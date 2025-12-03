@@ -1,47 +1,47 @@
 @interface WFArrayParameterState
-+ (void)processValues:(id)a3 context:(id)a4 processingClass:(Class)a5 userInputRequiredHandler:(id)a6 valueHandler:(id)a7 processSingleVariableStringsAsContentItems:(BOOL)a8;
-- (BOOL)isEqual:(id)a3;
++ (void)processValues:(id)values context:(id)context processingClass:(Class)class userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler processSingleVariableStringsAsContentItems:(BOOL)items;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)containedVariables;
-- (WFArrayParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFArrayParameterState)initWithValues:(id)a3;
-- (WFArrayParameterState)initWithValues:(id)a3 identity:(id)a4;
+- (WFArrayParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFArrayParameterState)initWithValues:(id)values;
+- (WFArrayParameterState)initWithValues:(id)values identity:(id)identity;
 - (WFPropertyListObject)serializedRepresentation;
 - (unint64_t)hash;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFArrayParameterState
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  valueHandlerCopy = valueHandler;
+  handlerCopy = handler;
+  contextCopy = context;
   v11 = objc_opt_class();
-  v12 = [(WFArrayParameterState *)self values];
-  [v11 processValues:v12 context:v10 processingClass:objc_opt_class() userInputRequiredHandler:v9 valueHandler:v8 processSingleVariableStringsAsContentItems:0];
+  values = [(WFArrayParameterState *)self values];
+  [v11 processValues:values context:contextCopy processingClass:objc_opt_class() userInputRequiredHandler:handlerCopy valueHandler:valueHandlerCopy processSingleVariableStringsAsContentItems:0];
 }
 
 - (NSArray)containedVariables
 {
-  v2 = [(WFArrayParameterState *)self values];
-  v3 = [v2 valueForKeyPath:@"@unionOfArrays.containedVariables"];
+  values = [(WFArrayParameterState *)self values];
+  v3 = [values valueForKeyPath:@"@unionOfArrays.containedVariables"];
 
   return v3;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(WFArrayParameterState *)self values];
-  v3 = [v2 hash];
+  values = [(WFArrayParameterState *)self values];
+  v3 = [values hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -51,9 +51,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFArrayParameterState *)v4 values];
-      v6 = [(WFArrayParameterState *)self values];
-      v7 = [v5 isEqualToArray:v6];
+      values = [(WFArrayParameterState *)equalCopy values];
+      values2 = [(WFArrayParameterState *)self values];
+      v7 = [values isEqualToArray:values2];
     }
 
     else
@@ -67,8 +67,8 @@
 
 - (WFPropertyListObject)serializedRepresentation
 {
-  v2 = [(WFArrayParameterState *)self values];
-  v3 = [v2 if_map:&__block_literal_global_64017];
+  values = [(WFArrayParameterState *)self values];
+  v3 = [values if_map:&__block_literal_global_64017];
 
   return v3;
 }
@@ -94,13 +94,13 @@ LABEL_7:
   return v5;
 }
 
-- (WFArrayParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFArrayParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  providerCopy = provider;
+  parameterCopy = parameter;
+  representationCopy = representation;
   v11 = objc_opt_class();
-  v12 = WFEnforceClass_1501(v10, v11);
+  v12 = WFEnforceClass_1501(representationCopy, v11);
 
   if (v12)
   {
@@ -108,20 +108,20 @@ LABEL_7:
     v17 = 3221225472;
     v18 = __85__WFArrayParameterState_initWithSerializedRepresentation_variableProvider_parameter___block_invoke;
     v19 = &unk_1E837D9A0;
-    v20 = v8;
-    v21 = v9;
+    v20 = providerCopy;
+    v21 = parameterCopy;
     v13 = [v12 if_compactMap:&v16];
     self = [(WFArrayParameterState *)self initWithValues:v13, v16, v17, v18, v19];
 
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 WFPropertyListParameterValue *__85__WFArrayParameterState_initWithSerializedRepresentation_variableProvider_parameter___block_invoke(uint64_t a1, void *a2)
@@ -149,14 +149,14 @@ LABEL_7:
   return v5;
 }
 
-- (WFArrayParameterState)initWithValues:(id)a3 identity:(id)a4
+- (WFArrayParameterState)initWithValues:(id)values identity:(id)identity
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  valuesCopy = values;
+  identityCopy = identity;
+  v9 = identityCopy;
+  if (valuesCopy)
   {
-    if (v8)
+    if (identityCopy)
     {
       goto LABEL_3;
     }
@@ -164,8 +164,8 @@ LABEL_7:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFArrayParameterState.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"values"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFArrayParameterState.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"values"}];
 
     if (v9)
     {
@@ -173,8 +173,8 @@ LABEL_7:
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"WFArrayParameterState.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"identity"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFArrayParameterState.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"identity"}];
 
 LABEL_3:
   v17.receiver = self;
@@ -182,33 +182,33 @@ LABEL_3:
   v10 = [(WFArrayParameterState *)&v17 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [valuesCopy copy];
     values = v10->_values;
     v10->_values = v11;
 
-    objc_storeStrong(&v10->_identity, a4);
+    objc_storeStrong(&v10->_identity, identity);
     v13 = v10;
   }
 
   return v10;
 }
 
-- (WFArrayParameterState)initWithValues:(id)a3
+- (WFArrayParameterState)initWithValues:(id)values
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [(WFArrayParameterState *)self initWithValues:v5 identity:v6];
+  valuesCopy = values;
+  uUID = [v4 UUID];
+  v7 = [(WFArrayParameterState *)self initWithValues:valuesCopy identity:uUID];
 
   return v7;
 }
 
-+ (void)processValues:(id)a3 context:(id)a4 processingClass:(Class)a5 userInputRequiredHandler:(id)a6 valueHandler:(id)a7 processSingleVariableStringsAsContentItems:(BOOL)a8
++ (void)processValues:(id)values context:(id)context processingClass:(Class)class userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler processSingleVariableStringsAsContentItems:(BOOL)items
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  valuesCopy = values;
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
   v17 = objc_opt_new();
   v18 = objc_opt_new();
   v41[0] = 0;
@@ -225,8 +225,8 @@ LABEL_3:
   v32[1] = 3221225472;
   v32[2] = __157__WFArrayParameterState_Convenience__processValues_context_processingClass_userInputRequiredHandler_valueHandler_processSingleVariableStringsAsContentItems___block_invoke;
   v32[3] = &unk_1E837DA38;
-  v38 = a8;
-  v19 = v14;
+  itemsCopy = items;
+  v19 = contextCopy;
   v33 = v19;
   v34 = v17;
   v35 = v18;
@@ -237,17 +237,17 @@ LABEL_3:
   v24[2] = __157__WFArrayParameterState_Convenience__processValues_context_processingClass_userInputRequiredHandler_valueHandler_processSingleVariableStringsAsContentItems___block_invoke_4;
   v24[3] = &unk_1E837DA60;
   v29 = v41;
-  v20 = v15;
+  v20 = handlerCopy;
   v27 = v20;
   v30 = v39;
-  v31 = a5;
+  classCopy = class;
   v21 = v35;
   v25 = v21;
-  v22 = v16;
+  v22 = valueHandlerCopy;
   v28 = v22;
   v23 = v34;
   v26 = v23;
-  [v13 if_enumerateAsynchronouslyInSequence:v32 completionHandler:v24];
+  [valuesCopy if_enumerateAsynchronouslyInSequence:v32 completionHandler:v24];
 
   _Block_object_dispose(v39, 8);
   _Block_object_dispose(v41, 8);

@@ -1,16 +1,16 @@
 @interface FMOutlinedTableViewCell
-- (_TtC6FindMy23FMOutlinedTableViewCell)initWithCoder:(id)a3;
-- (_TtC6FindMy23FMOutlinedTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC6FindMy23FMOutlinedTableViewCell)initWithCoder:(id)coder;
+- (_TtC6FindMy23FMOutlinedTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation FMOutlinedTableViewCell
 
-- (_TtC6FindMy23FMOutlinedTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC6FindMy23FMOutlinedTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -19,10 +19,10 @@
     v6 = 0;
   }
 
-  return sub_1003E3C90(a3, a4, v6);
+  return sub_1003E3C90(style, identifier, v6);
 }
 
-- (_TtC6FindMy23FMOutlinedTableViewCell)initWithCoder:(id)a3
+- (_TtC6FindMy23FMOutlinedTableViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC6FindMy23FMOutlinedTableViewCell_outlineLayer;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(CAShapeLayer) init];
@@ -34,7 +34,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003E3EC0();
 }
 

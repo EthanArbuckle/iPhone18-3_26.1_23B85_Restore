@@ -1,34 +1,34 @@
 @interface CoreRCHIDService
-- (BOOL)setIOHIDServicePropertyForKey:(id)a3 withValue:(id)a4;
+- (BOOL)setIOHIDServicePropertyForKey:(id)key withValue:(id)value;
 - (CoreRCHIDService)init;
-- (IUnknown)interfaceWithID:(__CFUUID *)a3;
-- (id)copyIOHIDServicePropertyForKey:(id)a3;
-- (int)probeIOService:(unsigned int)a3 propertyTable:(id)a4 order:(int *)a5;
-- (int)startWithIOService:(unsigned int)a3 propertyTable:(id)a4;
+- (IUnknown)interfaceWithID:(__CFUUID *)d;
+- (id)copyIOHIDServicePropertyForKey:(id)key;
+- (int)probeIOService:(unsigned int)service propertyTable:(id)table order:(int *)order;
+- (int)startWithIOService:(unsigned int)service propertyTable:(id)table;
 - (int)stop;
-- (void)addBus:(id)a3;
-- (void)addDevice:(id)a3;
-- (void)addIRMappingWithValue:(id)a3;
-- (void)bus:(id)a3 deviceHasBeenAdded:(id)a4;
-- (void)bus:(id)a3 deviceHasBeenRemoved:(id)a4;
-- (void)cecDevice:(id)a3 deckControlCommandHasBeenReceived:(unsigned __int8)a4 fromDevice:(id)a5;
-- (void)cecDevice:(id)a3 deckControlPlayHasBeenReceived:(unsigned __int8)a4 fromDevice:(id)a5;
+- (void)addBus:(id)bus;
+- (void)addDevice:(id)device;
+- (void)addIRMappingWithValue:(id)value;
+- (void)bus:(id)bus deviceHasBeenAdded:(id)added;
+- (void)bus:(id)bus deviceHasBeenRemoved:(id)removed;
+- (void)cecDevice:(id)device deckControlCommandHasBeenReceived:(unsigned __int8)received fromDevice:(id)fromDevice;
+- (void)cecDevice:(id)device deckControlPlayHasBeenReceived:(unsigned __int8)received fromDevice:(id)fromDevice;
 - (void)dealloc;
-- (void)device:(id)a3 receivedHIDEvent:(id)a4 fromDevice:(id)a5;
-- (void)dispatchHIDEvent:(__IOHIDEvent *)a3 options:(unsigned int)a4;
-- (void)dispatchHIDEvent:(id)a3 fromDevice:(id)a4;
-- (void)manager:(id)a3 hasAdded:(id)a4;
-- (void)manager:(id)a3 hasRemoved:(id)a4;
-- (void)removeBus:(id)a3;
-- (void)removeDevice:(id)a3;
-- (void)scheduleWithDispatchQueue:(id)a3;
-- (void)setIOHIDServiceEventCallback:(void *)a3 target:(void *)a4 context:(void *)a5;
-- (void)unscheduleFromDispatchQueue:(id)a3;
+- (void)device:(id)device receivedHIDEvent:(id)event fromDevice:(id)fromDevice;
+- (void)dispatchHIDEvent:(__IOHIDEvent *)event options:(unsigned int)options;
+- (void)dispatchHIDEvent:(id)event fromDevice:(id)device;
+- (void)manager:(id)manager hasAdded:(id)added;
+- (void)manager:(id)manager hasRemoved:(id)removed;
+- (void)removeBus:(id)bus;
+- (void)removeDevice:(id)device;
+- (void)scheduleWithDispatchQueue:(id)queue;
+- (void)setIOHIDServiceEventCallback:(void *)callback target:(void *)target context:(void *)context;
+- (void)unscheduleFromDispatchQueue:(id)queue;
 @end
 
 @implementation CoreRCHIDService
 
-- (void)addIRMappingWithValue:(id)a3
+- (void)addIRMappingWithValue:(id)value
 {
   v37 = 0;
   if (gLogCategory_CoreRCHID <= 40 && (gLogCategory_CoreRCHID != -1 || _LogCategory_Initialize()))
@@ -40,8 +40,8 @@
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v4 = [(CoreRCHIDService *)self buses];
-  v5 = [v4 countByEnumeratingWithState:&v33 objects:v40 count:16];
+  buses = [(CoreRCHIDService *)self buses];
+  v5 = [buses countByEnumeratingWithState:&v33 objects:v40 count:16];
   if (v5)
   {
     v6 = v5;
@@ -52,7 +52,7 @@
       {
         if (*v34 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(buses);
         }
 
         v9 = *(*(&v33 + 1) + 8 * i);
@@ -63,8 +63,8 @@
           v32 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v10 = [v9 devices];
-          v11 = [v10 countByEnumeratingWithState:&v29 objects:v39 count:16];
+          devices = [v9 devices];
+          v11 = [devices countByEnumeratingWithState:&v29 objects:v39 count:16];
           if (v11)
           {
             v12 = v11;
@@ -76,7 +76,7 @@ LABEL_12:
             {
               if (*v30 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(devices);
               }
 
               v15 = *(*(&v29 + 1) + 8 * v14);
@@ -90,7 +90,7 @@ LABEL_12:
 
               if (v12 == ++v14)
               {
-                v12 = [v10 countByEnumeratingWithState:&v29 objects:v39 count:16];
+                v12 = [devices countByEnumeratingWithState:&v29 objects:v39 count:16];
                 if (v12)
                 {
                   goto LABEL_12;
@@ -111,7 +111,7 @@ LABEL_12:
             v28 = 0u;
             v25 = 0u;
             v26 = 0u;
-            v18 = [a3 countByEnumeratingWithState:&v25 objects:v38 count:16];
+            v18 = [value countByEnumeratingWithState:&v25 objects:v38 count:16];
             if (v18)
             {
               v19 = v18;
@@ -122,13 +122,13 @@ LABEL_12:
                 {
                   if (*v26 != v20)
                   {
-                    objc_enumerationMutation(a3);
+                    objc_enumerationMutation(value);
                   }
 
                   [v17 addMappingWithProtocolID:objc_msgSend(objc_msgSend(*(*(&v25 + 1) + 8 * j) options:"objectForKeyedSubscript:" commandToMap:@"protocol" command:"integerValue") repeat:{objc_msgSend(objc_msgSend(*(*(&v25 + 1) + 8 * j), "objectForKeyedSubscript:", @"protocol", "integerValue"), objc_msgSend(objc_msgSend(*(*(&v25 + 1) + 8 * j), "objectForKeyedSubscript:", @"corerccommand", "integerValue"), objc_msgSend(objc_msgSend(*(*(&v25 + 1) + 8 * j), "objectForKeyedSubscript:", @"command", "integerValue"), objc_msgSend(objc_msgSend(*(*(&v25 + 1) + 8 * j), "objectForKeyedSubscript:", @"repeat", "integerValue")}];
                 }
 
-                v19 = [a3 countByEnumeratingWithState:&v25 objects:v38 count:16];
+                v19 = [value countByEnumeratingWithState:&v25 objects:v38 count:16];
               }
 
               while (v19);
@@ -150,7 +150,7 @@ LABEL_19:
         ;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v33 objects:v40 count:16];
+      v6 = [buses countByEnumeratingWithState:&v33 objects:v40 count:16];
       if (v6)
       {
         continue;
@@ -164,66 +164,66 @@ LABEL_35:
   sub_2624(&v37);
 }
 
-- (void)manager:(id)a3 hasAdded:(id)a4
+- (void)manager:(id)manager hasAdded:(id)added
 {
   if (gLogCategory_CoreRCHID <= 10 && (gLogCategory_CoreRCHID != -1 || _LogCategory_Initialize()))
   {
-    v7 = a3;
-    v8 = a4;
+    managerCopy = manager;
+    addedCopy = added;
     LogPrintF();
   }
 
-  if ([(CoreRCManager *)[(CoreRCHIDService *)self manager:v7] isEqual:a3])
+  if ([(CoreRCManager *)[(CoreRCHIDService *)self manager:managerCopy] isEqual:manager])
   {
 
-    [(CoreRCHIDService *)self addBus:a4];
+    [(CoreRCHIDService *)self addBus:added];
   }
 }
 
-- (void)manager:(id)a3 hasRemoved:(id)a4
+- (void)manager:(id)manager hasRemoved:(id)removed
 {
   if (gLogCategory_CoreRCHID <= 10 && (gLogCategory_CoreRCHID != -1 || _LogCategory_Initialize()))
   {
-    v7 = a3;
-    v8 = a4;
+    managerCopy = manager;
+    removedCopy = removed;
     LogPrintF();
   }
 
-  if ([(CoreRCManager *)[(CoreRCHIDService *)self manager:v7] isEqual:a3])
+  if ([(CoreRCManager *)[(CoreRCHIDService *)self manager:managerCopy] isEqual:manager])
   {
 
-    [(CoreRCHIDService *)self removeBus:a4];
+    [(CoreRCHIDService *)self removeBus:removed];
   }
 }
 
-- (void)bus:(id)a3 deviceHasBeenAdded:(id)a4
-{
-  if (gLogCategory_CoreRCHID <= 10 && (gLogCategory_CoreRCHID != -1 || _LogCategory_Initialize()))
-  {
-    LogPrintF();
-  }
-
-  [(CoreRCHIDService *)self addDevice:a4];
-}
-
-- (void)bus:(id)a3 deviceHasBeenRemoved:(id)a4
+- (void)bus:(id)bus deviceHasBeenAdded:(id)added
 {
   if (gLogCategory_CoreRCHID <= 10 && (gLogCategory_CoreRCHID != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  [(CoreRCHIDService *)self removeDevice:a4];
+  [(CoreRCHIDService *)self addDevice:added];
 }
 
-- (void)device:(id)a3 receivedHIDEvent:(id)a4 fromDevice:(id)a5
+- (void)bus:(id)bus deviceHasBeenRemoved:(id)removed
+{
+  if (gLogCategory_CoreRCHID <= 10 && (gLogCategory_CoreRCHID != -1 || _LogCategory_Initialize()))
+  {
+    LogPrintF();
+  }
+
+  [(CoreRCHIDService *)self removeDevice:removed];
+}
+
+- (void)device:(id)device receivedHIDEvent:(id)event fromDevice:(id)fromDevice
 {
   if (gLogCategory_CoreRCHID <= 40 && (gLogCategory_CoreRCHID != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  [(CoreRCHIDService *)self dispatchHIDEvent:a4 fromDevice:a5];
+  [(CoreRCHIDService *)self dispatchHIDEvent:event fromDevice:fromDevice];
 }
 
 - (CoreRCHIDService)init
@@ -264,22 +264,22 @@ LABEL_35:
   [(CoreRCHIDService *)&v4 dealloc];
 }
 
-- (IUnknown)interfaceWithID:(__CFUUID *)a3
+- (IUnknown)interfaceWithID:(__CFUUID *)d
 {
   v5 = CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0, 0, 0, 0, 0, 0, 0, 0, 0xC0u, 0, 0, 0, 0, 0, 0, 0x46u);
-  if (CFEqual(a3, v5))
+  if (CFEqual(d, v5))
   {
     return &self->_ioPlugInInterface;
   }
 
   v6 = CFUUIDGetConstantUUIDWithBytes(0, 0xC2u, 0x44u, 0xE8u, 0x58u, 0x10u, 0x9Cu, 0x11u, 0xD4u, 0x91u, 0xD4u, 0, 0x50u, 0xE4u, 0xC6u, 0x42u, 0x6Fu);
-  if (CFEqual(a3, v6))
+  if (CFEqual(d, v6))
   {
     return &self->_ioPlugInInterface;
   }
 
   v8 = CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0x6Fu, 0xE2u, 0x2Au, 0xBFu, 0x68u, 0xB9u, 0x11u, 0xDBu, 0xA7u, 0x1Fu, 0, 0x16u, 0xCBu, 0xC1u, 0x10u, 0xF7u);
-  if (CFEqual(a3, v8))
+  if (CFEqual(d, v8))
   {
     return &self->_hidServiceInterface2;
   }
@@ -290,23 +290,23 @@ LABEL_35:
   }
 }
 
-- (int)probeIOService:(unsigned int)a3 propertyTable:(id)a4 order:(int *)a5
+- (int)probeIOService:(unsigned int)service propertyTable:(id)table order:(int *)order
 {
   if (gLogCategory_CoreRCHID <= 10 && (gLogCategory_CoreRCHID != -1 || _LogCategory_Initialize()))
   {
     sub_26AC();
-    if (!a3)
+    if (!service)
     {
       return -536870206;
     }
   }
 
-  else if (!a3)
+  else if (!service)
   {
     return -536870206;
   }
 
-  if (IOObjectConformsTo(a3, "IOCECService"))
+  if (IOObjectConformsTo(service, "IOCECService"))
   {
     return 0;
   }
@@ -314,7 +314,7 @@ LABEL_35:
   return -536870206;
 }
 
-- (int)startWithIOService:(unsigned int)a3 propertyTable:(id)a4
+- (int)startWithIOService:(unsigned int)service propertyTable:(id)table
 {
   if (gLogCategory_CoreRCHID <= 10 && (gLogCategory_CoreRCHID != -1 || _LogCategory_Initialize()))
   {
@@ -334,9 +334,9 @@ LABEL_35:
   return 0;
 }
 
-- (id)copyIOHIDServicePropertyForKey:(id)a3
+- (id)copyIOHIDServicePropertyForKey:(id)key
 {
-  if ([a3 isEqual:@"PrimaryUsagePage"])
+  if ([key isEqual:@"PrimaryUsagePage"])
   {
     v4 = &off_8408;
   }
@@ -344,19 +344,19 @@ LABEL_35:
   else
   {
     v4 = &off_8420;
-    if (([a3 isEqual:@"PrimaryUsage"] & 1) == 0)
+    if (([key isEqual:@"PrimaryUsage"] & 1) == 0)
     {
-      if ([a3 isEqual:@"Product"])
+      if ([key isEqual:@"Product"])
       {
         v4 = @"CoreRC HID Service";
       }
 
-      else if ([a3 isEqual:@"DeviceUsagePairs"])
+      else if ([key isEqual:@"DeviceUsagePairs"])
       {
         v4 = [NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:&off_8408, @"DeviceUsagePage", &off_8420, @"DeviceUsage", 0], 0];
       }
 
-      else if ([a3 isEqual:@"Transport"])
+      else if ([key isEqual:@"Transport"])
       {
         v4 = @"CoreRC";
       }
@@ -376,7 +376,7 @@ LABEL_35:
   return [(NSArray *)v4 copy];
 }
 
-- (BOOL)setIOHIDServicePropertyForKey:(id)a3 withValue:(id)a4
+- (BOOL)setIOHIDServicePropertyForKey:(id)key withValue:(id)value
 {
   if (gLogCategory_CoreRCHID <= 10 && (gLogCategory_CoreRCHID != -1 || _LogCategory_Initialize()))
   {
@@ -386,26 +386,26 @@ LABEL_35:
   return 1;
 }
 
-- (void)setIOHIDServiceEventCallback:(void *)a3 target:(void *)a4 context:(void *)a5
+- (void)setIOHIDServiceEventCallback:(void *)callback target:(void *)target context:(void *)context
 {
-  self->_eventCallback = a3;
-  self->_eventTarget = a4;
-  self->_eventContext = a5;
+  self->_eventCallback = callback;
+  self->_eventTarget = target;
+  self->_eventContext = context;
 }
 
-- (void)dispatchHIDEvent:(__IOHIDEvent *)a3 options:(unsigned int)a4
+- (void)dispatchHIDEvent:(__IOHIDEvent *)event options:(unsigned int)options
 {
-  if (a3)
+  if (event)
   {
     eventCallback = self->_eventCallback;
     if (eventCallback)
     {
-      eventCallback(self->_eventTarget, self->_eventContext, &self->_hidServiceInterface2, a3, 0);
+      eventCallback(self->_eventTarget, self->_eventContext, &self->_hidServiceInterface2, event, 0);
     }
   }
 }
 
-- (void)scheduleWithDispatchQueue:(id)a3
+- (void)scheduleWithDispatchQueue:(id)queue
 {
   if (gLogCategory_CoreRCHID <= 40 && (gLogCategory_CoreRCHID != -1 || _LogCategory_Initialize()))
   {
@@ -421,7 +421,7 @@ LABEL_35:
   dispatch_async(queue, block);
 }
 
-- (void)unscheduleFromDispatchQueue:(id)a3
+- (void)unscheduleFromDispatchQueue:(id)queue
 {
   if (gLogCategory_CoreRCHID <= 40 && (gLogCategory_CoreRCHID != -1 || _LogCategory_Initialize()))
   {
@@ -437,20 +437,20 @@ LABEL_35:
   dispatch_sync(queue, block);
 }
 
-- (void)addBus:(id)a3
+- (void)addBus:(id)bus
 {
   if (gLogCategory_CoreRCHID <= 40 && (gLogCategory_CoreRCHID != -1 || _LogCategory_Initialize()))
   {
     sub_280C();
   }
 
-  [(NSMutableSet *)self->_monitoredBuses addObject:a3];
+  [(NSMutableSet *)self->_monitoredBuses addObject:bus];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [a3 devices];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  devices = [bus devices];
+  v6 = [devices countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -461,93 +461,93 @@ LABEL_35:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(devices);
         }
 
         [(CoreRCHIDService *)self addDevice:*(*(&v10 + 1) + 8 * i)];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [devices countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 
-  [a3 setDelegate:self];
+  [bus setDelegate:self];
 }
 
-- (void)removeBus:(id)a3
+- (void)removeBus:(id)bus
 {
   if (gLogCategory_CoreRCHID <= 40 && (gLogCategory_CoreRCHID != -1 || _LogCategory_Initialize()))
   {
     sub_284C();
   }
 
-  if ([a3 delegate] == self)
+  if ([bus delegate] == self)
   {
-    [a3 setDelegate:0];
+    [bus setDelegate:0];
   }
 
   monitoredBuses = self->_monitoredBuses;
 
-  [(NSMutableSet *)monitoredBuses removeObject:a3];
+  [(NSMutableSet *)monitoredBuses removeObject:bus];
 }
 
-- (void)addDevice:(id)a3
+- (void)addDevice:(id)device
 {
   if (gLogCategory_CoreRCHID <= 40 && (gLogCategory_CoreRCHID != -1 || _LogCategory_Initialize()))
   {
     sub_288C();
   }
 
-  [(NSMutableSet *)self->_monitoredDevices addObject:a3];
+  [(NSMutableSet *)self->_monitoredDevices addObject:device];
 
-  [a3 setDelegate:self];
+  [device setDelegate:self];
 }
 
-- (void)removeDevice:(id)a3
+- (void)removeDevice:(id)device
 {
   if (gLogCategory_CoreRCHID <= 40 && (gLogCategory_CoreRCHID != -1 || _LogCategory_Initialize()))
   {
     sub_28CC();
   }
 
-  if ([a3 delegate] == self)
+  if ([device delegate] == self)
   {
-    [a3 setDelegate:0];
+    [device setDelegate:0];
   }
 
   monitoredDevices = self->_monitoredDevices;
 
-  [(NSMutableSet *)monitoredDevices removeObject:a3];
+  [(NSMutableSet *)monitoredDevices removeObject:device];
 }
 
-- (void)dispatchHIDEvent:(id)a3 fromDevice:(id)a4
+- (void)dispatchHIDEvent:(id)event fromDevice:(id)device
 {
-  if (a3 && [a3 event])
+  if (event && [event event])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      [a3 event];
+      [event event];
       IOHIDEventGetTimeStamp();
       VendorDefinedEvent = IOHIDEventCreateVendorDefinedEvent();
       if (VendorDefinedEvent)
       {
         v7 = VendorDefinedEvent;
-        [a3 event];
+        [event event];
         IOHIDEventAppendEvent();
         CFRelease(v7);
       }
     }
 
-    v8 = [a3 event];
+    event = [event event];
 
-    [(CoreRCHIDService *)self dispatchHIDEvent:v8 options:0];
+    [(CoreRCHIDService *)self dispatchHIDEvent:event options:0];
   }
 }
 
-- (void)cecDevice:(id)a3 deckControlCommandHasBeenReceived:(unsigned __int8)a4 fromDevice:(id)a5
+- (void)cecDevice:(id)device deckControlCommandHasBeenReceived:(unsigned __int8)received fromDevice:(id)fromDevice
 {
   v8 = [sub_1528() initWithCECDeckControlMode:v5 pressed:1];
   if (v8)
@@ -562,7 +562,7 @@ LABEL_35:
   }
 }
 
-- (void)cecDevice:(id)a3 deckControlPlayHasBeenReceived:(unsigned __int8)a4 fromDevice:(id)a5
+- (void)cecDevice:(id)device deckControlPlayHasBeenReceived:(unsigned __int8)received fromDevice:(id)fromDevice
 {
   v8 = [sub_1528() initWithCECPlayMode:v5 pressed:1];
   if (v8)

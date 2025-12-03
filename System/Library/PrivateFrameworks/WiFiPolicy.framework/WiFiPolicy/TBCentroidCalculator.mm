@@ -1,7 +1,7 @@
 @interface TBCentroidCalculator
 - (CLLocationCoordinate2D)centroid;
 - (NSMutableArray)points;
-- (void)addLatitude:(double)a3 longitude:(double)a4;
+- (void)addLatitude:(double)latitude longitude:(double)longitude;
 @end
 
 @implementation TBCentroidCalculator
@@ -21,32 +21,32 @@
   return points;
 }
 
-- (void)addLatitude:(double)a3 longitude:(double)a4
+- (void)addLatitude:(double)latitude longitude:(double)longitude
 {
-  if ([(TBCentroidCalculator *)self _validLatitudeValue:?]&& [(TBCentroidCalculator *)self _validLongitudeValue:a4])
+  if ([(TBCentroidCalculator *)self _validLatitudeValue:?]&& [(TBCentroidCalculator *)self _validLongitudeValue:longitude])
   {
     v7 = MEMORY[0x277CBEA60];
-    v8 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-    v9 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v8 = [MEMORY[0x277CCABB0] numberWithDouble:latitude];
+    v9 = [MEMORY[0x277CCABB0] numberWithDouble:longitude];
     v11 = [v7 arrayWithObjects:{v8, v9, 0}];
 
-    v10 = [(TBCentroidCalculator *)self points];
-    [v10 addObject:v11];
+    points = [(TBCentroidCalculator *)self points];
+    [points addObject:v11];
   }
 }
 
 - (CLLocationCoordinate2D)centroid
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [(TBCentroidCalculator *)self points];
-  v4 = [v3 count];
+  points = [(TBCentroidCalculator *)self points];
+  v4 = [points count];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = [(TBCentroidCalculator *)self points];
-  v6 = [v5 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  points2 = [(TBCentroidCalculator *)self points];
+  v6 = [points2 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v6)
   {
     v7 = v6;
@@ -60,7 +60,7 @@
       {
         if (*v36 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(points2);
         }
 
         v13 = *(*(&v35 + 1) + 8 * i);
@@ -85,7 +85,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v7 = [points2 countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v7);

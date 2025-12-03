@@ -1,9 +1,9 @@
 @interface TRProxyAuthOperation
-+ (id)_logStringForAppleIDServiceType:(int64_t)a3;
-+ (int64_t)_appleIDServiceTypeForTRAccountServices:(id)a3;
-- (void)_handleProxyAuthenticationResponse:(id)a3 proxiedDevice:(id)a4;
-- (void)_handleProxyDeviceResponse:(id)a3;
-- (void)_performProxyAuthenticationWithProxiedDevice:(id)a3;
++ (id)_logStringForAppleIDServiceType:(int64_t)type;
++ (int64_t)_appleIDServiceTypeForTRAccountServices:(id)services;
+- (void)_handleProxyAuthenticationResponse:(id)response proxiedDevice:(id)device;
+- (void)_handleProxyDeviceResponse:(id)response;
+- (void)_performProxyAuthenticationWithProxiedDevice:(id)device;
 - (void)_sendProxyDeviceRequest;
 - (void)execute;
 @end
@@ -14,8 +14,8 @@
 {
   if ([(TRProxyAuthOperation *)self isCancelled])
   {
-    v3 = [objc_opt_class() userCancelledError];
-    [(TROperation *)self finishWithError:v3];
+    userCancelledError = [objc_opt_class() userCancelledError];
+    [(TROperation *)self finishWithError:userCancelledError];
   }
 
   else
@@ -41,13 +41,13 @@
 
   v4 = objc_alloc_init(TRSetupProxyDeviceRequest);
   objc_initWeak(buf, self);
-  v5 = [(TROperation *)self session];
+  session = [(TROperation *)self session];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__TRProxyAuthOperation__sendProxyDeviceRequest__block_invoke;
   v7[3] = &unk_279DCECD0;
   objc_copyWeak(&v8, buf);
-  [v5 sendRequest:v4 withResponseHandler:v7];
+  [session sendRequest:v4 withResponseHandler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(buf);
@@ -77,10 +77,10 @@ void __47__TRProxyAuthOperation__sendProxyDeviceRequest__block_invoke(uint64_t a
   }
 }
 
-- (void)_handleProxyDeviceResponse:(id)a3
+- (void)_handleProxyDeviceResponse:(id)response
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   if (_TRLogEnabled == 1)
   {
     v5 = TRLogHandle();
@@ -89,7 +89,7 @@ void __47__TRProxyAuthOperation__sendProxyDeviceRequest__block_invoke(uint64_t a
       v8 = 136315394;
       v9 = "[TRProxyAuthOperation _handleProxyDeviceResponse:]";
       v10 = 2112;
-      v11 = v4;
+      v11 = responseCopy;
       _os_log_impl(&dword_26F2A2000, v5, OS_LOG_TYPE_DEFAULT, "%s Handle Proxy Device Response: %@", &v8, 0x16u);
     }
   }
@@ -97,43 +97,43 @@ void __47__TRProxyAuthOperation__sendProxyDeviceRequest__block_invoke(uint64_t a
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 proxyDevice];
-    [(TRProxyAuthOperation *)self _performProxyAuthenticationWithProxiedDevice:v6];
+    proxyDevice = [responseCopy proxyDevice];
+    [(TRProxyAuthOperation *)self _performProxyAuthenticationWithProxiedDevice:proxyDevice];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TRNearbyDeviceErrorDomain" code:-10000 userInfo:0];
-    [(TROperation *)self finishWithError:v6];
+    proxyDevice = [MEMORY[0x277CCA9B8] errorWithDomain:@"TRNearbyDeviceErrorDomain" code:-10000 userInfo:0];
+    [(TROperation *)self finishWithError:proxyDevice];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performProxyAuthenticationWithProxiedDevice:(id)a3
+- (void)_performProxyAuthenticationWithProxiedDevice:(id)device
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = [TRAnisetteDataProvider alloc];
-  v6 = [(TROperation *)self session];
-  v7 = [(TRAnisetteDataProvider *)v5 initWithSession:v6];
+  session = [(TROperation *)self session];
+  v7 = [(TRAnisetteDataProvider *)v5 initWithSession:session];
 
   v8 = objc_alloc_init(getAKAppleIDAuthenticationInAppContextClass());
-  v9 = [(TRProxyAuthOperation *)self presentingViewController];
-  [v8 setPresentingViewController:v9];
+  presentingViewController = [(TRProxyAuthOperation *)self presentingViewController];
+  [v8 setPresentingViewController:presentingViewController];
 
-  v10 = [(TRProxyAuthOperation *)self account];
-  v11 = [v10 username];
-  [v8 setUsername:v11];
+  account = [(TRProxyAuthOperation *)self account];
+  username = [account username];
+  [v8 setUsername:username];
 
   [v8 setIsUsernameEditable:0];
   [v8 setShouldAllowAppleIDCreation:0];
   v12 = objc_opt_class();
-  v13 = [(TRProxyAuthOperation *)self targetedServices];
-  [v8 setServiceType:{objc_msgSend(v12, "_appleIDServiceTypeForTRAccountServices:", v13)}];
+  targetedServices = [(TRProxyAuthOperation *)self targetedServices];
+  [v8 setServiceType:{objc_msgSend(v12, "_appleIDServiceTypeForTRAccountServices:", targetedServices)}];
 
   [v8 setShouldForceInteractiveAuth:0];
-  [v8 setProxiedDevice:v4];
+  [v8 setProxiedDevice:deviceCopy];
   [v8 setAnisetteDataProvider:v7];
   [v8 _setProxyingForApp:1];
   if (self->_isCLIMode)
@@ -163,12 +163,12 @@ void __47__TRProxyAuthOperation__sendProxyDeviceRequest__block_invoke(uint64_t a
     v16 = TRLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v8 username];
+      username2 = [v8 username];
       v18 = [objc_opt_class() _logStringForAppleIDServiceType:{objc_msgSend(v8, "serviceType")}];
       *buf = 136315650;
       v28 = "[TRProxyAuthOperation _performProxyAuthenticationWithProxiedDevice:]";
       v29 = 2112;
-      v30 = v17;
+      v30 = username2;
       v31 = 2114;
       v32 = v18;
       _os_log_impl(&dword_26F2A2000, v16, OS_LOG_TYPE_DEFAULT, "%s Attempting authentication of account %@ using service type %{public}@", buf, 0x20u);
@@ -181,9 +181,9 @@ void __47__TRProxyAuthOperation__sendProxyDeviceRequest__block_invoke(uint64_t a
   v23[2] = __69__TRProxyAuthOperation__performProxyAuthenticationWithProxiedDevice___block_invoke;
   v23[3] = &unk_279DCF040;
   v24 = v19;
-  v25 = self;
-  v26 = v4;
-  v20 = v4;
+  selfCopy = self;
+  v26 = deviceCopy;
+  v20 = deviceCopy;
   v21 = v19;
   [v21 authenticateWithContext:v8 completion:v23];
 
@@ -327,11 +327,11 @@ void __69__TRProxyAuthOperation__performProxyAuthenticationWithProxiedDevice___b
   }
 }
 
-- (void)_handleProxyAuthenticationResponse:(id)a3 proxiedDevice:(id)a4
+- (void)_handleProxyAuthenticationResponse:(id)response proxiedDevice:(id)device
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  deviceCopy = device;
   if (_TRLogEnabled == 1)
   {
     v8 = TRLogHandle();
@@ -340,7 +340,7 @@ void __69__TRProxyAuthOperation__performProxyAuthenticationWithProxiedDevice___b
       *buf = 136315394;
       v35 = "[TRProxyAuthOperation _handleProxyAuthenticationResponse:proxiedDevice:]";
       v36 = 2112;
-      v37 = v6;
+      v37 = responseCopy;
       _os_log_impl(&dword_26F2A2000, v8, OS_LOG_TYPE_DEFAULT, "%s Handle Proxy Authentication Response: %@", buf, 0x16u);
     }
   }
@@ -348,14 +348,14 @@ void __69__TRProxyAuthOperation__performProxyAuthenticationWithProxiedDevice___b
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v6;
+    v9 = responseCopy;
     v10 = objc_opt_new();
-    v11 = [v9 unauthenticatedAccountServices];
-    [v10 setObject:v11 forKeyedSubscript:@"TRProxyAuthOperationUnauthenticatedServicesKey"];
+    unauthenticatedAccountServices = [v9 unauthenticatedAccountServices];
+    [v10 setObject:unauthenticatedAccountServices forKeyedSubscript:@"TRProxyAuthOperationUnauthenticatedServicesKey"];
 
-    v12 = [v9 error];
+    error = [v9 error];
 
-    if (v12)
+    if (error)
     {
       if (_TRLogEnabled == 1)
       {
@@ -367,15 +367,15 @@ void __69__TRProxyAuthOperation__performProxyAuthenticationWithProxiedDevice___b
         }
       }
 
-      v14 = [v9 error];
-      [v10 setObject:v14 forKeyedSubscript:@"TRProxyAuthOperationErrorKey"];
+      error2 = [v9 error];
+      [v10 setObject:error2 forKeyedSubscript:@"TRProxyAuthOperationErrorKey"];
     }
 
     else
     {
-      v19 = [v9 authenticationResults];
-      v20 = v19;
-      if (v19 && self->_presentingViewController && !self->_isCLIMode && self->_canDoTermsAndConditions && self->_isForHomePod)
+      authenticationResults = [v9 authenticationResults];
+      v20 = authenticationResults;
+      if (authenticationResults && self->_presentingViewController && !self->_isCLIMode && self->_canDoTermsAndConditions && self->_isForHomePod)
       {
         v21 = [(NSSet *)self->_targetedServices containsObject:&unk_287F62918];
 
@@ -392,12 +392,12 @@ void __69__TRProxyAuthOperation__performProxyAuthenticationWithProxiedDevice___b
           }
 
           v23 = [TRAnisetteDataProvider alloc];
-          v24 = [(TROperation *)self session];
-          v15 = [(TRAnisetteDataProvider *)v23 initWithSession:v24];
+          session = [(TROperation *)self session];
+          v15 = [(TRAnisetteDataProvider *)v23 initWithSession:session];
 
           v25 = [TRTermsAndConditionsManager alloc];
-          v26 = [v9 authenticationResults];
-          v27 = [(TRTermsAndConditionsManager *)v25 initWithAuthResultsBlock:v26 presentingViewController:self->_presentingChildViewController];
+          authenticationResults2 = [v9 authenticationResults];
+          v27 = [(TRTermsAndConditionsManager *)v25 initWithAuthResultsBlock:authenticationResults2 presentingViewController:self->_presentingChildViewController];
           termsManager = self->_termsManager;
           self->_termsManager = v27;
 
@@ -413,7 +413,7 @@ void __69__TRProxyAuthOperation__performProxyAuthenticationWithProxiedDevice___b
           v31[2] = __73__TRProxyAuthOperation__handleProxyAuthenticationResponse_proxiedDevice___block_invoke_2;
           v31[3] = &unk_279DCEBF8;
           v31[4] = self;
-          [(TRTermsAndConditionsManager *)v29 loadProxiedTerms:v7 anisetteDataProvider:v15 appProvidedContext:@"HomePodSetup" acceptAction:v32 declineAction:v31];
+          [(TRTermsAndConditionsManager *)v29 loadProxiedTerms:deviceCopy anisetteDataProvider:v15 appProvidedContext:@"HomePodSetup" acceptAction:v32 declineAction:v31];
           if (_TRLogEnabled == 1)
           {
             v30 = TRLogHandle();
@@ -443,11 +443,11 @@ LABEL_14:
         goto LABEL_20;
       }
 
-      v14 = TRLogHandle();
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      error2 = TRLogHandle();
+      if (os_log_type_enabled(error2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_26F2A2000, v14, OS_LOG_TYPE_DEFAULT, "Proxy Auth Skipping terms", buf, 2u);
+        _os_log_impl(&dword_26F2A2000, error2, OS_LOG_TYPE_DEFAULT, "Proxy Auth Skipping terms", buf, 2u);
       }
     }
 
@@ -489,20 +489,20 @@ void __73__TRProxyAuthOperation__handleProxyAuthenticationResponse_proxiedDevice
   [v1 finishWithError:v2];
 }
 
-+ (int64_t)_appleIDServiceTypeForTRAccountServices:(id)a3
++ (int64_t)_appleIDServiceTypeForTRAccountServices:(id)services
 {
-  v3 = a3;
-  if ([v3 containsObject:&unk_287F62918])
+  servicesCopy = services;
+  if ([servicesCopy containsObject:&unk_287F62918])
   {
     v4 = 1;
   }
 
-  else if ([v3 containsObject:&unk_287F62930])
+  else if ([servicesCopy containsObject:&unk_287F62930])
   {
     v4 = 2;
   }
 
-  else if ([v3 containsObject:&unk_287F62948])
+  else if ([servicesCopy containsObject:&unk_287F62948])
   {
     v4 = 6;
   }
@@ -515,16 +515,16 @@ void __73__TRProxyAuthOperation__handleProxyAuthenticationResponse_proxiedDevice
   return v4;
 }
 
-+ (id)_logStringForAppleIDServiceType:(int64_t)a3
++ (id)_logStringForAppleIDServiceType:(int64_t)type
 {
-  if ((a3 - 1) > 5)
+  if ((type - 1) > 5)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return off_279DCF088[a3 - 1];
+    return off_279DCF088[type - 1];
   }
 }
 

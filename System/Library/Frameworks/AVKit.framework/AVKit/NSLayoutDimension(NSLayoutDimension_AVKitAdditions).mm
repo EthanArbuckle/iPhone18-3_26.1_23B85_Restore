@@ -8,7 +8,7 @@
 
 - (id)avkit_constraintLessThanOrEqualToConstant:()NSLayoutDimension_AVKitAdditions priority:
 {
-  v4 = [a1 constraintLessThanOrEqualToConstant:?];
+  v4 = [self constraintLessThanOrEqualToConstant:?];
   *&v5 = a3;
   [v4 setPriority:v5];
 
@@ -17,7 +17,7 @@
 
 - (id)avkit_constraintGreaterThanOrEqualToConstant:()NSLayoutDimension_AVKitAdditions priority:
 {
-  v4 = [a1 constraintGreaterThanOrEqualToConstant:?];
+  v4 = [self constraintGreaterThanOrEqualToConstant:?];
   *&v5 = a3;
   [v4 setPriority:v5];
 
@@ -26,7 +26,7 @@
 
 - (id)avkit_constraintEqualToConstant:()NSLayoutDimension_AVKitAdditions priority:
 {
-  v4 = [a1 constraintEqualToConstant:?];
+  v4 = [self constraintEqualToConstant:?];
   *&v5 = a3;
   [v4 setPriority:v5];
 

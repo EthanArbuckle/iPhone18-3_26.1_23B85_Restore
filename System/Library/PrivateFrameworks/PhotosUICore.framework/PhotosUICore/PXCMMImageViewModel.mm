@@ -1,50 +1,50 @@
 @interface PXCMMImageViewModel
-- (void)performChanges:(id)a3;
-- (void)setAsset:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setMediaProvider:(id)a3;
+- (void)performChanges:(id)changes;
+- (void)setAsset:(id)asset;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setMediaProvider:(id)provider;
 @end
 
 @implementation PXCMMImageViewModel
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(PXCMMImageViewModel *)self signalChange:4];
   }
 }
 
-- (void)setMediaProvider:(id)a3
+- (void)setMediaProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_mediaProvider != v5)
+  providerCopy = provider;
+  if (self->_mediaProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mediaProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_mediaProvider, provider);
     [(PXCMMImageViewModel *)self signalChange:2];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
-  if (self->_asset != v5)
+  assetCopy = asset;
+  if (self->_asset != assetCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_asset, a3);
+    v6 = assetCopy;
+    objc_storeStrong(&self->_asset, asset);
     [(PXCMMImageViewModel *)self signalChange:1];
-    v5 = v6;
+    assetCopy = v6;
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXCMMImageViewModel;
-  [(PXCMMImageViewModel *)&v3 performChanges:a3];
+  [(PXCMMImageViewModel *)&v3 performChanges:changes];
 }
 
 @end

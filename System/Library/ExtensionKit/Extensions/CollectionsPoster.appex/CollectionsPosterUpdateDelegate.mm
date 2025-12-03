@@ -1,20 +1,20 @@
 @interface CollectionsPosterUpdateDelegate
-- (void)updateConfiguration:(PRPosterConfiguration *)a3 withSessionInfo:(PRUpdatingSessionInfo *)a4 completion:(id)a5;
-- (void)updateDescriptors:(NSDictionary *)a3 withSessionInfo:(PRUpdatingSessionInfo *)a4 completion:(id)a5;
+- (void)updateConfiguration:(PRPosterConfiguration *)configuration withSessionInfo:(PRUpdatingSessionInfo *)info completion:(id)completion;
+- (void)updateDescriptors:(NSDictionary *)descriptors withSessionInfo:(PRUpdatingSessionInfo *)info completion:(id)completion;
 @end
 
 @implementation CollectionsPosterUpdateDelegate
 
-- (void)updateDescriptors:(NSDictionary *)a3 withSessionInfo:(PRUpdatingSessionInfo *)a4 completion:(id)a5
+- (void)updateDescriptors:(NSDictionary *)descriptors withSessionInfo:(PRUpdatingSessionInfo *)info completion:(id)completion
 {
   v9 = sub_100001FDC(&qword_1000205D0, &qword_1000122F0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(completion);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = descriptors;
+  v14[3] = info;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_100010A2C();
@@ -29,22 +29,22 @@
   v17[3] = 0;
   v17[4] = &unk_100012358;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  descriptorsCopy = descriptors;
+  infoCopy = info;
+  selfCopy = self;
   sub_10000E794(0, 0, v12, &unk_100012360, v17);
 }
 
-- (void)updateConfiguration:(PRPosterConfiguration *)a3 withSessionInfo:(PRUpdatingSessionInfo *)a4 completion:(id)a5
+- (void)updateConfiguration:(PRPosterConfiguration *)configuration withSessionInfo:(PRUpdatingSessionInfo *)info completion:(id)completion
 {
   v9 = sub_100001FDC(&qword_1000205D0, &qword_1000122F0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(completion);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = configuration;
+  v14[3] = info;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_100010A2C();
@@ -59,9 +59,9 @@
   v17[3] = 0;
   v17[4] = &unk_1000123F0;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  configurationCopy = configuration;
+  infoCopy = info;
+  selfCopy = self;
   sub_10000E794(0, 0, v12, &unk_100012310, v17);
 }
 

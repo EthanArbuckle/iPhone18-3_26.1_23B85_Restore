@@ -1,28 +1,28 @@
 @interface NEExtensionAppProxyProviderContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (void)cancelWithError:(id)a3;
-- (void)openFlowDivertControlSocketWithCompletionHandler:(id)a3;
-- (void)setDelegateInterface:(unsigned int)a3;
-- (void)setInitialFlowDivertControlSocket:(id)a3;
-- (void)startWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)stopWithReason:(int)a3;
+- (void)cancelWithError:(id)error;
+- (void)openFlowDivertControlSocketWithCompletionHandler:(id)handler;
+- (void)setDelegateInterface:(unsigned int)interface;
+- (void)setInitialFlowDivertControlSocket:(id)socket;
+- (void)startWithOptions:(id)options completionHandler:(id)handler;
+- (void)stopWithReason:(int)reason;
 @end
 
 @implementation NEExtensionAppProxyProviderContext
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
+  errorCopy = error;
+  v5 = errorCopy;
   if (self && self->_director)
   {
     v7 = MEMORY[0x1E69E9820];
     v8 = 3221225472;
     v9 = __54__NEExtensionAppProxyProviderContext_cancelWithError___block_invoke;
     v10 = &unk_1E7F0A0E8;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = errorCopy;
     NEFlowDirectorDestroy();
   }
 
@@ -30,7 +30,7 @@
   {
     v6.receiver = self;
     v6.super_class = NEExtensionAppProxyProviderContext;
-    [(NEExtensionTunnelProviderContext *)&v6 cancelWithError:v4];
+    [(NEExtensionTunnelProviderContext *)&v6 cancelWithError:errorCopy];
   }
 }
 
@@ -49,23 +49,23 @@ id __54__NEExtensionAppProxyProviderContext_cancelWithError___block_invoke(uint6
   return objc_msgSendSuper2(&v4, sel_cancelWithError_, v2);
 }
 
-- (void)stopWithReason:(int)a3
+- (void)stopWithReason:(int)reason
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [(NEExtensionProviderContext *)self _principalObject];
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
   v6 = ne_log_obj();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2080;
     v14 = ne_session_stop_reason_to_string();
     _os_log_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_DEFAULT, "%@: Calling stopProxyWithReason because: %s", buf, 0x16u);
   }
 
-  if (self && (a3 - 1) <= 0x29)
+  if (self && (reason - 1) <= 0x29)
   {
-    v7 = qword_1BAA4E658[a3 - 1];
+    v7 = qword_1BAA4E658[reason - 1];
   }
 
   else
@@ -77,9 +77,9 @@ id __54__NEExtensionAppProxyProviderContext_cancelWithError___block_invoke(uint6
   v9[1] = 3221225472;
   v9[2] = __53__NEExtensionAppProxyProviderContext_stopWithReason___block_invoke;
   v9[3] = &unk_1E7F086C0;
-  v10 = a3;
+  reasonCopy = reason;
   v9[4] = self;
-  [v5 stopProxyWithReason:v7 completionHandler:v9];
+  [_principalObject stopProxyWithReason:v7 completionHandler:v9];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -92,15 +92,15 @@ id __53__NEExtensionAppProxyProviderContext_stopWithReason___block_invoke(uint64
   return objc_msgSendSuper2(&v3, sel_stopWithReason_, v1);
 }
 
-- (void)startWithOptions:(id)a3 completionHandler:(id)a4
+- (void)startWithOptions:(id)options completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NEExtensionProviderContext *)self _principalObject];
+  optionsCopy = options;
+  handlerCopy = handler;
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
   v14.receiver = self;
   v14.super_class = NEExtensionAppProxyProviderContext;
-  [(NEExtensionProviderContext *)&v14 startWithOptions:v6 completionHandler:v7];
+  [(NEExtensionProviderContext *)&v14 startWithOptions:optionsCopy completionHandler:handlerCopy];
 
   if (self && self->_director)
   {
@@ -108,9 +108,9 @@ id __53__NEExtensionAppProxyProviderContext_stopWithReason___block_invoke(uint64
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2048;
-      v18 = v6;
+      v18 = optionsCopy;
       _os_log_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_DEFAULT, "%@: Calling startProxyWithOptions with options %p", buf, 0x16u);
     }
 
@@ -119,7 +119,7 @@ id __53__NEExtensionAppProxyProviderContext_stopWithReason___block_invoke(uint64
     v13[2] = __73__NEExtensionAppProxyProviderContext_startWithOptions_completionHandler___block_invoke;
     v13[3] = &unk_1E7F0B4A8;
     v13[4] = self;
-    [v8 startProxyWithOptions:v6 completionHandler:v13];
+    [_principalObject startProxyWithOptions:optionsCopy completionHandler:v13];
   }
 
   else
@@ -128,7 +128,7 @@ id __53__NEExtensionAppProxyProviderContext_stopWithReason___block_invoke(uint64
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v16 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_1BA83C000, v10, OS_LOG_TYPE_ERROR, "%@: Cannot start the proxy because the flow director is nil", buf, 0xCu);
     }
 
@@ -161,39 +161,39 @@ void __73__NEExtensionAppProxyProviderContext_startWithOptions_completionHandler
   [*(a1 + 32) startedWithError:a2];
 }
 
-- (void)openFlowDivertControlSocketWithCompletionHandler:(id)a3
+- (void)openFlowDivertControlSocketWithCompletionHandler:(id)handler
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v6 = [(NEExtensionProviderContext *)self hostContext];
+  handlerCopy = handler;
+  hostContext = [(NEExtensionProviderContext *)self hostContext];
   v7 = ne_log_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_INFO, "%@: Opening new flow divert control socket", &v9, 0xCu);
   }
 
-  [v6 openFlowDivertControlSocketWithCompletionHandler:v4];
+  [hostContext openFlowDivertControlSocketWithCompletionHandler:handlerCopy];
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDelegateInterface:(unsigned int)a3
+- (void)setDelegateInterface:(unsigned int)interface
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 1024;
-    v11 = a3;
+    interfaceCopy = interface;
     _os_log_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_INFO, "%@: Setting flow divert delegate interface to %u", &v8, 0x12u);
   }
 
   if (self)
   {
-    self->_delegateInterfaceIndex = a3;
+    self->_delegateInterfaceIndex = interface;
     if (self->_director)
     {
       delegateInterfaceIndex = self->_delegateInterfaceIndex;
@@ -204,10 +204,10 @@ void __73__NEExtensionAppProxyProviderContext_startWithOptions_completionHandler
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setInitialFlowDivertControlSocket:(id)a3
+- (void)setInitialFlowDivertControlSocket:(id)socket
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  socketCopy = socket;
   if (self)
   {
     Property = objc_getProperty(self, v4, 48, 1);
@@ -219,9 +219,9 @@ void __73__NEExtensionAppProxyProviderContext_startWithOptions_completionHandler
   }
 
   v7 = Property;
-  v8 = [v7 appVPN];
+  appVPN = [v7 appVPN];
 
-  v19 = v5;
+  v19 = socketCopy;
   if (self)
   {
     objc_initWeak(&location, self);
@@ -257,7 +257,7 @@ void __73__NEExtensionAppProxyProviderContext_startWithOptions_completionHandler
       v24 = &unk_1E7F0AA58;
       objc_copyWeak(v25, &location);
       NEFlowDirectorSetOpenControlSocketCallback();
-      if (v8)
+      if (appVPN)
       {
         v16 = self->_director;
         v20[1] = MEMORY[0x1E69E9820];

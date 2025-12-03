@@ -1,77 +1,77 @@
 @interface PKPeerPaymentSiriSnippetContentView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPeerPaymentSiriSnippetContentView)initWithBalloonView:(id)a3;
-- (double)_balloonMaxWidthForBoundsWidth:(double)a3;
-- (id)_memoBalloonViewWithText:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPeerPaymentSiriSnippetContentView)initWithBalloonView:(id)view;
+- (double)_balloonMaxWidthForBoundsWidth:(double)width;
+- (id)_memoBalloonViewWithText:(id)text;
 - (void)layoutSubviews;
-- (void)setMemoText:(id)a3;
-- (void)setRecipient:(id)a3;
-- (void)setToFieldText:(id)a3;
+- (void)setMemoText:(id)text;
+- (void)setRecipient:(id)recipient;
+- (void)setToFieldText:(id)text;
 @end
 
 @implementation PKPeerPaymentSiriSnippetContentView
 
-- (PKPeerPaymentSiriSnippetContentView)initWithBalloonView:(id)a3
+- (PKPeerPaymentSiriSnippetContentView)initWithBalloonView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v26.receiver = self;
   v26.super_class = PKPeerPaymentSiriSnippetContentView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v9 = [(PKPeerPaymentSiriSnippetContentView *)&v26 initWithFrame:CGRectZero.origin.x, y, width, height];
-  if (v9)
+  height = [(PKPeerPaymentSiriSnippetContentView *)&v26 initWithFrame:CGRectZero.origin.x, y, width, height];
+  if (height)
   {
     v10 = +[UIColor clearColor];
-    [(PKPeerPaymentSiriSnippetContentView *)v9 setBackgroundColor:v10];
+    [(PKPeerPaymentSiriSnippetContentView *)height setBackgroundColor:v10];
 
     v11 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-    toLabel = v9->_toLabel;
-    v9->_toLabel = v11;
+    toLabel = height->_toLabel;
+    height->_toLabel = v11;
 
-    v13 = v9->_toLabel;
+    v13 = height->_toLabel;
     v14 = +[UIColor labelColor];
     [(UILabel *)v13 setTextColor:v14];
 
-    v15 = v9->_toLabel;
+    v15 = height->_toLabel;
     v16 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody addingSymbolicTraits:2 options:0];
     v17 = [UIFont fontWithDescriptor:v16 size:0.0];
     [(UILabel *)v15 setFont:v17];
 
-    [(UILabel *)v9->_toLabel setNumberOfLines:1];
-    v18 = v9->_toLabel;
+    [(UILabel *)height->_toLabel setNumberOfLines:1];
+    v18 = height->_toLabel;
     v19 = +[UIColor clearColor];
     [(UILabel *)v18 setBackgroundColor:v19];
 
-    [(PKPeerPaymentSiriSnippetContentView *)v9 addSubview:v9->_toLabel];
-    objc_storeStrong(&v9->_peerPaymentBalloonView, a3);
-    [(PKPeerPaymentSiriSnippetContentView *)v9 addSubview:v5];
+    [(PKPeerPaymentSiriSnippetContentView *)height addSubview:height->_toLabel];
+    objc_storeStrong(&height->_peerPaymentBalloonView, view);
+    [(PKPeerPaymentSiriSnippetContentView *)height addSubview:viewCopy];
     v20 = [[UIStackView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-    toFieldStackView = v9->_toFieldStackView;
-    v9->_toFieldStackView = v20;
+    toFieldStackView = height->_toFieldStackView;
+    height->_toFieldStackView = v20;
 
-    [(UIStackView *)v9->_toFieldStackView setAxis:0];
-    [(UIStackView *)v9->_toFieldStackView setSpacing:16.0];
+    [(UIStackView *)height->_toFieldStackView setAxis:0];
+    [(UIStackView *)height->_toFieldStackView setSpacing:16.0];
     LODWORD(v22) = 1148846080;
-    [(UILabel *)v9->_toLabel setContentCompressionResistancePriority:0 forAxis:v22];
+    [(UILabel *)height->_toLabel setContentCompressionResistancePriority:0 forAxis:v22];
     LODWORD(v23) = 1148846080;
-    [(UILabel *)v9->_toLabel setContentCompressionResistancePriority:1 forAxis:v23];
+    [(UILabel *)height->_toLabel setContentCompressionResistancePriority:1 forAxis:v23];
     LODWORD(v24) = 1132068864;
-    [(UILabel *)v9->_toLabel setContentHuggingPriority:0 forAxis:v24];
-    [(UIStackView *)v9->_toFieldStackView addArrangedSubview:v9->_toLabel];
-    [(PKPeerPaymentSiriSnippetContentView *)v9 addSubview:v9->_toFieldStackView];
+    [(UILabel *)height->_toLabel setContentHuggingPriority:0 forAxis:v24];
+    [(UIStackView *)height->_toFieldStackView addArrangedSubview:height->_toLabel];
+    [(PKPeerPaymentSiriSnippetContentView *)height addSubview:height->_toFieldStackView];
   }
 
-  return v9;
+  return height;
 }
 
-- (void)setRecipient:(id)a3
+- (void)setRecipient:(id)recipient
 {
-  v4 = a3;
+  recipientCopy = recipient;
   v5 = objc_alloc_init(CNContactStore);
-  v6 = [v4 contactIdentifier];
+  contactIdentifier = [recipientCopy contactIdentifier];
 
-  v40 = v6;
+  v40 = contactIdentifier;
   v7 = [NSArray arrayWithObjects:&v40 count:1];
   v8 = [CNContact predicateForContactsWithIdentifiers:v7];
 
@@ -82,19 +82,19 @@
   v11 = v34;
   if (v11)
   {
-    v12 = PKLogFacilityTypeGetObject();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    firstObject = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v38 = v11;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentSiriSnippetContentView Error fetching contacts: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentSiriSnippetContentView Error fetching contacts: %@", buf, 0xCu);
     }
   }
 
   else
   {
-    v12 = [v10 firstObject];
-    if (v12)
+    firstObject = [v10 firstObject];
+    if (firstObject)
     {
       v33 = [UIImage _applicationIconImageForBundleIdentifier:@"com.apple.MobileSMS" format:2];
       v13 = objc_alloc_init(off_10000CBD0());
@@ -103,16 +103,16 @@
       [v13 setPosition:2];
       v14 = objc_alloc_init(off_10000CBD8());
       [v14 setBadgeStyleSettings:v13];
-      v36 = v12;
+      v36 = firstObject;
       [NSArray arrayWithObjects:&v36 count:1];
       v15 = v30 = v10;
       v28 = v14;
       [v14 setContacts:v15];
 
       [v14 setBadgeImage:v33];
-      v16 = [v14 view];
+      view = [v14 view];
       recipientBadgedAvatarView = self->_recipientBadgedAvatarView;
-      self->_recipientBadgedAvatarView = v16;
+      self->_recipientBadgedAvatarView = view;
 
       LODWORD(v18) = 1148846080;
       [(UIView *)self->_recipientBadgedAvatarView setContentCompressionResistancePriority:0 forAxis:v18];
@@ -121,8 +121,8 @@
       LODWORD(v20) = 1148846080;
       [(UIView *)self->_recipientBadgedAvatarView setContentHuggingPriority:0 forAxis:v20];
       [(UIView *)self->_recipientBadgedAvatarView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v21 = [(UIView *)self->_recipientBadgedAvatarView widthAnchor];
-      [v21 constraintEqualToConstant:64.0];
+      widthAnchor = [(UIView *)self->_recipientBadgedAvatarView widthAnchor];
+      [widthAnchor constraintEqualToConstant:64.0];
       v22 = v31 = v9;
       v35[0] = v22;
       [(UIView *)self->_recipientBadgedAvatarView heightAnchor];
@@ -155,26 +155,26 @@
   }
 }
 
-- (void)setToFieldText:(id)a3
+- (void)setToFieldText:(id)text
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->_toFieldText] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToString:self->_toFieldText] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     toFieldText = self->_toFieldText;
     self->_toFieldText = v4;
 
-    [(UILabel *)self->_toLabel setText:v6];
+    [(UILabel *)self->_toLabel setText:textCopy];
     [(PKPeerPaymentSiriSnippetContentView *)self setNeedsLayout];
   }
 }
 
-- (void)setMemoText:(id)a3
+- (void)setMemoText:(id)text
 {
-  v9 = a3;
-  if (([v9 isEqualToString:self->_memoText] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToString:self->_memoText] & 1) == 0)
   {
-    v4 = [v9 copy];
+    v4 = [textCopy copy];
     memoText = self->_memoText;
     self->_memoText = v4;
 
@@ -184,7 +184,7 @@
 
     if ([(NSString *)self->_memoText length])
     {
-      v7 = [(PKPeerPaymentSiriSnippetContentView *)self _memoBalloonViewWithText:v9];
+      v7 = [(PKPeerPaymentSiriSnippetContentView *)self _memoBalloonViewWithText:textCopy];
       v8 = self->_memoBalloonView;
       self->_memoBalloonView = v7;
 
@@ -206,8 +206,8 @@
   v7 = CGRectGetMaxY(v26) + 8.0;
   [(PKPeerPaymentSiriSnippetContentView *)self _balloonMaxWidthForBoundsWidth:v4];
   v9 = v8;
-  v10 = [(PKPeerPaymentMessageBalloonView *)self->_peerPaymentBalloonView bubbleView];
-  [v10 sizeThatFits:{v9, v6 - v7 + -12.0}];
+  bubbleView = [(PKPeerPaymentMessageBalloonView *)self->_peerPaymentBalloonView bubbleView];
+  [bubbleView sizeThatFits:{v9, v6 - v7 + -12.0}];
   v12 = v11;
   v14 = v13;
 
@@ -245,16 +245,16 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  [(UILabel *)self->_toLabel sizeThatFits:a3.width + -30.0 + -64.0, a3.height + -16.0];
+  height = fits.height;
+  width = fits.width;
+  [(UILabel *)self->_toLabel sizeThatFits:fits.width + -30.0 + -64.0, fits.height + -16.0];
   v7 = v6;
   [(PKPeerPaymentSiriSnippetContentView *)self _balloonMaxWidthForBoundsWidth:width];
   v9 = v8;
-  v10 = [(PKPeerPaymentMessageBalloonView *)self->_peerPaymentBalloonView bubbleView];
-  [v10 sizeThatFits:{v9, height + -80.0 + -12.0}];
+  bubbleView = [(PKPeerPaymentMessageBalloonView *)self->_peerPaymentBalloonView bubbleView];
+  [bubbleView sizeThatFits:{v9, height + -80.0 + -12.0}];
   v12 = v11;
   v14 = v13;
 
@@ -290,9 +290,9 @@
   return result;
 }
 
-- (id)_memoBalloonViewWithText:(id)a3
+- (id)_memoBalloonViewWithText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v4 = +[CKUIBehavior sharedBehaviors];
   objc_opt_class();
   v5 = CKBalloonViewForClass();
@@ -300,7 +300,7 @@
   [v5 setBalloonCorners:-1];
   [v5 setColor:5];
   [v5 setCanUseOpaqueMask:0];
-  v6 = [[NSMutableAttributedString alloc] initWithString:v3];
+  v6 = [[NSMutableAttributedString alloc] initWithString:textCopy];
   if ([v4 hyphenatesTextContent])
   {
     v7 = +[NSParagraphStyle defaultParagraphStyle];
@@ -312,7 +312,7 @@
   }
 
   v10 = [v6 length];
-  if ([v3 __ck_shouldUseBigEmoji])
+  if ([textCopy __ck_shouldUseBigEmoji])
   {
     [v4 bigEmojiFont];
   }
@@ -324,8 +324,8 @@
   v11 = ;
   [v6 addAttribute:NSFontAttributeName value:v11 range:{0, v10}];
   v12 = +[CKUIBehavior sharedBehaviors];
-  v13 = [v12 theme];
-  v14 = [v13 balloonTextColorForColorType:{objc_msgSend(v5, "color")}];
+  theme = [v12 theme];
+  v14 = [theme balloonTextColorForColorType:{objc_msgSend(v5, "color")}];
   [v6 addAttribute:NSForegroundColorAttributeName value:v14 range:{0, v10}];
 
   [v5 setAttributedText:v6];
@@ -334,14 +334,14 @@
   return v5;
 }
 
-- (double)_balloonMaxWidthForBoundsWidth:(double)a3
+- (double)_balloonMaxWidthForBoundsWidth:(double)width
 {
   v4 = +[CKUIBehavior sharedBehaviors];
-  [v4 balloonMaxWidthForTranscriptWidth:0 marginInsets:0 shouldShowPluginButtons:0 shouldShowCharacterCount:a3 shouldCoverSendButton:{0.0, 10.0, 0.0, 10.0}];
+  [v4 balloonMaxWidthForTranscriptWidth:0 marginInsets:0 shouldShowPluginButtons:0 shouldShowCharacterCount:width shouldCoverSendButton:{0.0, 10.0, 0.0, 10.0}];
   v6 = v5;
 
-  result = a3 + -20.0;
-  if (v6 < a3 + -20.0)
+  result = width + -20.0;
+  if (v6 < width + -20.0)
   {
     return v6;
   }

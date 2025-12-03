@@ -1,19 +1,19 @@
 @interface ICDocCamShutterButton
-- (ICDocCamShutterButton)initWithCoder:(id)a3;
-- (ICDocCamShutterButton)initWithFrame:(CGRect)a3;
+- (ICDocCamShutterButton)initWithCoder:(id)coder;
+- (ICDocCamShutterButton)initWithFrame:(CGRect)frame;
 - (id)innerCircle;
 - (id)outerRingImage;
 - (void)commonInit;
-- (void)setPseudoDisabled:(BOOL)a3;
+- (void)setPseudoDisabled:(BOOL)disabled;
 @end
 
 @implementation ICDocCamShutterButton
 
-- (ICDocCamShutterButton)initWithCoder:(id)a3
+- (ICDocCamShutterButton)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ICDocCamShutterButton;
-  v3 = [(ICDocCamShutterButton *)&v6 initWithCoder:a3];
+  v3 = [(ICDocCamShutterButton *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -23,11 +23,11 @@
   return v4;
 }
 
-- (ICDocCamShutterButton)initWithFrame:(CGRect)a3
+- (ICDocCamShutterButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ICDocCamShutterButton;
-  v3 = [(ICDocCamShutterButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICDocCamShutterButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -39,19 +39,19 @@
 
 - (void)commonInit
 {
-  v3 = [MEMORY[0x277D75348] whiteColor];
-  [(ICDocCamShutterButton *)self setTintColor:v3];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(ICDocCamShutterButton *)self setTintColor:whiteColor];
 
   v4 = objc_alloc(MEMORY[0x277D755E8]);
-  v5 = [(ICDocCamShutterButton *)self outerRingImage];
-  v8 = [v4 initWithImage:v5];
+  outerRingImage = [(ICDocCamShutterButton *)self outerRingImage];
+  v8 = [v4 initWithImage:outerRingImage];
 
-  v6 = [MEMORY[0x277D75348] whiteColor];
-  [v8 setTintColor:v6];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  [v8 setTintColor:whiteColor2];
 
   [(ICDocCamShutterButton *)self insertSubview:v8 atIndex:0];
-  v7 = [(ICDocCamShutterButton *)self innerCircle];
-  [(ICDocCamShutterButton *)self setBackgroundImage:v7 forState:0];
+  innerCircle = [(ICDocCamShutterButton *)self innerCircle];
+  [(ICDocCamShutterButton *)self setBackgroundImage:innerCircle forState:0];
 }
 
 - (id)outerRingImage
@@ -72,19 +72,19 @@
   return v4;
 }
 
-- (void)setPseudoDisabled:(BOOL)a3
+- (void)setPseudoDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  self->_pseudoDisabled = a3;
-  v4 = [(ICDocCamShutterButton *)self layer];
-  v6 = v4;
+  disabledCopy = disabled;
+  self->_pseudoDisabled = disabled;
+  layer = [(ICDocCamShutterButton *)self layer];
+  v6 = layer;
   LODWORD(v5) = 1.0;
-  if (v3)
+  if (disabledCopy)
   {
     *&v5 = 0.5;
   }
 
-  [v4 setOpacity:v5];
+  [layer setOpacity:v5];
 }
 
 @end

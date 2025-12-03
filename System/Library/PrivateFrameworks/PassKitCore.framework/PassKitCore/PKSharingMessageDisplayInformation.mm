@@ -1,37 +1,37 @@
 @interface PKSharingMessageDisplayInformation
-- (PKSharingMessageDisplayInformation)initWithCoder:(id)a3;
-- (id)_initWithTitle:(void *)a3 subtitle:(void *)a4 imageURL:(void *)a5 openGraphURL:;
+- (PKSharingMessageDisplayInformation)initWithCoder:(id)coder;
+- (id)_initWithTitle:(void *)title subtitle:(void *)subtitle imageURL:(void *)l openGraphURL:;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSharingMessageDisplayInformation
 
-- (id)_initWithTitle:(void *)a3 subtitle:(void *)a4 imageURL:(void *)a5 openGraphURL:
+- (id)_initWithTitle:(void *)title subtitle:(void *)subtitle imageURL:(void *)l openGraphURL:
 {
   v23 = *MEMORY[0x1E69E9840];
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a1)
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  lCopy = l;
+  if (self)
   {
-    v20.receiver = a1;
+    v20.receiver = self;
     v20.super_class = PKSharingMessageDisplayInformation;
     v14 = objc_msgSendSuper2(&v20, sel_init);
-    a1 = v14;
+    self = v14;
     if (v14)
     {
       objc_storeStrong(v14 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      v15 = [v12 scheme];
-      v16 = [v15 isEqualToString:@"https"];
+      objc_storeStrong(self + 2, title);
+      scheme = [subtitleCopy scheme];
+      v16 = [scheme isEqualToString:@"https"];
 
       if (v16)
       {
-        v17 = v12;
-        v18 = a1[3];
-        a1[3] = v17;
+        v17 = subtitleCopy;
+        v18 = self[3];
+        self[3] = v17;
       }
 
       else
@@ -40,39 +40,39 @@
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v22 = v12;
+          v22 = subtitleCopy;
           _os_log_error_impl(&dword_1AD337000, v18, OS_LOG_TYPE_ERROR, "PKSharingMessageDisplayInformation: received non-HTTPS image URL: %@", buf, 0xCu);
         }
       }
 
-      objc_storeStrong(a1 + 4, a5);
+      objc_storeStrong(self + 4, l);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (PKSharingMessageDisplayInformation)initWithCoder:(id)a3
+- (PKSharingMessageDisplayInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKSharingMessageDisplayInformation;
   v5 = [(PKSharingMessageDisplayInformation *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageURL"];
     imageURL = v5->_imageURL;
     v5->_imageURL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"openGraphURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"openGraphURL"];
     openGraphURL = v5->_openGraphURL;
     v5->_openGraphURL = v12;
   }
@@ -80,14 +80,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_subtitle forKey:@"subtitle"];
-  [v5 encodeObject:self->_imageURL forKey:@"imageURL"];
-  [v5 encodeObject:self->_openGraphURL forKey:@"openGraphURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subtitle"];
+  [coderCopy encodeObject:self->_imageURL forKey:@"imageURL"];
+  [coderCopy encodeObject:self->_openGraphURL forKey:@"openGraphURL"];
 }
 
 - (id)description

@@ -1,16 +1,16 @@
 @interface VideosUI_QueryDescriptionBarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation VideosUI_QueryDescriptionBarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUI.QueryDescriptionBar" hasSwiftField:@"queryDescriptionBannerText" withSwiftType:"Optional<UIView>"];
-  [v3 validateClass:@"VideosUI.QueryDescriptionBar" hasSwiftField:@"additionalInformationView" withSwiftType:"Optional<UIView>"];
-  [v3 validateClass:@"VideosUI.QueryDescriptionBar" hasInstanceMethod:@"singlePressWithGesture:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUI.QueryDescriptionBar" hasSwiftField:@"queryDescriptionBannerText" withSwiftType:"Optional<UIView>"];
+  [validationsCopy validateClass:@"VideosUI.QueryDescriptionBar" hasSwiftField:@"additionalInformationView" withSwiftType:"Optional<UIView>"];
+  [validationsCopy validateClass:@"VideosUI.QueryDescriptionBar" hasInstanceMethod:@"singlePressWithGesture:" withFullSignature:{"v", "@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -23,8 +23,8 @@
   v5 = [(VideosUI_QueryDescriptionBarAccessibility *)self safeSwiftValueForKey:@"additionalInformationView"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v4 accessibilityLabel];
-  v10 = [v6 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
+  accessibilityLabel2 = [v6 accessibilityLabel];
   v8 = __UIAXStringForVariables();
 
   return v8;

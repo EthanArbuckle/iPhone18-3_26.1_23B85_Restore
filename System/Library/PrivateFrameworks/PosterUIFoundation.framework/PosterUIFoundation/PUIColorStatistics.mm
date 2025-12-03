@@ -1,28 +1,28 @@
 @interface PUIColorStatistics
-- (BOOL)isSimilarToColorStatistics:(id)a3;
-- (BOOL)updateWithColorBoxes:(id)a3;
+- (BOOL)isSimilarToColorStatistics:(id)statistics;
+- (BOOL)updateWithColorBoxes:(id)boxes;
 - (PLKColorBoxes)colorBoxes;
-- (PUIColorStatistics)initWithCoder:(id)a3;
-- (PUIColorStatistics)initWithColorBoxes:(id)a3;
+- (PUIColorStatistics)initWithCoder:(id)coder;
+- (PUIColorStatistics)initWithColorBoxes:(id)boxes;
 - (UIColor)averageColor;
 - (_UILegibilitySettings)legibilitySettings;
 - (double)averageContrast;
 - (double)averageSaturation;
-- (double)contrastInRect:(CGRect)a3;
-- (double)lumaInRect:(CGRect)a3;
-- (double)saturationInRect:(CGRect)a3;
-- (id)averageColorInRect:(CGRect)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)contrastInRect:(CGRect)rect;
+- (double)lumaInRect:(CGRect)rect;
+- (double)saturationInRect:(CGRect)rect;
+- (id)averageColorInRect:(CGRect)rect;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initWithAverageColor:(void *)a1;
-- (id)initWithAverageColor:(void *)a1 contrast:(uint64_t)a2;
-- (void)_lock_initializeWithColorBoxes:(uint64_t)a1;
+- (id)initWithAverageColor:(void *)color;
+- (id)initWithAverageColor:(void *)color contrast:(uint64_t)contrast;
+- (void)_lock_initializeWithColorBoxes:(uint64_t)boxes;
 - (void)_notifyObserversDidUpdate;
-- (void)addColorStatisticsObserver:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addColorStatisticsObserver:(id)observer;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)removeColorStatisticsObserver:(id)a3;
-- (void)resetWithColor:(id)a3;
+- (void)removeColorStatisticsObserver:(id)observer;
+- (void)resetWithColor:(id)color;
 @end
 
 @implementation PUIColorStatistics
@@ -30,10 +30,10 @@
 - (_UILegibilitySettings)legibilitySettings
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(_UILegibilitySettingsProvider *)self->_lock_legibilityProvider settings];
+  settings = [(_UILegibilitySettingsProvider *)self->_lock_legibilityProvider settings];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return settings;
 }
 
 - (UIColor)averageColor
@@ -45,9 +45,9 @@
   return v3;
 }
 
-- (PUIColorStatistics)initWithColorBoxes:(id)a3
+- (PUIColorStatistics)initWithColorBoxes:(id)boxes
 {
-  v4 = a3;
+  boxesCopy = boxes;
   v10.receiver = self;
   v10.super_class = PUIColorStatistics;
   v5 = [(PUIColorStatistics *)&v10 init];
@@ -55,7 +55,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    [(PUIColorStatistics *)v5 _lock_initializeWithColorBoxes:v4];
+    [(PUIColorStatistics *)v5 _lock_initializeWithColorBoxes:boxesCopy];
     v8 = objc_alloc_init(MEMORY[0x1E69DD5C0]);
     lock_legibilityProvider = v6->_lock_legibilityProvider;
     v6->_lock_legibilityProvider = v8;
@@ -91,18 +91,18 @@
   return lock_averageSaturation;
 }
 
-- (BOOL)updateWithColorBoxes:(id)a3
+- (BOOL)updateWithColorBoxes:(id)boxes
 {
-  v4 = a3;
-  if (v4)
+  boxesCopy = boxes;
+  if (boxesCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     v5 = self->_lock_averageColor;
     v6 = self->_lock_averageColor;
-    v7 = [v4 isEqualToColorBoxes:self->_lock_colorBoxes];
-    if (([v4 isEqualToColorBoxes:self->_lock_colorBoxes] & 1) == 0)
+    v7 = [boxesCopy isEqualToColorBoxes:self->_lock_colorBoxes];
+    if (([boxesCopy isEqualToColorBoxes:self->_lock_colorBoxes] & 1) == 0)
     {
-      [(PUIColorStatistics *)self updateWithColorBoxes:v4, &self->_lock_averageColor];
+      [(PUIColorStatistics *)self updateWithColorBoxes:boxesCopy, &self->_lock_averageColor];
     }
 
     os_unfair_lock_unlock(&self->_lock);
@@ -120,12 +120,12 @@
   return v7;
 }
 
-- (double)contrastInRect:(CGRect)a3
+- (double)contrastInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   os_unfair_lock_lock(&self->_lock);
   [(PLKColorBoxes *)self->_lock_colorBoxes contrastInRect:x, y, width, height];
   v9 = v8;
@@ -133,12 +133,12 @@
   return v9;
 }
 
-- (double)saturationInRect:(CGRect)a3
+- (double)saturationInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   os_unfair_lock_lock(&self->_lock);
   [(PLKColorBoxes *)self->_lock_colorBoxes saturationInRect:x, y, width, height];
   v9 = v8;
@@ -146,12 +146,12 @@
   return v9;
 }
 
-- (double)lumaInRect:(CGRect)a3
+- (double)lumaInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   os_unfair_lock_lock(&self->_lock);
   [(PLKColorBoxes *)self->_lock_colorBoxes lumaInRect:x, y, width, height];
   v9 = v8;
@@ -159,39 +159,39 @@
   return v9;
 }
 
-- (id)averageColorInRect:(CGRect)a3
+- (id)averageColorInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(PLKColorBoxes *)self->_lock_colorBoxes averageColorInRect:x, y, width, height];
+  height = [(PLKColorBoxes *)self->_lock_colorBoxes averageColorInRect:x, y, width, height];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v8;
+  return height;
 }
 
-- (BOOL)isSimilarToColorStatistics:(id)a3
+- (BOOL)isSimilarToColorStatistics:(id)statistics
 {
-  if (!a3)
+  if (!statistics)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(PUIColorStatistics *)self averageColor];
-  v6 = [v4 averageColor];
+  statisticsCopy = statistics;
+  averageColor = [(PUIColorStatistics *)self averageColor];
+  averageColor2 = [statisticsCopy averageColor];
   [(PUIColorStatistics *)self averageContrast];
   v8 = v7;
-  [v4 averageContrast];
+  [statisticsCopy averageContrast];
   v10 = v9;
   [(PUIColorStatistics *)self averageSaturation];
   v12 = v11;
-  [v4 averageSaturation];
+  [statisticsCopy averageSaturation];
   v14 = v13;
 
-  v15 = [v5 _isSimilarToColor:v6 withinPercentage:0.00000011920929];
+  v15 = [averageColor _isSimilarToColor:averageColor2 withinPercentage:0.00000011920929];
   v16 = vabdd_f64(v12, v14) <= 0.00000011920929;
   if (vabdd_f64(v8, v10) > 0.00000011920929)
   {
@@ -211,34 +211,34 @@
   return v17;
 }
 
-- (void)addColorStatisticsObserver:(id)a3
+- (void)addColorStatisticsObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   lock_observers = self->_lock_observers;
   if (!lock_observers)
   {
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v6 = self->_lock_observers;
-    self->_lock_observers = v5;
+    self->_lock_observers = weakObjectsHashTable;
 
     lock_observers = self->_lock_observers;
   }
 
-  [(NSHashTable *)lock_observers addObject:v7];
+  [(NSHashTable *)lock_observers addObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeColorStatisticsObserver:(id)a3
+- (void)removeColorStatisticsObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers removeObject:v4];
+  [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock(&self->_lock);
   v5 = [(PLKColorBoxes *)self->_lock_colorBoxes copy];
@@ -248,9 +248,9 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock);
   lock_averageColor = self->_lock_averageColor;
   lock_averageContrast = self->_lock_averageContrast;
@@ -258,43 +258,43 @@
   v8 = self->_lock_colorBoxes;
   v10 = lock_averageColor;
   os_unfair_lock_unlock(&self->_lock);
-  v9 = [(UIColor *)v10 BSColor];
-  [v4 encodeObject:v9 forKey:@"averageColor"];
+  bSColor = [(UIColor *)v10 BSColor];
+  [coderCopy encodeObject:bSColor forKey:@"averageColor"];
 
-  [v4 encodeDouble:@"averageContrast" forKey:lock_averageContrast];
-  [v4 encodeDouble:@"averageSaturation" forKey:lock_averageSaturation];
-  [v4 encodeObject:v8 forKey:@"colorBoxes"];
+  [coderCopy encodeDouble:@"averageContrast" forKey:lock_averageContrast];
+  [coderCopy encodeDouble:@"averageSaturation" forKey:lock_averageSaturation];
+  [coderCopy encodeObject:v8 forKey:@"colorBoxes"];
 }
 
-- (PUIColorStatistics)initWithCoder:(id)a3
+- (PUIColorStatistics)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"averageColor"];
-  [v4 decodeDoubleForKey:@"averageContrast"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageColor"];
+  [coderCopy decodeDoubleForKey:@"averageContrast"];
   v7 = v6;
-  [v4 decodeDoubleForKey:@"averageSaturation"];
+  [coderCopy decodeDoubleForKey:@"averageSaturation"];
   v9 = v8;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v4;
+    v10 = coderCopy;
     [v10 setClass:objc_opt_class() forClassName:@"PUIColorBoxes"];
   }
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colorBoxes"];
-  v12 = [v5 UIColor];
-  v13 = v12;
-  if (v12)
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colorBoxes"];
+  uIColor = [v5 UIColor];
+  v13 = uIColor;
+  if (uIColor)
   {
-    v14 = v12;
+    systemGrayColor = uIColor;
   }
 
   else
   {
-    v14 = [MEMORY[0x1E69DC888] systemGrayColor];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
   }
 
-  v15 = v14;
+  v15 = systemGrayColor;
 
   if (v11)
   {
@@ -324,7 +324,7 @@
 
 - (id)description
 {
-  v3 = [(PUIColorStatistics *)self averageColor];
+  averageColor = [(PUIColorStatistics *)self averageColor];
   [(PUIColorStatistics *)self averageContrast];
   v5 = v4;
   [(PUIColorStatistics *)self averageSaturation];
@@ -332,66 +332,66 @@
   v8 = MEMORY[0x1E696AEC0];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [v8 stringWithFormat:@"<%@: %p color: %@; contrast: %.2f; saturation: %.2f>", v10, self, v3, v5, v7];;
+  v11 = [v8 stringWithFormat:@"<%@: %p color: %@; contrast: %.2f; saturation: %.2f>", v10, self, averageColor, v5, v7];;
 
   return v11;
 }
 
-- (id)initWithAverageColor:(void *)a1 contrast:(uint64_t)a2
+- (id)initWithAverageColor:(void *)color contrast:(uint64_t)contrast
 {
-  v2 = a1;
-  if (a1)
+  colorCopy = color;
+  if (color)
   {
-    v3 = [MEMORY[0x1E69C5410] colorBoxesForAverageColor:a2 contrast:?];
-    v2 = [v2 initWithColorBoxes:v3];
+    v3 = [MEMORY[0x1E69C5410] colorBoxesForAverageColor:contrast contrast:?];
+    colorCopy = [colorCopy initWithColorBoxes:v3];
   }
 
-  return v2;
+  return colorCopy;
 }
 
-- (id)initWithAverageColor:(void *)a1
+- (id)initWithAverageColor:(void *)color
 {
-  v2 = a1;
-  if (a1)
+  colorCopy = color;
+  if (color)
   {
     v3 = [MEMORY[0x1E69C5410] colorBoxesForAverageColor:a2 contrast:0.0];
-    v2 = [v2 initWithColorBoxes:v3];
+    colorCopy = [colorCopy initWithColorBoxes:v3];
   }
 
-  return v2;
+  return colorCopy;
 }
 
-- (void)_lock_initializeWithColorBoxes:(uint64_t)a1
+- (void)_lock_initializeWithColorBoxes:(uint64_t)boxes
 {
   v10 = a2;
-  if (a1)
+  if (boxes)
   {
-    objc_storeStrong((a1 + 48), a2);
-    v4 = [v10 averageColor];
-    v5 = v4;
-    if (v4)
+    objc_storeStrong((boxes + 48), a2);
+    averageColor = [v10 averageColor];
+    v5 = averageColor;
+    if (averageColor)
     {
-      v6 = v4;
+      systemGrayColor = averageColor;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69DC888] systemGrayColor];
+      systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
     }
 
-    v7 = *(a1 + 24);
-    *(a1 + 24) = v6;
+    v7 = *(boxes + 24);
+    *(boxes + 24) = systemGrayColor;
 
     [v10 contrast];
-    *(a1 + 32) = v8;
+    *(boxes + 32) = v8;
     [v10 saturation];
-    *(a1 + 40) = v9;
+    *(boxes + 40) = v9;
   }
 }
 
-- (void)resetWithColor:(id)a3
+- (void)resetWithColor:(id)color
 {
-  v7 = [a3 colorWithAlphaComponent:1.0];
+  v7 = [color colorWithAlphaComponent:1.0];
   v4 = [MEMORY[0x1E69C5410] colorBoxesForAverageColor:v7 contrast:0.0];
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_lock_averageColor;
@@ -410,11 +410,11 @@
 - (void)_notifyObserversDidUpdate
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v2 = [*(a1 + 56) copy];
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_lock((self + 8));
+    v2 = [*(self + 56) copy];
+    os_unfair_lock_unlock((self + 8));
     v10 = 0u;
     v11 = 0u;
     v8 = 0u;
@@ -435,7 +435,7 @@
             objc_enumerationMutation(v3);
           }
 
-          [*(*(&v8 + 1) + 8 * v7++) colorStatisticsDidChange:{a1, v8}];
+          [*(*(&v8 + 1) + 8 * v7++) colorStatisticsDidChange:{self, v8}];
         }
 
         while (v5 != v7);
@@ -449,15 +449,15 @@
 
 - (void)invalidate
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v2 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    os_unfair_lock_lock((self + 8));
+    v2 = *(self + 48);
+    *(self + 48) = 0;
 
-    [*(a1 + 56) removeAllObjects];
+    [*(self + 56) removeAllObjects];
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((self + 8));
   }
 }
 

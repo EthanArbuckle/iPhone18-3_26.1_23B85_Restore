@@ -1,5 +1,5 @@
 @interface PPTopicWithRecord
-- (PPTopicWithRecord)initWithTopicIdentifier:(id)a3 mostRelevantRecord:(id)a4;
+- (PPTopicWithRecord)initWithTopicIdentifier:(id)identifier mostRelevantRecord:(id)record;
 - (double)sentimentScore;
 @end
 
@@ -17,16 +17,16 @@
   return result;
 }
 
-- (PPTopicWithRecord)initWithTopicIdentifier:(id)a3 mostRelevantRecord:(id)a4
+- (PPTopicWithRecord)initWithTopicIdentifier:(id)identifier mostRelevantRecord:(id)record
 {
-  v7 = a4;
+  recordCopy = record;
   v11.receiver = self;
   v11.super_class = PPTopicWithRecord;
-  v8 = [(PPTopic *)&v11 initWithTopicIdentifier:a3 mostRelevantRecord:0];
+  v8 = [(PPTopic *)&v11 initWithTopicIdentifier:identifier mostRelevantRecord:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mostRelevantRecord, a4);
+    objc_storeStrong(&v8->_mostRelevantRecord, record);
   }
 
   return v9;

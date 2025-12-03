@@ -1,15 +1,15 @@
 @interface HUHomePodDetailViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation HUHomePodDetailViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUHomePodDetailView" hasInstanceMethod:@"mediaSystemRole" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"HUHomePodDetailView" hasInstanceVariable:@"_unitNameLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUHomePodDetailView" hasInstanceMethod:@"mediaSystemRole" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"HUHomePodDetailView" hasInstanceVariable:@"_unitNameLabel" withType:"UILabel"];
 }
 
 - (id)accessibilityLabel

@@ -1,34 +1,34 @@
 @interface RAPWebBundleQuestion
 - (BOOL)isAnonymous;
 - (RAPCommentQuestion)geotaggedPhotoCommentQuestion;
-- (RAPWebBundleQuestion)initWithReport:(id)a3 directionsRecording:(id)a4;
-- (RAPWebBundleQuestion)initWithReport:(id)a3 place:(id)a4 poiCorrectionType:(int)a5 questionType:(int64_t)a6;
-- (RAPWebBundleQuestion)initWithReport:(id)a3 place:(id)a4 questionType:(int64_t)a5;
-- (RAPWebBundleQuestion)initWithReport:(id)a3 questionType:(int64_t)a4;
+- (RAPWebBundleQuestion)initWithReport:(id)report directionsRecording:(id)recording;
+- (RAPWebBundleQuestion)initWithReport:(id)report place:(id)place poiCorrectionType:(int)type questionType:(int64_t)questionType;
+- (RAPWebBundleQuestion)initWithReport:(id)report place:(id)place questionType:(int64_t)type;
+- (RAPWebBundleQuestion)initWithReport:(id)report questionType:(int64_t)type;
 - (id)questionTypeAsString;
-- (void)_fetchChildContainmentWithCompletion:(id)a3;
-- (void)_fetchContainmentItems:(id)a3 withCompletion:(id)a4;
-- (void)_fetchParentContainmentWithCompletion:(id)a3;
-- (void)_fetchTransitInfoFromReportedLine:(id)a3 withCompletion:(id)a4;
-- (void)_fetchTransitInfoFromStation:(id)a3 withCompletion:(id)a4;
-- (void)_fillSubmissionParameters:(id)a3;
-- (void)retrieveContextwithLocales:(id)a3 contextCompletion:(id)a4;
-- (void)setDirectionsRecording:(id)a3;
-- (void)setReportedUserPath:(id)a3;
+- (void)_fetchChildContainmentWithCompletion:(id)completion;
+- (void)_fetchContainmentItems:(id)items withCompletion:(id)completion;
+- (void)_fetchParentContainmentWithCompletion:(id)completion;
+- (void)_fetchTransitInfoFromReportedLine:(id)line withCompletion:(id)completion;
+- (void)_fetchTransitInfoFromStation:(id)station withCompletion:(id)completion;
+- (void)_fillSubmissionParameters:(id)parameters;
+- (void)retrieveContextwithLocales:(id)locales contextCompletion:(id)completion;
+- (void)setDirectionsRecording:(id)recording;
+- (void)setReportedUserPath:(id)path;
 @end
 
 @implementation RAPWebBundleQuestion
 
-- (void)_fetchContainmentItems:(id)a3 withCompletion:(id)a4
+- (void)_fetchContainmentItems:(id)items withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  completionCopy = completion;
   v8 = objc_alloc_init(NSMutableArray);
   v9 = objc_alloc_init(NSMutableArray);
   v10 = +[GEOMapService sharedService];
   v11 = +[GEOMapService sharedService];
-  v12 = [v11 defaultTraits];
-  v13 = [v10 ticketForMUIDs:v6 traits:v12];
+  defaultTraits = [v11 defaultTraits];
+  v13 = [v10 ticketForMUIDs:itemsCopy traits:defaultTraits];
 
   objc_initWeak(&location, self);
   v18[0] = _NSConcreteStackBlock;
@@ -36,7 +36,7 @@
   v18[2] = sub_10087B720;
   v18[3] = &unk_10162C7A8;
   objc_copyWeak(&v22, &location);
-  v14 = v7;
+  v14 = completionCopy;
   v21 = v14;
   v15 = v9;
   v19 = v15;
@@ -49,71 +49,71 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_fetchParentContainmentWithCompletion:(id)a3
+- (void)_fetchParentContainmentWithCompletion:(id)completion
 {
-  v20 = a3;
-  v4 = [(RAPWebBundleQuestion *)self reportedPlace];
-  v5 = [v4 mapItem];
+  completionCopy = completion;
+  reportedPlace = [(RAPWebBundleQuestion *)self reportedPlace];
+  mapItem = [reportedPlace mapItem];
 
-  v6 = [v5 _geoMapItem];
-  v7 = [v6 _containedPlace];
-  v8 = [v7 parent];
+  _geoMapItem = [mapItem _geoMapItem];
+  _containedPlace = [_geoMapItem _containedPlace];
+  parent = [_containedPlace parent];
 
   v9 = objc_alloc_init(NSMutableArray);
-  if ([v8 _hasMUID])
+  if ([parent _hasMUID])
   {
-    v10 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v8 _muid]);
+    v10 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [parent _muid]);
     [v9 addObject:v10];
   }
 
-  v11 = [(RAPWebBundleQuestion *)self reportedPlace];
-  v12 = [v11 mapItem];
-  v13 = [v12 _geoMapItem];
-  v14 = [v13 _venueInfo];
+  reportedPlace2 = [(RAPWebBundleQuestion *)self reportedPlace];
+  mapItem2 = [reportedPlace2 mapItem];
+  _geoMapItem2 = [mapItem2 _geoMapItem];
+  _venueInfo = [_geoMapItem2 _venueInfo];
 
-  v15 = [v14 parent];
-  if ([v15 businessID])
+  parent2 = [_venueInfo parent];
+  if ([parent2 businessID])
   {
-    v16 = [v14 parent];
-    v17 = [v16 businessID];
-    v18 = [v8 _muid];
+    parent3 = [_venueInfo parent];
+    businessID = [parent3 businessID];
+    _muid = [parent _muid];
 
-    if (v17 == v18)
+    if (businessID == _muid)
     {
       goto LABEL_7;
     }
 
-    v15 = [v14 parent];
-    v19 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v15 businessID]);
+    parent2 = [_venueInfo parent];
+    v19 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [parent2 businessID]);
     [v9 addObject:v19];
   }
 
 LABEL_7:
   if ([v9 count])
   {
-    [(RAPWebBundleQuestion *)self _fetchContainmentItems:v9 withCompletion:v20];
+    [(RAPWebBundleQuestion *)self _fetchContainmentItems:v9 withCompletion:completionCopy];
   }
 
-  else if (v20)
+  else if (completionCopy)
   {
-    (*(v20 + 2))(v20, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)_fetchChildContainmentWithCompletion:(id)a3
+- (void)_fetchChildContainmentWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(RAPWebBundleQuestion *)self reportedPlace];
-  v7 = [v6 mapItem];
-  v8 = [v7 _firstRelatedPlaceListForType:3];
+  reportedPlace = [(RAPWebBundleQuestion *)self reportedPlace];
+  mapItem = [reportedPlace mapItem];
+  v8 = [mapItem _firstRelatedPlaceListForType:3];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [v8 mapIdentifiers];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  mapIdentifiers = [v8 mapIdentifiers];
+  v10 = [mapIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -125,7 +125,7 @@ LABEL_7:
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(mapIdentifiers);
         }
 
         v14 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [*(*(&v15 + 1) + 8 * v13) muid]);
@@ -135,7 +135,7 @@ LABEL_7:
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [mapIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
@@ -143,52 +143,52 @@ LABEL_7:
 
   if ([v5 count])
   {
-    [(RAPWebBundleQuestion *)self _fetchContainmentItems:v5 withCompletion:v4];
+    [(RAPWebBundleQuestion *)self _fetchContainmentItems:v5 withCompletion:completionCopy];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)_fetchTransitInfoFromReportedLine:(id)a3 withCompletion:(id)a4
+- (void)_fetchTransitInfoFromReportedLine:(id)line withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  lineCopy = line;
   v7 = +[UIScreen mainScreen];
   [v7 scale];
   v9 = v8;
 
-  v10 = [v6 artwork];
-  v11 = [UIImage _mapkit_transitArtworkImageWithDataSource:v10 size:6 scale:v9];
+  artwork = [lineCopy artwork];
+  v11 = [UIImage _mapkit_transitArtworkImageWithDataSource:artwork size:6 scale:v9];
 
-  v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [v6 lineFeatureID]);
+  v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [lineCopy lineFeatureID]);
   v13 = objc_alloc_init(RAPWebBundleImageContext);
   v14 = UIImagePNGRepresentation(v11);
   [(RAPWebBundleImageContext *)v13 setImage:v14];
 
   [(RAPWebBundleImageContext *)v13 setIdentifier:v12];
   v15 = objc_alloc_init(RAPWebBundleTransitLineContext);
-  v16 = [v6 displayName];
+  displayName = [lineCopy displayName];
 
-  [(RAPWebBundleTransitLineContext *)v15 setName:v16];
+  [(RAPWebBundleTransitLineContext *)v15 setName:displayName];
   [(RAPWebBundleTransitLineContext *)v15 setIdentifier:v12];
   [(RAPWebBundleTransitLineContext *)v15 setImageContext:v13];
-  if (v5)
+  if (completionCopy)
   {
     v20 = v15;
     v17 = [NSArray arrayWithObjects:&v20 count:1];
     v19 = v13;
     v18 = [NSArray arrayWithObjects:&v19 count:1];
-    v5[2](v5, v17, v18);
+    completionCopy[2](completionCopy, v17, v18);
   }
 }
 
-- (void)_fetchTransitInfoFromStation:(id)a3 withCompletion:(id)a4
+- (void)_fetchTransitInfoFromStation:(id)station withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  stationCopy = station;
+  completionCopy = completion;
   v7 = objc_alloc_init(NSMutableArray);
   v8 = objc_alloc_init(NSMutableArray);
   v9 = +[NSMutableSet set];
@@ -196,11 +196,11 @@ LABEL_7:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v10 = [v5 mapItem];
-  v11 = [v10 _transitInfo];
-  v12 = [v11 lines];
+  mapItem = [stationCopy mapItem];
+  _transitInfo = [mapItem _transitInfo];
+  lines = [_transitInfo lines];
 
-  v13 = [v12 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  v13 = [lines countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v13)
   {
     v14 = v13;
@@ -212,7 +212,7 @@ LABEL_7:
       {
         if (*v31 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(lines);
         }
 
         v17 = MKMapItemIdentifierFromGEOTransitLine();
@@ -222,17 +222,17 @@ LABEL_7:
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v14 = [lines countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v14);
   }
 
   v18 = +[MKMapService sharedService];
-  v19 = [v9 allObjects];
+  allObjects = [v9 allObjects];
   v20 = +[MKMapService sharedService];
-  v21 = [v20 mapsDefaultTraits];
-  v22 = [v18 ticketForTransitLines:v19 traits:v21];
+  mapsDefaultTraits = [v20 mapsDefaultTraits];
+  v22 = [v18 ticketForTransitLines:allObjects traits:mapsDefaultTraits];
 
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
@@ -240,17 +240,17 @@ LABEL_7:
   v26[3] = &unk_10165FB28;
   v27 = v8;
   v28 = v7;
-  v29 = v6;
-  v23 = v6;
+  v29 = completionCopy;
+  v23 = completionCopy;
   v24 = v7;
   v25 = v8;
   [v22 submitWithHandler:v26 networkActivity:0];
 }
 
-- (void)retrieveContextwithLocales:(id)a3 contextCompletion:(id)a4
+- (void)retrieveContextwithLocales:(id)locales contextCompletion:(id)completion
 {
-  v87 = a3;
-  v86 = a4;
+  localesCopy = locales;
+  completionCopy = completion;
   group = dispatch_group_create();
   v134 = 0;
   v135 = &v134;
@@ -264,34 +264,34 @@ LABEL_7:
   v132[3] = sub_10087D344;
   v132[4] = sub_10087D354;
   v133 = objc_alloc_init(NSMutableArray);
-  v8 = [(RAPWebBundleQuestion *)self questionType];
-  if (v8 <= 10)
+  questionType = [(RAPWebBundleQuestion *)self questionType];
+  if (questionType <= 10)
   {
-    if ((v8 - 1) >= 8)
+    if ((questionType - 1) >= 8)
     {
-      if (v8 == 9)
+      if (questionType == 9)
       {
         goto LABEL_20;
       }
 
-      if (v8 != 10)
+      if (questionType != 10)
       {
         goto LABEL_65;
       }
     }
 
     v13 = [RAPWebBundleAddToMapContext alloc];
-    v14 = [(RAPWebBundleQuestion *)self questionTypeAsString];
-    v15 = [(RAPWebBundleBaseContext *)v13 initWithType:v14 locales:v87];
+    questionTypeAsString = [(RAPWebBundleQuestion *)self questionTypeAsString];
+    v15 = [(RAPWebBundleBaseContext *)v13 initWithType:questionTypeAsString locales:localesCopy];
 
     v16 = [RAPPlaceCorrectableAddress alloc];
-    v17 = [(RAPWebBundleQuestion *)self reportedPlace];
-    v18 = [v17 mapItem];
-    v12 = [(RAPPlaceCorrectableAddress *)v16 _initWithMapItem:v18];
+    reportedPlace = [(RAPWebBundleQuestion *)self reportedPlace];
+    mapItem = [reportedPlace mapItem];
+    v12 = [(RAPPlaceCorrectableAddress *)v16 _initWithMapItem:mapItem];
 
-    v19 = [v12 freeformAddress];
-    v20 = [v19 value];
-    [(RAPWebBundleAddToMapContext *)v15 setAddress:v20];
+    freeformAddress = [v12 freeformAddress];
+    value = [freeformAddress value];
+    [(RAPWebBundleAddToMapContext *)v15 setAddress:value];
 
     v21 = v135[5];
     v135[5] = v15;
@@ -299,25 +299,25 @@ LABEL_7:
     goto LABEL_64;
   }
 
-  if (v8 > 22)
+  if (questionType > 22)
   {
-    if (v8 > 26)
+    if (questionType > 26)
     {
-      if (v8 == 27)
+      if (questionType == 27)
       {
         v76 = [RAPWebBundlePOIContext alloc];
-        v77 = [(RAPWebBundleQuestion *)self questionTypeAsString];
-        v78 = [(RAPWebBundleBaseContext *)v76 initWithType:v77 locales:v87];
+        questionTypeAsString2 = [(RAPWebBundleQuestion *)self questionTypeAsString];
+        v78 = [(RAPWebBundleBaseContext *)v76 initWithType:questionTypeAsString2 locales:localesCopy];
 
-        v79 = [(RAPQuestion *)self report];
-        v80 = [v79 _context];
-        v81 = [v80 reportedLine];
+        report = [(RAPQuestion *)self report];
+        _context = [report _context];
+        reportedLine = [_context reportedLine];
 
         v127[0] = _NSConcreteStackBlock;
         v127[1] = 3221225472;
         v127[2] = sub_10087D35C;
         v127[3] = &unk_10162C730;
-        v82 = v81;
+        v82 = reportedLine;
         v128 = v82;
         v130 = v132;
         v83 = v78;
@@ -329,30 +329,30 @@ LABEL_7:
         goto LABEL_64;
       }
 
-      if (v8 == 28)
+      if (questionType == 28)
       {
         v71 = [RAPWebBundleAddToMapContext alloc];
-        v72 = [(RAPWebBundleQuestion *)self questionTypeAsString];
-        v73 = [(RAPWebBundleBaseContext *)v71 initWithType:v72 locales:v87];
+        questionTypeAsString3 = [(RAPWebBundleQuestion *)self questionTypeAsString];
+        v73 = [(RAPWebBundleBaseContext *)v71 initWithType:questionTypeAsString3 locales:localesCopy];
 
-        v74 = [(RAPWebBundleQuestion *)self reportedPlace];
-        v75 = [v74 userVisibleTitle];
-        [(RAPWebBundleAddToMapContext *)v73 setEntityName:v75];
+        reportedPlace2 = [(RAPWebBundleQuestion *)self reportedPlace];
+        userVisibleTitle = [reportedPlace2 userVisibleTitle];
+        [(RAPWebBundleAddToMapContext *)v73 setEntityName:userVisibleTitle];
 
         v12 = v135[5];
         v135[5] = v73;
         goto LABEL_64;
       }
 
-      if (v8 != 29)
+      if (questionType != 29)
       {
         goto LABEL_65;
       }
     }
 
-    else if ((v8 - 24) >= 3)
+    else if ((questionType - 24) >= 3)
     {
-      if (v8 == 23)
+      if (questionType == 23)
       {
         v12 = sub_100798874();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -368,23 +368,23 @@ LABEL_7:
     }
 
 LABEL_20:
-    v88 = self;
+    selfCopy = self;
     v22 = [RAPWebBundlePOIContext alloc];
-    v23 = [(RAPWebBundleQuestion *)self questionTypeAsString];
-    v91 = [(RAPWebBundleBaseContext *)v22 initWithType:v23 locales:v87];
+    questionTypeAsString4 = [(RAPWebBundleQuestion *)self questionTypeAsString];
+    v91 = [(RAPWebBundleBaseContext *)v22 initWithType:questionTypeAsString4 locales:localesCopy];
 
-    v24 = [(RAPWebBundleQuestion *)self reportedPlace];
-    v90 = [v24 mapItem];
+    reportedPlace3 = [(RAPWebBundleQuestion *)self reportedPlace];
+    mapItem2 = [reportedPlace3 mapItem];
 
-    v84 = [[_MKLocalizedHoursBuilder alloc] initWithMapItem:v90 localizedHoursStringOptions:0];
-    v85 = [v84 operatingHours];
-    v25 = [v85 pdHours];
+    v84 = [[_MKLocalizedHoursBuilder alloc] initWithMapItem:mapItem2 localizedHoursStringOptions:0];
+    operatingHours = [v84 operatingHours];
+    pdHours = [operatingHours pdHours];
     v94 = objc_alloc_init(NSMutableArray);
     v142 = 0u;
     v143 = 0u;
     v140 = 0u;
     v141 = 0u;
-    obj = v25;
+    obj = pdHours;
     v95 = [obj countByEnumeratingWithState:&v140 objects:buf count:16];
     if (v95)
     {
@@ -539,48 +539,48 @@ LABEL_38:
     }
 
     v52 = [RAPPlaceCorrectableAddress alloc];
-    v53 = [(RAPWebBundleQuestion *)v88 reportedPlace];
-    v54 = [v53 mapItem];
-    v55 = [(RAPPlaceCorrectableAddress *)v52 _initWithMapItem:v54];
+    reportedPlace4 = [(RAPWebBundleQuestion *)selfCopy reportedPlace];
+    mapItem3 = [reportedPlace4 mapItem];
+    v55 = [(RAPPlaceCorrectableAddress *)v52 _initWithMapItem:mapItem3];
 
-    v56 = [v55 freeformAddress];
-    v57 = [v56 value];
-    [(RAPWebBundleAddToMapContext *)v91 setAddress:v57];
+    freeformAddress2 = [v55 freeformAddress];
+    value2 = [freeformAddress2 value];
+    [(RAPWebBundleAddToMapContext *)v91 setAddress:value2];
 
     [(RAPWebBundlePOIContext *)v91 setBusinessHours:v40];
-    v58 = [v90 name];
-    [(RAPWebBundlePOIContext *)v91 setName:v58];
+    name = [mapItem2 name];
+    [(RAPWebBundlePOIContext *)v91 setName:name];
 
-    v59 = [v90 phoneNumber];
-    [(RAPWebBundlePOIContext *)v91 setPhoneNumber:v59];
+    phoneNumber = [mapItem2 phoneNumber];
+    [(RAPWebBundlePOIContext *)v91 setPhoneNumber:phoneNumber];
 
-    v60 = [v90 url];
-    v61 = [v60 absoluteString];
-    [(RAPWebBundlePOIContext *)v91 setUrl:v61];
+    v60 = [mapItem2 url];
+    absoluteString = [v60 absoluteString];
+    [(RAPWebBundlePOIContext *)v91 setUrl:absoluteString];
 
-    v62 = [v90 _localizedCategoryNamesForType:0];
+    v62 = [mapItem2 _localizedCategoryNamesForType:0];
     [(RAPWebBundlePOIContext *)v91 setCategories:v62];
 
-    -[RAPWebBundlePOIContext setPermanentClosed:](v91, "setPermanentClosed:", [v85 hoursType] == 4);
-    -[RAPWebBundlePOIContext setTemporaryClosed:](v91, "setTemporaryClosed:", [v85 hoursType] == 3);
-    [(RAPWebBundlePOIContext *)v91 setAcceptsApplePay:[v90 _acceptsApplePay]];
-    v63 = [v90 _transitInfo];
-    LOBYTE(v61) = [v63 linesCount] == 0;
+    -[RAPWebBundlePOIContext setPermanentClosed:](v91, "setPermanentClosed:", [operatingHours hoursType] == 4);
+    -[RAPWebBundlePOIContext setTemporaryClosed:](v91, "setTemporaryClosed:", [operatingHours hoursType] == 3);
+    [(RAPWebBundlePOIContext *)v91 setAcceptsApplePay:[mapItem2 _acceptsApplePay]];
+    _transitInfo = [mapItem2 _transitInfo];
+    LOBYTE(absoluteString) = [_transitInfo linesCount] == 0;
 
-    if ((v61 & 1) == 0)
+    if ((absoluteString & 1) == 0)
     {
       dispatch_group_enter(group);
-      v64 = [(RAPWebBundleQuestion *)v88 reportedPlace];
+      reportedPlace5 = [(RAPWebBundleQuestion *)selfCopy reportedPlace];
       v116[0] = _NSConcreteStackBlock;
       v116[1] = 3221225472;
       v116[2] = sub_10087D530;
       v116[3] = &unk_10162C708;
-      v116[4] = v88;
+      v116[4] = selfCopy;
       v119 = v132;
       v117 = v91;
       v120 = &v134;
       v118 = group;
-      [(RAPWebBundleQuestion *)v88 _fetchTransitInfoFromStation:v64 withCompletion:v116];
+      [(RAPWebBundleQuestion *)selfCopy _fetchTransitInfoFromStation:reportedPlace5 withCompletion:v116];
     }
 
     dispatch_group_enter(group);
@@ -594,7 +594,7 @@ LABEL_38:
     v115 = &v134;
     v66 = group;
     v113 = v66;
-    [(RAPWebBundleQuestion *)v88 _fetchChildContainmentWithCompletion:v111];
+    [(RAPWebBundleQuestion *)selfCopy _fetchChildContainmentWithCompletion:v111];
     dispatch_group_enter(v66);
     v106[0] = _NSConcreteStackBlock;
     v106[1] = 3221225472;
@@ -605,25 +605,25 @@ LABEL_38:
     v109 = v132;
     v110 = &v134;
     v108 = v66;
-    [(RAPWebBundleQuestion *)v88 _fetchParentContainmentWithCompletion:v106];
+    [(RAPWebBundleQuestion *)selfCopy _fetchParentContainmentWithCompletion:v106];
     v68 = v135[5];
     v135[5] = v67;
     v69 = v67;
 
-    v12 = v90;
+    v12 = mapItem2;
     goto LABEL_64;
   }
 
-  if ((v8 - 11) < 0xA)
+  if ((questionType - 11) < 0xA)
   {
     goto LABEL_20;
   }
 
-  if ((v8 - 21) < 2)
+  if ((questionType - 21) < 2)
   {
     v9 = [RAPWebBundleBaseContext alloc];
-    v10 = [(RAPWebBundleQuestion *)self questionTypeAsString];
-    v11 = [(RAPWebBundleBaseContext *)v9 initWithType:v10 locales:v87];
+    questionTypeAsString5 = [(RAPWebBundleQuestion *)self questionTypeAsString];
+    v11 = [(RAPWebBundleBaseContext *)v9 initWithType:questionTypeAsString5 locales:localesCopy];
 
     v12 = v135[5];
     v135[5] = v11;
@@ -635,10 +635,10 @@ LABEL_65:
   block[1] = 3221225472;
   block[2] = sub_10087D7BC;
   block[3] = &unk_101661430;
-  v103 = v86;
+  v103 = completionCopy;
   v104 = &v134;
   v105 = v132;
-  v70 = v86;
+  v70 = completionCopy;
   dispatch_group_notify(group, &_dispatch_main_q, block);
 
   _Block_object_dispose(v132, 8);
@@ -651,10 +651,10 @@ LABEL_65:
   if (!geotaggedPhotoCommentQuestion)
   {
     v4 = [RAPCommentQuestion alloc];
-    v5 = [(RAPQuestion *)self report];
+    report = [(RAPQuestion *)self report];
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"Details [Report a Problem photos]" value:@"localized string not found" table:0];
-    v8 = [(RAPCommentQuestion *)v4 initWithReport:v5 parentQuestion:self title:v7 placeholderText:0 emphasis:4];
+    v8 = [(RAPCommentQuestion *)v4 initWithReport:report parentQuestion:self title:v7 placeholderText:0 emphasis:4];
     v9 = self->_geotaggedPhotoCommentQuestion;
     self->_geotaggedPhotoCommentQuestion = v8;
 
@@ -666,105 +666,105 @@ LABEL_65:
 
 - (id)questionTypeAsString
 {
-  v2 = [(RAPWebBundleQuestion *)self questionType];
-  if (v2 > 0x1D)
+  questionType = [(RAPWebBundleQuestion *)self questionType];
+  if (questionType > 0x1D)
   {
     return @"poi";
   }
 
   else
   {
-    return off_10162C7C8[v2];
+    return off_10162C7C8[questionType];
   }
 }
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [v4 details];
+  parametersCopy = parameters;
+  details = [parametersCopy details];
 
-  if (!v5)
+  if (!details)
   {
     v6 = objc_opt_new();
-    [v4 setDetails:v6];
+    [parametersCopy setDetails:v6];
   }
 
-  v7 = [(RAPWebBundleQuestion *)self dynamicForm];
-  [v4 setDynamicForm:v7];
+  dynamicForm = [(RAPWebBundleQuestion *)self dynamicForm];
+  [parametersCopy setDynamicForm:dynamicForm];
 
   switch(self->_questionType)
   {
     case 1:
     case 0xALL:
-      v16 = [v4 details];
-      v9 = [v16 addressPointFeedback];
+      details2 = [parametersCopy details];
+      addressPointFeedback = [details2 addressPointFeedback];
 
-      if (!v9)
+      if (!addressPointFeedback)
       {
-        v9 = objc_alloc_init(GEORPAddressFeedback);
-        v17 = [v4 details];
-        [v17 setAddressPointFeedback:v9];
+        addressPointFeedback = objc_alloc_init(GEORPAddressFeedback);
+        details3 = [parametersCopy details];
+        [details3 setAddressPointFeedback:addressPointFeedback];
       }
 
-      v18 = [v9 place];
+      place = [addressPointFeedback place];
 
-      if (!v18)
+      if (!place)
       {
-        v19 = [(RAPPlace *)self->_reportedPlace mapItem];
-        v20 = [v19 _geoMapItem];
-        v21 = [v20 _placeData];
-        [v9 setPlace:v21];
+        mapItem = [(RAPPlace *)self->_reportedPlace mapItem];
+        _geoMapItem = [mapItem _geoMapItem];
+        _placeData = [_geoMapItem _placeData];
+        [addressPointFeedback setPlace:_placeData];
       }
 
-      v22 = [(RAPPlace *)self->_reportedPlace placeInfo];
+      placeInfo = [(RAPPlace *)self->_reportedPlace placeInfo];
 
-      if (v22)
+      if (placeInfo)
       {
-        v23 = [(RAPPlace *)self->_reportedPlace placeInfo];
-        v24 = [v23 placeRequest];
-        [v9 setPlaceRequest:v24];
+        placeInfo2 = [(RAPPlace *)self->_reportedPlace placeInfo];
+        placeRequest = [placeInfo2 placeRequest];
+        [addressPointFeedback setPlaceRequest:placeRequest];
       }
 
-      v25 = [(RAPPlace *)self->_reportedPlace mapItem];
-      v26 = [v25 _maps_isHomeWorkOrSchool];
+      mapItem2 = [(RAPPlace *)self->_reportedPlace mapItem];
+      _maps_isHomeWorkOrSchool = [mapItem2 _maps_isHomeWorkOrSchool];
 
-      if (!v26)
+      if (!_maps_isHomeWorkOrSchool)
       {
         goto LABEL_80;
       }
 
-      v12 = [v9 personalizedMaps];
-      if (!v12)
+      personalizedMaps = [addressPointFeedback personalizedMaps];
+      if (!personalizedMaps)
       {
-        v12 = objc_alloc_init(GEORPPersonalizedMapsContext);
-        [v9 setPersonalizedMaps:v12];
+        personalizedMaps = objc_alloc_init(GEORPPersonalizedMapsContext);
+        [addressPointFeedback setPersonalizedMaps:personalizedMaps];
       }
 
-      [v12 setAddressType:9];
-      v27 = [(RAPPlace *)self->_reportedPlace mapItem];
-      v28 = [v27 _maps_isHome];
+      [personalizedMaps setAddressType:9];
+      mapItem3 = [(RAPPlace *)self->_reportedPlace mapItem];
+      _maps_isHome = [mapItem3 _maps_isHome];
 
-      if (v28)
+      if (_maps_isHome)
       {
         v29 = 1;
       }
 
       else
       {
-        v89 = [(RAPPlace *)self->_reportedPlace mapItem];
-        v90 = [v89 _maps_isWork];
+        mapItem4 = [(RAPPlace *)self->_reportedPlace mapItem];
+        _maps_isWork = [mapItem4 _maps_isWork];
 
-        if (v90)
+        if (_maps_isWork)
         {
           v29 = 2;
         }
 
         else
         {
-          v114 = [(RAPPlace *)self->_reportedPlace mapItem];
-          v115 = [v114 _maps_isSchool];
+          mapItem5 = [(RAPPlace *)self->_reportedPlace mapItem];
+          _maps_isSchool = [mapItem5 _maps_isSchool];
 
-          if (v115)
+          if (_maps_isSchool)
           {
             v29 = 3;
           }
@@ -776,7 +776,7 @@ LABEL_65:
         }
       }
 
-      [v12 setPlaceType:v29];
+      [personalizedMaps setPlaceType:v29];
       goto LABEL_79;
     case 2:
     case 9:
@@ -792,28 +792,28 @@ LABEL_65:
     case 0x18:
     case 0x19:
     case 0x1DLL:
-      v8 = [v4 details];
-      v9 = [v8 poiFeedback];
+      details4 = [parametersCopy details];
+      addressPointFeedback = [details4 poiFeedback];
 
-      if (!v9)
+      if (!addressPointFeedback)
       {
-        v9 = objc_alloc_init(GEORPPoiFeedback);
-        v10 = [v4 details];
-        [v10 setPoiFeedback:v9];
+        addressPointFeedback = objc_alloc_init(GEORPPoiFeedback);
+        details5 = [parametersCopy details];
+        [details5 setPoiFeedback:addressPointFeedback];
       }
 
-      [v9 setCorrectionType:self->_poiCorrectionType];
-      v11 = [v9 place];
+      [addressPointFeedback setCorrectionType:self->_poiCorrectionType];
+      place2 = [addressPointFeedback place];
 
-      if (v11)
+      if (place2)
       {
         goto LABEL_80;
       }
 
-      v12 = [(RAPPlace *)self->_reportedPlace mapItem];
-      v13 = [v12 _geoMapItem];
-      v14 = [v13 _placeData];
-      [v9 setPlace:v14];
+      personalizedMaps = [(RAPPlace *)self->_reportedPlace mapItem];
+      _geoMapItem2 = [personalizedMaps _geoMapItem];
+      _placeData2 = [_geoMapItem2 _placeData];
+      [addressPointFeedback setPlace:_placeData2];
       goto LABEL_8;
     case 3:
     case 4:
@@ -822,76 +822,76 @@ LABEL_65:
     case 7:
     case 8:
     case 0x1CLL:
-      v15 = [v4 details];
-      v9 = [v15 addMapFeedback];
+      details6 = [parametersCopy details];
+      addressPointFeedback = [details6 addMapFeedback];
 
-      if (v9)
+      if (addressPointFeedback)
       {
         goto LABEL_80;
       }
 
-      v9 = objc_alloc_init(GEORPAddToMapFeedback);
-      [v9 setIsEntrypointReportSomethingMissing:GEOConfigGetBOOL()];
-      v12 = [v4 details];
-      [v12 setAddMapFeedback:v9];
+      addressPointFeedback = objc_alloc_init(GEORPAddToMapFeedback);
+      [addressPointFeedback setIsEntrypointReportSomethingMissing:GEOConfigGetBOOL()];
+      personalizedMaps = [parametersCopy details];
+      [personalizedMaps setAddMapFeedback:addressPointFeedback];
       goto LABEL_79;
     case 0xBLL:
-      v39 = [v4 details];
-      v9 = [v39 localityFeedback];
+      details7 = [parametersCopy details];
+      addressPointFeedback = [details7 localityFeedback];
 
-      if (!v9)
+      if (!addressPointFeedback)
       {
-        v9 = objc_alloc_init(GEORPLocalityFeedback);
-        v40 = [v4 details];
-        [v40 setLocalityFeedback:v9];
+        addressPointFeedback = objc_alloc_init(GEORPLocalityFeedback);
+        details8 = [parametersCopy details];
+        [details8 setLocalityFeedback:addressPointFeedback];
       }
 
-      v41 = [v9 place];
+      place3 = [addressPointFeedback place];
 
-      if (!v41)
+      if (!place3)
       {
-        v42 = [(RAPWebBundleQuestion *)self reportedPlace];
-        v43 = [v42 mapItem];
-        v44 = [v43 _geoMapItem];
-        v45 = [v44 _placeData];
-        [v9 setPlace:v45];
+        reportedPlace = [(RAPWebBundleQuestion *)self reportedPlace];
+        mapItem6 = [reportedPlace mapItem];
+        _geoMapItem3 = [mapItem6 _geoMapItem];
+        _placeData3 = [_geoMapItem3 _placeData];
+        [addressPointFeedback setPlace:_placeData3];
       }
 
-      v46 = [(RAPPlace *)self->_reportedPlace placeInfo];
+      placeInfo3 = [(RAPPlace *)self->_reportedPlace placeInfo];
 
-      if (!v46)
+      if (!placeInfo3)
       {
         goto LABEL_80;
       }
 
-      v12 = [(RAPWebBundleQuestion *)self reportedPlace];
-      v13 = [v12 placeInfo];
-      v14 = [v13 placeRequest];
-      [v9 setPlaceRequest:v14];
+      personalizedMaps = [(RAPWebBundleQuestion *)self reportedPlace];
+      _geoMapItem2 = [personalizedMaps placeInfo];
+      _placeData2 = [_geoMapItem2 placeRequest];
+      [addressPointFeedback setPlaceRequest:_placeData2];
       goto LABEL_8;
     case 0x15:
     case 0x16:
-      v38 = [v4 details];
-      v9 = [v38 streetFeedback];
+      details9 = [parametersCopy details];
+      addressPointFeedback = [details9 streetFeedback];
 
-      if (v9)
+      if (addressPointFeedback)
       {
         goto LABEL_80;
       }
 
-      v9 = objc_alloc_init(GEORPStreetFeedback);
-      v12 = [v4 details];
-      [v12 setStreetFeedback:v9];
+      addressPointFeedback = objc_alloc_init(GEORPStreetFeedback);
+      personalizedMaps = [parametersCopy details];
+      [personalizedMaps setStreetFeedback:addressPointFeedback];
       goto LABEL_79;
     case 0x17:
-      v47 = [v4 details];
-      v48 = [v47 directionsFeedback];
+      details10 = [parametersCopy details];
+      directionsFeedback = [details10 directionsFeedback];
 
-      if (!v48)
+      if (!directionsFeedback)
       {
-        v48 = objc_alloc_init(GEORPDirectionsFeedback);
-        v49 = [v4 details];
-        [v49 setDirectionsFeedback:v48];
+        directionsFeedback = objc_alloc_init(GEORPDirectionsFeedback);
+        details11 = [parametersCopy details];
+        [details11 setDirectionsFeedback:directionsFeedback];
       }
 
       v50 = self->_directionsRecording;
@@ -899,8 +899,8 @@ LABEL_65:
       reportedUserPath = self->_reportedUserPath;
       if (reportedUserPath && (v53 = -[RAPUserPathEntry routeIndex](reportedUserPath, "routeIndex"), -[RAPDirectionsRecording routes](v50, "routes"), v54 = objc_claimAutoreleasedReturnValue(), v55 = [v54 count], v54, v55 > v53))
       {
-        v56 = [(RAPDirectionsRecording *)v50 routes];
-        v57 = [v56 objectAtIndexedSubscript:{-[RAPUserPathEntry routeIndex](self->_reportedUserPath, "routeIndex")}];
+        routes = [(RAPDirectionsRecording *)v50 routes];
+        v57 = [routes objectAtIndexedSubscript:{-[RAPUserPathEntry routeIndex](self->_reportedUserPath, "routeIndex")}];
 
         v58 = [[NSMutableArray alloc] initWithObjects:{v57, 0}];
         [v51 setRoutes:v58];
@@ -919,8 +919,8 @@ LABEL_65:
 
       else
       {
-        v61 = [(RAPDirectionsRecording *)v50 routes];
-        v62 = [v61 mutableCopy];
+        routes2 = [(RAPDirectionsRecording *)v50 routes];
+        v62 = [routes2 mutableCopy];
         [v51 setRoutes:v62];
 
         v59 = sub_100798874();
@@ -928,12 +928,12 @@ LABEL_65:
         {
           v63 = v51;
           v64 = self->_reportedUserPath;
-          v65 = [(RAPDirectionsRecording *)v50 routes];
+          routes3 = [(RAPDirectionsRecording *)v50 routes];
           *buf = 138412546;
           v148 = v64;
           v51 = v63;
           v149 = 2048;
-          v150 = [v65 count];
+          v150 = [routes3 count];
           _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_INFO, "updating RAPWebBundleQuestion with reportedUserPath: %@ and multiple routes (count: %ld)", buf, 0x16u);
         }
 
@@ -941,58 +941,58 @@ LABEL_65:
       }
 
       v135 = v57;
-      v136 = v48;
+      v136 = directionsFeedback;
 
-      v66 = [(RAPUserPathEntry *)self->_reportedUserPath rerouteLocation];
-      if (v66)
+      rerouteLocation = [(RAPUserPathEntry *)self->_reportedUserPath rerouteLocation];
+      if (rerouteLocation)
       {
-        v67 = v66;
-        v68 = [(RAPUserPathEntry *)self->_reportedUserPath traversal];
+        v67 = rerouteLocation;
+        traversal = [(RAPUserPathEntry *)self->_reportedUserPath traversal];
 
-        if (v68 == 2)
+        if (traversal == 2)
         {
           v69 = [NSMutableArray alloc];
-          v70 = [(RAPUserPathEntry *)self->_reportedUserPath rerouteLocation];
-          v71 = [v69 initWithObjects:{v70, 0}];
+          rerouteLocation2 = [(RAPUserPathEntry *)self->_reportedUserPath rerouteLocation];
+          v71 = [v69 initWithObjects:{rerouteLocation2, 0}];
           [v51 setRerouteLocations:v71];
         }
       }
 
       v72 = [GEORPPlaceInfo alloc];
-      v73 = [(RAPDirectionsRecording *)v50 startWaypointCorrectedSearchTemplate];
-      v74 = [v72 initWithCorrectedSearch:v73];
+      startWaypointCorrectedSearchTemplate = [(RAPDirectionsRecording *)v50 startWaypointCorrectedSearchTemplate];
+      v74 = [v72 initWithCorrectedSearch:startWaypointCorrectedSearchTemplate];
 
       [v74 clearSessionId];
       v75 = objc_alloc_init(GEORPPlaceRequestResponse);
-      v76 = [v74 placeRequest];
-      [v75 setPlaceRequest:v76];
+      placeRequest2 = [v74 placeRequest];
+      [v75 setPlaceRequest:placeRequest2];
 
       v134 = v74;
-      v77 = [v74 placeResponse];
-      [v75 setPlaceResponse:v77];
+      placeResponse = [v74 placeResponse];
+      [v75 setPlaceResponse:placeResponse];
 
       v78 = [GEORPPlaceInfo alloc];
-      v79 = [(RAPDirectionsRecording *)v50 endWaypointCorrectedSearchTemplate];
-      v80 = [v78 initWithCorrectedSearch:v79];
+      endWaypointCorrectedSearchTemplate = [(RAPDirectionsRecording *)v50 endWaypointCorrectedSearchTemplate];
+      v80 = [v78 initWithCorrectedSearch:endWaypointCorrectedSearchTemplate];
 
       [v80 clearSessionId];
       v81 = objc_alloc_init(GEORPPlaceRequestResponse);
-      v82 = [v80 placeRequest];
-      [v81 setPlaceRequest:v82];
+      placeRequest3 = [v80 placeRequest];
+      [v81 setPlaceRequest:placeRequest3];
 
       v133 = v80;
-      v83 = [v80 placeResponse];
-      [v81 setPlaceResponse:v83];
+      placeResponse2 = [v80 placeResponse];
+      [v81 setPlaceResponse:placeResponse2];
 
       v84 = [NSMutableArray arrayWithObjects:v75, v81, 0];
       [v51 setDirectionsWaypointPlaceInfos:v84];
 
-      v85 = [(RAPDirectionsRecording *)v50 startWaypoint];
-      if (v85)
+      startWaypoint = [(RAPDirectionsRecording *)v50 startWaypoint];
+      if (startWaypoint)
       {
         v86 = [GEORPUserSearchInput alloc];
-        v87 = [(RAPDirectionsRecording *)v50 startWaypoint];
-        v88 = [v86 initWithRAPUserSearchInput:v87];
+        startWaypoint2 = [(RAPDirectionsRecording *)v50 startWaypoint];
+        v88 = [v86 initWithRAPUserSearchInput:startWaypoint2];
         [v51 setStartWaypoint:v88];
       }
 
@@ -1001,12 +1001,12 @@ LABEL_65:
         [v51 setStartWaypoint:0];
       }
 
-      v91 = [(RAPDirectionsRecording *)v50 endWaypoint];
-      if (v91)
+      endWaypoint = [(RAPDirectionsRecording *)v50 endWaypoint];
+      if (endWaypoint)
       {
         v92 = [GEORPUserSearchInput alloc];
-        v93 = [(RAPDirectionsRecording *)v50 endWaypoint];
-        v94 = [v92 initWithRAPUserSearchInput:v93];
+        endWaypoint2 = [(RAPDirectionsRecording *)v50 endWaypoint];
+        v94 = [v92 initWithRAPUserSearchInput:endWaypoint2];
         [v51 setEndWaypoint:v94];
       }
 
@@ -1017,10 +1017,10 @@ LABEL_65:
 
       v95 = v135;
 
-      v96 = [(RAPDirectionsRecording *)v50 endWaypoint];
-      v97 = [v96 findMyHandleID];
+      endWaypoint3 = [(RAPDirectionsRecording *)v50 endWaypoint];
+      findMyHandleID = [endWaypoint3 findMyHandleID];
 
-      if (v97)
+      if (findMyHandleID)
       {
         [v51 setIsRouteToPerson:1];
       }
@@ -1036,55 +1036,55 @@ LABEL_65:
         goto LABEL_88;
       }
 
-      v99 = [(RAPUserPathEntry *)v98 stepIndex];
+      stepIndex = [(RAPUserPathEntry *)v98 stepIndex];
       v141 = 0u;
       v142 = 0u;
       v143 = 0u;
       v144 = 0u;
-      v100 = [v135 routeLegs];
-      v101 = [v100 countByEnumeratingWithState:&v141 objects:v146 count:16];
+      routeLegs = [v135 routeLegs];
+      v101 = [routeLegs countByEnumeratingWithState:&v141 objects:v146 count:16];
       if (!v101)
       {
         goto LABEL_73;
       }
 
       v102 = 0;
-      v131 = v99;
+      v131 = stepIndex;
       v132 = 0;
       v103 = *v142;
-      v129 = v100;
+      v129 = routeLegs;
       v130 = v51;
       v128 = v75;
       v126 = *v142;
       break;
     case 0x1ALL:
     case 0x1BLL:
-      v30 = [v4 details];
-      v9 = [v30 transitPoiFeedback];
+      details12 = [parametersCopy details];
+      addressPointFeedback = [details12 transitPoiFeedback];
 
-      if (!v9)
+      if (!addressPointFeedback)
       {
-        v9 = objc_alloc_init(GEORPTransitPoiFeedback);
-        v31 = [v4 details];
-        [v31 setTransitPoiFeedback:v9];
+        addressPointFeedback = objc_alloc_init(GEORPTransitPoiFeedback);
+        details13 = [parametersCopy details];
+        [details13 setTransitPoiFeedback:addressPointFeedback];
       }
 
-      v32 = [v4 details];
-      v33 = [v32 transitPoiFeedback];
-      v34 = [v33 place];
+      details14 = [parametersCopy details];
+      transitPoiFeedback = [details14 transitPoiFeedback];
+      place4 = [transitPoiFeedback place];
 
-      if (v34)
+      if (place4)
       {
         goto LABEL_80;
       }
 
-      v12 = [(RAPWebBundleQuestion *)self reportedPlace];
-      v13 = [v12 mapItem];
-      v14 = [v13 _geoMapItem];
-      v35 = [v14 _placeData];
-      v36 = [v4 details];
-      v37 = [v36 transitPoiFeedback];
-      [v37 setPlace:v35];
+      personalizedMaps = [(RAPWebBundleQuestion *)self reportedPlace];
+      _geoMapItem2 = [personalizedMaps mapItem];
+      _placeData2 = [_geoMapItem2 _geoMapItem];
+      v14_placeData = [_placeData2 _placeData];
+      details15 = [parametersCopy details];
+      transitPoiFeedback2 = [details15 transitPoiFeedback];
+      [transitPoiFeedback2 setPlace:v14_placeData];
 
 LABEL_8:
 LABEL_79:
@@ -1105,7 +1105,7 @@ LABEL_80:
     {
       if (*v142 != v103)
       {
-        objc_enumerationMutation(v100);
+        objc_enumerationMutation(routeLegs);
       }
 
       v106 = *(*(&v141 + 1) + 8 * v104);
@@ -1113,8 +1113,8 @@ LABEL_80:
       v138 = 0u;
       v139 = 0u;
       v140 = 0u;
-      v107 = [v106 steps];
-      v108 = [v107 countByEnumeratingWithState:&v137 objects:v145 count:16];
+      steps = [v106 steps];
+      v108 = [steps countByEnumeratingWithState:&v137 objects:v145 count:16];
       if (v108)
       {
         v109 = v108;
@@ -1127,31 +1127,31 @@ LABEL_80:
           {
             if (*v138 != v110)
             {
-              objc_enumerationMutation(v107);
+              objc_enumerationMutation(steps);
             }
 
             if (!v111)
             {
 
               v117 = (v105 + 1);
-              v118 = [(RAPDirectionsRecording *)v50 waypoints];
-              v119 = [v118 count];
+              waypoints = [(RAPDirectionsRecording *)v50 waypoints];
+              v119 = [waypoints count];
 
               if (v117 >= v119)
               {
-                v112 = sub_100798874();
-                v48 = v136;
+                waypoints3 = sub_100798874();
+                directionsFeedback = v136;
                 v51 = v130;
                 v75 = v128;
-                if (os_log_type_enabled(v112, OS_LOG_TYPE_ERROR))
+                if (os_log_type_enabled(waypoints3, OS_LOG_TYPE_ERROR))
                 {
-                  v123 = [(RAPDirectionsRecording *)v50 waypoints];
-                  v124 = [v123 count];
+                  waypoints2 = [(RAPDirectionsRecording *)v50 waypoints];
+                  v124 = [waypoints2 count];
                   *buf = 134218240;
                   v148 = v117;
                   v149 = 2048;
                   v150 = v124;
-                  _os_log_impl(&_mh_execute_header, v112, OS_LOG_TYPE_ERROR, "found waypointIndex: %lu but recorded waypoints did not match: %lu", buf, 0x16u);
+                  _os_log_impl(&_mh_execute_header, waypoints3, OS_LOG_TYPE_ERROR, "found waypointIndex: %lu but recorded waypoints did not match: %lu", buf, 0x16u);
                 }
 
                 v95 = v135;
@@ -1160,14 +1160,14 @@ LABEL_80:
               else
               {
                 v120 = [GEORPUserSearchInput alloc];
-                v112 = [(RAPDirectionsRecording *)v50 waypoints];
-                v121 = [v112 objectAtIndexedSubscript:v117];
+                waypoints3 = [(RAPDirectionsRecording *)v50 waypoints];
+                v121 = [waypoints3 objectAtIndexedSubscript:v117];
                 v122 = [v120 initWithRAPUserSearchInput:v121];
                 v51 = v130;
                 [v130 setEndWaypoint:v122];
 
                 v95 = v135;
-                v48 = v136;
+                directionsFeedback = v136;
                 v75 = v128;
               }
 
@@ -1179,7 +1179,7 @@ LABEL_80:
           }
 
           while (v109);
-          v109 = [v107 countByEnumeratingWithState:&v137 objects:v145 count:16];
+          v109 = [steps countByEnumeratingWithState:&v137 objects:v145 count:16];
           if (v109)
           {
             continue;
@@ -1192,8 +1192,8 @@ LABEL_80:
       ++v105;
       ++v104;
       v103 = v126;
-      v48 = v136;
-      v100 = v129;
+      directionsFeedback = v136;
+      routeLegs = v129;
       v51 = v130;
     }
 
@@ -1207,109 +1207,109 @@ LABEL_80:
   while (v101);
 LABEL_73:
 
-  v112 = sub_100798874();
-  if (os_log_type_enabled(v112, OS_LOG_TYPE_ERROR))
+  waypoints3 = sub_100798874();
+  if (os_log_type_enabled(waypoints3, OS_LOG_TYPE_ERROR))
   {
     v113 = self->_reportedUserPath;
     *buf = 138412546;
     v148 = v113;
     v149 = 2112;
     v150 = v95;
-    _os_log_impl(&_mh_execute_header, v112, OS_LOG_TYPE_ERROR, "Did not find waypointIndex for path: %@ in route: %@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, waypoints3, OS_LOG_TYPE_ERROR, "Did not find waypointIndex for path: %@ in route: %@", buf, 0x16u);
   }
 
 LABEL_87:
 
 LABEL_88:
-  [v48 setDirectionsContext:v51];
+  [directionsFeedback setDirectionsContext:v51];
 
 LABEL_81:
-  v116 = [(RAPWebBundleQuestion *)self geotaggedPhotoCommentQuestion];
-  [v116 _fillSubmissionParameters:v4];
+  geotaggedPhotoCommentQuestion = [(RAPWebBundleQuestion *)self geotaggedPhotoCommentQuestion];
+  [geotaggedPhotoCommentQuestion _fillSubmissionParameters:parametersCopy];
 }
 
 - (BOOL)isAnonymous
 {
   v5.receiver = self;
   v5.super_class = RAPWebBundleQuestion;
-  v3 = [(RAPQuestion *)&v5 isAnonymous];
-  if (v3)
+  isAnonymous = [(RAPQuestion *)&v5 isAnonymous];
+  if (isAnonymous)
   {
-    LOBYTE(v3) = self->_questionType != 10;
+    LOBYTE(isAnonymous) = self->_questionType != 10;
   }
 
-  return v3;
+  return isAnonymous;
 }
 
-- (void)setDirectionsRecording:(id)a3
+- (void)setDirectionsRecording:(id)recording
 {
-  v5 = a3;
+  recordingCopy = recording;
   if (![(RAPDirectionsRecording *)self->_directionsRecording isEqual:?])
   {
-    objc_storeStrong(&self->_directionsRecording, a3);
+    objc_storeStrong(&self->_directionsRecording, recording);
   }
 }
 
-- (void)setReportedUserPath:(id)a3
+- (void)setReportedUserPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   if (![(RAPUserPathEntry *)self->_reportedUserPath isEqual:?])
   {
-    objc_storeStrong(&self->_reportedUserPath, a3);
+    objc_storeStrong(&self->_reportedUserPath, path);
   }
 }
 
-- (RAPWebBundleQuestion)initWithReport:(id)a3 directionsRecording:(id)a4
+- (RAPWebBundleQuestion)initWithReport:(id)report directionsRecording:(id)recording
 {
-  v7 = a4;
+  recordingCopy = recording;
   v11.receiver = self;
   v11.super_class = RAPWebBundleQuestion;
-  v8 = [(RAPQuestion *)&v11 initWithReport:a3 parentQuestion:0];
+  v8 = [(RAPQuestion *)&v11 initWithReport:report parentQuestion:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_directionsRecording, a4);
+    objc_storeStrong(&v8->_directionsRecording, recording);
     v9->_questionType = 23;
   }
 
   return v9;
 }
 
-- (RAPWebBundleQuestion)initWithReport:(id)a3 place:(id)a4 poiCorrectionType:(int)a5 questionType:(int64_t)a6
+- (RAPWebBundleQuestion)initWithReport:(id)report place:(id)place poiCorrectionType:(int)type questionType:(int64_t)questionType
 {
-  result = [(RAPWebBundleQuestion *)self initWithReport:a3 place:a4 questionType:a6];
+  result = [(RAPWebBundleQuestion *)self initWithReport:report place:place questionType:questionType];
   if (result)
   {
-    result->_poiCorrectionType = a5;
+    result->_poiCorrectionType = type;
   }
 
   return result;
 }
 
-- (RAPWebBundleQuestion)initWithReport:(id)a3 place:(id)a4 questionType:(int64_t)a5
+- (RAPWebBundleQuestion)initWithReport:(id)report place:(id)place questionType:(int64_t)type
 {
-  v9 = a4;
+  placeCopy = place;
   v13.receiver = self;
   v13.super_class = RAPWebBundleQuestion;
-  v10 = [(RAPQuestion *)&v13 initWithReport:a3 parentQuestion:0];
+  v10 = [(RAPQuestion *)&v13 initWithReport:report parentQuestion:0];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_reportedPlace, a4);
-    v11->_questionType = a5;
+    objc_storeStrong(&v10->_reportedPlace, place);
+    v11->_questionType = type;
   }
 
   return v11;
 }
 
-- (RAPWebBundleQuestion)initWithReport:(id)a3 questionType:(int64_t)a4
+- (RAPWebBundleQuestion)initWithReport:(id)report questionType:(int64_t)type
 {
   v6.receiver = self;
   v6.super_class = RAPWebBundleQuestion;
-  result = [(RAPQuestion *)&v6 initWithReport:a3 parentQuestion:0];
+  result = [(RAPQuestion *)&v6 initWithReport:report parentQuestion:0];
   if (result)
   {
-    result->_questionType = a4;
+    result->_questionType = type;
   }
 
   return result;

@@ -1,11 +1,11 @@
 @interface VCReportingUpdateAndReportServices
-- (VCReportingUpdateAndReportServices)initWithServiceBlock:(id)a3 needToUpdate:(BOOL)a4 needToReport:(BOOL)a5;
+- (VCReportingUpdateAndReportServices)initWithServiceBlock:(id)block needToUpdate:(BOOL)update needToReport:(BOOL)report;
 - (void)dealloc;
 @end
 
 @implementation VCReportingUpdateAndReportServices
 
-- (VCReportingUpdateAndReportServices)initWithServiceBlock:(id)a3 needToUpdate:(BOOL)a4 needToReport:(BOOL)a5
+- (VCReportingUpdateAndReportServices)initWithServiceBlock:(id)block needToUpdate:(BOOL)update needToReport:(BOOL)report
 {
   v11.receiver = self;
   v11.super_class = VCReportingUpdateAndReportServices;
@@ -13,9 +13,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_needToUpdate = a4;
-    v8->_needToReport = a5;
-    v8->_block = _Block_copy(a3);
+    v8->_needToUpdate = update;
+    v8->_needToReport = report;
+    v8->_block = _Block_copy(block);
   }
 
   return v9;

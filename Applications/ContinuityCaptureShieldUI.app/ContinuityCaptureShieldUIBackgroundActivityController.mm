@@ -1,20 +1,20 @@
 @interface ContinuityCaptureShieldUIBackgroundActivityController
-- (ContinuityCaptureShieldUIBackgroundActivityController)initWithBackgroundActivityIdentifier:(id)a3;
-- (void)activateBackgroundActivityWithUserInteractionHandler:(id)a3;
+- (ContinuityCaptureShieldUIBackgroundActivityController)initWithBackgroundActivityIdentifier:(id)identifier;
+- (void)activateBackgroundActivityWithUserInteractionHandler:(id)handler;
 - (void)deactivateBackgroundActivity;
-- (void)publishNewDataWithUserInteractionHandler:(id)a3;
+- (void)publishNewDataWithUserInteractionHandler:(id)handler;
 @end
 
 @implementation ContinuityCaptureShieldUIBackgroundActivityController
 
-- (ContinuityCaptureShieldUIBackgroundActivityController)initWithBackgroundActivityIdentifier:(id)a3
+- (ContinuityCaptureShieldUIBackgroundActivityController)initWithBackgroundActivityIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = ContinuityCaptureShieldUIBackgroundActivityController;
   v6 = [(ContinuityCaptureShieldUIBackgroundActivityController *)&v13 init];
   v7 = v6;
-  if (!v5)
+  if (!identifierCopy)
   {
     sub_10000A92C(a2, v6);
     if (!v7)
@@ -28,7 +28,7 @@
   if (v6)
   {
 LABEL_3:
-    v8 = [v5 copy];
+    v8 = [identifierCopy copy];
     backgroundActivityIdentifier = v7->_backgroundActivityIdentifier;
     v7->_backgroundActivityIdentifier = v8;
 
@@ -42,12 +42,12 @@ LABEL_4:
   return v7;
 }
 
-- (void)activateBackgroundActivityWithUserInteractionHandler:(id)a3
+- (void)activateBackgroundActivityWithUserInteractionHandler:(id)handler
 {
   if (!self->_backgroundActivityActive)
   {
     self->_backgroundActivityActive = 1;
-    [(ContinuityCaptureShieldUIBackgroundActivityController *)self publishNewDataWithUserInteractionHandler:a3];
+    [(ContinuityCaptureShieldUIBackgroundActivityController *)self publishNewDataWithUserInteractionHandler:handler];
   }
 }
 
@@ -60,9 +60,9 @@ LABEL_4:
   }
 }
 
-- (void)publishNewDataWithUserInteractionHandler:(id)a3
+- (void)publishNewDataWithUserInteractionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = self->_currentAttribution;
   if (self->_backgroundActivityActive)
   {
@@ -93,7 +93,7 @@ LABEL_4:
   objc_copyWeak(&v16, location);
   v11 = v10;
   v14 = v11;
-  v12 = v4;
+  v12 = handlerCopy;
   v15 = v12;
   [(STBackgroundActivitiesStatusDomainPublisher *)publisher updateVolatileData:v17 completion:v13];
 

@@ -1,26 +1,26 @@
 @interface BKUIPearlPositioningGuideView
-- (BKUIPearlPositioningGuideView)initWithFrame:(CGRect)a3;
+- (BKUIPearlPositioningGuideView)initWithFrame:(CGRect)frame;
 - (BOOL)needsMaskedNeedsPositionStyleEnrollment;
 - (CGPoint)portalCenter;
 - (CGPoint)startPortalCenter;
 - (CGPoint)targetPortalCenter;
 - (double)_maxDistance;
 - (double)_minDistance;
-- (double)_updatedFloatWithTarget:(double)a3 current:(double)a4 start:(double)a5 progress:(double)a6;
+- (double)_updatedFloatWithTarget:(double)target current:(double)current start:(double)start progress:(double)progress;
 - (double)maximumMaskLayerDistanceFromCenter;
 - (double)minimumMaskLayerDistanceFromCenter;
-- (id)_roundedRectMaskForMaskDistance:(double)a3 portalCenter:(CGPoint)a4 cornerRadius:(double)a5;
+- (id)_roundedRectMaskForMaskDistance:(double)distance portalCenter:(CGPoint)center cornerRadius:(double)radius;
 - (void)_displayTick;
-- (void)_startAnimationWithDuration:(double)a3 completion:(id)a4;
+- (void)_startAnimationWithDuration:(double)duration completion:(id)completion;
 - (void)_startDisplay;
 - (void)_stopDisplay;
-- (void)_updateTargetValuesForAnimation:(int64_t)a3 animationCurve:(int64_t)a4;
-- (void)animateToBreatheOutValuesOverDuration:(double)a3 completion:(id)a4;
-- (void)animateToFinishedValuesOverDuration:(double)a3 center:(CGPoint)a4 completion:(id)a5;
-- (void)animateToOpenValuesOverDuration:(double)a3 curve:(int64_t)a4 completion:(id)a5;
-- (void)animateToPopOutValuesOverDuration:(double)a3 completion:(id)a4;
+- (void)_updateTargetValuesForAnimation:(int64_t)animation animationCurve:(int64_t)curve;
+- (void)animateToBreatheOutValuesOverDuration:(double)duration completion:(id)completion;
+- (void)animateToFinishedValuesOverDuration:(double)duration center:(CGPoint)center completion:(id)completion;
+- (void)animateToOpenValuesOverDuration:(double)duration curve:(int64_t)curve completion:(id)completion;
+- (void)animateToPopOutValuesOverDuration:(double)duration completion:(id)completion;
 - (void)breathe;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)prepareMaskLayerForReducedMotionOpenTransition;
 - (void)prepareMaskLayerForStartToOpenTransition;
 - (void)resetValuesToStart;
@@ -28,11 +28,11 @@
 
 @implementation BKUIPearlPositioningGuideView
 
-- (BKUIPearlPositioningGuideView)initWithFrame:(CGRect)a3
+- (BKUIPearlPositioningGuideView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = BKUIPearlPositioningGuideView;
-  v3 = [(BKUIPearlPositioningGuideView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKUIPearlPositioningGuideView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -60,8 +60,8 @@
 
   [(CADisplayLink *)self->_displayLink bkui_enableHighFrameRate];
   v5 = self->_displayLink;
-  v6 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [(CADisplayLink *)v5 addToRunLoop:v6 forMode:*MEMORY[0x277CBE738]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [(CADisplayLink *)v5 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 }
 
 - (void)_stopDisplay
@@ -88,14 +88,14 @@
   [(BKUIPearlPositioningGuideView *)self setNeedsDisplay];
 }
 
-- (void)_startAnimationWithDuration:(double)a3 completion:(id)a4
+- (void)_startAnimationWithDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if ([(BKUIPearlPositioningGuideView *)self isHidden])
   {
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -114,17 +114,17 @@
     v14[3] = &unk_278D0A308;
     v14[4] = self;
     v16 = v8;
-    v15 = v6;
+    v15 = completionCopy;
     [(UIView *)v7 bkui_animateWithDuration:v17 animations:v14 completion:0.2];
   }
 
   else
   {
-    self->_animationDuration = a3;
+    self->_animationDuration = duration;
     self->_lastAnimationTickProgres = 0.0;
-    v9 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     animationStart = self->_animationStart;
-    self->_animationStart = v9;
+    self->_animationStart = date;
 
     self->_startLineWidth = self->_lineWidth;
     self->_startEdgeDistance = self->_edgeDistance;
@@ -132,15 +132,15 @@
     self->_startPostCornerLength = self->_postCornerLength;
     self->_startLineAlpha = self->_lineAlpha;
     self->_startPortalCenter = self->_portalCenter;
-    v11 = [(BKUIPearlPositioningGuideView *)self animationCompletion];
+    animationCompletion = [(BKUIPearlPositioningGuideView *)self animationCompletion];
 
-    if (v11)
+    if (animationCompletion)
     {
-      v12 = [(BKUIPearlPositioningGuideView *)self animationCompletion];
-      v12[2](v12, 0);
+      animationCompletion2 = [(BKUIPearlPositioningGuideView *)self animationCompletion];
+      animationCompletion2[2](animationCompletion2, 0);
     }
 
-    v13 = [v6 copy];
+    v13 = [completionCopy copy];
     [(BKUIPearlPositioningGuideView *)self setAnimationCompletion:v13];
   }
 }
@@ -208,11 +208,11 @@ uint64_t __72__BKUIPearlPositioningGuideView__startAnimationWithDuration_complet
   return result;
 }
 
-- (void)_updateTargetValuesForAnimation:(int64_t)a3 animationCurve:(int64_t)a4
+- (void)_updateTargetValuesForAnimation:(int64_t)animation animationCurve:(int64_t)curve
 {
-  if (a3 > 1)
+  if (animation > 1)
   {
-    if (a3 == 2)
+    if (animation == 2)
     {
       self->_targetLineWidth = 4.33333333;
       self->_targetEdgeDistance = 142.0;
@@ -223,11 +223,11 @@ uint64_t __72__BKUIPearlPositioningGuideView__startAnimationWithDuration_complet
       [(BKUIPearlPositioningGuideView *)self center];
       p_targetPortalCenter->x = v22;
       self->_targetPortalCenter.y = v23;
-      self->_animationCurve = a4;
-      v24 = [MEMORY[0x277D75418] currentDevice];
-      v25 = [v24 userInterfaceIdiom];
+      self->_animationCurve = curve;
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v25 != 1)
+      if (userInterfaceIdiom != 1)
       {
         return;
       }
@@ -239,13 +239,13 @@ uint64_t __72__BKUIPearlPositioningGuideView__startAnimationWithDuration_complet
       goto LABEL_16;
     }
 
-    if (a3 == 3)
+    if (animation == 3)
     {
       self->_targetLineWidth = 3.5;
-      v12 = [MEMORY[0x277D75418] currentDevice];
-      v13 = [v12 userInterfaceIdiom];
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-      if (v13 == 1)
+      if (userInterfaceIdiom2 == 1)
       {
         self->_targetLineWidth = 6.0;
       }
@@ -261,7 +261,7 @@ uint64_t __72__BKUIPearlPositioningGuideView__startAnimationWithDuration_complet
 
   else
   {
-    if (!a3)
+    if (!animation)
     {
       self->_targetLineWidth = 4.33333333;
       self->_targetEdgeDistance = 128.0;
@@ -272,11 +272,11 @@ uint64_t __72__BKUIPearlPositioningGuideView__startAnimationWithDuration_complet
       [(BKUIPearlPositioningGuideView *)self center];
       v16->x = v17;
       self->_targetPortalCenter.y = v18;
-      self->_animationCurve = a4;
-      v19 = [MEMORY[0x277D75418] currentDevice];
-      v20 = [v19 userInterfaceIdiom];
+      self->_animationCurve = curve;
+      currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-      if (v20 != 1)
+      if (userInterfaceIdiom3 != 1)
       {
         return;
       }
@@ -286,7 +286,7 @@ uint64_t __72__BKUIPearlPositioningGuideView__startAnimationWithDuration_complet
       goto LABEL_13;
     }
 
-    if (a3 == 1)
+    if (animation == 1)
     {
       self->_targetLineWidth = 4.33333333;
       self->_targetEdgeDistance = 132.0;
@@ -297,11 +297,11 @@ uint64_t __72__BKUIPearlPositioningGuideView__startAnimationWithDuration_complet
       [(BKUIPearlPositioningGuideView *)self center];
       v6->x = v7;
       self->_targetPortalCenter.y = v8;
-      self->_animationCurve = a4;
-      v9 = [MEMORY[0x277D75418] currentDevice];
-      v10 = [v9 userInterfaceIdiom];
+      self->_animationCurve = curve;
+      currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
-      if (v10 == 1)
+      if (userInterfaceIdiom4 == 1)
       {
         self->_targetLineWidth = 6.0;
         [(BKUIPearlPositioningGuideView *)self _maxDistance];
@@ -315,19 +315,19 @@ LABEL_16:
   }
 }
 
-- (void)animateToOpenValuesOverDuration:(double)a3 curve:(int64_t)a4 completion:(id)a5
+- (void)animateToOpenValuesOverDuration:(double)duration curve:(int64_t)curve completion:(id)completion
 {
-  v8 = a5;
-  [(BKUIPearlPositioningGuideView *)self _updateTargetValuesForAnimation:0 animationCurve:a4];
+  completionCopy = completion;
+  [(BKUIPearlPositioningGuideView *)self _updateTargetValuesForAnimation:0 animationCurve:curve];
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __82__BKUIPearlPositioningGuideView_animateToOpenValuesOverDuration_curve_completion___block_invoke;
   v10[3] = &unk_278D0A330;
   objc_copyWeak(&v12, &location);
-  v9 = v8;
+  v9 = completionCopy;
   v11 = v9;
-  [(BKUIPearlPositioningGuideView *)self _startAnimationWithDuration:v10 completion:a3];
+  [(BKUIPearlPositioningGuideView *)self _startAnimationWithDuration:v10 completion:duration];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -345,26 +345,26 @@ uint64_t __82__BKUIPearlPositioningGuideView_animateToOpenValuesOverDuration_cur
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)animateToBreatheOutValuesOverDuration:(double)a3 completion:(id)a4
+- (void)animateToBreatheOutValuesOverDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(BKUIPearlPositioningGuideView *)self _updateTargetValuesForAnimation:1 animationCurve:0];
-  [(BKUIPearlPositioningGuideView *)self _startAnimationWithDuration:v6 completion:a3];
+  [(BKUIPearlPositioningGuideView *)self _startAnimationWithDuration:completionCopy completion:duration];
 }
 
-- (void)animateToPopOutValuesOverDuration:(double)a3 completion:(id)a4
+- (void)animateToPopOutValuesOverDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(BKUIPearlPositioningGuideView *)self _updateTargetValuesForAnimation:2 animationCurve:1];
-  [(BKUIPearlPositioningGuideView *)self _startAnimationWithDuration:v6 completion:a3];
+  [(BKUIPearlPositioningGuideView *)self _startAnimationWithDuration:completionCopy completion:duration];
 }
 
 - (double)minimumMaskLayerDistanceFromCenter
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 != 1)
+  if (userInterfaceIdiom != 1)
   {
     return 0.0;
   }
@@ -375,10 +375,10 @@ uint64_t __82__BKUIPearlPositioningGuideView_animateToOpenValuesOverDuration_cur
 
 - (double)maximumMaskLayerDistanceFromCenter
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 != 1)
+  if (userInterfaceIdiom != 1)
   {
     return 0.0;
   }
@@ -423,25 +423,25 @@ uint64_t __40__BKUIPearlPositioningGuideView_breathe__block_invoke_2(uint64_t re
   return result;
 }
 
-- (void)animateToFinishedValuesOverDuration:(double)a3 center:(CGPoint)a4 completion:(id)a5
+- (void)animateToFinishedValuesOverDuration:(double)duration center:(CGPoint)center completion:(id)completion
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
+  y = center.y;
+  x = center.x;
+  completionCopy = completion;
   [(BKUIPearlPositioningGuideView *)self _updateTargetValuesForAnimation:3 animationCurve:[(BKUIPearlPositioningGuideView *)self animationCurve]];
   self->_targetPortalCenter.x = x;
   self->_targetPortalCenter.y = y;
-  [(BKUIPearlPositioningGuideView *)self _startAnimationWithDuration:v9 completion:a3];
+  [(BKUIPearlPositioningGuideView *)self _startAnimationWithDuration:completionCopy completion:duration];
 }
 
-- (id)_roundedRectMaskForMaskDistance:(double)a3 portalCenter:(CGPoint)a4 cornerRadius:(double)a5
+- (id)_roundedRectMaskForMaskDistance:(double)distance portalCenter:(CGPoint)center cornerRadius:(double)radius
 {
-  y = a4.y;
-  x = a4.x;
+  y = center.y;
+  x = center.x;
   v9 = MEMORY[0x277D75208];
   [(BKUIPearlPositioningGuideView *)self bounds];
   v10 = [v9 bezierPathWithRect:?];
-  v11 = [MEMORY[0x277D75208] _bezierPathWithArcRoundedRect:x - a3 cornerRadius:{y - a3, a3 + a3, a3 + a3, a5}];
+  v11 = [MEMORY[0x277D75208] _bezierPathWithArcRoundedRect:x - distance cornerRadius:{y - distance, distance + distance, distance + distance, radius}];
   [v10 appendPath:v11];
 
   return v10;
@@ -451,15 +451,15 @@ uint64_t __40__BKUIPearlPositioningGuideView_breathe__block_invoke_2(uint64_t re
 {
   if ([(BKUIPearlPositioningGuideView *)self needsMaskedNeedsPositionStyleEnrollment])
   {
-    v3 = [(BKUIPearlPositioningGuideView *)self roundedRectMaskLayer];
+    roundedRectMaskLayer = [(BKUIPearlPositioningGuideView *)self roundedRectMaskLayer];
 
-    if (v3)
+    if (roundedRectMaskLayer)
     {
       [(BKUIPearlPositioningGuideView *)self portalCenter];
       v8 = [(BKUIPearlPositioningGuideView *)self _roundedRectMaskForMaskDistance:0.0 portalCenter:v4 cornerRadius:v5, 0.0];
-      v6 = [(BKUIPearlPositioningGuideView *)self roundedRectMaskLayer];
+      roundedRectMaskLayer2 = [(BKUIPearlPositioningGuideView *)self roundedRectMaskLayer];
       v7 = v8;
-      [v6 setPath:{objc_msgSend(v8, "CGPath")}];
+      [roundedRectMaskLayer2 setPath:{objc_msgSend(v8, "CGPath")}];
 
       self->_startMaskFromCenter = 1;
     }
@@ -470,48 +470,48 @@ uint64_t __40__BKUIPearlPositioningGuideView_breathe__block_invoke_2(uint64_t re
 {
   if ([(BKUIPearlPositioningGuideView *)self needsMaskedNeedsPositionStyleEnrollment])
   {
-    v3 = [(BKUIPearlPositioningGuideView *)self roundedRectMaskLayer];
+    roundedRectMaskLayer = [(BKUIPearlPositioningGuideView *)self roundedRectMaskLayer];
 
-    if (v3)
+    if (roundedRectMaskLayer)
     {
       [(BKUIPearlPositioningGuideView *)self _minDistance];
       v5 = v4;
       [(BKUIPearlPositioningGuideView *)self portalCenter];
       v10 = [(BKUIPearlPositioningGuideView *)self _roundedRectMaskForMaskDistance:v5 portalCenter:v6 cornerRadius:v7, 30.0];
-      v8 = [(BKUIPearlPositioningGuideView *)self roundedRectMaskLayer];
+      roundedRectMaskLayer2 = [(BKUIPearlPositioningGuideView *)self roundedRectMaskLayer];
       v9 = v10;
-      [v8 setPath:{objc_msgSend(v10, "CGPath")}];
+      [roundedRectMaskLayer2 setPath:{objc_msgSend(v10, "CGPath")}];
     }
   }
 }
 
-- (double)_updatedFloatWithTarget:(double)a3 current:(double)a4 start:(double)a5 progress:(double)a6
+- (double)_updatedFloatWithTarget:(double)target current:(double)current start:(double)start progress:(double)progress
 {
   animationCurve = self->_animationCurve;
   switch(animationCurve)
   {
     case 0:
-      v9 = timingEaseInOut_block_invoke(a6);
+      v9 = timingEaseInOut_block_invoke(progress);
       goto LABEL_7;
     case 2:
-      v9 = timingEaseOut_block_invoke_2(a6);
+      v9 = timingEaseOut_block_invoke_2(progress);
       goto LABEL_7;
     case 1:
-      v9 = timingEaseIn_block_invoke_3(a6);
+      v9 = timingEaseIn_block_invoke_3(progress);
 LABEL_7:
-      a6 = v9;
+      progress = v9;
       break;
   }
 
-  return a5 + (a3 - a5) * a6;
+  return start + (target - start) * progress;
 }
 
 - (void)_displayTick
 {
   if (self->_animationStart)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    [v3 timeIntervalSinceDate:self->_animationStart];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:self->_animationStart];
     v5 = v4;
 
     [(BKUIPearlPositioningGuideView *)self animationDuration];
@@ -554,9 +554,9 @@ LABEL_7:
     [(BKUIPearlPositioningGuideView *)self setPortalCenter:v23, v26];
     if ([(BKUIPearlPositioningGuideView *)self needsMaskedNeedsPositionStyleEnrollment])
     {
-      v27 = [(BKUIPearlPositioningGuideView *)self roundedRectMaskLayer];
+      roundedRectMaskLayer = [(BKUIPearlPositioningGuideView *)self roundedRectMaskLayer];
 
-      if (v27)
+      if (roundedRectMaskLayer)
       {
         if (self->_startMaskFromCenter)
         {
@@ -577,8 +577,8 @@ LABEL_7:
         v35 = v33 + v34 * 0.5;
         [(BKUIPearlPositioningGuideView *)self portalCenter];
         v38 = [(BKUIPearlPositioningGuideView *)self _roundedRectMaskForMaskDistance:v31 portalCenter:v36 cornerRadius:v37, v35];
-        v39 = [(BKUIPearlPositioningGuideView *)self roundedRectMaskLayer];
-        [v39 setPath:{objc_msgSend(v38, "CGPath")}];
+        roundedRectMaskLayer2 = [(BKUIPearlPositioningGuideView *)self roundedRectMaskLayer];
+        [roundedRectMaskLayer2 setPath:{objc_msgSend(v38, "CGPath")}];
       }
     }
 
@@ -587,24 +587,24 @@ LABEL_7:
     [(BKUIPearlPositioningGuideView *)self setNeedsDisplay];
     if (v8 >= 1.0)
     {
-      v40 = [(BKUIPearlPositioningGuideView *)self animationCompletion];
+      animationCompletion = [(BKUIPearlPositioningGuideView *)self animationCompletion];
 
-      if (v40)
+      if (animationCompletion)
       {
-        v41 = [(BKUIPearlPositioningGuideView *)self animationCompletion];
+        animationCompletion2 = [(BKUIPearlPositioningGuideView *)self animationCompletion];
         [(BKUIPearlPositioningGuideView *)self setAnimationCompletion:0];
-        v41[2](v41, 1);
+        animationCompletion2[2](animationCompletion2, 1);
       }
     }
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(BKUIPearlPositioningGuideView *)self portalCenter:a3.origin.x];
+  [(BKUIPearlPositioningGuideView *)self portalCenter:rect.origin.x];
   v5 = v4;
   v7 = v6;
-  v32 = [MEMORY[0x277D75208] bezierPath];
+  bezierPath = [MEMORY[0x277D75208] bezierPath];
   [(BKUIPearlPositioningGuideView *)self edgeDistance];
   v9 = v8;
   [(BKUIPearlPositioningGuideView *)self cornerRadius];
@@ -614,61 +614,61 @@ LABEL_7:
   [(BKUIPearlPositioningGuideView *)self lineWidth];
   v30 = v5 + v9;
   v31 = v14;
-  [v32 moveToPoint:{v5 + v9, v7 + v9 - v11 - v13}];
+  [bezierPath moveToPoint:{v5 + v9, v7 + v9 - v11 - v13}];
   v15 = v13 + v7 + v9 - v11 - v13;
-  [v32 addLineToPoint:{v5 + v9, v15}];
+  [bezierPath addLineToPoint:{v5 + v9, v15}];
   v29 = v5 + v9 - v11;
-  [v32 addArcWithCenter:1 radius:v29 startAngle:v15 endAngle:v11 clockwise:{0.0, 1.57079633}];
+  [bezierPath addArcWithCenter:1 radius:v29 startAngle:v15 endAngle:v11 clockwise:{0.0, 1.57079633}];
   v28 = v29 - v13;
-  [v32 addLineToPoint:?];
+  [bezierPath addLineToPoint:?];
   v16 = v5 - v9;
   v27 = v16 + v11 + v13;
-  [v32 moveToPoint:?];
-  [v32 addLineToPoint:{v16 + v11, v7 + v9}];
+  [bezierPath moveToPoint:?];
+  [bezierPath addLineToPoint:{v16 + v11, v7 + v9}];
   v17 = v7 + v9 - v11;
-  [v32 addArcWithCenter:1 radius:v16 + v11 startAngle:v17 endAngle:v11 clockwise:{1.57079633, 3.14159265}];
-  [v32 addLineToPoint:{v16, v17 - v13}];
+  [bezierPath addArcWithCenter:1 radius:v16 + v11 startAngle:v17 endAngle:v11 clockwise:{1.57079633, 3.14159265}];
+  [bezierPath addLineToPoint:{v16, v17 - v13}];
   v18 = v7 - v9;
   v19 = v7 - v9 + v11;
   v20 = v19 + v13;
-  [v32 moveToPoint:{v16, v20}];
-  [v32 addLineToPoint:{v16, v19}];
-  [v32 addArcWithCenter:1 radius:v16 + v11 startAngle:v19 endAngle:v11 clockwise:{3.14159265, 4.71238898}];
-  [v32 addLineToPoint:{v27, v18}];
-  [v32 moveToPoint:{v28, v18}];
-  [v32 addLineToPoint:{v29, v18}];
-  [v32 addArcWithCenter:1 radius:v29 startAngle:v19 endAngle:v11 clockwise:{4.71238898, 0.0}];
-  [v32 addLineToPoint:{v30, v20}];
-  [v32 setLineCapStyle:1];
-  [v32 setLineWidth:v31 + 1.0];
+  [bezierPath moveToPoint:{v16, v20}];
+  [bezierPath addLineToPoint:{v16, v19}];
+  [bezierPath addArcWithCenter:1 radius:v16 + v11 startAngle:v19 endAngle:v11 clockwise:{3.14159265, 4.71238898}];
+  [bezierPath addLineToPoint:{v27, v18}];
+  [bezierPath moveToPoint:{v28, v18}];
+  [bezierPath addLineToPoint:{v29, v18}];
+  [bezierPath addArcWithCenter:1 radius:v29 startAngle:v19 endAngle:v11 clockwise:{4.71238898, 0.0}];
+  [bezierPath addLineToPoint:{v30, v20}];
+  [bezierPath setLineCapStyle:1];
+  [bezierPath setLineWidth:v31 + 1.0];
   v21 = MEMORY[0x277D75348];
   [(BKUIPearlPositioningGuideView *)self lineAlpha];
   v23 = [v21 colorWithWhite:0.0 alpha:v22 * 0.25];
   [v23 setStroke];
 
-  [v32 stroke];
-  [v32 setLineWidth:v31];
+  [bezierPath stroke];
+  [bezierPath setLineWidth:v31];
   v24 = MEMORY[0x277D75348];
   [(BKUIPearlPositioningGuideView *)self lineAlpha];
   v26 = [v24 colorWithWhite:1.0 alpha:v25];
   [v26 setStroke];
 
-  [v32 stroke];
+  [bezierPath stroke];
 }
 
 - (BOOL)needsMaskedNeedsPositionStyleEnrollment
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 1;
 
   return v3;
 }
 
 - (double)_maxDistance
 {
-  v2 = [(BKUIPearlPositioningGuideView *)self inSheet];
+  inSheet = [(BKUIPearlPositioningGuideView *)self inSheet];
   result = 246.0;
-  if (v2)
+  if (inSheet)
   {
     return 209.1;
   }
@@ -678,9 +678,9 @@ LABEL_7:
 
 - (double)_minDistance
 {
-  v2 = [(BKUIPearlPositioningGuideView *)self inSheet];
+  inSheet = [(BKUIPearlPositioningGuideView *)self inSheet];
   result = 198.0;
-  if (v2)
+  if (inSheet)
   {
     return 168.3;
   }

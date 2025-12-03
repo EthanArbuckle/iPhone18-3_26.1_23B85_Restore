@@ -2,29 +2,29 @@
 - (BOOL)_shouldEnableCommunityID;
 - (GEORPUserPath)combinedUserPath;
 - (RAPReport)init;
-- (RAPReport)initWithContext:(id)a3 submitter:(id)a4;
+- (RAPReport)initWithContext:(id)context submitter:(id)submitter;
 - (id)_auxiliaryControlsRecording;
-- (id)_buildRequestParamsWithError:(id *)a3;
+- (id)_buildRequestParamsWithError:(id *)error;
 - (id)_directionsRecording;
 - (id)_mapContext;
 - (id)_navigationSettings;
 - (id)_placeContext;
-- (id)_saveRAPInfoToMapsSyncWithRequestParams:(id)a3;
+- (id)_saveRAPInfoToMapsSyncWithRequestParams:(id)params;
 - (id)devicePushToken;
 - (id)newFeedbackRequestParameters;
-- (void)_anonymizeDirectionsRequestsAndResponsesIfNeeded:(id)a3;
-- (void)_anonymizeLocations:(id)a3 traits:(id)a4;
-- (void)_anonymizePhotos:(id)a3;
-- (void)_anonymizeScreenshots:(id)a3;
-- (void)_buildUserInfoWithRequestParams:(id)a3 CompletionHandler:(id)a4;
+- (void)_anonymizeDirectionsRequestsAndResponsesIfNeeded:(id)needed;
+- (void)_anonymizeLocations:(id)locations traits:(id)traits;
+- (void)_anonymizePhotos:(id)photos;
+- (void)_anonymizeScreenshots:(id)screenshots;
+- (void)_buildUserInfoWithRequestParams:(id)params CompletionHandler:(id)handler;
 - (void)_invokeChangeHandlers;
-- (void)_prepareRequestParametersForSubmission:(id)a3;
+- (void)_prepareRequestParametersForSubmission:(id)submission;
 - (void)_setNeedsUpdate;
 - (void)_update;
-- (void)addObserver:(id)a3 changeHandler:(id)a4;
-- (void)removePhotosOfType:(int64_t)a3;
-- (void)setInitialQuestion:(id)a3;
-- (void)submitWithPrivacyRequestHandler:(id)a3 willStartSubmitting:(id)a4 didFinishSubmitting:(id)a5;
+- (void)addObserver:(id)observer changeHandler:(id)handler;
+- (void)removePhotosOfType:(int64_t)type;
+- (void)setInitialQuestion:(id)question;
+- (void)submitWithPrivacyRequestHandler:(id)handler willStartSubmitting:(id)submitting didFinishSubmitting:(id)finishSubmitting;
 - (void)updateIfNeeded;
 @end
 
@@ -45,27 +45,27 @@
   return combinedUserPath;
 }
 
-- (void)_anonymizeDirectionsRequestsAndResponsesIfNeeded:(id)a3
+- (void)_anonymizeDirectionsRequestsAndResponsesIfNeeded:(id)needed
 {
-  v3 = a3;
-  v4 = [v3 details];
-  v5 = [v4 directionsFeedback];
-  v6 = [v5 directionsContext];
+  neededCopy = needed;
+  details = [neededCopy details];
+  directionsFeedback = [details directionsFeedback];
+  directionsContext = [directionsFeedback directionsContext];
 
-  v7 = [v6 directionsRequests];
-  v8 = [v7 count];
+  directionsRequests = [directionsContext directionsRequests];
+  v8 = [directionsRequests count];
 
   if (v8)
   {
     if (sub_100742C84())
     {
-      [v6 setDirectionsRequests:0];
+      [directionsContext setDirectionsRequests:0];
       v50 = 0u;
       v51 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v9 = [v6 directionsWaypointPlaceInfos];
-      v10 = [v9 countByEnumeratingWithState:&v48 objects:v55 count:16];
+      directionsWaypointPlaceInfos = [directionsContext directionsWaypointPlaceInfos];
+      v10 = [directionsWaypointPlaceInfos countByEnumeratingWithState:&v48 objects:v55 count:16];
       if (v10)
       {
         v11 = v10;
@@ -76,13 +76,13 @@
           {
             if (*v49 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(directionsWaypointPlaceInfos);
             }
 
             [*(*(&v48 + 1) + 8 * i) setPlaceRequest:0];
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v48 objects:v55 count:16];
+          v11 = [directionsWaypointPlaceInfos countByEnumeratingWithState:&v48 objects:v55 count:16];
         }
 
         while (v11);
@@ -91,13 +91,13 @@
 
     else
     {
-      v9 = objc_opt_new();
+      directionsWaypointPlaceInfos = objc_opt_new();
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v14 = [v6 directionsRequests];
-      v15 = [v14 countByEnumeratingWithState:&v44 objects:v54 count:16];
+      directionsRequests2 = [directionsContext directionsRequests];
+      v15 = [directionsRequests2 countByEnumeratingWithState:&v44 objects:v54 count:16];
       if (v15)
       {
         v16 = v15;
@@ -108,7 +108,7 @@
           {
             if (*v45 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(directionsRequests2);
             }
 
             v19 = [*(*(&v44 + 1) + 8 * j) copy];
@@ -118,28 +118,28 @@
             }
 
             [v19 clearSessionId];
-            [v9 addObject:v19];
+            [directionsWaypointPlaceInfos addObject:v19];
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v44 objects:v54 count:16];
+          v16 = [directionsRequests2 countByEnumeratingWithState:&v44 objects:v54 count:16];
         }
 
         while (v16);
       }
 
-      [v6 setDirectionsRequests:v9];
+      [directionsContext setDirectionsRequests:directionsWaypointPlaceInfos];
     }
   }
 
   if (sub_100742FB0())
   {
-    [v6 setDirectionsResponses:0];
+    [directionsContext setDirectionsResponses:0];
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v20 = [v6 directionsWaypointPlaceInfos];
-    v21 = [v20 countByEnumeratingWithState:&v40 objects:v53 count:16];
+    directionsWaypointPlaceInfos2 = [directionsContext directionsWaypointPlaceInfos];
+    v21 = [directionsWaypointPlaceInfos2 countByEnumeratingWithState:&v40 objects:v53 count:16];
     if (v21)
     {
       v22 = v21;
@@ -150,30 +150,30 @@
         {
           if (*v41 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(directionsWaypointPlaceInfos2);
           }
 
           [*(*(&v40 + 1) + 8 * k) setPlaceResponse:0];
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v40 objects:v53 count:16];
+        v22 = [directionsWaypointPlaceInfos2 countByEnumeratingWithState:&v40 objects:v53 count:16];
       }
 
       while (v22);
     }
   }
 
-  v25 = [v3 details];
-  v26 = [v25 transitPoiFeedback];
+  details2 = [neededCopy details];
+  transitPoiFeedback = [details2 transitPoiFeedback];
 
-  v27 = [v26 directionsRequests];
-  v28 = [v27 count];
+  directionsRequests3 = [transitPoiFeedback directionsRequests];
+  v28 = [directionsRequests3 count];
 
   if (v28)
   {
     if (sub_100742C84())
     {
-      [v26 setDirectionsRequests:0];
+      [transitPoiFeedback setDirectionsRequests:0];
     }
 
     else
@@ -183,8 +183,8 @@
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v30 = [v26 directionsRequests];
-      v31 = [v30 countByEnumeratingWithState:&v36 objects:v52 count:16];
+      directionsRequests4 = [transitPoiFeedback directionsRequests];
+      v31 = [directionsRequests4 countByEnumeratingWithState:&v36 objects:v52 count:16];
       if (v31)
       {
         v32 = v31;
@@ -195,7 +195,7 @@
           {
             if (*v37 != v33)
             {
-              objc_enumerationMutation(v30);
+              objc_enumerationMutation(directionsRequests4);
             }
 
             v35 = [*(*(&v36 + 1) + 8 * m) copy];
@@ -208,38 +208,38 @@
             [v29 addObject:v35];
           }
 
-          v32 = [v30 countByEnumeratingWithState:&v36 objects:v52 count:16];
+          v32 = [directionsRequests4 countByEnumeratingWithState:&v36 objects:v52 count:16];
         }
 
         while (v32);
       }
 
-      [v26 setDirectionsRequests:v29];
+      [transitPoiFeedback setDirectionsRequests:v29];
     }
   }
 
   if (sub_100742FB0())
   {
-    [v26 setDirectionsResponses:0];
+    [transitPoiFeedback setDirectionsResponses:0];
   }
 }
 
-- (void)_anonymizeLocations:(id)a3 traits:(id)a4
+- (void)_anonymizeLocations:(id)locations traits:(id)traits
 {
-  v5 = a3;
-  v6 = a4;
-  [v6 clearSessionId];
-  [v6 clearLocations];
-  v7 = [v5 details];
-  v8 = [v7 directionsFeedback];
-  v9 = [v8 directionsContext];
+  locationsCopy = locations;
+  traitsCopy = traits;
+  [traitsCopy clearSessionId];
+  [traitsCopy clearLocations];
+  details = [locationsCopy details];
+  directionsFeedback = [details directionsFeedback];
+  directionsContext = [directionsFeedback directionsContext];
 
   v82 = 0u;
   v83 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v10 = [v9 directionsWaypointPlaceInfos];
-  v11 = [v10 countByEnumeratingWithState:&v80 objects:v89 count:16];
+  directionsWaypointPlaceInfos = [directionsContext directionsWaypointPlaceInfos];
+  v11 = [directionsWaypointPlaceInfos countByEnumeratingWithState:&v80 objects:v89 count:16];
   if (v11)
   {
     v12 = v11;
@@ -251,7 +251,7 @@
       {
         if (*v81 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(directionsWaypointPlaceInfos);
         }
 
         [*(*(&v80 + 1) + 8 * v14) clearLocations];
@@ -259,14 +259,14 @@
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v80 objects:v89 count:16];
+      v12 = [directionsWaypointPlaceInfos countByEnumeratingWithState:&v80 objects:v89 count:16];
     }
 
     while (v12);
   }
 
-  v15 = [v9 directionsRequests];
-  v16 = [v15 count];
+  directionsRequests = [directionsContext directionsRequests];
+  v16 = [directionsRequests count];
 
   if (v16)
   {
@@ -275,8 +275,8 @@
     v77 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v18 = [v9 directionsRequests];
-    v19 = [v18 countByEnumeratingWithState:&v76 objects:v88 count:16];
+    directionsRequests2 = [directionsContext directionsRequests];
+    v19 = [directionsRequests2 countByEnumeratingWithState:&v76 objects:v88 count:16];
     if (v19)
     {
       v20 = v19;
@@ -288,7 +288,7 @@
         {
           if (*v77 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(directionsRequests2);
           }
 
           v23 = [*(*(&v76 + 1) + 8 * v22) copy];
@@ -300,21 +300,21 @@
         }
 
         while (v20 != v22);
-        v20 = [v18 countByEnumeratingWithState:&v76 objects:v88 count:16];
+        v20 = [directionsRequests2 countByEnumeratingWithState:&v76 objects:v88 count:16];
       }
 
       while (v20);
     }
 
-    [v9 setDirectionsRequests:v17];
+    [directionsContext setDirectionsRequests:v17];
   }
 
   v74 = 0u;
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v24 = [v9 directionsResponses];
-  v25 = [v24 countByEnumeratingWithState:&v72 objects:v87 count:16];
+  directionsResponses = [directionsContext directionsResponses];
+  v25 = [directionsResponses countByEnumeratingWithState:&v72 objects:v87 count:16];
   if (v25)
   {
     v26 = v25;
@@ -326,7 +326,7 @@
       {
         if (*v73 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(directionsResponses);
         }
 
         [*(*(&v72 + 1) + 8 * v28) clearLocations];
@@ -334,35 +334,35 @@
       }
 
       while (v26 != v28);
-      v26 = [v24 countByEnumeratingWithState:&v72 objects:v87 count:16];
+      v26 = [directionsResponses countByEnumeratingWithState:&v72 objects:v87 count:16];
     }
 
     while (v26);
   }
 
-  v29 = [v9 startWaypoint];
-  [v29 setOrigin:0];
+  startWaypoint = [directionsContext startWaypoint];
+  [startWaypoint setOrigin:0];
 
-  v30 = [v9 startWaypoint];
-  [v30 setAutocompleteEntry:0];
+  startWaypoint2 = [directionsContext startWaypoint];
+  [startWaypoint2 setAutocompleteEntry:0];
 
-  v31 = [v9 startWaypoint];
-  [v31 setSearchString:0];
+  startWaypoint3 = [directionsContext startWaypoint];
+  [startWaypoint3 setSearchString:0];
 
-  v32 = [v9 endWaypoint];
-  [v32 setOrigin:0];
+  endWaypoint = [directionsContext endWaypoint];
+  [endWaypoint setOrigin:0];
 
-  v33 = [v9 endWaypoint];
-  [v33 setAutocompleteEntry:0];
+  endWaypoint2 = [directionsContext endWaypoint];
+  [endWaypoint2 setAutocompleteEntry:0];
 
-  v34 = [v9 endWaypoint];
-  [v34 setSearchString:0];
+  endWaypoint3 = [directionsContext endWaypoint];
+  [endWaypoint3 setSearchString:0];
 
-  v35 = [v5 details];
-  v36 = [v35 transitPoiFeedback];
+  details2 = [locationsCopy details];
+  transitPoiFeedback = [details2 transitPoiFeedback];
 
-  v37 = [v36 directionsRequests];
-  v38 = [v37 count];
+  directionsRequests3 = [transitPoiFeedback directionsRequests];
+  v38 = [directionsRequests3 count];
 
   if (v38)
   {
@@ -371,8 +371,8 @@
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v40 = [v36 directionsRequests];
-    v41 = [v40 countByEnumeratingWithState:&v68 objects:v86 count:16];
+    directionsRequests4 = [transitPoiFeedback directionsRequests];
+    v41 = [directionsRequests4 countByEnumeratingWithState:&v68 objects:v86 count:16];
     if (v41)
     {
       v42 = v41;
@@ -384,7 +384,7 @@
         {
           if (*v69 != v43)
           {
-            objc_enumerationMutation(v40);
+            objc_enumerationMutation(directionsRequests4);
           }
 
           v45 = [*(*(&v68 + 1) + 8 * v44) copy];
@@ -396,21 +396,21 @@
         }
 
         while (v42 != v44);
-        v42 = [v40 countByEnumeratingWithState:&v68 objects:v86 count:16];
+        v42 = [directionsRequests4 countByEnumeratingWithState:&v68 objects:v86 count:16];
       }
 
       while (v42);
     }
 
-    [v36 setDirectionsRequests:v39];
+    [transitPoiFeedback setDirectionsRequests:v39];
   }
 
   v66 = 0u;
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v46 = [v36 directionsResponses];
-  v47 = [v46 countByEnumeratingWithState:&v64 objects:v85 count:16];
+  directionsResponses2 = [transitPoiFeedback directionsResponses];
+  v47 = [directionsResponses2 countByEnumeratingWithState:&v64 objects:v85 count:16];
   if (v47)
   {
     v48 = v47;
@@ -422,7 +422,7 @@
       {
         if (*v65 != v49)
         {
-          objc_enumerationMutation(v46);
+          objc_enumerationMutation(directionsResponses2);
         }
 
         [*(*(&v64 + 1) + 8 * v50) clearLocations];
@@ -430,16 +430,16 @@
       }
 
       while (v48 != v50);
-      v48 = [v46 countByEnumeratingWithState:&v64 objects:v85 count:16];
+      v48 = [directionsResponses2 countByEnumeratingWithState:&v64 objects:v85 count:16];
     }
 
     while (v48);
   }
 
-  v51 = [v5 commonContext];
-  if ([v51 pinType] == 4)
+  commonContext = [locationsCopy commonContext];
+  if ([commonContext pinType] == 4)
   {
-    [v51 setPinType:2];
+    [commonContext setPinType:2];
   }
 
   v62 = 0u;
@@ -473,22 +473,22 @@
     while (v54);
   }
 
-  if ([v5 isPersonalizedMapsFeedback])
+  if ([locationsCopy isPersonalizedMapsFeedback])
   {
-    [v51 clearUserPaths];
-    [v51 addUserPath:1];
-    [v51 addUserPath:7];
-    [v51 addUserPath:10];
-    [v51 addUserPath:10];
-    v57 = [v5 details];
-    v58 = [v57 addressPointFeedback];
-    [v58 setPersonalizedMaps:0];
+    [commonContext clearUserPaths];
+    [commonContext addUserPath:1];
+    [commonContext addUserPath:7];
+    [commonContext addUserPath:10];
+    [commonContext addUserPath:10];
+    details3 = [locationsCopy details];
+    addressPointFeedback = [details3 addressPointFeedback];
+    [addressPointFeedback setPersonalizedMaps:0];
   }
 }
 
-- (void)_anonymizeScreenshots:(id)a3
+- (void)_anonymizeScreenshots:(id)screenshots
 {
-  v4 = a3;
+  screenshotsCopy = screenshots;
   [(RAPReport *)self removePhotosOfType:0];
   [(RAPReport *)self removePhotosOfType:5];
   [(RAPReport *)self removePhotosOfType:2];
@@ -497,12 +497,12 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 details];
-  v6 = [v5 directionsFeedback];
-  v7 = [v6 directionsCorrections];
-  v8 = [v7 instructionCorrections];
+  details = [screenshotsCopy details];
+  directionsFeedback = [details directionsFeedback];
+  directionsCorrections = [directionsFeedback directionsCorrections];
+  instructionCorrections = [directionsCorrections instructionCorrections];
 
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v9 = [instructionCorrections countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -514,7 +514,7 @@
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(instructionCorrections);
         }
 
         [*(*(&v13 + 1) + 8 * v12) setRouteStepScreenshotImageId:0];
@@ -522,28 +522,28 @@
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [instructionCorrections countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_anonymizePhotos:(id)a3
+- (void)_anonymizePhotos:(id)photos
 {
-  v4 = a3;
+  photosCopy = photos;
   [(RAPReport *)self removePhotosOfType:1];
   [(RAPReport *)self removePhotosOfType:4];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 details];
-  v6 = [v5 directionsFeedback];
-  v7 = [v6 directionsCorrections];
-  v8 = [v7 instructionCorrections];
+  details = [photosCopy details];
+  directionsFeedback = [details directionsFeedback];
+  directionsCorrections = [directionsFeedback directionsCorrections];
+  instructionCorrections = [directionsCorrections instructionCorrections];
 
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v9 = [instructionCorrections countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -555,7 +555,7 @@
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(instructionCorrections);
         }
 
         [*(*(&v13 + 1) + 8 * v12) setPhotoId:0];
@@ -563,21 +563,21 @@
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [instructionCorrections countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (id)_saveRAPInfoToMapsSyncWithRequestParams:(id)a3
+- (id)_saveRAPInfoToMapsSyncWithRequestParams:(id)params
 {
-  v4 = a3;
-  v5 = [v4 submissionParameters];
-  v6 = [v5 type];
+  paramsCopy = params;
+  submissionParameters = [paramsCopy submissionParameters];
+  type = [submissionParameters type];
 
-  v7 = 0;
-  v8 = v6;
+  _directionsRecording = 0;
+  v8 = type;
   v9 = 0;
   v10 = 0;
   switch(v8)
@@ -595,123 +595,123 @@
     case 0x13u:
     case 0x14u:
     case 0x15u:
-      v11 = [(RAPReport *)self _context];
-      v12 = [v11 reportedPlace];
-      v13 = [v12 mapItem];
-      v14 = [v13 _geoMapItem];
+      _context = [(RAPReport *)self _context];
+      reportedPlace = [_context reportedPlace];
+      mapItem = [reportedPlace mapItem];
+      _geoMapItem = [mapItem _geoMapItem];
 
-      v10 = [GEOMapItemStorage mapItemStorageForGEOMapItem:v14];
+      v10 = [GEOMapItemStorage mapItemStorageForGEOMapItem:_geoMapItem];
 
       goto LABEL_3;
     case 2u:
-      v36 = [v4 submissionParameters];
-      v37 = [v36 details];
-      v38 = [v37 hasPoiFeedback];
+      submissionParameters2 = [paramsCopy submissionParameters];
+      details = [submissionParameters2 details];
+      hasPoiFeedback = [details hasPoiFeedback];
 
-      if (!v38)
+      if (!hasPoiFeedback)
       {
         goto LABEL_19;
       }
 
-      v27 = [v4 submissionParameters];
-      v28 = [v27 details];
-      v29 = [v28 poiFeedback];
+      submissionParameters3 = [paramsCopy submissionParameters];
+      details2 = [submissionParameters3 details];
+      poiFeedback = [details2 poiFeedback];
       goto LABEL_16;
     case 3u:
-      v24 = [v4 submissionParameters];
-      v25 = [v24 details];
-      v26 = [v25 hasTransitPoiFeedback];
+      submissionParameters4 = [paramsCopy submissionParameters];
+      details3 = [submissionParameters4 details];
+      hasTransitPoiFeedback = [details3 hasTransitPoiFeedback];
 
-      if (!v26)
+      if (!hasTransitPoiFeedback)
       {
         goto LABEL_19;
       }
 
-      v27 = [v4 submissionParameters];
-      v28 = [v27 details];
-      v29 = [v28 transitPoiFeedback];
+      submissionParameters3 = [paramsCopy submissionParameters];
+      details2 = [submissionParameters3 details];
+      poiFeedback = [details2 transitPoiFeedback];
       goto LABEL_16;
     case 4u:
-      v30 = [v4 submissionParameters];
-      v31 = [v30 details];
-      v32 = [v31 hasAddressPointFeedback];
+      submissionParameters5 = [paramsCopy submissionParameters];
+      details4 = [submissionParameters5 details];
+      hasAddressPointFeedback = [details4 hasAddressPointFeedback];
 
-      if (!v32)
+      if (!hasAddressPointFeedback)
       {
         goto LABEL_19;
       }
 
-      v27 = [v4 submissionParameters];
-      v28 = [v27 details];
-      v29 = [v28 addressPointFeedback];
+      submissionParameters3 = [paramsCopy submissionParameters];
+      details2 = [submissionParameters3 details];
+      poiFeedback = [details2 addressPointFeedback];
       goto LABEL_16;
     case 8u:
-      v7 = [(RAPReport *)self _directionsRecording];
+      _directionsRecording = [(RAPReport *)self _directionsRecording];
       goto LABEL_20;
     case 9u:
       goto LABEL_22;
     case 0xAu:
-      v33 = [v4 submissionParameters];
-      v34 = [v33 details];
-      v35 = [v34 hasPoiEnrichmentUpdate];
+      submissionParameters6 = [paramsCopy submissionParameters];
+      details5 = [submissionParameters6 details];
+      hasPoiEnrichmentUpdate = [details5 hasPoiEnrichmentUpdate];
 
-      if (!v35)
+      if (!hasPoiEnrichmentUpdate)
       {
         goto LABEL_19;
       }
 
-      v27 = [v4 submissionParameters];
-      v28 = [v27 details];
-      v29 = [v28 poiEnrichmentUpdate];
+      submissionParameters3 = [paramsCopy submissionParameters];
+      details2 = [submissionParameters3 details];
+      poiFeedback = [details2 poiEnrichmentUpdate];
       goto LABEL_16;
     case 0xCu:
-      v42 = [v4 submissionParameters];
-      v43 = [v42 details];
-      v44 = [v43 curatedCollectionFeedback];
-      v45 = [v44 hasCuratedCollectionContext];
+      submissionParameters7 = [paramsCopy submissionParameters];
+      details6 = [submissionParameters7 details];
+      curatedCollectionFeedback = [details6 curatedCollectionFeedback];
+      hasCuratedCollectionContext = [curatedCollectionFeedback hasCuratedCollectionContext];
 
-      if (!v45)
+      if (!hasCuratedCollectionContext)
       {
         goto LABEL_19;
       }
 
       v46 = [MKMapItemIdentifier alloc];
-      v47 = [v4 submissionParameters];
-      v48 = [v47 details];
-      v49 = [v48 curatedCollectionFeedback];
-      v50 = [v49 curatedCollectionContext];
-      v51 = [v50 curatedCollectionMuid];
-      v52 = [v46 initWithMUID:v51 resultProviderID:0 coordinate:{MKCoordinateInvalid[0], MKCoordinateInvalid[1]}];
+      submissionParameters8 = [paramsCopy submissionParameters];
+      details7 = [submissionParameters8 details];
+      curatedCollectionFeedback2 = [details7 curatedCollectionFeedback];
+      curatedCollectionContext = [curatedCollectionFeedback2 curatedCollectionContext];
+      curatedCollectionMuid = [curatedCollectionContext curatedCollectionMuid];
+      v52 = [v46 initWithMUID:curatedCollectionMuid resultProviderID:0 coordinate:{MKCoordinateInvalid[0], MKCoordinateInvalid[1]}];
 
       v9 = [NSString stringWithFormat:@"%@", v52];
 
-      v7 = 0;
+      _directionsRecording = 0;
       goto LABEL_21;
     case 0xDu:
-      v15 = [v4 submissionParameters];
-      v16 = [v15 details];
-      v17 = [v16 hasPoiImageFeedback];
+      submissionParameters9 = [paramsCopy submissionParameters];
+      details8 = [submissionParameters9 details];
+      hasPoiImageFeedback = [details8 hasPoiImageFeedback];
 
-      if (v17)
+      if (hasPoiImageFeedback)
       {
-        v18 = [v4 submissionParameters];
-        v19 = [v18 details];
-        v20 = [v19 poiImageFeedback];
-        v21 = [v20 poiImageContext];
-        v22 = [v21 place];
-        v23 = [v22 geoMapItem];
+        submissionParameters10 = [paramsCopy submissionParameters];
+        details9 = [submissionParameters10 details];
+        poiImageFeedback = [details9 poiImageFeedback];
+        poiImageContext = [poiImageFeedback poiImageContext];
+        place = [poiImageContext place];
+        geoMapItem = [place geoMapItem];
 
-        v10 = [GEOMapItemStorage mapItemStorageForGEOMapItem:v23];
+        v10 = [GEOMapItemStorage mapItemStorageForGEOMapItem:geoMapItem];
 
 LABEL_3:
-        v7 = 0;
+        _directionsRecording = 0;
         v9 = 0;
       }
 
       else
       {
 LABEL_19:
-        v7 = 0;
+        _directionsRecording = 0;
 LABEL_20:
         v9 = 0;
 LABEL_21:
@@ -722,20 +722,20 @@ LABEL_22:
       v53 = objc_alloc_init(RapUserProfileRecord);
       [(RapUserProfileRecord *)v53 setMapItemStorage:v10];
       [(RapUserProfileRecord *)v53 setCuratedCollectionIdentifier:v9];
-      [(RapUserProfileRecord *)v53 setDirections:v7];
+      [(RapUserProfileRecord *)v53 setDirections:_directionsRecording];
       [(RapUserProfileRecord *)v53 setMuninViewState:0];
 
       return v53;
     case 0x10u:
-      v27 = [v4 submissionParameters];
-      v28 = [v27 details];
-      v29 = [v28 localityFeedback];
+      submissionParameters3 = [paramsCopy submissionParameters];
+      details2 = [submissionParameters3 details];
+      poiFeedback = [details2 localityFeedback];
 LABEL_16:
-      v39 = v29;
-      v40 = [v29 place];
-      v41 = [v40 geoMapItem];
+      v39 = poiFeedback;
+      place2 = [poiFeedback place];
+      geoMapItem2 = [place2 geoMapItem];
 
-      v10 = [GEOMapItemStorage mapItemStorageForGEOMapItem:v41];
+      v10 = [GEOMapItemStorage mapItemStorageForGEOMapItem:geoMapItem2];
 
       goto LABEL_3;
     default:
@@ -745,9 +745,9 @@ LABEL_16:
   }
 }
 
-- (id)_buildRequestParamsWithError:(id *)a3
+- (id)_buildRequestParamsWithError:(id *)error
 {
-  v3 = [(RAPReport *)self newFeedbackRequestParameters];
+  newFeedbackRequestParameters = [(RAPReport *)self newFeedbackRequestParameters];
   if (_GEOConfigHasValue())
   {
     if ((GEOConfigGetBOOL() & 1) == 0)
@@ -794,18 +794,18 @@ LABEL_16:
     v14 = [v12 objectForKeyedSubscript:v13];
 
     v15 = +[GEOCountryConfiguration sharedConfiguration];
-    v16 = [v15 countryCode];
-    v17 = [v14 objectForKey:v16];
+    countryCode = [v15 countryCode];
+    v17 = [v14 objectForKey:countryCode];
 
     if (v17)
     {
-      v18 = [v17 BOOLValue];
+      bOOLValue = [v17 BOOLValue];
 
-      if ((v18 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
 LABEL_11:
-        v24 = [v3 submissionParameters];
-        if ([v24 isDirectionsFeedback])
+        submissionParameters = [newFeedbackRequestParameters submissionParameters];
+        if ([submissionParameters isDirectionsFeedback])
         {
           if (_GEOConfigHasValue())
           {
@@ -819,7 +819,7 @@ LABEL_11:
 
           else
           {
-            v74 = v3;
+            v74 = newFeedbackRequestParameters;
             v70 = [NSNumber numberWithUnsignedInt:118];
             v76 = v70;
             *buf = &off_1016EE2B8;
@@ -856,15 +856,15 @@ LABEL_11:
             v38 = [v36 objectForKeyedSubscript:v37];
 
             v39 = +[GEOCountryConfiguration sharedConfiguration];
-            v40 = [v39 countryCode];
-            v41 = [v38 objectForKey:v40];
+            countryCode2 = [v39 countryCode];
+            v41 = [v38 objectForKey:countryCode2];
 
             if (v41)
             {
-              v42 = [v41 BOOLValue];
+              bOOLValue2 = [v41 BOOLValue];
 
-              v3 = v74;
-              if (v42)
+              newFeedbackRequestParameters = v74;
+              if (bOOLValue2)
               {
 LABEL_29:
                 if (!sub_1007432DC())
@@ -892,7 +892,7 @@ LABEL_33:
             {
               v57 = GEOConfigGetBOOL();
 
-              v3 = v74;
+              newFeedbackRequestParameters = v74;
               if (v57)
               {
                 goto LABEL_29;
@@ -905,8 +905,8 @@ LABEL_33:
         {
         }
 
-        v26 = [v3 submissionParameters];
-        if ([v26 isTransitFeedback])
+        submissionParameters2 = [newFeedbackRequestParameters submissionParameters];
+        if ([submissionParameters2 isTransitFeedback])
         {
           if (_GEOConfigHasValue())
           {
@@ -920,7 +920,7 @@ LABEL_33:
 
           else
           {
-            v75 = v3;
+            v75 = newFeedbackRequestParameters;
             v71 = [NSNumber numberWithUnsignedInt:118];
             v76 = v71;
             *buf = &off_1016EE2B8;
@@ -957,15 +957,15 @@ LABEL_33:
             v52 = [v50 objectForKeyedSubscript:v51];
 
             v53 = +[GEOCountryConfiguration sharedConfiguration];
-            v54 = [v53 countryCode];
-            v55 = [v52 objectForKey:v54];
+            countryCode3 = [v53 countryCode];
+            v55 = [v52 objectForKey:countryCode3];
 
             if (v55)
             {
-              v56 = [v55 BOOLValue];
+              bOOLValue3 = [v55 BOOLValue];
 
-              v3 = v75;
-              if (v56)
+              newFeedbackRequestParameters = v75;
+              if (bOOLValue3)
               {
 LABEL_32:
                 if (!sub_1007432DC())
@@ -984,7 +984,7 @@ LABEL_32:
             {
               v58 = GEOConfigGetBOOL();
 
-              v3 = v75;
+              newFeedbackRequestParameters = v75;
               if (v58)
               {
                 goto LABEL_32;
@@ -997,8 +997,8 @@ LABEL_32:
         {
         }
 
-        [(RAPReport *)self _prepareRequestParametersForSubmission:v3];
-        v28 = v3;
+        [(RAPReport *)self _prepareRequestParametersForSubmission:newFeedbackRequestParameters];
+        v28 = newFeedbackRequestParameters;
         goto LABEL_39;
       }
     }
@@ -1014,10 +1014,10 @@ LABEL_32:
     }
   }
 
-  v20 = [v3 submissionParameters];
-  v21 = [v20 isPersonalizedMapsFeedback];
+  submissionParameters3 = [newFeedbackRequestParameters submissionParameters];
+  isPersonalizedMapsFeedback = [submissionParameters3 isPersonalizedMapsFeedback];
 
-  if (!v21)
+  if (!isPersonalizedMapsFeedback)
   {
     goto LABEL_11;
   }
@@ -1038,16 +1038,16 @@ LABEL_37:
   v62 = v60;
 LABEL_38:
   v28 = 0;
-  *a3 = v60;
+  *error = v60;
 LABEL_39:
 
   return v28;
 }
 
-- (void)_buildUserInfoWithRequestParams:(id)a3 CompletionHandler:(id)a4
+- (void)_buildUserInfoWithRequestParams:(id)params CompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  paramsCopy = params;
+  handlerCopy = handler;
   if ([(RAPReport *)self _shouldEnableCommunityID])
   {
     v8 = +[_TtC4Maps30ServerEvaluationStatusMapsSync shared];
@@ -1055,9 +1055,9 @@ LABEL_39:
     v13[1] = 3221225472;
     v13[2] = sub_100A31358;
     v13[3] = &unk_101632368;
-    v14 = v6;
-    v15 = self;
-    v16 = v7;
+    v14 = paramsCopy;
+    selfCopy = self;
+    v16 = handlerCopy;
     [v8 fetchRAPStatusWithCompletion:v13];
   }
 
@@ -1065,14 +1065,14 @@ LABEL_39:
   {
     if (sub_10074262C())
     {
-      v9 = 0;
+      devicePushToken = 0;
       v10 = 0;
       v11 = 0;
     }
 
     else
     {
-      v9 = [(RAPReport *)self devicePushToken];
+      devicePushToken = [(RAPReport *)self devicePushToken];
       if (sub_10079AE64() == 1)
       {
         v10 = sub_1007412FC();
@@ -1083,11 +1083,11 @@ LABEL_39:
         v10 = 0;
       }
 
-      v12 = [(RAPReport *)self preferredEmailAddress];
-      v11 = [GEORPFeedbackUserInfo userCredentialsForContactBackEmailAddress:v10 userEnteredEmailAddress:v12 pushToken:v9];
+      preferredEmailAddress = [(RAPReport *)self preferredEmailAddress];
+      v11 = [GEORPFeedbackUserInfo userCredentialsForContactBackEmailAddress:v10 userEnteredEmailAddress:preferredEmailAddress pushToken:devicePushToken];
     }
 
-    (*(v7 + 2))(v7, v11);
+    (*(handlerCopy + 2))(handlerCopy, v11);
   }
 }
 
@@ -1096,20 +1096,20 @@ LABEL_39:
   IsEnabled_RAPCommunityID = MapsFeature_IsEnabled_RAPCommunityID();
   if (IsEnabled_RAPCommunityID)
   {
-    v4 = [(RAPReport *)self initialQuestion];
-    v5 = [v4 isAnonymous];
+    initialQuestion = [(RAPReport *)self initialQuestion];
+    isAnonymous = [initialQuestion isAnonymous];
 
-    LOBYTE(IsEnabled_RAPCommunityID) = v5;
+    LOBYTE(IsEnabled_RAPCommunityID) = isAnonymous;
   }
 
   return IsEnabled_RAPCommunityID;
 }
 
-- (void)submitWithPrivacyRequestHandler:(id)a3 willStartSubmitting:(id)a4 didFinishSubmitting:(id)a5
+- (void)submitWithPrivacyRequestHandler:(id)handler willStartSubmitting:(id)submitting didFinishSubmitting:(id)finishSubmitting
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handlerCopy = handler;
+  submittingCopy = submitting;
+  finishSubmittingCopy = finishSubmitting;
   [(RAPReport *)self updateIfNeeded];
   [(RAPReport *)self _shouldEnableCommunityID];
   v24[0] = _NSConcreteStackBlock;
@@ -1126,10 +1126,10 @@ LABEL_39:
     v20[2] = sub_100A31A0C;
     v20[3] = &unk_1016322F0;
     v20[4] = self;
-    v21 = v9;
+    v21 = submittingCopy;
     v13 = v11;
     v22 = v13;
-    v23 = v10;
+    v23 = finishSubmittingCopy;
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100A31E34;
@@ -1137,7 +1137,7 @@ LABEL_39:
     v15[4] = self;
     v16 = objc_retainBlock(v20);
     v19 = v12;
-    v17 = v8;
+    v17 = handlerCopy;
     v18 = v13;
     v14 = v16;
     dispatch_async(&_dispatch_main_q, v15);
@@ -1180,54 +1180,54 @@ LABEL_39:
   return v6;
 }
 
-- (void)_prepareRequestParametersForSubmission:(id)a3
+- (void)_prepareRequestParametersForSubmission:(id)submission
 {
-  v4 = a3;
-  v5 = [v4 submissionParameters];
-  v6 = [v5 commonContext];
+  submissionCopy = submission;
+  submissionParameters = [submissionCopy submissionParameters];
+  commonContext = [submissionParameters commonContext];
 
-  if (!v6)
+  if (!commonContext)
   {
-    v6 = objc_opt_new();
-    v7 = [v4 submissionParameters];
-    [v7 setCommonContext:v6];
+    commonContext = objc_opt_new();
+    submissionParameters2 = [submissionCopy submissionParameters];
+    [submissionParameters2 setCommonContext:commonContext];
   }
 
-  v8 = [v6 combinedUserPath];
+  combinedUserPath = [commonContext combinedUserPath];
 
-  v9 = [(RAPReport *)self combinedUserPath];
-  v10 = v9;
-  if (v8)
+  combinedUserPath2 = [(RAPReport *)self combinedUserPath];
+  webPaths = combinedUserPath2;
+  if (combinedUserPath)
   {
-    v11 = [v9 nativePathsCount];
+    nativePathsCount = [combinedUserPath2 nativePathsCount];
 
-    if (v11)
+    if (nativePathsCount)
     {
       v12 = 0;
       do
       {
-        v13 = [(RAPReport *)self combinedUserPath];
-        v14 = [v13 nativePathAtIndex:v12];
+        combinedUserPath3 = [(RAPReport *)self combinedUserPath];
+        v14 = [combinedUserPath3 nativePathAtIndex:v12];
 
-        v15 = [v6 combinedUserPath];
-        [v15 addNativePath:v14];
+        combinedUserPath4 = [commonContext combinedUserPath];
+        [combinedUserPath4 addNativePath:v14];
 
         ++v12;
-        v16 = [(RAPReport *)self combinedUserPath];
-        v17 = [v16 nativePathsCount];
+        combinedUserPath5 = [(RAPReport *)self combinedUserPath];
+        nativePathsCount2 = [combinedUserPath5 nativePathsCount];
       }
 
-      while (v12 < v17);
+      while (v12 < nativePathsCount2);
     }
 
     v84 = 0u;
     v85 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v18 = [(RAPReport *)self combinedUserPath];
-    v10 = [v18 webPaths];
+    combinedUserPath6 = [(RAPReport *)self combinedUserPath];
+    webPaths = [combinedUserPath6 webPaths];
 
-    v19 = [v10 countByEnumeratingWithState:&v82 objects:v86 count:16];
+    v19 = [webPaths countByEnumeratingWithState:&v82 objects:v86 count:16];
     if (v19)
     {
       v20 = v19;
@@ -1238,15 +1238,15 @@ LABEL_39:
         {
           if (*v83 != v21)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(webPaths);
           }
 
           v23 = *(*(&v82 + 1) + 8 * i);
-          v24 = [v6 combinedUserPath];
-          [v24 addWebPath:v23];
+          combinedUserPath7 = [commonContext combinedUserPath];
+          [combinedUserPath7 addWebPath:v23];
         }
 
-        v20 = [v10 countByEnumeratingWithState:&v82 objects:v86 count:16];
+        v20 = [webPaths countByEnumeratingWithState:&v82 objects:v86 count:16];
       }
 
       while (v20);
@@ -1255,45 +1255,45 @@ LABEL_39:
 
   else
   {
-    [v6 setCombinedUserPath:v9];
+    [commonContext setCombinedUserPath:combinedUserPath2];
   }
 
   v25 = +[NSTimeZone localTimeZone];
-  [v6 setDeviceGmtOffset:{objc_msgSend(v25, "secondsFromGMT")}];
+  [commonContext setDeviceGmtOffset:{objc_msgSend(v25, "secondsFromGMT")}];
 
-  v26 = [(RAPReport *)self _context];
-  v27 = [v26 reportedPlace];
-  v28 = [v27 mapItem];
-  v29 = [v28 _isMapItemTypeBrand];
+  _context = [(RAPReport *)self _context];
+  reportedPlace = [_context reportedPlace];
+  mapItem = [reportedPlace mapItem];
+  _isMapItemTypeBrand = [mapItem _isMapItemTypeBrand];
 
-  if (v29)
+  if (_isMapItemTypeBrand)
   {
-    v30 = [v4 submissionParameters];
-    v31 = [v30 commonContext];
-    [v31 setPinType:8];
+    submissionParameters3 = [submissionCopy submissionParameters];
+    commonContext2 = [submissionParameters3 commonContext];
+    [commonContext2 setPinType:8];
   }
 
-  v32 = [(RAPReport *)self _auxiliaryControlsRecording];
-  v33 = [v32 auxiliaryControls];
-  v34 = [v33 mutableCopy];
-  [v6 setAuxiliaryControls:v34];
+  _auxiliaryControlsRecording = [(RAPReport *)self _auxiliaryControlsRecording];
+  auxiliaryControls = [_auxiliaryControlsRecording auxiliaryControls];
+  v34 = [auxiliaryControls mutableCopy];
+  [commonContext setAuxiliaryControls:v34];
 
-  if ([v32 hasOriginatingAuxiliaryControlIndex])
+  if ([_auxiliaryControlsRecording hasOriginatingAuxiliaryControlIndex])
   {
-    [v6 setOriginatingAuxiliaryControlIndex:{objc_msgSend(v32, "originatingAuxiliaryControlIndex")}];
+    [commonContext setOriginatingAuxiliaryControlIndex:{objc_msgSend(_auxiliaryControlsRecording, "originatingAuxiliaryControlIndex")}];
   }
 
   v35 = objc_alloc_init(GEORPMapLocation);
-  [v6 setMapLocation:v35];
-  v36 = [(RAPReport *)self _mapContext];
-  v37 = [v36 mapSnapshotImageData];
+  [commonContext setMapLocation:v35];
+  _mapContext = [(RAPReport *)self _mapContext];
+  mapSnapshotImageData = [_mapContext mapSnapshotImageData];
 
-  if (v37)
+  if (mapSnapshotImageData)
   {
     v38 = [RAPPhoto alloc];
     v39 = [UIImage alloc];
-    v40 = [v36 mapSnapshotImageData];
-    v41 = [v39 initWithData:v40];
+    mapSnapshotImageData2 = [_mapContext mapSnapshotImageData];
+    v41 = [v39 initWithData:mapSnapshotImageData2];
     v42 = [(RAPPhoto *)v38 initWithPhoto:v41 date:0 location:0];
 
     v43 = [[RAPPhotoWithMetadata alloc] initWithRAPPhoto:v42 photoType:0];
@@ -1301,100 +1301,100 @@ LABEL_39:
   }
 
   [(RAPQuestion *)self->_initialQuestion _prepareForSubmission];
-  [v36 mapZoomLevel];
+  [_mapContext mapZoomLevel];
   *&v44 = v44;
   [v35 setZoomLevel:v44];
-  v45 = [v36 mapType];
-  v46 = [v36 mapRegion];
-  [v35 _setMapType:v45 region:v46];
+  mapType = [_mapContext mapType];
+  mapRegion = [_mapContext mapRegion];
+  [v35 _setMapType:mapType region:mapRegion];
 
-  v47 = [v36 mapVisibleTileSets];
-  v48 = [v47 mutableCopy];
-  [v6 setVisibleTileSets:v48];
+  mapVisibleTileSets = [_mapContext mapVisibleTileSets];
+  v48 = [mapVisibleTileSets mutableCopy];
+  [commonContext setVisibleTileSets:v48];
 
-  v49 = [(RAPReport *)self _navigationSettings];
-  [v6 setNavigationSettings:v49];
+  _navigationSettings = [(RAPReport *)self _navigationSettings];
+  [commonContext setNavigationSettings:_navigationSettings];
 
-  [v6 setClientCreatedAt:CFAbsoluteTimeGetCurrent()];
-  v50 = [(RAPReport *)self _context];
-  v51 = [v50 reportedPlace];
+  [commonContext setClientCreatedAt:CFAbsoluteTimeGetCurrent()];
+  _context2 = [(RAPReport *)self _context];
+  reportedPlace2 = [_context2 reportedPlace];
 
-  if (v51)
+  if (reportedPlace2)
   {
-    v52 = [(RAPReport *)self _context];
-    v53 = [v52 reportedPlace];
-    v54 = [v53 source];
+    _context3 = [(RAPReport *)self _context];
+    reportedPlace3 = [_context3 reportedPlace];
+    source = [reportedPlace3 source];
 
-    if (v54 <= 9)
+    if (source <= 9)
     {
-      [v6 setPinType:dword_101215098[v54]];
+      [commonContext setPinType:dword_101215098[source]];
     }
   }
 
-  v55 = [(RAPReport *)self _context];
-  v56 = [v55 reportedPlace];
-  v57 = [v56 mapItem];
-  v58 = [v57 _isMapItemTypeBrand];
+  _context4 = [(RAPReport *)self _context];
+  reportedPlace4 = [_context4 reportedPlace];
+  mapItem2 = [reportedPlace4 mapItem];
+  _isMapItemTypeBrand2 = [mapItem2 _isMapItemTypeBrand];
 
-  if (v58)
+  if (_isMapItemTypeBrand2)
   {
-    [v6 setPinType:8];
+    [commonContext setPinType:8];
   }
 
-  if ([v6 pinType] == 6)
+  if ([commonContext pinType] == 6)
   {
-    v59 = [(RAPReport *)self _context];
-    v60 = [v59 reportedPlace];
+    _context5 = [(RAPReport *)self _context];
+    reportedPlace5 = [_context5 reportedPlace];
 
-    if (v60)
+    if (reportedPlace5)
     {
-      v61 = [v6 sourceInfo];
+      sourceInfo = [commonContext sourceInfo];
 
-      if (!v61)
+      if (!sourceInfo)
       {
         v62 = objc_alloc_init(GEORPSourceInfo);
-        [v6 setSourceInfo:v62];
+        [commonContext setSourceInfo:v62];
       }
 
-      v63 = [(RAPReport *)self _context];
-      v64 = [v63 reportedPlace];
-      v65 = [v64 sourceApplication];
-      v66 = [v6 sourceInfo];
-      [v66 setSourceApplication:v65];
+      _context6 = [(RAPReport *)self _context];
+      reportedPlace6 = [_context6 reportedPlace];
+      sourceApplication = [reportedPlace6 sourceApplication];
+      sourceInfo2 = [commonContext sourceInfo];
+      [sourceInfo2 setSourceApplication:sourceApplication];
 
-      v67 = [(RAPReport *)self _context];
-      v68 = [v67 reportedPlace];
-      v69 = [v68 sourceURL];
-      v70 = [v6 sourceInfo];
-      [v70 setSourceUrl:v69];
+      _context7 = [(RAPReport *)self _context];
+      reportedPlace7 = [_context7 reportedPlace];
+      sourceURL = [reportedPlace7 sourceURL];
+      sourceInfo3 = [commonContext sourceInfo];
+      [sourceInfo3 setSourceUrl:sourceURL];
     }
   }
 
-  v71 = [(RAPReport *)self _context];
-  [v6 setIsSprMap:{objc_msgSend(v71, "isSprMap")}];
+  _context8 = [(RAPReport *)self _context];
+  [commonContext setIsSprMap:{objc_msgSend(_context8, "isSprMap")}];
 
-  v72 = [v4 submissionParameters];
-  v73 = [v72 commonContext];
-  v74 = [v73 searchCommon];
+  submissionParameters4 = [submissionCopy submissionParameters];
+  commonContext3 = [submissionParameters4 commonContext];
+  searchCommon = [commonContext3 searchCommon];
 
-  if (!v74)
+  if (!searchCommon)
   {
-    v74 = objc_alloc_init(GEORPSearchCommonContext);
-    v75 = [v4 submissionParameters];
-    v76 = [v75 commonContext];
-    [v76 setSearchCommon:v74];
+    searchCommon = objc_alloc_init(GEORPSearchCommonContext);
+    submissionParameters5 = [submissionCopy submissionParameters];
+    commonContext4 = [submissionParameters5 commonContext];
+    [commonContext4 setSearchCommon:searchCommon];
   }
 
-  v77 = [(RAPReport *)self _context];
-  v78 = [v77 currentSearchString];
-  [v74 setLastSearchString:v78];
+  _context9 = [(RAPReport *)self _context];
+  currentSearchString = [_context9 currentSearchString];
+  [searchCommon setLastSearchString:currentSearchString];
 
-  v79 = [(RAPReport *)self _context];
-  v80 = [v79 currentUserTypedSearchString];
-  [v74 setLastUserTypedSearchString:v80];
+  _context10 = [(RAPReport *)self _context];
+  currentUserTypedSearchString = [_context10 currentUserTypedSearchString];
+  [searchCommon setLastUserTypedSearchString:currentUserTypedSearchString];
 
-  v81 = [v4 submissionParameters];
-  [v81 setFeedbackType];
+  submissionParameters6 = [submissionCopy submissionParameters];
+  [submissionParameters6 setFeedbackType];
 }
 
 - (id)_navigationSettings
@@ -1407,7 +1407,7 @@ LABEL_39:
     dispatch_once(&qword_10195E210, &stru_101632388);
   }
 
-  v4 = [qword_10195E208 path];
+  path = [qword_10195E208 path];
   v5 = _CFPreferencesCopyAppValueWithContainer();
 
   if (v5)
@@ -1433,8 +1433,8 @@ LABEL_39:
   v8 = BOOL;
 
   [v2 setPauseSpokenAudio:v8];
-  v9 = [v3 effectiveTransportType];
-  if (!v9 || v9 == 3 || v9 == 2)
+  effectiveTransportType = [v3 effectiveTransportType];
+  if (!effectiveTransportType || effectiveTransportType == 3 || effectiveTransportType == 2)
   {
     Integer = GEOConfigGetInteger();
   }
@@ -1447,8 +1447,8 @@ LABEL_39:
   [v2 setMuteSpeechOverride:{objc_msgSend(v3, "voiceGuidanceLevel") != Integer}];
   [v2 setSpeechEnabled:1];
   [v2 setMaxAlternateRouteCount:2];
-  v11 = [v3 currentVoiceLanguage];
-  [v2 setVoiceLanguage:v11];
+  currentVoiceLanguage = [v3 currentVoiceLanguage];
+  [v2 setVoiceLanguage:currentVoiceLanguage];
 
   [v2 setShouldUseGuidanceEventManager:1];
   [v2 setUserPreferredTransportType:GEOGetUserPreferredTransportType()];
@@ -1458,56 +1458,56 @@ LABEL_39:
 
 - (id)_auxiliaryControlsRecording
 {
-  v3 = [(RAPReport *)self initialQuestion];
-  v4 = [v3 _alternateAuxiliaryControlsRecording];
+  initialQuestion = [(RAPReport *)self initialQuestion];
+  _alternateAuxiliaryControlsRecording = [initialQuestion _alternateAuxiliaryControlsRecording];
 
-  if (!v4)
+  if (!_alternateAuxiliaryControlsRecording)
   {
-    v5 = [(RAPReport *)self _context];
-    v4 = [v5 currentlyConnectedAuxiliaryControls];
+    _context = [(RAPReport *)self _context];
+    _alternateAuxiliaryControlsRecording = [_context currentlyConnectedAuxiliaryControls];
   }
 
-  return v4;
+  return _alternateAuxiliaryControlsRecording;
 }
 
 - (id)_directionsRecording
 {
-  v3 = [(RAPReport *)self initialQuestion];
-  v4 = [v3 _alternateDirectionsRecording];
+  initialQuestion = [(RAPReport *)self initialQuestion];
+  _alternateDirectionsRecording = [initialQuestion _alternateDirectionsRecording];
 
-  if (!v4)
+  if (!_alternateDirectionsRecording)
   {
-    v5 = [(RAPReport *)self _context];
-    v4 = [v5 directionsRecording];
+    _context = [(RAPReport *)self _context];
+    _alternateDirectionsRecording = [_context directionsRecording];
   }
 
-  return v4;
+  return _alternateDirectionsRecording;
 }
 
 - (id)_placeContext
 {
-  v3 = [(RAPReport *)self initialQuestion];
-  v4 = [v3 _alternatePlaceContext];
+  initialQuestion = [(RAPReport *)self initialQuestion];
+  _alternatePlaceContext = [initialQuestion _alternatePlaceContext];
 
-  if (!v4)
+  if (!_alternatePlaceContext)
   {
-    v4 = [(RAPReport *)self _context];
+    _alternatePlaceContext = [(RAPReport *)self _context];
   }
 
-  return v4;
+  return _alternatePlaceContext;
 }
 
 - (id)_mapContext
 {
-  v3 = [(RAPReport *)self initialQuestion];
-  v4 = [v3 _alternateMapViewContext];
+  initialQuestion = [(RAPReport *)self initialQuestion];
+  _alternateMapViewContext = [initialQuestion _alternateMapViewContext];
 
-  if (!v4)
+  if (!_alternateMapViewContext)
   {
-    v4 = [(RAPReport *)self _context];
+    _alternateMapViewContext = [(RAPReport *)self _context];
   }
 
-  return v4;
+  return _alternateMapViewContext;
 }
 
 - (void)_invokeChangeHandlers
@@ -1516,8 +1516,8 @@ LABEL_39:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMapTable *)self->_observers keyEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  keyEnumerator = [(NSMapTable *)self->_observers keyEnumerator];
+  v4 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1528,7 +1528,7 @@ LABEL_39:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -1536,17 +1536,17 @@ LABEL_39:
         (v9)[2](v9, self, v8);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)addObserver:(id)a3 changeHandler:(id)a4
+- (void)addObserver:(id)observer changeHandler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  handlerCopy = handler;
   observers = self->_observers;
   if (!observers)
   {
@@ -1557,16 +1557,16 @@ LABEL_39:
     observers = self->_observers;
   }
 
-  v10 = [v6 copy];
-  [(NSMapTable *)observers setObject:v10 forKey:v11];
+  v10 = [handlerCopy copy];
+  [(NSMapTable *)observers setObject:v10 forKey:observerCopy];
 }
 
 - (id)newFeedbackRequestParameters
 {
   v3 = objc_alloc_init(GEORPFeedbackRequestParameters);
   v4 = objc_alloc_init(GEORPFeedbackSubmissionParameters);
-  v5 = [(RAPReport *)self initialQuestion];
-  [v5 _fillSubmissionParameters:v4];
+  initialQuestion = [(RAPReport *)self initialQuestion];
+  [initialQuestion _fillSubmissionParameters:v4];
 
   [v3 setSubmissionParameters:v4];
   return v3;
@@ -1574,12 +1574,12 @@ LABEL_39:
 
 - (void)_update
 {
-  v3 = [(RAPReport *)self initialQuestion];
-  v4 = [v3 _isRecursivelyComplete];
+  initialQuestion = [(RAPReport *)self initialQuestion];
+  _isRecursivelyComplete = [initialQuestion _isRecursivelyComplete];
 
-  if (self->_canCreateSubmittableProblem != v4)
+  if (self->_canCreateSubmittableProblem != _isRecursivelyComplete)
   {
-    self->_canCreateSubmittableProblem = v4;
+    self->_canCreateSubmittableProblem = _isRecursivelyComplete;
 
     [(RAPReport *)self _invokeChangeHandlers];
   }
@@ -1608,42 +1608,42 @@ LABEL_39:
   }
 }
 
-- (void)removePhotosOfType:(int64_t)a3
+- (void)removePhotosOfType:(int64_t)type
 {
   photosWithMetadata = self->_photosWithMetadata;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100A33C54;
   v5[3] = &unk_101632278;
-  v5[4] = a3;
+  v5[4] = type;
   v4 = [NSPredicate predicateWithBlock:v5];
   [(NSMutableArray *)photosWithMetadata filterUsingPredicate:v4];
 }
 
-- (void)setInitialQuestion:(id)a3
+- (void)setInitialQuestion:(id)question
 {
-  v5 = a3;
+  questionCopy = question;
   if (!self->_initialQuestion)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_initialQuestion, a3);
+    v6 = questionCopy;
+    objc_storeStrong(&self->_initialQuestion, question);
     [(RAPReport *)self _setNeedsUpdate];
-    v5 = v6;
+    questionCopy = v6;
   }
 }
 
-- (RAPReport)initWithContext:(id)a3 submitter:(id)a4
+- (RAPReport)initWithContext:(id)context submitter:(id)submitter
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  submitterCopy = submitter;
   v16.receiver = self;
   v16.super_class = RAPReport;
   v9 = [(RAPReport *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_submitter, a4);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_submitter, submitter);
     v11 = objc_opt_new();
     photosWithMetadata = v10->_photosWithMetadata;
     v10->_photosWithMetadata = v11;

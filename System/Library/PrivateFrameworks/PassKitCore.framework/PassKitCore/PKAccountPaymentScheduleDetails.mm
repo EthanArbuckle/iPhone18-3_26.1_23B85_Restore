@@ -1,32 +1,32 @@
 @interface PKAccountPaymentScheduleDetails
-- (BOOL)isEqual:(id)a3;
-- (PKAccountPaymentScheduleDetails)initWithCoder:(id)a3;
-- (PKAccountPaymentScheduleDetails)initWithDictionary:(id)a3 productTimeZone:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountPaymentScheduleDetails)initWithCoder:(id)coder;
+- (PKAccountPaymentScheduleDetails)initWithDictionary:(id)dictionary productTimeZone:(id)zone;
 - (id)description;
 - (id)hashString;
 - (id)jsonDictionaryRepresentation;
 - (id)jsonString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountPaymentScheduleDetails
 
-- (PKAccountPaymentScheduleDetails)initWithDictionary:(id)a3 productTimeZone:(id)a4
+- (PKAccountPaymentScheduleDetails)initWithDictionary:(id)dictionary productTimeZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  zoneCopy = zone;
   v8 = [(PKAccountPaymentScheduleDetails *)self init];
   if (v8)
   {
-    v9 = [v6 PKStringForKey:@"frequency"];
+    v9 = [dictionaryCopy PKStringForKey:@"frequency"];
     v8->_frequency = PKAccountPaymentFrequencyFromString(v9);
-    v8->_scheduledDay = [v6 PKIntegerForKey:@"scheduledDay"];
-    v10 = [v6 PKStringForKey:@"preset"];
+    v8->_scheduledDay = [dictionaryCopy PKIntegerForKey:@"scheduledDay"];
+    v10 = [dictionaryCopy PKStringForKey:@"preset"];
     v8->_preset = PKAccountPaymentPresetFromString(v10);
-    v11 = [v6 PKStringForKey:@"scheduledDate"];
-    objc_storeStrong(&v8->_productTimeZone, a4);
-    v12 = PKPaymentDateFormatterWithTimeZone(v7);
+    v11 = [dictionaryCopy PKStringForKey:@"scheduledDate"];
+    objc_storeStrong(&v8->_productTimeZone, zone);
+    v12 = PKPaymentDateFormatterWithTimeZone(zoneCopy);
     v13 = v12;
     if (v11)
     {
@@ -35,7 +35,7 @@
       v8->_scheduledDate = v14;
     }
 
-    v16 = [v6 PKStringForKey:@"paymentTermsIdentifier"];
+    v16 = [dictionaryCopy PKStringForKey:@"paymentTermsIdentifier"];
     paymentTermsIdentifier = v8->_paymentTermsIdentifier;
     v8->_paymentTermsIdentifier = v16;
   }
@@ -47,9 +47,9 @@
 {
   v12 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(PKAccountPaymentScheduleDetails *)self jsonDictionaryRepresentation];
+  jsonDictionaryRepresentation = [(PKAccountPaymentScheduleDetails *)self jsonDictionaryRepresentation];
   v9 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:2 error:&v9];
+  v4 = [v2 dataWithJSONObject:jsonDictionaryRepresentation options:2 error:&v9];
   v5 = v9;
 
   if (v5)
@@ -75,53 +75,53 @@
 
 - (id)jsonDictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = PKAccountPaymentFrequencyToString(self->_frequency);
-  [v3 setObject:v4 forKeyedSubscript:@"frequency"];
+  [dictionary setObject:v4 forKeyedSubscript:@"frequency"];
 
   v5 = PKAccountPaymentPresetToString(self->_preset);
-  [v3 setObject:v5 forKeyedSubscript:@"preset"];
+  [dictionary setObject:v5 forKeyedSubscript:@"preset"];
 
-  [v3 setObject:self->_paymentTermsIdentifier forKeyedSubscript:@"paymentTermsIdentifier"];
+  [dictionary setObject:self->_paymentTermsIdentifier forKeyedSubscript:@"paymentTermsIdentifier"];
   if (self->_frequency == 6 && self->_scheduledDay)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-    [v3 setObject:v6 forKeyedSubscript:@"scheduledDay"];
+    [dictionary setObject:v6 forKeyedSubscript:@"scheduledDay"];
   }
 
   else
   {
     v6 = PKPaymentDateFormatterWithTimeZone(self->_productTimeZone);
     v7 = [v6 stringFromDate:self->_scheduledDate];
-    [v3 setObject:v7 forKeyedSubscript:@"scheduledDate"];
+    [dictionary setObject:v7 forKeyedSubscript:@"scheduledDate"];
   }
 
-  v8 = [v3 copy];
+  v8 = [dictionary copy];
 
   return v8;
 }
 
 - (id)hashString
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   frequency = self->_frequency;
   if (frequency)
   {
     v5 = PKAccountPaymentFrequencyToString(frequency);
-    [v3 appendString:v5];
+    [string appendString:v5];
   }
 
   preset = self->_preset;
   if (preset)
   {
     v7 = PKAccountPaymentPresetToString(preset);
-    [v3 appendString:v7];
+    [string appendString:v7];
   }
 
   if (self->_frequency == 6 && self->_scheduledDay)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-    v9 = [v8 stringValue];
+    stringValue = [v8 stringValue];
   }
 
   else
@@ -132,39 +132,39 @@
     }
 
     v8 = PKPaymentDateFormatterWithTimeZone(self->_productTimeZone);
-    v9 = [v8 stringFromDate:self->_scheduledDate];
+    stringValue = [v8 stringFromDate:self->_scheduledDate];
   }
 
-  v10 = v9;
-  [v3 appendString:v9];
+  v10 = stringValue;
+  [string appendString:stringValue];
 
 LABEL_11:
   if (self->_paymentTermsIdentifier)
   {
-    [v3 appendString:?];
+    [string appendString:?];
   }
 
-  v11 = [v3 copy];
+  v11 = [string copy];
 
   return v11;
 }
 
-- (PKAccountPaymentScheduleDetails)initWithCoder:(id)a3
+- (PKAccountPaymentScheduleDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKAccountPaymentScheduleDetails;
   v5 = [(PKAccountPaymentScheduleDetails *)&v11 init];
   if (v5)
   {
-    v5->_frequency = [v4 decodeIntegerForKey:@"frequency"];
-    v5->_scheduledDay = [v4 decodeIntegerForKey:@"scheduledDay"];
-    v5->_preset = [v4 decodeIntegerForKey:@"preset"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scheduledDate"];
+    v5->_frequency = [coderCopy decodeIntegerForKey:@"frequency"];
+    v5->_scheduledDay = [coderCopy decodeIntegerForKey:@"scheduledDay"];
+    v5->_preset = [coderCopy decodeIntegerForKey:@"preset"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scheduledDate"];
     scheduledDate = v5->_scheduledDate;
     v5->_scheduledDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentTermsIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentTermsIdentifier"];
     paymentTermsIdentifier = v5->_paymentTermsIdentifier;
     v5->_paymentTermsIdentifier = v8;
   }
@@ -172,20 +172,20 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   frequency = self->_frequency;
-  v5 = a3;
-  [v5 encodeInteger:frequency forKey:@"frequency"];
-  [v5 encodeInteger:self->_preset forKey:@"preset"];
-  [v5 encodeObject:self->_scheduledDate forKey:@"scheduledDate"];
-  [v5 encodeInteger:self->_scheduledDay forKey:@"scheduledDay"];
-  [v5 encodeObject:self->_paymentTermsIdentifier forKey:@"paymentTermsIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:frequency forKey:@"frequency"];
+  [coderCopy encodeInteger:self->_preset forKey:@"preset"];
+  [coderCopy encodeObject:self->_scheduledDate forKey:@"scheduledDate"];
+  [coderCopy encodeInteger:self->_scheduledDay forKey:@"scheduledDay"];
+  [coderCopy encodeObject:self->_paymentTermsIdentifier forKey:@"paymentTermsIdentifier"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -193,7 +193,7 @@ LABEL_11:
   }
 
   scheduledDate = self->_scheduledDate;
-  v6 = v4[5];
+  v6 = equalCopy[5];
   if (scheduledDate && v6)
   {
     if (([(NSDate *)scheduledDate isEqual:?]& 1) == 0)
@@ -208,7 +208,7 @@ LABEL_11:
   }
 
   paymentTermsIdentifier = self->_paymentTermsIdentifier;
-  v8 = v4[6];
+  v8 = equalCopy[6];
   if (!paymentTermsIdentifier || !v8)
   {
     if (paymentTermsIdentifier == v8)
@@ -227,12 +227,12 @@ LABEL_15:
   }
 
 LABEL_12:
-  if (self->_frequency != v4[2] || self->_scheduledDay != v4[3])
+  if (self->_frequency != equalCopy[2] || self->_scheduledDay != equalCopy[3])
   {
     goto LABEL_15;
   }
 
-  v9 = self->_preset == v4[4];
+  v9 = self->_preset == equalCopy[4];
 LABEL_16:
 
   return v9;
@@ -240,10 +240,10 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_scheduledDate];
-  [v3 safelyAddObject:self->_paymentTermsIdentifier];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_scheduledDate];
+  [array safelyAddObject:self->_paymentTermsIdentifier];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_frequency - v4 + 32 * v4;
   v6 = self->_scheduledDay - v5 + 32 * v5;
   v7 = self->_preset - v6 + 32 * v6;

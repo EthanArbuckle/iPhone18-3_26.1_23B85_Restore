@@ -1,28 +1,28 @@
 @interface CloudFeatureObject
 - (CloudFeatureObject)init;
-- (CloudFeatureObject)initWithFeatureID:(id)a3 status:(int64_t)a4 canUse:(BOOL)a5 limit:(id)a6 accessToken:(id)a7;
+- (CloudFeatureObject)initWithFeatureID:(id)d status:(int64_t)status canUse:(BOOL)use limit:(id)limit accessToken:(id)token;
 @end
 
 @implementation CloudFeatureObject
 
-- (CloudFeatureObject)initWithFeatureID:(id)a3 status:(int64_t)a4 canUse:(BOOL)a5 limit:(id)a6 accessToken:(id)a7
+- (CloudFeatureObject)initWithFeatureID:(id)d status:(int64_t)status canUse:(BOOL)use limit:(id)limit accessToken:(id)token
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  dCopy = d;
+  limitCopy = limit;
+  tokenCopy = token;
   v21.receiver = self;
   v21.super_class = CloudFeatureObject;
   v15 = [(CloudFeatureObject *)&v21 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [dCopy copy];
     featureID = v15->_featureID;
     v15->_featureID = v16;
 
-    v15->_status = a4;
-    v15->_canUse = a5;
-    objc_storeStrong(&v15->_limit, a6);
-    v18 = [v14 copy];
+    v15->_status = status;
+    v15->_canUse = use;
+    objc_storeStrong(&v15->_limit, limit);
+    v18 = [tokenCopy copy];
     accessToken = v15->_accessToken;
     v15->_accessToken = v18;
   }

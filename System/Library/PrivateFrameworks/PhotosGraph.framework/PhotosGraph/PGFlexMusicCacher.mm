@@ -1,11 +1,11 @@
 @interface PGFlexMusicCacher
-+ (void)cacheSongAudioAndArtworkForUIDs:(id)a3;
++ (void)cacheSongAudioAndArtworkForUIDs:(id)ds;
 - (PGFlexMusicCacher)init;
 @end
 
 @implementation PGFlexMusicCacher
 
-+ (void)cacheSongAudioAndArtworkForUIDs:(id)a3
++ (void)cacheSongAudioAndArtworkForUIDs:(id)ds
 {
   v3 = sub_22F741180();
   v4 = sub_22F35B860(v3);

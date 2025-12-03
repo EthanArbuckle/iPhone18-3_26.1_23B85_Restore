@@ -1,33 +1,33 @@
 @interface _UICollectionCompositionalLayoutDynamicAnimator
-- (BOOL)_animatorStep:(double)a3;
-- (id)behaviorForIdentifier:(id *)a1;
+- (BOOL)_animatorStep:(double)step;
+- (id)behaviorForIdentifier:(id *)identifier;
 @end
 
 @implementation _UICollectionCompositionalLayoutDynamicAnimator
 
-- (id)behaviorForIdentifier:(id *)a1
+- (id)behaviorForIdentifier:(id *)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    v4 = a1;
+    identifierCopy = identifier;
     if (!a2)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:sel_behaviorForIdentifier_ object:v4 file:@"_UICollectionCompositionalLayoutSolver.m" lineNumber:3557 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_behaviorForIdentifier_ object:identifierCopy file:@"_UICollectionCompositionalLayoutSolver.m" lineNumber:3557 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
     }
 
-    a1 = [v4[42] objectForKeyedSubscript:a2];
+    identifier = [identifierCopy[42] objectForKeyedSubscript:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return identifier;
 }
 
-- (BOOL)_animatorStep:(double)a3
+- (BOOL)_animatorStep:(double)step
 {
   v7.receiver = self;
   v7.super_class = _UICollectionCompositionalLayoutDynamicAnimator;
-  v4 = [(UIDynamicAnimator *)&v7 _animatorStep:a3];
+  v4 = [(UIDynamicAnimator *)&v7 _animatorStep:step];
   invalidationHandler = self->_invalidationHandler;
   if (invalidationHandler)
   {

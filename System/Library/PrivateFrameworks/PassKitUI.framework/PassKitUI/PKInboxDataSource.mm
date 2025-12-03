@@ -1,15 +1,15 @@
 @interface PKInboxDataSource
 - (BOOL)hasInboxMessages;
 - (BOOL)inboxVisible;
-- (PKInboxDataSource)initWithDelegate:(id)a3;
+- (PKInboxDataSource)initWithDelegate:(id)delegate;
 - (id)activeInboxMessages;
 - (id)expiredInboxMessages;
-- (id)inboxMessageWithIdentifier:(id)a3;
+- (id)inboxMessageWithIdentifier:(id)identifier;
 - (unint64_t)badgeCount;
-- (void)_accountUserInvitationsCompletion:(id)a3;
+- (void)_accountUserInvitationsCompletion:(id)completion;
 - (void)_updateInboxMessages;
 - (void)dealloc;
-- (void)updateInboxWithCompletion:(id)a3;
+- (void)updateInboxWithCompletion:(id)completion;
 @end
 
 @implementation PKInboxDataSource
@@ -40,7 +40,7 @@
     v10 = v5;
     v23 = v10;
     [v4 addOperation:v20];
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __41__PKInboxDataSource__updateInboxMessages__block_invoke_3;
@@ -52,7 +52,7 @@
     v12 = v8;
     v13 = v9;
     v14 = v10;
-    v15 = [v4 evaluateWithInput:v11 completion:v16];
+    v15 = [v4 evaluateWithInput:null completion:v16];
   }
 }
 
@@ -256,19 +256,19 @@ void __41__PKInboxDataSource__updateInboxMessages__block_invoke_3(uint64_t a1)
   return inboxVisible;
 }
 
-- (PKInboxDataSource)initWithDelegate:(id)a3
+- (PKInboxDataSource)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PKInboxDataSource;
   v5 = [(PKInboxDataSource *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
-    v7 = [MEMORY[0x1E69B8DB8] paymentService];
+    objc_storeWeak(&v5->_delegate, delegateCopy);
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     paymentService = v6->_paymentService;
-    v6->_paymentService = v7;
+    v6->_paymentService = paymentService;
 
     [(PKPaymentService *)v6->_paymentService registerObserver:v6];
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -308,10 +308,10 @@ void __41__PKInboxDataSource__updateInboxMessages__block_invoke_3(uint64_t a1)
   return v3;
 }
 
-- (id)inboxMessageWithIdentifier:(id)a3
+- (id)inboxMessageWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     activeInboxMessages = self->_activeInboxMessages;
@@ -319,7 +319,7 @@ void __41__PKInboxDataSource__updateInboxMessages__block_invoke_3(uint64_t a1)
     v17[1] = 3221225472;
     v17[2] = __48__PKInboxDataSource_inboxMessageWithIdentifier___block_invoke;
     v17[3] = &unk_1E80232F0;
-    v6 = v4;
+    v6 = identifierCopy;
     v18 = v6;
     v7 = [(NSMutableArray *)activeInboxMessages pk_firstObjectPassingTest:v17];
     if (v7)
@@ -433,9 +433,9 @@ uint64_t __48__PKInboxDataSource_inboxMessageWithIdentifier___block_invoke_3(uin
   return v8;
 }
 
-- (void)updateInboxWithCompletion:(id)a3
+- (void)updateInboxWithCompletion:(id)completion
 {
-  aBlock = a3;
+  aBlock = completion;
   os_unfair_lock_lock(&self->_lock);
   if (aBlock)
   {
@@ -464,9 +464,9 @@ uint64_t __48__PKInboxDataSource_inboxMessageWithIdentifier___block_invoke_3(uin
   return hasInboxMessages;
 }
 
-- (void)_accountUserInvitationsCompletion:(id)a3
+- (void)_accountUserInvitationsCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x1E69B8658]);
   v17[0] = 0;
   v17[1] = v17;
@@ -494,16 +494,16 @@ uint64_t __48__PKInboxDataSource_inboxMessageWithIdentifier___block_invoke_3(uin
   v13[4] = self;
   v13[5] = v14;
   [v5 addOperation:v13];
-  v6 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__PKInboxDataSource__accountUserInvitationsCompletion___block_invoke_6;
   v9[3] = &unk_1E8023368;
   v11 = v17;
   v12 = v14;
-  v7 = v4;
+  v7 = completionCopy;
   v10 = v7;
-  v8 = [v5 evaluateWithInput:v6 completion:v9];
+  v8 = [v5 evaluateWithInput:null completion:v9];
 
   _Block_object_dispose(v14, 8);
   _Block_object_dispose(v17, 8);

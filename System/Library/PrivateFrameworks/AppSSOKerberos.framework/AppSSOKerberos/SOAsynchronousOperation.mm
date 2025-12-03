@@ -25,13 +25,13 @@
 {
   v5.receiver = self;
   v5.super_class = SOAsynchronousOperation;
-  v3 = [(SOAsynchronousOperation *)&v5 isReady];
-  if (v3)
+  isReady = [(SOAsynchronousOperation *)&v5 isReady];
+  if (isReady)
   {
-    LOBYTE(v3) = [(SOAsynchronousOperation *)self state]== 0;
+    LOBYTE(isReady) = [(SOAsynchronousOperation *)self state]== 0;
   }
 
-  return v3;
+  return isReady;
 }
 
 - (void)start

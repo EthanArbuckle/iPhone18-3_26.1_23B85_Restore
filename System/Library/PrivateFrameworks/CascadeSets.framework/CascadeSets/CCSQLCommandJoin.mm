@@ -1,6 +1,6 @@
 @interface CCSQLCommandJoin
 - (CCSQLCommandJoin)init;
-- (CCSQLCommandJoin)initWithJoinType:(int64_t)a3 joinTables:(id)a4;
+- (CCSQLCommandJoin)initWithJoinType:(int64_t)type joinTables:(id)tables;
 - (id)description;
 @end
 
@@ -12,17 +12,17 @@
   objc_exception_throw(v2);
 }
 
-- (CCSQLCommandJoin)initWithJoinType:(int64_t)a3 joinTables:(id)a4
+- (CCSQLCommandJoin)initWithJoinType:(int64_t)type joinTables:(id)tables
 {
-  v7 = a4;
+  tablesCopy = tables;
   v11.receiver = self;
   v11.super_class = CCSQLCommandJoin;
   v8 = [(CCSQLCommandJoin *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_joinType = a3;
-    objc_storeStrong(&v8->_joinTables, a4);
+    v8->_joinType = type;
+    objc_storeStrong(&v8->_joinTables, tables);
   }
 
   return v9;

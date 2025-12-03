@@ -1,10 +1,10 @@
 @interface RMModelNetworkWiFiDeclaration_QoSMarkingPolicy
 + (NSSet)allowedPayloadKeys;
 + (id)buildRequiredOnly;
-+ (id)buildWithAllowListAppIdentifiers:(id)a3 appleAudioVideoCalls:(id)a4 enabled:(id)a5;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildWithAllowListAppIdentifiers:(id)identifiers appleAudioVideoCalls:(id)calls enabled:(id)enabled;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelNetworkWiFiDeclaration_QoSMarkingPolicy
@@ -24,18 +24,18 @@
   return v4;
 }
 
-+ (id)buildWithAllowListAppIdentifiers:(id)a3 appleAudioVideoCalls:(id)a4 enabled:(id)a5
++ (id)buildWithAllowListAppIdentifiers:(id)identifiers appleAudioVideoCalls:(id)calls enabled:(id)enabled
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  enabledCopy = enabled;
+  callsCopy = calls;
+  identifiersCopy = identifiers;
   v10 = objc_opt_new();
-  [v10 setPayloadAllowListAppIdentifiers:v9];
+  [v10 setPayloadAllowListAppIdentifiers:identifiersCopy];
 
   v11 = MEMORY[0x277CBEC38];
-  if (v8)
+  if (callsCopy)
   {
-    v12 = v8;
+    v12 = callsCopy;
   }
 
   else
@@ -45,9 +45,9 @@
 
   [v10 setPayloadAppleAudioVideoCalls:v12];
 
-  if (v7)
+  if (enabledCopy)
   {
-    v13 = v7;
+    v13 = enabledCopy;
   }
 
   else
@@ -67,12 +67,12 @@
   return v2;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelNetworkWiFiDeclaration_QoSMarkingPolicy allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -80,33 +80,33 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadArrayFromDictionary:v7 usingKey:@"AllowListAppIdentifiers" forKeyPath:@"payloadAllowListAppIdentifiers" validator:&__block_literal_global_468 isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"AppleAudioVideoCalls" forKeyPath:@"payloadAppleAudioVideoCalls" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"Enabled" forKeyPath:@"payloadEnabled" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:a5];
+  v13 = [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"AllowListAppIdentifiers" forKeyPath:@"payloadAllowListAppIdentifiers" validator:&__block_literal_global_468 isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"AppleAudioVideoCalls" forKeyPath:@"payloadAppleAudioVideoCalls" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"Enabled" forKeyPath:@"payloadEnabled" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:error];
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelNetworkWiFiDeclaration_QoSMarkingPolicy *)self payloadAllowListAppIdentifiers];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"AllowListAppIdentifiers" value:v5 itemSerializer:&__block_literal_global_476 isRequired:0 defaultValue:0];
+  payloadAllowListAppIdentifiers = [(RMModelNetworkWiFiDeclaration_QoSMarkingPolicy *)self payloadAllowListAppIdentifiers];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"AllowListAppIdentifiers" value:payloadAllowListAppIdentifiers itemSerializer:&__block_literal_global_476 isRequired:0 defaultValue:0];
 
-  v6 = [(RMModelNetworkWiFiDeclaration_QoSMarkingPolicy *)self payloadAppleAudioVideoCalls];
+  payloadAppleAudioVideoCalls = [(RMModelNetworkWiFiDeclaration_QoSMarkingPolicy *)self payloadAppleAudioVideoCalls];
   v7 = MEMORY[0x277CBEC38];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"AppleAudioVideoCalls" value:v6 isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"AppleAudioVideoCalls" value:payloadAppleAudioVideoCalls isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
 
-  v8 = [(RMModelNetworkWiFiDeclaration_QoSMarkingPolicy *)self payloadEnabled];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"Enabled" value:v8 isRequired:0 defaultValue:v7];
+  payloadEnabled = [(RMModelNetworkWiFiDeclaration_QoSMarkingPolicy *)self payloadEnabled];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"Enabled" value:payloadEnabled isRequired:0 defaultValue:v7];
 
   v9 = [v4 copy];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = RMModelNetworkWiFiDeclaration_QoSMarkingPolicy;
-  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:zone];
   v5 = [(NSArray *)self->_payloadAllowListAppIdentifiers copy];
   v6 = v4[2];
   v4[2] = v5;

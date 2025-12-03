@@ -1,33 +1,33 @@
 @interface DNDModeAssertionInvalidationDetails
-- (BOOL)isEqual:(id)a3;
-- (DNDModeAssertionInvalidationDetails)initWithCoder:(id)a3;
-- (id)_initWithDetails:(id)a3;
-- (id)_initWithIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DNDModeAssertionInvalidationDetails)initWithCoder:(id)coder;
+- (id)_initWithDetails:(id)details;
+- (id)_initWithIdentifier:(id)identifier;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDModeAssertionInvalidationDetails
 
-- (id)_initWithDetails:(id)a3
+- (id)_initWithDetails:(id)details
 {
-  v4 = [a3 identifier];
-  v5 = [(DNDModeAssertionInvalidationDetails *)self _initWithIdentifier:v4];
+  identifier = [details identifier];
+  v5 = [(DNDModeAssertionInvalidationDetails *)self _initWithIdentifier:identifier];
 
   return v5;
 }
 
-- (id)_initWithIdentifier:(id)a3
+- (id)_initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = DNDModeAssertionInvalidationDetails;
   v5 = [(DNDModeAssertionInvalidationDetails *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     v7 = v6;
     if (v6)
     {
@@ -47,16 +47,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(DNDModeAssertionInvalidationDetails *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(DNDModeAssertionInvalidationDetails *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -66,25 +66,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DNDModeAssertionInvalidationDetails *)self identifier];
-      v7 = [(DNDModeAssertionInvalidationDetails *)v5 identifier];
-      if (v6 == v7)
+      v5 = equalCopy;
+      identifier = [(DNDModeAssertionInvalidationDetails *)self identifier];
+      identifier2 = [(DNDModeAssertionInvalidationDetails *)v5 identifier];
+      if (identifier == identifier2)
       {
         v12 = 1;
       }
 
       else
       {
-        v8 = [(DNDModeAssertionInvalidationDetails *)self identifier];
-        if (v8)
+        identifier3 = [(DNDModeAssertionInvalidationDetails *)self identifier];
+        if (identifier3)
         {
-          v9 = [(DNDModeAssertionInvalidationDetails *)v5 identifier];
-          if (v9)
+          identifier4 = [(DNDModeAssertionInvalidationDetails *)v5 identifier];
+          if (identifier4)
           {
-            v10 = [(DNDModeAssertionInvalidationDetails *)self identifier];
-            v11 = [(DNDModeAssertionInvalidationDetails *)v5 identifier];
-            v12 = [v10 isEqual:v11];
+            identifier5 = [(DNDModeAssertionInvalidationDetails *)self identifier];
+            identifier6 = [(DNDModeAssertionInvalidationDetails *)v5 identifier];
+            v12 = [identifier5 isEqual:identifier6];
           }
 
           else
@@ -113,33 +113,33 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDModeAssertionInvalidationDetails *)self identifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p identifier: '%@'>", v4, self, v5];;
+  identifier = [(DNDModeAssertionInvalidationDetails *)self identifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p identifier: '%@'>", v4, self, identifier];;
 
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDMutableModeAssertionInvalidationDetails alloc];
 
   return [(DNDModeAssertionInvalidationDetails *)v4 _initWithDetails:self];
 }
 
-- (DNDModeAssertionInvalidationDetails)initWithCoder:(id)a3
+- (DNDModeAssertionInvalidationDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
 
   v6 = [(DNDModeAssertionInvalidationDetails *)self _initWithIdentifier:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DNDModeAssertionInvalidationDetails *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(DNDModeAssertionInvalidationDetails *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
 @end

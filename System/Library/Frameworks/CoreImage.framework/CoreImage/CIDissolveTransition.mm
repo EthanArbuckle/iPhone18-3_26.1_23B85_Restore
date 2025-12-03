@@ -60,7 +60,7 @@ LABEL_8:
   {
     if (inputTargetImage)
     {
-      v6 = [(CIDissolveTransition *)self _kernel];
+      _kernel = [(CIDissolveTransition *)self _kernel];
       [(CIImage *)self->inputImage extent];
       v8 = v7;
       v10 = v9;
@@ -91,7 +91,7 @@ LABEL_8:
 
     else
     {
-      v6 = [(CIDissolveTransition *)self _fadeKernel];
+      _kernel = [(CIDissolveTransition *)self _fadeKernel];
       [(CIImage *)self->inputImage extent];
       x = v45;
       y = v46;
@@ -106,7 +106,7 @@ LABEL_8:
     }
 
     v39 = [v24 arrayWithObjects:v25 count:{v26, v50, v51}];
-    v40 = v6;
+    v40 = _kernel;
     v41 = x;
     v42 = y;
     v43 = width;
@@ -116,7 +116,7 @@ LABEL_8:
 
   if (inputTargetImage)
   {
-    v30 = [(CIDissolveTransition *)self _fadeKernel];
+    _fadeKernel = [(CIDissolveTransition *)self _fadeKernel];
     [(CIImage *)self->inputTargetImage extent];
     v32 = v31;
     v34 = v33;
@@ -125,7 +125,7 @@ LABEL_8:
     v52[0] = self->inputTargetImage;
     v52[1] = [MEMORY[0x1E696AD98] numberWithDouble:1.0 - v4];
     v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:2];
-    v40 = v30;
+    v40 = _fadeKernel;
     v41 = v32;
     v42 = v34;
     v43 = v36;

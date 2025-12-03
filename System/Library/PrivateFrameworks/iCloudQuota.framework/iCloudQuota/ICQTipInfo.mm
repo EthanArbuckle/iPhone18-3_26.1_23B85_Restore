@@ -1,43 +1,43 @@
 @interface ICQTipInfo
-- (ICQTipInfo)initWithCoder:(id)a3;
-- (id)_parseTipIcon:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ICQTipInfo)initWithCoder:(id)coder;
+- (id)_parseTipIcon:(id)icon;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICQTipInfo
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = ICQTipInfo;
   v5 = [(ICQTipInfo *)&v32 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"title"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(ICQTipInfo *)v5 setTitle:v6];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"subTitle"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"subTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(ICQTipInfo *)v5 setSubtitle:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"anchor"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"anchor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(ICQTipInfo *)v5 setAnchor:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"id"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"id"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
     }
 
     v25 = v9;
-    v10 = [v4 objectForKeyedSubscript:@"dismissURL"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"dismissURL"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       }
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"icon"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"icon"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
       [(ICQTipInfo *)v5 setIcon:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"actions"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"actions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,7 +82,7 @@
 
     else
     {
-      v16 = [v4 objectForKeyedSubscript:@"button"];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"button"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -206,15 +206,15 @@ void __33__ICQTipInfo_initFromDictionary___block_invoke_2(uint64_t a1, void *a2)
   }
 }
 
-- (id)_parseTipIcon:(id)a3
+- (id)_parseTipIcon:(id)icon
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"type"];
+  iconCopy = icon;
+  v4 = [iconCopy objectForKeyedSubscript:@"type"];
   if ([v4 isEqualToString:@"IMAGE"])
   {
     v5 = objc_alloc_init(ICQTipIconURL);
     [(ICQTipIcon *)v5 setType:v4];
-    v6 = [v3 objectForKeyedSubscript:@"urls"];
+    v6 = [iconCopy objectForKeyedSubscript:@"urls"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -229,13 +229,13 @@ void __33__ICQTipInfo_initFromDictionary___block_invoke_2(uint64_t a1, void *a2)
   {
     v5 = objc_alloc_init(ICQTipIconSymbol);
     [(ICQTipIcon *)v5 setType:v4];
-    v8 = [v3 objectForKeyedSubscript:@"path"];
+    v8 = [iconCopy objectForKeyedSubscript:@"path"];
     [(ICQTipIconURL *)v5 setPath:v8];
 
-    v9 = [v3 objectForKeyedSubscript:@"color"];
+    v9 = [iconCopy objectForKeyedSubscript:@"color"];
     [(ICQTipIconURL *)v5 setSystemColorName:v9];
 
-    v6 = [v3 objectForKeyedSubscript:@"id"];
+    v6 = [iconCopy objectForKeyedSubscript:@"id"];
     [(ICQTipIconURL *)v5 setId:v6];
 LABEL_6:
 
@@ -248,7 +248,7 @@ LABEL_8:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ICQTipInfo);
   [(ICQTipInfo *)v4 setId:self->_id];
@@ -261,45 +261,45 @@ LABEL_8:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   id = self->_id;
-  v5 = a3;
-  [v5 encodeObject:id forKey:@"id"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeObject:self->_subtitle forKey:@"subTitle"];
-  [v5 encodeObject:self->_anchor forKey:@"anchor"];
-  [v5 encodeObject:self->_dismissURL forKey:@"dismissURL"];
-  [v5 encodeObject:self->_actions forKey:@"actions"];
-  [v5 encodeObject:self->_icon forKey:@"icon"];
+  coderCopy = coder;
+  [coderCopy encodeObject:id forKey:@"id"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subTitle"];
+  [coderCopy encodeObject:self->_anchor forKey:@"anchor"];
+  [coderCopy encodeObject:self->_dismissURL forKey:@"dismissURL"];
+  [coderCopy encodeObject:self->_actions forKey:@"actions"];
+  [coderCopy encodeObject:self->_icon forKey:@"icon"];
 }
 
-- (ICQTipInfo)initWithCoder:(id)a3
+- (ICQTipInfo)initWithCoder:(id)coder
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = ICQTipInfo;
   v5 = [(ICQTipInfo *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
     id = v5->_id;
     v5->_id = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subTitle"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subTitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"anchor"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"anchor"];
     anchor = v5->_anchor;
     v5->_anchor = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dismissURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dismissURL"];
     dismissURL = v5->_dismissURL;
     v5->_dismissURL = v14;
 
@@ -309,11 +309,11 @@ LABEL_8:
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
     v18 = [v16 setWithArray:v17];
 
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"actions"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"actions"];
     actions = v5->_actions;
     v5->_actions = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
     icon = v5->_icon;
     v5->_icon = v21;
   }

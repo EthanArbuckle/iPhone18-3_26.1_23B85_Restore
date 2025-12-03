@@ -3,46 +3,46 @@
 - (BOOL)personalRequestsAuthenticationRequired;
 - (HMAssistantAccessControl)accessControl;
 - (HMUser)user;
-- (HUPersonalRequestsEditorItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (HUPersonalRequestsEditorItemManager)initWithDelegate:(id)a3 userItem:(id)a4 accessorySettingItem:(id)a5 module:(id)a6 onlyShowDeviceSwitches:(BOOL)a7;
-- (HUPersonalRequestsEditorItemManager)initWithDelegate:(id)a3 userItem:(id)a4 onlyShowDeviceSwitches:(BOOL)a5;
-- (id)_buildItemModulesForHome:(id)a3;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
-- (id)_commitUpdateToAccessControl:(id)a3;
-- (void)_updateRequiredAuthSectionFooterForSection:(id)a3;
-- (void)setActivityNotificationsEnabled:(BOOL)a3;
+- (HUPersonalRequestsEditorItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (HUPersonalRequestsEditorItemManager)initWithDelegate:(id)delegate userItem:(id)item accessorySettingItem:(id)settingItem module:(id)module onlyShowDeviceSwitches:(BOOL)switches;
+- (HUPersonalRequestsEditorItemManager)initWithDelegate:(id)delegate userItem:(id)item onlyShowDeviceSwitches:(BOOL)switches;
+- (id)_buildItemModulesForHome:(id)home;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
+- (id)_commitUpdateToAccessControl:(id)control;
+- (void)_updateRequiredAuthSectionFooterForSection:(id)section;
+- (void)setActivityNotificationsEnabled:(BOOL)enabled;
 @end
 
 @implementation HUPersonalRequestsEditorItemManager
 
-- (HUPersonalRequestsEditorItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUPersonalRequestsEditorItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithDelegate_home_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUPersonalRequestsEditorItemManager.m" lineNumber:39 description:{@"%s is unavailable; use %@ instead", "-[HUPersonalRequestsEditorItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUPersonalRequestsEditorItemManager.m" lineNumber:39 description:{@"%s is unavailable; use %@ instead", "-[HUPersonalRequestsEditorItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (HUPersonalRequestsEditorItemManager)initWithDelegate:(id)a3 userItem:(id)a4 onlyShowDeviceSwitches:(BOOL)a5
+- (HUPersonalRequestsEditorItemManager)initWithDelegate:(id)delegate userItem:(id)item onlyShowDeviceSwitches:(BOOL)switches
 {
-  v5 = a5;
-  v8 = a4;
+  switchesCopy = switches;
+  itemCopy = item;
   v20.receiver = self;
   v20.super_class = HUPersonalRequestsEditorItemManager;
-  v9 = [(HFItemManager *)&v20 initWithDelegate:a3 sourceItem:v8];
+  v9 = [(HFItemManager *)&v20 initWithDelegate:delegate sourceItem:itemCopy];
   if (v9)
   {
-    v10 = [v8 home];
+    home = [itemCopy home];
     homeForUser = v9->_homeForUser;
-    v9->_homeForUser = v10;
+    v9->_homeForUser = home;
 
-    v12 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v13 = [v12 homeManager];
-    v14 = [v13 hf_accessorySettingsController];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    homeManager = [mEMORY[0x277D146E8] homeManager];
+    hf_accessorySettingsController = [homeManager hf_accessorySettingsController];
 
-    v15 = [[HUPersonalRequestsDevicesItemModule alloc] initWithItemUpdater:v9 userItem:v8 home:v9->_homeForUser settingsController:v14 onlyShowDeviceSwitches:v5];
+    v15 = [[HUPersonalRequestsDevicesItemModule alloc] initWithItemUpdater:v9 userItem:itemCopy home:v9->_homeForUser settingsController:hf_accessorySettingsController onlyShowDeviceSwitches:switchesCopy];
     prDevicesModule = v9->_prDevicesModule;
     v9->_prDevicesModule = v15;
 
@@ -50,34 +50,34 @@
     locationDeviceManager = v9->_locationDeviceManager;
     v9->_locationDeviceManager = v17;
 
-    v9->_onlyShowDeviceSwitches = v5;
+    v9->_onlyShowDeviceSwitches = switchesCopy;
   }
 
   return v9;
 }
 
-- (HUPersonalRequestsEditorItemManager)initWithDelegate:(id)a3 userItem:(id)a4 accessorySettingItem:(id)a5 module:(id)a6 onlyShowDeviceSwitches:(BOOL)a7
+- (HUPersonalRequestsEditorItemManager)initWithDelegate:(id)delegate userItem:(id)item accessorySettingItem:(id)settingItem module:(id)module onlyShowDeviceSwitches:(BOOL)switches
 {
-  v7 = a7;
-  v11 = a4;
-  v12 = a6;
+  switchesCopy = switches;
+  itemCopy = item;
+  moduleCopy = module;
   v22.receiver = self;
   v22.super_class = HUPersonalRequestsEditorItemManager;
-  v13 = [(HFItemManager *)&v22 initWithDelegate:a3 sourceItem:v11];
+  v13 = [(HFItemManager *)&v22 initWithDelegate:delegate sourceItem:itemCopy];
   if (v13)
   {
-    v14 = [v11 home];
+    home = [itemCopy home];
     homeForUser = v13->_homeForUser;
-    v13->_homeForUser = v14;
+    v13->_homeForUser = home;
 
     v16 = [HUPersonalRequestsDevicesItemModule alloc];
     v17 = v13->_homeForUser;
-    v18 = [v12 settingsController];
-    v19 = [(HUPersonalRequestsDevicesItemModule *)v16 initWithItemUpdater:v13 userItem:v11 home:v17 settingsController:v18 onlyShowDeviceSwitches:v7];
+    settingsController = [moduleCopy settingsController];
+    v19 = [(HUPersonalRequestsDevicesItemModule *)v16 initWithItemUpdater:v13 userItem:itemCopy home:v17 settingsController:settingsController onlyShowDeviceSwitches:switchesCopy];
     prDevicesModule = v13->_prDevicesModule;
     v13->_prDevicesModule = v19;
 
-    v13->_onlyShowDeviceSwitches = v7;
+    v13->_onlyShowDeviceSwitches = switchesCopy;
   }
 
   return v13;
@@ -85,38 +85,38 @@
 
 - (HMUser)user
 {
-  v2 = [(HFItemManager *)self sourceItem];
-  v3 = [v2 user];
+  sourceItem = [(HFItemManager *)self sourceItem];
+  user = [sourceItem user];
 
-  return v3;
+  return user;
 }
 
 - (HMAssistantAccessControl)accessControl
 {
-  v3 = [(HFItemManager *)self sourceItem];
-  v4 = [v3 user];
-  v5 = [(HUPersonalRequestsEditorItemManager *)self homeForUser];
-  v6 = [v4 assistantAccessControlForHome:v5];
+  sourceItem = [(HFItemManager *)self sourceItem];
+  user = [sourceItem user];
+  homeForUser = [(HUPersonalRequestsEditorItemManager *)self homeForUser];
+  v6 = [user assistantAccessControlForHome:homeForUser];
 
   return v6;
 }
 
 - (BOOL)_arePersonalRequestsEnabled
 {
-  v3 = [(HUPersonalRequestsEditorItemManager *)self homeForUser];
-  v4 = [v3 hf_currentUserIsOwner];
+  homeForUser = [(HUPersonalRequestsEditorItemManager *)self homeForUser];
+  hf_currentUserIsOwner = [homeForUser hf_currentUserIsOwner];
 
-  v5 = [(HUPersonalRequestsEditorItemManager *)self accessControl];
-  v6 = [(HUPersonalRequestsEditorItemManager *)self prDevicesModule];
-  v7 = [v6 supportedMULanguageCodes];
-  LOBYTE(v4) = [v5 hf_effectivelyEnabledForSupportedVoiceRecognitionLanguages:v7 currentUserIsOwner:v4];
+  accessControl = [(HUPersonalRequestsEditorItemManager *)self accessControl];
+  prDevicesModule = [(HUPersonalRequestsEditorItemManager *)self prDevicesModule];
+  supportedMULanguageCodes = [prDevicesModule supportedMULanguageCodes];
+  LOBYTE(hf_currentUserIsOwner) = [accessControl hf_effectivelyEnabledForSupportedVoiceRecognitionLanguages:supportedMULanguageCodes currentUserIsOwner:hf_currentUserIsOwner];
 
-  return v4;
+  return hf_currentUserIsOwner;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   if ([(HUPersonalRequestsEditorItemManager *)self onlyShowDeviceSwitches])
   {
     v5 = MEMORY[0x277CBEBF8];
@@ -125,9 +125,9 @@
   else
   {
     objc_initWeak(&location, self);
-    v6 = [(HUPersonalRequestsEditorItemManager *)self staticItemProvider];
+    staticItemProvider = [(HUPersonalRequestsEditorItemManager *)self staticItemProvider];
 
-    if (!v6)
+    if (!staticItemProvider)
     {
       v7 = objc_opt_new();
       v8 = objc_alloc(MEMORY[0x277D14B38]);
@@ -151,8 +151,8 @@
     }
 
     v14 = MEMORY[0x277CBEA60];
-    v15 = [(HUPersonalRequestsEditorItemManager *)self staticItemProvider];
-    v5 = [v14 arrayWithObject:v15];
+    staticItemProvider2 = [(HUPersonalRequestsEditorItemManager *)self staticItemProvider];
+    v5 = [v14 arrayWithObject:staticItemProvider2];
 
     objc_destroyWeak(&location);
   }
@@ -194,40 +194,40 @@ id __66__HUPersonalRequestsEditorItemManager__buildItemProvidersForHome___block_
   return v10;
 }
 
-- (id)_buildItemModulesForHome:(id)a3
+- (id)_buildItemModulesForHome:(id)home
 {
   v3 = MEMORY[0x277CBEA60];
-  v4 = [(HUPersonalRequestsEditorItemManager *)self prDevicesModule];
-  v5 = [v3 arrayWithObject:v4];
+  prDevicesModule = [(HUPersonalRequestsEditorItemManager *)self prDevicesModule];
+  v5 = [v3 arrayWithObject:prDevicesModule];
 
   return v5;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = [(HUPersonalRequestsEditorItemManager *)self prDevicesModule];
-    v7 = [v6 buildSectionsWithDisplayedItems:v4];
+    prDevicesModule = [(HUPersonalRequestsEditorItemManager *)self prDevicesModule];
+    v7 = [prDevicesModule buildSectionsWithDisplayedItems:itemsCopy];
     [v5 addObjectsFromArray:v7];
 
     if (![(HUPersonalRequestsEditorItemManager *)self onlyShowDeviceSwitches])
     {
       v8 = MEMORY[0x277CBEB98];
-      v9 = [(HUPersonalRequestsEditorItemManager *)self activityNotificationsItem];
-      v16[0] = v9;
+      activityNotificationsItem = [(HUPersonalRequestsEditorItemManager *)self activityNotificationsItem];
+      v16[0] = activityNotificationsItem;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
       v11 = [v8 setWithArray:v10];
-      v12 = [v4 na_setByIntersectingWithSet:v11];
+      v12 = [itemsCopy na_setByIntersectingWithSet:v11];
 
       if ([v12 count])
       {
         v13 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"kHUEditUserPersonalRequestsRequireAuthSection"];
-        v14 = [v12 allObjects];
-        [v13 setItems:v14];
+        allObjects = [v12 allObjects];
+        [v13 setItems:allObjects];
 
         [(HUPersonalRequestsEditorItemManager *)self _updateRequiredAuthSectionFooterForSection:v13];
         [v5 addObject:v13];
@@ -245,21 +245,21 @@ id __66__HUPersonalRequestsEditorItemManager__buildItemProvidersForHome___block_
 
 - (BOOL)personalRequestsAuthenticationRequired
 {
-  v2 = [(HUPersonalRequestsEditorItemManager *)self accessControl];
-  v3 = [v2 allowUnauthenticatedRequests];
+  accessControl = [(HUPersonalRequestsEditorItemManager *)self accessControl];
+  allowUnauthenticatedRequests = [accessControl allowUnauthenticatedRequests];
 
-  return v3 ^ 1;
+  return allowUnauthenticatedRequests ^ 1;
 }
 
-- (void)setActivityNotificationsEnabled:(BOOL)a3
+- (void)setActivityNotificationsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v15 = *MEMORY[0x277D85DE8];
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NO";
-    if (v3)
+    if (enabledCopy)
     {
       v7 = @"YES";
     }
@@ -269,10 +269,10 @@ id __66__HUPersonalRequestsEditorItemManager__buildItemProvidersForHome___block_
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "Setting activityNotificationsEnabled to: %@", buf, 0xCu);
   }
 
-  v8 = [(HUPersonalRequestsEditorItemManager *)self accessControl];
-  v9 = [v8 mutableCopy];
+  accessControl = [(HUPersonalRequestsEditorItemManager *)self accessControl];
+  v9 = [accessControl mutableCopy];
 
-  [v9 setActivityNotificationsEnabledForPersonalRequests:v3];
+  [v9 setActivityNotificationsEnabledForPersonalRequests:enabledCopy];
   v10 = [(HUPersonalRequestsEditorItemManager *)self _commitUpdateToAccessControl:v9];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -294,27 +294,27 @@ void __71__HUPersonalRequestsEditorItemManager_setActivityNotificationsEnabled__
   v7 = [v2 performItemUpdateRequest:v6];
 }
 
-- (id)_commitUpdateToAccessControl:(id)a3
+- (id)_commitUpdateToAccessControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   v5 = MEMORY[0x277D2C900];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __68__HUPersonalRequestsEditorItemManager__commitUpdateToAccessControl___block_invoke;
   v18[3] = &unk_277DBB448;
-  v6 = v4;
+  v6 = controlCopy;
   v19 = v6;
-  v20 = self;
+  selfCopy = self;
   v7 = [v5 futureWithErrorOnlyHandlerAdapterBlock:v18];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __68__HUPersonalRequestsEditorItemManager__commitUpdateToAccessControl___block_invoke_38;
   v15 = &unk_277DB7E68;
-  v16 = self;
+  selfCopy2 = self;
   v17 = v6;
   v8 = v6;
   v9 = [v7 addSuccessBlock:&v12];
-  v10 = [v7 addFailureBlock:{&__block_literal_global_168, v12, v13, v14, v15, v16}];
+  v10 = [v7 addFailureBlock:{&__block_literal_global_168, v12, v13, v14, v15, selfCopy2}];
 
   return v7;
 }
@@ -372,18 +372,18 @@ void __68__HUPersonalRequestsEditorItemManager__commitUpdateToAccessControl___bl
   [v4 handleError:v3];
 }
 
-- (void)_updateRequiredAuthSectionFooterForSection:(id)a3
+- (void)_updateRequiredAuthSectionFooterForSection:(id)section
 {
-  v4 = a3;
-  v5 = [(HUPersonalRequestsEditorItemManager *)self locationDeviceManager];
-  v6 = [v5 activeLocationDeviceFuture];
+  sectionCopy = section;
+  locationDeviceManager = [(HUPersonalRequestsEditorItemManager *)self locationDeviceManager];
+  activeLocationDeviceFuture = [locationDeviceManager activeLocationDeviceFuture];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __82__HUPersonalRequestsEditorItemManager__updateRequiredAuthSectionFooterForSection___block_invoke;
   v9[3] = &unk_277DBE2B0;
-  v10 = v4;
-  v7 = v4;
-  v8 = [v6 addCompletionBlock:v9];
+  v10 = sectionCopy;
+  v7 = sectionCopy;
+  v8 = [activeLocationDeviceFuture addCompletionBlock:v9];
 }
 
 void __82__HUPersonalRequestsEditorItemManager__updateRequiredAuthSectionFooterForSection___block_invoke(uint64_t a1, void *a2)

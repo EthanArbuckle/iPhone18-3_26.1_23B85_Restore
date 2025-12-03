@@ -1,75 +1,75 @@
 @interface PUPhotoEditBoostContainerView
-- (void)_constrainSubview:(id)a3;
+- (void)_constrainSubview:(id)subview;
 - (void)_updateViewLayering;
-- (void)setEdrGain:(double)a3;
-- (void)setViewToBoost:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setEdrGain:(double)gain;
+- (void)setViewToBoost:(id)boost;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation PUPhotoEditBoostContainerView
 
-- (void)_constrainSubview:(id)a3
+- (void)_constrainSubview:(id)subview
 {
-  v4 = a3;
-  v5 = [(PUPhotoEditBoostContainerView *)self leftAnchor];
-  v6 = [v4 leftAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  subviewCopy = subview;
+  leftAnchor = [(PUPhotoEditBoostContainerView *)self leftAnchor];
+  leftAnchor2 = [subviewCopy leftAnchor];
+  v7 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v7 setActive:1];
 
-  v8 = [(PUPhotoEditBoostContainerView *)self rightAnchor];
-  v9 = [v4 rightAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  rightAnchor = [(PUPhotoEditBoostContainerView *)self rightAnchor];
+  rightAnchor2 = [subviewCopy rightAnchor];
+  v10 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v10 setActive:1];
 
-  v11 = [(PUPhotoEditBoostContainerView *)self topAnchor];
-  v12 = [v4 topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  topAnchor = [(PUPhotoEditBoostContainerView *)self topAnchor];
+  topAnchor2 = [subviewCopy topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v13 setActive:1];
 
-  v16 = [(PUPhotoEditBoostContainerView *)self bottomAnchor];
-  v14 = [v4 bottomAnchor];
+  bottomAnchor = [(PUPhotoEditBoostContainerView *)self bottomAnchor];
+  bottomAnchor2 = [subviewCopy bottomAnchor];
 
-  v15 = [v16 constraintEqualToAnchor:v14];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v15 setActive:1];
 }
 
 - (void)_updateViewLayering
 {
-  v3 = [(PUPhotoEditBoostContainerView *)self viewToBoost];
+  viewToBoost = [(PUPhotoEditBoostContainerView *)self viewToBoost];
 
-  if (v3)
+  if (viewToBoost)
   {
-    v4 = [(PUPhotoEditBoostContainerView *)self subviews];
-    v5 = [(PUPhotoEditBoostContainerView *)self viewToBoost];
-    v6 = [v4 containsObject:v5];
+    subviews = [(PUPhotoEditBoostContainerView *)self subviews];
+    viewToBoost2 = [(PUPhotoEditBoostContainerView *)self viewToBoost];
+    v6 = [subviews containsObject:viewToBoost2];
 
     if ((v6 & 1) == 0)
     {
-      v7 = [(PUPhotoEditBoostContainerView *)self viewToBoost];
-      [(PUPhotoEditBoostContainerView *)self addSubview:v7];
+      viewToBoost3 = [(PUPhotoEditBoostContainerView *)self viewToBoost];
+      [(PUPhotoEditBoostContainerView *)self addSubview:viewToBoost3];
 
-      v8 = [(PUPhotoEditBoostContainerView *)self viewToBoost];
-      [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+      viewToBoost4 = [(PUPhotoEditBoostContainerView *)self viewToBoost];
+      [viewToBoost4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v9 = [(PUPhotoEditBoostContainerView *)self viewToBoost];
-      [(PUPhotoEditBoostContainerView *)self _constrainSubview:v9];
+      viewToBoost5 = [(PUPhotoEditBoostContainerView *)self viewToBoost];
+      [(PUPhotoEditBoostContainerView *)self _constrainSubview:viewToBoost5];
     }
 
-    v10 = [(PUPhotoEditBoostContainerView *)self boostView];
-    [(PUPhotoEditBoostContainerView *)self bringSubviewToFront:v10];
+    boostView = [(PUPhotoEditBoostContainerView *)self boostView];
+    [(PUPhotoEditBoostContainerView *)self bringSubviewToFront:boostView];
   }
 }
 
-- (void)setEdrGain:(double)a3
+- (void)setEdrGain:(double)gain
 {
-  self->_edrGain = a3;
-  v4 = [(PUPhotoEditBoostContainerView *)self boostView];
-  [v4 setEdrGain:a3];
+  self->_edrGain = gain;
+  boostView = [(PUPhotoEditBoostContainerView *)self boostView];
+  [boostView setEdrGain:gain];
 }
 
-- (void)setViewToBoost:(id)a3
+- (void)setViewToBoost:(id)boost
 {
-  v4 = a3;
+  boostCopy = boost;
   viewToBoost = self->_viewToBoost;
   if (viewToBoost)
   {
@@ -82,25 +82,25 @@
     v6 = 0;
   }
 
-  self->_viewToBoost = v4;
+  self->_viewToBoost = boostCopy;
 
   [(PUPhotoEditBoostContainerView *)self _updateViewLayering];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = [(PUPhotoEditBoostContainerView *)self boostView];
+  boostView = [(PUPhotoEditBoostContainerView *)self boostView];
 
-  if (!v4)
+  if (!boostView)
   {
     v5 = objc_alloc(MEMORY[0x1E69C44E0]);
     v9 = [v5 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    v6 = [v9 layer];
-    [v6 setMasksToBounds:1];
+    layer = [v9 layer];
+    [layer setMasksToBounds:1];
 
     v7 = *MEMORY[0x1E69796E8];
-    v8 = [v9 layer];
-    [v8 setCornerCurve:v7];
+    layer2 = [v9 layer];
+    [layer2 setCornerCurve:v7];
 
     [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PUPhotoEditBoostContainerView *)self addSubview:v9];

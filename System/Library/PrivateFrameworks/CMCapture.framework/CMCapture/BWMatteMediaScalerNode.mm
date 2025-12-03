@@ -1,24 +1,24 @@
 @interface BWMatteMediaScalerNode
 + (void)initialize;
-- (BWMatteMediaScalerNode)initWithBasePoolCapacity:(int)a3;
-- (uint64_t)_outputDimensionsForAttachedMediaKey:(unint64_t)a3 attachedMediaMainImageDownscalingFactor:(unint64_t)a4 primaryMediaWidth:(float)a5 primaryMediaHeight:requestedWidth:requestedHeight:zoomWithoutUpscalingEnabled:aspectRatio:inputDimensions:;
+- (BWMatteMediaScalerNode)initWithBasePoolCapacity:(int)capacity;
+- (uint64_t)_outputDimensionsForAttachedMediaKey:(unint64_t)key attachedMediaMainImageDownscalingFactor:(unint64_t)factor primaryMediaWidth:(float)width primaryMediaHeight:requestedWidth:requestedHeight:zoomWithoutUpscalingEnabled:aspectRatio:inputDimensions:;
 - (uint64_t)_zoomAttachedMedia:(CMAttachmentBearerRef)target sampleBuffer:;
-- (uint64_t)mainImageDownscalingFactorForAttachedMediaKey:(void *)a3 attachedMediaMetadata:;
-- (void)_purgeResourcesLeavingThemForMediaToProcess:(uint64_t)a1;
-- (void)_rebuildBufferPoolForAttachedMediaKey:(float)a3 attachedMediaMainImageDownscalingFactor:(uint64_t)a4 inputDimensions:(uint64_t)a5 outputDimensions:(void *)a6 settings:;
+- (uint64_t)mainImageDownscalingFactorForAttachedMediaKey:(void *)key attachedMediaMetadata:;
+- (void)_purgeResourcesLeavingThemForMediaToProcess:(uint64_t)process;
+- (void)_rebuildBufferPoolForAttachedMediaKey:(float)key attachedMediaMainImageDownscalingFactor:(uint64_t)factor inputDimensions:(uint64_t)dimensions outputDimensions:(void *)outputDimensions settings:;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setMainImageDownscalingFactorByAttachedMediaKey:(id)a3;
-- (void)setOutputSizeByAttachedMediaKey:(id)a3;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setMainImageDownscalingFactorByAttachedMediaKey:(id)key;
+- (void)setOutputSizeByAttachedMediaKey:(id)key;
 @end
 
 @implementation BWMatteMediaScalerNode
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -27,9 +27,9 @@
   }
 }
 
-- (BWMatteMediaScalerNode)initWithBasePoolCapacity:(int)a3
+- (BWMatteMediaScalerNode)initWithBasePoolCapacity:(int)capacity
 {
-  if (a3 <= 0)
+  if (capacity <= 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"baseCapacity must be >= 1" userInfo:0]);
   }
@@ -49,7 +49,7 @@
     [(BWNodeOutput *)v7 setFormatRequirements:+[BWVideoFormatRequirements formatRequirements]];
     [(BWNodeOutput *)v7 setPassthroughMode:1];
     [(BWNode *)v5 addOutput:v7];
-    v5->_poolBaseCapacity = a3;
+    v5->_poolBaseCapacity = capacity;
   }
 
   return v5;
@@ -74,27 +74,27 @@
   [(BWNode *)&v5 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
-  [(BWNodeOutput *)self->super._output setFormat:a3, a4];
+  [(BWNodeOutput *)self->super._output setFormat:format, input];
   [(BWNodeInput *)self->super._input setPassthroughMode:1];
   [(BWNodeOutput *)self->super._output setPassthroughMode:1];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(NSDictionary *)self->_mainImageDownscalingFactorByAttachedMediaKey count])
   {
-    [v5 addObjectsFromArray:{-[NSDictionary allKeys](self->_mainImageDownscalingFactorByAttachedMediaKey, "allKeys")}];
+    [array addObjectsFromArray:{-[NSDictionary allKeys](self->_mainImageDownscalingFactorByAttachedMediaKey, "allKeys")}];
   }
 
   if ([(NSDictionary *)self->_outputSizeByAttachedMediaKey count])
   {
-    [v5 addObjectsFromArray:{-[NSDictionary allKeys](self->_outputSizeByAttachedMediaKey, "allKeys")}];
+    [array addObjectsFromArray:{-[NSDictionary allKeys](self->_outputSizeByAttachedMediaKey, "allKeys")}];
   }
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v15 count:{16, 152}];
+  v6 = [array countByEnumeratingWithState:&v16 objects:v15 count:{16, 152}];
   if (v6)
   {
     v7 = v6;
@@ -105,7 +105,7 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(array);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -123,34 +123,34 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v15 count:16];
+      v7 = [array countByEnumeratingWithState:&v16 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setMainImageDownscalingFactorByAttachedMediaKey:(id)a3
+- (void)setMainImageDownscalingFactorByAttachedMediaKey:(id)key
 {
   mainImageDownscalingFactorByAttachedMediaKey = self->_mainImageDownscalingFactorByAttachedMediaKey;
-  if (mainImageDownscalingFactorByAttachedMediaKey != a3)
+  if (mainImageDownscalingFactorByAttachedMediaKey != key)
   {
 
-    self->_mainImageDownscalingFactorByAttachedMediaKey = [a3 copy];
+    self->_mainImageDownscalingFactorByAttachedMediaKey = [key copy];
   }
 }
 
-- (void)setOutputSizeByAttachedMediaKey:(id)a3
+- (void)setOutputSizeByAttachedMediaKey:(id)key
 {
   outputSizeByAttachedMediaKey = self->_outputSizeByAttachedMediaKey;
-  if (outputSizeByAttachedMediaKey != a3)
+  if (outputSizeByAttachedMediaKey != key)
   {
 
-    self->_outputSizeByAttachedMediaKey = [a3 copy];
+    self->_outputSizeByAttachedMediaKey = [key copy];
   }
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   if (dword_1EB58E4E0)
   {
@@ -164,15 +164,15 @@
   [(BWMatteMediaScalerNode *)self _purgeResourcesLeavingThemForMediaToProcess:?];
   v8.receiver = self;
   v8.super_class = BWMatteMediaScalerNode;
-  [(BWNode *)&v8 didReachEndOfDataForConfigurationID:a3 input:a4];
+  [(BWNode *)&v8 didReachEndOfDataForConfigurationID:d input:input];
 }
 
-- (uint64_t)mainImageDownscalingFactorForAttachedMediaKey:(void *)a3 attachedMediaMetadata:
+- (uint64_t)mainImageDownscalingFactorForAttachedMediaKey:(void *)key attachedMediaMetadata:
 {
   if (result)
   {
     v4 = result;
-    result = [objc_msgSend(a3 objectForKeyedSubscript:{*off_1E798A788), "floatValue"}];
+    result = [objc_msgSend(key objectForKeyedSubscript:{*off_1E798A788), "floatValue"}];
     if (*(v4 + 177) != 1 || v5 == 0.0)
     {
       v6 = [*(v4 + 144) objectForKeyedSubscript:a2];
@@ -184,14 +184,14 @@
   return result;
 }
 
-- (void)_purgeResourcesLeavingThemForMediaToProcess:(uint64_t)a1
+- (void)_purgeResourcesLeavingThemForMediaToProcess:(uint64_t)process
 {
-  if (a1 && [*(a1 + 160) count])
+  if (process && [*(process + 160) count])
   {
     [a2 count];
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = *(a1 + 160);
-    v13 = OUTLINED_FUNCTION_4_2(v4, v6, v7, v8, v9, v10, v11, v12, v27, v29, v31, v33, v35, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, 0);
+    array = [MEMORY[0x1E695DF70] array];
+    v5 = *(process + 160);
+    v13 = OUTLINED_FUNCTION_4_2(array, v6, v7, v8, v9, v10, v11, v12, v27, v29, v31, v33, v35, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, 0);
     if (v13)
     {
       v14 = v13;
@@ -209,7 +209,7 @@
           v18 = [a2 containsObject:v17];
           if ((v18 & 1) == 0)
           {
-            v18 = [v4 addObject:v17];
+            v18 = [array addObject:v17];
           }
         }
 
@@ -219,20 +219,20 @@
       while (v14);
     }
 
-    [*(a1 + 160) removeObjectsForKeys:v4];
-    if (![*(a1 + 160) count])
+    [*(process + 160) removeObjectsForKeys:array];
+    if (![*(process + 160) count])
     {
-      v26 = *(a1 + 168);
+      v26 = *(process + 168);
       if (v26)
       {
         CFRelease(v26);
-        *(a1 + 168) = 0;
+        *(process + 168) = 0;
       }
     }
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   v6 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -240,7 +240,7 @@
     OUTLINED_FUNCTION_5_14();
   }
 
-  if (!a3 || (ImageBuffer = CMSampleBufferGetImageBuffer(a3)) == 0 || (v8 = ImageBuffer, Width = CVPixelBufferGetWidth(ImageBuffer), Height = CVPixelBufferGetHeight(v8), !CMGetAttachment(a3, *off_1E798A3C8, 0)) || (v11 = CMGetAttachment(a3, @"StillSettings", 0)) == 0)
+  if (!buffer || (ImageBuffer = CMSampleBufferGetImageBuffer(buffer)) == 0 || (v8 = ImageBuffer, Width = CVPixelBufferGetWidth(ImageBuffer), Height = CVPixelBufferGetHeight(v8), !CMGetAttachment(buffer, *off_1E798A3C8, 0)) || (v11 = CMGetAttachment(buffer, @"StillSettings", 0)) == 0)
   {
     if (!self)
     {
@@ -269,7 +269,7 @@
 
   else
   {
-    v42 = self;
+    selfCopy = self;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:{0x1F21AABB0, @"PersonSemanticsHair", @"PersonSemanticsSkin", @"PersonSemanticsTeeth", @"PersonSemanticsGlasses", 0}];
     v18 = [MEMORY[0x1E695DF70] arrayWithArray:v17];
     v43 = 0u;
@@ -294,7 +294,7 @@
           AttachedMedia = [v30 isEqualToString:@"PrimaryFormat"];
           if ((AttachedMedia & 1) == 0)
           {
-            AttachedMedia = BWSampleBufferGetAttachedMedia(a3, v30);
+            AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, v30);
             if (!AttachedMedia)
             {
               AttachedMedia = [v18 removeObject:v30];
@@ -310,12 +310,12 @@
 
     v16 = [v18 copy];
     v6 = MEMORY[0x1E695FF58];
-    self = v42;
+    self = selfCopy;
   }
 
   if (![v16 count])
   {
-    [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+    [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
 LABEL_32:
     if (-[BWNodeOutput memoryPool](self->super._output, "memoryPool") && ![objc_msgSend(v12 "requestedSettings")])
     {
@@ -325,7 +325,7 @@ LABEL_32:
     goto LABEL_35;
   }
 
-  v39 = [CMGetAttachment(a3 @"StillImageBufferFrameType"];
+  v39 = [CMGetAttachment(buffer @"StillImageBufferFrameType"];
   if (v39 == 40)
   {
     [(BWMatteMediaScalerNode *)self _purgeResourcesLeavingThemForMediaToProcess:v16];
@@ -333,10 +333,10 @@ LABEL_32:
 
   if ([v16 count])
   {
-    [(BWMatteMediaScalerNode *)self _zoomAttachedMedia:v16 sampleBuffer:a3];
+    [(BWMatteMediaScalerNode *)self _zoomAttachedMedia:v16 sampleBuffer:buffer];
   }
 
-  [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+  [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
   if (v39 == 40)
   {
     goto LABEL_32;
@@ -351,13 +351,13 @@ LABEL_35:
 
 - (uint64_t)_zoomAttachedMedia:(CMAttachmentBearerRef)target sampleBuffer:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v50 = CMGetAttachment(target, @"StillSettings", 0);
-  v49 = [v50 requestedSettings];
+  requestedSettings = [v50 requestedSettings];
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
@@ -404,19 +404,19 @@ LABEL_35:
 
         v16 = ImageBuffer;
         v17 = CMGetAttachment(v14, key, 0);
-        [(BWMatteMediaScalerNode *)a1 mainImageDownscalingFactorForAttachedMediaKey:v10 attachedMediaMetadata:v17];
+        [(BWMatteMediaScalerNode *)self mainImageDownscalingFactorForAttachedMediaKey:v10 attachedMediaMetadata:v17];
         v19 = v18;
-        if (v18 == 0.0 && ![*(a1 + 152) objectForKeyedSubscript:v10])
+        if (v18 == 0.0 && ![*(self + 152) objectForKeyedSubscript:v10])
         {
           goto LABEL_19;
         }
 
-        if (!*(a1 + 168) && VTPixelTransferSessionCreate(allocator, (a1 + 168)))
+        if (!*(self + 168) && VTPixelTransferSessionCreate(allocator, (self + 168)))
         {
           goto LABEL_19;
         }
 
-        [objc_msgSend(objc_msgSend(a1 graph];
+        [objc_msgSend(objc_msgSend(self graph];
         v20 = v19 == 0.0 || v19 == 1.0;
         if (!v20 && CVPixelBufferGetPixelFormatType(v16) != 1278226488)
         {
@@ -429,19 +429,19 @@ LABEL_19:
 
         CVPixelBufferGetWidth(v16);
         CVPixelBufferGetHeight(v16);
-        v23 = [v49 outputWidth];
-        v24 = [v49 outputHeight];
-        [v49 outputWidth];
-        [v49 outputHeight];
-        [v49 isZoomWithoutUpscalingEnabled];
+        outputWidth = [requestedSettings outputWidth];
+        outputHeight = [requestedSettings outputHeight];
+        [requestedSettings outputWidth];
+        [requestedSettings outputHeight];
+        [requestedSettings isZoomWithoutUpscalingEnabled];
         v8 = v53;
-        [v49 aspectRatio];
-        v25 = v24;
+        [requestedSettings aspectRatio];
+        v25 = outputHeight;
         v6 = v54;
-        v26 = [BWMatteMediaScalerNode _outputDimensionsForAttachedMediaKey:a1 attachedMediaMainImageDownscalingFactor:v10 primaryMediaWidth:v23 primaryMediaHeight:v25 requestedWidth:v19 requestedHeight:? zoomWithoutUpscalingEnabled:? aspectRatio:? inputDimensions:?];
-        [(BWMatteMediaScalerNode *)a1 _rebuildBufferPoolForAttachedMediaKey:v10 attachedMediaMainImageDownscalingFactor:v19 inputDimensions:v27 outputDimensions:v26 settings:v50];
+        v26 = [BWMatteMediaScalerNode _outputDimensionsForAttachedMediaKey:self attachedMediaMainImageDownscalingFactor:v10 primaryMediaWidth:outputWidth primaryMediaHeight:v25 requestedWidth:v19 requestedHeight:? zoomWithoutUpscalingEnabled:? aspectRatio:? inputDimensions:?];
+        [(BWMatteMediaScalerNode *)self _rebuildBufferPoolForAttachedMediaKey:v10 attachedMediaMainImageDownscalingFactor:v19 inputDimensions:v27 outputDimensions:v26 settings:v50];
         [MEMORY[0x1E696AEC0] stringWithFormat:@"NewPixelBuffer-%@", v10];
-        v28 = [objc_msgSend(*(a1 + 160) objectForKeyedSubscript:{v10), "newPixelBuffer"}];
+        v28 = [objc_msgSend(*(self + 160) objectForKeyedSubscript:{v10), "newPixelBuffer"}];
         if (!v28)
         {
           goto LABEL_19;
@@ -516,7 +516,7 @@ LABEL_19:
         else
         {
           BWCMSampleBufferCopyReattachAndReturnMutableMetadata(cf);
-          v7 = VTPixelTransferSessionTransferImage(*(a1 + 168), v16, v29);
+          v7 = VTPixelTransferSessionTransferImage(*(self + 168), v16, v29);
           if (!v7)
           {
             v40 = OUTLINED_FUNCTION_1_19();
@@ -555,20 +555,20 @@ LABEL_20:
   return v7;
 }
 
-- (uint64_t)_outputDimensionsForAttachedMediaKey:(unint64_t)a3 attachedMediaMainImageDownscalingFactor:(unint64_t)a4 primaryMediaWidth:(float)a5 primaryMediaHeight:requestedWidth:requestedHeight:zoomWithoutUpscalingEnabled:aspectRatio:inputDimensions:
+- (uint64_t)_outputDimensionsForAttachedMediaKey:(unint64_t)key attachedMediaMainImageDownscalingFactor:(unint64_t)factor primaryMediaWidth:(float)width primaryMediaHeight:requestedWidth:requestedHeight:zoomWithoutUpscalingEnabled:aspectRatio:inputDimensions:
 {
-  if (!a1)
+  if (!self)
   {
     goto LABEL_11;
   }
 
-  if (a5 == 0.0)
+  if (width == 0.0)
   {
-    if ([*(a1 + 152) objectForKeyedSubscript:a2])
+    if ([*(self + 152) objectForKeyedSubscript:a2])
     {
       v11 = MEMORY[0x1E695F060];
       size = *MEMORY[0x1E695F060];
-      CGSizeMakeWithDictionaryRepresentation([*(a1 + 152) objectForKeyedSubscript:a2], &size);
+      CGSizeMakeWithDictionaryRepresentation([*(self + 152) objectForKeyedSubscript:a2], &size);
       if (size.width != *v11 || size.height != v11[1])
       {
         width = size.width;
@@ -585,27 +585,27 @@ LABEL_11:
     return v8 | width;
   }
 
-  width = FigCaptureRoundFloatToMultipleOf(2, a3 / a5);
-  v8 = FigCaptureRoundFloatToMultipleOf(2, a4 / a5) << 32;
+  width = FigCaptureRoundFloatToMultipleOf(2, key / width);
+  v8 = FigCaptureRoundFloatToMultipleOf(2, factor / width) << 32;
   return v8 | width;
 }
 
-- (void)_rebuildBufferPoolForAttachedMediaKey:(float)a3 attachedMediaMainImageDownscalingFactor:(uint64_t)a4 inputDimensions:(uint64_t)a5 outputDimensions:(void *)a6 settings:
+- (void)_rebuildBufferPoolForAttachedMediaKey:(float)key attachedMediaMainImageDownscalingFactor:(uint64_t)factor inputDimensions:(uint64_t)dimensions outputDimensions:(void *)outputDimensions settings:
 {
-  if (a1 && (a3 != 0.0 || [*(a1 + 152) objectForKeyedSubscript:a2]))
+  if (self && (key != 0.0 || [*(self + 152) objectForKeyedSubscript:a2]))
   {
-    v10 = *(a1 + 160);
+    v10 = *(self + 160);
     if (!v10)
     {
       v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      *(a1 + 160) = v10;
+      *(self + 160) = v10;
     }
 
     v11 = [v10 objectForKeyedSubscript:a2];
-    if (a5 == [v11 width] && objc_msgSend(v11, "height") == a5 >> 32)
+    if (dimensions == [v11 width] && objc_msgSend(v11, "height") == dimensions >> 32)
     {
-      v12 = *(a1 + 136);
-      [objc_msgSend(a6 "requestedSettings")];
+      v12 = *(self + 136);
+      [objc_msgSend(outputDimensions "requestedSettings")];
       if ([v11 capacity] != v12)
       {
 
@@ -616,19 +616,19 @@ LABEL_11:
     else
     {
       v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"MatteMediaScaler-%@", a2];
-      v14 = *(a1 + 136);
-      [objc_msgSend(a6 "requestedSettings")];
-      v15 = [objc_msgSend(*(a1 + 16) mediaPropertiesForAttachedMediaKey:{a2), "resolvedVideoFormat"}];
-      v16 = [v15 pixelFormat];
-      if (v16)
+      v14 = *(self + 136);
+      [objc_msgSend(outputDimensions "requestedSettings")];
+      v15 = [objc_msgSend(*(self + 16) mediaPropertiesForAttachedMediaKey:{a2), "resolvedVideoFormat"}];
+      pixelFormat = [v15 pixelFormat];
+      if (pixelFormat)
       {
-        v17 = v16;
+        v17 = pixelFormat;
         v18 = objc_alloc_init(BWVideoFormatRequirements);
         v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v17];
         [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
         [OUTLINED_FUNCTION_15() setSupportedPixelFormats:?];
-        [(BWVideoFormatRequirements *)v18 setWidth:a5];
-        [(BWVideoFormatRequirements *)v18 setHeight:a5 >> 32];
+        [(BWVideoFormatRequirements *)v18 setWidth:dimensions];
+        [(BWVideoFormatRequirements *)v18 setHeight:dimensions >> 32];
         +[BWVideoFormatRequirements cacheModesForCacheProfile:](BWVideoFormatRequirements, "cacheModesForCacheProfile:", [v15 cacheMode]);
         [OUTLINED_FUNCTION_15() setSupportedCacheModes:?];
         [(BWVideoFormatRequirements *)v18 setWidthAlignment:16];
@@ -641,13 +641,13 @@ LABEL_11:
         v25 = v18;
         v19 = +[BWVideoFormat formatByResolvingRequirements:](BWVideoFormat, "formatByResolvingRequirements:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1]);
         v20 = [BWPixelBufferPool alloc];
-        v21 = [*(a1 + 16) memoryPool];
-        LOBYTE(v24) = *(a1 + 176);
-        v22 = [(BWPixelBufferPool *)v20 initWithVideoFormat:v19 capacity:v14 name:v13 clientProvidesPool:0 memoryPool:v21 providesBackPressure:v24 reportSlowBackPressureAllocations:?];
+        memoryPool = [*(self + 16) memoryPool];
+        LOBYTE(v24) = *(self + 176);
+        v22 = [(BWPixelBufferPool *)v20 initWithVideoFormat:v19 capacity:v14 name:v13 clientProvidesPool:0 memoryPool:memoryPool providesBackPressure:v24 reportSlowBackPressureAllocations:?];
         if (v22)
         {
           v23 = v22;
-          [*(a1 + 160) setObject:v22 forKeyedSubscript:a2];
+          [*(self + 160) setObject:v22 forKeyedSubscript:a2];
         }
       }
     }

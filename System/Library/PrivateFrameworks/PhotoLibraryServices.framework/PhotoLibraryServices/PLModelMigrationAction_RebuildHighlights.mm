@@ -1,20 +1,20 @@
 @interface PLModelMigrationAction_RebuildHighlights
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RebuildHighlights
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = [PLMomentGenerationDataManager alloc];
-  v8 = [(PLModelMigrationActionBackground *)self pathManager];
-  v9 = [(PLMomentGenerationDataManager *)v7 initWithManagedObjectContext:v6 pathManagerForLightweightMigration:v8];
+  pathManager = [(PLModelMigrationActionBackground *)self pathManager];
+  v9 = [(PLMomentGenerationDataManager *)v7 initWithManagedObjectContext:contextCopy pathManagerForLightweightMigration:pathManager];
 
-  v10 = [(PLMomentGenerationDataManager *)v9 generator];
+  generator = [(PLMomentGenerationDataManager *)v9 generator];
   [PLMomentGenerationDataManager setManagerMomentarilyBlessed:v9];
-  if (v10)
+  if (generator)
   {
     v24 = PLMomentGenerationShouldDeleteAllHighlightsKey;
     v25[0] = MEMORY[0x1E695E110];
@@ -28,7 +28,7 @@
     v20[3] = &unk_1E75781E8;
     v21 = v13;
     v14 = v13;
-    [v10 rebuildAllHighlightsWithOptions:v12 completionHandler:v20];
+    [generator rebuildAllHighlightsWithOptions:v12 completionHandler:v20];
     dispatch_group_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
   }
 
@@ -41,10 +41,10 @@
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v12 = [v15 errorWithDomain:v16 code:41001 userInfo:v17];
 
-    if (a4)
+    if (error)
     {
       v18 = v12;
-      *a4 = v12;
+      *error = v12;
     }
 
     v11 = 3;

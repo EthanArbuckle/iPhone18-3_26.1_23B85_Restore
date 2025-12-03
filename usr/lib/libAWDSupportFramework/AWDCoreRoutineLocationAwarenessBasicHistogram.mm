@@ -1,13 +1,13 @@
 @interface AWDCoreRoutineLocationAwarenessBasicHistogram
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)countAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (int)countAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineLocationAwarenessBasicHistogram
@@ -20,16 +20,16 @@
   [(AWDCoreRoutineLocationAwarenessBasicHistogram *)&v3 dealloc];
 }
 
-- (int)countAtIndex:(unint64_t)a3
+- (int)countAtIndex:(unint64_t)index
 {
   p_counts = &self->_counts;
   count = self->_counts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_counts->list[a3];
+  return p_counts->list[index];
 }
 
 - (id)description
@@ -41,12 +41,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v2 = [MEMORY[0x29EDB8E00] dictionary];
-  [v2 setObject:PBRepeatedInt32NSArray() forKey:@"count"];
-  return v2;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"count"];
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   p_counts = &self->_counts;
   if (self->_counts.count)
@@ -63,33 +63,33 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ([(AWDCoreRoutineLocationAwarenessBasicHistogram *)self countsCount])
   {
-    [a3 clearCounts];
-    v5 = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self countsCount];
-    if (v5)
+    [to clearCounts];
+    countsCount = [(AWDCoreRoutineLocationAwarenessBasicHistogram *)self countsCount];
+    if (countsCount)
     {
-      v6 = v5;
+      v6 = countsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addCount:{-[AWDCoreRoutineLocationAwarenessBasicHistogram countAtIndex:](self, "countAtIndex:", i)}];
+        [to addCount:{-[AWDCoreRoutineLocationAwarenessBasicHistogram countAtIndex:](self, "countAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedInt32Copy();
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = [a3 isMemberOfClass:objc_opt_class()];
+  v3 = [equal isMemberOfClass:objc_opt_class()];
   if (v3)
   {
 
@@ -99,15 +99,15 @@
   return v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = [a3 countsCount];
-  if (v5)
+  countsCount = [from countsCount];
+  if (countsCount)
   {
-    v6 = v5;
+    v6 = countsCount;
     for (i = 0; i != v6; ++i)
     {
-      -[AWDCoreRoutineLocationAwarenessBasicHistogram addCount:](self, "addCount:", [a3 countAtIndex:i]);
+      -[AWDCoreRoutineLocationAwarenessBasicHistogram addCount:](self, "addCount:", [from countAtIndex:i]);
     }
   }
 }

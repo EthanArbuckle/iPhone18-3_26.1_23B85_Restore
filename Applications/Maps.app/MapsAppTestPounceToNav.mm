@@ -6,18 +6,18 @@
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTest *)self testName];
-  NSLog(@"test is %@", v3);
+  testName = [(MapsAppTest *)self testName];
+  NSLog(@"test is %@", testName);
 
-  v4 = [(MapsAppTest *)self options];
-  v5 = [v4 objectForKeyedSubscript:@"traceName"];
+  options = [(MapsAppTest *)self options];
+  v5 = [options objectForKeyedSubscript:@"traceName"];
 
   v6 = [NSBundle bundleWithIdentifier:@"com.apple.Maps"];
   v7 = [v5 stringByAppendingString:@".trace"];
   v8 = [v6 pathForResource:v7 ofType:@"sqlite"];
 
-  v9 = [(MapsAppTest *)self testCoordinator];
-  [v9 pptTestStartTracePlaybackFromPath:v8];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestStartTracePlaybackFromPath:v8];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;

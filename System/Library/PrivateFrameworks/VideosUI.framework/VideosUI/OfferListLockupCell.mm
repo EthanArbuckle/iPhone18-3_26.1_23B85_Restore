@@ -1,14 +1,14 @@
 @interface OfferListLockupCell
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (void)vui_prepareForReuse;
-- (void)vui_setHighlighted:(BOOL)a3;
+- (void)vui_setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation OfferListLockupCell
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v5 = self;
+  selfCopy = self;
   v6 = OUTLINED_FUNCTION_25_1();
   sub_1E3B937A0(v6, v7);
   OUTLINED_FUNCTION_18_3();
@@ -19,15 +19,15 @@
   return result;
 }
 
-- (void)vui_setHighlighted:(BOOL)a3
+- (void)vui_setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_1E3B93994(a3);
+  selfCopy = self;
+  sub_1E3B93994(highlighted);
 }
 
 - (void)vui_prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3B93A64();
 }
 

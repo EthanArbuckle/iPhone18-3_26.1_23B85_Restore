@@ -1,5 +1,5 @@
 @interface PGMeaningfulEventMatchingResult
-- (PGMeaningfulEventMatchingResult)initWithIsMatching:(BOOL)a3 score:(double)a4 isReliable:(BOOL)a5 requiredCriteria:(id)a6;
+- (PGMeaningfulEventMatchingResult)initWithIsMatching:(BOOL)matching score:(double)score isReliable:(BOOL)reliable requiredCriteria:(id)criteria;
 - (id)description;
 @end
 
@@ -33,19 +33,19 @@
   return v8;
 }
 
-- (PGMeaningfulEventMatchingResult)initWithIsMatching:(BOOL)a3 score:(double)a4 isReliable:(BOOL)a5 requiredCriteria:(id)a6
+- (PGMeaningfulEventMatchingResult)initWithIsMatching:(BOOL)matching score:(double)score isReliable:(BOOL)reliable requiredCriteria:(id)criteria
 {
-  v11 = a6;
+  criteriaCopy = criteria;
   v15.receiver = self;
   v15.super_class = PGMeaningfulEventMatchingResult;
   v12 = [(PGMeaningfulEventMatchingResult *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_isMatching = a3;
-    v12->_score = a4;
-    v12->_isReliable = a5;
-    objc_storeStrong(&v12->_requiredCriteria, a6);
+    v12->_isMatching = matching;
+    v12->_score = score;
+    v12->_isReliable = reliable;
+    objc_storeStrong(&v12->_requiredCriteria, criteria);
   }
 
   return v13;

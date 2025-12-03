@@ -1,41 +1,41 @@
 @interface XBLaunchImageProviderClient
-+ (void)preheatServiceWithTimeout:(double)a3;
++ (void)preheatServiceWithTimeout:(double)timeout;
 - (XBLaunchImageProviderClient)init;
-- (XBLaunchImageProviderClient)initWithApplicationInfo:(id)a3;
-- (unsigned)generateImageWithContext:(id)a3 captureInfo:(id *)a4 error:(id *)a5;
+- (XBLaunchImageProviderClient)initWithApplicationInfo:(id)info;
+- (unsigned)generateImageWithContext:(id)context captureInfo:(id *)info error:(id *)error;
 @end
 
 @implementation XBLaunchImageProviderClient
 
 - (XBLaunchImageProviderClient)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"XBLaunchImageProviderClient.m" lineNumber:35 description:@"use initWithDefaultService"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"XBLaunchImageProviderClient.m" lineNumber:35 description:@"use initWithDefaultService"];
 
   return 0;
 }
 
-- (XBLaunchImageProviderClient)initWithApplicationInfo:(id)a3
+- (XBLaunchImageProviderClient)initWithApplicationInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = XBLaunchImageProviderClient;
   v6 = [(BSBaseXPCClient *)&v9 initWithServiceName:@"com.apple.splashboard.launchimage" endpoint:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appInfo, a3);
+    objc_storeStrong(&v6->_appInfo, info);
   }
 
   return v7;
 }
 
-- (unsigned)generateImageWithContext:(id)a3 captureInfo:(id *)a4 error:(id *)a5
+- (unsigned)generateImageWithContext:(id)context captureInfo:(id *)info error:(id *)error
 {
   v93 = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  v58 = [v57 launchRequest];
-  v7 = [v57 applicationCompatibilityInfo];
+  contextCopy = context;
+  launchRequest = [contextCopy launchRequest];
+  applicationCompatibilityInfo = [contextCopy applicationCompatibilityInfo];
   v81 = 0;
   v82 = &v81;
   v83 = 0x3032000000;
@@ -46,56 +46,56 @@
   v78 = &v77;
   v79 = 0x2020000000;
   v80 = -1;
-  if (!v57)
+  if (!contextCopy)
   {
-    v46 = [MEMORY[0x277CCA890] currentHandler];
-    [v46 handleFailureInMethod:a2 object:self file:@"XBLaunchImageProviderClient.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"context != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"XBLaunchImageProviderClient.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"context != nil"}];
   }
 
-  if (!v58)
+  if (!launchRequest)
   {
-    v47 = [MEMORY[0x277CCA890] currentHandler];
-    [v47 handleFailureInMethod:a2 object:self file:@"XBLaunchImageProviderClient.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"launchRequest != nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"XBLaunchImageProviderClient.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"launchRequest != nil"}];
   }
 
-  if (!v7)
+  if (!applicationCompatibilityInfo)
   {
-    v48 = [MEMORY[0x277CCA890] currentHandler];
-    [v48 handleFailureInMethod:a2 object:self file:@"XBLaunchImageProviderClient.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"appInfo != nil"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"XBLaunchImageProviderClient.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"appInfo != nil"}];
   }
 
   if (!self->_appInfo)
   {
-    v49 = [MEMORY[0x277CCA890] currentHandler];
-    [v49 handleFailureInMethod:a2 object:self file:@"XBLaunchImageProviderClient.m" lineNumber:58 description:@"This API cannot be used if the client was not initialized with an app info"];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"XBLaunchImageProviderClient.m" lineNumber:58 description:@"This API cannot be used if the client was not initialized with an app info"];
   }
 
-  v8 = [v7 bundleIdentifier];
-  v9 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
+  bundleIdentifier = [applicationCompatibilityInfo bundleIdentifier];
+  bundleIdentifier2 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
   v10 = BSEqualStrings();
 
   if ((v10 & 1) == 0)
   {
-    v50 = [MEMORY[0x277CCA890] currentHandler];
-    v51 = [v7 bundleIdentifier];
-    v52 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
-    [v50 handleFailureInMethod:a2 object:self file:@"XBLaunchImageProviderClient.m" lineNumber:59 description:{@"app info bundle ID: %@ doesn't match ivar app info bundle ID: %@", v51, v52}];
+    currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+    bundleIdentifier3 = [applicationCompatibilityInfo bundleIdentifier];
+    bundleIdentifier4 = [(XBApplicationLaunchCompatibilityInfo *)self->_appInfo bundleIdentifier];
+    [currentHandler5 handleFailureInMethod:a2 object:self file:@"XBLaunchImageProviderClient.m" lineNumber:59 description:{@"app info bundle ID: %@ doesn't match ivar app info bundle ID: %@", bundleIdentifier3, bundleIdentifier4}];
   }
 
-  v11 = [v7 launchInterfaceIdentifierForRequest:v58];
-  [v58 setLaunchInterfaceIdentifier:v11];
+  v11 = [applicationCompatibilityInfo launchInterfaceIdentifierForRequest:launchRequest];
+  [launchRequest setLaunchInterfaceIdentifier:v11];
 
   v12 = MEMORY[0x277CC1E90];
-  v13 = [v7 bundleIdentifier];
+  bundleIdentifier5 = [applicationCompatibilityInfo bundleIdentifier];
   v76 = 0;
-  v55 = [v12 bundleRecordWithBundleIdentifier:v13 allowPlaceholder:0 error:&v76];
+  v55 = [v12 bundleRecordWithBundleIdentifier:bundleIdentifier5 allowPlaceholder:0 error:&v76];
   v56 = v76;
 
   if (v56)
   {
     v14 = [XBLaunchImageError alloc];
-    v15 = [v7 bundleIdentifier];
-    v16 = [(XBLaunchImageError *)v14 initWithCode:4 bundleID:v15 reason:@"Failed to get LSBundleRecord" fatal:0];
+    bundleIdentifier6 = [applicationCompatibilityInfo bundleIdentifier];
+    v16 = [(XBLaunchImageError *)v14 initWithCode:4 bundleID:bundleIdentifier6 reason:@"Failed to get LSBundleRecord" fatal:0];
     v17 = 0;
     v18 = v82[5];
     v82[5] = v16;
@@ -111,10 +111,10 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  v15 = v55;
-  v28 = [v15 isDeletableSystemApplication];
-  v17 = v28;
-  if (v28)
+  bundleIdentifier6 = v55;
+  isDeletableSystemApplication = [bundleIdentifier6 isDeletableSystemApplication];
+  v17 = isDeletableSystemApplication;
+  if (isDeletableSystemApplication)
   {
     v18 = XBLogCapture();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -136,40 +136,40 @@ LABEL_15:
   }
 
   [(BSBaseXPCClient *)self _sendMessage:&__block_literal_global_8];
-  v20 = [(BSBaseXPCClient *)self _connection];
-  v21 = [v58 launchInterfaceIdentifier];
-  v22 = [v7 launchInterfaceWithIdentifier:v21];
+  _connection = [(BSBaseXPCClient *)self _connection];
+  launchInterfaceIdentifier = [launchRequest launchInterfaceIdentifier];
+  v22 = [applicationCompatibilityInfo launchInterfaceWithIdentifier:launchInterfaceIdentifier];
 
-  v23 = self;
-  v24 = [v7 bundlePath];
-  v25 = [MEMORY[0x277CCA8D8] bundleWithPath:v24];
+  selfCopy = self;
+  bundlePath = [applicationCompatibilityInfo bundlePath];
+  v25 = [MEMORY[0x277CCA8D8] bundleWithPath:bundlePath];
   if (v25)
   {
     if ([v22 isStoryboard])
     {
-      v26 = [v22 name];
+      name = [v22 name];
       v27 = v82;
       v75 = v82[5];
-      XBValidateStoryboard(v26, v25, &v75);
+      XBValidateStoryboard(name, v25, &v75);
       objc_storeStrong(v27 + 5, v75);
     }
 
     else if ([v22 isXIB])
     {
-      v26 = [v22 name];
+      name = [v22 name];
       v36 = v82;
       obj = v82[5];
-      XBValidateNib(v26, v25, &obj);
+      XBValidateNib(name, v25, &obj);
       objc_storeStrong(v36 + 5, obj);
     }
 
     else
     {
-      v26 = XBLogCapture();
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+      name = XBLogCapture();
+      if (os_log_type_enabled(name, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_26B5EF000, v26, OS_LOG_TYPE_DEFAULT, "Nothing to validate", buf, 2u);
+        _os_log_impl(&dword_26B5EF000, name, OS_LOG_TYPE_DEFAULT, "Nothing to validate", buf, 2u);
       }
     }
 
@@ -178,26 +178,26 @@ LABEL_15:
       goto LABEL_32;
     }
 
-    v30 = XBLogCapture();
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+    bundleIdentifier7 = XBLogCapture();
+    if (os_log_type_enabled(bundleIdentifier7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_26B5EF000, v30, OS_LOG_TYPE_DEFAULT, "Validated OK", buf, 2u);
+      _os_log_impl(&dword_26B5EF000, bundleIdentifier7, OS_LOG_TYPE_DEFAULT, "Validated OK", buf, 2u);
     }
   }
 
   else
   {
     v29 = [XBLaunchImageError alloc];
-    v30 = [(XBApplicationLaunchCompatibilityInfo *)v23->_appInfo bundleIdentifier];
+    bundleIdentifier7 = [(XBApplicationLaunchCompatibilityInfo *)selfCopy->_appInfo bundleIdentifier];
     v31 = MEMORY[0x277CCACA8];
-    v32 = [v58 launchInterfaceIdentifier];
-    v33 = [v31 stringWithFormat:@"Validation failed to construct NSBundle for %@ at %@.", v32, v24];
-    v34 = [(XBLaunchImageError *)v29 initWithCode:4 bundleID:v30 reason:v33 fatal:0];
+    launchInterfaceIdentifier2 = [launchRequest launchInterfaceIdentifier];
+    v33 = [v31 stringWithFormat:@"Validation failed to construct NSBundle for %@ at %@.", launchInterfaceIdentifier2, bundlePath];
+    v34 = [(XBLaunchImageError *)v29 initWithCode:4 bundleID:bundleIdentifier7 reason:v33 fatal:0];
     v35 = v82[5];
     v82[5] = v34;
 
-    self = v23;
+    self = selfCopy;
   }
 
 LABEL_32:
@@ -209,7 +209,7 @@ LABEL_33:
   }
 
   v37 = objc_alloc_init(MEMORY[0x277CF0B78]);
-  [v57 timeout];
+  [contextCopy timeout];
   if (v38 > 0.0)
   {
     v39 = dispatch_time(0, (v38 * 1000000000.0));
@@ -219,9 +219,9 @@ LABEL_33:
     block[2] = __74__XBLaunchImageProviderClient_generateImageWithContext_captureInfo_error___block_invoke_38;
     block[3] = &unk_279CF9D68;
     v70 = v37;
-    v72 = self;
+    selfCopy2 = self;
     v73 = &v81;
-    v71 = v7;
+    v71 = applicationCompatibilityInfo;
     dispatch_after(v39, v40, block);
   }
 
@@ -235,9 +235,9 @@ LABEL_33:
   v65[1] = 3221225472;
   v65[2] = __74__XBLaunchImageProviderClient_generateImageWithContext_captureInfo_error___block_invoke_43;
   v65[3] = &unk_279CF9D90;
-  v66 = v7;
-  v67 = v58;
-  v68 = a4 != 0;
+  v66 = applicationCompatibilityInfo;
+  v67 = launchRequest;
+  v68 = info != 0;
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
   v59[2] = __74__XBLaunchImageProviderClient_generateImageWithContext_captureInfo_error___block_invoke_2;
@@ -249,9 +249,9 @@ LABEL_33:
   v64 = buf;
   v61 = v66;
   [(BSBaseXPCClient *)self _sendMessage:v65 withReplyHandler:v59 waitForReply:1 waitDuration:-1];
-  if (a4)
+  if (info)
   {
-    *a4 = *(v88 + 5);
+    *info = *(v88 + 5);
   }
 
   _Block_object_dispose(buf, 8);
@@ -265,12 +265,12 @@ LABEL_49:
       v42 = XBLogCapture();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
       {
-        v43 = [v7 bundleIdentifier];
-        [XBLaunchImageProviderClient generateImageWithContext:v43 captureInfo:buf error:v42];
+        bundleIdentifier8 = [applicationCompatibilityInfo bundleIdentifier];
+        [XBLaunchImageProviderClient generateImageWithContext:bundleIdentifier8 captureInfo:buf error:v42];
       }
     }
 
-    *a5 = v82[5];
+    *error = v82[5];
   }
 
   v44 = *(v78 + 6);
@@ -349,26 +349,26 @@ uint64_t __74__XBLaunchImageProviderClient_generateImageWithContext_captureInfo_
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)preheatServiceWithTimeout:(double)a3
++ (void)preheatServiceWithTimeout:(double)timeout
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3 <= 0.0)
+  if (timeout <= 0.0)
   {
-    [(XBLaunchImageProviderClient *)a2 preheatServiceWithTimeout:a1];
+    [(XBLaunchImageProviderClient *)a2 preheatServiceWithTimeout:self];
   }
 
   v4 = XBLogDaemonLifecycle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v13 = a3;
+    timeoutCopy = timeout;
     _os_log_impl(&dword_26B5EF000, v4, OS_LOG_TYPE_DEFAULT, "Warming up splashboardd (timeout %.1fs)", buf, 0xCu);
   }
 
   v5 = [(BSBaseXPCClient *)[XBLaunchImageProviderClient alloc] initWithServiceName:@"com.apple.splashboard.launchimage"];
   [(BSBaseXPCClient *)v5 _sendMessage:&__block_literal_global_53];
-  v6 = [(BSBaseXPCClient *)v5 _connection];
-  v7 = dispatch_time(0, (a3 * 1000000000.0));
+  _connection = [(BSBaseXPCClient *)v5 _connection];
+  v7 = dispatch_time(0, (timeout * 1000000000.0));
   v8 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

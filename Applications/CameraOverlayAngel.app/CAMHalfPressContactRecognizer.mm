@@ -1,11 +1,11 @@
 @interface CAMHalfPressContactRecognizer
-- (BOOL)_isValidDoubleHalfPressWithAction:(id)a3;
+- (BOOL)_isValidDoubleHalfPressWithAction:(id)action;
 - (CAMHalfPressContactRecognizer)init;
 - (CAMHalfPressContactRecognizerDelegate)delegate;
 - (double)_doubleHalfPressMaximumDelay;
 - (double)_maxPositionDeltaBetweenHalfPresses;
 - (double)_minimumHalfPressDelayAfterDoubleHalfPress;
-- (void)contactUpdatedWithAction:(id)a3;
+- (void)contactUpdatedWithAction:(id)action;
 - (void)reset;
 @end
 
@@ -103,31 +103,31 @@
   [(CAMHalfPressContactRecognizer *)self _setIgnoringCurrentHalfPress:0];
   if ([(CAMHalfPressContactRecognizer *)self _sensingAlgsDoubleHalfPressEnabled])
   {
-    v3 = [(CAMHalfPressContactRecognizer *)self _doubleHalfPressValidator];
-    [v3 reset];
+    _doubleHalfPressValidator = [(CAMHalfPressContactRecognizer *)self _doubleHalfPressValidator];
+    [_doubleHalfPressValidator reset];
   }
 }
 
-- (void)contactUpdatedWithAction:(id)a3
+- (void)contactUpdatedWithAction:(id)action
 {
-  v29 = a3;
+  actionCopy = action;
   if ([(CAMHalfPressContactRecognizer *)self enabled])
   {
-    v4 = [v29 _contact];
+    _contact = [actionCopy _contact];
     [(CAMHalfPressContactRecognizer *)self _lastHalfPressTimestamp];
     if (v5 != 0.0)
     {
-      [v4 positionDelta];
+      [_contact positionDelta];
       CEKExpandNormalizedContactPoint();
       v7 = fabs(v6);
       [(CAMHalfPressContactRecognizer *)self _accumulatedPositionDeltaSinceLastHalfPress];
       [(CAMHalfPressContactRecognizer *)self _setAccumulatedPositionDeltaSinceLastHalfPress:v8 + v7];
     }
 
-    v9 = [v29 _stagePhase];
-    if (v9 < 3)
+    _stagePhase = [actionCopy _stagePhase];
+    if (_stagePhase < 3)
     {
-      v10 = 1u >> (v9 & 7);
+      v10 = 1u >> (_stagePhase & 7);
     }
 
     else
@@ -135,32 +135,32 @@
       v10 = 0;
     }
 
-    v11 = [v29 _stage];
-    v12 = [v29 _numberOfStages];
-    v13 = [v4 isTouching];
-    if (v12 > 1)
+    _stage = [actionCopy _stage];
+    _numberOfStages = [actionCopy _numberOfStages];
+    isTouching = [_contact isTouching];
+    if (_numberOfStages > 1)
     {
-      v15 = v29;
-      if (v11 <= 3)
+      v15 = actionCopy;
+      if (_stage <= 3)
       {
-        if (v11 == 3)
+        if (_stage == 3)
         {
           v14 = 3;
         }
 
         else
         {
-          if (v11 == 1)
+          if (_stage == 1)
           {
             v16 = 1;
           }
 
           else
           {
-            v16 = v13;
+            v16 = isTouching;
           }
 
-          if (v11 <= 1)
+          if (_stage <= 1)
           {
             v14 = v16;
           }
@@ -180,8 +180,8 @@
 
     else
     {
-      v14 = 4 * (v11 > 0);
-      v15 = v29;
+      v14 = 4 * (_stage > 0);
+      v15 = actionCopy;
     }
 
     if (v14 == 2)
@@ -201,13 +201,13 @@
 
     [v15 _timestamp];
     v19 = v18;
-    v20 = [(CAMHalfPressContactRecognizer *)self _isValidDoubleHalfPressWithAction:v29];
+    v20 = [(CAMHalfPressContactRecognizer *)self _isValidDoubleHalfPressWithAction:actionCopy];
     if (v10 == 1)
     {
       goto LABEL_25;
     }
 
-    v22 = (v9 < 3) & (4u >> (v9 & 7));
+    v22 = (_stagePhase < 3) & (4u >> (_stagePhase & 7));
     if (v14 != 2)
     {
       v22 = 0;
@@ -221,29 +221,29 @@
         v25 = v24;
         if (![(CAMHalfPressContactRecognizer *)self _lastHalfPressWasDouble]|| ([(CAMHalfPressContactRecognizer *)self _minimumHalfPressDelayAfterDoubleHalfPress], v19 - v25 >= v26))
         {
-          v21 = [(CAMHalfPressContactRecognizer *)self delegate];
-          [v21 halfPressContactRecognizerSingleHalfPressDidBegin:self];
+          delegate = [(CAMHalfPressContactRecognizer *)self delegate];
+          [delegate halfPressContactRecognizerSingleHalfPressDidBegin:self];
           goto LABEL_26;
         }
 
 LABEL_25:
         [(CAMHalfPressContactRecognizer *)self reset];
         [(CAMHalfPressContactRecognizer *)self _setIgnoringCurrentHalfPress:1];
-        v21 = [(CAMHalfPressContactRecognizer *)self delegate];
-        [v21 halfPressContactRecognizerSingleHalfPressDidCancel:self];
+        delegate = [(CAMHalfPressContactRecognizer *)self delegate];
+        [delegate halfPressContactRecognizerSingleHalfPressDidCancel:self];
 LABEL_26:
 
 LABEL_44:
         goto LABEL_45;
       }
 
-      if (v9 < 3)
+      if (_stagePhase < 3)
       {
         goto LABEL_44;
       }
 
-      v28 = [(CAMHalfPressContactRecognizer *)self delegate];
-      [v28 halfPressContactRecognizerSingleHalfPressDidCancel:self];
+      delegate2 = [(CAMHalfPressContactRecognizer *)self delegate];
+      [delegate2 halfPressContactRecognizerSingleHalfPressDidCancel:self];
       goto LABEL_42;
     }
 
@@ -269,14 +269,14 @@ LABEL_43:
       if (v23)
       {
         [(CAMHalfPressContactRecognizer *)self _setLastHalfPressWasDouble:1];
-        v28 = [(CAMHalfPressContactRecognizer *)self delegate];
-        [v28 halfPressContactRecognizerDoubleHalfPressDidEnd:self];
+        delegate2 = [(CAMHalfPressContactRecognizer *)self delegate];
+        [delegate2 halfPressContactRecognizerDoubleHalfPressDidEnd:self];
         goto LABEL_42;
       }
     }
 
-    v28 = [(CAMHalfPressContactRecognizer *)self delegate];
-    [v28 halfPressContactRecognizerSingleHalfPressDidEnd:self];
+    delegate2 = [(CAMHalfPressContactRecognizer *)self delegate];
+    [delegate2 halfPressContactRecognizerSingleHalfPressDidEnd:self];
 LABEL_42:
 
     goto LABEL_43;
@@ -287,64 +287,64 @@ LABEL_45:
   _objc_release_x1();
 }
 
-- (BOOL)_isValidDoubleHalfPressWithAction:(id)a3
+- (BOOL)_isValidDoubleHalfPressWithAction:(id)action
 {
-  v4 = a3;
-  v5 = [(CAMHalfPressContactRecognizer *)self _sensingAlgsDoubleHalfPressEnabled];
-  [v4 _timestamp];
+  actionCopy = action;
+  _sensingAlgsDoubleHalfPressEnabled = [(CAMHalfPressContactRecognizer *)self _sensingAlgsDoubleHalfPressEnabled];
+  [actionCopy _timestamp];
   v7 = v6;
-  if (v5)
+  if (_sensingAlgsDoubleHalfPressEnabled)
   {
     v8 = v6 * 1000000.0;
-    v9 = [v4 _contact];
-    v10 = [v4 _stagePhase];
-    if (v10 >= 3)
+    _contact = [actionCopy _contact];
+    _stagePhase = [actionCopy _stagePhase];
+    if (_stagePhase >= 3)
     {
       v11 = 8;
     }
 
     else
     {
-      v11 = 0x400020001uLL >> (16 * v10);
+      v11 = 0x400020001uLL >> (16 * _stagePhase);
     }
 
-    v12 = [(CAMHalfPressContactRecognizer *)self _touchEvent];
-    [v12 setEventMask:{objc_msgSend(v9, "touchPositionHints")}];
-    [v12 setIsTouching:{objc_msgSend(v9, "isTouching")}];
-    [v9 positionDelta];
+    _touchEvent = [(CAMHalfPressContactRecognizer *)self _touchEvent];
+    [_touchEvent setEventMask:{objc_msgSend(_contact, "touchPositionHints")}];
+    [_touchEvent setIsTouching:{objc_msgSend(_contact, "isTouching")}];
+    [_contact positionDelta];
     *&v13 = v13;
-    [v12 setLiftoffVelocity:v13];
-    [v9 touchMajorRadius];
+    [_touchEvent setLiftoffVelocity:v13];
+    [_contact touchMajorRadius];
     *&v14 = v14;
-    [v12 setMajorRadius:v14];
-    [v12 setPhase:v11 & 0xF];
-    [v9 positionDelta];
+    [_touchEvent setMajorRadius:v14];
+    [_touchEvent setPhase:v11 & 0xF];
+    [_contact positionDelta];
     *&v16 = v15;
-    [v12 setPositionDeltaY:v16];
-    [v9 position];
+    [_touchEvent setPositionDeltaY:v16];
+    [_contact position];
     *&v18 = v17;
-    [v12 setPositionY:v18];
-    [v12 setTimestamp:v8];
-    v19 = [(CAMHalfPressContactRecognizer *)self _forceEvent];
-    [v4 _normalizedForce];
+    [_touchEvent setPositionY:v18];
+    [_touchEvent setTimestamp:v8];
+    _forceEvent = [(CAMHalfPressContactRecognizer *)self _forceEvent];
+    [actionCopy _normalizedForce];
     *&v20 = v20;
-    [v19 setForceProgress:v20];
-    [v19 setForceStage:{objc_msgSend(v4, "_stage")}];
-    [v19 setForceStageTransition:{objc_msgSend(v4, "_stagePhase")}];
-    [v19 setPhase:v11 & 0xF];
-    [v4 _nextStageNormalizedForceThreshold];
+    [_forceEvent setForceProgress:v20];
+    [_forceEvent setForceStage:{objc_msgSend(actionCopy, "_stage")}];
+    [_forceEvent setForceStageTransition:{objc_msgSend(actionCopy, "_stagePhase")}];
+    [_forceEvent setPhase:v11 & 0xF];
+    [actionCopy _nextStageNormalizedForceThreshold];
     *&v21 = v21;
-    [v19 setNextThreshold:v21];
-    [v4 _pressedStageNormalizedForceThreshold];
+    [_forceEvent setNextThreshold:v21];
+    [actionCopy _pressedStageNormalizedForceThreshold];
     *&v22 = v22;
-    [v19 setPressedThreshold:v22];
-    [v4 _releaseStageNormalizedForceThreshold];
+    [_forceEvent setPressedThreshold:v22];
+    [actionCopy _releaseStageNormalizedForceThreshold];
     *&v23 = v23;
-    [v19 setReleasedThreshold:v23];
-    [v19 setTimestamp:v8];
+    [_forceEvent setReleasedThreshold:v23];
+    [_forceEvent setTimestamp:v8];
     v34 = 0;
-    v24 = [(CAMHalfPressContactRecognizer *)self _doubleHalfPressValidator];
-    [v24 update:v12 forceStageEvent:v19 isDoubleHalfPress:&v34];
+    _doubleHalfPressValidator = [(CAMHalfPressContactRecognizer *)self _doubleHalfPressValidator];
+    [_doubleHalfPressValidator update:_touchEvent forceStageEvent:_forceEvent isDoubleHalfPress:&v34];
 
     v25 = v34;
   }

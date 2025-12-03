@@ -1,27 +1,27 @@
 @interface FLOWSchemaFLOWAppContext
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWAppContext)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWAppContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWAppContext)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWAppContext)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAppResolutionType:(BOOL)a3;
-- (void)setHasProtectedAppType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAppResolutionType:(BOOL)type;
+- (void)setHasProtectedAppType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWAppContext
 
-- (FLOWSchemaFLOWAppContext)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWAppContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = FLOWSchemaFLOWAppContext;
   v5 = [(FLOWSchemaFLOWAppContext *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"bundleId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"bundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(FLOWSchemaFLOWAppContext *)v5 setBundleId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"appVersion"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"appVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,21 +37,21 @@
       [(FLOWSchemaFLOWAppContext *)v5 setAppVersion:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isSmartEnoughAppSelectionUsed"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isSmartEnoughAppSelectionUsed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWAppContext setIsSmartEnoughAppSelectionUsed:](v5, "setIsSmartEnoughAppSelectionUsed:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"appResolutionType"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"appResolutionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWAppContext setAppResolutionType:](v5, "setAppResolutionType:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"protectedAppType"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"protectedAppType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,30 +64,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWAppContext)initWithJSON:(id)a3
+- (FLOWSchemaFLOWAppContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWAppContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWAppContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWAppContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -100,7 +100,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [(FLOWSchemaFLOWAppContext *)self appResolutionType]- 1;
@@ -114,28 +114,28 @@
       v5 = off_1E78D4EB8[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"appResolutionType"];
+    [dictionary setObject:v5 forKeyedSubscript:@"appResolutionType"];
   }
 
   if (self->_appVersion)
   {
-    v6 = [(FLOWSchemaFLOWAppContext *)self appVersion];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"appVersion"];
+    appVersion = [(FLOWSchemaFLOWAppContext *)self appVersion];
+    v7 = [appVersion copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"appVersion"];
   }
 
   if (self->_bundleId)
   {
-    v8 = [(FLOWSchemaFLOWAppContext *)self bundleId];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"bundleId"];
+    bundleId = [(FLOWSchemaFLOWAppContext *)self bundleId];
+    v9 = [bundleId copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"bundleId"];
   }
 
   has = self->_has;
   if (has)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWAppContext isSmartEnoughAppSelectionUsed](self, "isSmartEnoughAppSelectionUsed")}];
-    [v3 setObject:v11 forKeyedSubscript:@"isSmartEnoughAppSelectionUsed"];
+    [dictionary setObject:v11 forKeyedSubscript:@"isSmartEnoughAppSelectionUsed"];
 
     has = self->_has;
   }
@@ -153,12 +153,12 @@
       v13 = off_1E78D4F28[v12];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"protectedAppType"];
+    [dictionary setObject:v13 forKeyedSubscript:@"protectedAppType"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -203,28 +203,28 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(FLOWSchemaFLOWAppContext *)self bundleId];
-  v6 = [v4 bundleId];
-  if ((v5 != 0) == (v6 == 0))
+  bundleId = [(FLOWSchemaFLOWAppContext *)self bundleId];
+  bundleId2 = [equalCopy bundleId];
+  if ((bundleId != 0) == (bundleId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(FLOWSchemaFLOWAppContext *)self bundleId];
-  if (v7)
+  bundleId3 = [(FLOWSchemaFLOWAppContext *)self bundleId];
+  if (bundleId3)
   {
-    v8 = v7;
-    v9 = [(FLOWSchemaFLOWAppContext *)self bundleId];
-    v10 = [v4 bundleId];
-    v11 = [v9 isEqual:v10];
+    v8 = bundleId3;
+    bundleId4 = [(FLOWSchemaFLOWAppContext *)self bundleId];
+    bundleId5 = [equalCopy bundleId];
+    v11 = [bundleId4 isEqual:bundleId5];
 
     if (!v11)
     {
@@ -236,22 +236,22 @@ LABEL_4:
   {
   }
 
-  v5 = [(FLOWSchemaFLOWAppContext *)self appVersion];
-  v6 = [v4 appVersion];
-  if ((v5 != 0) == (v6 == 0))
+  bundleId = [(FLOWSchemaFLOWAppContext *)self appVersion];
+  bundleId2 = [equalCopy appVersion];
+  if ((bundleId != 0) == (bundleId2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(FLOWSchemaFLOWAppContext *)self appVersion];
-  if (v12)
+  appVersion = [(FLOWSchemaFLOWAppContext *)self appVersion];
+  if (appVersion)
   {
-    v13 = v12;
-    v14 = [(FLOWSchemaFLOWAppContext *)self appVersion];
-    v15 = [v4 appVersion];
-    v16 = [v14 isEqual:v15];
+    v13 = appVersion;
+    appVersion2 = [(FLOWSchemaFLOWAppContext *)self appVersion];
+    appVersion3 = [equalCopy appVersion];
+    v16 = [appVersion2 isEqual:appVersion3];
 
     if (!v16)
     {
@@ -264,19 +264,19 @@ LABEL_11:
   }
 
   has = self->_has;
-  v20 = v4[36];
+  v20 = equalCopy[36];
   if ((*&has & 1) == (v20 & 1))
   {
     if (*&has)
     {
       isSmartEnoughAppSelectionUsed = self->_isSmartEnoughAppSelectionUsed;
-      if (isSmartEnoughAppSelectionUsed != [v4 isSmartEnoughAppSelectionUsed])
+      if (isSmartEnoughAppSelectionUsed != [equalCopy isSmartEnoughAppSelectionUsed])
       {
         goto LABEL_12;
       }
 
       has = self->_has;
-      v20 = v4[36];
+      v20 = equalCopy[36];
     }
 
     v22 = (*&has >> 1) & 1;
@@ -285,19 +285,19 @@ LABEL_11:
       if (v22)
       {
         appResolutionType = self->_appResolutionType;
-        if (appResolutionType != [v4 appResolutionType])
+        if (appResolutionType != [equalCopy appResolutionType])
         {
           goto LABEL_12;
         }
 
         has = self->_has;
-        v20 = v4[36];
+        v20 = equalCopy[36];
       }
 
       v24 = (*&has >> 2) & 1;
       if (v24 == ((v20 >> 2) & 1))
       {
-        if (!v24 || (protectedAppType = self->_protectedAppType, protectedAppType == [v4 protectedAppType]))
+        if (!v24 || (protectedAppType = self->_protectedAppType, protectedAppType == [equalCopy protectedAppType]))
         {
           v17 = 1;
           goto LABEL_13;
@@ -313,29 +313,29 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(FLOWSchemaFLOWAppContext *)self bundleId];
+  toCopy = to;
+  bundleId = [(FLOWSchemaFLOWAppContext *)self bundleId];
 
-  if (v4)
+  if (bundleId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(FLOWSchemaFLOWAppContext *)self appVersion];
+  appVersion = [(FLOWSchemaFLOWAppContext *)self appVersion];
 
-  if (v5)
+  if (appVersion)
   {
     PBDataWriterWriteStringField();
   }
 
   has = self->_has;
-  v7 = v8;
+  v7 = toCopy;
   if (has)
   {
     PBDataWriterWriteBOOLField();
-    v7 = v8;
+    v7 = toCopy;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -355,20 +355,20 @@ LABEL_7:
   }
 
   PBDataWriterWriteInt32Field();
-  v7 = v8;
+  v7 = toCopy;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_8:
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 
 LABEL_9:
 }
 
-- (void)setHasProtectedAppType:(BOOL)a3
+- (void)setHasProtectedAppType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -381,9 +381,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAppResolutionType:(BOOL)a3
+- (void)setHasAppResolutionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

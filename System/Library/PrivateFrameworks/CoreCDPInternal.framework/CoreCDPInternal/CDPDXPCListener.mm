@@ -1,10 +1,10 @@
 @interface CDPDXPCListener
 + (id)sharedInstance;
-- (BOOL)_connection:(id)a3 hasEntitlement:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_connection:(id)_connection hasEntitlement:(id)entitlement;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CDPDXPCListener)init;
-- (unint64_t)_clientTypeForBundleID:(id)a3;
-- (unint64_t)_clientTypeForConnection:(id)a3;
+- (unint64_t)_clientTypeForBundleID:(id)d;
+- (unint64_t)_clientTypeForConnection:(id)connection;
 - (void)start;
 @end
 
@@ -52,17 +52,17 @@ uint64_t __33__CDPDXPCListener_sharedInstance__block_invoke()
   [(NSXPCListener *)listener resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [CDPDXPCListener listener:shouldAcceptNewConnection:];
   }
 
-  if ([(CDPDXPCListener *)self _connection:v7 hasEntitlement:@"com.apple.cdp.recovery"]|| [(CDPDXPCListener *)self _connection:v7 hasEntitlement:@"com.apple.authkit.client"]|| [(CDPDXPCListener *)self _connection:v7 hasEntitlement:@"com.apple.authkit.client.private"]|| [(CDPDXPCListener *)self _connection:v7 hasEntitlement:@"com.apple.authkit.client.internal"]|| [(CDPDXPCListener *)self _connection:v7 hasEntitlement:@"com.apple.authkit.client.owner"])
+  if ([(CDPDXPCListener *)self _connection:connectionCopy hasEntitlement:@"com.apple.cdp.recovery"]|| [(CDPDXPCListener *)self _connection:connectionCopy hasEntitlement:@"com.apple.authkit.client"]|| [(CDPDXPCListener *)self _connection:connectionCopy hasEntitlement:@"com.apple.authkit.client.private"]|| [(CDPDXPCListener *)self _connection:connectionCopy hasEntitlement:@"com.apple.authkit.client.internal"]|| [(CDPDXPCListener *)self _connection:connectionCopy hasEntitlement:@"com.apple.authkit.client.owner"])
   {
     v9 = 9;
   }
@@ -72,32 +72,32 @@ uint64_t __33__CDPDXPCListener_sharedInstance__block_invoke()
     v9 = 1;
   }
 
-  if ([(CDPDXPCListener *)self _connection:v7 hasEntitlement:@"com.apple.cdp.statemachine"])
+  if ([(CDPDXPCListener *)self _connection:connectionCopy hasEntitlement:@"com.apple.cdp.statemachine"])
   {
     v9 |= 2uLL;
   }
 
-  if ([(CDPDXPCListener *)self _connection:v7 hasEntitlement:@"com.apple.cdp.utility"])
+  if ([(CDPDXPCListener *)self _connection:connectionCopy hasEntitlement:@"com.apple.cdp.utility"])
   {
     v9 |= 4uLL;
   }
 
-  if ([(CDPDXPCListener *)self _connection:v7 hasEntitlement:@"com.apple.cdp.followup"])
+  if ([(CDPDXPCListener *)self _connection:connectionCopy hasEntitlement:@"com.apple.cdp.followup"])
   {
     v9 |= 0x10uLL;
   }
 
-  if ([(CDPDXPCListener *)self _connection:v7 hasEntitlement:@"com.apple.cdp.recoverykey"])
+  if ([(CDPDXPCListener *)self _connection:connectionCopy hasEntitlement:@"com.apple.cdp.recoverykey"])
   {
     v9 |= 0x20uLL;
   }
 
-  if ([(CDPDXPCListener *)self _connection:v7 hasEntitlement:@"com.apple.cdp.walrus"])
+  if ([(CDPDXPCListener *)self _connection:connectionCopy hasEntitlement:@"com.apple.cdp.walrus"])
   {
     v9 |= 0x40uLL;
   }
 
-  if ([(CDPDXPCListener *)self _connection:v7 hasEntitlement:@"com.apple.cdp.walrus.pcskeys"])
+  if ([(CDPDXPCListener *)self _connection:connectionCopy hasEntitlement:@"com.apple.cdp.walrus.pcskeys"])
   {
     v10 = v9 | 0x80;
   }
@@ -107,23 +107,23 @@ uint64_t __33__CDPDXPCListener_sharedInstance__block_invoke()
     v10 = v9;
   }
 
-  v11 = [(CDPDXPCListener *)self _clientTypeForConnection:v7];
+  v11 = [(CDPDXPCListener *)self _clientTypeForConnection:connectionCopy];
   v12 = [(CDPDXPCListener *)self _shouldAcceptNewConnectionWithEntitlements:v10];
   if (v12)
   {
-    v13 = [[CDPDClientHandler alloc] initWithConnection:v7 entitlements:v10 clientType:v11];
+    v13 = [[CDPDClientHandler alloc] initWithConnection:connectionCopy entitlements:v10 clientType:v11];
     v14 = CDPDaemonExportedInterface();
-    [v7 setExportedInterface:v14];
+    [connectionCopy setExportedInterface:v14];
 
-    [v7 setExportedObject:v13];
-    objc_initWeak(&location, v7);
+    [connectionCopy setExportedObject:v13];
+    objc_initWeak(&location, connectionCopy);
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __54__CDPDXPCListener_listener_shouldAcceptNewConnection___block_invoke;
     v20 = &unk_278E245A8;
     objc_copyWeak(&v21, &location);
-    [v7 setInvalidationHandler:&v17];
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:&v17];
+    [connectionCopy resume];
     v15 = _CDPLogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
@@ -159,13 +159,13 @@ void __54__CDPDXPCListener_listener_shouldAcceptNewConnection___block_invoke(uin
   [v3 postNotificationName:@"CDPDConnectionInvalidatedNotification" object:WeakRetained];
 }
 
-- (BOOL)_connection:(id)a3 hasEntitlement:(id)a4
+- (BOOL)_connection:(id)_connection hasEntitlement:(id)entitlement
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v6 isEqualToString:@"com.apple.cdp.recoverykey"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"com.apple.cdp.utility") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"com.apple.cdp.walrus"))
+  _connectionCopy = _connection;
+  entitlementCopy = entitlement;
+  if (([entitlementCopy isEqualToString:@"com.apple.cdp.recoverykey"] & 1) != 0 || (objc_msgSend(entitlementCopy, "isEqualToString:", @"com.apple.cdp.utility") & 1) != 0 || objc_msgSend(entitlementCopy, "isEqualToString:", @"com.apple.cdp.walrus"))
   {
-    v7 = [v5 valueForEntitlement:v6];
+    v7 = [_connectionCopy valueForEntitlement:entitlementCopy];
     v8 = (objc_opt_respondsToSelector() & 1) != 0 && ([v7 BOOLValue] & 1) != 0;
   }
 
@@ -177,10 +177,10 @@ void __54__CDPDXPCListener_listener_shouldAcceptNewConnection___block_invoke(uin
   return v8;
 }
 
-- (unint64_t)_clientTypeForConnection:(id)a3
+- (unint64_t)_clientTypeForConnection:(id)connection
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = proc_pidpath([a3 processIdentifier], buffer, 0x1000u);
+  v4 = proc_pidpath([connection processIdentifier], buffer, 0x1000u);
   v5 = MEMORY[0x277CBEBC0];
   v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:buffer length:v4 encoding:4];
   v7 = [v5 fileURLWithPath:v6];
@@ -189,8 +189,8 @@ void __54__CDPDXPCListener_listener_shouldAcceptNewConnection___block_invoke(uin
   {
     v8 = _CFBundleCopyBundleURLForExecutableURL();
     v9 = [MEMORY[0x277CCA8D8] bundleWithURL:v8];
-    v10 = [v9 bundleIdentifier];
-    v11 = [(CDPDXPCListener *)self _clientTypeForBundleID:v10];
+    bundleIdentifier = [v9 bundleIdentifier];
+    v11 = [(CDPDXPCListener *)self _clientTypeForBundleID:bundleIdentifier];
   }
 
   else
@@ -202,10 +202,10 @@ void __54__CDPDXPCListener_listener_shouldAcceptNewConnection___block_invoke(uin
   return v11;
 }
 
-- (unint64_t)_clientTypeForBundleID:(id)a3
+- (unint64_t)_clientTypeForBundleID:(id)d
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.purplebuddy"])
+  dCopy = d;
+  if ([dCopy isEqualToString:@"com.apple.purplebuddy"])
   {
     v4 = _CDPLogSystem();
     v5 = 2;
@@ -218,7 +218,7 @@ void __54__CDPDXPCListener_listener_shouldAcceptNewConnection___block_invoke(uin
 
   else
   {
-    v6 = [v3 isEqualToString:@"com.apple.Preferences"];
+    v6 = [dCopy isEqualToString:@"com.apple.Preferences"];
     v4 = _CDPLogSystem();
     v7 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
     if (v6)

@@ -1,15 +1,15 @@
 @interface SCATMenuOpeningElement
 - (CGSize)intrinsicContentSize;
-- (SCATMenuOpeningElement)initWithFrame:(CGRect)a3;
+- (SCATMenuOpeningElement)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SCATMenuOpeningElement
 
-- (SCATMenuOpeningElement)initWithFrame:(CGRect)a3
+- (SCATMenuOpeningElement)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = SCATMenuOpeningElement;
-  v3 = [(SCATMenuOpeningElement *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SCATMenuOpeningElement *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -17,14 +17,14 @@
     v5 = [[_UIBackdropView alloc] initWithPrivateStyle:2030];
     v6 = [UIImage imageNamed:@"SCAT_alwaysTap_mask"];
     [(SCATMenuOpeningElement *)v4 setBackdropMaskImage:v6];
-    v7 = [v5 inputSettings];
-    [v7 setGrayscaleTintMaskImage:v6];
+    inputSettings = [v5 inputSettings];
+    [inputSettings setGrayscaleTintMaskImage:v6];
 
-    v8 = [v5 inputSettings];
-    [v8 setColorTintMaskImage:v6];
+    inputSettings2 = [v5 inputSettings];
+    [inputSettings2 setColorTintMaskImage:v6];
 
-    v9 = [v5 inputSettings];
-    [v9 setFilterMaskImage:v6];
+    inputSettings3 = [v5 inputSettings];
+    [inputSettings3 setFilterMaskImage:v6];
 
     [(SCATMenuOpeningElement *)v4 addSubview:v5];
     v10 = [UIImageView alloc];
@@ -46,8 +46,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(SCATMenuOpeningElement *)self backdropMaskImage];
-  [v2 size];
+  backdropMaskImage = [(SCATMenuOpeningElement *)self backdropMaskImage];
+  [backdropMaskImage size];
   v4 = v3;
   v6 = v5;
 

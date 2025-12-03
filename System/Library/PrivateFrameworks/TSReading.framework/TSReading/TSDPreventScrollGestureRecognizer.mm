@@ -1,28 +1,28 @@
 @interface TSDPreventScrollGestureRecognizer
-- (TSDPreventScrollGestureRecognizer)initWithInteractiveCanvasController:(id)a3;
+- (TSDPreventScrollGestureRecognizer)initWithInteractiveCanvasController:(id)controller;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation TSDPreventScrollGestureRecognizer
 
-- (TSDPreventScrollGestureRecognizer)initWithInteractiveCanvasController:(id)a3
+- (TSDPreventScrollGestureRecognizer)initWithInteractiveCanvasController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = TSDPreventScrollGestureRecognizer;
   v4 = [(TSDPreventScrollGestureRecognizer *)&v8 initWithTarget:0 action:0];
   if (v4)
   {
-    if (!a3)
+    if (!controller)
     {
-      v5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDPreventScrollGestureRecognizer initWithInteractiveCanvasController:]"];
-      [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDPreventScrollGestureRecognizer.m"), 24, @"invalid nil value for '%s'", "icc"}];
+      [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDPreventScrollGestureRecognizer.m"), 24, @"invalid nil value for '%s'", "icc"}];
     }
 
-    v4->mICC = a3;
+    v4->mICC = controller;
   }
 
   return v4;
@@ -38,12 +38,12 @@
   [(TSDPreventScrollGestureRecognizer *)&v3 reset];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v20 = *MEMORY[0x277D85DE8];
   v18.receiver = self;
   v18.super_class = TSDPreventScrollGestureRecognizer;
-  [(TSDPreventScrollGestureRecognizer *)&v18 touchesBegan:a3 withEvent:a4];
+  [(TSDPreventScrollGestureRecognizer *)&v18 touchesBegan:began withEvent:event];
   if (![(TSDPreventScrollGestureRecognizer *)self state]&& [(TSDInteractiveCanvasController *)self->mICC currentlyScrolling])
   {
     [(TSDPreventScrollGestureRecognizer *)self setState:5];
@@ -54,7 +54,7 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  v6 = [began countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -65,7 +65,7 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(began);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -91,25 +91,25 @@ LABEL_15:
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v7 = [began countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = TSDPreventScrollGestureRecognizer;
-  [(TSDPreventScrollGestureRecognizer *)&v6 touchesEnded:a3 withEvent:a4];
-  if (self->mTouch && [a3 containsObject:?])
+  [(TSDPreventScrollGestureRecognizer *)&v6 touchesEnded:ended withEvent:event];
+  if (self->mTouch && [ended containsObject:?])
   {
 
     self->mTouch = 0;
   }
 
-  if (self->mSecondTouch && [a3 containsObject:?])
+  if (self->mSecondTouch && [ended containsObject:?])
   {
 
     self->mSecondTouch = 0;
@@ -121,18 +121,18 @@ LABEL_15:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = TSDPreventScrollGestureRecognizer;
-  [(TSDPreventScrollGestureRecognizer *)&v6 touchesCancelled:a3 withEvent:a4];
-  if (self->mTouch && [a3 containsObject:?])
+  [(TSDPreventScrollGestureRecognizer *)&v6 touchesCancelled:cancelled withEvent:event];
+  if (self->mTouch && [cancelled containsObject:?])
   {
 
     self->mTouch = 0;
   }
 
-  if (self->mSecondTouch && [a3 containsObject:?])
+  if (self->mSecondTouch && [cancelled containsObject:?])
   {
 
     self->mSecondTouch = 0;

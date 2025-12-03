@@ -1,22 +1,22 @@
 @interface _UIBlurEffectTVRecipe
-+ (id)recipeForStyle:(int64_t)a3;
-- (id)recipeForUserInterfaceStyle:(int64_t)a3;
++ (id)recipeForStyle:(int64_t)style;
+- (id)recipeForUserInterfaceStyle:(int64_t)style;
 @end
 
 @implementation _UIBlurEffectTVRecipe
 
-+ (id)recipeForStyle:(int64_t)a3
++ (id)recipeForStyle:(int64_t)style
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setStyle:a3];
+  v4 = objc_alloc_init(self);
+  [v4 setStyle:style];
   v5 = 0;
-  if (a3 <= 12)
+  if (style <= 12)
   {
-    if (a3 > 8)
+    if (style > 8)
     {
-      if (a3 != 9)
+      if (style != 9)
       {
-        if (a3 == 11)
+        if (style == 11)
         {
           v15 = +[UIColor whiteColor];
           [v4 setPreBackdropTint:v15];
@@ -31,7 +31,7 @@
 
         else
         {
-          if (a3 != 12)
+          if (style != 12)
           {
             goto LABEL_34;
           }
@@ -54,11 +54,11 @@
       goto LABEL_28;
     }
 
-    if (a3 != 6)
+    if (style != 6)
     {
-      if (a3 != 7)
+      if (style != 7)
       {
-        if (a3 != 8)
+        if (style != 8)
         {
           goto LABEL_34;
         }
@@ -85,11 +85,11 @@ LABEL_26:
     goto LABEL_33;
   }
 
-  if (a3 > 16)
+  if (style > 16)
   {
-    if (a3 <= 18)
+    if (style <= 18)
     {
-      if (a3 != 17)
+      if (style != 17)
       {
 LABEL_11:
         v6 = +[UIColor blackColor];
@@ -109,9 +109,9 @@ LABEL_33:
       goto LABEL_31;
     }
 
-    if (a3 != 19)
+    if (style != 19)
     {
-      if (a3 != 4019)
+      if (style != 4019)
       {
         goto LABEL_34;
       }
@@ -140,7 +140,7 @@ LABEL_29:
     goto LABEL_33;
   }
 
-  switch(a3)
+  switch(style)
   {
     case 13:
       v12 = +[UIColor whiteColor];
@@ -173,9 +173,9 @@ LABEL_34:
   return v5;
 }
 
-- (id)recipeForUserInterfaceStyle:(int64_t)a3
+- (id)recipeForUserInterfaceStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     if (qword_1ED498EC0 != -1)
     {
@@ -238,7 +238,7 @@ LABEL_34:
     }
 
 LABEL_9:
-    v5 = self;
+    selfCopy = self;
     goto LABEL_30;
   }
 
@@ -275,10 +275,10 @@ LABEL_9:
   }
 
 LABEL_29:
-  v5 = [v7 recipeForStyle:v8];
+  selfCopy = [v7 recipeForStyle:v8];
 LABEL_30:
 
-  return v5;
+  return selfCopy;
 }
 
 @end

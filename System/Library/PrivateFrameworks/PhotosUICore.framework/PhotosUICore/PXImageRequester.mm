@@ -9,38 +9,38 @@
 - (CGSize)viewportSize;
 - (NSString)description;
 - (PXImageRequester)init;
-- (PXImageRequester)initWithMediaProvider:(id)a3 asset:(id)a4;
+- (PXImageRequester)initWithMediaProvider:(id)provider asset:(id)asset;
 - (void)_cancelRequests;
-- (void)_handleProgressForImageRequest:(id)a3 progress:(double)a4;
-- (void)_handleResultOfImageRequest:(id)a3 image:(id)a4 info:(id)a5;
-- (void)_setHasFullQuality:(BOOL)a3;
-- (void)_setImage:(id)a3;
-- (void)_setIsInCloud:(BOOL)a3;
-- (void)_setLoadingProgress:(double)a3;
-- (void)_setOpportunisticImage:(id)a3;
-- (void)_setTargetSize:(CGSize)a3;
+- (void)_handleProgressForImageRequest:(id)request progress:(double)progress;
+- (void)_handleResultOfImageRequest:(id)request image:(id)image info:(id)info;
+- (void)_setHasFullQuality:(BOOL)quality;
+- (void)_setImage:(id)image;
+- (void)_setIsInCloud:(BOOL)cloud;
+- (void)_setLoadingProgress:(double)progress;
+- (void)_setOpportunisticImage:(id)image;
+- (void)_setTargetSize:(CGSize)size;
 - (void)_updateIfNeeded;
 - (void)_updateImageRequestIfNeeded;
 - (void)_updateIsInCloudIfNeeded;
 - (void)_updateTargetSizeIfNeeded;
 - (void)dealloc;
 - (void)didPerformChanges;
-- (void)handlePreloadedImage:(id)a3;
-- (void)handlePreloadedImageRequester:(id)a3;
-- (void)performChanges:(id)a3;
-- (void)setAsset:(id)a3;
-- (void)setContentSize:(CGSize)a3;
-- (void)setContentsRect:(CGRect)a3;
-- (void)setCropRect:(CGRect)a3;
-- (void)setDesiredContentsRect:(CGRect)a3;
-- (void)setDownloadIntent:(int64_t)a3;
-- (void)setLoadingError:(id)a3;
-- (void)setMaximumRequestSize:(CGSize)a3;
-- (void)setMediaProvider:(id)a3;
-- (void)setPreferHDR:(BOOL)a3;
-- (void)setScale:(double)a3;
-- (void)setTargetHDRHeadroom:(double)a3;
-- (void)setViewportSize:(CGSize)a3;
+- (void)handlePreloadedImage:(id)image;
+- (void)handlePreloadedImageRequester:(id)requester;
+- (void)performChanges:(id)changes;
+- (void)setAsset:(id)asset;
+- (void)setContentSize:(CGSize)size;
+- (void)setContentsRect:(CGRect)rect;
+- (void)setCropRect:(CGRect)rect;
+- (void)setDesiredContentsRect:(CGRect)rect;
+- (void)setDownloadIntent:(int64_t)intent;
+- (void)setLoadingError:(id)error;
+- (void)setMaximumRequestSize:(CGSize)size;
+- (void)setMediaProvider:(id)provider;
+- (void)setPreferHDR:(BOOL)r;
+- (void)setScale:(double)scale;
+- (void)setTargetHDRHeadroom:(double)headroom;
+- (void)setViewportSize:(CGSize)size;
 @end
 
 @implementation PXImageRequester
@@ -122,34 +122,34 @@
 
 - (void)_cancelRequests
 {
-  v2 = [(PXImageRequester *)self _currentRequest];
-  [v2 cancel];
+  _currentRequest = [(PXImageRequester *)self _currentRequest];
+  [_currentRequest cancel];
 }
 
-- (void)_setIsInCloud:(BOOL)a3
+- (void)_setIsInCloud:(BOOL)cloud
 {
-  if (self->_isInCloud != a3)
+  if (self->_isInCloud != cloud)
   {
-    self->_isInCloud = a3;
+    self->_isInCloud = cloud;
     [(PXImageRequester *)self signalChange:16];
   }
 }
 
-- (void)_setHasFullQuality:(BOOL)a3
+- (void)_setHasFullQuality:(BOOL)quality
 {
-  if (self->_hasFullQuality != a3)
+  if (self->_hasFullQuality != quality)
   {
-    self->_hasFullQuality = a3;
-    if (a3)
+    self->_hasFullQuality = quality;
+    if (quality)
     {
       v5 = +[PXPhotosDetailsSettings sharedInstance];
-      v6 = [v5 showFacesAreaRect];
+      showFacesAreaRect = [v5 showFacesAreaRect];
 
-      if (v6)
+      if (showFacesAreaRect)
       {
-        v7 = [(PXImageRequester *)self asset];
-        v8 = [(PXImageRequester *)self image];
-        v9 = PXDebugImageWithFaceRect(v7, v8);
+        asset = [(PXImageRequester *)self asset];
+        image = [(PXImageRequester *)self image];
+        v9 = PXDebugImageWithFaceRect(asset, image);
 
         [(PXImageRequester *)self _setImage:v9];
       }
@@ -159,36 +159,36 @@
   }
 }
 
-- (void)_setOpportunisticImage:(id)a3
+- (void)_setOpportunisticImage:(id)image
 {
-  v5 = a3;
-  if (self->_opportunisticImage != v5)
+  imageCopy = image;
+  if (self->_opportunisticImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_opportunisticImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_opportunisticImage, image);
     [(PXImageRequester *)self signalChange:2048];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)_setImage:(id)a3
+- (void)_setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [(PXImageRequester *)self signalChange:4];
     [(PXImageRequester *)self _invalidateIsInCloud];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)_setTargetSize:(CGSize)a3
+- (void)_setTargetSize:(CGSize)size
 {
-  if (self->__targetSize.width != a3.width || self->__targetSize.height != a3.height)
+  if (self->__targetSize.width != size.width || self->__targetSize.height != size.height)
   {
-    self->__targetSize = a3;
+    self->__targetSize = size;
     [(PXImageRequester *)self _invalidateImageRequest];
   }
 }
@@ -199,108 +199,108 @@
   v17.receiver = self;
   v17.super_class = PXImageRequester;
   v4 = [(PXImageRequester *)&v17 description];
-  v5 = [(PXImageRequester *)self asset];
+  asset = [(PXImageRequester *)self asset];
   [(PXImageRequester *)self contentSize];
   v6 = NSStringFromCGSize(v19);
   [(PXImageRequester *)self scale];
   v8 = v7;
   [(PXImageRequester *)self maximumRequestSize];
   v9 = NSStringFromCGSize(v20);
-  v10 = [(PXImageRequester *)self image];
-  v11 = [(PXImageRequester *)self hasFullQuality];
+  image = [(PXImageRequester *)self image];
+  hasFullQuality = [(PXImageRequester *)self hasFullQuality];
   v12 = @"NO";
-  if (v11)
+  if (hasFullQuality)
   {
     v12 = @"YES";
   }
 
   v13 = v12;
-  v14 = [(PXImageRequester *)self _currentRequest];
-  v15 = [v3 stringWithFormat:@"<%@ asset:%p contentSize:%@ scale:%f maxSize:%@ image:%@ hasFullQuality:%@ currentRequest:%@>", v4, v5, v6, v8, v9, v10, v13, v14];
+  _currentRequest = [(PXImageRequester *)self _currentRequest];
+  v15 = [v3 stringWithFormat:@"<%@ asset:%p contentSize:%@ scale:%f maxSize:%@ image:%@ hasFullQuality:%@ currentRequest:%@>", v4, asset, v6, v8, v9, image, v13, _currentRequest];
 
   return v15;
 }
 
-- (void)handlePreloadedImageRequester:(id)a3
+- (void)handlePreloadedImageRequester:(id)requester
 {
-  v4 = [a3 image];
-  if (v4)
+  image = [requester image];
+  if (image)
   {
-    v5 = v4;
-    [(PXImageRequester *)self handlePreloadedImage:v4];
-    v4 = v5;
+    v5 = image;
+    [(PXImageRequester *)self handlePreloadedImage:image];
+    image = v5;
   }
 }
 
-- (void)handlePreloadedImage:(id)a3
+- (void)handlePreloadedImage:(id)image
 {
-  v7 = a3;
-  v4 = [(PXImageRequester *)self image];
-  v5 = [v7 px_isLargerThan:v4];
+  imageCopy = image;
+  image = [(PXImageRequester *)self image];
+  v5 = [imageCopy px_isLargerThan:image];
 
   if (v5)
   {
-    [(PXImageRequester *)self _setImage:v7];
-    v6 = [(PXImageRequester *)self asset];
-    [(PXImageRequester *)self _setCurrentImageSourceAsset:v6];
+    [(PXImageRequester *)self _setImage:imageCopy];
+    asset = [(PXImageRequester *)self asset];
+    [(PXImageRequester *)self _setCurrentImageSourceAsset:asset];
   }
 }
 
-- (void)setLoadingError:(id)a3
+- (void)setLoadingError:(id)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_loadingError != v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (self->_loadingError != errorCopy)
   {
-    v8 = v5;
-    v7 = [(NSError *)v5 isEqual:?];
+    v8 = errorCopy;
+    v7 = [(NSError *)errorCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_loadingError, a3);
+      objc_storeStrong(&self->_loadingError, error);
       [(PXImageRequester *)self signalChange:0x2000];
       v6 = v8;
     }
   }
 }
 
-- (void)_setLoadingProgress:(double)a3
+- (void)_setLoadingProgress:(double)progress
 {
-  if (self->_loadingProgress != a3)
+  if (self->_loadingProgress != progress)
   {
-    self->_loadingProgress = a3;
+    self->_loadingProgress = progress;
     [(PXImageRequester *)self signalChange:4096];
   }
 }
 
-- (void)setDownloadIntent:(int64_t)a3
+- (void)setDownloadIntent:(int64_t)intent
 {
-  if (self->_downloadIntent != a3)
+  if (self->_downloadIntent != intent)
   {
-    self->_downloadIntent = a3;
+    self->_downloadIntent = intent;
     [(PXImageRequester *)self _invalidateImageRequest];
 
     [(PXImageRequester *)self signalChange:0x4000];
   }
 }
 
-- (void)setViewportSize:(CGSize)a3
+- (void)setViewportSize:(CGSize)size
 {
-  if (self->_viewportSize.width != a3.width || self->_viewportSize.height != a3.height)
+  if (self->_viewportSize.width != size.width || self->_viewportSize.height != size.height)
   {
-    self->_viewportSize = a3;
+    self->_viewportSize = size;
     [(PXImageRequester *)self signalChange:1024];
   }
 }
 
-- (void)setContentsRect:(CGRect)a3
+- (void)setContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_contentsRect = &self->_contentsRect;
-  if (!CGRectEqualToRect(self->_contentsRect, a3))
+  if (!CGRectEqualToRect(self->_contentsRect, rect))
   {
     p_contentsRect->origin.x = x;
     p_contentsRect->origin.y = y;
@@ -311,14 +311,14 @@
   }
 }
 
-- (void)setDesiredContentsRect:(CGRect)a3
+- (void)setDesiredContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_desiredContentsRect = &self->_desiredContentsRect;
-  if (!CGRectEqualToRect(self->_desiredContentsRect, a3))
+  if (!CGRectEqualToRect(self->_desiredContentsRect, rect))
   {
     p_desiredContentsRect->origin.x = x;
     p_desiredContentsRect->origin.y = y;
@@ -329,36 +329,36 @@
   }
 }
 
-- (void)setMaximumRequestSize:(CGSize)a3
+- (void)setMaximumRequestSize:(CGSize)size
 {
-  if (self->_maximumRequestSize.width != a3.width || self->_maximumRequestSize.height != a3.height)
+  if (self->_maximumRequestSize.width != size.width || self->_maximumRequestSize.height != size.height)
   {
-    self->_maximumRequestSize = a3;
+    self->_maximumRequestSize = size;
     [(PXImageRequester *)self _invalidateTargetSize];
 
     [(PXImageRequester *)self signalChange:512];
   }
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  if (self->_scale != a3)
+  if (self->_scale != scale)
   {
-    self->_scale = a3;
+    self->_scale = scale;
     [(PXImageRequester *)self _invalidateTargetSize];
 
     [(PXImageRequester *)self signalChange:64];
   }
 }
 
-- (void)setCropRect:(CGRect)a3
+- (void)setCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_cropRect = &self->_cropRect;
-  if (!CGRectEqualToRect(self->_cropRect, a3))
+  if (!CGRectEqualToRect(self->_cropRect, rect))
   {
     p_cropRect->origin.x = x;
     p_cropRect->origin.y = y;
@@ -370,47 +370,47 @@
   }
 }
 
-- (void)setTargetHDRHeadroom:(double)a3
+- (void)setTargetHDRHeadroom:(double)headroom
 {
-  if (self->_targetHDRHeadroom != a3)
+  if (self->_targetHDRHeadroom != headroom)
   {
-    self->_targetHDRHeadroom = a3;
+    self->_targetHDRHeadroom = headroom;
     [(PXImageRequester *)self _invalidateImageRequest];
   }
 }
 
-- (void)setPreferHDR:(BOOL)a3
+- (void)setPreferHDR:(BOOL)r
 {
-  if (self->_preferHDR != a3)
+  if (self->_preferHDR != r)
   {
-    self->_preferHDR = a3;
+    self->_preferHDR = r;
     [(PXImageRequester *)self _invalidateImageRequest];
   }
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  if (self->_contentSize.width != a3.width || self->_contentSize.height != a3.height)
+  if (self->_contentSize.width != size.width || self->_contentSize.height != size.height)
   {
-    self->_contentSize = a3;
+    self->_contentSize = size;
     [(PXImageRequester *)self _invalidateTargetSize];
 
     [(PXImageRequester *)self signalChange:32];
   }
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   asset = self->_asset;
-  if (asset != v5)
+  if (asset != assetCopy)
   {
-    v12 = v5;
-    v7 = asset;
-    objc_storeStrong(&self->_asset, a3);
+    v12 = assetCopy;
+    assetCopy2 = asset;
+    objc_storeStrong(&self->_asset, asset);
     [(PXImageRequester *)self signalChange:1];
     v8 = v12;
-    v9 = v7;
+    v9 = assetCopy2;
     v10 = v9;
     if (v8 && v9)
     {
@@ -435,19 +435,19 @@
 LABEL_10:
     [(PXImageRequester *)self _invalidateIsInCloud];
 
-    v5 = v12;
+    assetCopy = v12;
   }
 }
 
-- (void)setMediaProvider:(id)a3
+- (void)setMediaProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_mediaProvider != v5)
+  providerCopy = provider;
+  if (self->_mediaProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mediaProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_mediaProvider, provider);
     [(PXImageRequester *)self _invalidateImageRequest];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
@@ -456,23 +456,23 @@ LABEL_10:
   if (self->_needsUpdateFlags.isInCloud)
   {
     self->_needsUpdateFlags.isInCloud = 0;
-    v4 = [(PXImageRequester *)self image];
+    image = [(PXImageRequester *)self image];
 
     v5 = 0;
-    if (!v4)
+    if (!image)
     {
-      v6 = [(PXImageRequester *)self _currentRequest];
-      v7 = [v6 resultIsInCloud];
+      _currentRequest = [(PXImageRequester *)self _currentRequest];
+      resultIsInCloud = [_currentRequest resultIsInCloud];
 
-      if (v7)
+      if (resultIsInCloud)
       {
         v5 = 1;
       }
 
       else
       {
-        v8 = [(PXImageRequester *)self asset];
-        v5 = PXDisplayAssetIsInCloud(v8);
+        asset = [(PXImageRequester *)self asset];
+        v5 = PXDisplayAssetIsInCloud(asset);
       }
     }
 
@@ -480,14 +480,14 @@ LABEL_10:
   }
 }
 
-- (void)_handleResultOfImageRequest:(id)a3 image:(id)a4 info:(id)a5
+- (void)_handleResultOfImageRequest:(id)request image:(id)image info:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(PXImageRequester *)self asset];
-  v10 = [v7 asset];
-  v11 = v9;
-  v12 = v10;
+  requestCopy = request;
+  imageCopy = image;
+  asset = [(PXImageRequester *)self asset];
+  asset2 = [requestCopy asset];
+  v11 = asset;
+  v12 = asset2;
   v13 = v12;
   if (v11 == v12)
   {
@@ -497,9 +497,9 @@ LABEL_9:
     v15[1] = 3221225472;
     v15[2] = __59__PXImageRequester__handleResultOfImageRequest_image_info___block_invoke;
     v15[3] = &unk_1E774A448;
-    v16 = v7;
-    v17 = self;
-    v18 = v8;
+    v16 = requestCopy;
+    selfCopy = self;
+    v18 = imageCopy;
     [(PXImageRequester *)self performChanges:v15];
 
     goto LABEL_11;
@@ -648,19 +648,19 @@ LABEL_31:
   }
 }
 
-- (void)_handleProgressForImageRequest:(id)a3 progress:(double)a4
+- (void)_handleProgressForImageRequest:(id)request progress:(double)progress
 {
-  v6 = a3;
-  v7 = [(PXImageRequester *)self _currentRequest];
+  requestCopy = request;
+  _currentRequest = [(PXImageRequester *)self _currentRequest];
 
-  if (v7 == v6)
+  if (_currentRequest == requestCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __60__PXImageRequester__handleProgressForImageRequest_progress___block_invoke;
     v8[3] = &unk_1E7745E18;
     v8[4] = self;
-    *&v8[5] = a4;
+    *&v8[5] = progress;
     [(PXImageRequester *)self performChanges:v8];
   }
 }
@@ -670,21 +670,21 @@ LABEL_31:
   if (self->_needsUpdateFlags.imageRequest)
   {
     self->_needsUpdateFlags.imageRequest = 0;
-    v3 = [(PXImageRequester *)self _currentRequest];
+    _currentRequest = [(PXImageRequester *)self _currentRequest];
     [(PXImageRequester *)self _targetSize];
     v5 = v4;
     v7 = v6;
-    v8 = [(PXImageRequester *)self asset];
-    v9 = [(PXImageRequester *)self mediaProvider];
-    v10 = [(PXImageRequester *)self image];
-    v11 = [v10 px_pixelSize];
-    v36 = MEMORY[0x1A590D220](v11, v5, v7, v12, v13);
+    asset = [(PXImageRequester *)self asset];
+    mediaProvider = [(PXImageRequester *)self mediaProvider];
+    image = [(PXImageRequester *)self image];
+    px_pixelSize = [image px_pixelSize];
+    v36 = MEMORY[0x1A590D220](px_pixelSize, v5, v7, v12, v13);
 
-    if (v3 && (v14 = [v3 targetSize], v17 = MEMORY[0x1A590D220](v14, v5, v7, v15, v16), (objc_msgSend(v3, "isCanceled") & 1) == 0))
+    if (_currentRequest && (v14 = [_currentRequest targetSize], v17 = MEMORY[0x1A590D220](v14, v5, v7, v15, v16), (objc_msgSend(_currentRequest, "isCanceled") & 1) == 0))
     {
-      v19 = [v3 error];
+      error = [_currentRequest error];
 
-      if (v19)
+      if (error)
       {
         v18 = 1;
       }
@@ -701,12 +701,12 @@ LABEL_31:
     }
 
     v35 = v18;
-    v20 = [v3 asset];
-    if (v20)
+    asset2 = [_currentRequest asset];
+    if (asset2)
     {
-      v21 = v8;
-      v22 = v8;
-      v23 = v20;
+      v21 = asset;
+      v22 = asset;
+      v23 = asset2;
       if (v22 == v23)
       {
         v25 = 1;
@@ -728,7 +728,7 @@ LABEL_31:
         v25 = 0;
       }
 
-      if (v3)
+      if (_currentRequest)
       {
         goto LABEL_19;
       }
@@ -736,13 +736,13 @@ LABEL_31:
 
     else
     {
-      v21 = v8;
+      v21 = asset;
       v25 = 0;
-      if (v3)
+      if (_currentRequest)
       {
 LABEL_19:
-        v27 = [v3 options];
-        [v27 normalizedCropRect];
+        options = [_currentRequest options];
+        [options normalizedCropRect];
         v37.origin.x = v28;
         v37.origin.y = v29;
         v37.size.width = v30;
@@ -750,14 +750,14 @@ LABEL_19:
         v26 = CGRectEqualToRect(self->_cropRect, v37);
 
 LABEL_20:
-        v32 = [(PXImageRequester *)self preferHDR];
-        v33 = [v3 options];
-        v34 = [v33 preferHDR];
+        preferHDR = [(PXImageRequester *)self preferHDR];
+        options2 = [_currentRequest options];
+        preferHDR2 = [options2 preferHDR];
 
-        if (v32 != v34)
+        if (preferHDR != preferHDR2)
         {
 LABEL_21:
-          [v3 cancel];
+          [_currentRequest cancel];
           if (v5 != *MEMORY[0x1E695F060] || v7 != *(MEMORY[0x1E695F060] + 8))
           {
             PXSizeIsNull();
@@ -847,11 +847,11 @@ void __47__PXImageRequester__updateImageRequestIfNeeded__block_invoke_2(uint64_t
   [(PXImageRequester *)self _updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXImageRequester;
-  [(PXImageRequester *)&v3 performChanges:a3];
+  [(PXImageRequester *)&v3 performChanges:changes];
 }
 
 - (void)dealloc
@@ -864,26 +864,26 @@ void __47__PXImageRequester__updateImageRequestIfNeeded__block_invoke_2(uint64_t
 
 - (PXImageRequester)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXImageRequester.m" lineNumber:112 description:{@"init is unavailable, use designated initializer"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXImageRequester.m" lineNumber:112 description:{@"init is unavailable, use designated initializer"}];
 
   abort();
 }
 
-- (PXImageRequester)initWithMediaProvider:(id)a3 asset:(id)a4
+- (PXImageRequester)initWithMediaProvider:(id)provider asset:(id)asset
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  assetCopy = asset;
   v16.receiver = self;
   v16.super_class = PXImageRequester;
   v9 = [(PXImageRequester *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mediaProvider, a3);
-    objc_storeStrong(&v10->_asset, a4);
-    v11 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-    [v11 scale];
+    objc_storeStrong(&v9->_mediaProvider, provider);
+    objc_storeStrong(&v10->_asset, asset);
+    px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+    [px_mainScreen scale];
     v10->_scale = v12;
 
     v13 = *(off_1E77221F8 + 1);

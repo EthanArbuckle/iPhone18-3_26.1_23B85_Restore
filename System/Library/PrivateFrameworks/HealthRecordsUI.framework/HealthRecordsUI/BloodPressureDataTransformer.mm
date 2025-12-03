@@ -1,44 +1,44 @@
 @interface BloodPressureDataTransformer
-- (id)chartDisplayTypeWith:(id)a3 displayName:(id)a4 unitName:(id)a5;
-- (id)chartPointFor:(id)a3 in:(id)a4 with:(int64_t)a5 dataSourceType:(int64_t)a6;
-- (id)graphSeriesWith:(id)a3;
+- (id)chartDisplayTypeWith:(id)with displayName:(id)name unitName:(id)unitName;
+- (id)chartPointFor:(id)for in:(id)in with:(int64_t)with dataSourceType:(int64_t)type;
+- (id)graphSeriesWith:(id)with;
 @end
 
 @implementation BloodPressureDataTransformer
 
-- (id)chartPointFor:(id)a3 in:(id)a4 with:(int64_t)a5 dataSourceType:(int64_t)a6
+- (id)chartPointFor:(id)for in:(id)in with:(int64_t)with dataSourceType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  forCopy = for;
+  inCopy = in;
 
-  v10 = sub_1D12E322C(v8, v9, a5);
+  v10 = sub_1D12E322C(forCopy, inCopy, with);
 
   return v10;
 }
 
-- (id)graphSeriesWith:(id)a3
+- (id)graphSeriesWith:(id)with
 {
-  v3 = a3;
-  v4 = [v3 keyColor];
-  if (!v4)
+  withCopy = with;
+  keyColor = [withCopy keyColor];
+  if (!keyColor)
   {
-    v4 = [objc_opt_self() blackColor];
+    keyColor = [objc_opt_self() blackColor];
   }
 
   type metadata accessor for BloodPressureChartSeries();
-  v5 = [swift_getObjCClassFromMetadata() defaultSeriesWithDiastolicColor_];
+  defaultSeriesWithDiastolicColor_ = [swift_getObjCClassFromMetadata() defaultSeriesWithDiastolicColor_];
 
-  return v5;
+  return defaultSeriesWithDiastolicColor_;
 }
 
-- (id)chartDisplayTypeWith:(id)a3 displayName:(id)a4 unitName:(id)a5
+- (id)chartDisplayTypeWith:(id)with displayName:(id)name unitName:(id)unitName
 {
-  v5 = a3;
+  withCopy = with;
 
   sub_1D12E1C50();
   v7 = v6;
   v8 = [objc_allocWithZone(MEMORY[0x1E69A43E8]) init];
-  v9 = [objc_allocWithZone(MEMORY[0x1E69A43F0]) initWithGraphSeries:v5 baseDisplayType:v7 valueFormatter:v8 dataTypeCode:80];
+  v9 = [objc_allocWithZone(MEMORY[0x1E69A43F0]) initWithGraphSeries:withCopy baseDisplayType:v7 valueFormatter:v8 dataTypeCode:80];
 
   return v9;
 }

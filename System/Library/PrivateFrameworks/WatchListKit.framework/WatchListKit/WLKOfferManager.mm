@@ -6,12 +6,12 @@
 - (id)_connection;
 - (id)_offers;
 - (id)_updateOfferFile;
-- (void)_activeAccountChangedNotification:(id)a3;
-- (void)_setOffers:(id)a3;
-- (void)clearOffers:(id)a3;
-- (void)removeOfferByBadgeId:(id)a3 completionHandler:(id)a4;
-- (void)saveOffer:(id)a3 completionHandler:(id)a4;
-- (void)sendBadgeActionMetricsEvents:(id)a3;
+- (void)_activeAccountChangedNotification:(id)notification;
+- (void)_setOffers:(id)offers;
+- (void)clearOffers:(id)offers;
+- (void)removeOfferByBadgeId:(id)id completionHandler:(id)handler;
+- (void)saveOffer:(id)offer completionHandler:(id)handler;
+- (void)sendBadgeActionMetricsEvents:(id)events;
 @end
 
 @implementation WLKOfferManager
@@ -56,9 +56,9 @@ uint64_t __38__WLKOfferManager_defaultOfferManager__block_invoke()
 
     if (WLKIsDaemon())
     {
-      v6 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v7 = +[WLKAccountMonitor sharedInstance];
-      [v6 addObserver:v2 selector:sel__activeAccountChangedNotification_ name:@"WLKAccountMonitorAccountDidChange" object:v7];
+      [defaultCenter addObserver:v2 selector:sel__activeAccountChangedNotification_ name:@"WLKAccountMonitorAccountDidChange" object:v7];
 
       v8 = MEMORY[0x277CBEA90];
       v9 = +[WLKOfferManager _offerFullPath];
@@ -116,10 +116,10 @@ uint64_t __38__WLKOfferManager_defaultOfferManager__block_invoke()
   return v2;
 }
 
-- (void)saveOffer:(id)a3 completionHandler:(id)a4
+- (void)saveOffer:(id)offer completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  offerCopy = offer;
+  handlerCopy = handler;
   v8 = WLKSystemLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -131,7 +131,7 @@ uint64_t __38__WLKOfferManager_defaultOfferManager__block_invoke()
   v27[1] = 3221225472;
   v27[2] = __47__WLKOfferManager_saveOffer_completionHandler___block_invoke;
   v27[3] = &unk_279E5EB38;
-  v9 = v7;
+  v9 = handlerCopy;
   v28 = v9;
   v10 = MEMORY[0x2743D2DF0](v27);
   if (WLKIsDaemon())
@@ -143,7 +143,7 @@ uint64_t __38__WLKOfferManager_defaultOfferManager__block_invoke()
     block[2] = __47__WLKOfferManager_saveOffer_completionHandler___block_invoke_49;
     block[3] = &unk_279E5EB88;
     objc_copyWeak(&v25, &buf);
-    v23 = v6;
+    v23 = offerCopy;
     v24 = v10;
     v12 = v10;
     dispatch_async(queue, block);
@@ -154,14 +154,14 @@ uint64_t __38__WLKOfferManager_defaultOfferManager__block_invoke()
 
   else
   {
-    v13 = [(WLKOfferManager *)self _connection];
+    _connection = [(WLKOfferManager *)self _connection];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __47__WLKOfferManager_saveOffer_completionHandler___block_invoke_3;
     v20[3] = &unk_279E5EB38;
     v14 = v10;
     v21 = v14;
-    v15 = [v13 remoteObjectProxyWithErrorHandler:v20];
+    v15 = [_connection remoteObjectProxyWithErrorHandler:v20];
 
     v16 = WLKSystemLogObject();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -176,7 +176,7 @@ uint64_t __38__WLKOfferManager_defaultOfferManager__block_invoke()
     v18[3] = &unk_279E5EB38;
     v19 = v14;
     v17 = v14;
-    [v15 saveOffer:v6 completionHandler:v18];
+    [v15 saveOffer:offerCopy completionHandler:v18];
   }
 }
 
@@ -401,10 +401,10 @@ void __42__WLKOfferManager_fetchOffers_completion___block_invoke_58(uint64_t a1,
   }
 }
 
-- (void)removeOfferByBadgeId:(id)a3 completionHandler:(id)a4
+- (void)removeOfferByBadgeId:(id)id completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  handlerCopy = handler;
   v8 = WLKSystemLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -416,7 +416,7 @@ void __42__WLKOfferManager_fetchOffers_completion___block_invoke_58(uint64_t a1,
   v27[1] = 3221225472;
   v27[2] = __58__WLKOfferManager_removeOfferByBadgeId_completionHandler___block_invoke;
   v27[3] = &unk_279E5EB38;
-  v9 = v7;
+  v9 = handlerCopy;
   v28 = v9;
   v10 = MEMORY[0x2743D2DF0](v27);
   if (WLKIsDaemon())
@@ -428,7 +428,7 @@ void __42__WLKOfferManager_fetchOffers_completion___block_invoke_58(uint64_t a1,
     block[2] = __58__WLKOfferManager_removeOfferByBadgeId_completionHandler___block_invoke_60;
     block[3] = &unk_279E5EB88;
     objc_copyWeak(&v25, &buf);
-    v23 = v6;
+    v23 = idCopy;
     v24 = v10;
     v12 = v10;
     dispatch_async(queue, block);
@@ -439,14 +439,14 @@ void __42__WLKOfferManager_fetchOffers_completion___block_invoke_58(uint64_t a1,
 
   else
   {
-    v13 = [(WLKOfferManager *)self _connection];
+    _connection = [(WLKOfferManager *)self _connection];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __58__WLKOfferManager_removeOfferByBadgeId_completionHandler___block_invoke_64;
     v20[3] = &unk_279E5EB38;
     v14 = v10;
     v21 = v14;
-    v15 = [v13 remoteObjectProxyWithErrorHandler:v20];
+    v15 = [_connection remoteObjectProxyWithErrorHandler:v20];
 
     v16 = WLKSystemLogObject();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -461,7 +461,7 @@ void __42__WLKOfferManager_fetchOffers_completion___block_invoke_58(uint64_t a1,
     v18[3] = &unk_279E5EB38;
     v19 = v14;
     v17 = v14;
-    [v15 removeOfferByBadgeId:v6 completionHandler:v18];
+    [v15 removeOfferByBadgeId:idCopy completionHandler:v18];
   }
 }
 
@@ -634,9 +634,9 @@ void __58__WLKOfferManager_removeOfferByBadgeId_completionHandler___block_invoke
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)clearOffers:(id)a3
+- (void)clearOffers:(id)offers
 {
-  v4 = a3;
+  offersCopy = offers;
   v5 = WLKSystemLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -648,7 +648,7 @@ void __58__WLKOfferManager_removeOfferByBadgeId_completionHandler___block_invoke
   v23[1] = 3221225472;
   v23[2] = __31__WLKOfferManager_clearOffers___block_invoke;
   v23[3] = &unk_279E5EB38;
-  v6 = v4;
+  v6 = offersCopy;
   v24 = v6;
   v7 = MEMORY[0x2743D2DF0](v23);
   if (WLKIsDaemon())
@@ -670,14 +670,14 @@ void __58__WLKOfferManager_removeOfferByBadgeId_completionHandler___block_invoke
 
   else
   {
-    v10 = [(WLKOfferManager *)self _connection];
+    _connection = [(WLKOfferManager *)self _connection];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __31__WLKOfferManager_clearOffers___block_invoke_68;
     v17[3] = &unk_279E5EB38;
     v11 = v7;
     v18 = v11;
-    v12 = [v10 remoteObjectProxyWithErrorHandler:v17];
+    v12 = [_connection remoteObjectProxyWithErrorHandler:v17];
 
     v13 = WLKSystemLogObject();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -845,12 +845,12 @@ void __30__WLKOfferManager__connection__block_invoke_76(uint64_t a1)
   }
 }
 
-- (void)_activeAccountChangedNotification:(id)a3
+- (void)_activeAccountChangedNotification:(id)notification
 {
   if (WLKIsDaemon())
   {
-    v3 = [MEMORY[0x277D6C478] activeAccount];
-    if (!v3)
+    activeAccount = [MEMORY[0x277D6C478] activeAccount];
+    if (!activeAccount)
     {
       NSLog(&cfstr_Wlkoffermanage_0.isa);
       +[WLKBadgingUtilities clearSavedBadgeIdentifiers];
@@ -861,7 +861,7 @@ void __30__WLKOfferManager__connection__block_invoke_76(uint64_t a1)
       v6 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.WatchListKit"];
       [v6 removeObjectForKey:@"PreviouslyBadgedTVOffers"];
 
-      v3 = 0;
+      activeAccount = 0;
     }
   }
 }
@@ -875,12 +875,12 @@ void __30__WLKOfferManager__connection__block_invoke_76(uint64_t a1)
   return v3;
 }
 
-- (void)_setOffers:(id)a3
+- (void)_setOffers:(id)offers
 {
-  v4 = a3;
+  offersCopy = offers;
   os_unfair_lock_lock(&__offersLock);
   offers = self->_offers;
-  self->_offers = v4;
+  self->_offers = offersCopy;
 
   os_unfair_lock_unlock(&__offersLock);
 }
@@ -890,12 +890,12 @@ void __30__WLKOfferManager__connection__block_invoke_76(uint64_t a1)
   v2 = WLKDefaultSupportPath();
   if ([v2 length])
   {
-    v3 = [MEMORY[0x277D6C478] activeAccount];
-    v4 = [v3 ams_DSID];
+    activeAccount = [MEMORY[0x277D6C478] activeAccount];
+    ams_DSID = [activeAccount ams_DSID];
 
-    if (v4)
+    if (ams_DSID)
     {
-      v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v4];
+      v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", ams_DSID];
       if (v5)
       {
         v6 = [v2 stringByAppendingPathComponent:v5];
@@ -918,26 +918,26 @@ void __30__WLKOfferManager__connection__block_invoke_76(uint64_t a1)
   v2 = +[WLKOfferManager _offerPath];
   v3 = [v2 stringByAppendingPathComponent:@"offers.plist"];
 
-  v4 = [v3 stringByExpandingTildeInPath];
+  stringByExpandingTildeInPath = [v3 stringByExpandingTildeInPath];
 
-  return v4;
+  return stringByExpandingTildeInPath;
 }
 
 - (id)_updateOfferFile
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = +[WLKOfferManager _offerPath];
   v22 = 0;
-  [v3 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v22];
+  [defaultManager createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v22];
   v5 = v22;
 
   if (!v5)
   {
     v8 = MEMORY[0x277CCAAB0];
-    v9 = [(WLKOfferManager *)self offers];
+    offers = [(WLKOfferManager *)self offers];
     v21 = 0;
-    v10 = [v8 archivedDataWithRootObject:v9 requiringSecureCoding:1 error:&v21];
+    v10 = [v8 archivedDataWithRootObject:offers requiringSecureCoding:1 error:&v21];
     v11 = v21;
 
     if (!v10)
@@ -997,23 +997,23 @@ LABEL_14:
   return v7;
 }
 
-- (void)sendBadgeActionMetricsEvents:(id)a3
+- (void)sendBadgeActionMetricsEvents:(id)events
 {
   v56 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_alloc(MEMORY[0x277CEE598]);
   v5 = WLKTVAppBundleID();
-  v6 = [MEMORY[0x277CEE3F8] wlk_defaultBag];
-  v34 = [v4 initWithContainerID:v5 bag:v6];
+  wlk_defaultBag = [MEMORY[0x277CEE3F8] wlk_defaultBag];
+  v34 = [v4 initWithContainerID:v5 bag:wlk_defaultBag];
 
   v33 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v35 = v3;
-  v7 = [v3 lastObject];
-  v8 = [v7 objectForKeyedSubscript:@"metrics"];
+  v35 = eventsCopy;
+  lastObject = [eventsCopy lastObject];
+  v8 = [lastObject objectForKeyedSubscript:@"metrics"];
 
   obj = v8;
   v38 = [v8 countByEnumeratingWithState:&v48 objects:v55 count:16];
@@ -1188,8 +1188,8 @@ LABEL_34:
   }
 
   [v34 enqueueEvents:v33];
-  v31 = [v34 flush];
-  [v31 addFinishBlock:&__block_literal_global_108];
+  flush = [v34 flush];
+  [flush addFinishBlock:&__block_literal_global_108];
 
   v32 = *MEMORY[0x277D85DE8];
 }

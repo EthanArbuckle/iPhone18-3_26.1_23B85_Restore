@@ -1,25 +1,25 @@
 @interface HMFMutableNetService
-- (HMFMutableNetService)initWithDomain:(id)a3 type:(id)a4 name:(id)a5 port:(unint64_t)a6;
-- (HMFMutableNetService)initWithNetService:(id)a3;
+- (HMFMutableNetService)initWithDomain:(id)domain type:(id)type name:(id)name port:(unint64_t)port;
+- (HMFMutableNetService)initWithNetService:(id)service;
 - (id)internal;
-- (void)netService:(id)a3 didNotPublish:(id)a4;
-- (void)netServiceDidPublish:(id)a3;
-- (void)netServiceDidStop:(id)a3;
-- (void)netServiceWillPublish:(id)a3;
-- (void)removeTXTRecordValueForKey:(id)a3;
-- (void)setInternal:(id)a3;
-- (void)setTXTRecord:(id)a3;
-- (void)setTXTRecordValue:(id)a3 forKey:(id)a4;
-- (void)startPublishingWithCompletionHandler:(id)a3;
+- (void)netService:(id)service didNotPublish:(id)publish;
+- (void)netServiceDidPublish:(id)publish;
+- (void)netServiceDidStop:(id)stop;
+- (void)netServiceWillPublish:(id)publish;
+- (void)removeTXTRecordValueForKey:(id)key;
+- (void)setInternal:(id)internal;
+- (void)setTXTRecord:(id)record;
+- (void)setTXTRecordValue:(id)value forKey:(id)key;
+- (void)startPublishingWithCompletionHandler:(id)handler;
 - (void)stopPublishing;
 - (void)updateTXTRecord;
 @end
 
 @implementation HMFMutableNetService
 
-- (HMFMutableNetService)initWithNetService:(id)a3
+- (HMFMutableNetService)initWithNetService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -31,24 +31,24 @@
   objc_exception_throw(v10);
 }
 
-- (HMFMutableNetService)initWithDomain:(id)a3 type:(id)a4 name:(id)a5 port:(unint64_t)a6
+- (HMFMutableNetService)initWithDomain:(id)domain type:(id)type name:(id)name port:(unint64_t)port
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (!v10)
+  domainCopy = domain;
+  typeCopy = type;
+  nameCopy = name;
+  v13 = nameCopy;
+  if (!domainCopy)
   {
     v26 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy3 = self;
     v27 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_14;
     }
 
-    v28 = HMFGetLogIdentifier(v24);
+    v28 = HMFGetLogIdentifier(selfCopy3);
     *buf = 138543362;
     v35 = v28;
     v29 = "%{public}@Service domain is required";
@@ -58,31 +58,31 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v11)
+  if (!typeCopy)
   {
     v26 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy3 = self;
     v27 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_14;
     }
 
-    v28 = HMFGetLogIdentifier(v24);
+    v28 = HMFGetLogIdentifier(selfCopy3);
     *buf = 138543362;
     v35 = v28;
     v29 = "%{public}@Service type is required";
     goto LABEL_13;
   }
 
-  if (!v12)
+  if (!nameCopy)
   {
     v26 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy3 = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      v28 = HMFGetLogIdentifier(v24);
+      v28 = HMFGetLogIdentifier(selfCopy3);
       *buf = 138543362;
       v35 = v28;
       v29 = "%{public}@Service name is required";
@@ -101,11 +101,11 @@ LABEL_14:
   v14 = [(HMFNetService *)&v32 initWithNetService:0];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [domainCopy copy];
     domain = v14->super._domain;
     v14->super._domain = v15;
 
-    v17 = [v11 copy];
+    v17 = [typeCopy copy];
     type = v14->super._type;
     v14->super._type = v17;
 
@@ -113,7 +113,7 @@ LABEL_14:
     name = v14->super._name;
     v14->super._name = v19;
 
-    v14->super._port = a6;
+    v14->super._port = port;
     v21 = +[HMFNetAddress localAddress];
     v33 = v21;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v33 count:1];
@@ -121,18 +121,18 @@ LABEL_14:
     v14->super._addresses = v22;
   }
 
-  v24 = v14;
-  v25 = v24;
+  selfCopy3 = v14;
+  v25 = selfCopy3;
 LABEL_15:
 
   v30 = *MEMORY[0x277D85DE8];
   return v25;
 }
 
-- (void)setTXTRecord:(id)a3
+- (void)setTXTRecord:(id)record
 {
-  v10 = a3;
-  v4 = [v10 mutableCopy];
+  recordCopy = record;
+  v4 = [recordCopy mutableCopy];
   os_unfair_lock_lock_with_options();
   if (([(NSMutableDictionary *)self->super._TXTRecord isEqualToDictionary:v4]& 1) != 0)
   {
@@ -143,16 +143,16 @@ LABEL_15:
   {
     if (v4)
     {
-      v5 = v4;
+      dictionary = v4;
     }
 
     else
     {
-      v5 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
     TXTRecord = self->super._TXTRecord;
-    self->super._TXTRecord = v5;
+    self->super._TXTRecord = dictionary;
 
     [(HMFMutableNetService *)self updateTXTRecord];
     os_unfair_lock_unlock(&self->super._lock);
@@ -172,23 +172,23 @@ LABEL_15:
   }
 }
 
-- (void)setTXTRecordValue:(id)a3 forKey:(id)a4
+- (void)setTXTRecordValue:(id)value forKey:(id)key
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = v7;
+  valueCopy = value;
+  keyCopy = key;
+  selfCopy = self;
+  v9 = keyCopy;
   v10 = MEMORY[0x277CBAB60];
   v24 = v9;
-  v11 = [MEMORY[0x277CBEA90] data];
-  v25[0] = v11;
+  data = [MEMORY[0x277CBEA90] data];
+  v25[0] = data;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
   v13 = [v10 dataFromTXTRecordDictionary:v12];
 
   v14 = 0;
-  v15 = v8;
-  v16 = v6;
+  v15 = selfCopy;
+  v16 = valueCopy;
   v17 = MEMORY[0x277CBAB60];
   v24 = @"key";
   v25[0] = v16;
@@ -220,11 +220,11 @@ LABEL_15:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeTXTRecordValueForKey:(id)a3
+- (void)removeTXTRecordValueForKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   os_unfair_lock_lock_with_options();
-  [(NSMutableDictionary *)self->super._TXTRecord removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->super._TXTRecord removeObjectForKey:keyCopy];
   [(HMFMutableNetService *)self updateTXTRecord];
   v4 = [(NSMutableDictionary *)self->super._TXTRecord copy];
   os_unfair_lock_unlock(&self->super._lock);
@@ -236,13 +236,13 @@ LABEL_15:
 
 - (void)updateTXTRecord
 {
-  v3 = [(HMFNetService *)self clientQueue];
+  clientQueue = [(HMFNetService *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__HMFMutableNetService_updateTXTRecord__block_invoke;
   block[3] = &unk_2786E6C80;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
 void __39__HMFMutableNetService_updateTXTRecord__block_invoke(uint64_t a1)
@@ -285,28 +285,28 @@ void __39__HMFMutableNetService_updateTXTRecord__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setInternal:(id)a3
+- (void)setInternal:(id)internal
 {
-  v4 = a3;
+  internalCopy = internal;
   os_unfair_lock_lock_with_options();
   internal = self->super._internal;
-  self->super._internal = v4;
+  self->super._internal = internalCopy;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)startPublishingWithCompletionHandler:(id)a3
+- (void)startPublishingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMFNetService *)self clientQueue];
+  handlerCopy = handler;
+  clientQueue = [(HMFNetService *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__HMFMutableNetService_startPublishingWithCompletionHandler___block_invoke;
   v7[3] = &unk_2786E6D68;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(clientQueue, v7);
 }
 
 void __61__HMFMutableNetService_startPublishingWithCompletionHandler___block_invoke(uint64_t a1)
@@ -426,25 +426,25 @@ LABEL_21:
   if ([(HMFNetService *)self isPublishing])
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy = self;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = HMFGetLogIdentifier(v4);
+      v6 = HMFGetLogIdentifier(selfCopy);
       *buf = 138543362;
       v11 = v6;
       _os_log_impl(&dword_22ADEC000, v5, OS_LOG_TYPE_INFO, "%{public}@Stopping the net service", buf, 0xCu);
     }
 
     objc_autoreleasePoolPop(v3);
-    [(HMFNetService *)v4 setPublishing:0];
-    v7 = [(HMFNetService *)v4 clientQueue];
+    [(HMFNetService *)selfCopy setPublishing:0];
+    clientQueue = [(HMFNetService *)selfCopy clientQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __38__HMFMutableNetService_stopPublishing__block_invoke;
     block[3] = &unk_2786E6C80;
-    block[4] = v4;
-    dispatch_async(v7, block);
+    block[4] = selfCopy;
+    dispatch_async(clientQueue, block);
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -456,16 +456,16 @@ void __38__HMFMutableNetService_stopPublishing__block_invoke(uint64_t a1)
   [v1 stop];
 }
 
-- (void)netServiceWillPublish:(id)a3
+- (void)netServiceWillPublish:(id)publish
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  publishCopy = publish;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = HMFGetLogIdentifier(v6);
+    v8 = HMFGetLogIdentifier(selfCopy);
     v10 = 138543362;
     v11 = v8;
     _os_log_impl(&dword_22ADEC000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Net service will publish", &v10, 0xCu);
@@ -475,15 +475,15 @@ void __38__HMFMutableNetService_stopPublishing__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)netServiceDidPublish:(id)a3
+- (void)netServiceDidPublish:(id)publish
 {
-  v4 = [(HMFNetService *)self clientQueue];
+  clientQueue = [(HMFNetService *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__HMFMutableNetService_netServiceDidPublish___block_invoke;
   block[3] = &unk_2786E6C80;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(clientQueue, block);
 }
 
 void __45__HMFMutableNetService_netServiceDidPublish___block_invoke(uint64_t a1)
@@ -511,18 +511,18 @@ void __45__HMFMutableNetService_netServiceDidPublish___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)netService:(id)a3 didNotPublish:(id)a4
+- (void)netService:(id)service didNotPublish:(id)publish
 {
-  v5 = a4;
-  v6 = [(HMFNetService *)self clientQueue];
+  publishCopy = publish;
+  clientQueue = [(HMFNetService *)self clientQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__HMFMutableNetService_netService_didNotPublish___block_invoke;
   v8[3] = &unk_2786E6D18;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = publishCopy;
+  v7 = publishCopy;
+  dispatch_async(clientQueue, v8);
 }
 
 void __49__HMFMutableNetService_netService_didNotPublish___block_invoke(uint64_t a1)
@@ -570,15 +570,15 @@ void __49__HMFMutableNetService_netService_didNotPublish___block_invoke(uint64_t
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)netServiceDidStop:(id)a3
+- (void)netServiceDidStop:(id)stop
 {
-  v4 = [(HMFNetService *)self clientQueue];
+  clientQueue = [(HMFNetService *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__HMFMutableNetService_netServiceDidStop___block_invoke;
   block[3] = &unk_2786E6C80;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(clientQueue, block);
 }
 
 void __42__HMFMutableNetService_netServiceDidStop___block_invoke(uint64_t a1)

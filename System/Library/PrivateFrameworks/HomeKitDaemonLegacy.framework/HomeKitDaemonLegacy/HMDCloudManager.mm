@@ -1,57 +1,57 @@
 @interface HMDCloudManager
 + (id)logCategory;
-- (BOOL)_processFetchedTransaction:(id)a3;
+- (BOOL)_processFetchedTransaction:(id)transaction;
 - (BOOL)decryptionFailed;
 - (BOOL)legacyZoneHasRecordsAvailable;
 - (HMDCloudHomeManagerZone)homeManagerZone;
 - (HMDCloudLegacyZone)legacyZone;
-- (HMDCloudManager)initWithMessageDispatcher:(id)a3 cloudDataSyncStateFilter:(id)a4 cloudCache:(id)a5 delegate:(id)a6 dataSource:(id)a7 syncManager:(id)a8 callbackQueue:(id)a9 container:(id)a10 logEventSubmitter:(id)a11 workQueue:(id)a12;
-- (HMDCloudManager)initWithMessageDispatcher:(id)a3 cloudDataSyncStateFilter:(id)a4 cloudCache:(id)a5 delegate:(id)a6 dataSource:(id)a7 syncManager:(id)a8 logEventSubmitter:(id)a9 callbackQueue:(id)a10;
+- (HMDCloudManager)initWithMessageDispatcher:(id)dispatcher cloudDataSyncStateFilter:(id)filter cloudCache:(id)cache delegate:(id)delegate dataSource:(id)source syncManager:(id)manager callbackQueue:(id)queue container:(id)self0 logEventSubmitter:(id)self1 workQueue:(id)self2;
+- (HMDCloudManager)initWithMessageDispatcher:(id)dispatcher cloudDataSyncStateFilter:(id)filter cloudCache:(id)cache delegate:(id)delegate dataSource:(id)source syncManager:(id)manager logEventSubmitter:(id)submitter callbackQueue:(id)self0;
 - (HMDCloudManagerDataSource)dataSource;
 - (HMDCloudManagerDelegate)delegate;
 - (HMDCloudMetadataZone)metadataZone;
 - (HMDSyncOperationManager)syncManager;
 - (NSData)serverTokenData;
-- (id)_changeTokenFromData:(id)a3;
+- (id)_changeTokenFromData:(id)data;
 - (id)_serverTokenData;
-- (void)__addCKDatabaseOperation:(id)a3;
-- (void)__deleteRecordWithID:(id)a3 completionHandler:(id)a4;
-- (void)__deleteRecordZoneWithID:(id)a3 completionHandler:(id)a4;
-- (void)__deleteRecordZonesWithIDs:(id)a3 completionHandler:(id)a4;
-- (void)__fetchAllRecordZonesWithCompletionHandler:(id)a3;
-- (void)__fetchRecordZoneWithID:(id)a3 completionHandler:(id)a4;
-- (void)__fetchSubscriptionWithID:(id)a3 completionHandler:(id)a4;
-- (void)__saveRecordZone:(id)a3 completionHandler:(id)a4;
-- (void)__saveSubscription:(id)a3 completionHandler:(id)a4;
+- (void)__addCKDatabaseOperation:(id)operation;
+- (void)__deleteRecordWithID:(id)d completionHandler:(id)handler;
+- (void)__deleteRecordZoneWithID:(id)d completionHandler:(id)handler;
+- (void)__deleteRecordZonesWithIDs:(id)ds completionHandler:(id)handler;
+- (void)__fetchAllRecordZonesWithCompletionHandler:(id)handler;
+- (void)__fetchRecordZoneWithID:(id)d completionHandler:(id)handler;
+- (void)__fetchSubscriptionWithID:(id)d completionHandler:(id)handler;
+- (void)__saveRecordZone:(id)zone completionHandler:(id)handler;
+- (void)__saveSubscription:(id)subscription completionHandler:(id)handler;
 - (void)_accountIsActive;
-- (void)_addHomeZoneName:(id)a3 owner:(id)a4;
-- (void)_auditProxSetupNotification:(id)a3;
-- (void)_checkZoneAndUploadTransaction:(id)a3 completionHandler:(id)a4;
-- (void)_createZoneAndFetchChanges:(id)a3;
-- (void)_createZoneAndUploadTransaction:(id)a3 completionHandler:(id)a4;
-- (void)_fetchAndVerifyZoneRootRecord:(id)a3 completionHandler:(id)a4;
-- (void)_fetchDatabaseZoneChangesCompletion:(id)a3;
-- (void)_fetchLegacyTransaction:(id)a3 forceFetch:(BOOL)a4 accountCompletionHandler:(id)a5 dataCompletionHandler:(id)a6;
-- (void)_fetchTransaction:(id)a3 completionHandler:(id)a4;
-- (void)_forceCleanCloud:(BOOL)a3 fetchTransaction:(id)a4 completionHandler:(id)a5;
-- (void)_handleAccountStatus:(int64_t)a3 completionHandler:(id)a4;
+- (void)_addHomeZoneName:(id)name owner:(id)owner;
+- (void)_auditProxSetupNotification:(id)notification;
+- (void)_checkZoneAndUploadTransaction:(id)transaction completionHandler:(id)handler;
+- (void)_createZoneAndFetchChanges:(id)changes;
+- (void)_createZoneAndUploadTransaction:(id)transaction completionHandler:(id)handler;
+- (void)_fetchAndVerifyZoneRootRecord:(id)record completionHandler:(id)handler;
+- (void)_fetchDatabaseZoneChangesCompletion:(id)completion;
+- (void)_fetchLegacyTransaction:(id)transaction forceFetch:(BOOL)fetch accountCompletionHandler:(id)handler dataCompletionHandler:(id)completionHandler;
+- (void)_fetchTransaction:(id)transaction completionHandler:(id)handler;
+- (void)_forceCleanCloud:(BOOL)cloud fetchTransaction:(id)transaction completionHandler:(id)handler;
+- (void)_handleAccountStatus:(int64_t)status completionHandler:(id)handler;
 - (void)_handleControllerKeyAvailable;
-- (void)_handleKeychainSyncStateChanged:(BOOL)a3;
-- (void)_processFetchCompletedWithError:(id)a3 serverToken:(id)a4 fetchTransaction:(id)a5 migrationOptions:(unint64_t)a6 completionHandler:(id)a7 moreRecordsComing:(BOOL)a8 emptyRecord:(BOOL)a9;
+- (void)_handleKeychainSyncStateChanged:(BOOL)changed;
+- (void)_processFetchCompletedWithError:(id)error serverToken:(id)token fetchTransaction:(id)transaction migrationOptions:(unint64_t)options completionHandler:(id)handler moreRecordsComing:(BOOL)coming emptyRecord:(BOOL)record;
 - (void)_registerForProxSetupNotifications;
-- (void)_removeAllHomeZonesCompletionHandler:(id)a3;
-- (void)_removeHomeZoneName:(id)a3;
-- (void)_removeZonesTransactions:(id)a3 completionHandler:(id)a4;
-- (void)_resetCloudCache:(id)a3;
-- (void)_resetCloudDataAndDeleteMetadataForCurrentAccount:(BOOL)a3 completionHandler:(id)a4;
+- (void)_removeAllHomeZonesCompletionHandler:(id)handler;
+- (void)_removeHomeZoneName:(id)name;
+- (void)_removeZonesTransactions:(id)transactions completionHandler:(id)handler;
+- (void)_resetCloudCache:(id)cache;
+- (void)_resetCloudDataAndDeleteMetadataForCurrentAccount:(BOOL)account completionHandler:(id)handler;
 - (void)_resetCloudServerTokenData;
-- (void)_resetCloudZonesIgnoreHomeManager:(BOOL)a3 completionHandler:(id)a4;
+- (void)_resetCloudZonesIgnoreHomeManager:(BOOL)manager completionHandler:(id)handler;
 - (void)_resetHomeDataRecordState;
-- (void)_scheduleZoneFetch:(id)a3;
-- (void)_setupSubscriptionForZone:(id)a3;
+- (void)_scheduleZoneFetch:(id)fetch;
+- (void)_setupSubscriptionForZone:(id)zone;
 - (void)_startControllerKeyPollTimer;
 - (void)_startControllerKeyPollTimerWithBackoff;
-- (void)_startControllerKeyPollTimerWithValue:(int64_t)a3;
+- (void)_startControllerKeyPollTimerWithValue:(int64_t)value;
 - (void)_startFetchPollTimer;
 - (void)_startFetchRetryTimer;
 - (void)_startWatchdogControllerKeyPollTimer;
@@ -60,42 +60,42 @@
 - (void)_stopFetchRetryTimer;
 - (void)_stopWatchdogControllerKeyPollTimer;
 - (void)_updateServerTokenStatusOnCloudFilter;
-- (void)_uploadLegacyTransaction:(id)a3 completionHandler:(id)a4;
-- (void)_uploadTransaction:(id)a3 completionHandler:(id)a4;
-- (void)_verifyAndRemoveAllHomeZonesCompletionHandler:(id)a3;
-- (void)_verifyAndRemoveZone:(id)a3 completionHandler:(id)a4;
-- (void)_verifyHH2SentinelCloudZoneExist:(id)a3;
-- (void)_verifyZoneHasBeenDeletedTransaction:(id)a3 completionHandler:(id)a4;
-- (void)_verifyZonesExist:(id)a3 zoneIndex:(unint64_t)a4 completion:(id)a5;
-- (void)addHomeZoneName:(id)a3 owner:(id)a4;
+- (void)_uploadLegacyTransaction:(id)transaction completionHandler:(id)handler;
+- (void)_uploadTransaction:(id)transaction completionHandler:(id)handler;
+- (void)_verifyAndRemoveAllHomeZonesCompletionHandler:(id)handler;
+- (void)_verifyAndRemoveZone:(id)zone completionHandler:(id)handler;
+- (void)_verifyHH2SentinelCloudZoneExist:(id)exist;
+- (void)_verifyZoneHasBeenDeletedTransaction:(id)transaction completionHandler:(id)handler;
+- (void)_verifyZonesExist:(id)exist zoneIndex:(unint64_t)index completion:(id)completion;
+- (void)addHomeZoneName:(id)name owner:(id)owner;
 - (void)cacheDatabaseServerToken;
 - (void)dealloc;
-- (void)fetchCurrentAccountStateWithCompletionHandler:(id)a3;
+- (void)fetchCurrentAccountStateWithCompletionHandler:(id)handler;
 - (void)fetchDatabaseZoneChanges;
-- (void)fetchLegacyTransaction:(id)a3 forceFetch:(BOOL)a4 accountCompletionHandler:(id)a5 dataCompletionHandler:(id)a6;
-- (void)fetchTransaction:(id)a3 completionHandler:(id)a4;
-- (void)handleKeychainStateChangedNotification:(id)a3;
-- (void)handler:(id)a3 didReceiveCKNotification:(id)a4;
-- (void)handler:(id)a3 didReceivePushForTopic:(id)a4;
+- (void)fetchLegacyTransaction:(id)transaction forceFetch:(BOOL)fetch accountCompletionHandler:(id)handler dataCompletionHandler:(id)completionHandler;
+- (void)fetchTransaction:(id)transaction completionHandler:(id)handler;
+- (void)handleKeychainStateChangedNotification:(id)notification;
+- (void)handler:(id)handler didReceiveCKNotification:(id)notification;
+- (void)handler:(id)handler didReceivePushForTopic:(id)topic;
 - (void)initializeServerTokenStatusOnCloudFilter;
 - (void)registerForPushNotifications;
-- (void)removeHomeZoneName:(id)a3;
-- (void)removeZonesTransactions:(id)a3 completionHandler:(id)a4;
-- (void)resetCloudCache:(id)a3;
-- (void)resetCloudDataAndDeleteMetadataForCurrentAccount:(BOOL)a3 completionHandler:(id)a4;
-- (void)resetCloudServerTokenData:(id)a3;
-- (void)setAccountActive:(BOOL)a3;
-- (void)setAccountActiveUpdateCallback:(id)a3;
-- (void)setCloudDataDeletedNotificationBlock:(id)a3;
-- (void)setCloudMetadataDeletedNotificationBlock:(id)a3;
-- (void)setControllerKeyAvailableNotificationBlock:(id)a3;
-- (void)setDataAvailableFromCloudCompletionBlock:(id)a3;
-- (void)setDataDecryptionFailedCompletionBlock:(id)a3;
-- (void)updateAccountStatusChanged:(BOOL)a3 completionHandler:(id)a4;
+- (void)removeHomeZoneName:(id)name;
+- (void)removeZonesTransactions:(id)transactions completionHandler:(id)handler;
+- (void)resetCloudCache:(id)cache;
+- (void)resetCloudDataAndDeleteMetadataForCurrentAccount:(BOOL)account completionHandler:(id)handler;
+- (void)resetCloudServerTokenData:(id)data;
+- (void)setAccountActive:(BOOL)active;
+- (void)setAccountActiveUpdateCallback:(id)callback;
+- (void)setCloudDataDeletedNotificationBlock:(id)block;
+- (void)setCloudMetadataDeletedNotificationBlock:(id)block;
+- (void)setControllerKeyAvailableNotificationBlock:(id)block;
+- (void)setDataAvailableFromCloudCompletionBlock:(id)block;
+- (void)setDataDecryptionFailedCompletionBlock:(id)block;
+- (void)updateAccountStatusChanged:(BOOL)changed completionHandler:(id)handler;
 - (void)updateServerTokenStatusOnCloudFilter;
-- (void)uploadLegacyTransaction:(id)a3 completionHandler:(id)a4;
-- (void)uploadTransaction:(id)a3 completionHandler:(id)a4;
-- (void)verifyAndRemoveZone:(id)a3 completionHandler:(id)a4;
+- (void)uploadLegacyTransaction:(id)transaction completionHandler:(id)handler;
+- (void)uploadTransaction:(id)transaction completionHandler:(id)handler;
+- (void)verifyAndRemoveZone:(id)zone completionHandler:(id)handler;
 @end
 
 @implementation HMDCloudManager
@@ -121,22 +121,22 @@
   return WeakRetained;
 }
 
-- (void)handler:(id)a3 didReceiveCKNotification:(id)a4
+- (void)handler:(id)handler didReceiveCKNotification:(id)notification
 {
-  v5 = [a4 containerIdentifier];
-  v6 = [(HMDCloudManager *)self container];
-  v7 = [v6 containerIdentifier];
-  v8 = [v5 isEqualToString:v7];
+  containerIdentifier = [notification containerIdentifier];
+  container = [(HMDCloudManager *)self container];
+  containerIdentifier2 = [container containerIdentifier];
+  v8 = [containerIdentifier isEqualToString:containerIdentifier2];
 
   if (v8)
   {
-    v9 = [(HMDCloudManager *)self workQueue];
+    workQueue = [(HMDCloudManager *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __52__HMDCloudManager_handler_didReceiveCKNotification___block_invoke;
     block[3] = &unk_279735D00;
     block[4] = self;
-    dispatch_async(v9, block);
+    dispatch_async(workQueue, block);
   }
 }
 
@@ -196,43 +196,43 @@ void __52__HMDCloudManager_handler_didReceiveCKNotification___block_invoke(uint6
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handler:(id)a3 didReceivePushForTopic:(id)a4
+- (void)handler:(id)handler didReceivePushForTopic:(id)topic
 {
   v5 = MEMORY[0x277D0F8C0];
-  v6 = a4;
-  v7 = [v5 sharedPowerLogger];
-  [v7 reportIncomingCloudPush:v6];
+  topicCopy = topic;
+  sharedPowerLogger = [v5 sharedPowerLogger];
+  [sharedPowerLogger reportIncomingCloudPush:topicCopy];
 
-  v9 = [(HMDCloudManager *)self logEventSubmitter];
-  v8 = [HMDIncomingCloudPushLogEvent incomingCloudPush:v6];
+  logEventSubmitter = [(HMDCloudManager *)self logEventSubmitter];
+  v8 = [HMDIncomingCloudPushLogEvent incomingCloudPush:topicCopy];
 
-  [v9 submitLogEvent:v8];
+  [logEventSubmitter submitLogEvent:v8];
 }
 
-- (void)_fetchDatabaseZoneChangesCompletion:(id)a3
+- (void)_fetchDatabaseZoneChangesCompletion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [(HMDCloudManager *)v6 cloudCache];
-    v10 = [v9 databaseServerChangeToken];
+    cloudCache = [(HMDCloudManager *)selfCopy cloudCache];
+    databaseServerChangeToken = [cloudCache databaseServerChangeToken];
     *buf = 138543618;
     *&buf[4] = v8;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = databaseServerChangeToken;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Fetching zone changes for the database with %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   v11 = objc_alloc(MEMORY[0x277CBC388]);
-  v12 = [(HMDCloudManager *)v6 cloudCache];
-  v13 = [v12 databaseServerChangeToken];
-  v14 = [v11 initWithPreviousServerChangeToken:v13];
+  cloudCache2 = [(HMDCloudManager *)selfCopy cloudCache];
+  databaseServerChangeToken2 = [cloudCache2 databaseServerChangeToken];
+  v14 = [v11 initWithPreviousServerChangeToken:databaseServerChangeToken2];
 
   [v14 setFetchAllChanges:1];
   *buf = 0;
@@ -240,16 +240,16 @@ void __52__HMDCloudManager_handler_didReceiveCKNotification___block_invoke(uint6
   *&buf[16] = 0x3032000000;
   v34 = __Block_byref_object_copy__40007;
   v35 = __Block_byref_object_dispose__40008;
-  v36 = [MEMORY[0x277CBEB18] array];
-  objc_initWeak(&location, v6);
+  array = [MEMORY[0x277CBEB18] array];
+  objc_initWeak(&location, selfCopy);
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __55__HMDCloudManager__fetchDatabaseZoneChangesCompletion___block_invoke;
   v27[3] = &unk_279725730;
-  v27[4] = v6;
+  v27[4] = selfCopy;
   v27[5] = buf;
   [v14 setRecordZoneWithIDChangedBlock:v27];
-  logger = v6->_logger;
+  logger = selfCopy->_logger;
   if (os_signpost_enabled(logger))
   {
     *v29 = 0;
@@ -263,20 +263,20 @@ void __52__HMDCloudManager_handler_didReceiveCKNotification___block_invoke(uint6
   objc_copyWeak(v26, &location);
   v26[1] = 0xEEEEB0B5B2B2EEEELL;
   v25 = buf;
-  v16 = v4;
+  v16 = completionCopy;
   v24 = v16;
   [v14 setFetchDatabaseChangesCompletionBlock:v23];
   v17 = objc_autoreleasePoolPush();
-  v18 = v6;
+  v18 = selfCopy;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     v20 = HMFGetLogIdentifier();
-    v21 = [v14 operationID];
+    operationID = [v14 operationID];
     *v29 = 138543618;
     v30 = v20;
     v31 = 2112;
-    v32 = v21;
+    v32 = operationID;
     _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_INFO, "%{public}@Fetching database zone changes with operation ID: %@", v29, 0x16u);
   }
 
@@ -681,13 +681,13 @@ LABEL_65:
 
 - (void)cacheDatabaseServerToken
 {
-  v3 = [(HMDCloudManager *)self workQueue];
+  workQueue = [(HMDCloudManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__HMDCloudManager_cacheDatabaseServerToken__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __43__HMDCloudManager_cacheDatabaseServerToken__block_invoke(uint64_t a1)
@@ -723,8 +723,8 @@ void __43__HMDCloudManager_cacheDatabaseServerToken__block_invoke(uint64_t a1)
   v4 = [(HMDCloudManager *)self dataSource:v7];
   v5 = [v4 queryDatabaseOperationWithBlock:v3];
 
-  v6 = [(HMDCloudManager *)self syncManager];
-  [v6 addOperation:v5];
+  syncManager = [(HMDCloudManager *)self syncManager];
+  [syncManager addOperation:v5];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -761,23 +761,23 @@ LABEL_6:
   }
 }
 
-- (void)_scheduleZoneFetch:(id)a3
+- (void)_scheduleZoneFetch:(id)fetch
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  fetchCopy = fetch;
+  if (fetchCopy)
   {
-    v5 = [(HMDCloudManager *)self delegate];
-    v6 = [(HMDCloudManager *)self legacyZone];
-    v7 = [v6 zone];
-    v8 = [v7 zoneID];
-    v9 = [v8 zoneName];
-    v10 = [v9 isEqualToString:v4];
+    delegate = [(HMDCloudManager *)self delegate];
+    legacyZone = [(HMDCloudManager *)self legacyZone];
+    v7 = [legacyZone zone];
+    zoneID = [v7 zoneID];
+    zoneName = [zoneID zoneName];
+    v10 = [zoneName isEqualToString:fetchCopy];
 
     if (v10)
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
@@ -788,21 +788,21 @@ LABEL_6:
       }
 
       objc_autoreleasePoolPop(v11);
-      [v5 fetchHomeDataFromCloudWithCloudConflict:0 withDelay:0.0];
+      [delegate fetchHomeDataFromCloudWithCloudConflict:0 withDelay:0.0];
     }
 
     else
     {
-      v19 = [(HMDCloudManager *)self homeManagerZone];
-      v20 = [v19 zone];
-      v21 = [v20 zoneID];
-      v22 = [v21 zoneName];
-      v23 = [v22 isEqualToString:v4];
+      homeManagerZone = [(HMDCloudManager *)self homeManagerZone];
+      v20 = [homeManagerZone zone];
+      zoneID2 = [v20 zoneID];
+      zoneName2 = [zoneID2 zoneName];
+      v23 = [zoneName2 isEqualToString:fetchCopy];
 
       if (v23)
       {
         v24 = objc_autoreleasePoolPush();
-        v25 = self;
+        selfCopy2 = self;
         v26 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
@@ -813,18 +813,18 @@ LABEL_6:
         }
 
         objc_autoreleasePoolPop(v24);
-        [v5 fetchHomeManagerCloudConflict:0 withDelay:0.0];
+        [delegate fetchHomeManagerCloudConflict:0 withDelay:0.0];
       }
 
       else
       {
-        v28 = [(HMDCloudManager *)self cloudCache];
-        v29 = [v28 homeZoneExists:v4];
+        cloudCache = [(HMDCloudManager *)self cloudCache];
+        v29 = [cloudCache homeZoneExists:fetchCopy];
 
         if (v29)
         {
           v30 = objc_autoreleasePoolPush();
-          v31 = self;
+          selfCopy3 = self;
           v32 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
           {
@@ -832,13 +832,13 @@ LABEL_6:
             v36 = 138543618;
             v37 = v33;
             v38 = 2112;
-            v39 = v4;
+            v39 = fetchCopy;
             _os_log_impl(&dword_2531F8000, v32, OS_LOG_TYPE_INFO, "%{public}@Scheduling fetch for home zone %@", &v36, 0x16u);
           }
 
           objc_autoreleasePoolPop(v30);
-          v34 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v4];
-          [v5 fetchHomeFromCloudZone:v34 cloudConflict:0 withDelay:0.0];
+          v34 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:fetchCopy];
+          [delegate fetchHomeFromCloudZone:v34 cloudConflict:0 withDelay:0.0];
         }
       }
     }
@@ -847,7 +847,7 @@ LABEL_6:
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy4 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -865,13 +865,13 @@ LABEL_6:
 
 - (void)registerForPushNotifications
 {
-  v3 = [(HMDCloudManager *)self container];
+  container = [(HMDCloudManager *)self container];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __47__HMDCloudManager_registerForPushNotifications__block_invoke;
   v4[3] = &unk_27972EEB0;
   v4[4] = self;
-  [v3 serverPreferredPushEnvironmentWithCompletionHandler:v4];
+  [container serverPreferredPushEnvironmentWithCompletionHandler:v4];
 }
 
 void __47__HMDCloudManager_registerForPushNotifications__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -943,42 +943,42 @@ void __47__HMDCloudManager_registerForPushNotifications__block_invoke_2(id *a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setupSubscriptionForZone:(id)a3
+- (void)_setupSubscriptionForZone:(id)zone
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 subscription];
+  zoneCopy = zone;
+  subscription = [zoneCopy subscription];
 
-  if (!v5)
+  if (!subscription)
   {
-    v6 = [v4 subscriptionName];
+    subscriptionName = [zoneCopy subscriptionName];
 
-    if (v6)
+    if (subscriptionName)
     {
       objc_initWeak(&location, self);
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v10 = HMFGetLogIdentifier();
-        v11 = [v4 subscriptionName];
+        subscriptionName2 = [zoneCopy subscriptionName];
         *buf = 138543618;
         v19 = v10;
         v20 = 2112;
-        v21 = v11;
+        v21 = subscriptionName2;
         _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@Fetching subscription with ID %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v7);
-      v12 = [v4 subscriptionName];
+      subscriptionName3 = [zoneCopy subscriptionName];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __45__HMDCloudManager__setupSubscriptionForZone___block_invoke;
       v14[3] = &unk_279725D48;
       objc_copyWeak(&v16, &location);
-      v15 = v4;
-      [(HMDCloudManager *)v8 __fetchSubscriptionWithID:v12 completionHandler:v14];
+      v15 = zoneCopy;
+      [(HMDCloudManager *)selfCopy __fetchSubscriptionWithID:subscriptionName3 completionHandler:v14];
 
       objc_destroyWeak(&v16);
       objc_destroyWeak(&location);
@@ -1178,36 +1178,36 @@ LABEL_11:
 
 - (void)_registerForProxSetupNotifications
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v3 = +[HMDDeviceSetupManager sharedManager];
-  [v4 addObserver:self selector:sel__auditProxSetupNotification_ name:@"HMDDeviceSetupManagerUpdatedRunningNotification" object:v3];
+  [defaultCenter addObserver:self selector:sel__auditProxSetupNotification_ name:@"HMDDeviceSetupManagerUpdatedRunningNotification" object:v3];
 }
 
-- (void)_auditProxSetupNotification:(id)a3
+- (void)_auditProxSetupNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 hmf_BOOLForKey:@"running"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo hmf_BOOLForKey:@"running"];
 
   if (v5)
   {
     [(HMDCloudManager *)self _startWatchdogControllerKeyPollTimer];
-    v6 = [(HMDCloudManager *)self controllerKeyPollTimer];
+    controllerKeyPollTimer = [(HMDCloudManager *)self controllerKeyPollTimer];
 
-    if (v6)
+    if (controllerKeyPollTimer)
     {
       [(HMDCloudManager *)self _stopControllerKeyPollTimer];
       [(HMDCloudManager *)self setCurrentBackoffTimerValuesInMinutes:0];
       [(HMDCloudManager *)self _startControllerKeyPollTimer];
-      v7 = [(HMDCloudManager *)self dataSource];
-      v8 = [v7 isControllerKeyAvailable];
+      dataSource = [(HMDCloudManager *)self dataSource];
+      isControllerKeyAvailable = [dataSource isControllerKeyAvailable];
 
-      if (v8)
+      if (isControllerKeyAvailable)
       {
         [(HMDCloudManager *)self _handleControllerKeyAvailable];
       }
 
-      v9 = [(HMDCloudManager *)self cloudDataSyncStateFilter];
-      [v9 kickResetConfigDisplayTimer];
+      cloudDataSyncStateFilter = [(HMDCloudManager *)self cloudDataSyncStateFilter];
+      [cloudDataSyncStateFilter kickResetConfigDisplayTimer];
     }
   }
 
@@ -1221,12 +1221,12 @@ LABEL_11:
 - (void)_stopControllerKeyPollTimer
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCloudManager *)self controllerKeyPollTimer];
+  controllerKeyPollTimer = [(HMDCloudManager *)self controllerKeyPollTimer];
 
-  if (v3)
+  if (controllerKeyPollTimer)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -1237,42 +1237,42 @@ LABEL_11:
     }
 
     objc_autoreleasePoolPop(v4);
-    v8 = [(HMDCloudManager *)v5 controllerKeyPollTimer];
-    dispatch_source_cancel(v8);
+    controllerKeyPollTimer2 = [(HMDCloudManager *)selfCopy controllerKeyPollTimer];
+    dispatch_source_cancel(controllerKeyPollTimer2);
 
-    [(HMDCloudManager *)v5 setControllerKeyPollTimer:0];
+    [(HMDCloudManager *)selfCopy setControllerKeyPollTimer:0];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startControllerKeyPollTimerWithValue:(int64_t)a3
+- (void)_startControllerKeyPollTimerWithValue:(int64_t)value
 {
   v21 = *MEMORY[0x277D85DE8];
   [(HMDCloudManager *)self _stopControllerKeyPollTimer];
-  v5 = [(HMDCloudManager *)self workQueue];
-  v6 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v5);
+  workQueue = [(HMDCloudManager *)self workQueue];
+  v6 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, workQueue);
   [(HMDCloudManager *)self setControllerKeyPollTimer:v6];
 
-  v7 = [(HMDCloudManager *)self controllerKeyPollTimer];
-  v8 = dispatch_time(0, 1000000000 * a3);
-  dispatch_source_set_timer(v7, v8, 0xFFFFFFFFFFFFFFFFLL, 0x2540BE400uLL);
+  controllerKeyPollTimer = [(HMDCloudManager *)self controllerKeyPollTimer];
+  v8 = dispatch_time(0, 1000000000 * value);
+  dispatch_source_set_timer(controllerKeyPollTimer, v8, 0xFFFFFFFFFFFFFFFFLL, 0x2540BE400uLL);
 
   objc_initWeak(&location, self);
-  v9 = [(HMDCloudManager *)self controllerKeyPollTimer];
+  controllerKeyPollTimer2 = [(HMDCloudManager *)self controllerKeyPollTimer];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __57__HMDCloudManager__startControllerKeyPollTimerWithValue___block_invoke;
   handler[3] = &unk_279731C88;
   objc_copyWeak(v17, &location);
-  v17[1] = a3;
-  dispatch_source_set_event_handler(v9, handler);
+  v17[1] = value;
+  dispatch_source_set_event_handler(controllerKeyPollTimer2, handler);
 
-  v10 = [(HMDCloudManager *)self controllerKeyPollTimer];
-  dispatch_resume(v10);
+  controllerKeyPollTimer3 = [(HMDCloudManager *)self controllerKeyPollTimer];
+  dispatch_resume(controllerKeyPollTimer3);
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -1345,26 +1345,26 @@ void __57__HMDCloudManager__startControllerKeyPollTimerWithValue___block_invoke(
 - (void)_startControllerKeyPollTimerWithBackoff
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCloudManager *)self currentBackoffTimerValuesInMinutes];
-  v4 = [v3 count];
+  currentBackoffTimerValuesInMinutes = [(HMDCloudManager *)self currentBackoffTimerValuesInMinutes];
+  v4 = [currentBackoffTimerValuesInMinutes count];
 
   if (v4)
   {
-    v5 = [(HMDCloudManager *)self currentBackoffTimerValuesInMinutes];
-    v6 = [v5 objectAtIndex:0];
-    v7 = [v6 integerValue];
+    currentBackoffTimerValuesInMinutes2 = [(HMDCloudManager *)self currentBackoffTimerValuesInMinutes];
+    v6 = [currentBackoffTimerValuesInMinutes2 objectAtIndex:0];
+    integerValue = [v6 integerValue];
 
-    v8 = [(HMDCloudManager *)self currentBackoffTimerValuesInMinutes];
-    v9 = [v8 count];
+    currentBackoffTimerValuesInMinutes3 = [(HMDCloudManager *)self currentBackoffTimerValuesInMinutes];
+    v9 = [currentBackoffTimerValuesInMinutes3 count];
 
     if (v9 >= 2)
     {
-      v10 = [(HMDCloudManager *)self currentBackoffTimerValuesInMinutes];
-      [v10 removeObjectAtIndex:0];
+      currentBackoffTimerValuesInMinutes4 = [(HMDCloudManager *)self currentBackoffTimerValuesInMinutes];
+      [currentBackoffTimerValuesInMinutes4 removeObjectAtIndex:0];
     }
 
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -1372,18 +1372,18 @@ void __57__HMDCloudManager__startControllerKeyPollTimerWithValue___block_invoke(
       v20 = 138543618;
       v21 = v14;
       v22 = 2048;
-      v23 = v7;
+      v23 = integerValue;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, "%{public}@Starting a back off timer with %lld minutes timeout", &v20, 0x16u);
     }
 
     objc_autoreleasePoolPop(v11);
-    [(HMDCloudManager *)v12 _startControllerKeyPollTimerWithValue:60 * v7];
+    [(HMDCloudManager *)selfCopy _startControllerKeyPollTimerWithValue:60 * integerValue];
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -1402,9 +1402,9 @@ void __57__HMDCloudManager__startControllerKeyPollTimerWithValue___block_invoke(
 - (void)_startControllerKeyPollTimer
 {
   v3 = controllerKeyPollInterval;
-  v4 = [(HMDCloudManager *)self watchdogControllerKeyPollTimer];
+  watchdogControllerKeyPollTimer = [(HMDCloudManager *)self watchdogControllerKeyPollTimer];
 
-  if (v4)
+  if (watchdogControllerKeyPollTimer)
   {
     v5 = aggressiveControllerKeyPollInterval;
   }
@@ -1420,12 +1420,12 @@ void __57__HMDCloudManager__startControllerKeyPollTimerWithValue___block_invoke(
 - (void)_stopWatchdogControllerKeyPollTimer
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCloudManager *)self watchdogControllerKeyPollTimer];
+  watchdogControllerKeyPollTimer = [(HMDCloudManager *)self watchdogControllerKeyPollTimer];
 
-  if (v3)
+  if (watchdogControllerKeyPollTimer)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -1436,10 +1436,10 @@ void __57__HMDCloudManager__startControllerKeyPollTimerWithValue___block_invoke(
     }
 
     objc_autoreleasePoolPop(v4);
-    v8 = [(HMDCloudManager *)v5 watchdogControllerKeyPollTimer];
-    dispatch_source_cancel(v8);
+    watchdogControllerKeyPollTimer2 = [(HMDCloudManager *)selfCopy watchdogControllerKeyPollTimer];
+    dispatch_source_cancel(watchdogControllerKeyPollTimer2);
 
-    [(HMDCloudManager *)v5 setWatchdogControllerKeyPollTimer:0];
+    [(HMDCloudManager *)selfCopy setWatchdogControllerKeyPollTimer:0];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -1450,28 +1450,28 @@ void __57__HMDCloudManager__startControllerKeyPollTimerWithValue___block_invoke(
   v23 = *MEMORY[0x277D85DE8];
   [(HMDCloudManager *)self _stopWatchdogControllerKeyPollTimer];
   v3 = watchdogControllerKeyPollTimeout;
-  v4 = [(HMDCloudManager *)self workQueue];
-  v5 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v4);
+  workQueue = [(HMDCloudManager *)self workQueue];
+  v5 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, workQueue);
   [(HMDCloudManager *)self setWatchdogControllerKeyPollTimer:v5];
 
-  v6 = [(HMDCloudManager *)self watchdogControllerKeyPollTimer];
+  watchdogControllerKeyPollTimer = [(HMDCloudManager *)self watchdogControllerKeyPollTimer];
   v7 = dispatch_time(0, 1000000000 * v3);
-  dispatch_source_set_timer(v6, v7, 0xFFFFFFFFFFFFFFFFLL, 0x2540BE400uLL);
+  dispatch_source_set_timer(watchdogControllerKeyPollTimer, v7, 0xFFFFFFFFFFFFFFFFLL, 0x2540BE400uLL);
 
   objc_initWeak(&location, self);
-  v8 = [(HMDCloudManager *)self watchdogControllerKeyPollTimer];
+  watchdogControllerKeyPollTimer2 = [(HMDCloudManager *)self watchdogControllerKeyPollTimer];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __55__HMDCloudManager__startWatchdogControllerKeyPollTimer__block_invoke;
   v18 = &unk_279732FD8;
   objc_copyWeak(&v19, &location);
-  dispatch_source_set_event_handler(v8, &v15);
+  dispatch_source_set_event_handler(watchdogControllerKeyPollTimer2, &v15);
 
   v9 = [(HMDCloudManager *)self watchdogControllerKeyPollTimer:v15];
   dispatch_resume(v9);
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -1515,7 +1515,7 @@ void __55__HMDCloudManager__startWatchdogControllerKeyPollTimer__block_invoke(ui
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1526,15 +1526,15 @@ void __55__HMDCloudManager__startWatchdogControllerKeyPollTimer__block_invoke(ui
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDCloudManager *)v4 delegate];
-  [v7 reloadHomeDataFromLocalStore:0];
+  delegate = [(HMDCloudManager *)selfCopy delegate];
+  [delegate reloadHomeDataFromLocalStore:0];
 
-  v8 = [(HMDCloudManager *)v4 controllerKeyAvailableNotificationHandler];
+  controllerKeyAvailableNotificationHandler = [(HMDCloudManager *)selfCopy controllerKeyAvailableNotificationHandler];
 
-  if (v8)
+  if (controllerKeyAvailableNotificationHandler)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = v4;
+    v10 = selfCopy;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -1545,27 +1545,27 @@ void __55__HMDCloudManager__startWatchdogControllerKeyPollTimer__block_invoke(ui
     }
 
     objc_autoreleasePoolPop(v9);
-    v13 = [(HMDCloudManager *)v10 clientCallbackQueue];
-    v14 = [(HMDCloudManager *)v10 controllerKeyAvailableNotificationHandler];
-    dispatch_async(v13, v14);
+    clientCallbackQueue = [(HMDCloudManager *)v10 clientCallbackQueue];
+    controllerKeyAvailableNotificationHandler2 = [(HMDCloudManager *)v10 controllerKeyAvailableNotificationHandler];
+    dispatch_async(clientCallbackQueue, controllerKeyAvailableNotificationHandler2);
   }
 
-  [(HMDCloudManager *)v4 _stopControllerKeyPollTimer];
-  [(HMDCloudManager *)v4 _stopFetchRetryTimer];
-  [(HMDCloudManager *)v4 fetchDatabaseZoneChanges];
+  [(HMDCloudManager *)selfCopy _stopControllerKeyPollTimer];
+  [(HMDCloudManager *)selfCopy _stopFetchRetryTimer];
+  [(HMDCloudManager *)selfCopy fetchDatabaseZoneChanges];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleKeychainSyncStateChanged:(BOOL)a3
+- (void)_handleKeychainSyncStateChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v19 = *MEMORY[0x277D85DE8];
   [(HMDCloudManager *)self setKeychainSyncEnabled:?];
-  if (!v3)
+  if (!changedCopy)
   {
     [(HMDCloudManager *)self _stopControllerKeyPollTimer];
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -1586,15 +1586,15 @@ LABEL_10:
     return;
   }
 
-  v5 = [(HMDCloudManager *)self dataSource];
-  v6 = [v5 isControllerKeyAvailable];
+  dataSource = [(HMDCloudManager *)self dataSource];
+  isControllerKeyAvailable = [dataSource isControllerKeyAvailable];
 
-  if (!v6)
+  if (!isControllerKeyAvailable)
   {
     if ([(HMDCloudManager *)self cloudHomeDataRecordExists])
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy2 = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
@@ -1605,7 +1605,7 @@ LABEL_10:
       }
 
       objc_autoreleasePoolPop(v13);
-      [(HMDCloudManager *)v14 _startControllerKeyPollTimer];
+      [(HMDCloudManager *)selfCopy2 _startControllerKeyPollTimer];
     }
 
     goto LABEL_10;
@@ -1616,30 +1616,30 @@ LABEL_10:
   [(HMDCloudManager *)self _handleControllerKeyAvailable];
 }
 
-- (void)handleKeychainStateChangedNotification:(id)a3
+- (void)handleKeychainStateChangedNotification:(id)notification
 {
-  v4 = [(HMDCloudManager *)self dataSource];
-  v5 = [v4 isKeychainSyncEnabled];
+  dataSource = [(HMDCloudManager *)self dataSource];
+  isKeychainSyncEnabled = [dataSource isKeychainSyncEnabled];
 
-  v6 = [(HMDCloudManager *)self workQueue];
+  workQueue = [(HMDCloudManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__HMDCloudManager_handleKeychainStateChangedNotification___block_invoke;
   v7[3] = &unk_279735D28;
   v7[4] = self;
-  v8 = v5;
-  dispatch_async(v6, v7);
+  v8 = isKeychainSyncEnabled;
+  dispatch_async(workQueue, v7);
 }
 
 - (void)_stopFetchPollTimer
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCloudManager *)self pollTimer];
+  pollTimer = [(HMDCloudManager *)self pollTimer];
 
-  if (v3)
+  if (pollTimer)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -1650,10 +1650,10 @@ LABEL_10:
     }
 
     objc_autoreleasePoolPop(v4);
-    v8 = [(HMDCloudManager *)v5 pollTimer];
-    dispatch_source_cancel(v8);
+    pollTimer2 = [(HMDCloudManager *)selfCopy pollTimer];
+    dispatch_source_cancel(pollTimer2);
 
-    [(HMDCloudManager *)v5 setPollTimer:0];
+    [(HMDCloudManager *)selfCopy setPollTimer:0];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -1663,13 +1663,13 @@ LABEL_10:
 {
   v30 = *MEMORY[0x277D85DE8];
   [(HMDCloudManager *)self _stopFetchPollTimer];
-  v3 = [(HMDCloudManager *)self workQueue];
-  v4 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v3);
+  workQueue = [(HMDCloudManager *)self workQueue];
+  v4 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, workQueue);
   [(HMDCloudManager *)self setPollTimer:v4];
 
   v5 = arc4random_uniform(0x1C21u);
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = v5 + 86400;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -1683,24 +1683,24 @@ LABEL_10:
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [(HMDCloudManager *)v7 pollTimer];
+  pollTimer = [(HMDCloudManager *)selfCopy pollTimer];
   v12 = dispatch_walltime(0, 1000000000 * v9);
-  dispatch_source_set_timer(v11, v12, 0xFFFFFFFFFFFFFFFFLL, 0x2540BE400uLL);
+  dispatch_source_set_timer(pollTimer, v12, 0xFFFFFFFFFFFFFFFFLL, 0x2540BE400uLL);
 
-  objc_initWeak(&location, v7);
-  v13 = [(HMDCloudManager *)v7 pollTimer];
+  objc_initWeak(&location, selfCopy);
+  pollTimer2 = [(HMDCloudManager *)selfCopy pollTimer];
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __39__HMDCloudManager__startFetchPollTimer__block_invoke;
   v23 = &unk_279732FD8;
   objc_copyWeak(&v24, &location);
-  dispatch_source_set_event_handler(v13, &v20);
+  dispatch_source_set_event_handler(pollTimer2, &v20);
 
-  v14 = [(HMDCloudManager *)v7 pollTimer:v20];
+  v14 = [(HMDCloudManager *)selfCopy pollTimer:v20];
   dispatch_resume(v14);
 
   v15 = objc_autoreleasePoolPush();
-  v16 = v7;
+  v16 = selfCopy;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
@@ -1762,12 +1762,12 @@ void __39__HMDCloudManager__startFetchPollTimer__block_invoke(uint64_t a1)
 - (void)_stopFetchRetryTimer
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCloudManager *)self retryTimer];
+  retryTimer = [(HMDCloudManager *)self retryTimer];
 
-  if (v3)
+  if (retryTimer)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -1778,10 +1778,10 @@ void __39__HMDCloudManager__startFetchPollTimer__block_invoke(uint64_t a1)
     }
 
     objc_autoreleasePoolPop(v4);
-    v8 = [(HMDCloudManager *)v5 retryTimer];
-    dispatch_source_cancel(v8);
+    retryTimer2 = [(HMDCloudManager *)selfCopy retryTimer];
+    dispatch_source_cancel(retryTimer2);
 
-    [(HMDCloudManager *)v5 setRetryTimer:0];
+    [(HMDCloudManager *)selfCopy setRetryTimer:0];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -1790,33 +1790,33 @@ void __39__HMDCloudManager__startFetchPollTimer__block_invoke(uint64_t a1)
 - (void)_startFetchRetryTimer
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCloudManager *)self retryTimer];
+  retryTimer = [(HMDCloudManager *)self retryTimer];
 
-  if (!v3)
+  if (!retryTimer)
   {
-    v4 = [(HMDCloudManager *)self workQueue];
-    v5 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v4);
+    workQueue = [(HMDCloudManager *)self workQueue];
+    v5 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, workQueue);
     [(HMDCloudManager *)self setRetryTimer:v5];
 
-    v6 = [(HMDCloudManager *)self retryTimer];
+    retryTimer2 = [(HMDCloudManager *)self retryTimer];
     v7 = dispatch_time(0, 60000000000);
-    dispatch_source_set_timer(v6, v7, 0xFFFFFFFFFFFFFFFFLL, 0x5F5E100uLL);
+    dispatch_source_set_timer(retryTimer2, v7, 0xFFFFFFFFFFFFFFFFLL, 0x5F5E100uLL);
 
     objc_initWeak(&location, self);
-    v8 = [(HMDCloudManager *)self retryTimer];
+    retryTimer3 = [(HMDCloudManager *)self retryTimer];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __40__HMDCloudManager__startFetchRetryTimer__block_invoke;
     handler[3] = &unk_279732E78;
     objc_copyWeak(&v16, &location);
     handler[4] = self;
-    dispatch_source_set_event_handler(v8, handler);
+    dispatch_source_set_event_handler(retryTimer3, handler);
 
-    v9 = [(HMDCloudManager *)self retryTimer];
-    dispatch_resume(v9);
+    retryTimer4 = [(HMDCloudManager *)self retryTimer];
+    dispatch_resume(retryTimer4);
 
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -1860,35 +1860,35 @@ void __40__HMDCloudManager__startFetchRetryTimer__block_invoke(uint64_t a1)
 
 - (void)_updateServerTokenStatusOnCloudFilter
 {
-  v3 = [(HMDCloudManager *)self legacyZone];
-  v4 = [v3 serverChangeToken];
-  v5 = v4 != 0;
+  legacyZone = [(HMDCloudManager *)self legacyZone];
+  serverChangeToken = [legacyZone serverChangeToken];
+  v5 = serverChangeToken != 0;
 
-  v6 = [(HMDCloudManager *)self cloudDataSyncStateFilter];
-  [v6 updateServerTokenAvailable:v5];
+  cloudDataSyncStateFilter = [(HMDCloudManager *)self cloudDataSyncStateFilter];
+  [cloudDataSyncStateFilter updateServerTokenAvailable:v5];
 }
 
 - (void)updateServerTokenStatusOnCloudFilter
 {
-  v3 = [(HMDCloudManager *)self workQueue];
+  workQueue = [(HMDCloudManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__HMDCloudManager_updateServerTokenStatusOnCloudFilter__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (void)initializeServerTokenStatusOnCloudFilter
 {
   objc_initWeak(&location, self);
-  v3 = [(HMDCloudManager *)self workQueue];
+  workQueue = [(HMDCloudManager *)self workQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __59__HMDCloudManager_initializeServerTokenStatusOnCloudFilter__block_invoke;
   v4[3] = &unk_279732FD8;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(workQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1911,16 +1911,16 @@ void __59__HMDCloudManager_initializeServerTokenStatusOnCloudFilter__block_invok
   }
 }
 
-- (void)_forceCleanCloud:(BOOL)a3 fetchTransaction:(id)a4 completionHandler:(id)a5
+- (void)_forceCleanCloud:(BOOL)cloud fetchTransaction:(id)transaction completionHandler:(id)handler
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 cloudZone];
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  cloudZone = [transactionCopy cloudZone];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = cloudZone;
   }
 
   else
@@ -1932,24 +1932,24 @@ void __59__HMDCloudManager_initializeServerTokenStatusOnCloudFilter__block_invok
 
   if (v12)
   {
-    v13 = [v12 homeDataObjectID];
-    v14 = [v8 doesRecordExistInCacheWithObjectID:v13];
+    homeDataObjectID = [v12 homeDataObjectID];
+    v14 = [transactionCopy doesRecordExistInCacheWithObjectID:homeDataObjectID];
 
-    v15 = [v12 homeDataV3ObjectID];
-    v16 = [v8 doesRecordExistInCacheWithObjectID:v15];
+    homeDataV3ObjectID = [v12 homeDataV3ObjectID];
+    v16 = [transactionCopy doesRecordExistInCacheWithObjectID:homeDataV3ObjectID];
 
     objc_initWeak(location, self);
-    v17 = [(HMDCloudManager *)self homeManagerZone];
+    homeManagerZone = [(HMDCloudManager *)self homeManagerZone];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __71__HMDCloudManager__forceCleanCloud_fetchTransaction_completionHandler___block_invoke;
     v23[3] = &unk_279725CF8;
     objc_copyWeak(&v26, location);
-    v25 = v9;
-    v27 = a3;
+    v25 = handlerCopy;
+    cloudCopy = cloud;
     v24 = v12;
     v28 = (v14 | v16) & 1;
-    [(HMDCloudManager *)self _fetchAndVerifyZoneRootRecord:v17 completionHandler:v23];
+    [(HMDCloudManager *)self _fetchAndVerifyZoneRootRecord:homeManagerZone completionHandler:v23];
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(location);
@@ -1958,7 +1958,7 @@ void __59__HMDCloudManager_initializeServerTokenStatusOnCloudFilter__block_invok
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -2312,15 +2312,15 @@ LABEL_13:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAccountActive:(BOOL)a3
+- (void)setAccountActive:(BOOL)active
 {
-  self->_accountActive = a3;
-  v4 = [(HMDCloudManager *)self accountActiveUpdateHandler];
+  self->_accountActive = active;
+  accountActiveUpdateHandler = [(HMDCloudManager *)self accountActiveUpdateHandler];
 
-  if (v4)
+  if (accountActiveUpdateHandler)
   {
-    v5 = [(HMDCloudManager *)self accountActiveUpdateHandler];
-    v5[2](v5, self->_accountActive);
+    accountActiveUpdateHandler2 = [(HMDCloudManager *)self accountActiveUpdateHandler];
+    accountActiveUpdateHandler2[2](accountActiveUpdateHandler2, self->_accountActive);
   }
 }
 
@@ -2328,7 +2328,7 @@ LABEL_13:
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2339,26 +2339,26 @@ LABEL_13:
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HMDCloudManager *)v4 setAccountActive:1];
-  v7 = [(HMDCloudManager *)v4 dataSource];
-  -[HMDCloudManager _handleKeychainSyncStateChanged:](v4, "_handleKeychainSyncStateChanged:", [v7 isKeychainSyncEnabled]);
+  [(HMDCloudManager *)selfCopy setAccountActive:1];
+  dataSource = [(HMDCloudManager *)selfCopy dataSource];
+  -[HMDCloudManager _handleKeychainSyncStateChanged:](selfCopy, "_handleKeychainSyncStateChanged:", [dataSource isKeychainSyncEnabled]);
 
-  [(HMDCloudManager *)v4 _startFetchPollTimer];
-  [(HMDCloudManager *)v4 fetchDatabaseZoneChanges];
-  v8 = [(HMDCloudManager *)v4 legacyZone];
-  [(HMDCloudManager *)v4 _setupSubscriptionForZone:v8];
+  [(HMDCloudManager *)selfCopy _startFetchPollTimer];
+  [(HMDCloudManager *)selfCopy fetchDatabaseZoneChanges];
+  legacyZone = [(HMDCloudManager *)selfCopy legacyZone];
+  [(HMDCloudManager *)selfCopy _setupSubscriptionForZone:legacyZone];
 
-  v9 = [(HMDCloudManager *)v4 homeManagerZone];
-  [(HMDCloudManager *)v4 _setupSubscriptionForZone:v9];
+  homeManagerZone = [(HMDCloudManager *)selfCopy homeManagerZone];
+  [(HMDCloudManager *)selfCopy _setupSubscriptionForZone:homeManagerZone];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(HMDCloudManager *)v4 cloudCache];
-  v11 = [v10 allHomeZones];
+  cloudCache = [(HMDCloudManager *)selfCopy cloudCache];
+  allHomeZones = [cloudCache allHomeZones];
 
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v12 = [allHomeZones countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
     v13 = v12;
@@ -2370,14 +2370,14 @@ LABEL_13:
       {
         if (*v18 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allHomeZones);
         }
 
-        [(HMDCloudManager *)v4 _setupSubscriptionForZone:*(*(&v17 + 1) + 8 * v15++)];
+        [(HMDCloudManager *)selfCopy _setupSubscriptionForZone:*(*(&v17 + 1) + 8 * v15++)];
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v13 = [allHomeZones countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v13);
@@ -2386,22 +2386,22 @@ LABEL_13:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createZoneAndFetchChanges:(id)a3
+- (void)_createZoneAndFetchChanges:(id)changes
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changesCopy = changes;
   [(HMDCloudManager *)self _stopControllerKeyPollTimer];
   [(HMDCloudManager *)self _stopFetchRetryTimer];
-  v5 = [(HMDCloudManager *)self homeManagerZone];
-  v6 = [(HMDCloudManager *)self metadataZone];
-  v7 = [(HMDCloudManager *)self legacyZone];
-  v8 = v7;
-  if (v5 && v6 && v7)
+  homeManagerZone = [(HMDCloudManager *)self homeManagerZone];
+  metadataZone = [(HMDCloudManager *)self metadataZone];
+  legacyZone = [(HMDCloudManager *)self legacyZone];
+  v8 = legacyZone;
+  if (homeManagerZone && metadataZone && legacyZone)
   {
     objc_initWeak(&location, self);
-    v9 = [v8 serverChangeToken];
+    serverChangeToken = [v8 serverChangeToken];
 
-    if (v9)
+    if (serverChangeToken)
     {
       v26[0] = @"84968B22-8974-4102-AAA6-7B9C763A14B5";
       v26[1] = @"9C3BF4D1-C7CF-4217-BCD2-0F7E96D5B300";
@@ -2411,7 +2411,7 @@ LABEL_13:
       v19[2] = __46__HMDCloudManager__createZoneAndFetchChanges___block_invoke_2;
       v19[3] = &unk_279732250;
       objc_copyWeak(&v21, &location);
-      v20 = v4;
+      v20 = changesCopy;
       [v8 cloudRecordWithNames:v10 completionHandler:v19];
 
       objc_destroyWeak(&v21);
@@ -2419,8 +2419,8 @@ LABEL_13:
 
     else
     {
-      v25[0] = v5;
-      v25[1] = v6;
+      v25[0] = homeManagerZone;
+      v25[1] = metadataZone;
       v25[2] = v8;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:3];
       v15[0] = MEMORY[0x277D85DD0];
@@ -2428,7 +2428,7 @@ LABEL_13:
       v15[2] = __46__HMDCloudManager__createZoneAndFetchChanges___block_invoke_5;
       v15[3] = &unk_279730CC0;
       objc_copyWeak(&v18, &location);
-      v17 = v4;
+      v17 = changesCopy;
       v13 = v12;
       v16 = v13;
       [(HMDCloudManager *)self _verifyHH2SentinelCloudZoneExist:v15];
@@ -2441,13 +2441,13 @@ LABEL_13:
 
   else
   {
-    v11 = [(HMDCloudManager *)self clientCallbackQueue];
+    clientCallbackQueue = [(HMDCloudManager *)self clientCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __46__HMDCloudManager__createZoneAndFetchChanges___block_invoke;
     block[3] = &unk_2797348C0;
-    v24 = v4;
-    dispatch_async(v11, block);
+    v24 = changesCopy;
+    dispatch_async(clientCallbackQueue, block);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -2597,14 +2597,14 @@ uint64_t __46__HMDCloudManager__createZoneAndFetchChanges___block_invoke_4(uint6
   return result;
 }
 
-- (void)_verifyZonesExist:(id)a3 zoneIndex:(unint64_t)a4 completion:(id)a5
+- (void)_verifyZonesExist:(id)exist zoneIndex:(unint64_t)index completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v8 && [v8 count] - 1 >= a4)
+  existCopy = exist;
+  completionCopy = completion;
+  if (existCopy && [existCopy count] - 1 >= index)
   {
-    v16 = [v8 objectAtIndex:a4];
+    v16 = [existCopy objectAtIndex:index];
     objc_initWeak(buf, self);
     logger = self->_logger;
     if (os_signpost_enabled(logger))
@@ -2614,7 +2614,7 @@ uint64_t __46__HMDCloudManager__createZoneAndFetchChanges___block_invoke_4(uint6
     }
 
     v18 = [v16 zone];
-    v19 = [v18 zoneID];
+    zoneID = [v18 zoneID];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __58__HMDCloudManager__verifyZonesExist_zoneIndex_completion___block_invoke_163;
@@ -2623,10 +2623,10 @@ uint64_t __46__HMDCloudManager__createZoneAndFetchChanges___block_invoke_4(uint6
     v25[1] = 0xEEEEB0B5B2B2EEEELL;
     v15 = v16;
     v22 = v15;
-    v24 = v9;
-    v25[2] = a4;
-    v23 = v8;
-    [(HMDCloudManager *)self __fetchRecordZoneWithID:v19 completionHandler:v21];
+    v24 = completionCopy;
+    v25[2] = index;
+    v23 = existCopy;
+    [(HMDCloudManager *)self __fetchRecordZoneWithID:zoneID completionHandler:v21];
 
     objc_destroyWeak(v25);
     objc_destroyWeak(buf);
@@ -2634,7 +2634,7 @@ uint64_t __46__HMDCloudManager__createZoneAndFetchChanges___block_invoke_4(uint6
   }
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
@@ -2645,15 +2645,15 @@ uint64_t __46__HMDCloudManager__createZoneAndFetchChanges___block_invoke_4(uint6
   }
 
   objc_autoreleasePoolPop(v10);
-  if (v9)
+  if (completionCopy)
   {
-    v14 = [(HMDCloudManager *)v11 clientCallbackQueue];
+    clientCallbackQueue = [(HMDCloudManager *)selfCopy clientCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__HMDCloudManager__verifyZonesExist_zoneIndex_completion___block_invoke;
     block[3] = &unk_2797348C0;
-    v28 = v9;
-    dispatch_async(v14, block);
+    v28 = completionCopy;
+    dispatch_async(clientCallbackQueue, block);
 
     v15 = v28;
 LABEL_10:
@@ -3028,9 +3028,9 @@ void __58__HMDCloudManager__verifyZonesExist_zoneIndex_completion___block_invoke
   }
 }
 
-- (void)_verifyHH2SentinelCloudZoneExist:(id)a3
+- (void)_verifyHH2SentinelCloudZoneExist:(id)exist
 {
-  v4 = a3;
+  existCopy = exist;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277CBC5F8]);
   v6 = [v5 initWithZoneName:@"HH2-CD9D5508-EAED-4462-A7CB-AFB779F35A71" ownerName:*MEMORY[0x277CBBF28]];
@@ -3049,7 +3049,7 @@ void __58__HMDCloudManager__verifyZonesExist_zoneIndex_completion___block_invoke
   v13[1] = 0xEEEEB0B5B2B2EEEELL;
   v8 = v6;
   v11 = v8;
-  v9 = v4;
+  v9 = existCopy;
   v12 = v9;
   [(HMDCloudManager *)self __fetchRecordZoneWithID:v8 completionHandler:v10];
 
@@ -3201,27 +3201,27 @@ uint64_t __52__HMDCloudManager__verifyHH2SentinelCloudZoneExist___block_invoke_1
 
 - (void)_resetHomeDataRecordState
 {
-  v3 = [(HMDCloudManager *)self legacyZone];
-  [v3 setRecordsAvailable:0];
+  legacyZone = [(HMDCloudManager *)self legacyZone];
+  [legacyZone setRecordsAvailable:0];
 
   [(HMDCloudManager *)self setCloudHomeDataRecordExists:0];
 
   [(HMDCloudManager *)self _stopControllerKeyPollTimer];
 }
 
-- (id)_changeTokenFromData:(id)a3
+- (id)_changeTokenFromData:(id)data
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v17 = 0;
-    v5 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v17];
+    v5 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v17];
     v6 = v17;
     if (!v5)
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
@@ -3240,7 +3240,7 @@ uint64_t __52__HMDCloudManager__verifyHH2SentinelCloudZoneExist___block_invoke_1
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy2 = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
@@ -3265,15 +3265,15 @@ uint64_t __52__HMDCloudManager__verifyHH2SentinelCloudZoneExist___block_invoke_1
   return v5;
 }
 
-- (void)_handleAccountStatus:(int64_t)a3 completionHandler:(id)a4
+- (void)_handleAccountStatus:(int64_t)status completionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-  if (a3 == 1)
+  if (status == 1)
   {
     if (v10)
     {
@@ -3284,8 +3284,8 @@ uint64_t __52__HMDCloudManager__verifyHH2SentinelCloudZoneExist___block_invoke_1
     }
 
     objc_autoreleasePoolPop(v7);
-    [(HMDCloudManager *)v8 _createZoneAndFetchChanges:v6];
-    [(HMDCloudManager *)v8 registerForPushNotifications];
+    [(HMDCloudManager *)selfCopy _createZoneAndFetchChanges:handlerCopy];
+    [(HMDCloudManager *)selfCopy registerForPushNotifications];
   }
 
   else
@@ -3296,26 +3296,26 @@ uint64_t __52__HMDCloudManager__verifyHH2SentinelCloudZoneExist___block_invoke_1
       *buf = 138543618;
       v19 = v12;
       v20 = 2048;
-      v21 = a3;
+      statusCopy = status;
       _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@iCloud account status (%tu) is not available", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v7);
-    [(HMDCloudManager *)v8 setAccountActive:0];
-    [(HMDCloudManager *)v8 _stopFetchPollTimer];
-    [(HMDCloudManager *)v8 _stopControllerKeyPollTimer];
-    v13 = [(HMDCloudManager *)v8 dataSource];
-    -[HMDCloudManager setKeychainSyncEnabled:](v8, "setKeychainSyncEnabled:", [v13 isKeychainSyncEnabled]);
+    [(HMDCloudManager *)selfCopy setAccountActive:0];
+    [(HMDCloudManager *)selfCopy _stopFetchPollTimer];
+    [(HMDCloudManager *)selfCopy _stopControllerKeyPollTimer];
+    dataSource = [(HMDCloudManager *)selfCopy dataSource];
+    -[HMDCloudManager setKeychainSyncEnabled:](selfCopy, "setKeychainSyncEnabled:", [dataSource isKeychainSyncEnabled]);
 
-    if (v6)
+    if (handlerCopy)
     {
-      v14 = [(HMDCloudManager *)v8 clientCallbackQueue];
+      clientCallbackQueue = [(HMDCloudManager *)selfCopy clientCallbackQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __58__HMDCloudManager__handleAccountStatus_completionHandler___block_invoke;
       block[3] = &unk_2797348C0;
-      v17 = v6;
-      dispatch_async(v14, block);
+      v17 = handlerCopy;
+      dispatch_async(clientCallbackQueue, block);
     }
   }
 
@@ -3329,19 +3329,19 @@ void __58__HMDCloudManager__handleAccountStatus_completionHandler___block_invoke
   (*(v1 + 16))(v1, 0, 0, v2);
 }
 
-- (void)updateAccountStatusChanged:(BOOL)a3 completionHandler:(id)a4
+- (void)updateAccountStatusChanged:(BOOL)changed completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(HMDCloudManager *)self workQueue];
+  handlerCopy = handler;
+  workQueue = [(HMDCloudManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__HMDCloudManager_updateAccountStatusChanged_completionHandler___block_invoke;
   block[3] = &unk_279733DB0;
-  v11 = a3;
+  changedCopy = changed;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __64__HMDCloudManager_updateAccountStatusChanged_completionHandler___block_invoke(uint64_t a1)
@@ -3378,19 +3378,19 @@ uint64_t __64__HMDCloudManager_updateAccountStatusChanged_completionHandler___bl
   return result;
 }
 
-- (void)_processFetchCompletedWithError:(id)a3 serverToken:(id)a4 fetchTransaction:(id)a5 migrationOptions:(unint64_t)a6 completionHandler:(id)a7 moreRecordsComing:(BOOL)a8 emptyRecord:(BOOL)a9
+- (void)_processFetchCompletedWithError:(id)error serverToken:(id)token fetchTransaction:(id)transaction migrationOptions:(unint64_t)options completionHandler:(id)handler moreRecordsComing:(BOOL)coming emptyRecord:(BOOL)record
 {
-  v9 = a8;
+  comingCopy = coming;
   v89 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = [v17 cloudZone];
+  errorCopy = error;
+  tokenCopy = token;
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  cloudZone = [transactionCopy cloudZone];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = v19;
+    v20 = cloudZone;
   }
 
   else
@@ -3400,12 +3400,12 @@ uint64_t __64__HMDCloudManager_updateAccountStatusChanged_completionHandler___bl
 
   v21 = v20;
 
-  if (!v15)
+  if (!errorCopy)
   {
-    if (v9)
+    if (comingCopy)
     {
       v35 = objc_autoreleasePoolPush();
-      v36 = self;
+      selfCopy = self;
       v37 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
       {
@@ -3419,22 +3419,22 @@ uint64_t __64__HMDCloudManager_updateAccountStatusChanged_completionHandler___bl
       goto LABEL_47;
     }
 
-    if (![(HMDCloudManager *)self decryptionFailed]&& !a9)
+    if (![(HMDCloudManager *)self decryptionFailed]&& !record)
     {
 LABEL_37:
-      v62 = [(HMDCloudManager *)self dataSource];
-      if ([v62 isControllerKeyAvailable])
+      dataSource = [(HMDCloudManager *)self dataSource];
+      if ([dataSource isControllerKeyAvailable])
       {
       }
 
       else
       {
-        v63 = [(HMDCloudManager *)self cloudHomeDataRecordExists];
+        cloudHomeDataRecordExists = [(HMDCloudManager *)self cloudHomeDataRecordExists];
 
-        if (v63)
+        if (cloudHomeDataRecordExists)
         {
           v64 = objc_autoreleasePoolPush();
-          v65 = self;
+          selfCopy2 = self;
           v66 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
           {
@@ -3445,38 +3445,38 @@ LABEL_37:
           }
 
           objc_autoreleasePoolPop(v64);
-          if (v18)
+          if (handlerCopy)
           {
             v68 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:77 userInfo:0];
-            v69 = [(HMDCloudManager *)v65 clientCallbackQueue];
+            clientCallbackQueue = [(HMDCloudManager *)selfCopy2 clientCallbackQueue];
             v79[0] = MEMORY[0x277D85DD0];
             v79[1] = 3221225472;
             v79[2] = __145__HMDCloudManager__processFetchCompletedWithError_serverToken_fetchTransaction_migrationOptions_completionHandler_moreRecordsComing_emptyRecord___block_invoke_156;
             v79[3] = &unk_279735738;
             v80 = v68;
-            v81 = v18;
+            v81 = handlerCopy;
             v70 = v68;
-            dispatch_async(v69, v79);
+            dispatch_async(clientCallbackQueue, v79);
           }
 
           goto LABEL_47;
         }
       }
 
-      if (!v18)
+      if (!handlerCopy)
       {
         goto LABEL_47;
       }
 
-      v71 = [(HMDCloudManager *)self clientCallbackQueue];
+      clientCallbackQueue2 = [(HMDCloudManager *)self clientCallbackQueue];
       v75[0] = MEMORY[0x277D85DD0];
       v75[1] = 3221225472;
       v75[2] = __145__HMDCloudManager__processFetchCompletedWithError_serverToken_fetchTransaction_migrationOptions_completionHandler_moreRecordsComing_emptyRecord___block_invoke_2;
       v75[3] = &unk_279734380;
-      v77 = v18;
-      v78 = a6;
+      v77 = handlerCopy;
+      optionsCopy = options;
       v76 = 0;
-      dispatch_async(v71, v75);
+      dispatch_async(clientCallbackQueue2, v75);
 
       v52 = v77;
 LABEL_46:
@@ -3484,12 +3484,12 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    v53 = [(HMDCloudManager *)self decryptionFailed];
+    decryptionFailed = [(HMDCloudManager *)self decryptionFailed];
     v54 = objc_autoreleasePoolPush();
-    v55 = self;
+    selfCopy3 = self;
     v56 = HMFGetOSLogHandle();
     v57 = os_log_type_enabled(v56, OS_LOG_TYPE_INFO);
-    if (v53)
+    if (decryptionFailed)
     {
       if (v57)
       {
@@ -3514,21 +3514,21 @@ LABEL_33:
     objc_autoreleasePoolPop(v54);
     if (v21)
     {
-      v60 = [v21 homeDataObjectID];
-      [v17 removeChangeWithObjectID:v60];
+      homeDataObjectID = [v21 homeDataObjectID];
+      [transactionCopy removeChangeWithObjectID:homeDataObjectID];
 
-      v61 = [v21 homeDataV3ObjectID];
-      [v17 removeChangeWithObjectID:v61];
+      homeDataV3ObjectID = [v21 homeDataV3ObjectID];
+      [transactionCopy removeChangeWithObjectID:homeDataV3ObjectID];
     }
 
-    [v17 setUpdatedServerChangeToken:0];
-    [(HMDCloudManager *)v55 _resetCloudServerTokenData];
-    v16 = v74;
+    [transactionCopy setUpdatedServerChangeToken:0];
+    [(HMDCloudManager *)selfCopy3 _resetCloudServerTokenData];
+    tokenCopy = v74;
     goto LABEL_37;
   }
 
   v22 = objc_autoreleasePoolPush();
-  v23 = self;
+  selfCopy4 = self;
   v24 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
   {
@@ -3539,22 +3539,22 @@ LABEL_33:
   }
 
   objc_autoreleasePoolPop(v22);
-  v26 = [(HMDCloudManager *)v23 cloudCache];
-  [v26 setDatabaseServerChangeToken:0];
+  cloudCache = [(HMDCloudManager *)selfCopy4 cloudCache];
+  [cloudCache setDatabaseServerChangeToken:0];
 
-  v27 = [(HMDCloudManager *)v23 cloudCache];
-  [v27 persistDatabaseServerChangeToken];
+  cloudCache2 = [(HMDCloudManager *)selfCopy4 cloudCache];
+  [cloudCache2 persistDatabaseServerChangeToken];
 
-  v28 = [v15 domain];
+  domain = [errorCopy domain];
   v29 = *MEMORY[0x277CBBF50];
-  if ([v28 isEqualToString:*MEMORY[0x277CBBF50]])
+  if ([domain isEqualToString:*MEMORY[0x277CBBF50]])
   {
-    v30 = [v15 code];
+    code = [errorCopy code];
 
-    if (v30 == 21)
+    if (code == 21)
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = v23;
+      v32 = selfCopy4;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
@@ -3566,7 +3566,7 @@ LABEL_33:
 
       objc_autoreleasePoolPop(v31);
       [(HMDCloudManager *)v32 _resetCloudServerTokenData];
-      [(HMDCloudManager *)v32 _fetchLegacyTransaction:v17 forceFetch:0 accountCompletionHandler:0 dataCompletionHandler:v18];
+      [(HMDCloudManager *)v32 _fetchLegacyTransaction:transactionCopy forceFetch:0 accountCompletionHandler:0 dataCompletionHandler:handlerCopy];
       goto LABEL_47;
     }
   }
@@ -3575,14 +3575,14 @@ LABEL_33:
   {
   }
 
-  v39 = [v15 domain];
-  if ([v39 isEqualToString:v29])
+  domain2 = [errorCopy domain];
+  if ([domain2 isEqualToString:v29])
   {
-    v40 = -[HMDCloudManager _validFetchRetryCKErrorCode:](v23, "_validFetchRetryCKErrorCode:", [v15 code]);
+    v40 = -[HMDCloudManager _validFetchRetryCKErrorCode:](selfCopy4, "_validFetchRetryCKErrorCode:", [errorCopy code]);
 
-    if (!v18 && v40)
+    if (!handlerCopy && v40)
     {
-      [(HMDCloudManager *)v23 _startFetchRetryTimer];
+      [(HMDCloudManager *)selfCopy4 _startFetchRetryTimer];
     }
   }
 
@@ -3591,42 +3591,42 @@ LABEL_33:
   }
 
   v41 = objc_autoreleasePoolPush();
-  v42 = v23;
+  v42 = selfCopy4;
   v43 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
   {
     v44 = HMFGetLogIdentifier();
-    [v15 hmd_conciseCKError];
-    v73 = v15;
-    v45 = v18;
-    v46 = v17;
+    [errorCopy hmd_conciseCKError];
+    v73 = errorCopy;
+    v45 = handlerCopy;
+    v46 = transactionCopy;
     v47 = v21;
-    v49 = v48 = v16;
-    v50 = [v49 shortDescription];
+    v49 = v48 = tokenCopy;
+    shortDescription = [v49 shortDescription];
     *buf = 138543618;
     v86 = v44;
     v87 = 2112;
-    v88 = v50;
+    v88 = shortDescription;
     _os_log_impl(&dword_2531F8000, v43, OS_LOG_TYPE_ERROR, "%{public}@Fetch failed with error: %@", buf, 0x16u);
 
-    v16 = v48;
+    tokenCopy = v48;
     v21 = v47;
-    v17 = v46;
-    v18 = v45;
-    v15 = v73;
+    transactionCopy = v46;
+    handlerCopy = v45;
+    errorCopy = v73;
   }
 
   objc_autoreleasePoolPop(v41);
-  if (v18)
+  if (handlerCopy)
   {
-    v51 = [(HMDCloudManager *)v42 clientCallbackQueue];
+    clientCallbackQueue3 = [(HMDCloudManager *)v42 clientCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __145__HMDCloudManager__processFetchCompletedWithError_serverToken_fetchTransaction_migrationOptions_completionHandler_moreRecordsComing_emptyRecord___block_invoke;
     block[3] = &unk_279735738;
-    v84 = v18;
-    v83 = v15;
-    dispatch_async(v51, block);
+    v84 = handlerCopy;
+    v83 = errorCopy;
+    dispatch_async(clientCallbackQueue3, block);
 
     v52 = v84;
     goto LABEL_46;
@@ -3637,12 +3637,12 @@ LABEL_47:
   v72 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_processFetchedTransaction:(id)a3
+- (BOOL)_processFetchedTransaction:(id)transaction
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -3653,21 +3653,21 @@ LABEL_47:
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDCloudManager *)v6 logEventSubmitter];
-  v10 = [HMDDecryptionCompletedLogEvent decryptionCompletedWithFailure:[(HMDCloudManager *)v6 decryptionFailed]];
-  [v9 submitLogEvent:v10];
+  logEventSubmitter = [(HMDCloudManager *)selfCopy logEventSubmitter];
+  v10 = [HMDDecryptionCompletedLogEvent decryptionCompletedWithFailure:[(HMDCloudManager *)selfCopy decryptionFailed]];
+  [logEventSubmitter submitLogEvent:v10];
 
-  v11 = [(HMDCloudManager *)v6 delegate];
-  if ([v4 decryptionFailed])
+  delegate = [(HMDCloudManager *)selfCopy delegate];
+  if ([transactionCopy decryptionFailed])
   {
-    v12 = [(HMDCloudManager *)v6 legacyZone];
-    [v12 setRecordsAvailable:0];
+    legacyZone = [(HMDCloudManager *)selfCopy legacyZone];
+    [legacyZone setRecordsAvailable:0];
 
-    v13 = [(HMDCloudManager *)v6 dataSource];
-    if ([v13 supportsKeyTransferServer])
+    dataSource = [(HMDCloudManager *)selfCopy dataSource];
+    if ([dataSource supportsKeyTransferServer])
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = v6;
+      v15 = selfCopy;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
@@ -3678,18 +3678,18 @@ LABEL_47:
       }
 
       objc_autoreleasePoolPop(v14);
-      v18 = [v13 keyTransferAgent];
-      [v18 beginPairingWithCompletionHandler:0];
+      keyTransferAgent = [dataSource keyTransferAgent];
+      [keyTransferAgent beginPairingWithCompletionHandler:0];
     }
 
-    v19 = [(HMDCloudManager *)v6 legacyZone];
-    v20 = [v19 serverChangeToken];
+    legacyZone2 = [(HMDCloudManager *)selfCopy legacyZone];
+    serverChangeToken = [legacyZone2 serverChangeToken];
     v21 = HMFEqualObjects();
 
     if ((v21 & 1) == 0)
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = v6;
+      v23 = selfCopy;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
@@ -3701,45 +3701,45 @@ LABEL_47:
 
       objc_autoreleasePoolPop(v22);
       [(HMDCloudManager *)v23 _resetCloudServerTokenData];
-      [v11 archiveServerToken:0];
+      [delegate archiveServerToken:0];
     }
 
-    if ([v4 iCloudSwitchStateEnabled])
+    if ([transactionCopy iCloudSwitchStateEnabled])
     {
-      v26 = [(HMDCloudManager *)v6 watchdogControllerKeyPollTimer];
-      if (v26 && (+[HMDDeviceSetupManager sharedManager](HMDDeviceSetupManager, "sharedManager"), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v27 isRunning], v27, v26, v28))
+      watchdogControllerKeyPollTimer = [(HMDCloudManager *)selfCopy watchdogControllerKeyPollTimer];
+      if (watchdogControllerKeyPollTimer && (+[HMDDeviceSetupManager sharedManager](HMDDeviceSetupManager, "sharedManager"), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v27 isRunning], v27, watchdogControllerKeyPollTimer, v28))
       {
-        [(HMDCloudManager *)v6 _startControllerKeyPollTimer];
+        [(HMDCloudManager *)selfCopy _startControllerKeyPollTimer];
       }
 
       else
       {
-        v41 = [(HMDCloudManager *)v6 currentBackoffTimerValuesInMinutes];
-        v42 = v41 == 0;
+        currentBackoffTimerValuesInMinutes = [(HMDCloudManager *)selfCopy currentBackoffTimerValuesInMinutes];
+        v42 = currentBackoffTimerValuesInMinutes == 0;
 
         if (v42)
         {
           v43 = [MEMORY[0x277CBEB18] arrayWithCapacity:5];
-          [(HMDCloudManager *)v6 setCurrentBackoffTimerValuesInMinutes:v43];
+          [(HMDCloudManager *)selfCopy setCurrentBackoffTimerValuesInMinutes:v43];
 
           for (i = 0; i != 5; ++i)
           {
-            v45 = [(HMDCloudManager *)v6 currentBackoffTimerValuesInMinutes];
+            currentBackoffTimerValuesInMinutes2 = [(HMDCloudManager *)selfCopy currentBackoffTimerValuesInMinutes];
             v46 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:sBackoffTimerValuesInMinutes[i]];
-            [v45 addObject:v46];
+            [currentBackoffTimerValuesInMinutes2 addObject:v46];
           }
         }
 
-        [(HMDCloudManager *)v6 _startControllerKeyPollTimerWithBackoff];
+        [(HMDCloudManager *)selfCopy _startControllerKeyPollTimerWithBackoff];
       }
     }
 
     v47 = +[HMDDeviceSetupManager sharedManager];
-    v48 = [v47 followUpManager];
-    [v48 startAdvertising:1];
+    followUpManager = [v47 followUpManager];
+    [followUpManager startAdvertising:1];
 
     v49 = objc_autoreleasePoolPush();
-    v50 = v6;
+    v50 = selfCopy;
     v51 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
     {
@@ -3750,27 +3750,27 @@ LABEL_47:
     }
 
     objc_autoreleasePoolPop(v49);
-    v53 = [(HMDCloudManager *)v50 dataDecryptionFailedHandler];
+    dataDecryptionFailedHandler = [(HMDCloudManager *)v50 dataDecryptionFailedHandler];
 
-    if (v53)
+    if (dataDecryptionFailedHandler)
     {
-      v54 = [(HMDCloudManager *)v50 dataDecryptionFailedHandler];
-      v54[2]();
+      dataDecryptionFailedHandler2 = [(HMDCloudManager *)v50 dataDecryptionFailedHandler];
+      dataDecryptionFailedHandler2[2]();
     }
 
-    v55 = [(HMDCloudManager *)v50 cloudDataSyncStateFilter];
-    [v55 setDecryptionFailed:1];
+    cloudDataSyncStateFilter = [(HMDCloudManager *)v50 cloudDataSyncStateFilter];
+    [cloudDataSyncStateFilter setDecryptionFailed:1];
 
-    LOBYTE(v29) = 0;
+    LOBYTE(controllerIdentifierChanged) = 0;
   }
 
   else
   {
-    v29 = [v4 controllerIdentifierChanged];
-    if (v29)
+    controllerIdentifierChanged = [transactionCopy controllerIdentifierChanged];
+    if (controllerIdentifierChanged)
     {
       v30 = objc_autoreleasePoolPush();
-      v31 = v6;
+      v31 = selfCopy;
       v32 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
@@ -3784,7 +3784,7 @@ LABEL_47:
       v34 = dispatch_group_create();
       dispatch_group_enter(v34);
       objc_initWeak(buf, v31);
-      v35 = [(HMDCloudManager *)v31 homeManagerZone];
+      homeManagerZone = [(HMDCloudManager *)v31 homeManagerZone];
       v58 = MEMORY[0x277D85DD0];
       v59 = 3221225472;
       v60 = __46__HMDCloudManager__processFetchedTransaction___block_invoke;
@@ -3792,7 +3792,7 @@ LABEL_47:
       objc_copyWeak(&v63, buf);
       v36 = v34;
       v62 = v36;
-      [(HMDCloudManager *)v31 _verifyAndRemoveZone:v35 completionHandler:&v58];
+      [(HMDCloudManager *)v31 _verifyAndRemoveZone:homeManagerZone completionHandler:&v58];
 
       dispatch_group_wait(v36, 0xFFFFFFFFFFFFFFFFLL);
       objc_destroyWeak(&v63);
@@ -3801,31 +3801,31 @@ LABEL_47:
 
     else
     {
-      [v11 reloadHomeDataFromLocalStore:1];
+      [delegate reloadHomeDataFromLocalStore:1];
     }
 
-    [(HMDCloudManager *)v6 setCurrentBackoffTimerValuesInMinutes:0, v58, v59, v60, v61];
+    [(HMDCloudManager *)selfCopy setCurrentBackoffTimerValuesInMinutes:0, v58, v59, v60, v61];
     v37 = +[HMDDeviceSetupManager sharedManager];
-    v38 = [v37 followUpManager];
-    [v38 stopAdvertising:1];
+    followUpManager2 = [v37 followUpManager];
+    [followUpManager2 stopAdvertising:1];
 
-    if ([(HMDCloudManager *)v6 decryptionFailed])
+    if ([(HMDCloudManager *)selfCopy decryptionFailed])
     {
-      [v11 fetchAllZones];
+      [delegate fetchAllZones];
     }
 
-    v39 = [(HMDCloudManager *)v6 legacyZone];
-    [v39 setRecordsAvailable:1];
+    legacyZone3 = [(HMDCloudManager *)selfCopy legacyZone];
+    [legacyZone3 setRecordsAvailable:1];
 
-    v40 = [(HMDCloudManager *)v6 cloudDataSyncStateFilter];
-    [v40 setDecryptionFailed:0];
+    cloudDataSyncStateFilter2 = [(HMDCloudManager *)selfCopy cloudDataSyncStateFilter];
+    [cloudDataSyncStateFilter2 setDecryptionFailed:0];
 
-    v13 = [MEMORY[0x277CFEC78] systemStore];
-    [v13 ensureControllerKeyExistsForAllViews];
+    dataSource = [MEMORY[0x277CFEC78] systemStore];
+    [dataSource ensureControllerKeyExistsForAllViews];
   }
 
   v56 = *MEMORY[0x277D85DE8];
-  return v29;
+  return controllerIdentifierChanged;
 }
 
 void __46__HMDCloudManager__processFetchedTransaction___block_invoke(uint64_t a1, int a2, void *a3)
@@ -3895,20 +3895,20 @@ void __46__HMDCloudManager__processFetchedTransaction___block_invoke_3(uint64_t 
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (void)_fetchLegacyTransaction:(id)a3 forceFetch:(BOOL)a4 accountCompletionHandler:(id)a5 dataCompletionHandler:(id)a6
+- (void)_fetchLegacyTransaction:(id)transaction forceFetch:(BOOL)fetch accountCompletionHandler:(id)handler dataCompletionHandler:(id)completionHandler
 {
-  v8 = a4;
+  fetchCopy = fetch;
   v134[1] = *MEMORY[0x277D85DE8];
-  v75 = a3;
-  v76 = a5;
-  v73 = a6;
-  v10 = [(HMDCloudManager *)self dataSource];
-  v11 = [v10 keyTransferAgent];
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  dataSource = [(HMDCloudManager *)self dataSource];
+  keyTransferAgent = [dataSource keyTransferAgent];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v11;
+    v12 = keyTransferAgent;
   }
 
   else
@@ -3919,12 +3919,12 @@ void __46__HMDCloudManager__processFetchedTransaction___block_invoke_3(uint64_t 
   v13 = v12;
 
   v72 = v13;
-  v14 = [v13 progressState];
+  progressState = [v13 progressState];
 
-  if (v14)
+  if (progressState)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -3936,24 +3936,24 @@ void __46__HMDCloudManager__processFetchedTransaction___block_invoke_3(uint64_t 
 
     objc_autoreleasePoolPop(v15);
     v74 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:12 userInfo:0];
-    if (v76)
+    if (handlerCopy)
     {
-      (*(v76 + 2))(v76, 0, 0, v74);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v74);
     }
 
-    if (v73)
+    if (completionHandlerCopy)
     {
-      v73[2]();
+      completionHandlerCopy[2]();
     }
   }
 
   else
   {
-    v19 = [v75 cloudZone];
+    cloudZone = [transactionCopy cloudZone];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = v19;
+      v20 = cloudZone;
     }
 
     else
@@ -3965,7 +3965,7 @@ void __46__HMDCloudManager__processFetchedTransaction___block_invoke_3(uint64_t 
 
     v74 = v21;
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     v25 = v24;
     if (v21)
@@ -3975,7 +3975,7 @@ void __46__HMDCloudManager__processFetchedTransaction___block_invoke_3(uint64_t 
         v26 = HMFGetLogIdentifier();
         v27 = v26;
         v28 = @"existing";
-        if (!v76)
+        if (!handlerCopy)
         {
           v28 = @"changed";
         }
@@ -3988,33 +3988,33 @@ void __46__HMDCloudManager__processFetchedTransaction___block_invoke_3(uint64_t 
       }
 
       objc_autoreleasePoolPop(v22);
-      v29 = [(HMDCloudManager *)v23 cloudDataSyncStateFilter];
-      [v75 setICloudSwitchStateEnabled:{objc_msgSend(v29, "isiCloudSwitchEnabled")}];
+      cloudDataSyncStateFilter = [(HMDCloudManager *)selfCopy2 cloudDataSyncStateFilter];
+      [transactionCopy setICloudSwitchStateEnabled:{objc_msgSend(cloudDataSyncStateFilter, "isiCloudSwitchEnabled")}];
 
       v71 = objc_alloc_init(MEMORY[0x277CBC3A0]);
-      if (v8)
+      if (fetchCopy)
       {
         [v71 setPreviousServerChangeToken:0];
       }
 
       else
       {
-        v31 = [(HMDCloudManager *)v23 legacyZone];
-        v32 = [v31 serverChangeToken];
-        [v71 setPreviousServerChangeToken:v32];
+        legacyZone = [(HMDCloudManager *)selfCopy2 legacyZone];
+        serverChangeToken = [legacyZone serverChangeToken];
+        [v71 setPreviousServerChangeToken:serverChangeToken];
       }
 
-      v33 = [v71 previousServerChangeToken];
-      v69 = v33 == 0;
+      previousServerChangeToken = [v71 previousServerChangeToken];
+      v69 = previousServerChangeToken == 0;
 
       v34 = objc_autoreleasePoolPush();
-      val = v23;
+      val = selfCopy2;
       v35 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
       {
         v36 = HMFGetLogIdentifier();
-        v37 = [v71 previousServerChangeToken];
-        v38 = [v37 debugDescription];
+        previousServerChangeToken2 = [v71 previousServerChangeToken];
+        v38 = [previousServerChangeToken2 debugDescription];
         *buf = 138543618;
         *&buf[4] = v36;
         *&buf[12] = 2112;
@@ -4023,7 +4023,7 @@ void __46__HMDCloudManager__processFetchedTransaction___block_invoke_3(uint64_t 
       }
 
       objc_autoreleasePoolPop(v34);
-      if (([v75 iCloudSwitchStateEnabled] & 1) == 0)
+      if (([transactionCopy iCloudSwitchStateEnabled] & 1) == 0)
       {
         v39 = objc_autoreleasePoolPush();
         v40 = val;
@@ -4041,15 +4041,15 @@ void __46__HMDCloudManager__processFetchedTransaction___block_invoke_3(uint64_t 
       }
 
       v43 = objc_alloc(MEMORY[0x277CBC3B8]);
-      v44 = [(HMDCloudManager *)val legacyZone];
-      v45 = [v44 zone];
-      v46 = [v45 zoneID];
-      v134[0] = v46;
+      legacyZone2 = [(HMDCloudManager *)val legacyZone];
+      v45 = [legacyZone2 zone];
+      zoneID = [v45 zoneID];
+      v134[0] = zoneID;
       v47 = [MEMORY[0x277CBEA60] arrayWithObjects:v134 count:1];
-      v48 = [(HMDCloudManager *)val legacyZone];
-      v49 = [v48 zone];
-      v50 = [v49 zoneID];
-      v132 = v50;
+      legacyZone3 = [(HMDCloudManager *)val legacyZone];
+      v49 = [legacyZone3 zone];
+      zoneID2 = [v49 zoneID];
+      v132 = zoneID2;
       v133 = v71;
       v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v133 forKeys:&v132 count:1];
       v52 = [v43 initWithRecordZoneIDs:v47 configurationsByRecordZoneID:v51];
@@ -4072,7 +4072,7 @@ void __46__HMDCloudManager__processFetchedTransaction___block_invoke_3(uint64_t 
       v53 = v74;
       v118 = v53;
       v120 = buf;
-      v54 = v75;
+      v54 = transactionCopy;
       v119 = v54;
       v121 = v124;
       [v52 setRecordChangedBlock:v117];
@@ -4118,10 +4118,10 @@ void __46__HMDCloudManager__processFetchedTransaction___block_invoke_3(uint64_t 
       v101 = v69;
       v92 = v58;
       v97 = buf;
-      v59 = v76;
+      v59 = handlerCopy;
       v93 = v59;
       v98 = v111;
-      v60 = v73;
+      v60 = completionHandlerCopy;
       v94 = v60;
       v99 = v124;
       v61 = _Block_copy(aBlock);
@@ -4153,11 +4153,11 @@ void __46__HMDCloudManager__processFetchedTransaction___block_invoke_3(uint64_t 
       if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
       {
         v66 = HMFGetLogIdentifier();
-        v67 = [v52 operationID];
+        operationID = [v52 operationID];
         *v126 = 138543618;
         v127 = v66;
         v128 = 2112;
-        v129 = v67;
+        v129 = operationID;
         _os_log_impl(&dword_2531F8000, v65, OS_LOG_TYPE_INFO, "%{public}@[Legacy] Fetching record changes operation with ID: %@", v126, 0x16u);
       }
 
@@ -4193,14 +4193,14 @@ void __46__HMDCloudManager__processFetchedTransaction___block_invoke_3(uint64_t 
 
       objc_autoreleasePoolPop(v22);
       v71 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      if (v76)
+      if (handlerCopy)
       {
-        (*(v76 + 2))(v76, 0, 0, v71);
+        (*(handlerCopy + 2))(handlerCopy, 0, 0, v71);
       }
 
-      if (v73)
+      if (completionHandlerCopy)
       {
-        v73[2]();
+        completionHandlerCopy[2]();
       }
     }
   }
@@ -5025,25 +5025,25 @@ void __101__HMDCloudManager__fetchLegacyTransaction_forceFetch_accountCompletion
   (*(v2 + 16))(v2, v3, v4, v5);
 }
 
-- (void)fetchLegacyTransaction:(id)a3 forceFetch:(BOOL)a4 accountCompletionHandler:(id)a5 dataCompletionHandler:(id)a6
+- (void)fetchLegacyTransaction:(id)transaction forceFetch:(BOOL)fetch accountCompletionHandler:(id)handler dataCompletionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(HMDCloudManager *)self workQueue];
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  workQueue = [(HMDCloudManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __100__HMDCloudManager_fetchLegacyTransaction_forceFetch_accountCompletionHandler_dataCompletionHandler___block_invoke;
   block[3] = &unk_279725AC8;
-  v19 = v11;
-  v20 = v12;
+  v19 = handlerCopy;
+  v20 = completionHandlerCopy;
   block[4] = self;
-  v18 = v10;
-  v21 = a4;
-  v14 = v10;
-  v15 = v12;
-  v16 = v11;
-  dispatch_async(v13, block);
+  v18 = transactionCopy;
+  fetchCopy = fetch;
+  v14 = transactionCopy;
+  v15 = completionHandlerCopy;
+  v16 = handlerCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __100__HMDCloudManager_fetchLegacyTransaction_forceFetch_accountCompletionHandler_dataCompletionHandler___block_invoke(uint64_t a1)
@@ -5098,96 +5098,96 @@ void __100__HMDCloudManager_fetchLegacyTransaction_forceFetch_accountCompletionH
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)setAccountActiveUpdateCallback:(id)a3
+- (void)setAccountActiveUpdateCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(HMDCloudManager *)self workQueue];
+  callbackCopy = callback;
+  workQueue = [(HMDCloudManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__HMDCloudManager_setAccountActiveUpdateCallback___block_invoke;
   v7[3] = &unk_279735738;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = callbackCopy;
+  v6 = callbackCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)setDataDecryptionFailedCompletionBlock:(id)a3
+- (void)setDataDecryptionFailedCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMDCloudManager *)self workQueue];
+  blockCopy = block;
+  workQueue = [(HMDCloudManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__HMDCloudManager_setDataDecryptionFailedCompletionBlock___block_invoke;
   v7[3] = &unk_279735738;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)setControllerKeyAvailableNotificationBlock:(id)a3
+- (void)setControllerKeyAvailableNotificationBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMDCloudManager *)self workQueue];
+  blockCopy = block;
+  workQueue = [(HMDCloudManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__HMDCloudManager_setControllerKeyAvailableNotificationBlock___block_invoke;
   v7[3] = &unk_279735738;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)setCloudMetadataDeletedNotificationBlock:(id)a3
+- (void)setCloudMetadataDeletedNotificationBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMDCloudManager *)self workQueue];
+  blockCopy = block;
+  workQueue = [(HMDCloudManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__HMDCloudManager_setCloudMetadataDeletedNotificationBlock___block_invoke;
   v7[3] = &unk_279735738;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)setCloudDataDeletedNotificationBlock:(id)a3
+- (void)setCloudDataDeletedNotificationBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMDCloudManager *)self workQueue];
+  blockCopy = block;
+  workQueue = [(HMDCloudManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__HMDCloudManager_setCloudDataDeletedNotificationBlock___block_invoke;
   v7[3] = &unk_279735738;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)setDataAvailableFromCloudCompletionBlock:(id)a3
+- (void)setDataAvailableFromCloudCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMDCloudManager *)self workQueue];
+  blockCopy = block;
+  workQueue = [(HMDCloudManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__HMDCloudManager_setDataAvailableFromCloudCompletionBlock___block_invoke;
   v7[3] = &unk_279735738;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)fetchCurrentAccountStateWithCompletionHandler:(id)a3
+- (void)fetchCurrentAccountStateWithCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -5198,24 +5198,24 @@ void __100__HMDCloudManager_fetchLegacyTransaction_forceFetch_accountCompletionH
   }
 
   objc_autoreleasePoolPop(v5);
-  logger = v6->_logger;
+  logger = selfCopy->_logger;
   if (os_signpost_enabled(logger))
   {
     *buf = 0;
     _os_signpost_emit_with_name_impl(&dword_2531F8000, logger, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "AccountStatus", "", buf, 2u);
   }
 
-  objc_initWeak(buf, v6);
-  v10 = [(HMDCloudManager *)v6 container];
+  objc_initWeak(buf, selfCopy);
+  container = [(HMDCloudManager *)selfCopy container];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__HMDCloudManager_fetchCurrentAccountStateWithCompletionHandler___block_invoke;
   v13[3] = &unk_279725AA0;
   objc_copyWeak(v15, buf);
   v15[1] = 0xEEEEB0B5B2B2EEEELL;
-  v11 = v4;
+  v11 = handlerCopy;
   v14 = v11;
-  [v10 accountStatusWithCompletionHandler:v13];
+  [container accountStatusWithCompletionHandler:v13];
 
   objc_destroyWeak(v15);
   objc_destroyWeak(buf);
@@ -5273,15 +5273,15 @@ void __65__HMDCloudManager_fetchCurrentAccountStateWithCompletionHandler___block
 
 - (id)_serverTokenData
 {
-  v3 = [(HMDCloudManager *)self legacyZone];
-  v4 = [v3 serverChangeToken];
+  legacyZone = [(HMDCloudManager *)self legacyZone];
+  serverChangeToken = [legacyZone serverChangeToken];
 
-  if (v4)
+  if (serverChangeToken)
   {
     v5 = MEMORY[0x277CCAAB0];
-    v6 = [(HMDCloudManager *)self legacyZone];
-    v7 = [v6 serverChangeToken];
-    v8 = [v5 archivedDataWithRootObject:v7 requiringSecureCoding:1 error:0];
+    legacyZone2 = [(HMDCloudManager *)self legacyZone];
+    serverChangeToken2 = [legacyZone2 serverChangeToken];
+    v8 = [v5 archivedDataWithRootObject:serverChangeToken2 requiringSecureCoding:1 error:0];
   }
 
   else
@@ -5300,14 +5300,14 @@ void __65__HMDCloudManager_fetchCurrentAccountStateWithCompletionHandler___block
   v10 = __Block_byref_object_copy__40007;
   v11 = __Block_byref_object_dispose__40008;
   v12 = 0;
-  v3 = [(HMDCloudManager *)self workQueue];
+  workQueue = [(HMDCloudManager *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __34__HMDCloudManager_serverTokenData__block_invoke;
   v6[3] = &unk_279734898;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -5327,18 +5327,18 @@ uint64_t __34__HMDCloudManager_serverTokenData__block_invoke(uint64_t a1)
 
 - (BOOL)decryptionFailed
 {
-  v2 = [(HMDCloudManager *)self cloudDataSyncStateFilter];
-  v3 = [v2 decryptionFailed];
+  cloudDataSyncStateFilter = [(HMDCloudManager *)self cloudDataSyncStateFilter];
+  decryptionFailed = [cloudDataSyncStateFilter decryptionFailed];
 
-  return v3;
+  return decryptionFailed;
 }
 
-- (void)_resetCloudCache:(id)a3
+- (void)_resetCloudCache:(id)cache
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cacheCopy = cache;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -5349,19 +5349,19 @@ uint64_t __34__HMDCloudManager_serverTokenData__block_invoke(uint64_t a1)
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDCloudManager *)v6 cloudCache];
-  [v9 deleteAllZones];
+  cloudCache = [(HMDCloudManager *)selfCopy cloudCache];
+  [cloudCache deleteAllZones];
 
-  objc_initWeak(buf, v6);
-  v10 = [(HMDCloudManager *)v6 cloudCache];
+  objc_initWeak(buf, selfCopy);
+  cloudCache2 = [(HMDCloudManager *)selfCopy cloudCache];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __36__HMDCloudManager__resetCloudCache___block_invoke;
   v13[3] = &unk_279734508;
   objc_copyWeak(&v15, buf);
-  v11 = v4;
+  v11 = cacheCopy;
   v14 = v11;
-  [v10 createAndFetchZonesFromBackingStore:v13];
+  [cloudCache2 createAndFetchZonesFromBackingStore:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
@@ -5398,25 +5398,25 @@ void __36__HMDCloudManager__resetCloudCache___block_invoke(uint64_t a1, void *a2
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetCloudCache:(id)a3
+- (void)resetCloudCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(HMDCloudManager *)self workQueue];
+  cacheCopy = cache;
+  workQueue = [(HMDCloudManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__HMDCloudManager_resetCloudCache___block_invoke;
   v7[3] = &unk_279735738;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = cacheCopy;
+  v6 = cacheCopy;
+  dispatch_async(workQueue, v7);
 }
 
 - (void)_resetCloudServerTokenData
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -5427,50 +5427,50 @@ void __36__HMDCloudManager__resetCloudCache___block_invoke(uint64_t a1, void *a2
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDCloudManager *)v4 legacyZone];
-  [v7 setServerChangeToken:0];
+  legacyZone = [(HMDCloudManager *)selfCopy legacyZone];
+  [legacyZone setServerChangeToken:0];
 
-  v8 = [(HMDCloudManager *)v4 cloudCache];
-  [v8 setDatabaseServerChangeToken:0];
+  cloudCache = [(HMDCloudManager *)selfCopy cloudCache];
+  [cloudCache setDatabaseServerChangeToken:0];
 
-  v9 = [(HMDCloudManager *)v4 cloudCache];
-  [v9 persistDatabaseServerChangeToken];
+  cloudCache2 = [(HMDCloudManager *)selfCopy cloudCache];
+  [cloudCache2 persistDatabaseServerChangeToken];
 
-  [(HMDCloudManager *)v4 _updateServerTokenStatusOnCloudFilter];
+  [(HMDCloudManager *)selfCopy _updateServerTokenStatusOnCloudFilter];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetCloudServerTokenData:(id)a3
+- (void)resetCloudServerTokenData:(id)data
 {
-  v4 = [(HMDCloudManager *)self workQueue];
+  workQueue = [(HMDCloudManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__HMDCloudManager_resetCloudServerTokenData___block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
-- (void)_resetCloudDataAndDeleteMetadataForCurrentAccount:(BOOL)a3 completionHandler:(id)a4
+- (void)_resetCloudDataAndDeleteMetadataForCurrentAccount:(BOOL)account completionHandler:(id)handler
 {
-  v4 = a3;
+  accountCopy = account;
   v35[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x277CBEB18];
-  v8 = [(HMDCloudManager *)self legacyZone];
-  v9 = [v8 homeDataRecordID];
-  v35[0] = v9;
-  v10 = [(HMDCloudManager *)self legacyZone];
-  v11 = [v10 homeDataV3RecordID];
-  v35[1] = v11;
+  legacyZone = [(HMDCloudManager *)self legacyZone];
+  homeDataRecordID = [legacyZone homeDataRecordID];
+  v35[0] = homeDataRecordID;
+  legacyZone2 = [(HMDCloudManager *)self legacyZone];
+  homeDataV3RecordID = [legacyZone2 homeDataV3RecordID];
+  v35[1] = homeDataV3RecordID;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:2];
   v13 = [v7 arrayWithArray:v12];
 
-  if (v4)
+  if (accountCopy)
   {
-    v14 = [(HMDCloudManager *)self legacyZone];
-    v15 = [v14 metadataRecordID];
-    [v13 addObject:v15];
+    legacyZone3 = [(HMDCloudManager *)self legacyZone];
+    metadataRecordID = [legacyZone3 metadataRecordID];
+    [v13 addObject:metadataRecordID];
   }
 
   v16 = [objc_alloc(MEMORY[0x277CBC4A0]) initWithRecordsToSave:0 recordIDsToDelete:v13];
@@ -5493,26 +5493,26 @@ void __36__HMDCloudManager__resetCloudCache___block_invoke(uint64_t a1, void *a2
   v24[2] = __87__HMDCloudManager__resetCloudDataAndDeleteMetadataForCurrentAccount_completionHandler___block_invoke_127;
   v24[3] = &unk_279725A78;
   objc_copyWeak(&v26, &location);
-  v17 = v6;
+  v17 = handlerCopy;
   v25 = v17;
   [v16 setModifyRecordsCompletionBlock:v24];
   v18 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     v21 = HMFGetLogIdentifier();
-    v22 = [v16 operationID];
+    operationID = [v16 operationID];
     *buf = 138543618;
     v32 = v21;
     v33 = 2112;
-    v34 = v22;
+    v34 = operationID;
     _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_INFO, "%{public}@Adding deleting operation with ID: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v18);
-  [(HMDCloudManager *)v19 _stopFetchRetryTimer];
-  [(HMDCloudManager *)v19 __addCKDatabaseOperation:v16];
+  [(HMDCloudManager *)selfCopy _stopFetchRetryTimer];
+  [(HMDCloudManager *)selfCopy __addCKDatabaseOperation:v16];
 
   objc_destroyWeak(&v26);
   objc_destroyWeak(&v28);
@@ -5767,16 +5767,16 @@ void __87__HMDCloudManager__resetCloudDataAndDeleteMetadataForCurrentAccount_com
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)_resetCloudZonesIgnoreHomeManager:(BOOL)a3 completionHandler:(id)a4
+- (void)_resetCloudZonesIgnoreHomeManager:(BOOL)manager completionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(HMDCloudManager *)self accountActive];
+  handlerCopy = handler;
+  accountActive = [(HMDCloudManager *)self accountActive];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   v11 = v10;
-  if (v7)
+  if (accountActive)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -5787,15 +5787,15 @@ void __87__HMDCloudManager__resetCloudDataAndDeleteMetadataForCurrentAccount_com
     }
 
     objc_autoreleasePoolPop(v8);
-    objc_initWeak(buf, v9);
+    objc_initWeak(buf, selfCopy);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __71__HMDCloudManager__resetCloudZonesIgnoreHomeManager_completionHandler___block_invoke_124;
     v16[3] = &unk_279725A00;
     objc_copyWeak(&v18, buf);
-    v17 = v6;
-    v19 = a3;
-    [(HMDCloudManager *)v9 __fetchAllRecordZonesWithCompletionHandler:v16];
+    v17 = handlerCopy;
+    managerCopy = manager;
+    [(HMDCloudManager *)selfCopy __fetchAllRecordZonesWithCompletionHandler:v16];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(buf);
@@ -5812,15 +5812,15 @@ void __87__HMDCloudManager__resetCloudDataAndDeleteMetadataForCurrentAccount_com
     }
 
     objc_autoreleasePoolPop(v8);
-    if (v6)
+    if (handlerCopy)
     {
-      v14 = [(HMDCloudManager *)v9 clientCallbackQueue];
+      clientCallbackQueue = [(HMDCloudManager *)selfCopy clientCallbackQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __71__HMDCloudManager__resetCloudZonesIgnoreHomeManager_completionHandler___block_invoke;
       block[3] = &unk_2797348C0;
-      v21 = v6;
-      dispatch_async(v14, block);
+      v21 = handlerCopy;
+      dispatch_async(clientCallbackQueue, block);
     }
   }
 
@@ -5957,12 +5957,12 @@ void __71__HMDCloudManager__resetCloudZonesIgnoreHomeManager_completionHandler__
   }
 }
 
-- (void)_verifyAndRemoveAllHomeZonesCompletionHandler:(id)a3
+- (void)_verifyAndRemoveAllHomeZonesCompletionHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v4 = [(HMDCloudManager *)self cloudCache];
-  v5 = [v4 allHomeZones];
+  handlerCopy = handler;
+  cloudCache = [(HMDCloudManager *)self cloudCache];
+  allHomeZones = [cloudCache allHomeZones];
 
   v26[0] = 0;
   v26[1] = v26;
@@ -5975,7 +5975,7 @@ void __71__HMDCloudManager__resetCloudZonesIgnoreHomeManager_completionHandler__
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v5;
+  obj = allHomeZones;
   v7 = [obj countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v7)
   {
@@ -6010,15 +6010,15 @@ void __71__HMDCloudManager__resetCloudZonesIgnoreHomeManager_completionHandler__
     while (v7);
   }
 
-  v11 = [(HMDCloudManager *)self clientCallbackQueue];
+  clientCallbackQueue = [(HMDCloudManager *)self clientCallbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__HMDCloudManager__verifyAndRemoveAllHomeZonesCompletionHandler___block_invoke_2;
   block[3] = &unk_279731910;
-  v17 = v14;
+  v17 = handlerCopy;
   v18 = v26;
-  v12 = v14;
-  dispatch_group_notify(v6, v11, block);
+  v12 = handlerCopy;
+  dispatch_group_notify(v6, clientCallbackQueue, block);
 
   _Block_object_dispose(v26, 8);
   v13 = *MEMORY[0x277D85DE8];
@@ -6046,16 +6046,16 @@ uint64_t __65__HMDCloudManager__verifyAndRemoveAllHomeZonesCompletionHandler___b
   return result;
 }
 
-- (void)_verifyAndRemoveZone:(id)a3 completionHandler:(id)a4
+- (void)_verifyAndRemoveZone:(id)zone completionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  zoneCopy = zone;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (zoneCopy)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -6063,34 +6063,34 @@ uint64_t __65__HMDCloudManager__verifyAndRemoveAllHomeZonesCompletionHandler___b
       *buf = 138543618;
       v22 = v12;
       v23 = 2112;
-      v24 = v6;
+      v24 = zoneCopy;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Verifying zone after controller key change: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v9);
-    objc_initWeak(buf, v10);
+    objc_initWeak(buf, selfCopy);
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __58__HMDCloudManager__verifyAndRemoveZone_completionHandler___block_invoke_119;
     v15[3] = &unk_2797259B0;
     objc_copyWeak(&v18, buf);
-    v16 = v6;
+    v16 = zoneCopy;
     v17 = v8;
-    [(HMDCloudManager *)v10 _fetchAndVerifyZoneRootRecord:v16 completionHandler:v15];
+    [(HMDCloudManager *)selfCopy _fetchAndVerifyZoneRootRecord:v16 completionHandler:v15];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(buf);
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    v13 = [(HMDCloudManager *)self clientCallbackQueue];
+    clientCallbackQueue = [(HMDCloudManager *)self clientCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__HMDCloudManager__verifyAndRemoveZone_completionHandler___block_invoke;
     block[3] = &unk_2797348C0;
     v20 = v8;
-    dispatch_async(v13, block);
+    dispatch_async(clientCallbackQueue, block);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -6209,36 +6209,36 @@ void __58__HMDCloudManager__verifyAndRemoveZone_completionHandler___block_invoke
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)verifyAndRemoveZone:(id)a3 completionHandler:(id)a4
+- (void)verifyAndRemoveZone:(id)zone completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCloudManager *)self workQueue];
+  zoneCopy = zone;
+  handlerCopy = handler;
+  workQueue = [(HMDCloudManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__HMDCloudManager_verifyAndRemoveZone_completionHandler___block_invoke;
   block[3] = &unk_2797355D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = zoneCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = zoneCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)_removeAllHomeZonesCompletionHandler:(id)a3
+- (void)_removeAllHomeZonesCompletionHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCloudManager *)self cloudCache];
-  v6 = [v5 allHomeZones];
+  handlerCopy = handler;
+  cloudCache = [(HMDCloudManager *)self cloudCache];
+  allHomeZones = [cloudCache allHomeZones];
 
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(allHomeZones, "count")}];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v6;
+  v8 = allHomeZones;
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v9)
   {
@@ -6254,11 +6254,11 @@ void __58__HMDCloudManager__verifyAndRemoveZone_completionHandler___block_invoke
         }
 
         v12 = [*(*(&v23 + 1) + 8 * v11) zone];
-        v13 = [v12 zoneID];
+        zoneID = [v12 zoneID];
 
-        if (v13)
+        if (zoneID)
         {
-          [v7 addObject:v13];
+          [v7 addObject:zoneID];
         }
 
         ++v11;
@@ -6272,7 +6272,7 @@ void __58__HMDCloudManager__verifyAndRemoveZone_completionHandler___block_invoke
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -6285,15 +6285,15 @@ void __58__HMDCloudManager__verifyAndRemoveZone_completionHandler___block_invoke
   }
 
   objc_autoreleasePoolPop(v14);
-  objc_initWeak(buf, v15);
+  objc_initWeak(buf, selfCopy);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __56__HMDCloudManager__removeAllHomeZonesCompletionHandler___block_invoke;
   v20[3] = &unk_279731300;
   objc_copyWeak(&v22, buf);
-  v18 = v4;
+  v18 = handlerCopy;
   v21 = v18;
-  [(HMDCloudManager *)v15 __deleteRecordZonesWithIDs:v7 completionHandler:v20];
+  [(HMDCloudManager *)selfCopy __deleteRecordZonesWithIDs:v7 completionHandler:v20];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(buf);
@@ -6317,20 +6317,20 @@ void __56__HMDCloudManager__removeAllHomeZonesCompletionHandler___block_invoke(u
   }
 }
 
-- (void)resetCloudDataAndDeleteMetadataForCurrentAccount:(BOOL)a3 completionHandler:(id)a4
+- (void)resetCloudDataAndDeleteMetadataForCurrentAccount:(BOOL)account completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v7 = [(HMDCloudManager *)self workQueue];
+  workQueue = [(HMDCloudManager *)self workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __86__HMDCloudManager_resetCloudDataAndDeleteMetadataForCurrentAccount_completionHandler___block_invoke;
   v9[3] = &unk_279725960;
   objc_copyWeak(&v11, &location);
-  v12 = a3;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, v9);
+  accountCopy = account;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  dispatch_async(workQueue, v9);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -6378,20 +6378,20 @@ void __86__HMDCloudManager_resetCloudDataAndDeleteMetadataForCurrentAccount_comp
   }
 }
 
-- (void)_fetchAndVerifyZoneRootRecord:(id)a3 completionHandler:(id)a4
+- (void)_fetchAndVerifyZoneRootRecord:(id)record completionHandler:(id)handler
 {
   v54[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  recordCopy = record;
+  handlerCopy = handler;
+  if (recordCopy)
   {
     v8 = [[HMDCloudTransaction alloc] initWithType:3 temporaryCache:1];
-    [(HMDCloudTransaction *)v8 updateCloudZone:v6];
-    v9 = [(HMDCloudTransaction *)v8 privateZoneRootRecordID];
-    if (v9)
+    [(HMDCloudTransaction *)v8 updateCloudZone:recordCopy];
+    privateZoneRootRecordID = [(HMDCloudTransaction *)v8 privateZoneRootRecordID];
+    if (privateZoneRootRecordID)
     {
       v10 = objc_alloc(MEMORY[0x277CBC3E0]);
-      v54[0] = v9;
+      v54[0] = privateZoneRootRecordID;
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:1];
       v12 = [v10 initWithRecordIDs:v11];
 
@@ -6411,7 +6411,7 @@ void __86__HMDCloudManager_resetCloudDataAndDeleteMetadataForCurrentAccount_comp
       v36[2] = __67__HMDCloudManager__fetchAndVerifyZoneRootRecord_completionHandler___block_invoke_101;
       v36[3] = &unk_279725910;
       objc_copyWeak(&v40, &location);
-      v37 = v9;
+      v37 = privateZoneRootRecordID;
       v39 = v52;
       v13 = v8;
       v38 = v13;
@@ -6421,27 +6421,27 @@ void __86__HMDCloudManager_resetCloudDataAndDeleteMetadataForCurrentAccount_comp
       v30[2] = __67__HMDCloudManager__fetchAndVerifyZoneRootRecord_completionHandler___block_invoke_103;
       v30[3] = &unk_279725938;
       objc_copyWeak(&v35, &location);
-      v31 = v6;
-      v33 = v7;
+      v31 = recordCopy;
+      v33 = handlerCopy;
       v34 = v52;
       v32 = v13;
       [v12 setFetchRecordsCompletionBlock:v30];
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         v17 = HMFGetLogIdentifier();
-        v18 = [v12 operationID];
+        operationID = [v12 operationID];
         *buf = 138543618;
         v49 = v17;
         v50 = 2112;
-        v51 = v18;
+        v51 = operationID;
         _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_INFO, "%{public}@Fetching zone root record operation with ID: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v14);
-      [(HMDCloudManager *)v15 __addCKDatabaseOperation:v12];
+      [(HMDCloudManager *)selfCopy __addCKDatabaseOperation:v12];
 
       objc_destroyWeak(&v35);
       objc_destroyWeak(&v40);
@@ -6453,7 +6453,7 @@ void __86__HMDCloudManager_resetCloudDataAndDeleteMetadataForCurrentAccount_comp
     else
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = self;
+      selfCopy2 = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -6461,23 +6461,23 @@ void __86__HMDCloudManager_resetCloudDataAndDeleteMetadataForCurrentAccount_comp
         *v52 = 138543618;
         *&v52[4] = v27;
         *&v52[12] = 2112;
-        *&v52[14] = v6;
+        *&v52[14] = recordCopy;
         _os_log_impl(&dword_2531F8000, v26, OS_LOG_TYPE_ERROR, "%{public}@Failed to determine root record for zone %@", v52, 0x16u);
       }
 
       objc_autoreleasePoolPop(v24);
-      if (!v7)
+      if (!handlerCopy)
       {
         goto LABEL_15;
       }
 
-      v28 = [(HMDCloudManager *)v25 clientCallbackQueue];
+      clientCallbackQueue = [(HMDCloudManager *)selfCopy2 clientCallbackQueue];
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
       v44[2] = __67__HMDCloudManager__fetchAndVerifyZoneRootRecord_completionHandler___block_invoke_98;
       v44[3] = &unk_2797348C0;
-      v45 = v7;
-      dispatch_async(v28, v44);
+      v45 = handlerCopy;
+      dispatch_async(clientCallbackQueue, v44);
 
       v12 = v45;
     }
@@ -6487,7 +6487,7 @@ LABEL_15:
   }
 
   v19 = objc_autoreleasePoolPush();
-  v20 = self;
+  selfCopy3 = self;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
@@ -6498,15 +6498,15 @@ LABEL_15:
   }
 
   objc_autoreleasePoolPop(v19);
-  if (v7)
+  if (handlerCopy)
   {
-    v23 = [(HMDCloudManager *)v20 clientCallbackQueue];
+    clientCallbackQueue2 = [(HMDCloudManager *)selfCopy3 clientCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __67__HMDCloudManager__fetchAndVerifyZoneRootRecord_completionHandler___block_invoke;
     block[3] = &unk_2797348C0;
-    v47 = v7;
-    dispatch_async(v23, block);
+    v47 = handlerCopy;
+    dispatch_async(clientCallbackQueue2, block);
 
     v8 = v47;
 LABEL_16:
@@ -6767,13 +6767,13 @@ uint64_t __67__HMDCloudManager__fetchAndVerifyZoneRootRecord_completionHandler__
   return v4(v1, v2, v3 ^ 1u, 0);
 }
 
-- (void)_uploadLegacyTransaction:(id)a3 completionHandler:(id)a4
+- (void)_uploadLegacyTransaction:(id)transaction completionHandler:(id)handler
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cloudZone];
-  if (v8)
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  cloudZone = [transactionCopy cloudZone];
+  if (cloudZone)
   {
     objc_initWeak(location, self);
     v15[0] = MEMORY[0x277D85DD0];
@@ -6781,9 +6781,9 @@ uint64_t __67__HMDCloudManager__fetchAndVerifyZoneRootRecord_completionHandler__
     v15[2] = __62__HMDCloudManager__uploadLegacyTransaction_completionHandler___block_invoke_2;
     v15[3] = &unk_2797258C0;
     objc_copyWeak(&v19, location);
-    v18 = v7;
-    v16 = v8;
-    v17 = v6;
+    v18 = handlerCopy;
+    v16 = cloudZone;
+    v17 = transactionCopy;
     [v17 fetchBatchToUpload:v15];
 
     objc_destroyWeak(&v19);
@@ -6793,7 +6793,7 @@ uint64_t __67__HMDCloudManager__fetchAndVerifyZoneRootRecord_completionHandler__
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -6804,15 +6804,15 @@ uint64_t __67__HMDCloudManager__fetchAndVerifyZoneRootRecord_completionHandler__
     }
 
     objc_autoreleasePoolPop(v9);
-    if (v7)
+    if (handlerCopy)
     {
-      v13 = [(HMDCloudManager *)v10 clientCallbackQueue];
+      clientCallbackQueue = [(HMDCloudManager *)selfCopy clientCallbackQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __62__HMDCloudManager__uploadLegacyTransaction_completionHandler___block_invoke;
       block[3] = &unk_2797348C0;
-      v21 = v7;
-      dispatch_async(v13, block);
+      v21 = handlerCopy;
+      dispatch_async(clientCallbackQueue, block);
     }
   }
 
@@ -7605,22 +7605,22 @@ void __62__HMDCloudManager__uploadLegacyTransaction_completionHandler___block_in
   [WeakRetained _uploadLegacyTransaction:*(a1 + 32) completionHandler:*(a1 + 40)];
 }
 
-- (void)uploadLegacyTransaction:(id)a3 completionHandler:(id)a4
+- (void)uploadLegacyTransaction:(id)transaction completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v8 = [(HMDCloudManager *)self workQueue];
+  workQueue = [(HMDCloudManager *)self workQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __61__HMDCloudManager_uploadLegacyTransaction_completionHandler___block_invoke;
   v11[3] = &unk_279730E50;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, v11);
+  v12 = transactionCopy;
+  v13 = handlerCopy;
+  v9 = transactionCopy;
+  v10 = handlerCopy;
+  dispatch_async(workQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -7699,17 +7699,17 @@ void __61__HMDCloudManager_uploadLegacyTransaction_completionHandler___block_inv
   }
 }
 
-- (void)_removeZonesTransactions:(id)a3 completionHandler:(id)a4
+- (void)_removeZonesTransactions:(id)transactions completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cloudZone];
-  v9 = [v8 zone];
-  v10 = [v9 zoneID];
+  transactionsCopy = transactions;
+  handlerCopy = handler;
+  cloudZone = [transactionsCopy cloudZone];
+  v9 = [cloudZone zone];
+  zoneID = [v9 zoneID];
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -7717,24 +7717,24 @@ void __61__HMDCloudManager_uploadLegacyTransaction_completionHandler___block_inv
     *buf = 138543618;
     v25 = v14;
     v26 = 2112;
-    v27 = v10;
+    v27 = zoneID;
     _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, "%{public}@Removing zone %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
-  objc_initWeak(buf, v12);
+  objc_initWeak(buf, selfCopy);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __62__HMDCloudManager__removeZonesTransactions_completionHandler___block_invoke;
   v19[3] = &unk_279725780;
   objc_copyWeak(&v23, buf);
-  v15 = v10;
+  v15 = zoneID;
   v20 = v15;
-  v16 = v7;
+  v16 = handlerCopy;
   v22 = v16;
-  v17 = v6;
+  v17 = transactionsCopy;
   v21 = v17;
-  [(HMDCloudManager *)v12 __deleteRecordZoneWithID:v15 completionHandler:v19];
+  [(HMDCloudManager *)selfCopy __deleteRecordZoneWithID:v15 completionHandler:v19];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(buf);
@@ -7814,21 +7814,21 @@ void __62__HMDCloudManager__removeZonesTransactions_completionHandler___block_in
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeZonesTransactions:(id)a3 completionHandler:(id)a4
+- (void)removeZonesTransactions:(id)transactions completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCloudManager *)self workQueue];
+  transactionsCopy = transactions;
+  handlerCopy = handler;
+  workQueue = [(HMDCloudManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__HMDCloudManager_removeZonesTransactions_completionHandler___block_invoke;
   block[3] = &unk_2797355D0;
-  v12 = v6;
-  v13 = v7;
+  v12 = transactionsCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = transactionsCopy;
+  v10 = handlerCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __61__HMDCloudManager_removeZonesTransactions_completionHandler___block_invoke(uint64_t a1)
@@ -7879,13 +7879,13 @@ void __61__HMDCloudManager_removeZonesTransactions_completionHandler___block_inv
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_uploadTransaction:(id)a3 completionHandler:(id)a4
+- (void)_uploadTransaction:(id)transaction completionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cloudZone];
-  if (v8)
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  cloudZone = [transactionCopy cloudZone];
+  if (cloudZone)
   {
     logger = self->_logger;
     if (os_signpost_enabled(logger))
@@ -7900,9 +7900,9 @@ void __61__HMDCloudManager_removeZonesTransactions_completionHandler___block_inv
     v16[2] = __56__HMDCloudManager__uploadTransaction_completionHandler___block_invoke_73;
     v16[3] = &unk_279725848;
     objc_copyWeak(v20, buf);
-    v19 = v7;
-    v17 = v8;
-    v18 = v6;
+    v19 = handlerCopy;
+    v17 = cloudZone;
+    v18 = transactionCopy;
     v20[1] = 0xEEEEB0B5B2B2EEEELL;
     [v18 fetchBatchToUpload:v16];
 
@@ -7913,7 +7913,7 @@ void __61__HMDCloudManager_removeZonesTransactions_completionHandler___block_inv
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -7924,15 +7924,15 @@ void __61__HMDCloudManager_removeZonesTransactions_completionHandler___block_inv
     }
 
     objc_autoreleasePoolPop(v10);
-    if (v7)
+    if (handlerCopy)
     {
-      v14 = [(HMDCloudManager *)v11 clientCallbackQueue];
+      clientCallbackQueue = [(HMDCloudManager *)selfCopy clientCallbackQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __56__HMDCloudManager__uploadTransaction_completionHandler___block_invoke;
       block[3] = &unk_2797348C0;
-      v22 = v7;
-      dispatch_async(v14, block);
+      v22 = handlerCopy;
+      dispatch_async(clientCallbackQueue, block);
     }
   }
 
@@ -8655,29 +8655,29 @@ void __56__HMDCloudManager__uploadTransaction_completionHandler___block_invoke_8
   [WeakRetained _uploadTransaction:*(a1 + 32) completionHandler:*(a1 + 40)];
 }
 
-- (void)_checkZoneAndUploadTransaction:(id)a3 completionHandler:(id)a4
+- (void)_checkZoneAndUploadTransaction:(id)transaction completionHandler:(id)handler
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cloudZone];
-  if (v8)
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  cloudZone = [transactionCopy cloudZone];
+  if (cloudZone)
   {
     objc_initWeak(location, self);
-    if ([v6 shouldDeleteZone])
+    if ([transactionCopy shouldDeleteZone])
     {
-      v9 = [v8 zone];
-      v10 = [v9 zoneID];
+      v9 = [cloudZone zone];
+      zoneID = [v9 zoneID];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __68__HMDCloudManager__checkZoneAndUploadTransaction_completionHandler___block_invoke_2;
       v26[3] = &unk_279725780;
       v11 = &v30;
       objc_copyWeak(&v30, location);
-      v27 = v8;
-      v29 = v7;
-      v28 = v6;
-      [(HMDCloudManager *)self __deleteRecordZoneWithID:v10 completionHandler:v26];
+      v27 = cloudZone;
+      v29 = handlerCopy;
+      v28 = transactionCopy;
+      [(HMDCloudManager *)self __deleteRecordZoneWithID:zoneID completionHandler:v26];
       v12 = &v27;
       v13 = &v29;
       v14 = &v28;
@@ -8685,24 +8685,24 @@ void __56__HMDCloudManager__uploadTransaction_completionHandler___block_invoke_8
 
     else
     {
-      if (![v6 shouldCreateZone])
+      if (![transactionCopy shouldCreateZone])
       {
-        [(HMDCloudManager *)self _uploadTransaction:v6 completionHandler:v7];
+        [(HMDCloudManager *)self _uploadTransaction:transactionCopy completionHandler:handlerCopy];
         goto LABEL_12;
       }
 
-      v9 = [v8 zone];
-      v10 = [v9 zoneID];
+      v9 = [cloudZone zone];
+      zoneID = [v9 zoneID];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __68__HMDCloudManager__checkZoneAndUploadTransaction_completionHandler___block_invoke_3;
       v21[3] = &unk_2797257A8;
       v11 = &v25;
       objc_copyWeak(&v25, location);
-      v22 = v8;
-      v23 = v6;
-      v24 = v7;
-      [(HMDCloudManager *)self __fetchRecordZoneWithID:v10 completionHandler:v21];
+      v22 = cloudZone;
+      v23 = transactionCopy;
+      v24 = handlerCopy;
+      [(HMDCloudManager *)self __fetchRecordZoneWithID:zoneID completionHandler:v21];
       v12 = &v22;
       v13 = &v23;
       v14 = &v24;
@@ -8715,7 +8715,7 @@ LABEL_12:
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
@@ -8726,15 +8726,15 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v15);
-  if (v7)
+  if (handlerCopy)
   {
-    v19 = [(HMDCloudManager *)v16 clientCallbackQueue];
+    clientCallbackQueue = [(HMDCloudManager *)selfCopy clientCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __68__HMDCloudManager__checkZoneAndUploadTransaction_completionHandler___block_invoke;
     block[3] = &unk_2797348C0;
-    v32 = v7;
-    dispatch_async(v19, block);
+    v32 = handlerCopy;
+    dispatch_async(clientCallbackQueue, block);
   }
 
 LABEL_13:
@@ -8900,13 +8900,13 @@ LABEL_14:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_verifyZoneHasBeenDeletedTransaction:(id)a3 completionHandler:(id)a4
+- (void)_verifyZoneHasBeenDeletedTransaction:(id)transaction completionHandler:(id)handler
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cloudZone];
-  if (v8)
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  cloudZone = [transactionCopy cloudZone];
+  if (cloudZone)
   {
     v9 = [objc_alloc(MEMORY[0x277CBC388]) initWithPreviousServerChangeToken:0];
     [v9 setFetchAllChanges:1];
@@ -8919,7 +8919,7 @@ LABEL_14:
     v28[1] = 3221225472;
     v28[2] = __74__HMDCloudManager__verifyZoneHasBeenDeletedTransaction_completionHandler___block_invoke_2;
     v28[3] = &unk_279725730;
-    v10 = v8;
+    v10 = cloudZone;
     v29 = v10;
     v30 = &v38;
     [v9 setRecordZoneWithIDWasDeletedBlock:v28];
@@ -8929,26 +8929,26 @@ LABEL_14:
     v22[3] = &unk_279725758;
     objc_copyWeak(&v27, &location);
     v23 = v10;
-    v25 = v7;
+    v25 = handlerCopy;
     v26 = &v38;
-    v24 = v6;
+    v24 = transactionCopy;
     [v9 setFetchDatabaseChangesCompletionBlock:v22];
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [v9 operationID];
+      operationID = [v9 operationID];
       *buf = 138543618;
       v35 = v14;
       v36 = 2112;
-      v37 = v15;
+      v37 = operationID;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, "%{public}@Verifying zone was deleted operation: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v11);
-    [(HMDCloudManager *)v12 __addCKDatabaseOperation:v9];
+    [(HMDCloudManager *)selfCopy __addCKDatabaseOperation:v9];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
@@ -8957,7 +8957,7 @@ LABEL_14:
   }
 
   v16 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy2 = self;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
@@ -8968,15 +8968,15 @@ LABEL_14:
   }
 
   objc_autoreleasePoolPop(v16);
-  if (v7)
+  if (handlerCopy)
   {
-    v20 = [(HMDCloudManager *)v17 clientCallbackQueue];
+    clientCallbackQueue = [(HMDCloudManager *)selfCopy2 clientCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __74__HMDCloudManager__verifyZoneHasBeenDeletedTransaction_completionHandler___block_invoke;
     block[3] = &unk_2797348C0;
-    v33 = v7;
-    dispatch_async(v20, block);
+    v33 = handlerCopy;
+    dispatch_async(clientCallbackQueue, block);
 
     v9 = v33;
 LABEL_9:
@@ -9107,24 +9107,24 @@ LABEL_16:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createZoneAndUploadTransaction:(id)a3 completionHandler:(id)a4
+- (void)_createZoneAndUploadTransaction:(id)transaction completionHandler:(id)handler
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cloudZone];
-  if (v8)
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  cloudZone = [transactionCopy cloudZone];
+  if (cloudZone)
   {
     objc_initWeak(location, self);
-    v9 = [v8 zone];
+    v9 = [cloudZone zone];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __69__HMDCloudManager__createZoneAndUploadTransaction_completionHandler___block_invoke_2;
     v16[3] = &unk_2797257A8;
     objc_copyWeak(&v20, location);
-    v17 = v8;
-    v19 = v7;
-    v18 = v6;
+    v17 = cloudZone;
+    v19 = handlerCopy;
+    v18 = transactionCopy;
     [(HMDCloudManager *)self __saveRecordZone:v9 completionHandler:v16];
 
     objc_destroyWeak(&v20);
@@ -9134,7 +9134,7 @@ LABEL_16:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -9145,15 +9145,15 @@ LABEL_16:
     }
 
     objc_autoreleasePoolPop(v10);
-    if (v7)
+    if (handlerCopy)
     {
-      v14 = [(HMDCloudManager *)v11 clientCallbackQueue];
+      clientCallbackQueue = [(HMDCloudManager *)selfCopy clientCallbackQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __69__HMDCloudManager__createZoneAndUploadTransaction_completionHandler___block_invoke;
       block[3] = &unk_2797348C0;
-      v22 = v7;
-      dispatch_async(v14, block);
+      v22 = handlerCopy;
+      dispatch_async(clientCallbackQueue, block);
     }
   }
 
@@ -9220,22 +9220,22 @@ void __69__HMDCloudManager__createZoneAndUploadTransaction_completionHandler___b
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)uploadTransaction:(id)a3 completionHandler:(id)a4
+- (void)uploadTransaction:(id)transaction completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v8 = [(HMDCloudManager *)self workQueue];
+  workQueue = [(HMDCloudManager *)self workQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__HMDCloudManager_uploadTransaction_completionHandler___block_invoke;
   v11[3] = &unk_279730E50;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, v11);
+  v12 = transactionCopy;
+  v13 = handlerCopy;
+  v9 = transactionCopy;
+  v10 = handlerCopy;
+  dispatch_async(workQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -9314,18 +9314,18 @@ void __55__HMDCloudManager_uploadTransaction_completionHandler___block_invoke_2(
   }
 }
 
-- (void)_fetchTransaction:(id)a3 completionHandler:(id)a4
+- (void)_fetchTransaction:(id)transaction completionHandler:(id)handler
 {
   v80[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v47 = a4;
-  v49 = v6;
-  v7 = [v6 cloudZone];
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  v49 = transactionCopy;
+  cloudZone = [transactionCopy cloudZone];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   v11 = v10;
-  if (v7)
+  if (cloudZone)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -9333,23 +9333,23 @@ void __55__HMDCloudManager_uploadTransaction_completionHandler___block_invoke_2(
       *buf = 138543618;
       *&buf[4] = v12;
       *&buf[12] = 2112;
-      *&buf[14] = v7;
+      *&buf[14] = cloudZone;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Fetching changes from zone %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
     v48 = objc_alloc_init(MEMORY[0x277CBC3A0]);
-    v13 = [v7 serverChangeToken];
-    [v48 setPreviousServerChangeToken:v13];
+    serverChangeToken = [cloudZone serverChangeToken];
+    [v48 setPreviousServerChangeToken:serverChangeToken];
 
     v14 = objc_autoreleasePoolPush();
-    v15 = v9;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = HMFGetLogIdentifier();
-      v18 = [v48 previousServerChangeToken];
-      v19 = [v18 debugDescription];
+      previousServerChangeToken = [v48 previousServerChangeToken];
+      v19 = [previousServerChangeToken debugDescription];
       *buf = 138543618;
       *&buf[4] = v17;
       *&buf[12] = 2112;
@@ -9358,7 +9358,7 @@ void __55__HMDCloudManager_uploadTransaction_completionHandler___block_invoke_2(
     }
 
     objc_autoreleasePoolPop(v14);
-    if (([v6 zoneHasNoLocalData] & 1) != 0 || objc_msgSend(v6, "isHomeManagerTransaction") && (objc_msgSend(v6, "doRecordsExistInCache") & 1) == 0)
+    if (([transactionCopy zoneHasNoLocalData] & 1) != 0 || objc_msgSend(transactionCopy, "isHomeManagerTransaction") && (objc_msgSend(transactionCopy, "doRecordsExistInCache") & 1) == 0)
     {
       [v48 setFetchNewestChangesFirst:1];
       v20 = 1;
@@ -9377,13 +9377,13 @@ void __55__HMDCloudManager_uploadTransaction_completionHandler___block_invoke_2(
     }
 
     v24 = objc_alloc(MEMORY[0x277CBC3B8]);
-    v25 = [v7 zone];
-    v26 = [v25 zoneID];
-    v80[0] = v26;
+    v25 = [cloudZone zone];
+    zoneID = [v25 zoneID];
+    v80[0] = zoneID;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v80 count:1];
-    v28 = [v7 zone];
-    v29 = [v28 zoneID];
-    v78 = v29;
+    v28 = [cloudZone zone];
+    zoneID2 = [v28 zoneID];
+    v78 = zoneID2;
     v79 = v48;
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v79 forKeys:&v78 count:1];
     v31 = [v24 initWithRecordZoneIDs:v27 configurationsByRecordZoneID:v30];
@@ -9438,7 +9438,7 @@ void __55__HMDCloudManager_uploadTransaction_completionHandler___block_invoke_2(
     aBlock[2] = __55__HMDCloudManager__fetchTransaction_completionHandler___block_invoke_54;
     aBlock[3] = &unk_2797256E0;
     objc_copyWeak(&v62, &location);
-    v37 = v47;
+    v37 = handlerCopy;
     v61 = v37;
     v38 = v32;
     v60 = v38;
@@ -9468,11 +9468,11 @@ void __55__HMDCloudManager_uploadTransaction_completionHandler___block_invoke_2(
     if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
     {
       v44 = HMFGetLogIdentifier();
-      v45 = [v31 operationID];
+      operationID = [v31 operationID];
       *v72 = 138543618;
       v73 = v44;
       v74 = 2112;
-      v75 = v45;
+      v75 = operationID;
       _os_log_impl(&dword_2531F8000, v43, OS_LOG_TYPE_INFO, "%{public}@Fetching record changes operation with ID: %@", v72, 0x16u);
     }
 
@@ -9500,15 +9500,15 @@ void __55__HMDCloudManager_uploadTransaction_completionHandler___block_invoke_2(
     }
 
     objc_autoreleasePoolPop(v8);
-    if (v47)
+    if (handlerCopy)
     {
-      v22 = [(HMDCloudManager *)v9 clientCallbackQueue];
+      clientCallbackQueue = [(HMDCloudManager *)selfCopy clientCallbackQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __55__HMDCloudManager__fetchTransaction_completionHandler___block_invoke;
       block[3] = &unk_2797348C0;
-      v71 = v47;
-      dispatch_async(v22, block);
+      v71 = handlerCopy;
+      dispatch_async(clientCallbackQueue, block);
     }
   }
 
@@ -9864,21 +9864,21 @@ LABEL_14:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchTransaction:(id)a3 completionHandler:(id)a4
+- (void)fetchTransaction:(id)transaction completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCloudManager *)self workQueue];
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  workQueue = [(HMDCloudManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__HMDCloudManager_fetchTransaction_completionHandler___block_invoke;
   block[3] = &unk_2797355D0;
-  v12 = v6;
-  v13 = v7;
+  v12 = transactionCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = transactionCopy;
+  v10 = handlerCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __54__HMDCloudManager_fetchTransaction_completionHandler___block_invoke(uint64_t a1)
@@ -9929,12 +9929,12 @@ void __54__HMDCloudManager_fetchTransaction_completionHandler___block_invoke_44(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_removeHomeZoneName:(id)a3
+- (void)_removeHomeZoneName:(id)name
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -9942,33 +9942,33 @@ void __54__HMDCloudManager_fetchTransaction_completionHandler___block_invoke_44(
     v11 = 138543618;
     v12 = v8;
     v13 = 2112;
-    v14 = v4;
+    v14 = nameCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Removing zone %@", &v11, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  if (v4)
+  if (nameCopy)
   {
-    v9 = [(HMDCloudManager *)v6 cloudCache];
-    [v9 deleteHomeZoneWithName:v4];
+    cloudCache = [(HMDCloudManager *)selfCopy cloudCache];
+    [cloudCache deleteHomeZoneWithName:nameCopy];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeHomeZoneName:(id)a3
+- (void)removeHomeZoneName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   objc_initWeak(&location, self);
-  v5 = [(HMDCloudManager *)self workQueue];
+  workQueue = [(HMDCloudManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__HMDCloudManager_removeHomeZoneName___block_invoke;
   block[3] = &unk_279732E78;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = nameCopy;
+  v6 = nameCopy;
+  dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -9980,13 +9980,13 @@ void __38__HMDCloudManager_removeHomeZoneName___block_invoke(uint64_t a1)
   [WeakRetained _removeHomeZoneName:*(a1 + 32)];
 }
 
-- (void)_addHomeZoneName:(id)a3 owner:(id)a4
+- (void)_addHomeZoneName:(id)name owner:(id)owner
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  ownerCopy = owner;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -9994,21 +9994,21 @@ void __38__HMDCloudManager_removeHomeZoneName___block_invoke(uint64_t a1)
     *buf = 138543618;
     v17 = v11;
     v18 = 2112;
-    v19 = v6;
+    v19 = nameCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Adding home cloud zone %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  if (v6)
+  if (nameCopy)
   {
-    v12 = [(HMDCloudManager *)v9 cloudCache];
+    cloudCache = [(HMDCloudManager *)selfCopy cloudCache];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __42__HMDCloudManager__addHomeZoneName_owner___block_invoke;
     v14[3] = &unk_279725668;
-    v14[4] = v9;
-    v15 = v6;
-    [v12 homeZoneWithName:v15 owner:v7 completion:v14];
+    v14[4] = selfCopy;
+    v15 = nameCopy;
+    [cloudCache homeZoneWithName:v15 owner:ownerCopy completion:v14];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -10022,22 +10022,22 @@ void __42__HMDCloudManager__addHomeZoneName_owner___block_invoke(uint64_t a1, ui
   [v3 fetchHomeFromCloudZone:v4 cloudConflict:0 withDelay:0.0];
 }
 
-- (void)addHomeZoneName:(id)a3 owner:(id)a4
+- (void)addHomeZoneName:(id)name owner:(id)owner
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  ownerCopy = owner;
   objc_initWeak(&location, self);
-  v8 = [(HMDCloudManager *)self workQueue];
+  workQueue = [(HMDCloudManager *)self workQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __41__HMDCloudManager_addHomeZoneName_owner___block_invoke;
   v11[3] = &unk_279732670;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = nameCopy;
+  v13 = ownerCopy;
+  v9 = ownerCopy;
+  v10 = nameCopy;
+  dispatch_async(workQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -10051,62 +10051,62 @@ void __41__HMDCloudManager_addHomeZoneName_owner___block_invoke(uint64_t a1)
 
 - (HMDCloudHomeManagerZone)homeManagerZone
 {
-  v2 = [(HMDCloudManager *)self cloudCache];
-  v3 = [v2 homeManagerZone];
+  cloudCache = [(HMDCloudManager *)self cloudCache];
+  homeManagerZone = [cloudCache homeManagerZone];
 
-  return v3;
+  return homeManagerZone;
 }
 
 - (HMDCloudMetadataZone)metadataZone
 {
-  v2 = [(HMDCloudManager *)self cloudCache];
-  v3 = [v2 metadataZone];
+  cloudCache = [(HMDCloudManager *)self cloudCache];
+  metadataZone = [cloudCache metadataZone];
 
-  return v3;
+  return metadataZone;
 }
 
 - (BOOL)legacyZoneHasRecordsAvailable
 {
-  v2 = [(HMDCloudManager *)self cloudCache];
-  v3 = [v2 legacyZone];
-  v4 = [v3 hasRecordsAvailable];
+  cloudCache = [(HMDCloudManager *)self cloudCache];
+  legacyZone = [cloudCache legacyZone];
+  hasRecordsAvailable = [legacyZone hasRecordsAvailable];
 
-  return v4;
+  return hasRecordsAvailable;
 }
 
 - (HMDCloudLegacyZone)legacyZone
 {
-  v2 = [(HMDCloudManager *)self cloudCache];
-  v3 = [v2 legacyZone];
+  cloudCache = [(HMDCloudManager *)self cloudCache];
+  legacyZone = [cloudCache legacyZone];
 
-  return v3;
+  return legacyZone;
 }
 
-- (void)__deleteRecordWithID:(id)a3 completionHandler:(id)a4
+- (void)__deleteRecordWithID:(id)d completionHandler:(id)handler
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dCopy = d;
+  handlerCopy = handler;
+  if (dCopy)
   {
     v8 = objc_alloc(MEMORY[0x277CBC4A0]);
-    v34[0] = v6;
+    v34[0] = dCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
     v10 = [v8 initWithRecordsToSave:0 recordIDsToDelete:v9];
 
-    v11 = [v10 operationID];
+    operationID = [v10 operationID];
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __58__HMDCloudManager___deleteRecordWithID_completionHandler___block_invoke;
     v25 = &unk_279725618;
-    v26 = self;
-    v12 = v11;
+    selfCopy = self;
+    v12 = operationID;
     v27 = v12;
-    v28 = v6;
-    v29 = v7;
+    v28 = dCopy;
+    v29 = handlerCopy;
     [v10 setModifyRecordsCompletionBlock:&v22];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -10119,13 +10119,13 @@ void __41__HMDCloudManager_addHomeZoneName_owner___block_invoke(uint64_t a1)
     }
 
     objc_autoreleasePoolPop(v13);
-    [(HMDCloudManager *)v14 __addCKDatabaseOperation:v10, v22, v23, v24, v25, v26];
+    [(HMDCloudManager *)selfCopy2 __addCKDatabaseOperation:v10, v22, v23, v24, v25, selfCopy];
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy3 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -10136,9 +10136,9 @@ void __41__HMDCloudManager_addHomeZoneName_owner___block_invoke(uint64_t a1)
     }
 
     objc_autoreleasePoolPop(v17);
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
@@ -10179,26 +10179,26 @@ void __58__HMDCloudManager___deleteRecordWithID_completionHandler___block_invoke
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__deleteRecordZonesWithIDs:(id)a3 completionHandler:(id)a4
+- (void)__deleteRecordZonesWithIDs:(id)ds completionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  dsCopy = ds;
+  handlerCopy = handler;
+  if ([dsCopy count])
   {
-    v8 = [objc_alloc(MEMORY[0x277CBC490]) initWithRecordZonesToSave:0 recordZoneIDsToDelete:v6];
-    v9 = [v8 operationID];
+    v8 = [objc_alloc(MEMORY[0x277CBC490]) initWithRecordZonesToSave:0 recordZoneIDsToDelete:dsCopy];
+    operationID = [v8 operationID];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __64__HMDCloudManager___deleteRecordZonesWithIDs_completionHandler___block_invoke;
     v20[3] = &unk_279725640;
     v20[4] = self;
-    v10 = v9;
+    v10 = operationID;
     v21 = v10;
-    v22 = v7;
+    v22 = handlerCopy;
     [v8 setModifyRecordZonesCompletionBlock:v20];
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -10211,13 +10211,13 @@ void __58__HMDCloudManager___deleteRecordWithID_completionHandler___block_invoke
     }
 
     objc_autoreleasePoolPop(v11);
-    [(HMDCloudManager *)v12 __addCKDatabaseOperation:v8];
+    [(HMDCloudManager *)selfCopy __addCKDatabaseOperation:v8];
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -10228,9 +10228,9 @@ void __58__HMDCloudManager___deleteRecordWithID_completionHandler___block_invoke
     }
 
     objc_autoreleasePoolPop(v15);
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
@@ -10269,28 +10269,28 @@ void __64__HMDCloudManager___deleteRecordZonesWithIDs_completionHandler___block_
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__deleteRecordZoneWithID:(id)a3 completionHandler:(id)a4
+- (void)__deleteRecordZoneWithID:(id)d completionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dCopy = d;
+  handlerCopy = handler;
+  if (dCopy)
   {
-    v17 = v6;
+    v17 = dCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __62__HMDCloudManager___deleteRecordZoneWithID_completionHandler___block_invoke;
     v14[3] = &unk_279734A00;
-    v15 = v6;
-    v16 = v7;
+    v15 = dCopy;
+    v16 = handlerCopy;
     [(HMDCloudManager *)self __deleteRecordZonesWithIDs:v8 completionHandler:v14];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -10301,9 +10301,9 @@ void __64__HMDCloudManager___deleteRecordZonesWithIDs_completionHandler___block_
     }
 
     objc_autoreleasePoolPop(v9);
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
@@ -10322,31 +10322,31 @@ void __62__HMDCloudManager___deleteRecordZoneWithID_completionHandler___block_in
   }
 }
 
-- (void)__saveRecordZone:(id)a3 completionHandler:(id)a4
+- (void)__saveRecordZone:(id)zone completionHandler:(id)handler
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  zoneCopy = zone;
+  handlerCopy = handler;
+  if (zoneCopy)
   {
     v8 = objc_alloc(MEMORY[0x277CBC490]);
-    v34[0] = v6;
+    v34[0] = zoneCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
     v10 = [v8 initWithRecordZonesToSave:v9 recordZoneIDsToDelete:0];
 
-    v11 = [v10 operationID];
+    operationID = [v10 operationID];
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __54__HMDCloudManager___saveRecordZone_completionHandler___block_invoke;
     v25 = &unk_279725618;
-    v26 = self;
-    v12 = v11;
+    selfCopy = self;
+    v12 = operationID;
     v27 = v12;
-    v28 = v6;
-    v29 = v7;
+    v28 = zoneCopy;
+    v29 = handlerCopy;
     [v10 setModifyRecordZonesCompletionBlock:&v22];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -10359,13 +10359,13 @@ void __62__HMDCloudManager___deleteRecordZoneWithID_completionHandler___block_in
     }
 
     objc_autoreleasePoolPop(v13);
-    [(HMDCloudManager *)v14 __addCKDatabaseOperation:v10, v22, v23, v24, v25, v26];
+    [(HMDCloudManager *)selfCopy2 __addCKDatabaseOperation:v10, v22, v23, v24, v25, selfCopy];
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy3 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -10376,9 +10376,9 @@ void __62__HMDCloudManager___deleteRecordZoneWithID_completionHandler___block_in
     }
 
     objc_autoreleasePoolPop(v17);
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
@@ -10421,31 +10421,31 @@ void __54__HMDCloudManager___saveRecordZone_completionHandler___block_invoke(uin
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__fetchRecordZoneWithID:(id)a3 completionHandler:(id)a4
+- (void)__fetchRecordZoneWithID:(id)d completionHandler:(id)handler
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dCopy = d;
+  handlerCopy = handler;
+  if (dCopy)
   {
     v8 = objc_alloc(MEMORY[0x277CBC3D0]);
-    v34[0] = v6;
+    v34[0] = dCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
     v10 = [v8 initWithRecordZoneIDs:v9];
 
-    v11 = [v10 operationID];
+    operationID = [v10 operationID];
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __61__HMDCloudManager___fetchRecordZoneWithID_completionHandler___block_invoke;
     v25 = &unk_2797255F0;
-    v26 = self;
-    v12 = v11;
+    selfCopy = self;
+    v12 = operationID;
     v27 = v12;
-    v28 = v6;
-    v29 = v7;
+    v28 = dCopy;
+    v29 = handlerCopy;
     [v10 setFetchRecordZonesCompletionBlock:&v22];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -10458,13 +10458,13 @@ void __54__HMDCloudManager___saveRecordZone_completionHandler___block_invoke(uin
     }
 
     objc_autoreleasePoolPop(v13);
-    [(HMDCloudManager *)v14 __addCKDatabaseOperation:v10, v22, v23, v24, v25, v26];
+    [(HMDCloudManager *)selfCopy2 __addCKDatabaseOperation:v10, v22, v23, v24, v25, selfCopy];
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy3 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -10475,9 +10475,9 @@ void __54__HMDCloudManager___saveRecordZone_completionHandler___block_invoke(uin
     }
 
     objc_autoreleasePoolPop(v17);
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
@@ -10517,24 +10517,24 @@ void __61__HMDCloudManager___fetchRecordZoneWithID_completionHandler___block_inv
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__fetchAllRecordZonesWithCompletionHandler:(id)a3
+- (void)__fetchAllRecordZonesWithCompletionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBC3D0] fetchAllRecordZonesOperation];
-  v6 = [v5 operationID];
+  handlerCopy = handler;
+  fetchAllRecordZonesOperation = [MEMORY[0x277CBC3D0] fetchAllRecordZonesOperation];
+  operationID = [fetchAllRecordZonesOperation operationID];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __62__HMDCloudManager___fetchAllRecordZonesWithCompletionHandler___block_invoke;
   v14[3] = &unk_2797274F8;
   v14[4] = self;
-  v7 = v6;
+  v7 = operationID;
   v15 = v7;
-  v8 = v4;
+  v8 = handlerCopy;
   v16 = v8;
-  [v5 setFetchRecordZonesCompletionBlock:v14];
+  [fetchAllRecordZonesOperation setFetchRecordZonesCompletionBlock:v14];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -10547,7 +10547,7 @@ void __61__HMDCloudManager___fetchRecordZoneWithID_completionHandler___block_inv
   }
 
   objc_autoreleasePoolPop(v9);
-  [(HMDCloudManager *)v10 __addCKDatabaseOperation:v5];
+  [(HMDCloudManager *)selfCopy __addCKDatabaseOperation:fetchAllRecordZonesOperation];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -10584,31 +10584,31 @@ void __62__HMDCloudManager___fetchAllRecordZonesWithCompletionHandler___block_in
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__saveSubscription:(id)a3 completionHandler:(id)a4
+- (void)__saveSubscription:(id)subscription completionHandler:(id)handler
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  subscriptionCopy = subscription;
+  handlerCopy = handler;
+  if (subscriptionCopy)
   {
     v8 = objc_alloc(MEMORY[0x277CBC4B0]);
-    v34[0] = v6;
+    v34[0] = subscriptionCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
     v10 = [v8 initWithSubscriptionsToSave:v9 subscriptionIDsToDelete:0];
 
-    v11 = [v10 operationID];
+    operationID = [v10 operationID];
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __56__HMDCloudManager___saveSubscription_completionHandler___block_invoke;
     v25 = &unk_279725618;
-    v26 = self;
-    v12 = v11;
+    selfCopy = self;
+    v12 = operationID;
     v27 = v12;
-    v28 = v6;
-    v29 = v7;
+    v28 = subscriptionCopy;
+    v29 = handlerCopy;
     [v10 setModifySubscriptionsCompletionBlock:&v22];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -10621,13 +10621,13 @@ void __62__HMDCloudManager___fetchAllRecordZonesWithCompletionHandler___block_in
     }
 
     objc_autoreleasePoolPop(v13);
-    [(HMDCloudManager *)v14 __addCKDatabaseOperation:v10, v22, v23, v24, v25, v26];
+    [(HMDCloudManager *)selfCopy2 __addCKDatabaseOperation:v10, v22, v23, v24, v25, selfCopy];
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy3 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -10638,9 +10638,9 @@ void __62__HMDCloudManager___fetchAllRecordZonesWithCompletionHandler___block_in
     }
 
     objc_autoreleasePoolPop(v17);
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
@@ -10765,31 +10765,31 @@ LABEL_19:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__fetchSubscriptionWithID:(id)a3 completionHandler:(id)a4
+- (void)__fetchSubscriptionWithID:(id)d completionHandler:(id)handler
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dCopy = d;
+  handlerCopy = handler;
+  if (dCopy)
   {
     v8 = objc_alloc(MEMORY[0x277CBC418]);
-    v34[0] = v6;
+    v34[0] = dCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
     v10 = [v8 initWithSubscriptionIDs:v9];
 
-    v11 = [v10 operationID];
+    operationID = [v10 operationID];
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __63__HMDCloudManager___fetchSubscriptionWithID_completionHandler___block_invoke;
     v25 = &unk_2797255F0;
-    v26 = self;
-    v12 = v11;
+    selfCopy = self;
+    v12 = operationID;
     v27 = v12;
-    v28 = v6;
-    v29 = v7;
+    v28 = dCopy;
+    v29 = handlerCopy;
     [v10 setFetchSubscriptionCompletionBlock:&v22];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -10802,13 +10802,13 @@ LABEL_19:
     }
 
     objc_autoreleasePoolPop(v13);
-    [(HMDCloudManager *)v14 __addCKDatabaseOperation:v10, v22, v23, v24, v25, v26];
+    [(HMDCloudManager *)selfCopy2 __addCKDatabaseOperation:v10, v22, v23, v24, v25, selfCopy];
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy3 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -10819,9 +10819,9 @@ LABEL_19:
     }
 
     objc_autoreleasePoolPop(v17);
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
@@ -10870,24 +10870,24 @@ void __63__HMDCloudManager___fetchSubscriptionWithID_completionHandler___block_i
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__addCKDatabaseOperation:(id)a3
+- (void)__addCKDatabaseOperation:(id)operation
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  operationCopy = operation;
+  v5 = operationCopy;
+  if (operationCopy)
   {
-    v6 = [v4 configuration];
-    [v6 setQualityOfService:17];
+    configuration = [operationCopy configuration];
+    [configuration setQualityOfService:17];
 
-    v7 = [(HMDCloudManager *)self database];
-    [v7 addOperation:v5];
+    database = [(HMDCloudManager *)self database];
+    [database addOperation:v5];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -10905,27 +10905,27 @@ void __63__HMDCloudManager___fetchSubscriptionWithID_completionHandler___block_i
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HMDCloudManager;
   [(HMDCloudManager *)&v4 dealloc];
 }
 
-- (HMDCloudManager)initWithMessageDispatcher:(id)a3 cloudDataSyncStateFilter:(id)a4 cloudCache:(id)a5 delegate:(id)a6 dataSource:(id)a7 syncManager:(id)a8 callbackQueue:(id)a9 container:(id)a10 logEventSubmitter:(id)a11 workQueue:(id)a12
+- (HMDCloudManager)initWithMessageDispatcher:(id)dispatcher cloudDataSyncStateFilter:(id)filter cloudCache:(id)cache delegate:(id)delegate dataSource:(id)source syncManager:(id)manager callbackQueue:(id)queue container:(id)self0 logEventSubmitter:(id)self1 workQueue:(id)self2
 {
   v54 = *MEMORY[0x277D85DE8];
-  v48 = a3;
-  v47 = a4;
-  v46 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v45 = a9;
-  v44 = a10;
-  v43 = a11;
-  v42 = a12;
+  dispatcherCopy = dispatcher;
+  filterCopy = filter;
+  cacheCopy = cache;
+  delegateCopy = delegate;
+  sourceCopy = source;
+  managerCopy = manager;
+  queueCopy = queue;
+  containerCopy = container;
+  submitterCopy = submitter;
+  workQueueCopy = workQueue;
   v49.receiver = self;
   v49.super_class = HMDCloudManager;
   v21 = [(HMDCloudManager *)&v49 init];
@@ -10935,20 +10935,20 @@ void __63__HMDCloudManager___fetchSubscriptionWithID_completionHandler___block_i
     logger = v21->_logger;
     v21->_logger = v22;
 
-    objc_storeStrong(&v21->_workQueue, a12);
-    objc_storeStrong(&v21->_container, a10);
-    v24 = [(CKContainer *)v21->_container privateCloudDatabase];
+    objc_storeStrong(&v21->_workQueue, workQueue);
+    objc_storeStrong(&v21->_container, container);
+    privateCloudDatabase = [(CKContainer *)v21->_container privateCloudDatabase];
     database = v21->_database;
-    v21->_database = v24;
+    v21->_database = privateCloudDatabase;
 
-    objc_storeStrong(&v21->_cloudCache, a5);
+    objc_storeStrong(&v21->_cloudCache, cache);
     v21->_cloudHomeDataRecordExists = 0;
-    objc_storeStrong(&v21->_clientCallbackQueue, a9);
-    objc_storeStrong(&v21->_msgDispatcher, a3);
-    v26 = v18;
-    objc_storeWeak(&v21->_delegate, v18);
-    objc_storeWeak(&v21->_dataSource, v19);
-    objc_storeWeak(&v21->_syncManager, v20);
+    objc_storeStrong(&v21->_clientCallbackQueue, queue);
+    objc_storeStrong(&v21->_msgDispatcher, dispatcher);
+    v26 = delegateCopy;
+    objc_storeWeak(&v21->_delegate, delegateCopy);
+    objc_storeWeak(&v21->_dataSource, sourceCopy);
+    objc_storeWeak(&v21->_syncManager, managerCopy);
     retryTimer = v21->_retryTimer;
     v21->_retryTimer = 0;
 
@@ -10964,16 +10964,16 @@ void __63__HMDCloudManager___fetchSubscriptionWithID_completionHandler___block_i
     cloudMetadataDeletedNotificationHandler = v21->_cloudMetadataDeletedNotificationHandler;
     v21->_cloudMetadataDeletedNotificationHandler = 0;
 
-    v21->_keychainSyncEnabled = [v19 isKeychainSyncEnabled];
+    v21->_keychainSyncEnabled = [sourceCopy isKeychainSyncEnabled];
     v21->_firstV3FetchRun = 0;
     v21->_firstDBQueryRun = 0;
-    objc_storeStrong(&v21->_cloudDataSyncStateFilter, a4);
-    objc_storeStrong(&v21->_logEventSubmitter, a11);
-    v32 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v32 addObserver:v21 selector:sel_resetCloudServerTokenData_ name:@"kCloudServerTokenDataResetNotification" object:0];
+    objc_storeStrong(&v21->_cloudDataSyncStateFilter, filter);
+    objc_storeStrong(&v21->_logEventSubmitter, submitter);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v21 selector:sel_resetCloudServerTokenData_ name:@"kCloudServerTokenDataResetNotification" object:0];
 
-    v33 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v33 addObserver:v21 selector:sel_handleKeychainStateChangedNotification_ name:@"HMDAppleAccountSettingsKeychainSyncStateUpdatedNotificationKey" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v21 selector:sel_handleKeychainStateChangedNotification_ name:@"HMDAppleAccountSettingsKeychainSyncStateUpdatedNotificationKey" object:0];
 
     [(HMDCloudManager *)v21 _registerForProxSetupNotifications];
     v34 = objc_autoreleasePoolPush();
@@ -10982,44 +10982,44 @@ void __63__HMDCloudManager___fetchSubscriptionWithID_completionHandler___block_i
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
     {
       v37 = HMFGetLogIdentifier();
-      v38 = [(CKContainer *)v21->_container containerIdentifier];
+      containerIdentifier = [(CKContainer *)v21->_container containerIdentifier];
       *buf = 138543618;
       v51 = v37;
       v52 = 2112;
-      v53 = v38;
+      v53 = containerIdentifier;
       _os_log_impl(&dword_2531F8000, v36, OS_LOG_TYPE_INFO, "%{public}@Using %@ as container identifier", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v34);
-    v18 = v26;
+    delegateCopy = v26;
   }
 
   v39 = *MEMORY[0x277D85DE8];
   return v21;
 }
 
-- (HMDCloudManager)initWithMessageDispatcher:(id)a3 cloudDataSyncStateFilter:(id)a4 cloudCache:(id)a5 delegate:(id)a6 dataSource:(id)a7 syncManager:(id)a8 logEventSubmitter:(id)a9 callbackQueue:(id)a10
+- (HMDCloudManager)initWithMessageDispatcher:(id)dispatcher cloudDataSyncStateFilter:(id)filter cloudCache:(id)cache delegate:(id)delegate dataSource:(id)source syncManager:(id)manager logEventSubmitter:(id)submitter callbackQueue:(id)self0
 {
   v41 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v35 = a4;
-  v16 = a5;
-  v17 = a6;
-  v34 = a7;
-  v33 = a8;
-  v32 = a9;
-  v18 = a10;
+  dispatcherCopy = dispatcher;
+  filterCopy = filter;
+  cacheCopy = cache;
+  delegateCopy = delegate;
+  sourceCopy = source;
+  managerCopy = manager;
+  submitterCopy = submitter;
+  queueCopy = queue;
   v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v20 = dispatch_queue_create("com.apple.hmd.cksync", v19);
 
   v21 = [objc_alloc(MEMORY[0x277CBC220]) initWithContainerIdentifier:@"com.apple.willow.config" environment:cloudKitContainerEnvironment];
   v22 = objc_autoreleasePoolPush();
-  v23 = self;
+  selfCopy = self;
   v24 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
   {
     HMFGetLogIdentifier();
-    v26 = v25 = v17;
+    v26 = v25 = delegateCopy;
     v27 = CKContainerEnvironmentString();
     *buf = 138543618;
     v38 = v26;
@@ -11027,12 +11027,12 @@ void __63__HMDCloudManager___fetchSubscriptionWithID_completionHandler___block_i
     v40 = v27;
     _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_INFO, "%{public}@Creating CloudKit container in '%@' environment", buf, 0x16u);
 
-    v17 = v25;
+    delegateCopy = v25;
   }
 
   objc_autoreleasePoolPop(v22);
   v28 = [objc_alloc(MEMORY[0x277CBC218]) initWithContainerID:v21];
-  v31 = [(HMDCloudManager *)v23 initWithMessageDispatcher:v36 cloudDataSyncStateFilter:v35 cloudCache:v16 delegate:v17 dataSource:v34 syncManager:v33 callbackQueue:v18 container:v28 logEventSubmitter:v32 workQueue:v20];
+  v31 = [(HMDCloudManager *)selfCopy initWithMessageDispatcher:dispatcherCopy cloudDataSyncStateFilter:filterCopy cloudCache:cacheCopy delegate:delegateCopy dataSource:sourceCopy syncManager:managerCopy callbackQueue:queueCopy container:v28 logEventSubmitter:submitterCopy workQueue:v20];
 
   v29 = *MEMORY[0x277D85DE8];
   return v31;

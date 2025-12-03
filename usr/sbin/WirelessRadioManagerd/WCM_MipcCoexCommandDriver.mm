@@ -1,14 +1,14 @@
 @interface WCM_MipcCoexCommandDriver
 - (WCM_MipcCoexCommandDriver)init;
-- (id)createMessageWithMsgId:(unint64_t)a3 withArgs:(id)a4 withSubId:(id)a5;
+- (id)createMessageWithMsgId:(unint64_t)id withArgs:(id)args withSubId:(id)subId;
 - (void)clientError;
 - (void)clientStarted;
 - (void)clientStopped;
 - (void)connectBaseband;
-- (void)handleCoexManagerEvent:(id)a3;
-- (void)handleEvent:(id)a3;
-- (void)sendMessage:(unint64_t)a3 withArgs:(id)a4 withSubId:(unint64_t)a5;
-- (void)setCellularController:(id)a3;
+- (void)handleCoexManagerEvent:(id)event;
+- (void)handleEvent:(id)event;
+- (void)sendMessage:(unint64_t)message withArgs:(id)args withSubId:(unint64_t)id;
+- (void)setCellularController:(id)controller;
 - (void)updateBasebandPowerState;
 @end
 
@@ -41,12 +41,12 @@
   return v2;
 }
 
-- (void)setCellularController:(id)a3
+- (void)setCellularController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [WCM_Logging logLevel:3 message:@"YYDebug_ MipcCoexCommandDriver:  Set cellular controller\n"];
   mCellularController = self->mCellularController;
-  self->mCellularController = v4;
+  self->mCellularController = controllerCopy;
 }
 
 - (void)clientStarted
@@ -81,16 +81,16 @@
   [(WCM_MipcCoexCommandDriver *)self sendMessage:388 withArgs:v3 withSubId:0];
 }
 
-- (id)createMessageWithMsgId:(unint64_t)a3 withArgs:(id)a4 withSubId:(id)a5
+- (id)createMessageWithMsgId:(unint64_t)id withArgs:(id)args withSubId:(id)subId
 {
-  v7 = a4;
-  v8 = a5;
+  argsCopy = args;
+  subIdCopy = subId;
   *keys = *off_10023D9A0;
   v16 = "kSubId";
-  values[0] = xpc_uint64_create(a3);
-  v9 = v7;
+  values[0] = xpc_uint64_create(id);
+  v9 = argsCopy;
   values[1] = v9;
-  v10 = v8;
+  v10 = subIdCopy;
   values[2] = v10;
   v11 = xpc_dictionary_create(keys, values, 3uLL);
   for (i = 2; i != -1; --i)
@@ -100,13 +100,13 @@
   return v11;
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  v4 = a3;
-  [WCM_Logging logLevel:2 message:@"YYDebug_ Coex MIPC Driver: Receiving XPC Event : %@", v4];
+  eventCopy = event;
+  [WCM_Logging logLevel:2 message:@"YYDebug_ Coex MIPC Driver: Receiving XPC Event : %@", eventCopy];
   if (self->driverStarted)
   {
-    v5 = xpc_copy(v4);
+    v5 = xpc_copy(eventCopy);
     mQueue = self->mQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -124,9 +124,9 @@
   }
 }
 
-- (void)handleCoexManagerEvent:(id)a3
+- (void)handleCoexManagerEvent:(id)event
 {
-  xdict = a3;
+  xdict = event;
   v4 = [WCM_Logging stringFromXPCObjectWithPrefix:"stringFromXPCObjectWithPrefix:prefix:" prefix:?];
   [WCM_Logging logLevel:2 message:@"YYDebug_ Coex MIPC Driver: handleCoexManagerEvent Handling XPC Event : %@", v4];
   uint64 = xpc_dictionary_get_uint64(xdict, "kMessageId");
@@ -189,14 +189,14 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)sendMessage:(unint64_t)a3 withArgs:(id)a4 withSubId:(unint64_t)a5
+- (void)sendMessage:(unint64_t)message withArgs:(id)args withSubId:(unint64_t)id
 {
-  v8 = a4;
-  v9 = xpc_uint64_create(a5);
+  argsCopy = args;
+  v9 = xpc_uint64_create(id);
   *keys = *off_10023D9A0;
   v17 = "kSubId";
-  values[0] = xpc_uint64_create(a3);
-  v10 = v8;
+  values[0] = xpc_uint64_create(message);
+  v10 = argsCopy;
   values[1] = v10;
   v11 = v9;
   values[2] = v11;
@@ -204,7 +204,7 @@ LABEL_18:
   if (self->mCellularController)
   {
     v13 = [WCM_Logging stringFromXPCObjectWithPrefix:v12 prefix:@"YYDebug_ "];
-    [WCM_Logging logLevel:2 message:@"YYDebug_ MIPC Driver: Sending messageId(%lld) to Coex Manager %@", a3, v13];
+    [WCM_Logging logLevel:2 message:@"YYDebug_ MIPC Driver: Sending messageId(%lld) to Coex Manager %@", message, v13];
     [(WCM_CellularController *)self->mCellularController handleMessage:v12];
   }
 

@@ -1,16 +1,16 @@
 @interface _VFCombineLatestObservableSubscription
-- (_VFCombineLatestObservableSubscription)initWithObservables:(id)a3;
-- (id)subscribe:(id)a3;
-- (void)_observableAtIndex:(unint64_t)a3 didCompleteForObserver:(id)a4;
-- (void)_observableAtIndex:(unint64_t)a3 didFailWithError:(id)a4 observer:(id)a5;
-- (void)_observableAtIndex:(unint64_t)a3 receivedResult:(id)a4 observer:(id)a5;
+- (_VFCombineLatestObservableSubscription)initWithObservables:(id)observables;
+- (id)subscribe:(id)subscribe;
+- (void)_observableAtIndex:(unint64_t)index didCompleteForObserver:(id)observer;
+- (void)_observableAtIndex:(unint64_t)index didFailWithError:(id)error observer:(id)observer;
+- (void)_observableAtIndex:(unint64_t)index receivedResult:(id)result observer:(id)observer;
 @end
 
 @implementation _VFCombineLatestObservableSubscription
 
-- (_VFCombineLatestObservableSubscription)initWithObservables:(id)a3
+- (_VFCombineLatestObservableSubscription)initWithObservables:(id)observables
 {
-  v4 = a3;
+  observablesCopy = observables;
   v21.receiver = self;
   v21.super_class = _VFCombineLatestObservableSubscription;
   v5 = [(_VFCombineLatestObservableSubscription *)&v21 init];
@@ -20,25 +20,25 @@
     lock = v5->_lock;
     v5->_lock = v6;
 
-    v8 = [v4 vf_map:&__block_literal_global_21];
+    v8 = [observablesCopy vf_map:&__block_literal_global_21];
     observables = v5->_observables;
     v5->_observables = v8;
 
-    v10 = [v4 vf_map:&__block_literal_global_5];
+    v10 = [observablesCopy vf_map:&__block_literal_global_5];
     v11 = [v10 mutableCopy];
     results = v5->_results;
     v5->_results = v11;
 
-    v13 = [v4 vf_map:&__block_literal_global_8];
+    v13 = [observablesCopy vf_map:&__block_literal_global_8];
     v14 = [v13 mutableCopy];
     tokens = v5->_tokens;
     v5->_tokens = v14;
 
-    v16 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, objc_msgSend(v4, "count")}];
+    v16 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, objc_msgSend(observablesCopy, "count")}];
     activeIndexes = v5->_activeIndexes;
     v5->_activeIndexes = v16;
 
-    v18 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, objc_msgSend(v4, "count")}];
+    v18 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, objc_msgSend(observablesCopy, "count")}];
     silentIndexes = v5->_silentIndexes;
     v5->_silentIndexes = v18;
   }
@@ -46,21 +46,21 @@
   return v5;
 }
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   v5 = objc_alloc_init(VFCancelationToken);
-  v6 = [(_VFCombineLatestObservableSubscription *)self observables];
+  observables = [(_VFCombineLatestObservableSubscription *)self observables];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __52___VFCombineLatestObservableSubscription_subscribe___block_invoke;
   v12[3] = &unk_279E35A48;
   v7 = v5;
   v13 = v7;
-  v14 = self;
-  v15 = v4;
-  v8 = v4;
-  [v6 enumerateObjectsUsingBlock:v12];
+  selfCopy = self;
+  v15 = subscribeCopy;
+  v8 = subscribeCopy;
+  [observables enumerateObjectsUsingBlock:v12];
 
   v9 = v15;
   v10 = v7;
@@ -68,15 +68,15 @@
   return v7;
 }
 
-- (void)_observableAtIndex:(unint64_t)a3 receivedResult:(id)a4 observer:(id)a5
+- (void)_observableAtIndex:(unint64_t)index receivedResult:(id)result observer:(id)observer
 {
-  v11 = a5;
+  observerCopy = observer;
   lock = self->_lock;
-  v9 = a4;
+  resultCopy = result;
   [(NSLock *)lock lock];
-  [(NSMutableArray *)self->_results replaceObjectAtIndex:a3 withObject:v9];
+  [(NSMutableArray *)self->_results replaceObjectAtIndex:index withObject:resultCopy];
 
-  [(NSMutableIndexSet *)self->_silentIndexes removeIndex:a3];
+  [(NSMutableIndexSet *)self->_silentIndexes removeIndex:index];
   if ([(NSMutableIndexSet *)self->_silentIndexes count])
   {
     [(NSLock *)self->_lock unlock];
@@ -88,40 +88,40 @@
     [(NSLock *)self->_lock unlock];
     if (v10)
     {
-      [v11 observerDidReceiveResult:v10];
+      [observerCopy observerDidReceiveResult:v10];
     }
   }
 }
 
-- (void)_observableAtIndex:(unint64_t)a3 didCompleteForObserver:(id)a4
+- (void)_observableAtIndex:(unint64_t)index didCompleteForObserver:(id)observer
 {
-  v9 = a4;
+  observerCopy = observer;
   [(NSLock *)self->_lock lock];
   tokens = self->_tokens;
-  v7 = [MEMORY[0x277CBEB68] null];
-  [(NSMutableArray *)tokens replaceObjectAtIndex:a3 withObject:v7];
+  null = [MEMORY[0x277CBEB68] null];
+  [(NSMutableArray *)tokens replaceObjectAtIndex:index withObject:null];
 
-  [(NSMutableIndexSet *)self->_activeIndexes removeIndex:a3];
+  [(NSMutableIndexSet *)self->_activeIndexes removeIndex:index];
   v8 = [(NSMutableIndexSet *)self->_activeIndexes count];
   [(NSLock *)self->_lock unlock];
   if (!v8)
   {
-    [v9 observerDidComplete];
+    [observerCopy observerDidComplete];
   }
 }
 
-- (void)_observableAtIndex:(unint64_t)a3 didFailWithError:(id)a4 observer:(id)a5
+- (void)_observableAtIndex:(unint64_t)index didFailWithError:(id)error observer:(id)observer
 {
   lock = self->_lock;
-  v9 = a5;
-  v10 = a4;
+  observerCopy = observer;
+  errorCopy = error;
   [(NSLock *)lock lock];
   v12 = [(NSMutableIndexSet *)self->_activeIndexes mutableCopy];
-  [v12 removeIndex:a3];
+  [v12 removeIndex:index];
   v11 = [(NSMutableArray *)self->_tokens objectsAtIndexes:v12];
   [v11 makeObjectsPerformSelector:sel_cancel];
   [(NSLock *)self->_lock unlock];
-  [v9 observerDidFailWithError:v10];
+  [observerCopy observerDidFailWithError:errorCopy];
 }
 
 @end

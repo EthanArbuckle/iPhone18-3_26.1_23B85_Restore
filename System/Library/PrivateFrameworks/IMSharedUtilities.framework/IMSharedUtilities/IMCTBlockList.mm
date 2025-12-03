@@ -1,8 +1,8 @@
 @interface IMCTBlockList
 + (id)sharedBlockList;
 - (IMCTBlockList)init;
-- (void)blockContact:(CNContact *)a3 completion:(id)a4;
-- (void)unblockContact:(CNContact *)a3 completion:(id)a4;
+- (void)blockContact:(CNContact *)contact completion:(id)completion;
+- (void)unblockContact:(CNContact *)contact completion:(id)completion;
 @end
 
 @implementation IMCTBlockList
@@ -19,14 +19,14 @@
   return v3;
 }
 
-- (void)blockContact:(CNContact *)a3 completion:(id)a4
+- (void)blockContact:(CNContact *)contact completion:(id)completion
 {
   v7 = sub_1A870CCE0(&unk_1EB3090D0);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = contact;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1A88C87A8();
@@ -41,19 +41,19 @@
   v14[3] = 0;
   v14[4] = &unk_1A88F4640;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  contactCopy = contact;
+  selfCopy = self;
   sub_1A885323C(0, 0, v9, &unk_1A88F4648, v14);
 }
 
-- (void)unblockContact:(CNContact *)a3 completion:(id)a4
+- (void)unblockContact:(CNContact *)contact completion:(id)completion
 {
   v7 = sub_1A870CCE0(&unk_1EB3090D0);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = contact;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1A88C87A8();
@@ -68,8 +68,8 @@
   v14[3] = 0;
   v14[4] = &unk_1A88F45F8;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  contactCopy = contact;
+  selfCopy = self;
   sub_1A885323C(0, 0, v9, &unk_1A88F4608, v14);
 }
 

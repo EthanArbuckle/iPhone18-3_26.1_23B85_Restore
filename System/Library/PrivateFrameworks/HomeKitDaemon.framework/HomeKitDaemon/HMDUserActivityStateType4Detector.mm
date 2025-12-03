@@ -1,29 +1,29 @@
 @interface HMDUserActivityStateType4Detector
 + (id)logCategory;
-- (HMDUserActivityStateType4Detector)initWithDataSource:(id)a3;
-- (HMDUserActivityStateType4Detector)initWithDataSource:(id)a3 location:(id)a4;
-- (unint64_t)_userType4StateFromRegionState:(int64_t)a3;
-- (void)_handleHomeLocationChangedNotification:(id)a3;
+- (HMDUserActivityStateType4Detector)initWithDataSource:(id)source;
+- (HMDUserActivityStateType4Detector)initWithDataSource:(id)source location:(id)location;
+- (unint64_t)_userType4StateFromRegionState:(int64_t)state;
+- (void)_handleHomeLocationChangedNotification:(id)notification;
 - (void)_registerForMessages;
-- (void)_updateState:(unint64_t)a3 withReason:(unint64_t)a4 notifyDelegate:(BOOL)a5;
-- (void)configureWithCompletion:(id)a3;
+- (void)_updateState:(unint64_t)state withReason:(unint64_t)reason notifyDelegate:(BOOL)delegate;
+- (void)configureWithCompletion:(id)completion;
 - (void)deregisterForRegionUpdates;
-- (void)didDetermineState:(int64_t)a3 forRegion:(id)a4;
-- (void)handleLocationAuthorizationChange:(int64_t)a3;
+- (void)didDetermineState:(int64_t)state forRegion:(id)region;
+- (void)handleLocationAuthorizationChange:(int64_t)change;
 - (void)registerForRegionUpdates;
 @end
 
 @implementation HMDUserActivityStateType4Detector
 
-- (unint64_t)_userType4StateFromRegionState:(int64_t)a3
+- (unint64_t)_userType4StateFromRegionState:(int64_t)state
 {
   v3 = 2;
-  if (a3 != 2)
+  if (state != 2)
   {
     v3 = 3;
   }
 
-  if (a3)
+  if (state)
   {
     return v3;
   }
@@ -34,20 +34,20 @@
   }
 }
 
-- (void)didDetermineState:(int64_t)a3 forRegion:(id)a4
+- (void)didDetermineState:(int64_t)state forRegion:(id)region
 {
-  v6 = a4;
-  v7 = [(HMDUserActivityStateDetector *)self dataSource];
-  v8 = [v7 queue];
+  regionCopy = region;
+  dataSource = [(HMDUserActivityStateDetector *)self dataSource];
+  queue = [dataSource queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__HMDUserActivityStateType4Detector_didDetermineState_forRegion___block_invoke;
   block[3] = &unk_278685DF8;
   block[4] = self;
-  v11 = v6;
-  v12 = a3;
-  v9 = v6;
-  dispatch_async(v8, block);
+  v11 = regionCopy;
+  stateCopy = state;
+  v9 = regionCopy;
+  dispatch_async(queue, block);
 }
 
 void __65__HMDUserActivityStateType4Detector_didDetermineState_forRegion___block_invoke(uint64_t a1)
@@ -111,19 +111,19 @@ void __65__HMDUserActivityStateType4Detector_didDetermineState_forRegion___block
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleHomeLocationChangedNotification:(id)a3
+- (void)_handleHomeLocationChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDUserActivityStateDetector *)self dataSource];
-  v6 = [v5 queue];
+  notificationCopy = notification;
+  dataSource = [(HMDUserActivityStateDetector *)self dataSource];
+  queue = [dataSource queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__HMDUserActivityStateType4Detector__handleHomeLocationChangedNotification___block_invoke;
   v8[3] = &unk_27868A750;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = notificationCopy;
+  v7 = notificationCopy;
+  dispatch_async(queue, v8);
 }
 
 uint64_t __76__HMDUserActivityStateType4Detector__handleHomeLocationChangedNotification___block_invoke(uint64_t a1)
@@ -156,36 +156,36 @@ uint64_t __76__HMDUserActivityStateType4Detector__handleHomeLocationChangedNotif
   return result;
 }
 
-- (void)handleLocationAuthorizationChange:(int64_t)a3
+- (void)handleLocationAuthorizationChange:(int64_t)change
 {
-  v5 = [(HMDUserActivityStateDetector *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  dataSource = [(HMDUserActivityStateDetector *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(HMDUserActivityStateType4Detector *)self _updateLocationAuthorization:a3 withReason:4 notifyDelegate:1];
+  [(HMDUserActivityStateType4Detector *)self _updateLocationAuthorization:change withReason:4 notifyDelegate:1];
 }
 
-- (void)_updateState:(unint64_t)a3 withReason:(unint64_t)a4 notifyDelegate:(BOOL)a5
+- (void)_updateState:(unint64_t)state withReason:(unint64_t)reason notifyDelegate:(BOOL)delegate
 {
-  v5 = a5;
+  delegateCopy = delegate;
   v32 = *MEMORY[0x277D85DE8];
-  v9 = [(HMDUserActivityStateDetector *)self dataSource];
-  v10 = [v9 queue];
-  dispatch_assert_queue_V2(v10);
+  dataSource = [(HMDUserActivityStateDetector *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([(HMDUserActivityStateType4Detector *)self state]== a3)
+  if ([(HMDUserActivityStateType4Detector *)self state]== state)
   {
     goto LABEL_15;
   }
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = HMDUserVacationStateAsString(a3);
-    v16 = HMDUserActivityStateDetectorUpdateReasonAsString(a4);
+    v15 = HMDUserVacationStateAsString(state);
+    v16 = HMDUserActivityStateDetectorUpdateReasonAsString(reason);
     v26 = 138543874;
     v27 = v14;
     v28 = 2112;
@@ -196,29 +196,29 @@ uint64_t __76__HMDUserActivityStateType4Detector__handleHomeLocationChangedNotif
   }
 
   objc_autoreleasePoolPop(v11);
-  [(HMDUserActivityStateType4Detector *)v12 setState:a3];
-  v17 = [(HMDUserActivityStateType4Detector *)v12 state];
-  if (v17 <= 1)
+  [(HMDUserActivityStateType4Detector *)selfCopy setState:state];
+  state = [(HMDUserActivityStateType4Detector *)selfCopy state];
+  if (state <= 1)
   {
-    if (!v17)
+    if (!state)
     {
       goto LABEL_15;
     }
 
-    if (v17 != 1)
+    if (state != 1)
     {
       goto LABEL_11;
     }
 
     v22 = objc_alloc_init(HMDUserActivityReportUnsetValue);
-    [(HMDUserActivityStateDetector *)v12 setLatestReport:v22];
+    [(HMDUserActivityStateDetector *)selfCopy setLatestReport:v22];
   }
 
   else
   {
-    if ((v17 - 2) >= 2)
+    if ((state - 2) >= 2)
     {
-      if (v17 == 4)
+      if (state == 4)
       {
         goto LABEL_15;
       }
@@ -227,23 +227,23 @@ uint64_t __76__HMDUserActivityStateType4Detector__handleHomeLocationChangedNotif
     }
 
     v18 = [HMDUserActivityType4Report alloc];
-    v19 = [(HMDUserActivityStateDetector *)v12 dataSource];
-    v20 = [v19 home];
-    v21 = [v20 currentUser];
-    v22 = [(HMDUserActivityType4Report *)v18 initWithUser:v21 state:[(HMDUserActivityStateType4Detector *)v12 state] withReason:a4];
+    dataSource2 = [(HMDUserActivityStateDetector *)selfCopy dataSource];
+    home = [dataSource2 home];
+    currentUser = [home currentUser];
+    v22 = [(HMDUserActivityType4Report *)v18 initWithUser:currentUser state:[(HMDUserActivityStateType4Detector *)selfCopy state] withReason:reason];
 
     v23 = [[HMDUserActivityReportSetValue alloc] initWithReport:v22];
-    [(HMDUserActivityStateDetector *)v12 setLatestReport:v23];
+    [(HMDUserActivityStateDetector *)selfCopy setLatestReport:v23];
   }
 
 LABEL_11:
-  if (v5)
+  if (delegateCopy)
   {
-    v24 = [(HMDUserActivityStateDetector *)v12 latestReport];
+    latestReport = [(HMDUserActivityStateDetector *)selfCopy latestReport];
 
-    if (v24)
+    if (latestReport)
     {
-      [(HMDUserActivityStateDetector *)v12 notifyDetectorStateChangedWithReason:a4];
+      [(HMDUserActivityStateDetector *)selfCopy notifyDetectorStateChangedWithReason:reason];
     }
   }
 
@@ -253,37 +253,37 @@ LABEL_15:
 
 - (void)_registerForMessages
 {
-  v3 = [(HMDUserActivityStateDetector *)self dataSource];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  dataSource = [(HMDUserActivityStateDetector *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(HMDUserActivityStateDetector *)self dataSource];
-  v5 = [v9 notificationCenter];
-  v6 = [(HMDUserActivityStateDetector *)self dataSource];
-  v7 = [v6 home];
-  v8 = [v7 homeLocationHandler];
-  [v5 addObserver:self selector:sel__handleHomeLocationChangedNotification_ name:@"HMDLocationForHomeChanged" object:v8];
+  dataSource2 = [(HMDUserActivityStateDetector *)self dataSource];
+  notificationCenter = [dataSource2 notificationCenter];
+  dataSource3 = [(HMDUserActivityStateDetector *)self dataSource];
+  home = [dataSource3 home];
+  homeLocationHandler = [home homeLocationHandler];
+  [notificationCenter addObserver:self selector:sel__handleHomeLocationChangedNotification_ name:@"HMDLocationForHomeChanged" object:homeLocationHandler];
 }
 
 - (void)deregisterForRegionUpdates
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserActivityStateDetector *)self dataSource];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  dataSource = [(HMDUserActivityStateDetector *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(HMDUserActivityStateType4Detector *)self region];
-  if (v5)
+  region = [(HMDUserActivityStateType4Detector *)self region];
+  if (region)
   {
-    v6 = [(HMDUserActivityStateType4Detector *)self location];
-    v10[0] = v5;
+    location = [(HMDUserActivityStateType4Detector *)self location];
+    v10[0] = region;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __63__HMDUserActivityStateType4Detector_deregisterForRegionUpdates__block_invoke;
     v9[3] = &unk_27868A250;
     v9[4] = self;
-    [v6 deregisterForRegionUpdate:v7 completionHandler:v9];
+    [location deregisterForRegionUpdate:v7 completionHandler:v9];
 
     [(HMDUserActivityStateType4Detector *)self setRegion:0];
   }
@@ -336,50 +336,50 @@ LABEL_6:
 - (void)registerForRegionUpdates
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserActivityStateDetector *)self dataSource];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  dataSource = [(HMDUserActivityStateDetector *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(HMDUserActivityStateType4Detector *)self region];
-  if (!v5)
+  region = [(HMDUserActivityStateType4Detector *)self region];
+  if (!region)
   {
-    v10 = [(HMDUserActivityStateType4Detector *)self homeLocation];
-    if (v10)
+    homeLocation = [(HMDUserActivityStateType4Detector *)self homeLocation];
+    if (homeLocation)
     {
       if ([(HMDUserActivityStateDetector *)self locationAuthorization]== 1)
       {
         v11 = objc_alloc(MEMORY[0x277CBFBC8]);
-        [v10 coordinate];
+        [homeLocation coordinate];
         v13 = v12;
         v15 = v14;
-        v16 = [MEMORY[0x277CCAD78] UUID];
-        v17 = [v16 UUIDString];
-        v18 = [v11 initWithCenter:v17 radius:0 identifier:v13 nearbyAllowed:{v15, 321869.0}];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        uUIDString = [uUID UUIDString];
+        v18 = [v11 initWithCenter:uUIDString radius:0 identifier:v13 nearbyAllowed:{v15, 321869.0}];
         [(HMDUserActivityStateType4Detector *)self setRegion:v18];
 
-        v19 = [(HMDUserActivityStateType4Detector *)self region];
-        [v19 setNotifyOnExit:1];
+        region2 = [(HMDUserActivityStateType4Detector *)self region];
+        [region2 setNotifyOnExit:1];
 
-        v20 = [(HMDUserActivityStateType4Detector *)self region];
-        [v20 setNotifyOnEntry:1];
+        region3 = [(HMDUserActivityStateType4Detector *)self region];
+        [region3 setNotifyOnEntry:1];
 
-        v21 = [(HMDUserActivityStateType4Detector *)self location];
-        v22 = [(HMDUserActivityStateType4Detector *)self region];
-        v31 = v22;
+        location = [(HMDUserActivityStateType4Detector *)self location];
+        region4 = [(HMDUserActivityStateType4Detector *)self region];
+        v31 = region4;
         v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
         v30[2] = __61__HMDUserActivityStateType4Detector_registerForRegionUpdates__block_invoke;
         v30[3] = &unk_27868A250;
         v30[4] = self;
-        [v21 registerForRegionUpdate:v23 withDelegate:self completionHandler:v30];
+        [location registerForRegionUpdate:v23 withDelegate:self completionHandler:v30];
 
 LABEL_14:
         goto LABEL_15;
       }
 
       v24 = objc_autoreleasePoolPush();
-      v25 = self;
+      selfCopy2 = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
@@ -394,7 +394,7 @@ LABEL_14:
     else
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = self;
+      selfCopy2 = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
@@ -412,7 +412,7 @@ LABEL_12:
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy3 = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -475,16 +475,16 @@ void __61__HMDUserActivityStateType4Detector_registerForRegionUpdates__block_inv
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithCompletion:(id)a3
+- (void)configureWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserActivityStateDetector *)self dataSource];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  completionCopy = completion;
+  dataSource = [(HMDUserActivityStateDetector *)self dataSource];
+  queue = [dataSource queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -495,19 +495,19 @@ void __61__HMDUserActivityStateType4Detector_registerForRegionUpdates__block_inv
   }
 
   objc_autoreleasePoolPop(v7);
-  v11 = [(HMDUserActivityStateDetector *)v8 dataSource];
-  v12 = [v11 home];
-  v13 = [v12 homeLocationHandler];
-  v14 = [v13 location];
-  homeLocation = v8->_homeLocation;
-  v8->_homeLocation = v14;
+  dataSource2 = [(HMDUserActivityStateDetector *)selfCopy dataSource];
+  home = [dataSource2 home];
+  homeLocationHandler = [home homeLocationHandler];
+  location = [homeLocationHandler location];
+  homeLocation = selfCopy->_homeLocation;
+  selfCopy->_homeLocation = location;
 
-  [(HMDUserActivityStateType4Detector *)v8 _registerForMessages];
-  v16 = [(HMDUserActivityStateType4Detector *)v8 location];
-  -[HMDUserActivityStateType4Detector _updateLocationAuthorization:withReason:notifyDelegate:](v8, "_updateLocationAuthorization:withReason:notifyDelegate:", [v16 locationAuthorized], 1, 0);
+  [(HMDUserActivityStateType4Detector *)selfCopy _registerForMessages];
+  location2 = [(HMDUserActivityStateType4Detector *)selfCopy location];
+  -[HMDUserActivityStateType4Detector _updateLocationAuthorization:withReason:notifyDelegate:](selfCopy, "_updateLocationAuthorization:withReason:notifyDelegate:", [location2 locationAuthorized], 1, 0);
 
   v17 = objc_autoreleasePoolPush();
-  v18 = v8;
+  v18 = selfCopy;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
@@ -521,7 +521,7 @@ void __61__HMDUserActivityStateType4Detector_registerForRegionUpdates__block_inv
   }
 
   objc_autoreleasePoolPop(v17);
-  v22 = _Block_copy(v4);
+  v22 = _Block_copy(completionCopy);
   v23 = v22;
   if (v22)
   {
@@ -531,27 +531,27 @@ void __61__HMDUserActivityStateType4Detector_registerForRegionUpdates__block_inv
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDUserActivityStateType4Detector)initWithDataSource:(id)a3 location:(id)a4
+- (HMDUserActivityStateType4Detector)initWithDataSource:(id)source location:(id)location
 {
-  v7 = a4;
+  locationCopy = location;
   v11.receiver = self;
   v11.super_class = HMDUserActivityStateType4Detector;
-  v8 = [(HMDUserActivityStateDetector *)&v11 initWithDataSource:a3];
+  v8 = [(HMDUserActivityStateDetector *)&v11 initWithDataSource:source];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_location, a4);
+    objc_storeStrong(&v8->_location, location);
     v9->_state = 0;
   }
 
   return v9;
 }
 
-- (HMDUserActivityStateType4Detector)initWithDataSource:(id)a3
+- (HMDUserActivityStateType4Detector)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = +[HMDLocation sharedManager];
-  v6 = [(HMDUserActivityStateType4Detector *)self initWithDataSource:v4 location:v5];
+  v6 = [(HMDUserActivityStateType4Detector *)self initWithDataSource:sourceCopy location:v5];
 
   return v6;
 }

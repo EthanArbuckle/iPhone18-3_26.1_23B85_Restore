@@ -4,11 +4,11 @@
 - (uint64_t)_setPreRecognitionWeight:(uint64_t)result;
 - (uint64_t)setRotation:(uint64_t)result;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)transformChangedWithEvent:(id)a3;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)transformChangedWithEvent:(id)event;
 @end
 
 @implementation _UIRotationGestureRecognizerDriver
@@ -172,23 +172,23 @@
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = [(_UIGestureRecognizerDriver *)self context];
-  v28 = [v6 activeComponentsForEvent:a4];
+  context = [(_UIGestureRecognizerDriver *)self context];
+  v28 = [context activeComponentsForEvent:event];
 
   v7 = [v28 count] == 2;
   v8 = v28;
   if (v7)
   {
-    [a4 timestamp];
+    [event timestamp];
     self->_lastTouchTime = v9;
     self->_anchorPoint.x = _CentroidOfTouches(v28, 1);
     self->_anchorPoint.y = v10;
     self->_initialAnchorPoint = self->_anchorPoint;
-    v11 = [v28 allObjects];
+    allObjects = [v28 allObjects];
     touches = self->_touches;
-    self->_touches = v11;
+    self->_touches = allObjects;
 
     *&self->_flags |= 1u;
     _UIGestureRecognizerDistanceBetweenTouches(self->_touches);
@@ -239,11 +239,11 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v55 = *MEMORY[0x1E69E9840];
-  v7 = [(_UIGestureRecognizerDriver *)self context];
-  v8 = [v7 activeComponentsForEvent:a4];
+  context = [(_UIGestureRecognizerDriver *)self context];
+  v8 = [context activeComponentsForEvent:event];
 
   if ([v8 count] != 2)
   {
@@ -265,7 +265,7 @@
   v21 = 64;
   currentRotationCount = self->_currentRotationCount;
   v23 = v19 - currentTouchAngle;
-  [a4 timestamp];
+  [event timestamp];
   v25 = v24;
   v26 = 72;
   lastTouchTime = self->_lastTouchTime;
@@ -274,8 +274,8 @@
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v28 = a3;
-  v29 = [v28 countByEnumeratingWithState:&v50 objects:v54 count:16];
+  movedCopy = moved;
+  v29 = [movedCopy countByEnumeratingWithState:&v50 objects:v54 count:16];
   if (v29)
   {
     v48 = 72;
@@ -288,7 +288,7 @@
       {
         if (*v51 != v31)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(movedCopy);
         }
 
         if ([*(*(&v50 + 1) + 8 * i) _isPointerTouch])
@@ -298,7 +298,7 @@
         }
       }
 
-      v29 = [v28 countByEnumeratingWithState:&v50 objects:v54 count:16];
+      v29 = [movedCopy countByEnumeratingWithState:&v50 objects:v54 count:16];
       if (v29)
       {
         continue;
@@ -334,8 +334,8 @@ LABEL_12:
     goto LABEL_29;
   }
 
-  v35 = [v8 allObjects];
-  _UIGestureRecognizerDistanceBetweenTouches(v35);
+  allObjects = [v8 allObjects];
+  _UIGestureRecognizerDistanceBetweenTouches(allObjects);
   v37 = v36;
 
   if (v29)
@@ -368,7 +368,7 @@ LABEL_29:
     self->_anchorPoint.x = _CentroidOfTouches(v8, 1);
     self->_anchorPoint.y = v43;
     self->_previousVelocity = self->_velocity;
-    [a4 timestamp];
+    [event timestamp];
     *(&self->super.super.isa + v26) = v44;
     self->_currentTouchAngle = v19;
     if ((v29 & 1) != 0 || [(_UIGestureRecognizerTransformAnalyzer *)self->_transformAnalyzer dominantComponent]== 3)
@@ -408,10 +408,10 @@ LABEL_29:
 LABEL_39:
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = [(_UIGestureRecognizerDriver *)self context];
-  v9 = [v6 activeComponentsForEvent:a4];
+  context = [(_UIGestureRecognizerDriver *)self context];
+  v9 = [context activeComponentsForEvent:event];
 
   if ([v9 count])
   {
@@ -423,10 +423,10 @@ LABEL_39:
 
   else
   {
-    v7 = [(_UIGestureRecognizerDriver *)self state];
+    state = [(_UIGestureRecognizerDriver *)self state];
     if (self)
     {
-      if (v7 == 1)
+      if (state == 1)
       {
         v8 = 2;
       }
@@ -441,7 +441,7 @@ LABEL_39:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   if (self)
   {
@@ -449,23 +449,23 @@ LABEL_39:
   }
 }
 
-- (void)transformChangedWithEvent:(id)a3
+- (void)transformChangedWithEvent:(id)event
 {
   p_anchorPoint = &self->_anchorPoint;
-  v6 = [(_UIGestureRecognizerDriver *)self context];
-  [a3 locationInView:0];
+  context = [(_UIGestureRecognizerDriver *)self context];
+  [event locationInView:0];
   v8 = v7;
   v10 = v9;
-  v11 = [a3 _allWindows];
-  v12 = [v11 anyObject];
-  [v6 convertPoint:v12 toSceneReferenceCoordinatesFromView:{v8, v10}];
+  _allWindows = [event _allWindows];
+  anyObject = [_allWindows anyObject];
+  [context convertPoint:anyObject toSceneReferenceCoordinatesFromView:{v8, v10}];
   p_anchorPoint->x = v13;
   p_anchorPoint->y = v14;
 
-  v15 = [a3 phase];
-  if (v15 > 2)
+  phase = [event phase];
+  if (phase > 2)
   {
-    if (v15 == 3)
+    if (phase == 3)
     {
       if ([(_UIGestureRecognizerDriver *)self state]== 1)
       {
@@ -477,43 +477,43 @@ LABEL_39:
         v34 = 3;
       }
 
-      v33 = self;
+      selfCopy3 = self;
     }
 
     else
     {
-      if (v15 != 4)
+      if (phase != 4)
       {
         return;
       }
 
-      v33 = self;
+      selfCopy3 = self;
       v34 = 3;
     }
 
     goto LABEL_31;
   }
 
-  if (v15 == 1)
+  if (phase == 1)
   {
     self->_initialTouchAngle = 0.0;
     self->_initialAnchorPoint = *p_anchorPoint;
-    [a3 timestamp];
+    [event timestamp];
     self->_lastTouchTime = v35;
     return;
   }
 
-  if (v15 == 2)
+  if (phase == 2)
   {
     self->_previousVelocity = self->_velocity;
     currentRotationCount = self->_currentRotationCount;
-    [a3 rotation];
+    [event rotation];
     v18 = v17;
     currentTouchAngle = self->_currentTouchAngle;
-    [a3 timestamp];
+    [event timestamp];
     v21 = v20;
     lastTouchTime = self->_lastTouchTime;
-    [a3 timestamp];
+    [event timestamp];
     self->_lastTouchTime = v23;
     v24 = vabdd_f64(v18, currentTouchAngle);
     if (v24 > 1.57079633)
@@ -574,11 +574,11 @@ LABEL_36:
 
       if (![(_UIGestureRecognizerDriver *)self state])
       {
-        v33 = self;
+        selfCopy3 = self;
         v34 = 1;
 LABEL_31:
 
-        [(_UIGestureRecognizerDriver *)v33 _setState:v34 notifyDelegate:1];
+        [(_UIGestureRecognizerDriver *)selfCopy3 _setState:v34 notifyDelegate:1];
       }
     }
   }

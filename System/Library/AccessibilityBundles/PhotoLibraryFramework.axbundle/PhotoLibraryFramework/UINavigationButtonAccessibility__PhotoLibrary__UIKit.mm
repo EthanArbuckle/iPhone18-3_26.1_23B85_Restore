@@ -27,15 +27,15 @@
   {
     v9.receiver = self;
     v9.super_class = UINavigationButtonAccessibility__PhotoLibrary__UIKit;
-    v6 = [(UINavigationButtonAccessibility__PhotoLibrary__UIKit *)&v9 accessibilityLabel];
+    accessibilityLabel = [(UINavigationButtonAccessibility__PhotoLibrary__UIKit *)&v9 accessibilityLabel];
     goto LABEL_10;
   }
 
   v5 = @"plugin.buttons";
 LABEL_9:
-  v6 = accessibilityLocalizedString(v5);
+  accessibilityLabel = accessibilityLocalizedString(v5);
 LABEL_10:
-  v7 = v6;
+  v7 = accessibilityLabel;
 
   return v7;
 }

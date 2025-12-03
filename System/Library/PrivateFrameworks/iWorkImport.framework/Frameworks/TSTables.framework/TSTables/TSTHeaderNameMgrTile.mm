@@ -1,26 +1,26 @@
 @interface TSTHeaderNameMgrTile
-+ (id)medianStringFromArray:(id)a3;
-- (TSTHeaderNameMgrTile)initWithHeaderNameMgr:(id)a3 context:(id)a4;
++ (id)medianStringFromArray:(id)array;
+- (TSTHeaderNameMgrTile)initWithHeaderNameMgr:(id)mgr context:(id)context;
 - (id).cxx_construct;
 - (id)splitTile;
-- (void)createFragmentEntryForString:(id)a3 createIfMissingUsingPrecedentCoord:(const TSUCellCoord *)a4;
+- (void)createFragmentEntryForString:(id)string createIfMissingUsingPrecedentCoord:(const TSUCellCoord *)coord;
 - (void)dealloc;
-- (void)fragmentEntryForString:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)unpackAfterUnarchive:(id)a3;
+- (void)fragmentEntryForString:(id)string;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)unpackAfterUnarchive:(id)unarchive;
 @end
 
 @implementation TSTHeaderNameMgrTile
 
-- (TSTHeaderNameMgrTile)initWithHeaderNameMgr:(id)a3 context:(id)a4
+- (TSTHeaderNameMgrTile)initWithHeaderNameMgr:(id)mgr context:(id)context
 {
   v6.receiver = self;
   v6.super_class = TSTHeaderNameMgrTile;
-  result = [(TSTHeaderNameMgrTile *)&v6 initWithContext:a4];
+  result = [(TSTHeaderNameMgrTile *)&v6 initWithContext:context];
   if (result)
   {
-    result->_headerNameMgr = a3;
+    result->_headerNameMgr = mgr;
     result->_tileLock._os_unfair_lock_opaque = 0;
     __dmb(0xBu);
   }
@@ -84,14 +84,14 @@
   [(TSTHeaderNameMgrTile *)&v10 dealloc];
 }
 
-+ (id)medianStringFromArray:(id)a3
++ (id)medianStringFromArray:(id)array
 {
-  v3 = a3;
-  if (objc_msgSend_count(v3, v4, v5, v6, v7))
+  arrayCopy = array;
+  if (objc_msgSend_count(arrayCopy, v4, v5, v6, v7))
   {
-    v11 = objc_msgSend_sortedArrayUsingSelector_(v3, v8, sel_compare_, v9, v10);
-    v16 = objc_msgSend_count(v3, v12, v13, v14, v15);
-    v20 = objc_msgSend_objectAtIndex_(v3, v17, v16 >> 1, v18, v19);
+    v11 = objc_msgSend_sortedArrayUsingSelector_(arrayCopy, v8, sel_compare_, v9, v10);
+    v16 = objc_msgSend_count(arrayCopy, v12, v13, v14, v15);
+    v20 = objc_msgSend_objectAtIndex_(arrayCopy, v17, v16 >> 1, v18, v19);
   }
 
   else
@@ -102,11 +102,11 @@
   return v20;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v25 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v25, v4, off_2812E4498[310], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E4498[310], v5, v6);
 
   v11 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v8, *(v7 + 48) & 0xFFFFFFFFFFFFFFFELL, v9, v10);
   firstFragment = self->_firstFragment;
@@ -122,7 +122,7 @@
     v29[0] = 0;
     v29[1] = 0;
     v28 = v29;
-    v22 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v18, v21[3] & 0xFFFFFFFFFFFFFFFELL, v19, v20, v25);
+    v22 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v18, v21[3] & 0xFFFFFFFFFFFFFFFELL, v19, v20, unarchiverCopy);
     v26 = 0;
     v27 = v22;
     if (v21[4])
@@ -151,10 +151,10 @@
   }
 }
 
-- (void)unpackAfterUnarchive:(id)a3
+- (void)unpackAfterUnarchive:(id)unarchive
 {
-  v11 = a3;
-  self->_headerNameMgr = v11;
+  unarchiveCopy = unarchive;
+  self->_headerNameMgr = unarchiveCopy;
   begin_node = self->_nameFragmentToEntry.__tree_.__begin_node_;
   if (begin_node != &self->_nameFragmentToEntry.__tree_.__end_node_)
   {
@@ -192,11 +192,11 @@
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_2214117F0, off_2812E4498[310], v6);
+  v7 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_2214117F0, off_2812E4498[310], v6);
 
   if (self->_headerNameMgr || (v12 = MEMORY[0x277D81150], objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSTHeaderNameMgrTile saveToArchiver:]", v10, v11), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTHeaderNameMgr.mm", v15, v16), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v18, v13, v17, 443, 0, "invalid nil value for '%{public}s'", "_headerNameMgr"), v17, v13, objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22), self->_headerNameMgr))
   {
@@ -354,10 +354,10 @@ LABEL_37:
   }
 }
 
-- (void)fragmentEntryForString:(id)a3
+- (void)fragmentEntryForString:(id)string
 {
-  v11 = a3;
-  if (!objc_msgSend_length(v11, v4, v5, v6, v7) || (v8 = sub_22141185C(&self->_nameFragmentToEntry, &v11), &self->_nameFragmentToEntry.__tree_.__end_node_ == v8))
+  stringCopy = string;
+  if (!objc_msgSend_length(stringCopy, v4, v5, v6, v7) || (v8 = sub_22141185C(&self->_nameFragmentToEntry, &stringCopy), &self->_nameFragmentToEntry.__tree_.__end_node_ == v8))
   {
     v9 = 0;
   }
@@ -370,13 +370,13 @@ LABEL_37:
   return v9;
 }
 
-- (void)createFragmentEntryForString:(id)a3 createIfMissingUsingPrecedentCoord:(const TSUCellCoord *)a4
+- (void)createFragmentEntryForString:(id)string createIfMissingUsingPrecedentCoord:(const TSUCellCoord *)coord
 {
-  v6 = a3;
-  obj = v6;
-  if (objc_msgSend_length(v6, v7, v8, v9, v10))
+  stringCopy = string;
+  obj = stringCopy;
+  if (objc_msgSend_length(stringCopy, v7, v8, v9, v10))
   {
-    v11 = *a4;
+    v11 = *coord;
     v12 = sub_22141185C(&self->_nameFragmentToEntry, &obj);
     if (&self->_nameFragmentToEntry.__tree_.__end_node_ == v12)
     {
@@ -390,7 +390,7 @@ LABEL_37:
     }
 
     v16 = *(v12 + 40);
-    v6 = obj;
+    stringCopy = obj;
   }
 
   else
@@ -407,7 +407,7 @@ LABEL_37:
   v6 = objc_msgSend_count(self, a2, v2, v3, v4);
   v7 = 0;
   v8 = 88;
-  v75 = self;
+  selfCopy = self;
   p_nameFragmentToEntry = &self->_nameFragmentToEntry;
   begin_node = self->_nameFragmentToEntry.__tree_.__begin_node_;
   do
@@ -456,13 +456,13 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  objc_msgSend_addChangedTile_(v75->_headerNameMgr, v15, v75, v16, v17);
+  objc_msgSend_addChangedTile_(selfCopy->_headerNameMgr, v15, selfCopy, v16, v17);
   v19 = [TSTHeaderNameMgrTile alloc];
-  headerNameMgr = v75->_headerNameMgr;
+  headerNameMgr = selfCopy->_headerNameMgr;
   v25 = objc_msgSend_context(headerNameMgr, v21, v22, v23, v24);
   v28 = objc_msgSend_initWithHeaderNameMgr_context_(v19, v26, headerNameMgr, v25, v27);
 
-  v33 = objc_msgSend_lastFragment(v75, v29, v30, v31, v32);
+  v33 = objc_msgSend_lastFragment(selfCopy, v29, v30, v31, v32);
   objc_msgSend_setLastFragment_(v28, v34, v33, v35, v36);
 
   v37 = objc_alloc(MEMORY[0x277CBEB18]);
@@ -473,7 +473,7 @@ LABEL_33:
     do
     {
       v45 = v44 + 4;
-      if (objc_msgSend_compare_(v18, v41, v44[4], v42, v43, v75) == -1)
+      if (objc_msgSend_compare_(v18, v41, v44[4], v42, v43, selfCopy) == -1)
       {
         objc_msgSend_addObject_(v76, v41, *v45, v42, v43);
         v46 = v44[5];
@@ -516,7 +516,7 @@ LABEL_33:
     while (v60 != p_end_node);
   }
 
-  os_unfair_lock_lock(&v75->_tileLock);
+  os_unfair_lock_lock(&selfCopy->_tileLock);
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
@@ -545,8 +545,8 @@ LABEL_33:
     while (v63);
   }
 
-  os_unfair_lock_unlock(&v75->_tileLock);
-  objc_msgSend_setLastFragment_(v75, v67, v18, v68, v69);
+  os_unfair_lock_unlock(&selfCopy->_tileLock);
+  objc_msgSend_setLastFragment_(selfCopy, v67, v18, v68, v69);
   if (!objc_msgSend_count(v28, v70, v71, v72, v73))
   {
 

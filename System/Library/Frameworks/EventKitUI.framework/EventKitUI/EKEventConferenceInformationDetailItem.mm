@@ -1,24 +1,24 @@
 @interface EKEventConferenceInformationDetailItem
 + (id)titleForCell;
 + (id)titleForExtendedViewController;
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5;
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview;
 - (id)textForCopyAction;
 @end
 
 @implementation EKEventConferenceInformationDetailItem
 
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview
 {
-  v6 = [(EKEvent *)self->super.super._event virtualConference:a3];
+  v6 = [(EKEvent *)self->super.super._event virtualConference:event];
   if (v6)
   {
-    v7 = [(EKEvent *)self->super.super._event virtualConference];
-    v8 = [v7 joinMethods];
-    if ([v8 count] <= 1)
+    virtualConference = [(EKEvent *)self->super.super._event virtualConference];
+    joinMethods = [virtualConference joinMethods];
+    if ([joinMethods count] <= 1)
     {
-      v10 = [(EKEvent *)self->super.super._event virtualConference];
-      v11 = [v10 conferenceDetails];
-      v9 = [v11 length] != 0;
+      virtualConference2 = [(EKEvent *)self->super.super._event virtualConference];
+      conferenceDetails = [virtualConference2 conferenceDetails];
+      v9 = [conferenceDetails length] != 0;
     }
 
     else
@@ -59,8 +59,8 @@
   [(EKEvent *)event parsedConference:&v10 andNotes:&v9];
   v3 = v10;
   v4 = v9;
-  v5 = [v3 range];
-  v7 = [v4 substringWithRange:{v5, v6}];
+  range = [v3 range];
+  v7 = [v4 substringWithRange:{range, v6}];
 
   return v7;
 }

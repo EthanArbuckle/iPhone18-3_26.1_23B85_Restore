@@ -1,38 +1,38 @@
 @interface PKApplyTermsVerifyingViewController
-- (PKApplyTermsVerifyingViewController)initWithController:(id)a3 setupDelegate:(id)a4 context:(int64_t)a5 termsIdentifiers:(id)a6 applyPage:(id)a7;
+- (PKApplyTermsVerifyingViewController)initWithController:(id)controller setupDelegate:(id)delegate context:(int64_t)context termsIdentifiers:(id)identifiers applyPage:(id)page;
 - (void)_processTerms;
-- (void)_showActivationSpinner:(BOOL)a3;
+- (void)_showActivationSpinner:(BOOL)spinner;
 - (void)_terminateSetupFlow;
 - (void)dealloc;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKApplyTermsVerifyingViewController
 
-- (PKApplyTermsVerifyingViewController)initWithController:(id)a3 setupDelegate:(id)a4 context:(int64_t)a5 termsIdentifiers:(id)a6 applyPage:(id)a7
+- (PKApplyTermsVerifyingViewController)initWithController:(id)controller setupDelegate:(id)delegate context:(int64_t)context termsIdentifiers:(id)identifiers applyPage:(id)page
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  identifiersCopy = identifiers;
+  pageCopy = page;
   v22.receiver = self;
   v22.super_class = PKApplyTermsVerifyingViewController;
-  v16 = [(PKExplanationViewController *)&v22 initWithContext:a5];
+  v16 = [(PKExplanationViewController *)&v22 initWithContext:context];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_applyController, v12);
-    v18 = [v14 copy];
+    objc_storeWeak(&v16->_applyController, controllerCopy);
+    v18 = [identifiersCopy copy];
     termsIdentifiers = v17->_termsIdentifiers;
     v17->_termsIdentifiers = v18;
 
-    objc_storeStrong(&v17->_setupDelegate, a4);
+    objc_storeStrong(&v17->_setupDelegate, delegate);
     WeakRetained = objc_loadWeakRetained(&v17->_applyController);
     v17->_featureIdentifier = [WeakRetained featureIdentifier];
 
-    objc_storeStrong(&v17->_applyPage, a7);
+    objc_storeStrong(&v17->_applyPage, page);
   }
 
   return v17;
@@ -60,32 +60,32 @@
   [(PKExplanationViewController *)&v11 viewDidLoad];
   [(PKExplanationViewController *)self setShowDoneButton:0];
   [(PKExplanationViewController *)self setShowCancelButton:0];
-  v3 = [(PKApplyTermsVerifyingViewController *)self navigationItem];
-  [v3 setHidesBackButton:1];
+  navigationItem = [(PKApplyTermsVerifyingViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  v4 = [(PKExplanationViewController *)self explanationView];
-  [v4 setShowPrivacyView:0];
-  v5 = [v4 dockView];
-  [v5 setPrimaryButton:0];
-  v6 = [v5 footerView];
-  [v6 setSetUpLaterButton:0];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setShowPrivacyView:0];
+  dockView = [explanationView dockView];
+  [dockView setPrimaryButton:0];
+  footerView = [dockView footerView];
+  [footerView setSetUpLaterButton:0];
   [(PKApplyTermsVerifyingViewController *)self _showActivationSpinner:1];
   WeakRetained = objc_loadWeakRetained(&self->_applyController);
-  v8 = [WeakRetained preferredLanguage];
+  preferredLanguage = [WeakRetained preferredLanguage];
 
   v9 = PKLocalizedApplyFeatureString();
-  [v4 setTitleText:v9];
+  [explanationView setTitleText:v9];
 
   v10 = PKLocalizedApplyFeatureString();
-  [v4 setBodyText:v10];
+  [explanationView setBodyText:v10];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = PKApplyTermsVerifyingViewController;
-  [(PKApplyTermsVerifyingViewController *)&v8 viewDidAppear:a3];
+  [(PKApplyTermsVerifyingViewController *)&v8 viewDidAppear:appear];
   WeakRetained = objc_loadWeakRetained(&self->_applyController);
   [WeakRetained applyFlowDidAppear];
 
@@ -98,12 +98,12 @@
   [v5 reportAnalyticsDictionaryForPage:0 pageTag:v6 additionalValues:v7];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = PKApplyTermsVerifyingViewController;
-  [(PKApplyTermsVerifyingViewController *)&v9 viewWillDisappear:a3];
+  [(PKApplyTermsVerifyingViewController *)&v9 viewWillDisappear:disappear];
   inUseAssertion = self->_inUseAssertion;
   if (inUseAssertion)
   {
@@ -134,7 +134,7 @@
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_applyController);
-    v8 = [WeakRetained preferredLanguage];
+    preferredLanguage = [WeakRetained preferredLanguage];
 
     self->_isProcessingTerms = 1;
     objc_initWeak(&location, self);
@@ -143,9 +143,9 @@
     aBlock[2] = __52__PKApplyTermsVerifyingViewController__processTerms__block_invoke;
     aBlock[3] = &unk_1E8022A88;
     objc_copyWeak(&v25, &location);
-    v9 = v8;
+    v9 = preferredLanguage;
     v23 = v9;
-    v24 = self;
+    selfCopy = self;
     v10 = _Block_copy(aBlock);
     if ([(NSSet *)self->_termsIdentifiers count]< 2)
     {
@@ -165,13 +165,13 @@
 
       else
       {
-        v15 = [(NSSet *)self->_termsIdentifiers anyObject];
+        anyObject = [(NSSet *)self->_termsIdentifiers anyObject];
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
         v16[2] = __52__PKApplyTermsVerifyingViewController__processTerms__block_invoke_15;
         v16[3] = &unk_1E8022AB0;
         v17 = v10;
-        [v11 termsAccepted:1 termsIdentifier:v15 secondaryIdentifier:0 actionIdentifier:0 completion:v16];
+        [v11 termsAccepted:1 termsIdentifier:anyObject secondaryIdentifier:0 actionIdentifier:0 completion:v16];
         v12 = &v17;
       }
     }
@@ -968,20 +968,20 @@ void __52__PKApplyTermsVerifyingViewController__processTerms__block_invoke_15(ui
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_showActivationSpinner:(BOOL)a3
+- (void)_showActivationSpinner:(BOOL)spinner
 {
-  v3 = a3;
+  spinnerCopy = spinner;
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [(PKExplanationViewController *)self explanationView];
-  [v4 setShowSpinner:v3];
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v5 _setIdleTimerDisabled:v3 forReason:@"Submitting Application Terms"];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setShowSpinner:spinnerCopy];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] _setIdleTimerDisabled:spinnerCopy forReason:@"Submitting Application Terms"];
 
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"enabled";
-    if (v3)
+    if (spinnerCopy)
     {
       v7 = @"disabled";
     }
@@ -993,8 +993,8 @@ void __52__PKApplyTermsVerifyingViewController__processTerms__block_invoke_15(ui
     _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "Idle timer is: %@ for reason: %@", &v9, 0x16u);
   }
 
-  v8 = [v4 dockView];
-  [v8 setButtonsEnabled:v3 ^ 1];
+  dockView = [explanationView dockView];
+  [dockView setButtonsEnabled:spinnerCopy ^ 1];
 }
 
 - (void)_terminateSetupFlow
@@ -1014,8 +1014,8 @@ void __52__PKApplyTermsVerifyingViewController__processTerms__block_invoke_15(ui
 
   else
   {
-    v5 = [(PKApplyTermsVerifyingViewController *)self presentingViewController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKApplyTermsVerifyingViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 

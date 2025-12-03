@@ -4,23 +4,23 @@
 - (VKTextFrameProcessor)init;
 - (VKTextFrameProcessorConfiguration)configuration;
 - (__n128)warpTransform;
-- (id)_documentRequestForInputObservation:(uint64_t)a1;
-- (id)_filterDocuments:(uint64_t)a1;
-- (id)_performDetection:(void *)a1;
-- (id)_performGatingAndRecognition:(id *)a1;
-- (id)_performRecognition:(void *)a3 inputObservation:;
+- (id)_documentRequestForInputObservation:(uint64_t)observation;
+- (id)_filterDocuments:(uint64_t)documents;
+- (id)_performDetection:(void *)detection;
+- (id)_performGatingAndRecognition:(id *)recognition;
+- (id)_performRecognition:(void *)recognition inputObservation:;
 - (id)resultHandler;
-- (void)_performAssociation:(void *)a1;
-- (void)_processRecognitionResults:(void *)a3 forFrame:;
+- (void)_performAssociation:(void *)association;
+- (void)_processRecognitionResults:(void *)results forFrame:;
 - (void)_removeAllItems;
-- (void)applyHomographyWarpTransform:(__n128)a3;
-- (void)processFrame:(id)a3;
+- (void)applyHomographyWarpTransform:(__n128)transform;
+- (void)processFrame:(id)frame;
 - (void)reset;
-- (void)sendResult:(void *)a1;
-- (void)setConfiguration:(id)a3;
-- (void)setResultHandler:(id)a3;
-- (void)setWantsThrottling:(BOOL)a3;
-- (void)setWarpTransform:(uint64_t)a1;
+- (void)sendResult:(void *)result;
+- (void)setConfiguration:(id)configuration;
+- (void)setResultHandler:(id)handler;
+- (void)setWantsThrottling:(BOOL)throttling;
+- (void)setWarpTransform:(uint64_t)transform;
 @end
 
 @implementation VKTextFrameProcessor
@@ -55,9 +55,9 @@
     *v2->_anon_60 = *MEMORY[0x1E69E9B10];
     *&v2->_anon_60[16] = v6;
     *&v2->_anon_60[32] = *(v5 + 32);
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     recognizedItems = v2->_recognizedItems;
-    v2->_recognizedItems = v7;
+    v2->_recognizedItems = array;
   }
 
   return v2;
@@ -72,20 +72,20 @@
   return v3;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VKTextFrameProcessor *)self configuration];
-  v6 = [v5 isEqual:v4];
+  configurationCopy = configuration;
+  configuration = [(VKTextFrameProcessor *)self configuration];
+  v6 = [configuration isEqual:configurationCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [v4 copy];
+    v7 = [configurationCopy copy];
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __41__VKTextFrameProcessor_setConfiguration___block_invoke;
     v12 = &unk_1E7BE4768;
-    v13 = self;
+    selfCopy = self;
     v14 = v7;
     v8 = v7;
     vk_performWhileLocked(self, &v9);
@@ -103,16 +103,16 @@
   return v4;
 }
 
-- (void)setResultHandler:(id)a3
+- (void)setResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__VKTextFrameProcessor_setResultHandler___block_invoke;
   v6[3] = &unk_1E7BE47B8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   vk_performWhileLocked(self, v6);
 }
 
@@ -124,7 +124,7 @@ void __41__VKTextFrameProcessor_setResultHandler___block_invoke(uint64_t a1)
   *(v3 + 152) = v2;
 }
 
-- (void)applyHomographyWarpTransform:(__n128)a3
+- (void)applyHomographyWarpTransform:(__n128)transform
 {
   v13 = 0;
   v14 = &v13;
@@ -137,16 +137,16 @@ void __41__VKTextFrameProcessor_setResultHandler___block_invoke(uint64_t a1)
   v7[2] = __53__VKTextFrameProcessor_applyHomographyWarpTransform___block_invoke;
   v7[3] = &unk_1E7BE4808;
   v8 = a2;
-  v9 = a3;
+  transformCopy = transform;
   v10 = a4;
-  v11 = a1;
+  selfCopy = self;
   v12 = &v13;
-  vk_performWhileLocked(a1, v7);
+  vk_performWhileLocked(self, v7);
   v5 = v14[5];
   v6 = objc_alloc_init(VKRecognizedItemFrameProcessorResult);
   [(VKRecognizedItemFrameProcessorResult *)v6 setAllItems:v5];
   [(VKRecognizedItemFrameProcessorResult *)v6 setUpdatedItems:v5];
-  [(VKTextFrameProcessor *)a1 sendResult:v6];
+  [(VKTextFrameProcessor *)self sendResult:v6];
 
   _Block_object_dispose(&v13, 8);
 }
@@ -238,27 +238,27 @@ __n128 __41__VKTextFrameProcessor_setWarpTransform___block_invoke(uint64_t a1)
   return wantsThrottling;
 }
 
-- (void)setWantsThrottling:(BOOL)a3
+- (void)setWantsThrottling:(BOOL)throttling
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __43__VKTextFrameProcessor_setWantsThrottling___block_invoke;
   v3[3] = &unk_1E7BE41B8;
   v3[4] = self;
-  v4 = a3;
+  throttlingCopy = throttling;
   vk_performWhileLocked(self, v3);
 }
 
-- (void)processFrame:(id)a3
+- (void)processFrame:(id)frame
 {
-  v4 = a3;
-  v5 = [(VKTextFrameProcessor *)self configuration];
+  frameCopy = frame;
+  configuration = [(VKTextFrameProcessor *)self configuration];
   currentConfig = self->_currentConfig;
-  self->_currentConfig = v5;
+  self->_currentConfig = configuration;
 
   self->_dataType = [(VKTextFrameProcessorConfiguration *)self->_currentConfig dataType];
-  v7 = [(VKTextFrameProcessor *)&self->super.super.isa _performGatingAndRecognition:v4];
-  [(VKTextFrameProcessor *)self _processRecognitionResults:v7 forFrame:v4];
+  v7 = [(VKTextFrameProcessor *)&self->super.super.isa _performGatingAndRecognition:frameCopy];
+  [(VKTextFrameProcessor *)self _processRecognitionResults:v7 forFrame:frameCopy];
 }
 
 - (void)reset
@@ -269,23 +269,23 @@ __n128 __41__VKTextFrameProcessor_setWarpTransform___block_invoke(uint64_t a1)
   [(VKTextFrameProcessor *)&self->super.super.isa _removeAllItems];
 }
 
-- (void)_performAssociation:(void *)a1
+- (void)_performAssociation:(void *)association
 {
   v3 = a2;
-  if (a1)
+  if (association)
   {
     v33 = 0;
     v34 = &v33;
     v35 = 0x3032000000;
     v36 = __Block_byref_object_copy__2;
     v37 = __Block_byref_object_dispose__2;
-    v38 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v27 = 0;
     v28 = &v27;
     v29 = 0x3032000000;
     v30 = __Block_byref_object_copy__2;
     v31 = __Block_byref_object_dispose__2;
-    v32 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v21 = 0;
     v22 = &v21;
     v23 = 0x3032000000;
@@ -297,24 +297,24 @@ __n128 __41__VKTextFrameProcessor_setWarpTransform___block_invoke(uint64_t a1)
     v17 = 0x3032000000;
     v18 = __Block_byref_object_copy__2;
     v19 = __Block_byref_object_dispose__2;
-    v20 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v5 = MEMORY[0x1E69E9820];
     v6 = 3221225472;
     v7 = __44__VKTextFrameProcessor__performAssociation___block_invoke;
     v8 = &unk_1E7BE4858;
     v9 = v3;
-    v10 = a1;
+    associationCopy = association;
     v11 = &v27;
     v12 = &v15;
     v13 = &v33;
     v14 = &v21;
-    vk_performWhileLocked(a1, &v5);
+    vk_performWhileLocked(association, &v5);
     v4 = objc_alloc_init(VKRecognizedItemFrameProcessorResult);
     [(VKRecognizedItemFrameProcessorResult *)v4 setAllItems:v16[5], v5, v6, v7, v8];
     [(VKRecognizedItemFrameProcessorResult *)v4 setAddedItems:v34[5]];
     [(VKRecognizedItemFrameProcessorResult *)v4 setUpdatedItems:v28[5]];
     [(VKRecognizedItemFrameProcessorResult *)v4 setRemovedItems:v22[5]];
-    [(VKTextFrameProcessor *)a1 sendResult:v4];
+    [(VKTextFrameProcessor *)association sendResult:v4];
 
     _Block_object_dispose(&v15, 8);
     _Block_object_dispose(&v21, 8);
@@ -402,33 +402,33 @@ LABEL_13:
   return [*(*(a1 + 40) + 144) addObjectsFromArray:*(*(*(a1 + 56) + 8) + 40)];
 }
 
-- (void)sendResult:(void *)a1
+- (void)sendResult:(void *)result
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (result)
   {
-    v5 = [v3 allItems];
-    [a1 setWantsThrottling:{objc_msgSend(v5, "count") != 0}];
+    allItems = [v3 allItems];
+    [result setWantsThrottling:{objc_msgSend(allItems, "count") != 0}];
 
     if (!v4)
     {
       [VKAssert handleFailedAssertWithCondition:"result" functionName:"[VKTextFrameProcessor sendResult:]" simulateCrash:0 showAlert:0 format:@"Expecting a non-nil result object."];
     }
 
-    v6 = [a1 resultHandler];
-    if (v6)
+    resultHandler = [result resultHandler];
+    if (resultHandler)
     {
-      v7 = [a1 resultHandlerQueue];
-      if (v7)
+      resultHandlerQueue = [result resultHandlerQueue];
+      if (resultHandlerQueue)
       {
         OUTLINED_FUNCTION_0_1();
         v10[1] = 3221225472;
         v10[2] = __35__VKTextFrameProcessor_sendResult___block_invoke;
         v10[3] = &unk_1E7BE47E0;
-        v12 = v6;
+        v12 = resultHandler;
         v11 = v4;
-        dispatch_async(v7, v10);
+        dispatch_async(resultHandlerQueue, v10);
       }
 
       else
@@ -442,20 +442,20 @@ LABEL_13:
 
 - (__n128)warpTransform
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  [a1 lock];
-  v3 = a1[6];
-  [a1 unlock];
+  [self lock];
+  v3 = self[6];
+  [self unlock];
   return v3;
 }
 
-- (void)setWarpTransform:(uint64_t)a1
+- (void)setWarpTransform:(uint64_t)transform
 {
-  if (a1)
+  if (transform)
   {
     OUTLINED_FUNCTION_0_1();
     v5[1] = 3221225472;
@@ -469,18 +469,18 @@ LABEL_13:
   }
 }
 
-- (id)_performGatingAndRecognition:(id *)a1
+- (id)_performGatingAndRecognition:(id *)recognition
 {
   v3 = a2;
-  if (a1)
+  if (recognition)
   {
-    if ([a1[20] shouldPerformTextDetectionGating])
+    if ([recognition[20] shouldPerformTextDetectionGating])
     {
       v4 = OUTLINED_FUNCTION_4();
       v6 = [(VKTextFrameProcessor *)v4 _performDetection:v5];
       if (!v6)
       {
-        a1 = MEMORY[0x1E695E0F0];
+        recognition = MEMORY[0x1E695E0F0];
         goto LABEL_7;
       }
 
@@ -493,30 +493,30 @@ LABEL_13:
     }
 
     v8 = OUTLINED_FUNCTION_4();
-    a1 = [(VKTextFrameProcessor *)v8 _performRecognition:v9 inputObservation:v7];
+    recognition = [(VKTextFrameProcessor *)v8 _performRecognition:v9 inputObservation:v7];
   }
 
 LABEL_7:
 
-  return a1;
+  return recognition;
 }
 
-- (void)_processRecognitionResults:(void *)a3 forFrame:
+- (void)_processRecognitionResults:(void *)results forFrame:
 {
   v26 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1 && ([a1 isCancelled] & 1) == 0)
+  resultsCopy = results;
+  if (self && ([self isCancelled] & 1) == 0)
   {
     v7 = MEMORY[0x1E695DF70];
     [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_3_0() lock];
-    v19 = a1[7];
-    v20 = a1[6];
-    v18 = a1[8];
-    v17 = a1;
-    [a1 unlock];
+    v19 = self[7];
+    v20 = self[6];
+    v18 = self[8];
+    selfCopy = self;
+    [self unlock];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
@@ -538,8 +538,8 @@ LABEL_7:
 
           v13 = *(*(&v21 + 1) + 8 * i);
           v14 = [VKRecognizedText alloc];
-          v15 = [v6 info];
-          v16 = [(VKRecognizedText *)v14 initWithFrameInfo:v15 textBlockObservation:v13];
+          info = [resultsCopy info];
+          v16 = [(VKRecognizedText *)v14 initWithFrameInfo:info textBlockObservation:v13];
 
           [(VKRecognizedItem *)v16 applyHomographyWarpTransform:*&v20, *&v19, *&v18];
           [v7 addObject:v16];
@@ -551,55 +551,55 @@ LABEL_7:
       while (v10);
     }
 
-    [(VKTextFrameProcessor *)v17 _performAssociation:v7];
+    [(VKTextFrameProcessor *)selfCopy _performAssociation:v7];
   }
 }
 
 - (void)_removeAllItems
 {
-  if (a1)
+  if (self)
   {
-    [a1 lock];
-    v3 = [a1[18] copy];
-    [a1[18] removeAllObjects];
-    [a1 unlock];
+    [self lock];
+    v3 = [self[18] copy];
+    [self[18] removeAllObjects];
+    [self unlock];
     if ([v3 count])
     {
       v2 = objc_alloc_init(VKRecognizedItemFrameProcessorResult);
       [(VKRecognizedItemFrameProcessorResult *)v2 setRemovedItems:v3];
-      [(VKTextFrameProcessor *)a1 sendResult:v2];
+      [(VKTextFrameProcessor *)self sendResult:v2];
     }
   }
 }
 
-- (id)_performDetection:(void *)a1
+- (id)_performDetection:(void *)detection
 {
   v37 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v28 = v3;
-  if (a1)
+  if (detection)
   {
     v4 = v3;
-    v5 = [a1 configuration];
-    if (([v5 shouldPerformTextDetectionGating] & 1) == 0)
+    configuration = [detection configuration];
+    if (([configuration shouldPerformTextDetectionGating] & 1) == 0)
     {
       [VKAssert handleFailedAssertWithCondition:"configuration.shouldPerformTextDetectionGating" functionName:"[VKTextFrameProcessor _performDetection:]" simulateCrash:0 showAlert:0 format:@"Running detection when the configuration does not support it."];
     }
 
     v6 = objc_alloc_init(MEMORY[0x1E6984628]);
-    [v6 setUsesAlternateLineGrouping:{objc_msgSend(v5, "usesAlternateLineGrouping")}];
+    [v6 setUsesAlternateLineGrouping:{objc_msgSend(configuration, "usesAlternateLineGrouping")}];
     [v6 setMaximumCandidateCount:1];
     [v6 setDetectionOnly:1];
-    v7 = [v4 info];
-    [v7 regionOfInterest];
+    info = [v4 info];
+    [info regionOfInterest];
     [v6 setRegionOfInterest:?];
 
-    v8 = [v4 imageRequestHandler];
+    imageRequestHandler = [v4 imageRequestHandler];
     v34 = v6;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v34 count:1];
     v29 = 0;
-    v27 = v8;
-    [v8 performRequests:v9 error:&v29];
+    v27 = imageRequestHandler;
+    [imageRequestHandler performRequests:v9 error:&v29];
     v10 = v29;
 
     if (v10)
@@ -613,17 +613,17 @@ LABEL_7:
       }
     }
 
-    [v5 comparisonPoint];
+    [configuration comparisonPoint];
     v13 = v12;
     v15 = v14;
-    v16 = [v5 documentBlockType];
-    v17 = [v6 results];
-    v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v17, "count")}];
+    documentBlockType = [configuration documentBlockType];
+    results = [v6 results];
+    v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(results, "count")}];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v19 = v17;
+    v19 = results;
     v20 = [v19 countByEnumeratingWithState:&v30 objects:buf count:16];
     if (v20)
     {
@@ -638,7 +638,7 @@ LABEL_7:
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v30 + 1) + 8 * i) closestTextBlockOfTypes:v16 toPoint:10000 maximumPixelDistance:{v13, v15}];
+          v24 = [*(*(&v30 + 1) + 8 * i) closestTextBlockOfTypes:documentBlockType toPoint:10000 maximumPixelDistance:{v13, v15}];
           if (v24)
           {
             [v18 addObject:v24];
@@ -662,57 +662,57 @@ LABEL_7:
   return v25;
 }
 
-- (id)_performRecognition:(void *)a3 inputObservation:
+- (id)_performRecognition:(void *)recognition inputObservation:
 {
-  v3 = a1;
+  selfCopy = self;
   v17[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v5 = a3;
+    recognitionCopy = recognition;
     v6 = a2;
-    [VKTextFrameProcessor setWarpTransform:v3];
-    v7 = [(VKTextFrameProcessor *)v3 _documentRequestForInputObservation:v5];
+    [VKTextFrameProcessor setWarpTransform:selfCopy];
+    v7 = [(VKTextFrameProcessor *)selfCopy _documentRequestForInputObservation:recognitionCopy];
 
-    v8 = [v6 info];
-    [v8 regionOfInterest];
+    info = [v6 info];
+    [info regionOfInterest];
     [v7 setRegionOfInterest:?];
 
-    v9 = [v6 imageRequestHandler];
+    imageRequestHandler = [v6 imageRequestHandler];
 
     v17[0] = v7;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
     v14 = 0;
-    [v9 performRequests:v10 error:&v14];
+    [imageRequestHandler performRequests:v10 error:&v14];
     v11 = v14;
 
     if (v11)
     {
-      v12 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.UtilityCamera");
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      results = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.UtilityCamera");
+      if (os_log_type_enabled(results, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v16 = v11;
-        _os_log_error_impl(&dword_1B4335000, v12, OS_LOG_TYPE_ERROR, "Error performing recognition request. %@", buf, 0xCu);
+        _os_log_error_impl(&dword_1B4335000, results, OS_LOG_TYPE_ERROR, "Error performing recognition request. %@", buf, 0xCu);
       }
 
-      v3 = MEMORY[0x1E695E0F0];
+      selfCopy = MEMORY[0x1E695E0F0];
     }
 
     else
     {
-      v12 = [v7 results];
-      v3 = [(VKTextFrameProcessor *)v3 _filterDocuments:v12];
+      results = [v7 results];
+      selfCopy = [(VKTextFrameProcessor *)selfCopy _filterDocuments:results];
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)_documentRequestForInputObservation:(uint64_t)a1
+- (id)_documentRequestForInputObservation:(uint64_t)observation
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (observation)
   {
     v4 = objc_alloc_init(MEMORY[0x1E6984628]);
     [v4 setUsesAlternateLineGrouping:{objc_msgSend(OUTLINED_FUNCTION_2_0(), "usesAlternateLineGrouping")}];
@@ -721,23 +721,23 @@ LABEL_7:
     [v4 setUsesLanguageDetection:{objc_msgSend(OUTLINED_FUNCTION_2_0(), "usesLanguageDetection")}];
     [v4 setUsesLanguageCorrection:1];
     [v4 setRecognitionLevel:0];
-    v5 = [OUTLINED_FUNCTION_2_0() customWords];
-    v6 = [v5 count];
+    customWords = [OUTLINED_FUNCTION_2_0() customWords];
+    v6 = [customWords count];
 
     if (v6)
     {
       [OUTLINED_FUNCTION_2_0() customWords];
       objc_claimAutoreleasedReturnValue();
-      [OUTLINED_FUNCTION_3_0() setCustomWords:v5];
+      [OUTLINED_FUNCTION_3_0() setCustomWords:customWords];
     }
 
-    v7 = [OUTLINED_FUNCTION_2_0() recognitionLanguages];
-    v8 = v7;
-    if (!v7 || ![v7 count])
+    recognitionLanguages = [OUTLINED_FUNCTION_2_0() recognitionLanguages];
+    v8 = recognitionLanguages;
+    if (!recognitionLanguages || ![recognitionLanguages count])
     {
-      v5 = [MEMORY[0x1E695DF58] preferredLanguages];
+      customWords = [MEMORY[0x1E695DF58] preferredLanguages];
 
-      v8 = v5;
+      v8 = customWords;
     }
 
     [v4 setRecognitionLanguages:v8];
@@ -746,7 +746,7 @@ LABEL_7:
       v10[0] = v3;
       [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
       objc_claimAutoreleasedReturnValue();
-      [OUTLINED_FUNCTION_3_0() setInputTextBlocks:v5];
+      [OUTLINED_FUNCTION_3_0() setInputTextBlocks:customWords];
     }
   }
 
@@ -758,17 +758,17 @@ LABEL_7:
   return v4;
 }
 
-- (id)_filterDocuments:(uint64_t)a1
+- (id)_filterDocuments:(uint64_t)documents
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (documents)
   {
     v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
     if (v4)
     {
-      v6 = *(a1 + 168);
+      v6 = *(documents + 168);
       if (v6)
       {
         _FilterByDataType(v4, v6);
@@ -776,16 +776,16 @@ LABEL_7:
 
       else
       {
-        _FilterByBlockType(v4, [*(a1 + 160) documentBlockType]);
+        _FilterByBlockType(v4, [*(documents + 160) documentBlockType]);
       }
       v7 = ;
 
       v5 = v7;
     }
 
-    if ([*(a1 + 160) isForSingleItem] && objc_msgSend(v5, "count"))
+    if ([*(documents + 160) isForSingleItem] && objc_msgSend(v5, "count"))
     {
-      [*(a1 + 160) comparisonPoint];
+      [*(documents + 160) comparisonPoint];
       v10 = VKVNRectClosestToPoint(v5, v8, v9);
       v13[0] = v10;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];

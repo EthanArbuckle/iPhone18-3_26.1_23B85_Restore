@@ -1,9 +1,9 @@
 @interface ACFHTTPMethod
 + (id)method;
-+ (id)methodWithName:(id)a3 headerFields:(id)a4 body:(id)a5;
-+ (id)methodWithName:(id)a3 headerFields:(id)a4 bodyPropertyList:(id)a5 error:(id *)a6;
++ (id)methodWithName:(id)name headerFields:(id)fields body:(id)body;
++ (id)methodWithName:(id)name headerFields:(id)fields bodyPropertyList:(id)list error:(id *)error;
 - (ACFHTTPMethod)init;
-- (ACFHTTPMethod)initWithName:(id)a3 headerFields:(id)a4 body:(id)a5;
+- (ACFHTTPMethod)initWithName:(id)name headerFields:(id)fields body:(id)body;
 - (void)dealloc;
 @end
 
@@ -11,25 +11,25 @@
 
 + (id)method
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)methodWithName:(id)a3 headerFields:(id)a4 body:(id)a5
++ (id)methodWithName:(id)name headerFields:(id)fields body:(id)body
 {
-  v5 = [[a1 alloc] initWithName:a3 headerFields:a4 body:a5];
+  v5 = [[self alloc] initWithName:name headerFields:fields body:body];
 
   return v5;
 }
 
-+ (id)methodWithName:(id)a3 headerFields:(id)a4 bodyPropertyList:(id)a5 error:(id *)a6
++ (id)methodWithName:(id)name headerFields:(id)fields bodyPropertyList:(id)list error:(id *)error
 {
-  result = [MEMORY[0x29EDBA0C0] dataWithPropertyList:a5 format:100 options:0 error:a6];
+  result = [MEMORY[0x29EDBA0C0] dataWithPropertyList:list format:100 options:0 error:error];
   if (result)
   {
 
-    return [a1 methodWithName:a3 headerFields:a4 body:result];
+    return [self methodWithName:name headerFields:fields body:result];
   }
 
   return result;
@@ -55,16 +55,16 @@
   return v2;
 }
 
-- (ACFHTTPMethod)initWithName:(id)a3 headerFields:(id)a4 body:(id)a5
+- (ACFHTTPMethod)initWithName:(id)name headerFields:(id)fields body:(id)body
 {
   v10.receiver = self;
   v10.super_class = ACFHTTPMethod;
   v8 = [(ACFHTTPMethod *)&v10 init];
   if (v8)
   {
-    v8->_name = a3;
-    v8->_headerFields = a4;
-    v8->_body = a5;
+    v8->_name = name;
+    v8->_headerFields = fields;
+    v8->_body = body;
   }
 
   return v8;

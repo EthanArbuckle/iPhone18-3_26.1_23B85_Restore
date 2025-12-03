@@ -1,6 +1,6 @@
 @interface MTRBooleanStateConfigurationClusterSensorFaultEvent
 - (MTRBooleanStateConfigurationClusterSensorFaultEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRBooleanStateConfigurationClusterSensorFaultEvent);
-  v5 = [(MTRBooleanStateConfigurationClusterSensorFaultEvent *)self sensorFault];
-  [(MTRBooleanStateConfigurationClusterSensorFaultEvent *)v4 setSensorFault:v5];
+  sensorFault = [(MTRBooleanStateConfigurationClusterSensorFaultEvent *)self sensorFault];
+  [(MTRBooleanStateConfigurationClusterSensorFaultEvent *)v4 setSensorFault:sensorFault];
 
   return v4;
 }

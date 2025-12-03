@@ -1,19 +1,19 @@
 @interface THWButtonControlRep
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)handleGesture:(id)gesture;
 - (BOOL)p_interactionEnabled;
 - (CALayer)highlightLayer;
 - (THWButtonControlDelegate)delegate;
 - (id)additionalLayersOverLayer;
-- (id)p_imageForState:(int)a3 highlighted:(BOOL)a4;
+- (id)p_imageForState:(int)state highlighted:(BOOL)highlighted;
 - (int)state;
-- (void)addAdditionalChildLayersToArray:(id)a3;
+- (void)addAdditionalChildLayersToArray:(id)array;
 - (void)dealloc;
-- (void)didUpdateLayer:(id)a3;
+- (void)didUpdateLayer:(id)layer;
 - (void)p_interactionDidEnd;
 - (void)p_interactionWillStart;
 - (void)screenScaleDidChange;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation THWButtonControlRep
@@ -42,10 +42,10 @@
   v4.receiver = self;
   v4.super_class = THWButtonControlRep;
   [(THWButtonControlRep *)&v4 screenScaleDidChange];
-  v3 = [(THWButtonControlRep *)self delegate];
+  delegate = [(THWButtonControlRep *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    if ([(THWButtonControlDelegate *)v3 buttonControlUseContentsScaleForImageCache:self])
+    if ([(THWButtonControlDelegate *)delegate buttonControlUseContentsScaleForImageCache:self])
     {
       [*(&self->_cachedImages + 1) removeAllObjects];
     }
@@ -54,19 +54,19 @@
 
 - (int)state
 {
-  v3 = [(THWButtonControlRep *)self delegate];
+  delegate = [(THWButtonControlRep *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [(THWButtonControlDelegate *)v3 buttonControlState:self];
+  return [(THWButtonControlDelegate *)delegate buttonControlState:self];
 }
 
-- (id)p_imageForState:(int)a3 highlighted:(BOOL)a4
+- (id)p_imageForState:(int)state highlighted:(BOOL)highlighted
 {
-  v4 = a4;
-  v5 = *&a3;
+  highlightedCopy = highlighted;
+  v5 = *&state;
   v7 = *(&self->_cachedImages + 1);
   if (!v7)
   {
@@ -74,22 +74,22 @@
     *(&self->_cachedImages + 1) = v7;
   }
 
-  v8 = [(TSUIntegerKeyDictionary *)v7 objectForKey:v4 | (2 * v5)];
+  v8 = [(TSUIntegerKeyDictionary *)v7 objectForKey:highlightedCopy | (2 * v5)];
   if (!v8)
   {
-    v8 = [(THWButtonControlDelegate *)[(THWButtonControlRep *)self delegate] buttonControl:self imageForState:v5 highlighted:v4];
-    if (!v8 && v4)
+    v8 = [(THWButtonControlDelegate *)[(THWButtonControlRep *)self delegate] buttonControl:self imageForState:v5 highlighted:highlightedCopy];
+    if (!v8 && highlightedCopy)
     {
       v8 = [(THWButtonControlRep *)self p_imageForState:v5 highlighted:0];
     }
 
     if (v5 == 1 && !v8)
     {
-      v8 = [(THWButtonControlRep *)self p_imageForState:0 highlighted:v4];
+      v8 = [(THWButtonControlRep *)self p_imageForState:0 highlighted:highlightedCopy];
       if (v8)
       {
 LABEL_12:
-        [*(&self->_cachedImages + 1) setObject:v8 forKey:v4 | (2 * v5)];
+        [*(&self->_cachedImages + 1) setObject:v8 forKey:highlightedCopy | (2 * v5)];
         return v8;
       }
 
@@ -105,38 +105,38 @@ LABEL_12:
   return v8;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(THWControlRep *)self invalidateLayers];
-    v4 = [(THWButtonControlRep *)self delegate];
+    delegate = [(THWButtonControlRep *)self delegate];
     if (objc_opt_respondsToSelector())
     {
 
-      [(THWButtonControlDelegate *)v4 buttonControlHighlightedDidChange:self];
+      [(THWButtonControlDelegate *)delegate buttonControlHighlightedDidChange:self];
     }
   }
 }
 
 - (BOOL)p_interactionEnabled
 {
-  v3 = [(THWControlRep *)self controlHostRep];
+  controlHostRep = [(THWControlRep *)self controlHostRep];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 1;
   }
 
-  v4 = [(THWButtonControlRep *)self layout];
+  layout = [(THWButtonControlRep *)self layout];
 
-  return [v3 control:v4 isInteractionEnabledForRep:self];
+  return [controlHostRep control:layout isInteractionEnabledForRep:self];
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  v4 = [a3 gestureKind];
-  if (v4 != TSWPImmediatePress || [(THWButtonControlRep *)self state]== 2)
+  gestureKind = [gesture gestureKind];
+  if (gestureKind != TSWPImmediatePress || [(THWButtonControlRep *)self state]== 2)
   {
     return 0;
   }
@@ -144,16 +144,16 @@ LABEL_12:
   return [(THWButtonControlRep *)self p_interactionEnabled];
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  v5 = [a3 gestureState];
-  if (v5 <= 3)
+  gestureState = [gesture gestureState];
+  if (gestureState <= 3)
   {
-    switch(v5)
+    switch(gestureState)
     {
       case 1:
         [(THWButtonControlRep *)self p_interactionWillStart];
-        v6 = self;
+        selfCopy3 = self;
         v7 = &dword_0 + 1;
         break;
       case 2:
@@ -161,15 +161,15 @@ LABEL_12:
         {
           objc_opt_class();
           [TSUDynamicCast() cancel];
-          v6 = self;
+          selfCopy3 = self;
           v7 = 0;
         }
 
         else
         {
-          [a3 naturalLocationForRep:self];
+          [gesture naturalLocationForRep:self];
           v7 = [(THWButtonControlRep *)self containsPoint:?];
-          v6 = self;
+          selfCopy3 = self;
         }
 
         break;
@@ -185,11 +185,11 @@ LABEL_12:
         return 1;
     }
 
-    [(THWButtonControlRep *)v6 setHighlighted:v7];
+    [(THWButtonControlRep *)selfCopy3 setHighlighted:v7];
     return 1;
   }
 
-  if ((v5 - 4) < 2)
+  if ((gestureState - 4) < 2)
   {
     [(THWButtonControlRep *)self setHighlighted:0];
 LABEL_9:
@@ -201,21 +201,21 @@ LABEL_9:
 
 - (void)p_interactionWillStart
 {
-  v3 = [(THWButtonControlRep *)self delegate];
+  delegate = [(THWButtonControlRep *)self delegate];
   if (objc_opt_respondsToSelector())
   {
 
-    [(THWButtonControlDelegate *)v3 buttonControlInteractionWillStart:self];
+    [(THWButtonControlDelegate *)delegate buttonControlInteractionWillStart:self];
   }
 }
 
 - (void)p_interactionDidEnd
 {
-  v3 = [(THWButtonControlRep *)self delegate];
+  delegate = [(THWButtonControlRep *)self delegate];
   if (objc_opt_respondsToSelector())
   {
 
-    [(THWButtonControlDelegate *)v3 buttonControlInteractionDidEnd:self];
+    [(THWButtonControlDelegate *)delegate buttonControlInteractionDidEnd:self];
   }
 }
 
@@ -235,15 +235,15 @@ LABEL_9:
   return result;
 }
 
-- (void)didUpdateLayer:(id)a3
+- (void)didUpdateLayer:(id)layer
 {
   v5 = [(THWButtonControlRep *)self p_imageForState:[(THWButtonControlRep *)self state] highlighted:self->_highlighted];
-  v6 = [(THWButtonControlRep *)self delegate];
+  delegate = [(THWButtonControlRep *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     if (self->_highlighted)
     {
-      v7 = [(THWButtonControlDelegate *)v6 buttonControlAdjustImageWhenHighlighted:self];
+      v7 = [(THWButtonControlDelegate *)delegate buttonControlAdjustImageWhenHighlighted:self];
       goto LABEL_7;
     }
   }
@@ -259,21 +259,21 @@ LABEL_7:
   [-[THWButtonControlRep canvas](self "canvas")];
   v9 = v8;
   v10 = [v5 CGImageForContentsScale:?];
-  if ([a3 contents] != v10)
+  if ([layer contents] != v10)
   {
-    [a3 setContents:v10];
-    [a3 setContentsScale:v9];
+    [layer setContents:v10];
+    [layer setContentsScale:v9];
   }
 
   if (v7)
   {
-    v11 = [(THWButtonControlRep *)self highlightLayer];
+    highlightLayer = [(THWButtonControlRep *)self highlightLayer];
     y = CGPointZero.y;
-    [a3 bounds];
-    [(CALayer *)v11 setBounds:CGPointZero.x, y];
-    if (![(CALayer *)v11 superlayer])
+    [layer bounds];
+    [(CALayer *)highlightLayer setBounds:CGPointZero.x, y];
+    if (![(CALayer *)highlightLayer superlayer])
     {
-      [a3 insertSublayer:v11 atIndex:0];
+      [layer insertSublayer:highlightLayer atIndex:0];
     }
   }
 
@@ -287,28 +287,28 @@ LABEL_7:
   if (objc_opt_respondsToSelector())
   {
 
-    [(THWButtonControlDelegate *)v6 buttonControl:self didUpdateLayer:a3];
+    [(THWButtonControlDelegate *)delegate buttonControl:self didUpdateLayer:layer];
   }
 }
 
 - (id)additionalLayersOverLayer
 {
-  v3 = [(THWButtonControlRep *)self delegate];
+  delegate = [(THWButtonControlRep *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [(THWButtonControlDelegate *)v3 buttonControlAdditionalLayersOverLayer:self];
+  return [(THWButtonControlDelegate *)delegate buttonControlAdditionalLayersOverLayer:self];
 }
 
-- (void)addAdditionalChildLayersToArray:(id)a3
+- (void)addAdditionalChildLayersToArray:(id)array
 {
-  v5 = [(THWButtonControlRep *)self delegate];
+  delegate = [(THWButtonControlRep *)self delegate];
   if (objc_opt_respondsToSelector())
   {
 
-    [(THWButtonControlDelegate *)v5 buttonControl:self addAdditionalChildLayersToArray:a3];
+    [(THWButtonControlDelegate *)delegate buttonControl:self addAdditionalChildLayersToArray:array];
   }
 }
 

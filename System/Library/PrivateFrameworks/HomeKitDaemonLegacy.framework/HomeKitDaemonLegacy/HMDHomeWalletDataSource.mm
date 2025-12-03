@@ -1,9 +1,9 @@
 @interface HMDHomeWalletDataSource
 - (BOOL)isResidentCapable;
-- (BOOL)registerForPasscodeChangeNotificationWithQueue:(id)a3 callback:(id)a4;
+- (BOOL)registerForPasscodeChangeNotificationWithQueue:(id)queue callback:(id)callback;
 - (HMDHomeWalletDataSource)init;
 - (double)accessoryWriteRetryInterval;
-- (id)numberValueFromNoBackupStoreWithKey:(id)a3;
+- (id)numberValueFromNoBackupStoreWithKey:(id)key;
 - (int64_t)accessoryWriteMaxRetryCount;
 - (int64_t)walletKeyColor;
 - (void)dealloc;
@@ -11,9 +11,9 @@
 
 @implementation HMDHomeWalletDataSource
 
-- (id)numberValueFromNoBackupStoreWithKey:(id)a3
+- (id)numberValueFromNoBackupStoreWithKey:(id)key
 {
-  v3 = CFPreferencesCopyAppValue(a3, *MEMORY[0x277CD0028]);
+  v3 = CFPreferencesCopyAppValue(key, *MEMORY[0x277CD0028]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -30,10 +30,10 @@
   return v4;
 }
 
-- (BOOL)registerForPasscodeChangeNotificationWithQueue:(id)a3 callback:(id)a4
+- (BOOL)registerForPasscodeChangeNotificationWithQueue:(id)queue callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  callbackCopy = callback;
   out_token = -1;
   objc_initWeak(&location, self);
   v11 = MEMORY[0x277D85DD0];
@@ -41,9 +41,9 @@
   v13 = __83__HMDHomeWalletDataSource_registerForPasscodeChangeNotificationWithQueue_callback___block_invoke;
   v14 = &unk_27972AC38;
   objc_copyWeak(&v16, &location);
-  v8 = v7;
+  v8 = callbackCopy;
   v15 = v8;
-  v9 = notify_register_dispatch("com.apple.managedconfiguration.passcodechanged", &out_token, v6, &v11);
+  v9 = notify_register_dispatch("com.apple.managedconfiguration.passcodechanged", &out_token, queueCopy, &v11);
   if (!v9)
   {
     [(HMDHomeWalletDataSource *)self setPassCodeChangeNotificationToken:out_token, v11, v12, v13, v14];
@@ -73,25 +73,25 @@ void __83__HMDHomeWalletDataSource_registerForPasscodeChangeNotificationWithQueu
 
 - (int64_t)walletKeyColor
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"walletKeyColor"];
-  v4 = [v3 numberValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"walletKeyColor"];
+  numberValue = [v3 numberValue];
 
-  v5 = [v4 integerValue];
-  v6 = v5;
-  if (v5 > 14935010)
+  integerValue = [numberValue integerValue];
+  v6 = integerValue;
+  if (integerValue > 14935010)
   {
-    v7 = v5 == 14935011;
+    v7 = integerValue == 14935011;
     v8 = 15521450;
   }
 
   else
   {
-    v7 = v5 == 0;
+    v7 = integerValue == 0;
     v8 = 14341582;
   }
 
-  if (!v7 && v5 != v8)
+  if (!v7 && integerValue != v8)
   {
     v6 = *MEMORY[0x277CD06D0];
   }
@@ -101,30 +101,30 @@ void __83__HMDHomeWalletDataSource_registerForPasscodeChangeNotificationWithQueu
 
 - (double)accessoryWriteRetryInterval
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"walletKeyAccessoryWriteRetryInterval"];
-  v4 = [v3 numberValue];
-  v5 = [v4 integerValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"walletKeyAccessoryWriteRetryInterval"];
+  numberValue = [v3 numberValue];
+  integerValue = [numberValue integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (int64_t)accessoryWriteMaxRetryCount
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"walletKeyAccessoryWriteMaxRetryCount"];
-  v4 = [v3 numberValue];
-  v5 = [v4 integerValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"walletKeyAccessoryWriteMaxRetryCount"];
+  numberValue = [v3 numberValue];
+  integerValue = [numberValue integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (BOOL)isResidentCapable
 {
   v2 = +[HMDDeviceCapabilities deviceCapabilities];
-  v3 = [v2 isResidentCapable];
+  isResidentCapable = [v2 isResidentCapable];
 
-  return v3;
+  return isResidentCapable;
 }
 
 - (void)dealloc

@@ -49,7 +49,7 @@
     v10 = 2112;
     v11 = objc_opt_class();
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v4 = v11;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ %p Deleted", buf, 0x2Au);
   }
@@ -61,14 +61,14 @@
 
 - (id)getMegadomeLanguages
 {
-  v2 = [(MegadomeWrapper *)self->_megadomeWrapper readMegadomeLanguages];
+  readMegadomeLanguages = [(MegadomeWrapper *)self->_megadomeWrapper readMegadomeLanguages];
   v3 = +[NSMutableArray array];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v2 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v25 count:16];
+  allKeys = [readMegadomeLanguages allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v15 objects:v25 count:16];
   if (v5)
   {
     v6 = *v16;
@@ -78,24 +78,24 @@
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v2 objectForKeyedSubscript:v8];
+        v9 = [readMegadomeLanguages objectForKeyedSubscript:v8];
         v10 = v9;
         if (v9)
         {
           [v9 floatValue];
           if (v11 > 0.5)
           {
-            v12 = [v8 lowercaseString];
-            [v3 addObject:v12];
+            lowercaseString = [v8 lowercaseString];
+            [v3 addObject:lowercaseString];
           }
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v15 objects:v25 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v15 objects:v25 count:16];
     }
 
     while (v5);

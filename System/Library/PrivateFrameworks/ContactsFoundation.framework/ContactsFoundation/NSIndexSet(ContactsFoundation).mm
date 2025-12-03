@@ -25,7 +25,7 @@
   v5 = v4;
   v9 = v5;
   v10 = &v11;
-  [a1 enumerateIndexesUsingBlock:v8];
+  [self enumerateIndexesUsingBlock:v8];
   v6 = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
@@ -46,7 +46,7 @@
   v5 = v4;
   v9 = v5;
   v10 = &v11;
-  [a1 enumerateIndexesUsingBlock:v8];
+  [self enumerateIndexesUsingBlock:v8];
   v6 = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
@@ -64,7 +64,7 @@
     v6[2] = __43__NSIndexSet_ContactsFoundation___cn_each___block_invoke;
     v6[3] = &unk_1E6ED7DA0;
     v7 = v4;
-    [a1 enumerateIndexesUsingBlock:v6];
+    [self enumerateIndexesUsingBlock:v6];
   }
 }
 
@@ -73,40 +73,40 @@
   v4 = a3;
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __45__NSIndexSet_ContactsFoundation___cn_filter___block_invoke;
     v10[3] = &unk_1E6ED7DC8;
     v12 = v4;
-    v6 = v5;
+    v6 = indexSet;
     v11 = v6;
-    [a1 enumerateIndexesUsingBlock:v10];
+    [self enumerateIndexesUsingBlock:v10];
     v7 = v11;
-    v8 = v6;
+    selfCopy = v6;
   }
 
   else
   {
-    v8 = a1;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)_cn_flatMap:()ContactsFoundation
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __46__NSIndexSet_ContactsFoundation___cn_flatMap___block_invoke;
   v11[3] = &unk_1E6ED7DC8;
   v13 = v4;
-  v6 = v5;
+  v6 = indexSet;
   v12 = v6;
   v7 = v4;
-  [a1 enumerateIndexesUsingBlock:v11];
+  [self enumerateIndexesUsingBlock:v11];
   v8 = v12;
   v9 = v6;
 
@@ -116,7 +116,7 @@
 - (id)_cn_map:()ContactsFoundation
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __42__NSIndexSet_ContactsFoundation___cn_map___block_invoke;
@@ -125,7 +125,7 @@
   v6 = v5;
   v12 = v6;
   v7 = v4;
-  [a1 enumerateIndexesUsingBlock:v11];
+  [self enumerateIndexesUsingBlock:v11];
   v8 = v12;
   v9 = v6;
 
@@ -135,7 +135,7 @@
 - (id)_cn_mapRanges:()ContactsFoundation
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __48__NSIndexSet_ContactsFoundation___cn_mapRanges___block_invoke;
@@ -144,7 +144,7 @@
   v6 = v5;
   v12 = v6;
   v7 = v4;
-  [a1 enumerateRangesUsingBlock:v11];
+  [self enumerateRangesUsingBlock:v11];
   v8 = v12;
   v9 = v6;
 
@@ -154,7 +154,7 @@
 - (id)_cn_shortDescription
 {
   v2 = [MEMORY[0x1E696AD60] stringWithString:@"{"];
-  v3 = [a1 _cn_mapRanges:CNRangeShortDescription];
+  v3 = [self _cn_mapRanges:CNRangeShortDescription];
   v4 = [v3 componentsJoinedByString:{@", "}];
   [v2 appendString:v4];
 

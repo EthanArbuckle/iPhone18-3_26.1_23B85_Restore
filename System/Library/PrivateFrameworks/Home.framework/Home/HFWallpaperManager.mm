@@ -1,35 +1,35 @@
 @interface HFWallpaperManager
 + (id)sharedInstance;
 - (HFWallpaperManager)init;
-- (id)_cachedWallpaperForKey:(id)a3;
-- (id)_originalImageForWallpaper:(id)a3 forProcessingGenerator:(BOOL)a4;
-- (id)_originalImageFromNamedWallpaperSourceForWallpaper:(id)a3;
-- (id)_wallpaperForHomeKitObject:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)allNamedWallpaperThumbnailsForWallpaperCollectionType:(int64_t)a3;
-- (id)allNamedWallpapersForWallpaperCollectionType:(int64_t)a3;
-- (id)defaultUserSelectableWallpaperForHomeKitObject:(id)a3;
-- (id)defaultUserSelectableWallpaperForWallpaperCollectionType:(int64_t)a3;
-- (id)generateProcessedImageFromWallpaper:(id)a3 originalImage:(id)a4;
-- (id)processOriginalBlurredImageFromWallpaper:(id)a3 originalImage:(id)a4;
-- (id)processOriginalImageFromWallpaper:(id)a3 originalImage:(id)a4;
-- (id)wallpaperForHomeKitObject:(id)a3 dispatchToMainOnComplete:(BOOL)a4;
-- (id)wallpaperImageForWallpaper:(id)a3 variant:(int64_t)a4;
-- (void)_dispatchWallpaperChangedforHomeKitObject:(id)a3;
-- (void)_dispatchWallpaperChangedforHomeKitObjectAsync:(id)a3;
+- (id)_cachedWallpaperForKey:(id)key;
+- (id)_originalImageForWallpaper:(id)wallpaper forProcessingGenerator:(BOOL)generator;
+- (id)_originalImageFromNamedWallpaperSourceForWallpaper:(id)wallpaper;
+- (id)_wallpaperForHomeKitObject:(id)object createIfNeeded:(BOOL)needed;
+- (id)allNamedWallpaperThumbnailsForWallpaperCollectionType:(int64_t)type;
+- (id)allNamedWallpapersForWallpaperCollectionType:(int64_t)type;
+- (id)defaultUserSelectableWallpaperForHomeKitObject:(id)object;
+- (id)defaultUserSelectableWallpaperForWallpaperCollectionType:(int64_t)type;
+- (id)generateProcessedImageFromWallpaper:(id)wallpaper originalImage:(id)image;
+- (id)processOriginalBlurredImageFromWallpaper:(id)wallpaper originalImage:(id)image;
+- (id)processOriginalImageFromWallpaper:(id)wallpaper originalImage:(id)image;
+- (id)wallpaperForHomeKitObject:(id)object dispatchToMainOnComplete:(BOOL)complete;
+- (id)wallpaperImageForWallpaper:(id)wallpaper variant:(int64_t)variant;
+- (void)_dispatchWallpaperChangedforHomeKitObject:(id)object;
+- (void)_dispatchWallpaperChangedforHomeKitObjectAsync:(id)async;
 - (void)_logUserMetricsAfterSettingWallpaper;
 - (void)_migrateIfNeeded;
 - (void)_migrateToSunriseWallpaperIfNeeded;
-- (void)_migrateWallpaperDict:(id)a3 forHomeKitIdentifier:(id)a4;
-- (void)_preloadWallpaperForHomeKitObject:(id)a3;
+- (void)_migrateWallpaperDict:(id)dict forHomeKitIdentifier:(id)identifier;
+- (void)_preloadWallpaperForHomeKitObject:(id)object;
 - (void)_pruneUnusedWallpapers;
-- (void)_pruneUnusedWallpapersWithExistingHomeKitIdentifiers:(id)a3;
-- (void)_setImageCacheForWallpaper:(id)a3 image:(id)a4 forHomeKitIdentifier:(id)a5;
-- (void)_setWallpaper:(id)a3 forHomeKitIdentifier:(id)a4;
-- (void)_setWallpaper:(id)a3 image:(id)a4 forHomeKitIdentifier:(id)a5;
-- (void)_setWallpaper:(id)a3 image:(id)a4 forHomeKitObject:(id)a5;
-- (void)homeManagerDidFinishInitialDatabaseLoad:(id)a3;
+- (void)_pruneUnusedWallpapersWithExistingHomeKitIdentifiers:(id)identifiers;
+- (void)_setImageCacheForWallpaper:(id)wallpaper image:(id)image forHomeKitIdentifier:(id)identifier;
+- (void)_setWallpaper:(id)wallpaper forHomeKitIdentifier:(id)identifier;
+- (void)_setWallpaper:(id)wallpaper image:(id)image forHomeKitIdentifier:(id)identifier;
+- (void)_setWallpaper:(id)wallpaper image:(id)image forHomeKitObject:(id)object;
+- (void)homeManagerDidFinishInitialDatabaseLoad:(id)load;
 - (void)preheatCache;
-- (void)registerWallpaperSource:(id)a3 processedSource:(id)a4;
+- (void)registerWallpaperSource:(id)source processedSource:(id)processedSource;
 @end
 
 @implementation HFWallpaperManager
@@ -115,10 +115,10 @@ void __36__HFWallpaperManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)defaultUserSelectableWallpaperForHomeKitObject:(id)a3
+- (id)defaultUserSelectableWallpaperForHomeKitObject:(id)object
 {
-  v4 = a3;
-  v5 = [(HFWallpaperManager *)self _wallpaperForHomeKitObject:v4 createIfNeeded:0];
+  objectCopy = object;
+  v5 = [(HFWallpaperManager *)self _wallpaperForHomeKitObject:objectCopy createIfNeeded:0];
   v6 = v5;
   if (v5)
   {
@@ -136,22 +136,22 @@ void __36__HFWallpaperManager_sharedInstance__block_invoke()
   return v8;
 }
 
-- (id)defaultUserSelectableWallpaperForWallpaperCollectionType:(int64_t)a3
+- (id)defaultUserSelectableWallpaperForWallpaperCollectionType:(int64_t)type
 {
-  v4 = [(HFWallpaperManager *)self namedWallpaperSource];
-  v5 = [v4 defaultWallpaperForCollection:a3];
+  namedWallpaperSource = [(HFWallpaperManager *)self namedWallpaperSource];
+  v5 = [namedWallpaperSource defaultWallpaperForCollection:type];
 
   return v5;
 }
 
-- (void)registerWallpaperSource:(id)a3 processedSource:(id)a4
+- (void)registerWallpaperSource:(id)source processedSource:(id)processedSource
 {
-  v6 = a4;
-  [(HFWallpaperManager *)self setNamedWallpaperSource:a3];
-  v7 = [(HFWallpaperManager *)self imageCache];
-  [v7 setProcessedWallpaperSource:v6];
+  processedSourceCopy = processedSource;
+  [(HFWallpaperManager *)self setNamedWallpaperSource:source];
+  imageCache = [(HFWallpaperManager *)self imageCache];
+  [imageCache setProcessedWallpaperSource:processedSourceCopy];
 
-  self->_wallpaperSourceRegistered = a3 != 0;
+  self->_wallpaperSourceRegistered = source != 0;
   [(HFWallpaperManager *)self _migrateIfNeeded];
 
   [(HFWallpaperManager *)self _migrateToSunriseWallpaperIfNeeded];
@@ -160,13 +160,13 @@ void __36__HFWallpaperManager_sharedInstance__block_invoke()
 - (void)preheatCache
 {
   v3 = +[HFHomeKitDispatcher sharedDispatcher];
-  v4 = [v3 allHomesFuture];
+  allHomesFuture = [v3 allHomesFuture];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __34__HFWallpaperManager_preheatCache__block_invoke;
   v6[3] = &unk_277DF9508;
   v6[4] = self;
-  v5 = [v4 addSuccessBlock:v6];
+  v5 = [allHomesFuture addSuccessBlock:v6];
 }
 
 void __34__HFWallpaperManager_preheatCache__block_invoke(uint64_t a1)
@@ -182,12 +182,12 @@ void __34__HFWallpaperManager_preheatCache__block_invoke(uint64_t a1)
   }
 }
 
-- (id)wallpaperForHomeKitObject:(id)a3 dispatchToMainOnComplete:(BOOL)a4
+- (id)wallpaperForHomeKitObject:(id)object dispatchToMainOnComplete:(BOOL)complete
 {
-  v6 = a3;
-  v7 = [(HFWallpaperManager *)self wallpapersCache];
-  v8 = [v6 uniqueIdentifier];
-  v9 = [v7 tryObjectForKey:v8];
+  objectCopy = object;
+  wallpapersCache = [(HFWallpaperManager *)self wallpapersCache];
+  uniqueIdentifier = [objectCopy uniqueIdentifier];
+  v9 = [wallpapersCache tryObjectForKey:uniqueIdentifier];
 
   if (v9)
   {
@@ -202,16 +202,16 @@ void __34__HFWallpaperManager_preheatCache__block_invoke(uint64_t a1)
     v19 = 3221225472;
     v20 = __73__HFWallpaperManager_wallpaperForHomeKitObject_dispatchToMainOnComplete___block_invoke;
     v21 = &unk_277E01568;
-    v22 = self;
-    v23 = v6;
-    v25 = a4;
+    selfCopy = self;
+    v23 = objectCopy;
+    completeCopy = complete;
     v13 = v11;
     v24 = v13;
     v14 = [v12 blockOperationWithBlock:&v18];
-    [v14 setQueuePriority:{4, v18, v19, v20, v21, v22}];
+    [v14 setQueuePriority:{4, v18, v19, v20, v21, selfCopy}];
     [v14 setQualityOfService:33];
-    v15 = [MEMORY[0x277D0F8F0] defaultScheduler];
-    v16 = [v15 performOperation:v14];
+    defaultScheduler = [MEMORY[0x277D0F8F0] defaultScheduler];
+    v16 = [defaultScheduler performOperation:v14];
 
     v10 = v13;
   }
@@ -284,10 +284,10 @@ LABEL_12:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)wallpaperImageForWallpaper:(id)a3 variant:(int64_t)a4
+- (id)wallpaperImageForWallpaper:(id)wallpaper variant:(int64_t)variant
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  wallpaperCopy = wallpaper;
   v7 = HFLogForCategory(0x35uLL);
   v8 = os_signpost_id_generate(v7);
 
@@ -295,31 +295,31 @@ LABEL_12:
   v10 = v9;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
-    v11 = [v6 assetIdentifier];
+    assetIdentifier = [wallpaperCopy assetIdentifier];
     *buf = 138412802;
-    v21 = v11;
+    v21 = assetIdentifier;
     v22 = 2048;
-    v23 = [v6 type];
+    type = [wallpaperCopy type];
     v24 = 2048;
-    v25 = a4;
+    variantCopy = variant;
     _os_signpost_emit_with_name_impl(&dword_20D9BF000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "LoadDashboardWallpaper", "wallpaperImageForWallpaper: Loading asset %@ of type %ld variant %ld", buf, 0x20u);
   }
 
-  if (a4)
+  if (variant)
   {
-    v12 = [(HFWallpaperManager *)self imageCache];
+    imageCache = [(HFWallpaperManager *)self imageCache];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __57__HFWallpaperManager_wallpaperImageForWallpaper_variant___block_invoke;
     v18[3] = &unk_277E01590;
     v18[4] = self;
-    v19 = v6;
-    v13 = [v12 imageForVariant:a4 wallpaper:v19 withOriginalImageGenerator:v18];
+    v19 = wallpaperCopy;
+    v13 = [imageCache imageForVariant:variant wallpaper:v19 withOriginalImageGenerator:v18];
   }
 
   else
   {
-    v13 = [(HFWallpaperManager *)self _originalImageForWallpaper:v6 forProcessingGenerator:0];
+    v13 = [(HFWallpaperManager *)self _originalImageForWallpaper:wallpaperCopy forProcessingGenerator:0];
   }
 
   v14 = HFLogForCategory(0x35uLL);
@@ -336,89 +336,89 @@ LABEL_12:
   return v13;
 }
 
-- (id)generateProcessedImageFromWallpaper:(id)a3 originalImage:(id)a4
+- (id)generateProcessedImageFromWallpaper:(id)wallpaper originalImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 type];
-  if (v7 && v8 == 6)
+  wallpaperCopy = wallpaper;
+  imageCopy = image;
+  type = [wallpaperCopy type];
+  if (imageCopy && type == 6)
   {
-    v9 = [(HFWallpaperManager *)self imageCache];
-    v10 = [v9 processedWallpaperSource];
-    v11 = [v10 generateFilteredImageForWallpaper:v6 image:v7];
+    imageCache = [(HFWallpaperManager *)self imageCache];
+    processedWallpaperSource = [imageCache processedWallpaperSource];
+    v11 = [processedWallpaperSource generateFilteredImageForWallpaper:wallpaperCopy image:imageCopy];
 
-    v7 = v11;
+    imageCopy = v11;
   }
 
-  v12 = [(HFWallpaperManager *)self imageCache];
-  v13 = [v12 processedWallpaperSource];
-  v14 = [v13 processedImageForVariant:1 wallpaper:v6 image:v7];
+  imageCache2 = [(HFWallpaperManager *)self imageCache];
+  processedWallpaperSource2 = [imageCache2 processedWallpaperSource];
+  v14 = [processedWallpaperSource2 processedImageForVariant:1 wallpaper:wallpaperCopy image:imageCopy];
 
   return v14;
 }
 
-- (id)processOriginalImageFromWallpaper:(id)a3 originalImage:(id)a4
+- (id)processOriginalImageFromWallpaper:(id)wallpaper originalImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 type];
-  if (v7 && v8 == 1)
+  wallpaperCopy = wallpaper;
+  imageCopy = image;
+  type = [wallpaperCopy type];
+  if (imageCopy && type == 1)
   {
-    v9 = [(HFWallpaperManager *)self imageCache];
-    v10 = [v9 processedWallpaperSource];
-    v11 = [v10 generateFilteredImageForWallpaper:v6 image:v7];
+    imageCache = [(HFWallpaperManager *)self imageCache];
+    processedWallpaperSource = [imageCache processedWallpaperSource];
+    v11 = [processedWallpaperSource generateFilteredImageForWallpaper:wallpaperCopy image:imageCopy];
   }
 
   else
   {
-    v11 = v7;
+    v11 = imageCopy;
   }
 
   return v11;
 }
 
-- (id)processOriginalBlurredImageFromWallpaper:(id)a3 originalImage:(id)a4
+- (id)processOriginalBlurredImageFromWallpaper:(id)wallpaper originalImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 type];
+  wallpaperCopy = wallpaper;
+  imageCopy = image;
+  type = [wallpaperCopy type];
   v9 = 0;
-  if (v7 && v8 == 6)
+  if (imageCopy && type == 6)
   {
-    v10 = [(HFWallpaperManager *)self imageCache];
-    v11 = [v10 processedWallpaperSource];
-    v9 = [v11 generateFilteredImageForWallpaper:v6 image:v7];
+    imageCache = [(HFWallpaperManager *)self imageCache];
+    processedWallpaperSource = [imageCache processedWallpaperSource];
+    v9 = [processedWallpaperSource generateFilteredImageForWallpaper:wallpaperCopy image:imageCopy];
   }
 
   return v9;
 }
 
-- (id)allNamedWallpapersForWallpaperCollectionType:(int64_t)a3
+- (id)allNamedWallpapersForWallpaperCollectionType:(int64_t)type
 {
-  v5 = [(HFWallpaperManager *)self namedWallpaperSource];
+  namedWallpaperSource = [(HFWallpaperManager *)self namedWallpaperSource];
 
-  if (!v5)
+  if (!namedWallpaperSource)
   {
     NSLog(&cfstr_MustRegisterNa.isa);
   }
 
-  v6 = [(HFWallpaperManager *)self namedWallpaperSource];
-  v7 = [v6 allWallpapersForCollection:a3];
+  namedWallpaperSource2 = [(HFWallpaperManager *)self namedWallpaperSource];
+  v7 = [namedWallpaperSource2 allWallpapersForCollection:type];
 
   return v7;
 }
 
-- (id)allNamedWallpaperThumbnailsForWallpaperCollectionType:(int64_t)a3
+- (id)allNamedWallpaperThumbnailsForWallpaperCollectionType:(int64_t)type
 {
-  v5 = [(HFWallpaperManager *)self namedWallpaperSource];
+  namedWallpaperSource = [(HFWallpaperManager *)self namedWallpaperSource];
 
-  if (!v5)
+  if (!namedWallpaperSource)
   {
     NSLog(&cfstr_MustRegisterNa.isa);
   }
 
-  v6 = [(HFWallpaperManager *)self namedWallpaperSource];
-  v7 = [v6 allWallpaperThumbnailsForCollection:a3];
+  namedWallpaperSource2 = [(HFWallpaperManager *)self namedWallpaperSource];
+  v7 = [namedWallpaperSource2 allWallpaperThumbnailsForCollection:type];
 
   return v7;
 }
@@ -433,8 +433,8 @@ LABEL_12:
   v2 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v5];
   [v2 setQueuePriority:4];
   [v2 setQualityOfService:17];
-  v3 = [MEMORY[0x277D0F8F0] defaultScheduler];
-  v4 = [v3 performOperation:v2];
+  defaultScheduler = [MEMORY[0x277D0F8F0] defaultScheduler];
+  v4 = [defaultScheduler performOperation:v2];
 }
 
 void __38__HFWallpaperManager__migrateIfNeeded__block_invoke(uint64_t a1)
@@ -487,32 +487,32 @@ void __38__HFWallpaperManager__migrateIfNeeded__block_invoke(uint64_t a1)
 
 - (void)_migrateToSunriseWallpaperIfNeeded
 {
-  v11 = [(HFWallpaperManager *)self userDefaults];
-  if ([v11 BOOLForKey:@"hasUpdatedToSunrise"])
+  userDefaults = [(HFWallpaperManager *)self userDefaults];
+  if ([userDefaults BOOLForKey:@"hasUpdatedToSunrise"])
   {
   }
 
   else
   {
     v3 = +[HFHomeKitDispatcher sharedDispatcher];
-    v4 = [v3 homeManager];
-    v5 = [v4 homes];
-    v6 = [v5 count];
+    homeManager = [v3 homeManager];
+    homes = [homeManager homes];
+    v6 = [homes count];
 
     if (v6)
     {
       v7 = +[HFHomeKitDispatcher sharedDispatcher];
-      v8 = [v7 homeManager];
-      v9 = [v8 homes];
+      homeManager2 = [v7 homeManager];
+      homes2 = [homeManager2 homes];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __56__HFWallpaperManager__migrateToSunriseWallpaperIfNeeded__block_invoke;
       v12[3] = &unk_277E01608;
       v12[4] = self;
-      [v9 na_each:v12];
+      [homes2 na_each:v12];
 
-      v10 = [(HFWallpaperManager *)self userDefaults];
-      [v10 setBool:1 forKey:@"hasUpdatedToSunrise"];
+      userDefaults2 = [(HFWallpaperManager *)self userDefaults];
+      [userDefaults2 setBool:1 forKey:@"hasUpdatedToSunrise"];
     }
   }
 }
@@ -548,14 +548,14 @@ void __56__HFWallpaperManager__migrateToSunriseWallpaperIfNeeded__block_invoke_2
   [*(a1 + 32) _migrateWallpaperDict:v5 forHomeKitIdentifier:v6];
 }
 
-- (void)_migrateWallpaperDict:(id)a3 forHomeKitIdentifier:(id)a4
+- (void)_migrateWallpaperDict:(id)dict forHomeKitIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3)
+  identifierCopy = identifier;
+  if (dict)
   {
-    v7 = a3;
-    v8 = [[HFWallpaper alloc] initWithDictionary:v7];
+    dictCopy = dict;
+    v8 = [[HFWallpaper alloc] initWithDictionary:dictCopy];
 
     if (![(HFWallpaper *)v8 isCustomType])
     {
@@ -565,40 +565,40 @@ void __56__HFWallpaperManager__migrateToSunriseWallpaperIfNeeded__block_invoke_2
         v12 = 138412546;
         v13 = v8;
         v14 = 2112;
-        v15 = v6;
+        v15 = identifierCopy;
         _os_log_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_DEFAULT, "Remove old default wallpaper: %@ for homeKitIdentifier: %@", &v12, 0x16u);
       }
 
-      v10 = [(HFWallpaperManager *)self userDefaults];
-      [v10 removeObjectForKey:v6];
+      userDefaults = [(HFWallpaperManager *)self userDefaults];
+      [userDefaults removeObjectForKey:identifierCopy];
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setWallpaper:(id)a3 image:(id)a4 forHomeKitObject:(id)a5
+- (void)_setWallpaper:(id)wallpaper image:(id)image forHomeKitObject:(id)object
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  wallpaperCopy = wallpaper;
+  imageCopy = image;
+  objectCopy = object;
   v11 = MEMORY[0x277CCA8C8];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __59__HFWallpaperManager__setWallpaper_image_forHomeKitObject___block_invoke;
   v21 = &unk_277DF3398;
-  v22 = self;
-  v23 = v8;
-  v24 = v9;
-  v25 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  selfCopy = self;
+  v23 = wallpaperCopy;
+  v24 = imageCopy;
+  v25 = objectCopy;
+  v12 = objectCopy;
+  v13 = imageCopy;
+  v14 = wallpaperCopy;
   v15 = [v11 blockOperationWithBlock:&v18];
-  [v15 setQueuePriority:{4, v18, v19, v20, v21, v22}];
+  [v15 setQueuePriority:{4, v18, v19, v20, v21, selfCopy}];
   [v15 setQualityOfService:17];
-  v16 = [MEMORY[0x277D0F8F0] defaultScheduler];
-  v17 = [v16 performOperation:v15];
+  defaultScheduler = [MEMORY[0x277D0F8F0] defaultScheduler];
+  v17 = [defaultScheduler performOperation:v15];
 }
 
 uint64_t __59__HFWallpaperManager__setWallpaper_image_forHomeKitObject___block_invoke(uint64_t a1)
@@ -621,51 +621,51 @@ uint64_t __59__HFWallpaperManager__setWallpaper_image_forHomeKitObject___block_i
   return result;
 }
 
-- (void)_setWallpaper:(id)a3 image:(id)a4 forHomeKitIdentifier:(id)a5
+- (void)_setWallpaper:(id)wallpaper image:(id)image forHomeKitIdentifier:(id)identifier
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  [(HFWallpaperManager *)self _setWallpaper:v10 forHomeKitIdentifier:v9];
-  if (v8)
+  wallpaperCopy = wallpaper;
+  imageCopy = image;
+  identifierCopy = identifier;
+  [(HFWallpaperManager *)self _setWallpaper:wallpaperCopy forHomeKitIdentifier:identifierCopy];
+  if (imageCopy)
   {
-    [(HFWallpaperManager *)self _setImageCacheForWallpaper:v10 image:v8 forHomeKitIdentifier:v9];
+    [(HFWallpaperManager *)self _setImageCacheForWallpaper:wallpaperCopy image:imageCopy forHomeKitIdentifier:identifierCopy];
   }
 }
 
-- (void)_setWallpaper:(id)a3 forHomeKitIdentifier:(id)a4
+- (void)_setWallpaper:(id)wallpaper forHomeKitIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  wallpaperCopy = wallpaper;
+  identifierCopy = identifier;
   v8 = HFLogForCategory(0x4EuLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    v15 = v6;
+    v15 = wallpaperCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = identifierCopy;
     _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "Setting wallpaper %@ for HomeKit object %@", &v14, 0x16u);
   }
 
-  v9 = [(HFWallpaperManager *)self wallpapersCache];
-  [v9 setObject:v6 forKey:v7];
+  wallpapersCache = [(HFWallpaperManager *)self wallpapersCache];
+  [wallpapersCache setObject:wallpaperCopy forKey:identifierCopy];
 
-  v10 = [(HFWallpaperManager *)self userDefaults];
-  v11 = [v6 dictionaryRepresentation];
-  v12 = [v7 UUIDString];
-  [v10 setObject:v11 forKey:v12];
+  userDefaults = [(HFWallpaperManager *)self userDefaults];
+  dictionaryRepresentation = [wallpaperCopy dictionaryRepresentation];
+  uUIDString = [identifierCopy UUIDString];
+  [userDefaults setObject:dictionaryRepresentation forKey:uUIDString];
 
   [(HFWallpaperManager *)self _logUserMetricsAfterSettingWallpaper];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setImageCacheForWallpaper:(id)a3 image:(id)a4 forHomeKitIdentifier:(id)a5
+- (void)_setImageCacheForWallpaper:(id)wallpaper image:(id)image forHomeKitIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HFWallpaperManager *)self imageCache];
-  [v9 saveVariantsForWallpaper:v7 originalImage:v8];
+  wallpaperCopy = wallpaper;
+  imageCopy = image;
+  imageCache = [(HFWallpaperManager *)self imageCache];
+  [imageCache saveVariantsForWallpaper:wallpaperCopy originalImage:imageCopy];
 
   v10 = MEMORY[0x277CCA8C8];
   v16[0] = MEMORY[0x277D85DD0];
@@ -673,15 +673,15 @@ uint64_t __59__HFWallpaperManager__setWallpaper_image_forHomeKitObject___block_i
   v16[2] = __76__HFWallpaperManager__setImageCacheForWallpaper_image_forHomeKitIdentifier___block_invoke;
   v16[3] = &unk_277DF32A8;
   v16[4] = self;
-  v17 = v8;
-  v18 = v7;
-  v11 = v7;
-  v12 = v8;
+  v17 = imageCopy;
+  v18 = wallpaperCopy;
+  v11 = wallpaperCopy;
+  v12 = imageCopy;
   v13 = [v10 blockOperationWithBlock:v16];
   [v13 setQueuePriority:0];
   [v13 setQualityOfService:17];
-  v14 = [MEMORY[0x277D0F8F0] defaultScheduler];
-  v15 = [v14 performOperation:v13];
+  defaultScheduler = [MEMORY[0x277D0F8F0] defaultScheduler];
+  v15 = [defaultScheduler performOperation:v13];
 }
 
 void __76__HFWallpaperManager__setImageCacheForWallpaper_image_forHomeKitIdentifier___block_invoke(uint64_t a1)
@@ -701,8 +701,8 @@ void __76__HFWallpaperManager__setImageCacheForWallpaper_image_forHomeKitIdentif
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v2 = [(HFWallpaperManager *)self userDefaults];
-  v3 = [v2 persistentDomainForName:@"com.apple.Home.wallpaper"];
+  userDefaults = [(HFWallpaperManager *)self userDefaults];
+  v3 = [userDefaults persistentDomainForName:@"com.apple.Home.wallpaper"];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__HFWallpaperManager__logUserMetricsAfterSettingWallpaper__block_invoke;
@@ -754,12 +754,12 @@ void __58__HFWallpaperManager__logUserMetricsAfterSettingWallpaper__block_invoke
   }
 }
 
-- (void)_dispatchWallpaperChangedforHomeKitObjectAsync:(id)a3
+- (void)_dispatchWallpaperChangedforHomeKitObjectAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   if (+[HFUtilities isInternalTest])
   {
-    [(HFWallpaperManager *)self _dispatchWallpaperChangedforHomeKitObject:v4];
+    [(HFWallpaperManager *)self _dispatchWallpaperChangedforHomeKitObject:asyncCopy];
   }
 
   else
@@ -769,18 +769,18 @@ void __58__HFWallpaperManager__logUserMetricsAfterSettingWallpaper__block_invoke
     v5[2] = __69__HFWallpaperManager__dispatchWallpaperChangedforHomeKitObjectAsync___block_invoke;
     v5[3] = &unk_277DF3370;
     v5[4] = self;
-    v6 = v4;
+    v6 = asyncCopy;
     dispatch_async(MEMORY[0x277D85CD0], v5);
   }
 }
 
-- (void)_dispatchWallpaperChangedforHomeKitObject:(id)a3
+- (void)_dispatchWallpaperChangedforHomeKitObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
     v5 = +[HFHomeKitDispatcher sharedDispatcher];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -799,7 +799,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v3;
+    v9 = objectCopy;
     v5 = +[HFHomeKitDispatcher sharedDispatcher];
     v11 = MEMORY[0x277D85DD0];
     v12 = 3221225472;
@@ -837,13 +837,13 @@ void __64__HFWallpaperManager__dispatchWallpaperChangedforHomeKitObject___block_
 - (void)_pruneUnusedWallpapers
 {
   v3 = +[HFHomeKitDispatcher sharedDispatcher];
-  v4 = [v3 allHomesFuture];
+  allHomesFuture = [v3 allHomesFuture];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__HFWallpaperManager__pruneUnusedWallpapers__block_invoke;
   v6[3] = &unk_277DF9508;
   v6[4] = self;
-  v5 = [v4 addSuccessBlock:v6];
+  v5 = [allHomesFuture addSuccessBlock:v6];
 }
 
 void __44__HFWallpaperManager__pruneUnusedWallpapers__block_invoke(uint64_t a1, void *a2)
@@ -914,28 +914,28 @@ uint64_t __44__HFWallpaperManager__pruneUnusedWallpapers__block_invoke_4(uint64_
   return [*(a1 + 32) _pruneUnusedWallpapersWithExistingHomeKitIdentifiers:*(a1 + 40)];
 }
 
-- (void)_pruneUnusedWallpapersWithExistingHomeKitIdentifiers:(id)a3
+- (void)_pruneUnusedWallpapersWithExistingHomeKitIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(HFWallpaperManager *)self userDefaults];
-  v7 = [v6 persistentDomainForName:@"com.apple.Home.wallpaper"];
+  identifiersCopy = identifiers;
+  array = [MEMORY[0x277CBEB18] array];
+  userDefaults = [(HFWallpaperManager *)self userDefaults];
+  v7 = [userDefaults persistentDomainForName:@"com.apple.Home.wallpaper"];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __75__HFWallpaperManager__pruneUnusedWallpapersWithExistingHomeKitIdentifiers___block_invoke;
   v12[3] = &unk_277E01658;
-  v13 = v4;
-  v14 = v5;
-  v15 = self;
-  v8 = v5;
-  v9 = v4;
+  v13 = identifiersCopy;
+  v14 = array;
+  selfCopy = self;
+  v8 = array;
+  v9 = identifiersCopy;
   [v7 enumerateKeysAndObjectsUsingBlock:v12];
 
-  v10 = [(HFWallpaperManager *)self fileManager];
-  [v10 pruneUnusedOriginalWallpaperImages:v8];
+  fileManager = [(HFWallpaperManager *)self fileManager];
+  [fileManager pruneUnusedOriginalWallpaperImages:v8];
 
-  v11 = [(HFWallpaperManager *)self imageCache];
-  [v11 pruneUnusedWallpaperVariants:v8];
+  imageCache = [(HFWallpaperManager *)self imageCache];
+  [imageCache pruneUnusedWallpaperVariants:v8];
 }
 
 void __75__HFWallpaperManager__pruneUnusedWallpapersWithExistingHomeKitIdentifiers___block_invoke(id *a1, void *a2, void *a3)
@@ -1016,40 +1016,40 @@ void __75__HFWallpaperManager__pruneUnusedWallpapersWithExistingHomeKitIdentifie
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_cachedWallpaperForKey:(id)a3
+- (id)_cachedWallpaperForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HFWallpaperManager *)self wallpapersCache];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  wallpapersCache = [(HFWallpaperManager *)self wallpapersCache];
+  v6 = [wallpapersCache objectForKey:keyCopy];
 
   return v6;
 }
 
-- (id)_wallpaperForHomeKitObject:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_wallpaperForHomeKitObject:(id)object createIfNeeded:(BOOL)needed
 {
-  v6 = a3;
+  objectCopy = object;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__25;
   v22 = __Block_byref_object_dispose__25;
-  v7 = [(HFWallpaperManager *)self wallpapersCache];
-  v8 = [v6 uniqueIdentifier];
-  v23 = [v7 tryObjectForKey:v8];
+  wallpapersCache = [(HFWallpaperManager *)self wallpapersCache];
+  uniqueIdentifier = [objectCopy uniqueIdentifier];
+  v23 = [wallpapersCache tryObjectForKey:uniqueIdentifier];
 
   v9 = v19[5];
   if (!v9)
   {
-    v10 = [(HFWallpaperManager *)self wallpapersCache];
+    wallpapersCache2 = [(HFWallpaperManager *)self wallpapersCache];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __64__HFWallpaperManager__wallpaperForHomeKitObject_createIfNeeded___block_invoke;
     v13[3] = &unk_277E01680;
     v16 = &v18;
-    v14 = v6;
-    v15 = self;
-    v17 = a4;
-    [v10 performBlockWithWriteLock:v13];
+    v14 = objectCopy;
+    selfCopy = self;
+    neededCopy = needed;
+    [wallpapersCache2 performBlockWithWriteLock:v13];
 
     v9 = v19[5];
   }
@@ -1208,22 +1208,22 @@ LABEL_24:
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_preloadWallpaperForHomeKitObject:(id)a3
+- (void)_preloadWallpaperForHomeKitObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = MEMORY[0x277CCA8C8];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __56__HFWallpaperManager__preloadWallpaperForHomeKitObject___block_invoke;
   v13 = &unk_277DF3370;
-  v14 = v4;
-  v15 = self;
-  v6 = v4;
+  v14 = objectCopy;
+  selfCopy = self;
+  v6 = objectCopy;
   v7 = [v5 blockOperationWithBlock:&v10];
   [v7 setQueuePriority:{4, v10, v11, v12, v13}];
   [v7 setQualityOfService:33];
-  v8 = [MEMORY[0x277D0F8F0] defaultScheduler];
-  v9 = [v8 performOperation:v7];
+  defaultScheduler = [MEMORY[0x277D0F8F0] defaultScheduler];
+  v9 = [defaultScheduler performOperation:v7];
 }
 
 void __56__HFWallpaperManager__preloadWallpaperForHomeKitObject___block_invoke(uint64_t a1)
@@ -1249,27 +1249,27 @@ void __56__HFWallpaperManager__preloadWallpaperForHomeKitObject___block_invoke(u
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_originalImageForWallpaper:(id)a3 forProcessingGenerator:(BOOL)a4
+- (id)_originalImageForWallpaper:(id)wallpaper forProcessingGenerator:(BOOL)generator
 {
-  v6 = a3;
-  v7 = v6;
-  if (!a4 && [v6 type] == 6)
+  wallpaperCopy = wallpaper;
+  v7 = wallpaperCopy;
+  if (!generator && [wallpaperCopy type] == 6)
   {
     v8 = [HFWallpaper alloc];
-    v9 = [v7 assetIdentifier];
-    v10 = [v7 cropInfo];
-    v11 = [(HFWallpaper *)v8 initWithType:1 assetIdentifier:v9 cropInfo:v10];
+    assetIdentifier = [v7 assetIdentifier];
+    cropInfo = [v7 cropInfo];
+    v11 = [(HFWallpaper *)v8 initWithType:1 assetIdentifier:assetIdentifier cropInfo:cropInfo];
 
     v7 = v11;
   }
 
-  v12 = [(HFWallpaperManager *)self fileManager];
-  v13 = [v12 originalImageExistsForWallpaper:v7];
+  fileManager = [(HFWallpaperManager *)self fileManager];
+  v13 = [fileManager originalImageExistsForWallpaper:v7];
 
   if (v13)
   {
-    v14 = [(HFWallpaperManager *)self fileManager];
-    v15 = [v14 originalImageForWallpaper:v7];
+    fileManager2 = [(HFWallpaperManager *)self fileManager];
+    v15 = [fileManager2 originalImageForWallpaper:v7];
 
     if (v15)
     {
@@ -1293,14 +1293,14 @@ LABEL_13:
   return v15;
 }
 
-- (id)_originalImageFromNamedWallpaperSourceForWallpaper:(id)a3
+- (id)_originalImageFromNamedWallpaperSourceForWallpaper:(id)wallpaper
 {
-  v4 = a3;
-  v5 = [(HFWallpaperManager *)self namedWallpaperSource];
-  v6 = [v5 imageForWallpaper:v4];
+  wallpaperCopy = wallpaper;
+  namedWallpaperSource = [(HFWallpaperManager *)self namedWallpaperSource];
+  v6 = [namedWallpaperSource imageForWallpaper:wallpaperCopy];
 
-  v7 = [v4 assetIdentifier];
-  v8 = [v7 containsString:@"_Thumbnail"];
+  assetIdentifier = [wallpaperCopy assetIdentifier];
+  v8 = [assetIdentifier containsString:@"_Thumbnail"];
 
   if ((v8 & 1) == 0)
   {
@@ -1311,12 +1311,12 @@ LABEL_13:
     v14[3] = &unk_277DF32A8;
     v14[4] = self;
     v15 = v6;
-    v16 = v4;
+    v16 = wallpaperCopy;
     v10 = [v9 blockOperationWithBlock:v14];
     [v10 setQueuePriority:4];
     [v10 setQualityOfService:17];
-    v11 = [MEMORY[0x277D0F8F0] defaultScheduler];
-    v12 = [v11 performOperation:v10];
+    defaultScheduler = [MEMORY[0x277D0F8F0] defaultScheduler];
+    v12 = [defaultScheduler performOperation:v10];
   }
 
   return v6;
@@ -1328,15 +1328,15 @@ void __73__HFWallpaperManager__originalImageFromNamedWallpaperSourceForWallpaper
   [v2 saveOriginalImage:*(a1 + 40) forWallpaper:*(a1 + 48)];
 }
 
-- (void)homeManagerDidFinishInitialDatabaseLoad:(id)a3
+- (void)homeManagerDidFinishInitialDatabaseLoad:(id)load
 {
   v4 = +[HFHomeKitDispatcher sharedDispatcher];
-  v5 = [v4 home];
+  home = [v4 home];
 
-  if (v5)
+  if (home)
   {
     [(HFWallpaperManager *)self _migrateToSunriseWallpaperIfNeeded];
-    [(HFWallpaperManager *)self _preloadWallpaperForHomeKitObject:v5];
+    [(HFWallpaperManager *)self _preloadWallpaperForHomeKitObject:home];
   }
 }
 

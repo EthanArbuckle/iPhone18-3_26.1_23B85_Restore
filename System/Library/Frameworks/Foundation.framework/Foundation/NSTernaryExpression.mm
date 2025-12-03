@@ -1,14 +1,14 @@
 @interface NSTernaryExpression
-- (BOOL)isEqual:(id)a3;
-- (NSTernaryExpression)initWithCoder:(id)a3;
-- (NSTernaryExpression)initWithPredicate:(id)a3 trueExpression:(id)a4 falseExpression:(id)a5;
-- (id)_expressionWithSubstitutionVariables:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)expressionValueWithObject:(id)a3 context:(id)a4;
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (NSTernaryExpression)initWithCoder:(id)coder;
+- (NSTernaryExpression)initWithPredicate:(id)predicate trueExpression:(id)expression falseExpression:(id)falseExpression;
+- (id)_expressionWithSubstitutionVariables:(id)variables;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)expressionValueWithObject:(id)object context:(id)context;
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags;
 - (void)allowEvaluation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSTernaryExpression
@@ -37,7 +37,7 @@
   [(NSExpression *)&v3 allowEvaluation];
 }
 
-- (NSTernaryExpression)initWithPredicate:(id)a3 trueExpression:(id)a4 falseExpression:(id)a5
+- (NSTernaryExpression)initWithPredicate:(id)predicate trueExpression:(id)expression falseExpression:(id)falseExpression
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -45,34 +45,34 @@
   v8 = [(NSExpression *)&v10 initWithExpressionType:20];
   if (v8)
   {
-    v8->_predicate = a3;
-    v8->_trueExpression = a4;
-    v8->_falseExpression = a5;
+    v8->_predicate = predicate;
+    v8->_trueExpression = expression;
+    v8->_falseExpression = falseExpression;
   }
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   v5.receiver = self;
   v5.super_class = NSTernaryExpression;
-  [(NSExpression *)&v5 encodeWithCoder:a3];
-  [a3 encodeObject:-[NSTernaryExpression predicate](self forKey:{"predicate"), @"NSPredicate"}];
-  [a3 encodeObject:-[NSTernaryExpression trueExpression](self forKey:{"trueExpression"), @"NSTrueExpression"}];
-  [a3 encodeObject:-[NSTernaryExpression falseExpression](self forKey:{"falseExpression"), @"NSFalseExpression"}];
+  [(NSExpression *)&v5 encodeWithCoder:coder];
+  [coder encodeObject:-[NSTernaryExpression predicate](self forKey:{"predicate"), @"NSPredicate"}];
+  [coder encodeObject:-[NSTernaryExpression trueExpression](self forKey:{"trueExpression"), @"NSTrueExpression"}];
+  [coder encodeObject:-[NSTernaryExpression falseExpression](self forKey:{"falseExpression"), @"NSFalseExpression"}];
 }
 
-- (NSTernaryExpression)initWithCoder:(id)a3
+- (NSTernaryExpression)initWithCoder:(id)coder
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be decoded by non-keyed archivers" userInfo:0]);
@@ -80,16 +80,16 @@
 
   v13.receiver = self;
   v13.super_class = NSTernaryExpression;
-  v5 = [(NSExpression *)&v13 initWithCoder:a3];
+  v5 = [(NSExpression *)&v13 initWithCoder:coder];
   if (v5)
   {
-    v6 = [a3 allowedClasses];
-    v7 = [v6 count];
+    allowedClasses = [coder allowedClasses];
+    v7 = [allowedClasses count];
     if (v7)
     {
-      v8 = [v6 mutableCopy];
+      v8 = [allowedClasses mutableCopy];
       [v8 unionSet:{+[_NSPredicateUtilities _expressionClassesForSecureCoding](_NSPredicateUtilities, "_expressionClassesForSecureCoding")}];
-      v9 = [v6 mutableCopy];
+      v9 = [allowedClasses mutableCopy];
       [v9 unionSet:{+[_NSPredicateUtilities _predicateClassesForSecureCoding](_NSPredicateUtilities, "_predicateClassesForSecureCoding")}];
     }
 
@@ -99,9 +99,9 @@
       v9 = +[_NSPredicateUtilities _predicateClassesForSecureCoding];
     }
 
-    v5->_predicate = [a3 decodeObjectOfClasses:v9 forKey:@"NSPredicate"];
-    v5->_trueExpression = [a3 decodeObjectOfClasses:v8 forKey:@"NSTrueExpression"];
-    v5->_falseExpression = [a3 decodeObjectOfClasses:v8 forKey:@"NSFalseExpression"];
+    v5->_predicate = [coder decodeObjectOfClasses:v9 forKey:@"NSPredicate"];
+    v5->_trueExpression = [coder decodeObjectOfClasses:v8 forKey:@"NSTrueExpression"];
+    v5->_falseExpression = [coder decodeObjectOfClasses:v8 forKey:@"NSFalseExpression"];
     if (objc_opt_isKindOfClass())
     {
       if (objc_opt_isKindOfClass())
@@ -152,47 +152,47 @@ LABEL_15:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [-[NSTernaryExpression predicate](self predicate];
+  predicate = [-[NSTernaryExpression predicate](self predicate];
   v5 = [-[NSTernaryExpression trueExpression](self "trueExpression")];
   v6 = [-[NSTernaryExpression falseExpression](self "falseExpression")];
-  v7 = [objc_alloc(objc_opt_class()) initWithPredicate:v4 trueExpression:v5 falseExpression:v6];
+  v7 = [objc_alloc(objc_opt_class()) initWithPredicate:predicate trueExpression:v5 falseExpression:v6];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [(NSTernaryExpression *)self expressionType];
-  if (v5 != [a3 expressionType] || !objc_msgSend(-[NSTernaryExpression predicate](self, "predicate"), "isEqual:", objc_msgSend(a3, "predicate")) || !objc_msgSend(-[NSTernaryExpression trueExpression](self, "trueExpression"), "isEqual:", objc_msgSend(a3, "trueExpression")))
+  expressionType = [(NSTernaryExpression *)self expressionType];
+  if (expressionType != [equal expressionType] || !objc_msgSend(-[NSTernaryExpression predicate](self, "predicate"), "isEqual:", objc_msgSend(equal, "predicate")) || !objc_msgSend(-[NSTernaryExpression trueExpression](self, "trueExpression"), "isEqual:", objc_msgSend(equal, "trueExpression")))
   {
     return 0;
   }
 
-  v6 = [(NSTernaryExpression *)self falseExpression];
-  v7 = [a3 falseExpression];
+  falseExpression = [(NSTernaryExpression *)self falseExpression];
+  falseExpression2 = [equal falseExpression];
 
-  return [v6 isEqual:v7];
+  return [falseExpression isEqual:falseExpression2];
 }
 
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags
 {
-  if (a4)
+  if (flags)
   {
-    if ((a4 & 4) != 0)
+    if ((flags & 4) != 0)
     {
-      [a3 visitPredicateExpression:self];
+      [visitor visitPredicateExpression:self];
       [-[NSTernaryExpression predicate](self "predicate")];
       [-[NSTernaryExpression trueExpression](self "trueExpression")];
-      v7 = [(NSTernaryExpression *)self falseExpression];
+      falseExpression = [(NSTernaryExpression *)self falseExpression];
 
-      [v7 acceptVisitor:a3 flags:a4];
+      [falseExpression acceptVisitor:visitor flags:flags];
     }
 
     else
@@ -201,24 +201,24 @@ LABEL_15:
       [-[NSTernaryExpression trueExpression](self "trueExpression")];
       [-[NSTernaryExpression falseExpression](self "falseExpression")];
 
-      [a3 visitPredicateExpression:self];
+      [visitor visitPredicateExpression:self];
     }
   }
 }
 
-- (id)_expressionWithSubstitutionVariables:(id)a3
+- (id)_expressionWithSubstitutionVariables:(id)variables
 {
-  if (!a3)
+  if (!variables)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot substitute a nil substitution dictionary." userInfo:0]);
   }
 
-  v3 = -[NSTernaryExpression initWithPredicate:trueExpression:falseExpression:]([NSTernaryExpression alloc], "initWithPredicate:trueExpression:falseExpression:", [-[NSTernaryExpression predicate](self "predicate")], objc_msgSend(-[NSTernaryExpression trueExpression](self, "trueExpression"), "_expressionWithSubstitutionVariables:", a3), objc_msgSend(-[NSTernaryExpression falseExpression](self, "falseExpression"), "_expressionWithSubstitutionVariables:", a3));
+  v3 = -[NSTernaryExpression initWithPredicate:trueExpression:falseExpression:]([NSTernaryExpression alloc], "initWithPredicate:trueExpression:falseExpression:", [-[NSTernaryExpression predicate](self "predicate")], objc_msgSend(-[NSTernaryExpression trueExpression](self, "trueExpression"), "_expressionWithSubstitutionVariables:", variables), objc_msgSend(-[NSTernaryExpression falseExpression](self, "falseExpression"), "_expressionWithSubstitutionVariables:", variables));
 
   return v3;
 }
 
-- (id)expressionValueWithObject:(id)a3 context:(id)a4
+- (id)expressionValueWithObject:(id)object context:(id)context
 {
   if (![(NSExpression *)self _allowsEvaluation])
   {
@@ -228,15 +228,15 @@ LABEL_15:
   v7 = [[_NSPerformanceMeter alloc] initWithTarget:self, 0];
   if ([-[NSTernaryExpression predicate](self "predicate")])
   {
-    v8 = [(NSTernaryExpression *)self trueExpression];
+    trueExpression = [(NSTernaryExpression *)self trueExpression];
   }
 
   else
   {
-    v8 = [(NSTernaryExpression *)self falseExpression];
+    trueExpression = [(NSTernaryExpression *)self falseExpression];
   }
 
-  v9 = [v8 expressionValueWithObject:a3 context:a4];
+  v9 = [trueExpression expressionValueWithObject:object context:context];
   if (v7)
   {
     [(_NSPerformanceMeter *)v7 invalidate];

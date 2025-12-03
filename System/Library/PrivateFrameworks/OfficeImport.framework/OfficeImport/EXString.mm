@@ -1,25 +1,25 @@
 @interface EXString
-+ (id)cleanupWhitespace:(id)a3;
-+ (id)edStringWithRunsFromXmlDivElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)edStringWithRunsFromXmlStringElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)edTextFromXmlStringElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)readStringWithAsciiCodeFromXmlStringElement:(_xmlNode *)a3;
-+ (id)stringInEDString:(id)a3 forRunIndex:(unsigned int)a4;
-+ (id)stringInEDString:(id)a3 start:(unint64_t)a4 end:(unint64_t)a5;
-+ (void)buildEDString:(id)a3 fromChildrenOfNode:(_xmlNode *)a4 edFont:(id)a5 keepWhitespace:(BOOL)a6 state:(id)a7;
-+ (void)buildEDString:(id)a3 fromNode:(_xmlNode *)a4 edFont:(id)a5 keepWhitespace:(BOOL)a6 state:(id)a7;
-+ (void)buildEDString:(id)a3 fromText:(id)a4 edFont:(id)a5 keepWhitespace:(BOOL)a6 state:(id)a7;
-+ (void)parseStringWithAsciiCode:(id)a3;
++ (id)cleanupWhitespace:(id)whitespace;
++ (id)edStringWithRunsFromXmlDivElement:(_xmlNode *)element state:(id)state;
++ (id)edStringWithRunsFromXmlStringElement:(_xmlNode *)element state:(id)state;
++ (id)edTextFromXmlStringElement:(_xmlNode *)element state:(id)state;
++ (id)readStringWithAsciiCodeFromXmlStringElement:(_xmlNode *)element;
++ (id)stringInEDString:(id)string forRunIndex:(unsigned int)index;
++ (id)stringInEDString:(id)string start:(unint64_t)start end:(unint64_t)end;
++ (void)buildEDString:(id)string fromChildrenOfNode:(_xmlNode *)node edFont:(id)font keepWhitespace:(BOOL)whitespace state:(id)state;
++ (void)buildEDString:(id)string fromNode:(_xmlNode *)node edFont:(id)font keepWhitespace:(BOOL)whitespace state:(id)state;
++ (void)buildEDString:(id)string fromText:(id)text edFont:(id)font keepWhitespace:(BOOL)whitespace state:(id)state;
++ (void)parseStringWithAsciiCode:(id)code;
 @end
 
 @implementation EXString
 
-+ (id)edTextFromXmlStringElement:(_xmlNode *)a3 state:(id)a4
++ (id)edTextFromXmlStringElement:(_xmlNode *)element state:(id)state
 {
-  v6 = [a4 EXSpreadsheetMLNamespace];
-  v7 = OCXFindChild(a3, v6, "t");
+  eXSpreadsheetMLNamespace = [state EXSpreadsheetMLNamespace];
+  v7 = OCXFindChild(element, eXSpreadsheetMLNamespace, "t");
 
-  if (v7 && ([a1 readStringWithAsciiCodeFromXmlStringElement:v7], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v7 && ([self readStringWithAsciiCodeFromXmlStringElement:v7], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
     v10 = [EDString edStringWithString:v8];
@@ -33,27 +33,27 @@
   return v10;
 }
 
-+ (id)edStringWithRunsFromXmlStringElement:(_xmlNode *)a3 state:(id)a4
++ (id)edStringWithRunsFromXmlStringElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v6 = objc_alloc_init(EDString);
   v32 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v7 = [v5 EXSpreadsheetMLNamespace];
-  Child = OCXFindChild(a3, v7, "r");
+  eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+  Child = OCXFindChild(element, eXSpreadsheetMLNamespace, "r");
 
   if (!Child)
   {
     goto LABEL_29;
   }
 
-  v30 = a3;
+  elementCopy = element;
   v31 = v6;
   v9 = 0;
   v10 = 0;
   do
   {
-    v11 = [v5 EXSpreadsheetMLNamespace];
-    v12 = OCXFindChild(Child, v11, "rPr");
+    eXSpreadsheetMLNamespace2 = [stateCopy EXSpreadsheetMLNamespace];
+    v12 = OCXFindChild(Child, eXSpreadsheetMLNamespace2, "rPr");
 
     if (v12)
     {
@@ -62,29 +62,29 @@
         v10 = +[(EDCollection *)EDRunsCollection];
       }
 
-      v13 = [v5 EXSpreadsheetMLNamespace];
-      v14 = OCXFindChild(v12, v13, "effectLst");
+      eXSpreadsheetMLNamespace3 = [stateCopy EXSpreadsheetMLNamespace];
+      v14 = OCXFindChild(v12, eXSpreadsheetMLNamespace3, "effectLst");
 
       if (v14)
       {
-        v15 = [v5 workbookPart];
-        v16 = [v5 officeArtState];
-        v14 = [OAXEffect readEffectsFromXmlNode:v14 packagePart:v15 drawingState:v16];
+        workbookPart = [stateCopy workbookPart];
+        officeArtState = [stateCopy officeArtState];
+        v14 = [OAXEffect readEffectsFromXmlNode:v14 packagePart:workbookPart drawingState:officeArtState];
       }
 
-      v17 = [EXFont edFontFromXmlFontElement:v12 inConditionalFormat:0 returnDefaultIfEmpty:1 state:v5];
-      v18 = [v5 resources];
-      v19 = [EDRun runWithCharIndex:v9 font:v17 effects:v14 resources:v18];
+      v17 = [EXFont edFontFromXmlFontElement:v12 inConditionalFormat:0 returnDefaultIfEmpty:1 state:stateCopy];
+      resources = [stateCopy resources];
+      v19 = [EDRun runWithCharIndex:v9 font:v17 effects:v14 resources:resources];
 
       [v10 addObject:v19];
     }
 
-    v20 = [v5 EXSpreadsheetMLNamespace];
-    v21 = OCXFindChild(Child, v20, "t");
+    eXSpreadsheetMLNamespace4 = [stateCopy EXSpreadsheetMLNamespace];
+    v21 = OCXFindChild(Child, eXSpreadsheetMLNamespace4, "t");
 
     if (v21)
     {
-      v22 = [a1 readStringWithAsciiCodeFromXmlStringElement:v21];
+      v22 = [self readStringWithAsciiCodeFromXmlStringElement:v21];
       v23 = v22;
       if (v22)
       {
@@ -94,12 +94,12 @@
       }
     }
 
-    v25 = [v5 EXSpreadsheetMLNamespace];
-    Child = OCXFindNextChild(Child, v25, "r");
+    eXSpreadsheetMLNamespace5 = [stateCopy EXSpreadsheetMLNamespace];
+    Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace5, "r");
   }
 
   while (Child);
-  a3 = v30;
+  element = elementCopy;
   v6 = v31;
   if (v10)
   {
@@ -111,12 +111,12 @@
 LABEL_29:
     if (![v32 length])
     {
-      v26 = [v5 EXSpreadsheetMLNamespace];
-      v27 = OCXFindChild(a3, v26, "t");
+      eXSpreadsheetMLNamespace6 = [stateCopy EXSpreadsheetMLNamespace];
+      v27 = OCXFindChild(element, eXSpreadsheetMLNamespace6, "t");
 
       if (v27)
       {
-        v28 = [a1 readStringWithAsciiCodeFromXmlStringElement:v27];
+        v28 = [self readStringWithAsciiCodeFromXmlStringElement:v27];
         if (v28)
         {
           [v32 appendString:v28];
@@ -135,13 +135,13 @@ LABEL_29:
   return v6;
 }
 
-+ (id)edStringWithRunsFromXmlDivElement:(_xmlNode *)a3 state:(id)a4
++ (id)edStringWithRunsFromXmlDivElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
-  if (a3)
+  stateCopy = state;
+  if (element)
   {
     v7 = +[EDString string];
-    [a1 buildEDString:v7 fromNode:a3 edFont:0 keepWhitespace:0 state:v6];
+    [self buildEDString:v7 fromNode:element edFont:0 keepWhitespace:0 state:stateCopy];
   }
 
   else
@@ -152,36 +152,36 @@ LABEL_29:
   return v7;
 }
 
-+ (id)readStringWithAsciiCodeFromXmlStringElement:(_xmlNode *)a3
++ (id)readStringWithAsciiCodeFromXmlStringElement:(_xmlNode *)element
 {
-  v3 = a3;
-  if (a3)
+  elementCopy = element;
+  if (element)
   {
-    v3 = [objc_alloc(MEMORY[0x277CCAB68]) tc_initWithContentOfXmlNode:a3];
-    if (!v3)
+    elementCopy = [objc_alloc(MEMORY[0x277CCAB68]) tc_initWithContentOfXmlNode:element];
+    if (!elementCopy)
     {
       [TCMessageException raise:TCInvalidFileFormatMessage];
     }
 
-    [a1 parseStringWithAsciiCode:v3];
+    [self parseStringWithAsciiCode:elementCopy];
   }
 
-  return v3;
+  return elementCopy;
 }
 
-+ (void)parseStringWithAsciiCode:(id)a3
++ (void)parseStringWithAsciiCode:(id)code
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length] && objc_msgSend(v3, "rangeOfString:", @"_x") != 0x7FFFFFFFFFFFFFFFLL)
+  codeCopy = code;
+  if ([codeCopy length] && objc_msgSend(codeCopy, "rangeOfString:", @"_x") != 0x7FFFFFFFFFFFFFFFLL)
   {
     v22 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"0123456789abcdefABCDEF"];
-    v4 = [v3 rangeOfString:@"_x"];
+    v4 = [codeCopy rangeOfString:@"_x"];
     if (v4 != 0x7FFFFFFFFFFFFFFFLL)
     {
       while (1)
       {
-        v5 = [v3 rangeOfString:@"_" options:0 range:{v4 + 2, objc_msgSend(v3, "length") - (v4 + 2)}];
+        v5 = [codeCopy rangeOfString:@"_" options:0 range:{v4 + 2, objc_msgSend(codeCopy, "length") - (v4 + 2)}];
         v6 = v5;
         if (v5 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -193,7 +193,7 @@ LABEL_29:
           break;
         }
 
-        v4 = [v3 rangeOfString:@"_x" options:0 range:{v5 + 1, objc_msgSend(v3, "length") - (v5 + 1)}];
+        v4 = [codeCopy rangeOfString:@"_x" options:0 range:{v5 + 1, objc_msgSend(codeCopy, "length") - (v5 + 1)}];
 LABEL_27:
         if (v4 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -201,17 +201,17 @@ LABEL_27:
         }
       }
 
-      v7 = [v3 substringWithRange:{v4 + 2, 4}];
+      v7 = [codeCopy substringWithRange:{v4 + 2, 4}];
       v8 = &stru_286EE1130;
-      if ([v3 length] >= (v6 + 7))
+      if ([codeCopy length] >= (v6 + 7))
       {
-        v8 = [v3 substringWithRange:{v6 + 1, 6}];
+        v8 = [codeCopy substringWithRange:{v6 + 1, 6}];
       }
 
       if (![v7 caseInsensitiveCompare:@"005F"] && -[__CFString hasPrefix:](v8, "hasPrefix:", @"x") && -[__CFString hasSuffix:](v8, "hasSuffix:", @"_") && (-[__CFString substringWithRange:](v8, "substringWithRange:", 1, 4), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "stringByTrimmingCharactersInSet:", v22), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", &stru_286EE1130), v10, v9, v11))
       {
-        [v3 replaceCharactersInRange:v4 withString:{6, &stru_286EE1130}];
-        v12 = [v3 rangeOfString:@"_x" options:0 range:{v4 + 7, objc_msgSend(v3, "length") - (v4 + 7)}];
+        [codeCopy replaceCharactersInRange:v4 withString:{6, &stru_286EE1130}];
+        v12 = [codeCopy rangeOfString:@"_x" options:0 range:{v4 + 7, objc_msgSend(codeCopy, "length") - (v4 + 7)}];
       }
 
       else
@@ -243,21 +243,21 @@ LABEL_27:
           }
 
           v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", v16];
-          [v3 replaceCharactersInRange:v4 withString:{7, v21}];
-          if ([v3 length] <= (v4 + 1))
+          [codeCopy replaceCharactersInRange:v4 withString:{7, v21}];
+          if ([codeCopy length] <= (v4 + 1))
           {
             v4 = 0x7FFFFFFFFFFFFFFFLL;
           }
 
           else
           {
-            v4 = [v3 rangeOfString:@"_x" options:0 range:{v4 + 1, objc_msgSend(v3, "length") - (v4 + 1)}];
+            v4 = [codeCopy rangeOfString:@"_x" options:0 range:{v4 + 1, objc_msgSend(codeCopy, "length") - (v4 + 1)}];
           }
 
           goto LABEL_26;
         }
 
-        v12 = [v3 rangeOfString:@"_x" options:0 range:{v6 + 1, objc_msgSend(v3, "length") - (v6 + 1)}];
+        v12 = [codeCopy rangeOfString:@"_x" options:0 range:{v6 + 1, objc_msgSend(codeCopy, "length") - (v6 + 1)}];
       }
 
       v4 = v12;
@@ -270,56 +270,56 @@ LABEL_28:
   }
 }
 
-+ (void)buildEDString:(id)a3 fromChildrenOfNode:(_xmlNode *)a4 edFont:(id)a5 keepWhitespace:(BOOL)a6 state:(id)a7
++ (void)buildEDString:(id)string fromChildrenOfNode:(_xmlNode *)node edFont:(id)font keepWhitespace:(BOOL)whitespace state:(id)state
 {
-  v8 = a6;
-  v19 = a3;
-  v12 = a5;
-  v13 = a7;
-  for (i = OCXFirstChild(a4); i; i = OCXNextSibling(i))
+  whitespaceCopy = whitespace;
+  stringCopy = string;
+  fontCopy = font;
+  stateCopy = state;
+  for (i = OCXFirstChild(node); i; i = OCXNextSibling(i))
   {
     v15 = xmlStrEqual(i->name, "br");
     type = i->type;
     if (type == XML_ELEMENT_NODE && v15 == 0)
     {
-      [a1 buildEDString:v19 fromNode:i edFont:v12 keepWhitespace:v8 state:v13];
+      [self buildEDString:stringCopy fromNode:i edFont:fontCopy keepWhitespace:whitespaceCopy state:stateCopy];
     }
 
     else if (type == XML_TEXT_NODE)
     {
       v18 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithContentOfXmlNode:i];
-      [a1 buildEDString:v19 fromText:v18 edFont:v12 keepWhitespace:v8 state:v13];
+      [self buildEDString:stringCopy fromText:v18 edFont:fontCopy keepWhitespace:whitespaceCopy state:stateCopy];
     }
 
     else if (v15)
     {
-      [a1 buildEDString:v19 fromText:@"\n" edFont:v12 keepWhitespace:1 state:v13];
+      [self buildEDString:stringCopy fromText:@"\n" edFont:fontCopy keepWhitespace:1 state:stateCopy];
     }
   }
 }
 
-+ (void)buildEDString:(id)a3 fromNode:(_xmlNode *)a4 edFont:(id)a5 keepWhitespace:(BOOL)a6 state:(id)a7
++ (void)buildEDString:(id)string fromNode:(_xmlNode *)node edFont:(id)font keepWhitespace:(BOOL)whitespace state:(id)state
 {
-  v31 = a6;
-  v11 = a3;
-  v12 = a5;
-  v13 = a7;
-  if (a4)
+  whitespaceCopy = whitespace;
+  stringCopy = string;
+  fontCopy = font;
+  stateCopy = state;
+  if (node)
   {
-    v14 = [v12 copy];
+    v14 = [fontCopy copy];
     if (!v14)
     {
       v15 = [EDFont alloc];
-      v16 = [v13 resources];
-      v14 = [(EDFont *)v15 initWithResources:v16];
+      resources = [stateCopy resources];
+      v14 = [(EDFont *)v15 initWithResources:resources];
     }
 
-    if (xmlStrEqual(a4->name, "font"))
+    if (xmlStrEqual(node->name, "font"))
     {
-      v30 = a1;
+      selfCopy2 = self;
       v35 = 0;
-      v29 = v11;
-      v17 = CXOptionalStringAttribute(a4, CXNoNamespace, "face", &v35);
+      v29 = stringCopy;
+      v17 = CXOptionalStringAttribute(node, CXNoNamespace, "face", &v35);
       v18 = v35;
       if (v17)
       {
@@ -327,68 +327,68 @@ LABEL_28:
       }
 
       v34 = 0;
-      if (CXOptionalLongAttribute(a4, CXNoNamespace, "size", &v34))
+      if (CXOptionalLongAttribute(node, CXNoNamespace, "size", &v34))
       {
         [(EDFont *)v14 setHeight:v34];
       }
 
       v33 = 0;
-      v19 = CXOptionalStringAttribute(a4, CXNoNamespace, "color", &v33);
+      v19 = CXOptionalStringAttribute(node, CXNoNamespace, "color", &v33);
       v20 = v33;
       v21 = v20;
       if (v19)
       {
         if ([v20 isEqualToString:@"auto"])
         {
-          v22 = [v13 resources];
-          [EDColorReference colorReferenceWithSystemColorID:11 resources:v22];
+          resources2 = [stateCopy resources];
+          [EDColorReference colorReferenceWithSystemColorID:11 resources:resources2];
         }
 
         else
         {
-          v26 = [v21 intValue];
-          v22 = [v13 resources];
-          [EDColorReference colorReferenceWithColorIndex:v26 resources:v22];
+          intValue = [v21 intValue];
+          resources2 = [stateCopy resources];
+          [EDColorReference colorReferenceWithColorIndex:intValue resources:resources2];
         }
         v27 = ;
 
         [(EDFont *)v14 setColorReference:v27];
       }
 
-      v11 = v29;
+      stringCopy = v29;
     }
 
     else
     {
-      if (!xmlStrEqual(a4->name, "span"))
+      if (!xmlStrEqual(node->name, "span"))
       {
-        if (xmlStrEqual(a4->name, "b"))
+        if (xmlStrEqual(node->name, "b"))
         {
           [(EDFont *)v14 setBold:1];
         }
 
-        else if (xmlStrEqual(a4->name, "i"))
+        else if (xmlStrEqual(node->name, "i"))
         {
           [(EDFont *)v14 setItalic:1];
         }
 
-        else if (xmlStrEqual(a4->name, "u"))
+        else if (xmlStrEqual(node->name, "u"))
         {
           [(EDFont *)v14 setUnderline:1];
         }
 
         else
         {
-          if (!xmlStrEqual(a4->name, "s"))
+          if (!xmlStrEqual(node->name, "s"))
           {
-            if (xmlStrEqual(a4->name, "sup"))
+            if (xmlStrEqual(node->name, "sup"))
             {
               v28 = 1;
             }
 
             else
             {
-              if (!xmlStrEqual(a4->name, "sub"))
+              if (!xmlStrEqual(node->name, "sub"))
               {
                 goto LABEL_20;
               }
@@ -404,74 +404,74 @@ LABEL_28:
         }
 
 LABEL_20:
-        [a1 buildEDString:v11 fromChildrenOfNode:a4 edFont:v14 keepWhitespace:v31 state:v13];
+        [self buildEDString:stringCopy fromChildrenOfNode:node edFont:v14 keepWhitespace:whitespaceCopy state:stateCopy];
 
         goto LABEL_21;
       }
 
-      v30 = a1;
+      selfCopy2 = self;
       v32 = &stru_286EE1130;
-      CXOptionalStringAttribute(a4, CXNoNamespace, "style", &v32);
+      CXOptionalStringAttribute(node, CXNoNamespace, "style", &v32);
       v18 = v32;
       v23 = OAVReadComposite(v18);
       v24 = [v23 objectForKey:@"mso-spacerun"];
       v25 = v24;
       if (v24)
       {
-        v31 = [v24 caseInsensitiveCompare:@"yes"] == 0;
+        whitespaceCopy = [v24 caseInsensitiveCompare:@"yes"] == 0;
       }
     }
 
-    a1 = v30;
+    self = selfCopy2;
     goto LABEL_20;
   }
 
 LABEL_21:
 }
 
-+ (void)buildEDString:(id)a3 fromText:(id)a4 edFont:(id)a5 keepWhitespace:(BOOL)a6 state:(id)a7
++ (void)buildEDString:(id)string fromText:(id)text edFont:(id)font keepWhitespace:(BOOL)whitespace state:(id)state
 {
-  v25 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (!a6)
+  stringCopy = string;
+  textCopy = text;
+  fontCopy = font;
+  stateCopy = state;
+  if (!whitespace)
   {
-    v15 = [a1 cleanupWhitespace:v12];
+    v15 = [self cleanupWhitespace:textCopy];
 
-    v12 = v15;
+    textCopy = v15;
   }
 
-  if (v12 && [v12 length])
+  if (textCopy && [textCopy length])
   {
-    v16 = [v25 string];
-    v17 = [v16 length];
-    v18 = [v14 resources];
-    v19 = [EDRun runWithCharIndex:v17 font:v13 resources:v18];
+    string = [stringCopy string];
+    v17 = [string length];
+    resources = [stateCopy resources];
+    v19 = [EDRun runWithCharIndex:v17 font:fontCopy resources:resources];
 
-    v20 = [v25 runs];
-    if ([v20 count])
+    runs = [stringCopy runs];
+    if ([runs count])
     {
-      v21 = [v20 objectAtIndex:{objc_msgSend(v20, "count") - 1}];
+      v21 = [runs objectAtIndex:{objc_msgSend(runs, "count") - 1}];
       v22 = v21;
       if (v21)
       {
-        v23 = [v21 fontIndex];
-        if (v23 == [v19 fontIndex])
+        fontIndex = [v21 fontIndex];
+        if (fontIndex == [v19 fontIndex])
         {
 LABEL_13:
-          if (v16)
+          if (string)
           {
-            v24 = [v16 stringByAppendingString:v12];
+            v24 = [string stringByAppendingString:textCopy];
           }
 
           else
           {
-            v24 = v12;
+            v24 = textCopy;
           }
 
-          [v25 setString:v24];
-          if (v16)
+          [stringCopy setString:v24];
+          if (string)
           {
           }
 
@@ -479,7 +479,7 @@ LABEL_13:
         }
       }
 
-      if (!v20)
+      if (!runs)
       {
         goto LABEL_11;
       }
@@ -488,35 +488,35 @@ LABEL_13:
     else
     {
       v22 = 0;
-      if (!v20)
+      if (!runs)
       {
 LABEL_11:
-        v20 = +[(EDCollection *)EDRunsCollection];
-        [v25 setRuns:v20];
+        runs = +[(EDCollection *)EDRunsCollection];
+        [stringCopy setRuns:runs];
       }
     }
 
-    [v20 addObject:v19];
+    [runs addObject:v19];
     goto LABEL_13;
   }
 
 LABEL_19:
 }
 
-+ (id)stringInEDString:(id)a3 start:(unint64_t)a4 end:(unint64_t)a5
++ (id)stringInEDString:(id)string start:(unint64_t)start end:(unint64_t)end
 {
-  v7 = [a3 string];
-  v8 = [v7 substringWithRange:{a4, a5 - a4}];
+  string = [string string];
+  v8 = [string substringWithRange:{start, end - start}];
 
   return v8;
 }
 
-+ (id)stringInEDString:(id)a3 forRunIndex:(unsigned int)a4
++ (id)stringInEDString:(id)string forRunIndex:(unsigned int)index
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [v6 runs];
-  v8 = [v7 count];
+  v4 = *&index;
+  stringCopy = string;
+  runs = [stringCopy runs];
+  v8 = [runs count];
   v9 = v4;
 
   if (v8 <= v4)
@@ -526,26 +526,26 @@ LABEL_19:
 
   else
   {
-    v10 = [v6 runs];
-    v11 = [v10 objectAtIndex:v4];
+    runs2 = [stringCopy runs];
+    v11 = [runs2 objectAtIndex:v4];
 
-    v12 = [v11 charIndex];
-    v13 = [v6 runs];
-    v14 = [v13 count] - 1;
+    charIndex = [v11 charIndex];
+    runs3 = [stringCopy runs];
+    v14 = [runs3 count] - 1;
     if (v14 == v4)
     {
-      v15 = [v6 string];
-      v16 = [v15 length];
+      string = [stringCopy string];
+      charIndex2 = [string length];
     }
 
     else
     {
-      v15 = [v6 runs];
-      v4 = [v15 objectAtIndex:(v4 + 1)];
-      v16 = [v4 charIndex];
+      string = [stringCopy runs];
+      v4 = [string objectAtIndex:(v4 + 1)];
+      charIndex2 = [v4 charIndex];
     }
 
-    v17 = [a1 stringInEDString:v6 start:v12 end:v16];
+    v17 = [self stringInEDString:stringCopy start:charIndex end:charIndex2];
     if (v14 != v9)
     {
     }
@@ -554,17 +554,17 @@ LABEL_19:
   return v17;
 }
 
-+ (id)cleanupWhitespace:(id)a3
++ (id)cleanupWhitespace:(id)whitespace
 {
-  v3 = a3;
-  v4 = [v3 tc_componentsSeparatedByWhitespace];
+  whitespaceCopy = whitespace;
+  tc_componentsSeparatedByWhitespace = [whitespaceCopy tc_componentsSeparatedByWhitespace];
   v5 = 0;
-  v6 = [v4 count];
+  v6 = [tc_componentsSeparatedByWhitespace count];
   if (v6)
   {
     for (i = 0; i != v6; ++i)
     {
-      v8 = [v4 objectAtIndex:i];
+      v8 = [tc_componentsSeparatedByWhitespace objectAtIndex:i];
       v9 = v8;
       if (v8 && [v8 length])
       {

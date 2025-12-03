@@ -1,9 +1,9 @@
 @interface BMMicroLocationProbabilityPerLabel
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMMicroLocationProbabilityPerLabel)initWithLabelIdentifier:(id)a3 probability:(double)a4;
-- (BMMicroLocationProbabilityPerLabel)initWithProto:(id)a3;
-- (BMMicroLocationProbabilityPerLabel)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMMicroLocationProbabilityPerLabel)initWithLabelIdentifier:(id)identifier probability:(double)probability;
+- (BMMicroLocationProbabilityPerLabel)initWithProto:(id)proto;
+- (BMMicroLocationProbabilityPerLabel)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)proto;
 - (unint64_t)hash;
@@ -11,30 +11,30 @@
 
 @implementation BMMicroLocationProbabilityPerLabel
 
-- (BMMicroLocationProbabilityPerLabel)initWithLabelIdentifier:(id)a3 probability:(double)a4
+- (BMMicroLocationProbabilityPerLabel)initWithLabelIdentifier:(id)identifier probability:(double)probability
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = BMMicroLocationProbabilityPerLabel;
   v7 = [(BMMicroLocationProbabilityPerLabel *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     labelIdentifier = v7->_labelIdentifier;
     v7->_labelIdentifier = v8;
 
-    v7->_probability = a4;
+    v7->_probability = probability;
   }
 
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (version == 1)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -53,30 +53,30 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMMicroLocationProbabilityPerLabel *)self proto];
-  v3 = [v2 data];
+  proto = [(BMMicroLocationProbabilityPerLabel *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMMicroLocationProbabilityPerLabel)initWithProto:(id)a3
+- (BMMicroLocationProbabilityPerLabel)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       if ([v5 hasLabel]&& ([v5 hasProbability]& 1) != 0)
       {
         v6 = objc_alloc(MEMORY[0x1E696AFB0]);
-        v7 = [v5 label];
-        v8 = [v6 initWithUUIDString:v7];
+        label = [v5 label];
+        v8 = [v6 initWithUUIDString:label];
         [v5 probability];
         self = [(BMMicroLocationProbabilityPerLabel *)self initWithLabelIdentifier:v8 probability:?];
 
-        v9 = self;
+        selfCopy = self;
 LABEL_13:
 
         goto LABEL_14;
@@ -98,40 +98,40 @@ LABEL_13:
       }
     }
 
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
-  v9 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v9;
+  return selfCopy;
 }
 
-- (BMMicroLocationProbabilityPerLabel)initWithProtoData:(id)a3
+- (BMMicroLocationProbabilityPerLabel)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBProbabilityPerLabel alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBProbabilityPerLabel alloc] initWithData:dataCopy];
 
     self = [(BMMicroLocationProbabilityPerLabel *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(NSUUID *)self->_labelIdentifier UUIDString];
-  [v3 setLabel:v4];
+  uUIDString = [(NSUUID *)self->_labelIdentifier UUIDString];
+  [v3 setLabel:uUIDString];
 
   [v3 setProbability:self->_probability];
 
@@ -147,9 +147,9 @@ LABEL_14:
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -157,14 +157,14 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v7 = v6;
+  v7 = equalCopy;
   v8 = v7;
   labelIdentifier = self->_labelIdentifier;
   v10 = labelIdentifier;
   if (!labelIdentifier)
   {
-    v3 = [v7 labelIdentifier];
-    if (!v3)
+    labelIdentifier = [v7 labelIdentifier];
+    if (!labelIdentifier)
     {
       v11 = 0;
       goto LABEL_10;
@@ -173,8 +173,8 @@ LABEL_14:
     v10 = self->_labelIdentifier;
   }
 
-  v4 = [v8 labelIdentifier];
-  if (![(NSUUID *)v10 isEqual:v4])
+  labelIdentifier2 = [v8 labelIdentifier];
+  if (![(NSUUID *)v10 isEqual:labelIdentifier2])
   {
     v12 = 0;
 LABEL_11:

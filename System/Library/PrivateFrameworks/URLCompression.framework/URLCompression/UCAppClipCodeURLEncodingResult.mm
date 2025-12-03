@@ -1,33 +1,33 @@
 @interface UCAppClipCodeURLEncodingResult
-+ (id)resultWithRawEncodedBits:(id)a3 appClipCodeBytes:(id)a4;
-- (UCAppClipCodeURLEncodingResult)initWithRawEncodedBits:(id)a3 appClipCodeBytes:(id)a4;
++ (id)resultWithRawEncodedBits:(id)bits appClipCodeBytes:(id)bytes;
+- (UCAppClipCodeURLEncodingResult)initWithRawEncodedBits:(id)bits appClipCodeBytes:(id)bytes;
 @end
 
 @implementation UCAppClipCodeURLEncodingResult
 
-+ (id)resultWithRawEncodedBits:(id)a3 appClipCodeBytes:(id)a4
++ (id)resultWithRawEncodedBits:(id)bits appClipCodeBytes:(id)bytes
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithRawEncodedBits:v7 appClipCodeBytes:v6];
+  bytesCopy = bytes;
+  bitsCopy = bits;
+  v8 = [[self alloc] initWithRawEncodedBits:bitsCopy appClipCodeBytes:bytesCopy];
 
   return v8;
 }
 
-- (UCAppClipCodeURLEncodingResult)initWithRawEncodedBits:(id)a3 appClipCodeBytes:(id)a4
+- (UCAppClipCodeURLEncodingResult)initWithRawEncodedBits:(id)bits appClipCodeBytes:(id)bytes
 {
-  v6 = a3;
-  v7 = a4;
+  bitsCopy = bits;
+  bytesCopy = bytes;
   v13.receiver = self;
   v13.super_class = UCAppClipCodeURLEncodingResult;
   v8 = [(UCAppClipCodeURLEncodingResult *)&v13 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [bitsCopy copy];
     rawEncodedBits = v8->_rawEncodedBits;
     v8->_rawEncodedBits = v9;
 
-    objc_storeStrong(&v8->_appClipCodeBytes, a4);
+    objc_storeStrong(&v8->_appClipCodeBytes, bytes);
     v11 = v8;
   }
 

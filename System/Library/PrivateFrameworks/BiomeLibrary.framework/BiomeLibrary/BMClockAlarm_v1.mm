@@ -9,10 +9,10 @@
 {
   v4.receiver = self;
   v4.super_class = BMClockAlarm_v1;
-  v2 = [(BMClockAlarm *)&v4 lastEventType];
-  if (v2 < 0xB)
+  lastEventType = [(BMClockAlarm *)&v4 lastEventType];
+  if (lastEventType < 0xB)
   {
-    return v2 + 1;
+    return lastEventType + 1;
   }
 
   else
@@ -25,10 +25,10 @@
 {
   v4.receiver = self;
   v4.super_class = BMClockAlarm_v1;
-  v2 = [(BMClockAlarm *)&v4 eventType];
-  if (v2 < 6)
+  eventType = [(BMClockAlarm *)&v4 eventType];
+  if (eventType < 6)
   {
-    return v2 + 1;
+    return eventType + 1;
   }
 
   else

@@ -8,7 +8,7 @@
 
 - (NSString)simStatus
 {
-  v2 = self;
+  selfCopy = self;
   sub_10013EF20();
 
   v3 = String._bridgeToObjectiveC()();
@@ -18,7 +18,7 @@
 
 - (BOOL)hasTelephonyCapability
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10013EFC0();
 
   return v3 & 1;
@@ -26,7 +26,7 @@
 
 - (BOOL)hasTelephonyEntitlement
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10013F048();
 
   return v3 & 1;

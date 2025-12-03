@@ -1,13 +1,13 @@
 @interface TSWReviewMatchingAnswerState
 - (BOOL)hasUserSelected;
-- (TSWReviewMatchingAnswerState)initWithCoder:(id)a3;
+- (TSWReviewMatchingAnswerState)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)numSelectedTargets;
-- (unint64_t)placardForTarget:(unint64_t)a3;
-- (unint64_t)targetForPlacard:(unint64_t)a3;
+- (unint64_t)placardForTarget:(unint64_t)target;
+- (unint64_t)targetForPlacard:(unint64_t)placard;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTarget:(unint64_t)a3 forPlacard:(unint64_t)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTarget:(unint64_t)target forPlacard:(unint64_t)placard;
 @end
 
 @implementation TSWReviewMatchingAnswerState
@@ -20,7 +20,7 @@
   [(TSWReviewMatchingAnswerState *)&v3 dealloc];
 }
 
-- (TSWReviewMatchingAnswerState)initWithCoder:(id)a3
+- (TSWReviewMatchingAnswerState)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = TSWReviewMatchingAnswerState;
@@ -28,21 +28,21 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->mPlacardToTargetMap = [a3 decodeObjectOfClasses:+[NSSet setWithObjects:](NSSet forKey:{"setWithObjects:", v5, objc_opt_class(), 0), @"TSWReviewAnswerStateChoiceForSource"}];
+    v4->mPlacardToTargetMap = [coder decodeObjectOfClasses:+[NSSet setWithObjects:](NSSet forKey:{"setWithObjects:", v5, objc_opt_class(), 0), @"TSWReviewAnswerStateChoiceForSource"}];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TSWReviewMatchingAnswerState;
   [(TSWReviewAnswerState *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->mPlacardToTargetMap forKey:@"TSWReviewAnswerStateChoiceForSource"];
+  [coder encodeObject:self->mPlacardToTargetMap forKey:@"TSWReviewAnswerStateChoiceForSource"];
 }
 
-- (unint64_t)targetForPlacard:(unint64_t)a3
+- (unint64_t)targetForPlacard:(unint64_t)placard
 {
   mPlacardToTargetMap = self->mPlacardToTargetMap;
   if (!mPlacardToTargetMap)
@@ -50,12 +50,12 @@
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if ([(NSMutableArray *)mPlacardToTargetMap count]<= a3)
+  if ([(NSMutableArray *)mPlacardToTargetMap count]<= placard)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v6 = [(NSMutableArray *)self->mPlacardToTargetMap objectAtIndex:a3];
+  v6 = [(NSMutableArray *)self->mPlacardToTargetMap objectAtIndex:placard];
   if (!v6)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -64,7 +64,7 @@
   return [v6 unsignedIntegerValue];
 }
 
-- (unint64_t)placardForTarget:(unint64_t)a3
+- (unint64_t)placardForTarget:(unint64_t)target
 {
   mPlacardToTargetMap = self->mPlacardToTargetMap;
   if (!mPlacardToTargetMap || ![(NSMutableArray *)mPlacardToTargetMap count])
@@ -78,7 +78,7 @@
     v7 = [(NSMutableArray *)self->mPlacardToTargetMap objectAtIndex:v6];
     if (v7)
     {
-      if ([v7 unsignedIntegerValue] == a3)
+      if ([v7 unsignedIntegerValue] == target)
       {
         break;
       }
@@ -93,9 +93,9 @@
   return v6;
 }
 
-- (void)setTarget:(unint64_t)a3 forPlacard:(unint64_t)a4
+- (void)setTarget:(unint64_t)target forPlacard:(unint64_t)placard
 {
-  if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+  if (placard != 0x7FFFFFFFFFFFFFFFLL)
   {
     mPlacardToTargetMap = self->mPlacardToTargetMap;
     if (!mPlacardToTargetMap)
@@ -104,19 +104,19 @@
       self->mPlacardToTargetMap = mPlacardToTargetMap;
     }
 
-    if ([(NSMutableArray *)mPlacardToTargetMap count]<= a4)
+    if ([(NSMutableArray *)mPlacardToTargetMap count]<= placard)
     {
       v8 = [(NSMutableArray *)self->mPlacardToTargetMap count];
-      if ((a4 + 1) != v8)
+      if ((placard + 1) != v8)
       {
-        if (a4 + 1 - v8 <= 1)
+        if (placard + 1 - v8 <= 1)
         {
           v9 = 1;
         }
 
         else
         {
-          v9 = a4 + 1 - v8;
+          v9 = placard + 1 - v8;
         }
 
         do
@@ -129,18 +129,18 @@
       }
     }
 
-    v10 = [(TSWReviewMatchingAnswerState *)self placardForTarget:a3];
-    if (v10 != a4)
+    v10 = [(TSWReviewMatchingAnswerState *)self placardForTarget:target];
+    if (v10 != placard)
     {
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
       {
         [(NSMutableArray *)self->mPlacardToTargetMap replaceObjectAtIndex:v10 withObject:[NSNumber numberWithUnsignedInteger:0x7FFFFFFFFFFFFFFFLL]];
       }
 
-      v11 = [NSNumber numberWithUnsignedInteger:a3];
+      v11 = [NSNumber numberWithUnsignedInteger:target];
       v12 = self->mPlacardToTargetMap;
 
-      [(NSMutableArray *)v12 replaceObjectAtIndex:a4 withObject:v11];
+      [(NSMutableArray *)v12 replaceObjectAtIndex:placard withObject:v11];
     }
   }
 }

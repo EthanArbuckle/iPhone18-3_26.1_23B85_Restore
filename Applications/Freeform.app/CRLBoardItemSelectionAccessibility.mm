@@ -7,18 +7,18 @@
 
 - (NSSet)crlaxInfos
 {
-  v2 = [(CRLBoardItemSelectionAccessibility *)self crlaxTarget];
-  v3 = [v2 boardItems];
+  crlaxTarget = [(CRLBoardItemSelectionAccessibility *)self crlaxTarget];
+  boardItems = [crlaxTarget boardItems];
 
-  return v3;
+  return boardItems;
 }
 
 - (unint64_t)crlaxInfoCount
 {
-  v2 = [(CRLBoardItemSelectionAccessibility *)self crlaxTarget];
-  v3 = [v2 itemCount];
+  crlaxTarget = [(CRLBoardItemSelectionAccessibility *)self crlaxTarget];
+  itemCount = [crlaxTarget itemCount];
 
-  return v3;
+  return itemCount;
 }
 
 @end

@@ -7,18 +7,18 @@
 - (uint64_t)_configureUsingLayer:()Configuration
 {
   v4 = a3;
-  v5 = [v4 contentsGravity];
-  [a1 setContentsGravity:v5];
+  contentsGravity = [v4 contentsGravity];
+  [self setContentsGravity:contentsGravity];
 
-  [a1 setNeedsDisplayOnBoundsChange:{objc_msgSend(v4, "needsDisplayOnBoundsChange")}];
-  v6 = [v4 contentsFormat];
-  [a1 setContentsFormat:v6];
+  [self setNeedsDisplayOnBoundsChange:{objc_msgSend(v4, "needsDisplayOnBoundsChange")}];
+  contentsFormat = [v4 contentsFormat];
+  [self setContentsFormat:contentsFormat];
 
-  [a1 setContentsMultiplyColor:{objc_msgSend(v4, "contentsMultiplyColor")}];
+  [self setContentsMultiplyColor:{objc_msgSend(v4, "contentsMultiplyColor")}];
   [v4 contentsScale];
   v8 = v7;
 
-  return [a1 setContentsScale:v8];
+  return [self setContentsScale:v8];
 }
 
 @end

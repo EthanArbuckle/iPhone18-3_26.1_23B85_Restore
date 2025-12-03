@@ -1,14 +1,14 @@
 @interface CellularLteOtaMsg
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsChannelType:(id)a3;
-- (int)StringAsDlCcchMsg:(id)a3;
-- (int)StringAsDlDcchMsg:(id)a3;
-- (int)StringAsMcchMsg:(id)a3;
-- (int)StringAsUlCcchMsg:(id)a3;
-- (int)StringAsUlDcchMsg:(id)a3;
+- (int)StringAsChannelType:(id)type;
+- (int)StringAsDlCcchMsg:(id)msg;
+- (int)StringAsDlDcchMsg:(id)msg;
+- (int)StringAsMcchMsg:(id)msg;
+- (int)StringAsUlCcchMsg:(id)msg;
+- (int)StringAsUlDcchMsg:(id)msg;
 - (int)channelType;
 - (int)dlCcchMsg;
 - (int)dlDcchMsg;
@@ -16,37 +16,37 @@
 - (int)ulCcchMsg;
 - (int)ulDcchMsg;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCellId:(BOOL)a3;
-- (void)setHasChannelType:(BOOL)a3;
-- (void)setHasDlBw:(BOOL)a3;
-- (void)setHasDlCcchMsg:(BOOL)a3;
-- (void)setHasDlDcchMsg:(BOOL)a3;
-- (void)setHasFreq:(BOOL)a3;
-- (void)setHasFreqBandInd:(BOOL)a3;
-- (void)setHasLength:(BOOL)a3;
-- (void)setHasMcchMsg:(BOOL)a3;
-- (void)setHasMsgType:(BOOL)a3;
-- (void)setHasNumMncDigits:(BOOL)a3;
-- (void)setHasPhyCellId:(BOOL)a3;
-- (void)setHasRbId:(BOOL)a3;
-- (void)setHasScgEverConfigured:(BOOL)a3;
-- (void)setHasSelPlmnMcc:(BOOL)a3;
-- (void)setHasSelPlmnMnc:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasTrackingAreaCode:(BOOL)a3;
-- (void)setHasUlCcchMsg:(BOOL)a3;
-- (void)setHasUlDcchMsg:(BOOL)a3;
-- (void)setHasUpperLayerIndication:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCellId:(BOOL)id;
+- (void)setHasChannelType:(BOOL)type;
+- (void)setHasDlBw:(BOOL)bw;
+- (void)setHasDlCcchMsg:(BOOL)msg;
+- (void)setHasDlDcchMsg:(BOOL)msg;
+- (void)setHasFreq:(BOOL)freq;
+- (void)setHasFreqBandInd:(BOOL)ind;
+- (void)setHasLength:(BOOL)length;
+- (void)setHasMcchMsg:(BOOL)msg;
+- (void)setHasMsgType:(BOOL)type;
+- (void)setHasNumMncDigits:(BOOL)digits;
+- (void)setHasPhyCellId:(BOOL)id;
+- (void)setHasRbId:(BOOL)id;
+- (void)setHasScgEverConfigured:(BOOL)configured;
+- (void)setHasSelPlmnMcc:(BOOL)mcc;
+- (void)setHasSelPlmnMnc:(BOOL)mnc;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasTrackingAreaCode:(BOOL)code;
+- (void)setHasUlCcchMsg:(BOOL)msg;
+- (void)setHasUlDcchMsg:(BOOL)msg;
+- (void)setHasUpperLayerIndication:(BOOL)indication;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularLteOtaMsg
 
-- (void)setHasPhyCellId:(BOOL)a3
+- (void)setHasPhyCellId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4096;
   }
@@ -59,9 +59,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasFreq:(BOOL)a3
+- (void)setHasFreq:(BOOL)freq
 {
-  if (a3)
+  if (freq)
   {
     v3 = 64;
   }
@@ -74,9 +74,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasRbId:(BOOL)a3
+- (void)setHasRbId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 0x2000;
   }
@@ -102,9 +102,9 @@
   }
 }
 
-- (void)setHasChannelType:(BOOL)a3
+- (void)setHasChannelType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -117,45 +117,45 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (int)StringAsChannelType:(id)a3
+- (int)StringAsChannelType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"BCCH_BCH"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"BCCH_BCH"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"BCCH_DL_SCH"])
+  else if ([typeCopy isEqualToString:@"BCCH_DL_SCH"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"MCCH"])
+  else if ([typeCopy isEqualToString:@"MCCH"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"PCCH"])
+  else if ([typeCopy isEqualToString:@"PCCH"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"DL_CCCH"])
+  else if ([typeCopy isEqualToString:@"DL_CCCH"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"DL_DCCH"])
+  else if ([typeCopy isEqualToString:@"DL_DCCH"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"UL_CCCH"])
+  else if ([typeCopy isEqualToString:@"UL_CCCH"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"UL_DCCH"])
+  else if ([typeCopy isEqualToString:@"UL_DCCH"])
   {
     v4 = 15;
   }
@@ -168,9 +168,9 @@
   return v4;
 }
 
-- (void)setHasMsgType:(BOOL)a3
+- (void)setHasMsgType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 1024;
   }
@@ -183,9 +183,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasLength:(BOOL)a3
+- (void)setHasLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 256;
   }
@@ -198,9 +198,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasDlBw:(BOOL)a3
+- (void)setHasDlBw:(BOOL)bw
 {
-  if (a3)
+  if (bw)
   {
     v3 = 8;
   }
@@ -213,9 +213,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasCellId:(BOOL)a3
+- (void)setHasCellId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -228,9 +228,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasFreqBandInd:(BOOL)a3
+- (void)setHasFreqBandInd:(BOOL)ind
 {
-  if (a3)
+  if (ind)
   {
     v3 = 128;
   }
@@ -243,9 +243,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasTrackingAreaCode:(BOOL)a3
+- (void)setHasTrackingAreaCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 0x20000;
   }
@@ -258,9 +258,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasSelPlmnMcc:(BOOL)a3
+- (void)setHasSelPlmnMcc:(BOOL)mcc
 {
-  if (a3)
+  if (mcc)
   {
     v3 = 0x4000;
   }
@@ -273,9 +273,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasSelPlmnMnc:(BOOL)a3
+- (void)setHasSelPlmnMnc:(BOOL)mnc
 {
-  if (a3)
+  if (mnc)
   {
     v3 = 0x8000;
   }
@@ -288,9 +288,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasNumMncDigits:(BOOL)a3
+- (void)setHasNumMncDigits:(BOOL)digits
 {
-  if (a3)
+  if (digits)
   {
     v3 = 2048;
   }
@@ -303,9 +303,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasUpperLayerIndication:(BOOL)a3
+- (void)setHasUpperLayerIndication:(BOOL)indication
 {
-  if (a3)
+  if (indication)
   {
     v3 = 0x200000;
   }
@@ -318,9 +318,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasScgEverConfigured:(BOOL)a3
+- (void)setHasScgEverConfigured:(BOOL)configured
 {
-  if (a3)
+  if (configured)
   {
     v3 = 0x100000;
   }
@@ -346,9 +346,9 @@
   }
 }
 
-- (void)setHasMcchMsg:(BOOL)a3
+- (void)setHasMcchMsg:(BOOL)msg
 {
-  if (a3)
+  if (msg)
   {
     v3 = 512;
   }
@@ -361,17 +361,17 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (int)StringAsMcchMsg:(id)a3
+- (int)StringAsMcchMsg:(id)msg
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"lte_rrc_MBSFNAreaConfiguration_r9"])
+  msgCopy = msg;
+  if ([msgCopy isEqualToString:@"lte_rrc_MBSFNAreaConfiguration_r9"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"lte_rrc_MBMSCountingRequest_r10"];
+    v4 = [msgCopy isEqualToString:@"lte_rrc_MBMSCountingRequest_r10"];
   }
 
   return v4;
@@ -390,9 +390,9 @@
   }
 }
 
-- (void)setHasUlCcchMsg:(BOOL)a3
+- (void)setHasUlCcchMsg:(BOOL)msg
 {
-  if (a3)
+  if (msg)
   {
     v3 = 0x40000;
   }
@@ -405,17 +405,17 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (int)StringAsUlCcchMsg:(id)a3
+- (int)StringAsUlCcchMsg:(id)msg
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"lte_rrc_rrcConnectionReestablishmentRequest"])
+  msgCopy = msg;
+  if ([msgCopy isEqualToString:@"lte_rrc_rrcConnectionReestablishmentRequest"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"lte_rrc_rrcConnectionRequest"];
+    v4 = [msgCopy isEqualToString:@"lte_rrc_rrcConnectionRequest"];
   }
 
   return v4;
@@ -434,9 +434,9 @@
   }
 }
 
-- (void)setHasUlDcchMsg:(BOOL)a3
+- (void)setHasUlDcchMsg:(BOOL)msg
 {
-  if (a3)
+  if (msg)
   {
     v3 = 0x80000;
   }
@@ -449,100 +449,100 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (int)StringAsUlDcchMsg:(id)a3
+- (int)StringAsUlDcchMsg:(id)msg
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"lte_rrc_csfbParametersRequestCDMA2000"])
+  msgCopy = msg;
+  if ([msgCopy isEqualToString:@"lte_rrc_csfbParametersRequestCDMA2000"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_measurementReport"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_measurementReport"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_rrcConnectionReconfigurationComplete"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_rrcConnectionReconfigurationComplete"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_rrcConnectionReestablishmentComplete"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_rrcConnectionReestablishmentComplete"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_rrcConnectionSetupComplete"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_rrcConnectionSetupComplete"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_securityModeComplete"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_securityModeComplete"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_securityModeFailure"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_securityModeFailure"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_ueCapabilityInformation"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_ueCapabilityInformation"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_ulHandoverPreparationTransfer"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_ulHandoverPreparationTransfer"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_ulInformationTransfer"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_ulInformationTransfer"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_counterCheckResponse"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_counterCheckResponse"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_ueInformationResponse_r9"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_ueInformationResponse_r9"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_proximityIndication_r9"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_proximityIndication_r9"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_rnReconfigurationComplete_r10"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_rnReconfigurationComplete_r10"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_mbmsCountingResponse_r10"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_mbmsCountingResponse_r10"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_interFreqRSTDMeasurementIndication_r10"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_interFreqRSTDMeasurementIndication_r10"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_ueAssistanceInformation_r11"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_ueAssistanceInformation_r11"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_inDeviceCoexIndication_r11"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_inDeviceCoexIndication_r11"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_mbmsInterestIndication_r11"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_mbmsInterestIndication_r11"])
   {
     v4 = 18;
   }
@@ -568,9 +568,9 @@
   }
 }
 
-- (void)setHasDlCcchMsg:(BOOL)a3
+- (void)setHasDlCcchMsg:(BOOL)msg
 {
-  if (a3)
+  if (msg)
   {
     v3 = 16;
   }
@@ -583,25 +583,25 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (int)StringAsDlCcchMsg:(id)a3
+- (int)StringAsDlCcchMsg:(id)msg
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"lte_rrc_rrcConnectionReestablishment"])
+  msgCopy = msg;
+  if ([msgCopy isEqualToString:@"lte_rrc_rrcConnectionReestablishment"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_rrcConnectionReestablishmentReject"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_rrcConnectionReestablishmentReject"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_rrcConnectionReject"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_rrcConnectionReject"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_rrcConnectionSetup"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_rrcConnectionSetup"])
   {
     v4 = 3;
   }
@@ -627,9 +627,9 @@
   }
 }
 
-- (void)setHasDlDcchMsg:(BOOL)a3
+- (void)setHasDlDcchMsg:(BOOL)msg
 {
-  if (a3)
+  if (msg)
   {
     v3 = 32;
   }
@@ -642,60 +642,60 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (int)StringAsDlDcchMsg:(id)a3
+- (int)StringAsDlDcchMsg:(id)msg
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"lte_rrc_csfbParametersResponseCDMA2000"])
+  msgCopy = msg;
+  if ([msgCopy isEqualToString:@"lte_rrc_csfbParametersResponseCDMA2000"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_dlInformationTransfer"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_dlInformationTransfer"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_handoverFromEUTRAPreparationRequest"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_handoverFromEUTRAPreparationRequest"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_mobilityFromEUTRACommand"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_mobilityFromEUTRACommand"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_rrcConnectionReconfiguration"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_rrcConnectionReconfiguration"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_rrcConnectionRelease"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_rrcConnectionRelease"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_securityModeCommand"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_securityModeCommand"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_ueCapabilityEnquiry"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_ueCapabilityEnquiry"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_counterCheck"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_counterCheck"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_ueInformationRequest_r9"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_ueInformationRequest_r9"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"lte_rrc_loggedMeasurementConfiguration_r10"])
+  else if ([msgCopy isEqualToString:@"lte_rrc_loggedMeasurementConfiguration_r10"])
   {
     v4 = 10;
   }
@@ -708,9 +708,9 @@
   return v4;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 0x10000;
   }
@@ -728,8 +728,8 @@
   v7.receiver = self;
   v7.super_class = CellularLteOtaMsg;
   v3 = [(CellularLteOtaMsg *)&v7 description];
-  v4 = [(CellularLteOtaMsg *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularLteOtaMsg *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -1150,9 +1150,9 @@ LABEL_27:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v28 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
@@ -1466,14 +1466,14 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 26) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 26) |= 1u;
     has = self->_has;
     if ((*&has & 0x10000) == 0)
     {
@@ -1492,8 +1492,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 21) = self->_subsId;
-  *(v4 + 26) |= 0x10000u;
+  *(toCopy + 21) = self->_subsId;
+  *(toCopy + 26) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1507,8 +1507,8 @@ LABEL_4:
   }
 
 LABEL_32:
-  *(v4 + 17) = self->_phyCellId;
-  *(v4 + 26) |= 0x1000u;
+  *(toCopy + 17) = self->_phyCellId;
+  *(toCopy + 26) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1522,8 +1522,8 @@ LABEL_5:
   }
 
 LABEL_33:
-  *(v4 + 11) = self->_freq;
-  *(v4 + 26) |= 0x40u;
+  *(toCopy + 11) = self->_freq;
+  *(toCopy + 26) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1537,8 +1537,8 @@ LABEL_6:
   }
 
 LABEL_34:
-  *(v4 + 18) = self->_rbId;
-  *(v4 + 26) |= 0x2000u;
+  *(toCopy + 18) = self->_rbId;
+  *(toCopy + 26) |= 0x2000u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1552,8 +1552,8 @@ LABEL_7:
   }
 
 LABEL_35:
-  *(v4 + 5) = self->_channelType;
-  *(v4 + 26) |= 4u;
+  *(toCopy + 5) = self->_channelType;
+  *(toCopy + 26) |= 4u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1567,28 +1567,28 @@ LABEL_8:
   }
 
 LABEL_36:
-  *(v4 + 15) = self->_msgType;
-  *(v4 + 26) |= 0x400u;
+  *(toCopy + 15) = self->_msgType;
+  *(toCopy + 26) |= 0x400u;
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_9:
-    *(v4 + 13) = self->_length;
-    *(v4 + 26) |= 0x100u;
+    *(toCopy + 13) = self->_length;
+    *(toCopy + 26) |= 0x100u;
   }
 
 LABEL_10:
   if (self->_content)
   {
-    v7 = v4;
-    [v4 setContent:?];
-    v4 = v7;
+    v7 = toCopy;
+    [toCopy setContent:?];
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((*&v6 & 8) != 0)
   {
-    *(v4 + 8) = self->_dlBw;
-    *(v4 + 26) |= 8u;
+    *(toCopy + 8) = self->_dlBw;
+    *(toCopy + 26) |= 8u;
     v6 = self->_has;
     if ((*&v6 & 2) == 0)
     {
@@ -1607,8 +1607,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  *(v4 + 4) = self->_cellId;
-  *(v4 + 26) |= 2u;
+  *(toCopy + 4) = self->_cellId;
+  *(toCopy + 26) |= 2u;
   v6 = self->_has;
   if ((*&v6 & 0x80) == 0)
   {
@@ -1622,8 +1622,8 @@ LABEL_15:
   }
 
 LABEL_40:
-  *(v4 + 12) = self->_freqBandInd;
-  *(v4 + 26) |= 0x80u;
+  *(toCopy + 12) = self->_freqBandInd;
+  *(toCopy + 26) |= 0x80u;
   v6 = self->_has;
   if ((*&v6 & 0x20000) == 0)
   {
@@ -1637,8 +1637,8 @@ LABEL_16:
   }
 
 LABEL_41:
-  *(v4 + 22) = self->_trackingAreaCode;
-  *(v4 + 26) |= 0x20000u;
+  *(toCopy + 22) = self->_trackingAreaCode;
+  *(toCopy + 26) |= 0x20000u;
   v6 = self->_has;
   if ((*&v6 & 0x4000) == 0)
   {
@@ -1652,8 +1652,8 @@ LABEL_17:
   }
 
 LABEL_42:
-  *(v4 + 19) = self->_selPlmnMcc;
-  *(v4 + 26) |= 0x4000u;
+  *(toCopy + 19) = self->_selPlmnMcc;
+  *(toCopy + 26) |= 0x4000u;
   v6 = self->_has;
   if ((*&v6 & 0x8000) == 0)
   {
@@ -1667,8 +1667,8 @@ LABEL_18:
   }
 
 LABEL_43:
-  *(v4 + 20) = self->_selPlmnMnc;
-  *(v4 + 26) |= 0x8000u;
+  *(toCopy + 20) = self->_selPlmnMnc;
+  *(toCopy + 26) |= 0x8000u;
   v6 = self->_has;
   if ((*&v6 & 0x800) == 0)
   {
@@ -1682,8 +1682,8 @@ LABEL_19:
   }
 
 LABEL_44:
-  *(v4 + 16) = self->_numMncDigits;
-  *(v4 + 26) |= 0x800u;
+  *(toCopy + 16) = self->_numMncDigits;
+  *(toCopy + 26) |= 0x800u;
   v6 = self->_has;
   if ((*&v6 & 0x200000) == 0)
   {
@@ -1697,8 +1697,8 @@ LABEL_20:
   }
 
 LABEL_45:
-  *(v4 + 101) = self->_upperLayerIndication;
-  *(v4 + 26) |= 0x200000u;
+  *(toCopy + 101) = self->_upperLayerIndication;
+  *(toCopy + 26) |= 0x200000u;
   v6 = self->_has;
   if ((*&v6 & 0x100000) == 0)
   {
@@ -1712,8 +1712,8 @@ LABEL_21:
   }
 
 LABEL_46:
-  *(v4 + 100) = self->_scgEverConfigured;
-  *(v4 + 26) |= 0x100000u;
+  *(toCopy + 100) = self->_scgEverConfigured;
+  *(toCopy + 26) |= 0x100000u;
   v6 = self->_has;
   if ((*&v6 & 0x200) == 0)
   {
@@ -1727,8 +1727,8 @@ LABEL_22:
   }
 
 LABEL_47:
-  *(v4 + 14) = self->_mcchMsg;
-  *(v4 + 26) |= 0x200u;
+  *(toCopy + 14) = self->_mcchMsg;
+  *(toCopy + 26) |= 0x200u;
   v6 = self->_has;
   if ((*&v6 & 0x40000) == 0)
   {
@@ -1742,8 +1742,8 @@ LABEL_23:
   }
 
 LABEL_48:
-  *(v4 + 23) = self->_ulCcchMsg;
-  *(v4 + 26) |= 0x40000u;
+  *(toCopy + 23) = self->_ulCcchMsg;
+  *(toCopy + 26) |= 0x40000u;
   v6 = self->_has;
   if ((*&v6 & 0x80000) == 0)
   {
@@ -1757,8 +1757,8 @@ LABEL_24:
   }
 
 LABEL_49:
-  *(v4 + 24) = self->_ulDcchMsg;
-  *(v4 + 26) |= 0x80000u;
+  *(toCopy + 24) = self->_ulDcchMsg;
+  *(toCopy + 26) |= 0x80000u;
   v6 = self->_has;
   if ((*&v6 & 0x10) == 0)
   {
@@ -1772,21 +1772,21 @@ LABEL_25:
   }
 
 LABEL_50:
-  *(v4 + 9) = self->_dlCcchMsg;
-  *(v4 + 26) |= 0x10u;
+  *(toCopy + 9) = self->_dlCcchMsg;
+  *(toCopy + 26) |= 0x10u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_26:
-    *(v4 + 10) = self->_dlDcchMsg;
-    *(v4 + 26) |= 0x20u;
+    *(toCopy + 10) = self->_dlDcchMsg;
+    *(toCopy + 26) |= 0x20u;
   }
 
 LABEL_27:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (*&has)
@@ -1896,7 +1896,7 @@ LABEL_9:
   }
 
 LABEL_10:
-  v8 = [(NSData *)self->_content copyWithZone:a3];
+  v8 = [(NSData *)self->_content copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
@@ -2100,19 +2100,19 @@ LABEL_24:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_121;
   }
 
   has = self->_has;
-  v6 = *(v4 + 26);
+  v6 = *(equalCopy + 26);
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_121;
     }
@@ -2125,7 +2125,7 @@ LABEL_24:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_subsId != *(v4 + 21))
+    if ((v6 & 0x10000) == 0 || self->_subsId != *(equalCopy + 21))
     {
       goto LABEL_121;
     }
@@ -2138,7 +2138,7 @@ LABEL_24:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v6 & 0x1000) == 0 || self->_phyCellId != *(v4 + 17))
+    if ((v6 & 0x1000) == 0 || self->_phyCellId != *(equalCopy + 17))
     {
       goto LABEL_121;
     }
@@ -2151,7 +2151,7 @@ LABEL_24:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_freq != *(v4 + 11))
+    if ((v6 & 0x40) == 0 || self->_freq != *(equalCopy + 11))
     {
       goto LABEL_121;
     }
@@ -2164,7 +2164,7 @@ LABEL_24:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v6 & 0x2000) == 0 || self->_rbId != *(v4 + 18))
+    if ((v6 & 0x2000) == 0 || self->_rbId != *(equalCopy + 18))
     {
       goto LABEL_121;
     }
@@ -2177,7 +2177,7 @@ LABEL_24:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_channelType != *(v4 + 5))
+    if ((v6 & 4) == 0 || self->_channelType != *(equalCopy + 5))
     {
       goto LABEL_121;
     }
@@ -2190,7 +2190,7 @@ LABEL_24:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_msgType != *(v4 + 15))
+    if ((v6 & 0x400) == 0 || self->_msgType != *(equalCopy + 15))
     {
       goto LABEL_121;
     }
@@ -2203,7 +2203,7 @@ LABEL_24:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_length != *(v4 + 13))
+    if ((v6 & 0x100) == 0 || self->_length != *(equalCopy + 13))
     {
       goto LABEL_121;
     }
@@ -2215,7 +2215,7 @@ LABEL_24:
   }
 
   content = self->_content;
-  if (content | *(v4 + 3))
+  if (content | *(equalCopy + 3))
   {
     if (![(NSData *)content isEqual:?])
     {
@@ -2225,10 +2225,10 @@ LABEL_24:
     has = self->_has;
   }
 
-  v8 = *(v4 + 26);
+  v8 = *(equalCopy + 26);
   if ((*&has & 8) != 0)
   {
-    if ((v8 & 8) == 0 || self->_dlBw != *(v4 + 8))
+    if ((v8 & 8) == 0 || self->_dlBw != *(equalCopy + 8))
     {
       goto LABEL_121;
     }
@@ -2241,7 +2241,7 @@ LABEL_24:
 
   if ((*&has & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_cellId != *(v4 + 4))
+    if ((v8 & 2) == 0 || self->_cellId != *(equalCopy + 4))
     {
       goto LABEL_121;
     }
@@ -2254,7 +2254,7 @@ LABEL_24:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v8 & 0x80) == 0 || self->_freqBandInd != *(v4 + 12))
+    if ((v8 & 0x80) == 0 || self->_freqBandInd != *(equalCopy + 12))
     {
       goto LABEL_121;
     }
@@ -2267,7 +2267,7 @@ LABEL_24:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v8 & 0x20000) == 0 || self->_trackingAreaCode != *(v4 + 22))
+    if ((v8 & 0x20000) == 0 || self->_trackingAreaCode != *(equalCopy + 22))
     {
       goto LABEL_121;
     }
@@ -2280,7 +2280,7 @@ LABEL_24:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v8 & 0x4000) == 0 || self->_selPlmnMcc != *(v4 + 19))
+    if ((v8 & 0x4000) == 0 || self->_selPlmnMcc != *(equalCopy + 19))
     {
       goto LABEL_121;
     }
@@ -2293,7 +2293,7 @@ LABEL_24:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v8 & 0x8000) == 0 || self->_selPlmnMnc != *(v4 + 20))
+    if ((v8 & 0x8000) == 0 || self->_selPlmnMnc != *(equalCopy + 20))
     {
       goto LABEL_121;
     }
@@ -2306,7 +2306,7 @@ LABEL_24:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v8 & 0x800) == 0 || self->_numMncDigits != *(v4 + 16))
+    if ((v8 & 0x800) == 0 || self->_numMncDigits != *(equalCopy + 16))
     {
       goto LABEL_121;
     }
@@ -2324,16 +2324,16 @@ LABEL_24:
       goto LABEL_121;
     }
 
-    v9 = *(v4 + 101);
+    v9 = *(equalCopy + 101);
     if (self->_upperLayerIndication)
     {
-      if ((*(v4 + 101) & 1) == 0)
+      if ((*(equalCopy + 101) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 101))
+    else if (*(equalCopy + 101))
     {
       goto LABEL_121;
     }
@@ -2361,16 +2361,16 @@ LABEL_121:
     goto LABEL_121;
   }
 
-  v10 = *(v4 + 100);
+  v10 = *(equalCopy + 100);
   if (self->_scgEverConfigured)
   {
-    if ((*(v4 + 100) & 1) == 0)
+    if ((*(equalCopy + 100) & 1) == 0)
     {
       goto LABEL_121;
     }
   }
 
-  else if (*(v4 + 100))
+  else if (*(equalCopy + 100))
   {
     goto LABEL_121;
   }
@@ -2378,7 +2378,7 @@ LABEL_121:
 LABEL_90:
   if ((*&has & 0x200) != 0)
   {
-    if ((v8 & 0x200) == 0 || self->_mcchMsg != *(v4 + 14))
+    if ((v8 & 0x200) == 0 || self->_mcchMsg != *(equalCopy + 14))
     {
       goto LABEL_121;
     }
@@ -2391,7 +2391,7 @@ LABEL_90:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v8 & 0x40000) == 0 || self->_ulCcchMsg != *(v4 + 23))
+    if ((v8 & 0x40000) == 0 || self->_ulCcchMsg != *(equalCopy + 23))
     {
       goto LABEL_121;
     }
@@ -2404,7 +2404,7 @@ LABEL_90:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v8 & 0x80000) == 0 || self->_ulDcchMsg != *(v4 + 24))
+    if ((v8 & 0x80000) == 0 || self->_ulDcchMsg != *(equalCopy + 24))
     {
       goto LABEL_121;
     }
@@ -2417,7 +2417,7 @@ LABEL_90:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v8 & 0x10) == 0 || self->_dlCcchMsg != *(v4 + 9))
+    if ((v8 & 0x10) == 0 || self->_dlCcchMsg != *(equalCopy + 9))
     {
       goto LABEL_121;
     }
@@ -2430,7 +2430,7 @@ LABEL_90:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v8 & 0x20) == 0 || self->_dlDcchMsg != *(v4 + 10))
+    if ((v8 & 0x20) == 0 || self->_dlDcchMsg != *(equalCopy + 10))
     {
       goto LABEL_121;
     }
@@ -2440,7 +2440,7 @@ LABEL_90:
 
   else
   {
-    v11 = (*(v4 + 26) & 0x20) == 0;
+    v11 = (*(equalCopy + 26) & 0x20) == 0;
   }
 
 LABEL_122:
@@ -2751,15 +2751,15 @@ LABEL_32:
   return v4 ^ v28 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v11 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 26);
+  fromCopy = from;
+  v5 = *(fromCopy + 26);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 26);
+    v5 = *(fromCopy + 26);
     if ((v5 & 0x10000) == 0)
     {
 LABEL_3:
@@ -2777,9 +2777,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_subsId = *(v4 + 21);
+  self->_subsId = *(fromCopy + 21);
   *&self->_has |= 0x10000u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_4:
@@ -2792,9 +2792,9 @@ LABEL_4:
   }
 
 LABEL_32:
-  self->_phyCellId = *(v4 + 17);
+  self->_phyCellId = *(fromCopy + 17);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x40) == 0)
   {
 LABEL_5:
@@ -2807,9 +2807,9 @@ LABEL_5:
   }
 
 LABEL_33:
-  self->_freq = *(v4 + 11);
+  self->_freq = *(fromCopy + 11);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_6:
@@ -2822,9 +2822,9 @@ LABEL_6:
   }
 
 LABEL_34:
-  self->_rbId = *(v4 + 18);
+  self->_rbId = *(fromCopy + 18);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 4) == 0)
   {
 LABEL_7:
@@ -2837,9 +2837,9 @@ LABEL_7:
   }
 
 LABEL_35:
-  self->_channelType = *(v4 + 5);
+  self->_channelType = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x400) == 0)
   {
 LABEL_8:
@@ -2852,29 +2852,29 @@ LABEL_8:
   }
 
 LABEL_36:
-  self->_msgType = *(v4 + 15);
+  self->_msgType = *(fromCopy + 15);
   *&self->_has |= 0x400u;
-  if ((*(v4 + 26) & 0x100) != 0)
+  if ((*(fromCopy + 26) & 0x100) != 0)
   {
 LABEL_9:
-    self->_length = *(v4 + 13);
+    self->_length = *(fromCopy + 13);
     *&self->_has |= 0x100u;
   }
 
 LABEL_10:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
-    v7 = v4;
+    v7 = fromCopy;
     [(CellularLteOtaMsg *)self setContent:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 26);
+  v6 = *(fromCopy + 26);
   if ((v6 & 8) != 0)
   {
-    self->_dlBw = *(v4 + 8);
+    self->_dlBw = *(fromCopy + 8);
     *&self->_has |= 8u;
-    v6 = *(v4 + 26);
+    v6 = *(fromCopy + 26);
     if ((v6 & 2) == 0)
     {
 LABEL_14:
@@ -2892,9 +2892,9 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  self->_cellId = *(v4 + 4);
+  self->_cellId = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v6 = *(v4 + 26);
+  v6 = *(fromCopy + 26);
   if ((v6 & 0x80) == 0)
   {
 LABEL_15:
@@ -2907,9 +2907,9 @@ LABEL_15:
   }
 
 LABEL_40:
-  self->_freqBandInd = *(v4 + 12);
+  self->_freqBandInd = *(fromCopy + 12);
   *&self->_has |= 0x80u;
-  v6 = *(v4 + 26);
+  v6 = *(fromCopy + 26);
   if ((v6 & 0x20000) == 0)
   {
 LABEL_16:
@@ -2922,9 +2922,9 @@ LABEL_16:
   }
 
 LABEL_41:
-  self->_trackingAreaCode = *(v4 + 22);
+  self->_trackingAreaCode = *(fromCopy + 22);
   *&self->_has |= 0x20000u;
-  v6 = *(v4 + 26);
+  v6 = *(fromCopy + 26);
   if ((v6 & 0x4000) == 0)
   {
 LABEL_17:
@@ -2937,9 +2937,9 @@ LABEL_17:
   }
 
 LABEL_42:
-  self->_selPlmnMcc = *(v4 + 19);
+  self->_selPlmnMcc = *(fromCopy + 19);
   *&self->_has |= 0x4000u;
-  v6 = *(v4 + 26);
+  v6 = *(fromCopy + 26);
   if ((v6 & 0x8000) == 0)
   {
 LABEL_18:
@@ -2952,9 +2952,9 @@ LABEL_18:
   }
 
 LABEL_43:
-  self->_selPlmnMnc = *(v4 + 20);
+  self->_selPlmnMnc = *(fromCopy + 20);
   *&self->_has |= 0x8000u;
-  v6 = *(v4 + 26);
+  v6 = *(fromCopy + 26);
   if ((v6 & 0x800) == 0)
   {
 LABEL_19:
@@ -2967,9 +2967,9 @@ LABEL_19:
   }
 
 LABEL_44:
-  self->_numMncDigits = *(v4 + 16);
+  self->_numMncDigits = *(fromCopy + 16);
   *&self->_has |= 0x800u;
-  v6 = *(v4 + 26);
+  v6 = *(fromCopy + 26);
   if ((v6 & 0x200000) == 0)
   {
 LABEL_20:
@@ -2982,9 +2982,9 @@ LABEL_20:
   }
 
 LABEL_45:
-  self->_upperLayerIndication = *(v4 + 101);
+  self->_upperLayerIndication = *(fromCopy + 101);
   *&self->_has |= 0x200000u;
-  v6 = *(v4 + 26);
+  v6 = *(fromCopy + 26);
   if ((v6 & 0x100000) == 0)
   {
 LABEL_21:
@@ -2997,9 +2997,9 @@ LABEL_21:
   }
 
 LABEL_46:
-  self->_scgEverConfigured = *(v4 + 100);
+  self->_scgEverConfigured = *(fromCopy + 100);
   *&self->_has |= 0x100000u;
-  v6 = *(v4 + 26);
+  v6 = *(fromCopy + 26);
   if ((v6 & 0x200) == 0)
   {
 LABEL_22:
@@ -3012,9 +3012,9 @@ LABEL_22:
   }
 
 LABEL_47:
-  self->_mcchMsg = *(v4 + 14);
+  self->_mcchMsg = *(fromCopy + 14);
   *&self->_has |= 0x200u;
-  v6 = *(v4 + 26);
+  v6 = *(fromCopy + 26);
   if ((v6 & 0x40000) == 0)
   {
 LABEL_23:
@@ -3027,9 +3027,9 @@ LABEL_23:
   }
 
 LABEL_48:
-  self->_ulCcchMsg = *(v4 + 23);
+  self->_ulCcchMsg = *(fromCopy + 23);
   *&self->_has |= 0x40000u;
-  v6 = *(v4 + 26);
+  v6 = *(fromCopy + 26);
   if ((v6 & 0x80000) == 0)
   {
 LABEL_24:
@@ -3042,9 +3042,9 @@ LABEL_24:
   }
 
 LABEL_49:
-  self->_ulDcchMsg = *(v4 + 24);
+  self->_ulDcchMsg = *(fromCopy + 24);
   *&self->_has |= 0x80000u;
-  v6 = *(v4 + 26);
+  v6 = *(fromCopy + 26);
   if ((v6 & 0x10) == 0)
   {
 LABEL_25:
@@ -3057,12 +3057,12 @@ LABEL_25:
   }
 
 LABEL_50:
-  self->_dlCcchMsg = *(v4 + 9);
+  self->_dlCcchMsg = *(fromCopy + 9);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 26) & 0x20) != 0)
+  if ((*(fromCopy + 26) & 0x20) != 0)
   {
 LABEL_26:
-    self->_dlDcchMsg = *(v4 + 10);
+    self->_dlDcchMsg = *(fromCopy + 10);
     *&self->_has |= 0x20u;
   }
 

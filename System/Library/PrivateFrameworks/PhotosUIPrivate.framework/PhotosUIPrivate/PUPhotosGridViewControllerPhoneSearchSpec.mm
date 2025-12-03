@@ -1,25 +1,25 @@
 @interface PUPhotosGridViewControllerPhoneSearchSpec
-- (void)configureCollectionViewGridLayout:(id)a3 forWidth:(double)a4 safeAreaInsets:(UIEdgeInsets)a5;
+- (void)configureCollectionViewGridLayout:(id)layout forWidth:(double)width safeAreaInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation PUPhotosGridViewControllerPhoneSearchSpec
 
-- (void)configureCollectionViewGridLayout:(id)a3 forWidth:(double)a4 safeAreaInsets:(UIEdgeInsets)a5
+- (void)configureCollectionViewGridLayout:(id)layout forWidth:(double)width safeAreaInsets:(UIEdgeInsets)insets
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v28.receiver = self;
   v28.super_class = PUPhotosGridViewControllerPhoneSearchSpec;
-  v11 = a3;
-  [(PUPhotosGridViewControllerPhoneSpec *)&v28 configureCollectionViewGridLayout:v11 forWidth:a4 safeAreaInsets:top, left, bottom, right];
+  layoutCopy = layout;
+  [(PUPhotosGridViewControllerPhoneSpec *)&v28 configureCollectionViewGridLayout:layoutCopy forWidth:width safeAreaInsets:top, left, bottom, right];
   [(PUPhotosGridViewControllerPhoneSpec *)self gridContentInsets];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = a4 - v14 - v18;
+  v20 = width - v14 - v18;
   v21 = [MEMORY[0x1E69C4548] photosGridLayoutColumnsForWidth:v20];
   v26 = 0.0;
   v27 = 0.0;
@@ -33,14 +33,14 @@
   v23 = v27;
   v24 = v15 + v26;
   v25 = v19 + v26;
-  [v11 setItemSize:?];
-  [v11 setInterItemSpacing:{v23, v23}];
-  [v11 setSectionContentInset:{v13, v24, v17, v25}];
-  [v11 setSectionTopPadding:0.0];
-  [v11 setGlobalTopPadding:0.0];
-  [v11 setGlobalBottomPadding:4.0];
-  [v11 setCropType:0];
-  [v11 setCropAmount:0.0];
+  [layoutCopy setItemSize:?];
+  [layoutCopy setInterItemSpacing:{v23, v23}];
+  [layoutCopy setSectionContentInset:{v13, v24, v17, v25}];
+  [layoutCopy setSectionTopPadding:0.0];
+  [layoutCopy setGlobalTopPadding:0.0];
+  [layoutCopy setGlobalBottomPadding:4.0];
+  [layoutCopy setCropType:0];
+  [layoutCopy setCropAmount:0.0];
 }
 
 @end

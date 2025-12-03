@@ -1,13 +1,13 @@
 @interface NTKBundleComplicationDataSourceLoader
-+ (NTKBundleComplicationDataSourceLoader)complicationDataSourceLoaderWithBlock:(id)a3;
-+ (NTKBundleComplicationDataSourceLoader)complicationDataSourceLoaderWithDirectories:(id)a3;
-+ (NTKBundleComplicationDataSourceLoader)complicationDataSourceLoaderWithDirectory:(id)a3;
-+ (id)aggregateComplicationLoaderWithComplicationLoaders:(id)a3;
++ (NTKBundleComplicationDataSourceLoader)complicationDataSourceLoaderWithBlock:(id)block;
++ (NTKBundleComplicationDataSourceLoader)complicationDataSourceLoaderWithDirectories:(id)directories;
++ (NTKBundleComplicationDataSourceLoader)complicationDataSourceLoaderWithDirectory:(id)directory;
++ (id)aggregateComplicationLoaderWithComplicationLoaders:(id)loaders;
 + (id)defaultComplicationDataSourceLoader;
 + (id)disabledComplicationDataSourceLoader;
 - (NTKBundleComplicationDataSourceLoader)init;
 - (id)cachedDataSources;
-- (void)enumerateComplicationClassesWithBlock:(id)a3;
+- (void)enumerateComplicationClassesWithBlock:(id)block;
 @end
 
 @implementation NTKBundleComplicationDataSourceLoader
@@ -52,7 +52,7 @@ void __77__NTKBundleComplicationDataSourceLoader_disabledComplicationDataSourceL
   block[1] = 3221225472;
   block[2] = __76__NTKBundleComplicationDataSourceLoader_defaultComplicationDataSourceLoader__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultComplicationDataSourceLoader_onceToken != -1)
   {
     dispatch_once(&defaultComplicationDataSourceLoader_onceToken, block);
@@ -122,67 +122,67 @@ void __76__NTKBundleComplicationDataSourceLoader_defaultComplicationDataSourceLo
   defaultComplicationDataSourceLoader_BundleLoader = v18;
 }
 
-+ (NTKBundleComplicationDataSourceLoader)complicationDataSourceLoaderWithDirectory:(id)a3
++ (NTKBundleComplicationDataSourceLoader)complicationDataSourceLoaderWithDirectory:(id)directory
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  directoryCopy = directory;
+  v5 = directoryCopy;
+  if (directoryCopy)
   {
-    v9[0] = v4;
+    v9[0] = directoryCopy;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-    v7 = [a1 complicationDataSourceLoaderWithDirectories:v6];
+    v7 = [self complicationDataSourceLoaderWithDirectories:v6];
   }
 
   else
   {
-    v7 = [a1 complicationDataSourceLoaderWithDirectories:MEMORY[0x277CBEBF8]];
+    v7 = [self complicationDataSourceLoaderWithDirectories:MEMORY[0x277CBEBF8]];
   }
 
   return v7;
 }
 
-+ (NTKBundleComplicationDataSourceLoader)complicationDataSourceLoaderWithDirectories:(id)a3
++ (NTKBundleComplicationDataSourceLoader)complicationDataSourceLoaderWithDirectories:(id)directories
 {
-  v3 = a3;
+  directoriesCopy = directories;
   v4 = objc_alloc_init(_NTKBundleBundleComplicationLoader);
-  v5 = [v3 copy];
+  v5 = [directoriesCopy copy];
 
   [(_NTKBundleBundleComplicationLoader *)v4 setUrls:v5];
 
   return v4;
 }
 
-+ (NTKBundleComplicationDataSourceLoader)complicationDataSourceLoaderWithBlock:(id)a3
++ (NTKBundleComplicationDataSourceLoader)complicationDataSourceLoaderWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_opt_new();
-  v5 = [v3 copy];
+  v5 = [blockCopy copy];
 
   [v4 setBlock:v5];
 
   return v4;
 }
 
-+ (id)aggregateComplicationLoaderWithComplicationLoaders:(id)a3
++ (id)aggregateComplicationLoaderWithComplicationLoaders:(id)loaders
 {
-  v3 = a3;
+  loadersCopy = loaders;
   v4 = objc_opt_new();
-  [v4 setLoaders:v3];
+  [v4 setLoaders:loadersCopy];
 
   return v4;
 }
 
-- (void)enumerateComplicationClassesWithBlock:(id)a3
+- (void)enumerateComplicationClassesWithBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   kdebug_trace();
-  if (v4)
+  if (blockCopy)
   {
-    v5 = [(NTKBundleComplicationDataSourceLoader *)self cachedDataSources];
+    cachedDataSources = [(NTKBundleComplicationDataSourceLoader *)self cachedDataSources];
 
-    if (!v5)
+    if (!cachedDataSources)
     {
       v6 = [MEMORY[0x277CBEB58] set];
       v20[0] = MEMORY[0x277D85DD0];
@@ -205,8 +205,8 @@ void __76__NTKBundleComplicationDataSourceLoader_defaultComplicationDataSourceLo
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = [(NTKBundleComplicationDataSourceLoader *)self cachedDataSources];
-    v11 = [v10 countByEnumeratingWithState:&v15 objects:v22 count:16];
+    cachedDataSources2 = [(NTKBundleComplicationDataSourceLoader *)self cachedDataSources];
+    v11 = [cachedDataSources2 countByEnumeratingWithState:&v15 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -217,7 +217,7 @@ LABEL_6:
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(cachedDataSources2);
         }
 
         if (v19)
@@ -225,10 +225,10 @@ LABEL_6:
           break;
         }
 
-        v4[2](v4, *(*(&v15 + 1) + 8 * v14++), &v19);
+        blockCopy[2](blockCopy, *(*(&v15 + 1) + 8 * v14++), &v19);
         if (v12 == v14)
         {
-          v12 = [v10 countByEnumeratingWithState:&v15 objects:v22 count:16];
+          v12 = [cachedDataSources2 countByEnumeratingWithState:&v15 objects:v22 count:16];
           if (v12)
           {
             goto LABEL_6;

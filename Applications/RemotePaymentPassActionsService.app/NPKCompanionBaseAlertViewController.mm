@@ -1,22 +1,22 @@
 @interface NPKCompanionBaseAlertViewController
-- (void)_establishPresenterConnectionWithEndpoint:(id)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)_establishPresenterConnectionWithEndpoint:(id)endpoint;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)dismiss;
 @end
 
 @implementation NPKCompanionBaseAlertViewController
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v8 = a4;
-  v6 = [a3 xpcEndpoint];
-  [(NPKCompanionBaseAlertViewController *)self _establishPresenterConnectionWithEndpoint:v6];
+  completionCopy = completion;
+  xpcEndpoint = [context xpcEndpoint];
+  [(NPKCompanionBaseAlertViewController *)self _establishPresenterConnectionWithEndpoint:xpcEndpoint];
 
-  v7 = v8;
-  if (v8)
+  v7 = completionCopy;
+  if (completionCopy)
   {
-    (*(v8 + 2))(v8);
-    v7 = v8;
+    (*(completionCopy + 2))(completionCopy);
+    v7 = completionCopy;
   }
 }
 
@@ -28,8 +28,8 @@
   v5[3] = &unk_100010398;
   v5[4] = self;
   v3 = objc_retainBlock(v5);
-  v4 = [(NPKCompanionBaseAlertViewController *)self presentedViewController];
-  if (v4)
+  presentedViewController = [(NPKCompanionBaseAlertViewController *)self presentedViewController];
+  if (presentedViewController)
   {
     [(NPKCompanionBaseAlertViewController *)self dismissViewControllerAnimated:1 completion:v3];
   }
@@ -40,13 +40,13 @@
   }
 }
 
-- (void)_establishPresenterConnectionWithEndpoint:(id)a3
+- (void)_establishPresenterConnectionWithEndpoint:(id)endpoint
 {
-  if (a3)
+  if (endpoint)
   {
-    v4 = a3;
+    endpointCopy = endpoint;
     v10 = objc_opt_new();
-    [v10 _setEndpoint:v4];
+    [v10 _setEndpoint:endpointCopy];
 
     v5 = [[NSXPCConnection alloc] initWithListenerEndpoint:v10];
     presenterConnection = self->_presenterConnection;
@@ -58,8 +58,8 @@
     [(NSXPCConnection *)v7 setRemoteObjectInterface:v8];
 
     [(NSXPCConnection *)self->_presenterConnection resume];
-    v9 = [(NPKCompanionBaseAlertViewController *)self viewServicePresenter];
-    [v9 establishConnection];
+    viewServicePresenter = [(NPKCompanionBaseAlertViewController *)self viewServicePresenter];
+    [viewServicePresenter establishConnection];
   }
 }
 

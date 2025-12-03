@@ -1,22 +1,22 @@
 @interface SGStructuredEventDocument
-+ (BOOL)caseInsensitiveContainsString:(id)a3 inCandidates:(id)a4;
-+ (id)candidatesForLabelIndexSets:(id)a3 inPlainText:(id)a4 forTaggedCharacterRanges:(id)a5;
-+ (id)cleanCandidates:(id)a3 outputName:(id)a4 label:(id)a5;
-+ (id)modelOutputSummary:(id)a3;
-+ (id)simpleCandidateResolutionFromCandidates:(id)a3;
-+ (id)stripRepeatedContent:(id)a3 repeatedLength:(unint64_t)a4;
++ (BOOL)caseInsensitiveContainsString:(id)string inCandidates:(id)candidates;
++ (id)candidatesForLabelIndexSets:(id)sets inPlainText:(id)text forTaggedCharacterRanges:(id)ranges;
++ (id)cleanCandidates:(id)candidates outputName:(id)name label:(id)label;
++ (id)modelOutputSummary:(id)summary;
++ (id)simpleCandidateResolutionFromCandidates:(id)candidates;
++ (id)stripRepeatedContent:(id)content repeatedLength:(unint64_t)length;
 - (BOOL)detectedEventPolarity;
-- (SGStructuredEventDocument)initWithPlainText:(id)a3 category:(unsigned __int8)a4 dataDetectorMatches:(id)a5 enrichedTaggedCharacterRanges:(id)a6 modelOutput:(id)a7 fromSuggestTool:(BOOL)a8;
-- (id)_simpleCandidateForOutputName:(id)a3 label:(id)a4 withError:(id *)a5;
-- (id)detectedAddressForLabel:(id)a3 withError:(id *)a4;
+- (SGStructuredEventDocument)initWithPlainText:(id)text category:(unsigned __int8)category dataDetectorMatches:(id)matches enrichedTaggedCharacterRanges:(id)ranges modelOutput:(id)output fromSuggestTool:(BOOL)tool;
+- (id)_simpleCandidateForOutputName:(id)name label:(id)label withError:(id *)error;
+- (id)detectedAddressForLabel:(id)label withError:(id *)error;
 - (id)detectedEndDateComponents;
 - (id)detectedEventName;
-- (id)detectedPostalAddressExtractionForTokenIndexes:(id)a3 dataDetectorMatches:(id)a4 label:(id)a5;
-- (id)detectedReservationIdWithError:(id *)a3;
+- (id)detectedPostalAddressExtractionForTokenIndexes:(id)indexes dataDetectorMatches:(id)matches label:(id)label;
+- (id)detectedReservationIdWithError:(id *)error;
 - (id)detectedStartDateComponents;
-- (id)filterCandidateDateComponents:(id)a3;
-- (id)labelTokenIndexesForOutputName:(id)a3 label:(id)a4;
-- (id)mergePostalAddressComponents:(id)a3;
+- (id)filterCandidateDateComponents:(id)components;
+- (id)labelTokenIndexesForOutputName:(id)name label:(id)label;
+- (id)mergePostalAddressComponents:(id)components;
 - (id)modelOutputSummary;
 - (id)predictedStringsFromModelOutput;
 - (id)titleMapping;
@@ -26,19 +26,19 @@
 
 - (BOOL)detectedEventPolarity
 {
-  v3 = [(SGExtractionDocument *)self modelOutput];
-  v4 = [SGExtractionDocument labelTokenIndexesForOutputName:@"polarity" label:@"POLARITY__EVENT_YES" modelOutput:v3];
+  modelOutput = [(SGExtractionDocument *)self modelOutput];
+  v4 = [SGExtractionDocument labelTokenIndexesForOutputName:@"polarity" label:@"POLARITY__EVENT_YES" modelOutput:modelOutput];
 
-  v5 = [(SGExtractionDocument *)self modelOutput];
-  v6 = [v5 objectForKeyedSubscript:@"polarity"];
+  modelOutput2 = [(SGExtractionDocument *)self modelOutput];
+  v6 = [modelOutput2 objectForKeyedSubscript:@"polarity"];
   if (v6)
   {
     if ([v4 containsIndex:0])
     {
-      v7 = [(SGExtractionDocument *)self modelOutput];
-      v8 = [v7 objectForKey:@"polarity"];
-      v9 = [v8 firstObject];
-      v10 = [v9 isEqualToString:@"POLARITY__EVENT_YES"];
+      modelOutput3 = [(SGExtractionDocument *)self modelOutput];
+      v8 = [modelOutput3 objectForKey:@"polarity"];
+      firstObject = [v8 firstObject];
+      v10 = [firstObject isEqualToString:@"POLARITY__EVENT_YES"];
     }
 
     else
@@ -55,16 +55,16 @@
   return v10;
 }
 
-- (id)labelTokenIndexesForOutputName:(id)a3 label:(id)a4
+- (id)labelTokenIndexesForOutputName:(id)name label:(id)label
 {
-  v6 = a4;
-  v7 = a3;
+  labelCopy = label;
+  nameCopy = name;
   v8 = +[SGStructuredEventExtractionModel sharedInstance];
-  v9 = [v8 maxMergeDistanceForSection:v7 label:v6];
+  v9 = [v8 maxMergeDistanceForSection:nameCopy label:labelCopy];
 
   v10 = objc_opt_class();
-  v11 = [(SGExtractionDocument *)self modelOutput];
-  v12 = [v10 labelTokenIndexesForOutputName:v7 label:v6 modelOutput:v11 maxMergeDistance:v9];
+  modelOutput = [(SGExtractionDocument *)self modelOutput];
+  v12 = [v10 labelTokenIndexesForOutputName:nameCopy label:labelCopy modelOutput:modelOutput maxMergeDistance:v9];
 
   return v12;
 }
@@ -95,8 +95,8 @@
         v7 = *(*(&v29 + 1) + 8 * i);
         if (([v7 isEqualToString:@"polarity"] & 1) == 0)
         {
-          v8 = [(SGExtractionDocument *)self modelOutput];
-          v9 = [v8 objectForKeyedSubscript:v7];
+          modelOutput = [(SGExtractionDocument *)self modelOutput];
+          v9 = [modelOutput objectForKeyedSubscript:v7];
           v10 = [v9 count];
 
           if (v10)
@@ -104,8 +104,8 @@
             v11 = 0;
             do
             {
-              v12 = [(SGExtractionDocument *)self modelOutput];
-              v13 = [v12 objectForKeyedSubscript:v7];
+              modelOutput2 = [(SGExtractionDocument *)self modelOutput];
+              v13 = [modelOutput2 objectForKeyedSubscript:v7];
               v14 = [v13 objectAtIndexedSubscript:v11];
 
               if (([v14 isEqualToString:@"NONE"] & 1) == 0)
@@ -123,8 +123,8 @@
               }
 
               ++v11;
-              v18 = [(SGExtractionDocument *)self modelOutput];
-              v19 = [v18 objectForKeyedSubscript:v7];
+              modelOutput3 = [(SGExtractionDocument *)self modelOutput];
+              v19 = [modelOutput3 objectForKeyedSubscript:v7];
               v20 = [v19 count];
             }
 
@@ -140,9 +140,9 @@
   }
 
   v21 = objc_opt_class();
-  v22 = [(SGStructuredEventDocument *)self plainText];
-  v23 = [(SGExtractionDocument *)self enrichedTaggedCharacterRanges];
-  v24 = [v21 candidatesForLabelIndexSets:v3 inPlainText:v22 forTaggedCharacterRanges:v23];
+  plainText = [(SGStructuredEventDocument *)self plainText];
+  enrichedTaggedCharacterRanges = [(SGExtractionDocument *)self enrichedTaggedCharacterRanges];
+  v24 = [v21 candidatesForLabelIndexSets:v3 inPlainText:plainText forTaggedCharacterRanges:enrichedTaggedCharacterRanges];
 
   v25 = *MEMORY[0x277D85DE8];
 
@@ -152,8 +152,8 @@
 - (id)modelOutputSummary
 {
   v3 = objc_opt_class();
-  v4 = [(SGExtractionDocument *)self modelOutput];
-  v5 = [v3 modelOutputSummary:v4];
+  modelOutput = [(SGExtractionDocument *)self modelOutput];
+  v5 = [v3 modelOutputSummary:modelOutput];
 
   return v5;
 }
@@ -171,17 +171,17 @@
   }
 }
 
-- (id)detectedPostalAddressExtractionForTokenIndexes:(id)a3 dataDetectorMatches:(id)a4 label:(id)a5
+- (id)detectedPostalAddressExtractionForTokenIndexes:(id)indexes dataDetectorMatches:(id)matches label:(id)label
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SGExtractionDocument *)self modelOutput];
+  indexesCopy = indexes;
+  matchesCopy = matches;
+  labelCopy = label;
+  modelOutput = [(SGExtractionDocument *)self modelOutput];
 
-  if (!v11)
+  if (!modelOutput)
   {
-    v17 = 0;
-    v16 = 0;
+    anyObject2 = 0;
+    anyObject = 0;
     goto LABEL_16;
   }
 
@@ -191,17 +191,17 @@
   v25 = 3221225472;
   v26 = __102__SGStructuredEventDocument_detectedPostalAddressExtractionForTokenIndexes_dataDetectorMatches_label___block_invoke;
   v27 = &unk_27894B1A0;
-  v28 = self;
-  v29 = v9;
+  selfCopy = self;
+  v29 = matchesCopy;
   v14 = v13;
   v30 = v14;
   v15 = v12;
   v31 = v15;
-  [v8 enumerateRangesUsingBlock:&v24];
+  [indexesCopy enumerateRangesUsingBlock:&v24];
   if ([v14 count] == 1)
   {
-    v16 = [v14 anyObject];
-    if (v16)
+    anyObject = [v14 anyObject];
+    if (anyObject)
     {
       goto LABEL_14;
     }
@@ -209,10 +209,10 @@
 
   else if ([v14 count] >= 2)
   {
-    v18 = [v14 allObjects];
-    v16 = [(SGStructuredEventDocument *)self mergePostalAddressComponents:v18];
+    allObjects = [v14 allObjects];
+    anyObject = [(SGStructuredEventDocument *)self mergePostalAddressComponents:allObjects];
 
-    if (v16)
+    if (anyObject)
     {
       goto LABEL_14;
     }
@@ -222,27 +222,27 @@
   {
     if ([v15 count] >= 2)
     {
-      v19 = [v15 allObjects];
+      allObjects2 = [v15 allObjects];
       category = self->_category;
-      v21 = [(SGExtractionDocument *)self enrichedTaggedCharacterRanges];
-      v17 = [(SGStructuredEventDocument *)self resolveCandidates:v19 forCategory:category label:v10 rawIndexSet:v8 taggedCharacterRanges:v21];
+      enrichedTaggedCharacterRanges = [(SGExtractionDocument *)self enrichedTaggedCharacterRanges];
+      anyObject2 = [(SGStructuredEventDocument *)self resolveCandidates:allObjects2 forCategory:category label:labelCopy rawIndexSet:indexesCopy taggedCharacterRanges:enrichedTaggedCharacterRanges];
 
       goto LABEL_12;
     }
 
-    v16 = 0;
+    anyObject = 0;
 LABEL_14:
-    v17 = 0;
+    anyObject2 = 0;
     goto LABEL_15;
   }
 
-  v17 = [v15 anyObject];
+  anyObject2 = [v15 anyObject];
 LABEL_12:
-  v16 = 0;
+  anyObject = 0;
 LABEL_15:
 
 LABEL_16:
-  v22 = [[SGPostalAddressExtraction alloc] initWithPlainText:v17 components:v16];
+  v22 = [[SGPostalAddressExtraction alloc] initWithPlainText:anyObject2 components:anyObject];
 
   return v22;
 }
@@ -316,15 +316,15 @@ void __102__SGStructuredEventDocument_detectedPostalAddressExtractionForTokenInd
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)mergePostalAddressComponents:(id)a3
+- (id)mergePostalAddressComponents:(id)components
 {
   v43 = *MEMORY[0x277D85DE8];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  componentsCopy = components;
+  v4 = [componentsCopy countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v4)
   {
     v5 = v4;
@@ -333,7 +333,7 @@ void __102__SGStructuredEventDocument_detectedPostalAddressExtractionForTokenInd
     v8 = 0;
     v9 = 0;
     v10 = 0;
-    obj = v3;
+    obj = componentsCopy;
     v37 = *v39;
     while (2)
     {
@@ -345,38 +345,38 @@ void __102__SGStructuredEventDocument_detectedPostalAddressExtractionForTokenInd
         }
 
         v12 = *(*(&v38 + 1) + 8 * i);
-        v13 = [v12 street];
+        street = [v12 street];
 
-        if (v13)
+        if (street)
         {
           if (v6)
           {
-            v14 = [v12 street];
-            v15 = [v6 caseInsensitiveCompare:v14];
+            street2 = [v12 street];
+            v15 = [v6 caseInsensitiveCompare:street2];
 
             if (v15)
             {
 LABEL_29:
-              v3 = obj;
+              componentsCopy = obj;
 
               v33 = 0;
               goto LABEL_32;
             }
           }
 
-          v16 = [v12 street];
+          street3 = [v12 street];
 
-          v6 = v16;
+          v6 = street3;
         }
 
-        v17 = [v12 city];
+        city = [v12 city];
 
-        if (v17)
+        if (city)
         {
           if (v7)
           {
-            v18 = [v12 city];
-            v19 = [v7 caseInsensitiveCompare:v18];
+            city2 = [v12 city];
+            v19 = [v7 caseInsensitiveCompare:city2];
 
             if (v19)
             {
@@ -384,19 +384,19 @@ LABEL_29:
             }
           }
 
-          v20 = [v12 city];
+          city3 = [v12 city];
 
-          v7 = v20;
+          v7 = city3;
         }
 
-        v21 = [v12 postalCode];
+        postalCode = [v12 postalCode];
 
-        if (v21)
+        if (postalCode)
         {
           if (v8)
           {
-            v22 = [v12 postalCode];
-            v23 = [v8 caseInsensitiveCompare:v22];
+            postalCode2 = [v12 postalCode];
+            v23 = [v8 caseInsensitiveCompare:postalCode2];
 
             if (v23)
             {
@@ -404,19 +404,19 @@ LABEL_29:
             }
           }
 
-          v24 = [v12 postalCode];
+          postalCode3 = [v12 postalCode];
 
-          v8 = v24;
+          v8 = postalCode3;
         }
 
-        v25 = [v12 state];
+        state = [v12 state];
 
-        if (v25)
+        if (state)
         {
           if (v9)
           {
-            v26 = [v12 state];
-            v27 = [v9 caseInsensitiveCompare:v26];
+            state2 = [v12 state];
+            v27 = [v9 caseInsensitiveCompare:state2];
 
             if (v27)
             {
@@ -424,19 +424,19 @@ LABEL_29:
             }
           }
 
-          v28 = [v12 state];
+          state3 = [v12 state];
 
-          v9 = v28;
+          v9 = state3;
         }
 
-        v29 = [v12 country];
+        country = [v12 country];
 
-        if (v29)
+        if (country)
         {
           if (v10)
           {
-            v30 = [v12 country];
-            v31 = [v10 caseInsensitiveCompare:v30];
+            country2 = [v12 country];
+            v31 = [v10 caseInsensitiveCompare:country2];
 
             if (v31)
             {
@@ -444,13 +444,13 @@ LABEL_29:
             }
           }
 
-          v32 = [v12 country];
+          country3 = [v12 country];
 
-          v10 = v32;
+          v10 = country3;
         }
       }
 
-      v3 = obj;
+      componentsCopy = obj;
       v5 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
       if (v5)
       {
@@ -478,26 +478,26 @@ LABEL_32:
   return v33;
 }
 
-- (id)_simpleCandidateForOutputName:(id)a3 label:(id)a4 withError:(id *)a5
+- (id)_simpleCandidateForOutputName:(id)name label:(id)label withError:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SGExtractionDocument *)self modelOutput];
-  if (!v10 || (v11 = v10, [(SGExtractionDocument *)self enrichedTaggedCharacterRanges], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, !v12))
+  nameCopy = name;
+  labelCopy = label;
+  modelOutput = [(SGExtractionDocument *)self modelOutput];
+  if (!modelOutput || (v11 = modelOutput, [(SGExtractionDocument *)self enrichedTaggedCharacterRanges], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, !v12))
   {
     v13 = sgEventsLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v29 = v9;
+      v29 = labelCopy;
       _os_log_error_impl(&dword_231E60000, v13, OS_LOG_TYPE_ERROR, "SGStructuredEventDocument: Unable to detect %@, missing modelOutput or enrichedTaggedCharacterRanges", buf, 0xCu);
     }
 
     goto LABEL_8;
   }
 
-  v13 = [(SGStructuredEventDocument *)self labelTokenIndexesForOutputName:v8 label:v9];
+  v13 = [(SGStructuredEventDocument *)self labelTokenIndexesForOutputName:nameCopy label:labelCopy];
   if (![v13 count])
   {
 LABEL_8:
@@ -506,7 +506,7 @@ LABEL_8:
   }
 
   v14 = [(SGExtractionDocument *)self candidatesForLabelTokenIndexes:v13 inPlainText:self->_plainText];
-  v15 = [objc_opt_class() cleanCandidates:v14 outputName:v8 label:v9];
+  v15 = [objc_opt_class() cleanCandidates:v14 outputName:nameCopy label:labelCopy];
   v16 = [objc_opt_class() simpleCandidateResolutionFromCandidates:v15];
   v17 = v16;
   if (v16)
@@ -524,18 +524,18 @@ LABEL_8:
     else
     {
       category = self->_category;
-      v20 = [(SGExtractionDocument *)self enrichedTaggedCharacterRanges];
-      v18 = [(SGStructuredEventDocument *)self resolveCandidates:v15 forCategory:category label:v9 rawIndexSet:v13 taggedCharacterRanges:v20];
+      enrichedTaggedCharacterRanges = [(SGExtractionDocument *)self enrichedTaggedCharacterRanges];
+      v18 = [(SGStructuredEventDocument *)self resolveCandidates:v15 forCategory:category label:labelCopy rawIndexSet:v13 taggedCharacterRanges:enrichedTaggedCharacterRanges];
     }
 
-    if (a5 && !v18)
+    if (error && !v18)
     {
       v21 = objc_alloc(MEMORY[0x277CCA9B8]);
       v26 = *MEMORY[0x277CCA450];
-      v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SGStructuredEventDocument: %@, unable to resolve candidates", v9];
-      v27 = v22;
+      labelCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SGStructuredEventDocument: %@, unable to resolve candidates", labelCopy];
+      v27 = labelCopy;
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-      *a5 = [v21 initWithDomain:@"SGExtractionDocumentErrorDomain" code:1 userInfo:v23];
+      *error = [v21 initWithDomain:@"SGExtractionDocumentErrorDomain" code:1 userInfo:v23];
 
       v18 = 0;
     }
@@ -547,12 +547,12 @@ LABEL_16:
   return v17;
 }
 
-- (id)detectedAddressForLabel:(id)a3 withError:(id *)a4
+- (id)detectedAddressForLabel:(id)label withError:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SGExtractionDocument *)self modelOutput];
-  if (!v7 || (v8 = v7, [(SGExtractionDocument *)self enrichedTaggedCharacterRanges], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, !v9))
+  labelCopy = label;
+  modelOutput = [(SGExtractionDocument *)self modelOutput];
+  if (!modelOutput || (v8 = modelOutput, [(SGExtractionDocument *)self enrichedTaggedCharacterRanges], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, !v9))
   {
     v10 = sgEventsLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -564,7 +564,7 @@ LABEL_16:
     goto LABEL_9;
   }
 
-  v10 = [(SGStructuredEventDocument *)self labelTokenIndexesForOutputName:@"location" label:v6];
+  v10 = [(SGStructuredEventDocument *)self labelTokenIndexesForOutputName:@"location" label:labelCopy];
   if (![v10 count])
   {
 LABEL_9:
@@ -572,15 +572,15 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v11 = [(SGStructuredEventDocument *)self detectedPostalAddressExtractionForTokenIndexes:v10 dataDetectorMatches:self->_dataDetectorMatches label:v6];
-  v12 = [v11 hasExtraction];
-  if (a4 && (v12 & 1) == 0)
+  v11 = [(SGStructuredEventDocument *)self detectedPostalAddressExtractionForTokenIndexes:v10 dataDetectorMatches:self->_dataDetectorMatches label:labelCopy];
+  hasExtraction = [v11 hasExtraction];
+  if (error && (hasExtraction & 1) == 0)
   {
     v13 = objc_alloc(MEMORY[0x277CCA9B8]);
     v18 = *MEMORY[0x277CCA450];
     v19[0] = @"SGStructuredEventDocument: address, unable to resolve candidates";
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-    *a4 = [v13 initWithDomain:@"SGExtractionDocumentErrorDomain" code:1 userInfo:v14];
+    *error = [v13 initWithDomain:@"SGExtractionDocumentErrorDomain" code:1 userInfo:v14];
   }
 
 LABEL_10:
@@ -590,27 +590,27 @@ LABEL_10:
   return v11;
 }
 
-- (id)filterCandidateDateComponents:(id)a3
+- (id)filterCandidateDateComponents:(id)components
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  componentsCopy = components;
+  if ([componentsCopy count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [componentsCopy firstObject];
   }
 
   else
   {
-    if ([v3 count] < 2)
+    if ([componentsCopy count] < 2)
     {
       v5 = 0;
       goto LABEL_11;
     }
 
-    v4 = [objc_opt_class() mergeDetectedDateComponents:v3];
+    firstObject = [objc_opt_class() mergeDetectedDateComponents:componentsCopy];
   }
 
-  v5 = v4;
-  if (v4 && ([v4 year] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v5, "month") == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v5, "day") == 0x7FFFFFFFFFFFFFFFLL))
+  v5 = firstObject;
+  if (firstObject && ([firstObject year] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v5, "month") == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v5, "day") == 0x7FFFFFFFFFFFFFFFLL))
   {
     v6 = 0;
     goto LABEL_12;
@@ -626,8 +626,8 @@ LABEL_12:
 
 - (id)detectedEndDateComponents
 {
-  v3 = [(SGExtractionDocument *)self modelOutput];
-  if (v3 && (v4 = v3, [(SGExtractionDocument *)self enrichedTaggedCharacterRanges], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  modelOutput = [(SGExtractionDocument *)self modelOutput];
+  if (modelOutput && (v4 = modelOutput, [(SGExtractionDocument *)self enrichedTaggedCharacterRanges], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = [(SGStructuredEventDocument *)self labelTokenIndexesForOutputName:@"time" label:@"EVENT_TIME__END_DATETIME"];
     LOBYTE(v11) = 1;
@@ -652,8 +652,8 @@ LABEL_12:
 
 - (id)detectedStartDateComponents
 {
-  v3 = [(SGExtractionDocument *)self modelOutput];
-  if (v3 && (v4 = v3, [(SGExtractionDocument *)self enrichedTaggedCharacterRanges], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  modelOutput = [(SGExtractionDocument *)self modelOutput];
+  if (modelOutput && (v4 = modelOutput, [(SGExtractionDocument *)self enrichedTaggedCharacterRanges], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = [(SGStructuredEventDocument *)self labelTokenIndexesForOutputName:@"time" label:@"EVENT_TIME__START_DATETIME"];
     LOBYTE(v11) = 0;
@@ -676,11 +676,11 @@ LABEL_12:
   return v8;
 }
 
-- (id)detectedReservationIdWithError:(id *)a3
+- (id)detectedReservationIdWithError:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v5 = [(SGExtractionDocument *)self modelOutput];
-  if (v5 && (v6 = v5, [(SGExtractionDocument *)self enrichedTaggedCharacterRanges], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  modelOutput = [(SGExtractionDocument *)self modelOutput];
+  if (modelOutput && (v6 = modelOutput, [(SGExtractionDocument *)self enrichedTaggedCharacterRanges], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
     v8 = [(SGStructuredEventDocument *)self labelTokenIndexesForOutputName:@"core" label:@"EVENT_CORE__RESERVATION_ID"];
     v9 = [(SGExtractionDocument *)self candidatesForLabelTokenIndexes:v8 inPlainText:self->_plainText];
@@ -697,17 +697,17 @@ LABEL_12:
         else
         {
           category = self->_category;
-          v12 = [(SGExtractionDocument *)self enrichedTaggedCharacterRanges];
-          v10 = [(SGStructuredEventDocument *)self resolveCandidates:v9 forCategory:category label:@"EVENT_CORE__RESERVATION_ID" rawIndexSet:v8 taggedCharacterRanges:v12];
+          enrichedTaggedCharacterRanges = [(SGExtractionDocument *)self enrichedTaggedCharacterRanges];
+          v10 = [(SGStructuredEventDocument *)self resolveCandidates:v9 forCategory:category label:@"EVENT_CORE__RESERVATION_ID" rawIndexSet:v8 taggedCharacterRanges:enrichedTaggedCharacterRanges];
         }
 
-        if (a3 && !v10)
+        if (error && !v10)
         {
           v14 = objc_alloc(MEMORY[0x277CCA9B8]);
           v19 = *MEMORY[0x277CCA450];
           v20[0] = @"SGStructuredEventDocument: reservationId, unable to resolve candidates";
           v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-          *a3 = [v14 initWithDomain:@"SGExtractionDocumentErrorDomain" code:1 userInfo:v15];
+          *error = [v14 initWithDomain:@"SGExtractionDocumentErrorDomain" code:1 userInfo:v15];
         }
       }
 
@@ -739,14 +739,14 @@ LABEL_12:
 
 - (id)detectedEventName
 {
-  v3 = [(SGExtractionDocument *)self modelOutput];
-  if (v3 && (v4 = v3, -[SGExtractionDocument enrichedTaggedCharacterRanges](self, "enrichedTaggedCharacterRanges"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
+  modelOutput = [(SGExtractionDocument *)self modelOutput];
+  if (modelOutput && (v4 = modelOutput, -[SGExtractionDocument enrichedTaggedCharacterRanges](self, "enrichedTaggedCharacterRanges"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
   {
-    v7 = [(SGStructuredEventDocument *)self titleMapping];
-    if (v7)
+    titleMapping = [(SGStructuredEventDocument *)self titleMapping];
+    if (titleMapping)
     {
-      v8 = v7;
-      v9 = [(SGStructuredEventDocument *)self labelTokenIndexesForOutputName:@"title" label:v7];
+      v8 = titleMapping;
+      v9 = [(SGStructuredEventDocument *)self labelTokenIndexesForOutputName:@"title" label:titleMapping];
       v10 = [(SGExtractionDocument *)self candidatesForLabelTokenIndexes:v9 inPlainText:self->_plainText];
       v11 = [objc_opt_class() cleanCandidates:v10 outputName:@"title" label:v8];
       v12 = [objc_opt_class() simpleCandidateResolutionFromCandidates:v11];
@@ -764,8 +764,8 @@ LABEL_12:
       else
       {
         category = self->_category;
-        v17 = [(SGExtractionDocument *)self enrichedTaggedCharacterRanges];
-        v14 = [(SGStructuredEventDocument *)self resolveCandidates:v11 forCategory:category label:v8 rawIndexSet:v9 taggedCharacterRanges:v17];
+        enrichedTaggedCharacterRanges = [(SGExtractionDocument *)self enrichedTaggedCharacterRanges];
+        v14 = [(SGStructuredEventDocument *)self resolveCandidates:v11 forCategory:category label:v8 rawIndexSet:v9 taggedCharacterRanges:enrichedTaggedCharacterRanges];
       }
 
       goto LABEL_16;
@@ -797,30 +797,30 @@ LABEL_16:
   return v14;
 }
 
-- (SGStructuredEventDocument)initWithPlainText:(id)a3 category:(unsigned __int8)a4 dataDetectorMatches:(id)a5 enrichedTaggedCharacterRanges:(id)a6 modelOutput:(id)a7 fromSuggestTool:(BOOL)a8
+- (SGStructuredEventDocument)initWithPlainText:(id)text category:(unsigned __int8)category dataDetectorMatches:(id)matches enrichedTaggedCharacterRanges:(id)ranges modelOutput:(id)output fromSuggestTool:(BOOL)tool
 {
-  v15 = a3;
-  v16 = a5;
+  textCopy = text;
+  matchesCopy = matches;
   v20.receiver = self;
   v20.super_class = SGStructuredEventDocument;
-  v17 = [(SGExtractionDocument *)&v20 initWithEnrichedTaggedCharacterRanges:a6 modelOutput:a7];
+  v17 = [(SGExtractionDocument *)&v20 initWithEnrichedTaggedCharacterRanges:ranges modelOutput:output];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_plainText, a3);
-    v18->_category = a4;
-    objc_storeStrong(&v18->_dataDetectorMatches, a5);
-    v18->_fromSuggestTool = a8;
+    objc_storeStrong(&v17->_plainText, text);
+    v18->_category = category;
+    objc_storeStrong(&v18->_dataDetectorMatches, matches);
+    v18->_fromSuggestTool = tool;
   }
 
   return v18;
 }
 
-+ (id)stripRepeatedContent:(id)a3 repeatedLength:(unint64_t)a4
++ (id)stripRepeatedContent:(id)content repeatedLength:(unint64_t)length
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 && [v5 length] >= a4)
+  contentCopy = content;
+  v6 = contentCopy;
+  if (length && [contentCopy length] >= length)
   {
     v7 = vcvtpd_u64_f64(vcvtd_n_f64_u64([v6 length], 1uLL));
     v8 = [v6 substringToIndex:v7];
@@ -841,29 +841,29 @@ LABEL_6:
   return v9;
 }
 
-+ (id)cleanCandidates:(id)a3 outputName:(id)a4 label:(id)a5
++ (id)cleanCandidates:(id)candidates outputName:(id)name label:(id)label
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  labelCopy = label;
+  nameCopy = name;
+  candidatesCopy = candidates;
   v10 = +[SGStructuredEventExtractionModel sharedInstance];
-  [v10 stripRepeatedContentForSectionLength:v8 label:v7];
+  [v10 stripRepeatedContentForSectionLength:nameCopy label:labelCopy];
 
   v11 = sgMap();
 
   return v11;
 }
 
-+ (BOOL)caseInsensitiveContainsString:(id)a3 inCandidates:(id)a4
++ (BOOL)caseInsensitiveContainsString:(id)string inCandidates:(id)candidates
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stringCopy = string;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  candidatesCopy = candidates;
+  v7 = [candidatesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -873,17 +873,17 @@ LABEL_6:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(candidatesCopy);
         }
 
-        if (![*(*(&v12 + 1) + 8 * i) caseInsensitiveCompare:{v5, v12}])
+        if (![*(*(&v12 + 1) + 8 * i) caseInsensitiveCompare:{stringCopy, v12}])
         {
           LOBYTE(v7) = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [candidatesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -899,16 +899,16 @@ LABEL_11:
   return v7;
 }
 
-+ (id)simpleCandidateResolutionFromCandidates:(id)a3
++ (id)simpleCandidateResolutionFromCandidates:(id)candidates
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  candidatesCopy = candidates;
   v5 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = candidatesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -924,7 +924,7 @@ LABEL_11:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if (([a1 caseInsensitiveContainsString:v11 inCandidates:{v5, v15}] & 1) == 0)
+        if (([self caseInsensitiveContainsString:v11 inCandidates:{v5, v15}] & 1) == 0)
         {
           [v5 addObject:v11];
         }
@@ -938,31 +938,31 @@ LABEL_11:
 
   if ([v5 count] == 1)
   {
-    v12 = [v5 firstObject];
+    firstObject = [v5 firstObject];
   }
 
   else
   {
-    v12 = 0;
+    firstObject = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return firstObject;
 }
 
-+ (id)candidatesForLabelIndexSets:(id)a3 inPlainText:(id)a4 forTaggedCharacterRanges:(id)a5
++ (id)candidatesForLabelIndexSets:(id)sets inPlainText:(id)text forTaggedCharacterRanges:(id)ranges
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  setsCopy = sets;
+  textCopy = text;
+  rangesCopy = ranges;
   v21 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = v8;
+  v11 = setsCopy;
   v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
@@ -979,7 +979,7 @@ LABEL_11:
 
         v16 = *(*(&v22 + 1) + 8 * i);
         v17 = [v11 objectForKeyedSubscript:v16];
-        v18 = [a1 candidatesForLabelTokenIndexes:v17 inPlainText:v9 forTaggedCharacterRanges:v10];
+        v18 = [self candidatesForLabelTokenIndexes:v17 inPlainText:textCopy forTaggedCharacterRanges:rangesCopy];
 
         if (v18)
         {
@@ -998,16 +998,16 @@ LABEL_11:
   return v21;
 }
 
-+ (id)modelOutputSummary:(id)a3
++ (id)modelOutputSummary:(id)summary
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  summaryCopy = summary;
   v4 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = v3;
+  v5 = summaryCopy;
   v24 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v24)
   {

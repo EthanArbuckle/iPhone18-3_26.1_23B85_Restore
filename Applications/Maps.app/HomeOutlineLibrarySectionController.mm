@@ -1,9 +1,9 @@
 @interface HomeOutlineLibrarySectionController
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (MapsUIDiffableDataSourceViewModel)sectionHeaderViewModel;
 - (NSArray)dataProviders;
 - (NSArray)itemSnapshots;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 @end
 
 @implementation HomeOutlineLibrarySectionController
@@ -40,7 +40,7 @@
 
 - (NSArray)itemSnapshots
 {
-  v2 = self;
+  selfCopy = self;
   sub_100130AB4();
 
   sub_100131C5C();
@@ -49,29 +49,29 @@
   return v3.super.isa;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_10013113C(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10013113C(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(self) = sub_100131B80();
 
   (*(v7 + 8))(v9, v6);

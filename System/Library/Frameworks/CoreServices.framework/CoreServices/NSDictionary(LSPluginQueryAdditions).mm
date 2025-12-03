@@ -10,7 +10,7 @@
   v21 = *MEMORY[0x1E69E9840];
   v4 = a3;
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:1];
-  v6 = [a1 objectForKey:v4];
+  v6 = [self objectForKey:v4];
   if (_NSIsNSArray())
   {
     v18 = 0u;
@@ -34,10 +34,10 @@
           v11 = *(*(&v16 + 1) + 8 * i);
           if (_NSIsNSString())
           {
-            v12 = [v11 ls_cleanForPluginQuery];
-            if (v12)
+            ls_cleanForPluginQuery = [v11 ls_cleanForPluginQuery];
+            if (ls_cleanForPluginQuery)
             {
-              [v5 addObject:v12];
+              [v5 addObject:ls_cleanForPluginQuery];
             }
           }
         }
@@ -51,10 +51,10 @@
 
   else if (_NSIsNSString())
   {
-    v13 = [v6 ls_cleanForPluginQuery];
-    if (v13)
+    ls_cleanForPluginQuery2 = [v6 ls_cleanForPluginQuery];
+    if (ls_cleanForPluginQuery2)
     {
-      [v5 addObject:v13];
+      [v5 addObject:ls_cleanForPluginQuery2];
     }
   }
 
@@ -74,7 +74,7 @@
   v3[2] = __52__NSDictionary_LSPluginQueryAdditions__ls_hashQuery__block_invoke;
   v3[3] = &unk_1E6A1D770;
   v3[4] = &v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:v3];
+  [self enumerateKeysAndObjectsUsingBlock:v3];
   v1 = v5[3];
   _Block_object_dispose(&v4, 8);
   return v1;

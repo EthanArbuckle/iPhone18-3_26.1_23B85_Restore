@@ -1,8 +1,8 @@
 @interface _HKSleepDurationAverageFormatter
 - (_HKSleepDurationAverageFormatter)init;
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4;
-- (void)_setRangeData:(id)a3 isTimeInBed:(BOOL)a4;
-- (void)setCurrentVisibleAverageNumber:(id)a3 isTimeInBed:(BOOL)a4 isHighlighted:(BOOL)a5 useAverageCopy:(BOOL)a6;
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context;
+- (void)_setRangeData:(id)data isTimeInBed:(BOOL)bed;
+- (void)setCurrentVisibleAverageNumber:(id)number isTimeInBed:(BOOL)bed isHighlighted:(BOOL)highlighted useAverageCopy:(BOOL)copy;
 @end
 
 @implementation _HKSleepDurationAverageFormatter
@@ -26,15 +26,15 @@
   return v3;
 }
 
-- (void)setCurrentVisibleAverageNumber:(id)a3 isTimeInBed:(BOOL)a4 isHighlighted:(BOOL)a5 useAverageCopy:(BOOL)a6
+- (void)setCurrentVisibleAverageNumber:(id)number isTimeInBed:(BOOL)bed isHighlighted:(BOOL)highlighted useAverageCopy:(BOOL)copy
 {
-  v6 = a6;
-  v8 = a4;
+  copyCopy = copy;
+  bedCopy = bed;
   v21[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if (v10)
+  numberCopy = number;
+  if (numberCopy)
   {
-    if (v6)
+    if (copyCopy)
     {
       v11 = 3;
     }
@@ -46,7 +46,7 @@
 
     v12 = [[HKSelectedRangeData alloc] initWithStatisticsType:v11];
     v13 = v12;
-    if (v8)
+    if (bedCopy)
     {
       v14 = 9;
     }
@@ -57,19 +57,19 @@
     }
 
     [(HKSelectedRangeData *)v12 setDataType:v14];
-    v15 = [(HKInteractiveChartDataFormatter *)self majorFont];
-    v16 = [(HKInteractiveChartDataFormatter *)self minorFont];
-    v17 = HKTimePeriodStringWithFonts(v15, v16, v10, 0x1CuLL);
+    majorFont = [(HKInteractiveChartDataFormatter *)self majorFont];
+    minorFont = [(HKInteractiveChartDataFormatter *)self minorFont];
+    v17 = HKTimePeriodStringWithFonts(majorFont, minorFont, numberCopy, 0x1CuLL);
 
     [(HKSelectedRangeData *)v13 setAttributedString:v17];
-    [(HKSelectedRangeData *)v13 setValueAsNumber:v10];
+    [(HKSelectedRangeData *)v13 setValueAsNumber:numberCopy];
     v18 = 0;
-    if (!v8)
+    if (!bedCopy)
     {
       v18 = _HKCategoryValueSleepAnalysisDefaultAsleepValue();
     }
 
-    if (a5)
+    if (highlighted)
     {
       [MEMORY[0x1E69DC888] hk_sleepColorForSleepAnalysis:v18];
     }
@@ -83,44 +83,44 @@
 
     v21[0] = v13;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-    [(_HKSleepDurationAverageFormatter *)self _setRangeData:v20 isTimeInBed:v8];
+    [(_HKSleepDurationAverageFormatter *)self _setRangeData:v20 isTimeInBed:bedCopy];
   }
 
   else
   {
-    [(_HKSleepDurationAverageFormatter *)self _setRangeData:MEMORY[0x1E695E0F0] isTimeInBed:v8];
+    [(_HKSleepDurationAverageFormatter *)self _setRangeData:MEMORY[0x1E695E0F0] isTimeInBed:bedCopy];
   }
 }
 
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context
 {
-  v5 = [a3 lastObject];
+  lastObject = [data lastObject];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v5 annotationOptions] & 2) != 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([lastObject annotationOptions] & 2) != 0)
   {
-    v6 = [(_HKSleepDurationAverageFormatter *)self rangeDataForTimeAsleepAverage];
+    rangeDataForTimeAsleepAverage = [(_HKSleepDurationAverageFormatter *)self rangeDataForTimeAsleepAverage];
   }
 
   else
   {
-    v6 = [(_HKSleepDurationAverageFormatter *)self rangeDataForTimeInBedAverage];
+    rangeDataForTimeAsleepAverage = [(_HKSleepDurationAverageFormatter *)self rangeDataForTimeInBedAverage];
   }
 
-  v7 = v6;
+  v7 = rangeDataForTimeAsleepAverage;
 
   return v7;
 }
 
-- (void)_setRangeData:(id)a3 isTimeInBed:(BOOL)a4
+- (void)_setRangeData:(id)data isTimeInBed:(BOOL)bed
 {
-  if (a4)
+  if (bed)
   {
-    [(_HKSleepDurationAverageFormatter *)self setRangeDataForTimeInBedAverage:a3];
+    [(_HKSleepDurationAverageFormatter *)self setRangeDataForTimeInBedAverage:data];
   }
 
   else
   {
-    [(_HKSleepDurationAverageFormatter *)self setRangeDataForTimeAsleepAverage:a3];
+    [(_HKSleepDurationAverageFormatter *)self setRangeDataForTimeAsleepAverage:data];
   }
 }
 

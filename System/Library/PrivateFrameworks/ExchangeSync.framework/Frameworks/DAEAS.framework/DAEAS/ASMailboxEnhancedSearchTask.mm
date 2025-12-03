@@ -1,27 +1,27 @@
 @interface ASMailboxEnhancedSearchTask
-- (ASMailboxEnhancedSearchTask)initWithQuery:(id)a3;
-- (BOOL)getTopLevelToken:(char *)a3 outStatusCodePage:(char *)a4 outStatusToken:(char *)a5;
-- (BOOL)processContext:(id)a3;
-- (id)replacementObjectForEmailItem:(id)a3;
+- (ASMailboxEnhancedSearchTask)initWithQuery:(id)query;
+- (BOOL)getTopLevelToken:(char *)token outStatusCodePage:(char *)page outStatusToken:(char *)statusToken;
+- (BOOL)processContext:(id)context;
+- (id)replacementObjectForEmailItem:(id)item;
 - (id)requestBody;
-- (void)_appendSearchOptions:(id)a3;
-- (void)_appendSearchQuery:(id)a3;
-- (void)finishWithError:(id)a3;
+- (void)_appendSearchOptions:(id)options;
+- (void)_appendSearchQuery:(id)query;
+- (void)finishWithError:(id)error;
 - (void)performTask;
 @end
 
 @implementation ASMailboxEnhancedSearchTask
 
-- (ASMailboxEnhancedSearchTask)initWithQuery:(id)a3
+- (ASMailboxEnhancedSearchTask)initWithQuery:(id)query
 {
   v7.receiver = self;
   v7.super_class = ASMailboxEnhancedSearchTask;
-  v3 = [(ASSearchTask *)&v7 initWithQuery:a3];
+  v3 = [(ASSearchTask *)&v7 initWithQuery:query];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCACA8] da_newGUID];
+    da_newGUID = [MEMORY[0x277CCACA8] da_newGUID];
     searchId = v3->_searchId;
-    v3->_searchId = v4;
+    v3->_searchId = da_newGUID;
   }
 
   return v3;
@@ -30,20 +30,20 @@
 - (void)performTask
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(ASTask *)self taskManager];
-  v4 = [v3 protocol];
-  v5 = [v4 supportsMailboxEnhancedSearch];
+  taskManager = [(ASTask *)self taskManager];
+  protocol = [taskManager protocol];
+  supportsMailboxEnhancedSearch = [protocol supportsMailboxEnhancedSearch];
 
-  if (v5 == 2)
+  if (supportsMailboxEnhancedSearch == 2)
   {
     v6 = DALoggingwithCategory();
     v7 = *(MEMORY[0x277D03988] + 4);
     if (os_log_type_enabled(v6, v7))
     {
-      v8 = [(ASTask *)self taskManager];
-      v9 = [v8 easProtocolVersion];
+      taskManager2 = [(ASTask *)self taskManager];
+      easProtocolVersion = [taskManager2 easProtocolVersion];
       *buf = 138412290;
-      v15 = v9;
+      v15 = easProtocolVersion;
       _os_log_impl(&dword_24A0AC000, v6, v7, "The server's EAS version is too low. Required: 16.1 or higher, given: %@", buf, 0xCu);
     }
 
@@ -53,8 +53,8 @@
 
   else
   {
-    v11 = [(ASSearchTask *)self query];
-    [v11 setState:1];
+    query = [(ASSearchTask *)self query];
+    [query setState:1];
 
     v13.receiver = self;
     v13.super_class = ASMailboxEnhancedSearchTask;
@@ -64,60 +64,60 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_appendSearchQuery:(id)a3
+- (void)_appendSearchQuery:(id)query
 {
-  v11 = a3;
-  v4 = [(ASSearchTask *)self query];
-  [v11 openTag:9];
-  [v11 switchToCodePage:0];
-  [v11 appendTag:16 withStringContent:@"Email"];
-  v5 = [v4 collectionID];
-  if (v5)
+  queryCopy = query;
+  query = [(ASSearchTask *)self query];
+  [queryCopy openTag:9];
+  [queryCopy switchToCodePage:0];
+  [queryCopy appendTag:16 withStringContent:@"Email"];
+  collectionID = [query collectionID];
+  if (collectionID)
   {
-    [v11 appendTag:18 withStringContent:v5];
+    [queryCopy appendTag:18 withStringContent:collectionID];
   }
 
-  [v11 switchToCodePage:25];
-  v6 = [v4 searchPredicate];
+  [queryCopy switchToCodePage:25];
+  searchPredicate = [query searchPredicate];
 
-  if (v6)
+  if (searchPredicate)
   {
     v7 = [ASMailboxSearchPredicate alloc];
-    v8 = [v4 searchPredicate];
-    v9 = [(ASMailboxSearchPredicate *)v7 initWithPredicate:v8];
+    searchPredicate2 = [query searchPredicate];
+    v9 = [(ASMailboxSearchPredicate *)v7 initWithPredicate:searchPredicate2];
 
-    v10 = [(ASMailboxSearchPredicate *)v9 getString];
-    [v11 appendTag:11 withStringContent:v10];
+    getString = [(ASMailboxSearchPredicate *)v9 getString];
+    [queryCopy appendTag:11 withStringContent:getString];
   }
 
-  [v11 closeTag:9];
+  [queryCopy closeTag:9];
 }
 
-- (void)_appendSearchOptions:(id)a3
+- (void)_appendSearchOptions:(id)options
 {
-  v12 = a3;
-  [v12 openTag:12];
-  v4 = [(ASSearchTask *)self query];
-  [v4 range];
+  optionsCopy = options;
+  [optionsCopy openTag:12];
+  query = [(ASSearchTask *)self query];
+  [query range];
   v6 = v5;
 
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"0-%ld", v6 - 1];
-  [v12 appendTag:13 withStringContent:v7];
-  v8 = [(ASSearchTask *)self query];
-  v9 = [v8 collectionID];
+  [optionsCopy appendTag:13 withStringContent:v7];
+  query2 = [(ASSearchTask *)self query];
+  collectionID = [query2 collectionID];
 
-  if (v9)
+  if (collectionID)
   {
-    v10 = [(ASSearchTask *)self query];
-    v11 = [v10 deepTraversal];
+    query3 = [(ASSearchTask *)self query];
+    deepTraversal = [query3 deepTraversal];
 
-    if (v11)
+    if (deepTraversal)
     {
-      [v12 appendEmptyTag:14];
+      [optionsCopy appendEmptyTag:14];
     }
   }
 
-  [v12 closeTag:12];
+  [optionsCopy closeTag:12];
 }
 
 - (id)requestBody
@@ -133,24 +133,24 @@
   [v3 closeTag:8];
   [v3 closeTag:7];
   [v3 closeTag:5];
-  v4 = [v3 data];
+  data = [v3 data];
 
-  return v4;
+  return data;
 }
 
-- (BOOL)getTopLevelToken:(char *)a3 outStatusCodePage:(char *)a4 outStatusToken:(char *)a5
+- (BOOL)getTopLevelToken:(char *)token outStatusCodePage:(char *)page outStatusToken:(char *)statusToken
 {
-  *a4 = 25;
-  *a3 = 5;
-  *a5 = 10;
+  *page = 25;
+  *token = 5;
+  *statusToken = 10;
   return 1;
 }
 
-- (id)replacementObjectForEmailItem:(id)a3
+- (id)replacementObjectForEmailItem:(id)item
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [[ASMailMessage alloc] initWithASEmailItem:v4];
+  itemCopy = item;
+  v5 = [[ASMailMessage alloc] initWithASEmailItem:itemCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->super.super._delegate);
   v10[0] = v5;
@@ -162,10 +162,10 @@
   return 0;
 }
 
-- (BOOL)processContext:(id)a3
+- (BOOL)processContext:(id)context
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __46__ASMailboxEnhancedSearchTask_processContext___block_invoke;
@@ -177,28 +177,28 @@
   v32[0] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
 
-  v8 = [(ASTask *)self currentlyParsingItem];
+  currentlyParsingItem = [(ASTask *)self currentlyParsingItem];
 
-  if (!v8)
+  if (!currentlyParsingItem)
   {
     if (!self->super.super._haveSwitchedCodePage)
     {
-      if (![v4 hasNumberOfTokensRemaining:2])
+      if (![contextCopy hasNumberOfTokensRemaining:2])
       {
         goto LABEL_17;
       }
 
-      if ([v4 currentByte])
+      if ([contextCopy currentByte])
       {
         v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to Find code page"];
-        v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASMailboxEnhancedSearchTask.m", 158, objc_msgSend(v4, "curOffset")];
+        v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASMailboxEnhancedSearchTask.m", 158, objc_msgSend(contextCopy, "curOffset")];
         v16 = DALoggingwithCategory();
         v17 = *(MEMORY[0x277D03988] + 3);
         if (os_log_type_enabled(v16, v17))
         {
-          v18 = [v4 curOffset];
+          curOffset = [contextCopy curOffset];
           *buf = 134217984;
-          v30 = v18;
+          v30 = curOffset;
           _os_log_impl(&dword_24A0AC000, v16, v17, "Failure at index %lld:", buf, 0xCu);
         }
 
@@ -213,18 +213,18 @@
         goto LABEL_28;
       }
 
-      [v4 advanceOffsetByAmount:1];
-      if ([v4 currentByte] != 25)
+      [contextCopy advanceOffsetByAmount:1];
+      if ([contextCopy currentByte] != 25)
       {
         v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to Find code page"];
-        v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASMailboxEnhancedSearchTask.m", 158, objc_msgSend(v4, "curOffset")];
+        v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASMailboxEnhancedSearchTask.m", 158, objc_msgSend(contextCopy, "curOffset")];
         v23 = DALoggingwithCategory();
         v17 = *(MEMORY[0x277D03988] + 3);
         if (os_log_type_enabled(v23, v17))
         {
-          v24 = [v4 curOffset];
+          curOffset2 = [contextCopy curOffset];
           *buf = 134217984;
-          v30 = v24;
+          v30 = curOffset2;
           _os_log_impl(&dword_24A0AC000, v23, v17, "Failure at index %lld:", buf, 0xCu);
         }
 
@@ -239,8 +239,8 @@
         goto LABEL_28;
       }
 
-      [v4 advanceOffsetByAmount:1];
-      [v4 setCodePage:25];
+      [contextCopy advanceOffsetByAmount:1];
+      [contextCopy setCodePage:25];
       self->super.super._haveSwitchedCodePage = 1;
     }
 
@@ -253,26 +253,26 @@ LABEL_7:
       goto LABEL_2;
     }
 
-    if (![v4 hasNumberOfTokensRemaining:1])
+    if (![contextCopy hasNumberOfTokensRemaining:1])
     {
       goto LABEL_17;
     }
 
-    if (([v4 currentByte] & 0x3F) == 5)
+    if (([contextCopy currentByte] & 0x3F) == 5)
     {
       self->super.super._haveParsedCommand = 1;
       goto LABEL_7;
     }
 
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected Find response"];
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASMailboxEnhancedSearchTask.m", 159, objc_msgSend(v4, "curOffset")];
+    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASMailboxEnhancedSearchTask.m", 159, objc_msgSend(contextCopy, "curOffset")];
     v21 = DALoggingwithCategory();
     v17 = *(MEMORY[0x277D03988] + 3);
     if (os_log_type_enabled(v21, v17))
     {
-      v22 = [v4 curOffset];
+      curOffset3 = [contextCopy curOffset];
       *buf = 134217984;
-      v30 = v22;
+      v30 = curOffset3;
       _os_log_impl(&dword_24A0AC000, v21, v17, "Failure at index %lld:", buf, 0xCu);
     }
 
@@ -281,10 +281,10 @@ LABEL_7:
     {
 LABEL_29:
 
-      [v4 setParseErrorReason:v15];
+      [contextCopy setParseErrorReason:v15];
 LABEL_30:
-      v25 = [v4 parseErrorReason];
-      v20 = v25 == 0;
+      parseErrorReason = [contextCopy parseErrorReason];
+      v20 = parseErrorReason == 0;
 
       goto LABEL_31;
     }
@@ -297,10 +297,10 @@ LABEL_28:
   }
 
 LABEL_2:
-  v9 = [(ASTask *)self currentlyParsingItem];
-  v10 = [(ASTask *)self taskManager];
-  v11 = [v10 account];
-  [v9 parseASParseContext:v4 root:0 parent:0 callbackDict:v7 streamCallbackDict:0 account:v11];
+  currentlyParsingItem2 = [(ASTask *)self currentlyParsingItem];
+  taskManager = [(ASTask *)self taskManager];
+  account = [taskManager account];
+  [currentlyParsingItem2 parseASParseContext:contextCopy root:0 parent:0 callbackDict:v7 streamCallbackDict:0 account:account];
 
   currentlyParsingItem = self->super.super._currentlyParsingItem;
   if (currentlyParsingItem && [(ASItem *)currentlyParsingItem parsingState]>= 2)
@@ -316,30 +316,30 @@ LABEL_31:
   return v20;
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(ASTask *)self currentlyParsingItem];
+  errorCopy = error;
+  currentlyParsingItem = [(ASTask *)self currentlyParsingItem];
   v7 = DALoggingwithCategory();
   v8 = MEMORY[0x277D03988];
   v9 = *(MEMORY[0x277D03988] + 7);
   if (os_log_type_enabled(v7, v9))
   {
     *buf = 138412546;
-    v46 = v6;
+    selfCopy = currentlyParsingItem;
     v47 = 2112;
-    v48 = v5;
+    v48 = errorCopy;
     _os_log_impl(&dword_24A0AC000, v7, v9, "Search task finished with response %@ error %@", buf, 0x16u);
   }
 
   v10 = objc_opt_new();
-  v11 = [(ASSearchTask *)self query];
-  [v11 setState:2];
+  query = [(ASSearchTask *)self query];
+  [query setState:2];
 
-  if (!v5 && v6)
+  if (!errorCopy && currentlyParsingItem)
   {
-    if ([(ASMailboxEnhancedSearchTask *)v6 parsingState]== 2)
+    if ([(ASMailboxEnhancedSearchTask *)currentlyParsingItem parsingState]== 2)
     {
       v12 = DALoggingwithCategory();
       v13 = *(v8 + 6);
@@ -347,36 +347,36 @@ LABEL_31:
       {
         v14 = objc_opt_class();
         *buf = 138412546;
-        v46 = v14;
+        selfCopy = v14;
         v47 = 2112;
-        v48 = v6;
+        v48 = currentlyParsingItem;
         v15 = v14;
         _os_log_impl(&dword_24A0AC000, v12, v13, "%@ Parsed response of %@", buf, 0x16u);
       }
 
-      v16 = [(ASMailboxEnhancedSearchTask *)v6 status];
-      v17 = -[ASSearchTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [v16 intValue]);
+      status = [(ASMailboxEnhancedSearchTask *)currentlyParsingItem status];
+      v17 = -[ASSearchTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [status intValue]);
 
-      v18 = [(ASMailboxEnhancedSearchTask *)v6 stores];
-      if ([v18 count])
+      stores = [(ASMailboxEnhancedSearchTask *)currentlyParsingItem stores];
+      if ([stores count])
       {
         v33 = a2;
-        v35 = v6;
-        v34 = v18;
-        v19 = [v18 objectAtIndexedSubscript:0];
+        v35 = currentlyParsingItem;
+        v34 = stores;
+        v19 = [stores objectAtIndexedSubscript:0];
         WeakRetained = objc_loadWeakRetained(&self->super.super._delegate);
-        v21 = [v19 total];
-        [WeakRetained searchTask:self returnedTotalCount:v21];
+        total = [v19 total];
+        [WeakRetained searchTask:self returnedTotalCount:total];
 
-        v22 = [v19 status];
-        v17 = -[ASSearchTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [v22 intValue]);
+        status2 = [v19 status];
+        v17 = -[ASSearchTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [status2 intValue]);
 
         v42 = 0u;
         v43 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v23 = [v19 results];
-        v24 = [v23 countByEnumeratingWithState:&v40 objects:v44 count:16];
+        results = [v19 results];
+        v24 = [results countByEnumeratingWithState:&v40 objects:v44 count:16];
         if (v24)
         {
           v25 = v24;
@@ -387,7 +387,7 @@ LABEL_31:
             {
               if (*v41 != v26)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(results);
               }
 
               v28 = *(*(&v40 + 1) + 8 * i);
@@ -402,33 +402,33 @@ LABEL_31:
               [(ASSearchTask *)self setNumDownloadedElements:[(ASSearchTask *)self numDownloadedElements]+ 1];
             }
 
-            v25 = [v23 countByEnumeratingWithState:&v40 objects:v44 count:16];
+            v25 = [results countByEnumeratingWithState:&v40 objects:v44 count:16];
           }
 
           while (v25);
         }
 
-        v5 = 0;
-        v6 = v35;
-        v18 = v34;
+        errorCopy = 0;
+        currentlyParsingItem = v35;
+        stores = v34;
       }
 
 LABEL_27:
       if (v17 != 2)
       {
-        v5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:v17 userInfo:0];
+        errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:v17 userInfo:0];
       }
 
       goto LABEL_31;
     }
 
-    v5 = 0;
+    errorCopy = 0;
 LABEL_30:
     v17 = 2;
     goto LABEL_31;
   }
 
-  if (v6)
+  if (currentlyParsingItem)
   {
     goto LABEL_30;
   }
@@ -438,13 +438,13 @@ LABEL_30:
   if (os_log_type_enabled(v30, v31))
   {
     *buf = 138412546;
-    v46 = self;
+    selfCopy = self;
     v47 = 2112;
-    v48 = v5;
+    v48 = errorCopy;
     _os_log_impl(&dword_24A0AC000, v30, v31, "%@ failed: %@", buf, 0x16u);
   }
 
-  if (v5)
+  if (errorCopy)
   {
     v17 = 2;
   }
@@ -454,21 +454,21 @@ LABEL_30:
     v17 = 1;
   }
 
-  if (!v5)
+  if (!errorCopy)
   {
     goto LABEL_27;
   }
 
 LABEL_31:
-  if (![(ASTask *)self attemptRetryWithStatus:v17 error:v5])
+  if (![(ASTask *)self attemptRetryWithStatus:v17 error:errorCopy])
   {
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __47__ASMailboxEnhancedSearchTask_finishWithError___block_invoke;
     v36[3] = &unk_278FC7D48;
     v37 = v10;
-    v38 = self;
-    v39 = v5;
+    selfCopy2 = self;
+    v39 = errorCopy;
     [(ASTask *)self finishWithError:v39 afterDelegateCallout:v36];
   }
 

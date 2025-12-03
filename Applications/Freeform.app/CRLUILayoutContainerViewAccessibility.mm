@@ -14,18 +14,18 @@
   [(CRLUILayoutContainerViewAccessibility *)&v8 layoutSubviews];
   if ([(CRLUILayoutContainerViewAccessibility *)self crlaxShouldPreventSettingSortPriorityForNavigationController])
   {
-    v3 = [(CRLUILayoutContainerViewAccessibility *)self _crlaxNavigationController];
-    v4 = [v3 navigationBar];
-    [v4 _accessibilitySetSortPriority:0];
+    _crlaxNavigationController = [(CRLUILayoutContainerViewAccessibility *)self _crlaxNavigationController];
+    navigationBar = [_crlaxNavigationController navigationBar];
+    [navigationBar _accessibilitySetSortPriority:0];
 
-    v5 = [v3 toolbar];
-    [v5 _accessibilitySetSortPriority:0];
+    toolbar = [_crlaxNavigationController toolbar];
+    [toolbar _accessibilitySetSortPriority:0];
 
-    v6 = [(CRLUILayoutContainerViewAccessibility *)self _crlaxTopPalette];
-    [v6 _accessibilitySetSortPriority:0];
+    _crlaxTopPalette = [(CRLUILayoutContainerViewAccessibility *)self _crlaxTopPalette];
+    [_crlaxTopPalette _accessibilitySetSortPriority:0];
 
-    v7 = [(CRLUILayoutContainerViewAccessibility *)self _crlaxNavigationTransitionView];
-    [v7 _accessibilitySetSortPriority:0];
+    _crlaxNavigationTransitionView = [(CRLUILayoutContainerViewAccessibility *)self _crlaxNavigationTransitionView];
+    [_crlaxNavigationTransitionView _accessibilitySetSortPriority:0];
   }
 }
 
@@ -40,16 +40,16 @@
 
 - (id)_crlaxTopPalette
 {
-  v2 = [(CRLUILayoutContainerViewAccessibility *)self _crlaxNavigationController];
-  v3 = [v2 crlaxValueForKey:@"_topPalette"];
+  _crlaxNavigationController = [(CRLUILayoutContainerViewAccessibility *)self _crlaxNavigationController];
+  v3 = [_crlaxNavigationController crlaxValueForKey:@"_topPalette"];
 
   return v3;
 }
 
 - (id)_crlaxNavigationTransitionView
 {
-  v2 = [(CRLUILayoutContainerViewAccessibility *)self _crlaxNavigationController];
-  v3 = [v2 crlaxValueForKey:@"navigationTransitionView"];
+  _crlaxNavigationController = [(CRLUILayoutContainerViewAccessibility *)self _crlaxNavigationController];
+  v3 = [_crlaxNavigationController crlaxValueForKey:@"navigationTransitionView"];
 
   return v3;
 }

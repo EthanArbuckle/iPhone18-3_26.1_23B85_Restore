@@ -1,41 +1,41 @@
 @interface DynamicLabel
 - (BOOL)hasContent;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
 - (CGRect)jet_focusedFrame;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (NSString)maximumContentSizeCategory;
 - (void)invalidateIntrinsicContentSize;
-- (void)setContentHuggingPriority:(float)a3 forAxis:(int64_t)a4;
-- (void)setMaximumContentSizeCategory:(id)a3;
-- (void)textViewDidChangeSelection:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setContentHuggingPriority:(float)priority forAxis:(int64_t)axis;
+- (void)setMaximumContentSizeCategory:(id)category;
+- (void)textViewDidChangeSelection:(id)selection;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DynamicLabel
 
 - (void)invalidateIntrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   DynamicLabel.invalidateIntrinsicContentSize()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   DynamicLabel.traitCollectionDidChange(_:)(v9);
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   DynamicLabel.intrinsicContentSize.getter();
   v4 = v3;
   v6 = v5;
@@ -49,37 +49,37 @@
 
 - (NSString)maximumContentSizeCategory
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DynamicLabel.maximumContentSizeCategory.getter();
 
   return v3;
 }
 
-- (void)setMaximumContentSizeCategory:(id)a3
+- (void)setMaximumContentSizeCategory:(id)category
 {
-  v5 = a3;
-  v6 = self;
-  DynamicLabel.maximumContentSizeCategory.setter(a3);
+  categoryCopy = category;
+  selfCopy = self;
+  DynamicLabel.maximumContentSizeCategory.setter(category);
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v11.value.super.isa = v4;
-  LOBYTE(v4) = DynamicLabel.point(inside:with:)(__PAIR128__(*&y, *&x), v11);
+  eventCopy = event;
+  y = inside.y;
+  x = inside.x;
+  eventCopy2 = event;
+  selfCopy = self;
+  v11.value.super.isa = eventCopy;
+  LOBYTE(eventCopy) = DynamicLabel.point(inside:with:)(__PAIR128__(*&y, *&x), v11);
 
-  return v4 & 1;
+  return eventCopy & 1;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = DynamicLabel.sizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;
@@ -89,11 +89,11 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   v6 = DynamicLabel.systemLayoutSizeFitting(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;
@@ -103,29 +103,29 @@
   return result;
 }
 
-- (void)setContentHuggingPriority:(float)a3 forAxis:(int64_t)a4
+- (void)setContentHuggingPriority:(float)priority forAxis:(int64_t)axis
 {
-  v6 = self;
-  DynamicLabel.setContentHuggingPriority(_:for:)(a3, a4);
+  selfCopy = self;
+  DynamicLabel.setContentHuggingPriority(_:for:)(priority, axis);
 }
 
-- (void)textViewDidChangeSelection:(id)a3
+- (void)textViewDidChangeSelection:(id)selection
 {
-  v4 = a3;
-  v5 = self;
-  DynamicLabel.textViewDidChangeSelection(_:)(v4);
+  selectionCopy = selection;
+  selfCopy = self;
+  DynamicLabel.textViewDidChangeSelection(_:)(selectionCopy);
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v8 = sub_1CA19ADF8();
   v9 = *(v8 - 8);
   MEMORY[0x1EEE9AC00](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1CA19ADA8();
-  v12 = a3;
-  v13 = self;
-  LOBYTE(self) = DynamicLabel.textView(_:shouldInteractWith:in:interaction:)(v13, v11);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(self) = DynamicLabel.textView(_:shouldInteractWith:in:interaction:)(selfCopy, v11);
 
   (*(v9 + 8))(v11, v8);
   return self & 1;
@@ -133,7 +133,7 @@
 
 - (BOOL)hasContent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DynamicLabel.hasContent.getter();
 
   return v3 & 1;
@@ -141,7 +141,7 @@
 
 - (CGRect)jet_focusedFrame
 {
-  v2 = self;
+  selfCopy = self;
   DynamicLabel.focusedFrame.getter();
   v4 = v3;
   v6 = v5;
@@ -159,11 +159,11 @@
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  DynamicLabel.measurements(fitting:in:)(a4);
+  selfCopy = self;
+  DynamicLabel.measurements(fitting:in:)(in);
   v8 = v7;
   v10 = v9;
   v12 = v11;

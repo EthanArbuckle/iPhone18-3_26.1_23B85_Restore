@@ -1,32 +1,32 @@
 @interface KTIDStaticKeyStore
-- (BOOL)removeEntryByContact:(id)a3 error:(id *)a4;
-- (BOOL)removeEntryByContactIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)removeEntryByKDID:(id)a3 error:(id *)a4;
-- (BOOL)resetCloudKit:(id *)a3;
-- (BOOL)setErrorCode:(int)a3 forMapping:(id)a4 error:(id *)a5;
-- (BOOL)setupCloudSchema:(BOOL)a3 error:(id *)a4;
-- (BOOL)triggerSync:(id *)a3;
-- (BOOL)updateStaticKeyEntry:(id)a3 contact:(id)a4 error:(id *)a5;
-- (BOOL)updateStaticKeyEntry:(id)a3 contactServerPath:(id)a4 contactIdentifier:(id)a5 mappings:(id)a6 error:(id *)a7;
-- (id)findByContact:(id)a3 error:(id *)a4;
-- (id)findByContactIdentifier:(id)a3 error:(id *)a4;
-- (id)findByIdentifier:(id)a3 error:(id *)a4;
-- (id)findKeyByHandle:(id)a3 error:(id *)a4;
-- (id)listKTID:(id *)a3;
-- (id)mappings:(id)a3 error:(id *)a4;
-- (id)validateByContact:(id)a3 error:(id *)a4;
-- (id)validateByContactIdentifier:(id)a3 error:(id *)a4;
-- (id)validateByIdentifier:(id)a3 error:(id *)a4;
+- (BOOL)removeEntryByContact:(id)contact error:(id *)error;
+- (BOOL)removeEntryByContactIdentifier:(id)identifier error:(id *)error;
+- (BOOL)removeEntryByKDID:(id)d error:(id *)error;
+- (BOOL)resetCloudKit:(id *)kit;
+- (BOOL)setErrorCode:(int)code forMapping:(id)mapping error:(id *)error;
+- (BOOL)setupCloudSchema:(BOOL)schema error:(id *)error;
+- (BOOL)triggerSync:(id *)sync;
+- (BOOL)updateStaticKeyEntry:(id)entry contact:(id)contact error:(id *)error;
+- (BOOL)updateStaticKeyEntry:(id)entry contactServerPath:(id)path contactIdentifier:(id)identifier mappings:(id)mappings error:(id *)error;
+- (id)findByContact:(id)contact error:(id *)error;
+- (id)findByContactIdentifier:(id)identifier error:(id *)error;
+- (id)findByIdentifier:(id)identifier error:(id *)error;
+- (id)findKeyByHandle:(id)handle error:(id *)error;
+- (id)listKTID:(id *)d;
+- (id)mappings:(id)mappings error:(id *)error;
+- (id)validateByContact:(id)contact error:(id *)error;
+- (id)validateByContactIdentifier:(id)identifier error:(id *)error;
+- (id)validateByIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation KTIDStaticKeyStore
 
-- (BOOL)updateStaticKeyEntry:(id)a3 contactServerPath:(id)a4 contactIdentifier:(id)a5 mappings:(id)a6 error:(id *)a7
+- (BOOL)updateStaticKeyEntry:(id)entry contactServerPath:(id)path contactIdentifier:(id)identifier mappings:(id)mappings error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  entryCopy = entry;
+  pathCopy = path;
+  identifierCopy = identifier;
+  mappingsCopy = mappings;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -44,13 +44,13 @@
   v22[2] = __94__KTIDStaticKeyStore_updateStaticKeyEntry_contactServerPath_contactIdentifier_mappings_error___block_invoke;
   v22[3] = &unk_1E87024D8;
   v27 = &v29;
-  v15 = v11;
+  v15 = entryCopy;
   v23 = v15;
-  v16 = v13;
+  v16 = identifierCopy;
   v24 = v16;
-  v17 = v12;
+  v17 = pathCopy;
   v25 = v17;
-  v18 = v14;
+  v18 = mappingsCopy;
   v26 = v18;
   v28 = &v35;
   v21[0] = MEMORY[0x1E69E9820];
@@ -60,9 +60,9 @@
   v21[4] = &v29;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v22 errorHandler:v21];
   v19 = v36[5];
-  if (a7 && !v19)
+  if (error && !v19)
   {
-    *a7 = v30[5];
+    *error = v30[5];
   }
 
   _Block_object_dispose(&v29, 8);
@@ -148,10 +148,10 @@ uint64_t __94__KTIDStaticKeyStore_updateStaticKeyEntry_contactServerPath_contact
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)updateStaticKeyEntry:(id)a3 contact:(id)a4 error:(id *)a5
+- (BOOL)updateStaticKeyEntry:(id)entry contact:(id)contact error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  entryCopy = entry;
+  contactCopy = contact;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -169,9 +169,9 @@ uint64_t __94__KTIDStaticKeyStore_updateStaticKeyEntry_contactServerPath_contact
   v14[2] = __57__KTIDStaticKeyStore_updateStaticKeyEntry_contact_error___block_invoke;
   v14[3] = &unk_1E8702500;
   v17 = &v19;
-  v9 = v7;
+  v9 = entryCopy;
   v15 = v9;
-  v10 = v8;
+  v10 = contactCopy;
   v16 = v10;
   v18 = &v25;
   v13[0] = MEMORY[0x1E69E9820];
@@ -181,9 +181,9 @@ uint64_t __94__KTIDStaticKeyStore_updateStaticKeyEntry_contactServerPath_contact
   v13[4] = &v19;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v14 errorHandler:v13];
   v11 = v26[5];
-  if (a5 && !v11)
+  if (error && !v11)
   {
-    *a5 = v20[5];
+    *error = v20[5];
   }
 
   _Block_object_dispose(&v19, 8);
@@ -266,9 +266,9 @@ uint64_t __57__KTIDStaticKeyStore_updateStaticKeyEntry_contact_error___block_inv
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)removeEntryByKDID:(id)a3 error:(id *)a4
+- (BOOL)removeEntryByKDID:(id)d error:(id *)error
 {
-  v5 = a3;
+  dCopy = d;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -284,7 +284,7 @@ uint64_t __57__KTIDStaticKeyStore_updateStaticKeyEntry_contact_error___block_inv
   v10[2] = __46__KTIDStaticKeyStore_removeEntryByKDID_error___block_invoke;
   v10[3] = &unk_1E8701760;
   v12 = &v18;
-  v6 = v5;
+  v6 = dCopy;
   v11 = v6;
   v13 = &v14;
   v9[0] = MEMORY[0x1E69E9820];
@@ -293,9 +293,9 @@ uint64_t __57__KTIDStaticKeyStore_updateStaticKeyEntry_contact_error___block_inv
   v9[3] = &unk_1E8701788;
   v9[4] = &v18;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v10 errorHandler:v9];
-  if (a4)
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v7 = *(v15 + 24);
@@ -398,9 +398,9 @@ uint64_t __46__KTIDStaticKeyStore_removeEntryByKDID_error___block_invoke_3()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)removeEntryByContactIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeEntryByContactIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -416,7 +416,7 @@ uint64_t __46__KTIDStaticKeyStore_removeEntryByKDID_error___block_invoke_3()
   v10[2] = __59__KTIDStaticKeyStore_removeEntryByContactIdentifier_error___block_invoke;
   v10[3] = &unk_1E8701760;
   v12 = &v18;
-  v6 = v5;
+  v6 = identifierCopy;
   v11 = v6;
   v13 = &v14;
   v9[0] = MEMORY[0x1E69E9820];
@@ -425,9 +425,9 @@ uint64_t __46__KTIDStaticKeyStore_removeEntryByKDID_error___block_invoke_3()
   v9[3] = &unk_1E8701788;
   v9[4] = &v18;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v10 errorHandler:v9];
-  if (a4)
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v7 = *(v15 + 24);
@@ -530,9 +530,9 @@ uint64_t __59__KTIDStaticKeyStore_removeEntryByContactIdentifier_error___block_i
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)removeEntryByContact:(id)a3 error:(id *)a4
+- (BOOL)removeEntryByContact:(id)contact error:(id *)error
 {
-  v5 = a3;
+  contactCopy = contact;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -548,7 +548,7 @@ uint64_t __59__KTIDStaticKeyStore_removeEntryByContactIdentifier_error___block_i
   v10[2] = __49__KTIDStaticKeyStore_removeEntryByContact_error___block_invoke;
   v10[3] = &unk_1E8701760;
   v12 = &v18;
-  v6 = v5;
+  v6 = contactCopy;
   v11 = v6;
   v13 = &v14;
   v9[0] = MEMORY[0x1E69E9820];
@@ -557,9 +557,9 @@ uint64_t __59__KTIDStaticKeyStore_removeEntryByContactIdentifier_error___block_i
   v9[3] = &unk_1E8701788;
   v9[4] = &v18;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v10 errorHandler:v9];
-  if (a4)
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v7 = *(v15 + 24);
@@ -665,9 +665,9 @@ uint64_t __49__KTIDStaticKeyStore_removeEntryByContact_error___block_invoke_3()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)findKeyByHandle:(id)a3 error:(id *)a4
+- (id)findKeyByHandle:(id)handle error:(id *)error
 {
-  v5 = a3;
+  handleCopy = handle;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -685,7 +685,7 @@ uint64_t __49__KTIDStaticKeyStore_removeEntryByContact_error___block_invoke_3()
   v10[2] = __44__KTIDStaticKeyStore_findKeyByHandle_error___block_invoke;
   v10[3] = &unk_1E8701760;
   v12 = &v14;
-  v6 = v5;
+  v6 = handleCopy;
   v11 = v6;
   v13 = &v20;
   v9[0] = MEMORY[0x1E69E9820];
@@ -694,9 +694,9 @@ uint64_t __49__KTIDStaticKeyStore_removeEntryByContact_error___block_invoke_3()
   v9[3] = &unk_1E8701788;
   v9[4] = &v14;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v10 errorHandler:v9];
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v7 = v21[5];
@@ -805,9 +805,9 @@ uint64_t __44__KTIDStaticKeyStore_findKeyByHandle_error___block_invoke_3()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)findByContactIdentifier:(id)a3 error:(id *)a4
+- (id)findByContactIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -825,7 +825,7 @@ uint64_t __44__KTIDStaticKeyStore_findKeyByHandle_error___block_invoke_3()
   v10[2] = __52__KTIDStaticKeyStore_findByContactIdentifier_error___block_invoke;
   v10[3] = &unk_1E8701760;
   v12 = &v14;
-  v6 = v5;
+  v6 = identifierCopy;
   v11 = v6;
   v13 = &v20;
   v9[0] = MEMORY[0x1E69E9820];
@@ -834,9 +834,9 @@ uint64_t __44__KTIDStaticKeyStore_findKeyByHandle_error___block_invoke_3()
   v9[3] = &unk_1E8701788;
   v9[4] = &v14;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v10 errorHandler:v9];
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v7 = v21[5];
@@ -945,9 +945,9 @@ uint64_t __52__KTIDStaticKeyStore_findByContactIdentifier_error___block_invoke_3
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)findByContact:(id)a3 error:(id *)a4
+- (id)findByContact:(id)contact error:(id *)error
 {
-  v5 = a3;
+  contactCopy = contact;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -965,7 +965,7 @@ uint64_t __52__KTIDStaticKeyStore_findByContactIdentifier_error___block_invoke_3
   v10[2] = __42__KTIDStaticKeyStore_findByContact_error___block_invoke;
   v10[3] = &unk_1E8701760;
   v12 = &v14;
-  v6 = v5;
+  v6 = contactCopy;
   v11 = v6;
   v13 = &v20;
   v9[0] = MEMORY[0x1E69E9820];
@@ -974,9 +974,9 @@ uint64_t __52__KTIDStaticKeyStore_findByContactIdentifier_error___block_invoke_3
   v9[3] = &unk_1E8701788;
   v9[4] = &v14;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v10 errorHandler:v9];
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v7 = v21[5];
@@ -1085,9 +1085,9 @@ uint64_t __42__KTIDStaticKeyStore_findByContact_error___block_invoke_3()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)findByIdentifier:(id)a3 error:(id *)a4
+- (id)findByIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1105,7 +1105,7 @@ uint64_t __42__KTIDStaticKeyStore_findByContact_error___block_invoke_3()
   v10[2] = __45__KTIDStaticKeyStore_findByIdentifier_error___block_invoke;
   v10[3] = &unk_1E8701760;
   v12 = &v14;
-  v6 = v5;
+  v6 = identifierCopy;
   v11 = v6;
   v13 = &v20;
   v9[0] = MEMORY[0x1E69E9820];
@@ -1114,9 +1114,9 @@ uint64_t __42__KTIDStaticKeyStore_findByContact_error___block_invoke_3()
   v9[3] = &unk_1E8701788;
   v9[4] = &v14;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v10 errorHandler:v9];
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v7 = v21[5];
@@ -1200,9 +1200,9 @@ uint64_t __45__KTIDStaticKeyStore_findByIdentifier_error___block_invoke_4()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)validateByIdentifier:(id)a3 error:(id *)a4
+- (id)validateByIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1220,7 +1220,7 @@ uint64_t __45__KTIDStaticKeyStore_findByIdentifier_error___block_invoke_4()
   v10[2] = __49__KTIDStaticKeyStore_validateByIdentifier_error___block_invoke;
   v10[3] = &unk_1E8701760;
   v12 = &v14;
-  v6 = v5;
+  v6 = identifierCopy;
   v11 = v6;
   v13 = &v20;
   v9[0] = MEMORY[0x1E69E9820];
@@ -1229,9 +1229,9 @@ uint64_t __45__KTIDStaticKeyStore_findByIdentifier_error___block_invoke_4()
   v9[3] = &unk_1E8701788;
   v9[4] = &v14;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v10 errorHandler:v9];
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v7 = v21[5];
@@ -1315,17 +1315,17 @@ uint64_t __49__KTIDStaticKeyStore_validateByIdentifier_error___block_invoke_4()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)validateByContact:(id)a3 error:(id *)a4
+- (id)validateByContact:(id)contact error:(id *)error
 {
-  v6 = [a3 identifier];
-  v7 = [(KTIDStaticKeyStore *)self validateByContactIdentifier:v6 error:a4];
+  identifier = [contact identifier];
+  v7 = [(KTIDStaticKeyStore *)self validateByContactIdentifier:identifier error:error];
 
   return v7;
 }
 
-- (id)validateByContactIdentifier:(id)a3 error:(id *)a4
+- (id)validateByContactIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1343,7 +1343,7 @@ uint64_t __49__KTIDStaticKeyStore_validateByIdentifier_error___block_invoke_4()
   v10[2] = __56__KTIDStaticKeyStore_validateByContactIdentifier_error___block_invoke;
   v10[3] = &unk_1E8701760;
   v12 = &v14;
-  v6 = v5;
+  v6 = identifierCopy;
   v11 = v6;
   v13 = &v20;
   v9[0] = MEMORY[0x1E69E9820];
@@ -1352,9 +1352,9 @@ uint64_t __49__KTIDStaticKeyStore_validateByIdentifier_error___block_invoke_4()
   v9[3] = &unk_1E8701788;
   v9[4] = &v14;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v10 errorHandler:v9];
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v7 = v21[5];
@@ -1438,15 +1438,15 @@ uint64_t __56__KTIDStaticKeyStore_validateByContactIdentifier_error___block_invo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)mappings:(id)a3 error:(id *)a4
+- (id)mappings:(id)mappings error:(id *)error
 {
-  v4 = [(KTIDStaticKeyStore *)self findByIdentifier:a3 error:a4];
-  v5 = [v4 mappings];
+  v4 = [(KTIDStaticKeyStore *)self findByIdentifier:mappings error:error];
+  mappings = [v4 mappings];
 
-  return v5;
+  return mappings;
 }
 
-- (id)listKTID:(id *)a3
+- (id)listKTID:(id *)d
 {
   v14 = 0;
   v15 = &v14;
@@ -1472,9 +1472,9 @@ uint64_t __56__KTIDStaticKeyStore_validateByContactIdentifier_error___block_invo
   v6[3] = &unk_1E8701788;
   v6[4] = &v8;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v7 errorHandler:v6];
-  if (a3)
+  if (d)
   {
-    *a3 = v9[5];
+    *d = v9[5];
   }
 
   v4 = v15[5];
@@ -1546,9 +1546,9 @@ uint64_t __31__KTIDStaticKeyStore_listKTID___block_invoke_4()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)setErrorCode:(int)a3 forMapping:(id)a4 error:(id *)a5
+- (BOOL)setErrorCode:(int)code forMapping:(id)mapping error:(id *)error
 {
-  v7 = a4;
+  mappingCopy = mapping;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -1564,8 +1564,8 @@ uint64_t __31__KTIDStaticKeyStore_listKTID___block_invoke_4()
   v12[2] = __52__KTIDStaticKeyStore_setErrorCode_forMapping_error___block_invoke;
   v12[3] = &unk_1E8702550;
   v14 = &v17;
-  v16 = a3;
-  v8 = v7;
+  codeCopy = code;
+  v8 = mappingCopy;
   v13 = v8;
   v15 = &v23;
   v11[0] = MEMORY[0x1E69E9820];
@@ -1574,9 +1574,9 @@ uint64_t __31__KTIDStaticKeyStore_listKTID___block_invoke_4()
   v11[3] = &unk_1E8701788;
   v11[4] = &v17;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v12 errorHandler:v11];
-  if (a5)
+  if (error)
   {
-    *a5 = v18[5];
+    *error = v18[5];
   }
 
   v9 = *(v24 + 24);
@@ -1651,7 +1651,7 @@ uint64_t __52__KTIDStaticKeyStore_setErrorCode_forMapping_error___block_invoke_4
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)triggerSync:(id *)a3
+- (BOOL)triggerSync:(id *)sync
 {
   v14 = 0;
   v15 = &v14;
@@ -1675,9 +1675,9 @@ uint64_t __52__KTIDStaticKeyStore_setErrorCode_forMapping_error___block_invoke_4
   v6[3] = &unk_1E8701788;
   v6[4] = &v8;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v7 errorHandler:v6];
-  if (a3)
+  if (sync)
   {
-    *a3 = v9[5];
+    *sync = v9[5];
   }
 
   v4 = *(v15 + 24);
@@ -1749,7 +1749,7 @@ uint64_t __34__KTIDStaticKeyStore_triggerSync___block_invoke_4()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)setupCloudSchema:(BOOL)a3 error:(id *)a4
+- (BOOL)setupCloudSchema:(BOOL)schema error:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -1765,7 +1765,7 @@ uint64_t __34__KTIDStaticKeyStore_triggerSync___block_invoke_4()
   v8[1] = 3221225472;
   v8[2] = __45__KTIDStaticKeyStore_setupCloudSchema_error___block_invoke;
   v8[3] = &unk_1E8702578;
-  v9 = a3;
+  schemaCopy = schema;
   v8[4] = &v10;
   v8[5] = &v16;
   v7[0] = MEMORY[0x1E69E9820];
@@ -1774,9 +1774,9 @@ uint64_t __34__KTIDStaticKeyStore_triggerSync___block_invoke_4()
   v7[3] = &unk_1E8701788;
   v7[4] = &v10;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v8 errorHandler:v7];
-  if (a4)
+  if (error)
   {
-    *a4 = v11[5];
+    *error = v11[5];
   }
 
   v5 = *(v17 + 24);
@@ -1849,7 +1849,7 @@ uint64_t __45__KTIDStaticKeyStore_setupCloudSchema_error___block_invoke_4()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)resetCloudKit:(id *)a3
+- (BOOL)resetCloudKit:(id *)kit
 {
   v14 = 0;
   v15 = &v14;
@@ -1873,9 +1873,9 @@ uint64_t __45__KTIDStaticKeyStore_setupCloudSchema_error___block_invoke_4()
   v6[3] = &unk_1E8701788;
   v6[4] = &v8;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v7 errorHandler:v6];
-  if (a3)
+  if (kit)
   {
-    *a3 = v9[5];
+    *kit = v9[5];
   }
 
   v4 = *(v15 + 24);

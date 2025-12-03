@@ -1,54 +1,54 @@
 @interface MTLVertexBufferLayoutDescriptor
-+ (MTLVertexBufferLayoutDescriptor)allocWithZone:(_NSZone *)a3;
-- (BOOL)isEqual:(id)a3;
++ (MTLVertexBufferLayoutDescriptor)allocWithZone:(_NSZone *)zone;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation MTLVertexBufferLayoutDescriptor
 
-+ (MTLVertexBufferLayoutDescriptor)allocWithZone:(_NSZone *)a3
++ (MTLVertexBufferLayoutDescriptor)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [MTLVertexBufferLayoutDescriptorInternal allocWithZone:a3];
+    return [MTLVertexBufferLayoutDescriptorInternal allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___MTLVertexBufferLayoutDescriptor;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     return 0;
   }
 
-  v6 = [(MTLVertexBufferLayoutDescriptor *)self stride];
-  if (v6 != [a3 stride])
+  stride = [(MTLVertexBufferLayoutDescriptor *)self stride];
+  if (stride != [equal stride])
   {
     return 0;
   }
 
-  v7 = [(MTLVertexBufferLayoutDescriptor *)self stepFunction];
-  if (v7 != [a3 stepFunction])
+  stepFunction = [(MTLVertexBufferLayoutDescriptor *)self stepFunction];
+  if (stepFunction != [equal stepFunction])
   {
     return 0;
   }
 
-  v8 = [(MTLVertexBufferLayoutDescriptor *)self stepRate];
-  return v8 == [a3 stepRate];
+  stepRate = [(MTLVertexBufferLayoutDescriptor *)self stepRate];
+  return stepRate == [equal stepRate];
 }
 
 - (unint64_t)hash

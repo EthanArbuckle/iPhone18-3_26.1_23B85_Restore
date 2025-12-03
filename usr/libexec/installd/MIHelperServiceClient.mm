@@ -1,16 +1,16 @@
 @interface MIHelperServiceClient
 + (id)sharedInstance;
-- (BOOL)cloneItemAtURL:(id)a3 toURL:(id)a4 onBehalfOf:(id *)a5 error:(id *)a6;
-- (BOOL)createSafeHarborWithIdentifier:(id)a3 forPersona:(id)a4 containerType:(unint64_t)a5 andMigrateDataFrom:(id)a6 withError:(id *)a7;
-- (BOOL)dataContainer:(id)a3 ofContainerType:(unint64_t)a4 isEmpty:(BOOL *)a5 error:(id *)a6;
-- (BOOL)makeSymlinkFromAppDataContainerToBundleForIdentifier:(id)a3 forPersona:(id)a4 withError:(id *)a5;
-- (BOOL)migrateMobileContentWithError:(id *)a3;
-- (BOOL)moveItemInStagingLocation:(id)a3 atRelativePath:(id)a4 toDestinationURL:(id)a5 onBehalfOf:(id *)a6 error:(id *)a7;
-- (BOOL)wipeStagingRootAndSetUpPerUserDataDirWithError:(id *)a3;
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3;
+- (BOOL)cloneItemAtURL:(id)l toURL:(id)rL onBehalfOf:(id *)of error:(id *)error;
+- (BOOL)createSafeHarborWithIdentifier:(id)identifier forPersona:(id)persona containerType:(unint64_t)type andMigrateDataFrom:(id)from withError:(id *)error;
+- (BOOL)dataContainer:(id)container ofContainerType:(unint64_t)type isEmpty:(BOOL *)empty error:(id *)error;
+- (BOOL)makeSymlinkFromAppDataContainerToBundleForIdentifier:(id)identifier forPersona:(id)persona withError:(id *)error;
+- (BOOL)migrateMobileContentWithError:(id *)error;
+- (BOOL)moveItemInStagingLocation:(id)location atRelativePath:(id)path toDestinationURL:(id)l onBehalfOf:(id *)of error:(id *)error;
+- (BOOL)wipeStagingRootAndSetUpPerUserDataDirWithError:(id *)error;
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler;
 - (id)_sharedConnection;
-- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (id)stageItemAtURL:(id)a3 toStagingLocation:(id)a4 options:(id)a5 containedSymlink:(BOOL *)a6 error:(id *)a7;
+- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (id)stageItemAtURL:(id)l toStagingLocation:(id)location options:(id)options containedSymlink:(BOOL *)symlink error:(id *)error;
 - (void)_invalidateObject;
 - (void)dealloc;
 @end
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = sub_100037D00;
   block[3] = &unk_100090CF8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000A9698 != -1)
   {
     dispatch_once(&qword_1000A9698, block);
@@ -38,8 +38,8 @@
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(MIHelperServiceClient *)obj xpcConnection];
-  [v2 invalidate];
+  xpcConnection = [(MIHelperServiceClient *)obj xpcConnection];
+  [xpcConnection invalidate];
 
   [(MIHelperServiceClient *)obj setXpcConnection:0];
   objc_sync_exit(obj);
@@ -55,72 +55,72 @@
 
 - (id)_sharedConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MIHelperServiceClient *)v2 xpcConnection];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  xpcConnection = [(MIHelperServiceClient *)selfCopy xpcConnection];
 
-  if (!v3)
+  if (!xpcConnection)
   {
     v4 = [[NSXPCConnection alloc] initWithServiceName:@"com.apple.MobileInstallationHelperService"];
-    [(MIHelperServiceClient *)v2 setXpcConnection:v4];
+    [(MIHelperServiceClient *)selfCopy setXpcConnection:v4];
 
-    v5 = [(MIHelperServiceClient *)v2 xpcConnection];
+    xpcConnection2 = [(MIHelperServiceClient *)selfCopy xpcConnection];
 
-    if (!v5)
+    if (!xpcConnection2)
     {
       goto LABEL_5;
     }
 
     v6 = sub_1000040C8();
-    v7 = [(MIHelperServiceClient *)v2 xpcConnection];
-    [v7 setRemoteObjectInterface:v6];
+    xpcConnection3 = [(MIHelperServiceClient *)selfCopy xpcConnection];
+    [xpcConnection3 setRemoteObjectInterface:v6];
 
-    objc_initWeak(&location, v2);
+    objc_initWeak(&location, selfCopy);
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10003804C;
     v14[3] = &unk_100091798;
     objc_copyWeak(&v15, &location);
-    v8 = [(MIHelperServiceClient *)v2 xpcConnection];
-    [v8 setInterruptionHandler:v14];
+    xpcConnection4 = [(MIHelperServiceClient *)selfCopy xpcConnection];
+    [xpcConnection4 setInterruptionHandler:v14];
 
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10003808C;
     v12[3] = &unk_100091798;
     objc_copyWeak(&v13, &location);
-    v9 = [(MIHelperServiceClient *)v2 xpcConnection];
-    [v9 setInvalidationHandler:v12];
+    xpcConnection5 = [(MIHelperServiceClient *)selfCopy xpcConnection];
+    [xpcConnection5 setInvalidationHandler:v12];
 
-    v10 = [(MIHelperServiceClient *)v2 xpcConnection];
-    [v10 resume];
+    xpcConnection6 = [(MIHelperServiceClient *)selfCopy xpcConnection];
+    [xpcConnection6 resume];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 
-  v5 = [(MIHelperServiceClient *)v2 xpcConnection];
+  xpcConnection2 = [(MIHelperServiceClient *)selfCopy xpcConnection];
 LABEL_5:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return xpcConnection2;
 }
 
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MIHelperServiceClient *)self _sharedConnection];
-  v7 = v5;
-  if (v5)
+  handlerCopy = handler;
+  _sharedConnection = [(MIHelperServiceClient *)self _sharedConnection];
+  v7 = _sharedConnection;
+  if (_sharedConnection)
   {
-    v8 = [v5 remoteObjectProxyWithErrorHandler:v4];
+    v8 = [_sharedConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
     v9 = sub_100010734("[MIHelperServiceClient _remoteObjectProxyWithErrorHandler:]", 85, MIInstallerErrorDomain, 4, 0, 0, @"Failed to get XPC connection", v6, v11);
-    v4[2](v4, v9);
+    handlerCopy[2](handlerCopy, v9);
 
     v8 = 0;
   }
@@ -128,20 +128,20 @@ LABEL_5:
   return v8;
 }
 
-- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MIHelperServiceClient *)self _sharedConnection];
-  v7 = v5;
-  if (v5)
+  handlerCopy = handler;
+  _sharedConnection = [(MIHelperServiceClient *)self _sharedConnection];
+  v7 = _sharedConnection;
+  if (_sharedConnection)
   {
-    v8 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    v8 = [_sharedConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
     v9 = sub_100010734("[MIHelperServiceClient _synchronousRemoteObjectProxyWithErrorHandler:]", 96, MIInstallerErrorDomain, 4, 0, 0, @"Failed to get XPC connection", v6, v11);
-    v4[2](v4, v9);
+    handlerCopy[2](handlerCopy, v9);
 
     v8 = 0;
   }
@@ -149,7 +149,7 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)migrateMobileContentWithError:(id *)a3
+- (BOOL)migrateMobileContentWithError:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -171,9 +171,9 @@ LABEL_5:
   [v4 migrateMobileContentWithCompletion:v8];
 
   v5 = v11[5];
-  if (a3 && v5)
+  if (error && v5)
   {
-    *a3 = v5;
+    *error = v5;
     v5 = v11[5];
   }
 
@@ -183,7 +183,7 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)wipeStagingRootAndSetUpPerUserDataDirWithError:(id *)a3
+- (BOOL)wipeStagingRootAndSetUpPerUserDataDirWithError:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -205,9 +205,9 @@ LABEL_5:
   [v4 wipeStagingRootAndSetUpPerUserDataDirWithCompletion:v8];
 
   v5 = v11[5];
-  if (a3 && v5)
+  if (error && v5)
   {
-    *a3 = v5;
+    *error = v5;
     v5 = v11[5];
   }
 
@@ -217,11 +217,11 @@ LABEL_5:
   return v6;
 }
 
-- (id)stageItemAtURL:(id)a3 toStagingLocation:(id)a4 options:(id)a5 containedSymlink:(BOOL *)a6 error:(id *)a7
+- (id)stageItemAtURL:(id)l toStagingLocation:(id)location options:(id)options containedSymlink:(BOOL *)symlink error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  lCopy = l;
+  locationCopy = location;
+  optionsCopy = options;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -251,20 +251,20 @@ LABEL_5:
   v20[4] = &v26;
   v20[5] = &v32;
   v20[6] = &v22;
-  [v15 stageItemAtURL:v12 toStagingLocation:v13 options:v14 completion:v20];
+  [v15 stageItemAtURL:lCopy toStagingLocation:locationCopy options:optionsCopy completion:v20];
 
   v16 = v33;
   v17 = v33[5];
-  if (a7 && !v17)
+  if (error && !v17)
   {
-    *a7 = v27[5];
+    *error = v27[5];
     v16 = v33;
     v17 = v33[5];
   }
 
-  if (a6 && v17)
+  if (symlink && v17)
   {
-    *a6 = *(v23 + 24);
+    *symlink = *(v23 + 24);
     v17 = v16[5];
   }
 
@@ -277,10 +277,10 @@ LABEL_5:
   return v18;
 }
 
-- (BOOL)makeSymlinkFromAppDataContainerToBundleForIdentifier:(id)a3 forPersona:(id)a4 withError:(id *)a5
+- (BOOL)makeSymlinkFromAppDataContainerToBundleForIdentifier:(id)identifier forPersona:(id)persona withError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  personaCopy = persona;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -298,12 +298,12 @@ LABEL_5:
   v14[2] = sub_100038C20;
   v14[3] = &unk_1000917C0;
   v14[4] = &v16;
-  [v10 makeSymlinkFromAppDataContainerToBundleForIdentifier:v8 forPersona:v9 completion:v14];
+  [v10 makeSymlinkFromAppDataContainerToBundleForIdentifier:identifierCopy forPersona:personaCopy completion:v14];
 
   v11 = v17[5];
-  if (a5 && v11)
+  if (error && v11)
   {
-    *a5 = v11;
+    *error = v11;
     v11 = v17[5];
   }
 
@@ -313,11 +313,11 @@ LABEL_5:
   return v12;
 }
 
-- (BOOL)createSafeHarborWithIdentifier:(id)a3 forPersona:(id)a4 containerType:(unint64_t)a5 andMigrateDataFrom:(id)a6 withError:(id *)a7
+- (BOOL)createSafeHarborWithIdentifier:(id)identifier forPersona:(id)persona containerType:(unint64_t)type andMigrateDataFrom:(id)from withError:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  identifierCopy = identifier;
+  personaCopy = persona;
+  fromCopy = from;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -335,12 +335,12 @@ LABEL_5:
   v19[2] = sub_100038E6C;
   v19[3] = &unk_1000917C0;
   v19[4] = &v21;
-  [v15 createSafeHarborWithIdentifier:v12 forPersona:v13 containerType:a5 andMigrateDataFrom:v14 completion:v19];
+  [v15 createSafeHarborWithIdentifier:identifierCopy forPersona:personaCopy containerType:type andMigrateDataFrom:fromCopy completion:v19];
 
   v16 = v22[5];
-  if (a7 && v16)
+  if (error && v16)
   {
-    *a7 = v16;
+    *error = v16;
     v16 = v22[5];
   }
 
@@ -350,9 +350,9 @@ LABEL_5:
   return v17;
 }
 
-- (BOOL)dataContainer:(id)a3 ofContainerType:(unint64_t)a4 isEmpty:(BOOL *)a5 error:(id *)a6
+- (BOOL)dataContainer:(id)container ofContainerType:(unint64_t)type isEmpty:(BOOL *)empty error:(id *)error
 {
-  v10 = a3;
+  containerCopy = container;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -375,20 +375,20 @@ LABEL_5:
   v15[3] = &unk_100091810;
   v15[4] = &v17;
   v15[5] = &v21;
-  [v11 isDataContainerEmpty:v10 ofContainerType:a4 completion:v15];
+  [v11 isDataContainerEmpty:containerCopy ofContainerType:type completion:v15];
 
-  if (a6)
+  if (error)
   {
     v12 = v22[5];
     if (v12)
     {
-      *a6 = v12;
+      *error = v12;
     }
   }
 
-  if (a5)
+  if (empty)
   {
-    *a5 = *(v18 + 24);
+    *empty = *(v18 + 24);
   }
 
   v13 = v22[5] == 0;
@@ -398,11 +398,11 @@ LABEL_5:
   return v13;
 }
 
-- (BOOL)moveItemInStagingLocation:(id)a3 atRelativePath:(id)a4 toDestinationURL:(id)a5 onBehalfOf:(id *)a6 error:(id *)a7
+- (BOOL)moveItemInStagingLocation:(id)location atRelativePath:(id)path toDestinationURL:(id)l onBehalfOf:(id *)of error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  locationCopy = location;
+  pathCopy = path;
+  lCopy = l;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -425,15 +425,15 @@ LABEL_5:
   v20[3] = &unk_100091860;
   v20[4] = &v26;
   v20[5] = &v22;
-  v16 = *&a6->var0[4];
-  v19[0] = *a6->var0;
+  v16 = *&of->var0[4];
+  v19[0] = *of->var0;
   v19[1] = v16;
-  [v15 moveItemInStagingLocation:v12 atRelativePath:v13 toDestinationURL:v14 onBehalfOf:v19 completion:v20];
+  [v15 moveItemInStagingLocation:locationCopy atRelativePath:pathCopy toDestinationURL:lCopy onBehalfOf:v19 completion:v20];
 
   v17 = *(v23 + 24);
-  if (a7 && (v23[3] & 1) == 0)
+  if (error && (v23[3] & 1) == 0)
   {
-    *a7 = v27[5];
+    *error = v27[5];
     v17 = *(v23 + 24);
   }
 
@@ -443,10 +443,10 @@ LABEL_5:
   return v17 & 1;
 }
 
-- (BOOL)cloneItemAtURL:(id)a3 toURL:(id)a4 onBehalfOf:(id *)a5 error:(id *)a6
+- (BOOL)cloneItemAtURL:(id)l toURL:(id)rL onBehalfOf:(id *)of error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -469,15 +469,15 @@ LABEL_5:
   v17[3] = &unk_100091860;
   v17[4] = &v23;
   v17[5] = &v19;
-  v13 = *&a5->var0[4];
-  v16[0] = *a5->var0;
+  v13 = *&of->var0[4];
+  v16[0] = *of->var0;
   v16[1] = v13;
-  [v12 cloneItemAtURL:v10 toURL:v11 onBehalfOf:v16 completion:v17];
+  [v12 cloneItemAtURL:lCopy toURL:rLCopy onBehalfOf:v16 completion:v17];
 
   v14 = *(v20 + 24);
-  if (a6 && (v20[3] & 1) == 0)
+  if (error && (v20[3] & 1) == 0)
   {
-    *a6 = v24[5];
+    *error = v24[5];
     v14 = *(v20 + 24);
   }
 

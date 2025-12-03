@@ -8,15 +8,15 @@
 {
   if ([a3 cachedDiscoveryEnabled])
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = [a1 nonCachedResults];
+    selfCopy = [self nonCachedResults];
   }
 
-  return v4;
+  return selfCopy;
 }
 
 @end

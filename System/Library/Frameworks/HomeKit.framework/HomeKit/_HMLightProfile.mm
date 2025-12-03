@@ -1,52 +1,52 @@
 @interface _HMLightProfile
 - (HMLightProfile)lightProfile;
-- (_HMLightProfile)initWithCoder:(id)a3;
-- (_HMLightProfile)initWithUUID:(id)a3 services:(id)a4 settings:(id)a5;
+- (_HMLightProfile)initWithCoder:(id)coder;
+- (_HMLightProfile)initWithUUID:(id)d services:(id)services settings:(id)settings;
 - (void)_registerNotificationHandlers;
-- (void)handleSettingsDidUpdate:(id)a3;
+- (void)handleSettingsDidUpdate:(id)update;
 @end
 
 @implementation _HMLightProfile
 
-- (_HMLightProfile)initWithCoder:(id)a3
+- (_HMLightProfile)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [[_HMAccessoryProfile alloc] initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [[_HMAccessoryProfile alloc] initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hmlp.sck"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hmlp.sck"];
     if (v6)
     {
-      v7 = [(_HMAccessoryProfile *)v5 profileUniqueIdentifier];
-      v8 = [(_HMAccessoryProfile *)v5 services];
-      self = [(_HMLightProfile *)self initWithUUID:v7 services:v8 settings:v6];
+      profileUniqueIdentifier = [(_HMAccessoryProfile *)v5 profileUniqueIdentifier];
+      services = [(_HMAccessoryProfile *)v5 services];
+      self = [(_HMLightProfile *)self initWithUUID:profileUniqueIdentifier services:services settings:v6];
 
-      v9 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)handleSettingsDidUpdate:(id)a3
+- (void)handleSettingsDidUpdate:(id)update
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_HMLightProfile *)self lightProfile];
-  if (v5)
+  updateCopy = update;
+  lightProfile = [(_HMLightProfile *)self lightProfile];
+  if (lightProfile)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -54,62 +54,62 @@
       *buf = 138543874;
       v26 = v9;
       v27 = 2112;
-      v28 = v4;
+      v28 = updateCopy;
       v29 = 2112;
-      v30 = v5;
+      v30 = lightProfile;
       _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@Handling message for light profile %@:%@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v6);
     v24 = objc_opt_class();
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
-    v11 = [(_HMLightProfile *)v4 unarchivedObjectForKey:@"hmlp.sck" ofClasses:v10];
+    accessory = [(_HMLightProfile *)updateCopy unarchivedObjectForKey:@"hmlp.sck" ofClasses:v10];
 
-    if (v11)
+    if (accessory)
     {
-      v12 = [(_HMLightProfile *)v4 name];
-      [v5 updateSettings:v11 withReason:v12];
+      name = [(_HMLightProfile *)updateCopy name];
+      [lightProfile updateSettings:accessory withReason:name];
     }
 
     else
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = v7;
+      v19 = selfCopy;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         v21 = HMFGetLogIdentifier();
-        v22 = [(_HMLightProfile *)v4 messagePayload];
+        messagePayload = [(_HMLightProfile *)updateCopy messagePayload];
         *buf = 138543874;
         v26 = v21;
         v27 = 2112;
-        v28 = v4;
+        v28 = updateCopy;
         v29 = 2112;
-        v30 = v22;
+        v30 = messagePayload;
         _os_log_impl(&dword_19BB39000, v20, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode light profile settings from message: %@ with payload: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v18);
-      v11 = 0;
+      accessory = 0;
     }
   }
 
   else
   {
-    v11 = [(_HMAccessoryProfile *)self accessory];
+    accessory = [(_HMAccessoryProfile *)self accessory];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v11 lightProfiles];
+      lightProfiles = [accessory lightProfiles];
       *buf = 138543874;
       v26 = v16;
       v27 = 2112;
-      v28 = v14;
+      v28 = selfCopy2;
       v29 = 2112;
-      v30 = v17;
+      v30 = lightProfiles;
       _os_log_impl(&dword_19BB39000, v15, OS_LOG_TYPE_ERROR, "%{public}@Skipping settings update, light profile not found in accessory light profiles %@:%@", buf, 0x20u);
     }
 
@@ -121,35 +121,35 @@
 
 - (void)_registerNotificationHandlers
 {
-  v4 = [(_HMAccessoryProfile *)self context];
-  v3 = [v4 messageDispatcher];
-  [v3 registerForMessage:@"HMLightProfile.sdum" receiver:self selector:sel_handleSettingsDidUpdate_];
+  context = [(_HMAccessoryProfile *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher registerForMessage:@"HMLightProfile.sdum" receiver:self selector:sel_handleSettingsDidUpdate_];
 }
 
 - (HMLightProfile)lightProfile
 {
-  v3 = [(_HMAccessoryProfile *)self accessory];
-  v4 = [v3 lightProfiles];
+  accessory = [(_HMAccessoryProfile *)self accessory];
+  lightProfiles = [accessory lightProfiles];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31___HMLightProfile_lightProfile__block_invoke;
   v7[3] = &unk_1E7547810;
   v7[4] = self;
-  v5 = [v4 na_firstObjectPassingTest:v7];
+  v5 = [lightProfiles na_firstObjectPassingTest:v7];
 
   return v5;
 }
 
-- (_HMLightProfile)initWithUUID:(id)a3 services:(id)a4 settings:(id)a5
+- (_HMLightProfile)initWithUUID:(id)d services:(id)services settings:(id)settings
 {
-  v9 = a5;
+  settingsCopy = settings;
   v13.receiver = self;
   v13.super_class = _HMLightProfile;
-  v10 = [(_HMAccessoryProfile *)&v13 initWithUUID:a3 services:a4];
+  v10 = [(_HMAccessoryProfile *)&v13 initWithUUID:d services:services];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_settings, a5);
+    objc_storeStrong(&v10->_settings, settings);
   }
 
   return v11;

@@ -1,19 +1,19 @@
 @interface FTRegAccountMonitor
-- (BOOL)_shouldHandleAccountNofication:(id)a3;
-- (FTRegAccountMonitor)initWithServiceType:(int64_t)a3;
+- (BOOL)_shouldHandleAccountNofication:(id)nofication;
+- (FTRegAccountMonitor)initWithServiceType:(int64_t)type;
 - (id)_activeAccounts;
 - (id)logName;
-- (void)_handleAccountNotification:(id)a3;
-- (void)_handleDaemonConnected:(id)a3;
+- (void)_handleAccountNotification:(id)notification;
+- (void)_handleDaemonConnected:(id)connected;
 - (void)_startListeningForNotifications;
 - (void)_stopListeningForNotifications;
-- (void)_updateAccountState:(BOOL)a3;
+- (void)_updateAccountState:(BOOL)state;
 - (void)dealloc;
 @end
 
 @implementation FTRegAccountMonitor
 
-- (FTRegAccountMonitor)initWithServiceType:(int64_t)a3
+- (FTRegAccountMonitor)initWithServiceType:(int64_t)type
 {
   v16 = *MEMORY[0x277D85DE8];
   v13.receiver = self;
@@ -30,7 +30,7 @@
       goto LABEL_11;
     }
 
-    [(FTRegAccountMonitor *)v4 setServiceType:a3];
+    [(FTRegAccountMonitor *)v4 setServiceType:type];
     [(FTRegAccountMonitor *)v4 setService:v6];
     v7 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -45,7 +45,7 @@
       IMLogString();
     }
 
-    v8 = [[FTRegConnectionHandler alloc] initWithServiceType:a3 name:@"AccountMonitor"];
+    v8 = [[FTRegConnectionHandler alloc] initWithServiceType:type name:@"AccountMonitor"];
     connectionHandler = v4->_connectionHandler;
     v4->_connectionHandler = v8;
 
@@ -62,8 +62,8 @@ LABEL_11:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = FTRegAccountMonitor;
@@ -73,18 +73,18 @@ LABEL_11:
 - (id)logName
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(FTRegAccountMonitor *)self service];
-  v4 = [v3 name];
-  v5 = [v2 stringWithFormat:@"AccountMonitor[%@]", v4];
+  service = [(FTRegAccountMonitor *)self service];
+  name = [service name];
+  v5 = [v2 stringWithFormat:@"AccountMonitor[%@]", name];
 
   return v5;
 }
 
 - (id)_activeAccounts
 {
-  v3 = [MEMORY[0x277D18D28] sharedInstance];
-  v4 = [(FTRegAccountMonitor *)self service];
-  v5 = [v3 activeAccountsForService:v4];
+  mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+  service = [(FTRegAccountMonitor *)self service];
+  v5 = [mEMORY[0x277D18D28] activeAccountsForService:service];
   v6 = [v5 copy];
 
   v7 = [v6 indexesOfObjectsPassingTest:&__block_literal_global_14];
@@ -147,9 +147,9 @@ LABEL_15:
   return v4;
 }
 
-- (void)_updateAccountState:(BOOL)a3
+- (void)_updateAccountState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v28 = *MEMORY[0x277D85DE8];
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -166,8 +166,8 @@ LABEL_15:
   CNFRegLogIndent();
   if ([(FTRegConnectionHandler *)self->_connectionHandler isConnectedToDaemon])
   {
-    v6 = [(FTRegAccountMonitor *)self _activeAccounts];
-    v7 = [v6 count];
+    _activeAccounts = [(FTRegAccountMonitor *)self _activeAccounts];
+    v7 = [_activeAccounts count];
     if (v7 == [(NSArray *)self->_accounts count])
     {
       v23 = 0u;
@@ -189,7 +189,7 @@ LABEL_15:
               objc_enumerationMutation(v8);
             }
 
-            v10 |= [v6 containsObject:*(*(&v21 + 1) + 8 * i)] ^ 1;
+            v10 |= [_activeAccounts containsObject:*(*(&v21 + 1) + 8 * i)] ^ 1;
           }
 
           v9 = [(NSArray *)v8 countByEnumeratingWithState:&v21 objects:v27 count:16];
@@ -223,7 +223,7 @@ LABEL_15:
     }
 
 LABEL_16:
-    v13 = [v6 copy];
+    v13 = [_activeAccounts copy];
     accounts = self->_accounts;
     self->_accounts = v13;
 
@@ -231,7 +231,7 @@ LABEL_16:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = @"NO";
-      if (v3)
+      if (stateCopy)
       {
         v16 = @"YES";
       }
@@ -246,10 +246,10 @@ LABEL_16:
       IMLogString();
     }
 
-    if (v3)
+    if (stateCopy)
     {
-      v17 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v17 postNotificationName:@"FTRegActiveAccountsChangedNotification" object:self userInfo:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"FTRegActiveAccountsChangedNotification" object:self userInfo:0];
     }
 
 LABEL_36:
@@ -274,19 +274,19 @@ LABEL_37:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldHandleAccountNofication:(id)a3
+- (BOOL)_shouldHandleAccountNofication:(id)nofication
 {
-  if (!a3)
+  if (!nofication)
   {
     return 0;
   }
 
-  v4 = [a3 object];
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  object = [nofication object];
+  if (object && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 service];
-    v6 = [(FTRegAccountMonitor *)self service];
-    v7 = v5 == v6;
+    service = [object service];
+    service2 = [(FTRegAccountMonitor *)self service];
+    v7 = service == service2;
   }
 
   else
@@ -301,19 +301,19 @@ LABEL_37:
 {
   if ((*&self->_monitorFlags & 1) == 0)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:self selector:sel__handleDaemonConnected_ name:*MEMORY[0x277D18CE0] object:0];
-    [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C18] object:0];
-    [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C20] object:0];
-    [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18CA8] object:0];
-    [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18BF8] object:0];
-    [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18BA8] object:0];
-    [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C48] object:0];
-    [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C58] object:0];
-    [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C08] object:0];
-    [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C10] object:0];
-    [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18B98] object:0];
-    [v3 addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C28] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__handleDaemonConnected_ name:*MEMORY[0x277D18CE0] object:0];
+    [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C18] object:0];
+    [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C20] object:0];
+    [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18CA8] object:0];
+    [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18BF8] object:0];
+    [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18BA8] object:0];
+    [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C48] object:0];
+    [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C58] object:0];
+    [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C08] object:0];
+    [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C10] object:0];
+    [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18B98] object:0];
+    [defaultCenter addObserver:self selector:sel__handleAccountNotification_ name:*MEMORY[0x277D18C28] object:0];
     *&self->_monitorFlags |= 1u;
   }
 }
@@ -322,41 +322,41 @@ LABEL_37:
 {
   if (*&self->_monitorFlags)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x277D18CE0] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18C18] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18C20] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18CA8] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18BF8] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18BA8] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18C48] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18C58] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18C08] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18C10] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18B98] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D18C28] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18CE0] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18C18] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18C20] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18CA8] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18BF8] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18BA8] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18C48] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18C58] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18C08] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18C10] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18B98] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D18C28] object:0];
     *&self->_monitorFlags &= ~1u;
   }
 }
 
-- (void)_handleAccountNotification:(id)a3
+- (void)_handleAccountNotification:(id)notification
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(FTRegAccountMonitor *)self _shouldHandleAccountNofication:v4])
+  notificationCopy = notification;
+  if ([(FTRegAccountMonitor *)self _shouldHandleAccountNofication:notificationCopy])
   {
     v5 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 name];
+      name = [notificationCopy name];
       *buf = 138412290;
-      v10 = v6;
+      v10 = name;
       _os_log_impl(&dword_243BE5000, v5, OS_LOG_TYPE_DEFAULT, "Updating account due to notification: %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
     {
-      v8 = [v4 name];
+      name2 = [notificationCopy name];
       IMLogString();
     }
 
@@ -368,9 +368,9 @@ LABEL_37:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDaemonConnected:(id)a3
+- (void)_handleDaemonConnected:(id)connected
 {
-  v4 = a3;
+  connectedCopy = connected;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {

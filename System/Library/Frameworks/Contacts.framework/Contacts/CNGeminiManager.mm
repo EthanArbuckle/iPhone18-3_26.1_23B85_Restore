@@ -1,43 +1,43 @@
 @interface CNGeminiManager
 + (BOOL)deviceSupportsGemini;
-+ (id)channelStringFromSenderIdentity:(id)a3;
++ (id)channelStringFromSenderIdentity:(id)identity;
 + (id)descriptorForRequiredKeys;
-- (BOOL)isReferencedByContactsForSenderLabelIdentifier:(id)a3 store:(id)a4;
-- (BOOL)remapChannelIdentifier:(id)a3 toIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)remapContactsHavingPreferredChannelIdentifier:(id)a3 toPreferredChannelIdentifier:(id)a4 contactStore:(id)a5 error:(id *)a6;
-- (BOOL)remapMessagesHavingChannelIdentifier:(uint64_t)a1 toChannelIdentifier:(void *)a2 error:(void *)a3;
-- (BOOL)remapRecentCallsHavingChannelIdentifier:(uint64_t)a1 toChannelIdentifier:(void *)a2 error:(void *)a3;
-- (CNGeminiManager)initWithEnvironment:(id)a3 coreTelephonyClient:(id)a4 callProviderManager:(id)a5;
-- (CNGeminiResult)geminiResultForChannel:(uint64_t)a3 usage:(void *)a4 availableChannels:(int)a5 isUnknownNumber:;
-- (CNGeminiResult)geminiResultForHandle:(void *)a3 contactStore:(uint64_t)a4 substituteDefaultForDangling:(uint64_t)a5 error:;
-- (id)badgeLabelForSenderIdentity:(id)a3 error:(id *)a4;
-- (id)badgeLabelForSubscription:(id)a3 error:(id *)a4;
-- (id)bestChannelIdentifierForPhoneNumbers:(void *)a3 fromChannelIdentifiers:(void *)a4 defaultChannelIdentifier:;
-- (id)bestSenderIdentityForContact:(id)a3 error:(id *)a4;
-- (id)bestSenderIdentityForFavoritesEntry:(id)a3 error:(id *)a4;
-- (id)bestSenderIdentityForHandle:(id)a3 contactStore:(id)a4 error:(id *)a5;
-- (id)bestSubscriptionForContact:(id)a3 error:(id *)a4;
-- (id)bestSubscriptionForHandle:(id)a3 contactStore:(id)a4 error:(id *)a5;
+- (BOOL)isReferencedByContactsForSenderLabelIdentifier:(id)identifier store:(id)store;
+- (BOOL)remapChannelIdentifier:(id)identifier toIdentifier:(id)toIdentifier error:(id *)error;
+- (BOOL)remapContactsHavingPreferredChannelIdentifier:(id)identifier toPreferredChannelIdentifier:(id)channelIdentifier contactStore:(id)store error:(id *)error;
+- (BOOL)remapMessagesHavingChannelIdentifier:(uint64_t)identifier toChannelIdentifier:(void *)channelIdentifier error:(void *)error;
+- (BOOL)remapRecentCallsHavingChannelIdentifier:(uint64_t)identifier toChannelIdentifier:(void *)channelIdentifier error:(void *)error;
+- (CNGeminiManager)initWithEnvironment:(id)environment coreTelephonyClient:(id)client callProviderManager:(id)manager;
+- (CNGeminiResult)geminiResultForChannel:(uint64_t)channel usage:(void *)usage availableChannels:(int)channels isUnknownNumber:;
+- (CNGeminiResult)geminiResultForHandle:(void *)handle contactStore:(uint64_t)store substituteDefaultForDangling:(uint64_t)dangling error:;
+- (id)badgeLabelForSenderIdentity:(id)identity error:(id *)error;
+- (id)badgeLabelForSubscription:(id)subscription error:(id *)error;
+- (id)bestChannelIdentifierForPhoneNumbers:(void *)numbers fromChannelIdentifiers:(void *)identifiers defaultChannelIdentifier:;
+- (id)bestSenderIdentityForContact:(id)contact error:(id *)error;
+- (id)bestSenderIdentityForFavoritesEntry:(id)entry error:(id *)error;
+- (id)bestSenderIdentityForHandle:(id)handle contactStore:(id)store error:(id *)error;
+- (id)bestSubscriptionForContact:(id)contact error:(id *)error;
+- (id)bestSubscriptionForHandle:(id)handle contactStore:(id)store error:(id *)error;
 - (id)callProviderManager;
-- (id)channelForContact:(id)a3 error:(id *)a4;
-- (id)channelForFavoritesEntry:(void *)a1 includeDanglingChannels:(void *)a2 error:(int)a3;
-- (id)channelForPreferredChannelString:(void *)a3 fromChannels:(int)a4 synthesizeMissingChannels:;
-- (id)channelIdentifierForMostRecentCallFromPhoneNumbers:(void *)a3 fromChannelIdentifiers:;
-- (id)channelIdentifierForMostRecentSMSFromPhoneNumbers:(void *)a3 fromChannelIdentifiers:;
-- (id)channelsByIdentifierIncludingDanglingPlans:(void *)a3 defaultChannel:(void *)a4 availableChannels:;
-- (id)contactForPhoneString:(void *)a3 contactStore:;
+- (id)channelForContact:(id)contact error:(id *)error;
+- (id)channelForFavoritesEntry:(void *)entry includeDanglingChannels:(void *)channels error:(int)error;
+- (id)channelForPreferredChannelString:(void *)string fromChannels:(int)channels synthesizeMissingChannels:;
+- (id)channelIdentifierForMostRecentCallFromPhoneNumbers:(void *)numbers fromChannelIdentifiers:;
+- (id)channelIdentifierForMostRecentSMSFromPhoneNumbers:(void *)numbers fromChannelIdentifiers:;
+- (id)channelsByIdentifierIncludingDanglingPlans:(void *)plans defaultChannel:(void *)channel availableChannels:;
+- (id)contactForPhoneString:(void *)string contactStore:;
 - (id)coreTelephonyClient;
 - (id)fakeSenderIdentities;
-- (id)fetchedSenderIdentitiesWithError:(id *)a3;
-- (id)fetchedSubscriptionForSenderIdentity:(id)a1;
-- (id)fetchedSubscriptionsWithError:(id)a1;
-- (id)geminiResultForContact:(id)a3 substituteDefaultForDangling:(BOOL)a4 error:(id *)a5;
-- (id)mostRecentChannelIdentifierForPhoneNumbers:(void *)a3 fromChannelIdentifiers:;
-- (id)remoteBestSenderIdentityForHandle:(id)a3 contactStore:(id)a4 error:(id *)a5;
-- (id)remoteGeminiResultForContact:(id)a3 substituteDefaultForDangling:(BOOL)a4 error:(id *)a5;
-- (void)addDelegate:(id)a3 queue:(id)a4;
+- (id)fetchedSenderIdentitiesWithError:(id *)error;
+- (id)fetchedSubscriptionForSenderIdentity:(id)identity;
+- (id)fetchedSubscriptionsWithError:(id)error;
+- (id)geminiResultForContact:(id)contact substituteDefaultForDangling:(BOOL)dangling error:(id *)error;
+- (id)mostRecentChannelIdentifierForPhoneNumbers:(void *)numbers fromChannelIdentifiers:;
+- (id)remoteBestSenderIdentityForHandle:(id)handle contactStore:(id)store error:(id *)error;
+- (id)remoteGeminiResultForContact:(id)contact substituteDefaultForDangling:(BOOL)dangling error:(id *)error;
+- (void)addDelegate:(id)delegate queue:(id)queue;
 - (void)notifyDelegateOfChannelUpdates;
-- (void)removeDelegate:(id)a3;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation CNGeminiManager
@@ -70,16 +70,16 @@ void __44__CNGeminiManager_descriptorForRequiredKeys__block_invoke()
 + (BOOL)deviceSupportsGemini
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:15];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:15];
 
-  v6 = a1;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (deviceSupportsGemini_haveValidGeminiStatus == 1)
   {
     v7 = deviceSupportsGemini_supportsGemini | v5;
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -110,7 +110,7 @@ void __44__CNGeminiManager_descriptorForRequiredKeys__block_invoke()
       _os_log_impl(&dword_1954A0000, v9, OS_LOG_TYPE_DEFAULT, "Supports Gemini: %i", buf, 8u);
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
     v7 = deviceSupportsGemini_supportsGemini | v5;
   }
 
@@ -119,16 +119,16 @@ void __44__CNGeminiManager_descriptorForRequiredKeys__block_invoke()
 
 - (id)callProviderManager
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_0();
     OUTLINED_FUNCTION_12();
     OUTLINED_FUNCTION_9_0();
-    a1 = cn_objectResultWithObjectLock();
+    self = cn_objectResultWithObjectLock();
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 id __38__CNGeminiManager_callProviderManager__block_invoke(uint64_t a1)
@@ -150,7 +150,7 @@ id __38__CNGeminiManager_callProviderManager__block_invoke(uint64_t a1)
 
 - (void)notifyDelegateOfChannelUpdates
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_9_0();
     dispatch_async(v2, v1);
@@ -222,16 +222,16 @@ void __49__CNGeminiManager_notifyDelegateOfChannelUpdates__block_invoke(uint64_t
 
 - (id)coreTelephonyClient
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_0();
     OUTLINED_FUNCTION_12();
     OUTLINED_FUNCTION_9_0();
-    a1 = cn_objectResultWithObjectLock();
+    self = cn_objectResultWithObjectLock();
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 id __38__CNGeminiManager_coreTelephonyClient__block_invoke(uint64_t a1)
@@ -251,36 +251,36 @@ id __38__CNGeminiManager_coreTelephonyClient__block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (id)channelStringFromSenderIdentity:(id)a3
++ (id)channelStringFromSenderIdentity:(id)identity
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  identityCopy = identity;
+  v4 = identityCopy;
+  if (identityCopy)
   {
-    v5 = [v3 accountUUID];
+    accountUUID = [identityCopy accountUUID];
 
-    if (v5)
+    if (accountUUID)
     {
       v6 = MEMORY[0x1E696AEC0];
-      v7 = [v4 accountUUID];
-      v8 = [v7 UUIDString];
-      v5 = [v6 stringWithFormat:@"uuid:%@", v8];
+      accountUUID2 = [v4 accountUUID];
+      uUIDString = [accountUUID2 UUIDString];
+      accountUUID = [v6 stringWithFormat:@"uuid:%@", uUIDString];
     }
   }
 
   else
   {
-    v5 = 0;
+    accountUUID = 0;
   }
 
-  return v5;
+  return accountUUID;
 }
 
-- (CNGeminiManager)initWithEnvironment:(id)a3 coreTelephonyClient:(id)a4 callProviderManager:(id)a5
+- (CNGeminiManager)initWithEnvironment:(id)environment coreTelephonyClient:(id)client callProviderManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  environmentCopy = environment;
+  clientCopy = client;
+  managerCopy = manager;
   v22.receiver = self;
   v22.super_class = CNGeminiManager;
   v12 = [(CNGeminiManager *)&v22 init];
@@ -290,20 +290,20 @@ id __38__CNGeminiManager_coreTelephonyClient__block_invoke(uint64_t a1)
     queue = v12->_queue;
     v12->_queue = v13;
 
-    v15 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     delegateToQueue = v12->_delegateToQueue;
-    v12->_delegateToQueue = v15;
+    v12->_delegateToQueue = weakToStrongObjectsMapTable;
 
-    objc_storeStrong(&v12->_environment, a3);
-    objc_storeStrong(&v12->_callProviderManager, a5);
-    objc_storeStrong(&v12->_coreTelephonyClient, a4);
+    objc_storeStrong(&v12->_environment, environment);
+    objc_storeStrong(&v12->_callProviderManager, manager);
+    objc_storeStrong(&v12->_coreTelephonyClient, client);
     [(CoreTelephonyClient *)v12->_coreTelephonyClient setDelegate:v12];
     [(TUCallProviderManager *)v12->_callProviderManager addDelegate:v12 queue:0];
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v18 = *MEMORY[0x1E6993BD8];
     objc_opt_self();
-    v19 = [MEMORY[0x1E6993BE0] sharedManager];
-    [v17 addObserver:v12 selector:sel_danglingPlansDidUpdate_ name:v18 object:v19];
+    mEMORY[0x1E6993BE0] = [MEMORY[0x1E6993BE0] sharedManager];
+    [defaultCenter addObserver:v12 selector:sel_danglingPlansDidUpdate_ name:v18 object:mEMORY[0x1E6993BE0]];
 
     v20 = v12;
   }
@@ -311,51 +311,51 @@ id __38__CNGeminiManager_coreTelephonyClient__block_invoke(uint64_t a1)
   return v12;
 }
 
-- (id)fetchedSenderIdentitiesWithError:(id *)a3
+- (id)fetchedSenderIdentitiesWithError:(id *)error
 {
   objc_opt_self();
   if (CFPreferencesGetAppBooleanValue(@"CNEnableGemini", *MEMORY[0x1E695E890], 0))
   {
-    v4 = [(CNGeminiManager *)self fakeSenderIdentities];
+    fakeSenderIdentities = [(CNGeminiManager *)self fakeSenderIdentities];
   }
 
   else
   {
     [(CNGeminiManager *)self fetchedSenderIdentitiesWithError:?];
-    v4 = v6;
+    fakeSenderIdentities = v6;
   }
 
-  return v4;
+  return fakeSenderIdentities;
 }
 
-- (id)channelForContact:(id)a3 error:(id *)a4
+- (id)channelForContact:(id)contact error:(id *)error
 {
-  v4 = [(CNGeminiManager *)self geminiResultForContact:a3 substituteDefaultForDangling:0 error:a4];
-  v5 = [v4 channel];
+  v4 = [(CNGeminiManager *)self geminiResultForContact:contact substituteDefaultForDangling:0 error:error];
+  channel = [v4 channel];
 
-  return v5;
+  return channel;
 }
 
-- (id)bestSenderIdentityForContact:(id)a3 error:(id *)a4
+- (id)bestSenderIdentityForContact:(id)contact error:(id *)error
 {
-  v4 = [(CNGeminiManager *)self geminiResultForContact:a3 substituteDefaultForDangling:1 error:a4];
-  v5 = [v4 channel];
-  v6 = [v5 senderIdentity];
+  v4 = [(CNGeminiManager *)self geminiResultForContact:contact substituteDefaultForDangling:1 error:error];
+  channel = [v4 channel];
+  senderIdentity = [channel senderIdentity];
 
-  return v6;
+  return senderIdentity;
 }
 
-- (id)remoteGeminiResultForContact:(id)a3 substituteDefaultForDangling:(BOOL)a4 error:(id *)a5
+- (id)remoteGeminiResultForContact:(id)contact substituteDefaultForDangling:(BOOL)dangling error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v10 = [v9 entitlementVerifier];
-  v11 = [v10 currentProcessHasBooleanEntitlement:*MEMORY[0x1E6996500] error:0];
+  danglingCopy = dangling;
+  contactCopy = contact;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  entitlementVerifier = [currentEnvironment entitlementVerifier];
+  v11 = [entitlementVerifier currentProcessHasBooleanEntitlement:*MEMORY[0x1E6996500] error:0];
 
   if (v11)
   {
-    v12 = [(CNGeminiManager *)self geminiResultForContact:v8 substituteDefaultForDangling:v6 error:a5];
+    v12 = [(CNGeminiManager *)self geminiResultForContact:contactCopy substituteDefaultForDangling:danglingCopy error:error];
   }
 
   else
@@ -384,11 +384,11 @@ id __38__CNGeminiManager_coreTelephonyClient__block_invoke(uint64_t a1)
     v17[3] = &unk_1E74129A8;
     v17[4] = &v18;
     v17[5] = &v24;
-    [v15 geminiResultForContact:v8 substituteDefaultForDangling:v6 withReply:v17];
+    [v15 geminiResultForContact:contactCopy substituteDefaultForDangling:danglingCopy withReply:v17];
     [v13 invalidate];
-    if (a5)
+    if (error)
     {
-      *a5 = v25[5];
+      *error = v25[5];
     }
 
     v12 = v19[5];
@@ -423,42 +423,42 @@ void __83__CNGeminiManager_remoteGeminiResultForContact_substituteDefaultForDang
   *(v9 + 40) = v6;
 }
 
-- (id)remoteBestSenderIdentityForHandle:(id)a3 contactStore:(id)a4 error:(id *)a5
+- (id)remoteBestSenderIdentityForHandle:(id)handle contactStore:(id)store error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v11 = [v10 entitlementVerifier];
-  v12 = [v11 currentProcessHasBooleanEntitlement:*MEMORY[0x1E6996500] error:0];
+  handleCopy = handle;
+  storeCopy = store;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  entitlementVerifier = [currentEnvironment entitlementVerifier];
+  v12 = [entitlementVerifier currentProcessHasBooleanEntitlement:*MEMORY[0x1E6996500] error:0];
 
   if (v12)
   {
-    v13 = [(CNGeminiManager *)self bestSenderIdentityForHandle:v8 contactStore:v9 error:a5];
+    senderIdentity = [(CNGeminiManager *)self bestSenderIdentityForHandle:handleCopy contactStore:storeCopy error:error];
     goto LABEL_11;
   }
 
-  if ([v8 handleType])
+  if ([handleCopy handleType])
   {
-    v14 = [v8 handleType];
-    if (!v9 || v14 != -1)
+    handleType = [handleCopy handleType];
+    if (!storeCopy || handleType != -1)
     {
       goto LABEL_8;
     }
   }
 
-  else if (!v9)
+  else if (!storeCopy)
   {
     goto LABEL_8;
   }
 
-  v19 = [v8 stringValue];
-  v20 = [(CNGeminiManager *)self contactForPhoneString:v19 contactStore:v9];
+  stringValue = [handleCopy stringValue];
+  v20 = [(CNGeminiManager *)self contactForPhoneString:stringValue contactStore:storeCopy];
 
   if (v20)
   {
-    v21 = [(CNGeminiManager *)self remoteGeminiResultForContact:v20 substituteDefaultForDangling:1 error:a5];
-    v22 = [v21 channel];
-    v13 = [v22 senderIdentity];
+    v21 = [(CNGeminiManager *)self remoteGeminiResultForContact:v20 substituteDefaultForDangling:1 error:error];
+    channel = [v21 channel];
+    senderIdentity = [channel senderIdentity];
 
     goto LABEL_11;
   }
@@ -488,20 +488,20 @@ LABEL_8:
   v23[3] = &unk_1E74129D0;
   v23[4] = &v24;
   v23[5] = &v30;
-  [v17 bestSenderIdentityForHandle:v8 withReply:v23];
+  [v17 bestSenderIdentityForHandle:handleCopy withReply:v23];
   [v15 invalidate];
-  if (a5)
+  if (error)
   {
-    *a5 = v31[5];
+    *error = v31[5];
   }
 
-  v13 = v25[5];
+  senderIdentity = v25[5];
   _Block_object_dispose(&v24, 8);
 
   _Block_object_dispose(&v30, 8);
 LABEL_11:
 
-  return v13;
+  return senderIdentity;
 }
 
 void __72__CNGeminiManager_remoteBestSenderIdentityForHandle_contactStore_error___block_invoke()
@@ -527,21 +527,21 @@ void __72__CNGeminiManager_remoteBestSenderIdentityForHandle_contactStore_error_
   *(v9 + 40) = v6;
 }
 
-- (id)geminiResultForContact:(id)a3 substituteDefaultForDangling:(BOOL)a4 error:(id *)a5
+- (id)geminiResultForContact:(id)contact substituteDefaultForDangling:(BOOL)dangling error:(id *)error
 {
-  v5 = a4;
+  danglingCopy = dangling;
   v39[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  contactCopy = contact;
+  if (!contactCopy)
   {
     v8 = 0;
     goto LABEL_3;
   }
 
-  v10 = [objc_opt_class() descriptorForRequiredKeys];
-  v39[0] = v10;
+  descriptorForRequiredKeys = [objc_opt_class() descriptorForRequiredKeys];
+  v39[0] = descriptorForRequiredKeys;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:1];
-  [v7 assertKeysAreAvailable:v11];
+  [contactCopy assertKeysAreAvailable:v11];
 
   v36 = 0;
   v37 = 0;
@@ -551,10 +551,10 @@ void __72__CNGeminiManager_remoteBestSenderIdentityForHandle_contactStore_error_
   if ([v12 count])
   {
     v15 = *MEMORY[0x1E6996568];
-    v16 = [v7 preferredChannel];
-    v17 = (*(v15 + 16))(v15, v16);
+    preferredChannel = [contactCopy preferredChannel];
+    v17 = (*(v15 + 16))(v15, preferredChannel);
 
-    if ((v17 & 1) != 0 || ([v7 preferredChannel], v19 = objc_claimAutoreleasedReturnValue(), -[CNGeminiManager channelForPreferredChannelString:fromChannels:synthesizeMissingChannels:](self, v19, v12, 1), v20 = objc_claimAutoreleasedReturnValue(), v19, v21 = v20, -[CNGeminiManager geminiResultForChannel:usage:availableChannels:isUnknownNumber:](self, v20, 1, v14, objc_msgSend(v7, "hasBeenPersisted") ^ 1), v8 = objc_claimAutoreleasedReturnValue(), v21, !v8))
+    if ((v17 & 1) != 0 || ([contactCopy preferredChannel], v19 = objc_claimAutoreleasedReturnValue(), -[CNGeminiManager channelForPreferredChannelString:fromChannels:synthesizeMissingChannels:](self, v19, v12, 1), v20 = objc_claimAutoreleasedReturnValue(), v19, v21 = v20, -[CNGeminiManager geminiResultForChannel:usage:availableChannels:isUnknownNumber:](self, v20, 1, v14, objc_msgSend(contactCopy, "hasBeenPersisted") ^ 1), v8 = objc_claimAutoreleasedReturnValue(), v21, !v8))
     {
       if (![objc_opt_class() deviceSupportsGemini])
       {
@@ -562,24 +562,24 @@ void __72__CNGeminiManager_remoteBestSenderIdentityForHandle_contactStore_error_
         goto LABEL_10;
       }
 
-      v24 = [v7 phoneNumbers];
-      v25 = [v24 _cn_map:&__block_literal_global_182];
+      phoneNumbers = [contactCopy phoneNumbers];
+      v25 = [phoneNumbers _cn_map:&__block_literal_global_182];
       v35 = [v25 _cn_filter:*MEMORY[0x1E6996550]];
 
-      v33 = [v12 allKeys];
-      v26 = [v13 channelIdentifier];
-      v27 = [(CNGeminiManager *)self bestChannelIdentifierForPhoneNumbers:v35 fromChannelIdentifiers:v33 defaultChannelIdentifier:v26];
+      allKeys = [v12 allKeys];
+      channelIdentifier = [v13 channelIdentifier];
+      v27 = [(CNGeminiManager *)self bestChannelIdentifierForPhoneNumbers:v35 fromChannelIdentifiers:allKeys defaultChannelIdentifier:channelIdentifier];
 
       v34 = v27;
-      v28 = [v27 first];
-      v29 = (*(v15 + 16))(v15, v28);
+      first = [v27 first];
+      v29 = (*(v15 + 16))(v15, first);
 
       if (v29)
       {
 
         v8 = 0;
         v23 = 1;
-        v22 = v35;
+        channel = v35;
 LABEL_18:
 
         if (!v23)
@@ -590,7 +590,7 @@ LABEL_18:
 LABEL_10:
         if (v13)
         {
-          v18 = -[CNGeminiManager geminiResultForChannel:usage:availableChannels:isUnknownNumber:](self, v13, 3, v14, [v7 hasBeenPersisted] ^ 1);
+          v18 = -[CNGeminiManager geminiResultForChannel:usage:availableChannels:isUnknownNumber:](self, v13, 3, v14, [contactCopy hasBeenPersisted] ^ 1);
 
           v8 = v18;
         }
@@ -598,8 +598,8 @@ LABEL_10:
         goto LABEL_13;
       }
 
-      v30 = [v27 first];
-      v31 = [v12 objectForKey:v30];
+      first2 = [v27 first];
+      v31 = [v12 objectForKey:first2];
 
       if (!v31)
       {
@@ -607,8 +607,8 @@ LABEL_10:
         v31 = v38;
       }
 
-      v32 = [v27 second];
-      v8 = -[CNGeminiManager geminiResultForChannel:usage:availableChannels:isUnknownNumber:](self, v31, [v32 unsignedIntegerValue], v14, objc_msgSend(v7, "hasBeenPersisted") ^ 1);
+      second = [v27 second];
+      v8 = -[CNGeminiManager geminiResultForChannel:usage:availableChannels:isUnknownNumber:](self, v31, [second unsignedIntegerValue], v14, objc_msgSend(contactCopy, "hasBeenPersisted") ^ 1);
 
       if (!v8)
       {
@@ -616,8 +616,8 @@ LABEL_10:
       }
     }
 
-    v22 = [v8 channel];
-    v23 = v5 & ~[v22 isAvailable];
+    channel = [v8 channel];
+    v23 = danglingCopy & ~[channel isAvailable];
     goto LABEL_18;
   }
 
@@ -637,20 +637,20 @@ id __77__CNGeminiManager_geminiResultForContact_substituteDefaultForDangling_err
   return v3;
 }
 
-- (id)bestSenderIdentityForHandle:(id)a3 contactStore:(id)a4 error:(id *)a5
+- (id)bestSenderIdentityForHandle:(id)handle contactStore:(id)store error:(id *)error
 {
-  v5 = [(CNGeminiManager *)self geminiResultForHandle:a3 contactStore:a4 substituteDefaultForDangling:1 error:a5];
-  v6 = [v5 channel];
-  v7 = [v6 senderIdentity];
+  v5 = [(CNGeminiManager *)self geminiResultForHandle:handle contactStore:store substituteDefaultForDangling:1 error:error];
+  channel = [v5 channel];
+  senderIdentity = [channel senderIdentity];
 
-  return v7;
+  return senderIdentity;
 }
 
-- (id)channelIdentifierForMostRecentCallFromPhoneNumbers:(void *)a3 fromChannelIdentifiers:
+- (id)channelIdentifierForMostRecentCallFromPhoneNumbers:(void *)numbers fromChannelIdentifiers:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  numbersCopy = numbers;
+  if (self)
   {
     v19 = 0;
     v20 = &v19;
@@ -675,15 +675,15 @@ id __77__CNGeminiManager_geminiResultForContact_substituteDefaultForDangling_err
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 outgoingLocalParticipantUUID];
-      v13 = [v12 UUIDString];
+      outgoingLocalParticipantUUID = [v10 outgoingLocalParticipantUUID];
+      uUIDString = [outgoingLocalParticipantUUID UUIDString];
 
-      v14 = [v11 date];
-      v15 = v14;
+      date = [v11 date];
+      v15 = date;
       v16 = 0;
-      if (v13 && v14)
+      if (uUIDString && date)
       {
-        v16 = [MEMORY[0x1E69967A8] pairWithFirst:v13 second:v14];
+        v16 = [MEMORY[0x1E69967A8] pairWithFirst:uUIDString second:date];
       }
     }
 
@@ -701,11 +701,11 @@ id __77__CNGeminiManager_geminiResultForContact_substituteDefaultForDangling_err
   return v16;
 }
 
-- (id)channelIdentifierForMostRecentSMSFromPhoneNumbers:(void *)a3 fromChannelIdentifiers:
+- (id)channelIdentifierForMostRecentSMSFromPhoneNumbers:(void *)numbers fromChannelIdentifiers:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  numbersCopy = numbers;
+  if (self)
   {
     v7 = [MEMORY[0x1E695DFD8] setWithArray:v5];
     if (!IMCoreLibraryCore() || !getIMSPIGetMostRecentIMEventForContactHandlesAndLocalLabelIDsSymbolLoc())
@@ -716,7 +716,7 @@ LABEL_5:
       goto LABEL_6;
     }
 
-    v10 = [MEMORY[0x1E695DFD8] setWithArray:v6];
+    v10 = [MEMORY[0x1E695DFD8] setWithArray:numbersCopy];
     v11 = v7;
     v12 = v10;
     IMSPIGetMostRecentIMEventForContactHandlesAndLocalLabelIDsSymbolLoc = getIMSPIGetMostRecentIMEventForContactHandlesAndLocalLabelIDsSymbolLoc();
@@ -746,43 +746,43 @@ uint64_t __85__CNGeminiManager_mostRecentChannelIdentifierForPhoneNumbers_fromCh
   return v7;
 }
 
-- (id)badgeLabelForSenderIdentity:(id)a3 error:(id *)a4
+- (id)badgeLabelForSenderIdentity:(id)identity error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 localizedShortName];
+  identityCopy = identity;
+  localizedShortName = [identityCopy localizedShortName];
   v7 = *MEMORY[0x1E6996568];
-  if ((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], v6))
+  if ((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], localizedShortName))
   {
 
-    v9 = [(CNGeminiManager *)self fetchedSubscriptionForSenderIdentity:v5];
-    v10 = [(CNGeminiManager *)self coreTelephonyClient];
-    v11 = [v10 getSimLabel:v9 error:0];
+    v9 = [(CNGeminiManager *)self fetchedSubscriptionForSenderIdentity:identityCopy];
+    coreTelephonyClient = [(CNGeminiManager *)self coreTelephonyClient];
+    v11 = [coreTelephonyClient getSimLabel:v9 error:0];
 
-    v12 = [v11 text];
-    v6 = [v12 _cn_take:1];
+    text = [v11 text];
+    localizedShortName = [text _cn_take:1];
 
-    if ((*(v7 + 16))(v7, v6))
+    if ((*(v7 + 16))(v7, localizedShortName))
     {
 
-      v6 = @"?";
+      localizedShortName = @"?";
     }
   }
 
-  return v6;
+  return localizedShortName;
 }
 
-- (BOOL)remapChannelIdentifier:(id)a3 toIdentifier:(id)a4 error:(id *)a5
+- (BOOL)remapChannelIdentifier:(id)identifier toIdentifier:(id)toIdentifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  toIdentifierCopy = toIdentifier;
   v10 = *MEMORY[0x1E6996568];
-  if (((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], v8) & 1) != 0 || (*(v10 + 16))(v10, v9))
+  if (((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], identifierCopy) & 1) != 0 || (*(v10 + 16))(v10, toIdentifierCopy))
   {
     v11 = [CNErrorFactory errorWithCode:205 userInfo:0];
-    if (a5)
+    if (error)
     {
       v11 = v11;
-      *a5 = v11;
+      *error = v11;
     }
 
     v12 = 0;
@@ -792,7 +792,7 @@ uint64_t __85__CNGeminiManager_mostRecentChannelIdentifierForPhoneNumbers_fromCh
   {
     v14 = objc_opt_new();
     v23 = 0;
-    v15 = [(CNGeminiManager *)self remapContactsHavingPreferredChannelIdentifier:v8 toPreferredChannelIdentifier:v9 contactStore:v14 error:&v23];
+    v15 = [(CNGeminiManager *)self remapContactsHavingPreferredChannelIdentifier:identifierCopy toPreferredChannelIdentifier:toIdentifierCopy contactStore:v14 error:&v23];
     v16 = v23;
     v17 = v16;
     v18 = 0;
@@ -801,7 +801,7 @@ uint64_t __85__CNGeminiManager_mostRecentChannelIdentifierForPhoneNumbers_fromCh
       v18 = v16;
     }
 
-    v19 = [CNGeminiManager remapRecentCallsHavingChannelIdentifier:v8 toChannelIdentifier:v9 error:?];
+    v19 = [CNGeminiManager remapRecentCallsHavingChannelIdentifier:identifierCopy toChannelIdentifier:toIdentifierCopy error:?];
     v20 = v19 && v15;
     if (!v19 && v15)
     {
@@ -810,7 +810,7 @@ uint64_t __85__CNGeminiManager_mostRecentChannelIdentifierForPhoneNumbers_fromCh
       v18 = 0;
     }
 
-    v21 = [CNGeminiManager remapMessagesHavingChannelIdentifier:v8 toChannelIdentifier:v9 error:?];
+    v21 = [CNGeminiManager remapMessagesHavingChannelIdentifier:identifierCopy toChannelIdentifier:toIdentifierCopy error:?];
     v12 = v21 & v20;
     if (!v21 && v20)
     {
@@ -819,21 +819,21 @@ uint64_t __85__CNGeminiManager_mostRecentChannelIdentifierForPhoneNumbers_fromCh
       v18 = 0;
     }
 
-    if (a5 && !v12)
+    if (error && !v12)
     {
       v22 = v18;
-      *a5 = v18;
+      *error = v18;
     }
   }
 
   return v12;
 }
 
-- (BOOL)remapMessagesHavingChannelIdentifier:(uint64_t)a1 toChannelIdentifier:(void *)a2 error:(void *)a3
+- (BOOL)remapMessagesHavingChannelIdentifier:(uint64_t)identifier toChannelIdentifier:(void *)channelIdentifier error:(void *)error
 {
-  v5 = a2;
-  v6 = a3;
-  if (!a1)
+  channelIdentifierCopy = channelIdentifier;
+  errorCopy = error;
+  if (!identifier)
   {
     goto LABEL_8;
   }
@@ -849,33 +849,33 @@ uint64_t __85__CNGeminiManager_mostRecentChannelIdentifierForPhoneNumbers_fromCh
   }
 
   v7 = *MEMORY[0x1E6996568];
-  if ((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], v6) & 1) != 0 || ((*(v7 + 16))(v7, v5))
+  if ((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], errorCopy) & 1) != 0 || ((*(v7 + 16))(v7, channelIdentifierCopy))
   {
     goto LABEL_8;
   }
 
-  v8 = v5;
-  v9 = v6;
+  v8 = channelIdentifierCopy;
+  v9 = errorCopy;
   IMSPIRemapChatsWithLastAddressedLabelIDToNewLabelIDSymbolLoc = getIMSPIRemapChatsWithLastAddressedLabelIDToNewLabelIDSymbolLoc();
   if (IMSPIRemapChatsWithLastAddressedLabelIDToNewLabelIDSymbolLoc)
   {
     IMSPIRemapChatsWithLastAddressedLabelIDToNewLabelIDSymbolLoc(v8, v9);
 
 LABEL_8:
-    return a1 != 0;
+    return identifier != 0;
   }
 
   MDItemUniqueIdentifier_cold_1 = getMDItemUniqueIdentifier_cold_1();
   return [(CNGeminiManager *)MDItemUniqueIdentifier_cold_1 remapContactsHavingPreferredChannelIdentifier:v13 toPreferredChannelIdentifier:v14 contactStore:v15 error:v16, v17];
 }
 
-- (BOOL)remapContactsHavingPreferredChannelIdentifier:(id)a3 toPreferredChannelIdentifier:(id)a4 contactStore:(id)a5 error:(id *)a6
+- (BOOL)remapContactsHavingPreferredChannelIdentifier:(id)identifier toPreferredChannelIdentifier:(id)channelIdentifier contactStore:(id)store error:(id *)error
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a4;
-  v11 = [@"uuid:" stringByAppendingString:a3];
-  v12 = [@"uuid:" stringByAppendingString:v10];
+  storeCopy = store;
+  channelIdentifierCopy = channelIdentifier;
+  v11 = [@"uuid:" stringByAppendingString:identifier];
+  v12 = [@"uuid:" stringByAppendingString:channelIdentifierCopy];
 
   v13 = [CNContact predicateForContactsMatchingPreferredChannel:v11 limitOne:0];
   v14 = [CNContactFetchRequest alloc];
@@ -896,17 +896,17 @@ LABEL_8:
   v29 = v18;
   v19 = v17;
   v30 = v19;
-  v20 = [v9 enumerateContactsWithFetchRequest:v16 error:&v31 usingBlock:v28];
+  v20 = [storeCopy enumerateContactsWithFetchRequest:v16 error:&v31 usingBlock:v28];
   v21 = v31;
   v22 = v21;
   if (v20)
   {
     v27 = v21;
-    v23 = [v9 executeSaveRequest:v19 error:&v27];
+    v23 = [storeCopy executeSaveRequest:v19 error:&v27];
     v24 = v27;
 
     v22 = v24;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -915,7 +915,7 @@ LABEL_8:
   else
   {
     v23 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -924,7 +924,7 @@ LABEL_8:
   if ((v23 & 1) == 0)
   {
     v25 = v22;
-    *a6 = v22;
+    *error = v22;
   }
 
 LABEL_7:
@@ -940,16 +940,16 @@ void __113__CNGeminiManager_remapContactsHavingPreferredChannelIdentifier_toPref
   [*(a1 + 40) updateContact:v4];
 }
 
-- (BOOL)isReferencedByContactsForSenderLabelIdentifier:(id)a3 store:(id)a4
+- (BOOL)isReferencedByContactsForSenderLabelIdentifier:(id)identifier store:(id)store
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  storeCopy = store;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v7 = [CNContact predicateForContactsMatchingPreferredChannel:v5 limitOne:1];
+  v7 = [CNContact predicateForContactsMatchingPreferredChannel:identifierCopy limitOne:1];
   v8 = [CNContactFetchRequest alloc];
   v18[0] = @"preferredChannel";
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
@@ -962,7 +962,7 @@ void __113__CNGeminiManager_remapContactsHavingPreferredChannelIdentifier_toPref
   v13[2] = __72__CNGeminiManager_isReferencedByContactsForSenderLabelIdentifier_store___block_invoke;
   v13[3] = &unk_1E7412670;
   v13[4] = &v14;
-  if ([v6 enumerateContactsWithFetchRequest:v10 error:0 usingBlock:v13])
+  if ([storeCopy enumerateContactsWithFetchRequest:v10 error:0 usingBlock:v13])
   {
     v11 = *(v15 + 24);
   }
@@ -984,9 +984,9 @@ uint64_t __72__CNGeminiManager_isReferencedByContactsForSenderLabelIdentifier_st
   return result;
 }
 
-- (id)bestSubscriptionForContact:(id)a3 error:(id *)a4
+- (id)bestSubscriptionForContact:(id)contact error:(id *)error
 {
-  v5 = [(CNGeminiManager *)self bestSenderIdentityForContact:a3 error:a4];
+  v5 = [(CNGeminiManager *)self bestSenderIdentityForContact:contact error:error];
   if (v5)
   {
     v6 = [(CNGeminiManager *)self fetchedSubscriptionForSenderIdentity:v5];
@@ -1000,9 +1000,9 @@ uint64_t __72__CNGeminiManager_isReferencedByContactsForSenderLabelIdentifier_st
   return v6;
 }
 
-- (id)bestSubscriptionForHandle:(id)a3 contactStore:(id)a4 error:(id *)a5
+- (id)bestSubscriptionForHandle:(id)handle contactStore:(id)store error:(id *)error
 {
-  v6 = [(CNGeminiManager *)self bestSenderIdentityForHandle:a3 contactStore:a4 error:a5];
+  v6 = [(CNGeminiManager *)self bestSenderIdentityForHandle:handle contactStore:store error:error];
   if (v6)
   {
     v7 = [(CNGeminiManager *)self fetchedSubscriptionForSenderIdentity:v6];
@@ -1053,12 +1053,12 @@ uint64_t __56__CNGeminiManager_fetchedSubscriptionForSenderIdentity___block_invo
   return v5;
 }
 
-- (id)badgeLabelForSubscription:(id)a3 error:(id *)a4
+- (id)badgeLabelForSubscription:(id)subscription error:(id *)error
 {
-  v4 = a3;
+  subscriptionCopy = subscription;
   v5 = *MEMORY[0x1E6996568];
-  v6 = [v4 label];
-  LOBYTE(v5) = (*(v5 + 16))(v5, v6);
+  label = [subscriptionCopy label];
+  LOBYTE(v5) = (*(v5 + 16))(v5, label);
 
   if (v5)
   {
@@ -1067,33 +1067,33 @@ uint64_t __56__CNGeminiManager_fetchedSubscriptionForSenderIdentity___block_invo
 
   else
   {
-    v8 = [v4 label];
-    v9 = [v4 label];
-    v10 = [v9 rangeOfComposedCharacterSequenceAtIndex:0];
-    v7 = [v8 substringToIndex:v10 + v11];
+    label2 = [subscriptionCopy label];
+    label3 = [subscriptionCopy label];
+    v10 = [label3 rangeOfComposedCharacterSequenceAtIndex:0];
+    v7 = [label2 substringToIndex:v10 + v11];
   }
 
   return v7;
 }
 
-- (id)channelsByIdentifierIncludingDanglingPlans:(void *)a3 defaultChannel:(void *)a4 availableChannels:
+- (id)channelsByIdentifierIncludingDanglingPlans:(void *)plans defaultChannel:(void *)channel availableChannels:
 {
   v93 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v7 = [a1 fetchedSenderIdentitiesWithError:0];
-    v73 = a3;
-    v74 = a4;
+    v7 = [self fetchedSenderIdentitiesWithError:0];
+    plansCopy = plans;
+    channelCopy = channel;
     if (a2 && [objc_opt_class() deviceSupportsGemini])
     {
-      a4 = 0x1E7410000;
+      channel = 0x1E7410000;
       objc_opt_self();
-      v8 = [MEMORY[0x1E6993BE0] sharedManager];
-      v9 = [v8 danglingPlanItemsShouldUpdate:1];
+      mEMORY[0x1E6993BE0] = [MEMORY[0x1E6993BE0] sharedManager];
+      v9 = [mEMORY[0x1E6993BE0] danglingPlanItemsShouldUpdate:1];
 
       objc_opt_self();
-      v10 = [MEMORY[0x1E6993BE0] sharedManager];
-      v70 = [v10 planItemsShouldUpdate:1];
+      mEMORY[0x1E6993BE0]2 = [MEMORY[0x1E6993BE0] sharedManager];
+      v70 = [mEMORY[0x1E6993BE0]2 planItemsShouldUpdate:1];
     }
 
     else
@@ -1102,7 +1102,7 @@ uint64_t __56__CNGeminiManager_fetchedSubscriptionForSenderIdentity___block_invo
       v9 = 0;
     }
 
-    v75 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v77 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v7, "count") + objc_msgSend(v9, "count")}];
     v86 = 0u;
     v87 = 0u;
@@ -1131,10 +1131,10 @@ uint64_t __56__CNGeminiManager_fetchedSubscriptionForSenderIdentity___block_invo
 
           if ((v18 & 1) == 0)
           {
-            v19 = [v15 channelIdentifier];
-            OUTLINED_FUNCTION_6_0(v19, v20, v21, v22, v23, v24, v25, v26, v69, v70, v71, v73, v74, v75, obj, v77);
+            channelIdentifier = [v15 channelIdentifier];
+            OUTLINED_FUNCTION_6_0(channelIdentifier, v20, v21, v22, v23, v24, v25, v26, v69, v70, v71, plansCopy, channelCopy, array, obj, v77);
 
-            [v75 addObject:v15];
+            [array addObject:v15];
           }
         }
 
@@ -1163,8 +1163,8 @@ uint64_t __56__CNGeminiManager_fetchedSubscriptionForSenderIdentity___block_invo
             objc_enumerationMutation(v27);
           }
 
-          a4 = *(*(&v82 + 1) + 8 * j);
-          v32 = [[CNGeminiChannel alloc] initWithDanglingPlanItem:a4];
+          channel = *(*(&v82 + 1) + 8 * j);
+          v32 = [[CNGeminiChannel alloc] initWithDanglingPlanItem:channel];
           [v32 channelIdentifier];
           objc_claimAutoreleasedReturnValue();
           v33 = OUTLINED_FUNCTION_3_1();
@@ -1172,8 +1172,8 @@ uint64_t __56__CNGeminiManager_fetchedSubscriptionForSenderIdentity___block_invo
 
           if ((v35 & 1) == 0)
           {
-            v36 = [v32 channelIdentifier];
-            OUTLINED_FUNCTION_6_0(v36, v37, v38, v39, v40, v41, v42, v43, v69, v70, v71, v73, v74, v75, obj, v77);
+            channelIdentifier2 = [v32 channelIdentifier];
+            OUTLINED_FUNCTION_6_0(channelIdentifier2, v37, v38, v39, v40, v41, v42, v43, v69, v70, v71, plansCopy, channelCopy, array, obj, v77);
           }
         }
 
@@ -1216,8 +1216,8 @@ uint64_t __56__CNGeminiManager_fetchedSubscriptionForSenderIdentity___block_invo
 
             if ((v53 & 1) == 0)
             {
-              v54 = [v50 channelIdentifier];
-              OUTLINED_FUNCTION_6_0(v54, v55, v56, v57, v58, v59, v60, v61, v69, v70, v72, v73, v74, v75, obj, v77);
+              channelIdentifier3 = [v50 channelIdentifier];
+              OUTLINED_FUNCTION_6_0(channelIdentifier3, v55, v56, v57, v58, v59, v60, v61, v69, v70, v72, plansCopy, channelCopy, array, obj, v77);
             }
           }
 
@@ -1232,18 +1232,18 @@ uint64_t __56__CNGeminiManager_fetchedSubscriptionForSenderIdentity___block_invo
       while (v62);
     }
 
-    if (v73)
+    if (plansCopy)
     {
-      v63 = [obj firstObject];
-      v64 = [v63 accountUUID];
-      v65 = [v64 UUIDString];
-      *v73 = [v77 objectForKey:v65];
+      firstObject = [obj firstObject];
+      accountUUID = [firstObject accountUUID];
+      uUIDString = [accountUUID UUIDString];
+      *plansCopy = [v77 objectForKey:uUIDString];
     }
 
-    if (v74)
+    if (channelCopy)
     {
-      v66 = v75;
-      *v74 = v75;
+      v66 = array;
+      *channelCopy = array;
     }
 
     v67 = [v77 copy];
@@ -1260,10 +1260,10 @@ uint64_t __56__CNGeminiManager_fetchedSubscriptionForSenderIdentity___block_invo
 - (id)fakeSenderIdentities
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v32 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v1 = [v32 persistentDomainForName:*MEMORY[0x1E696A400]];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v1 = [standardUserDefaults persistentDomainForName:*MEMORY[0x1E696A400]];
     v31 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"5E4B060A-7996-47D2-804E-0833378D1311"];
     v2 = [v1 objectForKey:@"CNGeminiFakeSubscription1Label"];
     v3 = OUTLINED_FUNCTION_7_0(v2, @"Home");
@@ -1279,8 +1279,8 @@ uint64_t __56__CNGeminiManager_fetchedSubscriptionForSenderIdentity___block_invo
     v29 = [objc_alloc(off_1ED5E70D0[0]()) initWithType:2 value:v5];
 
     v10 = objc_alloc(_MergedGlobals[0]());
-    v11 = [MEMORY[0x1E696AFB0] UUID];
-    v12 = [v10 initWithUUID:v11 accountUUID:v31 localizedName:v3 localizedShortName:v30 localizedServiceName:v7 handle:v29];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v12 = [v10 initWithUUID:uUID accountUUID:v31 localizedName:v3 localizedShortName:v30 localizedServiceName:v7 handle:v29];
 
     v13 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"ACE7E1F1-744F-41A5-856F-D8822258B2E1"];
     v14 = [v1 objectForKey:@"CNGeminiFakeSubscription2Label"];
@@ -1297,8 +1297,8 @@ uint64_t __56__CNGeminiManager_fetchedSubscriptionForSenderIdentity___block_invo
     v23 = [objc_alloc(off_1ED5E70D0[0]()) initWithType:2 value:v17];
 
     v24 = objc_alloc(_MergedGlobals[0]());
-    v25 = [MEMORY[0x1E696AFB0] UUID];
-    v26 = [v24 initWithUUID:v25 accountUUID:v13 localizedName:v15 localizedShortName:v22 localizedServiceName:v19 handle:v23];
+    uUID2 = [MEMORY[0x1E696AFB0] UUID];
+    v26 = [v24 initWithUUID:uUID2 accountUUID:v13 localizedName:v15 localizedShortName:v22 localizedServiceName:v19 handle:v23];
 
     v33[0] = v12;
     v33[1] = v26;
@@ -1313,49 +1313,49 @@ uint64_t __56__CNGeminiManager_fetchedSubscriptionForSenderIdentity___block_invo
   return v27;
 }
 
-- (id)contactForPhoneString:(void *)a3 contactStore:
+- (id)contactForPhoneString:(void *)string contactStore:
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v4 = a3;
+    stringCopy = string;
     v5 = a2;
     v6 = [[CNPhoneNumber alloc] initWithStringValue:v5];
 
     v7 = [CNContact predicateForContactsMatchingPhoneNumber:v6];
 
-    v8 = [objc_opt_class() descriptorForRequiredKeys];
-    v13[0] = v8;
+    descriptorForRequiredKeys = [objc_opt_class() descriptorForRequiredKeys];
+    v13[0] = descriptorForRequiredKeys;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-    v10 = [v4 unifiedContactsMatchingPredicate:v7 keysToFetch:v9 error:0];
+    v10 = [stringCopy unifiedContactsMatchingPredicate:v7 keysToFetch:v9 error:0];
 
-    v11 = 0;
+    lastObject = 0;
     if ([v10 count] == 1)
     {
-      v11 = [v10 lastObject];
+      lastObject = [v10 lastObject];
     }
   }
 
   else
   {
-    v11 = 0;
+    lastObject = 0;
   }
 
-  return v11;
+  return lastObject;
 }
 
-- (id)channelForPreferredChannelString:(void *)a3 fromChannels:(int)a4 synthesizeMissingChannels:
+- (id)channelForPreferredChannelString:(void *)string fromChannels:(int)channels synthesizeMissingChannels:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  stringCopy = string;
+  if (self)
   {
     if ([v7 hasPrefix:@"uuid:"])
     {
       v9 = [v7 substringFromIndex:5];
-      a1 = [v8 objectForKey:v9];
+      self = [stringCopy objectForKey:v9];
 
-      if (a1)
+      if (self)
       {
         goto LABEL_9;
       }
@@ -1363,51 +1363,51 @@ uint64_t __56__CNGeminiManager_fetchedSubscriptionForSenderIdentity___block_invo
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
 
-    if (a4)
+    if (channels)
     {
       if ([CNGeminiChannel alloc])
       {
         OUTLINED_FUNCTION_4_0();
-        a1 = [(CNGeminiChannel *)v10 initWithChannelIdentifier:v11 localizedLabel:v12 localizedBadgeLabel:v13 handle:v14 senderIdentity:v15 available:v16];
+        self = [(CNGeminiChannel *)v10 initWithChannelIdentifier:v11 localizedLabel:v12 localizedBadgeLabel:v13 handle:v14 senderIdentity:v15 available:v16];
       }
 
       else
       {
-        a1 = 0;
+        self = 0;
       }
     }
   }
 
 LABEL_9:
 
-  return a1;
+  return self;
 }
 
-- (CNGeminiResult)geminiResultForChannel:(uint64_t)a3 usage:(void *)a4 availableChannels:(int)a5 isUnknownNumber:
+- (CNGeminiResult)geminiResultForChannel:(uint64_t)channel usage:(void *)usage availableChannels:(int)channels isUnknownNumber:
 {
   v9 = a2;
-  v10 = a4;
-  if (a1)
+  usageCopy = usage;
+  if (self)
   {
-    v11 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v12 = [v11 featureFlags];
-    v13 = [v12 isFeatureEnabled:14];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags = [currentEnvironment featureFlags];
+    v13 = [featureFlags isFeatureEnabled:14];
 
     v14 = [CNGeminiResult alloc];
-    if ((v13 & a5) != 0)
+    if ((v13 & channels) != 0)
     {
-      v15 = 4;
+      channelCopy = 4;
     }
 
     else
     {
-      v15 = a3;
+      channelCopy = channel;
     }
 
-    v16 = [(CNGeminiResult *)v14 initWithChannel:v9 usage:v15 availableChannels:v10];
+    v16 = [(CNGeminiResult *)v14 initWithChannel:v9 usage:channelCopy availableChannels:usageCopy];
   }
 
   else
@@ -1418,41 +1418,41 @@ LABEL_9:
   return v16;
 }
 
-- (id)bestChannelIdentifierForPhoneNumbers:(void *)a3 fromChannelIdentifiers:(void *)a4 defaultChannelIdentifier:
+- (id)bestChannelIdentifierForPhoneNumbers:(void *)numbers fromChannelIdentifiers:(void *)identifiers defaultChannelIdentifier:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  numbersCopy = numbers;
+  identifiersCopy = identifiers;
+  if (self)
   {
-    if ([v7 count] && (-[CNGeminiManager mostRecentChannelIdentifierForPhoneNumbers:fromChannelIdentifiers:](a1, v7, v8), (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+    if ([v7 count] && (-[CNGeminiManager mostRecentChannelIdentifierForPhoneNumbers:fromChannelIdentifiers:](self, v7, numbersCopy), (v12 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v10 = v12;
-      a1 = [MEMORY[0x1E69967A8] pairWithFirst:v12 second:&unk_1F0986FB8];
+      self = [MEMORY[0x1E69967A8] pairWithFirst:v12 second:&unk_1F0986FB8];
     }
 
     else if ((*(*MEMORY[0x1E6996568] + 16))())
     {
       v10 = 0;
-      a1 = 0;
+      self = 0;
     }
 
     else
     {
-      a1 = [MEMORY[0x1E69967A8] pairWithFirst:v9 second:&unk_1F0986FD0];
+      self = [MEMORY[0x1E69967A8] pairWithFirst:identifiersCopy second:&unk_1F0986FD0];
       v10 = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (CNGeminiResult)geminiResultForHandle:(void *)a3 contactStore:(uint64_t)a4 substituteDefaultForDangling:(uint64_t)a5 error:
+- (CNGeminiResult)geminiResultForHandle:(void *)handle contactStore:(uint64_t)store substituteDefaultForDangling:(uint64_t)dangling error:
 {
   v39[1] = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  if (!a1 || (v11 = *MEMORY[0x1E6996568], [v9 stringValue], v12 = objc_claimAutoreleasedReturnValue(), LOBYTE(v11) = (*(v11 + 16))(v11, v12), v12, (v11 & 1) != 0))
+  handleCopy = handle;
+  if (!self || (v11 = *MEMORY[0x1E6996568], [v9 stringValue], v12 = objc_claimAutoreleasedReturnValue(), LOBYTE(v11) = (*(v11 + 16))(v11, v12), v12, (v11 & 1) != 0))
   {
     v13 = 0;
     goto LABEL_4;
@@ -1465,40 +1465,40 @@ LABEL_9:
 
   else
   {
-    if (v10)
+    if (handleCopy)
     {
-      v17 = [v9 stringValue];
-      v18 = [(CNGeminiManager *)a1 contactForPhoneString:v17 contactStore:v10];
+      stringValue = [v9 stringValue];
+      v18 = [(CNGeminiManager *)self contactForPhoneString:stringValue contactStore:handleCopy];
 
       if (v18)
       {
-        v13 = [a1 geminiResultForContact:v18 substituteDefaultForDangling:a4 error:a5];
+        v13 = [self geminiResultForContact:v18 substituteDefaultForDangling:store error:dangling];
 
         goto LABEL_4;
       }
     }
 
-    v15 = [v9 stringValue];
-    v39[0] = v15;
+    stringValue2 = [v9 stringValue];
+    v39[0] = stringValue2;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:1];
   }
 
   v37 = 0;
   v38 = 0;
-  v19 = [(CNGeminiManager *)a1 channelsByIdentifierIncludingDanglingPlans:&v38 defaultChannel:&v37 availableChannels:?];
+  v19 = [(CNGeminiManager *)self channelsByIdentifierIncludingDanglingPlans:&v38 defaultChannel:&v37 availableChannels:?];
   v20 = v38;
   v21 = v37;
-  v22 = [v19 allKeys];
-  v23 = [v20 channelIdentifier];
-  v24 = [(CNGeminiManager *)a1 bestChannelIdentifierForPhoneNumbers:v16 fromChannelIdentifiers:v22 defaultChannelIdentifier:v23];
+  allKeys = [v19 allKeys];
+  channelIdentifier = [v20 channelIdentifier];
+  v24 = [(CNGeminiManager *)self bestChannelIdentifierForPhoneNumbers:v16 fromChannelIdentifiers:allKeys defaultChannelIdentifier:channelIdentifier];
 
-  v25 = [v24 first];
-  v26 = [v19 objectForKey:v25];
+  first = [v24 first];
+  v26 = [v19 objectForKey:first];
 
   if (!v26)
   {
     v26 = [CNGeminiChannel alloc];
-    v27 = [v24 first];
+    first2 = [v24 first];
     if (v26)
     {
       OUTLINED_FUNCTION_4_0();
@@ -1507,56 +1507,56 @@ LABEL_9:
   }
 
   v35 = [CNGeminiResult alloc];
-  v36 = [v24 second];
-  v13 = -[CNGeminiResult initWithChannel:usage:availableChannels:](v35, "initWithChannel:usage:availableChannels:", v26, [v36 unsignedIntegerValue], v21);
+  second = [v24 second];
+  v13 = -[CNGeminiResult initWithChannel:usage:availableChannels:](v35, "initWithChannel:usage:availableChannels:", v26, [second unsignedIntegerValue], v21);
 
 LABEL_4:
 
   return v13;
 }
 
-- (id)mostRecentChannelIdentifierForPhoneNumbers:(void *)a3 fromChannelIdentifiers:
+- (id)mostRecentChannelIdentifierForPhoneNumbers:(void *)numbers fromChannelIdentifiers:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1 && [objc_opt_class() deviceSupportsGemini])
+  numbersCopy = numbers;
+  if (self && [objc_opt_class() deviceSupportsGemini])
   {
     v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
-    v8 = [(CNGeminiManager *)a1 channelIdentifierForMostRecentCallFromPhoneNumbers:v5 fromChannelIdentifiers:v6];
-    if ([a1 dataSourceExclusions])
+    v8 = [(CNGeminiManager *)self channelIdentifierForMostRecentCallFromPhoneNumbers:v5 fromChannelIdentifiers:numbersCopy];
+    if ([self dataSourceExclusions])
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = [(CNGeminiManager *)a1 channelIdentifierForMostRecentSMSFromPhoneNumbers:v5 fromChannelIdentifiers:v6];
+      v9 = [(CNGeminiManager *)self channelIdentifierForMostRecentSMSFromPhoneNumbers:v5 fromChannelIdentifiers:numbersCopy];
     }
 
     [v7 _cn_addNonNilObject:v8];
     [v7 _cn_addNonNilObject:v9];
     [v7 sortUsingComparator:&__block_literal_global_195];
-    v11 = [v7 firstObject];
-    v10 = [v11 first];
+    firstObject = [v7 firstObject];
+    first = [firstObject first];
   }
 
   else
   {
-    v10 = 0;
+    first = 0;
   }
 
-  return v10;
+  return first;
 }
 
-- (id)channelForFavoritesEntry:(void *)a1 includeDanglingChannels:(void *)a2 error:(int)a3
+- (id)channelForFavoritesEntry:(void *)entry includeDanglingChannels:(void *)channels error:(int)error
 {
-  v5 = a2;
-  v6 = v5;
-  if (a1 && (v7 = *MEMORY[0x1E6996568], [v5 actionChannel], v8 = objc_claimAutoreleasedReturnValue(), LOBYTE(v7) = (*(v7 + 16))(v7, v8), v8, (v7 & 1) == 0))
+  channelsCopy = channels;
+  v6 = channelsCopy;
+  if (entry && (v7 = *MEMORY[0x1E6996568], [channelsCopy actionChannel], v8 = objc_claimAutoreleasedReturnValue(), LOBYTE(v7) = (*(v7 + 16))(v7, v8), v8, (v7 & 1) == 0))
   {
-    v11 = [(CNGeminiManager *)a1 channelsByIdentifierIncludingDanglingPlans:a3 defaultChannel:0 availableChannels:0];
-    v12 = [v6 actionChannel];
-    v9 = [(CNGeminiManager *)a1 channelForPreferredChannelString:v12 fromChannels:v11 synthesizeMissingChannels:a3];
+    v11 = [(CNGeminiManager *)entry channelsByIdentifierIncludingDanglingPlans:error defaultChannel:0 availableChannels:0];
+    actionChannel = [v6 actionChannel];
+    v9 = [(CNGeminiManager *)entry channelForPreferredChannelString:actionChannel fromChannels:v11 synthesizeMissingChannels:error];
   }
 
   else
@@ -1567,62 +1567,62 @@ LABEL_4:
   return v9;
 }
 
-- (id)bestSenderIdentityForFavoritesEntry:(id)a3 error:(id *)a4
+- (id)bestSenderIdentityForFavoritesEntry:(id)entry error:(id *)error
 {
-  v4 = [CNGeminiManager channelForFavoritesEntry:a3 includeDanglingChannels:0 error:?];
-  v5 = [v4 senderIdentity];
+  v4 = [CNGeminiManager channelForFavoritesEntry:entry includeDanglingChannels:0 error:?];
+  senderIdentity = [v4 senderIdentity];
 
-  return v5;
+  return senderIdentity;
 }
 
-- (id)fetchedSubscriptionForSenderIdentity:(id)a1
+- (id)fetchedSubscriptionForSenderIdentity:(id)identity
 {
-  v2 = a1;
-  if (a1)
+  identityCopy = identity;
+  if (identity)
   {
     v3 = a2;
-    v4 = [(CNGeminiManager *)v2 fetchedSubscriptionsWithError:?];
-    v2 = [(CNGeminiManager *)v2 coreTelephonyClient];
-    v5 = [v3 handle];
+    v4 = [(CNGeminiManager *)identityCopy fetchedSubscriptionsWithError:?];
+    identityCopy = [(CNGeminiManager *)identityCopy coreTelephonyClient];
+    handle = [v3 handle];
 
-    v6 = [v5 value];
+    value = [handle value];
 
     OUTLINED_FUNCTION_2();
     v19 = 3221225472;
     v20 = __56__CNGeminiManager_fetchedSubscriptionForSenderIdentity___block_invoke;
     v21 = &unk_1E7412AD8;
-    v22 = v2;
-    v23 = v6;
-    v7 = v6;
-    v8 = v2;
+    v22 = identityCopy;
+    v23 = value;
+    v7 = value;
+    v8 = identityCopy;
     v9 = [v4 _cn_firstObjectPassingTest:&v18];
     OUTLINED_FUNCTION_10_0(v9, v10, v11, v12, v13, v14, v15, v16, v18, v19, v20, v21, v22, v23);
   }
 
-  return v2;
+  return identityCopy;
 }
 
-- (BOOL)remapRecentCallsHavingChannelIdentifier:(uint64_t)a1 toChannelIdentifier:(void *)a2 error:(void *)a3
+- (BOOL)remapRecentCallsHavingChannelIdentifier:(uint64_t)identifier toChannelIdentifier:(void *)channelIdentifier error:(void *)error
 {
-  if (a1)
+  if (identifier)
   {
     v5 = getTUCallHistoryManagerClass[0];
-    v6 = a3;
-    v7 = a2;
+    errorCopy = error;
+    channelIdentifierCopy = channelIdentifier;
     v8 = objc_alloc_init(v5());
-    v9 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v7];
+    v9 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:channelIdentifierCopy];
 
-    v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v6];
+    v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:errorCopy];
     [v8 updateOutgoingLocalParticipantUUID:v10 forCallsWithOutgoingLocalParticipantUUID:v9];
   }
 
-  return a1 != 0;
+  return identifier != 0;
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   if (self)
   {
     queue = self->_queue;
@@ -1637,11 +1637,11 @@ LABEL_4:
   OUTLINED_FUNCTION_12();
   v12 = __37__CNGeminiManager_addDelegate_queue___block_invoke;
   v13 = &unk_1E7412A60;
-  v14 = self;
-  v15 = v7;
-  v16 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v15 = queueCopy;
+  v16 = delegateCopy;
+  v9 = delegateCopy;
+  v10 = queueCopy;
   dispatch_async(queue, block);
 }
 
@@ -1674,9 +1674,9 @@ uint64_t __37__CNGeminiManager_addDelegate_queue___block_invoke(uint64_t a1)
   return [v5 setObject:v7 forKey:v6];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   if (self)
   {
     queue = self->_queue;
@@ -1708,27 +1708,27 @@ uint64_t __34__CNGeminiManager_removeDelegate___block_invoke(uint64_t a1)
   return [v1 removeObjectForKey:*(a1 + 40)];
 }
 
-- (id)fetchedSubscriptionsWithError:(id)a1
+- (id)fetchedSubscriptionsWithError:(id)error
 {
-  v2 = a1;
-  if (a1)
+  errorCopy = error;
+  if (error)
   {
-    v4 = [(CNGeminiManager *)a1 coreTelephonyClient];
-    v5 = [v4 getSubscriptionInfoWithError:a2];
+    coreTelephonyClient = [(CNGeminiManager *)error coreTelephonyClient];
+    v5 = [coreTelephonyClient getSubscriptionInfoWithError:a2];
 
-    v2 = [(CNGeminiManager *)v2 coreTelephonyClient];
-    v6 = [v5 subscriptionsInUse];
+    errorCopy = [(CNGeminiManager *)errorCopy coreTelephonyClient];
+    subscriptionsInUse = [v5 subscriptionsInUse];
     OUTLINED_FUNCTION_0();
     OUTLINED_FUNCTION_12();
     v19 = __49__CNGeminiManager_fetchedSubscriptionsWithError___block_invoke;
     v20 = &unk_1E7412AB0;
-    v21 = v2;
-    v7 = v2;
-    v8 = [v6 _cn_filter:v18];
+    v21 = errorCopy;
+    v7 = errorCopy;
+    v8 = [subscriptionsInUse _cn_filter:v18];
     OUTLINED_FUNCTION_10_0(v8, v9, v10, v11, v12, v13, v14, v15, v17, v18[0], v18[1], v19, v20, v21);
   }
 
-  return v2;
+  return errorCopy;
 }
 
 - (void)fetchedSenderIdentitiesWithError:(void *)a1 .cold.1(void *a1, uint64_t *a2)

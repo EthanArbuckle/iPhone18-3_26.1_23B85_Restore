@@ -1,5 +1,5 @@
 @interface UIAccessibilityLocationDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)point;
 - (NSString)name;
 - (UIAccessibilityLocationDescriptor)initWithAttributedName:(NSAttributedString *)attributedName point:(CGPoint)point inView:(UIView *)view;
@@ -57,22 +57,22 @@
 
 - (NSString)name
 {
-  v2 = [(UIAccessibilityLocationDescriptor *)self attributedName];
-  v3 = [v2 string];
+  attributedName = [(UIAccessibilityLocationDescriptor *)self attributedName];
+  string = [attributedName string];
 
-  return v3;
+  return string;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(UIAccessibilityLocationDescriptor *)self attributedName];
-    v7 = [v5 attributedName];
-    v8 = [v6 isEqual:v7];
+    v5 = equalCopy;
+    attributedName = [(UIAccessibilityLocationDescriptor *)self attributedName];
+    attributedName2 = [v5 attributedName];
+    v8 = [attributedName isEqual:attributedName2];
 
     if (v8 && (-[UIAccessibilityLocationDescriptor view](self, "view"), v9 = objc_claimAutoreleasedReturnValue(), [v5 view], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v9 == v10))
     {
@@ -99,14 +99,14 @@
 
 - (unint64_t)hash
 {
-  v3 = [(UIAccessibilityLocationDescriptor *)self view];
-  v4 = [v3 hash];
+  view = [(UIAccessibilityLocationDescriptor *)self view];
+  v4 = [view hash];
   v5 = MEMORY[0x1E696B098];
   [(UIAccessibilityLocationDescriptor *)self point];
   v6 = [v5 valueWithCGPoint:?];
   v7 = [v6 hash];
-  v8 = [(UIAccessibilityLocationDescriptor *)self attributedName];
-  v9 = v4 ^ [v8 hash];
+  attributedName = [(UIAccessibilityLocationDescriptor *)self attributedName];
+  v9 = v4 ^ [attributedName hash];
 
   return v7 ^ v9;
 }

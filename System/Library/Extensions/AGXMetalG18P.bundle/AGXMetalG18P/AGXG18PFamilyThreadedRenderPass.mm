@@ -1,13 +1,13 @@
 @interface AGXG18PFamilyThreadedRenderPass
-- (AGXG18PFamilyThreadedRenderPass)initWithCommandBuffer:(id)a3 renderPassDescriptor:(id)a4;
+- (AGXG18PFamilyThreadedRenderPass)initWithCommandBuffer:(id)buffer renderPassDescriptor:(id)descriptor;
 - (id).cxx_construct;
 - (id)renderCommandEncoder;
-- (id)sampledRenderCommandEncoderWithProgramInfoBuffer:(id *)a3 capacity:(unint64_t)a4;
+- (id)sampledRenderCommandEncoderWithProgramInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
 - (void)dealloc;
 - (void)endEncoding;
-- (void)setColorStoreAction:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setDepthStoreAction:(unint64_t)a3;
-- (void)setStencilStoreAction:(unint64_t)a3;
+- (void)setColorStoreAction:(unint64_t)action atIndex:(unint64_t)index;
+- (void)setDepthStoreAction:(unint64_t)action;
+- (void)setStencilStoreAction:(unint64_t)action;
 @end
 
 @implementation AGXG18PFamilyThreadedRenderPass
@@ -23,22 +23,22 @@
   return self;
 }
 
-- (void)setStencilStoreAction:(unint64_t)a3
+- (void)setStencilStoreAction:(unint64_t)action
 {
   impl = self->_impl;
   if ((*(impl + 7757) & 2) != 0)
   {
-    impl[996] = a3;
-    if (a3 > 1)
+    impl[996] = action;
+    if (action > 1)
     {
-      if (a3 == 2)
+      if (action == 2)
       {
         *(impl + 1938) |= 0x200u;
         impl[968] &= 0xFFFFFDFFFFFFFDFFLL;
         goto LABEL_12;
       }
 
-      if (a3 != 3)
+      if (action != 3)
       {
         goto LABEL_14;
       }
@@ -48,7 +48,7 @@
 
     else
     {
-      if (!a3)
+      if (!action)
       {
         *(impl + 1938) &= ~0x200u;
         LODWORD(v6) = impl[968] & 0xFFFFFDFF;
@@ -60,7 +60,7 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      if (a3 != 1)
+      if (action != 1)
       {
         goto LABEL_14;
       }
@@ -79,7 +79,7 @@ LABEL_12:
 
 LABEL_14:
   v8 = 68;
-  if (a3 != 1)
+  if (action != 1)
   {
     v8 = 0;
   }
@@ -87,15 +87,15 @@ LABEL_14:
   *(impl + (v8 >> 3) + 8424) |= 1 << (v8 & 4);
 }
 
-- (void)setDepthStoreAction:(unint64_t)a3
+- (void)setDepthStoreAction:(unint64_t)action
 {
   impl = self->_impl;
   if (*(impl + 7757))
   {
-    impl[995] = a3;
-    if (a3 <= 1)
+    impl[995] = action;
+    if (action <= 1)
     {
-      if (!a3)
+      if (!action)
       {
         *(impl + 1938) &= ~0x100u;
         LODWORD(v8) = impl[968] & 0xFFFFFEFF;
@@ -105,7 +105,7 @@ LABEL_14:
         goto LABEL_14;
       }
 
-      if (a3 != 1)
+      if (action != 1)
       {
         goto LABEL_15;
       }
@@ -113,7 +113,7 @@ LABEL_14:
 
     else
     {
-      if (a3 == 2)
+      if (action == 2)
       {
         *(impl + 1938) |= 0x100u;
         impl[968] &= 0xFFFFFEFFFFFFFEFFLL;
@@ -124,13 +124,13 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      if (a3 == 3)
+      if (action == 3)
       {
         v4 = *(impl + 1938) | 0x100;
         goto LABEL_12;
       }
 
-      if (a3 != 5)
+      if (action != 5)
       {
         goto LABEL_15;
       }
@@ -147,7 +147,7 @@ LABEL_12:
 
 LABEL_15:
   v7 = 67;
-  if ((a3 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((action & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v7 = 0;
   }
@@ -155,11 +155,11 @@ LABEL_15:
   *(impl + (v7 >> 3) + 8424) |= 1 << (v7 & 3);
 }
 
-- (void)setColorStoreAction:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setColorStoreAction:(unint64_t)action atIndex:(unint64_t)index
 {
-  if (a4 <= 7)
+  if (index <= 7)
   {
-    AGX::Framebuffer<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setColorStoreAction(self->_impl + 231, a3, a4);
+    AGX::Framebuffer<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setColorStoreAction(self->_impl + 231, action, index);
   }
 }
 
@@ -172,12 +172,12 @@ LABEL_15:
     objc_autoreleasePoolPop(v3);
   }
 
-  v4 = [*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB790]) device];
+  device = [*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB790]) device];
   impl = self->_impl;
   v6 = impl[1053];
   v7 = impl[1054];
-  atomic_fetch_or((v4 + 856), v6);
-  atomic_fetch_or((v4 + 864), v7);
+  atomic_fetch_or((device + 856), v6);
+  atomic_fetch_or((device + 864), v7);
   dispatchQueue = self->dispatchQueue;
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
@@ -691,10 +691,10 @@ LABEL_3:
   *(*(a1 + 32) + 224) = *(*(a1 + 32) + 216);
 }
 
-- (id)sampledRenderCommandEncoderWithProgramInfoBuffer:(id *)a3 capacity:(unint64_t)a4
+- (id)sampledRenderCommandEncoderWithProgramInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
-  v7 = [(IOGPUMetalParallelRenderCommandEncoder *)self _renderCommandEncoderCommon];
-  v8 = [v7 sampledSubRenderCommandEncoderWithDescriptor:*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB7A8]) subEncoderIndex:*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB7A0]) - 1 framebuffer:self->_impl + 1848 programInfoBuffer:a3 capacity:a4];
+  _renderCommandEncoderCommon = [(IOGPUMetalParallelRenderCommandEncoder *)self _renderCommandEncoderCommon];
+  v8 = [_renderCommandEncoderCommon sampledSubRenderCommandEncoderWithDescriptor:*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB7A8]) subEncoderIndex:*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB7A0]) - 1 framebuffer:self->_impl + 1848 programInfoBuffer:buffer capacity:capacity];
   v9 = v8;
   if (**MEMORY[0x29EDC56B0])
   {
@@ -728,17 +728,17 @@ void __93__AGXG18PFamilyThreadedRenderPass_sampledRenderCommandEncoderWithProgra
 
 - (id)renderCommandEncoder
 {
-  v3 = [(IOGPUMetalParallelRenderCommandEncoder *)self _renderCommandEncoderCommon];
-  v4 = [v3 subRenderCommandEncoderWithDescriptor:*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB7A8]) subEncoderIndex:*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB7A0]) - 1 framebuffer:self->_impl + 1848];
-  v5 = v4;
+  _renderCommandEncoderCommon = [(IOGPUMetalParallelRenderCommandEncoder *)self _renderCommandEncoderCommon];
+  1848 = [_renderCommandEncoderCommon subRenderCommandEncoderWithDescriptor:*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB7A8]) subEncoderIndex:*(&self->super.super.super.super.isa + *MEMORY[0x29EDBB7A0]) - 1 framebuffer:self->_impl + 1848];
+  v5 = 1848;
   if (**MEMORY[0x29EDC56B0])
   {
     [(_MTLParallelRenderCommandEncoder *)self globalTraceObjectID];
-    [v4 globalTraceObjectID];
+    [1848 globalTraceObjectID];
     kdebug_trace();
   }
 
-  if (v4)
+  if (1848)
   {
     dispatchQueue = self->dispatchQueue;
     v8[0] = MEMORY[0x29EDCA5F8];
@@ -746,11 +746,11 @@ void __93__AGXG18PFamilyThreadedRenderPass_sampledRenderCommandEncoderWithProgra
     v8[2] = __55__AGXG18PFamilyThreadedRenderPass_renderCommandEncoder__block_invoke;
     v8[3] = &unk_29F343860;
     v8[4] = self;
-    v8[5] = v4;
+    v8[5] = 1848;
     dispatch_sync(dispatchQueue, v8);
   }
 
-  return v4;
+  return 1848;
 }
 
 void __55__AGXG18PFamilyThreadedRenderPass_renderCommandEncoder__block_invoke(uint64_t a1)
@@ -808,16 +808,16 @@ void __55__AGXG18PFamilyThreadedRenderPass_renderCommandEncoder__block_invoke(ui
   [(_MTLParallelRenderCommandEncoder *)&v9 dealloc];
 }
 
-- (AGXG18PFamilyThreadedRenderPass)initWithCommandBuffer:(id)a3 renderPassDescriptor:(id)a4
+- (AGXG18PFamilyThreadedRenderPass)initWithCommandBuffer:(id)buffer renderPassDescriptor:(id)descriptor
 {
   block[290] = *MEMORY[0x29EDCA608];
-  v7 = [a3 device];
+  device = [buffer device];
   v20 = 0;
   v21 = 0;
-  [a4 validate:v7 width:&v21 height:&v20];
+  [descriptor validate:device width:&v21 height:&v20];
   v19.receiver = self;
   v19.super_class = AGXG18PFamilyThreadedRenderPass;
-  v8 = [(IOGPUMetalParallelRenderCommandEncoder *)&v19 initWithCommandBuffer:a3 renderPassDescriptor:a4];
+  v8 = [(IOGPUMetalParallelRenderCommandEncoder *)&v19 initWithCommandBuffer:buffer renderPassDescriptor:descriptor];
   if (v8)
   {
     v8->dispatchQueue = dispatch_queue_create("com.apple.Metal.ParallelRenderCommandEncoder", 0);
@@ -835,11 +835,11 @@ void __55__AGXG18PFamilyThreadedRenderPass_renderCommandEncoder__block_invoke(ui
     v8->_impl = v9;
     if (v9)
     {
-      v10 = [a4 _descriptorPrivate];
+      _descriptorPrivate = [descriptor _descriptorPrivate];
       v11 = v21;
       v12 = v20;
-      v13 = [a3 commandBufferStorage];
-      v14 = v7[106] + 7008;
+      commandBufferStorage = [buffer commandBufferStorage];
+      v14 = device[106] + 7008;
       block[0] = MEMORY[0x29EDCA5F8];
       block[1] = 3221225472;
       block[2] = ___ZN3AGX20RenderUSCStateLoaderINS_6HAL3008EncodersENS1_7ClassesEE17dataBufferConfigsERK16AGXGPUCoreConfigNSt3__15arrayIjLm4EEE_block_invoke;
@@ -849,26 +849,26 @@ void __55__AGXG18PFamilyThreadedRenderPass_renderCommandEncoder__block_invoke(ui
       block[4] = v14;
       if (AGX::RenderUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&,std::array<unsigned int,4ul>)::once != -1)
       {
-        v18 = v13;
+        v18 = commandBufferStorage;
         dispatch_once(&AGX::RenderUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&,std::array<unsigned int,4ul>)::once, block);
-        v13 = v18;
+        commandBufferStorage = v18;
       }
 
       *v9 = &AGX::RenderUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::databuffer_configs;
-      v9[1] = v7;
-      v9[2] = v13;
-      v15 = *(v13 + 768);
+      v9[1] = device;
+      v9[2] = commandBufferStorage;
+      v15 = *(commandBufferStorage + 768);
       *(v9 + 456) = 0;
       v9[226] = 0;
       v9[227] = 0;
       v9[225] = 0;
       *(v9 + 460) = 0;
       v9[3] = v15;
-      v9[4] = v13 + 144;
-      v9[229] = *(v13 + 784);
-      v16 = *(a3 + 90);
-      AGX::FramebufferDriverConfigGen3_3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::FramebufferDriverConfigGen3_3(block, v10, *(v7[106] + 16948), 0);
-      AGX::FramebufferGen3_3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::FramebufferGen3_3((v9 + 231), v7, v16, block, v11, v12, 0);
+      v9[4] = commandBufferStorage + 144;
+      v9[229] = *(commandBufferStorage + 784);
+      v16 = *(buffer + 90);
+      AGX::FramebufferDriverConfigGen3_3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::FramebufferDriverConfigGen3_3(block, _descriptorPrivate, *(device[106] + 16948), 0);
+      AGX::FramebufferGen3_3<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::FramebufferGen3_3((v9 + 231), device, v16, block, v11, v12, 0);
       v9[1054] = 0;
       v9[1053] = 64;
     }

@@ -1,58 +1,58 @@
 @interface PKShareInitiationAnalyticsReporter
-- (id)_initWithPass:(id)a3 sessionToken:(id)a4 reuseExistingSession:(BOOL)a5;
-- (void)_sendEventForPage:(unint64_t)a3 button:(unint64_t)a4 eventType:(id)a5 specifics:(id)a6;
-- (void)sendAuthenticationEventForSuccess:(BOOL)a3 specifics:(id)a4;
-- (void)sendDoneEventWithDidShare:(BOOL)a3 error:(id)a4 specifics:(id)a5;
-- (void)sendEvent:(id)a3;
+- (id)_initWithPass:(id)pass sessionToken:(id)token reuseExistingSession:(BOOL)session;
+- (void)_sendEventForPage:(unint64_t)page button:(unint64_t)button eventType:(id)type specifics:(id)specifics;
+- (void)sendAuthenticationEventForSuccess:(BOOL)success specifics:(id)specifics;
+- (void)sendDoneEventWithDidShare:(BOOL)share error:(id)error specifics:(id)specifics;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation PKShareInitiationAnalyticsReporter
 
-- (id)_initWithPass:(id)a3 sessionToken:(id)a4 reuseExistingSession:(BOOL)a5
+- (id)_initWithPass:(id)pass sessionToken:(id)token reuseExistingSession:(BOOL)session
 {
-  v5 = a5;
-  v9 = a3;
-  if (v9)
+  sessionCopy = session;
+  passCopy = pass;
+  if (passCopy)
   {
     v10 = *MEMORY[0x1E69BB708];
     v15.receiver = self;
     v15.super_class = PKShareInitiationAnalyticsReporter;
-    v11 = [(PKSharingAnalyticsReporter *)&v15 initWithSubject:v10 sessionToken:a4 reuseExistingSession:v5];
+    v11 = [(PKSharingAnalyticsReporter *)&v15 initWithSubject:v10 sessionToken:token reuseExistingSession:sessionCopy];
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_pass, a3);
+      objc_storeStrong(&v11->_pass, pass);
     }
 
     self = v12;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(PKPass *)self->_pass secureElementPass];
-  [v5 cardType];
+  eventCopy = event;
+  secureElementPass = [(PKPass *)self->_pass secureElementPass];
+  [secureElementPass cardType];
   v6 = PKPaymentCardTypeToString();
-  v7 = [(__CFString *)v6 lowercaseString];
-  [v4 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69BACA8]];
+  lowercaseString = [(__CFString *)v6 lowercaseString];
+  [eventCopy setObject:lowercaseString forKeyedSubscript:*MEMORY[0x1E69BACA8]];
 
   v8 = self->_pass;
   if ([(PKPass *)v8 passType]== PKPassTypeSecureElement)
   {
-    v9 = [(PKPass *)v8 secureElementPass];
-    v10 = [v9 cardType];
-    if (v10 <= 4)
+    secureElementPass2 = [(PKPass *)v8 secureElementPass];
+    cardType = [secureElementPass2 cardType];
+    if (cardType <= 4)
     {
-      v6 = **(&unk_1E8012548 + v10);
+      v6 = **(&unk_1E8012548 + cardType);
     }
   }
 
@@ -61,27 +61,27 @@
     v6 = @"other";
   }
 
-  [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69BAC90]];
-  v11 = [(PKPass *)self->_pass secureElementPass];
-  if (![v11 isIdentityPass])
+  [eventCopy setObject:v6 forKeyedSubscript:*MEMORY[0x1E69BAC90]];
+  secureElementPass3 = [(PKPass *)self->_pass secureElementPass];
+  if (![secureElementPass3 isIdentityPass])
   {
-    if (![v11 isAccessPass])
+    if (![secureElementPass3 isAccessPass])
     {
       goto LABEL_20;
     }
 
-    v14 = [v11 accessType];
-    v15 = [v11 accessReportingType];
-    v16 = v15;
-    if (v14 <= 2)
+    accessType = [secureElementPass3 accessType];
+    accessReportingType = [secureElementPass3 accessReportingType];
+    v16 = accessReportingType;
+    if (accessType <= 2)
     {
-      switch(v14)
+      switch(accessType)
       {
         case 0:
           v18 = @"general";
-          if (v15)
+          if (accessReportingType)
           {
-            v18 = v15;
+            v18 = accessReportingType;
           }
 
           goto LABEL_35;
@@ -98,9 +98,9 @@ LABEL_39:
 
     else
     {
-      if (v14 <= 4)
+      if (accessType <= 4)
       {
-        if (v14 == 3)
+        if (accessType == 3)
         {
           v17 = @"singlefamily";
         }
@@ -113,13 +113,13 @@ LABEL_39:
         goto LABEL_39;
       }
 
-      if (v14 == 5)
+      if (accessType == 5)
       {
         v17 = @"multifamily";
         goto LABEL_39;
       }
 
-      if (v14 == 6)
+      if (accessType == 6)
       {
         v17 = @"urbanmobility";
         goto LABEL_39;
@@ -132,16 +132,16 @@ LABEL_35:
     goto LABEL_39;
   }
 
-  v12 = [v11 identityType];
-  if (v12 <= 2)
+  identityType = [secureElementPass3 identityType];
+  if (identityType <= 2)
   {
-    if (v12 == 1)
+    if (identityType == 1)
     {
       v13 = MEMORY[0x1E69BA648];
       goto LABEL_27;
     }
 
-    if (v12 == 2)
+    if (identityType == 2)
     {
       v13 = MEMORY[0x1E69BB2C8];
       goto LABEL_27;
@@ -152,15 +152,15 @@ LABEL_20:
     goto LABEL_27;
   }
 
-  if (v12 != 3)
+  if (identityType != 3)
   {
-    if (v12 == 4)
+    if (identityType == 4)
     {
       v13 = MEMORY[0x1E69BA8E0];
       goto LABEL_27;
     }
 
-    if (v12 != 5)
+    if (identityType != 5)
     {
       goto LABEL_20;
     }
@@ -171,16 +171,16 @@ LABEL_27:
   v17 = *v13;
 LABEL_40:
 
-  [v4 setObject:v17 forKeyedSubscript:*MEMORY[0x1E69BAC88]];
+  [eventCopy setObject:v17 forKeyedSubscript:*MEMORY[0x1E69BAC88]];
   v19.receiver = self;
   v19.super_class = PKShareInitiationAnalyticsReporter;
-  [(PKSharingAnalyticsReporter *)&v19 sendEvent:v4];
+  [(PKSharingAnalyticsReporter *)&v19 sendEvent:eventCopy];
 }
 
-- (void)sendAuthenticationEventForSuccess:(BOOL)a3 specifics:(id)a4
+- (void)sendAuthenticationEventForSuccess:(BOOL)success specifics:(id)specifics
 {
-  v4 = a3;
-  v6 = [a4 mutableCopy];
+  successCopy = success;
+  v6 = [specifics mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -194,7 +194,7 @@ LABEL_40:
 
   v10 = v8;
 
-  if (v4)
+  if (successCopy)
   {
     v9 = @"success";
   }
@@ -208,11 +208,11 @@ LABEL_40:
   [(PKShareInitiationAnalyticsReporter *)self _sendEventForPage:3 button:0 eventType:*MEMORY[0x1E69BA760] specifics:v10];
 }
 
-- (void)sendDoneEventWithDidShare:(BOOL)a3 error:(id)a4 specifics:(id)a5
+- (void)sendDoneEventWithDidShare:(BOOL)share error:(id)error specifics:(id)specifics
 {
-  v6 = a3;
-  v15 = a4;
-  v8 = [a5 mutableCopy];
+  shareCopy = share;
+  errorCopy = error;
+  v8 = [specifics mutableCopy];
   v9 = v8;
   if (v8)
   {
@@ -227,17 +227,17 @@ LABEL_40:
   v11 = v10;
 
   v12 = *MEMORY[0x1E69BB288];
-  if (v6)
+  if (shareCopy)
   {
     v13 = MEMORY[0x1E69BB290];
   }
 
   else
   {
-    if (v15)
+    if (errorCopy)
     {
       [v11 setObject:*MEMORY[0x1E69BB280] forKeyedSubscript:v12];
-      v14 = ErrorTypeFromError(v15);
+      v14 = ErrorTypeFromError(errorCopy);
       [v11 setObject:v14 forKeyedSubscript:*MEMORY[0x1E69BA678]];
 
       goto LABEL_10;
@@ -251,10 +251,10 @@ LABEL_10:
   [(PKShareInitiationAnalyticsReporter *)self _sendEventForPage:4 button:0 eventType:*MEMORY[0x1E69BA818] specifics:v11];
 }
 
-- (void)_sendEventForPage:(unint64_t)a3 button:(unint64_t)a4 eventType:(id)a5 specifics:(id)a6
+- (void)_sendEventForPage:(unint64_t)page button:(unint64_t)button eventType:(id)type specifics:(id)specifics
 {
-  v10 = a5;
-  v11 = [a6 mutableCopy];
+  typeCopy = type;
+  v11 = [specifics mutableCopy];
   v12 = v11;
   if (v11)
   {
@@ -268,7 +268,7 @@ LABEL_10:
 
   v20 = v13;
 
-  [v20 setObject:v10 forKeyedSubscript:*MEMORY[0x1E69BA680]];
+  [v20 setObject:typeCopy forKeyedSubscript:*MEMORY[0x1E69BA680]];
   v14 = *MEMORY[0x1E69BABE8];
   v15 = [v20 objectForKeyedSubscript:*MEMORY[0x1E69BABE8]];
 
@@ -279,12 +279,12 @@ LABEL_10:
 
   else
   {
-    v16 = a3 > 4;
+    v16 = page > 4;
   }
 
   if (!v16)
   {
-    [v20 setObject:off_1E8012650[a3] forKeyedSubscript:v14];
+    [v20 setObject:off_1E8012650[page] forKeyedSubscript:v14];
   }
 
   v17 = *MEMORY[0x1E69BA440];
@@ -292,14 +292,14 @@ LABEL_10:
 
   if (!v18)
   {
-    if (a4 == 1)
+    if (button == 1)
     {
       v19 = MEMORY[0x1E69BA468];
     }
 
     else
     {
-      if (a4 != 2)
+      if (button != 2)
       {
         goto LABEL_15;
       }

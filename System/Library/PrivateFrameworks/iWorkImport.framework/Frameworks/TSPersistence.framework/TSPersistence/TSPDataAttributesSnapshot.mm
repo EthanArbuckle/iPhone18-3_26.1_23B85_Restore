@@ -1,17 +1,17 @@
 @interface TSPDataAttributesSnapshot
-+ (id)newSnapshotForContext:(id)a3;
++ (id)newSnapshotForContext:(id)context;
 - (TSPDataAttributesSnapshot)init;
-- (TSPDataAttributesSnapshot)initWithAttributesMap:(id)a3;
-- (id)attributesForData:(id)a3;
+- (TSPDataAttributesSnapshot)initWithAttributesMap:(id)map;
+- (id)attributesForData:(id)data;
 @end
 
 @implementation TSPDataAttributesSnapshot
 
-+ (id)newSnapshotForContext:(id)a3
++ (id)newSnapshotForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v8 = objc_msgSend_dataManager(v4, v6, v7);
+  v8 = objc_msgSend_dataManager(contextCopy, v6, v7);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_276AE5190;
@@ -20,7 +20,7 @@
   v16 = v9;
   objc_msgSend_enumerateAllDataUsingBlock_(v8, v10, v15);
 
-  v11 = [a1 alloc];
+  v11 = [self alloc];
   v13 = objc_msgSend_initWithAttributesMap_(v11, v12, v9);
 
   return v13;
@@ -42,25 +42,25 @@
   objc_exception_throw(v13);
 }
 
-- (TSPDataAttributesSnapshot)initWithAttributesMap:(id)a3
+- (TSPDataAttributesSnapshot)initWithAttributesMap:(id)map
 {
-  v5 = a3;
+  mapCopy = map;
   v9.receiver = self;
   v9.super_class = TSPDataAttributesSnapshot;
   v6 = [(TSPDataAttributesSnapshot *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_attributesMap, a3);
+    objc_storeStrong(&v6->_attributesMap, map);
   }
 
   return v7;
 }
 
-- (id)attributesForData:(id)a3
+- (id)attributesForData:(id)data
 {
   attributesMap = self->_attributesMap;
-  v4 = objc_msgSend_digest(a3, a2, a3);
+  v4 = objc_msgSend_digest(data, a2, data);
   v6 = objc_msgSend_objectForKeyedSubscript_(attributesMap, v5, v4);
 
   return v6;

@@ -66,15 +66,15 @@
     [(NSFileManager(FPAdditions) *)&section fp_createPathIfNeeded:v3, v4];
   }
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v47 = 0;
-  v6 = [v5 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v47];
+  v6 = [defaultManager createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v47];
   v7 = v47;
   v8 = v7;
   if (v6 & 1) != 0 || ([v7 fp_isCocoaErrorCode:516])
   {
     v46 = v8;
-    v9 = [v5 attributesOfItemAtPath:v3 error:&v46];
+    v9 = [defaultManager attributesOfItemAtPath:v3 error:&v46];
     v10 = v46;
 
     v11 = v10 == 0;
@@ -91,16 +91,16 @@
       }
     }
 
-    v14 = [v9 fileOwnerAccountName];
+    fileOwnerAccountName = [v9 fileOwnerAccountName];
     v15 = NSUserName();
-    v16 = [v14 isEqual:v15];
+    v16 = [fileOwnerAccountName isEqual:v15];
 
     if ((v16 & 1) == 0)
     {
       v17 = fp_current_or_default_log();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
       {
-        v18 = [v9 fileOwnerAccountName];
+        fileOwnerAccountName2 = [v9 fileOwnerAccountName];
         NSUserName();
         objc_claimAutoreleasedReturnValue();
         [NSFileManager(FPAdditions) fp_createPathIfNeeded:];
@@ -188,10 +188,10 @@
           v36 = 45;
         }
 
-        v37 = [v9 filePosixPermissions];
-        v38 = [v9 filePosixPermissions];
+        filePosixPermissions = [v9 filePosixPermissions];
+        filePosixPermissions2 = [v9 filePosixPermissions];
         *buf = 67111424;
-        if ((v37 & 2) != 0)
+        if ((filePosixPermissions & 2) != 0)
         {
           v39 = 119;
         }
@@ -203,7 +203,7 @@
 
         v52 = v44;
         v53 = 1024;
-        if (v38)
+        if (filePosixPermissions2)
         {
           v40 = 120;
         }
@@ -252,7 +252,7 @@
       v50 = v22;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
       v45 = v10;
-      v25 = [v5 setAttributes:v24 ofItemAtPath:v3 error:&v45];
+      v25 = [defaultManager setAttributes:v24 ofItemAtPath:v3 error:&v45];
       v8 = v45;
 
       if ((v25 & 1) == 0)

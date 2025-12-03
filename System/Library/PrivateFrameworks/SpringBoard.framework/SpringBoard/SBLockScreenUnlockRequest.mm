@@ -1,36 +1,36 @@
 @interface SBLockScreenUnlockRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SBLockScreenUnlockRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(SBLockScreenUnlockRequest *)self name];
-  [v4 setName:v5];
+  name = [(SBLockScreenUnlockRequest *)self name];
+  [v4 setName:name];
 
   [v4 setSource:{-[SBLockScreenUnlockRequest source](self, "source")}];
   [v4 setIntent:{-[SBLockScreenUnlockRequest intent](self, "intent")}];
-  v6 = [(SBLockScreenUnlockRequest *)self process];
-  [v4 setProcess:v6];
+  process = [(SBLockScreenUnlockRequest *)self process];
+  [v4 setProcess:process];
 
-  v7 = [(SBLockScreenUnlockRequest *)self destinationApplication];
-  [v4 setDestinationApplication:v7];
+  destinationApplication = [(SBLockScreenUnlockRequest *)self destinationApplication];
+  [v4 setDestinationApplication:destinationApplication];
 
   [v4 setWantsBiometricPresentation:{-[SBLockScreenUnlockRequest wantsBiometricPresentation](self, "wantsBiometricPresentation")}];
   [v4 setForceAlertAuthenticationUI:{-[SBLockScreenUnlockRequest forceAlertAuthenticationUI](self, "forceAlertAuthenticationUI")}];
-  v8 = [(SBLockScreenUnlockRequest *)self title];
-  [v4 setTitle:v8];
+  title = [(SBLockScreenUnlockRequest *)self title];
+  [v4 setTitle:title];
 
-  v9 = [(SBLockScreenUnlockRequest *)self subtitle];
-  [v4 setSubtitle:v9];
+  subtitle = [(SBLockScreenUnlockRequest *)self subtitle];
+  [v4 setSubtitle:subtitle];
 
-  v10 = [(SBLockScreenUnlockRequest *)self unlockDestination];
-  [v4 setUnlockDestination:v10];
+  unlockDestination = [(SBLockScreenUnlockRequest *)self unlockDestination];
+  [v4 setUnlockDestination:unlockDestination];
 
   return v4;
 }
@@ -56,21 +56,21 @@
   [v3 appendString:self->_title withName:@"title" skipIfEmpty:1];
   [v3 appendString:self->_subtitle withName:@"subtitle" skipIfEmpty:1];
   [v3 appendString:self->_unlockDestination withName:@"unlockDestination" skipIfEmpty:1];
-  v13 = [v3 build];
+  build = [v3 build];
 
-  return v13;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   name = self->_name;
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
   v58[2] = __37__SBLockScreenUnlockRequest_isEqual___block_invoke;
   v58[3] = &unk_2783B1D60;
-  v7 = v4;
+  v7 = equalCopy;
   v59 = v7;
   v8 = [v5 appendString:name counterpart:v58];
   source = self->_source;
@@ -160,18 +160,18 @@ uint64_t __37__SBLockScreenUnlockRequest_isEqual___block_invoke_4(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_name];
-  v5 = [v3 appendInteger:self->_source];
-  v6 = [v3 appendInteger:self->_intent];
-  v7 = [v3 appendObject:self->_process];
-  v8 = [v3 appendObject:self->_destinationApplication];
-  v9 = [v3 appendBool:self->_wantsBiometricPresentation];
-  v10 = [v3 appendBool:self->_forceAlertAuthenticationUI];
-  v11 = [v3 appendString:self->_title];
-  v12 = [v3 appendString:self->_subtitle];
-  v13 = [v3 appendString:self->_unlockDestination];
-  v14 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_name];
+  v5 = [builder appendInteger:self->_source];
+  v6 = [builder appendInteger:self->_intent];
+  v7 = [builder appendObject:self->_process];
+  v8 = [builder appendObject:self->_destinationApplication];
+  v9 = [builder appendBool:self->_wantsBiometricPresentation];
+  v10 = [builder appendBool:self->_forceAlertAuthenticationUI];
+  v11 = [builder appendString:self->_title];
+  v12 = [builder appendString:self->_subtitle];
+  v13 = [builder appendString:self->_unlockDestination];
+  v14 = [builder hash];
 
   return v14;
 }

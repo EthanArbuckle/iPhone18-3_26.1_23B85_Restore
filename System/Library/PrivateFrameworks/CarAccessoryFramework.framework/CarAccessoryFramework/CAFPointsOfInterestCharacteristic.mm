@@ -2,38 +2,38 @@
 + (void)load;
 - (CAFPointsOfInterest)pointsOfInterestValue;
 - (id)formattedValue;
-- (void)setPointsOfInterestValue:(id)a3;
+- (void)setPointsOfInterestValue:(id)value;
 @end
 
 @implementation CAFPointsOfInterestCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFPointsOfInterestCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (CAFPointsOfInterest)pointsOfInterestValue
 {
-  v2 = [(CAFArrayCharacteristic *)self arrayValue];
-  v3 = [CAFPointsOfInterest pointsOfInterestWithArray:v2];
+  arrayValue = [(CAFArrayCharacteristic *)self arrayValue];
+  v3 = [CAFPointsOfInterest pointsOfInterestWithArray:arrayValue];
 
   return v3;
 }
 
-- (void)setPointsOfInterestValue:(id)a3
+- (void)setPointsOfInterestValue:(id)value
 {
-  v4 = [a3 arrayRepresentation];
-  [(CAFArrayCharacteristic *)self setArrayValue:v4];
+  arrayRepresentation = [value arrayRepresentation];
+  [(CAFArrayCharacteristic *)self setArrayValue:arrayRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFPointsOfInterestCharacteristic *)self pointsOfInterestValue];
-  v3 = [v2 formattedValue];
+  pointsOfInterestValue = [(CAFPointsOfInterestCharacteristic *)self pointsOfInterestValue];
+  formattedValue = [pointsOfInterestValue formattedValue];
 
-  return v3;
+  return formattedValue;
 }
 
 @end

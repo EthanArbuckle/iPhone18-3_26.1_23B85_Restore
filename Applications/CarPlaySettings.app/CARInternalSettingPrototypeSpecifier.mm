@@ -1,19 +1,19 @@
 @interface CARInternalSettingPrototypeSpecifier
-- (CARInternalSettingPrototypeSpecifier)initWithInternalSettingPrototype:(id)a3;
-- (void)_performAction:(id)a3;
+- (CARInternalSettingPrototypeSpecifier)initWithInternalSettingPrototype:(id)prototype;
+- (void)_performAction:(id)action;
 @end
 
 @implementation CARInternalSettingPrototypeSpecifier
 
-- (CARInternalSettingPrototypeSpecifier)initWithInternalSettingPrototype:(id)a3
+- (CARInternalSettingPrototypeSpecifier)initWithInternalSettingPrototype:(id)prototype
 {
-  v5 = a3;
-  v6 = [v5 title];
+  prototypeCopy = prototype;
+  title = [prototypeCopy title];
   v16.receiver = self;
   v16.super_class = CARInternalSettingPrototypeSpecifier;
-  v7 = [(CARSettingsSwitchCellSpecifier *)&v16 initWithTitle:v6 image:0 icon:0];
+  v7 = [(CARSettingsSwitchCellSpecifier *)&v16 initWithTitle:title image:0 icon:0];
 
-  objc_storeStrong(&v7->_prototype, a3);
+  objc_storeStrong(&v7->_prototype, prototype);
   objc_initWeak(&location, v7);
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
@@ -23,43 +23,43 @@
   [(CARSettingsCellSpecifier *)v7 setActionBlock:&v10];
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
-  v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 internalSettingsState]);
+  v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [prototypeCopy internalSettingsState]);
   [(CARSettingsCellSpecifier *)v7 setCellValue:v8];
 
   return v7;
 }
 
-- (void)_performAction:(id)a3
+- (void)_performAction:(id)action
 {
-  v4 = a3;
-  v12 = v4;
-  if (v4)
+  actionCopy = action;
+  v12 = actionCopy;
+  if (actionCopy)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [actionCopy BOOLValue];
   }
 
   else
   {
-    v6 = [(CARInternalSettingPrototypeSpecifier *)self prototype];
-    v5 = ([v6 state] ^ 1);
+    prototype = [(CARInternalSettingPrototypeSpecifier *)self prototype];
+    bOOLValue = ([prototype state] ^ 1);
   }
 
-  v7 = [(CARInternalSettingPrototypeSpecifier *)self prototype];
+  prototype2 = [(CARInternalSettingPrototypeSpecifier *)self prototype];
   v8 = +[CARPrototypePref nowPlayingAlbumArt];
 
-  v9 = [(CARInternalSettingPrototypeSpecifier *)self prototype];
-  v10 = v9;
-  if (v7 == v8)
+  prototype3 = [(CARInternalSettingPrototypeSpecifier *)self prototype];
+  v10 = prototype3;
+  if (prototype2 == v8)
   {
-    [v9 setInternalSettingsState:v5];
+    [prototype3 setInternalSettingsState:bOOLValue];
   }
 
   else
   {
-    [v9 setState:v5];
+    [prototype3 setState:bOOLValue];
   }
 
-  v11 = [NSNumber numberWithBool:v5];
+  v11 = [NSNumber numberWithBool:bOOLValue];
   [(CARSettingsCellSpecifier *)self setCellValue:v11];
 }
 

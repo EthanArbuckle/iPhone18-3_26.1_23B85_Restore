@@ -1,9 +1,9 @@
 @interface MapsSuggestionsBaseTrigger
-- (MapsSuggestionsBaseTrigger)initWithName:(id)a3;
-- (MapsSuggestionsBaseTrigger)initWithName:(id)a3 queue:(id)a4;
-- (void)registerObserver:(id)a3;
+- (MapsSuggestionsBaseTrigger)initWithName:(id)name;
+- (MapsSuggestionsBaseTrigger)initWithName:(id)name queue:(id)queue;
+- (void)registerObserver:(id)observer;
 - (void)triggerMyObservers;
-- (void)unregisterObserver:(id)a3;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation MapsSuggestionsBaseTrigger
@@ -14,9 +14,9 @@
   v3 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(MapsSuggestionsBaseTrigger *)self uniqueName];
+    uniqueName = [(MapsSuggestionsBaseTrigger *)self uniqueName];
     *buf = 138412290;
-    v9 = v4;
+    v9 = uniqueName;
     _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "FIRING %@", buf, 0xCu);
   }
 
@@ -58,38 +58,38 @@ void __48__MapsSuggestionsBaseTrigger_triggerMyObservers__block_invoke(uint64_t 
   }
 }
 
-- (MapsSuggestionsBaseTrigger)initWithName:(id)a3
+- (MapsSuggestionsBaseTrigger)initWithName:(id)name
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:@"%@Queue", v5];
-  v7 = [v6 UTF8String];
+  nameCopy = name;
+  nameCopy = [[v4 alloc] initWithFormat:@"%@Queue", nameCopy];
+  uTF8String = [nameCopy UTF8String];
   v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v9 = dispatch_queue_create(v7, v8);
-  v10 = [(MapsSuggestionsBaseTrigger *)self initWithName:v5 queue:v9];
+  v9 = dispatch_queue_create(uTF8String, v8);
+  v10 = [(MapsSuggestionsBaseTrigger *)self initWithName:nameCopy queue:v9];
 
   return v10;
 }
 
-- (MapsSuggestionsBaseTrigger)initWithName:(id)a3 queue:(id)a4
+- (MapsSuggestionsBaseTrigger)initWithName:(id)name queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = MapsSuggestionsBaseTrigger;
   v8 = [(MapsSuggestionsBaseTrigger *)&v19 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    objc_storeStrong(&v8->_queue, a4);
+    objc_storeStrong(&v8->_queue, queue);
     v11 = [MapsSuggestionsObservers alloc];
     queue = v8->_queue;
     v13 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v14 = [(MapsSuggestionsBaseTrigger *)v8 uniqueName];
-    v15 = [v13 initWithFormat:@"%@Observers", v14];
+    uniqueName = [(MapsSuggestionsBaseTrigger *)v8 uniqueName];
+    v15 = [v13 initWithFormat:@"%@Observers", uniqueName];
     v16 = [(MapsSuggestionsObservers *)v11 initWithCallbackQueue:queue name:v15];
     observers = v8->_observers;
     v8->_observers = v16;
@@ -98,9 +98,9 @@ void __48__MapsSuggestionsBaseTrigger_triggerMyObservers__block_invoke(uint64_t 
   return v8;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   observers = self->_observers;
   v6[0] = MEMORY[0x1E69E9820];
@@ -108,7 +108,7 @@ void __48__MapsSuggestionsBaseTrigger_triggerMyObservers__block_invoke(uint64_t 
   v6[2] = __47__MapsSuggestionsBaseTrigger_registerObserver___block_invoke;
   v6[3] = &unk_1E81F5EF0;
   objc_copyWeak(&v7, &location);
-  [(MapsSuggestionsObservers *)observers registerObserver:v4 handler:v6];
+  [(MapsSuggestionsObservers *)observers registerObserver:observerCopy handler:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
@@ -152,9 +152,9 @@ void __47__MapsSuggestionsBaseTrigger_registerObserver___block_invoke(uint64_t a
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   observers = self->_observers;
   v6[0] = MEMORY[0x1E69E9820];
@@ -162,7 +162,7 @@ void __47__MapsSuggestionsBaseTrigger_registerObserver___block_invoke(uint64_t a
   v6[2] = __49__MapsSuggestionsBaseTrigger_unregisterObserver___block_invoke;
   v6[3] = &unk_1E81F5EF0;
   objc_copyWeak(&v7, &location);
-  [(MapsSuggestionsObservers *)observers unregisterObserver:v4 handler:v6];
+  [(MapsSuggestionsObservers *)observers unregisterObserver:observerCopy handler:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }

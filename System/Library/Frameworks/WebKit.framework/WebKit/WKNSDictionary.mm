@@ -1,8 +1,8 @@
 @interface WKNSDictionary
 - (Ref<API::Dictionary,)_protectedDictionary;
-- (WKNSDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5;
+- (WKNSDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count;
 - (id)keyEnumerator;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (unint64_t)count;
 - (void)dealloc;
 @end
@@ -50,11 +50,11 @@ LABEL_5:
   }
 }
 
-- (WKNSDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5
+- (WKNSDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count
 {
   v6.receiver = self;
   v6.super_class = WKNSDictionary;
-  return [(WKNSDictionary *)&v6 initWithObjects:a3 forKeys:a4 count:a5];
+  return [(WKNSDictionary *)&v6 initWithObjects:objects forKeys:keys count:count];
 }
 
 - (unint64_t)count
@@ -71,9 +71,9 @@ LABEL_5:
   }
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = WTF::dynamic_objc_cast<NSString>(a3);
+  v4 = WTF::dynamic_objc_cast<NSString>(key);
   if (!v4)
   {
     return 0;
@@ -193,7 +193,7 @@ LABEL_26:
 
   if (v19)
   {
-    v5 = 0;
+    null = 0;
     if (v20)
     {
       goto LABEL_33;
@@ -205,7 +205,7 @@ LABEL_37:
 
   else if (v10)
   {
-    v5 = *(v10 + 8);
+    null = *(v10 + 8);
     if ((v20 & 1) == 0)
     {
       goto LABEL_37;
@@ -214,7 +214,7 @@ LABEL_37:
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     if ((v20 & 1) == 0)
     {
       goto LABEL_37;
@@ -223,7 +223,7 @@ LABEL_37:
 
 LABEL_33:
 
-  return v5;
+  return null;
 }
 
 - (id)keyEnumerator
@@ -255,7 +255,7 @@ LABEL_33:
     v4 = v3;
   }
 
-  v5 = [v3 objectEnumerator];
+  objectEnumerator = [v3 objectEnumerator];
   if (v3)
   {
   }
@@ -268,7 +268,7 @@ LABEL_33:
     CFRelease(*(v6 + 1));
   }
 
-  return v5;
+  return objectEnumerator;
 }
 
 @end

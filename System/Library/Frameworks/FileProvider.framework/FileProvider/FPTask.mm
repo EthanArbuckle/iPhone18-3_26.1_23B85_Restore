@@ -1,32 +1,32 @@
 @interface FPTask
-+ (BOOL)exec:(id)a3 error:(id *)a4;
-+ (BOOL)exec:(id)a3 stdoutString:(id *)a4 stderrString:(id *)a5 error:(id *)a6;
-+ (id)sanitizeStringForFilename:(id)a3;
++ (BOOL)exec:(id)exec error:(id *)error;
++ (BOOL)exec:(id)exec stdoutString:(id *)string stderrString:(id *)stderrString error:(id *)error;
++ (id)sanitizeStringForFilename:(id)filename;
 + (id)simulatorRoot;
-+ (id)taskWithArguments:(id)a3;
-+ (id)taskWithCommand:(id)a3;
-+ (id)taskWithCommandWithArguments:(id)a3;
-+ (id)taskWithRedirectedOutputAndCommand:(id)a3;
++ (id)taskWithArguments:(id)arguments;
++ (id)taskWithCommand:(id)command;
++ (id)taskWithCommandWithArguments:(id)arguments;
++ (id)taskWithRedirectedOutputAndCommand:(id)command;
 - (FPTask)init;
 - (const)newPreparedArgvArray;
-- (int)_prepareRedirections:(void *)a3;
+- (int)_prepareRedirections:(void *)redirections;
 - (int)exec;
 - (int)execAsync;
 - (void)exec;
 - (void)execAsync;
 - (void)resetRedirect;
-- (void)setCommand:(id)a3;
-- (void)setCommandWithArguments:(id)a3;
+- (void)setCommand:(id)command;
+- (void)setCommandWithArguments:(id)arguments;
 @end
 
 @implementation FPTask
 
 + (id)simulatorRoot
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 environment];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  environment = [processInfo environment];
 
-  v4 = [v3 objectForKeyedSubscript:@"SIMULATOR_ROOT"];
+  v4 = [environment objectForKeyedSubscript:@"SIMULATOR_ROOT"];
 
   return v4;
 }
@@ -49,59 +49,59 @@
   return v3;
 }
 
-+ (id)taskWithRedirectedOutputAndCommand:(id)a3
++ (id)taskWithRedirectedOutputAndCommand:(id)command
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v12];
+  commandCopy = command;
+  v6 = [[v4 alloc] initWithFormat:commandCopy arguments:&v12];
 
-  v7 = [a1 taskWithCommandWithArguments:v6];
+  v7 = [self taskWithCommandWithArguments:v6];
 
-  v8 = [MEMORY[0x1E696AC00] fileHandleWithStandardError];
-  [v7 setStandardError:v8];
+  fileHandleWithStandardError = [MEMORY[0x1E696AC00] fileHandleWithStandardError];
+  [v7 setStandardError:fileHandleWithStandardError];
 
-  v9 = [MEMORY[0x1E696AC00] fileHandleWithStandardOutput];
-  [v7 setStandardOutput:v9];
+  fileHandleWithStandardOutput = [MEMORY[0x1E696AC00] fileHandleWithStandardOutput];
+  [v7 setStandardOutput:fileHandleWithStandardOutput];
 
   return v7;
 }
 
-+ (id)taskWithCommand:(id)a3
++ (id)taskWithCommand:(id)command
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v10];
+  commandCopy = command;
+  v6 = [[v4 alloc] initWithFormat:commandCopy arguments:&v10];
 
-  v7 = [a1 taskWithCommandWithArguments:v6];
+  v7 = [self taskWithCommandWithArguments:v6];
 
   return v7;
 }
 
-+ (id)taskWithCommandWithArguments:(id)a3
++ (id)taskWithCommandWithArguments:(id)arguments
 {
-  v3 = a3;
+  argumentsCopy = arguments;
   v4 = objc_alloc_init(FPTask);
-  [(FPTask *)v4 setCommandWithArguments:v3];
+  [(FPTask *)v4 setCommandWithArguments:argumentsCopy];
 
   return v4;
 }
 
-+ (id)taskWithArguments:(id)a3
++ (id)taskWithArguments:(id)arguments
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setArgv:v4];
+  argumentsCopy = arguments;
+  v5 = objc_alloc_init(self);
+  [v5 setArgv:argumentsCopy];
 
   return v5;
 }
 
-+ (id)sanitizeStringForFilename:(id)a3
++ (id)sanitizeStringForFilename:(id)filename
 {
-  v3 = a3;
-  if (v3)
+  filenameCopy = filename;
+  if (filenameCopy)
   {
-    v4 = v3;
-    v5 = [v3 stringByReplacingOccurrencesOfString:@"/" withString:@":"];
+    v4 = filenameCopy;
+    v5 = [filenameCopy stringByReplacingOccurrencesOfString:@"/" withString:@":"];
 
     v6 = [v5 stringByReplacingOccurrencesOfString:@" withString:@"'""];
     v7 = ;
@@ -123,20 +123,20 @@
   return v8;
 }
 
-- (void)setCommand:(id)a3
+- (void)setCommand:(id)command
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v7];
+  commandCopy = command;
+  v6 = [[v4 alloc] initWithFormat:commandCopy arguments:&v7];
 
   [(FPTask *)self setCommandWithArguments:v6];
 }
 
-- (void)setCommandWithArguments:(id)a3
+- (void)setCommandWithArguments:(id)arguments
 {
-  v19 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  if (![v19 length])
+  argumentsCopy = arguments;
+  array = [MEMORY[0x1E695DF70] array];
+  if (![argumentsCopy length])
   {
     goto LABEL_22;
   }
@@ -149,13 +149,13 @@
   v10 = 1;
   do
   {
-    v11 = [v19 characterAtIndex:v6];
+    v11 = [argumentsCopy characterAtIndex:v6];
     if (v11 != 39 || (v8 & 1) != 0)
     {
       if ((v11 != 34) | v5 & 1)
       {
         v13 = v11 != 32;
-        v12 = v19;
+        v12 = argumentsCopy;
         if ((v13 | v5 | v8))
         {
           goto LABEL_18;
@@ -164,7 +164,7 @@
 
       else
       {
-        v12 = v19;
+        v12 = argumentsCopy;
         if ((v8 & 1) == 0)
         {
           v5 = 0;
@@ -176,7 +176,7 @@
 
     else
     {
-      v12 = v19;
+      v12 = argumentsCopy;
       if ((v5 & 1) == 0)
       {
         v8 = 0;
@@ -200,9 +200,9 @@ LABEL_18:
         v15 = v16;
       }
 
-      [v4 addObject:v15];
+      [array addObject:v15];
 
-      v12 = v19;
+      v12 = argumentsCopy;
     }
 
     v5 = 0;
@@ -218,25 +218,25 @@ LABEL_19:
   while (v6 < [v12 length]);
   if (v17)
   {
-    v18 = [v19 substringWithRange:{v7, v17}];
-    [v4 addObject:v18];
+    v18 = [argumentsCopy substringWithRange:{v7, v17}];
+    [array addObject:v18];
   }
 
 LABEL_22:
-  [(FPTask *)self setArgv:v4];
+  [(FPTask *)self setArgv:array];
 }
 
-- (int)_prepareRedirections:(void *)a3
+- (int)_prepareRedirections:(void *)redirections
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = [(FPTask *)self standardOutput];
+  standardOutput = [(FPTask *)self standardOutput];
 
-  if (v5)
+  if (standardOutput)
   {
-    v6 = [(FPTask *)self standardOutput];
-    LODWORD(v7) = posix_spawn_file_actions_adddup2(a3, [v6 fileDescriptor], 1);
+    standardOutput2 = [(FPTask *)self standardOutput];
+    LODWORD(standardError) = posix_spawn_file_actions_adddup2(redirections, [standardOutput2 fileDescriptor], 1);
 
-    if (v7)
+    if (standardError)
     {
       v8 = fp_current_or_default_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -248,21 +248,21 @@ LABEL_22:
     }
   }
 
-  v7 = [(FPTask *)self standardError];
+  standardError = [(FPTask *)self standardError];
 
-  if (v7)
+  if (standardError)
   {
-    v9 = [(FPTask *)self standardError];
-    LODWORD(v7) = posix_spawn_file_actions_adddup2(a3, [v9 fileDescriptor], 2);
+    standardError2 = [(FPTask *)self standardError];
+    LODWORD(standardError) = posix_spawn_file_actions_adddup2(redirections, [standardError2 fileDescriptor], 2);
 
-    if (v7)
+    if (standardError)
     {
       v8 = fp_current_or_default_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_8:
         v12 = 136315138;
-        v13 = strerror(v7);
+        v13 = strerror(standardError);
         _os_log_impl(&dword_1AAAE1000, v8, OS_LOG_TYPE_DEFAULT, "[WARNING] Unable to perform spawn action (%s).", &v12, 0xCu);
       }
 
@@ -271,29 +271,29 @@ LABEL_9:
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return v7;
+  return standardError;
 }
 
 - (const)newPreparedArgvArray
 {
-  v3 = [(FPTask *)self argv];
-  v4 = malloc_type_malloc(8 * [v3 count] + 8, 0x50040EE9192B6uLL);
+  argv = [(FPTask *)self argv];
+  v4 = malloc_type_malloc(8 * [argv count] + 8, 0x50040EE9192B6uLL);
 
-  v5 = [(FPTask *)self argv];
-  v6 = [v5 count];
+  argv2 = [(FPTask *)self argv];
+  v6 = [argv2 count];
 
   if (v6)
   {
     v7 = 0;
     do
     {
-      v8 = [(FPTask *)self argv];
-      v9 = [v8 objectAtIndexedSubscript:v7];
+      argv3 = [(FPTask *)self argv];
+      v9 = [argv3 objectAtIndexedSubscript:v7];
 
       if ([v9 hasPrefix:@"~"])
       {
-        v10 = [v9 stringByExpandingTildeInPath];
-        v4[v7] = [v10 fileSystemRepresentation];
+        stringByExpandingTildeInPath = [v9 stringByExpandingTildeInPath];
+        v4[v7] = [stringByExpandingTildeInPath fileSystemRepresentation];
       }
 
       else
@@ -302,15 +302,15 @@ LABEL_9:
       }
 
       ++v7;
-      v11 = [(FPTask *)self argv];
-      v12 = [v11 count];
+      argv4 = [(FPTask *)self argv];
+      v12 = [argv4 count];
     }
 
     while (v7 < v12);
   }
 
-  v13 = [(FPTask *)self argv];
-  v4[[v13 count]] = 0;
+  argv5 = [(FPTask *)self argv];
+  v4[[argv5 count]] = 0;
 
   return v4;
 }
@@ -318,15 +318,15 @@ LABEL_9:
 - (int)execAsync
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [(FPTask *)self argv];
-  if (![v3 count])
+  argv = [(FPTask *)self argv];
+  if (![argv count])
   {
     [FPTask execAsync];
   }
 
   v26 = 0;
 
-  v4 = [(FPTask *)self newPreparedArgvArray];
+  newPreparedArgvArray = [(FPTask *)self newPreparedArgvArray];
   v25 = 0;
   v5 = posix_spawn_file_actions_init(&v25);
   if (v5)
@@ -372,15 +372,15 @@ LABEL_9:
     [(FPTask *)self execAsync];
   }
 
-  v20 = posix_spawnp(&v26, *v4, &v25, 0, v4, *MEMORY[0x1E69E97E8]);
+  v20 = posix_spawnp(&v26, *newPreparedArgvArray, &v25, 0, newPreparedArgvArray, *MEMORY[0x1E69E97E8]);
   if (v20)
   {
     v21 = v20;
     v7 = fp_current_or_default_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(FPTask *)self argv];
-      v23 = [v22 componentsJoinedByString:{@", "}];
+      argv2 = [(FPTask *)self argv];
+      v23 = [argv2 componentsJoinedByString:{@", "}];
       v24 = strerror(v21);
       *buf = 138412546;
       v28 = v23;
@@ -394,7 +394,7 @@ LABEL_9:
 
   v13 = 1;
 LABEL_10:
-  free(v4);
+  free(newPreparedArgvArray);
   v14 = posix_spawn_file_actions_destroy(&v25);
   if (v14)
   {
@@ -426,13 +426,13 @@ LABEL_10:
 - (int)exec
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [(FPTask *)self argv];
-  if (![v3 count])
+  argv = [(FPTask *)self argv];
+  if (![argv count])
   {
     [FPTask exec];
   }
 
-  v4 = [(FPTask *)self newPreparedArgvArray];
+  newPreparedArgvArray = [(FPTask *)self newPreparedArgvArray];
   v34 = 0;
   v5 = posix_spawn_file_actions_init(&v34);
   if (v5)
@@ -474,15 +474,15 @@ LABEL_10:
       [(FPTask *)self execAsync];
     }
 
-    v15 = posix_spawnp(&v32, *v4, &v34, 0, v4, *MEMORY[0x1E69E97E8]);
+    v15 = posix_spawnp(&v32, *newPreparedArgvArray, &v34, 0, newPreparedArgvArray, *MEMORY[0x1E69E97E8]);
     if (v15)
     {
       v10 = v15;
       v16 = fp_current_or_default_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(FPTask *)self argv];
-        v18 = [v17 componentsJoinedByString:{@", "}];
+        argv2 = [(FPTask *)self argv];
+        v18 = [argv2 componentsJoinedByString:{@", "}];
         v19 = strerror(v10);
         *buf = 138412546;
         v36 = v18;
@@ -542,7 +542,7 @@ LABEL_10:
     }
   }
 
-  free(v4);
+  free(newPreparedArgvArray);
   v24 = posix_spawn_file_actions_destroy(&v34);
   if (v24)
   {
@@ -574,27 +574,27 @@ void __14__FPTask_exec__block_invoke(uint64_t a1)
   }
 }
 
-+ (BOOL)exec:(id)a3 stdoutString:(id *)a4 stderrString:(id *)a5 error:(id *)a6
++ (BOOL)exec:(id)exec stdoutString:(id *)string stderrString:(id *)stderrString error:(id *)error
 {
   v65[1] = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v8 = [MEMORY[0x1E696AE00] pipe];
-  v9 = [MEMORY[0x1E696AE00] pipe];
-  v10 = [FPTask taskWithCommandWithArguments:v38];
-  v11 = [v8 fileHandleForWriting];
-  [v10 setStandardOutput:v11];
+  execCopy = exec;
+  pipe = [MEMORY[0x1E696AE00] pipe];
+  pipe2 = [MEMORY[0x1E696AE00] pipe];
+  v10 = [FPTask taskWithCommandWithArguments:execCopy];
+  fileHandleForWriting = [pipe fileHandleForWriting];
+  [v10 setStandardOutput:fileHandleForWriting];
 
-  v12 = [v9 fileHandleForWriting];
-  [v10 setStandardError:v12];
+  fileHandleForWriting2 = [pipe2 fileHandleForWriting];
+  [v10 setStandardError:fileHandleForWriting2];
 
-  v13 = [v10 execAsync];
-  v14 = [v8 fileHandleForWriting];
-  [v14 closeFile];
+  execAsync = [v10 execAsync];
+  fileHandleForWriting3 = [pipe fileHandleForWriting];
+  [fileHandleForWriting3 closeFile];
 
-  v15 = [v9 fileHandleForWriting];
-  [v15 closeFile];
+  fileHandleForWriting4 = [pipe2 fileHandleForWriting];
+  [fileHandleForWriting4 closeFile];
 
-  if ((v13 & 0x80000000) == 0)
+  if ((execAsync & 0x80000000) == 0)
   {
     v16 = dispatch_queue_create("queue for reading the task output and error streams concurrently", MEMORY[0x1E69E96A8]);
     v52 = 0;
@@ -603,14 +603,14 @@ void __14__FPTask_exec__block_invoke(uint64_t a1)
     v55 = __Block_byref_object_copy__24;
     v56 = __Block_byref_object_dispose__24;
     v57 = 0;
-    if (a4)
+    if (string)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __47__FPTask_exec_stdoutString_stderrString_error___block_invoke;
       block[3] = &unk_1E793AA20;
       v51 = &v52;
-      v50 = v8;
+      v50 = pipe;
       dispatch_async(v16, block);
     }
 
@@ -620,32 +620,32 @@ void __14__FPTask_exec__block_invoke(uint64_t a1)
     v46 = __Block_byref_object_copy__24;
     v47 = __Block_byref_object_dispose__24;
     v48 = 0;
-    if (a5)
+    if (stderrString)
     {
       v40[0] = MEMORY[0x1E69E9820];
       v40[1] = 3221225472;
       v40[2] = __47__FPTask_exec_stdoutString_stderrString_error___block_invoke_53;
       v40[3] = &unk_1E793AA20;
       v42 = &v43;
-      v41 = v9;
+      v41 = pipe2;
       dispatch_async(v16, v40);
     }
 
     dispatch_barrier_sync(v16, &__block_literal_global_47);
-    if (a4)
+    if (string)
     {
       v17 = objc_alloc(MEMORY[0x1E696AEC0]);
-      *a4 = [v17 initWithData:v53[5] encoding:4];
+      *string = [v17 initWithData:v53[5] encoding:4];
     }
 
-    if (a5)
+    if (stderrString)
     {
       v18 = objc_alloc(MEMORY[0x1E696AEC0]);
-      *a5 = [v18 initWithData:v44[5] encoding:4];
+      *stderrString = [v18 initWithData:v44[5] encoding:4];
     }
 
     v39 = 0;
-    while (waitpid(v13, &v39, 0) < 0)
+    while (waitpid(execAsync, &v39, 0) < 0)
     {
       if (*__error() != 4)
       {
@@ -658,10 +658,10 @@ void __14__FPTask_exec__block_invoke(uint64_t a1)
           [FPTask exec:v22 stdoutString:buf stderrString:v20 error:v19];
         }
 
-        if (a6)
+        if (error)
         {
           [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
-          *a6 = v23 = 0;
+          *error = v23 = 0;
           goto LABEL_36;
         }
 
@@ -678,7 +678,7 @@ void __14__FPTask_exec__block_invoke(uint64_t a1)
     else if ((v39 & 0x7F) == 0)
     {
       v26 = BYTE1(v39);
-      if (a6 && BYTE1(v39))
+      if (error && BYTE1(v39))
       {
         v60 = *MEMORY[0x1E696A578];
         v35 = BYTE1(v39);
@@ -687,17 +687,17 @@ void __14__FPTask_exec__block_invoke(uint64_t a1)
         v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v61 forKeys:&v60 count:1];
         v36 = [v28 mutableCopy];
 
-        if (a4)
+        if (string)
         {
-          [v36 setObject:*a4 forKeyedSubscript:@"stdout"];
+          [v36 setObject:*string forKeyedSubscript:@"stdout"];
         }
 
-        if (a5)
+        if (stderrString)
         {
-          [v36 setObject:*a5 forKeyedSubscript:@"stderr"];
+          [v36 setObject:*stderrString forKeyedSubscript:@"stderr"];
         }
 
-        *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"FPTaskErrorDomain" code:2 userInfo:v36];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"FPTaskErrorDomain" code:2 userInfo:v36];
 
         v26 = v35;
       }
@@ -718,14 +718,14 @@ LABEL_36:
       _os_log_impl(&dword_1AAAE1000, v29, OS_LOG_TYPE_INFO, "[INFO] command terminated due to signal %d", buf, 8u);
     }
 
-    if (a6)
+    if (error)
     {
       v30 = MEMORY[0x1E696ABC0];
       v58 = *MEMORY[0x1E696A578];
       v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Task terminated due to signal %d", v25];
       v59 = v31;
       v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
-      *a6 = [v30 errorWithDomain:@"FPTaskErrorDomain" code:3 userInfo:v32];
+      *error = [v30 errorWithDomain:@"FPTaskErrorDomain" code:3 userInfo:v32];
     }
 
 LABEL_35:
@@ -733,14 +733,14 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (a6)
+  if (error)
   {
     v24 = MEMORY[0x1E696ABC0];
     v64 = *MEMORY[0x1E696A578];
     v65[0] = @"Failed to spawn task";
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v65 forKeys:&v64 count:1];
     [v24 errorWithDomain:@"FPTaskErrorDomain" code:-1 userInfo:v16];
-    *a6 = v23 = 0;
+    *error = v23 = 0;
 LABEL_37:
 
     goto LABEL_38;
@@ -793,11 +793,11 @@ void __47__FPTask_exec_stdoutString_stderrString_error___block_invoke_53(uint64_
   }
 }
 
-+ (BOOL)exec:(id)a3 error:(id *)a4
++ (BOOL)exec:(id)exec error:(id *)error
 {
   v6 = 0;
   v7 = 0;
-  v4 = [FPTask exec:a3 stdoutString:&v7 stderrString:&v6 error:a4];
+  v4 = [FPTask exec:exec stdoutString:&v7 stderrString:&v6 error:error];
 
   return v4;
 }
@@ -812,7 +812,7 @@ void __47__FPTask_exec_stdoutString_stderrString_error___block_invoke_53(uint64_
 - (void)execAsync
 {
   v10 = *MEMORY[0x1E69E9840];
-  v1 = [a1 argv];
+  argv = [self argv];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_0_9(&dword_1AAAE1000, v2, v3, "[DEBUG] Spawning FPTask with command '%@'", v4, v5, v6, v7, v9);
 

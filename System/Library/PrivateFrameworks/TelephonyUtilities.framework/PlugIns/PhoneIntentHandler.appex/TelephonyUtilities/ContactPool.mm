@@ -1,22 +1,22 @@
 @interface ContactPool
-- (ContactPool)initWithContacts:(id)a3;
+- (ContactPool)initWithContacts:(id)contacts;
 - (id)allContactIds;
-- (id)contactWithId:(id)a3;
-- (id)contactsWithIds:(id)a3;
+- (id)contactWithId:(id)id;
+- (id)contactsWithIds:(id)ids;
 - (unint64_t)count;
 @end
 
 @implementation ContactPool
 
-- (ContactPool)initWithContacts:(id)a3
+- (ContactPool)initWithContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v24.receiver = self;
   v24.super_class = ContactPool;
   v5 = [(ContactPool *)&v24 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contactsCopy copy];
     allContacts = v5->_allContacts;
     v5->_allContacts = v6;
 
@@ -25,7 +25,7 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = v4;
+    v9 = contactsCopy;
     v10 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v10)
     {
@@ -41,12 +41,12 @@
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [v14 identifier];
+          identifier = [v14 identifier];
 
-          if (v15)
+          if (identifier)
           {
-            v16 = [v14 identifier];
-            [v8 setObject:v14 forKeyedSubscript:v16];
+            identifier2 = [v14 identifier];
+            [v8 setObject:v14 forKeyedSubscript:identifier2];
           }
         }
 
@@ -66,39 +66,39 @@
 
 - (unint64_t)count
 {
-  v2 = [(ContactPool *)self allContacts];
-  v3 = [v2 count];
+  allContacts = [(ContactPool *)self allContacts];
+  v3 = [allContacts count];
 
   return v3;
 }
 
 - (id)allContactIds
 {
-  v2 = [(ContactPool *)self contactByIdCache];
-  v3 = [v2 allKeys];
-  v4 = [NSSet setWithArray:v3];
+  contactByIdCache = [(ContactPool *)self contactByIdCache];
+  allKeys = [contactByIdCache allKeys];
+  v4 = [NSSet setWithArray:allKeys];
 
   return v4;
 }
 
-- (id)contactWithId:(id)a3
+- (id)contactWithId:(id)id
 {
-  v4 = a3;
-  v5 = [(ContactPool *)self contactByIdCache];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  idCopy = id;
+  contactByIdCache = [(ContactPool *)self contactByIdCache];
+  v6 = [contactByIdCache objectForKeyedSubscript:idCopy];
 
   return v6;
 }
 
-- (id)contactsWithIds:(id)a3
+- (id)contactsWithIds:(id)ids
 {
-  v4 = a3;
-  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  idsCopy = ids;
+  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(idsCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = idsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {

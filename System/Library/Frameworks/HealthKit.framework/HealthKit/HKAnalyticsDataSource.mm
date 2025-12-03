@@ -1,5 +1,5 @@
 @interface HKAnalyticsDataSource
-- (HKAnalyticsDataSource)initWithHealthDataSource:(id)a3;
+- (HKAnalyticsDataSource)initWithHealthDataSource:(id)source;
 - (HKAnalyticsHealthDataSource)healthDataSource;
 - (HKAnalyticsHealthDataSource)weakHealthDataSource;
 - (void)healthDataSource;
@@ -7,9 +7,9 @@
 
 @implementation HKAnalyticsDataSource
 
-- (HKAnalyticsDataSource)initWithHealthDataSource:(id)a3
+- (HKAnalyticsDataSource)initWithHealthDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = HKAnalyticsDataSource;
   v5 = [(HKAnalyticsDataSource *)&v11 init];
@@ -19,12 +19,12 @@
     if (objc_opt_isKindOfClass())
     {
       objc_storeWeak(&v5->_weakHealthDataSource, 0);
-      v6 = v4;
+      v6 = sourceCopy;
     }
 
     else
     {
-      objc_storeWeak(&v5->_weakHealthDataSource, v4);
+      objc_storeWeak(&v5->_weakHealthDataSource, sourceCopy);
       v6 = 0;
     }
 

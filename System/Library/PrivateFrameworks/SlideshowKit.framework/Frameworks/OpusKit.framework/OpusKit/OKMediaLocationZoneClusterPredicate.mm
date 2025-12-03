@@ -1,14 +1,14 @@
 @interface OKMediaLocationZoneClusterPredicate
-- (OKMediaLocationZoneClusterPredicate)initWithDistance:(double)a3;
-- (id)_containsInSet:(id)a3 withinItems:(id)a4 distance:(double)a5;
-- (id)_titleWithPlacemark:(id)a3;
-- (id)evaluateItems:(id)a3 progressBlock:(id)a4;
+- (OKMediaLocationZoneClusterPredicate)initWithDistance:(double)distance;
+- (id)_containsInSet:(id)set withinItems:(id)items distance:(double)distance;
+- (id)_titleWithPlacemark:(id)placemark;
+- (id)evaluateItems:(id)items progressBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation OKMediaLocationZoneClusterPredicate
 
-- (OKMediaLocationZoneClusterPredicate)initWithDistance:(double)a3
+- (OKMediaLocationZoneClusterPredicate)initWithDistance:(double)distance
 {
   v7.receiver = self;
   v7.super_class = OKMediaLocationZoneClusterPredicate;
@@ -16,8 +16,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_distance = a3;
-    -[OKMediaClusterPredicate setUniqueID:](v4, "setUniqueID:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%f", @"locationZone", *&a3]);
+    v4->_distance = distance;
+    -[OKMediaClusterPredicate setUniqueID:](v4, "setUniqueID:", [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%f", @"locationZone", *&distance]);
     [(OKMediaClusterPredicate *)v5 setCategory:1];
   }
 
@@ -31,21 +31,21 @@
   [(OKMediaClusterPredicate *)&v2 dealloc];
 }
 
-- (id)_containsInSet:(id)a3 withinItems:(id)a4 distance:(double)a5
+- (id)_containsInSet:(id)set withinItems:(id)items distance:(double)distance
 {
   v27 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CBFC70];
-  v9 = [a4 valueForKeyPath:@"location"];
+  v9 = [items valueForKeyPath:@"location"];
   v10 = [v8 regionWithLocations:v9 andIdentifier:{objc_msgSend(MEMORY[0x277CCACA8], "generateUUID")}];
   v11 = objc_alloc(MEMORY[0x277CBFBC8]);
   [v10 center];
-  v14 = [v11 initWithCenter:-[OKMediaClusterPredicate uniqueID](self radius:"uniqueID") identifier:{v12, v13, a5}];
+  v14 = [v11 initWithCenter:-[OKMediaClusterPredicate uniqueID](self radius:"uniqueID") identifier:{v12, v13, distance}];
   v15 = [MEMORY[0x277CBEB58] set];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v16 = [a3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v16 = [set countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v16)
   {
     v17 = v16;
@@ -56,7 +56,7 @@
       {
         if (*v23 != v18)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(set);
         }
 
         v20 = *(*(&v22 + 1) + 8 * i);
@@ -67,7 +67,7 @@
         }
       }
 
-      v17 = [a3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v17 = [set countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v17);
@@ -76,60 +76,60 @@
   return v15;
 }
 
-- (id)_titleWithPlacemark:(id)a3
+- (id)_titleWithPlacemark:(id)placemark
 {
   result = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"Unspecified", @"Unspecified", @"Localizable"}];
-  if (a3)
+  if (placemark)
   {
-    if ([a3 areasOfInterest] && objc_msgSend(a3, "areasOfInterest"))
+    if ([placemark areasOfInterest] && objc_msgSend(placemark, "areasOfInterest"))
     {
-      v5 = [a3 areasOfInterest];
+      areasOfInterest = [placemark areasOfInterest];
 
-      return [v5 firstObject];
+      return [areasOfInterest firstObject];
     }
 
-    else if ([a3 inlandWater])
+    else if ([placemark inlandWater])
     {
 
-      return [a3 inlandWater];
+      return [placemark inlandWater];
     }
 
-    else if ([a3 ocean])
+    else if ([placemark ocean])
     {
 
-      return [a3 ocean];
+      return [placemark ocean];
     }
 
-    else if ([a3 locality])
+    else if ([placemark locality])
     {
-      if ([a3 administrativeArea])
+      if ([placemark administrativeArea])
       {
-        return [MEMORY[0x277CCACA8] stringWithFormat:@"%@, %@", objc_msgSend(a3, "locality"), objc_msgSend(a3, "administrativeArea")];
+        return [MEMORY[0x277CCACA8] stringWithFormat:@"%@, %@", objc_msgSend(placemark, "locality"), objc_msgSend(placemark, "administrativeArea")];
       }
 
       else
       {
 
-        return [a3 locality];
+        return [placemark locality];
       }
     }
 
     else
     {
 
-      return [a3 name];
+      return [placemark name];
     }
   }
 
   return result;
 }
 
-- (id)evaluateItems:(id)a3 progressBlock:(id)a4
+- (id)evaluateItems:(id)items progressBlock:(id)block
 {
   v41 = *MEMORY[0x277D85DE8];
   obj = objc_alloc_init(MEMORY[0x277CBEB18]);
   context = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x277CBEB58] setWithSet:a3];
+  v6 = [MEMORY[0x277CBEB58] setWithSet:items];
   v7 = [v6 filteredSetUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithBlock:", &__block_literal_global_10)}];
   if ([v7 count])
   {
@@ -151,10 +151,10 @@
   {
     v10 = objc_autoreleasePoolPush();
     v11 = objc_alloc_init(OKMediaCluster);
-    v12 = [v6 anyObject];
-    [(NSMutableArray *)[(OKMediaCluster *)v11 items] addObject:v12];
-    [v6 minusSet:{objc_msgSend(MEMORY[0x277CBEB98], "setWithObject:", v12)}];
-    v13 = -[OKMediaLocationZoneClusterPredicate _containsInSet:withinItems:distance:](self, "_containsInSet:withinItems:distance:", v6, [MEMORY[0x277CBEB98] setWithObject:v12], self->_distance);
+    anyObject = [v6 anyObject];
+    [(NSMutableArray *)[(OKMediaCluster *)v11 items] addObject:anyObject];
+    [v6 minusSet:{objc_msgSend(MEMORY[0x277CBEB98], "setWithObject:", anyObject)}];
+    v13 = -[OKMediaLocationZoneClusterPredicate _containsInSet:withinItems:distance:](self, "_containsInSet:withinItems:distance:", v6, [MEMORY[0x277CBEB98] setWithObject:anyObject], self->_distance);
     if ([v13 count])
     {
 LABEL_6:
@@ -221,8 +221,8 @@ LABEL_6:
           [v27 performSynchronously:0 timeout:{dispatch_time(0, 2000000000)}];
         }
 
-        v28 = [(OKMediaCluster *)v20 items];
-        -[NSMutableArray sortUsingDescriptors:](v28, "sortUsingDescriptors:", [MEMORY[0x277CBEA60] arrayWithObject:v14]);
+        items = [(OKMediaCluster *)v20 items];
+        -[NSMutableArray sortUsingDescriptors:](items, "sortUsingDescriptors:", [MEMORY[0x277CBEA60] arrayWithObject:v14]);
       }
 
       v9 = obj;
@@ -236,8 +236,8 @@ LABEL_6:
   [v9 sortUsingDescriptors:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v29)}];
   if (v16)
   {
-    v30 = [(OKMediaCluster *)v16 items];
-    -[NSMutableArray sortUsingDescriptors:](v30, "sortUsingDescriptors:", [MEMORY[0x277CBEA60] arrayWithObject:v14]);
+    items2 = [(OKMediaCluster *)v16 items];
+    -[NSMutableArray sortUsingDescriptors:](items2, "sortUsingDescriptors:", [MEMORY[0x277CBEA60] arrayWithObject:v14]);
     [v9 addObject:v16];
   }
 

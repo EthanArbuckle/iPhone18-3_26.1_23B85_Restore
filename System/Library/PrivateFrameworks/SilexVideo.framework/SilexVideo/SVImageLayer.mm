@@ -1,16 +1,16 @@
 @interface SVImageLayer
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 @end
 
 @implementation SVImageLayer
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  objc_storeStrong(&self->_image, a3);
-  v7 = a3;
-  v5 = v7;
-  -[SVImageLayer setContents:](self, "setContents:", [v7 CGImage]);
-  if (v7)
+  objc_storeStrong(&self->_image, image);
+  imageCopy = image;
+  v5 = imageCopy;
+  -[SVImageLayer setContents:](self, "setContents:", [imageCopy CGImage]);
+  if (imageCopy)
   {
     identifier = self->_identifier;
   }

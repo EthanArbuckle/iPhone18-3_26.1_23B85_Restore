@@ -1,28 +1,28 @@
 @interface MTMutableAlarm
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)applyChangesFromChangeSet:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)applyChangesFromChangeSet:(id)set;
 @end
 
 @implementation MTMutableAlarm
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [MTAlarm allocWithZone:a3];
-  v5 = [(MTAlarm *)self alarmID];
-  v6 = [(MTAlarm *)v4 initWithIdentifier:v5];
+  v4 = [MTAlarm allocWithZone:zone];
+  alarmID = [(MTAlarm *)self alarmID];
+  v6 = [(MTAlarm *)v4 initWithIdentifier:alarmID];
 
   [(MTAlarm *)self _copyStateOntoAlarm:v6];
   return v6;
 }
 
-- (void)applyChangesFromChangeSet:(id)a3
+- (void)applyChangesFromChangeSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v7 = [MTChangeSet changeSetWithChangesFromObject:0 toObject:self];
-  v5 = [v7 changeSetByAddingChangeSet:v4];
+  v5 = [v7 changeSetByAddingChangeSet:setCopy];
 
-  v6 = [v5 _deserializer];
-  [(MTAlarm *)self _updatePropertiesFromDeserializer:v6];
+  _deserializer = [v5 _deserializer];
+  [(MTAlarm *)self _updatePropertiesFromDeserializer:_deserializer];
 }
 
 @end

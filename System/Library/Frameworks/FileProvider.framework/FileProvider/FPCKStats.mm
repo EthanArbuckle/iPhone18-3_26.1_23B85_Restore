@@ -1,7 +1,7 @@
 @interface FPCKStats
 - (FPCKStats)init;
-- (FPCKStats)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (FPCKStats)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FPCKStats
@@ -13,30 +13,30 @@
   return [(FPCKStats *)&v3 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   numberOfFilesChecked = self->_numberOfFilesChecked;
-  v5 = a3;
-  [v5 encodeInteger:numberOfFilesChecked forKey:@"_numberOfFilesChecked"];
-  [v5 encodeInteger:self->_numberOfBrokenFilesInFSAndFSSnapshotCheck forKey:@"_numberOfBrokenFilesInFSAndFSSnapshotCheck"];
-  [v5 encodeInteger:self->_numberOfBrokenFilesInFSSnapshotAndFPSnapshotCheck forKey:@"_numberOfBrokenFilesInFSSnapshotAndFPSnapshotCheck"];
-  [v5 encodeInteger:self->_numberOfBrokenFilesInReconciliationTableCheck forKey:@"_numberOfBrokenFilesInReconciliationTableCheck"];
-  [v5 encodeInteger:self->_numberOfBrokenFilesInBackupManifestCheck forKey:@"_numberOfBrokenFilesInBackupManifestCheck"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:numberOfFilesChecked forKey:@"_numberOfFilesChecked"];
+  [coderCopy encodeInteger:self->_numberOfBrokenFilesInFSAndFSSnapshotCheck forKey:@"_numberOfBrokenFilesInFSAndFSSnapshotCheck"];
+  [coderCopy encodeInteger:self->_numberOfBrokenFilesInFSSnapshotAndFPSnapshotCheck forKey:@"_numberOfBrokenFilesInFSSnapshotAndFPSnapshotCheck"];
+  [coderCopy encodeInteger:self->_numberOfBrokenFilesInReconciliationTableCheck forKey:@"_numberOfBrokenFilesInReconciliationTableCheck"];
+  [coderCopy encodeInteger:self->_numberOfBrokenFilesInBackupManifestCheck forKey:@"_numberOfBrokenFilesInBackupManifestCheck"];
 }
 
-- (FPCKStats)initWithCoder:(id)a3
+- (FPCKStats)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = FPCKStats;
   v5 = [(FPCKStats *)&v7 init];
   if (v5)
   {
-    v5->_numberOfFilesChecked = [v4 decodeIntegerForKey:@"_numberOfFilesChecked"];
-    v5->_numberOfBrokenFilesInFSAndFSSnapshotCheck = [v4 decodeIntegerForKey:@"_numberOfBrokenFilesInFSAndFSSnapshotCheck"];
-    v5->_numberOfBrokenFilesInFSSnapshotAndFPSnapshotCheck = [v4 decodeIntegerForKey:@"_numberOfBrokenFilesInFSSnapshotAndFPSnapshotCheck"];
-    v5->_numberOfBrokenFilesInReconciliationTableCheck = [v4 decodeIntegerForKey:@"_numberOfBrokenFilesInReconciliationTableCheck"];
-    v5->_numberOfBrokenFilesInBackupManifestCheck = [v4 decodeIntegerForKey:@"_numberOfBrokenFilesInBackupManifestCheck"];
+    v5->_numberOfFilesChecked = [coderCopy decodeIntegerForKey:@"_numberOfFilesChecked"];
+    v5->_numberOfBrokenFilesInFSAndFSSnapshotCheck = [coderCopy decodeIntegerForKey:@"_numberOfBrokenFilesInFSAndFSSnapshotCheck"];
+    v5->_numberOfBrokenFilesInFSSnapshotAndFPSnapshotCheck = [coderCopy decodeIntegerForKey:@"_numberOfBrokenFilesInFSSnapshotAndFPSnapshotCheck"];
+    v5->_numberOfBrokenFilesInReconciliationTableCheck = [coderCopy decodeIntegerForKey:@"_numberOfBrokenFilesInReconciliationTableCheck"];
+    v5->_numberOfBrokenFilesInBackupManifestCheck = [coderCopy decodeIntegerForKey:@"_numberOfBrokenFilesInBackupManifestCheck"];
   }
 
   return v5;

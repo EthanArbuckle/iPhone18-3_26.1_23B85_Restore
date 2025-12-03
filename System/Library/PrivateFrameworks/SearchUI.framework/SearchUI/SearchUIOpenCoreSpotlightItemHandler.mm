@@ -1,43 +1,43 @@
 @interface SearchUIOpenCoreSpotlightItemHandler
-- (id)createViewControllerForCommand:(id)a3 environment:(id)a4;
+- (id)createViewControllerForCommand:(id)command environment:(id)environment;
 - (id)destinationApplicationBundleIdentifier;
 - (id)itemProvider;
-- (void)getUserActivityForCommand:(id)a3 environment:(id)a4 completionHandler:(id)a5;
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5;
+- (void)getUserActivityForCommand:(id)command environment:(id)environment completionHandler:(id)handler;
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment;
 @end
 
 @implementation SearchUIOpenCoreSpotlightItemHandler
 
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SearchUICommandHandler *)self rowModel];
-  v11 = [v10 cardSection];
-  v12 = [v11 appEntityAnnotation];
+  commandCopy = command;
+  environmentCopy = environment;
+  rowModel = [(SearchUICommandHandler *)self rowModel];
+  cardSection = [rowModel cardSection];
+  appEntityAnnotation = [cardSection appEntityAnnotation];
 
-  if (v12)
+  if (appEntityAnnotation)
   {
-    v13 = [(SearchUICommandHandler *)self rowModel];
-    v14 = [v13 cardSection];
-    v15 = [v14 appEntityAnnotation];
-    v16 = [v8 applicationBundleIdentifier];
+    rowModel2 = [(SearchUICommandHandler *)self rowModel];
+    cardSection2 = [rowModel2 cardSection];
+    appEntityAnnotation2 = [cardSection2 appEntityAnnotation];
+    applicationBundleIdentifier = [commandCopy applicationBundleIdentifier];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __80__SearchUIOpenCoreSpotlightItemHandler_performCommand_triggerEvent_environment___block_invoke;
     v18[3] = &unk_1E85B39E0;
-    v19 = v8;
-    v22 = a4;
-    v20 = v9;
-    v21 = self;
-    [SearchUIToolKitUtilities performOpenIntentForAnnotation:v15 bundleId:v16 completionHandler:v18];
+    v19 = commandCopy;
+    eventCopy = event;
+    v20 = environmentCopy;
+    selfCopy = self;
+    [SearchUIToolKitUtilities performOpenIntentForAnnotation:appEntityAnnotation2 bundleId:applicationBundleIdentifier completionHandler:v18];
   }
 
   else
   {
     v17.receiver = self;
     v17.super_class = SearchUIOpenCoreSpotlightItemHandler;
-    [(SearchUIOpenUserActivityHandler *)&v17 performCommand:v8 triggerEvent:a4 environment:v9];
+    [(SearchUIOpenUserActivityHandler *)&v17 performCommand:commandCopy triggerEvent:event environment:environmentCopy];
   }
 }
 
@@ -71,79 +71,79 @@ id __80__SearchUIOpenCoreSpotlightItemHandler_performCommand_triggerEvent_enviro
   return objc_msgSendSuper2(&v5, sel_performCommand_triggerEvent_environment_, v2, v1, v3);
 }
 
-- (void)getUserActivityForCommand:(id)a3 environment:(id)a4 completionHandler:(id)a5
+- (void)getUserActivityForCommand:(id)command environment:(id)environment completionHandler:(id)handler
 {
-  v32 = a3;
-  v8 = a4;
+  commandCopy = command;
+  environmentCopy = environment;
   v9 = MEMORY[0x1E69636A8];
-  v10 = a5;
+  handlerCopy = handler;
   v11 = [v9 alloc];
   v12 = [v11 initWithActivityType:*MEMORY[0x1E6963B90]];
   v13 = objc_opt_new();
-  v14 = [v32 coreSpotlightIdentifier];
-  if (v14)
+  coreSpotlightIdentifier = [commandCopy coreSpotlightIdentifier];
+  if (coreSpotlightIdentifier)
   {
-    [v13 setObject:v14 forKeyedSubscript:*MEMORY[0x1E6963B98]];
+    [v13 setObject:coreSpotlightIdentifier forKeyedSubscript:*MEMORY[0x1E6963B98]];
   }
 
-  v15 = [v8 searchString];
-  if (v15)
+  searchString = [environmentCopy searchString];
+  if (searchString)
   {
-    [v13 setObject:v15 forKeyedSubscript:*MEMORY[0x1E6963B88]];
-    v16 = [(SearchUICommandHandler *)self rowModel];
-    [v16 identifyingResult];
-    v31 = v15;
-    v17 = v10;
-    v18 = v14;
+    [v13 setObject:searchString forKeyedSubscript:*MEMORY[0x1E6963B88]];
+    rowModel = [(SearchUICommandHandler *)self rowModel];
+    [rowModel identifyingResult];
+    v31 = searchString;
+    v17 = handlerCopy;
+    v18 = coreSpotlightIdentifier;
     v19 = v12;
-    v20 = self;
-    v22 = v21 = v8;
-    v23 = [v22 applicationBundleIdentifier];
-    v24 = [v23 isEqual:@"com.apple.email.SearchIndexer"];
+    selfCopy = self;
+    v22 = v21 = environmentCopy;
+    applicationBundleIdentifier = [v22 applicationBundleIdentifier];
+    v24 = [applicationBundleIdentifier isEqual:@"com.apple.email.SearchIndexer"];
 
-    v8 = v21;
-    v25 = v20;
+    environmentCopy = v21;
+    v25 = selfCopy;
     v12 = v19;
-    v14 = v18;
-    v10 = v17;
-    v15 = v31;
+    coreSpotlightIdentifier = v18;
+    handlerCopy = v17;
+    searchString = v31;
 
     if (v24)
     {
-      v26 = [(SearchUICommandHandler *)v25 rowModel];
-      v27 = [v26 identifyingResult];
-      v28 = [v27 applicationBundleIdentifier];
-      [v13 setObject:v28 forKeyedSubscript:@"kCSItemBundle"];
+      rowModel2 = [(SearchUICommandHandler *)v25 rowModel];
+      identifyingResult = [rowModel2 identifyingResult];
+      applicationBundleIdentifier2 = [identifyingResult applicationBundleIdentifier];
+      [v13 setObject:applicationBundleIdentifier2 forKeyedSubscript:@"kCSItemBundle"];
     }
   }
 
-  v29 = [v32 actionIdentifier];
-  if (v29)
+  actionIdentifier = [commandCopy actionIdentifier];
+  if (actionIdentifier)
   {
-    [v13 setObject:v29 forKeyedSubscript:*MEMORY[0x1E6963938]];
+    [v13 setObject:actionIdentifier forKeyedSubscript:*MEMORY[0x1E6963938]];
   }
 
   [v12 setUserInfo:v13];
-  v30 = [v32 applicationBundleIdentifier];
-  v10[2](v10, v12, v30);
+  applicationBundleIdentifier3 = [commandCopy applicationBundleIdentifier];
+  handlerCopy[2](handlerCopy, v12, applicationBundleIdentifier3);
 }
 
-- (id)createViewControllerForCommand:(id)a3 environment:(id)a4
+- (id)createViewControllerForCommand:(id)command environment:(id)environment
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SearchUICommandHandler *)self rowModel];
-  v9 = [v7 coreSpotlightIdentifier];
-  v10 = [v7 applicationBundleIdentifier];
+  environmentCopy = environment;
+  commandCopy = command;
+  rowModel = [(SearchUICommandHandler *)self rowModel];
+  coreSpotlightIdentifier = [commandCopy coreSpotlightIdentifier];
+  applicationBundleIdentifier = [commandCopy applicationBundleIdentifier];
 
   v11 = objc_alloc(MEMORY[0x1E697A0C0]);
-  v12 = [v6 searchString];
+  searchString = [environmentCopy searchString];
 
-  v13 = [v8 displayTitle];
-  v14 = [v11 initWithSearchableItemUniqueIdentifier:v9 queryString:v12 applicationBundleIdentifier:v10 previewTitle:v13];
+  displayTitle = [rowModel displayTitle];
+  v14 = [v11 initWithSearchableItemUniqueIdentifier:coreSpotlightIdentifier queryString:searchString applicationBundleIdentifier:applicationBundleIdentifier previewTitle:displayTitle];
 
-  if ([MEMORY[0x1E697A0C8] canPreviewItem:v14] && (objc_msgSend(v8, "identifyingResult"), v15 = objc_claimAutoreleasedReturnValue(), v16 = +[SearchUIUtilities resultIsSiriAction:](SearchUIUtilities, "resultIsSiriAction:", v15), v15, !v16))
+  if ([MEMORY[0x1E697A0C8] canPreviewItem:v14] && (objc_msgSend(rowModel, "identifyingResult"), v15 = objc_claimAutoreleasedReturnValue(), v16 = +[SearchUIUtilities resultIsSiriAction:](SearchUIUtilities, "resultIsSiriAction:", v15), v15, !v16))
   {
     v21 = objc_alloc(MEMORY[0x1E697A0C8]);
     v24[0] = v14;
@@ -154,22 +154,22 @@ id __80__SearchUIOpenCoreSpotlightItemHandler_performCommand_triggerEvent_enviro
   else
   {
     v17 = [SearchUIUtilities bundleIdentifierForApp:4];
-    v18 = [v10 isEqualToString:v17];
+    v18 = [applicationBundleIdentifier isEqualToString:v17];
 
     if (v18)
     {
-      v19 = [SearchUICalendarStore eventControllerWithIdentifier:v9];
+      v19 = [SearchUICalendarStore eventControllerWithIdentifier:coreSpotlightIdentifier];
 LABEL_8:
       v20 = v19;
       goto LABEL_11;
     }
 
-    if (v10)
+    if (applicationBundleIdentifier)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = [[SearchUIFallbackPeekViewController alloc] initWithDetailedRowModel:v8];
+        v19 = [[SearchUIFallbackPeekViewController alloc] initWithDetailedRowModel:rowModel];
         goto LABEL_8;
       }
     }
@@ -186,33 +186,33 @@ LABEL_11:
 {
   v18.receiver = self;
   v18.super_class = SearchUIOpenCoreSpotlightItemHandler;
-  v3 = [(SearchUICommandHandler *)&v18 itemProvider];
-  v4 = v3;
-  if (v3)
+  itemProvider = [(SearchUICommandHandler *)&v18 itemProvider];
+  v4 = itemProvider;
+  if (itemProvider)
   {
-    v5 = v3;
+    v5 = itemProvider;
   }
 
   else
   {
     v6 = objc_opt_new();
-    v7 = [(SearchUICommandHandler *)self rowModel];
-    v8 = [v7 identifyingResult];
-    v9 = [v8 itemProviderFileTypes];
-    [v6 setFileProviderTypeIdentifiers:v9];
+    rowModel = [(SearchUICommandHandler *)self rowModel];
+    identifyingResult = [rowModel identifyingResult];
+    itemProviderFileTypes = [identifyingResult itemProviderFileTypes];
+    [v6 setFileProviderTypeIdentifiers:itemProviderFileTypes];
 
-    v10 = [(SearchUICommandHandler *)self rowModel];
-    v11 = [v10 identifyingResult];
-    v12 = [v11 itemProviderDataTypes];
-    [v6 setDataProviderTypeIdentifiers:v12];
+    rowModel2 = [(SearchUICommandHandler *)self rowModel];
+    identifyingResult2 = [rowModel2 identifyingResult];
+    itemProviderDataTypes = [identifyingResult2 itemProviderDataTypes];
+    [v6 setDataProviderTypeIdentifiers:itemProviderDataTypes];
 
-    v13 = [(SearchUICommandHandler *)self command];
-    v14 = [v13 applicationBundleIdentifier];
-    [v6 setApplicationBundleIdentifier:v14];
+    command = [(SearchUICommandHandler *)self command];
+    applicationBundleIdentifier = [command applicationBundleIdentifier];
+    [v6 setApplicationBundleIdentifier:applicationBundleIdentifier];
 
-    v15 = [(SearchUICommandHandler *)self command];
-    v16 = [v15 coreSpotlightIdentifier];
-    [v6 setCoreSpotlightIdentifier:v16];
+    command2 = [(SearchUICommandHandler *)self command];
+    coreSpotlightIdentifier = [command2 coreSpotlightIdentifier];
+    [v6 setCoreSpotlightIdentifier:coreSpotlightIdentifier];
 
     v5 = [SearchUIItemProviderUtilities itemProviderForItem:v6];
   }
@@ -222,10 +222,10 @@ LABEL_11:
 
 - (id)destinationApplicationBundleIdentifier
 {
-  v2 = [(SearchUICommandHandler *)self command];
-  v3 = [v2 applicationBundleIdentifier];
+  command = [(SearchUICommandHandler *)self command];
+  applicationBundleIdentifier = [command applicationBundleIdentifier];
 
-  return v3;
+  return applicationBundleIdentifier;
 }
 
 @end

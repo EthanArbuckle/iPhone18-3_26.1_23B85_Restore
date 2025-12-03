@@ -1,8 +1,8 @@
 @interface RBSProcessLimitations
 - (NSString)description;
 - (RBSProcessLimitations)init;
-- (RBSProcessLimitations)initWithRBSXPCCoder:(id)a3;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (RBSProcessLimitations)initWithRBSXPCCoder:(id)coder;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSProcessLimitations
@@ -70,22 +70,22 @@ uint64_t __36__RBSProcessLimitations_description__block_invoke()
   return [v2 setUnitsStyle:1];
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(RBSProcessLimitations *)self runTime];
-  [v4 encodeDouble:@"_runTime" forKey:?];
+  [coderCopy encodeDouble:@"_runTime" forKey:?];
 }
 
-- (RBSProcessLimitations)initWithRBSXPCCoder:(id)a3
+- (RBSProcessLimitations)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = RBSProcessLimitations;
   v5 = [(RBSProcessLimitations *)&v8 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"_runTime"];
+    [coderCopy decodeDoubleForKey:@"_runTime"];
     v5->_runTime = v6;
   }
 

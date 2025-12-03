@@ -120,14 +120,14 @@
   v28 = sin(v26 + v26);
   v29 = [CIVector vectorWithX:v27.__sinval * v27.__sinval / ((v11 + v11) * v11) + v27.__cosval * v27.__cosval / ((v25 + v25) * v25) Y:(v28 / (v11 * 4.0 * v11) - v28 / (v25 * 4.0 * v25)) Z:v27.__cosval * v27.__cosval / ((v11 + v11) * v11) + v27.__sinval * v27.__sinval / ((v25 + v25) * v25) W:v37];
   inputCenter1 = self->inputCenter1;
-  v31 = [(CIPortraitLightingStrobe *)self _strobeKernel];
+  _strobeKernel = [(CIPortraitLightingStrobe *)self _strobeKernel];
   [(CIImage *)self->inputImage extent];
   v38[0] = self->inputImage;
   v38[1] = inputCenter1;
   inputStrength = self->inputStrength;
   v38[2] = v29;
   v38[3] = inputStrength;
-  return [v31 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v38, 4), v33, v34, v35, v36}];
+  return [_strobeKernel applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v38, 4), v33, v34, v35, v36}];
 }
 
 @end

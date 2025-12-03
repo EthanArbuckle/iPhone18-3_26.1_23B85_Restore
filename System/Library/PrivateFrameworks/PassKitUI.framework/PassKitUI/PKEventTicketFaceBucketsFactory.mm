@@ -1,35 +1,35 @@
 @interface PKEventTicketFaceBucketsFactory
-+ (id)auxiliaryFieldsForPass:(id)a3;
-+ (id)headerFieldsForPass:(id)a3;
-+ (id)primaryFieldsForPass:(id)a3;
-+ (id)secondaryFieldsForPass:(id)a3;
++ (id)auxiliaryFieldsForPass:(id)pass;
++ (id)headerFieldsForPass:(id)pass;
++ (id)primaryFieldsForPass:(id)pass;
++ (id)secondaryFieldsForPass:(id)pass;
 @end
 
 @implementation PKEventTicketFaceBucketsFactory
 
-+ (id)headerFieldsForPass:(id)a3
++ (id)headerFieldsForPass:(id)pass
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  passCopy = pass;
   v4 = objc_alloc_init(MEMORY[0x1E69B8A50]);
   [v4 setType:0];
   v5 = *MEMORY[0x1E69BBC58];
-  v6 = [v3 eventDateInfoForSemanticKey:*MEMORY[0x1E69BBCB8]];
-  v7 = [v6 date];
-  v8 = v7;
-  if (v7)
+  v6 = [passCopy eventDateInfoForSemanticKey:*MEMORY[0x1E69BBCB8]];
+  date = [v6 date];
+  v8 = date;
+  if (date)
   {
-    v9 = v7;
+    v9 = date;
   }
 
   else
   {
-    v9 = [v3 dateForSemanticKey:v5];
+    v9 = [passCopy dateForSemanticKey:v5];
   }
 
   v10 = v9;
 
-  v11 = [v3 timeZoneForSemanticKey:*MEMORY[0x1E69BBF88]];
+  v11 = [passCopy timeZoneForSemanticKey:*MEMORY[0x1E69BBF88]];
   v12 = v11;
   if (v11)
   {
@@ -38,22 +38,22 @@
 
   else
   {
-    v14 = [v6 timeZone];
-    v15 = v14;
-    if (v14)
+    timeZone = [v6 timeZone];
+    v15 = timeZone;
+    if (timeZone)
     {
-      v16 = v14;
+      localTimeZone = timeZone;
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFE8] localTimeZone];
+      localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
     }
 
-    v13 = v16;
+    v13 = localTimeZone;
   }
 
-  v17 = [v3 dateForSemanticKey:*MEMORY[0x1E69BBC50]];
+  v17 = [passCopy dateForSemanticKey:*MEMORY[0x1E69BBC50]];
   [v4 setKey:v5];
   if (v10)
   {
@@ -61,10 +61,10 @@
     if (v17)
     {
       v31 = v5;
-      v19 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
-      [v19 setTimeZone:v13];
-      v20 = [v19 component:4 fromDate:v10];
-      if (v20 == [v19 component:4 fromDate:v17])
+      autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+      [autoupdatingCurrentCalendar setTimeZone:v13];
+      v20 = [autoupdatingCurrentCalendar component:4 fromDate:v10];
+      if (v20 == [autoupdatingCurrentCalendar component:4 fromDate:v17])
       {
         v21 = PKDateRangeStringFromDateToDate(v10, v17, 0, 0, 0, v13);
       }
@@ -110,8 +110,8 @@ LABEL_28:
     [v4 setLabel:v25];
 
 LABEL_29:
-    v27 = [v18 pk_uppercaseStringForPreferredLocale];
-    [v4 setUnformattedValue:v27];
+    pk_uppercaseStringForPreferredLocale = [v18 pk_uppercaseStringForPreferredLocale];
+    [v4 setUnformattedValue:pk_uppercaseStringForPreferredLocale];
 
     goto LABEL_30;
   }
@@ -142,11 +142,11 @@ LABEL_31:
   return v28;
 }
 
-+ (id)primaryFieldsForPass:(id)a3
++ (id)primaryFieldsForPass:(id)pass
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [PKEventTicketFaceBucketsFactory secondaryFieldsForPass:v3];
+  passCopy = pass;
+  v4 = [PKEventTicketFaceBucketsFactory secondaryFieldsForPass:passCopy];
   v5 = [v4 count];
 
   if (v5 >= 1)
@@ -158,10 +158,10 @@ LABEL_31:
     }
 
     v7 = *MEMORY[0x1E69BBD18];
-    v10 = [v3 seatingInformation];
-    v11 = [v10 firstSeat];
-    v12 = v11;
-    if (v11 && ([v11 type], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+    seatingInformation = [passCopy seatingInformation];
+    firstSeat = [seatingInformation firstSeat];
+    v12 = firstSeat;
+    if (firstSeat && ([firstSeat type], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v8 = v13;
     }
@@ -170,7 +170,7 @@ LABEL_31:
     {
       v14 = *MEMORY[0x1E69BBED0];
 
-      v15 = [v3 stringForSemanticKey:v14];
+      v15 = [passCopy stringForSemanticKey:v14];
       if (v15)
       {
         v8 = v15;
@@ -181,12 +181,12 @@ LABEL_31:
       {
         v7 = *MEMORY[0x1E69BBD30];
 
-        v8 = [v3 stringForSemanticKey:v7];
+        v8 = [passCopy stringForSemanticKey:v7];
         if (!v8 && v5 != 3)
         {
           v18 = *MEMORY[0x1E69BBE18];
 
-          v8 = [v3 stringForSemanticKey:v18];
+          v8 = [passCopy stringForSemanticKey:v18];
           v7 = v18;
         }
 
@@ -218,28 +218,28 @@ LABEL_20:
   v7 = objc_alloc_init(MEMORY[0x1E69B8A50]);
   [v7 setType:1];
   v8 = *MEMORY[0x1E69BBD28];
-  v9 = [v3 stringForSemanticKey:v8];
+  v9 = [passCopy stringForSemanticKey:v8];
   if (!v9)
   {
     v16 = *MEMORY[0x1E69BBD40];
 
-    v17 = [v3 stringForSemanticKey:v16];
+    v17 = [passCopy stringForSemanticKey:v16];
     if (v17)
     {
-      v10 = v17;
+      seatingInformation = v17;
       v8 = v16;
       goto LABEL_13;
     }
 
     v8 = *MEMORY[0x1E69BBE18];
 
-    v9 = [v3 stringForSemanticKey:v8];
+    v9 = [passCopy stringForSemanticKey:v8];
   }
 
-  v10 = v9;
+  seatingInformation = v9;
 LABEL_13:
   [v7 setKey:v8];
-  [v7 setUnformattedValue:v10];
+  [v7 setUnformattedValue:seatingInformation];
   v21 = v7;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
 LABEL_22:
@@ -249,14 +249,14 @@ LABEL_23:
   return v6;
 }
 
-+ (id)secondaryFieldsForPass:(id)a3
++ (id)secondaryFieldsForPass:(id)pass
 {
-  v3 = a3;
-  v4 = [v3 seatingInformation];
-  v5 = [v4 firstSeat];
+  passCopy = pass;
+  seatingInformation = [passCopy seatingInformation];
+  firstSeat = [seatingInformation firstSeat];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [v5 designation];
-  if (v7)
+  designation = [firstSeat designation];
+  if (designation)
   {
     v8 = *MEMORY[0x1E69BBD00];
     v9 = objc_alloc_init(MEMORY[0x1E69B8A50]);
@@ -266,13 +266,13 @@ LABEL_23:
     v10 = PKLocalizedTicketingString(&cfstr_LabelSeatNumbe.isa);
     [v9 setLabel:v10];
 
-    v11 = [v7 pk_uppercaseStringForPreferredLocale];
-    [v9 setUnformattedValue:v11];
+    pk_uppercaseStringForPreferredLocale = [designation pk_uppercaseStringForPreferredLocale];
+    [v9 setUnformattedValue:pk_uppercaseStringForPreferredLocale];
 
     [v6 addObject:v9];
   }
 
-  v12 = [v5 row];
+  v12 = [firstSeat row];
 
   if (v12)
   {
@@ -284,15 +284,15 @@ LABEL_23:
     v15 = PKLocalizedTicketingString(&cfstr_LabelSeatRow.isa);
     [v14 setLabel:v15];
 
-    v16 = [v12 pk_uppercaseStringForPreferredLocale];
-    [v14 setUnformattedValue:v16];
+    pk_uppercaseStringForPreferredLocale2 = [v12 pk_uppercaseStringForPreferredLocale];
+    [v14 setUnformattedValue:pk_uppercaseStringForPreferredLocale2];
 
     [v6 addObject:v14];
   }
 
-  v17 = [v5 section];
+  section = [firstSeat section];
 
-  if (v17)
+  if (section)
   {
     v18 = *MEMORY[0x1E69BBD10];
     v19 = objc_alloc_init(MEMORY[0x1E69B8A50]);
@@ -302,15 +302,15 @@ LABEL_23:
     v20 = PKLocalizedTicketingString(&cfstr_LabelSeatSecti.isa);
     [v19 setLabel:v20];
 
-    v21 = [v17 pk_uppercaseStringForPreferredLocale];
-    [v19 setUnformattedValue:v21];
+    pk_uppercaseStringForPreferredLocale3 = [section pk_uppercaseStringForPreferredLocale];
+    [v19 setUnformattedValue:pk_uppercaseStringForPreferredLocale3];
 
     [v6 addObject:v19];
   }
 
-  v22 = [v5 aisle];
+  aisle = [firstSeat aisle];
 
-  if (v22)
+  if (aisle)
   {
     v23 = *MEMORY[0x1E69BBCF0];
     v24 = objc_alloc_init(MEMORY[0x1E69B8A50]);
@@ -320,15 +320,15 @@ LABEL_23:
     v25 = PKLocalizedTicketingString(&cfstr_LabelSeatAisle.isa);
     [v24 setLabel:v25];
 
-    v26 = [v22 pk_uppercaseStringForPreferredLocale];
-    [v24 setUnformattedValue:v26];
+    pk_uppercaseStringForPreferredLocale4 = [aisle pk_uppercaseStringForPreferredLocale];
+    [v24 setUnformattedValue:pk_uppercaseStringForPreferredLocale4];
 
     [v6 addObject:v24];
   }
 
-  v27 = [v5 level];
+  level = [firstSeat level];
 
-  if (v27)
+  if (level)
   {
     v28 = *MEMORY[0x1E69BBCF8];
     v29 = objc_alloc_init(MEMORY[0x1E69B8A50]);
@@ -338,14 +338,14 @@ LABEL_23:
     v30 = PKLocalizedTicketingString(&cfstr_LabelSeatLevel.isa);
     [v29 setLabel:v30];
 
-    v31 = [v27 pk_uppercaseStringForPreferredLocale];
-    [v29 setUnformattedValue:v31];
+    pk_uppercaseStringForPreferredLocale5 = [level pk_uppercaseStringForPreferredLocale];
+    [v29 setUnformattedValue:pk_uppercaseStringForPreferredLocale5];
 
     [v6 addObject:v29];
   }
 
   v32 = *MEMORY[0x1E69BBEE8];
-  v33 = [v3 stringForSemanticKey:*MEMORY[0x1E69BBEE8]];
+  v33 = [passCopy stringForSemanticKey:*MEMORY[0x1E69BBEE8]];
 
   if (v33)
   {
@@ -356,14 +356,14 @@ LABEL_23:
     v35 = PKLocalizedTicketingString(&cfstr_LabelEntranceP.isa);
     [v34 setLabel:v35];
 
-    v36 = [v33 pk_uppercaseStringForPreferredLocale];
-    [v34 setUnformattedValue:v36];
+    pk_uppercaseStringForPreferredLocale6 = [v33 pk_uppercaseStringForPreferredLocale];
+    [v34 setUnformattedValue:pk_uppercaseStringForPreferredLocale6];
 
     [v6 addObject:v34];
   }
 
   v37 = *MEMORY[0x1E69BBED8];
-  v38 = [v3 stringForSemanticKey:*MEMORY[0x1E69BBED8]];
+  v38 = [passCopy stringForSemanticKey:*MEMORY[0x1E69BBED8]];
 
   if (v38)
   {
@@ -374,14 +374,14 @@ LABEL_23:
     v40 = PKLocalizedTicketingString(&cfstr_LabelEntranceD.isa);
     [v39 setLabel:v40];
 
-    v41 = [v38 pk_uppercaseStringForPreferredLocale];
-    [v39 setUnformattedValue:v41];
+    pk_uppercaseStringForPreferredLocale7 = [v38 pk_uppercaseStringForPreferredLocale];
+    [v39 setUnformattedValue:pk_uppercaseStringForPreferredLocale7];
 
     [v6 addObject:v39];
   }
 
   v42 = *MEMORY[0x1E69BBEE0];
-  v43 = [v3 stringForSemanticKey:*MEMORY[0x1E69BBEE0]];
+  v43 = [passCopy stringForSemanticKey:*MEMORY[0x1E69BBEE0]];
 
   if (v43)
   {
@@ -392,8 +392,8 @@ LABEL_23:
     v45 = PKLocalizedTicketingString(&cfstr_LabelEntranceG.isa);
     [v44 setLabel:v45];
 
-    v46 = [v43 pk_uppercaseStringForPreferredLocale];
-    [v44 setUnformattedValue:v46];
+    pk_uppercaseStringForPreferredLocale8 = [v43 pk_uppercaseStringForPreferredLocale];
+    [v44 setUnformattedValue:pk_uppercaseStringForPreferredLocale8];
 
     [v6 addObject:v44];
   }
@@ -407,14 +407,14 @@ LABEL_23:
   return v6;
 }
 
-+ (id)auxiliaryFieldsForPass:(id)a3
++ (id)auxiliaryFieldsForPass:(id)pass
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  passCopy = pass;
   v4 = objc_alloc_init(MEMORY[0x1E69B8A50]);
   [v4 setType:3];
   v5 = *MEMORY[0x1E69BBEF0];
-  v6 = [v3 stringForSemanticKey:v5];
+  v6 = [passCopy stringForSemanticKey:v5];
   if (v6)
   {
     goto LABEL_2;
@@ -422,12 +422,12 @@ LABEL_23:
 
   v8 = *MEMORY[0x1E69BBF08];
 
-  v9 = [v3 stringForSemanticKey:v8];
+  v9 = [passCopy stringForSemanticKey:v8];
   if (!v9)
   {
     v5 = *MEMORY[0x1E69BBF10];
 
-    v6 = [v3 stringForSemanticKey:v5];
+    v6 = [passCopy stringForSemanticKey:v5];
 LABEL_2:
     v7 = v6;
     goto LABEL_5;
@@ -437,7 +437,7 @@ LABEL_2:
   v5 = v8;
 LABEL_5:
   [v4 setKey:v5];
-  v10 = [v3 stringForSemanticKey:*MEMORY[0x1E69BBD20]];
+  v10 = [passCopy stringForSemanticKey:*MEMORY[0x1E69BBD20]];
   [v4 setLabel:v10];
 
   [v4 setUnformattedValue:v7];

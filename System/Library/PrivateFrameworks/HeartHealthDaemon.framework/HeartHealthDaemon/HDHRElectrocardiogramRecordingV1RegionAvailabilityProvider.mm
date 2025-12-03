@@ -1,74 +1,74 @@
 @interface HDHRElectrocardiogramRecordingV1RegionAvailabilityProvider
-- (HDHRElectrocardiogramRecordingV1RegionAvailabilityProvider)initWithRegionAvailabilityProvider:(id)a3 pairedDeviceCapabilityProvider:(id)a4;
+- (HDHRElectrocardiogramRecordingV1RegionAvailabilityProvider)initWithRegionAvailabilityProvider:(id)provider pairedDeviceCapabilityProvider:(id)capabilityProvider;
 - (HDRegionAvailabilityProvidingDelegate)delegate;
-- (id)onboardingEligibilityForCountryCode:(id)a3;
-- (id)onboardingEligibilityForCountryCode:(id)a3 device:(id)a4;
+- (id)onboardingEligibilityForCountryCode:(id)code;
+- (id)onboardingEligibilityForCountryCode:(id)code device:(id)device;
 @end
 
 @implementation HDHRElectrocardiogramRecordingV1RegionAvailabilityProvider
 
-- (HDHRElectrocardiogramRecordingV1RegionAvailabilityProvider)initWithRegionAvailabilityProvider:(id)a3 pairedDeviceCapabilityProvider:(id)a4
+- (HDHRElectrocardiogramRecordingV1RegionAvailabilityProvider)initWithRegionAvailabilityProvider:(id)provider pairedDeviceCapabilityProvider:(id)capabilityProvider
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  capabilityProviderCopy = capabilityProvider;
   v12.receiver = self;
   v12.super_class = HDHRElectrocardiogramRecordingV1RegionAvailabilityProvider;
   v9 = [(HDHRElectrocardiogramRecordingV1RegionAvailabilityProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_backingProvider, a3);
-    objc_storeStrong(&v10->_capabilityProvider, a4);
+    objc_storeStrong(&v9->_backingProvider, provider);
+    objc_storeStrong(&v10->_capabilityProvider, capabilityProvider);
   }
 
   return v10;
 }
 
-- (id)onboardingEligibilityForCountryCode:(id)a3
+- (id)onboardingEligibilityForCountryCode:(id)code
 {
-  v4 = a3;
-  v5 = [(HDPairedDeviceCapabilityProviding *)self->_capabilityProvider activePairedDevice];
-  if (v5)
+  codeCopy = code;
+  activePairedDevice = [(HDPairedDeviceCapabilityProviding *)self->_capabilityProvider activePairedDevice];
+  if (activePairedDevice)
   {
-    v6 = [(HDHRElectrocardiogramRecordingV1RegionAvailabilityProvider *)self onboardingEligibilityForCountryCode:v4 device:v5];
+    v6 = [(HDHRElectrocardiogramRecordingV1RegionAvailabilityProvider *)self onboardingEligibilityForCountryCode:codeCopy device:activePairedDevice];
   }
 
   else
   {
     v7 = objc_alloc(MEMORY[0x277CCD3F8]);
-    v8 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v9 = [v8 currentOSBuild];
-    v6 = [v7 initWithIneligibilityReasons:2 countryAvailabilityVersion:v9];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    currentOSBuild = [mEMORY[0x277CCDD30] currentOSBuild];
+    v6 = [v7 initWithIneligibilityReasons:2 countryAvailabilityVersion:currentOSBuild];
   }
 
   return v6;
 }
 
-- (id)onboardingEligibilityForCountryCode:(id)a3 device:(id)a4
+- (id)onboardingEligibilityForCountryCode:(id)code device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HDObservableRegionAvailabilityProviding *)self->_backingProvider regionAvailabilityForDevice:v7];
-  v9 = [v8 allowedCountries];
-  v10 = [v9 remoteState];
+  codeCopy = code;
+  deviceCopy = device;
+  v8 = [(HDObservableRegionAvailabilityProviding *)self->_backingProvider regionAvailabilityForDevice:deviceCopy];
+  allowedCountries = [v8 allowedCountries];
+  remoteState = [allowedCountries remoteState];
 
-  if (v10 != 4)
+  if (remoteState != 4)
   {
-    v27 = [(HDObservableRegionAvailabilityProviding *)self->_backingProvider onboardingEligibilityForCountryCode:v6 device:v7];
+    v27 = [(HDObservableRegionAvailabilityProviding *)self->_backingProvider onboardingEligibilityForCountryCode:codeCopy device:deviceCopy];
     goto LABEL_22;
   }
 
   v11 = MEMORY[0x277CCACA8];
-  v12 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v13 = [v12 currentOSBuild];
-  v14 = [v8 version];
-  v15 = [v11 stringWithFormat:@"%@.%@", v13, v14];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  currentOSBuild = [mEMORY[0x277CCDD30] currentOSBuild];
+  version = [v8 version];
+  v15 = [v11 stringWithFormat:@"%@.%@", currentOSBuild, version];
 
-  if (v6)
+  if (codeCopy)
   {
-    v16 = [v8 allowedCountries];
-    v17 = [v16 localCountrySet];
-    v18 = [v17 containsCountryCode:v6];
+    allowedCountries2 = [v8 allowedCountries];
+    localCountrySet = [allowedCountries2 localCountrySet];
+    v18 = [localCountrySet containsCountryCode:codeCopy];
 
     if (v18)
     {
@@ -80,13 +80,13 @@
       v19 = 8;
     }
 
-    v20 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v21 = [v20 isAppleWatch];
+    mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+    isAppleWatch = [mEMORY[0x277CCDD30]2 isAppleWatch];
 
-    v22 = v6;
-    v23 = [v7 valueForProperty:*MEMORY[0x277D2BC20]];
+    v22 = codeCopy;
+    v23 = [deviceCopy valueForProperty:*MEMORY[0x277D2BC20]];
     v24 = v23;
-    if (v21)
+    if (isAppleWatch)
     {
       if (v23)
       {

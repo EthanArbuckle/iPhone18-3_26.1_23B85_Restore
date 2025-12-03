@@ -1,8 +1,8 @@
 @interface ICLearnMoreViewController
-+ (void)showHelpWithPresentingViewController:(id)a3;
-- (ICLearnMoreViewController)initWithNibName:(id)a3 bundle:(id)a4;
++ (void)showHelpWithPresentingViewController:(id)controller;
+- (ICLearnMoreViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIScrollView)scrollView;
-- (void)didTapDoneButton:(id)a3;
+- (void)didTapDoneButton:(id)button;
 - (void)viewDidLoad;
 @end
 
@@ -20,26 +20,26 @@
   v4.receiver = self;
   v4.super_class = type metadata accessor for LearnMoreViewController();
   v2 = v4.receiver;
-  v3 = [(ICLearnMoreViewController *)&v4 viewDidLoad];
-  (*((swift_isaMask & *v2) + 0xD8))(v3);
+  viewDidLoad = [(ICLearnMoreViewController *)&v4 viewDidLoad];
+  (*((swift_isaMask & *v2) + 0xD8))(viewDidLoad);
   sub_1004B7BD4();
   sub_1004B837C();
   sub_1004B817C();
   sub_1004B7F94();
 }
 
-+ (void)showHelpWithPresentingViewController:(id)a3
++ (void)showHelpWithPresentingViewController:(id)controller
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  sub_1004B7A70(v4);
+  controllerCopy = controller;
+  sub_1004B7A70(controllerCopy);
 }
 
-- (void)didTapDoneButton:(id)a3
+- (void)didTapDoneButton:(id)button
 {
-  if (a3)
+  if (button)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -49,7 +49,7 @@
   {
     v6 = 0u;
     v7 = 0u;
-    v5 = self;
+    selfCopy2 = self;
   }
 
   [(ICLearnMoreViewController *)self dismissViewControllerAnimated:1 completion:0, v6, v7];
@@ -57,9 +57,9 @@
   sub_10027CAAC(&v6);
 }
 
-- (ICLearnMoreViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICLearnMoreViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -71,8 +71,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1004B8E0C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1004B8E0C(v5, v7, bundle);
 }
 
 @end

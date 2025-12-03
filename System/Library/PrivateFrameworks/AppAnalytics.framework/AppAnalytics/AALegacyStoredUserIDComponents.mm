@@ -1,6 +1,6 @@
 @interface AALegacyStoredUserIDComponents
 - (AALegacyStoredUserIDComponents)init;
-- (AALegacyStoredUserIDComponents)initWithID:(id)a3 rotationPeriod:(int64_t)a4 startDate:(id)a5 lastRotation:(id)a6;
+- (AALegacyStoredUserIDComponents)initWithID:(id)d rotationPeriod:(int64_t)period startDate:(id)date lastRotation:(id)rotation;
 - (NSDate)lastRotationDate;
 - (NSDate)startDate;
 - (NSUUID)userID;
@@ -54,12 +54,12 @@
   return v10;
 }
 
-- (AALegacyStoredUserIDComponents)initWithID:(id)a3 rotationPeriod:(int64_t)a4 startDate:(id)a5 lastRotation:(id)a6
+- (AALegacyStoredUserIDComponents)initWithID:(id)d rotationPeriod:(int64_t)period startDate:(id)date lastRotation:(id)rotation
 {
-  v33[1] = a3;
-  v33[2] = a5;
-  v35 = a4;
-  v36 = self;
+  v33[1] = d;
+  v33[2] = date;
+  periodCopy = period;
+  selfCopy = self;
   ObjectType = swift_getObjectType();
   v6 = type metadata accessor for LegacyStoredUserIDComponents();
   v7 = (v6 - 8);
@@ -87,7 +87,7 @@
   v24(&v10[v7[8]], v18, v11);
   v24(&v10[v7[9]], v16, v11);
   v25 = ObjectType;
-  *&v10[v7[7]] = v35;
+  *&v10[v7[7]] = periodCopy;
   v26 = objc_allocWithZone(v25);
   sub_1B6A47A08(v10, v26 + OBJC_IVAR___AALegacyStoredUserIDComponents_legacyStoredUserIDComponents);
   v37.receiver = v26;
@@ -98,7 +98,7 @@
   v28(v18, v11);
   (*(v20 + 8))(v23, v33[0]);
   sub_1B6A47A6C(v10);
-  v29 = v36;
+  v29 = selfCopy;
   swift_getObjectType();
   v30 = *((*MEMORY[0x1E69E7D40] & v29->super.isa) + 0x30);
   v31 = *((*MEMORY[0x1E69E7D40] & v29->super.isa) + 0x34);

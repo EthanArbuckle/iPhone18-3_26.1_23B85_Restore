@@ -1,14 +1,14 @@
 @interface ImageViewWithShadow
-- (_TtC18HealthExperienceUI19ImageViewWithShadow)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI19ImageViewWithShadow)initWithFrame:(CGRect)a3;
-- (_TtC18HealthExperienceUI19ImageViewWithShadow)initWithImage:(id)a3;
-- (_TtC18HealthExperienceUI19ImageViewWithShadow)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (_TtC18HealthExperienceUI19ImageViewWithShadow)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI19ImageViewWithShadow)initWithFrame:(CGRect)frame;
+- (_TtC18HealthExperienceUI19ImageViewWithShadow)initWithImage:(id)image;
+- (_TtC18HealthExperienceUI19ImageViewWithShadow)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 - (void)layoutSubviews;
 @end
 
 @implementation ImageViewWithShadow
 
-- (_TtC18HealthExperienceUI19ImageViewWithShadow)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI19ImageViewWithShadow)initWithCoder:(id)coder
 {
   result = sub_1BA4A8018();
   __break(1u);
@@ -21,29 +21,29 @@
   v10.super_class = type metadata accessor for ImageViewWithShadow();
   v2 = v10.receiver;
   [(ImageViewWithShadow *)&v10 layoutSubviews];
-  v3 = [v2 layer];
+  layer = [v2 layer];
   [v2 bounds];
-  v8 = [objc_opt_self() bezierPathWithRect_];
-  v9 = [v8 CGPath];
+  bezierPathWithRect_ = [objc_opt_self() bezierPathWithRect_];
+  cGPath = [bezierPathWithRect_ CGPath];
 
-  [v3 setShadowPath_];
+  [layer setShadowPath_];
 }
 
-- (_TtC18HealthExperienceUI19ImageViewWithShadow)initWithImage:(id)a3
+- (_TtC18HealthExperienceUI19ImageViewWithShadow)initWithImage:(id)image
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC18HealthExperienceUI19ImageViewWithShadow)initWithImage:(id)a3 highlightedImage:(id)a4
+- (_TtC18HealthExperienceUI19ImageViewWithShadow)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC18HealthExperienceUI19ImageViewWithShadow)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI19ImageViewWithShadow)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

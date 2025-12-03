@@ -1,15 +1,15 @@
 @interface DOCGoToSuggestionsCollectionView
-- (_TtC26DocumentManagerExecutablesP33_03A6F4A3946F5CAF17EC184247B3DEF332DOCGoToSuggestionsCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (_TtC26DocumentManagerExecutablesP33_03A6F4A3946F5CAF17EC184247B3DEF332DOCGoToSuggestionsCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 @end
 
 @implementation DOCGoToSuggestionsCollectionView
 
-- (_TtC26DocumentManagerExecutablesP33_03A6F4A3946F5CAF17EC184247B3DEF332DOCGoToSuggestionsCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtC26DocumentManagerExecutablesP33_03A6F4A3946F5CAF17EC184247B3DEF332DOCGoToSuggestionsCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutablesP33_03A6F4A3946F5CAF17EC184247B3DEF332DOCGoToSuggestionsCollectionView_focusableCollectionViewDelegate);
   *v10 = 0;
   v10[1] = 0;
@@ -25,7 +25,7 @@
   *(&self->super.super.super.super.super.isa + v11) = v12;
   v17.receiver = self;
   v17.super_class = type metadata accessor for DOCGoToSuggestionsCollectionView();
-  return [(DOCGoToSuggestionsCollectionView *)&v17 initWithFrame:a4 collectionViewLayout:x, y, width, height];
+  return [(DOCGoToSuggestionsCollectionView *)&v17 initWithFrame:layout collectionViewLayout:x, y, width, height];
 }
 
 @end

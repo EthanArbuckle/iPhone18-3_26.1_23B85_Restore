@@ -1,8 +1,8 @@
 @interface GKDashboardLeaderboardScoreHeaderView
 - (SEL)timeScopeAction;
 - (void)awakeFromNib;
-- (void)setTimeScopeAction:(SEL)a3;
-- (void)timeScopePressed:(id)a3;
+- (void)setTimeScopeAction:(SEL)action;
+- (void)timeScopePressed:(id)pressed;
 @end
 
 @implementation GKDashboardLeaderboardScoreHeaderView
@@ -15,22 +15,22 @@
   [(GKDashboardLeaderboardScoreHeaderView *)self setClipsToBounds:0];
 }
 
-- (void)timeScopePressed:(id)a3
+- (void)timeScopePressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   timeScopeTarget = self->_timeScopeTarget;
   if (timeScopeTarget)
   {
     timeScopeAction = self->_timeScopeAction;
     if (timeScopeAction)
     {
-      v7 = v4;
+      v7 = pressedCopy;
       timeScopeTarget = [timeScopeTarget _gkPerformSelector:timeScopeAction withObject:self->_timeScopeButton];
-      v4 = v7;
+      pressedCopy = v7;
     }
   }
 
-  MEMORY[0x2821F96F8](timeScopeTarget, v4);
+  MEMORY[0x2821F96F8](timeScopeTarget, pressedCopy);
 }
 
 - (SEL)timeScopeAction
@@ -46,19 +46,19 @@
   }
 }
 
-- (void)setTimeScopeAction:(SEL)a3
+- (void)setTimeScopeAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_timeScopeAction = v3;
+  self->_timeScopeAction = actionCopy;
 }
 
 @end

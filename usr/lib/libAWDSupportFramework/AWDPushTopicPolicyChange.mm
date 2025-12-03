@@ -1,15 +1,15 @@
 @interface AWDPushTopicPolicyChange
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasChange:(BOOL)a3;
-- (void)setHasDidCauseFilterChange:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasChange:(BOOL)change;
+- (void)setHasDidCauseFilterChange:(BOOL)change;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDPushTopicPolicyChange
@@ -23,9 +23,9 @@
   [(AWDPushTopicPolicyChange *)&v3 dealloc];
 }
 
-- (void)setHasChange:(BOOL)a3
+- (void)setHasChange:(BOOL)change
 {
-  if (a3)
+  if (change)
   {
     v3 = 2;
   }
@@ -38,9 +38,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDidCauseFilterChange:(BOOL)a3
+- (void)setHasDidCauseFilterChange:(BOOL)change
 {
-  if (a3)
+  if (change)
   {
     v3 = 4;
   }
@@ -62,40 +62,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   guid = self->_guid;
   if (guid)
   {
-    [v3 setObject:guid forKey:@"guid"];
+    [dictionary setObject:guid forKey:@"guid"];
   }
 
   topic = self->_topic;
   if (topic)
   {
-    [v3 setObject:topic forKey:@"topic"];
+    [dictionary setObject:topic forKey:@"topic"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_change), @"change"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_change), @"change"}];
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_didCauseFilterChange), @"didCauseFilterChange"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_didCauseFilterChange), @"didCauseFilterChange"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -129,42 +129,42 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 40) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 40) |= 1u;
   }
 
   if (self->_guid)
   {
-    [a3 setGuid:?];
+    [to setGuid:?];
   }
 
   if (self->_topic)
   {
-    [a3 setTopic:?];
+    [to setTopic:?];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 4) = self->_change;
-    *(a3 + 40) |= 2u;
+    *(to + 4) = self->_change;
+    *(to + 40) |= 2u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(a3 + 5) = self->_didCauseFilterChange;
-    *(a3 + 40) |= 4u;
+    *(to + 5) = self->_didCauseFilterChange;
+    *(to + 40) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -172,8 +172,8 @@
     *(v5 + 40) |= 1u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_guid copyWithZone:a3];
-  *(v6 + 32) = [(NSString *)self->_topic copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_guid copyWithZone:zone];
+  *(v6 + 32) = [(NSString *)self->_topic copyWithZone:zone];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -191,21 +191,21 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 40);
+    v6 = *(equal + 40);
     if (*&self->_has)
     {
-      if ((*(a3 + 40) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 40) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_20;
       }
     }
 
-    else if (*(a3 + 40))
+    else if (*(equal + 40))
     {
 LABEL_20:
       LOBYTE(v5) = 0;
@@ -213,28 +213,28 @@ LABEL_20:
     }
 
     guid = self->_guid;
-    if (!(guid | *(a3 + 3)) || (v5 = [(NSString *)guid isEqual:?]) != 0)
+    if (!(guid | *(equal + 3)) || (v5 = [(NSString *)guid isEqual:?]) != 0)
     {
       topic = self->_topic;
-      if (!(topic | *(a3 + 4)) || (v5 = [(NSString *)topic isEqual:?]) != 0)
+      if (!(topic | *(equal + 4)) || (v5 = [(NSString *)topic isEqual:?]) != 0)
       {
         if ((*&self->_has & 2) != 0)
         {
-          if ((*(a3 + 40) & 2) == 0 || self->_change != *(a3 + 4))
+          if ((*(equal + 40) & 2) == 0 || self->_change != *(equal + 4))
           {
             goto LABEL_20;
           }
         }
 
-        else if ((*(a3 + 40) & 2) != 0)
+        else if ((*(equal + 40) & 2) != 0)
         {
           goto LABEL_20;
         }
 
-        LOBYTE(v5) = (*(a3 + 40) & 4) == 0;
+        LOBYTE(v5) = (*(equal + 40) & 4) == 0;
         if ((*&self->_has & 4) != 0)
         {
-          if ((*(a3 + 40) & 4) == 0 || self->_didCauseFilterChange != *(a3 + 5))
+          if ((*(equal + 40) & 4) == 0 || self->_didCauseFilterChange != *(equal + 5))
           {
             goto LABEL_20;
           }
@@ -286,35 +286,35 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 40))
+  if (*(from + 40))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDPushTopicPolicyChange *)self setGuid:?];
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDPushTopicPolicyChange *)self setTopic:?];
   }
 
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 2) != 0)
   {
-    self->_change = *(a3 + 4);
+    self->_change = *(from + 4);
     *&self->_has |= 2u;
-    v5 = *(a3 + 40);
+    v5 = *(from + 40);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_didCauseFilterChange = *(a3 + 5);
+    self->_didCauseFilterChange = *(from + 5);
     *&self->_has |= 4u;
   }
 }

@@ -1,17 +1,17 @@
 @interface CKDPCSSQLCache
 + (void)evictPCSSQLCachesForKnownContainers;
-- (CKDPCSSQLCache)initWithDeviceContext:(id)a3 containerID:(id)a4 accountOverrideInfo:(id)a5 accountID:(id)a6 encryptionServiceName:(id)a7;
+- (CKDPCSSQLCache)initWithDeviceContext:(id)context containerID:(id)d accountOverrideInfo:(id)info accountID:(id)iD encryptionServiceName:(id)name;
 - (id)CKStatusReportArray;
-- (id)_lockedFetchPCSDataForID:(id)a3 databaseScope:(int64_t)a4 itemType:(unint64_t)a5;
-- (void)_lockedSetPCSData:(id)a3 databaseScope:(int64_t)a4 itemType:(unint64_t)a5 forID:(id)a6;
-- (void)_setPCSData:(id)a3 forItemWithID:(id)a4 databaseScope:(int64_t)a5 itemType:(unint64_t)a6 withCompletionHandler:(id)a7;
+- (id)_lockedFetchPCSDataForID:(id)d databaseScope:(int64_t)scope itemType:(unint64_t)type;
+- (void)_lockedSetPCSData:(id)data databaseScope:(int64_t)scope itemType:(unint64_t)type forID:(id)d;
+- (void)_setPCSData:(id)data forItemWithID:(id)d databaseScope:(int64_t)scope itemType:(unint64_t)type withCompletionHandler:(id)handler;
 - (void)clearCache;
-- (void)clearInvalidatedCacheEntriesWithSkipZonePCS:(BOOL)a3 completionHandler:(id)a4;
-- (void)fetchPCSDataForRecordWithID:(id)a3 databaseScope:(int64_t)a4 withCompletionHandler:(id)a5;
-- (void)fetchPCSDataForShareWithID:(id)a3 databaseScope:(int64_t)a4 withCompletionHandler:(id)a5;
-- (void)fetchPCSDataForZoneWithID:(id)a3 databaseScope:(int64_t)a4 withCompletionHandler:(id)a5;
-- (void)removePCSDataForItemsInShareWithID:(id)a3 withCompletionHandler:(id)a4;
-- (void)removePCSDataForItemsInZoneWithID:(id)a3 withCompletionHandler:(id)a4;
+- (void)clearInvalidatedCacheEntriesWithSkipZonePCS:(BOOL)s completionHandler:(id)handler;
+- (void)fetchPCSDataForRecordWithID:(id)d databaseScope:(int64_t)scope withCompletionHandler:(id)handler;
+- (void)fetchPCSDataForShareWithID:(id)d databaseScope:(int64_t)scope withCompletionHandler:(id)handler;
+- (void)fetchPCSDataForZoneWithID:(id)d databaseScope:(int64_t)scope withCompletionHandler:(id)handler;
+- (void)removePCSDataForItemsInShareWithID:(id)d withCompletionHandler:(id)handler;
+- (void)removePCSDataForItemsInZoneWithID:(id)d withCompletionHandler:(id)handler;
 @end
 
 @implementation CKDPCSSQLCache
@@ -23,35 +23,35 @@
   objc_msgSend_enumerateGroupsInDatabase_block_(CKDPCSSQLCacheTableGroup, v6, v5, &unk_28385DC60);
 }
 
-- (CKDPCSSQLCache)initWithDeviceContext:(id)a3 containerID:(id)a4 accountOverrideInfo:(id)a5 accountID:(id)a6 encryptionServiceName:(id)a7
+- (CKDPCSSQLCache)initWithDeviceContext:(id)context containerID:(id)d accountOverrideInfo:(id)info accountID:(id)iD encryptionServiceName:(id)name
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  contextCopy = context;
+  dCopy = d;
+  infoCopy = info;
+  iDCopy = iD;
+  nameCopy = name;
   v32.receiver = self;
   v32.super_class = CKDPCSSQLCache;
   v17 = [(CKDPCSSQLCache *)&v32 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_containerID, a4);
-    objc_storeStrong(&v18->_accountID, a6);
-    objc_storeStrong(&v18->_encryptionServiceName, a7);
+    objc_storeStrong(&v17->_containerID, d);
+    objc_storeStrong(&v18->_accountID, iD);
+    objc_storeStrong(&v18->_encryptionServiceName, name);
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v20 = dispatch_queue_create("PCSSQLCache", v19);
     asyncQueue = v18->_asyncQueue;
     v18->_asyncQueue = v20;
 
-    v23 = objc_msgSend_groupNameForContainerID_accountOverrideInfo_(CKDPCSSQLCacheTableGroup, v22, v13, v14);
+    v23 = objc_msgSend_groupNameForContainerID_accountOverrideInfo_(CKDPCSSQLCacheTableGroup, v22, dCopy, infoCopy);
     v24 = v18->_asyncQueue;
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = sub_2252BA61C;
     v27[3] = &unk_2785463D0;
-    v28 = v12;
-    v29 = v13;
+    v28 = contextCopy;
+    v29 = dCopy;
     v30 = v23;
     v31 = v18;
     v25 = v23;
@@ -61,10 +61,10 @@
   return v18;
 }
 
-- (id)_lockedFetchPCSDataForID:(id)a3 databaseScope:(int64_t)a4 itemType:(unint64_t)a5
+- (id)_lockedFetchPCSDataForID:(id)d databaseScope:(int64_t)scope itemType:(unint64_t)type
 {
   atomic_fetch_add_explicit(&self->_cacheRequestCount, 1u, memory_order_relaxed);
-  result = objc_msgSend_PCSDataForID_databaseScope_itemType_accountID_serviceName_(self->_table, a2, a3, a4, a5, self->_accountID, self->_encryptionServiceName);
+  result = objc_msgSend_PCSDataForID_databaseScope_itemType_accountID_serviceName_(self->_table, a2, d, scope, type, self->_accountID, self->_encryptionServiceName);
   if (result)
   {
     atomic_fetch_add_explicit(&self->_cacheHitCount, 1u, memory_order_relaxed);
@@ -73,69 +73,69 @@
   return result;
 }
 
-- (void)fetchPCSDataForRecordWithID:(id)a3 databaseScope:(int64_t)a4 withCompletionHandler:(id)a5
+- (void)fetchPCSDataForRecordWithID:(id)d databaseScope:(int64_t)scope withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   asyncQueue = self->_asyncQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_2252BA8CC;
   v13[3] = &unk_278547EB0;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = dCopy;
+  v15 = handlerCopy;
+  scopeCopy = scope;
+  v11 = handlerCopy;
+  v12 = dCopy;
   dispatch_async(asyncQueue, v13);
 }
 
-- (void)fetchPCSDataForZoneWithID:(id)a3 databaseScope:(int64_t)a4 withCompletionHandler:(id)a5
+- (void)fetchPCSDataForZoneWithID:(id)d databaseScope:(int64_t)scope withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   asyncQueue = self->_asyncQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_2252BAA24;
   v13[3] = &unk_278547EB0;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = dCopy;
+  v15 = handlerCopy;
+  scopeCopy = scope;
+  v11 = handlerCopy;
+  v12 = dCopy;
   dispatch_async(asyncQueue, v13);
 }
 
-- (void)fetchPCSDataForShareWithID:(id)a3 databaseScope:(int64_t)a4 withCompletionHandler:(id)a5
+- (void)fetchPCSDataForShareWithID:(id)d databaseScope:(int64_t)scope withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   asyncQueue = self->_asyncQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_2252BAB7C;
   v13[3] = &unk_278547EB0;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = dCopy;
+  v15 = handlerCopy;
+  scopeCopy = scope;
+  v11 = handlerCopy;
+  v12 = dCopy;
   dispatch_async(asyncQueue, v13);
 }
 
-- (void)_lockedSetPCSData:(id)a3 databaseScope:(int64_t)a4 itemType:(unint64_t)a5 forID:(id)a6
+- (void)_lockedSetPCSData:(id)data databaseScope:(int64_t)scope itemType:(unint64_t)type forID:(id)d
 {
-  v61 = a3;
-  v12 = a6;
-  if (!v61)
+  dataCopy = data;
+  dCopy = d;
+  if (!dataCopy)
   {
     table = self->_table;
-    v13 = objc_msgSend_sqliteRepresentation(v12, v10, v11);
-    v27 = objc_msgSend_deletePCSDataForID_databaseScope_itemType_accountID_serviceName_(table, v26, v13, a4, a5, self->_accountID, self->_encryptionServiceName);
+    v13 = objc_msgSend_sqliteRepresentation(dCopy, v10, v11);
+    v27 = objc_msgSend_deletePCSDataForID_databaseScope_itemType_accountID_serviceName_(table, v26, v13, scope, type, self->_accountID, self->_encryptionServiceName);
     goto LABEL_14;
   }
 
@@ -146,7 +146,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = objc_msgSend_zoneID(v61, v28, v29);
+      v16 = objc_msgSend_zoneID(dataCopy, v28, v29);
       if (objc_msgSend_specialContainerType(self->_containerID, v30, v31) != 5)
       {
 LABEL_11:
@@ -170,27 +170,27 @@ LABEL_11:
         goto LABEL_13;
       }
 
-      v32 = objc_msgSend_shareID(v61, v22, v23);
+      v32 = objc_msgSend_shareID(dataCopy, v22, v23);
       v16 = objc_msgSend_zoneID(v32, v34, v35);
     }
 
     goto LABEL_11;
   }
 
-  v16 = objc_msgSend_zoneID(v61, v14, v15);
-  v19 = objc_msgSend_shareID(v61, v17, v18);
-  v24 = objc_msgSend_parentID(v61, v20, v21);
+  v16 = objc_msgSend_zoneID(dataCopy, v14, v15);
+  v19 = objc_msgSend_shareID(dataCopy, v17, v18);
+  v24 = objc_msgSend_parentID(dataCopy, v20, v21);
 LABEL_13:
-  v36 = objc_msgSend_sqliteRepresentation(v12, v22, v23);
+  v36 = objc_msgSend_sqliteRepresentation(dCopy, v22, v23);
   objc_msgSend_setIdentifier_(v13, v37, v36);
 
-  v39 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v38, a4);
+  v39 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v38, scope);
   objc_msgSend_setDatabaseScope_(v13, v40, v39);
 
-  v42 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v41, a5);
+  v42 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v41, type);
   objc_msgSend_setItemType_(v13, v43, v42);
 
-  objc_msgSend_setCKDPCSData_(v13, v44, v61);
+  objc_msgSend_setCKDPCSData_(v13, v44, dataCopy);
   objc_msgSend_setAccountID_(v13, v45, self->_accountID);
   objc_msgSend_setServiceName_(v13, v46, self->_encryptionServiceName);
   v49 = objc_msgSend_sqliteRepresentation(v16, v47, v48);
@@ -206,59 +206,59 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)_setPCSData:(id)a3 forItemWithID:(id)a4 databaseScope:(int64_t)a5 itemType:(unint64_t)a6 withCompletionHandler:(id)a7
+- (void)_setPCSData:(id)data forItemWithID:(id)d databaseScope:(int64_t)scope itemType:(unint64_t)type withCompletionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  dataCopy = data;
+  dCopy = d;
+  handlerCopy = handler;
   asyncQueue = self->_asyncQueue;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_2252BAFFC;
   v19[3] = &unk_27854C620;
   v19[4] = self;
-  v20 = v12;
-  v23 = a5;
-  v24 = a6;
-  v21 = v13;
-  v22 = v14;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
+  v20 = dataCopy;
+  scopeCopy = scope;
+  typeCopy = type;
+  v21 = dCopy;
+  v22 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = dCopy;
+  v18 = dataCopy;
   dispatch_barrier_async(asyncQueue, v19);
 }
 
-- (void)removePCSDataForItemsInZoneWithID:(id)a3 withCompletionHandler:(id)a4
+- (void)removePCSDataForItemsInZoneWithID:(id)d withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   asyncQueue = self->_asyncQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2252BB144;
   block[3] = &unk_278546C30;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
   dispatch_barrier_async(asyncQueue, block);
 }
 
-- (void)removePCSDataForItemsInShareWithID:(id)a3 withCompletionHandler:(id)a4
+- (void)removePCSDataForItemsInShareWithID:(id)d withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   asyncQueue = self->_asyncQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2252BB2A0;
   block[3] = &unk_278546C30;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
   dispatch_barrier_async(asyncQueue, block);
 }
 
@@ -273,16 +273,16 @@ LABEL_14:
   dispatch_barrier_async(asyncQueue, block);
 }
 
-- (void)clearInvalidatedCacheEntriesWithSkipZonePCS:(BOOL)a3 completionHandler:(id)a4
+- (void)clearInvalidatedCacheEntriesWithSkipZonePCS:(BOOL)s completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   asyncQueue = self->_asyncQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2252BB4BC;
   block[3] = &unk_2785456A0;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_barrier_async(asyncQueue, block);
 }
 

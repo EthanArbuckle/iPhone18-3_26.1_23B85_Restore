@@ -1,52 +1,52 @@
 @interface RCVisualWaveformAmpSlice
-+ (id)colorForSliceColor:(unint64_t)a3 dimmed:(BOOL)a4;
-+ (void)setResolvedHighlightColor:(id)a3;
-+ (void)setResolvedMainColor:(id)a3;
-- (RCVisualWaveformAmpSlice)initWithIndex:(double)a3 amplitude:(double)a4;
++ (id)colorForSliceColor:(unint64_t)color dimmed:(BOOL)dimmed;
++ (void)setResolvedHighlightColor:(id)color;
++ (void)setResolvedMainColor:(id)color;
+- (RCVisualWaveformAmpSlice)initWithIndex:(double)index amplitude:(double)amplitude;
 - (double)visualAmplitudeHeight;
-- (void)setColor:(unint64_t)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHasProcessedSegments:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setVisualAmplitudeHeight:(double)a3;
-- (void)setVisualAmplitudeHeightInterpolatingFrames:(int64_t)a3;
+- (void)setColor:(unint64_t)color;
+- (void)setFrame:(CGRect)frame;
+- (void)setHasProcessedSegments:(BOOL)segments;
+- (void)setHidden:(BOOL)hidden;
+- (void)setVisualAmplitudeHeight:(double)height;
+- (void)setVisualAmplitudeHeightInterpolatingFrames:(int64_t)frames;
 @end
 
 @implementation RCVisualWaveformAmpSlice
 
-+ (void)setResolvedMainColor:(id)a3
++ (void)setResolvedMainColor:(id)color
 {
-  v6 = a3;
-  objc_storeStrong(&qword_1002D7048, a3);
+  colorCopy = color;
+  objc_storeStrong(&qword_1002D7048, color);
   v4 = [qword_1002D7048 colorWithAlphaComponent:0.15];
   v5 = qword_1002D7050;
   qword_1002D7050 = v4;
 }
 
-+ (void)setResolvedHighlightColor:(id)a3
++ (void)setResolvedHighlightColor:(id)color
 {
-  v6 = a3;
-  objc_storeStrong(&qword_1002D7058, a3);
+  colorCopy = color;
+  objc_storeStrong(&qword_1002D7058, color);
   v4 = [qword_1002D7058 colorWithAlphaComponent:0.15];
   v5 = qword_1002D7060;
   qword_1002D7060 = v4;
 }
 
-+ (id)colorForSliceColor:(unint64_t)a3 dimmed:(BOOL)a4
++ (id)colorForSliceColor:(unint64_t)color dimmed:(BOOL)dimmed
 {
-  if (a3 == 1)
+  if (color == 1)
   {
     v5 = &qword_1002D7048;
     v6 = &qword_1002D7050;
     goto LABEL_5;
   }
 
-  if (a3 == 2)
+  if (color == 2)
   {
     v5 = &qword_1002D7058;
     v6 = &qword_1002D7060;
 LABEL_5:
-    if (a4)
+    if (dimmed)
     {
       v5 = v6;
     }
@@ -61,7 +61,7 @@ LABEL_5:
   return v7;
 }
 
-- (RCVisualWaveformAmpSlice)initWithIndex:(double)a3 amplitude:(double)a4
+- (RCVisualWaveformAmpSlice)initWithIndex:(double)index amplitude:(double)amplitude
 {
   v7.receiver = self;
   v7.super_class = RCVisualWaveformAmpSlice;
@@ -69,8 +69,8 @@ LABEL_5:
   if (result)
   {
     result->_hasProcessedSegments = 0;
-    result->_sliceIndex = a3;
-    result->_amplitude = a4;
+    result->_sliceIndex = index;
+    result->_amplitude = amplitude;
     result->_visualAmplitudeHeight = 0.0;
     result->_visualAmplitudeHeightInterpolatingFrames = 0;
   }
@@ -78,68 +78,68 @@ LABEL_5:
   return result;
 }
 
-- (void)setColor:(unint64_t)a3
+- (void)setColor:(unint64_t)color
 {
-  v5 = [RCVisualWaveformAmpSlice colorForSliceColor:a3 dimmed:0];
+  v5 = [RCVisualWaveformAmpSlice colorForSliceColor:color dimmed:0];
   if (self->_lastColor != v5)
   {
     v10 = v5;
-    self->_color = a3;
-    v6 = [(RCVisualWaveformAmpSlice *)self uiColor];
+    self->_color = color;
+    uiColor = [(RCVisualWaveformAmpSlice *)self uiColor];
     lastColor = self->_lastColor;
-    self->_lastColor = v6;
+    self->_lastColor = uiColor;
 
-    v8 = [(UIColor *)self->_lastColor CGColor];
-    v9 = [(RCVisualWaveformAmpSlice *)self sliceLayer];
-    [v9 setBackgroundColor:v8];
+    cGColor = [(UIColor *)self->_lastColor CGColor];
+    sliceLayer = [(RCVisualWaveformAmpSlice *)self sliceLayer];
+    [sliceLayer setBackgroundColor:cGColor];
 
     v5 = v10;
   }
 }
 
-- (void)setHasProcessedSegments:(BOOL)a3
+- (void)setHasProcessedSegments:(BOOL)segments
 {
-  if (self->_hasProcessedSegments != a3)
+  if (self->_hasProcessedSegments != segments)
   {
-    self->_hasProcessedSegments = a3;
+    self->_hasProcessedSegments = segments;
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  self->_hidden = a3;
-  v4 = [(RCVisualWaveformAmpSlice *)self sliceLayer];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  self->_hidden = hidden;
+  sliceLayer = [(RCVisualWaveformAmpSlice *)self sliceLayer];
+  [sliceLayer setHidden:hiddenCopy];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v18 = +[UIScreen mainScreen];
   [v18 scale];
   v9 = v8;
 
-  v19 = [(RCVisualWaveformAmpSlice *)self sliceLayer];
-  [v19 frame];
+  sliceLayer = [(RCVisualWaveformAmpSlice *)self sliceLayer];
+  [sliceLayer frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
   if (COERCE__INT64(v9 * v11) != COERCE__INT64(x * v9) || COERCE__INT64(v9 * v13) != COERCE__INT64(y * v9) || COERCE__INT64(v9 * v15) != COERCE__INT64(height * v9))
   {
-    v20 = [(RCVisualWaveformAmpSlice *)self sliceLayer];
-    [v20 setFrame:{x, y, width, height}];
+    sliceLayer2 = [(RCVisualWaveformAmpSlice *)self sliceLayer];
+    [sliceLayer2 setFrame:{x, y, width, height}];
   }
 }
 
-- (void)setVisualAmplitudeHeightInterpolatingFrames:(int64_t)a3
+- (void)setVisualAmplitudeHeightInterpolatingFrames:(int64_t)frames
 {
-  self->_visualAmplitudeHeightInterpolatingFrames = a3;
-  if (!a3)
+  self->_visualAmplitudeHeightInterpolatingFrames = frames;
+  if (!frames)
   {
     self->_interpolatingvisualAmplitudeHeight = self->_visualAmplitudeHeight;
     self->_interpolatingvisualAmplitudeHeightDiff = 0.0;
@@ -147,27 +147,27 @@ LABEL_5:
   }
 }
 
-- (void)setVisualAmplitudeHeight:(double)a3
+- (void)setVisualAmplitudeHeight:(double)height
 {
   visualAmplitudeHeight = self->_visualAmplitudeHeight;
-  if (vabdd_f64(visualAmplitudeHeight, a3) > 2.22044605e-16)
+  if (vabdd_f64(visualAmplitudeHeight, height) > 2.22044605e-16)
   {
     visualAmplitudeHeightInterpolatingFrames = self->_visualAmplitudeHeightInterpolatingFrames;
     if (visualAmplitudeHeightInterpolatingFrames < 1)
     {
       self->_interpolatingVisualAmplitudeHeightFrameCount = 0;
-      self->_interpolatingvisualAmplitudeHeight = a3;
+      self->_interpolatingvisualAmplitudeHeight = height;
     }
 
     else
     {
       self->_interpolatingvisualAmplitudeHeight = visualAmplitudeHeight;
-      self->_interpolatingvisualAmplitudeHeightDiff = (a3 - visualAmplitudeHeight) / visualAmplitudeHeightInterpolatingFrames;
+      self->_interpolatingvisualAmplitudeHeightDiff = (height - visualAmplitudeHeight) / visualAmplitudeHeightInterpolatingFrames;
       self->_interpolatingVisualAmplitudeHeightFrameCount = visualAmplitudeHeightInterpolatingFrames;
     }
   }
 
-  self->_visualAmplitudeHeight = a3;
+  self->_visualAmplitudeHeight = height;
 }
 
 - (double)visualAmplitudeHeight

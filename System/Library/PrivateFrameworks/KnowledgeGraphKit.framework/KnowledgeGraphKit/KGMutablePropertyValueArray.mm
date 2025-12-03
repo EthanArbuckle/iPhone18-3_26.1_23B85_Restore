@@ -1,17 +1,17 @@
 @interface KGMutablePropertyValueArray
 - (KGMutablePropertyValueArray)init;
-- (void)appendValue:(id)a3 forIdentifier:(unint64_t)a4;
+- (void)appendValue:(id)value forIdentifier:(unint64_t)identifier;
 @end
 
 @implementation KGMutablePropertyValueArray
 
-- (void)appendValue:(id)a3 forIdentifier:(unint64_t)a4
+- (void)appendValue:(id)value forIdentifier:(unint64_t)identifier
 {
-  v6 = a3;
-  v8 = [(KGPropertyValueArray *)self elementIdentifiers];
-  [v8 addIdentifier:a4];
-  v7 = [(KGPropertyValueArray *)self values];
-  [v7 addObject:v6];
+  valueCopy = value;
+  elementIdentifiers = [(KGPropertyValueArray *)self elementIdentifiers];
+  [elementIdentifiers addIdentifier:identifier];
+  values = [(KGPropertyValueArray *)self values];
+  [values addObject:valueCopy];
 }
 
 - (KGMutablePropertyValueArray)init

@@ -1,8 +1,8 @@
 @interface ARUISpriteUniformsCache
-+ (id)cacheWithLimit:(unint64_t)a3;
++ (id)cacheWithLimit:(unint64_t)limit;
 + (id)defaultCache;
-- (ARUISpriteUniformsCache)initWithLimit:(unint64_t)a3;
-- (id)uniformsForSprite:(id)a3 renderedInContext:(id)a4;
+- (ARUISpriteUniformsCache)initWithLimit:(unint64_t)limit;
+- (id)uniformsForSprite:(id)sprite renderedInContext:(id)context;
 @end
 
 @implementation ARUISpriteUniformsCache
@@ -14,14 +14,14 @@
   return v2;
 }
 
-+ (id)cacheWithLimit:(unint64_t)a3
++ (id)cacheWithLimit:(unint64_t)limit
 {
-  v3 = [[ARUISpriteUniformsCache alloc] initWithLimit:a3];
+  v3 = [[ARUISpriteUniformsCache alloc] initWithLimit:limit];
 
   return v3;
 }
 
-- (ARUISpriteUniformsCache)initWithLimit:(unint64_t)a3
+- (ARUISpriteUniformsCache)initWithLimit:(unint64_t)limit
 {
   v8.receiver = self;
   v8.super_class = ARUISpriteUniformsCache;
@@ -32,21 +32,21 @@
     cache = v4->_cache;
     v4->_cache = v5;
 
-    [(NSCache *)v4->_cache setCountLimit:a3];
+    [(NSCache *)v4->_cache setCountLimit:limit];
   }
 
   return v4;
 }
 
-- (id)uniformsForSprite:(id)a3 renderedInContext:(id)a4
+- (id)uniformsForSprite:(id)sprite renderedInContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [ARUISpriteUniformsCacheKey keyForSprite:v6 context:v7];
+  spriteCopy = sprite;
+  contextCopy = context;
+  v8 = [ARUISpriteUniformsCacheKey keyForSprite:spriteCopy context:contextCopy];
   v9 = [(NSCache *)self->_cache objectForKey:v8];
   if (!v9)
   {
-    v9 = [[ARUISpriteUniforms alloc] initWithSprite:v6 inContext:v7];
+    v9 = [[ARUISpriteUniforms alloc] initWithSprite:spriteCopy inContext:contextCopy];
     [(NSCache *)self->_cache setObject:v9 forKey:v8];
   }
 

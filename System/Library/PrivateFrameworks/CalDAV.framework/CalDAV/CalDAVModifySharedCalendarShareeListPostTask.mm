@@ -1,10 +1,10 @@
 @interface CalDAVModifySharedCalendarShareeListPostTask
-- (id)copyDefaultParserForContentType:(id)a3;
+- (id)copyDefaultParserForContentType:(id)type;
 @end
 
 @implementation CalDAVModifySharedCalendarShareeListPostTask
 
-- (id)copyDefaultParserForContentType:(id)a3
+- (id)copyDefaultParserForContentType:(id)type
 {
   v4 = objc_alloc(MEMORY[0x277CFDCA8]);
   v5 = *MEMORY[0x277CFDEF8];

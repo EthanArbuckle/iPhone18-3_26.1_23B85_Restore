@@ -1,49 +1,49 @@
 @interface NviDirectionalitySignalProvider
-- (NviDirectionalitySignalProvider)initWithDataSource:(id)a3 assetsProvider:(id)a4;
-- (void)addDelegate:(id)a3;
-- (void)audioChunkAvailable:(id)a3 numChannels:(unint64_t)a4 numSamplesPerChannel:(unint64_t)a5 startSampleId:(unint64_t)a6 atAbsMachTimestamp:(unint64_t)a7;
+- (NviDirectionalitySignalProvider)initWithDataSource:(id)source assetsProvider:(id)provider;
+- (void)addDelegate:(id)delegate;
+- (void)audioChunkAvailable:(id)available numChannels:(unint64_t)channels numSamplesPerChannel:(unint64_t)channel startSampleId:(unint64_t)id atAbsMachTimestamp:(unint64_t)timestamp;
 - (void)dealloc;
-- (void)removeDelegate:(id)a3;
-- (void)request:(id)a3 didFailWithError:(id)a4;
-- (void)request:(id)a3 didProduceResult:(id)a4;
+- (void)removeDelegate:(id)delegate;
+- (void)request:(id)request didFailWithError:(id)error;
+- (void)request:(id)request didProduceResult:(id)result;
 - (void)reset;
-- (void)startWithNviContext:(id)a3 didStartHandler:(id)a4;
-- (void)stopWithDidStopHandler:(id)a3;
+- (void)startWithNviContext:(id)context didStartHandler:(id)handler;
+- (void)stopWithDidStopHandler:(id)handler;
 @end
 
 @implementation NviDirectionalitySignalProvider
 
-- (void)request:(id)a3 didFailWithError:(id)a4
+- (void)request:(id)request didFailWithError:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
   v7 = NviLogContextFacility;
   if (os_log_type_enabled(NviLogContextFacility, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315650;
     v10 = "[NviDirectionalitySignalProvider request:didFailWithError:]";
     v11 = 2114;
-    v12 = v5;
+    v12 = requestCopy;
     v13 = 2114;
-    v14 = v6;
+    v14 = errorCopy;
     _os_log_impl(&dword_222E4D000, v7, OS_LOG_TYPE_DEFAULT, "%s request: %{public}@, returnedError: %{public}@", &v9, 0x20u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)request:(id)a3 didProduceResult:(id)a4
+- (void)request:(id)request didProduceResult:(id)result
 {
-  v5 = a4;
+  resultCopy = result;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __60__NviDirectionalitySignalProvider_request_didProduceResult___block_invoke;
   v8[3] = &unk_2784C6FA8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = resultCopy;
+  selfCopy = self;
+  v7 = resultCopy;
   dispatch_async(queue, v8);
 }
 
@@ -145,20 +145,20 @@ LABEL_6:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioChunkAvailable:(id)a3 numChannels:(unint64_t)a4 numSamplesPerChannel:(unint64_t)a5 startSampleId:(unint64_t)a6 atAbsMachTimestamp:(unint64_t)a7
+- (void)audioChunkAvailable:(id)available numChannels:(unint64_t)channels numSamplesPerChannel:(unint64_t)channel startSampleId:(unint64_t)id atAbsMachTimestamp:(unint64_t)timestamp
 {
-  v11 = a3;
+  availableCopy = available;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __121__NviDirectionalitySignalProvider_audioChunkAvailable_numChannels_numSamplesPerChannel_startSampleId_atAbsMachTimestamp___block_invoke;
   block[3] = &unk_2784C3E20;
   block[4] = self;
-  v15 = v11;
-  v16 = a5;
-  v17 = a6;
-  v18 = a4;
-  v13 = v11;
+  v15 = availableCopy;
+  channelCopy = channel;
+  idCopy = id;
+  channelsCopy = channels;
+  v13 = availableCopy;
   dispatch_async(queue, block);
 }
 
@@ -263,17 +263,17 @@ uint64_t __40__NviDirectionalitySignalProvider_reset__block_invoke(uint64_t resu
   return result;
 }
 
-- (void)stopWithDidStopHandler:(id)a3
+- (void)stopWithDidStopHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__NviDirectionalitySignalProvider_stopWithDidStopHandler___block_invoke;
   v7[3] = &unk_2784C6E98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -296,20 +296,20 @@ uint64_t __58__NviDirectionalitySignalProvider_stopWithDidStopHandler___block_in
   return v6();
 }
 
-- (void)startWithNviContext:(id)a3 didStartHandler:(id)a4
+- (void)startWithNviContext:(id)context didStartHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__NviDirectionalitySignalProvider_startWithNviContext_didStartHandler___block_invoke;
   block[3] = &unk_2784C6C68;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = contextCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = contextCopy;
   dispatch_async(queue, block);
 }
 
@@ -401,31 +401,31 @@ void __71__NviDirectionalitySignalProvider_startWithNviContext_didStartHandler__
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__NviDirectionalitySignalProvider_removeDelegate___block_invoke;
   v7[3] = &unk_2784C6FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__NviDirectionalitySignalProvider_addDelegate___block_invoke;
   v7[3] = &unk_2784C6FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -438,7 +438,7 @@ void __71__NviDirectionalitySignalProvider_startWithNviContext_didStartHandler__
     *buf = 136315394;
     v7 = "[NviDirectionalitySignalProvider dealloc]";
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_222E4D000, v3, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -448,23 +448,23 @@ void __71__NviDirectionalitySignalProvider_startWithNviContext_didStartHandler__
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (NviDirectionalitySignalProvider)initWithDataSource:(id)a3 assetsProvider:(id)a4
+- (NviDirectionalitySignalProvider)initWithDataSource:(id)source assetsProvider:(id)provider
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  providerCopy = provider;
   v18.receiver = self;
   v18.super_class = NviDirectionalitySignalProvider;
   v9 = [(NviDirectionalitySignalProvider *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataSrc, a3);
-    objc_storeStrong(&v10->_assetsProvider, a4);
+    objc_storeStrong(&v9->_dataSrc, source);
+    objc_storeStrong(&v10->_assetsProvider, provider);
     v10->_currReqFirstSampleId = -1;
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     delegates = v10->_delegates;
-    v10->_delegates = v11;
+    v10->_delegates = weakObjectsHashTable;
 
     v13 = dispatch_queue_create("com.apple.nvi.sigprov.dir", 0);
     queue = v10->_queue;

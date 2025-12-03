@@ -1,26 +1,26 @@
 @interface _CNFavoritesLogger
 - (_CNFavoritesLogger)init;
-- (void)_simulateCrashReportWithMessage:(id)a3;
-- (void)failedToConvertFavoritesToPropertyList:(id)a3;
-- (void)failedToReadFavoritesForMatching:(id)a3;
-- (void)failedToReadFavoritesFromPath:(id)a3 error:(id)a4 simulateCrashReport:(BOOL)a5;
-- (void)failedToReadRemoteFavorites:(id)a3 willRetry:(BOOL)a4;
-- (void)failedToVerifyFavorites:(id)a3 withPropertyListFavorites:(id)a4 error:(id)a5;
-- (void)failedToVerifyWrittenFavoritesExistsAtPath:(id)a3;
-- (void)failedToWriteFavoritesForMatching:(id)a3;
-- (void)failedToWriteFavoritesToPath:(id)a3 error:(id)a4 simulateCrashReport:(BOOL)a5;
-- (void)failedToWriteRemoteFavorites:(id)a3 willRetry:(BOOL)a4;
+- (void)_simulateCrashReportWithMessage:(id)message;
+- (void)failedToConvertFavoritesToPropertyList:(id)list;
+- (void)failedToReadFavoritesForMatching:(id)matching;
+- (void)failedToReadFavoritesFromPath:(id)path error:(id)error simulateCrashReport:(BOOL)report;
+- (void)failedToReadRemoteFavorites:(id)favorites willRetry:(BOOL)retry;
+- (void)failedToVerifyFavorites:(id)favorites withPropertyListFavorites:(id)listFavorites error:(id)error;
+- (void)failedToVerifyWrittenFavoritesExistsAtPath:(id)path;
+- (void)failedToWriteFavoritesForMatching:(id)matching;
+- (void)failedToWriteFavoritesToPath:(id)path error:(id)error simulateCrashReport:(BOOL)report;
+- (void)failedToWriteRemoteFavorites:(id)favorites willRetry:(BOOL)retry;
 - (void)finishedReadingFavoritesForMatching;
-- (void)finishedReadingFavoritesFromPath:(id)a3 entriesCount:(unint64_t)a4;
+- (void)finishedReadingFavoritesFromPath:(id)path entriesCount:(unint64_t)count;
 - (void)finishedReadingRemoteFavorites;
 - (void)finishedWritingFavoritesForMatching;
-- (void)finishedWritingFavoritesToPath:(id)a3 entriesCount:(unint64_t)a4;
+- (void)finishedWritingFavoritesToPath:(id)path entriesCount:(unint64_t)count;
 - (void)finishedWritingRemoteFavorites;
-- (void)readingFavorites:(id)a3;
-- (void)rematchingFavorites:(id)a3;
+- (void)readingFavorites:(id)favorites;
+- (void)rematchingFavorites:(id)favorites;
 - (void)reportFavoritesAccessedAfterFirstUnlock;
 - (void)reportFavoritesAccessedBeforeFirstUnlock;
-- (void)writingFavorites:(id)a3;
+- (void)writingFavorites:(id)favorites;
 @end
 
 @implementation _CNFavoritesLogger
@@ -52,9 +52,9 @@
   }
 }
 
-- (void)readingFavorites:(id)a3
+- (void)readingFavorites:(id)favorites
 {
-  v3 = a3;
+  favoritesCopy = favorites;
   v4 = _os_activity_create(&dword_1954A0000, "ReadingFavorites", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -67,16 +67,16 @@
   block[1] = 3221225472;
   block[2] = __39___CNFavoritesLogger_readingFavorites___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = favoritesCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = favoritesCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)writingFavorites:(id)a3
+- (void)writingFavorites:(id)favorites
 {
-  v3 = a3;
+  favoritesCopy = favorites;
   v4 = _os_activity_create(&dword_1954A0000, "WritingFavorites", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -89,16 +89,16 @@
   block[1] = 3221225472;
   block[2] = __39___CNFavoritesLogger_writingFavorites___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = favoritesCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = favoritesCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)rematchingFavorites:(id)a3
+- (void)rematchingFavorites:(id)favorites
 {
-  v3 = a3;
+  favoritesCopy = favorites;
   v4 = _os_activity_create(&dword_1954A0000, "rematchingFavorites", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -111,24 +111,24 @@
   block[1] = 3221225472;
   block[2] = __42___CNFavoritesLogger_rematchingFavorites___block_invoke_2;
   block[3] = &unk_1E7412DD0;
-  v10 = v3;
+  v10 = favoritesCopy;
   v11 = v6;
   v7 = v6;
-  v8 = v3;
+  v8 = favoritesCopy;
   os_activity_apply(v5, block);
 }
 
-- (void)finishedReadingFavoritesFromPath:(id)a3 entriesCount:(unint64_t)a4
+- (void)finishedReadingFavoritesFromPath:(id)path entriesCount:(unint64_t)count
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  pathCopy = path;
   v7 = [(_CNFavoritesLogger *)self log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = v6;
+    v9 = pathCopy;
     v10 = 2048;
-    v11 = a4;
+    countCopy = count;
     _os_log_impl(&dword_1954A0000, v7, OS_LOG_TYPE_DEFAULT, "Read favorites file %{public}@, count = %ld", &v8, 0x16u);
   }
 }
@@ -153,17 +153,17 @@
   }
 }
 
-- (void)finishedWritingFavoritesToPath:(id)a3 entriesCount:(unint64_t)a4
+- (void)finishedWritingFavoritesToPath:(id)path entriesCount:(unint64_t)count
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  pathCopy = path;
   v7 = [(_CNFavoritesLogger *)self log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = v6;
+    v9 = pathCopy;
     v10 = 2048;
-    v11 = a4;
+    countCopy = count;
     _os_log_impl(&dword_1954A0000, v7, OS_LOG_TYPE_DEFAULT, "Saved favorites to file %{public}@, count = %ld", &v8, 0x16u);
   }
 }
@@ -178,9 +178,9 @@
   }
 }
 
-- (void)failedToReadRemoteFavorites:(id)a3 willRetry:(BOOL)a4
+- (void)failedToReadRemoteFavorites:(id)favorites willRetry:(BOOL)retry
 {
-  v5 = a3;
+  favoritesCopy = favorites;
   v6 = [(_CNFavoritesLogger *)self log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -188,15 +188,15 @@
   }
 }
 
-- (void)failedToReadFavoritesFromPath:(id)a3 error:(id)a4 simulateCrashReport:(BOOL)a5
+- (void)failedToReadFavoritesFromPath:(id)path error:(id)error simulateCrashReport:(BOOL)report
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v5)
+  reportCopy = report;
+  pathCopy = path;
+  errorCopy = error;
+  if (reportCopy)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error reading favorites file. Add a favorite as workaround. Please open a radar to Contacts (New Bugs).\n\n%@", v9];
-    [(_CNFavoritesLogger *)self _simulateCrashReportWithMessage:v10];
+    errorCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error reading favorites file. Add a favorite as workaround. Please open a radar to Contacts (New Bugs).\n\n%@", errorCopy];
+    [(_CNFavoritesLogger *)self _simulateCrashReportWithMessage:errorCopy];
   }
 
   else
@@ -209,9 +209,9 @@
   }
 }
 
-- (void)failedToConvertFavoritesToPropertyList:(id)a3
+- (void)failedToConvertFavoritesToPropertyList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = [(_CNFavoritesLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -219,31 +219,31 @@
   }
 }
 
-- (void)failedToVerifyFavorites:(id)a3 withPropertyListFavorites:(id)a4 error:(id)a5
+- (void)failedToVerifyFavorites:(id)favorites withPropertyListFavorites:(id)listFavorites error:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  favoritesCopy = favorites;
+  listFavoritesCopy = listFavorites;
+  errorCopy = error;
   v11 = [(_CNFavoritesLogger *)self log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
-    v14 = v8;
+    v14 = favoritesCopy;
     v15 = 2112;
-    v16 = v9;
+    v16 = listFavoritesCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = errorCopy;
     _os_log_error_impl(&dword_1954A0000, v11, OS_LOG_TYPE_ERROR, "Error converting favorites entries:\n%@\nconvertedEntries:\n%@,\n%@", buf, 0x20u);
   }
 
-  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error converting favorites entries to property list, not converted correctly. Please open a radar to Contacts (New Bugs).\n\n%@", v10];
-  [(_CNFavoritesLogger *)self _simulateCrashReportWithMessage:v12];
+  errorCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error converting favorites entries to property list, not converted correctly. Please open a radar to Contacts (New Bugs).\n\n%@", errorCopy];
+  [(_CNFavoritesLogger *)self _simulateCrashReportWithMessage:errorCopy];
 }
 
-- (void)failedToReadFavoritesForMatching:(id)a3
+- (void)failedToReadFavoritesForMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   v5 = [(_CNFavoritesLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -251,9 +251,9 @@
   }
 }
 
-- (void)failedToWriteRemoteFavorites:(id)a3 willRetry:(BOOL)a4
+- (void)failedToWriteRemoteFavorites:(id)favorites willRetry:(BOOL)retry
 {
-  v5 = a3;
+  favoritesCopy = favorites;
   v6 = [(_CNFavoritesLogger *)self log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -261,21 +261,21 @@
   }
 }
 
-- (void)failedToVerifyWrittenFavoritesExistsAtPath:(id)a3
+- (void)failedToVerifyWrittenFavoritesExistsAtPath:(id)path
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error saving favorites file\x10. File does not exist after saving. Please open a radar to PEP Contacts (New Bugs).\n\nexpected file: %@", a3];
-  [(_CNFavoritesLogger *)self _simulateCrashReportWithMessage:v4];
+  path = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error saving favorites file\x10. File does not exist after saving. Please open a radar to PEP Contacts (New Bugs).\n\nexpected file: %@", path];
+  [(_CNFavoritesLogger *)self _simulateCrashReportWithMessage:path];
 }
 
-- (void)failedToWriteFavoritesToPath:(id)a3 error:(id)a4 simulateCrashReport:(BOOL)a5
+- (void)failedToWriteFavoritesToPath:(id)path error:(id)error simulateCrashReport:(BOOL)report
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v5)
+  reportCopy = report;
+  pathCopy = path;
+  errorCopy = error;
+  if (reportCopy)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error saving favorites file. Please open a radar to Contacts (New Bugs).\n\n%@", v9];
-    [(_CNFavoritesLogger *)self _simulateCrashReportWithMessage:v10];
+    errorCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error saving favorites file. Please open a radar to Contacts (New Bugs).\n\n%@", errorCopy];
+    [(_CNFavoritesLogger *)self _simulateCrashReportWithMessage:errorCopy];
   }
 
   else
@@ -288,9 +288,9 @@
   }
 }
 
-- (void)failedToWriteFavoritesForMatching:(id)a3
+- (void)failedToWriteFavoritesForMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   v5 = [(_CNFavoritesLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -298,9 +298,9 @@
   }
 }
 
-- (void)_simulateCrashReportWithMessage:(id)a3
+- (void)_simulateCrashReportWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = [(_CNFavoritesLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -313,8 +313,8 @@
 
 - (void)reportFavoritesAccessedBeforeFirstUnlock
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
   v5 = [(_CNFavoritesLogger *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))

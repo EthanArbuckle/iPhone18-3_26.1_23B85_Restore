@@ -10,7 +10,7 @@
   if (result)
   {
 
-    return [a1 setBoundInterfaceIdentifier:result];
+    return [self setBoundInterfaceIdentifier:result];
   }
 
   return result;

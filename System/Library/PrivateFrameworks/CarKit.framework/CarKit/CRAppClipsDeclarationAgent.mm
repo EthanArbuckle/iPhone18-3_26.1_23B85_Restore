@@ -1,5 +1,5 @@
 @interface CRAppClipsDeclarationAgent
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CRAppClipsDeclarationAgent)init;
 - (CRAppClipsDeclaring)appClipDeclarer;
 @end
@@ -23,44 +23,44 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForEntitlement:@"com.apple.private.carkit.appClips"];
-  v9 = [v8 BOOLValue];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.private.carkit.appClips"];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     v10 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F47FBC90];
-    [v7 setExportedInterface:v10];
+    [connectionCopy setExportedInterface:v10];
     v11 = objc_alloc_init(CRAppClipsDeclarationSession);
     [(CRAppClipsDeclarationSession *)v11 setDeclarationAgent:self];
-    [v7 setExportedObject:v11];
-    objc_initWeak(&location, v7);
+    [connectionCopy setExportedObject:v11];
+    objc_initWeak(&location, connectionCopy);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __65__CRAppClipsDeclarationAgent_listener_shouldAcceptNewConnection___block_invoke;
     v17[3] = &unk_1E82FC248;
     objc_copyWeak(&v18, &location);
-    [v7 setInterruptionHandler:v17];
+    [connectionCopy setInterruptionHandler:v17];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __65__CRAppClipsDeclarationAgent_listener_shouldAcceptNewConnection___block_invoke_86;
     v15[3] = &unk_1E82FC248;
     objc_copyWeak(&v16, &location);
-    [v7 setInvalidationHandler:v15];
+    [connectionCopy setInvalidationHandler:v15];
     v12 = CarGeneralLogging();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v7, "processIdentifier")}];
+      v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(connectionCopy, "processIdentifier")}];
       *buf = 138412290;
       v21 = v13;
       _os_log_impl(&dword_1C81FC000, v12, OS_LOG_TYPE_INFO, "received app clip declaration connection from %@", buf, 0xCu);
     }
 
-    [v7 activate];
+    [connectionCopy activate];
     objc_destroyWeak(&v16);
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -71,11 +71,11 @@
     v10 = CarGeneralLogging();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [CRAppClipsDeclarationAgent listener:v7 shouldAcceptNewConnection:v10];
+      [CRAppClipsDeclarationAgent listener:connectionCopy shouldAcceptNewConnection:v10];
     }
   }
 
-  return v9;
+  return bOOLValue;
 }
 
 void __65__CRAppClipsDeclarationAgent_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)

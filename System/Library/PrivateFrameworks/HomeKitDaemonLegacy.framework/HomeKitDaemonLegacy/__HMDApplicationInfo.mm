@@ -1,6 +1,6 @@
 @interface __HMDApplicationInfo
-- (BOOL)isEqual:(id)a3;
-- (__HMDApplicationInfo)initWithRecord:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (__HMDApplicationInfo)initWithRecord:(id)record;
 - (id)vendorIdentifier;
 @end
 
@@ -10,9 +10,9 @@
 {
   v7.receiver = self;
   v7.super_class = __HMDApplicationInfo;
-  v3 = [(HMDApplicationInfo *)&v7 vendorIdentifier];
-  vendorIdentifier = v3;
-  if (!v3)
+  vendorIdentifier = [(HMDApplicationInfo *)&v7 vendorIdentifier];
+  vendorIdentifier = vendorIdentifier;
+  if (!vendorIdentifier)
   {
     vendorIdentifier = self->_vendorIdentifier;
   }
@@ -22,10 +22,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -34,9 +34,9 @@
   {
     v12.receiver = self;
     v12.super_class = __HMDApplicationInfo;
-    if ([(HMDApplicationInfo *)&v12 isEqual:v4])
+    if ([(HMDApplicationInfo *)&v12 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -52,8 +52,8 @@
 
       if (v7)
       {
-        v8 = [(HMDApplicationInfo *)self bundleURL];
-        v9 = [(HMDApplicationInfo *)v7 bundleURL];
+        bundleURL = [(HMDApplicationInfo *)self bundleURL];
+        bundleURL2 = [(HMDApplicationInfo *)v7 bundleURL];
         v10 = HMFEqualObjects();
       }
 
@@ -72,36 +72,36 @@
   return v10;
 }
 
-- (__HMDApplicationInfo)initWithRecord:(id)a3
+- (__HMDApplicationInfo)initWithRecord:(id)record
 {
-  v4 = a3;
-  if (v4)
+  recordCopy = record;
+  if (recordCopy)
   {
     v13.receiver = self;
     v13.super_class = __HMDApplicationInfo;
-    v5 = [(__HMDBundleApplicationInfo *)&v13 initWithRecord:v4];
+    v5 = [(__HMDBundleApplicationInfo *)&v13 initWithRecord:recordCopy];
     if (v5)
     {
-      v6 = [v4 applicationState];
-      v5->_installed = [v6 isInstalled];
+      applicationState = [recordCopy applicationState];
+      v5->_installed = [applicationState isInstalled];
 
-      v7 = [v4 deviceIdentifierForVendor];
-      v8 = [v7 UUIDString];
-      v9 = [v8 hm_generateSHA1];
+      deviceIdentifierForVendor = [recordCopy deviceIdentifierForVendor];
+      uUIDString = [deviceIdentifierForVendor UUIDString];
+      hm_generateSHA1 = [uUIDString hm_generateSHA1];
       vendorIdentifier = v5->_vendorIdentifier;
-      v5->_vendorIdentifier = v9;
+      v5->_vendorIdentifier = hm_generateSHA1;
     }
 
     self = v5;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

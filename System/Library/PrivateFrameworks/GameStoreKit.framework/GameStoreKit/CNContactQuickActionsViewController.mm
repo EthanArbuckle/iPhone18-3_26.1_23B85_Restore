@@ -1,55 +1,55 @@
 @interface CNContactQuickActionsViewController
-- (_TtC12GameStoreKit35CNContactQuickActionsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)viewForActionType:(id)a3;
-- (void)contactQuickActionsController:(id)a3 dismissDisambiguationViewController:(id)a4 forActionType:(id)a5;
-- (void)contactQuickActionsController:(id)a3 presentDisambiguationViewController:(id)a4 forActionType:(id)a5;
+- (_TtC12GameStoreKit35CNContactQuickActionsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)viewForActionType:(id)type;
+- (void)contactQuickActionsController:(id)controller dismissDisambiguationViewController:(id)viewController forActionType:(id)type;
+- (void)contactQuickActionsController:(id)controller presentDisambiguationViewController:(id)viewController forActionType:(id)type;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CNContactQuickActionsViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24F439D38();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_24F43A26C(a3);
+  selfCopy = self;
+  sub_24F43A26C(disappear);
 }
 
-- (void)contactQuickActionsController:(id)a3 presentDisambiguationViewController:(id)a4 forActionType:(id)a5
+- (void)contactQuickActionsController:(id)controller presentDisambiguationViewController:(id)viewController forActionType:(id)type
 {
   v8 = sub_24F92B0D8();
   v10 = v9;
-  v11 = a3;
-  v12 = a4;
-  v13 = self;
-  sub_24F43C7E4(v12, v8, v10);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  sub_24F43C7E4(viewControllerCopy, v8, v10);
 }
 
-- (void)contactQuickActionsController:(id)a3 dismissDisambiguationViewController:(id)a4 forActionType:(id)a5
+- (void)contactQuickActionsController:(id)controller dismissDisambiguationViewController:(id)viewController forActionType:(id)type
 {
-  v6 = self;
-  [a4 dismissViewControllerAnimated:1 completion:0];
-  v7 = *(&v6->super.super.super.isa + OBJC_IVAR____TtC12GameStoreKit35CNContactQuickActionsViewController_disambiguationVC);
-  *(&v6->super.super.super.isa + OBJC_IVAR____TtC12GameStoreKit35CNContactQuickActionsViewController_disambiguationVC) = 0;
+  selfCopy = self;
+  [viewController dismissViewControllerAnimated:1 completion:0];
+  v7 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC12GameStoreKit35CNContactQuickActionsViewController_disambiguationVC);
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC12GameStoreKit35CNContactQuickActionsViewController_disambiguationVC) = 0;
 }
 
-- (id)viewForActionType:(id)a3
+- (id)viewForActionType:(id)type
 {
   v4 = sub_24F92B0D8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_24F43A49C(v4, v6);
 
   return v8;
 }
 
-- (_TtC12GameStoreKit35CNContactQuickActionsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12GameStoreKit35CNContactQuickActionsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

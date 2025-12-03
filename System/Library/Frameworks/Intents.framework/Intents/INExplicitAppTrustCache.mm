@@ -11,10 +11,10 @@
 {
   if (!self->_loadedManagedBundleIdentifiers)
   {
-    v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v4 = [v3 managedAppIDs];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    managedAppIDs = [mEMORY[0x1E69ADFB8] managedAppIDs];
     managedBundleIdentifiers = self->_managedBundleIdentifiers;
-    self->_managedBundleIdentifiers = v4;
+    self->_managedBundleIdentifiers = managedAppIDs;
 
     self->_loadedManagedBundleIdentifiers = 1;
   }
@@ -28,10 +28,10 @@
 {
   if (!self->_loadedTrustedCodeSigningIdentities)
   {
-    v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v4 = [v3 trustedCodeSigningIdentities];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    trustedCodeSigningIdentities = [mEMORY[0x1E69ADFB8] trustedCodeSigningIdentities];
     trustedCodeSigningIdentities = self->_trustedCodeSigningIdentities;
-    self->_trustedCodeSigningIdentities = v4;
+    self->_trustedCodeSigningIdentities = trustedCodeSigningIdentities;
 
     self->_loadedTrustedCodeSigningIdentities = 1;
   }
@@ -146,8 +146,8 @@ LABEL_19:
 {
   if (!self->_enterpriseAppTrustAllowedLoaded)
   {
-    v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    self->_enterpriseAppTrustAllowed = [v3 effectiveBoolValueForSetting:*MEMORY[0x1E69ADE58]] != 2;
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    self->_enterpriseAppTrustAllowed = [mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADE58]] != 2;
 
     self->_enterpriseAppTrustAllowedLoaded = 1;
   }

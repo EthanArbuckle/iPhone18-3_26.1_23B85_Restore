@@ -1,27 +1,27 @@
 @interface SiriUINavigationController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (SiriUINavigationController)initWithCoder:(id)a3;
-- (SiriUINavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (SiriUINavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (SiriUINavigationController)initWithRootViewController:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (SiriUINavigationController)initWithCoder:(id)coder;
+- (SiriUINavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (SiriUINavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (SiriUINavigationController)initWithRootViewController:(id)controller;
 - (SiriUINavigationTransitioning)transitionController;
 - (_SiriUINavigationControllerDelegateAdapter)_delegateAdapter;
 - (id)delegate;
-- (void)_handleGestureFromRecognizer:(id)a3;
+- (void)_handleGestureFromRecognizer:(id)recognizer;
 - (void)_sharedInit;
-- (void)contentPlatterViewScrolledToContentOffset:(CGPoint)a3;
-- (void)setDelegate:(id)a3;
-- (void)setTransitionController:(id)a3;
+- (void)contentPlatterViewScrolledToContentOffset:(CGPoint)offset;
+- (void)setDelegate:(id)delegate;
+- (void)setTransitionController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation SiriUINavigationController
 
-- (SiriUINavigationController)initWithRootViewController:(id)a3
+- (SiriUINavigationController)initWithRootViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = SiriUINavigationController;
-  v3 = [(SiriUINavigationController *)&v6 initWithRootViewController:a3];
+  v3 = [(SiriUINavigationController *)&v6 initWithRootViewController:controller];
   v4 = v3;
   if (v3)
   {
@@ -31,11 +31,11 @@
   return v4;
 }
 
-- (SiriUINavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (SiriUINavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   v7.receiver = self;
   v7.super_class = SiriUINavigationController;
-  v4 = [(SiriUINavigationController *)&v7 initWithNavigationBarClass:a3 toolbarClass:a4];
+  v4 = [(SiriUINavigationController *)&v7 initWithNavigationBarClass:class toolbarClass:toolbarClass];
   v5 = v4;
   if (v4)
   {
@@ -45,11 +45,11 @@
   return v5;
 }
 
-- (SiriUINavigationController)initWithCoder:(id)a3
+- (SiriUINavigationController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SiriUINavigationController;
-  v3 = [(SiriUINavigationController *)&v6 initWithCoder:a3];
+  v3 = [(SiriUINavigationController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -59,11 +59,11 @@
   return v4;
 }
 
-- (SiriUINavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (SiriUINavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = SiriUINavigationController;
-  v4 = [(SiriUINavigationController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(SiriUINavigationController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -78,69 +78,69 @@
   v4.receiver = self;
   v4.super_class = SiriUINavigationController;
   [(SiriUINavigationController *)&v4 viewDidLoad];
-  v3 = [(SiriUINavigationController *)self view];
-  [v3 setClipsToBounds:0];
+  view = [(SiriUINavigationController *)self view];
+  [view setClipsToBounds:0];
 }
 
 - (id)delegate
 {
-  v2 = [(SiriUINavigationController *)self _delegateAdapter];
-  v3 = [v2 externalDelegate];
+  _delegateAdapter = [(SiriUINavigationController *)self _delegateAdapter];
+  externalDelegate = [_delegateAdapter externalDelegate];
 
-  return v3;
+  return externalDelegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(SiriUINavigationController *)self _delegateAdapter];
+  delegateCopy = delegate;
+  _delegateAdapter = [(SiriUINavigationController *)self _delegateAdapter];
   v7.receiver = self;
   v7.super_class = SiriUINavigationController;
-  [(SiriUINavigationController *)&v7 setDelegate:v5];
+  [(SiriUINavigationController *)&v7 setDelegate:_delegateAdapter];
 
-  v6 = [(SiriUINavigationController *)self _delegateAdapter];
-  [v6 setExternalDelegate:v4];
+  _delegateAdapter2 = [(SiriUINavigationController *)self _delegateAdapter];
+  [_delegateAdapter2 setExternalDelegate:delegateCopy];
 }
 
 - (SiriUINavigationTransitioning)transitionController
 {
-  v2 = [(SiriUINavigationController *)self _delegateAdapter];
-  v3 = [v2 transitionController];
+  _delegateAdapter = [(SiriUINavigationController *)self _delegateAdapter];
+  transitionController = [_delegateAdapter transitionController];
 
-  return v3;
+  return transitionController;
 }
 
-- (void)setTransitionController:(id)a3
+- (void)setTransitionController:(id)controller
 {
-  v6 = a3;
-  v4 = [(SiriUINavigationController *)self transitionController];
+  controllerCopy = controller;
+  transitionController = [(SiriUINavigationController *)self transitionController];
 
-  if (v4 != v6)
+  if (transitionController != controllerCopy)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v6 configureWithNavigationController:self];
+      [controllerCopy configureWithNavigationController:self];
     }
 
-    v5 = [(SiriUINavigationController *)self _delegateAdapter];
-    [v5 setTransitionController:v6];
+    _delegateAdapter = [(SiriUINavigationController *)self _delegateAdapter];
+    [_delegateAdapter setTransitionController:controllerCopy];
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(SiriUINavigationController *)self interactivePopGestureRecognizer];
+  beginCopy = begin;
+  interactivePopGestureRecognizer = [(SiriUINavigationController *)self interactivePopGestureRecognizer];
 
   if (self->_supportsSAE)
   {
-    v6 = [(SiriUINavigationController *)self viewControllers];
-    v7 = [v6 count] > 2;
+    viewControllers = [(SiriUINavigationController *)self viewControllers];
+    v7 = [viewControllers count] > 2;
   }
 
   else
   {
-    v7 = v5 == v4;
+    v7 = interactivePopGestureRecognizer == beginCopy;
   }
 
   return v7;
@@ -151,15 +151,15 @@
   [(SiriUINavigationController *)self setDelegate:0];
   self->_supportsSAE = [MEMORY[0x277CEF4D0] saeAvailable];
   self->_popAnimationType = 0;
-  v3 = [(SiriUINavigationController *)self navigationBar];
-  [v3 siriui_customizeAppearanceGivenSAEEnabled:self->_supportsSAE];
+  navigationBar = [(SiriUINavigationController *)self navigationBar];
+  [navigationBar siriui_customizeAppearanceGivenSAEEnabled:self->_supportsSAE];
 
   [(SiriUINavigationController *)self _setBuiltinTransitionStyle:!self->_supportsSAE];
-  v4 = [(SiriUINavigationController *)self interactivePopGestureRecognizer];
-  [v4 setDelegate:self];
+  interactivePopGestureRecognizer = [(SiriUINavigationController *)self interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer setDelegate:self];
 
-  v5 = [(SiriUINavigationController *)self interactivePopGestureRecognizer];
-  [v5 addTarget:self action:sel__handleGestureFromRecognizer_];
+  interactivePopGestureRecognizer2 = [(SiriUINavigationController *)self interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer2 addTarget:self action:sel__handleGestureFromRecognizer_];
 }
 
 - (_SiriUINavigationControllerDelegateAdapter)_delegateAdapter
@@ -177,42 +177,42 @@
   return delegateAdapter;
 }
 
-- (void)_handleGestureFromRecognizer:(id)a3
+- (void)_handleGestureFromRecognizer:(id)recognizer
 {
-  v6 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 state] == 1)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [recognizerCopy state] == 1)
   {
-    v4 = [(SiriUINavigationController *)self transitionController];
+    transitionController = [(SiriUINavigationController *)self transitionController];
     if (objc_opt_respondsToSelector())
     {
-      [v4 setOperation:2];
+      [transitionController setOperation:2];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(SiriUINavigationController *)self transitionCoordinator];
-      [v4 coordinateAdditionalTransitionsWithTransitionCoordinator:v5];
+      transitionCoordinator = [(SiriUINavigationController *)self transitionCoordinator];
+      [transitionController coordinateAdditionalTransitionsWithTransitionCoordinator:transitionCoordinator];
     }
   }
 }
 
-- (void)contentPlatterViewScrolledToContentOffset:(CGPoint)a3
+- (void)contentPlatterViewScrolledToContentOffset:(CGPoint)offset
 {
-  if (a3.y < -100.0)
+  if (offset.y < -100.0)
   {
-    v4 = [(SiriUINavigationController *)self viewControllers];
-    v5 = [v4 count];
+    viewControllers = [(SiriUINavigationController *)self viewControllers];
+    v5 = [viewControllers count];
 
     if (v5 == 2)
     {
-      v6 = [(SiriUINavigationController *)self transitionController];
+      transitionController = [(SiriUINavigationController *)self transitionController];
       v7 = objc_opt_respondsToSelector();
 
       if (v7)
       {
-        v8 = [(SiriUINavigationController *)self transitionController];
-        [v8 setOperation:2];
+        transitionController2 = [(SiriUINavigationController *)self transitionController];
+        [transitionController2 setOperation:2];
 
         [(SiriUINavigationController *)self setPopToRootViewController:1];
         [(SiriUINavigationController *)self setPopAnimationType:1];

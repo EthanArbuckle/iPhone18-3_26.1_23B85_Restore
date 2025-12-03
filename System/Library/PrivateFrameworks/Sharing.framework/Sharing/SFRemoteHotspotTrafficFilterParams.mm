@@ -1,20 +1,20 @@
 @interface SFRemoteHotspotTrafficFilterParams
-- (SFRemoteHotspotTrafficFilterParams)initWithCoder:(id)a3;
+- (SFRemoteHotspotTrafficFilterParams)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFRemoteHotspotTrafficFilterParams
 
-- (SFRemoteHotspotTrafficFilterParams)initWithCoder:(id)a3
+- (SFRemoteHotspotTrafficFilterParams)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SFRemoteHotspotTrafficFilterParams;
   v5 = [(SFRemoteHotspotTrafficFilterParams *)&v11 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -62,61 +62,61 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   srcIPAddress = self->_srcIPAddress;
-  v10 = v4;
+  v10 = coderCopy;
   if (srcIPAddress)
   {
-    [v4 encodeObject:srcIPAddress forKey:@"srcIP"];
-    v4 = v10;
+    [coderCopy encodeObject:srcIPAddress forKey:@"srcIP"];
+    coderCopy = v10;
   }
 
   if (self->_srcPort)
   {
     [v10 encodeInteger:? forKey:?];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   destIPAddress = self->_destIPAddress;
   if (destIPAddress)
   {
     [v10 encodeObject:destIPAddress forKey:@"destIP"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   if (self->_destPort)
   {
     [v10 encodeInteger:? forKey:?];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   if (self->_ipProtocol)
   {
     [v10 encodeInteger:? forKey:?];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   trafficClass = self->_trafficClass;
   if (trafficClass)
   {
     [v10 encodeObject:trafficClass forKey:@"traCla"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   ipVersion = self->_ipVersion;
   if (ipVersion)
   {
     [v10 encodeInt64:ipVersion forKey:@"ipVer"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   idleTimeout = self->_idleTimeout;
   if (idleTimeout)
   {
     [v10 encodeInt64:idleTimeout forKey:@"timeout"];
-    v4 = v10;
+    coderCopy = v10;
   }
 }
 

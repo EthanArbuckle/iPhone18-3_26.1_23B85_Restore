@@ -19,7 +19,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_80 = v2;
     acceptsTopLevelLeaves___haveChecked_79 = 1;
   }
@@ -36,7 +36,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_82 = v2;
     parsingLeafNode___haveChecked_81 = 1;
   }
@@ -53,7 +53,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_84 = v2;
     parsingWithSubItems___haveChecked_83 = 1;
   }
@@ -70,7 +70,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_86 = v2;
     frontingBasicTypes___haveChecked_85 = 1;
   }
@@ -87,7 +87,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_88 = v2;
     notifyOfUnknownTokens___haveChecked_87 = 1;
   }
@@ -98,7 +98,7 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -111,7 +111,7 @@
     v5 = [v6 dictionaryWithObjectsAndKeys:{v7, v8, v9, v10, 0}];
 
     v11 = +[ASItem parseRuleCache];
-    v12 = NSStringFromClass(a1);
+    v12 = NSStringFromClass(self);
     [v11 setObject:v5 forKey:v12];
   }
 
@@ -124,9 +124,9 @@
   v9.receiver = self;
   v9.super_class = ASResolveRecipientsAvailabilityItem;
   v4 = [(ASResolveRecipientsAvailabilityItem *)&v9 description];
-  v5 = [(ASResolveRecipientsAvailabilityItem *)self easStatus];
-  v6 = [(ASResolveRecipientsAvailabilityItem *)self mergedFreeBusy];
-  v7 = [v3 stringWithFormat:@"%@: easStatus %@ mergedFreeBusy %@", v4, v5, v6];
+  easStatus = [(ASResolveRecipientsAvailabilityItem *)self easStatus];
+  mergedFreeBusy = [(ASResolveRecipientsAvailabilityItem *)self mergedFreeBusy];
+  v7 = [v3 stringWithFormat:@"%@: easStatus %@ mergedFreeBusy %@", v4, easStatus, mergedFreeBusy];
 
   return v7;
 }

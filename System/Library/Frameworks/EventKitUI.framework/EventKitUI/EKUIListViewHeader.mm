@@ -1,22 +1,22 @@
 @interface EKUIListViewHeader
-+ (BOOL)_isDateInCurrentYear:(id)a3 currentYearStart:(id *)a4 currentYearEnd:(id *)a5 timeZone:(id)a6;
-+ (id)_stringForHeaderDate:(id)a3 currentYearStart:(id *)a4 currentYearEnd:(id *)a5 timeZone:(id)a6;
-+ (id)headerWithTableView:(id)a3 reuseIdentifier:(id)a4 date:(id)a5 timeZone:(id)a6 currentYearStart:(id *)a7 currentYearEnd:(id *)a8;
++ (BOOL)_isDateInCurrentYear:(id)year currentYearStart:(id *)start currentYearEnd:(id *)end timeZone:(id)zone;
++ (id)_stringForHeaderDate:(id)date currentYearStart:(id *)start currentYearEnd:(id *)end timeZone:(id)zone;
++ (id)headerWithTableView:(id)view reuseIdentifier:(id)identifier date:(id)date timeZone:(id)zone currentYearStart:(id *)start currentYearEnd:(id *)end;
 @end
 
 @implementation EKUIListViewHeader
 
-+ (id)headerWithTableView:(id)a3 reuseIdentifier:(id)a4 date:(id)a5 timeZone:(id)a6 currentYearStart:(id *)a7 currentYearEnd:(id *)a8
++ (id)headerWithTableView:(id)view reuseIdentifier:(id)identifier date:(id)date timeZone:(id)zone currentYearStart:(id *)start currentYearEnd:(id *)end
 {
-  v14 = a5;
-  v15 = a6;
-  v16 = [a3 dequeueReusableHeaderFooterViewWithIdentifier:a4];
-  v17 = [MEMORY[0x1E69DCC28] plainHeaderConfiguration];
-  if (v14)
+  dateCopy = date;
+  zoneCopy = zone;
+  v16 = [view dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+  plainHeaderConfiguration = [MEMORY[0x1E69DCC28] plainHeaderConfiguration];
+  if (dateCopy)
   {
-    v18 = [a1 _stringForHeaderDate:v14 currentYearStart:a7 currentYearEnd:a8 timeZone:v15];
-    [v17 setText:v18];
-    [v17 setPrefersSideBySideTextAndSecondaryText:1];
+    v18 = [self _stringForHeaderDate:dateCopy currentYearStart:start currentYearEnd:end timeZone:zoneCopy];
+    [plainHeaderConfiguration setText:v18];
+    [plainHeaderConfiguration setPrefersSideBySideTextAndSecondaryText:1];
     if (CUIKNSDateIsToday())
     {
       CUIKAppTintColor();
@@ -27,31 +27,31 @@
       [MEMORY[0x1E69DC888] labelColor];
     }
     v19 = ;
-    v20 = [v17 textProperties];
-    [v20 setColor:v19];
+    textProperties = [plainHeaderConfiguration textProperties];
+    [textProperties setColor:v19];
 
     v21 = CUIKGetOverlayCalendar();
     if (v21)
     {
-      v22 = [MEMORY[0x1E69933D8] monthDayStringForDate:v14 inCalendar:v21];
-      [v17 setSecondaryText:v22];
+      v22 = [MEMORY[0x1E69933D8] monthDayStringForDate:dateCopy inCalendar:v21];
+      [plainHeaderConfiguration setSecondaryText:v22];
     }
 
     else
     {
-      [v17 setSecondaryText:0];
+      [plainHeaderConfiguration setSecondaryText:0];
     }
   }
 
-  [v16 setContentConfiguration:v17];
+  [v16 setContentConfiguration:plainHeaderConfiguration];
 
   return v16;
 }
 
-+ (id)_stringForHeaderDate:(id)a3 currentYearStart:(id *)a4 currentYearEnd:(id *)a5 timeZone:(id)a6
++ (id)_stringForHeaderDate:(id)date currentYearStart:(id *)start currentYearEnd:(id *)end timeZone:(id)zone
 {
-  v10 = a3;
-  if ([a1 _isDateInCurrentYear:v10 currentYearStart:a4 currentYearEnd:a5 timeZone:a6])
+  dateCopy = date;
+  if ([self _isDateInCurrentYear:dateCopy currentYearStart:start currentYearEnd:end timeZone:zone])
   {
     CUIKLongDayStringForDateNoYear();
   }
@@ -62,28 +62,28 @@
   }
   v11 = ;
 
-  v12 = [v11 localizedUppercaseString];
+  localizedUppercaseString = [v11 localizedUppercaseString];
 
-  return v12;
+  return localizedUppercaseString;
 }
 
-+ (BOOL)_isDateInCurrentYear:(id)a3 currentYearStart:(id *)a4 currentYearEnd:(id *)a5 timeZone:(id)a6
++ (BOOL)_isDateInCurrentYear:(id)year currentYearStart:(id *)start currentYearEnd:(id *)end timeZone:(id)zone
 {
-  v9 = a3;
-  v10 = a6;
-  if (!*a4)
+  yearCopy = year;
+  zoneCopy = zone;
+  if (!*start)
   {
     v11 = MEMORY[0x1E69930C8];
     v12 = CUIKNowDate();
-    v13 = [v11 calendarDateWithDate:v12 timeZone:v10];
+    v13 = [v11 calendarDateWithDate:v12 timeZone:zoneCopy];
 
-    v14 = [v13 calendarDateForYear];
-    v15 = [v14 calendarDateForEndOfYear];
-    *a4 = [v14 date];
-    *a5 = [v15 date];
+    calendarDateForYear = [v13 calendarDateForYear];
+    calendarDateForEndOfYear = [calendarDateForYear calendarDateForEndOfYear];
+    *start = [calendarDateForYear date];
+    *end = [calendarDateForEndOfYear date];
   }
 
-  v16 = [v9 compare:?] != -1 && objc_msgSend(v9, "compare:", *a5) != 1;
+  v16 = [yearCopy compare:?] != -1 && objc_msgSend(yearCopy, "compare:", *end) != 1;
 
   return v16;
 }

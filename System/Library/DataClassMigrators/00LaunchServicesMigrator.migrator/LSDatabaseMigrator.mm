@@ -41,8 +41,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * i) bundleIdentifier];
-        [v3 addObject:v10];
+        bundleIdentifier = [*(*(&v16 + 1) + 8 * i) bundleIdentifier];
+        [v3 addObject:bundleIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -100,13 +100,13 @@
     [v6 setBool:1 forKey:@"LSHasRunRemoveTVAppRestrictionSentinelKey"];
 
     v5 = +[LSApplicationWorkspace defaultWorkspace];
-    v7 = [v5 _LSPrivateRemovedSystemAppIdentifiers];
-    v8 = [v7 mutableCopy];
+    _LSPrivateRemovedSystemAppIdentifiers = [v5 _LSPrivateRemovedSystemAppIdentifiers];
+    v8 = [_LSPrivateRemovedSystemAppIdentifiers mutableCopy];
 
-    LOBYTE(v7) = [(LSDatabaseMigrator *)self userDataDisposition];
+    LOBYTE(_LSPrivateRemovedSystemAppIdentifiers) = [(LSDatabaseMigrator *)self userDataDisposition];
     v9 = _LSDefaultLog();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-    if ((v7 & 4) != 0)
+    if ((_LSPrivateRemovedSystemAppIdentifiers & 4) != 0)
     {
       if (v10)
       {
@@ -164,8 +164,8 @@
   if (([(LSDatabaseMigrator *)self userDataDisposition]& 2) != 0)
   {
     v2 = +[LSApplicationWorkspace defaultWorkspace];
-    v3 = [v2 _LSPrivateRemovedSystemAppIdentifiers];
-    if ([v2 applicationIsInstalled:@"com.apple.tv"] && objc_msgSend(v3, "containsObject:", @"com.apple.tv"))
+    _LSPrivateRemovedSystemAppIdentifiers = [v2 _LSPrivateRemovedSystemAppIdentifiers];
+    if ([v2 applicationIsInstalled:@"com.apple.tv"] && objc_msgSend(_LSPrivateRemovedSystemAppIdentifiers, "containsObject:", @"com.apple.tv"))
     {
       v4 = _LSDefaultLog();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -174,7 +174,7 @@
         _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "TV app is installed but app-removed restriction exists for it. Removing restriction.", v7, 2u);
       }
 
-      v5 = [v3 mutableCopy];
+      v5 = [_LSPrivateRemovedSystemAppIdentifiers mutableCopy];
       [v5 removeObject:@"com.apple.tv"];
       [v2 _LSPrivateSetRemovedSystemAppIdentifiers:v5];
     }
@@ -185,8 +185,8 @@
 
 - (BOOL)performMigration
 {
-  v3 = [(LSDatabaseMigrator *)self populateLSDatabase];
-  v4 = v3 & [(LSDatabaseMigrator *)self removeTVAppSystemAppRemovedRestrictionFor12];
+  populateLSDatabase = [(LSDatabaseMigrator *)self populateLSDatabase];
+  v4 = populateLSDatabase & [(LSDatabaseMigrator *)self removeTVAppSystemAppRemovedRestrictionFor12];
   return v4 & [(LSDatabaseMigrator *)self removeAppRemovalRestrictionForTVOnUpgradeIfInstalled];
 }
 
@@ -194,9 +194,9 @@
 {
   v4.receiver = self;
   v4.super_class = LSDatabaseMigrator;
-  v2 = [(LSDatabaseMigrator *)&v4 didUpgrade];
+  didUpgrade = [(LSDatabaseMigrator *)&v4 didUpgrade];
   result = 120.0;
-  if (!v2)
+  if (!didUpgrade)
   {
     return 2.0;
   }

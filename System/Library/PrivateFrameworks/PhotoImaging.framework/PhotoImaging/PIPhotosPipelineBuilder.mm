@@ -1,17 +1,17 @@
 @interface PIPhotosPipelineBuilder
 + (NUVersion)pipelineVersion;
-+ (id)pipelineBuilderWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)buildPhotosPipeline:(id)a3 error:(id *)a4;
++ (id)pipelineBuilderWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)buildPhotosPipeline:(id)pipeline error:(id *)error;
 - (PIPhotosPipelineBuilder)init;
-- (PIPhotosPipelineBuilder)initWithPipelineDescriptor:(id)a3;
+- (PIPhotosPipelineBuilder)initWithPipelineDescriptor:(id)descriptor;
 @end
 
 @implementation PIPhotosPipelineBuilder
 
-- (BOOL)buildPhotosPipeline:(id)a3 error:(id *)a4
+- (BOOL)buildPhotosPipeline:(id)pipeline error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pipelineCopy = pipeline;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -49,8 +49,8 @@ LABEL_11:
           v21 = MEMORY[0x1E696AF00];
           v22 = specific;
           v23 = v19;
-          v24 = [v21 callStackSymbols];
-          v5 = [v24 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v21 callStackSymbols];
+          v5 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -77,8 +77,8 @@ LABEL_11:
     {
       v15 = MEMORY[0x1E696AF00];
       v16 = v14;
-      v17 = [v15 callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v15 callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v18;
       _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -94,11 +94,11 @@ LABEL_14:
   }
 }
 
-- (PIPhotosPipelineBuilder)initWithPipelineDescriptor:(id)a3
+- (PIPhotosPipelineBuilder)initWithPipelineDescriptor:(id)descriptor
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  descriptorCopy = descriptor;
+  if (!descriptorCopy)
   {
     v14 = NUAssertLogger_28537();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -120,8 +120,8 @@ LABEL_14:
         v22 = dispatch_get_specific(*v16);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v22;
         v30 = 2114;
@@ -132,8 +132,8 @@ LABEL_14:
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v21;
       _os_log_error_impl(&dword_1C7694000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -142,21 +142,21 @@ LABEL_14:
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = descriptorCopy;
   v27.receiver = self;
   v27.super_class = PIPhotosPipelineBuilder;
   v6 = [(PIPhotosPipelineBuilder *)&v27 init];
-  v7 = [v5 pipelineIdentifier];
+  pipelineIdentifier = [v5 pipelineIdentifier];
   pipelineIdentifier = v6->_pipelineIdentifier;
-  v6->_pipelineIdentifier = v7;
+  v6->_pipelineIdentifier = pipelineIdentifier;
 
-  v9 = [v5 schemaIdentifier];
+  schemaIdentifier = [v5 schemaIdentifier];
   schemaIdentifier = v6->_schemaIdentifier;
-  v6->_schemaIdentifier = v9;
+  v6->_schemaIdentifier = schemaIdentifier;
 
-  v11 = [v5 asset];
+  asset = [v5 asset];
   asset = v6->_asset;
-  v6->_asset = v11;
+  v6->_asset = asset;
 
   return v6;
 }
@@ -202,8 +202,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -230,8 +230,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -289,8 +289,8 @@ LABEL_11:
           v18 = MEMORY[0x1E696AF00];
           v19 = specific;
           v20 = v16;
-          v21 = [v18 callStackSymbols];
-          v2 = [v21 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v18 callStackSymbols];
+          v2 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v24 = specific;
           v25 = 2114;
@@ -317,8 +317,8 @@ LABEL_11:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v12 callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v15;
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -334,11 +334,11 @@ LABEL_14:
   }
 }
 
-+ (id)pipelineBuilderWithDescriptor:(id)a3 error:(id *)a4
++ (id)pipelineBuilderWithDescriptor:(id)descriptor error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  descriptorCopy = descriptor;
+  if (!descriptorCopy)
   {
     v12 = NUAssertLogger_28537();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -360,8 +360,8 @@ LABEL_14:
         v20 = dispatch_get_specific(*v14);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v26 = v20;
         v27 = 2114;
@@ -372,8 +372,8 @@ LABEL_14:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v19;
       _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -382,10 +382,10 @@ LABEL_14:
     _NUAssertFailHandler();
   }
 
-  v6 = v5;
-  v7 = [v5 basePipelineVersion];
+  v6 = descriptorCopy;
+  basePipelineVersion = [descriptorCopy basePipelineVersion];
   v8 = +[PIPhotosPipelineBuilder_2025_1 pipelineVersion];
-  v9 = [v7 isEqualToVersion:v8];
+  v9 = [basePipelineVersion isEqualToVersion:v8];
 
   if (v9)
   {
@@ -394,8 +394,8 @@ LABEL_14:
 
   else
   {
-    [MEMORY[0x1E69B3A48] invalidError:@"Invalid Photos pipeline version" object:v7];
-    *a4 = v10 = 0;
+    [MEMORY[0x1E69B3A48] invalidError:@"Invalid Photos pipeline version" object:basePipelineVersion];
+    *error = v10 = 0;
   }
 
   return v10;

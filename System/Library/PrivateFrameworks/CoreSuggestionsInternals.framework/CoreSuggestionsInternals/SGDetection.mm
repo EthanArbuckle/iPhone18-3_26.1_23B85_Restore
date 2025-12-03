@@ -1,5 +1,5 @@
 @interface SGDetection
-- (SGDetection)initWithType:(unsigned int)a3 extraction:(id)a4 context:(id)a5 contextRangeOfInterest:(_NSRange)a6 label:(id)a7 hasPhoneLabel:(BOOL)a8 match:(_NSRange)a9 extractionInfo:(id)a10 isUnlikelyPhone:(BOOL)a11;
+- (SGDetection)initWithType:(unsigned int)type extraction:(id)extraction context:(id)context contextRangeOfInterest:(_NSRange)interest label:(id)label hasPhoneLabel:(BOOL)phoneLabel match:(_NSRange)match extractionInfo:(id)self0 isUnlikelyPhone:(BOOL)self1;
 - (_NSRange)contextRangeOfInterest;
 - (_NSRange)match;
 - (id)description;
@@ -34,30 +34,30 @@
   return v5;
 }
 
-- (SGDetection)initWithType:(unsigned int)a3 extraction:(id)a4 context:(id)a5 contextRangeOfInterest:(_NSRange)a6 label:(id)a7 hasPhoneLabel:(BOOL)a8 match:(_NSRange)a9 extractionInfo:(id)a10 isUnlikelyPhone:(BOOL)a11
+- (SGDetection)initWithType:(unsigned int)type extraction:(id)extraction context:(id)context contextRangeOfInterest:(_NSRange)interest label:(id)label hasPhoneLabel:(BOOL)phoneLabel match:(_NSRange)match extractionInfo:(id)self0 isUnlikelyPhone:(BOOL)self1
 {
-  length = a6.length;
-  location = a6.location;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v24 = a10;
+  length = interest.length;
+  location = interest.location;
+  extractionCopy = extraction;
+  contextCopy = context;
+  labelCopy = label;
+  infoCopy = info;
   v25.receiver = self;
   v25.super_class = SGDetection;
   v20 = [(SGDetection *)&v25 init];
   v21 = v20;
   if (v20)
   {
-    v20->_type = a3;
-    objc_storeStrong(&v20->_extraction, a4);
-    objc_storeStrong(&v21->_context, a5);
+    v20->_type = type;
+    objc_storeStrong(&v20->_extraction, extraction);
+    objc_storeStrong(&v21->_context, context);
     v21->_contextRangeOfInterest.location = location;
     v21->_contextRangeOfInterest.length = length;
-    objc_storeStrong(&v21->_label, a7);
-    v21->_hasPhoneLabel = a8;
-    v21->_match = a9;
-    objc_storeStrong(&v21->_extractionInfo, a10);
-    v21->_isUnlikelyPhone = a11;
+    objc_storeStrong(&v21->_label, label);
+    v21->_hasPhoneLabel = phoneLabel;
+    v21->_match = match;
+    objc_storeStrong(&v21->_extractionInfo, info);
+    v21->_isUnlikelyPhone = phone;
   }
 
   return v21;

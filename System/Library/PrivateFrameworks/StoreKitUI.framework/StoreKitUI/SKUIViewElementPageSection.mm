@@ -1,42 +1,42 @@
 @interface SKUIViewElementPageSection
 - (BOOL)_stretchesToFitCollectionViewBounds;
-- (BOOL)collectionViewShouldHighlightItemAtIndexPath:(id)a3;
-- (BOOL)collectionViewShouldSelectItemAtIndexPath:(id)a3;
-- (BOOL)updateCellWithIndexPath:(id)a3 itemState:(id)a4 animated:(BOOL)a5;
-- (CGSize)cellSizeForIndexPath:(id)a3;
+- (BOOL)collectionViewShouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)collectionViewShouldSelectItemAtIndexPath:(id)path;
+- (BOOL)updateCellWithIndexPath:(id)path itemState:(id)state animated:(BOOL)animated;
+- (CGSize)cellSizeForIndexPath:(id)path;
 - (CGSize)preferredContentSize;
-- (SKUIViewElementPageSection)initWithPageComponent:(id)a3;
-- (UIEdgeInsets)pinningContentInsetForItemAtIndexPath:(id)a3;
+- (SKUIViewElementPageSection)initWithPageComponent:(id)component;
+- (UIEdgeInsets)pinningContentInsetForItemAtIndexPath:(id)path;
 - (UIEdgeInsets)sectionContentInset;
-- (double)contentInsetAdjustmentForCollectionView:(id)a3;
+- (double)contentInsetAdjustmentForCollectionView:(id)view;
 - (double)defaultVerticalInset;
-- (id)backgroundColorForIndexPath:(id)a3;
-- (id)cellForIndexPath:(id)a3;
-- (id)previewingContext:(id)a3 viewControllerForLocation:(CGPoint)a4;
-- (int64_t)applyUpdateType:(int64_t)a3;
+- (id)backgroundColorForIndexPath:(id)path;
+- (id)cellForIndexPath:(id)path;
+- (id)previewingContext:(id)context viewControllerForLocation:(CGPoint)location;
+- (int64_t)applyUpdateType:(int64_t)type;
 - (int64_t)defaultItemPinningStyle;
 - (void)_reloadViewElementProperties;
 - (void)_requestCellLayout;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3;
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3;
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3;
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3;
-- (void)entityProvider:(id)a3 didInvalidateWithContext:(id)a4;
-- (void)expandEditorialForLabelElement:(id)a3 indexPath:(id)a4;
-- (void)getModalSourceViewForViewElement:(id)a3 completionBlock:(id)a4;
-- (void)prefetchResourcesWithReason:(int64_t)a3;
-- (void)reloadCellWithIndexPath:(id)a3 reason:(int64_t)a4;
-- (void)willAppearInContext:(id)a3;
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path;
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path;
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes;
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path;
+- (void)entityProvider:(id)provider didInvalidateWithContext:(id)context;
+- (void)expandEditorialForLabelElement:(id)element indexPath:(id)path;
+- (void)getModalSourceViewForViewElement:(id)element completionBlock:(id)block;
+- (void)prefetchResourcesWithReason:(int64_t)reason;
+- (void)reloadCellWithIndexPath:(id)path reason:(int64_t)reason;
+- (void)willAppearInContext:(id)context;
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SKUIViewElementPageSection
 
-- (SKUIViewElementPageSection)initWithPageComponent:(id)a3
+- (SKUIViewElementPageSection)initWithPageComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIViewElementPageSection initWithPageComponent:];
@@ -44,7 +44,7 @@
 
   v8.receiver = self;
   v8.super_class = SKUIViewElementPageSection;
-  v5 = [(SKUIStorePageSection *)&v8 initWithPageComponent:v4];
+  v5 = [(SKUIStorePageSection *)&v8 initWithPageComponent:componentCopy];
   v6 = v5;
   if (v5)
   {
@@ -54,57 +54,57 @@
   return v6;
 }
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
-  v5 = a4;
-  v7 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v7 viewElement];
-  [v5 addItemViewElement:v6];
+  sessionCopy = session;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 }
 
-- (int64_t)applyUpdateType:(int64_t)a3
+- (int64_t)applyUpdateType:(int64_t)type
 {
-  if (a3 != 2)
+  if (type != 2)
   {
     [(SKUIViewElementPageSection *)self _reloadViewElementProperties];
   }
 
   v6.receiver = self;
   v6.super_class = SKUIViewElementPageSection;
-  return [(SKUIStorePageSection *)&v6 applyUpdateType:a3];
+  return [(SKUIStorePageSection *)&v6 applyUpdateType:type];
 }
 
-- (id)backgroundColorForIndexPath:(id)a3
+- (id)backgroundColorForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
-  v7 = [v6 handlesBackgroundColorDirectly];
+  pathCopy = path;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  handlesBackgroundColorDirectly = [viewElement handlesBackgroundColorDirectly];
 
-  if (v7)
+  if (handlesBackgroundColorDirectly)
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(SKUIStorePageSection *)self pageComponent];
-    v10 = [v9 viewElement];
-    v11 = [v10 style];
+    pageComponent2 = [(SKUIStorePageSection *)self pageComponent];
+    viewElement2 = [pageComponent2 viewElement];
+    style = [viewElement2 style];
 
-    v12 = [v11 ikBackgroundColor];
-    v13 = [v12 color];
+    ikBackgroundColor = [style ikBackgroundColor];
+    color = [ikBackgroundColor color];
 
-    if (v13)
+    if (color)
     {
-      v14 = v13;
+      v14 = color;
     }
 
     else
     {
       v16.receiver = self;
       v16.super_class = SKUIViewElementPageSection;
-      v14 = [(SKUIStorePageSection *)&v16 backgroundColorForIndexPath:v4];
+      v14 = [(SKUIStorePageSection *)&v16 backgroundColorForIndexPath:pathCopy];
     }
 
     v8 = v14;
@@ -113,28 +113,28 @@
   return v8;
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:self->_reuseIdentifier forIndexPath:v4];
+  pathCopy = path;
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:self->_reuseIdentifier forIndexPath:pathCopy];
 
   [v7 setContentInset:{self->_cellContentInset.top, self->_cellContentInset.left, self->_cellContentInset.bottom, self->_cellContentInset.right}];
   [v7 setSeparatorStyle:0];
-  v8 = [(SKUIStorePageSection *)self pageComponent];
-  v9 = [v8 viewElement];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  if ([v9 elementType] == 49)
+  if ([viewElement elementType] == 49)
   {
     [v7 setShowsReflectionImage:{-[SKUIViewElementPageSection _showsImageReflection](self, "_showsImageReflection")}];
   }
 
-  [v5 activePageWidth];
+  [context activePageWidth];
   v11 = v10 - self->_cellContentInset.left - self->_cellContentInset.right;
-  v12 = [v9 style];
-  v13 = [v12 visibility];
-  v14 = [v13 isEqualToString:@"hidden"];
+  style = [viewElement style];
+  visibility = [style visibility];
+  v14 = [visibility isEqualToString:@"hidden"];
 
   if (v14)
   {
@@ -143,19 +143,19 @@
 
   else
   {
-    v15 = v9;
+    v15 = viewElement;
   }
 
   [v7 reloadWithViewElement:v15 width:self->_cellLayoutContext context:v11];
   if (self->_rendersWithPerspective && [v7 conformsToProtocol:&unk_282916328])
   {
     v16 = v7;
-    v17 = [(SKUIStorePageSection *)self context];
-    v18 = [v17 parentViewController];
-    v19 = [v18 view];
+    context2 = [(SKUIStorePageSection *)self context];
+    parentViewController = [context2 parentViewController];
+    view = [parentViewController view];
 
-    [v16 setPerspectiveTargetView:v19];
-    [v19 bounds];
+    [v16 setPerspectiveTargetView:view];
+    [view bounds];
     [v16 setVanishingPoint:{CGRectGetMidX(v22), -800.0}];
   }
 
@@ -164,16 +164,16 @@
   return v7;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v4 = [(SKUIStorePageSection *)self context];
-  [v4 activePageWidth];
+  context = [(SKUIStorePageSection *)self context];
+  [context activePageWidth];
   v6 = v5;
 
-  v7 = [(SKUIStorePageSection *)self pageComponent];
-  v8 = [v7 viewElement];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  [(objc_class *)self->_cellClass sizeThatFitsWidth:v8 viewElement:self->_cellLayoutContext context:v6 - self->_cellContentInset.left - self->_cellContentInset.right];
+  [(objc_class *)self->_cellClass sizeThatFitsWidth:viewElement viewElement:self->_cellLayoutContext context:v6 - self->_cellContentInset.left - self->_cellContentInset.right];
   v10 = v9 + self->_cellContentInset.top + self->_cellContentInset.bottom;
   if ([(SKUIViewElementPageSection *)self _showsImageReflection])
   {
@@ -187,11 +187,11 @@
   return result;
 }
 
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
@@ -199,7 +199,7 @@
   v8[2] = __69__SKUIViewElementPageSection_collectionViewDidSelectItemAtIndexPath___block_invoke;
   v8[3] = &unk_2781FB338;
   objc_copyWeak(&v10, &location);
-  v7 = v6;
+  v7 = viewElement;
   v9 = v7;
   [v7 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:v8];
 
@@ -231,40 +231,40 @@ void __69__SKUIViewElementPageSection_collectionViewDidSelectItemAtIndexPath___b
   }
 }
 
-- (BOOL)collectionViewShouldHighlightItemAtIndexPath:(id)a3
+- (BOOL)collectionViewShouldHighlightItemAtIndexPath:(id)path
 {
-  v3 = [(SKUIStorePageSection *)self pageComponent];
-  v4 = [v3 viewElement];
-  v5 = [v4 isEnabled];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  isEnabled = [viewElement isEnabled];
 
-  return v5;
+  return isEnabled;
 }
 
-- (BOOL)collectionViewShouldSelectItemAtIndexPath:(id)a3
+- (BOOL)collectionViewShouldSelectItemAtIndexPath:(id)path
 {
-  v3 = [(SKUIStorePageSection *)self pageComponent];
-  v4 = [v3 viewElement];
-  v5 = [v4 isEnabled];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  isEnabled = [viewElement isEnabled];
 
-  return v5;
+  return isEnabled;
 }
 
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   if ([(SKUIViewElementPageSection *)self _stretchesToFitCollectionViewBounds])
   {
-    v5 = [(SKUIStorePageSection *)self context];
-    v6 = [v5 collectionView];
+    context = [(SKUIStorePageSection *)self context];
+    collectionView = [context collectionView];
 
-    [v6 bounds];
+    [collectionView bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    [v6 contentInset];
+    [collectionView contentInset];
     v16 = v15;
-    [v4 frame];
+    [attributesCopy frame];
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -273,16 +273,16 @@ void __69__SKUIViewElementPageSection_collectionViewDidSelectItemAtIndexPath___b
     v32.size.width = v12;
     v32.size.height = v14;
     v23 = CGRectGetMaxY(v32) - v16 - v20 - self->_sectionBottomInset;
-    v24 = [(SKUIStorePageSection *)self pageComponent];
-    v25 = [v24 viewElement];
-    v26 = [v25 style];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    viewElement = [pageComponent viewElement];
+    style = [viewElement style];
 
-    v27 = [v26 maxHeight];
+    maxHeight = [style maxHeight];
 
-    if (v27)
+    if (maxHeight)
     {
-      v28 = [v26 maxHeight];
-      [v28 floatValue];
+      maxHeight2 = [style maxHeight];
+      [maxHeight2 floatValue];
       v30 = v29;
 
       if (v23 < v30)
@@ -291,57 +291,57 @@ void __69__SKUIViewElementPageSection_collectionViewDidSelectItemAtIndexPath___b
       }
     }
 
-    [v4 setFrame:{v18, v20, v22, v23}];
-    [v4 setSize:{v22, v23}];
+    [attributesCopy setFrame:{v18, v20, v22, v23}];
+    [attributesCopy setSize:{v22, v23}];
   }
 
   v31.receiver = self;
   v31.super_class = SKUIViewElementPageSection;
-  [(SKUIStorePageSection *)&v31 collectionViewWillApplyLayoutAttributes:v4];
+  [(SKUIStorePageSection *)&v31 collectionViewWillApplyLayoutAttributes:attributesCopy];
 }
 
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SKUIStorePageSection *)self context];
-  v8 = [v7 activeMetricsImpressionSession];
-  [v8 beginActiveImpressionForViewElement:v6];
+  context = [(SKUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession beginActiveImpressionForViewElement:viewElement];
 
   v9.receiver = self;
   v9.super_class = SKUIViewElementPageSection;
-  [(SKUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:v4];
+  [(SKUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SKUIStorePageSection *)self context];
-  v8 = [v7 activeMetricsImpressionSession];
-  [v8 endActiveImpressionForViewElement:v6];
+  context = [(SKUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession endActiveImpressionForViewElement:viewElement];
 
   v9.receiver = self;
   v9.super_class = SKUIViewElementPageSection;
-  [(SKUIStorePageSection *)&v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:v4];
+  [(SKUIStorePageSection *)&v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:pathCopy];
 }
 
-- (double)contentInsetAdjustmentForCollectionView:(id)a3
+- (double)contentInsetAdjustmentForCollectionView:(id)view
 {
-  v4 = [(SKUIStorePageSection *)self pageComponent];
-  v5 = [v4 viewElement];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
   v6 = 0.0;
   if ([(SKUIViewElementPageSection *)self _showsImageReflection])
   {
     cellClass = self->_cellClass;
-    v8 = [(SKUIStorePageSection *)self context];
-    [v8 activePageWidth];
-    [(objc_class *)cellClass sizeThatFitsWidth:v5 viewElement:self->_cellLayoutContext context:v9 - self->_cellContentInset.left - self->_cellContentInset.right];
+    context = [(SKUIStorePageSection *)self context];
+    [context activePageWidth];
+    [(objc_class *)cellClass sizeThatFitsWidth:viewElement viewElement:self->_cellLayoutContext context:v9 - self->_cellContentInset.left - self->_cellContentInset.right];
     v11 = v10;
 
     v6 = -v11;
@@ -352,13 +352,13 @@ void __69__SKUIViewElementPageSection_collectionViewDidSelectItemAtIndexPath___b
 
 - (int64_t)defaultItemPinningStyle
 {
-  v3 = [(SKUIStorePageSection *)self pageComponent];
-  v4 = [v3 viewElement];
-  if ([v4 elementType] == 49)
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  if ([viewElement elementType] == 49)
   {
-    v5 = [(SKUIStorePageSection *)self isTopSection];
+    isTopSection = [(SKUIStorePageSection *)self isTopSection];
 
-    if (v5)
+    if (isTopSection)
     {
       return 3;
     }
@@ -373,47 +373,47 @@ void __69__SKUIViewElementPageSection_collectionViewDidSelectItemAtIndexPath___b
   return [(SKUIStorePageSection *)&v7 defaultItemPinningStyle];
 }
 
-- (void)entityProvider:(id)a3 didInvalidateWithContext:(id)a4
+- (void)entityProvider:(id)provider didInvalidateWithContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  providerCopy = provider;
   [(SKUIViewElementPageSection *)self _requestCellLayout];
   v8.receiver = self;
   v8.super_class = SKUIViewElementPageSection;
-  [(SKUIStorePageSection *)&v8 entityProvider:v7 didInvalidateWithContext:v6];
+  [(SKUIStorePageSection *)&v8 entityProvider:providerCopy didInvalidateWithContext:contextCopy];
 }
 
-- (void)expandEditorialForLabelElement:(id)a3 indexPath:(id)a4
+- (void)expandEditorialForLabelElement:(id)element indexPath:(id)path
 {
   v11[1] = *MEMORY[0x277D85DE8];
   cellLayoutContext = self->_cellLayoutContext;
-  v7 = a4;
-  [(SKUIViewElementLayoutContext *)cellLayoutContext expandEditorialForLabelElement:a3];
-  v8 = [(SKUIStorePageSection *)self context];
-  v9 = [v8 collectionView];
-  v11[0] = v7;
+  pathCopy = path;
+  [(SKUIViewElementLayoutContext *)cellLayoutContext expandEditorialForLabelElement:element];
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v11[0] = pathCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
 
-  [v9 reloadItemsAtIndexPaths:v10];
+  [collectionView reloadItemsAtIndexPaths:v10];
 }
 
-- (void)getModalSourceViewForViewElement:(id)a3 completionBlock:(id)a4
+- (void)getModalSourceViewForViewElement:(id)element completionBlock:(id)block
 {
-  v19 = a3;
-  v6 = a4;
-  v7 = [(SKUIStorePageSection *)self pageComponent];
-  v8 = [v7 viewElement];
-  v9 = [v19 isDescendentFromViewElement:v8];
+  elementCopy = element;
+  blockCopy = block;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  v9 = [elementCopy isDescendentFromViewElement:viewElement];
 
   if (v9)
   {
     v10 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:{-[SKUIStorePageSection sectionIndex](self, "sectionIndex")}];
-    v11 = [(SKUIStorePageSection *)self context];
-    v12 = [v11 collectionView];
-    v13 = [v12 cellForItemAtIndexPath:v10];
+    context = [(SKUIStorePageSection *)self context];
+    collectionView = [context collectionView];
+    v13 = [collectionView cellForItemAtIndexPath:v10];
 
-    v14 = [v19 itmlID];
-    v15 = [v13 viewForElementIdentifier:v14];
+    itmlID = [elementCopy itmlID];
+    v15 = [v13 viewForElementIdentifier:itmlID];
 
     v16 = objc_alloc_init(SKUIModalSourceViewProvider);
     v17 = v16;
@@ -435,21 +435,21 @@ void __69__SKUIViewElementPageSection_collectionViewDidSelectItemAtIndexPath___b
     v17 = 0;
   }
 
-  v6[2](v6, v17);
+  blockCopy[2](blockCopy, v17);
 }
 
-- (UIEdgeInsets)pinningContentInsetForItemAtIndexPath:(id)a3
+- (UIEdgeInsets)pinningContentInsetForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   firstSectionTopInset = self->_firstSectionTopInset;
   left = self->_cellContentInset.left;
   sectionBottomInset = self->_sectionBottomInset;
   right = self->_cellContentInset.right;
   v19 = 0;
-  v9 = [(SKUIStorePageSection *)self pageComponent];
-  v10 = [v9 viewElement];
-  v11 = [v10 style];
-  v12 = SKUIViewElementPaddingForStyle(v11, &v19);
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  style = [viewElement style];
+  v12 = SKUIViewElementPaddingForStyle(style, &v19);
   v14 = v13;
 
   if (v19 == 1)
@@ -460,7 +460,7 @@ void __69__SKUIViewElementPageSection_collectionViewDidSelectItemAtIndexPath___b
   else
   {
     v14 = 0.0;
-    if ([(SKUIStorePageSection *)self pinningStyleForItemAtIndexPath:v4]!= 3 && self->_cellContentInset.bottom <= 0.00000011920929)
+    if ([(SKUIStorePageSection *)self pinningStyleForItemAtIndexPath:pathCopy]!= 3 && self->_cellContentInset.bottom <= 0.00000011920929)
     {
       v14 = sectionBottomInset;
     }
@@ -481,10 +481,10 @@ void __69__SKUIViewElementPageSection_collectionViewDidSelectItemAtIndexPath___b
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(SKUIStorePageSection *)self pageComponent];
-    v4 = [v3 viewElement];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    viewElement = [pageComponent viewElement];
 
-    [(objc_class *)self->_cellClass preferredSizeForViewElement:v4 context:self->_cellLayoutContext];
+    [(objc_class *)self->_cellClass preferredSizeForViewElement:viewElement context:self->_cellLayoutContext];
     v6 = v5;
     v8 = v7;
   }
@@ -502,52 +502,52 @@ void __69__SKUIViewElementPageSection_collectionViewDidSelectItemAtIndexPath___b
   return result;
 }
 
-- (void)prefetchResourcesWithReason:(int64_t)a3
+- (void)prefetchResourcesWithReason:(int64_t)reason
 {
   cellClass = self->_cellClass;
-  v6 = [(SKUIStorePageSection *)self pageComponent];
-  v7 = [v6 viewElement];
-  [(objc_class *)cellClass prefetchResourcesForViewElement:v7 reason:a3 context:self->_cellLayoutContext];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [(objc_class *)cellClass prefetchResourcesForViewElement:viewElement reason:reason context:self->_cellLayoutContext];
 
   v8.receiver = self;
   v8.super_class = SKUIViewElementPageSection;
-  [(SKUIStorePageSection *)&v8 prefetchResourcesWithReason:a3];
+  [(SKUIStorePageSection *)&v8 prefetchResourcesWithReason:reason];
 }
 
-- (id)previewingContext:(id)a3 viewControllerForLocation:(CGPoint)a4
+- (id)previewingContext:(id)context viewControllerForLocation:(CGPoint)location
 {
-  v5 = [(SKUIStorePageSection *)self pageComponent:a3];
-  v6 = [v5 viewElement];
+  v5 = [(SKUIStorePageSection *)self pageComponent:context];
+  viewElement = [v5 viewElement];
 
-  v7 = [(SKUIStorePageSection *)self context];
-  v8 = [v7 clientContext];
-  v9 = [v8 previewViewControllerForViewElement:v6];
+  context = [(SKUIStorePageSection *)self context];
+  clientContext = [context clientContext];
+  v9 = [clientContext previewViewControllerForViewElement:viewElement];
 
   return v9;
 }
 
-- (void)reloadCellWithIndexPath:(id)a3 reason:(int64_t)a4
+- (void)reloadCellWithIndexPath:(id)path reason:(int64_t)reason
 {
-  v5 = a3;
-  v11 = [(SKUIStorePageSection *)self context];
-  v6 = [v11 collectionView];
-  v7 = [v6 cellForItemAtIndexPath:v5];
+  pathCopy = path;
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v7 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-  v8 = [(SKUIStorePageSection *)self pageComponent];
-  v9 = [v8 viewElement];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  [v11 activePageWidth];
-  [v7 reloadWithViewElement:v9 width:self->_cellLayoutContext context:v10 - self->_cellContentInset.left - self->_cellContentInset.right];
+  [context activePageWidth];
+  [v7 reloadWithViewElement:viewElement width:self->_cellLayoutContext context:v10 - self->_cellContentInset.left - self->_cellContentInset.right];
 }
 
 - (UIEdgeInsets)sectionContentInset
 {
   sectionBottomInset = self->_sectionBottomInset;
   v14 = 0;
-  v4 = [(SKUIStorePageSection *)self pageComponent];
-  v5 = [v4 viewElement];
-  v6 = [v5 style];
-  firstSectionTopInset = SKUIViewElementPaddingForStyle(v6, &v14);
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  style = [viewElement style];
+  firstSectionTopInset = SKUIViewElementPaddingForStyle(style, &v14);
   v9 = v8;
 
   if (v14 == 1)
@@ -575,12 +575,12 @@ void __69__SKUIViewElementPageSection_collectionViewDidSelectItemAtIndexPath___b
   return result;
 }
 
-- (BOOL)updateCellWithIndexPath:(id)a3 itemState:(id)a4 animated:(BOOL)a5
+- (BOOL)updateCellWithIndexPath:(id)path itemState:(id)state animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a4;
+  animatedCopy = animated;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_lastCell);
-  v9 = [WeakRetained updateWithItemState:v7 context:self->_cellLayoutContext animated:v5];
+  v9 = [WeakRetained updateWithItemState:stateCopy context:self->_cellLayoutContext animated:animatedCopy];
 
   if (v9)
   {
@@ -590,13 +590,13 @@ void __69__SKUIViewElementPageSection_collectionViewDidSelectItemAtIndexPath___b
   return v9;
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 collectionView];
-  [v5 registerClass:self->_cellClass forCellWithReuseIdentifier:self->_reuseIdentifier];
+  contextCopy = context;
+  collectionView = [contextCopy collectionView];
+  [collectionView registerClass:self->_cellClass forCellWithReuseIdentifier:self->_reuseIdentifier];
   v6 = self->_cellLayoutContext;
-  v7 = [[SKUIViewElementLayoutContext alloc] initWithStorePageSectionContext:v4 previousLayoutContext:v6];
+  v7 = [[SKUIViewElementLayoutContext alloc] initWithStorePageSectionContext:contextCopy previousLayoutContext:v6];
   cellLayoutContext = self->_cellLayoutContext;
   self->_cellLayoutContext = v7;
 
@@ -605,35 +605,35 @@ void __69__SKUIViewElementPageSection_collectionViewDidSelectItemAtIndexPath___b
   [(SKUIViewElementPageSection *)self _requestCellLayout];
   v9.receiver = self;
   v9.super_class = SKUIViewElementPageSection;
-  [(SKUIStorePageSection *)&v9 willAppearInContext:v4];
+  [(SKUIStorePageSection *)&v9 willAppearInContext:contextCopy];
 }
 
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   cellLayoutContext = self->_cellLayoutContext;
-  v8 = a4;
+  coordinatorCopy = coordinator;
   [(SKUIViewElementLayoutContext *)cellLayoutContext invalidateAllEditorialLayouts];
   [(SKUIViewElementLayoutContext *)self->_cellLayoutContext setActivePageWidth:width];
   [(SKUIViewElementPageSection *)self _requestCellLayout];
   v9.receiver = self;
   v9.super_class = SKUIViewElementPageSection;
-  [(SKUIStorePageSection *)&v9 willTransitionToSize:v8 withTransitionCoordinator:width, height];
+  [(SKUIStorePageSection *)&v9 willTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
-  v6 = a4;
-  v7 = a3;
+  imageCopy = image;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_lastCell);
-  [WeakRetained setImage:v6 forArtworkRequest:v7 context:self->_cellLayoutContext];
+  [WeakRetained setImage:imageCopy forArtworkRequest:requestCopy context:self->_cellLayoutContext];
 }
 
 - (double)defaultVerticalInset
 {
-  v2 = [MEMORY[0x277D75DA0] keyWindow];
-  [v2 bounds];
+  keyWindow = [MEMORY[0x277D75DA0] keyWindow];
+  [keyWindow bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -666,11 +666,11 @@ void __69__SKUIViewElementPageSection_collectionViewDidSelectItemAtIndexPath___b
 - (void)_reloadViewElementProperties
 {
   p_cellContentInset = &self->_cellContentInset;
-  v4 = [(SKUIStorePageSection *)self context];
-  [v4 horizontalPadding];
+  context = [(SKUIStorePageSection *)self context];
+  [context horizontalPadding];
   v6 = v5;
-  v7 = [(SKUIStorePageSection *)self context];
-  [v7 horizontalPadding];
+  context2 = [(SKUIStorePageSection *)self context];
+  [context2 horizontalPadding];
   p_cellContentInset->top = 0.0;
   p_cellContentInset->left = v6;
   p_cellContentInset->bottom = 0.0;
@@ -679,20 +679,20 @@ void __69__SKUIViewElementPageSection_collectionViewDidSelectItemAtIndexPath___b
   [(SKUIViewElementPageSection *)self defaultVerticalInset];
   self->_sectionBottomInset = v9;
   self->_firstSectionTopInset = v9;
-  v10 = [(SKUIStorePageSection *)self pageComponent];
-  v22 = [v10 viewElement];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  self->_rendersWithPerspective = [v22 rendersWithPerspective];
-  v11 = [v22 elementType];
-  if (v11 > 49)
+  self->_rendersWithPerspective = [viewElement rendersWithPerspective];
+  elementType = [viewElement elementType];
+  if (elementType > 49)
   {
-    if (v11 <= 108)
+    if (elementType <= 108)
     {
-      if (v11 <= 65)
+      if (elementType <= 65)
       {
-        if (v11 != 50)
+        if (elementType != 50)
         {
-          if (v11 != 62)
+          if (elementType != 62)
           {
             goto LABEL_47;
           }
@@ -705,9 +705,9 @@ void __69__SKUIViewElementPageSection_collectionViewDidSelectItemAtIndexPath___b
         goto LABEL_30;
       }
 
-      if (v11 != 66)
+      if (elementType != 66)
       {
-        if (v11 != 77)
+        if (elementType != 77)
         {
           goto LABEL_47;
         }
@@ -717,15 +717,15 @@ void __69__SKUIViewElementPageSection_collectionViewDidSelectItemAtIndexPath___b
         goto LABEL_46;
       }
 
-      v21 = [v22 lockupViewType];
-      if (v21 <= 3)
+      lockupViewType = [viewElement lockupViewType];
+      if (lockupViewType <= 3)
       {
-        if (v21 < 3)
+        if (lockupViewType < 3)
         {
           goto LABEL_45;
         }
 
-        if (v21 != 3)
+        if (lockupViewType != 3)
         {
           goto LABEL_47;
         }
@@ -736,13 +736,13 @@ void __69__SKUIViewElementPageSection_collectionViewDidSelectItemAtIndexPath___b
 
       else
       {
-        if (v21 > 5)
+        if (lockupViewType > 5)
         {
-          if (v21 != 6)
+          if (lockupViewType != 6)
           {
-            if (v21 != 7)
+            if (lockupViewType != 7)
             {
-              if (v21 != 8)
+              if (lockupViewType != 8)
               {
                 goto LABEL_47;
               }
@@ -766,7 +766,7 @@ LABEL_45:
           goto LABEL_46;
         }
 
-        if (v21 != 4)
+        if (lockupViewType != 4)
         {
           p_cellContentInset->right = 0.0;
           self->_cellClass = objc_opt_class();
@@ -785,11 +785,11 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    if (v11 <= 133)
+    if (elementType <= 133)
     {
-      if (v11 != 109)
+      if (elementType != 109)
       {
-        if (v11 != 131)
+        if (elementType != 131)
         {
           goto LABEL_47;
         }
@@ -804,9 +804,9 @@ LABEL_46:
       p_cellContentInset->top = 0.0;
       self->_firstSectionTopInset = 7.0;
       objc_storeStrong(&self->_reuseIdentifier, @"SKUISegmentedControlReuseIdentifier");
-      v20 = [v22 bottomDivider];
+      bottomDivider = [viewElement bottomDivider];
 
-      if (!v20)
+      if (!bottomDivider)
       {
         self->_sectionBottomInset = 7.0;
       }
@@ -814,14 +814,14 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    if (v11 == 134)
+    if (elementType == 134)
     {
       self->_cellClass = objc_opt_class();
       v12 = @"SKUIStarHistogramCellReuseIdentifier";
       goto LABEL_46;
     }
 
-    if (v11 != 141)
+    if (elementType != 141)
     {
       goto LABEL_47;
     }
@@ -835,18 +835,18 @@ LABEL_33:
     goto LABEL_47;
   }
 
-  if (v11 <= 26)
+  if (elementType <= 26)
   {
-    if (v11 == 4)
+    if (elementType == 4)
     {
       self->_cellClass = objc_opt_class();
       v12 = @"SKUIActivityIndicatorReuseIdentifier";
       goto LABEL_46;
     }
 
-    if (v11 != 12)
+    if (elementType != 12)
     {
-      if (v11 == 14)
+      if (elementType == 14)
       {
         self->_cellClass = objc_opt_class();
         objc_storeStrong(&self->_reuseIdentifier, @"SKUICardViewElementReuseIdentifier");
@@ -859,9 +859,9 @@ LABEL_33:
     goto LABEL_30;
   }
 
-  if (v11 <= 47)
+  if (elementType <= 47)
   {
-    if (v11 == 27)
+    if (elementType == 27)
     {
       self->_cellClass = objc_opt_class();
       v12 = @"SKUIContentUnavailableReuseIdentifier";
@@ -869,7 +869,7 @@ LABEL_33:
 
     else
     {
-      if (v11 != 40)
+      if (elementType != 40)
       {
         goto LABEL_47;
       }
@@ -884,7 +884,7 @@ LABEL_33:
     goto LABEL_46;
   }
 
-  if (v11 == 48)
+  if (elementType == 48)
   {
     self->_cellClass = objc_opt_class();
     objc_storeStrong(&self->_reuseIdentifier, @"SKUISectionHeaderReuseIdentifier");
@@ -897,18 +897,18 @@ LABEL_33:
   p_cellContentInset->left = 0.0;
   self->_firstSectionTopInset = 0.0;
   objc_storeStrong(&self->_reuseIdentifier, @"SKUIImageReuseIdentifier");
-  v13 = [v22 style];
-  v14 = [v13 imageTreatment];
-  v15 = [v14 isEqualToString:@"uber"];
+  style = [viewElement style];
+  imageTreatment = [style imageTreatment];
+  v15 = [imageTreatment isEqualToString:@"uber"];
 
   if (v15)
   {
     self->_sectionBottomInset = 0.0;
   }
 
-  v16 = [v22 style];
-  v17 = [v16 imageTreatment];
-  v18 = [v17 isEqualToString:@"uber-banner"];
+  style2 = [viewElement style];
+  imageTreatment2 = [style2 imageTreatment];
+  v18 = [imageTreatment2 isEqualToString:@"uber-banner"];
 
   if (v18)
   {
@@ -920,29 +920,29 @@ LABEL_47:
 
 - (void)_requestCellLayout
 {
-  v3 = [(SKUIStorePageSection *)self pageComponent];
-  v7 = [v3 viewElement];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v4 = [(SKUIStorePageSection *)self context];
-  [v4 activePageWidth];
+  context = [(SKUIStorePageSection *)self context];
+  [context activePageWidth];
   v6 = v5 - self->_cellContentInset.left - self->_cellContentInset.right;
 
-  [(objc_class *)self->_cellClass requestLayoutForViewElement:v7 width:self->_cellLayoutContext context:v6];
+  [(objc_class *)self->_cellClass requestLayoutForViewElement:viewElement width:self->_cellLayoutContext context:v6];
 }
 
 - (BOOL)_stretchesToFitCollectionViewBounds
 {
-  v3 = [(SKUIStorePageSection *)self isBottomSection];
-  if (v3)
+  isBottomSection = [(SKUIStorePageSection *)self isBottomSection];
+  if (isBottomSection)
   {
-    v4 = [(SKUIStorePageSection *)self pageComponent];
-    v5 = [v4 viewElement];
-    v6 = [v5 elementType];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    viewElement = [pageComponent viewElement];
+    elementType = [viewElement elementType];
 
-    LOBYTE(v3) = v6 == 4 || v6 == 27;
+    LOBYTE(isBottomSection) = elementType == 4 || elementType == 27;
   }
 
-  return v3;
+  return isBottomSection;
 }
 
 - (void)initWithPageComponent:.cold.1()

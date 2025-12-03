@@ -1,38 +1,38 @@
 @interface CSFModelConfigDecoder
-+ (id)decodeJsonFromFile:(id)a3;
-+ (id)getAftmCheckerConfigFromConfigDict:(id)a3;
-+ (id)getAftmRecognizerRelativeConfigFromConfigDict:(id)a3;
-+ (id)getNCModelFileFromConfigDict:(id)a3 resourcePath:(id)a4;
-+ (id)getOdldModelFileFromConfigDict:(id)a3 resourcePath:(id)a4;
-+ (id)getOdldValueForKey:(id)a3 categoryKey:(id)a4 configDict:(id)a5;
++ (id)decodeJsonFromFile:(id)file;
++ (id)getAftmCheckerConfigFromConfigDict:(id)dict;
++ (id)getAftmRecognizerRelativeConfigFromConfigDict:(id)dict;
++ (id)getNCModelFileFromConfigDict:(id)dict resourcePath:(id)path;
++ (id)getOdldModelFileFromConfigDict:(id)dict resourcePath:(id)path;
++ (id)getOdldValueForKey:(id)key categoryKey:(id)categoryKey configDict:(id)dict;
 @end
 
 @implementation CSFModelConfigDecoder
 
-+ (id)getOdldValueForKey:(id)a3 categoryKey:(id)a4 configDict:(id)a5
++ (id)getOdldValueForKey:(id)key categoryKey:(id)categoryKey configDict:(id)dict
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v9)
+  keyCopy = key;
+  categoryKeyCopy = categoryKey;
+  dictCopy = dict;
+  v10 = dictCopy;
+  if (!dictCopy)
   {
     goto LABEL_5;
   }
 
-  v11 = [v9 objectForKeyedSubscript:v8];
+  v11 = [dictCopy objectForKeyedSubscript:categoryKeyCopy];
   if (!v11)
   {
     goto LABEL_6;
   }
 
-  v12 = [v10 objectForKeyedSubscript:v8];
-  v13 = [v12 objectForKeyedSubscript:v7];
+  v12 = [v10 objectForKeyedSubscript:categoryKeyCopy];
+  v13 = [v12 objectForKeyedSubscript:keyCopy];
 
   if (v13)
   {
-    v14 = [v10 objectForKeyedSubscript:v8];
-    v11 = [v14 objectForKeyedSubscript:v7];
+    v14 = [v10 objectForKeyedSubscript:categoryKeyCopy];
+    v11 = [v14 objectForKeyedSubscript:keyCopy];
   }
 
   else
@@ -46,10 +46,10 @@ LABEL_6:
   return v11;
 }
 
-+ (id)decodeJsonFromFile:(id)a3
++ (id)decodeJsonFromFile:(id)file
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:a3];
+  v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:file];
   if (v3)
   {
     v11 = 0;
@@ -98,21 +98,21 @@ LABEL_6:
   return v7;
 }
 
-+ (id)getNCModelFileFromConfigDict:(id)a3 resourcePath:(id)a4
++ (id)getNCModelFileFromConfigDict:(id)dict resourcePath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  dictCopy = dict;
+  pathCopy = path;
+  v7 = pathCopy;
   v8 = 0;
-  if (v5)
+  if (dictCopy)
   {
-    if (v6)
+    if (pathCopy)
     {
-      v8 = [v5 objectForKeyedSubscript:@"ModelFile"];
+      v8 = [dictCopy objectForKeyedSubscript:@"ModelFile"];
 
       if (v8)
       {
-        v9 = [v5 objectForKeyedSubscript:@"ModelFile"];
+        v9 = [dictCopy objectForKeyedSubscript:@"ModelFile"];
         v8 = [v7 stringByAppendingPathComponent:v9];
       }
     }
@@ -121,14 +121,14 @@ LABEL_6:
   return v8;
 }
 
-+ (id)getOdldModelFileFromConfigDict:(id)a3 resourcePath:(id)a4
++ (id)getOdldModelFileFromConfigDict:(id)dict resourcePath:(id)path
 {
-  v5 = a4;
-  v6 = v5;
+  pathCopy = path;
+  v6 = pathCopy;
   v7 = 0;
-  if (a3 && v5)
+  if (dict && pathCopy)
   {
-    v8 = [CSFModelConfigDecoder getOdldValueForKey:@"model" categoryKey:@"pipeline" configDict:a3];
+    v8 = [CSFModelConfigDecoder getOdldValueForKey:@"model" categoryKey:@"pipeline" configDict:dict];
     v7 = [v8 objectForKeyedSubscript:@"modelFile"];
 
     if (v7)
@@ -141,11 +141,11 @@ LABEL_6:
   return v7;
 }
 
-+ (id)getAftmCheckerConfigFromConfigDict:(id)a3
++ (id)getAftmCheckerConfigFromConfigDict:(id)dict
 {
-  if (a3)
+  if (dict)
   {
-    v4 = [a3 objectForKeyedSubscript:@"checkerConfig"];
+    v4 = [dict objectForKeyedSubscript:@"checkerConfig"];
   }
 
   else
@@ -156,13 +156,13 @@ LABEL_6:
   return v4;
 }
 
-+ (id)getAftmRecognizerRelativeConfigFromConfigDict:(id)a3
++ (id)getAftmRecognizerRelativeConfigFromConfigDict:(id)dict
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictCopy = dict;
+  v4 = dictCopy;
+  if (dictCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"checkerConfig"];
+    v5 = [dictCopy objectForKeyedSubscript:@"checkerConfig"];
 
     if (v5)
     {

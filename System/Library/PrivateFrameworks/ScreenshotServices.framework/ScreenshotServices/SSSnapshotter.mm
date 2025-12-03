@@ -1,8 +1,8 @@
 @interface SSSnapshotter
 - (SSSnapshotter)init;
-- (id)_captureScreen:(id)a3 withScreenshotOptions:(id)a4;
-- (id)_screensThatAreCaptureableDidFindOnenessScreens:(BOOL *)a3;
-- (id)captureAvailableSnapshotsWithOptionsCollection:(id)a3 didFindOnenessScreens:(BOOL *)a4;
+- (id)_captureScreen:(id)screen withScreenshotOptions:(id)options;
+- (id)_screensThatAreCaptureableDidFindOnenessScreens:(BOOL *)screens;
+- (id)captureAvailableSnapshotsWithOptionsCollection:(id)collection didFindOnenessScreens:(BOOL *)screens;
 @end
 
 @implementation SSSnapshotter
@@ -43,12 +43,12 @@
   return v2;
 }
 
-- (id)captureAvailableSnapshotsWithOptionsCollection:(id)a3 didFindOnenessScreens:(BOOL *)a4
+- (id)captureAvailableSnapshotsWithOptionsCollection:(id)collection didFindOnenessScreens:(BOOL *)screens
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v19 = [MEMORY[0x1E695DF70] array];
-  [(SSSnapshotter *)self _screensThatAreCaptureableDidFindOnenessScreens:a4];
+  collectionCopy = collection;
+  array = [MEMORY[0x1E695DF70] array];
+  [(SSSnapshotter *)self _screensThatAreCaptureableDidFindOnenessScreens:screens];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -68,17 +68,17 @@
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v6 screenshotOptionsForScreen:v12];
+        v13 = [collectionCopy screenshotOptionsForScreen:v12];
         v14 = [(SSSnapshotter *)self _captureScreen:v12 withScreenshotOptions:v13];
 
-        v15 = [v14 image];
+        image = [v14 image];
 
-        if (v15)
+        if (image)
         {
-          v16 = [v14 image];
-          v17 = [SSScreenSnapshot snapshotWithImage:v16 fromScreen:v12];
+          image2 = [v14 image];
+          v17 = [SSScreenSnapshot snapshotWithImage:image2 fromScreen:v12];
 
-          [v19 addObject:v17];
+          [array addObject:v17];
         }
       }
 
@@ -88,32 +88,32 @@
     while (v9);
   }
 
-  return v19;
+  return array;
 }
 
-- (id)_screensThatAreCaptureableDidFindOnenessScreens:(BOOL *)a3
+- (id)_screensThatAreCaptureableDidFindOnenessScreens:(BOOL *)screens
 {
   v51 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695DF70];
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v7 = [v5 arrayWithObject:v6];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  v7 = [v5 arrayWithObject:mainScreen];
 
   v8 = MEMORY[0x1E695DFA8];
-  v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v10 = [v9 displayConfiguration];
-  v11 = [v10 identity];
-  v12 = [v11 rootIdentity];
-  v13 = [v8 setWithObject:v12];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  displayConfiguration = [mainScreen2 displayConfiguration];
+  identity = [displayConfiguration identity];
+  rootIdentity = [identity rootIdentity];
+  v13 = [v8 setWithObject:rootIdentity];
 
-  v14 = [(CARSessionStatus *)self->_carSessionStatus currentSession];
-  LOBYTE(self) = v14 != 0;
+  currentSession = [(CARSessionStatus *)self->_carSessionStatus currentSession];
+  LOBYTE(self) = currentSession != 0;
 
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
   v44[2] = __65__SSSnapshotter__screensThatAreCaptureableDidFindOnenessScreens___block_invoke_2;
   v44[3] = &unk_1E8590868;
   v47 = &__block_literal_global_7;
-  v48 = self;
+  selfCopy = self;
   v15 = v7;
   v45 = v15;
   v35 = v13;
@@ -123,10 +123,10 @@
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v17 = [MEMORY[0x1E69DC668] sharedApplication];
-  v18 = [v17 connectedScenes];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  connectedScenes = [mEMORY[0x1E69DC668] connectedScenes];
 
-  v19 = [v18 countByEnumeratingWithState:&v40 objects:v50 count:16];
+  v19 = [connectedScenes countByEnumeratingWithState:&v40 objects:v50 count:16];
   if (v19)
   {
     v20 = v19;
@@ -137,23 +137,23 @@
       {
         if (*v41 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v23 = *(*(&v40 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v24 = [v23 screen];
-          v25 = (v16)[2](v16, v24);
-          if (a3 && !*a3)
+          screen = [v23 screen];
+          v25 = (v16)[2](v16, screen);
+          if (screens && !*screens)
           {
-            *a3 = __65__SSSnapshotter__screensThatAreCaptureableDidFindOnenessScreens___block_invoke(v25, v24);
+            *screens = __65__SSSnapshotter__screensThatAreCaptureableDidFindOnenessScreens___block_invoke(v25, screen);
           }
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v40 objects:v50 count:16];
+      v20 = [connectedScenes countByEnumeratingWithState:&v40 objects:v50 count:16];
     }
 
     while (v20);
@@ -163,8 +163,8 @@
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v26 = [MEMORY[0x1E69DCEB0] screens];
-  v27 = [v26 countByEnumeratingWithState:&v36 objects:v49 count:16];
+  screens = [MEMORY[0x1E69DCEB0] screens];
+  v27 = [screens countByEnumeratingWithState:&v36 objects:v49 count:16];
   if (v27)
   {
     v28 = v27;
@@ -175,18 +175,18 @@
       {
         if (*v37 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(screens);
         }
 
         v31 = *(*(&v36 + 1) + 8 * j);
         v32 = (v16)[2](v16, v31);
-        if (a3 && !*a3)
+        if (screens && !*screens)
         {
-          *a3 = __65__SSSnapshotter__screensThatAreCaptureableDidFindOnenessScreens___block_invoke(v32, v31);
+          *screens = __65__SSSnapshotter__screensThatAreCaptureableDidFindOnenessScreens___block_invoke(v32, v31);
         }
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v36 objects:v49 count:16];
+      v28 = [screens countByEnumeratingWithState:&v36 objects:v49 count:16];
     }
 
     while (v28);
@@ -269,23 +269,23 @@ void __65__SSSnapshotter__screensThatAreCaptureableDidFindOnenessScreens___block
 LABEL_17:
 }
 
-- (id)_captureScreen:(id)a3 withScreenshotOptions:(id)a4
+- (id)_captureScreen:(id)screen withScreenshotOptions:(id)options
 {
-  v5 = a4;
-  v6 = [SSScreenSnapshotter snapshotterForScreen:a3];
-  v7 = [v5 preparedImage];
+  optionsCopy = options;
+  v6 = [SSScreenSnapshotter snapshotterForScreen:screen];
+  preparedImage = [optionsCopy preparedImage];
 
-  if (v7)
+  if (preparedImage)
   {
-    v8 = v7;
+    takeScreenshot = preparedImage;
   }
 
   else
   {
-    v8 = [v6 takeScreenshot];
+    takeScreenshot = [v6 takeScreenshot];
   }
 
-  v9 = v8;
+  v9 = takeScreenshot;
 
   v10 = objc_opt_new();
   [v10 setImage:v9];

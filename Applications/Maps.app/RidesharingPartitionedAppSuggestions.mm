@@ -1,5 +1,5 @@
 @interface RidesharingPartitionedAppSuggestions
-- (RidesharingPartitionedAppSuggestions)initWithInstalledSuggestions:(id)a3 notInstalledSuggestions:(id)a4;
+- (RidesharingPartitionedAppSuggestions)initWithInstalledSuggestions:(id)suggestions notInstalledSuggestions:(id)installedSuggestions;
 - (id)installedSuggestions;
 - (id)notInstalledSuggestions;
 @end
@@ -29,7 +29,7 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 iOSBundleIdentifier];
+        iOSBundleIdentifier = [v9 iOSBundleIdentifier];
         v11 = isExtensionHidden();
 
         if ((v11 & 1) == 0)
@@ -72,7 +72,7 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 iOSBundleIdentifier];
+        iOSBundleIdentifier = [v9 iOSBundleIdentifier];
         v11 = isExtensionHidden();
 
         if (v11)
@@ -92,20 +92,20 @@
   return v3;
 }
 
-- (RidesharingPartitionedAppSuggestions)initWithInstalledSuggestions:(id)a3 notInstalledSuggestions:(id)a4
+- (RidesharingPartitionedAppSuggestions)initWithInstalledSuggestions:(id)suggestions notInstalledSuggestions:(id)installedSuggestions
 {
-  v6 = a3;
-  v7 = a4;
+  suggestionsCopy = suggestions;
+  installedSuggestionsCopy = installedSuggestions;
   v14.receiver = self;
   v14.super_class = RidesharingPartitionedAppSuggestions;
   v8 = [(RidesharingPartitionedAppSuggestions *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [suggestionsCopy copy];
     installedSuggestions = v8->_installedSuggestions;
     v8->_installedSuggestions = v9;
 
-    v11 = [v7 copy];
+    v11 = [installedSuggestionsCopy copy];
     notInstalledSuggestions = v8->_notInstalledSuggestions;
     v8->_notInstalledSuggestions = v11;
   }

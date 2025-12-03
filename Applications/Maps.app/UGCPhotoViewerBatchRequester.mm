@@ -1,27 +1,27 @@
 @interface UGCPhotoViewerBatchRequester
-- (UGCPhotoViewerBatchRequester)initWithMapItem:(id)a3;
-- (void)fetchPhotosWithRange:(_NSRange)a3 completion:(id)a4;
+- (UGCPhotoViewerBatchRequester)initWithMapItem:(id)item;
+- (void)fetchPhotosWithRange:(_NSRange)range completion:(id)completion;
 @end
 
 @implementation UGCPhotoViewerBatchRequester
 
-- (void)fetchPhotosWithRange:(_NSRange)a3 completion:(id)a4
+- (void)fetchPhotosWithRange:(_NSRange)range completion:(id)completion
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  if (v7)
+  length = range.length;
+  location = range.location;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (length)
     {
       [(GEOMapServicePhotoLookupTicket *)self->_currentTicket cancel];
       v8 = +[GEOMapService sharedService];
-      v9 = [(MKMapItem *)self->_mapItem _vendorID];
-      v10 = [(MKMapItem *)self->_mapItem _geoMapItem];
-      v11 = [v10 _identifier];
+      _vendorID = [(MKMapItem *)self->_mapItem _vendorID];
+      _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+      _identifier = [_geoMapItem _identifier];
       v12 = +[GEOMapService sharedService];
-      v13 = [v12 defaultTraits];
-      v14 = [v8 ticketForVendorIdentifier:v9 mapItemIdentifier:v11 range:location traits:{length, v13}];
+      defaultTraits = [v12 defaultTraits];
+      v14 = [v8 ticketForVendorIdentifier:_vendorID mapItemIdentifier:_identifier range:location traits:{length, defaultTraits}];
       currentTicket = self->_currentTicket;
       self->_currentTicket = v14;
 
@@ -30,7 +30,7 @@
       v17[1] = 3221225472;
       v17[2] = sub_100AF4AAC;
       v17[3] = &unk_101637C68;
-      v18 = v7;
+      v18 = completionCopy;
       [(GEOMapServicePhotoLookupTicket *)v16 submitWithHandler:v17 networkActivity:0];
     }
   }
@@ -42,16 +42,16 @@
   }
 }
 
-- (UGCPhotoViewerBatchRequester)initWithMapItem:(id)a3
+- (UGCPhotoViewerBatchRequester)initWithMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = UGCPhotoViewerBatchRequester;
   v6 = [(UGCPhotoViewerBatchRequester *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapItem, a3);
+    objc_storeStrong(&v6->_mapItem, item);
   }
 
   return v7;

@@ -1,28 +1,28 @@
 @interface FCLatestStoriesOperation
-- (FCLatestStoriesOperation)initWithContext:(id)a3 dateRange:(id)a4 totalLimit:(unint64_t)a5 perFeedLimit:(unint64_t)a6;
-- (id)_constructFeedRequestsFromTags:(id)a3;
-- (void)_fetchTagsForQueryingWithCompletionHandler:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCLatestStoriesOperation)initWithContext:(id)context dateRange:(id)range totalLimit:(unint64_t)limit perFeedLimit:(unint64_t)feedLimit;
+- (id)_constructFeedRequestsFromTags:(id)tags;
+- (void)_fetchTagsForQueryingWithCompletionHandler:(id)handler;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)prepareOperation;
 @end
 
 @implementation FCLatestStoriesOperation
 
-- (FCLatestStoriesOperation)initWithContext:(id)a3 dateRange:(id)a4 totalLimit:(unint64_t)a5 perFeedLimit:(unint64_t)a6
+- (FCLatestStoriesOperation)initWithContext:(id)context dateRange:(id)range totalLimit:(unint64_t)limit perFeedLimit:(unint64_t)feedLimit
 {
-  v11 = a3;
-  v12 = a4;
+  contextCopy = context;
+  rangeCopy = range;
   v16.receiver = self;
   v16.super_class = FCLatestStoriesOperation;
   v13 = [(FCOperation *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_context, a3);
-    objc_storeStrong(&v14->_dateRange, a4);
-    v14->_totalLimit = a5;
-    v14->_perFeedLimit = a6;
+    objc_storeStrong(&v13->_context, context);
+    objc_storeStrong(&v14->_dateRange, range);
+    v14->_totalLimit = limit;
+    v14->_perFeedLimit = feedLimit;
   }
 
   return v14;
@@ -30,11 +30,11 @@
 
 - (void)prepareOperation
 {
-  v6 = [(FCLatestStoriesOperation *)self context];
-  v3 = [v6 configurationManager];
-  v4 = [v3 configuration];
+  context = [(FCLatestStoriesOperation *)self context];
+  configurationManager = [context configurationManager];
+  configuration = [configurationManager configuration];
   configuration = self->_configuration;
-  self->_configuration = v4;
+  self->_configuration = configuration;
 }
 
 - (void)performOperation
@@ -130,33 +130,33 @@ void __44__FCLatestStoriesOperation_performOperation__block_invoke_4(uint64_t a1
   [*(a1 + 32) finishedPerformingOperationWithError:v6];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(FCLatestStoriesOperation *)self headlinesCompletionHandler];
+  errorCopy = error;
+  headlinesCompletionHandler = [(FCLatestStoriesOperation *)self headlinesCompletionHandler];
 
-  if (v4)
+  if (headlinesCompletionHandler)
   {
-    v5 = [(FCLatestStoriesOperation *)self headlinesCompletionHandler];
-    v6 = [(FCLatestStoriesOperation *)self resultHeadlines];
-    (v5)[2](v5, v6, v7);
+    headlinesCompletionHandler2 = [(FCLatestStoriesOperation *)self headlinesCompletionHandler];
+    resultHeadlines = [(FCLatestStoriesOperation *)self resultHeadlines];
+    (headlinesCompletionHandler2)[2](headlinesCompletionHandler2, resultHeadlines, errorCopy);
   }
 }
 
-- (void)_fetchTagsForQueryingWithCompletionHandler:(id)a3
+- (void)_fetchTagsForQueryingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FCLatestStoriesOperation *)self context];
-  v6 = [v5 subscriptionList];
+  handlerCopy = handler;
+  context = [(FCLatestStoriesOperation *)self context];
+  subscriptionList = [context subscriptionList];
   v7 = FCDispatchQueueForQualityOfService([(FCLatestStoriesOperation *)self qualityOfService]);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __71__FCLatestStoriesOperation__fetchTagsForQueryingWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E7C3B860;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v6 performFirstSyncWithCallbackQueue:v7 completion:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [subscriptionList performFirstSyncWithCallbackQueue:v7 completion:v9];
 }
 
 void __71__FCLatestStoriesOperation__fetchTagsForQueryingWithCompletionHandler___block_invoke(uint64_t a1)
@@ -180,20 +180,20 @@ void __71__FCLatestStoriesOperation__fetchTagsForQueryingWithCompletionHandler__
   +[FCForYouQueryUtilities fetchTagsForQueryingWithSubscribedTagIDs:mutedTagIDs:purchasedTagIDs:bundleSubscriptionProvider:configuration:contentContext:fallbackToPresubscribedTagIDs:qualityOfService:completionHandler:](FCForYouQueryUtilities, "fetchTagsForQueryingWithSubscribedTagIDs:mutedTagIDs:purchasedTagIDs:bundleSubscriptionProvider:configuration:contentContext:fallbackToPresubscribedTagIDs:qualityOfService:completionHandler:", v12, v11, v3, v5, v6, v7, v10, [*(a1 + 32) qualityOfService], *(a1 + 40));
 }
 
-- (id)_constructFeedRequestsFromTags:(id)a3
+- (id)_constructFeedRequestsFromTags:(id)tags
 {
-  v4 = a3;
-  v5 = [(FCLatestStoriesOperation *)self dateRange];
-  v6 = [FCFeedRange feedRangeFromDateRange:v5];
+  tagsCopy = tags;
+  dateRange = [(FCLatestStoriesOperation *)self dateRange];
+  v6 = [FCFeedRange feedRangeFromDateRange:dateRange];
 
-  v7 = [(FCLatestStoriesOperation *)self context];
-  v8 = [v7 purchaseController];
-  v9 = [v8 allPurchasedTagIDs];
-  v10 = [(FCLatestStoriesOperation *)self context];
-  v11 = [v10 bundleSubscriptionManager];
-  v12 = [(FCLatestStoriesOperation *)self configuration];
-  v13 = [(FCLatestStoriesOperation *)self perFeedLimit];
-  v14 = [FCForYouQueryUtilities feedRequestsForTags:v4 tagBinProvider:&__block_literal_global_33 hiddenFeedIDs:MEMORY[0x1E695E0F0] purchasedTagIDs:v9 bundleSubscriptionProvider:v11 configuration:v12 maxCount:v13 feedRange:v6 sidecar:0 options:2];
+  context = [(FCLatestStoriesOperation *)self context];
+  purchaseController = [context purchaseController];
+  allPurchasedTagIDs = [purchaseController allPurchasedTagIDs];
+  context2 = [(FCLatestStoriesOperation *)self context];
+  bundleSubscriptionManager = [context2 bundleSubscriptionManager];
+  configuration = [(FCLatestStoriesOperation *)self configuration];
+  perFeedLimit = [(FCLatestStoriesOperation *)self perFeedLimit];
+  v14 = [FCForYouQueryUtilities feedRequestsForTags:tagsCopy tagBinProvider:&__block_literal_global_33 hiddenFeedIDs:MEMORY[0x1E695E0F0] purchasedTagIDs:allPurchasedTagIDs bundleSubscriptionProvider:bundleSubscriptionManager configuration:configuration maxCount:perFeedLimit feedRange:v6 sidecar:0 options:2];
 
   return v14;
 }

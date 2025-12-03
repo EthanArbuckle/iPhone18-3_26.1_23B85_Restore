@@ -1,16 +1,16 @@
 @interface DOCBrowseStartingPointsDocumentSource
 - (_TtC26DocumentManagerExecutables37DOCBrowseStartingPointsDocumentSource)init;
-- (_TtC26DocumentManagerExecutables37DOCBrowseStartingPointsDocumentSource)initWithCoder:(id)a3;
+- (_TtC26DocumentManagerExecutables37DOCBrowseStartingPointsDocumentSource)initWithCoder:(id)coder;
 @end
 
 @implementation DOCBrowseStartingPointsDocumentSource
 
-- (_TtC26DocumentManagerExecutables37DOCBrowseStartingPointsDocumentSource)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables37DOCBrowseStartingPointsDocumentSource)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for DOCBrowseStartingPointsDocumentSource();
-  v4 = a3;
-  v5 = [(DOCBrowseStartingPointsDocumentSource *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(DOCBrowseStartingPointsDocumentSource *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

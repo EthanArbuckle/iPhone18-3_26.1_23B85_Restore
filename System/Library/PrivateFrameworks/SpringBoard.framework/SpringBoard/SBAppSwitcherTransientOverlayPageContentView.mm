@@ -1,43 +1,43 @@
 @interface SBAppSwitcherTransientOverlayPageContentView
-- (SBAppSwitcherTransientOverlayPageContentView)initWithFrame:(CGRect)a3 appLayout:(id)a4;
+- (SBAppSwitcherTransientOverlayPageContentView)initWithFrame:(CGRect)frame appLayout:(id)layout;
 - (SBAppSwitcherTransientOverlayPageContentViewDelegate)delegate;
 - (unint64_t)maskedCorners;
 - (void)layoutSubviews;
-- (void)setActive:(BOOL)a3;
-- (void)setContentView:(id)a3;
-- (void)setMaskedCorners:(unint64_t)a3;
-- (void)setOrientation:(int64_t)a3;
+- (void)setActive:(BOOL)active;
+- (void)setContentView:(id)view;
+- (void)setMaskedCorners:(unint64_t)corners;
+- (void)setOrientation:(int64_t)orientation;
 @end
 
 @implementation SBAppSwitcherTransientOverlayPageContentView
 
-- (SBAppSwitcherTransientOverlayPageContentView)initWithFrame:(CGRect)a3 appLayout:(id)a4
+- (SBAppSwitcherTransientOverlayPageContentView)initWithFrame:(CGRect)frame appLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
   v17.receiver = self;
   v17.super_class = SBAppSwitcherTransientOverlayPageContentView;
-  v10 = [(SBAppSwitcherTransientOverlayPageContentView *)&v17 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(SBAppSwitcherTransientOverlayPageContentView *)&v17 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v11 = [v9 copy];
-    appLayout = v10->_appLayout;
-    v10->_appLayout = v11;
+    v11 = [layoutCopy copy];
+    appLayout = height->_appLayout;
+    height->_appLayout = v11;
 
     v13 = objc_alloc(MEMORY[0x277CF0D78]);
-    [(SBAppSwitcherTransientOverlayPageContentView *)v10 bounds];
+    [(SBAppSwitcherTransientOverlayPageContentView *)height bounds];
     v14 = [v13 initWithFrame:?];
-    contentWrapperView = v10->_contentWrapperView;
-    v10->_contentWrapperView = v14;
+    contentWrapperView = height->_contentWrapperView;
+    height->_contentWrapperView = v14;
 
-    [(BSUIOrientationTransformWrapperView *)v10->_contentWrapperView setClipsToBounds:1];
-    [(SBAppSwitcherTransientOverlayPageContentView *)v10 addSubview:v10->_contentWrapperView];
+    [(BSUIOrientationTransformWrapperView *)height->_contentWrapperView setClipsToBounds:1];
+    [(SBAppSwitcherTransientOverlayPageContentView *)height addSubview:height->_contentWrapperView];
   }
 
-  return v10;
+  return height;
 }
 
 - (void)layoutSubviews
@@ -49,60 +49,60 @@
   [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView setFrame:?];
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
+    self->_orientation = orientation;
     [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView setContainerOrientation:?];
-    v5 = [(SBAppSwitcherTransientOverlayPageContentView *)self delegate];
+    delegate = [(SBAppSwitcherTransientOverlayPageContentView *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 appSwitcherTransientOverlayPageContentViewDidChangeContainerOrientation:self];
+      [delegate appSwitcherTransientOverlayPageContentViewDidChangeContainerOrientation:self];
     }
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    v5 = [(SBAppSwitcherTransientOverlayPageContentView *)self delegate];
+    self->_active = active;
+    delegate = [(SBAppSwitcherTransientOverlayPageContentView *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 appSwitcherTransientOverlayPageContentViewDidChangeActive:self];
+      [delegate appSwitcherTransientOverlayPageContentViewDidChangeActive:self];
     }
   }
 }
 
-- (void)setMaskedCorners:(unint64_t)a3
+- (void)setMaskedCorners:(unint64_t)corners
 {
-  v4 = [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView layer];
-  [v4 setMaskedCorners:a3];
+  layer = [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView layer];
+  [layer setMaskedCorners:corners];
 }
 
 - (unint64_t)maskedCorners
 {
-  v2 = [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView layer];
-  v3 = [v2 maskedCorners];
+  layer = [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView layer];
+  maskedCorners = [layer maskedCorners];
 
-  return v3;
+  return maskedCorners;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  v7 = v5;
-  if (contentView != v5)
+  v7 = viewCopy;
+  if (contentView != viewCopy)
   {
     if ([(UIView *)contentView isDescendantOfView:self])
     {
       [(UIView *)self->_contentView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     if (self->_contentView)
     {
       [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView addContentView:?];

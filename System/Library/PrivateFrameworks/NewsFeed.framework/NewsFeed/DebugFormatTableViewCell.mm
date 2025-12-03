@@ -1,15 +1,15 @@
 @interface DebugFormatTableViewCell
-- (_TtC8NewsFeed24DebugFormatTableViewCell)initWithCoder:(id)a3;
-- (_TtC8NewsFeed24DebugFormatTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC8NewsFeed24DebugFormatTableViewCell)initWithCoder:(id)coder;
+- (_TtC8NewsFeed24DebugFormatTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation DebugFormatTableViewCell
 
-- (_TtC8NewsFeed24DebugFormatTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8NewsFeed24DebugFormatTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = sub_1D726207C();
   }
@@ -23,7 +23,7 @@
   return sub_1D71F3CCC(v4, v5);
 }
 
-- (_TtC8NewsFeed24DebugFormatTableViewCell)initWithCoder:(id)a3
+- (_TtC8NewsFeed24DebugFormatTableViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8NewsFeed24DebugFormatTableViewCell_indicatorColor) = 0;
   v3 = OBJC_IVAR____TtC8NewsFeed24DebugFormatTableViewCell_circleView;
@@ -44,13 +44,13 @@
   [v2 bounds];
   sub_1D72632CC();
   [v4 setFrame_];
-  v5 = [*&v2[v3] layer];
-  [v5 setCornerRadius_];
+  layer = [*&v2[v3] layer];
+  [layer setCornerRadius_];
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D71F3B7C();
 }
 

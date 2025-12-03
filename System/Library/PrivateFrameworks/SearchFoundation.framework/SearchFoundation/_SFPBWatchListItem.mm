@@ -1,120 +1,120 @@
 @interface _SFPBWatchListItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBWatchListItem)initWithDictionary:(id)a3;
-- (_SFPBWatchListItem)initWithFacade:(id)a3;
-- (_SFPBWatchListItem)initWithJSON:(id)a3;
+- (_SFPBWatchListItem)initWithDictionary:(id)dictionary;
+- (_SFPBWatchListItem)initWithFacade:(id)facade;
+- (_SFPBWatchListItem)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setAddToUpNextText:(id)a3;
-- (void)setAddedToUpNextText:(id)a3;
-- (void)setContinueInTextFormat:(id)a3;
-- (void)setInUpNextText:(id)a3;
-- (void)setInstallButtonTitle:(id)a3;
-- (void)setOpenButtonTitle:(id)a3;
-- (void)setPurchaseOfferTextFormat:(id)a3;
-- (void)setSeasonEpisodeTextFormat:(id)a3;
-- (void)setWatchListIdentifier:(id)a3;
-- (void)setWatchLiveTextFormat:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAddToUpNextText:(id)text;
+- (void)setAddedToUpNextText:(id)text;
+- (void)setContinueInTextFormat:(id)format;
+- (void)setInUpNextText:(id)text;
+- (void)setInstallButtonTitle:(id)title;
+- (void)setOpenButtonTitle:(id)title;
+- (void)setPurchaseOfferTextFormat:(id)format;
+- (void)setSeasonEpisodeTextFormat:(id)format;
+- (void)setWatchListIdentifier:(id)identifier;
+- (void)setWatchLiveTextFormat:(id)format;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBWatchListItem
 
-- (_SFPBWatchListItem)initWithFacade:(id)a3
+- (_SFPBWatchListItem)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBWatchListItem *)self init];
   if (v5)
   {
-    v6 = [v4 watchListIdentifier];
+    watchListIdentifier = [facadeCopy watchListIdentifier];
 
-    if (v6)
+    if (watchListIdentifier)
     {
-      v7 = [v4 watchListIdentifier];
-      [(_SFPBWatchListItem *)v5 setWatchListIdentifier:v7];
+      watchListIdentifier2 = [facadeCopy watchListIdentifier];
+      [(_SFPBWatchListItem *)v5 setWatchListIdentifier:watchListIdentifier2];
     }
 
-    v8 = [v4 seasonEpisodeTextFormat];
+    seasonEpisodeTextFormat = [facadeCopy seasonEpisodeTextFormat];
 
-    if (v8)
+    if (seasonEpisodeTextFormat)
     {
-      v9 = [v4 seasonEpisodeTextFormat];
-      [(_SFPBWatchListItem *)v5 setSeasonEpisodeTextFormat:v9];
+      seasonEpisodeTextFormat2 = [facadeCopy seasonEpisodeTextFormat];
+      [(_SFPBWatchListItem *)v5 setSeasonEpisodeTextFormat:seasonEpisodeTextFormat2];
     }
 
-    v10 = [v4 continueInTextFormat];
+    continueInTextFormat = [facadeCopy continueInTextFormat];
 
-    if (v10)
+    if (continueInTextFormat)
     {
-      v11 = [v4 continueInTextFormat];
-      [(_SFPBWatchListItem *)v5 setContinueInTextFormat:v11];
+      continueInTextFormat2 = [facadeCopy continueInTextFormat];
+      [(_SFPBWatchListItem *)v5 setContinueInTextFormat:continueInTextFormat2];
     }
 
-    v12 = [v4 openButtonTitle];
+    openButtonTitle = [facadeCopy openButtonTitle];
 
-    if (v12)
+    if (openButtonTitle)
     {
-      v13 = [v4 openButtonTitle];
-      [(_SFPBWatchListItem *)v5 setOpenButtonTitle:v13];
+      openButtonTitle2 = [facadeCopy openButtonTitle];
+      [(_SFPBWatchListItem *)v5 setOpenButtonTitle:openButtonTitle2];
     }
 
-    v14 = [v4 installButtonTitle];
+    installButtonTitle = [facadeCopy installButtonTitle];
 
-    if (v14)
+    if (installButtonTitle)
     {
-      v15 = [v4 installButtonTitle];
-      [(_SFPBWatchListItem *)v5 setInstallButtonTitle:v15];
+      installButtonTitle2 = [facadeCopy installButtonTitle];
+      [(_SFPBWatchListItem *)v5 setInstallButtonTitle:installButtonTitle2];
     }
 
-    v16 = [v4 purchaseOfferTextFormat];
+    purchaseOfferTextFormat = [facadeCopy purchaseOfferTextFormat];
 
-    if (v16)
+    if (purchaseOfferTextFormat)
     {
-      v17 = [v4 purchaseOfferTextFormat];
-      [(_SFPBWatchListItem *)v5 setPurchaseOfferTextFormat:v17];
+      purchaseOfferTextFormat2 = [facadeCopy purchaseOfferTextFormat];
+      [(_SFPBWatchListItem *)v5 setPurchaseOfferTextFormat:purchaseOfferTextFormat2];
     }
 
-    v18 = [v4 inUpNextText];
+    inUpNextText = [facadeCopy inUpNextText];
 
-    if (v18)
+    if (inUpNextText)
     {
-      v19 = [v4 inUpNextText];
-      [(_SFPBWatchListItem *)v5 setInUpNextText:v19];
+      inUpNextText2 = [facadeCopy inUpNextText];
+      [(_SFPBWatchListItem *)v5 setInUpNextText:inUpNextText2];
     }
 
-    v20 = [v4 addToUpNextText];
+    addToUpNextText = [facadeCopy addToUpNextText];
 
-    if (v20)
+    if (addToUpNextText)
     {
-      v21 = [v4 addToUpNextText];
-      [(_SFPBWatchListItem *)v5 setAddToUpNextText:v21];
+      addToUpNextText2 = [facadeCopy addToUpNextText];
+      [(_SFPBWatchListItem *)v5 setAddToUpNextText:addToUpNextText2];
     }
 
-    v22 = [v4 addedToUpNextText];
+    addedToUpNextText = [facadeCopy addedToUpNextText];
 
-    if (v22)
+    if (addedToUpNextText)
     {
-      v23 = [v4 addedToUpNextText];
-      [(_SFPBWatchListItem *)v5 setAddedToUpNextText:v23];
+      addedToUpNextText2 = [facadeCopy addedToUpNextText];
+      [(_SFPBWatchListItem *)v5 setAddedToUpNextText:addedToUpNextText2];
     }
 
-    v24 = [v4 watchLiveTextFormat];
+    watchLiveTextFormat = [facadeCopy watchLiveTextFormat];
 
-    if (v24)
+    if (watchLiveTextFormat)
     {
-      v25 = [v4 watchLiveTextFormat];
-      [(_SFPBWatchListItem *)v5 setWatchLiveTextFormat:v25];
+      watchLiveTextFormat2 = [facadeCopy watchLiveTextFormat];
+      [(_SFPBWatchListItem *)v5 setWatchLiveTextFormat:watchLiveTextFormat2];
     }
 
-    if ([v4 hasIsMediaContainer])
+    if ([facadeCopy hasIsMediaContainer])
     {
-      -[_SFPBWatchListItem setIsMediaContainer:](v5, "setIsMediaContainer:", [v4 isMediaContainer]);
+      -[_SFPBWatchListItem setIsMediaContainer:](v5, "setIsMediaContainer:", [facadeCopy isMediaContainer]);
     }
 
-    if ([v4 hasType])
+    if ([facadeCopy hasType])
     {
-      -[_SFPBWatchListItem setType:](v5, "setType:", [v4 type]);
+      -[_SFPBWatchListItem setType:](v5, "setType:", [facadeCopy type]);
     }
 
     v26 = v5;
@@ -123,15 +123,15 @@
   return v5;
 }
 
-- (_SFPBWatchListItem)initWithDictionary:(id)a3
+- (_SFPBWatchListItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = _SFPBWatchListItem;
   v5 = [(_SFPBWatchListItem *)&v35 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"watchListIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"watchListIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -139,7 +139,7 @@
       [(_SFPBWatchListItem *)v5 setWatchListIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"seasonEpisodeTextFormat"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"seasonEpisodeTextFormat"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -147,7 +147,7 @@
       [(_SFPBWatchListItem *)v5 setSeasonEpisodeTextFormat:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"continueInTextFormat"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"continueInTextFormat"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -155,7 +155,7 @@
       [(_SFPBWatchListItem *)v5 setContinueInTextFormat:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"openButtonTitle"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"openButtonTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -163,7 +163,7 @@
       [(_SFPBWatchListItem *)v5 setOpenButtonTitle:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"installButtonTitle"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"installButtonTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -172,7 +172,7 @@
     }
 
     v32 = v14;
-    v16 = [v4 objectForKeyedSubscript:@"purchaseOfferTextFormat"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"purchaseOfferTextFormat"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -181,7 +181,7 @@
     }
 
     v31 = v16;
-    v18 = [v4 objectForKeyedSubscript:@"inUpNextText"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"inUpNextText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -190,7 +190,7 @@
     }
 
     v34 = v6;
-    v20 = [v4 objectForKeyedSubscript:@"addToUpNextText"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"addToUpNextText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -198,7 +198,7 @@
       [(_SFPBWatchListItem *)v5 setAddToUpNextText:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"addedToUpNextText"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"addedToUpNextText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -207,7 +207,7 @@
     }
 
     v33 = v12;
-    v24 = [v4 objectForKeyedSubscript:@"watchLiveTextFormat"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"watchLiveTextFormat"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -216,14 +216,14 @@
     }
 
     v26 = v8;
-    v27 = [v4 objectForKeyedSubscript:@"isMediaContainer"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"isMediaContainer"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBWatchListItem setIsMediaContainer:](v5, "setIsMediaContainer:", [v27 BOOLValue]);
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"type"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -236,30 +236,30 @@
   return v5;
 }
 
-- (_SFPBWatchListItem)initWithJSON:(id)a3
+- (_SFPBWatchListItem)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBWatchListItem *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBWatchListItem *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBWatchListItem *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -272,100 +272,100 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_addToUpNextText)
   {
-    v4 = [(_SFPBWatchListItem *)self addToUpNextText];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"addToUpNextText"];
+    addToUpNextText = [(_SFPBWatchListItem *)self addToUpNextText];
+    v5 = [addToUpNextText copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"addToUpNextText"];
   }
 
   if (self->_addedToUpNextText)
   {
-    v6 = [(_SFPBWatchListItem *)self addedToUpNextText];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"addedToUpNextText"];
+    addedToUpNextText = [(_SFPBWatchListItem *)self addedToUpNextText];
+    v7 = [addedToUpNextText copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"addedToUpNextText"];
   }
 
   if (self->_continueInTextFormat)
   {
-    v8 = [(_SFPBWatchListItem *)self continueInTextFormat];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"continueInTextFormat"];
+    continueInTextFormat = [(_SFPBWatchListItem *)self continueInTextFormat];
+    v9 = [continueInTextFormat copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"continueInTextFormat"];
   }
 
   if (self->_inUpNextText)
   {
-    v10 = [(_SFPBWatchListItem *)self inUpNextText];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"inUpNextText"];
+    inUpNextText = [(_SFPBWatchListItem *)self inUpNextText];
+    v11 = [inUpNextText copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"inUpNextText"];
   }
 
   if (self->_installButtonTitle)
   {
-    v12 = [(_SFPBWatchListItem *)self installButtonTitle];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"installButtonTitle"];
+    installButtonTitle = [(_SFPBWatchListItem *)self installButtonTitle];
+    v13 = [installButtonTitle copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"installButtonTitle"];
   }
 
   if (self->_isMediaContainer)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBWatchListItem isMediaContainer](self, "isMediaContainer")}];
-    [v3 setObject:v14 forKeyedSubscript:@"isMediaContainer"];
+    [dictionary setObject:v14 forKeyedSubscript:@"isMediaContainer"];
   }
 
   if (self->_openButtonTitle)
   {
-    v15 = [(_SFPBWatchListItem *)self openButtonTitle];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"openButtonTitle"];
+    openButtonTitle = [(_SFPBWatchListItem *)self openButtonTitle];
+    v16 = [openButtonTitle copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"openButtonTitle"];
   }
 
   if (self->_purchaseOfferTextFormat)
   {
-    v17 = [(_SFPBWatchListItem *)self purchaseOfferTextFormat];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"purchaseOfferTextFormat"];
+    purchaseOfferTextFormat = [(_SFPBWatchListItem *)self purchaseOfferTextFormat];
+    v18 = [purchaseOfferTextFormat copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"purchaseOfferTextFormat"];
   }
 
   if (self->_seasonEpisodeTextFormat)
   {
-    v19 = [(_SFPBWatchListItem *)self seasonEpisodeTextFormat];
-    v20 = [v19 copy];
-    [v3 setObject:v20 forKeyedSubscript:@"seasonEpisodeTextFormat"];
+    seasonEpisodeTextFormat = [(_SFPBWatchListItem *)self seasonEpisodeTextFormat];
+    v20 = [seasonEpisodeTextFormat copy];
+    [dictionary setObject:v20 forKeyedSubscript:@"seasonEpisodeTextFormat"];
   }
 
   if (self->_type)
   {
-    v21 = [(_SFPBWatchListItem *)self type];
-    if (v21 >= 6)
+    type = [(_SFPBWatchListItem *)self type];
+    if (type >= 6)
     {
-      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v21];
+      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
     }
 
     else
     {
-      v22 = off_1E7ACE580[v21];
+      v22 = off_1E7ACE580[type];
     }
 
-    [v3 setObject:v22 forKeyedSubscript:@"type"];
+    [dictionary setObject:v22 forKeyedSubscript:@"type"];
   }
 
   if (self->_watchListIdentifier)
   {
-    v23 = [(_SFPBWatchListItem *)self watchListIdentifier];
-    v24 = [v23 copy];
-    [v3 setObject:v24 forKeyedSubscript:@"watchListIdentifier"];
+    watchListIdentifier = [(_SFPBWatchListItem *)self watchListIdentifier];
+    v24 = [watchListIdentifier copy];
+    [dictionary setObject:v24 forKeyedSubscript:@"watchListIdentifier"];
   }
 
   if (self->_watchLiveTextFormat)
   {
-    v25 = [(_SFPBWatchListItem *)self watchLiveTextFormat];
-    v26 = [v25 copy];
-    [v3 setObject:v26 forKeyedSubscript:@"watchLiveTextFormat"];
+    watchLiveTextFormat = [(_SFPBWatchListItem *)self watchLiveTextFormat];
+    v26 = [watchLiveTextFormat copy];
+    [dictionary setObject:v26 forKeyedSubscript:@"watchLiveTextFormat"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -393,28 +393,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ (2654435761 * self->_type);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_52;
   }
 
-  v5 = [(_SFPBWatchListItem *)self watchListIdentifier];
-  v6 = [v4 watchListIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  watchListIdentifier = [(_SFPBWatchListItem *)self watchListIdentifier];
+  watchListIdentifier2 = [equalCopy watchListIdentifier];
+  if ((watchListIdentifier != 0) == (watchListIdentifier2 == 0))
   {
     goto LABEL_51;
   }
 
-  v7 = [(_SFPBWatchListItem *)self watchListIdentifier];
-  if (v7)
+  watchListIdentifier3 = [(_SFPBWatchListItem *)self watchListIdentifier];
+  if (watchListIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_SFPBWatchListItem *)self watchListIdentifier];
-    v10 = [v4 watchListIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = watchListIdentifier3;
+    watchListIdentifier4 = [(_SFPBWatchListItem *)self watchListIdentifier];
+    watchListIdentifier5 = [equalCopy watchListIdentifier];
+    v11 = [watchListIdentifier4 isEqual:watchListIdentifier5];
 
     if (!v11)
     {
@@ -426,20 +426,20 @@
   {
   }
 
-  v5 = [(_SFPBWatchListItem *)self seasonEpisodeTextFormat];
-  v6 = [v4 seasonEpisodeTextFormat];
-  if ((v5 != 0) == (v6 == 0))
+  watchListIdentifier = [(_SFPBWatchListItem *)self seasonEpisodeTextFormat];
+  watchListIdentifier2 = [equalCopy seasonEpisodeTextFormat];
+  if ((watchListIdentifier != 0) == (watchListIdentifier2 == 0))
   {
     goto LABEL_51;
   }
 
-  v12 = [(_SFPBWatchListItem *)self seasonEpisodeTextFormat];
-  if (v12)
+  seasonEpisodeTextFormat = [(_SFPBWatchListItem *)self seasonEpisodeTextFormat];
+  if (seasonEpisodeTextFormat)
   {
-    v13 = v12;
-    v14 = [(_SFPBWatchListItem *)self seasonEpisodeTextFormat];
-    v15 = [v4 seasonEpisodeTextFormat];
-    v16 = [v14 isEqual:v15];
+    v13 = seasonEpisodeTextFormat;
+    seasonEpisodeTextFormat2 = [(_SFPBWatchListItem *)self seasonEpisodeTextFormat];
+    seasonEpisodeTextFormat3 = [equalCopy seasonEpisodeTextFormat];
+    v16 = [seasonEpisodeTextFormat2 isEqual:seasonEpisodeTextFormat3];
 
     if (!v16)
     {
@@ -451,20 +451,20 @@
   {
   }
 
-  v5 = [(_SFPBWatchListItem *)self continueInTextFormat];
-  v6 = [v4 continueInTextFormat];
-  if ((v5 != 0) == (v6 == 0))
+  watchListIdentifier = [(_SFPBWatchListItem *)self continueInTextFormat];
+  watchListIdentifier2 = [equalCopy continueInTextFormat];
+  if ((watchListIdentifier != 0) == (watchListIdentifier2 == 0))
   {
     goto LABEL_51;
   }
 
-  v17 = [(_SFPBWatchListItem *)self continueInTextFormat];
-  if (v17)
+  continueInTextFormat = [(_SFPBWatchListItem *)self continueInTextFormat];
+  if (continueInTextFormat)
   {
-    v18 = v17;
-    v19 = [(_SFPBWatchListItem *)self continueInTextFormat];
-    v20 = [v4 continueInTextFormat];
-    v21 = [v19 isEqual:v20];
+    v18 = continueInTextFormat;
+    continueInTextFormat2 = [(_SFPBWatchListItem *)self continueInTextFormat];
+    continueInTextFormat3 = [equalCopy continueInTextFormat];
+    v21 = [continueInTextFormat2 isEqual:continueInTextFormat3];
 
     if (!v21)
     {
@@ -476,20 +476,20 @@
   {
   }
 
-  v5 = [(_SFPBWatchListItem *)self openButtonTitle];
-  v6 = [v4 openButtonTitle];
-  if ((v5 != 0) == (v6 == 0))
+  watchListIdentifier = [(_SFPBWatchListItem *)self openButtonTitle];
+  watchListIdentifier2 = [equalCopy openButtonTitle];
+  if ((watchListIdentifier != 0) == (watchListIdentifier2 == 0))
   {
     goto LABEL_51;
   }
 
-  v22 = [(_SFPBWatchListItem *)self openButtonTitle];
-  if (v22)
+  openButtonTitle = [(_SFPBWatchListItem *)self openButtonTitle];
+  if (openButtonTitle)
   {
-    v23 = v22;
-    v24 = [(_SFPBWatchListItem *)self openButtonTitle];
-    v25 = [v4 openButtonTitle];
-    v26 = [v24 isEqual:v25];
+    v23 = openButtonTitle;
+    openButtonTitle2 = [(_SFPBWatchListItem *)self openButtonTitle];
+    openButtonTitle3 = [equalCopy openButtonTitle];
+    v26 = [openButtonTitle2 isEqual:openButtonTitle3];
 
     if (!v26)
     {
@@ -501,20 +501,20 @@
   {
   }
 
-  v5 = [(_SFPBWatchListItem *)self installButtonTitle];
-  v6 = [v4 installButtonTitle];
-  if ((v5 != 0) == (v6 == 0))
+  watchListIdentifier = [(_SFPBWatchListItem *)self installButtonTitle];
+  watchListIdentifier2 = [equalCopy installButtonTitle];
+  if ((watchListIdentifier != 0) == (watchListIdentifier2 == 0))
   {
     goto LABEL_51;
   }
 
-  v27 = [(_SFPBWatchListItem *)self installButtonTitle];
-  if (v27)
+  installButtonTitle = [(_SFPBWatchListItem *)self installButtonTitle];
+  if (installButtonTitle)
   {
-    v28 = v27;
-    v29 = [(_SFPBWatchListItem *)self installButtonTitle];
-    v30 = [v4 installButtonTitle];
-    v31 = [v29 isEqual:v30];
+    v28 = installButtonTitle;
+    installButtonTitle2 = [(_SFPBWatchListItem *)self installButtonTitle];
+    installButtonTitle3 = [equalCopy installButtonTitle];
+    v31 = [installButtonTitle2 isEqual:installButtonTitle3];
 
     if (!v31)
     {
@@ -526,20 +526,20 @@
   {
   }
 
-  v5 = [(_SFPBWatchListItem *)self purchaseOfferTextFormat];
-  v6 = [v4 purchaseOfferTextFormat];
-  if ((v5 != 0) == (v6 == 0))
+  watchListIdentifier = [(_SFPBWatchListItem *)self purchaseOfferTextFormat];
+  watchListIdentifier2 = [equalCopy purchaseOfferTextFormat];
+  if ((watchListIdentifier != 0) == (watchListIdentifier2 == 0))
   {
     goto LABEL_51;
   }
 
-  v32 = [(_SFPBWatchListItem *)self purchaseOfferTextFormat];
-  if (v32)
+  purchaseOfferTextFormat = [(_SFPBWatchListItem *)self purchaseOfferTextFormat];
+  if (purchaseOfferTextFormat)
   {
-    v33 = v32;
-    v34 = [(_SFPBWatchListItem *)self purchaseOfferTextFormat];
-    v35 = [v4 purchaseOfferTextFormat];
-    v36 = [v34 isEqual:v35];
+    v33 = purchaseOfferTextFormat;
+    purchaseOfferTextFormat2 = [(_SFPBWatchListItem *)self purchaseOfferTextFormat];
+    purchaseOfferTextFormat3 = [equalCopy purchaseOfferTextFormat];
+    v36 = [purchaseOfferTextFormat2 isEqual:purchaseOfferTextFormat3];
 
     if (!v36)
     {
@@ -551,20 +551,20 @@
   {
   }
 
-  v5 = [(_SFPBWatchListItem *)self inUpNextText];
-  v6 = [v4 inUpNextText];
-  if ((v5 != 0) == (v6 == 0))
+  watchListIdentifier = [(_SFPBWatchListItem *)self inUpNextText];
+  watchListIdentifier2 = [equalCopy inUpNextText];
+  if ((watchListIdentifier != 0) == (watchListIdentifier2 == 0))
   {
     goto LABEL_51;
   }
 
-  v37 = [(_SFPBWatchListItem *)self inUpNextText];
-  if (v37)
+  inUpNextText = [(_SFPBWatchListItem *)self inUpNextText];
+  if (inUpNextText)
   {
-    v38 = v37;
-    v39 = [(_SFPBWatchListItem *)self inUpNextText];
-    v40 = [v4 inUpNextText];
-    v41 = [v39 isEqual:v40];
+    v38 = inUpNextText;
+    inUpNextText2 = [(_SFPBWatchListItem *)self inUpNextText];
+    inUpNextText3 = [equalCopy inUpNextText];
+    v41 = [inUpNextText2 isEqual:inUpNextText3];
 
     if (!v41)
     {
@@ -576,20 +576,20 @@
   {
   }
 
-  v5 = [(_SFPBWatchListItem *)self addToUpNextText];
-  v6 = [v4 addToUpNextText];
-  if ((v5 != 0) == (v6 == 0))
+  watchListIdentifier = [(_SFPBWatchListItem *)self addToUpNextText];
+  watchListIdentifier2 = [equalCopy addToUpNextText];
+  if ((watchListIdentifier != 0) == (watchListIdentifier2 == 0))
   {
     goto LABEL_51;
   }
 
-  v42 = [(_SFPBWatchListItem *)self addToUpNextText];
-  if (v42)
+  addToUpNextText = [(_SFPBWatchListItem *)self addToUpNextText];
+  if (addToUpNextText)
   {
-    v43 = v42;
-    v44 = [(_SFPBWatchListItem *)self addToUpNextText];
-    v45 = [v4 addToUpNextText];
-    v46 = [v44 isEqual:v45];
+    v43 = addToUpNextText;
+    addToUpNextText2 = [(_SFPBWatchListItem *)self addToUpNextText];
+    addToUpNextText3 = [equalCopy addToUpNextText];
+    v46 = [addToUpNextText2 isEqual:addToUpNextText3];
 
     if (!v46)
     {
@@ -601,20 +601,20 @@
   {
   }
 
-  v5 = [(_SFPBWatchListItem *)self addedToUpNextText];
-  v6 = [v4 addedToUpNextText];
-  if ((v5 != 0) == (v6 == 0))
+  watchListIdentifier = [(_SFPBWatchListItem *)self addedToUpNextText];
+  watchListIdentifier2 = [equalCopy addedToUpNextText];
+  if ((watchListIdentifier != 0) == (watchListIdentifier2 == 0))
   {
     goto LABEL_51;
   }
 
-  v47 = [(_SFPBWatchListItem *)self addedToUpNextText];
-  if (v47)
+  addedToUpNextText = [(_SFPBWatchListItem *)self addedToUpNextText];
+  if (addedToUpNextText)
   {
-    v48 = v47;
-    v49 = [(_SFPBWatchListItem *)self addedToUpNextText];
-    v50 = [v4 addedToUpNextText];
-    v51 = [v49 isEqual:v50];
+    v48 = addedToUpNextText;
+    addedToUpNextText2 = [(_SFPBWatchListItem *)self addedToUpNextText];
+    addedToUpNextText3 = [equalCopy addedToUpNextText];
+    v51 = [addedToUpNextText2 isEqual:addedToUpNextText3];
 
     if (!v51)
     {
@@ -626,22 +626,22 @@
   {
   }
 
-  v5 = [(_SFPBWatchListItem *)self watchLiveTextFormat];
-  v6 = [v4 watchLiveTextFormat];
-  if ((v5 != 0) == (v6 == 0))
+  watchListIdentifier = [(_SFPBWatchListItem *)self watchLiveTextFormat];
+  watchListIdentifier2 = [equalCopy watchLiveTextFormat];
+  if ((watchListIdentifier != 0) == (watchListIdentifier2 == 0))
   {
 LABEL_51:
 
     goto LABEL_52;
   }
 
-  v52 = [(_SFPBWatchListItem *)self watchLiveTextFormat];
-  if (v52)
+  watchLiveTextFormat = [(_SFPBWatchListItem *)self watchLiveTextFormat];
+  if (watchLiveTextFormat)
   {
-    v53 = v52;
-    v54 = [(_SFPBWatchListItem *)self watchLiveTextFormat];
-    v55 = [v4 watchLiveTextFormat];
-    v56 = [v54 isEqual:v55];
+    v53 = watchLiveTextFormat;
+    watchLiveTextFormat2 = [(_SFPBWatchListItem *)self watchLiveTextFormat];
+    watchLiveTextFormat3 = [equalCopy watchLiveTextFormat];
+    v56 = [watchLiveTextFormat2 isEqual:watchLiveTextFormat3];
 
     if (!v56)
     {
@@ -654,10 +654,10 @@ LABEL_51:
   }
 
   isMediaContainer = self->_isMediaContainer;
-  if (isMediaContainer == [v4 isMediaContainer])
+  if (isMediaContainer == [equalCopy isMediaContainer])
   {
     type = self->_type;
-    v57 = type == [v4 type];
+    v57 = type == [equalCopy type];
     goto LABEL_53;
   }
 
@@ -668,65 +668,65 @@ LABEL_53:
   return v57;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v16 = a3;
-  v4 = [(_SFPBWatchListItem *)self watchListIdentifier];
-  if (v4)
+  toCopy = to;
+  watchListIdentifier = [(_SFPBWatchListItem *)self watchListIdentifier];
+  if (watchListIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBWatchListItem *)self seasonEpisodeTextFormat];
-  if (v5)
+  seasonEpisodeTextFormat = [(_SFPBWatchListItem *)self seasonEpisodeTextFormat];
+  if (seasonEpisodeTextFormat)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBWatchListItem *)self continueInTextFormat];
-  if (v6)
+  continueInTextFormat = [(_SFPBWatchListItem *)self continueInTextFormat];
+  if (continueInTextFormat)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_SFPBWatchListItem *)self openButtonTitle];
-  if (v7)
+  openButtonTitle = [(_SFPBWatchListItem *)self openButtonTitle];
+  if (openButtonTitle)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_SFPBWatchListItem *)self installButtonTitle];
-  if (v8)
+  installButtonTitle = [(_SFPBWatchListItem *)self installButtonTitle];
+  if (installButtonTitle)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(_SFPBWatchListItem *)self purchaseOfferTextFormat];
-  if (v9)
+  purchaseOfferTextFormat = [(_SFPBWatchListItem *)self purchaseOfferTextFormat];
+  if (purchaseOfferTextFormat)
   {
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(_SFPBWatchListItem *)self inUpNextText];
-  if (v10)
+  inUpNextText = [(_SFPBWatchListItem *)self inUpNextText];
+  if (inUpNextText)
   {
     PBDataWriterWriteStringField();
   }
 
-  v11 = [(_SFPBWatchListItem *)self addToUpNextText];
-  if (v11)
+  addToUpNextText = [(_SFPBWatchListItem *)self addToUpNextText];
+  if (addToUpNextText)
   {
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(_SFPBWatchListItem *)self addedToUpNextText];
-  if (v12)
+  addedToUpNextText = [(_SFPBWatchListItem *)self addedToUpNextText];
+  if (addedToUpNextText)
   {
     PBDataWriterWriteStringField();
   }
 
-  v13 = [(_SFPBWatchListItem *)self watchLiveTextFormat];
-  if (v13)
+  watchLiveTextFormat = [(_SFPBWatchListItem *)self watchLiveTextFormat];
+  if (watchLiveTextFormat)
   {
     PBDataWriterWriteStringField();
   }
@@ -736,99 +736,99 @@ LABEL_53:
     PBDataWriterWriteBOOLField();
   }
 
-  v14 = [(_SFPBWatchListItem *)self type];
-  v15 = v16;
-  if (v14)
+  type = [(_SFPBWatchListItem *)self type];
+  v15 = toCopy;
+  if (type)
   {
     PBDataWriterWriteInt32Field();
-    v15 = v16;
+    v15 = toCopy;
   }
 }
 
-- (void)setWatchLiveTextFormat:(id)a3
+- (void)setWatchLiveTextFormat:(id)format
 {
-  v4 = [a3 copy];
+  v4 = [format copy];
   watchLiveTextFormat = self->_watchLiveTextFormat;
   self->_watchLiveTextFormat = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setAddedToUpNextText:(id)a3
+- (void)setAddedToUpNextText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   addedToUpNextText = self->_addedToUpNextText;
   self->_addedToUpNextText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setAddToUpNextText:(id)a3
+- (void)setAddToUpNextText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   addToUpNextText = self->_addToUpNextText;
   self->_addToUpNextText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setInUpNextText:(id)a3
+- (void)setInUpNextText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   inUpNextText = self->_inUpNextText;
   self->_inUpNextText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPurchaseOfferTextFormat:(id)a3
+- (void)setPurchaseOfferTextFormat:(id)format
 {
-  v4 = [a3 copy];
+  v4 = [format copy];
   purchaseOfferTextFormat = self->_purchaseOfferTextFormat;
   self->_purchaseOfferTextFormat = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setInstallButtonTitle:(id)a3
+- (void)setInstallButtonTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   installButtonTitle = self->_installButtonTitle;
   self->_installButtonTitle = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setOpenButtonTitle:(id)a3
+- (void)setOpenButtonTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   openButtonTitle = self->_openButtonTitle;
   self->_openButtonTitle = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setContinueInTextFormat:(id)a3
+- (void)setContinueInTextFormat:(id)format
 {
-  v4 = [a3 copy];
+  v4 = [format copy];
   continueInTextFormat = self->_continueInTextFormat;
   self->_continueInTextFormat = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSeasonEpisodeTextFormat:(id)a3
+- (void)setSeasonEpisodeTextFormat:(id)format
 {
-  v4 = [a3 copy];
+  v4 = [format copy];
   seasonEpisodeTextFormat = self->_seasonEpisodeTextFormat;
   self->_seasonEpisodeTextFormat = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setWatchListIdentifier:(id)a3
+- (void)setWatchListIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   watchListIdentifier = self->_watchListIdentifier;
   self->_watchListIdentifier = v4;
 

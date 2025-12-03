@@ -1,10 +1,10 @@
 @interface MitigationController
-- (BOOL)getGPUUtilization:(int *)a3;
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3;
-- (__CFString)copyHeaderForIndex:(int)a3;
+- (BOOL)getGPUUtilization:(int *)utilization;
+- (__CFString)copyFieldCurrentValueForIndex:(int)index;
+- (__CFString)copyHeaderForIndex:(int)index;
 - (float)getCLPCPackagePowerCPUSplitFraction;
-- (id)initForFastLoop:(BOOL)a3 noDisplay:(BOOL)a4 powerSaveParams:(id)a5 powerZoneParams:(id)a6;
-- (int)getCLPCWriteToReadPower_8_24_mW:(__CFString *)a3;
+- (id)initForFastLoop:(BOOL)loop noDisplay:(BOOL)display powerSaveParams:(id)params powerZoneParams:(id)zoneParams;
+- (int)getCLPCWriteToReadPower_8_24_mW:(__CFString *)w;
 - (int)getCurrentCPUPower;
 - (int)getCurrentGPUPower;
 - (int)getCurrentPackagePower;
@@ -12,16 +12,16 @@
 - (int)getPackageGPUPowerTarget;
 - (int)getPackagePowerZoneMetric;
 - (int)requestListID;
-- (int)setServiceProperty:(unsigned int)a3 key:(__CFString *)a4 value:(int)a5 scaleToFixedPoint:(BOOL)a6;
-- (void)setCPMSMitigationsEnabled:(BOOL)a3;
-- (void)setCPULowPowerTarget:(int)a3;
-- (void)setCPUPowerCeiling:(int)a3 fromDecisionSource:(int)a4;
-- (void)setCPUPowerZoneTarget:(int)a3;
-- (void)setDieTempControllerProperty:(__CFString *)a3 level:(int)a4 scaleToFixedPoint:(BOOL)a5;
-- (void)setGPUPowerZoneTarget:(int)a3;
-- (void)setMaxCPUPowerTarget:(int)a3 useLegacyPath:(BOOL)a4 setProperty:(__CFString *)a5;
-- (void)setMaxGraphicsDrivePowerTarget:(int)a3;
-- (void)setMaxPackagePower:(int)a3;
+- (int)setServiceProperty:(unsigned int)property key:(__CFString *)key value:(int)value scaleToFixedPoint:(BOOL)point;
+- (void)setCPMSMitigationsEnabled:(BOOL)enabled;
+- (void)setCPULowPowerTarget:(int)target;
+- (void)setCPUPowerCeiling:(int)ceiling fromDecisionSource:(int)source;
+- (void)setCPUPowerZoneTarget:(int)target;
+- (void)setDieTempControllerProperty:(__CFString *)property level:(int)level scaleToFixedPoint:(BOOL)point;
+- (void)setGPUPowerZoneTarget:(int)target;
+- (void)setMaxCPUPowerTarget:(int)target useLegacyPath:(BOOL)path setProperty:(__CFString *)property;
+- (void)setMaxGraphicsDrivePowerTarget:(int)target;
+- (void)setMaxPackagePower:(int)power;
 - (void)setPackageLowPowerTarget;
 - (void)setPackagePowerZoneTarget;
 - (void)updateCPU;
@@ -145,7 +145,7 @@ LABEL_6:
   }
 }
 
-- (id)initForFastLoop:(BOOL)a3 noDisplay:(BOOL)a4 powerSaveParams:(id)a5 powerZoneParams:(id)a6
+- (id)initForFastLoop:(BOOL)loop noDisplay:(BOOL)display powerSaveParams:(id)params powerZoneParams:(id)zoneParams
 {
   v33.receiver = self;
   v33.super_class = MitigationController;
@@ -169,8 +169,8 @@ LABEL_6:
     v11->cpuMitigationQueue = dispatch_queue_create("com.apple.thermalmonitor.cpuMitigationQueue", 0);
     v11->gpuMitigationQueue = dispatch_queue_create("com.apple.thermalmonitor.gpuMitigationQueue", 0);
     v11->packageControlQueue = dispatch_queue_create("com.apple.thermalmonitor.packageControlQueue", 0);
-    v11->_noDisplay = a4;
-    if (!a4)
+    v11->_noDisplay = display;
+    if (!display)
     {
       v11->sgxDevice = sub_100031CAC("IOAcceleratorES", 0, 0);
     }
@@ -190,7 +190,7 @@ LABEL_6:
     }
 
     v11->graphicsUpdateInFlight = 0;
-    v11->connectsToDieTempCtlDriver = a3;
+    v11->connectsToDieTempCtlDriver = loop;
     if (byte_1000ABC38 == 1)
     {
       [+[SensorExchangeHelper sharedInstance](SensorExchangeHelper registerCLTMSensorIndex:"registerCLTMSensorIndex:forSMCKey:atSMCIndex:" forSMCKey:18 atSMCIndex:@"zETM", 18];
@@ -200,20 +200,20 @@ LABEL_6:
       [+[SensorExchangeHelper sharedInstance](SensorExchangeHelper registerCLTMSensorIndex:"registerCLTMSensorIndex:forSMCKey:atSMCIndex:" forSMCKey:25 atSMCIndex:@"zETM", 25];
     }
 
-    if (a6)
+    if (zoneParams)
     {
-      v11->_maxCPUPower = [objc_msgSend(a6 objectForKey:{@"CPUMaxPower", "intValue"}];
-      v11->_maxGPUPower = [objc_msgSend(a6 objectForKey:{@"GPUMaxPower", "intValue"}];
-      v11->_maxPackagePower = [objc_msgSend(a6 objectForKey:{@"PackageMaxPower", "intValue"}];
+      v11->_maxCPUPower = [objc_msgSend(zoneParams objectForKey:{@"CPUMaxPower", "intValue"}];
+      v11->_maxGPUPower = [objc_msgSend(zoneParams objectForKey:{@"GPUMaxPower", "intValue"}];
+      v11->_maxPackagePower = [objc_msgSend(zoneParams objectForKey:{@"PackageMaxPower", "intValue"}];
       v11->_usesPowerZoneControl = 1;
-      v11->_usesPackageControl = [objc_msgSend(a6 objectForKey:{@"usesPackageControl", "BOOLValue"}];
+      v11->_usesPackageControl = [objc_msgSend(zoneParams objectForKey:{@"usesPackageControl", "BOOLValue"}];
       if ((byte_1000AB2F9 & 1) == 0)
       {
         [(MitigationController *)v11 setGPUPowerZoneTarget:100];
       }
     }
 
-    if (a5)
+    if (params)
     {
       objc_initWeak(&location, v11);
       cpuMitigationQueue = v11->cpuMitigationQueue;
@@ -234,25 +234,25 @@ LABEL_6:
       {
         if (v11->_usesPackageControl)
         {
-          v18 = [objc_msgSend(a5 objectForKey:{@"PackageLowPowerTarget", "intValue"}];
+          v18 = [objc_msgSend(params objectForKey:{@"PackageLowPowerTarget", "intValue"}];
           v19 = 224;
         }
 
         else
         {
-          v18 = [objc_msgSend(a5 objectForKey:{@"CPULowPowerTarget", "intValue"}];
+          v18 = [objc_msgSend(params objectForKey:{@"CPULowPowerTarget", "intValue"}];
           v19 = 216;
         }
       }
 
       else
       {
-        v18 = [objc_msgSend(a5 objectForKey:{@"maxCPU", "intValue"}];
+        v18 = [objc_msgSend(params objectForKey:{@"maxCPU", "intValue"}];
         v19 = 212;
       }
 
       *(&v11->super.isa + v19) = v18;
-      v20 = [objc_msgSend(a5 objectForKey:{@"maxGPU", "intValue"}];
+      v20 = [objc_msgSend(params objectForKey:{@"maxGPU", "intValue"}];
       if (v11->connectsToDieTempCtlDriver)
       {
         v21 = v20;
@@ -309,15 +309,15 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)getGPUUtilization:(int *)a3
+- (BOOL)getGPUUtilization:(int *)utilization
 {
-  *a3 = 0;
+  *utilization = 0;
   if (!self->_noDisplay)
   {
     sgxDevice = self->sgxDevice;
     if (sgxDevice && (byte_1000AB218 & 1) == 0)
     {
-      byte_1000AB218 = sub_1000068B4(sgxDevice, @"GetGPUUtilization", a3, 1) ^ 1;
+      byte_1000AB218 = sub_1000068B4(sgxDevice, @"GetGPUUtilization", utilization, 1) ^ 1;
     }
 
     else if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
@@ -350,7 +350,7 @@ LABEL_6:
   return result;
 }
 
-- (void)setCPUPowerCeiling:(int)a3 fromDecisionSource:(int)a4
+- (void)setCPUPowerCeiling:(int)ceiling fromDecisionSource:(int)source
 {
   v4 = 40;
   if (self->_usesPowerZoneControl)
@@ -358,10 +358,10 @@ LABEL_6:
     v4 = 64;
   }
 
-  *(&self->super.isa + 4 * a4 + v4) = a3;
+  *(&self->super.isa + 4 * source + v4) = ceiling;
 }
 
-- (int)getCLPCWriteToReadPower_8_24_mW:(__CFString *)a3
+- (int)getCLPCWriteToReadPower_8_24_mW:(__CFString *)w
 {
   clpcService = self->clpcService;
   if (!clpcService || !self->_usesPowerZoneControl)
@@ -372,9 +372,9 @@ LABEL_6:
   v10 = v3;
   v11 = v4;
   v9 = 0;
-  if ((sub_1000067F0(clpcService, a3, &v9) & 1) == 0 && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+  if ((sub_1000067F0(clpcService, w, &v9) & 1) == 0 && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
   {
-    sub_100054B4C(a3);
+    sub_100054B4C(w);
   }
 
   return ((v9 * 0.000000059605) * 1000.0);
@@ -413,17 +413,17 @@ LABEL_6:
   return v3;
 }
 
-- (void)setCPUPowerZoneTarget:(int)a3
+- (void)setCPUPowerZoneTarget:(int)target
 {
-  if (a3 != -1)
+  if (target != -1)
   {
     v12 = v3;
-    v8 = 1374389535 * self->_maxCPUPower * a3;
+    v8 = 1374389535 * self->_maxCPUPower * target;
     v9 = (v8 >> 37) + (v8 >> 63);
     self->_currentRealCPUPowerTarget = v9;
     if (self->_isHipEngaged && self->_currentHipPowerTarget != v9)
     {
-      if (a3 <= 99)
+      if (target <= 99)
       {
         v11 = v9;
       }
@@ -438,7 +438,7 @@ LABEL_6:
 
     else
     {
-      if (a3 <= 99)
+      if (target <= 99)
       {
         v10 = v9;
       }
@@ -456,14 +456,14 @@ LABEL_6:
   }
 }
 
-- (void)setGPUPowerZoneTarget:(int)a3
+- (void)setGPUPowerZoneTarget:(int)target
 {
-  if (a3 != -1)
+  if (target != -1)
   {
-    v3 = 1374389535 * self->_maxGPUPower * a3;
+    v3 = 1374389535 * self->_maxGPUPower * target;
     v4 = (v3 >> 37) + (v3 >> 63);
     self->_currentRealGPUPowerTarget = v4;
-    if (a3 == 100)
+    if (target == 100)
     {
       [(MitigationController *)self setMaxGraphicsDrivePowerTarget:65000];
     }
@@ -526,16 +526,16 @@ LABEL_6:
   }
 }
 
-- (void)setCPMSMitigationsEnabled:(BOOL)a3
+- (void)setCPMSMitigationsEnabled:(BOOL)enabled
 {
   if (self->_usesPackageControl)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     v5 = qword_1000AB718;
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
     {
       v6 = "dis";
-      if (v3)
+      if (enabledCopy)
       {
         v6 = "en";
       }
@@ -545,7 +545,7 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "<Notice> %sabling CPMS mitigations in MitigationController", &v7, 0xCu);
     }
 
-    self->_cpmsMitigationsEnabled = v3;
+    self->_cpmsMitigationsEnabled = enabledCopy;
   }
 }
 
@@ -560,7 +560,7 @@ LABEL_6:
   dispatch_async(packageControlQueue, block);
 }
 
-- (void)setMaxPackagePower:(int)a3
+- (void)setMaxPackagePower:(int)power
 {
   if (self->_usesPackageControl)
   {
@@ -570,24 +570,24 @@ LABEL_6:
       if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
       {
         v6[0] = 67109120;
-        v6[1] = a3;
+        v6[1] = power;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "<Notice> Setting max package power in mitigation controller: %d", v6, 8u);
       }
     }
 
-    self->_maxPackagePower = a3;
+    self->_maxPackagePower = power;
   }
 }
 
-- (void)setMaxGraphicsDrivePowerTarget:(int)a3
+- (void)setMaxGraphicsDrivePowerTarget:(int)target
 {
   if (!self->_noDisplay)
   {
     self->graphicsUpdateInFlight = 1;
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     CFDictionaryAddValue(Mutable, @"SetMaxGPUAbsolutePower", kCFBooleanTrue);
-    valuePtr = a3;
-    self->_currentGPUPowerTarget = a3;
+    valuePtr = target;
+    self->_currentGPUPowerTarget = target;
     v6 = CFNumberCreate(0, kCFNumberSInt32Type, &valuePtr);
     if (v6)
     {
@@ -618,35 +618,35 @@ LABEL_6:
   }
 }
 
-- (void)setMaxCPUPowerTarget:(int)a3 useLegacyPath:(BOOL)a4 setProperty:(__CFString *)a5
+- (void)setMaxCPUPowerTarget:(int)target useLegacyPath:(BOOL)path setProperty:(__CFString *)property
 {
-  self->_currentCPUPowerTarget = a3;
+  self->_currentCPUPowerTarget = target;
   p_currentCPUPowerTarget = &self->_currentCPUPowerTarget;
   if (self->clpcService)
   {
-    v7 = a4;
+    pathCopy = path;
     v9 = 16777216.0;
-    if (a4)
+    if (path)
     {
       v9 = 65536.0;
     }
 
-    valuePtr = (a3 / 1000.0 * v9);
+    valuePtr = (target / 1000.0 * v9);
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     v11 = CFNumberCreate(0, kCFNumberSInt32Type, &valuePtr);
     if (v11)
     {
-      if (v7)
+      if (pathCopy)
       {
-        v12 = @"CPUPowerTarget";
+        propertyCopy = @"CPUPowerTarget";
       }
 
       else
       {
-        v12 = a5;
+        propertyCopy = property;
       }
 
-      CFDictionaryAddValue(Mutable, v12, v11);
+      CFDictionaryAddValue(Mutable, propertyCopy, v11);
       if (IORegistryEntrySetCFProperties(self->clpcService, Mutable))
       {
         sub_100054DF0(p_currentCPUPowerTarget);
@@ -675,15 +675,15 @@ LABEL_6:
   }
 }
 
-- (void)setCPULowPowerTarget:(int)a3
+- (void)setCPULowPowerTarget:(int)target
 {
   p_currentCPULowPowerTarget = &self->_currentCPULowPowerTarget;
-  if (self->_currentCPULowPowerTarget != a3)
+  if (self->_currentCPULowPowerTarget != target)
   {
-    self->_currentCPULowPowerTarget = a3;
+    self->_currentCPULowPowerTarget = target;
     if (self->clpcService)
     {
-      valuePtr = vcvtd_n_u64_f64(a3 / 1000.0, 0x18uLL);
+      valuePtr = vcvtd_n_u64_f64(target / 1000.0, 0x18uLL);
       Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
       v6 = CFNumberCreate(0, kCFNumberSInt32Type, &valuePtr);
       if (v6)
@@ -719,16 +719,16 @@ LABEL_6:
 
 - (void)updatePowerSaveActive
 {
-  v3 = [(MitigationController *)self lowerPowerModeActive];
+  lowerPowerModeActive = [(MitigationController *)self lowerPowerModeActive];
   v4 = qword_1000AB718;
   if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
   {
     v5[0] = 67109120;
-    v5[1] = v3;
+    v5[1] = lowerPowerModeActive;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "<Notice> update power save active: %{BOOL}u", v5, 8u);
   }
 
-  [(MitigationController *)self setPowerSaveActive:v3];
+  [(MitigationController *)self setPowerSaveActive:lowerPowerModeActive];
   *&dword_1000AB980 = [(MitigationController *)self powerSaveActive];
   [+[SensorExchangeHelper sharedInstance](SensorExchangeHelper forceSensorExchangeDataToSMC];
 }
@@ -752,7 +752,7 @@ LABEL_6:
   }
 }
 
-- (void)setDieTempControllerProperty:(__CFString *)a3 level:(int)a4 scaleToFixedPoint:(BOOL)a5
+- (void)setDieTempControllerProperty:(__CFString *)property level:(int)level scaleToFixedPoint:(BOOL)point
 {
   if (dword_1000AB21C || (dword_1000AB21C = sub_100031CAC("AppleDieTempController", 0, 0)) != 0)
   {
@@ -766,14 +766,14 @@ LABEL_6:
   }
 }
 
-- (int)setServiceProperty:(unsigned int)a3 key:(__CFString *)a4 value:(int)a5 scaleToFixedPoint:(BOOL)a6
+- (int)setServiceProperty:(unsigned int)property key:(__CFString *)key value:(int)value scaleToFixedPoint:(BOOL)point
 {
-  valuePtr = a5;
-  if (a6)
+  valuePtr = value;
+  if (point)
   {
-    if (a5 <= 99)
+    if (value <= 99)
     {
-      v8 = (a5 << 16) / 100;
+      v8 = (value << 16) / 100;
     }
 
     else
@@ -788,10 +788,10 @@ LABEL_6:
   if (v9)
   {
     v10 = v9;
-    v11 = IORegistryEntrySetCFProperty(a3, a4, v9);
+    v11 = IORegistryEntrySetCFProperty(property, key, v9);
     if (v11)
     {
-      sub_100055008(a4, v11);
+      sub_100055008(key, v11);
     }
 
     CFRelease(v10);
@@ -799,33 +799,33 @@ LABEL_6:
 
   else
   {
-    sub_1000550C0(a4, &valuePtr, &v14);
+    sub_1000550C0(key, &valuePtr, &v14);
     return v14;
   }
 
   return v11;
 }
 
-- (__CFString)copyHeaderForIndex:(int)a3
+- (__CFString)copyHeaderForIndex:(int)index
 {
-  if (a3 < 0x12)
+  if (index < 0x12)
   {
-    v3 = &off_100085F88[a3];
+    v3 = &off_100085F88[index];
     return *v3;
   }
 
-  if ((a3 & 0xFFFFFFFC) == 0x10)
+  if ((index & 0xFFFFFFFC) == 0x10)
   {
-    v3 = &off_100085F68[a3 - 16];
+    v3 = &off_100085F68[index - 16];
     return *v3;
   }
 
   return 0;
 }
 
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3
+- (__CFString)copyFieldCurrentValueForIndex:(int)index
 {
-  switch(a3)
+  switch(index)
   {
     case 0:
       v3 = kCFAllocatorDefault;
@@ -833,8 +833,8 @@ LABEL_6:
       return CFStringCreateWithFormat(v3, 0, @"%d", packageLowPowerTarget);
     case 1:
       v5 = kCFAllocatorDefault;
-      v6 = [(MitigationController *)self SGXLevel];
-      return CFStringCreateWithFormat(v5, 0, @"%d", v6);
+      sGXLevel = [(MitigationController *)self SGXLevel];
+      return CFStringCreateWithFormat(v5, 0, @"%d", sGXLevel);
     case 2:
       v3 = kCFAllocatorDefault;
       packageLowPowerTarget = 100;
@@ -862,20 +862,20 @@ LABEL_6:
       return CFStringCreateWithFormat(v3, 0, @"%d", packageLowPowerTarget);
     case 7:
       v5 = kCFAllocatorDefault;
-      v6 = [(MitigationController *)self getCurrentCPUPower];
-      return CFStringCreateWithFormat(v5, 0, @"%d", v6);
+      sGXLevel = [(MitigationController *)self getCurrentCPUPower];
+      return CFStringCreateWithFormat(v5, 0, @"%d", sGXLevel);
     case 8:
       v5 = kCFAllocatorDefault;
-      v6 = [(MitigationController *)self getCurrentGPUPower];
-      return CFStringCreateWithFormat(v5, 0, @"%d", v6);
+      sGXLevel = [(MitigationController *)self getCurrentGPUPower];
+      return CFStringCreateWithFormat(v5, 0, @"%d", sGXLevel);
     case 9:
       v5 = kCFAllocatorDefault;
-      v6 = [(MitigationController *)self getCurrentPackagePower];
-      return CFStringCreateWithFormat(v5, 0, @"%d", v6);
+      sGXLevel = [(MitigationController *)self getCurrentPackagePower];
+      return CFStringCreateWithFormat(v5, 0, @"%d", sGXLevel);
     case 10:
       v5 = kCFAllocatorDefault;
-      v6 = [(MitigationController *)self CPULevel];
-      return CFStringCreateWithFormat(v5, 0, @"%d", v6);
+      sGXLevel = [(MitigationController *)self CPULevel];
+      return CFStringCreateWithFormat(v5, 0, @"%d", sGXLevel);
     case 11:
       v3 = kCFAllocatorDefault;
       packageLowPowerTarget = self->_currentCPULowPowerTarget;
@@ -886,32 +886,32 @@ LABEL_6:
       return CFStringCreateWithFormat(v3, 0, @"%d", packageLowPowerTarget);
     case 13:
       v5 = kCFAllocatorDefault;
-      v6 = [(MitigationController *)self DVD1Level];
-      return CFStringCreateWithFormat(v5, 0, @"%d", v6);
+      sGXLevel = [(MitigationController *)self DVD1Level];
+      return CFStringCreateWithFormat(v5, 0, @"%d", sGXLevel);
     case 14:
       v5 = kCFAllocatorDefault;
-      v6 = [(MitigationController *)self getPackagePowerZoneMetric];
-      return CFStringCreateWithFormat(v5, 0, @"%d", v6);
+      sGXLevel = [(MitigationController *)self getPackagePowerZoneMetric];
+      return CFStringCreateWithFormat(v5, 0, @"%d", sGXLevel);
     case 15:
       v5 = kCFAllocatorDefault;
-      v6 = [(MitigationController *)self getPackageCPUPowerTarget];
-      return CFStringCreateWithFormat(v5, 0, @"%d", v6);
+      sGXLevel = [(MitigationController *)self getPackageCPUPowerTarget];
+      return CFStringCreateWithFormat(v5, 0, @"%d", sGXLevel);
     case 16:
       v5 = kCFAllocatorDefault;
-      v6 = [(MitigationController *)self getPackageGPUPowerTarget];
-      return CFStringCreateWithFormat(v5, 0, @"%d", v6);
+      sGXLevel = [(MitigationController *)self getPackageGPUPowerTarget];
+      return CFStringCreateWithFormat(v5, 0, @"%d", sGXLevel);
     case 17:
       v3 = kCFAllocatorDefault;
       packageLowPowerTarget = self->_currentHipPowerTarget;
       return CFStringCreateWithFormat(v3, 0, @"%d", packageLowPowerTarget);
     default:
-      if ((a3 & 0xFFFFFFFC) != 0x10)
+      if ((index & 0xFFFFFFFC) != 0x10)
       {
         return 0;
       }
 
       v3 = kCFAllocatorDefault;
-      packageLowPowerTarget = self->DVD1Contributors[a3 - 16].DVD1LevelSentPrevious;
+      packageLowPowerTarget = self->DVD1Contributors[index - 16].DVD1LevelSentPrevious;
       return CFStringCreateWithFormat(v3, 0, @"%d", packageLowPowerTarget);
   }
 }

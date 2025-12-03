@@ -1,32 +1,32 @@
 @interface OADTextBodyAutoFit
-- (BOOL)isEqual:(id)a3;
-- (OADTextBodyAutoFit)initWithType:(unsigned __int8)a3;
+- (BOOL)isEqual:(id)equal;
+- (OADTextBodyAutoFit)initWithType:(unsigned __int8)type;
 - (id)description;
 @end
 
 @implementation OADTextBodyAutoFit
 
-- (OADTextBodyAutoFit)initWithType:(unsigned __int8)a3
+- (OADTextBodyAutoFit)initWithType:(unsigned __int8)type
 {
   v5.receiver = self;
   v5.super_class = OADTextBodyAutoFit;
   result = [(OADTextBodyAutoFit *)&v5 init];
   if (result)
   {
-    result->mType = a3;
+    result->mType = type;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     mType = self->mType;
-    v6 = mType == [v4 type];
+    v6 = mType == [equalCopy type];
   }
 
   else

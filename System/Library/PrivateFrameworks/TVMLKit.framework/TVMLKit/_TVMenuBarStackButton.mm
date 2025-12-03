@@ -1,22 +1,22 @@
 @interface _TVMenuBarStackButton
 - (CGSize)intrinsicContentSize;
-- (_TVMenuBarStackButton)initWithCoder:(id)a3;
-- (_TVMenuBarStackButton)initWithFrame:(CGRect)a3;
+- (_TVMenuBarStackButton)initWithCoder:(id)coder;
+- (_TVMenuBarStackButton)initWithFrame:(CGRect)frame;
 - (void)_configureSubviews;
-- (void)_setSelectedOrHighlighted:(BOOL)a3;
+- (void)_setSelectedOrHighlighted:(BOOL)highlighted;
 - (void)_updateImageEdgeInsets;
-- (void)setSelected:(BOOL)a3;
-- (void)setTabBarItem:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setSelected:(BOOL)selected;
+- (void)setTabBarItem:(id)item;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation _TVMenuBarStackButton
 
-- (_TVMenuBarStackButton)initWithCoder:(id)a3
+- (_TVMenuBarStackButton)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _TVMenuBarStackButton;
-  v3 = [(_TVMenuBarStackButton *)&v6 initWithCoder:a3];
+  v3 = [(_TVMenuBarStackButton *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -26,11 +26,11 @@
   return v4;
 }
 
-- (_TVMenuBarStackButton)initWithFrame:(CGRect)a3
+- (_TVMenuBarStackButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _TVMenuBarStackButton;
-  v3 = [(_TVMenuBarStackButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVMenuBarStackButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -40,13 +40,13 @@
   return v4;
 }
 
-- (void)setTabBarItem:(id)a3
+- (void)setTabBarItem:(id)item
 {
-  v5 = a3;
-  if (self->_tabBarItem != v5)
+  itemCopy = item;
+  if (self->_tabBarItem != itemCopy)
   {
-    v23 = v5;
-    objc_storeStrong(&self->_tabBarItem, a3);
+    v23 = itemCopy;
+    objc_storeStrong(&self->_tabBarItem, item);
     [(_TVMenuBarStackButton *)self setShowsTouchWhenHighlighted:0];
     v6 = [(NSDictionary *)self->_tabBarItem objectForKey:*MEMORY[0x277D1AF98]];
     if ([v6 length])
@@ -66,8 +66,8 @@
     {
       v9 = [MEMORY[0x277CBEBC0] URLWithString:v7];
       v10 = +[TVInterfaceFactory sharedInterfaceFactory];
-      v11 = [v9 tv_resourceName];
-      v12 = [v10 imageForResource:v11];
+      tv_resourceName = [v9 tv_resourceName];
+      v12 = [v10 imageForResource:tv_resourceName];
 
       [(_TVMenuBarStackButton *)self setImage:v12 forState:0];
     }
@@ -84,36 +84,36 @@
     {
       v15 = [MEMORY[0x277CBEBC0] URLWithString:v13];
       v16 = +[TVInterfaceFactory sharedInterfaceFactory];
-      v17 = [v15 tv_resourceName];
-      v18 = [v16 imageForResource:v17];
+      tv_resourceName2 = [v15 tv_resourceName];
+      v18 = [v16 imageForResource:tv_resourceName2];
 
       [(_TVMenuBarStackButton *)self setImage:v18 forState:5];
       [(_TVMenuBarStackButton *)self setImage:v18 forState:4];
     }
 
-    v19 = [MEMORY[0x277D75348] tvmlkit_keyColor];
-    [(_TVMenuBarStackButton *)self _setImageColor:v19 forState:4];
+    tvmlkit_keyColor = [MEMORY[0x277D75348] tvmlkit_keyColor];
+    [(_TVMenuBarStackButton *)self _setImageColor:tvmlkit_keyColor forState:4];
 
-    v20 = [MEMORY[0x277D75348] systemGrayColor];
-    [(_TVMenuBarStackButton *)self _setImageColor:v20 forState:0];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(_TVMenuBarStackButton *)self _setImageColor:systemGrayColor forState:0];
 
-    v21 = [MEMORY[0x277D75348] tvmlkit_keyColor];
-    [(_TVMenuBarStackButton *)self setTitleColor:v21 forState:4];
+    tvmlkit_keyColor2 = [MEMORY[0x277D75348] tvmlkit_keyColor];
+    [(_TVMenuBarStackButton *)self setTitleColor:tvmlkit_keyColor2 forState:4];
 
-    v22 = [MEMORY[0x277D75348] systemGrayColor];
-    [(_TVMenuBarStackButton *)self setTitleColor:v22 forState:0];
+    systemGrayColor2 = [MEMORY[0x277D75348] systemGrayColor];
+    [(_TVMenuBarStackButton *)self setTitleColor:systemGrayColor2 forState:0];
 
-    v5 = v23;
+    itemCopy = v23;
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5.receiver = self;
   v5.super_class = _TVMenuBarStackButton;
   [(_TVMenuBarStackButton *)&v5 setSelected:?];
-  [(_TVMenuBarStackButton *)self _setSelectedOrHighlighted:v3];
+  [(_TVMenuBarStackButton *)self _setSelectedOrHighlighted:selectedCopy];
 }
 
 - (CGSize)intrinsicContentSize
@@ -128,11 +128,11 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = _TVMenuBarStackButton;
-  [(_TVMenuBarStackButton *)&v4 traitCollectionDidChange:a3];
+  [(_TVMenuBarStackButton *)&v4 traitCollectionDidChange:change];
   [(_TVMenuBarStackButton *)self _updateImageEdgeInsets];
 }
 
@@ -145,9 +145,9 @@
   [(_TVMenuBarStackButton *)self invalidateIntrinsicContentSize];
 }
 
-- (void)_setSelectedOrHighlighted:(BOOL)a3
+- (void)_setSelectedOrHighlighted:(BOOL)highlighted
 {
-  if (a3)
+  if (highlighted)
   {
     v4 = 0;
   }
@@ -168,10 +168,10 @@
   [(_TVMenuBarStackButton *)self imageEdgeInsets];
   v4 = v3;
   v6 = v5;
-  v7 = [(_TVMenuBarStackButton *)self traitCollection];
-  v8 = [v7 layoutDirection];
+  traitCollection = [(_TVMenuBarStackButton *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if (v8 == 1)
+  if (layoutDirection == 1)
   {
     v9 = 8.0;
   }
@@ -181,7 +181,7 @@
     v9 = 0.0;
   }
 
-  if (v8 == 1)
+  if (layoutDirection == 1)
   {
     v10 = 0.0;
   }

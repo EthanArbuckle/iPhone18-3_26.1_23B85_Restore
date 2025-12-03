@@ -1,62 +1,62 @@
 @interface SGPipelineEnrichment
-- (id)toCloudKitRecordWithId:(id)a3 parentEntityType:(int64_t)a4;
+- (id)toCloudKitRecordWithId:(id)id parentEntityType:(int64_t)type;
 @end
 
 @implementation SGPipelineEnrichment
 
-- (id)toCloudKitRecordWithId:(id)a3 parentEntityType:(int64_t)a4
+- (id)toCloudKitRecordWithId:(id)id parentEntityType:(int64_t)type
 {
   v153 = *MEMORY[0x277D85DE8];
-  v132 = a3;
+  idCopy = id;
   v7 = objc_opt_new();
-  v8 = [(SGEntity *)self duplicateKey];
-  v9 = [v8 entityKey];
+  duplicateKey = [(SGEntity *)self duplicateKey];
+  entityKey = [duplicateKey entityKey];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v125 = [MEMORY[0x277CCA890] currentHandler];
-    [v125 handleFailureInMethod:a2 object:self file:@"SGPipelineEntity+CloudKitRecord.m" lineNumber:251 description:{@"Invalid parameter not satisfying: %@", @"[self.duplicateKey.entityKey isKindOfClass:[SGPseudoEventKey class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGPipelineEntity+CloudKitRecord.m" lineNumber:251 description:{@"Invalid parameter not satisfying: %@", @"[self.duplicateKey.entityKey isKindOfClass:[SGPseudoEventKey class]]"}];
   }
 
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) != 0x10)
+  if ((type & 0xFFFFFFFFFFFFFFFDLL) != 0x10)
   {
-    v126 = [MEMORY[0x277CCA890] currentHandler];
-    [v126 handleFailureInMethod:a2 object:self file:@"SGPipelineEntity+CloudKitRecord.m" lineNumber:252 description:{@"Invalid parameter not satisfying: %@", @"parentEntityType == SGEntityTypeWebPage || parentEntityType == SGEntityTypeInteraction"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGPipelineEntity+CloudKitRecord.m" lineNumber:252 description:{@"Invalid parameter not satisfying: %@", @"parentEntityType == SGEntityTypeWebPage || parentEntityType == SGEntityTypeInteraction"}];
   }
 
-  [v7 setParentEntityType:a4];
-  v11 = [(SGEntity *)self duplicateKey];
-  v12 = [v11 entityKey];
-  v13 = [v12 groupId];
-  [v7 setGroupId:v13];
+  [v7 setParentEntityType:type];
+  duplicateKey2 = [(SGEntity *)self duplicateKey];
+  entityKey2 = [duplicateKey2 entityKey];
+  groupId = [entityKey2 groupId];
+  [v7 setGroupId:groupId];
 
-  v14 = [(SGEntity *)self sourceKey];
-  [v7 setSourceKey:v14];
+  sourceKey = [(SGEntity *)self sourceKey];
+  [v7 setSourceKey:sourceKey];
 
-  v15 = [(SGEntity *)self content];
-  [v7 setContent:v15];
+  content = [(SGEntity *)self content];
+  [v7 setContent:content];
 
-  v16 = [(SGEntity *)self title];
-  [v7 setTitle:v16];
+  title = [(SGEntity *)self title];
+  [v7 setTitle:title];
 
   [(SGEntity *)self creationTimestamp];
   [v7 setCreationTimestamp:?];
   [(SGEntity *)self lastModifiedTimestamp];
   [v7 setLastModifiedTimestamp:?];
-  v17 = [(SGEntity *)self tags];
-  v18 = [MEMORY[0x277D01FA0] allDay];
-  v19 = [v17 containsObject:v18];
+  tags = [(SGEntity *)self tags];
+  allDay = [MEMORY[0x277D01FA0] allDay];
+  v19 = [tags containsObject:allDay];
 
   [v7 setAllDay:v19];
-  v20 = [(SGEntity *)self timeRange];
-  v21 = v20;
-  if ((v19 & 1) == 0 && [v20 isFloating])
+  timeRange = [(SGEntity *)self timeRange];
+  v21 = timeRange;
+  if ((v19 & 1) == 0 && [timeRange isFloating])
   {
-    v22 = [v21 absoluteRange];
+    absoluteRange = [v21 absoluteRange];
 
-    v21 = v22;
+    v21 = absoluteRange;
   }
 
   v23 = objc_opt_new();
@@ -69,8 +69,8 @@
   {
     if ((v19 & 1) == 0)
     {
-      v24 = [MEMORY[0x277CCA890] currentHandler];
-      [v24 handleFailureInMethod:a2 object:self file:@"SGPipelineEntity+CloudKitRecord.m" lineNumber:284 description:@"Only all-day events should be floating. Other events should have a timezone set before being synced up."];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"SGPipelineEntity+CloudKitRecord.m" lineNumber:284 description:@"Only all-day events should be floating. Other events should have a timezone set before being synced up."];
     }
   }
 
@@ -86,9 +86,9 @@
   v148 = 0u;
   v145 = 0u;
   v146 = 0u;
-  v137 = self;
-  v25 = [(SGEntity *)self locations];
-  v26 = [v25 countByEnumeratingWithState:&v145 objects:v152 count:16];
+  selfCopy = self;
+  locations = [(SGEntity *)self locations];
+  v26 = [locations countByEnumeratingWithState:&v145 objects:v152 count:16];
   if (v26)
   {
     v27 = v26;
@@ -99,21 +99,21 @@
       {
         if (*v146 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(locations);
         }
 
         v30 = *(*(&v145 + 1) + 8 * i);
         v31 = objc_autoreleasePoolPush();
         v32 = objc_opt_new();
         [v32 setLocationType:{objc_msgSend(v30, "locationType")}];
-        v33 = [v30 label];
-        [v32 setLabel:v33];
+        label = [v30 label];
+        [v32 setLabel:label];
 
-        v34 = [v30 address];
-        [v32 setAddress:v34];
+        address = [v30 address];
+        [v32 setAddress:address];
 
-        v35 = [v30 airportCode];
-        [v32 setAirportCode:v35];
+        airportCode = [v30 airportCode];
+        [v32 setAirportCode:airportCode];
 
         [v30 latitude];
         [v30 latitude];
@@ -125,14 +125,14 @@
         [v32 setAccuracy:?];
         [v30 quality];
         [v32 setQuality:?];
-        v36 = [v30 handle];
-        [v32 setHandle:v36];
+        handle = [v30 handle];
+        [v32 setHandle:handle];
 
         [v7 addLocations:v32];
         objc_autoreleasePoolPop(v31);
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v145 objects:v152 count:16];
+      v27 = [locations countByEnumeratingWithState:&v145 objects:v152 count:16];
     }
 
     while (v27);
@@ -142,8 +142,8 @@
   v144 = 0u;
   v141 = 0u;
   v142 = 0u;
-  v37 = [(SGEntity *)v137 tags];
-  v38 = [v37 countByEnumeratingWithState:&v141 objects:v151 count:16];
+  tags2 = [(SGEntity *)selfCopy tags];
+  v38 = [tags2 countByEnumeratingWithState:&v141 objects:v151 count:16];
   if (!v38)
   {
     v133 = 0;
@@ -154,7 +154,7 @@
     v135 = 0;
     v80 = 0;
     v39 = 0;
-    v81 = v132;
+    v81 = idCopy;
     goto LABEL_100;
   }
 
@@ -175,14 +175,14 @@
     {
       if (*v142 != v40)
       {
-        objc_enumerationMutation(v37);
+        objc_enumerationMutation(tags2);
       }
 
       v42 = *(*(&v141 + 1) + 8 * v41);
       if ([v42 isExtraKey])
       {
-        v43 = [v42 value];
-        [v7 setExtraKey:v43];
+        value = [v42 value];
+        [v7 setExtraKey:value];
 LABEL_30:
 
         goto LABEL_31;
@@ -190,15 +190,15 @@ LABEL_30:
 
       if ([v42 isDomain])
       {
-        v43 = [v42 value];
-        [v7 setDomain:v43];
+        value = [v42 value];
+        [v7 setDomain:value];
         goto LABEL_30;
       }
 
       if ([v42 isTemplateName])
       {
-        v43 = [v42 value];
-        [v7 setTemplateName:v43];
+        value = [v42 value];
+        [v7 setTemplateName:value];
         goto LABEL_30;
       }
 
@@ -210,8 +210,8 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v45 = [MEMORY[0x277D01FA0] extractedEventCancellation];
-      v46 = [v42 isEqualToEntityTag:v45];
+      extractedEventCancellation = [MEMORY[0x277D01FA0] extractedEventCancellation];
+      v46 = [v42 isEqualToEntityTag:extractedEventCancellation];
 
       if (v46)
       {
@@ -219,8 +219,8 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v47 = [MEMORY[0x277D01FA0] extractedFlight];
-      v48 = [v42 isEqualToEntityTag:v47];
+      extractedFlight = [MEMORY[0x277D01FA0] extractedFlight];
+      v48 = [v42 isEqualToEntityTag:extractedFlight];
 
       if (v48)
       {
@@ -231,8 +231,8 @@ LABEL_59:
         goto LABEL_31;
       }
 
-      v51 = [MEMORY[0x277D01FA0] extractedBus];
-      v52 = [v42 isEqualToEntityTag:v51];
+      extractedBus = [MEMORY[0x277D01FA0] extractedBus];
+      v52 = [v42 isEqualToEntityTag:extractedBus];
 
       if (v52)
       {
@@ -241,8 +241,8 @@ LABEL_59:
         goto LABEL_59;
       }
 
-      v53 = [MEMORY[0x277D01FA0] extractedTrain];
-      v54 = [v42 isEqualToEntityTag:v53];
+      extractedTrain = [MEMORY[0x277D01FA0] extractedTrain];
+      v54 = [v42 isEqualToEntityTag:extractedTrain];
 
       if (v54)
       {
@@ -251,8 +251,8 @@ LABEL_59:
         goto LABEL_59;
       }
 
-      v55 = [MEMORY[0x277D01FA0] extractedBoat];
-      v56 = [v42 isEqualToEntityTag:v55];
+      extractedBoat = [MEMORY[0x277D01FA0] extractedBoat];
+      v56 = [v42 isEqualToEntityTag:extractedBoat];
 
       if (v56)
       {
@@ -261,8 +261,8 @@ LABEL_59:
         goto LABEL_59;
       }
 
-      v57 = [MEMORY[0x277D01FA0] extractedHotel];
-      v58 = [v42 isEqualToEntityTag:v57];
+      extractedHotel = [MEMORY[0x277D01FA0] extractedHotel];
+      v58 = [v42 isEqualToEntityTag:extractedHotel];
 
       if (v58)
       {
@@ -271,8 +271,8 @@ LABEL_59:
         goto LABEL_59;
       }
 
-      v59 = [MEMORY[0x277D01FA0] extractedCarRental];
-      v60 = [v42 isEqualToEntityTag:v59];
+      extractedCarRental = [MEMORY[0x277D01FA0] extractedCarRental];
+      v60 = [v42 isEqualToEntityTag:extractedCarRental];
 
       if (v60)
       {
@@ -281,8 +281,8 @@ LABEL_59:
         goto LABEL_59;
       }
 
-      v61 = [MEMORY[0x277D01FA0] extractedTicket];
-      v62 = [v42 isEqualToEntityTag:v61];
+      extractedTicket = [MEMORY[0x277D01FA0] extractedTicket];
+      v62 = [v42 isEqualToEntityTag:extractedTicket];
 
       if (v62)
       {
@@ -291,8 +291,8 @@ LABEL_59:
         goto LABEL_59;
       }
 
-      v63 = [MEMORY[0x277D01FA0] extractedMovie];
-      v64 = [v42 isEqualToEntityTag:v63];
+      extractedMovie = [MEMORY[0x277D01FA0] extractedMovie];
+      v64 = [v42 isEqualToEntityTag:extractedMovie];
 
       if (v64)
       {
@@ -301,8 +301,8 @@ LABEL_59:
         goto LABEL_59;
       }
 
-      v65 = [MEMORY[0x277D01FA0] extractedFood];
-      v66 = [v42 isEqualToEntityTag:v65];
+      extractedFood = [MEMORY[0x277D01FA0] extractedFood];
+      v66 = [v42 isEqualToEntityTag:extractedFood];
 
       if (v66)
       {
@@ -311,8 +311,8 @@ LABEL_59:
         goto LABEL_59;
       }
 
-      v67 = [MEMORY[0x277D01FA0] extractedSocial];
-      v68 = [v42 isEqualToEntityTag:v67];
+      extractedSocial = [MEMORY[0x277D01FA0] extractedSocial];
+      v68 = [v42 isEqualToEntityTag:extractedSocial];
 
       if (v68)
       {
@@ -321,8 +321,8 @@ LABEL_59:
         goto LABEL_59;
       }
 
-      v69 = [MEMORY[0x277D01FA0] extractedAppointment];
-      v70 = [v42 isEqualToEntityTag:v69];
+      extractedAppointment = [MEMORY[0x277D01FA0] extractedAppointment];
+      v70 = [v42 isEqualToEntityTag:extractedAppointment];
 
       if (v70)
       {
@@ -392,20 +392,20 @@ LABEL_31:
     }
 
     while (v38 != v41);
-    v79 = [v37 countByEnumeratingWithState:&v141 objects:v151 count:16];
+    v79 = [tags2 countByEnumeratingWithState:&v141 objects:v151 count:16];
     v38 = v79;
   }
 
   while (v79);
   v80 = v129;
 
-  v81 = v132;
+  v81 = idCopy;
   if (v39)
   {
     v82 = objc_autoreleasePoolPush();
     v83 = MEMORY[0x277CCAAA0];
-    v84 = [v39 value];
-    v85 = [v84 dataUsingEncoding:4];
+    value2 = [v39 value];
+    v85 = [value2 dataUsingEncoding:4];
     v86 = [v83 JSONObjectWithData:v85 options:0 error:0];
 
     objc_autoreleasePoolPop(v82);
@@ -445,16 +445,16 @@ LABEL_31:
   {
     v92 = objc_autoreleasePoolPush();
     v93 = MEMORY[0x277CCAAA0];
-    v94 = [v138 value];
-    v95 = [v94 dataUsingEncoding:4];
-    v37 = [v93 JSONObjectWithData:v95 options:0 error:0];
+    value3 = [v138 value];
+    v95 = [value3 dataUsingEncoding:4];
+    tags2 = [v93 JSONObjectWithData:v95 options:0 error:0];
 
     objc_autoreleasePoolPop(v92);
-    if (v37)
+    if (tags2)
     {
       v96 = objc_autoreleasePoolPush();
       v139 = 0;
-      v97 = [MEMORY[0x277CCAC58] dataWithPropertyList:v37 format:200 options:0 error:&v139];
+      v97 = [MEMORY[0x277CCAC58] dataWithPropertyList:tags2 format:200 options:0 error:&v139];
       v98 = v139;
       objc_autoreleasePoolPop(v96);
       if (v97)
@@ -503,39 +503,39 @@ LABEL_100:
   if ([v7 parentEntityType] == 16)
   {
     v100 = objc_opt_new();
-    v101 = [v136 value];
-    [v100 setInteractionId:v101];
+    value4 = [v136 value];
+    [v100 setInteractionId:value4];
 
-    v102 = [v80 value];
-    [v100 setInteractionGroupId:v102];
+    value5 = [v80 value];
+    [v100 setInteractionGroupId:value5];
 
-    v103 = [v135 value];
-    [v100 setInteractionTeamId:v103];
+    value6 = [v135 value];
+    [v100 setInteractionTeamId:value6];
 
-    v104 = [v134 value];
-    [v100 setInteractionBundleId:v104];
+    value7 = [v134 value];
+    [v100 setInteractionBundleId:value7];
 
-    v105 = [v133 value];
-    [v100 setIntentResponseUserActivityString:v105];
+    value8 = [v133 value];
+    [v100 setIntentResponseUserActivityString:value8];
 
-    v106 = [v91 value];
+    value9 = [v91 value];
 
-    if (v106)
+    if (value9)
     {
       v107 = objc_alloc(MEMORY[0x277CBEA90]);
-      v108 = [v91 value];
-      v109 = [v107 initWithBase64EncodedString:v108 options:0];
+      value10 = [v91 value];
+      v109 = [v107 initWithBase64EncodedString:value10 options:0];
 
       [v100 setReservationContainerReference:v109];
     }
 
-    v110 = [v38 value];
+    value11 = [v38 value];
 
-    if (v110)
+    if (value11)
     {
       v111 = objc_alloc(MEMORY[0x277CBEA90]);
-      v112 = [v38 value];
-      v113 = [v111 initWithBase64EncodedString:v112 options:0];
+      value12 = [v38 value];
+      v113 = [v111 initWithBase64EncodedString:value12 options:0];
 
       [v100 setReservationItemReferences:v113];
       [v7 setInteractionInfo:v100];
@@ -569,10 +569,10 @@ LABEL_100:
   [v117 setObject:&unk_284749A40 forKeyedSubscript:@"v"];
   [v118 setObject:&unk_284749A40 forKeyedSubscript:@"m"];
   v119 = MEMORY[0x277D42570];
-  v120 = [v7 data];
-  v121 = [v119 compress:v120 lowMemory:1];
-  v122 = [v118 encryptedValues];
-  [v122 setObject:v121 forKeyedSubscript:@"pe"];
+  data = [v7 data];
+  v121 = [v119 compress:data lowMemory:1];
+  encryptedValues = [v118 encryptedValues];
+  [encryptedValues setObject:v121 forKeyedSubscript:@"pe"];
 
   v123 = *MEMORY[0x277D85DE8];
 

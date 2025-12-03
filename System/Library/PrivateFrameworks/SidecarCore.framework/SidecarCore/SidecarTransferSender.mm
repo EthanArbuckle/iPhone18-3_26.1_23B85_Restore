@@ -1,16 +1,16 @@
 @interface SidecarTransferSender
-- (SidecarTransferSender)initWithSession:(id)a3 requestID:(int64_t)a4 transferID:(int64_t)a5;
-- (void)_sendCompletion:(id)a3;
-- (void)sendItems:(id)a3 messageType:(int64_t)a4;
+- (SidecarTransferSender)initWithSession:(id)session requestID:(int64_t)d transferID:(int64_t)iD;
+- (void)_sendCompletion:(id)completion;
+- (void)sendItems:(id)items messageType:(int64_t)type;
 @end
 
 @implementation SidecarTransferSender
 
-- (void)_sendCompletion:(id)a3
+- (void)_sendCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v6 = SidecarCoreLogSubsystem(OS_LOG_TYPE_ERROR);
     if (v6)
@@ -20,15 +20,15 @@
       v6 = log;
       if (v8)
       {
-        v9 = [v4 domain];
-        v10 = [v4 code];
-        v11 = [v4 localizedDescription];
+        domain = [completionCopy domain];
+        code = [completionCopy code];
+        localizedDescription = [completionCopy localizedDescription];
         *buf = 138543875;
-        v14 = v9;
+        v14 = domain;
         v15 = 2048;
-        v16 = v10;
+        v16 = code;
         v17 = 2113;
-        v18 = v11;
+        v18 = localizedDescription;
         _os_log_impl(&dword_26604C000, log, OS_LOG_TYPE_ERROR, "%{public}@ (%ld) %{private}@", buf, 0x20u);
 
         v6 = log;
@@ -41,30 +41,30 @@
   if (!SidecarTransferSenderSliceData(self))
   {
 LABEL_6:
-    v5 = [(SidecarTransfer *)self delegate];
-    [v5 sidecarTransfer:self didComplete:v4];
+    delegate = [(SidecarTransfer *)self delegate];
+    [delegate sidecarTransfer:self didComplete:completionCopy];
     goto LABEL_7;
   }
 
-  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:5];
-  SidecarTransferSenderSetMessageData(self, v5);
-  SidecarTransferSendMessage(self, v5);
+  delegate = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:5];
+  SidecarTransferSenderSetMessageData(self, delegate);
+  SidecarTransferSendMessage(self, delegate);
 LABEL_7:
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendItems:(id)a3 messageType:(int64_t)a4
+- (void)sendItems:(id)items messageType:(int64_t)type
 {
-  v6 = a3;
+  itemsCopy = items;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__SidecarTransferSender_sendItems_messageType___block_invoke;
   v9[3] = &unk_279BC2F80;
   v9[4] = self;
-  v7 = v6;
+  v7 = itemsCopy;
   v10 = v7;
-  v11 = a4;
+  typeCopy = type;
   SidecarTransferLocked(self, v9);
   v8 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:5];
   SidecarMessageSetItemMetaData(v8, v7);
@@ -91,11 +91,11 @@ void __47__SidecarTransferSender_sendItems_messageType___block_invoke(uint64_t a
   *(*(a1 + 32) + 80) = *(a1 + 48);
 }
 
-- (SidecarTransferSender)initWithSession:(id)a3 requestID:(int64_t)a4 transferID:(int64_t)a5
+- (SidecarTransferSender)initWithSession:(id)session requestID:(int64_t)d transferID:(int64_t)iD
 {
   v10.receiver = self;
   v10.super_class = SidecarTransferSender;
-  v5 = [(SidecarTransfer *)&v10 initWithSession:a3 requestID:a4 transferID:a5];
+  v5 = [(SidecarTransfer *)&v10 initWithSession:session requestID:d transferID:iD];
   v6 = v5;
   if (v5)
   {

@@ -1,8 +1,8 @@
 @interface AKConfiguration
 + (id)sharedConfiguration;
 - (AKConfiguration)init;
-- (id)configurationValueForKey:(id)a3;
-- (id)configurationValueForKey:(id)a3 useDomain:(BOOL)a4;
+- (id)configurationValueForKey:(id)key;
+- (id)configurationValueForKey:(id)key useDomain:(BOOL)domain;
 - (int64_t)accountAccessTelemetryOptInFFOverride;
 - (int64_t)contactKeyVerification;
 - (int64_t)deviceSafetyRestrictionReasonOverride;
@@ -12,7 +12,7 @@
 - (int64_t)forceSilentEscrowRecordRepairEnabled;
 - (int64_t)forceSilentEscrowRecordRepairEnabledV2;
 - (int64_t)internalSiwADefaultHME;
-- (int64_t)overrideForKey:(id)a3;
+- (int64_t)overrideForKey:(id)key;
 - (int64_t)requestedCloudPartition;
 - (int64_t)shouldAddHSA2CreateHeader;
 - (int64_t)shouldAllowDemoMode;
@@ -42,44 +42,44 @@
 - (unint64_t)lastKnownIDMSEnvironment;
 - (void)_clearGlobalConfigValues;
 - (void)dealloc;
-- (void)setAccountAccessTelemetryOptInOverride:(int64_t)a3;
-- (void)setConfigurationValue:(id)a3 forKey:(id)a4;
-- (void)setContactKeyVerification:(int64_t)a3;
-- (void)setDeviceSafetyRestrictionReasonOverride:(int64_t)a3;
-- (void)setDomainConfigurationValue:(id)a3 forKey:(id)a4;
-- (void)setForceHasSOSActiveDevice:(int64_t)a3;
-- (void)setForceSOSNeeded:(int64_t)a3;
-- (void)setForceSilentBurnCDPRepairEnabled:(int64_t)a3;
-- (void)setForceSilentEscrowRecordRepairEnabled:(int64_t)a3;
-- (void)setForceSilentEscrowRecordRepairEnabledV2:(int64_t)a3;
-- (void)setIdmsWalrusStatusOverride:(id)a3;
-- (void)setLastKnownIDMSEnvironment:(unint64_t)a3;
-- (void)setLastKnownLocale:(id)a3;
-- (void)setOverride:(int64_t)a3 forKey:(id)a4;
-- (void)setRequestedCloudPartition:(int64_t)a3;
-- (void)setShouldAddHSA2CreateHeader:(int64_t)a3;
-- (void)setShouldAllowDemoMode:(int64_t)a3;
-- (void)setShouldAllowExperimentalMode:(int64_t)a3;
-- (void)setShouldAllowPhoneNumberAccounts:(int64_t)a3;
-- (void)setShouldAllowTestApplication:(int64_t)a3;
-- (void)setShouldAlwaysShowWelcome:(int64_t)a3;
-- (void)setShouldAskToBuy:(int64_t)a3;
-- (void)setShouldAutocycleAppsInTiburon:(int64_t)a3;
-- (void)setShouldAutocycleAppsInWebTakeover:(int64_t)a3;
-- (void)setShouldBypassCustodianDeviceCheck:(int64_t)a3;
-- (void)setShouldDisablePiggybacking:(int64_t)a3;
-- (void)setShouldEnableAttestationLogging:(int64_t)a3;
-- (void)setShouldEnableBeneficiaryLiveOn:(int64_t)a3;
-- (void)setShouldEnableTelemetryOptIn:(int64_t)a3;
-- (void)setShouldEnableTestAccountMode:(int64_t)a3;
-- (void)setShouldFakeAuthSuccess:(int64_t)a3;
-- (void)setShouldForceBaaValidation:(int64_t)a3;
-- (void)setShouldHideInternalBuildHeader:(int64_t)a3;
-- (void)setShouldHideSeedBuildHeader:(int64_t)a3;
-- (void)setShouldSuppressHSA2Suggestions:(int64_t)a3;
-- (void)setShouldSuppressModalSheetsInMacBuddy:(int64_t)a3;
-- (void)setStrongDeviceIdentityMarker:(id)a3;
-- (void)setTelemetryOptInGracePeriodOverride:(int64_t)a3;
+- (void)setAccountAccessTelemetryOptInOverride:(int64_t)override;
+- (void)setConfigurationValue:(id)value forKey:(id)key;
+- (void)setContactKeyVerification:(int64_t)verification;
+- (void)setDeviceSafetyRestrictionReasonOverride:(int64_t)override;
+- (void)setDomainConfigurationValue:(id)value forKey:(id)key;
+- (void)setForceHasSOSActiveDevice:(int64_t)device;
+- (void)setForceSOSNeeded:(int64_t)needed;
+- (void)setForceSilentBurnCDPRepairEnabled:(int64_t)enabled;
+- (void)setForceSilentEscrowRecordRepairEnabled:(int64_t)enabled;
+- (void)setForceSilentEscrowRecordRepairEnabledV2:(int64_t)v2;
+- (void)setIdmsWalrusStatusOverride:(id)override;
+- (void)setLastKnownIDMSEnvironment:(unint64_t)environment;
+- (void)setLastKnownLocale:(id)locale;
+- (void)setOverride:(int64_t)override forKey:(id)key;
+- (void)setRequestedCloudPartition:(int64_t)partition;
+- (void)setShouldAddHSA2CreateHeader:(int64_t)header;
+- (void)setShouldAllowDemoMode:(int64_t)mode;
+- (void)setShouldAllowExperimentalMode:(int64_t)mode;
+- (void)setShouldAllowPhoneNumberAccounts:(int64_t)accounts;
+- (void)setShouldAllowTestApplication:(int64_t)application;
+- (void)setShouldAlwaysShowWelcome:(int64_t)welcome;
+- (void)setShouldAskToBuy:(int64_t)buy;
+- (void)setShouldAutocycleAppsInTiburon:(int64_t)tiburon;
+- (void)setShouldAutocycleAppsInWebTakeover:(int64_t)takeover;
+- (void)setShouldBypassCustodianDeviceCheck:(int64_t)check;
+- (void)setShouldDisablePiggybacking:(int64_t)piggybacking;
+- (void)setShouldEnableAttestationLogging:(int64_t)logging;
+- (void)setShouldEnableBeneficiaryLiveOn:(int64_t)on;
+- (void)setShouldEnableTelemetryOptIn:(int64_t)in;
+- (void)setShouldEnableTestAccountMode:(int64_t)mode;
+- (void)setShouldFakeAuthSuccess:(int64_t)success;
+- (void)setShouldForceBaaValidation:(int64_t)validation;
+- (void)setShouldHideInternalBuildHeader:(int64_t)header;
+- (void)setShouldHideSeedBuildHeader:(int64_t)header;
+- (void)setShouldSuppressHSA2Suggestions:(int64_t)suggestions;
+- (void)setShouldSuppressModalSheetsInMacBuddy:(int64_t)buddy;
+- (void)setStrongDeviceIdentityMarker:(id)marker;
+- (void)setTelemetryOptInGracePeriodOverride:(int64_t)override;
 @end
 
 @implementation AKConfiguration
@@ -170,48 +170,48 @@ uint64_t __38__AKConfiguration_sharedConfiguration__block_invoke()
 - (unint64_t)lastKnownIDMSEnvironment
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"AKLastIDMSEnvironment"];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (int64_t)shouldAllowTestApplication
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"AKAddTestApplicationHeader"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)forceHasSOSActiveDevice
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"_AKShouldForceHasSOSActiveDevice"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)forceSOSNeeded
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"_AKShouldForceSOSNeeded"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)shouldEnableTelemetryOptIn
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   v3 = +[AKDevice currentDevice];
-  v4 = [v3 isInternalBuild];
+  isInternalBuild = [v3 isInternalBuild];
   MEMORY[0x1E69E5920](v3);
-  if ((v4 & 1) == 0)
+  if ((isInternalBuild & 1) == 0)
   {
     return -1;
   }
 
-  location[0] = [(AKConfiguration *)v6 configurationValueForKey:@"_AKTelemetryOptIn"];
+  location[0] = [(AKConfiguration *)selfCopy configurationValueForKey:@"_AKTelemetryOptIn"];
   if ([location[0] integerValue] == 1)
   {
     v7 = 1;
@@ -228,17 +228,17 @@ uint64_t __38__AKConfiguration_sharedConfiguration__block_invoke()
 
 - (int64_t)shouldEnableAccountImprovementOptIn
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   v3 = +[AKDevice currentDevice];
-  v4 = [v3 isInternalBuild];
+  isInternalBuild = [v3 isInternalBuild];
   MEMORY[0x1E69E5920](v3);
-  if ((v4 & 1) == 0)
+  if ((isInternalBuild & 1) == 0)
   {
     return -1;
   }
 
-  location[0] = [(AKConfiguration *)v6 configurationValueForKey:@"_AKImprovementOptIn"];
+  location[0] = [(AKConfiguration *)selfCopy configurationValueForKey:@"_AKImprovementOptIn"];
   if ([location[0] integerValue] == 1)
   {
     v7 = 1;
@@ -256,9 +256,9 @@ uint64_t __38__AKConfiguration_sharedConfiguration__block_invoke()
 - (int64_t)shouldHideInternalBuildHeader
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"AKHideInternalBuildHeader"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
 - (unint64_t)internalFeaturesMaskValue
@@ -285,17 +285,17 @@ uint64_t __38__AKConfiguration_sharedConfiguration__block_invoke()
   }
 
   v5 = +[AKFeatureManager sharedManager];
-  v6 = [v5 isSignInSecurityRedesignEnabled];
+  isSignInSecurityRedesignEnabled = [v5 isSignInSecurityRedesignEnabled];
   MEMORY[0x1E69E5920](v5);
-  if (v6)
+  if (isSignInSecurityRedesignEnabled)
   {
     v7 |= 0x800uLL;
   }
 
   v3 = +[AKFeatureManager sharedManager];
-  v4 = [v3 isAuthKitSolariumFeatureEnabled];
+  isAuthKitSolariumFeatureEnabled = [v3 isAuthKitSolariumFeatureEnabled];
   MEMORY[0x1E69E5920](v3);
-  if (v4)
+  if (isAuthKitSolariumFeatureEnabled)
   {
     v7 |= 0x1000uLL;
   }
@@ -306,41 +306,41 @@ uint64_t __38__AKConfiguration_sharedConfiguration__block_invoke()
 - (int64_t)shouldBypassCustodianDeviceCheck
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"_AKByPassCustodianDeviceCheck"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)shouldEnableBeneficiaryLiveOn
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"_AKBeneficiaryLiveOnKey"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)shouldRequestPiggybackingPresenceEnforcement
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"AKShouldRequestPiggybackingPresenceEnforcement"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)shouldForceBaaValidation
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"_AKShouldForceBaaValidation"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)contactKeyVerification
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"_AKContactKeyVerification"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
 uint64_t __23__AKConfiguration_init__block_invoke(void *a1, int a2)
@@ -364,37 +364,37 @@ uint64_t __23__AKConfiguration_init__block_invoke(void *a1, int a2)
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (self->_notificationToken)
   {
-    notify_cancel(v4->_notificationToken);
+    notify_cancel(selfCopy->_notificationToken);
   }
 
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = AKConfiguration;
   [(AKConfiguration *)&v2 dealloc];
 }
 
-- (id)configurationValueForKey:(id)a3
+- (id)configurationValueForKey:(id)key
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKConfiguration *)v6 configurationValueForKey:location[0] useDomain:0];
+  objc_storeStrong(location, key);
+  v4 = [(AKConfiguration *)selfCopy configurationValueForKey:location[0] useDomain:0];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (id)configurationValueForKey:(id)a3 useDomain:(BOOL)a4
+- (id)configurationValueForKey:(id)key useDomain:(BOOL)domain
 {
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v42 = a4;
+  objc_storeStrong(location, key);
+  domainCopy = domain;
   if (location[0])
   {
     v31 = 0;
@@ -404,14 +404,14 @@ uint64_t __23__AKConfiguration_init__block_invoke(void *a1, int a2)
     v35 = __Block_byref_object_copy__5;
     v36 = __Block_byref_object_dispose__5;
     v37 = 0;
-    queue = v44->_settingsQueue;
+    queue = selfCopy->_settingsQueue;
     v24 = MEMORY[0x1E69E9820];
     v25 = -1073741824;
     v26 = 0;
     v27 = __54__AKConfiguration_configurationValueForKey_useDomain___block_invoke;
     v28 = &unk_1E73D4878;
     v30[1] = &v31;
-    v29 = MEMORY[0x1E69E5928](v44);
+    v29 = MEMORY[0x1E69E5928](selfCopy);
     v30[0] = MEMORY[0x1E69E5928](location[0]);
     dispatch_sync(queue, &v24);
     if (v32[5])
@@ -422,10 +422,10 @@ uint64_t __23__AKConfiguration_init__block_invoke(void *a1, int a2)
 
     else
     {
-      v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v23 = [v10 objectForKey:location[0]];
-      MEMORY[0x1E69E5920](v10);
-      if (!v23 && v42)
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v23 = [standardUserDefaults objectForKey:location[0]];
+      MEMORY[0x1E69E5920](standardUserDefaults);
+      if (!v23 && domainCopy)
       {
         v9 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.AuthKit"];
         v4 = [v9 objectForKey:location[0]];
@@ -437,13 +437,13 @@ uint64_t __23__AKConfiguration_init__block_invoke(void *a1, int a2)
 
       if (v23)
       {
-        settingsQueue = v44->_settingsQueue;
+        settingsQueue = selfCopy->_settingsQueue;
         v15 = MEMORY[0x1E69E9820];
         v16 = -1073741824;
         v17 = 0;
         v18 = __54__AKConfiguration_configurationValueForKey_useDomain___block_invoke_2;
         v19 = &unk_1E73D60B0;
-        v20 = MEMORY[0x1E69E5928](v44);
+        v20 = MEMORY[0x1E69E5928](selfCopy);
         v21 = MEMORY[0x1E69E5928](location[0]);
         v22 = MEMORY[0x1E69E5928](v23);
         dispatch_barrier_async(settingsQueue, &v15);
@@ -501,14 +501,14 @@ uint64_t __54__AKConfiguration_configurationValueForKey_useDomain___block_invoke
   return MEMORY[0x1E69E5920](v3);
 }
 
-- (void)setConfigurationValue:(id)a3 forKey:(id)a4
+- (void)setConfigurationValue:(id)value forKey:(id)key
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, key);
   if (v11)
   {
     v4 = MEMORY[0x1E695E890];
@@ -536,14 +536,14 @@ uint64_t __54__AKConfiguration_configurationValueForKey_useDomain___block_invoke
   objc_storeStrong(location, 0);
 }
 
-- (void)setDomainConfigurationValue:(id)a3 forKey:(id)a4
+- (void)setDomainConfigurationValue:(id)value forKey:(id)key
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, key);
   if (v12)
   {
     v7 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.AuthKit"];
@@ -576,7 +576,7 @@ uint64_t __54__AKConfiguration_configurationValueForKey_useDomain___block_invoke
 
 - (void)_clearGlobalConfigValues
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   queue = dispatch_get_global_queue(21, 0);
   v3 = MEMORY[0x1E69E9820];
@@ -584,7 +584,7 @@ uint64_t __54__AKConfiguration_configurationValueForKey_useDomain___block_invoke
   v5 = 0;
   v6 = __43__AKConfiguration__clearGlobalConfigValues__block_invoke;
   v7 = &unk_1E73D34C0;
-  v8[0] = MEMORY[0x1E69E5928](v9);
+  v8[0] = MEMORY[0x1E69E5928](selfCopy);
   dispatch_async(queue, &v3);
   MEMORY[0x1E69E5920](queue);
   objc_storeStrong(v8, 0);
@@ -679,18 +679,18 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
   *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)overrideForKey:(id)a3
+- (int64_t)overrideForKey:(id)key
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [(AKConfiguration *)v9 configurationValueForKey:location[0]];
-  v7 = [v6 integerValue];
+  objc_storeStrong(location, key);
+  v6 = [(AKConfiguration *)selfCopy configurationValueForKey:location[0]];
+  integerValue = [v6 integerValue];
   MEMORY[0x1E69E5920](v6);
-  if (v7 < 1)
+  if (integerValue < 1)
   {
-    v5 = v7;
+    v5 = integerValue;
   }
 
   else
@@ -712,15 +712,15 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
   return v4;
 }
 
-- (void)setOverride:(int64_t)a3 forKey:(id)a4
+- (void)setOverride:(int64_t)override forKey:(id)key
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  overrideCopy = override;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v4 = v9;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
+  objc_storeStrong(&location, key);
+  v4 = selfCopy;
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:overrideCopy];
   [AKConfiguration setConfigurationValue:v4 forKey:"setConfigurationValue:forKey:"];
   MEMORY[0x1E69E5920](v5);
   objc_storeStrong(&location, 0);
@@ -729,14 +729,14 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)shouldFakeAuthSuccess
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"AKFakeAuthSuccess"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setShouldFakeAuthSuccess:(int64_t)a3
+- (void)setShouldFakeAuthSuccess:(int64_t)success
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:success];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -744,14 +744,14 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)shouldDisablePiggybacking
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"AKDisablePiggy"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setShouldDisablePiggybacking:(int64_t)a3
+- (void)setShouldDisablePiggybacking:(int64_t)piggybacking
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:piggybacking];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -759,14 +759,14 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)shouldSuppressHSA2Suggestions
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"AKSuppressHSA2Suggestions"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setShouldSuppressHSA2Suggestions:(int64_t)a3
+- (void)setShouldSuppressHSA2Suggestions:(int64_t)suggestions
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:suggestions];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -774,14 +774,14 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)shouldAddHSA2CreateHeader
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"AKAddHS2CreateHeader"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setShouldAddHSA2CreateHeader:(int64_t)a3
+- (void)setShouldAddHSA2CreateHeader:(int64_t)header
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:header];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -789,14 +789,14 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)shouldAllowPhoneNumberAccounts
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"AKAllowPhoneNumberAccounts"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setShouldAllowPhoneNumberAccounts:(int64_t)a3
+- (void)setShouldAllowPhoneNumberAccounts:(int64_t)accounts
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:accounts];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -804,21 +804,21 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)shouldAllowExperimentalMode
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"AKAddExperimentalModeHeader"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setShouldAllowExperimentalMode:(int64_t)a3
+- (void)setShouldAllowExperimentalMode:(int64_t)mode
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
 
-- (void)setShouldHideInternalBuildHeader:(int64_t)a3
+- (void)setShouldHideInternalBuildHeader:(int64_t)header
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:header];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -826,14 +826,14 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)shouldHideSeedBuildHeader
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"AKHideSeedBuildHeader"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setShouldHideSeedBuildHeader:(int64_t)a3
+- (void)setShouldHideSeedBuildHeader:(int64_t)header
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:header];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -841,29 +841,29 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)shouldAllowDemoMode
 {
   v4 = +[AKDevice currentDevice];
-  v5 = [v4 isInternalBuild];
+  isInternalBuild = [v4 isInternalBuild];
   MEMORY[0x1E69E5920](v4);
-  if ((v5 & 1) == 0)
+  if ((isInternalBuild & 1) == 0)
   {
     return -1;
   }
 
   v3 = [(AKConfiguration *)self configurationValueForKey:@"_AKAuthorizationDemoMode"];
-  v7 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v7;
+  return integerValue;
 }
 
-- (void)setShouldAllowDemoMode:(int64_t)a3
+- (void)setShouldAllowDemoMode:(int64_t)mode
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
 
-- (void)setShouldAllowTestApplication:(int64_t)a3
+- (void)setShouldAllowTestApplication:(int64_t)application
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:application];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -871,14 +871,14 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)shouldEnableTestAccountMode
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"_AKAddTestAccountHeader"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setShouldEnableTestAccountMode:(int64_t)a3
+- (void)setShouldEnableTestAccountMode:(int64_t)mode
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -886,14 +886,14 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)shouldSuppressModalSheetsInMacBuddy
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"AKSuppressModalSheetsInMacBuddy"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setShouldSuppressModalSheetsInMacBuddy:(int64_t)a3
+- (void)setShouldSuppressModalSheetsInMacBuddy:(int64_t)buddy
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:buddy];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -901,14 +901,14 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)shouldAutocycleAppsInTiburon
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"_AKAutocycleAppsInTiburon"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setShouldAutocycleAppsInTiburon:(int64_t)a3
+- (void)setShouldAutocycleAppsInTiburon:(int64_t)tiburon
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:tiburon];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -916,14 +916,14 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)shouldAlwaysShowWelcome
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"_AKAlwaysShowWelcome"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setShouldAlwaysShowWelcome:(int64_t)a3
+- (void)setShouldAlwaysShowWelcome:(int64_t)welcome
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:welcome];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -931,14 +931,14 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)shouldAutocycleAppsInWebTakeover
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"_AKAutocycleAppsInWebTakeOver"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setShouldAutocycleAppsInWebTakeover:(int64_t)a3
+- (void)setShouldAutocycleAppsInWebTakeover:(int64_t)takeover
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:takeover];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -946,28 +946,28 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)shouldAskToBuy
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"_AKAskToBuy"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setShouldAskToBuy:(int64_t)a3
+- (void)setShouldAskToBuy:(int64_t)buy
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:buy];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
 
-- (void)setShouldEnableTelemetryOptIn:(int64_t)a3
+- (void)setShouldEnableTelemetryOptIn:(int64_t)in
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:in];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
 
-- (void)setLastKnownIDMSEnvironment:(unint64_t)a3
+- (void)setLastKnownIDMSEnvironment:(unint64_t)environment
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:environment];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -975,14 +975,14 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)forceSilentEscrowRecordRepairEnabled
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"AKForceSilentEscrowRecordRepairEnabled"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setForceSilentEscrowRecordRepairEnabled:(int64_t)a3
+- (void)setForceSilentEscrowRecordRepairEnabled:(int64_t)enabled
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:enabled];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -990,14 +990,14 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)forceSilentEscrowRecordRepairEnabledV2
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"AKForceSilentEscrowRecordRepairEnabledV2"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setForceSilentEscrowRecordRepairEnabledV2:(int64_t)a3
+- (void)setForceSilentEscrowRecordRepairEnabledV2:(int64_t)v2
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:v2];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -1005,52 +1005,52 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)forceSilentBurnCDPRepairEnabled
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"AKForceSilentBurnCDPRepairEnabled"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setForceSilentBurnCDPRepairEnabled:(int64_t)a3
+- (void)setForceSilentBurnCDPRepairEnabled:(int64_t)enabled
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:enabled];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
 
-- (void)setIdmsWalrusStatusOverride:(id)a3
+- (void)setIdmsWalrusStatusOverride:(id)override
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKConfiguration *)v4 setConfigurationValue:location[0] forKey:@"_AKIdmsWalrusStatusOverrideKey"];
+  objc_storeStrong(location, override);
+  [(AKConfiguration *)selfCopy setConfigurationValue:location[0] forKey:@"_AKIdmsWalrusStatusOverrideKey"];
   objc_storeStrong(location, 0);
 }
 
-- (void)setShouldBypassCustodianDeviceCheck:(int64_t)a3
+- (void)setShouldBypassCustodianDeviceCheck:(int64_t)check
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:check];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
 
-- (void)setShouldEnableBeneficiaryLiveOn:(int64_t)a3
+- (void)setShouldEnableBeneficiaryLiveOn:(int64_t)on
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:on];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
 
-- (void)setShouldForceBaaValidation:(int64_t)a3
+- (void)setShouldForceBaaValidation:(int64_t)validation
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:validation];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
 
-- (void)setContactKeyVerification:(int64_t)a3
+- (void)setContactKeyVerification:(int64_t)verification
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:verification];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -1058,38 +1058,38 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)requestedCloudPartition
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"_AKCloudPartition"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setRequestedCloudPartition:(int64_t)a3
+- (void)setRequestedCloudPartition:(int64_t)partition
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:partition];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
 
-- (void)setLastKnownLocale:(id)a3
+- (void)setLastKnownLocale:(id)locale
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKConfiguration *)v4 setConfigurationValue:location[0] forKey:@"AKLastLocale"];
+  objc_storeStrong(location, locale);
+  [(AKConfiguration *)selfCopy setConfigurationValue:location[0] forKey:@"AKLastLocale"];
   objc_storeStrong(location, 0);
 }
 
-- (void)setForceHasSOSActiveDevice:(int64_t)a3
+- (void)setForceHasSOSActiveDevice:(int64_t)device
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:device];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
 
-- (void)setForceSOSNeeded:(int64_t)a3
+- (void)setForceSOSNeeded:(int64_t)needed
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:needed];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -1097,14 +1097,14 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)telemetryOptInGracePeriodOverride
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"_AKOverrideTelemetryOptInGracePeriod"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setTelemetryOptInGracePeriodOverride:(int64_t)a3
+- (void)setTelemetryOptInGracePeriodOverride:(int64_t)override
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:override];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -1112,39 +1112,39 @@ void __43__AKConfiguration__clearGlobalConfigValues__block_invoke(id *a1)
 - (int64_t)accountAccessTelemetryOptInFFOverride
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"_AKAccountAccessTelemetryOptInFFOverrideKey"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setAccountAccessTelemetryOptInOverride:(int64_t)a3
+- (void)setAccountAccessTelemetryOptInOverride:(int64_t)override
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:override];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
 
-- (void)setStrongDeviceIdentityMarker:(id)a3
+- (void)setStrongDeviceIdentityMarker:(id)marker
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKConfiguration *)v4 setDomainConfigurationValue:location[0] forKey:@"_AKBAACertMarkerKey"];
+  objc_storeStrong(location, marker);
+  [(AKConfiguration *)selfCopy setDomainConfigurationValue:location[0] forKey:@"_AKBAACertMarkerKey"];
   objc_storeStrong(location, 0);
 }
 
 - (int64_t)deviceSafetyRestrictionReasonOverride
 {
   v3 = [(AKConfiguration *)self configurationValueForKey:@"AKDeviceSafetyRestrictionReasonOverride"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v4;
+  return integerValue;
 }
 
-- (void)setDeviceSafetyRestrictionReasonOverride:(int64_t)a3
+- (void)setDeviceSafetyRestrictionReasonOverride:(int64_t)override
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:override];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -1156,9 +1156,9 @@ uint64_t __49__AKConfiguration_shouldEnableAttestationLogging__block_invoke(uint
   return MEMORY[0x1E69E5920](v2);
 }
 
-- (void)setShouldEnableAttestationLogging:(int64_t)a3
+- (void)setShouldEnableAttestationLogging:(int64_t)logging
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:logging];
   [AKConfiguration setConfigurationValue:"setConfigurationValue:forKey:" forKey:?];
   MEMORY[0x1E69E5920](v4);
 }
@@ -1166,17 +1166,17 @@ uint64_t __49__AKConfiguration_shouldEnableAttestationLogging__block_invoke(uint
 - (int64_t)internalSiwADefaultHME
 {
   v4 = +[AKDevice currentDevice];
-  v5 = [v4 isInternalBuild];
+  isInternalBuild = [v4 isInternalBuild];
   MEMORY[0x1E69E5920](v4);
-  if (!v5)
+  if (!isInternalBuild)
   {
     return -1;
   }
 
   v3 = [(AKConfiguration *)self configurationValueForKey:@"_AKInternalSiwADefaultHME"];
-  v7 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   MEMORY[0x1E69E5920](v3);
-  return v7;
+  return integerValue;
 }
 
 @end

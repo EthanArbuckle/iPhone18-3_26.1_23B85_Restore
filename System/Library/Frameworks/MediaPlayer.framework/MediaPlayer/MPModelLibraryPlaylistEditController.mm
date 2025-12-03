@@ -1,5 +1,5 @@
 @interface MPModelLibraryPlaylistEditController
-- (BOOL)_isLastEntry:(id)a3;
+- (BOOL)_isLastEntry:(id)entry;
 - (BOOL)isRedoAvailable;
 - (BOOL)isUndoAvailable;
 - (MPModelPlaylist)parentPlaylist;
@@ -16,66 +16,66 @@
 - (id)_currentPlaylist;
 - (id)_currentTrackList;
 - (id)_defaultPlaylistEntryPropertySet;
-- (id)_initWithLibrary:(id)a3 playlist:(id)a4 initialTrackList:(id)a5 initialItemList:(id)a6 playlistProperties:(id)a7 playlistEntryProperties:(id)a8 authorProfile:(id)a9;
-- (id)_itemIdentifierForIndexPath:(id)a3 usingExclusiveAccessToken:(id)a4;
-- (id)_movePlaylistEntry:(id)a3 afterEntry:(id)a4;
-- (id)_newDataSourceForModelObjects:(id)a3;
+- (id)_initWithLibrary:(id)library playlist:(id)playlist initialTrackList:(id)list initialItemList:(id)itemList playlistProperties:(id)properties playlistEntryProperties:(id)entryProperties authorProfile:(id)profile;
+- (id)_itemIdentifierForIndexPath:(id)path usingExclusiveAccessToken:(id)token;
+- (id)_movePlaylistEntry:(id)entry afterEntry:(id)afterEntry;
+- (id)_newDataSourceForModelObjects:(id)objects;
 - (id)_removeAllPlaylistEntries;
-- (id)_removePlaylistEntries:(id)a3;
-- (id)_sectionIdentifierForItemIdentifier:(id)a3;
-- (id)_setPlaylistName:(id)a3;
-- (id)debugDescriptionForItem:(id)a3 inSection:(id)a4;
-- (id)movePlaylistEntry:(id)a3 afterEntry:(id)a4;
-- (id)performTransactionWithBlock:(id)a3;
-- (id)performTransactionWithIdentifier:(id)a3 block:(id)a4;
+- (id)_removePlaylistEntries:(id)entries;
+- (id)_sectionIdentifierForItemIdentifier:(id)identifier;
+- (id)_setPlaylistName:(id)name;
+- (id)debugDescriptionForItem:(id)item inSection:(id)section;
+- (id)movePlaylistEntry:(id)entry afterEntry:(id)afterEntry;
+- (id)performTransactionWithBlock:(id)block;
+- (id)performTransactionWithIdentifier:(id)identifier block:(id)block;
 - (id)removeAllPlaylistEntries;
-- (id)removePlaylistEntries:(id)a3;
-- (id)removePlaylistEntry:(id)a3;
-- (id)setPlaylistName:(id)a3;
-- (id)transactionsSinceIdentifier:(id)a3;
-- (void)_applyChanges:(id)a3 toTransaction:(id)a4 completion:(id)a5;
-- (void)_createTrackIdentifierListWithInitialEntries:(id)a3 initialObjects:(id)a4 completion:(id)a5;
-- (void)_endTransactionCommittingChanges:(BOOL)a3;
-- (void)_insertObjects:(id)a3 afterEntry:(id)a4 completion:(id)a5;
+- (id)removePlaylistEntries:(id)entries;
+- (id)removePlaylistEntry:(id)entry;
+- (id)setPlaylistName:(id)name;
+- (id)transactionsSinceIdentifier:(id)identifier;
+- (void)_applyChanges:(id)changes toTransaction:(id)transaction completion:(id)completion;
+- (void)_createTrackIdentifierListWithInitialEntries:(id)entries initialObjects:(id)objects completion:(id)completion;
+- (void)_endTransactionCommittingChanges:(BOOL)changes;
+- (void)_insertObjects:(id)objects afterEntry:(id)entry completion:(id)completion;
 - (void)_logEditorState;
-- (void)_resolveTrackListWithCompletion:(id)a3;
+- (void)_resolveTrackListWithCompletion:(id)completion;
 - (void)_startNewTransaction;
-- (void)_startTransactionWithIdentifier:(id)a3;
-- (void)appendItem:(id)a3 completion:(id)a4;
-- (void)appendItems:(id)a3 completion:(id)a4;
-- (void)appendObject:(id)a3 completion:(id)a4;
-- (void)appendObjects:(id)a3 completion:(id)a4;
-- (void)applyChanges:(id)a3 completion:(id)a4;
-- (void)beginEditingWithCompletion:(id)a3;
-- (void)commitWithCompletion:(id)a3;
-- (void)insertItem:(id)a3 afterEntry:(id)a4 completion:(id)a5;
-- (void)insertItem:(id)a3 atIndexPath:(id)a4 completion:(id)a5;
-- (void)insertItemAtStart:(id)a3 completion:(id)a4;
-- (void)insertItems:(id)a3 afterEntry:(id)a4 completion:(id)a5;
-- (void)insertItems:(id)a3 atIndexPath:(id)a4 completion:(id)a5;
-- (void)insertItemsAtStart:(id)a3 completion:(id)a4;
-- (void)insertObject:(id)a3 afterEntry:(id)a4 completion:(id)a5;
-- (void)insertObjectAtStart:(id)a3 completion:(id)a4;
-- (void)insertObjects:(id)a3 afterEntry:(id)a4 completion:(id)a5;
-- (void)insertObjectsAtStart:(id)a3 completion:(id)a4;
-- (void)moveEntry:(id)a3 afterEntry:(id)a4;
-- (void)moveEntryToStart:(id)a3;
-- (void)moveItemFromIndexPath:(id)a3 toIndexPath:(id)a4;
-- (void)redoNextTransactionWithCompletion:(id)a3;
-- (void)removeEntries:(id)a3;
-- (void)removeEntry:(id)a3;
-- (void)removeItemAtIndexPath:(id)a3;
-- (void)sectionedIdentifierList:(id)a3 dataSourceDidChangeItems:(id)a4 inSection:(id)a5;
-- (void)setCoverArtworkRecipe:(id)a3;
-- (void)setCuratorPlaylist:(id)a3;
-- (void)setDescriptionText:(id)a3;
-- (void)setEditSessionID:(id)a3;
-- (void)setInitialTrackList:(id)a3;
-- (void)setParentPlaylist:(id)a3;
-- (void)setPublicPlaylist:(id)a3;
-- (void)setUserImage:(id)a3;
-- (void)setVisiblePlaylist:(id)a3;
-- (void)undoPreviousTransactionWithCompletion:(id)a3;
+- (void)_startTransactionWithIdentifier:(id)identifier;
+- (void)appendItem:(id)item completion:(id)completion;
+- (void)appendItems:(id)items completion:(id)completion;
+- (void)appendObject:(id)object completion:(id)completion;
+- (void)appendObjects:(id)objects completion:(id)completion;
+- (void)applyChanges:(id)changes completion:(id)completion;
+- (void)beginEditingWithCompletion:(id)completion;
+- (void)commitWithCompletion:(id)completion;
+- (void)insertItem:(id)item afterEntry:(id)entry completion:(id)completion;
+- (void)insertItem:(id)item atIndexPath:(id)path completion:(id)completion;
+- (void)insertItemAtStart:(id)start completion:(id)completion;
+- (void)insertItems:(id)items afterEntry:(id)entry completion:(id)completion;
+- (void)insertItems:(id)items atIndexPath:(id)path completion:(id)completion;
+- (void)insertItemsAtStart:(id)start completion:(id)completion;
+- (void)insertObject:(id)object afterEntry:(id)entry completion:(id)completion;
+- (void)insertObjectAtStart:(id)start completion:(id)completion;
+- (void)insertObjects:(id)objects afterEntry:(id)entry completion:(id)completion;
+- (void)insertObjectsAtStart:(id)start completion:(id)completion;
+- (void)moveEntry:(id)entry afterEntry:(id)afterEntry;
+- (void)moveEntryToStart:(id)start;
+- (void)moveItemFromIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)redoNextTransactionWithCompletion:(id)completion;
+- (void)removeEntries:(id)entries;
+- (void)removeEntry:(id)entry;
+- (void)removeItemAtIndexPath:(id)path;
+- (void)sectionedIdentifierList:(id)list dataSourceDidChangeItems:(id)items inSection:(id)section;
+- (void)setCoverArtworkRecipe:(id)recipe;
+- (void)setCuratorPlaylist:(id)playlist;
+- (void)setDescriptionText:(id)text;
+- (void)setEditSessionID:(id)d;
+- (void)setInitialTrackList:(id)list;
+- (void)setParentPlaylist:(id)playlist;
+- (void)setPublicPlaylist:(id)playlist;
+- (void)setUserImage:(id)image;
+- (void)setVisiblePlaylist:(id)playlist;
+- (void)undoPreviousTransactionWithCompletion:(id)completion;
 @end
 
 @implementation MPModelLibraryPlaylistEditController
@@ -84,7 +84,7 @@
 {
   v32 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(MPSectionedIdentifierList *)self->_trackIdentifierList itemCount];
+  itemCount = [(MPSectionedIdentifierList *)self->_trackIdentifierList itemCount];
   v5 = [(NSMutableArray *)self->_completedTransactions count];
   v19 = 0u;
   v20 = 0u;
@@ -106,8 +106,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v12 = [*(*(&v19 + 1) + 8 * i) changes];
-        v9 += [v12 count];
+        changes = [*(*(&v19 + 1) + 8 * i) changes];
+        v9 += [changes count];
       }
 
       v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v19 objects:v31 count:16];
@@ -125,9 +125,9 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544130;
-    v24 = self;
+    selfCopy3 = self;
     v25 = 2048;
-    v26 = v4;
+    v26 = itemCount;
     v27 = 2048;
     v28 = v5;
     v29 = 2048;
@@ -135,14 +135,14 @@
     _os_log_impl(&dword_1A238D000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ [Editor State] Summary: %lu tracks, %lu transaction(s) containing %lu change(s) \n", buf, 0x2Au);
   }
 
-  if (v4 <= 0x1F4)
+  if (itemCount <= 0x1F4)
   {
     v14 = os_log_create("com.apple.amp.mediaplayer", "PlaylistEditing_Oversize");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v15 = [(MPSectionedIdentifierList *)self->_trackIdentifierList debugDescription];
       *buf = 138543618;
-      v24 = self;
+      selfCopy3 = self;
       v25 = 2114;
       v26 = v15;
       _os_log_impl(&dword_1A238D000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ [Editor State] Track List:\n%{public}@\n", buf, 0x16u);
@@ -157,7 +157,7 @@
       lastAppliedTransactionIndex = self->_lastAppliedTransactionIndex;
       completedTransactions = self->_completedTransactions;
       *buf = 138543874;
-      v24 = self;
+      selfCopy3 = self;
       v25 = 2048;
       v26 = lastAppliedTransactionIndex;
       v27 = 2114;
@@ -176,21 +176,21 @@
   {
     v4 = v3;
     playlist = self->_playlist;
-    v6 = [(MPModelObject *)playlist identifiers];
+    identifiers = [(MPModelObject *)playlist identifiers];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __56__MPModelLibraryPlaylistEditController__currentPlaylist__block_invoke_3;
     v12[3] = &unk_1E767C0A8;
     v12[4] = self;
-    v7 = [(MPModelObject *)playlist copyWithIdentifiers:v6 block:v12];
+    v7 = [(MPModelObject *)playlist copyWithIdentifiers:identifiers block:v12];
   }
 
   else
   {
     v8 = [MPModelPlaylist alloc];
     v9 = [MPIdentifierSet alloc];
-    v6 = +[MPModelPlaylistKind identityKind];
-    v4 = [(MPIdentifierSet *)v9 initWithSource:@"com.apple.MediaPlayer.MPModelLibraryPlaylistEditController" modelKind:v6 block:&__block_literal_global_141];
+    identifiers = +[MPModelPlaylistKind identityKind];
+    v4 = [(MPIdentifierSet *)v9 initWithSource:@"com.apple.MediaPlayer.MPModelLibraryPlaylistEditController" modelKind:identifiers block:&__block_literal_global_141];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __56__MPModelLibraryPlaylistEditController__currentPlaylist__block_invoke_2;
@@ -336,14 +336,14 @@ void __56__MPModelLibraryPlaylistEditController__currentPlaylist__block_invoke_3
   }
 }
 
-- (void)_endTransactionCommittingChanges:(BOOL)a3
+- (void)_endTransactionCommittingChanges:(BOOL)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   v16 = *MEMORY[0x1E69E9840];
   if (!self->_currentTransaction)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"MPModelLibraryPlaylistEditController.m" lineNumber:1737 description:@"No current transaction to end"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryPlaylistEditController.m" lineNumber:1737 description:@"No current transaction to end"];
   }
 
   v5 = os_log_create("com.apple.amp.mediaplayer", "PlaylistEditing_Oversize");
@@ -351,13 +351,13 @@ void __56__MPModelLibraryPlaylistEditController__currentPlaylist__block_invoke_3
   {
     currentTransaction = self->_currentTransaction;
     v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = currentTransaction;
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Ending transaction %{public}@", &v12, 0x16u);
   }
 
-  if (v3)
+  if (changesCopy)
   {
     lastAppliedTransactionIndex = self->_lastAppliedTransactionIndex;
     if (lastAppliedTransactionIndex != [(NSMutableArray *)self->_completedTransactions count]- 1)
@@ -382,44 +382,44 @@ void __56__MPModelLibraryPlaylistEditController__currentPlaylist__block_invoke_3
   self->_currentTransaction = 0;
 }
 
-- (void)_startTransactionWithIdentifier:(id)a3
+- (void)_startTransactionWithIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   if (self->_currentTransaction)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"MPModelLibraryPlaylistEditController.m" lineNumber:1731 description:@"Already have a transaction started"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryPlaylistEditController.m" lineNumber:1731 description:@"Already have a transaction started"];
   }
 
   v6 = os_log_create("com.apple.amp.mediaplayer", "PlaylistEditing");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v5;
+    v13 = identifierCopy;
     _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting new transaction %{public}@", &v10, 0x16u);
   }
 
-  v7 = [[MPModelLibraryPlaylistEditTransactionDetails alloc] initWithIdentifier:v5];
+  v7 = [[MPModelLibraryPlaylistEditTransactionDetails alloc] initWithIdentifier:identifierCopy];
   currentTransaction = self->_currentTransaction;
   self->_currentTransaction = v7;
 }
 
 - (void)_startNewTransaction
 {
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v3 = [v5 UUIDString];
-  v4 = [v3 lowercaseString];
-  [(MPModelLibraryPlaylistEditController *)self _startTransactionWithIdentifier:v4];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  lowercaseString = [uUIDString lowercaseString];
+  [(MPModelLibraryPlaylistEditController *)self _startTransactionWithIdentifier:lowercaseString];
 }
 
 - (id)_currentTrackList
 {
   v3 = objc_alloc_init(MPMutableSectionedCollection);
-  v4 = [(MPModelLibraryPlaylistEditController *)self _currentPlaylist];
-  [(MPMutableSectionedCollection *)v3 appendSection:v4];
+  _currentPlaylist = [(MPModelLibraryPlaylistEditController *)self _currentPlaylist];
+  [(MPMutableSectionedCollection *)v3 appendSection:_currentPlaylist];
 
   trackIdentifierList = self->_trackIdentifierList;
   v10[0] = MEMORY[0x1E69E9820];
@@ -500,9 +500,9 @@ void __57__MPModelLibraryPlaylistEditController__currentTrackList__block_invoke(
   }
 }
 
-- (id)_setPlaylistName:(id)a3
+- (id)_setPlaylistName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   currentTransaction = self->_currentTransaction;
   if (!currentTransaction)
   {
@@ -512,20 +512,20 @@ void __57__MPModelLibraryPlaylistEditController__currentTrackList__block_invoke(
   newName = self->_newName;
   if (newName)
   {
-    v7 = newName;
+    name = newName;
   }
 
   else
   {
-    v7 = [(MPModelPlaylist *)self->_playlist name];
+    name = [(MPModelPlaylist *)self->_playlist name];
   }
 
-  v8 = v7;
+  v8 = name;
   v9 = [[MPModelLibraryPlaylistEditChangeDetails alloc] initWithType:6];
-  [(MPModelLibraryPlaylistEditChangeDetails *)v9 setPlaylistName:v4];
+  [(MPModelLibraryPlaylistEditChangeDetails *)v9 setPlaylistName:nameCopy];
   [(MPModelLibraryPlaylistEditChangeDetails *)v9 setPreviousPlaylistName:v8];
   [(MPModelLibraryPlaylistEditTransactionDetails *)self->_currentTransaction addChange:v9];
-  v10 = [v4 copy];
+  v10 = [nameCopy copy];
   v11 = self->_newName;
   self->_newName = v10;
 
@@ -538,20 +538,20 @@ void __57__MPModelLibraryPlaylistEditController__currentTrackList__block_invoke(
   return v12;
 }
 
-- (void)_resolveTrackListWithCompletion:(id)a3
+- (void)_resolveTrackListWithCompletion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MPModelLibraryPlaylistEditController *)self _currentTrackList];
+  completionCopy = completion;
+  _currentTrackList = [(MPModelLibraryPlaylistEditController *)self _currentTrackList];
   v6 = objc_alloc_init(MPMutableSectionedCollection);
   [(MPMutableSectionedCollection *)v6 appendSection:&stru_1F149ECA8];
-  v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v5, "totalItemCount")}];
+  v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(_currentTrackList, "totalItemCount")}];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __72__MPModelLibraryPlaylistEditController__resolveTrackListWithCompletion___block_invoke;
   v20[3] = &unk_1E767BE50;
   v20[4] = self;
-  v8 = v5;
+  v8 = _currentTrackList;
   v21 = v8;
   v9 = v6;
   v22 = v9;
@@ -563,11 +563,11 @@ void __57__MPModelLibraryPlaylistEditController__currentTrackList__block_invoke(
     v11 = os_log_create("com.apple.amp.mediaplayer", "PlaylistEditing_Oversize");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(MPSectionedCollection *)v9 totalItemCount];
+      totalItemCount = [(MPSectionedCollection *)v9 totalItemCount];
       *buf = 138543874;
-      v25 = self;
+      selfCopy = self;
       v26 = 2048;
-      v27 = v12;
+      v27 = totalItemCount;
       v28 = 2114;
       v29 = v9;
       _os_log_impl(&dword_1A238D000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Importing %ld non-library tracks: %{public}@", buf, 0x20u);
@@ -583,7 +583,7 @@ void __57__MPModelLibraryPlaylistEditController__currentTrackList__block_invoke(
     v15[3] = &unk_1E767BD88;
     v15[4] = self;
     v16 = v13;
-    v19 = v4;
+    v19 = completionCopy;
     v17 = v8;
     v18 = v10;
     v14 = v13;
@@ -592,7 +592,7 @@ void __57__MPModelLibraryPlaylistEditController__currentTrackList__block_invoke(
 
   else
   {
-    (*(v4 + 2))(v4, v8, 0);
+    (*(completionCopy + 2))(completionCopy, v8, 0);
   }
 }
 
@@ -919,18 +919,18 @@ LABEL_6:
   return v15;
 }
 
-- (id)_sectionIdentifierForItemIdentifier:(id)a3
+- (id)_sectionIdentifierForItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MPSectionedIdentifierList *)self->_trackIdentifierList allSectionIdentifiers];
+  identifierCopy = identifier;
+  allSectionIdentifiers = [(MPSectionedIdentifierList *)self->_trackIdentifierList allSectionIdentifiers];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __76__MPModelLibraryPlaylistEditController__sectionIdentifierForItemIdentifier___block_invoke;
   v9[3] = &unk_1E767BE28;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 msv_firstWhere:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [allSectionIdentifiers msv_firstWhere:v9];
 
   return v7;
 }
@@ -951,19 +951,19 @@ uint64_t __76__MPModelLibraryPlaylistEditController__sectionIdentifierForItemIde
   return v4;
 }
 
-- (id)_newDataSourceForModelObjects:(id)a3
+- (id)_newDataSourceForModelObjects:(id)objects
 {
-  v5 = a3;
-  v6 = [(MPModelLibraryPlaylistEditController *)self _defaultPlaylistEntryPropertySet];
-  v7 = [v6 propertySetByCombiningWithPropertySet:self->_playlistEntryProperties];
+  objectsCopy = objects;
+  _defaultPlaylistEntryPropertySet = [(MPModelLibraryPlaylistEditController *)self _defaultPlaylistEntryPropertySet];
+  v7 = [_defaultPlaylistEntryPropertySet propertySetByCombiningWithPropertySet:self->_playlistEntryProperties];
 
-  v8 = [v5 firstObject];
+  firstObject = [objectsCopy firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v12 = [v5 firstObject];
+    firstObject2 = [objectsCopy firstObject];
     objc_opt_class();
     v13 = objc_opt_isKindOfClass();
 
@@ -971,49 +971,49 @@ uint64_t __76__MPModelLibraryPlaylistEditController__sectionIdentifierForItemIde
     {
       v14 = [MPModelLibraryPlaylistEditPlaylistDataSource alloc];
       library = self->_library;
-      v16 = [v5 firstObject];
-      v11 = [(MPModelLibraryPlaylistEditPlaylistDataSource *)v14 initWithLibrary:library playlist:v16 initialTrackList:0 playlistEntryProperties:v7];
+      firstObject3 = [objectsCopy firstObject];
+      v11 = [(MPModelLibraryPlaylistEditPlaylistDataSource *)v14 initWithLibrary:library playlist:firstObject3 initialTrackList:0 playlistEntryProperties:v7];
     }
 
     else
     {
-      v17 = [v5 firstObject];
+      firstObject4 = [objectsCopy firstObject];
       objc_opt_class();
       v18 = objc_opt_isKindOfClass();
 
       if ((v18 & 1) == 0)
       {
-        v24 = [v5 firstObject];
+        firstObject5 = [objectsCopy firstObject];
         objc_opt_class();
         v25 = objc_opt_isKindOfClass();
 
         if ((v25 & 1) == 0)
         {
-          v26 = [MEMORY[0x1E696AAA8] currentHandler];
-          v27 = [v5 firstObject];
-          [v26 handleFailureInMethod:a2 object:self file:@"MPModelLibraryPlaylistEditController.m" lineNumber:1532 description:{@"Unsupported model object %@", v27}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          firstObject6 = [objectsCopy firstObject];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryPlaylistEditController.m" lineNumber:1532 description:{@"Unsupported model object %@", firstObject6}];
 
           v11 = 0;
           goto LABEL_9;
         }
 
-        v10 = [[MPModelLibraryPlaylistEditPlaylistEntryDataSource alloc] initWithPlaylistEntries:v5];
+        v10 = [[MPModelLibraryPlaylistEditPlaylistEntryDataSource alloc] initWithPlaylistEntries:objectsCopy];
         goto LABEL_3;
       }
 
-      v19 = [v7 relationships];
-      v16 = [v19 objectForKey:@"MPModelRelationshipPlaylistEntrySong"];
+      relationships = [v7 relationships];
+      firstObject3 = [relationships objectForKey:@"MPModelRelationshipPlaylistEntrySong"];
 
       v20 = [MPModelLibraryPlaylistEditAlbumDataSource alloc];
       v21 = self->_library;
-      v22 = [v5 firstObject];
-      v11 = [(MPModelLibraryPlaylistEditAlbumDataSource *)v20 initWithLibrary:v21 album:v22 trackProperties:v16 authorProfile:self->_authorProfile];
+      firstObject7 = [objectsCopy firstObject];
+      v11 = [(MPModelLibraryPlaylistEditAlbumDataSource *)v20 initWithLibrary:v21 album:firstObject7 trackProperties:firstObject3 authorProfile:self->_authorProfile];
     }
 
     goto LABEL_9;
   }
 
-  v10 = [[MPModelLibraryPlaylistEditTrackDataSource alloc] initWithTrackObjects:v5 authorProfile:self->_authorProfile];
+  v10 = [[MPModelLibraryPlaylistEditTrackDataSource alloc] initWithTrackObjects:objectsCopy authorProfile:self->_authorProfile];
 LABEL_3:
   v11 = v10;
 LABEL_9:
@@ -1021,13 +1021,13 @@ LABEL_9:
   return v11;
 }
 
-- (id)_itemIdentifierForIndexPath:(id)a3 usingExclusiveAccessToken:(id)a4
+- (id)_itemIdentifierForIndexPath:(id)path usingExclusiveAccessToken:(id)token
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 item];
-  v10 = [(MPSectionedIdentifierList *)self->_trackIdentifierList enumeratorWithOptions:0x1000000 startPosition:0 endPosition:0 withExclusiveAccessToken:v8];
-  v11 = [v10 nextObjectWithExclusiveAccessToken:v8];
+  pathCopy = path;
+  tokenCopy = token;
+  item = [pathCopy item];
+  v10 = [(MPSectionedIdentifierList *)self->_trackIdentifierList enumeratorWithOptions:0x1000000 startPosition:0 endPosition:0 withExclusiveAccessToken:tokenCopy];
+  v11 = [v10 nextObjectWithExclusiveAccessToken:tokenCopy];
   if (!v11)
   {
     goto LABEL_7;
@@ -1037,7 +1037,7 @@ LABEL_9:
   while ([v11 entryType] != 3)
   {
 LABEL_6:
-    v15 = [v10 nextObjectWithExclusiveAccessToken:v8];
+    v15 = [v10 nextObjectWithExclusiveAccessToken:tokenCopy];
 
     v11 = v15;
     if (!v15)
@@ -1046,33 +1046,33 @@ LABEL_6:
     }
   }
 
-  v13 = [v11 itemResult];
-  v14 = [v13 itemIdentifier];
+  itemResult = [v11 itemResult];
+  itemIdentifier = [itemResult itemIdentifier];
 
-  if (v12 != v9)
+  if (v12 != item)
   {
     ++v12;
 
     goto LABEL_6;
   }
 
-  if (!v14)
+  if (!itemIdentifier)
   {
 LABEL_7:
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"MPModelLibraryPlaylistEditController.m" lineNumber:1511 description:{@"Invalid index path %@", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryPlaylistEditController.m" lineNumber:1511 description:{@"Invalid index path %@", pathCopy}];
 
-    v14 = 0;
+    itemIdentifier = 0;
   }
 
-  return v14;
+  return itemIdentifier;
 }
 
-- (void)_createTrackIdentifierListWithInitialEntries:(id)a3 initialObjects:(id)a4 completion:(id)a5
+- (void)_createTrackIdentifierListWithInitialEntries:(id)entries initialObjects:(id)objects completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entriesCopy = entries;
+  objectsCopy = objects;
+  completionCopy = completion;
   [(NSMutableDictionary *)self->_dataSources removeAllObjects];
   v11 = [[MPSectionedIdentifierList alloc] initWithIdentifier:@"MPModelLibraryPlaylistEditControllerLibrarySectionIdentifierName"];
   trackIdentifierList = self->_trackIdentifierList;
@@ -1080,25 +1080,25 @@ LABEL_7:
 
   [(MPSectionedIdentifierList *)self->_trackIdentifierList setDelegate:self];
   [(MPSectionedIdentifierList *)self->_trackIdentifierList setAnnotationDelegate:self];
-  v13 = [(MPModelLibraryPlaylistEditController *)self _defaultPlaylistEntryPropertySet];
-  v14 = [v13 propertySetByCombiningWithPropertySet:self->_playlistEntryProperties];
+  _defaultPlaylistEntryPropertySet = [(MPModelLibraryPlaylistEditController *)self _defaultPlaylistEntryPropertySet];
+  v14 = [_defaultPlaylistEntryPropertySet propertySetByCombiningWithPropertySet:self->_playlistEntryProperties];
 
-  if (v9)
+  if (objectsCopy)
   {
-    v15 = [[MPModelLibraryPlaylistEditTrackDataSource alloc] initWithTrackObjects:v9 authorProfile:self->_authorProfile];
+    v15 = [[MPModelLibraryPlaylistEditTrackDataSource alloc] initWithTrackObjects:objectsCopy authorProfile:self->_authorProfile];
   }
 
   else
   {
     v16 = [MPModelLibraryPlaylistEditPlaylistDataSource alloc];
     library = self->_library;
-    v18 = [(MPModelLibraryPlaylistEditController *)self _currentPlaylist];
-    v15 = [(MPModelLibraryPlaylistEditPlaylistDataSource *)v16 initWithLibrary:library playlist:v18 initialTrackList:v8 playlistEntryProperties:v14];
+    _currentPlaylist = [(MPModelLibraryPlaylistEditController *)self _currentPlaylist];
+    v15 = [(MPModelLibraryPlaylistEditPlaylistDataSource *)v16 initWithLibrary:library playlist:_currentPlaylist initialTrackList:entriesCopy playlistEntryProperties:v14];
   }
 
-  v19 = [(MPModelLibraryPlaylistEditDataSource *)v15 identifier];
+  identifier = [(MPModelLibraryPlaylistEditDataSource *)v15 identifier];
   initialDataSourceIdentifier = self->_initialDataSourceIdentifier;
-  self->_initialDataSourceIdentifier = v19;
+  self->_initialDataSourceIdentifier = identifier;
 
   [(NSMutableDictionary *)self->_dataSources setObject:v15 forKey:self->_initialDataSourceIdentifier];
   objc_initWeak(&location, self);
@@ -1111,7 +1111,7 @@ LABEL_7:
   objc_copyWeak(&v28, &location);
   v23 = v15;
   v26 = v23;
-  v24 = v10;
+  v24 = completionCopy;
   v27 = v24;
   [(MPSectionedIdentifierList *)v21 addDataSourceAtStart:v23 section:v22 completion:v25];
 
@@ -1193,15 +1193,15 @@ void __111__MPModelLibraryPlaylistEditController__createTrackIdentifierListWithI
   [*(*(a1 + 32) + 144) setObject:v8 forKeyedSubscript:v7];
 }
 
-- (BOOL)_isLastEntry:(id)a3
+- (BOOL)_isLastEntry:(id)entry
 {
-  if (!a3)
+  if (!entry)
   {
     return 0;
   }
 
-  v4 = [a3 universalIdentifier];
-  LOBYTE(self) = [v4 isEqualToString:self->_currentLastItemIdentifier];
+  universalIdentifier = [entry universalIdentifier];
+  LOBYTE(self) = [universalIdentifier isEqualToString:self->_currentLastItemIdentifier];
 
   return self;
 }
@@ -1213,7 +1213,7 @@ void __111__MPModelLibraryPlaylistEditController__createTrackIdentifierListWithI
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1A238D000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Removing all entries", &v11, 0xCu);
   }
 
@@ -1233,33 +1233,33 @@ void __111__MPModelLibraryPlaylistEditController__createTrackIdentifierListWithI
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1A238D000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Successfully completed remove all", &v11, 0xCu);
   }
 
   return v8;
 }
 
-- (id)_removePlaylistEntries:(id)a3
+- (id)_removePlaylistEntries:(id)entries
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entriesCopy = entries;
   v5 = os_log_create("com.apple.amp.mediaplayer", "PlaylistEditing_Oversize");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v35 = self;
+    selfCopy2 = self;
     v36 = 2114;
-    v37 = v4;
+    v37 = entriesCopy;
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Removing entries %{public}@", buf, 0x16u);
   }
 
-  v27 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v27 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(entriesCopy, "count")}];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v4;
+  obj = entriesCopy;
   v28 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v28)
   {
@@ -1274,22 +1274,22 @@ void __111__MPModelLibraryPlaylistEditController__createTrackIdentifierListWithI
         }
 
         v7 = *(*(&v29 + 1) + 8 * i);
-        v8 = [v7 universalIdentifier];
-        v9 = [(MPModelLibraryPlaylistEditController *)self _sectionIdentifierForItemIdentifier:v8];
-        v10 = [MPSectionedIdentifierListPosition positionForItem:v8 inSection:v9];
+        universalIdentifier = [v7 universalIdentifier];
+        v9 = [(MPModelLibraryPlaylistEditController *)self _sectionIdentifierForItemIdentifier:universalIdentifier];
+        v10 = [MPSectionedIdentifierListPosition positionForItem:universalIdentifier inSection:v9];
         v11 = [(MPSectionedIdentifierList *)self->_trackIdentifierList enumeratorWithOptions:8 startPosition:v10 endPosition:0];
-        v12 = [v11 nextObject];
+        nextObject = [v11 nextObject];
 
-        v13 = [v12 itemResult];
-        v14 = [v13 itemIdentifier];
+        itemResult = [nextObject itemResult];
+        itemIdentifier = [itemResult itemIdentifier];
 
-        [(MPSectionedIdentifierList *)self->_trackIdentifierList removeItem:v8 fromSection:v9];
+        [(MPSectionedIdentifierList *)self->_trackIdentifierList removeItem:universalIdentifier fromSection:v9];
         v15 = [MPModelLibraryPlaylistEditChangeDetails alloc];
-        v16 = [v7 universalIdentifier];
-        v17 = [(MPModelLibraryPlaylistEditChangeDetails *)v15 initWithType:2 itemIdentifier:v16];
+        universalIdentifier2 = [v7 universalIdentifier];
+        v17 = [(MPModelLibraryPlaylistEditChangeDetails *)v15 initWithType:2 itemIdentifier:universalIdentifier2];
 
         [(MPModelLibraryPlaylistEditChangeDetails *)v17 setItem:v7];
-        [(MPModelLibraryPlaylistEditChangeDetails *)v17 setPreviousReferenceIdentifier:v14];
+        [(MPModelLibraryPlaylistEditChangeDetails *)v17 setPreviousReferenceIdentifier:itemIdentifier];
         [v27 addObject:v17];
       }
 
@@ -1300,88 +1300,88 @@ void __111__MPModelLibraryPlaylistEditController__createTrackIdentifierListWithI
   }
 
   v18 = [(MPSectionedIdentifierList *)self->_trackIdentifierList enumeratorWithOptions:8];
-  v19 = [v18 nextObject];
+  nextObject2 = [v18 nextObject];
 
-  v20 = [v19 itemResult];
-  v21 = [v20 itemIdentifier];
+  itemResult2 = [nextObject2 itemResult];
+  itemIdentifier2 = [itemResult2 itemIdentifier];
   currentLastItemIdentifier = self->_currentLastItemIdentifier;
-  self->_currentLastItemIdentifier = v21;
+  self->_currentLastItemIdentifier = itemIdentifier2;
 
   v23 = os_log_create("com.apple.amp.mediaplayer", "PlaylistEditing");
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v35 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1A238D000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ Successfully completed remove", buf, 0xCu);
   }
 
   return v27;
 }
 
-- (id)_movePlaylistEntry:(id)a3 afterEntry:(id)a4
+- (id)_movePlaylistEntry:(id)entry afterEntry:(id)afterEntry
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  afterEntryCopy = afterEntry;
   v8 = os_log_create("com.apple.amp.mediaplayer", "PlaylistEditing_Oversize");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v38 = self;
+    selfCopy2 = self;
     v39 = 2114;
-    v40 = v6;
+    v40 = entryCopy;
     v41 = 2114;
-    v42 = v7;
+    v42 = afterEntryCopy;
     _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ moving entry %{public}@ after entry %{public}@", buf, 0x20u);
   }
 
-  v9 = [v6 universalIdentifier];
-  v10 = [(MPModelLibraryPlaylistEditController *)self _sectionIdentifierForItemIdentifier:v9];
-  v11 = [[MPModelLibraryPlaylistEditChangeDetails alloc] initWithType:3 itemIdentifier:v9];
-  [(MPModelLibraryPlaylistEditChangeDetails *)v11 setItem:v6];
-  v12 = [MPSectionedIdentifierListPosition positionForItem:v9 inSection:v10];
+  universalIdentifier = [entryCopy universalIdentifier];
+  v10 = [(MPModelLibraryPlaylistEditController *)self _sectionIdentifierForItemIdentifier:universalIdentifier];
+  v11 = [[MPModelLibraryPlaylistEditChangeDetails alloc] initWithType:3 itemIdentifier:universalIdentifier];
+  [(MPModelLibraryPlaylistEditChangeDetails *)v11 setItem:entryCopy];
+  v12 = [MPSectionedIdentifierListPosition positionForItem:universalIdentifier inSection:v10];
   v13 = [(MPSectionedIdentifierList *)self->_trackIdentifierList enumeratorWithOptions:8 startPosition:v12 endPosition:0];
-  v14 = [v13 nextObject];
+  nextObject = [v13 nextObject];
 
-  v15 = [v14 itemResult];
-  v16 = [v15 itemIdentifier];
+  itemResult = [nextObject itemResult];
+  itemIdentifier = [itemResult itemIdentifier];
 
-  v36 = v16;
-  [(MPModelLibraryPlaylistEditChangeDetails *)v11 setPreviousReferenceIdentifier:v16];
-  v35 = [(NSMutableDictionary *)self->_itemIdentifierToPositionIdentifierMap objectForKeyedSubscript:v9];
+  v36 = itemIdentifier;
+  [(MPModelLibraryPlaylistEditChangeDetails *)v11 setPreviousReferenceIdentifier:itemIdentifier];
+  v35 = [(NSMutableDictionary *)self->_itemIdentifierToPositionIdentifierMap objectForKeyedSubscript:universalIdentifier];
   [(MPModelLibraryPlaylistEditChangeDetails *)v11 setPreviousPositionIdentifier:?];
-  if (v7)
+  if (afterEntryCopy)
   {
-    v33 = v14;
+    v33 = nextObject;
     v34 = v12;
-    v17 = [v7 universalIdentifier];
-    v18 = [(MPModelLibraryPlaylistEditController *)self _sectionIdentifierForItemIdentifier:v17];
+    universalIdentifier2 = [afterEntryCopy universalIdentifier];
+    v18 = [(MPModelLibraryPlaylistEditController *)self _sectionIdentifierForItemIdentifier:universalIdentifier2];
     v19 = v10;
-    [(MPSectionedIdentifierList *)self->_trackIdentifierList moveItem:v9 fromSection:v10 afterItem:v17 inSection:v18];
-    v20 = [(NSMutableDictionary *)self->_itemIdentifierToPositionIdentifierMap objectForKeyedSubscript:v17];
+    [(MPSectionedIdentifierList *)self->_trackIdentifierList moveItem:universalIdentifier fromSection:v10 afterItem:universalIdentifier2 inSection:v18];
+    v20 = [(NSMutableDictionary *)self->_itemIdentifierToPositionIdentifierMap objectForKeyedSubscript:universalIdentifier2];
     v21 = v20;
     if (v20)
     {
-      v22 = v20;
+      positionUniversalIdentifier = v20;
     }
 
     else
     {
-      v22 = [v7 positionUniversalIdentifier];
+      positionUniversalIdentifier = [afterEntryCopy positionUniversalIdentifier];
     }
 
-    v25 = v22;
+    v25 = positionUniversalIdentifier;
 
-    [(MPModelLibraryPlaylistEditChangeDetails *)v11 setReferenceItem:v7];
-    [(MPModelLibraryPlaylistEditChangeDetails *)v11 setReferenceItemIdentifier:v17];
+    [(MPModelLibraryPlaylistEditChangeDetails *)v11 setReferenceItem:afterEntryCopy];
+    [(MPModelLibraryPlaylistEditChangeDetails *)v11 setReferenceItemIdentifier:universalIdentifier2];
     [(MPModelLibraryPlaylistEditChangeDetails *)v11 setReferenceItemPositionIdentifier:v25];
 
     v10 = v19;
-    v14 = v33;
+    nextObject = v33;
     v12 = v34;
-    if ([(MPModelLibraryPlaylistEditController *)self _isLastEntry:v7])
+    if ([(MPModelLibraryPlaylistEditController *)self _isLastEntry:afterEntryCopy])
     {
-      objc_storeStrong(&self->_currentLastItemIdentifier, v9);
+      objc_storeStrong(&self->_currentLastItemIdentifier, universalIdentifier);
       [(MPModelLibraryPlaylistEditChangeDetails *)v11 setIsLastItem:1];
       goto LABEL_12;
     }
@@ -1389,21 +1389,21 @@ void __111__MPModelLibraryPlaylistEditController__createTrackIdentifierListWithI
 
   else
   {
-    v23 = [(MPSectionedIdentifierList *)self->_trackIdentifierList orderedSectionIdentifiers];
-    v24 = [v23 firstObject];
+    orderedSectionIdentifiers = [(MPSectionedIdentifierList *)self->_trackIdentifierList orderedSectionIdentifiers];
+    firstObject = [orderedSectionIdentifiers firstObject];
 
-    [(MPSectionedIdentifierList *)self->_trackIdentifierList moveItem:v9 fromSection:v10 afterHeadOfSection:v24];
+    [(MPSectionedIdentifierList *)self->_trackIdentifierList moveItem:universalIdentifier fromSection:v10 afterHeadOfSection:firstObject];
   }
 
-  if ([(MPModelLibraryPlaylistEditController *)self _isLastEntry:v6])
+  if ([(MPModelLibraryPlaylistEditController *)self _isLastEntry:entryCopy])
   {
     v26 = [(MPSectionedIdentifierList *)self->_trackIdentifierList enumeratorWithOptions:8];
-    v27 = [v26 nextObject];
+    nextObject2 = [v26 nextObject];
 
-    v28 = [v27 itemResult];
-    v29 = [v28 itemIdentifier];
+    itemResult2 = [nextObject2 itemResult];
+    itemIdentifier2 = [itemResult2 itemIdentifier];
     currentLastItemIdentifier = self->_currentLastItemIdentifier;
-    self->_currentLastItemIdentifier = v29;
+    self->_currentLastItemIdentifier = itemIdentifier2;
   }
 
 LABEL_12:
@@ -1411,26 +1411,26 @@ LABEL_12:
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v38 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1A238D000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@ Successfully completed move", buf, 0xCu);
   }
 
   return v11;
 }
 
-- (void)_insertObjects:(id)a3 afterEntry:(id)a4 completion:(id)a5
+- (void)_insertObjects:(id)objects afterEntry:(id)entry completion:(id)completion
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v24 = a5;
-  v10 = [(MPModelLibraryPlaylistEditController *)self _newDataSourceForModelObjects:v8];
-  v11 = [v10 identifier];
-  [(NSMutableDictionary *)self->_dataSources setObject:v10 forKey:v11];
-  v12 = v9 == 0;
+  objectsCopy = objects;
+  entryCopy = entry;
+  completionCopy = completion;
+  v10 = [(MPModelLibraryPlaylistEditController *)self _newDataSourceForModelObjects:objectsCopy];
+  identifier = [v10 identifier];
+  [(NSMutableDictionary *)self->_dataSources setObject:v10 forKey:identifier];
+  v12 = entryCopy == 0;
   if (self->_currentLastItemIdentifier)
   {
-    v13 = [(MPModelLibraryPlaylistEditController *)self _isLastEntry:v9];
+    v13 = [(MPModelLibraryPlaylistEditController *)self _isLastEntry:entryCopy];
   }
 
   else
@@ -1438,20 +1438,20 @@ LABEL_12:
     v13 = 1;
   }
 
-  v14 = [v9 universalIdentifier];
+  universalIdentifier = [entryCopy universalIdentifier];
   v15 = os_log_create("com.apple.amp.mediaplayer", "PlaylistEditing_Oversize");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v44 = self;
+    selfCopy = self;
     v45 = 2114;
-    v46 = v8;
+    v46 = objectsCopy;
     v47 = 2114;
-    v48 = v14;
+    v48 = universalIdentifier;
     _os_log_impl(&dword_1A238D000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ inserting items %{public}@ after entry %{public}@", buf, 0x20u);
   }
 
-  v16 = v9 == 0;
+  v16 = entryCopy == 0;
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -1459,10 +1459,10 @@ LABEL_12:
   aBlock[3] = &unk_1E767BDB0;
   v17 = v10;
   v38 = v17;
-  v18 = v9;
+  v18 = entryCopy;
   v41 = v12;
   v39 = v18;
-  v40 = self;
+  selfCopy2 = self;
   v42 = v13;
   v19 = _Block_copy(aBlock);
   if (v16)
@@ -1475,8 +1475,8 @@ LABEL_12:
     v33[3] = &unk_1E767BDD8;
     objc_copyWeak(&v36, buf);
     v34 = v19;
-    v35 = v24;
-    [(MPSectionedIdentifierList *)trackIdentifierList addDataSourceAtStart:v17 section:v11 completion:v33];
+    v35 = completionCopy;
+    [(MPSectionedIdentifierList *)trackIdentifierList addDataSourceAtStart:v17 section:identifier completion:v33];
 
     objc_destroyWeak(&v36);
     objc_destroyWeak(buf);
@@ -1494,8 +1494,8 @@ LABEL_12:
       v29[3] = &unk_1E767BDD8;
       objc_copyWeak(&v32, buf);
       v30 = v19;
-      v31 = v24;
-      [(MPSectionedIdentifierList *)v20 addDataSourceAtEnd:v17 section:v11 completion:v29];
+      v31 = completionCopy;
+      [(MPSectionedIdentifierList *)v20 addDataSourceAtEnd:v17 section:identifier completion:v29];
 
       objc_destroyWeak(&v32);
       objc_destroyWeak(buf);
@@ -1503,7 +1503,7 @@ LABEL_12:
 
     else
     {
-      v22 = [(MPModelLibraryPlaylistEditController *)self _sectionIdentifierForItemIdentifier:v14];
+      v22 = [(MPModelLibraryPlaylistEditController *)self _sectionIdentifierForItemIdentifier:universalIdentifier];
       v23 = self->_trackIdentifierList;
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
@@ -1511,8 +1511,8 @@ LABEL_12:
       v25[3] = &unk_1E767BDD8;
       objc_copyWeak(&v28, buf);
       v26 = v19;
-      v27 = v24;
-      [(MPSectionedIdentifierList *)v23 addDataSource:v17 section:v11 afterItem:v14 inSection:v22 completion:v25];
+      v27 = completionCopy;
+      [(MPSectionedIdentifierList *)v23 addDataSource:v17 section:identifier afterItem:universalIdentifier inSection:v22 completion:v25];
 
       objc_destroyWeak(&v28);
       objc_destroyWeak(buf);
@@ -1739,24 +1739,24 @@ void __77__MPModelLibraryPlaylistEditController__insertObjects_afterEntry_comple
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_applyChanges:(id)a3 toTransaction:(id)a4 completion:(id)a5
+- (void)_applyChanges:(id)changes toTransaction:(id)transaction completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  changesCopy = changes;
+  transactionCopy = transaction;
+  completionCopy = completion;
   v12 = dispatch_get_global_queue(2, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__MPModelLibraryPlaylistEditController__applyChanges_toTransaction_completion___block_invoke;
   block[3] = &unk_1E767FD58;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v20 = v11;
+  v17 = changesCopy;
+  selfCopy = self;
+  v19 = transactionCopy;
+  v20 = completionCopy;
   v21 = a2;
-  v13 = v10;
-  v14 = v11;
-  v15 = v9;
+  v13 = transactionCopy;
+  v14 = completionCopy;
+  v15 = changesCopy;
   dispatch_async(v12, block);
 }
 
@@ -2193,10 +2193,10 @@ void __79__MPModelLibraryPlaylistEditController__applyChanges_toTransaction_comp
   [v3 setPersistentID:0];
 }
 
-- (void)sectionedIdentifierList:(id)a3 dataSourceDidChangeItems:(id)a4 inSection:(id)a5
+- (void)sectionedIdentifierList:(id)list dataSourceDidChangeItems:(id)items inSection:(id)section
 {
-  v6 = a5;
-  v7 = v6;
+  sectionCopy = section;
+  v7 = sectionCopy;
   if (!self->_notificationsSuspended)
   {
     accessQueue = self->_accessQueue;
@@ -2205,7 +2205,7 @@ void __79__MPModelLibraryPlaylistEditController__applyChanges_toTransaction_comp
     v9[2] = __99__MPModelLibraryPlaylistEditController_sectionedIdentifierList_dataSourceDidChangeItems_inSection___block_invoke;
     v9[3] = &unk_1E76823C0;
     v9[4] = self;
-    v10 = v6;
+    v10 = sectionCopy;
     dispatch_async(accessQueue, v9);
   }
 }
@@ -2260,19 +2260,19 @@ void __99__MPModelLibraryPlaylistEditController_sectionedIdentifierList_dataSour
   [*(*(a1 + 32) + 144) setObject:v8 forKeyedSubscript:v7];
 }
 
-- (id)debugDescriptionForItem:(id)a3 inSection:(id)a4
+- (id)debugDescriptionForItem:(id)item inSection:(id)section
 {
-  v7 = a3;
-  v8 = [(NSMutableDictionary *)self->_dataSources objectForKeyedSubscript:a4];
+  itemCopy = item;
+  v8 = [(NSMutableDictionary *)self->_dataSources objectForKeyedSubscript:section];
   if (!v8)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"MPModelLibraryPlaylistEditController.m" lineNumber:1024 description:{@"No data source for item identifier %@", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryPlaylistEditController.m" lineNumber:1024 description:{@"No data source for item identifier %@", itemCopy}];
   }
 
-  v9 = [v8 playlistEntriesByIdentifier];
-  v10 = [v9 objectForKeyedSubscript:v7];
-  v11 = [(NSMutableDictionary *)self->_itemIdentifierToPositionIdentifierMap objectForKeyedSubscript:v7];
+  playlistEntriesByIdentifier = [v8 playlistEntriesByIdentifier];
+  v10 = [playlistEntriesByIdentifier objectForKeyedSubscript:itemCopy];
+  v11 = [(NSMutableDictionary *)self->_itemIdentifierToPositionIdentifierMap objectForKeyedSubscript:itemCopy];
   v12 = v11;
   v13 = &stru_1F149ECA8;
   if (v11)
@@ -2284,20 +2284,20 @@ void __99__MPModelLibraryPlaylistEditController_sectionedIdentifierList_dataSour
 
   if (v10)
   {
-    v15 = [v10 song];
-    if (v15 && (v16 = v15, [v10 song], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "hasLoadedValueForKey:", @"MPModelPropertySongTitle"), v17, v16, v18))
+    song = [v10 song];
+    if (song && (v16 = song, [v10 song], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "hasLoadedValueForKey:", @"MPModelPropertySongTitle"), v17, v16, v18))
     {
-      v19 = [v10 song];
-      v20 = [v19 title];
+      song2 = [v10 song];
+      title = [song2 title];
     }
 
     else
     {
-      v19 = [v10 anyObject];
-      v20 = [objc_opt_class() description];
+      song2 = [v10 anyObject];
+      title = [objc_opt_class() description];
     }
 
-    v21 = v20;
+    v21 = title;
   }
 
   else
@@ -2310,47 +2310,47 @@ void __99__MPModelLibraryPlaylistEditController_sectionedIdentifierList_dataSour
   return v22;
 }
 
-- (void)removeEntries:(id)a3
+- (void)removeEntries:(id)entries
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entriesCopy = entries;
   v5 = os_log_create("com.apple.amp.mediaplayer", "PlaylistEditing_Oversize");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
-    v11 = v4;
+    v11 = entriesCopy;
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Removing entries %{public}@", &v8, 0x16u);
   }
 
-  v6 = [(MPModelLibraryPlaylistEditController *)self removePlaylistEntries:v4];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"MPModelLibraryPlaylistEditControllerDidChangeNotification" object:self];
+  v6 = [(MPModelLibraryPlaylistEditController *)self removePlaylistEntries:entriesCopy];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPModelLibraryPlaylistEditControllerDidChangeNotification" object:self];
 }
 
-- (void)removeEntry:(id)a3
+- (void)removeEntry:(id)entry
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entryCopy = entry;
   v5 = os_log_create("com.apple.amp.mediaplayer", "PlaylistEditing_Oversize");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
-    v11 = v4;
+    v11 = entryCopy;
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Removing entry %{public}@", &v8, 0x16u);
   }
 
-  v6 = [(MPModelLibraryPlaylistEditController *)self removePlaylistEntry:v4];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"MPModelLibraryPlaylistEditControllerDidChangeNotification" object:self];
+  v6 = [(MPModelLibraryPlaylistEditController *)self removePlaylistEntry:entryCopy];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPModelLibraryPlaylistEditControllerDidChangeNotification" object:self];
 }
 
-- (void)removeItemAtIndexPath:(id)a3
+- (void)removeItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -2364,13 +2364,13 @@ void __99__MPModelLibraryPlaylistEditController_sectionedIdentifierList_dataSour
   v10[3] = &unk_1E767BCC0;
   v12 = &v13;
   v10[4] = self;
-  v6 = v4;
+  v6 = pathCopy;
   v11 = v6;
   [(MPSectionedIdentifierList *)trackIdentifierList performWithExclusiveAccess:v10];
   v7 = [(NSMutableDictionary *)self->_playlistEntriesByIdentifier objectForKeyedSubscript:v14[5]];
   v8 = [(MPModelLibraryPlaylistEditController *)self removePlaylistEntry:v7];
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 postNotificationName:@"MPModelLibraryPlaylistEditControllerDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPModelLibraryPlaylistEditControllerDidChangeNotification" object:self];
 
   _Block_object_dispose(&v13, 8);
 }
@@ -2383,38 +2383,38 @@ void __62__MPModelLibraryPlaylistEditController_removeItemAtIndexPath___block_in
   *(v4 + 40) = v3;
 }
 
-- (void)moveEntryToStart:(id)a3
+- (void)moveEntryToStart:(id)start
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  startCopy = start;
   v5 = os_log_create("com.apple.amp.mediaplayer", "PlaylistEditing_Oversize");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
-    v11 = v4;
+    v11 = startCopy;
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ moving entry to start %{public}@", &v8, 0x16u);
   }
 
-  v6 = [(MPModelLibraryPlaylistEditController *)self movePlaylistEntry:v4 afterEntry:0];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"MPModelLibraryPlaylistEditControllerDidChangeNotification" object:self];
+  v6 = [(MPModelLibraryPlaylistEditController *)self movePlaylistEntry:startCopy afterEntry:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPModelLibraryPlaylistEditControllerDidChangeNotification" object:self];
 }
 
-- (void)moveEntry:(id)a3 afterEntry:(id)a4
+- (void)moveEntry:(id)entry afterEntry:(id)afterEntry
 {
-  v5 = [(MPModelLibraryPlaylistEditController *)self movePlaylistEntry:a3 afterEntry:a4];
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"MPModelLibraryPlaylistEditControllerDidChangeNotification" object:self];
+  v5 = [(MPModelLibraryPlaylistEditController *)self movePlaylistEntry:entry afterEntry:afterEntry];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPModelLibraryPlaylistEditControllerDidChangeNotification" object:self];
 }
 
-- (void)moveItemFromIndexPath:(id)a3 toIndexPath:(id)a4
+- (void)moveItemFromIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 item];
-  if (v8 != [v7 item])
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  item = [pathCopy item];
+  if (item != [indexPathCopy item])
   {
     v25 = 0;
     v26 = &v25;
@@ -2435,15 +2435,15 @@ void __62__MPModelLibraryPlaylistEditController_removeItemAtIndexPath___block_in
     v14[3] = &unk_1E767BCE8;
     v17 = &v25;
     v14[4] = self;
-    v15 = v6;
+    v15 = pathCopy;
     v18 = &v19;
-    v16 = v7;
+    v16 = indexPathCopy;
     [(MPSectionedIdentifierList *)trackIdentifierList performWithExclusiveAccess:v14];
     v10 = [(NSMutableDictionary *)self->_playlistEntriesByIdentifier objectForKeyedSubscript:v26[5]];
     v11 = [(NSMutableDictionary *)self->_playlistEntriesByIdentifier objectForKeyedSubscript:v20[5]];
     v12 = [(MPModelLibraryPlaylistEditController *)self movePlaylistEntry:v10 afterEntry:v11];
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 postNotificationName:@"MPModelLibraryPlaylistEditControllerDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPModelLibraryPlaylistEditControllerDidChangeNotification" object:self];
 
     _Block_object_dispose(&v19, 8);
     _Block_object_dispose(&v25, 8);
@@ -2467,37 +2467,37 @@ void __74__MPModelLibraryPlaylistEditController_moveItemFromIndexPath_toIndexPat
   *(v10 + 40) = v9;
 }
 
-- (void)insertItems:(id)a3 afterEntry:(id)a4 completion:(id)a5
+- (void)insertItems:(id)items afterEntry:(id)entry completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __74__MPModelLibraryPlaylistEditController_insertItems_afterEntry_completion___block_invoke;
   v10[3] = &unk_1E767BC98;
-  v11 = v8;
-  v9 = v8;
-  [(MPModelLibraryPlaylistEditController *)self insertObjects:a3 afterEntry:a4 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(MPModelLibraryPlaylistEditController *)self insertObjects:items afterEntry:entry completion:v10];
 }
 
-- (void)insertItem:(id)a3 afterEntry:(id)a4 completion:(id)a5
+- (void)insertItem:(id)item afterEntry:(id)entry completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  itemCopy = item;
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 arrayWithObjects:&v13 count:1];
+  completionCopy = completion;
+  entryCopy = entry;
+  itemCopy2 = item;
+  v12 = [v8 arrayWithObjects:&itemCopy count:1];
 
-  [(MPModelLibraryPlaylistEditController *)self insertItems:v12 afterEntry:v10 completion:v9, v13, v14];
+  [(MPModelLibraryPlaylistEditController *)self insertItems:v12 afterEntry:entryCopy completion:completionCopy, itemCopy, v14];
 }
 
-- (void)insertItems:(id)a3 atIndexPath:(id)a4 completion:(id)a5
+- (void)insertItems:(id)items atIndexPath:(id)path completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 item])
+  itemsCopy = items;
+  pathCopy = path;
+  completionCopy = completion;
+  if ([pathCopy item])
   {
     v18 = 0;
     v19 = &v18;
@@ -2512,22 +2512,22 @@ void __74__MPModelLibraryPlaylistEditController_moveItemFromIndexPath_toIndexPat
     v15[3] = &unk_1E767BCC0;
     v17 = &v18;
     v15[4] = self;
-    v16 = v9;
+    v16 = pathCopy;
     [(MPSectionedIdentifierList *)trackIdentifierList performWithExclusiveAccess:v15];
     v12 = [(NSMutableDictionary *)self->_playlistEntriesByIdentifier objectForKeyedSubscript:v19[5]];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __75__MPModelLibraryPlaylistEditController_insertItems_atIndexPath_completion___block_invoke_2;
     v13[3] = &unk_1E767BC98;
-    v14 = v10;
-    [(MPModelLibraryPlaylistEditController *)self insertObjects:v8 afterEntry:v12 completion:v13];
+    v14 = completionCopy;
+    [(MPModelLibraryPlaylistEditController *)self insertObjects:itemsCopy afterEntry:v12 completion:v13];
 
     _Block_object_dispose(&v18, 8);
   }
 
   else
   {
-    [(MPModelLibraryPlaylistEditController *)self insertItemsAtStart:v8 completion:v10];
+    [(MPModelLibraryPlaylistEditController *)self insertItemsAtStart:itemsCopy completion:completionCopy];
   }
 }
 
@@ -2539,79 +2539,79 @@ void __75__MPModelLibraryPlaylistEditController_insertItems_atIndexPath_completi
   *(v4 + 40) = v3;
 }
 
-- (void)insertItem:(id)a3 atIndexPath:(id)a4 completion:(id)a5
+- (void)insertItem:(id)item atIndexPath:(id)path completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  itemCopy = item;
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 arrayWithObjects:&v13 count:1];
+  completionCopy = completion;
+  pathCopy = path;
+  itemCopy2 = item;
+  v12 = [v8 arrayWithObjects:&itemCopy count:1];
 
-  [(MPModelLibraryPlaylistEditController *)self insertItems:v12 atIndexPath:v10 completion:v9, v13, v14];
+  [(MPModelLibraryPlaylistEditController *)self insertItems:v12 atIndexPath:pathCopy completion:completionCopy, itemCopy, v14];
 }
 
-- (void)insertItemsAtStart:(id)a3 completion:(id)a4
+- (void)insertItemsAtStart:(id)start completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__MPModelLibraryPlaylistEditController_insertItemsAtStart_completion___block_invoke;
   v8[3] = &unk_1E767BC98;
-  v9 = v6;
-  v7 = v6;
-  [(MPModelLibraryPlaylistEditController *)self insertObjectsAtStart:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(MPModelLibraryPlaylistEditController *)self insertObjectsAtStart:start completion:v8];
 }
 
-- (void)insertItemAtStart:(id)a3 completion:(id)a4
+- (void)insertItemAtStart:(id)start completion:(id)completion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  startCopy = start;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v10 count:1];
+  completionCopy = completion;
+  startCopy2 = start;
+  v9 = [v6 arrayWithObjects:&startCopy count:1];
 
-  [(MPModelLibraryPlaylistEditController *)self insertItemsAtStart:v9 completion:v7, v10, v11];
+  [(MPModelLibraryPlaylistEditController *)self insertItemsAtStart:v9 completion:completionCopy, startCopy, v11];
 }
 
-- (void)appendItems:(id)a3 completion:(id)a4
+- (void)appendItems:(id)items completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__MPModelLibraryPlaylistEditController_appendItems_completion___block_invoke;
   v8[3] = &unk_1E767BC98;
-  v9 = v6;
-  v7 = v6;
-  [(MPModelLibraryPlaylistEditController *)self appendObjects:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(MPModelLibraryPlaylistEditController *)self appendObjects:items completion:v8];
 }
 
-- (void)appendItem:(id)a3 completion:(id)a4
+- (void)appendItem:(id)item completion:(id)completion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  itemCopy = item;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v10 count:1];
+  completionCopy = completion;
+  itemCopy2 = item;
+  v9 = [v6 arrayWithObjects:&itemCopy count:1];
 
-  [(MPModelLibraryPlaylistEditController *)self appendItems:v9 completion:v7, v10, v11];
+  [(MPModelLibraryPlaylistEditController *)self appendItems:v9 completion:completionCopy, itemCopy, v11];
 }
 
-- (void)commitWithCompletion:(id)a3
+- (void)commitWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__MPModelLibraryPlaylistEditController_commitWithCompletion___block_invoke;
   block[3] = &unk_1E7681358;
   block[4] = self;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
-  v7 = v5;
+  v7 = completionCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -2990,10 +2990,10 @@ void __61__MPModelLibraryPlaylistEditController_commitWithCompletion___block_inv
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)transactionsSinceIdentifier:(id)a3
+- (id)transactionsSinceIdentifier:(id)identifier
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -3007,8 +3007,8 @@ void __61__MPModelLibraryPlaylistEditController_commitWithCompletion___block_inv
   v16 = &unk_1E7681680;
   v19 = &v21;
   v20 = a2;
-  v17 = self;
-  v7 = v5;
+  selfCopy = self;
+  v7 = identifierCopy;
   v18 = v7;
   dispatch_sync(accessQueue, &v13);
   v8 = os_log_create("com.apple.amp.mediaplayer", "PlaylistEditing_Oversize");
@@ -3017,7 +3017,7 @@ void __61__MPModelLibraryPlaylistEditController_commitWithCompletion___block_inv
     v9 = [v22[5] count];
     v10 = v22[5];
     *buf = 138544130;
-    v28 = self;
+    selfCopy2 = self;
     v29 = 2048;
     v30 = v9;
     v31 = 2114;
@@ -3202,20 +3202,20 @@ LABEL_27:
   }
 }
 
-- (void)applyChanges:(id)a3 completion:(id)a4
+- (void)applyChanges:(id)changes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__MPModelLibraryPlaylistEditController_applyChanges_completion___block_invoke;
   block[3] = &unk_1E7681568;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = changesCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = changesCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -3308,17 +3308,17 @@ LABEL_9:
   (*(*(a1 + 48) + 16))(*(a1 + 48), v5, v3, v13);
 }
 
-- (void)redoNextTransactionWithCompletion:(id)a3
+- (void)redoNextTransactionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__MPModelLibraryPlaylistEditController_redoNextTransactionWithCompletion___block_invoke;
   v7[3] = &unk_1E76824C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -3432,17 +3432,17 @@ void __74__MPModelLibraryPlaylistEditController_redoNextTransactionWithCompletio
   *(*(a1 + 32) + 160) = 0;
 }
 
-- (void)undoPreviousTransactionWithCompletion:(id)a3
+- (void)undoPreviousTransactionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__MPModelLibraryPlaylistEditController_undoPreviousTransactionWithCompletion___block_invoke;
   v7[3] = &unk_1E76824C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -3766,9 +3766,9 @@ void __64__MPModelLibraryPlaylistEditController_removeAllPlaylistEntries__block_
   }
 }
 
-- (id)removePlaylistEntries:(id)a3
+- (id)removePlaylistEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -3781,9 +3781,9 @@ void __64__MPModelLibraryPlaylistEditController_removeAllPlaylistEntries__block_
   block[2] = __62__MPModelLibraryPlaylistEditController_removePlaylistEntries___block_invoke;
   block[3] = &unk_1E7681330;
   block[4] = self;
-  v10 = v4;
+  v10 = entriesCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = entriesCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -3811,23 +3811,23 @@ void __62__MPModelLibraryPlaylistEditController_removePlaylistEntries___block_in
   }
 }
 
-- (id)removePlaylistEntry:(id)a3
+- (id)removePlaylistEntry:(id)entry
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  entryCopy = entry;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v9 count:1];
+  entryCopy2 = entry;
+  v6 = [v4 arrayWithObjects:&entryCopy count:1];
 
-  v7 = [(MPModelLibraryPlaylistEditController *)self removePlaylistEntries:v6, v9, v10];
+  v7 = [(MPModelLibraryPlaylistEditController *)self removePlaylistEntries:v6, entryCopy, v10];
 
   return v7;
 }
 
-- (id)movePlaylistEntry:(id)a3 afterEntry:(id)a4
+- (id)movePlaylistEntry:(id)entry afterEntry:(id)afterEntry
 {
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  afterEntryCopy = afterEntry;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -3840,11 +3840,11 @@ void __62__MPModelLibraryPlaylistEditController_removePlaylistEntries___block_in
   v13[2] = __69__MPModelLibraryPlaylistEditController_movePlaylistEntry_afterEntry___block_invoke;
   v13[3] = &unk_1E7681900;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = entryCopy;
+  v15 = afterEntryCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = afterEntryCopy;
+  v10 = entryCopy;
   dispatch_sync(accessQueue, v13);
   v11 = v18[5];
 
@@ -3909,23 +3909,23 @@ void __69__MPModelLibraryPlaylistEditController_movePlaylistEntry_afterEntry___b
   }
 }
 
-- (void)insertObjects:(id)a3 afterEntry:(id)a4 completion:(id)a5
+- (void)insertObjects:(id)objects afterEntry:(id)entry completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectsCopy = objects;
+  entryCopy = entry;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __76__MPModelLibraryPlaylistEditController_insertObjects_afterEntry_completion___block_invoke;
   v15[3] = &unk_1E7681770;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = objectsCopy;
+  v17 = entryCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = entryCopy;
+  v14 = objectsCopy;
   dispatch_async(accessQueue, v15);
 }
 
@@ -3990,33 +3990,33 @@ void __76__MPModelLibraryPlaylistEditController_insertObjects_afterEntry_complet
   (*(*(a1 + 40) + 16))(*(a1 + 40), v9, v5);
 }
 
-- (void)insertObject:(id)a3 afterEntry:(id)a4 completion:(id)a5
+- (void)insertObject:(id)object afterEntry:(id)entry completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  objectCopy = object;
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 arrayWithObjects:&v13 count:1];
+  completionCopy = completion;
+  entryCopy = entry;
+  objectCopy2 = object;
+  v12 = [v8 arrayWithObjects:&objectCopy count:1];
 
-  [(MPModelLibraryPlaylistEditController *)self insertObjects:v12 afterEntry:v10 completion:v9, v13, v14];
+  [(MPModelLibraryPlaylistEditController *)self insertObjects:v12 afterEntry:entryCopy completion:completionCopy, objectCopy, v14];
 }
 
-- (void)insertObjectsAtStart:(id)a3 completion:(id)a4
+- (void)insertObjectsAtStart:(id)start completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  startCopy = start;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__MPModelLibraryPlaylistEditController_insertObjectsAtStart_completion___block_invoke;
   block[3] = &unk_1E7681568;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = startCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = startCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -4080,32 +4080,32 @@ void __72__MPModelLibraryPlaylistEditController_insertObjectsAtStart_completion_
   (*(*(a1 + 40) + 16))(*(a1 + 40), v9, v5);
 }
 
-- (void)insertObjectAtStart:(id)a3 completion:(id)a4
+- (void)insertObjectAtStart:(id)start completion:(id)completion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  startCopy = start;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v10 count:1];
+  completionCopy = completion;
+  startCopy2 = start;
+  v9 = [v6 arrayWithObjects:&startCopy count:1];
 
-  [(MPModelLibraryPlaylistEditController *)self insertObjectsAtStart:v9 completion:v7, v10, v11];
+  [(MPModelLibraryPlaylistEditController *)self insertObjectsAtStart:v9 completion:completionCopy, startCopy, v11];
 }
 
-- (void)appendObjects:(id)a3 completion:(id)a4
+- (void)appendObjects:(id)objects completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  objectsCopy = objects;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__MPModelLibraryPlaylistEditController_appendObjects_completion___block_invoke;
   block[3] = &unk_1E7681568;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = objectsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = objectsCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -4180,34 +4180,34 @@ void __65__MPModelLibraryPlaylistEditController_appendObjects_completion___block
   (*(*(a1 + 40) + 16))(*(a1 + 40), v9, v5);
 }
 
-- (void)appendObject:(id)a3 completion:(id)a4
+- (void)appendObject:(id)object completion:(id)completion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  objectCopy = object;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v10 count:1];
+  completionCopy = completion;
+  objectCopy2 = object;
+  v9 = [v6 arrayWithObjects:&objectCopy count:1];
 
-  [(MPModelLibraryPlaylistEditController *)self appendObjects:v9 completion:v7, v10, v11];
+  [(MPModelLibraryPlaylistEditController *)self appendObjects:v9 completion:completionCopy, objectCopy, v11];
 }
 
-- (id)performTransactionWithBlock:(id)a3
+- (id)performTransactionWithBlock:(id)block
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v7 lowercaseString];
-  v9 = [(MPModelLibraryPlaylistEditController *)self performTransactionWithIdentifier:v8 block:v5];
+  blockCopy = block;
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
+  lowercaseString = [uUIDString lowercaseString];
+  v9 = [(MPModelLibraryPlaylistEditController *)self performTransactionWithIdentifier:lowercaseString block:blockCopy];
 
   return v9;
 }
 
-- (id)performTransactionWithIdentifier:(id)a3 block:(id)a4
+- (id)performTransactionWithIdentifier:(id)identifier block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -4222,10 +4222,10 @@ void __65__MPModelLibraryPlaylistEditController_appendObjects_completion___block
   v17 = &v19;
   v18 = a2;
   block[4] = self;
-  v15 = v7;
-  v16 = v8;
-  v10 = v8;
-  v11 = v7;
+  v15 = identifierCopy;
+  v16 = blockCopy;
+  v10 = blockCopy;
+  v11 = identifierCopy;
   dispatch_sync(accessQueue, block);
   v12 = v20[5];
 
@@ -4283,17 +4283,17 @@ void __56__MPModelLibraryPlaylistEditController_currentTrackList__block_invoke(u
   *(v3 + 40) = v2;
 }
 
-- (void)setEditSessionID:(id)a3
+- (void)setEditSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__MPModelLibraryPlaylistEditController_setEditSessionID___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -4355,17 +4355,17 @@ void __53__MPModelLibraryPlaylistEditController_editSessionID__block_invoke(uint
   }
 }
 
-- (void)setCoverArtworkRecipe:(id)a3
+- (void)setCoverArtworkRecipe:(id)recipe
 {
-  v4 = a3;
+  recipeCopy = recipe;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__MPModelLibraryPlaylistEditController_setCoverArtworkRecipe___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = recipeCopy;
+  v6 = recipeCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -4427,17 +4427,17 @@ void __58__MPModelLibraryPlaylistEditController_coverArtworkRecipe__block_invoke
   }
 }
 
-- (void)setCuratorPlaylist:(id)a3
+- (void)setCuratorPlaylist:(id)playlist
 {
-  v4 = a3;
+  playlistCopy = playlist;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__MPModelLibraryPlaylistEditController_setCuratorPlaylist___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = playlistCopy;
+  v6 = playlistCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -4499,17 +4499,17 @@ void __57__MPModelLibraryPlaylistEditController_isCuratorPlaylist__block_invoke(
   }
 }
 
-- (void)setVisiblePlaylist:(id)a3
+- (void)setVisiblePlaylist:(id)playlist
 {
-  v4 = a3;
+  playlistCopy = playlist;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__MPModelLibraryPlaylistEditController_setVisiblePlaylist___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = playlistCopy;
+  v6 = playlistCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -4571,17 +4571,17 @@ void __57__MPModelLibraryPlaylistEditController_isVisiblePlaylist__block_invoke(
   }
 }
 
-- (void)setPublicPlaylist:(id)a3
+- (void)setPublicPlaylist:(id)playlist
 {
-  v4 = a3;
+  playlistCopy = playlist;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__MPModelLibraryPlaylistEditController_setPublicPlaylist___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = playlistCopy;
+  v6 = playlistCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -4643,17 +4643,17 @@ void __56__MPModelLibraryPlaylistEditController_isPublicPlaylist__block_invoke(u
   }
 }
 
-- (void)setUserImage:(id)a3
+- (void)setUserImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__MPModelLibraryPlaylistEditController_setUserImage___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = imageCopy;
+  v6 = imageCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -4679,17 +4679,17 @@ void __56__MPModelLibraryPlaylistEditController_isPublicPlaylist__block_invoke(u
   return v3;
 }
 
-- (void)setParentPlaylist:(id)a3
+- (void)setParentPlaylist:(id)playlist
 {
-  v4 = a3;
+  playlistCopy = playlist;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__MPModelLibraryPlaylistEditController_setParentPlaylist___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = playlistCopy;
+  v6 = playlistCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -4715,17 +4715,17 @@ void __56__MPModelLibraryPlaylistEditController_isPublicPlaylist__block_invoke(u
   return v3;
 }
 
-- (void)setDescriptionText:(id)a3
+- (void)setDescriptionText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__MPModelLibraryPlaylistEditController_setDescriptionText___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = textCopy;
+  v6 = textCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -4776,9 +4776,9 @@ void __55__MPModelLibraryPlaylistEditController_descriptionText__block_invoke(ui
   }
 }
 
-- (id)setPlaylistName:(id)a3
+- (id)setPlaylistName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -4790,10 +4790,10 @@ void __55__MPModelLibraryPlaylistEditController_descriptionText__block_invoke(ui
   block[1] = 3221225472;
   block[2] = __56__MPModelLibraryPlaylistEditController_setPlaylistName___block_invoke;
   block[3] = &unk_1E7681330;
-  v10 = v4;
+  v10 = nameCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = nameCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -4906,17 +4906,17 @@ uint64_t __55__MPModelLibraryPlaylistEditController_isUndoAvailable__block_invok
   return result;
 }
 
-- (void)beginEditingWithCompletion:(id)a3
+- (void)beginEditingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__MPModelLibraryPlaylistEditController_beginEditingWithCompletion___block_invoke;
   v7[3] = &unk_1E76824C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -4996,7 +4996,7 @@ void __67__MPModelLibraryPlaylistEditController_beginEditingWithCompletion___blo
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__33276;
   v12 = __Block_byref_object_dispose__33277;
-  v13 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -5034,17 +5034,17 @@ void __56__MPModelLibraryPlaylistEditController_initialTrackList__block_invoke(v
   }
 }
 
-- (void)setInitialTrackList:(id)a3
+- (void)setInitialTrackList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__MPModelLibraryPlaylistEditController_setInitialTrackList___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = listCopy;
+  v6 = listCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -5069,15 +5069,15 @@ void __60__MPModelLibraryPlaylistEditController_setInitialTrackList___block_invo
   }
 }
 
-- (id)_initWithLibrary:(id)a3 playlist:(id)a4 initialTrackList:(id)a5 initialItemList:(id)a6 playlistProperties:(id)a7 playlistEntryProperties:(id)a8 authorProfile:(id)a9
+- (id)_initWithLibrary:(id)library playlist:(id)playlist initialTrackList:(id)list initialItemList:(id)itemList playlistProperties:(id)properties playlistEntryProperties:(id)entryProperties authorProfile:(id)profile
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
+  libraryCopy = library;
+  playlistCopy = playlist;
+  listCopy = list;
+  itemListCopy = itemList;
+  propertiesCopy = properties;
+  entryPropertiesCopy = entryProperties;
+  profileCopy = profile;
   v52.receiver = self;
   v52.super_class = MPModelLibraryPlaylistEditController;
   v23 = [(MPModelLibraryPlaylistEditController *)&v52 init];
@@ -5095,22 +5095,22 @@ void __60__MPModelLibraryPlaylistEditController_setInitialTrackList___block_invo
     accessQueue = v23->_accessQueue;
     v23->_accessQueue = v27;
 
-    objc_storeStrong(&v23->_library, a3);
-    v29 = [v17 copy];
+    objc_storeStrong(&v23->_library, library);
+    v29 = [playlistCopy copy];
     playlist = v23->_playlist;
     v23->_playlist = v29;
 
-    v31 = [v18 copy];
+    v31 = [listCopy copy];
     initialTrackList = v23->_initialTrackList;
     v23->_initialTrackList = v31;
 
-    v33 = [v19 copy];
+    v33 = [itemListCopy copy];
     initialTrackObjectList = v23->_initialTrackObjectList;
     v23->_initialTrackObjectList = v33;
 
-    if (v20)
+    if (propertiesCopy)
     {
-      v35 = v20;
+      v35 = propertiesCopy;
     }
 
     else
@@ -5121,9 +5121,9 @@ void __60__MPModelLibraryPlaylistEditController_setInitialTrackList___block_invo
     playlistProperties = v23->_playlistProperties;
     v23->_playlistProperties = v35;
 
-    if (v21)
+    if (entryPropertiesCopy)
     {
-      v37 = v21;
+      v37 = entryPropertiesCopy;
     }
 
     else
@@ -5134,7 +5134,7 @@ void __60__MPModelLibraryPlaylistEditController_setInitialTrackList___block_invo
     playlistEntryProperties = v23->_playlistEntryProperties;
     v23->_playlistEntryProperties = v37;
 
-    v39 = [v22 copy];
+    v39 = [profileCopy copy];
     authorProfile = v23->_authorProfile;
     v23->_authorProfile = v39;
 
@@ -5142,21 +5142,21 @@ void __60__MPModelLibraryPlaylistEditController_setInitialTrackList___block_invo
     dataSources = v23->_dataSources;
     v23->_dataSources = v41;
 
-    v43 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     playlistEntriesByIdentifier = v23->_playlistEntriesByIdentifier;
-    v23->_playlistEntriesByIdentifier = v43;
+    v23->_playlistEntriesByIdentifier = dictionary;
 
-    v45 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     completedTransactions = v23->_completedTransactions;
-    v23->_completedTransactions = v45;
+    v23->_completedTransactions = array;
 
-    v47 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     itemIdentifierToPositionIdentifierMap = v23->_itemIdentifierToPositionIdentifierMap;
-    v23->_itemIdentifierToPositionIdentifierMap = v47;
+    v23->_itemIdentifierToPositionIdentifierMap = dictionary2;
 
-    v49 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     positionIdentifierToItemIdentifierMap = v23->_positionIdentifierToItemIdentifierMap;
-    v23->_positionIdentifierToItemIdentifierMap = v49;
+    v23->_positionIdentifierToItemIdentifierMap = dictionary3;
 
     v23->_lastAppliedTransactionIndex = -1;
   }

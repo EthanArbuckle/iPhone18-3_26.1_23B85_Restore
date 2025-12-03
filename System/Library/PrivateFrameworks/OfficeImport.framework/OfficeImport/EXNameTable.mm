@@ -1,43 +1,43 @@
 @interface EXNameTable
-+ (id)edNameFromXmlNameElement:(_xmlNode *)a3 state:(id)a4;
-+ (void)readFrom:(_xmlNode *)a3 state:(id)a4;
++ (id)edNameFromXmlNameElement:(_xmlNode *)element state:(id)state;
++ (void)readFrom:(_xmlNode *)from state:(id)state;
 @end
 
 @implementation EXNameTable
 
-+ (void)readFrom:(_xmlNode *)a3 state:(id)a4
++ (void)readFrom:(_xmlNode *)from state:(id)state
 {
-  v6 = a4;
-  if (a3)
+  stateCopy = state;
+  if (from)
   {
-    v13 = v6;
-    v7 = [v6 resources];
-    v8 = [v7 names];
+    v13 = stateCopy;
+    resources = [stateCopy resources];
+    names = [resources names];
 
-    v9 = [v13 EXSpreadsheetMLNamespace];
-    Child = OCXFindChild(a3, v9, "definedName");
+    eXSpreadsheetMLNamespace = [v13 EXSpreadsheetMLNamespace];
+    Child = OCXFindChild(from, eXSpreadsheetMLNamespace, "definedName");
 
     while (Child)
     {
-      v11 = [a1 edNameFromXmlNameElement:Child state:v13];
-      [v8 addObject:v11];
+      v11 = [self edNameFromXmlNameElement:Child state:v13];
+      [names addObject:v11];
 
-      v12 = [v13 EXSpreadsheetMLNamespace];
-      Child = OCXFindNextChild(Child, v12, "definedName");
+      eXSpreadsheetMLNamespace2 = [v13 EXSpreadsheetMLNamespace];
+      Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace2, "definedName");
     }
 
-    v6 = v13;
+    stateCopy = v13;
   }
 }
 
-+ (id)edNameFromXmlNameElement:(_xmlNode *)a3 state:(id)a4
++ (id)edNameFromXmlNameElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
-  if (a3)
+  stateCopy = state;
+  if (element)
   {
     v6 = objc_alloc_init(EDName);
     v15 = 0;
-    v7 = CXOptionalStringAttribute(a3, CXNoNamespace, "name", &v15);
+    v7 = CXOptionalStringAttribute(element, CXNoNamespace, "name", &v15);
     v8 = v15;
     if (v7)
     {
@@ -46,15 +46,15 @@
     }
 
     v14 = 0;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "localSheetId", &v14))
+    if (CXOptionalLongAttribute(element, CXNoNamespace, "localSheetId", &v14))
     {
       [(EDName *)v6 setSheetIndex:v14];
     }
 
-    v10 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithContentOfXmlNode:a3];
+    v10 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithContentOfXmlNode:element];
     v11 = [@"=" stringByAppendingString:v10];
-    v12 = [v5 workbook];
-    [(EDName *)v6 setFormulaString:v11 workbook:v12];
+    workbook = [stateCopy workbook];
+    [(EDName *)v6 setFormulaString:v11 workbook:workbook];
   }
 
   else

@@ -1,6 +1,6 @@
 @interface OKMediaAspectRatioClusterPredicate
 - (OKMediaAspectRatioClusterPredicate)init;
-- (id)evaluateItems:(id)a3 progressBlock:(id)a4;
+- (id)evaluateItems:(id)items progressBlock:(id)block;
 - (id)title;
 - (void)dealloc;
 @end
@@ -36,7 +36,7 @@
   return [v2 localizedStringForKey:@"Aspect Ratio" value:@"Aspect Ratio" table:@"Localizable"];
 }
 
-- (id)evaluateItems:(id)a3 progressBlock:(id)a4
+- (id)evaluateItems:(id)items progressBlock:(id)block
 {
   v49 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -65,7 +65,7 @@
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v12 = [a3 countByEnumeratingWithState:&v42 objects:v48 count:16];
+  v12 = [items countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (v12)
   {
     v13 = v12;
@@ -76,7 +76,7 @@
       {
         if (*v43 != v14)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(items);
         }
 
         v16 = *(*(&v42 + 1) + 8 * i);
@@ -106,7 +106,7 @@
         [(NSMutableArray *)[(OKMediaCluster *)v18 items] addObject:v16];
       }
 
-      v13 = [a3 countByEnumeratingWithState:&v42 objects:v48 count:16];
+      v13 = [items countByEnumeratingWithState:&v42 objects:v48 count:16];
     }
 
     while (v13);
@@ -162,8 +162,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v29 = [*(*(&v34 + 1) + 8 * k) items];
-        [v29 sortUsingDescriptors:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v24)}];
+        items = [*(*(&v34 + 1) + 8 * k) items];
+        [items sortUsingDescriptors:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v24)}];
       }
 
       v26 = [v5 countByEnumeratingWithState:&v34 objects:v46 count:16];

@@ -1,19 +1,19 @@
 @interface VCPMADBackgroundService
-+ (int)runWithArgc:(int)a3 andArgv:(const char *)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (int)runWithArgc:(int)argc andArgv:(const char *)argv;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (int)run;
 @end
 
 @implementation VCPMADBackgroundService
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -29,7 +29,7 @@
     *token.val = v10;
     if (v10 && (v11 = CFGetTypeID(v10), v11 == CFBooleanGetTypeID()) && CFEqual(*token.val, kCFBooleanTrue))
     {
-      if (self->_listener == v6)
+      if (self->_listener == listenerCopy)
       {
         v17 = [VCPMADRemoteActivityClientHandler clientHandlerWithXPCConnection:v8];
         if (v17)
@@ -135,24 +135,24 @@ LABEL_22:
   return 0;
 }
 
-+ (int)runWithArgc:(int)a3 andArgv:(const char *)a4
++ (int)runWithArgc:(int)argc andArgv:(const char *)argv
 {
-  if (a3 >= 2)
+  if (argc >= 2)
   {
-    if (a3 != 2 && MediaAnalysisLogLevel() >= 4)
+    if (argc != 2 && MediaAnalysisLogLevel() >= 4)
     {
       v6 = VCPLogToOSLogType[4];
       if (os_log_type_enabled(&_os_log_default, v6))
       {
         *buf = 67109120;
-        *&buf[4] = a3;
+        *&buf[4] = argc;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v6, "Unsupported number of arguments specified (%d); ignoring", buf, 8u);
       }
     }
 
-    if (!strcmp(a4[1], "clamp"))
+    if (!strcmp(argv[1], "clamp"))
     {
-      *buf = *a4;
+      *buf = *argv;
       v24 = 0;
       if (MediaAnalysisLogLevel() >= 5)
       {
@@ -217,7 +217,7 @@ LABEL_22:
 
       else
       {
-        v15 = posix_spawnp(0, *a4, 0, &v24, buf, environ) == 0;
+        v15 = posix_spawnp(0, *argv, 0, &v24, buf, environ) == 0;
         v16 = MediaAnalysisLogLevel();
         if (v15)
         {
@@ -265,7 +265,7 @@ LABEL_22:
       v7 = VCPLogToOSLogType[4];
       if (os_log_type_enabled(&_os_log_default, v7))
       {
-        v8 = a4[1];
+        v8 = argv[1];
         *buf = 136315138;
         *&buf[4] = v8;
         v9 = "Unknown argument specified (%s); ignoring";

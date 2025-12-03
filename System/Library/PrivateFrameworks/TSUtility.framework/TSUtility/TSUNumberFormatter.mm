@@ -1,41 +1,41 @@
 @interface TSUNumberFormatter
 + (id)availableCurrencyCodes;
-+ (id)currencySymbolForCurrencyCode:(id)a3;
++ (id)currencySymbolForCurrencyCode:(id)code;
 + (id)currentLocaleCurrencyCode;
 + (id)currentNonCachedLocaleCurrencyCode;
 + (id)currentNonCachedLocaleDecimalSeparator;
-+ (id)defaultFormatStringForValueType:(int)a3;
-+ (id)defaultFormatStringForValueType:(int)a3 negativeStyle:(int)a4;
-+ (id)displayNameForCurrencyCode:(id)a3;
-+ (id)formatString:(id)a3 transformedForNegativeStyle:(int)a4;
-+ (id)formatterForLocale:(__CFLocale *)a3;
++ (id)defaultFormatStringForValueType:(int)type;
++ (id)defaultFormatStringForValueType:(int)type negativeStyle:(int)style;
++ (id)displayNameForCurrencyCode:(id)code;
++ (id)formatString:(id)string transformedForNegativeStyle:(int)style;
++ (id)formatterForLocale:(__CFLocale *)locale;
 + (id)localizedPercentSymbol;
 + (id)userVisibleCurrencyCodes;
-+ (int)positionOfMinusSignInNumberFormatSubpattern:(id)a3;
-+ (int)positionOfSymbol:(id)a3 inNumberFormatSubpattern:(id)a4;
-+ (unsigned)defaultDecimalPlacesForCurrencyCode:(id)a3;
-+ (void)formatString:(id)a3 replaceOccurencesOfUnescapedString:(id)a4 withString:(id)a5;
++ (int)positionOfMinusSignInNumberFormatSubpattern:(id)subpattern;
++ (int)positionOfSymbol:(id)symbol inNumberFormatSubpattern:(id)subpattern;
++ (unsigned)defaultDecimalPlacesForCurrencyCode:(id)code;
++ (void)formatString:(id)string replaceOccurencesOfUnescapedString:(id)unescapedString withString:(id)withString;
 + (void)initialize;
-- (BOOL)currencyFromString:(__CFString *)a3 additionalCurrencyCode:(__CFString *)a4 value:(double *)a5 formatString:(const __CFString *)a6 currencyCode:(const __CFString *)a7;
-- (BOOL)decimalFromString:(__CFString *)a3 value:(double *)a4 formatString:(const __CFString *)a5;
-- (BOOL)findCurrencySymbolInString:(__CFString *)a3 additionalCurrencyCode:(__CFString *)a4 successTSUlString:(const __CFString *)a5;
-- (BOOL)fractionFromString:(__CFString *)a3 value:(double *)a4;
-- (BOOL)percentageFromString:(__CFString *)a3 value:(double *)a4 formatString:(const __CFString *)a5;
-- (BOOL)scientificFromString:(__CFString *)a3 value:(double *)a4 formatString:(const __CFString *)a5;
-- (BOOL)valueFromString:(__CFString *)a3 formatters:(__CFArray *)a4 value:(double *)a5 formatString:(const __CFString *)a6 currencyCode:(const __CFString *)a7;
-- (TSUNumberFormatter)initWithLocale:(__CFLocale *)a3;
+- (BOOL)currencyFromString:(__CFString *)string additionalCurrencyCode:(__CFString *)code value:(double *)value formatString:(const __CFString *)formatString currencyCode:(const __CFString *)currencyCode;
+- (BOOL)decimalFromString:(__CFString *)string value:(double *)value formatString:(const __CFString *)formatString;
+- (BOOL)findCurrencySymbolInString:(__CFString *)string additionalCurrencyCode:(__CFString *)code successTSUlString:(const __CFString *)ulString;
+- (BOOL)fractionFromString:(__CFString *)string value:(double *)value;
+- (BOOL)percentageFromString:(__CFString *)string value:(double *)value formatString:(const __CFString *)formatString;
+- (BOOL)scientificFromString:(__CFString *)string value:(double *)value formatString:(const __CFString *)formatString;
+- (BOOL)valueFromString:(__CFString *)string formatters:(__CFArray *)formatters value:(double *)value formatString:(const __CFString *)formatString currencyCode:(const __CFString *)code;
+- (TSUNumberFormatter)initWithLocale:(__CFLocale *)locale;
 - (__CFArray)p_currencyFormatters;
 - (__CFArray)p_decimalFormatters;
 - (__CFArray)p_percentageFormatters;
 - (__CFArray)p_scientificFormatters;
-- (id)currencySymbolForCurrencyCode:(id)a3;
+- (id)currencySymbolForCurrencyCode:(id)code;
 - (id)currentLocaleCurrencyCode;
-- (id)defaultFormatStringForValueType:(int)a3;
-- (id)defaultFormatStringForValueType:(int)a3 negativeStyle:(int)a4;
-- (id)displayNameForCurrencyCode:(id)a3;
-- (id)halfWidthCurrencySymbolForCurrencyCode:(id)a3;
+- (id)defaultFormatStringForValueType:(int)type;
+- (id)defaultFormatStringForValueType:(int)type negativeStyle:(int)style;
+- (id)displayNameForCurrencyCode:(id)code;
+- (id)halfWidthCurrencySymbolForCurrencyCode:(id)code;
 - (void)dealloc;
-- (void)numberPreferencesChanged:(id)a3;
+- (void)numberPreferencesChanged:(id)changed;
 @end
 
 @implementation TSUNumberFormatter
@@ -44,42 +44,42 @@
 {
   gLockTSUNumberOfTrailingZerosInMantissaWhenFormattedAsScientific = objc_alloc_init(MEMORY[0x277CCAC60]);
   gLockTSUNumberFormatterStringFromDoubleWithFormat = objc_alloc_init(MEMORY[0x277CCAC60]);
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSUNumberFormatter;
   objc_msgSendSuper2(&v3, sel_initialize);
 }
 
-+ (int)positionOfSymbol:(id)a3 inNumberFormatSubpattern:(id)a4
++ (int)positionOfSymbol:(id)symbol inNumberFormatSubpattern:(id)subpattern
 {
-  v5 = [a4 rangeOfString:a3];
+  v5 = [subpattern rangeOfString:symbol];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   v7 = v5;
-  v8 = [a4 indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
-  return v8 != 0x7FFFFFFFFFFFFFFFLL && v7 >= v8;
+  indexOfFirstNonPrefixCharacterInNumberFormatSubpattern = [subpattern indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
+  return indexOfFirstNonPrefixCharacterInNumberFormatSubpattern != 0x7FFFFFFFFFFFFFFFLL && v7 >= indexOfFirstNonPrefixCharacterInNumberFormatSubpattern;
 }
 
-+ (int)positionOfMinusSignInNumberFormatSubpattern:(id)a3
++ (int)positionOfMinusSignInNumberFormatSubpattern:(id)subpattern
 {
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"-"];
 
-  return [a1 positionOfSymbol:v5 inNumberFormatSubpattern:a3];
+  return [self positionOfSymbol:v5 inNumberFormatSubpattern:subpattern];
 }
 
-+ (id)formatString:(id)a3 transformedForNegativeStyle:(int)a4
++ (id)formatString:(id)string transformedForNegativeStyle:(int)style
 {
-  v7 = [MEMORY[0x277CCAB68] string];
-  v8 = v7;
-  if (!a4)
+  string = [MEMORY[0x277CCAB68] string];
+  v8 = string;
+  if (!style)
   {
-    [v7 appendString:{objc_msgSend(a3, "positiveSubpatternOfNumberFormatPattern")}];
+    [string appendString:{objc_msgSend(string, "positiveSubpatternOfNumberFormatPattern")}];
     [v8 appendString:@";"];
-    v12 = [objc_msgSend(a3 "positiveSubpatternOfNumberFormatPattern")];
-    [a1 formatString:v12 replaceOccurencesOfUnescapedString:@"-" withString:&stru_287DDF830];
-    v13 = +[TSUNumberFormatter positionOfMinusSignInNumberFormatSubpattern:](TSUNumberFormatter, "positionOfMinusSignInNumberFormatSubpattern:", [a3 negativeSubpatternOfNumberFormatPattern]);
+    v12 = [objc_msgSend(string "positiveSubpatternOfNumberFormatPattern")];
+    [self formatString:v12 replaceOccurencesOfUnescapedString:@"-" withString:&stru_287DDF830];
+    v13 = +[TSUNumberFormatter positionOfMinusSignInNumberFormatSubpattern:](TSUNumberFormatter, "positionOfMinusSignInNumberFormatSubpattern:", [string negativeSubpatternOfNumberFormatPattern]);
     if (v13)
     {
       v14 = v13;
@@ -106,28 +106,28 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (a4 == 1)
+  if (style == 1)
   {
-    [v7 appendString:{objc_msgSend(a3, "positiveSubpatternOfNumberFormatPattern")}];
+    [string appendString:{objc_msgSend(string, "positiveSubpatternOfNumberFormatPattern")}];
     [v8 appendString:@";"];
-    v9 = [objc_msgSend(a3 "positiveSubpatternOfNumberFormatPattern")];
-    [a1 formatString:v9 replaceOccurencesOfUnescapedString:@"-" withString:&stru_287DDF830];
+    v9 = [objc_msgSend(string "positiveSubpatternOfNumberFormatPattern")];
+    [self formatString:v9 replaceOccurencesOfUnescapedString:@"-" withString:&stru_287DDF830];
     v10 = v8;
     v11 = v9;
   }
 
   else
   {
-    if ((a4 & 0xFFFFFFFE) != 2)
+    if ((style & 0xFFFFFFFE) != 2)
     {
-      [v7 appendString:a3];
+      [string appendString:string];
       return v8;
     }
 
-    [v7 appendString:{objc_msgSend(a3, "positiveSubpatternOfNumberFormatPattern")}];
+    [string appendString:{objc_msgSend(string, "positiveSubpatternOfNumberFormatPattern")}];
     [v8 appendString:@";"];
-    v9 = [objc_msgSend(a3 "positiveSubpatternOfNumberFormatPattern")];
-    [a1 formatString:v9 replaceOccurencesOfUnescapedString:@"-" withString:&stru_287DDF830];
+    v9 = [objc_msgSend(string "positiveSubpatternOfNumberFormatPattern")];
+    [self formatString:v9 replaceOccurencesOfUnescapedString:@"-" withString:&stru_287DDF830];
     objc_msgSend(v8, "appendString:", @"(");
     [v8 appendString:v9];
     v11 = @"");
@@ -139,38 +139,38 @@ LABEL_13:
   return v8;
 }
 
-+ (void)formatString:(id)a3 replaceOccurencesOfUnescapedString:(id)a4 withString:(id)a5
++ (void)formatString:(id)string replaceOccurencesOfUnescapedString:(id)unescapedString withString:(id)withString
 {
-  v17 = [a3 newRangesOfEscapedCharactersInNumberFormatPattern];
-  v8 = [a3 length];
-  if ([v17 count])
+  newRangesOfEscapedCharactersInNumberFormatPattern = [string newRangesOfEscapedCharactersInNumberFormatPattern];
+  v8 = [string length];
+  if ([newRangesOfEscapedCharactersInNumberFormatPattern count])
   {
-    [a3 replaceOccurrencesOfString:a4 withString:a5 options:0 range:{0, objc_msgSend(objc_msgSend(v17, "objectAtIndex:", 0), "rangeValue")}];
-    if ([v17 count] >= 2)
+    [string replaceOccurrencesOfString:unescapedString withString:withString options:0 range:{0, objc_msgSend(objc_msgSend(newRangesOfEscapedCharactersInNumberFormatPattern, "objectAtIndex:", 0), "rangeValue")}];
+    if ([newRangesOfEscapedCharactersInNumberFormatPattern count] >= 2)
     {
       v9 = 1;
       do
       {
-        v10 = [a3 length];
-        v11 = [objc_msgSend(v17 objectAtIndex:{v9 - 1), "rangeValue"}];
-        [a3 replaceOccurrencesOfString:a4 withString:a5 options:0 range:{v12 + v11 - v8 + v10, objc_msgSend(objc_msgSend(v17, "objectAtIndex:", v9++), "rangeValue") - (v12 + v11)}];
+        v10 = [string length];
+        v11 = [objc_msgSend(newRangesOfEscapedCharactersInNumberFormatPattern objectAtIndex:{v9 - 1), "rangeValue"}];
+        [string replaceOccurrencesOfString:unescapedString withString:withString options:0 range:{v12 + v11 - v8 + v10, objc_msgSend(objc_msgSend(newRangesOfEscapedCharactersInNumberFormatPattern, "objectAtIndex:", v9++), "rangeValue") - (v12 + v11)}];
       }
 
-      while (v9 < [v17 count]);
+      while (v9 < [newRangesOfEscapedCharactersInNumberFormatPattern count]);
     }
 
-    v13 = [objc_msgSend(v17 "lastObject")];
+    v13 = [objc_msgSend(newRangesOfEscapedCharactersInNumberFormatPattern "lastObject")];
     v15 = v13 + v14;
-    v16 = [a3 length] - (v13 + v14);
+    v16 = [string length] - (v13 + v14);
   }
 
   else
   {
-    v16 = [a3 length];
+    v16 = [string length];
     v15 = 0;
   }
 
-  [a3 replaceOccurrencesOfString:a4 withString:a5 options:0 range:{v15, v16}];
+  [string replaceOccurrencesOfString:unescapedString withString:withString options:0 range:{v15, v16}];
 }
 
 + (id)availableCurrencyCodes
@@ -180,25 +180,25 @@ LABEL_13:
   return v2;
 }
 
-+ (id)displayNameForCurrencyCode:(id)a3
++ (id)displayNameForCurrencyCode:(id)code
 {
-  v4 = [a1 formatterForLocale:0];
+  v4 = [self formatterForLocale:0];
 
-  return [v4 displayNameForCurrencyCode:a3];
+  return [v4 displayNameForCurrencyCode:code];
 }
 
-+ (id)currencySymbolForCurrencyCode:(id)a3
++ (id)currencySymbolForCurrencyCode:(id)code
 {
-  v4 = [a1 formatterForLocale:0];
+  v4 = [self formatterForLocale:0];
 
-  return [v4 currencySymbolForCurrencyCode:a3];
+  return [v4 currencySymbolForCurrencyCode:code];
 }
 
-+ (unsigned)defaultDecimalPlacesForCurrencyCode:(id)a3
++ (unsigned)defaultDecimalPlacesForCurrencyCode:(id)code
 {
   defaultFractionDigits = 0;
   v7 = 0.0;
-  if (CFNumberFormatterGetDecimalInfoForCurrencyCode(a3, &defaultFractionDigits, &v7))
+  if (CFNumberFormatterGetDecimalInfoForCurrencyCode(code, &defaultFractionDigits, &v7))
   {
     return defaultFractionDigits & ~(defaultFractionDigits >> 31);
   }
@@ -216,15 +216,15 @@ LABEL_13:
 
 + (id)currentLocaleCurrencyCode
 {
-  v2 = [a1 formatterForLocale:0];
+  v2 = [self formatterForLocale:0];
 
   return [v2 currentLocaleCurrencyCode];
 }
 
 + (id)currentNonCachedLocaleCurrencyCode
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  result = CFLocaleGetValue(v2, *MEMORY[0x277CBEEA0]);
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  result = CFLocaleGetValue(currentLocale, *MEMORY[0x277CBEEA0]);
   if (!result)
   {
     return @"USD";
@@ -235,40 +235,40 @@ LABEL_13:
 
 + (id)currentNonCachedLocaleDecimalSeparator
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v3 = *MEMORY[0x277CBEEB8];
 
-  return CFLocaleGetValue(v2, v3);
+  return CFLocaleGetValue(currentLocale, v3);
 }
 
-+ (id)defaultFormatStringForValueType:(int)a3 negativeStyle:(int)a4
++ (id)defaultFormatStringForValueType:(int)type negativeStyle:(int)style
 {
-  v4 = *&a4;
-  v5 = *&a3;
-  v6 = [a1 formatterForLocale:0];
+  v4 = *&style;
+  v5 = *&type;
+  v6 = [self formatterForLocale:0];
 
   return [v6 defaultFormatStringForValueType:v5 negativeStyle:v4];
 }
 
-+ (id)defaultFormatStringForValueType:(int)a3
++ (id)defaultFormatStringForValueType:(int)type
 {
-  v3 = *&a3;
-  v4 = [a1 formatterForLocale:0];
+  v3 = *&type;
+  v4 = [self formatterForLocale:0];
 
   return [v4 defaultFormatStringForValueType:v3];
 }
 
 + (id)localizedPercentSymbol
 {
-  v2 = [a1 formatterForLocale:0];
+  v2 = [self formatterForLocale:0];
 
   return [v2 localizedPercentSymbol];
 }
 
 + (id)userVisibleCurrencyCodes
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  if ([v2 BOOLForKey:TSUDefaultsShowCompleteCurrencyList])
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  if ([standardUserDefaults BOOLForKey:TSUDefaultsShowCompleteCurrencyList])
   {
     v3 = CFLocaleCopyCommonISOCurrencyCodes();
     v4 = v3;
@@ -287,39 +287,39 @@ LABEL_13:
   return v3;
 }
 
-+ (id)formatterForLocale:(__CFLocale *)a3
++ (id)formatterForLocale:(__CFLocale *)locale
 {
-  if (a3)
+  if (locale)
   {
-    v4 = [[a1 alloc] initWithLocale:a3];
+    v4 = [[self alloc] initWithLocale:locale];
 
     return v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCACC8] currentThread];
-    v7 = [v6 threadDictionary];
-    v8 = [v7 objectForKey:@"TSUNumberFormatterThreadDictionaryKey"];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary = [currentThread threadDictionary];
+    v8 = [threadDictionary objectForKey:@"TSUNumberFormatterThreadDictionaryKey"];
     if (!v8)
     {
-      v8 = [[a1 alloc] initWithLocale:0];
-      [v7 setObject:v8 forKey:@"TSUNumberFormatterThreadDictionaryKey"];
+      v8 = [[self alloc] initWithLocale:0];
+      [threadDictionary setObject:v8 forKey:@"TSUNumberFormatterThreadDictionaryKey"];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __50__TSUNumberFormatter_Private__formatterForLocale___block_invoke;
       v12[3] = &unk_279D65DF0;
-      v12[4] = v6;
+      v12[4] = currentThread;
       v12[5] = v8;
-      [v7 setObject:TSURegisterLocaleChangeObserver(v12) forKey:@"TSUNumberFormatterThreadDictionaryLocaleObserverKey"];
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
+      [threadDictionary setObject:TSURegisterLocaleChangeObserver(v12) forKey:@"TSUNumberFormatterThreadDictionaryLocaleObserverKey"];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v10 = *MEMORY[0x277CCA6F8];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __50__TSUNumberFormatter_Private__formatterForLocale___block_invoke_2;
       v11[3] = &unk_279D65E18;
       v11[4] = v8;
-      [v7 setObject:objc_msgSend(v9 forKey:{"addObserverForName:object:queue:usingBlock:", v10, v6, 0, v11), @"TSUNumberFormatterThreadDictionaryExitObserverKey"}];
+      [threadDictionary setObject:objc_msgSend(defaultCenter forKey:{"addObserverForName:object:queue:usingBlock:", v10, currentThread, 0, v11), @"TSUNumberFormatterThreadDictionaryExitObserverKey"}];
     }
 
     return v8;
@@ -352,16 +352,16 @@ uint64_t __50__TSUNumberFormatter_Private__formatterForLocale___block_invoke(uin
   return result;
 }
 
-- (TSUNumberFormatter)initWithLocale:(__CFLocale *)a3
+- (TSUNumberFormatter)initWithLocale:(__CFLocale *)locale
 {
   v13.receiver = self;
   v13.super_class = TSUNumberFormatter;
   v4 = [(TSUNumberFormatter *)&v13 init];
   if (v4)
   {
-    if (a3)
+    if (locale)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(locale);
     }
 
     else
@@ -468,40 +468,40 @@ uint64_t __50__TSUNumberFormatter_Private__formatterForLocale___block_invoke(uin
   [(TSUNumberFormatter *)&v12 dealloc];
 }
 
-- (void)numberPreferencesChanged:(id)a3
+- (void)numberPreferencesChanged:(id)changed
 {
-  v3 = [objc_msgSend(MEMORY[0x277CCACC8] currentThread];
-  if ([v3 objectForKey:@"TSUNumberFormatterThreadDictionaryKey"] != self)
+  currentThread = [objc_msgSend(MEMORY[0x277CCACC8] currentThread];
+  if ([currentThread objectForKey:@"TSUNumberFormatterThreadDictionaryKey"] != self)
   {
     v4 = +[TSUAssertionHandler currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUNumberFormatter(Private) numberPreferencesChanged:]"];
     [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUNumberFormatter.m"), 1886, @"Registered wrong date formatter for date preference change notification"}];
   }
 
-  v6 = self;
-  [v3 removeObjectForKey:@"TSUNumberFormatterThreadDictionaryKey"];
-  TSURemoveLocaleChangeObserver([v3 objectForKey:@"TSUNumberFormatterThreadDictionaryLocaleObserverKey"]);
-  [v3 removeObjectForKey:@"TSUNumberFormatterThreadDictionaryLocaleObserverKey"];
-  v7 = [v3 objectForKey:@"TSUNumberFormatterThreadDictionaryExitObserverKey"];
+  selfCopy = self;
+  [currentThread removeObjectForKey:@"TSUNumberFormatterThreadDictionaryKey"];
+  TSURemoveLocaleChangeObserver([currentThread objectForKey:@"TSUNumberFormatterThreadDictionaryLocaleObserverKey"]);
+  [currentThread removeObjectForKey:@"TSUNumberFormatterThreadDictionaryLocaleObserverKey"];
+  v7 = [currentThread objectForKey:@"TSUNumberFormatterThreadDictionaryExitObserverKey"];
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
-  [v3 removeObjectForKey:@"TSUNumberFormatterThreadDictionaryExitObserverKey"];
+  [currentThread removeObjectForKey:@"TSUNumberFormatterThreadDictionaryExitObserverKey"];
 }
 
-- (BOOL)decimalFromString:(__CFString *)a3 value:(double *)a4 formatString:(const __CFString *)a5
+- (BOOL)decimalFromString:(__CFString *)string value:(double *)value formatString:(const __CFString *)formatString
 {
-  v9 = [(TSUNumberFormatter *)self p_decimalFormatters];
+  p_decimalFormatters = [(TSUNumberFormatter *)self p_decimalFormatters];
 
-  return [(TSUNumberFormatter *)self valueFromString:a3 formatters:v9 value:a4 formatString:a5 currencyCode:0];
+  return [(TSUNumberFormatter *)self valueFromString:string formatters:p_decimalFormatters value:value formatString:formatString currencyCode:0];
 }
 
-- (BOOL)currencyFromString:(__CFString *)a3 additionalCurrencyCode:(__CFString *)a4 value:(double *)a5 formatString:(const __CFString *)a6 currencyCode:(const __CFString *)a7
+- (BOOL)currencyFromString:(__CFString *)string additionalCurrencyCode:(__CFString *)code value:(double *)value formatString:(const __CFString *)formatString currencyCode:(const __CFString *)currencyCode
 {
   cf = 0;
-  if ([(TSUNumberFormatter *)self findCurrencySymbolInString:a3 additionalCurrencyCode:a4 successTSUlString:&cf])
+  if ([(TSUNumberFormatter *)self findCurrencySymbolInString:string additionalCurrencyCode:code successTSUlString:&cf])
   {
-    v12 = [(TSUNumberFormatter *)self valueFromString:cf formatters:[(TSUNumberFormatter *)self p_currencyFormatters] value:a5 formatString:a6 currencyCode:a7];
+    v12 = [(TSUNumberFormatter *)self valueFromString:cf formatters:[(TSUNumberFormatter *)self p_currencyFormatters] value:value formatString:formatString currencyCode:currencyCode];
     v13 = v12;
-    if (!a4 || v12)
+    if (!code || v12)
     {
       goto LABEL_14;
     }
@@ -509,11 +509,11 @@ uint64_t __50__TSUNumberFormatter_Private__formatterForLocale___block_invoke(uin
     mAdditionalCurrencyCode = self->mAdditionalCurrencyCode;
     if (mAdditionalCurrencyCode)
     {
-      if (CFStringCompare(mAdditionalCurrencyCode, a4, 0) == kCFCompareEqualTo)
+      if (CFStringCompare(mAdditionalCurrencyCode, code, 0) == kCFCompareEqualTo)
       {
         mAdditionalCurrencyCodeFormatters = self->mAdditionalCurrencyCodeFormatters;
 LABEL_13:
-        v13 = [(TSUNumberFormatter *)self valueFromString:cf formatters:mAdditionalCurrencyCodeFormatters value:a5 formatString:a6 currencyCode:a7];
+        v13 = [(TSUNumberFormatter *)self valueFromString:cf formatters:mAdditionalCurrencyCodeFormatters value:value formatString:formatString currencyCode:currencyCode];
 LABEL_14:
         CFRelease(cf);
         return v13;
@@ -532,7 +532,7 @@ LABEL_14:
       CFRelease(v16);
     }
 
-    v17 = CFRetain(a4);
+    v17 = CFRetain(code);
     self->mAdditionalCurrencyCode = v17;
     mAdditionalCurrencyCodeFormatters = TSUCreateArrayOfCurrencyFormattersForLocale(self->mLocale, [MEMORY[0x277CBEA60] arrayWithObject:v17]);
     self->mAdditionalCurrencyCodeFormatters = mAdditionalCurrencyCodeFormatters;
@@ -542,31 +542,31 @@ LABEL_14:
   return 0;
 }
 
-- (BOOL)percentageFromString:(__CFString *)a3 value:(double *)a4 formatString:(const __CFString *)a5
+- (BOOL)percentageFromString:(__CFString *)string value:(double *)value formatString:(const __CFString *)formatString
 {
-  v9 = [(TSUNumberFormatter *)self p_percentageFormatters];
+  p_percentageFormatters = [(TSUNumberFormatter *)self p_percentageFormatters];
 
-  return [(TSUNumberFormatter *)self valueFromString:a3 formatters:v9 value:a4 formatString:a5 currencyCode:0];
+  return [(TSUNumberFormatter *)self valueFromString:string formatters:p_percentageFormatters value:value formatString:formatString currencyCode:0];
 }
 
-- (BOOL)scientificFromString:(__CFString *)a3 value:(double *)a4 formatString:(const __CFString *)a5
+- (BOOL)scientificFromString:(__CFString *)string value:(double *)value formatString:(const __CFString *)formatString
 {
-  v9 = [(TSUNumberFormatter *)self p_scientificFormatters];
+  p_scientificFormatters = [(TSUNumberFormatter *)self p_scientificFormatters];
 
-  return [(TSUNumberFormatter *)self valueFromString:a3 formatters:v9 value:a4 formatString:a5 currencyCode:0];
+  return [(TSUNumberFormatter *)self valueFromString:string formatters:p_scientificFormatters value:value formatString:formatString currencyCode:0];
 }
 
-- (BOOL)fractionFromString:(__CFString *)a3 value:(double *)a4
+- (BOOL)fractionFromString:(__CFString *)string value:(double *)value
 {
-  v7 = CFStringFind(a3, @"/", 0);
+  v7 = CFStringFind(string, @"/", 0);
   if (v7.location != -1 && v7.length != 0)
   {
     v10 = *MEMORY[0x277CBECE8];
     v31.location = 0;
     v31.length = v7.location;
-    v11 = CFStringCreateWithSubstring(*MEMORY[0x277CBECE8], a3, v31);
+    v11 = CFStringCreateWithSubstring(*MEMORY[0x277CBECE8], string, v31);
     v12 = v7.location + 1;
-    if (v12 >= CFStringGetLength(a3))
+    if (v12 >= CFStringGetLength(string))
     {
       v19 = 0;
       v20 = 0;
@@ -578,9 +578,9 @@ LABEL_14:
       goto LABEL_26;
     }
 
-    v32.length = CFStringGetLength(a3) - v12;
+    v32.length = CFStringGetLength(string) - v12;
     v32.location = v7.location + 1;
-    v13 = CFStringCreateWithSubstring(v10, a3, v32);
+    v13 = CFStringCreateWithSubstring(v10, string, v32);
     MutableCopy = CFStringCreateMutableCopy(v10, 0, v11);
     v15 = CFStringCreateMutableCopy(v10, 0, v13);
     CFStringTrimWhitespace(MutableCopy);
@@ -657,7 +657,7 @@ LABEL_17:
       v23 = v21 + v22 / v29;
       if (__fpclassifyd(v23) != 2 && __fpclassifyd(v23) != 1)
       {
-        if (!a4)
+        if (!value)
         {
           v9 = 1;
           if (!v11)
@@ -671,7 +671,7 @@ LABEL_17:
         v24 = v21 + v30 / v29;
         v9 = 1;
 LABEL_27:
-        *a4 = v24;
+        *value = v24;
 LABEL_28:
         if (!v11)
         {
@@ -723,7 +723,7 @@ LABEL_29:
 LABEL_26:
     v9 = 0;
     v24 = 0.0;
-    if (!a4)
+    if (!value)
     {
       goto LABEL_28;
     }
@@ -732,37 +732,37 @@ LABEL_26:
   }
 
   v9 = 0;
-  if (a4)
+  if (value)
   {
-    *a4 = 0.0;
+    *value = 0.0;
   }
 
   return v9;
 }
 
-- (BOOL)valueFromString:(__CFString *)a3 formatters:(__CFArray *)a4 value:(double *)a5 formatString:(const __CFString *)a6 currencyCode:(const __CFString *)a7
+- (BOOL)valueFromString:(__CFString *)string formatters:(__CFArray *)formatters value:(double *)value formatString:(const __CFString *)formatString currencyCode:(const __CFString *)code
 {
-  Count = CFArrayGetCount(a4);
+  Count = CFArrayGetCount(formatters);
   if (Count >= 1)
   {
     v13 = Count;
-    ValueAtIndex = CFArrayGetValueAtIndex(a4, 0);
-    if (TSUImprovedCFNumberFormatterGetValueFromString(ValueAtIndex, a3, a5))
+    ValueAtIndex = CFArrayGetValueAtIndex(formatters, 0);
+    if (TSUImprovedCFNumberFormatterGetValueFromString(ValueAtIndex, string, value))
     {
       v15 = 1;
-      if (a6)
+      if (formatString)
       {
 LABEL_4:
         Format = CFNumberFormatterGetFormat(ValueAtIndex);
-        *a6 = CFRetain(Format);
+        *formatString = CFRetain(Format);
       }
 
 LABEL_5:
-      if (a7)
+      if (code)
       {
         v17 = CFNumberFormatterCopyProperty(ValueAtIndex, *MEMORY[0x277CBEEF8]);
 LABEL_16:
-        *a7 = v17;
+        *code = v17;
         return v15;
       }
 
@@ -772,11 +772,11 @@ LABEL_16:
     v18 = 1;
     while (v13 != v18)
     {
-      ValueAtIndex = CFArrayGetValueAtIndex(a4, v18++);
-      if (TSUImprovedCFNumberFormatterGetValueFromString(ValueAtIndex, a3, a5))
+      ValueAtIndex = CFArrayGetValueAtIndex(formatters, v18++);
+      if (TSUImprovedCFNumberFormatterGetValueFromString(ValueAtIndex, string, value))
       {
         v15 = v18 - 1 < v13;
-        if (a6)
+        if (formatString)
         {
           goto LABEL_4;
         }
@@ -786,13 +786,13 @@ LABEL_16:
     }
   }
 
-  if (a6)
+  if (formatString)
   {
-    *a6 = 0;
+    *formatString = 0;
   }
 
   v15 = 0;
-  if (a7)
+  if (code)
   {
     v17 = 0;
     goto LABEL_16;
@@ -801,17 +801,17 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)findCurrencySymbolInString:(__CFString *)a3 additionalCurrencyCode:(__CFString *)a4 successTSUlString:(const __CFString *)a5
+- (BOOL)findCurrencySymbolInString:(__CFString *)string additionalCurrencyCode:(__CFString *)code successTSUlString:(const __CFString *)ulString
 {
-  Length = CFStringGetLength(a3);
-  if (!Length || ((v10 = Length, Length >= 8) ? (v11 = 8) : (v11 = Length), v12 = TSUCurrencyCodesForLocale(self->mLocale, a4), (v13 = [v12 count]) == 0))
+  Length = CFStringGetLength(string);
+  if (!Length || ((v10 = Length, Length >= 8) ? (v11 = 8) : (v11 = Length), v12 = TSUCurrencyCodesForLocale(self->mLocale, code), (v13 = [v12 count]) == 0))
   {
     LOBYTE(v19) = 0;
     return v19;
   }
 
   v14 = v13;
-  v23 = a5;
+  ulStringCopy = ulString;
   v15 = 0;
   while (1)
   {
@@ -819,7 +819,7 @@ LABEL_16:
     v17 = [(TSUNumberFormatter *)self currencySymbolForCurrencyCode:v16];
     v25.location = 0;
     v25.length = v11;
-    if (CFStringFindWithOptions(a3, v17, v25, 0, 0))
+    if (CFStringFindWithOptions(string, v17, v25, 0, 0))
     {
       break;
     }
@@ -828,7 +828,7 @@ LABEL_16:
     {
       v26.location = v10 - v11;
       v26.length = v11;
-      if (CFStringFindWithOptions(a3, v17, v26, 0, 0))
+      if (CFStringFindWithOptions(string, v17, v26, 0, 0))
       {
         break;
       }
@@ -839,7 +839,7 @@ LABEL_16:
     result.length = 0;
     v27.location = 0;
     v27.length = v11;
-    if (CFStringFindWithOptions(a3, v18, v27, 0, &result))
+    if (CFStringFindWithOptions(string, v18, v27, 0, &result))
     {
       v19 = 1;
     }
@@ -854,17 +854,17 @@ LABEL_16:
 
       v28.location = v10 - v11;
       v28.length = v11;
-      v19 = CFStringFindWithOptions(a3, v18, v28, 0, &result) != 0;
+      v19 = CFStringFindWithOptions(string, v18, v28, 0, &result) != 0;
     }
 
-    if (v23 && v19)
+    if (ulStringCopy && v19)
     {
       LOBYTE(v19) = 1;
       result.length = 1;
-      MutableCopy = CFStringCreateMutableCopy(0, 0, a3);
+      MutableCopy = CFStringCreateMutableCopy(0, 0, string);
       v21 = [(TSUNumberFormatter *)self currencySymbolForCurrencyCode:v16];
       CFStringReplace(MutableCopy, result, v21);
-      *v23 = MutableCopy;
+      *ulStringCopy = MutableCopy;
       return v19;
     }
 
@@ -880,46 +880,46 @@ LABEL_17:
     }
   }
 
-  if (v23)
+  if (ulStringCopy)
   {
-    *v23 = CFRetain(a3);
+    *ulStringCopy = CFRetain(string);
   }
 
   LOBYTE(v19) = 1;
   return v19;
 }
 
-- (id)displayNameForCurrencyCode:(id)a3
+- (id)displayNameForCurrencyCode:(id)code
 {
-  v3 = CFLocaleCopyDisplayNameForPropertyValue(self->mLocale, *MEMORY[0x277CBEEA0], a3);
+  v3 = CFLocaleCopyDisplayNameForPropertyValue(self->mLocale, *MEMORY[0x277CBEEA0], code);
 
   return v3;
 }
 
-- (id)currencySymbolForCurrencyCode:(id)a3
+- (id)currencySymbolForCurrencyCode:(id)code
 {
-  v3 = a3;
-  if (!a3)
+  codeCopy = code;
+  if (!code)
   {
     v5 = +[TSUAssertionHandler currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUNumberFormatter(Private) currencySymbolForCurrencyCode:]"];
     [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUNumberFormatter.m"), 2177, @"can't get the currency symbol for a nil currency code. Using USD."}];
-    v3 = @"USD";
+    codeCopy = @"USD";
   }
 
   mCurrencyCodeToSymbolMap = self->mCurrencyCodeToSymbolMap;
   objc_sync_enter(mCurrencyCodeToSymbolMap);
-  v8 = [(NSMutableDictionary *)self->mCurrencyCodeToSymbolMap objectForKey:v3];
+  v8 = [(NSMutableDictionary *)self->mCurrencyCodeToSymbolMap objectForKey:codeCopy];
   if (!v8)
   {
     v9 = MEMORY[0x26D6AAE40](self->mLocale);
     ComponentsFromLocaleIdentifier = CFLocaleCreateComponentsFromLocaleIdentifier(0, v9);
     MutableCopy = CFDictionaryCreateMutableCopy(0, 0, ComponentsFromLocaleIdentifier);
-    CFDictionarySetValue(MutableCopy, *MEMORY[0x277CBEEA0], v3);
+    CFDictionarySetValue(MutableCopy, *MEMORY[0x277CBEEA0], codeCopy);
     LocaleIdentifierFromComponents = CFLocaleCreateLocaleIdentifierFromComponents(0, MutableCopy);
     v13 = CFLocaleCreate(0, LocaleIdentifierFromComponents);
     v8 = [CFLocaleGetValue(v13 *MEMORY[0x277CBEEA8])];
-    [(NSMutableDictionary *)self->mCurrencyCodeToSymbolMap setObject:v8 forKey:v3];
+    [(NSMutableDictionary *)self->mCurrencyCodeToSymbolMap setObject:v8 forKey:codeCopy];
 
     CFRelease(v13);
     CFRelease(LocaleIdentifierFromComponents);
@@ -931,16 +931,16 @@ LABEL_17:
   return v8;
 }
 
-- (id)halfWidthCurrencySymbolForCurrencyCode:(id)a3
+- (id)halfWidthCurrencySymbolForCurrencyCode:(id)code
 {
   mCurrencyCodeToHalfWidthSymbolMap = self->mCurrencyCodeToHalfWidthSymbolMap;
   objc_sync_enter(mCurrencyCodeToHalfWidthSymbolMap);
-  MutableCopy = [(NSMutableDictionary *)self->mCurrencyCodeToHalfWidthSymbolMap objectForKey:a3];
+  MutableCopy = [(NSMutableDictionary *)self->mCurrencyCodeToHalfWidthSymbolMap objectForKey:code];
   if (!MutableCopy)
   {
-    MutableCopy = CFStringCreateMutableCopy(0, 0, [(TSUNumberFormatter *)self currencySymbolForCurrencyCode:a3]);
+    MutableCopy = CFStringCreateMutableCopy(0, 0, [(TSUNumberFormatter *)self currencySymbolForCurrencyCode:code]);
     CFStringTransform(MutableCopy, 0, *MEMORY[0x277CBF0A8], 0);
-    [(NSMutableDictionary *)self->mCurrencyCodeToHalfWidthSymbolMap setObject:MutableCopy forKey:a3];
+    [(NSMutableDictionary *)self->mCurrencyCodeToHalfWidthSymbolMap setObject:MutableCopy forKey:code];
     CFRelease(MutableCopy);
   }
 
@@ -959,33 +959,33 @@ LABEL_17:
   return result;
 }
 
-- (id)defaultFormatStringForValueType:(int)a3 negativeStyle:(int)a4
+- (id)defaultFormatStringForValueType:(int)type negativeStyle:(int)style
 {
   v4 = 112;
-  if ((a3 - 1) < 3)
+  if ((type - 1) < 3)
   {
-    v4 = 8 * (a3 - 1) + 120;
+    v4 = 8 * (type - 1) + 120;
   }
 
-  if (a4 >= 4)
+  if (style >= 4)
   {
-    v5 = 4;
+    styleCopy = 4;
   }
 
   else
   {
-    v5 = a4;
+    styleCopy = style;
   }
 
-  return [*(&self->super.isa + v4) objectAtIndex:v5];
+  return [*(&self->super.isa + v4) objectAtIndex:styleCopy];
 }
 
-- (id)defaultFormatStringForValueType:(int)a3
+- (id)defaultFormatStringForValueType:(int)type
 {
   v3 = 96;
-  if ((a3 - 1) < 3)
+  if ((type - 1) < 3)
   {
-    v3 = 8 * (a3 - 1) + 72;
+    v3 = 8 * (type - 1) + 72;
   }
 
   return *(&self->super.isa + v3);

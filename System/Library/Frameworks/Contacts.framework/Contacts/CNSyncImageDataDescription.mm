@@ -1,21 +1,21 @@
 @interface CNSyncImageDataDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (void)ABValueForABPerson:(void *)a3;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (void)ABValueForABPerson:(void *)person;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNSyncImageDataDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 syncImageData];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  syncImageData = [contactCopy syncImageData];
+  if (!syncImageData)
   {
-    v4 = [v7 syncImageData];
-    if (!v4)
+    syncImageData2 = [otherCopy syncImageData];
+    if (!syncImageData2)
     {
       v11 = 1;
 LABEL_6:
@@ -24,11 +24,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 syncImageData];
-  v10 = [v7 syncImageData];
-  v11 = [v9 isEqual:v10];
+  syncImageData3 = [contactCopy syncImageData];
+  syncImageData4 = [otherCopy syncImageData];
+  v11 = [syncImageData3 isEqual:syncImageData4];
 
-  if (!v8)
+  if (!syncImageData)
   {
     goto LABEL_6;
   }
@@ -38,30 +38,30 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_syncImageData"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_syncImageData"];
 
   v7 = [v9 copy];
-  v8 = v5[39];
-  v5[39] = v7;
+  v8 = contactCopy[39];
+  contactCopy[39] = v7;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A188];
+    *d = *MEMORY[0x1E698A188];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
-- (void)ABValueForABPerson:(void *)a3
+- (void)ABValueForABPerson:(void *)person
 {
-  result = ABPersonCopyImageDataWithFormat(a3, 5u);
+  result = ABPersonCopyImageDataWithFormat(person, 5u);
   if (result)
   {
 

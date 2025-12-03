@@ -13,13 +13,13 @@
 - (__CFString)anonymizedName
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = objc_getAssociatedObject(a1, &PHPersonPNPersonProtocolAnonymizedNameKey);
+  v2 = objc_getAssociatedObject(self, &PHPersonPNPersonProtocolAnonymizedNameKey);
   if (!v2)
   {
-    v3 = [a1 name];
-    if ([v3 length])
+    name = [self name];
+    if ([name length])
     {
-      v4 = [v3 dataUsingEncoding:1 allowLossyConversion:1];
+      v4 = [name dataUsingEncoding:1 allowLossyConversion:1];
       CC_SHA1([v4 bytes], objc_msgSend(v4, "length"), md);
       v5 = [MEMORY[0x1E695DEF0] dataWithBytes:md length:20];
       v2 = [v5 base64EncodedStringWithOptions:0];
@@ -40,7 +40,7 @@
       v6 = &stru_1F496CB30;
     }
 
-    objc_setAssociatedObject(a1, &PHPersonPNPersonProtocolAnonymizedNameKey, v6, 1);
+    objc_setAssociatedObject(self, &PHPersonPNPersonProtocolAnonymizedNameKey, v6, 1);
   }
 
   if ([(__CFString *)v2 length])
@@ -60,35 +60,35 @@
 
 - (void)setIsVerified:()PNPersonProtocol
 {
-  v1 = [MEMORY[0x1E6978988] changeRequestForPerson:a1];
+  v1 = [MEMORY[0x1E6978988] changeRequestForPerson:self];
   [v1 setVerifiedType:2];
 }
 
 - (void)setManualOrder:()PNPersonProtocol
 {
-  v4 = [MEMORY[0x1E6978988] changeRequestForPerson:a1];
+  v4 = [MEMORY[0x1E6978988] changeRequestForPerson:self];
   [v4 setManualOrder:a3];
 }
 
 - (id)keyFace
 {
-  v1 = [MEMORY[0x1E69787D0] fetchKeyFaceForPerson:a1 options:0];
-  v2 = [v1 firstObject];
+  v1 = [MEMORY[0x1E69787D0] fetchKeyFaceForPerson:self options:0];
+  firstObject = [v1 firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 - (void)setKeyFace:()PNPersonProtocol
 {
   v9 = a3;
-  v4 = [a1 keyFace];
-  v5 = [v4 localIdentifier];
-  v6 = [v9 localIdentifier];
-  v7 = [v5 isEqualToString:v6];
+  keyFace = [self keyFace];
+  localIdentifier = [keyFace localIdentifier];
+  localIdentifier2 = [v9 localIdentifier];
+  v7 = [localIdentifier isEqualToString:localIdentifier2];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [MEMORY[0x1E6978988] changeRequestForPerson:a1];
+    v8 = [MEMORY[0x1E6978988] changeRequestForPerson:self];
     [v8 setKeyFace:v9 forCluster:0];
   }
 }
@@ -97,15 +97,15 @@
 {
   v4 = MEMORY[0x1E6978988];
   v5 = a3;
-  v6 = [v4 changeRequestForPerson:a1];
+  v6 = [v4 changeRequestForPerson:self];
   [v6 addMergeCandidatePersons:v5];
 }
 
 - (id)personLocalIdentifiers
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  v1 = [a1 localIdentifier];
-  v4[0] = v1;
+  localIdentifier = [self localIdentifier];
+  v4[0] = localIdentifier;
   v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v4 count:1];
 
   return v2;

@@ -1,31 +1,31 @@
 @interface AVTAvatarActionsRecordUpdate
-+ (id)recordUpdateForDeletingRecord:(id)a3 withDataSource:(id)a4;
-- (AVTAvatarActionsRecordUpdate)initWithAvatarRecord:(id)a3 fromLeft:(BOOL)a4;
++ (id)recordUpdateForDeletingRecord:(id)record withDataSource:(id)source;
+- (AVTAvatarActionsRecordUpdate)initWithAvatarRecord:(id)record fromLeft:(BOOL)left;
 @end
 
 @implementation AVTAvatarActionsRecordUpdate
 
-- (AVTAvatarActionsRecordUpdate)initWithAvatarRecord:(id)a3 fromLeft:(BOOL)a4
+- (AVTAvatarActionsRecordUpdate)initWithAvatarRecord:(id)record fromLeft:(BOOL)left
 {
-  v7 = a3;
+  recordCopy = record;
   v11.receiver = self;
   v11.super_class = AVTAvatarActionsRecordUpdate;
   v8 = [(AVTAvatarActionsRecordUpdate *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_avatarRecord, a3);
-    v9->_fromLeft = a4;
+    objc_storeStrong(&v8->_avatarRecord, record);
+    v9->_fromLeft = left;
   }
 
   return v9;
 }
 
-+ (id)recordUpdateForDeletingRecord:(id)a3 withDataSource:(id)a4
++ (id)recordUpdateForDeletingRecord:(id)record withDataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 numberOfRecords] < 2)
+  recordCopy = record;
+  sourceCopy = source;
+  if ([sourceCopy numberOfRecords] < 2)
   {
     v15 = 0;
   }
@@ -36,18 +36,18 @@
     v17[1] = 3221225472;
     v17[2] = __77__AVTAvatarActionsRecordUpdate_recordUpdateForDeletingRecord_withDataSource___block_invoke;
     v17[3] = &unk_1E7F3B3B0;
-    v18 = v6;
-    v8 = [v7 indexOfRecordPassingTest:v17];
-    v9 = [v7 indexSetForEditableRecords];
-    v10 = [v9 mutableCopy];
+    v18 = recordCopy;
+    v8 = [sourceCopy indexOfRecordPassingTest:v17];
+    indexSetForEditableRecords = [sourceCopy indexSetForEditableRecords];
+    v10 = [indexSetForEditableRecords mutableCopy];
 
     [v10 removeIndex:v8];
     if ([v10 count])
     {
       v11 = [v10 closestIndexToIndex:v8 greaterIndexesFirst:1];
       v12 = v11 < v8;
-      v13 = [a1 alloc];
-      v14 = [v7 recordAtIndex:v11];
+      v13 = [self alloc];
+      v14 = [sourceCopy recordAtIndex:v11];
       v15 = [v13 initWithAvatarRecord:v14 fromLeft:v12];
     }
 

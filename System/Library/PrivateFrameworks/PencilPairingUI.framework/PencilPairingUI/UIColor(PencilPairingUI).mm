@@ -81,16 +81,16 @@
 
 + (id)fingerDrawingInkColor
 {
-  v0 = [MEMORY[0x277D75348] blackColor];
-  v1 = [v0 colorWithAlphaComponent:0.1];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v1 = [blackColor colorWithAlphaComponent:0.1];
 
   return v1;
 }
 
 + (id)batteryBodyColor
 {
-  v0 = [MEMORY[0x277D75348] labelColor];
-  v1 = [v0 colorWithAlphaComponent:0.4];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v1 = [labelColor colorWithAlphaComponent:0.4];
 
   return v1;
 }

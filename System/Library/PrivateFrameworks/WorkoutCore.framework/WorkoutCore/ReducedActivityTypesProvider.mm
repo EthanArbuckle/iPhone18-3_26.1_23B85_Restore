@@ -1,7 +1,7 @@
 @interface ReducedActivityTypesProvider
 - (NSArray)reducedActivityTypes;
 - (_TtC11WorkoutCore28ReducedActivityTypesProvider)init;
-- (void)setReducedActivityTypes:(id)a3;
+- (void)setReducedActivityTypes:(id)types;
 @end
 
 @implementation ReducedActivityTypesProvider
@@ -25,17 +25,17 @@
   return v4.super.isa;
 }
 
-- (void)setReducedActivityTypes:(id)a3
+- (void)setReducedActivityTypes:(id)types
 {
-  v3 = a3;
-  if (a3)
+  typesCopy = types;
+  if (types)
   {
     type metadata accessor for FIUIWorkoutActivityType();
-    v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    typesCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = self;
-  ReducedActivityTypesProvider.reducedActivityTypes.setter(v3);
+  selfCopy = self;
+  ReducedActivityTypesProvider.reducedActivityTypes.setter(typesCopy);
 }
 
 - (_TtC11WorkoutCore28ReducedActivityTypesProvider)init

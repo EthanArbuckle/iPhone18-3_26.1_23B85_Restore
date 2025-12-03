@@ -1,19 +1,19 @@
 @interface _PASImmutableDomainSelection
-- (BOOL)containsDomain:(id)a3;
-- (BOOL)isEqualToDomainSelection:(id)a3;
-- (id)_initWithNonOverlappingDomainSet:(id)a3;
+- (BOOL)containsDomain:(id)domain;
+- (BOOL)isEqualToDomainSelection:(id)selection;
+- (id)_initWithNonOverlappingDomainSet:(id)set;
 @end
 
 @implementation _PASImmutableDomainSelection
 
-- (BOOL)isEqualToDomainSelection:(id)a3
+- (BOOL)isEqualToDomainSelection:(id)selection
 {
-  v4 = a3;
-  if (v4 && (v5 = -[_PASDomainSelection count](self, "count"), v5 == [v4 count]))
+  selectionCopy = selection;
+  if (selectionCopy && (v5 = -[_PASDomainSelection count](self, "count"), v5 == [selectionCopy count]))
   {
     domains = self->_domains;
-    v7 = [v4 allDomains];
-    v8 = [(NSSet *)domains isEqual:v7];
+    allDomains = [selectionCopy allDomains];
+    v8 = [(NSSet *)domains isEqual:allDomains];
   }
 
   else
@@ -24,11 +24,11 @@
   return v8;
 }
 
-- (BOOL)containsDomain:(id)a3
+- (BOOL)containsDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v5 = objc_autoreleasePoolPush();
-  if ([(NSSet *)self->_domains containsObject:v4])
+  if ([(NSSet *)self->_domains containsObject:domainCopy])
   {
     v6 = 1;
   }
@@ -37,22 +37,22 @@
   {
     while (1)
     {
-      v7 = [v4 rangeOfString:@"." options:6];
+      v7 = [domainCopy rangeOfString:@"." options:6];
       v6 = v8 != 0;
       if (!v8)
       {
         break;
       }
 
-      v9 = [v4 substringToIndex:v7];
+      v9 = [domainCopy substringToIndex:v7];
 
       objc_autoreleasePoolPop(v5);
       v5 = objc_autoreleasePoolPush();
-      v4 = v9;
+      domainCopy = v9;
       if ([(NSSet *)self->_domains containsObject:v9])
       {
         v6 = 1;
-        v4 = v9;
+        domainCopy = v9;
         break;
       }
     }
@@ -63,19 +63,19 @@
   return v6;
 }
 
-- (id)_initWithNonOverlappingDomainSet:(id)a3
+- (id)_initWithNonOverlappingDomainSet:(id)set
 {
-  v6 = a3;
+  setCopy = set;
   v7 = [(_PASDomainSelection *)self init];
   if (v7)
   {
-    if (![v6 count])
+    if (![setCopy count])
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:v7 file:@"_PASDomainSelection.m" lineNumber:224 description:@"_PASImmutableDomainSelection shouldn't be instantiated with zero domains"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:@"_PASDomainSelection.m" lineNumber:224 description:@"_PASImmutableDomainSelection shouldn't be instantiated with zero domains"];
     }
 
-    objc_storeStrong(&v7->_domains, a3);
+    objc_storeStrong(&v7->_domains, set);
   }
 
   return v7;

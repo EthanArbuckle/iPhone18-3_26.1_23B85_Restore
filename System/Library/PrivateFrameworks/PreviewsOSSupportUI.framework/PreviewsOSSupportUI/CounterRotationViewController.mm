@@ -1,14 +1,14 @@
 @interface CounterRotationViewController
-- (_TtC19PreviewsOSSupportUI29CounterRotationViewController)initWithCoder:(id)a3;
-- (_TtC19PreviewsOSSupportUI29CounterRotationViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC19PreviewsOSSupportUI29CounterRotationViewController)initWithCoder:(id)coder;
+- (_TtC19PreviewsOSSupportUI29CounterRotationViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CounterRotationViewController
 
-- (_TtC19PreviewsOSSupportUI29CounterRotationViewController)initWithCoder:(id)a3
+- (_TtC19PreviewsOSSupportUI29CounterRotationViewController)initWithCoder:(id)coder
 {
   result = sub_25F52A620();
   __break(1u);
@@ -21,11 +21,11 @@
   v5.super_class = swift_getObjectType();
   v2 = v5.receiver;
   [(CounterRotationViewController *)&v5 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 addSubview_];
+    v4 = view;
+    [view addSubview_];
   }
 
   else
@@ -41,11 +41,11 @@
   v2 = v14.receiver;
   [(CounterRotationViewController *)&v14 viewWillLayoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC19PreviewsOSSupportUI29CounterRotationViewController_contentView];
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 bounds];
+    v5 = view;
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -60,15 +60,15 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  _s19PreviewsOSSupportUI29CounterRotationViewControllerC18viewWillTransition2to4withySo6CGSizeV_So06UIViewgJ11Coordinator_ptF_0(a4);
+  selfCopy = self;
+  _s19PreviewsOSSupportUI29CounterRotationViewControllerC18viewWillTransition2to4withySo6CGSizeV_So06UIViewgJ11Coordinator_ptF_0(coordinator);
   swift_unknownObjectRelease();
 }
 
-- (_TtC19PreviewsOSSupportUI29CounterRotationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19PreviewsOSSupportUI29CounterRotationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

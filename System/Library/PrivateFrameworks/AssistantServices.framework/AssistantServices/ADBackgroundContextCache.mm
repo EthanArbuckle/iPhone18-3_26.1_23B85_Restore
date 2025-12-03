@@ -1,8 +1,8 @@
 @interface ADBackgroundContextCache
-+ (id)_backgroundContextWithObjects:(id)a3;
++ (id)_backgroundContextWithObjects:(id)objects;
 - (id)backgroundContextWithCachedObjects;
-- (void)_setDefaultToken:(id)a3 inDynamiteClientState:(id)a4;
-- (void)_updateDefaultTokenInDynamiteClientState:(id)a3;
+- (void)_setDefaultToken:(id)token inDynamiteClientState:(id)state;
+- (void)_updateDefaultTokenInDynamiteClientState:(id)state;
 @end
 
 @implementation ADBackgroundContextCache
@@ -87,9 +87,9 @@
     if ([v6 count])
     {
       v12 = +[ADMultiUserService sharedService];
-      v13 = [v12 countVoiceProfiles];
+      countVoiceProfiles = [v12 countVoiceProfiles];
 
-      if (v13)
+      if (countVoiceProfiles)
       {
         v14 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
         v18 = _NSConcreteStackBlock;
@@ -112,9 +112,9 @@
   return v16;
 }
 
-- (void)_updateDefaultTokenInDynamiteClientState:(id)a3
+- (void)_updateDefaultTokenInDynamiteClientState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   musicPersonalizationToken = self->_musicPersonalizationToken;
   if (*&self->_musicPersonalizationToken != 0)
   {
@@ -127,34 +127,34 @@
       musicPersonalizationToken = self->_musicPersonalizationToken;
     }
 
-    [(ADBackgroundContextCache *)self _setDefaultToken:musicPersonalizationToken inDynamiteClientState:v4];
+    [(ADBackgroundContextCache *)self _setDefaultToken:musicPersonalizationToken inDynamiteClientState:stateCopy];
   }
 }
 
-- (void)_setDefaultToken:(id)a3 inDynamiteClientState:(id)a4
+- (void)_setDefaultToken:(id)token inDynamiteClientState:(id)state
 {
-  v8 = a4;
-  v6 = a3;
-  [v8 setUserToken:v6];
+  stateCopy = state;
+  tokenCopy = token;
+  [stateCopy setUserToken:tokenCopy];
   v7 = objc_alloc_init(SAUserState);
-  [v7 setUserToken:v6];
+  [v7 setUserToken:tokenCopy];
 
   if (self->_musicPersonalizationTokenStatus)
   {
-    [v8 setUserTokenStatus:?];
+    [stateCopy setUserTokenStatus:?];
     [v7 setUserTokenStatus:self->_musicPersonalizationTokenStatus];
   }
 
-  [v8 setDefaultUserState:v7];
+  [stateCopy setDefaultUserState:v7];
 }
 
-+ (id)_backgroundContextWithObjects:(id)a3
++ (id)_backgroundContextWithObjects:(id)objects
 {
-  v3 = a3;
+  objectsCopy = objects;
   v4 = objc_alloc_init(SASetBackgroundContext);
-  if ([v3 count])
+  if ([objectsCopy count])
   {
-    [v4 setObjects:v3];
+    [v4 setObjects:objectsCopy];
   }
 
   return v4;

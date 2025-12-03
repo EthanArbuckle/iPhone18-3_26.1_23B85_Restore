@@ -1,6 +1,6 @@
 @interface CRLBrushStrokeLayoutOptions
 - (CRLBrushStrokeLayoutOptions)init;
-- (void)setStrokeEnd:(double)a3;
+- (void)setStrokeEnd:(double)end;
 @end
 
 @implementation CRLBrushStrokeLayoutOptions
@@ -18,11 +18,11 @@
   return result;
 }
 
-- (void)setStrokeEnd:(double)a3
+- (void)setStrokeEnd:(double)end
 {
-  v5 = sub_1004C3240(a3, 0.0, 1.0);
+  v5 = sub_1004C3240(end, 0.0, 1.0);
   self->_strokeEnd = v5;
-  if (v5 != a3)
+  if (v5 != end)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -50,7 +50,7 @@
 
     v7 = [NSString stringWithUTF8String:"[CRLBrushStrokeLayoutOptions setStrokeEnd:]"];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLBrushStroke.mm"];
-    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:146 isFatal:0 description:"strokeEnd (%f) should be between 0 and 1 inclusive.", *&a3];
+    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:146 isFatal:0 description:"strokeEnd (%f) should be between 0 and 1 inclusive.", *&end];
   }
 }
 

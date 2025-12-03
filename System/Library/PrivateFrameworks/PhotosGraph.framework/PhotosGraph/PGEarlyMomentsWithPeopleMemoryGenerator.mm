@@ -1,44 +1,44 @@
 @interface PGEarlyMomentsWithPeopleMemoryGenerator
-+ (id)earlyMomentNodesByPersonNodeWithPersonNodes:(id)a3;
-+ (unint64_t)numberOfPotentialMemoriesForGraph:(id)a3;
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4;
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8;
-- (void)_enumerateEarlyMomentsWithPeopleForLocalDate:(id)a3 withGraph:(id)a4 usingBlock:(id)a5;
-- (void)_enumeratePotentialMemoriesForProcessingWindow:(id)a3 graph:(id)a4 progressBlock:(id)a5 usingBlock:(id)a6;
++ (id)earlyMomentNodesByPersonNodeWithPersonNodes:(id)nodes;
++ (unint64_t)numberOfPotentialMemoriesForGraph:(id)graph;
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph;
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph;
+- (void)_enumerateEarlyMomentsWithPeopleForLocalDate:(id)date withGraph:(id)graph usingBlock:(id)block;
+- (void)_enumeratePotentialMemoriesForProcessingWindow:(id)window graph:(id)graph progressBlock:(id)block usingBlock:(id)usingBlock;
 @end
 
 @implementation PGEarlyMomentsWithPeopleMemoryGenerator
 
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph
 {
-  v9 = a7;
-  v10 = a3;
-  v11 = [v10 memoryFeatureNodes];
-  v12 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:v11];
+  contextCopy = context;
+  memoryCopy = memory;
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+  v12 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:memoryFeatureNodes];
 
-  v13 = [v10 memoryMomentNodes];
+  memoryMomentNodes = [memoryCopy memoryMomentNodes];
 
   v14 = [PGPeopleMemoryTitleGenerator alloc];
-  v15 = [v13 temporarySet];
-  v16 = [v12 temporarySet];
-  v17 = [(PGPeopleMemoryTitleGenerator *)v14 initWithMomentNodes:v15 personNodes:v16 timeTitleOptions:0 type:3 titleGenerationContext:v9];
+  temporarySet = [memoryMomentNodes temporarySet];
+  temporarySet2 = [v12 temporarySet];
+  v17 = [(PGPeopleMemoryTitleGenerator *)v14 initWithMomentNodes:temporarySet personNodes:temporarySet2 timeTitleOptions:0 type:3 titleGenerationContext:contextCopy];
 
   return v17;
 }
 
-- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)a3 inGraph:(id)a4
+- (id)keyAssetCurationOptionsWithTriggeredMemory:(id)memory inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 memoryFeatureNodes];
-  v9 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:v8];
+  graphCopy = graph;
+  memoryCopy = memory;
+  memoryFeatureNodes = [memoryCopy memoryFeatureNodes];
+  v9 = [(PGGraphNodeCollection *)PGGraphPersonNodeCollection subsetInCollection:memoryFeatureNodes];
 
   v13.receiver = self;
   v13.super_class = PGEarlyMomentsWithPeopleMemoryGenerator;
-  v10 = [(PGMemoryGenerator *)&v13 keyAssetCurationOptionsWithTriggeredMemory:v7 inGraph:v6];
+  v10 = [(PGMemoryGenerator *)&v13 keyAssetCurationOptionsWithTriggeredMemory:memoryCopy inGraph:graphCopy];
 
-  v11 = [v9 localIdentifiers];
-  [v10 setReferencePersonLocalIdentifiers:v11];
+  localIdentifiers = [v9 localIdentifiers];
+  [v10 setReferencePersonLocalIdentifiers:localIdentifiers];
 
   [v10 setMinimumNumberOfReferencePersons:0];
 
@@ -68,21 +68,21 @@ uint64_t __117__PGEarlyMomentsWithPeopleMemoryGenerator_relevantFeederForTrigger
   return result;
 }
 
-- (void)_enumeratePotentialMemoriesForProcessingWindow:(id)a3 graph:(id)a4 progressBlock:(id)a5 usingBlock:(id)a6
+- (void)_enumeratePotentialMemoriesForProcessingWindow:(id)window graph:(id)graph progressBlock:(id)block usingBlock:(id)usingBlock
 {
   v59 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PGMemoryGenerator *)self memoryGenerationContext];
-  v15 = [v14 processedScenesAndFacesCache];
-  v16 = [v15 libraryHasEnoughScenesProcessed:1 andProcessedFaces:1];
+  windowCopy = window;
+  graphCopy = graph;
+  blockCopy = block;
+  usingBlockCopy = usingBlock;
+  memoryGenerationContext = [(PGMemoryGenerator *)self memoryGenerationContext];
+  processedScenesAndFacesCache = [memoryGenerationContext processedScenesAndFacesCache];
+  v16 = [processedScenesAndFacesCache libraryHasEnoughScenesProcessed:1 andProcessedFaces:1];
 
   if (v16)
   {
-    v17 = [(PGEarlyMomentsWithPeopleMemoryGenerator *)self localDate];
-    if (v17)
+    localDate = [(PGEarlyMomentsWithPeopleMemoryGenerator *)self localDate];
+    if (localDate)
     {
       [(PGEarlyMomentsWithPeopleMemoryGenerator *)self localDate];
     }
@@ -116,13 +116,13 @@ uint64_t __117__PGEarlyMomentsWithPeopleMemoryGenerator_relevantFeederForTrigger
     v29 = &v45;
     v30 = &v41;
     v31 = &v37;
-    v26 = v11;
-    v27 = self;
+    v26 = graphCopy;
+    selfCopy = self;
     v32 = &v33;
-    v28 = v13;
+    v28 = usingBlockCopy;
     [(PGEarlyMomentsWithPeopleMemoryGenerator *)self _enumerateEarlyMomentsWithPeopleForLocalDate:v18 withGraph:v26 usingBlock:v25];
-    v19 = [(PGMemoryGenerator *)self loggingConnection];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
       v20 = v46[3];
       v21 = v42[3];
@@ -138,7 +138,7 @@ uint64_t __117__PGEarlyMomentsWithPeopleMemoryGenerator_relevantFeederForTrigger
       v56 = 0;
       v57 = 2048;
       v58 = v23;
-      _os_log_impl(&dword_22F0FC000, v19, OS_LOG_TYPE_DEFAULT, "Memory Creation Request: Found %lu, rejected %lu uninteresting, %lu too short, %lu insufficiently faced, %lu blocklisting", buf, 0x34u);
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Memory Creation Request: Found %lu, rejected %lu uninteresting, %lu too short, %lu insufficiently faced, %lu blocklisting", buf, 0x34u);
     }
 
     _Block_object_dispose(&v33, 8);
@@ -315,37 +315,37 @@ LABEL_36:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enumerateEarlyMomentsWithPeopleForLocalDate:(id)a3 withGraph:(id)a4 usingBlock:(id)a5
+- (void)_enumerateEarlyMomentsWithPeopleForLocalDate:(id)date withGraph:(id)graph usingBlock:(id)block
 {
   v65 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v45 = a5;
-  v44 = v8;
+  dateCopy = date;
+  graphCopy = graph;
+  blockCopy = block;
+  v44 = dateCopy;
   if ([(PGEarlyMomentsWithPeopleMemoryGenerator *)self shouldGenerateAllMemories])
   {
-    v10 = [v9 momentNodes];
+    momentNodes = [graphCopy momentNodes];
   }
 
   else
   {
-    v11 = [MEMORY[0x277D27690] monthFromDate:v8];
-    v12 = [MEMORY[0x277D27690] weekOfMonthFromDate:v8];
-    v13 = [v9 dateNodesForMonth:v11];
-    v14 = [v9 dateNodesForWeekOfMonth:v12];
+    v11 = [MEMORY[0x277D27690] monthFromDate:dateCopy];
+    v12 = [MEMORY[0x277D27690] weekOfMonthFromDate:dateCopy];
+    v13 = [graphCopy dateNodesForMonth:v11];
+    v14 = [graphCopy dateNodesForWeekOfMonth:v12];
     v15 = [MEMORY[0x277CBEB58] setWithSet:v14];
     [v15 intersectSet:v13];
-    v16 = [(MAElementCollection *)[PGGraphDateNodeCollection alloc] initWithSet:v15 graph:v9];
-    v10 = [(PGGraphDateNodeCollection *)v16 momentNodes];
+    v16 = [(MAElementCollection *)[PGGraphDateNodeCollection alloc] initWithSet:v15 graph:graphCopy];
+    momentNodes = [(PGGraphDateNodeCollection *)v16 momentNodes];
   }
 
-  v17 = [v10 personNodes];
-  v18 = [v9 meNodeCollection];
-  v19 = [v17 collectionBySubtracting:v18];
+  personNodes = [momentNodes personNodes];
+  meNodeCollection = [graphCopy meNodeCollection];
+  v19 = [personNodes collectionBySubtracting:meNodeCollection];
 
-  v20 = [(PGMemoryGenerator *)self memoryGenerationContext];
-  v43 = v9;
-  v21 = [v20 momentNodesAtSensitiveLocationsInGraph:v9];
+  memoryGenerationContext = [(PGMemoryGenerator *)self memoryGenerationContext];
+  v43 = graphCopy;
+  v21 = [memoryGenerationContext momentNodesAtSensitiveLocationsInGraph:graphCopy];
 
   v61 = 0;
   v42 = v19;
@@ -393,7 +393,7 @@ LABEL_36:
                 objc_enumerationMutation(v26);
               }
 
-              if (![v10 containsNode:*(*(&v53 + 1) + 8 * v31)])
+              if (![momentNodes containsNode:*(*(&v53 + 1) + 8 * v31)])
               {
                 v29 = v32;
                 goto LABEL_19;
@@ -457,7 +457,7 @@ LABEL_19:
               while (v36);
             }
 
-            v45[2](v45, v34, v24, &v61);
+            blockCopy[2](blockCopy, v34, v24, &v61);
             v40 = v61;
 
             if (v40 == 1)
@@ -491,19 +491,19 @@ LABEL_38:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)earlyMomentNodesByPersonNodeWithPersonNodes:(id)a3
++ (id)earlyMomentNodesByPersonNodeWithPersonNodes:(id)nodes
 {
-  v3 = a3;
-  v4 = [v3 socialGroupNodes];
-  v5 = [v4 personNodes];
-  v6 = [v5 collectionByIntersecting:v3];
+  nodesCopy = nodes;
+  socialGroupNodes = [nodesCopy socialGroupNodes];
+  personNodes = [socialGroupNodes personNodes];
+  v6 = [personNodes collectionByIntersecting:nodesCopy];
 
-  v7 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __87__PGEarlyMomentsWithPeopleMemoryGenerator_earlyMomentNodesByPersonNodeWithPersonNodes___block_invoke;
   v10[3] = &unk_27887F328;
-  v8 = v7;
+  v8 = strongToStrongObjectsMapTable;
   v11 = v8;
   [v6 enumerateIdentifiersAsCollectionsWithBlock:v10];
 
@@ -597,10 +597,10 @@ LABEL_3:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)numberOfPotentialMemoriesForGraph:(id)a3
++ (unint64_t)numberOfPotentialMemoriesForGraph:(id)graph
 {
-  v4 = [PGGraphPersonNodeCollection personNodesExcludingMeInGraph:a3];
-  v5 = [a1 earlyMomentNodesByPersonNodeWithPersonNodes:v4];
+  v4 = [PGGraphPersonNodeCollection personNodesExcludingMeInGraph:graph];
+  v5 = [self earlyMomentNodesByPersonNodeWithPersonNodes:v4];
   v6 = [v5 count];
 
   return v6;

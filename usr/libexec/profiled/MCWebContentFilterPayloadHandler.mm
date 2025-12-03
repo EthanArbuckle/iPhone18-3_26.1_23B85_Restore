@@ -1,7 +1,7 @@
 @interface MCWebContentFilterPayloadHandler
-+ (id)internalErrorWithUnderlyingError:(id)a3;
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
-- (id)_copyCertificateWithPayloadUUID:(id)a3 intoKeychainAccessGroup:(id)a4 personaID:(id)a5;
++ (id)internalErrorWithUnderlyingError:(id)error;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
+- (id)_copyCertificateWithPayloadUUID:(id)d intoKeychainAccessGroup:(id)group personaID:(id)iD;
 - (void)_installDependency;
 - (void)_removeDependency;
 - (void)remove;
@@ -14,67 +14,67 @@
 - (void)_installDependency
 {
   v8 = +[MCDependencyManager sharedManager];
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 UUID];
-  v5 = [(MCNewPayloadHandler *)self profileHandler];
-  v6 = [v5 profile];
-  v7 = [v6 identifier];
-  [v8 addDependent:v4 ofParent:v7 inDomain:kMCDMProfileWithWebContentFilterToPayloadUUIDDependencyKey];
+  payload = [(MCNewPayloadHandler *)self payload];
+  uUID = [payload UUID];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  profile = [profileHandler profile];
+  identifier = [profile identifier];
+  [v8 addDependent:uUID ofParent:identifier inDomain:kMCDMProfileWithWebContentFilterToPayloadUUIDDependencyKey];
 }
 
 - (void)_removeDependency
 {
   v8 = +[MCDependencyManager sharedManager];
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 UUID];
-  v5 = [(MCNewPayloadHandler *)self profileHandler];
-  v6 = [v5 profile];
-  v7 = [v6 identifier];
-  [v8 removeDependent:v4 fromParent:v7 inDomain:kMCDMProfileWithWebContentFilterToPayloadUUIDDependencyKey];
+  payload = [(MCNewPayloadHandler *)self payload];
+  uUID = [payload UUID];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  profile = [profileHandler profile];
+  identifier = [profile identifier];
+  [v8 removeDependent:uUID fromParent:identifier inDomain:kMCDMProfileWithWebContentFilterToPayloadUUIDDependencyKey];
 }
 
-+ (id)internalErrorWithUnderlyingError:(id)a3
++ (id)internalErrorWithUnderlyingError:(id)error
 {
   v3 = MCWebContentFilterErrorDomain;
-  v4 = a3;
+  errorCopy = error;
   v5 = MCErrorArray();
-  v6 = [NSError MCErrorWithDomain:v3 code:40000 descriptionArray:v5 underlyingError:v4 errorType:MCErrorTypeFatal, 0];
+  v6 = [NSError MCErrorWithDomain:v3 code:40000 descriptionArray:v5 underlyingError:errorCopy errorType:MCErrorTypeFatal, 0];
 
   return v6;
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v80 = a3;
-  v82 = a4;
-  v81 = a5;
-  v90 = self;
-  v89 = [(MCNewPayloadHandler *)self payload];
+  installerCopy = installer;
+  optionsCopy = options;
+  clientCopy = client;
+  selfCopy = self;
+  payload = [(MCNewPayloadHandler *)self payload];
   v83 = objc_alloc_init(NSMutableArray);
-  v11 = [v89 contentFilterUUID];
-  if (v11)
+  contentFilterUUID = [payload contentFilterUUID];
+  if (contentFilterUUID)
   {
   }
 
   else
   {
     v12 = +[MDMCloudConfiguration sharedConfiguration];
-    v13 = [v12 isSupervised];
+    isSupervised = [v12 isSupervised];
 
-    if ((v13 & 1) == 0)
+    if ((isSupervised & 1) == 0)
     {
-      if (a6)
+      if (error)
       {
         v29 = MCErrorArray();
-        *a6 = [NSError MCErrorWithDomain:MCWebContentFilterErrorDomain code:40003 descriptionArray:v29 errorType:MCErrorTypeFatal, 0];
+        *error = [NSError MCErrorWithDomain:MCWebContentFilterErrorDomain code:40003 descriptionArray:v29 errorType:MCErrorTypeFatal, 0];
       }
 
       goto LABEL_72;
     }
   }
 
-  v14 = [v89 filterType];
-  v15 = [v14 isEqualToString:kMCWebContentFilterTypePlugin];
+  filterType = [payload filterType];
+  v15 = [filterType isEqualToString:kMCWebContentFilterTypePlugin];
 
   if (!v15)
   {
@@ -85,7 +85,7 @@ LABEL_12:
   }
 
   v16 = +[MCWebContentFilterPayload typeStrings];
-  v17 = [v16 firstObject];
+  firstObject = [v16 firstObject];
   v78 = MCNEProfileIngestionHandlerClassForPayload();
 
   v18 = v78;
@@ -98,45 +98,45 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Could not get NetworkExtension store lock.", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       +[MCWebContentFilterPayloadHandler internalError];
-      *a6 = v18 = v78;
+      *error = v18 = v78;
     }
 
     goto LABEL_72;
   }
 
   [v78 loadConfigurationsForceReloadFromDisk];
-  v19 = [v89 pluginConfiguration];
-  v76 = [MCVPNPayloadBase NEVPNPayloadBaseDelegateWithConfigurationDict:v19];
+  pluginConfiguration = [payload pluginConfiguration];
+  v76 = [MCVPNPayloadBase NEVPNPayloadBaseDelegateWithConfigurationDict:pluginConfiguration];
 
   v20 = +[MCWebContentFilterPayload typeStrings];
-  v21 = [v20 firstObject];
-  [v78 createConfigurationFromPayload:v76 payloadType:v21];
+  firstObject2 = [v20 firstObject];
+  [v78 createConfigurationFromPayload:v76 payloadType:firstObject2];
 
-  v22 = [v78 ingestedConfiguration];
-  v77 = v22;
-  if (!v22)
+  ingestedConfiguration = [v78 ingestedConfiguration];
+  v77 = ingestedConfiguration;
+  if (!ingestedConfiguration)
   {
     v30 = +[MCWebContentFilterPayloadHandler internalError];
     goto LABEL_61;
   }
 
-  v87 = [v22 getPendingCertificateInfo:v76];
+  v87 = [ingestedConfiguration getPendingCertificateInfo:v76];
   if (v87)
   {
-    v23 = [v82 objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
-    v24 = [v23 BOOLValue];
+    v23 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
+    bOOLValue = [v23 BOOLValue];
 
-    if (v24)
+    if (bOOLValue)
     {
       v25 = kMDMPersonaKey;
-      v26 = [v82 objectForKeyedSubscript:kMDMPersonaKey];
+      v26 = [optionsCopy objectForKeyedSubscript:kMDMPersonaKey];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v88 = [v82 objectForKeyedSubscript:v25];
+        v88 = [optionsCopy objectForKeyedSubscript:v25];
       }
 
       else
@@ -188,7 +188,7 @@ LABEL_12:
               v96[2] = sub_10009F7E8;
               v96[3] = &unk_10011CF68;
               v100 = buf;
-              v96[4] = v90;
+              v96[4] = selfCopy;
               v97 = v35;
               v98 = v36;
               v99 = v88;
@@ -197,7 +197,7 @@ LABEL_12:
 
             else
             {
-              v39 = [(MCWebContentFilterPayloadHandler *)v90 _copyCertificateWithPayloadUUID:v35 intoKeychainAccessGroup:v36 personaID:0];
+              v39 = [(MCWebContentFilterPayloadHandler *)selfCopy _copyCertificateWithPayloadUUID:v35 intoKeychainAccessGroup:v36 personaID:0];
               v40 = *(v102 + 5);
               *(v102 + 5) = v39;
             }
@@ -205,8 +205,8 @@ LABEL_12:
             v41 = *(v102 + 5);
             if (v41)
             {
-              v42 = [v89 UUID];
-              [(MCNewPayloadHandler *)v90 _retainDependencyBetweenPersistentID:v41 andUUID:v42 forSystem:1 user:0 personaID:v88];
+              uUID = [payload UUID];
+              [(MCNewPayloadHandler *)selfCopy _retainDependencyBetweenPersistentID:v41 andUUID:uUID forSystem:1 user:0 personaID:v88];
 
               [v83 addObject:*(v102 + 5)];
             }
@@ -216,8 +216,8 @@ LABEL_12:
           {
             if (v35)
             {
-              v7 = [(MCNewPayloadHandler *)v90 profileHandler];
-              v6 = [v7 persistentIDForCertificateUUID:v35];
+              profileHandler = [(MCNewPayloadHandler *)selfCopy profileHandler];
+              v6 = [profileHandler persistentIDForCertificateUUID:v35];
               v38 = v6;
             }
 
@@ -258,48 +258,48 @@ LABEL_12:
   }
 
   [v77 setPayloadInfoIdentity:v76];
-  v45 = [v89 UUID];
-  v46 = [v89 organization];
-  [v77 setPayloadInfoCommon:v45 payloadOrganization:v46];
+  uUID2 = [payload UUID];
+  organization = [payload organization];
+  [v77 setPayloadInfoCommon:uUID2 payloadOrganization:organization];
 
-  v47 = [v89 contentFilterUUID];
-  if (!v47 || ([v89 contentFilterUUID], v48 = objc_claimAutoreleasedReturnValue(), v49 = objc_msgSend(v77, "setPerAppUUID:andSafariDomains:", v48, 0), v48, v47, (v49 & 1) != 0))
+  contentFilterUUID2 = [payload contentFilterUUID];
+  if (!contentFilterUUID2 || ([payload contentFilterUUID], v48 = objc_claimAutoreleasedReturnValue(), v49 = objc_msgSend(v77, "setPerAppUUID:andSafariDomains:", v48, 0), v48, contentFilterUUID2, (v49 & 1) != 0))
   {
-    v50 = [(MCNewPayloadHandler *)v90 profileHandler];
-    v51 = [v50 profile];
+    profileHandler2 = [(MCNewPayloadHandler *)selfCopy profileHandler];
+    profile = [profileHandler2 profile];
 
-    if (v51)
+    if (profile)
     {
       v52 = objc_alloc_init(NSMutableDictionary);
-      v53 = [v51 UUID];
-      v54 = v53 == 0;
+      uUID3 = [profile UUID];
+      v54 = uUID3 == 0;
 
       if (!v54)
       {
-        v55 = [v51 UUID];
-        [v52 setObject:v55 forKeyedSubscript:kMCPayloadUUIDKey];
+        uUID4 = [profile UUID];
+        [v52 setObject:uUID4 forKeyedSubscript:kMCPayloadUUIDKey];
       }
 
-      v56 = [v51 identifier];
-      v57 = v56 == 0;
+      identifier = [profile identifier];
+      v57 = identifier == 0;
 
       if (!v57)
       {
-        v58 = [v51 identifier];
-        [v52 setObject:v58 forKeyedSubscript:kMCPayloadIdentifierKey];
+        identifier2 = [profile identifier];
+        [v52 setObject:identifier2 forKeyedSubscript:kMCPayloadIdentifierKey];
       }
 
-      if (v82)
+      if (optionsCopy)
       {
-        [v52 addEntriesFromDictionary:v82];
+        [v52 addEntriesFromDictionary:optionsCopy];
       }
 
       [v77 setProfileInfo:v52];
     }
 
     [v78 updateDefaultAfterAddingConfiguration];
-    v59 = [v77 getConfigurationIdentifier];
-    [v89 setPersistentResourceID:v59];
+    getConfigurationIdentifier = [v77 getConfigurationIdentifier];
+    [payload setPersistentResourceID:getConfigurationIdentifier];
 
     v95 = 0;
     v60 = [v78 saveIngestedConfiguration:&v95];
@@ -316,10 +316,10 @@ LABEL_61:
 
     if (v30)
     {
-      if (a6)
+      if (error)
       {
         v63 = v30;
-        *a6 = v30;
+        *error = v30;
       }
 
       v93 = 0u;
@@ -341,8 +341,8 @@ LABEL_61:
             }
 
             v68 = *(*(&v91 + 1) + 8 * j);
-            v69 = [v89 UUID];
-            [(MCNewPayloadHandler *)v90 _releaseDependencyBetweenPersistentID:v68 andUUID:v69];
+            uUID5 = [payload UUID];
+            [(MCNewPayloadHandler *)selfCopy _releaseDependencyBetweenPersistentID:v68 andUUID:uUID5];
           }
 
           v65 = [v64 countByEnumeratingWithState:&v91 objects:v111 count:16];
@@ -366,10 +366,10 @@ LABEL_72:
     _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_ERROR, "Could not configure content filter UUID", buf, 2u);
   }
 
-  v72 = [(MCNewPayloadHandler *)v90 payload];
-  v73 = [v72 displayName];
+  payload2 = [(MCNewPayloadHandler *)selfCopy payload];
+  displayName = [payload2 displayName];
   v74 = MCErrorArray();
-  v75 = [NSError MCErrorWithDomain:MCWebContentFilterErrorDomain code:40002 descriptionArray:v74 errorType:MCErrorTypeFatal, v73, 0];
+  v75 = [NSError MCErrorWithDomain:MCWebContentFilterErrorDomain code:40002 descriptionArray:v74 errorType:MCErrorTypeFatal, displayName, 0];
   v27 = v75 != 0;
 
 LABEL_73:
@@ -378,21 +378,21 @@ LABEL_73:
 
 - (void)setAside
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 filterType];
-  v5 = [v4 isEqualToString:kMCWebContentFilterTypePlugin];
+  payload = [(MCNewPayloadHandler *)self payload];
+  filterType = [payload filterType];
+  v5 = [filterType isEqualToString:kMCWebContentFilterTypePlugin];
 
   if (v5)
   {
     v6 = +[MCWebContentFilterPayload typeStrings];
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
     v8 = MCNEProfileIngestionHandlerClassForPayload();
 
     if ([v8 lockConfigurations])
     {
       [v8 loadConfigurationsForceReloadFromDisk];
-      v9 = [v3 persistentResourceID];
-      v10 = [v8 setAsideConfigurationName:v9 unsetAside:0];
+      persistentResourceID = [payload persistentResourceID];
+      v10 = [v8 setAsideConfigurationName:persistentResourceID unsetAside:0];
 
       [v8 unlockConfigurations];
     }
@@ -416,21 +416,21 @@ LABEL_73:
 
 - (void)unsetAside
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 filterType];
-  v5 = [v4 isEqualToString:kMCWebContentFilterTypePlugin];
+  payload = [(MCNewPayloadHandler *)self payload];
+  filterType = [payload filterType];
+  v5 = [filterType isEqualToString:kMCWebContentFilterTypePlugin];
 
   if (v5)
   {
     v6 = +[MCWebContentFilterPayload typeStrings];
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
     v8 = MCNEProfileIngestionHandlerClassForPayload();
 
     if ([v8 lockConfigurations])
     {
       [v8 loadConfigurationsForceReloadFromDisk];
-      v9 = [v3 persistentResourceID];
-      v10 = [v8 setAsideConfigurationName:v9 unsetAside:1];
+      persistentResourceID = [payload persistentResourceID];
+      v10 = [v8 setAsideConfigurationName:persistentResourceID unsetAside:1];
 
       [v8 unlockConfigurations];
     }
@@ -454,25 +454,25 @@ LABEL_73:
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 filterType];
-  v5 = [v4 isEqualToString:kMCWebContentFilterTypePlugin];
+  payload = [(MCNewPayloadHandler *)self payload];
+  filterType = [payload filterType];
+  v5 = [filterType isEqualToString:kMCWebContentFilterTypePlugin];
 
   if (v5)
   {
     v6 = +[MCWebContentFilterPayload typeStrings];
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
     v8 = MCNEProfileIngestionHandlerClassForPayload();
 
     if ([v8 lockConfigurations])
     {
       [v8 loadConfigurationsForceReloadFromDisk];
-      v9 = [v3 persistentResourceID];
+      persistentResourceID = [payload persistentResourceID];
 
-      if (v9)
+      if (persistentResourceID)
       {
-        v10 = [v3 persistentResourceID];
-        v11 = [v8 getCertificatesForConfigurationWithIdentifier:v10];
+        persistentResourceID2 = [payload persistentResourceID];
+        v11 = [v8 getCertificatesForConfigurationWithIdentifier:persistentResourceID2];
 
         v29 = 0u;
         v30 = 0u;
@@ -495,8 +495,8 @@ LABEL_73:
               }
 
               v17 = *(*(&v27 + 1) + 8 * v16);
-              v18 = [v3 UUID];
-              [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v17 andUUID:v18];
+              uUID = [payload UUID];
+              [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v17 andUUID:uUID];
 
               v16 = v16 + 1;
             }
@@ -512,14 +512,14 @@ LABEL_73:
         if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
         {
           v20 = v19;
-          v21 = [v3 persistentResourceID];
+          persistentResourceID3 = [payload persistentResourceID];
           *buf = 138543362;
-          v32 = v21;
+          v32 = persistentResourceID3;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "Calling removeConfigurationWithIdentifier for id: %{public}@", buf, 0xCu);
         }
 
-        v22 = [v3 persistentResourceID];
-        [v8 removeConfigurationWithIdentifier:v22];
+        persistentResourceID4 = [payload persistentResourceID];
+        [v8 removeConfigurationWithIdentifier:persistentResourceID4];
       }
 
       else
@@ -549,23 +549,23 @@ LABEL_73:
 
   else
   {
-    v23 = [(MCNewPayloadHandler *)self profileHandler];
-    v24 = [v23 isSetAside];
+    profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+    isSetAside = [profileHandler isSetAside];
 
-    if ((v24 & 1) == 0)
+    if ((isSetAside & 1) == 0)
     {
       [(MCWebContentFilterPayloadHandler *)self _removeDependency];
     }
   }
 }
 
-- (id)_copyCertificateWithPayloadUUID:(id)a3 intoKeychainAccessGroup:(id)a4 personaID:(id)a5
+- (id)_copyCertificateWithPayloadUUID:(id)d intoKeychainAccessGroup:(id)group personaID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MCNewPayloadHandler *)self profileHandler];
-  v12 = [v11 payloadHandlerWithUUID:v8];
+  dCopy = d;
+  groupCopy = group;
+  iDCopy = iD;
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  v12 = [profileHandler payloadHandlerWithUUID:dCopy];
 
   if (v12)
   {
@@ -581,7 +581,7 @@ LABEL_73:
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v30 = v8;
+      v30 = dCopy;
       v31 = 2114;
       v32 = v14;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "ContentFilter: Failed to get the identity for UUID %{public}@: %{public}@", buf, 0x16u);
@@ -591,29 +591,29 @@ LABEL_73:
     {
 LABEL_7:
       v26 = v14;
-      v27 = v10;
-      v16 = v9;
-      v17 = [v12 accessibility];
+      v27 = iDCopy;
+      v16 = groupCopy;
+      accessibility = [v12 accessibility];
       v18 = _MCLogObjects[0];
       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v30 = v17;
+        v30 = accessibility;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "Web content filter identity, storing with accessibility %@", buf, 0xCu);
       }
 
-      v19 = [@"NE:" stringByAppendingString:v8];
-      v20 = [(MCNewPayloadHandler *)self profileHandler];
-      v21 = [v20 profile];
-      v9 = v16;
-      v22 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:accessibility:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:accessibility:", v13, v19, v16, [v21 isInstalledForSystem], v17);
+      v19 = [@"NE:" stringByAppendingString:dCopy];
+      profileHandler2 = [(MCNewPayloadHandler *)self profileHandler];
+      profile = [profileHandler2 profile];
+      groupCopy = v16;
+      v22 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:accessibility:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:accessibility:", v13, v19, v16, [profile isInstalledForSystem], accessibility);
 
-      v10 = v27;
+      iDCopy = v27;
       if (v22)
       {
-        v23 = [(MCNewPayloadHandler *)self payload];
-        v24 = [v23 UUID];
-        [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v22 andUUID:v24 personaID:v27];
+        payload = [(MCNewPayloadHandler *)self payload];
+        uUID = [payload UUID];
+        [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v22 andUUID:uUID personaID:v27];
       }
 
       CFRelease(v13);

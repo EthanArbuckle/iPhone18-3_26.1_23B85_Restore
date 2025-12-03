@@ -8,8 +8,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(_NUGeometryResult *)self geometry];
-  v6 = [v5 description];
+  geometry = [(_NUGeometryResult *)self geometry];
+  v6 = [geometry description];
   v7 = v6;
   v8 = @"NONE";
   if (v6)

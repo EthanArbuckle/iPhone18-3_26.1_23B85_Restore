@@ -1,10 +1,10 @@
 @interface SUOverlayTransition
-+ (int64_t)transitionTypeFromString:(id)a3;
++ (int64_t)transitionTypeFromString:(id)string;
 - (SUOverlayTransition)init;
-- (SUOverlayTransition)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUOverlayTransition)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUOverlayTransition
@@ -22,14 +22,14 @@
   return result;
 }
 
-- (SUOverlayTransition)initWithCoder:(id)a3
+- (SUOverlayTransition)initWithCoder:(id)coder
 {
   v4 = [(SUOverlayTransition *)self init];
   if (v4)
   {
-    [a3 decodeDoubleForKey:@"duration"];
+    [coder decodeDoubleForKey:@"duration"];
     v4->_duration = v5;
-    v4->_type = [a3 decodeIntegerForKey:@"type"];
+    v4->_type = [coder decodeIntegerForKey:@"type"];
   }
 
   return v4;
@@ -43,36 +43,36 @@
   [(SUOverlayTransition *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 8) = self->_duration;
   *(v4 + 16) = self->_sourceElement;
   *(v4 + 24) = self->_type;
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeDouble:@"duration" forKey:self->_duration];
+  [coder encodeDouble:@"duration" forKey:self->_duration];
   type = self->_type;
 
-  [a3 encodeInteger:type forKey:@"type"];
+  [coder encodeInteger:type forKey:@"type"];
 }
 
-+ (int64_t)transitionTypeFromString:(id)a3
++ (int64_t)transitionTypeFromString:(id)string
 {
-  if ([a3 isEqualToString:@"flip"])
+  if ([string isEqualToString:@"flip"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"slide-from-right"])
+  if ([string isEqualToString:@"slide-from-right"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"slide-from-bottom"])
+  if ([string isEqualToString:@"slide-from-bottom"])
   {
     return 3;
   }

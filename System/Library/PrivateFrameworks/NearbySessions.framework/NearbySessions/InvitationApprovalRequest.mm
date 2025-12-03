@@ -1,15 +1,15 @@
 @interface InvitationApprovalRequest
 - (_TtC14NearbySessions25InvitationApprovalRequest)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation InvitationApprovalRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  InvitationApprovalRequest.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  InvitationApprovalRequest.encode(with:)(coderCopy);
 }
 
 - (_TtC14NearbySessions25InvitationApprovalRequest)init

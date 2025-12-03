@@ -1,15 +1,15 @@
 @interface ICQuotaExceededAlertController
-- (BOOL)showIfNeededFromWindow:(id)a3;
+- (BOOL)showIfNeededFromWindow:(id)window;
 - (ICQuotaExceededAlertController)init;
-- (ICQuotaExceededAlertController)initWithRecordID:(id)a3 accountID:(id)a4 date:(id)a5;
+- (ICQuotaExceededAlertController)initWithRecordID:(id)d accountID:(id)iD date:(id)date;
 - (NSDate)date;
 - (NSDate)lastShowDate;
 - (NSString)accountID;
 - (id)makeAlert;
-- (void)setCloudContext:(id)a3;
-- (void)setDidShowForRecord:(BOOL)a3;
-- (void)setLastShowDate:(id)a3;
-- (void)setManagedObjectContext:(id)a3;
+- (void)setCloudContext:(id)context;
+- (void)setDidShowForRecord:(BOOL)record;
+- (void)setLastShowDate:(id)date;
+- (void)setManagedObjectContext:(id)context;
 @end
 
 @implementation ICQuotaExceededAlertController
@@ -35,20 +35,20 @@
   return v7.super.isa;
 }
 
-- (void)setDidShowForRecord:(BOOL)a3
+- (void)setDidShowForRecord:(BOOL)record
 {
-  v3 = a3;
-  *(self + OBJC_IVAR___ICQuotaExceededAlertController_didShowForRecord) = a3;
+  recordCopy = record;
+  *(self + OBJC_IVAR___ICQuotaExceededAlertController_didShowForRecord) = record;
   v4 = *(self + OBJC_IVAR___ICQuotaExceededAlertController_recordID);
-  v5 = self;
-  v6 = [v4 recordName];
-  if (!v6)
+  selfCopy = self;
+  recordName = [v4 recordName];
+  if (!recordName)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = String._bridgeToObjectiveC()();
+    recordName = String._bridgeToObjectiveC()();
   }
 
-  [objc_opt_self() setDidShowExceededStorageQuotaAlert:v3 forNoteWithIdentifier:v6];
+  [objc_opt_self() setDidShowExceededStorageQuotaAlert:recordCopy forNoteWithIdentifier:recordName];
 }
 
 - (NSDate)lastShowDate
@@ -73,12 +73,12 @@
   return v10;
 }
 
-- (void)setLastShowDate:(id)a3
+- (void)setLastShowDate:(id)date
 {
   v5 = sub_10015DA04(&unk_1006C1710);
   __chkstk_darwin(v5 - 8);
   v7 = &v11 - v6;
-  if (a3)
+  if (date)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = type metadata accessor for Date();
@@ -91,25 +91,25 @@
     (*(*(v9 - 8) + 56))(v7, 1, 1, v9);
   }
 
-  v10 = self;
+  selfCopy = self;
   sub_100238588(v7);
 }
 
-- (void)setCloudContext:(id)a3
+- (void)setCloudContext:(id)context
 {
   v4 = *(self + OBJC_IVAR___ICQuotaExceededAlertController_cloudContext);
-  *(self + OBJC_IVAR___ICQuotaExceededAlertController_cloudContext) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___ICQuotaExceededAlertController_cloudContext) = context;
+  contextCopy = context;
 }
 
-- (void)setManagedObjectContext:(id)a3
+- (void)setManagedObjectContext:(id)context
 {
   v4 = *(self + OBJC_IVAR___ICQuotaExceededAlertController_managedObjectContext);
-  *(self + OBJC_IVAR___ICQuotaExceededAlertController_managedObjectContext) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___ICQuotaExceededAlertController_managedObjectContext) = context;
+  contextCopy = context;
 }
 
-- (ICQuotaExceededAlertController)initWithRecordID:(id)a3 accountID:(id)a4 date:(id)a5
+- (ICQuotaExceededAlertController)initWithRecordID:(id)d accountID:(id)iD date:(id)date
 {
   v6 = type metadata accessor for Date();
   __chkstk_darwin(v6 - 8);
@@ -117,22 +117,22 @@
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = sub_100239B90(v12, v9, v11, v8);
+  dCopy = d;
+  v13 = sub_100239B90(dCopy, v9, v11, v8);
 
   return v13;
 }
 
-- (BOOL)showIfNeededFromWindow:(id)a3
+- (BOOL)showIfNeededFromWindow:(id)window
 {
-  v4 = a3;
-  v5 = self;
+  windowCopy = window;
+  selfCopy = self;
   v6 = sub_100238810();
   if (v6)
   {
     v7 = swift_allocObject();
-    *(v7 + 16) = v5;
-    *(v7 + 24) = v4;
+    *(v7 + 16) = selfCopy;
+    *(v7 + 24) = windowCopy;
     v12[4] = sub_100239F90;
     v12[5] = v7;
     v12[0] = _NSConcreteStackBlock;
@@ -140,8 +140,8 @@
     v12[2] = sub_10028DCE8;
     v12[3] = &unk_100651500;
     v8 = _Block_copy(v12);
-    v9 = v4;
-    v10 = v5;
+    v9 = windowCopy;
+    v10 = selfCopy;
 
     performBlockOnMainThread();
 
@@ -157,7 +157,7 @@
 
 - (id)makeAlert
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002390E8();
 
   return v3;

@@ -1,9 +1,9 @@
 @interface PDBlockedApp
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
 - (PDBlockedApp)init;
-- (PDBlockedApp)initWithDatabaseRow:(id)a3;
+- (PDBlockedApp)initWithDatabaseRow:(id)row;
 - (PDDatabaseValue)identityValue;
-- (void)bindTo:(id)a3;
+- (void)bindTo:(id)to;
 @end
 
 @implementation PDBlockedApp
@@ -19,15 +19,15 @@
   objc_exception_throw(v6);
 }
 
-- (PDBlockedApp)initWithDatabaseRow:(id)a3
+- (PDBlockedApp)initWithDatabaseRow:(id)row
 {
-  v4 = sub_10016D778(a3, @"appIdentifier");
+  v4 = sub_10016D778(row, @"appIdentifier");
   v5 = sub_1000D52FC(self, v4);
 
   return v5;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   if (self)
   {
@@ -39,22 +39,22 @@
     appIdentifier = 0;
   }
 
-  sub_1000982FC(a3, appIdentifier, @"appIdentifier");
+  sub_1000982FC(to, appIdentifier, @"appIdentifier");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (version)
   {
     v9 = 1;
   }
 
-  else if (sub_1000B9298(v7, @"create table PDBlockedApp(   appIdentifier text not null)", 0, 0, 0) && sub_1000B9298(v8, @"create unique index PDBlockedApp_appIdentifier on PDBlockedApp (appIdentifier)", 0, 0, 0))
+  else if (sub_1000B9298(databaseCopy, @"create table PDBlockedApp(   appIdentifier text not null)", 0, 0, 0) && sub_1000B9298(v8, @"create unique index PDBlockedApp_appIdentifier on PDBlockedApp (appIdentifier)", 0, 0, 0))
   {
     v9 = 1;
-    *a4 = 1;
+    *finalVersion = 1;
   }
 
   else

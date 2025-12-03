@@ -3,19 +3,19 @@
 + (double)maxRenderingSize;
 + (id)_createFullSizeRenderer;
 + (id)_sharedOfflineInkRendererSmallSize;
-+ (id)renderDrawing:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5;
++ (id)renderDrawing:(id)drawing clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale;
 + (void)purgeSharedRenderer;
 @end
 
 @implementation AKInkRendererHelper
 
-+ (id)renderDrawing:(id)a3 clippedToStrokeSpaceRect:(CGRect)a4 scale:(double)a5
++ (id)renderDrawing:(id)drawing clippedToStrokeSpaceRect:(CGRect)rect scale:(double)scale
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  drawingCopy = drawing;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -56,9 +56,9 @@
     v17 = v16;
   }
 
-  if ((ceil(v17) + 2.0) * a5 >= 128.0)
+  if ((ceil(v17) + 2.0) * scale >= 128.0)
   {
-    [a1 _createFullSizeRenderer];
+    [self _createFullSizeRenderer];
   }
 
   else
@@ -72,7 +72,7 @@
   v21[3] = &unk_278C7BC48;
   v21[4] = &v28;
   v21[5] = &v22;
-  [v18 renderDrawing:v11 clippedToStrokeSpaceRect:v21 scale:x completion:{y, width, height, a5}];
+  [v18 renderDrawing:drawingCopy clippedToStrokeSpaceRect:v21 scale:x completion:{y, width, height, scale}];
   dispatch_semaphore_wait(v23[5], 0xFFFFFFFFFFFFFFFFLL);
 
   _Block_object_dispose(&v22, 8);
@@ -96,7 +96,7 @@
   result = *&qword_27E39B620;
   if (*&qword_27E39B620 == 0.0)
   {
-    [a1 _calculateMaxRenderingSize];
+    [self _calculateMaxRenderingSize];
     qword_27E39B620 = *&result;
   }
 
@@ -120,7 +120,7 @@
 
 + (id)_createFullSizeRenderer
 {
-  [a1 maxRenderingSize];
+  [self maxRenderingSize];
   v3 = [objc_alloc(MEMORY[0x277CD9630]) initWithSize:v2 scale:{v2, 1.0}];
 
   return v3;
@@ -128,12 +128,12 @@
 
 + (double)_calculateMaxRenderingSize
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 bounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;

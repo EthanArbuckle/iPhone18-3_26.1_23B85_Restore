@@ -1,68 +1,68 @@
 @interface CaptureMTLAccelerationStructureCommandEncoder
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)writeGenericBVHStructureOfAccelerationStructure:(id)a3 into:(id)a4;
-- (BOOL)writeGenericBVHStructureSizesOfAccelerationStructure:(id)a3 into:(id)a4;
-- (CaptureMTLAccelerationStructureCommandEncoder)initWithBaseObject:(id)a3 captureCommandBuffer:(id)a4 copyEventValue:(unint64_t)a5;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)writeGenericBVHStructureOfAccelerationStructure:(id)structure into:(id)into;
+- (BOOL)writeGenericBVHStructureSizesOfAccelerationStructure:(id)structure into:(id)into;
+- (CaptureMTLAccelerationStructureCommandEncoder)initWithBaseObject:(id)object captureCommandBuffer:(id)buffer copyEventValue:(unint64_t)value;
 - (NSString)description;
 - (unint64_t)streamReference;
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4;
-- (void)buildAccelerationStructure:(id)a3 descriptor:(id)a4 scratchBuffer:(id)a5 scratchBufferOffset:(unint64_t)a6;
-- (void)copyAccelerationStructure:(id)a3 toAccelerationStructure:(id)a4;
-- (void)copyAndCompactAccelerationStructure:(id)a3 toAccelerationStructure:(id)a4;
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages;
+- (void)buildAccelerationStructure:(id)structure descriptor:(id)descriptor scratchBuffer:(id)buffer scratchBufferOffset:(unint64_t)offset;
+- (void)copyAccelerationStructure:(id)structure toAccelerationStructure:(id)accelerationStructure;
+- (void)copyAndCompactAccelerationStructure:(id)structure toAccelerationStructure:(id)accelerationStructure;
 - (void)dealloc;
-- (void)deserializeInstanceAccelerationStructure:(id)a3 primitiveAccelerationStructures:(id)a4 fromBuffer:(id)a5 serializedBufferOffset:(unint64_t)a6;
-- (void)deserializeInstanceAccelerationStructure:(id)a3 primitiveAccelerationStructures:(id)a4 fromBuffer:(id)a5 serializedBufferOffset:(unint64_t)a6 withDescriptor:(id)a7;
-- (void)deserializePrimitiveAccelerationStructure:(id)a3 fromBuffer:(id)a4 serializedBufferOffset:(unint64_t)a5;
-- (void)deserializePrimitiveAccelerationStructure:(id)a3 fromBuffer:(id)a4 serializedBufferOffset:(unint64_t)a5 withDescriptor:(id)a6;
+- (void)deserializeInstanceAccelerationStructure:(id)structure primitiveAccelerationStructures:(id)structures fromBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset;
+- (void)deserializeInstanceAccelerationStructure:(id)structure primitiveAccelerationStructures:(id)structures fromBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset withDescriptor:(id)descriptor;
+- (void)deserializePrimitiveAccelerationStructure:(id)structure fromBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset;
+- (void)deserializePrimitiveAccelerationStructure:(id)structure fromBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset withDescriptor:(id)descriptor;
 - (void)endEncoding;
-- (void)insertDebugSignpost:(id)a3;
+- (void)insertDebugSignpost:(id)signpost;
 - (void)insertSplit;
 - (void)popDebugGroup;
-- (void)pushDebugGroup:(id)a3;
-- (void)refitAccelerationStructure:(id)a3 descriptor:(id)a4 destination:(id)a5 scratchBuffer:(id)a6 scratchBufferOffset:(unint64_t)a7;
-- (void)refitAccelerationStructure:(id)a3 descriptor:(id)a4 destination:(id)a5 scratchBuffer:(id)a6 scratchBufferOffset:(unint64_t)a7 options:(unint64_t)a8;
-- (void)serializeInstanceAccelerationStructure:(id)a3 primitiveAccelerationStructures:(id)a4 toBuffer:(id)a5 serializedBufferOffset:(unint64_t)a6;
-- (void)serializePrimitiveAccelerationStructure:(id)a3 toBuffer:(id)a4 serializedBufferOffset:(unint64_t)a5;
-- (void)setLabel:(id)a3;
+- (void)pushDebugGroup:(id)group;
+- (void)refitAccelerationStructure:(id)structure descriptor:(id)descriptor destination:(id)destination scratchBuffer:(id)buffer scratchBufferOffset:(unint64_t)offset;
+- (void)refitAccelerationStructure:(id)structure descriptor:(id)descriptor destination:(id)destination scratchBuffer:(id)buffer scratchBufferOffset:(unint64_t)offset options:(unint64_t)options;
+- (void)serializeInstanceAccelerationStructure:(id)structure primitiveAccelerationStructures:(id)structures toBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset;
+- (void)serializePrimitiveAccelerationStructure:(id)structure toBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset;
+- (void)setLabel:(id)label;
 - (void)touch;
-- (void)updateFence:(id)a3;
-- (void)useHeap:(id)a3;
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4;
-- (void)useResource:(id)a3 usage:(unint64_t)a4;
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5;
-- (void)waitForFence:(id)a3;
-- (void)writeAccelerationStructureSerializationData:(id)a3 toBuffer:(id)a4 offset:(unint64_t)a5;
-- (void)writeAccelerationStructureTraversalDepth:(id)a3 toBuffer:(id)a4 offset:(unint64_t)a5;
-- (void)writeCompactedAccelerationStructureSize:(id)a3 toBuffer:(id)a4 offset:(unint64_t)a5;
-- (void)writeCompactedAccelerationStructureSize:(id)a3 toBuffer:(id)a4 offset:(unint64_t)a5 sizeDataType:(unint64_t)a6;
-- (void)writeDeserializedAccelerationStructureSize:(id)a3 serializedOffset:(unint64_t)a4 toBuffer:(id)a5 sizeBufferOffset:(unint64_t)a6;
-- (void)writeDeserializedPrimitiveAccelerationStructureSizes:(id)a3 serializedOffset:(unint64_t)a4 toBuffer:(id)a5 sizesBufferOffset:(unint64_t)a6;
-- (void)writeSerializedAccelerationStructureSize:(id)a3 toBuffer:(id)a4 sizeBufferOffset:(unint64_t)a5;
+- (void)updateFence:(id)fence;
+- (void)useHeap:(id)heap;
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count;
+- (void)useResource:(id)resource usage:(unint64_t)usage;
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage;
+- (void)waitForFence:(id)fence;
+- (void)writeAccelerationStructureSerializationData:(id)data toBuffer:(id)buffer offset:(unint64_t)offset;
+- (void)writeAccelerationStructureTraversalDepth:(id)depth toBuffer:(id)buffer offset:(unint64_t)offset;
+- (void)writeCompactedAccelerationStructureSize:(id)size toBuffer:(id)buffer offset:(unint64_t)offset;
+- (void)writeCompactedAccelerationStructureSize:(id)size toBuffer:(id)buffer offset:(unint64_t)offset sizeDataType:(unint64_t)type;
+- (void)writeDeserializedAccelerationStructureSize:(id)size serializedOffset:(unint64_t)offset toBuffer:(id)buffer sizeBufferOffset:(unint64_t)bufferOffset;
+- (void)writeDeserializedPrimitiveAccelerationStructureSizes:(id)sizes serializedOffset:(unint64_t)offset toBuffer:(id)buffer sizesBufferOffset:(unint64_t)bufferOffset;
+- (void)writeSerializedAccelerationStructureSize:(id)size toBuffer:(id)buffer sizeBufferOffset:(unint64_t)offset;
 @end
 
 @implementation CaptureMTLAccelerationStructureCommandEncoder
 
-- (void)writeSerializedAccelerationStructureSize:(id)a3 toBuffer:(id)a4 sizeBufferOffset:(unint64_t)a5
+- (void)writeSerializedAccelerationStructureSize:(id)size toBuffer:(id)buffer sizeBufferOffset:(unint64_t)offset
 {
-  v8 = a3;
-  v9 = a4;
-  [v8 touch];
-  if (v8)
+  sizeCopy = size;
+  bufferCopy = buffer;
+  [sizeCopy touch];
+  if (sizeCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
+      [(NSMutableSet *)retainedObjects addObject:sizeCopy];
     }
   }
 
-  [v9 touch];
-  if (v9)
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v11 = self->_retainedObjects;
     if (v11)
     {
-      [(NSMutableSet *)v11 addObject:v9];
+      [(NSMutableSet *)v11 addObject:bufferCopy];
     }
   }
 
@@ -72,9 +72,9 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v29);
   baseObject = self->_baseObject;
-  v14 = [v8 baseObject];
-  v15 = [v9 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject writeSerializedAccelerationStructureSize:v14 toBuffer:v15 sizeBufferOffset:a5];
+  baseObject = [sizeCopy baseObject];
+  baseObject2 = [bufferCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject writeSerializedAccelerationStructureSize:baseObject toBuffer:baseObject2 sizeBufferOffset:offset];
 
   v16 = v30;
   *(v30 + 8) = -15588;
@@ -95,10 +95,10 @@
   }
 
   *(v16 + 13) = v17;
-  v21 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v21)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v21->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -106,10 +106,10 @@
     var0 = 0;
   }
 
-  v23 = [v8 traceStream];
-  if (v23)
+  traceStream2 = [sizeCopy traceStream];
+  if (traceStream2)
   {
-    v24 = *v23;
+    v24 = *traceStream2;
   }
 
   else
@@ -117,10 +117,10 @@
     v24 = 0;
   }
 
-  v25 = [v9 traceStream];
-  if (v25)
+  traceStream3 = [bufferCopy traceStream];
+  if (traceStream3)
   {
-    v26 = *v25;
+    v26 = *traceStream3;
   }
 
   else
@@ -131,77 +131,77 @@
   *v18 = var0;
   *(v18 + 1) = v24;
   *(v18 + 2) = v26;
-  *(v18 + 3) = a5;
+  *(v18 + 3) = offset;
   s();
   *v27 = v28;
   *(v27 + 8) = BYTE8(v31);
   *(v30 + 15) |= 8u;
 }
 
-- (BOOL)writeGenericBVHStructureSizesOfAccelerationStructure:(id)a3 into:(id)a4
+- (BOOL)writeGenericBVHStructureSizesOfAccelerationStructure:(id)structure into:(id)into
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 touch];
-  if (v6)
+  structureCopy = structure;
+  intoCopy = into;
+  [structureCopy touch];
+  if (structureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:structureCopy];
     }
   }
 
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  LOBYTE(baseObject) = [(MTLAccelerationStructureCommandEncoderSPI *)baseObject writeGenericBVHStructureSizesOfAccelerationStructure:v10 into:v7];
+  baseObject = [structureCopy baseObject];
+  LOBYTE(baseObject) = [(MTLAccelerationStructureCommandEncoderSPI *)baseObject writeGenericBVHStructureSizesOfAccelerationStructure:baseObject into:intoCopy];
 
   return baseObject;
 }
 
-- (BOOL)writeGenericBVHStructureOfAccelerationStructure:(id)a3 into:(id)a4
+- (BOOL)writeGenericBVHStructureOfAccelerationStructure:(id)structure into:(id)into
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 touch];
-  if (v6)
+  structureCopy = structure;
+  intoCopy = into;
+  [structureCopy touch];
+  if (structureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:structureCopy];
     }
   }
 
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  v11 = unwrapMTLGenericBVHBuffersSPI(v7);
+  baseObject = [structureCopy baseObject];
+  v11 = unwrapMTLGenericBVHBuffersSPI(intoCopy);
 
-  v12 = [(MTLAccelerationStructureCommandEncoderSPI *)baseObject writeGenericBVHStructureOfAccelerationStructure:v10 into:v11];
+  v12 = [(MTLAccelerationStructureCommandEncoderSPI *)baseObject writeGenericBVHStructureOfAccelerationStructure:baseObject into:v11];
   return v12;
 }
 
-- (void)writeDeserializedPrimitiveAccelerationStructureSizes:(id)a3 serializedOffset:(unint64_t)a4 toBuffer:(id)a5 sizesBufferOffset:(unint64_t)a6
+- (void)writeDeserializedPrimitiveAccelerationStructureSizes:(id)sizes serializedOffset:(unint64_t)offset toBuffer:(id)buffer sizesBufferOffset:(unint64_t)bufferOffset
 {
-  v10 = a3;
-  v11 = a5;
-  [v10 touch];
-  if (v10)
+  sizesCopy = sizes;
+  bufferCopy = buffer;
+  [sizesCopy touch];
+  if (sizesCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:sizesCopy];
     }
   }
 
-  [v11 touch];
-  if (v11)
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v13 = self->_retainedObjects;
     if (v13)
     {
-      [(NSMutableSet *)v13 addObject:v11];
+      [(NSMutableSet *)v13 addObject:bufferCopy];
     }
   }
 
@@ -211,9 +211,9 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v31);
   baseObject = self->_baseObject;
-  v16 = [v10 baseObject];
-  v17 = [v11 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject writeDeserializedPrimitiveAccelerationStructureSizes:v16 serializedOffset:a4 toBuffer:v17 sizesBufferOffset:a6];
+  baseObject = [sizesCopy baseObject];
+  baseObject2 = [bufferCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject writeDeserializedPrimitiveAccelerationStructureSizes:baseObject serializedOffset:offset toBuffer:baseObject2 sizesBufferOffset:bufferOffset];
 
   v18 = v32;
   *(v32 + 8) = -15591;
@@ -234,10 +234,10 @@
   }
 
   *(v18 + 13) = v19;
-  v23 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v23)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v23->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -245,10 +245,10 @@
     var0 = 0;
   }
 
-  v25 = [v10 traceStream];
-  if (v25)
+  traceStream2 = [sizesCopy traceStream];
+  if (traceStream2)
   {
-    v26 = *v25;
+    v26 = *traceStream2;
   }
 
   else
@@ -256,10 +256,10 @@
     v26 = 0;
   }
 
-  v27 = [v11 traceStream];
-  if (v27)
+  traceStream3 = [bufferCopy traceStream];
+  if (traceStream3)
   {
-    v28 = *v27;
+    v28 = *traceStream3;
   }
 
   else
@@ -269,36 +269,36 @@
 
   *v20 = var0;
   *(v20 + 1) = v26;
-  *(v20 + 2) = a4;
+  *(v20 + 2) = offset;
   *(v20 + 3) = v28;
-  *(v20 + 4) = a6;
+  *(v20 + 4) = bufferOffset;
   s();
   *v29 = v30;
   *(v29 + 8) = BYTE8(v33);
   *(v32 + 15) |= 8u;
 }
 
-- (void)writeDeserializedAccelerationStructureSize:(id)a3 serializedOffset:(unint64_t)a4 toBuffer:(id)a5 sizeBufferOffset:(unint64_t)a6
+- (void)writeDeserializedAccelerationStructureSize:(id)size serializedOffset:(unint64_t)offset toBuffer:(id)buffer sizeBufferOffset:(unint64_t)bufferOffset
 {
-  v10 = a3;
-  v11 = a5;
-  [v10 touch];
-  if (v10)
+  sizeCopy = size;
+  bufferCopy = buffer;
+  [sizeCopy touch];
+  if (sizeCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:sizeCopy];
     }
   }
 
-  [v11 touch];
-  if (v11)
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v13 = self->_retainedObjects;
     if (v13)
     {
-      [(NSMutableSet *)v13 addObject:v11];
+      [(NSMutableSet *)v13 addObject:bufferCopy];
     }
   }
 
@@ -308,9 +308,9 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v31);
   baseObject = self->_baseObject;
-  v16 = [v10 baseObject];
-  v17 = [v11 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject writeDeserializedAccelerationStructureSize:v16 serializedOffset:a4 toBuffer:v17 sizeBufferOffset:a6];
+  baseObject = [sizeCopy baseObject];
+  baseObject2 = [bufferCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject writeDeserializedAccelerationStructureSize:baseObject serializedOffset:offset toBuffer:baseObject2 sizeBufferOffset:bufferOffset];
 
   v18 = v32;
   *(v32 + 8) = -15592;
@@ -331,10 +331,10 @@
   }
 
   *(v18 + 13) = v19;
-  v23 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v23)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v23->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -342,10 +342,10 @@
     var0 = 0;
   }
 
-  v25 = [v10 traceStream];
-  if (v25)
+  traceStream2 = [sizeCopy traceStream];
+  if (traceStream2)
   {
-    v26 = *v25;
+    v26 = *traceStream2;
   }
 
   else
@@ -353,10 +353,10 @@
     v26 = 0;
   }
 
-  v27 = [v11 traceStream];
-  if (v27)
+  traceStream3 = [bufferCopy traceStream];
+  if (traceStream3)
   {
-    v28 = *v27;
+    v28 = *traceStream3;
   }
 
   else
@@ -366,36 +366,36 @@
 
   *v20 = var0;
   *(v20 + 1) = v26;
-  *(v20 + 2) = a4;
+  *(v20 + 2) = offset;
   *(v20 + 3) = v28;
-  *(v20 + 4) = a6;
+  *(v20 + 4) = bufferOffset;
   s();
   *v29 = v30;
   *(v29 + 8) = BYTE8(v33);
   *(v32 + 15) |= 8u;
 }
 
-- (void)writeCompactedAccelerationStructureSize:(id)a3 toBuffer:(id)a4 offset:(unint64_t)a5 sizeDataType:(unint64_t)a6
+- (void)writeCompactedAccelerationStructureSize:(id)size toBuffer:(id)buffer offset:(unint64_t)offset sizeDataType:(unint64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  [v10 touch];
-  if (v10)
+  sizeCopy = size;
+  bufferCopy = buffer;
+  [sizeCopy touch];
+  if (sizeCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:sizeCopy];
     }
   }
 
-  [v11 touch];
-  if (v11)
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v13 = self->_retainedObjects;
     if (v13)
     {
-      [(NSMutableSet *)v13 addObject:v11];
+      [(NSMutableSet *)v13 addObject:bufferCopy];
     }
   }
 
@@ -405,9 +405,9 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v31);
   baseObject = self->_baseObject;
-  v16 = [v10 baseObject];
-  v17 = [v11 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject writeCompactedAccelerationStructureSize:v16 toBuffer:v17 offset:a5 sizeDataType:a6];
+  baseObject = [sizeCopy baseObject];
+  baseObject2 = [bufferCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject writeCompactedAccelerationStructureSize:baseObject toBuffer:baseObject2 offset:offset sizeDataType:type];
 
   v18 = v32;
   *(v32 + 8) = -15502;
@@ -428,10 +428,10 @@
   }
 
   *(v18 + 13) = v19;
-  v23 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v23)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v23->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -439,10 +439,10 @@
     var0 = 0;
   }
 
-  v25 = [v10 traceStream];
-  if (v25)
+  traceStream2 = [sizeCopy traceStream];
+  if (traceStream2)
   {
-    v26 = *v25;
+    v26 = *traceStream2;
   }
 
   else
@@ -450,10 +450,10 @@
     v26 = 0;
   }
 
-  v27 = [v11 traceStream];
-  if (v27)
+  traceStream3 = [bufferCopy traceStream];
+  if (traceStream3)
   {
-    v28 = *v27;
+    v28 = *traceStream3;
   }
 
   else
@@ -464,35 +464,35 @@
   *v20 = var0;
   *(v20 + 1) = v26;
   *(v20 + 2) = v28;
-  *(v20 + 3) = a5;
-  *(v20 + 4) = a6;
+  *(v20 + 3) = offset;
+  *(v20 + 4) = type;
   s();
   *v29 = v30;
   *(v29 + 8) = BYTE8(v33);
   *(v32 + 15) |= 8u;
 }
 
-- (void)writeCompactedAccelerationStructureSize:(id)a3 toBuffer:(id)a4 offset:(unint64_t)a5
+- (void)writeCompactedAccelerationStructureSize:(id)size toBuffer:(id)buffer offset:(unint64_t)offset
 {
-  v8 = a3;
-  v9 = a4;
-  [v8 touch];
-  if (v8)
+  sizeCopy = size;
+  bufferCopy = buffer;
+  [sizeCopy touch];
+  if (sizeCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
+      [(NSMutableSet *)retainedObjects addObject:sizeCopy];
     }
   }
 
-  [v9 touch];
-  if (v9)
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v11 = self->_retainedObjects;
     if (v11)
     {
-      [(NSMutableSet *)v11 addObject:v9];
+      [(NSMutableSet *)v11 addObject:bufferCopy];
     }
   }
 
@@ -502,9 +502,9 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v29);
   baseObject = self->_baseObject;
-  v14 = [v8 baseObject];
-  v15 = [v9 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject writeCompactedAccelerationStructureSize:v14 toBuffer:v15 offset:a5];
+  baseObject = [sizeCopy baseObject];
+  baseObject2 = [bufferCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject writeCompactedAccelerationStructureSize:baseObject toBuffer:baseObject2 offset:offset];
 
   v16 = v30;
   *(v30 + 8) = -15629;
@@ -525,10 +525,10 @@
   }
 
   *(v16 + 13) = v17;
-  v21 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v21)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v21->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -536,10 +536,10 @@
     var0 = 0;
   }
 
-  v23 = [v8 traceStream];
-  if (v23)
+  traceStream2 = [sizeCopy traceStream];
+  if (traceStream2)
   {
-    v24 = *v23;
+    v24 = *traceStream2;
   }
 
   else
@@ -547,10 +547,10 @@
     v24 = 0;
   }
 
-  v25 = [v9 traceStream];
-  if (v25)
+  traceStream3 = [bufferCopy traceStream];
+  if (traceStream3)
   {
-    v26 = *v25;
+    v26 = *traceStream3;
   }
 
   else
@@ -561,34 +561,34 @@
   *v18 = var0;
   *(v18 + 1) = v24;
   *(v18 + 2) = v26;
-  *(v18 + 3) = a5;
+  *(v18 + 3) = offset;
   s();
   *v27 = v28;
   *(v27 + 8) = BYTE8(v31);
   *(v30 + 15) |= 8u;
 }
 
-- (void)writeAccelerationStructureTraversalDepth:(id)a3 toBuffer:(id)a4 offset:(unint64_t)a5
+- (void)writeAccelerationStructureTraversalDepth:(id)depth toBuffer:(id)buffer offset:(unint64_t)offset
 {
-  v8 = a3;
-  v9 = a4;
-  [v8 touch];
-  if (v8)
+  depthCopy = depth;
+  bufferCopy = buffer;
+  [depthCopy touch];
+  if (depthCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
+      [(NSMutableSet *)retainedObjects addObject:depthCopy];
     }
   }
 
-  [v9 touch];
-  if (v9)
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v11 = self->_retainedObjects;
     if (v11)
     {
-      [(NSMutableSet *)v11 addObject:v9];
+      [(NSMutableSet *)v11 addObject:bufferCopy];
     }
   }
 
@@ -598,9 +598,9 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v29);
   baseObject = self->_baseObject;
-  v14 = [v8 baseObject];
-  v15 = [v9 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject writeAccelerationStructureTraversalDepth:v14 toBuffer:v15 offset:a5];
+  baseObject = [depthCopy baseObject];
+  baseObject2 = [bufferCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject writeAccelerationStructureTraversalDepth:baseObject toBuffer:baseObject2 offset:offset];
 
   v16 = v30;
   *(v30 + 8) = -15287;
@@ -621,10 +621,10 @@
   }
 
   *(v16 + 13) = v17;
-  v21 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v21)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v21->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -632,10 +632,10 @@
     var0 = 0;
   }
 
-  v23 = [v8 traceStream];
-  if (v23)
+  traceStream2 = [depthCopy traceStream];
+  if (traceStream2)
   {
-    v24 = *v23;
+    v24 = *traceStream2;
   }
 
   else
@@ -643,10 +643,10 @@
     v24 = 0;
   }
 
-  v25 = [v9 traceStream];
-  if (v25)
+  traceStream3 = [bufferCopy traceStream];
+  if (traceStream3)
   {
-    v26 = *v25;
+    v26 = *traceStream3;
   }
 
   else
@@ -657,34 +657,34 @@
   *v18 = var0;
   *(v18 + 1) = v24;
   *(v18 + 2) = v26;
-  *(v18 + 3) = a5;
+  *(v18 + 3) = offset;
   s();
   *v27 = v28;
   *(v27 + 8) = BYTE8(v31);
   *(v30 + 15) |= 8u;
 }
 
-- (void)writeAccelerationStructureSerializationData:(id)a3 toBuffer:(id)a4 offset:(unint64_t)a5
+- (void)writeAccelerationStructureSerializationData:(id)data toBuffer:(id)buffer offset:(unint64_t)offset
 {
-  v8 = a3;
-  v9 = a4;
-  [v8 touch];
-  if (v8)
+  dataCopy = data;
+  bufferCopy = buffer;
+  [dataCopy touch];
+  if (dataCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
+      [(NSMutableSet *)retainedObjects addObject:dataCopy];
     }
   }
 
-  [v9 touch];
-  if (v9)
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v11 = self->_retainedObjects;
     if (v11)
     {
-      [(NSMutableSet *)v11 addObject:v9];
+      [(NSMutableSet *)v11 addObject:bufferCopy];
     }
   }
 
@@ -694,9 +694,9 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v29);
   baseObject = self->_baseObject;
-  v14 = [v8 baseObject];
-  v15 = [v9 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject writeAccelerationStructureSerializationData:v14 toBuffer:v15 offset:a5];
+  baseObject = [dataCopy baseObject];
+  baseObject2 = [bufferCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject writeAccelerationStructureSerializationData:baseObject toBuffer:baseObject2 offset:offset];
 
   v16 = v30;
   *(v30 + 8) = -15365;
@@ -717,10 +717,10 @@
   }
 
   *(v16 + 13) = v17;
-  v21 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v21)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v21->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -728,10 +728,10 @@
     var0 = 0;
   }
 
-  v23 = [v8 traceStream];
-  if (v23)
+  traceStream2 = [dataCopy traceStream];
+  if (traceStream2)
   {
-    v24 = *v23;
+    v24 = *traceStream2;
   }
 
   else
@@ -739,10 +739,10 @@
     v24 = 0;
   }
 
-  v25 = [v9 traceStream];
-  if (v25)
+  traceStream3 = [bufferCopy traceStream];
+  if (traceStream3)
   {
-    v26 = *v25;
+    v26 = *traceStream3;
   }
 
   else
@@ -753,23 +753,23 @@
   *v18 = var0;
   *(v18 + 1) = v24;
   *(v18 + 2) = v26;
-  *(v18 + 3) = a5;
+  *(v18 + 3) = offset;
   s();
   *v27 = v28;
   *(v27 + 8) = BYTE8(v31);
   *(v30 + 15) |= 8u;
 }
 
-- (void)waitForFence:(id)a3
+- (void)waitForFence:(id)fence
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  fenceCopy = fence;
+  [fenceCopy touch];
+  if (fenceCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:fenceCopy];
     }
   }
 
@@ -779,8 +779,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject waitForFence:v8];
+  baseObject = [fenceCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject waitForFence:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -15630;
@@ -801,10 +801,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -812,10 +812,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [fenceCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -831,34 +831,34 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage
 {
-  RetainArray(self->_retainedObjects, a3, a4);
+  RetainArray(self->_retainedObjects, resources, count);
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
   traceStream = self->_traceStream;
   v10 = GTTraceContext_pushEncoderWithStream(self->_traceContext, &v29);
   baseObject = self->_baseObject;
-  v12 = 8 * a4;
+  v12 = 8 * count;
   __chkstk_darwin(v10, v13);
-  bzero(&v29 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  if (a4)
+  bzero(&v29 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  if (count)
   {
-    v14 = a3;
+    resourcesCopy = resources;
     v15 = (&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0));
-    v16 = a4;
+    countCopy = count;
     do
     {
-      v17 = *v14++;
+      v17 = *resourcesCopy++;
       *v15++ = [v17 baseObject];
-      --v16;
+      --countCopy;
     }
 
-    while (v16);
+    while (countCopy);
   }
 
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject useResources:&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0) count:a4 usage:a5];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject useResources:&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0) count:count usage:usage];
   v18 = v30;
   *(v30 + 8) = -15631;
   v19 = BYTE9(v31);
@@ -878,10 +878,10 @@
   }
 
   *(v18 + 13) = v19;
-  v23 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v23)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v23->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -889,12 +889,12 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v23, v24);
-  bzero(&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  v26 = StreamArray(&v29, (&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, a4);
+  __chkstk_darwin(traceStream, v24);
+  bzero(&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  v26 = StreamArray(&v29, (&v29 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0)), resources, count);
   *v20 = var0;
-  *(v20 + 1) = a4;
-  *(v20 + 2) = a5;
+  *(v20 + 1) = count;
+  *(v20 + 2) = usage;
   v20[24] = v26;
   *(v20 + 25) = 0;
   *(v20 + 7) = 0;
@@ -904,16 +904,16 @@
   *(v30 + 15) |= 8u;
 }
 
-- (void)useResource:(id)a3 usage:(unint64_t)a4
+- (void)useResource:(id)resource usage:(unint64_t)usage
 {
-  v6 = a3;
-  [v6 touch];
-  if (v6)
+  resourceCopy = resource;
+  [resourceCopy touch];
+  if (resourceCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:resourceCopy];
     }
   }
 
@@ -923,8 +923,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v22);
   baseObject = self->_baseObject;
-  v10 = [v6 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject useResource:v10 usage:a4];
+  baseObject = [resourceCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject useResource:baseObject usage:usage];
 
   v11 = v23;
   *(v23 + 8) = -15632;
@@ -945,10 +945,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -956,10 +956,10 @@
     var0 = 0;
   }
 
-  v18 = [v6 traceStream];
-  if (v18)
+  traceStream2 = [resourceCopy traceStream];
+  if (traceStream2)
   {
-    v19 = *v18;
+    v19 = *traceStream2;
   }
 
   else
@@ -969,41 +969,41 @@
 
   *v13 = var0;
   *(v13 + 1) = v19;
-  *(v13 + 2) = a4;
+  *(v13 + 2) = usage;
   s();
   *v20 = v21;
   *(v20 + 8) = BYTE8(v24);
   *(v23 + 15) |= 8u;
 }
 
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count
 {
-  RetainArray(self->_retainedObjects, a3, a4);
+  RetainArray(self->_retainedObjects, heaps, count);
   v28 = 0u;
   v29 = 0u;
   v27 = 0u;
   traceStream = self->_traceStream;
   v8 = GTTraceContext_pushEncoderWithStream(self->_traceContext, &v27);
   baseObject = self->_baseObject;
-  v10 = 8 * a4;
+  v10 = 8 * count;
   __chkstk_darwin(v8, v11);
-  bzero(&v27 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  if (a4)
+  bzero(&v27 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  if (count)
   {
-    v12 = a3;
+    heapsCopy = heaps;
     v13 = (&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0));
-    v14 = a4;
+    countCopy = count;
     do
     {
-      v15 = *v12++;
+      v15 = *heapsCopy++;
       *v13++ = [v15 baseObject];
-      --v14;
+      --countCopy;
     }
 
-    while (v14);
+    while (countCopy);
   }
 
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject useHeaps:&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0) count:a4];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject useHeaps:&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0) count:count];
   v16 = v28;
   *(v28 + 8) = -15633;
   v17 = BYTE9(v29);
@@ -1023,10 +1023,10 @@
   }
 
   *(v16 + 13) = v17;
-  v21 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v21)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v21->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1034,11 +1034,11 @@
     var0 = 0;
   }
 
-  __chkstk_darwin(v21, v22);
-  bzero(&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  v24 = StreamArray(&v27, (&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, a4);
+  __chkstk_darwin(traceStream, v22);
+  bzero(&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  v24 = StreamArray(&v27, (&v27 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0)), heaps, count);
   *v18 = var0;
-  *(v18 + 1) = a4;
+  *(v18 + 1) = count;
   v18[16] = v24;
   *(v18 + 17) = 0;
   *(v18 + 5) = 0;
@@ -1048,16 +1048,16 @@
   *(v28 + 15) |= 8u;
 }
 
-- (void)useHeap:(id)a3
+- (void)useHeap:(id)heap
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  heapCopy = heap;
+  [heapCopy touch];
+  if (heapCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:heapCopy];
     }
   }
 
@@ -1067,8 +1067,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject useHeap:v8];
+  baseObject = [heapCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject useHeap:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -15634;
@@ -1089,10 +1089,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1100,10 +1100,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [heapCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -1119,16 +1119,16 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)updateFence:(id)a3
+- (void)updateFence:(id)fence
 {
-  v4 = a3;
-  [v4 touch];
-  if (v4)
+  fenceCopy = fence;
+  [fenceCopy touch];
+  if (fenceCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v4];
+      [(NSMutableSet *)retainedObjects addObject:fenceCopy];
     }
   }
 
@@ -1138,8 +1138,8 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v20);
   baseObject = self->_baseObject;
-  v8 = [v4 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject updateFence:v8];
+  baseObject = [fenceCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject updateFence:baseObject];
 
   v9 = v21;
   *(v21 + 8) = -15635;
@@ -1160,10 +1160,10 @@
   }
 
   *(v9 + 13) = v10;
-  v14 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v14)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v14->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1171,10 +1171,10 @@
     var0 = 0;
   }
 
-  v16 = [v4 traceStream];
-  if (v16)
+  traceStream2 = [fenceCopy traceStream];
+  if (traceStream2)
   {
-    v17 = *v16;
+    v17 = *traceStream2;
   }
 
   else
@@ -1190,27 +1190,27 @@
   *(v21 + 15) |= 8u;
 }
 
-- (void)serializePrimitiveAccelerationStructure:(id)a3 toBuffer:(id)a4 serializedBufferOffset:(unint64_t)a5
+- (void)serializePrimitiveAccelerationStructure:(id)structure toBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset
 {
-  v8 = a3;
-  v9 = a4;
-  [v8 touch];
-  if (v8)
+  structureCopy = structure;
+  bufferCopy = buffer;
+  [structureCopy touch];
+  if (structureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
+      [(NSMutableSet *)retainedObjects addObject:structureCopy];
     }
   }
 
-  [v9 touch];
-  if (v9)
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v11 = self->_retainedObjects;
     if (v11)
     {
-      [(NSMutableSet *)v11 addObject:v9];
+      [(NSMutableSet *)v11 addObject:bufferCopy];
     }
   }
 
@@ -1220,9 +1220,9 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v29);
   baseObject = self->_baseObject;
-  v14 = [v8 baseObject];
-  v15 = [v9 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject serializePrimitiveAccelerationStructure:v14 toBuffer:v15 serializedBufferOffset:a5];
+  baseObject = [structureCopy baseObject];
+  baseObject2 = [bufferCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject serializePrimitiveAccelerationStructure:baseObject toBuffer:baseObject2 serializedBufferOffset:offset];
 
   v16 = v30;
   *(v30 + 8) = -15521;
@@ -1243,10 +1243,10 @@
   }
 
   *(v16 + 13) = v17;
-  v21 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v21)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v21->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1254,10 +1254,10 @@
     var0 = 0;
   }
 
-  v23 = [v8 traceStream];
-  if (v23)
+  traceStream2 = [structureCopy traceStream];
+  if (traceStream2)
   {
-    v24 = *v23;
+    v24 = *traceStream2;
   }
 
   else
@@ -1265,10 +1265,10 @@
     v24 = 0;
   }
 
-  v25 = [v9 traceStream];
-  if (v25)
+  traceStream3 = [bufferCopy traceStream];
+  if (traceStream3)
   {
-    v26 = *v25;
+    v26 = *traceStream3;
   }
 
   else
@@ -1279,22 +1279,22 @@
   *v18 = var0;
   *(v18 + 1) = v24;
   *(v18 + 2) = v26;
-  *(v18 + 3) = a5;
+  *(v18 + 3) = offset;
   s();
   *v27 = v28;
   *(v27 + 8) = BYTE8(v31);
   *(v30 + 15) |= 8u;
 }
 
-- (void)pushDebugGroup:(id)a3
+- (void)pushDebugGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLAccelerationStructureCommandEncoderSPI *)self->_baseObject pushDebugGroup:v4];
+  [(MTLAccelerationStructureCommandEncoderSPI *)self->_baseObject pushDebugGroup:groupCopy];
   v6 = v19;
   *(v19 + 8) = -15639;
   v7 = BYTE9(v20);
@@ -1314,10 +1314,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1325,16 +1325,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [groupCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [groupCopy UTF8String];
+    v15 = strlen([groupCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -1370,10 +1370,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1396,15 +1396,15 @@
   [(MTLAccelerationStructureCommandEncoderSPI *)baseObject insertSplit];
 }
 
-- (void)insertDebugSignpost:(id)a3
+- (void)insertDebugSignpost:(id)signpost
 {
-  v4 = a3;
+  signpostCopy = signpost;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLAccelerationStructureCommandEncoderSPI *)self->_baseObject insertDebugSignpost:v4];
+  [(MTLAccelerationStructureCommandEncoderSPI *)self->_baseObject insertDebugSignpost:signpostCopy];
   v6 = v19;
   *(v19 + 8) = -15641;
   v7 = BYTE9(v20);
@@ -1424,10 +1424,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1435,16 +1435,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [signpostCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [signpostCopy UTF8String];
+    v15 = strlen([signpostCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -1453,28 +1453,28 @@
   *(v19 + 15) |= 8u;
 }
 
-- (void)deserializePrimitiveAccelerationStructure:(id)a3 fromBuffer:(id)a4 serializedBufferOffset:(unint64_t)a5 withDescriptor:(id)a6
+- (void)deserializePrimitiveAccelerationStructure:(id)structure fromBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset withDescriptor:(id)descriptor
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  [v10 touch];
-  if (v10)
+  structureCopy = structure;
+  bufferCopy = buffer;
+  descriptorCopy = descriptor;
+  [structureCopy touch];
+  if (structureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:structureCopy];
     }
   }
 
-  [v11 touch];
-  if (v11)
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v14 = self->_retainedObjects;
     if (v14)
     {
-      [(NSMutableSet *)v14 addObject:v11];
+      [(NSMutableSet *)v14 addObject:bufferCopy];
     }
   }
 
@@ -1484,10 +1484,10 @@
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v34);
   baseObject = self->_baseObject;
-  v17 = [v10 baseObject];
-  v18 = [v11 baseObject];
-  v19 = unwrapMTLAccelerationStructureDescriptor(v12);
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject deserializePrimitiveAccelerationStructure:v17 fromBuffer:v18 serializedBufferOffset:a5 withDescriptor:v19];
+  baseObject = [structureCopy baseObject];
+  baseObject2 = [bufferCopy baseObject];
+  v19 = unwrapMTLAccelerationStructureDescriptor(descriptorCopy);
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject deserializePrimitiveAccelerationStructure:baseObject fromBuffer:baseObject2 serializedBufferOffset:offset withDescriptor:v19];
 
   v20 = v35;
   *(v35 + 8) = -15465;
@@ -1508,10 +1508,10 @@
   }
 
   *(v20 + 13) = v21;
-  v25 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v25)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v25->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1519,10 +1519,10 @@
     var0 = 0;
   }
 
-  v27 = [v10 traceStream];
-  if (v27)
+  traceStream2 = [structureCopy traceStream];
+  if (traceStream2)
   {
-    v28 = *v27;
+    v28 = *traceStream2;
   }
 
   else
@@ -1530,10 +1530,10 @@
     v28 = 0;
   }
 
-  v29 = [v11 traceStream];
-  if (v29)
+  traceStream3 = [bufferCopy traceStream];
+  if (traceStream3)
   {
-    v30 = *v29;
+    v30 = *traceStream3;
   }
 
   else
@@ -1541,12 +1541,12 @@
     v30 = 0;
   }
 
-  v31 = SaveMTLAccelerationStructureDescriptor(&v34, v12);
+  v31 = SaveMTLAccelerationStructureDescriptor(&v34, descriptorCopy);
 
   *v22 = var0;
   *(v22 + 1) = v28;
   *(v22 + 2) = v30;
-  *(v22 + 3) = a5;
+  *(v22 + 3) = offset;
   v22[32] = v31;
   *(v22 + 33) = 0;
   *(v22 + 9) = 0;
@@ -1582,10 +1582,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1604,14 +1604,14 @@
   [(CaptureMTLAccelerationStructureCommandEncoder *)&v13 dealloc];
 }
 
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  [(MTLAccelerationStructureCommandEncoderSPI *)self->_baseObject barrierAfterQueueStages:a3 beforeStages:a4];
+  [(MTLAccelerationStructureCommandEncoderSPI *)self->_baseObject barrierAfterQueueStages:stages beforeStages:beforeStages];
   v8 = v18;
   *(v18 + 8) = -14968;
   v9 = BYTE9(v19);
@@ -1631,10 +1631,10 @@
   }
 
   *(v8 + 13) = v9;
-  v13 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v13)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v13->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1643,23 +1643,23 @@
   }
 
   *v10 = var0;
-  *(v10 + 1) = a3;
-  *(v10 + 2) = a4;
+  *(v10 + 1) = stages;
+  *(v10 + 2) = beforeStages;
   s();
   *v15 = v16;
   *(v15 + 8) = BYTE8(v19);
   *(v18 + 15) |= 8u;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLAccelerationStructureCommandEncoderSPI *)self->_baseObject setLabel:v4];
+  [(MTLAccelerationStructureCommandEncoderSPI *)self->_baseObject setLabel:labelCopy];
   v6 = v19;
   *(v19 + 8) = -15648;
   v7 = BYTE9(v20);
@@ -1679,10 +1679,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1690,16 +1690,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -1708,13 +1708,13 @@
   *(v19 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLAccelerationStructureCommandEncoderSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLAccelerationStructureCommandEncoderSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -1771,30 +1771,30 @@
 
 - (void)endEncoding
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GTAccelerationStructureDescriptorDownloader_needsDownloader(self->_traceStream);
   if (endEncoding_descriptorDownloaderToken != -1)
   {
     dispatch_once(&endEncoding_descriptorDownloaderToken, &__block_literal_global_9419);
   }
 
-  [(MTLAccelerationStructureCommandEncoderSPI *)v2->_baseObject endEncoding];
-  WeakRetained = objc_loadWeakRetained(&v2->_captureCommandBuffer);
+  [(MTLAccelerationStructureCommandEncoderSPI *)selfCopy->_baseObject endEncoding];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_captureCommandBuffer);
   v5 = DEVICEOBJECT(WeakRetained);
 
-  if ([(NSMutableArray *)v2->_blitOperations count])
+  if ([(NSMutableArray *)selfCopy->_blitOperations count])
   {
     v73 = v3;
     context = objc_autoreleasePoolPush();
     v74 = v5;
-    v77 = [v5 blitCommandEncoder];
-    [v77 setLabel:@"com.apple.gputools.ADSExtraBuffersBlit"];
+    blitCommandEncoder = [v5 blitCommandEncoder];
+    [blitCommandEncoder setLabel:@"com.apple.gputools.ADSExtraBuffersBlit"];
     v85 = 0u;
     v86 = 0u;
     v83 = 0u;
     v84 = 0u;
-    v75 = v2;
-    obj = v2->_blitOperations;
+    v75 = selfCopy;
+    obj = selfCopy->_blitOperations;
     v6 = [(NSMutableArray *)obj countByEnumeratingWithState:&v83 objects:v87 count:16];
     if (v6)
     {
@@ -1817,7 +1817,7 @@
           v15 = [v10 objectForKeyedSubscript:@"dstBuffer"];
           v16 = DEVICEOBJECT(v15);
           v17 = [v10 objectForKeyedSubscript:@"length"];
-          [v77 copyFromBuffer:v12 sourceOffset:v14 toBuffer:v16 destinationOffset:0 size:NumberToInt(v17)];
+          [blitCommandEncoder copyFromBuffer:v12 sourceOffset:v14 toBuffer:v16 destinationOffset:0 size:NumberToInt(v17)];
         }
 
         v7 = [(NSMutableArray *)obj countByEnumeratingWithState:&v83 objects:v87 count:16];
@@ -1826,8 +1826,8 @@
       while (v7);
     }
 
-    [v77 endEncoding];
-    v2 = v75;
+    [blitCommandEncoder endEncoding];
+    selfCopy = v75;
     v18 = v75->_blitOperations;
     v81[0] = _NSConcreteStackBlock;
     v81[1] = 3221225472;
@@ -1850,19 +1850,19 @@
   if (v3)
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = [v5 computeCommandEncoder];
-    [v23 setLabel:@"com.apple.gputools.GTAccelerationStructureDescriptorDownloader.copyCommandEncoder"];
+    computeCommandEncoder = [v5 computeCommandEncoder];
+    [computeCommandEncoder setLabel:@"com.apple.gputools.GTAccelerationStructureDescriptorDownloader.copyCommandEncoder"];
     newpool[0] = 0;
     apr_pool_create_ex(newpool, 0, 0, 0);
     v24 = apr_hash_make(newpool[0]);
-    GTTraceMemPool_buildMemoryMap(v2->_traceStream->var3, v24);
-    v25 = objc_loadWeakRetained(&v2->_captureCommandBuffer);
-    v26 = [v25 device];
-    retainedDescriptorObjectsByStreamRef = v2->_retainedDescriptorObjectsByStreamRef;
-    v28 = atomic_load(&v2->_traceContext->var3);
-    v29 = GTAccelerationStructureDescriptorDownloader_make(v26, retainedDescriptorObjectsByStreamRef, v24, v28, newpool[0]);
+    GTTraceMemPool_buildMemoryMap(selfCopy->_traceStream->var3, v24);
+    v25 = objc_loadWeakRetained(&selfCopy->_captureCommandBuffer);
+    device = [v25 device];
+    retainedDescriptorObjectsByStreamRef = selfCopy->_retainedDescriptorObjectsByStreamRef;
+    v28 = atomic_load(&selfCopy->_traceContext->var3);
+    v29 = GTAccelerationStructureDescriptorDownloader_make(device, retainedDescriptorObjectsByStreamRef, v24, v28, newpool[0]);
 
-    var0 = v2->_traceStream->var4.var0;
+    var0 = selfCopy->_traceStream->var4.var0;
     if (var0)
     {
       v31 = 0;
@@ -1914,12 +1914,12 @@ LABEL_20:
       }
     }
 
-    v39 = objc_loadWeakRetained(&v2->_captureCommandBuffer);
-    v40 = [v39 device];
-    v41 = DEVICEOBJECT(v40);
+    v39 = objc_loadWeakRetained(&selfCopy->_captureCommandBuffer);
+    device2 = [v39 device];
+    v41 = DEVICEOBJECT(device2);
     GTAccelerationStructureDescriptorDownloader_allocateStateBuffers(v29, v41);
 
-    v42 = v2->_traceStream->var4.var0;
+    v42 = selfCopy->_traceStream->var4.var0;
     if (v42)
     {
       v43 = 0;
@@ -1959,7 +1959,7 @@ LABEL_32:
         break;
       }
 
-      GTAccelerationStructureDescriptorDownloader_processFunc(v29, v47, v23);
+      GTAccelerationStructureDescriptorDownloader_processFunc(v29, v47, computeCommandEncoder);
       v48 = atomic_load(v42 + 1);
       v49 = v46 + (v48 >> 6);
       v50 = (HIDWORD(v46) + 1);
@@ -1971,12 +1971,12 @@ LABEL_32:
       }
     }
 
-    v51 = objc_loadWeakRetained(&v2->_captureCommandBuffer);
-    v52 = [v51 accelerationStructureDescriptorProcessEvent];
+    v51 = objc_loadWeakRetained(&selfCopy->_captureCommandBuffer);
+    accelerationStructureDescriptorProcessEvent = [v51 accelerationStructureDescriptorProcessEvent];
     v53 = endEncoding_descriptorDownloaderEventListener;
-    copyEventValue = v2->_copyEventValue;
-    v55 = objc_loadWeakRetained(&v2->_captureCommandBuffer);
-    GTAccelerationStructureDescriptorDownloader_postProcess(v29, v52, v53, copyEventValue, [v55 isCapturing], v2, v2->_traceContext);
+    copyEventValue = selfCopy->_copyEventValue;
+    v55 = objc_loadWeakRetained(&selfCopy->_captureCommandBuffer);
+    GTAccelerationStructureDescriptorDownloader_postProcess(v29, accelerationStructureDescriptorProcessEvent, v53, copyEventValue, [v55 isCapturing], selfCopy, selfCopy->_traceContext);
 
     v56 = v29[3];
     v29[3] = 0;
@@ -1985,14 +1985,14 @@ LABEL_32:
     v29[4] = 0;
 
     apr_pool_destroy(newpool[0]);
-    [v23 endEncoding];
-    v58 = objc_loadWeakRetained(&v2->_captureCommandBuffer);
-    v59 = [v58 accelerationStructureDescriptorProcessEvent];
-    [v5 encodeSignalEvent:v59 value:v2->_copyEventValue];
+    [computeCommandEncoder endEncoding];
+    v58 = objc_loadWeakRetained(&selfCopy->_captureCommandBuffer);
+    accelerationStructureDescriptorProcessEvent2 = [v58 accelerationStructureDescriptorProcessEvent];
+    [v5 encodeSignalEvent:accelerationStructureDescriptorProcessEvent2 value:selfCopy->_copyEventValue];
 
-    v60 = objc_loadWeakRetained(&v2->_captureCommandBuffer);
-    v61 = [v60 accelerationStructureDescriptorProcessEvent];
-    [v5 encodeWaitForEvent:v61 value:v2->_copyEventValue + 1 timeout:GT_ENV];
+    v60 = objc_loadWeakRetained(&selfCopy->_captureCommandBuffer);
+    accelerationStructureDescriptorProcessEvent3 = [v60 accelerationStructureDescriptorProcessEvent];
+    [v5 encodeWaitForEvent:accelerationStructureDescriptorProcessEvent3 value:selfCopy->_copyEventValue + 1 timeout:GT_ENV];
 
     [v5 addCompletedHandler:&__block_literal_global_54];
     objc_autoreleasePoolPop(v22);
@@ -2001,8 +2001,8 @@ LABEL_32:
   v79 = 0u;
   v80 = 0u;
   *newpool = 0u;
-  traceStream = v2->_traceStream;
-  GTTraceContext_pushEncoderWithStream(v2->_traceContext, newpool);
+  traceStream = selfCopy->_traceStream;
+  GTTraceContext_pushEncoderWithStream(selfCopy->_traceContext, newpool);
   v63 = v79;
   *(v79 + 8) = -15642;
   v64 = BYTE9(v80);
@@ -2022,10 +2022,10 @@ LABEL_32:
   }
 
   *(v63 + 13) = v64;
-  v68 = [(CaptureMTLAccelerationStructureCommandEncoder *)v2 traceStream];
-  if (v68)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)selfCopy traceStream];
+  if (traceStream)
   {
-    v69 = v68->var0;
+    v69 = traceStream->var0;
   }
 
   else
@@ -2048,39 +2048,39 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
   endEncoding_descriptorDownloaderEventListener = v1;
 }
 
-- (void)deserializeInstanceAccelerationStructure:(id)a3 primitiveAccelerationStructures:(id)a4 fromBuffer:(id)a5 serializedBufferOffset:(unint64_t)a6 withDescriptor:(id)a7
+- (void)deserializeInstanceAccelerationStructure:(id)structure primitiveAccelerationStructures:(id)structures fromBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset withDescriptor:(id)descriptor
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  [v11 touch];
-  if (v11)
+  structureCopy = structure;
+  structuresCopy = structures;
+  bufferCopy = buffer;
+  descriptorCopy = descriptor;
+  [structureCopy touch];
+  if (structureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v11];
+      [(NSMutableSet *)retainedObjects addObject:structureCopy];
     }
   }
 
-  RetainNSArray(self->_retainedObjects, v12);
-  [v13 touch];
-  if (v13)
+  RetainNSArray(self->_retainedObjects, structuresCopy);
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v16 = self->_retainedObjects;
     if (v16)
     {
-      [(NSMutableSet *)v16 addObject:v13];
+      [(NSMutableSet *)v16 addObject:bufferCopy];
     }
   }
 
-  RetainObjectForDescriptorDownloader(v11, self->_retainedDescriptorObjectsByStreamRef);
+  RetainObjectForDescriptorDownloader(structureCopy, self->_retainedDescriptorObjectsByStreamRef);
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v17 = v12;
+  v17 = structuresCopy;
   v18 = [v17 countByEnumeratingWithState:&v51 objects:v55 count:16];
   if (v18)
   {
@@ -2110,14 +2110,14 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v48);
   baseObject = self->_baseObject;
-  v24 = [v11 baseObject];
+  baseObject = [structureCopy baseObject];
   v25 = unwrapNSArray(v17);
-  v26 = [v13 baseObject];
-  v27 = unwrapMTLAccelerationStructureDescriptor(v14);
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject deserializeInstanceAccelerationStructure:v24 primitiveAccelerationStructures:v25 fromBuffer:v26 serializedBufferOffset:a6 withDescriptor:v27];
+  baseObject2 = [bufferCopy baseObject];
+  v27 = unwrapMTLAccelerationStructureDescriptor(descriptorCopy);
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject deserializeInstanceAccelerationStructure:baseObject primitiveAccelerationStructures:v25 fromBuffer:baseObject2 serializedBufferOffset:offset withDescriptor:v27];
 
   v28 = objc_alloc_init(MTLInstanceAccelerationStructureDescriptor);
-  [v11 setCaptureDescriptor:v28];
+  [structureCopy setCaptureDescriptor:v28];
 
   v29 = v49;
   *(v49 + 8) = -15466;
@@ -2138,10 +2138,10 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
   }
 
   *(v29 + 13) = v30;
-  v34 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v34)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v34->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2149,10 +2149,10 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
     var0 = 0;
   }
 
-  v36 = [v11 traceStream];
-  if (v36)
+  traceStream2 = [structureCopy traceStream];
+  if (traceStream2)
   {
-    v37 = *v36;
+    v37 = *traceStream2;
   }
 
   else
@@ -2160,10 +2160,10 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
     v37 = 0;
   }
 
-  v38 = [v13 traceStream];
-  if (v38)
+  traceStream3 = [bufferCopy traceStream];
+  if (traceStream3)
   {
-    v39 = *v38;
+    v39 = *traceStream3;
   }
 
   else
@@ -2172,19 +2172,19 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
   }
 
   v40 = StreamMTLNameArray(&v48, v17);
-  v41 = SaveMTLAccelerationStructureDescriptor(&v48, v14);
+  v41 = SaveMTLAccelerationStructureDescriptor(&v48, descriptorCopy);
   *v31 = var0;
   *(v31 + 1) = v37;
   *(v31 + 2) = v39;
-  *(v31 + 3) = a6;
+  *(v31 + 3) = offset;
   v31[32] = v40;
   v31[33] = v41;
   *(v31 + 34) = 0;
   *(v31 + 19) = 0;
   WeakRetained = objc_loadWeakRetained(&self->_captureCommandBuffer);
-  v43 = [WeakRetained isCapturing];
+  isCapturing = [WeakRetained isCapturing];
   v44 = objc_alloc_init(MTLInstanceAccelerationStructureDescriptor);
-  SetCaptureDescriptor(v11, self, v43, v44);
+  SetCaptureDescriptor(structureCopy, self, isCapturing, v44);
 
   s();
   *v45 = v46;
@@ -2192,29 +2192,29 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
   *(v49 + 15) |= 8u;
 }
 
-- (void)serializeInstanceAccelerationStructure:(id)a3 primitiveAccelerationStructures:(id)a4 toBuffer:(id)a5 serializedBufferOffset:(unint64_t)a6
+- (void)serializeInstanceAccelerationStructure:(id)structure primitiveAccelerationStructures:(id)structures toBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  [v10 touch];
-  if (v10)
+  structureCopy = structure;
+  structuresCopy = structures;
+  bufferCopy = buffer;
+  [structureCopy touch];
+  if (structureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:structureCopy];
     }
   }
 
-  RetainNSArray(self->_retainedObjects, v11);
-  [v12 touch];
-  if (v12)
+  RetainNSArray(self->_retainedObjects, structuresCopy);
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v14 = self->_retainedObjects;
     if (v14)
     {
-      [(NSMutableSet *)v14 addObject:v12];
+      [(NSMutableSet *)v14 addObject:bufferCopy];
     }
   }
 
@@ -2224,10 +2224,10 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v34);
   baseObject = self->_baseObject;
-  v17 = [v10 baseObject];
-  v18 = unwrapNSArray(v11);
-  v19 = [v12 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject serializeInstanceAccelerationStructure:v17 primitiveAccelerationStructures:v18 toBuffer:v19 serializedBufferOffset:a6];
+  baseObject = [structureCopy baseObject];
+  v18 = unwrapNSArray(structuresCopy);
+  baseObject2 = [bufferCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject serializeInstanceAccelerationStructure:baseObject primitiveAccelerationStructures:v18 toBuffer:baseObject2 serializedBufferOffset:offset];
 
   v20 = v35;
   *(v35 + 8) = -15522;
@@ -2248,10 +2248,10 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
   }
 
   *(v20 + 13) = v21;
-  v25 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v25)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v25->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2259,10 +2259,10 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
     var0 = 0;
   }
 
-  v27 = [v10 traceStream];
-  if (v27)
+  traceStream2 = [structureCopy traceStream];
+  if (traceStream2)
   {
-    v28 = *v27;
+    v28 = *traceStream2;
   }
 
   else
@@ -2270,10 +2270,10 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
     v28 = 0;
   }
 
-  v29 = [v12 traceStream];
-  if (v29)
+  traceStream3 = [bufferCopy traceStream];
+  if (traceStream3)
   {
-    v30 = *v29;
+    v30 = *traceStream3;
   }
 
   else
@@ -2281,11 +2281,11 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
     v30 = 0;
   }
 
-  v31 = StreamMTLNameArray(&v34, v11);
+  v31 = StreamMTLNameArray(&v34, structuresCopy);
   *v22 = var0;
   *(v22 + 1) = v28;
   *(v22 + 2) = v30;
-  *(v22 + 3) = a6;
+  *(v22 + 3) = offset;
   v22[32] = v31;
   *(v22 + 33) = 0;
   *(v22 + 9) = 0;
@@ -2295,38 +2295,38 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
   *(v35 + 15) |= 8u;
 }
 
-- (void)deserializeInstanceAccelerationStructure:(id)a3 primitiveAccelerationStructures:(id)a4 fromBuffer:(id)a5 serializedBufferOffset:(unint64_t)a6
+- (void)deserializeInstanceAccelerationStructure:(id)structure primitiveAccelerationStructures:(id)structures fromBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  [v10 touch];
-  if (v10)
+  structureCopy = structure;
+  structuresCopy = structures;
+  bufferCopy = buffer;
+  [structureCopy touch];
+  if (structureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:structureCopy];
     }
   }
 
-  RetainNSArray(self->_retainedObjects, v11);
-  [v12 touch];
-  if (v12)
+  RetainNSArray(self->_retainedObjects, structuresCopy);
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v14 = self->_retainedObjects;
     if (v14)
     {
-      [(NSMutableSet *)v14 addObject:v12];
+      [(NSMutableSet *)v14 addObject:bufferCopy];
     }
   }
 
-  RetainObjectForDescriptorDownloader(v10, self->_retainedDescriptorObjectsByStreamRef);
+  RetainObjectForDescriptorDownloader(structureCopy, self->_retainedDescriptorObjectsByStreamRef);
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v15 = v11;
+  v15 = structuresCopy;
   v16 = [v15 countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v16)
   {
@@ -2355,11 +2355,11 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
   v42 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v42);
-  v21 = [v10 baseObject];
+  baseObject = [structureCopy baseObject];
   baseObject = self->_baseObject;
   v23 = unwrapNSArray(v15);
-  v24 = [v12 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject deserializeInstanceAccelerationStructure:v21 primitiveAccelerationStructures:v23 fromBuffer:v24 serializedBufferOffset:a6];
+  baseObject2 = [bufferCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject deserializeInstanceAccelerationStructure:baseObject primitiveAccelerationStructures:v23 fromBuffer:baseObject2 serializedBufferOffset:offset];
 
   v25 = v43;
   *(v43 + 8) = -15524;
@@ -2380,10 +2380,10 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
   }
 
   *(v25 + 13) = v26;
-  v30 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v30)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v30->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2391,10 +2391,10 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
     var0 = 0;
   }
 
-  v32 = [v10 traceStream];
-  if (v32)
+  traceStream2 = [structureCopy traceStream];
+  if (traceStream2)
   {
-    v33 = *v32;
+    v33 = *traceStream2;
   }
 
   else
@@ -2402,10 +2402,10 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
     v33 = 0;
   }
 
-  v34 = [v12 traceStream];
-  if (v34)
+  traceStream3 = [bufferCopy traceStream];
+  if (traceStream3)
   {
-    v35 = *v34;
+    v35 = *traceStream3;
   }
 
   else
@@ -2417,14 +2417,14 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
   *v27 = var0;
   *(v27 + 1) = v33;
   *(v27 + 2) = v35;
-  *(v27 + 3) = a6;
+  *(v27 + 3) = offset;
   v27[32] = v36;
   *(v27 + 33) = 0;
   *(v27 + 9) = 0;
   WeakRetained = objc_loadWeakRetained(&self->_captureCommandBuffer);
-  v38 = [WeakRetained isCapturing];
+  isCapturing = [WeakRetained isCapturing];
   v39 = objc_alloc_init(MTLInstanceAccelerationStructureDescriptor);
-  SetCaptureDescriptor(v10, self, v38, v39);
+  SetCaptureDescriptor(structureCopy, self, isCapturing, v39);
 
   s();
   *v40 = v41;
@@ -2432,40 +2432,40 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
   *(v43 + 15) |= 8u;
 }
 
-- (void)deserializePrimitiveAccelerationStructure:(id)a3 fromBuffer:(id)a4 serializedBufferOffset:(unint64_t)a5
+- (void)deserializePrimitiveAccelerationStructure:(id)structure fromBuffer:(id)buffer serializedBufferOffset:(unint64_t)offset
 {
-  v8 = a3;
-  v9 = a4;
-  [v8 touch];
-  if (v8)
+  structureCopy = structure;
+  bufferCopy = buffer;
+  [structureCopy touch];
+  if (structureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v8];
+      [(NSMutableSet *)retainedObjects addObject:structureCopy];
     }
   }
 
-  [v9 touch];
-  if (v9)
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v11 = self->_retainedObjects;
     if (v11)
     {
-      [(NSMutableSet *)v11 addObject:v9];
+      [(NSMutableSet *)v11 addObject:bufferCopy];
     }
   }
 
-  RetainObjectForDescriptorDownloader(v8, self->_retainedDescriptorObjectsByStreamRef);
+  RetainObjectForDescriptorDownloader(structureCopy, self->_retainedDescriptorObjectsByStreamRef);
   v33 = 0u;
   v34 = 0u;
   v32 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v32);
-  v13 = [v8 baseObject];
+  baseObject = [structureCopy baseObject];
   baseObject = self->_baseObject;
-  v15 = [v9 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject deserializePrimitiveAccelerationStructure:v13 fromBuffer:v15 serializedBufferOffset:a5];
+  baseObject2 = [bufferCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject deserializePrimitiveAccelerationStructure:baseObject fromBuffer:baseObject2 serializedBufferOffset:offset];
 
   v16 = v33;
   *(v33 + 8) = -15523;
@@ -2486,10 +2486,10 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
   }
 
   *(v16 + 13) = v17;
-  v21 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v21)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v21->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2497,10 +2497,10 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
     var0 = 0;
   }
 
-  v23 = [v8 traceStream];
-  if (v23)
+  traceStream2 = [structureCopy traceStream];
+  if (traceStream2)
   {
-    v24 = *v23;
+    v24 = *traceStream2;
   }
 
   else
@@ -2508,10 +2508,10 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
     v24 = 0;
   }
 
-  v25 = [v9 traceStream];
-  if (v25)
+  traceStream3 = [bufferCopy traceStream];
+  if (traceStream3)
   {
-    v26 = *v25;
+    v26 = *traceStream3;
   }
 
   else
@@ -2522,11 +2522,11 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
   *v18 = var0;
   *(v18 + 1) = v24;
   *(v18 + 2) = v26;
-  *(v18 + 3) = a5;
+  *(v18 + 3) = offset;
   WeakRetained = objc_loadWeakRetained(&self->_captureCommandBuffer);
-  v28 = [WeakRetained isCapturing];
+  isCapturing = [WeakRetained isCapturing];
   v29 = objc_alloc_init(MTLPrimitiveAccelerationStructureDescriptor);
-  SetCaptureDescriptor(v8, self, v28, v29);
+  SetCaptureDescriptor(structureCopy, self, isCapturing, v29);
 
   s();
   *v30 = v31;
@@ -2534,34 +2534,34 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
   *(v33 + 15) |= 8u;
 }
 
-- (void)buildAccelerationStructure:(id)a3 descriptor:(id)a4 scratchBuffer:(id)a5 scratchBufferOffset:(unint64_t)a6
+- (void)buildAccelerationStructure:(id)structure descriptor:(id)descriptor scratchBuffer:(id)buffer scratchBufferOffset:(unint64_t)offset
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  structureCopy = structure;
+  descriptorCopy = descriptor;
+  bufferCopy = buffer;
+  if (structureCopy)
   {
-    v13 = [v10 device];
-    v14 = [v13 captureRaytracingEnabled];
+    device = [structureCopy device];
+    captureRaytracingEnabled = [device captureRaytracingEnabled];
 
-    if ((v14 & 1) == 0)
+    if ((captureRaytracingEnabled & 1) == 0)
     {
       GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLAccelerationStructureCommandEncoder_buildAccelerationStructure_descriptor_scratchBuffer_scratchBufferOffset", "Raytracing", 0, 0);
       baseObject = self->_baseObject;
-      v37 = [v10 baseObject];
-      v38 = unwrapMTLAccelerationStructureDescriptor(v11);
-      v39 = [v12 baseObject];
-      [(MTLAccelerationStructureCommandEncoderSPI *)baseObject buildAccelerationStructure:v37 descriptor:v38 scratchBuffer:v39 scratchBufferOffset:a6];
+      baseObject = [structureCopy baseObject];
+      v38 = unwrapMTLAccelerationStructureDescriptor(descriptorCopy);
+      baseObject2 = [bufferCopy baseObject];
+      [(MTLAccelerationStructureCommandEncoderSPI *)baseObject buildAccelerationStructure:baseObject descriptor:v38 scratchBuffer:baseObject2 scratchBufferOffset:offset];
 
-      v28 = v11;
+      v28 = descriptorCopy;
       goto LABEL_23;
     }
 
-    [v10 touch];
+    [structureCopy touch];
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v10];
+      [(NSMutableSet *)retainedObjects addObject:structureCopy];
     }
   }
 
@@ -2570,40 +2570,40 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
     [0 touch];
   }
 
-  [v12 touch];
-  if (v12)
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v16 = self->_retainedObjects;
     if (v16)
     {
-      [(NSMutableSet *)v16 addObject:v12];
+      [(NSMutableSet *)v16 addObject:bufferCopy];
     }
   }
 
-  RetainObjectForDescriptorDownloader(v10, self->_retainedDescriptorObjectsByStreamRef);
-  RetainAccelerationStructureDescriptorObjects(self->_retainedObjects, self->_retainedDescriptorObjectsByStreamRef, v11);
+  RetainObjectForDescriptorDownloader(structureCopy, self->_retainedDescriptorObjectsByStreamRef);
+  RetainAccelerationStructureDescriptorObjects(self->_retainedObjects, self->_retainedDescriptorObjectsByStreamRef, descriptorCopy);
   v52 = 0u;
   v53 = 0u;
   v51 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v51);
   v18 = self->_baseObject;
-  v19 = [v10 baseObject];
-  v20 = unwrapMTLAccelerationStructureDescriptor(v11);
-  v49 = v12;
-  v21 = [v12 baseObject];
-  v48 = a6;
-  [(MTLAccelerationStructureCommandEncoderSPI *)v18 buildAccelerationStructure:v19 descriptor:v20 scratchBuffer:v21 scratchBufferOffset:a6];
+  baseObject3 = [structureCopy baseObject];
+  v20 = unwrapMTLAccelerationStructureDescriptor(descriptorCopy);
+  v49 = bufferCopy;
+  baseObject4 = [bufferCopy baseObject];
+  offsetCopy = offset;
+  [(MTLAccelerationStructureCommandEncoderSPI *)v18 buildAccelerationStructure:baseObject3 descriptor:v20 scratchBuffer:baseObject4 scratchBufferOffset:offset];
 
-  v50 = v11;
-  v22 = v10;
+  v50 = descriptorCopy;
+  v22 = structureCopy;
   WeakRetained = objc_loadWeakRetained(&self->_captureCommandBuffer);
-  LODWORD(v19) = [WeakRetained isCapturing];
+  LODWORD(baseObject3) = [WeakRetained isCapturing];
   LODWORD(v20) = (dword_31F7C8 >> 4) & 1;
   captureDevice = self->_captureDevice;
   blitOperations = self->_blitOperations;
-  v26 = [v22 extraRetainedObjects];
-  v27 = copyCaptureDescriptor(&v50, v19, v20, captureDevice, blitOperations, v26, self->_retainedDescriptorObjectsByStreamRef, self->_bufferCache);
+  extraRetainedObjects = [v22 extraRetainedObjects];
+  v27 = copyCaptureDescriptor(&v50, baseObject3, v20, captureDevice, blitOperations, extraRetainedObjects, self->_retainedDescriptorObjectsByStreamRef, self->_bufferCache);
   v28 = v50;
 
   v29 = v52;
@@ -2625,11 +2625,11 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
   }
 
   *(v29 + 13) = v30;
-  v34 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  v12 = v49;
-  if (v34)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  bufferCopy = v49;
+  if (traceStream)
   {
-    var0 = v34->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2637,10 +2637,10 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
     var0 = 0;
   }
 
-  v40 = [v22 traceStream];
-  if (v40)
+  traceStream2 = [v22 traceStream];
+  if (traceStream2)
   {
-    v41 = *v40;
+    v41 = *traceStream2;
   }
 
   else
@@ -2648,10 +2648,10 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
     v41 = 0;
   }
 
-  v42 = [v49 traceStream];
-  if (v42)
+  traceStream3 = [v49 traceStream];
+  if (traceStream3)
   {
-    v43 = *v42;
+    v43 = *traceStream3;
   }
 
   else
@@ -2663,7 +2663,7 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
   *v31 = var0;
   *(v31 + 1) = v41;
   *(v31 + 2) = v43;
-  *(v31 + 3) = v48;
+  *(v31 + 3) = offsetCopy;
   v31[32] = v44;
   *(v31 + 33) = 0;
   *(v31 + 9) = 0;
@@ -2678,67 +2678,67 @@ void __60__CaptureMTLAccelerationStructureCommandEncoder_endEncoding__block_invo
 LABEL_23:
 }
 
-- (void)refitAccelerationStructure:(id)a3 descriptor:(id)a4 destination:(id)a5 scratchBuffer:(id)a6 scratchBufferOffset:(unint64_t)a7 options:(unint64_t)a8
+- (void)refitAccelerationStructure:(id)structure descriptor:(id)descriptor destination:(id)destination scratchBuffer:(id)buffer scratchBufferOffset:(unint64_t)offset options:(unint64_t)options
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  [v12 touch];
-  if (v12)
+  structureCopy = structure;
+  descriptorCopy = descriptor;
+  destinationCopy = destination;
+  bufferCopy = buffer;
+  [structureCopy touch];
+  if (structureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v12];
+      [(NSMutableSet *)retainedObjects addObject:structureCopy];
     }
   }
 
-  [v14 touch];
-  if (v14)
+  [destinationCopy touch];
+  if (destinationCopy)
   {
     v17 = self->_retainedObjects;
     if (v17)
     {
-      [(NSMutableSet *)v17 addObject:v14];
+      [(NSMutableSet *)v17 addObject:destinationCopy];
     }
   }
 
-  [v15 touch];
-  if (v15)
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v18 = self->_retainedObjects;
     if (v18)
     {
-      [(NSMutableSet *)v18 addObject:v15];
+      [(NSMutableSet *)v18 addObject:bufferCopy];
     }
   }
 
-  RetainObjectForDescriptorDownloader(v12, self->_retainedDescriptorObjectsByStreamRef);
-  RetainObjectForDescriptorDownloader(v14, self->_retainedDescriptorObjectsByStreamRef);
-  RetainAccelerationStructureDescriptorObjects(self->_retainedObjects, self->_retainedDescriptorObjectsByStreamRef, v13);
+  RetainObjectForDescriptorDownloader(structureCopy, self->_retainedDescriptorObjectsByStreamRef);
+  RetainObjectForDescriptorDownloader(destinationCopy, self->_retainedDescriptorObjectsByStreamRef);
+  RetainAccelerationStructureDescriptorObjects(self->_retainedObjects, self->_retainedDescriptorObjectsByStreamRef, descriptorCopy);
   v56 = 0u;
   v57 = 0u;
   v55 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v55);
   baseObject = self->_baseObject;
-  v21 = [v12 baseObject];
-  v22 = unwrapMTLAccelerationStructureDescriptor(v13);
-  v23 = [v14 baseObject];
-  v53 = v15;
-  v24 = [v15 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject refitAccelerationStructure:v21 descriptor:v22 destination:v23 scratchBuffer:v24 scratchBufferOffset:v50 options:v52];
+  baseObject = [structureCopy baseObject];
+  v22 = unwrapMTLAccelerationStructureDescriptor(descriptorCopy);
+  baseObject2 = [destinationCopy baseObject];
+  v53 = bufferCopy;
+  baseObject3 = [bufferCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject refitAccelerationStructure:baseObject descriptor:v22 destination:baseObject2 scratchBuffer:baseObject3 scratchBufferOffset:v50 options:v52];
 
-  v54 = v13;
-  v25 = v14;
+  v54 = descriptorCopy;
+  v25 = destinationCopy;
   WeakRetained = objc_loadWeakRetained(&self->_captureCommandBuffer);
-  LODWORD(v24) = [WeakRetained isCapturing];
+  LODWORD(baseObject3) = [WeakRetained isCapturing];
   LODWORD(baseObject) = (dword_31F7C8 >> 4) & 1;
   captureDevice = self->_captureDevice;
   blitOperations = self->_blitOperations;
-  v29 = [v25 extraRetainedObjects];
-  v30 = copyCaptureDescriptor(&v54, v24, baseObject, captureDevice, blitOperations, v29, self->_retainedDescriptorObjectsByStreamRef, self->_bufferCache);
+  extraRetainedObjects = [v25 extraRetainedObjects];
+  v30 = copyCaptureDescriptor(&v54, baseObject3, baseObject, captureDevice, blitOperations, extraRetainedObjects, self->_retainedDescriptorObjectsByStreamRef, self->_bufferCache);
   v31 = v54;
 
   v32 = v56;
@@ -2760,10 +2760,10 @@ LABEL_23:
   }
 
   *(v32 + 13) = v33;
-  v37 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v37)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v37->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2771,10 +2771,10 @@ LABEL_23:
     var0 = 0;
   }
 
-  v39 = [v12 traceStream];
-  if (v39)
+  traceStream2 = [structureCopy traceStream];
+  if (traceStream2)
   {
-    v40 = *v39;
+    v40 = *traceStream2;
   }
 
   else
@@ -2782,10 +2782,10 @@ LABEL_23:
     v40 = 0;
   }
 
-  v41 = [v25 traceStream];
-  if (v41)
+  traceStream3 = [v25 traceStream];
+  if (traceStream3)
   {
-    v42 = *v41;
+    v42 = *traceStream3;
   }
 
   else
@@ -2793,10 +2793,10 @@ LABEL_23:
     v42 = 0;
   }
 
-  v43 = [v53 traceStream];
-  if (v43)
+  traceStream4 = [v53 traceStream];
+  if (traceStream4)
   {
-    v44 = *v43;
+    v44 = *traceStream4;
   }
 
   else
@@ -2823,67 +2823,67 @@ LABEL_23:
   *(v56 + 15) |= 8u;
 }
 
-- (void)refitAccelerationStructure:(id)a3 descriptor:(id)a4 destination:(id)a5 scratchBuffer:(id)a6 scratchBufferOffset:(unint64_t)a7
+- (void)refitAccelerationStructure:(id)structure descriptor:(id)descriptor destination:(id)destination scratchBuffer:(id)buffer scratchBufferOffset:(unint64_t)offset
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  [v11 touch];
-  if (v11)
+  structureCopy = structure;
+  descriptorCopy = descriptor;
+  destinationCopy = destination;
+  bufferCopy = buffer;
+  [structureCopy touch];
+  if (structureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v11];
+      [(NSMutableSet *)retainedObjects addObject:structureCopy];
     }
   }
 
-  [v13 touch];
-  if (v13)
+  [destinationCopy touch];
+  if (destinationCopy)
   {
     v16 = self->_retainedObjects;
     if (v16)
     {
-      [(NSMutableSet *)v16 addObject:v13];
+      [(NSMutableSet *)v16 addObject:destinationCopy];
     }
   }
 
-  [v14 touch];
-  if (v14)
+  [bufferCopy touch];
+  if (bufferCopy)
   {
     v17 = self->_retainedObjects;
     if (v17)
     {
-      [(NSMutableSet *)v17 addObject:v14];
+      [(NSMutableSet *)v17 addObject:bufferCopy];
     }
   }
 
-  RetainObjectForDescriptorDownloader(v11, self->_retainedDescriptorObjectsByStreamRef);
-  RetainObjectForDescriptorDownloader(v13, self->_retainedDescriptorObjectsByStreamRef);
-  RetainAccelerationStructureDescriptorObjects(self->_retainedObjects, self->_retainedDescriptorObjectsByStreamRef, v12);
+  RetainObjectForDescriptorDownloader(structureCopy, self->_retainedDescriptorObjectsByStreamRef);
+  RetainObjectForDescriptorDownloader(destinationCopy, self->_retainedDescriptorObjectsByStreamRef);
+  RetainAccelerationStructureDescriptorObjects(self->_retainedObjects, self->_retainedDescriptorObjectsByStreamRef, descriptorCopy);
   v52 = 0u;
   v53 = 0u;
   v51 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v51);
   baseObject = self->_baseObject;
-  v20 = [v11 baseObject];
-  v21 = unwrapMTLAccelerationStructureDescriptor(v12);
-  v22 = [v13 baseObject];
-  v49 = v14;
-  v23 = [v14 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject refitAccelerationStructure:v20 descriptor:v21 destination:v22 scratchBuffer:v23 scratchBufferOffset:a7];
+  baseObject = [structureCopy baseObject];
+  v21 = unwrapMTLAccelerationStructureDescriptor(descriptorCopy);
+  baseObject2 = [destinationCopy baseObject];
+  v49 = bufferCopy;
+  baseObject3 = [bufferCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject refitAccelerationStructure:baseObject descriptor:v21 destination:baseObject2 scratchBuffer:baseObject3 scratchBufferOffset:offset];
 
-  v50 = v12;
-  v24 = v13;
+  v50 = descriptorCopy;
+  v24 = destinationCopy;
   WeakRetained = objc_loadWeakRetained(&self->_captureCommandBuffer);
   LODWORD(baseObject) = [WeakRetained isCapturing];
-  LODWORD(v20) = (dword_31F7C8 >> 4) & 1;
+  LODWORD(baseObject) = (dword_31F7C8 >> 4) & 1;
   captureDevice = self->_captureDevice;
   blitOperations = self->_blitOperations;
-  v28 = [v24 extraRetainedObjects];
-  v29 = copyCaptureDescriptor(&v50, baseObject, v20, captureDevice, blitOperations, v28, self->_retainedDescriptorObjectsByStreamRef, self->_bufferCache);
+  extraRetainedObjects = [v24 extraRetainedObjects];
+  v29 = copyCaptureDescriptor(&v50, baseObject, baseObject, captureDevice, blitOperations, extraRetainedObjects, self->_retainedDescriptorObjectsByStreamRef, self->_bufferCache);
   v30 = v50;
 
   v31 = v52;
@@ -2905,10 +2905,10 @@ LABEL_23:
   }
 
   *(v31 + 13) = v32;
-  v36 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v36)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v36->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -2916,10 +2916,10 @@ LABEL_23:
     var0 = 0;
   }
 
-  v38 = [v11 traceStream];
-  if (v38)
+  traceStream2 = [structureCopy traceStream];
+  if (traceStream2)
   {
-    v39 = *v38;
+    v39 = *traceStream2;
   }
 
   else
@@ -2927,10 +2927,10 @@ LABEL_23:
     v39 = 0;
   }
 
-  v40 = [v24 traceStream];
-  if (v40)
+  traceStream3 = [v24 traceStream];
+  if (traceStream3)
   {
-    v41 = *v40;
+    v41 = *traceStream3;
   }
 
   else
@@ -2938,10 +2938,10 @@ LABEL_23:
     v41 = 0;
   }
 
-  v42 = [v49 traceStream];
-  if (v42)
+  traceStream4 = [v49 traceStream];
+  if (traceStream4)
   {
-    v43 = *v42;
+    v43 = *traceStream4;
   }
 
   else
@@ -2954,7 +2954,7 @@ LABEL_23:
   *(v33 + 1) = v39;
   *(v33 + 2) = v41;
   *(v33 + 3) = v43;
-  *(v33 + 4) = a7;
+  *(v33 + 4) = offset;
   v33[40] = v44;
   *(v33 + 41) = 0;
   *(v33 + 11) = 0;
@@ -2967,41 +2967,41 @@ LABEL_23:
   *(v52 + 15) |= 8u;
 }
 
-- (void)copyAndCompactAccelerationStructure:(id)a3 toAccelerationStructure:(id)a4
+- (void)copyAndCompactAccelerationStructure:(id)structure toAccelerationStructure:(id)accelerationStructure
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 touch];
-  if (v6)
+  structureCopy = structure;
+  accelerationStructureCopy = accelerationStructure;
+  [structureCopy touch];
+  if (structureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:structureCopy];
     }
   }
 
-  [v7 touch];
-  if (v7)
+  [accelerationStructureCopy touch];
+  if (accelerationStructureCopy)
   {
     v9 = self->_retainedObjects;
     if (v9)
     {
-      [(NSMutableSet *)v9 addObject:v7];
+      [(NSMutableSet *)v9 addObject:accelerationStructureCopy];
     }
   }
 
-  RetainObjectForDescriptorDownloader(v6, self->_retainedDescriptorObjectsByStreamRef);
-  RetainObjectForDescriptorDownloader(v7, self->_retainedDescriptorObjectsByStreamRef);
+  RetainObjectForDescriptorDownloader(structureCopy, self->_retainedDescriptorObjectsByStreamRef);
+  RetainObjectForDescriptorDownloader(accelerationStructureCopy, self->_retainedDescriptorObjectsByStreamRef);
   v39 = 0u;
   v40 = 0u;
   v38 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v38);
   baseObject = self->_baseObject;
-  v12 = [v6 baseObject];
-  v13 = [v7 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject copyAndCompactAccelerationStructure:v12 toAccelerationStructure:v13];
+  baseObject = [structureCopy baseObject];
+  baseObject2 = [accelerationStructureCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject copyAndCompactAccelerationStructure:baseObject toAccelerationStructure:baseObject2];
 
   v14 = v39;
   *(v39 + 8) = -15645;
@@ -3022,10 +3022,10 @@ LABEL_23:
   }
 
   *(v14 + 13) = v15;
-  v19 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v19)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v19->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3033,10 +3033,10 @@ LABEL_23:
     var0 = 0;
   }
 
-  v21 = [v6 traceStream];
-  if (v21)
+  traceStream2 = [structureCopy traceStream];
+  if (traceStream2)
   {
-    v22 = *v21;
+    v22 = *traceStream2;
   }
 
   else
@@ -3044,10 +3044,10 @@ LABEL_23:
     v22 = 0;
   }
 
-  v23 = [v7 traceStream];
-  if (v23)
+  traceStream3 = [accelerationStructureCopy traceStream];
+  if (traceStream3)
   {
-    v24 = *v23;
+    v24 = *traceStream3;
   }
 
   else
@@ -3058,29 +3058,29 @@ LABEL_23:
   *v16 = var0;
   *(v16 + 1) = v22;
   *(v16 + 2) = v24;
-  v25 = v6;
-  v26 = v7;
+  v25 = structureCopy;
+  v26 = accelerationStructureCopy;
   if ((dword_31F7C8 & 0x10) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_captureCommandBuffer);
-    v28 = [WeakRetained isCapturing];
+    isCapturing = [WeakRetained isCapturing];
 
-    if ((v28 & 1) == 0)
+    if ((isCapturing & 1) == 0)
     {
-      v29 = [v26 extraRetainedObjects];
-      [v29 removeAllObjects];
+      extraRetainedObjects = [v26 extraRetainedObjects];
+      [extraRetainedObjects removeAllObjects];
     }
 
-    v30 = [v26 extraRetainedObjects];
+    extraRetainedObjects2 = [v26 extraRetainedObjects];
     retainedDescriptorObjectsByStreamRef = self->_retainedDescriptorObjectsByStreamRef;
-    v32 = [v25 captureDescriptor];
-    RetainAccelerationStructureDescriptorObjects(v30, retainedDescriptorObjectsByStreamRef, v32);
+    captureDescriptor = [v25 captureDescriptor];
+    RetainAccelerationStructureDescriptorObjects(extraRetainedObjects2, retainedDescriptorObjectsByStreamRef, captureDescriptor);
   }
 
   v33 = objc_loadWeakRetained(&self->_captureCommandBuffer);
-  v34 = [v33 isCapturing];
-  v35 = [v25 captureDescriptor];
-  SetCaptureDescriptor(v26, self, v34, v35);
+  isCapturing2 = [v33 isCapturing];
+  captureDescriptor2 = [v25 captureDescriptor];
+  SetCaptureDescriptor(v26, self, isCapturing2, captureDescriptor2);
 
   s();
   *v36 = v37;
@@ -3088,41 +3088,41 @@ LABEL_23:
   *(v39 + 15) |= 8u;
 }
 
-- (void)copyAccelerationStructure:(id)a3 toAccelerationStructure:(id)a4
+- (void)copyAccelerationStructure:(id)structure toAccelerationStructure:(id)accelerationStructure
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 touch];
-  if (v6)
+  structureCopy = structure;
+  accelerationStructureCopy = accelerationStructure;
+  [structureCopy touch];
+  if (structureCopy)
   {
     retainedObjects = self->_retainedObjects;
     if (retainedObjects)
     {
-      [(NSMutableSet *)retainedObjects addObject:v6];
+      [(NSMutableSet *)retainedObjects addObject:structureCopy];
     }
   }
 
-  [v7 touch];
-  if (v7)
+  [accelerationStructureCopy touch];
+  if (accelerationStructureCopy)
   {
     v9 = self->_retainedObjects;
     if (v9)
     {
-      [(NSMutableSet *)v9 addObject:v7];
+      [(NSMutableSet *)v9 addObject:accelerationStructureCopy];
     }
   }
 
-  RetainObjectForDescriptorDownloader(v6, self->_retainedDescriptorObjectsByStreamRef);
-  RetainObjectForDescriptorDownloader(v7, self->_retainedDescriptorObjectsByStreamRef);
+  RetainObjectForDescriptorDownloader(structureCopy, self->_retainedDescriptorObjectsByStreamRef);
+  RetainObjectForDescriptorDownloader(accelerationStructureCopy, self->_retainedDescriptorObjectsByStreamRef);
   v39 = 0u;
   v40 = 0u;
   v38 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v38);
   baseObject = self->_baseObject;
-  v12 = [v6 baseObject];
-  v13 = [v7 baseObject];
-  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject copyAccelerationStructure:v12 toAccelerationStructure:v13];
+  baseObject = [structureCopy baseObject];
+  baseObject2 = [accelerationStructureCopy baseObject];
+  [(MTLAccelerationStructureCommandEncoderSPI *)baseObject copyAccelerationStructure:baseObject toAccelerationStructure:baseObject2];
 
   v14 = v39;
   *(v39 + 8) = -15646;
@@ -3143,10 +3143,10 @@ LABEL_23:
   }
 
   *(v14 + 13) = v15;
-  v19 = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
-  if (v19)
+  traceStream = [(CaptureMTLAccelerationStructureCommandEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v19->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -3154,10 +3154,10 @@ LABEL_23:
     var0 = 0;
   }
 
-  v21 = [v6 traceStream];
-  if (v21)
+  traceStream2 = [structureCopy traceStream];
+  if (traceStream2)
   {
-    v22 = *v21;
+    v22 = *traceStream2;
   }
 
   else
@@ -3165,10 +3165,10 @@ LABEL_23:
     v22 = 0;
   }
 
-  v23 = [v7 traceStream];
-  if (v23)
+  traceStream3 = [accelerationStructureCopy traceStream];
+  if (traceStream3)
   {
-    v24 = *v23;
+    v24 = *traceStream3;
   }
 
   else
@@ -3179,29 +3179,29 @@ LABEL_23:
   *v16 = var0;
   *(v16 + 1) = v22;
   *(v16 + 2) = v24;
-  v25 = v6;
-  v26 = v7;
+  v25 = structureCopy;
+  v26 = accelerationStructureCopy;
   if ((dword_31F7C8 & 0x10) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_captureCommandBuffer);
-    v28 = [WeakRetained isCapturing];
+    isCapturing = [WeakRetained isCapturing];
 
-    if ((v28 & 1) == 0)
+    if ((isCapturing & 1) == 0)
     {
-      v29 = [v26 extraRetainedObjects];
-      [v29 removeAllObjects];
+      extraRetainedObjects = [v26 extraRetainedObjects];
+      [extraRetainedObjects removeAllObjects];
     }
 
-    v30 = [v26 extraRetainedObjects];
+    extraRetainedObjects2 = [v26 extraRetainedObjects];
     retainedDescriptorObjectsByStreamRef = self->_retainedDescriptorObjectsByStreamRef;
-    v32 = [v25 captureDescriptor];
-    RetainAccelerationStructureDescriptorObjects(v30, retainedDescriptorObjectsByStreamRef, v32);
+    captureDescriptor = [v25 captureDescriptor];
+    RetainAccelerationStructureDescriptorObjects(extraRetainedObjects2, retainedDescriptorObjectsByStreamRef, captureDescriptor);
   }
 
   v33 = objc_loadWeakRetained(&self->_captureCommandBuffer);
-  v34 = [v33 isCapturing];
-  v35 = [v25 captureDescriptor];
-  SetCaptureDescriptor(v26, self, v34, v35);
+  isCapturing2 = [v33 isCapturing];
+  captureDescriptor2 = [v25 captureDescriptor];
+  SetCaptureDescriptor(v26, self, isCapturing2, captureDescriptor2);
 
   s();
   *v36 = v37;
@@ -3209,32 +3209,32 @@ LABEL_23:
   *(v39 + 15) |= 8u;
 }
 
-- (CaptureMTLAccelerationStructureCommandEncoder)initWithBaseObject:(id)a3 captureCommandBuffer:(id)a4 copyEventValue:(unint64_t)a5
+- (CaptureMTLAccelerationStructureCommandEncoder)initWithBaseObject:(id)object captureCommandBuffer:(id)buffer copyEventValue:(unint64_t)value
 {
-  v9 = a3;
-  v10 = a4;
+  objectCopy = object;
+  bufferCopy = buffer;
   v28.receiver = self;
   v28.super_class = CaptureMTLAccelerationStructureCommandEncoder;
   v11 = [(CaptureMTLAccelerationStructureCommandEncoder *)&v28 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_baseObject, a3);
-    v13 = [v10 device];
+    objc_storeStrong(&v11->_baseObject, object);
+    device = [bufferCopy device];
     captureDevice = v12->_captureDevice;
-    v12->_captureDevice = v13;
+    v12->_captureDevice = device;
 
-    objc_storeWeak(&v12->_captureCommandBuffer, v10);
-    v15 = [v10 traceContext];
-    v12->_traceContext = v15;
-    v16 = DEVICEOBJECT(v9);
-    v12->_traceStream = GTTraceContext_openEncoderStream(v15, v16, *([v10 traceStream] + 3));
+    objc_storeWeak(&v12->_captureCommandBuffer, bufferCopy);
+    traceContext = [bufferCopy traceContext];
+    v12->_traceContext = traceContext;
+    v16 = DEVICEOBJECT(objectCopy);
+    v12->_traceStream = GTTraceContext_openEncoderStream(traceContext, v16, *([bufferCopy traceStream] + 3));
 
-    v17 = [v10 retainedObjects];
+    retainedObjects = [bufferCopy retainedObjects];
     retainedObjects = v12->_retainedObjects;
-    v12->_retainedObjects = v17;
+    v12->_retainedObjects = retainedObjects;
 
-    v12->_copyEventValue = a5;
+    v12->_copyEventValue = value;
     v19 = v12->_retainedObjects;
     v20 = DEVICEOBJECT(v12->_baseObject);
     [(NSMutableSet *)v19 addObject:v20];

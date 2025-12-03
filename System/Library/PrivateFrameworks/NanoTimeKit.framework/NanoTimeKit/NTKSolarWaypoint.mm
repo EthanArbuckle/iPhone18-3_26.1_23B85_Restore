@@ -1,7 +1,7 @@
 @interface NTKSolarWaypoint
 - (NSString)description;
 - (NSString)localizedName;
-- (NTKSolarWaypoint)initWithType:(int64_t)a3 solarTimeModel:(id)a4;
+- (NTKSolarWaypoint)initWithType:(int64_t)type solarTimeModel:(id)model;
 - (id)ntkCacheableKey;
 - (void)updateDependentValues;
 - (void)updateDependentValuesWithPlaceholderData;
@@ -9,17 +9,17 @@
 
 @implementation NTKSolarWaypoint
 
-- (NTKSolarWaypoint)initWithType:(int64_t)a3 solarTimeModel:(id)a4
+- (NTKSolarWaypoint)initWithType:(int64_t)type solarTimeModel:(id)model
 {
-  v7 = a4;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = NTKSolarWaypoint;
   v8 = [(NTKSolarWaypoint *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_solarTimeModel, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_solarTimeModel, model);
     v10 = v9;
   }
 
@@ -34,13 +34,13 @@
   {
     if (type == 1)
     {
-      v5 = [(NTKSolarTimeModel *)solarTimeModel localDawnDate];
+      localDawnDate = [(NTKSolarTimeModel *)solarTimeModel localDawnDate];
       goto LABEL_13;
     }
 
     if (type == 2)
     {
-      v5 = [(NTKSolarTimeModel *)solarTimeModel localSunriseDate];
+      localDawnDate = [(NTKSolarTimeModel *)solarTimeModel localSunriseDate];
       goto LABEL_13;
     }
   }
@@ -50,22 +50,22 @@
     switch(type)
     {
       case 3:
-        v5 = [(NTKSolarTimeModel *)solarTimeModel localSolarNoonDate];
+        localDawnDate = [(NTKSolarTimeModel *)solarTimeModel localSolarNoonDate];
         goto LABEL_13;
       case 4:
-        v5 = [(NTKSolarTimeModel *)solarTimeModel localSunsetDate];
+        localDawnDate = [(NTKSolarTimeModel *)solarTimeModel localSunsetDate];
         goto LABEL_13;
       case 5:
-        v5 = [(NTKSolarTimeModel *)solarTimeModel localDuskDate];
+        localDawnDate = [(NTKSolarTimeModel *)solarTimeModel localDuskDate];
         goto LABEL_13;
     }
   }
 
-  v5 = [(NTKSolarTimeModel *)solarTimeModel startDateForReferenceDate];
+  localDawnDate = [(NTKSolarTimeModel *)solarTimeModel startDateForReferenceDate];
 LABEL_13:
-  obj = v5;
-  v6 = [MEMORY[0x277CBEAA8] distantPast];
-  if ([obj isEqualToDate:v6])
+  obj = localDawnDate;
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  if ([obj isEqualToDate:distantPast])
   {
 
 LABEL_16:
@@ -76,8 +76,8 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v7 = [MEMORY[0x277CBEAA8] distantFuture];
-  v8 = [obj isEqualToDate:v7];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v8 = [obj isEqualToDate:distantFuture];
 
   if (v8)
   {
@@ -192,8 +192,8 @@ LABEL_17:
   v4 = [(NTKSolarWaypoint *)&v10 description];
   waypointDate = self->_waypointDate;
   percentageThroughPeriodForWaypointDate = self->_percentageThroughPeriodForWaypointDate;
-  v7 = [(NTKSolarWaypoint *)self localizedName];
-  v8 = [v3 stringWithFormat:@"%@ date = (%@) percent = %.2f localizedName =%@", v4, waypointDate, *&percentageThroughPeriodForWaypointDate, v7];
+  localizedName = [(NTKSolarWaypoint *)self localizedName];
+  v8 = [v3 stringWithFormat:@"%@ date = (%@) percent = %.2f localizedName =%@", v4, waypointDate, *&percentageThroughPeriodForWaypointDate, localizedName];
 
   return v8;
 }

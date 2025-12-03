@@ -1,14 +1,14 @@
 @interface PTGlobalStateChangeMonitor
-- (PTGlobalStateChangeMonitor)initWithQueue:(id)a3 stateChangeBlock:(id)a4;
+- (PTGlobalStateChangeMonitor)initWithQueue:(id)queue stateChangeBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation PTGlobalStateChangeMonitor
 
-- (PTGlobalStateChangeMonitor)initWithQueue:(id)a3 stateChangeBlock:(id)a4
+- (PTGlobalStateChangeMonitor)initWithQueue:(id)queue stateChangeBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v24.receiver = self;
   v24.super_class = PTGlobalStateChangeMonitor;
   v9 = [(PTGlobalStateChangeMonitor *)&v24 init];
@@ -18,20 +18,20 @@
     goto LABEL_7;
   }
 
-  objc_storeStrong(&v9->_targetQueue, a3);
-  v11 = MEMORY[0x25F8B17E0](v8);
+  objc_storeStrong(&v9->_targetQueue, queue);
+  v11 = MEMORY[0x25F8B17E0](blockCopy);
   stateChangeBlock = v10->_stateChangeBlock;
   v10->_stateChangeBlock = v11;
 
   objc_initWeak(&location, v10);
   out_token = 0;
-  v13 = [(PTGlobalStateChangeMonitor *)v10 targetQueue];
+  targetQueue = [(PTGlobalStateChangeMonitor *)v10 targetQueue];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __61__PTGlobalStateChangeMonitor_initWithQueue_stateChangeBlock___block_invoke;
   handler[3] = &unk_279A18CF8;
   objc_copyWeak(&v21, &location);
-  v14 = notify_register_dispatch("com.apple.performancetrace.global_state_did_change", &out_token, v13, handler);
+  v14 = notify_register_dispatch("com.apple.performancetrace.global_state_did_change", &out_token, targetQueue, handler);
 
   if (!v14)
   {

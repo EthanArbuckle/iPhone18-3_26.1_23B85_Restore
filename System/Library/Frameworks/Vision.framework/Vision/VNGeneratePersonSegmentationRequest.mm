@@ -1,24 +1,24 @@
 @interface VNGeneratePersonSegmentationRequest
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
 + (id)privateRevisionsSet;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
 - (BOOL)useTiling;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
 - (OSType)outputPixelFormat;
 - (VNGeneratePersonSegmentationRequest)initWithCompletionHandler:(VNRequestCompletionHandler)completionHandler;
 - (VNGeneratePersonSegmentationRequestQualityLevel)qualityLevel;
 - (float)minimumConfidence;
-- (id)_internalPerformRevision:(void *)a3 session:(uint64_t)a4 qosClass:(void *)a5 generatorOptions:(uint64_t)a6 error:;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
+- (id)_internalPerformRevision:(void *)revision session:(uint64_t)session qosClass:(void *)class generatorOptions:(uint64_t)options error:;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
 - (id)description;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
-- (id)supportedOutputPixelFormatsAndReturnError:(id *)a3;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
+- (id)supportedOutputPixelFormatsAndReturnError:(id *)error;
 - (uint64_t)keepRawOutputMask;
-- (void)applyConfigurationOfRequest:(id)a3;
-- (void)setMinimumConfidence:(float)a3;
+- (void)applyConfigurationOfRequest:(id)request;
+- (void)setMinimumConfidence:(float)confidence;
 - (void)setOutputPixelFormat:(OSType)outputPixelFormat;
 - (void)setQualityLevel:(VNGeneratePersonSegmentationRequestQualityLevel)qualityLevel;
-- (void)setUseTiling:(BOOL)a3;
+- (void)setUseTiling:(BOOL)tiling;
 @end
 
 @implementation VNGeneratePersonSegmentationRequest
@@ -41,9 +41,9 @@
   if ([(VNRequest *)self resolvedRevision]>= 0xDECAF000)
   {
     v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v9 = [(VNGeneratePersonSegmentationRequest *)self useTiling];
+    useTiling = [(VNGeneratePersonSegmentationRequest *)self useTiling];
     [(VNGeneratePersonSegmentationRequest *)self minimumConfidence];
-    v11 = [v8 initWithFormat:@"%@ useTiling=%d minimumConfidence=%f", v7, v9, v10];
+    v11 = [v8 initWithFormat:@"%@ useTiling=%d minimumConfidence=%f", v7, useTiling, v10];
 
     v7 = v11;
   }
@@ -65,60 +65,60 @@ uint64_t __50__VNGeneratePersonSegmentationRequest_description__block_invoke(uin
   }
 }
 
-- (void)setMinimumConfidence:(float)a3
+- (void)setMinimumConfidence:(float)confidence
 {
-  v5 = [(VNRequest *)self configuration];
-  *&v4 = a3;
-  [v5 setMinimumConfidence:v4];
+  configuration = [(VNRequest *)self configuration];
+  *&v4 = confidence;
+  [configuration setMinimumConfidence:v4];
 }
 
 - (float)minimumConfidence
 {
-  v2 = [(VNRequest *)self configuration];
-  [v2 minimumConfidence];
+  configuration = [(VNRequest *)self configuration];
+  [configuration minimumConfidence];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setUseTiling:(BOOL)a3
+- (void)setUseTiling:(BOOL)tiling
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setUseTiling:v3];
+  tilingCopy = tiling;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setUseTiling:tilingCopy];
 }
 
 - (BOOL)useTiling
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 useTiling];
+  configuration = [(VNRequest *)self configuration];
+  useTiling = [configuration useTiling];
 
-  return v3;
+  return useTiling;
 }
 
 - (void)setOutputPixelFormat:(OSType)outputPixelFormat
 {
   v3 = *&outputPixelFormat;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setOutputPixelFormat:v3];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setOutputPixelFormat:v3];
 }
 
 - (OSType)outputPixelFormat
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 outputPixelFormat];
+  configuration = [(VNRequest *)self configuration];
+  outputPixelFormat = [configuration outputPixelFormat];
 
-  return v3;
+  return outputPixelFormat;
 }
 
-- (id)supportedOutputPixelFormatsAndReturnError:(id *)a3
+- (id)supportedOutputPixelFormatsAndReturnError:(id *)error
 {
   v8 = 0;
-  v4 = [(VNRequest *)self applicableDetectorClassAndOptions:&v8 forRevision:[(VNRequest *)self resolvedRevision] error:a3];
+  v4 = [(VNRequest *)self applicableDetectorClassAndOptions:&v8 forRevision:[(VNRequest *)self resolvedRevision] error:error];
   v5 = v8;
   if (v4)
   {
-    v6 = [(objc_class *)v4 supportedOutputPixelFormatsForOptions:v5 error:a3];
+    v6 = [(objc_class *)v4 supportedOutputPixelFormatsForOptions:v5 error:error];
   }
 
   else
@@ -131,38 +131,38 @@ uint64_t __50__VNGeneratePersonSegmentationRequest_description__block_invoke(uin
 
 - (void)setQualityLevel:(VNGeneratePersonSegmentationRequestQualityLevel)qualityLevel
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setQualityLevel:qualityLevel];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setQualityLevel:qualityLevel];
 }
 
 - (VNGeneratePersonSegmentationRequestQualityLevel)qualityLevel
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 qualityLevel];
+  configuration = [(VNRequest *)self configuration];
+  qualityLevel = [configuration qualityLevel];
 
-  return v3;
+  return qualityLevel;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [v8 imageBufferAndReturnError:a5];
+  contextCopy = context;
+  v9 = [contextCopy imageBufferAndReturnError:error];
   if (v9)
   {
-    v45 = [v8 session];
-    v43 = [v8 qosClass];
-    v44 = [(VNGeneratePersonSegmentationRequest *)self newDefaultDetectorOptionsForRequestRevision:a3 session:v45];
+    session = [contextCopy session];
+    qosClass = [contextCopy qosClass];
+    v44 = [(VNGeneratePersonSegmentationRequest *)self newDefaultDetectorOptionsForRequestRevision:revision session:session];
     v46 = v9;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
     [v44 setObject:v10 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
 
-    v11 = [(VNGeneratePersonSegmentationRequest *)self qualityLevel];
-    if (v11)
+    qualityLevel = [(VNGeneratePersonSegmentationRequest *)self qualityLevel];
+    if (qualityLevel)
     {
-      if (v11 == VNGeneratePersonSegmentationRequestQualityLevelBalanced)
+      if (qualityLevel == VNGeneratePersonSegmentationRequestQualityLevelBalanced)
       {
-        if (a5)
+        if (error)
         {
           v19 = 0;
           v22 = [VNError errorForInternalErrorWithLocalizedDescription:@"Balanced quality level is handled by compound request"];
@@ -172,16 +172,16 @@ uint64_t __50__VNGeneratePersonSegmentationRequest_description__block_invoke(uin
 
       else
       {
-        if (v11 == VNGeneratePersonSegmentationRequestQualityLevelFast)
+        if (qualityLevel == VNGeneratePersonSegmentationRequestQualityLevelFast)
         {
-          v41 = v45;
+          v41 = session;
           v12 = v9;
           v13 = v44;
           v38 = v12;
           if (self)
           {
-            v39 = [v12 width];
-            v37 = [v12 height];
+            width = [v12 width];
+            height = [v12 height];
             [v13 setObject:&unk_1F19C1540 forKeyedSubscript:@"VNSegmentationGeneratorProcessOption_QualityLevel"];
             v50 = VNPersonSegmentationGeneratorFastOutputBlobNameMask;
             v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VNGeneratePersonSegmentationRequest outputPixelFormat](self, "outputPixelFormat")}];
@@ -195,19 +195,19 @@ uint64_t __50__VNGeneratePersonSegmentationRequest_description__block_invoke(uin
             [v13 setObject:v16 forKeyedSubscript:@"VNSegmentationGeneratorProcessOption_KeepRawOutputMask"];
 
             v17 = @"portrait";
-            if (v39 > v37)
+            if (width > height)
             {
               v17 = @"landscape";
             }
 
             v18 = v17;
             [v13 setObject:v18 forKeyedSubscript:@"VNEspressoModelFileBasedDetectorOption_NetworkConfiguration"];
-            if (self->_previousObservations && v39 == self->_previousImageWidth && v37 == self->_previousImageHeight)
+            if (self->_previousObservations && width == self->_previousImageWidth && height == self->_previousImageHeight)
             {
               [v13 setObject:? forKeyedSubscript:?];
             }
 
-            v19 = [(VNGeneratePersonSegmentationRequest *)self _internalPerformRevision:a3 session:v41 qosClass:v43 generatorOptions:v13 error:a5];
+            v19 = [(VNGeneratePersonSegmentationRequest *)self _internalPerformRevision:revision session:v41 qosClass:qosClass generatorOptions:v13 error:error];
             if (v19)
             {
               objc_storeStrong(&self->_previousObservations, v19);
@@ -225,7 +225,7 @@ uint64_t __50__VNGeneratePersonSegmentationRequest_description__block_invoke(uin
           goto LABEL_35;
         }
 
-        if (a5)
+        if (error)
         {
           v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[VNGeneratePersonSegmentationRequest qualityLevel](self, "qualityLevel")}];
           v35 = [VNError errorForInvalidOption:v34 named:@"qualityLevel"];
@@ -239,8 +239,8 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v40 = v45;
-    v23 = v8;
+    v40 = session;
+    v23 = contextCopy;
     v42 = v44;
     if (self)
     {
@@ -260,22 +260,22 @@ LABEL_38:
       [(VNGeneratePersonSegmentationRequest *)v24 setOutputPixelFormat:1278226534];
       if (v24)
       {
-        v27 = [(VNRequest *)v24 configuration];
-        [v27 setKeepRawOutputMask:1];
+        configuration = [(VNRequest *)v24 configuration];
+        [configuration setKeepRawOutputMask:1];
       }
 
-      v26 = [v23 requestPerformerAndReturnError:a5];
+      v26 = [v23 requestPerformerAndReturnError:error];
       if (v26)
       {
         v51[0] = v24;
         v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:1];
-        v29 = [v26 performDependentRequests:v28 onBehalfOfRequest:self inContext:v23 error:a5];
+        v29 = [v26 performDependentRequests:v28 onBehalfOfRequest:self inContext:v23 error:error];
 
         if (v29)
         {
-          v30 = [(VNRequest *)v24 results];
+          results = [(VNRequest *)v24 results];
 
-          v26 = v30;
+          v26 = results;
 LABEL_28:
           [v42 setObject:&unk_1F19C1528 forKeyedSubscript:@"VNSegmentationGeneratorProcessOption_QualityLevel"];
           v49 = VNPersonSegmentationGeneratorLearnedMattingOutputBlobNameMask;
@@ -290,7 +290,7 @@ LABEL_28:
           [v42 setObject:v33 forKeyedSubscript:@"VNSegmentationGeneratorProcessOption_KeepRawOutputMask"];
 
           [v42 setObject:v26 forKeyedSubscript:@"VNSegmentationGeneratorProcessOption_MaskImageObservations"];
-          v19 = [(VNGeneratePersonSegmentationRequest *)self _internalPerformRevision:a3 session:v40 qosClass:v43 generatorOptions:v42 error:a5];
+          v19 = [(VNGeneratePersonSegmentationRequest *)self _internalPerformRevision:revision session:v40 qosClass:qosClass generatorOptions:v42 error:error];
           goto LABEL_33;
         }
       }
@@ -323,22 +323,22 @@ LABEL_39:
   return v21;
 }
 
-- (id)_internalPerformRevision:(void *)a3 session:(uint64_t)a4 qosClass:(void *)a5 generatorOptions:(uint64_t)a6 error:
+- (id)_internalPerformRevision:(void *)revision session:(uint64_t)session qosClass:(void *)class generatorOptions:(uint64_t)options error:
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v12];
+  revisionCopy = revision;
+  classCopy = class;
+  v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:classCopy];
   [v13 removeObjectForKey:@"VNSegmentationGeneratorProcessOption_OutputPixelFormat"];
   [v13 removeObjectForKey:@"VNSegmentationGeneratorProcessOption_KeepRawOutputMask"];
   [v13 removeObjectForKey:@"VNSegmentationGeneratorProcessOption_MaskImageObservations"];
-  v14 = [a1 applicableDetectorTypeForRevision:a2 error:a6];
+  v14 = [self applicableDetectorTypeForRevision:a2 error:options];
   if (v14)
   {
-    v15 = [v11 detectorOfType:v14 configuredWithOptions:v13 error:a6];
+    v15 = [revisionCopy detectorOfType:v14 configuredWithOptions:v13 error:options];
     if (v15)
     {
-      [a1 regionOfInterest];
-      v16 = [v15 processUsingQualityOfServiceClass:a4 options:v12 regionOfInterest:a1 warningRecorder:a6 error:0 progressHandler:?];
+      [self regionOfInterest];
+      v16 = [v15 processUsingQualityOfServiceClass:session options:classCopy regionOfInterest:self warningRecorder:options error:0 progressHandler:?];
     }
 
     else
@@ -355,15 +355,15 @@ LABEL_39:
   return v16;
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VNGeneratePersonSegmentationRequest *)self qualityLevel];
-  if (v5 == [v4 qualityLevel] && (v6 = -[VNGeneratePersonSegmentationRequest outputPixelFormat](self, "outputPixelFormat"), v6 == objc_msgSend(v4, "outputPixelFormat")) && (-[VNGeneratePersonSegmentationRequest minimumConfidence](self, "minimumConfidence"), v8 = v7, objc_msgSend(v4, "minimumConfidence"), v8 == v9))
+  configurationCopy = configuration;
+  qualityLevel = [(VNGeneratePersonSegmentationRequest *)self qualityLevel];
+  if (qualityLevel == [configurationCopy qualityLevel] && (v6 = -[VNGeneratePersonSegmentationRequest outputPixelFormat](self, "outputPixelFormat"), v6 == objc_msgSend(configurationCopy, "outputPixelFormat")) && (-[VNGeneratePersonSegmentationRequest minimumConfidence](self, "minimumConfidence"), v8 = v7, objc_msgSend(configurationCopy, "minimumConfidence"), v8 == v9))
   {
     v12.receiver = self;
     v12.super_class = VNGeneratePersonSegmentationRequest;
-    v10 = [(VNImageBasedRequest *)&v12 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v10 = [(VNImageBasedRequest *)&v12 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -374,11 +374,11 @@ LABEL_39:
   return v10;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v9.receiver = self;
   v9.super_class = VNGeneratePersonSegmentationRequest;
-  v5 = [(VNRequest *)&v9 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
+  v5 = [(VNRequest *)&v9 newDefaultDetectorOptionsForRequestRevision:revision session:session];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[VNGeneratePersonSegmentationRequest qualityLevel](self, "qualityLevel")}];
   [v5 setObject:v6 forKeyedSubscript:@"VNSegmentationGeneratorProcessOption_QualityLevel"];
 
@@ -388,38 +388,38 @@ LABEL_39:
   return v5;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 3737841665)
+  if (revision == 3737841665)
   {
     goto LABEL_12;
   }
 
-  if (a3 != 3737841664)
+  if (revision != 3737841664)
   {
-    if (a3 != 1)
+    if (revision != 1)
     {
-      if (a4)
+      if (error)
       {
         [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-        *a4 = v8 = 0;
+        *error = v8 = 0;
         goto LABEL_21;
       }
 
       goto LABEL_20;
     }
 
-    v6 = [(VNGeneratePersonSegmentationRequest *)self qualityLevel];
-    if (v6 == VNGeneratePersonSegmentationRequestQualityLevelFast)
+    qualityLevel = [(VNGeneratePersonSegmentationRequest *)self qualityLevel];
+    if (qualityLevel == VNGeneratePersonSegmentationRequestQualityLevelFast)
     {
       goto LABEL_12;
     }
 
-    if (v6 != VNGeneratePersonSegmentationRequestQualityLevelBalanced)
+    if (qualityLevel != VNGeneratePersonSegmentationRequestQualityLevelBalanced)
     {
-      if (v6)
+      if (qualityLevel)
       {
-        if (a4)
+        if (error)
         {
           goto LABEL_19;
         }
@@ -439,8 +439,8 @@ LABEL_17:
     goto LABEL_21;
   }
 
-  v7 = [(VNGeneratePersonSegmentationRequest *)self qualityLevel];
-  switch(v7)
+  qualityLevel2 = [(VNGeneratePersonSegmentationRequest *)self qualityLevel];
+  switch(qualityLevel2)
   {
     case VNGeneratePersonSegmentationRequestQualityLevelFast:
       goto LABEL_12;
@@ -451,11 +451,11 @@ LABEL_17:
       goto LABEL_12;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_19:
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Undefined quality level: %lu", -[VNGeneratePersonSegmentationRequest qualityLevel](self, "qualityLevel")];
-    *a4 = [VNError errorForInternalErrorWithLocalizedDescription:v11];
+    *error = [VNError errorForInternalErrorWithLocalizedDescription:v11];
   }
 
 LABEL_20:
@@ -465,18 +465,18 @@ LABEL_21:
   return v8;
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v6.receiver = self;
     v6.super_class = VNGeneratePersonSegmentationRequest;
-    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:v4];
+    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = requestCopy;
       [(VNGeneratePersonSegmentationRequest *)self setQualityLevel:[(VNGeneratePersonSegmentationRequest *)v5 qualityLevel]];
       [(VNGeneratePersonSegmentationRequest *)self setOutputPixelFormat:[(VNGeneratePersonSegmentationRequest *)v5 outputPixelFormat]];
       [(VNGeneratePersonSegmentationRequest *)self setUseTiling:[(VNGeneratePersonSegmentationRequest *)v5 useTiling]];
@@ -493,14 +493,14 @@ LABEL_21:
   return [(VNStatefulRequest *)self initWithFrameAnalysisSpacing:&v4 completionHandler:completionHandler];
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  if (a3 == 3737841664)
+  if (revision == 3737841664)
   {
     v5 = @"VNGeneratePersonSegmentationRequestPrivateRevisionInstanceBased4People";
   }
 
-  else if (a3 == 3737841665)
+  else if (revision == 3737841665)
   {
     v5 = @"VNGeneratePersonSegmentationRequestPrivateRevisionSemanticV7";
   }
@@ -509,7 +509,7 @@ LABEL_21:
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___VNGeneratePersonSegmentationRequest;
     v5 = objc_msgSendSuper2(&v7, sel_descriptionForPrivateRevision_);
   }
@@ -541,15 +541,15 @@ void __71__VNGeneratePersonSegmentationRequest_Revisioning__privateRevisionsSet_
 
 - (uint64_t)keepRawOutputMask
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [a1 configuration];
-  v2 = [v1 keepRawOutputMask];
+  configuration = [self configuration];
+  keepRawOutputMask = [configuration keepRawOutputMask];
 
-  return v2;
+  return keepRawOutputMask;
 }
 
 @end

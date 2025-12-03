@@ -1,14 +1,14 @@
 @interface ETIOSBrowserViewController
 - (BOOL)shouldAutorotate;
 - (CGRect)horizontalSwipeExclusionRect;
-- (double)canvasViewControllerPercentExpanded:(id)a3;
+- (double)canvasViewControllerPercentExpanded:(id)expanded;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_updateBottomMargin;
 - (void)beginSuppressingAppearanceMethods;
-- (void)canvasViewController:(id)a3 requestsPresentationStyleExpanded:(BOOL)a4;
-- (void)canvasViewControllerHideEntryView:(id)a3;
-- (void)canvasViewControllerShowEntryView:(id)a3;
-- (void)dismissCanvasViewController:(id)a3;
+- (void)canvasViewController:(id)controller requestsPresentationStyleExpanded:(BOOL)expanded;
+- (void)canvasViewControllerHideEntryView:(id)view;
+- (void)canvasViewControllerShowEntryView:(id)view;
+- (void)dismissCanvasViewController:(id)controller;
 - (void)endSuppressingAppearanceMethods;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -20,18 +20,18 @@
 
 - (BOOL)shouldAutorotate
 {
-  v2 = [(ETBrowserViewController *)self canvasViewController];
-  v3 = [v2 shouldAutorotate];
+  canvasViewController = [(ETBrowserViewController *)self canvasViewController];
+  shouldAutorotate = [canvasViewController shouldAutorotate];
 
-  return v3;
+  return shouldAutorotate;
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(ETBrowserViewController *)self canvasViewController];
-  v3 = [v2 supportedInterfaceOrientations];
+  canvasViewController = [(ETBrowserViewController *)self canvasViewController];
+  supportedInterfaceOrientations = [canvasViewController supportedInterfaceOrientations];
 
-  return v3;
+  return supportedInterfaceOrientations;
 }
 
 - (void)viewDidLoad
@@ -39,12 +39,12 @@
   v6.receiver = self;
   v6.super_class = ETIOSBrowserViewController;
   [(ETBrowserViewController *)&v6 viewDidLoad];
-  v3 = [(ETIOSBrowserViewController *)self view];
+  view = [(ETIOSBrowserViewController *)self view];
   v4 = [UIColor colorWithWhite:0.1 alpha:1.0];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
-  v5 = [(ETBrowserViewController *)self canvasViewController];
-  [v5 setPresentationDelegate:self];
+  canvasViewController = [(ETBrowserViewController *)self canvasViewController];
+  [canvasViewController setPresentationDelegate:self];
   [(ETIOSBrowserViewController *)self _updateBottomMargin];
 }
 
@@ -58,17 +58,17 @@
 
 - (CGRect)horizontalSwipeExclusionRect
 {
-  v3 = [(ETBrowserViewController *)self canvasViewController];
-  v4 = [v3 canvasView];
+  canvasViewController = [(ETBrowserViewController *)self canvasViewController];
+  canvasView = [canvasViewController canvasView];
 
-  v5 = [(ETIOSBrowserViewController *)self view];
-  [v4 frame];
+  view = [(ETIOSBrowserViewController *)self view];
+  [canvasView frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v4 superview];
-  [v5 convertRect:v14 fromView:{v7, v9, v11, v13}];
+  superview = [canvasView superview];
+  [view convertRect:superview fromView:{v7, v9, v11, v13}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -87,86 +87,86 @@
 
 - (void)viewDidTransitionToExpandedPresentation
 {
-  v2 = [(ETBrowserViewController *)self canvasViewController];
-  [v2 viewDidTransitionToExpandedPresentation];
+  canvasViewController = [(ETBrowserViewController *)self canvasViewController];
+  [canvasViewController viewDidTransitionToExpandedPresentation];
 }
 
 - (void)viewDidTransitionToCompactPresentation
 {
-  v2 = [(ETBrowserViewController *)self canvasViewController];
-  [v2 viewDidTransitionToCompactPresentation];
+  canvasViewController = [(ETBrowserViewController *)self canvasViewController];
+  [canvasViewController viewDidTransitionToCompactPresentation];
 }
 
 - (void)beginSuppressingAppearanceMethods
 {
-  v2 = [(ETBrowserViewController *)self canvasViewController];
-  [v2 setIgnoreAppearanceCallbacks:1];
+  canvasViewController = [(ETBrowserViewController *)self canvasViewController];
+  [canvasViewController setIgnoreAppearanceCallbacks:1];
 }
 
 - (void)endSuppressingAppearanceMethods
 {
-  v2 = [(ETBrowserViewController *)self canvasViewController];
-  [v2 setIgnoreAppearanceCallbacks:0];
+  canvasViewController = [(ETBrowserViewController *)self canvasViewController];
+  [canvasViewController setIgnoreAppearanceCallbacks:0];
 }
 
 - (void)_updateBottomMargin
 {
-  v11 = [(ETBrowserViewController *)self canvasViewController];
-  v3 = [(ETIOSBrowserViewController *)self view];
-  [v3 safeAreaInsets];
+  canvasViewController = [(ETBrowserViewController *)self canvasViewController];
+  view = [(ETIOSBrowserViewController *)self view];
+  [view safeAreaInsets];
 
-  v4 = [(ETIOSBrowserViewController *)self sheetPresentationController];
-  [v4 _grabberTopSpacing];
+  sheetPresentationController = [(ETIOSBrowserViewController *)self sheetPresentationController];
+  [sheetPresentationController _grabberTopSpacing];
   v6 = v5 + v5;
 
-  v7 = [v11 view];
-  v8 = [(ETIOSBrowserViewController *)self view];
-  [v8 bounds];
-  [v7 setFrame:{v9 + 0.0, v6 + v10}];
+  view2 = [canvasViewController view];
+  view3 = [(ETIOSBrowserViewController *)self view];
+  [view3 bounds];
+  [view2 setFrame:{v9 + 0.0, v6 + v10}];
 }
 
-- (void)canvasViewController:(id)a3 requestsPresentationStyleExpanded:(BOOL)a4
+- (void)canvasViewController:(id)controller requestsPresentationStyleExpanded:(BOOL)expanded
 {
-  v4 = a4;
-  v5 = [(ETIOSBrowserViewController *)self sendDelegate];
-  [v5 requestPresentationStyleExpanded:v4];
+  expandedCopy = expanded;
+  sendDelegate = [(ETIOSBrowserViewController *)self sendDelegate];
+  [sendDelegate requestPresentationStyleExpanded:expandedCopy];
 }
 
-- (void)dismissCanvasViewController:(id)a3
+- (void)dismissCanvasViewController:(id)controller
 {
-  v3 = [(ETIOSBrowserViewController *)self sendDelegate];
-  [v3 dismiss];
+  sendDelegate = [(ETIOSBrowserViewController *)self sendDelegate];
+  [sendDelegate dismiss];
 }
 
-- (void)canvasViewControllerHideEntryView:(id)a3
+- (void)canvasViewControllerHideEntryView:(id)view
 {
-  v3 = [(ETIOSBrowserViewController *)self sendDelegate];
-  [v3 setEntryViewHidden:1];
+  sendDelegate = [(ETIOSBrowserViewController *)self sendDelegate];
+  [sendDelegate setEntryViewHidden:1];
 }
 
-- (void)canvasViewControllerShowEntryView:(id)a3
+- (void)canvasViewControllerShowEntryView:(id)view
 {
-  v3 = [(ETIOSBrowserViewController *)self sendDelegate];
-  [v3 setEntryViewHidden:0];
+  sendDelegate = [(ETIOSBrowserViewController *)self sendDelegate];
+  [sendDelegate setEntryViewHidden:0];
 }
 
-- (double)canvasViewControllerPercentExpanded:(id)a3
+- (double)canvasViewControllerPercentExpanded:(id)expanded
 {
-  v4 = [(ETIOSBrowserViewController *)self sheetPresentationController];
-  v5 = [v4 _detentValues];
+  sheetPresentationController = [(ETIOSBrowserViewController *)self sheetPresentationController];
+  _detentValues = [sheetPresentationController _detentValues];
   v6 = 0.0;
-  if ([v5 count] >= 2)
+  if ([_detentValues count] >= 2)
   {
-    v7 = [(ETIOSBrowserViewController *)self view];
-    [v7 bounds];
+    view = [(ETIOSBrowserViewController *)self view];
+    [view bounds];
     v9 = v8;
-    v10 = [(ETIOSBrowserViewController *)self view];
-    [v10 safeAreaInsets];
+    view2 = [(ETIOSBrowserViewController *)self view];
+    [view2 safeAreaInsets];
     v12 = v9 - v11;
-    v13 = [v5 objectAtIndexedSubscript:1];
+    v13 = [_detentValues objectAtIndexedSubscript:1];
     [v13 doubleValue];
     v15 = v14;
-    v16 = [v5 objectAtIndexedSubscript:0];
+    v16 = [_detentValues objectAtIndexedSubscript:0];
     [v16 doubleValue];
     v6 = (v12 - v15) / (v17 - v15);
   }

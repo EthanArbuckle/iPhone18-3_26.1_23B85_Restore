@@ -10,44 +10,44 @@
 
 - (uint64_t)routeRequiresElevationCorrection
 {
-  if ([a1 elevationModel])
+  if ([self elevationModel])
   {
     return 0;
   }
 
-  return [a1 shouldRequestWGS84Elevations];
+  return [self shouldRequestWGS84Elevations];
 }
 
 - (double)pointWithAltitudeCorrectionAtIndex:()VKExtras
 {
-  [a1 pointAt:?];
+  [self pointAt:?];
   v6[0] = v2;
   v6[1] = v3;
   v6[2] = v4;
-  [a1 _applyAltitudeCorrectionIfNecessary:v6];
+  [self _applyAltitudeCorrectionIfNecessary:v6];
   return *v6;
 }
 
 - (double)pointWithAltitudeCorrectionAtRouteCoordinate:()VKExtras
 {
-  [a1 pointAtRouteCoordinate:?];
+  [self pointAtRouteCoordinate:?];
   v6[0] = v2;
   v6[1] = v3;
   v6[2] = v4;
-  [a1 _applyAltitudeCorrectionIfNecessary:v6];
+  [self _applyAltitudeCorrectionIfNecessary:v6];
   return *v6;
 }
 
 - (double)_applyAltitudeCorrectionIfNecessary:()VKExtras
 {
-  if ([a1 routeRequiresElevationCorrection])
+  if ([self routeRequiresElevationCorrection])
   {
     v5 = +[VKSharedResourcesManager sharedResources];
-    v6 = [v5 undulationModel];
+    undulationModel = [v5 undulationModel];
 
-    if (v6)
+    if (undulationModel)
     {
-      Undulation = md::GeoidModel::getUndulation(v6, *a3, a3[1]);
+      Undulation = md::GeoidModel::getUndulation(undulationModel, *a3, a3[1]);
       v8 = *&Undulation;
       if (!HIDWORD(Undulation))
       {
@@ -64,22 +64,22 @@
 
 - (uint64_t)shouldRequestWGS84Elevations
 {
-  v2 = objc_getAssociatedObject(a1, &[GEOComposedRoute(VKExtras) shouldRequestWGS84Elevations]::singletonCachedValue);
+  v2 = objc_getAssociatedObject(self, &[GEOComposedRoute(VKExtras) shouldRequestWGS84Elevations]::singletonCachedValue);
   v3 = v2;
   if (v2)
   {
-    v4 = [(CachedShouldRequestWGS84Elevations *)v2 value];
+    value = [(CachedShouldRequestWGS84Elevations *)v2 value];
   }
 
   else
   {
     v5 = objc_alloc_init(CachedShouldRequestWGS84Elevations);
-    objc_setAssociatedObject(a1, &[GEOComposedRoute(VKExtras) shouldRequestWGS84Elevations]::singletonCachedValue, v5, 0x301);
-    v4 = [(CachedShouldRequestWGS84Elevations *)v5 value];
+    objc_setAssociatedObject(self, &[GEOComposedRoute(VKExtras) shouldRequestWGS84Elevations]::singletonCachedValue, v5, 0x301);
+    value = [(CachedShouldRequestWGS84Elevations *)v5 value];
     v3 = v5;
   }
 
-  return v4;
+  return value;
 }
 
 @end

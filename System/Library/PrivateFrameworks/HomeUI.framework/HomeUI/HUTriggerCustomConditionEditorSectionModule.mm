@@ -1,37 +1,37 @@
 @interface HUTriggerCustomConditionEditorSectionModule
-- (BOOL)isConditionEnabled:(id)a3;
-- (HUTriggerCustomConditionEditorSectionModule)initWithItemUpdater:(id)a3;
-- (HUTriggerCustomConditionEditorSectionModule)initWithItemUpdater:(id)a3 home:(id)a4;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
-- (id)conditionForItem:(id)a3;
-- (id)itemForCondition:(id)a3;
+- (BOOL)isConditionEnabled:(id)enabled;
+- (HUTriggerCustomConditionEditorSectionModule)initWithItemUpdater:(id)updater;
+- (HUTriggerCustomConditionEditorSectionModule)initWithItemUpdater:(id)updater home:(id)home;
+- (id)buildSectionsWithDisplayedItems:(id)items;
+- (id)conditionForItem:(id)item;
+- (id)itemForCondition:(id)condition;
 - (id)itemProviders;
 - (void)_buildItemProviders;
-- (void)setConditionEnabled:(BOOL)a3 forCondition:(id)a4;
-- (void)updateEnabledConditions:(id)a3 disabledConditions:(id)a4;
+- (void)setConditionEnabled:(BOOL)enabled forCondition:(id)condition;
+- (void)updateEnabledConditions:(id)conditions disabledConditions:(id)disabledConditions;
 @end
 
 @implementation HUTriggerCustomConditionEditorSectionModule
 
-- (HUTriggerCustomConditionEditorSectionModule)initWithItemUpdater:(id)a3
+- (HUTriggerCustomConditionEditorSectionModule)initWithItemUpdater:(id)updater
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithItemUpdater_home_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUTriggerCustomConditionEditorSectionModule.m" lineNumber:27 description:{@"%s is unavailable; use %@ instead", "-[HUTriggerCustomConditionEditorSectionModule initWithItemUpdater:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUTriggerCustomConditionEditorSectionModule.m" lineNumber:27 description:{@"%s is unavailable; use %@ instead", "-[HUTriggerCustomConditionEditorSectionModule initWithItemUpdater:]", v6}];
 
   return 0;
 }
 
-- (HUTriggerCustomConditionEditorSectionModule)initWithItemUpdater:(id)a3 home:(id)a4
+- (HUTriggerCustomConditionEditorSectionModule)initWithItemUpdater:(id)updater home:(id)home
 {
-  v7 = a4;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HUTriggerCustomConditionEditorSectionModule;
-  v8 = [(HFItemModule *)&v11 initWithItemUpdater:a3];
+  v8 = [(HFItemModule *)&v11 initWithItemUpdater:updater];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a4);
+    objc_storeStrong(&v8->_home, home);
     [(HUTriggerCustomConditionEditorSectionModule *)v9 _buildItemProviders];
   }
 
@@ -41,27 +41,27 @@
 - (id)itemProviders
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HUTriggerCustomConditionEditorSectionModule *)self itemProvider];
-  v4 = [v2 setWithObject:v3];
+  itemProvider = [(HUTriggerCustomConditionEditorSectionModule *)self itemProvider];
+  v4 = [v2 setWithObject:itemProvider];
 
   return v4;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUTriggerCustomConditionEditorSectionModule *)self itemProvider];
-  v6 = [v5 items];
+  itemsCopy = items;
+  itemProvider = [(HUTriggerCustomConditionEditorSectionModule *)self itemProvider];
+  items = [itemProvider items];
 
-  v7 = [v6 na_setByIntersectingWithSet:v4];
+  v7 = [items na_setByIntersectingWithSet:itemsCopy];
 
   if ([v7 count])
   {
     v8 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"custom"];
-    v9 = [v7 allObjects];
-    v10 = [MEMORY[0x277D14778] defaultItemComparator];
-    v11 = [v9 sortedArrayUsingComparator:v10];
+    allObjects = [v7 allObjects];
+    defaultItemComparator = [MEMORY[0x277D14778] defaultItemComparator];
+    v11 = [allObjects sortedArrayUsingComparator:defaultItemComparator];
     [v8 setItems:v11];
 
     v14[0] = v8;
@@ -76,27 +76,27 @@
   return v12;
 }
 
-- (void)updateEnabledConditions:(id)a3 disabledConditions:(id)a4
+- (void)updateEnabledConditions:(id)conditions disabledConditions:(id)disabledConditions
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 mutableCopy];
+  disabledConditionsCopy = disabledConditions;
+  conditionsCopy = conditions;
+  v8 = [conditionsCopy mutableCopy];
   [(HUTriggerCustomConditionEditorSectionModule *)self setMutableEnabledConditions:v8];
 
-  v9 = [v6 mutableCopy];
+  v9 = [disabledConditionsCopy mutableCopy];
   [(HUTriggerCustomConditionEditorSectionModule *)self setMutableDisabledConditions:v9];
 
-  v11 = [v7 setByAddingObjectsFromSet:v6];
+  v11 = [conditionsCopy setByAddingObjectsFromSet:disabledConditionsCopy];
 
-  v10 = [(HUTriggerCustomConditionEditorSectionModule *)self sourceConditionItemProvider];
-  [v10 setConditions:v11];
+  sourceConditionItemProvider = [(HUTriggerCustomConditionEditorSectionModule *)self sourceConditionItemProvider];
+  [sourceConditionItemProvider setConditions:v11];
 }
 
-- (id)conditionForItem:(id)a3
+- (id)conditionForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = itemCopy;
   if (!v5)
   {
     goto LABEL_7;
@@ -115,21 +115,21 @@
   v7 = v5;
   if (!v6)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v8 handleFailureInFunction:v9 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v4, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v9 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v4, objc_opt_class()}];
 
 LABEL_7:
     v7 = 0;
   }
 
-  v10 = [v7 sourceItem];
+  sourceItem = [v7 sourceItem];
   v11 = &unk_2825BD9C0;
-  if (v10)
+  if (sourceItem)
   {
-    if ([v10 conformsToProtocol:v11])
+    if ([sourceItem conformsToProtocol:v11])
     {
-      v12 = v10;
+      v12 = sourceItem;
     }
 
     else
@@ -137,38 +137,38 @@ LABEL_7:
       v12 = 0;
     }
 
-    v13 = v10;
+    v13 = sourceItem;
     if (v12)
     {
       goto LABEL_15;
     }
 
-    v14 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertProtocolCast(Protocol * _Nonnull __strong, id  _Nonnull __strong)"}];
     v16 = NSStringFromProtocol(v11);
-    [v14 handleFailureInFunction:v15 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v16}];
+    [currentHandler2 handleFailureInFunction:v15 file:@"NSObject+NAAdditions.h" lineNumber:71 description:{@"Expected protocol %@", v16}];
   }
 
   v13 = 0;
 LABEL_15:
 
-  v17 = [v13 condition];
+  condition = [v13 condition];
 
-  return v17;
+  return condition;
 }
 
-- (id)itemForCondition:(id)a3
+- (id)itemForCondition:(id)condition
 {
-  v4 = a3;
-  v5 = [(HUTriggerCustomConditionEditorSectionModule *)self itemProvider];
-  v6 = [v5 items];
+  conditionCopy = condition;
+  itemProvider = [(HUTriggerCustomConditionEditorSectionModule *)self itemProvider];
+  items = [itemProvider items];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__HUTriggerCustomConditionEditorSectionModule_itemForCondition___block_invoke;
   v10[3] = &unk_277DB85D8;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 na_firstObjectPassingTest:v10];
+  v11 = conditionCopy;
+  v7 = conditionCopy;
+  v8 = [items na_firstObjectPassingTest:v10];
 
   return v8;
 }
@@ -243,38 +243,38 @@ LABEL_15:
   return v19;
 }
 
-- (BOOL)isConditionEnabled:(id)a3
+- (BOOL)isConditionEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(HUTriggerCustomConditionEditorSectionModule *)self enabledConditions];
-  v6 = [v5 containsObject:v4];
+  enabledCopy = enabled;
+  enabledConditions = [(HUTriggerCustomConditionEditorSectionModule *)self enabledConditions];
+  v6 = [enabledConditions containsObject:enabledCopy];
 
   return v6;
 }
 
-- (void)setConditionEnabled:(BOOL)a3 forCondition:(id)a4
+- (void)setConditionEnabled:(BOOL)enabled forCondition:(id)condition
 {
-  v4 = a3;
-  v9 = a4;
-  if ([(HUTriggerCustomConditionEditorSectionModule *)self isConditionEnabled:?]!= v4)
+  enabledCopy = enabled;
+  conditionCopy = condition;
+  if ([(HUTriggerCustomConditionEditorSectionModule *)self isConditionEnabled:?]!= enabledCopy)
   {
-    if (v4)
+    if (enabledCopy)
     {
-      v6 = [(HUTriggerCustomConditionEditorSectionModule *)self mutableDisabledConditions];
-      [v6 removeObject:v9];
+      mutableDisabledConditions = [(HUTriggerCustomConditionEditorSectionModule *)self mutableDisabledConditions];
+      [mutableDisabledConditions removeObject:conditionCopy];
 
       [(HUTriggerCustomConditionEditorSectionModule *)self mutableEnabledConditions];
     }
 
     else
     {
-      v7 = [(HUTriggerCustomConditionEditorSectionModule *)self mutableEnabledConditions];
-      [v7 removeObject:v9];
+      mutableEnabledConditions = [(HUTriggerCustomConditionEditorSectionModule *)self mutableEnabledConditions];
+      [mutableEnabledConditions removeObject:conditionCopy];
 
       [(HUTriggerCustomConditionEditorSectionModule *)self mutableDisabledConditions];
     }
     v8 = ;
-    [v8 addObject:v9];
+    [v8 addObject:conditionCopy];
   }
 }
 
@@ -283,19 +283,19 @@ LABEL_15:
   objc_initWeak(&location, self);
   v3 = objc_alloc(MEMORY[0x277D145A0]);
   v4 = [MEMORY[0x277CBEB98] set];
-  v5 = [(HUTriggerCustomConditionEditorSectionModule *)self home];
-  v6 = [v3 initWithConditions:v4 home:v5];
+  home = [(HUTriggerCustomConditionEditorSectionModule *)self home];
+  v6 = [v3 initWithConditions:v4 home:home];
   sourceConditionItemProvider = self->_sourceConditionItemProvider;
   self->_sourceConditionItemProvider = v6;
 
   v8 = objc_alloc(MEMORY[0x277D14C38]);
-  v9 = [(HUTriggerCustomConditionEditorSectionModule *)self sourceConditionItemProvider];
+  sourceConditionItemProvider = [(HUTriggerCustomConditionEditorSectionModule *)self sourceConditionItemProvider];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __66__HUTriggerCustomConditionEditorSectionModule__buildItemProviders__block_invoke;
   v12[3] = &unk_277DBFAD0;
   objc_copyWeak(&v13, &location);
-  v10 = [v8 initWithSourceProvider:v9 transformationBlock:v12];
+  v10 = [v8 initWithSourceProvider:sourceConditionItemProvider transformationBlock:v12];
   itemProvider = self->_itemProvider;
   self->_itemProvider = v10;
 

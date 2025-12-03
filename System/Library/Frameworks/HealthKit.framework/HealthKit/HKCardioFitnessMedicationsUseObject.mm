@@ -1,12 +1,12 @@
 @interface HKCardioFitnessMedicationsUseObject
-- (BOOL)isEqual:(id)a3;
-- (HKCardioFitnessMedicationsUseObject)initWithCoder:(id)a3;
-- (id)_initWithCardioFitnessMedicationsUseOptions:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKCardioFitnessMedicationsUseObject)initWithCoder:(id)coder;
+- (id)_initWithCardioFitnessMedicationsUseOptions:(unint64_t)options;
 @end
 
 @implementation HKCardioFitnessMedicationsUseObject
 
-- (id)_initWithCardioFitnessMedicationsUseOptions:(unint64_t)a3
+- (id)_initWithCardioFitnessMedicationsUseOptions:(unint64_t)options
 {
   v10.receiver = self;
   v10.super_class = HKCardioFitnessMedicationsUseObject;
@@ -14,35 +14,35 @@
   if (v4)
   {
     v5 = [HKObjectType characteristicTypeForIdentifier:@"HKCharacteristicTypeIdentifierCardioFitnessMedicationsUse"];
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options];
     v7 = [v5 _validateCharacteristic:v6 error:0];
 
     if (v7)
     {
-      v8 = a3;
+      optionsCopy = options;
     }
 
     else
     {
-      v8 = 0;
+      optionsCopy = 0;
     }
 
-    v4->_options = v8;
+    v4->_options = optionsCopy;
   }
 
   return v4;
 }
 
-- (HKCardioFitnessMedicationsUseObject)initWithCoder:(id)a3
+- (HKCardioFitnessMedicationsUseObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = HKCardioFitnessMedicationsUseObject;
   v5 = [(HKCardioFitnessMedicationsUseObject *)&v12 init];
   if (v5)
   {
     v6 = [HKObjectType characteristicTypeForIdentifier:@"HKCharacteristicTypeIdentifierCardioFitnessMedicationsUse"];
-    v7 = [v4 decodeIntegerForKey:@"cardioFitnessMedicationsUse"];
+    v7 = [coderCopy decodeIntegerForKey:@"cardioFitnessMedicationsUse"];
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
     v9 = [v6 _validateCharacteristic:v8 error:0];
 
@@ -62,11 +62,11 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_options == v4[1];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_options == equalCopy[1];
 
   return v5;
 }

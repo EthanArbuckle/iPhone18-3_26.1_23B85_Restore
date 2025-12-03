@@ -1,6 +1,6 @@
 @interface FCTagSearchRecordStream
 - (FCTagSearchRecordStream)init;
-- (id)fetchMoreResultsWithLimit:(unint64_t)a3 qualityOfService:(int64_t)a4 callbackQueue:(id)a5 completionHandler:(id)a6;
+- (id)fetchMoreResultsWithLimit:(unint64_t)limit qualityOfService:(int64_t)service callbackQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation FCTagSearchRecordStream
@@ -20,22 +20,22 @@
   return v2;
 }
 
-- (id)fetchMoreResultsWithLimit:(unint64_t)a3 qualityOfService:(int64_t)a4 callbackQueue:(id)a5 completionHandler:(id)a6
+- (id)fetchMoreResultsWithLimit:(unint64_t)limit qualityOfService:(int64_t)service callbackQueue:(id)queue completionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
+  queueCopy = queue;
+  handlerCopy = handler;
   if ([(FCTagSearchRecordStream *)self isFinished])
   {
     v12 = 0;
-    if (v10 && v11)
+    if (queueCopy && handlerCopy)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __102__FCTagSearchRecordStream_fetchMoreResultsWithLimit_qualityOfService_callbackQueue_completionHandler___block_invoke;
       block[3] = &unk_1E7C379C8;
-      v27 = v11;
-      dispatch_async(v10, block);
+      v27 = handlerCopy;
+      dispatch_async(queueCopy, block);
 
       v12 = 0;
     }
@@ -58,24 +58,24 @@
     }
 
     [(FCTagSearchRecordStream *)self setFetching:1];
-    v13 = [(FCTagSearchRecordStream *)self operationConstructor];
-    v14 = [(FCTagSearchRecordStream *)self cursor];
-    v12 = (v13)[2](v13, v14);
+    operationConstructor = [(FCTagSearchRecordStream *)self operationConstructor];
+    cursor = [(FCTagSearchRecordStream *)self cursor];
+    v12 = (operationConstructor)[2](operationConstructor, cursor);
 
     if (v12)
     {
-      v12[47] = a3;
+      v12[47] = limit;
     }
 
     [v12 setRelativePriority:1];
-    [v12 setQualityOfService:a4];
+    [v12 setQualityOfService:service];
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
     v21 = __102__FCTagSearchRecordStream_fetchMoreResultsWithLimit_qualityOfService_callbackQueue_completionHandler___block_invoke_119;
     v22 = &unk_1E7C459A0;
-    v23 = self;
-    v25 = v11;
-    v24 = v10;
+    selfCopy = self;
+    v25 = handlerCopy;
+    v24 = queueCopy;
     if (v12)
     {
       objc_setProperty_nonatomic_copy(v12, v15, &v19, 424);

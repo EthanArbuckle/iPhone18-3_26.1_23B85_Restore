@@ -1,13 +1,13 @@
 @interface CHFastPathTextSynthesizer
 - (BOOL)shouldUsePersonalization;
-- (CHFastPathTextSynthesizer)initWithStyleInventory:(id)a3;
+- (CHFastPathTextSynthesizer)initWithStyleInventory:(id)inventory;
 - (CHFastPathTextSynthesizer)initWithoutPersonalizedStyleInventory;
-- (id)generateDrawingForText:(id)a3 options:(id)a4;
-- (id)refineDrawing:(id)a3 transcription:(id)a4 options:(id)a5 shouldCancel:(id)a6 error:(id *)a7;
-- (id)replaceDrawing:(id)a3 originalTranscription:(id)a4 replacementTranscription:(id)a5 options:(id)a6 shouldCancel:(id)a7 error:(id *)a8;
-- (id)supportedCharacterIndexesForString:(id)a3 options:(id)a4;
-- (id)supportedCharactersUsingDefaultStyleOnly:(BOOL)a3;
-- (id)synthesizeDrawingForString:(id)a3 options:(id)a4 shouldCancel:(id)a5 error:(id *)a6;
+- (id)generateDrawingForText:(id)text options:(id)options;
+- (id)refineDrawing:(id)drawing transcription:(id)transcription options:(id)options shouldCancel:(id)cancel error:(id *)error;
+- (id)replaceDrawing:(id)drawing originalTranscription:(id)transcription replacementTranscription:(id)replacementTranscription options:(id)options shouldCancel:(id)cancel error:(id *)error;
+- (id)supportedCharacterIndexesForString:(id)string options:(id)options;
+- (id)supportedCharactersUsingDefaultStyleOnly:(BOOL)only;
+- (id)synthesizeDrawingForString:(id)string options:(id)options shouldCancel:(id)cancel error:(id *)error;
 @end
 
 @implementation CHFastPathTextSynthesizer
@@ -22,9 +22,9 @@
   return 0;
 }
 
-- (CHFastPathTextSynthesizer)initWithStyleInventory:(id)a3
+- (CHFastPathTextSynthesizer)initWithStyleInventory:(id)inventory
 {
-  v4 = a3;
+  inventoryCopy = inventory;
   if (objc_msgSend_initWithoutPersonalizedStyleInventory(self, v5, v6, v7, v8, v9))
   {
     operator new();
@@ -44,14 +44,14 @@
   return v22 ^ 1;
 }
 
-- (id)generateDrawingForText:(id)a3 options:(id)a4
+- (id)generateDrawingForText:(id)text options:(id)options
 {
   v104 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v55 = a4;
+  textCopy = text;
+  optionsCopy = options;
   if (objc_msgSend_shouldUsePersonalization(self, v7, v8, v9, v10, v11))
   {
-    v17 = objc_msgSend_fastPathUseDefaultStyle(v55, v12, v13, v14, v15, v16) ^ 1;
+    v17 = objc_msgSend_fastPathUseDefaultStyle(optionsCopy, v12, v13, v14, v15, v16) ^ 1;
   }
 
   else
@@ -103,7 +103,7 @@
   v68 = &v67;
   v69 = 0x2020000000;
   v70 = 0;
-  v25 = objc_msgSend_length(v6, v20, v21, v22, v23, v24);
+  v25 = objc_msgSend_length(textCopy, v20, v21, v22, v23, v24);
   v59[0] = MEMORY[0x1E69E9820];
   v59[1] = 3221225472;
   v59[2] = sub_18387F9B4;
@@ -113,11 +113,11 @@
   v62 = &v79;
   v59[4] = self;
   v63 = &v75;
-  v26 = v55;
+  v26 = optionsCopy;
   v60 = v26;
   v64 = &v71;
   v65 = &v67;
-  objc_msgSend_enumerateCodepointsInRange_usingBlock_(v6, v27, 0, v25, v59, v28);
+  objc_msgSend_enumerateCodepointsInRange_usingBlock_(textCopy, v27, 0, v25, v59, v28);
   if (!v68[3])
   {
     v33 = @"NO";
@@ -239,9 +239,9 @@ LABEL_31:
 
   objc_msgSend_seed(v26, v42, v43, v44, v45, v46);
   v58 = v57 = &unk_1EF1BCCB8;
-  sub_18378D1D0(&v57, v6, (v84 + 6), buf);
+  sub_18378D1D0(&v57, textCopy, (v84 + 6), buf);
   v47 = [CHSynthesisResult alloc];
-  v49 = objc_msgSend_initWithContent_drawing_segmentContents_segmentStrokeIndexes_numberOfNotSynthesizedCharacters_(v47, v48, v6, *buf, v98, v99, v101 + v100);
+  v49 = objc_msgSend_initWithContent_drawing_segmentContents_segmentStrokeIndexes_numberOfNotSynthesizedCharacters_(v47, v48, textCopy, *buf, v98, v99, v101 + v100);
   v56[4] = v94;
   v56[5] = v95;
   v56[6] = v96;
@@ -267,10 +267,10 @@ LABEL_31:
   return v49;
 }
 
-- (id)synthesizeDrawingForString:(id)a3 options:(id)a4 shouldCancel:(id)a5 error:(id *)a6
+- (id)synthesizeDrawingForString:(id)string options:(id)options shouldCancel:(id)cancel error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  stringCopy = string;
+  optionsCopy = options;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -283,14 +283,14 @@ LABEL_31:
     _os_log_impl(&dword_18366B000, v10, OS_LOG_TYPE_DEFAULT, "CHFastPathTextSynthesizer: start synthesizeDrawingForString", buf, 2u);
   }
 
-  if (!objc_msgSend_length(v8, v11, v12, v13, v14, v15))
+  if (!objc_msgSend_length(stringCopy, v11, v12, v13, v14, v15))
   {
     v31 = 0;
     goto LABEL_14;
   }
 
-  v20 = objc_msgSend_synthesisOptionsWithDictionary_(CHSynthesisRequestOptions, v16, v9, v17, v18, v19);
-  v24 = objc_msgSend_generateDrawingForText_options_(self, v21, v8, v20, v22, v23);
+  v20 = objc_msgSend_synthesisOptionsWithDictionary_(CHSynthesisRequestOptions, v16, optionsCopy, v17, v18, v19);
+  v24 = objc_msgSend_generateDrawingForText_options_(self, v21, stringCopy, v20, v22, v23);
   v30 = objc_msgSend_drawing(v24, v25, v26, v27, v28, v29);
 
   if (!v30)
@@ -330,7 +330,7 @@ LABEL_14:
   return v31;
 }
 
-- (id)refineDrawing:(id)a3 transcription:(id)a4 options:(id)a5 shouldCancel:(id)a6 error:(id *)a7
+- (id)refineDrawing:(id)drawing transcription:(id)transcription options:(id)options shouldCancel:(id)cancel error:(id *)error
 {
   if (qword_1EA84DC48 != -1)
   {
@@ -369,7 +369,7 @@ LABEL_8:
   return 0;
 }
 
-- (id)replaceDrawing:(id)a3 originalTranscription:(id)a4 replacementTranscription:(id)a5 options:(id)a6 shouldCancel:(id)a7 error:(id *)a8
+- (id)replaceDrawing:(id)drawing originalTranscription:(id)transcription replacementTranscription:(id)replacementTranscription options:(id)options shouldCancel:(id)cancel error:(id *)error
 {
   if (qword_1EA84DC48 != -1)
   {
@@ -408,13 +408,13 @@ LABEL_8:
   return 0;
 }
 
-- (id)supportedCharactersUsingDefaultStyleOnly:(BOOL)a3
+- (id)supportedCharactersUsingDefaultStyleOnly:(BOOL)only
 {
-  v6 = a3;
+  onlyCopy = only;
   v32 = *MEMORY[0x1E69E9840];
-  v8 = objc_msgSend_set(MEMORY[0x1E695DFA8], a2, a3, v3, v4, v5);
+  v8 = objc_msgSend_set(MEMORY[0x1E695DFA8], a2, only, v3, v4, v5);
   v9 = sub_183790E88;
-  if (v6)
+  if (onlyCopy)
   {
     v9 = sub_183790E9C;
   }
@@ -493,10 +493,10 @@ LABEL_13:
   return v8;
 }
 
-- (id)supportedCharacterIndexesForString:(id)a3 options:(id)a4
+- (id)supportedCharacterIndexesForString:(id)string options:(id)options
 {
-  v6 = a3;
-  v11 = objc_msgSend_objectForKeyedSubscript_(a4, v7, CHTextSynthesisOptionFastPathUseDefaultStyle[0], v8, v9, v10);
+  stringCopy = string;
+  v11 = objc_msgSend_objectForKeyedSubscript_(options, v7, CHTextSynthesisOptionFastPathUseDefaultStyle[0], v8, v9, v10);
   v17 = objc_msgSend_BOOLValue(v11, v12, v13, v14, v15, v16);
 
   v22 = objc_msgSend_supportedCharactersUsingDefaultStyleOnly_(self, v18, v17, v19, v20, v21);
@@ -504,7 +504,7 @@ LABEL_13:
   v33 = objc_msgSend_componentsJoinedByString_(v28, v29, &stru_1EF1C0318, v30, v31, v32);
 
   v38 = objc_msgSend_characterSetWithCharactersInString_(MEMORY[0x1E696AB08], v34, v33, v35, v36, v37);
-  v43 = objc_msgSend_indexesOfCharacters_(v6, v39, v38, v40, v41, v42);
+  v43 = objc_msgSend_indexesOfCharacters_(stringCopy, v39, v38, v40, v41, v42);
 
   return v43;
 }

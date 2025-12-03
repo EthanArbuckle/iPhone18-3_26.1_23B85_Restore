@@ -1,10 +1,10 @@
 @interface NPKRemotePassActionCompanionBubbleContentView
-+ (double)_roundedTextHeightForAttributedText:(id)a3 withAvailableWidth:(double)a4;
-+ (double)contentViewHeightForViewModel:(id)a3 withWidth:(double)a4;
-+ (id)_attributedTextFromText:(id)a3 inFont:(id)a4;
++ (double)_roundedTextHeightForAttributedText:(id)text withAvailableWidth:(double)width;
++ (double)contentViewHeightForViewModel:(id)model withWidth:(double)width;
++ (id)_attributedTextFromText:(id)text inFont:(id)font;
 + (id)_defaultParagraphStyle;
-- (NPKRemotePassActionCompanionBubbleContentView)initWithDelegate:(id)a3;
-- (NPKRemotePassActionCompanionBubbleContentView)initWithFrame:(CGRect)a3;
+- (NPKRemotePassActionCompanionBubbleContentView)initWithDelegate:(id)delegate;
+- (NPKRemotePassActionCompanionBubbleContentView)initWithFrame:(CGRect)frame;
 - (NPKRemotePassActionCompanionBubbleContentViewDelegate)delegate;
 - (UIButton)actionButton;
 - (id)_makeHorizontalConstraints;
@@ -21,33 +21,33 @@
 - (void)_setUpSubviews;
 - (void)_setUpTapGestureRecognizer;
 - (void)_setUpTitleLabel;
-- (void)_updateViewForViewModel:(id)a3;
+- (void)_updateViewForViewModel:(id)model;
 - (void)layoutSubviews;
-- (void)setViewModel:(id)a3;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation NPKRemotePassActionCompanionBubbleContentView
 
-- (NPKRemotePassActionCompanionBubbleContentView)initWithDelegate:(id)a3
+- (NPKRemotePassActionCompanionBubbleContentView)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = NPKRemotePassActionCompanionBubbleContentView;
   v5 = [(NPKRemotePassActionCompanionBubbleContentView *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (NPKRemotePassActionCompanionBubbleContentView)initWithFrame:(CGRect)a3
+- (NPKRemotePassActionCompanionBubbleContentView)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = NPKRemotePassActionCompanionBubbleContentView;
-  v3 = [(NPKRemotePassActionCompanionBubbleContentView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NPKRemotePassActionCompanionBubbleContentView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UIImageView);
@@ -90,15 +90,15 @@
   [(NPKRemotePassActionCompanionBubbleContentView *)&v12 layoutSubviews];
   [(NPKRemotePassActionCompanionBubbleContentView *)self frame];
   Width = CGRectGetWidth(v13);
-  v4 = [(NPKRemotePassActionCompanionBubbleContentView *)self viewModel];
-  v5 = [v4 cardArtImage];
+  viewModel = [(NPKRemotePassActionCompanionBubbleContentView *)self viewModel];
+  cardArtImage = [viewModel cardArtImage];
 
-  if (v5)
+  if (cardArtImage)
   {
     v6 = fmax(Width + -12.0 + -12.0, 0.0);
-    [v5 size];
+    [cardArtImage size];
     v8 = v7;
-    [v5 size];
+    [cardArtImage size];
     v10 = v6 / (v8 / v9);
   }
 
@@ -107,15 +107,15 @@
     v10 = 0.0;
   }
 
-  v11 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageViewHeightConstraint];
-  [v11 setConstant:v10];
+  cardArtImageViewHeightConstraint = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageViewHeightConstraint];
+  [cardArtImageViewHeightConstraint setConstant:v10];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  objc_storeStrong(&self->_viewModel, a3);
-  v5 = a3;
-  [(NPKRemotePassActionCompanionBubbleContentView *)self _updateViewForViewModel:v5];
+  objc_storeStrong(&self->_viewModel, model);
+  modelCopy = model;
+  [(NPKRemotePassActionCompanionBubbleContentView *)self _updateViewForViewModel:modelCopy];
 }
 
 - (UIButton)actionButton
@@ -144,11 +144,11 @@
     v9 = self->_actionButton;
     self->_actionButton = v8;
 
-    v10 = [(UIButton *)self->_actionButton titleLabel];
-    [v10 setMinimumScaleFactor:0.699999988];
+    titleLabel = [(UIButton *)self->_actionButton titleLabel];
+    [titleLabel setMinimumScaleFactor:0.699999988];
 
-    v11 = [(UIButton *)self->_actionButton titleLabel];
-    [v11 setAdjustsFontSizeToFitWidth:1];
+    titleLabel2 = [(UIButton *)self->_actionButton titleLabel];
+    [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
     actionButton = self->_actionButton;
   }
@@ -156,15 +156,15 @@
   return actionButton;
 }
 
-+ (double)contentViewHeightForViewModel:(id)a3 withWidth:(double)a4
++ (double)contentViewHeightForViewModel:(id)model withWidth:(double)width
 {
-  v6 = a3;
-  v7 = a4 + -12.0 + -12.0;
-  v8 = [v6 cardArtImage];
-  v9 = v8;
-  if (v8)
+  modelCopy = model;
+  v7 = width + -12.0 + -12.0;
+  cardArtImage = [modelCopy cardArtImage];
+  v9 = cardArtImage;
+  if (cardArtImage)
   {
-    [v8 size];
+    [cardArtImage size];
     v11 = v10;
     [v9 size];
     v13 = v7 / (v11 / v12) + 12.0 + 8.0;
@@ -175,7 +175,7 @@
     v13 = 20.0;
   }
 
-  if ([v6 showsActionButton])
+  if ([modelCopy showsActionButton])
   {
     v14 = v7 * 0.5 + -8.0;
   }
@@ -185,31 +185,31 @@
     v14 = v7;
   }
 
-  v15 = [v6 titleText];
-  v16 = [a1 _primaryFont];
-  v17 = [a1 _attributedTextFromText:v15 inFont:v16];
+  titleText = [modelCopy titleText];
+  _primaryFont = [self _primaryFont];
+  v17 = [self _attributedTextFromText:titleText inFont:_primaryFont];
 
-  [a1 _roundedTextHeightForAttributedText:v17 withAvailableWidth:v14];
+  [self _roundedTextHeightForAttributedText:v17 withAvailableWidth:v14];
   v19 = v18;
-  v20 = [v6 detailText];
-  v21 = [a1 _secondaryFont];
-  v22 = [a1 _attributedTextFromText:v20 inFont:v21];
+  detailText = [modelCopy detailText];
+  _secondaryFont = [self _secondaryFont];
+  v22 = [self _attributedTextFromText:detailText inFont:_secondaryFont];
 
-  [a1 _roundedTextHeightForAttributedText:v22 withAvailableWidth:v14];
+  [self _roundedTextHeightForAttributedText:v22 withAvailableWidth:v14];
   v24 = v23;
   v25 = 0.0;
-  if ([v6 showsActionButton])
+  if ([modelCopy showsActionButton])
   {
-    v26 = [v6 actionButtonText];
-    v27 = [v26 length];
+    actionButtonText = [modelCopy actionButtonText];
+    v27 = [actionButtonText length];
 
     if (v27)
     {
-      v28 = [v6 actionButtonText];
-      v29 = [a1 _primaryFont];
-      v30 = [a1 _attributedTextFromText:v28 inFont:v29];
+      actionButtonText2 = [modelCopy actionButtonText];
+      _primaryFont2 = [self _primaryFont];
+      v30 = [self _attributedTextFromText:actionButtonText2 inFont:_primaryFont2];
 
-      [a1 _roundedTextHeightForAttributedText:v30 withAvailableWidth:v14];
+      [self _roundedTextHeightForAttributedText:v30 withAvailableWidth:v14];
       v25 = v31 + v31;
     }
   }
@@ -219,49 +219,49 @@
 
 - (void)_setUpConstraints
 {
-  v3 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  cardArtImageView = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
+  [cardArtImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bottomContentStackView = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
+  [bottomContentStackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(NPKRemotePassActionCompanionBubbleContentView *)self setTranslatesAutoresizingMaskIntoConstraints:0];
   v8 = objc_alloc_init(NSMutableArray);
-  v5 = [(NPKRemotePassActionCompanionBubbleContentView *)self _makeVerticalConstraints];
-  [v8 addObjectsFromArray:v5];
+  _makeVerticalConstraints = [(NPKRemotePassActionCompanionBubbleContentView *)self _makeVerticalConstraints];
+  [v8 addObjectsFromArray:_makeVerticalConstraints];
 
-  v6 = [(NPKRemotePassActionCompanionBubbleContentView *)self _makeHorizontalConstraints];
-  [v8 addObjectsFromArray:v6];
+  _makeHorizontalConstraints = [(NPKRemotePassActionCompanionBubbleContentView *)self _makeHorizontalConstraints];
+  [v8 addObjectsFromArray:_makeHorizontalConstraints];
 
-  v7 = [(NPKRemotePassActionCompanionBubbleContentView *)self _makeRelativeConstraints];
-  [v8 addObjectsFromArray:v7];
+  _makeRelativeConstraints = [(NPKRemotePassActionCompanionBubbleContentView *)self _makeRelativeConstraints];
+  [v8 addObjectsFromArray:_makeRelativeConstraints];
 
   [NSLayoutConstraint activateConstraints:v8];
 }
 
 - (id)_makeVerticalConstraints
 {
-  v22 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
-  v21 = [v22 topAnchor];
-  v20 = [(NPKRemotePassActionCompanionBubbleContentView *)self topAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20 constant:12.0];
+  cardArtImageView = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
+  topAnchor = [cardArtImageView topAnchor];
+  topAnchor2 = [(NPKRemotePassActionCompanionBubbleContentView *)self topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:12.0];
   v23[0] = v19;
-  v18 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
-  v16 = [v18 topAnchor];
-  v17 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
-  v15 = [v17 bottomAnchor];
-  v3 = [v16 constraintEqualToAnchor:v15 constant:8.0];
+  labelStackView = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
+  topAnchor3 = [labelStackView topAnchor];
+  cardArtImageView2 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
+  bottomAnchor = [cardArtImageView2 bottomAnchor];
+  v3 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:8.0];
   v23[1] = v3;
-  v4 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
-  v5 = [v4 topAnchor];
-  v6 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
-  v7 = [v6 bottomAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:8.0];
+  bottomContentStackView = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
+  topAnchor4 = [bottomContentStackView topAnchor];
+  cardArtImageView3 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
+  bottomAnchor2 = [cardArtImageView3 bottomAnchor];
+  v8 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:8.0];
   v23[2] = v8;
-  v9 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomAnchor];
-  v10 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:8.0];
+  bottomAnchor3 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomAnchor];
+  bottomContentStackView2 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
+  bottomAnchor4 = [bottomContentStackView2 bottomAnchor];
+  v12 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:8.0];
   v23[3] = v12;
   v14 = [NSArray arrayWithObjects:v23 count:4];
 
@@ -270,25 +270,25 @@
 
 - (id)_makeHorizontalConstraints
 {
-  v20 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
-  v19 = [v20 leadingAnchor];
-  v18 = [(NPKRemotePassActionCompanionBubbleContentView *)self leadingAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18 constant:12.0];
+  cardArtImageView = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
+  leadingAnchor = [cardArtImageView leadingAnchor];
+  leadingAnchor2 = [(NPKRemotePassActionCompanionBubbleContentView *)self leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:12.0];
   v21[0] = v17;
-  v15 = [(NPKRemotePassActionCompanionBubbleContentView *)self trailingAnchor];
-  v16 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
-  v3 = [v16 trailingAnchor];
-  v4 = [v15 constraintEqualToAnchor:v3 constant:12.0];
+  trailingAnchor = [(NPKRemotePassActionCompanionBubbleContentView *)self trailingAnchor];
+  cardArtImageView2 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
+  trailingAnchor2 = [cardArtImageView2 trailingAnchor];
+  v4 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:12.0];
   v21[1] = v4;
-  v5 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
-  v6 = [v5 leadingAnchor];
-  v7 = [(NPKRemotePassActionCompanionBubbleContentView *)self leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:12.0];
+  bottomContentStackView = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
+  leadingAnchor3 = [bottomContentStackView leadingAnchor];
+  leadingAnchor4 = [(NPKRemotePassActionCompanionBubbleContentView *)self leadingAnchor];
+  v8 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:12.0];
   v21[2] = v8;
-  v9 = [(NPKRemotePassActionCompanionBubbleContentView *)self trailingAnchor];
-  v10 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
-  v11 = [v10 trailingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:12.0];
+  trailingAnchor3 = [(NPKRemotePassActionCompanionBubbleContentView *)self trailingAnchor];
+  bottomContentStackView2 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
+  trailingAnchor4 = [bottomContentStackView2 trailingAnchor];
+  v12 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:12.0];
   v21[3] = v12;
   v14 = [NSArray arrayWithObjects:v21 count:4];
 
@@ -297,13 +297,13 @@
 
 - (id)_makeRelativeConstraints
 {
-  v3 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
-  v4 = [v3 heightAnchor];
-  v5 = [v4 constraintEqualToConstant:0.0];
+  cardArtImageView = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
+  heightAnchor = [cardArtImageView heightAnchor];
+  v5 = [heightAnchor constraintEqualToConstant:0.0];
   [(NPKRemotePassActionCompanionBubbleContentView *)self setCardArtImageViewHeightConstraint:v5];
 
-  v6 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageViewHeightConstraint];
-  v9 = v6;
+  cardArtImageViewHeightConstraint = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageViewHeightConstraint];
+  v9 = cardArtImageViewHeightConstraint;
   v7 = [NSArray arrayWithObjects:&v9 count:1];
 
   return v7;
@@ -322,21 +322,21 @@
 
 - (void)_setUpCardArtImageView
 {
-  v3 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
+  cardArtImageView = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
 
-  if (v3)
+  if (cardArtImageView)
   {
-    v4 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
-    [v4 setContentMode:1];
+    cardArtImageView2 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
+    [cardArtImageView2 setContentMode:1];
 
-    v5 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
-    v6 = [v5 layer];
-    [v6 setMasksToBounds:1];
+    cardArtImageView3 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
+    layer = [cardArtImageView3 layer];
+    [layer setMasksToBounds:1];
 
-    v7 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
-    [v7 _setContinuousCornerRadius:7.0];
+    cardArtImageView4 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
+    [cardArtImageView4 _setContinuousCornerRadius:7.0];
 
-    v12 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
+    cardArtImageView5 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
     [(NPKRemotePassActionCompanionBubbleContentView *)self addSubview:?];
   }
 
@@ -350,9 +350,9 @@
       v10 = pk_RemotePassAction_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
+        cardArtImageView6 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
         *buf = 138412290;
-        v14 = v11;
+        v14 = cardArtImageView6;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Warning: Expected to find a card art image view, but instead found nil! cardArtImageView: %@", buf, 0xCu);
       }
     }
@@ -361,20 +361,20 @@
 
 - (void)_setUpTitleLabel
 {
-  v3 = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
+  titleLabel = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
 
-  if (v3)
+  if (titleLabel)
   {
     v4 = +[UIColor labelColor];
-    v5 = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
-    [v5 setTextColor:v4];
+    titleLabel2 = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
+    [titleLabel2 setTextColor:v4];
 
-    v6 = [objc_opt_class() _primaryFont];
-    v7 = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
-    [v7 setFont:v6];
+    _primaryFont = [objc_opt_class() _primaryFont];
+    titleLabel3 = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
+    [titleLabel3 setFont:_primaryFont];
 
-    v12 = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
-    [v12 setNumberOfLines:0];
+    titleLabel4 = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
+    [titleLabel4 setNumberOfLines:0];
   }
 
   else
@@ -387,9 +387,9 @@
       v10 = pk_RemotePassAction_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
+        titleLabel5 = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
         *buf = 138412290;
-        v14 = v11;
+        v14 = titleLabel5;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Warning: Expected to find a title label, but instead found nil! titleLabel: %@", buf, 0xCu);
       }
     }
@@ -398,20 +398,20 @@
 
 - (void)_setUpDetailLabel
 {
-  v3 = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
+  detailLabel = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
 
-  if (v3)
+  if (detailLabel)
   {
     v4 = +[UIColor secondaryLabelColor];
-    v5 = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
-    [v5 setTextColor:v4];
+    detailLabel2 = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
+    [detailLabel2 setTextColor:v4];
 
-    v6 = [objc_opt_class() _secondaryFont];
-    v7 = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
-    [v7 setFont:v6];
+    _secondaryFont = [objc_opt_class() _secondaryFont];
+    detailLabel3 = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
+    [detailLabel3 setFont:_secondaryFont];
 
-    v12 = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
-    [v12 setNumberOfLines:0];
+    detailLabel4 = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
+    [detailLabel4 setNumberOfLines:0];
   }
 
   else
@@ -424,9 +424,9 @@
       v10 = pk_RemotePassAction_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
+        detailLabel5 = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
         *buf = 138412290;
-        v14 = v11;
+        v14 = detailLabel5;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Warning: Expected to find a detail label, but instead found nil! detailLabel: %@", buf, 0xCu);
       }
     }
@@ -435,41 +435,41 @@
 
 - (void)_setUpLabelStackView
 {
-  v3 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
+  labelStackView = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
 
-  if (v3)
+  if (labelStackView)
   {
-    v4 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
-    [v4 setAxis:1];
+    labelStackView2 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
+    [labelStackView2 setAxis:1];
 
-    v5 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
-    [v5 setDistribution:2];
+    labelStackView3 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
+    [labelStackView3 setDistribution:2];
 
-    v6 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
-    [v6 setAlignment:0];
+    labelStackView4 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
+    [labelStackView4 setAlignment:0];
 
-    v7 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
-    [v7 setSpacing:2.0];
+    labelStackView5 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
+    [labelStackView5 setSpacing:2.0];
 
-    v8 = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
+    titleLabel = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
 
-    if (v8)
+    if (titleLabel)
     {
-      v9 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
-      v10 = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
-      [v9 addArrangedSubview:v10];
+      labelStackView6 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
+      titleLabel2 = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
+      [labelStackView6 addArrangedSubview:titleLabel2];
     }
 
-    v11 = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
+    detailLabel = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
 
-    if (v11)
+    if (detailLabel)
     {
-      v12 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
-      v13 = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
-      [v12 addArrangedSubview:v13];
+      labelStackView7 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
+      detailLabel2 = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
+      [labelStackView7 addArrangedSubview:detailLabel2];
     }
 
-    v18 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
+    labelStackView8 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
     [(NPKRemotePassActionCompanionBubbleContentView *)self addSubview:?];
   }
 
@@ -483,9 +483,9 @@
       v16 = pk_RemotePassAction_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
+        labelStackView9 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
         *buf = 138412290;
-        v20 = v17;
+        v20 = labelStackView9;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Warning: Expected to find a label container view, but instead found nil! labelStackView: %@", buf, 0xCu);
       }
     }
@@ -494,9 +494,9 @@
 
 - (void)_setUpActionButton
 {
-  v3 = [(NPKRemotePassActionCompanionBubbleContentView *)self actionButton];
+  actionButton = [(NPKRemotePassActionCompanionBubbleContentView *)self actionButton];
 
-  if (!v3)
+  if (!actionButton)
   {
     v4 = pk_RemotePassAction_log();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -506,9 +506,9 @@
       v6 = pk_RemotePassAction_log();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(NPKRemotePassActionCompanionBubbleContentView *)self actionButton];
+        actionButton2 = [(NPKRemotePassActionCompanionBubbleContentView *)self actionButton];
         v8 = 138412290;
-        v9 = v7;
+        v9 = actionButton2;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Warning: Expected to find an action button, but instead found nil! actionButton: %@", &v8, 0xCu);
       }
     }
@@ -517,41 +517,41 @@
 
 - (void)_setUpBottomContentStackView
 {
-  v3 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
+  bottomContentStackView = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
 
-  if (v3)
+  if (bottomContentStackView)
   {
-    v4 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
-    [v4 setAxis:0];
+    bottomContentStackView2 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
+    [bottomContentStackView2 setAxis:0];
 
-    v5 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
-    [v5 setDistribution:0];
+    bottomContentStackView3 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
+    [bottomContentStackView3 setDistribution:0];
 
-    v6 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
-    [v6 setAlignment:3];
+    bottomContentStackView4 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
+    [bottomContentStackView4 setAlignment:3];
 
-    v7 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
-    [v7 setSpacing:8.0];
+    bottomContentStackView5 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
+    [bottomContentStackView5 setSpacing:8.0];
 
-    v8 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
+    labelStackView = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
 
-    if (v8)
+    if (labelStackView)
     {
-      v9 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
-      v10 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
-      [v9 addArrangedSubview:v10];
+      bottomContentStackView6 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
+      labelStackView2 = [(NPKRemotePassActionCompanionBubbleContentView *)self labelStackView];
+      [bottomContentStackView6 addArrangedSubview:labelStackView2];
     }
 
-    v11 = [(NPKRemotePassActionCompanionBubbleContentView *)self actionButton];
+    actionButton = [(NPKRemotePassActionCompanionBubbleContentView *)self actionButton];
 
-    if (v11)
+    if (actionButton)
     {
-      v12 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
-      v13 = [(NPKRemotePassActionCompanionBubbleContentView *)self actionButton];
-      [v12 addArrangedSubview:v13];
+      bottomContentStackView7 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
+      actionButton2 = [(NPKRemotePassActionCompanionBubbleContentView *)self actionButton];
+      [bottomContentStackView7 addArrangedSubview:actionButton2];
     }
 
-    v18 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
+    bottomContentStackView8 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
     [(NPKRemotePassActionCompanionBubbleContentView *)self addSubview:?];
   }
 
@@ -565,9 +565,9 @@
       v16 = pk_RemotePassAction_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
+        bottomContentStackView9 = [(NPKRemotePassActionCompanionBubbleContentView *)self bottomContentStackView];
         *buf = 138412290;
-        v20 = v17;
+        v20 = bottomContentStackView9;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Warning: Expected to find an bottom content stack view, but instead found nil! bottomContentStackView: %@", buf, 0xCu);
       }
     }
@@ -576,13 +576,13 @@
 
 - (void)_setUpTapGestureRecognizer
 {
-  v3 = [(NPKRemotePassActionCompanionBubbleContentView *)self tapGestureRecognizer];
+  tapGestureRecognizer = [(NPKRemotePassActionCompanionBubbleContentView *)self tapGestureRecognizer];
 
-  if (v3)
+  if (tapGestureRecognizer)
   {
-    v4 = [(NPKRemotePassActionCompanionBubbleContentView *)self gestureRecognizers];
-    v5 = [(NPKRemotePassActionCompanionBubbleContentView *)self tapGestureRecognizer];
-    v6 = [v4 containsObject:v5];
+    gestureRecognizers = [(NPKRemotePassActionCompanionBubbleContentView *)self gestureRecognizers];
+    tapGestureRecognizer2 = [(NPKRemotePassActionCompanionBubbleContentView *)self tapGestureRecognizer];
+    v6 = [gestureRecognizers containsObject:tapGestureRecognizer2];
 
     if (v6)
     {
@@ -602,7 +602,7 @@
 
     else
     {
-      v14 = [(NPKRemotePassActionCompanionBubbleContentView *)self tapGestureRecognizer];
+      tapGestureRecognizer3 = [(NPKRemotePassActionCompanionBubbleContentView *)self tapGestureRecognizer];
       [(NPKRemotePassActionCompanionBubbleContentView *)self addGestureRecognizer:?];
     }
   }
@@ -617,9 +617,9 @@
       v12 = pk_RemotePassAction_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(NPKRemotePassActionCompanionBubbleContentView *)self tapGestureRecognizer];
+        tapGestureRecognizer4 = [(NPKRemotePassActionCompanionBubbleContentView *)self tapGestureRecognizer];
         *buf = 138412290;
-        v16 = v13;
+        v16 = tapGestureRecognizer4;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Warning: Expected to find a tap gesture recognizer, but instead found nil!: %@", buf, 0xCu);
       }
     }
@@ -657,12 +657,12 @@
     }
   }
 
-  v6 = [(NPKRemotePassActionCompanionBubbleContentView *)self delegate];
+  delegate = [(NPKRemotePassActionCompanionBubbleContentView *)self delegate];
 
-  if (v6)
+  if (delegate)
   {
-    v7 = [(NPKRemotePassActionCompanionBubbleContentView *)self delegate];
-    [v7 remotePassActionRequestBubbleContentViewDidReceiveTap:self];
+    delegate2 = [(NPKRemotePassActionCompanionBubbleContentView *)self delegate];
+    [delegate2 remotePassActionRequestBubbleContentViewDidReceiveTap:self];
 LABEL_7:
 
     return;
@@ -673,27 +673,27 @@ LABEL_7:
 
   if (v9)
   {
-    v7 = pk_RemotePassAction_log();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    delegate2 = pk_RemotePassAction_log();
+    if (os_log_type_enabled(delegate2, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(NPKRemotePassActionCompanionBubbleContentView *)self delegate];
+      delegate3 = [(NPKRemotePassActionCompanionBubbleContentView *)self delegate];
       v11 = 138412290;
-      v12 = v10;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Warning: Unable to handle tap. Did you forget to set the delegate? delegate: %@", &v11, 0xCu);
+      v12 = delegate3;
+      _os_log_impl(&_mh_execute_header, delegate2, OS_LOG_TYPE_DEFAULT, "Warning: Unable to handle tap. Did you forget to set the delegate? delegate: %@", &v11, 0xCu);
     }
 
     goto LABEL_7;
   }
 }
 
-- (void)_updateViewForViewModel:(id)a3
+- (void)_updateViewForViewModel:(id)model
 {
-  v32 = a3;
-  v4 = [v32 cardArtImage];
-  v5 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
-  [v5 setImage:v4];
+  modelCopy = model;
+  cardArtImage = [modelCopy cardArtImage];
+  cardArtImageView = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
+  [cardArtImageView setImage:cardArtImage];
 
-  if ([v32 shouldDimPass])
+  if ([modelCopy shouldDimPass])
   {
     v6 = 0.5;
   }
@@ -703,48 +703,48 @@ LABEL_7:
     v6 = 1.0;
   }
 
-  v7 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
-  [v7 setAlpha:v6];
+  cardArtImageView2 = [(NPKRemotePassActionCompanionBubbleContentView *)self cardArtImageView];
+  [cardArtImageView2 setAlpha:v6];
 
   v8 = objc_opt_class();
-  v9 = [v32 titleText];
-  v10 = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
-  v11 = [v10 font];
-  v12 = [v8 _attributedTextFromText:v9 inFont:v11];
+  titleText = [modelCopy titleText];
+  titleLabel = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
+  font = [titleLabel font];
+  v12 = [v8 _attributedTextFromText:titleText inFont:font];
 
-  v13 = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
-  [v13 setAttributedText:v12];
+  titleLabel2 = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
+  [titleLabel2 setAttributedText:v12];
 
   v14 = [v12 length] == 0;
-  v15 = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
-  [v15 setHidden:v14];
+  titleLabel3 = [(NPKRemotePassActionCompanionBubbleContentView *)self titleLabel];
+  [titleLabel3 setHidden:v14];
 
   v16 = objc_opt_class();
-  v17 = [v32 detailText];
-  v18 = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
-  v19 = [v18 font];
-  v20 = [v16 _attributedTextFromText:v17 inFont:v19];
+  detailText = [modelCopy detailText];
+  detailLabel = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
+  font2 = [detailLabel font];
+  v20 = [v16 _attributedTextFromText:detailText inFont:font2];
 
-  v21 = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
-  [v21 setAttributedText:v20];
+  detailLabel2 = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
+  [detailLabel2 setAttributedText:v20];
 
   v22 = [v20 length] == 0;
-  v23 = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
-  [v23 setHidden:v22];
+  detailLabel3 = [(NPKRemotePassActionCompanionBubbleContentView *)self detailLabel];
+  [detailLabel3 setHidden:v22];
 
   v24 = objc_opt_class();
-  v25 = [v32 actionButtonText];
-  v26 = [objc_opt_class() _primaryFont];
-  v27 = [v24 _attributedTextFromText:v25 inFont:v26];
+  actionButtonText = [modelCopy actionButtonText];
+  _primaryFont = [objc_opt_class() _primaryFont];
+  v27 = [v24 _attributedTextFromText:actionButtonText inFont:_primaryFont];
 
-  v28 = [(NPKRemotePassActionCompanionBubbleContentView *)self actionButton];
-  [v28 setAttributedTitle:v27 forState:0];
+  actionButton = [(NPKRemotePassActionCompanionBubbleContentView *)self actionButton];
+  [actionButton setAttributedTitle:v27 forState:0];
 
-  v29 = [v32 showsActionButton];
-  if (v29)
+  showsActionButton = [modelCopy showsActionButton];
+  if (showsActionButton)
   {
-    v26 = [v32 actionButtonText];
-    v30 = [v26 length] == 0;
+    _primaryFont = [modelCopy actionButtonText];
+    v30 = [_primaryFont length] == 0;
   }
 
   else
@@ -752,10 +752,10 @@ LABEL_7:
     v30 = 1;
   }
 
-  v31 = [(NPKRemotePassActionCompanionBubbleContentView *)self actionButton];
-  [v31 setHidden:v30];
+  actionButton2 = [(NPKRemotePassActionCompanionBubbleContentView *)self actionButton];
+  [actionButton2 setHidden:v30];
 
-  if (v29)
+  if (showsActionButton)
   {
   }
 
@@ -763,32 +763,32 @@ LABEL_7:
   [(NPKRemotePassActionCompanionBubbleContentView *)self layoutIfNeeded];
 }
 
-+ (id)_attributedTextFromText:(id)a3 inFont:(id)a4
++ (id)_attributedTextFromText:(id)text inFont:(id)font
 {
-  v4 = a3;
-  if (a3)
+  textCopy = text;
+  if (text)
   {
-    v6 = a4;
-    v7 = v4;
-    v8 = [a1 _defaultParagraphStyle];
+    fontCopy = font;
+    v7 = textCopy;
+    _defaultParagraphStyle = [self _defaultParagraphStyle];
     v9 = [NSAttributedString alloc];
     v12[0] = NSFontAttributeName;
     v12[1] = NSParagraphStyleAttributeName;
-    v13[0] = v6;
-    v13[1] = v8;
+    v13[0] = fontCopy;
+    v13[1] = _defaultParagraphStyle;
     v10 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2];
 
-    v4 = [v9 initWithString:v7 attributes:v10];
+    textCopy = [v9 initWithString:v7 attributes:v10];
   }
 
-  return v4;
+  return textCopy;
 }
 
-+ (double)_roundedTextHeightForAttributedText:(id)a3 withAvailableWidth:(double)a4
++ (double)_roundedTextHeightForAttributedText:(id)text withAvailableWidth:(double)width
 {
-  if (a3)
+  if (text)
   {
-    [a3 boundingRectWithSize:3 options:0 context:{a4, 1.79769313e308}];
+    [text boundingRectWithSize:3 options:0 context:{width, 1.79769313e308}];
     Height = CGRectGetHeight(v12);
   }
 

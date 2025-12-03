@@ -1,23 +1,23 @@
 @interface TSPDigest
-+ (id)digestFromDispatchData:(id)a3;
-+ (id)digestFromNSData:(id)a3;
-+ (id)digestFromReadChannel:(id)a3 error:(id *)a4;
-+ (id)digestWithDigestString:(id)a3;
++ (id)digestFromDispatchData:(id)data;
++ (id)digestFromNSData:(id)data;
++ (id)digestFromReadChannel:(id)channel error:(id *)error;
++ (id)digestWithDigestString:(id)string;
 + (id)emptyDataDigest;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)digestString;
 - (TSPDigest)init;
-- (TSPDigest)initWithDigestString:(id)a3;
-- (id)anonymousIdentifierWithContext:(id)a3;
-- (id)anonymousIdentifierWithDocumentProperties:(id)a3 passphrase:(id)a4;
+- (TSPDigest)initWithDigestString:(id)string;
+- (id)anonymousIdentifierWithContext:(id)context;
+- (id)anonymousIdentifierWithDocumentProperties:(id)properties passphrase:(id)passphrase;
 - (id)description;
-- (id)initFromBytes:(const void *)a3 length:(unsigned int)a4;
-- (id)initFromDispatchData:(id)a3;
-- (id)initFromNSData:(id)a3;
-- (id)initFromProtobufString:(const void *)a3;
-- (id)initFromReadChannel:(id)a3 scanForOSLikeCorruption:(BOOL)a4 foundLikelyOSCorruption:(BOOL *)a5 foundLikelyZeroBytesCorruption:(BOOL *)a6 error:(id *)a7;
-- (id)initFromSHA1Context:(CC_SHA1state_st *)a3;
-- (int64_t)compare:(id)a3;
+- (id)initFromBytes:(const void *)bytes length:(unsigned int)length;
+- (id)initFromDispatchData:(id)data;
+- (id)initFromNSData:(id)data;
+- (id)initFromProtobufString:(const void *)string;
+- (id)initFromReadChannel:(id)channel scanForOSLikeCorruption:(BOOL)corruption foundLikelyOSCorruption:(BOOL *)sCorruption foundLikelyZeroBytesCorruption:(BOOL *)bytesCorruption error:(id *)error;
+- (id)initFromSHA1Context:(CC_SHA1state_st *)context;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation TSPDigest
@@ -49,26 +49,26 @@
   return v3;
 }
 
-+ (id)digestWithDigestString:(id)a3
++ (id)digestWithDigestString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc(objc_opt_class());
-  v6 = objc_msgSend_initWithDigestString_(v4, v5, v3);
+  v6 = objc_msgSend_initWithDigestString_(v4, v5, stringCopy);
 
   return v6;
 }
 
-- (TSPDigest)initWithDigestString:(id)a3
+- (TSPDigest)initWithDigestString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v18.receiver = self;
   v18.super_class = TSPDigest;
   v7 = [(TSPDigest *)&v18 init];
   if (v7)
   {
-    if (objc_msgSend_length(v4, v5, v6) == 40)
+    if (objc_msgSend_length(stringCopy, v5, v6) == 40)
     {
-      v8 = v4;
+      v8 = stringCopy;
       v11 = (objc_msgSend_UTF8String(v8, v9, v10) + 1);
       for (i = 8; i != 28; ++i)
       {
@@ -115,36 +115,36 @@
   return v7;
 }
 
-+ (id)digestFromNSData:(id)a3
++ (id)digestFromNSData:(id)data
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v7 = objc_msgSend_initFromNSData_(v5, v6, v4);
+  dataCopy = data;
+  v5 = [self alloc];
+  v7 = objc_msgSend_initFromNSData_(v5, v6, dataCopy);
 
   return v7;
 }
 
-+ (id)digestFromDispatchData:(id)a3
++ (id)digestFromDispatchData:(id)data
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v7 = objc_msgSend_initFromDispatchData_(v5, v6, v4);
+  dataCopy = data;
+  v5 = [self alloc];
+  v7 = objc_msgSend_initFromDispatchData_(v5, v6, dataCopy);
 
   return v7;
 }
 
-+ (id)digestFromReadChannel:(id)a3 error:(id *)a4
++ (id)digestFromReadChannel:(id)channel error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 alloc];
-  Channel_scanForOSLikeCorruption_foundLikelyOSCorruption_foundLikelyZeroBytesCorruption_error = objc_msgSend_initFromReadChannel_scanForOSLikeCorruption_foundLikelyOSCorruption_foundLikelyZeroBytesCorruption_error_(v7, v8, v6, 0, 0, 0, a4);
+  channelCopy = channel;
+  v7 = [self alloc];
+  Channel_scanForOSLikeCorruption_foundLikelyOSCorruption_foundLikelyZeroBytesCorruption_error = objc_msgSend_initFromReadChannel_scanForOSLikeCorruption_foundLikelyOSCorruption_foundLikelyZeroBytesCorruption_error_(v7, v8, channelCopy, 0, 0, 0, error);
 
   return Channel_scanForOSLikeCorruption_foundLikelyOSCorruption_foundLikelyZeroBytesCorruption_error;
 }
 
-- (id)initFromReadChannel:(id)a3 scanForOSLikeCorruption:(BOOL)a4 foundLikelyOSCorruption:(BOOL *)a5 foundLikelyZeroBytesCorruption:(BOOL *)a6 error:(id *)a7
+- (id)initFromReadChannel:(id)channel scanForOSLikeCorruption:(BOOL)corruption foundLikelyOSCorruption:(BOOL *)sCorruption foundLikelyZeroBytesCorruption:(BOOL *)bytesCorruption error:(id *)error
 {
-  v12 = a3;
+  channelCopy = channel;
   v45.receiver = self;
   v45.super_class = TSPDigest;
   v13 = [(TSPDigest *)&v45 init];
@@ -175,12 +175,12 @@
     v24[3] = &unk_27A6E3080;
     v24[7] = &v27;
     v24[8] = &c;
-    v25 = a4;
+    corruptionCopy = corruption;
     v24[4] = &v41;
     v24[5] = &v33;
     v24[6] = &v37;
-    objc_msgSend_readWithHandlerAndWait_(v12, v14, v24);
-    objc_msgSend_close(v12, v15, v16);
+    objc_msgSend_readWithHandlerAndWait_(channelCopy, v14, v24);
+    objc_msgSend_close(channelCopy, v15, v16);
     if (v28[5])
     {
 
@@ -192,12 +192,12 @@
       v18 = objc_msgSend_initFromSHA1Context_(v13, v17, &c);
     }
 
-    if (a5)
+    if (sCorruption)
     {
-      *a5 = *(v42 + 24);
+      *sCorruption = *(v42 + 24);
     }
 
-    if (a6)
+    if (bytesCorruption)
     {
       v19 = v34[3];
       v20 = v19 != 0;
@@ -212,12 +212,12 @@
         v22 = v21;
       }
 
-      *a6 = v22;
+      *bytesCorruption = v22;
     }
 
-    if (*a7)
+    if (*error)
     {
-      *a7 = v28[5];
+      *error = v28[5];
     }
 
     _Block_object_dispose(&v27, 8);
@@ -248,13 +248,13 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = objc_msgSend_digestData(v4, v5, v6);
+    v7 = objc_msgSend_digestData(equalCopy, v5, v6);
     v10 = *self->_digestData.__elems_ == *v7 && *&self->_digestData.__elems_[8] == *(v7 + 8) && *&self->_digestData.__elems_[16] == *(v7 + 16);
   }
 
@@ -262,17 +262,17 @@
   {
     v12.receiver = self;
     v12.super_class = TSPDigest;
-    v10 = [(TSPDigest *)&v12 isEqual:v4];
+    v10 = [(TSPDigest *)&v12 isEqual:equalCopy];
   }
 
   return v10;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v7 = objc_msgSend_digestData(v4, v5, v6);
-  objc_msgSend_digestData(v4, v8, v9);
+  compareCopy = compare;
+  v7 = objc_msgSend_digestData(compareCopy, v5, v6);
+  objc_msgSend_digestData(compareCopy, v8, v9);
   v10 = 0;
   while (1)
   {
@@ -316,9 +316,9 @@ LABEL_8:
   return v10;
 }
 
-- (id)initFromBytes:(const void *)a3 length:(unsigned int)a4
+- (id)initFromBytes:(const void *)bytes length:(unsigned int)length
 {
-  if (a3)
+  if (bytes)
   {
     v10.receiver = self;
     v10.super_class = TSPDigest;
@@ -326,25 +326,25 @@ LABEL_8:
     v7 = v6;
     if (v6)
     {
-      CC_SHA1(a3, a4, v6->_digestData.__elems_);
+      CC_SHA1(bytes, length, v6->_digestData.__elems_);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)initFromSHA1Context:(CC_SHA1state_st *)a3
+- (id)initFromSHA1Context:(CC_SHA1state_st *)context
 {
-  v3 = a3;
-  if (a3)
+  selfCopy = context;
+  if (context)
   {
     v7.receiver = self;
     v7.super_class = TSPDigest;
@@ -352,53 +352,53 @@ LABEL_8:
     v5 = v4;
     if (v4)
     {
-      CC_SHA1_Final(v4->_digestData.__elems_, v3);
+      CC_SHA1_Final(v4->_digestData.__elems_, selfCopy);
     }
 
     self = v5;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)initFromNSData:(id)a3
+- (id)initFromNSData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   CC_SHA1_Init(&c);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2769B1D90;
   v9[3] = &unk_27A6E30A0;
   v9[4] = &c;
-  objc_msgSend_enumerateByteRangesUsingBlock_(v4, v5, v9);
+  objc_msgSend_enumerateByteRangesUsingBlock_(dataCopy, v5, v9);
   v7 = objc_msgSend_initFromSHA1Context_(self, v6, &c);
 
   return v7;
 }
 
-- (id)initFromDispatchData:(id)a3
+- (id)initFromDispatchData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   CC_SHA1_Init(&c);
   applier[0] = MEMORY[0x277D85DD0];
   applier[1] = 3221225472;
   applier[2] = sub_2769B1E64;
   applier[3] = &unk_27A6E30C0;
   applier[4] = &c;
-  dispatch_data_apply(v4, applier);
+  dispatch_data_apply(dataCopy, applier);
   v6 = objc_msgSend_initFromSHA1Context_(self, v5, &c);
 
   return v6;
 }
 
-- (id)anonymousIdentifierWithDocumentProperties:(id)a3 passphrase:(id)a4
+- (id)anonymousIdentifierWithDocumentProperties:(id)properties passphrase:(id)passphrase
 {
-  v6 = a4;
-  v9 = objc_msgSend_hashPrivateUUIDWithDigest_(a3, v7, self);
-  if (v6)
+  passphraseCopy = passphrase;
+  v9 = objc_msgSend_hashPrivateUUIDWithDigest_(properties, v7, self);
+  if (passphraseCopy)
   {
-    v10 = objc_msgSend_tsu_UUIDWithNamespaceUUID_name_(MEMORY[0x277CCAD78], v8, v9, v6);
+    v10 = objc_msgSend_tsu_UUIDWithNamespaceUUID_name_(MEMORY[0x277CCAD78], v8, v9, passphraseCopy);
 
     v9 = v10;
   }
@@ -406,13 +406,13 @@ LABEL_8:
   return v9;
 }
 
-- (id)anonymousIdentifierWithContext:(id)a3
+- (id)anonymousIdentifierWithContext:(id)context
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  contextCopy = context;
+  v7 = contextCopy;
+  if (contextCopy)
   {
-    objc_msgSend_anonymousIdentifierForDigest_(v4, v5, self);
+    objc_msgSend_anonymousIdentifierForDigest_(contextCopy, v5, self);
   }
 
   else
@@ -424,7 +424,7 @@ LABEL_8:
   return v8;
 }
 
-- (id)initFromProtobufString:(const void *)a3
+- (id)initFromProtobufString:(const void *)string
 {
   v9.receiver = self;
   v9.super_class = TSPDigest;
@@ -435,7 +435,7 @@ LABEL_8:
     return v5;
   }
 
-  v6 = *(a3 + 23);
+  v6 = *(string + 23);
   if ((v6 & 0x80000000) == 0)
   {
     if (v6 != 20)
@@ -444,15 +444,15 @@ LABEL_8:
     }
 
 LABEL_7:
-    v7 = *a3;
-    *(v4 + 6) = *(a3 + 4);
+    v7 = *string;
+    *(v4 + 6) = *(string + 4);
     *(v4 + 8) = v7;
     return v5;
   }
 
-  if (*(a3 + 1) == 20)
+  if (*(string + 1) == 20)
   {
-    a3 = *a3;
+    string = *string;
     goto LABEL_7;
   }
 

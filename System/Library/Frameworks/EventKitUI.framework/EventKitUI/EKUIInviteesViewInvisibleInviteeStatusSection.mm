@@ -1,15 +1,15 @@
 @interface EKUIInviteesViewInvisibleInviteeStatusSection
-- (BOOL)canEditRow:(id)a3;
-- (id)actionsForRow:(id)a3;
-- (id)cellForIndexPath:(id)a3 inTableView:(id)a4;
-- (id)contextMenuDataForIndexPath:(id)a3 interaction:(id)a4;
+- (BOOL)canEditRow:(id)row;
+- (id)actionsForRow:(id)row;
+- (id)cellForIndexPath:(id)path inTableView:(id)view;
+- (id)contextMenuDataForIndexPath:(id)path interaction:(id)interaction;
 - (id)debugTitle;
-- (id)titleForDeleteConfirmationButtonForRow:(id)a3;
+- (id)titleForDeleteConfirmationButtonForRow:(id)row;
 - (unint64_t)numberOfRows;
-- (void)commitEditingStyle:(int64_t)a3 forRow:(id)a4;
-- (void)reloadAndRegisterReusableCellsWithTableView:(id)a3;
-- (void)selectRow:(id)a3;
-- (void)updateWithEvent:(id)a3 editable:(BOOL)a4 fromDetail:(BOOL)a5;
+- (void)commitEditingStyle:(int64_t)style forRow:(id)row;
+- (void)reloadAndRegisterReusableCellsWithTableView:(id)view;
+- (void)selectRow:(id)row;
+- (void)updateWithEvent:(id)event editable:(BOOL)editable fromDetail:(BOOL)detail;
 @end
 
 @implementation EKUIInviteesViewInvisibleInviteeStatusSection
@@ -23,36 +23,36 @@
 
 - (unint64_t)numberOfRows
 {
-  v3 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participants];
+  participants = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participants];
 
-  if (!v3)
+  if (!participants)
   {
     return 0;
   }
 
-  v4 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participants];
-  v5 = [v4 count];
+  participants2 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participants];
+  v5 = [participants2 count];
 
   return v5;
 }
 
-- (id)cellForIndexPath:(id)a3 inTableView:(id)a4
+- (id)cellForIndexPath:(id)path inTableView:(id)view
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 row];
-  v9 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participants];
-  v10 = [v9 count];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [pathCopy row];
+  participants = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participants];
+  v10 = [participants count];
   if ([(EKUIInviteesViewInvisibleInviteeStatusSection *)self _isValidRow:v8])
   {
-    v11 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self cachedCellReuseIdentifier];
-    v12 = [v7 dequeueReusableCellWithIdentifier:v11 forIndexPath:v6];
+    cachedCellReuseIdentifier = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self cachedCellReuseIdentifier];
+    v12 = [viewCopy dequeueReusableCellWithIdentifier:cachedCellReuseIdentifier forIndexPath:pathCopy];
 
     [(EKUIInviteesViewInviteesCell *)v12 setHideStatus:1];
-    v13 = [v9 objectAtIndex:v8];
-    v14 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self event];
-    [(EKUIInviteesViewInviteesCell *)v12 updateWithParticipantForSorting:v13 hideStatus:CanSeeAttendeeStatuses(v14)];
+    v13 = [participants objectAtIndex:v8];
+    event = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self event];
+    [(EKUIInviteesViewInviteesCell *)v12 updateWithParticipantForSorting:v13 hideStatus:CanSeeAttendeeStatuses(event)];
   }
 
   else
@@ -78,9 +78,9 @@
   return v12;
 }
 
-- (void)reloadAndRegisterReusableCellsWithTableView:(id)a3
+- (void)reloadAndRegisterReusableCellsWithTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_opt_class();
   v6 = objc_alloc(MEMORY[0x1E696AEC0]);
   v7 = NSStringFromClass(v5);
@@ -88,33 +88,33 @@
   v9 = [v6 initWithFormat:@"%@-%@", v7, v8];
   [(EKUIInviteesViewInvisibleInviteeStatusSection *)self setCachedCellReuseIdentifier:v9];
 
-  v10 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self cachedCellReuseIdentifier];
-  [v4 registerClass:v5 forCellReuseIdentifier:v10];
+  cachedCellReuseIdentifier = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self cachedCellReuseIdentifier];
+  [viewCopy registerClass:v5 forCellReuseIdentifier:cachedCellReuseIdentifier];
 
   v11 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self reuseIdentifierVersion]+ 1;
 
   [(EKUIInviteesViewInvisibleInviteeStatusSection *)self setReuseIdentifierVersion:v11];
 }
 
-- (void)selectRow:(id)a3
+- (void)selectRow:(id)row
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 row];
+  rowCopy = row;
+  v5 = [rowCopy row];
   if ([(EKUIInviteesViewInvisibleInviteeStatusSection *)self _isValidRow:v5])
   {
-    v6 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participants];
-    v7 = [v6 objectAtIndex:v5];
+    participants = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participants];
+    v7 = [participants objectAtIndex:v5];
 
-    v8 = [v7 participant];
-    if (v8)
+    participant = [v7 participant];
+    if (participant)
     {
-      v9 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participantTapped];
+      participantTapped = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participantTapped];
 
-      if (v9)
+      if (participantTapped)
       {
-        v10 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participantTapped];
-        (v10)[2](v10, v8);
+        participantTapped2 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participantTapped];
+        (participantTapped2)[2](participantTapped2, participant);
 
 LABEL_12:
         goto LABEL_13;
@@ -127,7 +127,7 @@ LABEL_12:
       }
 
       v14 = 138412290;
-      v15 = v4;
+      v15 = rowCopy;
       v13 = "No 'participant tapped' callback defined.  Will not select row.  Index path: [%@]";
     }
 
@@ -140,7 +140,7 @@ LABEL_12:
       }
 
       v14 = 138412290;
-      v15 = v4;
+      v15 = rowCopy;
       v13 = "Cannot find participant.  Will not select row.  Index path: [%@]";
     }
 
@@ -152,19 +152,19 @@ LABEL_12:
   if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_ERROR))
   {
     v14 = 138412290;
-    v15 = v4;
+    v15 = rowCopy;
     _os_log_impl(&dword_1D3400000, v11, OS_LOG_TYPE_ERROR, "Cannot find row to select.  Will not select row.  Index path: [%@]", &v14, 0xCu);
   }
 
 LABEL_13:
 }
 
-- (BOOL)canEditRow:(id)a3
+- (BOOL)canEditRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   if ([(EKUIInviteesViewInvisibleInviteeStatusSection *)self editable])
   {
-    v5 = -[EKUIInviteesViewInvisibleInviteeStatusSection _isValidRow:](self, "_isValidRow:", [v4 row]);
+    v5 = -[EKUIInviteesViewInvisibleInviteeStatusSection _isValidRow:](self, "_isValidRow:", [rowCopy row]);
   }
 
   else
@@ -175,7 +175,7 @@ LABEL_13:
   return v5;
 }
 
-- (id)titleForDeleteConfirmationButtonForRow:(id)a3
+- (id)titleForDeleteConfirmationButtonForRow:(id)row
 {
   v3 = EventKitUIBundle();
   v4 = [v3 localizedStringForKey:@"Remove invitee - invisible invitee status section" value:@"Remove" table:0];
@@ -183,46 +183,46 @@ LABEL_13:
   return v4;
 }
 
-- (void)commitEditingStyle:(int64_t)a3 forRow:(id)a4
+- (void)commitEditingStyle:(int64_t)style forRow:(id)row
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [v6 row];
-  if (a3 == 1)
+  rowCopy = row;
+  v7 = [rowCopy row];
+  if (style == 1)
   {
     v8 = v7;
     if ([(EKUIInviteesViewInvisibleInviteeStatusSection *)self _isValidRow:v7])
     {
-      v9 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participantRemoved];
+      participantRemoved = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participantRemoved];
 
-      if (v9)
+      if (participantRemoved)
       {
-        v10 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participants];
-        v11 = [v10 objectAtIndex:v8];
+        participants = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participants];
+        v11 = [participants objectAtIndex:v8];
 
-        v12 = [v11 participant];
+        participant = [v11 participant];
         v13 = kEKUILogInviteesHandle;
         if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412546;
-          v28 = v12;
+          v28 = participant;
           v29 = 2112;
-          v30 = v6;
+          v30 = rowCopy;
           _os_log_impl(&dword_1D3400000, v13, OS_LOG_TYPE_DEBUG, "Invoking participant removed callback with participant [%@] and index path [%@]", buf, 0x16u);
         }
 
-        v14 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participantRemoved];
+        participantRemoved2 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participantRemoved];
         v22[0] = MEMORY[0x1E69E9820];
         v22[1] = 3221225472;
         v22[2] = __75__EKUIInviteesViewInvisibleInviteeStatusSection_commitEditingStyle_forRow___block_invoke;
         v22[3] = &unk_1E843EE88;
-        v23 = v12;
-        v24 = v6;
-        v25 = self;
+        v23 = participant;
+        v24 = rowCopy;
+        selfCopy = self;
         v26 = v8;
-        v15 = v14[2];
-        v16 = v12;
-        v15(v14, v16, v24, v22);
+        v15 = participantRemoved2[2];
+        v16 = participant;
+        v15(participantRemoved2, v16, v24, v22);
       }
     }
 
@@ -232,7 +232,7 @@ LABEL_13:
       if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v28 = v6;
+        v28 = rowCopy;
         _os_log_impl(&dword_1D3400000, v21, OS_LOG_TYPE_ERROR, "Received commit for nonexistent row: [%@]", buf, 0xCu);
       }
     }
@@ -245,7 +245,7 @@ LABEL_13:
     {
       v18 = MEMORY[0x1E696AD98];
       v19 = v17;
-      v20 = [v18 numberWithInteger:a3];
+      v20 = [v18 numberWithInteger:style];
       *buf = 138412290;
       v28 = v20;
       _os_log_impl(&dword_1D3400000, v19, OS_LOG_TYPE_ERROR, "Received commit for unrecognized editing style: [%@]", buf, 0xCu);
@@ -272,20 +272,20 @@ void __75__EKUIInviteesViewInvisibleInviteeStatusSection_commitEditingStyle_forR
   [v5 removeObjectAtIndex:*(a1 + 56)];
 }
 
-- (id)actionsForRow:(id)a3
+- (id)actionsForRow:(id)row
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [EKUIInviteesViewSectionCommon deleteRowAction:self forRow:v4];
-  v6 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participants];
-  v7 = [v6 objectAtIndex:{objc_msgSend(v4, "row")}];
+  rowCopy = row;
+  v5 = [EKUIInviteesViewSectionCommon deleteRowAction:self forRow:rowCopy];
+  participants = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participants];
+  v7 = [participants objectAtIndex:{objc_msgSend(rowCopy, "row")}];
 
-  v8 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participantSetRole];
+  participantSetRole = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participantSetRole];
   v9 = MEMORY[0x1E696AC90];
-  v10 = [v4 section];
+  section = [rowCopy section];
 
-  v11 = [v9 indexSetWithIndex:v10];
-  v12 = [EKUIInviteesViewSectionCommon setRoleRowActionWithParticipant:v7 withSetRoleBlock:v8 forSections:v11];
+  v11 = [v9 indexSetWithIndex:section];
+  v12 = [EKUIInviteesViewSectionCommon setRoleRowActionWithParticipant:v7 withSetRoleBlock:participantSetRole forSections:v11];
 
   v15[0] = v5;
   v15[1] = v12;
@@ -294,35 +294,35 @@ void __75__EKUIInviteesViewInvisibleInviteeStatusSection_commitEditingStyle_forR
   return v13;
 }
 
-- (id)contextMenuDataForIndexPath:(id)a3 interaction:(id)a4
+- (id)contextMenuDataForIndexPath:(id)path interaction:(id)interaction
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participants];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
-  v10 = [v9 participant];
+  interactionCopy = interaction;
+  pathCopy = path;
+  participants = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participants];
+  v9 = [participants objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  participant = [v9 participant];
 
   v11 = [EKUIInviteeContextMenuData alloc];
-  v12 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participantSetRole];
-  v13 = [(EKUIInviteeContextMenuData *)v11 initWithDefaultActionsForSection:self indexPath:v7 participant:v10 interaction:v6 participantSetRole:v12];
+  participantSetRole = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self participantSetRole];
+  v13 = [(EKUIInviteeContextMenuData *)v11 initWithDefaultActionsForSection:self indexPath:pathCopy participant:participant interaction:interactionCopy participantSetRole:participantSetRole];
 
   return v13;
 }
 
-- (void)updateWithEvent:(id)a3 editable:(BOOL)a4 fromDetail:(BOOL)a5
+- (void)updateWithEvent:(id)event editable:(BOOL)editable fromDetail:(BOOL)detail
 {
-  v5 = a5;
-  v6 = a4;
+  detailCopy = detail;
+  editableCopy = editable;
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  [(EKUIInviteesViewInvisibleInviteeStatusSection *)self setEvent:v8];
-  if (CanSeeAttendeeStatuses(v8))
+  eventCopy = event;
+  [(EKUIInviteesViewInvisibleInviteeStatusSection *)self setEvent:eventCopy];
+  if (CanSeeAttendeeStatuses(eventCopy))
   {
     v9 = kEKUILogInviteesHandle;
     if (os_log_type_enabled(kEKUILogInviteesHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v29 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1D3400000, v9, OS_LOG_TYPE_DEBUG, "Can see attendee statuses.  Will not analyze attendees for section: [%@]", buf, 0xCu);
     }
 
@@ -332,20 +332,20 @@ void __75__EKUIInviteesViewInvisibleInviteeStatusSection_commitEditingStyle_forR
   else
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v12 = [v8 organizer];
-    v13 = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self event];
-    if (([v13 isExternallyOrganizedInvitation] & 1) == 0 && !-[EKUIInviteesViewInvisibleInviteeStatusSection editable](self, "editable"))
+    organizer = [eventCopy organizer];
+    event = [(EKUIInviteesViewInvisibleInviteeStatusSection *)self event];
+    if (([event isExternallyOrganizedInvitation] & 1) == 0 && !-[EKUIInviteesViewInvisibleInviteeStatusSection editable](self, "editable"))
     {
-      v5 = 0;
+      detailCopy = 0;
     }
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v22 = v8;
-    v14 = [v8 attendees];
-    v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v22 = eventCopy;
+    attendees = [eventCopy attendees];
+    v15 = [attendees countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v15)
     {
       v16 = v15;
@@ -356,18 +356,18 @@ void __75__EKUIInviteesViewInvisibleInviteeStatusSection_commitEditingStyle_forR
         {
           if (*v24 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(attendees);
           }
 
           v19 = *(*(&v23 + 1) + 8 * i);
-          if ([v19 participantType] != 2 && (objc_msgSend(v19, "isEqualToParticipant:", v12) & 1) == 0 && (!v5 || (objc_msgSend(v19, "isNew") & 1) == 0))
+          if ([v19 participantType] != 2 && (objc_msgSend(v19, "isEqualToParticipant:", organizer) & 1) == 0 && (!detailCopy || (objc_msgSend(v19, "isNew") & 1) == 0))
           {
             v20 = [MEMORY[0x1E6966A88] participantForSortingWithEKParticipant:v19];
             [v11 addObject:v20];
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v16 = [attendees countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v16);
@@ -375,11 +375,11 @@ void __75__EKUIInviteesViewInvisibleInviteeStatusSection_commitEditingStyle_forR
 
     v10 = [v11 sortedArrayUsingComparator:&__block_literal_global_28];
 
-    v8 = v22;
-    v6 = v6;
+    eventCopy = v22;
+    editableCopy = editableCopy;
   }
 
-  [(EKUIInviteesViewInvisibleInviteeStatusSection *)self setEditable:v6];
+  [(EKUIInviteesViewInvisibleInviteeStatusSection *)self setEditable:editableCopy];
   v21 = [v10 mutableCopy];
   [(EKUIInviteesViewInvisibleInviteeStatusSection *)self setParticipants:v21];
 }

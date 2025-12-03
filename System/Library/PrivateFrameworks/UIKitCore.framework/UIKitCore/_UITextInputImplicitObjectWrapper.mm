@@ -1,15 +1,15 @@
 @interface _UITextInputImplicitObjectWrapper
-+ (id)wrapperForObject:(id)a3;
++ (id)wrapperForObject:(id)object;
 - (id)weakObject;
 @end
 
 @implementation _UITextInputImplicitObjectWrapper
 
-+ (id)wrapperForObject:(id)a3
++ (id)wrapperForObject:(id)object
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setWeakObject:v4];
+  objectCopy = object;
+  v5 = objc_alloc_init(self);
+  [v5 setWeakObject:objectCopy];
 
   return v5;
 }

@@ -1,29 +1,29 @@
 @interface PBFAmbientEditingCollectionViewController
 - (FBSDisplayConfiguration)displayConfiguration;
 - (PBFAmbientEditingCollectionViewController)init;
-- (PBFAmbientEditingCollectionViewController)initWithCollectionViewLayout:(id)a3;
-- (PBFAmbientEditingCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PBFAmbientEditingCollectionViewController)initWithCollectionViewLayout:(id)layout;
+- (PBFAmbientEditingCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (PBFAmbientEditingCollectionViewControllerDelegate)ambientEditingDelegate;
 - (UIView)transitionOverlayView;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)init:(id)a3;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)init:(id)init;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dismiss;
-- (void)editingSceneViewController:(id)a3 userDidDismissWithAction:(int64_t)a4 updatedConfiguration:(id)a5 updatedConfiguredProperties:(id)a6 completion:(id)a7;
-- (void)editingSceneViewController:(id)a3 wantsRemotePresentationOfViewController:(id)a4 contentScreenRect:(CGRect)a5;
+- (void)editingSceneViewController:(id)controller userDidDismissWithAction:(int64_t)action updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties completion:(id)completion;
+- (void)editingSceneViewController:(id)controller wantsRemotePresentationOfViewController:(id)viewController contentScreenRect:(CGRect)rect;
 - (void)invalidate;
-- (void)pageControlDidChangePage:(id)a3;
-- (void)posterExtensionDataStore:(id)a3 didUpdateConfiguration:(id)a4;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(void *)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setDisplayConfiguration:(id)a3;
-- (void)setTransitionOverlayView:(id)a3;
+- (void)pageControlDidChangePage:(id)page;
+- (void)posterExtensionDataStore:(id)store didUpdateConfiguration:(id)configuration;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(void *)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setDisplayConfiguration:(id)configuration;
+- (void)setTransitionOverlayView:(id)view;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -31,10 +31,10 @@
 
 @implementation PBFAmbientEditingCollectionViewController
 
-- (void)scrollViewDidEndScrollingAnimation:(void *)a3
+- (void)scrollViewDidEndScrollingAnimation:(void *)animation
 {
-  v4 = a3;
-  v5 = a1;
+  animationCopy = animation;
+  selfCopy = self;
   sub_21B6573E8();
 }
 
@@ -43,52 +43,52 @@
   v2 = *(self + OBJC_IVAR___PBFAmbientEditingCollectionViewController__displayConfiguration);
   if (v2)
   {
-    v3 = *(self + OBJC_IVAR___PBFAmbientEditingCollectionViewController__displayConfiguration);
+    mainConfiguration = *(self + OBJC_IVAR___PBFAmbientEditingCollectionViewController__displayConfiguration);
   }
 
   else
   {
     v5 = objc_opt_self();
-    v6 = self;
-    v7 = [v5 pui_sharedDisplayMonitor];
-    v3 = [v7 mainConfiguration];
+    selfCopy = self;
+    pui_sharedDisplayMonitor = [v5 pui_sharedDisplayMonitor];
+    mainConfiguration = [pui_sharedDisplayMonitor mainConfiguration];
 
     v2 = 0;
   }
 
   v8 = v2;
 
-  return v3;
+  return mainConfiguration;
 }
 
-- (void)setDisplayConfiguration:(id)a3
+- (void)setDisplayConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  AmbientEditingCollectionViewController.displayConfiguration.setter(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  AmbientEditingCollectionViewController.displayConfiguration.setter(configurationCopy);
 }
 
 - (PBFAmbientEditingCollectionViewController)init
 {
-  v2 = [objc_opt_self() sharedInstance];
-  v3 = [v2 dataStore];
+  sharedInstance = [objc_opt_self() sharedInstance];
+  dataStore = [sharedInstance dataStore];
 
   v4 = objc_allocWithZone(type metadata accessor for AmbientEditingCollectionViewController());
-  v5 = sub_21B647E3C(v3);
+  v5 = sub_21B647E3C(dataStore);
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v5;
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
   v4 = objc_opt_self();
-  v5 = a3;
-  v6 = [v4 sharedInstance];
-  v7 = [v6 dataStore];
+  initCopy = init;
+  sharedInstance = [v4 sharedInstance];
+  dataStore = [sharedInstance dataStore];
 
   v8 = objc_allocWithZone(type metadata accessor for AmbientEditingCollectionViewController());
-  v9 = sub_21B6484A0(v7, v5);
+  v9 = sub_21B6484A0(dataStore, initCopy);
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v9;
@@ -100,11 +100,11 @@
   v6.super_class = type metadata accessor for AmbientEditingCollectionViewController();
   v2 = v6.receiver;
   [(PBFAmbientEditingCollectionViewController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() secondarySystemBackgroundColor];
+    v4 = view;
+    secondarySystemBackgroundColor = [objc_opt_self() secondarySystemBackgroundColor];
     [v4 setBackgroundColor_];
 
     sub_21B64AEC0();
@@ -128,7 +128,7 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   AmbientEditingCollectionViewController.viewDidLayoutSubviews()();
 }
 
@@ -147,29 +147,29 @@
   return *(self + v3);
 }
 
-- (void)setTransitionOverlayView:(id)a3
+- (void)setTransitionOverlayView:(id)view
 {
   v5 = OBJC_IVAR___PBFAmbientEditingCollectionViewController_transitionOverlayView;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = view;
+  viewCopy = view;
 }
 
 - (void)dismiss
 {
-  v2 = self;
+  selfCopy = self;
   AmbientEditingCollectionViewController.dismiss()();
 }
 
-- (void)pageControlDidChangePage:(id)a3
+- (void)pageControlDidChangePage:(id)page
 {
-  v4 = a3;
-  v5 = self;
-  sub_21B6500A4([v4 currentPage], 1);
+  pageCopy = page;
+  selfCopy = self;
+  sub_21B6500A4([pageCopy currentPage], 1);
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   v4 = OBJC_IVAR___PBFAmbientEditingCollectionViewController_posters;
   swift_beginAccess();
@@ -185,23 +185,23 @@
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = sub_21B6C8A04();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21B6C8994();
-  v10 = a3;
-  v11 = self;
-  v12 = AmbientEditingCollectionViewController.collectionView(_:cellForItemAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = AmbientEditingCollectionViewController.collectionView(_:cellForItemAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v7 = sub_21B6C8A04();
   v8 = *(v7 - 8);
@@ -210,110 +210,110 @@
   v11 = sub_21B6C8DA4();
   v13 = v12;
   sub_21B6C8994();
-  v14 = a3;
-  v15 = self;
-  v16 = AmbientEditingCollectionViewController.collectionView(_:viewForSupplementaryElementOfKind:at:)(v14, v11, v13, v10);
+  viewCopy = view;
+  selfCopy = self;
+  v16 = AmbientEditingCollectionViewController.collectionView(_:viewForSupplementaryElementOfKind:at:)(viewCopy, v11, v13, v10);
 
   (*(v8 + 8))(v10, v7);
 
   return v16;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_21B6C8A04();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21B6C8994();
-  v10 = a3;
-  v11 = self;
-  AmbientEditingCollectionViewController.collectionView(_:didSelectItemAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  AmbientEditingCollectionViewController.collectionView(_:didSelectItemAt:)(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_21B6C8A04();
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21B6C8994();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_21B6569E8(v13);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_21B6569E8(cellCopy);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_21B6C8A04();
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21B6C8994();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_21B656B14(v13);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_21B656B14(cellCopy);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)editingSceneViewController:(id)a3 userDidDismissWithAction:(int64_t)a4 updatedConfiguration:(id)a5 updatedConfiguredProperties:(id)a6 completion:(id)a7
+- (void)editingSceneViewController:(id)controller userDidDismissWithAction:(int64_t)action updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties completion:(id)completion
 {
-  v12 = _Block_copy(a7);
+  v12 = _Block_copy(completion);
   v13 = swift_allocObject();
   *(v13 + 16) = v12;
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = self;
-  AmbientEditingCollectionViewController.editingSceneViewController(_:userDidDismissWith:updatedConfiguration:updatedConfiguredProperties:completion:)(v14, a4, a5, a6, sub_21B657924, v13);
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  propertiesCopy = properties;
+  selfCopy = self;
+  AmbientEditingCollectionViewController.editingSceneViewController(_:userDidDismissWith:updatedConfiguration:updatedConfiguredProperties:completion:)(controllerCopy, action, configuration, properties, sub_21B657924, v13);
 }
 
-- (void)editingSceneViewController:(id)a3 wantsRemotePresentationOfViewController:(id)a4 contentScreenRect:(CGRect)a5
+- (void)editingSceneViewController:(id)controller wantsRemotePresentationOfViewController:(id)viewController contentScreenRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4;
-  v11 = self;
-  sub_21B64EDD8(v10, x, y, width, height);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  sub_21B64EDD8(viewControllerCopy, x, y, width, height);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if ((*(self + OBJC_IVAR___PBFAmbientEditingCollectionViewController_isScrollingOrSettling) & 1) == 0)
   {
-    v5 = a3;
-    v6 = self;
-    sub_21B64FDF8([v5 isScrollAnimating]);
+    scrollCopy = scroll;
+    selfCopy = self;
+    sub_21B64FDF8([scrollCopy isScrollAnimating]);
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v7 = a3;
-  v8 = self;
-  sub_21B657198(&a5->x);
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_21B657198(&offset->x);
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  v7 = self;
-  sub_21B657618(a4);
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_21B657618(decelerate);
 }
 
-- (void)posterExtensionDataStore:(id)a3 didUpdateConfiguration:(id)a4
+- (void)posterExtensionDataStore:(id)store didUpdateConfiguration:(id)configuration
 {
   v6 = swift_allocObject();
-  *(v6 + 16) = a4;
+  *(v6 + 16) = configuration;
   *(v6 + 24) = self;
   v12[4] = sub_21B657C84;
   v12[5] = v6;
@@ -322,10 +322,10 @@
   v12[2] = sub_21B63863C;
   v12[3] = &block_descriptor_161;
   v7 = _Block_copy(v12);
-  v8 = a4;
-  v9 = self;
-  v10 = v8;
-  v11 = v9;
+  configurationCopy = configuration;
+  selfCopy = self;
+  v10 = configurationCopy;
+  v11 = selfCopy;
 
   BSDispatchMain();
 
@@ -337,20 +337,20 @@
   v3 = OBJC_IVAR___PBFAmbientEditingCollectionViewController_transitionOverlayView;
   swift_beginAccess();
   v4 = *(self + v3);
-  v5 = self;
+  selfCopy = self;
   [v4 removeFromSuperview];
   v6 = *(self + v3);
   *(self + v3) = 0;
 }
 
-- (PBFAmbientEditingCollectionViewController)initWithCollectionViewLayout:(id)a3
+- (PBFAmbientEditingCollectionViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (PBFAmbientEditingCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PBFAmbientEditingCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

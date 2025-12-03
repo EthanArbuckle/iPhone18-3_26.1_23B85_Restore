@@ -1,16 +1,16 @@
 @interface TSSStyleMapper
-- (TSSStyleMapper)initWithTargetStylesheet:(id)a3 newStyleDOLCContext:(id)a4;
+- (TSSStyleMapper)initWithTargetStylesheet:(id)stylesheet newStyleDOLCContext:(id)context;
 - (TSSStylesheet)targetStylesheet;
-- (id)_mappedStyleForStyle:(id)a3 depth:(unint64_t)a4;
-- (id)createStyleForStyle:(id)a3 withPropertyMap:(id)a4;
-- (id)mappedStyleForStyle:(id)a3 inThemeStylesheet:(BOOL)a4;
-- (id)pCascadedFindExistingRootlessStyle:(id)a3 propertyMap:(id)a4;
-- (id)pTargetParentForStyle:(id)a3 withParentIdentifier:(id)a4;
+- (id)_mappedStyleForStyle:(id)style depth:(unint64_t)depth;
+- (id)createStyleForStyle:(id)style withPropertyMap:(id)map;
+- (id)mappedStyleForStyle:(id)style inThemeStylesheet:(BOOL)stylesheet;
+- (id)pCascadedFindExistingRootlessStyle:(id)style propertyMap:(id)map;
+- (id)pTargetParentForStyle:(id)style withParentIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)popMappingContext:(id)a3;
-- (void)pushMappingContext:(id)a3;
-- (void)varyInThemeStylesheetForDurationOfBlock:(id)a3;
-- (void)varyInThemeStylesheetIf:(BOOL)a3 forDurationOfBlock:(id)a4;
+- (void)popMappingContext:(id)context;
+- (void)pushMappingContext:(id)context;
+- (void)varyInThemeStylesheetForDurationOfBlock:(id)block;
+- (void)varyInThemeStylesheetIf:(BOOL)if forDurationOfBlock:(id)block;
 @end
 
 @implementation TSSStyleMapper
@@ -22,14 +22,14 @@
   [(TSSStyleMapper *)&v3 dealloc];
 }
 
-- (TSSStyleMapper)initWithTargetStylesheet:(id)a3 newStyleDOLCContext:(id)a4
+- (TSSStyleMapper)initWithTargetStylesheet:(id)stylesheet newStyleDOLCContext:(id)context
 {
   v6 = [(TSSStyleMapper *)self init];
   if (v6)
   {
-    v6->_targetStylesheet = a3;
-    v6->_targetThemeStylesheet = [a3 parent];
-    v6->_dolcContext = a4;
+    v6->_targetStylesheet = stylesheet;
+    v6->_targetThemeStylesheet = [stylesheet parent];
+    v6->_dolcContext = context;
     v6->_forceMatchStyle = 0;
   }
 
@@ -47,7 +47,7 @@
   return *(&self->super.isa + v2);
 }
 
-- (void)pushMappingContext:(id)a3
+- (void)pushMappingContext:(id)context
 {
   mappingContext = self->_mappingContext;
   if (!mappingContext)
@@ -56,10 +56,10 @@
     self->_mappingContext = mappingContext;
   }
 
-  [(NSMutableArray *)mappingContext addObject:a3];
+  [(NSMutableArray *)mappingContext addObject:context];
 }
 
-- (void)popMappingContext:(id)a3
+- (void)popMappingContext:(id)context
 {
   mappingContext = self->_mappingContext;
   if (mappingContext && [(NSMutableArray *)mappingContext count])
@@ -70,9 +70,9 @@
   }
 }
 
-- (id)pCascadedFindExistingRootlessStyle:(id)a3 propertyMap:(id)a4
+- (id)pCascadedFindExistingRootlessStyle:(id)style propertyMap:(id)map
 {
-  result = [(TSSStylesheet *)self->_targetStylesheet firstRootlessStyleOfClass:objc_opt_class() withOverridePropertyMap:a4];
+  result = [(TSSStylesheet *)self->_targetStylesheet firstRootlessStyleOfClass:objc_opt_class() withOverridePropertyMap:map];
   if (!result)
   {
     targetThemeStylesheet = self->_targetThemeStylesheet;
@@ -80,7 +80,7 @@
     {
       v8 = objc_opt_class();
 
-      return [(TSSStylesheet *)targetThemeStylesheet firstRootlessStyleOfClass:v8 withOverridePropertyMap:a4];
+      return [(TSSStylesheet *)targetThemeStylesheet firstRootlessStyleOfClass:v8 withOverridePropertyMap:map];
     }
 
     else
@@ -92,31 +92,31 @@
   return result;
 }
 
-- (id)createStyleForStyle:(id)a3 withPropertyMap:(id)a4
+- (id)createStyleForStyle:(id)style withPropertyMap:(id)map
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithContext:-[TSPObject context](self->_targetStylesheet name:"context") overridePropertyMap:0 isVariation:{a4, 0}];
+  v5 = [objc_alloc(objc_opt_class()) initWithContext:-[TSPObject context](self->_targetStylesheet name:"context") overridePropertyMap:0 isVariation:{map, 0}];
   [(TSSStylesheet *)self->_targetStylesheet addStyle:v5];
 
   return v5;
 }
 
-- (id)pTargetParentForStyle:(id)a3 withParentIdentifier:(id)a4
+- (id)pTargetParentForStyle:(id)style withParentIdentifier:(id)identifier
 {
-  result = [(TSSStylesheet *)self->_targetStylesheet cascadedStyleWithIdentifier:a4];
+  result = [(TSSStylesheet *)self->_targetStylesheet cascadedStyleWithIdentifier:identifier];
   if (!result)
   {
-    if ([String(a4) isEqualToString:@"imported"])
+    if ([String(identifier) isEqualToString:@"imported"])
     {
       return 0;
     }
 
     else
     {
-      result = String(a4);
+      result = String(identifier);
       if (result)
       {
         v7 = result;
-        result = String(a4);
+        result = String(identifier);
         if (result)
         {
           targetStylesheet = self->_targetStylesheet;
@@ -131,10 +131,10 @@
   return result;
 }
 
-- (id)_mappedStyleForStyle:(id)a3 depth:(unint64_t)a4
+- (id)_mappedStyleForStyle:(id)style depth:(unint64_t)depth
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!style)
   {
     return 0;
   }
@@ -146,30 +146,30 @@
   }
 
   self->_styleMap = styleMap;
-  v8 = [a3 stylesheet];
-  if (v8 == self->_targetStylesheet && !self->_varyInThemeStylesheet || v8 == self->_targetThemeStylesheet)
+  stylesheet = [style stylesheet];
+  if (stylesheet == self->_targetStylesheet && !self->_varyInThemeStylesheet || stylesheet == self->_targetThemeStylesheet)
   {
-    return a3;
+    return style;
   }
 
-  v9 = [(TSURetainedPointerKeyDictionary *)self->_styleMap objectForKeyedSubscript:a3];
+  v9 = [(TSURetainedPointerKeyDictionary *)self->_styleMap objectForKeyedSubscript:style];
   if (!v9)
   {
-    v10 = [TSSStylePromise promiseForStyle:a3];
-    [(TSURetainedPointerKeyDictionary *)self->_styleMap setObject:v10 forKeyedSubscript:a3];
+    v10 = [TSSStylePromise promiseForStyle:style];
+    [(TSURetainedPointerKeyDictionary *)self->_styleMap setObject:v10 forKeyedSubscript:style];
     v11 = objc_opt_new();
-    v12 = [a3 propertyMap];
+    propertyMap = [style propertyMap];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __45__TSSStyleMapper__mappedStyleForStyle_depth___block_invoke;
     v27[3] = &unk_279D481A8;
     v27[4] = self;
     v27[5] = v11;
-    v27[6] = v12;
-    v27[7] = a4;
-    [v12 enumeratePropertiesAndObjectsUsingBlock:v27];
-    v13 = [objc_msgSend(a3 "rootIdentifiedAncestor")];
-    if (v13 && (v14 = [(TSSStyleMapper *)self pTargetParentForStyle:a3 withParentIdentifier:v13]) != 0)
+    v27[6] = propertyMap;
+    v27[7] = depth;
+    [propertyMap enumeratePropertiesAndObjectsUsingBlock:v27];
+    v13 = [objc_msgSend(style "rootIdentifiedAncestor")];
+    if (v13 && (v14 = [(TSSStyleMapper *)self pTargetParentForStyle:style withParentIdentifier:v13]) != 0)
     {
       v9 = v14;
       if (self->_forceMatchStyle)
@@ -184,19 +184,19 @@
       }
 
       v16 = *(&self->super.isa + v15);
-      [v12 filterWithProperties:{objc_msgSend(objc_opt_class(), "properties")}];
-      v17 = [v16 variationOfStyle:v9 propertyMap:v12];
+      [propertyMap filterWithProperties:{objc_msgSend(objc_opt_class(), "properties")}];
+      v17 = [v16 variationOfStyle:v9 propertyMap:propertyMap];
     }
 
     else
     {
-      v9 = [(TSSStyleMapper *)self pCascadedFindExistingRootlessStyle:a3 propertyMap:v12];
+      v9 = [(TSSStyleMapper *)self pCascadedFindExistingRootlessStyle:style propertyMap:propertyMap];
       if (v9)
       {
         goto LABEL_19;
       }
 
-      v17 = [(TSSStyleMapper *)self createStyleForStyle:a3 withPropertyMap:v12];
+      v17 = [(TSSStyleMapper *)self createStyleForStyle:style withPropertyMap:propertyMap];
     }
 
     v9 = v17;
@@ -208,7 +208,7 @@ LABEL_27:
     }
 
 LABEL_19:
-    [(TSURetainedPointerKeyDictionary *)self->_styleMap setObject:v9 forKeyedSubscript:a3];
+    [(TSURetainedPointerKeyDictionary *)self->_styleMap setObject:v9 forKeyedSubscript:style];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
@@ -268,7 +268,7 @@ uint64_t __45__TSSStyleMapper__mappedStyleForStyle_depth___block_invoke(uint64_t
   return result;
 }
 
-- (id)mappedStyleForStyle:(id)a3 inThemeStylesheet:(BOOL)a4
+- (id)mappedStyleForStyle:(id)style inThemeStylesheet:(BOOL)stylesheet
 {
   v7 = 0;
   v8 = &v7;
@@ -276,13 +276,13 @@ uint64_t __45__TSSStyleMapper__mappedStyleForStyle_depth___block_invoke(uint64_t
   v10 = __Block_byref_object_copy__9;
   v11 = __Block_byref_object_dispose__9;
   v12 = 0;
-  if (a4)
+  if (stylesheet)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __56__TSSStyleMapper_mappedStyleForStyle_inThemeStylesheet___block_invoke;
     v6[3] = &unk_279D481D0;
-    v6[5] = a3;
+    v6[5] = style;
     v6[6] = &v7;
     v6[4] = self;
     [(TSSStyleMapper *)self varyInThemeStylesheetForDurationOfBlock:v6];
@@ -291,7 +291,7 @@ uint64_t __45__TSSStyleMapper__mappedStyleForStyle_depth___block_invoke(uint64_t
 
   else
   {
-    v4 = [(TSSStyleMapper *)self mappedStyleForStyle:a3];
+    v4 = [(TSSStyleMapper *)self mappedStyleForStyle:style];
     v8[5] = v4;
   }
 
@@ -306,35 +306,35 @@ uint64_t __56__TSSStyleMapper_mappedStyleForStyle_inThemeStylesheet___block_invo
   return result;
 }
 
-- (void)varyInThemeStylesheetForDurationOfBlock:(id)a3
+- (void)varyInThemeStylesheetForDurationOfBlock:(id)block
 {
   if (self->_varyInThemeStylesheet)
   {
-    v4 = *(a3 + 2);
+    v4 = *(block + 2);
 
-    v4(a3);
+    v4(block);
   }
 
   else
   {
     self->_varyInThemeStylesheet = 1;
     [(TSSStylesheet *)self->_targetThemeStylesheet setIsLocked:0];
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
     [(TSSStylesheet *)self->_targetThemeStylesheet setIsLocked:1];
     self->_varyInThemeStylesheet = 0;
   }
 }
 
-- (void)varyInThemeStylesheetIf:(BOOL)a3 forDurationOfBlock:(id)a4
+- (void)varyInThemeStylesheetIf:(BOOL)if forDurationOfBlock:(id)block
 {
-  if (a3)
+  if (if)
   {
-    [(TSSStyleMapper *)self varyInThemeStylesheetForDurationOfBlock:a4];
+    [(TSSStyleMapper *)self varyInThemeStylesheetForDurationOfBlock:block];
   }
 
   else
   {
-    (*(a4 + 2))(a4);
+    (*(block + 2))(block);
   }
 }
 

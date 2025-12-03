@@ -2,17 +2,17 @@
 + (INSiriAuthorizationStatus)siriAuthorizationStatus;
 + (NSString)siriLanguageCode;
 + (id)sharedPreferences;
-+ (void)_verifyProcessCanDonateIntentWithName:(id)a3 completion:(id)a4;
++ (void)_verifyProcessCanDonateIntentWithName:(id)name completion:(id)completion;
 + (void)requestSiriAuthorization:(void *)handler;
 - (INPreferences)init;
 - (id)_init;
 - (id)_siriLanguageCode;
 - (int64_t)_siriAuthorizationStatus;
 - (void)_THROW_EXCEPTION_FOR_PROCESS_MISSING_ENTITLEMENT_com_apple_developer_siri;
-- (void)_updateWithExtensionContext:(id)a3;
-- (void)_verifyProcessCanDonateIntentWithName:(id)a3 completion:(id)a4;
+- (void)_updateWithExtensionContext:(id)context;
+- (void)_verifyProcessCanDonateIntentWithName:(id)name completion:(id)completion;
 - (void)assertThisProcessHasSiriEntitlement;
-- (void)requestSiriAuthorization:(id)a3;
+- (void)requestSiriAuthorization:(id)authorization;
 @end
 
 @implementation INPreferences
@@ -77,20 +77,20 @@ uint64_t __52__INPreferences_assertThisProcessHasSiriEntitlement__block_invoke(u
   }
 }
 
-- (void)_verifyProcessCanDonateIntentWithName:(id)a3 completion:(id)a4
+- (void)_verifyProcessCanDonateIntentWithName:(id)name completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
     assistantdConnection = self->_assistantdConnection;
-    v8 = a3;
-    v9 = [(_INVocabularyConnection *)assistantdConnection settingsService];
+    nameCopy = name;
+    settingsService = [(_INVocabularyConnection *)assistantdConnection settingsService];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __66__INPreferences__verifyProcessCanDonateIntentWithName_completion___block_invoke;
     v10[3] = &unk_1E727FA90;
-    v11 = v6;
-    [v9 verifyProcessCanDonateIntentWithName:v8 completion:v10];
+    v11 = completionCopy;
+    [settingsService verifyProcessCanDonateIntentWithName:nameCopy completion:v10];
   }
 }
 
@@ -142,10 +142,10 @@ void __66__INPreferences__verifyProcessCanDonateIntentWithName_completion___bloc
 
       v5 = v4;
       _Block_object_dispose(&v24, 8);
-      v6 = [v4 sharedPreferences];
-      v7 = [v6 languageCode];
+      sharedPreferences = [v4 sharedPreferences];
+      languageCode = [sharedPreferences languageCode];
       v8 = v18[5];
-      v18[5] = v7;
+      v18[5] = languageCode;
     }
 
     else
@@ -153,18 +153,18 @@ void __66__INPreferences__verifyProcessCanDonateIntentWithName_completion___bloc
       [(INPreferences *)self assertThisProcessHasSiriEntitlement];
       v9 = dispatch_group_create();
       dispatch_group_enter(v9);
-      v10 = [(_INVocabularyConnection *)self->_assistantdConnection settingsService];
+      settingsService = [(_INVocabularyConnection *)self->_assistantdConnection settingsService];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __34__INPreferences__siriLanguageCode__block_invoke;
       v14[3] = &unk_1E727FA68;
       v16 = &v17;
-      v6 = v9;
-      v15 = v6;
-      [v10 fetchCurrentSiriLanguageCode:v14];
+      sharedPreferences = v9;
+      v15 = sharedPreferences;
+      [settingsService fetchCurrentSiriLanguageCode:v14];
 
       v11 = dispatch_time(0, 5000000000);
-      dispatch_group_wait(v6, v11);
+      dispatch_group_wait(sharedPreferences, v11);
       v8 = v15;
     }
 
@@ -184,26 +184,26 @@ void __34__INPreferences__siriLanguageCode__block_invoke(uint64_t a1, void *a2)
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)requestSiriAuthorization:(id)a3
+- (void)requestSiriAuthorization:(id)authorization
 {
-  v4 = a3;
-  if (v4)
+  authorizationCopy = authorization;
+  if (authorizationCopy)
   {
     if (+[_INSiriAuthorizationManager _isSiriAuthorizationRestricted])
     {
-      v4[2](v4, 1);
+      authorizationCopy[2](authorizationCopy, 1);
     }
 
     else
     {
       [(INPreferences *)self assertThisProcessHasSiriEntitlement];
-      v5 = [(_INVocabularyConnection *)self->_assistantdConnection settingsService];
+      settingsService = [(_INVocabularyConnection *)self->_assistantdConnection settingsService];
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
       v6[2] = __42__INPreferences_requestSiriAuthorization___block_invoke;
       v6[3] = &unk_1E727FA40;
-      v7 = v4;
-      [v5 requestSiriAuthorization:v6];
+      v7 = authorizationCopy;
+      [settingsService requestSiriAuthorization:v6];
     }
   }
 }
@@ -240,7 +240,7 @@ void __42__INPreferences_requestSiriAuthorization___block_invoke(uint64_t a1, ui
     [(INPreferences *)self assertThisProcessHasSiriEntitlement];
     v4 = dispatch_group_create();
     dispatch_group_enter(v4);
-    v5 = [(_INVocabularyConnection *)self->_assistantdConnection settingsService];
+    settingsService = [(_INVocabularyConnection *)self->_assistantdConnection settingsService];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __41__INPreferences__siriAuthorizationStatus__block_invoke;
@@ -248,7 +248,7 @@ void __42__INPreferences_requestSiriAuthorization___block_invoke(uint64_t a1, ui
     v11 = &v12;
     v6 = v4;
     v10 = v6;
-    [v5 fetchSiriAuthorization:v9];
+    [settingsService fetchSiriAuthorization:v9];
 
     v7 = dispatch_time(0, 5000000000);
     dispatch_group_wait(v6, v7);
@@ -266,15 +266,15 @@ void __42__INPreferences_requestSiriAuthorization___block_invoke(uint64_t a1, ui
   objc_exception_throw(v2);
 }
 
-- (void)_updateWithExtensionContext:(id)a3
+- (void)_updateWithExtensionContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a3 inputItems];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  inputItems = [context inputItems];
+  v5 = [inputItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -285,11 +285,11 @@ void __42__INPreferences_requestSiriAuthorization___block_invoke(uint64_t a1, ui
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(inputItems);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) userInfo];
-        v10 = [v9 objectForKey:@"Session Language"];
+        userInfo = [*(*(&v12 + 1) + 8 * i) userInfo];
+        v10 = [userInfo objectForKey:@"Session Language"];
 
         if (v10)
         {
@@ -299,7 +299,7 @@ void __42__INPreferences_requestSiriAuthorization___block_invoke(uint64_t a1, ui
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [inputItems countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -316,40 +316,40 @@ LABEL_11:
 
 - (INPreferences)init
 {
-  v3 = [objc_opt_class() sharedPreferences];
+  sharedPreferences = [objc_opt_class() sharedPreferences];
 
-  return v3;
+  return sharedPreferences;
 }
 
-+ (void)_verifyProcessCanDonateIntentWithName:(id)a3 completion:(id)a4
++ (void)_verifyProcessCanDonateIntentWithName:(id)name completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 sharedPreferences];
-  [v8 _verifyProcessCanDonateIntentWithName:v7 completion:v6];
+  completionCopy = completion;
+  nameCopy = name;
+  sharedPreferences = [self sharedPreferences];
+  [sharedPreferences _verifyProcessCanDonateIntentWithName:nameCopy completion:completionCopy];
 }
 
 + (NSString)siriLanguageCode
 {
-  v2 = [a1 sharedPreferences];
-  v3 = [v2 _siriLanguageCode];
+  sharedPreferences = [self sharedPreferences];
+  _siriLanguageCode = [sharedPreferences _siriLanguageCode];
 
-  return v3;
+  return _siriLanguageCode;
 }
 
 + (void)requestSiriAuthorization:(void *)handler
 {
   v4 = handler;
-  v5 = [a1 sharedPreferences];
-  [v5 requestSiriAuthorization:v4];
+  sharedPreferences = [self sharedPreferences];
+  [sharedPreferences requestSiriAuthorization:v4];
 }
 
 + (INSiriAuthorizationStatus)siriAuthorizationStatus
 {
-  v2 = [a1 sharedPreferences];
-  v3 = [v2 _siriAuthorizationStatus];
+  sharedPreferences = [self sharedPreferences];
+  _siriAuthorizationStatus = [sharedPreferences _siriAuthorizationStatus];
 
-  return v3;
+  return _siriAuthorizationStatus;
 }
 
 @end

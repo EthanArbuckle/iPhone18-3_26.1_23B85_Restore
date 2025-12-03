@@ -2,32 +2,32 @@
 - (BOOL)becomeFirstResponder;
 - (BOOL)handleBackTab;
 - (BOOL)handleTab;
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (PDFKitTextView)initWithAnnotation:(id)a3 pdfPageView:(id)a4 pdfView:(id)a5;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (PDFKitTextView)initWithAnnotation:(id)annotation pdfPageView:(id)view pdfView:(id)pdfView;
 - (id)annotation;
-- (void)_adjustScrollViewForKeyboardNotification:(id)a3;
-- (void)_applyScale:(double)a3 toView:(id)a4;
-- (void)_commitTextFromTextView:(id)a3;
-- (void)_setAttributedString:(id)a3;
-- (void)_setFont:(id)a3;
-- (void)_setString:(id)a3;
+- (void)_adjustScrollViewForKeyboardNotification:(id)notification;
+- (void)_applyScale:(double)scale toView:(id)view;
+- (void)_commitTextFromTextView:(id)view;
+- (void)_setAttributedString:(id)string;
+- (void)_setFont:(id)font;
+- (void)_setString:(id)string;
 - (void)_setup;
 - (void)_setupTopLevelView;
 - (void)_textWidgetDone;
 - (void)_updateScaleFactor;
-- (void)adjustScrollViewToAccomodateKeyboardStartingFrame:(double)a3 endingFrame:(double)a4 annotationFrame:(double)a5 withAnimationDuration:(CGFloat)a6 curve:(CGFloat)a7;
-- (void)autoFillDidInsertWithExplicitInvocationMode:(BOOL)a3;
-- (void)insertTextSuggestion:(id)a3 completionHandler:(id)a4;
-- (void)textViewDidChange:(id)a3;
+- (void)adjustScrollViewToAccomodateKeyboardStartingFrame:(double)frame endingFrame:(double)endingFrame annotationFrame:(double)annotationFrame withAnimationDuration:(CGFloat)duration curve:(CGFloat)curve;
+- (void)autoFillDidInsertWithExplicitInvocationMode:(BOOL)mode;
+- (void)insertTextSuggestion:(id)suggestion completionHandler:(id)handler;
+- (void)textViewDidChange:(id)change;
 @end
 
 @implementation PDFKitTextView
 
-- (PDFKitTextView)initWithAnnotation:(id)a3 pdfPageView:(id)a4 pdfView:(id)a5
+- (PDFKitTextView)initWithAnnotation:(id)annotation pdfPageView:(id)view pdfView:(id)pdfView
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  annotationCopy = annotation;
+  viewCopy = view;
+  pdfViewCopy = pdfView;
   v35.receiver = self;
   v35.super_class = PDFKitTextView;
   v11 = [(PDFKitTextView *)&v35 init];
@@ -37,10 +37,10 @@
     v13 = v11->_private;
     v11->_private = v12;
 
-    objc_storeWeak(&v11->_private->annotation, v8);
-    objc_storeWeak(&v11->_private->pdfPageView, v9);
-    objc_storeWeak(&v11->_private->pdfView, v10);
-    [v8 bounds];
+    objc_storeWeak(&v11->_private->annotation, annotationCopy);
+    objc_storeWeak(&v11->_private->pdfPageView, viewCopy);
+    objc_storeWeak(&v11->_private->pdfView, pdfViewCopy);
+    [annotationCopy bounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -57,20 +57,20 @@
     v26->textView = v25;
 
     [(PDFTextWidgetTextView *)v11->_private->textView setDelegate:v11];
-    v34 = v8;
-    v28 = v9;
-    v29 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v29 addObserver:v11 selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+    v34 = annotationCopy;
+    v28 = viewCopy;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
 
-    v30 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v30 addObserver:v11 selector:sel__keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v11 selector:sel__keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
 
-    v31 = [MEMORY[0x1E696AD88] defaultCenter];
-    v32 = [v10 documentScrollView];
-    [v31 addObserver:v11 selector:sel__didChangeZoomFactor_ name:@"PDFScrollViewDidChangeZoomFactor" object:v32];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    documentScrollView = [pdfViewCopy documentScrollView];
+    [defaultCenter3 addObserver:v11 selector:sel__didChangeZoomFactor_ name:@"PDFScrollViewDidChangeZoomFactor" object:documentScrollView];
 
-    v9 = v28;
-    v8 = v34;
+    viewCopy = v28;
+    annotationCopy = v34;
 
     [(PDFKitTextView *)v11 _setup];
   }
@@ -87,8 +87,8 @@
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(PDFTextWidgetTextView *)self->_private->textView becomeFirstResponder];
-  if (v3)
+  becomeFirstResponder = [(PDFTextWidgetTextView *)self->_private->textView becomeFirstResponder];
+  if (becomeFirstResponder)
   {
     WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
     v5 = objc_loadWeakRetained(&self->_private->annotation);
@@ -109,21 +109,21 @@
     }
   }
 
-  return v3;
+  return becomeFirstResponder;
 }
 
-- (void)insertTextSuggestion:(id)a3 completionHandler:(id)a4
+- (void)insertTextSuggestion:(id)suggestion completionHandler:(id)handler
 {
   v5 = self->_private;
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  suggestionCopy = suggestion;
   WeakRetained = objc_loadWeakRetained(&v5->pdfPageView);
-  [WeakRetained populateFormFieldsWithAutoFillSuggestion:v7 completionHandler:v6];
+  [WeakRetained populateFormFieldsWithAutoFillSuggestion:suggestionCopy completionHandler:handlerCopy];
 }
 
-- (void)autoFillDidInsertWithExplicitInvocationMode:(BOOL)a3
+- (void)autoFillDidInsertWithExplicitInvocationMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }
@@ -137,36 +137,36 @@
   [WeakRetained setAutofillEntryType:v3];
 }
 
-- (void)_commitTextFromTextView:(id)a3
+- (void)_commitTextFromTextView:(id)view
 {
-  v40 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_private->annotation);
   v5 = [WeakRetained valueForAnnotationKey:@"/FT"];
   v6 = v5;
   if (WeakRetained && [v5 isEqualToString:@"/Tx"])
   {
-    v7 = [v40 text];
-    if ([v7 length])
+    text = [viewCopy text];
+    if ([text length])
     {
-      v8 = [v40 endOfDocument];
-      v9 = [v40 positionFromPosition:v8 offset:-1];
+      endOfDocument = [viewCopy endOfDocument];
+      v9 = [viewCopy positionFromPosition:endOfDocument offset:-1];
 
-      v10 = [v40 endOfDocument];
-      v11 = [v40 textRangeFromPosition:v9 toPosition:v10];
+      endOfDocument2 = [viewCopy endOfDocument];
+      v11 = [viewCopy textRangeFromPosition:v9 toPosition:endOfDocument2];
 
-      [v40 firstRectForRange:v11];
+      [viewCopy firstRectForRange:v11];
       v13 = v12;
       v15 = v14;
       v17 = v16;
       v19 = v18;
-      v20 = [v40 textInputView];
-      [v40 convertRect:v20 fromView:{v13, v15, v17, v19}];
+      textInputView = [viewCopy textInputView];
+      [viewCopy convertRect:textInputView fromView:{v13, v15, v17, v19}];
       v22 = v21;
       v24 = v23;
       v26 = v25;
       v28 = v27;
 
-      [v40 bounds];
+      [viewCopy bounds];
       v43.origin.x = v29;
       v43.origin.y = v30;
       v43.size.width = v31;
@@ -177,56 +177,56 @@
       v42.size.height = v28;
       if (!CGRectIntersectsRect(v42, v43))
       {
-        v33 = [WeakRetained widgetStringValue];
+        widgetStringValue = [WeakRetained widgetStringValue];
 
-        v7 = v33;
+        text = widgetStringValue;
       }
     }
 
-    v34 = [v40 selectedRange];
+    selectedRange = [viewCopy selectedRange];
     v36 = v35;
     v37 = objc_loadWeakRetained(&self->_private->pdfPageView);
-    [v37 setStringValue:v7 onTextWidgetAnnotation:WeakRetained withTextView:v40];
+    [v37 setStringValue:text onTextWidgetAnnotation:WeakRetained withTextView:viewCopy];
 
-    if (v34 != [v40 selectedRange])
+    if (selectedRange != [viewCopy selectedRange])
     {
-      [v40 setSelectedRange:{v34 - 1, v36}];
+      [viewCopy setSelectedRange:{selectedRange - 1, v36}];
     }
 
-    v38 = [v40 text];
-    v39 = [v38 length] != 0;
+    text2 = [viewCopy text];
+    v39 = [text2 length] != 0;
 
     [WeakRetained setAutofillEntryType:v39];
   }
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
   v6 = self->_private;
-  v7 = a5;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&v6->annotation);
-  v9 = [WeakRetained isMultiline];
+  isMultiline = [WeakRetained isMultiline];
 
-  v10 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v11 = [v7 rangeOfCharacterFromSet:v10];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v11 = [textCopy rangeOfCharacterFromSet:newlineCharacterSet];
 
-  if (!((v11 == 0x7FFFFFFFFFFFFFFFLL) | v9 & 1))
+  if (!((v11 == 0x7FFFFFFFFFFFFFFFLL) | isMultiline & 1))
   {
     [(PDFKitTextView *)self _textWidgetDone];
   }
 
-  return (v11 == 0x7FFFFFFFFFFFFFFFLL) | v9 & 1;
+  return (v11 == 0x7FFFFFFFFFFFFFFFLL) | isMultiline & 1;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v8 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
-  v5 = [v8 markedTextRange];
-  v6 = v5;
-  if (v5)
+  markedTextRange = [changeCopy markedTextRange];
+  v6 = markedTextRange;
+  if (markedTextRange)
   {
-    v7 = [v5 isEmpty];
+    isEmpty = [markedTextRange isEmpty];
     if (!WeakRetained)
     {
       goto LABEL_7;
@@ -235,16 +235,16 @@
 
   else
   {
-    v7 = 1;
+    isEmpty = 1;
     if (!WeakRetained)
     {
       goto LABEL_7;
     }
   }
 
-  if (([WeakRetained formFillingUpdatesAnnotationOnEveryTextChange] & v7) == 1)
+  if (([WeakRetained formFillingUpdatesAnnotationOnEveryTextChange] & isEmpty) == 1)
   {
-    [(PDFKitTextView *)self _commitTextFromTextView:v8];
+    [(PDFKitTextView *)self _commitTextFromTextView:changeCopy];
   }
 
 LABEL_7:
@@ -267,37 +267,37 @@ LABEL_7:
   [v6 removeControlForAnnotation:v5];
 }
 
-- (void)_adjustScrollViewForKeyboardNotification:(id)a3
+- (void)_adjustScrollViewForKeyboardNotification:(id)notification
 {
-  v65 = a3;
-  v4 = [(PDFTextWidgetTextView *)self->_private->textView isFirstResponder];
-  v5 = v65;
-  if (v4)
+  notificationCopy = notification;
+  isFirstResponder = [(PDFTextWidgetTextView *)self->_private->textView isFirstResponder];
+  v5 = notificationCopy;
+  if (isFirstResponder)
   {
-    v6 = [v65 userInfo];
-    v7 = [v6 valueForKey:*MEMORY[0x1E69DDF98]];
+    userInfo = [notificationCopy userInfo];
+    v7 = [userInfo valueForKey:*MEMORY[0x1E69DDF98]];
     [v7 CGRectValue];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
-    v16 = [v65 userInfo];
-    v17 = [v16 valueForKey:*MEMORY[0x1E69DDFA0]];
+    userInfo2 = [notificationCopy userInfo];
+    v17 = [userInfo2 valueForKey:*MEMORY[0x1E69DDFA0]];
     [v17 CGRectValue];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v64 = v24;
 
-    v25 = [v65 userInfo];
-    v26 = [v25 valueForKey:*MEMORY[0x1E69DDF40]];
+    userInfo3 = [notificationCopy userInfo];
+    v26 = [userInfo3 valueForKey:*MEMORY[0x1E69DDF40]];
     [v26 floatValue];
     v28 = v27;
 
-    v29 = [v65 userInfo];
-    v30 = [v29 valueForKey:*MEMORY[0x1E69DDF38]];
-    v31 = [v30 unsignedIntegerValue];
+    userInfo4 = [notificationCopy userInfo];
+    v30 = [userInfo4 valueForKey:*MEMORY[0x1E69DDF38]];
+    unsignedIntegerValue = [v30 unsignedIntegerValue];
 
     WeakRetained = objc_loadWeakRetained(&self->_private->pdfView);
     v33 = objc_loadWeakRetained(&self->_private->annotation);
@@ -317,30 +317,30 @@ LABEL_7:
       v60 = v23;
       v44 = v13;
       v46 = v45;
-      v47 = [v34 page];
-      [WeakRetained convertRect:v47 fromPage:{v37, v40, v43, v46}];
+      page = [v34 page];
+      [WeakRetained convertRect:page fromPage:{v37, v40, v43, v46}];
       v49 = v48;
       v51 = v50;
       v53 = v52;
       v55 = v54;
 
       [WeakRetained convertRect:0 toView:{v49, v51, v53, v55}];
-      [(PDFKitTextView *)self adjustScrollViewToAccomodateKeyboardStartingFrame:v31 endingFrame:v38 annotationFrame:v41 withAnimationDuration:v44 curve:v63, v62, v61, v60, v64, v56, v57, v58, v59, *&v35];
+      [(PDFKitTextView *)self adjustScrollViewToAccomodateKeyboardStartingFrame:unsignedIntegerValue endingFrame:v38 annotationFrame:v41 withAnimationDuration:v44 curve:v63, v62, v61, v60, v64, v56, v57, v58, v59, *&v35];
     }
 
-    v5 = v65;
+    v5 = notificationCopy;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](isFirstResponder, v5);
 }
 
-- (void)adjustScrollViewToAccomodateKeyboardStartingFrame:(double)a3 endingFrame:(double)a4 annotationFrame:(double)a5 withAnimationDuration:(CGFloat)a6 curve:(CGFloat)a7
+- (void)adjustScrollViewToAccomodateKeyboardStartingFrame:(double)frame endingFrame:(double)endingFrame annotationFrame:(double)annotationFrame withAnimationDuration:(CGFloat)duration curve:(CGFloat)curve
 {
-  WeakRetained = objc_loadWeakRetained((*(a1 + 8) + 24));
-  v26 = [WeakRetained documentScrollView];
-  v27 = [v26 superview];
-  [v26 frame];
-  [v27 convertRect:0 toView:?];
+  WeakRetained = objc_loadWeakRetained((*(self + 8) + 24));
+  documentScrollView = [WeakRetained documentScrollView];
+  superview = [documentScrollView superview];
+  [documentScrollView frame];
+  [superview convertRect:0 toView:?];
   v29 = v28;
   v31 = v30;
   v33 = v32;
@@ -350,19 +350,19 @@ LABEL_7:
   v89.origin.y = v31;
   v89.size.width = v33;
   v89.size.height = v35;
-  v72 = -(a7 - CGRectGetMaxY(v89));
+  v72 = -(curve - CGRectGetMaxY(v89));
   v68 = *MEMORY[0x1E695F050];
   v71 = *(MEMORY[0x1E695F050] + 8);
   v70 = *(MEMORY[0x1E695F050] + 16);
   v69 = *(MEMORY[0x1E695F050] + 24);
-  [v26 bounds];
-  [v26 convertRect:0 toView:?];
+  [documentScrollView bounds];
+  [documentScrollView convertRect:0 toView:?];
   x = v90.origin.x;
   y = v90.origin.y;
   width = v90.size.width;
   height = v90.size.height;
-  v95.origin.x = a6;
-  v95.origin.y = a7;
+  v95.origin.x = duration;
+  v95.origin.y = curve;
   v95.size.width = a8;
   v95.size.height = a9;
   if (CGRectIntersectsRect(v90, v95))
@@ -371,13 +371,13 @@ LABEL_7:
     v91.origin.y = y;
     v91.size.width = width;
     v91.size.height = height;
-    v96.origin.x = a6;
-    v96.origin.y = a7;
+    v96.origin.x = duration;
+    v96.origin.y = curve;
     v96.size.width = a8;
     v96.size.height = a9;
     v92 = CGRectIntersection(v91, v96);
     v65 = height - (CGRectGetHeight(v92) + 0.0);
-    [v26 convertRect:0 fromView:{a12, a13, a14, a15}];
+    [documentScrollView convertRect:0 fromView:{a12, a13, a14, a15}];
     rect2a = v40;
     v42 = v41;
     v44 = v43;
@@ -420,9 +420,9 @@ LABEL_7:
     v51 = v68;
   }
 
-  [v26 contentInset];
+  [documentScrollView contentInset];
   v53 = v52;
-  [v26 _contentScrollInset];
+  [documentScrollView _contentScrollInset];
   v55 = v54;
   v57 = v56;
   v59 = v58;
@@ -444,7 +444,7 @@ LABEL_7:
   {
     if (v60 <= 0.0)
     {
-      [v26 _setContentScrollInset:{v55, v57, v60, v59}];
+      [documentScrollView _setContentScrollInset:{v55, v57, v60, v59}];
       goto LABEL_21;
     }
 
@@ -453,7 +453,7 @@ LABEL_7:
     block[1] = 3221225472;
     block[2] = __124__PDFKitTextView_adjustScrollViewToAccomodateKeyboardStartingFrame_endingFrame_annotationFrame_withAnimationDuration_curve___block_invoke_2;
     block[3] = &unk_1E8151850;
-    v74 = v26;
+    v74 = documentScrollView;
     v75 = v55;
     v76 = v57;
     v77 = v60;
@@ -479,7 +479,7 @@ LABEL_7:
     v79[1] = 3221225472;
     v79[2] = __124__PDFKitTextView_adjustScrollViewToAccomodateKeyboardStartingFrame_endingFrame_annotationFrame_withAnimationDuration_curve___block_invoke;
     v79[3] = &unk_1E8151828;
-    v80 = v26;
+    v80 = documentScrollView;
     v81 = v55;
     v82 = v57;
     v83 = v60;
@@ -563,33 +563,33 @@ uint64_t __124__PDFKitTextView_adjustScrollViewToAccomodateKeyboardStartingFrame
   return v7;
 }
 
-- (void)_setString:(id)a3
+- (void)_setString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stringCopy = string;
+  v5 = stringCopy;
+  if (stringCopy)
   {
-    v6 = v4;
-    v4 = [v4 length];
+    v6 = stringCopy;
+    stringCopy = [stringCopy length];
     v5 = v6;
-    if (v4)
+    if (stringCopy)
     {
-      v4 = [(PDFTextWidgetTextView *)self->_private->textView setText:v6];
+      stringCopy = [(PDFTextWidgetTextView *)self->_private->textView setText:v6];
       v5 = v6;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](stringCopy, v5);
 }
 
-- (void)_setFont:(id)a3
+- (void)_setFont:(id)font
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->annotation);
-  v4 = [WeakRetained scaledFontForTextWidget];
-  v5 = v4;
-  if (v4)
+  scaledFontForTextWidget = [WeakRetained scaledFontForTextWidget];
+  v5 = scaledFontForTextWidget;
+  if (scaledFontForTextWidget)
   {
-    [v4 pointSize];
+    [scaledFontForTextWidget pointSize];
     if (v6 > 0.0)
     {
       [(PDFTextWidgetTextView *)self->_private->textView setFont:v5];
@@ -608,42 +608,42 @@ uint64_t __124__PDFKitTextView_adjustScrollViewToAccomodateKeyboardStartingFrame
   }
 
   v66 = self->_private->textView;
-  v5 = [v4 widgetStringValue];
-  v6 = [v4 font];
-  v7 = [v4 fontColor];
-  v8 = [v4 alignment];
-  v9 = [v4 backgroundColor];
-  v69 = [v4 border];
+  widgetStringValue = [v4 widgetStringValue];
+  font = [v4 font];
+  fontColor = [v4 fontColor];
+  alignment = [v4 alignment];
+  backgroundColor = [v4 backgroundColor];
+  border = [v4 border];
   v10 = [v4 valueForAnnotationKey:@"/MK"];
-  v68 = [v10 borderColor];
+  borderColor = [v10 borderColor];
 
-  v11 = [v4 shouldComb];
-  v12 = [v4 isAppearanceStreamEmpty];
-  [(PDFKitTextView *)self _setString:v5];
-  v70 = v6;
-  [(PDFKitTextView *)self _setFont:v6];
-  v64 = v7;
-  [(PDFKitTextView *)self _setFontColor:v7];
-  [(PDFKitTextView *)self _setAlignment:v8];
+  shouldComb = [v4 shouldComb];
+  isAppearanceStreamEmpty = [v4 isAppearanceStreamEmpty];
+  [(PDFKitTextView *)self _setString:widgetStringValue];
+  v70 = font;
+  [(PDFKitTextView *)self _setFont:font];
+  v64 = fontColor;
+  [(PDFKitTextView *)self _setFontColor:fontColor];
+  [(PDFKitTextView *)self _setAlignment:alignment];
   v13 = self->_private;
   textView = v13->textView;
-  if (v12)
+  if (isAppearanceStreamEmpty)
   {
-    if (v9)
+    if (backgroundColor)
     {
-      [(PDFTextWidgetTextView *)v13->textView setBackgroundColor:v9];
+      [(PDFTextWidgetTextView *)v13->textView setBackgroundColor:backgroundColor];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E69DC888] clearColor];
-      [(PDFTextWidgetTextView *)textView setBackgroundColor:v17];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(PDFTextWidgetTextView *)textView setBackgroundColor:clearColor];
     }
 
-    if (!v69 || ([v69 lineWidth], v18 <= 0.0))
+    if (!border || ([border lineWidth], v18 <= 0.0))
     {
       v16 = -200.0;
-      if (v11)
+      if (shouldComb)
       {
         goto LABEL_16;
       }
@@ -651,41 +651,41 @@ uint64_t __124__PDFKitTextView_adjustScrollViewToAccomodateKeyboardStartingFrame
       goto LABEL_18;
     }
 
-    v19 = [(PDFTextWidgetTextView *)self->_private->textView layer];
-    if (v68)
+    layer = [(PDFTextWidgetTextView *)self->_private->textView layer];
+    if (borderColor)
     {
-      [v19 setBorderColor:{objc_msgSend(v68, "CGColor")}];
+      [layer setBorderColor:{objc_msgSend(borderColor, "CGColor")}];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E69DC888] blackColor];
-      [v19 setBorderColor:{objc_msgSend(v20, "CGColor")}];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      [layer setBorderColor:{objc_msgSend(blackColor, "CGColor")}];
     }
 
-    v15 = [(PDFTextWidgetTextView *)self->_private->textView layer];
-    [v69 lineWidth];
-    [v15 setBorderWidth:?];
+    layer2 = [(PDFTextWidgetTextView *)self->_private->textView layer];
+    [border lineWidth];
+    [layer2 setBorderWidth:?];
     v16 = -200.0;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E69DC888] clearColor];
-    [(PDFTextWidgetTextView *)textView setBackgroundColor:v15];
+    layer2 = [MEMORY[0x1E69DC888] clearColor];
+    [(PDFTextWidgetTextView *)textView setBackgroundColor:layer2];
     v16 = 0.0;
   }
 
-  if (v11)
+  if (shouldComb)
   {
 LABEL_16:
     [(PDFTextWidgetTextView *)self->_private->textView setAllowsEditingTextAttributes:1];
-    v21 = [(PDFTextWidgetTextView *)self->_private->textView textContainer];
-    [v21 setLineBreakMode:2];
+    textContainer = [(PDFTextWidgetTextView *)self->_private->textView textContainer];
+    [textContainer setLineBreakMode:2];
 
-    if (v5)
+    if (widgetStringValue)
     {
-      [(PDFKitTextView *)self _setAttributedString:v5];
+      [(PDFKitTextView *)self _setAttributedString:widgetStringValue];
     }
   }
 
@@ -693,8 +693,8 @@ LABEL_18:
   +[PDFAnnotationDrawing textInset];
   v23 = v22;
   v67 = WeakRetained;
-  v65 = v5;
-  v62 = v9;
+  v65 = widgetStringValue;
+  v62 = backgroundColor;
   if ([v4 isMultiline])
   {
     v24 = self->_private->textView;
@@ -706,9 +706,9 @@ LABEL_18:
   else
   {
     v28 = @"Wj";
-    if (v5)
+    if (widgetStringValue)
     {
-      v28 = v5;
+      v28 = widgetStringValue;
     }
 
     v29 = v28;
@@ -729,8 +729,8 @@ LABEL_18:
 
   [(PDFTextWidgetTextView *)v24 setTextContainerInset:v25, v26, v27, v23, v62];
   v37 = self->_private->textView;
-  v38 = [v4 autoFillTextContentType];
-  [(PDFTextWidgetTextView *)v37 setTextContentType:v38];
+  autoFillTextContentType = [v4 autoFillTextContentType];
+  [(PDFTextWidgetTextView *)v37 setTextContentType:autoFillTextContentType];
 
   v39 = objc_alloc(MEMORY[0x1E69DC708]);
   v40 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.up"];
@@ -750,8 +750,8 @@ LABEL_18:
 
   v73 = v48;
   v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v73 count:1];
-  v50 = [(PDFTextWidgetTextView *)self->_private->textView inputAssistantItem];
-  [v50 setLeadingBarButtonGroups:v49];
+  inputAssistantItem = [(PDFTextWidgetTextView *)self->_private->textView inputAssistantItem];
+  [inputAssistantItem setLeadingBarButtonGroups:v49];
 
   if ([v4 isMultiline])
   {
@@ -766,8 +766,8 @@ LABEL_18:
 
     v71 = v56;
     v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v71 count:1];
-    v58 = [(PDFTextWidgetTextView *)self->_private->textView inputAssistantItem];
-    [v58 setTrailingBarButtonGroups:v57];
+    inputAssistantItem2 = [(PDFTextWidgetTextView *)self->_private->textView inputAssistantItem];
+    [inputAssistantItem2 setTrailingBarButtonGroups:v57];
   }
 
   else
@@ -783,11 +783,11 @@ LABEL_18:
     [(PDFTextWidgetTextView *)self->_private->textView setReturnKeyType:9];
   }
 
-  v60 = [(PDFTextWidgetTextView *)self->_private->textView layer];
-  [v60 setZPosition:v16];
+  layer3 = [(PDFTextWidgetTextView *)self->_private->textView layer];
+  [layer3 setZPosition:v16];
 
-  v61 = [(PDFTextWidgetTextView *)self->_private->textView layer];
-  [v61 setDrawsAsynchronously:1];
+  layer4 = [(PDFTextWidgetTextView *)self->_private->textView layer];
+  [layer4 setDrawsAsynchronously:1];
 
   [v4 setControl:self];
   WeakRetained = v67;
@@ -822,45 +822,45 @@ LABEL_31:
   v8->topLevelView = v4;
 }
 
-- (void)_setAttributedString:(id)a3
+- (void)_setAttributedString:(id)string
 {
   v27[1] = *MEMORY[0x1E69E9840];
   v4 = self->_private;
-  v5 = a3;
+  stringCopy = string;
   WeakRetained = objc_loadWeakRetained(&v4->annotation);
-  v7 = [WeakRetained font];
+  font = [WeakRetained font];
   v8 = [WeakRetained valueForAnnotationKey:@"/MaxLen"];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
 
-  if (!v7)
+  if (!font)
   {
     v10 = MEMORY[0x1E69DB878];
     [(PDFTextWidgetTextView *)self->_private->textView frame];
-    v7 = [v10 systemFontOfSize:v11 + -2.0];
+    font = [v10 systemFontOfSize:v11 + -2.0];
   }
 
-  v12 = v9;
+  v12 = integerValue;
   v26 = *MEMORY[0x1E69DB648];
   v13 = v26;
-  v27[0] = v7;
+  v27[0] = font;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-  [v5 sizeWithAttributes:v14];
+  [stringCopy sizeWithAttributes:v14];
   v16 = v15;
 
-  v17 = [v5 length];
+  v17 = [stringCopy length];
   [WeakRetained bounds];
   v19 = (v18 + -v16 / v17 * v12) / v12;
-  v20 = [v5 length];
-  v21 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v5];
+  v20 = [stringCopy length];
+  v21 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:stringCopy];
 
   v22 = *MEMORY[0x1E69DB660];
   v23 = [MEMORY[0x1E696AD98] numberWithDouble:v19];
   [v21 addAttribute:v22 value:v23 range:{0, v20}];
 
   [v21 addAttribute:*MEMORY[0x1E69DB668] value:&unk_1F4184228 range:{0, v20}];
-  [v21 addAttribute:v13 value:v7 range:{0, v20}];
-  v24 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v25 = [v24 mutableCopy];
+  [v21 addAttribute:v13 value:font range:{0, v20}];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v25 = [defaultParagraphStyle mutableCopy];
 
   [v25 setLineBreakMode:2];
   [v21 addAttribute:*MEMORY[0x1E69DB688] value:v25 range:{0, v20}];
@@ -878,17 +878,17 @@ LABEL_31:
   [(PDFKitTextView *)self _applyScale:topLevelView toView:v5];
 }
 
-- (void)_applyScale:(double)a3 toView:(id)a4
+- (void)_applyScale:(double)scale toView:(id)view
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  [v6 setContentScaleFactor:a3];
+  viewCopy = view;
+  [viewCopy setContentScaleFactor:scale];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [v6 subviews];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subviews = [viewCopy subviews];
+  v8 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -900,14 +900,14 @@ LABEL_31:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subviews);
         }
 
-        [(PDFKitTextView *)self _applyScale:*(*(&v12 + 1) + 8 * v11++) toView:a3];
+        [(PDFKitTextView *)self _applyScale:*(*(&v12 + 1) + 8 * v11++) toView:scale];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);

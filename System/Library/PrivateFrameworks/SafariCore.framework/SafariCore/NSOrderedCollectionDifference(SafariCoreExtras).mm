@@ -8,13 +8,13 @@
 - (id)safari_removalIndexes
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a1 removals];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  removals = [self removals];
+  v4 = [removals countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -25,23 +25,23 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(removals);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         if ([v8 associatedIndex] == 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v2 addIndex:{objc_msgSend(v8, "index")}];
+          [indexSet addIndex:{objc_msgSend(v8, "index")}];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [removals countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [v2 copy];
+  v9 = [indexSet copy];
   v10 = *MEMORY[0x1E69E9840];
 
   return v9;
@@ -50,13 +50,13 @@
 - (id)safari_insertionIndexes
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a1 insertions];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  insertions = [self insertions];
+  v4 = [insertions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -67,23 +67,23 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(insertions);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         if ([v8 associatedIndex] == 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v2 addIndex:{objc_msgSend(v8, "index")}];
+          [indexSet addIndex:{objc_msgSend(v8, "index")}];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [insertions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [v2 copy];
+  v9 = [indexSet copy];
   v10 = *MEMORY[0x1E69E9840];
 
   return v9;

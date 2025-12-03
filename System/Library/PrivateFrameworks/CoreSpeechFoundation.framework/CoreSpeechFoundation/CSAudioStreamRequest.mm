@@ -1,13 +1,13 @@
 @interface CSAudioStreamRequest
-+ (id)defaultRequestWithContext:(id)a3;
-+ (id)requestForLpcmRecordSettingsWithContext:(id)a3;
-+ (id)requestForOpusRecordSettingsWithContext:(id)a3;
-+ (id)requestForSpeexRecordSettingsWithContext:(id)a3;
-- (CSAudioStreamRequest)initWithXPCObject:(id)a3;
++ (id)defaultRequestWithContext:(id)context;
++ (id)requestForLpcmRecordSettingsWithContext:(id)context;
++ (id)requestForOpusRecordSettingsWithContext:(id)context;
++ (id)requestForSpeexRecordSettingsWithContext:(id)context;
+- (CSAudioStreamRequest)initWithXPCObject:(id)object;
 - (OS_xpc_object)xpcObject;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initTandemWithRequest:(id)a3;
+- (id)initTandemWithRequest:(id)request;
 @end
 
 @implementation CSAudioStreamRequest
@@ -123,8 +123,8 @@
   recordContext = self->_recordContext;
   if (recordContext)
   {
-    v5 = [(CSAudioRecordContext *)recordContext xpcObject];
-    xpc_dictionary_set_value(v3, "recordContext", v5);
+    xpcObject = [(CSAudioRecordContext *)recordContext xpcObject];
+    xpc_dictionary_set_value(v3, "recordContext", xpcObject);
   }
 
   for (i = 12; i != -1; --i)
@@ -136,7 +136,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CSAudioStreamRequest);
   [(CSAudioStreamRequest *)v4 setRequiresHistoricalBuffer:self->_requiresHistoricalBuffer];
@@ -156,28 +156,28 @@
   return v4;
 }
 
-- (CSAudioStreamRequest)initWithXPCObject:(id)a3
+- (CSAudioStreamRequest)initWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v10.receiver = self;
   v10.super_class = CSAudioStreamRequest;
   v5 = [(CSAudioStreamRequest *)&v10 init];
   if (v5)
   {
-    v5->_requiresHistoricalBuffer = xpc_dictionary_get_BOOL(v4, "requiresHistoricalBuffer");
-    v5->_useCustomizedRecordSettings = xpc_dictionary_get_BOOL(v4, "useCustomizedRecordSettings");
-    v5->_audioFormat = xpc_dictionary_get_int64(v4, "audioFormat");
-    v5->_sampleRate = xpc_dictionary_get_double(v4, "sampleRate");
-    v5->_lpcmBitDepth = xpc_dictionary_get_int64(v4, "lpcmBitDepth");
-    v5->_lpcmIsFloat = xpc_dictionary_get_BOOL(v4, "lpcmIsFloat");
-    v5->_numberOfChannels = xpc_dictionary_get_int64(v4, "NumberOfChannels");
-    v5->_encoderBitRate = xpc_dictionary_get_int64(v4, "encoderBitRate");
-    v5->_clientIdentity = xpc_dictionary_get_uint64(v4, "audioClientIdentity");
-    v5->_requestSkipClientMonitorUpdate = xpc_dictionary_get_BOOL(v4, "requestSkipClientMonitorUpdate");
-    v5->_requestRecordModeLock = xpc_dictionary_get_BOOL(v4, "requestRecordModeLock");
-    v5->_requestListeningMicIndicatorLock = xpc_dictionary_get_BOOL(v4, "requestListeningMicIndicatorLock");
-    v5->_requestExclaveAudio = xpc_dictionary_get_BOOL(v4, "requestExclaveAudio");
-    v6 = xpc_dictionary_get_value(v4, "recordContext");
+    v5->_requiresHistoricalBuffer = xpc_dictionary_get_BOOL(objectCopy, "requiresHistoricalBuffer");
+    v5->_useCustomizedRecordSettings = xpc_dictionary_get_BOOL(objectCopy, "useCustomizedRecordSettings");
+    v5->_audioFormat = xpc_dictionary_get_int64(objectCopy, "audioFormat");
+    v5->_sampleRate = xpc_dictionary_get_double(objectCopy, "sampleRate");
+    v5->_lpcmBitDepth = xpc_dictionary_get_int64(objectCopy, "lpcmBitDepth");
+    v5->_lpcmIsFloat = xpc_dictionary_get_BOOL(objectCopy, "lpcmIsFloat");
+    v5->_numberOfChannels = xpc_dictionary_get_int64(objectCopy, "NumberOfChannels");
+    v5->_encoderBitRate = xpc_dictionary_get_int64(objectCopy, "encoderBitRate");
+    v5->_clientIdentity = xpc_dictionary_get_uint64(objectCopy, "audioClientIdentity");
+    v5->_requestSkipClientMonitorUpdate = xpc_dictionary_get_BOOL(objectCopy, "requestSkipClientMonitorUpdate");
+    v5->_requestRecordModeLock = xpc_dictionary_get_BOOL(objectCopy, "requestRecordModeLock");
+    v5->_requestListeningMicIndicatorLock = xpc_dictionary_get_BOOL(objectCopy, "requestListeningMicIndicatorLock");
+    v5->_requestExclaveAudio = xpc_dictionary_get_BOOL(objectCopy, "requestExclaveAudio");
+    v6 = xpc_dictionary_get_value(objectCopy, "recordContext");
     if (v6)
     {
       v7 = [[CSAudioRecordContext alloc] initWithXPCObject:v6];
@@ -189,32 +189,32 @@
   return v5;
 }
 
-- (id)initTandemWithRequest:(id)a3
+- (id)initTandemWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(CSAudioStreamRequest);
-  v6 = [v4 recordContext];
-  [(CSAudioStreamRequest *)v5 setRecordContext:v6];
+  recordContext = [requestCopy recordContext];
+  [(CSAudioStreamRequest *)v5 setRecordContext:recordContext];
 
-  -[CSAudioStreamRequest setRequiresHistoricalBuffer:](v5, "setRequiresHistoricalBuffer:", [v4 requiresHistoricalBuffer]);
-  -[CSAudioStreamRequest setUseCustomizedRecordSettings:](v5, "setUseCustomizedRecordSettings:", [v4 useCustomizedRecordSettings]);
-  -[CSAudioStreamRequest setAudioFormat:](v5, "setAudioFormat:", [v4 audioFormat]);
-  [v4 sampleRate];
+  -[CSAudioStreamRequest setRequiresHistoricalBuffer:](v5, "setRequiresHistoricalBuffer:", [requestCopy requiresHistoricalBuffer]);
+  -[CSAudioStreamRequest setUseCustomizedRecordSettings:](v5, "setUseCustomizedRecordSettings:", [requestCopy useCustomizedRecordSettings]);
+  -[CSAudioStreamRequest setAudioFormat:](v5, "setAudioFormat:", [requestCopy audioFormat]);
+  [requestCopy sampleRate];
   [(CSAudioStreamRequest *)v5 setSampleRate:?];
-  -[CSAudioStreamRequest setLpcmBitDepth:](v5, "setLpcmBitDepth:", [v4 lpcmBitDepth]);
-  -[CSAudioStreamRequest setLpcmIsFloat:](v5, "setLpcmIsFloat:", [v4 lpcmIsFloat]);
-  -[CSAudioStreamRequest setNumberOfChannels:](v5, "setNumberOfChannels:", [v4 numberOfChannels]);
-  -[CSAudioStreamRequest setEncoderBitRate:](v5, "setEncoderBitRate:", [v4 encoderBitRate]);
-  v7 = [v4 requestExclaveAudio];
+  -[CSAudioStreamRequest setLpcmBitDepth:](v5, "setLpcmBitDepth:", [requestCopy lpcmBitDepth]);
+  -[CSAudioStreamRequest setLpcmIsFloat:](v5, "setLpcmIsFloat:", [requestCopy lpcmIsFloat]);
+  -[CSAudioStreamRequest setNumberOfChannels:](v5, "setNumberOfChannels:", [requestCopy numberOfChannels]);
+  -[CSAudioStreamRequest setEncoderBitRate:](v5, "setEncoderBitRate:", [requestCopy encoderBitRate]);
+  requestExclaveAudio = [requestCopy requestExclaveAudio];
 
-  [(CSAudioStreamRequest *)v5 setRequestExclaveAudio:v7];
+  [(CSAudioStreamRequest *)v5 setRequestExclaveAudio:requestExclaveAudio];
   return v5;
 }
 
-+ (id)requestForSpeexRecordSettingsWithContext:(id)a3
++ (id)requestForSpeexRecordSettingsWithContext:(id)context
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   v4 = CSLogCategoryAudio;
   if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_DEFAULT))
   {
@@ -230,7 +230,7 @@
   +[CSConfig inputRecordingSampleRate];
   [(CSAudioStreamRequest *)v5 setSampleRate:v6];
   [(CSAudioStreamRequest *)v5 setNumberOfChannels:1];
-  v7 = [v3 copy];
+  v7 = [contextCopy copy];
   [(CSAudioStreamRequest *)v5 setRecordContext:v7];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -238,10 +238,10 @@
   return v5;
 }
 
-+ (id)requestForOpusRecordSettingsWithContext:(id)a3
++ (id)requestForOpusRecordSettingsWithContext:(id)context
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   v4 = CSLogCategoryAudio;
   if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_DEFAULT))
   {
@@ -258,7 +258,7 @@
   [(CSAudioStreamRequest *)v5 setLpcmBitDepth:+[CSConfig inputRecordingSampleBitDepth]];
   [(CSAudioStreamRequest *)v5 setLpcmIsFloat:0];
   [(CSAudioStreamRequest *)v5 setNumberOfChannels:1];
-  v7 = [v3 copy];
+  v7 = [contextCopy copy];
   [(CSAudioStreamRequest *)v5 setRecordContext:v7];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -266,10 +266,10 @@
   return v5;
 }
 
-+ (id)requestForLpcmRecordSettingsWithContext:(id)a3
++ (id)requestForLpcmRecordSettingsWithContext:(id)context
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   v4 = CSLogCategoryAudio;
   if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_DEFAULT))
   {
@@ -286,7 +286,7 @@
   [(CSAudioStreamRequest *)v5 setLpcmBitDepth:+[CSConfig inputRecordingSampleBitDepth]];
   [(CSAudioStreamRequest *)v5 setLpcmIsFloat:+[CSConfig inputRecordingIsFloat]];
   [(CSAudioStreamRequest *)v5 setNumberOfChannels:+[CSConfig inputRecordingNumberOfChannels]];
-  v7 = [v3 copy];
+  v7 = [contextCopy copy];
   [(CSAudioStreamRequest *)v5 setRecordContext:v7];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -294,10 +294,10 @@
   return v5;
 }
 
-+ (id)defaultRequestWithContext:(id)a3
++ (id)defaultRequestWithContext:(id)context
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   v4 = CSLogCategoryAudio;
   if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_DEFAULT))
   {
@@ -321,7 +321,7 @@
   [(CSAudioStreamRequest *)v5 setNumberOfChannels:+[CSConfig inputRecordingNumberOfChannels]];
   if ((v6 & 1) == 0)
   {
-    v8 = [v3 copy];
+    v8 = [contextCopy copy];
     [(CSAudioStreamRequest *)v5 setRecordContext:v8];
   }
 

@@ -1,43 +1,43 @@
 @interface _UITextLayoutCanvasView
 - (BOOL)_supportsLocationForPositionInViewport;
-- (BOOL)textViewportLayoutController:(id)a3 addRenderingSurface:(id)a4 group:(int64_t)a5 placement:(int64_t)a6;
-- (CGRect)frameForAnchoredTextAttachment:(id)a3 associatedLayoutFragment:(id)a4;
-- (CGRect)textViewportLayoutController:(id)a3 presentationLayoutFragmentFrameForTextLayoutFragment:(id)a4 proposedOrigin:(CGPoint)a5;
-- (CGRect)viewportBoundsForTextViewportLayoutController:(id)a3;
+- (BOOL)textViewportLayoutController:(id)controller addRenderingSurface:(id)surface group:(int64_t)group placement:(int64_t)placement;
+- (CGRect)frameForAnchoredTextAttachment:(id)attachment associatedLayoutFragment:(id)fragment;
+- (CGRect)textViewportLayoutController:(id)controller presentationLayoutFragmentFrameForTextLayoutFragment:(id)fragment proposedOrigin:(CGPoint)origin;
+- (CGRect)viewportBoundsForTextViewportLayoutController:(id)controller;
 - (NSCustomTextRendering)customRenderController;
 - (_UITextCanvasContext)context;
-- (_UITextLayoutCanvasView)initWithTextLayoutManager:(id)a3 textContainer:(id)a4;
+- (_UITextLayoutCanvasView)initWithTextLayoutManager:(id)manager textContainer:(id)container;
 - (id)_internalTextLayoutController;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)locationForPositionInViewport:(CGPoint)a3 offset:(CGSize *)a4;
-- (id)textRangeForBounds:(CGRect)a3 layoutIfNeeded:(BOOL)a4;
-- (id)textViewportLayoutController:(id)a3 renderingSurfaceForTextLayoutFragment:(id)a4;
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4;
-- (void)_performViewportLayout:(BOOL)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)locationForPositionInViewport:(CGPoint)viewport offset:(CGSize *)offset;
+- (id)textRangeForBounds:(CGRect)bounds layoutIfNeeded:(BOOL)needed;
+- (id)textViewportLayoutController:(id)controller renderingSurfaceForTextLayoutFragment:(id)fragment;
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor;
+- (void)_performViewportLayout:(BOOL)layout;
 - (void)_removeUnusedElementViews;
 - (void)_traitsChanged;
-- (void)_updateContentsScaleForCustomRenderController:(double)a3;
-- (void)_updateRenderingSurfaceViewsForTextRange:(id)a3 inTextView:(id)a4 bounds:(CGRect)a5;
-- (void)_updateTraitsForCustomTextRenderer:(id)a3;
+- (void)_updateContentsScaleForCustomRenderController:(double)controller;
+- (void)_updateRenderingSurfaceViewsForTextRange:(id)range inTextView:(id)view bounds:(CGRect)bounds;
+- (void)_updateTraitsForCustomTextRenderer:(id)renderer;
 - (void)_viewportDidLayout;
 - (void)_viewportWillLayout;
 - (void)configureCustomTextRenderer;
 - (void)dealloc;
-- (void)drawTextInRect:(CGRect)a3;
+- (void)drawTextInRect:(CGRect)rect;
 - (void)flushElementViews;
-- (void)invalidateTemporaryAttributesInRange:(id)a3;
-- (void)isScrollingChangedTo:(BOOL)a3;
+- (void)invalidateTemporaryAttributesInRange:(id)range;
+- (void)isScrollingChangedTo:(BOOL)to;
 - (void)layoutSubviews;
 - (void)observeEnclosingScrollView;
 - (void)requestHoverEffectsUpdate;
 - (void)setNeedsDisplay;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
 - (void)setNeedsLayout;
-- (void)setSelectionContainerView:(id)a3;
-- (void)setTextEmphasisBackgroundView:(id)a3 withTextView:(id)a4;
-- (void)textViewportLayoutController:(id)a3 configureRenderingSurfaceForTextLayoutFragment:(id)a4;
-- (void)textViewportLayoutControllerDidLayout:(id)a3;
-- (void)textViewportLayoutControllerWillLayout:(id)a3;
+- (void)setSelectionContainerView:(id)view;
+- (void)setTextEmphasisBackgroundView:(id)view withTextView:(id)textView;
+- (void)textViewportLayoutController:(id)controller configureRenderingSurfaceForTextLayoutFragment:(id)fragment;
+- (void)textViewportLayoutControllerDidLayout:(id)layout;
+- (void)textViewportLayoutControllerWillLayout:(id)layout;
 - (void)updateContentSizeIfNeeded;
 @end
 
@@ -56,13 +56,13 @@
   v6.receiver = self;
   v6.super_class = _UITextLayoutCanvasView;
   [(UIView *)&v6 setNeedsLayout];
-  v3 = [(UIView *)self->_textEmphasisBackgroundView superview];
-  v4 = v3;
-  if (v3 == self)
+  superview = [(UIView *)self->_textEmphasisBackgroundView superview];
+  v4 = superview;
+  if (superview == self)
   {
-    v5 = [(UIView *)self->_textEmphasisBackgroundView isHidden];
+    isHidden = [(UIView *)self->_textEmphasisBackgroundView isHidden];
 
-    if (!v5)
+    if (!isHidden)
     {
       [(UIView *)self->_textEmphasisBackgroundView setNeedsDisplay];
     }
@@ -79,19 +79,19 @@
   [(_UITextLayoutCanvasView *)self _performViewportLayout:1];
   if (self->_hoverEffectsLayer)
   {
-    v3 = [(UIView *)self layer];
-    [v3 bounds];
+    layer = [(UIView *)self layer];
+    [layer bounds];
     [(_UITextLayoutCanvasViewHoverEffectContainerLayer *)self->_hoverEffectsLayer setFrame:?];
   }
 
-  v4 = [(_UITextLayoutCanvasView *)self customRenderController];
-  v5 = v4;
-  if (v4)
+  customRenderController = [(_UITextLayoutCanvasView *)self customRenderController];
+  v5 = customRenderController;
+  if (customRenderController)
   {
-    [v4 contentsScale];
+    [customRenderController contentsScale];
     v7 = v6;
-    v8 = [(UIView *)self traitCollection];
-    [v8 displayScale];
+    traitCollection = [(UIView *)self traitCollection];
+    [traitCollection displayScale];
     v10 = v9;
 
     if (v7 != v10)
@@ -104,8 +104,8 @@
           v13 = v12;
           [v5 contentsScale];
           v15 = v14;
-          v16 = [(UIView *)self traitCollection];
-          [v16 displayScale];
+          traitCollection2 = [(UIView *)self traitCollection];
+          [traitCollection2 displayScale];
           v18 = 134349570;
           v19 = v15;
           v20 = 2050;
@@ -116,8 +116,8 @@
         }
       }
 
-      v11 = [(UIView *)self traitCollection];
-      [v11 displayScale];
+      traitCollection3 = [(UIView *)self traitCollection];
+      [traitCollection3 displayScale];
       [(_UITextLayoutCanvasView *)self _updateContentsScaleForCustomRenderController:?];
     }
   }
@@ -143,8 +143,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(NSMapTable *)self->_textViewportViews keyEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  keyEnumerator = [(NSMapTable *)self->_textViewportViews keyEnumerator];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -156,22 +156,22 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         [(NSMutableSet *)self->_viewportElementsToRemove addObject:*(*(&v11 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 
   [(_UITextLayoutCanvasView *)self configureCustomTextRenderer];
-  v10 = [(_UITextLayoutCanvasView *)self customRenderController];
-  [v10 beginLayout];
+  customRenderController = [(_UITextLayoutCanvasView *)self customRenderController];
+  [customRenderController beginLayout];
 }
 
 - (_UITextCanvasContext)context
@@ -189,17 +189,17 @@
   self->_oldClientAuxiliaryViews = 0;
 
   [(_UITextLayoutCanvasView *)self _removeUnusedElementViews];
-  v4 = [(_UITextLayoutCanvasView *)self customRenderController];
-  v5 = v4;
-  if (v4)
+  customRenderController = [(_UITextLayoutCanvasView *)self customRenderController];
+  v5 = customRenderController;
+  if (customRenderController)
   {
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __45___UITextLayoutCanvasView__viewportDidLayout__block_invoke;
     v29[3] = &unk_1E70F35B8;
-    v6 = v4;
+    v6 = customRenderController;
     v30 = v6;
-    v31 = self;
+    selfCopy = self;
     [UIView performWithoutAnimation:v29];
 
     p_layoutFragmentViewsNeedDisplay = &self->_layoutFragmentViewsNeedDisplay;
@@ -218,8 +218,8 @@
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v8 = [(NSMapTable *)self->_textViewportViews keyEnumerator];
-      v9 = [v8 countByEnumeratingWithState:&v25 objects:v32 count:16];
+      keyEnumerator = [(NSMapTable *)self->_textViewportViews keyEnumerator];
+      v9 = [keyEnumerator countByEnumeratingWithState:&v25 objects:v32 count:16];
       if (v9)
       {
         v10 = v9;
@@ -230,7 +230,7 @@
           {
             if (*v26 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(keyEnumerator);
             }
 
             v13 = [(NSMapTable *)self->_textViewportViews objectForKey:*(*(&v25 + 1) + 8 * i)];
@@ -240,7 +240,7 @@
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v25 objects:v32 count:16];
+          v10 = [keyEnumerator countByEnumeratingWithState:&v25 objects:v32 count:16];
         }
 
         while (v10);
@@ -248,51 +248,51 @@
     }
   }
 
-  v14 = [(NSTextViewportLayoutController *)self->_viewportLayoutController viewportRange];
-  if (v14)
+  viewportRange = [(NSTextViewportLayoutController *)self->_viewportLayoutController viewportRange];
+  if (viewportRange)
   {
-    [(NSTextLayoutManager *)self->_textLayoutManager ensureLayoutForRange:v14];
+    [(NSTextLayoutManager *)self->_textLayoutManager ensureLayoutForRange:viewportRange];
   }
 
   [(_UITextLayoutCanvasView *)self updateContentSizeIfNeeded];
-  v15 = [(_UITextLayoutCanvasView *)self context];
+  context = [(_UITextLayoutCanvasView *)self context];
   v16 = [(NSMutableSet *)self->_textAttachmentViews mutableCopy];
   [v16 minusSet:self->_newTextAttachmentViews];
   if ([v16 count])
   {
-    [v15 didRemoveTextAttachmentViews:v16];
+    [context didRemoveTextAttachmentViews:v16];
   }
 
   v17 = [(NSMutableSet *)self->_newTextAttachmentViews mutableCopy];
   [v17 minusSet:self->_textAttachmentViews];
   if ([v17 count])
   {
-    [v15 didAddTextAttachmentViews:v17];
+    [context didAddTextAttachmentViews:v17];
   }
 
   [(NSMutableSet *)self->_textAttachmentViews setSet:self->_newTextAttachmentViews];
   [(NSMutableSet *)self->_newTextAttachmentViews removeAllObjects];
   *p_layoutFragmentViewsNeedDisplay = 0;
-  v18 = [(_UITextLayoutCanvasView *)self _internalTextLayoutController];
-  v19 = [v18 searchableObject];
-  v20 = v19;
-  if (v19)
+  _internalTextLayoutController = [(_UITextLayoutCanvasView *)self _internalTextLayoutController];
+  searchableObject = [_internalTextLayoutController searchableObject];
+  v20 = searchableObject;
+  if (searchableObject)
   {
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __45___UITextLayoutCanvasView__viewportDidLayout__block_invoke_4;
     v23[3] = &unk_1E70F3590;
-    v24 = v19;
+    v24 = searchableObject;
     [UIView performWithoutAnimation:v23];
   }
 
-  v21 = [(_UITextLayoutCanvasView *)self context];
-  [v21 _textKit2CanvasDidLayout];
+  context2 = [(_UITextLayoutCanvasView *)self context];
+  [context2 _textKit2CanvasDidLayout];
 
   if (v5)
   {
-    v22 = [(_UITextLayoutCanvasView *)self context];
-    [v22 _updateInteractionGeometry];
+    context3 = [(_UITextLayoutCanvasView *)self context];
+    [context3 _updateInteractionGeometry];
   }
 }
 
@@ -303,21 +303,21 @@
   {
     self->_contentSize.width = v3;
     self->_contentSize.height = v4;
-    v6 = [(NSTextLayoutManager *)self->_textLayoutManager textSelectionNavigation];
-    [v6 flushLayoutCache];
+    textSelectionNavigation = [(NSTextLayoutManager *)self->_textLayoutManager textSelectionNavigation];
+    [textSelectionNavigation flushLayoutCache];
 
-    v7 = [(_UITextLayoutCanvasView *)self context];
-    [v7 textContainerUsageDidChangeToSize:{self->_contentSize.width, self->_contentSize.height}];
+    context = [(_UITextLayoutCanvasView *)self context];
+    [context textContainerUsageDidChangeToSize:{self->_contentSize.width, self->_contentSize.height}];
   }
 }
 
 - (id)_internalTextLayoutController
 {
-  v2 = [(_UITextLayoutCanvasView *)self context];
-  v3 = [v2 textLayoutController];
+  context = [(_UITextLayoutCanvasView *)self context];
+  textLayoutController = [context textLayoutController];
   if (objc_opt_respondsToSelector())
   {
-    v4 = v3;
+    v4 = textLayoutController;
   }
 
   else
@@ -334,25 +334,25 @@
   if (objc_opt_respondsToSelector())
   {
     v4 = objc_loadWeakRetained(&self->_context);
-    v5 = [v4 customRenderController];
+    customRenderController = [v4 customRenderController];
   }
 
   else
   {
-    v5 = 0;
+    customRenderController = 0;
   }
 
-  return v5;
+  return customRenderController;
 }
 
 - (void)configureCustomTextRenderer
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v3 = [(_UITextLayoutCanvasView *)self customRenderController];
-  v4 = v3;
-  if (self->_lastCustomRenderController != v3)
+  customRenderController = [(_UITextLayoutCanvasView *)self customRenderController];
+  v4 = customRenderController;
+  if (self->_lastCustomRenderController != customRenderController)
   {
-    self->_lastCustomRenderController = v3;
+    self->_lastCustomRenderController = customRenderController;
     *&self->_canvasViewFlags = *&self->_canvasViewFlags & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
@@ -392,8 +392,8 @@
     }
 
     *&self->_canvasViewFlags = *&self->_canvasViewFlags & 0xF7 | v8;
-    v9 = [(UIView *)self traitCollection];
-    [(_UITextLayoutCanvasView *)self _updateTraitsForCustomTextRenderer:v9];
+    traitCollection = [(UIView *)self traitCollection];
+    [(_UITextLayoutCanvasView *)self _updateTraitsForCustomTextRenderer:traitCollection];
 
     [(_UITextLayoutCanvasView *)self _removeUnusedElementViews];
     traitChangeToken = self->_traitChangeToken;
@@ -463,10 +463,10 @@
 
 - (void)dealloc
 {
-  v3 = [(_UITextLayoutCanvasView *)self context];
-  v4 = [v3 hasOverriddenEnclosingScrollView];
+  context = [(_UITextLayoutCanvasView *)self context];
+  hasOverriddenEnclosingScrollView = [context hasOverriddenEnclosingScrollView];
 
-  if (v4)
+  if (hasOverriddenEnclosingScrollView)
   {
     [(UIView *)self _removeGeometryChangeObserver:?];
   }
@@ -483,8 +483,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMapTable *)self->_textViewportViews keyEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  keyEnumerator = [(NSMapTable *)self->_textViewportViews keyEnumerator];
+  v4 = [keyEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -496,14 +496,14 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         [(NSMutableSet *)self->_viewportElementsToRemove addObject:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [keyEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -515,24 +515,24 @@
 
 - (void)_traitsChanged
 {
-  v3 = [(UIView *)self traitCollection];
-  [(_UITextLayoutCanvasView *)self _updateTraitsForCustomTextRenderer:v3];
+  traitCollection = [(UIView *)self traitCollection];
+  [(_UITextLayoutCanvasView *)self _updateTraitsForCustomTextRenderer:traitCollection];
 }
 
-- (_UITextLayoutCanvasView)initWithTextLayoutManager:(id)a3 textContainer:(id)a4
+- (_UITextLayoutCanvasView)initWithTextLayoutManager:(id)manager textContainer:(id)container
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  containerCopy = container;
   v26.receiver = self;
   v26.super_class = _UITextLayoutCanvasView;
   v9 = [(UIView *)&v26 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_textLayoutManager, a3);
-    objc_storeStrong(&v10->_textContainer, a4);
-    v11 = [v7 textContainers];
-    v10->_textContainerIndex = [v11 indexOfObject:v8];
+    objc_storeStrong(&v9->_textLayoutManager, manager);
+    objc_storeStrong(&v10->_textContainer, container);
+    textContainers = [managerCopy textContainers];
+    v10->_textContainerIndex = [textContainers indexOfObject:containerCopy];
 
     v12 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     textAttachmentViews = v10->_textAttachmentViews;
@@ -546,13 +546,13 @@
     viewportElementsToRemove = v10->_viewportElementsToRemove;
     v10->_viewportElementsToRemove = v16;
 
-    v18 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     textViewportViews = v10->_textViewportViews;
-    v10->_textViewportViews = v18;
+    v10->_textViewportViews = weakToStrongObjectsMapTable;
 
-    v20 = [v7 textViewportLayoutController];
+    textViewportLayoutController = [managerCopy textViewportLayoutController];
     viewportLayoutController = v10->_viewportLayoutController;
-    v10->_viewportLayoutController = v20;
+    v10->_viewportLayoutController = textViewportLayoutController;
 
     [(NSTextViewportLayoutController *)v10->_viewportLayoutController setDelegate:v10];
     v10->_contentSize = *MEMORY[0x1E695F060];
@@ -571,8 +571,8 @@
     if (hoverEffectsLayer)
     {
       [(_UITextLayoutCanvasViewHoverEffectContainerLayer *)hoverEffectsLayer setZPosition:10000.0];
-      v24 = [(UIView *)v10 layer];
-      [v24 addSublayer:v10->_hoverEffectsLayer];
+      layer = [(UIView *)v10 layer];
+      [layer addSublayer:v10->_hoverEffectsLayer];
     }
   }
 
@@ -581,25 +581,25 @@
 
 - (void)observeEnclosingScrollView
 {
-  v3 = [(_UITextLayoutCanvasView *)self context];
-  v4 = [v3 hasOverriddenEnclosingScrollView];
+  context = [(_UITextLayoutCanvasView *)self context];
+  hasOverriddenEnclosingScrollView = [context hasOverriddenEnclosingScrollView];
 
-  if (v4)
+  if (hasOverriddenEnclosingScrollView)
   {
 
     [(UIView *)self _addGeometryChangeObserver:?];
   }
 }
 
-- (void)setSelectionContainerView:(id)a3
+- (void)setSelectionContainerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   selectionContainerView = self->_selectionContainerView;
-  if (selectionContainerView != v5)
+  if (selectionContainerView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIView *)selectionContainerView removeFromSuperview];
-    objc_storeStrong(&self->_selectionContainerView, a3);
+    objc_storeStrong(&self->_selectionContainerView, view);
     v7 = self->_selectionContainerView;
     if (v7)
     {
@@ -607,40 +607,40 @@
     }
 
     [(_UITextLayoutCanvasView *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)setTextEmphasisBackgroundView:(id)a3 withTextView:(id)a4
+- (void)setTextEmphasisBackgroundView:(id)view withTextView:(id)textView
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  textViewCopy = textView;
   textEmphasisBackgroundView = self->_textEmphasisBackgroundView;
-  v11 = v8;
-  if (textEmphasisBackgroundView != v8)
+  v11 = viewCopy;
+  if (textEmphasisBackgroundView != viewCopy)
   {
-    if (!v9)
+    if (!textViewCopy)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"_UITextLayoutCanvasView.m" lineNumber:159 description:@"Improper text highlighting setup"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextLayoutCanvasView.m" lineNumber:159 description:@"Improper text highlighting setup"];
 
       textEmphasisBackgroundView = self->_textEmphasisBackgroundView;
     }
 
     [(UIView *)textEmphasisBackgroundView removeFromSuperview];
-    objc_storeStrong(&self->_textEmphasisBackgroundView, a3);
+    objc_storeStrong(&self->_textEmphasisBackgroundView, view);
     [(_UITextLayoutCanvasView *)self setNeedsLayout];
     v11 = self->_textEmphasisBackgroundView;
   }
 
   if (v11 || (-[NSTextLayoutManager textContentManager](self->_textLayoutManager, "textContentManager"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 supportsAnchoredTextAttachments], v12, (v13 & 1) != 0))
   {
-    v14 = [(NSTextViewportLayoutController *)self->_viewportLayoutController _platformRenderingSurfaceUpdater];
+    _platformRenderingSurfaceUpdater = [(NSTextViewportLayoutController *)self->_viewportLayoutController _platformRenderingSurfaceUpdater];
 
-    if (!v14)
+    if (!_platformRenderingSurfaceUpdater)
     {
       objc_initWeak(&location, self);
-      objc_initWeak(&from, v9);
+      objc_initWeak(&from, textViewCopy);
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __70___UITextLayoutCanvasView_setTextEmphasisBackgroundView_withTextView___block_invoke;
@@ -661,30 +661,30 @@
   }
 }
 
-- (void)_updateRenderingSurfaceViewsForTextRange:(id)a3 inTextView:(id)a4 bounds:(CGRect)a5
+- (void)_updateRenderingSurfaceViewsForTextRange:(id)range inTextView:(id)view bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v54[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
+  rangeCopy = range;
+  viewCopy = view;
   v13 = self->_textLayoutManager;
   v14 = self->_viewportLayoutController;
   v50 = 0;
   v51 = &v50;
   v52 = 0x2020000000;
   v53 = 0;
-  if (([v11 isEmpty] & 1) == 0)
+  if (([rangeCopy isEmpty] & 1) == 0)
   {
-    v54[0] = v11;
+    v54[0] = rangeCopy;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:1];
-    v16 = [v12 _nsRangeForTextKitRanges:v15];
+    v16 = [viewCopy _nsRangeForTextKitRanges:v15];
     v18 = v17;
 
-    v19 = [v12 textStorage];
-    if (v16 + v18 <= [v19 length])
+    textStorage = [viewCopy textStorage];
+    if (v16 + v18 <= [textStorage length])
     {
       v20 = *off_1E70ECA80;
       v49[0] = MEMORY[0x1E69E9820];
@@ -692,15 +692,15 @@
       v49[2] = __86___UITextLayoutCanvasView__updateRenderingSurfaceViewsForTextRange_inTextView_bounds___block_invoke;
       v49[3] = &unk_1E70F8050;
       v49[4] = &v50;
-      [v19 enumerateAttribute:v20 inRange:v16 options:v18 usingBlock:{0, v49}];
+      [textStorage enumerateAttribute:v20 inRange:v16 options:v18 usingBlock:{0, v49}];
     }
   }
 
   if (*(v51 + 24) == 1)
   {
     [(NSTextViewportLayoutController *)v14 addRenderingSurface:self->_textEmphasisBackgroundView key:@"_UITextViewHighlightBackgroundView" group:1 placement:1];
-    v21 = [(_UITextLayoutCanvasView *)self context];
-    [(_UITextLayoutCanvasView *)v21 textContainerOrigin];
+    context = [(_UITextLayoutCanvasView *)self context];
+    [(_UITextLayoutCanvasView *)context textContainerOrigin];
     v23 = v22;
     v25 = v24;
     [(UIView *)self->_textEmphasisBackgroundView frame];
@@ -720,13 +720,13 @@
     }
 
     [(UIView *)self->_textEmphasisBackgroundView setHidden:0];
-    [(_UITextEmphasisBackgroundView *)self->_textEmphasisBackgroundView setTextRange:v11];
+    [(_UITextEmphasisBackgroundView *)self->_textEmphasisBackgroundView setTextRange:rangeCopy];
     [(_UITextEmphasisBackgroundView *)self->_textEmphasisBackgroundView setOrigin:-x, -y];
     goto LABEL_10;
   }
 
-  v21 = [(UIView *)self->_textEmphasisBackgroundView superview];
-  if (v21 != self)
+  context = [(UIView *)self->_textEmphasisBackgroundView superview];
+  if (context != self)
   {
 LABEL_10:
 
@@ -742,8 +742,8 @@ LABEL_10:
   }
 
 LABEL_11:
-  v32 = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
-  if ([v32 supportsAnchoredTextAttachments])
+  textContentManager = [(NSTextLayoutManager *)self->_textLayoutManager textContentManager];
+  if ([textContentManager supportsAnchoredTextAttachments])
   {
     [(NSTextViewportLayoutController *)v14 viewportBounds];
     v34 = v33;
@@ -763,7 +763,7 @@ LABEL_11:
     v44[4] = self;
     objc_copyWeak(v47, &location);
     v45 = v14;
-    v46 = v11;
+    v46 = rangeCopy;
     v42 = [(NSTextLayoutManager *)textLayoutManager enumerateTextLayoutFragmentsFromLocation:0 options:0 usingBlock:v44];
 
     objc_destroyWeak(v47);
@@ -773,13 +773,13 @@ LABEL_11:
   _Block_object_dispose(&v50, 8);
 }
 
-- (CGRect)frameForAnchoredTextAttachment:(id)a3 associatedLayoutFragment:(id)a4
+- (CGRect)frameForAnchoredTextAttachment:(id)attachment associatedLayoutFragment:(id)fragment
 {
-  v6 = a4;
+  fragmentCopy = fragment;
   textViewportViews = self->_textViewportViews;
-  v8 = a3;
-  v9 = [(NSMapTable *)textViewportViews objectForKey:v6];
-  [v6 boundsForTextParagraphAnchoredAttachment:v8];
+  attachmentCopy = attachment;
+  v9 = [(NSMapTable *)textViewportViews objectForKey:fragmentCopy];
+  [fragmentCopy boundsForTextParagraphAnchoredAttachment:attachmentCopy];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -796,11 +796,11 @@ LABEL_11:
 
   else
   {
-    v24 = [(_UITextLayoutCanvasView *)self context];
-    [v24 textContainerOrigin];
+    context = [(_UITextLayoutCanvasView *)self context];
+    [context textContainerOrigin];
     v26 = v25;
     v28 = v27;
-    [v6 layoutFragmentFrame];
+    [fragmentCopy layoutFragmentFrame];
     v19 = v11 + v26 + v29;
     v21 = v13 + v28 + v30;
   }
@@ -816,17 +816,17 @@ LABEL_11:
   return result;
 }
 
-- (void)_updateTraitsForCustomTextRenderer:(id)a3
+- (void)_updateTraitsForCustomTextRenderer:(id)renderer
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UITextLayoutCanvasView *)self customRenderController];
-  v6 = v5;
-  if (v5)
+  rendererCopy = renderer;
+  customRenderController = [(_UITextLayoutCanvasView *)self customRenderController];
+  v6 = customRenderController;
+  if (customRenderController)
   {
-    [v5 contentsScale];
+    [customRenderController contentsScale];
     v8 = v7;
-    [v4 displayScale];
+    [rendererCopy displayScale];
     if (v8 != v9)
     {
       if (os_variant_has_internal_diagnostics())
@@ -837,7 +837,7 @@ LABEL_11:
           v11 = v10;
           [v6 contentsScale];
           v13 = v12;
-          [v4 displayScale];
+          [rendererCopy displayScale];
           v15 = 134349570;
           v16 = v13;
           v17 = 2050;
@@ -848,7 +848,7 @@ LABEL_11:
         }
       }
 
-      [v4 displayScale];
+      [rendererCopy displayScale];
       [(_UITextLayoutCanvasView *)self _updateContentsScaleForCustomRenderController:?];
     }
 
@@ -859,19 +859,19 @@ LABEL_11:
   }
 }
 
-- (void)_updateContentsScaleForCustomRenderController:(double)a3
+- (void)_updateContentsScaleForCustomRenderController:(double)controller
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = [(_UITextLayoutCanvasView *)self customRenderController];
-  v6 = v5;
-  if (v5)
+  customRenderController = [(_UITextLayoutCanvasView *)self customRenderController];
+  v6 = customRenderController;
+  if (customRenderController)
   {
     if (*&self->_canvasViewFlags)
     {
-      [v5 contentsScale];
+      [customRenderController contentsScale];
       v8 = v7;
-      [v6 setContentsScale:a3];
-      if (v8 != a3)
+      [v6 setContentsScale:controller];
+      if (v8 != controller)
       {
         if (os_variant_has_internal_diagnostics())
         {
@@ -890,20 +890,20 @@ LABEL_11:
   }
 }
 
-- (id)textRangeForBounds:(CGRect)a3 layoutIfNeeded:(BOOL)a4
+- (id)textRangeForBounds:(CGRect)bounds layoutIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  neededCopy = needed;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__94;
   v27 = __Block_byref_object_dispose__94;
   v28 = 0;
-  if (a4)
+  if (needed)
   {
     v10 = 4;
   }
@@ -919,11 +919,11 @@ LABEL_11:
   v22[2] = __61___UITextLayoutCanvasView_textRangeForBounds_layoutIfNeeded___block_invoke;
   v22[3] = &unk_1E7109BF0;
   v22[4] = &v23;
-  [(NSTextViewportLayoutController *)viewportLayoutController enumerateTextViewportElementsInRect:v10 options:v22 usingBlock:a3.origin.x];
+  [(NSTextViewportLayoutController *)viewportLayoutController enumerateTextViewportElementsInRect:v10 options:v22 usingBlock:bounds.origin.x];
   v12 = v24[5];
   if (!v12)
   {
-    if (v4)
+    if (neededCopy)
     {
       [(UIView *)self frame];
       if (!CGRectIsEmpty(v30))
@@ -943,9 +943,9 @@ LABEL_11:
     if (!v12)
     {
       v14 = [off_1E70ECBF0 alloc];
-      v15 = [(NSTextLayoutManager *)self->_textLayoutManager documentRange];
-      v16 = [v15 location];
-      v17 = [v14 initWithLocation:v16];
+      documentRange = [(NSTextLayoutManager *)self->_textLayoutManager documentRange];
+      location = [documentRange location];
+      v17 = [v14 initWithLocation:location];
       v18 = v24[5];
       v24[5] = v17;
 
@@ -959,12 +959,12 @@ LABEL_11:
   return v19;
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v20 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = _UITextLayoutCanvasView;
@@ -973,8 +973,8 @@ LABEL_11:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(NSMapTable *)self->_textViewportViews objectEnumerator];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  objectEnumerator = [(NSMapTable *)self->_textViewportViews objectEnumerator];
+  v9 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -985,7 +985,7 @@ LABEL_11:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v13 = *(*(&v14 + 1) + 8 * i);
@@ -1000,23 +1000,23 @@ LABEL_11:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v10 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_performViewportLayout:(BOOL)a3
+- (void)_performViewportLayout:(BOOL)layout
 {
   if (!self->_inLayout)
   {
-    v3 = a3;
-    v5 = [(_UITextLayoutCanvasView *)self customRenderController];
-    v6 = v5;
-    if (v3 && (*&self->_canvasViewFlags & 8) != 0)
+    layoutCopy = layout;
+    customRenderController = [(_UITextLayoutCanvasView *)self customRenderController];
+    v6 = customRenderController;
+    if (layoutCopy && (*&self->_canvasViewFlags & 8) != 0)
     {
-      [v5 preLayoutNotify];
+      [customRenderController preLayoutNotify];
     }
 
     self->_inLayout = 1;
@@ -1026,7 +1026,7 @@ LABEL_11:
     v9[3] = &unk_1E70F3590;
     v9[4] = self;
     [UIView performWithoutAnimation:v9];
-    if (v3)
+    if (layoutCopy)
     {
       [(_UITextLayoutCanvasView *)self _viewportWillLayout];
     }
@@ -1037,7 +1037,7 @@ LABEL_11:
     v8[3] = &unk_1E70F3590;
     v8[4] = self;
     [UIView performWithoutAnimation:v8];
-    if (v3)
+    if (layoutCopy)
     {
       [(_UITextLayoutCanvasView *)self _viewportDidLayout];
     }
@@ -1049,18 +1049,18 @@ LABEL_11:
     v7[4] = self;
     [UIView performWithoutAnimation:v7];
     self->_inLayout = 0;
-    if (v3 && (*&self->_canvasViewFlags & 8) != 0)
+    if (layoutCopy && (*&self->_canvasViewFlags & 8) != 0)
     {
       [v6 postLayoutNotify];
     }
   }
 }
 
-- (void)isScrollingChangedTo:(BOOL)a3
+- (void)isScrollingChangedTo:(BOOL)to
 {
-  if (self->_isTextViewScrolling != a3)
+  if (self->_isTextViewScrolling != to)
   {
-    self->_isTextViewScrolling = a3;
+    self->_isTextViewScrolling = to;
     [(_UITextLayoutCanvasView *)self requestHoverEffectsUpdate];
   }
 }
@@ -1073,11 +1073,11 @@ LABEL_11:
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = _UITextLayoutCanvasView;
-  v5 = [(UIView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -1094,29 +1094,29 @@ LABEL_11:
   return v7;
 }
 
-- (CGRect)viewportBoundsForTextViewportLayoutController:(id)a3
+- (CGRect)viewportBoundsForTextViewportLayoutController:(id)controller
 {
   [(UIView *)self bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(_UITextLayoutCanvasView *)self context];
-  [v12 textContainerOrigin];
+  context = [(_UITextLayoutCanvasView *)self context];
+  [context textContainerOrigin];
   v39 = v14;
   v40 = v13;
-  v15 = [v12 enclosingScrollView];
-  v16 = [v12 hasOverriddenEnclosingScrollView];
-  v17 = [v12 enclosingScrollView];
-  v18 = v17;
-  if (v16)
+  enclosingScrollView = [context enclosingScrollView];
+  hasOverriddenEnclosingScrollView = [context hasOverriddenEnclosingScrollView];
+  enclosingScrollView2 = [context enclosingScrollView];
+  v18 = enclosingScrollView2;
+  if (hasOverriddenEnclosingScrollView)
   {
-    [v17 visibleBounds];
+    [enclosingScrollView2 visibleBounds];
   }
 
   else
   {
-    [v17 bounds];
+    [enclosingScrollView2 bounds];
   }
 
   v23 = v19;
@@ -1124,9 +1124,9 @@ LABEL_11:
   v25 = v21;
   v26 = v22;
 
-  if (v15)
+  if (enclosingScrollView)
   {
-    [(UIView *)self convertRect:v15 fromView:v23, v24, v25, v26];
+    [(UIView *)self convertRect:enclosingScrollView fromView:v23, v24, v25, v26];
     v5 = v27;
     v7 = v28;
     v9 = v29;
@@ -1164,19 +1164,19 @@ LABEL_11:
   return _MergedGlobals_13_1;
 }
 
-- (id)locationForPositionInViewport:(CGPoint)a3 offset:(CGSize *)a4
+- (id)locationForPositionInViewport:(CGPoint)viewport offset:(CGSize *)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = viewport.y;
+  x = viewport.x;
   if (![(_UITextLayoutCanvasView *)self _supportsLocationForPositionInViewport])
   {
-    v13 = 0;
+    location = 0;
     goto LABEL_30;
   }
 
-  v8 = [(_UITextLayoutCanvasView *)self textLayoutManager];
-  v9 = [v8 textContainers];
-  if ([v9 count] < 2)
+  textLayoutManager = [(_UITextLayoutCanvasView *)self textLayoutManager];
+  textContainers = [textLayoutManager textContainers];
+  if ([textContainers count] < 2)
   {
     v11 = 0;
     v12 = 0;
@@ -1184,8 +1184,8 @@ LABEL_11:
 
   else
   {
-    v10 = [(_UITextLayoutCanvasView *)self textContainer];
-    v11 = [v9 indexOfObject:v10];
+    textContainer = [(_UITextLayoutCanvasView *)self textContainer];
+    v11 = [textContainers indexOfObject:textContainer];
 
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1198,11 +1198,11 @@ LABEL_11:
     }
   }
 
-  v14 = [v8 textLayoutFragmentForPosition:v12 inTextContainerAtIndex:{x, y}];
+  v14 = [textLayoutManager textLayoutFragmentForPosition:v12 inTextContainerAtIndex:{x, y}];
   if (!v14)
   {
 LABEL_23:
-    v13 = 0;
+    location = 0;
     goto LABEL_29;
   }
 
@@ -1210,11 +1210,11 @@ LABEL_23:
   v16 = -5;
   while (1)
   {
-    v17 = [v15 rangeInElement];
-    [v8 ensureLayoutForRange:v17];
-    v18 = [v15 textElement];
+    rangeInElement = [v15 rangeInElement];
+    [textLayoutManager ensureLayoutForRange:rangeInElement];
+    textElement = [v15 textElement];
 
-    if (v18)
+    if (textElement)
     {
       break;
     }
@@ -1227,22 +1227,22 @@ LABEL_23:
 
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v19 = v9;
+      textContainers2 = textContainers;
     }
 
     else
     {
-      v19 = [v8 textContainers];
+      textContainers2 = [textLayoutManager textContainers];
 
-      if ([v19 count] < 2)
+      if ([textContainers2 count] < 2)
       {
         v11 = 0;
         v20 = 0;
         goto LABEL_20;
       }
 
-      v22 = [(_UITextLayoutCanvasView *)self textContainer];
-      v11 = [v19 indexOfObject:v22];
+      textContainer2 = [(_UITextLayoutCanvasView *)self textContainer];
+      v11 = [textContainers2 indexOfObject:textContainer2];
 
       v20 = v11;
       if (v11 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1254,12 +1254,12 @@ LABEL_23:
     v20 = 0;
     v11 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_20:
-    v21 = [v8 textLayoutFragmentForPosition:v20 inTextContainerAtIndex:{x, y}];
-    v9 = v19;
+    v21 = [textLayoutManager textLayoutFragmentForPosition:v20 inTextContainerAtIndex:{x, y}];
+    textContainers = textContainers2;
 LABEL_21:
     if (v15 == v21)
     {
-      v13 = 0;
+      location = 0;
       goto LABEL_28;
     }
 
@@ -1272,41 +1272,41 @@ LABEL_21:
   }
 
   [v15 layoutFragmentFrame];
-  if (a4)
+  if (offset)
   {
-    a4->width = v23 - x;
-    a4->height = v24 - y;
+    offset->width = v23 - x;
+    offset->height = v24 - y;
   }
 
-  v13 = [v17 location];
+  location = [rangeInElement location];
   v21 = 0;
 LABEL_28:
 
 LABEL_29:
 LABEL_30:
 
-  return v13;
+  return location;
 }
 
-- (id)textViewportLayoutController:(id)a3 renderingSurfaceForTextLayoutFragment:(id)a4
+- (id)textViewportLayoutController:(id)controller renderingSurfaceForTextLayoutFragment:(id)fragment
 {
-  v5 = a4;
-  v6 = [(_UITextLayoutCanvasView *)self context];
-  [v6 textContainerOrigin];
+  fragmentCopy = fragment;
+  context = [(_UITextLayoutCanvasView *)self context];
+  [context textContainerOrigin];
   v8 = v7;
   v10 = v9;
-  v11 = [v6 textContainer];
-  [v11 size];
+  textContainer = [context textContainer];
+  [textContainer size];
   v13 = v12;
   v15 = v14;
 
-  v16 = [(_UITextLayoutCanvasView *)self customRenderController];
-  [v6 _clipRectForFadedEdges];
+  customRenderController = [(_UITextLayoutCanvasView *)self customRenderController];
+  [context _clipRectForFadedEdges];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(NSMapTable *)self->_textViewportViews objectForKey:v5];
+  v25 = [(NSMapTable *)self->_textViewportViews objectForKey:fragmentCopy];
   if (v25)
   {
     v26 = v25;
@@ -1316,48 +1316,48 @@ LABEL_30:
   else
   {
     v27 = off_1E70EC608;
-    if (v16)
+    if (customRenderController)
     {
       v27 = off_1E70EC600;
     }
 
-    v26 = [objc_alloc(*v27) initWithLayoutFragment:v5 containerOrigin:v8 containerSize:v10 clipRect:{v13, v15, v18, v20, v22, v24}];
-    [(NSMapTable *)self->_textViewportViews setObject:v26 forKey:v5];
+    v26 = [objc_alloc(*v27) initWithLayoutFragment:fragmentCopy containerOrigin:v8 containerSize:v10 clipRect:{v13, v15, v18, v20, v22, v24}];
+    [(NSMapTable *)self->_textViewportViews setObject:v26 forKey:fragmentCopy];
   }
 
   return v26;
 }
 
-- (CGRect)textViewportLayoutController:(id)a3 presentationLayoutFragmentFrameForTextLayoutFragment:(id)a4 proposedOrigin:(CGPoint)a5
+- (CGRect)textViewportLayoutController:(id)controller presentationLayoutFragmentFrameForTextLayoutFragment:(id)fragment proposedOrigin:(CGPoint)origin
 {
-  v6 = a4;
-  v7 = [v6 textParagraph];
-  [v6 layoutFragmentFrame];
+  fragmentCopy = fragment;
+  textParagraph = [fragmentCopy textParagraph];
+  [fragmentCopy layoutFragmentFrame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  if (v7)
+  if (textParagraph)
   {
-    v16 = [(_UITextLayoutCanvasView *)self uniqueWritingToolsAnimatedLayoutInfo];
-    v17 = v16;
-    if (!v16)
+    uniqueWritingToolsAnimatedLayoutInfo = [(_UITextLayoutCanvasView *)self uniqueWritingToolsAnimatedLayoutInfo];
+    v17 = uniqueWritingToolsAnimatedLayoutInfo;
+    if (!uniqueWritingToolsAnimatedLayoutInfo)
     {
-      v19 = [v7 attributedString];
-      if (![v19 length])
+      attributedString = [textParagraph attributedString];
+      if (![attributedString length])
       {
         goto LABEL_12;
       }
 
-      v34 = [MEMORY[0x1E696AAB0] _animatedTextSpacerAttributeKey];
-      v20 = [v19 attribute:v34 atIndex:0 effectiveRange:0];
+      _animatedTextSpacerAttributeKey = [MEMORY[0x1E696AAB0] _animatedTextSpacerAttributeKey];
+      rangeInElement = [attributedString attribute:_animatedTextSpacerAttributeKey atIndex:0 effectiveRange:0];
 
-      if (!v20)
+      if (!rangeInElement)
       {
         goto LABEL_12;
       }
 
-      [v20 presentationFrameForTextLayoutFragmentFrame:{v9, v11, v13, v15}];
+      [rangeInElement presentationFrameForTextLayoutFragmentFrame:{v9, v11, v13, v15}];
       v9 = v35;
       v11 = v36;
       v13 = v37;
@@ -1368,30 +1368,30 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v18 = [v16 animatingTextRange];
-    v19 = [v18 location];
+    animatingTextRange = [uniqueWritingToolsAnimatedLayoutInfo animatingTextRange];
+    attributedString = [animatingTextRange location];
 
-    v20 = [v6 rangeInElement];
-    v21 = [v17 animatingTextRange];
-    v22 = [v21 textRangeByIntersectingWithTextRange:v20];
-    v23 = [v22 isNotEmpty];
+    rangeInElement = [fragmentCopy rangeInElement];
+    animatingTextRange2 = [v17 animatingTextRange];
+    v22 = [animatingTextRange2 textRangeByIntersectingWithTextRange:rangeInElement];
+    isNotEmpty = [v22 isNotEmpty];
 
-    if (!v23)
+    if (!isNotEmpty)
     {
 LABEL_10:
 
       goto LABEL_11;
     }
 
-    v24 = [v17 animatedTextSpacer];
-    v25 = [v21 endLocation];
-    if (([v20 containsLocation:v25] & 1) == 0)
+    animatedTextSpacer = [v17 animatedTextSpacer];
+    endLocation = [animatingTextRange2 endLocation];
+    if (([rangeInElement containsLocation:endLocation] & 1) == 0)
     {
-      v26 = [v20 endLocation];
-      v27 = [v21 endLocation];
-      if (![v26 isEqual:v27])
+      endLocation2 = [rangeInElement endLocation];
+      endLocation3 = [animatingTextRange2 endLocation];
+      if (![endLocation2 isEqual:endLocation3])
       {
-        v39 = [v20 isEqualToTextRange:v21];
+        v39 = [rangeInElement isEqualToTextRange:animatingTextRange2];
 
         if ((v39 & 1) == 0)
         {
@@ -1403,7 +1403,7 @@ LABEL_10:
     }
 
 LABEL_8:
-    [v24 verticalOffsetForSucceedingLayout];
+    [animatedTextSpacer verticalOffsetForSucceedingLayout];
     v29 = v28;
     v40.origin.x = v9;
     v40.origin.y = v11;
@@ -1428,35 +1428,35 @@ LABEL_13:
   return result;
 }
 
-- (void)textViewportLayoutController:(id)a3 configureRenderingSurfaceForTextLayoutFragment:(id)a4
+- (void)textViewportLayoutController:(id)controller configureRenderingSurfaceForTextLayoutFragment:(id)fragment
 {
-  v6 = a4;
-  v7 = [(_UITextLayoutCanvasView *)self context];
-  [v7 textContainerOrigin];
+  fragmentCopy = fragment;
+  context = [(_UITextLayoutCanvasView *)self context];
+  [context textContainerOrigin];
   v9 = v8;
   v11 = v10;
-  v12 = [v7 textContainer];
-  [v12 size];
+  textContainer = [context textContainer];
+  [textContainer size];
   v14 = v13;
   v16 = v15;
 
-  [v6 layoutFragmentFrame];
+  [fragmentCopy layoutFragmentFrame];
   if (CGRectGetWidth(v51) <= v14)
   {
-    [v7 _clipRectForFadedEdges];
+    [context _clipRectForFadedEdges];
     v18 = v17;
     v20 = v19;
     v42 = v21;
     v23 = v22;
-    v24 = [(NSMapTable *)self->_textViewportViews objectForKey:v6];
+    v24 = [(NSMapTable *)self->_textViewportViews objectForKey:fragmentCopy];
     if (!v24)
     {
-      v41 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     }
 
-    v25 = [(UIView *)self->_selectionContainerView superview];
+    superview = [(UIView *)self->_selectionContainerView superview];
 
-    if (v25 == self)
+    if (superview == self)
     {
       [(UIView *)self insertSubview:v24 aboveSubview:self->_selectionContainerView];
     }
@@ -1479,21 +1479,21 @@ LABEL_13:
     v50[10] = v42;
     v50[11] = v23;
     [v24 performChanges:v50];
-    [(NSMutableSet *)self->_viewportElementsToRemove removeObject:v6];
-    v26 = [(_UITextLayoutCanvasView *)self customRenderController];
-    [v26 didLayoutFragment:v6];
+    [(NSMutableSet *)self->_viewportElementsToRemove removeObject:fragmentCopy];
+    customRenderController = [(_UITextLayoutCanvasView *)self customRenderController];
+    [customRenderController didLayoutFragment:fragmentCopy];
 
-    [v6 layoutFragmentFrame];
+    [fragmentCopy layoutFragmentFrame];
     v53 = CGRectOffset(v52, v9, v11);
     x = v53.origin.x;
     y = v53.origin.y;
     width = v53.size.width;
     height = v53.size.height;
-    v31 = [v6 textLineFragments];
-    if ([v31 count] == 1)
+    textLineFragments = [fragmentCopy textLineFragments];
+    if ([textLineFragments count] == 1)
     {
-      v32 = [v31 firstObject];
-      [v32 typographicBounds];
+      firstObject = [textLineFragments firstObject];
+      [firstObject typographicBounds];
       v34 = v33;
       v36 = v35;
 
@@ -1517,8 +1517,8 @@ LABEL_13:
     v47 = y;
     v48 = width;
     v49 = height;
-    v44 = v7;
-    v45 = self;
+    v44 = context;
+    selfCopy = self;
     [v24 enumerateTextAttachmentViewsUsingBlock:v43];
     hoverEffectsLayer = self->_hoverEffectsLayer;
     if (!hoverEffectsLayer)
@@ -1529,9 +1529,9 @@ LABEL_13:
     if (!self->_isTextViewScrolling)
     {
       WeakRetained = objc_loadWeakRetained(&self->_context);
-      v39 = [WeakRetained isEditing];
+      isEditing = [WeakRetained isEditing];
 
-      if ((v39 & 1) == 0)
+      if ((isEditing & 1) == 0)
       {
 
         v40 = 0;
@@ -1549,23 +1549,23 @@ LABEL_16:
   }
 }
 
-- (void)textViewportLayoutControllerWillLayout:(id)a3
+- (void)textViewportLayoutControllerWillLayout:(id)layout
 {
   if (!self->_inLayout)
   {
     v5 = MEMORY[0x1E696AD88];
-    v6 = a3;
-    v7 = [v5 defaultCenter];
-    [v7 postNotificationName:@"_UITextViewportLayoutControllerWillLayout" object:v6];
+    layoutCopy = layout;
+    defaultCenter = [v5 defaultCenter];
+    [defaultCenter postNotificationName:@"_UITextViewportLayoutControllerWillLayout" object:layoutCopy];
 
-    v10 = [(_UITextLayoutCanvasView *)self customRenderController];
-    if (v10)
+    customRenderController = [(_UITextLayoutCanvasView *)self customRenderController];
+    if (customRenderController)
     {
-      v8 = [(_UITextLayoutCanvasView *)self customRenderController];
-      v9 = v8;
+      customRenderController2 = [(_UITextLayoutCanvasView *)self customRenderController];
+      v9 = customRenderController2;
       if ((*&self->_canvasViewFlags & 8) != 0)
       {
-        [v8 preLayoutNotify];
+        [customRenderController2 preLayoutNotify];
       }
     }
 
@@ -1573,28 +1573,28 @@ LABEL_16:
   }
 }
 
-- (void)textViewportLayoutControllerDidLayout:(id)a3
+- (void)textViewportLayoutControllerDidLayout:(id)layout
 {
   if (!self->_inLayout)
   {
-    v5 = a3;
+    layoutCopy = layout;
     [(_UITextLayoutCanvasView *)self _viewportDidLayout];
-    v7 = [(_UITextLayoutCanvasView *)self customRenderController];
-    if (v7 && (*&self->_canvasViewFlags & 8) != 0)
+    customRenderController = [(_UITextLayoutCanvasView *)self customRenderController];
+    if (customRenderController && (*&self->_canvasViewFlags & 8) != 0)
     {
-      [v7 postLayoutNotify];
+      [customRenderController postLayoutNotify];
     }
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"_UITextViewportLayoutControllerDidLayout" object:v5];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_UITextViewportLayoutControllerDidLayout" object:layoutCopy];
   }
 }
 
-- (BOOL)textViewportLayoutController:(id)a3 addRenderingSurface:(id)a4 group:(int64_t)a5 placement:(int64_t)a6
+- (BOOL)textViewportLayoutController:(id)controller addRenderingSurface:(id)surface group:(int64_t)group placement:(int64_t)placement
 {
-  v11 = a3;
-  v12 = a4;
-  if (!v12)
+  controllerCopy = controller;
+  surfaceCopy = surface;
+  if (!surfaceCopy)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -1620,19 +1620,19 @@ LABEL_16:
   selectionContainerView = self->_selectionContainerView;
   if (selectionContainerView)
   {
-    v14 = [(UIView *)selectionContainerView superview];
+    superview = [(UIView *)selectionContainerView superview];
 
-    if (v14 != self)
+    if (superview != self)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"_UITextLayoutCanvasView.m" lineNumber:964 description:@"Non-nil _selectionContainerView is not in the subtree. UIKit to fix."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextLayoutCanvasView.m" lineNumber:964 description:@"Non-nil _selectionContainerView is not in the subtree. UIKit to fix."];
     }
   }
 
-  v16 = [(UIView *)self->_selectionContainerView superview];
-  if (v12)
+  superview2 = [(UIView *)self->_selectionContainerView superview];
+  if (surfaceCopy)
   {
-    v17 = v16 == self;
+    v17 = superview2 == self;
   }
 
   else
@@ -1644,12 +1644,12 @@ LABEL_16:
 
   if (v18)
   {
-    v19 = v12;
-    if (a5)
+    v19 = surfaceCopy;
+    if (group)
     {
-      if (a5 == 1)
+      if (group == 1)
       {
-        if (a6)
+        if (placement)
         {
           [(UIView *)self insertSubview:v19 atIndex:0];
         }
@@ -1662,12 +1662,12 @@ LABEL_16:
 
       else
       {
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v20 handleFailureInMethod:a2 object:self file:@"_UITextLayoutCanvasView.m" lineNumber:990 description:{@"Unsupported rendering group value, not Background or Contents. %ld", a5}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UITextLayoutCanvasView.m" lineNumber:990 description:{@"Unsupported rendering group value, not Background or Contents. %ld", group}];
       }
     }
 
-    else if (a6)
+    else if (placement)
     {
       [(UIView *)self insertSubview:v19 aboveSubview:self->_selectionContainerView];
     }
@@ -1724,40 +1724,40 @@ LABEL_16:
   return v18;
 }
 
-- (void)invalidateTemporaryAttributesInRange:(id)a3
+- (void)invalidateTemporaryAttributesInRange:(id)range
 {
-  v4 = a3;
-  v5 = [(_UITextLayoutCanvasView *)self customRenderController];
+  rangeCopy = range;
+  customRenderController = [(_UITextLayoutCanvasView *)self customRenderController];
 
-  if (v5)
+  if (customRenderController)
   {
     if ((*&self->_canvasViewFlags & 4) != 0)
     {
-      v7 = [v4 textKit2Ranges];
+      textKit2Ranges = [rangeCopy textKit2Ranges];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __64___UITextLayoutCanvasView_invalidateTemporaryAttributesInRange___block_invoke;
       v8[3] = &unk_1E7109C60;
       v8[4] = self;
-      [v7 enumerateObjectsUsingBlock:v8];
+      [textKit2Ranges enumerateObjectsUsingBlock:v8];
     }
 
     else
     {
-      v6 = [(_UITextLayoutCanvasView *)self customRenderController];
-      [v6 setNeedsDisplay];
+      customRenderController2 = [(_UITextLayoutCanvasView *)self customRenderController];
+      [customRenderController2 setNeedsDisplay];
     }
   }
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(_UITextLayoutCanvasView *)self context];
-  [v8 textContainerOrigin];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  context = [(_UITextLayoutCanvasView *)self context];
+  [context textContainerOrigin];
   v10 = v9;
   v12 = v11;
 
@@ -1777,20 +1777,20 @@ LABEL_16:
   CGContextSaveGState(v14);
   v16 = v17;
   CGContextConcatCTM(v14, &v16);
-  v15 = [(_UITextLayoutCanvasView *)self textRangeForBounds:1 layoutIfNeeded:x, y, width, height];
-  _UITextLayoutDrawRangeInContext(self->_textLayoutManager, v15, v14);
+  height = [(_UITextLayoutCanvasView *)self textRangeForBounds:1 layoutIfNeeded:x, y, width, height];
+  _UITextLayoutDrawRangeInContext(self->_textLayoutManager, height, v14);
   CGContextRestoreGState(v14);
 }
 
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor
 {
-  v6 = a4;
-  v9 = [(_UITextLayoutCanvasView *)self context];
-  v7 = [v9 enclosingScrollView];
+  ancestorCopy = ancestor;
+  context = [(_UITextLayoutCanvasView *)self context];
+  enclosingScrollView = [context enclosingScrollView];
 
-  if (v7 == v6)
+  if (enclosingScrollView == ancestorCopy)
   {
-    v8 = a3->var0 & 0xE;
+    v8 = changed->var0 & 0xE;
 
     if (v8)
     {

@@ -1,34 +1,34 @@
 @interface SXLayoutPipeline
-- (SXLayoutPipeline)initWithLayoutOperationFactory:(id)a3 DOMObjectProviderFactory:(id)a4;
+- (SXLayoutPipeline)initWithLayoutOperationFactory:(id)factory DOMObjectProviderFactory:(id)providerFactory;
 - (SXLayoutPipelineDelegate)delegate;
-- (void)addProcessor:(id)a3 type:(unint64_t)a4;
+- (void)addProcessor:(id)processor type:(unint64_t)type;
 - (void)cancelTasks;
-- (void)finalizeLayoutForLayoutOperation:(id)a3 task:(id)a4 DOMObjectProvider:(id)a5;
-- (void)layoutWithTask:(id)a3;
-- (void)removeProcessor:(id)a3 type:(unint64_t)a4;
+- (void)finalizeLayoutForLayoutOperation:(id)operation task:(id)task DOMObjectProvider:(id)provider;
+- (void)layoutWithTask:(id)task;
+- (void)removeProcessor:(id)processor type:(unint64_t)type;
 @end
 
 @implementation SXLayoutPipeline
 
-- (SXLayoutPipeline)initWithLayoutOperationFactory:(id)a3 DOMObjectProviderFactory:(id)a4
+- (SXLayoutPipeline)initWithLayoutOperationFactory:(id)factory DOMObjectProviderFactory:(id)providerFactory
 {
-  v7 = a3;
-  v8 = a4;
+  factoryCopy = factory;
+  providerFactoryCopy = providerFactory;
   v23.receiver = self;
   v23.super_class = SXLayoutPipeline;
   v9 = [(SXLayoutPipeline *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_layoutOperationFactory, a3);
-    objc_storeStrong(&v10->_DOMObjectProviderFactory, a4);
-    v11 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v9->_layoutOperationFactory, factory);
+    objc_storeStrong(&v10->_DOMObjectProviderFactory, providerFactory);
+    array = [MEMORY[0x1E695DF70] array];
     preProcessors = v10->_preProcessors;
-    v10->_preProcessors = v11;
+    v10->_preProcessors = array;
 
-    v13 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     postProcessors = v10->_postProcessors;
-    v10->_postProcessors = v13;
+    v10->_postProcessors = array2;
 
     v15 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     layoutOperationQueue = v10->_layoutOperationQueue;
@@ -36,9 +36,9 @@
 
     v17 = v10->_layoutOperationQueue;
     v18 = MEMORY[0x1E696AEC0];
-    v19 = [MEMORY[0x1E696AFB0] UUID];
-    v20 = [v19 UUIDString];
-    v21 = [v18 stringWithFormat:@"com.apple.news.anf-layout (%@)", v20];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v21 = [v18 stringWithFormat:@"com.apple.news.anf-layout (%@)", uUIDString];
     [(NSOperationQueue *)v17 setName:v21];
 
     [(NSOperationQueue *)v10->_layoutOperationQueue setQualityOfService:25];
@@ -48,40 +48,40 @@
   return v10;
 }
 
-- (void)layoutWithTask:(id)a3
+- (void)layoutWithTask:(id)task
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  taskCopy = task;
   v5 = SXLayoutLog;
   if (os_log_type_enabled(SXLayoutLog, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 identifier];
+    identifier = [taskCopy identifier];
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = identifier;
     _os_log_impl(&dword_1D825C000, v6, OS_LOG_TYPE_DEFAULT, "Pipeline receieved new layout task, task-identifier=%{public}@", &buf, 0xCu);
   }
 
-  v8 = [(SXLayoutPipeline *)self DOMObjectProviderFactory];
-  v9 = [v8 createDOMObjectProvider];
+  dOMObjectProviderFactory = [(SXLayoutPipeline *)self DOMObjectProviderFactory];
+  createDOMObjectProvider = [dOMObjectProviderFactory createDOMObjectProvider];
 
-  v10 = [v4 DOM];
-  [v9 setDOM:v10];
+  v10 = [taskCopy DOM];
+  [createDOMObjectProvider setDOM:v10];
 
-  v11 = [(SXLayoutPipeline *)self layoutOperationFactory];
-  v12 = [v11 layoutOperationWithTask:v4 DOMObjectProvider:v9];
+  layoutOperationFactory = [(SXLayoutPipeline *)self layoutOperationFactory];
+  v12 = [layoutOperationFactory layoutOperationWithTask:taskCopy DOMObjectProvider:createDOMObjectProvider];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
   v54 = 0x2020000000;
   v55 = 0;
-  v13 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __35__SXLayoutPipeline_layoutWithTask___block_invoke;
   v46[3] = &unk_1E84FF5C0;
   v46[4] = &buf;
-  v14 = [v13 beginBackgroundTaskWithName:@"ANF Layout" expirationHandler:v46];
+  v14 = [mEMORY[0x1E69DC668] beginBackgroundTaskWithName:@"ANF Layout" expirationHandler:v46];
 
   *(*(&buf + 1) + 24) = v14;
   objc_initWeak(&location, v12);
@@ -92,9 +92,9 @@
   v38[3] = &unk_1E84FF610;
   objc_copyWeak(&v42, &location);
   objc_copyWeak(&v43, &from);
-  v15 = v4;
+  v15 = taskCopy;
   v39 = v15;
-  v16 = v9;
+  v16 = createDOMObjectProvider;
   v40 = v16;
   p_buf = &buf;
   [v12 setCompletionBlock:v38];
@@ -124,20 +124,20 @@
   v22 = SXLayoutLog;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v19 identifier];
-    v24 = [(SXLayoutPipeline *)self layoutOperationQueue];
-    v25 = [v24 name];
+    identifier2 = [v19 identifier];
+    layoutOperationQueue = [(SXLayoutPipeline *)self layoutOperationQueue];
+    name = [layoutOperationQueue name];
     *v47 = 138412802;
     v48 = v12;
     v49 = 2114;
-    v50 = v23;
+    v50 = identifier2;
     v51 = 2114;
-    v52 = v25;
+    v52 = name;
     _os_log_impl(&dword_1D825C000, v22, OS_LOG_TYPE_DEFAULT, "Adding layout operation: %@, task-identifier= %{public}@, layout-queue: %{public}@", v47, 0x20u);
   }
 
-  v26 = [(SXLayoutPipeline *)self layoutOperationQueue];
-  [v26 addOperation:v12];
+  layoutOperationQueue2 = [(SXLayoutPipeline *)self layoutOperationQueue];
+  [layoutOperationQueue2 addOperation:v12];
 
   objc_destroyWeak(&v33);
   objc_destroyWeak(&v37);
@@ -344,80 +344,80 @@ void __35__SXLayoutPipeline_layoutWithTask___block_invoke_11(uint64_t a1, void *
   }
 }
 
-- (void)finalizeLayoutForLayoutOperation:(id)a3 task:(id)a4 DOMObjectProvider:(id)a5
+- (void)finalizeLayoutForLayoutOperation:(id)operation task:(id)task DOMObjectProvider:(id)provider
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  providerCopy = provider;
+  taskCopy = task;
+  operationCopy = operation;
   v11 = [SXLayoutResult alloc];
-  v12 = [v10 layoutBlueprint];
-  v13 = [v8 DOM];
+  layoutBlueprint = [operationCopy layoutBlueprint];
+  v13 = [providerCopy DOM];
 
-  [v10 duration];
+  [operationCopy duration];
   v15 = v14;
 
-  v17 = [(SXLayoutResult *)v11 initWithLayoutBlueprint:v12 DOM:v13 duration:v15];
-  v16 = [(SXLayoutPipeline *)self delegate];
-  [v16 layoutPipeline:self finishedTask:v9 withResult:v17];
+  v17 = [(SXLayoutResult *)v11 initWithLayoutBlueprint:layoutBlueprint DOM:v13 duration:v15];
+  delegate = [(SXLayoutPipeline *)self delegate];
+  [delegate layoutPipeline:self finishedTask:taskCopy withResult:v17];
 }
 
-- (void)addProcessor:(id)a3 type:(unint64_t)a4
+- (void)addProcessor:(id)processor type:(unint64_t)type
 {
-  v6 = a3;
-  if (v6)
+  processorCopy = processor;
+  if (processorCopy)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
-      v9 = v6;
-      v7 = [(SXLayoutPipeline *)self postProcessors];
+      v9 = processorCopy;
+      postProcessors = [(SXLayoutPipeline *)self postProcessors];
     }
 
     else
     {
-      if (a4)
+      if (type)
       {
         goto LABEL_7;
       }
 
-      v9 = v6;
-      v7 = [(SXLayoutPipeline *)self preProcessors];
+      v9 = processorCopy;
+      postProcessors = [(SXLayoutPipeline *)self preProcessors];
     }
 
-    v8 = v7;
-    [v7 addObject:v9];
+    v8 = postProcessors;
+    [postProcessors addObject:v9];
 
-    v6 = v9;
+    processorCopy = v9;
   }
 
 LABEL_7:
 }
 
-- (void)removeProcessor:(id)a3 type:(unint64_t)a4
+- (void)removeProcessor:(id)processor type:(unint64_t)type
 {
-  v6 = a3;
-  if (v6)
+  processorCopy = processor;
+  if (processorCopy)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
-      v9 = v6;
-      v7 = [(SXLayoutPipeline *)self postProcessors];
+      v9 = processorCopy;
+      postProcessors = [(SXLayoutPipeline *)self postProcessors];
     }
 
     else
     {
-      if (a4)
+      if (type)
       {
         goto LABEL_7;
       }
 
-      v9 = v6;
-      v7 = [(SXLayoutPipeline *)self preProcessors];
+      v9 = processorCopy;
+      postProcessors = [(SXLayoutPipeline *)self preProcessors];
     }
 
-    v8 = v7;
-    [v7 removeObject:v9];
+    v8 = postProcessors;
+    [postProcessors removeObject:v9];
 
-    v6 = v9;
+    processorCopy = v9;
   }
 
 LABEL_7:
@@ -432,8 +432,8 @@ LABEL_7:
     _os_log_impl(&dword_1D825C000, v3, OS_LOG_TYPE_DEFAULT, "Cancelling all layout tasks", v5, 2u);
   }
 
-  v4 = [(SXLayoutPipeline *)self layoutOperationQueue];
-  [v4 cancelAllOperations];
+  layoutOperationQueue = [(SXLayoutPipeline *)self layoutOperationQueue];
+  [layoutOperationQueue cancelAllOperations];
 }
 
 - (SXLayoutPipelineDelegate)delegate

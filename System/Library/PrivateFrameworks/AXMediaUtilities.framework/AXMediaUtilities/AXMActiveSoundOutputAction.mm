@@ -1,24 +1,24 @@
 @interface AXMActiveSoundOutputAction
-- (AXMActiveSoundOutputAction)initWithSoundID:(id)a3;
-- (AXMActiveSoundOutputAction)initWithURL:(id)a3;
+- (AXMActiveSoundOutputAction)initWithSoundID:(id)d;
+- (AXMActiveSoundOutputAction)initWithURL:(id)l;
 @end
 
 @implementation AXMActiveSoundOutputAction
 
-- (AXMActiveSoundOutputAction)initWithURL:(id)a3
+- (AXMActiveSoundOutputAction)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(AXMActiveSoundOutputActionHandle);
-  v6 = [(AXMSoundOutputAction *)self _initWithURL:v4 handle:v5];
+  v6 = [(AXMSoundOutputAction *)self _initWithURL:lCopy handle:v5];
 
   return v6;
 }
 
-- (AXMActiveSoundOutputAction)initWithSoundID:(id)a3
+- (AXMActiveSoundOutputAction)initWithSoundID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc_init(AXMActiveSoundOutputActionHandle);
-  v6 = [(AXMSoundOutputAction *)self _initWithSoundID:v4 handle:v5];
+  v6 = [(AXMSoundOutputAction *)self _initWithSoundID:dCopy handle:v5];
 
   return v6;
 }

@@ -1,21 +1,21 @@
 @interface BMPBSiriInferredHelpfulnessEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasInferredHelpfulnessScore:(BOOL)a3;
-- (void)setHasRestatementScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasInferredHelpfulnessScore:(BOOL)score;
+- (void)setHasRestatementScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBSiriInferredHelpfulnessEvent
 
-- (void)setHasInferredHelpfulnessScore:(BOOL)a3
+- (void)setHasInferredHelpfulnessScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasRestatementScore:(BOOL)a3
+- (void)setHasRestatementScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 4;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = BMPBSiriInferredHelpfulnessEvent;
   v4 = [(BMPBSiriInferredHelpfulnessEvent *)&v8 description];
-  v5 = [(BMPBSiriInferredHelpfulnessEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBSiriInferredHelpfulnessEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_absoluteTimestamp];
-    [v3 setObject:v9 forKey:@"absoluteTimestamp"];
+    [dictionary setObject:v9 forKey:@"absoluteTimestamp"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -83,41 +83,41 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithDouble:self->_inferredHelpfulnessScore];
-  [v3 setObject:v10 forKey:@"inferredHelpfulnessScore"];
+  [dictionary setObject:v10 forKey:@"inferredHelpfulnessScore"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_restatementScore];
-    [v3 setObject:v5 forKey:@"restatementScore"];
+    [dictionary setObject:v5 forKey:@"restatementScore"];
   }
 
 LABEL_5:
   turnID = self->_turnID;
   if (turnID)
   {
-    [v3 setObject:turnID forKey:@"turnID"];
+    [dictionary setObject:turnID forKey:@"turnID"];
   }
 
   modelID = self->_modelID;
   if (modelID)
   {
-    [v3 setObject:modelID forKey:@"modelID"];
+    [dictionary setObject:modelID forKey:@"modelID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if (has)
   {
     absoluteTimestamp = self->_absoluteTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -138,37 +138,37 @@ LABEL_3:
 
   inferredHelpfulnessScore = self->_inferredHelpfulnessScore;
   PBDataWriterWriteDoubleField();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     restatementScore = self->_restatementScore;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
   if (self->_turnID)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_modelID)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = *&self->_absoluteTimestamp;
-    *(v4 + 48) |= 1u;
+    toCopy[1] = *&self->_absoluteTimestamp;
+    *(toCopy + 48) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -187,33 +187,33 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = *&self->_inferredHelpfulnessScore;
-  *(v4 + 48) |= 2u;
+  toCopy[2] = *&self->_inferredHelpfulnessScore;
+  *(toCopy + 48) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    v4[3] = *&self->_restatementScore;
-    *(v4 + 48) |= 4u;
+    toCopy[3] = *&self->_restatementScore;
+    *(toCopy + 48) |= 4u;
   }
 
 LABEL_5:
-  v6 = v4;
+  v6 = toCopy;
   if (self->_turnID)
   {
-    [v4 setTurnID:?];
-    v4 = v6;
+    [toCopy setTurnID:?];
+    toCopy = v6;
   }
 
   if (self->_modelID)
   {
     [v6 setModelID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 1) == 0)
@@ -251,35 +251,35 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_turnID copyWithZone:a3];
+  v8 = [(NSString *)self->_turnID copyWithZone:zone];
   v9 = v6[5];
   v6[5] = v8;
 
-  v10 = [(NSString *)self->_modelID copyWithZone:a3];
+  v10 = [(NSString *)self->_modelID copyWithZone:zone];
   v11 = v6[4];
   v6[4] = v10;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_absoluteTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_absoluteTimestamp != *(equalCopy + 1))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_21:
     v8 = 0;
@@ -288,38 +288,38 @@ LABEL_21:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_inferredHelpfulnessScore != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_inferredHelpfulnessScore != *(equalCopy + 2))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_restatementScore != *(v4 + 3))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_restatementScore != *(equalCopy + 3))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
     goto LABEL_21;
   }
 
   turnID = self->_turnID;
-  if (turnID | *(v4 + 5) && ![(NSString *)turnID isEqual:?])
+  if (turnID | *(equalCopy + 5) && ![(NSString *)turnID isEqual:?])
   {
     goto LABEL_21;
   }
 
   modelID = self->_modelID;
-  if (modelID | *(v4 + 4))
+  if (modelID | *(equalCopy + 4))
   {
     v8 = [(NSString *)modelID isEqual:?];
   }
@@ -441,15 +441,15 @@ LABEL_22:
   return v17 ^ [(NSString *)self->_modelID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 48);
+  fromCopy = from;
+  v5 = *(fromCopy + 48);
   if (v5)
   {
-    self->_absoluteTimestamp = *(v4 + 1);
+    self->_absoluteTimestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -462,32 +462,32 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 48) & 2) == 0)
+  else if ((*(fromCopy + 48) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_inferredHelpfulnessScore = *(v4 + 2);
+  self->_inferredHelpfulnessScore = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if ((*(v4 + 48) & 4) != 0)
+  if ((*(fromCopy + 48) & 4) != 0)
   {
 LABEL_4:
-    self->_restatementScore = *(v4 + 3);
+    self->_restatementScore = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
 LABEL_5:
-  v6 = v4;
-  if (*(v4 + 5))
+  v6 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(BMPBSiriInferredHelpfulnessEvent *)self setTurnID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBSiriInferredHelpfulnessEvent *)self setModelID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

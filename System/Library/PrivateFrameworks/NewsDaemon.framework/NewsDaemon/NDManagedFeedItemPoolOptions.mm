@@ -1,15 +1,15 @@
 @interface NDManagedFeedItemPoolOptions
 - (NDManagedFeedItemPoolOptions)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NDManagedFeedItemPoolOptions
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  NDManagedFeedItemPoolOptions.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  NDManagedFeedItemPoolOptions.encode(with:)(coderCopy);
 }
 
 - (NDManagedFeedItemPoolOptions)init

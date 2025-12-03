@@ -1,6 +1,6 @@
 @interface UASimulatorAdvertisementCreator
 - (BOOL)active;
-- (UASimulatorAdvertisementCreator)initWithManager:(id)a3 simulator:(id)a4;
+- (UASimulatorAdvertisementCreator)initWithManager:(id)manager simulator:(id)simulator;
 - (id)eligibleAdvertiseableItemsInOrder;
 - (id)items;
 - (id)statusString;
@@ -9,16 +9,16 @@
 
 @implementation UASimulatorAdvertisementCreator
 
-- (UASimulatorAdvertisementCreator)initWithManager:(id)a3 simulator:(id)a4
+- (UASimulatorAdvertisementCreator)initWithManager:(id)manager simulator:(id)simulator
 {
-  v7 = a4;
+  simulatorCopy = simulator;
   v11.receiver = self;
   v11.super_class = UASimulatorAdvertisementCreator;
-  v8 = [(UAClientController *)&v11 initWithManager:a3 name:@"SimCreator"];
+  v8 = [(UAClientController *)&v11 initWithManager:manager name:@"SimCreator"];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_simulator, a4);
+    objc_storeStrong(&v8->_simulator, simulator);
   }
 
   return v9;
@@ -26,18 +26,18 @@
 
 - (id)items
 {
-  v3 = [(UASimulatorAdvertisementCreator *)self simulator];
-  if ([v3 activitiesShouldCrossover])
+  simulator = [(UASimulatorAdvertisementCreator *)self simulator];
+  if ([simulator activitiesShouldCrossover])
   {
-    v4 = [(UASimulatorAdvertisementCreator *)self simulator];
-    v5 = [v4 receiver];
-    v6 = [v5 receivedItems];
-    if (v6)
+    simulator2 = [(UASimulatorAdvertisementCreator *)self simulator];
+    receiver = [simulator2 receiver];
+    receivedItems = [receiver receivedItems];
+    if (receivedItems)
     {
-      v7 = [(UASimulatorAdvertisementCreator *)self simulator];
-      v8 = [v7 receiver];
-      v9 = [v8 receivedItems];
-      v10 = [NSSet setWithArray:v9];
+      simulator3 = [(UASimulatorAdvertisementCreator *)self simulator];
+      receiver2 = [simulator3 receiver];
+      receivedItems2 = [receiver2 receivedItems];
+      v10 = [NSSet setWithArray:receivedItems2];
     }
 
     else
@@ -56,21 +56,21 @@
 
 - (id)eligibleAdvertiseableItemsInOrder
 {
-  v3 = [(UASimulatorAdvertisementCreator *)self simulator];
-  v4 = [v3 activitiesShouldCrossover];
+  simulator = [(UASimulatorAdvertisementCreator *)self simulator];
+  activitiesShouldCrossover = [simulator activitiesShouldCrossover];
 
-  if (v4)
+  if (activitiesShouldCrossover)
   {
-    v5 = [(UASimulatorAdvertisementCreator *)self simulator];
-    v6 = [v5 receiver];
-    v7 = [v6 receivedItems];
+    simulator2 = [(UASimulatorAdvertisementCreator *)self simulator];
+    receiver = [simulator2 receiver];
+    receivedItems = [receiver receivedItems];
 
     v8 = +[NSMutableArray array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    obj = v7;
+    obj = receivedItems;
     v9 = [obj countByEnumeratingWithState:&v25 objects:v31 count:16];
     if (v9)
     {
@@ -87,10 +87,10 @@
 
           v13 = *(*(&v25 + 1) + 8 * i);
           v14 = [UASimulatorSuggestedItem alloc];
-          v15 = [(UASimulatorAdvertisementCreator *)self simulator];
-          v16 = [v15 peeredDevice];
-          v17 = [(UASimulatorAdvertisementCreator *)self simulator];
-          v18 = [(UASimulatorSuggestedItem *)v14 initWithUserActivityInfo:v13 peerDevice:v16 simulator:v17];
+          simulator3 = [(UASimulatorAdvertisementCreator *)self simulator];
+          peeredDevice = [simulator3 peeredDevice];
+          simulator4 = [(UASimulatorAdvertisementCreator *)self simulator];
+          v18 = [(UASimulatorSuggestedItem *)v14 initWithUserActivityInfo:v13 peerDevice:peeredDevice simulator:simulator4];
 
           [(UASimulatorSuggestedItem *)v18 setActive:1];
           [v8 addObject:v18];
@@ -126,9 +126,9 @@
 {
   v7.receiver = self;
   v7.super_class = UASimulatorAdvertisementCreator;
-  v3 = [(UACornerActionManagerHandler *)&v7 priority];
-  v4 = [(UASimulatorAdvertisementCreator *)self simulator];
-  if ([v4 activitiesShouldCrossover])
+  priority = [(UACornerActionManagerHandler *)&v7 priority];
+  simulator = [(UASimulatorAdvertisementCreator *)self simulator];
+  if ([simulator activitiesShouldCrossover])
   {
     v5 = 100;
   }
@@ -138,15 +138,15 @@
     v5 = 0;
   }
 
-  return v3 + v5;
+  return priority + v5;
 }
 
 - (BOOL)active
 {
-  v2 = [(UASimulatorAdvertisementCreator *)self simulator];
-  v3 = [v2 activitiesShouldCrossover];
+  simulator = [(UASimulatorAdvertisementCreator *)self simulator];
+  activitiesShouldCrossover = [simulator activitiesShouldCrossover];
 
-  return v3;
+  return activitiesShouldCrossover;
 }
 
 - (id)statusString
@@ -161,43 +161,43 @@
     v3 = @"(inactive) ";
   }
 
-  v4 = [(UASimulatorAdvertisementCreator *)self simulator];
-  v5 = [v4 peeredDevice];
-  v6 = [v5 name];
-  v7 = [(UASimulatorAdvertisementCreator *)self simulator];
-  v8 = [v7 receiver];
-  v9 = [v8 receivedItems];
-  v10 = [v9 firstObject];
-  if (v10)
+  simulator = [(UASimulatorAdvertisementCreator *)self simulator];
+  peeredDevice = [simulator peeredDevice];
+  name = [peeredDevice name];
+  simulator2 = [(UASimulatorAdvertisementCreator *)self simulator];
+  receiver = [simulator2 receiver];
+  receivedItems = [receiver receivedItems];
+  firstObject = [receivedItems firstObject];
+  if (firstObject)
   {
-    v22 = [(UASimulatorAdvertisementCreator *)self simulator];
-    [v22 receiver];
-    v23 = v9;
+    simulator3 = [(UASimulatorAdvertisementCreator *)self simulator];
+    [simulator3 receiver];
+    v23 = receivedItems;
     v12 = v11 = v3;
     [v12 receivedItems];
-    v13 = v25 = v4;
+    v13 = v25 = simulator;
     [v13 firstObject];
-    v24 = v7;
-    v15 = v14 = v5;
+    v24 = simulator2;
+    v15 = v14 = peeredDevice;
     [v15 statusString];
-    v16 = v8;
-    v18 = v17 = v6;
+    v16 = receiver;
+    v18 = v17 = name;
     v21 = v11;
-    v9 = v23;
+    receivedItems = v23;
     v19 = [NSString stringWithFormat:@"(sim-rebroadcasted-item):%@ %@ %@", v21, v17, v18];
 
-    v6 = v17;
-    v8 = v16;
+    name = v17;
+    receiver = v16;
 
-    v5 = v14;
-    v7 = v24;
+    peeredDevice = v14;
+    simulator2 = v24;
 
-    v4 = v25;
+    simulator = v25;
   }
 
   else
   {
-    v19 = [NSString stringWithFormat:@"(sim-rebroadcasted-item):%@ %@ %@", v3, v6, @"-"];
+    v19 = [NSString stringWithFormat:@"(sim-rebroadcasted-item):%@ %@ %@", v3, name, @"-"];
   }
 
   return v19;

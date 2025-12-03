@@ -1,27 +1,27 @@
 @interface ADDeviceSyncMessageSendingContext
-- (ADDeviceSyncMessageSendingContext)initWithQueue:(id)a3 deviceIdentifier:(id)a4 timeoutDuration:(double)a5 completion:(id)a6;
-- (void)_addError:(id)a3;
-- (void)_beginSendingWithMessageSender:(id)a3;
+- (ADDeviceSyncMessageSendingContext)initWithQueue:(id)queue deviceIdentifier:(id)identifier timeoutDuration:(double)duration completion:(id)completion;
+- (void)_addError:(id)error;
+- (void)_beginSendingWithMessageSender:(id)sender;
 - (void)_cancelWatchdogTimer;
-- (void)_endSendingWithMessageSender:(id)a3 replyMessage:(id)a4 error:(id)a5;
-- (void)_finalizeWithError:(id)a3;
-- (void)_finalizeWithResponseMessage:(id)a3;
+- (void)_endSendingWithMessageSender:(id)sender replyMessage:(id)message error:(id)error;
+- (void)_finalizeWithError:(id)error;
+- (void)_finalizeWithResponseMessage:(id)message;
 - (void)_handleWatchdogTimeout;
-- (void)beginSendingWithMessageSender:(id)a3;
+- (void)beginSendingWithMessageSender:(id)sender;
 - (void)dealloc;
-- (void)endSendingWithMessageSender:(id)a3 replyMessage:(id)a4 error:(id)a5;
+- (void)endSendingWithMessageSender:(id)sender replyMessage:(id)message error:(id)error;
 @end
 
 @implementation ADDeviceSyncMessageSendingContext
 
-- (void)_finalizeWithError:(id)a3
+- (void)_finalizeWithError:(id)error
 {
-  v7 = a3;
+  errorCopy = error;
   [(ADDeviceSyncMessageSendingContext *)self _cancelWatchdogTimer];
   completion = self->_completion;
   if (completion)
   {
-    completion[2](completion, 0, v7);
+    completion[2](completion, 0, errorCopy);
     v5 = self->_completion;
     self->_completion = 0;
   }
@@ -30,14 +30,14 @@
   self->_errors = 0;
 }
 
-- (void)_finalizeWithResponseMessage:(id)a3
+- (void)_finalizeWithResponseMessage:(id)message
 {
-  v7 = a3;
+  messageCopy = message;
   [(ADDeviceSyncMessageSendingContext *)self _cancelWatchdogTimer];
   completion = self->_completion;
   if (completion)
   {
-    completion[2](completion, v7, 0);
+    completion[2](completion, messageCopy, 0);
     v5 = self->_completion;
     self->_completion = 0;
   }
@@ -46,11 +46,11 @@
   self->_errors = 0;
 }
 
-- (void)_addError:(id)a3
+- (void)_addError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_completion)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy && self->_completion)
   {
     errors = self->_errors;
     v9 = v5;
@@ -63,11 +63,11 @@
       errors = self->_errors;
     }
 
-    v4 = [(NSMutableArray *)errors addObject:v9];
+    errorCopy = [(NSMutableArray *)errors addObject:v9];
     v5 = v9;
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(errorCopy, v5);
 }
 
 - (void)_cancelWatchdogTimer
@@ -90,11 +90,11 @@
   }
 }
 
-- (void)_endSendingWithMessageSender:(id)a3 replyMessage:(id)a4 error:(id)a5
+- (void)_endSendingWithMessageSender:(id)sender replyMessage:(id)message error:(id)error
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  senderCopy = sender;
+  messageCopy = message;
+  errorCopy = error;
   numberOfActiveMessageSenders = self->_numberOfActiveMessageSenders;
   if (numberOfActiveMessageSenders)
   {
@@ -103,10 +103,10 @@
 
   if (self->_completion)
   {
-    [(ADDeviceSyncMessageSendingContext *)self _addError:v9];
-    if (v8)
+    [(ADDeviceSyncMessageSendingContext *)self _addError:errorCopy];
+    if (messageCopy)
     {
-      [(ADDeviceSyncMessageSendingContext *)self _finalizeWithResponseMessage:v8];
+      [(ADDeviceSyncMessageSendingContext *)self _finalizeWithResponseMessage:messageCopy];
     }
 
     else if (!self->_numberOfActiveMessageSenders)
@@ -117,7 +117,7 @@
   }
 }
 
-- (void)_beginSendingWithMessageSender:(id)a3
+- (void)_beginSendingWithMessageSender:(id)sender
 {
   numberOfActiveMessageSenders = self->_numberOfActiveMessageSenders;
   if (!numberOfActiveMessageSenders)
@@ -129,61 +129,61 @@
   self->_numberOfActiveMessageSenders = numberOfActiveMessageSenders + 1;
 }
 
-- (void)endSendingWithMessageSender:(id)a3 replyMessage:(id)a4 error:(id)a5
+- (void)endSendingWithMessageSender:(id)sender replyMessage:(id)message error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  senderCopy = sender;
+  messageCopy = message;
+  errorCopy = error;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10012A1B4;
   v15[3] = &unk_10051DB18;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = senderCopy;
+  v17 = messageCopy;
+  v18 = errorCopy;
+  v12 = errorCopy;
+  v13 = messageCopy;
+  v14 = senderCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)beginSendingWithMessageSender:(id)a3
+- (void)beginSendingWithMessageSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10012A25C;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = senderCopy;
+  v6 = senderCopy;
   dispatch_async(queue, v7);
 }
 
-- (ADDeviceSyncMessageSendingContext)initWithQueue:(id)a3 deviceIdentifier:(id)a4 timeoutDuration:(double)a5 completion:(id)a6
+- (ADDeviceSyncMessageSendingContext)initWithQueue:(id)queue deviceIdentifier:(id)identifier timeoutDuration:(double)duration completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  queueCopy = queue;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v28.receiver = self;
   v28.super_class = ADDeviceSyncMessageSendingContext;
   v14 = [(ADDeviceSyncMessageSendingContext *)&v28 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_queue, a3);
-    v16 = [v12 copy];
+    objc_storeStrong(&v14->_queue, queue);
+    v16 = [identifierCopy copy];
     deviceIdentifier = v15->_deviceIdentifier;
     v15->_deviceIdentifier = v16;
 
-    v18 = objc_retainBlock(v13);
+    v18 = objc_retainBlock(completionCopy);
     completion = v15->_completion;
     v15->_completion = v18;
 
-    if (a5 > 0.0)
+    if (duration > 0.0)
     {
       objc_initWeak(&location, v15);
       v20 = [AFWatchdogTimer alloc];
@@ -193,7 +193,7 @@
       v25[2] = sub_10012A40C;
       v25[3] = &unk_10051B5F0;
       objc_copyWeak(&v26, &location);
-      v22 = [v20 initWithTimeoutInterval:queue onQueue:v25 timeoutHandler:a5];
+      v22 = [v20 initWithTimeoutInterval:queue onQueue:v25 timeoutHandler:duration];
       watchdogTimer = v15->_watchdogTimer;
       v15->_watchdogTimer = v22;
 

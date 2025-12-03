@@ -1,27 +1,27 @@
 @interface NTKPigmentPreferenceManager
-+ (BOOL)_shouldSaveAutoSelectedPigments:(id)a3 forCollectionName:(id)a4 userDefault:(id)a5;
-- (BOOL)_threadunsafe_isOptionVisible:(id)a3;
-- (BOOL)isOptionVisible:(id)a3;
++ (BOOL)_shouldSaveAutoSelectedPigments:(id)pigments forCollectionName:(id)name userDefault:(id)default;
+- (BOOL)_threadunsafe_isOptionVisible:(id)visible;
+- (BOOL)isOptionVisible:(id)visible;
 - (NSSet)autoSelectedPigments;
 - (NSSet)selectedPigments;
-- (NTKPigmentPreferenceManager)initWithDomain:(id)a3;
+- (NTKPigmentPreferenceManager)initWithDomain:(id)domain;
 - (NTKPigmentPreferenceManagerDelegate)delegate;
 - (void)_loadAutoSelectedPigments;
 - (void)_loadVisibleOptions;
-- (void)_threadunsafe_appendAutoSelectPigments:(id)a3;
+- (void)_threadunsafe_appendAutoSelectPigments:(id)pigments;
 - (void)_threadunsafe_removeAllAutoSelectPigments;
-- (void)_threadunsafe_removeAutoSelectionWithOptionName:(id)a3;
-- (void)_threadunsafe_setOptionName:(id)a3 visible:(BOOL)a4 manual:(BOOL)a5;
+- (void)_threadunsafe_removeAutoSelectionWithOptionName:(id)name;
+- (void)_threadunsafe_setOptionName:(id)name visible:(BOOL)visible manual:(BOOL)manual;
 - (void)_threadunsafe_syncAllContent;
-- (void)_threadunsafe_syncAutoSelectedPigments:(id)a3;
-- (void)_threadunsafe_syncVisibleOptionsByCollection:(id)a3;
+- (void)_threadunsafe_syncAutoSelectedPigments:(id)pigments;
+- (void)_threadunsafe_syncVisibleOptionsByCollection:(id)collection;
 - (void)dealloc;
 - (void)handlePairedDeviceChanged;
 - (void)resetContent;
-- (void)setAutoSelectedPigments:(id)a3;
-- (void)setAutoSelectedPigments:(id)a3 forCollectionName:(id)a4;
-- (void)setOption:(id)a3 visible:(BOOL)a4;
-- (void)setSelectedPigments:(id)a3;
+- (void)setAutoSelectedPigments:(id)pigments;
+- (void)setAutoSelectedPigments:(id)pigments forCollectionName:(id)name;
+- (void)setOption:(id)option visible:(BOOL)visible;
+- (void)setSelectedPigments:(id)pigments;
 @end
 
 @implementation NTKPigmentPreferenceManager
@@ -34,31 +34,31 @@
   [(NTKPigmentPreferenceManager *)&v3 dealloc];
 }
 
-- (NTKPigmentPreferenceManager)initWithDomain:(id)a3
+- (NTKPigmentPreferenceManager)initWithDomain:(id)domain
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  domainCopy = domain;
   v32.receiver = self;
   v32.super_class = NTKPigmentPreferenceManager;
   v6 = [(NTKPigmentPreferenceManager *)&v32 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_domain, a3);
+    objc_storeStrong(&v6->_domain, domain);
     v8 = dispatch_queue_create("com.apple.nanotimekit.NTKPigmentPreferenceManager", 0);
     privateQueue = v7->_privateQueue;
     v7->_privateQueue = v8;
 
     pthread_rwlock_init(&v7->_rwlock, 0);
     v10 = objc_alloc(MEMORY[0x277CBEBD0]);
-    v11 = [(NTKPigmentPreferenceManager *)v7 domain];
-    v12 = [v10 initWithSuiteName:v11];
+    domain = [(NTKPigmentPreferenceManager *)v7 domain];
+    v12 = [v10 initWithSuiteName:domain];
     userDefault = v7->_userDefault;
     v7->_userDefault = v12;
 
     v14 = objc_alloc(MEMORY[0x277D2BA58]);
-    v15 = [(NTKPigmentPreferenceManager *)v7 domain];
-    v16 = [v14 initWithDomain:v15];
+    domain2 = [(NTKPigmentPreferenceManager *)v7 domain];
+    v16 = [v14 initWithDomain:domain2];
     npsDomainAccessor = v7->_npsDomainAccessor;
     v7->_npsDomainAccessor = v16;
 
@@ -232,11 +232,11 @@ void __46__NTKPigmentPreferenceManager_initWithDomain___block_invoke_29(uint64_t
   return v3;
 }
 
-- (void)setSelectedPigments:(id)a3
+- (void)setSelectedPigments:(id)pigments
 {
-  v4 = a3;
+  pigmentsCopy = pigments;
   pthread_rwlock_wrlock(&self->_rwlock);
-  v5 = [v4 copy];
+  v5 = [pigmentsCopy copy];
 
   selectedPigments = self->_selectedPigments;
   self->_selectedPigments = v5;
@@ -253,11 +253,11 @@ void __46__NTKPigmentPreferenceManager_initWithDomain___block_invoke_29(uint64_t
   return v3;
 }
 
-- (void)setAutoSelectedPigments:(id)a3
+- (void)setAutoSelectedPigments:(id)pigments
 {
-  v4 = a3;
+  pigmentsCopy = pigments;
   pthread_rwlock_wrlock(&self->_rwlock);
-  v5 = [v4 copy];
+  v5 = [pigmentsCopy copy];
 
   autoSelectedPigments = self->_autoSelectedPigments;
   self->_autoSelectedPigments = v5;
@@ -265,13 +265,13 @@ void __46__NTKPigmentPreferenceManager_initWithDomain___block_invoke_29(uint64_t
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (BOOL)isOptionVisible:(id)a3
+- (BOOL)isOptionVisible:(id)visible
 {
-  v4 = a3;
-  if ([v4 isAddable])
+  visibleCopy = visible;
+  if ([visibleCopy isAddable])
   {
     pthread_rwlock_rdlock(&self->_rwlock);
-    v5 = [(NTKPigmentPreferenceManager *)self _threadunsafe_isOptionVisible:v4];
+    v5 = [(NTKPigmentPreferenceManager *)self _threadunsafe_isOptionVisible:visibleCopy];
     pthread_rwlock_unlock(&self->_rwlock);
   }
 
@@ -283,27 +283,27 @@ void __46__NTKPigmentPreferenceManager_initWithDomain___block_invoke_29(uint64_t
   return v5;
 }
 
-- (void)setOption:(id)a3 visible:(BOOL)a4
+- (void)setOption:(id)option visible:(BOOL)visible
 {
-  v4 = a4;
-  v7 = a3;
+  visibleCopy = visible;
+  optionCopy = option;
   pthread_rwlock_wrlock(&self->_rwlock);
-  v6 = [v7 fullname];
-  [(NTKPigmentPreferenceManager *)self _threadunsafe_setOptionName:v6 visible:v4];
+  fullname = [optionCopy fullname];
+  [(NTKPigmentPreferenceManager *)self _threadunsafe_setOptionName:fullname visible:visibleCopy];
 
   [(NTKPigmentPreferenceManager *)self _threadunsafe_syncAllContent];
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (void)setAutoSelectedPigments:(id)a3 forCollectionName:(id)a4
+- (void)setAutoSelectedPigments:(id)pigments forCollectionName:(id)name
 {
   v43 = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v6 = a4;
+  pigmentsCopy = pigments;
+  nameCopy = name;
   pthread_rwlock_wrlock(&self->_rwlock);
   v7 = objc_opt_class();
-  v8 = [(NTKPigmentPreferenceManager *)self userDefault];
-  LODWORD(v7) = [v7 _shouldSaveAutoSelectedPigments:v30 forCollectionName:v6 userDefault:v8];
+  userDefault = [(NTKPigmentPreferenceManager *)self userDefault];
+  LODWORD(v7) = [v7 _shouldSaveAutoSelectedPigments:pigmentsCopy forCollectionName:nameCopy userDefault:userDefault];
 
   if (v7)
   {
@@ -311,15 +311,15 @@ void __46__NTKPigmentPreferenceManager_initWithDomain___block_invoke_29(uint64_t
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v39 = v6;
+      v39 = nameCopy;
       _os_log_impl(&dword_22D9C5000, v9, OS_LOG_TYPE_DEFAULT, "#pref-sync Starting auto-selection for domain: %{public}@", buf, 0xCu);
     }
 
-    v10 = [(NTKPigmentPreferenceManager *)self userDefault];
-    v29 = [v10 objectForKey:@"DefaultSelectedPigmentsByDomain"];
+    userDefault2 = [(NTKPigmentPreferenceManager *)self userDefault];
+    v29 = [userDefault2 objectForKey:@"DefaultSelectedPigmentsByDomain"];
 
     v11 = MEMORY[0x277CBEB98];
-    v12 = [v29 objectForKeyedSubscript:v6];
+    v12 = [v29 objectForKeyedSubscript:nameCopy];
     v28 = [v11 setWithArray:v12];
 
     if ([v28 count])
@@ -330,7 +330,7 @@ void __46__NTKPigmentPreferenceManager_initWithDomain___block_invoke_29(uint64_t
       v35[2] = __73__NTKPigmentPreferenceManager_setAutoSelectedPigments_forCollectionName___block_invoke;
       v35[3] = &unk_27877F498;
       v36 = v28;
-      v37 = self;
+      selfCopy = self;
       [v13 enumerateObjectsUsingBlock:v35];
     }
 
@@ -340,7 +340,7 @@ void __46__NTKPigmentPreferenceManager_initWithDomain___block_invoke_29(uint64_t
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v16 = v30;
+    v16 = pigmentsCopy;
     v17 = [v16 countByEnumeratingWithState:&v31 objects:v42 count:16];
     if (v17)
     {
@@ -355,16 +355,16 @@ void __46__NTKPigmentPreferenceManager_initWithDomain___block_invoke_29(uint64_t
           }
 
           v20 = *(*(&v31 + 1) + 8 * i);
-          v21 = [v20 fullname];
-          [v15 addObject:v21];
+          fullname = [v20 fullname];
+          [v15 addObject:fullname];
 
           if (![(NTKPigmentPreferenceManager *)self _threadunsafe_isOptionVisible:v20])
           {
             [v14 addObject:v20];
           }
 
-          v22 = [v20 fullname];
-          [(NTKPigmentPreferenceManager *)self _threadunsafe_setOptionName:v22 visible:1 manual:0];
+          fullname2 = [v20 fullname];
+          [(NTKPigmentPreferenceManager *)self _threadunsafe_setOptionName:fullname2 visible:1 manual:0];
         }
 
         v17 = [v16 countByEnumeratingWithState:&v31 objects:v42 count:16];
@@ -373,18 +373,18 @@ void __46__NTKPigmentPreferenceManager_initWithDomain___block_invoke_29(uint64_t
       while (v17);
     }
 
-    v23 = [v29 mutableCopy];
-    if (!v23)
+    dictionary = [v29 mutableCopy];
+    if (!dictionary)
     {
-      v23 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
-    [v23 setObject:v15 forKeyedSubscript:v6];
-    v24 = [(NTKPigmentPreferenceManager *)self userDefault];
-    [v24 setObject:v23 forKey:@"DefaultSelectedPigmentsByDomain"];
+    [dictionary setObject:v15 forKeyedSubscript:nameCopy];
+    userDefault3 = [(NTKPigmentPreferenceManager *)self userDefault];
+    [userDefault3 setObject:dictionary forKey:@"DefaultSelectedPigmentsByDomain"];
 
-    v25 = [(NTKPigmentPreferenceManager *)self userDefault];
-    [v25 synchronize];
+    userDefault4 = [(NTKPigmentPreferenceManager *)self userDefault];
+    [userDefault4 synchronize];
 
     [(NTKPigmentPreferenceManager *)self _threadunsafe_appendAutoSelectPigments:v14];
     [(NTKPigmentPreferenceManager *)self _threadunsafe_syncAllContent];
@@ -393,7 +393,7 @@ void __46__NTKPigmentPreferenceManager_initWithDomain___block_invoke_29(uint64_t
     {
       selectedPigments = self->_selectedPigments;
       *buf = 138543618;
-      v39 = v6;
+      v39 = nameCopy;
       v40 = 2114;
       v41 = selectedPigments;
       _os_log_impl(&dword_22D9C5000, v26, OS_LOG_TYPE_DEFAULT, "#pref-sync Finished auto-selection for domain: %{public}@ - selections: %{public}@", buf, 0x16u);
@@ -452,22 +452,22 @@ void __73__NTKPigmentPreferenceManager_setAutoSelectedPigments_forCollectionName
 
   pthread_rwlock_wrlock(&self->_rwlock);
   v4 = objc_alloc(MEMORY[0x277D2BA58]);
-  v5 = [(NTKPigmentPreferenceManager *)self domain];
-  v6 = [v4 initWithDomain:v5];
+  domain = [(NTKPigmentPreferenceManager *)self domain];
+  v6 = [v4 initWithDomain:domain];
   npsDomainAccessor = self->_npsDomainAccessor;
   self->_npsDomainAccessor = v6;
 
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (BOOL)_threadunsafe_isOptionVisible:(id)a3
+- (BOOL)_threadunsafe_isOptionVisible:(id)visible
 {
-  v4 = a3;
-  if ([v4 isAddable])
+  visibleCopy = visible;
+  if ([visibleCopy isAddable])
   {
     selectedPigments = self->_selectedPigments;
-    v6 = [v4 fullname];
-    v7 = [(NSSet *)selectedPigments containsObject:v6];
+    fullname = [visibleCopy fullname];
+    v7 = [(NSSet *)selectedPigments containsObject:fullname];
   }
 
   else
@@ -478,53 +478,53 @@ void __73__NTKPigmentPreferenceManager_setAutoSelectedPigments_forCollectionName
   return v7;
 }
 
-- (void)_threadunsafe_setOptionName:(id)a3 visible:(BOOL)a4 manual:(BOOL)a5
+- (void)_threadunsafe_setOptionName:(id)name visible:(BOOL)visible manual:(BOOL)manual
 {
-  v5 = a5;
-  v6 = a4;
-  v11 = a3;
+  manualCopy = manual;
+  visibleCopy = visible;
+  nameCopy = name;
   v8 = [(NSSet *)self->_selectedPigments mutableCopy];
   if (!v8)
   {
     v8 = [MEMORY[0x277CBEB58] set];
   }
 
-  if (v6)
+  if (visibleCopy)
   {
-    [v8 addObject:v11];
+    [v8 addObject:nameCopy];
   }
 
   else
   {
-    [v8 removeObject:v11];
+    [v8 removeObject:nameCopy];
   }
 
   v9 = [v8 copy];
   selectedPigments = self->_selectedPigments;
   self->_selectedPigments = v9;
 
-  if (v5)
+  if (manualCopy)
   {
-    [(NTKPigmentPreferenceManager *)self _threadunsafe_removeAutoSelectionWithOptionName:v11];
+    [(NTKPigmentPreferenceManager *)self _threadunsafe_removeAutoSelectionWithOptionName:nameCopy];
   }
 }
 
-+ (BOOL)_shouldSaveAutoSelectedPigments:(id)a3 forCollectionName:(id)a4 userDefault:(id)a5
++ (BOOL)_shouldSaveAutoSelectedPigments:(id)pigments forCollectionName:(id)name userDefault:(id)default
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  pigmentsCopy = pigments;
+  nameCopy = name;
+  defaultCopy = default;
+  v10 = defaultCopy;
   v11 = 0;
-  if (v8 && v9)
+  if (nameCopy && defaultCopy)
   {
     v12 = objc_alloc_init(MEMORY[0x277CCAB68]);
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v13 = v7;
+    v13 = pigmentsCopy;
     v14 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v14)
     {
@@ -539,8 +539,8 @@ void __73__NTKPigmentPreferenceManager_setAutoSelectedPigments_forCollectionName
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v26 + 1) + 8 * i) identifier];
-          [v12 appendString:v18];
+          identifier = [*(*(&v26 + 1) + 8 * i) identifier];
+          [v12 appendString:identifier];
         }
 
         v15 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -552,21 +552,21 @@ void __73__NTKPigmentPreferenceManager_setAutoSelectedPigments_forCollectionName
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v12, "hash")}];
     v20 = [v10 objectForKey:@"AutoSelectionIdentifiersByDomain"];
     v21 = v20;
-    if (v20 && ([v20 objectForKeyedSubscript:v8], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isEqualToNumber:", v19), v22, (v23 & 1) != 0))
+    if (v20 && ([v20 objectForKeyedSubscript:nameCopy], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isEqualToNumber:", v19), v22, (v23 & 1) != 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v24 = [v21 mutableCopy];
-      if (!v24)
+      dictionary = [v21 mutableCopy];
+      if (!dictionary)
       {
-        v24 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
       }
 
-      [v24 setObject:v19 forKeyedSubscript:v8];
-      [v10 setObject:v24 forKey:@"AutoSelectionIdentifiersByDomain"];
+      [dictionary setObject:v19 forKeyedSubscript:nameCopy];
+      [v10 setObject:dictionary forKey:@"AutoSelectionIdentifiersByDomain"];
 
       v11 = 1;
     }
@@ -575,14 +575,14 @@ void __73__NTKPigmentPreferenceManager_setAutoSelectedPigments_forCollectionName
   return v11;
 }
 
-- (void)_threadunsafe_removeAutoSelectionWithOptionName:(id)a3
+- (void)_threadunsafe_removeAutoSelectionWithOptionName:(id)name
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(NSSet *)self->_autoSelectedPigments containsObject:v4])
+  nameCopy = name;
+  if ([(NSSet *)self->_autoSelectedPigments containsObject:nameCopy])
   {
     v5 = [(NSSet *)self->_autoSelectedPigments mutableCopy];
-    [v5 removeObject:v4];
+    [v5 removeObject:nameCopy];
     v6 = [v5 copy];
     autoSelectedPigments = self->_autoSelectedPigments;
     self->_autoSelectedPigments = v6;
@@ -591,17 +591,17 @@ void __73__NTKPigmentPreferenceManager_setAutoSelectedPigments_forCollectionName
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v4;
+      v10 = nameCopy;
       _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "#pref-sync Auto-selected pigment removed: %{public}@", &v9, 0xCu);
     }
   }
 }
 
-- (void)_threadunsafe_appendAutoSelectPigments:(id)a3
+- (void)_threadunsafe_appendAutoSelectPigments:(id)pigments
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  pigmentsCopy = pigments;
+  if ([pigmentsCopy count])
   {
     v5 = [(NSSet *)self->_autoSelectedPigments mutableCopy];
     if (!v5)
@@ -613,7 +613,7 @@ void __73__NTKPigmentPreferenceManager_setAutoSelectedPigments_forCollectionName
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v4;
+    v6 = pigmentsCopy;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v21 count:16];
     if (v7)
     {
@@ -629,8 +629,8 @@ void __73__NTKPigmentPreferenceManager_setAutoSelectedPigments_forCollectionName
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * v10) fullname];
-          [v5 addObject:v11];
+          fullname = [*(*(&v15 + 1) + 8 * v10) fullname];
+          [v5 addObject:fullname];
 
           ++v10;
         }
@@ -673,18 +673,18 @@ void __73__NTKPigmentPreferenceManager_setAutoSelectedPigments_forCollectionName
   [(NTKPigmentPreferenceManager *)self _threadunsafe_syncAutoSelectedPigments:v5];
 }
 
-- (void)_threadunsafe_syncAutoSelectedPigments:(id)a3
+- (void)_threadunsafe_syncAutoSelectedPigments:(id)pigments
 {
-  v4 = a3;
-  v5 = [(NTKPigmentPreferenceManager *)self privateQueue];
+  pigmentsCopy = pigments;
+  privateQueue = [(NTKPigmentPreferenceManager *)self privateQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__NTKPigmentPreferenceManager__threadunsafe_syncAutoSelectedPigments___block_invoke;
   v7[3] = &unk_27877E438;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = pigmentsCopy;
+  v6 = pigmentsCopy;
+  dispatch_async(privateQueue, v7);
 }
 
 void __70__NTKPigmentPreferenceManager__threadunsafe_syncAutoSelectedPigments___block_invoke(uint64_t a1)
@@ -717,18 +717,18 @@ void __70__NTKPigmentPreferenceManager__threadunsafe_syncAutoSelectedPigments___
   }
 }
 
-- (void)_threadunsafe_syncVisibleOptionsByCollection:(id)a3
+- (void)_threadunsafe_syncVisibleOptionsByCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(NTKPigmentPreferenceManager *)self privateQueue];
+  collectionCopy = collection;
+  privateQueue = [(NTKPigmentPreferenceManager *)self privateQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__NTKPigmentPreferenceManager__threadunsafe_syncVisibleOptionsByCollection___block_invoke;
   v7[3] = &unk_27877E438;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = collectionCopy;
+  v6 = collectionCopy;
+  dispatch_async(privateQueue, v7);
 }
 
 void __76__NTKPigmentPreferenceManager__threadunsafe_syncVisibleOptionsByCollection___block_invoke(uint64_t a1)
@@ -771,7 +771,7 @@ void __76__NTKPigmentPreferenceManager__threadunsafe_syncVisibleOptionsByCollect
 - (void)_loadVisibleOptions
 {
   pthread_rwlock_wrlock(&self->_rwlock);
-  v3 = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
   v7 = [(NPSDomainAccessor *)self->_npsDomainAccessor objectForKey:@"SelectedPigmentList"];
   pthread_rwlock_unlock(&self->_rwlock);
   v4 = v7;
@@ -789,7 +789,7 @@ void __76__NTKPigmentPreferenceManager__threadunsafe_syncVisibleOptionsByCollect
 - (void)_loadAutoSelectedPigments
 {
   pthread_rwlock_wrlock(&self->_rwlock);
-  v3 = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
   v7 = [(NPSDomainAccessor *)self->_npsDomainAccessor objectForKey:@"AutoSelectedPigmentList"];
   pthread_rwlock_unlock(&self->_rwlock);
   v4 = v7;

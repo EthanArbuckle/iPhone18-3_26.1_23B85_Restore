@@ -1,5 +1,5 @@
 @interface SESSettingsEligiblity
-+ (BOOL)isApplicationInstalledOrPlaceholder:(id)a3;
++ (BOOL)isApplicationInstalledOrPlaceholder:(id)placeholder;
 + (BOOL)isContactlessTCCServiceEligible;
 + (BOOL)isSecureElementTCCServiceEligible;
 @end
@@ -76,12 +76,12 @@
   return v4;
 }
 
-+ (BOOL)isApplicationInstalledOrPlaceholder:(id)a3
++ (BOOL)isApplicationInstalledOrPlaceholder:(id)placeholder
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  placeholderCopy = placeholder;
   v10 = 0;
-  v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v10];
+  v4 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:placeholderCopy allowPlaceholder:1 error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -91,7 +91,7 @@
       *buf = 138412546;
       v12 = v5;
       v13 = 2112;
-      v14 = v3;
+      v14 = placeholderCopy;
       _os_log_impl(&dword_1C7B9A000, v6, OS_LOG_TYPE_ERROR, "Error %@ encountered when checking if %@ is installed", buf, 0x16u);
     }
 

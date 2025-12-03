@@ -5,16 +5,16 @@
 - (NSString)customContentTitle;
 - (NSString)manageButtonTitle;
 - (SWCollaborationDetailViewModel)init;
-- (SWCollaborationDetailViewModel)initWithHighlight:(id)a3;
+- (SWCollaborationDetailViewModel)initWithHighlight:(id)highlight;
 - (SWHighlight)highlight;
 - (UICloudSharingControllerDelegate)cloudSharingControllerDelegate;
-- (void)highlightCenterHighlightsDidChange:(id)a3;
-- (void)setCustomCollaborators:(id)a3;
-- (void)setCustomContentTitle:(id)a3;
-- (void)setHighlight:(id)a3;
-- (void)setItemProvider:(id)a3;
-- (void)setManageButtonTitle:(id)a3;
-- (void)setShowManageButton:(BOOL)a3;
+- (void)highlightCenterHighlightsDidChange:(id)change;
+- (void)setCustomCollaborators:(id)collaborators;
+- (void)setCustomContentTitle:(id)title;
+- (void)setHighlight:(id)highlight;
+- (void)setItemProvider:(id)provider;
+- (void)setManageButtonTitle:(id)title;
+- (void)setShowManageButton:(BOOL)button;
 @end
 
 @implementation SWCollaborationDetailViewModel
@@ -26,19 +26,19 @@
   return *(self + v3);
 }
 
-- (void)setItemProvider:(id)a3
+- (void)setItemProvider:(id)provider
 {
   v5 = OBJC_IVAR___SWCollaborationDetailViewModel_itemProvider;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = provider;
+  providerCopy = provider;
+  selfCopy = self;
 
   v9 = swift_allocObject();
   swift_unknownObjectWeakInit();
 
-  sub_1BBC27108(v7, sub_1BBC286D4, v9);
+  sub_1BBC27108(providerCopy, sub_1BBC286D4, v9);
 }
 
 - (UICloudSharingControllerDelegate)cloudSharingControllerDelegate
@@ -53,18 +53,18 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_1BBC40ABC();
 
   return v5;
 }
 
-- (void)setHighlight:(id)a3
+- (void)setHighlight:(id)highlight
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = a3;
-  v6 = self;
+  highlightCopy = highlight;
+  selfCopy = self;
   sub_1BBC40ACC();
 }
 
@@ -72,7 +72,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_1BBC40ABC();
 
   if (v6)
@@ -88,16 +88,16 @@
   return v4;
 }
 
-- (void)setCustomContentTitle:(id)a3
+- (void)setCustomContentTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     sub_1BBC410EC();
   }
 
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_1BBC40ACC();
 }
 
@@ -105,7 +105,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_1BBC40ABC();
 
   if (v6)
@@ -122,9 +122,9 @@
   return v4;
 }
 
-- (void)setCustomCollaborators:(id)a3
+- (void)setCustomCollaborators:(id)collaborators
 {
-  if (a3)
+  if (collaborators)
   {
     sub_1BBC1D534(0, &qword_1EBCA5378, 0x1E697B6E8);
     sub_1BBC4117C();
@@ -132,7 +132,7 @@
 
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_1BBC40ACC();
 }
 
@@ -140,7 +140,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_1BBC40ABC();
 
   v4 = sub_1BBC410BC();
@@ -148,12 +148,12 @@
   return v4;
 }
 
-- (void)setManageButtonTitle:(id)a3
+- (void)setManageButtonTitle:(id)title
 {
   sub_1BBC410EC();
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_1BBC40ACC();
 }
 
@@ -161,24 +161,24 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_1BBC40ABC();
 
   return v5;
 }
 
-- (void)setShowManageButton:(BOOL)a3
+- (void)setShowManageButton:(BOOL)button
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_1BBC40ACC();
 }
 
-- (SWCollaborationDetailViewModel)initWithHighlight:(id)a3
+- (SWCollaborationDetailViewModel)initWithHighlight:(id)highlight
 {
-  v4 = a3;
-  v5 = sub_1BBC2655C(a3);
+  highlightCopy = highlight;
+  v5 = sub_1BBC2655C(highlight);
 
   return v5;
 }
@@ -190,7 +190,7 @@
   return result;
 }
 
-- (void)highlightCenterHighlightsDidChange:(id)a3
+- (void)highlightCenterHighlightsDidChange:(id)change
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBCA5228, &unk_1BBC446E0);
   v5 = *(*(v4 - 8) + 64);
@@ -198,7 +198,7 @@
   v8 = &v10 - v7;
   swift_getKeyPath();
   swift_getKeyPath();
-  v9 = self;
+  selfCopy = self;
   sub_1BBC40ABC();
 
   sub_1BBC22424(v8);

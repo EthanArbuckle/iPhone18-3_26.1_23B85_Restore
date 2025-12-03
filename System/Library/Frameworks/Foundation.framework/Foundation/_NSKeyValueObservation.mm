@@ -9,14 +9,14 @@
 - (void)dealloc
 {
   Strong = swift_unknownObjectWeakLoadStrong();
-  v4 = self;
+  selfCopy = self;
   if (Strong)
   {
     NSKeyValueObservation.Helper.invalidate()();
   }
 
   swift_unknownObjectWeakAssign();
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for NSKeyValueObservation();
   [(_NSKeyValueObservation *)&v5 dealloc];
 }
@@ -24,7 +24,7 @@
 - (void)invalidate
 {
   Strong = swift_unknownObjectWeakLoadStrong();
-  v4 = self;
+  selfCopy = self;
   if (Strong)
   {
     NSKeyValueObservation.Helper.invalidate()();

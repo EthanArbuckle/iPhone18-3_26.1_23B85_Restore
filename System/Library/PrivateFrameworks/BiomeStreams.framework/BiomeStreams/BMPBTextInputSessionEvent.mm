@@ -1,23 +1,23 @@
 @interface BMPBTextInputSessionEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSessionType:(id)a3;
+- (int)StringAsSessionType:(id)type;
 - (int)sessionType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSessionType:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSessionType:(BOOL)type;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBTextInputSessionEvent
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -43,9 +43,9 @@
   }
 }
 
-- (void)setHasSessionType:(BOOL)a3
+- (void)setHasSessionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -58,25 +58,25 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsSessionType:(id)a3
+- (int)StringAsSessionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Keyboard"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Keyboard"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ThirdPartyKeyboard"])
+  else if ([typeCopy isEqualToString:@"ThirdPartyKeyboard"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Pencil"])
+  else if ([typeCopy isEqualToString:@"Pencil"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Dictation"])
+  else if ([typeCopy isEqualToString:@"Dictation"])
   {
     v4 = 3;
   }
@@ -95,20 +95,20 @@
   v8.receiver = self;
   v8.super_class = BMPBTextInputSessionEvent;
   v4 = [(BMPBTextInputSessionEvent *)&v8 description];
-  v5 = [(BMPBTextInputSessionEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBTextInputSessionEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_duration];
-    [v3 setObject:v5 forKey:@"duration"];
+    [dictionary setObject:v5 forKey:@"duration"];
 
     has = self->_has;
   }
@@ -116,13 +116,13 @@
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timestamp];
-    [v3 setObject:v6 forKey:@"timestamp"];
+    [dictionary setObject:v6 forKey:@"timestamp"];
   }
 
   bundleID = self->_bundleID;
   if (bundleID)
   {
-    [v3 setObject:bundleID forKey:@"bundleID"];
+    [dictionary setObject:bundleID forKey:@"bundleID"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -138,28 +138,28 @@
       v9 = off_1E6E52A98[sessionType];
     }
 
-    [v3 setObject:v9 forKey:@"sessionType"];
+    [dictionary setObject:v9 forKey:@"sessionType"];
   }
 
   sessionID = self->_sessionID;
   if (sessionID)
   {
-    [v3 setObject:sessionID forKey:@"sessionID"];
+    [dictionary setObject:sessionID forKey:@"sessionID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if (has)
   {
     duration = self->_duration;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
   }
 
@@ -167,69 +167,69 @@
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     sessionType = self->_sessionType;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_sessionID)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = *&self->_duration;
-    *(v4 + 44) |= 1u;
+    toCopy[1] = *&self->_duration;
+    *(toCopy + 44) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[2] = *&self->_timestamp;
-    *(v4 + 44) |= 2u;
+    toCopy[2] = *&self->_timestamp;
+    *(toCopy + 44) |= 2u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_bundleID)
   {
-    [v4 setBundleID:?];
-    v4 = v6;
+    [toCopy setBundleID:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 10) = self->_sessionType;
-    *(v4 + 44) |= 4u;
+    *(toCopy + 10) = self->_sessionType;
+    *(toCopy + 44) |= 4u;
   }
 
   if (self->_sessionID)
   {
     [v6 setSessionID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -245,7 +245,7 @@
     *(v5 + 44) |= 2u;
   }
 
-  v8 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleID copyWithZone:zone];
   v9 = *(v6 + 24);
   *(v6 + 24) = v8;
 
@@ -255,51 +255,51 @@
     *(v6 + 44) |= 4u;
   }
 
-  v10 = [(NSString *)self->_sessionID copyWithZone:a3];
+  v10 = [(NSString *)self->_sessionID copyWithZone:zone];
   v11 = *(v6 + 32);
   *(v6 + 32) = v10;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if (has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_duration != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_duration != *(equalCopy + 1))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_22;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_timestamp != *(v4 + 2))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_timestamp != *(equalCopy + 2))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_22;
   }
 
   bundleID = self->_bundleID;
-  if (bundleID | *(v4 + 3))
+  if (bundleID | *(equalCopy + 3))
   {
     if (![(NSString *)bundleID isEqual:?])
     {
@@ -311,22 +311,22 @@ LABEL_22:
     has = self->_has;
   }
 
-  v8 = *(v4 + 44);
+  v8 = *(equalCopy + 44);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_sessionType != *(v4 + 10))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_sessionType != *(equalCopy + 10))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_22;
   }
 
   sessionID = self->_sessionID;
-  if (sessionID | *(v4 + 4))
+  if (sessionID | *(equalCopy + 4))
   {
     v10 = [(NSString *)sessionID isEqual:?];
   }
@@ -424,40 +424,40 @@ LABEL_23:
   return v9 ^ v5 ^ v14 ^ v13 ^ [(NSString *)self->_sessionID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 44);
+  fromCopy = from;
+  v5 = *(fromCopy + 44);
   if (v5)
   {
-    self->_duration = *(v4 + 1);
+    self->_duration = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(v4 + 2);
+    self->_timestamp = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  v6 = v4;
-  if (*(v4 + 3))
+  v6 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(BMPBTextInputSessionEvent *)self setBundleID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 44) & 4) != 0)
+  if ((*(fromCopy + 44) & 4) != 0)
   {
-    self->_sessionType = *(v4 + 10);
+    self->_sessionType = *(fromCopy + 10);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBTextInputSessionEvent *)self setSessionID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

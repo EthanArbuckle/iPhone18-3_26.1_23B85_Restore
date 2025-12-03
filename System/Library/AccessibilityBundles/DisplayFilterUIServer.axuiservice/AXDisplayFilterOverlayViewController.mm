@@ -1,14 +1,14 @@
 @interface AXDisplayFilterOverlayViewController
 - (NSArray)filters;
 - (void)_applyInitialLayoutConstraints;
-- (void)fadeToBlackAndComeBack:(double)a3 completion:(id)a4;
+- (void)fadeToBlackAndComeBack:(double)back completion:(id)completion;
 - (void)loadView;
-- (void)setFilters:(id)a3;
+- (void)setFilters:(id)filters;
 @end
 
 @implementation AXDisplayFilterOverlayViewController
 
-- (void)fadeToBlackAndComeBack:(double)a3 completion:(id)a4
+- (void)fadeToBlackAndComeBack:(double)back completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -19,11 +19,11 @@
   v5[1] = 3221225472;
   v5[2] = sub_1D44;
   v5[3] = &unk_8298;
-  v7 = a3;
+  backCopy = back;
   v5[4] = self;
-  v6 = a4;
-  v4 = v6;
-  [UIView animateWithDuration:v8 animations:v5 completion:v7 * 0.25];
+  completionCopy = completion;
+  v4 = completionCopy;
+  [UIView animateWithDuration:v8 animations:v5 completion:backCopy * 0.25];
 }
 
 - (void)loadView
@@ -34,62 +34,62 @@
   height = CGRectZero.size.height;
   v9 = [v3 initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(AXDisplayFilterOverlayViewController *)self setView:v9];
-  v7 = [[AXDisplayFilterOverlayView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(AXDisplayFilterOverlayView *)v7 setTranslatesAutoresizingMaskIntoConstraints:1];
-  [(AXDisplayFilterOverlayView *)v7 setAutoresizingMask:18];
-  [(AXDisplayFilterOverlayView *)v7 setAlpha:0.0];
+  height = [[AXDisplayFilterOverlayView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(AXDisplayFilterOverlayView *)height setTranslatesAutoresizingMaskIntoConstraints:1];
+  [(AXDisplayFilterOverlayView *)height setAutoresizingMask:18];
+  [(AXDisplayFilterOverlayView *)height setAlpha:0.0];
   v8 = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
-  [(AXDisplayFilterOverlayView *)v7 setBackgroundColor:v8];
+  [(AXDisplayFilterOverlayView *)height setBackgroundColor:v8];
 
-  [(AXDisplayFilterOverlayViewController *)self set_filterView:v7];
-  [v9 addSubview:v7];
+  [(AXDisplayFilterOverlayViewController *)self set_filterView:height];
+  [v9 addSubview:height];
   [(AXDisplayFilterOverlayViewController *)self _applyInitialLayoutConstraints];
 }
 
 - (void)_applyInitialLayoutConstraints
 {
-  v8 = [(AXDisplayFilterOverlayViewController *)self view];
-  v3 = [(AXDisplayFilterOverlayViewController *)self _filterView];
-  v4 = [NSLayoutConstraint constraintWithItem:v3 attribute:1 relatedBy:0 toItem:v8 attribute:1 multiplier:1.0 constant:0.0];
-  [v8 addConstraint:v4];
+  view = [(AXDisplayFilterOverlayViewController *)self view];
+  _filterView = [(AXDisplayFilterOverlayViewController *)self _filterView];
+  v4 = [NSLayoutConstraint constraintWithItem:_filterView attribute:1 relatedBy:0 toItem:view attribute:1 multiplier:1.0 constant:0.0];
+  [view addConstraint:v4];
 
-  v5 = [NSLayoutConstraint constraintWithItem:v3 attribute:2 relatedBy:0 toItem:v8 attribute:2 multiplier:1.0 constant:0.0];
-  [v8 addConstraint:v5];
+  v5 = [NSLayoutConstraint constraintWithItem:_filterView attribute:2 relatedBy:0 toItem:view attribute:2 multiplier:1.0 constant:0.0];
+  [view addConstraint:v5];
 
-  v6 = [NSLayoutConstraint constraintWithItem:v3 attribute:3 relatedBy:0 toItem:v8 attribute:3 multiplier:1.0 constant:0.0];
-  [v8 addConstraint:v6];
+  v6 = [NSLayoutConstraint constraintWithItem:_filterView attribute:3 relatedBy:0 toItem:view attribute:3 multiplier:1.0 constant:0.0];
+  [view addConstraint:v6];
 
-  v7 = [NSLayoutConstraint constraintWithItem:v3 attribute:4 relatedBy:0 toItem:v8 attribute:4 multiplier:1.0 constant:0.0];
-  [v8 addConstraint:v7];
+  v7 = [NSLayoutConstraint constraintWithItem:_filterView attribute:4 relatedBy:0 toItem:view attribute:4 multiplier:1.0 constant:0.0];
+  [view addConstraint:v7];
 }
 
 - (NSArray)filters
 {
-  v3 = [(AXDisplayFilterOverlayViewController *)self _filterView];
+  _filterView = [(AXDisplayFilterOverlayViewController *)self _filterView];
 
-  if (!v3)
+  if (!_filterView)
   {
-    v4 = [(AXDisplayFilterOverlayViewController *)self view];
+    view = [(AXDisplayFilterOverlayViewController *)self view];
   }
 
-  v5 = [(AXDisplayFilterOverlayViewController *)self _filterView];
-  v6 = [v5 filters];
+  _filterView2 = [(AXDisplayFilterOverlayViewController *)self _filterView];
+  filters = [_filterView2 filters];
 
-  return v6;
+  return filters;
 }
 
-- (void)setFilters:(id)a3
+- (void)setFilters:(id)filters
 {
-  v4 = a3;
-  v5 = [(AXDisplayFilterOverlayViewController *)self _filterView];
+  filtersCopy = filters;
+  _filterView = [(AXDisplayFilterOverlayViewController *)self _filterView];
 
-  if (!v5)
+  if (!_filterView)
   {
-    v6 = [(AXDisplayFilterOverlayViewController *)self view];
+    view = [(AXDisplayFilterOverlayViewController *)self view];
   }
 
-  v7 = [(AXDisplayFilterOverlayViewController *)self _filterView];
-  [v7 setFilters:v4];
+  _filterView2 = [(AXDisplayFilterOverlayViewController *)self _filterView];
+  [_filterView2 setFilters:filtersCopy];
 }
 
 @end

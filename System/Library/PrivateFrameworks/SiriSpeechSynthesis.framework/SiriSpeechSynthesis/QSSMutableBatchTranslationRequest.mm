@@ -1,85 +1,85 @@
 @interface QSSMutableBatchTranslationRequest
 - (QSSMutableBatchTranslationRequest)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)opt_in_status;
-- (void)setApp_id:(id)a3;
-- (void)setOpt_in_status:(int64_t)a3;
-- (void)setParagraphs:(id)a3;
-- (void)setRequest_id:(id)a3;
-- (void)setSession_id:(id)a3;
-- (void)setSource_language:(id)a3;
-- (void)setTarget_language:(id)a3;
-- (void)setTask:(id)a3;
-- (void)setUrl:(id)a3;
+- (void)setApp_id:(id)app_id;
+- (void)setOpt_in_status:(int64_t)opt_in_status;
+- (void)setParagraphs:(id)paragraphs;
+- (void)setRequest_id:(id)request_id;
+- (void)setSession_id:(id)session_id;
+- (void)setSource_language:(id)source_language;
+- (void)setTarget_language:(id)target_language;
+- (void)setTask:(id)task;
+- (void)setUrl:(id)url;
 @end
 
 @implementation QSSMutableBatchTranslationRequest
 
-- (void)setOpt_in_status:(int64_t)a3
+- (void)setOpt_in_status:(int64_t)opt_in_status
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:opt_in_status];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
 - (int64_t)opt_in_status
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"opt_in_status"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  v4 = [a3 copy];
+  v4 = [url copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setSession_id:(id)a3
+- (void)setSession_id:(id)session_id
 {
-  v4 = [a3 copy];
+  v4 = [session_id copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setApp_id:(id)a3
+- (void)setApp_id:(id)app_id
 {
-  v4 = [a3 copy];
+  v4 = [app_id copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setParagraphs:(id)a3
+- (void)setParagraphs:(id)paragraphs
 {
-  v4 = [a3 copy];
+  v4 = [paragraphs copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setTarget_language:(id)a3
+- (void)setTarget_language:(id)target_language
 {
-  v4 = [a3 copy];
+  v4 = [target_language copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setSource_language:(id)a3
+- (void)setSource_language:(id)source_language
 {
-  v4 = [a3 copy];
+  v4 = [source_language copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setTask:(id)a3
+- (void)setTask:(id)task
 {
-  v4 = [a3 copy];
+  v4 = [task copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setRequest_id:(id)a3
+- (void)setRequest_id:(id)request_id
 {
-  v4 = [a3 copy];
+  v4 = [request_id copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -94,9 +94,9 @@
   v2 = [(QSSMutableBatchTranslationRequest *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;

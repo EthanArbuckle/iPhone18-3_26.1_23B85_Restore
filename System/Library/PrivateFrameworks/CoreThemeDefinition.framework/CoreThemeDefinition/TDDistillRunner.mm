@@ -1,5 +1,5 @@
 @interface TDDistillRunner
-- (BOOL)_isDistillUnnecessaryForDocument:(id)a3;
+- (BOOL)_isDistillUnnecessaryForDocument:(id)document;
 - (TDDistillRunner)init;
 - (id)carScratchURL;
 - (void)_moveScratchToOutputPath;
@@ -32,11 +32,11 @@
     v4 = mkstemps(__s, 4);
     v5 = strlen(__s);
     self->_carScratchURL = CFURLCreateFromFileSystemRepresentation(*MEMORY[0x277CBECE8], __s, v5, 0);
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    v7 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSend(v6, "attributesOfItemAtPath:error:", -[NSURL path](self->_carScratchURL, "path"), 0)}];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v7 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSend(defaultManager, "attributesOfItemAtPath:error:", -[NSURL path](self->_carScratchURL, "path"), 0)}];
     v8 = [MEMORY[0x277CCABB0] numberWithInteger:420];
     [v7 setObject:v8 forKey:*MEMORY[0x277CCA180]];
-    [v6 setAttributes:v7 ofItemAtPath:-[NSURL path](self->_carScratchURL error:{"path"), 0}];
+    [defaultManager setAttributes:v7 ofItemAtPath:-[NSURL path](self->_carScratchURL error:{"path"), 0}];
     close(v4);
     result = self->_carScratchURL;
   }
@@ -47,51 +47,51 @@
 
 - (void)_removeScratchPath
 {
-  v2 = [(TDDistillRunner *)self carScratchURL];
-  if ([v2 checkResourceIsReachableAndReturnError:0])
+  carScratchURL = [(TDDistillRunner *)self carScratchURL];
+  if ([carScratchURL checkResourceIsReachableAndReturnError:0])
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
 
-    [v3 removeItemAtURL:v2 error:0];
+    [defaultManager removeItemAtURL:carScratchURL error:0];
   }
 }
 
 - (void)_moveScratchToOutputPath
 {
-  v4 = [(TDDistillRunner *)self carScratchURL];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  if (([v4 checkResourceIsReachableAndReturnError:0] & 1) == 0)
+  carScratchURL = [(TDDistillRunner *)self carScratchURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if (([carScratchURL checkResourceIsReachableAndReturnError:0] & 1) == 0)
   {
-    [(TDDistillRunner *)v4 _moveScratchToOutputPath];
+    [(TDDistillRunner *)carScratchURL _moveScratchToOutputPath];
   }
 
-  v6 = [(TDDistillRunner *)self outputURL];
-  if ([(NSURL *)v6 checkResourceIsReachableAndReturnError:0])
+  outputURL = [(TDDistillRunner *)self outputURL];
+  if ([(NSURL *)outputURL checkResourceIsReachableAndReturnError:0])
   {
-    [v5 removeItemAtURL:v6 error:0];
+    [defaultManager removeItemAtURL:outputURL error:0];
   }
 
   v10 = 0;
-  if (([v5 moveItemAtURL:v4 toURL:v6 error:&v10] & 1) == 0)
+  if (([defaultManager moveItemAtURL:carScratchURL toURL:outputURL error:&v10] & 1) == 0)
   {
-    v7 = [(TDDistillRunner *)self logger];
-    v8 = [v4 path];
-    v9 = [(NSURL *)v6 path];
-    [(TDLogger *)v7 logErrorWithFormat:@"move from %@ toPath: %@ failed: %@", v8, v9, v10];
+    logger = [(TDDistillRunner *)self logger];
+    path = [carScratchURL path];
+    path2 = [(NSURL *)outputURL path];
+    [(TDLogger *)logger logErrorWithFormat:@"move from %@ toPath: %@ failed: %@", path, path2, v10];
   }
 }
 
-- (BOOL)_isDistillUnnecessaryForDocument:(id)a3
+- (BOOL)_isDistillUnnecessaryForDocument:(id)document
 {
-  v4 = [(TDDistillRunner *)self outputURL];
-  if ([(NSURL *)v4 checkResourceIsReachableAndReturnError:0])
+  outputURL = [(TDDistillRunner *)self outputURL];
+  if ([(NSURL *)outputURL checkResourceIsReachableAndReturnError:0])
   {
-    v5 = [[TDProMergeableCommonAssetStorage alloc] initWithPath:[(NSURL *)v4 path]];
-    v6 = [a3 checksum];
-    if (v5 && v6 == [(CUICommonAssetStorage *)v5 associatedChecksum])
+    v5 = [[TDProMergeableCommonAssetStorage alloc] initWithPath:[(NSURL *)outputURL path]];
+    checksum = [document checksum];
+    if (v5 && checksum == [(CUICommonAssetStorage *)v5 associatedChecksum])
     {
-      v7 = [a3 historian];
-      v8 = [v7 foundDataChangesSinceDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithTimeIntervalSince1970:", -[CUICommonAssetStorage storageTimestamp](v5, "storageTimestamp"))}] ^ 1;
+      historian = [document historian];
+      v8 = [historian foundDataChangesSinceDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithTimeIntervalSince1970:", -[CUICommonAssetStorage storageTimestamp](v5, "storageTimestamp"))}] ^ 1;
     }
 
     else

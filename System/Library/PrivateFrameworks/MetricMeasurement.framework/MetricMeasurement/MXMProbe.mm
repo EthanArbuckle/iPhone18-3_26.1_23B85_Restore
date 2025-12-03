@@ -1,15 +1,15 @@
 @interface MXMProbe
 + (id)probe;
 - (BOOL)_setupWaitSemaphore;
-- (BOOL)waitUntilStoppedWithTimeout:(double)a3;
+- (BOOL)waitUntilStoppedWithTimeout:(double)timeout;
 - (MXMProbe)init;
 - (MXMProbeDelegate)delegate;
 - (OS_dispatch_queue)updateQueue;
-- (id)sampleWithTimeout:(double)a3 stopReason:(unint64_t *)a4;
-- (void)_handleIncomingData:(id)a3;
+- (id)sampleWithTimeout:(double)timeout stopReason:(unint64_t *)reason;
+- (void)_handleIncomingData:(id)data;
 - (void)_stopUpdates;
-- (void)updateNowUntilStoppedWithUpdateHandler:(id)a3 stopHandler:(id)a4;
-- (void)updateNowUntilTimeout:(double)a3 updateHandler:(id)a4 stopHandler:(id)a5;
+- (void)updateNowUntilStoppedWithUpdateHandler:(id)handler stopHandler:(id)stopHandler;
+- (void)updateNowUntilTimeout:(double)timeout updateHandler:(id)handler stopHandler:(id)stopHandler;
 - (void)waitForeverUntilStopped;
 @end
 
@@ -33,7 +33,7 @@
 
 + (id)probe
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -45,28 +45,28 @@
   return [(MXMProbe *)&v3 init];
 }
 
-- (void)updateNowUntilStoppedWithUpdateHandler:(id)a3 stopHandler:(id)a4
+- (void)updateNowUntilStoppedWithUpdateHandler:(id)handler stopHandler:(id)stopHandler
 {
-  v6 = a4;
-  v7 = _Block_copy(a3);
+  stopHandlerCopy = stopHandler;
+  v7 = _Block_copy(handler);
   updateHandler = self->_updateHandler;
   self->_updateHandler = v7;
 
-  v9 = _Block_copy(v6);
+  v9 = _Block_copy(stopHandlerCopy);
   stopHandler = self->_stopHandler;
   self->_stopHandler = v9;
 
   [(MXMProbe *)self _beginUpdates];
 }
 
-- (void)updateNowUntilTimeout:(double)a3 updateHandler:(id)a4 stopHandler:(id)a5
+- (void)updateNowUntilTimeout:(double)timeout updateHandler:(id)handler stopHandler:(id)stopHandler
 {
-  v9 = a4;
-  v10 = a5;
-  [(MXMProbe *)self updateNowUntilStoppedWithUpdateHandler:v9 stopHandler:v10];
+  handlerCopy = handler;
+  stopHandlerCopy = stopHandler;
+  [(MXMProbe *)self updateNowUntilStoppedWithUpdateHandler:handlerCopy stopHandler:stopHandlerCopy];
   objc_initWeak(&location, self);
-  v11 = dispatch_time(0, (a3 * 1000000000.0));
-  v12 = [(MXMProbe *)self updateQueue];
+  v11 = dispatch_time(0, (timeout * 1000000000.0));
+  updateQueue = [(MXMProbe *)self updateQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __60__MXMProbe_updateNowUntilTimeout_updateHandler_stopHandler___block_invoke;
@@ -74,7 +74,7 @@
   objc_copyWeak(v14, &location);
   v14[1] = a2;
   v13[4] = self;
-  dispatch_after(v11, v12, v13);
+  dispatch_after(v11, updateQueue, v13);
 
   objc_destroyWeak(v14);
   objc_destroyWeak(&location);
@@ -93,22 +93,22 @@ void __60__MXMProbe_updateNowUntilTimeout_updateHandler_stopHandler___block_invo
   [v3 _stopUpdates];
 }
 
-- (void)_handleIncomingData:(id)a3
+- (void)_handleIncomingData:(id)data
 {
-  v4 = a3;
-  if (-[MXMProbe _shouldStop](self, "_shouldStop") || ![v4 numberOfSets] || -[MXMProbe _shouldStop](self, "_shouldStop"))
+  dataCopy = data;
+  if (-[MXMProbe _shouldStop](self, "_shouldStop") || ![dataCopy numberOfSets] || -[MXMProbe _shouldStop](self, "_shouldStop"))
   {
-    v5 = v4;
+    v5 = dataCopy;
   }
 
   else
   {
     v10 = 0;
-    v6 = [(MXMProbe *)self filter];
-    v5 = [v4 dataMatchingFilter:v6];
+    filter = [(MXMProbe *)self filter];
+    v5 = [dataCopy dataMatchingFilter:filter];
 
-    v7 = [(MXMProbe *)self delegate];
-    [v7 probeDidUpdate:self data:v5 stop:&v10];
+    delegate = [(MXMProbe *)self delegate];
+    [delegate probeDidUpdate:self data:v5 stop:&v10];
 
     updateHandler = self->_updateHandler;
     v9 = v10;
@@ -146,13 +146,13 @@ void __60__MXMProbe_updateNowUntilTimeout_updateHandler_stopHandler___block_invo
 
 - (BOOL)_setupWaitSemaphore
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(MXMProbe *)v2 _updating]&& !v2->_stopWaiter)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(MXMProbe *)selfCopy _updating]&& !selfCopy->_stopWaiter)
   {
     v5 = dispatch_semaphore_create(0);
-    stopWaiter = v2->_stopWaiter;
-    v2->_stopWaiter = v5;
+    stopWaiter = selfCopy->_stopWaiter;
+    selfCopy->_stopWaiter = v5;
 
     v3 = 1;
   }
@@ -162,7 +162,7 @@ void __60__MXMProbe_updateNowUntilTimeout_updateHandler_stopHandler___block_invo
     v3 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -177,18 +177,18 @@ void __60__MXMProbe_updateNowUntilTimeout_updateHandler_stopHandler___block_invo
   }
 }
 
-- (BOOL)waitUntilStoppedWithTimeout:(double)a3
+- (BOOL)waitUntilStoppedWithTimeout:(double)timeout
 {
-  v4 = [(MXMProbe *)self _setupWaitSemaphore];
-  if (v4)
+  _setupWaitSemaphore = [(MXMProbe *)self _setupWaitSemaphore];
+  if (_setupWaitSemaphore)
   {
-    LOBYTE(v4) = dispatch_semaphore_wait(self->_stopWaiter, 0xFFFFFFFFFFFFFFFFLL) != 0;
+    LOBYTE(_setupWaitSemaphore) = dispatch_semaphore_wait(self->_stopWaiter, 0xFFFFFFFFFFFFFFFFLL) != 0;
   }
 
-  return v4;
+  return _setupWaitSemaphore;
 }
 
-- (id)sampleWithTimeout:(double)a3 stopReason:(unint64_t *)a4
+- (id)sampleWithTimeout:(double)timeout stopReason:(unint64_t *)reason
 {
   v23 = 0;
   v24 = &v23;
@@ -214,10 +214,10 @@ void __60__MXMProbe_updateNowUntilTimeout_updateHandler_stopHandler___block_invo
   v15[3] = &unk_2798C9640;
   v15[4] = &v19;
   [(MXMProbe *)self updateNowUntilStoppedWithUpdateHandler:v16 stopHandler:v15];
-  v10 = dispatch_time(0, (a3 * 1000000000.0));
+  v10 = dispatch_time(0, (timeout * 1000000000.0));
   if (!dispatch_semaphore_wait(v9, v10))
   {
-    if (!a4)
+    if (!reason)
     {
       goto LABEL_8;
     }
@@ -229,7 +229,7 @@ void __60__MXMProbe_updateNowUntilTimeout_updateHandler_stopHandler___block_invo
   [(MXMProbe *)self stopUpdates];
   if ([(MXMProbe *)self waitUntilStoppedWithTimeout:60.0])
   {
-    if (!a4)
+    if (!reason)
     {
       goto LABEL_8;
     }
@@ -237,15 +237,15 @@ void __60__MXMProbe_updateNowUntilTimeout_updateHandler_stopHandler___block_invo
     goto LABEL_4;
   }
 
-  v14 = [MEMORY[0x277CCA890] currentHandler];
-  [v14 handleFailureInMethod:a2 object:self file:@"MXMProbe.m" lineNumber:197 description:@"Failed to stop the probe!"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MXMProbe.m" lineNumber:197 description:@"Failed to stop the probe!"];
 
-  if (a4)
+  if (reason)
   {
 LABEL_4:
     v11 = 1;
 LABEL_7:
-    *a4 = v11;
+    *reason = v11;
   }
 
 LABEL_8:

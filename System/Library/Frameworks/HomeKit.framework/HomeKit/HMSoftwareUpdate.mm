@@ -1,12 +1,12 @@
 @interface HMSoftwareUpdate
 + (id)logCategory;
 - (BOOL)isDocumentationAvailable;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)mergeFromNewObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)mergeFromNewObject:(id)object;
 - (HMAccessory)accessory;
 - (HMSoftwareUpdate)init;
-- (HMSoftwareUpdate)initWithCoder:(id)a3;
-- (HMSoftwareUpdate)initWithVersion:(id)a3 displayableVersion:(id)a4 downloadSize:(unint64_t)a5 state:(int64_t)a6 installDuration:(double)a7 documentationMetadata:(id)a8 releaseDate:(id)a9;
+- (HMSoftwareUpdate)initWithCoder:(id)coder;
+- (HMSoftwareUpdate)initWithVersion:(id)version displayableVersion:(id)displayableVersion downloadSize:(unint64_t)size state:(int64_t)state installDuration:(double)duration documentationMetadata:(id)metadata releaseDate:(id)date;
 - (HMSoftwareUpdateDelegate)delegate;
 - (HMSoftwareUpdateDocumentation)documentation;
 - (HMSoftwareUpdateDocumentationMetadata)documentationMetadata;
@@ -19,25 +19,25 @@
 - (int64_t)state;
 - (unint64_t)hash;
 - (unint64_t)updateType;
-- (void)_handleUpdatedDocumentation:(id)a3;
-- (void)_handleUpdatedDocumentationMetadata:(id)a3;
-- (void)_handleUpdatedNeedsAttentionReasonsMessage:(id)a3;
-- (void)_handleUpdatedState:(id)a3;
+- (void)_handleUpdatedDocumentation:(id)documentation;
+- (void)_handleUpdatedDocumentationMetadata:(id)metadata;
+- (void)_handleUpdatedNeedsAttentionReasonsMessage:(id)message;
+- (void)_handleUpdatedState:(id)state;
 - (void)_registerNotificationHandlers;
-- (void)_requestNeedsAttentionReasonsWithCompletionHandler:(id)a3;
+- (void)_requestNeedsAttentionReasonsWithCompletionHandler:(id)handler;
 - (void)_unconfigure;
-- (void)configureWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchNeedsAttentionReasonsWithCompletionHandler:(id)a3;
+- (void)configureWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchNeedsAttentionReasonsWithCompletionHandler:(id)handler;
 - (void)requestDocumentation;
-- (void)setDocumentation:(id)a3;
-- (void)setDocumentationMetadata:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setNextPermittedRequestDocumentationDate:(id)a3;
-- (void)setState:(int64_t)a3;
-- (void)setUpdateType:(unint64_t)a3;
-- (void)updateDocumentationMetadata:(id)a3 completionHandler:(id)a4;
-- (void)updateState:(int64_t)a3 completionHandler:(id)a4;
+- (void)setDocumentation:(id)documentation;
+- (void)setDocumentationMetadata:(id)metadata;
+- (void)setIdentifier:(id)identifier;
+- (void)setNextPermittedRequestDocumentationDate:(id)date;
+- (void)setState:(int64_t)state;
+- (void)setUpdateType:(unint64_t)type;
+- (void)updateDocumentationMetadata:(id)metadata completionHandler:(id)handler;
+- (void)updateState:(int64_t)state completionHandler:(id)handler;
 @end
 
 @implementation HMSoftwareUpdate
@@ -56,68 +56,68 @@
   return WeakRetained;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMSoftwareUpdate *)self identifier];
-  [v4 encodeObject:v5 forKey:@"HM.identifier"];
+  coderCopy = coder;
+  identifier = [(HMSoftwareUpdate *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"HM.identifier"];
 
-  v6 = [(HMSoftwareUpdate *)self version];
-  [v4 encodeObject:v6 forKey:@"HM.version"];
+  version = [(HMSoftwareUpdate *)self version];
+  [coderCopy encodeObject:version forKey:@"HM.version"];
 
-  v7 = [(HMSoftwareUpdate *)self displayableVersion];
-  [v4 encodeObject:v7 forKey:@"HM.displayableVersion"];
+  displayableVersion = [(HMSoftwareUpdate *)self displayableVersion];
+  [coderCopy encodeObject:displayableVersion forKey:@"HM.displayableVersion"];
 
-  [v4 encodeInteger:-[HMSoftwareUpdate state](self forKey:{"state"), @"HM.state"}];
-  [v4 encodeInt64:-[HMSoftwareUpdate downloadSize](self forKey:{"downloadSize"), @"HM.downloadSize"}];
+  [coderCopy encodeInteger:-[HMSoftwareUpdate state](self forKey:{"state"), @"HM.state"}];
+  [coderCopy encodeInt64:-[HMSoftwareUpdate downloadSize](self forKey:{"downloadSize"), @"HM.downloadSize"}];
   [(HMSoftwareUpdate *)self installDuration];
-  [v4 encodeInteger:v8 forKey:@"HM.installDuration"];
-  v9 = [(HMSoftwareUpdate *)self documentationMetadata];
-  [v4 encodeObject:v9 forKey:@"HM.docMetadata"];
+  [coderCopy encodeInteger:v8 forKey:@"HM.installDuration"];
+  documentationMetadata = [(HMSoftwareUpdate *)self documentationMetadata];
+  [coderCopy encodeObject:documentationMetadata forKey:@"HM.docMetadata"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[HMSoftwareUpdate updateType](self, "updateType")}];
-  [v4 encodeObject:v10 forKey:@"HM.updateType"];
+  [coderCopy encodeObject:v10 forKey:@"HM.updateType"];
 
-  v11 = [(HMSoftwareUpdate *)self releaseDate];
-  [v4 encodeObject:v11 forKey:@"HM.releaseDate"];
+  releaseDate = [(HMSoftwareUpdate *)self releaseDate];
+  [coderCopy encodeObject:releaseDate forKey:@"HM.releaseDate"];
 }
 
-- (HMSoftwareUpdate)initWithCoder:(id)a3
+- (HMSoftwareUpdate)initWithCoder:(id)coder
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.version"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.version"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.displayableVersion"];
-    if (!v6)
+    shortVersionString = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.displayableVersion"];
+    if (!shortVersionString)
     {
-      v6 = [v5 shortVersionString];
+      shortVersionString = [v5 shortVersionString];
     }
 
-    v7 = [v4 decodeInt64ForKey:@"HM.downloadSize"];
-    v8 = [v4 decodeIntegerForKey:@"HM.installDuration"];
-    v9 = [v4 decodeIntegerForKey:@"HM.state"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.docMetadata"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.releaseDate"];
-    v12 = [(HMSoftwareUpdate *)self initWithVersion:v5 displayableVersion:v6 downloadSize:v7 state:v9 installDuration:v10 documentationMetadata:v11 releaseDate:v8];
+    v7 = [coderCopy decodeInt64ForKey:@"HM.downloadSize"];
+    v8 = [coderCopy decodeIntegerForKey:@"HM.installDuration"];
+    v9 = [coderCopy decodeIntegerForKey:@"HM.state"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.docMetadata"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.releaseDate"];
+    v12 = [(HMSoftwareUpdate *)self initWithVersion:v5 displayableVersion:shortVersionString downloadSize:v7 state:v9 installDuration:v10 documentationMetadata:v11 releaseDate:v8];
     if (v12)
     {
-      v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.identifier"];
+      v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.identifier"];
       identifier = v12->_identifier;
       v12->_identifier = v13;
 
-      v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.documentation"];
+      v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.documentation"];
       documentation = v12->_documentation;
       v12->_documentation = v15;
 
-      v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.updateType"];
+      v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.updateType"];
       v12->_updateType = [v17 unsignedIntegerValue];
     }
 
-    v18 = v12;
+    selfCopy = v12;
 
-    v19 = v18;
+    v19 = selfCopy;
 LABEL_11:
 
     v23 = *MEMORY[0x1E69E9840];
@@ -127,7 +127,7 @@ LABEL_11:
   if (!isInternalBuild())
   {
     v20 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -151,28 +151,28 @@ LABEL_11:
 - (id)messageDestination
 {
   v3 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v4 = [(HMSoftwareUpdate *)self messageTargetUUID];
-  v5 = [v3 initWithTarget:v4];
+  messageTargetUUID = [(HMSoftwareUpdate *)self messageTargetUUID];
+  v5 = [v3 initWithTarget:messageTargetUUID];
 
   return v5;
 }
 
 - (id)logIdentifier
 {
-  v2 = [(HMSoftwareUpdate *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMSoftwareUpdate *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -184,36 +184,36 @@ LABEL_11:
 
   if (v6)
   {
-    v7 = [(HMSoftwareUpdate *)self delegate];
-    v8 = [v6 state];
-    v9 = [(HMSoftwareUpdate *)self state];
-    v10 = v9 != v8;
-    if (v9 != v8)
+    delegate = [(HMSoftwareUpdate *)self delegate];
+    state = [v6 state];
+    state2 = [(HMSoftwareUpdate *)self state];
+    v10 = state2 != state;
+    if (state2 != state)
     {
-      [(HMSoftwareUpdate *)self setState:v8];
+      [(HMSoftwareUpdate *)self setState:state];
       if (objc_opt_respondsToSelector())
       {
-        v11 = [(HMSoftwareUpdate *)self context];
-        v12 = [v11 queue];
+        context = [(HMSoftwareUpdate *)self context];
+        queue = [context queue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __39__HMSoftwareUpdate_mergeFromNewObject___block_invoke;
         block[3] = &unk_1E754E120;
         block[4] = self;
-        v47 = v8;
-        v46 = v7;
-        dispatch_async(v12, block);
+        v47 = state;
+        v46 = delegate;
+        dispatch_async(queue, block);
       }
     }
 
-    v13 = [v6 documentationMetadata];
-    v14 = [(HMSoftwareUpdate *)self documentationMetadata];
+    documentationMetadata = [v6 documentationMetadata];
+    documentationMetadata2 = [(HMSoftwareUpdate *)self documentationMetadata];
     v15 = HMFEqualObjects();
 
     if ((v15 & 1) == 0)
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
@@ -221,19 +221,19 @@ LABEL_11:
         *buf = 138543618;
         v49 = v19;
         v50 = 2112;
-        v51 = v13;
+        v51 = documentationMetadata;
         _os_log_impl(&dword_19BB39000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@Updating documentation metadata: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v16);
-      v20 = [(HMSoftwareUpdate *)v17 isDocumentationAvailable];
-      [(HMSoftwareUpdate *)v17 setDocumentationMetadata:v13];
-      v21 = [(HMSoftwareUpdate *)v17 isDocumentationAvailable];
-      if (v20 != v21)
+      isDocumentationAvailable = [(HMSoftwareUpdate *)selfCopy isDocumentationAvailable];
+      [(HMSoftwareUpdate *)selfCopy setDocumentationMetadata:documentationMetadata];
+      isDocumentationAvailable2 = [(HMSoftwareUpdate *)selfCopy isDocumentationAvailable];
+      if (isDocumentationAvailable != isDocumentationAvailable2)
       {
-        v22 = v21;
+        v22 = isDocumentationAvailable2;
         v23 = objc_autoreleasePoolPush();
-        v24 = v17;
+        v24 = selfCopy;
         v25 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
@@ -252,50 +252,50 @@ LABEL_11:
         objc_autoreleasePoolPop(v23);
         if (objc_opt_respondsToSelector())
         {
-          v28 = [(HMSoftwareUpdate *)v24 context];
-          v29 = [v28 queue];
+          context2 = [(HMSoftwareUpdate *)v24 context];
+          queue2 = [context2 queue];
           v42[0] = MEMORY[0x1E69E9820];
           v42[1] = 3221225472;
           v42[2] = __39__HMSoftwareUpdate_mergeFromNewObject___block_invoke_173;
           v42[3] = &unk_1E754DC70;
           v42[4] = v24;
           v44 = v22;
-          v43 = v7;
-          dispatch_async(v29, v42);
+          v43 = delegate;
+          dispatch_async(queue2, v42);
         }
       }
 
       v10 = 1;
     }
 
-    v30 = [v6 documentation];
-    v31 = [(HMSoftwareUpdate *)self documentation];
+    documentation = [v6 documentation];
+    documentation2 = [(HMSoftwareUpdate *)self documentation];
     v32 = HMFEqualObjects();
 
     if ((v32 & 1) == 0)
     {
-      [(HMSoftwareUpdate *)self setDocumentation:v30];
+      [(HMSoftwareUpdate *)self setDocumentation:documentation];
       if (objc_opt_respondsToSelector())
       {
-        v33 = [(HMSoftwareUpdate *)self context];
-        v34 = [v33 queue];
+        context3 = [(HMSoftwareUpdate *)self context];
+        queue3 = [context3 queue];
         v39[0] = MEMORY[0x1E69E9820];
         v39[1] = 3221225472;
         v39[2] = __39__HMSoftwareUpdate_mergeFromNewObject___block_invoke_175;
         v39[3] = &unk_1E754E5E8;
         v39[4] = self;
-        v40 = v30;
-        v41 = v7;
-        dispatch_async(v34, v39);
+        v40 = documentation;
+        v41 = delegate;
+        dispatch_async(queue3, v39);
       }
 
       v10 = 1;
     }
 
-    v35 = [v6 updateType];
-    if ([(HMSoftwareUpdate *)self updateType]!= v35)
+    updateType = [v6 updateType];
+    if ([(HMSoftwareUpdate *)self updateType]!= updateType)
     {
-      [(HMSoftwareUpdate *)self setUpdateType:v35];
+      [(HMSoftwareUpdate *)self setUpdateType:updateType];
       v10 = 1;
     }
   }
@@ -425,33 +425,33 @@ uint64_t __39__HMSoftwareUpdate_mergeFromNewObject___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)_requestNeedsAttentionReasonsWithCompletionHandler:(id)a3
+- (void)_requestNeedsAttentionReasonsWithCompletionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMSoftwareUpdate *)self context];
-  if (v5)
+  handlerCopy = handler;
+  context = [(HMSoftwareUpdate *)self context];
+  if (context)
   {
     v6 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v7 = [(HMSoftwareUpdate *)self identifier];
-    v8 = [v6 initWithTarget:v7];
+    identifier = [(HMSoftwareUpdate *)self identifier];
+    v8 = [v6 initWithTarget:identifier];
 
     v9 = [MEMORY[0x1E69A2A10] messageWithName:@"HMSU.rn" destination:v8 payload:0];
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __71__HMSoftwareUpdate__requestNeedsAttentionReasonsWithCompletionHandler___block_invoke;
     v19 = &unk_1E754DE00;
-    v20 = self;
-    v21 = v4;
+    selfCopy = self;
+    v21 = handlerCopy;
     [v9 setResponseHandler:&v16];
-    v10 = [v5 messageDispatcher];
-    [v10 sendMessage:v9];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v9];
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -544,20 +544,20 @@ void __71__HMSoftwareUpdate__requestNeedsAttentionReasonsWithCompletionHandler__
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleUpdatedNeedsAttentionReasonsMessage:(id)a3
+- (void)_handleUpdatedNeedsAttentionReasonsMessage:(id)message
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMSoftwareUpdate *)self context];
-  v6 = [v5 pendingRequests];
-  v7 = [v4 identifier];
-  v8 = [v6 removeCompletionBlockForIdentifier:v7];
+  messageCopy = message;
+  context = [(HMSoftwareUpdate *)self context];
+  pendingRequests = [context pendingRequests];
+  identifier = [messageCopy identifier];
+  v8 = [pendingRequests removeCompletionBlockForIdentifier:identifier];
 
-  v9 = [v4 numberForKey:@"needsAttention"];
+  v9 = [messageCopy numberForKey:@"needsAttention"];
   if (v9)
   {
-    v10 = [(HMSoftwareUpdate *)self needsAttentionReasons];
-    if (v10 == [v9 integerValue])
+    needsAttentionReasons = [(HMSoftwareUpdate *)self needsAttentionReasons];
+    if (needsAttentionReasons == [v9 integerValue])
     {
       if (!v8)
       {
@@ -568,7 +568,7 @@ void __71__HMSoftwareUpdate__requestNeedsAttentionReasonsWithCompletionHandler__
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
@@ -585,24 +585,24 @@ void __71__HMSoftwareUpdate__requestNeedsAttentionReasonsWithCompletionHandler__
       }
 
       objc_autoreleasePoolPop(v17);
-      -[HMSoftwareUpdate setNeedsAttentionReasons:](v18, "setNeedsAttentionReasons:", [v9 integerValue]);
+      -[HMSoftwareUpdate setNeedsAttentionReasons:](selfCopy, "setNeedsAttentionReasons:", [v9 integerValue]);
       if (!v8)
       {
-        v23 = [(HMSoftwareUpdate *)v18 delegate];
+        delegate = [(HMSoftwareUpdate *)selfCopy delegate];
         if (objc_opt_respondsToSelector())
         {
-          objc_initWeak(buf, v18);
-          v26 = [(HMSoftwareUpdate *)v18 context];
-          v27 = [v26 delegateCaller];
+          objc_initWeak(buf, selfCopy);
+          context2 = [(HMSoftwareUpdate *)selfCopy context];
+          delegateCaller = [context2 delegateCaller];
           v28[0] = MEMORY[0x1E69E9820];
           v28[1] = 3221225472;
           v28[2] = __63__HMSoftwareUpdate__handleUpdatedNeedsAttentionReasonsMessage___block_invoke;
           v28[3] = &unk_1E754A2B8;
           objc_copyWeak(&v31, buf);
-          v23 = v23;
-          v29 = v23;
+          delegate = delegate;
+          v29 = delegate;
           v30 = v9;
-          [v27 invokeBlock:v28];
+          [delegateCaller invokeBlock:v28];
 
           objc_destroyWeak(&v31);
           objc_destroyWeak(buf);
@@ -612,33 +612,33 @@ void __71__HMSoftwareUpdate__requestNeedsAttentionReasonsWithCompletionHandler__
       }
     }
 
-    v23 = [(HMSoftwareUpdate *)self context];
-    v24 = [v23 delegateCaller];
-    [v24 callCompletion:v8 error:0];
+    delegate = [(HMSoftwareUpdate *)self context];
+    delegateCaller2 = [delegate delegateCaller];
+    [delegateCaller2 callCompletion:v8 error:0];
 
 LABEL_12:
 LABEL_13:
-    [v4 respondWithPayload:0];
+    [messageCopy respondWithPayload:0];
     goto LABEL_14;
   }
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy2 = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v4 messagePayload];
+    messagePayload = [messageCopy messagePayload];
     *buf = 138543618;
     v33 = v14;
     v34 = 2112;
-    v35 = v15;
+    v35 = messagePayload;
     _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_ERROR, "%{public}@Missing needsAttentionReasons from message payload: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
   v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-  [v4 respondWithError:v16];
+  [messageCopy respondWithError:v16];
 
 LABEL_14:
   v25 = *MEMORY[0x1E69E9840];
@@ -655,28 +655,28 @@ void __63__HMSoftwareUpdate__handleUpdatedNeedsAttentionReasonsMessage___block_i
   }
 }
 
-- (void)fetchNeedsAttentionReasonsWithCompletionHandler:(id)a3
+- (void)fetchNeedsAttentionReasonsWithCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMSoftwareUpdate *)self context];
-  if (v5)
+  handlerCopy = handler;
+  context = [(HMSoftwareUpdate *)self context];
+  if (context)
   {
-    v6 = [(HMSoftwareUpdate *)self context];
+    context2 = [(HMSoftwareUpdate *)self context];
 
-    if (v6)
+    if (context2)
     {
-      if (v4)
+      if (handlerCopy)
       {
-        v7 = [(HMSoftwareUpdate *)self context];
-        v8 = [v7 queue];
+        context3 = [(HMSoftwareUpdate *)self context];
+        queue = [context3 queue];
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __68__HMSoftwareUpdate_fetchNeedsAttentionReasonsWithCompletionHandler___block_invoke;
         v14[3] = &unk_1E754E458;
         v14[4] = self;
-        v15 = v4;
-        dispatch_async(v8, v14);
+        v15 = handlerCopy;
+        dispatch_async(queue, v14);
 
         goto LABEL_8;
       }
@@ -691,7 +691,7 @@ void __63__HMSoftwareUpdate__handleUpdatedNeedsAttentionReasonsMessage___block_i
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
@@ -718,20 +718,20 @@ LABEL_8:
   return v3;
 }
 
-- (void)setNextPermittedRequestDocumentationDate:(id)a3
+- (void)setNextPermittedRequestDocumentationDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock_with_options();
   nextPermittedRequestDocumentationDate = self->_nextPermittedRequestDocumentationDate;
-  self->_nextPermittedRequestDocumentationDate = v4;
+  self->_nextPermittedRequestDocumentationDate = dateCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setUpdateType:(unint64_t)a3
+- (void)setUpdateType:(unint64_t)type
 {
   os_unfair_lock_lock_with_options();
-  self->_updateType = a3;
+  self->_updateType = type;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -744,11 +744,11 @@ LABEL_8:
   return updateType;
 }
 
-- (void)_handleUpdatedDocumentation:(id)a3
+- (void)_handleUpdatedDocumentation:(id)documentation
 {
   v46[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 dataForKey:@"documentation"];
+  documentationCopy = documentation;
+  v5 = [documentationCopy dataForKey:@"documentation"];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -776,13 +776,13 @@ LABEL_8:
 
       v12 = v11;
 
-      v13 = [(HMSoftwareUpdate *)self documentation];
+      documentation = [(HMSoftwareUpdate *)self documentation];
       v14 = HMFEqualObjects();
 
       if ((v14 & 1) == 0)
       {
         v15 = objc_autoreleasePoolPush();
-        v16 = self;
+        selfCopy = self;
         v17 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
@@ -795,22 +795,22 @@ LABEL_8:
         }
 
         objc_autoreleasePoolPop(v15);
-        [(HMSoftwareUpdate *)v16 setDocumentation:v10];
-        objc_initWeak(buf, v16);
-        v19 = [(HMSoftwareUpdate *)v16 delegate];
+        [(HMSoftwareUpdate *)selfCopy setDocumentation:v10];
+        objc_initWeak(buf, selfCopy);
+        delegate = [(HMSoftwareUpdate *)selfCopy delegate];
         if (objc_opt_respondsToSelector())
         {
           WeakRetained = objc_loadWeakRetained(buf);
-          v21 = [WeakRetained context];
-          v22 = [v21 delegateCaller];
+          context = [WeakRetained context];
+          delegateCaller = [context delegateCaller];
           v35[0] = MEMORY[0x1E69E9820];
           v35[1] = 3221225472;
           v35[2] = __48__HMSoftwareUpdate__handleUpdatedDocumentation___block_invoke;
           v35[3] = &unk_1E754E5E8;
-          v36 = v19;
+          v36 = delegate;
           v37 = WeakRetained;
           v38 = v12;
-          [v22 invokeBlock:v35];
+          [delegateCaller invokeBlock:v35];
         }
 
         objc_destroyWeak(buf);
@@ -820,16 +820,16 @@ LABEL_8:
     else
     {
       v28 = objc_autoreleasePoolPush();
-      v29 = self;
+      selfCopy2 = self;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
         v31 = HMFGetLogIdentifier();
-        v32 = [v4 messagePayload];
+        messagePayload = [documentationCopy messagePayload];
         *buf = 138543874;
         v41 = v31;
         v42 = 2112;
-        v43 = v32;
+        v43 = messagePayload;
         v44 = 2112;
         v45 = v34;
         _os_log_impl(&dword_19BB39000, v30, OS_LOG_TYPE_ERROR, "%{public}@Failed to unarchive software update documentation from serialized documentation data: %@: %@", buf, 0x20u);
@@ -837,29 +837,29 @@ LABEL_8:
 
       objc_autoreleasePoolPop(v28);
       v12 = [MEMORY[0x1E696ABC0] hmErrorWithCode:20];
-      [v4 respondWithError:v12];
+      [documentationCopy respondWithError:v12];
     }
   }
 
   else
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy3 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       v26 = HMFGetLogIdentifier();
-      v27 = [v4 messagePayload];
+      messagePayload2 = [documentationCopy messagePayload];
       *buf = 138543618;
       v41 = v26;
       v42 = 2112;
-      v43 = v27;
+      v43 = messagePayload2;
       _os_log_impl(&dword_19BB39000, v25, OS_LOG_TYPE_ERROR, "%{public}@Missing documentation data from message payload: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v23);
     v8 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-    [v4 respondWithError:v8];
+    [documentationCopy respondWithError:v8];
   }
 
   v33 = *MEMORY[0x1E69E9840];
@@ -868,24 +868,24 @@ LABEL_8:
 - (void)requestDocumentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(HMSoftwareUpdate *)self context];
-  v4 = v3;
-  if (v3)
+  context = [(HMSoftwareUpdate *)self context];
+  v4 = context;
+  if (context)
   {
-    v5 = [v3 queue];
+    queue = [context queue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __40__HMSoftwareUpdate_requestDocumentation__block_invoke;
     v11[3] = &unk_1E754E5C0;
     v11[4] = self;
     v12 = v4;
-    dispatch_async(v5, v11);
+    dispatch_async(queue, v11);
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -993,12 +993,12 @@ LABEL_9:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDocumentation:(id)a3
+- (void)setDocumentation:(id)documentation
 {
-  v6 = a3;
+  documentationCopy = documentation;
   os_unfair_lock_lock_with_options();
-  objc_storeStrong(&self->_documentation, a3);
-  if (v6)
+  objc_storeStrong(&self->_documentation, documentation);
+  if (documentationCopy)
   {
     nextPermittedRequestDocumentationDate = self->_nextPermittedRequestDocumentationDate;
     self->_nextPermittedRequestDocumentationDate = 0;
@@ -1028,17 +1028,17 @@ LABEL_9:
   return v3;
 }
 
-- (void)updateDocumentationMetadata:(id)a3 completionHandler:(id)a4
+- (void)updateDocumentationMetadata:(id)metadata completionHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMSoftwareUpdate *)self context];
-  if (!v7)
+  metadataCopy = metadata;
+  handlerCopy = handler;
+  context = [(HMSoftwareUpdate *)self context];
+  if (!handlerCopy)
   {
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMSoftwareUpdate updateDocumentationMetadata:completionHandler:]", @"completionHandler"];
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -1055,20 +1055,20 @@ LABEL_9:
     objc_exception_throw(v22);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
     objc_initWeak(location, self);
-    v10 = [v9 queue];
+    queue = [v9 queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __66__HMSoftwareUpdate_updateDocumentationMetadata_completionHandler___block_invoke;
     block[3] = &unk_1E7548348;
     objc_copyWeak(&v27, location);
-    v24 = v6;
-    v26 = v7;
+    v24 = metadataCopy;
+    v26 = handlerCopy;
     v25 = v9;
-    dispatch_async(v10, block);
+    dispatch_async(queue, block);
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(location);
@@ -1077,7 +1077,7 @@ LABEL_9:
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -1091,7 +1091,7 @@ LABEL_9:
 
     objc_autoreleasePoolPop(v11);
     v15 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v7 + 2))(v7, v15);
+    (*(handlerCopy + 2))(handlerCopy, v15);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -1193,35 +1193,35 @@ void __66__HMSoftwareUpdate_updateDocumentationMetadata_completionHandler___bloc
   }
 }
 
-- (void)_handleUpdatedDocumentationMetadata:(id)a3
+- (void)_handleUpdatedDocumentationMetadata:(id)metadata
 {
   v59 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMSoftwareUpdate *)self context];
-  v6 = [v5 pendingRequests];
-  v7 = [v4 identifier];
-  v8 = [v6 retrieveCompletionBlockForIdentifier:v7];
+  metadataCopy = metadata;
+  context = [(HMSoftwareUpdate *)self context];
+  pendingRequests = [context pendingRequests];
+  identifier = [metadataCopy identifier];
+  v8 = [pendingRequests retrieveCompletionBlockForIdentifier:identifier];
 
   if (v8)
   {
 LABEL_16:
-    [v4 respondWithPayload:0];
+    [metadataCopy respondWithPayload:0];
     goto LABEL_17;
   }
 
-  v9 = [v4 nullForKey:@"metadata"];
+  v9 = [metadataCopy nullForKey:@"metadata"];
 
   if (v9)
   {
     v10 = 0;
 LABEL_4:
-    v11 = [(HMSoftwareUpdate *)self documentationMetadata];
+    documentationMetadata = [(HMSoftwareUpdate *)self documentationMetadata];
     v12 = HMFEqualObjects();
 
     if ((v12 & 1) == 0)
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
@@ -1234,14 +1234,14 @@ LABEL_4:
       }
 
       objc_autoreleasePoolPop(v13);
-      v17 = [(HMSoftwareUpdate *)v14 isDocumentationAvailable];
-      [(HMSoftwareUpdate *)v14 setDocumentationMetadata:v10];
-      v18 = [(HMSoftwareUpdate *)v14 isDocumentationAvailable];
-      v19 = v18;
-      if (v17 != v18)
+      isDocumentationAvailable = [(HMSoftwareUpdate *)selfCopy isDocumentationAvailable];
+      [(HMSoftwareUpdate *)selfCopy setDocumentationMetadata:v10];
+      isDocumentationAvailable2 = [(HMSoftwareUpdate *)selfCopy isDocumentationAvailable];
+      v19 = isDocumentationAvailable2;
+      if (isDocumentationAvailable != isDocumentationAvailable2)
       {
         v20 = objc_autoreleasePoolPush();
-        v21 = v14;
+        v21 = selfCopy;
         v22 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
@@ -1256,7 +1256,7 @@ LABEL_4:
 
         objc_autoreleasePoolPop(v20);
         objc_initWeak(&location, v21);
-        v25 = [(HMSoftwareUpdate *)v21 delegate];
+        delegate = [(HMSoftwareUpdate *)v21 delegate];
         if (objc_opt_respondsToSelector())
         {
           v26 = objc_autoreleasePoolPush();
@@ -1275,16 +1275,16 @@ LABEL_4:
 
           objc_autoreleasePoolPop(v26);
           v31 = objc_loadWeakRetained(&location);
-          v32 = [v31 context];
-          v33 = [v32 delegateCaller];
+          context2 = [v31 context];
+          delegateCaller = [context2 delegateCaller];
           v49[0] = MEMORY[0x1E69E9820];
           v49[1] = 3221225472;
           v49[2] = __56__HMSoftwareUpdate__handleUpdatedDocumentationMetadata___block_invoke;
           v49[3] = &unk_1E754DC70;
-          v50 = v25;
+          v50 = delegate;
           v51 = v31;
           v52 = v19;
-          [v33 invokeBlock:v49];
+          [delegateCaller invokeBlock:v49];
         }
 
         objc_destroyWeak(&location);
@@ -1294,7 +1294,7 @@ LABEL_4:
     goto LABEL_16;
   }
 
-  v35 = [v4 dataForKey:@"metadata"];
+  v35 = [metadataCopy dataForKey:@"metadata"];
   if (v35)
   {
     v54 = 0;
@@ -1308,7 +1308,7 @@ LABEL_4:
     }
 
     v44 = objc_autoreleasePoolPush();
-    v45 = self;
+    selfCopy2 = self;
     v46 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
     {
@@ -1322,28 +1322,28 @@ LABEL_4:
 
     objc_autoreleasePoolPop(v44);
     v48 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-    [v4 respondWithError:v48];
+    [metadataCopy respondWithError:v48];
   }
 
   else
   {
     v38 = objc_autoreleasePoolPush();
-    v39 = self;
+    selfCopy3 = self;
     v40 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
       v41 = HMFGetLogIdentifier();
-      v42 = [v4 messagePayload];
+      messagePayload = [metadataCopy messagePayload];
       *buf = 138543618;
       v56 = v41;
       v57 = 2112;
-      v58 = v42;
+      v58 = messagePayload;
       _os_log_impl(&dword_19BB39000, v40, OS_LOG_TYPE_ERROR, "%{public}@Missing documentation metadata from message payload: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v38);
     v43 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-    [v4 respondWithError:v43];
+    [metadataCopy respondWithError:v43];
   }
 
 LABEL_17:
@@ -1351,12 +1351,12 @@ LABEL_17:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDocumentationMetadata:(id)a3
+- (void)setDocumentationMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   os_unfair_lock_lock_with_options();
   documentationMetadata = self->_documentationMetadata;
-  self->_documentationMetadata = v4;
+  self->_documentationMetadata = metadataCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1372,14 +1372,14 @@ LABEL_17:
 
 - (BOOL)isDocumentationAvailable
 {
-  v3 = [(HMSoftwareUpdate *)self nextPermittedRequestDocumentationDate];
-  v4 = [(HMSoftwareUpdate *)self documentationMetadata];
-  if (v4)
+  nextPermittedRequestDocumentationDate = [(HMSoftwareUpdate *)self nextPermittedRequestDocumentationDate];
+  documentationMetadata = [(HMSoftwareUpdate *)self documentationMetadata];
+  if (documentationMetadata)
   {
-    if (v3)
+    if (nextPermittedRequestDocumentationDate)
     {
-      v5 = [MEMORY[0x1E695DF00] date];
-      v6 = [v3 compare:v5] != 1;
+      date = [MEMORY[0x1E695DF00] date];
+      v6 = [nextPermittedRequestDocumentationDate compare:date] != 1;
     }
 
     else
@@ -1396,16 +1396,16 @@ LABEL_17:
   return v6;
 }
 
-- (void)updateState:(int64_t)a3 completionHandler:(id)a4
+- (void)updateState:(int64_t)state completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(HMSoftwareUpdate *)self context];
-  if (!v6)
+  handlerCopy = handler;
+  context = [(HMSoftwareUpdate *)self context];
+  if (!handlerCopy)
   {
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMSoftwareUpdate updateState:completionHandler:]", @"completionHandler"];
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -1422,25 +1422,25 @@ LABEL_17:
     objc_exception_throw(v21);
   }
 
-  v8 = v7;
-  if (v7)
+  v8 = context;
+  if (context)
   {
-    v9 = [v7 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __50__HMSoftwareUpdate_updateState_completionHandler___block_invoke;
     block[3] = &unk_1E754E0D0;
     block[4] = self;
-    v25 = a3;
-    v24 = v6;
+    stateCopy = state;
+    v24 = handlerCopy;
     v23 = v8;
-    dispatch_async(v9, block);
+    dispatch_async(queue, block);
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -1454,7 +1454,7 @@ LABEL_17:
 
     objc_autoreleasePoolPop(v10);
     v14 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v6 + 2))(v6, v14);
+    (*(handlerCopy + 2))(handlerCopy, v14);
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -1603,20 +1603,20 @@ void __50__HMSoftwareUpdate_updateState_completionHandler___block_invoke_152(uin
   }
 }
 
-- (void)_handleUpdatedState:(id)a3
+- (void)_handleUpdatedState:(id)state
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMSoftwareUpdate *)self context];
-  v6 = [v5 pendingRequests];
-  v7 = [v4 identifier];
-  v8 = [v6 removeCompletionBlockForIdentifier:v7];
+  stateCopy = state;
+  context = [(HMSoftwareUpdate *)self context];
+  pendingRequests = [context pendingRequests];
+  identifier = [stateCopy identifier];
+  v8 = [pendingRequests removeCompletionBlockForIdentifier:identifier];
 
-  v9 = [v4 numberForKey:@"state"];
+  v9 = [stateCopy numberForKey:@"state"];
   if (v9)
   {
-    v10 = [(HMSoftwareUpdate *)self state];
-    if (v10 == [v9 integerValue])
+    state = [(HMSoftwareUpdate *)self state];
+    if (state == [v9 integerValue])
     {
       if (!v8)
       {
@@ -1627,20 +1627,20 @@ void __50__HMSoftwareUpdate_updateState_completionHandler___block_invoke_152(uin
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         v20 = HMFGetLogIdentifier();
-        v21 = [v9 integerValue];
-        if (v21 > 5)
+        integerValue = [v9 integerValue];
+        if (integerValue > 5)
         {
           v22 = @"unknown";
         }
 
         else
         {
-          v22 = off_1E7548368[v21];
+          v22 = off_1E7548368[integerValue];
         }
 
         v23 = v22;
@@ -1652,24 +1652,24 @@ void __50__HMSoftwareUpdate_updateState_completionHandler___block_invoke_152(uin
       }
 
       objc_autoreleasePoolPop(v17);
-      -[HMSoftwareUpdate setState:](v18, "setState:", [v9 integerValue]);
+      -[HMSoftwareUpdate setState:](selfCopy, "setState:", [v9 integerValue]);
       if (!v8)
       {
-        v24 = [(HMSoftwareUpdate *)v18 delegate];
+        delegate = [(HMSoftwareUpdate *)selfCopy delegate];
         if (objc_opt_respondsToSelector())
         {
-          objc_initWeak(buf, v18);
-          v27 = [(HMSoftwareUpdate *)v18 context];
-          v28 = [v27 delegateCaller];
+          objc_initWeak(buf, selfCopy);
+          context2 = [(HMSoftwareUpdate *)selfCopy context];
+          delegateCaller = [context2 delegateCaller];
           v29[0] = MEMORY[0x1E69E9820];
           v29[1] = 3221225472;
           v29[2] = __40__HMSoftwareUpdate__handleUpdatedState___block_invoke;
           v29[3] = &unk_1E754A2B8;
           objc_copyWeak(&v32, buf);
-          v24 = v24;
-          v30 = v24;
+          delegate = delegate;
+          v30 = delegate;
           v31 = v9;
-          [v28 invokeBlock:v29];
+          [delegateCaller invokeBlock:v29];
 
           objc_destroyWeak(&v32);
           objc_destroyWeak(buf);
@@ -1679,33 +1679,33 @@ void __50__HMSoftwareUpdate_updateState_completionHandler___block_invoke_152(uin
       }
     }
 
-    v24 = [(HMSoftwareUpdate *)self context];
-    v25 = [v24 delegateCaller];
-    [v25 callCompletion:v8 error:0];
+    delegate = [(HMSoftwareUpdate *)self context];
+    delegateCaller2 = [delegate delegateCaller];
+    [delegateCaller2 callCompletion:v8 error:0];
 
 LABEL_15:
 LABEL_16:
-    [v4 respondWithPayload:0];
+    [stateCopy respondWithPayload:0];
     goto LABEL_17;
   }
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy2 = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v4 messagePayload];
+    messagePayload = [stateCopy messagePayload];
     *buf = 138543618;
     v34 = v14;
     v35 = 2112;
-    v36 = v15;
+    v36 = messagePayload;
     _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_ERROR, "%{public}@Missing state from message payload: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
   v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-  [v4 respondWithError:v16];
+  [stateCopy respondWithError:v16];
 
 LABEL_17:
   v26 = *MEMORY[0x1E69E9840];
@@ -1722,10 +1722,10 @@ void __40__HMSoftwareUpdate__handleUpdatedState___block_invoke(id *a1)
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   os_unfair_lock_lock_with_options();
-  self->_state = a3;
+  self->_state = state;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1757,12 +1757,12 @@ void __40__HMSoftwareUpdate__handleUpdatedState___block_invoke(id *a1)
   return v6;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
   identifier = self->_identifier;
-  self->_identifier = v4;
+  self->_identifier = identifierCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1778,28 +1778,28 @@ void __40__HMSoftwareUpdate__handleUpdatedState___block_invoke(id *a1)
 
 - (void)_registerNotificationHandlers
 {
-  v3 = [(HMSoftwareUpdate *)self context];
-  v4 = [v3 messageDispatcher];
-  [v4 registerForMessage:@"HMSU.us" receiver:self selector:sel__handleUpdatedState_];
+  context = [(HMSoftwareUpdate *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher registerForMessage:@"HMSU.us" receiver:self selector:sel__handleUpdatedState_];
 
-  v5 = [(HMSoftwareUpdate *)self context];
-  v6 = [v5 messageDispatcher];
-  [v6 registerForMessage:@"HMSU.dm" receiver:self selector:sel__handleUpdatedDocumentationMetadata_];
+  context2 = [(HMSoftwareUpdate *)self context];
+  messageDispatcher2 = [context2 messageDispatcher];
+  [messageDispatcher2 registerForMessage:@"HMSU.dm" receiver:self selector:sel__handleUpdatedDocumentationMetadata_];
 
-  v7 = [(HMSoftwareUpdate *)self context];
-  v8 = [v7 messageDispatcher];
-  [v8 registerForMessage:@"HMSU.du" receiver:self selector:sel__handleUpdatedDocumentation_];
+  context3 = [(HMSoftwareUpdate *)self context];
+  messageDispatcher3 = [context3 messageDispatcher];
+  [messageDispatcher3 registerForMessage:@"HMSU.du" receiver:self selector:sel__handleUpdatedDocumentation_];
 
-  v10 = [(HMSoftwareUpdate *)self context];
-  v9 = [v10 messageDispatcher];
-  [v9 registerForMessage:@"HMSU.na" receiver:self selector:sel__handleUpdatedNeedsAttentionReasonsMessage_];
+  context4 = [(HMSoftwareUpdate *)self context];
+  messageDispatcher4 = [context4 messageDispatcher];
+  [messageDispatcher4 registerForMessage:@"HMSU.na" receiver:self selector:sel__handleUpdatedNeedsAttentionReasonsMessage_];
 }
 
 - (void)_unconfigure
 {
   v12 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1810,22 +1810,22 @@ void __40__HMSoftwareUpdate__handleUpdatedState___block_invoke(id *a1)
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMSoftwareUpdate *)v4 context];
-  v8 = [v7 messageDispatcher];
-  [v8 deregisterReceiver:v4];
+  context = [(HMSoftwareUpdate *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher deregisterReceiver:selfCopy];
 
-  [(HMSoftwareUpdate *)v4 setContext:0];
+  [(HMSoftwareUpdate *)selfCopy setContext:0];
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configureWithContext:(id)a3
+- (void)configureWithContext:(id)context
 {
   [(HMSoftwareUpdate *)self setContext:?];
-  if (a3)
+  if (context)
   {
-    v5 = [(HMSoftwareUpdate *)self identifier];
+    identifier = [(HMSoftwareUpdate *)self identifier];
 
-    if (v5)
+    if (identifier)
     {
       [(HMSoftwareUpdate *)self _registerNotificationHandlers];
 
@@ -1836,46 +1836,46 @@ void __40__HMSoftwareUpdate__handleUpdatedState___block_invoke(id *a1)
 
 - (NSString)description
 {
-  v3 = [(HMSoftwareUpdate *)self releaseDate];
+  releaseDate = [(HMSoftwareUpdate *)self releaseDate];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(HMSoftwareUpdate *)self version];
-  v6 = [v5 versionString];
-  v7 = [(HMSoftwareUpdate *)self displayableVersion];
-  v8 = [(HMSoftwareUpdate *)self state];
-  if (v8 > 5)
+  version = [(HMSoftwareUpdate *)self version];
+  versionString = [version versionString];
+  displayableVersion = [(HMSoftwareUpdate *)self displayableVersion];
+  state = [(HMSoftwareUpdate *)self state];
+  if (state > 5)
   {
     v9 = @"unknown";
   }
 
   else
   {
-    v9 = off_1E7548368[v8];
+    v9 = off_1E7548368[state];
   }
 
   v10 = v9;
   [(HMSoftwareUpdate *)self downloadSize];
   v11 = NSLocalizedFileSizeDescription();
-  v12 = [(HMSoftwareUpdate *)self documentationMetadata];
-  v13 = [(HMSoftwareUpdate *)self updateType];
-  if (v13 - 1 > 2)
+  documentationMetadata = [(HMSoftwareUpdate *)self documentationMetadata];
+  updateType = [(HMSoftwareUpdate *)self updateType];
+  if (updateType - 1 > 2)
   {
     v14 = @"Unknown";
   }
 
   else
   {
-    v14 = off_1E75483D8[v13 - 1];
+    v14 = off_1E75483D8[updateType - 1];
   }
 
-  v15 = [v4 stringWithFormat:@"<Software Update, Version = %@, Displayable Version = %@, State = %@, Download Size = %@, Documentation Metadata = %@, Release Date = %@, Update Type = %@>", v6, v7, v10, v11, v12, v3, v14];
+  v15 = [v4 stringWithFormat:@"<Software Update, Version = %@, Displayable Version = %@, State = %@, Download Size = %@, Documentation Metadata = %@, Release Date = %@, Update Type = %@>", versionString, displayableVersion, v10, v11, documentationMetadata, releaseDate, v14];
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -1885,7 +1885,7 @@ void __40__HMSoftwareUpdate__handleUpdatedState___block_invoke(id *a1)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -1896,9 +1896,9 @@ void __40__HMSoftwareUpdate__handleUpdatedState___block_invoke(id *a1)
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMSoftwareUpdate *)self version];
-      v8 = [(HMSoftwareUpdate *)v6 version];
-      v9 = [v7 isEqual:v8];
+      version = [(HMSoftwareUpdate *)self version];
+      version2 = [(HMSoftwareUpdate *)v6 version];
+      v9 = [version isEqual:version2];
     }
 
     else
@@ -1912,49 +1912,49 @@ void __40__HMSoftwareUpdate__handleUpdatedState___block_invoke(id *a1)
 
 - (unint64_t)hash
 {
-  v2 = [(HMSoftwareUpdate *)self version];
-  v3 = [v2 hash];
+  version = [(HMSoftwareUpdate *)self version];
+  v3 = [version hash];
 
   return v3;
 }
 
-- (HMSoftwareUpdate)initWithVersion:(id)a3 displayableVersion:(id)a4 downloadSize:(unint64_t)a5 state:(int64_t)a6 installDuration:(double)a7 documentationMetadata:(id)a8 releaseDate:(id)a9
+- (HMSoftwareUpdate)initWithVersion:(id)version displayableVersion:(id)displayableVersion downloadSize:(unint64_t)size state:(int64_t)state installDuration:(double)duration documentationMetadata:(id)metadata releaseDate:(id)date
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a8;
-  v19 = a9;
-  if (v16)
+  versionCopy = version;
+  displayableVersionCopy = displayableVersion;
+  metadataCopy = metadata;
+  dateCopy = date;
+  if (versionCopy)
   {
-    v20 = v19;
+    v20 = dateCopy;
     v35.receiver = self;
     v35.super_class = HMSoftwareUpdate;
     v21 = [(HMSoftwareUpdate *)&v35 init];
     if (v21)
     {
-      v22 = [v16 copy];
+      v22 = [versionCopy copy];
       version = v21->_version;
       v21->_version = v22;
 
-      if (v17)
+      if (displayableVersionCopy)
       {
-        v24 = v17;
+        shortVersionString = displayableVersionCopy;
       }
 
       else
       {
-        v24 = [v16 shortVersionString];
+        shortVersionString = [versionCopy shortVersionString];
       }
 
       displayableVersion = v21->_displayableVersion;
-      v21->_displayableVersion = v24;
+      v21->_displayableVersion = shortVersionString;
 
-      v21->_downloadSize = a5;
-      v21->_state = a6;
-      objc_storeStrong(&v21->_documentationMetadata, a8);
-      v21->_installDuration = a7;
+      v21->_downloadSize = size;
+      v21->_state = state;
+      objc_storeStrong(&v21->_documentationMetadata, metadata);
+      v21->_installDuration = duration;
       v21->_updateType = 0;
-      objc_storeStrong(&v21->_releaseDate, a9);
+      objc_storeStrong(&v21->_releaseDate, date);
     }
 
     return v21;

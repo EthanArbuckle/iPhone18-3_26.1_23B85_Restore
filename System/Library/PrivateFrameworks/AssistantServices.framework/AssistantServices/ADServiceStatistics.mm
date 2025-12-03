@@ -1,38 +1,38 @@
 @interface ADServiceStatistics
-- (ADServiceStatistics)initWithServiceIdentifier:(id)a3;
+- (ADServiceStatistics)initWithServiceIdentifier:(id)identifier;
 - (id)_commandTimes;
 - (id)_serviceStatsPath;
 - (id)_statsDict;
 - (id)_statsDirectory;
-- (id)_statsForCommand:(id)a3;
+- (id)_statsForCommand:(id)command;
 - (void)_saveStats;
 - (void)dealloc;
-- (void)markIncomingCommand:(id)a3;
-- (void)markResponseForCommand:(id)a3;
+- (void)markIncomingCommand:(id)command;
+- (void)markResponseForCommand:(id)command;
 @end
 
 @implementation ADServiceStatistics
 
-- (void)markResponseForCommand:(id)a3
+- (void)markResponseForCommand:(id)command
 {
-  v4 = a3;
-  if (v4)
+  commandCopy = command;
+  if (commandCopy)
   {
-    v5 = [(ADServiceStatistics *)self _commandTimes];
-    v6 = [v5 objectForKey:v4];
+    _commandTimes = [(ADServiceStatistics *)self _commandTimes];
+    v6 = [_commandTimes objectForKey:commandCopy];
 
     if (v6)
     {
-      v7 = [(ADServiceStatistics *)self _statsForCommand:v4];
+      v7 = [(ADServiceStatistics *)self _statsForCommand:commandCopy];
       v8 = [v7 objectForKey:@"Total Count"];
-      v9 = [v8 intValue];
+      intValue = [v8 intValue];
 
-      v10 = [NSNumber numberWithInt:(v9 + 1)];
+      v10 = [NSNumber numberWithInt:(intValue + 1)];
       [v7 setObject:v10 forKey:@"Total Count"];
 
-      if (v9 >= 9)
+      if (intValue >= 9)
       {
-        v9 = 9;
+        intValue = 9;
       }
 
       v11 = [v7 objectForKey:@"Response Time"];
@@ -43,7 +43,7 @@
       [v14 timeIntervalSinceDate:v6];
       v16 = v15;
 
-      v17 = [NSNumber numberWithDouble:(v16 + v13 * v9) / (v9 + 1)];
+      v17 = [NSNumber numberWithDouble:(v16 + v13 * intValue) / (intValue + 1)];
       [v7 setObject:v17 forKey:@"Response Time"];
 
       [(ADServiceStatistics *)self _saveStats];
@@ -58,7 +58,7 @@
         v22 = 136315650;
         v23 = "[ADServiceStatistics markResponseForCommand:]";
         v24 = 2112;
-        v25 = v4;
+        v25 = commandCopy;
         v26 = 2114;
         v27 = serviceIdentifier;
         _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%s No start time for command %@ for service %{public}@", &v22, 0x20u);
@@ -81,14 +81,14 @@
   }
 }
 
-- (void)markIncomingCommand:(id)a3
+- (void)markIncomingCommand:(id)command
 {
-  v4 = a3;
-  if (v4)
+  commandCopy = command;
+  if (commandCopy)
   {
-    v5 = [(ADServiceStatistics *)self _commandTimes];
+    _commandTimes = [(ADServiceStatistics *)self _commandTimes];
     v6 = +[NSDate date];
-    [v5 setObject:v6 forKey:v4];
+    [_commandTimes setObject:v6 forKey:commandCopy];
   }
 
   else
@@ -144,23 +144,23 @@
 
     else
     {
-      v8 = [(ADServiceStatistics *)self _serviceStatsPath];
-      [v4 writeToFile:v8 atomically:0];
+      _serviceStatsPath = [(ADServiceStatistics *)self _serviceStatsPath];
+      [v4 writeToFile:_serviceStatsPath atomically:0];
     }
   }
 }
 
-- (id)_statsForCommand:(id)a3
+- (id)_statsForCommand:(id)command
 {
-  v4 = a3;
-  v5 = [(ADServiceStatistics *)self _statsDict];
-  v6 = [v5 objectForKey:v4];
+  commandCopy = command;
+  _statsDict = [(ADServiceStatistics *)self _statsDict];
+  v6 = [_statsDict objectForKey:commandCopy];
 
   if (!v6)
   {
     v6 = +[NSMutableDictionary dictionary];
-    v7 = [(ADServiceStatistics *)self _statsDict];
-    [v7 setObject:v6 forKey:v4];
+    _statsDict2 = [(ADServiceStatistics *)self _statsDict];
+    [_statsDict2 setObject:v6 forKey:commandCopy];
   }
 
   return v6;
@@ -173,8 +173,8 @@
   if (!statsDict)
   {
     v5 = [NSData alloc];
-    v6 = [(ADServiceStatistics *)self _serviceStatsPath];
-    v7 = [v5 initWithContentsOfFile:v6];
+    _serviceStatsPath = [(ADServiceStatistics *)self _serviceStatsPath];
+    v7 = [v5 initWithContentsOfFile:_serviceStatsPath];
 
     if (v7)
     {
@@ -218,9 +218,9 @@
 
 - (id)_serviceStatsPath
 {
-  v3 = [(ADServiceStatistics *)self _statsDirectory];
+  _statsDirectory = [(ADServiceStatistics *)self _statsDirectory];
   v4 = [NSString stringWithFormat:@"%@.plist", self->_serviceIdentifier];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  v5 = [_statsDirectory stringByAppendingPathComponent:v4];
 
   return v5;
 }
@@ -245,30 +245,30 @@
   [(ADServiceStatistics *)&v3 dealloc];
 }
 
-- (ADServiceStatistics)initWithServiceIdentifier:(id)a3
+- (ADServiceStatistics)initWithServiceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[ADPreferences sharedPreferences];
-  v6 = [v5 statisticsRecordingEnabled];
+  statisticsRecordingEnabled = [v5 statisticsRecordingEnabled];
 
-  v7 = 0;
-  if (v4 && v6)
+  selfCopy = 0;
+  if (identifierCopy && statisticsRecordingEnabled)
   {
     v12.receiver = self;
     v12.super_class = ADServiceStatistics;
     v8 = [(ADServiceStatistics *)&v12 init];
     if (v8)
     {
-      v9 = [v4 copy];
+      v9 = [identifierCopy copy];
       serviceIdentifier = v8->_serviceIdentifier;
       v8->_serviceIdentifier = v9;
     }
 
     self = v8;
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

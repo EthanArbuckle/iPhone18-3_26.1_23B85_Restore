@@ -1,20 +1,20 @@
 @interface OrgApacheLuceneSearchConjunctionScorer_DocsAndFreqs
-- (OrgApacheLuceneSearchConjunctionScorer_DocsAndFreqs)initWithOrgApacheLuceneSearchDocIdSetIterator:(id)a3;
+- (OrgApacheLuceneSearchConjunctionScorer_DocsAndFreqs)initWithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchConjunctionScorer_DocsAndFreqs
 
-- (OrgApacheLuceneSearchConjunctionScorer_DocsAndFreqs)initWithOrgApacheLuceneSearchDocIdSetIterator:(id)a3
+- (OrgApacheLuceneSearchConjunctionScorer_DocsAndFreqs)initWithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator
 {
   self->doc_ = -1;
-  JreStrongAssign(&self->iterator_, a3);
-  if (!a3)
+  JreStrongAssign(&self->iterator_, iterator);
+  if (!iterator)
   {
     JreThrowNullPointerException();
   }
 
-  self->cost_ = [a3 cost];
+  self->cost_ = [iterator cost];
   return self;
 }
 

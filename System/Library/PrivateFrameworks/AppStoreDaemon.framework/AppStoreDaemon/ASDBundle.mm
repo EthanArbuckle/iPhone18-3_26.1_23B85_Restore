@@ -1,28 +1,28 @@
 @interface ASDBundle
-+ (id)bundleWithIdentifier:(id)a3;
-- (ASDBundle)initWithCoder:(id)a3;
-- (ASDBundle)initWithIdentifier:(id)a3;
++ (id)bundleWithIdentifier:(id)identifier;
+- (ASDBundle)initWithCoder:(id)coder;
+- (ASDBundle)initWithIdentifier:(id)identifier;
 @end
 
 @implementation ASDBundle
 
-+ (id)bundleWithIdentifier:(id)a3
++ (id)bundleWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (ASDBundle)initWithIdentifier:(id)a3
+- (ASDBundle)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = ASDBundle;
   v5 = [(ASDBundle *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -30,23 +30,23 @@
   return v5;
 }
 
-- (ASDBundle)initWithCoder:(id)a3
+- (ASDBundle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
 
   if (v5)
   {
     self = [(ASDBundle *)self initWithIdentifier:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

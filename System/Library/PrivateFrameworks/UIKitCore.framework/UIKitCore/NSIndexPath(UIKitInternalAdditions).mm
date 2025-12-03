@@ -7,7 +7,7 @@
 
 - (__CFString)_ui_shortDescription
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2)
   {
     v3 = v2;
@@ -26,7 +26,7 @@
       }
 
       v7 = v6;
-      v8 = [a1 indexAtPosition:v5];
+      v8 = [self indexAtPosition:v5];
       if (v8 == 0x7FFFFFFFFFFFFFFFLL)
       {
         [(__CFString *)v4 appendFormat:@"NSNotFound%@", v7, v10];
@@ -57,8 +57,8 @@
   v13 = *MEMORY[0x1E69E9840];
   if (!a3)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"NSIndexPath+UIKitAdditions.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"outSectionIndex != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSIndexPath+UIKitAdditions.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"outSectionIndex != NULL"}];
 
     if (a4)
     {
@@ -66,8 +66,8 @@
     }
 
 LABEL_5:
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"NSIndexPath+UIKitAdditions.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"outItemIndex != NULL"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"NSIndexPath+UIKitAdditions.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"outItemIndex != NULL"}];
 
     goto LABEL_3;
   }
@@ -79,7 +79,7 @@ LABEL_5:
 
 LABEL_3:
   v12 = xmmword_18A677770;
-  result = [a1 getIndexes:&v12 range:{0, 2}];
+  result = [self getIndexes:&v12 range:{0, 2}];
   v9 = *(&v12 + 1);
   *a3 = v12;
   *a4 = v9;

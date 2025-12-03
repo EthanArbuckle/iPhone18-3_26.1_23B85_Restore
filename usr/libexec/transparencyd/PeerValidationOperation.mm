@@ -1,9 +1,9 @@
 @interface PeerValidationOperation
 - (NSDictionary)result;
 - (_TtC13transparencyd23PeerValidationOperation)init;
-- (_TtC13transparencyd23PeerValidationOperation)initWithDeps:(id)a3 application:(id)a4 uris:(id)a5 logClient:(id)a6;
+- (_TtC13transparencyd23PeerValidationOperation)initWithDeps:(id)deps application:(id)application uris:(id)uris logClient:(id)client;
 - (void)groupStart;
-- (void)setResult:(id)a3;
+- (void)setResult:(id)result;
 @end
 
 @implementation PeerValidationOperation
@@ -20,7 +20,7 @@
   return v5.super.isa;
 }
 
-- (void)setResult:(id)a3
+- (void)setResult:(id)result
 {
   sub_10009FDA0(0, &qword_100384BC0, KTVerifierResult_ptr);
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
@@ -30,14 +30,14 @@
   *(self + v5) = v4;
 }
 
-- (_TtC13transparencyd23PeerValidationOperation)initWithDeps:(id)a3 application:(id)a4 uris:(id)a5 logClient:(id)a6
+- (_TtC13transparencyd23PeerValidationOperation)initWithDeps:(id)deps application:(id)application uris:(id)uris logClient:(id)client
 {
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
   v11 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
+  depsCopy = deps;
   swift_unknownObjectRetain();
-  v13 = sub_1000D59A4(v12, v8, v10, v11, a6);
+  v13 = sub_1000D59A4(depsCopy, v8, v10, v11, client);
 
   swift_unknownObjectRelease();
   return v13;
@@ -45,7 +45,7 @@
 
 - (void)groupStart
 {
-  v2 = self;
+  selfCopy = self;
   PeerValidationOperation.groupStart()();
 }
 

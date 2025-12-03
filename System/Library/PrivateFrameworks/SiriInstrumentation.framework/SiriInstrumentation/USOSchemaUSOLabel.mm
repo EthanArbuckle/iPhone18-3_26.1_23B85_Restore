@@ -1,24 +1,24 @@
 @interface USOSchemaUSOLabel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (USOSchemaUSOLabel)initWithDictionary:(id)a3;
-- (USOSchemaUSOLabel)initWithJSON:(id)a3;
+- (USOSchemaUSOLabel)initWithDictionary:(id)dictionary;
+- (USOSchemaUSOLabel)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation USOSchemaUSOLabel
 
-- (USOSchemaUSOLabel)initWithDictionary:(id)a3
+- (USOSchemaUSOLabel)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = USOSchemaUSOLabel;
   v5 = [(USOSchemaUSOLabel *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"value"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"value"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,30 +32,30 @@
   return v5;
 }
 
-- (USOSchemaUSOLabel)initWithJSON:(id)a3
+- (USOSchemaUSOLabel)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(USOSchemaUSOLabel *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(USOSchemaUSOLabel *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(USOSchemaUSOLabel *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -68,31 +68,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_value)
   {
-    v4 = [(USOSchemaUSOLabel *)self value];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"value"];
+    value = [(USOSchemaUSOLabel *)self value];
+    v5 = [value copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"value"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(USOSchemaUSOLabel *)self value];
-    v6 = [v4 value];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    value = [(USOSchemaUSOLabel *)self value];
+    value2 = [equalCopy value];
+    v7 = value2;
+    if ((value != 0) != (value2 == 0))
     {
-      v8 = [(USOSchemaUSOLabel *)self value];
-      if (!v8)
+      value3 = [(USOSchemaUSOLabel *)self value];
+      if (!value3)
       {
 
 LABEL_10:
@@ -100,10 +100,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(USOSchemaUSOLabel *)self value];
-      v11 = [v4 value];
-      v12 = [v10 isEqual:v11];
+      v9 = value3;
+      value4 = [(USOSchemaUSOLabel *)self value];
+      value5 = [equalCopy value];
+      v12 = [value4 isEqual:value5];
 
       if (v12)
       {
@@ -122,12 +122,12 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(USOSchemaUSOLabel *)self value];
+  toCopy = to;
+  value = [(USOSchemaUSOLabel *)self value];
 
-  if (v4)
+  if (value)
   {
     PBDataWriterWriteStringField();
   }

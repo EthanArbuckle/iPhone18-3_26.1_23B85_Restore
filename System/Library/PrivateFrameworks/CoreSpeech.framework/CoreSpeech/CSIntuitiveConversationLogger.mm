@@ -1,17 +1,17 @@
 @interface CSIntuitiveConversationLogger
 - (CSAttSiriController)attSiriController;
 - (CSIntuitiveConversationLogger)init;
-- (CSIntuitiveConversationLogger)initWithAttSiriController:(id)a3;
-- (id)_createJsonLogPathBySignalType:(id)a3;
+- (CSIntuitiveConversationLogger)initWithAttSiriController:(id)controller;
+- (id)_createJsonLogPathBySignalType:(id)type;
 - (id)_timeStampString;
 - (void)_handleStopLogging;
-- (void)_logAudioMetaData:(id)a3;
+- (void)_logAudioMetaData:(id)data;
 - (void)_logMetadata;
 - (void)_setupLogDirectory;
-- (void)attSiriAudioSrcNodeDidStop:(id)a3;
-- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)a3 audioChunk:(id)a4;
-- (void)setMhId:(id)a3;
-- (void)startLoggingWithAudioRecordContext:(id)a3 requestId:(id)a4;
+- (void)attSiriAudioSrcNodeDidStop:(id)stop;
+- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)available audioChunk:(id)chunk;
+- (void)setMhId:(id)id;
+- (void)startLoggingWithAudioRecordContext:(id)context requestId:(id)id;
 - (void)stop;
 @end
 
@@ -24,21 +24,21 @@
   return WeakRetained;
 }
 
-- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)a3 audioChunk:(id)a4
+- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)available audioChunk:(id)chunk
 {
-  v5 = a4;
+  chunkCopy = chunk;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001645A4;
   v8[3] = &unk_100253C48;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = chunkCopy;
+  v7 = chunkCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)attSiriAudioSrcNodeDidStop:(id)a3
+- (void)attSiriAudioSrcNodeDidStop:(id)stop
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -65,17 +65,17 @@
   v5 = self->_audioRecordContext;
   if (v5)
   {
-    v6 = [(CSAudioRecordContext *)v5 type];
+    type = [(CSAudioRecordContext *)v5 type];
   }
 
   else
   {
-    v6 = 0;
+    type = 0;
   }
 
   v7 = [(CSIntuitiveConversationLogger *)self _createJsonLogPathBySignalType:@"metadata"];
   v29[0] = @"audioRecordType";
-  v8 = [CSAudioRecordContext recordTypeString:v6];
+  v8 = [CSAudioRecordContext recordTypeString:type];
   startTimestampString = self->_startTimestampString;
   stopTimestampString = self->_stopTimestampString;
   v30[0] = v8;
@@ -127,11 +127,11 @@
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
       v25 = v24;
-      v26 = [v23 localizedDescription];
+      localizedDescription = [v23 localizedDescription];
       *buf = 136315394;
       v32 = "[CSIntuitiveConversationLogger _logMetadata]";
       v33 = 2114;
-      v34 = v26;
+      v34 = localizedDescription;
       _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%s Failed to serialize metadata data with err: %{public}@", buf, 0x16u);
     }
   }
@@ -157,35 +157,35 @@
   return v5;
 }
 
-- (void)_logAudioMetaData:(id)a3
+- (void)_logAudioMetaData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
+  dataCopy = data;
+  v5 = dataCopy;
   if (!self->_previousLoggedSampleCount)
   {
-    v6 = [v4 startSampleCount];
-    self->_startSampleCount = v6;
+    startSampleCount = [dataCopy startSampleCount];
+    self->_startSampleCount = startSampleCount;
     v7 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 136315394;
       v10 = "[CSIntuitiveConversationLogger _logAudioMetaData:]";
       v11 = 2050;
-      v12 = v6;
+      v12 = startSampleCount;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s audio logging start sample count %{public}llu", &v9, 0x16u);
     }
   }
 
-  v8 = [v5 startSampleCount];
-  self->_previousLoggedSampleCount = v8 + [v5 numSamples];
+  startSampleCount2 = [v5 startSampleCount];
+  self->_previousLoggedSampleCount = startSampleCount2 + [v5 numSamples];
 }
 
 - (void)_handleStopLogging
 {
   self->_stopSampleCount = self->_previousLoggedSampleCount;
-  v3 = [(CSIntuitiveConversationLogger *)self _timeStampString];
+  _timeStampString = [(CSIntuitiveConversationLogger *)self _timeStampString];
   stopTimestampString = self->_stopTimestampString;
-  self->_stopTimestampString = v3;
+  self->_stopTimestampString = _timeStampString;
 
   self->_stopMachAbsTime = mach_absolute_time();
   [(CSIntuitiveConversationLogger *)self _logMetadata];
@@ -204,10 +204,10 @@
   }
 }
 
-- (id)_createJsonLogPathBySignalType:(id)a3
+- (id)_createJsonLogPathBySignalType:(id)type
 {
-  v4 = [NSString stringWithFormat:@"%@-%@.json", self->_requestId, a3];
-  v5 = [(NSString *)self->_logDirectory stringByAppendingPathComponent:v4];
+  type = [NSString stringWithFormat:@"%@-%@.json", self->_requestId, type];
+  v5 = [(NSString *)self->_logDirectory stringByAppendingPathComponent:type];
 
   return v5;
 }
@@ -216,9 +216,9 @@
 {
   v3 = +[NSFileManager defaultManager];
   v4 = +[CSFPreferences sharedPreferences];
-  v5 = [v4 mhLogDirectory];
+  mhLogDirectory = [v4 mhLogDirectory];
   logDirectory = self->_logDirectory;
-  self->_logDirectory = v5;
+  self->_logDirectory = mhLogDirectory;
 
   if ([v3 fileExistsAtPath:self->_logDirectory])
   {
@@ -238,13 +238,13 @@
       {
         v14 = self->_logDirectory;
         v15 = v10;
-        v16 = [v7 localizedDescription];
+        localizedDescription = [v7 localizedDescription];
         *buf = 136315650;
         v19 = "[CSIntuitiveConversationLogger _setupLogDirectory]";
         v20 = 2114;
         v21 = v14;
         v22 = 2114;
-        v23 = v16;
+        v23 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s Couldn't create logging directory at path %{public}@ %{public}@", buf, 0x20u);
       }
 
@@ -265,34 +265,34 @@
   }
 }
 
-- (void)setMhId:(id)a3
+- (void)setMhId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100164FA8;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = idCopy;
+  selfCopy = self;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)startLoggingWithAudioRecordContext:(id)a3 requestId:(id)a4
+- (void)startLoggingWithAudioRecordContext:(id)context requestId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  idCopy = id;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100165134;
   block[3] = &unk_100253680;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = contextCopy;
+  v13 = idCopy;
+  v9 = idCopy;
+  v10 = contextCopy;
   dispatch_async(queue, block);
 }
 
@@ -307,14 +307,14 @@
   dispatch_async(queue, block);
 }
 
-- (CSIntuitiveConversationLogger)initWithAttSiriController:(id)a3
+- (CSIntuitiveConversationLogger)initWithAttSiriController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(CSIntuitiveConversationLogger *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_attSiriController, v4);
+    objc_storeWeak(&v5->_attSiriController, controllerCopy);
   }
 
   return v6;

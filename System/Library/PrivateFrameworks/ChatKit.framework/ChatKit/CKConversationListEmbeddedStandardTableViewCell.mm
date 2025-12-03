@@ -1,9 +1,9 @@
 @interface CKConversationListEmbeddedStandardTableViewCell
 + (id)reuseIdentifier;
 - (CGRect)containerBounds;
-- (CKConversationListEmbeddedStandardTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CKConversationListEmbeddedStandardTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIEdgeInsets)marginInsets;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)prepareForReuse;
 @end
 
@@ -29,22 +29,22 @@
   return result;
 }
 
-- (CKConversationListEmbeddedStandardTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKConversationListEmbeddedStandardTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = CKConversationListEmbeddedStandardTableViewCell;
-  v4 = [(CKConversationListStandardCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKConversationListStandardCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(CKConversationListStandardCell *)v4 avatarView];
-    [v6 setAsynchronousRendering:1];
+    avatarView = [(CKConversationListStandardCell *)v4 avatarView];
+    [avatarView setAsynchronousRendering:1];
 
-    v7 = [(CKConversationListStandardCell *)v5 avatarView];
-    [v7 setShowsContactOnTap:0];
+    avatarView2 = [(CKConversationListStandardCell *)v5 avatarView];
+    [avatarView2 setShowsContactOnTap:0];
 
-    v8 = [(CKConversationListStandardCell *)v5 avatarView];
-    [v8 setBypassActionValidation:1];
+    avatarView3 = [(CKConversationListStandardCell *)v5 avatarView];
+    [avatarView3 setBypassActionValidation:1];
   }
 
   return v5;
@@ -55,33 +55,33 @@
   v4.receiver = self;
   v4.super_class = CKConversationListEmbeddedStandardTableViewCell;
   [(CKConversationListStandardCell *)&v4 prepareForReuse];
-  v3 = [(CKConversationListCell *)self summaryLabel];
-  [v3 setAttributedText:0];
+  summaryLabel = [(CKConversationListCell *)self summaryLabel];
+  [summaryLabel setAttributedText:0];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v15.receiver = self;
   v15.super_class = CKConversationListEmbeddedStandardTableViewCell;
-  v5 = [(CKConversationListEmbeddedStandardTableViewCell *)&v15 hitTest:a4 withEvent:a3.x, a3.y];
-  v6 = [(CKConversationListStandardCell *)self avatarView];
-  if (v5 == v6)
+  v5 = [(CKConversationListEmbeddedStandardTableViewCell *)&v15 hitTest:event withEvent:test.x, test.y];
+  avatarView = [(CKConversationListStandardCell *)self avatarView];
+  if (v5 == avatarView)
   {
     v8 = 1;
   }
 
   else
   {
-    v7 = [(CKConversationListStandardCell *)self avatarView];
-    v8 = [v5 isDescendantOfView:v7];
+    avatarView2 = [(CKConversationListStandardCell *)self avatarView];
+    v8 = [v5 isDescendantOfView:avatarView2];
   }
 
-  v9 = [(CKConversationListCell *)self closeButton];
+  closeButton = [(CKConversationListCell *)self closeButton];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v11 = (CKIsRunningInMacCatalyst() == 0) & v8;
-  if (v5 == v9)
+  if (v5 == closeButton)
   {
     v11 = 1;
   }

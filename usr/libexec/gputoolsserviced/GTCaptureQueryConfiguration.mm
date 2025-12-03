@@ -1,15 +1,15 @@
 @interface GTCaptureQueryConfiguration
-- (GTCaptureQueryConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTCaptureQueryConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTCaptureQueryConfiguration
 
-- (GTCaptureQueryConfiguration)initWithCoder:(id)a3
+- (GTCaptureQueryConfiguration)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = GTCaptureQueryConfiguration;
-  v3 = [(GTCaptureRequest *)&v7 initWithCoder:a3];
+  v3 = [(GTCaptureRequest *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -19,11 +19,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = GTCaptureQueryConfiguration;
-  [(GTCaptureRequest *)&v3 encodeWithCoder:a3];
+  [(GTCaptureRequest *)&v3 encodeWithCoder:coder];
 }
 
 @end

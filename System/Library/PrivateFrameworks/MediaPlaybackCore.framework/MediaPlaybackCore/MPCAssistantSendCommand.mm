@@ -1,27 +1,27 @@
 @interface MPCAssistantSendCommand
-- (BOOL)_isAnyDeviceControllable:(id)a3 forBundleID:(id)a4;
+- (BOOL)_isAnyDeviceControllable:(id)controllable forBundleID:(id)d;
 - (MPCAssistantSendCommand)init;
-- (void)_checkForAccount:(id)a3 destination:(id)a4 origin:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)_findEndpointFromEndpoints:(id)a3 byGroupLeader:(id)a4;
-- (void)_formGroupAndSendCommand:(unsigned int)a3 withOptions:(id)a4 toExternalDestination:(id)a5 completion:(id)a6;
-- (void)_sendCommand:(unsigned int)a3 path:(id)a4 options:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)_sendCommand:(unsigned int)a3 withOptions:(id)a4 toEndpoint:(void *)a5 toDestination:(id)a6 completion:(id)a7;
-- (void)sendCommand:(unsigned int)a3 withOptions:(id)a4 toEndpoint:(id)a5 toDestination:(id)a6 completion:(id)a7;
-- (void)sendMediaRemoteCommand:(unsigned int)a3 withOptions:(id)a4 toEndpointDestination:(id)a5 completion:(id)a6;
+- (void)_checkForAccount:(id)account destination:(id)destination origin:(id)origin queue:(id)queue completion:(id)completion;
+- (void)_findEndpointFromEndpoints:(id)endpoints byGroupLeader:(id)leader;
+- (void)_formGroupAndSendCommand:(unsigned int)command withOptions:(id)options toExternalDestination:(id)destination completion:(id)completion;
+- (void)_sendCommand:(unsigned int)command path:(id)path options:(id)options queue:(id)queue completion:(id)completion;
+- (void)_sendCommand:(unsigned int)command withOptions:(id)options toEndpoint:(void *)endpoint toDestination:(id)destination completion:(id)completion;
+- (void)sendCommand:(unsigned int)command withOptions:(id)options toEndpoint:(id)endpoint toDestination:(id)destination completion:(id)completion;
+- (void)sendMediaRemoteCommand:(unsigned int)command withOptions:(id)options toEndpointDestination:(id)destination completion:(id)completion;
 @end
 
 @implementation MPCAssistantSendCommand
 
-- (void)_findEndpointFromEndpoints:(id)a3 byGroupLeader:(id)a4
+- (void)_findEndpointFromEndpoints:(id)endpoints byGroupLeader:(id)leader
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  endpointsCopy = endpoints;
+  leaderCopy = leader;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = endpointsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -40,7 +40,7 @@ LABEL_3:
       if (MRAVEndpointGetDesignatedGroupLeader())
       {
         v13 = MRAVOutputDeviceCopyUniqueIdentifier();
-        v14 = [v6 isEqualToString:{v13, v16}];
+        v14 = [leaderCopy isEqualToString:{v13, v16}];
 
         if (v14)
         {
@@ -70,16 +70,16 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)_isAnyDeviceControllable:(id)a3 forBundleID:(id)a4
+- (BOOL)_isAnyDeviceControllable:(id)controllable forBundleID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllableCopy = controllable;
   IsSystemPodcastApplication = MRMediaRemoteApplicationIsSystemPodcastApplication();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = controllableCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -117,19 +117,19 @@ LABEL_13:
   return v11;
 }
 
-- (void)_sendCommand:(unsigned int)a3 path:(id)a4 options:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)_sendCommand:(unsigned int)command path:(id)path options:(id)options queue:(id)queue completion:(id)completion
 {
-  v8 = a7;
-  v7 = v8;
+  completionCopy = completion;
+  v7 = completionCopy;
   MRMediaRemoteSendCommandToPlayerWithResult();
 }
 
-- (void)_sendCommand:(unsigned int)a3 withOptions:(id)a4 toEndpoint:(void *)a5 toDestination:(id)a6 completion:(id)a7
+- (void)_sendCommand:(unsigned int)command withOptions:(id)options toEndpoint:(void *)endpoint toDestination:(id)destination completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  optionsCopy = options;
+  destinationCopy = destination;
+  completionCopy = completion;
   v15 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
   v16 = dispatch_queue_create("com.apple.mediaplayer.assistant.callback", v15);
 
@@ -140,7 +140,7 @@ LABEL_13:
     *buf = 138543618;
     v32 = v18;
     v33 = 2114;
-    v34 = a5;
+    endpointCopy = endpoint;
     _os_log_impl(&dword_1C5C61000, v17, OS_LOG_TYPE_DEFAULT, "Sending command: %{public}@ endpoint %{public}@...", buf, 0x16u);
   }
 
@@ -150,16 +150,16 @@ LABEL_13:
   v24[2] = __88__MPCAssistantSendCommand__sendCommand_withOptions_toEndpoint_toDestination_completion___block_invoke;
   v24[3] = &unk_1E82314B8;
   v28 = v16;
-  v29 = v14;
-  v25 = v13;
-  v26 = self;
-  v30 = a3;
-  v27 = v12;
+  v29 = completionCopy;
+  v25 = destinationCopy;
+  selfCopy = self;
+  commandCopy = command;
+  v27 = optionsCopy;
   v20 = v16;
-  v21 = v12;
-  v22 = v13;
-  v23 = v14;
-  [(MPCAssistantConnection *)connection connectToEndpoint:a5 completion:v24];
+  v21 = optionsCopy;
+  v22 = destinationCopy;
+  v23 = completionCopy;
+  [(MPCAssistantConnection *)connection connectToEndpoint:endpoint completion:v24];
 }
 
 void __88__MPCAssistantSendCommand__sendCommand_withOptions_toEndpoint_toDestination_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -201,17 +201,17 @@ void __88__MPCAssistantSendCommand__sendCommand_withOptions_toEndpoint_toDestina
   }
 }
 
-- (void)_formGroupAndSendCommand:(unsigned int)a3 withOptions:(id)a4 toExternalDestination:(id)a5 completion:(id)a6
+- (void)_formGroupAndSendCommand:(unsigned int)command withOptions:(id)options toExternalDestination:(id)destination completion:(id)completion
 {
   v45 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v11 outputDeviceUIDs];
+  optionsCopy = options;
+  destinationCopy = destination;
+  completionCopy = completion;
+  outputDeviceUIDs = [destinationCopy outputDeviceUIDs];
   v14 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
   v15 = dispatch_queue_create("com.apple.mediaplayer.assistant.grouping", v14);
 
-  if (a3 - 121 > 0xB || (v16 = 1, ((1 << (a3 - 121)) & 0x803) == 0))
+  if (command - 121 > 0xB || (v16 = 1, ((1 << (command - 121)) & 0x803) == 0))
   {
     v16 = 0;
   }
@@ -220,7 +220,7 @@ void __88__MPCAssistantSendCommand__sendCommand_withOptions_toEndpoint_toDestina
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v44 = v13;
+    v44 = outputDeviceUIDs;
     _os_log_impl(&dword_1C5C61000, v17, OS_LOG_TYPE_DEBUG, "Searching for output devices matching UIDs: %{public}@", buf, 0xCu);
   }
 
@@ -228,16 +228,16 @@ void __88__MPCAssistantSendCommand__sendCommand_withOptions_toEndpoint_toDestina
   aBlock[1] = 3221225472;
   aBlock[2] = __97__MPCAssistantSendCommand__formGroupAndSendCommand_withOptions_toExternalDestination_completion___block_invoke;
   aBlock[3] = &unk_1E82313C8;
-  v18 = v10;
+  v18 = optionsCopy;
   v36 = v18;
   v41 = v16;
-  v19 = v11;
+  v19 = destinationCopy;
   v37 = v19;
-  v42 = a3;
+  commandCopy = command;
   v20 = v15;
   v38 = v20;
-  v39 = self;
-  v21 = v12;
+  selfCopy = self;
+  v21 = completionCopy;
   v40 = v21;
   v22 = _Block_copy(aBlock);
   discovery = self->_discovery;
@@ -256,7 +256,7 @@ void __88__MPCAssistantSendCommand__sendCommand_withOptions_toEndpoint_toDestina
   v26 = v20;
   v27 = v19;
   v28 = v21;
-  [(MPCAssistantDiscovery *)discovery discoverRemoteControlEndpointsMatchingUIDs:v13 completion:v29];
+  [(MPCAssistantDiscovery *)discovery discoverRemoteControlEndpointsMatchingUIDs:outputDeviceUIDs completion:v29];
 }
 
 void __97__MPCAssistantSendCommand__formGroupAndSendCommand_withOptions_toExternalDestination_completion___block_invoke(uint64_t a1, void *a2)
@@ -647,31 +647,31 @@ LABEL_27:
   (*(*(a1 + 48) + 16))(*(a1 + 48), v7, v24, [*(a1 + 32) count]);
 }
 
-- (void)_checkForAccount:(id)a3 destination:(id)a4 origin:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)_checkForAccount:(id)account destination:(id)destination origin:(id)origin queue:(id)queue completion:(id)completion
 {
   v223[0] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if ([v13 isLocallyHosted])
+  accountCopy = account;
+  destinationCopy = destination;
+  originCopy = origin;
+  queueCopy = queue;
+  completionCopy = completion;
+  if ([originCopy isLocallyHosted])
   {
-    v16 = [MEMORY[0x1E69B0AA0] localOrigin];
+    localOrigin = [MEMORY[0x1E69B0AA0] localOrigin];
 
-    v13 = v16;
+    originCopy = localOrigin;
   }
 
-  v17 = [v12 appBundleID];
+  appBundleID = [destinationCopy appBundleID];
   IsSystemApplication = MRMediaRemoteApplicationIsSystemApplication();
 
-  if (IsSystemApplication & 1) != 0 || ([v12 appBundleID], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", *MEMORY[0x1E69B12F0]), v19, (v20) || (objc_msgSend(v12, "appBundleID"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", *MEMORY[0x1E69B12F8]), v21, (v22))
+  if (IsSystemApplication & 1) != 0 || ([destinationCopy appBundleID], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "isEqualToString:", *MEMORY[0x1E69B12F0]), v19, (v20) || (objc_msgSend(destinationCopy, "appBundleID"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", *MEMORY[0x1E69B12F8]), v21, (v22))
   {
 LABEL_6:
-    v23 = [v11 valueForKey:*MEMORY[0x1E69B1278]];
+    v23 = [accountCopy valueForKey:*MEMORY[0x1E69B1278]];
     if (!v23)
     {
-      v15[2](v15, 1);
+      completionCopy[2](completionCopy, 1);
 LABEL_212:
 
       goto LABEL_213;
@@ -695,19 +695,19 @@ LABEL_212:
     if (!v24)
     {
 LABEL_11:
-      v15[2](v15, 1);
+      completionCopy[2](completionCopy, 1);
 LABEL_211:
 
       goto LABEL_212;
     }
 
     v213 = v24;
-    v27 = [v24 accountDSID];
+    accountDSID = [v24 accountDSID];
     memset(&v218, 0, sizeof(v218));
     *buf = 4001;
     CC_SHA1_Init(&v218);
-    v28 = v27;
-    v29 = [v28 UTF8String];
+    v28 = accountDSID;
+    uTF8String = [v28 UTF8String];
     v30 = [v28 length];
     v31 = v30;
     if (*buf > 3000)
@@ -717,13 +717,13 @@ LABEL_211:
         switch(*buf)
         {
           case 0xFA1:
-            CC_SHA1_Update(&v218, v29, v30);
+            CC_SHA1_Update(&v218, uTF8String, v30);
             break;
           case 0x10A0:
-            CC_SHA256_Update(&v218, v29, v30);
+            CC_SHA256_Update(&v218, uTF8String, v30);
             break;
           case 0x11A0:
-            CC_SHA512_Update(&v218, v29, v30);
+            CC_SHA512_Update(&v218, uTF8String, v30);
             break;
         }
 
@@ -734,13 +734,13 @@ LABEL_211:
       {
         if (*buf == 4000)
         {
-          CC_MD5_Update(&v218, v29, v30);
+          CC_MD5_Update(&v218, uTF8String, v30);
         }
 
         goto LABEL_115;
       }
 
-      if (!v29)
+      if (!uTF8String)
       {
         goto LABEL_115;
       }
@@ -748,28 +748,28 @@ LABEL_211:
       v218.count[0] += v30;
       if (v30 + LODWORD(v218.hash[7]) <= 0x1F)
       {
-        memcpy(&v218.wbuf[-5] + LODWORD(v218.hash[7]), v29, v30);
+        memcpy(&v218.wbuf[-5] + LODWORD(v218.hash[7]), uTF8String, v30);
         v74 = LODWORD(v218.hash[7]) + v31;
 LABEL_89:
         LODWORD(v218.hash[7]) = v74;
         goto LABEL_115;
       }
 
-      v87 = &v29[v30];
+      v87 = &uTF8String[v30];
       if (LODWORD(v218.hash[7]))
       {
-        v212 = &v29[v30];
-        memcpy(&v218.wbuf[-5] + LODWORD(v218.hash[7]), v29, (32 - LODWORD(v218.hash[7])));
+        v212 = &uTF8String[v30];
+        memcpy(&v218.wbuf[-5] + LODWORD(v218.hash[7]), uTF8String, (32 - LODWORD(v218.hash[7])));
         v87 = v212;
         v218.count[1] = 0x9E3779B185EBCA87 * __ROR8__(v218.count[1] - 0x3D4D51C2D82B14B1 * v218.hash[3], 33);
         v218.hash[0] = 0x9E3779B185EBCA87 * __ROR8__(v218.hash[0] - 0x3D4D51C2D82B14B1 * v218.hash[4], 33);
         v218.hash[1] = 0x9E3779B185EBCA87 * __ROR8__(v218.hash[1] - 0x3D4D51C2D82B14B1 * v218.hash[5], 33);
         v218.hash[2] = 0x9E3779B185EBCA87 * __ROR8__(v218.hash[2] - 0x3D4D51C2D82B14B1 * v218.hash[6], 33);
-        v29 += (32 - LODWORD(v218.hash[7]));
+        uTF8String += (32 - LODWORD(v218.hash[7]));
         LODWORD(v218.hash[7]) = 0;
       }
 
-      if ((v29 + 32) <= v87)
+      if ((uTF8String + 32) <= v87)
       {
         v88 = v218.count[1];
         v90 = v218.hash[1];
@@ -777,23 +777,23 @@ LABEL_89:
         v89 = v218.hash[2];
         do
         {
-          v88 = 0x9E3779B185EBCA87 * __ROR8__(v88 - 0x3D4D51C2D82B14B1 * *v29, 33);
-          v91 = 0x9E3779B185EBCA87 * __ROR8__(v91 - 0x3D4D51C2D82B14B1 * *(v29 + 1), 33);
-          v90 = 0x9E3779B185EBCA87 * __ROR8__(v90 - 0x3D4D51C2D82B14B1 * *(v29 + 2), 33);
-          v89 = 0x9E3779B185EBCA87 * __ROR8__(v89 - 0x3D4D51C2D82B14B1 * *(v29 + 3), 33);
-          v29 += 32;
+          v88 = 0x9E3779B185EBCA87 * __ROR8__(v88 - 0x3D4D51C2D82B14B1 * *uTF8String, 33);
+          v91 = 0x9E3779B185EBCA87 * __ROR8__(v91 - 0x3D4D51C2D82B14B1 * *(uTF8String + 1), 33);
+          v90 = 0x9E3779B185EBCA87 * __ROR8__(v90 - 0x3D4D51C2D82B14B1 * *(uTF8String + 2), 33);
+          v89 = 0x9E3779B185EBCA87 * __ROR8__(v89 - 0x3D4D51C2D82B14B1 * *(uTF8String + 3), 33);
+          uTF8String += 32;
         }
 
-        while (v29 <= v87 - 32);
+        while (uTF8String <= v87 - 32);
         v218.count[1] = v88;
         v218.hash[0] = v91;
         v218.hash[1] = v90;
         v218.hash[2] = v89;
       }
 
-      if (v29 < v87)
+      if (uTF8String < v87)
       {
-        v74 = v87 - v29;
+        v74 = v87 - uTF8String;
         __memcpy_chk();
         goto LABEL_89;
       }
@@ -892,7 +892,7 @@ LABEL_210:
               v208 = [(__CFString *)v191 substringToIndex:7];
 
               v214 = v208;
-              v215 = v15;
+              v215 = completionCopy;
               v209 = v208;
               MRMediaRemoteGetSupportedCommandsForApp();
 
@@ -975,9 +975,9 @@ LABEL_215:
             }
 
 LABEL_214:
-            v210 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
             v211 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-            [v210 handleFailureInFunction:v211 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+            [currentHandler handleFailureInFunction:v211 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
             v191 = &stru_1F454A698;
             goto LABEL_210;
@@ -1130,9 +1130,9 @@ LABEL_149:
       {
         if (!*buf)
         {
-          v135 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
           v136 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"MSVHash _MSVHasherFinalize(MSVHasher * _Nonnull)"];
-          [v135 handleFailureInFunction:v136 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
+          [currentHandler2 handleFailureInFunction:v136 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
 
           goto LABEL_162;
         }
@@ -1259,9 +1259,9 @@ LABEL_161:
     {
       if (!*buf)
       {
-        v70 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
         v71 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppendBytes(MSVHasher * _Nonnull, const void * _Nonnull, size_t)"}];
-        [v70 handleFailureInFunction:v71 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
+        [currentHandler3 handleFailureInFunction:v71 file:@"MSVHasher+Algorithms.h" lineNumber:262 description:@"Cannot append to unknown hasher algorithm"];
 
         goto LABEL_115;
       }
@@ -1288,7 +1288,7 @@ LABEL_37:
             v64 = v31;
             do
             {
-              v65 = *v29++;
+              v65 = *uTF8String++;
               v63 |= v65 << v62;
               v62 += 8;
               --v64;
@@ -1321,7 +1321,7 @@ LABEL_37:
         }
 
         v40 = 8 * v37;
-        v41 = v29;
+        v41 = uTF8String;
         v42 = v218.hash[2] & 0xFFFFFFFFFFFFFFLL;
         do
         {
@@ -1341,7 +1341,7 @@ LABEL_37:
         v218.hash[1] = v48;
         v218.count[0] = v47 ^ v42;
         v218.count[1] = v49 ^ __ROR8__(v44, 47);
-        v29 += v38;
+        uTF8String += v38;
         v218.hash[2] = (v38 + v35) << 56;
         v31 = v39;
       }
@@ -1354,8 +1354,8 @@ LABEL_37:
         v53 = v218.hash[0];
         do
         {
-          v54 = *v29;
-          v29 += 8;
+          v54 = *uTF8String;
+          uTF8String += 8;
           v55 = v54 ^ v52;
           v56 = v51 + v50;
           v57 = v56 ^ __ROR8__(v50, 51);
@@ -1384,7 +1384,7 @@ LABEL_37:
 
     if (*buf != 2000)
     {
-      if (*buf != 3000 || !v29)
+      if (*buf != 3000 || !uTF8String)
       {
         goto LABEL_115;
       }
@@ -1394,11 +1394,11 @@ LABEL_37:
       HIDWORD(v218.count[0]) |= v68;
       if (v30 + LODWORD(v218.hash[3]) > 0xF)
       {
-        v79 = &v29[v30];
+        v79 = &uTF8String[v30];
         if (LODWORD(v218.hash[3]))
         {
-          v212 = &v29[v30];
-          memcpy(&v218.wbuf[-7] + LODWORD(v218.hash[3]), v29, (16 - LODWORD(v218.hash[3])));
+          v212 = &uTF8String[v30];
+          memcpy(&v218.wbuf[-7] + LODWORD(v218.hash[3]), uTF8String, (16 - LODWORD(v218.hash[3])));
           v79 = v212;
           HIDWORD(v80) = LODWORD(v218.count[1]) - 2048144777 * LODWORD(v218.hash[1]);
           LODWORD(v80) = HIDWORD(v80);
@@ -1412,12 +1412,12 @@ LABEL_37:
           LODWORD(v218.hash[0]) = -1640531535 * (v80 >> 19);
           HIDWORD(v80) = HIDWORD(v218.hash[0]) - 2048144777 * HIDWORD(v218.hash[2]);
           LODWORD(v80) = HIDWORD(v80);
-          v29 += (16 - LODWORD(v218.hash[3]));
+          uTF8String += (16 - LODWORD(v218.hash[3]));
           HIDWORD(v218.hash[0]) = -1640531535 * (v80 >> 19);
           LODWORD(v218.hash[3]) = 0;
         }
 
-        if (v29 <= v79 - 16)
+        if (uTF8String <= v79 - 16)
         {
           v82 = v218.count[1];
           v83 = HIDWORD(v218.count[1]);
@@ -1425,38 +1425,38 @@ LABEL_37:
           v85 = HIDWORD(v218.hash[0]);
           do
           {
-            HIDWORD(v86) = v82 - 2048144777 * *v29;
+            HIDWORD(v86) = v82 - 2048144777 * *uTF8String;
             LODWORD(v86) = HIDWORD(v86);
             v82 = -1640531535 * (v86 >> 19);
-            HIDWORD(v86) = v83 - 2048144777 * *(v29 + 1);
+            HIDWORD(v86) = v83 - 2048144777 * *(uTF8String + 1);
             LODWORD(v86) = HIDWORD(v86);
             v83 = -1640531535 * (v86 >> 19);
-            HIDWORD(v86) = v84 - 2048144777 * *(v29 + 2);
+            HIDWORD(v86) = v84 - 2048144777 * *(uTF8String + 2);
             LODWORD(v86) = HIDWORD(v86);
             v84 = -1640531535 * (v86 >> 19);
-            HIDWORD(v86) = v85 - 2048144777 * *(v29 + 3);
+            HIDWORD(v86) = v85 - 2048144777 * *(uTF8String + 3);
             LODWORD(v86) = HIDWORD(v86);
             v85 = -1640531535 * (v86 >> 19);
-            v29 += 16;
+            uTF8String += 16;
           }
 
-          while (v29 <= v79 - 16);
+          while (uTF8String <= v79 - 16);
           v218.count[1] = __PAIR64__(v83, v82);
           v218.hash[0] = __PAIR64__(v85, v84);
         }
 
-        if (v29 >= v79)
+        if (uTF8String >= v79)
         {
           goto LABEL_115;
         }
 
-        v69 = v79 - v29;
+        v69 = v79 - uTF8String;
         __memcpy_chk();
       }
 
       else
       {
-        memcpy(&v218.wbuf[-7] + LODWORD(v218.hash[3]), v29, v30);
+        memcpy(&v218.wbuf[-7] + LODWORD(v218.hash[3]), uTF8String, v30);
         v69 = LODWORD(v218.hash[3]) + v31;
       }
 
@@ -1479,18 +1479,18 @@ LABEL_114:
 
         if (v30 == 1)
         {
-          v73[16] = *v29;
+          v73[16] = *uTF8String;
           goto LABEL_114;
         }
 
 LABEL_98:
-        memcpy(v73 + 16, v29, v30);
+        memcpy(v73 + 16, uTF8String, v30);
         goto LABEL_114;
       }
 
       if (v30 == 2)
       {
-        v92 = *v29;
+        v92 = *uTF8String;
       }
 
       else
@@ -1500,8 +1500,8 @@ LABEL_98:
           goto LABEL_98;
         }
 
-        v92 = *v29;
-        v73[18] = v29[2];
+        v92 = *uTF8String;
+        v73[18] = uTF8String[2];
       }
 
       *(v73 + 8) = v92;
@@ -1522,7 +1522,7 @@ LABEL_98:
           LOBYTE(v77) = v218.count[1];
           v75 = HIBYTE(LOWORD(v218.count[1]));
           LOBYTE(v78) = BYTE2(v218.count[1]);
-          v93 = *v29;
+          v93 = *uTF8String;
         }
 
         goto LABEL_104;
@@ -1530,23 +1530,23 @@ LABEL_98:
 
       LOBYTE(v77) = v218.count[1];
       v75 = HIBYTE(LOWORD(v218.count[1]));
-      v78 = *v29;
+      v78 = *uTF8String;
     }
 
     else
     {
       if (!BYTE3(v218.count[1]))
       {
-        v77 = *v29;
-        v75 = *v29 >> 8;
-        v78 = HIWORD(*v29);
-        v93 = HIBYTE(*v29);
+        v77 = *uTF8String;
+        v75 = *uTF8String >> 8;
+        v78 = HIWORD(*uTF8String);
+        v93 = HIBYTE(*uTF8String);
         goto LABEL_104;
       }
 
       LOBYTE(v77) = v218.count[1];
-      LOBYTE(v75) = *v29;
-      v78 = *(v29 + 1);
+      LOBYTE(v75) = *uTF8String;
+      v78 = *(uTF8String + 1);
     }
 
     v93 = v78 >> 8;
@@ -1557,8 +1557,8 @@ LABEL_104:
     LODWORD(v96) = HIDWORD(v96);
     v97 = 5 * (v96 >> 19) - 430675100;
     LODWORD(v218.count[0]) = v97;
-    v98 = &v29[-BYTE3(v218.count[1]) + 4];
-    v99 = &v29[v76 - BYTE3(v218.count[1])];
+    v98 = &uTF8String[-BYTE3(v218.count[1]) + 4];
+    v99 = &uTF8String[v76 - BYTE3(v218.count[1])];
     while (v98 < v99)
     {
       v100 = *v98;
@@ -1593,11 +1593,11 @@ LABEL_104:
     goto LABEL_114;
   }
 
-  v32 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  if ([v32 sonicHijack])
+  standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+  if ([standardUserDefaults sonicHijack])
   {
-    v33 = [v12 appBundleID];
-    v34 = [v33 isEqualToString:@"com.apple.Sonic"];
+    appBundleID2 = [destinationCopy appBundleID];
+    v34 = [appBundleID2 isEqualToString:@"com.apple.Sonic"];
 
     if (v34)
     {
@@ -1609,7 +1609,7 @@ LABEL_104:
   {
   }
 
-  v15[2](v15, 1);
+  completionCopy[2](completionCopy, 1);
 LABEL_213:
 }
 
@@ -1706,17 +1706,17 @@ void __80__MPCAssistantSendCommand__checkForAccount_destination_origin_queue_com
 LABEL_22:
 }
 
-- (void)sendCommand:(unsigned int)a3 withOptions:(id)a4 toEndpoint:(id)a5 toDestination:(id)a6 completion:(id)a7
+- (void)sendCommand:(unsigned int)command withOptions:(id)options toEndpoint:(id)endpoint toDestination:(id)destination completion:(id)completion
 {
-  v10 = *&a3;
-  v12 = a7;
+  v10 = *&command;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __87__MPCAssistantSendCommand_sendCommand_withOptions_toEndpoint_toDestination_completion___block_invoke;
   v14[3] = &unk_1E8231350;
-  v15 = v12;
-  v13 = v12;
-  [(MPCAssistantSendCommand *)self _sendCommand:v10 withOptions:a4 toEndpoint:a5 toDestination:a6 completion:v14];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [(MPCAssistantSendCommand *)self _sendCommand:v10 withOptions:options toEndpoint:endpoint toDestination:destination completion:v14];
 }
 
 void __87__MPCAssistantSendCommand_sendCommand_withOptions_toEndpoint_toDestination_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1728,13 +1728,13 @@ void __87__MPCAssistantSendCommand_sendCommand_withOptions_toEndpoint_toDestinat
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)sendMediaRemoteCommand:(unsigned int)a3 withOptions:(id)a4 toEndpointDestination:(id)a5 completion:(id)a6
+- (void)sendMediaRemoteCommand:(unsigned int)command withOptions:(id)options toEndpointDestination:(id)destination completion:(id)completion
 {
-  v8 = *&a3;
+  v8 = *&command;
   v57 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  optionsCopy = options;
+  destinationCopy = destination;
+  completionCopy = completion;
   v13 = MRMediaRemoteCopyCommandDescription();
   v14 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
   v15 = dispatch_queue_create("com.apple.assistant.SendCommand", v14);
@@ -1745,11 +1745,11 @@ void __87__MPCAssistantSendCommand_sendCommand_withOptions_toEndpoint_toDestinat
     *buf = 138543618;
     *&buf[4] = v13;
     *&buf[12] = 2114;
-    *&buf[14] = v11;
+    *&buf[14] = destinationCopy;
     _os_log_impl(&dword_1C5C61000, v16, OS_LOG_TYPE_DEFAULT, "Command %{public}@ to destination: %{public}@", buf, 0x16u);
   }
 
-  v32 = [v11 outputDeviceUIDs];
+  outputDeviceUIDs = [destinationCopy outputDeviceUIDs];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
@@ -1759,7 +1759,7 @@ void __87__MPCAssistantSendCommand_sendCommand_withOptions_toEndpoint_toDestinat
   aBlock[2] = __95__MPCAssistantSendCommand_sendMediaRemoteCommand_withOptions_toEndpointDestination_completion___block_invoke;
   aBlock[3] = &unk_1E8231260;
   v52 = buf;
-  v31 = v12;
+  v31 = completionCopy;
   v51 = v31;
   v17 = _Block_copy(aBlock);
   v41[0] = MEMORY[0x1E69E9820];
@@ -1771,16 +1771,16 @@ void __87__MPCAssistantSendCommand_sendCommand_withOptions_toEndpoint_toDestinat
   v19 = v15;
   v48 = buf;
   v43 = v19;
-  v44 = self;
+  selfCopy = self;
   v49 = v8;
-  v20 = v10;
+  v20 = optionsCopy;
   v45 = v20;
-  v21 = v11;
+  v21 = destinationCopy;
   v46 = v21;
   v22 = v17;
   v47 = v22;
   v23 = _Block_copy(v41);
-  if ([v32 count])
+  if ([outputDeviceUIDs count])
   {
     if ([v21 singleGroup])
     {
@@ -1791,38 +1791,38 @@ void __87__MPCAssistantSendCommand_sendCommand_withOptions_toEndpoint_toDestinat
       v40 = buf;
       v39 = v22;
       [(MPCAssistantSendCommand *)self _formGroupAndSendCommand:v8 withOptions:v20 toExternalDestination:v21 completion:v38];
-      v24 = v39;
+      createPlayerPath = v39;
     }
 
     else
     {
       discovery = self->_discovery;
-      v28 = [v21 outputDeviceUIDs];
+      outputDeviceUIDs2 = [v21 outputDeviceUIDs];
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
       v33[2] = __95__MPCAssistantSendCommand_sendMediaRemoteCommand_withOptions_toEndpointDestination_completion___block_invoke_4;
       v33[3] = &unk_1E8231328;
       v34 = v21;
-      v35 = self;
+      selfCopy2 = self;
       v36 = v22;
       v37 = v23;
-      [(MPCAssistantDiscovery *)discovery discoverRemoteControlEndpointsMatchingUIDs:v28 completion:v33];
+      [(MPCAssistantDiscovery *)discovery discoverRemoteControlEndpointsMatchingUIDs:outputDeviceUIDs2 completion:v33];
 
-      v24 = v34;
+      createPlayerPath = v34;
     }
   }
 
   else
   {
-    v25 = [v21 outputGroups];
-    v26 = [v25 count] == 0;
+    outputGroups = [v21 outputGroups];
+    v26 = [outputGroups count] == 0;
 
     if (v26)
     {
       if ([v21 origin])
       {
-        v24 = [v21 createPlayerPath];
-        [(MPCAssistantSendCommand *)self _sendCommand:v8 path:v24 options:v20 queue:v19 completion:v22];
+        createPlayerPath = [v21 createPlayerPath];
+        [(MPCAssistantSendCommand *)self _sendCommand:v8 path:createPlayerPath options:v20 queue:v19 completion:v22];
       }
 
       else
@@ -1835,16 +1835,16 @@ void __87__MPCAssistantSendCommand_sendCommand_withOptions_toEndpoint_toDestinat
           _os_log_impl(&dword_1C5C61000, v29, OS_LOG_TYPE_ERROR, "Cannot send command: no output devices specified in destination: %{public}@", v53, 0xCu);
         }
 
-        v24 = MPCAssistantCreateError(8);
-        v30 = [[MPCAssistantSendCommandResult alloc] initWithReturnStatuses:0 error:v24];
+        createPlayerPath = MPCAssistantCreateError(8);
+        v30 = [[MPCAssistantSendCommandResult alloc] initWithReturnStatuses:0 error:createPlayerPath];
         (*(v31 + 2))(v31, v30);
       }
     }
 
     else
     {
-      v24 = [v21 outputGroups];
-      (*(v23 + 2))(v23, v24);
+      createPlayerPath = [v21 outputGroups];
+      (*(v23 + 2))(v23, createPlayerPath);
     }
   }
 

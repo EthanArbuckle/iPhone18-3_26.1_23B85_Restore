@@ -1,42 +1,42 @@
 @interface UIUpdateItem
 - (UICollectionViewUpdateItem)collectionViewUpdateItem;
 - (id)description;
-- (id)initWithAction:(void *)a3 forIndexPath:(void *)a4 animation:;
-- (int64_t)compareIndexPaths:(id)a3;
-- (int64_t)compareIndexPathsForMoves:(id)a3;
-- (int64_t)inverseCompareIndexPaths:(id)a3;
+- (id)initWithAction:(void *)action forIndexPath:(void *)path animation:;
+- (int64_t)compareIndexPaths:(id)paths;
+- (int64_t)compareIndexPathsForMoves:(id)moves;
+- (int64_t)inverseCompareIndexPaths:(id)paths;
 @end
 
 @implementation UIUpdateItem
 
-- (id)initWithAction:(void *)a3 forIndexPath:(void *)a4 animation:
+- (id)initWithAction:(void *)action forIndexPath:(void *)path animation:
 {
-  v8 = a3;
-  v9 = v8;
-  if (a1)
+  actionCopy = action;
+  v9 = actionCopy;
+  if (self)
   {
-    _UIAssertValidUpdateIndexPath(v8);
-    v14.receiver = a1;
+    _UIAssertValidUpdateIndexPath(actionCopy);
+    v14.receiver = self;
     v14.super_class = UIUpdateItem;
     v10 = objc_msgSendSuper2(&v14, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       *(v10 + 5) = a2;
-      objc_storeStrong(v10 + 3, a3);
-      a1[4] = a4;
+      objc_storeStrong(v10 + 3, action);
+      self[4] = path;
       v11 = [v9 row];
-      v12 = a1[2] & 0xFE;
+      v12 = self[2] & 0xFE;
       if (v11 == 0x7FFFFFFFFFFFFFFFLL)
       {
         ++v12;
       }
 
-      *(a1 + 16) = v12;
+      *(self + 16) = v12;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (UICollectionViewUpdateItem)collectionViewUpdateItem
@@ -71,13 +71,13 @@
 {
   if (self && (*&self->_updateItemFlags & 1) != 0)
   {
-    v3 = [MEMORY[0x1E696AD60] stringWithString:@"SEC:"];
+    string = [MEMORY[0x1E696AD60] stringWithString:@"SEC:"];
     v4 = 1;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v4 = 0;
   }
 
@@ -88,14 +88,14 @@
     {
       if (v4)
       {
-        v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[NSIndexPath section](self->_indexPath, "section")}];
-        [v3 appendFormat:@"%@(%@)", @"REL", v6];
+        _ui_shortDescription = [MEMORY[0x1E696AD98] numberWithInteger:{-[NSIndexPath section](self->_indexPath, "section")}];
+        [string appendFormat:@"%@(%@)", @"REL", _ui_shortDescription];
       }
 
       else
       {
-        v6 = [(NSIndexPath *)self->_indexPath _ui_shortDescription];
-        [v3 appendFormat:@"%@%@", @"REL", v6];
+        _ui_shortDescription = [(NSIndexPath *)self->_indexPath _ui_shortDescription];
+        [string appendFormat:@"%@%@", @"REL", _ui_shortDescription];
       }
     }
 
@@ -108,16 +108,16 @@
 
       if (v4)
       {
-        v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[NSIndexPath section](self->_indexPath, "section")}];
-        v7 = [(UIUpdateItem *)self _moveDestinationDescription];
-        [v3 appendFormat:@"MOV(%@)%@", v6, v7];
+        _ui_shortDescription = [MEMORY[0x1E696AD98] numberWithInteger:{-[NSIndexPath section](self->_indexPath, "section")}];
+        _moveDestinationDescription = [(UIUpdateItem *)self _moveDestinationDescription];
+        [string appendFormat:@"MOV(%@)%@", _ui_shortDescription, _moveDestinationDescription];
       }
 
       else
       {
-        v6 = [(NSIndexPath *)self->_indexPath _ui_shortDescription];
-        v7 = [(UIUpdateItem *)self _moveDestinationDescription];
-        [v3 appendFormat:@"MOV%@%@", v6, v7];
+        _ui_shortDescription = [(NSIndexPath *)self->_indexPath _ui_shortDescription];
+        _moveDestinationDescription = [(UIUpdateItem *)self _moveDestinationDescription];
+        [string appendFormat:@"MOV%@%@", _ui_shortDescription, _moveDestinationDescription];
       }
     }
   }
@@ -131,50 +131,50 @@
 
     if (v4)
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[NSIndexPath section](self->_indexPath, "section")}];
-      [v3 appendFormat:@"DEL(%@)", v6, v9];
+      _ui_shortDescription = [MEMORY[0x1E696AD98] numberWithInteger:{-[NSIndexPath section](self->_indexPath, "section")}];
+      [string appendFormat:@"DEL(%@)", _ui_shortDescription, v9];
     }
 
     else
     {
-      v6 = [(NSIndexPath *)self->_indexPath _ui_shortDescription];
-      [v3 appendFormat:@"DEL%@", v6, v9];
+      _ui_shortDescription = [(NSIndexPath *)self->_indexPath _ui_shortDescription];
+      [string appendFormat:@"DEL%@", _ui_shortDescription, v9];
     }
   }
 
   else if (v4)
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[NSIndexPath section](self->_indexPath, "section")}];
-    [v3 appendFormat:@"INS(%@)", v6, v9];
+    _ui_shortDescription = [MEMORY[0x1E696AD98] numberWithInteger:{-[NSIndexPath section](self->_indexPath, "section")}];
+    [string appendFormat:@"INS(%@)", _ui_shortDescription, v9];
   }
 
   else
   {
-    v6 = [(NSIndexPath *)self->_indexPath _ui_shortDescription];
-    [v3 appendFormat:@"INS%@", v6, v9];
+    _ui_shortDescription = [(NSIndexPath *)self->_indexPath _ui_shortDescription];
+    [string appendFormat:@"INS%@", _ui_shortDescription, v9];
   }
 
 LABEL_24:
 
-  return v3;
+  return string;
 }
 
-- (int64_t)compareIndexPaths:(id)a3
+- (int64_t)compareIndexPaths:(id)paths
 {
   indexPath = self->_indexPath;
-  if (a3)
+  if (paths)
   {
-    a3 = *(a3 + 3);
+    paths = *(paths + 3);
   }
 
-  return [(NSIndexPath *)indexPath compare:a3];
+  return [(NSIndexPath *)indexPath compare:paths];
 }
 
-- (int64_t)inverseCompareIndexPaths:(id)a3
+- (int64_t)inverseCompareIndexPaths:(id)paths
 {
-  if (a3)
+  if (paths)
   {
-    v3 = *(a3 + 3);
+    v3 = *(paths + 3);
   }
 
   else
@@ -185,12 +185,12 @@ LABEL_24:
   return [v3 compare:self->_indexPath];
 }
 
-- (int64_t)compareIndexPathsForMoves:(id)a3
+- (int64_t)compareIndexPathsForMoves:(id)moves
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  movesCopy = moves;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  if (v5)
+  if (movesCopy)
   {
     v7 = self->_action == 3;
   }
@@ -203,7 +203,7 @@ LABEL_24:
   v8 = !v7;
   if (has_internal_diagnostics)
   {
-    if ((v8 & 1) == 0 && v5[5] == 3)
+    if ((v8 & 1) == 0 && movesCopy[5] == 3)
     {
       goto LABEL_10;
     }
@@ -224,7 +224,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if ((v8 & 1) == 0 && v5[5] == 3)
+  if ((v8 & 1) == 0 && movesCopy[5] == 3)
   {
 LABEL_10:
     v9 = *&self->_updateItemFlags & 1;
@@ -244,7 +244,7 @@ LABEL_10:
 
 LABEL_18:
   v9 = *&self->_updateItemFlags & 1;
-  if (!v5)
+  if (!movesCopy)
   {
     v10 = 0;
     if ((*&self->_updateItemFlags & 1) == 0)
@@ -256,7 +256,7 @@ LABEL_18:
   }
 
 LABEL_11:
-  v10 = v5[4] & 1;
+  v10 = movesCopy[4] & 1;
   if (!v9)
   {
     goto LABEL_20;
@@ -272,7 +272,7 @@ LABEL_12:
 LABEL_20:
   if (v9 & 1 | ((v10 & 1) == 0))
   {
-    v11 = [(UIUpdateItem *)self compareIndexPaths:v5];
+    v11 = [(UIUpdateItem *)self compareIndexPaths:movesCopy];
   }
 
   else

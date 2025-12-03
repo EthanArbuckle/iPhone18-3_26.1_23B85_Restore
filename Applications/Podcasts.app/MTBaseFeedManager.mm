@@ -1,48 +1,48 @@
 @interface MTBaseFeedManager
-+ (BOOL)isUpdatingFeedUrl:(id)a3;
-+ (BOOL)isUpdatingPodcastUuid:(id)a3;
++ (BOOL)isUpdatingFeedUrl:(id)url;
++ (BOOL)isUpdatingPodcastUuid:(id)uuid;
 + (id)_metadataUrl;
 + (unint64_t)updatingCount;
-+ (void)didFinishUpdatingAllFeeds:(BOOL)a3;
-+ (void)didFinishUpdatingFeedUrl:(id)a3 withError:(id)a4;
-+ (void)didStartUpdatingFeedUrl:(id)a3 cloudSyncUrl:(id)a4;
++ (void)didFinishUpdatingAllFeeds:(BOOL)feeds;
++ (void)didFinishUpdatingFeedUrl:(id)url withError:(id)error;
++ (void)didStartUpdatingFeedUrl:(id)url cloudSyncUrl:(id)syncUrl;
 + (void)initialize;
-+ (void)postNotificationName:(id)a3 userInfo:(id)a4;
++ (void)postNotificationName:(id)name userInfo:(id)info;
 + (void)purgeSubscriptionMetadata;
-+ (void)removeMetadataForPodcastUuid:(id)a3;
++ (void)removeMetadataForPodcastUuid:(id)uuid;
 + (void)saveSubscriptionMetadata;
-+ (void)standardDeviationForEpisodes:(id)a3 standardDeviation:(double *)a4 average:(double *)a5;
-- (BOOL)_localEpisode:(id)a3 isEqualToServerEpisode:(id)a4;
-- (BOOL)abortUpdatesIfNetworkUnreachable:(BOOL)a3;
-- (BOOL)processFeed:(id)a3 podcastUUID:(id)a4 requestUrl:(id)a5 useBackgroundFetch:(BOOL)a6 needsUpdate:(BOOL)a7 source:(int64_t)a8;
-- (BOOL)updatePodcastWithUuid:(id)a3 withFeed:(id)a4 originalFeedUrl:(id)a5 source:(int64_t)a6;
++ (void)standardDeviationForEpisodes:(id)episodes standardDeviation:(double *)deviation average:(double *)average;
+- (BOOL)_localEpisode:(id)episode isEqualToServerEpisode:(id)serverEpisode;
+- (BOOL)abortUpdatesIfNetworkUnreachable:(BOOL)unreachable;
+- (BOOL)processFeed:(id)feed podcastUUID:(id)d requestUrl:(id)url useBackgroundFetch:(BOOL)fetch needsUpdate:(BOOL)update source:(int64_t)source;
+- (BOOL)updatePodcastWithUuid:(id)uuid withFeed:(id)feed originalFeedUrl:(id)url source:(int64_t)source;
 - (MTBaseFeedManager)init;
-- (id)_insertNewEpisodeForServerEpisode:(id)a3 podcast:(id)a4 ctx:(id)a5;
+- (id)_insertNewEpisodeForServerEpisode:(id)episode podcast:(id)podcast ctx:(id)ctx;
 - (id)_sortDescriptorsForLocalEpisodes;
 - (id)importContext;
-- (id)preProcessFeedHook:(id)a3 requestUrl:(id)a4 needsUpdate:(BOOL)a5;
+- (id)preProcessFeedHook:(id)hook requestUrl:(id)url needsUpdate:(BOOL)update;
 - (id)sessionCompletionHandler;
-- (int64_t)_compareServerEpisode:(id)a3 toLocalEpisode:(id)a4;
-- (int64_t)_compareServerEpisode:(id)a3 toServerEpisode:(id)a4;
-- (void)_addPendingFeedProcessingBlock:(id)a3;
-- (void)_didFinishUpdatingFeedUrl:(id)a3 withError:(id)a4;
+- (int64_t)_compareServerEpisode:(id)episode toLocalEpisode:(id)localEpisode;
+- (int64_t)_compareServerEpisode:(id)episode toServerEpisode:(id)serverEpisode;
+- (void)_addPendingFeedProcessingBlock:(id)block;
+- (void)_didFinishUpdatingFeedUrl:(id)url withError:(id)error;
 - (void)_processNextPendingFeedIfPossible;
 - (void)_queue_processNextPendingFeedIfPossible;
-- (void)_startDownloadForFeedUrl:(id)a3 cloudSyncFeedUrl:(id)a4 podcastStoreId:(int64_t)a5 triggerBy:(id)a6 userInitiated:(BOOL)a7 useBackgroundFetch:(BOOL)a8 source:(int64_t)a9;
-- (void)didDownloadFeedWithError:(id)a3 data:(id)a4 task:(id)a5 requestedUrl:(id)a6 useBackgroundFetch:(BOOL)a7;
-- (void)didRestoreFeedUrlTask:(id)a3;
-- (void)markEpisodeAsFirstSeen:(id)a3;
-- (void)preprocessFeedWithDataHashingBlock:(id)a3 feedCreationBlock:(id)a4 url:(id)a5 useBackgroundFetch:(BOOL)a6 source:(int64_t)a7;
-- (void)setSessionCompletionHandler:(id)a3;
-- (void)startDownloadForFeedUrl:(id)a3 cloudSyncFeedUrl:(id)a4 podcastStoreId:(int64_t)a5 triggerBy:(id)a6 userInitiated:(BOOL)a7 useBackgroundFetch:(BOOL)a8 source:(int64_t)a9;
-- (void)startDownloadForPodcastStoreId:(int64_t)a3 triggerBy:(id)a4 feedUrl:(id)a5 useBackgroundFetch:(BOOL)a6 source:(int64_t)a7;
+- (void)_startDownloadForFeedUrl:(id)url cloudSyncFeedUrl:(id)feedUrl podcastStoreId:(int64_t)id triggerBy:(id)by userInitiated:(BOOL)initiated useBackgroundFetch:(BOOL)fetch source:(int64_t)source;
+- (void)didDownloadFeedWithError:(id)error data:(id)data task:(id)task requestedUrl:(id)url useBackgroundFetch:(BOOL)fetch;
+- (void)didRestoreFeedUrlTask:(id)task;
+- (void)markEpisodeAsFirstSeen:(id)seen;
+- (void)preprocessFeedWithDataHashingBlock:(id)block feedCreationBlock:(id)creationBlock url:(id)url useBackgroundFetch:(BOOL)fetch source:(int64_t)source;
+- (void)setSessionCompletionHandler:(id)handler;
+- (void)startDownloadForFeedUrl:(id)url cloudSyncFeedUrl:(id)feedUrl podcastStoreId:(int64_t)id triggerBy:(id)by userInitiated:(BOOL)initiated useBackgroundFetch:(BOOL)fetch source:(int64_t)source;
+- (void)startDownloadForPodcastStoreId:(int64_t)id triggerBy:(id)by feedUrl:(id)url useBackgroundFetch:(BOOL)fetch source:(int64_t)source;
 @end
 
 @implementation MTBaseFeedManager
 
 + (void)initialize
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___MTBaseFeedManager;
   objc_msgSendSuper2(&v5, "initialize");
   if (qword_100583CC8 != -1)
@@ -50,8 +50,8 @@
     sub_10001468C();
   }
 
-  v3 = [a1 _metadataUrl];
-  v4 = [NSDictionary dictionaryWithContentsOfURL:v3];
+  _metadataUrl = [self _metadataUrl];
+  v4 = [NSDictionary dictionaryWithContentsOfURL:_metadataUrl];
 
   if (v4)
   {
@@ -89,10 +89,10 @@
     v9 = dispatch_queue_create([v8 UTF8String], 0);
     [(MTBaseFeedManager *)v2 setFeedProcessingQueue:v9];
 
-    v10 = [(MTBaseFeedManager *)v2 configuration];
-    v11 = [v10 workQueueConcurrent];
+    configuration = [(MTBaseFeedManager *)v2 configuration];
+    workQueueConcurrent = [configuration workQueueConcurrent];
     v12 = &_dispatch_queue_attr_concurrent;
-    if (!v11)
+    if (!workQueueConcurrent)
     {
       v12 = 0;
     }
@@ -115,29 +115,29 @@
 
 - (id)sessionCompletionHandler
 {
-  v2 = [(MTBaseFeedManager *)self externalFeedDownloader];
-  v3 = [v2 sessionCompletionHandler];
+  externalFeedDownloader = [(MTBaseFeedManager *)self externalFeedDownloader];
+  sessionCompletionHandler = [externalFeedDownloader sessionCompletionHandler];
 
-  return v3;
+  return sessionCompletionHandler;
 }
 
-- (void)setSessionCompletionHandler:(id)a3
+- (void)setSessionCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MTBaseFeedManager *)self externalFeedDownloader];
-  [v5 setSessionCompletionHandler:v4];
+  handlerCopy = handler;
+  externalFeedDownloader = [(MTBaseFeedManager *)self externalFeedDownloader];
+  [externalFeedDownloader setSessionCompletionHandler:handlerCopy];
 
   [(MTBaseFeedManager *)self _processNextPendingFeedIfPossible];
 }
 
 - (id)importContext
 {
-  v2 = [(MTBaseFeedManager *)self configuration];
-  v3 = [v2 supportsBatchInsertion];
+  configuration = [(MTBaseFeedManager *)self configuration];
+  supportsBatchInsertion = [configuration supportsBatchInsertion];
 
   v4 = +[MTDB sharedInstance];
   v5 = v4;
-  if (v3)
+  if (supportsBatchInsertion)
   {
     [v4 resetableImportContext];
   }
@@ -151,31 +151,31 @@
   return v6;
 }
 
-- (id)preProcessFeedHook:(id)a3 requestUrl:(id)a4 needsUpdate:(BOOL)a5
+- (id)preProcessFeedHook:(id)hook requestUrl:(id)url needsUpdate:(BOOL)update
 {
   v5 = [[MTFeedUpdatePreProcessResult alloc] initWithShouldContinue:1 createdPodcastUUID:0];
 
   return v5;
 }
 
-- (BOOL)processFeed:(id)a3 podcastUUID:(id)a4 requestUrl:(id)a5 useBackgroundFetch:(BOOL)a6 needsUpdate:(BOOL)a7 source:(int64_t)a8
+- (BOOL)processFeed:(id)feed podcastUUID:(id)d requestUrl:(id)url useBackgroundFetch:(BOOL)fetch needsUpdate:(BOOL)update source:(int64_t)source
 {
-  v9 = a7;
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  updateCopy = update;
+  fetchCopy = fetch;
+  feedCopy = feed;
+  dCopy = d;
+  urlCopy = url;
   v17 = +[MTProcessorManager sharedInstance];
   [v17 startProcessorsForFeedUpdates];
 
-  v18 = [(MTBaseFeedManager *)self importContext];
-  if (v15)
+  importContext = [(MTBaseFeedManager *)self importContext];
+  if (dCopy)
   {
     v37 = 0;
     v38 = &v37;
     v39 = 0x2020000000;
     v40 = 0;
-    v19 = a8;
+    sourceCopy = source;
     v35[0] = 0;
     v35[1] = v35;
     v35[2] = 0x3032000000;
@@ -186,64 +186,64 @@
     v24[1] = 3221225472;
     v24[2] = sub_100103BEC;
     v24[3] = &unk_1004DC740;
-    v23 = v18;
-    v25 = v18;
-    v20 = v15;
-    v33 = v9;
+    v23 = importContext;
+    v25 = importContext;
+    v20 = dCopy;
+    v33 = updateCopy;
     v30 = v35;
     v31 = &v37;
     v26 = v20;
-    v27 = self;
-    v28 = v14;
-    v29 = v16;
-    v32 = v19;
-    v34 = v10;
+    selfCopy = self;
+    v28 = feedCopy;
+    v29 = urlCopy;
+    v32 = sourceCopy;
+    v34 = fetchCopy;
     [v25 performBlockAndWaitWithSave:v24];
-    if (v9 && *(v38 + 24) == 1)
+    if (updateCopy && *(v38 + 24) == 1)
     {
       v21 = +[MTFeedUpdateManager sharedInstance];
-      [v21 _updatePodcastWithUUID:v20 userInitiated:0 useBackgroundFetch:v10 source:14];
+      [v21 _updatePodcastWithUUID:v20 userInitiated:0 useBackgroundFetch:fetchCopy source:14];
     }
 
     _Block_object_dispose(v35, 8);
     _Block_object_dispose(&v37, 8);
-    v18 = v23;
+    importContext = v23;
   }
 
   return 1;
 }
 
-- (BOOL)updatePodcastWithUuid:(id)a3 withFeed:(id)a4 originalFeedUrl:(id)a5 source:(int64_t)a6
+- (BOOL)updatePodcastWithUuid:(id)uuid withFeed:(id)feed originalFeedUrl:(id)url source:(int64_t)source
 {
-  v10 = a3;
-  v11 = a4;
-  v311 = a5;
-  v314 = v11;
-  if (v11)
+  uuidCopy = uuid;
+  feedCopy = feed;
+  urlCopy = url;
+  v314 = feedCopy;
+  if (feedCopy)
   {
     v308 = os_transaction_create();
     v305 = objc_autoreleasePoolPush();
-    v328 = self;
-    v330 = [(MTBaseFeedManager *)self importContext];
-    v310 = v10;
-    v12 = [v330 podcastForUuid:v10];
-    v13 = [v11 podcastStoreId];
-    v14 = [v13 longLongValue];
+    selfCopy = self;
+    importContext = [(MTBaseFeedManager *)self importContext];
+    v310 = uuidCopy;
+    v12 = [importContext podcastForUuid:uuidCopy];
+    podcastStoreId = [feedCopy podcastStoreId];
+    longLongValue = [podcastStoreId longLongValue];
 
-    if ([MTStoreIdentifier isNotEmpty:v14])
+    if ([MTStoreIdentifier isNotEmpty:longLongValue])
     {
-      [v12 setStoreCollectionId:v14];
+      [v12 setStoreCollectionId:longLongValue];
     }
 
-    v15 = [v11 updatedFeedURL];
-    v307 = v15;
-    v301 = v14;
-    if ([MTDBUtil isSupportedUrlString:v15])
+    updatedFeedURL = [feedCopy updatedFeedURL];
+    v307 = updatedFeedURL;
+    v301 = longLongValue;
+    if ([MTDBUtil isSupportedUrlString:updatedFeedURL])
     {
       [v12 currentFeedURL];
-      v17 = v16 = v15;
-      v18 = [v17 absoluteString];
-      LOBYTE(v16) = [v16 isEqualToString:v18];
+      v17 = v16 = updatedFeedURL;
+      absoluteString = [v17 absoluteString];
+      LOBYTE(v16) = [v16 isEqualToString:absoluteString];
 
       if (v16)
       {
@@ -255,14 +255,14 @@
         v24 = _MTLogCategoryFeedUpdate();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [v12 currentFeedURL];
-          v26 = [v25 absoluteString];
+          currentFeedURL = [v12 currentFeedURL];
+          absoluteString2 = [currentFeedURL absoluteString];
           *buf = 138543874;
           v352 = v310;
           v353 = 2112;
           v354 = v307;
           v355 = 2112;
-          v356 = *&v26;
+          v356 = *&absoluteString2;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ Found different updatedFeedURL %@ from %@", buf, 0x20u);
         }
 
@@ -270,7 +270,7 @@
         v19 = 1;
       }
 
-      v11 = v314;
+      feedCopy = v314;
     }
 
     else
@@ -279,27 +279,27 @@
     }
 
     v303 = v19;
-    v27 = [v11 resolvedFeedURL];
-    v309 = v27;
-    if ([v27 length])
+    resolvedFeedURL = [feedCopy resolvedFeedURL];
+    v309 = resolvedFeedURL;
+    if ([resolvedFeedURL length])
     {
-      v28 = [v12 currentFeedURL];
-      v29 = [v28 absoluteString];
-      v30 = [v27 isEqualToString:v29];
+      currentFeedURL2 = [v12 currentFeedURL];
+      absoluteString3 = [currentFeedURL2 absoluteString];
+      v30 = [resolvedFeedURL isEqualToString:absoluteString3];
 
       if ((v30 & 1) == 0)
       {
         v31 = _MTLogCategoryFeedUpdate();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
-          v32 = [v12 currentFeedURL];
-          v33 = [v32 absoluteString];
+          currentFeedURL3 = [v12 currentFeedURL];
+          absoluteString4 = [currentFeedURL3 absoluteString];
           *buf = 138543874;
           v352 = v310;
           v353 = 2112;
           v354 = v309;
           v355 = 2112;
-          v356 = *&v33;
+          v356 = *&absoluteString4;
           _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%{public}@ Found different feedURL %@ from %@", buf, 0x20u);
         }
 
@@ -308,84 +308,84 @@
       }
     }
 
-    v302 = a6;
+    sourceCopy = source;
     v23 = v314;
-    v34 = [v314 title];
-    v35 = [v34 stringByStrippingHTML];
-    v36 = [v35 stringByRemovingNewlineCharacters];
-    [v12 setTitle:v36];
+    title = [v314 title];
+    stringByStrippingHTML = [title stringByStrippingHTML];
+    stringByRemovingNewlineCharacters = [stringByStrippingHTML stringByRemovingNewlineCharacters];
+    [v12 setTitle:stringByRemovingNewlineCharacters];
 
-    v37 = [v314 author];
-    v38 = [v37 stringByStrippingHTML];
-    [v12 setAuthor:v38];
+    author = [v314 author];
+    stringByStrippingHTML2 = [author stringByStrippingHTML];
+    [v12 setAuthor:stringByStrippingHTML2];
 
-    v39 = [v314 provider];
-    v40 = [v39 stringByStrippingHTML];
-    [v12 setProvider:v40];
+    provider = [v314 provider];
+    stringByStrippingHTML3 = [provider stringByStrippingHTML];
+    [v12 setProvider:stringByStrippingHTML3];
 
     [v12 setIsExplicit:{objc_msgSend(v314, "isExplicit")}];
-    v41 = [v314 feedDescription];
-    [v12 setItemDescription:v41];
+    feedDescription = [v314 feedDescription];
+    [v12 setItemDescription:feedDescription];
 
-    v42 = [v314 showType];
-    [v12 setShowTypeInFeed:v42];
+    showType = [v314 showType];
+    [v12 setShowTypeInFeed:showType];
 
-    v43 = [v314 category];
-    [v12 setCategory:v43];
+    category = [v314 category];
+    [v12 setCategory:category];
 
-    v44 = [v314 webpageURL];
-    [v12 setWebpageURL:v44];
+    webpageURL = [v314 webpageURL];
+    [v12 setWebpageURL:webpageURL];
 
-    v45 = [v314 shareURL];
-    [v12 setStoreCleanURL:v45];
+    shareURL = [v314 shareURL];
+    [v12 setStoreCleanURL:shareURL];
 
-    v46 = [v314 artworkPrimaryColor];
-    [v12 setArtworkPrimaryColor:v46];
+    artworkPrimaryColor = [v314 artworkPrimaryColor];
+    [v12 setArtworkPrimaryColor:artworkPrimaryColor];
 
-    v47 = [v314 showSpecificUpsellCopy];
-    [v12 setShowSpecificUpsellCopy:v47];
+    showSpecificUpsellCopy = [v314 showSpecificUpsellCopy];
+    [v12 setShowSpecificUpsellCopy:showSpecificUpsellCopy];
 
     [v12 setOfferTypes:{objc_msgSend(v314, "offerTypesAsFlagBits")}];
-    v48 = [v314 displayType];
-    if (v48)
+    displayType = [v314 displayType];
+    if (displayType)
     {
-      v49 = v48;
-      v50 = [v314 displayType];
-      v51 = [v50 isNotEmpty];
+      v49 = displayType;
+      displayType2 = [v314 displayType];
+      isNotEmpty = [displayType2 isNotEmpty];
 
-      if (v51)
+      if (isNotEmpty)
       {
-        v52 = [v314 displayType];
-        [v12 setDisplayType:v52];
+        displayType3 = [v314 displayType];
+        [v12 setDisplayType:displayType3];
       }
     }
 
-    v53 = [v314 channelItem];
+    channelItem = [v314 channelItem];
 
-    if (v53)
+    if (channelItem)
     {
-      v54 = [v314 channelItem];
-      v55 = v330;
-      v56 = [MTChannel createOrFindChannelFromFeedChannelItem:v54 personalizedRequest:0 context:v330];
+      channelItem2 = [v314 channelItem];
+      v55 = importContext;
+      v56 = [MTChannel createOrFindChannelFromFeedChannelItem:channelItem2 personalizedRequest:0 context:importContext];
 
       [v12 setChannel:v56];
-      v313 = [v56 subscriptionActive];
+      subscriptionActive = [v56 subscriptionActive];
     }
 
     else
     {
-      v313 = 0;
-      v55 = v330;
+      subscriptionActive = 0;
+      v55 = importContext;
     }
 
     v57 = kMTEpisodeEntityName;
     v58 = [NSFetchRequest fetchRequestWithEntityName:kMTEpisodeEntityName];
-    v59 = [v12 uuid];
-    v60 = [MTEpisode predicateForAllEpisodesIncludingHiddenOnPodcastUuid:v59];
+    uuid = [v12 uuid];
+    v60 = [MTEpisode predicateForAllEpisodesIncludingHiddenOnPodcastUuid:uuid];
     [v58 setPredicate:v60];
 
-    v61 = [(MTBaseFeedManager *)v328 _sortDescriptorsForLocalEpisodes];
-    [v58 setSortDescriptors:v61];
+    _sortDescriptorsForLocalEpisodes = [(MTBaseFeedManager *)selfCopy _sortDescriptorsForLocalEpisodes];
+    [v58 setSortDescriptors:_sortDescriptorsForLocalEpisodes];
 
     [v58 setReturnsObjectsAsFaults:0];
     [v58 setFetchBatchSize:200];
@@ -398,12 +398,12 @@
       v64 = _MTLogCategoryFeedUpdate();
       if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
       {
-        v65 = [v12 uuid];
-        v66 = [v12 title];
+        uuid2 = [v12 uuid];
+        title2 = [v12 title];
         *buf = 138543874;
-        v352 = v65;
+        v352 = uuid2;
         v353 = 2112;
-        v354 = v66;
+        v354 = title2;
         v355 = 2112;
         v356 = *&v63;
         _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_ERROR, "%{public}@ - %@ failed to fetch db episodes - %@", buf, 0x20u);
@@ -417,7 +417,7 @@
       v67 = v63;
       v20 = v310;
       v21 = v308;
-      v68 = v330;
+      v68 = importContext;
 LABEL_187:
 
       objc_autoreleasePoolPop(v305);
@@ -446,7 +446,7 @@ LABEL_187:
         v348[3] = v290;
         v291 = +[MTFeedUpdateMetricsDataKey source];
         v347[4] = v291;
-        v292 = [NSNumber numberWithInteger:v302];
+        v292 = [NSNumber numberWithInteger:sourceCopy];
         v348[4] = v292;
         v293 = [NSDictionary dictionaryWithObjects:v348 forKeys:v347 count:5];
 
@@ -472,13 +472,13 @@ LABEL_187:
       goto LABEL_192;
     }
 
-    v69 = [v314 items];
+    items = [v314 items];
     v345[0] = _NSConcreteStackBlock;
     v345[1] = 3221225472;
     v345[2] = sub_100106774;
     v345[3] = &unk_1004DC768;
-    v345[4] = v328;
-    v70 = [v69 sortedArrayWithOptions:16 usingComparator:v345];
+    v345[4] = selfCopy;
+    v70 = [items sortedArrayWithOptions:16 usingComparator:v345];
 
     v300 = [v70 count];
     v343 = 0.0;
@@ -488,12 +488,12 @@ LABEL_187:
     v315 = v70;
     if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
     {
-      v72 = [v12 uuid];
-      v73 = [v12 title];
+      uuid3 = [v12 uuid];
+      title3 = [v12 title];
       *buf = 138544130;
-      v352 = v72;
+      v352 = uuid3;
       v353 = 2112;
-      v354 = v73;
+      v354 = title3;
       v355 = 2048;
       v356 = v344;
       v357 = 2048;
@@ -506,13 +506,13 @@ LABEL_187:
     v74 = _MTLogCategoryFeedUpdate();
     if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
     {
-      v75 = [v12 uuid];
-      v76 = [v12 title];
+      uuid4 = [v12 uuid];
+      title4 = [v12 title];
       v77 = [v70 count];
       *buf = 138543874;
-      v352 = v75;
+      v352 = uuid4;
       v353 = 2112;
-      v354 = v76;
+      v354 = title4;
       v355 = 2048;
       v356 = *&v77;
       _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ number of items: %lu", buf, 0x20u);
@@ -533,18 +533,18 @@ LABEL_187:
       v316 = 0;
       v80 = 0.0;
 LABEL_135:
-      [v330 saveInCurrentBlock];
+      [importContext saveInCurrentBlock];
       if (v78 < [v62 count])
       {
         do
         {
           v224 = [v62 objectAtIndex:v78];
-          v225 = [v224 uuid];
+          uuid5 = [v224 uuid];
 
-          if (v225)
+          if (uuid5)
           {
-            v226 = [v224 uuid];
-            [v324 addObject:v226];
+            uuid6 = [v224 uuid];
+            [v324 addObject:uuid6];
 
             v227 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v224 storeTrackId]);
             [v325 addObject:v227];
@@ -555,9 +555,9 @@ LABEL_135:
             v227 = _MTLogCategoryFeedUpdate();
             if (os_log_type_enabled(v227, OS_LOG_TYPE_ERROR))
             {
-              v228 = [v224 title];
+              title5 = [v224 title];
               *buf = 138412290;
-              v352 = v228;
+              v352 = title5;
               _os_log_impl(&_mh_execute_header, v227, OS_LOG_TYPE_ERROR, "NULL UUID for feedDeletedEpisode removed from the feed, title %@", buf, 0xCu);
             }
           }
@@ -567,17 +567,17 @@ LABEL_135:
           {
             [v12 uuid];
             v231 = v230 = v78;
-            v232 = [v12 title];
-            v233 = [v224 uuid];
-            v234 = [v224 title];
+            title6 = [v12 title];
+            uuid7 = [v224 uuid];
+            title7 = [v224 title];
             *buf = 138544130;
             v352 = v231;
             v353 = 2112;
-            v354 = v232;
+            v354 = title6;
             v355 = 2114;
-            v356 = *&v233;
+            v356 = *&uuid7;
             v357 = 2112;
-            v358 = *&v234;
+            v358 = *&title7;
             _os_log_impl(&_mh_execute_header, v229, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ marking episode for deletion from tail end %{public}@ - %@", buf, 0x2Au);
 
             v12 = v336;
@@ -604,7 +604,7 @@ LABEL_135:
       [v235 setFetchBatchSize:200];
       v342 = 0;
       v320 = v235;
-      v239 = [v330 executeFetchRequest:v235 error:&v342];
+      v239 = [importContext executeFetchRequest:v235 error:&v342];
       v240 = v342;
       v241 = v321;
       if (v240)
@@ -612,12 +612,12 @@ LABEL_135:
         v242 = _MTLogCategoryFeedUpdate();
         if (os_log_type_enabled(v242, OS_LOG_TYPE_ERROR))
         {
-          v243 = [v12 uuid];
-          v244 = [v12 title];
+          uuid8 = [v12 uuid];
+          title8 = [v12 title];
           *buf = 138543874;
-          v352 = v243;
+          v352 = uuid8;
           v353 = 2112;
-          v354 = v244;
+          v354 = title8;
           v355 = 2112;
           v356 = *&v240;
           _os_log_impl(&_mh_execute_header, v242, OS_LOG_TYPE_ERROR, "%{public}@ - %@ failed to fetch episodes to delete - %@", buf, 0x20u);
@@ -654,20 +654,20 @@ LABEL_135:
             v251 = _MTLogCategoryFeedUpdate();
             if (os_log_type_enabled(v251, OS_LOG_TYPE_DEFAULT))
             {
-              v252 = [v336 uuid];
+              uuid9 = [v336 uuid];
               [v336 title];
               v253 = v246;
               v255 = v254 = v241;
-              v256 = [v250 uuid];
-              v257 = [v250 title];
+              uuid10 = [v250 uuid];
+              title9 = [v250 title];
               *buf = 138544130;
-              v352 = v252;
+              v352 = uuid9;
               v353 = 2112;
               v354 = v255;
               v355 = 2114;
-              v356 = *&v256;
+              v356 = *&uuid10;
               v357 = 2112;
-              v358 = *&v257;
+              v358 = *&title9;
               _os_log_impl(&_mh_execute_header, v251, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ deleting episode removed from feed %{public}@ - %@", buf, 0x2Au);
 
               v241 = v254;
@@ -679,7 +679,7 @@ LABEL_135:
             [v250 setEpisodeLevel:v241];
             if (!(v249 % 0xC8))
             {
-              [v330 saveInCurrentBlock];
+              [importContext saveInCurrentBlock];
             }
 
             ++v248;
@@ -695,15 +695,15 @@ LABEL_135:
         while (v247);
       }
 
-      [v330 saveInCurrentBlock];
+      [importContext saveInCurrentBlock];
       v12 = v336;
-      if (v312 && ![(MTBaseFeedManager *)v328 isSubscribingWithFeedUrl:v311])
+      if (v312 && ![(MTBaseFeedManager *)selfCopy isSubscribingWithFeedUrl:urlCopy])
       {
-        v258 = [v330 episodeForUuid:v312];
+        v258 = [importContext episodeForUuid:v312];
         [v258 metadataTimestamp];
         if (fabs(v259) <= 2.22044605e-16 && [v336 subscribed])
         {
-          [(MTBaseFeedManager *)v328 markEpisodeAsFirstSeen:v258];
+          [(MTBaseFeedManager *)selfCopy markEpisodeAsFirstSeen:v258];
           [v258 setPlayState:2 manually:0 source:6];
           [v258 setMetadataTimestamp:0.0];
           [v258 setMetadataFirstSyncEligible:1];
@@ -712,48 +712,48 @@ LABEL_135:
 
       if ([v299 count])
       {
-        v260 = [v336 uuid];
-        v261 = [v336 managedObjectContext];
-        v262 = [MTRecencyUtil upNextForPodcastUuid:v260 ctx:v261];
-        v263 = [v262 episodeUuid];
+        uuid11 = [v336 uuid];
+        managedObjectContext = [v336 managedObjectContext];
+        v262 = [MTRecencyUtil upNextForPodcastUuid:uuid11 ctx:managedObjectContext];
+        episodeUuid = [v262 episodeUuid];
 
         v264 = v312;
-        if (v263)
+        if (episodeUuid)
         {
-          v264 = v263;
+          v264 = episodeUuid;
         }
 
         v265 = v264;
         if ([v299 containsObject:v265])
         {
-          v266 = [v330 episodeForUuid:v263];
+          v266 = [importContext episodeForUuid:episodeUuid];
           v267 = _MTLogCategoryFeedUpdate();
           if (os_log_type_enabled(v267, OS_LOG_TYPE_DEFAULT))
           {
-            v268 = [v336 uuid];
-            v269 = [v336 title];
-            v270 = [v266 uuid];
-            v271 = [v266 title];
+            uuid12 = [v336 uuid];
+            title10 = [v336 title];
+            uuid13 = [v266 uuid];
+            title11 = [v266 title];
             *buf = 138544130;
-            v352 = v268;
+            v352 = uuid12;
             v353 = 2112;
-            v354 = v269;
+            v354 = title10;
             v355 = 2114;
-            v356 = *&v270;
+            v356 = *&uuid13;
             v357 = 2112;
-            v358 = *&v271;
+            v358 = *&title11;
             _os_log_impl(&_mh_execute_header, v267, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Found new smart play episode from episod entitlement changed %{public}@ - %@", buf, 0x2Au);
 
             v12 = v336;
           }
 
-          [(MTBaseFeedManager *)v328 markEpisodeAsFirstSeen:v266];
+          [(MTBaseFeedManager *)selfCopy markEpisodeAsFirstSeen:v266];
           [v266 setSentNotification:0];
         }
       }
 
-      v272 = [v314 imageURL];
-      if ([v272 length])
+      imageURL = [v314 imageURL];
+      if ([imageURL length])
       {
         [v314 imageURL];
       }
@@ -775,20 +775,20 @@ LABEL_135:
 
       if (v273)
       {
-        v276 = [v12 imageURL];
-        v277 = [v276 isEqualToString:v273];
+        imageURL2 = [v12 imageURL];
+        v277 = [imageURL2 isEqualToString:v273];
 
         if ((v277 & 1) == 0)
         {
           v278 = _MTLogCategoryFeedUpdate();
           if (os_log_type_enabled(v278, OS_LOG_TYPE_DEFAULT))
           {
-            v279 = [v12 uuid];
-            v280 = [v12 title];
+            uuid14 = [v12 uuid];
+            title12 = [v12 title];
             *buf = 138543874;
-            v352 = v279;
+            v352 = uuid14;
             v353 = 2112;
-            v354 = v280;
+            v354 = title12;
             v355 = 2112;
             v356 = *&v273;
             _os_log_impl(&_mh_execute_header, v278, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ artwork url did change %@", buf, 0x20u);
@@ -799,10 +799,10 @@ LABEL_135:
       }
 
       [v12 setImageURL:v273];
-      v281 = [v314 uberBackgroundImageURL];
-      [v12 setUberBackgroundImageURL:v281];
-      v282 = [v314 uberBackgroundJoeColor];
-      [v12 setUberBackgroundJoeColor:v282];
+      uberBackgroundImageURL = [v314 uberBackgroundImageURL];
+      [v12 setUberBackgroundImageURL:uberBackgroundImageURL];
+      uberBackgroundJoeColor = [v314 uberBackgroundJoeColor];
+      [v12 setUberBackgroundJoeColor:uberBackgroundJoeColor];
 
       [v12 feedChangedDate];
       if (v80 > v283)
@@ -817,9 +817,9 @@ LABEL_135:
         [v12 markPlaylistsForUpdate];
       }
 
-      [v330 saveInCurrentBlock];
+      [importContext saveInCurrentBlock];
 
-      v68 = v330;
+      v68 = importContext;
       v23 = v314;
       v63 = v298;
       v67 = contexta;
@@ -835,22 +835,22 @@ LABEL_135:
     while (1)
     {
       obj = [v70 objectAtIndex:{v79, v297}];
-      v81 = [obj enclosureURL];
+      enclosureURL = [obj enclosureURL];
 
-      if (!v81)
+      if (!enclosureURL)
       {
         v108 = _MTLogCategoryFeedUpdate();
         if (os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
         {
-          v109 = [v12 uuid];
-          v110 = [v12 title];
-          v111 = [obj title];
+          uuid15 = [v12 uuid];
+          title13 = [v12 title];
+          title14 = [obj title];
           *buf = 138543874;
-          v352 = v109;
+          v352 = uuid15;
           v353 = 2112;
-          v354 = v110;
+          v354 = title13;
           v355 = 2112;
-          v356 = *&v111;
+          v356 = *&title14;
           _os_log_impl(&_mh_execute_header, v108, OS_LOG_TYPE_ERROR, "%{public}@ - %@ feed item without an enclosure: %@", buf, 0x20u);
 
           v70 = v315;
@@ -879,7 +879,7 @@ LABEL_135:
           v85 = v78 - 1;
           v82 = [v62 objectAtIndex:v78 - 1];
 
-          if ([(MTBaseFeedManager *)v328 _localEpisode:v82 isEqualToServerEpisode:obj])
+          if ([(MTBaseFeedManager *)selfCopy _localEpisode:v82 isEqualToServerEpisode:obj])
           {
             v107 = 0;
             goto LABEL_63;
@@ -888,33 +888,33 @@ LABEL_135:
           v86 = _MTLogCategoryFeedUpdate();
           if (os_log_type_enabled(v86, OS_LOG_TYPE_INFO))
           {
-            v87 = [v12 uuid];
-            v88 = [v12 title];
+            uuid16 = [v12 uuid];
+            title15 = [v12 title];
             [obj guid];
             v331 = v78;
             v89 = v326 = v78 - 1;
             [v82 guid];
             v90 = v332 = v82;
-            v91 = [obj resolvedEnclosureUrl];
-            v92 = [v332 enclosureURL];
-            v93 = [obj title];
-            v94 = [v332 title];
+            resolvedEnclosureUrl = [obj resolvedEnclosureUrl];
+            enclosureURL2 = [v332 enclosureURL];
+            title16 = [obj title];
+            title17 = [v332 title];
             *buf = 138545154;
-            v352 = v87;
+            v352 = uuid16;
             v353 = 2112;
-            v354 = v88;
+            v354 = title15;
             v355 = 2112;
             v356 = *&v89;
             v357 = 2112;
             v358 = *&v90;
             v359 = 2112;
-            v360 = v91;
+            v360 = resolvedEnclosureUrl;
             v361 = 2112;
-            v362 = v92;
+            v362 = enclosureURL2;
             v363 = 2112;
-            v364 = v93;
+            v364 = title16;
             v365 = 2112;
-            v366 = v94;
+            v366 = title17;
             _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_INFO, "%{public}@ - %@ did not find match for episode %@ - %@ | %@ - %@ | %@ - %@", buf, 0x52u);
 
             v82 = v332;
@@ -925,17 +925,17 @@ LABEL_135:
             v83 = AMSUserNotification_ptr;
           }
 
-          if ([(MTBaseFeedManager *)v328 _compareServerEpisode:obj toLocalEpisode:v82]== -1)
+          if ([(MTBaseFeedManager *)selfCopy _compareServerEpisode:obj toLocalEpisode:v82]== -1)
           {
             break;
           }
 
-          v95 = [v82 uuid];
+          uuid17 = [v82 uuid];
 
-          if (v95)
+          if (uuid17)
           {
-            v96 = [v82 uuid];
-            [v324 addObject:v96];
+            uuid18 = [v82 uuid];
+            [v324 addObject:uuid18];
 
             v97 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v82 storeTrackId]);
             [v325 addObject:v97];
@@ -946,9 +946,9 @@ LABEL_135:
             v97 = _MTLogCategoryFeedUpdate();
             if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
             {
-              v98 = [v82 title];
+              title18 = [v82 title];
               *buf = 138412290;
-              v352 = v98;
+              v352 = title18;
               _os_log_impl(&_mh_execute_header, v97, OS_LOG_TYPE_ERROR, "NULL UUID for localEpisode no longer in server feed, title %@", buf, 0xCu);
             }
           }
@@ -956,18 +956,18 @@ LABEL_135:
           v99 = _MTLogCategoryFeedUpdate();
           if (os_log_type_enabled(v99, OS_LOG_TYPE_DEFAULT))
           {
-            v100 = [v12 uuid];
-            v101 = [v12 title];
-            v102 = [v82 uuid];
-            v103 = [v82 title];
+            uuid19 = [v12 uuid];
+            title19 = [v12 title];
+            uuid20 = [v82 uuid];
+            title20 = [v82 title];
             *buf = 138544130;
-            v352 = v100;
+            v352 = uuid19;
             v353 = 2112;
-            v354 = v101;
+            v354 = title19;
             v355 = 2114;
-            v356 = *&v102;
+            v356 = *&uuid20;
             v357 = 2112;
-            v358 = *&v103;
+            v358 = *&title20;
             _os_log_impl(&_mh_execute_header, v99, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ marking episode for deletion %{public}@ - %@", buf, 0x2Au);
 
             v83 = AMSUserNotification_ptr;
@@ -976,7 +976,7 @@ LABEL_135:
           v62 = v329;
           if (200 * (v78 / 0xC8) == v78)
           {
-            [v330 saveInCurrentBlock];
+            [importContext saveInCurrentBlock];
           }
 
           v104 = [v329 count];
@@ -992,18 +992,18 @@ LABEL_135:
         v112 = _MTLogCategoryFeedUpdate();
         if (os_log_type_enabled(v112, OS_LOG_TYPE_DEFAULT))
         {
-          v113 = [v12 uuid];
-          v114 = [v12 title];
-          v115 = [obj episodeStoreId];
-          v116 = [obj title];
+          uuid21 = [v12 uuid];
+          title21 = [v12 title];
+          episodeStoreId = [obj episodeStoreId];
+          title22 = [obj title];
           *buf = 138544130;
-          v352 = v113;
+          v352 = uuid21;
           v353 = 2112;
-          v354 = v114;
+          v354 = title21;
           v355 = 2114;
-          v356 = *&v115;
+          v356 = *&episodeStoreId;
           v357 = 2112;
-          v358 = *&v116;
+          v358 = *&title22;
           _os_log_impl(&_mh_execute_header, v112, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ should add new episode from server %{public}@ - %@", buf, 0x2Au);
 
           v12 = v336;
@@ -1015,19 +1015,19 @@ LABEL_135:
 
       v83 = AMSUserNotification_ptr;
 LABEL_63:
-      v117 = [obj episodeStoreId];
-      v118 = [v117 longLongValue];
+      episodeStoreId2 = [obj episodeStoreId];
+      longLongValue2 = [episodeStoreId2 longLongValue];
 
       v119 = _MTLogCategoryFeedUpdate();
       if (os_log_type_enabled(v119, OS_LOG_TYPE_DEFAULT))
       {
-        v120 = [v12 uuid];
-        v121 = [v12 title];
-        v122 = [NSNumber numberWithLongLong:v118];
+        uuid22 = [v12 uuid];
+        title23 = [v12 title];
+        v122 = [NSNumber numberWithLongLong:longLongValue2];
         *buf = 138543874;
-        v352 = v120;
+        v352 = uuid22;
         v353 = 2112;
-        v354 = v121;
+        v354 = title23;
         v355 = 2112;
         v356 = *&v122;
         _os_log_impl(&_mh_execute_header, v119, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ serverEpisode %@", buf, 0x20u);
@@ -1040,7 +1040,7 @@ LABEL_63:
         break;
       }
 
-      if (v118 > 0)
+      if (longLongValue2 > 0)
       {
         v123 = v107;
       }
@@ -1063,27 +1063,27 @@ LABEL_77:
       }
 
 LABEL_81:
-      v136 = v330;
+      v136 = importContext;
       v79 = v319;
 LABEL_82:
       v137 = v127;
-      v127 = [(MTBaseFeedManager *)v328 _insertNewEpisodeForServerEpisode:obj podcast:v12 ctx:v136];
+      v127 = [(MTBaseFeedManager *)selfCopy _insertNewEpisodeForServerEpisode:obj podcast:v12 ctx:v136];
 
       v138 = _MTLogCategoryFeedUpdate();
       if (os_log_type_enabled(v138, OS_LOG_TYPE_DEFAULT))
       {
-        v139 = [v12 uuid];
-        v140 = [v12 title];
-        v141 = [v127 uuid];
-        v142 = [v127 title];
+        uuid23 = [v12 uuid];
+        title24 = [v12 title];
+        uuid24 = [v127 uuid];
+        title25 = [v127 title];
         *buf = 138544130;
-        v352 = v139;
+        v352 = uuid23;
         v353 = 2112;
-        v354 = v140;
+        v354 = title24;
         v355 = 2114;
-        v356 = *&v141;
+        v356 = *&uuid24;
         v357 = 2112;
-        v358 = *&v142;
+        v358 = *&title25;
         _os_log_impl(&_mh_execute_header, v138, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ adding new episode %{public}@ - %@", buf, 0x2Au);
 
         v12 = v336;
@@ -1100,112 +1100,112 @@ LABEL_86:
       v143 = _MTLogCategoryFeedUpdate();
       if (os_log_type_enabled(v143, OS_LOG_TYPE_DEFAULT))
       {
-        v144 = [v12 uuid];
-        v145 = [v12 title];
-        v146 = [v127 uuid];
-        v147 = [v127 title];
+        uuid25 = [v12 uuid];
+        title26 = [v12 title];
+        uuid26 = [v127 uuid];
+        title27 = [v127 title];
         *buf = 138544130;
-        v352 = v144;
+        v352 = uuid25;
         v353 = 2112;
-        v354 = v145;
+        v354 = title26;
         v355 = 2114;
-        v356 = *&v146;
+        v356 = *&uuid26;
         v357 = 2112;
-        v358 = *&v147;
+        v358 = *&title27;
         _os_log_impl(&_mh_execute_header, v143, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ updating episode %{public}@ - %@", buf, 0x2Au);
 
         v12 = v336;
       }
 
       [v127 setFeedDeleted:0];
-      v148 = [obj guid];
-      [v127 setGuid:v148];
+      guid = [obj guid];
+      [v127 setGuid:guid];
 
-      if ([MTStoreIdentifier isNotEmpty:v118])
+      if ([MTStoreIdentifier isNotEmpty:longLongValue2])
       {
-        [v127 setStoreTrackId:v118];
+        [v127 setStoreTrackId:longLongValue2];
       }
 
-      v149 = [obj title];
-      v150 = [v149 stringByStrippingHTML];
+      title28 = [obj title];
+      stringByStrippingHTML4 = [title28 stringByStrippingHTML];
 
-      [v127 setTitle:v150];
-      v151 = [obj itunesTitle];
-      [v127 setItunesTitle:v151];
+      [v127 setTitle:stringByStrippingHTML4];
+      itunesTitle = [obj itunesTitle];
+      [v127 setItunesTitle:itunesTitle];
 
-      v152 = [(MTBaseFeedManager *)v328 configuration];
-      v153 = [v152 usesCleanEpisodeTitles];
+      configuration = [(MTBaseFeedManager *)selfCopy configuration];
+      usesCleanEpisodeTitles = [configuration usesCleanEpisodeTitles];
 
-      if (v153)
+      if (usesCleanEpisodeTitles)
       {
-        v154 = [v12 title];
-        v155 = [v150 cleanedTitleStringWithPrefix:v154];
+        title29 = [v12 title];
+        v155 = [stringByStrippingHTML4 cleanedTitleStringWithPrefix:title29];
         [v127 setCleanedTitle:v155];
       }
 
-      v156 = [obj itemDescription];
-      [v127 setItemDescription:v156];
+      itemDescription = [obj itemDescription];
+      [v127 setItemDescription:itemDescription];
 
-      v157 = [obj itemSummary];
-      [v127 setItunesSubtitle:v157];
+      itemSummary = [obj itemSummary];
+      [v127 setItunesSubtitle:itemSummary];
 
-      v158 = [obj author];
-      [v127 setAuthor:v158];
+      author2 = [obj author];
+      [v127 setAuthor:author2];
 
       [v127 setByteSize:{objc_msgSend(obj, "byteSize")}];
       v159 = [obj uti];
       [v127 setUti:v159];
 
-      v160 = [obj pubDate];
-      if (v160)
+      pubDate = [obj pubDate];
+      if (pubDate)
       {
-        v161 = v160;
+        v161 = pubDate;
         [v127 pubDate];
         v163 = v162;
-        v164 = [obj pubDate];
-        [v164 timeIntervalSinceReferenceDate];
+        pubDate2 = [obj pubDate];
+        [pubDate2 timeIntervalSinceReferenceDate];
         v166 = v165;
 
         if (v163 != v166)
         {
-          v167 = [obj pubDate];
-          [v167 timeIntervalSinceReferenceDate];
+          pubDate3 = [obj pubDate];
+          [pubDate3 timeIntervalSinceReferenceDate];
           [v127 setPubDate:?];
         }
       }
 
-      v168 = [obj firstTimeAvailableAsFree];
-      if (v168)
+      firstTimeAvailableAsFree = [obj firstTimeAvailableAsFree];
+      if (firstTimeAvailableAsFree)
       {
-        v169 = v168;
+        v169 = firstTimeAvailableAsFree;
         [v127 firstTimeAvailableAsFree];
         v171 = v170;
-        v172 = [obj firstTimeAvailableAsFree];
-        [v172 timeIntervalSinceReferenceDate];
+        firstTimeAvailableAsFree2 = [obj firstTimeAvailableAsFree];
+        [firstTimeAvailableAsFree2 timeIntervalSinceReferenceDate];
         v174 = v173;
 
         if (v171 != v174)
         {
-          v175 = [obj firstTimeAvailableAsFree];
-          [v175 timeIntervalSinceReferenceDate];
+          firstTimeAvailableAsFree3 = [obj firstTimeAvailableAsFree];
+          [firstTimeAvailableAsFree3 timeIntervalSinceReferenceDate];
           [v127 setFirstTimeAvailableAsFree:?];
         }
       }
 
-      v176 = [obj firstTimeAvailableAsPaid];
-      if (v176)
+      firstTimeAvailableAsPaid = [obj firstTimeAvailableAsPaid];
+      if (firstTimeAvailableAsPaid)
       {
-        v177 = v176;
+        v177 = firstTimeAvailableAsPaid;
         [v127 firstTimeAvailableAsPaid];
         v179 = v178;
-        v180 = [obj firstTimeAvailableAsPaid];
-        [v180 timeIntervalSinceReferenceDate];
+        firstTimeAvailableAsPaid2 = [obj firstTimeAvailableAsPaid];
+        [firstTimeAvailableAsPaid2 timeIntervalSinceReferenceDate];
         v182 = v181;
 
         if (v179 != v182)
         {
-          v183 = [obj firstTimeAvailableAsPaid];
-          [v183 timeIntervalSinceReferenceDate];
+          firstTimeAvailableAsPaid3 = [obj firstTimeAvailableAsPaid];
+          [firstTimeAvailableAsPaid3 timeIntervalSinceReferenceDate];
           [v127 setFirstTimeAvailableAsPaid:?];
         }
       }
@@ -1217,23 +1217,23 @@ LABEL_86:
 
       [v127 setExplicit:{objc_msgSend(obj, "isExplicit")}];
       [v127 setEpisodeLevel:v321];
-      v184 = [obj episodeType];
-      [v127 setEpisodeType:v184];
+      episodeType = [obj episodeType];
+      [v127 setEpisodeType:episodeType];
 
-      v185 = [v127 episodeNumber];
-      if (v185 != [obj episodeNumber])
+      episodeNumber = [v127 episodeNumber];
+      if (episodeNumber != [obj episodeNumber])
       {
         [v127 setEpisodeNumber:{objc_msgSend(obj, "episodeNumber")}];
       }
 
-      v186 = [v127 seasonNumber];
-      if (v186 != [obj seasonNumber])
+      seasonNumber = [v127 seasonNumber];
+      if (seasonNumber != [obj seasonNumber])
       {
         [v127 setSeasonNumber:{objc_msgSend(obj, "seasonNumber")}];
       }
 
-      v187 = [obj webpageURL];
-      [v127 setWebpageURL:v187];
+      webpageURL2 = [obj webpageURL];
+      [v127 setWebpageURL:webpageURL2];
 
       [v127 setIsHidden:0];
       [obj entitledDuration];
@@ -1250,38 +1250,38 @@ LABEL_86:
         [v127 setFreeDuration:?];
       }
 
-      v190 = [obj entitledEnclosureURL];
-      [v127 setEntitledEnclosureURL:v190];
+      entitledEnclosureURL = [obj entitledEnclosureURL];
+      [v127 setEntitledEnclosureURL:entitledEnclosureURL];
 
-      v191 = [obj resolvedEnclosureUrl];
-      [v127 setFreeEnclosureURL:v191];
+      resolvedEnclosureUrl2 = [obj resolvedEnclosureUrl];
+      [v127 setFreeEnclosureURL:resolvedEnclosureUrl2];
 
-      v192 = [obj priceType];
-      [v127 setFreePriceType:v192];
+      priceType = [obj priceType];
+      [v127 setFreePriceType:priceType];
 
-      v193 = [obj entitledPriceType];
-      [v127 setEntitledPriceType:v193];
+      entitledPriceType = [obj entitledPriceType];
+      [v127 setEntitledPriceType:entitledPriceType];
 
-      v194 = [obj entitledTranscriptIdentifier];
-      [v127 setEntitledTranscriptIdentifier:v194];
+      entitledTranscriptIdentifier = [obj entitledTranscriptIdentifier];
+      [v127 setEntitledTranscriptIdentifier:entitledTranscriptIdentifier];
 
-      v195 = [obj freeTranscriptIdentifier];
-      [v127 setFreeTranscriptIdentifier:v195];
+      freeTranscriptIdentifier = [obj freeTranscriptIdentifier];
+      [v127 setFreeTranscriptIdentifier:freeTranscriptIdentifier];
 
-      v196 = [v127 transcriptIdentifier];
-      v197 = [obj entitledTranscriptSnippet];
-      [v127 setEntitledTranscriptSnippet:v197];
+      transcriptIdentifier = [v127 transcriptIdentifier];
+      entitledTranscriptSnippet = [obj entitledTranscriptSnippet];
+      [v127 setEntitledTranscriptSnippet:entitledTranscriptSnippet];
 
-      v198 = [obj freeTranscriptSnippet];
-      [v127 setFreeTranscriptSnippet:v198];
+      freeTranscriptSnippet = [obj freeTranscriptSnippet];
+      [v127 setFreeTranscriptSnippet:freeTranscriptSnippet];
 
-      v199 = [obj entitledTranscriptProvider];
-      [v127 setEntitledTranscriptProvider:v199];
+      entitledTranscriptProvider = [obj entitledTranscriptProvider];
+      [v127 setEntitledTranscriptProvider:entitledTranscriptProvider];
 
-      v200 = [obj freeTranscriptProvider];
-      [v127 setFreeTranscriptProvider:v200];
+      freeTranscriptProvider = [obj freeTranscriptProvider];
+      [v127 setFreeTranscriptProvider:freeTranscriptProvider];
 
-      if (v313)
+      if (subscriptionActive)
       {
         [obj entitledDuration];
         if (v201 > 0.0)
@@ -1290,40 +1290,40 @@ LABEL_86:
           [v127 setDuration:?];
         }
 
-        v202 = [obj entitledEnclosureURL];
+        entitledEnclosureURL2 = [obj entitledEnclosureURL];
 
-        if (v202)
+        if (entitledEnclosureURL2)
         {
-          v203 = [obj entitledEnclosureURL];
-          [v127 setEnclosureURL:v203];
+          entitledEnclosureURL3 = [obj entitledEnclosureURL];
+          [v127 setEnclosureURL:entitledEnclosureURL3];
         }
 
-        v204 = [obj entitledPriceType];
-        [v127 setPriceType:v204];
+        entitledPriceType2 = [obj entitledPriceType];
+        [v127 setPriceType:entitledPriceType2];
 
-        v205 = [obj entitledTranscriptIdentifier];
+        entitledTranscriptIdentifier2 = [obj entitledTranscriptIdentifier];
       }
 
       else
       {
         [v127 freeDuration];
         [v127 setDuration:?];
-        v206 = [v127 freeEnclosureURL];
-        [v127 setEnclosureURL:v206];
+        freeEnclosureURL = [v127 freeEnclosureURL];
+        [v127 setEnclosureURL:freeEnclosureURL];
 
-        v207 = [v127 freePriceType];
-        [v127 setPriceType:v207];
+        freePriceType = [v127 freePriceType];
+        [v127 setPriceType:freePriceType];
 
-        v205 = [v127 freeTranscriptIdentifier];
+        entitledTranscriptIdentifier2 = [v127 freeTranscriptIdentifier];
       }
 
-      v208 = v205;
-      [v127 setTranscriptIdentifier:v205];
+      v208 = entitledTranscriptIdentifier2;
+      [v127 setTranscriptIdentifier:entitledTranscriptIdentifier2];
 
       v209 = +[PFTranscriptProviderBridge shared];
-      v210 = [v127 transcriptIdentifier];
-      v211 = [v127 assetURL];
-      [v209 updateTTMLIDFrom:v196 toNewID:v210 hasDownloadedContent:v211 != 0 forEpisodeAdamID:{objc_msgSend(v127, "storeTrackId")}];
+      transcriptIdentifier2 = [v127 transcriptIdentifier];
+      assetURL = [v127 assetURL];
+      [v209 updateTTMLIDFrom:transcriptIdentifier toNewID:transcriptIdentifier2 hasDownloadedContent:assetURL != 0 forEpisodeAdamID:{objc_msgSend(v127, "storeTrackId")}];
 
       v12 = v336;
       if (v135)
@@ -1332,15 +1332,15 @@ LABEL_86:
         v212 = _MTLogCategoryFeedUpdate();
         if (os_log_type_enabled(v212, OS_LOG_TYPE_DEFAULT))
         {
-          v213 = [v127 uuid];
-          v214 = [v127 title];
-          v215 = [v127 entitlementState];
+          uuid27 = [v127 uuid];
+          title30 = [v127 title];
+          entitlementState = [v127 entitlementState];
           *buf = 138543874;
-          v352 = v213;
+          v352 = uuid27;
           v353 = 2112;
-          v354 = v214;
+          v354 = title30;
           v355 = 2048;
-          v356 = *&v215;
+          v356 = *&entitlementState;
           _os_log_impl(&_mh_execute_header, v212, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ set entitlement state for inserted episode to %lld from updatePodcastWithUuid", buf, 0x20u);
         }
       }
@@ -1356,15 +1356,15 @@ LABEL_123:
       {
         [v127 firstTimeAvailable];
         v80 = v217;
-        v218 = [v127 uuid];
+        uuid28 = [v127 uuid];
 
-        v312 = v218;
+        v312 = uuid28;
         v70 = v315;
       }
 
       if (__ROR8__(0x8F5C28F5C28F5C29 * v78, 3) <= 0x147AE147AE147AEuLL)
       {
-        [v330 saveInCurrentBlock];
+        [importContext saveInCurrentBlock];
       }
 
       objc_autoreleasePoolPop(context);
@@ -1377,20 +1377,20 @@ LABEL_129:
       }
     }
 
-    if (v118 < 1)
+    if (longLongValue2 < 1)
     {
       v127 = 0;
       goto LABEL_81;
     }
 
 LABEL_72:
-    v124 = [NSNumber numberWithLongLong:v118];
+    v124 = [NSNumber numberWithLongLong:longLongValue2];
     v125 = [v325 containsObject:v124];
 
     if (v125)
     {
-      v126 = [v83[282] predicateForEpisodeStoreTrackId:v118];
-      v127 = [v330 objectInEntity:v306 predicate:v126];
+      v126 = [v83[282] predicateForEpisodeStoreTrackId:longLongValue2];
+      v127 = [importContext objectInEntity:v306 predicate:v126];
 
       if (!v127)
       {
@@ -1398,47 +1398,47 @@ LABEL_72:
         v79 = v319;
         if (os_log_type_enabled(v219, OS_LOG_TYPE_ERROR))
         {
-          v220 = [v12 uuid];
-          v221 = [v12 title];
-          v222 = [0 uuid];
-          v223 = [0 title];
+          uuid29 = [v12 uuid];
+          title31 = [v12 title];
+          uuid30 = [0 uuid];
+          title32 = [0 title];
           *buf = 138544130;
-          v352 = v220;
+          v352 = uuid29;
           v353 = 2112;
-          v354 = v221;
+          v354 = title31;
           v355 = 2114;
-          v356 = *&v222;
+          v356 = *&uuid30;
           v357 = 2112;
-          v358 = *&v223;
+          v358 = *&title32;
           _os_log_impl(&_mh_execute_header, v219, OS_LOG_TYPE_ERROR, "%{public}@ - %@ failed to update feed-deleted episode %{public}@ - %@", buf, 0x2Au);
         }
 
         v127 = 0;
-        v136 = v330;
+        v136 = importContext;
         goto LABEL_82;
       }
 
-      v128 = [v127 uuid];
-      [v324 removeObject:v128];
+      uuid31 = [v127 uuid];
+      [v324 removeObject:uuid31];
 
-      v129 = [NSNumber numberWithLongLong:v118];
+      v129 = [NSNumber numberWithLongLong:longLongValue2];
       [v325 removeObject:v129];
 
       v130 = _MTLogCategoryFeedUpdate();
       if (os_log_type_enabled(v130, OS_LOG_TYPE_DEFAULT))
       {
-        v131 = [v12 uuid];
-        v132 = [v12 title];
-        v133 = [v127 uuid];
-        v134 = [v127 title];
+        uuid32 = [v12 uuid];
+        title33 = [v12 title];
+        uuid33 = [v127 uuid];
+        title34 = [v127 title];
         *buf = 138544130;
-        v352 = v131;
+        v352 = uuid32;
         v353 = 2112;
-        v354 = v132;
+        v354 = title33;
         v355 = 2114;
-        v356 = *&v133;
+        v356 = *&uuid33;
         v357 = 2112;
-        v358 = *&v134;
+        v358 = *&title34;
         _os_log_impl(&_mh_execute_header, v130, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ updating feed-deleted episode %{public}@ - %@", buf, 0x2Au);
 
         v12 = v336;
@@ -1460,12 +1460,12 @@ LABEL_78:
     goto LABEL_77;
   }
 
-  v20 = v10;
+  v20 = uuidCopy;
   v21 = _MTLogCategoryFeedUpdate();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v352 = v10;
+    v352 = uuidCopy;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%{public}@ failed to update because feed was nil", buf, 0xCu);
   }
 
@@ -1476,36 +1476,36 @@ LABEL_192:
   return v22;
 }
 
-- (void)markEpisodeAsFirstSeen:(id)a3
+- (void)markEpisodeAsFirstSeen:(id)seen
 {
-  v3 = a3;
-  [v3 unsuppressAutomaticDownloadsIfNeeded];
-  [v3 setIsNew:1];
+  seenCopy = seen;
+  [seenCopy unsuppressAutomaticDownloadsIfNeeded];
+  [seenCopy setIsNew:1];
 }
 
-- (id)_insertNewEpisodeForServerEpisode:(id)a3 podcast:(id)a4 ctx:(id)a5
+- (id)_insertNewEpisodeForServerEpisode:(id)episode podcast:(id)podcast ctx:(id)ctx
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8 && ([v8 isDeleted] & 1) == 0)
+  episodeCopy = episode;
+  podcastCopy = podcast;
+  ctxCopy = ctx;
+  if (podcastCopy && ([podcastCopy isDeleted] & 1) == 0)
   {
     v11 = +[_TtC8Podcasts21SyncControllerFactory resolvedSyncController];
     [v11 setUppSyncDirtyFlag:1];
 
-    v10 = +[MTEpisode insertNewEpisodeInManagedObjectContext:canSendNotifications:](MTEpisode, "insertNewEpisodeInManagedObjectContext:canSendNotifications:", v9, +[PFNotificationSettings canSendNotification]);
-    [v10 setPodcast:v8];
-    v12 = [v7 guid];
-    [v10 setGuid:v12];
+    v10 = +[MTEpisode insertNewEpisodeInManagedObjectContext:canSendNotifications:](MTEpisode, "insertNewEpisodeInManagedObjectContext:canSendNotifications:", ctxCopy, +[PFNotificationSettings canSendNotification]);
+    [v10 setPodcast:podcastCopy];
+    guid = [episodeCopy guid];
+    [v10 setGuid:guid];
 
     [v10 setImportSource:2];
-    v13 = [v7 pubDate];
-    [v13 timeIntervalSinceReferenceDate];
+    pubDate = [episodeCopy pubDate];
+    [pubDate timeIntervalSinceReferenceDate];
     v15 = v14;
-    [v8 addedDate];
+    [podcastCopy addedDate];
     v17 = v16;
 
-    v18 = [v8 importing];
+    importing = [podcastCopy importing];
     if (v15 < v17)
     {
       v19 = 1;
@@ -1513,10 +1513,10 @@ LABEL_192:
 
     else
     {
-      v19 = v18;
+      v19 = importing;
     }
 
-    if (v19 & 1) == 0 && ([v8 subscribed])
+    if (v19 & 1) == 0 && ([podcastCopy subscribed])
     {
       goto LABEL_26;
     }
@@ -1539,24 +1539,24 @@ LABEL_192:
     if ((v19 & 1) == 0)
     {
 LABEL_26:
-      v21 = [v8 isDark];
-      v22 = [v8 darkCount];
-      [v8 setDarkCount:v22 + 1];
-      [v8 setDarkCountLocal:v22 + 1];
-      [v8 markPlaylistsForUpdate];
-      if (v21 != [v8 isDark])
+      isDark = [podcastCopy isDark];
+      darkCount = [podcastCopy darkCount];
+      [podcastCopy setDarkCount:darkCount + 1];
+      [podcastCopy setDarkCountLocal:darkCount + 1];
+      [podcastCopy markPlaylistsForUpdate];
+      if (isDark != [podcastCopy isDark])
       {
-        v23 = [v8 isDark];
-        v24 = [v8 latestExitFromDarkDownloads];
-        if (v24)
+        isDark2 = [podcastCopy isDark];
+        latestExitFromDarkDownloads = [podcastCopy latestExitFromDarkDownloads];
+        if (latestExitFromDarkDownloads)
         {
-          v25 = [PFAnalyticsEvent darkDownloadsChangeWithWasDark:v21 isDark:v23 reason:2 previousExit:v24];
+          v25 = [PFAnalyticsEvent darkDownloadsChangeWithWasDark:isDark isDark:isDark2 reason:2 previousExit:latestExitFromDarkDownloads];
         }
 
         else
         {
           v26 = +[NSDate now];
-          v25 = [PFAnalyticsEvent darkDownloadsChangeWithWasDark:v21 isDark:v23 reason:2 previousExit:v26];
+          v25 = [PFAnalyticsEvent darkDownloadsChangeWithWasDark:isDark isDark:isDark2 reason:2 previousExit:v26];
         }
 
         v27 = objc_opt_new();
@@ -1567,18 +1567,18 @@ LABEL_26:
     v28 = _MTLogCategoryFeedUpdate();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [v8 uuid];
-      v30 = [v8 title];
-      v31 = [v10 uuid];
-      v32 = [v10 title];
+      uuid = [podcastCopy uuid];
+      title = [podcastCopy title];
+      uuid2 = [v10 uuid];
+      title2 = [v10 title];
       v34 = 138544130;
-      v35 = v29;
+      v35 = uuid;
       v36 = 2112;
-      v37 = v30;
+      v37 = title;
       v38 = 2114;
-      v39 = v31;
+      v39 = uuid2;
       v40 = 2112;
-      v41 = v32;
+      v41 = title2;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ new episode %{public}@ - %@", &v34, 0x2Au);
     }
   }
@@ -1591,21 +1591,21 @@ LABEL_26:
   return v10;
 }
 
-- (BOOL)_localEpisode:(id)a3 isEqualToServerEpisode:(id)a4
+- (BOOL)_localEpisode:(id)episode isEqualToServerEpisode:(id)serverEpisode
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 guid];
-  if (v7)
+  episodeCopy = episode;
+  serverEpisodeCopy = serverEpisode;
+  guid = [serverEpisodeCopy guid];
+  if (guid)
   {
-    v8 = v7;
-    v9 = [v5 guid];
-    if (v9)
+    v8 = guid;
+    guid2 = [episodeCopy guid];
+    if (guid2)
     {
-      v10 = v9;
-      v11 = [v6 guid];
-      v12 = [v5 guid];
-      v13 = [v11 isEqualToString:v12];
+      v10 = guid2;
+      guid3 = [serverEpisodeCopy guid];
+      guid4 = [episodeCopy guid];
+      v13 = [guid3 isEqualToString:guid4];
 
       if (v13)
       {
@@ -1619,29 +1619,29 @@ LABEL_26:
     }
   }
 
-  v15 = [v6 resolvedEnclosureUrl];
-  if (v15 && ([v5 enclosureURL], (v16 = objc_claimAutoreleasedReturnValue()) != 0) && (v17 = v16, objc_msgSend(v5, "enclosureURL"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v15, "isEqualToString:", v18), v18, v17, (v19 & 1) != 0))
+  resolvedEnclosureUrl = [serverEpisodeCopy resolvedEnclosureUrl];
+  if (resolvedEnclosureUrl && ([episodeCopy enclosureURL], (v16 = objc_claimAutoreleasedReturnValue()) != 0) && (v17 = v16, objc_msgSend(episodeCopy, "enclosureURL"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(resolvedEnclosureUrl, "isEqualToString:", v18), v18, v17, (v19 & 1) != 0))
   {
     v14 = 1;
   }
 
   else
   {
-    v20 = [v6 title];
-    v21 = [v20 stringByStrippingHTML];
+    title = [serverEpisodeCopy title];
+    stringByStrippingHTML = [title stringByStrippingHTML];
 
-    if (v21)
+    if (stringByStrippingHTML)
     {
-      v22 = [v5 title];
-      if (v22)
+      title2 = [episodeCopy title];
+      if (title2)
       {
-        v23 = [v5 title];
-        if ([v21 isEqualToString:v23])
+        title3 = [episodeCopy title];
+        if ([stringByStrippingHTML isEqualToString:title3])
         {
-          v24 = [v6 pubDate];
-          [v5 pubDate];
+          pubDate = [serverEpisodeCopy pubDate];
+          [episodeCopy pubDate];
           v25 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-          v14 = [v24 isEqualToDate:v25];
+          v14 = [pubDate isEqualToDate:v25];
         }
 
         else
@@ -1666,24 +1666,24 @@ LABEL_21:
   return v14;
 }
 
-- (int64_t)_compareServerEpisode:(id)a3 toServerEpisode:(id)a4
+- (int64_t)_compareServerEpisode:(id)episode toServerEpisode:(id)serverEpisode
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 pubDate];
-  v8 = [v6 pubDate];
-  v9 = v8;
-  if (v7 && v8)
+  episodeCopy = episode;
+  serverEpisodeCopy = serverEpisode;
+  pubDate = [episodeCopy pubDate];
+  pubDate2 = [serverEpisodeCopy pubDate];
+  v9 = pubDate2;
+  if (pubDate && pubDate2)
   {
-    v10 = [v8 compare:v7];
+    v10 = [pubDate2 compare:pubDate];
   }
 
   else
   {
-    v11 = [v5 guid];
-    v12 = [v6 guid];
-    v13 = v12;
-    if (v11 | v12)
+    guid = [episodeCopy guid];
+    guid2 = [serverEpisodeCopy guid];
+    v13 = guid2;
+    if (guid | guid2)
     {
       v14 = -1;
     }
@@ -1693,7 +1693,7 @@ LABEL_21:
       v14 = 0;
     }
 
-    if (v12)
+    if (guid2)
     {
       v10 = 1;
     }
@@ -1703,9 +1703,9 @@ LABEL_21:
       v10 = v14;
     }
 
-    if (v11 && v12)
+    if (guid && guid2)
     {
-      v10 = [v12 compare:v11];
+      v10 = [guid2 compare:guid];
     }
   }
 
@@ -1723,25 +1723,25 @@ LABEL_21:
   return v4;
 }
 
-- (int64_t)_compareServerEpisode:(id)a3 toLocalEpisode:(id)a4
+- (int64_t)_compareServerEpisode:(id)episode toLocalEpisode:(id)localEpisode
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 pubDate];
-  [v6 pubDate];
+  episodeCopy = episode;
+  localEpisodeCopy = localEpisode;
+  pubDate = [episodeCopy pubDate];
+  [localEpisodeCopy pubDate];
   v8 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
   v9 = v8;
-  if (v7 && v8)
+  if (pubDate && v8)
   {
-    v10 = [v8 compare:v7];
+    v10 = [v8 compare:pubDate];
   }
 
   else
   {
-    v11 = [v5 guid];
-    v12 = [v6 guid];
-    v13 = v12;
-    if (v11 | v12)
+    guid = [episodeCopy guid];
+    guid2 = [localEpisodeCopy guid];
+    v13 = guid2;
+    if (guid | guid2)
     {
       v14 = -1;
     }
@@ -1751,7 +1751,7 @@ LABEL_21:
       v14 = 0;
     }
 
-    if (v12)
+    if (guid2)
     {
       v10 = 1;
     }
@@ -1761,36 +1761,36 @@ LABEL_21:
       v10 = v14;
     }
 
-    if (v11 && v12)
+    if (guid && guid2)
     {
-      v10 = [v12 compare:v11];
+      v10 = [guid2 compare:guid];
     }
   }
 
   return v10;
 }
 
-+ (BOOL)isUpdatingPodcastUuid:(id)a3
++ (BOOL)isUpdatingPodcastUuid:(id)uuid
 {
-  v4 = a3;
-  if ([v4 length])
+  uuidCopy = uuid;
+  if ([uuidCopy length])
   {
     v15 = 0;
     v16 = &v15;
     v17 = 0x2020000000;
     v18 = 0;
     v5 = +[MTDB sharedInstance];
-    v6 = [v5 mainOrPrivateContext];
+    mainOrPrivateContext = [v5 mainOrPrivateContext];
 
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100107164;
     v10[3] = &unk_1004DC790;
-    v7 = v6;
+    v7 = mainOrPrivateContext;
     v11 = v7;
-    v12 = v4;
+    v12 = uuidCopy;
     v13 = &v15;
-    v14 = a1;
+    selfCopy = self;
     [v7 performBlockAndWait:v10];
     v8 = *(v16 + 24);
 
@@ -1805,14 +1805,14 @@ LABEL_21:
   return v8 & 1;
 }
 
-+ (BOOL)isUpdatingFeedUrl:(id)a3
++ (BOOL)isUpdatingFeedUrl:(id)url
 {
-  v3 = a3;
-  if ([v3 length])
+  urlCopy = url;
+  if ([urlCopy length])
   {
     v4 = qword_100583CD0;
     objc_sync_enter(v4);
-    v5 = [qword_100583CD0 containsObject:v3];
+    v5 = [qword_100583CD0 containsObject:urlCopy];
     objc_sync_exit(v4);
   }
 
@@ -1834,25 +1834,25 @@ LABEL_21:
   return v3;
 }
 
-- (void)preprocessFeedWithDataHashingBlock:(id)a3 feedCreationBlock:(id)a4 url:(id)a5 useBackgroundFetch:(BOOL)a6 source:(int64_t)a7
+- (void)preprocessFeedWithDataHashingBlock:(id)block feedCreationBlock:(id)creationBlock url:(id)url useBackgroundFetch:(BOOL)fetch source:(int64_t)source
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  blockCopy = block;
+  creationBlockCopy = creationBlock;
+  urlCopy = url;
   objc_initWeak(&location, self);
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1001074C8;
   v19[3] = &unk_1004DC7B8;
   objc_copyWeak(v23, &location);
-  v15 = v12;
+  v15 = blockCopy;
   v21 = v15;
-  v16 = v14;
+  v16 = urlCopy;
   v20 = v16;
-  v17 = v13;
-  v24 = a6;
+  v17 = creationBlockCopy;
+  fetchCopy = fetch;
   v22 = v17;
-  v23[1] = a7;
+  v23[1] = source;
   v18 = objc_retainBlock(v19);
   [(MTBaseFeedManager *)self _addPendingFeedProcessingBlock:v18];
 
@@ -1860,32 +1860,32 @@ LABEL_21:
   objc_destroyWeak(&location);
 }
 
-- (void)didDownloadFeedWithError:(id)a3 data:(id)a4 task:(id)a5 requestedUrl:(id)a6 useBackgroundFetch:(BOOL)a7
+- (void)didDownloadFeedWithError:(id)error data:(id)data task:(id)task requestedUrl:(id)url useBackgroundFetch:(BOOL)fetch
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (v12)
+  fetchCopy = fetch;
+  errorCopy = error;
+  dataCopy = data;
+  taskCopy = task;
+  if (errorCopy)
   {
-    v15 = a6;
+    urlCopy = url;
     v16 = _MTLogCategoryFeedUpdate();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v12 localizedDescription];
-      v18 = [v12 userInfo];
-      v19 = [v18 objectForKey:NSUnderlyingErrorKey];
+      localizedDescription = [errorCopy localizedDescription];
+      userInfo = [errorCopy userInfo];
+      v19 = [userInfo objectForKey:NSUnderlyingErrorKey];
       *buf = 138412546;
-      v27 = v17;
+      v27 = localizedDescription;
       v28 = 2112;
       v29 = v19;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%@: Underlying error %@", buf, 0x16u);
     }
 
-    [(MTBaseFeedManager *)self feedDownloadedWithError:v12 task:v14 requestedUrl:v15];
-    v20 = [v15 absoluteString];
+    [(MTBaseFeedManager *)self feedDownloadedWithError:errorCopy task:taskCopy requestedUrl:urlCopy];
+    absoluteString = [urlCopy absoluteString];
 
-    [(MTBaseFeedManager *)self _didFinishUpdatingFeedUrl:v20 withError:v12];
+    [(MTBaseFeedManager *)self _didFinishUpdatingFeedUrl:absoluteString withError:errorCopy];
   }
 
   else
@@ -1894,46 +1894,46 @@ LABEL_21:
     v24[1] = 3221225472;
     v24[2] = sub_100107C70;
     v24[3] = &unk_1004DC7E0;
-    v25 = v13;
+    v25 = dataCopy;
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100107C78;
     v22[3] = &unk_1004DC808;
     v23 = v25;
-    v21 = a6;
-    [(MTBaseFeedManager *)self preprocessFeedWithDataHashingBlock:v24 feedCreationBlock:v22 url:v21 useBackgroundFetch:v7 source:17];
+    urlCopy2 = url;
+    [(MTBaseFeedManager *)self preprocessFeedWithDataHashingBlock:v24 feedCreationBlock:v22 url:urlCopy2 useBackgroundFetch:fetchCopy source:17];
 
-    v20 = v25;
+    absoluteString = v25;
   }
 }
 
-- (void)didRestoreFeedUrlTask:(id)a3
+- (void)didRestoreFeedUrlTask:(id)task
 {
-  v8 = a3;
+  taskCopy = task;
   v3 = qword_100583CD0;
   objc_sync_enter(v3);
-  v4 = [v8 absoluteString];
-  v5 = [v4 length];
+  absoluteString = [taskCopy absoluteString];
+  v5 = [absoluteString length];
 
   if (v5)
   {
     v6 = qword_100583CD0;
-    v7 = [v8 absoluteString];
-    [v6 addObject:v7];
+    absoluteString2 = [taskCopy absoluteString];
+    [v6 addObject:absoluteString2];
   }
 
   objc_sync_exit(v3);
 }
 
-- (BOOL)abortUpdatesIfNetworkUnreachable:(BOOL)a3
+- (BOOL)abortUpdatesIfNetworkUnreachable:(BOOL)unreachable
 {
-  v3 = a3;
+  unreachableCopy = unreachable;
   v4 = +[MTReachability sharedInstance];
-  v5 = [v4 isReachable];
+  isReachable = [v4 isReachable];
 
-  if ((v5 & 1) == 0)
+  if ((isReachable & 1) == 0)
   {
-    if (v3)
+    if (unreachableCopy)
     {
       dispatch_async(&_dispatch_main_q, &stru_1004DC828);
     }
@@ -1941,27 +1941,27 @@ LABEL_21:
     [objc_opt_class() didFinishUpdatingAllFeeds:0];
   }
 
-  return v5 ^ 1;
+  return isReachable ^ 1;
 }
 
-- (void)_startDownloadForFeedUrl:(id)a3 cloudSyncFeedUrl:(id)a4 podcastStoreId:(int64_t)a5 triggerBy:(id)a6 userInitiated:(BOOL)a7 useBackgroundFetch:(BOOL)a8 source:(int64_t)a9
+- (void)_startDownloadForFeedUrl:(id)url cloudSyncFeedUrl:(id)feedUrl podcastStoreId:(int64_t)id triggerBy:(id)by userInitiated:(BOOL)initiated useBackgroundFetch:(BOOL)fetch source:(int64_t)source
 {
-  v9 = a8;
-  v10 = a7;
-  v14 = a3;
-  v15 = a6;
+  fetchCopy = fetch;
+  initiatedCopy = initiated;
+  urlCopy = url;
+  byCopy = by;
   v16 = _MTLogCategoryFeedUpdate();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v24 = 138412290;
-    v25 = v14;
+    idCopy = urlCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Running on downloads queue %@", &v24, 0xCu);
   }
 
-  v17 = [(MTBaseFeedManager *)self configuration];
-  v18 = ([v17 useBackgroundFetchForFeedDownloads] | v9);
+  configuration = [(MTBaseFeedManager *)self configuration];
+  v18 = ([configuration useBackgroundFetchForFeedDownloads] | fetchCopy);
 
-  v19 = [(MTBaseFeedManager *)self _shouldDownloadPodcastWithIdentifierFromStore:a5];
+  v19 = [(MTBaseFeedManager *)self _shouldDownloadPodcastWithIdentifierFromStore:id];
   v20 = _MTLogCategoryFeedUpdate();
   v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
   if (v19)
@@ -1969,15 +1969,15 @@ LABEL_21:
     if (v21)
     {
       v24 = 134218498;
-      v25 = a5;
+      idCopy = id;
       v26 = 2112;
-      v27 = v14;
+      v27 = urlCopy;
       v28 = 2048;
       v29 = v18;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Downloading from Media API with storeID %lld for feedURL %@ localBackgroundFetch %ld", &v24, 0x20u);
     }
 
-    [(MTBaseFeedManager *)self startDownloadForPodcastStoreId:a5 triggerBy:v15 feedUrl:v14 useBackgroundFetch:v18 source:a9];
+    [(MTBaseFeedManager *)self startDownloadForPodcastStoreId:id triggerBy:byCopy feedUrl:urlCopy useBackgroundFetch:v18 source:source];
   }
 
   else
@@ -1985,47 +1985,47 @@ LABEL_21:
     if (v21)
     {
       v24 = 138412546;
-      v25 = v14;
+      idCopy = urlCopy;
       v26 = 2048;
       v27 = v18;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Downloading directly from feedURL %@ localBackgroundFetch %ld", &v24, 0x16u);
     }
 
-    v22 = [[_TtC18PodcastsFoundation22DownloadableURLOptions alloc] initWithUrl:v14 nonAppInitiated:1];
-    v23 = [(MTBaseFeedManager *)self externalFeedDownloader];
-    [v23 startDownloadTaskForFeedURL:v22 userInitiated:v10 useBackgroundFetch:v18];
+    v22 = [[_TtC18PodcastsFoundation22DownloadableURLOptions alloc] initWithUrl:urlCopy nonAppInitiated:1];
+    externalFeedDownloader = [(MTBaseFeedManager *)self externalFeedDownloader];
+    [externalFeedDownloader startDownloadTaskForFeedURL:v22 userInitiated:initiatedCopy useBackgroundFetch:v18];
   }
 }
 
-- (void)startDownloadForFeedUrl:(id)a3 cloudSyncFeedUrl:(id)a4 podcastStoreId:(int64_t)a5 triggerBy:(id)a6 userInitiated:(BOOL)a7 useBackgroundFetch:(BOOL)a8 source:(int64_t)a9
+- (void)startDownloadForFeedUrl:(id)url cloudSyncFeedUrl:(id)feedUrl podcastStoreId:(int64_t)id triggerBy:(id)by userInitiated:(BOOL)initiated useBackgroundFetch:(BOOL)fetch source:(int64_t)source
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  if (v15)
+  urlCopy = url;
+  feedUrlCopy = feedUrl;
+  byCopy = by;
+  if (urlCopy)
   {
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100108350;
     v22[3] = &unk_1004DC850;
     v22[4] = self;
-    v23 = v15;
-    v26 = a5;
-    v24 = v16;
-    v28 = a7;
-    v29 = a8;
-    v25 = v17;
-    v27 = a9;
+    v23 = urlCopy;
+    idCopy = id;
+    v24 = feedUrlCopy;
+    initiatedCopy = initiated;
+    fetchCopy = fetch;
+    v25 = byCopy;
+    sourceCopy = source;
     v18 = objc_retainBlock(v22);
-    v19 = [(MTBaseFeedManager *)self configuration];
-    if ([v19 useBackgroundFetchForFeedDownloads])
+    configuration = [(MTBaseFeedManager *)self configuration];
+    if ([configuration useBackgroundFetchForFeedDownloads])
     {
-      v20 = [(MTBaseFeedManager *)self _shouldDownloadPodcastWithIdentifierFromStore:a5];
+      v20 = [(MTBaseFeedManager *)self _shouldDownloadPodcastWithIdentifierFromStore:id];
 
       if ((v20 & 1) == 0)
       {
-        v21 = [(MTBaseFeedManager *)self externalFeedDownloader];
-        [v21 restoreBackgroundDownloadTasksWithCompletion:v18];
+        externalFeedDownloader = [(MTBaseFeedManager *)self externalFeedDownloader];
+        [externalFeedDownloader restoreBackgroundDownloadTasksWithCompletion:v18];
 
 LABEL_7:
         goto LABEL_8;
@@ -2043,25 +2043,25 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)startDownloadForPodcastStoreId:(int64_t)a3 triggerBy:(id)a4 feedUrl:(id)a5 useBackgroundFetch:(BOOL)a6 source:(int64_t)a7
+- (void)startDownloadForPodcastStoreId:(int64_t)id triggerBy:(id)by feedUrl:(id)url useBackgroundFetch:(BOOL)fetch source:(int64_t)source
 {
-  v8 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [(MTBaseFeedManager *)self storePodcastDownloader];
-  v15 = [NSNumber numberWithLongLong:a3];
-  v16 = [v12 absoluteString];
-  v17 = [(MTBaseFeedManager *)self allowEpisodesRequestTo404AndDeleteEpisodesWithFeedUrl:v16];
+  fetchCopy = fetch;
+  urlCopy = url;
+  byCopy = by;
+  storePodcastDownloader = [(MTBaseFeedManager *)self storePodcastDownloader];
+  v15 = [NSNumber numberWithLongLong:id];
+  absoluteString = [urlCopy absoluteString];
+  v17 = [(MTBaseFeedManager *)self allowEpisodesRequestTo404AndDeleteEpisodesWithFeedUrl:absoluteString];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100108774;
   v19[3] = &unk_1004DC878;
   v19[4] = self;
-  v20 = v12;
-  v22 = v8;
-  v21 = a7;
-  v18 = v12;
-  [v14 downloadPodcast:v15 triggerBy:v13 allowEpisodesTo404:v17 isImplicitActionRequest:v8 completion:v19];
+  v20 = urlCopy;
+  v22 = fetchCopy;
+  sourceCopy = source;
+  v18 = urlCopy;
+  [storePodcastDownloader downloadPodcast:v15 triggerBy:byCopy allowEpisodesTo404:v17 isImplicitActionRequest:fetchCopy completion:v19];
 }
 
 + (void)purgeSubscriptionMetadata
@@ -2073,21 +2073,21 @@ LABEL_8:
 
   objc_sync_exit(v3);
 
-  [a1 saveSubscriptionMetadata];
+  [self saveSubscriptionMetadata];
 }
 
-+ (void)removeMetadataForPodcastUuid:(id)a3
++ (void)removeMetadataForPodcastUuid:(id)uuid
 {
-  v3 = a3;
-  if (v3)
+  uuidCopy = uuid;
+  if (uuidCopy)
   {
-    v5 = v3;
+    v5 = uuidCopy;
     v4 = qword_100583CD8;
     objc_sync_enter(v4);
     [qword_100583CD8 removeObjectForKey:v5];
     objc_sync_exit(v4);
 
-    v3 = v5;
+    uuidCopy = v5;
   }
 }
 
@@ -2096,9 +2096,9 @@ LABEL_8:
   v3 = qword_100583CD8;
   objc_sync_enter(v3);
   v4 = qword_100583CD8;
-  v5 = [a1 _metadataUrl];
+  _metadataUrl = [self _metadataUrl];
   v8 = 0;
-  [v4 writeToURL:v5 error:&v8];
+  [v4 writeToURL:_metadataUrl error:&v8];
   v6 = v8;
 
   if (v6)
@@ -2107,7 +2107,7 @@ LABEL_8:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v10 = a1;
+      selfCopy = self;
       v11 = 2112;
       v12 = v6;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%@ failed to save hash cache due to %@", buf, 0x16u);
@@ -2117,60 +2117,60 @@ LABEL_8:
   objc_sync_exit(v3);
 }
 
-- (void)_addPendingFeedProcessingBlock:(id)a3
+- (void)_addPendingFeedProcessingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MTBaseFeedManager *)self feedProcessingQueue];
+  blockCopy = block;
+  feedProcessingQueue = [(MTBaseFeedManager *)self feedProcessingQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100108C98;
   v7[3] = &unk_1004D8520;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(feedProcessingQueue, v7);
 }
 
 - (void)_processNextPendingFeedIfPossible
 {
-  v3 = [(MTBaseFeedManager *)self feedProcessingQueue];
+  feedProcessingQueue = [(MTBaseFeedManager *)self feedProcessingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100108D84;
   block[3] = &unk_1004D8358;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(feedProcessingQueue, block);
 }
 
 - (void)_queue_processNextPendingFeedIfPossible
 {
-  v3 = [(MTBaseFeedManager *)self feedProcessingQueue];
-  dispatch_assert_queue_V2(v3);
+  feedProcessingQueue = [(MTBaseFeedManager *)self feedProcessingQueue];
+  dispatch_assert_queue_V2(feedProcessingQueue);
 
-  v4 = [(MTBaseFeedManager *)self externalFeedDownloader];
-  v5 = [v4 sessionCompletionHandler];
+  externalFeedDownloader = [(MTBaseFeedManager *)self externalFeedDownloader];
+  sessionCompletionHandler = [externalFeedDownloader sessionCompletionHandler];
 
-  if (v5)
+  if (sessionCompletionHandler)
   {
-    v6 = _MTLogCategoryFeedUpdate();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    firstObject = _MTLogCategoryFeedUpdate();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v14) = 0;
       v7 = "Postponing feed update because we're waiting to call the session completion handler";
 LABEL_4:
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, v7, &v14, 2u);
+      _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_DEFAULT, v7, &v14, 2u);
     }
   }
 
   else
   {
-    v8 = [(MTBaseFeedManager *)self pendingFeedProcessingBlocks];
-    v9 = [v8 count];
+    pendingFeedProcessingBlocks = [(MTBaseFeedManager *)self pendingFeedProcessingBlocks];
+    v9 = [pendingFeedProcessingBlocks count];
 
     if (!v9)
     {
-      v6 = _MTLogCategoryFeedUpdate();
-      if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      firstObject = _MTLogCategoryFeedUpdate();
+      if (!os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_11;
       }
@@ -2180,19 +2180,19 @@ LABEL_4:
       goto LABEL_4;
     }
 
-    v10 = [(MTBaseFeedManager *)self pendingFeedProcessingBlocks];
-    v6 = [v10 firstObject];
+    pendingFeedProcessingBlocks2 = [(MTBaseFeedManager *)self pendingFeedProcessingBlocks];
+    firstObject = [pendingFeedProcessingBlocks2 firstObject];
 
-    v11 = [(MTBaseFeedManager *)self pendingFeedProcessingBlocks];
-    [v11 removeObjectAtIndex:0];
+    pendingFeedProcessingBlocks3 = [(MTBaseFeedManager *)self pendingFeedProcessingBlocks];
+    [pendingFeedProcessingBlocks3 removeObjectAtIndex:0];
 
-    (*(v6 + 16))(v6);
+    (*(firstObject + 16))(firstObject);
     v12 = _MTLogCategoryFeedUpdate();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(MTBaseFeedManager *)self pendingFeedProcessingBlocks];
+      pendingFeedProcessingBlocks4 = [(MTBaseFeedManager *)self pendingFeedProcessingBlocks];
       v14 = 134217984;
-      v15 = [v13 count];
+      v15 = [pendingFeedProcessingBlocks4 count];
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Done processing feed. %lu remaining.", &v14, 0xCu);
     }
 
@@ -2202,49 +2202,49 @@ LABEL_4:
 LABEL_11:
 }
 
-+ (void)didStartUpdatingFeedUrl:(id)a3 cloudSyncUrl:(id)a4
++ (void)didStartUpdatingFeedUrl:(id)url cloudSyncUrl:(id)syncUrl
 {
-  v6 = a3;
-  v7 = a4;
+  urlCopy = url;
+  syncUrlCopy = syncUrl;
   v8 = qword_100583CD0;
   objc_sync_enter(v8);
-  [qword_100583CD0 addObject:v6];
+  [qword_100583CD0 addObject:urlCopy];
   objc_sync_exit(v8);
 
   v13 = @"MTBaseFeedManagerFeedUrlKey";
-  v14 = v6;
+  v14 = urlCopy;
   v9 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-  [a1 postNotificationName:@"MTBaseFeedManagerDidStartUpdatingFeed" userInfo:v9];
+  [self postNotificationName:@"MTBaseFeedManagerDidStartUpdatingFeed" userInfo:v9];
 
   v10 = _MTLogCategoryFeedUpdate();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = urlCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "didStartUpdatingFeedUrl: %@", &v11, 0xCu);
   }
 }
 
-- (void)_didFinishUpdatingFeedUrl:(id)a3 withError:(id)a4
+- (void)_didFinishUpdatingFeedUrl:(id)url withError:(id)error
 {
-  v5 = a4;
-  v6 = a3;
-  [objc_opt_class() didFinishUpdatingFeedUrl:v6 withError:v5];
+  errorCopy = error;
+  urlCopy = url;
+  [objc_opt_class() didFinishUpdatingFeedUrl:urlCopy withError:errorCopy];
 }
 
-+ (void)didFinishUpdatingFeedUrl:(id)a3 withError:(id)a4
++ (void)didFinishUpdatingFeedUrl:(id)url withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  urlCopy = url;
+  errorCopy = error;
   v8 = qword_100583CD0;
   objc_sync_enter(v8);
-  if (v6)
+  if (urlCopy)
   {
-    if ([qword_100583CD0 containsObject:v6])
+    if ([qword_100583CD0 containsObject:urlCopy])
     {
-      [qword_100583CD0 removeObject:v6];
+      [qword_100583CD0 removeObject:urlCopy];
       v9 = [qword_100583CD0 count] == 0;
-      if (!v7)
+      if (!errorCopy)
       {
         goto LABEL_4;
       }
@@ -2263,14 +2263,14 @@ LABEL_11:
   }
 
   v9 = 0;
-  if (!v7)
+  if (!errorCopy)
   {
 LABEL_4:
     v10 = _MTLogCategoryFeedUpdate();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v19 = v6;
+      v19 = urlCopy;
       v20 = 1024;
       LODWORD(v21) = [qword_100583CD0 count];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "didFinishUpdatingFeedUrl: %@, remaining count = %d", buf, 0x12u);
@@ -2283,11 +2283,11 @@ LABEL_8:
   v10 = _MTLogCategoryFeedUpdate();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    v13 = [v7 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     *buf = 138412802;
-    v19 = v6;
+    v19 = urlCopy;
     v20 = 2112;
-    v21 = v13;
+    v21 = localizedDescription;
     v22 = 1024;
     v23 = [qword_100583CD0 count];
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "didFinishUpdatingFeedUrl: %@, with error: %@, remaining count = %d", buf, 0x1Cu);
@@ -2296,9 +2296,9 @@ LABEL_8:
 LABEL_10:
 
   objc_sync_exit(v8);
-  if (v6)
+  if (urlCopy)
   {
-    v14 = v6;
+    v14 = urlCopy;
   }
 
   else
@@ -2309,21 +2309,21 @@ LABEL_10:
   v16 = @"MTBaseFeedManagerFeedUrlKey";
   v17 = v14;
   v15 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-  [a1 postNotificationName:@"MTBaseFeedManagerDidEndUpdatingFeed" userInfo:v15];
+  [self postNotificationName:@"MTBaseFeedManagerDidEndUpdatingFeed" userInfo:v15];
 
   if (v9)
   {
-    [a1 didFinishUpdatingAllFeeds:1];
+    [self didFinishUpdatingAllFeeds:1];
   }
 }
 
-+ (void)didFinishUpdatingAllFeeds:(BOOL)a3
++ (void)didFinishUpdatingAllFeeds:(BOOL)feeds
 {
-  v3 = a3;
-  if (![a1 updatingCount])
+  feedsCopy = feeds;
+  if (![self updatingCount])
   {
-    [a1 postNotificationName:@"MTBaseFeedManagerDidEndUpdatingAllFeeds" userInfo:0];
-    if (v3)
+    [self postNotificationName:@"MTBaseFeedManagerDidEndUpdatingAllFeeds" userInfo:0];
+    if (feedsCopy)
     {
       v5 = +[MTNotificationManager sharedInstance];
       [v5 processNotificationsWithReason:@"Feed Update"];
@@ -2338,40 +2338,40 @@ LABEL_10:
   }
 }
 
-+ (void)postNotificationName:(id)a3 userInfo:(id)a4
++ (void)postNotificationName:(id)name userInfo:(id)info
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100109580;
   v7[3] = &unk_1004D8798;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  nameCopy = name;
+  infoCopy = info;
+  v5 = infoCopy;
+  v6 = nameCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-+ (void)standardDeviationForEpisodes:(id)a3 standardDeviation:(double *)a4 average:(double *)a5
++ (void)standardDeviationForEpisodes:(id)episodes standardDeviation:(double *)deviation average:(double *)average
 {
-  v33 = a3;
-  *a4 = 0.0;
-  *a5 = 0.0;
+  episodesCopy = episodes;
+  *deviation = 0.0;
+  *average = 0.0;
   v7 = objc_opt_new();
-  v8 = [v33 count];
+  v8 = [episodesCopy count];
   if (v8 - 1 >= 1)
   {
     v9 = v8;
     v10 = 1;
     do
     {
-      v11 = [v33 objectAtIndex:v10 - 1];
-      v12 = [v11 pubDate];
-      [v12 timeIntervalSinceReferenceDate];
+      v11 = [episodesCopy objectAtIndex:v10 - 1];
+      pubDate = [v11 pubDate];
+      [pubDate timeIntervalSinceReferenceDate];
       v14 = v13;
 
-      v15 = [v33 objectAtIndex:v10];
-      v16 = [v15 pubDate];
-      [v16 timeIntervalSinceReferenceDate];
+      v15 = [episodesCopy objectAtIndex:v10];
+      pubDate2 = [v15 pubDate];
+      [pubDate2 timeIntervalSinceReferenceDate];
       v18 = v17;
 
       v19 = [NSNumber numberWithDouble:vabdd_f64(v14, v18)];
@@ -2387,7 +2387,7 @@ LABEL_10:
     {
       if (v20)
       {
-        *a5 = 0.0 / v20;
+        *average = 0.0 / v20;
       }
     }
 
@@ -2405,7 +2405,7 @@ LABEL_10:
       }
 
       while (v21 != v22);
-      *a5 = v23 / v21;
+      *average = v23 / v21;
       if (v21 >= 1)
       {
         v26 = 0;
@@ -2414,10 +2414,10 @@ LABEL_10:
         {
           v28 = [v7 objectAtIndex:v26];
           [v28 doubleValue];
-          v30 = v29 - *a5;
+          v30 = v29 - *average;
           v31 = [v7 objectAtIndex:v26];
           [v31 doubleValue];
-          v27 = v27 + v30 * (v32 - *a5);
+          v27 = v27 + v30 * (v32 - *average);
 
           ++v26;
         }
@@ -2425,7 +2425,7 @@ LABEL_10:
         while (v21 != v26);
         if (v21 != 1)
         {
-          *a4 = sqrt(v27 / (v21 - 1));
+          *deviation = sqrt(v27 / (v21 - 1));
         }
       }
     }

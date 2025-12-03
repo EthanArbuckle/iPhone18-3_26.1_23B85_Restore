@@ -1,19 +1,19 @@
 @interface MFPHueSaturationLightnessEffect
-- (MFPHueSaturationLightnessEffect)initWithHueChange:(int)a3 saturationChange:(int)a4 lightnessChange:(int)a5;
+- (MFPHueSaturationLightnessEffect)initWithHueChange:(int)change saturationChange:(int)saturationChange lightnessChange:(int)lightnessChange;
 @end
 
 @implementation MFPHueSaturationLightnessEffect
 
-- (MFPHueSaturationLightnessEffect)initWithHueChange:(int)a3 saturationChange:(int)a4 lightnessChange:(int)a5
+- (MFPHueSaturationLightnessEffect)initWithHueChange:(int)change saturationChange:(int)saturationChange lightnessChange:(int)lightnessChange
 {
   v9.receiver = self;
   v9.super_class = MFPHueSaturationLightnessEffect;
   result = [(MFPHueSaturationLightnessEffect *)&v9 init];
   if (result)
   {
-    result->mHueChange = a3;
-    result->mSaturationChange = a4;
-    result->mLightnessChange = a5;
+    result->mHueChange = change;
+    result->mSaturationChange = saturationChange;
+    result->mLightnessChange = lightnessChange;
   }
 
   return result;

@@ -6,7 +6,7 @@
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007EADA8();
 
   return 1;

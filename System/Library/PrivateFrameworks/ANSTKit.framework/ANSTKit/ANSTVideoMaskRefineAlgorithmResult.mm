@@ -1,8 +1,8 @@
 @interface ANSTVideoMaskRefineAlgorithmResult
 + (id)new;
 - (ANSTVideoMaskRefineAlgorithmResult)init;
-- (ANSTVideoMaskRefineAlgorithmResult)initWithSkinMask:(__CVBuffer *)a3 hairMask:(__CVBuffer *)a4 personMask:(__CVBuffer *)a5;
-- (__CVBuffer)refinedMaskForSemanticCategory:(id)a3;
+- (ANSTVideoMaskRefineAlgorithmResult)initWithSkinMask:(__CVBuffer *)mask hairMask:(__CVBuffer *)hairMask personMask:(__CVBuffer *)personMask;
+- (__CVBuffer)refinedMaskForSemanticCategory:(id)category;
 - (void)dealloc;
 @end
 
@@ -10,7 +10,7 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
@@ -22,19 +22,19 @@
   return result;
 }
 
-- (ANSTVideoMaskRefineAlgorithmResult)initWithSkinMask:(__CVBuffer *)a3 hairMask:(__CVBuffer *)a4 personMask:(__CVBuffer *)a5
+- (ANSTVideoMaskRefineAlgorithmResult)initWithSkinMask:(__CVBuffer *)mask hairMask:(__CVBuffer *)hairMask personMask:(__CVBuffer *)personMask
 {
   v10.receiver = self;
   v10.super_class = ANSTVideoMaskRefineAlgorithmResult;
-  v8 = [(ANSTResult *)&v10 _init];
-  if (v8)
+  _init = [(ANSTResult *)&v10 _init];
+  if (_init)
   {
-    v8->_skinMask = CVPixelBufferRetain(a3);
-    v8->_hairMask = CVPixelBufferRetain(a4);
-    v8->_personMask = CVPixelBufferRetain(a5);
+    _init->_skinMask = CVPixelBufferRetain(mask);
+    _init->_hairMask = CVPixelBufferRetain(hairMask);
+    _init->_personMask = CVPixelBufferRetain(personMask);
   }
 
-  return v8;
+  return _init;
 }
 
 - (void)dealloc
@@ -47,11 +47,11 @@
   [(ANSTVideoMaskRefineAlgorithmResult *)&v3 dealloc];
 }
 
-- (__CVBuffer)refinedMaskForSemanticCategory:(id)a3
+- (__CVBuffer)refinedMaskForSemanticCategory:(id)category
 {
-  v4 = a3;
-  v6 = v4;
-  if (@"Skin" == v4 || (objc_msgSend_isEqualToString_(v4, v5, @"Skin") & 1) != 0)
+  categoryCopy = category;
+  v6 = categoryCopy;
+  if (@"Skin" == categoryCopy || (objc_msgSend_isEqualToString_(categoryCopy, v5, @"Skin") & 1) != 0)
   {
     v8 = &OBJC_IVAR___ANSTVideoMaskRefineAlgorithmResult__skinMask;
   }

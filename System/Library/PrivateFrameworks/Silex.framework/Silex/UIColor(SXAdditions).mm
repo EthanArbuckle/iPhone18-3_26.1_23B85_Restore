@@ -23,7 +23,7 @@
   v3[2] = __34__UIColor_SXAdditions__brightness__block_invoke;
   v3[3] = &unk_1E8501808;
   v3[4] = &v4;
-  [a1 _getHSBA:v3];
+  [self _getHSBA:v3];
   v1 = v5[3];
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -36,7 +36,7 @@
   v5 = 0.0;
   v6 = 0.0;
   v4 = a3;
-  [a1 getHue:&v8 saturation:&v7 brightness:&v6 alpha:&v5];
+  [self getHue:&v8 saturation:&v7 brightness:&v6 alpha:&v5];
   v4[2](v4, v8, v7, v6, v5);
 }
 
@@ -46,7 +46,7 @@
   v4 = 0.0;
   v5 = 0.0;
   v3 = 0;
-  [a1 getRed:&v6 green:&v5 blue:&v4 alpha:&v3];
+  [self getRed:&v6 green:&v5 blue:&v4 alpha:&v3];
   v6 = 1.0 - v6;
   v4 = 1.0 - v4;
   v5 = 1.0 - v5;
@@ -61,7 +61,7 @@
   v4 = 0.0;
   v5 = 0.0;
   v3 = 0;
-  [a1 getHue:&v6 saturation:&v5 brightness:&v4 alpha:&v3];
+  [self getHue:&v6 saturation:&v5 brightness:&v4 alpha:&v3];
   v4 = 1.0 - v4;
   v1 = [MEMORY[0x1E69DC888] colorWithHue:v6 saturation:v5 brightness:? alpha:?];
 
@@ -74,7 +74,7 @@
   v13 = 0.0;
   v11 = 0.0;
   v10 = 0.0;
-  [a1 getRed:&v13 green:&v12 blue:&v11 alpha:&v10];
+  [self getRed:&v13 green:&v12 blue:&v11 alpha:&v10];
   v1 = v13 * 255.0;
   v2 = llroundf(v1);
   v3 = v12 * 255.0;
@@ -93,7 +93,7 @@
   v26 = 0.0;
   v23 = 0.0;
   v24 = 0.0;
-  if ([a1 getRed:&v26 green:&v25 blue:&v24 alpha:&v23])
+  if ([self getRed:&v26 green:&v25 blue:&v24 alpha:&v23])
   {
     if (v26 >= v25)
     {
@@ -210,10 +210,10 @@
   }
 
   v8 = -(v6 - a3 * 2.0);
-  v9 = a1 + 0.333333343;
-  if (a1 + 0.333333343 < 0.0)
+  v9 = self + 0.333333343;
+  if (self + 0.333333343 < 0.0)
   {
-    v9 = a1 + 0.333333343 + 1.0;
+    v9 = self + 0.333333343 + 1.0;
   }
 
   if (v9 > 1.0)
@@ -242,39 +242,39 @@ LABEL_10:
   }
 
 LABEL_14:
-  v12 = a1 + 1.0;
-  if (a1 >= 0.0)
+  selfCopy = self + 1.0;
+  if (self >= 0.0)
   {
-    v12 = a1;
+    selfCopy = self;
   }
 
-  if (v12 > 1.0)
+  if (selfCopy > 1.0)
   {
-    v12 = v12 + -1.0;
+    selfCopy = selfCopy + -1.0;
   }
 
-  if (v12 < 0.166666672)
+  if (selfCopy < 0.166666672)
   {
     v13 = (v6 - v8) * 6.0;
 LABEL_20:
-    v14 = v8 + v13 * v12;
+    v14 = v8 + v13 * selfCopy;
     goto LABEL_24;
   }
 
   v14 = v6;
-  if (v12 >= 0.5)
+  if (selfCopy >= 0.5)
   {
     v14 = v8;
-    if (v12 < 0.666666687)
+    if (selfCopy < 0.666666687)
     {
-      v13 = (0.666666687 - v12) * (v6 - v8);
-      v12 = 6.0;
+      v13 = (0.666666687 - selfCopy) * (v6 - v8);
+      selfCopy = 6.0;
       goto LABEL_20;
     }
   }
 
 LABEL_24:
-  v15 = a1 + -0.333333343;
+  v15 = self + -0.333333343;
   if (v15 < 0.0)
   {
     v15 = v15 + 1.0;
@@ -317,7 +317,7 @@ LABEL_24:
   v5 = 0.0;
   v6 = 0.0;
   v4 = 0.0;
-  [a1 getHue:&v7 saturation:&v6 lightness:&v5 alpha:&v4];
+  [self getHue:&v7 saturation:&v6 lightness:&v5 alpha:&v4];
   v1 = 1.0 - v5;
   v5 = 1.0 - v5;
   if (v6 >= 2.22044605e-16)
@@ -339,7 +339,7 @@ LABEL_24:
   v9 = 0.0;
   v10 = 0.0;
   v8 = 0.0;
-  [a1 getRed:&v10 green:&v9 blue:&v8 alpha:0];
+  [self getRed:&v10 green:&v9 blue:&v8 alpha:0];
   v1 = v10 * 255.0;
   if (v10 * 255.0 >= 10.0)
   {

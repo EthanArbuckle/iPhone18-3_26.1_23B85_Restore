@@ -1,12 +1,12 @@
 @interface NotificationViewController
-- (_TtC45HealthMedicationsNotificationContentExtension26NotificationViewController)initWithCoder:(id)a3;
-- (_TtC45HealthMedicationsNotificationContentExtension26NotificationViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didReceiveNotification:(id)a3;
+- (_TtC45HealthMedicationsNotificationContentExtension26NotificationViewController)initWithCoder:(id)coder;
+- (_TtC45HealthMedicationsNotificationContentExtension26NotificationViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didReceiveNotification:(id)notification;
 @end
 
 @implementation NotificationViewController
 
-- (_TtC45HealthMedicationsNotificationContentExtension26NotificationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC45HealthMedicationsNotificationContentExtension26NotificationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_100006658();
   sub_100006648();
@@ -16,10 +16,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     v6 = sub_1000065B8();
-    a3 = v7;
+    name = v7;
   }
 
   else
@@ -27,13 +27,13 @@
     v6 = 0;
   }
 
-  v8 = a4;
-  v9 = sub_100001B2C(v6, a3, a4);
+  bundleCopy = bundle;
+  v9 = sub_100001B2C(v6, name, bundle);
 
   return v9;
 }
 
-- (_TtC45HealthMedicationsNotificationContentExtension26NotificationViewController)initWithCoder:(id)a3
+- (_TtC45HealthMedicationsNotificationContentExtension26NotificationViewController)initWithCoder:(id)coder
 {
   sub_100006658();
   sub_100006648();
@@ -43,11 +43,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_100005E84();
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
   sub_100006658();
   sub_100006648();
@@ -57,9 +57,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_100003DA0(v5);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_100003DA0(notificationCopy);
 }
 
 @end

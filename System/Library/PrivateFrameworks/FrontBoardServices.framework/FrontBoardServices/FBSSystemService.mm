@@ -1,24 +1,24 @@
 @interface FBSSystemService
 + (id)clientCallbackQueue;
 + (id)sharedService;
-- (BOOL)canOpenApplication:(id)a3 reason:(int64_t *)a4;
-- (FBSSystemService)initWithEndpoint:(id)a3;
-- (id)_initWithEndpoint:(id)a3;
-- (id)badgeValueForBundleID:(id)a3;
-- (id)processHandleForApplication:(id)a3;
-- (int)pidForApplication:(id)a3;
-- (void)dataResetWithRequest:(id)a3 completion:(id)a4;
+- (BOOL)canOpenApplication:(id)application reason:(int64_t *)reason;
+- (FBSSystemService)initWithEndpoint:(id)endpoint;
+- (id)_initWithEndpoint:(id)endpoint;
+- (id)badgeValueForBundleID:(id)d;
+- (id)processHandleForApplication:(id)application;
+- (int)pidForApplication:(id)application;
+- (void)dataResetWithRequest:(id)request completion:(id)completion;
 - (void)dealloc;
-- (void)openApplication:(id)a3 options:(id)a4 clientPort:(unsigned int)a5 withResult:(id)a6;
-- (void)openApplication:(id)a3 options:(id)a4 withResult:(id)a5;
-- (void)openURL:(id)a3 application:(id)a4 options:(id)a5 clientPort:(unsigned int)a6 withResult:(id)a7;
+- (void)openApplication:(id)application options:(id)options clientPort:(unsigned int)port withResult:(id)result;
+- (void)openApplication:(id)application options:(id)options withResult:(id)result;
+- (void)openURL:(id)l application:(id)application options:(id)options clientPort:(unsigned int)port withResult:(id)result;
 - (void)reboot;
-- (void)sendActions:(id)a3 withResult:(id)a4;
-- (void)setBadgeValue:(id)a3 forBundleID:(id)a4;
-- (void)setKeyboardFocusApplicationPID:(int)a3 deferringToken:(id)a4 completion:(id)a5;
+- (void)sendActions:(id)actions withResult:(id)result;
+- (void)setBadgeValue:(id)value forBundleID:(id)d;
+- (void)setKeyboardFocusApplicationPID:(int)d deferringToken:(id)token completion:(id)completion;
 - (void)shutdown;
-- (void)terminateApplication:(id)a3 forReason:(int64_t)a4 andReport:(BOOL)a5 withDescription:(id)a6 completion:(id)a7;
-- (void)terminateApplicationGroup:(int64_t)a3 forReason:(int64_t)a4 andReport:(BOOL)a5 withDescription:(id)a6 completion:(id)a7;
+- (void)terminateApplication:(id)application forReason:(int64_t)reason andReport:(BOOL)report withDescription:(id)description completion:(id)completion;
+- (void)terminateApplicationGroup:(int64_t)group forReason:(int64_t)reason andReport:(BOOL)report withDescription:(id)description completion:(id)completion;
 @end
 
 @implementation FBSSystemService
@@ -73,15 +73,15 @@ uint64_t __33__FBSSystemService_sharedService__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (FBSSystemService)initWithEndpoint:(id)a3
+- (FBSSystemService)initWithEndpoint:(id)endpoint
 {
-  v5 = a3;
-  if (!v5)
+  endpointCopy = endpoint;
+  if (!endpointCopy)
   {
     [(FBSSystemService *)a2 initWithEndpoint:?];
   }
 
-  v6 = v5;
+  v6 = endpointCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -92,19 +92,19 @@ uint64_t __33__FBSSystemService_sharedService__block_invoke()
   return v7;
 }
 
-- (id)_initWithEndpoint:(id)a3
+- (id)_initWithEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v11.receiver = self;
   v11.super_class = FBSSystemService;
   v5 = [(FBSSystemService *)&v11 init];
   if (v5)
   {
-    v6 = [FBSSystemAppProxy checkoutProxyWithEndpoint:v4];
+    v6 = [FBSSystemAppProxy checkoutProxyWithEndpoint:endpointCopy];
     systemAppProxy = v5->_systemAppProxy;
     v5->_systemAppProxy = v6;
 
-    if (!v4)
+    if (!endpointCopy)
     {
       v8 = +[FBSOpenApplicationService serviceWithDefaultShellEndpoint];
       defaultOpenApplicationService = v5->_defaultOpenApplicationService;
@@ -115,17 +115,17 @@ uint64_t __33__FBSSystemService_sharedService__block_invoke()
   return v5;
 }
 
-- (int)pidForApplication:(id)a3
+- (int)pidForApplication:(id)application
 {
-  if (!a3)
+  if (!application)
   {
     return -1;
   }
 
   v3 = MEMORY[0x1E698D028];
-  v4 = a3;
+  applicationCopy = application;
   v5 = objc_alloc_init(v3);
-  v6 = [v5 applicationInfoForApplication:v4];
+  v6 = [v5 applicationInfoForApplication:applicationCopy];
 
   if (v6)
   {
@@ -133,74 +133,74 @@ uint64_t __33__FBSSystemService_sharedService__block_invoke()
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 intValue];
+      intValue = [v7 intValue];
     }
 
     else
     {
-      v9 = -1;
+      intValue = -1;
     }
   }
 
   else
   {
-    v9 = -1;
+    intValue = -1;
   }
 
   [v5 invalidate];
 
-  return v9;
+  return intValue;
 }
 
-- (BOOL)canOpenApplication:(id)a3 reason:(int64_t *)a4
+- (BOOL)canOpenApplication:(id)application reason:(int64_t *)reason
 {
   defaultOpenApplicationService = self->_defaultOpenApplicationService;
   if (defaultOpenApplicationService)
   {
-    return [(FBSOpenApplicationService *)defaultOpenApplicationService canOpenApplication:a3 reason:a4];
+    return [(FBSOpenApplicationService *)defaultOpenApplicationService canOpenApplication:application reason:reason];
   }
 
-  if (a4)
+  if (reason)
   {
-    *a4 = 8;
+    *reason = 8;
   }
 
   return 0;
 }
 
-- (void)openApplication:(id)a3 options:(id)a4 withResult:(id)a5
+- (void)openApplication:(id)application options:(id)options withResult:(id)result
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(FBSSystemService *)self openApplication:v10 options:v9 clientPort:[(FBSSystemService *)self createClientPort] withResult:v8];
+  resultCopy = result;
+  optionsCopy = options;
+  applicationCopy = application;
+  [(FBSSystemService *)self openApplication:applicationCopy options:optionsCopy clientPort:[(FBSSystemService *)self createClientPort] withResult:resultCopy];
 }
 
-- (void)sendActions:(id)a3 withResult:(id)a4
+- (void)sendActions:(id)actions withResult:(id)result
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  actionsCopy = actions;
+  resultCopy = result;
   v8 = FBLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 fbs_singleLineDescriptionOfBSActions];
+    fbs_singleLineDescriptionOfBSActions = [actionsCopy fbs_singleLineDescriptionOfBSActions];
     *buf = 138543362;
-    v18 = v9;
+    v18 = fbs_singleLineDescriptionOfBSActions;
     _os_log_impl(&dword_1A2DBB000, v8, OS_LOG_TYPE_DEFAULT, "[FBSSystemService] Sending action(s): %{public}@", buf, 0xCu);
   }
 
-  v10 = self;
-  systemAppProxy = v10->_systemAppProxy;
+  selfCopy = self;
+  systemAppProxy = selfCopy->_systemAppProxy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __43__FBSSystemService_sendActions_withResult___block_invoke;
   v14[3] = &unk_1E76BE758;
-  v15 = v10;
-  v16 = v7;
-  v12 = v10;
-  v13 = v7;
-  [(FBSSystemAppProxy *)systemAppProxy sendActions:v6 withResult:v14];
+  v15 = selfCopy;
+  v16 = resultCopy;
+  v12 = selfCopy;
+  v13 = resultCopy;
+  [(FBSSystemAppProxy *)systemAppProxy sendActions:actionsCopy withResult:v14];
 }
 
 uint64_t __43__FBSSystemService_sendActions_withResult___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -214,21 +214,21 @@ uint64_t __43__FBSSystemService_sendActions_withResult___block_invoke(uint64_t a
   return result;
 }
 
-- (void)terminateApplication:(id)a3 forReason:(int64_t)a4 andReport:(BOOL)a5 withDescription:(id)a6 completion:(id)a7
+- (void)terminateApplication:(id)application forReason:(int64_t)reason andReport:(BOOL)report withDescription:(id)description completion:(id)completion
 {
-  v8 = a5;
-  v12 = a7;
-  v13 = self;
-  systemAppProxy = v13->_systemAppProxy;
+  reportCopy = report;
+  completionCopy = completion;
+  selfCopy = self;
+  systemAppProxy = selfCopy->_systemAppProxy;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __88__FBSSystemService_terminateApplication_forReason_andReport_withDescription_completion___block_invoke;
   v17[3] = &unk_1E76BE780;
-  v18 = v13;
-  v19 = v12;
-  v15 = v13;
-  v16 = v12;
-  [(FBSSystemAppProxy *)systemAppProxy terminateApplication:a3 forReason:a4 andReport:v8 withDescription:a6 completion:v17];
+  v18 = selfCopy;
+  v19 = completionCopy;
+  v15 = selfCopy;
+  v16 = completionCopy;
+  [(FBSSystemAppProxy *)systemAppProxy terminateApplication:application forReason:reason andReport:reportCopy withDescription:description completion:v17];
 }
 
 uint64_t __88__FBSSystemService_terminateApplication_forReason_andReport_withDescription_completion___block_invoke(uint64_t a1)
@@ -242,21 +242,21 @@ uint64_t __88__FBSSystemService_terminateApplication_forReason_andReport_withDes
   return result;
 }
 
-- (void)terminateApplicationGroup:(int64_t)a3 forReason:(int64_t)a4 andReport:(BOOL)a5 withDescription:(id)a6 completion:(id)a7
+- (void)terminateApplicationGroup:(int64_t)group forReason:(int64_t)reason andReport:(BOOL)report withDescription:(id)description completion:(id)completion
 {
-  v8 = a5;
-  v12 = a7;
-  v13 = self;
-  systemAppProxy = v13->_systemAppProxy;
+  reportCopy = report;
+  completionCopy = completion;
+  selfCopy = self;
+  systemAppProxy = selfCopy->_systemAppProxy;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __93__FBSSystemService_terminateApplicationGroup_forReason_andReport_withDescription_completion___block_invoke;
   v17[3] = &unk_1E76BE780;
-  v18 = v13;
-  v19 = v12;
-  v15 = v13;
-  v16 = v12;
-  [(FBSSystemAppProxy *)systemAppProxy terminateApplicationGroup:a3 forReason:a4 andReport:v8 withDescription:a6 completion:v17];
+  v18 = selfCopy;
+  v19 = completionCopy;
+  v15 = selfCopy;
+  v16 = completionCopy;
+  [(FBSSystemAppProxy *)systemAppProxy terminateApplicationGroup:group forReason:reason andReport:reportCopy withDescription:description completion:v17];
 }
 
 uint64_t __93__FBSSystemService_terminateApplicationGroup_forReason_andReport_withDescription_completion___block_invoke(uint64_t a1)
@@ -270,34 +270,34 @@ uint64_t __93__FBSSystemService_terminateApplicationGroup_forReason_andReport_wi
   return result;
 }
 
-- (void)openApplication:(id)a3 options:(id)a4 clientPort:(unsigned int)a5 withResult:(id)a6
+- (void)openApplication:(id)application options:(id)options clientPort:(unsigned int)port withResult:(id)result
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (a5)
+  applicationCopy = application;
+  optionsCopy = options;
+  resultCopy = result;
+  if (port)
   {
     [FBSSystemService openApplication:a2 options:self clientPort:? withResult:?];
   }
 
-  v14 = v13;
+  v14 = resultCopy;
   defaultOpenApplicationService = self->_defaultOpenApplicationService;
   if (defaultOpenApplicationService)
   {
-    v16 = [FBSOpenApplicationOptions optionsWithDictionary:v12];
+    v16 = [FBSOpenApplicationOptions optionsWithDictionary:optionsCopy];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __66__FBSSystemService_openApplication_options_clientPort_withResult___block_invoke;
     v20[3] = &unk_1E76BE7A8;
     v17 = &v21;
     v21 = v14;
-    [(FBSOpenApplicationService *)defaultOpenApplicationService _openApplication:v11 withOptions:v16 clientHandle:0 completion:v20];
+    [(FBSOpenApplicationService *)defaultOpenApplicationService _openApplication:applicationCopy withOptions:v16 clientHandle:0 completion:v20];
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  if (v13)
+  if (resultCopy)
   {
     v16 = +[FBSSystemService clientCallbackQueue];
     v18[0] = MEMORY[0x1E69E9820];
@@ -350,24 +350,24 @@ void __66__FBSSystemService_openApplication_options_clientPort_withResult___bloc
   (*(v8 + 16))(v8, v10);
 }
 
-- (void)openURL:(id)a3 application:(id)a4 options:(id)a5 clientPort:(unsigned int)a6 withResult:(id)a7
+- (void)openURL:(id)l application:(id)application options:(id)options clientPort:(unsigned int)port withResult:(id)result
 {
-  v8 = *&a6;
-  v15 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a5];
-  if (v15)
+  v8 = *&port;
+  lCopy = l;
+  applicationCopy = application;
+  resultCopy = result;
+  v14 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:options];
+  if (lCopy)
   {
-    [v14 setObject:v15 forKey:@"__PayloadURL"];
+    [v14 setObject:lCopy forKey:@"__PayloadURL"];
   }
 
-  [(FBSSystemService *)self openApplication:v12 options:v14 clientPort:v8 withResult:v13];
+  [(FBSSystemService *)self openApplication:applicationCopy options:v14 clientPort:v8 withResult:resultCopy];
 }
 
-- (id)processHandleForApplication:(id)a3
+- (id)processHandleForApplication:(id)application
 {
-  if (a3)
+  if (application)
   {
     v4 = [(FBSSystemAppProxy *)self->_systemAppProxy processHandleForBundleID:?];
   }
@@ -380,33 +380,33 @@ void __66__FBSSystemService_openApplication_options_clientPort_withResult___bloc
   return v4;
 }
 
-- (id)badgeValueForBundleID:(id)a3
+- (id)badgeValueForBundleID:(id)d
 {
-  v3 = a3;
-  v4 = [objc_alloc(getUISApplicationStateClass()) initWithBundleIdentifier:v3];
+  dCopy = d;
+  v4 = [objc_alloc(getUISApplicationStateClass()) initWithBundleIdentifier:dCopy];
 
-  v5 = [v4 badgeValue];
+  badgeValue = [v4 badgeValue];
 
-  return v5;
+  return badgeValue;
 }
 
-- (void)setBadgeValue:(id)a3 forBundleID:(id)a4
+- (void)setBadgeValue:(id)value forBundleID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(getUISApplicationStateClass()) initWithBundleIdentifier:v5];
+  dCopy = d;
+  valueCopy = value;
+  v7 = [objc_alloc(getUISApplicationStateClass()) initWithBundleIdentifier:dCopy];
 
-  [v7 setBadgeValue:v6];
+  [v7 setBadgeValue:valueCopy];
 }
 
-- (void)dataResetWithRequest:(id)a3 completion:(id)a4
+- (void)dataResetWithRequest:(id)request completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v7 = objc_alloc_init(getDDRResetOptionsClass());
-  [v7 setHideProgress:{(objc_msgSend(v5, "options") >> 1) & 1}];
-  [v7 setEraseDataPlan:{objc_msgSend(v5, "options") & 1}];
-  v8 = [v5 mode] - 1;
+  [v7 setHideProgress:{(objc_msgSend(requestCopy, "options") >> 1) & 1}];
+  [v7 setEraseDataPlan:{objc_msgSend(requestCopy, "options") & 1}];
+  v8 = [requestCopy mode] - 1;
   if (v8 > 3)
   {
     v9 = 0;
@@ -418,17 +418,17 @@ void __66__FBSSystemService_openApplication_options_clientPort_withResult___bloc
   }
 
   v10 = objc_alloc(getDDRResetRequestClass());
-  v11 = [v5 reason];
-  v12 = [v10 initWithMode:v9 options:v7 reason:v11];
+  reason = [requestCopy reason];
+  v12 = [v10 initWithMode:v9 options:v7 reason:reason];
 
-  v13 = [getDDRResetServiceClass() sharedInstance];
+  sharedInstance = [getDDRResetServiceClass() sharedInstance];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __52__FBSSystemService_dataResetWithRequest_completion___block_invoke;
   v15[3] = &unk_1E76BDB58;
-  v16 = v6;
-  v14 = v6;
-  [v13 resetWithRequest:v12 completion:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [sharedInstance resetWithRequest:v12 completion:v15];
 }
 
 uint64_t __52__FBSSystemService_dataResetWithRequest_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -455,21 +455,21 @@ uint64_t __52__FBSSystemService_dataResetWithRequest_completion___block_invoke(u
   [(FBSSystemService *)self shutdownWithOptions:v3];
 }
 
-- (void)setKeyboardFocusApplicationPID:(int)a3 deferringToken:(id)a4 completion:(id)a5
+- (void)setKeyboardFocusApplicationPID:(int)d deferringToken:(id)token completion:(id)completion
 {
-  v6 = *&a3;
-  v8 = a5;
-  v9 = self;
-  systemAppProxy = v9->_systemAppProxy;
+  v6 = *&d;
+  completionCopy = completion;
+  selfCopy = self;
+  systemAppProxy = selfCopy->_systemAppProxy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__FBSSystemService_setKeyboardFocusApplicationPID_deferringToken_completion___block_invoke;
   v13[3] = &unk_1E76BE7D0;
-  v14 = v9;
-  v15 = v8;
-  v11 = v9;
-  v12 = v8;
-  [(FBSSystemAppProxy *)systemAppProxy setKeyboardFocusApplication:v6 deferringToken:a4 completion:v13];
+  v14 = selfCopy;
+  v15 = completionCopy;
+  v11 = selfCopy;
+  v12 = completionCopy;
+  [(FBSSystemAppProxy *)systemAppProxy setKeyboardFocusApplication:v6 deferringToken:token completion:v13];
 }
 
 uint64_t __77__FBSSystemService_setKeyboardFocusApplicationPID_deferringToken_completion___block_invoke(uint64_t a1)

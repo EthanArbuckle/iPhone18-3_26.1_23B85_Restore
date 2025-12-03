@@ -1,20 +1,20 @@
 @interface PXPhotoKitRemoveAssetActionPerformer
-- (void)completeUserInteractionTaskWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)completeUserInteractionTaskWithSuccess:(BOOL)success error:(id)error;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitRemoveAssetActionPerformer
 
-- (void)completeUserInteractionTaskWithSuccess:(BOOL)a3 error:(id)a4
+- (void)completeUserInteractionTaskWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
-  v6 = a4;
+  successCopy = success;
+  errorCopy = error;
   if ([(PXActionPerformer *)self state]== 10)
   {
     v7.receiver = self;
     v7.super_class = PXPhotoKitRemoveAssetActionPerformer;
-    [(PXActionPerformer *)&v7 completeUserInteractionTaskWithSuccess:v4 error:v6];
+    [(PXActionPerformer *)&v7 completeUserInteractionTaskWithSuccess:successCopy error:errorCopy];
   }
 }
 
@@ -22,16 +22,16 @@
 {
   [(PXPhotoKitAssetActionPerformer *)self instantlyExcludeAssetsFromDataSource];
   v3 = [PXRemoveAssetsFromAssetCollectionAction alloc];
-  v4 = [(PXAssetActionPerformer *)self selectionSnapshot];
-  v5 = [(PXAssetsSelectionAction *)v3 initWithSelectionSnapshot:v4];
+  selectionSnapshot = [(PXAssetActionPerformer *)self selectionSnapshot];
+  v5 = [(PXAssetsSelectionAction *)v3 initWithSelectionSnapshot:selectionSnapshot];
 
-  v6 = [(PXActionPerformer *)self undoManager];
+  undoManager = [(PXActionPerformer *)self undoManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__PXPhotoKitRemoveAssetActionPerformer_performBackgroundTask__block_invoke;
   v7[3] = &unk_1E774C5C0;
   v7[4] = self;
-  [(PXAction *)v5 executeWithUndoManager:v6 completionHandler:v7];
+  [(PXAction *)v5 executeWithUndoManager:undoManager completionHandler:v7];
 }
 
 void __61__PXPhotoKitRemoveAssetActionPerformer_performBackgroundTask__block_invoke(uint64_t a1, char a2, void *a3)
@@ -77,16 +77,16 @@ uint64_t __61__PXPhotoKitRemoveAssetActionPerformer_performBackgroundTask__block
 
   else
   {
-    v3 = [(PXPhotoKitAssetActionPerformer *)self assets];
-    v4 = [(PXActionPerformer *)self presentationEnvironment];
+    assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+    presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __66__PXPhotoKitRemoveAssetActionPerformer_performUserInteractionTask__block_invoke;
     v9[3] = &unk_1E77482A0;
-    v10 = v3;
-    v11 = self;
-    v5 = v3;
-    v6 = [v4 presentAlertWithConfigurationHandler:v9];
+    v10 = assets;
+    selfCopy = self;
+    v5 = assets;
+    v6 = [presentationEnvironment presentAlertWithConfigurationHandler:v9];
 
     if (!v6)
     {

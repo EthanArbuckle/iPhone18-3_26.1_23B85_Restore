@@ -1,37 +1,37 @@
 @interface PKSearchDisplayNameResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PKSearchDisplayNameResult)initWithCoder:(id)a3;
+- (PKSearchDisplayNameResult)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSearchDisplayNameResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   displayName = self->_displayName;
-  v5 = a3;
-  [v5 encodeObject:displayName forKey:@"displayName"];
-  [v5 encodeObject:self->_merchant forKey:@"merchant"];
-  [v5 encodeObject:self->_orderSpotlightDisplayName forKey:@"orderSpotlightDisplayName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_merchant forKey:@"merchant"];
+  [coderCopy encodeObject:self->_orderSpotlightDisplayName forKey:@"orderSpotlightDisplayName"];
 }
 
-- (PKSearchDisplayNameResult)initWithCoder:(id)a3
+- (PKSearchDisplayNameResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKSearchDisplayNameResult *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchant"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchant"];
     merchant = v5->_merchant;
     v5->_merchant = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"orderSpotlightDisplayName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"orderSpotlightDisplayName"];
     orderSpotlightDisplayName = v5->_orderSpotlightDisplayName;
     v5->_orderSpotlightDisplayName = v10;
   }
@@ -54,9 +54,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -64,7 +64,7 @@
   }
 
   displayName = self->_displayName;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (displayName && v6)
   {
     if (([(NSString *)displayName isEqual:?]& 1) == 0)
@@ -79,7 +79,7 @@
   }
 
   merchant = self->_merchant;
-  v8 = v4[2];
+  v8 = equalCopy[2];
   if (!merchant || !v8)
   {
     if (merchant == v8)
@@ -99,7 +99,7 @@ LABEL_14:
 
 LABEL_10:
   orderSpotlightDisplayName = self->_orderSpotlightDisplayName;
-  v10 = v4[3];
+  v10 = equalCopy[3];
   if (orderSpotlightDisplayName && v10)
   {
     v11 = [(NSString *)orderSpotlightDisplayName isEqual:?];

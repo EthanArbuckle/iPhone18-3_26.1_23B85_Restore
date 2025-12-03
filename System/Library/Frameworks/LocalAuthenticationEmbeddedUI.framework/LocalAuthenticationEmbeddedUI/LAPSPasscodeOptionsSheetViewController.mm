@@ -1,45 +1,45 @@
 @interface LAPSPasscodeOptionsSheetViewController
 - (CGSize)preferredContentSize;
-- (LAPSPasscodeOptionsSheetViewController)initWithConfiguration:(id)a3 style:(int64_t)a4;
+- (LAPSPasscodeOptionsSheetViewController)initWithConfiguration:(id)configuration style:(int64_t)style;
 - (LAPSPasscodeOptionsViewControllerDelegate)delegate;
-- (id)_cellIdentifierForIndexPath:(id)a3;
+- (id)_cellIdentifierForIndexPath:(id)path;
 - (id)_tableCellTextColor;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_changePasscodeRecoveryStatus:(id)a3;
-- (void)_changeSelectedPasscodeTypeIndex:(int64_t)a3;
-- (void)_close:(id)a3;
+- (void)_changePasscodeRecoveryStatus:(id)status;
+- (void)_changeSelectedPasscodeTypeIndex:(int64_t)index;
+- (void)_close:(id)_close;
 - (void)_setup;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation LAPSPasscodeOptionsSheetViewController
 
-- (LAPSPasscodeOptionsSheetViewController)initWithConfiguration:(id)a3 style:(int64_t)a4
+- (LAPSPasscodeOptionsSheetViewController)initWithConfiguration:(id)configuration style:(int64_t)style
 {
-  v7 = a3;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = LAPSPasscodeOptionsSheetViewController;
   v8 = [(LAPSPasscodeOptionsSheetViewController *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_config, a3);
-    v9->_style = a4;
-    v10 = [(LAPSPasscodeOptionsViewControllerConfiguration *)v9->_config allowedPasscodeTypes];
+    objc_storeStrong(&v8->_config, configuration);
+    v9->_style = style;
+    allowedPasscodeTypes = [(LAPSPasscodeOptionsViewControllerConfiguration *)v9->_config allowedPasscodeTypes];
     allowedPasscodeTypes = v9->_allowedPasscodeTypes;
-    v9->_allowedPasscodeTypes = v10;
+    v9->_allowedPasscodeTypes = allowedPasscodeTypes;
 
     v12 = v9->_allowedPasscodeTypes;
-    v13 = [(LAPSPasscodeOptionsViewControllerConfiguration *)v9->_config selectedPasscodeType];
-    v9->_selectedPasscodeTypeIndex = [(NSOrderedSet *)v12 indexOfObject:v13];
+    selectedPasscodeType = [(LAPSPasscodeOptionsViewControllerConfiguration *)v9->_config selectedPasscodeType];
+    v9->_selectedPasscodeTypeIndex = [(NSOrderedSet *)v12 indexOfObject:selectedPasscodeType];
   }
 
   return v9;
@@ -69,10 +69,10 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 30;
   }
@@ -83,7 +83,7 @@
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (![(LAPSPasscodeOptionsViewControllerConfiguration *)self->_config isPasscodeRecoverySupported])
   {
@@ -98,9 +98,9 @@
   return 1;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 1;
   }
@@ -111,12 +111,12 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(LAPSPasscodeOptionsSheetViewController *)self _cellIdentifierForIndexPath:v7];
-  v9 = [v6 dequeueReusableCellWithIdentifier:v8];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(LAPSPasscodeOptionsSheetViewController *)self _cellIdentifierForIndexPath:pathCopy];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8];
   if (!v9)
   {
     v9 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:v8];
@@ -124,18 +124,18 @@
 
   [v9 setAccessoryType:0];
   [v9 setSelectionStyle:0];
-  if ([v7 section])
+  if ([pathCopy section])
   {
-    if ([v7 section] != 1)
+    if ([pathCopy section] != 1)
     {
       [LAPSPasscodeOptionsSheetViewController tableView:cellForRowAtIndexPath:];
     }
 
-    v10 = [v9 defaultContentConfiguration];
-    v11 = [(LAPSPasscodeOptionsViewControllerConfiguration *)self->_config passcodeRecoveryTitle];
-    [v10 setText:v11];
+    defaultContentConfiguration = [v9 defaultContentConfiguration];
+    passcodeRecoveryTitle = [(LAPSPasscodeOptionsViewControllerConfiguration *)self->_config passcodeRecoveryTitle];
+    [defaultContentConfiguration setText:passcodeRecoveryTitle];
 
-    [v9 setContentConfiguration:v10];
+    [v9 setContentConfiguration:defaultContentConfiguration];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __74__LAPSPasscodeOptionsSheetViewController_tableView_cellForRowAtIndexPath___block_invoke_2;
@@ -146,33 +146,33 @@
     goto LABEL_9;
   }
 
-  v13 = [v7 row];
+  v13 = [pathCopy row];
   if (v13 >= [(NSOrderedSet *)self->_allowedPasscodeTypes count])
   {
     [LAPSPasscodeOptionsSheetViewController tableView:cellForRowAtIndexPath:];
   }
 
-  v10 = [v9 defaultContentConfiguration];
-  v14 = [v10 textProperties];
-  v15 = [(LAPSPasscodeOptionsSheetViewController *)self _tableCellTextColor];
-  [v14 setColor:v15];
+  defaultContentConfiguration = [v9 defaultContentConfiguration];
+  textProperties = [defaultContentConfiguration textProperties];
+  _tableCellTextColor = [(LAPSPasscodeOptionsSheetViewController *)self _tableCellTextColor];
+  [textProperties setColor:_tableCellTextColor];
 
-  v16 = -[NSOrderedSet objectAtIndex:](self->_allowedPasscodeTypes, "objectAtIndex:", [v7 row]);
-  v17 = [v16 localizedName];
-  [v10 setText:v17];
+  v16 = -[NSOrderedSet objectAtIndex:](self->_allowedPasscodeTypes, "objectAtIndex:", [pathCopy row]);
+  localizedName = [v16 localizedName];
+  [defaultContentConfiguration setText:localizedName];
 
-  [v9 setContentConfiguration:v10];
-  if ([v7 row] == self->_selectedPasscodeTypeIndex)
+  [v9 setContentConfiguration:defaultContentConfiguration];
+  if ([pathCopy row] == self->_selectedPasscodeTypeIndex)
   {
     [v9 setSelected:1];
-    [v6 selectRowAtIndexPath:v7 animated:0 scrollPosition:0];
+    [viewCopy selectRowAtIndexPath:pathCopy animated:0 scrollPosition:0];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __74__LAPSPasscodeOptionsSheetViewController_tableView_cellForRowAtIndexPath___block_invoke;
     block[3] = &unk_278A65D40;
     block[4] = self;
-    v21 = v6;
-    v22 = v7;
+    v21 = viewCopy;
+    v22 = pathCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
     v12 = v21;
@@ -213,12 +213,12 @@ void __74__LAPSPasscodeOptionsSheetViewController_tableView_cellForRowAtIndexPat
   [WeakRetained _changePasscodeRecoveryStatus:v4];
 }
 
-- (id)_cellIdentifierForIndexPath:(id)a3
+- (id)_cellIdentifierForIndexPath:(id)path
 {
-  v3 = a3;
-  if ([v3 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    if ([v3 section] != 1)
+    if ([pathCopy section] != 1)
     {
       [LAPSPasscodeOptionsSheetViewController _cellIdentifierForIndexPath:];
     }
@@ -234,42 +234,42 @@ void __74__LAPSPasscodeOptionsSheetViewController_tableView_cellForRowAtIndexPat
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = a4;
-  if (![v6 section])
+  viewCopy = view;
+  pathCopy = path;
+  if (![pathCopy section])
   {
-    v7 = [v6 row];
+    v7 = [pathCopy row];
     if (v7 < [(NSOrderedSet *)self->_allowedPasscodeTypes count])
     {
-      -[LAPSPasscodeOptionsSheetViewController _changeSelectedPasscodeTypeIndex:](self, "_changeSelectedPasscodeTypeIndex:", [v6 row]);
-      v8 = [v9 cellForRowAtIndexPath:v6];
+      -[LAPSPasscodeOptionsSheetViewController _changeSelectedPasscodeTypeIndex:](self, "_changeSelectedPasscodeTypeIndex:", [pathCopy row]);
+      v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
       [v8 setAccessoryType:3];
     }
   }
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 section])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [v5 indexPathForSelectedRow];
-    if ([v8 isEqual:v6])
+    indexPathForSelectedRow = [viewCopy indexPathForSelectedRow];
+    if ([indexPathForSelectedRow isEqual:pathCopy])
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = v6;
+      v9 = pathCopy;
     }
 
     v7 = v9;
@@ -278,31 +278,31 @@ void __74__LAPSPasscodeOptionsSheetViewController_tableView_cellForRowAtIndexPat
   return v7;
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v9 = a3;
-  v5 = a4;
-  if (![v5 section])
+  viewCopy = view;
+  pathCopy = path;
+  if (![pathCopy section])
   {
-    v6 = [v9 indexPathForSelectedRow];
-    v7 = [v6 isEqual:v5];
+    indexPathForSelectedRow = [viewCopy indexPathForSelectedRow];
+    v7 = [indexPathForSelectedRow isEqual:pathCopy];
 
     if ((v7 & 1) == 0)
     {
-      v8 = [v9 cellForRowAtIndexPath:v5];
+      v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
       [v8 setAccessoryType:0];
     }
   }
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   v4 = objc_opt_new();
 
   return v4;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v4 = objc_opt_new();
 
@@ -312,41 +312,41 @@ void __74__LAPSPasscodeOptionsSheetViewController_tableView_cellForRowAtIndexPat
 - (void)_setup
 {
   v30[4] = *MEMORY[0x277D85DE8];
-  v3 = [(LAPSPasscodeOptionsSheetViewController *)self view];
-  v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(LAPSPasscodeOptionsSheetViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
   v5 = objc_alloc(MEMORY[0x277D75B40]);
-  v6 = [(LAPSPasscodeOptionsSheetViewController *)self _tableViewStyle];
-  v7 = [v5 initWithFrame:v6 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+  _tableViewStyle = [(LAPSPasscodeOptionsSheetViewController *)self _tableViewStyle];
+  v7 = [v5 initWithFrame:_tableViewStyle style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v7 setDataSource:self];
   [v7 setDelegate:self];
   [v7 setAllowsMultipleSelection:0];
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v7 setSectionHeaderTopPadding:0.0];
-  v8 = [(LAPSPasscodeOptionsSheetViewController *)self view];
-  [v8 addSubview:v7];
+  view2 = [(LAPSPasscodeOptionsSheetViewController *)self view];
+  [view2 addSubview:v7];
 
   v21 = MEMORY[0x277CCAAD0];
-  v27 = [v7 topAnchor];
-  v28 = [(LAPSPasscodeOptionsSheetViewController *)self view];
-  v26 = [v28 topAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  topAnchor = [v7 topAnchor];
+  view3 = [(LAPSPasscodeOptionsSheetViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v30[0] = v25;
-  v23 = [v7 bottomAnchor];
-  v24 = [(LAPSPasscodeOptionsSheetViewController *)self view];
-  v22 = [v24 bottomAnchor];
-  v20 = [v23 constraintEqualToAnchor:v22];
+  bottomAnchor = [v7 bottomAnchor];
+  view4 = [(LAPSPasscodeOptionsSheetViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v30[1] = v20;
-  v19 = [v7 leadingAnchor];
-  v9 = [(LAPSPasscodeOptionsSheetViewController *)self view];
-  v10 = [v9 leadingAnchor];
-  v11 = [v19 constraintEqualToAnchor:v10];
+  leadingAnchor = [v7 leadingAnchor];
+  view5 = [(LAPSPasscodeOptionsSheetViewController *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v30[2] = v11;
-  v12 = [v7 trailingAnchor];
-  v13 = [(LAPSPasscodeOptionsSheetViewController *)self view];
-  v14 = [v13 trailingAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  trailingAnchor = [v7 trailingAnchor];
+  view6 = [(LAPSPasscodeOptionsSheetViewController *)self view];
+  trailingAnchor2 = [view6 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v30[3] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:4];
   [v21 activateConstraints:v16];
@@ -469,16 +469,16 @@ void __48__LAPSPasscodeOptionsSheetViewController__setup__block_invoke_6(uint64_
   [WeakRetained _close:v4];
 }
 
-- (void)_close:(id)a3
+- (void)_close:(id)_close
 {
   [(LAPSPasscodeOptionsSheetViewController *)self dismissViewControllerAnimated:1 completion:&__block_literal_global_43];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained passcodeOptionsViewControllerWillDisappear:self];
 }
 
-- (void)_changePasscodeRecoveryStatus:(id)a3
+- (void)_changePasscodeRecoveryStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -486,21 +486,21 @@ void __48__LAPSPasscodeOptionsSheetViewController__setup__block_invoke_6(uint64_
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained passcodeOptionsViewController:self didSetPasscodeRecoveryEnabled:{objc_msgSend(v5, "isOn")}];
+  [WeakRetained passcodeOptionsViewController:self didSetPasscodeRecoveryEnabled:{objc_msgSend(statusCopy, "isOn")}];
 }
 
-- (void)_changeSelectedPasscodeTypeIndex:(int64_t)a3
+- (void)_changeSelectedPasscodeTypeIndex:(int64_t)index
 {
-  if (a3 < 0 || [(NSOrderedSet *)self->_allowedPasscodeTypes count]<= a3)
+  if (index < 0 || [(NSOrderedSet *)self->_allowedPasscodeTypes count]<= index)
   {
     [LAPSPasscodeOptionsSheetViewController _changeSelectedPasscodeTypeIndex:];
   }
 
-  if (self->_selectedPasscodeTypeIndex != a3)
+  if (self->_selectedPasscodeTypeIndex != index)
   {
-    self->_selectedPasscodeTypeIndex = a3;
+    self->_selectedPasscodeTypeIndex = index;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v6 = [(NSOrderedSet *)self->_allowedPasscodeTypes objectAtIndex:a3];
+    v6 = [(NSOrderedSet *)self->_allowedPasscodeTypes objectAtIndex:index];
     [WeakRetained passcodeOptionsViewController:self didSelectPasscodeType:v6];
 
     if ([(LAPSPasscodeOptionsSheetViewController *)self _tableRowShouldDismissOnSelection])

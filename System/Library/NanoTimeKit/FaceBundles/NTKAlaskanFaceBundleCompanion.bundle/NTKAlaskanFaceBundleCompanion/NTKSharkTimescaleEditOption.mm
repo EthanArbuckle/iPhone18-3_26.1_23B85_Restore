@@ -1,35 +1,35 @@
 @interface NTKSharkTimescaleEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 @end
 
 @implementation NTKSharkTimescaleEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 - 1 > 4)
+  if (value - 1 > 4)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_389B8 + a3 - 1);
+    return *(&off_389B8 + value - 1);
   }
 }
 
 - (id)localizedName
 {
-  v2 = [(NTKSharkTimescaleEditOption *)self timescale];
-  if (v2 - 1 > 4)
+  timescale = [(NTKSharkTimescaleEditOption *)self timescale];
+  if (timescale - 1 > 4)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = *(&off_389E0 + v2 - 1);
+    v3 = *(&off_389E0 + timescale - 1);
   }
 
   return [NTKAlaskanFaceBundle localizedStringForKey:v3 comment:&stru_395D8];

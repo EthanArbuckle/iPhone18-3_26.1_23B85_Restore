@@ -1,17 +1,17 @@
 @interface HNDGamePadDevice
 - (BOOL)_astGameControllerEnabled;
 - (HNDGamePadDevice)init;
-- (void)_controllerConnected:(id)a3;
-- (void)_controllerDidBecomeCurrent:(id)a3;
-- (void)_sendEventForButtonNumber:(unint64_t)a3 value:(BOOL)a4;
-- (void)_sendEventForCurrentDisplacement:(id)a3;
+- (void)_controllerConnected:(id)connected;
+- (void)_controllerDidBecomeCurrent:(id)current;
+- (void)_sendEventForButtonNumber:(unint64_t)number value:(BOOL)value;
+- (void)_sendEventForCurrentDisplacement:(id)displacement;
 - (void)_setupCurrentController;
 - (void)_toggleIgnoreInputs;
 - (void)dealloc;
-- (void)handleReportCallback:(int)a3 report:(char *)a4 reportLength:(int64_t)a5;
-- (void)handleValueCallback:(__IOHIDValue *)a3;
-- (void)setCurrentGameController:(id)a3;
-- (void)setCurrentlyTappingAndHolding:(BOOL)a3;
+- (void)handleReportCallback:(int)callback report:(char *)report reportLength:(int64_t)length;
+- (void)handleValueCallback:(__IOHIDValue *)callback;
+- (void)setCurrentGameController:(id)controller;
+- (void)setCurrentlyTappingAndHolding:(BOOL)holding;
 @end
 
 @implementation HNDGamePadDevice
@@ -79,10 +79,10 @@
 
     [v7 addObserver:v2 selector:"_controllerDidBecomeCurrent:" name:*v8 object:0];
 
-    v11 = [sub_1000692DC() current];
+    current = [sub_1000692DC() current];
     currentGameController = v2->_currentGameController;
-    v2->_currentGameController = v11;
-    v13 = v11;
+    v2->_currentGameController = current;
+    v13 = current;
 
     [(HNDGamePadDevice *)v2 _setupCurrentController];
     v14 = [CADisplayLink displayLinkWithTarget:v2 selector:"_sendEventForCurrentDisplacement:"];
@@ -99,14 +99,14 @@
   return v2;
 }
 
-- (void)setCurrentGameController:(id)a3
+- (void)setCurrentGameController:(id)controller
 {
-  objc_storeStrong(&self->_currentGameController, a3);
+  objc_storeStrong(&self->_currentGameController, controller);
 
   [(HNDGamePadDevice *)self _setupCurrentController];
 }
 
-- (void)_sendEventForCurrentDisplacement:(id)a3
+- (void)_sendEventForCurrentDisplacement:(id)displacement
 {
   [(HNDGamePadDevice *)self currentLeftXDisplacement];
   v5 = v4;
@@ -175,17 +175,17 @@
     [(HNDGamePadDevice *)self currentYDisplacement];
     [v25 setDeltaY:v23];
     [v25 setIsGamepadEvent:1];
-    v24 = [(HNDDevice *)self delegate];
-    [v24 device:self didPostEvent:v25];
+    delegate = [(HNDDevice *)self delegate];
+    [delegate device:self didPostEvent:v25];
   }
 }
 
-- (void)_sendEventForButtonNumber:(unint64_t)a3 value:(BOOL)a4
+- (void)_sendEventForButtonNumber:(unint64_t)number value:(BOOL)value
 {
-  v4 = a4;
+  valueCopy = value;
   if (![(HNDGamePadDevice *)self isIgnoringInputs])
   {
-    if (v4)
+    if (valueCopy)
     {
       v7 = 1;
     }
@@ -195,11 +195,11 @@
       v7 = 2;
     }
 
-    if (a3 == 4 && v4)
+    if (number == 4 && valueCopy)
     {
       [(HNDGamePadDevice *)self setCurrentlyTappingAndHolding:[(HNDGamePadDevice *)self isCurrentlyTappingAndHolding]^ 1];
       v11 = objc_opt_new();
-      a3 = 1;
+      number = 1;
       if ([(HNDGamePadDevice *)self isCurrentlyTappingAndHolding])
       {
         v8 = 1;
@@ -216,22 +216,22 @@
 
     else
     {
-      if (a3 == 4)
+      if (number == 4)
       {
         return;
       }
 
       v11 = objc_opt_new();
       [v11 setType:v7];
-      [v11 setButtonNumber:a3];
+      [v11 setButtonNumber:number];
     }
 
-    v9 = [(HNDDevice *)self actionOverrideForUsagePage:0 usage:a3];
+    v9 = [(HNDDevice *)self actionOverrideForUsagePage:0 usage:number];
     [v11 setActionOverride:v9];
 
     [v11 setIsGamepadEvent:1];
-    v10 = [(HNDDevice *)self delegate];
-    [v10 device:self didPostEvent:v11];
+    delegate = [(HNDDevice *)self delegate];
+    [delegate device:self didPostEvent:v11];
   }
 }
 
@@ -239,7 +239,7 @@
 {
   LOBYTE(location[0]) = 0;
   sub_1000692DC();
-  v3 = [(HNDGamePadDevice *)self currentGameController];
+  currentGameController = [(HNDGamePadDevice *)self currentGameController];
   v4 = __UIAccessibilityCastAsClass();
 
   objc_initWeak(location, self);
@@ -248,63 +248,63 @@
   v31[2] = sub_100069BC0;
   v31[3] = &unk_1001D5770;
   objc_copyWeak(&v32, location);
-  v5 = [v4 extendedGamepad];
-  v6 = [v5 buttonA];
-  [v6 setValueChangedHandler:v31];
+  extendedGamepad = [v4 extendedGamepad];
+  buttonA = [extendedGamepad buttonA];
+  [buttonA setValueChangedHandler:v31];
 
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_100069C14;
   v29[3] = &unk_1001D5770;
   objc_copyWeak(&v30, location);
-  v7 = [v4 extendedGamepad];
-  v8 = [v7 buttonB];
-  [v8 setValueChangedHandler:v29];
+  extendedGamepad2 = [v4 extendedGamepad];
+  buttonB = [extendedGamepad2 buttonB];
+  [buttonB setValueChangedHandler:v29];
 
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_100069C68;
   v27[3] = &unk_1001D5770;
   objc_copyWeak(&v28, location);
-  v9 = [v4 extendedGamepad];
-  v10 = [v9 buttonX];
-  [v10 setValueChangedHandler:v27];
+  extendedGamepad3 = [v4 extendedGamepad];
+  buttonX = [extendedGamepad3 buttonX];
+  [buttonX setValueChangedHandler:v27];
 
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100069CBC;
   v25[3] = &unk_1001D5770;
   objc_copyWeak(&v26, location);
-  v11 = [v4 extendedGamepad];
-  v12 = [v11 buttonY];
-  [v12 setValueChangedHandler:v25];
+  extendedGamepad4 = [v4 extendedGamepad];
+  buttonY = [extendedGamepad4 buttonY];
+  [buttonY setValueChangedHandler:v25];
 
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100069D10;
   v23[3] = &unk_1001D5798;
   objc_copyWeak(&v24, location);
-  v13 = [v4 extendedGamepad];
-  v14 = [v13 leftThumbstick];
-  [v14 setValueChangedHandler:v23];
+  extendedGamepad5 = [v4 extendedGamepad];
+  leftThumbstick = [extendedGamepad5 leftThumbstick];
+  [leftThumbstick setValueChangedHandler:v23];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100069D88;
   v21[3] = &unk_1001D5798;
   objc_copyWeak(&v22, location);
-  v15 = [v4 extendedGamepad];
-  v16 = [v15 rightThumbstick];
-  [v16 setValueChangedHandler:v21];
+  extendedGamepad6 = [v4 extendedGamepad];
+  rightThumbstick = [extendedGamepad6 rightThumbstick];
+  [rightThumbstick setValueChangedHandler:v21];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100069E00;
   v19[3] = &unk_1001D5770;
   objc_copyWeak(&v20, location);
-  v17 = [v4 extendedGamepad];
-  v18 = [v17 buttonMenu];
-  [v18 setValueChangedHandler:v19];
+  extendedGamepad7 = [v4 extendedGamepad];
+  buttonMenu = [extendedGamepad7 buttonMenu];
+  [buttonMenu setValueChangedHandler:v19];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&v22);
@@ -316,21 +316,21 @@
   objc_destroyWeak(location);
 }
 
-- (void)_controllerConnected:(id)a3
+- (void)_controllerConnected:(id)connected
 {
-  v4 = a3;
+  connectedCopy = connected;
   sub_1000692DC();
-  v5 = [v4 object];
+  object = [connectedCopy object];
   v6 = __UIAccessibilityCastAsClass();
 
   [(HNDGamePadDevice *)self setCurrentGameController:v6];
 }
 
-- (void)_controllerDidBecomeCurrent:(id)a3
+- (void)_controllerDidBecomeCurrent:(id)current
 {
-  v4 = a3;
+  currentCopy = current;
   sub_1000692DC();
-  v5 = [v4 object];
+  object = [currentCopy object];
   v6 = __UIAccessibilityCastAsClass();
 
   [(HNDGamePadDevice *)self setCurrentGameController:v6];
@@ -352,32 +352,32 @@
   return v3;
 }
 
-- (void)handleReportCallback:(int)a3 report:(char *)a4 reportLength:(int64_t)a5
+- (void)handleReportCallback:(int)callback report:(char *)report reportLength:(int64_t)length
 {
-  v7 = *&a3;
+  v7 = *&callback;
   if (![(HNDGamePadDevice *)self _astGameControllerEnabled])
   {
     v9.receiver = self;
     v9.super_class = HNDGamePadDevice;
-    [(HNDDevice *)&v9 handleReportCallback:v7 report:a4 reportLength:a5];
+    [(HNDDevice *)&v9 handleReportCallback:v7 report:report reportLength:length];
   }
 }
 
-- (void)handleValueCallback:(__IOHIDValue *)a3
+- (void)handleValueCallback:(__IOHIDValue *)callback
 {
   if (![(HNDGamePadDevice *)self _astGameControllerEnabled])
   {
     v5.receiver = self;
     v5.super_class = HNDGamePadDevice;
-    [(HNDDevice *)&v5 handleValueCallback:a3];
+    [(HNDDevice *)&v5 handleValueCallback:callback];
   }
 }
 
 - (void)_toggleIgnoreInputs
 {
-  v3 = [(HNDGamePadDevice *)self isIgnoringInputs];
-  [(HNDGamePadDevice *)self setIgnoringInputs:v3 ^ 1];
-  if (v3)
+  isIgnoringInputs = [(HNDGamePadDevice *)self isIgnoringInputs];
+  [(HNDGamePadDevice *)self setIgnoringInputs:isIgnoringInputs ^ 1];
+  if (isIgnoringInputs)
   {
     v4 = @"GAME_MODE_DISABLED";
   }
@@ -389,17 +389,17 @@
 
   v8 = sub_100042B24(v4);
   v5 = +[HNDHandManager sharedManager];
-  v6 = [v5 currentDisplayManager];
-  v7 = [v6 rocker];
-  [v7 showBannerWithText:v8];
+  currentDisplayManager = [v5 currentDisplayManager];
+  rocker = [currentDisplayManager rocker];
+  [rocker showBannerWithText:v8];
 }
 
-- (void)setCurrentlyTappingAndHolding:(BOOL)a3
+- (void)setCurrentlyTappingAndHolding:(BOOL)holding
 {
-  if (self->_currentlyTappingAndHolding != a3)
+  if (self->_currentlyTappingAndHolding != holding)
   {
-    self->_currentlyTappingAndHolding = a3;
-    if (a3)
+    self->_currentlyTappingAndHolding = holding;
+    if (holding)
     {
       v4 = @"TAP_AND_HOLD_ENABLED";
     }
@@ -411,9 +411,9 @@
 
     v8 = sub_100042B24(v4);
     v5 = +[HNDHandManager sharedManager];
-    v6 = [v5 currentDisplayManager];
-    v7 = [v6 rocker];
-    [v7 showBannerWithText:v8];
+    currentDisplayManager = [v5 currentDisplayManager];
+    rocker = [currentDisplayManager rocker];
+    [rocker showBannerWithText:v8];
   }
 }
 

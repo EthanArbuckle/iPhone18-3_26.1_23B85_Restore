@@ -1,39 +1,39 @@
 @interface PXRecipientSearchDataSourceManager
 - (PXRecipientSearchDataSourceManager)init;
 - (void)queryStringDidChange;
-- (void)setQueryString:(id)a3;
-- (void)setSearchState:(unint64_t)a3;
+- (void)setQueryString:(id)string;
+- (void)setSearchState:(unint64_t)state;
 @end
 
 @implementation PXRecipientSearchDataSourceManager
 
-- (void)setSearchState:(unint64_t)a3
+- (void)setSearchState:(unint64_t)state
 {
-  if (self->_searchState != a3)
+  if (self->_searchState != state)
   {
-    self->_searchState = a3;
+    self->_searchState = state;
     [(PXRecipientSearchDataSourceManager *)self signalChange:2];
   }
 }
 
 - (void)queryStringDidChange
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXRecipientSearchDataSourceManager.m" lineNumber:41 description:{@"Method %s is a responsibility of subclass %@", "-[PXRecipientSearchDataSourceManager queryStringDidChange]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXRecipientSearchDataSourceManager.m" lineNumber:41 description:{@"Method %s is a responsibility of subclass %@", "-[PXRecipientSearchDataSourceManager queryStringDidChange]", v6}];
 
   abort();
 }
 
-- (void)setQueryString:(id)a3
+- (void)setQueryString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_queryString != v4)
+  stringCopy = string;
+  v5 = stringCopy;
+  if (self->_queryString != stringCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = stringCopy;
+    v6 = [(NSString *)stringCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {

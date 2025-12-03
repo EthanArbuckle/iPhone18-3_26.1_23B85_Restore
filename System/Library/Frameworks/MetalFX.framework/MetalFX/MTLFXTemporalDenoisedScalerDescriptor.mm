@@ -1,14 +1,14 @@
 @interface MTLFXTemporalDenoisedScalerDescriptor
-+ (float)supportedInputContentMaxScaleForDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newTemporalDenoisedScalerWithDevice:(id)a3;
-- (id)newTemporalDenoisedScalerWithDevice:(id)a3 compiler:(id)a4;
-- (id)newTemporalDenoisedScalerWithHistoryTexture:(id)a3;
++ (float)supportedInputContentMaxScaleForDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newTemporalDenoisedScalerWithDevice:(id)device;
+- (id)newTemporalDenoisedScalerWithDevice:(id)device compiler:(id)compiler;
+- (id)newTemporalDenoisedScalerWithHistoryTexture:(id)texture;
 @end
 
 @implementation MTLFXTemporalDenoisedScalerDescriptor
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setVersion:{-[MTLFXTemporalDenoisedScalerDescriptor version](self, "version")}];
@@ -42,14 +42,14 @@
   return v4;
 }
 
-- (id)newTemporalDenoisedScalerWithHistoryTexture:(id)a3
+- (id)newTemporalDenoisedScalerWithHistoryTexture:(id)texture
 {
-  v4 = a3;
-  v5 = [v4 device];
-  if ([MTLFXTemporalDenoisedScalerDescriptor supportsDevice:v5])
+  textureCopy = texture;
+  device = [textureCopy device];
+  if ([MTLFXTemporalDenoisedScalerDescriptor supportsDevice:device])
   {
-    [v5 supportsFamily:1001];
-    v6 = [[_MFXTemporalDenoisingScalingEffect alloc] initWithDevice:v5 descriptor:self history:v4];
+    [device supportsFamily:1001];
+    v6 = [[_MFXTemporalDenoisingScalingEffect alloc] initWithDevice:device descriptor:self history:textureCopy];
   }
 
   else
@@ -60,13 +60,13 @@
   return v6;
 }
 
-- (id)newTemporalDenoisedScalerWithDevice:(id)a3
+- (id)newTemporalDenoisedScalerWithDevice:(id)device
 {
-  v4 = a3;
-  if ([MTLFXTemporalDenoisedScalerDescriptor supportsDevice:v4])
+  deviceCopy = device;
+  if ([MTLFXTemporalDenoisedScalerDescriptor supportsDevice:deviceCopy])
   {
     [(MTLFXTemporalDenoisedScalerDescriptor *)self version];
-    v5 = [[_MFXTemporalDenoisingScalingEffect alloc] initWithDevice:v4 descriptor:self history:0];
+    v5 = [[_MFXTemporalDenoisingScalingEffect alloc] initWithDevice:deviceCopy descriptor:self history:0];
   }
 
   else
@@ -77,9 +77,9 @@
   return v5;
 }
 
-+ (float)supportedInputContentMaxScaleForDevice:(id)a3
++ (float)supportedInputContentMaxScaleForDevice:(id)device
 {
-  v3 = [a3 supportsFamily:1001];
+  v3 = [device supportsFamily:1001];
   result = 2.0;
   if (v3)
   {
@@ -89,13 +89,13 @@
   return result;
 }
 
-- (id)newTemporalDenoisedScalerWithDevice:(id)a3 compiler:(id)a4
+- (id)newTemporalDenoisedScalerWithDevice:(id)device compiler:(id)compiler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([MTLFXTemporalDenoisedScalerDescriptor supportsMetal4FX:v6])
+  deviceCopy = device;
+  compilerCopy = compiler;
+  if ([MTLFXTemporalDenoisedScalerDescriptor supportsMetal4FX:deviceCopy])
   {
-    v8 = [[_M4FXTemporalDenoisingScalingEffect alloc] initWithDevice:v6 compiler:v7 descriptor:self history:0];
+    v8 = [[_M4FXTemporalDenoisingScalingEffect alloc] initWithDevice:deviceCopy compiler:compilerCopy descriptor:self history:0];
   }
 
   else

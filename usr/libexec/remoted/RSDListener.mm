@@ -1,24 +1,24 @@
 @interface RSDListener
-- (RSDListener)initWithInterface:(id)a3 targetQueue:(id)a4;
-- (int)listenOnBonjourName:(const char *)a3 type:(const char *)a4 domain:(const char *)a5 configureTLS:(id)a6 connectionHandler:(id)a7;
-- (int)listenOnPort:(unsigned __int16)a3 connectionHandler:(id)a4;
+- (RSDListener)initWithInterface:(id)interface targetQueue:(id)queue;
+- (int)listenOnBonjourName:(const char *)name type:(const char *)type domain:(const char *)domain configureTLS:(id)s connectionHandler:(id)handler;
+- (int)listenOnPort:(unsigned __int16)port connectionHandler:(id)handler;
 - (void)cancel;
 @end
 
 @implementation RSDListener
 
-- (RSDListener)initWithInterface:(id)a3 targetQueue:(id)a4
+- (RSDListener)initWithInterface:(id)interface targetQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  interfaceCopy = interface;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = RSDListener;
   v9 = [(RSDListener *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_interface, a3);
-    objc_storeStrong(&v10->queue, a4);
+    objc_storeStrong(&v9->_interface, interface);
+    objc_storeStrong(&v10->queue, queue);
     v10->canceled = 0;
     v11 = v10;
   }
@@ -26,20 +26,20 @@
   return v10;
 }
 
-- (int)listenOnPort:(unsigned __int16)a3 connectionHandler:(id)a4
+- (int)listenOnPort:(unsigned __int16)port connectionHandler:(id)handler
 {
-  v20 = a3;
-  v5 = a4;
+  portCopy = port;
+  handlerCopy = handler;
   if (self->listener_source)
   {
     sub_10003EF30(&v19, handle);
   }
 
   handle[0] = -1;
-  v6 = [(RSDListener *)self interface];
-  v7 = [v6 local_address];
-  v8 = [(RSDListener *)self interface];
-  v9 = sub_1000240DC(handle, v7, &v20, [v8 index], &unk_100049E6C);
+  interface = [(RSDListener *)self interface];
+  local_address = [interface local_address];
+  interface2 = [(RSDListener *)self interface];
+  v9 = sub_1000240DC(handle, local_address, &portCopy, [interface2 index], &unk_100049E6C);
 
   if (v9)
   {
@@ -61,7 +61,7 @@
     handler[1] = 3221225472;
     handler[2] = sub_10002A1F8;
     handler[3] = &unk_10005DBA0;
-    v17 = v5;
+    v17 = handlerCopy;
     v18 = handle[0];
     dispatch_source_set_event_handler(v13, handler);
     v14 = self->listener_source;
@@ -73,28 +73,28 @@
   return v9;
 }
 
-- (int)listenOnBonjourName:(const char *)a3 type:(const char *)a4 domain:(const char *)a5 configureTLS:(id)a6 connectionHandler:(id)a7
+- (int)listenOnBonjourName:(const char *)name type:(const char *)type domain:(const char *)domain configureTLS:(id)s connectionHandler:(id)handler
 {
-  v12 = a6;
-  handler = a7;
+  sCopy = s;
+  handler = handler;
   if (self->bonjour_listener)
   {
     sub_100040F50(&v49, buf);
   }
 
-  v13 = [(RSDListener *)self interface];
-  v14 = [v13 index];
-  v15 = v12;
+  interface = [(RSDListener *)self interface];
+  index = [interface index];
+  v15 = sCopy;
   secure_tcp = nw_parameters_create_secure_tcp(v15, _nw_parameters_configure_protocol_default_configuration);
-  if (!v14)
+  if (!index)
   {
     sub_100041110(&v49, buf);
   }
 
   v17 = secure_tcp;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
+  nameCopy = name;
+  typeCopy = type;
+  domainCopy = domain;
   v21 = nw_interface_create_with_index();
   if (v21)
   {
@@ -128,14 +128,14 @@
     }
 
     v38 = 6;
-    v35 = handler;
+    handlerCopy2 = handler;
     goto LABEL_18;
   }
 
   v24 = nw_parameters_copy_required_interface(v22);
   name = nw_interface_get_name(v24);
-  v26 = [(RSDListener *)self interface];
-  v27 = strncmp(name, [v26 name], 0x10uLL);
+  interface2 = [(RSDListener *)self interface];
+  v27 = strncmp(name, [interface2 name], 0x10uLL);
 
   if (!v27)
   {
@@ -149,10 +149,10 @@
       sub_100041094(&v49, buf);
     }
 
-    v31 = v20;
+    v31 = domainCopy;
 
-    v32 = v19;
-    v33 = nw_advertise_descriptor_create_bonjour_service(v18, v19, v31);
+    v32 = typeCopy;
+    v33 = nw_advertise_descriptor_create_bonjour_service(nameCopy, typeCopy, v31);
     if (!v33)
     {
       sub_100041018(&v49, buf);
@@ -162,7 +162,7 @@
 
     nw_advertise_descriptor_set_no_auto_rename(v34, 1);
     nw_listener_set_advertise_descriptor(self->bonjour_listener, v34);
-    v35 = handler;
+    handlerCopy2 = handler;
     nw_listener_set_new_connection_handler(self->bonjour_listener, handler);
     v36 = self->bonjour_listener;
     v42[0] = _NSConcreteStackBlock;
@@ -170,11 +170,11 @@
     v42[2] = sub_10002A68C;
     v42[3] = &unk_10005DBF0;
     v42[4] = self;
-    v45 = v18;
+    v45 = nameCopy;
     v46 = v32;
     v47 = v31;
     v43 = v15;
-    v44 = handler;
+    handlerCopy3 = handler;
     v48 = -1;
     nw_listener_set_state_changed_handler(v36, v42);
     nw_listener_set_advertised_endpoint_changed_handler(self->bonjour_listener, &stru_10005DC30);
@@ -194,8 +194,8 @@ LABEL_18:
   }
 
   os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR);
-  v40 = [(RSDListener *)self interface];
-  [v40 name];
+  interface3 = [(RSDListener *)self interface];
+  [interface3 name];
   _os_log_send_and_compose_impl();
 
   result = _os_crash_msg();

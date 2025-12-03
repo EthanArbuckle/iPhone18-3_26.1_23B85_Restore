@@ -1,20 +1,20 @@
 @interface EligibilitySupport
 - (BOOL)allowKTEnableByDefault;
 - (_TtC13transparencyd18EligibilitySupport)init;
-- (id)eligibilityContainerPathAndReturnError:(id *)a3;
-- (void)checkiCloudAnalyticsWithCompletionHandler:(id)a3;
+- (id)eligibilityContainerPathAndReturnError:(id *)error;
+- (void)checkiCloudAnalyticsWithCompletionHandler:(id)handler;
 @end
 
 @implementation EligibilitySupport
 
-- (id)eligibilityContainerPathAndReturnError:(id *)a3
+- (id)eligibilityContainerPathAndReturnError:(id *)error
 {
   v4 = type metadata accessor for URL();
   v5 = *(v4 - 8);
   v6 = *(v5 + 64);
   __chkstk_darwin(v4);
   v8 = &v14 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = self;
+  selfCopy = self;
   sub_100007DF8();
 
   URL._bridgeToObjectiveC()(v10);
@@ -24,13 +24,13 @@
   return v12;
 }
 
-- (void)checkiCloudAnalyticsWithCompletionHandler:(id)a3
+- (void)checkiCloudAnalyticsWithCompletionHandler:(id)handler
 {
   v5 = sub_100095820(&qword_100383170, &qword_1002D78E0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -46,7 +46,7 @@
   v13[3] = 0;
   v13[4] = &unk_1002D7FC8;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1000EAE9C(0, 0, v8, &unk_1002D7FD8, v13);
 }
 

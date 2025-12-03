@@ -1,18 +1,18 @@
 @interface PAEBlackHole
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEBlackHole)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEBlackHole)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAEBlackHole
 
-- (PAEBlackHole)initWithAPIManager:(id)a3
+- (PAEBlackHole)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEBlackHole;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -47,16 +47,16 @@
   v6 = !v5;
   if (!v5)
   {
-    v7 = [v4 versionAtCreation];
+    versionAtCreation = [v4 versionAtCreation];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     [v3 addPointParameterWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultX:@"BlackHole::Center" defaultY:0 parmFlags:{0), 1, 0, 0.5, 0.5}];
-    [v3 addFloatSliderWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultValue:@"BlackHole::Amount" parameterMin:0 parameterMax:0) sliderMin:2 sliderMax:0 delta:150.0 parmFlags:{0.0, dbl_260343CD0[v7 == 0], 0.0, dbl_260343CE0[v7 == 0], 1.0}];
+    [v3 addFloatSliderWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultValue:@"BlackHole::Amount" parameterMin:0 parameterMax:0) sliderMin:2 sliderMax:0 delta:150.0 parmFlags:{0.0, dbl_260343CD0[versionAtCreation == 0], 0.0, dbl_260343CE0[versionAtCreation == 0], 1.0}];
   }
 
   return v6;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (v9)
@@ -65,9 +65,9 @@
     __asm { FMOV            V0.2D, #0.5 }
 
     v49 = _Q0;
-    [v9 getXValue:&v49 YValue:&v49 + 8 fromParm:1 atFxTime:a5->var0.var1];
+    [v9 getXValue:&v49 YValue:&v49 + 8 fromParm:1 atFxTime:info->var0.var1];
     v48 = 150.0;
-    [v10 getFloatValue:&v48 fromParm:2 atFxTime:a5->var0.var1];
+    [v10 getFloatValue:&v48 fromParm:2 atFxTime:info->var0.var1];
     v16 = llround(log2(v48 * 0.125));
     if (v16 <= 1)
     {
@@ -79,16 +79,16 @@
       v17 = v16;
     }
 
-    v18 = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
-    [(PAESharedDefaultBase *)self getPixelTransformForImage:a4];
-    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a4];
-    [(PAESharedDefaultBase *)self convertRelativeToImageCoordinates:&v49 withImage:a4];
+    v18 = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
+    [(PAESharedDefaultBase *)self getPixelTransformForImage:input];
+    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:input];
+    [(PAESharedDefaultBase *)self convertRelativeToImageCoordinates:&v49 withImage:input];
     v49 = *v36;
-    if (v18 && [a4 imageType] == 3)
+    if (v18 && [input imageType] == 3)
     {
-      if (a4)
+      if (input)
       {
-        [a4 heliumRef];
+        [input heliumRef];
       }
 
       else
@@ -192,7 +192,7 @@
         HBlackHole::HBlackHole(v30);
       }
 
-      [a3 setHeliumRef:{&v35, *&v33}];
+      [output setHeliumRef:{&v35, *&v33}];
       if (v35)
       {
         (*(*v35 + 24))(v35);
@@ -232,15 +232,15 @@
   return v9;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

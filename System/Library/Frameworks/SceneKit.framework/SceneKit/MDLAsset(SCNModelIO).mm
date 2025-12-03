@@ -14,9 +14,9 @@
     return 0;
   }
 
-  v5 = [a3 rootNode];
+  rootNode = [a3 rootNode];
 
-  return [a1 assetWithSCNNode:v5];
+  return [self assetWithSCNNode:rootNode];
 }
 
 + (uint64_t)assetWithSCNScene:()SCNModelIO bufferAllocator:
@@ -26,16 +26,16 @@
     return 0;
   }
 
-  v7 = [a3 rootNode];
+  rootNode = [a3 rootNode];
 
-  return [a1 assetWithSCNNode:v7 bufferAllocator:a4];
+  return [self assetWithSCNNode:rootNode bufferAllocator:a4];
 }
 
 + (uint64_t)assetWithSCNNode:()SCNModelIO
 {
   if (a3)
   {
-    return [a1 assetWithSCNNode:a3 bufferAllocator:0];
+    return [self assetWithSCNNode:a3 bufferAllocator:0];
   }
 
   else
@@ -51,7 +51,7 @@
     return 0;
   }
 
-  v6 = [[a1 alloc] initWithBufferAllocator:a4];
+  v6 = [[self alloc] initWithBufferAllocator:a4];
   [v6 addObject:{objc_msgSend(MEMORY[0x277CD7B18], "objectWithSCNNode:bufferAllocator:", a3, a4)}];
 
   return v6;

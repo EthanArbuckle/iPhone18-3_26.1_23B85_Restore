@@ -1,29 +1,29 @@
 @interface MRNowPlayingState
 - (BOOL)containsArtwork;
-- (MRNowPlayingState)initWithData:(id)a3;
-- (MRNowPlayingState)initWithPlayerPath:(id)a3;
-- (MRNowPlayingState)initWithProtobuf:(id)a3;
+- (MRNowPlayingState)initWithData:(id)data;
+- (MRNowPlayingState)initWithPlayerPath:(id)path;
+- (MRNowPlayingState)initWithProtobuf:(id)protobuf;
 - (NSData)data;
 - (NSDictionary)nowPlayingInfo;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyWithoutArtwork;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)protobufWithEncoding:(int64_t)a3;
-- (void)setNowPlayingInfo:(id)a3;
+- (id)protobufWithEncoding:(int64_t)encoding;
+- (void)setNowPlayingInfo:(id)info;
 @end
 
 @implementation MRNowPlayingState
 
-- (MRNowPlayingState)initWithPlayerPath:(id)a3
+- (MRNowPlayingState)initWithPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = MRNowPlayingState;
   v5 = [(MRNowPlayingState *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     playerPath = v5->_playerPath;
     v5->_playerPath = v6;
   }
@@ -31,78 +31,78 @@
   return v5;
 }
 
-- (MRNowPlayingState)initWithProtobuf:(id)a3
+- (MRNowPlayingState)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v5 = [MRPlayerPath alloc];
-    v6 = [v4 playerPath];
-    v7 = [(MRPlayerPath *)v5 initWithProtobuf:v6];
+    playerPath = [protobufCopy playerPath];
+    v7 = [(MRPlayerPath *)v5 initWithProtobuf:playerPath];
 
     v8 = [(MRNowPlayingState *)self initWithPlayerPath:v7];
     if (v8)
     {
-      v9 = [v4 displayID];
-      v10 = [v9 copy];
+      displayID = [protobufCopy displayID];
+      v10 = [displayID copy];
       displayID = v8->_displayID;
       v8->_displayID = v10;
 
-      v12 = [v4 displayName];
-      v13 = [v12 copy];
+      displayName = [protobufCopy displayName];
+      v13 = [displayName copy];
       displayName = v8->_displayName;
       v8->_displayName = v13;
 
-      v15 = [v4 playbackQueueCapabilities];
-      v8->_playbackQueueCapabilities = _MRPlaybackQueueCapabilitiesFromProto(v15);
+      playbackQueueCapabilities = [protobufCopy playbackQueueCapabilities];
+      v8->_playbackQueueCapabilities = _MRPlaybackQueueCapabilitiesFromProto(playbackQueueCapabilities);
 
       v16 = [MRPlaybackQueue alloc];
-      v17 = [v4 playbackQueue];
-      v18 = [(MRPlaybackQueue *)v16 initWithProtobuf:v17];
+      playbackQueue = [protobufCopy playbackQueue];
+      v18 = [(MRPlaybackQueue *)v16 initWithProtobuf:playbackQueue];
       playbackQueue = v8->_playbackQueue;
       v8->_playbackQueue = v18;
 
       v20 = [MRPlaybackQueueRequest alloc];
-      v21 = [v4 request];
-      v22 = [(MRPlaybackQueueRequest *)v20 initWithProtobuf:v21];
+      request = [protobufCopy request];
+      v22 = [(MRPlaybackQueueRequest *)v20 initWithProtobuf:request];
       request = v8->_request;
       v8->_request = v22;
 
-      v24 = [v4 supportedCommands];
-      v25 = [v24 supportedCommands];
-      v26 = [v25 mr_map:&__block_literal_global_30];
+      supportedCommands = [protobufCopy supportedCommands];
+      v24SupportedCommands = [supportedCommands supportedCommands];
+      v26 = [v24SupportedCommands mr_map:&__block_literal_global_30];
       supportedCommands = v8->_supportedCommands;
       v8->_supportedCommands = v26;
 
-      v8->_hasPlaybackState = [v4 hasPlaybackState];
-      v28 = [v4 playbackState];
-      if (v28 - 1 >= 5)
+      v8->_hasPlaybackState = [protobufCopy hasPlaybackState];
+      playbackState = [protobufCopy playbackState];
+      if (playbackState - 1 >= 5)
       {
         v29 = 0;
       }
 
       else
       {
-        v29 = v28;
+        v29 = playbackState;
       }
 
       v8->_playbackState = v29;
-      v8->_hasPlaybackStateTimestamp = [v4 hasPlaybackStateTimestamp];
-      [v4 playbackStateTimestamp];
+      v8->_hasPlaybackStateTimestamp = [protobufCopy hasPlaybackStateTimestamp];
+      [protobufCopy playbackStateTimestamp];
       v8->_playbackStateTimestamp = v30;
     }
 
     self = v8;
 
-    v31 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v31 = 0;
+    selfCopy = 0;
   }
 
-  return v31;
+  return selfCopy;
 }
 
 MRCommandInfo *__38__MRNowPlayingState_initWithProtobuf___block_invoke(uint64_t a1, void *a2)
@@ -113,74 +113,74 @@ MRCommandInfo *__38__MRNowPlayingState_initWithProtobuf___block_invoke(uint64_t 
   return v3;
 }
 
-- (MRNowPlayingState)initWithData:(id)a3
+- (MRNowPlayingState)initWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[_MRSetStateMessageProtobuf alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[_MRSetStateMessageProtobuf alloc] initWithData:dataCopy];
 
     self = [(MRNowPlayingState *)self initWithProtobuf:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (id)protobufWithEncoding:(int64_t)a3
+- (id)protobufWithEncoding:(int64_t)encoding
 {
   v5 = objc_alloc_init(_MRSetStateMessageProtobuf);
-  v6 = [(MRNowPlayingState *)self displayID];
-  v7 = [v6 copy];
+  displayID = [(MRNowPlayingState *)self displayID];
+  v7 = [displayID copy];
   [(_MRSetStateMessageProtobuf *)v5 setDisplayID:v7];
 
-  v8 = [(MRNowPlayingState *)self displayName];
-  v9 = [v8 copy];
+  displayName = [(MRNowPlayingState *)self displayName];
+  v9 = [displayName copy];
   [(_MRSetStateMessageProtobuf *)v5 setDisplayName:v9];
 
   v10 = _MRPlaybackQueueCapabilitiesCreateProtobuf([(MRNowPlayingState *)self playbackQueueCapabilities]);
   [(_MRSetStateMessageProtobuf *)v5 setPlaybackQueueCapabilities:v10];
 
-  v11 = [(MRNowPlayingState *)self playbackQueue];
-  v12 = [v11 protobufWithEncoding:a3];
+  playbackQueue = [(MRNowPlayingState *)self playbackQueue];
+  v12 = [playbackQueue protobufWithEncoding:encoding];
   [(_MRSetStateMessageProtobuf *)v5 setPlaybackQueue:v12];
 
-  v13 = [(MRNowPlayingState *)self playerPath];
-  v14 = [v13 protobuf];
-  [(_MRSetStateMessageProtobuf *)v5 setPlayerPath:v14];
+  playerPath = [(MRNowPlayingState *)self playerPath];
+  protobuf = [playerPath protobuf];
+  [(_MRSetStateMessageProtobuf *)v5 setPlayerPath:protobuf];
 
-  v15 = [(MRNowPlayingState *)self request];
-  v16 = [v15 protobuf];
-  [(_MRSetStateMessageProtobuf *)v5 setRequest:v16];
+  request = [(MRNowPlayingState *)self request];
+  protobuf2 = [request protobuf];
+  [(_MRSetStateMessageProtobuf *)v5 setRequest:protobuf2];
 
-  v17 = [(MRNowPlayingState *)self supportedCommands];
-  v18 = [v17 count];
+  supportedCommands = [(MRNowPlayingState *)self supportedCommands];
+  v18 = [supportedCommands count];
 
   if (v18)
   {
     v19 = objc_alloc_init(_MRSupportedCommandsProtobuf);
-    v20 = [(MRNowPlayingState *)self supportedCommands];
-    v21 = [v20 mr_map:&__block_literal_global_8_0];
+    supportedCommands2 = [(MRNowPlayingState *)self supportedCommands];
+    v21 = [supportedCommands2 mr_map:&__block_literal_global_8_0];
     v22 = [v21 mutableCopy];
     [(_MRSupportedCommandsProtobuf *)v19 setSupportedCommands:v22];
 
     [(_MRSetStateMessageProtobuf *)v5 setSupportedCommands:v19];
   }
 
-  v23 = [(MRNowPlayingState *)self playbackState];
-  if (v23 - 1 >= 5)
+  playbackState = [(MRNowPlayingState *)self playbackState];
+  if (playbackState - 1 >= 5)
   {
     v24 = 0;
   }
 
   else
   {
-    v24 = v23;
+    v24 = playbackState;
   }
 
   [(_MRSetStateMessageProtobuf *)v5 setPlaybackState:v24];
@@ -195,9 +195,9 @@ MRCommandInfo *__38__MRNowPlayingState_initWithProtobuf___block_invoke(uint64_t 
 - (NSData)data
 {
   v2 = [(MRNowPlayingState *)self protobufWithEncoding:0];
-  v3 = [v2 data];
+  data = [v2 data];
 
-  return v3;
+  return data;
 }
 
 - (BOOL)containsArtwork
@@ -207,10 +207,10 @@ MRCommandInfo *__38__MRNowPlayingState_initWithProtobuf___block_invoke(uint64_t 
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [(MRNowPlayingState *)self playbackQueue];
-  v3 = [v2 contentItems];
+  playbackQueue = [(MRNowPlayingState *)self playbackQueue];
+  contentItems = [playbackQueue contentItems];
 
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v4 = [contentItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -221,12 +221,12 @@ MRCommandInfo *__38__MRNowPlayingState_initWithProtobuf___block_invoke(uint64_t 
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(contentItems);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 artwork];
-        if (v9)
+        artwork = [v8 artwork];
+        if (artwork)
         {
 
 LABEL_13:
@@ -234,8 +234,8 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v10 = [v8 artworks];
-        v11 = [v10 count];
+        artworks = [v8 artworks];
+        v11 = [artworks count];
 
         if (v11)
         {
@@ -243,7 +243,7 @@ LABEL_13:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [contentItems countByEnumeratingWithState:&v15 objects:v19 count:16];
       v12 = 0;
       if (v5)
       {
@@ -273,10 +273,10 @@ LABEL_14:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [v2 playbackQueue];
-  v4 = [v3 contentItems];
+  playbackQueue = [v2 playbackQueue];
+  contentItems = [playbackQueue contentItems];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [contentItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -287,7 +287,7 @@ LABEL_14:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(contentItems);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -297,7 +297,7 @@ LABEL_14:
         [v9 setAnimatedArtworks:0];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [contentItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -309,49 +309,49 @@ LABEL_14:
 
 - (NSDictionary)nowPlayingInfo
 {
-  v3 = [(MRNowPlayingState *)self playbackQueue];
-  v4 = [v3 hasLocation];
+  playbackQueue = [(MRNowPlayingState *)self playbackQueue];
+  hasLocation = [playbackQueue hasLocation];
 
-  if (v4)
+  if (hasLocation)
   {
-    v5 = [(MRNowPlayingState *)self playbackQueue];
-    v6 = [v5 nowPlayingInfo];
+    playbackQueue2 = [(MRNowPlayingState *)self playbackQueue];
+    nowPlayingInfo = [playbackQueue2 nowPlayingInfo];
   }
 
   else
   {
-    v6 = 0;
+    nowPlayingInfo = 0;
   }
 
-  return v6;
+  return nowPlayingInfo;
 }
 
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(MRNowPlayingState *)self nowPlayingInfo];
-  [v3 setObject:v4 forKeyedSubscript:@"nowPlayingInfo"];
+  nowPlayingInfo = [(MRNowPlayingState *)self nowPlayingInfo];
+  [v3 setObject:nowPlayingInfo forKeyedSubscript:@"nowPlayingInfo"];
 
-  v5 = [(MRNowPlayingState *)self supportedCommands];
-  v6 = [v5 mr_map:&__block_literal_global_12_0];
+  supportedCommands = [(MRNowPlayingState *)self supportedCommands];
+  v6 = [supportedCommands mr_map:&__block_literal_global_12_0];
   [v3 setObject:v6 forKeyedSubscript:@"supportedCommands"];
 
-  v7 = [(MRNowPlayingState *)self playbackQueue];
-  v8 = [v7 dictionaryRepresentation];
-  [v3 setObject:v8 forKeyedSubscript:@"playbackQueue"];
+  playbackQueue = [(MRNowPlayingState *)self playbackQueue];
+  dictionaryRepresentation = [playbackQueue dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"playbackQueue"];
 
-  v9 = [(MRNowPlayingState *)self displayID];
-  [v3 setObject:v9 forKeyedSubscript:@"displayID"];
+  displayID = [(MRNowPlayingState *)self displayID];
+  [v3 setObject:displayID forKeyedSubscript:@"displayID"];
 
-  v10 = [(MRNowPlayingState *)self displayName];
-  [v3 setObject:v10 forKeyedSubscript:@"displayName"];
+  displayName = [(MRNowPlayingState *)self displayName];
+  [v3 setObject:displayName forKeyedSubscript:@"displayName"];
 
-  v11 = [(MRNowPlayingState *)self playerPath];
-  v12 = [v11 description];
+  playerPath = [(MRNowPlayingState *)self playerPath];
+  v12 = [playerPath description];
   [v3 setObject:v12 forKeyedSubscript:@"playerPath"];
 
-  v13 = [(MRNowPlayingState *)self request];
-  v14 = [v13 description];
+  request = [(MRNowPlayingState *)self request];
+  v14 = [request description];
   [v3 setObject:v14 forKeyedSubscript:@"request"];
 
   v15 = [(MRNowPlayingState *)self playbackState]- 1;
@@ -382,10 +382,10 @@ LABEL_14:
   return v3;
 }
 
-- (void)setNowPlayingInfo:(id)a3
+- (void)setNowPlayingInfo:(id)info
 {
-  v4 = a3;
-  v6 = [[MRContentItem alloc] initWithNowPlayingInfo:v4];
+  infoCopy = info;
+  v6 = [[MRContentItem alloc] initWithNowPlayingInfo:infoCopy];
 
   v5 = [[MRPlaybackQueue alloc] initWithContentItem:v6];
   [(MRNowPlayingState *)self setPlaybackQueue:v5];
@@ -395,42 +395,42 @@ LABEL_14:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(MRNowPlayingState *)self dictionaryRepresentation];
-  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, v5];
+  dictionaryRepresentation = [(MRNowPlayingState *)self dictionaryRepresentation];
+  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, dictionaryRepresentation];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MRNowPlayingState *)self displayID];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  displayID = [(MRNowPlayingState *)self displayID];
+  v7 = [displayID copyWithZone:zone];
   [v5 setDisplayID:v7];
 
-  v8 = [(MRNowPlayingState *)self displayName];
-  v9 = [v8 copyWithZone:a3];
+  displayName = [(MRNowPlayingState *)self displayName];
+  v9 = [displayName copyWithZone:zone];
   [v5 setDisplayName:v9];
 
-  v10 = [(MRNowPlayingState *)self nowPlayingInfo];
-  v11 = [v10 copyWithZone:a3];
+  nowPlayingInfo = [(MRNowPlayingState *)self nowPlayingInfo];
+  v11 = [nowPlayingInfo copyWithZone:zone];
   [v5 setNowPlayingInfo:v11];
 
   [v5 setPlaybackQueueCapabilities:{-[MRNowPlayingState playbackQueueCapabilities](self, "playbackQueueCapabilities")}];
-  v12 = [(MRNowPlayingState *)self playbackQueue];
-  v13 = [v12 copyWithZone:a3];
+  playbackQueue = [(MRNowPlayingState *)self playbackQueue];
+  v13 = [playbackQueue copyWithZone:zone];
   [v5 setPlaybackQueue:v13];
 
-  v14 = [(MRNowPlayingState *)self playerPath];
-  v15 = [v14 copyWithZone:a3];
+  playerPath = [(MRNowPlayingState *)self playerPath];
+  v15 = [playerPath copyWithZone:zone];
   [v5 setPlayerPath:v15];
 
-  v16 = [(MRNowPlayingState *)self request];
-  v17 = [v16 copyWithZone:a3];
+  request = [(MRNowPlayingState *)self request];
+  v17 = [request copyWithZone:zone];
   [v5 setRequest:v17];
 
-  v18 = [(MRNowPlayingState *)self supportedCommands];
-  v19 = [v18 copyWithZone:a3];
+  supportedCommands = [(MRNowPlayingState *)self supportedCommands];
+  v19 = [supportedCommands copyWithZone:zone];
   [v5 setSupportedCommands:v19];
 
   [v5 setPlaybackState:{-[MRNowPlayingState playbackState](self, "playbackState")}];

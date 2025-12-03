@@ -1,12 +1,12 @@
 @interface CCPBDataReader
 - (BOOL)readBOOL;
-- (BOOL)seekToOffset:(unint64_t)a3;
-- (CCPBDataReader)initWithData:(id)a3;
+- (BOOL)seekToOffset:(unint64_t)offset;
+- (CCPBDataReader)initWithData:(id)data;
 - (char)readInt8;
 - (double)readDouble;
 - (float)readFloat;
 - (id)readBigEndianShortThenString;
-- (id)readBytes:(unsigned int)a3;
+- (id)readBytes:(unsigned int)bytes;
 - (id)readProtoBuffer;
 - (int)readInt32;
 - (int)readSfixed32;
@@ -19,23 +19,23 @@
 - (unint64_t)readUint64;
 - (unsigned)readFixed32;
 - (unsigned)readUint32;
-- (void)readTag:(unsigned __int16 *)a3 andType:(char *)a4;
-- (void)readTag:(unsigned int *)a3 type:(char *)a4;
-- (void)updateData:(id)a3;
+- (void)readTag:(unsigned __int16 *)tag andType:(char *)type;
+- (void)readTag:(unsigned int *)tag type:(char *)type;
+- (void)updateData:(id)data;
 @end
 
 @implementation CCPBDataReader
 
-- (CCPBDataReader)initWithData:(id)a3
+- (CCPBDataReader)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = CCPBDataReader;
   v6 = [(CCPBDataReader *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
     v7->_pos = 0;
     v7->_error = 0;
     v7->_length = [(NSData *)v7->_data length];
@@ -45,14 +45,14 @@
   return v7;
 }
 
-- (void)updateData:(id)a3
+- (void)updateData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   data = self->_data;
-  v7 = v5;
-  if (data != v5)
+  v7 = dataCopy;
+  if (data != dataCopy)
   {
-    objc_storeStrong(&self->_data, a3);
+    objc_storeStrong(&self->_data, data);
     data = self->_data;
   }
 
@@ -60,19 +60,19 @@
   self->_length = [(NSData *)self->_data length];
 }
 
-- (BOOL)seekToOffset:(unint64_t)a3
+- (BOOL)seekToOffset:(unint64_t)offset
 {
   length = self->_length;
-  if (length >= a3)
+  if (length >= offset)
   {
-    self->_pos = a3;
+    self->_pos = offset;
     self->_error = 0;
   }
 
-  return length >= a3;
+  return length >= offset;
 }
 
-- (void)readTag:(unsigned int *)a3 type:(char *)a4
+- (void)readTag:(unsigned int *)tag type:(char *)type
 {
   v4 = 0;
   v5 = 0;
@@ -111,11 +111,11 @@ LABEL_9:
   }
 
 LABEL_11:
-  *a4 = v6 & 7;
-  *a3 = v6 >> 3;
+  *type = v6 & 7;
+  *tag = v6 >> 3;
 }
 
-- (void)readTag:(unsigned __int16 *)a3 andType:(char *)a4
+- (void)readTag:(unsigned __int16 *)tag andType:(char *)type
 {
   v4 = 0;
   v5 = 0;
@@ -154,16 +154,16 @@ LABEL_9:
   }
 
 LABEL_11:
-  *a4 = v6 & 7;
-  *a3 = v6 >> 3;
+  *type = v6 & 7;
+  *tag = v6 >> 3;
 }
 
 - (id)readProtoBuffer
 {
-  v3 = [(CCPBDataReader *)self readBigEndianFixed32];
+  readBigEndianFixed32 = [(CCPBDataReader *)self readBigEndianFixed32];
   pos = self->_pos;
   length = self->_length;
-  if (pos + v3 <= length && (v6 = v3, length - pos >= v3))
+  if (pos + readBigEndianFixed32 <= length && (v6 = readBigEndianFixed32, length - pos >= readBigEndianFixed32))
   {
     v7 = [(NSData *)self->_data subdataWithRange:?];
     self->_pos += v6;
@@ -647,7 +647,7 @@ LABEL_9:
   return !v10;
 }
 
-- (id)readBytes:(unsigned int)a3
+- (id)readBytes:(unsigned int)bytes
 {
   if ([(CCPBDataReader *)self hasError])
   {
@@ -657,7 +657,7 @@ LABEL_9:
   else
   {
     pos = self->_pos;
-    if (__CFADD__(pos, a3) || pos + a3 > self->_length)
+    if (__CFADD__(pos, bytes) || pos + bytes > self->_length)
     {
       v5 = 0;
       self->_error = 1;
@@ -666,7 +666,7 @@ LABEL_9:
     else
     {
       v5 = [(NSData *)self->_data subdataWithRange:?];
-      self->_pos += a3;
+      self->_pos += bytes;
     }
   }
 
@@ -675,7 +675,7 @@ LABEL_9:
 
 - (id)readBigEndianShortThenString
 {
-  v3 = [(CCPBDataReader *)self readBigEndianFixed16];
+  readBigEndianFixed16 = [(CCPBDataReader *)self readBigEndianFixed16];
   if ([(CCPBDataReader *)self hasError])
   {
     v4 = 0;
@@ -684,8 +684,8 @@ LABEL_9:
   else
   {
     pos = self->_pos;
-    v6 = __CFADD__(pos, v3);
-    v7 = pos + v3;
+    v6 = __CFADD__(pos, readBigEndianFixed16);
+    v7 = pos + readBigEndianFixed16;
     if (v6 || v7 > self->_length)
     {
       v4 = 0;
@@ -694,9 +694,9 @@ LABEL_9:
 
     else
     {
-      v8 = [(NSData *)self->_data bytes];
-      v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:&v8[self->_pos] length:v3 encoding:4];
-      self->_pos += v3;
+      bytes = [(NSData *)self->_data bytes];
+      v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:&bytes[self->_pos] length:readBigEndianFixed16 encoding:4];
+      self->_pos += readBigEndianFixed16;
     }
   }
 

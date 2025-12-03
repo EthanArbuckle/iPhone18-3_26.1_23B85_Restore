@@ -1,28 +1,28 @@
 @interface LACCredentialExtractablePasswordAuthorizer
 - (LACCredentialExtractablePasswordAuthorizer)init;
-- (LACCredentialExtractablePasswordAuthorizer)initWithACMHelper:(id)a3;
-- (LACCredentialExtractablePasswordAuthorizer)initWithACMHelper:(id)a3 featureFlags:(id)a4 signPoster:(id)a5;
+- (LACCredentialExtractablePasswordAuthorizer)initWithACMHelper:(id)helper;
+- (LACCredentialExtractablePasswordAuthorizer)initWithACMHelper:(id)helper featureFlags:(id)flags signPoster:(id)poster;
 @end
 
 @implementation LACCredentialExtractablePasswordAuthorizer
 
-- (LACCredentialExtractablePasswordAuthorizer)initWithACMHelper:(id)a3
+- (LACCredentialExtractablePasswordAuthorizer)initWithACMHelper:(id)helper
 {
   v5 = objc_opt_self();
   swift_unknownObjectRetain();
-  v6 = [v5 sharedInstance];
-  v7 = [objc_opt_self() sharedInstance];
-  v8 = [(LACCredentialExtractablePasswordAuthorizer *)self initWithACMHelper:a3 featureFlags:v6 signPoster:v7];
+  sharedInstance = [v5 sharedInstance];
+  sharedInstance2 = [objc_opt_self() sharedInstance];
+  v8 = [(LACCredentialExtractablePasswordAuthorizer *)self initWithACMHelper:helper featureFlags:sharedInstance signPoster:sharedInstance2];
 
   swift_unknownObjectRelease();
   return v8;
 }
 
-- (LACCredentialExtractablePasswordAuthorizer)initWithACMHelper:(id)a3 featureFlags:(id)a4 signPoster:(id)a5
+- (LACCredentialExtractablePasswordAuthorizer)initWithACMHelper:(id)helper featureFlags:(id)flags signPoster:(id)poster
 {
-  *(&self->super.isa + OBJC_IVAR___LACCredentialExtractablePasswordAuthorizer_acmHelper) = a3;
-  *(&self->super.isa + OBJC_IVAR___LACCredentialExtractablePasswordAuthorizer_featureFlags) = a4;
-  *(&self->super.isa + OBJC_IVAR___LACCredentialExtractablePasswordAuthorizer_signPoster) = a5;
+  *(&self->super.isa + OBJC_IVAR___LACCredentialExtractablePasswordAuthorizer_acmHelper) = helper;
+  *(&self->super.isa + OBJC_IVAR___LACCredentialExtractablePasswordAuthorizer_featureFlags) = flags;
+  *(&self->super.isa + OBJC_IVAR___LACCredentialExtractablePasswordAuthorizer_signPoster) = poster;
   v6.receiver = self;
   v6.super_class = LACCredentialExtractablePasswordAuthorizer;
   swift_unknownObjectRetain();

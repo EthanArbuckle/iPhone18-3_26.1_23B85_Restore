@@ -9,109 +9,109 @@
 - (HDCodableVisionSample)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableVisionSample);
-  v113.receiver = a1;
+  v113.receiver = self;
   v113.super_class = &off_283D45840;
   v3 = objc_msgSendSuper2(&v113, sel_codableRepresentationForSync);
   [(HDCodableVisionSample *)v2 setSample:v3];
 
-  -[HDCodableVisionSample setPrescriptionType:](v2, "setPrescriptionType:", [a1 prescriptionType]);
-  v4 = [a1 leftSphere];
-  if (v4)
+  -[HDCodableVisionSample setPrescriptionType:](v2, "setPrescriptionType:", [self prescriptionType]);
+  leftSphere = [self leftSphere];
+  if (leftSphere)
   {
   }
 
   else
   {
-    v5 = [a1 rightSphere];
+    rightSphere = [self rightSphere];
 
-    if (!v5)
+    if (!rightSphere)
     {
       goto LABEL_56;
     }
   }
 
-  v6 = [a1 leftSphere];
+  leftSphere2 = [self leftSphere];
 
-  if (v6)
+  if (leftSphere2)
   {
-    v7 = [a1 leftSphere];
-    v8 = [MEMORY[0x277CCDAB0] diopterUnit];
-    [v7 doubleValueForUnit:v8];
+    leftSphere3 = [self leftSphere];
+    diopterUnit = [MEMORY[0x277CCDAB0] diopterUnit];
+    [leftSphere3 doubleValueForUnit:diopterUnit];
     [(HDCodableVisionSample *)v2 setLeftSphere:?];
   }
 
-  v9 = [a1 rightSphere];
+  rightSphere2 = [self rightSphere];
 
-  if (v9)
+  if (rightSphere2)
   {
-    v10 = [a1 rightSphere];
-    v11 = [MEMORY[0x277CCDAB0] diopterUnit];
-    [v10 doubleValueForUnit:v11];
+    rightSphere3 = [self rightSphere];
+    diopterUnit2 = [MEMORY[0x277CCDAB0] diopterUnit];
+    [rightSphere3 doubleValueForUnit:diopterUnit2];
     [(HDCodableVisionSample *)v2 setRightSphere:?];
   }
 
-  v12 = [a1 leftCylinder];
+  leftCylinder = [self leftCylinder];
 
-  if (v12)
+  if (leftCylinder)
   {
-    v13 = [a1 leftCylinder];
-    v14 = [MEMORY[0x277CCDAB0] diopterUnit];
-    [v13 doubleValueForUnit:v14];
+    leftCylinder2 = [self leftCylinder];
+    diopterUnit3 = [MEMORY[0x277CCDAB0] diopterUnit];
+    [leftCylinder2 doubleValueForUnit:diopterUnit3];
     [(HDCodableVisionSample *)v2 setLeftCylinder:?];
   }
 
-  v15 = [a1 rightCylinder];
+  rightCylinder = [self rightCylinder];
 
-  if (v15)
+  if (rightCylinder)
   {
-    v16 = [a1 rightCylinder];
-    v17 = [MEMORY[0x277CCDAB0] diopterUnit];
-    [v16 doubleValueForUnit:v17];
+    rightCylinder2 = [self rightCylinder];
+    diopterUnit4 = [MEMORY[0x277CCDAB0] diopterUnit];
+    [rightCylinder2 doubleValueForUnit:diopterUnit4];
     [(HDCodableVisionSample *)v2 setRightCylinder:?];
   }
 
-  v18 = [a1 leftAxis];
+  leftAxis = [self leftAxis];
 
-  if (v18)
+  if (leftAxis)
   {
-    v19 = [a1 leftAxis];
-    v20 = [MEMORY[0x277CCDAB0] radianAngleUnit];
-    [v19 doubleValueForUnit:v20];
+    leftAxis2 = [self leftAxis];
+    radianAngleUnit = [MEMORY[0x277CCDAB0] radianAngleUnit];
+    [leftAxis2 doubleValueForUnit:radianAngleUnit];
     [(HDCodableVisionSample *)v2 setLeftAxis:?];
   }
 
-  v21 = [a1 rightAxis];
+  rightAxis = [self rightAxis];
 
-  if (v21)
+  if (rightAxis)
   {
-    v22 = [a1 rightAxis];
-    v23 = [MEMORY[0x277CCDAB0] radianAngleUnit];
-    [v22 doubleValueForUnit:v23];
+    rightAxis2 = [self rightAxis];
+    radianAngleUnit2 = [MEMORY[0x277CCDAB0] radianAngleUnit];
+    [rightAxis2 doubleValueForUnit:radianAngleUnit2];
     [(HDCodableVisionSample *)v2 setRightAxis:?];
   }
 
-  v24 = [a1 leftAddPower];
+  leftAddPower = [self leftAddPower];
 
-  if (v24)
+  if (leftAddPower)
   {
-    v25 = [a1 leftAddPower];
-    v26 = [MEMORY[0x277CCDAB0] diopterUnit];
-    [v25 doubleValueForUnit:v26];
+    leftAddPower2 = [self leftAddPower];
+    diopterUnit5 = [MEMORY[0x277CCDAB0] diopterUnit];
+    [leftAddPower2 doubleValueForUnit:diopterUnit5];
     [(HDCodableVisionSample *)v2 setLeftAddPower:?];
   }
 
-  v27 = [a1 rightAddPower];
+  rightAddPower = [self rightAddPower];
 
-  if (v27)
+  if (rightAddPower)
   {
-    v28 = [a1 rightAddPower];
-    v29 = [MEMORY[0x277CCDAB0] diopterUnit];
-    [v28 doubleValueForUnit:v29];
+    rightAddPower2 = [self rightAddPower];
+    diopterUnit6 = [MEMORY[0x277CCDAB0] diopterUnit];
+    [rightAddPower2 doubleValueForUnit:diopterUnit6];
     [(HDCodableVisionSample *)v2 setRightAddPower:?];
   }
 
-  v30 = [(HDCodableVisionSample *)v2 prescriptionType];
-  if (v30 == 2)
+  prescriptionType = [(HDCodableVisionSample *)v2 prescriptionType];
+  if (prescriptionType == 2)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -119,201 +119,201 @@
       goto LABEL_56;
     }
 
-    v90 = a1;
-    v91 = [v90 leftEye];
-    v92 = [v91 baseCurve];
+    selfCopy = self;
+    leftEye = [selfCopy leftEye];
+    baseCurve = [leftEye baseCurve];
 
-    if (v92)
+    if (baseCurve)
     {
-      v93 = [v90 leftEye];
-      v94 = [v93 baseCurve];
-      v95 = [MEMORY[0x277CCDAB0] meterUnit];
-      [v94 doubleValueForUnit:v95];
+      leftEye2 = [selfCopy leftEye];
+      baseCurve2 = [leftEye2 baseCurve];
+      meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+      [baseCurve2 doubleValueForUnit:meterUnit];
       [(HDCodableVisionSample *)v2 setLeftBaseCurve:?];
     }
 
-    v96 = [v90 rightEye];
-    v97 = [v96 baseCurve];
+    rightEye = [selfCopy rightEye];
+    baseCurve3 = [rightEye baseCurve];
 
-    if (v97)
+    if (baseCurve3)
     {
-      v98 = [v90 rightEye];
-      v99 = [v98 baseCurve];
-      v100 = [MEMORY[0x277CCDAB0] meterUnit];
-      [v99 doubleValueForUnit:v100];
+      rightEye2 = [selfCopy rightEye];
+      baseCurve4 = [rightEye2 baseCurve];
+      meterUnit2 = [MEMORY[0x277CCDAB0] meterUnit];
+      [baseCurve4 doubleValueForUnit:meterUnit2];
       [(HDCodableVisionSample *)v2 setRightBaseCurve:?];
     }
 
-    v101 = [v90 leftEye];
-    v102 = [v101 diameter];
+    leftEye3 = [selfCopy leftEye];
+    diameter = [leftEye3 diameter];
 
-    if (v102)
+    if (diameter)
     {
-      v103 = [v90 leftEye];
-      v104 = [v103 diameter];
-      v105 = [MEMORY[0x277CCDAB0] meterUnit];
-      [v104 doubleValueForUnit:v105];
+      leftEye4 = [selfCopy leftEye];
+      diameter2 = [leftEye4 diameter];
+      meterUnit3 = [MEMORY[0x277CCDAB0] meterUnit];
+      [diameter2 doubleValueForUnit:meterUnit3];
       [(HDCodableVisionSample *)v2 setLeftContactDiameter:?];
     }
 
-    v106 = [v90 rightEye];
-    v107 = [v106 diameter];
+    rightEye3 = [selfCopy rightEye];
+    diameter3 = [rightEye3 diameter];
 
-    if (v107)
+    if (diameter3)
     {
-      v108 = [v90 rightEye];
-      v109 = [v108 diameter];
-      v110 = [MEMORY[0x277CCDAB0] meterUnit];
-      [v109 doubleValueForUnit:v110];
+      rightEye4 = [selfCopy rightEye];
+      diameter4 = [rightEye4 diameter];
+      meterUnit4 = [MEMORY[0x277CCDAB0] meterUnit];
+      [diameter4 doubleValueForUnit:meterUnit4];
       [(HDCodableVisionSample *)v2 setRightContactDiameter:?];
     }
 
-    v111 = [v90 brand];
+    brand = [selfCopy brand];
 
-    if (!v111)
+    if (!brand)
     {
       goto LABEL_55;
     }
 
-    v87 = [v90 brand];
-    [(HDCodableVisionSample *)v2 setBrand:v87];
+    brand2 = [selfCopy brand];
+    [(HDCodableVisionSample *)v2 setBrand:brand2];
     goto LABEL_54;
   }
 
-  if (v30 == 1)
+  if (prescriptionType == 1)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v31 = a1;
-      v32 = [v31 leftEye];
-      v33 = [v32 vertexDistance];
+      selfCopy2 = self;
+      leftEye5 = [selfCopy2 leftEye];
+      vertexDistance = [leftEye5 vertexDistance];
 
-      if (v33)
+      if (vertexDistance)
       {
-        v34 = [v31 leftEye];
-        v35 = [v34 vertexDistance];
-        v36 = [MEMORY[0x277CCDAB0] meterUnit];
-        [v35 doubleValueForUnit:v36];
+        leftEye6 = [selfCopy2 leftEye];
+        vertexDistance2 = [leftEye6 vertexDistance];
+        meterUnit5 = [MEMORY[0x277CCDAB0] meterUnit];
+        [vertexDistance2 doubleValueForUnit:meterUnit5];
         [(HDCodableVisionSample *)v2 setLeftVertexDistance:?];
       }
 
-      v37 = [v31 rightEye];
-      v38 = [v37 vertexDistance];
+      rightEye5 = [selfCopy2 rightEye];
+      vertexDistance3 = [rightEye5 vertexDistance];
 
-      if (v38)
+      if (vertexDistance3)
       {
-        v39 = [v31 rightEye];
-        v40 = [v39 vertexDistance];
-        v41 = [MEMORY[0x277CCDAB0] meterUnit];
-        [v40 doubleValueForUnit:v41];
+        rightEye6 = [selfCopy2 rightEye];
+        vertexDistance4 = [rightEye6 vertexDistance];
+        meterUnit6 = [MEMORY[0x277CCDAB0] meterUnit];
+        [vertexDistance4 doubleValueForUnit:meterUnit6];
         [(HDCodableVisionSample *)v2 setRightVertexDistance:?];
       }
 
-      v42 = [v31 leftEye];
-      v43 = [v42 prism];
-      v44 = [v43 amount];
+      leftEye7 = [selfCopy2 leftEye];
+      prism = [leftEye7 prism];
+      amount = [prism amount];
 
-      if (v44)
+      if (amount)
       {
-        v45 = [v31 leftEye];
-        v46 = [v45 prism];
-        v47 = [v46 amount];
-        v48 = [MEMORY[0x277CCDAB0] prismDiopterUnit];
-        [v47 doubleValueForUnit:v48];
+        leftEye8 = [selfCopy2 leftEye];
+        prism2 = [leftEye8 prism];
+        amount2 = [prism2 amount];
+        prismDiopterUnit = [MEMORY[0x277CCDAB0] prismDiopterUnit];
+        [amount2 doubleValueForUnit:prismDiopterUnit];
         [(HDCodableVisionSample *)v2 setLeftPrismAmount:?];
       }
 
-      v49 = [v31 rightEye];
-      v50 = [v49 prism];
-      v51 = [v50 amount];
+      rightEye7 = [selfCopy2 rightEye];
+      prism3 = [rightEye7 prism];
+      amount3 = [prism3 amount];
 
-      if (v51)
+      if (amount3)
       {
-        v52 = [v31 rightEye];
-        v53 = [v52 prism];
-        v54 = [v53 amount];
-        v55 = [MEMORY[0x277CCDAB0] prismDiopterUnit];
-        [v54 doubleValueForUnit:v55];
+        rightEye8 = [selfCopy2 rightEye];
+        prism4 = [rightEye8 prism];
+        amount4 = [prism4 amount];
+        prismDiopterUnit2 = [MEMORY[0x277CCDAB0] prismDiopterUnit];
+        [amount4 doubleValueForUnit:prismDiopterUnit2];
         [(HDCodableVisionSample *)v2 setRightPrismAmount:?];
       }
 
-      v56 = [v31 leftEye];
-      v57 = [v56 prism];
-      v58 = [v57 angle];
+      leftEye9 = [selfCopy2 leftEye];
+      prism5 = [leftEye9 prism];
+      angle = [prism5 angle];
 
-      if (v58)
+      if (angle)
       {
-        v59 = [v31 leftEye];
-        v60 = [v59 prism];
-        v61 = [v60 angle];
-        v62 = [MEMORY[0x277CCDAB0] radianAngleUnit];
-        [v61 doubleValueForUnit:v62];
+        leftEye10 = [selfCopy2 leftEye];
+        prism6 = [leftEye10 prism];
+        angle2 = [prism6 angle];
+        radianAngleUnit3 = [MEMORY[0x277CCDAB0] radianAngleUnit];
+        [angle2 doubleValueForUnit:radianAngleUnit3];
         [(HDCodableVisionSample *)v2 setLeftPrismAngle:?];
       }
 
-      v63 = [v31 rightEye];
-      v64 = [v63 prism];
-      v65 = [v64 angle];
+      rightEye9 = [selfCopy2 rightEye];
+      prism7 = [rightEye9 prism];
+      angle3 = [prism7 angle];
 
-      if (v65)
+      if (angle3)
       {
-        v66 = [v31 rightEye];
-        v67 = [v66 prism];
-        v68 = [v67 angle];
-        v69 = [MEMORY[0x277CCDAB0] radianAngleUnit];
-        [v68 doubleValueForUnit:v69];
+        rightEye10 = [selfCopy2 rightEye];
+        prism8 = [rightEye10 prism];
+        angle4 = [prism8 angle];
+        radianAngleUnit4 = [MEMORY[0x277CCDAB0] radianAngleUnit];
+        [angle4 doubleValueForUnit:radianAngleUnit4];
         [(HDCodableVisionSample *)v2 setRightPrismAngle:?];
       }
 
-      v70 = [v31 leftEye];
-      v71 = [v70 farPupillaryDistance];
+      leftEye11 = [selfCopy2 leftEye];
+      farPupillaryDistance = [leftEye11 farPupillaryDistance];
 
-      if (v71)
+      if (farPupillaryDistance)
       {
-        v72 = [v31 leftEye];
-        v73 = [v72 farPupillaryDistance];
-        v74 = [MEMORY[0x277CCDAB0] meterUnit];
-        [v73 doubleValueForUnit:v74];
+        leftEye12 = [selfCopy2 leftEye];
+        farPupillaryDistance2 = [leftEye12 farPupillaryDistance];
+        meterUnit7 = [MEMORY[0x277CCDAB0] meterUnit];
+        [farPupillaryDistance2 doubleValueForUnit:meterUnit7];
         [(HDCodableVisionSample *)v2 setLeftFarPupillaryDistance:?];
       }
 
-      v75 = [v31 rightEye];
-      v76 = [v75 farPupillaryDistance];
+      rightEye11 = [selfCopy2 rightEye];
+      farPupillaryDistance3 = [rightEye11 farPupillaryDistance];
 
-      if (v76)
+      if (farPupillaryDistance3)
       {
-        v77 = [v31 rightEye];
-        v78 = [v77 farPupillaryDistance];
-        v79 = [MEMORY[0x277CCDAB0] meterUnit];
-        [v78 doubleValueForUnit:v79];
+        rightEye12 = [selfCopy2 rightEye];
+        farPupillaryDistance4 = [rightEye12 farPupillaryDistance];
+        meterUnit8 = [MEMORY[0x277CCDAB0] meterUnit];
+        [farPupillaryDistance4 doubleValueForUnit:meterUnit8];
         [(HDCodableVisionSample *)v2 setRightFarPupillaryDistance:?];
       }
 
-      v80 = [v31 leftEye];
-      v81 = [v80 nearPupillaryDistance];
+      leftEye13 = [selfCopy2 leftEye];
+      nearPupillaryDistance = [leftEye13 nearPupillaryDistance];
 
-      if (v81)
+      if (nearPupillaryDistance)
       {
-        v82 = [v31 leftEye];
-        v83 = [v82 nearPupillaryDistance];
-        v84 = [MEMORY[0x277CCDAB0] meterUnit];
-        [v83 doubleValueForUnit:v84];
+        leftEye14 = [selfCopy2 leftEye];
+        nearPupillaryDistance2 = [leftEye14 nearPupillaryDistance];
+        meterUnit9 = [MEMORY[0x277CCDAB0] meterUnit];
+        [nearPupillaryDistance2 doubleValueForUnit:meterUnit9];
         [(HDCodableVisionSample *)v2 setLeftNearPupillaryDistance:?];
       }
 
-      v85 = [v31 rightEye];
-      v86 = [v85 nearPupillaryDistance];
+      rightEye13 = [selfCopy2 rightEye];
+      nearPupillaryDistance3 = [rightEye13 nearPupillaryDistance];
 
-      if (!v86)
+      if (!nearPupillaryDistance3)
       {
         goto LABEL_55;
       }
 
-      v87 = [v31 rightEye];
-      v88 = [v87 nearPupillaryDistance];
-      v89 = [MEMORY[0x277CCDAB0] meterUnit];
-      [v88 doubleValueForUnit:v89];
+      brand2 = [selfCopy2 rightEye];
+      nearPupillaryDistance4 = [brand2 nearPupillaryDistance];
+      meterUnit10 = [MEMORY[0x277CCDAB0] meterUnit];
+      [nearPupillaryDistance4 doubleValueForUnit:meterUnit10];
       [(HDCodableVisionSample *)v2 setRightNearPupillaryDistance:?];
 
 LABEL_54:
@@ -329,13 +329,13 @@ LABEL_56:
 - (BOOL)addCodableRepresentationToCollection:()HDCodingSupport
 {
   v4 = a3;
-  v5 = [a1 codableRepresentationForSync];
-  if (v5)
+  codableRepresentationForSync = [self codableRepresentationForSync];
+  if (codableRepresentationForSync)
   {
-    [v4 addVisionSamples:v5];
+    [v4 addVisionSamples:codableRepresentationForSync];
   }
 
-  return v5 != 0;
+  return codableRepresentationForSync != 0;
 }
 
 + (id)createWithCodable:()HDCodingSupport
@@ -353,10 +353,10 @@ LABEL_56:
   v9 = v8;
   if (([v6 hasLeftSphere] & 1) == 0 && (objc_msgSend(v6, "hasRightSphere") & 1) == 0)
   {
-    v11 = a1;
+    selfCopy = self;
 LABEL_11:
-    v12 = [[v11 alloc] _init];
-    if ([v6 applyToObject:v12])
+    _init = [[selfCopy alloc] _init];
+    if ([v6 applyToObject:_init])
     {
       goto LABEL_12;
     }
@@ -364,14 +364,14 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  v10 = [v6 prescriptionType];
-  if (v10 == 2)
+  prescriptionType = [v6 prescriptionType];
+  if (prescriptionType == 2)
   {
-    v12 = [objc_alloc(MEMORY[0x277CCD218]) _init];
-    if ([v6 applyToObject:v12])
+    _init = [objc_alloc(MEMORY[0x277CCD218]) _init];
+    if ([v6 applyToObject:_init])
     {
 LABEL_12:
-      v13 = [v12 _validateWithConfiguration:{v7, v9}];
+      v13 = [_init _validateWithConfiguration:{v7, v9}];
       if (v13)
       {
         v14 = 0;
@@ -379,7 +379,7 @@ LABEL_12:
 
       else
       {
-        v14 = v12;
+        v14 = _init;
       }
 
       v3 = v14;
@@ -394,9 +394,9 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (v10 == 1)
+  if (prescriptionType == 1)
   {
-    v11 = MEMORY[0x277CCD488];
+    selfCopy = MEMORY[0x277CCD488];
     goto LABEL_11;
   }
 

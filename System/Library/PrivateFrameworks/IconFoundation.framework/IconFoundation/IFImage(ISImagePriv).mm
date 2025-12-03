@@ -27,13 +27,13 @@
     v9 = v8;
     [(IFImage *)self scale];
     v11 = [IFGraphicsContext bitmapContextWithSize:v4 scale:v7 preset:v9, v10];
-    v12 = [(IFImage *)self CGImage];
+    cGImage = [(IFImage *)self CGImage];
     [(IFImage *)self size];
     v14 = v13;
     [(IFImage *)self size];
-    [v11 drawCGImage:v12 inRect:{0.0, 0.0, v14, v15}];
-    v16 = [v11 data];
-    if (!v16)
+    [v11 drawCGImage:cGImage inRect:{0.0, 0.0, v14, v15}];
+    data = [v11 data];
+    if (!data)
     {
       v17 = IFDefaultLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -43,9 +43,9 @@
     }
 
     LODWORD(v35) = 9;
-    HIDWORD(v35) = [v16 length];
-    v18 = [(IFImage *)self layerData];
-    v36 = [v18 length];
+    HIDWORD(v35) = [data length];
+    layerData = [(IFImage *)self layerData];
+    v36 = [layerData length];
 
     [(IFImage *)self scale];
     v37 = v19;
@@ -73,9 +73,9 @@
     v45 = v29;
     v30 = objc_opt_new();
     [v30 appendBytes:&v35 length:48];
-    [v30 appendData:v16];
-    v31 = [(IFImage *)self layerData];
-    [v30 appendData:v31];
+    [v30 appendData:data];
+    layerData2 = [(IFImage *)self layerData];
+    [v30 appendData:layerData2];
 
     v32 = [v30 copy];
     v33 = self->_data;
@@ -91,7 +91,7 @@
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B9DEC000, a2, OS_LOG_TYPE_ERROR, "Failed getting bitmap data for %@", &v2, 0xCu);
 }
 

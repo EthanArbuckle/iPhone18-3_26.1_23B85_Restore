@@ -1,13 +1,13 @@
 @interface SHServiceStateHandlerUtilities
-+ (void)registerBundleAttributionForAuditToken:(id *)a3;
++ (void)registerBundleAttributionForAuditToken:(id *)token;
 @end
 
 @implementation SHServiceStateHandlerUtilities
 
-+ (void)registerBundleAttributionForAuditToken:(id *)a3
++ (void)registerBundleAttributionForAuditToken:(id *)token
 {
-  v3 = *&a3->var0[4];
-  v4[0] = *a3->var0;
+  v3 = *&token->var0[4];
+  v4[0] = *token->var0;
   v4[1] = v3;
   [STDynamicActivityAttributionPublisher setCurrentAttributionStringWithFormat:@"%@" auditToken:v4];
 }

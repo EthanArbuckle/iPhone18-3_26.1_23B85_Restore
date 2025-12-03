@@ -1,6 +1,6 @@
 @interface IMBJITAppKitData
 - (NSDictionary)dictionaryValue;
-- (void)setDictionaryValue:(id)a3;
+- (void)setDictionaryValue:(id)value;
 @end
 
 @implementation IMBJITAppKitData
@@ -14,7 +14,7 @@
   return v3.super.isa;
 }
 
-- (void)setDictionaryValue:(id)a3
+- (void)setDictionaryValue:(id)value
 {
   v4 = sub_1000ABFBC();
   v5 = *(self + 2);

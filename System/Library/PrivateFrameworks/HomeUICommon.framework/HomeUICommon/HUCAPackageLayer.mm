@@ -1,9 +1,9 @@
 @interface HUCAPackageLayer
 + (id)_allTags;
-+ (id)_tagsForName:(id)a3;
-- (HUCAPackageLayer)initWithName:(id)a3 layer:(id)a4;
-- (void)_applyPrimaryColorWithModifiers:(id)a3;
-- (void)applyModifiers:(id)a3;
++ (id)_tagsForName:(id)name;
+- (HUCAPackageLayer)initWithName:(id)name layer:(id)layer;
+- (void)_applyPrimaryColorWithModifiers:(id)modifiers;
+- (void)applyModifiers:(id)modifiers;
 @end
 
 @implementation HUCAPackageLayer
@@ -34,19 +34,19 @@ void __28__HUCAPackageLayer__allTags__block_invoke_2()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_tagsForName:(id)a3
++ (id)_tagsForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_opt_new();
-  v6 = [v4 componentsSeparatedByString:@"_"];
+  v6 = [nameCopy componentsSeparatedByString:@"_"];
   if ([v6 count] >= 2)
   {
     v7 = 1;
     do
     {
       v8 = [v6 objectAtIndexedSubscript:v7];
-      v9 = [a1 _allTags];
-      v10 = [v9 containsObject:v8];
+      _allTags = [self _allTags];
+      v10 = [_allTags containsObject:v8];
 
       if (v10)
       {
@@ -62,19 +62,19 @@ void __28__HUCAPackageLayer__allTags__block_invoke_2()
   return v5;
 }
 
-- (HUCAPackageLayer)initWithName:(id)a3 layer:(id)a4
+- (HUCAPackageLayer)initWithName:(id)name layer:(id)layer
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  layerCopy = layer;
   v14.receiver = self;
   v14.super_class = HUCAPackageLayer;
   v9 = [(HUCAPackageLayer *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_layer, a4);
-    v11 = [objc_opt_class() _tagsForName:v7];
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_layer, layer);
+    v11 = [objc_opt_class() _tagsForName:nameCopy];
     tags = v10->_tags;
     v10->_tags = v11;
   }
@@ -82,27 +82,27 @@ void __28__HUCAPackageLayer__allTags__block_invoke_2()
   return v10;
 }
 
-- (void)applyModifiers:(id)a3
+- (void)applyModifiers:(id)modifiers
 {
-  v6 = a3;
-  v4 = [(HUCAPackageLayer *)self tags];
-  v5 = [v4 containsObject:@"color"];
+  modifiersCopy = modifiers;
+  tags = [(HUCAPackageLayer *)self tags];
+  v5 = [tags containsObject:@"color"];
 
   if (v5)
   {
-    [(HUCAPackageLayer *)self _applyPrimaryColorWithModifiers:v6];
+    [(HUCAPackageLayer *)self _applyPrimaryColorWithModifiers:modifiersCopy];
   }
 }
 
-- (void)_applyPrimaryColorWithModifiers:(id)a3
+- (void)_applyPrimaryColorWithModifiers:(id)modifiers
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modifiersCopy = modifiers;
   objc_opt_class();
-  v5 = [(HUCAPackageLayer *)self layer];
+  layer = [(HUCAPackageLayer *)self layer];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = layer;
   }
 
   else
@@ -117,21 +117,21 @@ void __28__HUCAPackageLayer__allTags__block_invoke_2()
     v8 = HFLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v22 = [(HUCAPackageLayer *)self name];
-      v23 = [(HUCAPackageLayer *)self layer];
+      name = [(HUCAPackageLayer *)self name];
+      layer2 = [(HUCAPackageLayer *)self layer];
       v24 = objc_opt_class();
       v25 = NSStringFromClass(v24);
       v26 = 138412546;
-      v27 = v22;
+      v27 = name;
       v28 = 2112;
       v29 = v25;
       _os_log_error_impl(&dword_254573000, v8, OS_LOG_TYPE_ERROR, "Package layer (%@) of type '%@' requested to modify primary color but isn't a valid CAShapeLayer", &v26, 0x16u);
     }
   }
 
-  v9 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13A10]];
-  v10 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13A18]];
-  v11 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13A08]];
+  v9 = [modifiersCopy objectForKeyedSubscript:*MEMORY[0x277D13A10]];
+  v10 = [modifiersCopy objectForKeyedSubscript:*MEMORY[0x277D13A18]];
+  v11 = [modifiersCopy objectForKeyedSubscript:*MEMORY[0x277D13A08]];
 
   if (v9)
   {

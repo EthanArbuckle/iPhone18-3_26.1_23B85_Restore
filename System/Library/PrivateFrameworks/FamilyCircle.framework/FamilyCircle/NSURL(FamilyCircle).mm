@@ -8,9 +8,9 @@
 - (id)fa_URLByAddingQueryParams:()FamilyCircle
 {
   v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:a1 resolvingAgainstBaseURL:0];
-  v6 = [v5 queryItems];
-  v7 = [v6 mutableCopy];
+  v5 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:self resolvingAgainstBaseURL:0];
+  queryItems = [v5 queryItems];
+  v7 = [queryItems mutableCopy];
   v8 = v7;
   if (v7)
   {
@@ -43,7 +43,7 @@
   v6 = @"familyInviteSource";
   v7[0] = @"airdrop";
   v2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
-  v3 = [a1 fa_URLByAddingQueryParams:v2];
+  v3 = [self fa_URLByAddingQueryParams:v2];
 
   v4 = *MEMORY[0x1E69E9840];
 

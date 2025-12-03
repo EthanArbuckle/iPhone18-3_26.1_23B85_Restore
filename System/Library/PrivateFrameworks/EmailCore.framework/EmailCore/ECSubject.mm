@@ -1,38 +1,38 @@
 @interface ECSubject
-+ (id)_prefixTruncatedToMaximumAllowableSize:(id)a3;
-+ (id)_subjectTruncatedToMaximumAllowableSize:(id)a3;
-+ (id)_uniqueString:(id)a3 type:(int64_t)a4;
-+ (id)subjectWithString:(id)a3;
++ (id)_prefixTruncatedToMaximumAllowableSize:(id)size;
++ (id)_subjectTruncatedToMaximumAllowableSize:(id)size;
++ (id)_uniqueString:(id)string type:(int64_t)type;
++ (id)subjectWithString:(id)string;
 - (BOOL)hasForwardPrefix;
 - (BOOL)hasReplyPrefix;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToString:(id)a3;
-- (BOOL)isEqualToSubject:(id)a3;
-- (BOOL)isEqualToSubjectIgnoringPrefix:(id)a3;
-- (ECSubject)initWithCoder:(id)a3;
-- (ECSubject)initWithPrefix:(id)a3 subjectWithoutPrefix:(id)a4;
-- (ECSubject)initWithString:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToString:(id)string;
+- (BOOL)isEqualToSubject:(id)subject;
+- (BOOL)isEqualToSubjectIgnoringPrefix:(id)prefix;
+- (ECSubject)initWithCoder:(id)coder;
+- (ECSubject)initWithPrefix:(id)prefix subjectWithoutPrefix:(id)withoutPrefix;
+- (ECSubject)initWithString:(id)string;
 - (NSString)ef_publicDescription;
 - (NSString)subjectString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ECSubject
 
 - (NSString)subjectString
 {
-  v3 = [(ECSubject *)self prefix];
-  v4 = [(ECSubject *)self subjectWithoutPrefix];
-  v5 = v4;
-  if (v3)
+  prefix = [(ECSubject *)self prefix];
+  subjectWithoutPrefix = [(ECSubject *)self subjectWithoutPrefix];
+  v5 = subjectWithoutPrefix;
+  if (prefix)
   {
-    v6 = [v3 stringByAppendingString:v4];
+    v6 = [prefix stringByAppendingString:subjectWithoutPrefix];
   }
 
   else
   {
-    v6 = v4;
+    v6 = subjectWithoutPrefix;
   }
 
   v7 = v6;
@@ -40,18 +40,18 @@
   return v7;
 }
 
-+ (id)subjectWithString:(id)a3
++ (id)subjectWithString:(id)string
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithString:v4];
+  stringCopy = string;
+  v5 = [[self alloc] initWithString:stringCopy];
 
   return v5;
 }
 
-+ (id)_subjectTruncatedToMaximumAllowableSize:(id)a3
++ (id)_subjectTruncatedToMaximumAllowableSize:(id)size
 {
-  v3 = a3;
-  v4 = [v3 length];
+  sizeCopy = size;
+  v4 = [sizeCopy length];
   if (v4 >= 0x3E8)
   {
     v5 = 1000;
@@ -62,15 +62,15 @@
     v5 = v4;
   }
 
-  v6 = [v3 substringToIndex:v5];
+  v6 = [sizeCopy substringToIndex:v5];
 
   return v6;
 }
 
-+ (id)_prefixTruncatedToMaximumAllowableSize:(id)a3
++ (id)_prefixTruncatedToMaximumAllowableSize:(id)size
 {
-  v3 = a3;
-  v4 = [v3 length];
+  sizeCopy = size;
+  v4 = [sizeCopy length];
   if (v4 >= 0x3E8)
   {
     v5 = 1000;
@@ -81,14 +81,14 @@
     v5 = v4;
   }
 
-  v6 = [v3 substringToIndex:v5];
+  v6 = [sizeCopy substringToIndex:v5];
 
   return v6;
 }
 
-+ (id)_uniqueString:(id)a3 type:(int64_t)a4
++ (id)_uniqueString:(id)string type:(int64_t)type
 {
-  v5 = a3;
+  stringCopy = string;
   if (_uniqueString_type__onceToken != -1)
   {
     +[ECSubject _uniqueString:type:];
@@ -106,9 +106,9 @@
   block[2] = __32__ECSubject__uniqueString_type___block_invoke_3;
   block[3] = &unk_27874C378;
   v12 = &v14;
-  v13 = a4;
-  v11 = v5;
-  v7 = v5;
+  typeCopy = type;
+  v11 = stringCopy;
+  v7 = stringCopy;
   dispatch_sync(v6, block);
   v8 = v15[5];
 
@@ -174,28 +174,28 @@ LABEL_7:
   *(v7 + 40) = v6;
 }
 
-- (ECSubject)initWithString:(id)a3
+- (ECSubject)initWithString:(id)string
 {
   v8 = 0;
-  v4 = [ECSubjectParser subjectWithoutPrefixForSubject:a3 prefix:&v8];
+  v4 = [ECSubjectParser subjectWithoutPrefixForSubject:string prefix:&v8];
   v5 = v8;
   v6 = [(ECSubject *)self initWithPrefix:v5 subjectWithoutPrefix:v4];
 
   return v6;
 }
 
-- (ECSubject)initWithPrefix:(id)a3 subjectWithoutPrefix:(id)a4
+- (ECSubject)initWithPrefix:(id)prefix subjectWithoutPrefix:(id)withoutPrefix
 {
-  v6 = a3;
-  v7 = a4;
+  prefixCopy = prefix;
+  withoutPrefixCopy = withoutPrefix;
   v18.receiver = self;
   v18.super_class = ECSubject;
   v8 = [(ECSubject *)&v18 init];
   if (v8)
   {
-    if ([v6 length])
+    if ([prefixCopy length])
     {
-      v9 = [ECSubject _prefixTruncatedToMaximumAllowableSize:v6];
+      v9 = [ECSubject _prefixTruncatedToMaximumAllowableSize:prefixCopy];
 
       v10 = [ECSubject _uniqueString:v9 type:0];
       v11 = *(v8 + 5);
@@ -204,7 +204,7 @@ LABEL_7:
       v12 = [*(v8 + 5) length];
       *(v8 + 6) = v12;
       v8[24] = v12 != 0;
-      v6 = v9;
+      prefixCopy = v9;
     }
 
     else
@@ -212,12 +212,12 @@ LABEL_7:
       *(v8 + 8) = vdupq_n_s64(1uLL);
     }
 
-    if ([v7 length])
+    if ([withoutPrefixCopy length])
     {
-      v13 = [ECSubject _subjectTruncatedToMaximumAllowableSize:v7];
+      v13 = [ECSubject _subjectTruncatedToMaximumAllowableSize:withoutPrefixCopy];
 
       v14 = [ECSubject _uniqueString:v13 type:1];
-      v7 = v13;
+      withoutPrefixCopy = v13;
     }
 
     else
@@ -235,41 +235,41 @@ LABEL_7:
   return v8;
 }
 
-- (ECSubject)initWithCoder:(id)a3
+- (ECSubject)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_prefix"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_subjectWithoutPrefix"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_prefix"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_subjectWithoutPrefix"];
   v7 = [(ECSubject *)self initWithPrefix:v5 subjectWithoutPrefix:v6];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(ECSubject *)self prefix];
-  [v6 encodeObject:v4 forKey:@"EFPropertyKey_prefix"];
+  coderCopy = coder;
+  prefix = [(ECSubject *)self prefix];
+  [coderCopy encodeObject:prefix forKey:@"EFPropertyKey_prefix"];
 
-  v5 = [(ECSubject *)self subjectWithoutPrefix];
-  [v6 encodeObject:v5 forKey:@"EFPropertyKey_subjectWithoutPrefix"];
+  subjectWithoutPrefix = [(ECSubject *)self subjectWithoutPrefix];
+  [coderCopy encodeObject:subjectWithoutPrefix forKey:@"EFPropertyKey_subjectWithoutPrefix"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(ECSubject *)self prefix];
-  v4 = [v3 hash];
+  prefix = [(ECSubject *)self prefix];
+  v4 = [prefix hash];
 
-  v5 = [(ECSubject *)self subjectWithoutPrefix];
-  v6 = [v5 hash] + 5859909;
+  subjectWithoutPrefix = [(ECSubject *)self subjectWithoutPrefix];
+  v6 = [subjectWithoutPrefix hash] + 5859909;
 
   return 33 * v4 + v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -277,7 +277,7 @@ LABEL_7:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ECSubject *)self isEqualToSubject:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ECSubject *)self isEqualToSubject:equalCopy];
   }
 
   return v5;
@@ -285,27 +285,27 @@ LABEL_7:
 
 - (NSString)ef_publicDescription
 {
-  v3 = [MEMORY[0x277D07148] currentDevice];
-  v4 = [v3 isInternal];
+  currentDevice = [MEMORY[0x277D07148] currentDevice];
+  isInternal = [currentDevice isInternal];
   v5 = MEMORY[0x277D07198];
-  if (v4)
+  if (isInternal)
   {
-    v6 = [(ECSubject *)self subjectWithoutPrefix];
-    [v5 ec_partiallyRedactedStringForSubjectOrSummary:v6];
+    subjectWithoutPrefix = [(ECSubject *)self subjectWithoutPrefix];
+    [v5 ec_partiallyRedactedStringForSubjectOrSummary:subjectWithoutPrefix];
   }
 
   else
   {
-    v6 = [(ECSubject *)self subjectWithoutPrefix];
-    [v5 fullyRedactedStringForString:v6];
+    subjectWithoutPrefix = [(ECSubject *)self subjectWithoutPrefix];
+    [v5 fullyRedactedStringForString:subjectWithoutPrefix];
   }
   v7 = ;
 
-  v8 = [(ECSubject *)self prefix];
-  v9 = v8;
-  if (v8)
+  prefix = [(ECSubject *)self prefix];
+  v9 = prefix;
+  if (prefix)
   {
-    v10 = [v8 stringByAppendingString:v7];
+    v10 = [prefix stringByAppendingString:v7];
   }
 
   else
@@ -323,8 +323,8 @@ LABEL_7:
   hasReplyPrefixState = self->_hasReplyPrefixState;
   if (!hasReplyPrefixState)
   {
-    v4 = [(ECSubject *)self prefix];
-    v5 = [ECSubjectParser subjectHasReplyPrefix:v4];
+    prefix = [(ECSubject *)self prefix];
+    v5 = [ECSubjectParser subjectHasReplyPrefix:prefix];
     v6 = 1;
     if (v5)
     {
@@ -344,8 +344,8 @@ LABEL_7:
   hasForwardPrefixState = self->_hasForwardPrefixState;
   if (!hasForwardPrefixState)
   {
-    v4 = [(ECSubject *)self prefix];
-    v5 = [ECSubjectParser subjectHasForwardPrefix:v4];
+    prefix = [(ECSubject *)self prefix];
+    v5 = [ECSubjectParser subjectHasForwardPrefix:prefix];
     v6 = 1;
     if (v5)
     {
@@ -360,34 +360,34 @@ LABEL_7:
   return hasForwardPrefixState == 2;
 }
 
-- (BOOL)isEqualToSubject:(id)a3
+- (BOOL)isEqualToSubject:(id)subject
 {
-  v4 = a3;
-  if (v4 == self)
+  subjectCopy = subject;
+  if (subjectCopy == self)
   {
     v11 = 1;
     goto LABEL_8;
   }
 
-  v5 = [(ECSubject *)self prefix];
-  v6 = [(ECSubject *)v4 prefix];
-  v7 = v6;
-  if (v5 == v6)
+  prefix = [(ECSubject *)self prefix];
+  prefix2 = [(ECSubject *)subjectCopy prefix];
+  v7 = prefix2;
+  if (prefix == prefix2)
   {
 
     goto LABEL_7;
   }
 
-  v8 = [(ECSubject *)self prefix];
-  v9 = [(ECSubject *)v4 prefix];
-  v10 = [v8 isEqualToString:v9];
+  prefix3 = [(ECSubject *)self prefix];
+  prefix4 = [(ECSubject *)subjectCopy prefix];
+  v10 = [prefix3 isEqualToString:prefix4];
 
   if (v10)
   {
 LABEL_7:
-    v12 = [(ECSubject *)self subjectWithoutPrefix];
-    v13 = [(ECSubject *)v4 subjectWithoutPrefix];
-    v11 = [v12 isEqualToString:v13];
+    subjectWithoutPrefix = [(ECSubject *)self subjectWithoutPrefix];
+    subjectWithoutPrefix2 = [(ECSubject *)subjectCopy subjectWithoutPrefix];
+    v11 = [subjectWithoutPrefix isEqualToString:subjectWithoutPrefix2];
 
     goto LABEL_8;
   }
@@ -398,21 +398,21 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)isEqualToString:(id)a3
+- (BOOL)isEqualToString:(id)string
 {
-  v4 = a3;
-  v5 = [[ECSubject alloc] initWithString:v4];
+  stringCopy = string;
+  v5 = [[ECSubject alloc] initWithString:stringCopy];
   LOBYTE(self) = [(ECSubject *)self isEqualToSubject:v5];
 
   return self;
 }
 
-- (BOOL)isEqualToSubjectIgnoringPrefix:(id)a3
+- (BOOL)isEqualToSubjectIgnoringPrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(ECSubject *)self subjectWithoutPrefix];
-  v6 = [v4 subjectWithoutPrefix];
-  v7 = [v5 isEqualToString:v6];
+  prefixCopy = prefix;
+  subjectWithoutPrefix = [(ECSubject *)self subjectWithoutPrefix];
+  subjectWithoutPrefix2 = [prefixCopy subjectWithoutPrefix];
+  v7 = [subjectWithoutPrefix isEqualToString:subjectWithoutPrefix2];
 
   return v7;
 }

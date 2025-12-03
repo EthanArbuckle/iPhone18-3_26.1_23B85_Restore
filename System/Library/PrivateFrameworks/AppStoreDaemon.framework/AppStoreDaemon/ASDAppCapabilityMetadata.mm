@@ -1,39 +1,39 @@
 @interface ASDAppCapabilityMetadata
-+ (id)metadataWithAction:(int64_t)a3 bundleID:(id)a4 capabilities:(id)a5;
-+ (id)metadataWithAction:(int64_t)a3 entitlements:(id)a4 infoPlist:(id)a5;
-- (ASDAppCapabilityMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)metadataWithAction:(int64_t)action bundleID:(id)d capabilities:(id)capabilities;
++ (id)metadataWithAction:(int64_t)action entitlements:(id)entitlements infoPlist:(id)plist;
+- (ASDAppCapabilityMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSupportsFeatureB:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSupportsFeatureB:(BOOL)b;
 @end
 
 @implementation ASDAppCapabilityMetadata
 
-+ (id)metadataWithAction:(int64_t)a3 entitlements:(id)a4 infoPlist:(id)a5
++ (id)metadataWithAction:(int64_t)action entitlements:(id)entitlements infoPlist:(id)plist
 {
   v6 = objc_opt_new();
-  [v6 setAction:a3];
+  [v6 setAction:action];
   [v6 setFeatures:0];
 
   return v6;
 }
 
-+ (id)metadataWithAction:(int64_t)a3 bundleID:(id)a4 capabilities:(id)a5
++ (id)metadataWithAction:(int64_t)action bundleID:(id)d capabilities:(id)capabilities
 {
-  v7 = a5;
-  v8 = a4;
+  capabilitiesCopy = capabilities;
+  dCopy = d;
   v9 = objc_opt_new();
-  [v9 setAction:a3];
-  [v9 setBundleID:v8];
+  [v9 setAction:action];
+  [v9 setBundleID:dCopy];
 
-  v10 = ([v7 containsObject:@"a"] & 1) != 0 || objc_msgSend(v7, "containsObject:", @"supports-alternate-distribution");
-  if ([v7 containsObject:@"is-custom-browser-engine-app"])
+  v10 = ([capabilitiesCopy containsObject:@"a"] & 1) != 0 || objc_msgSend(capabilitiesCopy, "containsObject:", @"supports-alternate-distribution");
+  if ([capabilitiesCopy containsObject:@"is-custom-browser-engine-app"])
   {
     v10 |= 2uLL;
   }
 
-  if ([v7 containsObject:@"uses-non-webkit-browser-engine"])
+  if ([capabilitiesCopy containsObject:@"uses-non-webkit-browser-engine"])
   {
     v11 = v10 | 2;
   }
@@ -48,10 +48,10 @@
   return v9;
 }
 
-- (void)setSupportsFeatureB:(BOOL)a3
+- (void)setSupportsFeatureB:(BOOL)b
 {
   v3 = 2;
-  if (!a3)
+  if (!b)
   {
     v3 = 0;
   }
@@ -59,11 +59,11 @@
   self->_features = self->_features & 0xFFFFFFFFFFFFFFFDLL | v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[ASDAppCapabilityMetadata allocWithZone:](ASDAppCapabilityMetadata init];
   v5->_action = self->_action;
-  v6 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v6 = [(NSString *)self->_bundleID copyWithZone:zone];
   bundleID = v5->_bundleID;
   v5->_bundleID = v6;
 
@@ -71,30 +71,30 @@
   return v5;
 }
 
-- (ASDAppCapabilityMetadata)initWithCoder:(id)a3
+- (ASDAppCapabilityMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ASDAppCapabilityMetadata *)self init];
   if (v5)
   {
-    v5->_action = [v4 decodeIntegerForKey:@"A"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"B"];
+    v5->_action = [coderCopy decodeIntegerForKey:@"A"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"B"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v6;
 
-    v5->_features = [v4 decodeIntegerForKey:@"C"];
+    v5->_features = [coderCopy decodeIntegerForKey:@"C"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   action = self->_action;
-  v5 = a3;
-  [v5 encodeInteger:action forKey:@"A"];
-  [v5 encodeObject:self->_bundleID forKey:@"B"];
-  [v5 encodeInteger:self->_features forKey:@"C"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:action forKey:@"A"];
+  [coderCopy encodeObject:self->_bundleID forKey:@"B"];
+  [coderCopy encodeInteger:self->_features forKey:@"C"];
 }
 
 - (id)description

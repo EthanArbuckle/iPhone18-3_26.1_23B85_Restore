@@ -1,14 +1,14 @@
 @interface CRLCanvasAlignmentGuide
-- (BOOL)canBeSnappedToByEdge:(int)a3 ofFrame:(CGRect)a4 inVisibleUnscaledRect:(CGRect)a5;
-- (BOOL)isAssociatedContentVisibleInUnscaledRect:(CGRect)a3;
+- (BOOL)canBeSnappedToByEdge:(int)edge ofFrame:(CGRect)frame inVisibleUnscaledRect:(CGRect)rect;
+- (BOOL)isAssociatedContentVisibleInUnscaledRect:(CGRect)rect;
 - (CRLCanvasAlignmentGuide)init;
-- (CRLCanvasAlignmentGuide)initWithGeneratingObjectUnscaledRect:(CGRect)a3 edge:(int)a4;
-- (CRLCanvasAlignmentGuide)initWithType:(int64_t)a3 offset:(double)a4;
-- (double)distanceToPoint:(CGPoint)a3;
-- (id)renderableWithICC:(id)a3;
-- (void)setEnd:(double)a3;
-- (void)setOffset:(double)a3;
-- (void)setStart:(double)a3;
+- (CRLCanvasAlignmentGuide)initWithGeneratingObjectUnscaledRect:(CGRect)rect edge:(int)edge;
+- (CRLCanvasAlignmentGuide)initWithType:(int64_t)type offset:(double)offset;
+- (double)distanceToPoint:(CGPoint)point;
+- (id)renderableWithICC:(id)c;
+- (void)setEnd:(double)end;
+- (void)setOffset:(double)offset;
+- (void)setStart:(double)start;
 @end
 
 @implementation CRLCanvasAlignmentGuide
@@ -29,12 +29,12 @@
   return v3;
 }
 
-- (CRLCanvasAlignmentGuide)initWithGeneratingObjectUnscaledRect:(CGRect)a3 edge:(int)a4
+- (CRLCanvasAlignmentGuide)initWithGeneratingObjectUnscaledRect:(CGRect)rect edge:(int)edge
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9 = [(CRLCanvasAlignmentGuide *)self init];
   v10 = v9;
   if (v9)
@@ -43,7 +43,7 @@
     v9->mGeneratingObjectUnscaledRect.origin.y = y;
     v9->mGeneratingObjectUnscaledRect.size.width = width;
     v9->mGeneratingObjectUnscaledRect.size.height = height;
-    if (a4 > 2)
+    if (edge > 2)
     {
       [(CRLCanvasAlignmentGuide *)v9 setGuideType:0];
       v16.origin.x = x;
@@ -74,9 +74,9 @@
     }
 
     [(CRLCanvasAlignmentGuide *)v10 setEnd:MaxX];
-    if (a4 > 2)
+    if (edge > 2)
     {
-      switch(a4)
+      switch(edge)
       {
         case 3:
           v21.origin.x = x;
@@ -104,7 +104,7 @@
 
     else
     {
-      switch(a4)
+      switch(edge)
       {
         case 0:
           v20.origin.x = x;
@@ -138,7 +138,7 @@ LABEL_19:
   return v10;
 }
 
-- (CRLCanvasAlignmentGuide)initWithType:(int64_t)a3 offset:(double)a4
+- (CRLCanvasAlignmentGuide)initWithType:(int64_t)type offset:(double)offset
 {
   v6 = [(CRLCanvasAlignmentGuide *)self init];
   v7 = v6;
@@ -147,36 +147,36 @@ LABEL_19:
     size = CGRectNull.size;
     v6->mGeneratingObjectUnscaledRect.origin = CGRectNull.origin;
     v6->mGeneratingObjectUnscaledRect.size = size;
-    [(CRLCanvasAlignmentGuide *)v6 setGuideType:a3];
-    [(CRLCanvasAlignmentGuide *)v7 setOffset:a4];
+    [(CRLCanvasAlignmentGuide *)v6 setGuideType:type];
+    [(CRLCanvasAlignmentGuide *)v7 setOffset:offset];
     [(CRLCanvasAlignmentGuide *)v7 setInfinite:1];
   }
 
   return v7;
 }
 
-- (BOOL)canBeSnappedToByEdge:(int)a3 ofFrame:(CGRect)a4 inVisibleUnscaledRect:(CGRect)a5
+- (BOOL)canBeSnappedToByEdge:(int)edge ofFrame:(CGRect)frame inVisibleUnscaledRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  if ([CRLCanvasGuideController shouldSnapToOffscreenContent:a4.origin.x])
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if ([CRLCanvasGuideController shouldSnapToOffscreenContent:frame.origin.x])
   {
-    if (a3 > 5)
+    if (edge > 5)
     {
       v11 = 0;
       return v11 & 1;
     }
 
 LABEL_6:
-    v11 = *(&self->super.super.isa + *(&off_1018479B8)[a3]);
+    v11 = *(&self->super.super.isa + *(&off_1018479B8)[edge]);
     return v11 & 1;
   }
 
-  v12 = [(CRLCanvasAlignmentGuide *)self isAssociatedContentVisibleInUnscaledRect:x, y, width, height];
+  height = [(CRLCanvasAlignmentGuide *)self isAssociatedContentVisibleInUnscaledRect:x, y, width, height];
   v11 = 0;
-  if (v12 && a3 < 6)
+  if (height && edge < 6)
   {
     goto LABEL_6;
   }
@@ -184,17 +184,17 @@ LABEL_6:
   return v11 & 1;
 }
 
-- (BOOL)isAssociatedContentVisibleInUnscaledRect:(CGRect)a3
+- (BOOL)isAssociatedContentVisibleInUnscaledRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v12.origin.x = CGRectNull.origin.x;
   v12.origin.y = CGRectNull.origin.y;
   v12.size.width = CGRectNull.size.width;
   v12.size.height = CGRectNull.size.height;
-  if (CGRectEqualToRect(a3, v12))
+  if (CGRectEqualToRect(rect, v12))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -226,40 +226,40 @@ LABEL_6:
   return sub_10011FF38(self->mGeneratingObjectUnscaledRect.origin.x, self->mGeneratingObjectUnscaledRect.origin.y, self->mGeneratingObjectUnscaledRect.size.width, self->mGeneratingObjectUnscaledRect.size.height, x, y, width, height);
 }
 
-- (void)setStart:(double)a3
+- (void)setStart:(double)start
 {
-  if (self->mStart != a3)
+  if (self->mStart != start)
   {
-    self->mStart = a3;
+    self->mStart = start;
     self->super.mLocationInvalidated = 1;
   }
 }
 
-- (void)setEnd:(double)a3
+- (void)setEnd:(double)end
 {
-  if (self->mEnd != a3)
+  if (self->mEnd != end)
   {
-    self->mEnd = a3;
+    self->mEnd = end;
     self->super.mLocationInvalidated = 1;
   }
 }
 
-- (void)setOffset:(double)a3
+- (void)setOffset:(double)offset
 {
-  if (self->super.mOffset != a3)
+  if (self->super.mOffset != offset)
   {
-    self->super.mOffset = a3;
+    self->super.mOffset = offset;
     self->super.mLocationInvalidated = 1;
   }
 }
 
-- (double)distanceToPoint:(CGPoint)a3
+- (double)distanceToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLCanvasAlignmentGuide *)self guideType];
+  y = point.y;
+  x = point.x;
+  guideType = [(CRLCanvasAlignmentGuide *)self guideType];
   [(CRLCanvasAbstractGuide *)self offset];
-  if (v6)
+  if (guideType)
   {
     v8 = x;
   }
@@ -272,10 +272,10 @@ LABEL_6:
   return vabdd_f64(v7, v8);
 }
 
-- (id)renderableWithICC:(id)a3
+- (id)renderableWithICC:(id)c
 {
-  v4 = a3;
-  [v4 viewScale];
+  cCopy = c;
+  [cCopy viewScale];
   v6 = v5;
   [(CRLCanvasAlignmentGuide *)self start];
   v8 = v7;
@@ -332,7 +332,7 @@ LABEL_6:
   [CATransaction setDisableActions:1];
   if (self->mInfinite)
   {
-    [v4 visibleScaledRectForCanvasUI];
+    [cCopy visibleScaledRectForCanvasUI];
     if (self->mType == 1)
     {
       self->mStart = v16 / v6;
@@ -348,11 +348,11 @@ LABEL_6:
     self->mEnd = v19 / v6;
   }
 
-  v20 = [(CRLCanvasAlignmentGuide *)self guideType];
+  guideType = [(CRLCanvasAlignmentGuide *)self guideType];
   p_mSnappingObjectFrame = &self->super.mSnappingObjectFrame;
   IsNull = CGRectIsNull(self->super.mSnappingObjectFrame);
   mStart = self->mStart;
-  if (v20 == 1)
+  if (guideType == 1)
   {
     if (IsNull)
     {

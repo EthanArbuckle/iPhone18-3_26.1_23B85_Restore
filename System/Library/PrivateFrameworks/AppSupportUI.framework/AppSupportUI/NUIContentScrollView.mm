@@ -1,48 +1,48 @@
 @interface NUIContentScrollView
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)a3;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)size;
 - (BOOL)isLayoutSizeDependentOnPerpendicularAxis;
-- (CGSize)_finalSizeForTargetSize:(CGSize)result resultSize:(CGSize)a4 insets:(UIEdgeInsets)a5;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
-- (CGSize)_measureSizeForTargetSize:(CGSize)a3 insets:(UIEdgeInsets)a4;
-- (NUIContentScrollView)initWithDocumentView:(id)a3;
-- (NUIContentScrollView)initWithFrame:(CGRect)a3;
+- (CGSize)_finalSizeForTargetSize:(CGSize)result resultSize:(CGSize)size insets:(UIEdgeInsets)insets;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
+- (CGSize)_measureSizeForTargetSize:(CGSize)size insets:(UIEdgeInsets)insets;
+- (NUIContentScrollView)initWithDocumentView:(id)view;
+- (NUIContentScrollView)initWithFrame:(CGRect)frame;
 - (id)viewForFirstBaselineLayout;
 - (id)viewForLastBaselineLayout;
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3;
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view;
 - (void)layoutSubviews;
-- (void)setCanScrollDocumentViewHorizontally:(BOOL)a3;
-- (void)setCanScrollDocumentViewVertically:(BOOL)a3;
-- (void)setDocumentView:(id)a3;
-- (void)setHorizontalAlignment:(int64_t)a3;
-- (void)setVerticalAlignment:(int64_t)a3;
+- (void)setCanScrollDocumentViewHorizontally:(BOOL)horizontally;
+- (void)setCanScrollDocumentViewVertically:(BOOL)vertically;
+- (void)setDocumentView:(id)view;
+- (void)setHorizontalAlignment:(int64_t)alignment;
+- (void)setVerticalAlignment:(int64_t)alignment;
 @end
 
 @implementation NUIContentScrollView
 
-- (void)setCanScrollDocumentViewHorizontally:(BOOL)a3
+- (void)setCanScrollDocumentViewHorizontally:(BOOL)horizontally
 {
-  if (self->_canScrollDocumentViewHorizontally != a3)
+  if (self->_canScrollDocumentViewHorizontally != horizontally)
   {
-    self->_canScrollDocumentViewHorizontally = a3;
+    self->_canScrollDocumentViewHorizontally = horizontally;
     [(NUIContentScrollView *)self setNeedsLayout];
   }
 }
 
-- (void)setCanScrollDocumentViewVertically:(BOOL)a3
+- (void)setCanScrollDocumentViewVertically:(BOOL)vertically
 {
-  if (self->_canScrollDocumentViewVertically != a3)
+  if (self->_canScrollDocumentViewVertically != vertically)
   {
-    self->_canScrollDocumentViewVertically = a3;
+    self->_canScrollDocumentViewVertically = vertically;
     [(NUIContentScrollView *)self setNeedsLayout];
   }
 }
 
-- (NUIContentScrollView)initWithFrame:(CGRect)a3
+- (NUIContentScrollView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [(NUIContentScrollView *)self initWithDocumentView:0];
   v8 = v7;
   if (v7)
@@ -53,9 +53,9 @@
   return v8;
 }
 
-- (NUIContentScrollView)initWithDocumentView:(id)a3
+- (NUIContentScrollView)initWithDocumentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = NUIContentScrollView;
   v5 = [(NUIContentScrollView *)&v8 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -67,90 +67,90 @@
     [(NUIContentScrollView *)v5 _setHostsLayoutEngine:1];
     v6->_horizontalAlignment = 3;
     v6->_verticalAlignment = 1;
-    [(NUIContentScrollView *)v6 setDocumentView:v4];
+    [(NUIContentScrollView *)v6 setDocumentView:viewCopy];
   }
 
   return v6;
 }
 
-- (void)setDocumentView:(id)a3
+- (void)setDocumentView:(id)view
 {
-  v7 = a3;
-  v5 = [(NUIContentScrollView *)self documentView];
+  viewCopy = view;
+  documentView = [(NUIContentScrollView *)self documentView];
 
-  v6 = v7;
-  if (v5 != v7)
+  v6 = viewCopy;
+  if (documentView != viewCopy)
   {
     [(UIView *)self->_documentView removeFromSuperview];
-    objc_storeStrong(&self->_documentView, a3);
-    if (v7)
+    objc_storeStrong(&self->_documentView, view);
+    if (viewCopy)
     {
-      [(NUIContentScrollView *)self addSubview:v7];
+      [(NUIContentScrollView *)self addSubview:viewCopy];
     }
 
     [(NUIContentScrollView *)self invalidateIntrinsicContentSize];
-    v6 = v7;
+    v6 = viewCopy;
   }
 }
 
-- (void)setHorizontalAlignment:(int64_t)a3
+- (void)setHorizontalAlignment:(int64_t)alignment
 {
-  v3 = 3;
-  if (a3 != -1)
+  alignmentCopy = 3;
+  if (alignment != -1)
   {
-    v3 = a3;
+    alignmentCopy = alignment;
   }
 
-  if (self->_horizontalAlignment != v3)
+  if (self->_horizontalAlignment != alignmentCopy)
   {
-    self->_horizontalAlignment = v3;
+    self->_horizontalAlignment = alignmentCopy;
     [(NUIContentScrollView *)self setNeedsLayout];
   }
 }
 
-- (void)setVerticalAlignment:(int64_t)a3
+- (void)setVerticalAlignment:(int64_t)alignment
 {
-  if (a3 == -1)
+  if (alignment == -1)
   {
-    v3 = 1;
+    alignmentCopy = 1;
   }
 
   else
   {
-    v3 = a3;
+    alignmentCopy = alignment;
   }
 
-  if (self->_verticalAlignment != v3)
+  if (self->_verticalAlignment != alignmentCopy)
   {
-    self->_verticalAlignment = v3;
+    self->_verticalAlignment = alignmentCopy;
     [(NUIContentScrollView *)self setNeedsLayout];
   }
 }
 
 - (BOOL)isLayoutSizeDependentOnPerpendicularAxis
 {
-  v2 = [(NUIContentScrollView *)self documentView];
-  v3 = [v2 isLayoutSizeDependentOnPerpendicularAxis];
+  documentView = [(NUIContentScrollView *)self documentView];
+  isLayoutSizeDependentOnPerpendicularAxis = [documentView isLayoutSizeDependentOnPerpendicularAxis];
 
-  return v3;
+  return isLayoutSizeDependentOnPerpendicularAxis;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)size
 {
-  [(UIView *)self effectiveFirstBaselineOffsetFromContentTop:a3.width];
+  [(UIView *)self effectiveFirstBaselineOffsetFromContentTop:size.width];
   v5 = v4;
   [(UIView *)self effectiveBaselineOffsetFromContentBottom];
   v7 = v6;
-  v8 = [(NUIContentScrollView *)self viewForFirstBaselineLayout];
+  viewForFirstBaselineLayout = [(NUIContentScrollView *)self viewForFirstBaselineLayout];
 
-  if (v8 == self)
+  if (viewForFirstBaselineLayout == self)
   {
     v5 = 2.22507386e-308;
   }
 
-  v9 = [(NUIContentScrollView *)self viewForLastBaselineLayout];
+  viewForLastBaselineLayout = [(NUIContentScrollView *)self viewForLastBaselineLayout];
 
-  if (v9 == self)
+  if (viewForLastBaselineLayout == self)
   {
     v10 = 2.22507386e-308;
   }
@@ -166,12 +166,12 @@
   return result;
 }
 
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view
 {
-  v4 = a3;
-  v5 = [(NUIContentScrollView *)self documentView];
+  viewCopy = view;
+  documentView = [(NUIContentScrollView *)self documentView];
 
-  if (v5 == v4)
+  if (documentView == viewCopy)
   {
     [(NUIContentScrollView *)self invalidateIntrinsicContentSize];
     [(NUIContentScrollView *)self setNeedsLayout];
@@ -179,28 +179,28 @@
 
   v6.receiver = self;
   v6.super_class = NUIContentScrollView;
-  [(UIView *)&v6 _intrinsicContentSizeInvalidatedForChildView:v4];
+  [(UIView *)&v6 _intrinsicContentSizeInvalidatedForChildView:viewCopy];
 }
 
-- (CGSize)_measureSizeForTargetSize:(CGSize)a3 insets:(UIEdgeInsets)a4
+- (CGSize)_measureSizeForTargetSize:(CGSize)size insets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  height = a3.height;
-  width = a3.width;
-  v11 = fabs(a3.width) < 0.001 || [(NUIContentScrollView *)self canScrollDocumentViewHorizontally];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  v11 = fabs(size.width) < 0.001 || [(NUIContentScrollView *)self canScrollDocumentViewHorizontally];
   if (fabs(height) >= 0.001)
   {
-    v13 = [(NUIContentScrollView *)self canScrollDocumentViewVertically];
+    canScrollDocumentViewVertically = [(NUIContentScrollView *)self canScrollDocumentViewVertically];
     v12 = width - (left + right);
     if (v11)
     {
       v12 = 3.40282347e38;
     }
 
-    if (!v13)
+    if (!canScrollDocumentViewVertically)
     {
       v14 = height - (top + bottom);
       goto LABEL_13;
@@ -223,26 +223,26 @@ LABEL_13:
   return result;
 }
 
-- (CGSize)_finalSizeForTargetSize:(CGSize)result resultSize:(CGSize)a4 insets:(UIEdgeInsets)a5
+- (CGSize)_finalSizeForTargetSize:(CGSize)result resultSize:(CGSize)size insets:(UIEdgeInsets)insets
 {
-  v5 = a5.right + a4.width + a5.left;
+  v5 = insets.right + size.width + insets.left;
   if (v5 < result.width)
   {
     result.width = v5;
   }
 
-  if (a5.bottom + a4.height + a5.top < result.height)
+  if (insets.bottom + size.height + insets.top < result.height)
   {
-    result.height = a5.bottom + a4.height + a5.top;
+    result.height = insets.bottom + size.height + insets.top;
   }
 
   return result;
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(NUIContentScrollView *)self contentInset];
   v7 = v6;
   v9 = v8;
@@ -259,12 +259,12 @@ LABEL_13:
     if (v15 > 0.0)
     {
       v19 = v14;
-      v20 = [(NUIContentScrollView *)self documentView];
+      documentView = [(NUIContentScrollView *)self documentView];
 
-      if (v20)
+      if (documentView)
       {
-        v21 = [(NUIContentScrollView *)self documentView];
-        [v21 effectiveLayoutSizeFittingSize:{v19, v18}];
+        documentView2 = [(NUIContentScrollView *)self documentView];
+        [documentView2 effectiveLayoutSizeFittingSize:{v19, v18}];
         v16 = v22;
         v17 = v23;
       }
@@ -279,38 +279,38 @@ LABEL_13:
 
 - (id)viewForFirstBaselineLayout
 {
-  v3 = [(NUIContentScrollView *)self documentView];
+  documentView = [(NUIContentScrollView *)self documentView];
 
-  if (v3)
+  if (documentView)
   {
-    v4 = [(NUIContentScrollView *)self documentView];
-    v5 = [v4 viewForFirstBaselineLayout];
+    documentView2 = [(NUIContentScrollView *)self documentView];
+    selfCopy = [documentView2 viewForFirstBaselineLayout];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)viewForLastBaselineLayout
 {
-  v3 = [(NUIContentScrollView *)self documentView];
+  documentView = [(NUIContentScrollView *)self documentView];
 
-  if (v3)
+  if (documentView)
   {
-    v4 = [(NUIContentScrollView *)self documentView];
-    v5 = [v4 viewForLastBaselineLayout];
+    documentView2 = [(NUIContentScrollView *)self documentView];
+    selfCopy = [documentView2 viewForLastBaselineLayout];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)layoutSubviews
@@ -318,9 +318,9 @@ LABEL_13:
   v83.receiver = self;
   v83.super_class = NUIContentScrollView;
   [(NUIContentScrollView *)&v83 layoutSubviews];
-  v4 = [(NUIContentScrollView *)self documentView];
+  documentView = [(NUIContentScrollView *)self documentView];
 
-  if (!v4)
+  if (!documentView)
   {
     return;
   }
@@ -347,15 +347,15 @@ LABEL_13:
 
   v20 = *MEMORY[0x277CBF3A0];
   v19 = *(MEMORY[0x277CBF3A0] + 8);
-  v21 = [(NUIContentScrollView *)self documentView];
-  [v21 effectiveLayoutSizeFittingSize:{v17, v18}];
+  documentView2 = [(NUIContentScrollView *)self documentView];
+  [documentView2 effectiveLayoutSizeFittingSize:{v17, v18}];
   v23 = v22;
   v25 = v24;
 
   [(NUIContentScrollView *)self setContentSize:v23, v25];
-  v26 = [(NUIContentScrollView *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(NUIContentScrollView *)self effectiveUserInterfaceLayoutDirection];
   horizontalAlignment = self->_horizontalAlignment;
-  if (v26 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     if (horizontalAlignment <= 2)
     {
@@ -453,8 +453,8 @@ LABEL_21:
 
     v32 = v31;
 
-    v33 = [MEMORY[0x277CCA890] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:v32 lineNumber:260 description:{@"Invalid horizontal alignment %ld.", self->_horizontalAlignment}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:v32 lineNumber:260 description:{@"Invalid horizontal alignment %ld.", self->_horizontalAlignment}];
   }
 
 LABEL_31:
@@ -487,8 +487,8 @@ LABEL_38:
 
           v40 = v39;
 
-          v41 = [MEMORY[0x277CCA890] currentHandler];
-          [v41 handleFailureInMethod:a2 object:self file:v40 lineNumber:276 description:{@"Invalid vertical alignment %ld.", self->_verticalAlignment}];
+          currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:v40 lineNumber:276 description:{@"Invalid vertical alignment %ld.", self->_verticalAlignment}];
         }
 
         goto LABEL_48;
@@ -665,8 +665,8 @@ LABEL_48:
     v64 = v80 / v44;
   }
 
-  v81 = [(NUIContentScrollView *)self documentView];
-  [v81 setFrame:{v49, v54, v59, v64}];
+  documentView3 = [(NUIContentScrollView *)self documentView];
+  [documentView3 setFrame:{v49, v54, v59, v64}];
 }
 
 @end

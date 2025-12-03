@@ -4,26 +4,26 @@
 - (UICoordinateSpace)coordinateSpace;
 - (UIFocusEnvironment)parentFocusEnvironment;
 - (UIFocusItem)fulfilledItem;
-- (_UIFocusPromiseItem)initWithParentEnvironment:(id)a3 frame:(CGRect)a4 fullfillmentHandler:(id)a5;
-- (id)focusItemsInRect:(CGRect)a3;
+- (_UIFocusPromiseItem)initWithParentEnvironment:(id)environment frame:(CGRect)frame fullfillmentHandler:(id)handler;
+- (id)focusItemsInRect:(CGRect)rect;
 - (void)setNeedsFocusUpdate;
 - (void)updateFocusIfNeeded;
 @end
 
 @implementation _UIFocusPromiseItem
 
-- (_UIFocusPromiseItem)initWithParentEnvironment:(id)a3 frame:(CGRect)a4 fullfillmentHandler:(id)a5
+- (_UIFocusPromiseItem)initWithParentEnvironment:(id)environment frame:(CGRect)frame fullfillmentHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
-  v13 = a5;
-  if (!v12)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  environmentCopy = environment;
+  handlerCopy = handler;
+  if (!environmentCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"_UIFocusPromiseItem.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"parentEnvironment != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusPromiseItem.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"parentEnvironment != nil"}];
   }
 
   v21.origin.x = x;
@@ -32,22 +32,22 @@
   v21.size.height = height;
   if (CGRectIsNull(v21))
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"_UIFocusPromiseItem.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"!CGRectIsNull(frame)"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusPromiseItem.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"!CGRectIsNull(frame)"}];
 
-    if (v13)
+    if (handlerCopy)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v13)
+  else if (handlerCopy)
   {
     goto LABEL_5;
   }
 
-  v19 = [MEMORY[0x277CCA890] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"_UIFocusPromiseItem.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"fulfillmentHandler != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"_UIFocusPromiseItem.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"fulfillmentHandler != nil"}];
 
 LABEL_5:
   v20.receiver = self;
@@ -56,9 +56,9 @@ LABEL_5:
   v15 = v14;
   if (v14)
   {
-    [(_UIFocusPromiseItem *)v14 setParentFocusEnvironment:v12];
+    [(_UIFocusPromiseItem *)v14 setParentFocusEnvironment:environmentCopy];
     [(_UIFocusPromiseItem *)v15 setFrame:x, y, width, height];
-    [(_UIFocusPromiseItem *)v15 setFulfillmentHandler:v13];
+    [(_UIFocusPromiseItem *)v15 setFulfillmentHandler:handlerCopy];
   }
 
   return v15;
@@ -67,25 +67,25 @@ LABEL_5:
 - (NSString)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(_UIFocusPromiseItem *)self debugIdentifier];
-  v5 = [v3 appendObject:v4 withName:@"identifier" skipIfNil:1];
+  debugIdentifier = [(_UIFocusPromiseItem *)self debugIdentifier];
+  v5 = [v3 appendObject:debugIdentifier withName:@"identifier" skipIfNil:1];
 
   [(_UIFocusPromiseItem *)self frame];
   v6 = [v3 appendRect:@"frame" withName:?];
-  v7 = [(_UIFocusPromiseItem *)self parentFocusEnvironment];
-  v8 = [v3 appendObject:v7 withName:@"parentFocusEnvironment"];
+  parentFocusEnvironment = [(_UIFocusPromiseItem *)self parentFocusEnvironment];
+  v8 = [v3 appendObject:parentFocusEnvironment withName:@"parentFocusEnvironment"];
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (UIFocusItem)fulfilledItem
 {
   if ((*&self->_flags & 1) == 0)
   {
-    v3 = [(_UIFocusPromiseItem *)self fulfillmentHandler];
-    v4 = v3[2]();
+    fulfillmentHandler = [(_UIFocusPromiseItem *)self fulfillmentHandler];
+    v4 = fulfillmentHandler[2]();
 
     fulfilledItem = self->_fulfilledItem;
     self->_fulfilledItem = v4;
@@ -110,10 +110,10 @@ LABEL_5:
   [v2 updateFocusIfNeeded];
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v3 = [(_UIFocusPromiseItem *)self fulfilledItem:a3.origin.x];
+  v3 = [(_UIFocusPromiseItem *)self fulfilledItem:rect.origin.x];
   v4 = v3;
   if (v3)
   {
@@ -131,11 +131,11 @@ LABEL_5:
 
 - (UICoordinateSpace)coordinateSpace
 {
-  v2 = [(_UIFocusPromiseItem *)self parentFocusEnvironment];
-  v3 = [v2 focusItemContainer];
-  v4 = [v3 coordinateSpace];
+  parentFocusEnvironment = [(_UIFocusPromiseItem *)self parentFocusEnvironment];
+  focusItemContainer = [parentFocusEnvironment focusItemContainer];
+  coordinateSpace = [focusItemContainer coordinateSpace];
 
-  return v4;
+  return coordinateSpace;
 }
 
 - (UIFocusEnvironment)parentFocusEnvironment

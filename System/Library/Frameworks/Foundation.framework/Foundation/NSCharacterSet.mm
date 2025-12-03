@@ -22,18 +22,18 @@
 - (BOOL)characterIsMember:(unichar)aCharacter;
 - (BOOL)hasMemberInPlane:(uint8_t)thePlane;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSupersetOfSet:(NSCharacterSet *)theOtherSet;
 - (NSCharacterSet)init;
 - (NSCharacterSet)initWithCoder:(NSCoder *)coder;
 - (NSCharacterSet)invertedSet;
 - (NSData)bitmapRepresentation;
 - (id)_retainedBitmapRepresentation;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)replacementObjectForPortCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)replacementObjectForPortCoder:(id)coder;
 - (unint64_t)count;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSCharacterSet
@@ -94,7 +94,7 @@
 
 + (void)initialize
 {
-  if (NSCharacterSet == a1 && !_CFExecutableLinkedOnOrAfter())
+  if (NSCharacterSet == self && !_CFExecutableLinkedOnOrAfter())
   {
     __NSBuiltinSetTable = malloc_type_calloc(0xFuLL, 8uLL, 0x80040B8603338uLL);
   }
@@ -501,9 +501,9 @@
 
 - (unint64_t)hash
 {
-  v2 = [(NSCharacterSet *)self bitmapRepresentation];
+  bitmapRepresentation = [(NSCharacterSet *)self bitmapRepresentation];
 
-  return [(NSData *)v2 hash];
+  return [(NSData *)bitmapRepresentation hash];
 }
 
 - (NSCharacterSet)invertedSet
@@ -515,14 +515,14 @@
 
 - (BOOL)isEmpty
 {
-  v2 = [(NSCharacterSet *)self bitmapRepresentation];
-  if (!v2)
+  bitmapRepresentation = [(NSCharacterSet *)self bitmapRepresentation];
+  if (!bitmapRepresentation)
   {
     return 1;
   }
 
-  v3 = v2;
-  v4 = [(NSData *)v2 bytes];
+  v3 = bitmapRepresentation;
+  bytes = [(NSData *)bitmapRepresentation bytes];
   v5 = [(NSData *)v3 length];
   v6 = v5 - 1;
   if (v5 < 1)
@@ -532,7 +532,7 @@
 
   do
   {
-    v8 = *v4++;
+    v8 = *bytes++;
     v7 = v8;
     result = v8 == 0;
     v11 = v6-- != 0;
@@ -544,15 +544,15 @@
 
 - (unint64_t)count
 {
-  v2 = [(NSData *)[(NSCharacterSet *)self bitmapRepresentation] bytes];
+  bytes = [(NSData *)[(NSCharacterSet *)self bitmapRepresentation] bytes];
   v4 = 0;
-  if (v2)
+  if (bytes)
   {
     for (i = 0; i != 0x2000; ++i)
     {
-      if (v2[i])
+      if (bytes[i])
       {
-        v3.i32[0] = v2[i];
+        v3.i32[0] = bytes[i];
         v3 = vcnt_s8(v3);
         v3.i16[0] = vaddlv_u8(v3);
         v6 = v3.u32[0];
@@ -597,9 +597,9 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -609,28 +609,28 @@
     return 0;
   }
 
-  v5 = [(NSCharacterSet *)self bitmapRepresentation];
-  v6 = [a3 bitmapRepresentation];
+  bitmapRepresentation = [(NSCharacterSet *)self bitmapRepresentation];
+  bitmapRepresentation2 = [equal bitmapRepresentation];
 
-  return [(NSData *)v5 isEqual:v6];
+  return [(NSData *)bitmapRepresentation isEqual:bitmapRepresentation2];
 }
 
 - (NSData)bitmapRepresentation
 {
   v3 = [objc_allocWithZone(MEMORY[0x1E695DF88]) initWithLength:0x2000];
-  v4 = [v3 mutableBytes];
+  mutableBytes = [v3 mutableBytes];
   for (i = 0; i != 0xFFFF; ++i)
   {
     if ([(NSCharacterSet *)self characterIsMember:i])
     {
-      *(v4 + (i >> 3)) |= 1 << (i & 7);
+      *(mutableBytes + (i >> 3)) |= 1 << (i & 7);
     }
   }
 
   return v3;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
   Name = sel_getName(a2);
@@ -639,21 +639,21 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = [(NSCharacterSet *)self bitmapRepresentation];
-  if ([a3 allowsKeyedCoding])
+  bitmapRepresentation = [(NSCharacterSet *)self bitmapRepresentation];
+  if ([coder allowsKeyedCoding])
   {
-    if (object_getClass(a3) == NSKeyedArchiver)
+    if (object_getClass(coder) == NSKeyedArchiver)
     {
 
-      [a3 _encodePropertyList:v4 forKey:@"NSBitmap"];
+      [coder _encodePropertyList:bitmapRepresentation forKey:@"NSBitmap"];
     }
 
     else
     {
 
-      [a3 encodeObject:v4 forKey:@"NSBitmapObject"];
+      [coder encodeObject:bitmapRepresentation forKey:@"NSBitmapObject"];
     }
   }
 }
@@ -817,19 +817,19 @@ LABEL_35:
 
 - (id)_retainedBitmapRepresentation
 {
-  v2 = [(NSCharacterSet *)self bitmapRepresentation];
+  bitmapRepresentation = [(NSCharacterSet *)self bitmapRepresentation];
 
-  return v2;
+  return bitmapRepresentation;
 }
 
-- (id)replacementObjectForPortCoder:(id)a3
+- (id)replacementObjectForPortCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isByref] && -[NSCharacterSet isMutable](self, "isMutable"))
+  if ([coder isByref] && -[NSCharacterSet isMutable](self, "isMutable"))
   {
     v6.receiver = self;
     v6.super_class = NSCharacterSet;
-    return [(NSCharacterSet *)&v6 replacementObjectForPortCoder:a3];
+    return [(NSCharacterSet *)&v6 replacementObjectForPortCoder:coder];
   }
 
   return self;

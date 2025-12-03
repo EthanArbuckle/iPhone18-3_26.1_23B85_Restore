@@ -1,40 +1,40 @@
 @interface _ASAgentFileVaultRecoveryKeyListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)recoveryKeysForSerialNumber:(id)a3 completion:(id)a4;
-- (void)saveRecoveryKeyWithRequest:(id)a3 completion:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)recoveryKeysForSerialNumber:(id)number completion:(id)completion;
+- (void)saveRecoveryKeyWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation _ASAgentFileVaultRecoveryKeyListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1B1D2633C(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_1B1D2633C(connectionCopy);
 
   return v9 & 1;
 }
 
-- (void)saveRecoveryKeyWithRequest:(id)a3 completion:(id)a4
+- (void)saveRecoveryKeyWithRequest:(id)request completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_1B1D26628(v7, v8, v6);
+  requestCopy = request;
+  selfCopy = self;
+  sub_1B1D26628(requestCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)recoveryKeysForSerialNumber:(id)a3 completion:(id)a4
+- (void)recoveryKeysForSerialNumber:(id)number completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_1B1D7BE4C();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
-  sub_1B1D26DA8(v6, v8, v9, v5);
+  selfCopy = self;
+  sub_1B1D26DA8(v6, v8, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }

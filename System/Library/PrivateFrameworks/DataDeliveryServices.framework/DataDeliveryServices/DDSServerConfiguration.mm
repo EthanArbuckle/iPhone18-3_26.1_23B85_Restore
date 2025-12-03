@@ -1,25 +1,25 @@
 @interface DDSServerConfiguration
-- (BOOL)isEqual:(id)a3;
-- (DDSServerConfiguration)initWithXPCServiceName:(id)a3 assertionStorageDirectoryURL:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (DDSServerConfiguration)initWithXPCServiceName:(id)name assertionStorageDirectoryURL:(id)l;
 - (unint64_t)hash;
 @end
 
 @implementation DDSServerConfiguration
 
-- (DDSServerConfiguration)initWithXPCServiceName:(id)a3 assertionStorageDirectoryURL:(id)a4
+- (DDSServerConfiguration)initWithXPCServiceName:(id)name assertionStorageDirectoryURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = DDSServerConfiguration;
   v8 = [(DDSServerConfiguration *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     xpcServiceName = v8->_xpcServiceName;
     v8->_xpcServiceName = v9;
 
-    v11 = [v7 copy];
+    v11 = [lCopy copy];
     assertionStorageDirectoryURL = v8->_assertionStorageDirectoryURL;
     v8->_assertionStorageDirectoryURL = v11;
   }
@@ -27,13 +27,13 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -44,13 +44,13 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(DDSServerConfiguration *)self xpcServiceName];
-    v8 = [v6 xpcServiceName];
-    if ([v7 isEqualToString:v8])
+    xpcServiceName = [(DDSServerConfiguration *)self xpcServiceName];
+    xpcServiceName2 = [v6 xpcServiceName];
+    if ([xpcServiceName isEqualToString:xpcServiceName2])
     {
-      v9 = [(DDSServerConfiguration *)self assertionStorageDirectoryURL];
-      v10 = [v6 assertionStorageDirectoryURL];
-      v11 = [v9 isEqual:v10];
+      assertionStorageDirectoryURL = [(DDSServerConfiguration *)self assertionStorageDirectoryURL];
+      assertionStorageDirectoryURL2 = [v6 assertionStorageDirectoryURL];
+      v11 = [assertionStorageDirectoryURL isEqual:assertionStorageDirectoryURL2];
     }
 
     else
@@ -72,11 +72,11 @@
   v9.receiver = self;
   v9.super_class = DDSServerConfiguration;
   v3 = [(DDSServerConfiguration *)&v9 hash];
-  v4 = [(DDSServerConfiguration *)self xpcServiceName];
-  v5 = [v4 hash];
+  xpcServiceName = [(DDSServerConfiguration *)self xpcServiceName];
+  v5 = [xpcServiceName hash];
 
-  v6 = [(DDSServerConfiguration *)self assertionStorageDirectoryURL];
-  v7 = v5 ^ [v6 hash];
+  assertionStorageDirectoryURL = [(DDSServerConfiguration *)self assertionStorageDirectoryURL];
+  v7 = v5 ^ [assertionStorageDirectoryURL hash];
 
   return v7 ^ v3;
 }

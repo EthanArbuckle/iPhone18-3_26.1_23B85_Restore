@@ -10,21 +10,21 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v28.receiver = a1;
+  v28.receiver = self;
   v28.super_class = &off_286975BA8;
   v11 = objc_msgSendSuper2(&v28, sel_init);
   if (v11)
   {
     [v11 setBankTransactionType:{objc_msgSend(v8, "transactionType")}];
-    v12 = [v8 bankTransactionDescription];
-    [v11 setBankTransactionDescription:v12];
+    bankTransactionDescription = [v8 bankTransactionDescription];
+    [v11 setBankTransactionDescription:bankTransactionDescription];
 
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v13 = [v8 otherTransactionLocations];
-    v14 = [v13 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    otherTransactionLocations = [v8 otherTransactionLocations];
+    v14 = [otherTransactionLocations countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v14)
     {
       v15 = v14;
@@ -36,14 +36,14 @@
         {
           if (*v25 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(otherTransactionLocations);
           }
 
           [v11 addOtherTransactionLocations:*(*(&v24 + 1) + 8 * v17++)];
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v15 = [otherTransactionLocations countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v15);
@@ -53,18 +53,18 @@
     [v11 setTransactionTimestamp:?];
     [v11 setIndustryCode:{objc_msgSend(v8, "industryCode")}];
     [v11 setEnableBrandMuidFallback:{objc_msgSend(v8, "enableBrandMuidFallback")}];
-    v18 = [v8 transactionCurrencyCode];
-    [v11 setTransactionCurrencyCode:v18];
+    transactionCurrencyCode = [v8 transactionCurrencyCode];
+    [v11 setTransactionCurrencyCode:transactionCurrencyCode];
 
     [v11 setTransactionStatus:{objc_msgSend(v8, "transactionStatus")}];
-    v19 = [v8 merchantInformation];
-    [v11 setMerchantInformation:v19];
+    merchantInformation = [v8 merchantInformation];
+    [v11 setMerchantInformation:merchantInformation];
 
-    v20 = [v8 bankTransactionDescriptionClean];
-    [v11 setBankTransactionDescriptionClean:v20];
+    bankTransactionDescriptionClean = [v8 bankTransactionDescriptionClean];
+    [v11 setBankTransactionDescriptionClean:bankTransactionDescriptionClean];
 
-    v21 = [v8 bankIdentifier];
-    [v11 setBankIdentifier:v21];
+    bankIdentifier = [v8 bankIdentifier];
+    [v11 setBankIdentifier:bankIdentifier];
 
     [v11 setRawMerchantCode:v9];
     [v11 setIndustryCategory:v10];

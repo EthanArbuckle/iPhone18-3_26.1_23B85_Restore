@@ -1,35 +1,35 @@
 @interface _REPeriodOfDay
-- (BOOL)isEqual:(id)a3;
-- (_REPeriodOfDay)initWithInterval:(id)a3 periodOfDay:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (_REPeriodOfDay)initWithInterval:(id)interval periodOfDay:(unint64_t)day;
 @end
 
 @implementation _REPeriodOfDay
 
-- (_REPeriodOfDay)initWithInterval:(id)a3 periodOfDay:(unint64_t)a4
+- (_REPeriodOfDay)initWithInterval:(id)interval periodOfDay:(unint64_t)day
 {
-  v6 = a3;
+  intervalCopy = interval;
   v11.receiver = self;
   v11.super_class = _REPeriodOfDay;
   v7 = [(_REPeriodOfDay *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [intervalCopy copy];
     interval = v7->_interval;
     v7->_interval = v8;
 
-    v7->_periodOfDay = a4;
+    v7->_periodOfDay = day;
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[2];
     v7 = self->_interval;
     v8 = v7;

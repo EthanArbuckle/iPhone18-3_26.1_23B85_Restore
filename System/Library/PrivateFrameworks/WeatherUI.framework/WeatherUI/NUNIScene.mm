@@ -1,37 +1,37 @@
 @interface NUNIScene
-- (BOOL)isAnimating:(id)a3 forKeys:(unint64_t)a4;
+- (BOOL)isAnimating:(id)animating forKeys:(unint64_t)keys;
 - (CLLocationCoordinate2D)offsetCoordinate;
-- (NUNIScene)initWithSphereoids:(unint64_t)a3 projectionType:(unint64_t)a4 currentDateBlock:(id)a5;
-- (double)animatedFloatForKey:(uint64_t)a3;
+- (NUNIScene)initWithSphereoids:(unint64_t)sphereoids projectionType:(unint64_t)type currentDateBlock:(id)block;
+- (double)animatedFloatForKey:(uint64_t)key;
 - (float)restingCameraRoll;
-- (id)spheroidOfType:(unint64_t)a3;
-- (void)addAnimation:(id)a3;
-- (void)removeAllAnimationsFor:(id)a3 withKeys:(unint64_t)a4;
-- (void)removeAnimation:(id)a3;
-- (void)setAnimatedFloat:(unint64_t)a3 forKey:;
-- (void)setCamera:(float)a3 target:up:roll:;
-- (void)setOffsetCoordinate:(CLLocationCoordinate2D)a3;
-- (void)setSnap:(unint64_t)a3;
-- (void)update:(float)a3;
+- (id)spheroidOfType:(unint64_t)type;
+- (void)addAnimation:(id)animation;
+- (void)removeAllAnimationsFor:(id)for withKeys:(unint64_t)keys;
+- (void)removeAnimation:(id)animation;
+- (void)setAnimatedFloat:(unint64_t)float forKey:;
+- (void)setCamera:(float)camera target:up:roll:;
+- (void)setOffsetCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)setSnap:(unint64_t)snap;
+- (void)update:(float)update;
 - (void)updateCamera;
 - (void)updateFromDateIfNeeded;
-- (void)updateSunLocationAnimated:(BOOL)a3;
-- (void)updateSunLocationForDate:(id)a3 animated:(BOOL)a4;
+- (void)updateSunLocationAnimated:(BOOL)animated;
+- (void)updateSunLocationForDate:(id)date animated:(BOOL)animated;
 @end
 
 @implementation NUNIScene
 
-- (NUNIScene)initWithSphereoids:(unint64_t)a3 projectionType:(unint64_t)a4 currentDateBlock:(id)a5
+- (NUNIScene)initWithSphereoids:(unint64_t)sphereoids projectionType:(unint64_t)type currentDateBlock:(id)block
 {
-  v6 = a3;
-  v8 = a5;
+  sphereoidsCopy = sphereoids;
+  blockCopy = block;
   v29.receiver = self;
   v29.super_class = NUNIScene;
   v9 = [(NUNIScene *)&v29 init];
   if (v9)
   {
-    v27 = a4;
-    aBlock = v8;
+    typeCopy = type;
+    aBlock = blockCopy;
     v10 = objc_opt_new();
     spheroids = v9->_spheroids;
     v9->_spheroids = v10;
@@ -39,7 +39,7 @@
     v12 = 0;
     v13 = 0;
     v14 = 0;
-    while (((1 << v12) & v6) == 0)
+    while (((1 << v12) & sphereoidsCopy) == 0)
     {
 LABEL_13:
       if (++v12 == 24)
@@ -54,16 +54,16 @@ LABEL_13:
         *&v9->_structure.var11 = 2;
         v9->_structure.var8.var0.var0 = 5.7588;
         v9->_anon_78[16] = 1;
-        *&v9->_anon_78[8] = v27;
+        *&v9->_anon_78[8] = typeCopy;
         *&v9->_anon_78[52] = 1097859072;
         [(NUNIScene *)v9 setSnap:24];
-        v8 = aBlock;
+        blockCopy = aBlock;
         v22 = _Block_copy(aBlock);
         currentDateBlock = v9->_currentDateBlock;
         v9->_currentDateBlock = v22;
 
-        v24 = [(NUNIScene *)v9 date];
-        [v24 timeIntervalSince1970];
+        date = [(NUNIScene *)v9 date];
+        [date timeIntervalSince1970];
         *&v25 = v25 / 31536000.0;
         *&v9->_anon_78[20] = LODWORD(v25);
 
@@ -168,23 +168,23 @@ LABEL_17:
   }
 }
 
-- (double)animatedFloatForKey:(uint64_t)a3
+- (double)animatedFloatForKey:(uint64_t)key
 {
   *&v3 = 0;
-  if (a3 > 4)
+  if (key > 4)
   {
-    if (a3 > 7)
+    if (key > 7)
     {
-      switch(a3)
+      switch(key)
       {
         case 8:
-          v4 = (a1 + 160);
+          v4 = (self + 160);
           break;
         case 9:
-          v4 = (a1 + 164);
+          v4 = (self + 164);
           break;
         case 10:
-          v4 = (a1 + 168);
+          v4 = (self + 168);
           break;
         default:
           return *&v3;
@@ -193,22 +193,22 @@ LABEL_17:
 
     else
     {
-      if (a3 != 5)
+      if (key != 5)
       {
-        if (a3 == 6)
+        if (key == 6)
         {
-          *&v3 = *(a1 + 144);
+          *&v3 = *(self + 144);
         }
 
         else
         {
-          *&v3 = *(a1 + 152);
+          *&v3 = *(self + 152);
         }
 
         return *&v3;
       }
 
-      v4 = (a1 + 96);
+      v4 = (self + 96);
     }
 
 LABEL_24:
@@ -216,52 +216,52 @@ LABEL_24:
     return *&v3;
   }
 
-  if (a3 > 1)
+  if (key > 1)
   {
-    if (a3 == 2)
+    if (key == 2)
     {
-      v3 = *(a1 + 80);
+      v3 = *(self + 80);
       return *&v3;
     }
 
-    if (a3 == 3)
+    if (key == 3)
     {
-      v4 = (a1 + 100);
+      v4 = (self + 100);
     }
 
     else
     {
-      v4 = (a1 + 140);
+      v4 = (self + 140);
     }
 
     goto LABEL_24;
   }
 
-  if (a3)
+  if (key)
   {
-    if (a3 == 1)
+    if (key == 1)
     {
-      v3 = *(a1 + 64);
+      v3 = *(self + 64);
     }
   }
 
   else
   {
-    v3 = *(a1 + 48);
+    v3 = *(self + 48);
   }
 
   return *&v3;
 }
 
-- (void)setAnimatedFloat:(unint64_t)a3 forKey:
+- (void)setAnimatedFloat:(unint64_t)float forKey:
 {
-  if (a3 <= 4)
+  if (float <= 4)
   {
-    if (a3 <= 1)
+    if (float <= 1)
     {
-      if (a3)
+      if (float)
       {
-        if (a3 == 1)
+        if (float == 1)
         {
           *&self->_structure.var3 = _Q0;
         }
@@ -273,7 +273,7 @@ LABEL_24:
       }
     }
 
-    else if (a3 == 2)
+    else if (float == 2)
     {
       _Q1 = vmulq_f32(_Q0, _Q0);
       _S2 = _Q0.i32[2];
@@ -283,7 +283,7 @@ LABEL_24:
       *&self->_structure.var5 = vdivq_f32(_Q0, vdupq_lane_s32(*_Q1.f32, 0));
     }
 
-    else if (a3 == 3)
+    else if (float == 3)
     {
       LODWORD(self->_structure.var8.var0.var1) = _Q0.i32[0];
     }
@@ -294,9 +294,9 @@ LABEL_24:
     }
   }
 
-  else if (a3 > 7)
+  else if (float > 7)
   {
-    switch(a3)
+    switch(float)
     {
       case 8uLL:
         *&self->_anon_78[40] = _Q0.i32[0];
@@ -310,13 +310,13 @@ LABEL_24:
     }
   }
 
-  else if (a3 == 5)
+  else if (float == 5)
   {
     LODWORD(self->_structure.var8.var0.var0) = _Q0.i32[0];
     [(NUNIScene *)self updateCamera];
   }
 
-  else if (a3 == 6)
+  else if (float == 6)
   {
     *&self->_anon_78[24] = _Q0.i64[0];
   }
@@ -327,7 +327,7 @@ LABEL_24:
   }
 }
 
-- (void)update:(float)a3
+- (void)update:(float)update
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
@@ -351,12 +351,12 @@ LABEL_24:
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        *&v8 = a3;
+        *&v8 = update;
         if (([v12 update:{v8, v14}] & 1) == 0)
         {
           [v5 addIndex:{-[NSMutableArray indexOfObject:](self->_animations, "indexOfObject:", v12)}];
-          v13 = [v12 observer];
-          [v13 universeAnimationFinished:v12];
+          observer = [v12 observer];
+          [observer universeAnimationFinished:v12];
         }
       }
 
@@ -372,10 +372,10 @@ LABEL_24:
   }
 }
 
-- (BOOL)isAnimating:(id)a3 forKeys:(unint64_t)a4
+- (BOOL)isAnimating:(id)animating forKeys:(unint64_t)keys
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  animatingCopy = animating;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -397,12 +397,12 @@ LABEL_24:
 
         v12 = *(*(&v17 + 1) + 8 * i);
         v13 = [v12 key];
-        v14 = [v12 animatable];
-        if (v14 == v6)
+        animatable = [v12 animatable];
+        if (animatable == animatingCopy)
         {
           v15 = 1;
 
-          if (((1 << v13) & ~a4) == 0)
+          if (((1 << v13) & ~keys) == 0)
           {
             goto LABEL_12;
           }
@@ -425,12 +425,12 @@ LABEL_12:
   return v15;
 }
 
-- (void)addAnimation:(id)a3
+- (void)addAnimation:(id)animation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 key];
-  v6 = [v4 animatable];
+  animationCopy = animation;
+  v5 = [animationCopy key];
+  animatable = [animationCopy animatable];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -453,9 +453,9 @@ LABEL_12:
         v12 = *(*(&v15 + 1) + 8 * i);
         if ([v12 key] == v5)
         {
-          v13 = [v12 animatable];
+          animatable2 = [v12 animatable];
 
-          if (v13 == v6)
+          if (animatable2 == animatable)
           {
             v14 = v12;
 
@@ -481,18 +481,18 @@ LABEL_12:
 
   v14 = 0;
 LABEL_13:
-  [(NSMutableArray *)self->_animations addObject:v4, v15];
+  [(NSMutableArray *)self->_animations addObject:animationCopy, v15];
 }
 
-- (void)removeAllAnimationsFor:(id)a3 withKeys:(unint64_t)a4
+- (void)removeAllAnimationsFor:(id)for withKeys:(unint64_t)keys
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  forCopy = for;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v16 = self;
+  selfCopy = self;
   v7 = self->_animations;
   v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
@@ -511,18 +511,18 @@ LABEL_13:
 
         v13 = *(*(&v17 + 1) + 8 * i);
         v14 = [v13 key];
-        v15 = [v13 animatable];
-        if (v15 == v6)
+        animatable = [v13 animatable];
+        if (animatable == forCopy)
         {
 
-          if (((1 << v14) & ~a4) == 0)
+          if (((1 << v14) & ~keys) == 0)
           {
             if (!v10)
             {
               v10 = objc_opt_new();
             }
 
-            [v10 addIndex:{-[NSMutableArray indexOfObject:](v16->_animations, "indexOfObject:", v13)}];
+            [v10 addIndex:{-[NSMutableArray indexOfObject:](selfCopy->_animations, "indexOfObject:", v13)}];
           }
         }
 
@@ -544,35 +544,35 @@ LABEL_13:
 
   if ([v10 count])
   {
-    [(NSMutableArray *)v16->_animations removeObjectsAtIndexes:v10];
+    [(NSMutableArray *)selfCopy->_animations removeObjectsAtIndexes:v10];
   }
 }
 
-- (void)removeAnimation:(id)a3
+- (void)removeAnimation:(id)animation
 {
-  v5 = a3;
-  v4 = [v5 observer];
-  [v4 universeAnimationRemoved:v5];
+  animationCopy = animation;
+  observer = [animationCopy observer];
+  [observer universeAnimationRemoved:animationCopy];
 
-  [(NSMutableArray *)self->_animations removeObject:v5];
+  [(NSMutableArray *)self->_animations removeObject:animationCopy];
 }
 
-- (void)updateSunLocationAnimated:(BOOL)a3
+- (void)updateSunLocationAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(NUNIScene *)self date];
-  [(NUNIScene *)self updateSunLocationForDate:v5 animated:v3];
+  animatedCopy = animated;
+  date = [(NUNIScene *)self date];
+  [(NUNIScene *)self updateSunLocationForDate:date animated:animatedCopy];
 }
 
-- (void)updateSunLocationForDate:(id)a3 animated:(BOOL)a4
+- (void)updateSunLocationForDate:(id)date animated:(BOOL)animated
 {
   v74 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dateCopy = date;
   self->_isUpdateNeeded = 0;
-  [v6 timeIntervalSince1970];
+  [dateCopy timeIntervalSince1970];
   v8.i32[1] = 1098781496;
   *v8.i32 = v7 / 31536000.0;
-  if (a4)
+  if (animated)
   {
     if (*&self->_anon_78[20] != *v8.i32)
     {
@@ -615,7 +615,7 @@ LABEL_13:
         }
 
         v21 = *(*(&v69 + 1) + 8 * i);
-        if (a4)
+        if (animated)
         {
           [*(*(&v69 + 1) + 8 * i) angle];
           *v23.i32 = v22 + (floorf(v22 / 6.2832) * -6.2832);
@@ -632,7 +632,7 @@ LABEL_13:
           v67 = 0;
           v68 = 0;
           v66 = 0;
-          [v21 date:v6 toEquatorRotation:&v68 toAngle:&v68 + 4 toLight:&v66 toDistance:&v67 + 4 toRadius:&v67];
+          [v21 date:dateCopy toEquatorRotation:&v68 toAngle:&v68 + 4 toLight:&v66 toDistance:&v67 + 4 toRadius:&v67];
           v29 = *(&v68 + 1) + (floorf(*(&v68 + 1) / 6.2832) * -6.2832);
           v30 = vabds_f32(v29, *v59.i32);
           if (v29 <= *v59.i32)
@@ -729,7 +729,7 @@ LABEL_13:
         else
         {
           [(NUNIScene *)self removeAllAnimationsFor:*(*(&v69 + 1) + 8 * i) withKeys:154];
-          [v21 updateSunLocationForDate:v6];
+          [v21 updateSunLocationForDate:dateCopy];
         }
       }
 
@@ -740,7 +740,7 @@ LABEL_13:
   }
 }
 
-- (id)spheroidOfType:(unint64_t)a3
+- (id)spheroidOfType:(unint64_t)type
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -763,7 +763,7 @@ LABEL_13:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 type] == a3)
+        if ([v9 type] == type)
         {
           v10 = v9;
           goto LABEL_11;
@@ -795,9 +795,9 @@ LABEL_11:
   }
 }
 
-- (void)setCamera:(float)a3 target:up:roll:
+- (void)setCamera:(float)camera target:up:roll:
 {
-  *&self->_structure.var0 = *&a3;
+  *&self->_structure.var0 = *&camera;
   *&self->_structure.var3 = v3;
   *&self->_structure.var5 = v4;
   self->_structure.var8.var0.var1 = v5;
@@ -812,20 +812,20 @@ LABEL_11:
   return result;
 }
 
-- (void)setOffsetCoordinate:(CLLocationCoordinate2D)a3
+- (void)setOffsetCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   *&self->_anon_78[32] = longitude;
   *&self->_anon_78[36] = latitude;
 }
 
-- (void)setSnap:(unint64_t)a3
+- (void)setSnap:(unint64_t)snap
 {
-  if (*&self->_structure.var9 != a3)
+  if (*&self->_structure.var9 != snap)
   {
-    *&self->_structure.var9 = a3;
-    if (a3 == 24)
+    *&self->_structure.var9 = snap;
+    if (snap == 24)
     {
       v5 = 0;
     }

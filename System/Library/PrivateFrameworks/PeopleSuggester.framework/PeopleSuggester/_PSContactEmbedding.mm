@@ -1,10 +1,10 @@
 @interface _PSContactEmbedding
 - (_PSContactEmbedding)init;
-- (_PSContactEmbedding)initWithModel:(id)a3;
-- (id)convertToNSArrayFromMLMultiArray:(id)a3;
-- (id)getEmbeddingForContact:(id)a3;
-- (id)getEmbeddingFromFeatureDict:(id)a3;
-- (id)getEmbeddingsForContacts:(id)a3;
+- (_PSContactEmbedding)initWithModel:(id)model;
+- (id)convertToNSArrayFromMLMultiArray:(id)array;
+- (id)getEmbeddingForContact:(id)contact;
+- (id)getEmbeddingFromFeatureDict:(id)dict;
+- (id)getEmbeddingsForContacts:(id)contacts;
 @end
 
 @implementation _PSContactEmbedding
@@ -15,55 +15,55 @@
   if (v3)
   {
     self = [(_PSContactEmbedding *)self initWithModel:v3];
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (_PSContactEmbedding)initWithModel:(id)a3
+- (_PSContactEmbedding)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _PSContactEmbedding;
   v6 = [(_PSContactEmbedding *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
   }
 
   return v7;
 }
 
-- (id)getEmbeddingForContact:(id)a3
+- (id)getEmbeddingForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = objc_alloc_init(_PSContactEmbeddingFeatureExtractor);
-  v6 = [(_PSContactEmbeddingFeatureExtractor *)v5 featureInputForContact:v4];
+  v6 = [(_PSContactEmbeddingFeatureExtractor *)v5 featureInputForContact:contactCopy];
 
   v7 = [(_PSContactEmbedding *)self getEmbeddingFromFeatureDict:v6];
 
   return v7;
 }
 
-- (id)getEmbeddingsForContacts:(id)a3
+- (id)getEmbeddingsForContacts:(id)contacts
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactsCopy = contacts;
   v18 = objc_alloc_init(_PSContactEmbeddingFeatureExtractor);
-  v5 = [(_PSContactEmbeddingFeatureExtractor *)v18 featureInputsForContacts:v4];
+  v5 = [(_PSContactEmbeddingFeatureExtractor *)v18 featureInputsForContacts:contactsCopy];
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v4;
+  obj = contactsCopy;
   v7 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -80,10 +80,10 @@
 
         v11 = *(*(&v20 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v13 = [v11 identifier];
-        v14 = [v5 objectForKey:v13];
+        identifier = [v11 identifier];
+        v14 = [v5 objectForKey:identifier];
         v15 = [(_PSContactEmbedding *)self getEmbeddingFromFeatureDict:v14];
-        [v6 setObject:v15 forKey:v13];
+        [v6 setObject:v15 forKey:identifier];
 
         objc_autoreleasePoolPop(v12);
       }
@@ -99,10 +99,10 @@
   return v6;
 }
 
-- (id)getEmbeddingFromFeatureDict:(id)a3
+- (id)getEmbeddingFromFeatureDict:(id)dict
 {
   v39 = *MEMORY[0x1E69E9840];
-  v22 = a3;
+  dictCopy = dict;
   v26 = [_PSContactEmbeddingUtilities prepareFeatureInputFromFeatureDict:?];
   v25 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v25 setObject:v26 forKey:@"input1"];
@@ -146,9 +146,9 @@
 
   else
   {
-    v9 = [(_PSContactEmbedding *)self model];
+    model = [(_PSContactEmbedding *)self model];
     v31 = 0;
-    v10 = [v9 predictionFromFeatures:v24 error:&v31];
+    v10 = [model predictionFromFeatures:v24 error:&v31];
     v21 = v31;
 
     if (v21)
@@ -184,9 +184,9 @@
 
             v15 = *(*(&v27 + 1) + 8 * i);
             v16 = [v10 featureValueForName:{v15, v21}];
-            v17 = [v16 objectValue];
+            objectValue = [v16 objectValue];
 
-            v18 = [(_PSContactEmbedding *)self convertToNSArrayFromMLMultiArray:v17];
+            v18 = [(_PSContactEmbedding *)self convertToNSArrayFromMLMultiArray:objectValue];
             [v11 setObject:v18 forKey:v15];
           }
 
@@ -207,16 +207,16 @@
   return v8;
 }
 
-- (id)convertToNSArrayFromMLMultiArray:(id)a3
+- (id)convertToNSArrayFromMLMultiArray:(id)array
 {
-  v3 = a3;
-  v4 = [v3 count];
+  arrayCopy = array;
+  v4 = [arrayCopy count];
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v4];
   if (v4)
   {
     for (i = 0; i != v4; ++i)
     {
-      v7 = [v3 objectAtIndexedSubscript:i];
+      v7 = [arrayCopy objectAtIndexedSubscript:i];
       [v5 setObject:v7 atIndexedSubscript:i];
     }
   }

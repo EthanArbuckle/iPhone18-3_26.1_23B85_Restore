@@ -1,27 +1,27 @@
 @interface STSchemaSTLLMQURequestEnded
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (STSchemaSTLLMQURequestEnded)initWithDictionary:(id)a3;
-- (STSchemaSTLLMQURequestEnded)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (STSchemaSTLLMQURequestEnded)initWithDictionary:(id)dictionary;
+- (STSchemaSTLLMQURequestEnded)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasResponseLength:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasResponseLength:(BOOL)length;
+- (void)writeTo:(id)to;
 @end
 
 @implementation STSchemaSTLLMQURequestEnded
 
-- (STSchemaSTLLMQURequestEnded)initWithDictionary:(id)a3
+- (STSchemaSTLLMQURequestEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = STSchemaSTLLMQURequestEnded;
   v5 = [(STSchemaSTLLMQURequestEnded *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"modelNumber"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"modelNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,21 +29,21 @@
       [(STSchemaSTLLMQURequestEnded *)v5 setModelNumber:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"requestLength"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"requestLength"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTLLMQURequestEnded setRequestLength:](v5, "setRequestLength:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"responseLength"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"responseLength"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTLLMQURequestEnded setResponseLength:](v5, "setResponseLength:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"queryArguments"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"queryArguments"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(STSchemaSTLLMQURequestEnded *)v5 setQueryArguments:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"llmquPerfMetrics"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"llmquPerfMetrics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (STSchemaSTLLMQURequestEnded)initWithJSON:(id)a3
+- (STSchemaSTLLMQURequestEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(STSchemaSTLLMQURequestEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(STSchemaSTLLMQURequestEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(STSchemaSTLLMQURequestEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,43 +101,43 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_llmquPerfMetrics)
   {
-    v4 = [(STSchemaSTLLMQURequestEnded *)self llmquPerfMetrics];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    llmquPerfMetrics = [(STSchemaSTLLMQURequestEnded *)self llmquPerfMetrics];
+    dictionaryRepresentation = [llmquPerfMetrics dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"llmquPerfMetrics"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"llmquPerfMetrics"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"llmquPerfMetrics"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"llmquPerfMetrics"];
     }
   }
 
   if (self->_modelNumber)
   {
-    v7 = [(STSchemaSTLLMQURequestEnded *)self modelNumber];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"modelNumber"];
+    modelNumber = [(STSchemaSTLLMQURequestEnded *)self modelNumber];
+    v8 = [modelNumber copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"modelNumber"];
   }
 
   if (self->_queryArguments)
   {
-    v9 = [(STSchemaSTLLMQURequestEnded *)self queryArguments];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    queryArguments = [(STSchemaSTLLMQURequestEnded *)self queryArguments];
+    dictionaryRepresentation2 = [queryArguments dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"queryArguments"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"queryArguments"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"queryArguments"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"queryArguments"];
     }
   }
 
@@ -145,7 +145,7 @@
   if (has)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[STSchemaSTLLMQURequestEnded requestLength](self, "requestLength")}];
-    [v3 setObject:v13 forKeyedSubscript:@"requestLength"];
+    [dictionary setObject:v13 forKeyedSubscript:@"requestLength"];
 
     has = self->_has;
   }
@@ -153,12 +153,12 @@
   if ((has & 2) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[STSchemaSTLLMQURequestEnded responseLength](self, "responseLength")}];
-    [v3 setObject:v14 forKeyedSubscript:@"responseLength"];
+    [dictionary setObject:v14 forKeyedSubscript:@"responseLength"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -190,28 +190,28 @@ LABEL_6:
   return v6 ^ [(STSchemaLLMQUPerfMetrics *)self->_llmquPerfMetrics hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = [(STSchemaSTLLMQURequestEnded *)self modelNumber];
-  v6 = [v4 modelNumber];
-  if ((v5 != 0) == (v6 == 0))
+  modelNumber = [(STSchemaSTLLMQURequestEnded *)self modelNumber];
+  modelNumber2 = [equalCopy modelNumber];
+  if ((modelNumber != 0) == (modelNumber2 == 0))
   {
     goto LABEL_23;
   }
 
-  v7 = [(STSchemaSTLLMQURequestEnded *)self modelNumber];
-  if (v7)
+  modelNumber3 = [(STSchemaSTLLMQURequestEnded *)self modelNumber];
+  if (modelNumber3)
   {
-    v8 = v7;
-    v9 = [(STSchemaSTLLMQURequestEnded *)self modelNumber];
-    v10 = [v4 modelNumber];
-    v11 = [v9 isEqual:v10];
+    v8 = modelNumber3;
+    modelNumber4 = [(STSchemaSTLLMQURequestEnded *)self modelNumber];
+    modelNumber5 = [equalCopy modelNumber];
+    v11 = [modelNumber4 isEqual:modelNumber5];
 
     if (!v11)
     {
@@ -224,7 +224,7 @@ LABEL_6:
   }
 
   has = self->_has;
-  v13 = v4[40];
+  v13 = equalCopy[40];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_24;
@@ -233,13 +233,13 @@ LABEL_6:
   if (*&has)
   {
     requestLength = self->_requestLength;
-    if (requestLength != [v4 requestLength])
+    if (requestLength != [equalCopy requestLength])
     {
       goto LABEL_24;
     }
 
     has = self->_has;
-    v13 = v4[40];
+    v13 = equalCopy[40];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -251,26 +251,26 @@ LABEL_6:
   if (v15)
   {
     responseLength = self->_responseLength;
-    if (responseLength != [v4 responseLength])
+    if (responseLength != [equalCopy responseLength])
     {
       goto LABEL_24;
     }
   }
 
-  v5 = [(STSchemaSTLLMQURequestEnded *)self queryArguments];
-  v6 = [v4 queryArguments];
-  if ((v5 != 0) == (v6 == 0))
+  modelNumber = [(STSchemaSTLLMQURequestEnded *)self queryArguments];
+  modelNumber2 = [equalCopy queryArguments];
+  if ((modelNumber != 0) == (modelNumber2 == 0))
   {
     goto LABEL_23;
   }
 
-  v17 = [(STSchemaSTLLMQURequestEnded *)self queryArguments];
-  if (v17)
+  queryArguments = [(STSchemaSTLLMQURequestEnded *)self queryArguments];
+  if (queryArguments)
   {
-    v18 = v17;
-    v19 = [(STSchemaSTLLMQURequestEnded *)self queryArguments];
-    v20 = [v4 queryArguments];
-    v21 = [v19 isEqual:v20];
+    v18 = queryArguments;
+    queryArguments2 = [(STSchemaSTLLMQURequestEnded *)self queryArguments];
+    queryArguments3 = [equalCopy queryArguments];
+    v21 = [queryArguments2 isEqual:queryArguments3];
 
     if (!v21)
     {
@@ -282,17 +282,17 @@ LABEL_6:
   {
   }
 
-  v5 = [(STSchemaSTLLMQURequestEnded *)self llmquPerfMetrics];
-  v6 = [v4 llmquPerfMetrics];
-  if ((v5 != 0) == (v6 == 0))
+  modelNumber = [(STSchemaSTLLMQURequestEnded *)self llmquPerfMetrics];
+  modelNumber2 = [equalCopy llmquPerfMetrics];
+  if ((modelNumber != 0) == (modelNumber2 == 0))
   {
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v22 = [(STSchemaSTLLMQURequestEnded *)self llmquPerfMetrics];
-  if (!v22)
+  llmquPerfMetrics = [(STSchemaSTLLMQURequestEnded *)self llmquPerfMetrics];
+  if (!llmquPerfMetrics)
   {
 
 LABEL_27:
@@ -300,10 +300,10 @@ LABEL_27:
     goto LABEL_25;
   }
 
-  v23 = v22;
-  v24 = [(STSchemaSTLLMQURequestEnded *)self llmquPerfMetrics];
-  v25 = [v4 llmquPerfMetrics];
-  v26 = [v24 isEqual:v25];
+  v23 = llmquPerfMetrics;
+  llmquPerfMetrics2 = [(STSchemaSTLLMQURequestEnded *)self llmquPerfMetrics];
+  llmquPerfMetrics3 = [equalCopy llmquPerfMetrics];
+  v26 = [llmquPerfMetrics2 isEqual:llmquPerfMetrics3];
 
   if (v26)
   {
@@ -317,12 +317,12 @@ LABEL_25:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(STSchemaSTLLMQURequestEnded *)self modelNumber];
+  toCopy = to;
+  modelNumber = [(STSchemaSTLLMQURequestEnded *)self modelNumber];
 
-  if (v4)
+  if (modelNumber)
   {
     PBDataWriterWriteStringField();
   }
@@ -339,29 +339,29 @@ LABEL_25:
     PBDataWriterWriteUint32Field();
   }
 
-  v6 = [(STSchemaSTLLMQURequestEnded *)self queryArguments];
+  queryArguments = [(STSchemaSTLLMQURequestEnded *)self queryArguments];
 
-  if (v6)
+  if (queryArguments)
   {
-    v7 = [(STSchemaSTLLMQURequestEnded *)self queryArguments];
+    queryArguments2 = [(STSchemaSTLLMQURequestEnded *)self queryArguments];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(STSchemaSTLLMQURequestEnded *)self llmquPerfMetrics];
+  llmquPerfMetrics = [(STSchemaSTLLMQURequestEnded *)self llmquPerfMetrics];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (llmquPerfMetrics)
   {
-    v10 = [(STSchemaSTLLMQURequestEnded *)self llmquPerfMetrics];
+    llmquPerfMetrics2 = [(STSchemaSTLLMQURequestEnded *)self llmquPerfMetrics];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (void)setHasResponseLength:(BOOL)a3
+- (void)setHasResponseLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 2;
   }
@@ -374,26 +374,26 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = STSchemaSTLLMQURequestEnded;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(STSchemaSTLLMQURequestEnded *)self queryArguments];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  queryArguments = [(STSchemaSTLLMQURequestEnded *)self queryArguments];
+  v7 = [queryArguments applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(STSchemaSTLLMQURequestEnded *)self deleteQueryArguments];
   }
 
-  v9 = [(STSchemaSTLLMQURequestEnded *)self llmquPerfMetrics];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  llmquPerfMetrics = [(STSchemaSTLLMQURequestEnded *)self llmquPerfMetrics];
+  v10 = [llmquPerfMetrics applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(STSchemaSTLLMQURequestEnded *)self deleteLlmquPerfMetrics];
   }

@@ -11,16 +11,16 @@
 - (id)suggestionAttributedSubtitle;
 - (id)suggestionCategory;
 - (id)suggestionCategoryImage;
-- (id)suggestionCategorySubtitleForItems:(id)a3;
+- (id)suggestionCategorySubtitleForItems:(id)items;
 - (id)suggestionDismissAction;
 - (id)suggestionImage;
 - (id)suggestionPrimaryAction;
 - (id)suggestionSubtitle;
 - (id)suggestionTitle;
 - (int64_t)locationProximity;
-- (void)dismissViewController:(id)a3 finished:(BOOL)a4;
-- (void)reminderCreationViewController:(id)a3 didCreateReminder:(BOOL)a4 error:(id)a5;
-- (void)setSuggestionDelegate:(id)a3;
+- (void)dismissViewController:(id)controller finished:(BOOL)finished;
+- (void)reminderCreationViewController:(id)controller didCreateReminder:(BOOL)reminder error:(id)error;
+- (void)setSuggestionDelegate:(id)delegate;
 @end
 
 @implementation SGReminderSuggestion
@@ -32,16 +32,16 @@
   return v2;
 }
 
-- (void)setSuggestionDelegate:(id)a3
+- (void)setSuggestionDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1B81C8128();
 }
 
 - (NSAttributedString)title
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B81C8550();
 
   return v3;
@@ -49,7 +49,7 @@
 
 - (NSAttributedString)notes
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B81C8620();
 
   return v3;
@@ -61,7 +61,7 @@
   v4 = OUTLINED_FUNCTION_21(v3);
   MEMORY[0x1EEE9AC00](v4);
   v6 = &v11 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_1B81C87A0(v6);
 
   v8 = sub_1B81F78E8();
@@ -77,7 +77,7 @@
 
 - (CLLocation)location
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B81C886C();
 
   return v3;
@@ -85,7 +85,7 @@
 
 - (NSString)locationString
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B81C8B38();
   v4 = v3;
 
@@ -122,7 +122,7 @@
 
 - (NSUserActivity)userActivity
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B81C8D44();
 
   return v3;
@@ -130,30 +130,30 @@
 
 - (int64_t)locationProximity
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B81C9064();
 
   return v3;
 }
 
-- (void)reminderCreationViewController:(id)a3 didCreateReminder:(BOOL)a4 error:(id)a5
+- (void)reminderCreationViewController:(id)controller didCreateReminder:(BOOL)reminder error:(id)error
 {
-  v8 = a3;
-  v9 = self;
-  v10 = a5;
-  sub_1B81C90A4(v8, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1B81C90A4(controllerCopy, reminder);
 }
 
-- (void)dismissViewController:(id)a3 finished:(BOOL)a4
+- (void)dismissViewController:(id)controller finished:(BOOL)finished
 {
-  v6 = a3;
-  v7 = self;
-  SGReminderSuggestion.dismissViewController(_:finished:)(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  SGReminderSuggestion.dismissViewController(_:finished:)(controllerCopy, finished);
 }
 
 - (id)suggestionTitle
 {
-  v2 = self;
+  selfCopy = self;
   SGReminderSuggestion.suggestionTitle()();
 
   v3 = sub_1B81F8F58();
@@ -163,7 +163,7 @@
 
 - (id)suggestionPrimaryAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SGReminderSuggestion.suggestionPrimaryAction()();
 
   return v3;
@@ -171,7 +171,7 @@
 
 - (id)suggestionImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SGReminderSuggestion.suggestionImage()();
 
   return v3;
@@ -179,7 +179,7 @@
 
 - (id)suggestionDismissAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SGReminderSuggestion.suggestionDismissAction()();
 
   return v3;
@@ -187,7 +187,7 @@
 
 - (id)suggestionSubtitle
 {
-  v2 = self;
+  selfCopy = self;
   object = SGReminderSuggestion.suggestionSubtitle()().value._object;
 
   if (object)
@@ -205,7 +205,7 @@
 
 - (id)suggestionAttributedSubtitle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SGReminderSuggestion.suggestionAttributedSubtitle()();
 
   return v3;
@@ -220,17 +220,17 @@
 
 - (id)suggestionCategoryImage
 {
-  v2 = self;
+  selfCopy = self;
   v3.super.isa = SGReminderSuggestion.suggestionCategoryImage()().super.isa;
 
   return v3.super.isa;
 }
 
-- (id)suggestionCategorySubtitleForItems:(id)a3
+- (id)suggestionCategorySubtitleForItems:(id)items
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBA7CBD0);
   v4 = sub_1B81F90C8();
-  v5 = self;
+  selfCopy = self;
   object = SGReminderSuggestion.suggestionCategorySubtitle(forItems:)(v4).value._object;
 
   if (object)
@@ -248,7 +248,7 @@
 
 - (id)realtimeSuggestion
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SGReminderSuggestion.realtimeSuggestion()();
 
   return v3;

@@ -1,32 +1,32 @@
 @interface CRLUISliderAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)isTracking;
 - (CGRect)accessibilityFrame;
 - (UITableViewCell)crlaxParentTableViewCell;
 - (id)accessibilityLabel;
 - (void)_crlaxInteractionDidStart;
 - (void)_crlaxInteractionDidStop;
-- (void)_crlaxPerformTargetActionsForControlEvents:(unint64_t)a3;
+- (void)_crlaxPerformTargetActionsForControlEvents:(unint64_t)events;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)crlaxSetValue:(float)a3 andSendAction:(BOOL)a4;
+- (void)crlaxSetValue:(float)value andSendAction:(BOOL)action;
 @end
 
 @implementation CRLUISliderAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (UITableViewCell)crlaxParentTableViewCell
 {
-  v2 = [(CRLUISliderAccessibility *)self superview];
-  if (v2)
+  superview = [(CRLUISliderAccessibility *)self superview];
+  if (superview)
   {
     while (1)
     {
@@ -36,41 +36,41 @@
         break;
       }
 
-      v3 = [v2 superview];
+      v2Superview = [superview superview];
 
-      v2 = v3;
-      if (!v3)
+      superview = v2Superview;
+      if (!v2Superview)
       {
         goto LABEL_8;
       }
     }
 
     v7 = 0;
-    v2 = v2;
+    superview = superview;
     v4 = objc_opt_class();
-    v5 = __CRLAccessibilityCastAsClass(v4, v2, 1, &v7);
+    v5 = __CRLAccessibilityCastAsClass(v4, superview, 1, &v7);
     if (v7 == 1)
     {
       abort();
     }
 
-    v3 = v5;
+    v2Superview = v5;
   }
 
   else
   {
-    v3 = 0;
+    v2Superview = 0;
   }
 
 LABEL_8:
 
-  return v3;
+  return v2Superview;
 }
 
-- (void)crlaxSetValue:(float)a3 andSendAction:(BOOL)a4
+- (void)crlaxSetValue:(float)value andSendAction:(BOOL)action
 {
-  v4 = a4;
-  if (a4)
+  actionCopy = action;
+  if (action)
   {
     [(CRLUISliderAccessibility *)self _crlaxInteractionDidStart];
   }
@@ -80,14 +80,14 @@ LABEL_8:
   v7[2] = sub_100572AD4;
   v7[3] = &unk_10186FCD0;
   v7[4] = self;
-  v8 = a3;
-  v9 = v4;
+  valueCopy = value;
+  v9 = actionCopy;
   if (__CRLAccessibilityPerformSafeBlock(v7))
   {
     abort();
   }
 
-  if (v4)
+  if (actionCopy)
   {
     [(CRLUISliderAccessibility *)self _crlaxInteractionDidStop];
   }
@@ -97,20 +97,20 @@ LABEL_8:
 {
   v8.receiver = self;
   v8.super_class = CRLUISliderAccessibility;
-  v3 = [(CRLUISliderAccessibility *)&v8 accessibilityLabel];
-  if (![v3 length])
+  accessibilityLabel = [(CRLUISliderAccessibility *)&v8 accessibilityLabel];
+  if (![accessibilityLabel length])
   {
-    v4 = [(CRLUISliderAccessibility *)self crlaxParentTableViewCell];
-    v5 = v4;
-    if (v4)
+    crlaxParentTableViewCell = [(CRLUISliderAccessibility *)self crlaxParentTableViewCell];
+    v5 = crlaxParentTableViewCell;
+    if (crlaxParentTableViewCell)
     {
-      v6 = [v4 accessibilityLabel];
+      accessibilityLabel2 = [crlaxParentTableViewCell accessibilityLabel];
 
-      v3 = v6;
+      accessibilityLabel = accessibilityLabel2;
     }
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (void)accessibilityIncrement
@@ -133,12 +133,12 @@ LABEL_8:
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(CRLUISliderAccessibility *)self crlaxDelegateForFrame];
+  crlaxDelegateForFrame = [(CRLUISliderAccessibility *)self crlaxDelegateForFrame];
 
-  if (v3)
+  if (crlaxDelegateForFrame)
   {
-    v4 = [(CRLUISliderAccessibility *)self crlaxDelegateForFrame];
-    [v4 crlaxAccessibilityFrameForSlider:self];
+    crlaxDelegateForFrame2 = [(CRLUISliderAccessibility *)self crlaxDelegateForFrame];
+    [crlaxDelegateForFrame2 crlaxAccessibilityFrameForSlider:self];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -179,14 +179,14 @@ LABEL_8:
   return [(CRLUISliderAccessibility *)&v4 isTracking];
 }
 
-- (void)_crlaxPerformTargetActionsForControlEvents:(unint64_t)a3
+- (void)_crlaxPerformTargetActionsForControlEvents:(unint64_t)events
 {
-  v3 = self;
+  selfCopy = self;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = [(CRLUISliderAccessibility *)v3 allTargets];
+  obj = [(CRLUISliderAccessibility *)selfCopy allTargets];
   v4 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v4)
   {
@@ -206,7 +206,7 @@ LABEL_8:
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v8 = [(CRLUISliderAccessibility *)v3 actionsForTarget:v7 forControlEvent:a3];
+        v8 = [(CRLUISliderAccessibility *)selfCopy actionsForTarget:v7 forControlEvent:events];
         v9 = [v8 countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v9)
         {
@@ -224,7 +224,7 @@ LABEL_8:
               v13 = *(*(&v19 + 1) + 8 * j);
               if ([v13 hasSuffix:@":"])
               {
-                v14 = [v7 crlaxPerformSelectorFromString:v13 withObject:v3];
+                v14 = [v7 crlaxPerformSelectorFromString:v13 withObject:selfCopy];
               }
 
               else

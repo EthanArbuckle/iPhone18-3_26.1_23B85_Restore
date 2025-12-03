@@ -1,46 +1,46 @@
 @interface NIServerCarKeySession
 + (JobConfig)_aopJobConfigWithTimeouts;
-- (BOOL)updateConfiguration:(id)a3;
-- (NIServerCarKeySession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (NIServerDataResponse)processDCKMessage:(id)a3;
+- (BOOL)updateConfiguration:(id)configuration;
+- (NIServerCarKeySession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error;
+- (NIServerDataResponse)processDCKMessage:(id)message;
 - (NIServerNumberResponse)isRangingLimitExceeded;
-- (RequestConstructionDebugParams)_ownerDeviceServiceRequestDebugParams:(SEL)a3;
-- (Result<rose::RoseServiceRequest>)_passthroughSessionServiceRequest:(SEL)a3;
+- (RequestConstructionDebugParams)_ownerDeviceServiceRequestDebugParams:(SEL)params;
+- (Result<rose::RoseServiceRequest>)_passthroughSessionServiceRequest:(SEL)request;
 - (id).cxx_construct;
 - (id)_configureForLabTestModeSession;
 - (id)_configureForOwnerDevice;
 - (id)_configureForPassthroughSession;
 - (id)_pauseOwnerSession;
 - (id)_pausePassthroughOrLabTestModeSession;
-- (id)_processCarKeyEvent:(id)a3;
+- (id)_processCarKeyEvent:(id)event;
 - (id)_runLabTestModeSession;
 - (id)_runOwnerSession;
 - (id)_runPassthroughSession;
-- (id)_setDebugURSK:(id)a3 transactionIdentifier:(unsigned int)a4;
-- (id)_setURSKTTL:(unint64_t)a3;
+- (id)_setDebugURSK:(id)k transactionIdentifier:(unsigned int)identifier;
+- (id)_setURSKTTL:(unint64_t)l;
 - (id)configure;
 - (id)deleteURSKs;
 - (id)disableAllServices;
-- (id)pauseWithSource:(int64_t)a3;
-- (id)processBluetoothHostTimeSyncWithType:(int64_t)a3 btcClockTicks:(unint64_t)a4 eventCounter:(unint64_t)a5 monotonicTimeSec:(double)a6 response:(id *)a7;
+- (id)pauseWithSource:(int64_t)source;
+- (id)processBluetoothHostTimeSyncWithType:(int64_t)type btcClockTicks:(unint64_t)ticks eventCounter:(unint64_t)counter monotonicTimeSec:(double)sec response:(id *)response;
 - (id)run;
-- (void)_alishaSessionInvalidatedWithReason:(int)a3;
-- (void)_alishaStateChangedFromState:(unsigned __int8)a3 toNewState:(unsigned __int8)a4;
-- (void)_handleHealthChanged:(int)a3;
-- (void)_handleInitiatorRangingBlockUpdate:(InitiatorRangingBlockSummary *)a3;
-- (void)_handleSessionStats:(SessionStats *)a3;
-- (void)_handleTimeoutEvent:(int)a3 time:(double)a4;
-- (void)_relayDCKMessageInternal:(const void *)a3;
+- (void)_alishaSessionInvalidatedWithReason:(int)reason;
+- (void)_alishaStateChangedFromState:(unsigned __int8)state toNewState:(unsigned __int8)newState;
+- (void)_handleHealthChanged:(int)changed;
+- (void)_handleInitiatorRangingBlockUpdate:(InitiatorRangingBlockSummary *)update;
+- (void)_handleSessionStats:(SessionStats *)stats;
+- (void)_handleTimeoutEvent:(int)event time:(double)time;
+- (void)_relayDCKMessageInternal:(const void *)internal;
 - (void)invalidate;
-- (void)rangingServiceDidUpdateState:(int)a3 cause:(int)a4;
+- (void)rangingServiceDidUpdateState:(int)state cause:(int)cause;
 @end
 
 @implementation NIServerCarKeySession
 
-- (NIServerCarKeySession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5
+- (NIServerCarKeySession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  managerCopy = manager;
+  configurationCopy = configuration;
   v11 = objc_opt_class();
   if (v11 != objc_opt_class())
   {
@@ -48,9 +48,9 @@
     [v31 handleFailureInMethod:a2 object:self file:@"NIServerCarKeySession.mm" lineNumber:346 description:@"NIServerCarKeySession given invalid configuration."];
   }
 
-  v12 = [v9 serverSessionIdentifier];
+  serverSessionIdentifier = [managerCopy serverSessionIdentifier];
 
-  if (!v12)
+  if (!serverSessionIdentifier)
   {
     v32 = +[NSAssertionHandler currentHandler];
     [v32 handleFailureInMethod:a2 object:self file:@"NIServerCarKeySession.mm" lineNumber:347 description:{@"Invalid parameter not satisfying: %@", @"resourcesManager.serverSessionIdentifier"}];
@@ -60,18 +60,18 @@
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v10;
+    *&buf[4] = configurationCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "#ses-carkey,initWithResourcesManager. Configuration: %@", buf, 0xCu);
   }
 
   v33.receiver = self;
   v33.super_class = NIServerCarKeySession;
-  v14 = [(NIServerBaseSession *)&v33 initWithResourcesManager:v9 configuration:v10 error:a5];
+  v14 = [(NIServerBaseSession *)&v33 initWithResourcesManager:managerCopy configuration:configurationCopy error:error];
   if (v14)
   {
-    if (v9)
+    if (managerCopy)
     {
-      [v9 protobufLogger];
+      [managerCopy protobufLogger];
       v15 = *buf;
     }
 
@@ -92,22 +92,22 @@
       }
     }
 
-    v17 = [v9 clientConnectionQueue];
+    clientConnectionQueue = [managerCopy clientConnectionQueue];
     v18 = *(v14 + 8);
-    *(v14 + 8) = v17;
+    *(v14 + 8) = clientConnectionQueue;
 
-    v19 = [v10 copy];
+    v19 = [configurationCopy copy];
     v20 = *(v14 + 53);
     *(v14 + 53) = v19;
 
-    v21 = [v9 serverSessionIdentifier];
-    v22 = [v21 UUIDString];
+    serverSessionIdentifier2 = [managerCopy serverSessionIdentifier];
+    uUIDString = [serverSessionIdentifier2 UUIDString];
     v23 = *(v14 + 9);
-    *(v14 + 9) = v22;
+    *(v14 + 9) = uUIDString;
 
-    if (v9)
+    if (managerCopy)
     {
-      [v9 powerBudgetProvider];
+      [managerCopy powerBudgetProvider];
       v24 = *buf;
     }
 
@@ -158,7 +158,7 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#ses-carkey,invalidate.", buf, 2u);
   }
 
-  v4 = [(NIServerCarKeySession *)self disableAllServices];
+  disableAllServices = [(NIServerCarKeySession *)self disableAllServices];
   v5.receiver = self;
   v5.super_class = NIServerCarKeySession;
   [(NIServerBaseSession *)&v5 invalidate];
@@ -175,7 +175,7 @@
 
   v21.receiver = self;
   v21.super_class = NIServerCarKeySession;
-  v4 = [(NIServerBaseSession *)&v21 disableAllServices];
+  disableAllServices = [(NIServerBaseSession *)&v21 disableAllServices];
   ptr = self->_alishaManager.__ptr_;
   if (ptr)
   {
@@ -264,7 +264,7 @@
     }
   }
 
-  return v4;
+  return disableAllServices;
 }
 
 - (id)configure
@@ -282,8 +282,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#ses-carkey,configure", buf, 2u);
   }
 
-  v4 = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
-  v5 = v4 == 0;
+  vehicleIdentifier = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
+  v5 = vehicleIdentifier == 0;
 
   if (v5)
   {
@@ -359,31 +359,31 @@
       sub_1001FBA10(&self->_cachedCapabilities, v37);
       if ([(NICarKeyConfiguration *)self->_configuration configurationType]== 3)
       {
-        v27 = [(NIServerCarKeySession *)self _configureForLabTestModeSession];
+        _configureForLabTestModeSession = [(NIServerCarKeySession *)self _configureForLabTestModeSession];
       }
 
       else
       {
-        v28 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-        v29 = [v28 objectForKeyedSubscript:@"PassthroughSession"];
-        v30 = [v29 BOOLValue];
+        debugOptions = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+        v29 = [debugOptions objectForKeyedSubscript:@"PassthroughSession"];
+        bOOLValue = [v29 BOOLValue];
 
-        v31 = [(NICarKeyConfiguration *)self->_configuration configurationType];
-        if (v31 == 2)
+        configurationType = [(NICarKeyConfiguration *)self->_configuration configurationType];
+        if (configurationType == 2)
         {
           v32 = 1;
         }
 
         else
         {
-          v32 = v30;
+          v32 = bOOLValue;
         }
 
         if (v32 == 1)
         {
           self->_passthroughParams.isPassthroughSession = 1;
-          self->_passthroughParams.anchorSimulation = v31 == 2;
-          v27 = [(NIServerCarKeySession *)self _configureForPassthroughSession];
+          self->_passthroughParams.anchorSimulation = configurationType == 2;
+          _configureForLabTestModeSession = [(NIServerCarKeySession *)self _configureForPassthroughSession];
         }
 
         else
@@ -393,11 +393,11 @@
             __assert_rtn("[NIServerCarKeySession configure]", "NIServerCarKeySession.mm", 471, "_configuration.configurationType == _NICarKeyConfigurationTypeOwner");
           }
 
-          v27 = [(NIServerCarKeySession *)self _configureForOwnerDevice];
+          _configureForLabTestModeSession = [(NIServerCarKeySession *)self _configureForOwnerDevice];
         }
       }
 
-      v15 = v27;
+      v15 = _configureForLabTestModeSession;
     }
 
     if (v40 == 1)
@@ -423,7 +423,7 @@
 {
   if ([(NICarKeyConfiguration *)self->_configuration configurationType]== 3)
   {
-    v3 = [(NIServerCarKeySession *)self _runLabTestModeSession];
+    _runLabTestModeSession = [(NIServerCarKeySession *)self _runLabTestModeSession];
   }
 
   else
@@ -437,34 +437,34 @@
     {
       [(NIServerCarKeySession *)self _runOwnerSession];
     }
-    v3 = ;
+    _runLabTestModeSession = ;
   }
 
-  return v3;
+  return _runLabTestModeSession;
 }
 
-- (id)pauseWithSource:(int64_t)a3
+- (id)pauseWithSource:(int64_t)source
 {
   if (self->_passthroughParams.isPassthroughSession || [(NICarKeyConfiguration *)self->_configuration configurationType]== 3)
   {
-    v4 = [(NIServerCarKeySession *)self _pausePassthroughOrLabTestModeSession];
+    _pausePassthroughOrLabTestModeSession = [(NIServerCarKeySession *)self _pausePassthroughOrLabTestModeSession];
   }
 
   else
   {
-    v4 = [(NIServerCarKeySession *)self _pauseOwnerSession];
+    _pausePassthroughOrLabTestModeSession = [(NIServerCarKeySession *)self _pauseOwnerSession];
   }
 
-  return v4;
+  return _pausePassthroughOrLabTestModeSession;
 }
 
-- (BOOL)updateConfiguration:(id)a3
+- (BOOL)updateConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   dispatch_assert_queue_V2(self->_clientQueue);
-  if (v4 && self->_configuration && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (configurationCopy && self->_configuration && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 copy];
+    v5 = [configurationCopy copy];
     v6 = [(NICarKeyConfiguration *)self->_configuration canUpdateToConfiguration:v5];
     v7 = qword_1009F9820;
     v8 = os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT);
@@ -474,7 +474,7 @@
       {
         configuration = self->_configuration;
         v14 = 138543618;
-        v15 = configuration;
+        configurationCopy2 = configuration;
         v16 = 2114;
         v17 = v5;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#ses-carkey,Update configuration\nOld: %{public}@\nNew: %{public}@", &v14, 0x16u);
@@ -487,7 +487,7 @@
     {
       v12 = self->_configuration;
       v14 = 138412546;
-      v15 = v12;
+      configurationCopy2 = v12;
       v16 = 2112;
       v17 = v5;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#ses-carkey,Can't update configuration, parameters are too different\nOld: %@\nNew: %@", &v14, 0x16u);
@@ -502,9 +502,9 @@
     {
       v11 = self->_configuration;
       v14 = 138412546;
-      v15 = v11;
+      configurationCopy2 = v11;
       v16 = 2112;
-      v17 = v4;
+      v17 = configurationCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "#ses-carkey,Can't update configuration, one is nil or wrong type\nOld: %@\nNew: %@", &v14, 0x16u);
       v6 = 0;
     }
@@ -513,14 +513,14 @@
   return v6;
 }
 
-- (NIServerDataResponse)processDCKMessage:(id)a3
+- (NIServerDataResponse)processDCKMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *__p = v4;
+    *__p = messageCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-carkey,processDCKMessage got dckMessage: %@", buf, 0xCu);
   }
 
@@ -540,8 +540,8 @@
     goto LABEL_16;
   }
 
-  v6 = [v4 length];
-  if (!v4 || (v7 = v6) == 0)
+  v6 = [messageCopy length];
+  if (!messageCopy || (v7 = v6) == 0)
   {
     v20 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -560,7 +560,7 @@ LABEL_16:
   }
 
   sub_10003FB04(v37, v6);
-  [v4 getBytes:v37[0] length:v7];
+  [messageCopy getBytes:v37[0] length:v7];
   sub_1003A5B44(self->_alishaManager.__ptr_, v37, buf);
   if (v45 == 1)
   {
@@ -655,18 +655,18 @@ LABEL_38:
   return result;
 }
 
-- (id)processBluetoothHostTimeSyncWithType:(int64_t)a3 btcClockTicks:(unint64_t)a4 eventCounter:(unint64_t)a5 monotonicTimeSec:(double)a6 response:(id *)a7
+- (id)processBluetoothHostTimeSyncWithType:(int64_t)type btcClockTicks:(unint64_t)ticks eventCounter:(unint64_t)counter monotonicTimeSec:(double)sec response:(id *)response
 {
   v13 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     v14 = @"Unknown";
-    if (a3 == 138)
+    if (type == 138)
     {
       v14 = @"ConnCompltEventCount0";
     }
 
-    if (a3 == 12)
+    if (type == 12)
     {
       v14 = @"LESetPHY";
     }
@@ -675,21 +675,21 @@ LABEL_38:
     *buf = 138413058;
     v61 = v15;
     v62 = 2048;
-    v63 = a4;
+    ticksCopy = ticks;
     v64 = 2048;
-    v65 = a5;
+    counterCopy = counter;
     v66 = 2048;
-    *v67 = a6;
+    *v67 = sec;
     v16 = v13;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "#ses-carkey,processBluetoothHostTimeSyncWithType got event: %@, btc clock ticks: %llu, event counter: %llu, monotonic time: %f [s]", buf, 0x2Au);
   }
 
-  *a7 = 0;
+  *response = 0;
   if (self->_alishaManager.__ptr_)
   {
-    if (a3 == 12 || a3 == 138)
+    if (type == 12 || type == 138)
     {
-      if (a3 == 12)
+      if (type == 12)
       {
         v17 = 12;
       }
@@ -701,20 +701,20 @@ LABEL_38:
 
       v18 = sub_1000054A8();
       v19 = sub_100460AB0(v18);
-      v20 = 7500 * a4;
+      ticksCopy2 = 7500 * ticks;
       if (v19)
       {
-        v20 = a4;
+        ticksCopy2 = ticks;
       }
 
       *buf = v17;
       LODWORD(v61) = 1;
       BYTE4(v61) = 0;
-      BYTE2(v63) = 0;
-      v65 = v20;
+      BYTE2(ticksCopy) = 0;
+      counterCopy = ticksCopy2;
       LOBYTE(v66) = 1;
-      *&v67[3] = a5;
-      *&v67[7] = a6;
+      *&v67[3] = counter;
+      *&v67[7] = sec;
       LOBYTE(v51[0]) = 0;
       v57 = 0;
       sub_1003A6304(self->_alishaManager.__ptr_, buf, v51, &v48);
@@ -754,7 +754,7 @@ LABEL_38:
         {
           v43 = [NIBluetoothHostTimeSyncResponse alloc];
           LOWORD(v45) = v56;
-          *a7 = [(NIBluetoothHostTimeSyncResponse *)v43 initWithDeviceEventCount:v51[0] uwbDeviceTimeUs:v51[1] uwbDeviceTimeUncertainty:v52 uwbClockSkewMeasurementAvailable:v53 deviceMaxPpm:v54 success:v55 retryDelay:v45];
+          *response = [(NIBluetoothHostTimeSyncResponse *)v43 initWithDeviceEventCount:v51[0] uwbDeviceTimeUs:v51[1] uwbDeviceTimeUncertainty:v52 uwbClockSkewMeasurementAvailable:v53 deviceMaxPpm:v54 success:v55 retryDelay:v45];
         }
 
         if (v50 == 1)
@@ -879,19 +879,19 @@ LABEL_16:
   return v7;
 }
 
-- (id)_setDebugURSK:(id)a3 transactionIdentifier:(unsigned int)a4
+- (id)_setDebugURSK:(id)k transactionIdentifier:(unsigned int)identifier
 {
-  v6 = a3;
+  kCopy = k;
   [@"com.apple.nearbyd" UTF8String];
   if (os_variant_allows_internal_security_policies())
   {
-    if (v6 && [v6 length] == 32)
+    if (kCopy && [kCopy length] == 32)
     {
-      [v6 getBytes:v29 length:32];
-      v26 = a4;
+      [kCopy getBytes:v29 length:32];
+      identifierCopy = identifier;
       v27 = v29[0];
       v28 = v29[1];
-      v7 = sub_1003413A4(self->_alishaSystem.__ptr_, &v26);
+      v7 = sub_1003413A4(self->_alishaSystem.__ptr_, &identifierCopy);
       if (v7)
       {
         sub_1003A03C4(v7, __p);
@@ -951,12 +951,12 @@ LABEL_16:
   return v11;
 }
 
-- (id)_setURSKTTL:(unint64_t)a3
+- (id)_setURSKTTL:(unint64_t)l
 {
   [@"com.apple.nearbyd" UTF8String];
   if (os_variant_allows_internal_security_policies())
   {
-    sub_1003414A8(self->_alishaSystem.__ptr_, a3);
+    sub_1003414A8(self->_alishaSystem.__ptr_, l);
   }
 
   v5 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
@@ -964,13 +964,13 @@ LABEL_16:
   return v5;
 }
 
-- (id)_processCarKeyEvent:(id)a3
+- (id)_processCarKeyEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    v6 = [v4 objectForKey:@"CarKeyEventType"];
+    v6 = [eventCopy objectForKey:@"CarKeyEventType"];
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -982,23 +982,23 @@ LABEL_16:
       goto LABEL_15;
     }
 
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
     v8 = [v5 objectForKey:@"CarKeyEventReason"];
-    v9 = [v8 integerValue];
+    integerValue2 = [v8 integerValue];
 
-    if (v7 <= 3)
+    if (integerValue <= 3)
     {
-      switch(v7)
+      switch(integerValue)
       {
         case 1:
           v19 = qword_1009F9820;
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
-            v20 = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
+            vehicleIdentifier = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
             *buf = 67109378;
-            v44 = v9;
+            v44 = integerValue2;
             LOWORD(v45) = 2112;
-            *(&v45 + 2) = v20;
+            *(&v45 + 2) = vehicleIdentifier;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "#ses-carkey,_processCarKeyEvent: vehicle unlocked (reason %d) for vehicle identifier: %@", buf, 0x12u);
           }
 
@@ -1013,11 +1013,11 @@ LABEL_16:
           v27 = qword_1009F9820;
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
-            v28 = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
+            vehicleIdentifier2 = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
             *buf = 67109378;
-            v44 = v9;
+            v44 = integerValue2;
             LOWORD(v45) = 2112;
-            *(&v45 + 2) = v28;
+            *(&v45 + 2) = vehicleIdentifier2;
             _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "#ses-carkey,_processCarKeyEvent: vehicle locked (reason %d) for vehicle identifier: %@", buf, 0x12u);
           }
 
@@ -1032,11 +1032,11 @@ LABEL_16:
           v10 = qword_1009F9820;
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
           {
-            v11 = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
+            vehicleIdentifier3 = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
             *buf = 67109378;
-            v44 = v9;
+            v44 = integerValue2;
             LOWORD(v45) = 2112;
-            *(&v45 + 2) = v11;
+            *(&v45 + 2) = vehicleIdentifier3;
             _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "#ses-carkey,_processCarKeyEvent: vehicle ready to drive (reason %d) for vehicle identifier: %@", buf, 0x12u);
           }
 
@@ -1052,29 +1052,29 @@ LABEL_16:
       goto LABEL_41;
     }
 
-    switch(v7)
+    switch(integerValue)
     {
       case 4:
         v22 = qword_1009F9820;
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
+          vehicleIdentifier4 = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
           *buf = 67109378;
-          v44 = v9;
+          v44 = integerValue2;
           LOWORD(v45) = 2112;
-          *(&v45 + 2) = v23;
+          *(&v45 + 2) = vehicleIdentifier4;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "#ses-carkey,_processCarKeyEvent: ranging intent sent to vehicle (reason %d) for vehicle identifier: %@", buf, 0x12u);
         }
 
         v24 = self->_analyticsManager.__ptr_;
         if (v24)
         {
-          if (v9 == 2)
+          if (integerValue2 == 2)
           {
             sub_1001ED0F4(v24);
           }
 
-          else if (v9 == 1)
+          else if (integerValue2 == 1)
           {
             sub_1001ECF44(v24);
           }
@@ -1094,7 +1094,7 @@ LABEL_16:
           v16 = qword_1009F9820;
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v31 = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
+            vehicleIdentifier5 = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
             sub_1003A03C4(*buf, __p);
             if (v38 >= 0)
             {
@@ -1107,7 +1107,7 @@ LABEL_16:
             }
 
             *v39 = 138412546;
-            v40 = v31;
+            v40 = vehicleIdentifier5;
             v41 = 2080;
             v42 = v32;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "#ses-carkey,_processCarKeyEvent: vehicle sent ranging terminated sub-event. Vehicle identifier: %@. Stop ranging status: %s", v39, 0x16u);
@@ -1123,8 +1123,8 @@ LABEL_16:
         v33 = qword_1009F9820;
         if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
         {
-          v35 = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
-          sub_1004B8B2C(v35, buf, v33);
+          vehicleIdentifier6 = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
+          sub_1004B8B2C(vehicleIdentifier6, buf, v33);
         }
 
         break;
@@ -1136,7 +1136,7 @@ LABEL_16:
           v16 = qword_1009F9820;
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
+            vehicleIdentifier7 = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
             sub_1003A03C4(*buf, __p);
             if (v38 >= 0)
             {
@@ -1149,7 +1149,7 @@ LABEL_16:
             }
 
             *v39 = 138412546;
-            v40 = v17;
+            v40 = vehicleIdentifier7;
             v41 = 2080;
             v42 = v18;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "#ses-carkey,_processCarKeyEvent: vehicle sent ranging suspension sub-event. Vehicle identifier: %@. Stop ranging status: %s", v39, 0x16u);
@@ -1173,8 +1173,8 @@ LABEL_56:
         v33 = qword_1009F9820;
         if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
         {
-          v34 = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
-          sub_1004B8AD4(v34, buf, v33);
+          vehicleIdentifier8 = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
+          sub_1004B8AD4(vehicleIdentifier8, buf, v33);
         }
 
         break;
@@ -1183,8 +1183,8 @@ LABEL_41:
         v25 = qword_1009F9820;
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
-          v26 = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
-          sub_1004B8BC0(v7, v26, buf, v25);
+          vehicleIdentifier9 = [(NICarKeyConfiguration *)self->_configuration vehicleIdentifier];
+          sub_1004B8BC0(integerValue, vehicleIdentifier9, buf, v25);
         }
 
         v13 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-19881 userInfo:0];
@@ -1211,9 +1211,9 @@ LABEL_70:
   return v14;
 }
 
-- (void)rangingServiceDidUpdateState:(int)a3 cause:(int)a4
+- (void)rangingServiceDidUpdateState:(int)state cause:(int)cause
 {
-  if (a3 == 4)
+  if (state == 4)
   {
     ptr = self->_alishaManager.__ptr_;
     if (ptr)
@@ -1223,21 +1223,21 @@ LABEL_70:
   }
 }
 
-- (void)_alishaSessionInvalidatedWithReason:(int)a3
+- (void)_alishaSessionInvalidatedWithReason:(int)reason
 {
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    sub_100342FC8(a3, v9);
+    sub_100342FC8(reason, v9);
     sub_1004B8D04(v9);
   }
 
   [(NIServerCarKeySession *)self invalidate];
   v8.receiver = self;
   v8.super_class = NIServerCarKeySession;
-  v6 = [(NIServerBaseSession *)&v8 invalidationHandler];
+  invalidationHandler = [(NIServerBaseSession *)&v8 invalidationHandler];
   v7 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:0];
-  (v6)[2](v6, v7);
+  (invalidationHandler)[2](invalidationHandler, v7);
 }
 
 - (id)_configureForOwnerDevice
@@ -1266,27 +1266,27 @@ LABEL_70:
     sub_1004B8D94();
   }
 
-  v5 = self;
-  if (!v5->_dckCoder.__ptr_)
+  selfCopy = self;
+  if (!selfCopy->_dckCoder.__ptr_)
   {
     sub_1002C86D4();
   }
 
-  ptr = v5->_configProvider.__ptr_;
+  ptr = selfCopy->_configProvider.__ptr_;
   if (!ptr)
   {
-    v7 = [(NICarKeyConfiguration *)v5->_configuration debugOptions];
-    v8 = [v7 objectForKeyedSubscript:@"BypassBluetoothTimesync"];
+    debugOptions = [(NICarKeyConfiguration *)selfCopy->_configuration debugOptions];
+    v8 = [debugOptions objectForKeyedSubscript:@"BypassBluetoothTimesync"];
     [v8 BOOLValue];
 
     sub_1002C881C();
   }
 
-  v9 = [(NICarKeyConfiguration *)v5->_configuration protocolVersion];
-  if ((v9 | 0x200) == 0x300)
+  protocolVersion = [(NICarKeyConfiguration *)selfCopy->_configuration protocolVersion];
+  if ((protocolVersion | 0x200) == 0x300)
   {
-    *(ptr + 12) = v9;
-    if (!v5->_paramNegotiator.__ptr_)
+    *(ptr + 12) = protocolVersion;
+    if (!selfCopy->_paramNegotiator.__ptr_)
     {
       if (p_cachedCapabilities->__engaged_)
       {
@@ -1296,7 +1296,7 @@ LABEL_70:
       sub_1000195BC();
     }
 
-    v10 = v5;
+    v10 = selfCopy;
     if (!v10->_analyticsManager.__ptr_)
     {
       operator new();
@@ -1304,7 +1304,7 @@ LABEL_70:
 
     if (!v10->_certLogger.__ptr_)
     {
-      [(NICarKeyConfiguration *)v5->_configuration vehicleIdentifier];
+      [(NICarKeyConfiguration *)selfCopy->_configuration vehicleIdentifier];
       objc_claimAutoreleasedReturnValue();
       sub_1002C96AC();
     }
@@ -1327,7 +1327,7 @@ LABEL_70:
 
   else
   {
-    v14 = [NSString stringWithFormat:@"Protocol version 0x%04X not supported", [(NICarKeyConfiguration *)v5->_configuration protocolVersion]];
+    v14 = [NSString stringWithFormat:@"Protocol version 0x%04X not supported", [(NICarKeyConfiguration *)selfCopy->_configuration protocolVersion]];
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
       sub_1004B879C();
@@ -1372,8 +1372,8 @@ LABEL_70:
     [v72 handleFailureInMethod:a2 object:self file:@"NIServerCarKeySession.mm" lineNumber:1001 description:{@"Invalid parameter not satisfying: %@", @"_cachedCapabilities.has_value()"}];
   }
 
-  v6 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-  v7 = v6 == 0;
+  debugOptions = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+  v7 = debugOptions == 0;
 
   if (v7)
   {
@@ -1385,8 +1385,8 @@ LABEL_70:
     goto LABEL_66;
   }
 
-  v8 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-  v9 = [v8 objectForKeyedSubscript:@"BypassBluetoothTimesync"];
+  debugOptions2 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+  v9 = [debugOptions2 objectForKeyedSubscript:@"BypassBluetoothTimesync"];
   self->_passthroughParams.bypassBluetoothTimesync = [v9 BOOLValue];
 
   bypassBluetoothTimesync = self->_passthroughParams.bypassBluetoothTimesync;
@@ -1394,8 +1394,8 @@ LABEL_70:
   {
     if (!self->_passthroughParams.bypassBluetoothTimesync)
     {
-      v11 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-      v12 = [v11 objectForKeyedSubscript:@"DckTimeSyncBtEventLocalClock"];
+      debugOptions3 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+      v12 = [debugOptions3 objectForKeyedSubscript:@"DckTimeSyncBtEventLocalClock"];
 
       if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
@@ -1413,14 +1413,14 @@ LABEL_70:
         goto LABEL_66;
       }
 
-      v13 = [v12 unsignedLongLongValue];
+      unsignedLongLongValue = [v12 unsignedLongLongValue];
       v14 = sub_1000054A8();
       v15 = sub_100460AB0(v14);
       engaged = self->_passthroughParams.dckTimeSyncBtEvent.__engaged_;
-      v17 = 7500 * v13;
+      v17 = 7500 * unsignedLongLongValue;
       if (v15)
       {
-        v17 = v13;
+        v17 = unsignedLongLongValue;
       }
 
       *&self->_passthroughParams.dckTimeSyncBtEvent.var0.__null_state_ = 0x10000008ALL;
@@ -1435,8 +1435,8 @@ LABEL_70:
         self->_passthroughParams.dckTimeSyncBtEvent.__engaged_ = 1;
       }
 
-      v18 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-      v19 = [v18 objectForKeyedSubscript:@"DckTimeSyncUwbDeviceTime"];
+      debugOptions4 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+      v19 = [debugOptions4 objectForKeyedSubscript:@"DckTimeSyncUwbDeviceTime"];
 
       if (!v19 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
@@ -1475,8 +1475,8 @@ LABEL_70:
     goto LABEL_66;
   }
 
-  v22 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-  [(NIServerCarKeySession *)self _passthroughSessionServiceRequest:v22];
+  debugOptions5 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+  [(NIServerCarKeySession *)self _passthroughSessionServiceRequest:debugOptions5];
 
   if (v82)
   {
@@ -1642,8 +1642,8 @@ LABEL_66:
 
   v166.receiver = self;
   v166.super_class = NIServerCarKeySession;
-  v6 = [(NIServerBaseSession *)&v166 resourcesManager];
-  if ([v6 entitlementGranted:7])
+  resourcesManager = [(NIServerBaseSession *)&v166 resourcesManager];
+  if ([resourcesManager entitlementGranted:7])
   {
     v7 = sub_10035D02C();
     v8 = sub_10035D268(v7);
@@ -1721,38 +1721,38 @@ LABEL_66:
     if ((sub_10035D268(v97) & 0x101FFFFFFFFLL) == 0x10100000000)
     {
 LABEL_24:
-      v32 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-      v139 = sub_1002C49C8(v32, @"AlishaProtocolVersion", 0x100);
+      debugOptions = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+      v139 = sub_1002C49C8(debugOptions, @"AlishaProtocolVersion", 0x100);
 
-      v33 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-      v138 = sub_1002C49C8(v33, @"UWBConfigId", 1);
+      debugOptions2 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+      v138 = sub_1002C49C8(debugOptions2, @"UWBConfigId", 1);
 
-      v34 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-      v137 = sub_1002C49C8(v34, @"PulseShapeCombo", 0);
+      debugOptions3 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+      v137 = sub_1002C49C8(debugOptions3, @"PulseShapeCombo", 0);
 
-      v35 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-      v136 = sub_1002C49C8(v35, @"HopConfigBitmask", 0x80);
+      debugOptions4 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+      v136 = sub_1002C49C8(debugOptions4, @"HopConfigBitmask", 0x80);
 
-      v36 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-      v135 = sub_1002C49C8(v36, @"AnchorHopKey", 0);
+      debugOptions5 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+      v135 = sub_1002C49C8(debugOptions5, @"AnchorHopKey", 0);
 
-      v37 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-      v38 = sub_1002C49C8(v37, @"RFChannel", 1);
+      debugOptions6 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+      v38 = sub_1002C49C8(debugOptions6, @"RFChannel", 1);
 
-      v39 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-      v40 = sub_1002C49C8(v39, @"SyncCodeIndex", 9);
+      debugOptions7 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+      v40 = sub_1002C49C8(debugOptions7, @"SyncCodeIndex", 9);
 
-      v41 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-      v134 = sub_1002C49C8(v41, @"SessionRANMultiplier", 1);
+      debugOptions8 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+      v134 = sub_1002C49C8(debugOptions8, @"SessionRANMultiplier", 1);
 
-      v42 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-      v133 = sub_1002C49C8(v42, @"ChapsPerSlot", 6);
+      debugOptions9 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+      v133 = sub_1002C49C8(debugOptions9, @"ChapsPerSlot", 6);
 
-      v43 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-      v132 = sub_1002C49C8(v43, @"SlotsPerRound", 0xC);
+      debugOptions10 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+      v132 = sub_1002C49C8(debugOptions10, @"SlotsPerRound", 0xC);
 
-      v44 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-      v45 = sub_1002C49C8(v44, @"NumResponderNodes", 6);
+      debugOptions11 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+      v45 = sub_1002C49C8(debugOptions11, @"NumResponderNodes", 6);
 
       v46 = v40 - 9;
       if ((v40 - 9) >= 4u)
@@ -1801,26 +1801,26 @@ LABEL_40:
           {
             if (v47 == v165 || HIBYTE(v164) == 1 && v47 == v164)
             {
-              v74 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-              v130 = sub_1002C49C8(v74, @"DisableUWBEncryption", 0) != 0;
+              debugOptions12 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+              v130 = sub_1002C49C8(debugOptions12, @"DisableUWBEncryption", 0) != 0;
 
-              v75 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-              v129 = sub_1002C49C8(v75, @"DisableSecureToF", 0) != 0;
+              debugOptions13 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+              v129 = sub_1002C49C8(debugOptions13, @"DisableSecureToF", 0) != 0;
 
-              v76 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-              v131 = sub_1002C49C8(v76, @"ForceAntennaSelection", 0) != 0;
+              debugOptions14 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+              v131 = sub_1002C49C8(debugOptions14, @"ForceAntennaSelection", 0) != 0;
 
               v77 = v131;
               if (v131)
               {
-                v78 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-                v128 = sub_1002C49C8(v78, @"TxAntennaMask", 0);
+                debugOptions15 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+                v128 = sub_1002C49C8(debugOptions15, @"TxAntennaMask", 0);
 
-                v79 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-                v80 = sub_1002C49C8(v79, @"RxAntennaMask", 0);
+                debugOptions16 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+                v80 = sub_1002C49C8(debugOptions16, @"RxAntennaMask", 0);
 
-                v81 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
-                v82 = sub_1002C49C8(v81, @"RxSyncSearchAntennaMask", 0);
+                debugOptions17 = [(NICarKeyConfiguration *)self->_configuration debugOptions];
+                v82 = sub_1002C49C8(debugOptions17, @"RxSyncSearchAntennaMask", 0);
 
                 v77 = 1;
                 v84 = v129;
@@ -2495,7 +2495,7 @@ LABEL_16:
   return result;
 }
 
-- (RequestConstructionDebugParams)_ownerDeviceServiceRequestDebugParams:(SEL)a3
+- (RequestConstructionDebugParams)_ownerDeviceServiceRequestDebugParams:(SEL)params
 {
   v6 = a4;
   v7 = qword_1009F9820;
@@ -2538,34 +2538,34 @@ LABEL_12:
   else
   {
     v11 = [v6 objectForKeyedSubscript:@"DebugSTSIndex0"];
-    v12 = [v11 unsignedIntegerValue];
+    unsignedIntegerValue = [v11 unsignedIntegerValue];
 
     v13 = [v6 objectForKeyedSubscript:@"AnchorHopKey"];
-    v14 = [v13 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v13 unsignedIntegerValue];
 
     retstr->var2 = 1;
     retstr->var3.__engaged_ = 1;
-    retstr->var3.var0.__val_ = v12;
+    retstr->var3.var0.__val_ = unsignedIntegerValue;
     retstr->var4.__engaged_ = 1;
-    retstr->var4.var0.__val_ = v14;
+    retstr->var4.var0.__val_ = unsignedIntegerValue2;
   }
 
   v15 = [v6 objectForKeyedSubscript:@"DisableUWBEncryption"];
-  v16 = [v15 BOOLValue];
+  bOOLValue = [v15 BOOLValue];
 
   v17 = [v6 objectForKeyedSubscript:@"DisableSecureToF"];
-  v18 = [v17 BOOLValue];
+  bOOLValue2 = [v17 BOOLValue];
 
-  retstr->var9 = v16;
-  retstr->var10 = v18;
+  retstr->var9 = bOOLValue;
+  retstr->var10 = bOOLValue2;
   retstr->var11 = 5;
 
   return result;
 }
 
-- (void)_relayDCKMessageInternal:(const void *)a3
+- (void)_relayDCKMessageInternal:(const void *)internal
 {
-  v4 = [NSData dataWithBytes:*a3 length:*(a3 + 1) - *a3];
+  v4 = [NSData dataWithBytes:*internal length:*(internal + 1) - *internal];
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
@@ -2576,12 +2576,12 @@ LABEL_12:
 
   v8.receiver = self;
   v8.super_class = NIServerCarKeySession;
-  v6 = [(NIServerBaseSession *)&v8 resourcesManager];
-  v7 = [v6 remote];
-  [v7 relayDCKMessage:v4];
+  resourcesManager = [(NIServerBaseSession *)&v8 resourcesManager];
+  remote = [resourcesManager remote];
+  [remote relayDCKMessage:v4];
 }
 
-- (Result<rose::RoseServiceRequest>)_passthroughSessionServiceRequest:(SEL)a3
+- (Result<rose::RoseServiceRequest>)_passthroughSessionServiceRequest:(SEL)request
 {
   v6 = a4;
   [@"com.apple.nearbyd" UTF8String];
@@ -2698,43 +2698,43 @@ LABEL_12:
     }
 
     v19 = [v6 objectForKeyedSubscript:@"UWBSessionId"];
-    v85 = [v19 unsignedIntegerValue];
+    unsignedIntegerValue = [v19 unsignedIntegerValue];
 
-    p_passthroughParams->passthroughUwbSessionId.var0.__val_ = v85;
+    p_passthroughParams->passthroughUwbSessionId.var0.__val_ = unsignedIntegerValue;
     p_passthroughParams->passthroughUwbSessionId.__engaged_ = 1;
     v20 = [v6 objectForKeyedSubscript:@"RFChannel"];
-    v84 = [v20 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v20 unsignedIntegerValue];
 
     v21 = [v6 objectForKeyedSubscript:@"SyncCodeIndex"];
-    v22 = [v21 unsignedIntegerValue];
+    unsignedIntegerValue3 = [v21 unsignedIntegerValue];
 
     v23 = [v6 objectForKeyedSubscript:@"AlishaProtocolVersion"];
-    v83 = [v23 unsignedIntegerValue];
+    unsignedIntegerValue4 = [v23 unsignedIntegerValue];
 
     v24 = [v6 objectForKeyedSubscript:@"UWBConfigId"];
-    v82 = [v24 unsignedIntegerValue];
+    unsignedIntegerValue5 = [v24 unsignedIntegerValue];
 
     v25 = [v6 objectForKeyedSubscript:@"SessionRANMultiplier"];
-    v81 = [v25 unsignedIntegerValue];
+    unsignedIntegerValue6 = [v25 unsignedIntegerValue];
 
     v26 = [v6 objectForKeyedSubscript:@"ChapsPerSlot"];
-    v80 = [v26 unsignedIntegerValue];
+    unsignedIntegerValue7 = [v26 unsignedIntegerValue];
 
     v27 = [v6 objectForKeyedSubscript:@"SlotsPerRound"];
-    v79 = [v27 unsignedIntegerValue];
+    unsignedIntegerValue8 = [v27 unsignedIntegerValue];
 
     v28 = [v6 objectForKeyedSubscript:@"NumResponderNodes"];
-    v78 = [v28 unsignedIntegerValue];
+    unsignedIntegerValue9 = [v28 unsignedIntegerValue];
 
     v29 = [v6 objectForKeyedSubscript:@"HopConfigBitmask"];
-    v77 = [v29 unsignedIntegerValue];
+    unsignedIntegerValue10 = [v29 unsignedIntegerValue];
 
     v30 = [v6 objectForKeyedSubscript:@"PulseShapeCombo"];
-    v76 = [v30 unsignedIntegerValue];
+    unsignedIntegerValue11 = [v30 unsignedIntegerValue];
 
-    if ((v22 - 9) >= 4u)
+    if ((unsignedIntegerValue3 - 9) >= 4u)
     {
-      v45 = [NSString stringWithFormat:@"Invalid Sync Code Index: %lu", v22];
+      v45 = [NSString stringWithFormat:@"Invalid Sync Code Index: %lu", unsignedIntegerValue3];
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
         sub_1004B879C();
@@ -2747,23 +2747,23 @@ LABEL_12:
 
     else
     {
-      v68 = v22 - 9;
+      v68 = unsignedIntegerValue3 - 9;
       v31 = [v6 objectForKeyedSubscript:@"ACWGMacMode"];
 
       v32 = [v6 objectForKeyedSubscript:@"ACWGMacMode"];
-      v33 = [v32 unsignedIntValue];
+      unsignedIntValue = [v32 unsignedIntValue];
 
       v34 = [v6 objectForKeyedSubscript:@"ACWGMacMode"];
-      v67 = [v34 unsignedIntValue];
+      unsignedIntValue2 = [v34 unsignedIntValue];
 
       v35 = [v6 objectForKeyedSubscript:@"ACWGFinalData2Bitmask"];
-      v36 = [v35 unsignedIntValue];
-      v66 = (v33 & 0xFFFFFFC0) == 64;
+      unsignedIntValue3 = [v35 unsignedIntValue];
+      v66 = (unsignedIntValue & 0xFFFFFFC0) == 64;
       v75 = v31 != 0;
 
       if (v31)
       {
-        v37 = ((v36 & 3) << 16) | 0x1000000;
+        v37 = ((unsignedIntValue3 & 3) << 16) | 0x1000000;
       }
 
       else
@@ -2773,35 +2773,35 @@ LABEL_12:
 
       v38 = [v6 objectForKeyedSubscript:@"DebugSTSIndex0"];
       v65 = v37;
-      v74 = [v38 unsignedIntegerValue];
+      unsignedIntegerValue12 = [v38 unsignedIntegerValue];
 
       v39 = [v6 objectForKeyedSubscript:@"AnchorHopKey"];
-      v73 = [v39 unsignedIntegerValue];
+      unsignedIntegerValue13 = [v39 unsignedIntegerValue];
 
       v40 = [v6 objectForKeyedSubscript:@"DisableUWBEncryption"];
-      v72 = [v40 BOOLValue];
+      bOOLValue = [v40 BOOLValue];
 
       v41 = [v6 objectForKeyedSubscript:@"DisableSecureToF"];
-      v71 = [v41 BOOLValue];
+      bOOLValue2 = [v41 BOOLValue];
 
       if (p_passthroughParams->anchorSimulation)
       {
         v42 = [v6 objectForKeyedSubscript:@"AnchorResponderIndex"];
-        v70 = [v42 unsignedIntegerValue];
+        unsignedIntegerValue14 = [v42 unsignedIntegerValue];
 
         v69 = 1;
       }
 
       else
       {
-        v70 = 0;
+        unsignedIntegerValue14 = 0;
         v69 = 0;
       }
 
       v47 = [v6 objectForKeyedSubscript:@"ForceAntennaSelection"];
-      v48 = [v47 BOOLValue];
+      bOOLValue3 = [v47 BOOLValue];
 
-      if (v48)
+      if (bOOLValue3)
       {
         v117 = 0u;
         v115 = 0u;
@@ -2849,13 +2849,13 @@ LABEL_12:
         }
 
         v54 = [v6 objectForKeyedSubscript:@"TxAntennaMask"];
-        v55 = [v54 unsignedIntValue];
+        unsignedIntValue4 = [v54 unsignedIntValue];
 
         v56 = [v6 objectForKeyedSubscript:@"RxAntennaMask"];
-        v57 = [v56 unsignedIntValue];
+        unsignedIntValue5 = [v56 unsignedIntValue];
 
         v58 = [v6 objectForKeyedSubscript:@"RxSyncSearchAntennaMask"];
-        v59 = [v58 unsignedIntValue];
+        unsignedIntValue6 = [v58 unsignedIntValue];
 
         v60 = 1;
       }
@@ -2863,24 +2863,24 @@ LABEL_12:
       else
       {
         v60 = 0;
-        v59 = 0;
-        v57 = 0;
-        v55 = 0;
+        unsignedIntValue6 = 0;
+        unsignedIntValue5 = 0;
+        unsignedIntValue4 = 0;
       }
 
       v100 = p_passthroughParams->anchorSimulation;
-      v101 = v70 | (v69 << 8);
+      v101 = unsignedIntegerValue14 | (v69 << 8);
       v102 = 1;
-      v103 = v74;
+      v103 = unsignedIntegerValue12;
       v104 = 1;
-      v105 = v73;
+      v105 = unsignedIntegerValue13;
       v106 = 1;
-      v107 = v48;
-      v108 = v55 | ((v60 & 1) << 8);
-      v109 = v57 | ((v60 & 1) << 8);
-      v110 = v59 | (v60 << 8);
-      v111 = v72;
-      v112 = v71;
+      v107 = bOOLValue3;
+      v108 = unsignedIntValue4 | ((v60 & 1) << 8);
+      v109 = unsignedIntValue5 | ((v60 & 1) << 8);
+      v110 = unsignedIntValue6 | (v60 << 8);
+      v111 = bOOLValue;
+      v112 = bOOLValue2;
       v113 = 5;
       if (!p_passthroughParams->bypassBluetoothTimesync)
       {
@@ -2891,24 +2891,24 @@ LABEL_12:
         }
 
         v62 = [v6 objectForKeyedSubscript:@"UWBTime0"];
-        v63 = [v62 unsignedLongLongValue];
+        unsignedLongLongValue = [v62 unsignedLongLongValue];
 
-        p_passthroughParams->passthroughUwbTime0.var0.__val_ = v63;
+        p_passthroughParams->passthroughUwbTime0.var0.__val_ = unsignedLongLongValue;
         p_passthroughParams->passthroughUwbTime0.__engaged_ = 1;
       }
 
-      v88 = v85;
-      v89 = v84;
+      v88 = unsignedIntegerValue;
+      v89 = unsignedIntegerValue2;
       v90 = v68;
-      v91 = v83;
-      v92 = v82;
-      v93 = v81;
-      v94 = v80;
-      v95 = v79;
-      v96 = v78;
-      v97 = v77;
-      v98 = v76;
-      v99 = (v75 && v66) & 0xFFFFC0FF | ((v67 & 0x3F) << 8) | v65;
+      v91 = unsignedIntegerValue4;
+      v92 = unsignedIntegerValue5;
+      v93 = unsignedIntegerValue6;
+      v94 = unsignedIntegerValue7;
+      v95 = unsignedIntegerValue8;
+      v96 = unsignedIntegerValue9;
+      v97 = unsignedIntegerValue10;
+      v98 = unsignedIntegerValue11;
+      v99 = (v75 && v66) & 0xFFFFC0FF | ((unsignedIntValue2 & 0x3F) << 8) | v65;
       +[NIServerCarKeySession _aopJobConfigWithTimeouts];
       sub_10019CFAC(&v88, 102, v87, &v100, buf);
       memcpy(&retstr->var1, buf, 0x240uLL);
@@ -2929,18 +2929,18 @@ LABEL_34:
   return result;
 }
 
-- (void)_alishaStateChangedFromState:(unsigned __int8)a3 toNewState:(unsigned __int8)a4
+- (void)_alishaStateChangedFromState:(unsigned __int8)state toNewState:(unsigned __int8)newState
 {
-  v4 = a4;
-  v5 = a3;
+  newStateCopy = newState;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_clientQueue);
   v7 = qword_1009F9820;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    sub_1003A0BC8(v5, v20);
+    sub_1003A0BC8(stateCopy, v20);
     v8 = v21;
     v9 = v20[0];
-    sub_1003A0BC8(v4, __p);
+    sub_1003A0BC8(newStateCopy, __p);
     v10 = v20;
     if (v8 < 0)
     {
@@ -2979,52 +2979,52 @@ LABEL_34:
   ptr = self->_timeoutManager.__ptr_;
   if (ptr)
   {
-    sub_1002311E8(ptr, v5, v4);
+    sub_1002311E8(ptr, stateCopy, newStateCopy);
   }
 
-  v14 = sub_1003A2D2C(v5);
-  if (!(sub_1003A2D2C(v4) & 1 | ((v14 & 1) == 0)))
+  v14 = sub_1003A2D2C(stateCopy);
+  if (!(sub_1003A2D2C(newStateCopy) & 1 | ((v14 & 1) == 0)))
   {
     v17.receiver = self;
     v17.super_class = NIServerCarKeySession;
-    v15 = [(NIServerBaseSession *)&v17 resourcesManager];
-    v16 = [v15 remote];
-    [v16 didUpdateHealthStatus:4];
+    resourcesManager = [(NIServerBaseSession *)&v17 resourcesManager];
+    remote = [resourcesManager remote];
+    [remote didUpdateHealthStatus:4];
   }
 }
 
-- (void)_handleInitiatorRangingBlockUpdate:(InitiatorRangingBlockSummary *)a3
+- (void)_handleInitiatorRangingBlockUpdate:(InitiatorRangingBlockSummary *)update
 {
   dispatch_assert_queue_V2(self->_clientQueue);
   ptr = self->_certLogger.__ptr_;
   if (ptr)
   {
 
-    sub_1002BD0D4(ptr, &a3->var0);
+    sub_1002BD0D4(ptr, &update->var0);
   }
 }
 
-- (void)_handleSessionStats:(SessionStats *)a3
+- (void)_handleSessionStats:(SessionStats *)stats
 {
   dispatch_assert_queue_V2(self->_clientQueue);
-  if (a3->var1)
+  if (stats->var1)
   {
     ptr = self->_analyticsManager.__ptr_;
     if (ptr)
     {
 
-      sub_1001EDC6C(ptr, a3);
+      sub_1001EDC6C(ptr, stats);
     }
   }
 }
 
-- (void)_handleHealthChanged:(int)a3
+- (void)_handleHealthChanged:(int)changed
 {
   dispatch_assert_queue_V2(self->_clientQueue);
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100004A08(__p, (&off_1009A3070)[a3]);
+    sub_100004A08(__p, (&off_1009A3070)[changed]);
     if (v13 >= 0)
     {
       v6 = __p;
@@ -3049,40 +3049,40 @@ LABEL_34:
 
   v11.receiver = self;
   v11.super_class = NIServerCarKeySession;
-  v8 = [(NIServerBaseSession *)&v11 resourcesManager];
-  v9 = v8;
-  switch(a3)
+  resourcesManager = [(NIServerBaseSession *)&v11 resourcesManager];
+  v9 = resourcesManager;
+  switch(changed)
   {
     case 2:
-      v10 = [v8 remote];
-      [v10 didUpdateHealthStatus:3];
+      remote = [resourcesManager remote];
+      [remote didUpdateHealthStatus:3];
       goto LABEL_13;
     case 1:
-      v10 = [v8 remote];
-      [v10 didUpdateHealthStatus:2];
+      remote = [resourcesManager remote];
+      [remote didUpdateHealthStatus:2];
       goto LABEL_13;
     case 0:
-      v10 = [v8 remote];
-      [v10 didUpdateHealthStatus:1];
+      remote = [resourcesManager remote];
+      [remote didUpdateHealthStatus:1];
 LABEL_13:
 
       break;
   }
 }
 
-- (void)_handleTimeoutEvent:(int)a3 time:(double)a4
+- (void)_handleTimeoutEvent:(int)event time:(double)time
 {
   dispatch_assert_queue_V2(self->_clientQueue);
   v7 = qword_1009F9820;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100004A08(__p, (&off_1009A3088)[a3]);
+    sub_100004A08(__p, (&off_1009A3088)[event]);
     v8 = v20 >= 0 ? __p : __p[0];
     containerUniqueIdentifier = self->_containerUniqueIdentifier;
     *buf = 136315650;
     *v24 = v8;
     *&v24[8] = 2048;
-    *&v24[10] = a4;
+    *&v24[10] = time;
     *&v24[18] = 2112;
     v25 = containerUniqueIdentifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#ses-carkey,Received timeout event %s at %f sec, session container ID: %@", buf, 0x20u);
@@ -3095,7 +3095,7 @@ LABEL_13:
   ptr = self->_alishaManager.__ptr_;
   if (ptr)
   {
-    sub_1003A6444(ptr, a3, buf);
+    sub_1003A6444(ptr, event, buf);
     v11 = *buf;
     if (*buf)
     {
@@ -3116,9 +3116,9 @@ LABEL_13:
 
       v18.receiver = self;
       v18.super_class = NIServerCarKeySession;
-      v15 = [(NIServerBaseSession *)&v18 resourcesManager];
-      v16 = [v15 remote];
-      [v16 uwbSessionDidInvalidateWithError:v14];
+      resourcesManager = [(NIServerBaseSession *)&v18 resourcesManager];
+      remote = [resourcesManager remote];
+      [remote uwbSessionDidInvalidateWithError:v14];
     }
 
     else if (v26 == 1)

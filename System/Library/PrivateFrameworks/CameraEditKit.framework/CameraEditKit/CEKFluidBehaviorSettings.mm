@@ -1,12 +1,12 @@
 @interface CEKFluidBehaviorSettings
-- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)a3 toState:(int)a4;
-- (BOOL)isEqual:(id)a3;
+- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)state toState:(int)toState;
+- (BOOL)isEqual:(id)equal;
 - (CAFrameRateRange)frameRateRange;
 - (double)_effectiveTrackingDampingRatio;
 - (double)_effectiveTrackingResponse;
 - (double)_effectiveTrackingRetargetImpulse;
 - (double)settlingDuration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)setDefaultCriticallyDampedValues;
 - (void)setDefaultValues;
@@ -104,31 +104,31 @@
 
 - (double)settlingDuration
 {
-  v3 = [MEMORY[0x1E69794A8] animation];
-  [v3 setMass:1.0];
+  animation = [MEMORY[0x1E69794A8] animation];
+  [animation setMass:1.0];
   [(CEKFluidBehaviorSettings *)self dampingRatio];
   v5 = v4;
   [(CEKFluidBehaviorSettings *)self response];
   v7 = sqrt(6.28318531 / v6 * (6.28318531 / v6));
   v8 = v5 * (v7 + v7);
-  [v3 setStiffness:?];
-  [v3 setDamping:v8];
-  [v3 settlingDuration];
+  [animation setStiffness:?];
+  [animation setDamping:v8];
+  [animation settlingDuration];
   v10 = v9;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v54 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v54 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   behaviorType = self->_behaviorType;
   v85[0] = MEMORY[0x1E69E9820];
   v85[1] = 3221225472;
   v85[2] = __36__CEKFluidBehaviorSettings_isEqual___block_invoke;
   v85[3] = &unk_1E7CC65A0;
-  v6 = v4;
+  v6 = equalCopy;
   v86 = v6;
   v53 = [v54 appendInteger:behaviorType counterpart:v85];
   name = self->_name;
@@ -258,8 +258,8 @@
 
 - (unint64_t)hash
 {
-  v21 = [MEMORY[0x1E698E6B8] builder];
-  v20 = [v21 appendInteger:self->_behaviorType];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v20 = [builder appendInteger:self->_behaviorType];
   v19 = [v20 appendString:self->_name];
   v18 = [v19 appendDouble:self->_deceleration];
   v17 = [v18 appendCGFloat:self->_dampingRatio];
@@ -280,9 +280,9 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (![(CEKFluidBehaviorSettings *)self isEqual:v4])
   {
     objc_storeStrong((v4 + 144), self->_name);
@@ -306,7 +306,7 @@
   return v4;
 }
 
-- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)a3 toState:(int)a4
+- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)state toState:(int)toState
 {
   *&retstr->var7 = 0u;
   *&retstr->var9 = 0u;
@@ -325,7 +325,7 @@
     if (result)
     {
       *&retstr->var6 = *&self->_trackingDampingRatioSmoothing;
-      if (!a4)
+      if (!toState)
       {
         *&retstr->var2 = 257;
         response = self->_response;
@@ -345,7 +345,7 @@ LABEL_8:
     if (result)
     {
       *&retstr->var6 = *&self->_dampingRatioSmoothing;
-      if (a4 == 1)
+      if (toState == 1)
       {
         inertialTargetSmoothingRatio = self->_inertialTargetSmoothingRatio;
         retstr->var9 = self->_inertialProjectionDeceleration;

@@ -1,15 +1,15 @@
 @interface NTKRingsAndDotsViewAccessibility
-- (void)setRingsFillFractions:(id)a3;
+- (void)setRingsFillFractions:(id)fractions;
 @end
 
 @implementation NTKRingsAndDotsViewAccessibility
 
-- (void)setRingsFillFractions:(id)a3
+- (void)setRingsFillFractions:(id)fractions
 {
-  v4 = a3;
+  fractionsCopy = fractions;
   v17.receiver = self;
   v17.super_class = NTKRingsAndDotsViewAccessibility;
-  [(NTKRingsAndDotsViewAccessibility *)&v17 setRingsFillFractions:v4];
+  [(NTKRingsAndDotsViewAccessibility *)&v17 setRingsFillFractions:fractionsCopy];
   v16 = 0;
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();

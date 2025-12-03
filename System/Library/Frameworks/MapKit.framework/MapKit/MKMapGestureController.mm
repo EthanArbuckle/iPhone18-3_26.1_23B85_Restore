@@ -1,45 +1,45 @@
 @interface MKMapGestureController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isZoomEnabled;
-- (BOOL)keyDown:(id)a3;
-- (BOOL)keyUp:(id)a3;
-- (BOOL)tiltGestureRecognizerShouldBegin:(id)a3;
-- (CGPoint)_snapPointToDevicePixels:(CGPoint)a3;
-- (MKMapGestureController)initWithMapView:(id)a3 gestureTargetView:(id)a4 doubleTapTargetView:(id)a5;
+- (BOOL)keyDown:(id)down;
+- (BOOL)keyUp:(id)up;
+- (BOOL)tiltGestureRecognizerShouldBegin:(id)begin;
+- (CGPoint)_snapPointToDevicePixels:(CGPoint)pixels;
+- (MKMapGestureController)initWithMapView:(id)view gestureTargetView:(id)targetView doubleTapTargetView:(id)tapTargetView;
 - (MKMapGestureControllerDelegate)delegate;
-- (double)variableDelayTapRecognizer:(id)a3 shouldWaitForNextTapForDuration:(double)a4 afterTouch:(id)a5;
-- (void)_clearGesture:(id)a3;
-- (void)_handleInterrupt:(id)a3;
-- (void)_handleRotationPan:(id)a3;
-- (void)_handleStandardTilt:(id)a3;
-- (void)_handleZoomPan:(id)a3;
-- (void)_setTraitCollection:(id)a3;
-- (void)_updateRotationGestureForState:(int64_t)a3 focusPoint:(CGPoint)a4 rotation:(double)a5 velocity:(double)a6;
-- (void)_updateZoomGestureForState:(int64_t)a3 focusPoint:(CGPoint)a4 scale:(double)a5 velocity:(double)a6 gestureType:(int64_t)a7 configuration:(id)a8;
+- (double)variableDelayTapRecognizer:(id)recognizer shouldWaitForNextTapForDuration:(double)duration afterTouch:(id)touch;
+- (void)_clearGesture:(id)gesture;
+- (void)_handleInterrupt:(id)interrupt;
+- (void)_handleRotationPan:(id)pan;
+- (void)_handleStandardTilt:(id)tilt;
+- (void)_handleZoomPan:(id)pan;
+- (void)_setTraitCollection:(id)collection;
+- (void)_updateRotationGestureForState:(int64_t)state focusPoint:(CGPoint)point rotation:(double)rotation velocity:(double)velocity;
+- (void)_updateZoomGestureForState:(int64_t)state focusPoint:(CGPoint)point scale:(double)scale velocity:(double)velocity gestureType:(int64_t)type configuration:(id)configuration;
 - (void)beginGesturing;
 - (void)cancelZoomInOrOut;
 - (void)clearGestureRecognizersInFlight;
 - (void)dealloc;
 - (void)endGesturing;
-- (void)handleArrowPan:(id)a3;
-- (void)handleArrowRotate:(id)a3;
-- (void)handleArrowZoom:(id)a3;
-- (void)handleDoubleTap:(id)a3;
-- (void)handleOneHandedPanZoom:(id)a3;
-- (void)handlePan:(id)a3;
-- (void)handlePanZoom:(id)a3;
-- (void)handlePinch:(id)a3;
-- (void)handleRotation:(id)a3;
-- (void)handleTwoFingerLongPress:(id)a3;
-- (void)handleTwoFingerTap:(id)a3;
-- (void)handleZoomArrowMask:(int64_t)a3 speed:(double)a4;
-- (void)setCompassView:(id)a3;
-- (void)setRotationEnabled:(BOOL)a3;
-- (void)setTiltEnabled:(BOOL)a3;
-- (void)setZoomEnabled:(BOOL)a3;
-- (void)setupOneHandedZoomGestureRecognizerForView:(id)a3;
+- (void)handleArrowPan:(id)pan;
+- (void)handleArrowRotate:(id)rotate;
+- (void)handleArrowZoom:(id)zoom;
+- (void)handleDoubleTap:(id)tap;
+- (void)handleOneHandedPanZoom:(id)zoom;
+- (void)handlePan:(id)pan;
+- (void)handlePanZoom:(id)zoom;
+- (void)handlePinch:(id)pinch;
+- (void)handleRotation:(id)rotation;
+- (void)handleTwoFingerLongPress:(id)press;
+- (void)handleTwoFingerTap:(id)tap;
+- (void)handleZoomArrowMask:(int64_t)mask speed:(double)speed;
+- (void)setCompassView:(id)view;
+- (void)setRotationEnabled:(BOOL)enabled;
+- (void)setTiltEnabled:(BOOL)enabled;
+- (void)setZoomEnabled:(BOOL)enabled;
+- (void)setupOneHandedZoomGestureRecognizerForView:(id)view;
 - (void)stopDynamicAnimations;
 - (void)zoomIn;
 - (void)zoomOut;
@@ -55,9 +55,9 @@
   [(MKMapGestureController *)self _clearGesture:self->_twoFingerTapGestureRecognizer];
   [(MKMapGestureController *)self _clearGesture:self->_doubleTapGestureRecognizer];
   v3 = +[MKSystemController sharedInstance];
-  v4 = [v3 supportsExtendedGestures];
+  supportsExtendedGestures = [v3 supportsExtendedGestures];
 
-  if (v4)
+  if (supportsExtendedGestures)
   {
     oneHandedZoomGestureRecognizer = self->_oneHandedZoomGestureRecognizer;
 
@@ -120,8 +120,8 @@
 
   self->_gestureCount = gestureCount + 1;
   [(MKMapGestureController *)self stopDynamicAnimations];
-  v6 = [(MKBasicMapView *)self->_mapView mapView];
-  [v6 stopSnappingAnimations];
+  mapView = [(MKBasicMapView *)self->_mapView mapView];
+  [mapView stopSnappingAnimations];
 }
 
 - (void)stopDynamicAnimations
@@ -172,47 +172,47 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  v9 = gestureRecognizerCopy;
   touchGestureRecognizer = self->_touchGestureRecognizer;
-  if (touchGestureRecognizer == v7 || touchGestureRecognizer == v8)
+  if (touchGestureRecognizer == recognizerCopy || touchGestureRecognizer == gestureRecognizerCopy)
   {
     goto LABEL_10;
   }
 
   twoFingerLongPressGestureRecognizer = self->_twoFingerLongPressGestureRecognizer;
-  if (twoFingerLongPressGestureRecognizer == v7 || twoFingerLongPressGestureRecognizer == v8)
+  if (twoFingerLongPressGestureRecognizer == recognizerCopy || twoFingerLongPressGestureRecognizer == gestureRecognizerCopy)
   {
     goto LABEL_10;
   }
 
   pinchGestureRecognizer = self->_pinchGestureRecognizer;
-  if (pinchGestureRecognizer == v7 && self->_panGestureRecognizer == v8 || pinchGestureRecognizer == v8 && self->_panGestureRecognizer == v7 || (rotationGestureRecognizer = self->_rotationGestureRecognizer, rotationGestureRecognizer == v7) && self->_panGestureRecognizer == v8 || rotationGestureRecognizer == v8 && self->_panGestureRecognizer == v7)
+  if (pinchGestureRecognizer == recognizerCopy && self->_panGestureRecognizer == gestureRecognizerCopy || pinchGestureRecognizer == gestureRecognizerCopy && self->_panGestureRecognizer == recognizerCopy || (rotationGestureRecognizer = self->_rotationGestureRecognizer, rotationGestureRecognizer == recognizerCopy) && self->_panGestureRecognizer == gestureRecognizerCopy || rotationGestureRecognizer == gestureRecognizerCopy && self->_panGestureRecognizer == recognizerCopy)
   {
-    v19 = [(MKBasicMapView *)self->_mapView mapView];
-    v14 = [v19 staysCenteredDuringPinch] ^ 1;
+    mapView = [(MKBasicMapView *)self->_mapView mapView];
+    v14 = [mapView staysCenteredDuringPinch] ^ 1;
 
     goto LABEL_11;
   }
 
-  if (rotationGestureRecognizer == v7)
+  if (rotationGestureRecognizer == recognizerCopy)
   {
-    v4 = [(MKMapGestureController *)self pinchGestureRecognizer];
-    if (v4 == v9)
+    pinchGestureRecognizer = [(MKMapGestureController *)self pinchGestureRecognizer];
+    if (pinchGestureRecognizer == v9)
     {
       goto LABEL_42;
     }
   }
 
-  v18 = [(MKMapGestureController *)self pinchGestureRecognizer];
-  if (v18 == v7)
+  pinchGestureRecognizer2 = [(MKMapGestureController *)self pinchGestureRecognizer];
+  if (pinchGestureRecognizer2 == recognizerCopy)
   {
     v20 = self->_rotationGestureRecognizer;
 
-    if (rotationGestureRecognizer == v7)
+    if (rotationGestureRecognizer == recognizerCopy)
     {
     }
 
@@ -225,20 +225,20 @@
   else
   {
 
-    if (rotationGestureRecognizer == v7)
+    if (rotationGestureRecognizer == recognizerCopy)
     {
     }
   }
 
-  v4 = +[MKSystemController sharedInstance];
-  if (![(UIPanGestureRecognizer *)v4 supportsExtendedGestures])
+  pinchGestureRecognizer = +[MKSystemController sharedInstance];
+  if (![(UIPanGestureRecognizer *)pinchGestureRecognizer supportsExtendedGestures])
   {
 
     goto LABEL_34;
   }
 
   oneHandedZoomGestureRecognizer = self->_oneHandedZoomGestureRecognizer;
-  if (oneHandedZoomGestureRecognizer == v7)
+  if (oneHandedZoomGestureRecognizer == recognizerCopy)
   {
 LABEL_42:
 
@@ -255,14 +255,14 @@ LABEL_10:
 LABEL_34:
   conditionalPanRotationGestureRecognizer = self->_conditionalPanRotationGestureRecognizer;
   conditionalPanTiltGestureRecognizer = self->_conditionalPanTiltGestureRecognizer;
-  if (conditionalPanRotationGestureRecognizer == v7 && conditionalPanTiltGestureRecognizer == v9)
+  if (conditionalPanRotationGestureRecognizer == recognizerCopy && conditionalPanTiltGestureRecognizer == v9)
   {
     goto LABEL_10;
   }
 
   if (conditionalPanRotationGestureRecognizer)
   {
-    v24 = conditionalPanTiltGestureRecognizer == v7;
+    v24 = conditionalPanTiltGestureRecognizer == recognizerCopy;
   }
 
   else
@@ -276,21 +276,21 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_oneHandedZoomGestureRecognizer == v6 && ([v7 _isPointerTouch] & 1) != 0 || (-[MKMapGestureController delegate](self, "delegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "gestureController:shouldReceiveTouch:", self, v8), v9, (v10 & 1) == 0))
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  v8 = touchCopy;
+  if (self->_oneHandedZoomGestureRecognizer == recognizerCopy && ([touchCopy _isPointerTouch] & 1) != 0 || (-[MKMapGestureController delegate](self, "delegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "gestureController:shouldReceiveTouch:", self, v8), v9, (v10 & 1) == 0))
   {
     v11 = 0;
   }
 
-  else if (self->_panGestureRecognizer == v6)
+  else if (self->_panGestureRecognizer == recognizerCopy)
   {
-    v12 = [v8 view];
-    v13 = [v12 traitCollection];
-    v11 = [v13 touchLevel] != 1;
+    view = [v8 view];
+    traitCollection = [view traitCollection];
+    v11 = [traitCollection touchLevel] != 1;
   }
 
   else
@@ -301,41 +301,41 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)tiltGestureRecognizerShouldBegin:(id)a3
+- (BOOL)tiltGestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(MKBasicMapView *)self->_mapView mapView];
-  v6 = [v5 canEnter3DMode];
-  v19 = (v6 & 1) != 0 && (-[MKMapGestureController mapView](self, "mapView"), v7 = ;
+  beginCopy = begin;
+  mapView = [(MKBasicMapView *)self->_mapView mapView];
+  canEnter3DMode = [mapView canEnter3DMode];
+  v19 = (canEnter3DMode & 1) != 0 && (-[MKMapGestureController mapView](self, "mapView"), v7 = ;
   return v19;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_conditionalPanTiltGestureRecognizer == v4)
+  beginCopy = begin;
+  v5 = beginCopy;
+  if (self->_conditionalPanTiltGestureRecognizer == beginCopy)
   {
-    v7 = [(MKBasicMapView *)self->_mapView mapView];
-    v6 = [v7 canEnter3DMode];
+    mapView = [(MKBasicMapView *)self->_mapView mapView];
+    canEnter3DMode = [mapView canEnter3DMode];
   }
 
-  else if (self->_tiltGestureRecognizer == v4)
+  else if (self->_tiltGestureRecognizer == beginCopy)
   {
-    v6 = [(MKMapGestureController *)self tiltGestureRecognizerShouldBegin:?];
+    canEnter3DMode = [(MKMapGestureController *)self tiltGestureRecognizerShouldBegin:?];
   }
 
   else
   {
-    v6 = 1;
+    canEnter3DMode = 1;
   }
 
-  return v6;
+  return canEnter3DMode;
 }
 
-- (void)handleArrowZoom:(id)a3
+- (void)handleArrowZoom:(id)zoom
 {
-  v4 = a3;
+  zoomCopy = zoom;
   [(MKBasicMapView *)self->_mapView bounds];
   v6 = v5;
   v8 = v7;
@@ -366,12 +366,12 @@ LABEL_11:
     MidY = v26;
   }
 
-  if ([v4 state] == 1)
+  if ([zoomCopy state] == 1)
   {
     [(MKMapGestureController *)self beginGesturing];
     [(MKMapGestureController *)self stopDynamicAnimations];
-    v27 = [(MKBasicMapView *)self->_mapView mapView];
-    [v27 startPinchingWithFocusPoint:{MidX, MidY}];
+    mapView = [(MKBasicMapView *)self->_mapView mapView];
+    [mapView startPinchingWithFocusPoint:{MidX, MidY}];
 
     v28 = objc_loadWeakRetained(&self->_delegate);
     [v28 gestureControllerWillStartZooming:self animated:1];
@@ -395,7 +395,7 @@ LABEL_11:
     v60[3] = &unk_1E76C80C8;
     objc_copyWeak(v63, &location);
     v62 = from;
-    v61 = v4;
+    v61 = zoomCopy;
     v63[1] = *&MidX;
     v63[2] = *&MidY;
     [(VKTimedAnimation *)self->_currentArrowAnimation setStepHandler:v60];
@@ -407,8 +407,8 @@ LABEL_11:
     v59[1] = *&MidX;
     v59[2] = *&MidY;
     [(VKTimedAnimation *)self->_currentArrowAnimation setCompletionHandler:v58];
-    v31 = [(MKBasicMapView *)self->_mapView mapView];
-    [v31 runAnimation:self->_currentArrowAnimation];
+    mapView2 = [(MKBasicMapView *)self->_mapView mapView];
+    [mapView2 runAnimation:self->_currentArrowAnimation];
 
     objc_destroyWeak(v59);
     objc_destroyWeak(v63);
@@ -419,7 +419,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ([v4 state] == 3)
+  if ([zoomCopy state] == 3)
   {
     [(VKTimedAnimation *)self->_currentArrowAnimation stopAnimation:1];
     v33 = self->_currentArrowAnimation;
@@ -432,19 +432,19 @@ LABEL_19:
       v34 = self->_arrowZoomStartTimestamp - CFAbsoluteTimeGetCurrent() + 0.25;
     }
 
-    v35 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v35 doubleForKey:@"ZoomingDefault"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults doubleForKey:@"ZoomingDefault"];
     v37 = v36;
 
     arrowZoomSpeed = self->_arrowZoomSpeed;
-    v39 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v39 doubleForKey:@"ZoomingDefault"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults2 doubleForKey:@"ZoomingDefault"];
     v41 = v40;
 
     if (arrowZoomSpeed < v41)
     {
-      v42 = [MEMORY[0x1E695E000] standardUserDefaults];
-      [v42 doubleForKey:@"ZoomingDefault"];
+      standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+      [standardUserDefaults3 doubleForKey:@"ZoomingDefault"];
       v37 = v37 + (v43 - self->_arrowZoomSpeed) * 0.699999988;
     }
 
@@ -460,7 +460,7 @@ LABEL_19:
     }
 
     pinchFactorAverageInGesture = self->_pinchFactorAverageInGesture;
-    if (pinchFactorAverageInGesture > 1.0 || fabs(pinchFactorAverageInGesture + -1.0) < 0.000001 && ([v4 lastArrows] & 2) != 0)
+    if (pinchFactorAverageInGesture > 1.0 || fabs(pinchFactorAverageInGesture + -1.0) < 0.000001 && ([zoomCopy lastArrows] & 2) != 0)
     {
       v47 = v37 + 1.0;
     }
@@ -494,8 +494,8 @@ LABEL_19:
     v54[1] = *&MidX;
     v54[2] = *&MidY;
     [(VKTimedAnimation *)self->_currentArrowAnimation setCompletionHandler:v53];
-    v52 = [(MKBasicMapView *)self->_mapView mapView];
-    [v52 runAnimation:self->_currentArrowAnimation];
+    mapView3 = [(MKBasicMapView *)self->_mapView mapView];
+    [mapView3 runAnimation:self->_currentArrowAnimation];
 
     objc_destroyWeak(v54);
     objc_destroyWeak(v56);
@@ -606,9 +606,9 @@ void __42__MKMapGestureController_handleArrowZoom___block_invoke_4(uint64_t a1)
   }
 }
 
-- (void)handleArrowRotate:(id)a3
+- (void)handleArrowRotate:(id)rotate
 {
-  v4 = a3;
+  rotateCopy = rotate;
   [(MKBasicMapView *)self->_mapView bounds];
   v6 = v5;
   v8 = v7;
@@ -629,9 +629,9 @@ void __42__MKMapGestureController_handleArrowZoom___block_invoke_4(uint64_t a1)
   v60.size.width = v18;
   v60.size.height = v20;
   MidY = CGRectGetMidY(v60);
-  if ([v4 state] == 1)
+  if ([rotateCopy state] == 1)
   {
-    if (([v4 modifierFlags] & 0x100000) == 0)
+    if (([rotateCopy modifierFlags] & 0x100000) == 0)
     {
       [(MKMapGestureController *)self beginGesturing];
       [(VKTimedAnimation *)self->_currentArrowAnimation stopAnimation:0];
@@ -646,8 +646,8 @@ void __42__MKMapGestureController_handleArrowZoom___block_invoke_4(uint64_t a1)
 
       else
       {
-        v34 = [(MKBasicMapView *)self->_mapView mapView];
-        [v34 startRotatingWithFocusPoint:{MidX, MidY}];
+        mapView = [(MKBasicMapView *)self->_mapView mapView];
+        [mapView startRotatingWithFocusPoint:{MidX, MidY}];
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -665,7 +665,7 @@ void __42__MKMapGestureController_handleArrowZoom___block_invoke_4(uint64_t a1)
       v51[2] = __44__MKMapGestureController_handleArrowRotate___block_invoke_3;
       v51[3] = &unk_1E76C8078;
       objc_copyWeak(v53, &location);
-      v52 = v4;
+      v52 = rotateCopy;
       v53[1] = *&MidX;
       v53[2] = *&MidY;
       [(VKTimedAnimation *)self->_currentArrowAnimation setStepHandler:v51];
@@ -677,8 +677,8 @@ void __42__MKMapGestureController_handleArrowZoom___block_invoke_4(uint64_t a1)
       v50[1] = *&MidX;
       v50[2] = *&MidY;
       [(VKTimedAnimation *)self->_currentArrowAnimation setCompletionHandler:v49];
-      v38 = [(MKBasicMapView *)self->_mapView mapView];
-      [v38 runAnimation:self->_currentArrowAnimation];
+      mapView2 = [(MKBasicMapView *)self->_mapView mapView];
+      [mapView2 runAnimation:self->_currentArrowAnimation];
 
       objc_destroyWeak(v50);
       v39 = v53;
@@ -687,8 +687,8 @@ void __42__MKMapGestureController_handleArrowZoom___block_invoke_4(uint64_t a1)
 
     [(MKMapGestureController *)self beginGesturing];
     [(MKMapGestureController *)self stopDynamicAnimations];
-    v31 = ([v4 arrows] & 8) == 0;
-    if (([v4 modifierFlags] & 0x20000) != 0)
+    v31 = ([rotateCopy arrows] & 8) == 0;
+    if (([rotateCopy modifierFlags] & 0x20000) != 0)
     {
       v32 = 12.0;
     }
@@ -706,8 +706,8 @@ void __42__MKMapGestureController_handleArrowZoom___block_invoke_4(uint64_t a1)
 
     else
     {
-      v40 = [(MKBasicMapView *)self->_mapView mapView];
-      [v40 startRotatingWithFocusPoint:{MidX, MidY}];
+      mapView3 = [(MKBasicMapView *)self->_mapView mapView];
+      [mapView3 startRotatingWithFocusPoint:{MidX, MidY}];
     }
 
     v41 = objc_loadWeakRetained(&self->_delegate);
@@ -739,8 +739,8 @@ void __42__MKMapGestureController_handleArrowZoom___block_invoke_4(uint64_t a1)
     v55[1] = *&MidX;
     v55[2] = *&MidY;
     [(VKTimedAnimation *)self->_currentArrowAnimation setCompletionHandler:v54];
-    v30 = [(MKBasicMapView *)self->_mapView mapView];
-    [v30 runAnimation:self->_currentArrowAnimation];
+    mapView4 = [(MKBasicMapView *)self->_mapView mapView];
+    [mapView4 runAnimation:self->_currentArrowAnimation];
 LABEL_17:
 
     objc_destroyWeak(v29 + 4);
@@ -751,7 +751,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ([v4 state] == 3 && !self->_isFullRotatingFromArrows)
+  if ([rotateCopy state] == 3 && !self->_isFullRotatingFromArrows)
   {
     [(VKTimedAnimation *)self->_currentArrowAnimation stopAnimation:1];
     v25 = self->_currentArrowAnimation;
@@ -780,8 +780,8 @@ LABEL_18:
     v46[1] = *&MidX;
     v46[2] = *&MidY;
     [(VKTimedAnimation *)self->_currentArrowAnimation setCompletionHandler:v45];
-    v30 = [(MKBasicMapView *)self->_mapView mapView];
-    [v30 runAnimation:self->_currentArrowAnimation];
+    mapView4 = [(MKBasicMapView *)self->_mapView mapView];
+    [mapView4 runAnimation:self->_currentArrowAnimation];
     goto LABEL_17;
   }
 
@@ -949,9 +949,9 @@ void __44__MKMapGestureController_handleArrowRotate___block_invoke_6(uint64_t a1
   }
 }
 
-- (void)handleArrowPan:(id)a3
+- (void)handleArrowPan:(id)pan
 {
-  v4 = a3;
+  panCopy = pan;
   [(MKBasicMapView *)self->_mapView bounds];
   v6 = v5;
   v8 = v7;
@@ -972,12 +972,12 @@ void __44__MKMapGestureController_handleArrowRotate___block_invoke_6(uint64_t a1
   v52.size.width = v18;
   v52.size.height = v20;
   MidY = CGRectGetMidY(v52);
-  if ([v4 state] == 1)
+  if ([panCopy state] == 1)
   {
     [(MKMapGestureController *)self beginGesturing];
     [(MKMapGestureController *)self stopDynamicAnimations];
-    v23 = [(MKBasicMapView *)self->_mapView mapView];
-    [v23 startPanningAtPoint:1 panAtStartPoint:{MidX, MidY}];
+    mapView = [(MKBasicMapView *)self->_mapView mapView];
+    [mapView startPanningAtPoint:1 panAtStartPoint:{MidX, MidY}];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained gestureControllerWillStartPanning:self];
@@ -1002,7 +1002,7 @@ void __44__MKMapGestureController_handleArrowRotate___block_invoke_6(uint64_t a1
     v44[3] = &unk_1E76C8000;
     objc_copyWeak(v47, &location);
     v47[1] = *&Current;
-    v45 = v4;
+    v45 = panCopy;
     v46 = from;
     [(VKTimedAnimation *)self->_currentArrowAnimation setStepHandler:v44];
     v42[0] = MEMORY[0x1E69E9820];
@@ -1013,8 +1013,8 @@ void __44__MKMapGestureController_handleArrowRotate___block_invoke_6(uint64_t a1
     v43[1] = *&MidX;
     v43[2] = *&MidY;
     [(VKTimedAnimation *)self->_currentArrowAnimation setCompletionHandler:v42];
-    v28 = [(MKBasicMapView *)self->_mapView mapView];
-    [v28 runAnimation:self->_currentArrowAnimation];
+    mapView2 = [(MKBasicMapView *)self->_mapView mapView];
+    [mapView2 runAnimation:self->_currentArrowAnimation];
 
     objc_destroyWeak(v43);
     objc_destroyWeak(v47);
@@ -1025,7 +1025,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v4 state] == 3)
+  if ([panCopy state] == 3)
   {
     v30 = self->_currentArrowAnimation;
     if (v30)
@@ -1239,13 +1239,13 @@ void __41__MKMapGestureController_handleArrowPan___block_invoke_4(uint64_t a1)
   }
 }
 
-- (BOOL)keyUp:(id)a3
+- (BOOL)keyUp:(id)up
 {
-  v4 = a3;
+  upCopy = up;
   activeArrowGestureRecognizer = self->_activeArrowGestureRecognizer;
   if (activeArrowGestureRecognizer)
   {
-    [(_MKDirectionalArrowRecognizer *)self->_activeArrowGestureRecognizer keyUp:v4];
+    [(_MKDirectionalArrowRecognizer *)self->_activeArrowGestureRecognizer keyUp:upCopy];
     if ([(_MKDirectionalArrowRecognizer *)self->_activeArrowGestureRecognizer state]== 3 || [(_MKDirectionalArrowRecognizer *)self->_activeArrowGestureRecognizer state]== 5 || [(_MKDirectionalArrowRecognizer *)self->_activeArrowGestureRecognizer state]== 4)
     {
       v6 = self->_activeArrowGestureRecognizer;
@@ -1256,13 +1256,13 @@ void __41__MKMapGestureController_handleArrowPan___block_invoke_4(uint64_t a1)
   return activeArrowGestureRecognizer != 0;
 }
 
-- (BOOL)keyDown:(id)a3
+- (BOOL)keyDown:(id)down
 {
-  v4 = a3;
+  downCopy = down;
   activeArrowGestureRecognizer = self->_activeArrowGestureRecognizer;
   if (!activeArrowGestureRecognizer)
   {
-    v6 = [v4 key];
+    v6 = [downCopy key];
     if ((~[v6 modifierFlags] & 0x120000) == 0 && (objc_msgSend(v6, "modifierFlags") & 0xFFFFFFFFFFEDFFFFLL) == 0)
     {
 
@@ -1340,32 +1340,32 @@ LABEL_30:
   }
 
 LABEL_28:
-  [(_MKDirectionalArrowRecognizer *)activeArrowGestureRecognizer keyDown:v4];
+  [(_MKDirectionalArrowRecognizer *)activeArrowGestureRecognizer keyDown:downCopy];
   v11 = 1;
 LABEL_29:
 
   return v11;
 }
 
-- (void)_handleInterrupt:(id)a3
+- (void)_handleInterrupt:(id)interrupt
 {
-  v5 = a3;
-  if ([v5 state] == 3)
+  interruptCopy = interrupt;
+  if ([interruptCopy state] == 3)
   {
     [(MKMapGestureController *)self stopDynamicAnimations];
-    v4 = [(MKBasicMapView *)self->_mapView mapView];
-    [v4 stopSnappingAnimations];
+    mapView = [(MKBasicMapView *)self->_mapView mapView];
+    [mapView stopSnappingAnimations];
   }
 }
 
-- (void)_handleZoomPan:(id)a3
+- (void)_handleZoomPan:(id)pan
 {
-  v52 = a3;
-  if ([(UIPanGestureRecognizer *)v52 state]== 1)
+  panCopy = pan;
+  if ([(UIPanGestureRecognizer *)panCopy state]== 1)
   {
     self->_lastScale = 1.0;
     self->_lastZoomPanTranslation = 0.0;
-    if (self->_scaleDragGestureRecognizer == v52)
+    if (self->_scaleDragGestureRecognizer == panCopy)
     {
       [(MKBasicMapView *)self->_mapView bounds];
       v9 = v8;
@@ -1412,7 +1412,7 @@ LABEL_29:
 
     else
     {
-      [(UIPanGestureRecognizer *)v52 locationInView:self->_mapView];
+      [(UIPanGestureRecognizer *)panCopy locationInView:self->_mapView];
       MidX = v4;
       MidY = v6;
     }
@@ -1439,13 +1439,13 @@ LABEL_29:
 
   if ([(MKBasicMapView *)self->_mapView isPointValidForGesturing:MidX, MidY])
   {
-    v39 = [(UIPanGestureRecognizer *)v52 view];
-    [(UIPanGestureRecognizer *)v52 translationInView:v39];
+    view = [(UIPanGestureRecognizer *)panCopy view];
+    [(UIPanGestureRecognizer *)panCopy translationInView:view];
     v41 = v40;
     v43 = v42;
 
-    v44 = v52;
-    if (self->_scaleDragGestureRecognizer == v52)
+    v44 = panCopy;
+    if (self->_scaleDragGestureRecognizer == panCopy)
     {
       v45 = v41;
     }
@@ -1456,7 +1456,7 @@ LABEL_29:
     }
 
     conditionalPanZoomGestureRecognizer = self->_conditionalPanZoomGestureRecognizer;
-    if (conditionalPanZoomGestureRecognizer == v52)
+    if (conditionalPanZoomGestureRecognizer == panCopy)
     {
       v45 = -v45;
     }
@@ -1469,17 +1469,17 @@ LABEL_29:
   {
     conditionalPanZoomGestureRecognizer = self->_conditionalPanZoomGestureRecognizer;
     v47 = 1.0;
-    v44 = v52;
+    v44 = panCopy;
   }
 
   if (conditionalPanZoomGestureRecognizer == v44)
   {
-    v50 = [(_MKConditionalPanZoomGestureRecognizer *)v44 view];
-    [(UIPanGestureRecognizer *)v52 velocityInView:v50];
+    view2 = [(_MKConditionalPanZoomGestureRecognizer *)v44 view];
+    [(UIPanGestureRecognizer *)panCopy velocityInView:view2];
     v49 = -v51;
 
     v48 = self->_zoomConfiguration;
-    v44 = v52;
+    v44 = panCopy;
   }
 
   else
@@ -1491,12 +1491,12 @@ LABEL_29:
   [(MKMapGestureController *)self _updateZoomGestureForState:[(_MKConditionalPanZoomGestureRecognizer *)v44 state] focusPoint:4 scale:v48 velocity:MidX gestureType:MidY configuration:v47, v49];
 }
 
-- (void)_handleRotationPan:(id)a3
+- (void)_handleRotationPan:(id)pan
 {
-  v19 = a3;
-  if ([v19 state] == 1)
+  panCopy = pan;
+  if ([panCopy state] == 1)
   {
-    [v19 locationInView:self->_mapView];
+    [panCopy locationInView:self->_mapView];
     v5 = v4;
     v7 = v6;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1514,49 +1514,49 @@ LABEL_29:
     self->_panRotateStartPoint.y = v7;
   }
 
-  v13 = [(MKMapGestureController *)self mapView];
-  [v19 translationInView:v13];
+  mapView = [(MKMapGestureController *)self mapView];
+  [panCopy translationInView:mapView];
   v15 = v14;
 
-  v16 = [(MKMapGestureController *)self mapView];
-  [v19 velocityInView:v16];
+  mapView2 = [(MKMapGestureController *)self mapView];
+  [panCopy velocityInView:mapView2];
   v18 = v17;
 
-  -[MKMapGestureController _updateRotationGestureForState:focusPoint:rotation:velocity:](self, "_updateRotationGestureForState:focusPoint:rotation:velocity:", [v19 state], self->_panRotateStartPoint.x, self->_panRotateStartPoint.y, v15 / 200.0, v18 / 200.0);
+  -[MKMapGestureController _updateRotationGestureForState:focusPoint:rotation:velocity:](self, "_updateRotationGestureForState:focusPoint:rotation:velocity:", [panCopy state], self->_panRotateStartPoint.x, self->_panRotateStartPoint.y, v15 / 200.0, v18 / 200.0);
 }
 
-- (void)handleZoomArrowMask:(int64_t)a3 speed:(double)a4
+- (void)handleZoomArrowMask:(int64_t)mask speed:(double)speed
 {
   if ([(MKMapGestureController *)self isZoomEnabled])
   {
-    if (a3)
+    if (mask)
     {
-      if (a4 <= 0.0)
+      if (speed <= 0.0)
       {
-        v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-        [v9 doubleForKey:@"ZoomingDefault"];
+        standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+        [standardUserDefaults doubleForKey:@"ZoomingDefault"];
         self->_arrowZoomSpeed = v7;
       }
 
       else
       {
-        self->_arrowZoomSpeed = a4;
+        self->_arrowZoomSpeed = speed;
       }
     }
 
-    [(_MKDirectionalArrowRecognizer *)self->_arrowZoomGestureRecognizer handleArrowMask:a3];
+    [(_MKDirectionalArrowRecognizer *)self->_arrowZoomGestureRecognizer handleArrowMask:mask];
     if ([(_MKDirectionalArrowRecognizer *)self->_arrowZoomGestureRecognizer state]== 3 || [(_MKDirectionalArrowRecognizer *)self->_arrowZoomGestureRecognizer state]== 5 || [(_MKDirectionalArrowRecognizer *)self->_arrowZoomGestureRecognizer state]== 4)
     {
-      v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-      [v10 doubleForKey:@"ZoomingDefault"];
+      standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+      [standardUserDefaults2 doubleForKey:@"ZoomingDefault"];
       self->_arrowZoomSpeed = v8;
     }
   }
 }
 
-- (double)variableDelayTapRecognizer:(id)a3 shouldWaitForNextTapForDuration:(double)a4 afterTouch:(id)a5
+- (double)variableDelayTapRecognizer:(id)recognizer shouldWaitForNextTapForDuration:(double)duration afterTouch:(id)touch
 {
-  v7 = a5;
+  touchCopy = touch;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -1567,17 +1567,17 @@ LABEL_29:
     if (v11)
     {
       v12 = objc_loadWeakRetained(&self->_delegate);
-      [v12 gestureController:self shouldWaitForNextTapForDuration:v7 afterTouch:a4];
-      a4 = v13;
+      [v12 gestureController:self shouldWaitForNextTapForDuration:touchCopy afterTouch:duration];
+      duration = v13;
     }
   }
 
-  return a4;
+  return duration;
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
-  v4 = a3;
+  panCopy = pan;
   v5 = MKGetGesturesLog();
   if (os_signpost_enabled(v5))
   {
@@ -1585,7 +1585,7 @@ LABEL_29:
     _os_signpost_emit_with_name_impl(&dword_1A2EA0000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "HandlePan", &unk_1A30FEA0E, buf, 2u);
   }
 
-  [v4 locationInView:self->_mapView];
+  [panCopy locationInView:self->_mapView];
   v7 = v6;
   v9 = v8;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1613,53 +1613,53 @@ LABEL_29:
   v58 = &unk_1A31250BE;
   v59 = 0;
   v60 = 0;
-  [v4 translationInView:self->_mapView];
+  [panCopy translationInView:self->_mapView];
   [(MKMapGestureController *)self _snapPointToDevicePixels:?];
   v59 = v19;
   v60 = v20;
-  v21 = [v4 state];
-  if (v21 <= 2)
+  state = [panCopy state];
+  if (state <= 2)
   {
-    if (v21 == 1)
+    if (state == 1)
     {
       [(MKMapGestureController *)self beginGesturing];
-      v23 = [(MKBasicMapView *)self->_mapView mapView];
-      [v23 startPanningAtPoint:{v15, v17}];
+      mapView = [(MKBasicMapView *)self->_mapView mapView];
+      [mapView startPanningAtPoint:{v15, v17}];
 
-      v22 = objc_loadWeakRetained(&self->_delegate);
-      [v22 gestureControllerWillStartPanning:self];
+      mapView2 = objc_loadWeakRetained(&self->_delegate);
+      [mapView2 gestureControllerWillStartPanning:self];
     }
 
     else
     {
-      if (v21 != 2)
+      if (state != 2)
       {
         goto LABEL_18;
       }
 
-      v22 = [(MKBasicMapView *)self->_mapView mapView];
-      [v22 updatePanWithTranslation:{*(v54 + 6), *(v54 + 7)}];
+      mapView2 = [(MKBasicMapView *)self->_mapView mapView];
+      [mapView2 updatePanWithTranslation:{*(v54 + 6), *(v54 + 7)}];
     }
 
     goto LABEL_13;
   }
 
-  if (v21 == 3)
+  if (state == 3)
   {
-    [v4 velocityInView:self->_mapView];
+    [panCopy velocityInView:self->_mapView];
     if (self->_panWithMomentum && (fabs(v24) > 200.0 || fabs(v25) > 200.0))
     {
-      v29 = [(MKBasicMapView *)self->_mapView mapView];
-      [v29 isPitched];
+      mapView3 = [(MKBasicMapView *)self->_mapView mapView];
+      [mapView3 isPitched];
 
-      v22 = objc_alloc_init(MEMORY[0x1E69DF420]);
+      mapView2 = objc_alloc_init(MEMORY[0x1E69DF420]);
       v48 = MEMORY[0x1E69E9820];
       v49 = 3221225472;
       v50 = __36__MKMapGestureController_handlePan___block_invoke;
       v51 = &unk_1E76CA6E8;
       v52 = buf;
       v30 = dynamicValueAnimation();
-      [v22 setDynamicStepHandler:v30];
+      [mapView2 setDynamicStepHandler:v30];
 
       v31 = objc_alloc_init(MEMORY[0x1E69DF420]);
       v43 = MEMORY[0x1E69E9820];
@@ -1671,7 +1671,7 @@ LABEL_29:
       [v31 setDynamicStepHandler:v32];
 
       objc_initWeak(v42, self);
-      v33 = [objc_alloc(MEMORY[0x1E69DF400]) initWithAnimations:{v22, v31, 0}];
+      v33 = [objc_alloc(MEMORY[0x1E69DF400]) initWithAnimations:{mapView2, v31, 0}];
       v34 = self->_panDecelerationAnimationGroup;
       self->_panDecelerationAnimationGroup = v33;
 
@@ -1680,7 +1680,7 @@ LABEL_29:
       v39[2] = __36__MKMapGestureController_handlePan___block_invoke_3;
       v39[3] = &unk_1E76CA710;
       objc_copyWeak(&v41, v42);
-      v40 = v4;
+      v40 = panCopy;
       [(VKCompoundAnimation *)self->_panDecelerationAnimationGroup setCompletionHandler:v39];
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
@@ -1692,8 +1692,8 @@ LABEL_29:
       v35 = objc_loadWeakRetained(&self->_delegate);
       [v35 gestureControllerDidStopPanning:self willDecelerate:1];
 
-      v36 = [(MKBasicMapView *)self->_mapView mapView];
-      [v36 runAnimation:self->_panDecelerationAnimationGroup];
+      mapView4 = [(MKBasicMapView *)self->_mapView mapView];
+      [mapView4 runAnimation:self->_panDecelerationAnimationGroup];
 
       objc_destroyWeak(&v38);
       objc_destroyWeak(&v41);
@@ -1704,13 +1704,13 @@ LABEL_13:
     }
   }
 
-  else if (v21 != 4)
+  else if (state != 4)
   {
     goto LABEL_18;
   }
 
-  v26 = [(MKBasicMapView *)self->_mapView mapView];
-  [v26 stopPanningAtPoint:{v15, v17}];
+  mapView5 = [(MKBasicMapView *)self->_mapView mapView];
+  [mapView5 stopPanningAtPoint:{v15, v17}];
 
   v27 = objc_loadWeakRetained(&self->_delegate);
   [v27 gestureControllerDidStopPanning:self willDecelerate:0];
@@ -1752,17 +1752,17 @@ void __36__MKMapGestureController_handlePan___block_invoke_4(uint64_t a1)
   [v3 updatePanWithTranslation:{*(*(*(a1 + 32) + 8) + 48), *(*(*(a1 + 32) + 8) + 56)}];
 }
 
-- (CGPoint)_snapPointToDevicePixels:(CGPoint)a3
+- (CGPoint)_snapPointToDevicePixels:(CGPoint)pixels
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(MKBasicMapView *)self->_mapView mapView];
-  [v6 contentsScale];
+  y = pixels.y;
+  x = pixels.x;
+  mapView = [(MKBasicMapView *)self->_mapView mapView];
+  [mapView contentsScale];
   v8 = v7;
 
-  v9 = [(MKBasicMapView *)self->_mapView window];
-  v10 = [v9 screen];
-  [v10 scale];
+  window = [(MKBasicMapView *)self->_mapView window];
+  screen = [window screen];
+  [screen scale];
   v12 = vabdd_f64(v8, v11);
 
   if (v12 >= 0.000001)
@@ -1778,27 +1778,27 @@ void __36__MKMapGestureController_handlePan___block_invoke_4(uint64_t a1)
   return result;
 }
 
-- (void)_updateZoomGestureForState:(int64_t)a3 focusPoint:(CGPoint)a4 scale:(double)a5 velocity:(double)a6 gestureType:(int64_t)a7 configuration:(id)a8
+- (void)_updateZoomGestureForState:(int64_t)state focusPoint:(CGPoint)point scale:(double)scale velocity:(double)velocity gestureType:(int64_t)type configuration:(id)configuration
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v63 = *MEMORY[0x1E69E9840];
-  v15 = a8;
-  if (a3 == 1)
+  configurationCopy = configuration;
+  if (state == 1)
   {
     self->_lastScale = 1.0;
     [(MKMapGestureController *)self beginGesturing];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained gestureControllerWillStartZooming:self animated:0];
 
-    v22 = [(MKBasicMapView *)self->_mapView mapView];
-    [v22 startPinchingWithFocusPoint:{x, y}];
+    mapView = [(MKBasicMapView *)self->_mapView mapView];
+    [mapView startPinchingWithFocusPoint:{x, y}];
   }
 
-  else if (a3 == 4)
+  else if (state == 4)
   {
-    v16 = [(MKBasicMapView *)self->_mapView mapView];
-    [v16 stopPinchingWithFocusPoint:{x, y}];
+    mapView2 = [(MKBasicMapView *)self->_mapView mapView];
+    [mapView2 stopPinchingWithFocusPoint:{x, y}];
 
     v17 = objc_loadWeakRetained(&self->_delegate);
     v18 = v17;
@@ -1813,7 +1813,7 @@ void __36__MKMapGestureController_handlePan___block_invoke_4(uint64_t a1)
       v20 = 2 * (lastScale < 1.0);
     }
 
-    [v17 gestureControllerDidStopZooming:self direction:v20 type:a7 willDecelerate:0];
+    [v17 gestureControllerDidStopZooming:self direction:v20 type:type willDecelerate:0];
 
     [(MKMapGestureController *)self endGesturing];
     goto LABEL_37;
@@ -1830,7 +1830,7 @@ void __36__MKMapGestureController_handlePan___block_invoke_4(uint64_t a1)
   v23 = MEMORY[0x1A58E9F30](v56);
   if ([(MKBasicMapView *)self->_mapView isPointValidForGesturing:x, y])
   {
-    v23[2](v23, self->_lastScale, a5);
+    v23[2](v23, self->_lastScale, scale);
     v24 = MKGetGesturesLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
@@ -1838,12 +1838,12 @@ void __36__MKMapGestureController_handlePan___block_invoke_4(uint64_t a1)
       *buf = 134218240;
       v60 = v25;
       v61 = 2048;
-      v62 = a5;
+      scaleCopy = scale;
       _os_log_impl(&dword_1A2EA0000, v24, OS_LOG_TYPE_DEBUG, "_updateZoomGestureForState oldFactor : %f newFactor : %f", buf, 0x16u);
     }
   }
 
-  if (a3 == 3)
+  if (state == 3)
   {
     v55[0] = MEMORY[0x1E69E9820];
     v55[1] = 3221225472;
@@ -1852,24 +1852,24 @@ void __36__MKMapGestureController_handlePan___block_invoke_4(uint64_t a1)
     v55[4] = self;
     *&v55[5] = x;
     *&v55[6] = y;
-    v55[7] = a7;
+    v55[7] = type;
     v26 = MEMORY[0x1A58E9F30](v55);
     v27 = +[MKSystemController sharedInstance];
-    v28 = [v27 supportsExtendedGestures];
+    supportsExtendedGestures = [v27 supportsExtendedGestures];
 
-    if (v28)
+    if (supportsExtendedGestures)
     {
-      [v15 decelerationThreshold];
-      v30 = -a6;
-      if (a6 >= 0.0)
+      [configurationCopy decelerationThreshold];
+      velocityCopy = -velocity;
+      if (velocity >= 0.0)
       {
-        v30 = a6;
+        velocityCopy = velocity;
       }
 
-      if (v30 <= v29)
+      if (velocityCopy <= v29)
       {
-        v43 = [(MKBasicMapView *)self->_mapView mapView];
-        [v43 stopPinchingWithFocusPoint:{x, y}];
+        mapView3 = [(MKBasicMapView *)self->_mapView mapView];
+        [mapView3 stopPinchingWithFocusPoint:{x, y}];
 
         v44 = objc_loadWeakRetained(&self->_delegate);
         v45 = v44;
@@ -1884,29 +1884,29 @@ void __36__MKMapGestureController_handlePan___block_invoke_4(uint64_t a1)
           v47 = 2 * (v46 < 1.0);
         }
 
-        [v44 gestureControllerDidStopZooming:self direction:v47 type:a7 willDecelerate:0];
+        [v44 gestureControllerDidStopZooming:self direction:v47 type:type willDecelerate:0];
 
         [(MKMapGestureController *)self endGesturing];
       }
 
       else
       {
-        [v15 maximumZoomOutVelocity];
+        [configurationCopy maximumZoomOutVelocity];
         v32 = v31;
-        [v15 maximumZoomInVelocity];
-        if (v32 <= a6)
+        [configurationCopy maximumZoomInVelocity];
+        if (v32 <= velocity)
         {
-          v34 = a6;
+          velocityCopy2 = velocity;
         }
 
         else
         {
-          v34 = v32;
+          velocityCopy2 = v32;
         }
 
-        if (v34 <= v33)
+        if (velocityCopy2 <= v33)
         {
-          v35 = v34;
+          v35 = velocityCopy2;
         }
 
         else
@@ -1921,7 +1921,7 @@ void __36__MKMapGestureController_handlePan___block_invoke_4(uint64_t a1)
         objc_copyWeak(v54, &location);
         v54[1] = *&x;
         v54[2] = *&y;
-        v54[3] = a7;
+        v54[3] = type;
         v36 = MEMORY[0x1A58E9F30](v53);
         [(VKDynamicAnimation *)self->_pinchDecelerationAnimation stop];
         v37 = objc_loadWeakRetained(&self->_delegate);
@@ -1937,7 +1937,7 @@ void __36__MKMapGestureController_handlePan___block_invoke_4(uint64_t a1)
           v40 = 2 * (v39 < 1.0);
         }
 
-        [v37 gestureControllerDidStopZooming:self direction:v40 type:a7 willDecelerate:1];
+        [v37 gestureControllerDidStopZooming:self direction:v40 type:type willDecelerate:1];
 
         v41 = objc_alloc_init(MEMORY[0x1E69DF420]);
         pinchDecelerationAnimation = self->_pinchDecelerationAnimation;
@@ -1946,7 +1946,7 @@ void __36__MKMapGestureController_handlePan___block_invoke_4(uint64_t a1)
         [(VKDynamicAnimation *)self->_pinchDecelerationAnimation setCompletionHandler:v36];
         if (v35 <= 0.0)
         {
-          [v15 zoomOutFrictionScale];
+          [configurationCopy zoomOutFrictionScale];
         }
 
         v50 = MEMORY[0x1E69E9820];
@@ -1955,8 +1955,8 @@ void __36__MKMapGestureController_handlePan___block_invoke_4(uint64_t a1)
         v48 = dynamicValueAnimation();
         [(VKDynamicAnimation *)self->_pinchDecelerationAnimation setDynamicStepHandler:v48, v50, 3221225472, __105__MKMapGestureController__updateZoomGestureForState_focusPoint_scale_velocity_gestureType_configuration___block_invoke_3, &unk_1E76C7EE8];
 
-        v49 = [(MKBasicMapView *)self->_mapView mapView];
-        [v49 runAnimation:self->_pinchDecelerationAnimation];
+        mapView4 = [(MKBasicMapView *)self->_mapView mapView];
+        [mapView4 runAnimation:self->_pinchDecelerationAnimation];
 
         objc_destroyWeak(&v52);
         objc_destroyWeak(v54);
@@ -2031,9 +2031,9 @@ void __105__MKMapGestureController__updateZoomGestureForState_focusPoint_scale_v
   }
 }
 
-- (void)handlePinch:(id)a3
+- (void)handlePinch:(id)pinch
 {
-  v4 = a3;
+  pinchCopy = pinch;
   v5 = MKGetGesturesLog();
   if (os_signpost_enabled(v5))
   {
@@ -2041,7 +2041,7 @@ void __105__MKMapGestureController__updateZoomGestureForState_focusPoint_scale_v
     _os_signpost_emit_with_name_impl(&dword_1A2EA0000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "HandlePinch", &unk_1A30FEA0E, buf, 2u);
   }
 
-  [v4 locationInView:self->_mapView];
+  [pinchCopy locationInView:self->_mapView];
   v7 = v6;
   v9 = v8;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -2054,10 +2054,10 @@ void __105__MKMapGestureController__updateZoomGestureForState_focusPoint_scale_v
     v9 = v13;
   }
 
-  [v4 scale];
+  [pinchCopy scale];
   v15 = v14;
-  [v4 velocity];
-  -[MKMapGestureController _updateZoomGestureForState:focusPoint:scale:velocity:gestureType:configuration:](self, "_updateZoomGestureForState:focusPoint:scale:velocity:gestureType:configuration:", [v4 state], 1, self->_zoomConfiguration, v7, v9, v15, v16);
+  [pinchCopy velocity];
+  -[MKMapGestureController _updateZoomGestureForState:focusPoint:scale:velocity:gestureType:configuration:](self, "_updateZoomGestureForState:focusPoint:scale:velocity:gestureType:configuration:", [pinchCopy state], 1, self->_zoomConfiguration, v7, v9, v15, v16);
   v17 = MKGetGesturesLog();
   if (os_signpost_enabled(v17))
   {
@@ -2066,9 +2066,9 @@ void __105__MKMapGestureController__updateZoomGestureForState_focusPoint_scale_v
   }
 }
 
-- (void)handleOneHandedPanZoom:(id)a3
+- (void)handleOneHandedPanZoom:(id)zoom
 {
-  v4 = a3;
+  zoomCopy = zoom;
   v5 = MKGetGesturesLog();
   if (os_signpost_enabled(v5))
   {
@@ -2076,7 +2076,7 @@ void __105__MKMapGestureController__updateZoomGestureForState_focusPoint_scale_v
     _os_signpost_emit_with_name_impl(&dword_1A2EA0000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "HandlePanZoom", &unk_1A30FEA0E, buf, 2u);
   }
 
-  [v4 locationOfTapGesture];
+  [zoomCopy locationOfTapGesture];
   v7 = v6;
   v9 = v8;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -2089,13 +2089,13 @@ void __105__MKMapGestureController__updateZoomGestureForState_focusPoint_scale_v
     v9 = v13;
   }
 
-  v14 = [v4 state];
-  [v4 scale];
+  state = [zoomCopy state];
+  [zoomCopy scale];
   v16 = v15;
-  [v4 velocity];
+  [zoomCopy velocity];
   v18 = v17;
-  v19 = [v4 configuration];
-  [(MKMapGestureController *)self _updateZoomGestureForState:v14 focusPoint:4 scale:v19 velocity:v7 gestureType:v9 configuration:v16, v18];
+  configuration = [zoomCopy configuration];
+  [(MKMapGestureController *)self _updateZoomGestureForState:state focusPoint:4 scale:configuration velocity:v7 gestureType:v9 configuration:v16, v18];
 
   v20 = MKGetGesturesLog();
   if (os_signpost_enabled(v20))
@@ -2105,9 +2105,9 @@ void __105__MKMapGestureController__updateZoomGestureForState_focusPoint_scale_v
   }
 }
 
-- (void)handlePanZoom:(id)a3
+- (void)handlePanZoom:(id)zoom
 {
-  v26 = a3;
+  zoomCopy = zoom;
   [(MKBasicMapView *)self->_mapView bounds];
   v5 = v4;
   v7 = v6;
@@ -2145,22 +2145,22 @@ void __105__MKMapGestureController__updateZoomGestureForState_focusPoint_scale_v
     MidY = v23;
   }
 
-  v24 = [v26 state];
-  [v26 scale];
-  [(MKMapGestureController *)self _updateZoomGestureForState:v24 focusPoint:4 scale:0 velocity:MidX gestureType:MidY configuration:v25, 0.0];
+  state = [zoomCopy state];
+  [zoomCopy scale];
+  [(MKMapGestureController *)self _updateZoomGestureForState:state focusPoint:4 scale:0 velocity:MidX gestureType:MidY configuration:v25, 0.0];
 }
 
-- (void)handleTwoFingerLongPress:(id)a3
+- (void)handleTwoFingerLongPress:(id)press
 {
-  v6 = a3;
-  if ([v6 state] == 1)
+  pressCopy = press;
+  if ([pressCopy state] == 1)
   {
     self->_didStartLongPress = 1;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained gestureControllerWillStartTwoFingerLongPress:self];
   }
 
-  else if ([v6 state] == 3 || objc_msgSend(v6, "state") == 4)
+  else if ([pressCopy state] == 3 || objc_msgSend(pressCopy, "state") == 4)
   {
     if (self->_didStartLongPress)
     {
@@ -2172,17 +2172,17 @@ void __105__MKMapGestureController__updateZoomGestureForState_focusPoint_scale_v
   }
 }
 
-- (void)handleTwoFingerTap:(id)a3
+- (void)handleTwoFingerTap:(id)tap
 {
-  v4 = a3;
-  if ([v4 state] == 3)
+  tapCopy = tap;
+  if ([tapCopy state] == 3)
   {
     v5 = +[MKSystemController sharedInstance];
-    v6 = [v5 supportsExtendedGestures];
+    supportsExtendedGestures = [v5 supportsExtendedGestures];
 
-    if (v6)
+    if (supportsExtendedGestures)
     {
-      [v4 locationInView:self->_mapView];
+      [tapCopy locationInView:self->_mapView];
       MidX = v7;
       MidY = v9;
     }
@@ -2232,13 +2232,13 @@ void __105__MKMapGestureController__updateZoomGestureForState_focusPoint_scale_v
     v29 = objc_loadWeakRetained(&self->_delegate);
     [v29 gestureControllerWillStartZooming:self animated:1];
 
-    v30 = [(MKBasicMapView *)self->_mapView mapView];
+    mapView = [(MKBasicMapView *)self->_mapView mapView];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __45__MKMapGestureController_handleTwoFingerTap___block_invoke;
     v31[3] = &unk_1E76CDB38;
     v31[4] = self;
-    [v30 zoom:v31 withFocusPoint:-1.0 completionHandler:{MidX, MidY}];
+    [mapView zoom:v31 withFocusPoint:-1.0 completionHandler:{MidX, MidY}];
   }
 }
 
@@ -2252,17 +2252,17 @@ uint64_t __45__MKMapGestureController_handleTwoFingerTap___block_invoke(uint64_t
   return [v3 endGesturing];
 }
 
-- (void)handleDoubleTap:(id)a3
+- (void)handleDoubleTap:(id)tap
 {
-  v4 = a3;
-  if ([v4 state] == 3)
+  tapCopy = tap;
+  if ([tapCopy state] == 3)
   {
     v5 = +[MKSystemController sharedInstance];
-    v6 = [v5 supportsExtendedGestures];
+    supportsExtendedGestures = [v5 supportsExtendedGestures];
 
-    if (v6)
+    if (supportsExtendedGestures)
     {
-      [v4 locationInView:self->_mapView];
+      [tapCopy locationInView:self->_mapView];
       MidX = v7;
       MidY = v9;
     }
@@ -2308,8 +2308,8 @@ uint64_t __45__MKMapGestureController_handleTwoFingerTap___block_invoke(uint64_t
       MidY = v28;
     }
 
-    v29 = [v4 modifierFlags];
-    if ((v29 & 0x80000) != 0)
+    modifierFlags = [tapCopy modifierFlags];
+    if ((modifierFlags & 0x80000) != 0)
     {
       v30 = -1.0;
     }
@@ -2319,7 +2319,7 @@ uint64_t __45__MKMapGestureController_handleTwoFingerTap___block_invoke(uint64_t
       v30 = 1.0;
     }
 
-    if ((v29 & 0x80000) != 0)
+    if ((modifierFlags & 0x80000) != 0)
     {
       v31 = 2;
     }
@@ -2333,14 +2333,14 @@ uint64_t __45__MKMapGestureController_handleTwoFingerTap___block_invoke(uint64_t
     v32 = objc_loadWeakRetained(&self->_delegate);
     [v32 gestureControllerWillStartZooming:self animated:1];
 
-    v33 = [(MKBasicMapView *)self->_mapView mapView];
+    mapView = [(MKBasicMapView *)self->_mapView mapView];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __42__MKMapGestureController_handleDoubleTap___block_invoke;
     v34[3] = &unk_1E76C9AD0;
     v34[4] = self;
     v34[5] = v31;
-    [v33 zoom:v34 withFocusPoint:v30 completionHandler:{MidX, MidY}];
+    [mapView zoom:v34 withFocusPoint:v30 completionHandler:{MidX, MidY}];
   }
 }
 
@@ -2354,11 +2354,11 @@ uint64_t __42__MKMapGestureController_handleDoubleTap___block_invoke(uint64_t a1
   return [v3 endGesturing];
 }
 
-- (void)_updateRotationGestureForState:(int64_t)a3 focusPoint:(CGPoint)a4 rotation:(double)a5 velocity:(double)a6
+- (void)_updateRotationGestureForState:(int64_t)state focusPoint:(CGPoint)point rotation:(double)rotation velocity:(double)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  if (a3 == 1)
+  y = point.y;
+  x = point.x;
+  if (state == 1)
   {
     [(MKMapGestureController *)self beginGesturing];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -2372,25 +2372,25 @@ uint64_t __42__MKMapGestureController_handleDoubleTap___block_invoke(uint64_t a1
 
     else
     {
-      v18 = [(MKMapGestureController *)self mapView];
-      v19 = [v18 mapView];
-      [v19 startRotatingWithFocusPoint:{x, y}];
+      mapView = [(MKMapGestureController *)self mapView];
+      v18MapView = [mapView mapView];
+      [v18MapView startRotatingWithFocusPoint:{x, y}];
     }
   }
 
-  else if (a3 == 4)
+  else if (state == 4)
   {
     v12 = self->_rotationFilter;
     if (v12)
     {
-      [(MKRotationFilter *)v12 stopRotatingWithFocusPoint:a4.x, a4.y];
+      [(MKRotationFilter *)v12 stopRotatingWithFocusPoint:point.x, point.y];
     }
 
     else
     {
-      v15 = [(MKMapGestureController *)self mapView];
-      v16 = [v15 mapView];
-      [v16 stopRotatingWithFocusPoint:{x, y}];
+      mapView2 = [(MKMapGestureController *)self mapView];
+      v15MapView = [mapView2 mapView];
+      [v15MapView stopRotatingWithFocusPoint:{x, y}];
     }
 
     v17 = objc_loadWeakRetained(&self->_delegate);
@@ -2409,10 +2409,10 @@ uint64_t __42__MKMapGestureController_handleDoubleTap___block_invoke(uint64_t a1
   v38[1] = *&x;
   v38[2] = *&y;
   v20 = MEMORY[0x1A58E9F30](v37);
-  v20[2](a5);
-  if (a3 == 3)
+  v20[2](rotation);
+  if (state == 3)
   {
-    if (fabs(a6) <= 3.0)
+    if (fabs(velocity) <= 3.0)
     {
       v29 = self->_rotationFilter;
       if (v29)
@@ -2422,9 +2422,9 @@ uint64_t __42__MKMapGestureController_handleDoubleTap___block_invoke(uint64_t a1
 
       else
       {
-        v30 = [(MKMapGestureController *)self mapView];
-        v31 = [v30 mapView];
-        [v31 stopRotatingWithFocusPoint:{x, y}];
+        mapView3 = [(MKMapGestureController *)self mapView];
+        v30MapView = [mapView3 mapView];
+        [v30MapView stopRotatingWithFocusPoint:{x, y}];
       }
 
       v32 = objc_loadWeakRetained(&self->_delegate);
@@ -2443,8 +2443,8 @@ uint64_t __42__MKMapGestureController_handleDoubleTap___block_invoke(uint64_t a1
       v36[1] = *&x;
       v36[2] = *&y;
       v21 = MEMORY[0x1A58E9F30](v35);
-      v22 = [(MKMapGestureController *)self mapView];
-      v23 = [v22 isPointValidForGesturing:{x, y}];
+      mapView4 = [(MKMapGestureController *)self mapView];
+      v23 = [mapView4 isPointValidForGesturing:{x, y}];
 
       if (v23)
       {
@@ -2462,8 +2462,8 @@ uint64_t __42__MKMapGestureController_handleDoubleTap___block_invoke(uint64_t a1
         v27 = dynamicValueAnimation();
         [(VKDynamicAnimation *)self->_rotationDecelerationAnimation setDynamicStepHandler:v27, v33, 3221225472, __86__MKMapGestureController__updateRotationGestureForState_focusPoint_rotation_velocity___block_invoke_3, &unk_1E76C7F60];
 
-        v28 = [(MKBasicMapView *)self->_mapView mapView];
-        [v28 runAnimation:self->_rotationDecelerationAnimation];
+        mapView5 = [(MKBasicMapView *)self->_mapView mapView];
+        [mapView5 runAnimation:self->_rotationDecelerationAnimation];
       }
 
       objc_destroyWeak(v36);
@@ -2525,9 +2525,9 @@ void __86__MKMapGestureController__updateRotationGestureForState_focusPoint_rota
   }
 }
 
-- (void)handleRotation:(id)a3
+- (void)handleRotation:(id)rotation
 {
-  v4 = a3;
+  rotationCopy = rotation;
   v5 = MKGetGesturesLog();
   if (os_signpost_enabled(v5))
   {
@@ -2535,7 +2535,7 @@ void __86__MKMapGestureController__updateRotationGestureForState_focusPoint_rota
     _os_signpost_emit_with_name_impl(&dword_1A2EA0000, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "HandleRotation", &unk_1A30FEA0E, buf, 2u);
   }
 
-  [v4 locationInView:self->_mapView];
+  [rotationCopy locationInView:self->_mapView];
   v7 = v6;
   v9 = v8;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -2549,11 +2549,11 @@ void __86__MKMapGestureController__updateRotationGestureForState_focusPoint_rota
     v9 = v14;
   }
 
-  v15 = [v4 state];
-  [v4 rotation];
+  state = [rotationCopy state];
+  [rotationCopy rotation];
   v17 = v16;
-  [v4 velocity];
-  [(MKMapGestureController *)self _updateRotationGestureForState:v15 focusPoint:v7 rotation:v9 velocity:v17, v18];
+  [rotationCopy velocity];
+  [(MKMapGestureController *)self _updateRotationGestureForState:state focusPoint:v7 rotation:v9 velocity:v17, v18];
   v19 = MKGetGesturesLog();
   if (os_signpost_enabled(v19))
   {
@@ -2562,10 +2562,10 @@ void __86__MKMapGestureController__updateRotationGestureForState_focusPoint_rota
   }
 }
 
-- (void)_handleStandardTilt:(id)a3
+- (void)_handleStandardTilt:(id)tilt
 {
-  v4 = a3;
-  [v4 locationInView:self->_mapView];
+  tiltCopy = tilt;
+  [tiltCopy locationInView:self->_mapView];
   v6 = v5;
   v8 = v7;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -2579,21 +2579,21 @@ void __86__MKMapGestureController__updateRotationGestureForState_focusPoint_rota
     v8 = v13;
   }
 
-  v14 = [v4 state];
-  if (v14 > 2)
+  state = [tiltCopy state];
+  if (state > 2)
   {
-    if (v14 == 3)
+    if (state == 3)
     {
-      v24 = [v4 view];
-      [v4 velocityInView:v24];
+      view = [tiltCopy view];
+      [tiltCopy velocityInView:view];
       v26 = v25;
 
-      v27 = [(MKMapGestureController *)self mapView];
-      v18 = [v27 mapView];
+      mapView = [(MKMapGestureController *)self mapView];
+      v27MapView = [mapView mapView];
 
-      if (fabs(*&v26) <= 100.0 || ([v18 isFullyPitched] & 1) != 0 || !objc_msgSend(v18, "isPitched"))
+      if (fabs(*&v26) <= 100.0 || ([v27MapView isFullyPitched] & 1) != 0 || !objc_msgSend(v27MapView, "isPitched"))
       {
-        [v18 stopPitchingWithFocusPoint:{*&v6, *&v8}];
+        [v27MapView stopPitchingWithFocusPoint:{*&v6, *&v8}];
         v37 = objc_loadWeakRetained(&self->_delegate);
         v38 = v37;
         if (*&v26 >= 0.0)
@@ -2617,7 +2617,7 @@ void __86__MKMapGestureController__updateRotationGestureForState_focusPoint_rota
         v44[2] = __46__MKMapGestureController__handleStandardTilt___block_invoke;
         v44[3] = &unk_1E76C7E98;
         objc_copyWeak(v46, location);
-        v28 = v18;
+        v28 = v27MapView;
         v45 = v28;
         v46[1] = v6;
         v46[2] = v8;
@@ -2641,15 +2641,15 @@ void __86__MKMapGestureController__updateRotationGestureForState_focusPoint_rota
         self->_tiltDecelerationAnimation = v32;
 
         [(VKDynamicAnimation *)self->_tiltDecelerationAnimation setCompletionHandler:v30];
-        v34 = [(MKMapGestureController *)self mapView];
-        [v4 translationInView:v34];
+        mapView2 = [(MKMapGestureController *)self mapView];
+        [tiltCopy translationInView:mapView2];
         objc_copyWeak(&v40, location);
         v39 = v29;
         v35 = dynamicValueAnimation();
         [(VKDynamicAnimation *)self->_tiltDecelerationAnimation setDynamicStepHandler:v35];
 
-        v36 = [(MKBasicMapView *)self->_mapView mapView];
-        [v36 runAnimation:self->_tiltDecelerationAnimation];
+        mapView3 = [(MKBasicMapView *)self->_mapView mapView];
+        [mapView3 runAnimation:self->_tiltDecelerationAnimation];
 
         objc_destroyWeak(&v40);
         objc_destroyWeak(v43);
@@ -2661,11 +2661,11 @@ void __86__MKMapGestureController__updateRotationGestureForState_focusPoint_rota
       goto LABEL_20;
     }
 
-    if (v14 == 4)
+    if (state == 4)
     {
-      v20 = [(MKMapGestureController *)self mapView];
-      v21 = [v20 mapView];
-      [v21 stopPitchingWithFocusPoint:{*&v6, *&v8}];
+      mapView4 = [(MKMapGestureController *)self mapView];
+      v20MapView = [mapView4 mapView];
+      [v20MapView stopPitchingWithFocusPoint:{*&v6, *&v8}];
 
       v22 = objc_loadWeakRetained(&self->_delegate);
       [v22 gestureControllerDidStopTilting:self willDecelerate:0 tiltDirection:0];
@@ -2676,27 +2676,27 @@ void __86__MKMapGestureController__updateRotationGestureForState_focusPoint_rota
 
   else
   {
-    if (v14 == 1)
+    if (state == 1)
     {
       [(MKMapGestureController *)self beginGesturing];
       v23 = objc_loadWeakRetained(&self->_delegate);
       [v23 gestureControllerWillStartTilting:self];
 
-      v18 = [(MKMapGestureController *)self mapView];
-      v19 = [v18 mapView];
-      [v19 startPitchingWithFocusPoint:{*&v6, *&v8}];
+      v27MapView = [(MKMapGestureController *)self mapView];
+      v18MapView = [v27MapView mapView];
+      [v18MapView startPitchingWithFocusPoint:{*&v6, *&v8}];
       goto LABEL_11;
     }
 
-    if (v14 == 2)
+    if (state == 2)
     {
-      v15 = [v4 view];
-      [v4 translationInView:v15];
+      view2 = [tiltCopy view];
+      [tiltCopy translationInView:view2];
       v17 = v16;
 
-      v18 = [(MKMapGestureController *)self mapView];
-      v19 = [v18 mapView];
-      [v19 updatePitchWithFocusPoint:*&v6 translation:{*&v8, v17}];
+      v27MapView = [(MKMapGestureController *)self mapView];
+      v18MapView = [v27MapView mapView];
+      [v18MapView updatePitchWithFocusPoint:*&v6 translation:{*&v8, v17}];
 LABEL_11:
 
 LABEL_20:
@@ -2758,12 +2758,12 @@ void __46__MKMapGestureController__handleStandardTilt___block_invoke_3(uint64_t 
   }
 }
 
-- (void)_setTraitCollection:(id)a3
+- (void)_setTraitCollection:(id)collection
 {
-  v6 = a3;
+  collectionCopy = collection;
   if (([(UITraitCollection *)self->_traitCollection isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_traitCollection, a3);
+    objc_storeStrong(&self->_traitCollection, collection);
     if ([(UITraitCollection *)self->_traitCollection userInterfaceIdiom]== UIUserInterfaceIdiomCarPlay)
     {
       +[_MKZoomingGestureControlConfiguration configurationForCarPlay];
@@ -2778,44 +2778,44 @@ void __46__MKMapGestureController__handleStandardTilt___block_invoke_3(uint64_t 
   }
 }
 
-- (void)_clearGesture:(id)a3
+- (void)_clearGesture:(id)gesture
 {
-  v4 = a3;
-  v3 = [v4 isEnabled];
-  [v4 setEnabled:0];
-  [v4 setEnabled:v3];
+  gestureCopy = gesture;
+  isEnabled = [gestureCopy isEnabled];
+  [gestureCopy setEnabled:0];
+  [gestureCopy setEnabled:isEnabled];
 }
 
-- (void)setCompassView:(id)a3
+- (void)setCompassView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   compassView = self->_compassView;
   p_compassView = &self->_compassView;
-  if (compassView != v5)
+  if (compassView != viewCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_compassView, a3);
-    v5 = v8;
+    v8 = viewCopy;
+    objc_storeStrong(p_compassView, view);
+    viewCopy = v8;
   }
 }
 
-- (void)setZoomEnabled:(BOOL)a3
+- (void)setZoomEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(MKVariableDelayTapRecognizer *)self->_doubleTapGestureRecognizer setEnabled:?];
-  [(UITapGestureRecognizer *)self->_twoFingerTapGestureRecognizer setEnabled:v3];
-  [(UIPinchGestureRecognizer *)self->_pinchGestureRecognizer setEnabled:v3];
+  [(UITapGestureRecognizer *)self->_twoFingerTapGestureRecognizer setEnabled:enabledCopy];
+  [(UIPinchGestureRecognizer *)self->_pinchGestureRecognizer setEnabled:enabledCopy];
   v5 = +[MKSystemController sharedInstance];
-  v6 = [v5 supportsExtendedGestures];
+  supportsExtendedGestures = [v5 supportsExtendedGestures];
 
-  if (v6)
+  if (supportsExtendedGestures)
   {
-    [(_MKOneHandedZoomGestureRecognizer *)self->_oneHandedZoomGestureRecognizer setEnabled:v3];
+    [(_MKOneHandedZoomGestureRecognizer *)self->_oneHandedZoomGestureRecognizer setEnabled:enabledCopy];
   }
 
   conditionalPanZoomGestureRecognizer = self->_conditionalPanZoomGestureRecognizer;
 
-  [(_MKConditionalPanZoomGestureRecognizer *)conditionalPanZoomGestureRecognizer setEnabled:v3];
+  [(_MKConditionalPanZoomGestureRecognizer *)conditionalPanZoomGestureRecognizer setEnabled:enabledCopy];
 }
 
 - (BOOL)isZoomEnabled
@@ -2838,27 +2838,27 @@ void __46__MKMapGestureController__handleStandardTilt___block_invoke_3(uint64_t 
   [(MKMapGestureController *)&v3 dealloc];
 }
 
-- (void)setTiltEnabled:(BOOL)a3
+- (void)setTiltEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(MKTiltGestureRecognizer *)self->_tiltGestureRecognizer setEnabled:?];
   conditionalPanTiltGestureRecognizer = self->_conditionalPanTiltGestureRecognizer;
 
-  [(_MKConditionalPanTiltGestureRecognizer *)conditionalPanTiltGestureRecognizer setEnabled:v3];
+  [(_MKConditionalPanTiltGestureRecognizer *)conditionalPanTiltGestureRecognizer setEnabled:enabledCopy];
 }
 
-- (void)setRotationEnabled:(BOOL)a3
+- (void)setRotationEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(UIRotationGestureRecognizer *)self->_rotationGestureRecognizer setEnabled:?];
   conditionalPanRotationGestureRecognizer = self->_conditionalPanRotationGestureRecognizer;
 
-  [(_MKConditionalPanRotationGestureRecognizer *)conditionalPanRotationGestureRecognizer setEnabled:v3];
+  [(_MKConditionalPanRotationGestureRecognizer *)conditionalPanRotationGestureRecognizer setEnabled:enabledCopy];
 }
 
-- (void)setupOneHandedZoomGestureRecognizerForView:(id)a3
+- (void)setupOneHandedZoomGestureRecognizerForView:(id)view
 {
-  v11 = a3;
+  viewCopy = view;
   if (_MKLinkedOnOrAfterReleaseSet(2310))
   {
     v4 = [[_MKOneHandedZoomGestureRecognizer alloc] initWithTarget:self action:sel_handleOneHandedPanZoom_];
@@ -2866,34 +2866,34 @@ void __46__MKMapGestureController__handleStandardTilt___block_invoke_3(uint64_t 
     self->_oneHandedZoomGestureRecognizer = v4;
 
     [(_MKOneHandedZoomGestureRecognizer *)self->_oneHandedZoomGestureRecognizer setDelegate:self];
-    [v11 addGestureRecognizer:self->_oneHandedZoomGestureRecognizer];
-    v6 = [(_MKOneHandedZoomGestureRecognizer *)self->_oneHandedZoomGestureRecognizer tapGestureRecognizer];
-    [v11 addGestureRecognizer:v6];
+    [viewCopy addGestureRecognizer:self->_oneHandedZoomGestureRecognizer];
+    tapGestureRecognizer = [(_MKOneHandedZoomGestureRecognizer *)self->_oneHandedZoomGestureRecognizer tapGestureRecognizer];
+    [viewCopy addGestureRecognizer:tapGestureRecognizer];
 
-    v7 = [(_MKOneHandedZoomGestureRecognizer *)self->_oneHandedZoomGestureRecognizer panGestureRecognizer];
-    [v11 addGestureRecognizer:v7];
+    panGestureRecognizer = [(_MKOneHandedZoomGestureRecognizer *)self->_oneHandedZoomGestureRecognizer panGestureRecognizer];
+    [viewCopy addGestureRecognizer:panGestureRecognizer];
 
-    v8 = [(_MKOneHandedZoomGestureRecognizer *)self->_oneHandedZoomGestureRecognizer tapGestureRecognizer];
-    [v8 requireGestureRecognizerToFail:self->_panGestureRecognizer];
+    tapGestureRecognizer2 = [(_MKOneHandedZoomGestureRecognizer *)self->_oneHandedZoomGestureRecognizer tapGestureRecognizer];
+    [tapGestureRecognizer2 requireGestureRecognizerToFail:self->_panGestureRecognizer];
 
     panGestureRecognizer = self->_panGestureRecognizer;
-    v10 = [(_MKOneHandedZoomGestureRecognizer *)self->_oneHandedZoomGestureRecognizer panGestureRecognizer];
-    [(UIPanGestureRecognizer *)panGestureRecognizer requireGestureRecognizerToFail:v10];
+    panGestureRecognizer2 = [(_MKOneHandedZoomGestureRecognizer *)self->_oneHandedZoomGestureRecognizer panGestureRecognizer];
+    [(UIPanGestureRecognizer *)panGestureRecognizer requireGestureRecognizerToFail:panGestureRecognizer2];
   }
 }
 
-- (MKMapGestureController)initWithMapView:(id)a3 gestureTargetView:(id)a4 doubleTapTargetView:(id)a5
+- (MKMapGestureController)initWithMapView:(id)view gestureTargetView:(id)targetView doubleTapTargetView:(id)tapTargetView
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  viewCopy = view;
+  targetViewCopy = targetView;
+  tapTargetViewCopy = tapTargetView;
   v56.receiver = self;
   v56.super_class = MKMapGestureController;
   v12 = [(MKMapGestureController *)&v56 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_mapView, a3);
+    objc_storeStrong(&v12->_mapView, view);
     v13->_rotationSnappingEnabled = 0;
     v14 = [[MKVariableDelayTapRecognizer alloc] initWithTarget:v13 action:sel_handleDoubleTap_];
     doubleTapGestureRecognizer = v13->_doubleTapGestureRecognizer;
@@ -2902,18 +2902,18 @@ void __46__MKMapGestureController__handleStandardTilt___block_invoke_3(uint64_t 
     [(MKVariableDelayTapRecognizer *)v13->_doubleTapGestureRecognizer setNumberOfTapsRequired:2];
     [(MKVariableDelayTapRecognizer *)v13->_doubleTapGestureRecognizer setNumberOfTouchesRequired:1];
     [(MKVariableDelayTapRecognizer *)v13->_doubleTapGestureRecognizer setTapDelayDelegate:v13];
-    [v11 addGestureRecognizer:v13->_doubleTapGestureRecognizer];
+    [tapTargetViewCopy addGestureRecognizer:v13->_doubleTapGestureRecognizer];
     v16 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v13 action:sel_handleTwoFingerTap_];
     twoFingerTapGestureRecognizer = v13->_twoFingerTapGestureRecognizer;
     v13->_twoFingerTapGestureRecognizer = v16;
 
     [(UITapGestureRecognizer *)v13->_twoFingerTapGestureRecognizer setNumberOfTapsRequired:1];
     [(UITapGestureRecognizer *)v13->_twoFingerTapGestureRecognizer setNumberOfTouchesRequired:2];
-    [v10 addGestureRecognizer:v13->_twoFingerTapGestureRecognizer];
+    [targetViewCopy addGestureRecognizer:v13->_twoFingerTapGestureRecognizer];
     v18 = +[MKSystemController sharedInstance];
-    v19 = [v18 supportsExtendedGestures];
+    supportsExtendedGestures = [v18 supportsExtendedGestures];
 
-    if (v19)
+    if (supportsExtendedGestures)
     {
       v20 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v13 action:sel_handleTwoFingerLongPress_];
       twoFingerLongPressGestureRecognizer = v13->_twoFingerLongPressGestureRecognizer;
@@ -2921,14 +2921,14 @@ void __46__MKMapGestureController__handleStandardTilt___block_invoke_3(uint64_t 
 
       [(UILongPressGestureRecognizer *)v13->_twoFingerLongPressGestureRecognizer setNumberOfTouchesRequired:2];
       [(UILongPressGestureRecognizer *)v13->_twoFingerLongPressGestureRecognizer setMinimumPressDuration:0.2];
-      [v10 addGestureRecognizer:v13->_twoFingerLongPressGestureRecognizer];
+      [targetViewCopy addGestureRecognizer:v13->_twoFingerLongPressGestureRecognizer];
       v22 = [objc_alloc(MEMORY[0x1E69DCD80]) initWithTarget:v13 action:sel_handlePinch_];
       pinchGestureRecognizer = v13->_pinchGestureRecognizer;
       v13->_pinchGestureRecognizer = v22;
 
       [(UIPinchGestureRecognizer *)v13->_pinchGestureRecognizer setDelegate:v13];
       [(UIPinchGestureRecognizer *)v13->_pinchGestureRecognizer _setEndsOnSingleTouch:1];
-      [v10 addGestureRecognizer:v13->_pinchGestureRecognizer];
+      [targetViewCopy addGestureRecognizer:v13->_pinchGestureRecognizer];
       v24 = [[_MKZoomingGestureControlConfiguration alloc] initWithDecelerationThreshold:3.0 maximumZoomInVelocity:10.0 maximumZoomOutVelocity:-10.0 zoomOutFrictionScale:4.5];
       zoomConfiguration = v13->_zoomConfiguration;
       v13->_zoomConfiguration = v24;
@@ -2941,7 +2941,7 @@ void __46__MKMapGestureController__handleStandardTilt___block_invoke_3(uint64_t 
     [(UIPanGestureRecognizer *)v13->_panGestureRecognizer setDelegate:v13];
     [(UIPanGestureRecognizer *)v13->_panGestureRecognizer _setRequiresSystemGesturesToFail:1];
     [(UIPanGestureRecognizer *)v13->_panGestureRecognizer setAllowedScrollTypesMask:2];
-    [v10 addGestureRecognizer:v13->_panGestureRecognizer];
+    [targetViewCopy addGestureRecognizer:v13->_panGestureRecognizer];
     v28 = [[_MKUserInteractionGestureRecognizer alloc] initWithTarget:v13 action:sel_handleTouch_];
     touchGestureRecognizer = v13->_touchGestureRecognizer;
     v13->_touchGestureRecognizer = v28;
@@ -2951,11 +2951,11 @@ void __46__MKMapGestureController__handleStandardTilt___block_invoke_3(uint64_t 
     [(_MKUserInteractionGestureRecognizer *)v13->_touchGestureRecognizer setCancelsTouchesInView:0];
     [(_MKUserInteractionGestureRecognizer *)v13->_touchGestureRecognizer setDelaysTouchesBegan:0];
     [(_MKUserInteractionGestureRecognizer *)v13->_touchGestureRecognizer setDelaysTouchesEnded:0];
-    [v10 addGestureRecognizer:v13->_touchGestureRecognizer];
+    [targetViewCopy addGestureRecognizer:v13->_touchGestureRecognizer];
     v30 = +[MKSystemController sharedInstance];
-    v31 = [v30 supportsExtendedGestures];
+    supportsExtendedGestures2 = [v30 supportsExtendedGestures];
 
-    if (v31)
+    if (supportsExtendedGestures2)
     {
       v32 = [objc_alloc(MEMORY[0x1E69DCE68]) initWithTarget:v13 action:sel_handleRotation_];
       rotationGestureRecognizer = v13->_rotationGestureRecognizer;
@@ -2963,13 +2963,13 @@ void __46__MKMapGestureController__handleStandardTilt___block_invoke_3(uint64_t 
 
       [(UIRotationGestureRecognizer *)v13->_rotationGestureRecognizer setDelegate:v13];
       [(UIRotationGestureRecognizer *)v13->_rotationGestureRecognizer _setPreRecognitionWeight:0.5];
-      [v10 addGestureRecognizer:v13->_rotationGestureRecognizer];
+      [targetViewCopy addGestureRecognizer:v13->_rotationGestureRecognizer];
       v34 = [[MKTiltGestureRecognizer alloc] initWithTarget:v13 action:sel_handleTilt_];
       tiltGestureRecognizer = v13->_tiltGestureRecognizer;
       v13->_tiltGestureRecognizer = v34;
 
       [(MKTiltGestureRecognizer *)v13->_tiltGestureRecognizer setDelegate:v13];
-      [v10 addGestureRecognizer:v13->_tiltGestureRecognizer];
+      [targetViewCopy addGestureRecognizer:v13->_tiltGestureRecognizer];
     }
 
     v36 = [[_MKConditionalPanRotationGestureRecognizer alloc] initWithTarget:v13 action:sel__handleRotationPan_];
@@ -2978,7 +2978,7 @@ void __46__MKMapGestureController__handleStandardTilt___block_invoke_3(uint64_t 
 
     [(_MKConditionalPanRotationGestureRecognizer *)v13->_conditionalPanRotationGestureRecognizer setDelegate:v13];
     [(_MKConditionalPanRotationGestureRecognizer *)v13->_conditionalPanRotationGestureRecognizer setAllowedScrollTypesMask:2];
-    [v10 addGestureRecognizer:v13->_conditionalPanRotationGestureRecognizer];
+    [targetViewCopy addGestureRecognizer:v13->_conditionalPanRotationGestureRecognizer];
     [(UIPanGestureRecognizer *)v13->_panGestureRecognizer requireGestureRecognizerToFail:v13->_conditionalPanRotationGestureRecognizer];
     v38 = [[_MKConditionalPanZoomGestureRecognizer alloc] initWithTarget:v13 action:sel__handleZoomPan_];
     conditionalPanZoomGestureRecognizer = v13->_conditionalPanZoomGestureRecognizer;
@@ -2986,7 +2986,7 @@ void __46__MKMapGestureController__handleStandardTilt___block_invoke_3(uint64_t 
 
     [(_MKConditionalPanZoomGestureRecognizer *)v13->_conditionalPanZoomGestureRecognizer setDelegate:v13];
     [(_MKConditionalPanZoomGestureRecognizer *)v13->_conditionalPanZoomGestureRecognizer setAllowedScrollTypesMask:2];
-    [v10 addGestureRecognizer:v13->_conditionalPanZoomGestureRecognizer];
+    [targetViewCopy addGestureRecognizer:v13->_conditionalPanZoomGestureRecognizer];
     [(UIPanGestureRecognizer *)v13->_panGestureRecognizer requireGestureRecognizerToFail:v13->_conditionalPanZoomGestureRecognizer];
     v40 = [[_MKConditionalPanTiltGestureRecognizer alloc] initWithTarget:v13 action:sel__handleStandardTilt_];
     conditionalPanTiltGestureRecognizer = v13->_conditionalPanTiltGestureRecognizer;
@@ -2994,15 +2994,15 @@ void __46__MKMapGestureController__handleStandardTilt___block_invoke_3(uint64_t 
 
     [(_MKConditionalPanTiltGestureRecognizer *)v13->_conditionalPanTiltGestureRecognizer setDelegate:v13];
     [(_MKConditionalPanTiltGestureRecognizer *)v13->_conditionalPanTiltGestureRecognizer setAllowedScrollTypesMask:2];
-    [v10 addGestureRecognizer:v13->_conditionalPanTiltGestureRecognizer];
+    [targetViewCopy addGestureRecognizer:v13->_conditionalPanTiltGestureRecognizer];
     [(UIPanGestureRecognizer *)v13->_panGestureRecognizer requireGestureRecognizerToFail:v13->_conditionalPanTiltGestureRecognizer];
     v42 = [objc_alloc(MEMORY[0x1E69DD588]) initWithTarget:v13 action:sel__handleInterrupt_];
     gestureInterruptionRecognizer = v13->_gestureInterruptionRecognizer;
     v13->_gestureInterruptionRecognizer = v42;
 
-    [v10 addGestureRecognizer:v13->_gestureInterruptionRecognizer];
-    v44 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v44 doubleForKey:@"ZoomingDefault"];
+    [targetViewCopy addGestureRecognizer:v13->_gestureInterruptionRecognizer];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults doubleForKey:@"ZoomingDefault"];
     v13->_arrowZoomSpeed = v45;
 
     v46 = [[_MKDirectionalArrowRecognizer alloc] initWithTarget:v13 action:sel_handleArrowZoom_];
@@ -3019,11 +3019,11 @@ void __46__MKMapGestureController__handleStandardTilt___block_invoke_3(uint64_t 
 
     v13->_panWithMomentum = 1;
     v52 = +[MKSystemController sharedInstance];
-    v53 = [v52 supportsExtendedGestures];
+    supportsExtendedGestures3 = [v52 supportsExtendedGestures];
 
-    if (v53)
+    if (supportsExtendedGestures3)
     {
-      [(MKMapGestureController *)v13 setupOneHandedZoomGestureRecognizerForView:v10];
+      [(MKMapGestureController *)v13 setupOneHandedZoomGestureRecognizerForView:targetViewCopy];
     }
 
     v54 = v13;

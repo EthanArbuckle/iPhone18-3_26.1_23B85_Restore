@@ -1,22 +1,22 @@
 @interface DACheckSubscribedCalendarIsJunkContext
-- (DACheckSubscribedCalendarIsJunkContext)initWithURLString:(id)a3 completionBlock:(id)a4;
-- (void)finishedWithError:(id)a3;
+- (DACheckSubscribedCalendarIsJunkContext)initWithURLString:(id)string completionBlock:(id)block;
+- (void)finishedWithError:(id)error;
 @end
 
 @implementation DACheckSubscribedCalendarIsJunkContext
 
-- (DACheckSubscribedCalendarIsJunkContext)initWithURLString:(id)a3 completionBlock:(id)a4
+- (DACheckSubscribedCalendarIsJunkContext)initWithURLString:(id)string completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  stringCopy = string;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = DACheckSubscribedCalendarIsJunkContext;
   v9 = [(DACheckSubscribedCalendarIsJunkContext *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_urlString, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_urlString, string);
+    v11 = _Block_copy(blockCopy);
     completionBlock = v10->_completionBlock;
     v10->_completionBlock = v11;
   }
@@ -24,9 +24,9 @@
   return v10;
 }
 
-- (void)finishedWithError:(id)a3
+- (void)finishedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self->_completionBlock)
   {
     queue = self->_queue;
@@ -46,7 +46,7 @@
     v8[2] = __60__DACheckSubscribedCalendarIsJunkContext_finishedWithError___block_invoke;
     v8[3] = &unk_27851FED8;
     v8[4] = self;
-    v9 = v4;
+    v9 = errorCopy;
     dispatch_async(v7, v8);
   }
 }

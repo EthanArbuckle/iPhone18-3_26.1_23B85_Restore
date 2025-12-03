@@ -1,15 +1,15 @@
 @interface ULServiceSuspendReason
-- (BOOL)isEqual:(id)a3;
-- (ULServiceSuspendReason)initWithCoder:(id)a3;
-- (ULServiceSuspendReason)initWithSuspendReasonEnum:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ULServiceSuspendReason)initWithCoder:(id)coder;
+- (ULServiceSuspendReason)initWithSuspendReasonEnum:(unint64_t)enum;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ULServiceSuspendReason
 
-- (ULServiceSuspendReason)initWithSuspendReasonEnum:(unint64_t)a3
+- (ULServiceSuspendReason)initWithSuspendReasonEnum:(unint64_t)enum
 {
   v8.receiver = self;
   v8.super_class = ULServiceSuspendReason;
@@ -17,45 +17,45 @@
   v5 = v4;
   if (v4)
   {
-    [(ULServiceSuspendReason *)v4 setSuspendReasonEnum:a3];
+    [(ULServiceSuspendReason *)v4 setSuspendReasonEnum:enum];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(ULServiceSuspendReason *)self suspendReasonEnum];
+  suspendReasonEnum = [(ULServiceSuspendReason *)self suspendReasonEnum];
 
-  return [v4 initWithSuspendReasonEnum:v5];
+  return [v4 initWithSuspendReasonEnum:suspendReasonEnum];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x277CCABB0];
   suspendReasonEnum = self->_suspendReasonEnum;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v3 numberWithUnsignedInteger:suspendReasonEnum];
-  [v5 encodeObject:v6 forKey:@"suspendReasonEnum"];
+  [coderCopy encodeObject:v6 forKey:@"suspendReasonEnum"];
 }
 
-- (ULServiceSuspendReason)initWithCoder:(id)a3
+- (ULServiceSuspendReason)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = ULServiceSuspendReason;
   v5 = [(ULServiceSuspendReason *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suspendReasonEnum"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suspendReasonEnum"];
     v7 = v6;
     if (v6)
     {
-      v8 = [(ULServiceSuspendReason *)v6 unsignedIntegerValue];
+      unsignedIntegerValue = [(ULServiceSuspendReason *)v6 unsignedIntegerValue];
 
-      v5->_suspendReasonEnum = v8;
+      v5->_suspendReasonEnum = unsignedIntegerValue;
       v7 = v5;
     }
   }
@@ -83,17 +83,17 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ULServiceSuspendReason *)self suspendReasonEnum];
-    v7 = [v5 suspendReasonEnum];
+    v5 = equalCopy;
+    suspendReasonEnum = [(ULServiceSuspendReason *)self suspendReasonEnum];
+    suspendReasonEnum2 = [v5 suspendReasonEnum];
 
-    v8 = v6 == v7;
+    v8 = suspendReasonEnum == suspendReasonEnum2;
   }
 
   else

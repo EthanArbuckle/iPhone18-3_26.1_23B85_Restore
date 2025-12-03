@@ -1,26 +1,26 @@
 @interface VCPProtoEmbeddingResult
-+ (id)imageEmbeddingVSKAssetFromResults:(id)a3 localIdentifier:(id)a4;
-+ (id)resultFromLegacyDictionary:(id)a3;
-+ (id)resultsFromVSKAsset:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)imageEmbeddingVSKAssetFromResults:(id)results localIdentifier:(id)identifier;
++ (id)resultFromLegacyDictionary:(id)dictionary;
++ (id)resultsFromVSKAsset:(id)asset;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoEmbeddingResult
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   memset(&v13, 0, sizeof(v13));
-  CMTimeRangeMakeFromDictionary(&v13, v3);
-  v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"attributes"];
+  CMTimeRangeMakeFromDictionary(&v13, dictionaryCopy);
+  v4 = [(__CFDictionary *)dictionaryCopy objectForKeyedSubscript:@"attributes"];
   v5 = v4;
   if (v13.start.flags)
   {
@@ -70,11 +70,11 @@
 
 - (id)exportToLegacyDictionary
 {
-  v3 = [(VCPProtoEmbeddingResult *)self timeRange];
-  v4 = v3;
-  if (v3)
+  timeRange = [(VCPProtoEmbeddingResult *)self timeRange];
+  v4 = timeRange;
+  if (timeRange)
   {
-    [v3 timeRangeValue];
+    [timeRange timeRangeValue];
   }
 
   else
@@ -86,36 +86,36 @@
   v5 = CMTimeRangeCopyAsDictionary(&range, 0);
   v6 = [(__CFDictionary *)v5 mutableCopy];
 
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  v8 = [(VCPProtoEmbeddingResult *)self embeddingBlob];
-  [v7 setObject:v8 forKeyedSubscript:@"embeddings"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  embeddingBlob = [(VCPProtoEmbeddingResult *)self embeddingBlob];
+  [dictionary setObject:embeddingBlob forKeyedSubscript:@"embeddings"];
 
   if ([(VCPProtoEmbeddingResult *)self hasVersion])
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCPProtoEmbeddingResult version](self, "version")}];
-    [v7 setObject:v9 forKeyedSubscript:@"embeddingVersion"];
+    [dictionary setObject:v9 forKeyedSubscript:@"embeddingVersion"];
   }
 
-  [v6 setObject:v7 forKeyedSubscript:{@"attributes", *&v11.start.value, *&v11.start.epoch, *&v11.duration.timescale}];
+  [v6 setObject:dictionary forKeyedSubscript:{@"attributes", *&v11.start.value, *&v11.start.epoch, *&v11.duration.timescale}];
 
   return v6;
 }
 
-+ (id)resultsFromVSKAsset:(id)a3
++ (id)resultsFromVSKAsset:(id)asset
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v18 = v3;
-  if (v3)
+  assetCopy = asset;
+  v18 = assetCopy;
+  if (assetCopy)
   {
-    v4 = v3;
-    v17 = [v3 mad_photosLocalIdentifier];
-    v5 = [v4 vectors];
-    v6 = [v5 count];
+    v4 = assetCopy;
+    mad_photosLocalIdentifier = [assetCopy mad_photosLocalIdentifier];
+    vectors = [v4 vectors];
+    v6 = [vectors count];
 
     if (v6)
     {
-      v7 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
@@ -146,7 +146,7 @@
             [(VCPProtoEmbeddingResult *)v13 setTimeRange:v15];
 
             [(VCPProtoEmbeddingResult *)v13 setVersion:+[VCPVideoTransformerBackbone embeddingVersion]];
-            [v7 addObject:v13];
+            [array addObject:v13];
           }
 
           v8 = [obj countByEnumeratingWithState:&v20 objects:v27 count:16];
@@ -161,11 +161,11 @@
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        *&buf[4] = v17;
+        *&buf[4] = mad_photosLocalIdentifier;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[VSKAsset->ImageEmbeddingProto][%@] VSKAsset contains no embedding", buf, 0xCu);
       }
 
-      v7 = 0;
+      array = 0;
     }
   }
 
@@ -177,27 +177,27 @@
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[VSKAsset->ImageEmbeddingProto] No VSKAsset", buf, 2u);
     }
 
-    v7 = 0;
+    array = 0;
   }
 
-  return v7;
+  return array;
 }
 
-+ (id)imageEmbeddingVSKAssetFromResults:(id)a3 localIdentifier:(id)a4
++ (id)imageEmbeddingVSKAssetFromResults:(id)results localIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  resultsCopy = results;
+  identifierCopy = identifier;
+  if ([resultsCopy count])
   {
-    v20 = [MEMORY[0x1E69DF5F8] mad_stringIdentifierFromLocalIdentifier:v6 embeddingType:1];
-    v7 = [MEMORY[0x1E695DF70] array];
+    v20 = [MEMORY[0x1E69DF5F8] mad_stringIdentifierFromLocalIdentifier:identifierCopy embeddingType:1];
+    array = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = v5;
-    v9 = 0;
+    v8 = resultsCopy;
+    version2 = 0;
     v10 = [v8 countByEnumeratingWithState:&v21 objects:v31 count:16];
     if (v10)
     {
@@ -216,26 +216,26 @@
           {
             if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
             {
-              v17 = [v13 hasVersion];
-              v18 = [v13 version];
+              hasVersion = [v13 hasVersion];
+              version = [v13 version];
               *buf = 138412802;
-              v26 = v6;
+              v26 = identifierCopy;
               v27 = 1024;
-              v28 = v17;
+              v28 = hasVersion;
               v29 = 1024;
-              v30 = v18;
+              v30 = version;
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[ImageEmbeddingProto->VSKAsset][%@] Invalid embedding version (hasVersion: %d, version: %d) in VCPProtoEmbeddingResult", buf, 0x18u);
             }
 
             goto LABEL_20;
           }
 
-          v14 = [v13 embeddingBlob];
-          [v7 addObject:v14];
+          embeddingBlob = [v13 embeddingBlob];
+          [array addObject:embeddingBlob];
 
-          if (!v9)
+          if (!version2)
           {
-            v9 = [v13 version];
+            version2 = [v13 version];
           }
         }
 
@@ -249,10 +249,10 @@
       }
     }
 
-    if ([v7 count] && v9)
+    if ([array count] && version2)
     {
-      v15 = [MEMORY[0x1E69DF5F8] mad_attributesWithEmbeddingVersion:v9];
-      v16 = [objc_alloc(MEMORY[0x1E69DF5F8]) initWithStringIdentifier:v20 vectors:v7 attributes:v15 payload:0];
+      v15 = [MEMORY[0x1E69DF5F8] mad_attributesWithEmbeddingVersion:version2];
+      v16 = [objc_alloc(MEMORY[0x1E69DF5F8]) initWithStringIdentifier:v20 vectors:array attributes:v15 payload:0];
     }
 
     else
@@ -260,7 +260,7 @@
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v26 = v6;
+        v26 = identifierCopy;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[ImageEmbeddingProto->VSKAsset][%@] No valid embedding data/version in VCPProtoEmbeddingResult", buf, 0xCu);
       }
 
@@ -274,7 +274,7 @@ LABEL_20:
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v26 = v6;
+      v26 = identifierCopy;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[ImageEmbeddingProto->VSKAsset][%@] No VCPProtoEmbeddingResult", buf, 0xCu);
     }
 
@@ -290,40 +290,40 @@ LABEL_20:
   v8.receiver = self;
   v8.super_class = VCPProtoEmbeddingResult;
   v4 = [(VCPProtoEmbeddingResult *)&v8 description];
-  v5 = [(VCPProtoEmbeddingResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoEmbeddingResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timeRange = self->_timeRange;
   if (timeRange)
   {
-    v5 = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"timeRange"];
+    dictionaryRepresentation = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timeRange"];
   }
 
   embeddingBlob = self->_embeddingBlob;
   if (embeddingBlob)
   {
-    [v3 setObject:embeddingBlob forKey:@"embeddingBlob"];
+    [dictionary setObject:embeddingBlob forKey:@"embeddingBlob"];
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_version];
-    [v3 setObject:v7 forKey:@"version"];
+    [dictionary setObject:v7 forKey:@"version"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteDataField();
   if (*&self->_has)
@@ -332,26 +332,26 @@ LABEL_20:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  [v4 setTimeRange:self->_timeRange];
-  [v4 setEmbeddingBlob:self->_embeddingBlob];
+  toCopy = to;
+  [toCopy setTimeRange:self->_timeRange];
+  [toCopy setEmbeddingBlob:self->_embeddingBlob];
   if (*&self->_has)
   {
-    *(v4 + 6) = self->_version;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 6) = self->_version;
+    *(toCopy + 28) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSData *)self->_embeddingBlob copyWithZone:a3];
+  v8 = [(NSData *)self->_embeddingBlob copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
@@ -364,16 +364,16 @@ LABEL_20:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   timeRange = self->_timeRange;
-  if (timeRange | *(v4 + 2))
+  if (timeRange | *(equalCopy + 2))
   {
     if (![(VCPProtoTimeRange *)timeRange isEqual:?])
     {
@@ -382,7 +382,7 @@ LABEL_20:
   }
 
   embeddingBlob = self->_embeddingBlob;
-  if (embeddingBlob | *(v4 + 1))
+  if (embeddingBlob | *(equalCopy + 1))
   {
     if (![(NSData *)embeddingBlob isEqual:?])
     {
@@ -390,10 +390,10 @@ LABEL_20:
     }
   }
 
-  v7 = (*(v4 + 28) & 1) == 0;
+  v7 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) != 0 && self->_version == *(v4 + 6))
+    if ((*(equalCopy + 28) & 1) != 0 && self->_version == *(equalCopy + 6))
     {
       v7 = 1;
       goto LABEL_11;
@@ -425,12 +425,12 @@ LABEL_11:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   timeRange = self->_timeRange;
-  v6 = *(v4 + 2);
-  v7 = v4;
+  v6 = *(fromCopy + 2);
+  v7 = fromCopy;
   if (timeRange)
   {
     if (!v6)
@@ -451,17 +451,17 @@ LABEL_11:
     [(VCPProtoEmbeddingResult *)self setTimeRange:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(VCPProtoEmbeddingResult *)self setEmbeddingBlob:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
-    self->_version = *(v4 + 6);
+    self->_version = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 }

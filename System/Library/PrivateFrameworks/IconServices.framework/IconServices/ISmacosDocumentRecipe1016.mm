@@ -8,7 +8,7 @@
 - (id)hintedShadowOffset;
 - (id)hintedShadowSpread;
 - (id)hintedTextRect;
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4;
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation ISmacosDocumentRecipe1016
@@ -250,19 +250,19 @@ uint64_t __47__ISmacosDocumentRecipe1016_hintedShadowSpread__block_invoke()
   return [v2 addHintedFloat:1.0 forSize:{512.0, 512.0}];
 }
 
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [(ISmacosDocumentRecipe1016 *)self hintedBadgeRect];
-  [v7 hintedRectForSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  hintedBadgeRect = [(ISmacosDocumentRecipe1016 *)self hintedBadgeRect];
+  [hintedBadgeRect hintedRectForSize:{width, height}];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(ISmacosDocumentRecipe1016 *)self hintedTextRect];
-  [v16 hintedRectForSize:{width, height}];
+  hintedTextRect = [(ISmacosDocumentRecipe1016 *)self hintedTextRect];
+  [hintedTextRect hintedRectForSize:{width, height}];
   v78 = v18;
   v80 = v17;
   v20 = v19;
@@ -279,8 +279,8 @@ uint64_t __47__ISmacosDocumentRecipe1016_hintedShadowSpread__block_invoke()
   [(ISContentLayer *)v24 setContent:v25];
 
   v26 = objc_alloc_init(ISContentLayer);
-  v27 = [(ISmacosDocumentRecipe1016 *)self hintedPaperRect];
-  [v27 hintedRectForSize:{width, height}];
+  hintedPaperRect = [(ISmacosDocumentRecipe1016 *)self hintedPaperRect];
+  [hintedPaperRect hintedRectForSize:{width, height}];
   [(ISLayer *)v26 setFrame:?];
 
   [(ISLayer *)v26 setName:@"mask shape layer"];
@@ -291,13 +291,13 @@ uint64_t __47__ISmacosDocumentRecipe1016_hintedShadowSpread__block_invoke()
   [(ISLayer *)v29 setCoordinateSystem:0];
   [(ISLayer *)v29 setBlendMode:19];
   [(ISLayer *)v29 setName:@"bottomLeft"];
-  v30 = [(ISmacosDocumentRecipe1016 *)self hintedCornerSize];
-  [v30 hintedSizeForSize:{width, height}];
+  hintedCornerSize = [(ISmacosDocumentRecipe1016 *)self hintedCornerSize];
+  [hintedCornerSize hintedSizeForSize:{width, height}];
   [(ISLayer *)v29 setSize:?];
 
-  v31 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v32 = [v31 assetCatalogURL];
-  v33 = [ISAssetCatalogResource assetCatalogResourceWithURL:v32 imageName:@"document/bottom-right-mask" error:0];
+  iconFoundationFrameworkBundle = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL = [iconFoundationFrameworkBundle assetCatalogURL];
+  v33 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL imageName:@"document/bottom-right-mask" error:0];
   [(ISContentLayer *)v29 setContent:v33];
 
   [(ISLayer *)v26 addSublayer:v29];
@@ -305,13 +305,13 @@ uint64_t __47__ISmacosDocumentRecipe1016_hintedShadowSpread__block_invoke()
   [(ISLayer *)v34 setCoordinateSystem:3];
   [(ISLayer *)v34 setBlendMode:19];
   [(ISLayer *)v34 setName:@"topRight"];
-  v35 = [(ISmacosDocumentRecipe1016 *)self hintedPageCurlSize];
-  [v35 hintedSizeForSize:{width, height}];
+  hintedPageCurlSize = [(ISmacosDocumentRecipe1016 *)self hintedPageCurlSize];
+  [hintedPageCurlSize hintedSizeForSize:{width, height}];
   [(ISLayer *)v34 setSize:?];
 
-  v36 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v37 = [v36 assetCatalogURL];
-  v38 = [ISAssetCatalogResource assetCatalogResourceWithURL:v37 imageName:@"document/top-right-mask" error:0];
+  iconFoundationFrameworkBundle2 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL2 = [iconFoundationFrameworkBundle2 assetCatalogURL];
+  v38 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL2 imageName:@"document/top-right-mask" error:0];
   [(ISContentLayer *)v34 setContent:v38];
 
   [(ISLayer *)v26 addSublayer:v34];
@@ -320,13 +320,13 @@ uint64_t __47__ISmacosDocumentRecipe1016_hintedShadowSpread__block_invoke()
   [(ISLayer *)v39 setFlipped:2];
   [(ISLayer *)v39 setBlendMode:19];
   [(ISLayer *)v39 setName:@"bottomRight"];
-  v40 = [(ISmacosDocumentRecipe1016 *)self hintedCornerSize];
-  [v40 hintedSizeForSize:{width, height}];
+  hintedCornerSize2 = [(ISmacosDocumentRecipe1016 *)self hintedCornerSize];
+  [hintedCornerSize2 hintedSizeForSize:{width, height}];
   [(ISLayer *)v39 setSize:?];
 
-  v41 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v42 = [v41 assetCatalogURL];
-  v43 = [ISAssetCatalogResource assetCatalogResourceWithURL:v42 imageName:@"document/bottom-right-mask" error:0];
+  iconFoundationFrameworkBundle3 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL3 = [iconFoundationFrameworkBundle3 assetCatalogURL];
+  v43 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL3 imageName:@"document/bottom-right-mask" error:0];
   [(ISContentLayer *)v39 setContent:v43];
 
   [(ISLayer *)v26 addSublayer:v39];
@@ -335,13 +335,13 @@ uint64_t __47__ISmacosDocumentRecipe1016_hintedShadowSpread__block_invoke()
   [(ISLayer *)v44 setFlipped:1];
   [(ISLayer *)v44 setBlendMode:19];
   [(ISLayer *)v44 setName:@"topLeft"];
-  v45 = [(ISmacosDocumentRecipe1016 *)self hintedCornerSize];
-  [v45 hintedSizeForSize:{width, height}];
+  hintedCornerSize3 = [(ISmacosDocumentRecipe1016 *)self hintedCornerSize];
+  [hintedCornerSize3 hintedSizeForSize:{width, height}];
   [(ISLayer *)v44 setSize:?];
 
-  v46 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v47 = [v46 assetCatalogURL];
-  v48 = [ISAssetCatalogResource assetCatalogResourceWithURL:v47 imageName:@"document/bottom-right-mask" error:0];
+  iconFoundationFrameworkBundle4 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL4 = [iconFoundationFrameworkBundle4 assetCatalogURL];
+  v48 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL4 imageName:@"document/bottom-right-mask" error:0];
   [(ISContentLayer *)v44 setContent:v48];
 
   [(ISLayer *)v26 addSublayer:v44];
@@ -366,15 +366,15 @@ uint64_t __47__ISmacosDocumentRecipe1016_hintedShadowSpread__block_invoke()
   v53 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v53 setName:@"gradient layer"];
   [(ISLayer *)v53 setSize:width, height];
-  v54 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v55 = [v54 assetCatalogURL];
-  v56 = [ISAssetCatalogResource assetCatalogResourceWithURL:v55 imageName:@"document/gradient" error:0];
+  iconFoundationFrameworkBundle5 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL5 = [iconFoundationFrameworkBundle5 assetCatalogURL];
+  v56 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL5 imageName:@"document/gradient" error:0];
   [(ISContentLayer *)v53 setContent:v56];
 
   [(ISLayer *)v24 addSublayer:v53];
   v57 = objc_alloc_init(ISContentLayer);
-  v58 = [(ISmacosDocumentRecipe1016 *)self hintedPaperRect];
-  [v58 hintedRectForSize:{width, height}];
+  hintedPaperRect2 = [(ISmacosDocumentRecipe1016 *)self hintedPaperRect];
+  [hintedPaperRect2 hintedRectForSize:{width, height}];
   [(ISLayer *)v57 setFrame:?];
 
   [(ISLayer *)v24 addSublayer:v57];
@@ -402,8 +402,8 @@ uint64_t __47__ISmacosDocumentRecipe1016_hintedShadowSpread__block_invoke()
     [(ISLayer *)v62 setName:@"text layer"];
     [(ISLayer *)v62 setFrame:v81, v79, v20, v22];
     [(ISTextLayer *)v62 setText:@"kISTextResourceKey"];
-    v63 = [(ISmacosDocumentRecipe1016 *)self hintedFontSize];
-    [v63 hintedFloatForSize:{width, height}];
+    hintedFontSize = [(ISmacosDocumentRecipe1016 *)self hintedFontSize];
+    [hintedFontSize hintedFloatForSize:{width, height}];
     [(ISTextLayer *)v62 setFontSize:?];
 
     v64 = [objc_alloc(MEMORY[0x1E69A8968]) initWithWhite:0.0 alpha:1.0];
@@ -417,14 +417,14 @@ uint64_t __47__ISmacosDocumentRecipe1016_hintedShadowSpread__block_invoke()
   v66 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v66 setName:@"Forground layer"];
   [(ISLayer *)v66 setCoordinateSystem:3];
-  v67 = [(ISmacosDocumentRecipe1016 *)self hintedPageCurlSize];
-  [v67 hintedSizeForSize:{width, height}];
+  hintedPageCurlSize2 = [(ISmacosDocumentRecipe1016 *)self hintedPageCurlSize];
+  [hintedPageCurlSize2 hintedSizeForSize:{width, height}];
   [(ISLayer *)v66 setSize:?];
 
   [(ISLayer *)v66 setPosition:0.0, 0.0];
-  v68 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v69 = [v68 assetCatalogURL];
-  v70 = [ISAssetCatalogResource assetCatalogResourceWithURL:v69 imageName:@"document/page-fold" error:0];
+  iconFoundationFrameworkBundle6 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL6 = [iconFoundationFrameworkBundle6 assetCatalogURL];
+  v70 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL6 imageName:@"document/page-fold" error:0];
   [(ISContentLayer *)v66 setContent:v70];
 
   [(ISLayer *)v57 addSublayer:v66];
@@ -432,22 +432,22 @@ uint64_t __47__ISmacosDocumentRecipe1016_hintedShadowSpread__block_invoke()
   [(ISLayer *)v71 setName:@"shadow background layer"];
   [(ISLayer *)v71 setSize:width, height];
   v72 = objc_opt_new();
-  v73 = [(ISmacosDocumentRecipe1016 *)self hintedShadowBlur];
-  [v73 hintedFloatForSize:{width, height}];
+  hintedShadowBlur = [(ISmacosDocumentRecipe1016 *)self hintedShadowBlur];
+  [hintedShadowBlur hintedFloatForSize:{width, height}];
   [v72 setBlur:?];
 
-  v74 = [(ISmacosDocumentRecipe1016 *)self hintedShadowOffset];
-  [v74 hintedSizeForSize:{width, height}];
+  hintedShadowOffset = [(ISmacosDocumentRecipe1016 *)self hintedShadowOffset];
+  [hintedShadowOffset hintedSizeForSize:{width, height}];
   [v72 setOffset:?];
 
-  v75 = [(ISmacosDocumentRecipe1016 *)self hintedShadowSpread];
-  [v75 hintedFloatForSize:{width, height}];
+  hintedShadowSpread = [(ISmacosDocumentRecipe1016 *)self hintedShadowSpread];
+  [hintedShadowSpread hintedFloatForSize:{width, height}];
   [v72 setSpread:?];
 
   v76 = [objc_alloc(MEMORY[0x1E69A8968]) initWithWhite:0.0 alpha:0.28];
   [v72 setColor:v76];
 
-  [v72 setScale:a4];
+  [v72 setScale:scale];
   [(ISLayer *)v71 setEffect:v72];
   [(ISLayer *)v82 addSublayer:v71];
   [(ISLayer *)v71 addSublayer:v24];

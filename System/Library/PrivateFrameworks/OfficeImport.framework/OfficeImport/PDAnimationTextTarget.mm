@@ -1,5 +1,5 @@
 @interface PDAnimationTextTarget
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PDAnimationTextTarget)init;
 - (_NSRange)range;
 - (unint64_t)hash;
@@ -35,15 +35,15 @@
   return &v5[v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v12.receiver = self, v12.super_class = PDAnimationTextTarget, -[PDAnimationShapeTarget isEqual:](&v12, sel_isEqual_, v4)) && (v5 = -[PDAnimationTextTarget type](self, "type"), v5 == [v4 type]) && (v6 = -[PDAnimationTextTarget range](self, "range"), v6 == objc_msgSend(v4, "range")))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v12.receiver = self, v12.super_class = PDAnimationTextTarget, -[PDAnimationShapeTarget isEqual:](&v12, sel_isEqual_, equalCopy)) && (v5 = -[PDAnimationTextTarget type](self, "type"), v5 == [equalCopy type]) && (v6 = -[PDAnimationTextTarget range](self, "range"), v6 == objc_msgSend(equalCopy, "range")))
   {
     [(PDAnimationTextTarget *)self range];
     v8 = v7;
-    [v4 range];
+    [equalCopy range];
     v10 = v8 == v9;
   }
 

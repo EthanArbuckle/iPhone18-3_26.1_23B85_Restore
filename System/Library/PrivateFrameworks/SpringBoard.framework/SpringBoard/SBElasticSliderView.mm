@@ -1,8 +1,8 @@
 @interface SBElasticSliderView
 - (BOOL)_usesSolariumBackground;
-- (CGPoint)_elasticGlyphCenterForDefaultGlyphCenter:(CGPoint)a3;
+- (CGPoint)_elasticGlyphCenterForDefaultGlyphCenter:(CGPoint)center;
 - (CGPoint)glyphCenter;
-- (SBElasticSliderView)initWithFrame:(CGRect)a3;
+- (SBElasticSliderView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)shadowOutsets;
 - (double)_fractionToRegularMetrics;
 - (double)_minorAxisElasticLength;
@@ -12,26 +12,26 @@
 - (void)_updateGlyphScaleForAdditiveScaleOrAxisUpdate;
 - (void)_updateShadowMode;
 - (void)layoutElasticContentViews;
-- (void)setAccessoryLayoutEdge:(unint64_t)a3;
-- (void)setAccessoryViewPadding:(double)a3;
-- (void)setAdditiveGlyphScaleFactor:(double)a3;
-- (void)setAxis:(unint64_t)a3;
-- (void)setCompactMinorAxisDimension:(double)a3;
-- (void)setContinuousSliderCornerRadius:(double)a3;
-- (void)setCornerRadiusMinorAxisFraction:(double)a3;
-- (void)setLeadingAccessoryView:(id)a3;
-- (void)setRegularMinorAxisDimension:(double)a3;
-- (void)setShadowMode:(unint64_t)a3;
-- (void)setTrailingAccessoryView:(id)a3;
+- (void)setAccessoryLayoutEdge:(unint64_t)edge;
+- (void)setAccessoryViewPadding:(double)padding;
+- (void)setAdditiveGlyphScaleFactor:(double)factor;
+- (void)setAxis:(unint64_t)axis;
+- (void)setCompactMinorAxisDimension:(double)dimension;
+- (void)setContinuousSliderCornerRadius:(double)radius;
+- (void)setCornerRadiusMinorAxisFraction:(double)fraction;
+- (void)setLeadingAccessoryView:(id)view;
+- (void)setRegularMinorAxisDimension:(double)dimension;
+- (void)setShadowMode:(unint64_t)mode;
+- (void)setTrailingAccessoryView:(id)view;
 @end
 
 @implementation SBElasticSliderView
 
-- (SBElasticSliderView)initWithFrame:(CGRect)a3
+- (SBElasticSliderView)initWithFrame:(CGRect)frame
 {
   v39.receiver = self;
   v39.super_class = SBElasticSliderView;
-  v3 = [(CCUIContinuousSliderView *)&v39 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CCUIContinuousSliderView *)&v39 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -46,20 +46,20 @@
     v4->_maskView = v13;
 
     [(UIView *)v4->_maskView setUserInteractionEnabled:0];
-    v15 = [(UIView *)v4->_maskView layer];
-    [v15 setCompositingFilter:*MEMORY[0x277CDA310]];
+    layer = [(UIView *)v4->_maskView layer];
+    [layer setCompositingFilter:*MEMORY[0x277CDA310]];
 
-    v16 = [(CCUIBaseSliderView *)v4 elasticContentBoundaryView];
-    [v16 insertSubview:v4->_maskView atIndex:0];
+    elasticContentBoundaryView = [(CCUIBaseSliderView *)v4 elasticContentBoundaryView];
+    [elasticContentBoundaryView insertSubview:v4->_maskView atIndex:0];
 
-    v17 = [(SBElasticSliderView *)v4 _usesSolariumBackground];
-    if (!v17)
+    _usesSolariumBackground = [(SBElasticSliderView *)v4 _usesSolariumBackground];
+    if (!_usesSolariumBackground)
     {
       v18 = MEMORY[0x277D26718];
-      v19 = [MEMORY[0x277D75418] currentDevice];
-      v20 = [v19 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v20 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         v21 = @"elasticHUDBackgroundSheer";
       }
@@ -78,28 +78,28 @@
       v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%p", @"SBElasticSliderMaterialView", v4];
       [(MTMaterialView *)v25 setGroupNameBase:v26];
 
-      v27 = [(CCUIBaseSliderView *)v4 elasticContentView];
-      [v27 insertSubview:v4->_baseMaterialView atIndex:0];
+      elasticContentView = [(CCUIBaseSliderView *)v4 elasticContentView];
+      [elasticContentView insertSubview:v4->_baseMaterialView atIndex:0];
     }
 
-    v28 = [(CCUIBaseSliderView *)v4 elasticContentView];
-    [v28 setClipsToBounds:1];
+    elasticContentView2 = [(CCUIBaseSliderView *)v4 elasticContentView];
+    [elasticContentView2 setClipsToBounds:1];
     v29 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v6, v8, v10, v12}];
     shadowView = v4->_shadowView;
     v4->_shadowView = v29;
 
-    v31 = [(UIView *)v4->_shadowView layer];
-    [v31 setShadowPathIsBounds:1];
+    layer2 = [(UIView *)v4->_shadowView layer];
+    [layer2 setShadowPathIsBounds:1];
 
-    v32 = [(CCUIBaseSliderView *)v4 elasticBackgroundContentView];
-    [v32 insertSubview:v4->_shadowView atIndex:0];
+    elasticBackgroundContentView = [(CCUIBaseSliderView *)v4 elasticBackgroundContentView];
+    [elasticBackgroundContentView insertSubview:v4->_shadowView atIndex:0];
 
     [(SBElasticSliderView *)v4 _updateShadowMode];
-    if (v17)
+    if (_usesSolariumBackground)
     {
-      v33 = [objc_alloc(MEMORY[0x277D763B0]) initWithVariant:8];
-      [v33 setSubvariant:@"volumeSlider"];
-      [v28 _setBackground:v33];
+      elasticBackgroundContentView2 = [objc_alloc(MEMORY[0x277D763B0]) initWithVariant:8];
+      [elasticBackgroundContentView2 setSubvariant:@"volumeSlider"];
+      [elasticContentView2 _setBackground:elasticBackgroundContentView2];
     }
 
     else
@@ -110,25 +110,25 @@
 
       [(MTMaterialView *)v4->_captureOnlyMaterialView setCaptureOnly:1];
       v36 = v4->_captureOnlyMaterialView;
-      v37 = [(MTMaterialView *)v4->_baseMaterialView groupNameBase];
-      [(MTMaterialView *)v36 setGroupNameBase:v37];
+      groupNameBase = [(MTMaterialView *)v4->_baseMaterialView groupNameBase];
+      [(MTMaterialView *)v36 setGroupNameBase:groupNameBase];
 
-      v33 = [(CCUIBaseSliderView *)v4 elasticBackgroundContentView];
-      [v33 insertSubview:v4->_captureOnlyMaterialView atIndex:0];
+      elasticBackgroundContentView2 = [(CCUIBaseSliderView *)v4 elasticBackgroundContentView];
+      [elasticBackgroundContentView2 insertSubview:v4->_captureOnlyMaterialView atIndex:0];
     }
   }
 
   return v4;
 }
 
-- (void)setContinuousSliderCornerRadius:(double)a3
+- (void)setContinuousSliderCornerRadius:(double)radius
 {
-  v5 = [(CCUIBaseSliderView *)self elasticContentView];
-  [v5 _setContinuousCornerRadius:a3];
+  elasticContentView = [(CCUIBaseSliderView *)self elasticContentView];
+  [elasticContentView _setContinuousCornerRadius:radius];
 
-  [(UIView *)self->_shadowView _setContinuousCornerRadius:a3];
-  v6 = [(UIView *)self->_shadowView layer];
-  [v6 setShadowOffset:{0.0, a3 * 0.25}];
+  [(UIView *)self->_shadowView _setContinuousCornerRadius:radius];
+  layer = [(UIView *)self->_shadowView layer];
+  [layer setShadowOffset:{0.0, radius * 0.25}];
 }
 
 - (void)layoutElasticContentViews
@@ -136,8 +136,8 @@
   v12.receiver = self;
   v12.super_class = SBElasticSliderView;
   [(CCUIContinuousSliderView *)&v12 layoutElasticContentViews];
-  v3 = [(CCUIBaseSliderView *)self elasticContentView];
-  [v3 bounds];
+  elasticContentView = [(CCUIBaseSliderView *)self elasticContentView];
+  [elasticContentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -163,67 +163,67 @@
   return result;
 }
 
-- (void)setAxis:(unint64_t)a3
+- (void)setAxis:(unint64_t)axis
 {
-  if ([(CCUIContinuousSliderView *)self axis]!= a3)
+  if ([(CCUIContinuousSliderView *)self axis]!= axis)
   {
     v5.receiver = self;
     v5.super_class = SBElasticSliderView;
-    [(CCUIContinuousSliderView *)&v5 setAxis:a3];
+    [(CCUIContinuousSliderView *)&v5 setAxis:axis];
     [(SBElasticSliderView *)self _updateGlyphScaleForAdditiveScaleOrAxisUpdate];
   }
 }
 
-- (void)setCornerRadiusMinorAxisFraction:(double)a3
+- (void)setCornerRadiusMinorAxisFraction:(double)fraction
 {
-  if (self->_cornerRadiusMinorAxisFraction != a3)
+  if (self->_cornerRadiusMinorAxisFraction != fraction)
   {
-    self->_cornerRadiusMinorAxisFraction = a3;
+    self->_cornerRadiusMinorAxisFraction = fraction;
     [(SBElasticSliderView *)self setNeedsLayout];
   }
 }
 
-- (void)setRegularMinorAxisDimension:(double)a3
+- (void)setRegularMinorAxisDimension:(double)dimension
 {
-  if (self->_regularMinorAxisDimension != a3)
+  if (self->_regularMinorAxisDimension != dimension)
   {
-    self->_regularMinorAxisDimension = a3;
+    self->_regularMinorAxisDimension = dimension;
     [(SBElasticSliderView *)self setNeedsLayout];
   }
 }
 
-- (void)setCompactMinorAxisDimension:(double)a3
+- (void)setCompactMinorAxisDimension:(double)dimension
 {
-  if (self->_compactMinorAxisDimension != a3)
+  if (self->_compactMinorAxisDimension != dimension)
   {
-    self->_compactMinorAxisDimension = a3;
+    self->_compactMinorAxisDimension = dimension;
     [(SBElasticSliderView *)self setNeedsLayout];
   }
 }
 
-- (void)setAdditiveGlyphScaleFactor:(double)a3
+- (void)setAdditiveGlyphScaleFactor:(double)factor
 {
-  if (self->_additiveGlyphScaleFactor != a3)
+  if (self->_additiveGlyphScaleFactor != factor)
   {
-    self->_additiveGlyphScaleFactor = a3;
+    self->_additiveGlyphScaleFactor = factor;
     [(SBElasticSliderView *)self _updateGlyphScaleForAdditiveScaleOrAxisUpdate];
   }
 }
 
-- (void)setShadowMode:(unint64_t)a3
+- (void)setShadowMode:(unint64_t)mode
 {
-  if (self->_shadowMode != a3)
+  if (self->_shadowMode != mode)
   {
-    self->_shadowMode = a3;
+    self->_shadowMode = mode;
     [(SBElasticSliderView *)self _updateShadowMode];
   }
 }
 
 - (UIEdgeInsets)shadowOutsets
 {
-  v2 = [(UIView *)self->_shadowView layer];
-  [v2 shadowOffset];
-  [v2 shadowRadius];
+  layer = [(UIView *)self->_shadowView layer];
+  [layer shadowOffset];
+  [layer shadowRadius];
   UIEdgeInsetsMakeWithEdges();
   UIEdgeInsetsMin();
   v4 = v3;
@@ -242,73 +242,73 @@
   return result;
 }
 
-- (void)setLeadingAccessoryView:(id)a3
+- (void)setLeadingAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   leadingAccessoryView = self->_leadingAccessoryView;
-  if (leadingAccessoryView != v5)
+  if (leadingAccessoryView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIView *)leadingAccessoryView removeFromSuperview];
-    objc_storeStrong(&self->_leadingAccessoryView, a3);
-    v7 = [(CCUIBaseSliderView *)self elasticBackgroundContentView];
-    [v7 addSubview:v8];
+    objc_storeStrong(&self->_leadingAccessoryView, view);
+    elasticBackgroundContentView = [(CCUIBaseSliderView *)self elasticBackgroundContentView];
+    [elasticBackgroundContentView addSubview:v8];
 
     [(SBElasticSliderView *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)setTrailingAccessoryView:(id)a3
+- (void)setTrailingAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   trailingAccessoryView = self->_trailingAccessoryView;
-  if (trailingAccessoryView != v5)
+  if (trailingAccessoryView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIView *)trailingAccessoryView removeFromSuperview];
-    objc_storeStrong(&self->_trailingAccessoryView, a3);
-    v7 = [(CCUIBaseSliderView *)self elasticBackgroundContentView];
-    [v7 addSubview:v8];
+    objc_storeStrong(&self->_trailingAccessoryView, view);
+    elasticBackgroundContentView = [(CCUIBaseSliderView *)self elasticBackgroundContentView];
+    [elasticBackgroundContentView addSubview:v8];
 
     [(SBElasticSliderView *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)setAccessoryLayoutEdge:(unint64_t)a3
+- (void)setAccessoryLayoutEdge:(unint64_t)edge
 {
-  if (self->_accessoryLayoutEdge != a3)
+  if (self->_accessoryLayoutEdge != edge)
   {
-    self->_accessoryLayoutEdge = a3;
+    self->_accessoryLayoutEdge = edge;
     [(SBElasticSliderView *)self setNeedsLayout];
   }
 }
 
-- (void)setAccessoryViewPadding:(double)a3
+- (void)setAccessoryViewPadding:(double)padding
 {
-  if (self->_accessoryViewPadding != a3)
+  if (self->_accessoryViewPadding != padding)
   {
-    self->_accessoryViewPadding = a3;
+    self->_accessoryViewPadding = padding;
     [(SBElasticSliderView *)self setNeedsLayout];
   }
 }
 
 - (double)_minorAxisElasticLength
 {
-  v3 = [(CCUIBaseSliderView *)self elasticContentView];
-  [v3 bounds];
+  elasticContentView = [(CCUIBaseSliderView *)self elasticContentView];
+  [elasticContentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CCUIContinuousSliderView *)self axis];
+  axis = [(CCUIContinuousSliderView *)self axis];
   v13 = v5;
   v14 = v7;
   v15 = v9;
   v16 = v11;
-  if (v12 == 1)
+  if (axis == 1)
   {
 
     return CGRectGetHeight(*&v13);
@@ -353,20 +353,20 @@
 
 - (void)_layoutAccessoryViews
 {
-  v77 = [(SBElasticSliderView *)self leadingAccessoryView];
-  v3 = [(SBElasticSliderView *)self trailingAccessoryView];
-  [v77 frame];
+  leadingAccessoryView = [(SBElasticSliderView *)self leadingAccessoryView];
+  trailingAccessoryView = [(SBElasticSliderView *)self trailingAccessoryView];
+  [leadingAccessoryView frame];
   v66 = v4;
   v68 = v5;
   v7 = v6;
   rect = v8;
-  [v3 frame];
+  [trailingAccessoryView frame];
   v10 = v9;
   v70 = v11;
   v13 = v12;
   v75 = v14;
-  v15 = [(CCUIBaseSliderView *)self elasticBackgroundContentView];
-  [v15 bounds];
+  elasticBackgroundContentView = [(CCUIBaseSliderView *)self elasticBackgroundContentView];
+  [elasticBackgroundContentView bounds];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -374,8 +374,8 @@
 
   [(SBElasticSliderView *)self accessoryViewPadding];
   v25 = v24;
-  v26 = [(SBElasticSliderView *)self accessoryLayoutEdge];
-  if (v26 == 4)
+  accessoryLayoutEdge = [(SBElasticSliderView *)self accessoryLayoutEdge];
+  if (accessoryLayoutEdge == 4)
   {
     v83.origin.x = v17;
     v83.origin.y = v19;
@@ -403,28 +403,28 @@
 
   else
   {
-    if (!v26)
+    if (!accessoryLayoutEdge)
     {
       if ([(CCUIContinuousSliderView *)self axis]== 1)
       {
-        LOBYTE(v26) = 2;
+        LOBYTE(accessoryLayoutEdge) = 2;
       }
 
       else
       {
-        LOBYTE(v26) = 1;
+        LOBYTE(accessoryLayoutEdge) = 1;
       }
     }
 
-    if ((v26 & 2) != 0)
+    if ((accessoryLayoutEdge & 2) != 0)
     {
-      v31 = [(SBElasticSliderView *)self effectiveUserInterfaceLayoutDirection];
+      effectiveUserInterfaceLayoutDirection = [(SBElasticSliderView *)self effectiveUserInterfaceLayoutDirection];
       v65 = v13;
       v32 = v17;
       v33 = v19;
       v34 = v21;
       v35 = v23;
-      if (v31 == 1)
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         v36 = v25 + CGRectGetMaxX(*&v32);
         v87.origin.x = v17;
@@ -515,26 +515,26 @@
     }
   }
 
-  [v77 frame];
+  [leadingAccessoryView frame];
   SBUnintegralizedRectCenteredAboutPoint();
   v67 = v41;
   v43 = v42;
   recta = v45;
   v76 = v44;
-  [v3 frame];
+  [trailingAccessoryView frame];
   SBUnintegralizedRectCenteredAboutPoint();
   v47 = v46;
   v49 = v48;
   v69 = v51;
   v72 = v50;
-  v52 = [(SBElasticSliderView *)self traitCollection];
-  [v52 displayScale];
+  traitCollection = [(SBElasticSliderView *)self traitCollection];
+  [traitCollection displayScale];
 
-  [v77 frame];
+  [leadingAccessoryView frame];
   UIRectCenteredAboutPointScale();
   v54 = v53;
   v56 = v55;
-  [v3 frame];
+  [trailingAccessoryView frame];
   UIRectCenteredAboutPointScale();
   if (v28)
   {
@@ -587,8 +587,8 @@
     v63 = v59;
   }
 
-  [v77 setFrame:{v63, v60, v76, recta}];
-  [v3 setFrame:{v62, v61, v72, v69}];
+  [leadingAccessoryView setFrame:{v63, v60, v76, recta}];
+  [trailingAccessoryView setFrame:{v62, v61, v72, v69}];
 }
 
 - (void)_updateShadowMode
@@ -612,18 +612,18 @@
     v4 = 1043878380;
   }
 
-  v6 = [(UIView *)self->_shadowView layer];
+  layer = [(UIView *)self->_shadowView layer];
   LODWORD(v5) = v4;
-  [v6 setShadowOpacity:v5];
-  [v6 setShadowRadius:v3];
+  [layer setShadowOpacity:v5];
+  [layer setShadowRadius:v3];
 }
 
-- (CGPoint)_elasticGlyphCenterForDefaultGlyphCenter:(CGPoint)a3
+- (CGPoint)_elasticGlyphCenterForDefaultGlyphCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CCUIBaseSliderView *)self glyphContainerView];
-  [v6 bounds];
+  y = center.y;
+  x = center.x;
+  glyphContainerView = [(CCUIBaseSliderView *)self glyphContainerView];
+  [glyphContainerView bounds];
   v8 = v7;
   v10 = v9;
 
@@ -688,11 +688,11 @@
 
   else
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v5 = MEMORY[0x277D26718];
-    if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v2 = [v5 materialViewWithRecipeNamed:@"elasticHUDModuleSheer" inBundle:v6 options:0 initialWeighting:0 scaleAdjustment:1.0];

@@ -1,37 +1,37 @@
 @interface FaceCoreLandmark
-+ (id)landmarkWithType:(id)a3 pointCount:(unint64_t)a4 points:(CGPoint *)a5;
-- (FaceCoreLandmark)initWithType:(id)a3 pointCount:(unint64_t)a4 points:(CGPoint *)a5;
++ (id)landmarkWithType:(id)type pointCount:(unint64_t)count points:(CGPoint *)points;
+- (FaceCoreLandmark)initWithType:(id)type pointCount:(unint64_t)count points:(CGPoint *)points;
 - (void)dealloc;
 @end
 
 @implementation FaceCoreLandmark
 
-+ (id)landmarkWithType:(id)a3 pointCount:(unint64_t)a4 points:(CGPoint *)a5
++ (id)landmarkWithType:(id)type pointCount:(unint64_t)count points:(CGPoint *)points
 {
-  v7 = a3;
-  v8 = [[FaceCoreLandmark alloc] initWithType:v7 pointCount:a4 points:a5];
+  typeCopy = type;
+  v8 = [[FaceCoreLandmark alloc] initWithType:typeCopy pointCount:count points:points];
 
   return v8;
 }
 
-- (FaceCoreLandmark)initWithType:(id)a3 pointCount:(unint64_t)a4 points:(CGPoint *)a5
+- (FaceCoreLandmark)initWithType:(id)type pointCount:(unint64_t)count points:(CGPoint *)points
 {
-  v8 = a3;
+  typeCopy = type;
   v15.receiver = self;
   v15.super_class = FaceCoreLandmark;
   v9 = [(FaceCoreLandmark *)&v15 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [typeCopy copy];
     type = v9->type;
     v9->type = v10;
 
-    v9->pointCount = a4;
-    if (a4)
+    v9->pointCount = count;
+    if (count)
     {
-      v12 = malloc_type_malloc(16 * a4, 0x1000040451B5BE8uLL);
+      v12 = malloc_type_malloc(16 * count, 0x1000040451B5BE8uLL);
       v9->points = v12;
-      memcpy(v12, a5, 16 * v9->pointCount);
+      memcpy(v12, points, 16 * v9->pointCount);
     }
 
     v13 = v9;

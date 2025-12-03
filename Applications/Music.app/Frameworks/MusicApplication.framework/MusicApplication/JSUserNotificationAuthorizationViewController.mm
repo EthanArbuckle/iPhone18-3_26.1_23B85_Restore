@@ -1,12 +1,12 @@
 @interface JSUserNotificationAuthorizationViewController
-- (_TtC16MusicApplication45JSUserNotificationAuthorizationViewController)initWithCoder:(id)a3;
-- (_TtC16MusicApplication45JSUserNotificationAuthorizationViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16MusicApplication45JSUserNotificationAuthorizationViewController)initWithCoder:(id)coder;
+- (_TtC16MusicApplication45JSUserNotificationAuthorizationViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation JSUserNotificationAuthorizationViewController
 
-- (_TtC16MusicApplication45JSUserNotificationAuthorizationViewController)initWithCoder:(id)a3
+- (_TtC16MusicApplication45JSUserNotificationAuthorizationViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication45JSUserNotificationAuthorizationViewController_engagementViewController) = 0;
   result = sub_ABAFD0();
@@ -16,11 +16,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   JSUserNotificationAuthorizationViewController.viewDidLoad()();
 }
 
-- (_TtC16MusicApplication45JSUserNotificationAuthorizationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicApplication45JSUserNotificationAuthorizationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,29 +1,29 @@
 @interface SiriUISpokenNotificationsModule
-- (BOOL)_isEligibleForAnnounceNotificationsWithVendorID:(unsigned int)a3 productID:(unsigned int)a4;
+- (BOOL)_isEligibleForAnnounceNotificationsWithVendorID:(unsigned int)d productID:(unsigned int)iD;
 - (BOOL)isDeviceInEligibleAnnounceNotificationsConfiguration;
-- (SiriUISpokenNotificationsModule)initWithNibName:(id)a3 bundle:(id)a4;
+- (SiriUISpokenNotificationsModule)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_createMenuItems;
 - (void)_fetchAnnounceSettingsAndRefreshState;
 - (void)_muteSpokenMessages;
 - (void)_refreshState;
-- (void)_refreshStateWithSelected:(BOOL)a3 expanded:(BOOL)a4;
+- (void)_refreshStateWithSelected:(BOOL)selected expanded:(BOOL)expanded;
 - (void)_turnOffSpokenMessagesForTheDay;
 - (void)_turnOnSpokenMessages;
 - (void)_updateMenuItems;
-- (void)_updateMenuItemsWithDate:(id)a3;
-- (void)buttonTapped:(id)a3 forEvent:(id)a4;
-- (void)didTransitionToExpandedContentMode:(BOOL)a3;
-- (void)setContentModuleContext:(id)a3;
+- (void)_updateMenuItemsWithDate:(id)date;
+- (void)buttonTapped:(id)tapped forEvent:(id)event;
+- (void)didTransitionToExpandedContentMode:(BOOL)mode;
+- (void)setContentModuleContext:(id)context;
 - (void)viewDidLoad;
 @end
 
 @implementation SiriUISpokenNotificationsModule
 
-- (SiriUISpokenNotificationsModule)initWithNibName:(id)a3 bundle:(id)a4
+- (SiriUISpokenNotificationsModule)initWithNibName:(id)name bundle:(id)bundle
 {
   v11.receiver = self;
   v11.super_class = SiriUISpokenNotificationsModule;
-  v4 = [(CCUIMenuModuleViewController *)&v11 initWithNibName:a3 bundle:a4];
+  v4 = [(CCUIMenuModuleViewController *)&v11 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -53,36 +53,36 @@
   }
 
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x29EDBFAA0] sharedPreferences];
+  mEMORY[0x29EDBFAA0] = [MEMORY[0x29EDBFAA0] sharedPreferences];
   v4 = MEMORY[0x29EDCA5F8];
   v5 = 3221225472;
   v6 = sub_29C9EE034;
   v7 = &unk_29F33EB58;
   objc_copyWeak(&v8, &location);
-  [v3 getSpokenNotificationTemporarilyDisabledEndDateWithCompletion:&v4];
+  [mEMORY[0x29EDBFAA0] getSpokenNotificationTemporarilyDisabledEndDateWithCompletion:&v4];
 
   [(CCUIMenuModuleViewController *)self setMenuItems:self->_menuItems, v4, v5, v6, v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (void)_updateMenuItemsWithDate:(id)a3
+- (void)_updateMenuItemsWithDate:(id)date
 {
-  v19 = a3;
+  dateCopy = date;
   [(SiriUISpokenNotificationsModule *)self _createMenuItems];
-  if (v19)
+  if (dateCopy)
   {
-    v4 = [MEMORY[0x29EDB8D98] currentCalendar];
-    v5 = [MEMORY[0x29EDB8DB0] date];
-    v6 = [v4 isDate:v19 inSameDayAsDate:v5];
+    currentCalendar = [MEMORY[0x29EDB8D98] currentCalendar];
+    date = [MEMORY[0x29EDB8DB0] date];
+    v6 = [currentCalendar isDate:dateCopy inSameDayAsDate:date];
 
     if (v6)
     {
       v7 = objc_alloc_init(MEMORY[0x29EDB9F78]);
       [v7 setDateStyle:0];
       [v7 setTimeStyle:1];
-      v8 = [MEMORY[0x29EDB8D98] currentCalendar];
-      v9 = [v8 component:32 fromDate:v19];
+      currentCalendar2 = [MEMORY[0x29EDB8D98] currentCalendar];
+      v9 = [currentCalendar2 component:32 fromDate:dateCopy];
 
       if (v9 % 12 == 1)
       {
@@ -100,7 +100,7 @@
       v14 = [v12 bundleForClass:objc_opt_class()];
       v15 = [v14 localizedStringForKey:v13 value:&stru_2A23F1BE8 table:0];
 
-      v16 = [v7 stringFromDate:v19];
+      v16 = [v7 stringFromDate:dateCopy];
       v17 = [v11 stringWithFormat:v15, v16];
 
       [(CCUIMenuModuleItem *)self->_menuItemMute setSelected:1];
@@ -185,8 +185,8 @@ LABEL_10:
     _os_log_impl(&dword_29C9ED000, v3, OS_LOG_TYPE_DEFAULT, "%s Turning on Spoken Messages", &v11, 0xCu);
   }
 
-  v4 = [MEMORY[0x29EDBFAA0] sharedPreferences];
-  [v4 setSpokenNotificationTemporarilyDisabledUntil:0];
+  mEMORY[0x29EDBFAA0] = [MEMORY[0x29EDBFAA0] sharedPreferences];
+  [mEMORY[0x29EDBFAA0] setSpokenNotificationTemporarilyDisabledUntil:0];
 
   contentModuleContext = self->_contentModuleContext;
   v6 = MEMORY[0x29EDC0CF0];
@@ -210,8 +210,8 @@ LABEL_10:
   }
 
   v4 = [MEMORY[0x29EDB8DB0] dateWithTimeIntervalSinceNow:3600.0];
-  v5 = [MEMORY[0x29EDBFAA0] sharedPreferences];
-  [v5 setSpokenNotificationTemporarilyDisabledUntil:v4];
+  mEMORY[0x29EDBFAA0] = [MEMORY[0x29EDBFAA0] sharedPreferences];
+  [mEMORY[0x29EDBFAA0] setSpokenNotificationTemporarilyDisabledUntil:v4];
 
   contentModuleContext = self->_contentModuleContext;
   v7 = MEMORY[0x29EDC0CF0];
@@ -235,11 +235,11 @@ LABEL_10:
   }
 
   v4 = [MEMORY[0x29EDB8DB0] dateWithTimeIntervalSinceNow:86400.0];
-  v5 = [MEMORY[0x29EDB8D98] currentCalendar];
-  v6 = [v5 startOfDayForDate:v4];
+  currentCalendar = [MEMORY[0x29EDB8D98] currentCalendar];
+  v6 = [currentCalendar startOfDayForDate:v4];
 
-  v7 = [MEMORY[0x29EDBFAA0] sharedPreferences];
-  [v7 setSpokenNotificationTemporarilyDisabledUntil:v6];
+  mEMORY[0x29EDBFAA0] = [MEMORY[0x29EDBFAA0] sharedPreferences];
+  [mEMORY[0x29EDBFAA0] setSpokenNotificationTemporarilyDisabledUntil:v6];
 
   contentModuleContext = self->_contentModuleContext;
   v9 = MEMORY[0x29EDC0CF0];
@@ -251,29 +251,29 @@ LABEL_10:
   v13 = *MEMORY[0x29EDCA608];
 }
 
-- (BOOL)_isEligibleForAnnounceNotificationsWithVendorID:(unsigned int)a3 productID:(unsigned int)a4
+- (BOOL)_isEligibleForAnnounceNotificationsWithVendorID:(unsigned int)d productID:(unsigned int)iD
 {
-  if (a3 != 76)
+  if (d != 76)
   {
     return 0;
   }
 
-  v4 = (a4 != 8209) & ((a4 - 8194 > 0xE) | (0x3F64u >> (a4 - 2)));
-  if (a4 == 8230)
+  v4 = (iD != 8209) & ((iD - 8194 > 0xE) | (0x3F64u >> (iD - 2)));
+  if (iD == 8230)
   {
     LOBYTE(v4) = 0;
   }
 
-  return (a4 - 8194 < 0x2E) & (0x207C7BB7FF9BuLL >> (a4 - 2)) & v4;
+  return (iD - 8194 < 0x2E) & (0x207C7BB7FF9BuLL >> (iD - 2)) & v4;
 }
 
 - (BOOL)isDeviceInEligibleAnnounceNotificationsConfiguration
 {
   v23 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDBFE18] sharedInstance];
-  v4 = [v3 available];
+  mEMORY[0x29EDBFE18] = [MEMORY[0x29EDBFE18] sharedInstance];
+  available = [mEMORY[0x29EDBFE18] available];
 
-  if (!v4)
+  if (!available)
   {
     v12 = *MEMORY[0x29EDBFA98];
     if (os_log_type_enabled(*MEMORY[0x29EDBFA98], OS_LOG_TYPE_DEFAULT))
@@ -290,10 +290,10 @@ LABEL_10:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [MEMORY[0x29EDBFE18] sharedInstance];
-  v6 = [v5 connectedDevices];
+  mEMORY[0x29EDBFE18]2 = [MEMORY[0x29EDBFE18] sharedInstance];
+  connectedDevices = [mEMORY[0x29EDBFE18]2 connectedDevices];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  v7 = [connectedDevices countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (!v7)
   {
 
@@ -309,13 +309,13 @@ LABEL_10:
     {
       if (*v17 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(connectedDevices);
       }
 
       v9 |= -[SiriUISpokenNotificationsModule _isEligibleForAnnounceNotificationsWithVendorID:productID:](self, "_isEligibleForAnnounceNotificationsWithVendorID:productID:", [*(*(&v16 + 1) + 8 * i) vendorId], objc_msgSend(*(*(&v16 + 1) + 8 * i), "productId"));
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
+    v8 = [connectedDevices countByEnumeratingWithState:&v16 objects:v22 count:16];
   }
 
   while (v8);
@@ -345,28 +345,28 @@ LABEL_19:
 
 - (void)_refreshState
 {
-  v3 = [MEMORY[0x29EDBFAA0] sharedPreferences];
+  mEMORY[0x29EDBFAA0] = [MEMORY[0x29EDBFAA0] sharedPreferences];
   v4[0] = MEMORY[0x29EDCA5F8];
   v4[1] = 3221225472;
   v4[2] = sub_29C9EEF38;
   v4[3] = &unk_29F33EBD0;
   v4[4] = self;
-  [v3 getSpokenNotificationTemporarilyDisabledStatusWithCompletion:v4];
+  [mEMORY[0x29EDBFAA0] getSpokenNotificationTemporarilyDisabledStatusWithCompletion:v4];
 }
 
 - (void)_fetchAnnounceSettingsAndRefreshState
 {
   v22 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDBFAA0] sharedPreferences];
-  v4 = [v3 announceNotificationsOnHearingAidsSupported];
+  mEMORY[0x29EDBFAA0] = [MEMORY[0x29EDBFAA0] sharedPreferences];
+  announceNotificationsOnHearingAidsSupported = [mEMORY[0x29EDBFAA0] announceNotificationsOnHearingAidsSupported];
 
-  v5 = [MEMORY[0x29EDBFAA0] sharedPreferences];
-  v6 = [v5 announceNotificationsOnHearingAidsEnabled];
+  mEMORY[0x29EDBFAA0]2 = [MEMORY[0x29EDBFAA0] sharedPreferences];
+  announceNotificationsOnHearingAidsEnabled = [mEMORY[0x29EDBFAA0]2 announceNotificationsOnHearingAidsEnabled];
 
   self->_headphonesAnnounceEnabled = [(BBSettingsGateway *)self->_settingsGateway effectiveGlobalAnnounceHeadphonesSetting]!= 0;
-  self->_hearingAidsAnnounceEnabled = v4 & v6;
-  v7 = [MEMORY[0x29EDBFAA0] sharedPreferences];
-  self->_builtInSpeakerAnnounceEnabled = [v7 announceNotificationsOnBuiltInSpeakerEnabled];
+  self->_hearingAidsAnnounceEnabled = announceNotificationsOnHearingAidsSupported & announceNotificationsOnHearingAidsEnabled;
+  mEMORY[0x29EDBFAA0]3 = [MEMORY[0x29EDBFAA0] sharedPreferences];
+  self->_builtInSpeakerAnnounceEnabled = [mEMORY[0x29EDBFAA0]3 announceNotificationsOnBuiltInSpeakerEnabled];
 
   v8 = *MEMORY[0x29EDBFA98];
   if (os_log_type_enabled(*MEMORY[0x29EDBFA98], OS_LOG_TYPE_DEFAULT))
@@ -378,9 +378,9 @@ LABEL_19:
     v14 = 1024;
     v15 = headphonesAnnounceEnabled;
     v16 = 1024;
-    v17 = v4;
+    v17 = announceNotificationsOnHearingAidsSupported;
     v18 = 1024;
-    v19 = v6 & 1;
+    v19 = announceNotificationsOnHearingAidsEnabled & 1;
     v20 = 1024;
     v21 = builtInSpeakerAnnounceEnabled;
     _os_log_impl(&dword_29C9ED000, v8, OS_LOG_TYPE_DEFAULT, "%s fetched announce settings: headphones:%d, hearing aids supported: %d, hearing aids enabled: %d, builtin speaker: %d", &v12, 0x24u);
@@ -390,32 +390,32 @@ LABEL_19:
   v11 = *MEMORY[0x29EDCA608];
 }
 
-- (void)_refreshStateWithSelected:(BOOL)a3 expanded:(BOOL)a4
+- (void)_refreshStateWithSelected:(BOOL)selected expanded:(BOOL)expanded
 {
   v4[0] = MEMORY[0x29EDCA5F8];
   v4[1] = 3221225472;
   v4[2] = sub_29C9EF288;
   v4[3] = &unk_29F33EBF8;
-  v5 = a4;
+  expandedCopy = expanded;
   v4[4] = self;
-  v6 = a3;
+  selectedCopy = selected;
   [MEMORY[0x29EDC7DA0] performWithoutAnimation:v4];
 }
 
-- (void)buttonTapped:(id)a3 forEvent:(id)a4
+- (void)buttonTapped:(id)tapped forEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  tappedCopy = tapped;
+  eventCopy = event;
   if ([(SiriUISpokenNotificationsModule *)self isDeviceInEligibleAnnounceNotificationsConfiguration])
   {
     objc_initWeak(&location, self);
-    v8 = [MEMORY[0x29EDBFAA0] sharedPreferences];
+    mEMORY[0x29EDBFAA0] = [MEMORY[0x29EDBFAA0] sharedPreferences];
     v14[0] = MEMORY[0x29EDCA5F8];
     v14[1] = 3221225472;
     v14[2] = sub_29C9EF4B0;
     v14[3] = &unk_29F33EC20;
     objc_copyWeak(&v15, &location);
-    [v8 getSpokenNotificationTemporarilyDisabledStatusWithCompletion:v14];
+    [mEMORY[0x29EDBFAA0] getSpokenNotificationTemporarilyDisabledStatusWithCompletion:v14];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -432,24 +432,24 @@ LABEL_19:
   }
 }
 
-- (void)didTransitionToExpandedContentMode:(BOOL)a3
+- (void)didTransitionToExpandedContentMode:(BOOL)mode
 {
   v5.receiver = self;
   v5.super_class = SiriUISpokenNotificationsModule;
   [(CCUIMenuModuleViewController *)&v5 didTransitionToExpandedContentMode:?];
-  if (!a3)
+  if (!mode)
   {
     [(SiriUISpokenNotificationsModule *)self _refreshState];
   }
 }
 
-- (void)setContentModuleContext:(id)a3
+- (void)setContentModuleContext:(id)context
 {
-  objc_storeStrong(&self->_contentModuleContext, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_contentModuleContext, context);
+  contextCopy = context;
   v6.receiver = self;
   v6.super_class = SiriUISpokenNotificationsModule;
-  [(CCUIMenuModuleViewController *)&v6 setContentModuleContext:v5];
+  [(CCUIMenuModuleViewController *)&v6 setContentModuleContext:contextCopy];
 }
 
 - (void)viewDidLoad

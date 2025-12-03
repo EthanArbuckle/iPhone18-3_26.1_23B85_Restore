@@ -1,26 +1,26 @@
 @interface INSendMessageIntentAccessibility
-- (BOOL)_axIsRecipientSelectedInClarity:(id)a3;
-- (void)setRecipients:(id)a3;
+- (BOOL)_axIsRecipientSelectedInClarity:(id)clarity;
+- (void)setRecipients:(id)recipients;
 @end
 
 @implementation INSendMessageIntentAccessibility
 
-- (void)setRecipients:(id)a3
+- (void)setRecipients:(id)recipients
 {
   v34 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v20 = [v4 mutableCopy];
+  recipientsCopy = recipients;
+  v20 = [recipientsCopy mutableCopy];
   v5 = objc_opt_new();
-  v6 = [v5 isClarityBoardEnabled];
+  isClarityBoardEnabled = [v5 isClarityBoardEnabled];
 
-  if (v6)
+  if (isClarityBoardEnabled)
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v19 = v4;
-    obj = v4;
+    v19 = recipientsCopy;
+    obj = recipientsCopy;
     v7 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v7)
     {
@@ -36,14 +36,14 @@
           }
 
           v10 = *(*(&v28 + 1) + 8 * i);
-          v11 = [v10 siriMatches];
-          if ([v11 count])
+          siriMatches = [v10 siriMatches];
+          if ([siriMatches count])
           {
             v26 = 0u;
             v27 = 0u;
             v24 = 0u;
             v25 = 0u;
-            v12 = v11;
+            v12 = siriMatches;
             v13 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
             if (v13)
             {
@@ -58,8 +58,8 @@
                     objc_enumerationMutation(v12);
                   }
 
-                  v17 = [*(*(&v24 + 1) + 8 * j) contactIdentifier];
-                  if ([v17 length] && -[INSendMessageIntentAccessibility _axIsRecipientSelectedInClarity:](self, "_axIsRecipientSelectedInClarity:", v17))
+                  contactIdentifier = [*(*(&v24 + 1) + 8 * j) contactIdentifier];
+                  if ([contactIdentifier length] && -[INSendMessageIntentAccessibility _axIsRecipientSelectedInClarity:](self, "_axIsRecipientSelectedInClarity:", contactIdentifier))
                   {
 
                     goto LABEL_19;
@@ -88,7 +88,7 @@ LABEL_19:
       while (v8);
     }
 
-    v4 = v19;
+    recipientsCopy = v19;
   }
 
   v23.receiver = self;
@@ -98,18 +98,18 @@ LABEL_19:
   v18 = *MEMORY[0x29EDCA608];
 }
 
-- (BOOL)_axIsRecipientSelectedInClarity:(id)a3
+- (BOOL)_axIsRecipientSelectedInClarity:(id)clarity
 {
   v20 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v4 = [MEMORY[0x29EDB8BB8] sharedInstance];
-  v5 = [v4 entries];
+  clarityCopy = clarity;
+  mEMORY[0x29EDB8BB8] = [MEMORY[0x29EDB8BB8] sharedInstance];
+  entries = [mEMORY[0x29EDB8BB8] entries];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v5;
+  v6 = entries;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -123,12 +123,12 @@ LABEL_19:
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) contactProperty];
-        v11 = [v10 contact];
-        v12 = [v11 identifier];
+        contactProperty = [*(*(&v15 + 1) + 8 * i) contactProperty];
+        contact = [contactProperty contact];
+        identifier = [contact identifier];
 
-        LOBYTE(v10) = [v12 isEqualToString:v3];
-        if (v10)
+        LOBYTE(contactProperty) = [identifier isEqualToString:clarityCopy];
+        if (contactProperty)
         {
           LOBYTE(v7) = 1;
           goto LABEL_11;

@@ -1,10 +1,10 @@
 @interface KVField
-+ (id)fieldWithBuffer:(id)a3 root:(const void *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToField:(id)a3;
++ (id)fieldWithBuffer:(id)buffer root:(const void *)root;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToField:(id)field;
 - (KVField)init;
-- (KVField)initWithBuffer:(id)a3 root:(const Field *)a4;
-- (id)JSONWithIndent:(unsigned __int8)a3;
+- (KVField)initWithBuffer:(id)buffer root:(const Field *)root;
+- (id)JSONWithIndent:(unsigned __int8)indent;
 - (id)label;
 - (id)value;
 - (int64_t)fieldType;
@@ -28,20 +28,20 @@
   return v31 ^ v19 ^ v43;
 }
 
-- (BOOL)isEqualToField:(id)a3
+- (BOOL)isEqualToField:(id)field
 {
-  v8 = a3;
+  fieldCopy = field;
   v14 = objc_msgSend_fieldType(self, v9, v10, v11, v12, v13);
-  if (v14 == objc_msgSend_fieldType(v8, v15, v16, v17, v18, v19))
+  if (v14 == objc_msgSend_fieldType(fieldCopy, v15, v16, v17, v18, v19))
   {
     v25 = objc_msgSend_localeType(self, v20, v21, v22, v23, v24);
-    if (v25 == objc_msgSend_localeType(v8, v26, v27, v28, v29, v30))
+    if (v25 == objc_msgSend_localeType(fieldCopy, v26, v27, v28, v29, v30))
     {
       v41 = objc_msgSend_value(self, v31, v32, v33, v34, v35);
-      if (v41 || (objc_msgSend_value(v8, v36, v37, v38, v39, v40), (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      if (v41 || (objc_msgSend_value(fieldCopy, v36, v37, v38, v39, v40), (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v4 = objc_msgSend_value(self, v36, v37, v38, v39, v40);
-        v5 = objc_msgSend_value(v8, v42, v43, v44, v45, v46);
+        v5 = objc_msgSend_value(fieldCopy, v42, v43, v44, v45, v46);
         if (!objc_msgSend_isEqual_(v4, v47, v5, v48, v49, v50))
         {
           isEqual = 0;
@@ -58,10 +58,10 @@
       }
 
       v57 = objc_msgSend_label(self, v36, v37, v38, v39, v40);
-      if (v57 || (objc_msgSend_label(v8, v52, v53, v54, v55, v56), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+      if (v57 || (objc_msgSend_label(fieldCopy, v52, v53, v54, v55, v56), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v58 = objc_msgSend_label(self, v52, v53, v54, v55, v56);
-        v64 = objc_msgSend_label(v8, v59, v60, v61, v62, v63);
+        v64 = objc_msgSend_label(fieldCopy, v59, v60, v61, v62, v63);
         isEqual = objc_msgSend_isEqual_(v58, v65, v64, v66, v67, v68);
 
         if (v57)
@@ -116,16 +116,16 @@ LABEL_18:
   return isEqual;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isEqualToField = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     isEqualToField = objc_msgSend_isEqualToField_(self, v6, v5, v7, v8, v9);
   }
@@ -138,10 +138,10 @@ LABEL_18:
   return isEqualToField;
 }
 
-- (id)JSONWithIndent:(unsigned __int8)a3
+- (id)JSONWithIndent:(unsigned __int8)indent
 {
-  v5 = sub_2559C2C40(a3);
-  v6 = sub_2559C2C40(a3 + 1);
+  v5 = sub_2559C2C40(indent);
+  v6 = sub_2559C2C40(indent + 1);
   v7 = objc_alloc_init(MEMORY[0x277CCAB68]);
   objc_msgSend_appendFormat_(v7, v8, @"%@{\n", v9, v10, v11, v5);
   v17 = objc_msgSend_fieldType(self, v12, v13, v14, v15, v16);
@@ -259,17 +259,17 @@ LABEL_18:
   }
 }
 
-- (KVField)initWithBuffer:(id)a3 root:(const Field *)a4
+- (KVField)initWithBuffer:(id)buffer root:(const Field *)root
 {
-  v7 = a3;
+  bufferCopy = buffer;
   v11.receiver = self;
   v11.super_class = KVField;
   v8 = [(KVField *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_buffer, a3);
-    v9->_field = a4;
+    objc_storeStrong(&v8->_buffer, buffer);
+    v9->_field = root;
   }
 
   return v9;
@@ -281,11 +281,11 @@ LABEL_18:
   objc_exception_throw(v3);
 }
 
-+ (id)fieldWithBuffer:(id)a3 root:(const void *)a4
++ (id)fieldWithBuffer:(id)buffer root:(const void *)root
 {
-  v5 = a3;
+  bufferCopy = buffer;
   v6 = objc_alloc(objc_opt_class());
-  v10 = objc_msgSend_initWithBuffer_root_(v6, v7, v5, a4, v8, v9);
+  v10 = objc_msgSend_initWithBuffer_root_(v6, v7, bufferCopy, root, v8, v9);
 
   return v10;
 }

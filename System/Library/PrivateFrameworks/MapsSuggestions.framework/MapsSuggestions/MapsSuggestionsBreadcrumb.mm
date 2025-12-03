@@ -1,32 +1,32 @@
 @interface MapsSuggestionsBreadcrumb
-+ (id)breadcrumbWithData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToBreadcrumb:(id)a3;
-- (MapsSuggestionsBreadcrumb)initWithCoder:(id)a3;
-- (MapsSuggestionsBreadcrumb)initWithLocation:(id)a3 transportMode:(int)a4;
++ (id)breadcrumbWithData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToBreadcrumb:(id)breadcrumb;
+- (MapsSuggestionsBreadcrumb)initWithCoder:(id)coder;
+- (MapsSuggestionsBreadcrumb)initWithLocation:(id)location transportMode:(int)mode;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)data;
 - (id)objectForJSON;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MapsSuggestionsBreadcrumb
 
-- (MapsSuggestionsBreadcrumb)initWithLocation:(id)a3 transportMode:(int)a4
+- (MapsSuggestionsBreadcrumb)initWithLocation:(id)location transportMode:(int)mode
 {
-  v6 = a3;
+  locationCopy = location;
   v11.receiver = self;
   v11.super_class = MapsSuggestionsBreadcrumb;
   v7 = [(MapsSuggestionsBreadcrumb *)&v11 self];
 
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [locationCopy copy];
     location = v7->_location;
     v7->_location = v8;
 
-    v7->_likelyTransportMode = a4;
+    v7->_likelyTransportMode = mode;
   }
 
   return v7;
@@ -61,13 +61,13 @@
   return v3;
 }
 
-+ (id)breadcrumbWithData:(id)a3
++ (id)breadcrumbWithData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v8 = 0;
-    v4 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:&v8];
+    v4 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v8];
     v5 = v8;
     if (v5 || !v4)
     {
@@ -103,22 +103,22 @@
   return v4;
 }
 
-- (BOOL)isEqualToBreadcrumb:(id)a3
+- (BOOL)isEqualToBreadcrumb:(id)breadcrumb
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  breadcrumbCopy = breadcrumb;
+  v5 = breadcrumbCopy;
+  if (!breadcrumbCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == breadcrumbCopy)
   {
     v6 = 1;
     goto LABEL_7;
   }
 
-  if (self->_likelyTransportMode == v4->_likelyTransportMode)
+  if (self->_likelyTransportMode == breadcrumbCopy->_likelyTransportMode)
   {
     v6 = MapsSuggestionsAlmostSameLocation();
   }
@@ -134,10 +134,10 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -147,7 +147,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(MapsSuggestionsBreadcrumb *)self isEqualToBreadcrumb:v4];
+      v5 = [(MapsSuggestionsBreadcrumb *)self isEqualToBreadcrumb:equalCopy];
     }
 
     else
@@ -165,40 +165,40 @@ LABEL_7:
   v10.receiver = self;
   v10.super_class = MapsSuggestionsBreadcrumb;
   v4 = [(MapsSuggestionsBreadcrumb *)&v10 description];
-  v5 = [(MapsSuggestionsBreadcrumb *)self location];
-  v6 = [(MapsSuggestionsBreadcrumb *)self likelyTransportMode];
-  if (v6 >= 7)
+  location = [(MapsSuggestionsBreadcrumb *)self location];
+  likelyTransportMode = [(MapsSuggestionsBreadcrumb *)self likelyTransportMode];
+  if (likelyTransportMode >= 7)
   {
-    v7 = [NSString stringWithFormat:@"(unknown: %i)", v6];
+    v7 = [NSString stringWithFormat:@"(unknown: %i)", likelyTransportMode];
   }
 
   else
   {
-    v7 = off_100075740[v6];
+    v7 = off_100075740[likelyTransportMode];
   }
 
-  v8 = [v3 initWithFormat:@"%@ %@ using %@", v4, v5, v7];
+  v8 = [v3 initWithFormat:@"%@ %@ using %@", v4, location, v7];
 
   return v8;
 }
 
-- (MapsSuggestionsBreadcrumb)initWithCoder:(id)a3
+- (MapsSuggestionsBreadcrumb)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsBreadcrumbLocationKey"];
-  v6 = -[MapsSuggestionsBreadcrumb initWithLocation:transportMode:](self, "initWithLocation:transportMode:", v5, [v4 decodeIntegerForKey:@"MapsSuggestionsBreadcrumbTransportModeKey"]);
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsBreadcrumbLocationKey"];
+  v6 = -[MapsSuggestionsBreadcrumb initWithLocation:transportMode:](self, "initWithLocation:transportMode:", v5, [coderCopy decodeIntegerForKey:@"MapsSuggestionsBreadcrumbTransportModeKey"]);
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:self->_likelyTransportMode forKey:@"MapsSuggestionsBreadcrumbTransportModeKey"];
-  [v4 encodeObject:self->_location forKey:@"MapsSuggestionsBreadcrumbLocationKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_likelyTransportMode forKey:@"MapsSuggestionsBreadcrumbTransportModeKey"];
+  [coderCopy encodeObject:self->_location forKey:@"MapsSuggestionsBreadcrumbLocationKey"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MapsSuggestionsBreadcrumb alloc];
   location = self->_location;

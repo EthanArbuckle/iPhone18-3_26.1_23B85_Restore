@@ -1,31 +1,31 @@
 @interface MobileInstallationHelperServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation MobileInstallationHelperServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [v4 valueForEntitlement:@"com.apple.private.MobileInstallationHelperService.allowed"];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.private.MobileInstallationHelperService.allowed"];
 
   if (v5)
   {
     v6 = MobileInstallationHelperServiceProtocolInterface();
-    [v4 setExportedInterface:v6];
+    [connectionCopy setExportedInterface:v6];
 
     v7 = objc_opt_new();
-    [v4 setExportedObject:v7];
-    [v7 setXpcConnection:v4];
-    [v4 setInterruptionHandler:&stru_100024C18];
-    [v4 setInvalidationHandler:&stru_100024C38];
-    [v4 resume];
+    [connectionCopy setExportedObject:v7];
+    [v7 setXpcConnection:connectionCopy];
+    [connectionCopy setInterruptionHandler:&stru_100024C18];
+    [connectionCopy setInvalidationHandler:&stru_100024C38];
+    [connectionCopy resume];
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  [v4 processIdentifier];
+  [connectionCopy processIdentifier];
   if (!gLogHandle || *(gLogHandle + 44) >= 3)
   {
     v7 = MICopyProcessNameForPid();

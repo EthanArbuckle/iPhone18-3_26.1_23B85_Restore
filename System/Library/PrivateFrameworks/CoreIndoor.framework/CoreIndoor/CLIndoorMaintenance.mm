@@ -1,13 +1,13 @@
 @interface CLIndoorMaintenance
-- (void)doSynchronousXPC:(id)a3 description:(const char *)a4 waitForever:(BOOL)a5;
+- (void)doSynchronousXPC:(id)c description:(const char *)description waitForever:(BOOL)forever;
 - (void)eraseEverything;
-- (void)numFloors:(id)a3;
-- (void)onQueueEraseEverything:(id)a3;
-- (void)onQueueNumFloors:(id)a3;
+- (void)numFloors:(id)floors;
+- (void)onQueueEraseEverything:(id)everything;
+- (void)onQueueNumFloors:(id)floors;
 - (void)onQueueShutdown;
-- (void)prefetch:(id)a3;
-- (void)prefetchSynchronous:(id)a3;
-- (void)retrieveLocationRelevancyDurationWithCompletionHandler:(id)a3;
+- (void)prefetch:(id)prefetch;
+- (void)prefetchSynchronous:(id)synchronous;
+- (void)retrieveLocationRelevancyDurationWithCompletionHandler:(id)handler;
 - (void)shutdown;
 - (void)withinQueueReinitializeRemoteState;
 @end
@@ -20,25 +20,25 @@
   objc_exception_throw(v5);
 }
 
-- (void)retrieveLocationRelevancyDurationWithCompletionHandler:(id)a3
+- (void)retrieveLocationRelevancyDurationWithCompletionHandler:(id)handler
 {
   frameworkQueue = self->super._frameworkQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3321888768;
   v8[2] = sub_245A716A4;
   v8[3] = &unk_28589FA68;
-  v5 = self;
-  v6 = MEMORY[0x245D78D90](a3);
-  v9 = v5;
-  v7 = v5;
+  selfCopy = self;
+  v6 = MEMORY[0x245D78D90](handler);
+  v9 = selfCopy;
+  v7 = selfCopy;
   v10 = MEMORY[0x245D78D90](v6);
   dispatch_async(frameworkQueue, v8);
 }
 
-- (void)prefetch:(id)a3
+- (void)prefetch:(id)prefetch
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  prefetchCopy = prefetch;
   if (qword_28144B270 != -1)
   {
     sub_245A8E58C();
@@ -48,7 +48,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v23 = objc_msgSend_count(v4, v6, v7, v8, v9);
+    v23 = objc_msgSend_count(prefetchCopy, v6, v7, v8, v9);
     _os_log_impl(&dword_245A2E000, v5, OS_LOG_TYPE_DEBUG, "Sending request to prefetch %{public}zu venues", buf, 0xCu);
   }
 
@@ -56,9 +56,9 @@
   v19[1] = 3321888768;
   v19[2] = sub_245A719C0;
   v19[3] = &unk_28589FA98;
-  v10 = self;
-  v11 = v4;
-  v12 = v10;
+  selfCopy = self;
+  v11 = prefetchCopy;
+  v12 = selfCopy;
   v20 = v12;
   v21 = v11;
   objc_msgSend_doSynchronousXPC_description_waitForever_(v12, v13, v14, v15, v16, v19, "prefetch:", 0);
@@ -78,10 +78,10 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prefetchSynchronous:(id)a3
+- (void)prefetchSynchronous:(id)synchronous
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  synchronousCopy = synchronous;
   if (qword_28144B270 != -1)
   {
     sub_245A8E58C();
@@ -91,7 +91,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v23 = objc_msgSend_count(v4, v6, v7, v8, v9);
+    v23 = objc_msgSend_count(synchronousCopy, v6, v7, v8, v9);
     _os_log_impl(&dword_245A2E000, v5, OS_LOG_TYPE_DEBUG, "Sending request to prefetch %zu venues synchronously", buf, 0xCu);
   }
 
@@ -99,9 +99,9 @@
   v19[1] = 3321888768;
   v19[2] = sub_245A71D48;
   v19[3] = &unk_28589FAC8;
-  v10 = self;
-  v11 = v4;
-  v12 = v10;
+  selfCopy = self;
+  v11 = synchronousCopy;
+  v12 = selfCopy;
   v20 = v12;
   v21 = v11;
   objc_msgSend_doSynchronousXPC_description_waitForever_(v12, v13, v14, v15, v16, v19, "prefetch:", 1);
@@ -121,22 +121,22 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)doSynchronousXPC:(id)a3 description:(const char *)a4 waitForever:(BOOL)a5
+- (void)doSynchronousXPC:(id)c description:(const char *)description waitForever:(BOOL)forever
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  cCopy = c;
   v9 = dispatch_semaphore_create(0);
   frameworkQueue = self->super._frameworkQueue;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_245A71F84;
   v16[3] = &unk_278E8AA20;
-  v11 = v8;
+  v11 = cCopy;
   v18 = v11;
   v12 = v9;
   v17 = v12;
   dispatch_async(frameworkQueue, v16);
-  if (a5)
+  if (forever)
   {
     if (!dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL))
     {
@@ -162,7 +162,7 @@
   if (os_log_type_enabled(qword_28144B278, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315138;
-    v20 = a4;
+    descriptionCopy = description;
     _os_log_impl(&dword_245A2E000, v14, OS_LOG_TYPE_ERROR, "Timeout trying to do XPC %{publci}s", buf, 0xCu);
   }
 
@@ -198,9 +198,9 @@ LABEL_4:
   v10[1] = 3321888768;
   v10[2] = sub_245A72204;
   v10[3] = &unk_28589FB28;
-  v4 = self;
-  v11 = v4;
-  objc_msgSend_doSynchronousXPC_description_waitForever_(v4, v5, v6, v7, v8, v10, "eraseEverything", 0);
+  selfCopy = self;
+  v11 = selfCopy;
+  objc_msgSend_doSynchronousXPC_description_waitForever_(selfCopy, v5, v6, v7, v8, v10, "eraseEverything", 0);
 
   if (qword_28144B270 != -1)
   {
@@ -225,9 +225,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)onQueueEraseEverything:(id)a3
+- (void)onQueueEraseEverything:(id)everything
 {
-  v4 = a3;
+  everythingCopy = everything;
   if (qword_28144B270 != -1)
   {
     sub_245A8E58C();
@@ -252,7 +252,7 @@ LABEL_4:
   connection = self->super._connection;
   v11 = objc_msgSend__defaultErrHandlerForCaller_(self, v6, v7, v8, v9, @"eraseAllData");
   v16 = objc_msgSend_remoteObjectProxyWithErrorHandler_(connection, v12, v13, v14, v15, v11);
-  objc_msgSend_eraseAllData_(v16, v17, v18, v19, v20, v4);
+  objc_msgSend_eraseAllData_(v16, v17, v18, v19, v20, everythingCopy);
 }
 
 - (void)shutdown
@@ -283,8 +283,8 @@ LABEL_4:
   block[1] = 3321888768;
   block[2] = sub_245A72484;
   block[3] = &unk_28589FB58;
-  v7 = self;
-  v5 = v7;
+  selfCopy = self;
+  v5 = selfCopy;
   dispatch_sync(frameworkQueue, block);
 }
 
@@ -317,9 +317,9 @@ LABEL_4:
   objc_msgSend_shutdown(v14, v15, v16, v17, v18);
 }
 
-- (void)numFloors:(id)a3
+- (void)numFloors:(id)floors
 {
-  v4 = a3;
+  floorsCopy = floors;
   if (qword_28144B270 != -1)
   {
     sub_245A8E58C();
@@ -345,17 +345,17 @@ LABEL_4:
   v13[1] = 3321888768;
   v13[2] = sub_245A72740;
   v13[3] = &unk_28589FB88;
-  v6 = self;
-  v7 = MEMORY[0x245D78D90](v4);
-  v8 = v6;
+  selfCopy = self;
+  v7 = MEMORY[0x245D78D90](floorsCopy);
+  v8 = selfCopy;
   v14 = v8;
   v15 = MEMORY[0x245D78D90](v7);
   objc_msgSend_doSynchronousXPC_description_waitForever_(v8, v9, v10, v11, v12, v13, "numFloors", 0);
 }
 
-- (void)onQueueNumFloors:(id)a3
+- (void)onQueueNumFloors:(id)floors
 {
-  v4 = a3;
+  floorsCopy = floors;
   if (qword_28144B270 != -1)
   {
     sub_245A8E58C();
@@ -380,7 +380,7 @@ LABEL_4:
   connection = self->super._connection;
   v11 = objc_msgSend__defaultErrHandlerForCaller_(self, v6, v7, v8, v9, @"numFloors");
   v16 = objc_msgSend_remoteObjectProxyWithErrorHandler_(connection, v12, v13, v14, v15, v11);
-  objc_msgSend_numFloors_(v16, v17, v18, v19, v20, v4);
+  objc_msgSend_numFloors_(v16, v17, v18, v19, v20, floorsCopy);
 }
 
 @end

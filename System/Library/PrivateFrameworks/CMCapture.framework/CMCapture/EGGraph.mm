@@ -1,30 +1,30 @@
 @interface EGGraph
-- (BOOL)connectExternalSubgraphInput:(id)a3 toInternalInput:(id)a4;
-- (BOOL)connectExternalSubgraphOutput:(id)a3 toInternalOutput:(id)a4;
-- (BOOL)connectOutput:(id)a3 toInput:(id)a4;
-- (EGGraph)initWithName:(id)a3;
-- (id)subgraphInputInstalledFromInternalInput:(id)a3;
-- (id)subgraphInputInstalledFromInternalInput:(id)a3 withName:(id)a4;
-- (id)subgraphInputInstalledWithName:(id)a3;
-- (id)subgraphOutputInstalledFromInternalOutput:(id)a3;
-- (id)subgraphOutputInstalledFromInternalOutput:(id)a3 withName:(id)a4;
-- (id)subgraphOutputInstalledWithName:(id)a3;
+- (BOOL)connectExternalSubgraphInput:(id)input toInternalInput:(id)internalInput;
+- (BOOL)connectExternalSubgraphOutput:(id)output toInternalOutput:(id)internalOutput;
+- (BOOL)connectOutput:(id)output toInput:(id)input;
+- (EGGraph)initWithName:(id)name;
+- (id)subgraphInputInstalledFromInternalInput:(id)input;
+- (id)subgraphInputInstalledFromInternalInput:(id)input withName:(id)name;
+- (id)subgraphInputInstalledWithName:(id)name;
+- (id)subgraphOutputInstalledFromInternalOutput:(id)output;
+- (id)subgraphOutputInstalledFromInternalOutput:(id)output withName:(id)name;
+- (id)subgraphOutputInstalledWithName:(id)name;
 - (void)dealloc;
-- (void)installNode:(id)a3;
-- (void)installSubgraph:(id)a3;
-- (void)setParentGraph:(id)a3;
+- (void)installNode:(id)node;
+- (void)installSubgraph:(id)subgraph;
+- (void)setParentGraph:(id)graph;
 @end
 
 @implementation EGGraph
 
-- (EGGraph)initWithName:(id)a3
+- (EGGraph)initWithName:(id)name
 {
   v6.receiver = self;
   v6.super_class = EGGraph;
   v4 = [(EGGraph *)&v6 init];
   if (v4)
   {
-    v4->_name = [a3 copy];
+    v4->_name = [name copy];
     v4->_nodes = objc_opt_new();
     v4->_subgraphs = objc_opt_new();
     v4->_subgraphOutputs = objc_opt_new();
@@ -42,62 +42,62 @@
   [(EGGraph *)&v3 dealloc];
 }
 
-- (void)installNode:(id)a3
+- (void)installNode:(id)node
 {
-  if (!a3)
+  if (!node)
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to install a nil node! Forbidden", self, v6];
+    node = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to install a nil node! Forbidden", self, v6];
     goto LABEL_8;
   }
 
-  if (-[NSMutableDictionary objectForKeyedSubscript:](self->_nodes, "objectForKeyedSubscript:", [a3 name]))
+  if (-[NSMutableDictionary objectForKeyedSubscript:](self->_nodes, "objectForKeyedSubscript:", [node name]))
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to install node %@ with a duplicate name! Forbidden", self, a3];
+    node = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to install node %@ with a duplicate name! Forbidden", self, node];
 LABEL_8:
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v5 userInfo:0]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:node userInfo:0]);
   }
 
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_nodes, "setObject:forKeyedSubscript:", a3, [a3 name]);
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_nodes, "setObject:forKeyedSubscript:", node, [node name]);
 
-  [a3 setParentGraph:self];
+  [node setParentGraph:self];
 }
 
-- (void)installSubgraph:(id)a3
+- (void)installSubgraph:(id)subgraph
 {
-  if (!a3)
+  if (!subgraph)
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to install a nil subgraph! Forbidden", self, v6];
+    subgraph = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to install a nil subgraph! Forbidden", self, v6];
     goto LABEL_8;
   }
 
-  if (-[NSMutableDictionary objectForKeyedSubscript:](self->_subgraphs, "objectForKeyedSubscript:", [a3 name]))
+  if (-[NSMutableDictionary objectForKeyedSubscript:](self->_subgraphs, "objectForKeyedSubscript:", [subgraph name]))
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to install subgraph %@ with a duplicate name! Forbidden", self, a3];
+    subgraph = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to install subgraph %@ with a duplicate name! Forbidden", self, subgraph];
 LABEL_8:
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v5 userInfo:0]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:subgraph userInfo:0]);
   }
 
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_subgraphs, "setObject:forKeyedSubscript:", a3, [a3 name]);
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_subgraphs, "setObject:forKeyedSubscript:", subgraph, [subgraph name]);
 
-  [a3 setParentGraph:self];
+  [subgraph setParentGraph:self];
 }
 
-- (id)subgraphInputInstalledWithName:(id)a3
+- (id)subgraphInputInstalledWithName:(id)name
 {
   if (objc_loadWeak(&self->_parentGraph))
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to install a new port interface named %@ after having already been installed as a subgraph! Forbidden. Finish setting up a graph's interface and connections before installing it as a subgraph in another graph.", self, a3];
+    name = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to install a new port interface named %@ after having already been installed as a subgraph! Forbidden. Finish setting up a graph's interface and connections before installing it as a subgraph in another graph.", self, name];
     goto LABEL_10;
   }
 
-  if ([(NSMutableDictionary *)self->_subgraphInputs objectForKeyedSubscript:a3])
+  if ([(NSMutableDictionary *)self->_subgraphInputs objectForKeyedSubscript:name])
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to create an interface input with duplicate name %@! Forbidden", self, a3];
+    name = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to create an interface input with duplicate name %@! Forbidden", self, name];
 LABEL_10:
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v8 userInfo:0]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:name userInfo:0]);
   }
 
-  v5 = [[EGSubgraphInput alloc] initWithName:a3];
+  v5 = [[EGSubgraphInput alloc] initWithName:name];
   v6 = v5;
   if (v5)
   {
@@ -113,22 +113,22 @@ LABEL_10:
   return v6;
 }
 
-- (id)subgraphOutputInstalledWithName:(id)a3
+- (id)subgraphOutputInstalledWithName:(id)name
 {
   if (objc_loadWeak(&self->_parentGraph))
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to install a new port interface named %@ after having already been installed as a subgraph! Forbidden. Finish setting up a graph's interface and connections before installing it as a subgraph in another graph.", self, a3];
+    name = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to install a new port interface named %@ after having already been installed as a subgraph! Forbidden. Finish setting up a graph's interface and connections before installing it as a subgraph in another graph.", self, name];
     goto LABEL_10;
   }
 
-  if ([(NSMutableDictionary *)self->_subgraphOutputs objectForKeyedSubscript:a3])
+  if ([(NSMutableDictionary *)self->_subgraphOutputs objectForKeyedSubscript:name])
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to create an interface output with duplicate name %@! Forbidden", self, a3];
+    name = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to create an interface output with duplicate name %@! Forbidden", self, name];
 LABEL_10:
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v8 userInfo:0]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:name userInfo:0]);
   }
 
-  v5 = [(EGSubgraphPort *)[EGSubgraphOutput alloc] initWithName:a3];
+  v5 = [(EGSubgraphPort *)[EGSubgraphOutput alloc] initWithName:name];
   v6 = v5;
   if (v5)
   {
@@ -144,41 +144,41 @@ LABEL_10:
   return v6;
 }
 
-- (id)subgraphInputInstalledFromInternalInput:(id)a3
+- (id)subgraphInputInstalledFromInternalInput:(id)input
 {
-  v5 = [a3 name];
+  name = [input name];
 
-  return [(EGGraph *)self subgraphInputInstalledFromInternalInput:a3 withName:v5];
+  return [(EGGraph *)self subgraphInputInstalledFromInternalInput:input withName:name];
 }
 
-- (id)subgraphOutputInstalledFromInternalOutput:(id)a3
+- (id)subgraphOutputInstalledFromInternalOutput:(id)output
 {
-  v5 = [a3 name];
+  name = [output name];
 
-  return [(EGGraph *)self subgraphOutputInstalledFromInternalOutput:a3 withName:v5];
+  return [(EGGraph *)self subgraphOutputInstalledFromInternalOutput:output withName:name];
 }
 
-- (id)subgraphInputInstalledFromInternalInput:(id)a3 withName:(id)a4
+- (id)subgraphInputInstalledFromInternalInput:(id)input withName:(id)name
 {
   if (objc_loadWeak(&self->_parentGraph))
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to install a new port interface named %@ after having already been installed as a subgraph! Forbidden. Finish setting up a graph's interface and connections before installing it as a subgraph in another graph.", self, a4];
+    name = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to install a new port interface named %@ after having already been installed as a subgraph! Forbidden. Finish setting up a graph's interface and connections before installing it as a subgraph in another graph.", self, name];
     goto LABEL_12;
   }
 
-  if ([(NSMutableDictionary *)self->_subgraphInputs objectForKeyedSubscript:a4])
+  if ([(NSMutableDictionary *)self->_subgraphInputs objectForKeyedSubscript:name])
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to create an interface input with duplicate name %@! Forbidden", self, a4];
+    name = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to create an interface input with duplicate name %@! Forbidden", self, name];
 LABEL_12:
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v10 userInfo:0]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:name userInfo:0]);
   }
 
-  v7 = [[EGSubgraphInput alloc] initWithName:a4];
+  v7 = [[EGSubgraphInput alloc] initWithName:name];
   v8 = v7;
   if (v7)
   {
     [(EGSubgraphPort *)v7 setParentGraph:self];
-    if ([(EGGraph *)self connectExternalSubgraphInput:v8 toInternalInput:a3])
+    if ([(EGGraph *)self connectExternalSubgraphInput:v8 toInternalInput:input])
     {
       if (!self->_subgraphInput)
       {
@@ -197,27 +197,27 @@ LABEL_12:
   return v8;
 }
 
-- (id)subgraphOutputInstalledFromInternalOutput:(id)a3 withName:(id)a4
+- (id)subgraphOutputInstalledFromInternalOutput:(id)output withName:(id)name
 {
   if (objc_loadWeak(&self->_parentGraph))
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to install a new port interface named %@ after having already been installed as a subgraph! Forbidden. Finish setting up a graph's interface and connections before installing it as a subgraph in another graph.", self, a4];
+    name = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to install a new port interface named %@ after having already been installed as a subgraph! Forbidden. Finish setting up a graph's interface and connections before installing it as a subgraph in another graph.", self, name];
     goto LABEL_12;
   }
 
-  if ([(NSMutableDictionary *)self->_subgraphOutputs objectForKeyedSubscript:a4])
+  if ([(NSMutableDictionary *)self->_subgraphOutputs objectForKeyedSubscript:name])
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to create an interface output with duplicate name %@! Forbidden", self, a4];
+    name = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to create an interface output with duplicate name %@! Forbidden", self, name];
 LABEL_12:
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v10 userInfo:0]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:name userInfo:0]);
   }
 
-  v7 = [(EGSubgraphPort *)[EGSubgraphOutput alloc] initWithName:a4];
+  v7 = [(EGSubgraphPort *)[EGSubgraphOutput alloc] initWithName:name];
   v8 = v7;
   if (v7)
   {
     [(EGSubgraphPort *)v7 setParentGraph:self];
-    if ([(EGGraph *)self connectExternalSubgraphOutput:v8 toInternalOutput:a3])
+    if ([(EGGraph *)self connectExternalSubgraphOutput:v8 toInternalOutput:output])
     {
       if (!self->_subgraphOutput)
       {
@@ -236,98 +236,98 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)connectOutput:(id)a3 toInput:(id)a4
+- (BOOL)connectOutput:(id)output toInput:(id)input
 {
-  if ([objc_msgSend(a3 "portInterface")] != self)
+  if ([objc_msgSend(output "portInterface")] != self)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to connect output %@ to input: %@, but the output's port interface isn't owned by this graph", self, a3, a4];
+    input = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to connect output %@ to input: %@, but the output's port interface isn't owned by this graph", self, output, input];
     goto LABEL_8;
   }
 
-  if ([objc_msgSend(a4 "portInterface")] != self)
+  if ([objc_msgSend(input "portInterface")] != self)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to connect input %@ to output: %@, but the input's port interface isn't owned by this graph", self, a4, a3];
+    input = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to connect input %@ to output: %@, but the input's port interface isn't owned by this graph", self, input, output];
 LABEL_8:
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v10 userInfo:0]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:input userInfo:0]);
   }
 
   edges = self->_edges;
-  v8 = [[EGEdge alloc] initWithSource:a3 destination:a4];
+  v8 = [[EGEdge alloc] initWithSource:output destination:input];
   if (v8)
   {
-    [a3 registerDestination:a4];
-    [a4 registerSource:a3];
+    [output registerDestination:input];
+    [input registerSource:output];
     [(NSMutableArray *)edges addObject:v8];
 
-    [objc_msgSend(a3 "upstreamNodeOutput")];
+    [objc_msgSend(output "upstreamNodeOutput")];
   }
 
   return v8 != 0;
 }
 
-- (BOOL)connectExternalSubgraphInput:(id)a3 toInternalInput:(id)a4
+- (BOOL)connectExternalSubgraphInput:(id)input toInternalInput:(id)internalInput
 {
-  if ([a3 portInterface] != self)
+  if ([input portInterface] != self)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to connect externalInput %@ that it wasn't the parent of! Forbidden", self, a3];
+    input = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to connect externalInput %@ that it wasn't the parent of! Forbidden", self, input];
     goto LABEL_8;
   }
 
-  if ([objc_msgSend(a4 "portInterface")] != self)
+  if ([objc_msgSend(internalInput "portInterface")] != self)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to connect internalInput %@ that wasn't actually internal! Forbidden", self, a4];
+    input = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to connect internalInput %@ that wasn't actually internal! Forbidden", self, internalInput];
 LABEL_8:
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v10 userInfo:0]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:input userInfo:0]);
   }
 
   edges = self->_edges;
-  v8 = [[EGEdge alloc] initWithSource:a3 destination:a4];
+  v8 = [[EGEdge alloc] initWithSource:input destination:internalInput];
   if (v8)
   {
-    [a3 registerDestination:a4];
-    [a4 registerSource:a3];
-    [(NSMutableArray *)edges addObject:v8];
-  }
-
-  return v8 != 0;
-}
-
-- (BOOL)connectExternalSubgraphOutput:(id)a3 toInternalOutput:(id)a4
-{
-  if ([a3 portInterface] != self)
-  {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to connect externalOutput %@ that it wasn't the parent of! Forbidden", self, a3];
-    goto LABEL_8;
-  }
-
-  if ([objc_msgSend(a4 "portInterface")] != self)
-  {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to connect internalOutput %@ that wasn't actually internal! Forbidden", self, a4];
-LABEL_8:
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v10 userInfo:0]);
-  }
-
-  edges = self->_edges;
-  v8 = [[EGEdge alloc] initWithSource:a4 destination:a3];
-  if (v8)
-  {
-    [a4 registerDestination:a3];
-    [a3 registerSource:a4];
+    [input registerDestination:internalInput];
+    [internalInput registerSource:input];
     [(NSMutableArray *)edges addObject:v8];
   }
 
   return v8 != 0;
 }
 
-- (void)setParentGraph:(id)a3
+- (BOOL)connectExternalSubgraphOutput:(id)output toInternalOutput:(id)internalOutput
+{
+  if ([output portInterface] != self)
+  {
+    output = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to connect externalOutput %@ that it wasn't the parent of! Forbidden", self, output];
+    goto LABEL_8;
+  }
+
+  if ([objc_msgSend(internalOutput "portInterface")] != self)
+  {
+    output = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ tried to connect internalOutput %@ that wasn't actually internal! Forbidden", self, internalOutput];
+LABEL_8:
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:output userInfo:0]);
+  }
+
+  edges = self->_edges;
+  v8 = [[EGEdge alloc] initWithSource:internalOutput destination:output];
+  if (v8)
+  {
+    [internalOutput registerDestination:output];
+    [output registerSource:internalOutput];
+    [(NSMutableArray *)edges addObject:v8];
+  }
+
+  return v8 != 0;
+}
+
+- (void)setParentGraph:(id)graph
 {
   if (objc_loadWeak(&self->_parentGraph))
   {
-    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"%@ tried to install parent graph %@ when it was already had parent %@! Forbidden", self, a3, objc_loadWeak(&self->_parentGraph)), 0}];
+    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"%@ tried to install parent graph %@ when it was already had parent %@! Forbidden", self, graph, objc_loadWeak(&self->_parentGraph)), 0}];
     objc_exception_throw(v5);
   }
 
-  objc_storeWeak(&self->_parentGraph, a3);
+  objc_storeWeak(&self->_parentGraph, graph);
 }
 
 @end

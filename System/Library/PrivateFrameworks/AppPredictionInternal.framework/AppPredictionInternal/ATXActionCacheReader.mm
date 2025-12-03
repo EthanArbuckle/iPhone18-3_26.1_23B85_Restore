@@ -1,39 +1,39 @@
 @interface ATXActionCacheReader
 + (unordered_map<NSString)getActionKeyToPredictionItemMapFromChunk:()ATXNSStringHash;
-+ (void)_getActionKeyToPredictionItemMapFromChunk:(id)a3 map:(void *)a4 abGroup:(id *)a5 assetVersion:(int64_t *)a6;
-+ (void)_getExtraPredictionsFromChunk:(id)a3 map:(void *)a4 abGroup:(id *)a5 assetVersion:(int64_t *)a6;
-+ (void)_getIndexToPredictionItemMapWithChunk:(id)a3 withPredictionCount:(int64_t)a4 map:(void *)a5 abGroup:(id *)a6 assetVersion:(int64_t *)a7;
-- (ATXActionCacheReader)initWithChunks:(id)a3;
-- (ATXActionCacheReader)initWithData:(id)a3;
-- (ATXPredictionItem)predictionItemForAction:(SEL)a3;
++ (void)_getActionKeyToPredictionItemMapFromChunk:(id)chunk map:(void *)map abGroup:(id *)group assetVersion:(int64_t *)version;
++ (void)_getExtraPredictionsFromChunk:(id)chunk map:(void *)map abGroup:(id *)group assetVersion:(int64_t *)version;
++ (void)_getIndexToPredictionItemMapWithChunk:(id)chunk withPredictionCount:(int64_t)count map:(void *)map abGroup:(id *)group assetVersion:(int64_t *)version;
+- (ATXActionCacheReader)initWithChunks:(id)chunks;
+- (ATXActionCacheReader)initWithData:(id)data;
+- (ATXPredictionItem)predictionItemForAction:(SEL)action;
 - (id).cxx_construct;
 - (unordered_map<ATXAction)_getActionToIndexMap;
-- (void)enumerateExtraPredictionItemsWithBlock:(id)a3;
-- (void)failAndLog:(id)a3;
+- (void)enumerateExtraPredictionItemsWithBlock:(id)block;
+- (void)failAndLog:(id)log;
 @end
 
 @implementation ATXActionCacheReader
 
-- (ATXActionCacheReader)initWithChunks:(id)a3
+- (ATXActionCacheReader)initWithChunks:(id)chunks
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  chunksCopy = chunks;
   v13.receiver = self;
   v13.super_class = ATXActionCacheReader;
-  v5 = [(ATXActionCacheClientReader *)&v13 initWithChunks:v4];
+  v5 = [(ATXActionCacheClientReader *)&v13 initWithChunks:chunksCopy];
   if (v5)
   {
-    v6 = [v4 count];
+    v6 = [chunksCopy count];
     if (v6 == [(ATXActionCacheClientReader *)v5 chunkCount])
     {
       v7 = objc_autoreleasePoolPush();
       [(ATXActionCacheReader *)v5 _getActionToIndexMap];
       std::__hash_table<std::__hash_value_type<ATXAction * {__strong},int>,std::__unordered_map_hasher<ATXAction * {__strong},std::__hash_value_type<ATXAction * {__strong},int>,ATXActionHash,ATXActionEqual,true>,std::__unordered_map_equal<ATXAction * {__strong},std::__hash_value_type<ATXAction * {__strong},int>,ATXActionEqual,ATXActionHash,true>,std::allocator<std::__hash_value_type<ATXAction * {__strong},int>>>::__move_assign(&v5->_actionToIndexMap, buf);
       std::__hash_table<std::__hash_value_type<ATXAction * {__strong},int>,std::__unordered_map_hasher<ATXAction * {__strong},std::__hash_value_type<ATXAction * {__strong},int>,ATXActionHash,ATXActionEqual,true>,std::__unordered_map_equal<ATXAction * {__strong},std::__hash_value_type<ATXAction * {__strong},int>,ATXActionEqual,ATXActionHash,true>,std::allocator<std::__hash_value_type<ATXAction * {__strong},int>>>::~__hash_table(buf);
-      v8 = [v4 objectAtIndexedSubscript:2];
+      v8 = [chunksCopy objectAtIndexedSubscript:2];
       [ATXActionCacheReader _getIndexToPredictionItemMapWithChunk:v8 withPredictionCount:v5->_actionToIndexMap.__table_.__size_ map:&v5->_predictionItems abGroup:&v5->_abGroup assetVersion:&v5->_assetVersion];
 
-      v9 = [v4 objectAtIndexedSubscript:3];
+      v9 = [chunksCopy objectAtIndexedSubscript:3];
       [ATXActionCacheReader _getExtraPredictionsFromChunk:v9 map:&v5->_extraPredictionItems abGroup:0 assetVersion:0];
 
       objc_autoreleasePoolPop(v7);
@@ -44,7 +44,7 @@
       v10 = __atxlog_handle_default();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        -[ATXActionCacheReader initWithChunks:].cold.1(buf, [v4 count], -[ATXActionCacheClientReader chunkCount](v5, "chunkCount"), v10);
+        -[ATXActionCacheReader initWithChunks:].cold.1(buf, [chunksCopy count], -[ATXActionCacheClientReader chunkCount](v5, "chunkCount"), v10);
       }
     }
   }
@@ -53,7 +53,7 @@
   return v5;
 }
 
-- (ATXActionCacheReader)initWithData:(id)a3
+- (ATXActionCacheReader)initWithData:(id)data
 {
   v4 = ATXCacheFileSplitChunks();
   v5 = [(ATXActionCacheReader *)self initWithChunks:v4];
@@ -61,7 +61,7 @@
   return v5;
 }
 
-- (ATXPredictionItem)predictionItemForAction:(SEL)a3
+- (ATXPredictionItem)predictionItemForAction:(SEL)action
 {
   v23 = *MEMORY[0x277D85DE8];
   v21 = a4;
@@ -119,12 +119,12 @@
   return result;
 }
 
-- (void)failAndLog:(id)a3
+- (void)failAndLog:(id)log
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v47 = v4;
-  if ([v4 isEqualToAction:v4])
+  logCopy = log;
+  v47 = logCopy;
+  if ([logCopy isEqualToAction:logCopy])
   {
     v5 = @"YES";
   }
@@ -135,8 +135,8 @@
   }
 
   v40 = v5;
-  v6 = [v4 hash];
-  if (v6 == [v4 hash])
+  v6 = [logCopy hash];
+  if (v6 == [logCopy hash])
   {
     v7 = @"YES";
   }
@@ -147,25 +147,25 @@
   }
 
   v41 = v7;
-  v42 = [v4 bundleId];
-  v8 = [v4 intent];
-  v9 = [v8 _className];
-  v10 = v9;
+  bundleId = [logCopy bundleId];
+  intent = [logCopy intent];
+  _className = [intent _className];
+  v10 = _className;
   v11 = @"No intent name";
-  if (v9)
+  if (_className)
   {
-    v11 = v9;
+    v11 = _className;
   }
 
   v43 = v11;
 
-  v12 = [v4 userActivity];
-  v13 = [v12 activityType];
-  v14 = v13;
+  userActivity = [logCopy userActivity];
+  activityType = [userActivity activityType];
+  v14 = activityType;
   v15 = @"No activity type";
-  if (v13)
+  if (activityType)
   {
-    v15 = v13;
+    v15 = activityType;
   }
 
   v44 = v15;
@@ -208,13 +208,13 @@
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       v23 = *(i + 6);
-      v46 = [*(i + 2) bundleId];
-      v45 = [v4 intent];
-      v24 = [v45 _className];
-      v25 = v24;
-      if (v24)
+      bundleId2 = [*(i + 2) bundleId];
+      intent2 = [logCopy intent];
+      _className2 = [intent2 _className];
+      v25 = _className2;
+      if (_className2)
       {
-        v26 = v24;
+        v26 = _className2;
       }
 
       else
@@ -222,12 +222,12 @@
         v26 = @"No intent name";
       }
 
-      v27 = [v4 userActivity];
-      v28 = [v27 activityType];
-      v29 = v28;
-      if (v28)
+      userActivity2 = [logCopy userActivity];
+      activityType2 = [userActivity2 activityType];
+      v29 = activityType2;
+      if (activityType2)
       {
-        v30 = v28;
+        v30 = activityType2;
       }
 
       else
@@ -240,7 +240,7 @@
       *buf = 67110402;
       *v49 = v23;
       *&v49[4] = 2112;
-      *&v49[6] = v46;
+      *&v49[6] = bundleId2;
       *&v49[14] = 2112;
       *&v49[16] = v26;
       *&v49[24] = 2112;
@@ -251,20 +251,20 @@
       *&v50[2] = v32;
       _os_log_error_impl(&dword_2263AA000, v22, OS_LOG_TYPE_ERROR, "Action %d in _actionToIndexMap: bundleID: %@, Intent name: %@, activity type: %@, equal to action: %{BOOL}d, hash: %lu", buf, 0x36u);
 
-      v4 = v47;
+      logCopy = v47;
     }
   }
 
   v33 = __atxlog_handle_default();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
   {
-    v35 = [v4 hash];
+    v35 = [logCopy hash];
     *buf = 138414850;
     *v49 = v40;
     *&v49[8] = 2112;
     *&v49[10] = v41;
     *&v49[18] = 2112;
-    *&v49[20] = v42;
+    *&v49[20] = bundleId;
     *&v49[28] = 2112;
     *&v49[30] = v43;
     *&v49[38] = 2112;
@@ -287,15 +287,15 @@
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateExtraPredictionItemsWithBlock:(id)a3
+- (void)enumerateExtraPredictionItemsWithBlock:(id)block
 {
-  v8 = a3;
+  blockCopy = block;
   p_extraPredictionItems = &self->_extraPredictionItems;
   begin = self->_extraPredictionItems.__begin_;
   for (i = p_extraPredictionItems->__end_; begin != i; ++begin)
   {
     v7 = objc_autoreleasePoolPush();
-    v8[2](v8, begin);
+    blockCopy[2](blockCopy, begin);
     objc_autoreleasePoolPop(v7);
   }
 }
@@ -373,33 +373,33 @@ void __89__ATXActionCacheReader_enumerateActionsAndPredictionItemsForConsumerSub
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_getExtraPredictionsFromChunk:(id)a3 map:(void *)a4 abGroup:(id *)a5 assetVersion:(int64_t *)a6
++ (void)_getExtraPredictionsFromChunk:(id)chunk map:(void *)map abGroup:(id *)group assetVersion:(int64_t *)version
 {
-  v9 = a3;
-  v10 = *a4;
-  for (i = *(a4 + 1); i != v10; *i)
+  chunkCopy = chunk;
+  v10 = *map;
+  for (i = *(map + 1); i != v10; *i)
   {
     i -= 417;
   }
 
-  *(a4 + 1) = v10;
-  v12 = [MEMORY[0x277CEB558] stringKeyWithData:v9];
+  *(map + 1) = v10;
+  v12 = [MEMORY[0x277CEB558] stringKeyWithData:chunkCopy];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __79__ATXActionCacheReader__getExtraPredictionsFromChunk_map_abGroup_assetVersion___block_invoke;
   v15[3] = &__block_descriptor_40_e39_v52__0_B8__NSString_16Q24f32r_f36B44B48l;
-  v15[4] = a4;
+  v15[4] = map;
   [v12 enumerateApps:v15];
-  if (a5)
+  if (group)
   {
-    v13 = [v12 abGroup];
-    v14 = *a5;
-    *a5 = v13;
+    abGroup = [v12 abGroup];
+    v14 = *group;
+    *group = abGroup;
   }
 
-  if (a6)
+  if (version)
   {
-    *a6 = [v12 assetVersion];
+    *version = [v12 assetVersion];
   }
 }
 
@@ -481,27 +481,27 @@ void __79__ATXActionCacheReader__getExtraPredictionsFromChunk_map_abGroup_assetV
   return [ATXActionCacheReader _getActionKeyToPredictionItemMapFromChunk:a4 map:retstr abGroup:0 assetVersion:0];
 }
 
-+ (void)_getActionKeyToPredictionItemMapFromChunk:(id)a3 map:(void *)a4 abGroup:(id *)a5 assetVersion:(int64_t *)a6
++ (void)_getActionKeyToPredictionItemMapFromChunk:(id)chunk map:(void *)map abGroup:(id *)group assetVersion:(int64_t *)version
 {
-  v9 = a3;
-  std::__hash_table<std::__hash_value_type<NSString * {__strong},ATXPredictionItem>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},ATXPredictionItem>,ATXNSStringHash,ATXNSStringEqual,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},ATXPredictionItem>,ATXNSStringEqual,ATXNSStringHash,true>,std::allocator<std::__hash_value_type<NSString * {__strong},ATXPredictionItem>>>::clear(a4);
-  v10 = [MEMORY[0x277CEB558] stringKeyWithData:v9];
+  chunkCopy = chunk;
+  std::__hash_table<std::__hash_value_type<NSString * {__strong},ATXPredictionItem>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},ATXPredictionItem>,ATXNSStringHash,ATXNSStringEqual,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},ATXPredictionItem>,ATXNSStringEqual,ATXNSStringHash,true>,std::allocator<std::__hash_value_type<NSString * {__strong},ATXPredictionItem>>>::clear(map);
+  v10 = [MEMORY[0x277CEB558] stringKeyWithData:chunkCopy];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __91__ATXActionCacheReader__getActionKeyToPredictionItemMapFromChunk_map_abGroup_assetVersion___block_invoke;
   v13[3] = &__block_descriptor_40_e39_v52__0_B8__NSString_16Q24f32r_f36B44B48l;
-  v13[4] = a4;
+  v13[4] = map;
   [v10 enumerateApps:v13];
-  if (a5)
+  if (group)
   {
-    v11 = [v10 abGroup];
-    v12 = *a5;
-    *a5 = v11;
+    abGroup = [v10 abGroup];
+    v12 = *group;
+    *group = abGroup;
   }
 
-  if (a6)
+  if (version)
   {
-    *a6 = [v10 assetVersion];
+    *version = [v10 assetVersion];
   }
 }
 
@@ -516,29 +516,29 @@ void __91__ATXActionCacheReader__getActionKeyToPredictionItemMapFromChunk_map_ab
   std::__hash_table<std::__hash_value_type<NSString * {__strong},ATXPredictionItem>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},ATXPredictionItem>,ATXNSStringHash,ATXNSStringEqual,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},ATXPredictionItem>,ATXNSStringEqual,ATXNSStringHash,true>,std::allocator<std::__hash_value_type<NSString * {__strong},ATXPredictionItem>>>::__emplace_unique_key_args<NSString * {__strong},NSString * {__strong}&,ATXPredictionItem>(v9, &v14);
 }
 
-+ (void)_getIndexToPredictionItemMapWithChunk:(id)a3 withPredictionCount:(int64_t)a4 map:(void *)a5 abGroup:(id *)a6 assetVersion:(int64_t *)a7
++ (void)_getIndexToPredictionItemMapWithChunk:(id)chunk withPredictionCount:(int64_t)count map:(void *)map abGroup:(id *)group assetVersion:(int64_t *)version
 {
-  v12 = a3;
-  std::vector<ATXPredictionItem>::resize(a5, a4);
-  v13 = [MEMORY[0x277CEB558] numberKeyWithData:v12];
+  chunkCopy = chunk;
+  std::vector<ATXPredictionItem>::resize(map, count);
+  v13 = [MEMORY[0x277CEB558] numberKeyWithData:chunkCopy];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __107__ATXActionCacheReader__getIndexToPredictionItemMapWithChunk_withPredictionCount_map_abGroup_assetVersion___block_invoke;
   v16[3] = &__block_descriptor_56_e39_v52__0_B8__NSNumber_16Q24f32r_f36B44B48l;
-  v16[4] = a4;
-  v16[5] = a5;
-  v16[6] = a1;
+  v16[4] = count;
+  v16[5] = map;
+  v16[6] = self;
   [v13 enumerateApps:v16];
-  if (a6)
+  if (group)
   {
-    v14 = [v13 abGroup];
-    v15 = *a6;
-    *a6 = v14;
+    abGroup = [v13 abGroup];
+    v15 = *group;
+    *group = abGroup;
   }
 
-  if (a7)
+  if (version)
   {
-    *a7 = [v13 assetVersion];
+    *version = [v13 assetVersion];
   }
 }
 
@@ -617,8 +617,8 @@ void __107__ATXActionCacheReader__getIndexToPredictionItemMapWithChunk_withPredi
           objc_enumerationMutation(v4);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v7) predictedItem];
-        std::__hash_table<std::__hash_value_type<ATXAction * {__strong},int>,std::__unordered_map_hasher<ATXAction * {__strong},std::__hash_value_type<ATXAction * {__strong},int>,ATXActionHash,ATXActionEqual,true>,std::__unordered_map_equal<ATXAction * {__strong},std::__hash_value_type<ATXAction * {__strong},int>,ATXActionEqual,ATXActionHash,true>,std::allocator<std::__hash_value_type<ATXAction * {__strong},int>>>::__emplace_unique_key_args<ATXAction * {__strong},ATXAction * {__strong},long &>(retstr, &v10);
+        predictedItem = [*(*(&v11 + 1) + 8 * v7) predictedItem];
+        std::__hash_table<std::__hash_value_type<ATXAction * {__strong},int>,std::__unordered_map_hasher<ATXAction * {__strong},std::__hash_value_type<ATXAction * {__strong},int>,ATXActionHash,ATXActionEqual,true>,std::__unordered_map_equal<ATXAction * {__strong},std::__hash_value_type<ATXAction * {__strong},int>,ATXActionEqual,ATXActionHash,true>,std::allocator<std::__hash_value_type<ATXAction * {__strong},int>>>::__emplace_unique_key_args<ATXAction * {__strong},ATXAction * {__strong},long &>(retstr, &predictedItem);
 
         ++v15;
         ++v7;

@@ -1,7 +1,7 @@
 @interface CDBluetoothListener
 - (CDBluetoothListener)init;
 - (void)_activated;
-- (void)_handleEvent:(id)a3;
+- (void)_handleEvent:(id)event;
 - (void)_invalidated;
 - (void)activate;
 - (void)invalidate;
@@ -71,19 +71,19 @@
   }
 }
 
-- (void)_handleEvent:(id)a3
+- (void)_handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  string = xpc_dictionary_get_string(v4, "eventType");
+  string = xpc_dictionary_get_string(eventCopy, "eventType");
   if (!string || !strcmp(string, "deviceFound"))
   {
-    v6 = xpc_dictionary_get_string(v4, _xpc_event_key_name);
+    v6 = xpc_dictionary_get_string(eventCopy, _xpc_event_key_name);
     if (v6)
     {
       if (self->_deviceFoundHandler && !strcmp(v6, "PhotoSetup"))
       {
-        v7 = xpc_dictionary_get_dictionary(v4, "device");
+        v7 = xpc_dictionary_get_dictionary(eventCopy, "device");
         v10 = 0;
         v8 = [[CBDevice alloc] initWithXPCObject:v7 error:&v10];
         v9 = v10;

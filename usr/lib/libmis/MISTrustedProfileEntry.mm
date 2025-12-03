@@ -1,6 +1,6 @@
 @interface MISTrustedProfileEntry
-- (BOOL)isEqual:(id)a3;
-- (MISTrustedProfileEntry)initWithUUID:(id)a3 trustedTeamIDEntry:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MISTrustedProfileEntry)initWithUUID:(id)d trustedTeamIDEntry:(id)entry;
 - (id)redactedDescription;
 - (unint64_t)hash;
 @end
@@ -17,12 +17,12 @@
   return v13 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     v8 = objc_msgSend_uuid(self, v6, v7);
     v11 = objc_msgSend_uuid(v5, v9, v10);
     if (objc_msgSend_isEqual_(v8, v12, v11))
@@ -57,18 +57,18 @@
   return v11;
 }
 
-- (MISTrustedProfileEntry)initWithUUID:(id)a3 trustedTeamIDEntry:(id)a4
+- (MISTrustedProfileEntry)initWithUUID:(id)d trustedTeamIDEntry:(id)entry
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  entryCopy = entry;
   v12.receiver = self;
   v12.super_class = MISTrustedProfileEntry;
   v9 = [(MISTrustedProfileEntry *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_uuid, a3);
-    objc_storeStrong(&v10->_trustedTeamIDEntry, a4);
+    objc_storeStrong(&v9->_uuid, d);
+    objc_storeStrong(&v10->_trustedTeamIDEntry, entry);
   }
 
   return v10;

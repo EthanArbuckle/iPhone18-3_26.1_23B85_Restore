@@ -1,6 +1,6 @@
 @interface PLDetectedFaceGroup
-+ (id)detectedFaceGroupWithUUID:(id)a3 inManagedObjectContext:(id)a4;
-+ (void)batchFetchFaceGroupByFaceUUIDWithFaceUUIDs:(id)a3 predicate:(id)a4 library:(id)a5 completion:(id)a6;
++ (id)detectedFaceGroupWithUUID:(id)d inManagedObjectContext:(id)context;
++ (void)batchFetchFaceGroupByFaceUUIDWithFaceUUIDs:(id)ds predicate:(id)predicate library:(id)library completion:(id)completion;
 - (void)awakeFromInsert;
 - (void)willSave;
 @end
@@ -14,9 +14,9 @@
   [(PLManagedObject *)&v4 willSave];
   if (([(PLDetectedFaceGroup *)self isDeleted]& 1) == 0)
   {
-    v3 = [(PLDetectedFaceGroup *)self associatedPerson];
+    associatedPerson = [(PLDetectedFaceGroup *)self associatedPerson];
 
-    if (!v3)
+    if (!associatedPerson)
     {
       [PLPerson createAssociatedPersonForFaceGroup:self];
     }
@@ -28,25 +28,25 @@
   v4.receiver = self;
   v4.super_class = PLDetectedFaceGroup;
   [(PLDetectedFaceGroup *)&v4 awakeFromInsert];
-  v3 = [MEMORY[0x1E69BF320] UUIDString];
-  [(PLDetectedFaceGroup *)self setUuid:v3];
+  uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+  [(PLDetectedFaceGroup *)self setUuid:uUIDString];
 }
 
-+ (void)batchFetchFaceGroupByFaceUUIDWithFaceUUIDs:(id)a3 predicate:(id)a4 library:(id)a5 completion:(id)a6
++ (void)batchFetchFaceGroupByFaceUUIDWithFaceUUIDs:(id)ds predicate:(id)predicate library:(id)library completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
+  dsCopy = ds;
+  libraryCopy = library;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __95__PLDetectedFaceGroup_batchFetchFaceGroupByFaceUUIDWithFaceUUIDs_predicate_library_completion___block_invoke;
   v14[3] = &unk_1E7576F38;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v15 = libraryCopy;
+  v16 = dsCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = dsCopy;
+  v13 = libraryCopy;
   [v13 performBlockAndWait:v14];
 }
 
@@ -137,32 +137,32 @@ void __95__PLDetectedFaceGroup_batchFetchFaceGroupByFaceUUIDWithFaceUUIDs_predic
   (*(*(v1 + 48) + 16))();
 }
 
-+ (id)detectedFaceGroupWithUUID:(id)a3 inManagedObjectContext:(id)a4
++ (id)detectedFaceGroupWithUUID:(id)d inManagedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dCopy = d;
+  contextCopy = context;
+  if (dCopy)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"uuid", v6];
+    dCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"uuid", dCopy];
     v10 = MEMORY[0x1E695D5E0];
-    v11 = [a1 entityName];
-    v12 = [v10 fetchRequestWithEntityName:v11];
+    entityName = [self entityName];
+    v12 = [v10 fetchRequestWithEntityName:entityName];
 
-    [v12 setPredicate:v9];
+    [v12 setPredicate:dCopy];
     v16 = 0;
-    v13 = [v7 executeFetchRequest:v12 error:&v16];
-    v14 = [v13 firstObject];
+    v13 = [contextCopy executeFetchRequest:v12 error:&v16];
+    firstObject = [v13 firstObject];
 
     objc_autoreleasePoolPop(v8);
   }
 
   else
   {
-    v14 = 0;
+    firstObject = 0;
   }
 
-  return v14;
+  return firstObject;
 }
 
 @end

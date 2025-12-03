@@ -14,18 +14,18 @@
 - (unint64_t)toneMappingMode;
 - (unsigned)pixelFormat;
 - (void)dealloc;
-- (void)setChromaLocation:(id)a3;
-- (void)setClientName:(id)a3;
-- (void)setContentIDs:(id)a3;
-- (void)setDisplayID:(int64_t)a3;
-- (void)setImagePoolSize:(int64_t)a3;
-- (void)setIncludePrivateContent:(BOOL)a3;
-- (void)setMinFrameInterval:(id *)a3;
-- (void)setNumOfIdleFrames:(int64_t)a3;
-- (void)setPixelFormat:(unsigned int)a3;
-- (void)setPreset:(unint64_t)a3;
-- (void)setSize:(CGSize)a3;
-- (void)setToneMappingMode:(unint64_t)a3;
+- (void)setChromaLocation:(id)location;
+- (void)setClientName:(id)name;
+- (void)setContentIDs:(id)ds;
+- (void)setDisplayID:(int64_t)d;
+- (void)setImagePoolSize:(int64_t)size;
+- (void)setIncludePrivateContent:(BOOL)content;
+- (void)setMinFrameInterval:(id *)interval;
+- (void)setNumOfIdleFrames:(int64_t)frames;
+- (void)setPixelFormat:(unsigned int)format;
+- (void)setPreset:(unint64_t)preset;
+- (void)setSize:(CGSize)size;
+- (void)setToneMappingMode:(unint64_t)mode;
 @end
 
 @implementation FigScreenCaptureConfiguration
@@ -72,9 +72,9 @@
   return [v3 stringWithFormat:@"<%@: %p, options = %@>", NSStringFromClass(v4), self, -[__CFDictionary description](self->_fvdOptions, "description")];
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(a3);
+  DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(size);
   FigSimpleMutexLock();
   v5 = CFDictionaryGetValue(self->_fvdOptions, @"deviceInfo");
   if (v5)
@@ -111,9 +111,9 @@
   return result;
 }
 
-- (void)setMinFrameInterval:(id *)a3
+- (void)setMinFrameInterval:(id *)interval
 {
-  v3 = *a3;
+  v3 = *interval;
   CMTimeGetSeconds(&v3);
   FigSimpleMutexLock();
   FigCFDictionarySetInt32();
@@ -129,7 +129,7 @@
   return CMTimeMake(retstr, 1, 60);
 }
 
-- (void)setPixelFormat:(unsigned int)a3
+- (void)setPixelFormat:(unsigned int)format
 {
   FigSimpleMutexLock();
   FigCFDictionarySetInt();
@@ -145,22 +145,22 @@
   return 0;
 }
 
-- (void)setPreset:(unint64_t)a3
+- (void)setPreset:(unint64_t)preset
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v5 = convertPresetEnumToUsageModeString(a3);
+  v5 = convertPresetEnumToUsageModeString(preset);
   if (v5)
   {
-    v6 = a3;
+    presetCopy = preset;
   }
 
   else
   {
-    v6 = 0;
+    presetCopy = 0;
   }
 
   FigSimpleMutexLock();
-  if (v6 - 7 <= 7)
+  if (presetCopy - 7 <= 7)
   {
     Value = CFDictionaryGetValue(self->_fvdOptions, @"deviceInfo");
     if (Value)
@@ -174,11 +174,11 @@
       v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
-    if (v6 - 9 > 1)
+    if (presetCopy - 9 > 1)
     {
-      if (v6 - 11 > 1)
+      if (presetCopy - 11 > 1)
       {
-        if (v6 - 13 > 1)
+        if (presetCopy - 13 > 1)
         {
           v15 = @"HDRMode";
           v16 = @"HDR10";
@@ -233,7 +233,7 @@
   }
 
   CFDictionarySetValue(self->_fvdOptions, @"usage", v14);
-  self->_preset = v6;
+  self->_preset = presetCopy;
   FigSimpleMutexUnlock();
 }
 
@@ -245,7 +245,7 @@
   return preset;
 }
 
-- (void)setNumOfIdleFrames:(int64_t)a3
+- (void)setNumOfIdleFrames:(int64_t)frames
 {
   FigSimpleMutexLock();
   FigCFDictionarySetInt();
@@ -261,7 +261,7 @@
   return 0;
 }
 
-- (void)setImagePoolSize:(int64_t)a3
+- (void)setImagePoolSize:(int64_t)size
 {
   FigSimpleMutexLock();
   FigCFDictionarySetInt();
@@ -277,13 +277,13 @@
   return 0;
 }
 
-- (void)setClientName:(id)a3
+- (void)setClientName:(id)name
 {
   FigSimpleMutexLock();
   fvdOptions = self->_fvdOptions;
-  if (a3)
+  if (name)
   {
-    CFDictionarySetValue(fvdOptions, @"clientName", a3);
+    CFDictionarySetValue(fvdOptions, @"clientName", name);
   }
 
   else
@@ -302,13 +302,13 @@
   return Value;
 }
 
-- (void)setContentIDs:(id)a3
+- (void)setContentIDs:(id)ds
 {
   FigSimpleMutexLock();
   fvdOptions = self->_fvdOptions;
-  if (a3)
+  if (ds)
   {
-    CFDictionarySetValue(fvdOptions, @"ContentIDs", a3);
+    CFDictionarySetValue(fvdOptions, @"ContentIDs", ds);
   }
 
   else
@@ -329,12 +329,12 @@
   return Value;
 }
 
-- (void)setIncludePrivateContent:(BOOL)a3
+- (void)setIncludePrivateContent:(BOOL)content
 {
-  v3 = a3;
+  contentCopy = content;
   FigSimpleMutexLock();
   fvdOptions = self->_fvdOptions;
-  if (v3)
+  if (contentCopy)
   {
     CFDictionarySetValue(fvdOptions, @"IncludePrivateContent", *MEMORY[0x1E695E4D0]);
   }
@@ -355,7 +355,7 @@
   return 0;
 }
 
-- (void)setDisplayID:(int64_t)a3
+- (void)setDisplayID:(int64_t)d
 {
   FigSimpleMutexLock();
   FigCFDictionarySetInt32();
@@ -371,9 +371,9 @@
   return 1;
 }
 
-- (void)setToneMappingMode:(unint64_t)a3
+- (void)setToneMappingMode:(unint64_t)mode
 {
-  if (a3 - 1 <= 1)
+  if (mode - 1 <= 1)
   {
     FigSimpleMutexLock();
     FigCFDictionarySetInt32();
@@ -390,7 +390,7 @@
   return 0;
 }
 
-- (void)setChromaLocation:(id)a3
+- (void)setChromaLocation:(id)location
 {
   FigSimpleMutexLock();
   FigCFDictionarySetValue();

@@ -1,14 +1,14 @@
 @interface XRNetworkingServiceObservationTuple
-- (XRNetworkingServiceObservationTuple)initWithKind:(int)a3 count:(unsigned __int8)a4;
-- (XRNetworkingServiceObservationTuple)initWithKind:(int)a3 count:(unsigned __int8)a4 source:(__CFDictionary *)a5 indexToKeyMap:(const __CFString *)a6;
+- (XRNetworkingServiceObservationTuple)initWithKind:(int)kind count:(unsigned __int8)count;
+- (XRNetworkingServiceObservationTuple)initWithKind:(int)kind count:(unsigned __int8)count source:(__CFDictionary *)source indexToKeyMap:(const __CFString *)map;
 - (void)dealloc;
 @end
 
 @implementation XRNetworkingServiceObservationTuple
 
-- (XRNetworkingServiceObservationTuple)initWithKind:(int)a3 count:(unsigned __int8)a4
+- (XRNetworkingServiceObservationTuple)initWithKind:(int)kind count:(unsigned __int8)count
 {
-  v4 = a4;
+  countCopy = count;
   v13.receiver = self;
   v13.super_class = XRNetworkingServiceObservationTuple;
   v6 = [(XRNetworkingServiceObservationTuple *)&v13 init];
@@ -17,14 +17,14 @@
     return v6;
   }
 
-  if (v4 >= 0x32)
+  if (countCopy >= 0x32)
   {
     sub_24802BEB8();
   }
 
   else
   {
-    if (v4)
+    if (countCopy)
     {
       goto LABEL_4;
     }
@@ -35,11 +35,11 @@
   v12 = v14;
 
 LABEL_4:
-  v6->_kind = a3;
-  v6->_count = v4;
-  v7 = v4;
-  v6->data = malloc_type_calloc(8uLL, v4, 0x80040B8603338uLL);
-  if (v4)
+  v6->_kind = kind;
+  v6->_count = countCopy;
+  v7 = countCopy;
+  v6->data = malloc_type_calloc(8uLL, countCopy, 0x80040B8603338uLL);
+  if (countCopy)
   {
     v8 = 0;
     v9 = *MEMORY[0x277CBEEE8];
@@ -56,9 +56,9 @@ LABEL_4:
   return v6;
 }
 
-- (XRNetworkingServiceObservationTuple)initWithKind:(int)a3 count:(unsigned __int8)a4 source:(__CFDictionary *)a5 indexToKeyMap:(const __CFString *)a6
+- (XRNetworkingServiceObservationTuple)initWithKind:(int)kind count:(unsigned __int8)count source:(__CFDictionary *)source indexToKeyMap:(const __CFString *)map
 {
-  v8 = a4;
+  countCopy = count;
   v22.receiver = self;
   v22.super_class = XRNetworkingServiceObservationTuple;
   v10 = [(XRNetworkingServiceObservationTuple *)&v22 init];
@@ -67,14 +67,14 @@ LABEL_4:
     return v10;
   }
 
-  if (v8 >= 0x32)
+  if (countCopy >= 0x32)
   {
     sub_24802BFC0();
   }
 
   else
   {
-    if (v8)
+    if (countCopy)
     {
       goto LABEL_4;
     }
@@ -85,20 +85,20 @@ LABEL_4:
   v21 = v23;
 
 LABEL_4:
-  v10->_kind = a3;
-  v10->_count = v8;
-  v11 = v8;
-  v10->data = malloc_type_calloc(8uLL, v8, 0x80040B8603338uLL);
-  if (v8)
+  v10->_kind = kind;
+  v10->_count = countCopy;
+  v11 = countCopy;
+  v10->data = malloc_type_calloc(8uLL, countCopy, 0x80040B8603338uLL);
+  if (countCopy)
   {
     v12 = 0;
     v13 = *MEMORY[0x277CBEEE8];
     do
     {
-      v14 = a6[v12];
+      v14 = map[v12];
       if (v14)
       {
-        v15 = CFDictionaryGetValue(a5, *v14);
+        v15 = CFDictionaryGetValue(source, *v14);
         v16 = [v15 copy];
         data = v10->data;
         v18 = data[v12];

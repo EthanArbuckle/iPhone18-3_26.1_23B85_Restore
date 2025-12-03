@@ -1,9 +1,9 @@
 @interface MTRKeypadInputClusterSendKeyResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct;
 - (MTRKeypadInputClusterSendKeyResponseParams)init;
-- (MTRKeypadInputClusterSendKeyResponseParams)initWithDecodableStruct:(const DecodableType *)a3;
+- (MTRKeypadInputClusterSendKeyResponseParams)initWithDecodableStruct:(const DecodableType *)struct;
 - (MTRKeypadInputClusterSendKeyResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,14 +27,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRKeypadInputClusterSendKeyResponseParams);
-  v5 = [(MTRKeypadInputClusterSendKeyResponseParams *)self status];
-  [(MTRKeypadInputClusterSendKeyResponseParams *)v4 setStatus:v5];
+  status = [(MTRKeypadInputClusterSendKeyResponseParams *)self status];
+  [(MTRKeypadInputClusterSendKeyResponseParams *)v4 setStatus:status];
 
-  v6 = [(MTRKeypadInputClusterSendKeyResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRKeypadInputClusterSendKeyResponseParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRKeypadInputClusterSendKeyResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRKeypadInputClusterSendKeyResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -93,7 +93,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRKeypadInputClusterSendKeyResponseParams)initWithDecodableStruct:(const DecodableType *)a3
+- (MTRKeypadInputClusterSendKeyResponseParams)initWithDecodableStruct:(const DecodableType *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRKeypadInputClusterSendKeyResponseParams;
@@ -101,7 +101,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRKeypadInputClusterSendKeyResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRKeypadInputClusterSendKeyResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -117,9 +117,9 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3->var0];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:struct->var0];
   [(MTRKeypadInputClusterSendKeyResponseParams *)self setStatus:v4];
 
   v5 = 0;

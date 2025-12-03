@@ -1,23 +1,23 @@
 @interface AKRectAnnotation
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3;
-- (AKRectAnnotation)initWithCoder:(id)a3;
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key;
+- (AKRectAnnotation)initWithCoder:(id)coder;
 - (CGRect)hitTestBounds;
 - (id)displayName;
 - (id)keysForValuesToObserveForRedrawing;
 - (id)keysForValuesToObserveForUndo;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKRectAnnotation
 
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key
 {
-  v4 = a3;
-  if (![v4 isEqualToString:@"cornerRadius"] || (+[AKController akBundle](AKController, "akBundle"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "localizedStringForKey:value:table:", @"Corner Radius", &stru_28519E870, @"AnnotationStrings"), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+  keyCopy = key;
+  if (![keyCopy isEqualToString:@"cornerRadius"] || (+[AKController akBundle](AKController, "akBundle"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "localizedStringForKey:value:table:", @"Corner Radius", &stru_28519E870, @"AnnotationStrings"), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___AKRectAnnotation;
-    v6 = objc_msgSendSuper2(&v8, sel_displayNameForUndoablePropertyChangeWithKey_, v4);
+    v6 = objc_msgSendSuper2(&v8, sel_displayNameForUndoablePropertyChangeWithKey_, keyCopy);
   }
 
   return v6;
@@ -36,8 +36,8 @@
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKRectAnnotation;
-  v3 = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForUndo];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForUndo = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForUndo];
+  v4 = [v2 setWithSet:keysForValuesToObserveForUndo];
 
   [v4 addObjectsFromArray:&unk_2851BAC80];
 
@@ -49,8 +49,8 @@
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKRectAnnotation;
-  v3 = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForRedrawing];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForRedrawing = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForRedrawing];
+  v4 = [v2 setWithSet:keysForValuesToObserveForRedrawing];
 
   [v4 addObjectsFromArray:&unk_2851BAC98];
 
@@ -97,25 +97,25 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = AKRectAnnotation;
-  v4 = a3;
-  [(AKRectangularShapeAnnotation *)&v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(AKRectangularShapeAnnotation *)&v5 encodeWithCoder:coderCopy];
   [(AKRectAnnotation *)self cornerRadius:v5.receiver];
-  [v4 encodeDouble:@"cornerRadius" forKey:?];
+  [coderCopy encodeDouble:@"cornerRadius" forKey:?];
 }
 
-- (AKRectAnnotation)initWithCoder:(id)a3
+- (AKRectAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = AKRectAnnotation;
-  v5 = [(AKRectangularShapeAnnotation *)&v7 initWithCoder:v4];
+  v5 = [(AKRectangularShapeAnnotation *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"cornerRadius"];
+    [coderCopy decodeDoubleForKey:@"cornerRadius"];
     [(AKRectAnnotation *)v5 setCornerRadius:?];
   }
 

@@ -1,44 +1,44 @@
 @interface WBSAutoFillInternalFeedbackController
-+ (id)placeholderForFeedbackDetailType:(id)a3;
-+ (id)titleForAttachmentsType:(unint64_t)a3;
-+ (id)titleForFeedbackCategory:(unint64_t)a3;
++ (id)placeholderForFeedbackDetailType:(id)type;
++ (id)titleForAttachmentsType:(unint64_t)type;
++ (id)titleForFeedbackCategory:(unint64_t)category;
 - (BOOL)canContinueInTapToRadar;
 - (NSOrderedSet)detailTypesForSelectedFeedbackCategory;
 - (NSString)attachmentDetailsText;
 - (NSURL)continueInTapToRadarURL;
-- (WBSAutoFillInternalFeedbackController)initWithDiagnosticsData:(id)a3;
+- (WBSAutoFillInternalFeedbackController)initWithDiagnosticsData:(id)data;
 - (id)_radarTitleComponentForDetails;
-- (id)responseForDetailType:(id)a3;
-- (void)setResponse:(id)a3 forDetailType:(id)a4;
+- (id)responseForDetailType:(id)type;
+- (void)setResponse:(id)response forDetailType:(id)type;
 @end
 
 @implementation WBSAutoFillInternalFeedbackController
 
-+ (id)titleForFeedbackCategory:(unint64_t)a3
++ (id)titleForFeedbackCategory:(unint64_t)category
 {
-  if (a3 > 3)
+  if (category > 3)
   {
-    if (a3 >= 8)
+    if (category >= 8)
     {
       goto LABEL_6;
     }
   }
 
-  else if ((a3 & 0x8000000000000000) != 0)
+  else if ((category & 0x8000000000000000) != 0)
   {
     goto LABEL_6;
   }
 
-  a1 = _WBSLocalizedString();
+  self = _WBSLocalizedString();
 LABEL_6:
 
-  return a1;
+  return self;
 }
 
-+ (id)placeholderForFeedbackDetailType:(id)a3
++ (id)placeholderForFeedbackDetailType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"WBSAutoFillInternalFeedbackDetailTypeAutoFillNotOfferedFormPurpose"] || objc_msgSend(v3, "isEqualToString:", @"WBSAutoFillInternalFeedbackDetailTypeAutoFillNotOfferedExpectedAutoFillInformationTypes") || objc_msgSend(v3, "isEqualToString:", @"WBSAutoFillInternalFeedbackDetailTypeAutoFillIncorrectlyOfferedFormPurpose") || objc_msgSend(v3, "isEqualToString:", @"WBSAutoFillInternalFeedbackDetailTypeAutoFillIncorrectlyOfferedUnexpectedAutoFillInformationTypes") || objc_msgSend(v3, "isEqualToString:", @"WBSAutoFillInternalFeedbackDetailTypeAutoFillFillingFailedUnfilledFieldsExpectingFilling") || objc_msgSend(v3, "isEqualToString:", @"WBSAutoFillInternalFeedbackDetailTypeAutoFillFilledIncorrectDataIncorrectFields") || objc_msgSend(v3, "isEqualToString:", @"WBSAutoFillInternalFeedbackDetailTypeAutoFillFilledIncorrectDataExpectedFilledData") || objc_msgSend(v3, "isEqualToString:", @"WBSAutoFillInternalFeedbackDetailTypeAutoFillFilledIncorrectFormatIncorrectFields") || objc_msgSend(v3, "isEqualToString:", @"WBSAutoFillInternalFeedbackDetailTypeAutoFillFilledIncorrectFormatExpectedFormat"))
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"WBSAutoFillInternalFeedbackDetailTypeAutoFillNotOfferedFormPurpose"] || objc_msgSend(typeCopy, "isEqualToString:", @"WBSAutoFillInternalFeedbackDetailTypeAutoFillNotOfferedExpectedAutoFillInformationTypes") || objc_msgSend(typeCopy, "isEqualToString:", @"WBSAutoFillInternalFeedbackDetailTypeAutoFillIncorrectlyOfferedFormPurpose") || objc_msgSend(typeCopy, "isEqualToString:", @"WBSAutoFillInternalFeedbackDetailTypeAutoFillIncorrectlyOfferedUnexpectedAutoFillInformationTypes") || objc_msgSend(typeCopy, "isEqualToString:", @"WBSAutoFillInternalFeedbackDetailTypeAutoFillFillingFailedUnfilledFieldsExpectingFilling") || objc_msgSend(typeCopy, "isEqualToString:", @"WBSAutoFillInternalFeedbackDetailTypeAutoFillFilledIncorrectDataIncorrectFields") || objc_msgSend(typeCopy, "isEqualToString:", @"WBSAutoFillInternalFeedbackDetailTypeAutoFillFilledIncorrectDataExpectedFilledData") || objc_msgSend(typeCopy, "isEqualToString:", @"WBSAutoFillInternalFeedbackDetailTypeAutoFillFilledIncorrectFormatIncorrectFields") || objc_msgSend(typeCopy, "isEqualToString:", @"WBSAutoFillInternalFeedbackDetailTypeAutoFillFilledIncorrectFormatExpectedFormat"))
   {
     v4 = _WBSLocalizedString();
   }
@@ -46,7 +46,7 @@ LABEL_6:
   else
   {
     v4 = &stru_1F3A5E418;
-    if (([v3 isEqualToString:@"WBSAutoFillInternalFeedbackDetailTypeAutoFillOtherIssue"] & 1) == 0 && !objc_msgSend(v3, "isEqualToString:", @"WBSAutoFillInternalFeedbackDetailTypeAutoFillMultipleIssues"))
+    if (([typeCopy isEqualToString:@"WBSAutoFillInternalFeedbackDetailTypeAutoFillOtherIssue"] & 1) == 0 && !objc_msgSend(typeCopy, "isEqualToString:", @"WBSAutoFillInternalFeedbackDetailTypeAutoFillMultipleIssues"))
     {
       v4 = @"unknown detail type placeholder";
     }
@@ -55,19 +55,19 @@ LABEL_6:
   return v4;
 }
 
-+ (id)titleForAttachmentsType:(unint64_t)a3
++ (id)titleForAttachmentsType:(unint64_t)type
 {
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    a1 = _WBSLocalizedString();
+    self = _WBSLocalizedString();
   }
 
-  return a1;
+  return self;
 }
 
-- (WBSAutoFillInternalFeedbackController)initWithDiagnosticsData:(id)a3
+- (WBSAutoFillInternalFeedbackController)initWithDiagnosticsData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   result = [MEMORY[0x1E69C8880] isInternalInstall];
   if (result)
   {
@@ -77,11 +77,11 @@ LABEL_6:
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_diagnosticsData, a3);
+      objc_storeStrong(&v7->_diagnosticsData, data);
       v8->_selectedFeedbackCategory = 0;
-      v9 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       detailResponses = v8->_detailResponses;
-      v8->_detailResponses = v9;
+      v8->_detailResponses = dictionary;
 
       v8->_selectedAttachmentsType = 1;
       v11 = v8;
@@ -154,7 +154,7 @@ LABEL_6:
     {
       if (!selectedFeedbackCategory)
       {
-        v2 = [MEMORY[0x1E695DFB8] orderedSet];
+        orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
         goto LABEL_21;
       }
 
@@ -193,19 +193,19 @@ LABEL_17:
   v7 = 2;
 LABEL_20:
   v8 = [v5 arrayWithObjects:v6 count:{v7, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21}];
-  v2 = [v4 orderedSetWithArray:v8];
+  orderedSet = [v4 orderedSetWithArray:v8];
 
 LABEL_21:
 
-  return v2;
+  return orderedSet;
 }
 
 - (NSString)attachmentDetailsText
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = _WBSLocalizedString();
-  v5 = [(WBSAutoFillInternalFeedbackController *)self diagnosticsData];
-  v6 = [v5 url];
+  diagnosticsData = [(WBSAutoFillInternalFeedbackController *)self diagnosticsData];
+  v6 = [diagnosticsData url];
   v7 = [v3 localizedStringWithFormat:v4, v6];
 
   return v7;
@@ -218,8 +218,8 @@ LABEL_21:
     return 0;
   }
 
-  v3 = [(WBSAutoFillInternalFeedbackController *)self detailTypesForSelectedFeedbackCategory];
-  v4 = [v3 set];
+  detailTypesForSelectedFeedbackCategory = [(WBSAutoFillInternalFeedbackController *)self detailTypesForSelectedFeedbackCategory];
+  v4 = [detailTypesForSelectedFeedbackCategory set];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__WBSAutoFillInternalFeedbackController_canContinueInTapToRadar__block_invoke;
@@ -354,17 +354,17 @@ LABEL_19:
   }
 
   v8 = [(WBSAutoFillInternalFeedbackDiagnosticsData *)self->_diagnosticsData url];
-  v9 = [v8 host];
-  v10 = [(WBSAutoFillInternalFeedbackController *)self _radarTitleComponentForDetails];
+  host = [v8 host];
+  _radarTitleComponentForDetails = [(WBSAutoFillInternalFeedbackController *)self _radarTitleComponentForDetails];
   v47 = v3;
-  v45 = [v5 stringWithFormat:@"Safari AutoFill [in-app feedback]: %@%@ on %@ (%@)", v3, v7, v9, v10];
+  v45 = [v5 stringWithFormat:@"Safari AutoFill [in-app feedback]: %@%@ on %@ (%@)", v3, v7, host, _radarTitleComponentForDetails];
 
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v12 = self;
+  selfCopy = self;
   obj = [(WBSAutoFillInternalFeedbackController *)self detailTypesForSelectedFeedbackCategory];
   v13 = [obj countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v13)
@@ -384,12 +384,12 @@ LABEL_19:
         v18 = MEMORY[0x1E696AEC0];
         v19 = titleForFeedbackDetailType(v17, 0);
         v20 = [v18 stringWithFormat:@" * %@", v19];
-        [v11 addObject:v20];
+        [array addObject:v20];
 
         v21 = MEMORY[0x1E696AEC0];
-        v22 = [(NSMutableDictionary *)v12->_detailResponses objectForKeyedSubscript:v17];
+        v22 = [(NSMutableDictionary *)selfCopy->_detailResponses objectForKeyedSubscript:v17];
         v23 = [v21 stringWithFormat:@"%@\n", v22];
-        [v11 addObject:v23];
+        [array addObject:v23];
       }
 
       v14 = [obj countByEnumeratingWithState:&v49 objects:v54 count:16];
@@ -399,23 +399,23 @@ LABEL_19:
   }
 
   v24 = MEMORY[0x1E696AEC0];
-  v25 = v12;
-  v26 = [(WBSAutoFillInternalFeedbackDiagnosticsData *)v12->_diagnosticsData url];
+  v25 = selfCopy;
+  v26 = [(WBSAutoFillInternalFeedbackDiagnosticsData *)selfCopy->_diagnosticsData url];
   v27 = [v24 stringWithFormat:@"URL: %@\n", v26];
-  [v11 addObject:v27];
+  [array addObject:v27];
 
   if (v46)
   {
-    [v11 addObject:v46];
+    [array addObject:v46];
   }
 
-  v28 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   if (v25->_selectedAttachmentsType == 1)
   {
-    v29 = [(WBSAutoFillInternalFeedbackDiagnosticsData *)v25->_diagnosticsData writeTemporaryFileWithFormMetadata];
-    if (v29)
+    writeTemporaryFileWithFormMetadata = [(WBSAutoFillInternalFeedbackDiagnosticsData *)v25->_diagnosticsData writeTemporaryFileWithFormMetadata];
+    if (writeTemporaryFileWithFormMetadata)
     {
-      [v28 addObject:v29];
+      [array2 addObject:writeTemporaryFileWithFormMetadata];
       v30 = @"Form metadata attached.";
     }
 
@@ -424,15 +424,15 @@ LABEL_19:
       v30 = @"Safari was unable to attach form metadata for this issue.";
     }
 
-    [v11 addObject:v30];
+    [array addObject:v30];
   }
 
   v31 = MEMORY[0x1E696AEC0];
-  v32 = [(WBSAutoFillInternalFeedbackDiagnosticsData *)v25->_diagnosticsData creationDateString];
-  v33 = [v31 stringWithFormat:@"Diagnostics collection was triggered at %@", v32];
-  [v11 addObject:v33];
+  creationDateString = [(WBSAutoFillInternalFeedbackDiagnosticsData *)v25->_diagnosticsData creationDateString];
+  v33 = [v31 stringWithFormat:@"Diagnostics collection was triggered at %@", creationDateString];
+  [array addObject:v33];
 
-  v34 = [v11 componentsJoinedByString:@"\n"];
+  v34 = [array componentsJoinedByString:@"\n"];
   v35 = v25->_selectedFeedbackCategory - 1;
   if (v35 > 6)
   {
@@ -460,27 +460,27 @@ LABEL_19:
   [(WBSInternalFeedbackRadar *)v41 setClassification:@"Serious Bug"];
   [(WBSInternalFeedbackRadar *)v41 setReproducibility:@"Not Applicable"];
   [(WBSInternalFeedbackRadar *)v41 setKeywords:v38];
-  v42 = [v28 safari_mapObjectsUsingBlock:&__block_literal_global_1];
+  v42 = [array2 safari_mapObjectsUsingBlock:&__block_literal_global_1];
   [(WBSInternalFeedbackRadar *)v41 setAttachmentPaths:v42];
 
-  v43 = [(WBSInternalFeedbackRadar *)v41 continueInTapToRadarURL];
+  continueInTapToRadarURL = [(WBSInternalFeedbackRadar *)v41 continueInTapToRadarURL];
 
-  return v43;
+  return continueInTapToRadarURL;
 }
 
-- (id)responseForDetailType:(id)a3
+- (id)responseForDetailType:(id)type
 {
-  v3 = [(NSMutableDictionary *)self->_detailResponses objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_detailResponses objectForKeyedSubscript:type];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (void)setResponse:(id)a3 forDetailType:(id)a4
+- (void)setResponse:(id)response forDetailType:(id)type
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  [(NSMutableDictionary *)self->_detailResponses setObject:v7 forKeyedSubscript:v6];
+  typeCopy = type;
+  v7 = [response copy];
+  [(NSMutableDictionary *)self->_detailResponses setObject:v7 forKeyedSubscript:typeCopy];
 }
 
 @end

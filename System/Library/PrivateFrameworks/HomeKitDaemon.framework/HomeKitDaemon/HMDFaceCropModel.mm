@@ -5,11 +5,11 @@
 + (id)hmbProperties;
 + (id)hmbQueries;
 - (CGRect)faceBoundingBox;
-- (HMDFaceCropModel)initWithPersonFaceCrop:(id)a3;
+- (HMDFaceCropModel)initWithPersonFaceCrop:(id)crop;
 - (id)createPersonFaceCrop;
 - (int64_t)source;
-- (void)setFaceBoundingBox:(CGRect)a3;
-- (void)setSource:(int64_t)a3;
+- (void)setFaceBoundingBox:(CGRect)box;
+- (void)setSource:(int64_t)source;
 @end
 
 @implementation HMDFaceCropModel
@@ -90,10 +90,10 @@ void __38__HMDFaceCropModel_sentinelParentUUID__block_invoke()
 + (id)hmbQueries
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v3 = [a1 faceCropsForPersonUUIDQuery];
-  v8[0] = v3;
-  v4 = [a1 faceCropsWithUnassociatedFaceCropUUIDQuery];
-  v8[1] = v4;
+  faceCropsForPersonUUIDQuery = [self faceCropsForPersonUUIDQuery];
+  v8[0] = faceCropsForPersonUUIDQuery;
+  faceCropsWithUnassociatedFaceCropUUIDQuery = [self faceCropsWithUnassociatedFaceCropUUIDQuery];
+  v8[1] = faceCropsWithUnassociatedFaceCropUUIDQuery;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -161,33 +161,33 @@ void __33__HMDFaceCropModel_hmbProperties__block_invoke()
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSource:(int64_t)a3
+- (void)setSource:(int64_t)source
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:source];
   [(HMDFaceCropModel *)self setSourceField:v4];
 }
 
 - (int64_t)source
 {
-  v3 = [(HMDFaceCropModel *)self sourceField];
-  if (v3)
+  sourceField = [(HMDFaceCropModel *)self sourceField];
+  if (sourceField)
   {
-    v4 = [(HMDFaceCropModel *)self sourceField];
-    v5 = [v4 integerValue];
+    sourceField2 = [(HMDFaceCropModel *)self sourceField];
+    integerValue = [sourceField2 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (void)setFaceBoundingBox:(CGRect)a3
+- (void)setFaceBoundingBox:(CGRect)box
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCAE60] valueWithRect:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v4 = [MEMORY[0x277CCAE60] valueWithRect:{box.origin.x, box.origin.y, box.size.width, box.size.height}];
   v12 = 0;
   v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v12];
   v6 = v12;
@@ -199,7 +199,7 @@ void __33__HMDFaceCropModel_hmbProperties__block_invoke()
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -222,11 +222,11 @@ void __33__HMDFaceCropModel_hmbProperties__block_invoke()
 - (CGRect)faceBoundingBox
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDFaceCropModel *)self faceBoundingBoxData];
-  if (v3)
+  faceBoundingBoxData = [(HMDFaceCropModel *)self faceBoundingBoxData];
+  if (faceBoundingBoxData)
   {
     v23 = 0;
-    v4 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:&v23];
+    v4 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:faceBoundingBoxData error:&v23];
     v5 = v23;
     if (v4)
     {
@@ -240,7 +240,7 @@ void __33__HMDFaceCropModel_hmbProperties__block_invoke()
     else
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -283,30 +283,30 @@ void __33__HMDFaceCropModel_hmbProperties__block_invoke()
 - (id)createPersonFaceCrop
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDFaceCropModel *)self dataRepresentation];
-  v4 = [(HMDFaceCropModel *)self dateCreated];
-  v5 = [(HMDFaceCropModel *)self personUUID];
-  v6 = v5;
-  if (v5)
+  dataRepresentation = [(HMDFaceCropModel *)self dataRepresentation];
+  dateCreated = [(HMDFaceCropModel *)self dateCreated];
+  personUUID = [(HMDFaceCropModel *)self personUUID];
+  v6 = personUUID;
+  if (personUUID)
   {
-    v7 = v5;
+    hmbModelID = personUUID;
   }
 
   else
   {
-    v8 = [(HMDFaceCropModel *)self person];
-    v7 = [v8 hmbModelID];
+    person = [(HMDFaceCropModel *)self person];
+    hmbModelID = [person hmbModelID];
   }
 
-  if (v3 && v4 && v7)
+  if (dataRepresentation && dateCreated && hmbModelID)
   {
     v9 = objc_alloc(MEMORY[0x277CD1C78]);
-    v10 = [(HMBModel *)self hmbModelID];
+    hmbModelID2 = [(HMBModel *)self hmbModelID];
     [(HMDFaceCropModel *)self faceBoundingBox];
-    v11 = [v9 initWithUUID:v10 dataRepresentation:v3 dateCreated:v4 faceBoundingBox:v7 personUUID:?];
+    v11 = [v9 initWithUUID:hmbModelID2 dataRepresentation:dataRepresentation dateCreated:dateCreated faceBoundingBox:hmbModelID personUUID:?];
 
-    v12 = [(HMDFaceCropModel *)self unassociatedFaceCropUUID];
-    [v11 setUnassociatedFaceCropUUID:v12];
+    unassociatedFaceCropUUID = [(HMDFaceCropModel *)self unassociatedFaceCropUUID];
+    [v11 setUnassociatedFaceCropUUID:unassociatedFaceCropUUID];
 
     [v11 setSource:{-[HMDFaceCropModel source](self, "source")}];
     v13 = [v11 copy];
@@ -315,12 +315,12 @@ void __33__HMDFaceCropModel_hmbProperties__block_invoke()
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v17 = HMFGetLogIdentifier();
-      v18 = [(HMBModel *)v15 debugDescription];
+      v18 = [(HMBModel *)selfCopy debugDescription];
       v21 = 138543618;
       v22 = v17;
       v23 = 2112;
@@ -337,29 +337,29 @@ void __33__HMDFaceCropModel_hmbProperties__block_invoke()
   return v13;
 }
 
-- (HMDFaceCropModel)initWithPersonFaceCrop:(id)a3
+- (HMDFaceCropModel)initWithPersonFaceCrop:(id)crop
 {
-  v4 = a3;
-  v5 = [v4 UUID];
-  v6 = [objc_opt_class() sentinelParentUUID];
-  v7 = [(HMBModel *)self initWithModelID:v5 parentModelID:v6];
+  cropCopy = crop;
+  uUID = [cropCopy UUID];
+  sentinelParentUUID = [objc_opt_class() sentinelParentUUID];
+  v7 = [(HMBModel *)self initWithModelID:uUID parentModelID:sentinelParentUUID];
 
-  v8 = [v4 dataRepresentation];
-  [(HMDFaceCropModel *)v7 setDataRepresentation:v8];
+  dataRepresentation = [cropCopy dataRepresentation];
+  [(HMDFaceCropModel *)v7 setDataRepresentation:dataRepresentation];
 
-  v9 = [v4 dateCreated];
-  [(HMDFaceCropModel *)v7 setDateCreated:v9];
+  dateCreated = [cropCopy dateCreated];
+  [(HMDFaceCropModel *)v7 setDateCreated:dateCreated];
 
-  [v4 faceBoundingBox];
+  [cropCopy faceBoundingBox];
   [(HMDFaceCropModel *)v7 setFaceBoundingBox:?];
-  v10 = [v4 personUUID];
-  [(HMDFaceCropModel *)v7 setPersonUUID:v10];
+  personUUID = [cropCopy personUUID];
+  [(HMDFaceCropModel *)v7 setPersonUUID:personUUID];
 
-  v11 = [v4 unassociatedFaceCropUUID];
-  [(HMDFaceCropModel *)v7 setUnassociatedFaceCropUUID:v11];
+  unassociatedFaceCropUUID = [cropCopy unassociatedFaceCropUUID];
+  [(HMDFaceCropModel *)v7 setUnassociatedFaceCropUUID:unassociatedFaceCropUUID];
 
-  v12 = [v4 source];
-  [(HMDFaceCropModel *)v7 setSource:v12];
+  source = [cropCopy source];
+  [(HMDFaceCropModel *)v7 setSource:source];
 
   return v7;
 }

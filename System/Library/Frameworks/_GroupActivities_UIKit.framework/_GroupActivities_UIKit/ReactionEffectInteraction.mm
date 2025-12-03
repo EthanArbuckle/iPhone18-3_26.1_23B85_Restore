@@ -1,7 +1,7 @@
 @interface ReactionEffectInteraction
 - (UIView)view;
-- (void)didMoveToView:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation ReactionEffectInteraction
@@ -14,18 +14,18 @@
   return Strong;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   specialized ReactionEffectInteraction.willMove(to:)();
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  ReactionEffectInteraction.didMove(to:)(a3);
+  viewCopy = view;
+  selfCopy = self;
+  ReactionEffectInteraction.didMove(to:)(view);
 }
 
 @end

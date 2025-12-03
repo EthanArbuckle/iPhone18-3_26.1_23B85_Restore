@@ -2,34 +2,34 @@
 + (BOOL)__isNotesTextContentStorageClass;
 + (BOOL)_includesTextListMarkers;
 + (BOOL)_usesTextListElements;
-+ (void)registerEditedRangeValidator:(id)a3;
-- (BOOL)_supportsTextAttributesInRange:(_NSRange)a3;
++ (void)registerEditedRangeValidator:(id)validator;
+- (BOOL)_supportsTextAttributesInRange:(_NSRange)range;
 - (BOOL)containsExtraLineFragment;
 - (NSAttributedString)attributedString;
 - (NSAttributedString)attributedStringForTextElement:(NSTextElement *)textElement;
 - (NSCountableTextRange)documentRange;
 - (NSInteger)offsetFromLocation:(id)from toLocation:(id)to;
 - (NSTextContentStorage)init;
-- (NSTextContentStorage)initWithCoder:(id)a3;
+- (NSTextContentStorage)initWithCoder:(id)coder;
 - (NSTextElement)textElementForAttributedString:(NSAttributedString *)attributedString;
 - (NSTextRange)adjustedRangeFromRange:(NSTextRange *)textRange forEditingTextSelection:(BOOL)forEditingTextSelection;
-- (_NSRange)_applyEditedRangeAdjustmentsToRange:(_NSRange)a3;
-- (id)attributedStringForTextElements:(id)a3;
+- (_NSRange)_applyEditedRangeAdjustmentsToRange:(_NSRange)range;
+- (id)attributedStringForTextElements:(id)elements;
 - (id)delegate;
-- (id)enumerateTextElementsFromLocation:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5;
+- (id)enumerateTextElementsFromLocation:(id)location options:(unint64_t)options usingBlock:(id)block;
 - (id)locationFromLocation:(id)location withOffset:(NSInteger)offset;
 - (void)_commonInitialization;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)performEditingTransactionForTextStorage:(id)a3 usingBlock:(id)a4;
-- (void)processEditingForTextStorage:(id)a3 edited:(unint64_t)a4 range:(_NSRange)a5 changeInLength:(int64_t)a6 invalidatedRange:(_NSRange)a7;
-- (void)replaceContentsInRange:(id)a3 withTextElements:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)performEditingTransactionForTextStorage:(id)storage usingBlock:(id)block;
+- (void)processEditingForTextStorage:(id)storage edited:(unint64_t)edited range:(_NSRange)range changeInLength:(int64_t)length invalidatedRange:(_NSRange)invalidatedRange;
+- (void)replaceContentsInRange:(id)range withTextElements:(id)elements;
 - (void)setAttributedString:(NSAttributedString *)attributedString;
 - (void)setDelegate:(id)delegate;
-- (void)setTextStorage:(id)a3;
-- (void)synchronizeTextLayoutManagers:(id)a3;
-- (void)synchronizeToBackingStore:(id)a3;
-- (void)updateRangesForTextElement:(id)a3 locationDelta:(int64_t)a4;
+- (void)setTextStorage:(id)storage;
+- (void)synchronizeTextLayoutManagers:(id)managers;
+- (void)synchronizeToBackingStore:(id)store;
+- (void)updateRangesForTextElement:(id)element locationDelta:(int64_t)delta;
 @end
 
 @implementation NSTextContentStorage
@@ -170,7 +170,7 @@ uint64_t __45__NSTextContentStorage__usesTextListElements__block_invoke()
     +[NSTextContentStorage __isNotesTextContentStorageClass];
   }
 
-  return __isNotesTextContentStorageClass_notesTextContentStorageClass == a1;
+  return __isNotesTextContentStorageClass_notesTextContentStorageClass == self;
 }
 
 Class __56__NSTextContentStorage___isNotesTextContentStorageClass__block_invoke()
@@ -180,10 +180,10 @@ Class __56__NSTextContentStorage___isNotesTextContentStorageClass__block_invoke(
   return result;
 }
 
-- (_NSRange)_applyEditedRangeAdjustmentsToRange:(_NSRange)a3
+- (_NSRange)_applyEditedRangeAdjustmentsToRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v22 = *MEMORY[0x1E69E9840];
   obj = objc_opt_class();
   objc_sync_enter(obj);
@@ -241,7 +241,7 @@ Class __56__NSTextContentStorage___isNotesTextContentStorageClass__block_invoke(
   return result;
 }
 
-- (NSTextContentStorage)initWithCoder:(id)a3
+- (NSTextContentStorage)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = NSTextContentStorage;
@@ -250,12 +250,12 @@ Class __56__NSTextContentStorage___isNotesTextContentStorageClass__block_invoke(
   if (v4)
   {
     [(NSTextContentStorage *)v4 _commonInitialization];
-    if ([a3 allowsKeyedCoding])
+    if ([coder allowsKeyedCoding])
     {
-      -[NSTextContentStorage setTextStorage:](v5, "setTextStorage:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NS.textStorage"]);
+      -[NSTextContentStorage setTextStorage:](v5, "setTextStorage:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"NS.textStorage"]);
       if (!v5->_attributedString)
       {
-        -[NSTextContentStorage setAttributedString:](v5, "setAttributedString:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NS.attributedString"]);
+        -[NSTextContentStorage setAttributedString:](v5, "setAttributedString:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"NS.attributedString"]);
       }
     }
   }
@@ -263,14 +263,14 @@ Class __56__NSTextContentStorage___isNotesTextContentStorageClass__block_invoke(
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = NSTextContentStorage;
   [(NSTextContentManager *)&v5 encodeWithCoder:?];
-  if ([a3 allowsKeyedCoding] && (self->_textStorage || self->_attributedString))
+  if ([coder allowsKeyedCoding] && (self->_textStorage || self->_attributedString))
   {
-    [a3 encodeObject:? forKey:?];
+    [coder encodeObject:? forKey:?];
   }
 }
 
@@ -324,8 +324,8 @@ Class __56__NSTextContentStorage___isNotesTextContentStorageClass__block_invoke(
     self->_documentRange = 0;
     if (![(NSTextContentStorage *)self _supportsTextAttributesInRange:0, [(NSAttributedString *)self->_attributedString length]])
     {
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 postNotificationName:NSTextContentStorageUnsupportedAttributeAddedNotification object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:NSTextContentStorageUnsupportedAttributeAddedNotification object:self];
     }
 
     objc_sync_exit(self);
@@ -364,30 +364,30 @@ uint64_t __44__NSTextContentStorage_setAttributedString___block_invoke(uint64_t 
   return v3;
 }
 
-- (id)attributedStringForTextElements:(id)a3
+- (id)attributedStringForTextElements:(id)elements
 {
   v4 = objc_alloc_init(MEMORY[0x1E696AD40]);
-  [a3 enumerateObjectsUsingBlock:&__block_literal_global_206];
+  [elements enumerateObjectsUsingBlock:&__block_literal_global_206];
   return v4;
 }
 
-- (BOOL)_supportsTextAttributesInRange:(_NSRange)a3
+- (BOOL)_supportsTextAttributesInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v6 = [(NSTextContentStorage *)self textStorage];
-  v7 = [(NSTextContentStorage *)self attributedString];
-  v8 = [(NSTextStorage *)v6 ensuresFixingAttributes];
-  if (v8)
+  textStorage = [(NSTextContentStorage *)self textStorage];
+  attributedString = [(NSTextContentStorage *)self attributedString];
+  ensuresFixingAttributes = [(NSTextStorage *)textStorage ensuresFixingAttributes];
+  if (ensuresFixingAttributes)
   {
-    [(NSTextStorage *)v6 setEnsuresFixingAttributes:0];
+    [(NSTextStorage *)textStorage setEnsuresFixingAttributes:0];
   }
 
-  v17.length = [(NSAttributedString *)v7 length];
+  v17.length = [(NSAttributedString *)attributedString length];
   v17.location = 0;
   v18.location = location;
   v18.length = length;
@@ -399,10 +399,10 @@ uint64_t __44__NSTextContentStorage_setAttributedString___block_invoke(uint64_t 
     v12[2] = __55__NSTextContentStorage__supportsTextAttributesInRange___block_invoke;
     v12[3] = &unk_1E7266970;
     v12[4] = &v13;
-    [(NSAttributedString *)v7 enumerateAttribute:@"NSParagraphStyle" inRange:v9.location options:v9.length usingBlock:0x100000, v12];
+    [(NSAttributedString *)attributedString enumerateAttribute:@"NSParagraphStyle" inRange:v9.location options:v9.length usingBlock:0x100000, v12];
   }
 
-  [(NSTextStorage *)v6 setEnsuresFixingAttributes:v8];
+  [(NSTextStorage *)textStorage setEnsuresFixingAttributes:ensuresFixingAttributes];
   v10 = *(v14 + 24);
   _Block_object_dispose(&v13, 8);
   return (v10 & 1) == 0;
@@ -425,20 +425,20 @@ uint64_t __55__NSTextContentStorage__supportsTextAttributesInRange___block_invok
   return result;
 }
 
-- (void)setTextStorage:(id)a3
+- (void)setTextStorage:(id)storage
 {
   textStorage = self->_textStorage;
-  if (textStorage != a3)
+  if (textStorage != storage)
   {
     [(NSTextStorage *)textStorage setTextStorageObserver:0];
     objc_sync_enter(self);
     [(NSTextStorage *)self->_textStorage _setShouldSetOriginalFontAttribute:0];
-    self->_textStorage = a3;
-    [a3 _setShouldSetOriginalFontAttribute:1];
+    self->_textStorage = storage;
+    [storage _setShouldSetOriginalFontAttribute:1];
     objc_sync_exit(self);
-    [(NSTextContentStorage *)self setAttributedString:a3];
-    [a3 setTextStorageObserver:self];
-    if ([a3 _isSwiftAttributedString])
+    [(NSTextContentStorage *)self setAttributedString:storage];
+    [storage setTextStorageObserver:self];
+    if ([storage _isSwiftAttributedString])
     {
 
       [(NSTextContentStorage *)self setCopiesContentsInTextParagraphs:1];
@@ -446,32 +446,32 @@ uint64_t __55__NSTextContentStorage__supportsTextAttributesInRange___block_invok
   }
 }
 
-- (void)updateRangesForTextElement:(id)a3 locationDelta:(int64_t)a4
+- (void)updateRangesForTextElement:(id)element locationDelta:(int64_t)delta
 {
-  v7 = [a3 elementRange];
-  if (!v7)
+  elementRange = [element elementRange];
+  if (!elementRange)
   {
-    v12 = 0;
+    elementRange2 = 0;
     goto LABEL_9;
   }
 
-  v8 = [v7 range];
-  v10 = v8 + a4;
-  if (a4 && !v8)
+  range = [elementRange range];
+  v10 = range + delta;
+  if (delta && !range)
   {
     v11 = [[NSCountableTextRange alloc] initWithRange:v10, v9];
-    [a3 setElementRange:v11];
+    [element setElementRange:v11];
 
 LABEL_8:
-    v12 = [a3 elementRange];
+    elementRange2 = [element elementRange];
     goto LABEL_9;
   }
 
   v13 = [[NSCountableTextRange alloc] initWithRange:v10, v9];
-  [a3 setElementRange:v13];
+  [element setElementRange:v13];
 
-  v12 = 0;
-  if (a4 && !v10)
+  elementRange2 = 0;
+  if (delta && !v10)
   {
     goto LABEL_8;
   }
@@ -480,43 +480,43 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [a3 paragraphContentRange];
-    if (v14)
+    paragraphContentRange = [element paragraphContentRange];
+    if (paragraphContentRange)
     {
-      v15 = [v14 range];
-      v17 = [[NSCountableTextRange alloc] initWithRange:v15 + a4, v16];
-      [a3 setParagraphContentRange:v17];
+      range2 = [paragraphContentRange range];
+      v17 = [[NSCountableTextRange alloc] initWithRange:range2 + delta, v16];
+      [element setParagraphContentRange:v17];
     }
 
-    v18 = [a3 paragraphSeparatorRange];
-    if (v18)
+    paragraphSeparatorRange = [element paragraphSeparatorRange];
+    if (paragraphSeparatorRange)
     {
-      v19 = [v18 range];
-      v21 = [[NSCountableTextRange alloc] initWithRange:v19 + a4, v20];
-      [a3 setParagraphSeparatorRange:v21];
+      range3 = [paragraphSeparatorRange range];
+      v21 = [[NSCountableTextRange alloc] initWithRange:range3 + delta, v20];
+      [element setParagraphSeparatorRange:v21];
     }
 
-    [a3 synchronizeDocumentRange];
+    [element synchronizeDocumentRange];
   }
 
   objc_initWeak(&location, self);
-  v22 = [a3 childElements];
+  childElements = [element childElements];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __65__NSTextContentStorage_updateRangesForTextElement_locationDelta___block_invoke;
   v25[3] = &unk_1E7267D40;
   objc_copyWeak(v26, &location);
-  v26[1] = a4;
-  [v22 enumerateObjectsUsingBlock:v25];
-  if (v12)
+  v26[1] = delta;
+  [childElements enumerateObjectsUsingBlock:v25];
+  if (elementRange2)
   {
-    v23 = [(NSTextContentManager *)self textLayoutManagers];
+    textLayoutManagers = [(NSTextContentManager *)self textLayoutManagers];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __65__NSTextContentStorage_updateRangesForTextElement_locationDelta___block_invoke_2;
     v24[3] = &unk_1E7267CF8;
-    v24[4] = v12;
-    [(NSArray *)v23 enumerateObjectsUsingBlock:v24];
+    v24[4] = elementRange2;
+    [(NSArray *)textLayoutManagers enumerateObjectsUsingBlock:v24];
   }
 
   objc_destroyWeak(v26);
@@ -531,11 +531,11 @@ uint64_t __65__NSTextContentStorage_updateRangesForTextElement_locationDelta___b
   return [Weak updateRangesForTextElement:a2 locationDelta:v5];
 }
 
-- (void)processEditingForTextStorage:(id)a3 edited:(unint64_t)a4 range:(_NSRange)a5 changeInLength:(int64_t)a6 invalidatedRange:(_NSRange)a7
+- (void)processEditingForTextStorage:(id)storage edited:(unint64_t)edited range:(_NSRange)range changeInLength:(int64_t)length invalidatedRange:(_NSRange)invalidatedRange
 {
-  length = a5.length;
-  location = a5.location;
-  v10 = [(NSTextContentStorage *)self _applyEditedRangeAdjustmentsToRange:a7.location, a7.length];
+  length = range.length;
+  location = range.location;
+  v10 = [(NSTextContentStorage *)self _applyEditedRangeAdjustmentsToRange:invalidatedRange.location, invalidatedRange.length];
   if (v11)
   {
     v12 = v10;
@@ -543,7 +543,7 @@ uint64_t __65__NSTextContentStorage_updateRangesForTextElement_locationDelta___b
 
   else
   {
-    v12 = a7.location;
+    v12 = invalidatedRange.location;
   }
 
   if (v11)
@@ -553,22 +553,22 @@ uint64_t __65__NSTextContentStorage_updateRangesForTextElement_locationDelta___b
 
   else
   {
-    v13 = a7.length;
+    v13 = invalidatedRange.length;
   }
 
   v103 = [(NSString *)[(NSAttributedString *)[(NSTextContentStorage *)self attributedString] string] length];
   range2 = v13;
-  v14 = v13 - a6;
+  v14 = v13 - length;
   p_cachedRange = &self->_cachedRange;
   v112.location = v12;
-  v112.length = v13 - a6;
+  v112.length = v13 - length;
   v16 = NSIntersectionRange(v112, self->_cachedRange);
   v17 = v16.location;
   v18 = v16.length;
-  v106 = a4;
+  editedCopy = edited;
   if (v16 == 0uLL)
   {
-    if ((a4 & 2) == 0 || (v17 = v12, v12 != self->_cachedRange.length + self->_cachedRange.location) && (v17 = p_cachedRange->location, v12 + v14 != p_cachedRange->location))
+    if ((edited & 2) == 0 || (v17 = v12, v12 != self->_cachedRange.length + self->_cachedRange.location) && (v17 = p_cachedRange->location, v12 + v14 != p_cachedRange->location))
     {
       objc_sync_enter(self);
       v18 = 0;
@@ -841,9 +841,9 @@ LABEL_25:
 
       runs = v29->_runs;
       elementSize = v29->_elementSize;
-      v37 = [(NSAttributedString *)[(NSTextContentStorage *)self attributedString] string];
+      string = [(NSAttributedString *)[(NSTextContentStorage *)self attributedString] string];
       v23 = runs->var1[(elementSize + 8) * (v33 + v32) + 24];
-      if ((v23 & 2) != 0 || (v23 & 4) != 0 && (v38 = v37, v17 < [(NSString *)v37 length]) && [(NSString *)v38 characterAtIndex:v17]== 10)
+      if ((v23 & 2) != 0 || (v23 & 4) != 0 && (v38 = string, v17 < [(NSString *)string length]) && [(NSString *)v38 characterAtIndex:v17]== 10)
       {
         v113.location = v17;
         v113.length = v98;
@@ -874,13 +874,13 @@ LABEL_40:
   }
 
 LABEL_77:
-  if (a6)
+  if (length)
   {
     v68 = [(NSRunStorage *)self->_indexTable count];
     v69 = v68;
-    v70 = a6;
-    v71 = v103 - a6;
-    if (v103 - a6 >= v68)
+    lengthCopy = length;
+    v71 = v103 - length;
+    if (v103 - length >= v68)
     {
       v71 = v68;
     }
@@ -912,7 +912,7 @@ LABEL_77:
         v109[2] = __98__NSTextContentStorage_processEditingForTextStorage_edited_range_changeInLength_invalidatedRange___block_invoke;
         v109[3] = &unk_1E7267D68;
         v109[4] = self;
-        v109[5] = v70;
+        v109[5] = lengthCopy;
         __NSTextContentStorageEnumerateCachedElementsInElementIndexRange(self, v101, v78, v109);
         self->_cachedRange.location = __NSTextContentStorageGetRangeForIndexRange(self, 0, [(NSStorage *)self->_elements count]);
         self->_cachedRange.length = v80;
@@ -922,7 +922,7 @@ LABEL_77:
     self->_documentRange = 0;
     v12 = v72;
     v14 = v73;
-    a6 = v70;
+    length = lengthCopy;
   }
 
   if (v19 == 0x7FFFFFFFFFFFFFFFLL)
@@ -947,18 +947,18 @@ LABEL_77:
   }
 
   v84 = [(NSCountableTextRange *)v82 initWithRange:v83, v81];
-  v85 = [[NSCountableTextRange alloc] initWithRange:v83, v81 + a6];
+  v85 = [[NSCountableTextRange alloc] initWithRange:v83, v81 + length];
   [(NSTextContentManager *)self recordEditActionInRange:v84 newTextRange:v85];
 
   p_editedRange = &self->_editedRange;
   v87 = self->_editedRange.location;
-  v88 = length;
+  lengthCopy2 = length;
   if (v87 == 0x7FFFFFFFFFFFFFFFLL)
   {
     p_editedRange->location = location;
     self->_editedRange.length = length;
-    self->_editedDelta = a6;
-    self->_editedMask = v106;
+    self->_editedDelta = length;
+    self->_editedMask = editedCopy;
   }
 
   else
@@ -974,15 +974,15 @@ LABEL_77:
     }
 
     v90 = self->_editedRange.length + v87 - self->_editedDelta;
-    if (length - a6 + location > v90)
+    if (length - length + location > v90)
     {
-      v90 = length - a6 + location;
+      v90 = length - length + location;
     }
 
     p_editedRange->location = v89;
-    self->_editedRange.length = a6 - v89 + v90;
-    self->_editedDelta += a6;
-    self->_editedMask |= v106;
+    self->_editedRange.length = length - v89 + v90;
+    self->_editedDelta += length;
+    self->_editedMask |= editedCopy;
   }
 
   p_invalidatedRange = &self->_invalidatedRange;
@@ -1010,20 +1010,20 @@ LABEL_77:
   {
     if (self->__hasAnchoredTextAttachments)
     {
-      if ((v106 & 1) == 0 && (a6 & 0x8000000000000000) == 0)
+      if ((editedCopy & 1) == 0 && (length & 0x8000000000000000) == 0)
       {
         goto LABEL_111;
       }
 
-      v88 = [(NSTextStorage *)self->_textStorage length];
+      lengthCopy2 = [(NSTextStorage *)self->_textStorage length];
     }
 
-    else if ((v106 & 1) == 0)
+    else if ((editedCopy & 1) == 0)
     {
       goto LABEL_111;
     }
 
-    if (v88)
+    if (lengthCopy2)
     {
       v110.location = 0;
       v110.length = &v110;
@@ -1093,23 +1093,23 @@ uint64_t __98__NSTextContentStorage_processEditingForTextStorage_edited_range_ch
   return result;
 }
 
-- (void)performEditingTransactionForTextStorage:(id)a3 usingBlock:(id)a4
+- (void)performEditingTransactionForTextStorage:(id)storage usingBlock:(id)block
 {
   [(NSTextContentStorage *)self beginEditingTransaction];
-  (*(a4 + 2))(a4);
+  (*(block + 2))(block);
   [(NSTextContentStorage *)self endEditingTransaction];
 }
 
-- (void)synchronizeTextLayoutManagers:(id)a3
+- (void)synchronizeTextLayoutManagers:(id)managers
 {
   objc_sync_enter(self);
   v8.receiver = self;
   v8.super_class = NSTextContentStorage;
-  [(NSTextContentManager *)&v8 synchronizeTextLayoutManagers:a3];
+  [(NSTextContentManager *)&v8 synchronizeTextLayoutManagers:managers];
   if (![(NSTextContentStorage *)self _supportsTextAttributesInRange:self->_invalidatedRange.location, self->_invalidatedRange.length])
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:NSTextContentStorageUnsupportedAttributeAddedNotification object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:NSTextContentStorageUnsupportedAttributeAddedNotification object:self];
   }
 
   if (!self->_notifyingToFixSelection && self->_editedRange.location != 0x7FFFFFFFFFFFFFFFLL)
@@ -1136,9 +1136,9 @@ uint64_t __98__NSTextContentStorage_processEditingForTextStorage_edited_range_ch
   objc_sync_exit(self);
 }
 
-+ (void)registerEditedRangeValidator:(id)a3
++ (void)registerEditedRangeValidator:(id)validator
 {
-  if ([a3 conformsToProtocol:&unk_1F01D9CA0])
+  if ([validator conformsToProtocol:&unk_1F01D9CA0])
   {
     v4 = objc_opt_class();
     objc_sync_enter(v4);
@@ -1149,7 +1149,7 @@ uint64_t __98__NSTextContentStorage_processEditingForTextStorage_edited_range_ch
       _editedRangeValidators = v5;
     }
 
-    [v5 addObject:a3];
+    [v5 addObject:validator];
 
     objc_sync_exit(v4);
   }
@@ -1164,12 +1164,12 @@ uint64_t __98__NSTextContentStorage_processEditingForTextStorage_edited_range_ch
   }
 
   v4 = [(NSString *)[(NSAttributedString *)[(NSTextContentStorage *)self attributedString] string] characterAtIndex:v3 - 1];
-  v5 = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
 
-  return [v5 characterIsMember:v4];
+  return [newlineCharacterSet characterIsMember:v4];
 }
 
-- (id)enumerateTextElementsFromLocation:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5
+- (id)enumerateTextElementsFromLocation:(id)location options:(unint64_t)options usingBlock:(id)block
 {
   v151 = *MEMORY[0x1E69E9840];
   textStorage = self->_textStorage;
@@ -1179,17 +1179,17 @@ uint64_t __98__NSTextContentStorage_processEditingForTextStorage_edited_range_ch
   }
 
   v9 = [(NSTextStorage *)textStorage length];
-  if (!a3)
+  if (!location)
   {
-    a3 = [(NSTextRange *)[(NSTextContentStorage *)self documentRange] location];
+    location = [(NSTextRange *)[(NSTextContentStorage *)self documentRange] location];
   }
 
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (v10 = [a3 type], (objc_msgSend(v10, "isEqualToString:", NSTextLocationTypeCountable) & 1) == 0))
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (v10 = [location type], (objc_msgSend(v10, "isEqualToString:", NSTextLocationTypeCountable) & 1) == 0))
   {
     v11 = MEMORY[0x1E695DF30];
     v12 = *MEMORY[0x1E695D940];
     v13 = objc_opt_class();
-    [v11 raise:v12 format:{@"-[%@ %@] received NSTextLocation unrecognized %@.", v13, NSStringFromSelector(a2), a3}];
+    [v11 raise:v12 format:{@"-[%@ %@] received NSTextLocation unrecognized %@.", v13, NSStringFromSelector(a2), location}];
   }
 
   objc_sync_enter(self);
@@ -1198,8 +1198,8 @@ uint64_t __98__NSTextContentStorage_processEditingForTextStorage_edited_range_ch
     goto LABEL_210;
   }
 
-  v14 = [a3 characterIndex];
-  if (a4)
+  characterIndex = [location characterIndex];
+  if (options)
   {
     v15 = -1;
   }
@@ -1213,14 +1213,14 @@ uint64_t __98__NSTextContentStorage_processEditingForTextStorage_edited_range_ch
   [(NSTextContentStorage *)self delegate];
   v130 = objc_opt_respondsToSelector();
   memset(v137, 0, 512);
-  v16 = [(NSTextContentManager *)self maximumNumberOfUncachedElements];
+  maximumNumberOfUncachedElements = [(NSTextContentManager *)self maximumNumberOfUncachedElements];
   bzero(v137, 0x248uLL);
   v17.f64[0] = NAN;
   v17.f64[1] = NAN;
   *v138 = vnegq_f64(v17);
-  if (v16)
+  if (maximumNumberOfUncachedElements)
   {
-    v18 = v16;
+    v18 = maximumNumberOfUncachedElements;
   }
 
   else
@@ -1233,7 +1233,7 @@ uint64_t __98__NSTextContentStorage_processEditingForTextStorage_edited_range_ch
   v140 = 0x7FFFFFFFFFFFFFFFLL;
   v142 = 1;
   activeEnumerationCache = self->_activeEnumerationCache;
-  v141 = !(a4 & 1);
+  v141 = !(options & 1);
   v133 = 0u;
   v134 = 0;
   v135 = 0x7FFFFFFFFFFFFFFFLL;
@@ -1246,17 +1246,17 @@ uint64_t __98__NSTextContentStorage_processEditingForTextStorage_edited_range_ch
 
   self->_activeEnumerationCache = v137;
   v20 = v9 + self->_modifiedDocumentLengthDelta;
-  if (v14 >= v20)
+  if (characterIndex >= v20)
   {
     v21 = v9 + self->_modifiedDocumentLengthDelta;
   }
 
   else
   {
-    v21 = v14;
+    v21 = characterIndex;
   }
 
-  if (a4)
+  if (options)
   {
     v20 = 0;
   }
@@ -1271,13 +1271,13 @@ uint64_t __98__NSTextContentStorage_processEditingForTextStorage_edited_range_ch
   v22 = 0;
   v122 = 0;
   v23 = 1;
-  if (a4)
+  if (options)
   {
     v23 = -1;
   }
 
   v126 = v23;
-  v132 = 0x7FFFFFFFFFFFFFFFLL;
+  range = 0x7FFFFFFFFFFFFFFFLL;
   while (2)
   {
     v21 += v131;
@@ -1380,14 +1380,14 @@ uint64_t __98__NSTextContentStorage_processEditingForTextStorage_edited_range_ch
       range1 = v148 - v149;
     }
 
-    v40 = [(NSTextContentStorage *)self attributedString];
+    attributedString = [(NSTextContentStorage *)self attributedString];
     range2.length = 0;
     range2.location = 0;
-    v41 = [(NSAttributedString *)v40 attribute:@"NSAttachment" atIndex:v21 longestEffectiveRange:&range2 inRange:v34, range1];
-    v119 = v41 != 0;
+    range1 = [(NSAttributedString *)attributedString attribute:@"NSAttachment" atIndex:v21 longestEffectiveRange:&range2 inRange:v34, range1];
+    v119 = range1 != 0;
     [(NSTextContentStorage *)self delegate];
     v42 = objc_opt_respondsToSelector();
-    if (v41 && [v41 embeddingType] == 1)
+    if (range1 && [range1 embeddingType] == 1)
     {
       v43 = v148 - v21;
       if (v21 + 1 == v147)
@@ -1401,7 +1401,7 @@ uint64_t __98__NSTextContentStorage_processEditingForTextStorage_edited_range_ch
       }
 
       range1 = v44;
-      if ((v42 & 1) != 0 && (v22 = [-[NSTextContentStorage delegate](self "delegate")]) != 0 || (v45 = -[NSTextParagraph initWithTextAttachment:attributes:]([NSTextParagraph alloc], "initWithTextAttachment:attributes:", v41, -[NSAttributedString attributesAtIndex:effectiveRange:](v40, "attributesAtIndex:effectiveRange:", v21, 0)), v22 = v45, range1 < 2))
+      if ((v42 & 1) != 0 && (v22 = [-[NSTextContentStorage delegate](self "delegate")]) != 0 || (v45 = -[NSTextParagraph initWithTextAttachment:attributes:]([NSTextParagraph alloc], "initWithTextAttachment:attributes:", range1, -[NSAttributedString attributesAtIndex:effectiveRange:](attributedString, "attributesAtIndex:effectiveRange:", v21, 0)), v22 = v45, range1 < 2))
       {
         v50 = 1;
         v117 = 1;
@@ -1411,10 +1411,10 @@ uint64_t __98__NSTextContentStorage_processEditingForTextStorage_edited_range_ch
       else
       {
         v46 = [(NSAttributedString *)[(NSTextParagraph *)v45 attributedString] mutableCopy];
-        v47 = [v46 mutableString];
+        mutableString = [v46 mutableString];
         v48 = [v46 length];
-        v49 = [(NSAttributedString *)v40 string];
-        [v47 replaceCharactersInRange:v48 withString:{0, -[NSString substringWithRange:](v49, "substringWithRange:", v147, v148 - v147)}];
+        string = [(NSAttributedString *)attributedString string];
+        [mutableString replaceCharactersInRange:v48 withString:{0, -[NSString substringWithRange:](string, "substringWithRange:", v147, v148 - v147)}];
         [(NSTextParagraph *)v22 setAttributedString:v46];
 
         v50 = 1;
@@ -1440,37 +1440,37 @@ LABEL_81:
       v145[0] = 0;
       if ([objc_opt_class() _usesTextListElements])
       {
-        v61 = [(NSAttributedString *)v40 attribute:@"NSParagraphStyle" atIndex:v51 longestEffectiveRange:v145 inRange:v51, range1];
+        range12 = [(NSAttributedString *)attributedString attribute:@"NSParagraphStyle" atIndex:v51 longestEffectiveRange:v145 inRange:v51, range1];
       }
 
       else
       {
-        v61 = 0;
+        range12 = 0;
       }
 
-      if (![objc_msgSend(v61 "textLists")] || (v144 = 0, v143 = 0, (v22 = +[NSTextListElement _rootTextListElementFromAttributedString:atIndex:options:effectiveRange:textListElementInstantiationCallback:](NSTextListElement, "_rootTextListElementFromAttributedString:atIndex:options:effectiveRange:textListElementInstantiationCallback:", v40, v51, -[NSTextContentStorage includesTextListMarkers](self, "includesTextListMarkers"), &v143, &__block_literal_global_353)) == 0))
+      if (![objc_msgSend(range12 "textLists")] || (v144 = 0, v143 = 0, (v22 = +[NSTextListElement _rootTextListElementFromAttributedString:atIndex:options:effectiveRange:textListElementInstantiationCallback:](NSTextListElement, "_rootTextListElementFromAttributedString:atIndex:options:effectiveRange:textListElementInstantiationCallback:", attributedString, v51, -[NSTextContentStorage includesTextListMarkers](self, "includesTextListMarkers"), &v143, &__block_literal_global_353)) == 0))
       {
         if ([(NSTextContentStorage *)self copiesContentsInTextParagraphs])
         {
           if ([(NSTextStorage *)[(NSTextContentStorage *)self textStorage] _isSwiftAttributedString])
           {
-            v66 = [(NSTextStorage *)[(NSTextContentStorage *)self textStorage] _nsAttributedSubstringFromRange:v51, range1];
+            range13 = [(NSTextStorage *)[(NSTextContentStorage *)self textStorage] _nsAttributedSubstringFromRange:v51, range1];
           }
 
           else
           {
-            v66 = [(NSAttributedString *)v40 attributedSubstringFromRange:v51, range1];
+            range13 = [(NSAttributedString *)attributedString attributedSubstringFromRange:v51, range1];
           }
 
-          v67 = [[NSTextParagraph alloc] initWithAttributedString:v66];
+          range14 = [[NSTextParagraph alloc] initWithAttributedString:range13];
         }
 
         else
         {
-          v67 = [[NSTextParagraph alloc] initWithAttributedString:v40 range:v51, range1];
+          range14 = [[NSTextParagraph alloc] initWithAttributedString:attributedString range:v51, range1];
         }
 
-        v22 = v67;
+        v22 = range14;
         goto LABEL_105;
       }
 
@@ -1498,7 +1498,7 @@ LABEL_66:
     length = v53.location + v53.length - v34;
     while (1)
     {
-      v56 = [(NSAttributedString *)v40 attribute:@"NSAttachment" atIndex:v55 - 1 longestEffectiveRange:&range2 inRange:v34, v55 - v34];
+      v56 = [(NSAttributedString *)attributedString attribute:@"NSAttachment" atIndex:v55 - 1 longestEffectiveRange:&range2 inRange:v34, v55 - v34];
       if (v56)
       {
         break;
@@ -1555,7 +1555,7 @@ LABEL_75:
     length = v35 - v51;
     while (2)
     {
-      v59 = [(NSAttributedString *)v40 attribute:@"NSAttachment" atIndex:v58 longestEffectiveRange:&range2 inRange:v58, v35 - v58];
+      v59 = [(NSAttributedString *)attributedString attribute:@"NSAttachment" atIndex:v58 longestEffectiveRange:&range2 inRange:v58, v35 - v58];
       if (!v59)
       {
 LABEL_74:
@@ -1616,11 +1616,11 @@ LABEL_107:
 LABEL_108:
     v68 = v147;
     v69 = v141;
-    v70 = [[NSCountableTextRange alloc] initWithRange:v34, range1];
+    range15 = [[NSCountableTextRange alloc] initWithRange:v34, range1];
     [(NSTextElement *)v22 setTextContentManager:self];
-    [(NSTextParagraph *)v22 setElementRange:v70];
+    [(NSTextParagraph *)v22 setElementRange:range15];
 
-    v71 = (v117 & 1) == 0;
+    coalescingType = (v117 & 1) == 0;
     if (isKindOfClass)
     {
       v72 = v68 - v34 < range1 && v68 >= v34;
@@ -1638,7 +1638,7 @@ LABEL_108:
 
       if ((v117 & 1) == 0)
       {
-        v71 = [(NSTextElement *)v22 coalescingType];
+        coalescingType = [(NSTextElement *)v22 coalescingType];
       }
 
       [(NSTextParagraph *)v22 setIsBeginningOfParagraph:v118];
@@ -1669,7 +1669,7 @@ LABEL_108:
 
     *&v138[8] = v34;
     *&v138[16] = range1;
-    [(NSTextElement *)v22 setCoalescingType:v71];
+    [(NSTextElement *)v22 setCoalescingType:coalescingType];
     *(&v137[1] + *v138 + 1) = v22;
     if (v69)
     {
@@ -1686,18 +1686,18 @@ LABEL_108:
 LABEL_129:
     if ([(NSArray *)[(NSTextElement *)v22 childElements] count])
     {
-      v132 = [(NSTextRange *)[(NSTextElement *)v22 elementRange] range];
+      range = [(NSTextRange *)[(NSTextElement *)v22 elementRange] range];
       v124 = v80;
-      v81 = [(NSTextElement *)v22 childElements];
+      childElements = [(NSTextElement *)v22 childElements];
       WORD2(v145[0]) = 0;
       LODWORD(v145[0]) = 0;
-      if ([(NSArray *)v81 count])
+      if ([(NSArray *)childElements count])
       {
-        v82 = [(NSTextRange *)[(NSTextElement *)v22 elementRange] range];
+        range2 = [(NSTextRange *)[(NSTextElement *)v22 elementRange] range];
         v84 = v83;
-        if (a4)
+        if (options)
         {
-          range1a = [(NSArray *)v81 count]- 1;
+          range1a = [(NSArray *)childElements count]- 1;
         }
 
         else
@@ -1706,9 +1706,9 @@ LABEL_129:
         }
 
         v88 = 0;
-        if (v82 >= v21 || v82 + v84 <= v21)
+        if (range2 >= v21 || range2 + v84 <= v21)
         {
-          v87 = v22;
+          parentElement = v22;
         }
 
         else
@@ -1718,17 +1718,17 @@ LABEL_129:
           v90 = [(NSTextElement *)v22 childTextElementForLocation:v120 elementIndex:&range2];
           if (v90)
           {
-            v87 = [v90 parentElement];
-            v81 = [(NSTextElement *)v87 childElements];
+            parentElement = [v90 parentElement];
+            childElements = [(NSTextElement *)parentElement childElements];
             range1a = range2.location;
             v91 = 0;
-            v92 = [(NSTextElement *)v87 parentElement];
-            if (v92)
+            v87ParentElement = [(NSTextElement *)parentElement parentElement];
+            if (v87ParentElement)
             {
-              v93 = v87;
+              v93 = parentElement;
               do
               {
-                v94 = [(NSArray *)[(NSTextElement *)v92 childElements] indexOfObject:v93];
+                v94 = [(NSArray *)[(NSTextElement *)v87ParentElement childElements] indexOfObject:v93];
                 if (v91)
                 {
                   [v91 insertObject:objc_msgSend(MEMORY[0x1E696AD98] atIndex:{"numberWithInteger:", v94 + v126), 0}];
@@ -1740,11 +1740,11 @@ LABEL_129:
                   v91 = [v95 initWithObjects:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", v94 + v126), 0}];
                 }
 
-                v93 = v92;
-                v92 = [(NSTextElement *)v92 parentElement];
+                v93 = v87ParentElement;
+                v87ParentElement = [(NSTextElement *)v87ParentElement parentElement];
               }
 
-              while (v92);
+              while (v87ParentElement);
             }
 
             v96 = [v91 count];
@@ -1785,7 +1785,7 @@ LABEL_129:
           else
           {
             v88 = 0;
-            v87 = v22;
+            parentElement = v22;
           }
         }
 
@@ -1794,17 +1794,17 @@ LABEL_129:
 
       else
       {
-        v87 = 0;
-        v81 = 0;
+        parentElement = 0;
+        childElements = 0;
         v88 = 0;
         v89 = 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      *&v133 = v87;
-      *(&v133 + 1) = v81;
+      *&v133 = parentElement;
+      *(&v133 + 1) = childElements;
       v134 = v88;
       v135 = v89;
-      LOWORD(v136) = !(a4 & 1);
+      LOWORD(v136) = !(options & 1);
       *(&v136 + 2) = v145[0];
       HIWORD(v136) = WORD2(v145[0]);
       if (!v22)
@@ -1823,28 +1823,28 @@ LABEL_161:
         }
 
         v102 = v141;
-        v103 = [(NSTextElement *)NextElement elementRange];
-        v104 = v103;
+        elementRange = [(NSTextElement *)NextElement elementRange];
+        v104 = elementRange;
         if (v102)
         {
-          if (![(NSTextRange *)v103 containsLocation:a3])
+          if (![(NSTextRange *)elementRange containsLocation:location])
           {
             continue;
           }
         }
 
-        else if ([-[NSTextRange location](v103 "location")] != -1 || objc_msgSend(a3, "compare:", -[NSTextRange endLocation](v104, "endLocation")) == 1)
+        else if ([-[NSTextRange location](elementRange "location")] != -1 || objc_msgSend(location, "compare:", -[NSTextRange endLocation](v104, "endLocation")) == 1)
         {
           continue;
         }
 
         if (v141)
         {
-          v105 = [(NSArray *)[(NSTextElement *)v85 childElements] firstObject];
-          v106 = v105;
-          if (v105)
+          firstObject = [(NSArray *)[(NSTextElement *)v85 childElements] firstObject];
+          v106 = firstObject;
+          if (firstObject)
           {
-            if (([objc_msgSend(objc_msgSend(v105 "elementRange")] & 1) == 0 && objc_msgSend(a3, "compare:", objc_msgSend(objc_msgSend(v106, "elementRange"), "location")) != -1)
+            if (([objc_msgSend(objc_msgSend(firstObject "elementRange")] & 1) == 0 && objc_msgSend(location, "compare:", objc_msgSend(objc_msgSend(v106, "elementRange"), "location")) != -1)
             {
               continue;
             }
@@ -1860,9 +1860,9 @@ LABEL_161:
       }
 
 LABEL_176:
-      v107 = [(NSTextRange *)[(NSTextElement *)v85 elementRange] range];
-      v86 = a4 & 1;
-      if ((a4 & 1) != 0 && v107 <= v132)
+      range3 = [(NSTextRange *)[(NSTextElement *)v85 elementRange] range];
+      v86 = options & 1;
+      if ((options & 1) != 0 && range3 <= range)
       {
         if ([(NSTextElement *)v85 parentElement]== v22)
         {
@@ -1870,18 +1870,18 @@ LABEL_176:
         }
       }
 
-      else if ((a4 & 1) == 0 && v107 + v108 >= v124 + v132 && ![(NSTextElement *)v85 _firstRepresentableChildElement])
+      else if ((options & 1) == 0 && range3 + v108 >= v124 + range && ![(NSTextElement *)v85 _firstRepresentableChildElement])
       {
 LABEL_179:
 
         v124 = 0;
         v22 = 0;
         v134 = 0;
-        v132 = 0x7FFFFFFFFFFFFFFFLL;
+        range = 0x7FFFFFFFFFFFFFFFLL;
       }
 
 LABEL_183:
-      v109 = [(NSTextRange *)[(NSTextElement *)v85 elementRange] range];
+      range4 = [(NSTextRange *)[(NSTextElement *)v85 elementRange] range];
       v111 = v110;
       if ((v130 & 1) != 0 && ([-[NSTextContentStorage delegate](self "delegate")] & 1) == 0)
       {
@@ -1895,12 +1895,12 @@ LABEL_183:
           v114 = v111;
         }
 
-        v21 = v114 + v109;
+        v21 = v114 + range4;
       }
 
       else
       {
-        v112 = (*(a5 + 2))(a5, v85);
+        v112 = (*(block + 2))(block, v85);
         if (v86)
         {
           v113 = 0;
@@ -1911,7 +1911,7 @@ LABEL_183:
           v113 = v111;
         }
 
-        v21 = v113 + v109;
+        v21 = v113 + range4;
         if (!v112)
         {
           goto LABEL_207;
@@ -1935,7 +1935,7 @@ LABEL_183:
   {
     v85 = v22;
     v22 = 0;
-    v86 = a4 & 1;
+    v86 = options & 1;
     goto LABEL_183;
   }
 
@@ -1953,10 +1953,10 @@ LABEL_210:
   return v9;
 }
 
-- (void)replaceContentsInRange:(id)a3 withTextElements:(id)a4
+- (void)replaceContentsInRange:(id)range withTextElements:(id)elements
 {
   objc_sync_enter(self);
-  v45.location = [a3 range];
+  v45.location = [range range];
   location = v45.location;
   length = v45.length;
   v8 = NSIntersectionRange(v45, self->_cachedRange);
@@ -1994,8 +1994,8 @@ LABEL_210:
 
       else
       {
-        v19 = [v18 attributedString];
-        v15 = [v19 attributedSubstringFromRange:{0, &location[-v44.n128_u64[0]]}];
+        attributedString = [v18 attributedString];
+        v15 = [attributedString attributedSubstringFromRange:{0, &location[-v44.n128_u64[0]]}];
       }
 
       v13 = v44.n128_u64[0];
@@ -2032,8 +2032,8 @@ LABEL_19:
     [(NSString *)[(NSAttributedString *)[(NSTextContentStorage *)self attributedString] string] getParagraphStart:&v43 end:0 contentsEnd:0 forRange:v14, 1];
     if (v43 != v14)
     {
-      v20 = [(NSTextContentStorage *)self attributedString];
-      v15 = [(NSAttributedString *)v20 attributedSubstringFromRange:v43, v14 - v43];
+      attributedString2 = [(NSTextContentStorage *)self attributedString];
+      v15 = [(NSAttributedString *)attributedString2 attributedSubstringFromRange:v43, v14 - v43];
       v13 -= [(NSAttributedString *)v15 length];
       v14 = v43;
     }
@@ -2041,13 +2041,13 @@ LABEL_19:
 
   if (v15)
   {
-    location = [a4 mutableCopy];
-    [a4 firstObject];
+    location = [elements mutableCopy];
+    [elements firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v21 = [(NSAttributedString *)v15 mutableCopy];
-      [v21 appendAttributedString:{objc_msgSend(objc_msgSend(a4, "firstObject"), "attributedString")}];
+      [v21 appendAttributedString:{objc_msgSend(objc_msgSend(elements, "firstObject"), "attributedString")}];
       v22 = [[NSTextParagraph alloc] initWithAttributedString:v21];
       [location replaceObjectAtIndex:0 withObject:v22];
     }
@@ -2135,8 +2135,8 @@ LABEL_53:
     [(NSString *)[(NSAttributedString *)[(NSTextContentStorage *)self attributedString] string] getParagraphStart:0 end:&v43 contentsEnd:0 forRange:v29 + v14 - 1, 1];
     if (v29 + v14 != v43)
     {
-      v39 = [(NSTextContentStorage *)self attributedString];
-      v30 = [(NSAttributedString *)v39 attributedSubstringFromRange:v29 + v14, v43 - (v29 + v14)];
+      attributedString3 = [(NSTextContentStorage *)self attributedString];
+      v30 = [(NSAttributedString *)attributedString3 attributedSubstringFromRange:v29 + v14, v43 - (v29 + v14)];
       length += [(NSAttributedString *)v30 length];
       v29 = v43 - v14;
     }
@@ -2155,14 +2155,14 @@ LABEL_55:
   {
     if (!location)
     {
-      location = [a4 mutableCopy];
+      location = [elements mutableCopy];
     }
 
-    [a4 lastObject];
+    [elements lastObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v40 = [objc_msgSend(objc_msgSend(a4 "lastObject")];
+      v40 = [objc_msgSend(objc_msgSend(elements "lastObject")];
       [v40 appendAttributedString:v30];
       v41 = [[NSTextParagraph alloc] initWithAttributedString:v40];
       [location replaceObjectAtIndex:objc_msgSend(location withObject:{"count") - 1, v41}];
@@ -2189,27 +2189,27 @@ LABEL_33:
   objc_sync_exit(self);
 }
 
-- (void)synchronizeToBackingStore:(id)a3
+- (void)synchronizeToBackingStore:(id)store
 {
   objc_sync_enter(self);
   if ([(NSTextContentStorage *)self textStorage])
   {
-    v4 = [(NSTextContentStorage *)self textStorage];
+    textStorage = [(NSTextContentStorage *)self textStorage];
   }
 
   else
   {
-    v4 = objc_alloc_init(MEMORY[0x1E696AD40]);
+    textStorage = objc_alloc_init(MEMORY[0x1E696AD40]);
   }
 
-  v5 = v4;
+  v5 = textStorage;
   memset(v23, 0, sizeof(v23));
   p_modifiedRange = &self->_modifiedRange;
   location = self->_modifiedRange.location;
   length = self->_modifiedRange.length;
   v21 = 0;
   v22 = 0;
-  [(NSTextStorage *)v4 beginEditing];
+  [(NSTextStorage *)textStorage beginEditing];
   v9 = &off_18E856000;
   v10 = 0x1EAC99000uLL;
   if (self->_modifiedRange.length)
@@ -2342,16 +2342,16 @@ void __50__NSTextContentStorage_synchronizeToBackingStore___block_invoke(uint64_
 
   if ([location isEndOfDocument])
   {
-    v8 = [(NSAttributedString *)[(NSTextContentStorage *)self attributedString] length];
+    characterIndex = [(NSAttributedString *)[(NSTextContentStorage *)self attributedString] length];
   }
 
   else
   {
-    v8 = [location characterIndex];
+    characterIndex = [location characterIndex];
   }
 
-  v9 = v8 + offset;
-  if (v8 + offset < 0 || v9 > [(NSAttributedString *)[(NSTextContentStorage *)self attributedString] length])
+  v9 = characterIndex + offset;
+  if (characterIndex + offset < 0 || v9 > [(NSAttributedString *)[(NSTextContentStorage *)self attributedString] length])
   {
     return 0;
   }
@@ -2370,26 +2370,26 @@ void __50__NSTextContentStorage_synchronizeToBackingStore___block_invoke(uint64_
 {
   if ([from isEndOfDocument])
   {
-    v8 = [(NSAttributedString *)[(NSTextContentStorage *)self attributedString] length];
+    characterIndex = [(NSAttributedString *)[(NSTextContentStorage *)self attributedString] length];
   }
 
   else
   {
-    v8 = [from characterIndex];
+    characterIndex = [from characterIndex];
   }
 
-  v9 = v8;
+  v9 = characterIndex;
   if ([to isEndOfDocument])
   {
-    v10 = [(NSAttributedString *)[(NSTextContentStorage *)self attributedString] length];
+    characterIndex2 = [(NSAttributedString *)[(NSTextContentStorage *)self attributedString] length];
   }
 
   else
   {
-    v10 = [to characterIndex];
+    characterIndex2 = [to characterIndex];
   }
 
-  v11 = v10;
+  v11 = characterIndex2;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -2408,7 +2408,7 @@ void __50__NSTextContentStorage_synchronizeToBackingStore___block_invoke(uint64_
   }
 
   v5 = forEditingTextSelection;
-  v7 = [(NSTextRange *)textRange range];
+  range = [(NSTextRange *)textRange range];
   v9 = v8;
   location = p_editedRange->location;
   length = p_editedRange->length;
@@ -2416,7 +2416,7 @@ void __50__NSTextContentStorage_synchronizeToBackingStore___block_invoke(uint64_
   v13 = length - editedDelta;
   if (v5)
   {
-    if (location >= v7 + v8 && (location != v7 || v13 != v8))
+    if (location >= range + v8 && (location != range || v13 != v8))
     {
       return 0;
     }
@@ -2430,7 +2430,7 @@ void __50__NSTextContentStorage_synchronizeToBackingStore___block_invoke(uint64_
     v16 = v13 + location;
     if (editedDelta)
     {
-      v17 = v7 >= v16;
+      v17 = range >= v16;
     }
 
     else
@@ -2443,7 +2443,7 @@ void __50__NSTextContentStorage_synchronizeToBackingStore___block_invoke(uint64_
       return 0;
     }
 
-    v15 = editedDelta + v7;
+    v15 = editedDelta + range;
   }
 
   if (v15 == 0x7FFFFFFFFFFFFFFFLL)
@@ -2451,8 +2451,8 @@ void __50__NSTextContentStorage_synchronizeToBackingStore___block_invoke(uint64_
     return 0;
   }
 
-  v18 = [(NSAttributedString *)[(NSTextContentStorage *)self attributedString] string];
-  v19 = [(NSString *)v18 length];
+  string = [(NSAttributedString *)[(NSTextContentStorage *)self attributedString] string];
+  v19 = [(NSString *)string length];
   v20 = v19;
   v21 = v15 + v9;
   if (v15 && v15 < v19 - 1)
@@ -2460,7 +2460,7 @@ void __50__NSTextContentStorage_synchronizeToBackingStore___block_invoke(uint64_
     RangeOfCharacterClusterAtIndex = CFStringGetRangeOfCharacterClusterAtIndex();
     if (RangeOfCharacterClusterAtIndex >= v15 || v15 >= RangeOfCharacterClusterAtIndex + v23)
     {
-      if ([(NSString *)v18 characterAtIndex:v15]== 10 && [(NSString *)v18 characterAtIndex:v15 - 1]== 13)
+      if ([(NSString *)string characterAtIndex:v15]== 10 && [(NSString *)string characterAtIndex:v15 - 1]== 13)
       {
         ++v15;
         if (v9)
@@ -2501,7 +2501,7 @@ void __50__NSTextContentStorage_synchronizeToBackingStore___block_invoke(uint64_
       v29 = CFStringGetRangeOfCharacterClusterAtIndex();
       if (v29 >= v25)
       {
-        if ([(NSString *)v18 characterAtIndex:v15 + v9]== 10 && [(NSString *)v18 characterAtIndex:v25 - 1]== 13)
+        if ([(NSString *)string characterAtIndex:v15 + v9]== 10 && [(NSString *)string characterAtIndex:v25 - 1]== 13)
         {
           ++v9;
         }

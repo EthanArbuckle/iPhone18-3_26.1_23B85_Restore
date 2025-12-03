@@ -1,25 +1,25 @@
 @interface NWKUIAQISegmentedView
 - (CGSize)intrinsicContentSize;
-- (NWKUIAQISegmentedView)initWithModel:(id)a3 constraints:(id)a4;
-- (void)_addSubviewsFromModel:(id)a3;
+- (NWKUIAQISegmentedView)initWithModel:(id)model constraints:(id)constraints;
+- (void)_addSubviewsFromModel:(id)model;
 - (void)layoutSubviews;
-- (void)updateModel:(id)a3;
+- (void)updateModel:(id)model;
 @end
 
 @implementation NWKUIAQISegmentedView
 
-- (NWKUIAQISegmentedView)initWithModel:(id)a3 constraints:(id)a4
+- (NWKUIAQISegmentedView)initWithModel:(id)model constraints:(id)constraints
 {
-  v7 = a3;
+  modelCopy = model;
   v11.receiver = self;
   v11.super_class = NWKUIAQISegmentedView;
   v8 = [(NWKUIAQISegmentedView *)&v11 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v9 = v8;
   if (v8)
   {
-    v8->_constraints.width = a4.var0;
-    objc_storeStrong(&v8->_model, a3);
-    [(NWKUIAQISegmentedView *)v9 _addSubviewsFromModel:v7];
+    v8->_constraints.width = constraints.var0;
+    objc_storeStrong(&v8->_model, model);
+    [(NWKUIAQISegmentedView *)v9 _addSubviewsFromModel:modelCopy];
   }
 
   return v9;
@@ -55,29 +55,29 @@
   }
 }
 
-- (void)updateModel:(id)a3
+- (void)updateModel:(id)model
 {
-  v5 = a3;
-  if (self->_model != v5)
+  modelCopy = model;
+  if (self->_model != modelCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_model, a3);
+    v6 = modelCopy;
+    objc_storeStrong(&self->_model, model);
     [(NWKUIAQISegmentedView *)self _addSubviewsFromModel:v6];
     self->_lastLayoutHeight = 0.0;
     [(NWKUIAQISegmentedView *)self setNeedsLayout];
-    v5 = v6;
+    modelCopy = v6;
   }
 }
 
-- (void)_addSubviewsFromModel:(id)a3
+- (void)_addSubviewsFromModel:(id)model
 {
-  v4 = a3;
-  v5 = [(NWKUIAQISegmentedView *)self subviews];
-  [v5 makeObjectsPerformSelector:sel_removeFromSuperview];
+  modelCopy = model;
+  subviews = [(NWKUIAQISegmentedView *)self subviews];
+  [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
 
-  v6 = [v4 segments];
+  segments = [modelCopy segments];
 
-  v7 = [v6 count];
+  v7 = [segments count];
   v8 = v7 - 1;
   v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:v7];
   v14[0] = MEMORY[0x277D85DD0];
@@ -89,7 +89,7 @@
   v14[4] = self;
   v10 = v9;
   v11 = MEMORY[0x25F86D760](v14);
-  [v6 enumerateObjectsUsingBlock:v11];
+  [segments enumerateObjectsUsingBlock:v11];
   v12 = [v10 copy];
   segmentViews = self->_segmentViews;
   self->_segmentViews = v12;

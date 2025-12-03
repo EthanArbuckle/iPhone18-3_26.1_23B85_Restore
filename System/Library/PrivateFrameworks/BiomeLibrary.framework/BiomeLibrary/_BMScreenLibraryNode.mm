@@ -5,26 +5,26 @@
 + (id)configurationForSharing;
 + (id)storeConfigurationForRecording;
 + (id)storeConfigurationForSharing;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMScreenLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"Recording"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Recording"])
   {
-    v5 = [a1 Recording];
+    recording = [self Recording];
 LABEL_5:
-    v6 = v5;
+    v6 = recording;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"Sharing"])
+  if ([nameCopy isEqualToString:@"Sharing"])
   {
-    v5 = [a1 Sharing];
+    recording = [self Sharing];
     goto LABEL_5;
   }
 
@@ -50,13 +50,13 @@ LABEL_7:
 
 + (id)configurationForSharing
 {
-  v3 = [a1 storeConfigurationForSharing];
-  v4 = [a1 syncPolicyForSharing];
+  storeConfigurationForSharing = [self storeConfigurationForSharing];
+  syncPolicyForSharing = [self syncPolicyForSharing];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"37A3574E-F654-4D20-A83F-9184E6997188"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Screen.Sharing" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3E8448 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Screen.Sharing" eventClass:objc_opt_class() storeConfig:storeConfigurationForSharing syncPolicy:syncPolicyForSharing legacyNames:&unk_1EF3E8448 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -71,13 +71,13 @@ LABEL_7:
 
 + (id)configurationForRecording
 {
-  v3 = [a1 storeConfigurationForRecording];
-  v4 = [a1 syncPolicyForRecording];
+  storeConfigurationForRecording = [self storeConfigurationForRecording];
+  syncPolicyForRecording = [self syncPolicyForRecording];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"7AE58EC1-7524-459B-9D4F-5119EB12582E"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Screen.Recording" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3E8430 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Screen.Recording" eventClass:objc_opt_class() storeConfig:storeConfigurationForRecording syncPolicy:syncPolicyForRecording legacyNames:&unk_1EF3E8430 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -93,7 +93,7 @@ LABEL_7:
 + (id)Sharing
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForSharing];
+  configurationForSharing = [self configurationForSharing];
   v3 = +[BMScreenSharing columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -105,7 +105,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Screen.Sharing" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Screen.Sharing" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Screen.Sharing" schema:v9 configuration:configurationForSharing];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -115,7 +115,7 @@ LABEL_7:
 + (id)Recording
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForRecording];
+  configurationForRecording = [self configurationForRecording];
   v3 = +[BMScreenRecording columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -127,7 +127,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Screen.Recording" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Screen.Recording" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Screen.Recording" schema:v9 configuration:configurationForRecording];
 
   v11 = *MEMORY[0x1E69E9840];
 

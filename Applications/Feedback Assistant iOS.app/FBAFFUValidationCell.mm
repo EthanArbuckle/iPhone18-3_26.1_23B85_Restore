@@ -1,8 +1,8 @@
 @interface FBAFFUValidationCell
 - (NSString)itemIdentifier;
-- (_TtC18Feedback_Assistant20FBAFFUValidationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC18Feedback_Assistant20FBAFFUValidationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)awakeFromNib;
-- (void)setItemIdentifier:(id)a3;
+- (void)setItemIdentifier:(id)identifier;
 @end
 
 @implementation FBAFFUValidationCell
@@ -17,7 +17,7 @@
   return v4;
 }
 
-- (void)setItemIdentifier:(id)a3
+- (void)setItemIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR____TtC18Feedback_Assistant20FBAFFUValidationCell_itemIdentifier);
@@ -28,15 +28,15 @@
 
 - (void)awakeFromNib
 {
-  v2 = self;
+  selfCopy = self;
   sub_100086D44();
 }
 
-- (_TtC18Feedback_Assistant20FBAFFUValidationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18Feedback_Assistant20FBAFFUValidationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -45,7 +45,7 @@
     v6 = 0;
   }
 
-  return sub_100086F18(a3, a4, v6);
+  return sub_100086F18(style, identifier, v6);
 }
 
 @end

@@ -1,50 +1,50 @@
 @interface CDPFollowUpContext
-+ (id)_contextWithType:(id)a3 cdpContext:(id)a4;
++ (id)_contextWithType:(id)type cdpContext:(id)context;
 + (id)contextForADPStateHealing;
 + (id)contextForADPUpsell;
 + (id)contextForRecoveryKeyMismatchHealing;
 + (id)contextForSOSCompatibilityMode;
 + (id)contextForStateRepair;
-+ (id)contextWithType:(id)a3;
-- (CDPFollowUpContext)initWithCoder:(id)a3;
++ (id)contextWithType:(id)type;
+- (CDPFollowUpContext)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CDPFollowUpContext
 
-+ (id)contextWithType:(id)a3
++ (id)contextWithType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setShouldNotify:1];
-  [v4 setFollowUpType:v3];
+  [v4 setFollowUpType:typeCopy];
 
   return v4;
 }
 
-+ (id)_contextWithType:(id)a3 cdpContext:(id)a4
++ (id)_contextWithType:(id)type cdpContext:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a1 contextWithType:a3];
-  v8 = [v6 altDSID];
-  [v7 setAltDSID:v8];
+  contextCopy = context;
+  v7 = [self contextWithType:type];
+  altDSID = [contextCopy altDSID];
+  [v7 setAltDSID:altDSID];
 
-  v9 = [v6 telemetryFlowID];
-  [v7 setTelemetryFlowID:v9];
+  telemetryFlowID = [contextCopy telemetryFlowID];
+  [v7 setTelemetryFlowID:telemetryFlowID];
 
-  v10 = [v6 telemetryDeviceSessionID];
+  telemetryDeviceSessionID = [contextCopy telemetryDeviceSessionID];
 
-  [v7 setTelemetryDeviceSessionID:v10];
+  [v7 setTelemetryDeviceSessionID:telemetryDeviceSessionID];
   v11 = _CDPLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v7 altDSID];
+    altDSID2 = [v7 altDSID];
     v15 = 141558274;
     v16 = 1752392040;
     v17 = 2112;
-    v18 = v12;
+    v18 = altDSID2;
     _os_log_impl(&dword_1DED99000, v11, OS_LOG_TYPE_DEFAULT, "CDPFollowUpContext: set altDSID to %{mask.hash}@", &v15, 0x16u);
   }
 
@@ -61,7 +61,7 @@
     +[CDPFollowUpContext contextForSOSCompatibilityMode];
   }
 
-  v4 = [a1 contextWithType:@"kSOSCompatibilityMode"];
+  v4 = [self contextWithType:@"kSOSCompatibilityMode"];
   [v4 setRepairType:0];
 
   return v4;
@@ -75,7 +75,7 @@
     +[CDPFollowUpContext contextForRecoveryKeyMismatchHealing];
   }
 
-  v4 = [a1 contextWithType:@"kRecoveryKeyMismatchHealing"];
+  v4 = [self contextWithType:@"kRecoveryKeyMismatchHealing"];
 
   return v4;
 }
@@ -88,7 +88,7 @@
     +[CDPFollowUpContext contextForADPUpsell];
   }
 
-  v4 = [a1 contextWithType:@"kADPUpsell"];
+  v4 = [self contextWithType:@"kADPUpsell"];
 
   return v4;
 }
@@ -101,46 +101,46 @@
     +[CDPFollowUpContext contextForADPStateHealing];
   }
 
-  v4 = [a1 contextWithType:@"kADPStateHealing"];
+  v4 = [self contextWithType:@"kADPStateHealing"];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   followUpType = self->_followUpType;
-  v5 = a3;
-  [v5 encodeObject:followUpType forKey:@"_followUpType"];
-  [v5 encodeBool:self->_shouldNotify forKey:@"_shouldNotify"];
-  [v5 encodeBool:self->_force forKey:@"_force"];
-  [v5 encodeInteger:self->_repairType forKey:@"_repairType"];
-  [v5 encodeObject:self->_altDSID forKey:@"_altDSID"];
-  [v5 encodeObject:self->_telemetryFlowID forKey:@"_telemetryFlowID"];
-  [v5 encodeObject:self->_telemetryDeviceSessionID forKey:@"_telemetryDeviceSessionID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:followUpType forKey:@"_followUpType"];
+  [coderCopy encodeBool:self->_shouldNotify forKey:@"_shouldNotify"];
+  [coderCopy encodeBool:self->_force forKey:@"_force"];
+  [coderCopy encodeInteger:self->_repairType forKey:@"_repairType"];
+  [coderCopy encodeObject:self->_altDSID forKey:@"_altDSID"];
+  [coderCopy encodeObject:self->_telemetryFlowID forKey:@"_telemetryFlowID"];
+  [coderCopy encodeObject:self->_telemetryDeviceSessionID forKey:@"_telemetryDeviceSessionID"];
 }
 
-- (CDPFollowUpContext)initWithCoder:(id)a3
+- (CDPFollowUpContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CDPFollowUpContext *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_followUpType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_followUpType"];
     followUpType = v5->_followUpType;
     v5->_followUpType = v6;
 
-    v5->_shouldNotify = [v4 decodeBoolForKey:@"_shouldNotify"];
-    v5->_force = [v4 decodeBoolForKey:@"_force"];
-    v5->_repairType = [v4 decodeIntegerForKey:@"_repairType"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_altDSID"];
+    v5->_shouldNotify = [coderCopy decodeBoolForKey:@"_shouldNotify"];
+    v5->_force = [coderCopy decodeBoolForKey:@"_force"];
+    v5->_repairType = [coderCopy decodeIntegerForKey:@"_repairType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_telemetryFlowID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_telemetryFlowID"];
     telemetryFlowID = v5->_telemetryFlowID;
     v5->_telemetryFlowID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_telemetryDeviceSessionID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_telemetryDeviceSessionID"];
     telemetryDeviceSessionID = v5->_telemetryDeviceSessionID;
     v5->_telemetryDeviceSessionID = v12;
   }
@@ -159,7 +159,7 @@
 
 + (id)contextForStateRepair
 {
-  v2 = [a1 contextWithType:@"kCDPStateRepair"];
+  v2 = [self contextWithType:@"kCDPStateRepair"];
   [v2 setRepairType:0];
 
   return v2;

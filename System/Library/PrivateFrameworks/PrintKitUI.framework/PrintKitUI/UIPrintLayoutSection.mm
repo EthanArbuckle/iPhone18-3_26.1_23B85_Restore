@@ -1,60 +1,60 @@
 @interface UIPrintLayoutSection
 - (BOOL)shouldShow;
 - (BOOL)updatePrintOptionsList;
-- (UIPrintLayoutSection)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4;
-- (id)printOptionAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (UIPrintLayoutSection)initWithPrintInfo:(id)info printPanelViewController:(id)controller;
+- (id)printOptionAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)dealloc;
 - (void)didSelectPrintOptionSection;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)previewDidChangeSize:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)previewDidChangeSize:(id)size;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation UIPrintLayoutSection
 
-- (UIPrintLayoutSection)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4
+- (UIPrintLayoutSection)initWithPrintInfo:(id)info printPanelViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  controllerCopy = controller;
   v21.receiver = self;
   v21.super_class = UIPrintLayoutSection;
-  v8 = [(UIPrintOptionSection *)&v21 initWithPrintInfo:v6 printPanelViewController:v7];
+  v8 = [(UIPrintOptionSection *)&v21 initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
   if (v8)
   {
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"Layout" value:@"Layout" table:@"Localizable"];
     [(UIPrintOptionSection *)v8 setTitle:v10];
 
-    v11 = [[UIPrintPagesPerSheetOption alloc] initWithPrintInfo:v6 printPanelViewController:v7];
+    v11 = [[UIPrintPagesPerSheetOption alloc] initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
     [(UIPrintLayoutSection *)v8 setPagesPerSheetPrintOption:v11];
 
-    v12 = [[UIPrintLayoutDirectionOption alloc] initWithPrintInfo:v6 printPanelViewController:v7];
+    v12 = [[UIPrintLayoutDirectionOption alloc] initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
     [(UIPrintLayoutSection *)v8 setLayoutDirectionPrintOption:v12];
 
-    v13 = [[UIPrintBorderOption alloc] initWithPrintInfo:v6 printPanelViewController:v7];
+    v13 = [[UIPrintBorderOption alloc] initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
     [(UIPrintLayoutSection *)v8 setBorderPrintOption:v13];
 
-    v14 = [[UIPrintFlipHorizontalOption alloc] initWithPrintInfo:v6 printPanelViewController:v7];
+    v14 = [[UIPrintFlipHorizontalOption alloc] initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
     [(UIPrintLayoutSection *)v8 setFlipHorizontalPrintOption:v14];
 
     [(UIPrintLayoutSection *)v8 updatePrintOptionsList];
     [(UIPrintOptionSection *)v8 updateSectionSummary];
-    v15 = [(UIPrintLayoutSection *)v8 pagesPerSheetPrintOption];
-    [v15 addObserver:v8 forKeyPath:@"summary" options:0 context:0];
+    pagesPerSheetPrintOption = [(UIPrintLayoutSection *)v8 pagesPerSheetPrintOption];
+    [pagesPerSheetPrintOption addObserver:v8 forKeyPath:@"summary" options:0 context:0];
 
-    v16 = [(UIPrintLayoutSection *)v8 layoutDirectionPrintOption];
-    [v16 addObserver:v8 forKeyPath:@"summary" options:0 context:0];
+    layoutDirectionPrintOption = [(UIPrintLayoutSection *)v8 layoutDirectionPrintOption];
+    [layoutDirectionPrintOption addObserver:v8 forKeyPath:@"summary" options:0 context:0];
 
-    v17 = [(UIPrintLayoutSection *)v8 borderPrintOption];
-    [v17 addObserver:v8 forKeyPath:@"summary" options:0 context:0];
+    borderPrintOption = [(UIPrintLayoutSection *)v8 borderPrintOption];
+    [borderPrintOption addObserver:v8 forKeyPath:@"summary" options:0 context:0];
 
-    v18 = [(UIPrintLayoutSection *)v8 flipHorizontalPrintOption];
-    [v18 addObserver:v8 forKeyPath:@"summary" options:0 context:0];
+    flipHorizontalPrintOption = [(UIPrintLayoutSection *)v8 flipHorizontalPrintOption];
+    [flipHorizontalPrintOption addObserver:v8 forKeyPath:@"summary" options:0 context:0];
 
-    v19 = [(UIPrintOptionSection *)v8 printInfo];
-    [v19 addObserver:v8 forKeyPath:0x2871AF290 options:0 context:0];
+    printInfo = [(UIPrintOptionSection *)v8 printInfo];
+    [printInfo addObserver:v8 forKeyPath:0x2871AF290 options:0 context:0];
   }
 
   return v8;
@@ -62,36 +62,36 @@
 
 - (void)dealloc
 {
-  v3 = [(UIPrintLayoutSection *)self pagesPerSheetPrintOption];
-  [v3 removeObserver:self forKeyPath:@"summary"];
+  pagesPerSheetPrintOption = [(UIPrintLayoutSection *)self pagesPerSheetPrintOption];
+  [pagesPerSheetPrintOption removeObserver:self forKeyPath:@"summary"];
 
-  v4 = [(UIPrintLayoutSection *)self layoutDirectionPrintOption];
-  [v4 removeObserver:self forKeyPath:@"summary"];
+  layoutDirectionPrintOption = [(UIPrintLayoutSection *)self layoutDirectionPrintOption];
+  [layoutDirectionPrintOption removeObserver:self forKeyPath:@"summary"];
 
-  v5 = [(UIPrintLayoutSection *)self borderPrintOption];
-  [v5 removeObserver:self forKeyPath:@"summary"];
+  borderPrintOption = [(UIPrintLayoutSection *)self borderPrintOption];
+  [borderPrintOption removeObserver:self forKeyPath:@"summary"];
 
-  v6 = [(UIPrintLayoutSection *)self flipHorizontalPrintOption];
-  [v6 removeObserver:self forKeyPath:@"summary"];
+  flipHorizontalPrintOption = [(UIPrintLayoutSection *)self flipHorizontalPrintOption];
+  [flipHorizontalPrintOption removeObserver:self forKeyPath:@"summary"];
 
-  v7 = [(UIPrintOptionSection *)self printInfo];
-  [v7 removeObserver:self forKeyPath:0x2871AF290];
+  printInfo = [(UIPrintOptionSection *)self printInfo];
+  [printInfo removeObserver:self forKeyPath:0x2871AF290];
 
   v8.receiver = self;
   v8.super_class = UIPrintLayoutSection;
   [(UIPrintOptionSection *)&v8 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
+  pathCopy = path;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__UIPrintLayoutSection_observeValueForKeyPath_ofObject_change_context___block_invoke;
   v9[3] = &unk_279A9BF78;
-  v10 = v7;
-  v11 = self;
-  v8 = v7;
+  v10 = pathCopy;
+  selfCopy = self;
+  v8 = pathCopy;
   dispatch_async(MEMORY[0x277D85CD0], v9);
 }
 
@@ -114,44 +114,44 @@ uint64_t __71__UIPrintLayoutSection_observeValueForKeyPath_ofObject_change_conte
 
 - (BOOL)shouldShow
 {
-  v2 = [(UIPrintOptionSection *)self printPanelViewController];
-  v3 = [v2 shouldShowLayout];
+  printPanelViewController = [(UIPrintOptionSection *)self printPanelViewController];
+  shouldShowLayout = [printPanelViewController shouldShowLayout];
 
-  return v3;
+  return shouldShowLayout;
 }
 
 - (BOOL)updatePrintOptionsList
 {
   v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:5];
-  v4 = [(UIPrintLayoutSection *)self pagesPerSheetPrintOption];
-  [v3 addObject:v4];
+  pagesPerSheetPrintOption = [(UIPrintLayoutSection *)self pagesPerSheetPrintOption];
+  [v3 addObject:pagesPerSheetPrintOption];
 
-  v5 = [(UIPrintOptionSection *)self printInfo];
-  v6 = [v5 nUpActive];
+  printInfo = [(UIPrintOptionSection *)self printInfo];
+  nUpActive = [printInfo nUpActive];
 
-  if (v6)
+  if (nUpActive)
   {
-    v7 = [(UIPrintLayoutSection *)self layoutDirectionPrintOption];
-    [v3 addObject:v7];
+    layoutDirectionPrintOption = [(UIPrintLayoutSection *)self layoutDirectionPrintOption];
+    [v3 addObject:layoutDirectionPrintOption];
   }
 
-  v8 = [(UIPrintLayoutSection *)self borderPrintOption];
-  [v3 addObject:v8];
+  borderPrintOption = [(UIPrintLayoutSection *)self borderPrintOption];
+  [v3 addObject:borderPrintOption];
 
-  v9 = [(UIPrintLayoutSection *)self flipHorizontalPrintOption];
-  [v3 addObject:v9];
+  flipHorizontalPrintOption = [(UIPrintLayoutSection *)self flipHorizontalPrintOption];
+  [v3 addObject:flipHorizontalPrintOption];
 
-  v10 = [(UIPrintOptionSection *)self printOptions];
-  v11 = [v10 isEqualToArray:v3];
+  printOptions = [(UIPrintOptionSection *)self printOptions];
+  v11 = [printOptions isEqualToArray:v3];
 
   if ((v11 & 1) == 0)
   {
     [(UIPrintOptionSection *)self setPrintOptions:v3];
     if (pthread_main_np() == 1)
     {
-      v12 = [(UIPrintLayoutSection *)self layoutSectionController];
-      v13 = [v12 tableView];
-      [v13 reloadData];
+      layoutSectionController = [(UIPrintLayoutSection *)self layoutSectionController];
+      tableView = [layoutSectionController tableView];
+      [tableView reloadData];
     }
 
     else
@@ -177,67 +177,67 @@ void __46__UIPrintLayoutSection_updatePrintOptionsList__block_invoke(uint64_t a1
 
 - (void)didSelectPrintOptionSection
 {
-  v25 = [(UIPrintOptionSection *)self printPanelViewController];
+  printPanelViewController = [(UIPrintOptionSection *)self printPanelViewController];
   v3 = [objc_alloc(MEMORY[0x277D75B58]) initWithStyle:2];
   [(UIPrintLayoutSection *)self setLayoutSectionController:v3];
 
-  v4 = [(UIPrintOptionSection *)self title];
-  v5 = [(UIPrintLayoutSection *)self layoutSectionController];
-  [v5 setTitle:v4];
+  title = [(UIPrintOptionSection *)self title];
+  layoutSectionController = [(UIPrintLayoutSection *)self layoutSectionController];
+  [layoutSectionController setTitle:title];
 
-  v6 = [(UIPrintLayoutSection *)self layoutSectionController];
-  v7 = [v6 tableView];
-  [v7 setDelegate:self];
+  layoutSectionController2 = [(UIPrintLayoutSection *)self layoutSectionController];
+  tableView = [layoutSectionController2 tableView];
+  [tableView setDelegate:self];
 
-  v8 = [(UIPrintLayoutSection *)self layoutSectionController];
-  v9 = [v8 tableView];
-  [v9 setDataSource:self];
+  layoutSectionController3 = [(UIPrintLayoutSection *)self layoutSectionController];
+  tableView2 = [layoutSectionController3 tableView];
+  [tableView2 setDataSource:self];
 
-  v10 = [(UIPrintOptionSection *)self printPanelViewController];
-  [v10 contentInsetForPreviewWithHeight:0.0];
+  printPanelViewController2 = [(UIPrintOptionSection *)self printPanelViewController];
+  [printPanelViewController2 contentInsetForPreviewWithHeight:0.0];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(UIPrintLayoutSection *)self layoutSectionController];
-  v20 = [v19 tableView];
-  [v20 setContentInset:{v12, v14, v16, v18}];
+  layoutSectionController4 = [(UIPrintLayoutSection *)self layoutSectionController];
+  tableView3 = [layoutSectionController4 tableView];
+  [tableView3 setContentInset:{v12, v14, v16, v18}];
 
-  v21 = [(UIPrintLayoutSection *)self layoutSectionController];
-  v22 = [v21 navigationItem];
-  [v25 addPrintShareButtonsToNavItem:v22];
+  layoutSectionController5 = [(UIPrintLayoutSection *)self layoutSectionController];
+  navigationItem = [layoutSectionController5 navigationItem];
+  [printPanelViewController addPrintShareButtonsToNavItem:navigationItem];
 
-  v23 = [v25 printOptionsNavController];
-  v24 = [(UIPrintLayoutSection *)self layoutSectionController];
-  [v23 pushViewController:v24 animated:1];
+  printOptionsNavController = [printPanelViewController printOptionsNavController];
+  layoutSectionController6 = [(UIPrintLayoutSection *)self layoutSectionController];
+  [printOptionsNavController pushViewController:layoutSectionController6 animated:1];
 }
 
-- (void)previewDidChangeSize:(id)a3
+- (void)previewDidChangeSize:(id)size
 {
-  v4 = [a3 object];
-  [v4 floatValue];
+  object = [size object];
+  [object floatValue];
   v6 = v5;
 
-  v17 = [(UIPrintOptionSection *)self printPanelViewController];
-  [v17 contentInsetForPreviewWithHeight:v6];
+  printPanelViewController = [(UIPrintOptionSection *)self printPanelViewController];
+  [printPanelViewController contentInsetForPreviewWithHeight:v6];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(UIPrintLayoutSection *)self layoutSectionController];
-  v16 = [v15 tableView];
-  [v16 setContentInset:{v8, v10, v12, v14}];
+  layoutSectionController = [(UIPrintLayoutSection *)self layoutSectionController];
+  tableView = [layoutSectionController tableView];
+  [tableView setContentInset:{v8, v10, v12, v14}];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 2;
   }
 
-  v5 = [(UIPrintOptionSection *)self printInfo];
-  if ([v5 nUpActive])
+  printInfo = [(UIPrintOptionSection *)self printInfo];
+  if ([printInfo nUpActive])
   {
     v4 = 2;
   }
@@ -250,13 +250,13 @@ void __46__UIPrintLayoutSection_updatePrintOptionsList__block_invoke(uint64_t a1
   return v4;
 }
 
-- (id)printOptionAtIndexPath:(id)a3
+- (id)printOptionAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 row];
+  pathCopy = path;
+  section = [pathCopy section];
+  v6 = [pathCopy row];
 
-  if (v5)
+  if (section)
   {
     if (v6)
     {
@@ -283,17 +283,17 @@ void __46__UIPrintLayoutSection_updatePrintOptionsList__block_invoke(uint64_t a1
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v4 = [(UIPrintLayoutSection *)self printOptionAtIndexPath:a4];
-  v5 = [v4 createPrintOptionTableViewCell];
+  v4 = [(UIPrintLayoutSection *)self printOptionAtIndexPath:path];
+  createPrintOptionTableViewCell = [v4 createPrintOptionTableViewCell];
 
-  return v5;
+  return createPrintOptionTableViewCell;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v4 = [(UIPrintLayoutSection *)self printOptionAtIndexPath:a4];
+  v4 = [(UIPrintLayoutSection *)self printOptionAtIndexPath:path];
   if (v4)
   {
     v5 = v4;

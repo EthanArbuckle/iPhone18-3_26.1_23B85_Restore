@@ -22,11 +22,11 @@
     v2->_userNotificationBiomeStream = v7;
 
     v9 = BiomeLibrary();
-    v10 = [v9 Notification];
-    v11 = [v10 Usage];
-    v12 = [v11 source];
+    notification = [v9 Notification];
+    usage = [notification Usage];
+    source = [usage source];
     notificationUsageSource = v2->_notificationUsageSource;
-    v2->_notificationUsageSource = v12;
+    v2->_notificationUsageSource = source;
   }
 
   return v2;

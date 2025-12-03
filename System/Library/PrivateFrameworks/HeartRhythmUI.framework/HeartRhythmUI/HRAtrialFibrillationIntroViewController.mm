@@ -20,9 +20,9 @@
   v5.receiver = self;
   v5.super_class = HRAtrialFibrillationIntroViewController;
   [(HRAtrialFibrillationIntroViewController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(HRAtrialFibrillationIntroViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(HRAtrialFibrillationIntroViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
   [(HRAtrialFibrillationIntroViewController *)self setUpUI];
   [(HRAtrialFibrillationIntroViewController *)self setUpConstraints];
@@ -33,194 +33,194 @@
   v3 = objc_alloc_init(MEMORY[0x277D759D8]);
   [(HRAtrialFibrillationIntroViewController *)self setScrollView:v3];
 
-  v4 = [(HRAtrialFibrillationIntroViewController *)self scrollView];
-  [v4 setAlwaysBounceVertical:1];
+  scrollView = [(HRAtrialFibrillationIntroViewController *)self scrollView];
+  [scrollView setAlwaysBounceVertical:1];
 
-  v5 = [(HRAtrialFibrillationIntroViewController *)self scrollView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  scrollView2 = [(HRAtrialFibrillationIntroViewController *)self scrollView];
+  [scrollView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v6 = [MEMORY[0x277CCACA8] healthAccessibilityIdentifier:2 suffix:@"AppleWatchCanLookforAtrialFibrillation.EntireView"];
-  v7 = [(HRAtrialFibrillationIntroViewController *)self scrollView];
-  [v7 setAccessibilityIdentifier:v6];
+  scrollView3 = [(HRAtrialFibrillationIntroViewController *)self scrollView];
+  [scrollView3 setAccessibilityIdentifier:v6];
 
-  v8 = [(HRAtrialFibrillationIntroViewController *)self view];
-  v9 = [(HRAtrialFibrillationIntroViewController *)self scrollView];
-  [v8 addSubview:v9];
+  view = [(HRAtrialFibrillationIntroViewController *)self view];
+  scrollView4 = [(HRAtrialFibrillationIntroViewController *)self scrollView];
+  [view addSubview:scrollView4];
 
   v10 = objc_alloc_init(MEMORY[0x277D75D18]);
   [(HRAtrialFibrillationIntroViewController *)self setContentView:v10];
 
-  v11 = [(HRAtrialFibrillationIntroViewController *)self contentView];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentView = [(HRAtrialFibrillationIntroViewController *)self contentView];
+  [contentView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v12 = [(HRAtrialFibrillationIntroViewController *)self scrollView];
-  v13 = [(HRAtrialFibrillationIntroViewController *)self contentView];
-  [v12 addSubview:v13];
+  scrollView5 = [(HRAtrialFibrillationIntroViewController *)self scrollView];
+  contentView2 = [(HRAtrialFibrillationIntroViewController *)self contentView];
+  [scrollView5 addSubview:contentView2];
 
-  v14 = [(HRAtrialFibrillationIntroViewController *)self _createHeroView];
-  [(HRAtrialFibrillationIntroViewController *)self setHeroView:v14];
+  _createHeroView = [(HRAtrialFibrillationIntroViewController *)self _createHeroView];
+  [(HRAtrialFibrillationIntroViewController *)self setHeroView:_createHeroView];
 
-  v15 = [(HRAtrialFibrillationIntroViewController *)self heroView];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  heroView = [(HRAtrialFibrillationIntroViewController *)self heroView];
+  [heroView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(HRAtrialFibrillationIntroViewController *)self contentView];
-  v17 = [(HRAtrialFibrillationIntroViewController *)self heroView];
-  [v16 addSubview:v17];
+  contentView3 = [(HRAtrialFibrillationIntroViewController *)self contentView];
+  heroView2 = [(HRAtrialFibrillationIntroViewController *)self heroView];
+  [contentView3 addSubview:heroView2];
 
   v18 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HRAtrialFibrillationIntroViewController *)self setTitleLabel:v18];
 
   v19 = HRHeartRhythmUIFrameworkBundle();
   v20 = [v19 localizedStringForKey:@"ATRIAL_FIBRILLATION_DETECTION_ONBOARDING_INTRO_TITLE" value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable-Antimony"];
-  v21 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
-  [v21 setText:v20];
+  titleLabel = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
+  [titleLabel setText:v20];
 
-  v22 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
-  [v22 setTextAlignment:4];
+  titleLabel2 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
+  [titleLabel2 setTextAlignment:4];
 
-  v23 = [(HRAtrialFibrillationIntroViewController *)self _titleFont];
-  v24 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
-  [v24 setFont:v23];
+  _titleFont = [(HRAtrialFibrillationIntroViewController *)self _titleFont];
+  titleLabel3 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
+  [titleLabel3 setFont:_titleFont];
 
-  v25 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
-  [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel4 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
+  [titleLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v26 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
-  [v26 setNumberOfLines:0];
+  titleLabel5 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
+  [titleLabel5 setNumberOfLines:0];
 
-  v27 = [(HRAtrialFibrillationIntroViewController *)self contentView];
-  v28 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
-  [v27 addSubview:v28];
+  contentView4 = [(HRAtrialFibrillationIntroViewController *)self contentView];
+  titleLabel6 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
+  [contentView4 addSubview:titleLabel6];
 
   v29 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HRAtrialFibrillationIntroViewController *)self setBodyLabel:v29];
 
   v30 = HRHeartRhythmUIFrameworkBundle();
   v31 = [v30 localizedStringForKey:@"ATRIAL_FIBRILLATION_DETECTION_ONBOARDING_INTRO_BODY" value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable-Antimony"];
-  v32 = [(HRAtrialFibrillationIntroViewController *)self bodyLabel];
-  [v32 setText:v31];
+  bodyLabel = [(HRAtrialFibrillationIntroViewController *)self bodyLabel];
+  [bodyLabel setText:v31];
 
-  v33 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v34 = [(HRAtrialFibrillationIntroViewController *)self bodyLabel];
-  [v34 setTextColor:v33];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  bodyLabel2 = [(HRAtrialFibrillationIntroViewController *)self bodyLabel];
+  [bodyLabel2 setTextColor:secondaryLabelColor];
 
-  v35 = [(HRAtrialFibrillationIntroViewController *)self _bodyFont];
-  v36 = [(HRAtrialFibrillationIntroViewController *)self bodyLabel];
-  [v36 setFont:v35];
+  _bodyFont = [(HRAtrialFibrillationIntroViewController *)self _bodyFont];
+  bodyLabel3 = [(HRAtrialFibrillationIntroViewController *)self bodyLabel];
+  [bodyLabel3 setFont:_bodyFont];
 
-  v37 = [(HRAtrialFibrillationIntroViewController *)self bodyLabel];
-  [v37 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bodyLabel4 = [(HRAtrialFibrillationIntroViewController *)self bodyLabel];
+  [bodyLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v38 = [(HRAtrialFibrillationIntroViewController *)self bodyLabel];
-  [v38 setNumberOfLines:0];
+  bodyLabel5 = [(HRAtrialFibrillationIntroViewController *)self bodyLabel];
+  [bodyLabel5 setNumberOfLines:0];
 
-  v39 = [(HRAtrialFibrillationIntroViewController *)self contentView];
-  v40 = [(HRAtrialFibrillationIntroViewController *)self bodyLabel];
-  [v39 addSubview:v40];
+  contentView5 = [(HRAtrialFibrillationIntroViewController *)self contentView];
+  bodyLabel6 = [(HRAtrialFibrillationIntroViewController *)self bodyLabel];
+  [contentView5 addSubview:bodyLabel6];
 
   v41 = +[HROnboardingInlineExpandedContentView learnMoreAboutAtrialFibrillationExpandedView];
   [(HRAtrialFibrillationIntroViewController *)self setLearnMoreContentView:v41];
 
-  v43 = [(HRAtrialFibrillationIntroViewController *)self contentView];
-  v42 = [(HRAtrialFibrillationIntroViewController *)self learnMoreContentView];
-  [v43 addSubview:v42];
+  contentView6 = [(HRAtrialFibrillationIntroViewController *)self contentView];
+  learnMoreContentView = [(HRAtrialFibrillationIntroViewController *)self learnMoreContentView];
+  [contentView6 addSubview:learnMoreContentView];
 }
 
 - (void)setUpConstraints
 {
-  v3 = [(HRAtrialFibrillationIntroViewController *)self scrollView];
-  v4 = [(HRAtrialFibrillationIntroViewController *)self view];
-  [v3 hk_alignHorizontalConstraintsWithView:v4 margin:0.0];
+  scrollView = [(HRAtrialFibrillationIntroViewController *)self scrollView];
+  view = [(HRAtrialFibrillationIntroViewController *)self view];
+  [scrollView hk_alignHorizontalConstraintsWithView:view margin:0.0];
 
-  v5 = [(HRAtrialFibrillationIntroViewController *)self scrollView];
-  v6 = [v5 topAnchor];
-  v7 = [(HRAtrialFibrillationIntroViewController *)self view];
-  v8 = [v7 topAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  scrollView2 = [(HRAtrialFibrillationIntroViewController *)self scrollView];
+  topAnchor = [scrollView2 topAnchor];
+  view2 = [(HRAtrialFibrillationIntroViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v9 setActive:1];
 
-  v10 = [(HRAtrialFibrillationIntroViewController *)self scrollView];
-  v11 = [v10 bottomAnchor];
-  v12 = [(HRAtrialFibrillationIntroViewController *)self view];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  scrollView3 = [(HRAtrialFibrillationIntroViewController *)self scrollView];
+  bottomAnchor = [scrollView3 bottomAnchor];
+  view3 = [(HRAtrialFibrillationIntroViewController *)self view];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v14 setActive:1];
 
-  v15 = [(HRAtrialFibrillationIntroViewController *)self contentView];
-  v16 = [(HRAtrialFibrillationIntroViewController *)self scrollView];
-  [v15 hk_alignHorizontalConstraintsWithView:v16 margin:0.0];
+  contentView = [(HRAtrialFibrillationIntroViewController *)self contentView];
+  scrollView4 = [(HRAtrialFibrillationIntroViewController *)self scrollView];
+  [contentView hk_alignHorizontalConstraintsWithView:scrollView4 margin:0.0];
 
-  v17 = [(HRAtrialFibrillationIntroViewController *)self contentView];
-  v18 = [(HRAtrialFibrillationIntroViewController *)self scrollView];
-  [v17 hk_alignVerticalConstraintsWithView:v18 margin:0.0];
+  contentView2 = [(HRAtrialFibrillationIntroViewController *)self contentView];
+  scrollView5 = [(HRAtrialFibrillationIntroViewController *)self scrollView];
+  [contentView2 hk_alignVerticalConstraintsWithView:scrollView5 margin:0.0];
 
-  v19 = [(HRAtrialFibrillationIntroViewController *)self contentView];
-  v20 = [(HRAtrialFibrillationIntroViewController *)self view];
-  [v19 hk_alignHorizontalConstraintsWithView:v20 margin:0.0];
+  contentView3 = [(HRAtrialFibrillationIntroViewController *)self contentView];
+  view4 = [(HRAtrialFibrillationIntroViewController *)self view];
+  [contentView3 hk_alignHorizontalConstraintsWithView:view4 margin:0.0];
 
-  v21 = [(HRAtrialFibrillationIntroViewController *)self heroView];
-  v22 = [(HRAtrialFibrillationIntroViewController *)self contentView];
-  [v21 hk_alignHorizontalConstraintsWithView:v22 margin:0.0];
+  heroView = [(HRAtrialFibrillationIntroViewController *)self heroView];
+  contentView4 = [(HRAtrialFibrillationIntroViewController *)self contentView];
+  [heroView hk_alignHorizontalConstraintsWithView:contentView4 margin:0.0];
 
-  v23 = [(HRAtrialFibrillationIntroViewController *)self heroView];
-  v24 = [v23 topAnchor];
-  v25 = [(HRAtrialFibrillationIntroViewController *)self contentView];
-  v26 = [v25 topAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26 constant:16.0];
+  heroView2 = [(HRAtrialFibrillationIntroViewController *)self heroView];
+  topAnchor3 = [heroView2 topAnchor];
+  contentView5 = [(HRAtrialFibrillationIntroViewController *)self contentView];
+  topAnchor4 = [contentView5 topAnchor];
+  v27 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:16.0];
   [v27 setActive:1];
 
-  v28 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
-  v29 = [(HRAtrialFibrillationIntroViewController *)self contentView];
+  titleLabel = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
+  contentView6 = [(HRAtrialFibrillationIntroViewController *)self contentView];
   HKHealthUIBuddyDirectionalEdgeInsets();
-  [v28 hrui_alignHorizontalConstraintsWithView:v29 insets:?];
+  [titleLabel hrui_alignHorizontalConstraintsWithView:contentView6 insets:?];
 
-  v30 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
-  v31 = [v30 firstBaselineAnchor];
-  v32 = [(HRAtrialFibrillationIntroViewController *)self heroView];
-  v33 = [v32 bottomAnchor];
+  titleLabel2 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
+  firstBaselineAnchor = [titleLabel2 firstBaselineAnchor];
+  heroView3 = [(HRAtrialFibrillationIntroViewController *)self heroView];
+  bottomAnchor3 = [heroView3 bottomAnchor];
   [(HRAtrialFibrillationIntroViewController *)self _assetImageBottomToTitleFirstBaseline];
-  v34 = [v31 constraintEqualToAnchor:v33 constant:?];
+  v34 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor3 constant:?];
   [v34 setActive:1];
 
-  v35 = [(HRAtrialFibrillationIntroViewController *)self bodyLabel];
-  v36 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
-  [v35 hk_alignHorizontalConstraintsWithView:v36 margin:0.0];
+  bodyLabel = [(HRAtrialFibrillationIntroViewController *)self bodyLabel];
+  titleLabel3 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
+  [bodyLabel hk_alignHorizontalConstraintsWithView:titleLabel3 margin:0.0];
 
-  v37 = [(HRAtrialFibrillationIntroViewController *)self bodyLabel];
-  v38 = [v37 firstBaselineAnchor];
-  v39 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
-  v40 = [v39 lastBaselineAnchor];
+  bodyLabel2 = [(HRAtrialFibrillationIntroViewController *)self bodyLabel];
+  firstBaselineAnchor2 = [bodyLabel2 firstBaselineAnchor];
+  titleLabel4 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
+  lastBaselineAnchor = [titleLabel4 lastBaselineAnchor];
   [(HRAtrialFibrillationIntroViewController *)self _titleLastBaselineToBodyFirstBaseline];
-  v41 = [v38 constraintEqualToAnchor:v40 constant:?];
+  v41 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:?];
   [v41 setActive:1];
 
-  v42 = [(HRAtrialFibrillationIntroViewController *)self learnMoreContentView];
-  v43 = [v42 leadingAnchor];
-  v44 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
-  v45 = [v44 leadingAnchor];
-  v46 = [v43 constraintEqualToAnchor:v45];
+  learnMoreContentView = [(HRAtrialFibrillationIntroViewController *)self learnMoreContentView];
+  leadingAnchor = [learnMoreContentView leadingAnchor];
+  titleLabel5 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
+  leadingAnchor2 = [titleLabel5 leadingAnchor];
+  v46 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v46 setActive:1];
 
-  v47 = [(HRAtrialFibrillationIntroViewController *)self learnMoreContentView];
-  v48 = [v47 trailingAnchor];
-  v49 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
-  v50 = [v49 trailingAnchor];
-  v51 = [v48 constraintLessThanOrEqualToAnchor:v50];
+  learnMoreContentView2 = [(HRAtrialFibrillationIntroViewController *)self learnMoreContentView];
+  trailingAnchor = [learnMoreContentView2 trailingAnchor];
+  titleLabel6 = [(HRAtrialFibrillationIntroViewController *)self titleLabel];
+  trailingAnchor2 = [titleLabel6 trailingAnchor];
+  v51 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   [v51 setActive:1];
 
-  v52 = [(HRAtrialFibrillationIntroViewController *)self learnMoreContentView];
-  v53 = [v52 topAnchor];
-  v54 = [(HRAtrialFibrillationIntroViewController *)self bodyLabel];
-  v55 = [v54 bottomAnchor];
-  v56 = [v53 constraintEqualToAnchor:v55];
+  learnMoreContentView3 = [(HRAtrialFibrillationIntroViewController *)self learnMoreContentView];
+  topAnchor5 = [learnMoreContentView3 topAnchor];
+  bodyLabel3 = [(HRAtrialFibrillationIntroViewController *)self bodyLabel];
+  bottomAnchor4 = [bodyLabel3 bottomAnchor];
+  v56 = [topAnchor5 constraintEqualToAnchor:bottomAnchor4];
   [v56 setActive:1];
 
-  v61 = [(HRAtrialFibrillationIntroViewController *)self contentView];
-  v57 = [v61 bottomAnchor];
-  v58 = [(HRAtrialFibrillationIntroViewController *)self learnMoreContentView];
-  v59 = [v58 lastBaselineAnchor];
+  contentView7 = [(HRAtrialFibrillationIntroViewController *)self contentView];
+  bottomAnchor5 = [contentView7 bottomAnchor];
+  learnMoreContentView4 = [(HRAtrialFibrillationIntroViewController *)self learnMoreContentView];
+  lastBaselineAnchor2 = [learnMoreContentView4 lastBaselineAnchor];
   [(HRAtrialFibrillationIntroViewController *)self _bodyLastBaselineToContentBottom];
-  v60 = [v57 constraintEqualToAnchor:v59 constant:?];
+  v60 = [bottomAnchor5 constraintEqualToAnchor:lastBaselineAnchor2 constant:?];
   [v60 setActive:1];
 }
 
@@ -233,12 +233,12 @@
   [v3 addSubview:v4];
   [(HRSimulatedAtrialFibrillationNotificationView *)v4 hk_alignVerticalConstraintsWithView:v3 margin:0.0];
   v5 = MEMORY[0x277CCAAD0];
-  v6 = [(HRSimulatedAtrialFibrillationNotificationView *)v4 widthAnchor];
-  v7 = [v6 constraintEqualToConstant:160.0];
+  widthAnchor = [(HRSimulatedAtrialFibrillationNotificationView *)v4 widthAnchor];
+  v7 = [widthAnchor constraintEqualToConstant:160.0];
   v13[0] = v7;
-  v8 = [(HRSimulatedAtrialFibrillationNotificationView *)v4 centerXAnchor];
-  v9 = [v3 centerXAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  centerXAnchor = [(HRSimulatedAtrialFibrillationNotificationView *)v4 centerXAnchor];
+  centerXAnchor2 = [v3 centerXAnchor];
+  v10 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v13[1] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
   [v5 activateConstraints:v11];
@@ -249,8 +249,8 @@
 - (id)_titleFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HRAtrialFibrillationIntroViewController *)self _titleFontTextStyle];
-  v4 = [v2 hk_scalableFontForTextStyle:v3 symbolicTraits:2];
+  _titleFontTextStyle = [(HRAtrialFibrillationIntroViewController *)self _titleFontTextStyle];
+  v4 = [v2 hk_scalableFontForTextStyle:_titleFontTextStyle symbolicTraits:2];
 
   return v4;
 }
@@ -258,16 +258,16 @@
 - (id)_bodyFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HRAtrialFibrillationIntroViewController *)self _bodyFontTextStyle];
-  v4 = [v2 preferredFontForTextStyle:v3];
+  _bodyFontTextStyle = [(HRAtrialFibrillationIntroViewController *)self _bodyFontTextStyle];
+  v4 = [v2 preferredFontForTextStyle:_bodyFontTextStyle];
 
   return v4;
 }
 
 - (double)_assetImageBottomToTitleFirstBaseline
 {
-  v2 = [(HRAtrialFibrillationIntroViewController *)self _titleFont];
-  [v2 _scaledValueForValue:54.0];
+  _titleFont = [(HRAtrialFibrillationIntroViewController *)self _titleFont];
+  [_titleFont _scaledValueForValue:54.0];
   v4 = v3;
 
   return v4;
@@ -275,9 +275,9 @@
 
 - (double)_titleTopToFirstBaselineLeading
 {
-  v2 = [MEMORY[0x277D759A0] hrui_currentDeviceHas5Point8InchScreen];
+  hrui_currentDeviceHas5Point8InchScreen = [MEMORY[0x277D759A0] hrui_currentDeviceHas5Point8InchScreen];
   result = 36.0;
-  if (v2)
+  if (hrui_currentDeviceHas5Point8InchScreen)
   {
     return 44.0;
   }
@@ -288,8 +288,8 @@
 - (double)_titleLastBaselineToBodyFirstBaseline
 {
   v3 = objc_alloc(MEMORY[0x277D75520]);
-  v4 = [(HRAtrialFibrillationIntroViewController *)self _bodyFontTextStyle];
-  v5 = [v3 initForTextStyle:v4];
+  _bodyFontTextStyle = [(HRAtrialFibrillationIntroViewController *)self _bodyFontTextStyle];
+  v5 = [v3 initForTextStyle:_bodyFontTextStyle];
 
   [v5 scaledValueForValue:32.0];
   v7 = v6;
@@ -300,8 +300,8 @@
 - (double)_bodyLastBaselineToContentBottom
 {
   v3 = objc_alloc(MEMORY[0x277D75520]);
-  v4 = [(HRAtrialFibrillationIntroViewController *)self _bodyFontTextStyle];
-  v5 = [v3 initForTextStyle:v4];
+  _bodyFontTextStyle = [(HRAtrialFibrillationIntroViewController *)self _bodyFontTextStyle];
+  v5 = [v3 initForTextStyle:_bodyFontTextStyle];
 
   [v5 scaledValueForValue:48.0];
   v7 = v6;
@@ -322,8 +322,8 @@
   v5 = [v4 actionWithHandler:&v8];
   v6 = [v3 initWithBarButtonSystemItem:0 primaryAction:{v5, v8, v9, v10, v11}];
 
-  v7 = [(HRAtrialFibrillationIntroViewController *)self navigationItem];
-  [v7 setLeftBarButtonItem:v6];
+  navigationItem = [(HRAtrialFibrillationIntroViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v6];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -337,8 +337,8 @@ void __79__HRAtrialFibrillationIntroViewController_viewControllerWillEnterAdapti
 
 - (void)viewControllerDidLeaveAdaptiveModal
 {
-  v2 = [(HRAtrialFibrillationIntroViewController *)self navigationItem];
-  [v2 setLeftBarButtonItem:0];
+  navigationItem = [(HRAtrialFibrillationIntroViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
 }
 
 @end

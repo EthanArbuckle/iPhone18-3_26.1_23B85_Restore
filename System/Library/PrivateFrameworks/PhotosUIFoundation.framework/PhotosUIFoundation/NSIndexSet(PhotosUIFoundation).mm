@@ -26,7 +26,7 @@
   v7[2] = __58__NSIndexSet_PhotosUIFoundation__px_isSingleRangeWithMax___block_invoke;
   v7[3] = &unk_1E7BB7990;
   v7[4] = &v8;
-  [a1 enumerateRangesUsingBlock:v7];
+  [self enumerateRangesUsingBlock:v7];
   v4 = v9[5];
   if (v4)
   {
@@ -44,10 +44,10 @@
 
 - (uint64_t)px_coveringRange
 {
-  v2 = [a1 firstIndex];
-  if (((v2 != 0x7FFFFFFFFFFFFFFFLL) & ([a1 lastIndex] != 0x7FFFFFFFFFFFFFFFLL)) != 0)
+  firstIndex = [self firstIndex];
+  if (((firstIndex != 0x7FFFFFFFFFFFFFFFLL) & ([self lastIndex] != 0x7FFFFFFFFFFFFFFFLL)) != 0)
   {
-    return v2;
+    return firstIndex;
   }
 
   else
@@ -61,13 +61,13 @@
   v4 = a3;
   if ([v4 count])
   {
-    v5 = [a1 mutableCopy];
+    v5 = [self mutableCopy];
     [v5 px_adjustIndexesForInsertions:v4];
   }
 
   else
   {
-    v5 = [a1 copy];
+    v5 = [self copy];
   }
 
   return v5;
@@ -78,13 +78,13 @@
   v4 = a3;
   if ([v4 count])
   {
-    v5 = [a1 mutableCopy];
+    v5 = [self mutableCopy];
     [v5 px_adjustIndexesForDeletions:v4];
   }
 
   else
   {
-    v5 = [a1 copy];
+    v5 = [self copy];
   }
 
   return v5;
@@ -98,13 +98,13 @@
   v11[1] = 3221225472;
   v11[2] = __61__NSIndexSet_PhotosUIFoundation__px_enumerateMap_usingBlock___block_invoke;
   v11[3] = &unk_1E7BB7968;
-  v11[4] = a1;
+  v11[4] = self;
   v12 = v7;
   v13 = v8;
   v14 = a2;
   v9 = v8;
   v10 = v7;
-  [a1 enumerateRangesUsingBlock:v11];
+  [self enumerateRangesUsingBlock:v11];
 }
 
 - (id)px_map:()PhotosUIFoundation
@@ -118,7 +118,7 @@
   v10[3] = &unk_1E7BB7918;
   v11 = v6;
   v7 = v6;
-  [a1 px_enumerateMap:v5 usingBlock:v10];
+  [self px_enumerateMap:v5 usingBlock:v10];
 
   v8 = [v7 copy];
 
@@ -128,25 +128,25 @@
 - (id)px_intersectionWithIndexSet:()PhotosUIFoundation
 {
   v4 = a3;
-  if ([a1 count] && objc_msgSend(v4, "count"))
+  if ([self count] && objc_msgSend(v4, "count"))
   {
-    v5 = [a1 mutableCopy];
+    v5 = [self mutableCopy];
     v6 = [v4 mutableCopy];
     [v5 removeIndexes:v6];
-    [v6 removeIndexes:a1];
+    [v6 removeIndexes:self];
     [v5 addIndexes:v6];
-    v7 = [a1 mutableCopy];
+    v7 = [self mutableCopy];
     [v7 addIndexes:v4];
     [v7 removeIndexes:v5];
-    v8 = [v7 copy];
+    indexSet = [v7 copy];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AC90] indexSet];
+    indexSet = [MEMORY[0x1E696AC90] indexSet];
   }
 
-  return v8;
+  return indexSet;
 }
 
 - (uint64_t)px_intersectsWithIndexSet:()PhotosUIFoundation
@@ -160,7 +160,7 @@
   v7[1] = 3221225472;
   v7[2] = __60__NSIndexSet_PhotosUIFoundation__px_intersectsWithIndexSet___block_invoke;
   v7[3] = &unk_1E7BB7940;
-  v7[4] = a1;
+  v7[4] = self;
   v7[5] = &v8;
   [v4 enumerateRangesUsingBlock:v7];
   v5 = *(v9 + 24);
@@ -171,9 +171,9 @@
 
 - (uint64_t)px_indexAtPosition:()PhotosUIFoundation
 {
-  for (i = [a1 firstIndex]; a3; --a3)
+  for (i = [self firstIndex]; a3; --a3)
   {
-    i = [a1 indexGreaterThanIndex:i];
+    i = [self indexGreaterThanIndex:i];
   }
 
   return i;
@@ -182,14 +182,14 @@
 - (id)px_shortDescription
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __53__NSIndexSet_PhotosUIFoundation__px_shortDescription__block_invoke;
   v11 = &unk_1E7BB7918;
-  v12 = v3;
-  v4 = v3;
-  [a1 enumerateRangesUsingBlock:&v8];
+  v12 = array;
+  v4 = array;
+  [self enumerateRangesUsingBlock:&v8];
   v5 = [v4 componentsJoinedByString:{@", "}];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@]", v5, v8, v9, v10, v11];
 

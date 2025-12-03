@@ -6,11 +6,11 @@
 
 - (NSData)__im_encryptionKeyID
 {
-  v2 = [(IDSOffGridEncryptionProperties *)self encryptionKeyID];
+  encryptionKeyID = [(IDSOffGridEncryptionProperties *)self encryptionKeyID];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = encryptionKeyID;
   }
 
   else

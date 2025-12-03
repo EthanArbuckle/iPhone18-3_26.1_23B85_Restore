@@ -1,15 +1,15 @@
 @interface TRIMemoryEfficientFileDigest
-+ (id)sha256DigestForFile:(id)a3;
++ (id)sha256DigestForFile:(id)file;
 @end
 
 @implementation TRIMemoryEfficientFileDigest
 
-+ (id)sha256DigestForFile:(id)a3
++ (id)sha256DigestForFile:(id)file
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  fileCopy = file;
   v4 = MEMORY[0x277CCA9F8];
-  v5 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v3];
+  v5 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:fileCopy];
   v19 = 0;
   v6 = [v4 fileHandleForReadingFromURL:v5 error:&v19];
   v7 = v19;
@@ -34,14 +34,14 @@
       {
 
         objc_autoreleasePoolPop(v9);
-        v16 = [v8 mutableBytes];
-        if (!v16)
+        mutableBytes = [v8 mutableBytes];
+        if (!mutableBytes)
         {
           v17 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE728] reason:@"malloc failed" userInfo:0];
           objc_exception_throw(v17);
         }
 
-        CC_SHA256_Final(v16, &c);
+        CC_SHA256_Final(mutableBytes, &c);
         v13 = v8;
         goto LABEL_12;
       }
@@ -55,7 +55,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v21 = v3;
+      v21 = fileCopy;
       v22 = 2114;
       v23 = v11;
       _os_log_error_impl(&dword_26F567000, v12, OS_LOG_TYPE_ERROR, "Failed to read from %{public}@ during digest creation with error %{public}@", buf, 0x16u);
@@ -70,7 +70,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       c.count[0] = 138543618;
-      *&c.count[1] = v3;
+      *&c.count[1] = fileCopy;
       LOWORD(c.hash[1]) = 2114;
       *(&c.hash[1] + 2) = v7;
       _os_log_error_impl(&dword_26F567000, v8, OS_LOG_TYPE_ERROR, "Failed to create handle for %{public}@ with error %{public}@", &c, 0x16u);

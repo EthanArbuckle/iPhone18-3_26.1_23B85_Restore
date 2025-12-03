@@ -1,14 +1,14 @@
 @interface PasscodeContentViewControllerFactory
-+ (id)passcodeContentViewControllerForPasscode:(id)a3 options:(id)a4;
++ (id)passcodeContentViewControllerForPasscode:(id)passcode options:(id)options;
 @end
 
 @implementation PasscodeContentViewControllerFactory
 
-+ (id)passcodeContentViewControllerForPasscode:(id)a3 options:(id)a4
++ (id)passcodeContentViewControllerForPasscode:(id)passcode options:(id)options
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PasscodeContentViewControllerFullScreen alloc] initWithPasscode:v6 options:v5];
+  optionsCopy = options;
+  passcodeCopy = passcode;
+  v7 = [[PasscodeContentViewControllerFullScreen alloc] initWithPasscode:passcodeCopy options:optionsCopy];
 
   return v7;
 }

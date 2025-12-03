@@ -68,15 +68,15 @@
   [(CIVector *)self->inputMinComponents W];
   if (v14 <= 0.0 && ([(CIVector *)self->inputMaxComponents W], v15 >= 1.0))
   {
-    v16 = [(CIColorClamp *)self _kernelAlphaPreserving];
+    _kernelAlphaPreserving = [(CIColorClamp *)self _kernelAlphaPreserving];
   }
 
   else
   {
-    v16 = [(CIColorClamp *)self _kernel];
+    _kernelAlphaPreserving = [(CIColorClamp *)self _kernel];
   }
 
-  v18 = v16;
+  v18 = _kernelAlphaPreserving;
   v19[0] = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
   v19[1] = inputMinComponents;
   v19[2] = inputMaxComponents;

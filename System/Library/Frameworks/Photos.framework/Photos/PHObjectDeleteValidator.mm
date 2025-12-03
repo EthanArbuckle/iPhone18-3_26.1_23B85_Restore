@@ -1,20 +1,20 @@
 @interface PHObjectDeleteValidator
-- (BOOL)recordObjectID:(id)a3;
-- (BOOL)validateForDeleteWithRequestsByObjectID:(id)a3 error:(id *)a4;
-- (PHObjectDeleteValidator)initWithEntityName:(id)a3 managedObjectContext:(id)a4;
+- (BOOL)recordObjectID:(id)d;
+- (BOOL)validateForDeleteWithRequestsByObjectID:(id)d error:(id *)error;
+- (PHObjectDeleteValidator)initWithEntityName:(id)name managedObjectContext:(id)context;
 @end
 
 @implementation PHObjectDeleteValidator
 
-- (BOOL)validateForDeleteWithRequestsByObjectID:(id)a3 error:(id *)a4
+- (BOOL)validateForDeleteWithRequestsByObjectID:(id)d error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   if ([(NSMutableSet *)self->_deletedObjectIDs count])
   {
     v7 = MEMORY[0x1E695D5E0];
-    v8 = [(NSEntityDescription *)self->_entity name];
-    v9 = [v7 fetchRequestWithEntityName:v8];
+    name = [(NSEntityDescription *)self->_entity name];
+    v9 = [v7 fetchRequestWithEntityName:name];
 
     v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", self->_deletedObjectIDs];
     [v9 setPredicate:v10];
@@ -39,10 +39,10 @@
           }
 
           v16 = *(*(&v21 + 1) + 8 * i);
-          v17 = [v16 objectID];
-          v18 = [v6 objectForKey:v17];
+          objectID = [v16 objectID];
+          v18 = [dCopy objectForKey:objectID];
 
-          LODWORD(v16) = [v18 validateForDeleteManagedObject:v16 error:a4];
+          LODWORD(v16) = [v18 validateForDeleteManagedObject:v16 error:error];
           if (!v16)
           {
             v19 = 0;
@@ -72,14 +72,14 @@ LABEL_12:
   return v19;
 }
 
-- (BOOL)recordObjectID:(id)a3
+- (BOOL)recordObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 entity];
-  v6 = v5;
-  if (self->_entity && [v5 isKindOfEntity:?])
+  dCopy = d;
+  entity = [dCopy entity];
+  v6 = entity;
+  if (self->_entity && [entity isKindOfEntity:?])
   {
-    [(NSMutableSet *)self->_deletedObjectIDs addObject:v4];
+    [(NSMutableSet *)self->_deletedObjectIDs addObject:dCopy];
     v7 = 1;
   }
 
@@ -91,10 +91,10 @@ LABEL_12:
   return v7;
 }
 
-- (PHObjectDeleteValidator)initWithEntityName:(id)a3 managedObjectContext:(id)a4
+- (PHObjectDeleteValidator)initWithEntityName:(id)name managedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = PHObjectDeleteValidator;
   v8 = [(PHObjectDeleteValidator *)&v14 init];
@@ -108,7 +108,7 @@ LABEL_12:
     entity = v8->_entity;
     v8->_entity = v11;
 
-    objc_storeStrong(&v8->_context, a4);
+    objc_storeStrong(&v8->_context, context);
   }
 
   return v8;

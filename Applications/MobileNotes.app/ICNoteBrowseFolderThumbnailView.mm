@@ -1,22 +1,22 @@
 @interface ICNoteBrowseFolderThumbnailView
 - (BOOL)isCompact;
 - (ICFolder)folder;
-- (ICNoteBrowseFolderThumbnailView)initWithCoder:(id)a3;
-- (ICNoteBrowseFolderThumbnailView)initWithFrame:(CGRect)a3;
+- (ICNoteBrowseFolderThumbnailView)initWithCoder:(id)coder;
+- (ICNoteBrowseFolderThumbnailView)initWithFrame:(CGRect)frame;
 - (void)commonInit;
-- (void)setBackgroundColor:(id)a3;
-- (void)setFolder:(id)a3;
-- (void)setHasDropShadow:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setFolder:(id)folder;
+- (void)setHasDropShadow:(BOOL)shadow;
 - (void)updateThumbnails;
 @end
 
 @implementation ICNoteBrowseFolderThumbnailView
 
-- (ICNoteBrowseFolderThumbnailView)initWithCoder:(id)a3
+- (ICNoteBrowseFolderThumbnailView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ICNoteBrowseFolderThumbnailView;
-  v3 = [(ICNoteBrowseFolderThumbnailView *)&v6 initWithCoder:a3];
+  v3 = [(ICNoteBrowseFolderThumbnailView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -26,11 +26,11 @@
   return v4;
 }
 
-- (ICNoteBrowseFolderThumbnailView)initWithFrame:(CGRect)a3
+- (ICNoteBrowseFolderThumbnailView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ICNoteBrowseFolderThumbnailView;
-  v3 = [(ICNoteBrowseFolderThumbnailView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICNoteBrowseFolderThumbnailView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -56,24 +56,24 @@
   MidX = CGRectGetMidX(v64);
   [(ICNoteBrowseFolderThumbnailView *)self bounds];
   MidY = CGRectGetMidY(v65);
-  v8 = [[ICNoteResultsThumbnailView alloc] initWithFrame:0.0, 0.0, MidX, MidY];
+  midY = [[ICNoteResultsThumbnailView alloc] initWithFrame:0.0, 0.0, MidX, MidY];
   thumbnailView0 = self->_thumbnailView0;
-  self->_thumbnailView0 = v8;
+  self->_thumbnailView0 = midY;
 
   [(ICNoteResultsThumbnailView *)self->_thumbnailView0 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [[ICNoteResultsThumbnailView alloc] initWithFrame:0.0, 0.0, MidX, MidY];
+  midY2 = [[ICNoteResultsThumbnailView alloc] initWithFrame:0.0, 0.0, MidX, MidY];
   thumbnailView1 = self->_thumbnailView1;
-  self->_thumbnailView1 = v10;
+  self->_thumbnailView1 = midY2;
 
   [(ICNoteResultsThumbnailView *)self->_thumbnailView1 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v12 = [[ICNoteResultsThumbnailView alloc] initWithFrame:0.0, 0.0, MidX, MidY];
+  midY3 = [[ICNoteResultsThumbnailView alloc] initWithFrame:0.0, 0.0, MidX, MidY];
   thumbnailView2 = self->_thumbnailView2;
-  self->_thumbnailView2 = v12;
+  self->_thumbnailView2 = midY3;
 
   [(ICNoteResultsThumbnailView *)self->_thumbnailView2 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v14 = [[ICNoteResultsThumbnailView alloc] initWithFrame:0.0, 0.0, MidX, MidY];
+  midY4 = [[ICNoteResultsThumbnailView alloc] initWithFrame:0.0, 0.0, MidX, MidY];
   thumbnailView3 = self->_thumbnailView3;
-  self->_thumbnailView3 = v14;
+  self->_thumbnailView3 = midY4;
 
   [(ICNoteResultsThumbnailView *)self->_thumbnailView3 setTranslatesAutoresizingMaskIntoConstraints:0];
   v16 = self->_thumbnailView1;
@@ -155,21 +155,21 @@
   [(UIImageView *)self->_emptyFolderImageView setContentMode:1];
   [(UIImageView *)self->_emptyFolderImageView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_contentView addSubview:self->_emptyFolderImageView];
-  v56 = [(UIImageView *)self->_emptyFolderImageView centerXAnchor];
-  v55 = [(UIView *)self->_contentView centerXAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  centerXAnchor = [(UIImageView *)self->_emptyFolderImageView centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_contentView centerXAnchor];
+  v54 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v59[0] = v54;
-  v53 = [(UIImageView *)self->_emptyFolderImageView centerYAnchor];
-  v42 = [(UIView *)self->_contentView centerYAnchor];
-  v43 = [v53 constraintEqualToAnchor:v42];
+  centerYAnchor = [(UIImageView *)self->_emptyFolderImageView centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_contentView centerYAnchor];
+  v43 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v59[1] = v43;
-  v44 = [(UIImageView *)self->_emptyFolderImageView heightAnchor];
-  v45 = [(UIView *)self->_contentView heightAnchor];
-  v46 = [v44 constraintEqualToAnchor:v45 multiplier:0.5];
+  heightAnchor = [(UIImageView *)self->_emptyFolderImageView heightAnchor];
+  heightAnchor2 = [(UIView *)self->_contentView heightAnchor];
+  v46 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.5];
   v59[2] = v46;
-  v47 = [(UIImageView *)self->_emptyFolderImageView widthAnchor];
-  v48 = [(UIImageView *)self->_emptyFolderImageView heightAnchor];
-  v49 = [v47 constraintEqualToAnchor:v48];
+  widthAnchor = [(UIImageView *)self->_emptyFolderImageView widthAnchor];
+  heightAnchor3 = [(UIImageView *)self->_emptyFolderImageView heightAnchor];
+  v49 = [widthAnchor constraintEqualToAnchor:heightAnchor3];
   v59[3] = v49;
   v50 = [NSArray arrayWithObjects:v59 count:4];
   [NSLayoutConstraint activateConstraints:v50];
@@ -181,23 +181,23 @@
   v52 = [(ICNoteBrowseFolderThumbnailView *)self registerForTraitChanges:v51 withAction:"updateThumbnails"];
 }
 
-- (void)setFolder:(id)a3
+- (void)setFolder:(id)folder
 {
-  objc_storeWeak(&self->_folder, a3);
+  objc_storeWeak(&self->_folder, folder);
 
   [(ICNoteBrowseFolderThumbnailView *)self updateThumbnails];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(ICNoteBrowseFolderThumbnailView *)self contentView];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  contentView = [(ICNoteBrowseFolderThumbnailView *)self contentView];
+  [contentView setBackgroundColor:colorCopy];
 }
 
-- (void)setHasDropShadow:(BOOL)a3
+- (void)setHasDropShadow:(BOOL)shadow
 {
-  self->_hasDropShadow = a3;
+  self->_hasDropShadow = shadow;
   if ([(ICNoteBrowseFolderThumbnailView *)self hasDropShadow])
   {
 
@@ -213,45 +213,45 @@
 
 - (BOOL)isCompact
 {
-  v3 = [(ICNoteBrowseFolderThumbnailView *)self traitCollection];
-  if ([v3 ic_hasCompactSize])
+  traitCollection = [(ICNoteBrowseFolderThumbnailView *)self traitCollection];
+  if ([traitCollection ic_hasCompactSize])
   {
-    v4 = [(ICNoteBrowseFolderThumbnailView *)self allowsCompactSizeMetrics];
+    allowsCompactSizeMetrics = [(ICNoteBrowseFolderThumbnailView *)self allowsCompactSizeMetrics];
   }
 
   else
   {
-    v4 = 0;
+    allowsCompactSizeMetrics = 0;
   }
 
-  return v4;
+  return allowsCompactSizeMetrics;
 }
 
 - (void)updateThumbnails
 {
-  v3 = [(ICNoteBrowseFolderThumbnailView *)self folder];
-  v4 = [v3 visibleNotesInFolder];
-  v5 = v4;
+  folder = [(ICNoteBrowseFolderThumbnailView *)self folder];
+  visibleNotesInFolder = [folder visibleNotesInFolder];
+  v5 = visibleNotesInFolder;
   v6 = &__NSArray0__struct;
-  if (v4)
+  if (visibleNotesInFolder)
   {
-    v6 = v4;
+    v6 = visibleNotesInFolder;
   }
 
   v7 = v6;
 
-  v8 = [(ICNoteBrowseFolderThumbnailView *)self thumbnailViews];
+  thumbnailViews = [(ICNoteBrowseFolderThumbnailView *)self thumbnailViews];
   v28 = _NSConcreteStackBlock;
   v29 = 3221225472;
   v30 = sub_100125558;
   v31 = &unk_10064AA10;
   v9 = v7;
   v32 = v9;
-  v33 = self;
-  [v8 enumerateObjectsUsingBlock:&v28];
+  selfCopy = self;
+  [thumbnailViews enumerateObjectsUsingBlock:&v28];
 
   v10 = [(ICNoteBrowseFolderThumbnailView *)self folder:v28];
-  v11 = [v10 systemImageName];
+  systemImageName = [v10 systemImageName];
   v12 = +[UIDevice ic_isVision];
   v13 = &UIFontTextStyleTitle1;
   if (!v12)
@@ -259,30 +259,30 @@
     v13 = &UIFontTextStyleBody;
   }
 
-  v14 = [UIImage ic_systemImageNamed:v11 textStyle:*v13 scale:3];
-  v15 = [(ICNoteBrowseFolderThumbnailView *)self emptyFolderImageView];
-  [v15 setImage:v14];
+  v14 = [UIImage ic_systemImageNamed:systemImageName textStyle:*v13 scale:3];
+  emptyFolderImageView = [(ICNoteBrowseFolderThumbnailView *)self emptyFolderImageView];
+  [emptyFolderImageView setImage:v14];
 
   v16 = [v9 count] != 0;
-  v17 = [(ICNoteBrowseFolderThumbnailView *)self emptyFolderImageView];
-  [v17 setHidden:v16];
+  emptyFolderImageView2 = [(ICNoteBrowseFolderThumbnailView *)self emptyFolderImageView];
+  [emptyFolderImageView2 setHidden:v16];
 
   v18 = +[UIDevice ic_isVision];
   v19 = 16.0;
   if ((v18 & 1) == 0)
   {
-    v20 = [(ICNoteBrowseFolderThumbnailView *)self isCompact];
+    isCompact = [(ICNoteBrowseFolderThumbnailView *)self isCompact];
     v19 = 12.0;
-    if (v20)
+    if (isCompact)
     {
       v19 = 8.0;
     }
   }
 
   [(ICNoteBrowseFolderThumbnailView *)self setCornerRadius:v19];
-  v21 = [(ICNoteBrowseFolderThumbnailView *)self contentView];
+  contentView = [(ICNoteBrowseFolderThumbnailView *)self contentView];
   [(ICNoteBrowseFolderThumbnailView *)self cornerRadius];
-  [v21 ic_applyRoundedCornersWithRadius:?];
+  [contentView ic_applyRoundedCornersWithRadius:?];
 
   v22 = 12.0;
   if ((+[UIDevice ic_isVision]& 1) == 0)
@@ -298,8 +298,8 @@
     }
   }
 
-  v23 = [(ICNoteBrowseFolderThumbnailView *)self verticalStackView];
-  [v23 setDirectionalLayoutMargins:{v22, v22, v22, v22}];
+  verticalStackView = [(ICNoteBrowseFolderThumbnailView *)self verticalStackView];
+  [verticalStackView setDirectionalLayoutMargins:{v22, v22, v22, v22}];
 
   if ([(ICNoteBrowseFolderThumbnailView *)self isCompact])
   {
@@ -311,14 +311,14 @@
     v24 = 4.0;
   }
 
-  v25 = [(ICNoteBrowseFolderThumbnailView *)self verticalStackView];
-  [v25 setSpacing:v24];
+  verticalStackView2 = [(ICNoteBrowseFolderThumbnailView *)self verticalStackView];
+  [verticalStackView2 setSpacing:v24];
 
-  v26 = [(ICNoteBrowseFolderThumbnailView *)self horizontalStackView0];
-  [v26 setSpacing:v24];
+  horizontalStackView0 = [(ICNoteBrowseFolderThumbnailView *)self horizontalStackView0];
+  [horizontalStackView0 setSpacing:v24];
 
-  v27 = [(ICNoteBrowseFolderThumbnailView *)self horizontalStackView1];
-  [v27 setSpacing:v24];
+  horizontalStackView1 = [(ICNoteBrowseFolderThumbnailView *)self horizontalStackView1];
+  [horizontalStackView1 setSpacing:v24];
 }
 
 - (ICFolder)folder

@@ -4,30 +4,30 @@
 - (id)_peerPaymentAccount;
 - (id)_peerPaymentWebServiceContext;
 - (id)_webServiceContext;
-- (void)_deviceFailedToPair:(id)a3;
-- (void)archiveWebServiceBackgroundContext:(id)a3;
-- (void)archiveWebServiceContext:(id)a3;
+- (void)_deviceFailedToPair:(id)pair;
+- (void)archiveWebServiceBackgroundContext:(id)context;
+- (void)archiveWebServiceContext:(id)context;
 - (void)checkCompanionPeerPaymentRegistrationState;
 - (void)dealloc;
-- (void)handleAppletState:(id)a3 forUniqueID:(id)a4;
-- (void)handleBalanceReminderUpdate:(id)a3 balance:(id)a4 forUniqueID:(id)a5;
-- (void)handleBalanceUpdate:(id)a3 forUniqueID:(id)a4;
-- (void)handleCredentialsUpdate:(id)a3 forUniqueID:(id)a4 paymentApplicationIdentifier:(id)a5 completion:(id)a6;
+- (void)handleAppletState:(id)state forUniqueID:(id)d;
+- (void)handleBalanceReminderUpdate:(id)update balance:(id)balance forUniqueID:(id)d;
+- (void)handleBalanceUpdate:(id)update forUniqueID:(id)d;
+- (void)handleCredentialsUpdate:(id)update forUniqueID:(id)d paymentApplicationIdentifier:(id)identifier completion:(id)completion;
 - (void)handleDownloadAllPaymentPasses;
-- (void)handlePaymentTransactions:(id)a3 appletStates:(id)a4 forUniqueIDs:(id)a5;
-- (void)handlePaymentWebServiceContextFromWatch:(id)a3;
-- (void)handlePreconditionNotMetWithUniqueIDs:(id)a3 preconditionDescription:(id)a4 shouldUnregister:(BOOL)a5;
-- (void)handlePreferredAID:(id)a3 forPassWithUniqueID:(id)a4;
-- (void)handlePushToken:(id)a3;
-- (void)handleRemoveTransactionsWithIdentifiers:(id)a3;
-- (void)handleUpdatePaymentPassWithTypeIdentifier:(id)a3;
-- (void)handleUpdatedPeerPaymentWebServiceContext:(id)a3 account:(id)a4;
+- (void)handlePaymentTransactions:(id)transactions appletStates:(id)states forUniqueIDs:(id)ds;
+- (void)handlePaymentWebServiceContextFromWatch:(id)watch;
+- (void)handlePreconditionNotMetWithUniqueIDs:(id)ds preconditionDescription:(id)description shouldUnregister:(BOOL)unregister;
+- (void)handlePreferredAID:(id)d forPassWithUniqueID:(id)iD;
+- (void)handlePushToken:(id)token;
+- (void)handleRemoveTransactionsWithIdentifiers:(id)identifiers;
+- (void)handleUpdatePaymentPassWithTypeIdentifier:(id)identifier;
+- (void)handleUpdatedPeerPaymentWebServiceContext:(id)context account:(id)account;
 - (void)loadWebService;
 - (void)sendPaymentOptionsDefaultsToWatch;
 - (void)sendWebServiceContextToWatch;
-- (void)setNewAuthRandom:(id)a3;
-- (void)showPaymentSetupForAppDisplayName:(id)a3;
-- (void)startBackgroundVerificationObserverForPass:(id)a3 verificationMethod:(id)a4;
+- (void)setNewAuthRandom:(id)random;
+- (void)showPaymentSetupForAppDisplayName:(id)name;
+- (void)startBackgroundVerificationObserverForPass:(id)pass verificationMethod:(id)method;
 @end
 
 @implementation NPKSharedWebServiceProvider
@@ -67,7 +67,7 @@ void __55__NPKSharedWebServiceProvider_sharedWebServiceProvider__block_invoke()
     v2->_companionAgentConnectionLock._os_unfair_lock_opaque = 0;
     out_token = 0;
     objc_initWeak(&location, v2);
-    v6 = [@"com.apple.NanoPassKit.NPKSharedPaymentWebServiceChanged" UTF8String];
+    uTF8String = [@"com.apple.NanoPassKit.NPKSharedPaymentWebServiceChanged" UTF8String];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __35__NPKSharedWebServiceProvider_init__block_invoke;
@@ -75,9 +75,9 @@ void __55__NPKSharedWebServiceProvider_sharedWebServiceProvider__block_invoke()
     objc_copyWeak(&v33, &location);
     v7 = v2;
     v32 = v7;
-    notify_register_dispatch(v6, &out_token, MEMORY[0x277D85CD0], handler);
+    notify_register_dispatch(uTF8String, &out_token, MEMORY[0x277D85CD0], handler);
 
-    v8 = [@"com.apple.NanoPassKit.NPKSharedPeerPaymentWebServiceChanged" UTF8String];
+    uTF8String2 = [@"com.apple.NanoPassKit.NPKSharedPeerPaymentWebServiceChanged" UTF8String];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __35__NPKSharedWebServiceProvider_init__block_invoke_72;
@@ -85,9 +85,9 @@ void __55__NPKSharedWebServiceProvider_sharedWebServiceProvider__block_invoke()
     objc_copyWeak(&v30, &location);
     v9 = v7;
     v29 = v9;
-    notify_register_dispatch(v8, &out_token, MEMORY[0x277D85CD0], v28);
+    notify_register_dispatch(uTF8String2, &out_token, MEMORY[0x277D85CD0], v28);
 
-    v10 = [@"com.apple.NanoPassKit.NPKPeerPaymentAccountChangedDarwinNotification" UTF8String];
+    uTF8String3 = [@"com.apple.NanoPassKit.NPKPeerPaymentAccountChangedDarwinNotification" UTF8String];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __35__NPKSharedWebServiceProvider_init__block_invoke_73;
@@ -95,17 +95,17 @@ void __55__NPKSharedWebServiceProvider_sharedWebServiceProvider__block_invoke()
     objc_copyWeak(&v27, &location);
     v11 = v9;
     v26 = v11;
-    notify_register_dispatch(v10, &out_token, MEMORY[0x277D85CD0], v25);
+    notify_register_dispatch(uTF8String3, &out_token, MEMORY[0x277D85CD0], v25);
 
-    v12 = [*MEMORY[0x277D2BC70] UTF8String];
+    uTF8String4 = [*MEMORY[0x277D2BC70] UTF8String];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __35__NPKSharedWebServiceProvider_init__block_invoke_74;
     v23[3] = &unk_279944F20;
     objc_copyWeak(&v24, &location);
-    notify_register_dispatch(v12, &out_token, MEMORY[0x277D85CD0], v23);
+    notify_register_dispatch(uTF8String4, &out_token, MEMORY[0x277D85CD0], v23);
 
-    v13 = [*MEMORY[0x277D2BCB8] UTF8String];
+    uTF8String5 = [*MEMORY[0x277D2BCB8] UTF8String];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __35__NPKSharedWebServiceProvider_init__block_invoke_77;
@@ -113,10 +113,10 @@ void __55__NPKSharedWebServiceProvider_sharedWebServiceProvider__block_invoke()
     objc_copyWeak(&v22, &location);
     v14 = v11;
     v21 = v14;
-    notify_register_dispatch(v13, &out_token, MEMORY[0x277D85CD0], &v17);
+    notify_register_dispatch(uTF8String5, &out_token, MEMORY[0x277D85CD0], &v17);
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v14 selector:sel__deviceFailedToPair_ name:*MEMORY[0x277D2BC58] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v14 selector:sel__deviceFailedToPair_ name:*MEMORY[0x277D2BC58] object:0];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&v24);
@@ -275,11 +275,11 @@ void __35__NPKSharedWebServiceProvider_init__block_invoke_77(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(NPKSharedWebServiceProvider *)self targetDevice];
-  [v3 setDelegate:0];
+  targetDevice = [(NPKSharedWebServiceProvider *)self targetDevice];
+  [targetDevice setDelegate:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = NPKSharedWebServiceProvider;
@@ -309,17 +309,17 @@ void __35__NPKSharedWebServiceProvider_init__block_invoke_77(uint64_t a1)
   os_unfair_lock_lock(&self->_companionAgentConnectionLock);
   __45__NPKSharedWebServiceProvider_loadWebService__block_invoke(v27);
   os_unfair_lock_unlock(&self->_companionAgentConnectionLock);
-  v6 = [(NPKSharedWebServiceProvider *)self _webServiceContext];
-  v7 = [v6 secureElementID];
+  _webServiceContext = [(NPKSharedWebServiceProvider *)self _webServiceContext];
+  secureElementID = [_webServiceContext secureElementID];
 
-  if (!v7)
+  if (!secureElementID)
   {
-    [v6 setDeviceID:0];
+    [_webServiceContext setDeviceID:0];
   }
 
-  v8 = [(NPKSharedWebServiceProvider *)self webService];
+  webService = [(NPKSharedWebServiceProvider *)self webService];
 
-  if (v8)
+  if (webService)
   {
     v9 = pk_Payment_log();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -334,22 +334,22 @@ void __35__NPKSharedWebServiceProvider_init__block_invoke_77(uint64_t a1)
       }
     }
 
-    v12 = [(NPKSharedWebServiceProvider *)self webService];
-    [v12 setContext:v6];
+    webService2 = [(NPKSharedWebServiceProvider *)self webService];
+    [webService2 setContext:_webServiceContext];
   }
 
   else
   {
     v13 = objc_alloc(MEMORY[0x277D38170]);
-    v14 = [(NPKSharedWebServiceProvider *)self targetDevice];
-    v15 = [(NPKSharedWebServiceProvider *)self targetDevice];
-    v12 = [v13 initWithContext:v6 targetDevice:v14 archiver:v15];
+    targetDevice = [(NPKSharedWebServiceProvider *)self targetDevice];
+    targetDevice2 = [(NPKSharedWebServiceProvider *)self targetDevice];
+    webService2 = [v13 initWithContext:_webServiceContext targetDevice:targetDevice archiver:targetDevice2];
 
-    [(NPKSharedWebServiceProvider *)self setWebService:v12];
+    [(NPKSharedWebServiceProvider *)self setWebService:webService2];
     v16 = pk_Payment_log();
-    LODWORD(v15) = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
+    LODWORD(targetDevice2) = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
 
-    if (v15)
+    if (targetDevice2)
     {
       v17 = pk_Payment_log();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -360,32 +360,32 @@ void __35__NPKSharedWebServiceProvider_init__block_invoke_77(uint64_t a1)
     }
   }
 
-  v18 = [(NPKSharedWebServiceProvider *)self _peerPaymentWebServiceContext];
-  v19 = [(NPKSharedWebServiceProvider *)self peerPaymentWebService];
+  _peerPaymentWebServiceContext = [(NPKSharedWebServiceProvider *)self _peerPaymentWebServiceContext];
+  peerPaymentWebService = [(NPKSharedWebServiceProvider *)self peerPaymentWebService];
 
-  if (v19)
+  if (peerPaymentWebService)
   {
-    v20 = [(NPKSharedWebServiceProvider *)self peerPaymentWebService];
-    [(NPKSharedPeerPaymentWebServiceArchiver *)v20 setContext:v18];
+    peerPaymentWebService2 = [(NPKSharedWebServiceProvider *)self peerPaymentWebService];
+    [(NPKSharedPeerPaymentWebServiceArchiver *)peerPaymentWebService2 setContext:_peerPaymentWebServiceContext];
   }
 
   else
   {
     v21 = [NPKSharedPeerPaymentWebServiceArchiver alloc];
-    v22 = [(NPKSharedWebServiceProvider *)self companionAgentConnection];
-    v20 = [(NPKSharedPeerPaymentWebServiceArchiver *)v21 initWithCompanionAgentConnection:v22];
+    companionAgentConnection = [(NPKSharedWebServiceProvider *)self companionAgentConnection];
+    peerPaymentWebService2 = [(NPKSharedPeerPaymentWebServiceArchiver *)v21 initWithCompanionAgentConnection:companionAgentConnection];
 
-    v23 = [(NPKSharedWebServiceProvider *)self peerPaymentTargetDevice];
-    v24 = [objc_alloc(MEMORY[0x277D381B0]) initWithContext:v18 targetDevice:v23 archiver:v20];
-    v25 = [MEMORY[0x277D381A0] sharedInstance];
-    [v24 setPeerPaymentService:v25];
+    peerPaymentTargetDevice = [(NPKSharedWebServiceProvider *)self peerPaymentTargetDevice];
+    v24 = [objc_alloc(MEMORY[0x277D381B0]) initWithContext:_peerPaymentWebServiceContext targetDevice:peerPaymentTargetDevice archiver:peerPaymentWebService2];
+    mEMORY[0x277D381A0] = [MEMORY[0x277D381A0] sharedInstance];
+    [v24 setPeerPaymentService:mEMORY[0x277D381A0]];
 
-    [v23 setPeerPaymentWebService:v24];
+    [peerPaymentTargetDevice setPeerPaymentWebService:v24];
     [(NPKSharedWebServiceProvider *)self setPeerPaymentWebService:v24];
   }
 
-  v26 = [(NPKSharedWebServiceProvider *)self _peerPaymentAccount];
-  [(NPKSharedWebServiceProvider *)self setPeerPaymentAccount:v26];
+  _peerPaymentAccount = [(NPKSharedWebServiceProvider *)self _peerPaymentAccount];
+  [(NPKSharedWebServiceProvider *)self setPeerPaymentAccount:_peerPaymentAccount];
 }
 
 uint64_t __45__NPKSharedWebServiceProvider_loadWebService__block_invoke(uint64_t a1)
@@ -412,7 +412,7 @@ uint64_t __45__NPKSharedWebServiceProvider_loadWebService__block_invoke(uint64_t
   v13[1] = 3221225472;
   v14 = __49__NPKSharedWebServiceProvider__webServiceContext__block_invoke;
   v15 = &unk_279944FE8;
-  v16 = self;
+  selfCopy = self;
   v17 = &v18;
   v3 = v13;
   os_unfair_lock_lock(&self->_companionAgentConnectionLock);
@@ -473,7 +473,7 @@ void __49__NPKSharedWebServiceProvider__webServiceContext__block_invoke(uint64_t
   v13[1] = 3221225472;
   v14 = __60__NPKSharedWebServiceProvider__peerPaymentWebServiceContext__block_invoke;
   v15 = &unk_279944FE8;
-  v16 = self;
+  selfCopy = self;
   v17 = &v18;
   v3 = v13;
   os_unfair_lock_lock(&self->_companionAgentConnectionLock);
@@ -531,7 +531,7 @@ void __60__NPKSharedWebServiceProvider__peerPaymentWebServiceContext__block_invo
   v10[1] = 3221225472;
   v11 = __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke;
   v12 = &unk_279944FE8;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   v3 = v10;
   os_unfair_lock_lock(&self->_companionAgentConnectionLock);
@@ -570,10 +570,10 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
   *(v4 + 40) = v3;
 }
 
-- (void)_deviceFailedToPair:(id)a3
+- (void)_deviceFailedToPair:(id)pair
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pairCopy = pair;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -583,46 +583,46 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = pairCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Device failed to pair: %@", &v13, 0xCu);
     }
   }
 
   v8 = objc_alloc_init(MEMORY[0x277D38180]);
-  v9 = [(NPKSharedWebServiceProvider *)self webService];
-  [v9 setContext:v8];
+  webService = [(NPKSharedWebServiceProvider *)self webService];
+  [webService setContext:v8];
 
   v10 = objc_alloc_init(MEMORY[0x277D381B8]);
-  v11 = [(NPKSharedWebServiceProvider *)self peerPaymentWebService];
-  [v11 setContext:v10];
+  peerPaymentWebService = [(NPKSharedWebServiceProvider *)self peerPaymentWebService];
+  [peerPaymentWebService setContext:v10];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlePushToken:(id)a3
+- (void)handlePushToken:(id)token
 {
-  v4 = a3;
-  v5 = [(NPKSharedWebServiceProvider *)self webService];
-  v12 = [v5 context];
+  tokenCopy = token;
+  webService = [(NPKSharedWebServiceProvider *)self webService];
+  context = [webService context];
 
-  [v12 setPushToken:v4];
-  v6 = [(NPKSharedWebServiceProvider *)self webService];
-  v7 = [(NPKSharedWebServiceProvider *)self targetDevice];
-  v8 = [v6 context];
-  [v7 archiveContext:v8];
+  [context setPushToken:tokenCopy];
+  webService2 = [(NPKSharedWebServiceProvider *)self webService];
+  targetDevice = [(NPKSharedWebServiceProvider *)self targetDevice];
+  context2 = [webService2 context];
+  [targetDevice archiveContext:context2];
 
-  v9 = [(NPKSharedWebServiceProvider *)self peerPaymentWebService];
-  v10 = [v9 context];
-  [v10 setPushToken:v4];
+  peerPaymentWebService = [(NPKSharedWebServiceProvider *)self peerPaymentWebService];
+  context3 = [peerPaymentWebService context];
+  [context3 setPushToken:tokenCopy];
 
-  v11 = [v9 archiver];
-  [v11 archiveContext:v10];
+  archiver = [peerPaymentWebService archiver];
+  [archiver archiveContext:context3];
 }
 
-- (void)handlePreconditionNotMetWithUniqueIDs:(id)a3 preconditionDescription:(id)a4 shouldUnregister:(BOOL)a5
+- (void)handlePreconditionNotMetWithUniqueIDs:(id)ds preconditionDescription:(id)description shouldUnregister:(BOOL)unregister
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dsCopy = ds;
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_ERROR);
 
@@ -632,7 +632,7 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v5;
+      v11 = dsCopy;
       _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_ERROR, "Error: Should not be receiving precondition not met messages from Bridge (%@)", &v10, 0xCu);
     }
   }
@@ -640,12 +640,12 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlePaymentTransactions:(id)a3 appletStates:(id)a4 forUniqueIDs:(id)a5
+- (void)handlePaymentTransactions:(id)transactions appletStates:(id)states forUniqueIDs:(id)ds
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  transactionsCopy = transactions;
+  statesCopy = states;
+  dsCopy = ds;
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_ERROR);
 
@@ -655,11 +655,11 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412802;
-      v15 = v7;
+      v15 = transactionsCopy;
       v16 = 2112;
-      v17 = v8;
+      v17 = statesCopy;
       v18 = 2112;
-      v19 = v9;
+      v19 = dsCopy;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_ERROR, "Error: Should not be receiving payment transactions from Bridge (%@ %@ %@)", &v14, 0x20u);
     }
   }
@@ -667,11 +667,11 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAppletState:(id)a3 forUniqueID:(id)a4
+- (void)handleAppletState:(id)state forUniqueID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  stateCopy = state;
+  dCopy = d;
   v7 = pk_Payment_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
 
@@ -681,9 +681,9 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412546;
-      v12 = v6;
+      v12 = dCopy;
       v13 = 2112;
-      v14 = v5;
+      v14 = stateCopy;
       _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_ERROR, "Error: Should not be receiving applet state from Bridge (%@ %@)", &v11, 0x16u);
     }
   }
@@ -691,10 +691,10 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRemoveTransactionsWithIdentifiers:(id)a3
+- (void)handleRemoveTransactionsWithIdentifiers:(id)identifiers
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_ERROR);
 
@@ -704,7 +704,7 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = identifiersCopy;
       _os_log_impl(&dword_25B300000, v6, OS_LOG_TYPE_ERROR, "Error: Should not be receiving remove transactions from Bridge (%@)", &v8, 0xCu);
     }
   }
@@ -712,11 +712,11 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleBalanceUpdate:(id)a3 forUniqueID:(id)a4
+- (void)handleBalanceUpdate:(id)update forUniqueID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  updateCopy = update;
+  dCopy = d;
   v7 = pk_Payment_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
 
@@ -726,9 +726,9 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412546;
-      v12 = v5;
+      v12 = updateCopy;
       v13 = 2112;
-      v14 = v6;
+      v14 = dCopy;
       _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_ERROR, "Error: Should not be receiving balance update from Bridge (%@ %@)", &v11, 0x16u);
     }
   }
@@ -736,12 +736,12 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleBalanceReminderUpdate:(id)a3 balance:(id)a4 forUniqueID:(id)a5
+- (void)handleBalanceReminderUpdate:(id)update balance:(id)balance forUniqueID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  updateCopy = update;
+  balanceCopy = balance;
+  dCopy = d;
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_ERROR);
 
@@ -751,11 +751,11 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412802;
-      v15 = v7;
+      v15 = updateCopy;
       v16 = 2112;
-      v17 = v8;
+      v17 = balanceCopy;
       v18 = 2112;
-      v19 = v9;
+      v19 = dCopy;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_ERROR, "Error: Should not be receiving balance reminder update from Bridge (%@ %@ %@)", &v14, 0x20u);
     }
   }
@@ -763,20 +763,20 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCredentialsUpdate:(id)a3 forUniqueID:(id)a4 paymentApplicationIdentifier:(id)a5 completion:(id)a6
+- (void)handleCredentialsUpdate:(id)update forUniqueID:(id)d paymentApplicationIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(NPKSharedWebServiceProvider *)self companionAgentConnection];
-  [v14 updateCredentials:v13 forUniqueID:v12 paymentApplicationIdentifier:v11 completion:v10];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  dCopy = d;
+  updateCopy = update;
+  companionAgentConnection = [(NPKSharedWebServiceProvider *)self companionAgentConnection];
+  [companionAgentConnection updateCredentials:updateCopy forUniqueID:dCopy paymentApplicationIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)handleUpdatePaymentPassWithTypeIdentifier:(id)a3
+- (void)handleUpdatePaymentPassWithTypeIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_ERROR);
 
@@ -786,7 +786,7 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = identifierCopy;
       _os_log_impl(&dword_25B300000, v6, OS_LOG_TYPE_ERROR, "Error: Should not be receiving update payment pass requests from Bridge (%@)", &v8, 0xCu);
     }
   }
@@ -794,10 +794,10 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlePreferredAID:(id)a3 forPassWithUniqueID:(id)a4
+- (void)handlePreferredAID:(id)d forPassWithUniqueID:(id)iD
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  iDCopy = iD;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
 
@@ -807,7 +807,7 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = iDCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_ERROR, "Error: Should not be receiving preferred AID updates from Bridge (%@)", &v9, 0xCu);
     }
   }
@@ -815,10 +815,10 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)archiveWebServiceContext:(id)a3
+- (void)archiveWebServiceContext:(id)context
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -828,19 +828,19 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = contextCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Archive web service context: %@", &v11, 0xCu);
     }
   }
 
-  v8 = [(NPKSharedWebServiceProvider *)self companionAgentConnection];
+  companionAgentConnection = [(NPKSharedWebServiceProvider *)self companionAgentConnection];
   v9 = NPKPairedOrPairingDevice();
-  [v8 setSharedPaymentWebServiceContext:v4 forDevice:v9];
+  [companionAgentConnection setSharedPaymentWebServiceContext:contextCopy forDevice:v9];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)archiveWebServiceBackgroundContext:(id)a3
+- (void)archiveWebServiceBackgroundContext:(id)context
 {
   v3 = pk_Payment_log();
   v4 = os_log_type_enabled(v3, OS_LOG_TYPE_ERROR);
@@ -856,10 +856,10 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
   }
 }
 
-- (void)handlePaymentWebServiceContextFromWatch:(id)a3
+- (void)handlePaymentWebServiceContextFromWatch:(id)watch
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  watchCopy = watch;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -869,17 +869,17 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = watchCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Received updated webServiceContext:%@", &v12, 0xCu);
     }
   }
 
-  v8 = [(NPKSharedWebServiceProvider *)self webService];
-  [v8 setContext:v4];
+  webService = [(NPKSharedWebServiceProvider *)self webService];
+  [webService setContext:watchCopy];
 
-  v9 = [(NPKSharedWebServiceProvider *)self companionAgentConnection];
+  companionAgentConnection = [(NPKSharedWebServiceProvider *)self companionAgentConnection];
   v10 = NPKPairedOrPairingDevice();
-  [v9 setSharedPaymentWebServiceContext:v4 forDevice:v10];
+  [companionAgentConnection setSharedPaymentWebServiceContext:watchCopy forDevice:v10];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -899,13 +899,13 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
     }
   }
 
-  v6 = [(NPKSharedWebServiceProvider *)self targetDevice];
-  v7 = [(NPKSharedWebServiceProvider *)self webService];
-  v8 = [v7 context];
-  [v6 sendWebServiceContextToWatch:v8];
+  targetDevice = [(NPKSharedWebServiceProvider *)self targetDevice];
+  webService = [(NPKSharedWebServiceProvider *)self webService];
+  context = [webService context];
+  [targetDevice sendWebServiceContextToWatch:context];
 }
 
-- (void)showPaymentSetupForAppDisplayName:(id)a3
+- (void)showPaymentSetupForAppDisplayName:(id)name
 {
   v3 = pk_Payment_log();
   v4 = os_log_type_enabled(v3, OS_LOG_TYPE_ERROR);
@@ -937,17 +937,17 @@ void __50__NPKSharedWebServiceProvider__peerPaymentAccount__block_invoke(uint64_
   }
 }
 
-- (void)setNewAuthRandom:(id)a3
+- (void)setNewAuthRandom:(id)random
 {
-  v4 = a3;
-  v5 = [(NPKSharedWebServiceProvider *)self companionAgentConnection];
+  randomCopy = random;
+  companionAgentConnection = [(NPKSharedWebServiceProvider *)self companionAgentConnection];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__NPKSharedWebServiceProvider_setNewAuthRandom___block_invoke;
   v7[3] = &unk_279948FF8;
-  v8 = v4;
-  v6 = v4;
-  [v5 paymentPassUniqueIDsSynchronous:0 reply:v7];
+  v8 = randomCopy;
+  v6 = randomCopy;
+  [companionAgentConnection paymentPassUniqueIDsSynchronous:0 reply:v7];
 }
 
 uint64_t __48__NPKSharedWebServiceProvider_setNewAuthRandom___block_invoke(uint64_t a1, void *a2)
@@ -964,7 +964,7 @@ uint64_t __48__NPKSharedWebServiceProvider_setNewAuthRandom___block_invoke(uint6
   return result;
 }
 
-- (void)handleUpdatedPeerPaymentWebServiceContext:(id)a3 account:(id)a4
+- (void)handleUpdatedPeerPaymentWebServiceContext:(id)context account:(id)account
 {
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_ERROR);
@@ -1012,12 +1012,12 @@ uint64_t __48__NPKSharedWebServiceProvider_setNewAuthRandom___block_invoke(uint6
   }
 }
 
-- (void)startBackgroundVerificationObserverForPass:(id)a3 verificationMethod:(id)a4
+- (void)startBackgroundVerificationObserverForPass:(id)pass verificationMethod:(id)method
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NPKSharedWebServiceProvider *)self companionAgentConnection];
-  [v8 startBackgroundVerificationObserverForPass:v7 verificationMethod:v6];
+  methodCopy = method;
+  passCopy = pass;
+  companionAgentConnection = [(NPKSharedWebServiceProvider *)self companionAgentConnection];
+  [companionAgentConnection startBackgroundVerificationObserverForPass:passCopy verificationMethod:methodCopy];
 }
 
 @end

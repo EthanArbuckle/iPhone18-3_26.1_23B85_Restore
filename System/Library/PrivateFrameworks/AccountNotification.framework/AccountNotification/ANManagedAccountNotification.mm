@@ -1,39 +1,39 @@
 @interface ANManagedAccountNotification
-- (void)takeValuesFromAccountNotification:(id)a3;
+- (void)takeValuesFromAccountNotification:(id)notification;
 @end
 
 @implementation ANManagedAccountNotification
 
-- (void)takeValuesFromAccountNotification:(id)a3
+- (void)takeValuesFromAccountNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  [(ANManagedAccountNotification *)self setIdentifier:v5];
+  notificationCopy = notification;
+  identifier = [notificationCopy identifier];
+  [(ANManagedAccountNotification *)self setIdentifier:identifier];
 
-  v6 = [v4 title];
-  [(ANManagedAccountNotification *)self setTitle:v6];
+  title = [notificationCopy title];
+  [(ANManagedAccountNotification *)self setTitle:title];
 
-  v7 = [v4 message];
-  [(ANManagedAccountNotification *)self setMessage:v7];
+  message = [notificationCopy message];
+  [(ANManagedAccountNotification *)self setMessage:message];
 
-  v8 = [v4 accountTypeID];
-  [(ANManagedAccountNotification *)self setAccountTypeID:v8];
+  accountTypeID = [notificationCopy accountTypeID];
+  [(ANManagedAccountNotification *)self setAccountTypeID:accountTypeID];
 
-  v9 = [v4 date];
-  [(ANManagedAccountNotification *)self setDate:v9];
+  date = [notificationCopy date];
+  [(ANManagedAccountNotification *)self setDate:date];
 
-  v10 = [v4 activateButtonTitle];
-  [(ANManagedAccountNotification *)self setActivateButtonTitle:v10];
+  activateButtonTitle = [notificationCopy activateButtonTitle];
+  [(ANManagedAccountNotification *)self setActivateButtonTitle:activateButtonTitle];
 
-  v11 = [v4 userInfo];
-  [(ANManagedAccountNotification *)self setUserInfo:v11];
+  userInfo = [notificationCopy userInfo];
+  [(ANManagedAccountNotification *)self setUserInfo:userInfo];
 
-  v12 = [v4 callbackMachService];
-  [(ANManagedAccountNotification *)self setCallbackMachServiceName:v12];
+  callbackMachService = [notificationCopy callbackMachService];
+  [(ANManagedAccountNotification *)self setCallbackMachServiceName:callbackMachService];
 
-  v13 = [v4 eventIdentifier];
+  eventIdentifier = [notificationCopy eventIdentifier];
 
-  [(ANManagedAccountNotification *)self setEventID:v13];
+  [(ANManagedAccountNotification *)self setEventID:eventIdentifier];
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface BKSApplicationStateMonitor
-- (BKSApplicationStateMonitor)initWithEndpoint:(id)a3 bundleIDs:(id)a4 states:(unsigned int)a5 elevatedPriority:(BOOL)a6;
-- (BOOL)_clientSubscribedToThisReasonChange:(id)a3;
-- (BOOL)_clientSubscribedToThisStateChange:(id)a3 state:(id)a4 prevState:(id)a5;
+- (BKSApplicationStateMonitor)initWithEndpoint:(id)endpoint bundleIDs:(id)ds states:(unsigned int)states elevatedPriority:(BOOL)priority;
+- (BOOL)_clientSubscribedToThisReasonChange:(id)change;
+- (BOOL)_clientSubscribedToThisStateChange:(id)change state:(id)state prevState:(id)prevState;
 - (BOOL)elevatedPriority;
 - (NSArray)interestedBundleIDs;
-- (id)_legacyInfoForProcess:(id)a3;
-- (id)_legacyInfoForProcess:(id)a3 state:(id)a4;
-- (id)applicationInfoForApplication:(id)a3;
-- (id)applicationInfoForPID:(int)a3;
+- (id)_legacyInfoForProcess:(id)process;
+- (id)_legacyInfoForProcess:(id)process state:(id)state;
+- (id)applicationInfoForApplication:(id)application;
+- (id)applicationInfoForPID:(int)d;
 - (id)handler;
-- (unsigned)_legacyStateForProcess:(id)a3 state:(id)a4;
-- (unsigned)applicationStateForApplication:(id)a3;
+- (unsigned)_legacyStateForProcess:(id)process state:(id)state;
+- (unsigned)applicationStateForApplication:(id)application;
 - (unsigned)interestedStates;
-- (void)applicationInfoForApplication:(id)a3 completion:(id)a4;
-- (void)applicationInfoForPID:(int)a3 completion:(id)a4;
+- (void)applicationInfoForApplication:(id)application completion:(id)completion;
+- (void)applicationInfoForPID:(int)d completion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
 - (void)lock_updateConfiguration;
-- (void)setHandler:(id)a3;
-- (void)updateInterestedAssertionReasons:(id)a3;
-- (void)updateInterestedBundleIDs:(id)a3;
-- (void)updateInterestedBundleIDs:(id)a3 states:(unsigned int)a4;
+- (void)setHandler:(id)handler;
+- (void)updateInterestedAssertionReasons:(id)reasons;
+- (void)updateInterestedBundleIDs:(id)ds;
+- (void)updateInterestedBundleIDs:(id)ds states:(unsigned int)states;
 @end
 
 @implementation BKSApplicationStateMonitor
@@ -133,7 +133,7 @@ LABEL_22:
 {
   v27 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   interestedBundleIDs = self->_interestedBundleIDs;
   if (interestedBundleIDs)
   {
@@ -141,8 +141,8 @@ LABEL_22:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v5 = interestedBundleIDs;
-    v6 = [(NSArray *)v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    legacyPredicate = interestedBundleIDs;
+    v6 = [(NSArray *)legacyPredicate countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v6)
     {
       v7 = v6;
@@ -153,14 +153,14 @@ LABEL_22:
         {
           if (*v23 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(legacyPredicate);
           }
 
           v10 = [MEMORY[0x277D46F18] legacyPredicateMatchingBundleIdentifier:*(*(&v22 + 1) + 8 * i)];
-          [v3 addObject:v10];
+          [array addObject:v10];
         }
 
-        v7 = [(NSArray *)v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v7 = [(NSArray *)legacyPredicate countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v7);
@@ -169,8 +169,8 @@ LABEL_22:
 
   else
   {
-    v5 = [MEMORY[0x277D46F18] legacyPredicate];
-    [v3 addObject:v5];
+    legacyPredicate = [MEMORY[0x277D46F18] legacyPredicate];
+    [array addObject:legacyPredicate];
   }
 
   if (self->_elevatedPriority)
@@ -190,11 +190,11 @@ LABEL_22:
   v17[2] = __54__BKSApplicationStateMonitor_lock_updateConfiguration__block_invoke;
   v17[3] = &unk_278871DB0;
   v21 = v11;
-  v19 = self;
+  selfCopy = self;
   v20 = v12;
-  v18 = v3;
+  v18 = array;
   v14 = v12;
-  v15 = v3;
+  v15 = array;
   [(RBSProcessMonitor *)monitor updateConfiguration:v17];
 
   v16 = *MEMORY[0x277D85DE8];
@@ -238,15 +238,15 @@ void __54__BKSApplicationStateMonitor_lock_updateConfiguration__block_invoke(uin
   }
 }
 
-- (BKSApplicationStateMonitor)initWithEndpoint:(id)a3 bundleIDs:(id)a4 states:(unsigned int)a5 elevatedPriority:(BOOL)a6
+- (BKSApplicationStateMonitor)initWithEndpoint:(id)endpoint bundleIDs:(id)ds states:(unsigned int)states elevatedPriority:(BOOL)priority
 {
-  v9 = a4;
+  dsCopy = ds;
   v16.receiver = self;
   v16.super_class = BKSApplicationStateMonitor;
   v10 = [(BKSApplicationStateMonitor *)&v16 init];
   if (v10)
   {
-    if (v9)
+    if (dsCopy)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -260,22 +260,22 @@ void __54__BKSApplicationStateMonitor_lock_updateConfiguration__block_invoke(uin
     monitor = v10->_monitor;
     v10->_monitor = v11;
 
-    v10->_elevatedPriority = a6;
-    v13 = [v9 copy];
+    v10->_elevatedPriority = priority;
+    v13 = [dsCopy copy];
     interestedBundleIDs = v10->_interestedBundleIDs;
     v10->_interestedBundleIDs = v13;
 
-    v10->_interestedStates = a5;
+    v10->_interestedStates = states;
   }
 
   return v10;
 }
 
-- (void)setHandler:(id)a3
+- (void)setHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [handlerCopy copy];
 
   handler = self->_handler;
   self->_handler = v5;
@@ -303,16 +303,16 @@ void __54__BKSApplicationStateMonitor_lock_updateConfiguration__block_invoke(uin
   return elevatedPriority;
 }
 
-- (void)updateInterestedBundleIDs:(id)a3
+- (void)updateInterestedBundleIDs:(id)ds
 {
-  v4 = a3;
-  [(BKSApplicationStateMonitor *)self updateInterestedBundleIDs:v4 states:[(BKSApplicationStateMonitor *)self interestedStates]];
+  dsCopy = ds;
+  [(BKSApplicationStateMonitor *)self updateInterestedBundleIDs:dsCopy states:[(BKSApplicationStateMonitor *)self interestedStates]];
 }
 
-- (void)updateInterestedBundleIDs:(id)a3 states:(unsigned int)a4
+- (void)updateInterestedBundleIDs:(id)ds states:(unsigned int)states
 {
-  v8 = a3;
-  if (v8)
+  dsCopy = ds;
+  if (dsCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -322,20 +322,20 @@ void __54__BKSApplicationStateMonitor_lock_updateConfiguration__block_invoke(uin
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v6 = [v8 copy];
+  v6 = [dsCopy copy];
   interestedBundleIDs = self->_interestedBundleIDs;
   self->_interestedBundleIDs = v6;
 
-  self->_interestedStates = a4;
+  self->_interestedStates = states;
   [(BKSApplicationStateMonitor *)self lock_updateConfiguration];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)updateInterestedAssertionReasons:(id)a3
+- (void)updateInterestedAssertionReasons:(id)reasons
 {
-  v4 = a3;
+  reasonsCopy = reasons;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [reasonsCopy copy];
 
   interestedAssertionReasons = self->_interestedAssertionReasons;
   self->_interestedAssertionReasons = v5;
@@ -345,11 +345,11 @@ void __54__BKSApplicationStateMonitor_lock_updateConfiguration__block_invoke(uin
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)applicationInfoForApplication:(id)a3 completion:(id)a4
+- (void)applicationInfoForApplication:(id)application completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  applicationCopy = application;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [BKSApplicationStateMonitor applicationInfoForApplication:completion:];
   }
@@ -360,10 +360,10 @@ void __54__BKSApplicationStateMonitor_lock_updateConfiguration__block_invoke(uin
   v11[2] = __71__BKSApplicationStateMonitor_applicationInfoForApplication_completion___block_invoke;
   v11[3] = &unk_278871D38;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = applicationCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = applicationCopy;
   [v8 performBackgroundWork:v11];
 }
 
@@ -373,10 +373,10 @@ void __71__BKSApplicationStateMonitor_applicationInfoForApplication_completion__
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)applicationInfoForPID:(int)a3 completion:(id)a4
+- (void)applicationInfoForPID:(int)d completion:(id)completion
 {
-  v6 = a4;
-  if (!v6)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [BKSApplicationStateMonitor applicationInfoForPID:completion:];
   }
@@ -386,10 +386,10 @@ void __71__BKSApplicationStateMonitor_applicationInfoForApplication_completion__
   v9[1] = 3221225472;
   v9[2] = __63__BKSApplicationStateMonitor_applicationInfoForPID_completion___block_invoke;
   v9[3] = &unk_278871D60;
-  v11 = a3;
+  dCopy = d;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [v7 performBackgroundWork:v9];
 }
 
@@ -399,9 +399,9 @@ void __63__BKSApplicationStateMonitor_applicationInfoForPID_completion___block_i
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)applicationInfoForApplication:(id)a3
+- (id)applicationInfoForApplication:(id)application
 {
-  if (a3)
+  if (application)
   {
     v4 = [MEMORY[0x277D46F18] legacyPredicateMatchingBundleIdentifier:?];
     v5 = [MEMORY[0x277D46F48] handleForPredicate:v4 error:0];
@@ -416,9 +416,9 @@ void __63__BKSApplicationStateMonitor_applicationInfoForPID_completion___block_i
   return v6;
 }
 
-- (id)applicationInfoForPID:(int)a3
+- (id)applicationInfoForPID:(int)d
 {
-  if (a3 < 1)
+  if (d < 1)
   {
     v8 = 0;
   }
@@ -436,29 +436,29 @@ void __63__BKSApplicationStateMonitor_applicationInfoForPID_completion___block_i
   return v8;
 }
 
-- (unsigned)applicationStateForApplication:(id)a3
+- (unsigned)applicationStateForApplication:(id)application
 {
-  v3 = [(BKSApplicationStateMonitor *)self applicationInfoForApplication:a3];
+  v3 = [(BKSApplicationStateMonitor *)self applicationInfoForApplication:application];
   v4 = [v3 objectForKey:@"SBApplicationStateKey"];
-  v5 = [v4 unsignedIntValue];
+  unsignedIntValue = [v4 unsignedIntValue];
 
-  return v5;
+  return unsignedIntValue;
 }
 
-- (unsigned)_legacyStateForProcess:(id)a3 state:(id)a4
+- (unsigned)_legacyStateForProcess:(id)process state:(id)state
 {
-  v4 = a4;
-  v5 = [v4 taskState];
+  stateCopy = state;
+  taskState = [stateCopy taskState];
   v6 = 0;
-  if (v5 <= 2)
+  if (taskState <= 2)
   {
-    if (v5 == 1)
+    if (taskState == 1)
     {
       v6 = 1;
       goto LABEL_12;
     }
 
-    if (v5 != 2)
+    if (taskState != 2)
     {
       goto LABEL_12;
     }
@@ -466,17 +466,17 @@ void __63__BKSApplicationStateMonitor_applicationInfoForPID_completion___block_i
     goto LABEL_7;
   }
 
-  if (v5 == 3)
+  if (taskState == 3)
   {
     v6 = 2;
     goto LABEL_12;
   }
 
-  if (v5 == 4)
+  if (taskState == 4)
   {
 LABEL_7:
-    v7 = [v4 endowmentNamespaces];
-    v8 = [v7 containsObject:*MEMORY[0x277D470D0]];
+    endowmentNamespaces = [stateCopy endowmentNamespaces];
+    v8 = [endowmentNamespaces containsObject:*MEMORY[0x277D470D0]];
 
     if (v8)
     {
@@ -494,23 +494,23 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)_clientSubscribedToThisStateChange:(id)a3 state:(id)a4 prevState:(id)a5
+- (BOOL)_clientSubscribedToThisStateChange:(id)change state:(id)state prevState:(id)prevState
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BKSApplicationStateMonitor *)self _legacyStateForProcess:v8 state:v9];
+  changeCopy = change;
+  stateCopy = state;
+  prevStateCopy = prevState;
+  v11 = [(BKSApplicationStateMonitor *)self _legacyStateForProcess:changeCopy state:stateCopy];
   interestedStates = self->_interestedStates;
-  if (v10)
+  if (prevStateCopy)
   {
-    v13 = [(BKSApplicationStateMonitor *)self _legacyStateForProcess:v8 state:v10];
+    v13 = [(BKSApplicationStateMonitor *)self _legacyStateForProcess:changeCopy state:prevStateCopy];
     LOBYTE(v14) = (self->_interestedStates & v13) != 0;
     if (v11 == v13)
     {
-      v15 = [v9 process];
-      v16 = [v15 pid];
-      v17 = [v10 process];
-      v18 = v16 != [v17 pid];
+      process = [stateCopy process];
+      v16 = [process pid];
+      process2 = [prevStateCopy process];
+      v18 = v16 != [process2 pid];
     }
 
     else
@@ -528,10 +528,10 @@ LABEL_12:
   return v18 & (((interestedStates & v11) != 0) | v14);
 }
 
-- (BOOL)_clientSubscribedToThisReasonChange:(id)a3
+- (BOOL)_clientSubscribedToThisReasonChange:(id)change
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_lock(&self->_lock);
   if (self->_interestedAssertionReasons)
   {
@@ -539,7 +539,7 @@ LABEL_12:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v4;
+    v5 = changeCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -589,77 +589,77 @@ LABEL_12:
   return v12;
 }
 
-- (id)_legacyInfoForProcess:(id)a3
+- (id)_legacyInfoForProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   v5 = RBSProcessLegacyStateDescriptor();
-  v6 = [v4 currentStateMatchingDescriptor:v5];
+  v6 = [processCopy currentStateMatchingDescriptor:v5];
 
-  v7 = [(BKSApplicationStateMonitor *)self _legacyInfoForProcess:v4 state:v6];
+  v7 = [(BKSApplicationStateMonitor *)self _legacyInfoForProcess:processCopy state:v6];
 
   return v7;
 }
 
-- (id)_legacyInfoForProcess:(id)a3 state:(id)a4
+- (id)_legacyInfoForProcess:(id)process state:(id)state
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identity];
-  v9 = [v8 embeddedApplicationIdentifier];
-  v10 = v9;
-  if (v9)
+  processCopy = process;
+  stateCopy = state;
+  identity = [processCopy identity];
+  embeddedApplicationIdentifier = [identity embeddedApplicationIdentifier];
+  v10 = embeddedApplicationIdentifier;
+  if (embeddedApplicationIdentifier)
   {
-    v11 = v9;
+    identifier = embeddedApplicationIdentifier;
   }
 
   else
   {
-    v12 = [v8 xpcServiceIdentifier];
-    v13 = v12;
-    if (v12)
+    xpcServiceIdentifier = [identity xpcServiceIdentifier];
+    v13 = xpcServiceIdentifier;
+    if (xpcServiceIdentifier)
     {
-      v11 = v12;
+      identifier = xpcServiceIdentifier;
     }
 
     else
     {
-      v14 = [v6 bundle];
-      v11 = [v14 identifier];
+      bundle = [processCopy bundle];
+      identifier = [bundle identifier];
     }
   }
 
-  if (v6 && v11)
+  if (processCopy && identifier)
   {
-    v15 = [MEMORY[0x277CBEB38] dictionary];
-    v47 = [v8 isXPCService];
-    if (v47)
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    isXPCService = [identity isXPCService];
+    if (isXPCService)
     {
-      v16 = [v8 hostIdentifier];
-      v17 = [v16 rbs_pid];
+      hostIdentifier = [identity hostIdentifier];
+      rbs_pid = [hostIdentifier rbs_pid];
     }
 
     else
     {
-      v17 = 0;
+      rbs_pid = 0;
     }
 
-    v19 = [(BKSApplicationStateMonitor *)self _legacyStateForProcess:v6 state:v7];
-    v18 = [v7 assertions];
-    if ([v18 count])
+    v19 = [(BKSApplicationStateMonitor *)self _legacyStateForProcess:processCopy state:stateCopy];
+    assertions = [stateCopy assertions];
+    if ([assertions count])
     {
       v41 = v19;
-      v42 = v17;
-      v43 = v15;
-      v44 = v8;
-      v45 = v7;
-      v46 = v6;
-      v20 = [MEMORY[0x277CBEB18] array];
+      v42 = rbs_pid;
+      v43 = dictionary;
+      v44 = identity;
+      v45 = stateCopy;
+      v46 = processCopy;
+      array = [MEMORY[0x277CBEB18] array];
       v48 = 0u;
       v49 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v21 = v18;
+      v21 = assertions;
       v22 = [v21 countByEnumeratingWithState:&v48 objects:v55 count:16];
       if (v22)
       {
@@ -676,11 +676,11 @@ LABEL_12:
 
             v26 = *(*(&v48 + 1) + 8 * i);
             v27 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v26, "reason")}];
-            v28 = [v26 explanation];
-            v29 = v28;
+            explanation = [v26 explanation];
+            v29 = explanation;
             if (v27)
             {
-              v30 = v28 == 0;
+              v30 = explanation == 0;
             }
 
             else
@@ -693,9 +693,9 @@ LABEL_12:
               v53[0] = @"SBApplicationStateRunningReasonAssertionReasonKey";
               v53[1] = @"SBApplicationStateRunningReasonAssertionIdentifierKey";
               v54[0] = v27;
-              v54[1] = v28;
+              v54[1] = explanation;
               v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:v53 count:2];
-              [v20 addObject:v31];
+              [array addObject:v31];
             }
           }
 
@@ -705,58 +705,58 @@ LABEL_12:
         while (v23);
       }
 
-      v15 = v43;
-      if ([v20 count])
+      dictionary = v43;
+      if ([array count])
       {
-        [v43 setObject:v20 forKey:@"SBApplicationStateRunningReasonsKey"];
+        [v43 setObject:array forKey:@"SBApplicationStateRunningReasonsKey"];
       }
 
-      v7 = v45;
-      v6 = v46;
-      v8 = v44;
+      stateCopy = v45;
+      processCopy = v46;
+      identity = v44;
       v19 = v41;
-      v17 = v42;
+      rbs_pid = v42;
     }
 
     v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v19];
-    [v15 setObject:v32 forKey:@"SBApplicationStateKey"];
+    [dictionary setObject:v32 forKey:@"SBApplicationStateKey"];
 
     v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v19];
-    [v15 setObject:v33 forKey:@"SBMostElevatedStateForProcessID"];
+    [dictionary setObject:v33 forKey:@"SBMostElevatedStateForProcessID"];
 
     v34 = [MEMORY[0x277CCABB0] numberWithBool:v19 == 8];
-    [v15 setObject:v34 forKey:@"BKSApplicationStateAppIsFrontmost"];
+    [dictionary setObject:v34 forKey:@"BKSApplicationStateAppIsFrontmost"];
 
-    [v15 setObject:v11 forKey:@"SBApplicationStateDisplayIDKey"];
-    v35 = [v6 pid];
+    [dictionary setObject:identifier forKey:@"SBApplicationStateDisplayIDKey"];
+    v35 = [processCopy pid];
     v36 = [MEMORY[0x277CCABB0] numberWithInt:v35 & ~(v35 >> 31)];
-    [v15 setObject:v36 forKey:@"SBApplicationStateProcessIDKey"];
+    [dictionary setObject:v36 forKey:@"SBApplicationStateProcessIDKey"];
 
-    v37 = [MEMORY[0x277CCABB0] numberWithBool:v47];
-    [v15 setObject:v37 forKey:@"BKSApplicationStateExtensionKey"];
+    v37 = [MEMORY[0x277CCABB0] numberWithBool:isXPCService];
+    [dictionary setObject:v37 forKey:@"BKSApplicationStateExtensionKey"];
 
-    if (v17 >= 1)
+    if (rbs_pid >= 1)
     {
-      v38 = [MEMORY[0x277CCABB0] numberWithInt:v17];
-      [v15 setObject:v38 forKey:@"BKSApplicationStateHostPIDKey"];
+      v38 = [MEMORY[0x277CCABB0] numberWithInt:rbs_pid];
+      [dictionary setObject:v38 forKey:@"BKSApplicationStateHostPIDKey"];
     }
   }
 
   else
   {
-    v18 = rbs_shim_log();
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+    assertions = rbs_shim_log();
+    if (os_log_type_enabled(assertions, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_22EEB6000, v18, OS_LOG_TYPE_INFO, "BKSApplicationStateMonitor resolved state as not running with no bundleID", buf, 2u);
+      _os_log_impl(&dword_22EEB6000, assertions, OS_LOG_TYPE_INFO, "BKSApplicationStateMonitor resolved state as not running with no bundleID", buf, 2u);
     }
 
-    v15 = 0;
+    dictionary = 0;
   }
 
   v39 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return dictionary;
 }
 
 - (void)initWithEndpoint:bundleIDs:states:elevatedPriority:.cold.1()

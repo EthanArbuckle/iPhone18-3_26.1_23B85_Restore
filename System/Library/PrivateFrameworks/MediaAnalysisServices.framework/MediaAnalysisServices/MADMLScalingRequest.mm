@@ -1,84 +1,84 @@
 @interface MADMLScalingRequest
-- (MADMLScalingRequest)initWithCoder:(id)a3;
-- (MADMLScalingRequest)initWithScaledImageWidth:(unint64_t)a3 scaledImageHeight:(unint64_t)a4;
-- (MADMLScalingRequest)initWithScaledImageWidth:(unint64_t)a3 scaledImageHeight:(unint64_t)a4 scalingModel:(int64_t)a5;
+- (MADMLScalingRequest)initWithCoder:(id)coder;
+- (MADMLScalingRequest)initWithScaledImageWidth:(unint64_t)width scaledImageHeight:(unint64_t)height;
+- (MADMLScalingRequest)initWithScaledImageWidth:(unint64_t)width scaledImageHeight:(unint64_t)height scalingModel:(int64_t)model;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADMLScalingRequest
 
-- (MADMLScalingRequest)initWithScaledImageWidth:(unint64_t)a3 scaledImageHeight:(unint64_t)a4 scalingModel:(int64_t)a5
+- (MADMLScalingRequest)initWithScaledImageWidth:(unint64_t)width scaledImageHeight:(unint64_t)height scalingModel:(int64_t)model
 {
   v9.receiver = self;
   v9.super_class = MADMLScalingRequest;
   result = [(MADMLScalingRequest *)&v9 init];
   if (result)
   {
-    result->_scaledImageWidth = a3;
-    result->_scaledImageHeight = a4;
-    result->_scalingModelIndex = a5;
+    result->_scaledImageWidth = width;
+    result->_scaledImageHeight = height;
+    result->_scalingModelIndex = model;
   }
 
   return result;
 }
 
-- (MADMLScalingRequest)initWithScaledImageWidth:(unint64_t)a3 scaledImageHeight:(unint64_t)a4
+- (MADMLScalingRequest)initWithScaledImageWidth:(unint64_t)width scaledImageHeight:(unint64_t)height
 {
   v7.receiver = self;
   v7.super_class = MADMLScalingRequest;
   result = [(MADMLScalingRequest *)&v7 init];
   if (result)
   {
-    result->_scaledImageWidth = a3;
-    result->_scaledImageHeight = a4;
+    result->_scaledImageWidth = width;
+    result->_scaledImageHeight = height;
     result->_scalingModelIndex = 0;
   }
 
   return result;
 }
 
-- (MADMLScalingRequest)initWithCoder:(id)a3
+- (MADMLScalingRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MADMLScalingRequest;
-  v5 = [(MADRequest *)&v7 initWithCoder:v4];
+  v5 = [(MADRequest *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_scaledImageWidth = [v4 decodeIntegerForKey:@"ScaledImageWidth"];
-    v5->_scaledImageHeight = [v4 decodeIntegerForKey:@"ScaledImageHeight"];
-    v5->_scalingModelIndex = [v4 decodeIntegerForKey:@"ScalingModelIndex"];
+    v5->_scaledImageWidth = [coderCopy decodeIntegerForKey:@"ScaledImageWidth"];
+    v5->_scaledImageHeight = [coderCopy decodeIntegerForKey:@"ScaledImageHeight"];
+    v5->_scalingModelIndex = [coderCopy decodeIntegerForKey:@"ScalingModelIndex"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MADMLScalingRequest;
-  v4 = a3;
-  [(MADRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_scaledImageWidth forKey:{@"ScaledImageWidth", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_scaledImageHeight forKey:@"ScaledImageHeight"];
-  [v4 encodeInteger:self->_scalingModelIndex forKey:@"ScalingModelIndex"];
+  coderCopy = coder;
+  [(MADRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_scaledImageWidth forKey:{@"ScaledImageWidth", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_scaledImageHeight forKey:@"ScaledImageHeight"];
+  [coderCopy encodeInteger:self->_scalingModelIndex forKey:@"ScalingModelIndex"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p", v5, self];
+  [string appendFormat:@"<%@ %p", v5, self];
 
-  [v3 appendFormat:@", scaledImageWidth: %lu", self->_scaledImageWidth];
-  [v3 appendFormat:@", scaledImageHeight: %lu", self->_scaledImageHeight];
-  [v3 appendFormat:@", scalingModelIndex: %lu", self->_scalingModelIndex];
-  v6 = [(MADRequest *)self error];
-  [v3 appendFormat:@"error: %@>", v6];
+  [string appendFormat:@", scaledImageWidth: %lu", self->_scaledImageWidth];
+  [string appendFormat:@", scaledImageHeight: %lu", self->_scaledImageHeight];
+  [string appendFormat:@", scalingModelIndex: %lu", self->_scalingModelIndex];
+  error = [(MADRequest *)self error];
+  [string appendFormat:@"error: %@>", error];
 
-  return v3;
+  return string;
 }
 
 @end

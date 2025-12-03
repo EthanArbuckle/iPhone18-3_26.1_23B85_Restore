@@ -7,11 +7,11 @@
 
 - (id)rq_coded
 {
-  v1 = MGGroupIdentifierCopyApplyingHashing(a1);
-  v2 = [v1 normalized];
-  v3 = [v2 rq_coded];
+  v1 = MGGroupIdentifierCopyApplyingHashing(self);
+  normalized = [v1 normalized];
+  rq_coded = [normalized rq_coded];
 
-  return v3;
+  return rq_coded;
 }
 
 + (id)rq_instanceFromCoded:()MGRemoteQueryCoding

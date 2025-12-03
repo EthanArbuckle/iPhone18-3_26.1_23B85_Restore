@@ -1,15 +1,15 @@
 @interface VOTElementLabelCache
 + (id)sharedManager;
 - (VOTElementLabelCache)init;
-- (id)userLabelForIdentification:(id)a3;
-- (void)_handleCustomLabelsChanged:(id)a3;
-- (void)_iCloudPublishData:(id)a3;
-- (void)_iCloudReconcileDataStore:(id)a3;
-- (void)_icloudDataChanged:(id)a3;
+- (id)userLabelForIdentification:(id)identification;
+- (void)_handleCustomLabelsChanged:(id)changed;
+- (void)_iCloudPublishData:(id)data;
+- (void)_iCloudReconcileDataStore:(id)store;
+- (void)_icloudDataChanged:(id)changed;
 - (void)_loadLabelCache;
 - (void)_syncLabelCache;
 - (void)dealloc;
-- (void)storeUserLabel:(id)a3 forIdentification:(id)a4;
+- (void)storeUserLabel:(id)label forIdentification:(id)identification;
 @end
 
 @implementation VOTElementLabelCache
@@ -66,7 +66,7 @@
   return v3;
 }
 
-- (void)_handleCustomLabelsChanged:(id)a3
+- (void)_handleCustomLabelsChanged:(id)changed
 {
   labelCacheAccessQueue = self->_labelCacheAccessQueue;
   block[0] = _NSConcreteStackBlock;
@@ -83,13 +83,13 @@
   self->_labelCache = 0;
 
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 voiceOverCustomLabels];
+  voiceOverCustomLabels = [v4 voiceOverCustomLabels];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v5;
+  v6 = voiceOverCustomLabels;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -145,7 +145,7 @@
   [(VOTElementLabelCache *)&v5 dealloc];
 }
 
-- (void)_icloudDataChanged:(id)a3
+- (void)_icloudDataChanged:(id)changed
 {
   iCloudInteractionQueue = self->_iCloudInteractionQueue;
   block[0] = _NSConcreteStackBlock;
@@ -156,14 +156,14 @@
   dispatch_async(iCloudInteractionQueue, block);
 }
 
-- (void)_iCloudReconcileDataStore:(id)a3
+- (void)_iCloudReconcileDataStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  v5 = [storeCopy countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v5)
   {
     v7 = v5;
@@ -177,11 +177,11 @@
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(storeCopy);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v4 objectForKeyedSubscript:{v10, v18}];
+        v11 = [storeCopy objectForKeyedSubscript:{v10, v18}];
         v12 = [VOTElementUniqueIdentification identificationFromKey:v10];
         v13 = [(NSMutableDictionary *)self->_labelCache objectForKey:v12];
 
@@ -211,7 +211,7 @@
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v7 = [storeCopy countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v7);
@@ -222,11 +222,11 @@
   }
 }
 
-- (void)_iCloudPublishData:(id)a3
+- (void)_iCloudPublishData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = [a3 copy];
+    v4 = [data copy];
     iCloudInteractionQueue = self->_iCloudInteractionQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -264,8 +264,8 @@
         v10 = [(NSMutableDictionary *)self->_labelCache objectForKey:v9, v13, v14, v15];
         if (v10)
         {
-          v11 = [v9 hashKey];
-          [v3 setObject:v10 forKey:v11];
+          hashKey = [v9 hashKey];
+          [v3 setObject:v10 forKey:hashKey];
         }
 
         else
@@ -286,27 +286,27 @@
   [v12 setVoiceOverCustomLabels:v3];
 }
 
-- (void)storeUserLabel:(id)a3 forIdentification:(id)a4
+- (void)storeUserLabel:(id)label forIdentification:(id)identification
 {
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  identificationCopy = identification;
   labelCacheAccessQueue = self->_labelCacheAccessQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100108300;
   block[3] = &unk_1001C8C70;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = labelCopy;
+  v13 = identificationCopy;
+  v9 = identificationCopy;
+  v10 = labelCopy;
   dispatch_async(labelCacheAccessQueue, block);
 }
 
-- (id)userLabelForIdentification:(id)a3
+- (id)userLabelForIdentification:(id)identification
 {
-  v4 = a3;
-  v5 = v4;
+  identificationCopy = identification;
+  v5 = identificationCopy;
   if (self->_labelCache)
   {
     v12 = 0;
@@ -321,7 +321,7 @@
     block[2] = sub_1001085C4;
     block[3] = &unk_1001C77A0;
     block[4] = self;
-    v10 = v4;
+    v10 = identificationCopy;
     v11 = &v12;
     dispatch_sync(labelCacheAccessQueue, block);
     v7 = v13[5];

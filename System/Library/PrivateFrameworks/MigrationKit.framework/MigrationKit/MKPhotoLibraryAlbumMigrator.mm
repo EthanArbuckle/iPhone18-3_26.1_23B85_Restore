@@ -1,18 +1,18 @@
 @interface MKPhotoLibraryAlbumMigrator
 - (void)setCollections;
-- (void)setIdentifier:(id)a3 forAsset:(id)a4;
+- (void)setIdentifier:(id)identifier forAsset:(id)asset;
 @end
 
 @implementation MKPhotoLibraryAlbumMigrator
 
-- (void)setIdentifier:(id)a3 forAsset:(id)a4
+- (void)setIdentifier:(id)identifier forAsset:(id)asset
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(MKPhotoLibraryAssetDatabase *)v7->_db setIdentifier:v8 forAsset:v6];
-  objc_sync_exit(v7);
+  identifierCopy = identifier;
+  assetCopy = asset;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MKPhotoLibraryAssetDatabase *)selfCopy->_db setIdentifier:identifierCopy forAsset:assetCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)setCollections

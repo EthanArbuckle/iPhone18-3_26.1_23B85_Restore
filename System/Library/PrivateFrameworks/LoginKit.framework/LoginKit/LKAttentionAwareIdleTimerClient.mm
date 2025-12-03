@@ -1,7 +1,7 @@
 @interface LKAttentionAwareIdleTimerClient
-- (LKAttentionAwareIdleTimerClient)initWithClientDelegate:(id)a3 timeout:(double)a4 queue:(id)a5;
+- (LKAttentionAwareIdleTimerClient)initWithClientDelegate:(id)delegate timeout:(double)timeout queue:(id)queue;
 - (LKAttentionAwareIdleTimerDelegate)clientDelegate;
-- (void)_wakeupDeviceAfterInterval:(double)a3;
+- (void)_wakeupDeviceAfterInterval:(double)interval;
 - (void)dealloc;
 - (void)pause;
 - (void)resume;
@@ -9,19 +9,19 @@
 
 @implementation LKAttentionAwareIdleTimerClient
 
-- (LKAttentionAwareIdleTimerClient)initWithClientDelegate:(id)a3 timeout:(double)a4 queue:(id)a5
+- (LKAttentionAwareIdleTimerClient)initWithClientDelegate:(id)delegate timeout:(double)timeout queue:(id)queue
 {
-  v8 = a3;
-  v9 = a5;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = LKAttentionAwareIdleTimerClient;
   v10 = [(LKAttentionAwareIdleTimerClient *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_clientDelegate, v8);
-    v11->_timeout = a4;
-    objc_storeStrong(&v11->_queue, a5);
+    objc_storeWeak(&v10->_clientDelegate, delegateCopy);
+    v11->_timeout = timeout;
+    objc_storeStrong(&v11->_queue, queue);
   }
 
   return v11;
@@ -157,7 +157,7 @@ void __41__LKAttentionAwareIdleTimerClient_resume__block_invoke_3(uint64_t a1)
   [(LKAttentionAwareIdleTimerClient *)self setHandle:0];
 }
 
-- (void)_wakeupDeviceAfterInterval:(double)a3
+- (void)_wakeupDeviceAfterInterval:(double)interval
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = LKLogDefault;
@@ -166,12 +166,12 @@ void __41__LKAttentionAwareIdleTimerClient_resume__block_invoke_3(uint64_t a1)
     *buf = 136315394;
     v14 = "[LKAttentionAwareIdleTimerClient _wakeupDeviceAfterInterval:]";
     v15 = 2048;
-    v16 = a3;
+    intervalCopy = interval;
     _os_log_impl(&dword_25618F000, v4, OS_LOG_TYPE_DEFAULT, "%s %f", buf, 0x16u);
   }
 
   v12[0] = @"logind";
-  v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:{a3, @"scheduledby", @"time"}];
+  v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:{interval, @"scheduledby", @"time"}];
   v11[2] = @"leeway";
   v12[1] = v5;
   v12[2] = &unk_28683CE88;

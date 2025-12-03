@@ -1,55 +1,55 @@
 @interface ASCTextOfferMetadata
-- (ASCTextOfferMetadata)initWithCoder:(id)a3;
-- (ASCTextOfferMetadata)initWithTitle:(id)a3 subtitle:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (ASCTextOfferMetadata)initWithCoder:(id)coder;
+- (ASCTextOfferMetadata)initWithTitle:(id)title subtitle:(id)subtitle;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCTextOfferMetadata
 
-- (ASCTextOfferMetadata)initWithTitle:(id)a3 subtitle:(id)a4
+- (ASCTextOfferMetadata)initWithTitle:(id)title subtitle:(id)subtitle
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v14.receiver = self;
   v14.super_class = ASCTextOfferMetadata;
-  v8 = [(ASCOfferMetadata *)&v14 _init];
-  if (v8)
+  _init = [(ASCOfferMetadata *)&v14 _init];
+  if (_init)
   {
-    v9 = [v6 copy];
-    title = v8->_title;
-    v8->_title = v9;
+    v9 = [titleCopy copy];
+    title = _init->_title;
+    _init->_title = v9;
 
-    v11 = [v7 copy];
-    subtitle = v8->_subtitle;
-    v8->_subtitle = v11;
+    v11 = [subtitleCopy copy];
+    subtitle = _init->_subtitle;
+    _init->_subtitle = v11;
   }
 
-  return v8;
+  return _init;
 }
 
-- (ASCTextOfferMetadata)initWithCoder:(id)a3
+- (ASCTextOfferMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
   if (v5)
   {
     v20.receiver = self;
     v20.super_class = ASCTextOfferMetadata;
-    v6 = [(ASCOfferMetadata *)&v20 initWithCoder:v4];
+    v6 = [(ASCOfferMetadata *)&v20 initWithCoder:coderCopy];
     v7 = v6;
     if (v6)
     {
       objc_storeStrong(&v6->_title, v5);
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
       subtitle = v7->_subtitle;
       v7->_subtitle = v8;
     }
 
     self = v7;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -60,43 +60,43 @@
       [(ASCTextOfferMetadata *)v11 initWithCoder:v12, v13, v14, v15, v16, v17, v18];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = ASCTextOfferMetadata;
-  v4 = a3;
-  [(ASCOfferMetadata *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ASCOfferMetadata *)&v7 encodeWithCoder:coderCopy];
   v5 = [(ASCTextOfferMetadata *)self title:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"title"];
+  [coderCopy encodeObject:v5 forKey:@"title"];
 
-  v6 = [(ASCTextOfferMetadata *)self subtitle];
-  [v4 encodeObject:v6 forKey:@"subtitle"];
+  subtitle = [(ASCTextOfferMetadata *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"subtitle"];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCTextOfferMetadata *)self title];
-  [(ASCHasher *)v3 combineObject:v4];
+  title = [(ASCTextOfferMetadata *)self title];
+  [(ASCHasher *)v3 combineObject:title];
 
-  v5 = [(ASCTextOfferMetadata *)self subtitle];
-  [(ASCHasher *)v3 combineObject:v5];
+  subtitle = [(ASCTextOfferMetadata *)self subtitle];
+  [(ASCHasher *)v3 combineObject:subtitle];
 
-  v6 = [(ASCHasher *)v3 finalizeHash];
-  return v6;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -119,31 +119,31 @@
 
   if (v7)
   {
-    v8 = [(ASCTextOfferMetadata *)self title];
-    v9 = [v7 title];
-    v10 = v9;
-    if (v8 && v9)
+    title = [(ASCTextOfferMetadata *)self title];
+    title2 = [v7 title];
+    v10 = title2;
+    if (title && title2)
     {
-      if ([v8 isEqual:v9])
+      if ([title isEqual:title2])
       {
         goto LABEL_10;
       }
     }
 
-    else if (v8 == v9)
+    else if (title == title2)
     {
 LABEL_10:
-      v11 = [(ASCTextOfferMetadata *)self subtitle];
-      v12 = [v7 subtitle];
-      v13 = v12;
-      if (v11 && v12)
+      subtitle = [(ASCTextOfferMetadata *)self subtitle];
+      subtitle2 = [v7 subtitle];
+      v13 = subtitle2;
+      if (subtitle && subtitle2)
       {
-        v14 = [v11 isEqual:v12];
+        v14 = [subtitle isEqual:subtitle2];
       }
 
       else
       {
-        v14 = v11 == v12;
+        v14 = subtitle == subtitle2;
       }
 
       goto LABEL_18;
@@ -164,15 +164,15 @@ LABEL_19:
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCTextOfferMetadata *)self title];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"title"];
+  title = [(ASCTextOfferMetadata *)self title];
+  [(ASCDescriber *)v3 addObject:title withName:@"title"];
 
-  v5 = [(ASCTextOfferMetadata *)self subtitle];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"subtitle"];
+  subtitle = [(ASCTextOfferMetadata *)self subtitle];
+  [(ASCDescriber *)v3 addObject:subtitle withName:@"subtitle"];
 
-  v6 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v6;
+  return finalizeDescription;
 }
 
 @end

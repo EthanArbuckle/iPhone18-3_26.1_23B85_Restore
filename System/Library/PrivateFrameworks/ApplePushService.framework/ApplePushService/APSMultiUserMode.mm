@@ -2,7 +2,7 @@
 + (BOOL)_getIsCurrentlyLoggedIn;
 + (BOOL)_getMultiUserMode;
 + (id)sharedInstance;
-- (APSMultiUserMode)initWithIsMultiUserMode:(BOOL)a3 loggedInUser:(BOOL)a4;
+- (APSMultiUserMode)initWithIsMultiUserMode:(BOOL)mode loggedInUser:(BOOL)user;
 @end
 
 @implementation APSMultiUserMode
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000236DC;
   block[3] = &unk_1001863D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001BF6C0 != -1)
   {
     dispatch_once(&qword_1001BF6C0, block);
@@ -26,30 +26,30 @@
 
 + (BOOL)_getMultiUserMode
 {
-  v2 = [CUTWeakLinkClass() sharedManager];
-  v3 = [v2 isMultiUser];
+  cUTWeakLinkClass() = [CUTWeakLinkClass() sharedManager];
+  isMultiUser = [cUTWeakLinkClass() isMultiUser];
 
-  return v3;
+  return isMultiUser;
 }
 
 + (BOOL)_getIsCurrentlyLoggedIn
 {
-  v2 = [CUTWeakLinkClass() sharedManager];
-  v3 = [v2 currentUser];
-  v4 = [v3 isLoginUser];
+  cUTWeakLinkClass() = [CUTWeakLinkClass() sharedManager];
+  currentUser = [cUTWeakLinkClass() currentUser];
+  isLoginUser = [currentUser isLoginUser];
 
-  return v4 ^ 1;
+  return isLoginUser ^ 1;
 }
 
-- (APSMultiUserMode)initWithIsMultiUserMode:(BOOL)a3 loggedInUser:(BOOL)a4
+- (APSMultiUserMode)initWithIsMultiUserMode:(BOOL)mode loggedInUser:(BOOL)user
 {
   v7.receiver = self;
   v7.super_class = APSMultiUserMode;
   result = [(APSMultiUserMode *)&v7 init];
   if (result)
   {
-    result->_isMultiUser = a3;
-    result->_isLoggedInUser = a4;
+    result->_isMultiUser = mode;
+    result->_isLoggedInUser = user;
   }
 
   return result;

@@ -1,69 +1,69 @@
 @interface NFCISO15693ReaderSessionTag
-+ (BOOL)decodeIdentifier:(id)a3 manufacturerCode:(unint64_t *)a4 serialNumber:(id *)a5;
-+ (id)reverseByteOrder:(id)a3;
-- (BOOL)_transceiveWithData:(id)a3 receivedData:(id *)a4 commandConfig:(id)a5 error:(id *)a6;
++ (BOOL)decodeIdentifier:(id)identifier manufacturerCode:(unint64_t *)code serialNumber:(id *)number;
++ (id)reverseByteOrder:(id)order;
+- (BOOL)_transceiveWithData:(id)data receivedData:(id *)receivedData commandConfig:(id)config error:(id *)error;
 - (NSData)icSerialNumber;
 - (NSData)identifier;
-- (id)_parseResponseData:(id)a3 outError:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)_parseResponseErrorWithData:(id)a3;
+- (id)_parseResponseData:(id)data outError:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)_parseResponseErrorWithData:(id)data;
 - (unint64_t)icManufacturerCode;
-- (void)authenticateWithRequestFlags:(unsigned __int8)a3 cryptoSuiteIdentifier:(int64_t)a4 message:(id)a5 completionHandler:(id)a6;
-- (void)challengeWithRequestFlags:(unsigned __int8)a3 cryptoSuiteIdentifier:(int64_t)a4 message:(id)a5 completionHandler:(id)a6;
-- (void)customCommandWithRequestFlag:(unsigned __int8)a3 customCommandCode:(int64_t)a4 customRequestParameters:(id)a5 completionHandler:(id)a6;
-- (void)extendedFastReadMultipleBlocksWithRequestFlag:(unsigned __int8)a3 blockRange:(_NSRange)a4 completionHandler:(id)a5;
-- (void)extendedGetMultipleBlockSecurityStatusWithRequestFlag:(unsigned __int8)a3 blockRange:(_NSRange)a4 completionHandler:(id)a5;
-- (void)extendedLockBlockWithRequestFlags:(unsigned __int8)a3 blockNumber:(int64_t)a4 completionHandler:(id)a5;
-- (void)extendedReadMultipleBlocksWithRequestFlags:(unsigned __int8)a3 blockRange:(_NSRange)a4 completionHandler:(id)a5;
-- (void)extendedReadSingleBlockWithRequestFlags:(unsigned __int8)a3 blockNumber:(int64_t)a4 completionHandler:(id)a5;
-- (void)extendedWriteMultipleBlocksWithRequestFlags:(unsigned __int8)a3 blockRange:(_NSRange)a4 dataBlocks:(id)a5 completionHandler:(id)a6;
-- (void)extendedWriteSingleBlockWithRequestFlags:(unsigned __int8)a3 blockNumber:(int64_t)a4 dataBlock:(id)a5 completionHandler:(id)a6;
-- (void)fastReadMultipleBlocksWithRequestFlag:(unsigned __int8)a3 blockRange:(_NSRange)a4 completionHandler:(id)a5;
-- (void)getMultipleBlockSecurityStatusWithRequestFlag:(unsigned __int8)a3 blockRange:(_NSRange)a4 completionHandler:(id)a5;
-- (void)getSystemInfoAndUIDWithRequestFlag:(unsigned __int8)a3 completionHandler:(id)a4;
-- (void)getSystemInfoWithRequestFlag:(unsigned __int8)a3 completionHandler:(id)a4;
-- (void)keyUpdateWithRequestFlags:(unsigned __int8)a3 keyIdentifier:(int64_t)a4 message:(id)a5 completionHandler:(id)a6;
-- (void)lockAFIWithRequestFlag:(unsigned __int8)a3 completionHandler:(id)a4;
-- (void)lockBlockWithRequestFlags:(unsigned __int8)a3 blockNumber:(unsigned __int8)a4 completionHandler:(id)a5;
-- (void)lockDFSIDWithRequestFlag:(unsigned __int8)a3 completionHandler:(id)a4;
-- (void)lockDSFIDWithRequestFlag:(unsigned __int8)a3 completionHandler:(id)a4;
-- (void)readBufferWithRequestFlags:(unsigned __int8)a3 completionHandler:(id)a4;
-- (void)readMultipleBlocksWithConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)readMultipleBlocksWithRequestFlags:(unsigned __int8)a3 blockRange:(_NSRange)a4 completionHandler:(id)a5;
-- (void)readSingleBlockWithRequestFlags:(unsigned __int8)a3 blockNumber:(unsigned __int8)a4 completionHandler:(id)a5;
-- (void)resetToReadyWithRequestFlags:(unsigned __int8)a3 completionHandler:(id)a4;
-- (void)selectWithRequestFlags:(unsigned __int8)a3 completionHandler:(id)a4;
-- (void)sendCustomCommandWithConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)sendRequestWithFlag:(int64_t)a3 commandCode:(int64_t)a4 data:(id)a5 completionHandler:(id)a6;
-- (void)stayQuietWithCompletionHandler:(id)a3;
-- (void)writeAFIWithRequestFlag:(unsigned __int8)a3 afi:(unsigned __int8)a4 completionHandler:(id)a5;
-- (void)writeDSFIDWithRequestFlag:(unsigned __int8)a3 dsfid:(unsigned __int8)a4 completionHandler:(id)a5;
-- (void)writeMultipleBlocksWithRequestFlags:(unsigned __int8)a3 blockRange:(_NSRange)a4 dataBlocks:(id)a5 completionHandler:(id)a6;
-- (void)writeSingleBlockWithRequestFlags:(unsigned __int8)a3 blockNumber:(unsigned __int8)a4 dataBlock:(id)a5 completionHandler:(id)a6;
+- (void)authenticateWithRequestFlags:(unsigned __int8)flags cryptoSuiteIdentifier:(int64_t)identifier message:(id)message completionHandler:(id)handler;
+- (void)challengeWithRequestFlags:(unsigned __int8)flags cryptoSuiteIdentifier:(int64_t)identifier message:(id)message completionHandler:(id)handler;
+- (void)customCommandWithRequestFlag:(unsigned __int8)flag customCommandCode:(int64_t)code customRequestParameters:(id)parameters completionHandler:(id)handler;
+- (void)extendedFastReadMultipleBlocksWithRequestFlag:(unsigned __int8)flag blockRange:(_NSRange)range completionHandler:(id)handler;
+- (void)extendedGetMultipleBlockSecurityStatusWithRequestFlag:(unsigned __int8)flag blockRange:(_NSRange)range completionHandler:(id)handler;
+- (void)extendedLockBlockWithRequestFlags:(unsigned __int8)flags blockNumber:(int64_t)number completionHandler:(id)handler;
+- (void)extendedReadMultipleBlocksWithRequestFlags:(unsigned __int8)flags blockRange:(_NSRange)range completionHandler:(id)handler;
+- (void)extendedReadSingleBlockWithRequestFlags:(unsigned __int8)flags blockNumber:(int64_t)number completionHandler:(id)handler;
+- (void)extendedWriteMultipleBlocksWithRequestFlags:(unsigned __int8)flags blockRange:(_NSRange)range dataBlocks:(id)blocks completionHandler:(id)handler;
+- (void)extendedWriteSingleBlockWithRequestFlags:(unsigned __int8)flags blockNumber:(int64_t)number dataBlock:(id)block completionHandler:(id)handler;
+- (void)fastReadMultipleBlocksWithRequestFlag:(unsigned __int8)flag blockRange:(_NSRange)range completionHandler:(id)handler;
+- (void)getMultipleBlockSecurityStatusWithRequestFlag:(unsigned __int8)flag blockRange:(_NSRange)range completionHandler:(id)handler;
+- (void)getSystemInfoAndUIDWithRequestFlag:(unsigned __int8)flag completionHandler:(id)handler;
+- (void)getSystemInfoWithRequestFlag:(unsigned __int8)flag completionHandler:(id)handler;
+- (void)keyUpdateWithRequestFlags:(unsigned __int8)flags keyIdentifier:(int64_t)identifier message:(id)message completionHandler:(id)handler;
+- (void)lockAFIWithRequestFlag:(unsigned __int8)flag completionHandler:(id)handler;
+- (void)lockBlockWithRequestFlags:(unsigned __int8)flags blockNumber:(unsigned __int8)number completionHandler:(id)handler;
+- (void)lockDFSIDWithRequestFlag:(unsigned __int8)flag completionHandler:(id)handler;
+- (void)lockDSFIDWithRequestFlag:(unsigned __int8)flag completionHandler:(id)handler;
+- (void)readBufferWithRequestFlags:(unsigned __int8)flags completionHandler:(id)handler;
+- (void)readMultipleBlocksWithConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)readMultipleBlocksWithRequestFlags:(unsigned __int8)flags blockRange:(_NSRange)range completionHandler:(id)handler;
+- (void)readSingleBlockWithRequestFlags:(unsigned __int8)flags blockNumber:(unsigned __int8)number completionHandler:(id)handler;
+- (void)resetToReadyWithRequestFlags:(unsigned __int8)flags completionHandler:(id)handler;
+- (void)selectWithRequestFlags:(unsigned __int8)flags completionHandler:(id)handler;
+- (void)sendCustomCommandWithConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)sendRequestWithFlag:(int64_t)flag commandCode:(int64_t)code data:(id)data completionHandler:(id)handler;
+- (void)stayQuietWithCompletionHandler:(id)handler;
+- (void)writeAFIWithRequestFlag:(unsigned __int8)flag afi:(unsigned __int8)afi completionHandler:(id)handler;
+- (void)writeDSFIDWithRequestFlag:(unsigned __int8)flag dsfid:(unsigned __int8)dsfid completionHandler:(id)handler;
+- (void)writeMultipleBlocksWithRequestFlags:(unsigned __int8)flags blockRange:(_NSRange)range dataBlocks:(id)blocks completionHandler:(id)handler;
+- (void)writeSingleBlockWithRequestFlags:(unsigned __int8)flags blockNumber:(unsigned __int8)number dataBlock:(id)block completionHandler:(id)handler;
 @end
 
 @implementation NFCISO15693ReaderSessionTag
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = NFCISO15693ReaderSessionTag;
-  return [(NFCTag *)&v4 copyWithZone:a3];
+  return [(NFCTag *)&v4 copyWithZone:zone];
 }
 
-- (BOOL)_transceiveWithData:(id)a3 receivedData:(id *)a4 commandConfig:(id)a5 error:(id *)a6
+- (BOOL)_transceiveWithData:(id)data receivedData:(id *)receivedData commandConfig:(id)config error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [v11 maximumRetries];
-  if (v12 <= +[NFCTag _MaxRetry](NFCTag, "_MaxRetry") && ([v11 retryInterval], v14 = v13, +[NFCTag _MaxRetryInterval](NFCTag, "_MaxRetryInterval"), v14 <= v15) && (objc_msgSend(v11, "retryInterval"), v16 >= 0.0))
+  dataCopy = data;
+  configCopy = config;
+  maximumRetries = [configCopy maximumRetries];
+  if (maximumRetries <= +[NFCTag _MaxRetry](NFCTag, "_MaxRetry") && ([configCopy retryInterval], v14 = v13, +[NFCTag _MaxRetryInterval](NFCTag, "_MaxRetryInterval"), v14 <= v15) && (objc_msgSend(configCopy, "retryInterval"), v16 >= 0.0))
   {
-    v18 = [v11 maximumRetries];
-    v26 = [(NFCTag *)self _getInternalReaderSession];
-    if (v26)
+    maximumRetries2 = [configCopy maximumRetries];
+    _getInternalReaderSession = [(NFCTag *)self _getInternalReaderSession];
+    if (_getInternalReaderSession)
     {
-      v19 = v18 + 1;
-      if (v18 == -1)
+      v19 = maximumRetries2 + 1;
+      if (maximumRetries2 == -1)
       {
         v21 = 0;
         v20 = 0;
@@ -77,13 +77,13 @@
         {
           v22 = v20;
           v27 = v20;
-          [(NFCTag *)self _transceiveWithSession:v26 sendData:v10 receivedData:a4 error:&v27, v26];
+          [(NFCTag *)self _transceiveWithSession:_getInternalReaderSession sendData:dataCopy receivedData:receivedData error:&v27, _getInternalReaderSession];
           v20 = v27;
 
-          if (a6)
+          if (error)
           {
             v23 = v20;
-            *a6 = v20;
+            *error = v20;
           }
 
           if (!v20 || [v20 code] == 202)
@@ -91,32 +91,32 @@
             break;
           }
 
-          if (v21 < v18)
+          if (v21 < maximumRetries2)
           {
-            [v11 retryInterval];
+            [configCopy retryInterval];
             usleep((v24 * 1000000.0));
           }
 
           if (v19 == ++v21)
           {
-            v21 = v18 + 1;
+            v21 = maximumRetries2 + 1;
             break;
           }
         }
       }
 
-      if (a6 && v21 == v19)
+      if (error && v21 == v19)
       {
-        *a6 = [NFCError errorWithCode:101];
+        *error = [NFCError errorWithCode:101];
       }
 
       v17 = v20 == 0;
     }
 
-    else if (a6)
+    else if (error)
     {
       [NFCError errorWithCode:103];
-      *a6 = v17 = 0;
+      *error = v17 = 0;
     }
 
     else
@@ -125,10 +125,10 @@
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     [NFCError errorWithCode:300];
-    *a6 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
@@ -139,12 +139,12 @@
   return v17;
 }
 
-- (unint64_t)_parseResponseErrorWithData:(id)a3
+- (unint64_t)_parseResponseErrorWithData:(id)data
 {
-  v3 = [a3 bytes];
-  if (*v3)
+  bytes = [data bytes];
+  if (*bytes)
   {
-    return v3[1];
+    return bytes[1];
   }
 
   else
@@ -153,16 +153,16 @@
   }
 }
 
-+ (id)reverseByteOrder:(id)a3
++ (id)reverseByteOrder:(id)order
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:{objc_msgSend(v3, "length")}];
-  v6 = [v3 length];
+  orderCopy = order;
+  bytes = [orderCopy bytes];
+  v5 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:{objc_msgSend(orderCopy, "length")}];
+  v6 = [orderCopy length];
   if (v6 - 1 >= 0)
   {
     v7 = -v6;
-    v8 = v4 + v6 - 1;
+    v8 = bytes + v6 - 1;
     do
     {
       [v5 appendBytes:v8-- length:1];
@@ -174,26 +174,26 @@
   return v5;
 }
 
-+ (BOOL)decodeIdentifier:(id)a3 manufacturerCode:(unint64_t *)a4 serialNumber:(id *)a5
++ (BOOL)decodeIdentifier:(id)identifier manufacturerCode:(unint64_t *)code serialNumber:(id *)number
 {
-  v9 = a3;
-  if ([v9 length] != 8)
+  identifierCopy = identifier;
+  if ([identifierCopy length] != 8)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"NFCISO15693ReaderSessionTag.m" lineNumber:242 description:@"Invalid UID length"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NFCISO15693ReaderSessionTag.m" lineNumber:242 description:@"Invalid UID length"];
   }
 
-  v10 = [v9 length];
+  v10 = [identifierCopy length];
   if (v10 == 8)
   {
-    if (a4)
+    if (code)
     {
-      *a4 = *([v9 bytes] + 1);
+      *code = *([identifierCopy bytes] + 1);
     }
 
-    if (a5)
+    if (number)
     {
-      *a5 = [v9 subdataWithRange:{2, 6}];
+      *number = [identifierCopy subdataWithRange:{2, 6}];
     }
   }
 
@@ -204,8 +204,8 @@
 {
   v5.receiver = self;
   v5.super_class = NFCISO15693ReaderSessionTag;
-  v2 = [(NFCTag *)&v5 identifier];
-  v3 = [NFCISO15693ReaderSessionTag reverseByteOrder:v2];
+  identifier = [(NFCTag *)&v5 identifier];
+  v3 = [NFCISO15693ReaderSessionTag reverseByteOrder:identifier];
 
   return v3;
 }
@@ -213,8 +213,8 @@
 - (unint64_t)icManufacturerCode
 {
   v5 = 0;
-  v2 = [(NFCISO15693ReaderSessionTag *)self identifier];
-  v3 = [NFCISO15693ReaderSessionTag decodeIdentifier:v2 manufacturerCode:&v5 serialNumber:0];
+  identifier = [(NFCISO15693ReaderSessionTag *)self identifier];
+  v3 = [NFCISO15693ReaderSessionTag decodeIdentifier:identifier manufacturerCode:&v5 serialNumber:0];
 
   if (v3)
   {
@@ -229,9 +229,9 @@
 
 - (NSData)icSerialNumber
 {
-  v2 = [(NFCISO15693ReaderSessionTag *)self identifier];
+  identifier = [(NFCISO15693ReaderSessionTag *)self identifier];
   v8 = 0;
-  v3 = [NFCISO15693ReaderSessionTag decodeIdentifier:v2 manufacturerCode:0 serialNumber:&v8];
+  v3 = [NFCISO15693ReaderSessionTag decodeIdentifier:identifier manufacturerCode:0 serialNumber:&v8];
   v4 = v8;
 
   if (v3)
@@ -249,20 +249,20 @@
   return v6;
 }
 
-- (id)_parseResponseData:(id)a3 outError:(id *)a4
+- (id)_parseResponseData:(id)data outError:(id *)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NFCISO15693ReaderSessionTag *)self _parseResponseErrorWithData:v6];
+  dataCopy = data;
+  v7 = [(NFCISO15693ReaderSessionTag *)self _parseResponseErrorWithData:dataCopy];
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       v14 = @"ISO15693TagResponseErrorCode";
       v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
       v15[0] = v8;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-      *a4 = [NFCError errorWithCode:102 userInfo:v9];
+      *error = [NFCError errorWithCode:102 userInfo:v9];
     }
 
     v10 = objc_opt_new();
@@ -270,12 +270,12 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
 
-    v10 = [v6 subdataWithRange:{1, objc_msgSend(v6, "length") - 1}];
+    v10 = [dataCopy subdataWithRange:{1, objc_msgSend(dataCopy, "length") - 1}];
   }
 
   v11 = v10;
@@ -285,11 +285,11 @@
   return v11;
 }
 
-- (void)sendCustomCommandWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)sendCustomCommandWithConfiguration:(id)configuration completionHandler:(id)handler
 {
   v80 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v9 = _os_activity_create(&dword_23728C000, "NFCISO15693ReaderSessionTag sendCustomCommandWithConfiguration:completionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   *state = 0;
   *&state[8] = 0;
@@ -341,7 +341,7 @@
   }
 
   v70 = 0;
-  v21 = [v7 asNSDataWithError:&v70];
+  v21 = [configurationCopy asNSDataWithError:&v70];
   v22 = v70;
   if (v22)
   {
@@ -400,7 +400,7 @@
   {
     v68 = 0;
     v69 = 0;
-    [(NFCISO15693ReaderSessionTag *)self _transceiveWithData:v21 receivedData:&v69 commandConfig:v7 error:&v68];
+    [(NFCISO15693ReaderSessionTag *)self _transceiveWithData:v21 receivedData:&v69 commandConfig:configurationCopy error:&v68];
     v35 = v69;
     v36 = v68;
     if (v36 || [v35 length] < 2)
@@ -414,9 +414,9 @@
         v38 = v37;
         v39 = object_getClass(self);
         v40 = class_isMetaClass(v39);
-        v41 = v7;
+        v41 = configurationCopy;
         v42 = v21;
-        v43 = v8;
+        v43 = handlerCopy;
         v44 = object_getClassName(self);
         v45 = sel_getName(sel);
         v61 = [v35 length];
@@ -427,9 +427,9 @@
         }
 
         v58 = v44;
-        v8 = v43;
+        handlerCopy = v43;
         v21 = v42;
-        v7 = v41;
+        configurationCopy = v41;
         v38(3, "%c[%{public}s %{public}s]:%i %@ with response length = %lu", v46, v58, v45, 316, v23, v61);
       }
 
@@ -481,21 +481,21 @@
   v63[2] = sub_2372ADA34;
   v63[3] = &unk_278A29C60;
   v65 = v23;
-  v66 = v8;
+  v66 = handlerCopy;
   v64 = v34;
   v53 = v23;
   v54 = v34;
-  v55 = v8;
+  v55 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v63];
 
   v56 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readMultipleBlocksWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)readMultipleBlocksWithConfiguration:(id)configuration completionHandler:(id)handler
 {
   v92 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v9 = _os_activity_create(&dword_23728C000, "NFCISO15693ReaderSessionTag readMultipleBlocksWithConfiguration:completionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   *state = 0;
   *&state[8] = 0;
@@ -549,12 +549,12 @@
 
   v81.receiver = self;
   v81.super_class = NFCISO15693ReaderSessionTag;
-  v22 = [(NFCTag *)&v81 identifier];
+  identifier = [(NFCTag *)&v81 identifier];
   v80 = 0;
-  v23 = [v7 asNSDataArrayWithUID:v22 error:&v80];
+  v23 = [configurationCopy asNSDataArrayWithUID:identifier error:&v80];
   v24 = v80;
 
-  v69 = v7;
+  v69 = configurationCopy;
   if (v24)
   {
     v25 = NFLogGetLogger();
@@ -619,7 +619,7 @@
     {
       v37 = v36;
       v65 = v23;
-      v66 = v8;
+      v66 = handlerCopy;
       v68 = v10;
       v38 = *v77;
       while (2)
@@ -634,7 +634,7 @@
           v40 = *(*(&v76 + 1) + 8 * i);
           v74 = 0;
           v75 = 0;
-          [(NFCISO15693ReaderSessionTag *)self _transceiveWithData:v40 receivedData:&v75 commandConfig:v7 error:&v74];
+          [(NFCISO15693ReaderSessionTag *)self _transceiveWithData:v40 receivedData:&v75 commandConfig:configurationCopy error:&v74];
           v41 = v75;
           v24 = v74;
           if ([v41 length] >= 2)
@@ -648,7 +648,7 @@
               v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v90 forKeys:&v89 count:1];
               v45 = [NFCError errorWithCode:102 userInfo:v44];
 
-              v7 = v69;
+              configurationCopy = v69;
               v24 = v45;
             }
 
@@ -709,7 +709,7 @@
             }
 
             v23 = v65;
-            v8 = v66;
+            handlerCopy = v66;
             goto LABEL_45;
           }
         }
@@ -725,7 +725,7 @@
 
       v24 = 0;
       v23 = v65;
-      v8 = v66;
+      handlerCopy = v66;
       v10 = v68;
     }
 
@@ -742,373 +742,373 @@ LABEL_45:
   v70[2] = sub_2372AE12C;
   v70[3] = &unk_278A29C60;
   v72 = v24;
-  v73 = v8;
+  v73 = handlerCopy;
   v71 = v10;
   v56 = v24;
   v57 = v10;
-  v58 = v8;
+  v58 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v70];
 
   v59 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stayQuietWithCompletionHandler:(id)a3
+- (void)stayQuietWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_2372AE224;
   v6[3] = &unk_278A29C38;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v6];
 }
 
-- (void)readSingleBlockWithRequestFlags:(unsigned __int8)a3 blockNumber:(unsigned __int8)a4 completionHandler:(id)a5
+- (void)readSingleBlockWithRequestFlags:(unsigned __int8)flags blockNumber:(unsigned __int8)number completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2372AE320;
   v8[3] = &unk_278A29C38;
-  v9 = v6;
-  v7 = v6;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v8];
 }
 
-- (void)writeSingleBlockWithRequestFlags:(unsigned __int8)a3 blockNumber:(unsigned __int8)a4 dataBlock:(id)a5 completionHandler:(id)a6
+- (void)writeSingleBlockWithRequestFlags:(unsigned __int8)flags blockNumber:(unsigned __int8)number dataBlock:(id)block completionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2372AE434;
   v9[3] = &unk_278A29C38;
-  v10 = v7;
-  v8 = v7;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v9];
 }
 
-- (void)lockBlockWithRequestFlags:(unsigned __int8)a3 blockNumber:(unsigned __int8)a4 completionHandler:(id)a5
+- (void)lockBlockWithRequestFlags:(unsigned __int8)flags blockNumber:(unsigned __int8)number completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2372AE530;
   v8[3] = &unk_278A29C38;
-  v9 = v6;
-  v7 = v6;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v8];
 }
 
-- (void)readMultipleBlocksWithRequestFlags:(unsigned __int8)a3 blockRange:(_NSRange)a4 completionHandler:(id)a5
+- (void)readMultipleBlocksWithRequestFlags:(unsigned __int8)flags blockRange:(_NSRange)range completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2372AE62C;
   v8[3] = &unk_278A29C38;
-  v9 = v6;
-  v7 = v6;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v8];
 }
 
-- (void)writeMultipleBlocksWithRequestFlags:(unsigned __int8)a3 blockRange:(_NSRange)a4 dataBlocks:(id)a5 completionHandler:(id)a6
+- (void)writeMultipleBlocksWithRequestFlags:(unsigned __int8)flags blockRange:(_NSRange)range dataBlocks:(id)blocks completionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2372AE740;
   v9[3] = &unk_278A29C38;
-  v10 = v7;
-  v8 = v7;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v9];
 }
 
-- (void)selectWithRequestFlags:(unsigned __int8)a3 completionHandler:(id)a4
+- (void)selectWithRequestFlags:(unsigned __int8)flags completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2372AE83C;
   v7[3] = &unk_278A29C38;
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v7];
 }
 
-- (void)resetToReadyWithRequestFlags:(unsigned __int8)a3 completionHandler:(id)a4
+- (void)resetToReadyWithRequestFlags:(unsigned __int8)flags completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2372AE938;
   v7[3] = &unk_278A29C38;
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v7];
 }
 
-- (void)writeAFIWithRequestFlag:(unsigned __int8)a3 afi:(unsigned __int8)a4 completionHandler:(id)a5
+- (void)writeAFIWithRequestFlag:(unsigned __int8)flag afi:(unsigned __int8)afi completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2372AEA34;
   v8[3] = &unk_278A29C38;
-  v9 = v6;
-  v7 = v6;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v8];
 }
 
-- (void)lockAFIWithRequestFlag:(unsigned __int8)a3 completionHandler:(id)a4
+- (void)lockAFIWithRequestFlag:(unsigned __int8)flag completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2372AEB30;
   v7[3] = &unk_278A29C38;
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v7];
 }
 
-- (void)writeDSFIDWithRequestFlag:(unsigned __int8)a3 dsfid:(unsigned __int8)a4 completionHandler:(id)a5
+- (void)writeDSFIDWithRequestFlag:(unsigned __int8)flag dsfid:(unsigned __int8)dsfid completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2372AEC2C;
   v8[3] = &unk_278A29C38;
-  v9 = v6;
-  v7 = v6;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v8];
 }
 
-- (void)lockDFSIDWithRequestFlag:(unsigned __int8)a3 completionHandler:(id)a4
+- (void)lockDFSIDWithRequestFlag:(unsigned __int8)flag completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2372AED28;
   v7[3] = &unk_278A29C38;
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v7];
 }
 
-- (void)lockDSFIDWithRequestFlag:(unsigned __int8)a3 completionHandler:(id)a4
+- (void)lockDSFIDWithRequestFlag:(unsigned __int8)flag completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2372AEE24;
   v7[3] = &unk_278A29C38;
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v7];
 }
 
-- (void)getSystemInfoWithRequestFlag:(unsigned __int8)a3 completionHandler:(id)a4
+- (void)getSystemInfoWithRequestFlag:(unsigned __int8)flag completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2372AEF20;
   v7[3] = &unk_278A29C38;
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v7];
 }
 
-- (void)getSystemInfoAndUIDWithRequestFlag:(unsigned __int8)a3 completionHandler:(id)a4
+- (void)getSystemInfoAndUIDWithRequestFlag:(unsigned __int8)flag completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2372AF030;
   v7[3] = &unk_278A29C38;
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v7];
 }
 
-- (void)getMultipleBlockSecurityStatusWithRequestFlag:(unsigned __int8)a3 blockRange:(_NSRange)a4 completionHandler:(id)a5
+- (void)getMultipleBlockSecurityStatusWithRequestFlag:(unsigned __int8)flag blockRange:(_NSRange)range completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2372AF144;
   v8[3] = &unk_278A29C38;
-  v9 = v6;
-  v7 = v6;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v8];
 }
 
-- (void)fastReadMultipleBlocksWithRequestFlag:(unsigned __int8)a3 blockRange:(_NSRange)a4 completionHandler:(id)a5
+- (void)fastReadMultipleBlocksWithRequestFlag:(unsigned __int8)flag blockRange:(_NSRange)range completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2372AF258;
   v8[3] = &unk_278A29C38;
-  v9 = v6;
-  v7 = v6;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v8];
 }
 
-- (void)customCommandWithRequestFlag:(unsigned __int8)a3 customCommandCode:(int64_t)a4 customRequestParameters:(id)a5 completionHandler:(id)a6
+- (void)customCommandWithRequestFlag:(unsigned __int8)flag customCommandCode:(int64_t)code customRequestParameters:(id)parameters completionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2372AF36C;
   v9[3] = &unk_278A29C38;
-  v10 = v7;
-  v8 = v7;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v9];
 }
 
-- (void)extendedReadSingleBlockWithRequestFlags:(unsigned __int8)a3 blockNumber:(int64_t)a4 completionHandler:(id)a5
+- (void)extendedReadSingleBlockWithRequestFlags:(unsigned __int8)flags blockNumber:(int64_t)number completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2372AF480;
   v8[3] = &unk_278A29C38;
-  v9 = v6;
-  v7 = v6;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v8];
 }
 
-- (void)extendedWriteSingleBlockWithRequestFlags:(unsigned __int8)a3 blockNumber:(int64_t)a4 dataBlock:(id)a5 completionHandler:(id)a6
+- (void)extendedWriteSingleBlockWithRequestFlags:(unsigned __int8)flags blockNumber:(int64_t)number dataBlock:(id)block completionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2372AF594;
   v9[3] = &unk_278A29C38;
-  v10 = v7;
-  v8 = v7;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v9];
 }
 
-- (void)extendedLockBlockWithRequestFlags:(unsigned __int8)a3 blockNumber:(int64_t)a4 completionHandler:(id)a5
+- (void)extendedLockBlockWithRequestFlags:(unsigned __int8)flags blockNumber:(int64_t)number completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2372AF690;
   v8[3] = &unk_278A29C38;
-  v9 = v6;
-  v7 = v6;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v8];
 }
 
-- (void)extendedReadMultipleBlocksWithRequestFlags:(unsigned __int8)a3 blockRange:(_NSRange)a4 completionHandler:(id)a5
+- (void)extendedReadMultipleBlocksWithRequestFlags:(unsigned __int8)flags blockRange:(_NSRange)range completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2372AF78C;
   v8[3] = &unk_278A29C38;
-  v9 = v6;
-  v7 = v6;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v8];
 }
 
-- (void)extendedWriteMultipleBlocksWithRequestFlags:(unsigned __int8)a3 blockRange:(_NSRange)a4 dataBlocks:(id)a5 completionHandler:(id)a6
+- (void)extendedWriteMultipleBlocksWithRequestFlags:(unsigned __int8)flags blockRange:(_NSRange)range dataBlocks:(id)blocks completionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2372AF8A0;
   v9[3] = &unk_278A29C38;
-  v10 = v7;
-  v8 = v7;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v9];
 }
 
-- (void)authenticateWithRequestFlags:(unsigned __int8)a3 cryptoSuiteIdentifier:(int64_t)a4 message:(id)a5 completionHandler:(id)a6
+- (void)authenticateWithRequestFlags:(unsigned __int8)flags cryptoSuiteIdentifier:(int64_t)identifier message:(id)message completionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2372AF99C;
   v9[3] = &unk_278A29C38;
-  v10 = v7;
-  v8 = v7;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v9];
 }
 
-- (void)keyUpdateWithRequestFlags:(unsigned __int8)a3 keyIdentifier:(int64_t)a4 message:(id)a5 completionHandler:(id)a6
+- (void)keyUpdateWithRequestFlags:(unsigned __int8)flags keyIdentifier:(int64_t)identifier message:(id)message completionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2372AFAB4;
   v9[3] = &unk_278A29C38;
-  v10 = v7;
-  v8 = v7;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v9];
 }
 
-- (void)challengeWithRequestFlags:(unsigned __int8)a3 cryptoSuiteIdentifier:(int64_t)a4 message:(id)a5 completionHandler:(id)a6
+- (void)challengeWithRequestFlags:(unsigned __int8)flags cryptoSuiteIdentifier:(int64_t)identifier message:(id)message completionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2372AFBCC;
   v9[3] = &unk_278A29C38;
-  v10 = v7;
-  v8 = v7;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v9];
 }
 
-- (void)readBufferWithRequestFlags:(unsigned __int8)a3 completionHandler:(id)a4
+- (void)readBufferWithRequestFlags:(unsigned __int8)flags completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2372AFCC8;
   v7[3] = &unk_278A29C38;
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v7];
 }
 
-- (void)extendedGetMultipleBlockSecurityStatusWithRequestFlag:(unsigned __int8)a3 blockRange:(_NSRange)a4 completionHandler:(id)a5
+- (void)extendedGetMultipleBlockSecurityStatusWithRequestFlag:(unsigned __int8)flag blockRange:(_NSRange)range completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2372AFDE0;
   v8[3] = &unk_278A29C38;
-  v9 = v6;
-  v7 = v6;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v8];
 }
 
-- (void)extendedFastReadMultipleBlocksWithRequestFlag:(unsigned __int8)a3 blockRange:(_NSRange)a4 completionHandler:(id)a5
+- (void)extendedFastReadMultipleBlocksWithRequestFlag:(unsigned __int8)flag blockRange:(_NSRange)range completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2372AFEF4;
   v8[3] = &unk_278A29C38;
-  v9 = v6;
-  v7 = v6;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v8];
 }
 
-- (void)sendRequestWithFlag:(int64_t)a3 commandCode:(int64_t)a4 data:(id)a5 completionHandler:(id)a6
+- (void)sendRequestWithFlag:(int64_t)flag commandCode:(int64_t)code data:(id)data completionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2372B0008;
   v9[3] = &unk_278A29C38;
-  v10 = v7;
-  v8 = v7;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [(NFCTag *)self dispatchOnDelegateQueueAsync:v9];
 }
 

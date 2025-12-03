@@ -1,14 +1,14 @@
 @interface SKUITabBarControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation SKUITabBarControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUITabBarController" hasInstanceVariable:@"_floatingOverlayView" withType:"SKUIFloatingOverlayView"];
-  [v3 validateClass:@"SKUITabBarController" hasInstanceMethod:@"setFloatingOverlayViewController: animated:" withFullSignature:{"v", "@", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUITabBarController" hasInstanceVariable:@"_floatingOverlayView" withType:"SKUIFloatingOverlayView"];
+  [validationsCopy validateClass:@"SKUITabBarController" hasInstanceMethod:@"setFloatingOverlayViewController: animated:" withFullSignature:{"v", "@", "B", 0}];
 }
 
 @end

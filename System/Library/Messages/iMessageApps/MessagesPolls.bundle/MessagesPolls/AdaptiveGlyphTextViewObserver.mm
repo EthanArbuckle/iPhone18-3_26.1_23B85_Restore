@@ -1,38 +1,38 @@
 @interface AdaptiveGlyphTextViewObserver
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
 - (_TtC13MessagesPollsP33_27DE0C8FC02EA24110766567662B2DB629AdaptiveGlyphTextViewObserver)init;
-- (id)textDroppableView:(id)a3 proposalForDrop:(id)a4;
-- (id)textView:(id)a3 editMenuForTextInRange:(_NSRange)a4 suggestedActions:(id)a5;
-- (void)textViewDidChange:(id)a3;
+- (id)textDroppableView:(id)view proposalForDrop:(id)drop;
+- (id)textView:(id)view editMenuForTextInRange:(_NSRange)range suggestedActions:(id)actions;
+- (void)textViewDidChange:(id)change;
 @end
 
 @implementation AdaptiveGlyphTextViewObserver
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_28A84(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_28A84(changeCopy);
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
   v7 = sub_48414();
   v9 = v8;
-  v10 = a3;
-  v11 = self;
-  LOBYTE(v7) = sub_29C40(v10, v7, v9);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(v7) = sub_29C40(viewCopy, v7, v9);
 
   return v7 & 1;
 }
 
-- (id)textView:(id)a3 editMenuForTextInRange:(_NSRange)a4 suggestedActions:(id)a5
+- (id)textView:(id)view editMenuForTextInRange:(_NSRange)range suggestedActions:(id)actions
 {
   sub_61D4(0, &qword_635B0, UIMenuElement_ptr);
   v7 = sub_48544();
-  v8 = a3;
-  v9 = self;
-  v10 = sub_29E34(v8, v7);
+  viewCopy = view;
+  selfCopy = self;
+  v10 = sub_29E34(viewCopy, v7);
 
   return v10;
 }
@@ -52,12 +52,12 @@
   return [(AdaptiveGlyphTextViewObserver *)&v7 init];
 }
 
-- (id)textDroppableView:(id)a3 proposalForDrop:(id)a4
+- (id)textDroppableView:(id)view proposalForDrop:(id)drop
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_2A62C(a4);
+  selfCopy = self;
+  v8 = sub_2A62C(drop);
 
   swift_unknownObjectRelease();
 

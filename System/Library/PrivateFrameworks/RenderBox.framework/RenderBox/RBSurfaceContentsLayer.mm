@@ -1,5 +1,5 @@
 @interface RBSurfaceContentsLayer
-+ (id)defaultValueForKey:(id)a3;
++ (id)defaultValueForKey:(id)key;
 - (RBSurfaceContentsLayer)init;
 @end
 
@@ -19,24 +19,24 @@
   return v3;
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
-  if ([a3 isEqualToString:@"anchorPoint"])
+  if ([key isEqualToString:@"anchorPoint"])
   {
     v7 = *MEMORY[0x1E695EFF8];
     return [MEMORY[0x1E696B098] valueWithBytes:&v7 objCType:"{CGPoint=dd}"];
   }
 
-  else if ([a3 isEqualToString:@"needsLayoutOnGeometryChange"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"allowsEdgeAntialiasing"))
+  else if ([key isEqualToString:@"needsLayoutOnGeometryChange"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"allowsEdgeAntialiasing"))
   {
     return MEMORY[0x1E695E110];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___RBSurfaceContentsLayer;
-    return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, a3);
+    return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, key);
   }
 }
 

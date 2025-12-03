@@ -1,37 +1,37 @@
 @interface WBSPasswordPatternMatch
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)dictionaryRepresentation;
-- (WBSPasswordPatternMatch)initWithDictionaryRepresentation:(id)a3;
-- (WBSPasswordPatternMatch)initWithType:(unint64_t)a3 matchedSubstring:(id)a4 range:(_NSRange)a5 guessesRequired:(double)a6 userInfo:(id)a7;
+- (WBSPasswordPatternMatch)initWithDictionaryRepresentation:(id)representation;
+- (WBSPasswordPatternMatch)initWithType:(unint64_t)type matchedSubstring:(id)substring range:(_NSRange)range guessesRequired:(double)required userInfo:(id)info;
 - (_NSRange)range;
-- (id)compactDescriptionWithMatchedStringColumnWidth:(unint64_t)a3;
+- (id)compactDescriptionWithMatchedStringColumnWidth:(unint64_t)width;
 - (id)description;
-- (id)initExhaustiveSearchPatternWithMatchedSubstring:(id)a3 range:(_NSRange)a4;
+- (id)initExhaustiveSearchPatternWithMatchedSubstring:(id)substring range:(_NSRange)range;
 @end
 
 @implementation WBSPasswordPatternMatch
 
-- (WBSPasswordPatternMatch)initWithType:(unint64_t)a3 matchedSubstring:(id)a4 range:(_NSRange)a5 guessesRequired:(double)a6 userInfo:(id)a7
+- (WBSPasswordPatternMatch)initWithType:(unint64_t)type matchedSubstring:(id)substring range:(_NSRange)range guessesRequired:(double)required userInfo:(id)info
 {
-  length = a5.length;
-  location = a5.location;
-  v13 = a4;
-  v14 = a7;
+  length = range.length;
+  location = range.location;
+  substringCopy = substring;
+  infoCopy = info;
   v23.receiver = self;
   v23.super_class = WBSPasswordPatternMatch;
   v15 = [(WBSPasswordPatternMatch *)&v23 init];
   v16 = v15;
   if (v15)
   {
-    v15->_type = a3;
-    v17 = [v13 copy];
+    v15->_type = type;
+    v17 = [substringCopy copy];
     matchedSubstring = v16->_matchedSubstring;
     v16->_matchedSubstring = v17;
 
     v16->_range.location = location;
     v16->_range.length = length;
-    v16->_guessesRequired = a6;
-    v19 = [v14 copy];
+    v16->_guessesRequired = required;
+    v19 = [infoCopy copy];
     userInfo = v16->_userInfo;
     v16->_userInfo = v19;
 
@@ -41,23 +41,23 @@
   return v16;
 }
 
-- (id)initExhaustiveSearchPatternWithMatchedSubstring:(id)a3 range:(_NSRange)a4
+- (id)initExhaustiveSearchPatternWithMatchedSubstring:(id)substring range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = __exp10(a4.length);
+  length = range.length;
+  location = range.location;
+  v8 = __exp10(range.length);
 
-  return [(WBSPasswordPatternMatch *)self initWithType:0 matchedSubstring:a3 range:location guessesRequired:length userInfo:0, v8];
+  return [(WBSPasswordPatternMatch *)self initWithType:0 matchedSubstring:substring range:location guessesRequired:length userInfo:0, v8];
 }
 
-- (WBSPasswordPatternMatch)initWithDictionaryRepresentation:(id)a3
+- (WBSPasswordPatternMatch)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 safari_numberForKey:@"type"];
-  v6 = [v4 safari_numberForKey:@"rangeLocation"];
-  v7 = [v4 safari_numberForKey:@"rangeLength"];
-  v8 = [v4 safari_numberForKey:@"guessesRequired"];
-  v9 = [v4 objectForKeyedSubscript:@"matchedSubstring"];
+  representationCopy = representation;
+  v5 = [representationCopy safari_numberForKey:@"type"];
+  v6 = [representationCopy safari_numberForKey:@"rangeLocation"];
+  v7 = [representationCopy safari_numberForKey:@"rangeLength"];
+  v8 = [representationCopy safari_numberForKey:@"guessesRequired"];
+  v9 = [representationCopy objectForKeyedSubscript:@"matchedSubstring"];
   v10 = v9;
   v11 = &stru_1F3064D08;
   if (v9)
@@ -67,26 +67,26 @@
 
   v12 = v11;
 
-  v13 = [v4 objectForKeyedSubscript:@"userInfo"];
+  v13 = [representationCopy objectForKeyedSubscript:@"userInfo"];
 
-  v14 = 0;
+  selfCopy = 0;
   if (v5 && v6 && v7 && v8)
   {
-    v15 = [v5 integerValue];
-    v16 = [v6 unsignedIntegerValue];
-    v17 = [v7 unsignedIntegerValue];
+    integerValue = [v5 integerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v7 unsignedIntegerValue];
     [v8 doubleValue];
-    self = [(WBSPasswordPatternMatch *)self initWithType:v15 matchedSubstring:v12 range:v16 guessesRequired:v17 userInfo:v13];
-    v14 = self;
+    self = [(WBSPasswordPatternMatch *)self initWithType:integerValue matchedSubstring:v12 range:unsignedIntegerValue guessesRequired:unsignedIntegerValue2 userInfo:v13];
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -96,8 +96,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WBSPasswordPatternMatch *)v5 userInfo];
+      v5 = equalCopy;
+      userInfo = [(WBSPasswordPatternMatch *)v5 userInfo];
       type = self->_type;
       if (type != [(WBSPasswordPatternMatch *)v5 type])
       {
@@ -108,8 +108,8 @@ LABEL_15:
       }
 
       matchedSubstring = self->_matchedSubstring;
-      v9 = [(WBSPasswordPatternMatch *)v5 matchedSubstring];
-      if (![(NSString *)matchedSubstring isEqualToString:v9])
+      matchedSubstring = [(WBSPasswordPatternMatch *)v5 matchedSubstring];
+      if (![(NSString *)matchedSubstring isEqualToString:matchedSubstring])
       {
         goto LABEL_13;
       }
@@ -125,9 +125,9 @@ LABEL_15:
       if (guessesRequired == v13)
       {
         userInfo = self->_userInfo;
-        if (userInfo | v6)
+        if (userInfo | userInfo)
         {
-          v11 = [(NSDictionary *)userInfo isEqual:v6];
+          v11 = [(NSDictionary *)userInfo isEqual:userInfo];
         }
 
         else
@@ -178,7 +178,7 @@ LABEL_16:
   return v10;
 }
 
-- (id)compactDescriptionWithMatchedStringColumnWidth:(unint64_t)a3
+- (id)compactDescriptionWithMatchedStringColumnWidth:(unint64_t)width
 {
   location = self->_range.location;
   if (self->_userInfo)
@@ -201,7 +201,7 @@ LABEL_16:
   }
 
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(NSString *)self->_matchedSubstring UTF8String];
+  uTF8String = [(NSString *)self->_matchedSubstring UTF8String];
   v12 = self->_type - 1;
   if (v12 > 4)
   {
@@ -213,7 +213,7 @@ LABEL_16:
     v13 = off_1E7CF36B0[v12];
   }
 
-  v14 = [v10 stringWithFormat:@"%*s%-*s | %-16s | %12lg | %@", location, ", a3 - location, v11, -[__CFString UTF8String](v13, "UTF8String""), *&self->_guessesRequired, v9];
+  v14 = [v10 stringWithFormat:@"%*s%-*s | %-16s | %12lg | %@", location, ", width - location, uTF8String, -[__CFString UTF8String](v13, "UTF8String""), *&self->_guessesRequired, v9];
 
   return v14;
 }

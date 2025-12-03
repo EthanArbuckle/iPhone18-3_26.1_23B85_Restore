@@ -1,5 +1,5 @@
 @interface HDSQLiteDatabaseTableSchema
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -13,25 +13,25 @@
   return v4 ^ [(NSSet *)self->_indices hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   name = self->_name;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (name != v6 && (!v6 || ![(NSString *)name isEqual:?]))
   {
     goto LABEL_10;
   }
 
   columns = self->_columns;
-  v8 = v4[2];
+  v8 = equalCopy[2];
   if (columns != v8 && (!v8 || ![(NSDictionary *)columns isEqual:?]))
   {
     goto LABEL_10;
   }
 
   indices = self->_indices;
-  v10 = v4[3];
+  v10 = equalCopy[3];
   if (indices == v10)
   {
     v11 = 1;
@@ -59,8 +59,8 @@ LABEL_11:
   v23 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAB68];
   name = self->_name;
-  v5 = [(NSDictionary *)self->_columns allValues];
-  v6 = [v5 componentsJoinedByString:{@", "}];
+  allValues = [(NSDictionary *)self->_columns allValues];
+  v6 = [allValues componentsJoinedByString:{@", "}];
   v7 = [v3 stringWithFormat:@"CREATE TABLE %@ (%@)", name, v6];;
 
   v20 = 0u;
@@ -83,7 +83,7 @@ LABEL_11:
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 name];
+        name = [v13 name];
         if ([v13 isUnique])
         {
           v15 = @"UNIQUE ";
@@ -94,7 +94,7 @@ LABEL_11:
           v15 = &stru_28637B800;
         }
 
-        [v7 appendFormat:@" CREATE %@INDEX %@ on %@;", v14, v15, v13];
+        [v7 appendFormat:@" CREATE %@INDEX %@ on %@;", name, v15, v13];
       }
 
       v10 = [(NSSet *)v8 countByEnumeratingWithState:&v18 objects:v22 count:16];

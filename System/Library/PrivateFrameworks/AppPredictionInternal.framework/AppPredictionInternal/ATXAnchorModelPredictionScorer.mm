@@ -1,33 +1,33 @@
 @interface ATXAnchorModelPredictionScorer
-+ (double)normalizeValue:(double)a3 parameterKey:(id)a4;
-+ (double)predictedProbabilityFromNormalizedClassConditionalProbability:(double)a3 posteriorProbability:(double)a4 minutesAfterAnchor:(double)a5 standardDeviation:(double)a6 uniqueOccurrences:(double)a7;
-- (double)scoreForTrainingResult:(id)a3;
++ (double)normalizeValue:(double)value parameterKey:(id)key;
++ (double)predictedProbabilityFromNormalizedClassConditionalProbability:(double)probability posteriorProbability:(double)posteriorProbability minutesAfterAnchor:(double)anchor standardDeviation:(double)deviation uniqueOccurrences:(double)occurrences;
+- (double)scoreForTrainingResult:(id)result;
 @end
 
 @implementation ATXAnchorModelPredictionScorer
 
-- (double)scoreForTrainingResult:(id)a3
+- (double)scoreForTrainingResult:(id)result
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 phase1TrainingResult];
-  [v4 classConditionalProbability];
+  resultCopy = result;
+  phase1TrainingResult = [resultCopy phase1TrainingResult];
+  [phase1TrainingResult classConditionalProbability];
   v6 = v5;
 
-  v7 = [v3 phase1TrainingResult];
-  [v7 posteriorProbability];
+  phase1TrainingResult2 = [resultCopy phase1TrainingResult];
+  [phase1TrainingResult2 posteriorProbability];
   v9 = v8;
 
-  v10 = [v3 offsetFromAnchorToShowPrediction];
-  [v10 startSecondsAfterAnchor];
+  offsetFromAnchorToShowPrediction = [resultCopy offsetFromAnchorToShowPrediction];
+  [offsetFromAnchorToShowPrediction startSecondsAfterAnchor];
   v12 = v11 / 60.0;
 
-  v13 = [v3 phase1TrainingResult];
-  [v13 standardDeviationOfOffsetFromAnchor];
+  phase1TrainingResult3 = [resultCopy phase1TrainingResult];
+  [phase1TrainingResult3 standardDeviationOfOffsetFromAnchor];
   v15 = v14;
 
-  v16 = [v3 phase1TrainingResult];
-  v17 = [v16 numUniqueAnchorOccurrencesWithUniqueCandidateOccurrence];
+  phase1TrainingResult4 = [resultCopy phase1TrainingResult];
+  numUniqueAnchorOccurrencesWithUniqueCandidateOccurrence = [phase1TrainingResult4 numUniqueAnchorOccurrencesWithUniqueCandidateOccurrence];
 
   [ATXAnchorModelPredictionScorer normalizeValue:@"classConditionalProbability" parameterKey:v6];
   v19 = v18;
@@ -37,7 +37,7 @@
   v23 = v22;
   [ATXAnchorModelPredictionScorer normalizeValue:@"standardDeviation" parameterKey:v15];
   v25 = v24;
-  [ATXAnchorModelPredictionScorer normalizeValue:@"uniqueOccurrences" parameterKey:v17];
+  [ATXAnchorModelPredictionScorer normalizeValue:@"uniqueOccurrences" parameterKey:numUniqueAnchorOccurrencesWithUniqueCandidateOccurrence];
   [ATXAnchorModelPredictionScorer predictedProbabilityFromNormalizedClassConditionalProbability:v19 posteriorProbability:v21 minutesAfterAnchor:v23 standardDeviation:v25 uniqueOccurrences:v26];
   v28 = v27;
   v29 = __atxlog_handle_anchor();
@@ -46,24 +46,24 @@
     v41 = 134218242;
     v42 = v28;
     v43 = 2112;
-    v44 = *&v3;
+    v44 = *&resultCopy;
     _os_log_impl(&dword_2263AA000, v29, OS_LOG_TYPE_DEFAULT, "Predicted probability for trainingResult was %.2f. Training result: %@", &v41, 0x16u);
   }
 
-  v30 = [v3 phase1TrainingResult];
-  v31 = [v30 numRejectedSuggestion];
+  phase1TrainingResult5 = [resultCopy phase1TrainingResult];
+  numRejectedSuggestion = [phase1TrainingResult5 numRejectedSuggestion];
 
-  v32 = [v3 phase1TrainingResult];
-  v33 = [v32 numShownSuggestions];
+  phase1TrainingResult6 = [resultCopy phase1TrainingResult];
+  numShownSuggestions = [phase1TrainingResult6 numShownSuggestions];
 
-  v34 = [v3 phase1TrainingResult];
-  v35 = [v34 numEngagedSuggestions];
+  phase1TrainingResult7 = [resultCopy phase1TrainingResult];
+  numEngagedSuggestions = [phase1TrainingResult7 numEngagedSuggestions];
 
-  if (v31)
+  if (numRejectedSuggestion)
   {
-    if (v28 + v31 * -0.25 >= 0.0)
+    if (v28 + numRejectedSuggestion * -0.25 >= 0.0)
     {
-      v28 = v28 + v31 * -0.25;
+      v28 = v28 + numRejectedSuggestion * -0.25;
     }
 
     else
@@ -75,20 +75,20 @@
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
       v41 = 134218498;
-      v42 = *&v31;
+      v42 = *&numRejectedSuggestion;
       v43 = 2048;
       v44 = v28;
       v45 = 2112;
-      v46 = v3;
+      v46 = resultCopy;
       _os_log_impl(&dword_2263AA000, v36, OS_LOG_TYPE_DEFAULT, "Predicted probability after taking into account %ld rejections was %.2f. Training result: %@", &v41, 0x20u);
     }
   }
 
-  if (v33)
+  if (numShownSuggestions)
   {
-    if (v28 + v33 * -0.025 >= 0.1)
+    if (v28 + numShownSuggestions * -0.025 >= 0.1)
     {
-      v28 = v28 + v33 * -0.025;
+      v28 = v28 + numShownSuggestions * -0.025;
     }
 
     else
@@ -100,27 +100,27 @@
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
       v41 = 134218498;
-      v42 = *&v33;
+      v42 = *&numShownSuggestions;
       v43 = 2048;
       v44 = v28;
       v45 = 2112;
-      v46 = v3;
+      v46 = resultCopy;
       _os_log_impl(&dword_2263AA000, v37, OS_LOG_TYPE_DEFAULT, "Predicted probability after taking into account %ld abandons was %.2f. Training result: %@", &v41, 0x20u);
     }
   }
 
-  if (v35)
+  if (numEngagedSuggestions)
   {
-    v28 = fmin(v28 + v35 * 0.1, 1.0);
+    v28 = fmin(v28 + numEngagedSuggestions * 0.1, 1.0);
     v38 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
       v41 = 134218498;
-      v42 = *&v35;
+      v42 = *&numEngagedSuggestions;
       v43 = 2048;
       v44 = v28;
       v45 = 2112;
-      v46 = v3;
+      v46 = resultCopy;
       _os_log_impl(&dword_2263AA000, v38, OS_LOG_TYPE_DEFAULT, "Predicted probability after taking into account %ld engagements was %.2f. Training result: %@", &v41, 0x20u);
     }
   }
@@ -129,22 +129,22 @@
   return v28;
 }
 
-+ (double)normalizeValue:(double)a3 parameterKey:(id)a4
++ (double)normalizeValue:(double)value parameterKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   v6 = +[ATXAnchorModelHyperParameters sharedInstance];
-  [v6 minValueForParameterKey:v5];
+  [v6 minValueForParameterKey:keyCopy];
   v8 = v7;
 
   v9 = +[ATXAnchorModelHyperParameters sharedInstance];
-  [v9 maxValueForParameterKey:v5];
+  [v9 maxValueForParameterKey:keyCopy];
   v11 = v10;
 
-  v12 = (a3 - v8) / (v11 - v8);
+  v12 = (value - v8) / (v11 - v8);
   result = 1.0;
   if (v12 <= 1.0)
   {
-    result = (a3 - v8) / (v11 - v8);
+    result = (value - v8) / (v11 - v8);
     if (v12 < 0.0)
     {
       return 0.0;
@@ -154,27 +154,27 @@
   return result;
 }
 
-+ (double)predictedProbabilityFromNormalizedClassConditionalProbability:(double)a3 posteriorProbability:(double)a4 minutesAfterAnchor:(double)a5 standardDeviation:(double)a6 uniqueOccurrences:(double)a7
++ (double)predictedProbabilityFromNormalizedClassConditionalProbability:(double)probability posteriorProbability:(double)posteriorProbability minutesAfterAnchor:(double)anchor standardDeviation:(double)deviation uniqueOccurrences:(double)occurrences
 {
   v12 = +[ATXAnchorModelHyperParameters sharedInstance];
   [v12 modelWeightForParameterKey:@"classConditionalProbability"];
-  v14 = v13 * a3;
+  v14 = v13 * probability;
 
   v15 = +[ATXAnchorModelHyperParameters sharedInstance];
   [v15 modelWeightForParameterKey:@"posteriorProbability"];
-  v17 = v16 * a4;
+  v17 = v16 * posteriorProbability;
 
   v18 = +[ATXAnchorModelHyperParameters sharedInstance];
   [v18 modelWeightForParameterKey:@"minutesAfterAnchor"];
-  v20 = v19 * a5;
+  v20 = v19 * anchor;
 
   v21 = +[ATXAnchorModelHyperParameters sharedInstance];
   [v21 modelWeightForParameterKey:@"standardDeviation"];
-  v23 = v22 * a6;
+  v23 = v22 * deviation;
 
   v24 = +[ATXAnchorModelHyperParameters sharedInstance];
   [v24 modelWeightForParameterKey:@"uniqueOccurrences"];
-  v26 = v25 * a7;
+  v26 = v25 * occurrences;
 
   v27 = +[ATXAnchorModelHyperParameters sharedInstance];
   [v27 modelWeightForParameterKey:@"bias"];

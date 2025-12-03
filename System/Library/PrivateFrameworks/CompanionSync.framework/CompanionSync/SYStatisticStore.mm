@@ -1,48 +1,48 @@
 @interface SYStatisticStore
-+ (id)unpackMessageData:(id)a3;
-- (BOOL)_LOCKED_pruneFileTransferLogForServices:(id)a3;
-- (BOOL)_LOCKED_pruneMessageLogForServices:(id)a3;
-- (BOOL)_openDBFile:(BOOL)a3;
-- (BOOL)_tableEmpty:(id)a3;
++ (id)unpackMessageData:(id)data;
+- (BOOL)_LOCKED_pruneFileTransferLogForServices:(id)services;
+- (BOOL)_LOCKED_pruneMessageLogForServices:(id)services;
+- (BOOL)_openDBFile:(BOOL)file;
+- (BOOL)_tableEmpty:(id)empty;
 - (NSURL)presentedItemURL;
 - (SYStatisticStore)init;
-- (SYStatisticStore)initWithPath:(id)a3;
+- (SYStatisticStore)initWithPath:(id)path;
 - (double)_getMachTimestamp;
 - (id)_LOCKED_allServiceNames;
 - (id)_keySetForMessageLogTable;
 - (id)_openDBIfNecessary;
-- (id)_unpackMessageData:(id)a3;
-- (id)_unpackMetadata:(id)a3;
+- (id)_unpackMessageData:(id)data;
+- (id)_unpackMetadata:(id)metadata;
 - (int)_closeDB;
 - (int)_getSchemaVersion;
-- (unint64_t)rowIDForPartialMessage:(id)a3;
-- (void)_ensureCorrectFileOwnership:(id)a3;
+- (unint64_t)rowIDForPartialMessage:(id)message;
+- (void)_ensureCorrectFileOwnership:(id)ownership;
 - (void)_getSchemaVersion;
 - (void)_initializeFilePresentation;
-- (void)_letGoForUnitTests:(id)a3;
-- (void)_onQueueAsync:(id)a3;
-- (void)_onQueueSync:(id)a3;
+- (void)_letGoForUnitTests:(id)tests;
+- (void)_onQueueAsync:(id)async;
+- (void)_onQueueSync:(id)sync;
 - (void)_openDB;
 - (void)_pruneOldData;
-- (void)_unpackPBRequest:(id)a3 forMessageID:(unsigned __int16)a4 intoDictionary:(id)a5;
-- (void)_unpackPBResponse:(id)a3 forMessageID:(unsigned __int16)a4 intoDictionary:(id)a5;
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3;
-- (void)assignIdentifier:(id)a3 toOutgoingMessage:(id)a4;
-- (void)confirmDeliveryOfOutgoingFileTransfer:(id)a3;
-- (void)confirmDeliveryOfOutgoingMessage:(id)a3;
+- (void)_unpackPBRequest:(id)request forMessageID:(unsigned __int16)d intoDictionary:(id)dictionary;
+- (void)_unpackPBResponse:(id)response forMessageID:(unsigned __int16)d intoDictionary:(id)dictionary;
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler;
+- (void)assignIdentifier:(id)identifier toOutgoingMessage:(id)message;
+- (void)confirmDeliveryOfOutgoingFileTransfer:(id)transfer;
+- (void)confirmDeliveryOfOutgoingMessage:(id)message;
 - (void)dealloc;
 - (void)markLastIncomingMessageComplete;
-- (void)presentedItemDidMoveToURL:(id)a3;
-- (void)recordIncomingFileTransferAtURL:(id)a3 metadata:(id)a4 identifier:(id)a5 forService:(id)a6;
-- (void)recordIncomingMessage:(id)a3 forService:(id)a4;
-- (void)recordOutgoingFileTransferAtURL:(id)a3 metadata:(id)a4 identifier:(id)a5 error:(id)a6 forService:(id)a7;
-- (void)recordOutgoingMessage:(id)a3 forService:(id)a4;
-- (void)setFileTransferIdentifier:(id)a3 forOutgoingMessagesWithRowIDs:(id)a4;
-- (void)updateLastIncomingMessageWithError:(id)a3;
-- (void)updateLastIncomingMessageWithProcessingTime:(double)a3;
-- (void)updateOutgoingFileTransferWithIdentifier:(id)a3 sentSuccessfully:(BOOL)a4 error:(id)a5;
-- (void)updateOutgoingMessageWithIdentifier:(id)a3 didReceiveResponse:(BOOL)a4 error:(id)a5;
-- (void)updateOutgoingMessageWithIdentifier:(id)a3 forService:(id)a4 sentSuccessfully:(BOOL)a5 sendError:(id)a6;
+- (void)presentedItemDidMoveToURL:(id)l;
+- (void)recordIncomingFileTransferAtURL:(id)l metadata:(id)metadata identifier:(id)identifier forService:(id)service;
+- (void)recordIncomingMessage:(id)message forService:(id)service;
+- (void)recordOutgoingFileTransferAtURL:(id)l metadata:(id)metadata identifier:(id)identifier error:(id)error forService:(id)service;
+- (void)recordOutgoingMessage:(id)message forService:(id)service;
+- (void)setFileTransferIdentifier:(id)identifier forOutgoingMessagesWithRowIDs:(id)ds;
+- (void)updateLastIncomingMessageWithError:(id)error;
+- (void)updateLastIncomingMessageWithProcessingTime:(double)time;
+- (void)updateOutgoingFileTransferWithIdentifier:(id)identifier sentSuccessfully:(BOOL)successfully error:(id)error;
+- (void)updateOutgoingMessageWithIdentifier:(id)identifier didReceiveResponse:(BOOL)response error:(id)error;
+- (void)updateOutgoingMessageWithIdentifier:(id)identifier forService:(id)service sentSuccessfully:(BOOL)successfully sendError:(id)error;
 @end
 
 @implementation SYStatisticStore
@@ -56,9 +56,9 @@
   return v5;
 }
 
-- (SYStatisticStore)initWithPath:(id)a3
+- (SYStatisticStore)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = SYStatisticStore;
   v5 = [(SYStatisticStore *)&v18 init];
@@ -75,15 +75,15 @@
     v11 = *(v5 + 18);
     *(v5 + 18) = v10;
 
-    v12 = [v4 stringByStandardizingPath];
-    v13 = [v12 copy];
+    stringByStandardizingPath = [pathCopy stringByStandardizingPath];
+    v13 = [stringByStandardizingPath copy];
     v14 = *(v5 + 1);
     *(v5 + 1) = v13;
 
     [v5 _initializeFilePresentation];
     [v5 _openDB];
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v5 selector:sel__letGoForUnitTests_ name:@"SYUnitTestTearDown" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__letGoForUnitTests_ name:@"SYUnitTestTearDown" object:0];
 
     v16 = v5;
   }
@@ -101,8 +101,8 @@
   block[4] = self;
   dispatch_sync(operations_queue, block);
   [MEMORY[0x1E696ABF8] removeFilePresenter:self];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = SYStatisticStore;
@@ -149,7 +149,7 @@
   return v4;
 }
 
-- (void)_letGoForUnitTests:(id)a3
+- (void)_letGoForUnitTests:(id)tests
 {
   operations_queue = self->_operations_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -160,16 +160,16 @@
   dispatch_sync(operations_queue, block);
 }
 
-- (BOOL)_tableEmpty:(id)a3
+- (BOOL)_tableEmpty:(id)empty
 {
   ppStmt = 0;
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:@"SELECT COUNT(*) FROM %@", v5];
+  emptyCopy = empty;
+  emptyCopy = [[v4 alloc] initWithFormat:@"SELECT COUNT(*) FROM %@", emptyCopy];
 
-  v7 = [v6 UTF8String];
-  v8 = strlen(v7);
-  v9 = sqlite3_prepare_v2(self->_db, v7, v8, &ppStmt, 0);
+  uTF8String = [emptyCopy UTF8String];
+  v8 = strlen(uTF8String);
+  v9 = sqlite3_prepare_v2(self->_db, uTF8String, v8, &ppStmt, 0);
   if (v9)
   {
     if (v9 == 1)
@@ -226,16 +226,16 @@
   return v10;
 }
 
-- (void)_ensureCorrectFileOwnership:(id)a3
+- (void)_ensureCorrectFileOwnership:(id)ownership
 {
-  v3 = a3;
+  ownershipCopy = ownership;
   memset(&v5, 0, sizeof(v5));
-  if (stat([v3 fileSystemRepresentation], &v5) == -1)
+  if (stat([ownershipCopy fileSystemRepresentation], &v5) == -1)
   {
     [SYStatisticStore _ensureCorrectFileOwnership:];
   }
 
-  if (!v5.st_uid && !geteuid() && chown([v3 fileSystemRepresentation], 0x1F5u, 0x1F5u))
+  if (!v5.st_uid && !geteuid() && chown([ownershipCopy fileSystemRepresentation], 0x1F5u, 0x1F5u))
   {
     if (_stats_log_pred != -1)
     {
@@ -245,23 +245,23 @@
     v4 = _stats_log;
     if (os_log_type_enabled(_stats_log, OS_LOG_TYPE_ERROR))
     {
-      [(SYStatisticStore *)v3 _ensureCorrectFileOwnership:v4];
+      [(SYStatisticStore *)ownershipCopy _ensureCorrectFileOwnership:v4];
     }
   }
 
   if ((v5.st_mode & 0x10) == 0)
   {
-    chmod([v3 fileSystemRepresentation], 0x1B4u);
+    chmod([ownershipCopy fileSystemRepresentation], 0x1B4u);
   }
 }
 
-- (BOOL)_openDBFile:(BOOL)a3
+- (BOOL)_openDBFile:(BOOL)file
 {
-  v3 = a3;
+  fileCopy = file;
   v48[4] = *MEMORY[0x1E69E9840];
   v33 = 4227074;
   v5 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:self->_path isDirectory:0];
-  if (v3)
+  if (fileCopy)
   {
     v32 = [objc_alloc(MEMORY[0x1E696ABF8]) initWithFilePresenter:self];
     v6 = objc_alloc(MEMORY[0x1E695DFF8]);
@@ -283,7 +283,7 @@
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:4];
 
     v17 = dispatch_semaphore_create(0);
-    v18 = [(SYStatisticStore *)self presentedItemOperationQueue];
+    presentedItemOperationQueue = [(SYStatisticStore *)self presentedItemOperationQueue];
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
     v43[2] = __32__SYStatisticStore__openDBFile___block_invoke;
@@ -296,7 +296,7 @@
     v19 = v17;
     v20 = v11;
     v21 = v8;
-    [v32 coordinateAccessWithIntents:v16 queue:v18 byAccessor:v43];
+    [v32 coordinateAccessWithIntents:v16 queue:presentedItemOperationQueue byAccessor:v43];
 
     dispatch_semaphore_wait(v19, 0xFFFFFFFFFFFFFFFFLL);
     v33 = 4227078;
@@ -307,7 +307,7 @@
   v24 = [MEMORY[0x1E696ABF0] readingIntentWithURL:v5 options:0];
   [v23 addObject:v24];
 
-  if (v3)
+  if (fileCopy)
   {
     v25 = [MEMORY[0x1E696ABF0] writingIntentWithURL:v5 options:0];
     [v23 addObject:v25];
@@ -318,18 +318,18 @@
   v41 = 0x2020000000;
   v42 = 1;
   v26 = dispatch_semaphore_create(0);
-  v27 = [(SYStatisticStore *)self presentedItemOperationQueue];
+  presentedItemOperationQueue2 = [(SYStatisticStore *)self presentedItemOperationQueue];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __32__SYStatisticStore__openDBFile___block_invoke_92;
   v34[3] = &unk_1E86CBA50;
   v37 = v33;
-  v38 = v3;
+  v38 = fileCopy;
   v34[4] = self;
   v36 = &v39;
   v28 = v26;
   v35 = v28;
-  [v22 coordinateAccessWithIntents:v23 queue:v27 byAccessor:v34];
+  [v22 coordinateAccessWithIntents:v23 queue:presentedItemOperationQueue2 byAccessor:v34];
 
   dispatch_semaphore_wait(v28, 0xFFFFFFFFFFFFFFFFLL);
   v29 = *(v40 + 24);
@@ -462,9 +462,9 @@ intptr_t __32__SYStatisticStore__openDBFile___block_invoke_92(uint64_t a1)
   return v3;
 }
 
-- (void)_onQueueAsync:(id)a3
+- (void)_onQueueAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
@@ -477,9 +477,9 @@ intptr_t __32__SYStatisticStore__openDBFile___block_invoke_92(uint64_t a1)
   block[2] = __34__SYStatisticStore__onQueueAsync___block_invoke;
   block[3] = &unk_1E86CBA78;
   block[4] = self;
-  v8 = v4;
+  v8 = asyncCopy;
   v9 = v10;
-  v6 = v4;
+  v6 = asyncCopy;
   dispatch_async(operations_queue, block);
 
   _Block_object_dispose(v10, 8);
@@ -511,9 +511,9 @@ void __34__SYStatisticStore__onQueueAsync___block_invoke(void *a1)
   }
 }
 
-- (void)_onQueueSync:(id)a3
+- (void)_onQueueSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   v5 = os_transaction_create();
   dispatch_suspend(self->_operations_queue);
   preemption_queue = self->_preemption_queue;
@@ -522,8 +522,8 @@ void __34__SYStatisticStore__onQueueAsync___block_invoke(void *a1)
   v8[2] = __33__SYStatisticStore__onQueueSync___block_invoke;
   v8[3] = &unk_1E86CA388;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = syncCopy;
+  v7 = syncCopy;
   dispatch_sync(preemption_queue, v8);
   dispatch_resume(self->_operations_queue);
 }
@@ -557,17 +557,17 @@ void __33__SYStatisticStore__onQueueSync___block_invoke(uint64_t a1)
 
 - (id)_openDBIfNecessary
 {
-  v2 = self;
+  selfCopy = self;
   if (!self->_db)
   {
     [(SYStatisticStore *)self _openDB];
-    if (!v2->_db)
+    if (!selfCopy->_db)
     {
-      v2 = 0;
+      selfCopy = 0;
     }
   }
 
-  v3 = v2;
+  v3 = selfCopy;
 
   return v3;
 }
@@ -575,11 +575,11 @@ void __33__SYStatisticStore__onQueueSync___block_invoke(uint64_t a1)
 - (void)_openDB
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a1;
+  selfCopy = self;
   v4 = _SYObfuscate(a2);
   v6 = 138543362;
   v7 = v4;
-  _os_log_error_impl(&dword_1DF835000, v3, OS_LOG_TYPE_ERROR, "Error creating parent folder: %{public}@", &v6, 0xCu);
+  _os_log_error_impl(&dword_1DF835000, selfCopy, OS_LOG_TYPE_ERROR, "Error creating parent folder: %{public}@", &v6, 0xCu);
 
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -987,10 +987,10 @@ void __45__SYStatisticStore__keySetForMessageLogTable__block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_unpackMetadata:(id)a3
+- (id)_unpackMetadata:(id)metadata
 {
-  v3 = a3;
-  v4 = [SYSession unarchiveMetadata:v3];
+  metadataCopy = metadata;
+  v4 = [SYSession unarchiveMetadata:metadataCopy];
   v5 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v4 options:0 error:0];
   if (v5)
   {
@@ -1005,44 +1005,44 @@ void __45__SYStatisticStore__keySetForMessageLogTable__block_invoke()
   return v6;
 }
 
-- (void)_unpackPBRequest:(id)a3 forMessageID:(unsigned __int16)a4 intoDictionary:(id)a5
+- (void)_unpackPBRequest:(id)request forMessageID:(unsigned __int16)d intoDictionary:(id)dictionary
 {
-  v6 = a4;
-  v49 = a3;
-  v8 = a5;
+  dCopy = d;
+  requestCopy = request;
+  dictionaryCopy = dictionary;
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  [v8 setObject:v10 forKeyedSubscript:@"Type"];
+  [dictionaryCopy setObject:v10 forKeyedSubscript:@"Type"];
 
-  if (v6 <= 100)
+  if (dCopy <= 100)
   {
-    if (v6 <= 3)
+    if (dCopy <= 3)
     {
-      if (v6 != 1)
+      if (dCopy != 1)
       {
-        if (v6 != 2)
+        if (dCopy != 2)
         {
-          if (v6 != 3)
+          if (dCopy != 3)
           {
             goto LABEL_39;
           }
 
-          v11 = v49;
-          v12 = [v11 syncID];
-          [v8 setObject:v12 forKeyedSubscript:@"SyncID"];
+          v11 = requestCopy;
+          syncID = [v11 syncID];
+          [dictionaryCopy setObject:syncID forKeyedSubscript:@"SyncID"];
 
           if ([v11 hasEstimatedChangeCount])
           {
             v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v11, "estimatedChangeCount")}];
             v14 = @"ChangeCount";
 LABEL_24:
-            [v8 setObject:v13 forKeyedSubscript:v14];
+            [dictionaryCopy setObject:v13 forKeyedSubscript:v14];
           }
 
 LABEL_37:
-          v24 = [v11 header];
+          header = [v11 header];
 
-          if (!v24)
+          if (!header)
           {
             goto LABEL_39;
           }
@@ -1050,89 +1050,89 @@ LABEL_37:
           goto LABEL_38;
         }
 
-        v11 = v49;
-        v32 = [v11 syncID];
-        [v8 setObject:v32 forKeyedSubscript:@"SyncID"];
+        v11 = requestCopy;
+        syncID2 = [v11 syncID];
+        [dictionaryCopy setObject:syncID2 forKeyedSubscript:@"SyncID"];
 
         v33 = MEMORY[0x1E696AD98];
-        v34 = [v11 allObjects];
-        v35 = [v33 numberWithUnsignedInteger:{objc_msgSend(v34, "count")}];
-        [v8 setObject:v35 forKeyedSubscript:@"ChangeCount"];
+        allObjects = [v11 allObjects];
+        v35 = [v33 numberWithUnsignedInteger:{objc_msgSend(allObjects, "count")}];
+        [dictionaryCopy setObject:v35 forKeyedSubscript:@"ChangeCount"];
 
 LABEL_36:
-        [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"WantsResponse"];
+        [dictionaryCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"WantsResponse"];
         goto LABEL_37;
       }
 
       goto LABEL_21;
     }
 
-    if (v6 != 4)
+    if (dCopy != 4)
     {
-      if (v6 == 5)
+      if (dCopy == 5)
       {
 LABEL_21:
-        v11 = v49;
-        v25 = [v11 syncID];
+        v11 = requestCopy;
+        syncID3 = [v11 syncID];
 LABEL_26:
-        v30 = v25;
+        v30 = syncID3;
         v31 = @"SyncID";
 LABEL_27:
-        [v8 setObject:v30 forKeyedSubscript:v31];
+        [dictionaryCopy setObject:v30 forKeyedSubscript:v31];
 
         goto LABEL_36;
       }
 
-      if (v6 != 6)
+      if (dCopy != 6)
       {
         goto LABEL_39;
       }
 
       v20 = MEMORY[0x1E696AD98];
-      v11 = v49;
-      v21 = [v11 changes];
-      v22 = [v20 numberWithUnsignedInteger:{objc_msgSend(v21, "count")}];
+      v11 = requestCopy;
+      changes = [v11 changes];
+      v22 = [v20 numberWithUnsignedInteger:{objc_msgSend(changes, "count")}];
       v23 = @"ChangeCount";
 LABEL_31:
-      [v8 setObject:v22 forKeyedSubscript:v23];
+      [dictionaryCopy setObject:v22 forKeyedSubscript:v23];
 
       goto LABEL_37;
     }
 
-    v11 = v49;
-    v26 = [v11 syncID];
-    [v8 setObject:v26 forKeyedSubscript:@"SyncID"];
+    v11 = requestCopy;
+    syncID4 = [v11 syncID];
+    [dictionaryCopy setObject:syncID4 forKeyedSubscript:@"SyncID"];
 
     v27 = MEMORY[0x1E696AD98];
-    v28 = [v11 objects];
-    v29 = [v27 numberWithUnsignedInteger:{objc_msgSend(v28, "count")}];
-    [v8 setObject:v29 forKeyedSubscript:@"ChangeCount"];
+    objects = [v11 objects];
+    v29 = [v27 numberWithUnsignedInteger:{objc_msgSend(objects, "count")}];
+    [dictionaryCopy setObject:v29 forKeyedSubscript:@"ChangeCount"];
 
-    [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"WantsResponse"];
+    [dictionaryCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"WantsResponse"];
     v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v11, "chunkIndex")}];
     goto LABEL_23;
   }
 
-  if (v6 > 103)
+  if (dCopy > 103)
   {
-    if (v6 == 104)
+    if (dCopy == 104)
     {
-      v11 = v49;
-      v25 = [v11 sessionID];
+      v11 = requestCopy;
+      syncID3 = [v11 sessionID];
       goto LABEL_26;
     }
 
-    if (v6 == 105)
+    if (dCopy == 105)
     {
-      v11 = v49;
-      v38 = [v11 sessionID];
-      [v8 setObject:v38 forKeyedSubscript:@"SyncID"];
+      v11 = requestCopy;
+      sessionID = [v11 sessionID];
+      [dictionaryCopy setObject:sessionID forKeyedSubscript:@"SyncID"];
 
       if ([v11 hasError])
       {
-        v39 = [v11 error];
-        v40 = [v39 description];
-        [v8 setObject:v40 forKeyedSubscript:@"Error"];
+        error = [v11 error];
+        v40 = [error description];
+        [dictionaryCopy setObject:v40 forKeyedSubscript:@"Error"];
       }
 
       if (![v11 hasRollback])
@@ -1145,45 +1145,45 @@ LABEL_31:
       goto LABEL_27;
     }
 
-    if (v6 != 0x7FFF)
+    if (dCopy != 0x7FFF)
     {
       goto LABEL_39;
     }
   }
 
-  else if (v6 != 101)
+  else if (dCopy != 101)
   {
-    if (v6 == 102)
+    if (dCopy == 102)
     {
-      v11 = v49;
-      v36 = [v11 sessionID];
-      [v8 setObject:v36 forKeyedSubscript:@"SyncID"];
+      v11 = requestCopy;
+      sessionID2 = [v11 sessionID];
+      [dictionaryCopy setObject:sessionID2 forKeyedSubscript:@"SyncID"];
 
       v37 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v11, "isResetSync")}];
-      [v8 setObject:v37 forKeyedSubscript:@"IsResetSyncSession"];
+      [dictionaryCopy setObject:v37 forKeyedSubscript:@"IsResetSyncSession"];
 
-      [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"WantsResponse"];
+      [dictionaryCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"WantsResponse"];
       if (![v11 hasMetadata])
       {
         goto LABEL_37;
       }
 
-      v21 = [v11 metadata];
-      v22 = [(SYStatisticStore *)self _unpackMetadata:v21];
+      changes = [v11 metadata];
+      v22 = [(SYStatisticStore *)self _unpackMetadata:changes];
       v23 = @"SessionMetadata";
       goto LABEL_31;
     }
 
-    v11 = v49;
-    v15 = [v11 sessionID];
-    [v8 setObject:v15 forKeyedSubscript:@"SyncID"];
+    v11 = requestCopy;
+    sessionID3 = [v11 sessionID];
+    [dictionaryCopy setObject:sessionID3 forKeyedSubscript:@"SyncID"];
 
     v16 = MEMORY[0x1E696AD98];
-    v17 = [v11 changes];
-    v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(v17, "count")}];
-    [v8 setObject:v18 forKeyedSubscript:@"ChangeCount"];
+    changes2 = [v11 changes];
+    v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(changes2, "count")}];
+    [dictionaryCopy setObject:v18 forKeyedSubscript:@"ChangeCount"];
 
-    [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"WantsResponse"];
+    [dictionaryCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"WantsResponse"];
     v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v11, "index")}];
 LABEL_23:
     v13 = v19;
@@ -1191,57 +1191,57 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v24 = [v49 header];
-  if (v24)
+  header = [requestCopy header];
+  if (header)
   {
 LABEL_38:
     v41 = MEMORY[0x1E696AD98];
     Current = CFAbsoluteTimeGetCurrent();
-    [v24 timestamp];
+    [header timestamp];
     v44 = [v41 numberWithDouble:Current - v43];
-    [v8 setObject:v44 forKeyedSubscript:@"Duration"];
+    [dictionaryCopy setObject:v44 forKeyedSubscript:@"Duration"];
 
-    v45 = [v24 state];
-    v46 = [v45 jsonRepresentation];
-    [v8 setObject:v46 forKeyedSubscript:@"VectorClock"];
+    state = [header state];
+    jsonRepresentation = [state jsonRepresentation];
+    [dictionaryCopy setObject:jsonRepresentation forKeyedSubscript:@"VectorClock"];
 
-    v47 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v24, "version")}];
-    [v8 setObject:v47 forKeyedSubscript:@"ProtocolVersion"];
+    v47 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(header, "version")}];
+    [dictionaryCopy setObject:v47 forKeyedSubscript:@"ProtocolVersion"];
 
-    v48 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v24, "sequenceNumber")}];
-    [v8 setObject:v48 forKeyedSubscript:@"MessageSequenceNumber"];
+    v48 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(header, "sequenceNumber")}];
+    [dictionaryCopy setObject:v48 forKeyedSubscript:@"MessageSequenceNumber"];
   }
 
 LABEL_39:
 }
 
-- (void)_unpackPBResponse:(id)a3 forMessageID:(unsigned __int16)a4 intoDictionary:(id)a5
+- (void)_unpackPBResponse:(id)response forMessageID:(unsigned __int16)d intoDictionary:(id)dictionary
 {
-  v6 = a4;
-  v46 = a3;
-  v8 = a5;
+  dCopy = d;
+  responseCopy = response;
+  dictionaryCopy = dictionary;
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  [v8 setObject:v10 forKeyedSubscript:@"Type"];
+  [dictionaryCopy setObject:v10 forKeyedSubscript:@"Type"];
 
-  if (v6 <= 100)
+  if (dCopy <= 100)
   {
-    if (v6 > 3)
+    if (dCopy > 3)
     {
-      if (v6 == 4)
+      if (dCopy == 4)
       {
-        v17 = v46;
-        v30 = [v17 syncID];
-        [v8 setObject:v30 forKeyedSubscript:@"SyncID"];
+        v17 = responseCopy;
+        syncID = [v17 syncID];
+        [dictionaryCopy setObject:syncID forKeyedSubscript:@"SyncID"];
 
         v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v17, "chunkIndex")}];
 LABEL_29:
-        v18 = v31;
+        syncID2 = v31;
         v19 = @"ChunkIndex";
         goto LABEL_33;
       }
 
-      if (v6 != 5)
+      if (dCopy != 5)
       {
         goto LABEL_39;
       }
@@ -1249,43 +1249,43 @@ LABEL_29:
 
     else
     {
-      if (v6 == 1)
+      if (dCopy == 1)
       {
-        v25 = v46;
-        v26 = [v25 requestSyncID];
-        [v8 setObject:v26 forKeyedSubscript:@"SyncID"];
+        v25 = responseCopy;
+        requestSyncID = [v25 requestSyncID];
+        [dictionaryCopy setObject:requestSyncID forKeyedSubscript:@"SyncID"];
 
         if (![v25 hasError])
         {
           goto LABEL_37;
         }
 
-        v27 = [v25 error];
-        v15 = [v27 description];
+        error = [v25 error];
+        error2 = [error description];
 
         if ([v25 hasInProgressSyncID])
         {
-          v28 = [v25 inProgressSyncID];
-          v29 = [v15 stringByAppendingFormat:@" InProgressSyncID=%@", v28];
+          inProgressSyncID = [v25 inProgressSyncID];
+          v29 = [error2 stringByAppendingFormat:@" InProgressSyncID=%@", inProgressSyncID];
 
-          v15 = v29;
+          error2 = v29;
         }
 
         v16 = @"Error";
         goto LABEL_26;
       }
 
-      if (v6 != 2)
+      if (dCopy != 2)
       {
         goto LABEL_39;
       }
     }
 
-    v17 = v46;
-    v18 = [v17 syncID];
+    v17 = responseCopy;
+    syncID2 = [v17 syncID];
     v19 = @"SyncID";
 LABEL_33:
-    [v8 setObject:v18 forKeyedSubscript:v19];
+    [dictionaryCopy setObject:syncID2 forKeyedSubscript:v19];
 
     if (![v17 hasError])
     {
@@ -1296,19 +1296,19 @@ LABEL_33:
     goto LABEL_35;
   }
 
-  if (v6 <= 102)
+  if (dCopy <= 102)
   {
-    if (v6 != 101)
+    if (dCopy != 101)
     {
-      v20 = v46;
-      v21 = [v20 sessionID];
-      [v8 setObject:v21 forKeyedSubscript:@"SyncID"];
+      v20 = responseCopy;
+      sessionID = [v20 sessionID];
+      [dictionaryCopy setObject:sessionID forKeyedSubscript:@"SyncID"];
 
       if ([v20 hasMetadata])
       {
-        v22 = [v20 metadata];
-        v23 = [(SYStatisticStore *)self _unpackMetadata:v22];
-        [v8 setObject:v23 forKeyedSubscript:@"SessionMetadata"];
+        metadata = [v20 metadata];
+        v23 = [(SYStatisticStore *)self _unpackMetadata:metadata];
+        [dictionaryCopy setObject:v23 forKeyedSubscript:@"SessionMetadata"];
       }
 
       if (![v20 hasError])
@@ -1318,58 +1318,58 @@ LABEL_33:
 
       v24 = v20;
 LABEL_35:
-      v15 = [v24 error];
-      v36 = [v15 description];
-      [v8 setObject:v36 forKeyedSubscript:@"Error"];
+      error2 = [v24 error];
+      v36 = [error2 description];
+      [dictionaryCopy setObject:v36 forKeyedSubscript:@"Error"];
 
       goto LABEL_36;
     }
 
-    v33 = v46;
+    v33 = responseCopy;
     v17 = v33;
     v34 = MEMORY[0x1E696AD98];
     goto LABEL_32;
   }
 
-  if (v6 == 103)
+  if (dCopy == 103)
   {
-    v17 = v46;
-    v32 = [v17 sessionID];
-    [v8 setObject:v32 forKeyedSubscript:@"SyncID"];
+    v17 = responseCopy;
+    sessionID2 = [v17 sessionID];
+    [dictionaryCopy setObject:sessionID2 forKeyedSubscript:@"SyncID"];
 
     v31 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v17, "index")}];
     goto LABEL_29;
   }
 
-  if (v6 == 104)
+  if (dCopy == 104)
   {
-    v17 = v46;
-    v35 = [v17 sessionID];
-    [v8 setObject:v35 forKeyedSubscript:@"SyncID"];
+    v17 = responseCopy;
+    sessionID3 = [v17 sessionID];
+    [dictionaryCopy setObject:sessionID3 forKeyedSubscript:@"SyncID"];
 
-    [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"WantsResponse"];
+    [dictionaryCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"WantsResponse"];
     v34 = MEMORY[0x1E696AD98];
     v33 = v17;
 LABEL_32:
-    v18 = [v34 numberWithBool:{objc_msgSend(v33, "accepted")}];
+    syncID2 = [v34 numberWithBool:{objc_msgSend(v33, "accepted")}];
     v19 = @"RequestAccepted";
     goto LABEL_33;
   }
 
-  if (v6 != 105)
+  if (dCopy != 105)
   {
     goto LABEL_39;
   }
 
-  v11 = v46;
-  v12 = [v11 sessionID];
-  [v8 setObject:v12 forKeyedSubscript:@"SyncID"];
+  v11 = responseCopy;
+  sessionID4 = [v11 sessionID];
+  [dictionaryCopy setObject:sessionID4 forKeyedSubscript:@"SyncID"];
 
   if ([v11 hasError])
   {
-    v13 = [v11 error];
-    v14 = [v13 description];
-    [v8 setObject:v14 forKeyedSubscript:@"Error"];
+    error3 = [v11 error];
+    v14 = [error3 description];
+    [dictionaryCopy setObject:v14 forKeyedSubscript:@"Error"];
   }
 
   if (![v11 hasDidRollback])
@@ -1377,70 +1377,70 @@ LABEL_32:
     goto LABEL_37;
   }
 
-  v15 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v11, "didRollback")}];
+  error2 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v11, "didRollback")}];
   v16 = @"WantsRollback";
 LABEL_26:
-  [v8 setObject:v15 forKeyedSubscript:v16];
+  [dictionaryCopy setObject:error2 forKeyedSubscript:v16];
 LABEL_36:
 
 LABEL_37:
-  v37 = [v46 header];
+  header = [responseCopy header];
 
-  if (v37)
+  if (header)
   {
     v38 = MEMORY[0x1E696AD98];
     Current = CFAbsoluteTimeGetCurrent();
-    [v37 timestamp];
+    [header timestamp];
     v41 = [v38 numberWithDouble:Current - v40];
-    [v8 setObject:v41 forKeyedSubscript:@"Duration"];
+    [dictionaryCopy setObject:v41 forKeyedSubscript:@"Duration"];
 
-    v42 = [v37 state];
-    v43 = [v42 jsonRepresentation];
-    [v8 setObject:v43 forKeyedSubscript:@"VectorClock"];
+    state = [header state];
+    jsonRepresentation = [state jsonRepresentation];
+    [dictionaryCopy setObject:jsonRepresentation forKeyedSubscript:@"VectorClock"];
 
-    v44 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v37, "version")}];
-    [v8 setObject:v44 forKeyedSubscript:@"ProtocolVersion"];
+    v44 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(header, "version")}];
+    [dictionaryCopy setObject:v44 forKeyedSubscript:@"ProtocolVersion"];
 
-    v45 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v37, "sequenceNumber")}];
-    [v8 setObject:v45 forKeyedSubscript:@"MessageSequenceNumber"];
+    v45 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(header, "sequenceNumber")}];
+    [dictionaryCopy setObject:v45 forKeyedSubscript:@"MessageSequenceNumber"];
   }
 
 LABEL_39:
 }
 
-- (id)_unpackMessageData:(id)a3
+- (id)_unpackMessageData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = MEMORY[0x1E695DF90];
-  v6 = [(SYStatisticStore *)self _keySetForMessageLogTable];
-  v7 = [v5 dictionaryWithSharedKeySet:v6];
+  _keySetForMessageLogTable = [(SYStatisticStore *)self _keySetForMessageLogTable];
+  v7 = [v5 dictionaryWithSharedKeySet:_keySetForMessageLogTable];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v4;
+    v8 = dataCopy;
     [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"IsRequest"];
-    v9 = [v8 idsIdentifier];
+    idsIdentifier = [v8 idsIdentifier];
 
-    if (v9)
+    if (idsIdentifier)
     {
-      v10 = [v8 idsIdentifier];
-      [v7 setObject:v10 forKeyedSubscript:@"Identifier"];
+      idsIdentifier2 = [v8 idsIdentifier];
+      [v7 setObject:idsIdentifier2 forKeyedSubscript:@"Identifier"];
     }
 
-    v11 = [v8 pbRequest];
+    pbRequest = [v8 pbRequest];
 
-    if (v11)
+    if (pbRequest)
     {
-      v12 = [v8 pbRequest];
-      -[SYStatisticStore _unpackPBRequest:forMessageID:intoDictionary:](self, "_unpackPBRequest:forMessageID:intoDictionary:", v12, [v8 messageID], v7);
+      pbRequest2 = [v8 pbRequest];
+      -[SYStatisticStore _unpackPBRequest:forMessageID:intoDictionary:](self, "_unpackPBRequest:forMessageID:intoDictionary:", pbRequest2, [v8 messageID], v7);
     }
 
-    v13 = [v8 extraIDSOptions];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69A47E0]];
-    v15 = [v14 BOOLValue];
+    extraIDSOptions = [v8 extraIDSOptions];
+    v14 = [extraIDSOptions objectForKeyedSubscript:*MEMORY[0x1E69A47E0]];
+    bOOLValue = [v14 BOOLValue];
 
-    if (v15)
+    if (bOOLValue)
     {
       [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"WantsDeliveryAck"];
     }
@@ -1451,22 +1451,22 @@ LABEL_39:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = v4;
+      v16 = dataCopy;
       [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"IsRequest"];
-      v17 = [v16 idsIdentifier];
+      idsIdentifier3 = [v16 idsIdentifier];
 
-      if (v17)
+      if (idsIdentifier3)
       {
-        v18 = [v16 idsIdentifier];
-        [v7 setObject:v18 forKeyedSubscript:@"Identifier"];
+        idsIdentifier4 = [v16 idsIdentifier];
+        [v7 setObject:idsIdentifier4 forKeyedSubscript:@"Identifier"];
       }
 
-      v19 = [v16 pbRequest];
+      pbRequest3 = [v16 pbRequest];
 
-      if (v19)
+      if (pbRequest3)
       {
-        v20 = [v16 pbRequest];
-        -[SYStatisticStore _unpackPBRequest:forMessageID:intoDictionary:](self, "_unpackPBRequest:forMessageID:intoDictionary:", v20, [v16 messageID], v7);
+        pbRequest4 = [v16 pbRequest];
+        -[SYStatisticStore _unpackPBRequest:forMessageID:intoDictionary:](self, "_unpackPBRequest:forMessageID:intoDictionary:", pbRequest4, [v16 messageID], v7);
       }
 
       v21 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v16, "expectsResponse")}];
@@ -1478,30 +1478,30 @@ LABEL_39:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v22 = v4;
+        v22 = dataCopy;
         [v7 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"IsRequest"];
-        v23 = [v22 request];
-        v24 = [v23 idsIdentifier];
+        request = [v22 request];
+        idsIdentifier5 = [request idsIdentifier];
 
-        if (v24)
+        if (idsIdentifier5)
         {
-          v25 = [v23 idsIdentifier];
-          [v7 setObject:v25 forKeyedSubscript:@"RequestIdentifier"];
+          idsIdentifier6 = [request idsIdentifier];
+          [v7 setObject:idsIdentifier6 forKeyedSubscript:@"RequestIdentifier"];
         }
 
-        v26 = [v22 pbResponse];
+        pbResponse = [v22 pbResponse];
 
-        if (v26)
+        if (pbResponse)
         {
-          v27 = [v22 pbResponse];
-          -[SYStatisticStore _unpackPBResponse:forMessageID:intoDictionary:](self, "_unpackPBResponse:forMessageID:intoDictionary:", v27, [v23 messageID], v7);
+          pbResponse2 = [v22 pbResponse];
+          -[SYStatisticStore _unpackPBResponse:forMessageID:intoDictionary:](self, "_unpackPBResponse:forMessageID:intoDictionary:", pbResponse2, [request messageID], v7);
         }
 
-        v28 = [v22 extraIDSOptions];
-        v29 = [v28 objectForKeyedSubscript:*MEMORY[0x1E69A47E0]];
-        v30 = [v29 BOOLValue];
+        extraIDSOptions2 = [v22 extraIDSOptions];
+        v29 = [extraIDSOptions2 objectForKeyedSubscript:*MEMORY[0x1E69A47E0]];
+        bOOLValue2 = [v29 BOOLValue];
 
-        if (v30)
+        if (bOOLValue2)
         {
           [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"WantsDeliveryAck"];
         }
@@ -1515,30 +1515,30 @@ LABEL_39:
           goto LABEL_30;
         }
 
-        v31 = v4;
+        v31 = dataCopy;
         [v7 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"IsRequest"];
-        v32 = [v31 idsIdentifier];
+        idsIdentifier7 = [v31 idsIdentifier];
 
-        if (v32)
+        if (idsIdentifier7)
         {
-          v33 = [v31 idsIdentifier];
-          [v7 setObject:v33 forKeyedSubscript:@"Identifier"];
+          idsIdentifier8 = [v31 idsIdentifier];
+          [v7 setObject:idsIdentifier8 forKeyedSubscript:@"Identifier"];
         }
 
-        v34 = [v31 requestIDSIdentifier];
+        requestIDSIdentifier = [v31 requestIDSIdentifier];
 
-        if (v34)
+        if (requestIDSIdentifier)
         {
-          v35 = [v31 requestIDSIdentifier];
-          [v7 setObject:v35 forKeyedSubscript:@"RequestIdentifier"];
+          requestIDSIdentifier2 = [v31 requestIDSIdentifier];
+          [v7 setObject:requestIDSIdentifier2 forKeyedSubscript:@"RequestIdentifier"];
         }
 
-        v36 = [v31 pbResponse];
+        pbResponse3 = [v31 pbResponse];
 
-        if (v36)
+        if (pbResponse3)
         {
-          v37 = [v31 pbResponse];
-          -[SYStatisticStore _unpackPBResponse:forMessageID:intoDictionary:](self, "_unpackPBResponse:forMessageID:intoDictionary:", v37, [v31 messageID], v7);
+          pbResponse4 = [v31 pbResponse];
+          -[SYStatisticStore _unpackPBResponse:forMessageID:intoDictionary:](self, "_unpackPBResponse:forMessageID:intoDictionary:", pbResponse4, [v31 messageID], v7);
         }
       }
     }
@@ -1549,10 +1549,10 @@ LABEL_30:
   return v7;
 }
 
-- (void)recordIncomingMessage:(id)a3 forService:(id)a4
+- (void)recordIncomingMessage:(id)message forService:(id)service
 {
-  v6 = a4;
-  v7 = [(SYStatisticStore *)self _unpackMessageData:a3];
+  serviceCopy = service;
+  v7 = [(SYStatisticStore *)self _unpackMessageData:message];
   v8 = [v7 objectForKeyedSubscript:@"RequestIdentifier"];
 
   if (v8)
@@ -1568,9 +1568,9 @@ LABEL_30:
   v13[3] = &unk_1E86CBAA0;
   v13[4] = self;
   v14 = v7;
-  v15 = v6;
+  v15 = serviceCopy;
   v16 = v10;
-  v11 = v6;
+  v11 = serviceCopy;
   v12 = v7;
   [(SYStatisticStore *)self _onQueueAsync:v13];
 }
@@ -1669,13 +1669,13 @@ sqlite3_int64 __53__SYStatisticStore_recordIncomingMessage_forService___block_in
   return result;
 }
 
-- (void)updateLastIncomingMessageWithProcessingTime:(double)a3
+- (void)updateLastIncomingMessageWithProcessingTime:(double)time
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __64__SYStatisticStore_updateLastIncomingMessageWithProcessingTime___block_invoke;
   v3[3] = &unk_1E86C9F88;
-  *&v3[5] = a3;
+  *&v3[5] = time;
   v3[4] = self;
   [(SYStatisticStore *)self _onQueueAsync:v3];
 }
@@ -1701,16 +1701,16 @@ uint64_t __64__SYStatisticStore_updateLastIncomingMessageWithProcessingTime___bl
   return sqlite3_clear_bindings(*(*(a1 + 32) + 32));
 }
 
-- (void)updateLastIncomingMessageWithError:(id)a3
+- (void)updateLastIncomingMessageWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__SYStatisticStore_updateLastIncomingMessageWithError___block_invoke;
   v6[3] = &unk_1E86C9E90;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   [(SYStatisticStore *)self _onQueueAsync:v6];
 }
 
@@ -1765,11 +1765,11 @@ uint64_t __51__SYStatisticStore_markLastIncomingMessageComplete__block_invoke(ui
   return sqlite3_clear_bindings(*(*(a1 + 32) + 48));
 }
 
-- (void)recordOutgoingMessage:(id)a3 forService:(id)a4
+- (void)recordOutgoingMessage:(id)message forService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  messageCopy = message;
+  serviceCopy = service;
+  if (messageCopy)
   {
     v17 = 0;
     v18 = &v17;
@@ -1787,15 +1787,15 @@ uint64_t __51__SYStatisticStore_markLastIncomingMessageComplete__block_invoke(ui
     if (v18[3] != -1)
     {
       v9 = [MEMORY[0x1E696AD98] numberWithLongLong:?];
-      objc_setAssociatedObject(v6, "CompanionSync.StatisticStore.ReservedRowID", v9, 1);
+      objc_setAssociatedObject(messageCopy, "CompanionSync.StatisticStore.ReservedRowID", v9, 1);
 
-      v10 = [(SYStatisticStore *)self _unpackMessageData:v6];
+      v10 = [(SYStatisticStore *)self _unpackMessageData:messageCopy];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __53__SYStatisticStore_recordOutgoingMessage_forService___block_invoke_179;
       v12[3] = &unk_1E86CBAC8;
       v12[4] = self;
-      v13 = v7;
+      v13 = serviceCopy;
       v11 = v10;
       v14 = v11;
       v15 = &v17;
@@ -1913,15 +1913,15 @@ uint64_t __53__SYStatisticStore_recordOutgoingMessage_forService___block_invoke_
   return sqlite3_clear_bindings(*(*(a1 + 32) + 56));
 }
 
-- (void)assignIdentifier:(id)a3 toOutgoingMessage:(id)a4
+- (void)assignIdentifier:(id)identifier toOutgoingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_getAssociatedObject(v7, "CompanionSync.StatisticStore.ReservedRowID");
-  if (v8 || ([(SYStatisticStore *)self recordOutgoingMessage:v7 forService:@"<unknown>"], objc_getAssociatedObject(v7, "CompanionSync.StatisticStore.ReservedRowID"), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  identifierCopy = identifier;
+  messageCopy = message;
+  v8 = objc_getAssociatedObject(messageCopy, "CompanionSync.StatisticStore.ReservedRowID");
+  if (v8 || ([(SYStatisticStore *)self recordOutgoingMessage:messageCopy forService:@"<unknown>"], objc_getAssociatedObject(messageCopy, "CompanionSync.StatisticStore.ReservedRowID"), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
-    v10 = [v8 longLongValue];
+    longLongValue = [v8 longLongValue];
     [(SYStatisticStore *)self _getMachTimestamp];
     v12 = v11;
     v13[0] = MEMORY[0x1E69E9820];
@@ -1929,9 +1929,9 @@ uint64_t __53__SYStatisticStore_recordOutgoingMessage_forService___block_invoke_
     v13[2] = __55__SYStatisticStore_assignIdentifier_toOutgoingMessage___block_invoke;
     v13[3] = &unk_1E86CBAF0;
     v13[4] = self;
-    v14 = v6;
+    v14 = identifierCopy;
     v15 = v12;
-    v16 = v10;
+    v16 = longLongValue;
     [(SYStatisticStore *)self _onQueueAsync:v13];
   }
 }
@@ -1958,20 +1958,20 @@ uint64_t __55__SYStatisticStore_assignIdentifier_toOutgoingMessage___block_invok
   return sqlite3_clear_bindings(*(*(a1 + 32) + 64));
 }
 
-- (void)updateOutgoingMessageWithIdentifier:(id)a3 forService:(id)a4 sentSuccessfully:(BOOL)a5 sendError:(id)a6
+- (void)updateOutgoingMessageWithIdentifier:(id)identifier forService:(id)service sentSuccessfully:(BOOL)successfully sendError:(id)error
 {
-  v9 = a3;
-  v10 = a6;
+  identifierCopy = identifier;
+  errorCopy = error;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __94__SYStatisticStore_updateOutgoingMessageWithIdentifier_forService_sentSuccessfully_sendError___block_invoke;
   v13[3] = &unk_1E86CBB18;
   v13[4] = self;
-  v14 = v9;
-  v16 = a5;
-  v15 = v10;
-  v11 = v10;
-  v12 = v9;
+  v14 = identifierCopy;
+  successfullyCopy = successfully;
+  v15 = errorCopy;
+  v11 = errorCopy;
+  v12 = identifierCopy;
   [(SYStatisticStore *)self _onQueueAsync:v13];
 }
 
@@ -2025,17 +2025,17 @@ uint64_t __94__SYStatisticStore_updateOutgoingMessageWithIdentifier_forService_s
   return sqlite3_clear_bindings(*(*(a1 + 32) + 72));
 }
 
-- (void)updateOutgoingMessageWithIdentifier:(id)a3 didReceiveResponse:(BOOL)a4 error:(id)a5
+- (void)updateOutgoingMessageWithIdentifier:(id)identifier didReceiveResponse:(BOOL)response error:(id)error
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __81__SYStatisticStore_updateOutgoingMessageWithIdentifier_didReceiveResponse_error___block_invoke;
   v9[3] = &unk_1E86C9E40;
-  v11 = a4;
+  responseCopy = response;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
+  v10 = identifierCopy;
+  v8 = identifierCopy;
   [(SYStatisticStore *)self _onQueueAsync:v9];
 }
 
@@ -2060,16 +2060,16 @@ uint64_t __81__SYStatisticStore_updateOutgoingMessageWithIdentifier_didReceiveRe
   return sqlite3_clear_bindings(*(*(a1 + 32) + 96));
 }
 
-- (void)confirmDeliveryOfOutgoingMessage:(id)a3
+- (void)confirmDeliveryOfOutgoingMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__SYStatisticStore_confirmDeliveryOfOutgoingMessage___block_invoke;
   v6[3] = &unk_1E86C9E90;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = messageCopy;
+  v5 = messageCopy;
   [(SYStatisticStore *)self _onQueueAsync:v6];
 }
 
@@ -2093,15 +2093,15 @@ uint64_t __53__SYStatisticStore_confirmDeliveryOfOutgoingMessage___block_invoke(
   return sqlite3_clear_bindings(*(*(a1 + 32) + 104));
 }
 
-- (void)recordIncomingFileTransferAtURL:(id)a3 metadata:(id)a4 identifier:(id)a5 forService:(id)a6
+- (void)recordIncomingFileTransferAtURL:(id)l metadata:(id)metadata identifier:(id)identifier forService:(id)service
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  serviceCopy = service;
   [(SYStatisticStore *)self _getMachTimestamp];
   v15 = v14;
-  v16 = [v11 objectForKeyedSubscript:@"EnqueuedAt"];
+  v16 = [metadataCopy objectForKeyedSubscript:@"EnqueuedAt"];
   if (v16)
   {
     v17 = objc_opt_new();
@@ -2119,16 +2119,16 @@ uint64_t __53__SYStatisticStore_confirmDeliveryOfOutgoingMessage___block_invoke(
   v24[2] = __83__SYStatisticStore_recordIncomingFileTransferAtURL_metadata_identifier_forService___block_invoke;
   v24[3] = &unk_1E86CBB40;
   v24[4] = self;
-  v25 = v10;
-  v26 = v13;
-  v27 = v12;
-  v28 = v11;
+  v25 = lCopy;
+  v26 = serviceCopy;
+  v27 = identifierCopy;
+  v28 = metadataCopy;
   v29 = v15;
   v30 = v19;
-  v20 = v11;
-  v21 = v12;
-  v22 = v13;
-  v23 = v10;
+  v20 = metadataCopy;
+  v21 = identifierCopy;
+  v22 = serviceCopy;
+  v23 = lCopy;
   [(SYStatisticStore *)self _onQueueAsync:v24];
 }
 
@@ -2164,27 +2164,27 @@ uint64_t __83__SYStatisticStore_recordIncomingFileTransferAtURL_metadata_identif
   return sqlite3_clear_bindings(*(*(a1 + 32) + 112));
 }
 
-- (void)recordOutgoingFileTransferAtURL:(id)a3 metadata:(id)a4 identifier:(id)a5 error:(id)a6 forService:(id)a7
+- (void)recordOutgoingFileTransferAtURL:(id)l metadata:(id)metadata identifier:(id)identifier error:(id)error forService:(id)service
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  lCopy = l;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  serviceCopy = service;
   [(SYStatisticStore *)self _getMachTimestamp];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __89__SYStatisticStore_recordOutgoingFileTransferAtURL_metadata_identifier_error_forService___block_invoke;
   v20[3] = &unk_1E86CBB68;
   v20[4] = self;
-  v21 = v11;
-  v22 = v14;
-  v23 = v13;
-  v24 = v12;
+  v21 = lCopy;
+  v22 = serviceCopy;
+  v23 = identifierCopy;
+  v24 = metadataCopy;
   v25 = v15;
-  v16 = v12;
-  v17 = v13;
-  v18 = v14;
-  v19 = v11;
+  v16 = metadataCopy;
+  v17 = identifierCopy;
+  v18 = serviceCopy;
+  v19 = lCopy;
   [(SYStatisticStore *)self _onQueueAsync:v20];
 }
 
@@ -2219,20 +2219,20 @@ uint64_t __89__SYStatisticStore_recordOutgoingFileTransferAtURL_metadata_identif
   return sqlite3_clear_bindings(*(*(a1 + 32) + 112));
 }
 
-- (void)updateOutgoingFileTransferWithIdentifier:(id)a3 sentSuccessfully:(BOOL)a4 error:(id)a5
+- (void)updateOutgoingFileTransferWithIdentifier:(id)identifier sentSuccessfully:(BOOL)successfully error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  errorCopy = error;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __84__SYStatisticStore_updateOutgoingFileTransferWithIdentifier_sentSuccessfully_error___block_invoke;
   v12[3] = &unk_1E86CBB18;
   v12[4] = self;
-  v13 = v8;
-  v15 = a4;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = identifierCopy;
+  successfullyCopy = successfully;
+  v14 = errorCopy;
+  v10 = errorCopy;
+  v11 = identifierCopy;
   [(SYStatisticStore *)self _onQueueAsync:v12];
 }
 
@@ -2303,16 +2303,16 @@ void __84__SYStatisticStore_updateOutgoingFileTransferWithIdentifier_sentSuccess
   }
 }
 
-- (void)confirmDeliveryOfOutgoingFileTransfer:(id)a3
+- (void)confirmDeliveryOfOutgoingFileTransfer:(id)transfer
 {
-  v4 = a3;
+  transferCopy = transfer;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__SYStatisticStore_confirmDeliveryOfOutgoingFileTransfer___block_invoke;
   v6[3] = &unk_1E86C9E90;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = transferCopy;
+  v5 = transferCopy;
   [(SYStatisticStore *)self _onQueueAsync:v6];
 }
 
@@ -2354,27 +2354,27 @@ void __58__SYStatisticStore_confirmDeliveryOfOutgoingFileTransfer___block_invoke
   }
 }
 
-- (unint64_t)rowIDForPartialMessage:(id)a3
+- (unint64_t)rowIDForPartialMessage:(id)message
 {
-  v3 = objc_getAssociatedObject(a3, "CompanionSync.StatisticStore.ReservedRowID");
-  v4 = [v3 unsignedLongLongValue];
+  v3 = objc_getAssociatedObject(message, "CompanionSync.StatisticStore.ReservedRowID");
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (void)setFileTransferIdentifier:(id)a3 forOutgoingMessagesWithRowIDs:(id)a4
+- (void)setFileTransferIdentifier:(id)identifier forOutgoingMessagesWithRowIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dsCopy = ds;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __76__SYStatisticStore_setFileTransferIdentifier_forOutgoingMessagesWithRowIDs___block_invoke;
   v10[3] = &unk_1E86CA0F8;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  selfCopy = self;
+  v13 = dsCopy;
+  v8 = dsCopy;
+  v9 = identifierCopy;
   [(SYStatisticStore *)self _onQueueAsync:v10];
 }
 
@@ -2441,9 +2441,9 @@ unint64_t __76__SYStatisticStore_setFileTransferIdentifier_forOutgoingMessagesWi
   return v2;
 }
 
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_db)
   {
     if ([(SYStatisticStore *)self _closeDB])
@@ -2462,23 +2462,23 @@ unint64_t __76__SYStatisticStore_setFileTransferIdentifier_forOutgoingMessagesWi
     self->_db = 0;
   }
 
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)presentedItemDidMoveToURL:(id)a3
+- (void)presentedItemDidMoveToURL:(id)l
 {
-  v7 = [a3 URLByAppendingPathComponent:@"statistics.db"];
-  v4 = [v7 absoluteURL];
-  v5 = [v4 path];
+  v7 = [l URLByAppendingPathComponent:@"statistics.db"];
+  absoluteURL = [v7 absoluteURL];
+  path = [absoluteURL path];
   path = self->_path;
-  self->_path = v5;
+  self->_path = path;
 }
 
-+ (id)unpackMessageData:(id)a3
++ (id)unpackMessageData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[SYStatisticStore sharedInstance];
-  v5 = [v4 _unpackMessageData:v3];
+  v5 = [v4 _unpackMessageData:dataCopy];
 
   return v5;
 }
@@ -2555,10 +2555,10 @@ LABEL_19:
   return v2;
 }
 
-- (BOOL)_LOCKED_pruneMessageLogForServices:(id)a3
+- (BOOL)_LOCKED_pruneMessageLogForServices:(id)services
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  servicesCopy = services;
   ppStmt = 0;
   if (sqlite3_prepare_v2(self->_db, "DELETE FROM message_log WHERE service=? ORDER BY pk DESC LIMIT -1 OFFSET 250", -1, &ppStmt, 0))
   {
@@ -2582,7 +2582,7 @@ LABEL_19:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = servicesCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v7)
     {
@@ -2638,10 +2638,10 @@ LABEL_22:
   return v5;
 }
 
-- (BOOL)_LOCKED_pruneFileTransferLogForServices:(id)a3
+- (BOOL)_LOCKED_pruneFileTransferLogForServices:(id)services
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  servicesCopy = services;
   ppStmt = 0;
   if (sqlite3_prepare_v2(self->_db, "DELETE FROM file_transfer_log WHERE service=? ORDER BY pk DESC LIMIT -1 OFFSET 250", -1, &ppStmt, 0))
   {
@@ -2665,7 +2665,7 @@ LABEL_22:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = servicesCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v7)
     {

@@ -1,39 +1,39 @@
 @interface HMDBackgroundSystemTaskScheduler
-- (BOOL)cancelTaskRequestWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)registerForTaskWithIdentifier:(id)a3 usingQueue:(id)a4 launchHandler:(id)a5;
-- (BOOL)submitTaskRequest:(id)a3 error:(id *)a4;
-- (id)taskRequestForIdentifier:(id)a3;
+- (BOOL)cancelTaskRequestWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)registerForTaskWithIdentifier:(id)identifier usingQueue:(id)queue launchHandler:(id)handler;
+- (BOOL)submitTaskRequest:(id)request error:(id *)error;
+- (id)taskRequestForIdentifier:(id)identifier;
 @end
 
 @implementation HMDBackgroundSystemTaskScheduler
 
-- (BOOL)submitTaskRequest:(id)a3 error:(id *)a4
+- (BOOL)submitTaskRequest:(id)request error:(id *)error
 {
   v5 = MEMORY[0x277CF0810];
-  v6 = a3;
-  v7 = [v5 sharedScheduler];
-  v8 = [v6 taskRequest];
+  requestCopy = request;
+  sharedScheduler = [v5 sharedScheduler];
+  taskRequest = [requestCopy taskRequest];
 
-  LOBYTE(a4) = [v7 submitTaskRequest:v8 error:a4];
-  return a4;
+  LOBYTE(error) = [sharedScheduler submitTaskRequest:taskRequest error:error];
+  return error;
 }
 
-- (BOOL)cancelTaskRequestWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)cancelTaskRequestWithIdentifier:(id)identifier error:(id *)error
 {
   v5 = MEMORY[0x277CF0810];
-  v6 = a3;
-  v7 = [v5 sharedScheduler];
-  LOBYTE(a4) = [v7 cancelTaskRequestWithIdentifier:v6 error:a4];
+  identifierCopy = identifier;
+  sharedScheduler = [v5 sharedScheduler];
+  LOBYTE(error) = [sharedScheduler cancelTaskRequestWithIdentifier:identifierCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)taskRequestForIdentifier:(id)a3
+- (id)taskRequestForIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CF0810];
-  v4 = a3;
-  v5 = [v3 sharedScheduler];
-  v6 = [v5 taskRequestForIdentifier:v4];
+  identifierCopy = identifier;
+  sharedScheduler = [v3 sharedScheduler];
+  v6 = [sharedScheduler taskRequestForIdentifier:identifierCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -61,20 +61,20 @@
   return v9;
 }
 
-- (BOOL)registerForTaskWithIdentifier:(id)a3 usingQueue:(id)a4 launchHandler:(id)a5
+- (BOOL)registerForTaskWithIdentifier:(id)identifier usingQueue:(id)queue launchHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = MEMORY[0x277CF0810];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 sharedScheduler];
+  queueCopy = queue;
+  identifierCopy = identifier;
+  sharedScheduler = [v8 sharedScheduler];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __91__HMDBackgroundSystemTaskScheduler_registerForTaskWithIdentifier_usingQueue_launchHandler___block_invoke;
   v14[3] = &unk_278688FB8;
-  v15 = v7;
-  v12 = v7;
-  LOBYTE(v8) = [v11 registerForTaskWithIdentifier:v10 usingQueue:v9 launchHandler:v14];
+  v15 = handlerCopy;
+  v12 = handlerCopy;
+  LOBYTE(v8) = [sharedScheduler registerForTaskWithIdentifier:identifierCopy usingQueue:queueCopy launchHandler:v14];
 
   return v8;
 }

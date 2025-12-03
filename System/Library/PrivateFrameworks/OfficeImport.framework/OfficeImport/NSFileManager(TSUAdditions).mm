@@ -36,10 +36,10 @@
 
   +[OITSUAssertionHandler logBacktraceThrottled];
 LABEL_3:
-  if ([v8 tsu_isOnAPFSVolume] && (objc_msgSend(v8, "tsu_isOnSameVolumeAs:", v10) & 1) != 0 || (objc_msgSend(a1, "linkItemAtURL:toURL:error:", v8, v10, 0) & 1) == 0)
+  if ([v8 tsu_isOnAPFSVolume] && (objc_msgSend(v8, "tsu_isOnSameVolumeAs:", v10) & 1) != 0 || (objc_msgSend(self, "linkItemAtURL:toURL:error:", v8, v10, 0) & 1) == 0)
   {
     v18 = 0;
-    v12 = [a1 copyItemAtURL:v8 toURL:v10 error:&v18];
+    v12 = [self copyItemAtURL:v8 toURL:v10 error:&v18];
     v11 = v18;
     if (a5 && (v12 & 1) == 0)
     {

@@ -10,7 +10,7 @@
   v26 = *MEMORY[0x1E69E9840];
   pixelBufferOut = 0;
   v4 = a3;
-  v5 = [a1 decodeObjectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self decodeObjectOfClass:objc_opt_class() forKey:v4];
 
   if (v5)
   {
@@ -35,7 +35,7 @@
           *buf = 138543874;
           v21 = v12;
           v22 = 2048;
-          v23 = a1;
+          selfCopy2 = self;
           v24 = 1024;
           v25 = v7;
           v13 = "%{public}@ <%p>: Failed to decode pixel buffer - status: %d";
@@ -53,7 +53,7 @@ LABEL_10:
         *buf = 138543874;
         v21 = v12;
         v22 = 2048;
-        v23 = a1;
+        selfCopy2 = self;
         v24 = 1024;
         v25 = v7;
         v13 = "Error: %{public}@ <%p>: Failed to decode pixel buffer - status: %d";
@@ -73,7 +73,7 @@ LABEL_10:
 {
   v6 = a4;
   v7 = CVPixelBufferGetIOSurface(a3);
-  [a1 encodeObject:v7 forKey:v6];
+  [self encodeObject:v7 forKey:v6];
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface SAAppsCheckRestriction
-- (void)_ad_handleAppLaunchCommandWithRequest:(id)a3 completion:(id)a4;
+- (void)_ad_handleAppLaunchCommandWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation SAAppsCheckRestriction
 
-- (void)_ad_handleAppLaunchCommandWithRequest:(id)a3 completion:(id)a4
+- (void)_ad_handleAppLaunchCommandWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = objc_alloc_init(SACommandFailed);
-  v9 = [(SAAppsCheckRestriction *)self launchId];
-  if (!v9)
+  launchId = [(SAAppsCheckRestriction *)self launchId];
+  if (!launchId)
   {
     v13 = 0;
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_11;
     }
@@ -21,12 +21,12 @@
     goto LABEL_10;
   }
 
-  v10 = [off_10058BBA0() serviceWithDefaultShellEndpoint];
-  v11 = v10;
-  if (v10)
+  serviceWithDefaultShellEndpoint = [off_10058BBA0() serviceWithDefaultShellEndpoint];
+  v11 = serviceWithDefaultShellEndpoint;
+  if (serviceWithDefaultShellEndpoint)
   {
     v15 = 0;
-    if ([v10 canOpenApplication:v9 reason:&v15])
+    if ([serviceWithDefaultShellEndpoint canOpenApplication:launchId reason:&v15])
     {
       v12 = objc_alloc_init(SACommandSucceeded);
 
@@ -41,11 +41,11 @@
     v13 = [AFError errorWithCode:13];
   }
 
-  if (v7)
+  if (completionCopy)
   {
 LABEL_10:
-    v14 = [v6 createResponseWithReplyCommand:v8];
-    v7[2](v7, v14, 0, v13);
+    v14 = [requestCopy createResponseWithReplyCommand:v8];
+    completionCopy[2](completionCopy, v14, 0, v13);
   }
 
 LABEL_11:

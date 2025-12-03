@@ -1,16 +1,16 @@
 @interface MSPBookmarkStorage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MSPBookmarkStorage
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -43,25 +43,25 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PLACE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"PLACE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ROUTE"])
+  else if ([typeCopy isEqualToString:@"ROUTE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"REGION"])
+  else if ([typeCopy isEqualToString:@"REGION"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"TRANSIT_LINE"])
+  else if ([typeCopy isEqualToString:@"TRANSIT_LINE"])
   {
     v4 = 4;
   }
@@ -74,9 +74,9 @@
   return v4;
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -95,15 +95,15 @@
   v8.receiver = self;
   v8.super_class = MSPBookmarkStorage;
   v4 = [(MSPBookmarkStorage *)&v8 description];
-  v5 = [(MSPBookmarkStorage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MSPBookmarkStorage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     v4 = self->_type - 1;
@@ -117,20 +117,20 @@
       v5 = off_279868730[v4];
     }
 
-    [v3 setObject:v5 forKey:@"type"];
+    [dictionary setObject:v5 forKey:@"type"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   has = self->_has;
   if (has)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_position];
-    [v3 setObject:v8 forKey:@"position"];
+    [dictionary setObject:v8 forKey:@"position"];
 
     has = self->_has;
   }
@@ -138,62 +138,62 @@
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timestamp];
-    [v3 setObject:v9 forKey:@"timestamp"];
+    [dictionary setObject:v9 forKey:@"timestamp"];
   }
 
   placeBookmark = self->_placeBookmark;
   if (placeBookmark)
   {
-    v11 = [(MSPPlaceBookmark *)placeBookmark dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"placeBookmark"];
+    dictionaryRepresentation = [(MSPPlaceBookmark *)placeBookmark dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"placeBookmark"];
   }
 
   routeBookmark = self->_routeBookmark;
   if (routeBookmark)
   {
-    v13 = [(MSPRouteBookmark *)routeBookmark dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"routeBookmark"];
+    dictionaryRepresentation2 = [(MSPRouteBookmark *)routeBookmark dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"routeBookmark"];
   }
 
   regionBookmark = self->_regionBookmark;
   if (regionBookmark)
   {
-    v15 = [(MSPRegionBookmark *)regionBookmark dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"regionBookmark"];
+    dictionaryRepresentation3 = [(MSPRegionBookmark *)regionBookmark dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"regionBookmark"];
   }
 
   transitLineBookmark = self->_transitLineBookmark;
   if (transitLineBookmark)
   {
-    v17 = [(MSPTransitLineBookmark *)transitLineBookmark dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"transitLineBookmark"];
+    dictionaryRepresentation4 = [(MSPTransitLineBookmark *)transitLineBookmark dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"transitLineBookmark"];
   }
 
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v19 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"Unknown Fields"];
+    dictionaryRepresentation5 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"Unknown Fields"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if ((*&self->_has & 4) != 0)
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -201,7 +201,7 @@
   {
     position = self->_position;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
   }
 
@@ -209,94 +209,94 @@
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_placeBookmark)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_routeBookmark)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_regionBookmark)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_transitLineBookmark)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[18] = self->_type;
-    *(v4 + 76) |= 4u;
+    toCopy[18] = self->_type;
+    *(toCopy + 76) |= 4u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v6;
+    [toCopy setIdentifier:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 2) = *&self->_position;
-    *(v4 + 76) |= 1u;
+    *(toCopy + 2) = *&self->_position;
+    *(toCopy + 76) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 3) = *&self->_timestamp;
-    *(v4 + 76) |= 2u;
+    *(toCopy + 3) = *&self->_timestamp;
+    *(toCopy + 76) |= 2u;
   }
 
   if (self->_placeBookmark)
   {
     [v6 setPlaceBookmark:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_routeBookmark)
   {
     [v6 setRouteBookmark:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_regionBookmark)
   {
     [v6 setRegionBookmark:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_transitLineBookmark)
   {
     [v6 setTransitLineBookmark:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -304,7 +304,7 @@
     *(v5 + 76) |= 4u;
   }
 
-  v7 = [(NSString *)self->_identifier copyWithZone:a3];
+  v7 = [(NSString *)self->_identifier copyWithZone:zone];
   v8 = *(v6 + 32);
   *(v6 + 32) = v7;
 
@@ -322,19 +322,19 @@
     *(v6 + 76) |= 2u;
   }
 
-  v10 = [(MSPPlaceBookmark *)self->_placeBookmark copyWithZone:a3];
+  v10 = [(MSPPlaceBookmark *)self->_placeBookmark copyWithZone:zone];
   v11 = *(v6 + 40);
   *(v6 + 40) = v10;
 
-  v12 = [(MSPRouteBookmark *)self->_routeBookmark copyWithZone:a3];
+  v12 = [(MSPRouteBookmark *)self->_routeBookmark copyWithZone:zone];
   v13 = *(v6 + 56);
   *(v6 + 56) = v12;
 
-  v14 = [(MSPRegionBookmark *)self->_regionBookmark copyWithZone:a3];
+  v14 = [(MSPRegionBookmark *)self->_regionBookmark copyWithZone:zone];
   v15 = *(v6 + 48);
   *(v6 + 48) = v14;
 
-  v16 = [(MSPTransitLineBookmark *)self->_transitLineBookmark copyWithZone:a3];
+  v16 = [(MSPTransitLineBookmark *)self->_transitLineBookmark copyWithZone:zone];
   v17 = *(v6 + 64);
   *(v6 + 64) = v16;
 
@@ -342,31 +342,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   has = self->_has;
-  v6 = *(v4 + 76);
+  v6 = *(equalCopy + 76);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 76) & 4) == 0 || self->_type != *(v4 + 18))
+    if ((*(equalCopy + 76) & 4) == 0 || self->_type != *(equalCopy + 18))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 76) & 4) != 0)
+  else if ((*(equalCopy + 76) & 4) != 0)
   {
     goto LABEL_28;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 4))
+  if (identifier | *(equalCopy + 4))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -378,41 +378,41 @@ LABEL_28:
     has = self->_has;
   }
 
-  v8 = *(v4 + 76);
+  v8 = *(equalCopy + 76);
   if (has)
   {
-    if ((*(v4 + 76) & 1) == 0 || self->_position != *(v4 + 2))
+    if ((*(equalCopy + 76) & 1) == 0 || self->_position != *(equalCopy + 2))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 76))
+  else if (*(equalCopy + 76))
   {
     goto LABEL_28;
   }
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 76) & 2) == 0 || self->_timestamp != *(v4 + 3))
+    if ((*(equalCopy + 76) & 2) == 0 || self->_timestamp != *(equalCopy + 3))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 76) & 2) != 0)
+  else if ((*(equalCopy + 76) & 2) != 0)
   {
     goto LABEL_28;
   }
 
   placeBookmark = self->_placeBookmark;
-  if (placeBookmark | *(v4 + 5) && ![(MSPPlaceBookmark *)placeBookmark isEqual:?])
+  if (placeBookmark | *(equalCopy + 5) && ![(MSPPlaceBookmark *)placeBookmark isEqual:?])
   {
     goto LABEL_28;
   }
 
   routeBookmark = self->_routeBookmark;
-  if (routeBookmark | *(v4 + 7))
+  if (routeBookmark | *(equalCopy + 7))
   {
     if (![(MSPRouteBookmark *)routeBookmark isEqual:?])
     {
@@ -421,7 +421,7 @@ LABEL_28:
   }
 
   regionBookmark = self->_regionBookmark;
-  if (regionBookmark | *(v4 + 6))
+  if (regionBookmark | *(equalCopy + 6))
   {
     if (![(MSPRegionBookmark *)regionBookmark isEqual:?])
     {
@@ -430,7 +430,7 @@ LABEL_28:
   }
 
   transitLineBookmark = self->_transitLineBookmark;
-  if (transitLineBookmark | *(v4 + 8))
+  if (transitLineBookmark | *(equalCopy + 8))
   {
     v13 = [(MSPTransitLineBookmark *)transitLineBookmark isEqual:?];
   }
@@ -531,18 +531,18 @@ LABEL_29:
   return v15 ^ v17 ^ [(MSPTransitLineBookmark *)self->_transitLineBookmark hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[19] & 4) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[19] & 4) != 0)
   {
-    self->_type = v4[18];
+    self->_type = fromCopy[18];
     *&self->_has |= 4u;
   }
 
-  v15 = v4;
-  if (*(v4 + 4))
+  v15 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(MSPBookmarkStorage *)self setIdentifier:?];
     v5 = v15;

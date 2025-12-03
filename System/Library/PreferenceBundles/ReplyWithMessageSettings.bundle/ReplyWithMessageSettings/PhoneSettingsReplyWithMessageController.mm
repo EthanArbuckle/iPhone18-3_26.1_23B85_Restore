@@ -1,12 +1,12 @@
 @interface PhoneSettingsReplyWithMessageController
 - (TUReplyWithMessageStore)replyWithMessageStore;
-- (id)customReply:(id)a3;
+- (id)customReply:(id)reply;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int)customReplyIndexOfSpecifier:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int)customReplyIndexOfSpecifier:(id)specifier;
 - (void)emitNavigationEvent;
 - (void)returnPressedAtEnd;
-- (void)setCustomReply:(id)a3 specifier:(id)a4;
+- (void)setCustomReply:(id)reply specifier:(id)specifier;
 @end
 
 @implementation PhoneSettingsReplyWithMessageController
@@ -28,26 +28,26 @@
 
 - (void)emitNavigationEvent
 {
-  v3 = [(PhoneSettingsReplyWithMessageController *)self specifier];
-  v4 = [v3 target];
-  v5 = [v4 parentListController];
-  v6 = [v5 specifierID];
+  specifier = [(PhoneSettingsReplyWithMessageController *)self specifier];
+  target = [specifier target];
+  parentListController = [target parentListController];
+  specifierID = [parentListController specifierID];
 
-  if ([v6 isEqualToString:@"com.apple.preferences.phone"])
+  if ([specifierID isEqualToString:@"com.apple.preferences.phone"])
   {
     v20 = [NSString stringWithFormat:@"settings-navigation://com.apple.Settings.Apps/%@/%@", @"com.apple.mobilephone", @"REPLY_WITH_MESSAGES"];
     v7 = [NSURL URLWithString:v20];
     v8 = [_NSLocalizedStringResource alloc];
     v9 = +[NSLocale currentLocale];
     v10 = [NSBundle bundleForClass:objc_opt_class()];
-    v11 = [v10 bundleURL];
-    v12 = [v8 initWithKey:@"Respond with Text" table:0 locale:v9 bundleURL:v11];
+    bundleURL = [v10 bundleURL];
+    v12 = [v8 initWithKey:@"Respond with Text" table:0 locale:v9 bundleURL:bundleURL];
 
     v13 = [_NSLocalizedStringResource alloc];
     v14 = +[NSLocale currentLocale];
     v15 = [NSBundle bundleForClass:objc_opt_class()];
-    v16 = [v15 bundleURL];
-    v17 = [v13 initWithKey:@"Apps" table:0 locale:v14 bundleURL:v16];
+    bundleURL2 = [v15 bundleURL];
+    v17 = [v13 initWithKey:@"Apps" table:0 locale:v14 bundleURL:bundleURL2];
 
     v18 = TUResolvedPhoneResource();
     v21[0] = v17;
@@ -72,8 +72,8 @@
       if (v7 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v8 = v7;
-        v9 = [(PhoneSettingsReplyWithMessageController *)self replyWithMessageStore];
-        v10 = [v9 count];
+        replyWithMessageStore = [(PhoneSettingsReplyWithMessageController *)self replyWithMessageStore];
+        v10 = [replyWithMessageStore count];
 
         if (v10 >= 1)
         {
@@ -83,9 +83,9 @@
           do
           {
             v14 = [PSTextFieldSpecifier preferenceSpecifierNamed:0 target:self set:"setCustomReply:specifier:" get:"customReply:" detail:0 cell:8 edit:0, v22];
-            v15 = [(PhoneSettingsReplyWithMessageController *)self replyWithMessageStore];
-            v16 = [v15 defaultReplies];
-            v17 = [v16 objectAtIndex:v11];
+            replyWithMessageStore2 = [(PhoneSettingsReplyWithMessageController *)self replyWithMessageStore];
+            defaultReplies = [replyWithMessageStore2 defaultReplies];
+            v17 = [defaultReplies objectAtIndex:v11];
             [v14 setPlaceholder:v17];
 
             v18 = [NSNumber numberWithInt:v11];
@@ -115,15 +115,15 @@
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = PhoneSettingsReplyWithMessageController;
-  v4 = [(PhoneSettingsReplyWithMessageController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
+  v4 = [(PhoneSettingsReplyWithMessageController *)&v7 tableView:view cellForRowAtIndexPath:path];
   if ([v4 tag] == &dword_8)
   {
-    v5 = [v4 editableTextField];
-    [v5 setClearButtonMode:3];
+    editableTextField = [v4 editableTextField];
+    [editableTextField setClearButtonMode:3];
   }
 
   return v4;
@@ -131,39 +131,39 @@
 
 - (void)returnPressedAtEnd
 {
-  v3 = [UIApp keyWindow];
-  v2 = [v3 firstResponder];
-  [v2 resignFirstResponder];
+  keyWindow = [UIApp keyWindow];
+  firstResponder = [keyWindow firstResponder];
+  [firstResponder resignFirstResponder];
 }
 
-- (void)setCustomReply:(id)a3 specifier:(id)a4
+- (void)setCustomReply:(id)reply specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PhoneSettingsReplyWithMessageController *)self replyWithMessageStore];
-  LODWORD(self) = [(PhoneSettingsReplyWithMessageController *)self customReplyIndexOfSpecifier:v6];
+  specifierCopy = specifier;
+  replyCopy = reply;
+  replyWithMessageStore = [(PhoneSettingsReplyWithMessageController *)self replyWithMessageStore];
+  LODWORD(self) = [(PhoneSettingsReplyWithMessageController *)self customReplyIndexOfSpecifier:specifierCopy];
 
-  [v8 setCustomReply:v7 atIndex:self];
+  [replyWithMessageStore setCustomReply:replyCopy atIndex:self];
 }
 
-- (id)customReply:(id)a3
+- (id)customReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(PhoneSettingsReplyWithMessageController *)self replyWithMessageStore];
-  v6 = [v5 customReplies];
-  LODWORD(self) = [(PhoneSettingsReplyWithMessageController *)self customReplyIndexOfSpecifier:v4];
+  replyCopy = reply;
+  replyWithMessageStore = [(PhoneSettingsReplyWithMessageController *)self replyWithMessageStore];
+  customReplies = [replyWithMessageStore customReplies];
+  LODWORD(self) = [(PhoneSettingsReplyWithMessageController *)self customReplyIndexOfSpecifier:replyCopy];
 
-  v7 = [v6 objectAtIndex:self];
+  v7 = [customReplies objectAtIndex:self];
 
   return v7;
 }
 
-- (int)customReplyIndexOfSpecifier:(id)a3
+- (int)customReplyIndexOfSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"ReplyIndex"];
-  v4 = [v3 intValue];
+  v3 = [specifier propertyForKey:@"ReplyIndex"];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 @end

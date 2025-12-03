@@ -1,10 +1,10 @@
 @interface CNContactListDuplicatesBannerView
-- (CNContactListDuplicatesBannerView)initWithDuplicatesCount:(int64_t)a3;
+- (CNContactListDuplicatesBannerView)initWithDuplicatesCount:(int64_t)count;
 - (CNContactListDuplicatesBannerViewDelegate)delegate;
-- (id)countStringForLocalizedStringKey:(id)a3 count:(int64_t)a4;
+- (id)countStringForLocalizedStringKey:(id)key count:(int64_t)count;
 - (void)didTapDismiss;
 - (void)didTapViewDuplicates;
-- (void)setDuplicatesCount:(int64_t)a3;
+- (void)setDuplicatesCount:(int64_t)count;
 - (void)setupSubviews;
 @end
 
@@ -19,30 +19,30 @@
 
 - (void)didTapViewDuplicates
 {
-  v3 = [(CNContactListDuplicatesBannerView *)self delegate];
-  [v3 duplicatesBannerViewDidTapViewDuplicates:self];
+  delegate = [(CNContactListDuplicatesBannerView *)self delegate];
+  [delegate duplicatesBannerViewDidTapViewDuplicates:self];
 }
 
 - (void)didTapDismiss
 {
-  v3 = [(CNContactListDuplicatesBannerView *)self delegate];
-  [v3 duplicatesBannerViewDidTapDismiss:self];
+  delegate = [(CNContactListDuplicatesBannerView *)self delegate];
+  [delegate duplicatesBannerViewDidTapDismiss:self];
 }
 
-- (id)countStringForLocalizedStringKey:(id)a3 count:(int64_t)a4
+- (id)countStringForLocalizedStringKey:(id)key count:(int64_t)count
 {
-  v5 = a3;
+  keyCopy = key;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __76__CNContactListDuplicatesBannerView_countStringForLocalizedStringKey_count___block_invoke;
   aBlock[3] = &unk_1E74E59A8;
-  v13 = v5;
-  v14 = a4;
-  v6 = v5;
+  v13 = keyCopy;
+  countCopy = count;
+  v6 = keyCopy;
   v7 = _Block_copy(aBlock);
   v8 = MEMORY[0x1E696AEC0];
   v9 = v7[2]();
-  v10 = [v8 localizedStringWithFormat:v9, a4];
+  v10 = [v8 localizedStringWithFormat:v9, count];
 
   return v10;
 }
@@ -61,11 +61,11 @@ id __76__CNContactListDuplicatesBannerView_countStringForLocalizedStringKey_coun
 - (void)setupSubviews
 {
   v94[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  [(CNContactListDuplicatesBannerView *)self setBackgroundColor:v3];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  [(CNContactListDuplicatesBannerView *)self setBackgroundColor:secondarySystemBackgroundColor];
 
-  v4 = [(CNContactListDuplicatesBannerView *)self layer];
-  [v4 setCornerRadius:12.0];
+  layer = [(CNContactListDuplicatesBannerView *)self layer];
+  [layer setCornerRadius:12.0];
 
   v5 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   v6 = [(CNContactListDuplicatesBannerView *)self countStringForLocalizedStringKey:@"DUPLICATES_COUNT" count:self->_duplicatesCount];
@@ -90,32 +90,32 @@ id __76__CNContactListDuplicatesBannerView_countStringForLocalizedStringKey_coun
   v13 = [MEMORY[0x1E69DB878] fontWithDescriptor:v85 size:0.0];
   [v9 setFont:v13];
 
-  v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v9 setTextColor:v14];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v9 setTextColor:secondaryLabelColor];
 
   [v9 setNumberOfLines:0];
   v82 = v9;
   [v9 setAdjustsFontForContentSizeCategory:1];
   v15 = objc_alloc(MEMORY[0x1E69DD250]);
   v16 = [v15 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  v17 = [MEMORY[0x1E69DC888] separatorColor];
-  [v16 setBackgroundColor:v17];
+  separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+  [v16 setBackgroundColor:separatorColor];
 
   v18 = v16;
   [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
   v19 = objc_alloc_init(MEMORY[0x1E69DC738]);
-  v20 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
   v21 = CNContactsUIBundle();
   v22 = [v21 localizedStringForKey:@"DUPLICATES_FOUND_ACTION" value:&stru_1F0CE7398 table:@"Localized"];
-  [v20 setTitle:v22];
+  [plainButtonConfiguration setTitle:v22];
 
   v23 = *MEMORY[0x1E69DC5C0];
   v24 = *(MEMORY[0x1E69DC5C0] + 8);
   v25 = *(MEMORY[0x1E69DC5C0] + 16);
   v26 = *(MEMORY[0x1E69DC5C0] + 24);
-  v84 = v20;
-  [v20 setContentInsets:{*MEMORY[0x1E69DC5C0], v24, v25, v26}];
-  [v19 setConfiguration:v20];
+  v84 = plainButtonConfiguration;
+  [plainButtonConfiguration setContentInsets:{*MEMORY[0x1E69DC5C0], v24, v25, v26}];
+  [v19 setConfiguration:plainButtonConfiguration];
   v81 = v19;
   [v19 addTarget:self action:sel_didTapViewDuplicates forControlEvents:64];
   v27 = objc_alloc_init(MEMORY[0x1E69DCF90]);
@@ -151,87 +151,87 @@ id __76__CNContactListDuplicatesBannerView_countStringForLocalizedStringKey_coun
 
   [(CNContactListDuplicatesBannerView *)self addSubview:v31];
   v65 = MEMORY[0x1E696ACD8];
-  v75 = [v31 leadingAnchor];
-  v76 = [(CNContactListDuplicatesBannerView *)self layoutMarginsGuide];
-  v74 = [v76 leadingAnchor];
-  v73 = [v75 constraintEqualToAnchor:v74 constant:4.0];
+  leadingAnchor = [v31 leadingAnchor];
+  layoutMarginsGuide = [(CNContactListDuplicatesBannerView *)self layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v73 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:4.0];
   v92[0] = v73;
-  v71 = [v31 trailingAnchor];
-  v72 = [(CNContactListDuplicatesBannerView *)self layoutMarginsGuide];
-  v70 = [v72 trailingAnchor];
-  v69 = [v71 constraintEqualToAnchor:v70 constant:-4.0];
+  trailingAnchor = [v31 trailingAnchor];
+  layoutMarginsGuide2 = [(CNContactListDuplicatesBannerView *)self layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v69 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-4.0];
   v92[1] = v69;
-  v67 = [v31 topAnchor];
-  v78 = self;
-  v68 = [(CNContactListDuplicatesBannerView *)self layoutMarginsGuide];
-  v66 = [v68 topAnchor];
-  v64 = [v67 constraintEqualToAnchor:v66 constant:4.0];
+  topAnchor = [v31 topAnchor];
+  selfCopy = self;
+  layoutMarginsGuide3 = [(CNContactListDuplicatesBannerView *)self layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide3 topAnchor];
+  v64 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:4.0];
   v92[2] = v64;
-  v62 = [v31 bottomAnchor];
-  v63 = [(CNContactListDuplicatesBannerView *)self layoutMarginsGuide];
-  v61 = [v63 bottomAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61 constant:-4.0];
+  bottomAnchor = [v31 bottomAnchor];
+  layoutMarginsGuide4 = [(CNContactListDuplicatesBannerView *)self layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+  v60 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-4.0];
   v92[3] = v60;
   v32 = v18;
-  v58 = [v18 heightAnchor];
-  v59 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v59 scale];
-  v34 = [v58 constraintEqualToConstant:1.0 / v33];
+  heightAnchor = [v18 heightAnchor];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
+  v34 = [heightAnchor constraintEqualToConstant:1.0 / v33];
   v92[4] = v34;
   v79 = v18;
-  v35 = [v18 leadingAnchor];
+  leadingAnchor3 = [v18 leadingAnchor];
   v86 = v31;
-  v36 = [v31 layoutMarginsGuide];
-  v37 = [v36 leadingAnchor];
-  v38 = [v35 constraintEqualToAnchor:v37];
+  layoutMarginsGuide5 = [v31 layoutMarginsGuide];
+  leadingAnchor4 = [layoutMarginsGuide5 leadingAnchor];
+  v38 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v92[5] = v38;
-  v39 = [v32 trailingAnchor];
-  v40 = [v31 layoutMarginsGuide];
-  v41 = [v40 trailingAnchor];
-  v42 = [v39 constraintEqualToAnchor:v41];
+  trailingAnchor3 = [v32 trailingAnchor];
+  layoutMarginsGuide6 = [v31 layoutMarginsGuide];
+  trailingAnchor4 = [layoutMarginsGuide6 trailingAnchor];
+  v42 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v92[6] = v42;
   v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:7];
   [v65 activateConstraints:v43];
 
   v44 = objc_alloc_init(MEMORY[0x1E69DC738]);
-  v45 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  plainButtonConfiguration2 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
   v46 = MEMORY[0x1E69DCAB8];
   v47 = *MEMORY[0x1E69DDE50];
-  v48 = [MEMORY[0x1E69DC888] systemMidGrayColor];
-  v49 = [v46 cnui_symbolImageNamed:@"xmark" scale:v47 weight:4 withColor:v48 useFixedSize:1 compatibleWithTextStyle:*MEMORY[0x1E69DDCF8]];
-  [v45 setImage:v49];
+  systemMidGrayColor = [MEMORY[0x1E69DC888] systemMidGrayColor];
+  v49 = [v46 cnui_symbolImageNamed:@"xmark" scale:v47 weight:4 withColor:systemMidGrayColor useFixedSize:1 compatibleWithTextStyle:*MEMORY[0x1E69DDCF8]];
+  [plainButtonConfiguration2 setImage:v49];
 
-  [v45 setContentInsets:{v23, v24, v25, v26}];
-  [v44 setConfiguration:v45];
+  [plainButtonConfiguration2 setContentInsets:{v23, v24, v25, v26}];
+  [v44 setConfiguration:plainButtonConfiguration2];
   [v44 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v44 addTarget:v78 action:sel_didTapDismiss forControlEvents:64];
-  [(CNContactListDuplicatesBannerView *)v78 addSubview:v44];
+  [v44 addTarget:selfCopy action:sel_didTapDismiss forControlEvents:64];
+  [(CNContactListDuplicatesBannerView *)selfCopy addSubview:v44];
   v77 = MEMORY[0x1E696ACD8];
-  v50 = [v44 trailingAnchor];
-  v51 = [v86 trailingAnchor];
-  v52 = [v50 constraintEqualToAnchor:v51];
+  trailingAnchor5 = [v44 trailingAnchor];
+  trailingAnchor6 = [v86 trailingAnchor];
+  v52 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v91[0] = v52;
-  v53 = [v44 topAnchor];
-  v54 = [(CNContactListDuplicatesBannerView *)v78 layoutMarginsGuide];
-  v55 = [v54 topAnchor];
-  v56 = [v53 constraintEqualToAnchor:v55];
+  topAnchor3 = [v44 topAnchor];
+  layoutMarginsGuide7 = [(CNContactListDuplicatesBannerView *)selfCopy layoutMarginsGuide];
+  topAnchor4 = [layoutMarginsGuide7 topAnchor];
+  v56 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v91[1] = v56;
   v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:v91 count:2];
   [v77 activateConstraints:v57];
 }
 
-- (void)setDuplicatesCount:(int64_t)a3
+- (void)setDuplicatesCount:(int64_t)count
 {
-  if (self->_duplicatesCount != a3)
+  if (self->_duplicatesCount != count)
   {
-    self->_duplicatesCount = a3;
-    v6 = [(CNContactListDuplicatesBannerView *)self countStringForLocalizedStringKey:@"DUPLICATES_COUNT" count:a3];
-    v5 = [(CNContactListDuplicatesBannerView *)self titleLabel];
-    [v5 setText:v6];
+    self->_duplicatesCount = count;
+    v6 = [(CNContactListDuplicatesBannerView *)self countStringForLocalizedStringKey:@"DUPLICATES_COUNT" count:count];
+    titleLabel = [(CNContactListDuplicatesBannerView *)self titleLabel];
+    [titleLabel setText:v6];
   }
 }
 
-- (CNContactListDuplicatesBannerView)initWithDuplicatesCount:(int64_t)a3
+- (CNContactListDuplicatesBannerView)initWithDuplicatesCount:(int64_t)count
 {
   v8.receiver = self;
   v8.super_class = CNContactListDuplicatesBannerView;
@@ -239,7 +239,7 @@ id __76__CNContactListDuplicatesBannerView_countStringForLocalizedStringKey_coun
   v5 = v4;
   if (v4)
   {
-    v4->_duplicatesCount = a3;
+    v4->_duplicatesCount = count;
     [(CNContactListDuplicatesBannerView *)v4 setupSubviews];
     v6 = v5;
   }

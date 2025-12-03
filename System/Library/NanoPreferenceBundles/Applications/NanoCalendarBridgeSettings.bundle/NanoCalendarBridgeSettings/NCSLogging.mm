@@ -1,18 +1,18 @@
 @interface NCSLogging
-+ (id)nanoPrivacyAwareDescriptionForCollection:(id)a3 expectedClass:(Class)a4;
++ (id)nanoPrivacyAwareDescriptionForCollection:(id)collection expectedClass:(Class)class;
 @end
 
 @implementation NCSLogging
 
-+ (id)nanoPrivacyAwareDescriptionForCollection:(id)a3 expectedClass:(Class)a4
++ (id)nanoPrivacyAwareDescriptionForCollection:(id)collection expectedClass:(Class)class
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = objc_alloc_init(NSMutableString);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = collectionCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -32,8 +32,8 @@
         v13 = objc_autoreleasePoolPush();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [v12 nanoPrivacyAwareDescription];
-          [v5 appendFormat:@"  <%@>, \n", v14];
+          nanoPrivacyAwareDescription = [v12 nanoPrivacyAwareDescription];
+          [v5 appendFormat:@"  <%@>, \n", nanoPrivacyAwareDescription];
 
           ++v9;
         }

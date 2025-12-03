@@ -1,17 +1,17 @@
 @interface MUCircleProgressObservingView
 - (CGSize)intrinsicContentSize;
-- (MUCircleProgressObservingView)initWithFrame:(CGRect)a3;
+- (MUCircleProgressObservingView)initWithFrame:(CGRect)frame;
 - (void)_updateProgressView;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setProgress:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setProgress:(id)progress;
 @end
 
 @implementation MUCircleProgressObservingView
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (_ProgressKVOContext == a6)
+  if (_ProgressKVOContext == context)
   {
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
@@ -34,7 +34,7 @@
   {
     v7.receiver = self;
     v7.super_class = MUCircleProgressObservingView;
-    [(MUCircleProgressObservingView *)&v7 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(MUCircleProgressObservingView *)&v7 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -48,23 +48,23 @@
   [(MUCircleProgressView *)progressView setProgress:?];
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   progress = self->_progress;
-  if (progress != v5)
+  if (progress != progressCopy)
   {
-    v7 = v5;
+    v7 = progressCopy;
     [(NSProgress *)progress removeObserver:self forKeyPath:@"fractionCompleted" context:_ProgressKVOContext];
     [(NSProgress *)self->_progress removeObserver:self forKeyPath:@"indeterminate" context:_ProgressKVOContext];
-    objc_storeStrong(&self->_progress, a3);
+    objc_storeStrong(&self->_progress, progress);
     [(NSProgress *)self->_progress addObserver:self forKeyPath:@"fractionCompleted" options:0 context:_ProgressKVOContext];
     [(NSProgress *)self->_progress addObserver:self forKeyPath:@"indeterminate" options:0 context:_ProgressKVOContext];
     progress = [(MUCircleProgressObservingView *)self _updateProgressView];
-    v5 = v7;
+    progressCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](progress, v5);
+  MEMORY[0x1EEE66BB8](progress, progressCopy);
 }
 
 - (CGSize)intrinsicContentSize
@@ -84,11 +84,11 @@
   [(MUCircleProgressObservingView *)&v3 dealloc];
 }
 
-- (MUCircleProgressObservingView)initWithFrame:(CGRect)a3
+- (MUCircleProgressObservingView)initWithFrame:(CGRect)frame
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v6 = [[MUCircleProgressView alloc] initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v6 = [[MUCircleProgressView alloc] initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(MUCircleProgressView *)v6 frame];
   v8 = v7;
   [(MUCircleProgressView *)v6 frame];

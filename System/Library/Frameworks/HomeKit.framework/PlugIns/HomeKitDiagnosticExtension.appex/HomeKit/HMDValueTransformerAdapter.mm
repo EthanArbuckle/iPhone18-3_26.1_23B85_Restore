@@ -1,29 +1,29 @@
 @interface HMDValueTransformerAdapter
-- (BOOL)isKindOfTransformer:(Class)a3;
-- (HMDValueTransformerAdapter)initWithTransformer:(id)a3;
-- (id)reverseTransformedValue:(id)a3 error:(id *)a4;
-- (id)transformedValue:(id)a3 error:(id *)a4;
+- (BOOL)isKindOfTransformer:(Class)transformer;
+- (HMDValueTransformerAdapter)initWithTransformer:(id)transformer;
+- (id)reverseTransformedValue:(id)value error:(id *)error;
+- (id)transformedValue:(id)value error:(id *)error;
 @end
 
 @implementation HMDValueTransformerAdapter
 
-- (id)reverseTransformedValue:(id)a3 error:(id *)a4
+- (id)reverseTransformedValue:(id)value error:(id *)error
 {
-  v5 = a3;
-  v6 = [(HMDValueTransformerAdapter *)self reverseTransformedValue:v5];
+  valueCopy = value;
+  v6 = [(HMDValueTransformerAdapter *)self reverseTransformedValue:valueCopy];
 
   return v6;
 }
 
-- (id)transformedValue:(id)a3 error:(id *)a4
+- (id)transformedValue:(id)value error:(id *)error
 {
-  v5 = a3;
-  v6 = [(HMDValueTransformerAdapter *)self transformedValue:v5];
+  valueCopy = value;
+  v6 = [(HMDValueTransformerAdapter *)self transformedValue:valueCopy];
 
   return v6;
 }
 
-- (BOOL)isKindOfTransformer:(Class)a3
+- (BOOL)isKindOfTransformer:(Class)transformer
 {
   v7.receiver = self;
   v7.super_class = HMDValueTransformerAdapter;
@@ -41,16 +41,16 @@
   return isKindOfClass & 1;
 }
 
-- (HMDValueTransformerAdapter)initWithTransformer:(id)a3
+- (HMDValueTransformerAdapter)initWithTransformer:(id)transformer
 {
-  v5 = a3;
+  transformerCopy = transformer;
   v9.receiver = self;
   v9.super_class = HMDValueTransformerAdapter;
   v6 = [(HMDValueTransformer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transformer, a3);
+    objc_storeStrong(&v6->_transformer, transformer);
   }
 
   return v7;

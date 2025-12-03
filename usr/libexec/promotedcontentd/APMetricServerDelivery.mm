@@ -1,61 +1,61 @@
 @interface APMetricServerDelivery
 - (APMetricServerDelivery)init;
-- (BOOL)_shouldBackoffForDestination:(id)a3;
-- (BOOL)processMetrics:(int64_t)a3 forChannel:(id)a4;
+- (BOOL)_shouldBackoffForDestination:(id)destination;
+- (BOOL)processMetrics:(int64_t)metrics forChannel:(id)channel;
 - (double)_periodicDelay;
-- (id)_dataFromBatchDictionaries:(id)a3;
-- (id)_determineBillable:(id)a3;
-- (id)_dictionariesFromBatchesInStorage:(id)a3 useShelvedData:(BOOL)a4 channels:(id)a5 groupBatches:(BOOL)a6 batchInfos:(id *)a7 billing:(id *)a8;
-- (id)_loadBatchesAsDataForChannel:(id)a3 useShelvedData:(BOOL)a4 groupBatches:(BOOL)a5 batchInfos:(id *)a6 billing:(id *)a7;
-- (id)backoffTimerForDestination:(id)a3;
-- (id)lastProcessingDateForDestination:(id)a3;
-- (int64_t)backoffFromResponse:(id)a3;
-- (void)_asyncProcessMetrics:(int64_t)a3 forChannel:(id)a4;
+- (id)_dataFromBatchDictionaries:(id)dictionaries;
+- (id)_determineBillable:(id)billable;
+- (id)_dictionariesFromBatchesInStorage:(id)storage useShelvedData:(BOOL)data channels:(id)channels groupBatches:(BOOL)batches batchInfos:(id *)infos billing:(id *)billing;
+- (id)_loadBatchesAsDataForChannel:(id)channel useShelvedData:(BOOL)data groupBatches:(BOOL)batches batchInfos:(id *)infos billing:(id *)billing;
+- (id)backoffTimerForDestination:(id)destination;
+- (id)lastProcessingDateForDestination:(id)destination;
+- (int64_t)backoffFromResponse:(id)response;
+- (void)_asyncProcessMetrics:(int64_t)metrics forChannel:(id)channel;
 - (void)_configurePreparedDataObjects;
-- (void)_sendPayload:(id)a3 successCompletionHandler:(id)a4;
+- (void)_sendPayload:(id)payload successCompletionHandler:(id)handler;
 - (void)_startTestCommandsListener;
 - (void)_stopDeliveryTimer;
 - (void)dealloc;
 - (void)pause;
 - (void)processServerDeliveryTimer;
 - (void)resume;
-- (void)setLastProcessingDate:(id)a3 forDestination:(id)a4;
+- (void)setLastProcessingDate:(id)date forDestination:(id)destination;
 - (void)startDeliveryTimer;
-- (void)startTimer:(id)a3 withResponse:(id)a4;
-- (void)withdrawShelvedBatchesForChannel:(id)a3 groupBatches:(BOOL)a4 withSaveObjectBlock:(id)a5;
+- (void)startTimer:(id)timer withResponse:(id)response;
+- (void)withdrawShelvedBatchesForChannel:(id)channel groupBatches:(BOOL)batches withSaveObjectBlock:(id)block;
 @end
 
 @implementation APMetricServerDelivery
 
 - (void)startDeliveryTimer
 {
-  v3 = [(APMetricServerDelivery *)self serverDeliveryTimer];
+  serverDeliveryTimer = [(APMetricServerDelivery *)self serverDeliveryTimer];
 
-  if (!v3)
+  if (!serverDeliveryTimer)
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    v5 = [(APMetricServerDelivery *)v4 serverDeliveryTimer];
-    if (!v5)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    serverDeliveryTimer2 = [(APMetricServerDelivery *)selfCopy serverDeliveryTimer];
+    if (!serverDeliveryTimer2)
     {
-      v5 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v4->_serverDeliveryQueue);
-      [(APMetricServerDelivery *)v4 setServerDeliveryTimer:v5];
-      if (v5)
+      serverDeliveryTimer2 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, selfCopy->_serverDeliveryQueue);
+      [(APMetricServerDelivery *)selfCopy setServerDeliveryTimer:serverDeliveryTimer2];
+      if (serverDeliveryTimer2)
       {
-        objc_initWeak(location, v4);
+        objc_initWeak(location, selfCopy);
         v14[0] = _NSConcreteStackBlock;
         v14[1] = 3221225472;
         v14[2] = sub_1003377F4;
         v14[3] = &unk_10047C978;
         objc_copyWeak(&v15, location);
         v6 = objc_retainBlock(v14);
-        [(APMetricServerDelivery *)v4 _periodicDelay];
+        [(APMetricServerDelivery *)selfCopy _periodicDelay];
         v8 = v7 * 1000000000.0;
         v9 = v8;
         v10 = dispatch_time(0, v8);
-        dispatch_source_set_timer(v5, v10, v9, 0x37E11D600uLL);
-        dispatch_source_set_event_handler(v5, v6);
-        dispatch_resume(v5);
+        dispatch_source_set_timer(serverDeliveryTimer2, v10, v9, 0x37E11D600uLL);
+        dispatch_source_set_event_handler(serverDeliveryTimer2, v6);
+        dispatch_resume(serverDeliveryTimer2);
         v11 = APLogForCategory();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
@@ -77,11 +77,11 @@
         }
 
         APSimulateCrash();
-        v5 = 0;
+        serverDeliveryTimer2 = 0;
       }
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -136,13 +136,13 @@
     [(APMetricServerDelivery *)v2 startDeliveryTimer];
     objc_initWeak(&location, v2);
     v18 = dispatch_time(0, 5000000000);
-    v19 = [(APMetricServerDelivery *)v2 serverDeliveryQueue];
+    serverDeliveryQueue = [(APMetricServerDelivery *)v2 serverDeliveryQueue];
     v21 = _NSConcreteStackBlock;
     v22 = 3221225472;
     v23 = sub_100337480;
     v24 = &unk_10047C978;
     objc_copyWeak(&v25, &location);
-    dispatch_after(v18, v19, &v21);
+    dispatch_after(v18, serverDeliveryQueue, &v21);
 
     [(APMetricServerDelivery *)v2 _startTestCommandsListener:v21];
     objc_destroyWeak(&v25);
@@ -180,14 +180,14 @@
 
 - (void)_stopDeliveryTimer
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(APMetricServerDelivery *)v2 serverDeliveryTimer];
-  v4 = v3;
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  serverDeliveryTimer = [(APMetricServerDelivery *)selfCopy serverDeliveryTimer];
+  v4 = serverDeliveryTimer;
+  if (serverDeliveryTimer)
   {
-    dispatch_source_cancel(v3);
-    [(APMetricServerDelivery *)v2 setServerDeliveryTimer:0];
+    dispatch_source_cancel(serverDeliveryTimer);
+    [(APMetricServerDelivery *)selfCopy setServerDeliveryTimer:0];
     v5 = APLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -196,14 +196,14 @@
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)lastProcessingDateForDestination:(id)a3
+- (id)lastProcessingDateForDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(APMetricServerDelivery *)self lastProcessingDates];
-  v6 = [v5 objectForKey:v4];
+  destinationCopy = destination;
+  lastProcessingDates = [(APMetricServerDelivery *)self lastProcessingDates];
+  v6 = [lastProcessingDates objectForKey:destinationCopy];
 
   if (!v6)
   {
@@ -213,47 +213,47 @@
   return v6;
 }
 
-- (void)setLastProcessingDate:(id)a3 forDestination:(id)a4
+- (void)setLastProcessingDate:(id)date forDestination:(id)destination
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(APMetricServerDelivery *)self lastProcessingDates];
-  [v8 setObject:v7 forKey:v6];
+  destinationCopy = destination;
+  dateCopy = date;
+  lastProcessingDates = [(APMetricServerDelivery *)self lastProcessingDates];
+  [lastProcessingDates setObject:dateCopy forKey:destinationCopy];
 }
 
-- (id)backoffTimerForDestination:(id)a3
+- (id)backoffTimerForDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(APMetricServerDelivery *)self backoffTimers];
-  v6 = [v5 objectForKey:v4];
+  destinationCopy = destination;
+  backoffTimers = [(APMetricServerDelivery *)self backoffTimers];
+  v6 = [backoffTimers objectForKey:destinationCopy];
   if (!v6)
   {
     v7 = [APECBackoffTimer alloc];
     v8 = objc_alloc_init(APSystemClock);
     v6 = [(APECBackoffTimer *)v7 initWithClock:v8];
 
-    [v5 setObject:v6 forKey:v4];
+    [backoffTimers setObject:v6 forKey:destinationCopy];
   }
 
   return v6;
 }
 
-- (id)_determineBillable:(id)a3
+- (id)_determineBillable:(id)billable
 {
-  v3 = a3;
+  billableCopy = billable;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v4 = [billableCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v4)
   {
     v6 = 0;
 LABEL_14:
     v14 = +[NSBundle mainBundle];
-    v15 = [v14 bundleIdentifier];
+    bundleIdentifier = [v14 bundleIdentifier];
 
-    v6 = v15;
+    v6 = bundleIdentifier;
     goto LABEL_15;
   }
 
@@ -267,11 +267,11 @@ LABEL_14:
     {
       if (*v18 != v8)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(billableCopy);
       }
 
       v10 = *(*(&v17 + 1) + 8 * i);
-      v11 = [v3 countForObject:v10];
+      v11 = [billableCopy countForObject:v10];
       if (v11 > v7)
       {
         v12 = v11;
@@ -282,7 +282,7 @@ LABEL_14:
       }
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v5 = [billableCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   }
 
   while (v5);
@@ -296,10 +296,10 @@ LABEL_15:
   return v6;
 }
 
-- (id)_dataFromBatchDictionaries:(id)a3
+- (id)_dataFromBatchDictionaries:(id)dictionaries
 {
-  v3 = a3;
-  if ([v3 count])
+  dictionariesCopy = dictionaries;
+  if ([dictionariesCopy count])
   {
     v4 = +[NSDate date];
     v5 = +[NSDateFormatter iso8601TruncatedToMinutes];
@@ -307,23 +307,23 @@ LABEL_15:
     v6 = [v5 stringFromDate:v4];
     v7 = +[APSystemInfo osIdentifier];
     v8 = +[APDeviceInfo current];
-    v9 = [v8 buildVersion];
+    buildVersion = [v8 buildVersion];
 
     v10 = +[APDeviceInfo current];
-    v11 = [v10 deviceModel];
+    deviceModel = [v10 deviceModel];
 
     v29[0] = @"local_utc";
     v29[1] = @"batches";
     v30[0] = v6;
-    v30[1] = v3;
+    v30[1] = dictionariesCopy;
     v29[2] = @"version";
     v29[3] = @"os";
     v30[2] = &off_100493480;
     v30[3] = v7;
     v29[4] = @"build";
     v29[5] = @"model";
-    v30[4] = v9;
-    v30[5] = v11;
+    v30[4] = buildVersion;
+    v30[5] = deviceModel;
     v12 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:6];
     if (+[APSystemInternal isAppleInternalInstall])
     {
@@ -340,9 +340,9 @@ LABEL_15:
         v18 = APLogForCategory();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
-          v19 = [v14 jsonString];
+          jsonString = [v14 jsonString];
           *buf = 138477827;
-          v28 = v19;
+          v28 = jsonString;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "Batch payload %{private}@", buf, 0xCu);
         }
       }
@@ -387,13 +387,13 @@ LABEL_15:
   return v20;
 }
 
-- (void)_sendPayload:(id)a3 successCompletionHandler:(id)a4
+- (void)_sendPayload:(id)payload successCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(APMetricServerDelivery *)self httpDelivery];
+  payloadCopy = payload;
+  handlerCopy = handler;
+  httpDelivery = [(APMetricServerDelivery *)self httpDelivery];
   v23 = 0;
-  v9 = [v8 sendPayload:v6 error:&v23];
+  v9 = [httpDelivery sendPayload:payloadCopy error:&v23];
   v10 = v23;
   v11 = v10;
   if (!v10)
@@ -401,18 +401,18 @@ LABEL_15:
     goto LABEL_7;
   }
 
-  v12 = [v10 code];
+  code = [v10 code];
   v13 = APLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     *buf = 134218242;
-    v25 = v12;
+    v25 = code;
     v26 = 2114;
     v27 = v11;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Error (%ld) attempting to send batch: %{public}@", buf, 0x16u);
   }
 
-  if (v12 == 8898)
+  if (code == 8898)
   {
     v14 = APLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -425,17 +425,17 @@ LABEL_15:
   else
   {
 LABEL_7:
-    v15 = [v6 channel];
-    v16 = [v15 destination];
-    v14 = [(APMetricServerDelivery *)self backoffTimerForDestination:v16];
+    channel = [payloadCopy channel];
+    destination = [channel destination];
+    v14 = [(APMetricServerDelivery *)self backoffTimerForDestination:destination];
 
-    v17 = [v9 statusCode];
-    v18 = v17;
-    if ((v17 - 200) > 0x63)
+    statusCode = [v9 statusCode];
+    v18 = statusCode;
+    if ((statusCode - 200) > 0x63)
     {
       if (v11)
       {
-        v19 = v17 == 0;
+        v19 = statusCode == 0;
       }
 
       else
@@ -444,9 +444,9 @@ LABEL_7:
       }
 
       v20 = v19;
-      if ((v17 - 400) < 0xC8 || v20)
+      if ((statusCode - 400) < 0xC8 || v20)
       {
-        if (v17 == 503)
+        if (statusCode == 503)
         {
           [(APMetricServerDelivery *)self startTimer:v14 withResponse:v9];
         }
@@ -471,7 +471,7 @@ LABEL_7:
 
     else
     {
-      if (v17 == 202)
+      if (statusCode == 202)
       {
         [(APMetricServerDelivery *)self startTimer:v14 withResponse:v9];
       }
@@ -481,39 +481,39 @@ LABEL_7:
         [v14 resetTimer];
       }
 
-      v22 = [(APMetricServerDelivery *)self preparedDataServerDelivery];
-      sub_100395124(v22);
+      preparedDataServerDelivery = [(APMetricServerDelivery *)self preparedDataServerDelivery];
+      sub_100395124(preparedDataServerDelivery);
 
-      if (v7)
+      if (handlerCopy)
       {
-        v7[2](v7, v18 != 202);
+        handlerCopy[2](handlerCopy, v18 != 202);
       }
     }
   }
 }
 
-- (void)startTimer:(id)a3 withResponse:(id)a4
+- (void)startTimer:(id)timer withResponse:(id)response
 {
-  v7 = a3;
-  v6 = [(APMetricServerDelivery *)self backoffFromResponse:a4];
+  timerCopy = timer;
+  v6 = [(APMetricServerDelivery *)self backoffFromResponse:response];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v7 startNextTimer];
+    [timerCopy startNextTimer];
   }
 
   else
   {
-    [v7 startMinimumTimer:v6];
+    [timerCopy startMinimumTimer:v6];
   }
 }
 
-- (int64_t)backoffFromResponse:(id)a3
+- (int64_t)backoffFromResponse:(id)response
 {
-  v3 = [a3 valueForHTTPHeaderField:@"Retry-After"];
-  v4 = [v3 integerValue];
-  if (v4)
+  v3 = [response valueForHTTPHeaderField:@"Retry-After"];
+  integerValue = [v3 integerValue];
+  if (integerValue)
   {
-    v5 = v4;
+    v5 = integerValue;
   }
 
   else
@@ -534,17 +534,17 @@ LABEL_7:
   }
 
   v4 = +[MetricsModule storage];
-  v5 = [v4 activeChannels];
+  activeChannels = [v4 activeChannels];
   [v4 closeActiveBatches];
   v32 = v4;
-  v6 = [objc_opt_class() closedStoragePathPrefix];
-  [APMetricStorage_private removeExpiredBatchesFromClosedPrefix:v6];
+  closedStoragePathPrefix = [objc_opt_class() closedStoragePathPrefix];
+  [APMetricStorage_private removeExpiredBatchesFromClosedPrefix:closedStoragePathPrefix];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = v5;
+  v7 = activeChannels;
   v8 = [v7 countByEnumeratingWithState:&v34 objects:v46 count:16];
   if (v8)
   {
@@ -600,7 +600,7 @@ LABEL_7:
   }
 
   v18 = +[APMetricOffsetSettings settings];
-  v19 = [v18 lastActivity];
+  lastActivity = [v18 lastActivity];
   v20 = +[NSDate date];
   if (+[APSystemInternal isAppleInternalInstall])
   {
@@ -628,10 +628,10 @@ LABEL_7:
   {
     v33 = v18;
     v26 = [NSNumber numberWithBool:v11 & 1];
-    [v20 timeIntervalSinceDate:v19];
+    [v20 timeIntervalSinceDate:lastActivity];
     v27 = [NSNumber numberWithDouble:?];
     v28 = [NSNumber numberWithInteger:v24];
-    [v20 timeIntervalSinceDate:v19];
+    [v20 timeIntervalSinceDate:lastActivity];
     *buf = 138413058;
     v29 = @"NO";
     v39 = v26;
@@ -653,60 +653,60 @@ LABEL_7:
 
   if (v11)
   {
-    if (!v19 || ([v20 timeIntervalSinceDate:v19], v31 > v24))
+    if (!lastActivity || ([v20 timeIntervalSinceDate:lastActivity], v31 > v24))
     {
       [(APMetricServerDelivery *)self _stopDeliveryTimer];
     }
   }
 }
 
-- (BOOL)_shouldBackoffForDestination:(id)a3
+- (BOOL)_shouldBackoffForDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(APMetricServerDelivery *)self backoffTimerForDestination:v4];
-  v6 = [v5 isWaitingForBackoff];
-  if (v6)
+  destinationCopy = destination;
+  v5 = [(APMetricServerDelivery *)self backoffTimerForDestination:destinationCopy];
+  isWaitingForBackoff = [v5 isWaitingForBackoff];
+  if (isWaitingForBackoff)
   {
     v7 = +[NSISO8601DateFormatter apLocalSharedFormatter];
     v8 = APLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v5 scheduledDate];
-      v10 = [v7 stringFromDate:v9];
+      scheduledDate = [v5 scheduledDate];
+      v10 = [v7 stringFromDate:scheduledDate];
       v12 = 138740227;
-      v13 = v4;
+      v13 = destinationCopy;
       v14 = 2114;
       v15 = v10;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Metrics is in backoff for %{sensitive}@. Scheduled time: %{public}@", &v12, 0x16u);
     }
   }
 
-  return v6;
+  return isWaitingForBackoff;
 }
 
-- (id)_dictionariesFromBatchesInStorage:(id)a3 useShelvedData:(BOOL)a4 channels:(id)a5 groupBatches:(BOOL)a6 batchInfos:(id *)a7 billing:(id *)a8
+- (id)_dictionariesFromBatchesInStorage:(id)storage useShelvedData:(BOOL)data channels:(id)channels groupBatches:(BOOL)batches batchInfos:(id *)infos billing:(id *)billing
 {
-  v10 = a6;
-  v12 = a4;
-  v44 = a3;
-  v13 = a5;
+  batchesCopy = batches;
+  dataCopy = data;
+  storageCopy = storage;
+  channelsCopy = channels;
   v14 = 0;
-  v40 = a7;
-  if (a7 && a8)
+  infosCopy = infos;
+  if (infos && billing)
   {
-    v41 = v13;
-    v15 = [(APMetricServerDelivery *)self isRunningTests];
-    if (v12)
+    v41 = channelsCopy;
+    isRunningTests = [(APMetricServerDelivery *)self isRunningTests];
+    if (dataCopy)
     {
-      v16 = [v41 firstObject];
-      v17 = [v16 protectedEventChannel];
-      v43 = [v44 closeShelvedBatchesForChannel:v17 groupBatches:v10];
+      firstObject = [v41 firstObject];
+      protectedEventChannel = [firstObject protectedEventChannel];
+      v43 = [storageCopy closeShelvedBatchesForChannel:protectedEventChannel groupBatches:batchesCopy];
     }
 
     else
     {
-      v16 = [v41 mapObjectsUsingBlock:&stru_10047E970];
-      v43 = [v44 closeBatchesForChannels:v16];
+      firstObject = [v41 mapObjectsUsingBlock:&stru_10047E970];
+      v43 = [storageCopy closeBatchesForChannels:firstObject];
     }
 
     if (+[APSystemInternal isAppleInternalInstall])
@@ -726,7 +726,7 @@ LABEL_7:
           v14 = 0;
 LABEL_33:
 
-          v13 = v41;
+          channelsCopy = v41;
           goto LABEL_34;
         }
 
@@ -778,32 +778,32 @@ LABEL_33:
             v29 = APLogForCategory();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
             {
-              v30 = a8;
-              v31 = [v27 identifier];
+              billingCopy = billing;
+              identifier = [v27 identifier];
               v32 = *(*(&buf + 1) + 24);
               v33 = [v28 jsonDataWithOptions:0x400000];
               v34 = [v33 length];
               *v57 = 138543874;
-              v58 = v31;
+              v58 = identifier;
               v59 = 2048;
               v60 = v32;
               v61 = 2048;
               v62 = v34;
               _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "Send batch %{public}@ with %lu metrics, batchSize %lu", v57, 0x20u);
 
-              a8 = v30;
+              billing = billingCopy;
             }
 
             [v46 addObject:v28];
             v35 = objc_alloc_init(APMetricBatchInfo);
-            v36 = [v27 identifier];
-            [(APMetricBatchInfo *)v35 setIdentifier:v36];
+            identifier2 = [v27 identifier];
+            [(APMetricBatchInfo *)v35 setIdentifier:identifier2];
 
-            v37 = [v27 fileSystemToken];
-            [(APMetricBatchInfo *)v35 setFileSystemToken:v37];
+            fileSystemToken = [v27 fileSystemToken];
+            [(APMetricBatchInfo *)v35 setFileSystemToken:fileSystemToken];
 
             -[APMetricBatchInfo setPurpose:](v35, "setPurpose:", [v27 purpose]);
-            if (v15)
+            if (isRunningTests)
             {
               [(APMetricBatchInfo *)v35 setMetricsCount:*(*(&buf + 1) + 24)];
             }
@@ -825,10 +825,10 @@ LABEL_33:
       while (v49);
     }
 
-    *v40 = [v25 copy];
+    *infosCopy = [v25 copy];
     if ([v46 count])
     {
-      *a8 = [(APMetricServerDelivery *)self _determineBillable:v48];
+      *billing = [(APMetricServerDelivery *)self _determineBillable:v48];
       v14 = v46;
     }
 
@@ -853,11 +853,11 @@ LABEL_34:
   return v14;
 }
 
-- (id)_loadBatchesAsDataForChannel:(id)a3 useShelvedData:(BOOL)a4 groupBatches:(BOOL)a5 batchInfos:(id *)a6 billing:(id *)a7
+- (id)_loadBatchesAsDataForChannel:(id)channel useShelvedData:(BOOL)data groupBatches:(BOOL)batches batchInfos:(id *)infos billing:(id *)billing
 {
-  v8 = a5;
-  v9 = a4;
-  v11 = a3;
+  batchesCopy = batches;
+  dataCopy = data;
+  channelCopy = channel;
   v27 = +[MetricsModule storage];
   v12 = +[NSMutableArray array];
   v13 = +[NSMutableArray array];
@@ -867,40 +867,40 @@ LABEL_34:
   v35 = 0x3032000000;
   v36 = sub_100339298;
   v37 = sub_1003392A8;
-  v39 = v11;
+  v39 = channelCopy;
   v38 = [NSArray arrayWithObjects:&v39 count:1];
-  if (v8)
+  if (batchesCopy)
   {
-    v15 = +[APECPurposeConfig purposeConfig:](APECPurposeConfig, "purposeConfig:", [v11 purpose]);
-    v16 = [v15 allowedPurposes];
+    v15 = +[APECPurposeConfig purposeConfig:](APECPurposeConfig, "purposeConfig:", [channelCopy purpose]);
+    allowedPurposes = [v15 allowedPurposes];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_1003392B0;
     v30[3] = &unk_10047E9C0;
-    v31 = v11;
+    v31 = channelCopy;
     v32 = &v33;
-    [v16 enumerateObjectsUsingBlock:v30];
+    [allowedPurposes enumerateObjectsUsingBlock:v30];
   }
 
   v17 = v34[5];
   v28 = @"com.apple.ap.promotedcontentd";
   v29 = 0;
-  v18 = [(APMetricServerDelivery *)self _dictionariesFromBatchesInStorage:v27 useShelvedData:v9 channels:v17 groupBatches:v8 batchInfos:&v29 billing:&v28, a7];
+  billing = [(APMetricServerDelivery *)self _dictionariesFromBatchesInStorage:v27 useShelvedData:dataCopy channels:v17 groupBatches:batchesCopy batchInfos:&v29 billing:&v28, billing];
   v19 = v29;
   v20 = v28;
   _Block_object_dispose(&v33, 8);
 
   objc_autoreleasePoolPop(v14);
-  if (v18)
+  if (billing)
   {
-    [v12 addObjectsFromArray:v18];
+    [v12 addObjectsFromArray:billing];
     [v13 addObjectsFromArray:v19];
   }
 
-  if (a6)
+  if (infos)
   {
     v21 = v13;
-    *a6 = v13;
+    *infos = v13;
   }
 
   if (v26)
@@ -914,18 +914,18 @@ LABEL_34:
   return v23;
 }
 
-- (BOOL)processMetrics:(int64_t)a3 forChannel:(id)a4
+- (BOOL)processMetrics:(int64_t)metrics forChannel:(id)channel
 {
-  v6 = a4;
-  v7 = [(APMetricServerDelivery *)self isRunningTests];
-  if (+[APSystemInternal isAppleInternalInstall]&& (v7 & 1) == 0)
+  channelCopy = channel;
+  isRunningTests = [(APMetricServerDelivery *)self isRunningTests];
+  if (+[APSystemInternal isAppleInternalInstall]&& (isRunningTests & 1) == 0)
   {
-    v8 = [(APMetricServerDelivery *)self serverDeliveryQueue];
-    dispatch_assert_queue_V2(v8);
+    serverDeliveryQueue = [(APMetricServerDelivery *)self serverDeliveryQueue];
+    dispatch_assert_queue_V2(serverDeliveryQueue);
   }
 
   v9 = os_transaction_create();
-  if (v7)
+  if (isRunningTests)
   {
     goto LABEL_11;
   }
@@ -952,42 +952,42 @@ LABEL_34:
 
 LABEL_11:
     v10 = +[NSDate date];
-    v14 = [v6 destination];
-    v15 = [(APMetricServerDelivery *)self lastProcessingDateForDestination:v14];
+    destination = [channelCopy destination];
+    v15 = [(APMetricServerDelivery *)self lastProcessingDateForDestination:destination];
 
     [v10 timeIntervalSinceDate:v15];
     v17 = v16;
     [(APMetricServerDelivery *)self _periodicDelay];
-    if (a3 == 1 && v17 < v18 * 0.5 || ([v6 destination], v19 = objc_claimAutoreleasedReturnValue(), v20 = -[APMetricServerDelivery _shouldBackoffForDestination:](self, "_shouldBackoffForDestination:", v19), v19, (v20 & 1) != 0))
+    if (metrics == 1 && v17 < v18 * 0.5 || ([channelCopy destination], v19 = objc_claimAutoreleasedReturnValue(), v20 = -[APMetricServerDelivery _shouldBackoffForDestination:](self, "_shouldBackoffForDestination:", v19), v19, (v20 & 1) != 0))
     {
       v21 = 0;
     }
 
     else
     {
-      v24 = [(APMetricServerDelivery *)self processingDestinationsLock];
-      v46 = [(APMetricServerDelivery *)self processingDestinations];
-      [v24 lock];
-      v25 = [v6 destination];
-      v26 = [v46 containsObject:v25];
+      processingDestinationsLock = [(APMetricServerDelivery *)self processingDestinationsLock];
+      processingDestinations = [(APMetricServerDelivery *)self processingDestinations];
+      [processingDestinationsLock lock];
+      destination2 = [channelCopy destination];
+      v26 = [processingDestinations containsObject:destination2];
 
       if (v26)
       {
-        [v24 unlock];
+        [processingDestinationsLock unlock];
         v21 = 0;
       }
 
       else
       {
-        v27 = [v6 destination];
-        [v46 addObject:v27];
+        destination3 = [channelCopy destination];
+        [processingDestinations addObject:destination3];
 
-        [v24 unlock];
+        [processingDestinationsLock unlock];
         v42 = +[MetricsModule storage];
         v28 = objc_autoreleasePoolPush();
         v53 = 0;
         v54 = 0;
-        v45 = [(APMetricServerDelivery *)self _loadBatchesAsDataForChannel:v6 useShelvedData:0 groupBatches:1 batchInfos:&v54 billing:&v53];
+        v45 = [(APMetricServerDelivery *)self _loadBatchesAsDataForChannel:channelCopy useShelvedData:0 groupBatches:1 batchInfos:&v54 billing:&v53];
         v43 = v54;
         v44 = v53;
         objc_autoreleasePoolPop(v28);
@@ -1025,10 +1025,10 @@ LABEL_11:
           v34 = objc_alloc_init(APMetricPayload);
           [(APMetricPayload *)v34 setBatchesData:v45];
           [(APMetricPayload *)v34 setBilling:v44];
-          [(APMetricPayload *)v34 setChannel:v6];
+          [(APMetricPayload *)v34 setChannel:channelCopy];
           [(APMetricPayload *)v34 setBatchInfos:v43];
-          v35 = [(APMetricServerDelivery *)self fakeNetworkResponse];
-          [(APMetricPayload *)v34 setFakeNetworkResponse:v35];
+          fakeNetworkResponse = [(APMetricServerDelivery *)self fakeNetworkResponse];
+          [(APMetricPayload *)v34 setFakeNetworkResponse:fakeNetworkResponse];
 
           *buf = 0;
           *&buf[8] = buf;
@@ -1038,18 +1038,18 @@ LABEL_11:
           v48[1] = 3221225472;
           v48[2] = sub_100339AAC;
           v48[3] = &unk_10047E9E8;
-          v52 = v7;
+          v52 = isRunningTests;
           v49 = v43;
-          v50 = self;
+          selfCopy = self;
           v51 = buf;
           [(APMetricServerDelivery *)self _sendPayload:v34 successCompletionHandler:v48];
-          v36 = [v6 destination];
-          [(APMetricServerDelivery *)self setLastProcessingDate:v10 forDestination:v36];
+          destination4 = [channelCopy destination];
+          [(APMetricServerDelivery *)self setLastProcessingDate:v10 forDestination:destination4];
 
           if (*(*&buf[8] + 24) == 1)
           {
-            v37 = [v6 protectedEventChannel];
-            v38 = [v42 hasBacklogForChannel:v37];
+            protectedEventChannel = [channelCopy protectedEventChannel];
+            v38 = [v42 hasBacklogForChannel:protectedEventChannel];
 
             if (v38)
             {
@@ -1060,18 +1060,18 @@ LABEL_11:
                 _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Starting metrics processing due to a long backlog.", v47, 2u);
               }
 
-              [(APMetricServerDelivery *)self _asyncProcessMetrics:4 forChannel:v6];
+              [(APMetricServerDelivery *)self _asyncProcessMetrics:4 forChannel:channelCopy];
             }
           }
 
           _Block_object_dispose(buf, 8);
         }
 
-        [v24 lock];
-        v40 = [v6 destination];
-        [v46 removeObject:v40];
+        [processingDestinationsLock lock];
+        destination5 = [channelCopy destination];
+        [processingDestinations removeObject:destination5];
 
-        [v24 unlock];
+        [processingDestinationsLock unlock];
         v9 = 0;
       }
     }
@@ -1111,41 +1111,41 @@ LABEL_44:
   return v21;
 }
 
-- (void)_asyncProcessMetrics:(int64_t)a3 forChannel:(id)a4
+- (void)_asyncProcessMetrics:(int64_t)metrics forChannel:(id)channel
 {
-  v6 = a4;
-  v7 = [(APMetricServerDelivery *)self serverDeliveryQueue];
+  channelCopy = channel;
+  serverDeliveryQueue = [(APMetricServerDelivery *)self serverDeliveryQueue];
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100339DA8;
   v9[3] = &unk_10047EA10;
   objc_copyWeak(v11, &location);
-  v11[1] = a3;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, v9);
+  v11[1] = metrics;
+  v10 = channelCopy;
+  v8 = channelCopy;
+  dispatch_async(serverDeliveryQueue, v9);
 
   objc_destroyWeak(v11);
   objc_destroyWeak(&location);
 }
 
-- (void)withdrawShelvedBatchesForChannel:(id)a3 groupBatches:(BOOL)a4 withSaveObjectBlock:(id)a5
+- (void)withdrawShelvedBatchesForChannel:(id)channel groupBatches:(BOOL)batches withSaveObjectBlock:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  batchesCopy = batches;
+  channelCopy = channel;
+  blockCopy = block;
   v10 = 0;
   v11 = 50;
-  if (!v6)
+  if (!batchesCopy)
   {
     v11 = 500;
   }
 
-  v39 = v9;
-  v32 = self;
+  v39 = blockCopy;
+  selfCopy = self;
   v12 = v11;
-  v33 = v8;
+  v33 = channelCopy;
   while (v12 >= 1)
   {
     v44 = v12 - 1;
@@ -1154,16 +1154,16 @@ LABEL_44:
     v13 = objc_autoreleasePoolPush();
     v51 = 0;
     v52 = 0;
-    v14 = [(APMetricServerDelivery *)self _loadBatchesAsDataForChannel:v8 useShelvedData:1 groupBatches:v6 batchInfos:&v52 billing:&v51];
+    v14 = [(APMetricServerDelivery *)self _loadBatchesAsDataForChannel:channelCopy useShelvedData:1 groupBatches:batchesCopy batchInfos:&v52 billing:&v51];
     v45 = v52;
     v15 = v51;
     objc_autoreleasePoolPop(v13);
     if (v14)
     {
-      v16 = [(APMetricServerDelivery *)self httpDelivery];
+      httpDelivery = [(APMetricServerDelivery *)self httpDelivery];
       v50 = 0;
-      v41 = v16;
-      v17 = [v16 buildMetricDeliveryRequestFromData:v14 toChannel:v8 billing:v15 signing:0 failIfSignatureIsNotAvailable:0 error:&v50];
+      v41 = httpDelivery;
+      v17 = [httpDelivery buildMetricDeliveryRequestFromData:v14 toChannel:channelCopy billing:v15 signing:0 failIfSignatureIsNotAvailable:0 error:&v50];
       v42 = v50;
       if (v42)
       {
@@ -1210,14 +1210,14 @@ LABEL_44:
               v27 = APLogForCategory();
               if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
               {
-                v28 = [v26 identifier];
+                identifier = [v26 identifier];
                 *buf = 138543362;
-                v55 = v28;
+                v55 = identifier;
                 _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEBUG, "Deleting batch %{public}@", buf, 0xCu);
               }
 
-              v29 = [v26 fileSystemToken];
-              [APMetricBatch removeBatchByFileSystemToken:v29];
+              fileSystemToken = [v26 fileSystemToken];
+              [APMetricBatch removeBatchByFileSystemToken:fileSystemToken];
             }
 
             v23 = [v21 countByEnumeratingWithState:&v46 objects:v53 count:16];
@@ -1226,8 +1226,8 @@ LABEL_44:
           while (v23);
         }
 
-        self = v32;
-        v8 = v33;
+        self = selfCopy;
+        channelCopy = v33;
         v10 = v38;
         v15 = v36;
         v14 = v37;
@@ -1255,26 +1255,26 @@ LABEL_44:
 LABEL_25:
   if (v10)
   {
-    v30 = [(APMetricServerDelivery *)self preparedDataServerDelivery];
-    sub_10032EF10(v30);
+    preparedDataServerDelivery = [(APMetricServerDelivery *)self preparedDataServerDelivery];
+    sub_10032EF10(preparedDataServerDelivery);
 
-    v31 = [(APMetricServerDelivery *)self preparedUnsignedDataProcessor];
-    sub_100327FB0(v31);
+    preparedUnsignedDataProcessor = [(APMetricServerDelivery *)self preparedUnsignedDataProcessor];
+    sub_100327FB0(preparedUnsignedDataProcessor);
   }
 }
 
 - (void)pause
 {
-  v3 = [(APMetricServerDelivery *)self serverDeliveryTimer];
-  [(APMetricServerDelivery *)self setServerDeliveryTimerWasRunningWhenPaused:v3 != 0];
+  serverDeliveryTimer = [(APMetricServerDelivery *)self serverDeliveryTimer];
+  [(APMetricServerDelivery *)self setServerDeliveryTimerWasRunningWhenPaused:serverDeliveryTimer != 0];
 
   if ([(APMetricServerDelivery *)self serverDeliveryTimerWasRunningWhenPaused])
   {
     [(APMetricServerDelivery *)self _stopDeliveryTimer];
   }
 
-  v4 = [(APMetricServerDelivery *)self serverDeliveryQueue];
-  dispatch_suspend(v4);
+  serverDeliveryQueue = [(APMetricServerDelivery *)self serverDeliveryQueue];
+  dispatch_suspend(serverDeliveryQueue);
 
   v5 = APLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1286,8 +1286,8 @@ LABEL_25:
 
 - (void)resume
 {
-  v3 = [(APMetricServerDelivery *)self serverDeliveryQueue];
-  dispatch_resume(v3);
+  serverDeliveryQueue = [(APMetricServerDelivery *)self serverDeliveryQueue];
+  dispatch_resume(serverDeliveryQueue);
 
   if ([(APMetricServerDelivery *)self serverDeliveryTimerWasRunningWhenPaused])
   {
@@ -1325,8 +1325,8 @@ LABEL_25:
   v10 = [(APMetricServerDelivery *)self preparedUnsignedDataProcessor:v12];
   sub_100327FB0(v10);
 
-  v11 = [(APMetricServerDelivery *)self preparedDataServerDelivery];
-  sub_10032EF10(v11);
+  preparedDataServerDelivery = [(APMetricServerDelivery *)self preparedDataServerDelivery];
+  sub_10032EF10(preparedDataServerDelivery);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);

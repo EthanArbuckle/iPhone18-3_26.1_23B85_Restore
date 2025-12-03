@@ -1,37 +1,37 @@
 @interface CLKComplicationTemplateGraphicCornerMeteredGaugeText
-- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)a3;
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3;
+- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)block;
+- (void)_enumerateTextProviderKeysWithBlock:(id)block;
 @end
 
 @implementation CLKComplicationTemplateGraphicCornerMeteredGaugeText
 
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3
+- (void)_enumerateTextProviderKeysWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 0;
-  v3[2](v3, @"leadingTextProvider", 1, 1, &v4);
+  blockCopy[2](blockCopy, @"leadingTextProvider", 1, 1, &v4);
   if ((v4 & 1) == 0)
   {
-    v3[2](v3, @"trailingTextProvider", 1, 1, &v4);
+    blockCopy[2](blockCopy, @"trailingTextProvider", 1, 1, &v4);
     if ((v4 & 1) == 0)
     {
-      v3[2](v3, @"outerTextProvider", 0, 1, &v4);
+      blockCopy[2](blockCopy, @"outerTextProvider", 0, 1, &v4);
     }
   }
 }
 
-- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)a3
+- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[CLKRenderingContext sharedRenderingContext];
-  v6 = [v5 device];
+  device = [v5 device];
 
-  __102__CLKComplicationTemplateGraphicCornerMeteredGaugeText__enumerateFullColorImageProviderKeysWithBlock___block_invoke(v7, v6);
+  __102__CLKComplicationTemplateGraphicCornerMeteredGaugeText__enumerateFullColorImageProviderKeysWithBlock___block_invoke(v7, device);
   v8 = *&qword_27DE91A50;
   v9 = *&_enumerateFullColorImageProviderKeysWithBlock___imageDiameter_1229[[(CLKComplicationTemplate *)self sdkVersion]];
   v11 = 0;
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:*&_enumerateFullColorImageProviderKeysWithBlock___pointSize_1230];
-  v4[2](v4, @"outerImageProvider", 1, 1, v10, 4, &v11, v9, v9, v8, v8, 0.0);
+  blockCopy[2](blockCopy, @"outerImageProvider", 1, 1, v10, 4, &v11, v9, v9, v8, v8, 0.0);
 }
 
 uint64_t __102__CLKComplicationTemplateGraphicCornerMeteredGaugeText__enumerateFullColorImageProviderKeysWithBlock___block_invoke(uint64_t a1, void *a2)

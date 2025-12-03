@@ -1,55 +1,55 @@
 @interface SQLiteStringLikePredicate
-+ (id)predicateWithProperty:(id)a3 havingPrefix:(id)a4;
-+ (id)predicateWithProperty:(id)a3 havingSuffix:(id)a4;
-+ (id)predicateWithProperty:(id)a3 matchingPattern:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)SQLForEntityClass:(Class)a3;
++ (id)predicateWithProperty:(id)property havingPrefix:(id)prefix;
++ (id)predicateWithProperty:(id)property havingSuffix:(id)suffix;
++ (id)predicateWithProperty:(id)property matchingPattern:(id)pattern;
+- (BOOL)isEqual:(id)equal;
+- (id)SQLForEntityClass:(Class)class;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SQLiteStringLikePredicate
 
-+ (id)predicateWithProperty:(id)a3 havingPrefix:(id)a4
++ (id)predicateWithProperty:(id)property havingPrefix:(id)prefix
 {
-  v6 = a3;
-  v7 = [a4 stringByAppendingString:@"%"];
-  v8 = [a1 predicateWithProperty:v6 matchingPattern:v7];
+  propertyCopy = property;
+  v7 = [prefix stringByAppendingString:@"%"];
+  v8 = [self predicateWithProperty:propertyCopy matchingPattern:v7];
 
   return v8;
 }
 
-+ (id)predicateWithProperty:(id)a3 havingSuffix:(id)a4
++ (id)predicateWithProperty:(id)property havingSuffix:(id)suffix
 {
-  v6 = a3;
-  v7 = [@"%" stringByAppendingString:a4];
-  v8 = [a1 predicateWithProperty:v6 matchingPattern:v7];
+  propertyCopy = property;
+  v7 = [@"%" stringByAppendingString:suffix];
+  v8 = [self predicateWithProperty:propertyCopy matchingPattern:v7];
 
   return v8;
 }
 
-+ (id)predicateWithProperty:(id)a3 matchingPattern:(id)a4
++ (id)predicateWithProperty:(id)property matchingPattern:(id)pattern
 {
-  v5 = a4;
-  v6 = a3;
+  patternCopy = pattern;
+  propertyCopy = property;
   v7 = objc_alloc_init(objc_opt_class());
-  v8 = [v6 copy];
+  v8 = [propertyCopy copy];
 
   v9 = v7[1];
   v7[1] = v8;
 
-  v10 = [v5 copy];
+  v10 = [patternCopy copy];
   v11 = v7[2];
   v7[2] = v10;
 
   return v7;
 }
 
-- (id)SQLForEntityClass:(Class)a3
+- (id)SQLForEntityClass:(Class)class
 {
   v5 = +[NSMutableString stringWithString:](NSMutableString, "stringWithString:", @"(");
-  v6 = [(SQLiteStringLikePredicate *)self property];
-  v7 = [(objc_class *)a3 disambiguatedSQLForProperty:v6];
+  property = [(SQLiteStringLikePredicate *)self property];
+  v7 = [(objc_class *)class disambiguatedSQLForProperty:property];
   [v5 appendString:v7];
 
   [v5 appendString:@" LIKE ?"]);
@@ -76,15 +76,15 @@
   return [(NSString *)self->_pattern hash]+ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = SQLiteStringLikePredicate;
-  if ([(SQLitePredicate *)&v8 isEqual:v4])
+  if ([(SQLitePredicate *)&v8 isEqual:equalCopy])
   {
     pattern = self->_pattern;
-    if (pattern == v4[2])
+    if (pattern == equalCopy[2])
     {
       v6 = 1;
     }

@@ -1,5 +1,5 @@
 @interface MFIMAPDownload
-- (MFIMAPDownload)initWithUid:(unsigned int)a3;
+- (MFIMAPDownload)initWithUid:(unsigned int)uid;
 - (void)dealloc;
 @end
 
@@ -12,16 +12,16 @@
   [(MFIMAPDownload *)&v3 dealloc];
 }
 
-- (MFIMAPDownload)initWithUid:(unsigned int)a3
+- (MFIMAPDownload)initWithUid:(unsigned int)uid
 {
-  if (a3)
+  if (uid)
   {
     v5.receiver = self;
     v5.super_class = MFIMAPDownload;
     result = [(MFIMAPDownload *)&v5 init];
     if (result)
     {
-      result->_uid = a3;
+      result->_uid = uid;
     }
   }
 

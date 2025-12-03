@@ -1,11 +1,11 @@
 @interface FigCaptureCMSessionMonitor
-- (FigCaptureCMSessionMonitor)initWithCMSession:(opaqueCMSession *)a3 clientPID:(int)a4 observer:(id)a5;
-- (id)_initWithFigCaptureCMSession:(id)a3 clientPID:(int)a4 observer:(id)a5;
+- (FigCaptureCMSessionMonitor)initWithCMSession:(opaqueCMSession *)session clientPID:(int)d observer:(id)observer;
+- (id)_initWithFigCaptureCMSession:(id)session clientPID:(int)d observer:(id)observer;
 - (id)description;
 - (uint64_t)_beginMonitoring;
 - (uint64_t)_endMonitoring;
-- (void)_handleBKSApplicationStateChange:(uint64_t)a1;
-- (void)_handleCMSessionNotification:(uint64_t)a1;
+- (void)_handleBKSApplicationStateChange:(uint64_t)change;
+- (void)_handleCMSessionNotification:(uint64_t)notification;
 - (void)_updateApplicationState;
 - (void)dealloc;
 - (void)invalidate;
@@ -13,19 +13,19 @@
 
 @implementation FigCaptureCMSessionMonitor
 
-- (id)_initWithFigCaptureCMSession:(id)a3 clientPID:(int)a4 observer:(id)a5
+- (id)_initWithFigCaptureCMSession:(id)session clientPID:(int)d observer:(id)observer
 {
-  v6 = *&a4;
+  v6 = *&d;
   v11.receiver = self;
   v11.super_class = FigCaptureCMSessionMonitor;
   v8 = [(FigCaptureCMSessionMonitor *)&v11 init];
   if (v8)
   {
     v8->_lock = FigSimpleMutexCreate();
-    v10 = a3;
-    v8->_session = v10;
+    sessionCopy = session;
+    v8->_session = sessionCopy;
     v8->_clientPID = v6;
-    if (-[FigCaptureCMSession setProperty:value:](v10, "setProperty:value:", *MEMORY[0x1E69AFD90], [MEMORY[0x1E696AEC0] stringWithFormat:@"FigCaptureClient-%d", v6]))
+    if (-[FigCaptureCMSession setProperty:value:](sessionCopy, "setProperty:value:", *MEMORY[0x1E69AFD90], [MEMORY[0x1E696AEC0] stringWithFormat:@"FigCaptureClient-%d", v6]))
     {
       [FigCaptureCMSessionMonitor _initWithFigCaptureCMSession:clientPID:observer:];
     }
@@ -34,7 +34,7 @@
     {
       if (!-[FigCaptureCMSession setProperty:value:](v8->_session, "setProperty:value:", *MEMORY[0x1E69AFDA8], [MEMORY[0x1E696AD98] numberWithInt:v8->_clientPID]))
       {
-        v8->_observer = a5;
+        v8->_observer = observer;
         [(FigCaptureCMSessionMonitor *)v8 _beginMonitoring];
         return v8;
       }
@@ -48,10 +48,10 @@
   return v8;
 }
 
-- (FigCaptureCMSessionMonitor)initWithCMSession:(opaqueCMSession *)a3 clientPID:(int)a4 observer:(id)a5
+- (FigCaptureCMSessionMonitor)initWithCMSession:(opaqueCMSession *)session clientPID:(int)d observer:(id)observer
 {
-  v6 = *&a4;
-  if (!a3 && CMSessionCreate())
+  v6 = *&d;
+  if (!session && CMSessionCreate())
   {
     [FigCaptureCMSessionMonitor initWithCMSession:clientPID:observer:];
     v10 = 0;
@@ -59,10 +59,10 @@
 
   else
   {
-    v9 = [[FigCaptureCMSession alloc] initWithCMSession:a3];
-    self = [(FigCaptureCMSessionMonitor *)self _initWithFigCaptureCMSession:v9 clientPID:v6 observer:a5];
+    v9 = [[FigCaptureCMSession alloc] initWithCMSession:session];
+    self = [(FigCaptureCMSessionMonitor *)self _initWithFigCaptureCMSession:v9 clientPID:v6 observer:observer];
 
-    if (a3)
+    if (session)
     {
       return self;
     }
@@ -70,9 +70,9 @@
     v10 = 1;
   }
 
-  if (a3)
+  if (session)
   {
-    CFRelease(a3);
+    CFRelease(session);
   }
 
   if ((v10 & 1) == 0)
@@ -129,12 +129,12 @@ void __46__FigCaptureCMSessionMonitor__beginMonitoring__block_invoke(uint64_t a1
     v1 = result;
     [FigWeakReference weakReferenceToObject:result];
     [MEMORY[0x1E696AD88] defaultCenter];
-    v2 = [*(v1 + 16) cmsession];
-    *(v1 + 40) = OUTLINED_FUNCTION_2_17(v2, v3);
+    cmsession = [*(v1 + 16) cmsession];
+    *(v1 + 40) = OUTLINED_FUNCTION_2_17(cmsession, v3);
     [(FigCaptureCMSessionMonitor *)v1 _updateApplicationState];
     [MEMORY[0x1E696AD88] defaultCenter];
-    v4 = [*(v1 + 16) cmsession];
-    result = OUTLINED_FUNCTION_2_17(v4, v5);
+    cmsession2 = [*(v1 + 16) cmsession];
+    result = OUTLINED_FUNCTION_2_17(cmsession2, v5);
     *(v1 + 48) = result;
   }
 
@@ -162,41 +162,41 @@ void __46__FigCaptureCMSessionMonitor__beginMonitoring__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)_handleCMSessionNotification:(uint64_t)a1
+- (void)_handleCMSessionNotification:(uint64_t)notification
 {
-  if (!a1)
+  if (!notification)
   {
     return;
   }
 
   FigSimpleMutexLock();
-  v4 = *(a1 + 56);
+  v4 = *(notification + 56);
   FigSimpleMutexUnlock();
   if (v4 == 1)
   {
     goto LABEL_18;
   }
 
-  v5 = [a2 name];
-  if ([v5 isEqualToString:*MEMORY[0x1E69AFB80]])
+  name = [a2 name];
+  if ([name isEqualToString:*MEMORY[0x1E69AFB80]])
   {
-    v6 = [a2 userInfo];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69AF9E0]];
+    userInfo = [a2 userInfo];
+    v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69AF9E0]];
     if (v7)
     {
-      v8 = [v7 intValue];
-      if (v8 == 1)
+      intValue = [v7 intValue];
+      if (intValue == 1)
       {
-        v14 = *(a1 + 32);
+        v14 = *(notification + 32);
 
-        [v14 cmsessionMonitorDidEndAudioInterruption:a1];
+        [v14 cmsessionMonitorDidEndAudioInterruption:notification];
       }
 
-      else if (!v8)
+      else if (!intValue)
       {
-        v9 = *(a1 + 32);
+        v9 = *(notification + 32);
 
-        [v9 cmsessionMonitorDidBeginAudioInterruption:a1];
+        [v9 cmsessionMonitorDidBeginAudioInterruption:notification];
       }
 
       return;
@@ -208,30 +208,30 @@ LABEL_18:
     return;
   }
 
-  v10 = [a2 name];
-  if (![v10 isEqualToString:*MEMORY[0x1E69AFB00]])
+  name2 = [a2 name];
+  if (![name2 isEqualToString:*MEMORY[0x1E69AFB00]])
   {
     return;
   }
 
-  v11 = [a2 userInfo];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E69AFA50]];
+  userInfo2 = [a2 userInfo];
+  v12 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69AFA50]];
   if (!v12)
   {
     goto LABEL_18;
   }
 
-  v13 = [v12 unsignedIntValue];
+  unsignedIntValue = [v12 unsignedIntValue];
 
-  [(FigCaptureCMSessionMonitor *)a1 _handleBKSApplicationStateChange:v13];
+  [(FigCaptureCMSessionMonitor *)notification _handleBKSApplicationStateChange:unsignedIntValue];
 }
 
 - (void)_updateApplicationState
 {
-  if (a1)
+  if (self)
   {
     v4 = 0;
-    v2 = [*(a1 + 16) copyProperty:*MEMORY[0x1E69AFCA0] error:&v4];
+    v2 = [*(self + 16) copyProperty:*MEMORY[0x1E69AFCA0] error:&v4];
     v3 = v2;
     if (v4)
     {
@@ -240,17 +240,17 @@ LABEL_18:
 
     else
     {
-      -[FigCaptureCMSessionMonitor _handleBKSApplicationStateChange:](a1, [v2 unsignedIntValue]);
+      -[FigCaptureCMSessionMonitor _handleBKSApplicationStateChange:](self, [v2 unsignedIntValue]);
     }
   }
 }
 
-- (void)_handleBKSApplicationStateChange:(uint64_t)a1
+- (void)_handleBKSApplicationStateChange:(uint64_t)change
 {
-  if (a1)
+  if (change)
   {
     v6 = 0;
-    v4 = [*(a1 + 16) copyProperty:*MEMORY[0x1E69B0190] error:&v6];
+    v4 = [*(change + 16) copyProperty:*MEMORY[0x1E69B0190] error:&v6];
     v5 = v4;
     if (v6)
     {
@@ -259,7 +259,7 @@ LABEL_18:
 
     else
     {
-      [*(a1 + 32) cmsessionMonitor:a1 didUpdateApplicationState:a2 pidToInheritApplicationStateFrom:{objc_msgSend(v4, "intValue")}];
+      [*(change + 32) cmsessionMonitor:change didUpdateApplicationState:a2 pidToInheritApplicationStateFrom:{objc_msgSend(v4, "intValue")}];
     }
   }
 }

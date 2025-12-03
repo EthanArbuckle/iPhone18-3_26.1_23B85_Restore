@@ -1,9 +1,9 @@
 @interface PKDXpcClient
-- (BOOL)hasEntitlement:(id)a3;
+- (BOOL)hasEntitlement:(id)entitlement;
 - (OS_xpc_object)connection;
-- (PKDXpcClient)initWithConnection:(id)a3 server:(id)a4;
+- (PKDXpcClient)initWithConnection:(id)connection server:(id)server;
 - (id)description;
-- (id)entitlementValueForKey:(id)a3;
+- (id)entitlementValueForKey:(id)key;
 - (int)pid;
 - (void)dead;
 - (void)dealloc;
@@ -14,8 +14,8 @@
 
 - (int)pid
 {
-  v2 = [(PKDXpcClient *)self connection];
-  pid = xpc_connection_get_pid(v2);
+  connection = [(PKDXpcClient *)self connection];
+  pid = xpc_connection_get_pid(connection);
 
   return pid;
 }
@@ -27,18 +27,18 @@
   return WeakRetained;
 }
 
-- (PKDXpcClient)initWithConnection:(id)a3 server:(id)a4
+- (PKDXpcClient)initWithConnection:(id)connection server:(id)server
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  serverCopy = server;
   v47.receiver = self;
   v47.super_class = PKDXpcClient;
   v8 = [(PKDXpcClient *)&v47 init];
   v9 = v8;
   if (v8)
   {
-    [(PKDXpcClient *)v8 setConnection:v6];
-    objc_storeStrong(&v9->_server, a4);
+    [(PKDXpcClient *)v8 setConnection:connectionCopy];
+    objc_storeStrong(&v9->_server, server);
     [(PKDXpcClient *)v9 setAcceptWork:1];
     v53 = 0;
     memset(v52, 0, sizeof(v52));
@@ -84,13 +84,13 @@
     }
 
     v14 = v12;
-    v16 = [v12 UTF8String];
+    uTF8String = [v12 UTF8String];
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v18 = dispatch_queue_create(v16, v17);
+    v18 = dispatch_queue_create(uTF8String, v17);
     [(PKDXpcClient *)v9 setQueue:v18];
 
-    v19 = [(PKDXpcClient *)v9 queue];
-    xpc_connection_set_target_queue(v6, v19);
+    queue = [(PKDXpcClient *)v9 queue];
+    xpc_connection_set_target_queue(connectionCopy, queue);
 
     bzero(v49, 0x1000uLL);
     if (proc_pidpath([(PKDXpcClient *)v9 pid], v49, 0x1000u) > 0)
@@ -101,20 +101,20 @@
         v21 = [[PKBundle alloc] initWithExecutableURL:v20];
         [(PKDXpcClient *)v9 setBundle:v21];
 
-        v22 = [v20 path];
-        [(PKDXpcClient *)v9 setPath:v22];
+        path = [v20 path];
+        [(PKDXpcClient *)v9 setPath:path];
 
         v23 = pklog_handle_for_category();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
         {
           v24 = [(PKDXpcClient *)v9 pid];
-          v25 = [v20 path];
+          path2 = [v20 path];
           *buf = 134218498;
           *&buf[4] = v9;
           *&buf[12] = 1024;
           *&buf[14] = v24;
           *&buf[18] = 2112;
-          *&buf[20] = v25;
+          *&buf[20] = path2;
           _os_log_impl(&dword_0, v23, OS_LOG_TYPE_INFO, "<PKDXpcClient: %p> new client pid %d [%@]", buf, 0x1Cu);
         }
 
@@ -314,7 +314,7 @@ void __42__PKDXpcClient_initWithConnection_server___block_invoke(uint64_t a1, vo
 
 - (void)dying
 {
-  [a1 pid];
+  [self pid];
   OUTLINED_FUNCTION_0_6();
   OUTLINED_FUNCTION_2_3();
   _os_log_debug_impl(v1, v2, OS_LOG_TYPE_DEBUG, v3, v4, 0x12u);
@@ -322,17 +322,17 @@ void __42__PKDXpcClient_initWithConnection_server___block_invoke(uint64_t a1, vo
 
 - (void)dead
 {
-  [a1 pid];
+  [self pid];
   OUTLINED_FUNCTION_0_6();
   OUTLINED_FUNCTION_2_3();
   _os_log_debug_impl(v1, v2, OS_LOG_TYPE_DEBUG, v3, v4, 0x12u);
 }
 
-- (id)entitlementValueForKey:(id)a3
+- (id)entitlementValueForKey:(id)key
 {
   error = 0;
-  v4 = a3;
-  v5 = SecTaskCopyValueForEntitlement([(PKDXpcClient *)self _task], v4, &error);
+  keyCopy = key;
+  v5 = SecTaskCopyValueForEntitlement([(PKDXpcClient *)self _task], keyCopy, &error);
 
   if (error)
   {
@@ -348,9 +348,9 @@ void __42__PKDXpcClient_initWithConnection_server___block_invoke(uint64_t a1, vo
   return v5;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v3 = [(PKDXpcClient *)self entitlementValueForKey:a3];
+  v3 = [(PKDXpcClient *)self entitlementValueForKey:entitlement];
   v4 = v3;
   if (v3)
   {
@@ -367,14 +367,14 @@ void __42__PKDXpcClient_initWithConnection_server___block_invoke(uint64_t a1, vo
 
 - (id)description
 {
-  v3 = [(PKDXpcClient *)self connection];
+  connection = [(PKDXpcClient *)self connection];
 
-  if (v3)
+  if (connection)
   {
-    v4 = [(PKDXpcClient *)self connection];
+    connection2 = [(PKDXpcClient *)self connection];
     v5 = [(PKDXpcClient *)self pid];
-    v6 = [(PKDXpcClient *)self path];
-    v7 = [NSString stringWithFormat:@"<PKDXpcClient: %p con=%@ pid=%d path=%@>", self, v4, v5, v6];;
+    path = [(PKDXpcClient *)self path];
+    v7 = [NSString stringWithFormat:@"<PKDXpcClient: %p con=%@ pid=%d path=%@>", self, connection2, v5, path];;
 
     v8 = v7;
   }

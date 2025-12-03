@@ -1,13 +1,13 @@
 @interface ServiceProductBadgedPageViewController
-- (_TtC20StoreDynamicUIPlugin38ServiceProductBadgedPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20StoreDynamicUIPlugin38ServiceProductBadgedPageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didReceiveMemoryWarning;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -15,66 +15,66 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_FC95C();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_FCA40();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_FCC78();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   sub_FCFA0();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_FD084();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_FD168(a3);
+  selfCopy = self;
+  sub_FD168(disappear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_FD308();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_FD3B0();
 }
 
 - (void)didReceiveMemoryWarning
 {
-  v2 = self;
+  selfCopy = self;
   sub_FD518();
 }
 
-- (_TtC20StoreDynamicUIPlugin38ServiceProductBadgedPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20StoreDynamicUIPlugin38ServiceProductBadgedPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_13BB84();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_FDD4C();
 }
 

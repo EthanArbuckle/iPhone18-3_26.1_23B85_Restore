@@ -1,16 +1,16 @@
 @interface SUUIRedeemPreflightOperation
 - (BOOL)loadsRedeemCodeMetadata;
 - (SUUIRedeemConfiguration)redeemConfiguration;
-- (SUUIRedeemPreflightOperation)initWithClientContext:(id)a3 redeemCode:(id)a4 forcesAuthentication:(BOOL)a5;
+- (SUUIRedeemPreflightOperation)initWithClientContext:(id)context redeemCode:(id)code forcesAuthentication:(BOOL)authentication;
 - (SUUIRedeemViewControllerLegacy)redeemViewController;
 - (id)_authenticationContext;
 - (id)_initSUUIRedeemPreflightOperation;
-- (id)_redeemCodeMetadataWithClientContext:(id)a3;
+- (id)_redeemCodeMetadataWithClientContext:(id)context;
 - (id)outputBlock;
 - (void)main;
-- (void)setLoadsRedeemCodeMetadata:(BOOL)a3;
-- (void)setOutputBlock:(id)a3;
-- (void)setRedeemConfiguration:(id)a3;
+- (void)setLoadsRedeemCodeMetadata:(BOOL)metadata;
+- (void)setOutputBlock:(id)block;
+- (void)setRedeemConfiguration:(id)configuration;
 @end
 
 @implementation SUUIRedeemPreflightOperation
@@ -36,20 +36,20 @@
   return v2;
 }
 
-- (SUUIRedeemPreflightOperation)initWithClientContext:(id)a3 redeemCode:(id)a4 forcesAuthentication:(BOOL)a5
+- (SUUIRedeemPreflightOperation)initWithClientContext:(id)context redeemCode:(id)code forcesAuthentication:(BOOL)authentication
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [(SUUIRedeemPreflightOperation *)self _initSUUIRedeemPreflightOperation];
-  v12 = v11;
-  if (v11)
+  contextCopy = context;
+  codeCopy = code;
+  _initSUUIRedeemPreflightOperation = [(SUUIRedeemPreflightOperation *)self _initSUUIRedeemPreflightOperation];
+  v12 = _initSUUIRedeemPreflightOperation;
+  if (_initSUUIRedeemPreflightOperation)
   {
-    objc_storeStrong(v11 + 31, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(_initSUUIRedeemPreflightOperation + 31, context);
+    v13 = [codeCopy copy];
     redeemCode = v12->_redeemCode;
     v12->_redeemCode = v13;
 
-    v12->_forcesAuthentication = a5;
+    v12->_forcesAuthentication = authentication;
   }
 
   return v12;
@@ -128,7 +128,7 @@ uint64_t __43__SUUIRedeemPreflightOperation_outputBlock__block_invoke(uint64_t a
   return v3;
 }
 
-- (void)setLoadsRedeemCodeMetadata:(BOOL)a3
+- (void)setLoadsRedeemCodeMetadata:(BOOL)metadata
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -136,21 +136,21 @@ uint64_t __43__SUUIRedeemPreflightOperation_outputBlock__block_invoke(uint64_t a
   v4[2] = __59__SUUIRedeemPreflightOperation_setLoadsRedeemCodeMetadata___block_invoke;
   v4[3] = &unk_2798F93A0;
   v4[4] = self;
-  v5 = a3;
+  metadataCopy = metadata;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__SUUIRedeemPreflightOperation_setOutputBlock___block_invoke;
   v7[3] = &unk_2798F6030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -171,17 +171,17 @@ void *__47__SUUIRedeemPreflightOperation_setOutputBlock___block_invoke(uint64_t 
   return result;
 }
 
-- (void)setRedeemConfiguration:(id)a3
+- (void)setRedeemConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__SUUIRedeemPreflightOperation_setRedeemConfiguration___block_invoke;
   v7[3] = &unk_2798F5AF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -192,18 +192,18 @@ void *__47__SUUIRedeemPreflightOperation_setOutputBlock___block_invoke(uint64_t 
   if ([(SUUIRedeemPreflightOperation *)self forcesAuthentication])
   {
     v4 = objc_alloc_init(MEMORY[0x277D7FCC8]);
-    v5 = [(SUUIRedeemPreflightOperation *)self _authenticationContext];
-    v6 = [v5 requiredUniqueIdentifier];
+    _authenticationContext = [(SUUIRedeemPreflightOperation *)self _authenticationContext];
+    requiredUniqueIdentifier = [_authenticationContext requiredUniqueIdentifier];
 
-    if (([v4 canPerformExtendedBiometricActionsForAccountIdentifier:v6] & 1) == 0)
+    if (([v4 canPerformExtendedBiometricActionsForAccountIdentifier:requiredUniqueIdentifier] & 1) == 0)
     {
       v7 = dispatch_semaphore_create(0);
       v8 = objc_alloc(MEMORY[0x277D69A50]);
-      v9 = [(SUUIRedeemPreflightOperation *)self _authenticationContext];
-      v10 = [v8 initWithAuthenticationContext:v9];
+      _authenticationContext2 = [(SUUIRedeemPreflightOperation *)self _authenticationContext];
+      v10 = [v8 initWithAuthenticationContext:_authenticationContext2];
 
-      v11 = [(SUUIRedeemPreflightOperation *)self redeemViewController];
-      [v10 set_parentViewController:v11];
+      redeemViewController = [(SUUIRedeemPreflightOperation *)self redeemViewController];
+      [v10 set_parentViewController:redeemViewController];
 
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
@@ -231,20 +231,20 @@ void *__47__SUUIRedeemPreflightOperation_setOutputBlock___block_invoke(uint64_t 
 
   if (![(SUUIRedeemPreflightResult *)v3 resultType]&& [(SUUIRedeemPreflightOperation *)self loadsRedeemCodeMetadata]&& self->_redeemCode)
   {
-    v14 = [(SUUIRedeemPreflightResult *)v3 clientContext];
-    v15 = [(SUUIRedeemPreflightOperation *)self _redeemCodeMetadataWithClientContext:v14];
+    clientContext = [(SUUIRedeemPreflightResult *)v3 clientContext];
+    v15 = [(SUUIRedeemPreflightOperation *)self _redeemCodeMetadataWithClientContext:clientContext];
 
     [(SUUIRedeemPreflightResult *)v3 setCodeMetadata:v15];
   }
 
-  v16 = [(SUUIRedeemPreflightOperation *)self redeemConfiguration];
-  if (v16 && ![(SUUIRedeemPreflightResult *)v3 resultType])
+  redeemConfiguration = [(SUUIRedeemPreflightOperation *)self redeemConfiguration];
+  if (redeemConfiguration && ![(SUUIRedeemPreflightResult *)v3 resultType])
   {
     v17 = [SUUIRedeemConfiguration alloc];
-    v18 = [v16 operationQueue];
-    v19 = [v16 category];
-    v20 = [(SUUIRedeemPreflightResult *)v3 clientContext];
-    v21 = [(SUUIRedeemConfiguration *)v17 initWithOperationQueue:v18 category:v19 clientContext:v20];
+    operationQueue = [redeemConfiguration operationQueue];
+    category = [redeemConfiguration category];
+    clientContext2 = [(SUUIRedeemPreflightResult *)v3 clientContext];
+    v21 = [(SUUIRedeemConfiguration *)v17 initWithOperationQueue:operationQueue category:category clientContext:clientContext2];
 
     v22 = dispatch_semaphore_create(0);
     v27 = MEMORY[0x277D85DD0];
@@ -324,27 +324,27 @@ intptr_t __36__SUUIRedeemPreflightOperation_main__block_invoke_3(uint64_t a1, in
 
 - (id)_authenticationContext
 {
-  v2 = [MEMORY[0x277D69A20] defaultStore];
-  v3 = [v2 activeAccount];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  if (v3)
+  if (activeAccount)
   {
-    v4 = [objc_alloc(MEMORY[0x277D69BC8]) initWithAccount:v3];
-    [v4 setPromptStyle:1];
-    [v4 setShouldCreateNewSession:1];
+    contextForSignIn = [objc_alloc(MEMORY[0x277D69BC8]) initWithAccount:activeAccount];
+    [contextForSignIn setPromptStyle:1];
+    [contextForSignIn setShouldCreateNewSession:1];
   }
 
   else
   {
-    v4 = [MEMORY[0x277D69BC8] contextForSignIn];
+    contextForSignIn = [MEMORY[0x277D69BC8] contextForSignIn];
   }
 
-  return v4;
+  return contextForSignIn;
 }
 
-- (id)_redeemCodeMetadataWithClientContext:(id)a3
+- (id)_redeemCodeMetadataWithClientContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -352,7 +352,7 @@ intptr_t __36__SUUIRedeemPreflightOperation_main__block_invoke_3(uint64_t a1, in
   v27 = __Block_byref_object_dispose__3_1;
   v28 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [v4 URLBag];
+  uRLBag = [contextCopy URLBag];
   v7 = *MEMORY[0x277D6A628];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -362,16 +362,16 @@ intptr_t __36__SUUIRedeemPreflightOperation_main__block_invoke_3(uint64_t a1, in
   v22 = &v23;
   v8 = v5;
   v21 = v8;
-  [v6 loadValueForKey:v7 completionBlock:v20];
+  [uRLBag loadValueForKey:v7 completionBlock:v20];
 
   dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
   if (v24[5])
   {
     v9 = objc_alloc_init(MEMORY[0x277D7FD48]);
-    v10 = [MEMORY[0x277D69A20] defaultStore];
-    v11 = [v10 activeAccount];
+    defaultStore = [MEMORY[0x277D69A20] defaultStore];
+    activeAccount = [defaultStore activeAccount];
 
-    v12 = [objc_alloc(MEMORY[0x277D69A58]) initWithAccount:v11];
+    v12 = [objc_alloc(MEMORY[0x277D69A58]) initWithAccount:activeAccount];
     [v9 setAuthenticationContext:v12];
     v13 = objc_alloc(MEMORY[0x277D69CA0]);
     v14 = [v13 initWithURL:v24[5]];
@@ -380,8 +380,8 @@ intptr_t __36__SUUIRedeemPreflightOperation_main__block_invoke_3(uint64_t a1, in
     [v9 setDataProvider:v15];
     [v9 main];
     v16 = objc_alloc(MEMORY[0x277D69CF8]);
-    v17 = [v15 output];
-    v18 = [v16 initWithRedeemCodeDictionary:v17];
+    output = [v15 output];
+    v18 = [v16 initWithRedeemCodeDictionary:output];
 
     [v18 setInputCode:self->_redeemCode];
   }

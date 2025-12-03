@@ -6,18 +6,18 @@
 + (id)multipleCallParticipantLabelFontMiniWindow;
 + (id)multipleCallStatusLabelFont;
 + (id)multipleCallStatusLabelFontMiniWindow;
-+ (id)singleCallFontWithSize:(unint64_t)a3;
++ (id)singleCallFontWithSize:(unint64_t)size;
 + (id)singleCallLargeStatusLabelFont;
 + (id)singleCallParticipantLabelAmbientFont;
-+ (id)singleCallParticipantLabelBannerFontForText:(id)a3 availableWidth:(double)a4;
++ (id)singleCallParticipantLabelBannerFontForText:(id)text availableWidth:(double)width;
 + (id)singleCallParticipantLabelBannerMaximumFont;
-+ (id)singleCallParticipantLabelFontForCallDisplayStyle:(int64_t)a3 usesLargeFormatUI:(BOOL *)a4;
-+ (id)singleCallParticipantLabelFullscreenFontUsesLargeFormatUI:(BOOL *)a3;
++ (id)singleCallParticipantLabelFontForCallDisplayStyle:(int64_t)style usesLargeFormatUI:(BOOL *)i;
++ (id)singleCallParticipantLabelFullscreenFontUsesLargeFormatUI:(BOOL *)i;
 + (id)singleCallSmallStatusLabelFont;
 + (id)singleCallSmallerStatusLabelFont;
 + (id)singleCallStatusLabelFont;
-+ (id)singleCallStatusLabelFontForCallDisplayStyle:(int64_t)a3;
-+ (id)statusLabelFontColorForCallDisplayStyle:(int64_t)a3;
++ (id)singleCallStatusLabelFontForCallDisplayStyle:(int64_t)style;
++ (id)statusLabelFontColorForCallDisplayStyle:(int64_t)style;
 + (int64_t)yOffsetLayoutAttributeForParticipantsView;
 + (unint64_t)inCallParticipantsSpacing;
 + (unint64_t)yTopMarginSpacingForMultiParticipantsView;
@@ -51,7 +51,7 @@
   block[1] = 3221225472;
   block[2] = sub_10003E0C8;
   block[3] = &unk_1003567B0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1003B0B70 != -1)
   {
     dispatch_once(&qword_1003B0B70, block);
@@ -106,36 +106,36 @@
   }
 }
 
-+ (id)singleCallParticipantLabelFontForCallDisplayStyle:(int64_t)a3 usesLargeFormatUI:(BOOL *)a4
++ (id)singleCallParticipantLabelFontForCallDisplayStyle:(int64_t)style usesLargeFormatUI:(BOOL *)i
 {
-  if (a3 <= 1)
+  if (style <= 1)
   {
-    if (a3)
+    if (style)
     {
-      if (a3 == 1)
+      if (style == 1)
       {
-        a1 = [PHUIConfiguration singleCallParticipantLabelMiniWindowFont:1];
+        self = [PHUIConfiguration singleCallParticipantLabelMiniWindowFont:1];
       }
     }
 
     else
     {
-      a1 = [PHUIConfiguration singleCallParticipantLabelBannerMaximumFont:0];
+      self = [PHUIConfiguration singleCallParticipantLabelBannerMaximumFont:0];
     }
   }
 
   else
   {
-    if (a3 == 2)
+    if (style == 2)
     {
 LABEL_5:
-      a1 = [PHUIConfiguration singleCallParticipantLabelFullscreenFontUsesLargeFormatUI:a4];
+      self = [PHUIConfiguration singleCallParticipantLabelFullscreenFontUsesLargeFormatUI:i];
       goto LABEL_11;
     }
 
-    if (a3 != 3)
+    if (style != 3)
     {
-      if (a3 != 4)
+      if (style != 4)
       {
         goto LABEL_11;
       }
@@ -143,20 +143,20 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    a1 = [PHUIConfiguration singleCallParticipantLabelAmbientFont:3];
+    self = [PHUIConfiguration singleCallParticipantLabelAmbientFont:3];
   }
 
 LABEL_11:
 
-  return a1;
+  return self;
 }
 
-+ (id)singleCallParticipantLabelFullscreenFontUsesLargeFormatUI:(BOOL *)a3
++ (id)singleCallParticipantLabelFullscreenFontUsesLargeFormatUI:(BOOL *)i
 {
   v4 = +[CNKFeatures sharedInstance];
-  v5 = [v4 isHeroImageEnabled];
+  isHeroImageEnabled = [v4 isHeroImageEnabled];
 
-  if (a3 || v5)
+  if (i || isHeroImageEnabled)
   {
     v6 = [UIFont phPreferredBoldFontForTextStyle:UIFontTextStyleLargeTitle];
   }
@@ -177,11 +177,11 @@ LABEL_11:
   return v3;
 }
 
-+ (id)singleCallParticipantLabelBannerFontForText:(id)a3 availableWidth:(double)a4
++ (id)singleCallParticipantLabelBannerFontForText:(id)text availableWidth:(double)width
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5 || ((v7 = [v5 length], a4 != 0.0) ? (v8 = v7 == 0) : (v8 = 1), v8))
+  textCopy = text;
+  v6 = textCopy;
+  if (!textCopy || ((v7 = [textCopy length], width != 0.0) ? (v8 = v7 == 0) : (v8 = 1), v8))
   {
     v9 = +[PHUIConfiguration singleCallParticipantLabelBannerMaximumFont];
   }
@@ -216,7 +216,7 @@ LABEL_11:
         [v6 sizeWithAttributes:v18];
         v20 = v19;
 
-        if (v20 <= a4)
+        if (v20 <= width)
         {
           break;
         }
@@ -247,14 +247,14 @@ LABEL_11:
   return v3;
 }
 
-+ (id)statusLabelFontColorForCallDisplayStyle:(int64_t)a3
++ (id)statusLabelFontColorForCallDisplayStyle:(int64_t)style
 {
-  if (a3 <= 4)
+  if (style <= 4)
   {
-    a1 = +[UIColor secondaryLabelColor];
+    self = +[UIColor secondaryLabelColor];
   }
 
-  return a1;
+  return self;
 }
 
 + (id)multipleCallParticipantLabelFont
@@ -317,20 +317,20 @@ LABEL_11:
   return v3;
 }
 
-+ (id)singleCallStatusLabelFontForCallDisplayStyle:(int64_t)a3
++ (id)singleCallStatusLabelFontForCallDisplayStyle:(int64_t)style
 {
-  if (a3 > 1)
+  if (style > 1)
   {
-    if (a3 != 2)
+    if (style != 2)
     {
-      if (a3 == 3)
+      if (style == 3)
       {
         v4 = [UIFontDescriptor phPreferredFontDescriptorForTextStyle:UIFontTextStyleTitle2];
         [v4 pointSize];
         goto LABEL_10;
       }
 
-      if (a3 != 4)
+      if (style != 4)
       {
         goto LABEL_13;
       }
@@ -343,14 +343,14 @@ LABEL_11:
     [v4 pointSize];
 LABEL_10:
     v7 = [UIFont monospacedDigitSystemFontOfSize:"monospacedDigitSystemFontOfSize:weight:" weight:?];
-    v3 = [v7 withCaseSensitiveAttribute];
+    withCaseSensitiveAttribute = [v7 withCaseSensitiveAttribute];
 
     goto LABEL_13;
   }
 
-  if (a3)
+  if (style)
   {
-    if (a3 != 1)
+    if (style != 1)
     {
       goto LABEL_13;
     }
@@ -363,10 +363,10 @@ LABEL_10:
     v6 = &UIFontTextStyleSubheadline;
   }
 
-  v3 = [UIFont phPreferredFontForTextStyle:*v6];
+  withCaseSensitiveAttribute = [UIFont phPreferredFontForTextStyle:*v6];
 LABEL_13:
 
-  return v3;
+  return withCaseSensitiveAttribute;
 }
 
 + (id)singleCallStatusLabelFont
@@ -381,11 +381,11 @@ LABEL_13:
   return v3;
 }
 
-+ (id)singleCallFontWithSize:(unint64_t)a3
++ (id)singleCallFontWithSize:(unint64_t)size
 {
-  if (a3 > 1)
+  if (size > 1)
   {
-    if (a3 == 3)
+    if (size == 3)
     {
       v3 = +[PHUIConfiguration singleCallLargeStatusLabelFont];
       goto LABEL_9;
@@ -394,9 +394,9 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  if (a3)
+  if (size)
   {
-    if (a3 == 1)
+    if (size == 1)
     {
       v3 = +[PHUIConfiguration singleCallSmallStatusLabelFont];
       goto LABEL_9;

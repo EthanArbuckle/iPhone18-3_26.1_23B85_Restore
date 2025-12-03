@@ -1,44 +1,44 @@
 @interface AMSUIWebJSResponse
-- (AMSUIWebJSResponse)initWithCoder:(id)a3;
-- (AMSUIWebJSResponse)initWithRequest:(id)a3 duration:(double)a4;
-- (void)encodeWithCoder:(id)a3;
+- (AMSUIWebJSResponse)initWithCoder:(id)coder;
+- (AMSUIWebJSResponse)initWithRequest:(id)request duration:(double)duration;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSUIWebJSResponse
 
-- (AMSUIWebJSResponse)initWithRequest:(id)a3 duration:(double)a4
+- (AMSUIWebJSResponse)initWithRequest:(id)request duration:(double)duration
 {
-  v7 = a3;
+  requestCopy = request;
   v11.receiver = self;
   v11.super_class = AMSUIWebJSResponse;
   v8 = [(AMSUIWebJSResponse *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_duration = a4;
-    objc_storeStrong(&v8->_originalRequest, a3);
+    v8->_duration = duration;
+    objc_storeStrong(&v8->_originalRequest, request);
   }
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(AMSUIWebJSResponse *)self originalRequest];
-  [v6 encodeObject:v4 forKey:@"kCodingKeyRequest"];
+  coderCopy = coder;
+  originalRequest = [(AMSUIWebJSResponse *)self originalRequest];
+  [coderCopy encodeObject:originalRequest forKey:@"kCodingKeyRequest"];
 
-  v5 = [(AMSUIWebJSResponse *)self body];
-  [v6 encodeObject:v5 forKey:@"kCodingKeyBody"];
+  body = [(AMSUIWebJSResponse *)self body];
+  [coderCopy encodeObject:body forKey:@"kCodingKeyBody"];
 
   [(AMSUIWebJSResponse *)self duration];
-  [v6 encodeDouble:@"kCodingKeyDuration" forKey:?];
+  [coderCopy encodeDouble:@"kCodingKeyDuration" forKey:?];
 }
 
-- (AMSUIWebJSResponse)initWithCoder:(id)a3
+- (AMSUIWebJSResponse)initWithCoder:(id)coder
 {
   v17[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = AMSUIWebJSResponse;
   v5 = [(AMSUIWebJSResponse *)&v16 init];
@@ -53,13 +53,13 @@
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:5];
     v8 = [v6 setWithArray:v7];
 
-    [v4 decodeDoubleForKey:@"kCodingKeyDuration"];
+    [coderCopy decodeDoubleForKey:@"kCodingKeyDuration"];
     v5->_duration = v9;
-    v10 = [v4 decodeObjectOfClasses:v8 forKey:@"kCodingKeyBody"];
+    v10 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kCodingKeyBody"];
     body = v5->_body;
     v5->_body = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyRequest"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyRequest"];
     originalRequest = v5->_originalRequest;
     v5->_originalRequest = v12;
   }

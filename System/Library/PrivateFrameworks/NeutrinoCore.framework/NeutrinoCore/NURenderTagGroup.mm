@@ -1,21 +1,21 @@
 @interface NURenderTagGroup
-+ (BOOL)validatePath:(id)a3 error:(id *)a4;
++ (BOOL)validatePath:(id)path error:(id *)error;
 - (NURenderTagGroup)init;
 - (NURenderTagGroup)parent;
-- (id)_descriptionWithLevel:(int64_t)a3;
-- (id)_nodeWithPathComponents:(id)a3 atIndex:(unint64_t)a4;
+- (id)_descriptionWithLevel:(int64_t)level;
+- (id)_nodeWithPathComponents:(id)components atIndex:(unint64_t)index;
 - (id)_root;
-- (id)addTag:(id)a3 forNode:(id)a4;
-- (id)childWithName:(id)a3;
+- (id)addTag:(id)tag forNode:(id)node;
+- (id)childWithName:(id)name;
 - (id)description;
-- (id)finalizeMap:(id)a3;
+- (id)finalizeMap:(id)map;
 - (id)leafName;
-- (id)nodeWithPath:(id)a3;
+- (id)nodeWithPath:(id)path;
 - (id)path;
-- (void)_composePathComponents:(id)a3;
-- (void)addChild:(id)a3 withName:(id)a4;
-- (void)removeChildWithName:(id)a3;
-- (void)visitEveryTagWithBlock:(id)a3;
+- (void)_composePathComponents:(id)components;
+- (void)addChild:(id)child withName:(id)name;
+- (void)removeChildWithName:(id)name;
+- (void)visitEveryTagWithBlock:(id)block;
 @end
 
 @implementation NURenderTagGroup
@@ -27,9 +27,9 @@
   return WeakRetained;
 }
 
-- (id)finalizeMap:(id)a3
+- (id)finalizeMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v5 = objc_alloc_init(NUGeometrySpaceMap);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -37,8 +37,8 @@
   v11[3] = &unk_1E810AFD0;
   v6 = v5;
   v12 = v6;
-  v13 = v4;
-  v7 = v4;
+  v13 = mapCopy;
+  v7 = mapCopy;
   [(NURenderTagGroup *)self visitEveryTagWithBlock:v11];
   v8 = v13;
   v9 = v6;
@@ -46,16 +46,16 @@
   return v6;
 }
 
-- (void)visitEveryTagWithBlock:(id)a3
+- (void)visitEveryTagWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   tags = self->_tags;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __43__NURenderTagGroup_visitEveryTagWithBlock___block_invoke;
   v11[3] = &unk_1E810AF80;
   v11[4] = self;
-  v6 = v4;
+  v6 = blockCopy;
   v12 = v6;
   [(NSMutableDictionary *)tags enumerateKeysAndObjectsUsingBlock:v11];
   children = self->_children;
@@ -88,28 +88,28 @@ void __43__NURenderTagGroup_visitEveryTagWithBlock___block_invoke(uint64_t a1, u
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NURenderTagGroup *)self path];
+  path = [(NURenderTagGroup *)self path];
   v6 = [(NURenderTagGroup *)self _descriptionWithLevel:0];
-  v7 = [v3 stringWithFormat:@"<%@:%p path: %@ %@>", v4, self, v5, v6];
+  v7 = [v3 stringWithFormat:@"<%@:%p path: %@ %@>", v4, self, path, v6];
 
   return v7;
 }
 
-- (id)_descriptionWithLevel:(int64_t)a3
+- (id)_descriptionWithLevel:(int64_t)level
 {
   v5 = [MEMORY[0x1E696AD60] stringWithFormat:@"tags : %@\n", self->_tags];
   if ([(NSMutableDictionary *)self->_children count])
   {
-    if (a3 >= 1)
+    if (level >= 1)
     {
-      v6 = a3;
+      levelCopy = level;
       do
       {
         [v5 appendString:@"  "];
-        --v6;
+        --levelCopy;
       }
 
-      while (v6);
+      while (levelCopy);
     }
 
     [v5 appendFormat:@"> Children (%d):", -[NSMutableDictionary count](self->_children, "count")];
@@ -119,7 +119,7 @@ void __43__NURenderTagGroup_visitEveryTagWithBlock___block_invoke(uint64_t a1, u
     v9[2] = __42__NURenderTagGroup__descriptionWithLevel___block_invoke;
     v9[3] = &unk_1E810AF58;
     v10 = v5;
-    v11 = a3;
+    levelCopy2 = level;
     [(NSMutableDictionary *)children enumerateKeysAndObjectsUsingBlock:v9];
   }
 
@@ -146,22 +146,22 @@ void __42__NURenderTagGroup__descriptionWithLevel___block_invoke(uint64_t a1, vo
   [v8 appendFormat:@"> '%@'  %@", v10, v9];
 }
 
-- (id)nodeWithPath:(id)a3
+- (id)nodeWithPath:(id)path
 {
-  v4 = [a3 pathComponents];
-  v5 = [(NURenderTagGroup *)self _nodeWithPathComponents:v4 atIndex:0];
+  pathComponents = [path pathComponents];
+  v5 = [(NURenderTagGroup *)self _nodeWithPathComponents:pathComponents atIndex:0];
 
   return v5;
 }
 
-- (id)_nodeWithPathComponents:(id)a3 atIndex:(unint64_t)a4
+- (id)_nodeWithPathComponents:(id)components atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = a4 + 1;
-  if ([v6 count] == a4 + 1)
+  componentsCopy = components;
+  v7 = index + 1;
+  if ([componentsCopy count] == index + 1)
   {
     tags = self->_tags;
-    v9 = [v6 objectAtIndexedSubscript:a4];
+    v9 = [componentsCopy objectAtIndexedSubscript:index];
     v10 = [(NSMutableDictionary *)tags objectForKey:v9];
 LABEL_6:
     v16 = v10;
@@ -169,47 +169,47 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v11 = [v6 objectAtIndexedSubscript:a4];
+  v11 = [componentsCopy objectAtIndexedSubscript:index];
   v12 = [v11 isEqualToString:@".."];
 
   if (v12)
   {
-    v13 = [(NURenderTagGroup *)self parent];
-    v9 = v13;
-    v14 = v6;
+    parent = [(NURenderTagGroup *)self parent];
+    v9 = parent;
+    v14 = componentsCopy;
     v15 = v7;
 LABEL_5:
-    v10 = [v13 _nodeWithPathComponents:v14 atIndex:v15];
+    v10 = [parent _nodeWithPathComponents:v14 atIndex:v15];
     goto LABEL_6;
   }
 
-  v18 = [v6 objectAtIndexedSubscript:a4];
+  v18 = [componentsCopy objectAtIndexedSubscript:index];
   v19 = [v18 isEqualToString:@"."];
 
   if (v19)
   {
-    v16 = [(NURenderTagGroup *)self _nodeWithPathComponents:v6 atIndex:a4 + 1];
+    v16 = [(NURenderTagGroup *)self _nodeWithPathComponents:componentsCopy atIndex:index + 1];
   }
 
   else
   {
-    v20 = [v6 objectAtIndexedSubscript:a4];
+    v20 = [componentsCopy objectAtIndexedSubscript:index];
     v21 = [v20 isEqualToString:@"/"];
 
     if (v21)
     {
-      v13 = [(NURenderTagGroup *)self _root];
-      v9 = v13;
-      v14 = v6;
+      parent = [(NURenderTagGroup *)self _root];
+      v9 = parent;
+      v14 = componentsCopy;
       v15 = 1;
       goto LABEL_5;
     }
 
     children = self->_children;
-    v23 = [v6 objectAtIndexedSubscript:a4];
+    v23 = [componentsCopy objectAtIndexedSubscript:index];
     v24 = [(NSMutableDictionary *)children objectForKey:v23];
 
-    v16 = [v24 _nodeWithPathComponents:v6 atIndex:v7];
+    v16 = [v24 _nodeWithPathComponents:componentsCopy atIndex:v7];
   }
 
 LABEL_7:
@@ -219,29 +219,29 @@ LABEL_7:
 
 - (id)_root
 {
-  v3 = [(NURenderTagGroup *)self parent];
-  v4 = v3;
-  if (v3)
+  parent = [(NURenderTagGroup *)self parent];
+  v4 = parent;
+  if (parent)
   {
-    v5 = [v3 _root];
+    selfCopy = [parent _root];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   return v6;
 }
 
-- (id)addTag:(id)a3 forNode:(id)a4
+- (id)addTag:(id)tag forNode:(id)node
 {
   v63 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  tagCopy = tag;
+  nodeCopy = node;
+  if (!tagCopy)
   {
     v11 = NUAssertLogger_22844();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -262,8 +262,8 @@ LABEL_7:
         v32 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v33 = MEMORY[0x1E696AF00];
         v34 = v32;
-        v35 = [v33 callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v33 callStackSymbols];
+        v36 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v60 = v32;
         v61 = 2114;
@@ -274,8 +274,8 @@ LABEL_7:
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v60 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -284,8 +284,8 @@ LABEL_7:
     _NUAssertFailHandler("[NURenderTagGroup addTag:forNode:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderTagGroup.m", 109, @"Invalid parameter not satisfying: %s", v37, v38, v39, v40, "name != nil");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = nodeCopy;
+  if (!nodeCopy)
   {
     v18 = NUAssertLogger_22844();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -306,8 +306,8 @@ LABEL_7:
         v41 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v42 = MEMORY[0x1E696AF00];
         v43 = v41;
-        v44 = [v42 callStackSymbols];
-        v45 = [v44 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v42 callStackSymbols];
+        v45 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v60 = v41;
         v61 = 2114;
@@ -318,8 +318,8 @@ LABEL_7:
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v60 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -328,15 +328,15 @@ LABEL_7:
     _NUAssertFailHandler("[NURenderTagGroup addTag:forNode:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderTagGroup.m", 110, @"Invalid parameter not satisfying: %s", v46, v47, v48, v49, "node != nil");
   }
 
-  [(NURenderTagGroup *)self nodeWithPath:v6];
+  [(NURenderTagGroup *)self nodeWithPath:tagCopy];
   if (objc_claimAutoreleasedReturnValue())
   {
     v25 = NUAssertLogger_22844();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed when attempting to add tag - key '%@' is already present", v6];
+      tagCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed when attempting to add tag - key '%@' is already present", tagCopy];
       *buf = 138543362;
-      v60 = v26;
+      v60 = tagCopy;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
@@ -350,8 +350,8 @@ LABEL_7:
         v50 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v51 = MEMORY[0x1E696AF00];
         v52 = v50;
-        v53 = [v51 callStackSymbols];
-        v54 = [v53 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v51 callStackSymbols];
+        v54 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v60 = v50;
         v61 = 2114;
@@ -362,18 +362,18 @@ LABEL_7:
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v60 = v31;
       _os_log_error_impl(&dword_1C0184000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
-    _NUAssertFailHandler("[NURenderTagGroup addTag:forNode:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderTagGroup.m", 114, @"Failed when attempting to add tag - key '%@' is already present", v55, v56, v57, v58, v6);
+    _NUAssertFailHandler("[NURenderTagGroup addTag:forNode:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderTagGroup.m", 114, @"Failed when attempting to add tag - key '%@' is already present", v55, v56, v57, v58, tagCopy);
   }
 
-  v9 = [[NURenderTagNode alloc] initWithInput:v8 name:v6];
-  [(NSMutableDictionary *)self->_tags setValue:v9 forKey:v6];
+  v9 = [[NURenderTagNode alloc] initWithInput:v8 name:tagCopy];
+  [(NSMutableDictionary *)self->_tags setValue:v9 forKey:tagCopy];
 
   return v9;
 }
@@ -388,20 +388,20 @@ LABEL_7:
   return v4;
 }
 
-- (void)_composePathComponents:(id)a3
+- (void)_composePathComponents:(id)components
 {
-  v7 = a3;
+  componentsCopy = components;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
   v5 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained _composePathComponents:v7];
+    [WeakRetained _composePathComponents:componentsCopy];
   }
 
-  v6 = [(NURenderTagGroup *)self leafName];
-  if (v6)
+  leafName = [(NURenderTagGroup *)self leafName];
+  if (leafName)
   {
-    [v7 addObject:v6];
+    [componentsCopy addObject:leafName];
   }
 }
 
@@ -414,14 +414,14 @@ LABEL_7:
   v12 = __Block_byref_object_dispose__22871;
   v13 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  v4 = [WeakRetained children];
+  children = [WeakRetained children];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __28__NURenderTagGroup_leafName__block_invoke;
   v7[3] = &unk_1E810AF30;
   v7[4] = self;
   v7[5] = &v8;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [children enumerateKeysAndObjectsUsingBlock:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -441,11 +441,11 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
   }
 }
 
-- (void)removeChildWithName:(id)a3
+- (void)removeChildWithName:(id)name
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v6 = NUAssertLogger_22844();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -466,8 +466,8 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
         v13 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v14 = MEMORY[0x1E696AF00];
         v15 = v13;
-        v16 = [v14 callStackSymbols];
-        v17 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v14 callStackSymbols];
+        v17 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v24 = v13;
         v25 = 2114;
@@ -478,8 +478,8 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -488,17 +488,17 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
     _NUAssertFailHandler("[NURenderTagGroup removeChildWithName:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderTagGroup.m", 57, @"Invalid parameter not satisfying: %s", v18, v19, v20, v21, "name != nil");
   }
 
-  v22 = v4;
-  v5 = [(NSMutableDictionary *)self->_children objectForKey:v4];
+  v22 = nameCopy;
+  v5 = [(NSMutableDictionary *)self->_children objectForKey:nameCopy];
   [v5 setParent:0];
   [(NSMutableDictionary *)self->_children removeObjectForKey:v22];
 }
 
-- (id)childWithName:(id)a3
+- (id)childWithName:(id)name
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v8 = NUAssertLogger_22844();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -519,8 +519,8 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
         v15 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v16 = MEMORY[0x1E696AF00];
         v17 = v15;
-        v18 = [v16 callStackSymbols];
-        v19 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v16 callStackSymbols];
+        v19 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v25 = v15;
         v26 = 2114;
@@ -531,8 +531,8 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v25 = v14;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -541,18 +541,18 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
     _NUAssertFailHandler("[NURenderTagGroup childWithName:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderTagGroup.m", 50, @"Invalid parameter not satisfying: %s", v20, v21, v22, v23, "name != nil");
   }
 
-  v5 = v4;
-  v6 = [(NSMutableDictionary *)self->_children objectForKey:v4];
+  v5 = nameCopy;
+  v6 = [(NSMutableDictionary *)self->_children objectForKey:nameCopy];
 
   return v6;
 }
 
-- (void)addChild:(id)a3 withName:(id)a4
+- (void)addChild:(id)child withName:(id)name
 {
   v79 = *MEMORY[0x1E69E9840];
-  v74 = a3;
-  v6 = a4;
-  if (!v74)
+  childCopy = child;
+  nameCopy = name;
+  if (!childCopy)
   {
     v9 = NUAssertLogger_22844();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -573,8 +573,8 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
         v37 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v38 = MEMORY[0x1E696AF00];
         v39 = v37;
-        v40 = [v38 callStackSymbols];
-        v41 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v38 callStackSymbols];
+        v41 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v76 = v37;
         v77 = 2114;
@@ -585,8 +585,8 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v76 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -595,7 +595,7 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
     _NUAssertFailHandler("[NURenderTagGroup addChild:withName:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderTagGroup.m", 38, @"Invalid parameter not satisfying: %s", v42, v43, v44, v45, "child != nil");
   }
 
-  if (!v6)
+  if (!nameCopy)
   {
     v16 = NUAssertLogger_22844();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -616,8 +616,8 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
         v46 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v47 = MEMORY[0x1E696AF00];
         v48 = v46;
-        v49 = [v47 callStackSymbols];
-        v50 = [v49 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v47 callStackSymbols];
+        v50 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v76 = v46;
         v77 = 2114;
@@ -628,8 +628,8 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v76 = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -638,9 +638,9 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
     _NUAssertFailHandler("[NURenderTagGroup addChild:withName:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderTagGroup.m", 39, @"Invalid parameter not satisfying: %s", v51, v52, v53, v54, "name != nil");
   }
 
-  v7 = [v74 parent];
+  parent = [childCopy parent];
 
-  if (v7)
+  if (parent)
   {
     v23 = NUAssertLogger_22844();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -661,8 +661,8 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
         v55 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v56 = MEMORY[0x1E696AF00];
         v57 = v55;
-        v58 = [v56 callStackSymbols];
-        v59 = [v58 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v56 callStackSymbols];
+        v59 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v76 = v55;
         v77 = 2114;
@@ -673,8 +673,8 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v76 = v29;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -683,7 +683,7 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
     _NUAssertFailHandler("[NURenderTagGroup addChild:withName:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderTagGroup.m", 41, @"Attempting to add a child that is already parented", v60, v61, v62, v63, v73);
   }
 
-  v8 = [(NSMutableDictionary *)self->_children objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_children objectForKey:nameCopy];
 
   if (v8)
   {
@@ -706,8 +706,8 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
         v64 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v65 = MEMORY[0x1E696AF00];
         v66 = v64;
-        v67 = [v65 callStackSymbols];
-        v68 = [v67 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [v65 callStackSymbols];
+        v68 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v76 = v64;
         v77 = 2114;
@@ -718,8 +718,8 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v36 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v76 = v36;
       _os_log_error_impl(&dword_1C0184000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -728,8 +728,8 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
     _NUAssertFailHandler("[NURenderTagGroup addChild:withName:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderTagGroup.m", 42, @"A child node with that tag is already present!", v69, v70, v71, v72, v73);
   }
 
-  [v74 setParent:self];
-  [(NSMutableDictionary *)self->_children setObject:v74 forKey:v6];
+  [childCopy setParent:self];
+  [(NSMutableDictionary *)self->_children setObject:childCopy forKey:nameCopy];
 }
 
 - (NURenderTagGroup)init
@@ -748,11 +748,11 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
   return v2;
 }
 
-+ (BOOL)validatePath:(id)a3 error:(id *)a4
++ (BOOL)validatePath:(id)path error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
     v9 = NUAssertLogger_22844();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -773,8 +773,8 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
         v23 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v23;
         v43 = 2114;
@@ -785,8 +785,8 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -795,7 +795,7 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
     _NUAssertFailHandler("+[NURenderTagGroup validatePath:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderTagGroup.m", 125, @"Invalid parameter not satisfying: %s", v28, v29, v30, v31, "path != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v16 = NUAssertLogger_22844();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -816,8 +816,8 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
         v32 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v33 = MEMORY[0x1E696AF00];
         v34 = v32;
-        v35 = [v33 callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v33 callStackSymbols];
+        v36 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v32;
         v43 = 2114;
@@ -828,8 +828,8 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -838,11 +838,11 @@ void __28__NURenderTagGroup_leafName__block_invoke(uint64_t a1, void *a2, uint64
     _NUAssertFailHandler("+[NURenderTagGroup validatePath:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderTagGroup.m", 126, @"Invalid parameter not satisfying: %s", v37, v38, v39, v40, "error != NULL");
   }
 
-  v6 = v5;
-  v7 = [v5 isEqualToString:&stru_1F3F4BA98];
+  v6 = pathCopy;
+  v7 = [pathCopy isEqualToString:&stru_1F3F4BA98];
   if (v7)
   {
-    *a4 = [NUError mismatchError:@"Empty paths not allowed" object:v6];
+    *error = [NUError mismatchError:@"Empty paths not allowed" object:v6];
   }
 
   return v7 ^ 1;

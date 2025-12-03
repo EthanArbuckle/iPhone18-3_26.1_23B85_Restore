@@ -1,33 +1,33 @@
 @interface MTLDebugRenderPipelineState
-- (BOOL)isAncestorOf:(id)a3;
-- (BOOL)isImageBlockLayoutInputCompatibleWithOutputOf:(id)a3;
+- (BOOL)isAncestorOf:(id)of;
+- (BOOL)isImageBlockLayoutInputCompatibleWithOutputOf:(id)of;
 - (BOOL)rasterizationEnabled;
-- (MTLDebugRenderPipelineState)initWithPipelineState:(id)a3 reflection:(id)a4 parent:(id)a5 descriptor:(id)a6;
-- (MTLDebugRenderPipelineState)initWithPipelineState:(id)a3 reflection:(id)a4 parent:(id)a5 meshDescriptor:(id)a6;
-- (MTLDebugRenderPipelineState)initWithPipelineState:(id)a3 reflection:(id)a4 parent:(id)a5 tileDescriptor:(id)a6;
-- (MTLDebugRenderPipelineState)initWithRenderPipelineState:(id)a3 parent:(id)a4 mtl4Descriptor:(id)a5;
-- (MTLDebugRenderPipelineState)initWithRenderPipelineState:(id)a3 reflection:(id)a4 parent:(id)a5 mtl4Descriptor:(id)a6;
-- (id)_findMasterStruct:(id)a3 includeImageBlockData:(BOOL)a4;
-- (id)formattedDescription:(unint64_t)a3;
-- (id)functionHandleToDebugFunctionHandle:(id)a3 binaryFunction:(id)a4 stage:(unint64_t)a5;
-- (id)functionHandleToDebugFunctionHandle:(id)a3 parentFunction:(id)a4 stage:(unint64_t)a5;
-- (id)functionHandleToDebugFunctionHandle:(id)a3 stage:(unint64_t)a4;
-- (id)functionHandleWithBinaryFunction:(id)a3 stage:(unint64_t)a4;
-- (id)functionHandleWithFunction:(id)a3 stage:(unint64_t)a4;
-- (id)functionHandleWithFunction:(id)a3 stage:(unint64_t)a4 selector:(SEL)a5;
-- (id)functionHandleWithName:(id)a3 stage:(unint64_t)a4;
-- (id)getParameter:(id)a3;
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4;
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3 withStage:(unint64_t)a4 selector:(SEL)a5;
+- (MTLDebugRenderPipelineState)initWithPipelineState:(id)state reflection:(id)reflection parent:(id)parent descriptor:(id)descriptor;
+- (MTLDebugRenderPipelineState)initWithPipelineState:(id)state reflection:(id)reflection parent:(id)parent meshDescriptor:(id)descriptor;
+- (MTLDebugRenderPipelineState)initWithPipelineState:(id)state reflection:(id)reflection parent:(id)parent tileDescriptor:(id)descriptor;
+- (MTLDebugRenderPipelineState)initWithRenderPipelineState:(id)state parent:(id)parent mtl4Descriptor:(id)descriptor;
+- (MTLDebugRenderPipelineState)initWithRenderPipelineState:(id)state reflection:(id)reflection parent:(id)parent mtl4Descriptor:(id)descriptor;
+- (id)_findMasterStruct:(id)struct includeImageBlockData:(BOOL)data;
+- (id)formattedDescription:(unint64_t)description;
+- (id)functionHandleToDebugFunctionHandle:(id)handle binaryFunction:(id)function stage:(unint64_t)stage;
+- (id)functionHandleToDebugFunctionHandle:(id)handle parentFunction:(id)function stage:(unint64_t)stage;
+- (id)functionHandleToDebugFunctionHandle:(id)handle stage:(unint64_t)stage;
+- (id)functionHandleWithBinaryFunction:(id)function stage:(unint64_t)stage;
+- (id)functionHandleWithFunction:(id)function stage:(unint64_t)stage;
+- (id)functionHandleWithFunction:(id)function stage:(unint64_t)stage selector:(SEL)selector;
+- (id)functionHandleWithName:(id)name stage:(unint64_t)stage;
+- (id)getParameter:(id)parameter;
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage;
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor withStage:(unint64_t)stage selector:(SEL)selector;
 - (id)newRenderPipelineDescriptorForSpecialization;
-- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 fragmentAdditionalBinaryFunctions:(id)a4 error:(id *)a5;
-- (id)newRenderPipelineStateWithBinaryFunctions:(id)a3 error:(id *)a4;
-- (id)newTileRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4;
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4;
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4 selector:(SEL)a5;
+- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error;
+- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions fragmentAdditionalBinaryFunctions:(id)binaryFunctions error:(id *)error;
+- (id)newRenderPipelineStateWithBinaryFunctions:(id)functions error:(id *)error;
+- (id)newTileRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error;
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage;
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage selector:(SEL)selector;
 - (id)outputImageBlockData;
-- (id)validateBinaryFunctions:(id)a3 stage:(unint64_t)a4;
+- (id)validateBinaryFunctions:(id)functions stage:(unint64_t)stage;
 - (int64_t)shaderValidation;
 - (int64_t)shaderValidationState;
 - (void)_updateCachedMTL4MeshPipelineState;
@@ -36,24 +36,24 @@
 - (void)_updateCachedMeshPipelineState;
 - (void)_updateCachedPipelineState;
 - (void)_updateCachedTilePipelineState;
-- (void)_validateThreadgroupSize:(id *)a3 stage:(unint64_t)a4 context:(_MTLMessageContext *)a5;
+- (void)_validateThreadgroupSize:(id *)size stage:(unint64_t)stage context:(_MTLMessageContext *)context;
 - (void)dealloc;
-- (void)validateHandleForSetFunction:(id)a3;
+- (void)validateHandleForSetFunction:(id)function;
 @end
 
 @implementation MTLDebugRenderPipelineState
 
-- (MTLDebugRenderPipelineState)initWithRenderPipelineState:(id)a3 parent:(id)a4 mtl4Descriptor:(id)a5
+- (MTLDebugRenderPipelineState)initWithRenderPipelineState:(id)state parent:(id)parent mtl4Descriptor:(id)descriptor
 {
   v9.receiver = self;
   v9.super_class = MTLDebugRenderPipelineState;
-  v7 = [(MTLToolsRenderPipelineState *)&v9 initWithBaseObject:a3 parent:a4];
+  v7 = [(MTLToolsRenderPipelineState *)&v9 initWithBaseObject:state parent:parent];
   if (v7)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7->_mtl4Descriptor = [a5 copy];
+      v7->_mtl4Descriptor = [descriptor copy];
       [(MTLDebugRenderPipelineState *)v7 _updateCachedMTL4PipelineState];
     }
 
@@ -62,7 +62,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7->_mtl4TileDescriptor = [a5 copy];
+        v7->_mtl4TileDescriptor = [descriptor copy];
         [(MTLDebugRenderPipelineState *)v7 _updateCachedMTL4TilePipelineState];
       }
 
@@ -71,29 +71,29 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v7->_mtl4MeshDescriptor = [a5 copy];
+          v7->_mtl4MeshDescriptor = [descriptor copy];
           [(MTLDebugRenderPipelineState *)v7 _updateCachedMTL4MeshPipelineState];
         }
       }
     }
 
-    v7->_validationReflection = [a3 reflection];
+    v7->_validationReflection = [state reflection];
   }
 
   return v7;
 }
 
-- (MTLDebugRenderPipelineState)initWithRenderPipelineState:(id)a3 reflection:(id)a4 parent:(id)a5 mtl4Descriptor:(id)a6
+- (MTLDebugRenderPipelineState)initWithRenderPipelineState:(id)state reflection:(id)reflection parent:(id)parent mtl4Descriptor:(id)descriptor
 {
   v10.receiver = self;
   v10.super_class = MTLDebugRenderPipelineState;
-  v8 = [(MTLToolsRenderPipelineState *)&v10 initWithBaseObject:a3 parent:a5];
+  v8 = [(MTLToolsRenderPipelineState *)&v10 initWithBaseObject:state parent:parent];
   if (v8)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8->_mtl4Descriptor = [a6 copy];
+      v8->_mtl4Descriptor = [descriptor copy];
       [(MTLDebugRenderPipelineState *)v8 _updateCachedMTL4PipelineState];
     }
 
@@ -102,7 +102,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8->_mtl4TileDescriptor = [a6 copy];
+        v8->_mtl4TileDescriptor = [descriptor copy];
         [(MTLDebugRenderPipelineState *)v8 _updateCachedMTL4TilePipelineState];
       }
 
@@ -111,50 +111,50 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v8->_mtl4MeshDescriptor = [a6 copy];
+          v8->_mtl4MeshDescriptor = [descriptor copy];
           [(MTLDebugRenderPipelineState *)v8 _updateCachedMTL4MeshPipelineState];
         }
       }
     }
 
-    v8->_validationReflection = a4;
+    v8->_validationReflection = reflection;
   }
 
   return v8;
 }
 
-- (MTLDebugRenderPipelineState)initWithPipelineState:(id)a3 reflection:(id)a4 parent:(id)a5 descriptor:(id)a6
+- (MTLDebugRenderPipelineState)initWithPipelineState:(id)state reflection:(id)reflection parent:(id)parent descriptor:(id)descriptor
 {
   v12.receiver = self;
   v12.super_class = MTLDebugRenderPipelineState;
-  v8 = [(MTLToolsRenderPipelineState *)&v12 initWithBaseObject:a3 parent:a5];
+  v8 = [(MTLToolsRenderPipelineState *)&v12 initWithBaseObject:state parent:parent];
   if (v8)
   {
-    v9 = [a6 copy];
+    v9 = [descriptor copy];
     v8->_descriptor = v9;
     [(MTLRenderPipelineDescriptor *)v9 setBinaryArchives:0];
     v10 = MEMORY[0x277CBEBF8];
     [(MTLRenderPipelineDescriptor *)v8->_descriptor setVertexPreloadedLibraries:MEMORY[0x277CBEBF8]];
     [(MTLRenderPipelineDescriptor *)v8->_descriptor setFragmentPreloadedLibraries:v10];
-    v8->_validationReflection = a4;
+    v8->_validationReflection = reflection;
     [(MTLDebugRenderPipelineState *)v8 _updateCachedPipelineState];
   }
 
   return v8;
 }
 
-- (MTLDebugRenderPipelineState)initWithPipelineState:(id)a3 reflection:(id)a4 parent:(id)a5 tileDescriptor:(id)a6
+- (MTLDebugRenderPipelineState)initWithPipelineState:(id)state reflection:(id)reflection parent:(id)parent tileDescriptor:(id)descriptor
 {
   v11.receiver = self;
   v11.super_class = MTLDebugRenderPipelineState;
-  v8 = [(MTLToolsRenderPipelineState *)&v11 initWithBaseObject:a3 parent:a5];
+  v8 = [(MTLToolsRenderPipelineState *)&v11 initWithBaseObject:state parent:parent];
   if (v8)
   {
-    v9 = [a6 copy];
+    v9 = [descriptor copy];
     v8->_tileDescriptor = v9;
     [(MTLTileRenderPipelineDescriptor *)v9 setBinaryArchives:0];
     [(MTLTileRenderPipelineDescriptor *)v8->_tileDescriptor setPreloadedLibraries:MEMORY[0x277CBEBF8]];
-    v8->_validationReflection = a4;
+    v8->_validationReflection = reflection;
     [(MTLDebugRenderPipelineState *)v8 _updateCachedTilePipelineState];
   }
 
@@ -163,22 +163,22 @@
 
 - (void)_updateCachedTilePipelineState
 {
-  v3 = [(MTLTileRenderPipelineDescriptor *)self->_tileDescriptor _descriptorPrivate];
+  _descriptorPrivate = [(MTLTileRenderPipelineDescriptor *)self->_tileDescriptor _descriptorPrivate];
   v4 = 0;
-  self->_rasterSampleCount = *(v3 + 8);
+  self->_rasterSampleCount = *(_descriptorPrivate + 8);
   do
   {
-    v5 = [*v3 objectAtIndexedSubscript:v4];
-    if (v5)
+    pixelFormat = [*_descriptorPrivate objectAtIndexedSubscript:v4];
+    if (pixelFormat)
     {
-      v5 = [v5 pixelFormat];
+      pixelFormat = [pixelFormat pixelFormat];
     }
 
-    self->_colorPixelFormat[v4++] = v5;
+    self->_colorPixelFormat[v4++] = pixelFormat;
   }
 
   while (v4 != 8);
-  self->_threadgroupSizeMatchesTileSize = *(v3 + 32);
+  self->_threadgroupSizeMatchesTileSize = *(_descriptorPrivate + 32);
 }
 
 - (void)_updateCachedMTL4TilePipelineState
@@ -187,28 +187,28 @@
   self->_rasterSampleCount = [(MTL4TileRenderPipelineDescriptor *)self->_mtl4TileDescriptor rasterSampleCount];
   do
   {
-    v4 = [-[MTL4TileRenderPipelineDescriptor colorAttachments](self->_mtl4TileDescriptor "colorAttachments")];
-    if (v4)
+    pixelFormat = [-[MTL4TileRenderPipelineDescriptor colorAttachments](self->_mtl4TileDescriptor "colorAttachments")];
+    if (pixelFormat)
     {
-      v4 = [v4 pixelFormat];
+      pixelFormat = [pixelFormat pixelFormat];
     }
 
-    self->_colorPixelFormat[v3++] = v4;
+    self->_colorPixelFormat[v3++] = pixelFormat;
   }
 
   while (v3 != 8);
   self->_threadgroupSizeMatchesTileSize = [(MTL4TileRenderPipelineDescriptor *)self->_mtl4TileDescriptor threadgroupSizeMatchesTileSize];
 }
 
-- (id)_findMasterStruct:(id)a3 includeImageBlockData:(BOOL)a4
+- (id)_findMasterStruct:(id)struct includeImageBlockData:(BOOL)data
 {
-  if (!a3)
+  if (!struct)
   {
     return 0;
   }
 
-  v4 = a4;
-  result = [a3 count];
+  dataCopy = data;
+  result = [struct count];
   if (!result)
   {
     return result;
@@ -217,7 +217,7 @@
   v7 = 0;
   while (1)
   {
-    v8 = [objc_msgSend(a3 objectAtIndexedSubscript:{v7), "type"}];
+    v8 = [objc_msgSend(struct objectAtIndexedSubscript:{v7), "type"}];
     if (v8 == 16)
     {
       break;
@@ -229,22 +229,22 @@
     }
 
 LABEL_8:
-    if ([a3 count] <= ++v7)
+    if ([struct count] <= ++v7)
     {
       return 0;
     }
   }
 
-  if (!v4)
+  if (!dataCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_11:
-  result = [objc_msgSend(a3 objectAtIndexedSubscript:{v7), "imageBlockMasterStructMembers"}];
+  result = [objc_msgSend(struct objectAtIndexedSubscript:{v7), "imageBlockMasterStructMembers"}];
   if (!result)
   {
-    v9 = [a3 objectAtIndexedSubscript:v7];
+    v9 = [struct objectAtIndexedSubscript:v7];
 
     return [v9 dataTypeDescription];
   }
@@ -257,15 +257,15 @@ LABEL_11:
   result = -[MTLDebugRenderPipelineState _findMasterStruct:includeImageBlockData:](self, "_findMasterStruct:includeImageBlockData:", [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{-[MTLRenderPipelineReflection imageBlockDataReturn](self->_validationReflection, "imageBlockDataReturn"), 0}], 1);
   if (!result)
   {
-    v4 = [(MTLRenderPipelineReflection *)self->_validationReflection tileArguments];
+    tileArguments = [(MTLRenderPipelineReflection *)self->_validationReflection tileArguments];
 
-    return [(MTLDebugRenderPipelineState *)self _findMasterStruct:v4 includeImageBlockData:0];
+    return [(MTLDebugRenderPipelineState *)self _findMasterStruct:tileArguments includeImageBlockData:0];
   }
 
   return result;
 }
 
-- (BOOL)isImageBlockLayoutInputCompatibleWithOutputOf:(id)a3
+- (BOOL)isImageBlockLayoutInputCompatibleWithOutputOf:(id)of
 {
   v5 = [(MTLDebugRenderPipelineState *)self _findMasterStruct:[(MTLRenderPipelineReflection *)[(MTLDebugRenderPipelineState *)self validationReflection] tileArguments] includeImageBlockData:1];
   if (!v5)
@@ -273,13 +273,13 @@ LABEL_11:
     v5 = [(MTLDebugRenderPipelineState *)self _findMasterStruct:[(MTLRenderPipelineReflection *)[(MTLDebugRenderPipelineState *)self validationReflection] fragmentArguments] includeImageBlockData:1];
   }
 
-  v6 = [a3 outputImageBlockData];
-  if (!v6 || !v5)
+  outputImageBlockData = [of outputImageBlockData];
+  if (!outputImageBlockData || !v5)
   {
     return 1;
   }
 
-  return [v6 isStructLayoutThreadSafeWith:v5];
+  return [outputImageBlockData isStructLayoutThreadSafeWith:v5];
 }
 
 - (void)dealloc
@@ -305,19 +305,19 @@ LABEL_11:
 - (void)_updateCachedPipelineState
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [(MTLRenderPipelineDescriptor *)self->_descriptor _descriptorPrivate];
+  _descriptorPrivate = [(MTLRenderPipelineDescriptor *)self->_descriptor _descriptorPrivate];
   v4 = 0;
   v5 = 0;
-  self->_rasterSampleCount = *(v3 + 184);
+  self->_rasterSampleCount = *(_descriptorPrivate + 184);
   v6 = -8;
-  v7 = self;
+  selfCopy = self;
   do
   {
-    v8 = [objc_msgSend(*v3 _descriptorAtIndex:{v6 + 8), "_descriptorPrivate"}];
+    v8 = [objc_msgSend(*_descriptorPrivate _descriptorAtIndex:{v6 + 8), "_descriptorPrivate"}];
     if (v8)
     {
       v9 = *v8 >> 42;
-      v7->_colorPixelFormat[0] = v9;
+      selfCopy->_colorPixelFormat[0] = v9;
       if (v9)
       {
         v5 = ((*(v8 + 4) & 0xF) << v4) | v5 & ~(15 << v4);
@@ -326,16 +326,16 @@ LABEL_11:
 
     else
     {
-      v7->_colorPixelFormat[0] = 0;
+      selfCopy->_colorPixelFormat[0] = 0;
     }
 
     v4 += 4;
-    v7 = (v7 + 8);
+    selfCopy = (selfCopy + 8);
     ++v6;
   }
 
   while (v4 != 32);
-  v10 = *(v3 + 72);
+  v10 = *(_descriptorPrivate + 72);
   self->_depthPixelFormat = v10;
   if (v10)
   {
@@ -347,7 +347,7 @@ LABEL_11:
     v11 = v5;
   }
 
-  v12 = *(v3 + 80);
+  v12 = *(_descriptorPrivate + 80);
   self->_stencilPixelFormat = v12;
   if (v12)
   {
@@ -355,15 +355,15 @@ LABEL_11:
   }
 
   self->_attachmentWriteMask = v11;
-  v13 = *(v3 + 272);
+  v13 = *(_descriptorPrivate + 272);
   if (v13)
   {
-    v14 = [v13 layouts];
+    layouts = [v13 layouts];
     v15 = 0;
     self->_vertexDescriptorLayoutCount = 0;
     do
     {
-      v16 = [objc_msgSend(v14 objectAtIndexedSubscript:{v15), "stride"}];
+      v16 = [objc_msgSend(layouts objectAtIndexedSubscript:{v15), "stride"}];
       if (v16)
       {
         v17 = &self->_vertexDescriptorLayouts[self->_vertexDescriptorLayoutCount];
@@ -384,12 +384,12 @@ LABEL_11:
   self->_maxPatchCount = 0xFFFFFFFFLL;
   p_maxVertexCount = &self->_maxVertexCount;
   self->_maxVertexCount = 0xFFFFFFFFLL;
-  v21 = [(MTLRenderPipelineReflection *)self->_validationReflection vertexBuiltInArguments];
+  vertexBuiltInArguments = [(MTLRenderPipelineReflection *)self->_validationReflection vertexBuiltInArguments];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v22 = [v21 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  v22 = [vertexBuiltInArguments countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v22)
   {
     v23 = v22;
@@ -400,7 +400,7 @@ LABEL_11:
       {
         if (*v34 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(vertexBuiltInArguments);
         }
 
         v26 = *(*(&v33 + 1) + 8 * i);
@@ -415,23 +415,23 @@ LABEL_11:
           v28 = qword_22E27C370[v27];
         }
 
-        v29 = [v26 builtInType];
+        builtInType = [v26 builtInType];
         v30 = p_maxVertexCount;
-        if (v29 <= 2)
+        if (builtInType <= 2)
         {
-          if (v29 != 1)
+          if (builtInType != 1)
           {
             v30 = p_maxInstanceCount;
-            if (v29 != 2)
+            if (builtInType != 2)
             {
               continue;
             }
           }
         }
 
-        else if (v29 != 3)
+        else if (builtInType != 3)
         {
-          if (v29 == 13)
+          if (builtInType == 13)
           {
             v30 = p_maxPatchCount;
           }
@@ -439,7 +439,7 @@ LABEL_11:
           else
           {
             v30 = p_maxInstanceCount;
-            if (v29 != 4)
+            if (builtInType != 4)
             {
               continue;
             }
@@ -455,7 +455,7 @@ LABEL_11:
         *v30 = v31;
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v23 = [vertexBuiltInArguments countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v23);
@@ -471,16 +471,16 @@ LABEL_11:
   v4 = 0;
   self->_rasterSampleCount = [(MTL4RenderPipelineDescriptor *)self->_mtl4Descriptor rasterSampleCount];
   v5 = -8;
-  v6 = self;
+  selfCopy = self;
   do
   {
     v7 = [-[MTL4RenderPipelineDescriptor colorAttachments](self->_mtl4Descriptor "colorAttachments")];
     if (v7)
     {
       v8 = v7;
-      v9 = [v7 pixelFormat];
-      v6->_colorPixelFormat[0] = v9;
-      if (v9)
+      pixelFormat = [v7 pixelFormat];
+      selfCopy->_colorPixelFormat[0] = pixelFormat;
+      if (pixelFormat)
       {
         v4 = (([v8 writeMask] & 0xF) << v3) | v4 & ~(15 << v3);
       }
@@ -488,11 +488,11 @@ LABEL_11:
 
     else
     {
-      v6->_colorPixelFormat[0] = 0;
+      selfCopy->_colorPixelFormat[0] = 0;
     }
 
     v3 += 4;
-    v6 = (v6 + 8);
+    selfCopy = (selfCopy + 8);
     ++v5;
   }
 
@@ -500,15 +500,15 @@ LABEL_11:
   self->_depthPixelFormat = 0;
   self->_stencilPixelFormat = 0;
   self->_attachmentWriteMask = v4;
-  v10 = [(MTL4RenderPipelineDescriptor *)self->_mtl4Descriptor vertexDescriptor];
-  if (v10)
+  vertexDescriptor = [(MTL4RenderPipelineDescriptor *)self->_mtl4Descriptor vertexDescriptor];
+  if (vertexDescriptor)
   {
-    v11 = [v10 layouts];
+    layouts = [vertexDescriptor layouts];
     v12 = 0;
     self->_vertexDescriptorLayoutCount = 0;
     do
     {
-      v13 = [objc_msgSend(v11 objectAtIndexedSubscript:{v12), "stride"}];
+      v13 = [objc_msgSend(layouts objectAtIndexedSubscript:{v12), "stride"}];
       if (v13)
       {
         v14 = &self->_vertexDescriptorLayouts[self->_vertexDescriptorLayoutCount];
@@ -529,12 +529,12 @@ LABEL_11:
   self->_maxPatchCount = 0xFFFFFFFFLL;
   p_maxVertexCount = &self->_maxVertexCount;
   self->_maxVertexCount = 0xFFFFFFFFLL;
-  v18 = [(MTLRenderPipelineReflection *)self->_validationReflection vertexBuiltInArguments];
+  vertexBuiltInArguments = [(MTLRenderPipelineReflection *)self->_validationReflection vertexBuiltInArguments];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v19 = [v18 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  v19 = [vertexBuiltInArguments countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v19)
   {
     v20 = v19;
@@ -545,7 +545,7 @@ LABEL_11:
       {
         if (*v31 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(vertexBuiltInArguments);
         }
 
         v23 = *(*(&v30 + 1) + 8 * i);
@@ -560,23 +560,23 @@ LABEL_11:
           v25 = qword_22E27C370[v24];
         }
 
-        v26 = [v23 builtInType];
+        builtInType = [v23 builtInType];
         v27 = p_maxVertexCount;
-        if (v26 <= 2)
+        if (builtInType <= 2)
         {
-          if (v26 != 1)
+          if (builtInType != 1)
           {
             v27 = p_maxInstanceCount;
-            if (v26 != 2)
+            if (builtInType != 2)
             {
               continue;
             }
           }
         }
 
-        else if (v26 != 3)
+        else if (builtInType != 3)
         {
-          if (v26 == 13)
+          if (builtInType == 13)
           {
             v27 = p_maxPatchCount;
           }
@@ -584,7 +584,7 @@ LABEL_11:
           else
           {
             v27 = p_maxInstanceCount;
-            if (v26 != 4)
+            if (builtInType != 4)
             {
               continue;
             }
@@ -600,7 +600,7 @@ LABEL_11:
         *v27 = v28;
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v20 = [vertexBuiltInArguments countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v20);
@@ -609,30 +609,30 @@ LABEL_11:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v4.receiver = self;
   v4.super_class = MTLDebugRenderPipelineState;
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", -[MTLToolsObject description](&v4, sel_description), -[MTLRenderPipelineDescriptor formattedDescription:](self->_descriptor, "formattedDescription:", a3 + 4)];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", -[MTLToolsObject description](&v4, sel_description), -[MTLRenderPipelineDescriptor formattedDescription:](self->_descriptor, "formattedDescription:", description + 4)];
 }
 
-- (id)getParameter:(id)a3
+- (id)getParameter:(id)parameter
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 getParameter:a3];
+  return [baseObject getParameter:parameter];
 }
 
-- (BOOL)isAncestorOf:(id)a3
+- (BOOL)isAncestorOf:(id)of
 {
-  if (self == a3)
+  if (self == of)
   {
     return 1;
   }
 
-  v3 = a3;
-  v5 = a3;
-  while (v3)
+  ofCopy = of;
+  ofCopy2 = of;
+  while (ofCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -640,13 +640,13 @@ LABEL_11:
       break;
     }
 
-    v6 = [v3 parent];
+    parent = [ofCopy parent];
 
-    v3 = v6;
-    if (v6 == self)
+    ofCopy = parent;
+    if (parent == self)
     {
       v7 = 1;
-      v3 = v6;
+      ofCopy = parent;
       goto LABEL_8;
     }
   }
@@ -657,32 +657,32 @@ LABEL_8:
   return v7;
 }
 
-- (void)validateHandleForSetFunction:(id)a3
+- (void)validateHandleForSetFunction:(id)function
 {
-  v5 = [a3 parent];
-  if (([v5 isAncestorOf:self] & 1) == 0 && !-[MTLDebugRenderPipelineState isAncestorOf:](self, "isAncestorOf:", v5))
+  parent = [function parent];
+  if (([parent isAncestorOf:self] & 1) == 0 && !-[MTLDebugRenderPipelineState isAncestorOf:](self, "isAncestorOf:", parent))
   {
-    [MTLDebugRenderPipelineState validateHandleForSetFunction:a3];
+    [MTLDebugRenderPipelineState validateHandleForSetFunction:function];
   }
 }
 
-- (id)validateBinaryFunctions:(id)a3 stage:(unint64_t)a4
+- (id)validateBinaryFunctions:(id)functions stage:(unint64_t)stage
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = [(MTLToolsRenderPipelineState *)self device];
-  if ([a3 count])
+  device = [(MTLToolsRenderPipelineState *)self device];
+  if ([functions count])
   {
-    if (([-[MTLDevice baseObject](v6 "baseObject")] & 1) == 0)
+    if (([-[MTLDevice baseObject](device "baseObject")] & 1) == 0)
     {
-      [MTLDebugRenderPipelineState validateBinaryFunctions:a4 stage:?];
+      [MTLDebugRenderPipelineState validateBinaryFunctions:stage stage:?];
     }
 
-    v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+    v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(functions, "count")}];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v8 = [functions countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -693,18 +693,18 @@ LABEL_8:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(functions);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) baseObject];
-          [v7 addObject:v12];
-          if (![v12 precompiledOutput])
+          baseObject = [*(*(&v15 + 1) + 8 * i) baseObject];
+          [v7 addObject:baseObject];
+          if (![baseObject precompiledOutput])
           {
-            [MTLDebugRenderPipelineState validateBinaryFunctions:v12 stage:a4];
+            [MTLDebugRenderPipelineState validateBinaryFunctions:baseObject stage:stage];
           }
         }
 
-        v9 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [functions countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
@@ -720,9 +720,9 @@ LABEL_8:
   return v7;
 }
 
-- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 fragmentAdditionalBinaryFunctions:(id)a4 error:(id *)a5
+- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions fragmentAdditionalBinaryFunctions:(id)binaryFunctions error:(id *)error
 {
-  if ([a3 count])
+  if ([functions count])
   {
     if ([(MTLDebugRenderPipelineState *)self hasMetal4Descriptor])
     {
@@ -738,7 +738,7 @@ LABEL_8:
     }
   }
 
-  if ([a4 count])
+  if ([binaryFunctions count])
   {
     if ([(MTLDebugRenderPipelineState *)self hasMetal4Descriptor])
     {
@@ -754,12 +754,12 @@ LABEL_8:
     }
   }
 
-  v9 = [(MTLDebugRenderPipelineState *)self validateBinaryFunctions:a3 stage:2];
-  v10 = [(MTLDebugRenderPipelineState *)self validateBinaryFunctions:a4 stage:3];
+  v9 = [(MTLDebugRenderPipelineState *)self validateBinaryFunctions:functions stage:2];
+  v10 = [(MTLDebugRenderPipelineState *)self validateBinaryFunctions:binaryFunctions stage:3];
   v17 = 0;
-  if (!a5)
+  if (!error)
   {
-    a5 = &v17;
+    error = &v17;
   }
 
   v11 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -789,11 +789,11 @@ LABEL_17:
   {
     v13 = [(MTLRenderPipelineDescriptor *)self->_descriptor copy];
     v14 = objc_alloc_init(MEMORY[0x277CD6EB8]);
-    [v14 setBinaryFunctions:a3];
+    [v14 setBinaryFunctions:functions];
     [v13 setVertexLinkedFunctions:v14];
 
     v15 = objc_alloc_init(MEMORY[0x277CD6EB8]);
-    [v15 setBinaryFunctions:a4];
+    [v15 setBinaryFunctions:binaryFunctions];
     [v13 setFragmentLinkedFunctions:v15];
 
     v12 = [[MTLDebugRenderPipelineState alloc] initWithPipelineState:v11 reflection:self->_validationReflection parent:self descriptor:v13];
@@ -802,7 +802,7 @@ LABEL_17:
   return v12;
 }
 
-- (id)newTileRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newTileRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error
 {
   if ([(MTLDebugRenderPipelineState *)self hasMetal4Descriptor])
   {
@@ -817,11 +817,11 @@ LABEL_17:
     [MTLDebugRenderPipelineState newTileRenderPipelineStateWithAdditionalBinaryFunctions:error:];
   }
 
-  v7 = [(MTLDebugRenderPipelineState *)self validateBinaryFunctions:a3 stage:4];
+  v7 = [(MTLDebugRenderPipelineState *)self validateBinaryFunctions:functions stage:4];
   v13 = 0;
-  if (!a4)
+  if (!error)
   {
-    a4 = &v13;
+    error = &v13;
   }
 
   v8 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -851,7 +851,7 @@ LABEL_10:
   {
     v10 = [(MTLTileRenderPipelineDescriptor *)self->_tileDescriptor copy];
     v11 = objc_alloc_init(MEMORY[0x277CD6EB8]);
-    [v11 setBinaryFunctions:a3];
+    [v11 setBinaryFunctions:functions];
     [v10 setLinkedFunctions:v11];
 
     v9 = [[MTLDebugRenderPipelineState alloc] initWithPipelineState:v8 reflection:self->_validationReflection parent:self tileDescriptor:v10];
@@ -860,18 +860,18 @@ LABEL_10:
   return v9;
 }
 
-- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error
 {
-  v7 = [objc_msgSend(a3 "tileAdditionalBinaryFunctions")] != 0;
-  v8 = [objc_msgSend(a3 "vertexAdditionalBinaryFunctions")] || objc_msgSend(objc_msgSend(a3, "fragmentAdditionalBinaryFunctions"), "count") || objc_msgSend(objc_msgSend(a3, "objectAdditionalBinaryFunctions"), "count") || objc_msgSend(objc_msgSend(a3, "meshAdditionalBinaryFunctions"), "count") != 0;
+  v7 = [objc_msgSend(functions "tileAdditionalBinaryFunctions")] != 0;
+  v8 = [objc_msgSend(functions "vertexAdditionalBinaryFunctions")] || objc_msgSend(objc_msgSend(functions, "fragmentAdditionalBinaryFunctions"), "count") || objc_msgSend(objc_msgSend(functions, "objectAdditionalBinaryFunctions"), "count") || objc_msgSend(objc_msgSend(functions, "meshAdditionalBinaryFunctions"), "count") != 0;
   if (v8 == v7)
   {
     [MTLDebugRenderPipelineState newRenderPipelineStateWithAdditionalBinaryFunctions:error:];
   }
 
-  v9 = [(MTLDebugRenderPipelineState *)self hasMetal4Descriptor];
-  v10 = [objc_msgSend(a3 "tileAdditionalBinaryFunctions")];
-  if (v9)
+  hasMetal4Descriptor = [(MTLDebugRenderPipelineState *)self hasMetal4Descriptor];
+  v10 = [objc_msgSend(functions "tileAdditionalBinaryFunctions")];
+  if (hasMetal4Descriptor)
   {
     if (v10)
     {
@@ -889,7 +889,7 @@ LABEL_10:
       }
     }
 
-    if ([objc_msgSend(a3 "fragmentAdditionalBinaryFunctions")])
+    if ([objc_msgSend(functions "fragmentAdditionalBinaryFunctions")])
     {
       if (self->_mtl4Descriptor)
       {
@@ -913,7 +913,7 @@ LABEL_10:
       }
     }
 
-    if ([objc_msgSend(a3 "vertexAdditionalBinaryFunctions")])
+    if ([objc_msgSend(functions "vertexAdditionalBinaryFunctions")])
     {
       if (self->_mtl4Descriptor)
       {
@@ -929,7 +929,7 @@ LABEL_10:
       }
     }
 
-    if ([objc_msgSend(a3 "objectAdditionalBinaryFunctions")])
+    if ([objc_msgSend(functions "objectAdditionalBinaryFunctions")])
     {
       if (self->_mtl4MeshDescriptor)
       {
@@ -945,7 +945,7 @@ LABEL_10:
       }
     }
 
-    if ([objc_msgSend(a3 "meshAdditionalBinaryFunctions")])
+    if ([objc_msgSend(functions "meshAdditionalBinaryFunctions")])
     {
       if (self->_mtl4MeshDescriptor)
       {
@@ -969,37 +969,37 @@ LABEL_10:
       [MTLDebugRenderPipelineState newRenderPipelineStateWithAdditionalBinaryFunctions:error:];
     }
 
-    if ([objc_msgSend(a3 "fragmentAdditionalBinaryFunctions")] && !-[MTLRenderPipelineDescriptor supportAddingFragmentBinaryFunctions](-[MTLDebugRenderPipelineState descriptor](self, "descriptor"), "supportAddingFragmentBinaryFunctions"))
+    if ([objc_msgSend(functions "fragmentAdditionalBinaryFunctions")] && !-[MTLRenderPipelineDescriptor supportAddingFragmentBinaryFunctions](-[MTLDebugRenderPipelineState descriptor](self, "descriptor"), "supportAddingFragmentBinaryFunctions"))
     {
       [MTLDebugRenderPipelineState newRenderPipelineStateWithAdditionalBinaryFunctions:error:];
     }
 
-    if ([objc_msgSend(a3 "vertexAdditionalBinaryFunctions")] && !-[MTLRenderPipelineDescriptor supportAddingVertexBinaryFunctions](-[MTLDebugRenderPipelineState descriptor](self, "descriptor"), "supportAddingVertexBinaryFunctions"))
+    if ([objc_msgSend(functions "vertexAdditionalBinaryFunctions")] && !-[MTLRenderPipelineDescriptor supportAddingVertexBinaryFunctions](-[MTLDebugRenderPipelineState descriptor](self, "descriptor"), "supportAddingVertexBinaryFunctions"))
     {
       [MTLDebugRenderPipelineState newRenderPipelineStateWithAdditionalBinaryFunctions:error:];
     }
 
-    if ([objc_msgSend(a3 "objectAdditionalBinaryFunctions")] && (-[MTLRenderPipelineDescriptor supportAddingObjectBinaryFunctions](-[MTLDebugRenderPipelineState descriptor](self, "descriptor"), "supportAddingObjectBinaryFunctions") & 1) == 0)
+    if ([objc_msgSend(functions "objectAdditionalBinaryFunctions")] && (-[MTLRenderPipelineDescriptor supportAddingObjectBinaryFunctions](-[MTLDebugRenderPipelineState descriptor](self, "descriptor"), "supportAddingObjectBinaryFunctions") & 1) == 0)
     {
       [MTLDebugRenderPipelineState newRenderPipelineStateWithAdditionalBinaryFunctions:error:];
     }
 
-    if ([objc_msgSend(a3 "meshAdditionalBinaryFunctions")] && (-[MTLRenderPipelineDescriptor supportAddingMeshBinaryFunctions](-[MTLDebugRenderPipelineState descriptor](self, "descriptor"), "supportAddingMeshBinaryFunctions") & 1) == 0)
+    if ([objc_msgSend(functions "meshAdditionalBinaryFunctions")] && (-[MTLRenderPipelineDescriptor supportAddingMeshBinaryFunctions](-[MTLDebugRenderPipelineState descriptor](self, "descriptor"), "supportAddingMeshBinaryFunctions") & 1) == 0)
     {
       [MTLDebugRenderPipelineState newRenderPipelineStateWithAdditionalBinaryFunctions:error:];
     }
   }
 
   v11 = objc_opt_new();
-  [v11 setVertexAdditionalBinaryFunctions:{-[MTLDebugRenderPipelineState validateBinaryFunctions:stage:](self, "validateBinaryFunctions:stage:", objc_msgSend(a3, "vertexAdditionalBinaryFunctions"), 2)}];
-  [v11 setFragmentAdditionalBinaryFunctions:{-[MTLDebugRenderPipelineState validateBinaryFunctions:stage:](self, "validateBinaryFunctions:stage:", objc_msgSend(a3, "fragmentAdditionalBinaryFunctions"), 3)}];
-  [v11 setTileAdditionalBinaryFunctions:{-[MTLDebugRenderPipelineState validateBinaryFunctions:stage:](self, "validateBinaryFunctions:stage:", objc_msgSend(a3, "tileAdditionalBinaryFunctions"), 4)}];
-  [v11 setObjectAdditionalBinaryFunctions:{-[MTLDebugRenderPipelineState validateBinaryFunctions:stage:](self, "validateBinaryFunctions:stage:", objc_msgSend(a3, "objectAdditionalBinaryFunctions"), 5)}];
-  [v11 setMeshAdditionalBinaryFunctions:{-[MTLDebugRenderPipelineState validateBinaryFunctions:stage:](self, "validateBinaryFunctions:stage:", objc_msgSend(a3, "meshAdditionalBinaryFunctions"), 6)}];
+  [v11 setVertexAdditionalBinaryFunctions:{-[MTLDebugRenderPipelineState validateBinaryFunctions:stage:](self, "validateBinaryFunctions:stage:", objc_msgSend(functions, "vertexAdditionalBinaryFunctions"), 2)}];
+  [v11 setFragmentAdditionalBinaryFunctions:{-[MTLDebugRenderPipelineState validateBinaryFunctions:stage:](self, "validateBinaryFunctions:stage:", objc_msgSend(functions, "fragmentAdditionalBinaryFunctions"), 3)}];
+  [v11 setTileAdditionalBinaryFunctions:{-[MTLDebugRenderPipelineState validateBinaryFunctions:stage:](self, "validateBinaryFunctions:stage:", objc_msgSend(functions, "tileAdditionalBinaryFunctions"), 4)}];
+  [v11 setObjectAdditionalBinaryFunctions:{-[MTLDebugRenderPipelineState validateBinaryFunctions:stage:](self, "validateBinaryFunctions:stage:", objc_msgSend(functions, "objectAdditionalBinaryFunctions"), 5)}];
+  [v11 setMeshAdditionalBinaryFunctions:{-[MTLDebugRenderPipelineState validateBinaryFunctions:stage:](self, "validateBinaryFunctions:stage:", objc_msgSend(functions, "meshAdditionalBinaryFunctions"), 6)}];
   v23 = 0;
-  if (!a4)
+  if (!error)
   {
-    a4 = &v23;
+    error = &v23;
   }
 
   v12 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -1020,11 +1020,11 @@ LABEL_10:
 
   else
   {
-    if ([objc_msgSend(a3 "tileAdditionalBinaryFunctions")])
+    if ([objc_msgSend(functions "tileAdditionalBinaryFunctions")])
     {
       v15 = [(MTLTileRenderPipelineDescriptor *)self->_tileDescriptor copy];
       v16 = objc_opt_new();
-      [v16 setBinaryFunctions:{objc_msgSend(a3, "tileAdditionalBinaryFunctions")}];
+      [v16 setBinaryFunctions:{objc_msgSend(functions, "tileAdditionalBinaryFunctions")}];
       [v15 setLinkedFunctions:v16];
       v17 = [[MTLDebugRenderPipelineState alloc] initWithPipelineState:v12 reflection:self->_validationReflection parent:self tileDescriptor:v15];
     }
@@ -1033,16 +1033,16 @@ LABEL_10:
     {
       v15 = [(MTLRenderPipelineDescriptor *)self->_descriptor copy];
       v18 = objc_opt_new();
-      [v18 setBinaryFunctions:{objc_msgSend(a3, "vertexAdditionalBinaryFunctions")}];
+      [v18 setBinaryFunctions:{objc_msgSend(functions, "vertexAdditionalBinaryFunctions")}];
       [v15 setVertexLinkedFunctions:v18];
       v19 = objc_opt_new();
-      [v19 setBinaryFunctions:{objc_msgSend(a3, "fragmentAdditionalBinaryFunctions")}];
+      [v19 setBinaryFunctions:{objc_msgSend(functions, "fragmentAdditionalBinaryFunctions")}];
       [v15 setFragmentLinkedFunctions:v19];
       v20 = objc_opt_new();
-      [v20 setBinaryFunctions:{objc_msgSend(a3, "objectAdditionalBinaryFunctions")}];
+      [v20 setBinaryFunctions:{objc_msgSend(functions, "objectAdditionalBinaryFunctions")}];
       [v15 setObjectLinkedFunctions:v20];
       v21 = objc_opt_new();
-      [v21 setBinaryFunctions:{objc_msgSend(a3, "meshAdditionalBinaryFunctions")}];
+      [v21 setBinaryFunctions:{objc_msgSend(functions, "meshAdditionalBinaryFunctions")}];
       [v15 setMeshLinkedFunctions:v21];
       v17 = [[MTLDebugRenderPipelineState alloc] initWithPipelineState:v12 reflection:self->_validationReflection parent:self descriptor:v15];
     }
@@ -1053,11 +1053,11 @@ LABEL_10:
   return v14;
 }
 
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4 selector:(SEL)a5
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage selector:(SEL)selector
 {
   if ([-[MTLDevice baseObject](-[MTLToolsRenderPipelineState device](self "device")])
   {
-    if (a3)
+    if (descriptor)
     {
       goto LABEL_3;
     }
@@ -1068,7 +1068,7 @@ LABEL_11:
   }
 
   [MTLDebugRenderPipelineState newVisibleFunctionTableWithDescriptor:stage:selector:];
-  if (!a3)
+  if (!descriptor)
   {
     goto LABEL_11;
   }
@@ -1087,17 +1087,17 @@ LABEL_5:
     v10 = result;
     v11 = [MTLDebugVisibleFunctionTable alloc];
 
-    return [(MTLDebugVisibleFunctionTable *)v11 initWithVisibleFunctionTable:v10 parent:self descriptor:a3 pipelineState:self stage:a4];
+    return [(MTLDebugVisibleFunctionTable *)v11 initWithVisibleFunctionTable:v10 parent:self descriptor:descriptor pipelineState:self stage:stage];
   }
 
   return result;
 }
 
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage
 {
-  if (a4 <= 0x10 && ((1 << a4) & 0x10116) != 0)
+  if (stage <= 0x10 && ((1 << stage) & 0x10116) != 0)
   {
-    if (a3)
+    if (descriptor)
     {
       goto LABEL_4;
     }
@@ -1108,7 +1108,7 @@ LABEL_10:
   }
 
   MTLReportFailure();
-  if (!a3)
+  if (!descriptor)
   {
     goto LABEL_10;
   }
@@ -1125,7 +1125,7 @@ LABEL_6:
   if (result)
   {
     v8 = result;
-    v9 = [[MTLDebugVisibleFunctionTable alloc] initWithVisibleFunctionTable:result parent:self descriptor:a3 pipelineState:self stage:MTLRenderStagesToDebugStage(a4)];
+    v9 = [[MTLDebugVisibleFunctionTable alloc] initWithVisibleFunctionTable:result parent:self descriptor:descriptor pipelineState:self stage:MTLRenderStagesToDebugStage(stage)];
 
     return v9;
   }
@@ -1133,18 +1133,18 @@ LABEL_6:
   return result;
 }
 
-- (id)functionHandleToDebugFunctionHandle:(id)a3 parentFunction:(id)a4 stage:(unint64_t)a5
+- (id)functionHandleToDebugFunctionHandle:(id)handle parentFunction:(id)function stage:(unint64_t)stage
 {
-  v9 = *([a4 device] + 48);
+  v9 = *([function device] + 48);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __88__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_parentFunction_stage___block_invoke;
   v11[3] = &unk_2787B3E50;
-  v11[4] = a3;
+  v11[4] = handle;
   v11[5] = self;
-  v11[6] = a4;
-  v11[7] = a5;
-  return [v9 getCachedObjectForKey:a3 onMiss:v11];
+  v11[6] = function;
+  v11[7] = stage;
+  return [v9 getCachedObjectForKey:handle onMiss:v11];
 }
 
 uint64_t __88__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_parentFunction_stage___block_invoke(void *a1)
@@ -1158,11 +1158,11 @@ uint64_t __88__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_p
   return [(MTLDebugFunctionHandle *)v2 initWithBaseObject:v3 parent:v4 function:v5 stage:v6];
 }
 
-- (id)functionHandleWithFunction:(id)a3 stage:(unint64_t)a4 selector:(SEL)a5
+- (id)functionHandleWithFunction:(id)function stage:(unint64_t)stage selector:(SEL)selector
 {
-  if (a3)
+  if (function)
   {
-    if (([a3 conformsToProtocol:&unk_2842379F0] & 1) == 0)
+    if (([function conformsToProtocol:&unk_2842379F0] & 1) == 0)
     {
       [MTLDebugRenderPipelineState functionHandleWithFunction:stage:selector:];
     }
@@ -1175,14 +1175,14 @@ uint64_t __88__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_p
 
   v9 = [-[MTLToolsObject baseObject](self "baseObject")];
 
-  return [(MTLDebugRenderPipelineState *)self functionHandleToDebugFunctionHandle:v9 parentFunction:a3 stage:a4];
+  return [(MTLDebugRenderPipelineState *)self functionHandleToDebugFunctionHandle:v9 parentFunction:function stage:stage];
 }
 
-- (id)functionHandleWithFunction:(id)a3 stage:(unint64_t)a4
+- (id)functionHandleWithFunction:(id)function stage:(unint64_t)stage
 {
-  if (a4 <= 0x10 && ((1 << a4) & 0x10116) != 0)
+  if (stage <= 0x10 && ((1 << stage) & 0x10116) != 0)
   {
-    if (a3)
+    if (function)
     {
       goto LABEL_4;
     }
@@ -1193,27 +1193,27 @@ LABEL_10:
   }
 
   MTLReportFailure();
-  if (!a3)
+  if (!function)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (([a3 conformsToProtocol:&unk_2842379F0] & 1) == 0)
+  if (([function conformsToProtocol:&unk_2842379F0] & 1) == 0)
   {
     [MTLDebugRenderPipelineState functionHandleWithFunction:stage:];
   }
 
 LABEL_6:
   v7 = [-[MTLToolsObject baseObject](self "baseObject")];
-  v8 = MTLRenderStagesToDebugStage(a4);
+  v8 = MTLRenderStagesToDebugStage(stage);
 
-  return [(MTLDebugRenderPipelineState *)self functionHandleToDebugFunctionHandle:v7 parentFunction:a3 stage:v8];
+  return [(MTLDebugRenderPipelineState *)self functionHandleToDebugFunctionHandle:v7 parentFunction:function stage:v8];
 }
 
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3 withStage:(unint64_t)a4 selector:(SEL)a5
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor withStage:(unint64_t)stage selector:(SEL)selector
 {
-  if (a3)
+  if (descriptor)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1233,17 +1233,17 @@ LABEL_6:
     v10 = result;
     v11 = [MTLDebugIntersectionFunctionTable alloc];
 
-    return [(MTLDebugIntersectionFunctionTable *)v11 initWithIntersectionFunctionTable:v10 parent:self descriptor:a3 stage:a4];
+    return [(MTLDebugIntersectionFunctionTable *)v11 initWithIntersectionFunctionTable:v10 parent:self descriptor:descriptor stage:stage];
   }
 
   return result;
 }
 
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage
 {
-  if (a4 <= 0x10 && ((1 << a4) & 0x10116) != 0)
+  if (stage <= 0x10 && ((1 << stage) & 0x10116) != 0)
   {
-    if (a3)
+    if (descriptor)
     {
       goto LABEL_4;
     }
@@ -1254,7 +1254,7 @@ LABEL_10:
   }
 
   MTLReportFailure();
-  if (!a3)
+  if (!descriptor)
   {
     goto LABEL_10;
   }
@@ -1271,7 +1271,7 @@ LABEL_6:
   if (result)
   {
     v8 = result;
-    v9 = [[MTLDebugIntersectionFunctionTable alloc] initWithIntersectionFunctionTable:result parent:self descriptor:a3 stage:MTLRenderStagesToDebugStage(a4)];
+    v9 = [[MTLDebugIntersectionFunctionTable alloc] initWithIntersectionFunctionTable:result parent:self descriptor:descriptor stage:MTLRenderStagesToDebugStage(stage)];
 
     return v9;
   }
@@ -1279,21 +1279,21 @@ LABEL_6:
   return result;
 }
 
-- (MTLDebugRenderPipelineState)initWithPipelineState:(id)a3 reflection:(id)a4 parent:(id)a5 meshDescriptor:(id)a6
+- (MTLDebugRenderPipelineState)initWithPipelineState:(id)state reflection:(id)reflection parent:(id)parent meshDescriptor:(id)descriptor
 {
   v12.receiver = self;
   v12.super_class = MTLDebugRenderPipelineState;
-  v8 = [(MTLToolsRenderPipelineState *)&v12 initWithBaseObject:a3 parent:a5];
+  v8 = [(MTLToolsRenderPipelineState *)&v12 initWithBaseObject:state parent:parent];
   if (v8)
   {
-    v9 = [a6 copy];
+    v9 = [descriptor copy];
     v8->_meshDescriptor = v9;
     [(MTLMeshRenderPipelineDescriptor *)v9 setBinaryArchives:0];
     v10 = MEMORY[0x277CBEBF8];
     [(MTLMeshRenderPipelineDescriptor *)v8->_meshDescriptor setObjectPreloadedLibraries:MEMORY[0x277CBEBF8]];
     [(MTLMeshRenderPipelineDescriptor *)v8->_meshDescriptor setMeshPreloadedLibraries:v10];
     [(MTLMeshRenderPipelineDescriptor *)v8->_meshDescriptor setFragmentPreloadedLibraries:v10];
-    v8->_validationReflection = a4;
+    v8->_validationReflection = reflection;
     [(MTLDebugRenderPipelineState *)v8 _updateCachedMeshPipelineState];
   }
 
@@ -1302,19 +1302,19 @@ LABEL_6:
 
 - (void)_updateCachedMeshPipelineState
 {
-  v3 = [(MTLMeshRenderPipelineDescriptor *)self->_meshDescriptor _descriptorPrivate];
+  _descriptorPrivate = [(MTLMeshRenderPipelineDescriptor *)self->_meshDescriptor _descriptorPrivate];
   v4 = 0;
   v5 = 0;
-  self->_rasterSampleCount = *(v3 + 32);
+  self->_rasterSampleCount = *(_descriptorPrivate + 32);
   v6 = -8;
-  v7 = self;
+  selfCopy = self;
   do
   {
-    v8 = [objc_msgSend(*v3 _descriptorAtIndex:{v6 + 8), "_descriptorPrivate"}];
+    v8 = [objc_msgSend(*_descriptorPrivate _descriptorAtIndex:{v6 + 8), "_descriptorPrivate"}];
     if (v8)
     {
       v9 = *v8 >> 42;
-      v7->_colorPixelFormat[0] = v9;
+      selfCopy->_colorPixelFormat[0] = v9;
       if (v9)
       {
         v5 = ((*(v8 + 4) & 0xF) << v4) | v5 & ~(15 << v4);
@@ -1323,20 +1323,20 @@ LABEL_6:
 
     else
     {
-      v7->_colorPixelFormat[0] = 0;
+      selfCopy->_colorPixelFormat[0] = 0;
     }
 
     v4 += 4;
-    v7 = (v7 + 8);
+    selfCopy = (selfCopy + 8);
     ++v6;
   }
 
   while (v4 != 32);
-  v10 = *(v3 + 8);
+  v10 = *(_descriptorPrivate + 8);
   self->_depthPixelFormat = v10;
   v11 = v5 | 0x100000000;
   v12 = v10 == 0;
-  v13 = *(v3 + 16);
+  v13 = *(_descriptorPrivate + 16);
   self->_stencilPixelFormat = v13;
   if (v12)
   {
@@ -1366,16 +1366,16 @@ LABEL_6:
   v4 = 0;
   self->_rasterSampleCount = [(MTL4MeshRenderPipelineDescriptor *)self->_mtl4MeshDescriptor rasterSampleCount];
   v5 = -8;
-  v6 = self;
+  selfCopy = self;
   do
   {
     v7 = [-[MTL4RenderPipelineDescriptor colorAttachments](self->_mtl4Descriptor "colorAttachments")];
     if (v7)
     {
       v8 = v7;
-      v9 = [v7 pixelFormat];
-      v6->_colorPixelFormat[0] = v9;
-      if (v9)
+      pixelFormat = [v7 pixelFormat];
+      selfCopy->_colorPixelFormat[0] = pixelFormat;
+      if (pixelFormat)
       {
         v4 = (([v8 writeMask] & 0xF) << v3) | v4 & ~(15 << v3);
       }
@@ -1383,11 +1383,11 @@ LABEL_6:
 
     else
     {
-      v6->_colorPixelFormat[0] = 0;
+      selfCopy->_colorPixelFormat[0] = 0;
     }
 
     v3 += 4;
-    v6 = (v6 + 8);
+    selfCopy = (selfCopy + 8);
     ++v5;
   }
 
@@ -1401,7 +1401,7 @@ LABEL_6:
   self->_maxVertexCount = 0;
 }
 
-- (void)_validateThreadgroupSize:(id *)a3 stage:(unint64_t)a4 context:(_MTLMessageContext *)a5
+- (void)_validateThreadgroupSize:(id *)size stage:(unint64_t)stage context:(_MTLMessageContext *)context
 {
   meshDescriptor = self->_meshDescriptor;
   if (!meshDescriptor)
@@ -1409,44 +1409,44 @@ LABEL_6:
     meshDescriptor = self->_descriptor;
   }
 
-  if (a4 == 16)
+  if (stage == 16)
   {
     if (![meshDescriptor meshFunction])
     {
       return;
     }
 
-    v8 = [(MTLToolsObject *)self->super.super._baseObject maxTotalThreadsPerMeshThreadgroup];
-    v9 = [meshDescriptor meshThreadgroupSizeIsMultipleOfThreadExecutionWidth];
-    v10 = [(MTLToolsObject *)self->super.super._baseObject meshThreadExecutionWidth];
+    maxTotalThreadsPerMeshThreadgroup = [(MTLToolsObject *)self->super.super._baseObject maxTotalThreadsPerMeshThreadgroup];
+    meshThreadgroupSizeIsMultipleOfThreadExecutionWidth = [meshDescriptor meshThreadgroupSizeIsMultipleOfThreadExecutionWidth];
+    meshThreadExecutionWidth = [(MTLToolsObject *)self->super.super._baseObject meshThreadExecutionWidth];
   }
 
   else
   {
-    if (a4 != 8 || ![meshDescriptor objectFunction])
+    if (stage != 8 || ![meshDescriptor objectFunction])
     {
       return;
     }
 
-    v8 = [(MTLToolsObject *)self->super.super._baseObject maxTotalThreadsPerObjectThreadgroup];
-    v9 = [meshDescriptor objectThreadgroupSizeIsMultipleOfThreadExecutionWidth];
-    v10 = [(MTLToolsObject *)self->super.super._baseObject objectThreadExecutionWidth];
+    maxTotalThreadsPerMeshThreadgroup = [(MTLToolsObject *)self->super.super._baseObject maxTotalThreadsPerObjectThreadgroup];
+    meshThreadgroupSizeIsMultipleOfThreadExecutionWidth = [meshDescriptor objectThreadgroupSizeIsMultipleOfThreadExecutionWidth];
+    meshThreadExecutionWidth = [(MTLToolsObject *)self->super.super._baseObject objectThreadExecutionWidth];
   }
 
-  var1 = a3->var1;
-  var2 = a3->var2;
-  v13 = var1 * a3->var0 * var2;
-  if (v13 > v8)
+  var1 = size->var1;
+  var2 = size->var2;
+  v13 = var1 * size->var0 * var2;
+  if (v13 > maxTotalThreadsPerMeshThreadgroup)
   {
-    v17 = a3->var2;
-    v19 = var1 * a3->var0 * var2;
-    v16 = a3->var1;
+    v17 = size->var2;
+    v19 = var1 * size->var0 * var2;
+    v16 = size->var1;
     _MTLMessageContextPush_();
   }
 
-  if (v10)
+  if (meshThreadExecutionWidth)
   {
-    v14 = v9;
+    v14 = meshThreadgroupSizeIsMultipleOfThreadExecutionWidth;
   }
 
   else
@@ -1456,10 +1456,10 @@ LABEL_6:
 
   if (v14 == 1)
   {
-    if (v13 % v10)
+    if (v13 % meshThreadExecutionWidth)
     {
-      v18 = a3->var2;
-      v15 = *&a3->var0;
+      v18 = size->var2;
+      v15 = *&size->var0;
       _MTLMessageContextPush_();
     }
   }
@@ -1467,7 +1467,7 @@ LABEL_6:
 
 - (int64_t)shaderValidation
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1482,7 +1482,7 @@ LABEL_6:
       break;
     }
 
-    v2 = [v2 baseObject];
+    baseObject = [baseObject baseObject];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -1490,12 +1490,12 @@ LABEL_6:
     }
   }
 
-  return [v2 shaderValidation];
+  return [baseObject shaderValidation];
 }
 
 - (int64_t)shaderValidationState
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1510,7 +1510,7 @@ LABEL_6:
       break;
     }
 
-    v2 = [v2 baseObject];
+    baseObject = [baseObject baseObject];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -1518,20 +1518,20 @@ LABEL_6:
     }
   }
 
-  return [v2 shaderValidationState];
+  return [baseObject shaderValidationState];
 }
 
 - (id)newRenderPipelineDescriptorForSpecialization
 {
   device = self->super.super._device;
   _MTLMessageContextBegin_();
-  v4 = [-[MTLToolsObject baseObject](self baseObject];
-  if (!v4)
+  baseObject = [-[MTLToolsObject baseObject](self baseObject];
+  if (!baseObject)
   {
     _MTLMessageContextPush_();
   }
 
-  if (hasUnspecializedProperties(v4))
+  if (hasUnspecializedProperties(baseObject))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1539,7 +1539,7 @@ LABEL_6:
       _MTLMessageContextPush_();
     }
 
-    validateUnspecializedProperties(self->super.super._device, v4);
+    validateUnspecializedProperties(self->super.super._device, baseObject);
   }
 
   else
@@ -1548,20 +1548,20 @@ LABEL_6:
   }
 
   _MTLMessageContextEnd();
-  return [(MTLToolsDevice *)self->super.super._device newUnwrappedMTL4PipelineDescriptor:v4];
+  return [(MTLToolsDevice *)self->super.super._device newUnwrappedMTL4PipelineDescriptor:baseObject];
 }
 
-- (id)functionHandleToDebugFunctionHandle:(id)a3 stage:(unint64_t)a4
+- (id)functionHandleToDebugFunctionHandle:(id)handle stage:(unint64_t)stage
 {
   functionHandleObjectCache = self->super.super._device->functionHandleObjectCache;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __73__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_stage___block_invoke;
   v6[3] = &unk_2787B3E28;
-  v6[4] = a3;
+  v6[4] = handle;
   v6[5] = self;
-  v6[6] = a4;
-  return [(MTLToolsObjectCache *)functionHandleObjectCache getCachedObjectForKey:a3 onMiss:v6];
+  v6[6] = stage;
+  return [(MTLToolsObjectCache *)functionHandleObjectCache getCachedObjectForKey:handle onMiss:v6];
 }
 
 uint64_t __73__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_stage___block_invoke(void *a1)
@@ -1574,18 +1574,18 @@ uint64_t __73__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_s
   return [(MTLDebugFunctionHandle *)v2 initWithBaseObject:v3 parent:v4 stage:v5];
 }
 
-- (id)functionHandleToDebugFunctionHandle:(id)a3 binaryFunction:(id)a4 stage:(unint64_t)a5
+- (id)functionHandleToDebugFunctionHandle:(id)handle binaryFunction:(id)function stage:(unint64_t)stage
 {
   functionHandleObjectCache = self->super.super._device->functionHandleObjectCache;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __88__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_binaryFunction_stage___block_invoke;
   v7[3] = &unk_2787B3E50;
-  v7[4] = a3;
+  v7[4] = handle;
   v7[5] = self;
-  v7[6] = a4;
-  v7[7] = a5;
-  return [(MTLToolsObjectCache *)functionHandleObjectCache getCachedObjectForKey:a3 onMiss:v7];
+  v7[6] = function;
+  v7[7] = stage;
+  return [(MTLToolsObjectCache *)functionHandleObjectCache getCachedObjectForKey:handle onMiss:v7];
 }
 
 uint64_t __88__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_binaryFunction_stage___block_invoke(void *a1)
@@ -1599,16 +1599,16 @@ uint64_t __88__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_b
   return [(MTLDebugFunctionHandle *)v2 initWithBaseObject:v3 parent:v4 binaryFunction:v5 stage:v6];
 }
 
-- (id)functionHandleWithBinaryFunction:(id)a3 stage:(unint64_t)a4
+- (id)functionHandleWithBinaryFunction:(id)function stage:(unint64_t)stage
 {
   device = self->super.super._device;
   _MTLMessageContextBegin_();
-  if (!a3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!function || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     _MTLMessageContextPush_();
   }
 
-  if (a4 > 0x10 || ((1 << a4) & 0x10116) == 0)
+  if (stage > 0x10 || ((1 << stage) & 0x10116) == 0)
   {
     MTLReportFailure();
   }
@@ -1618,7 +1618,7 @@ uint64_t __88__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_b
   v9 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v9)
   {
-    v10 = [(MTLDebugRenderPipelineState *)self functionHandleToDebugFunctionHandle:v9 binaryFunction:a3 stage:MTLRenderStagesToDebugStage(a4)];
+    v10 = [(MTLDebugRenderPipelineState *)self functionHandleToDebugFunctionHandle:v9 binaryFunction:function stage:MTLRenderStagesToDebugStage(stage)];
   }
 
   else
@@ -1630,16 +1630,16 @@ uint64_t __88__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_b
   return v10;
 }
 
-- (id)functionHandleWithName:(id)a3 stage:(unint64_t)a4
+- (id)functionHandleWithName:(id)name stage:(unint64_t)stage
 {
   device = self->super.super._device;
   _MTLMessageContextBegin_();
-  if (!a3)
+  if (!name)
   {
     _MTLMessageContextPush_();
   }
 
-  if (a4 > 0x10 || ((1 << a4) & 0x10116) == 0)
+  if (stage > 0x10 || ((1 << stage) & 0x10116) == 0)
   {
     MTLReportFailure();
   }
@@ -1649,7 +1649,7 @@ uint64_t __88__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_b
   v9 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v9)
   {
-    v10 = [(MTLDebugRenderPipelineState *)self functionHandleToDebugFunctionHandle:v9 stage:MTLRenderStagesToDebugStage(a4)];
+    v10 = [(MTLDebugRenderPipelineState *)self functionHandleToDebugFunctionHandle:v9 stage:MTLRenderStagesToDebugStage(stage)];
   }
 
   else
@@ -1661,21 +1661,21 @@ uint64_t __88__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_b
   return v10;
 }
 
-- (id)newRenderPipelineStateWithBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithBinaryFunctions:(id)functions error:(id *)error
 {
   device = self->super.super._device;
   _MTLMessageContextBegin_();
-  if (!a3)
+  if (!functions)
   {
     _MTLMessageContextPush_();
   }
 
-  if ([objc_msgSend(a3 "vertexAdditionalBinaryFunctions")])
+  if ([objc_msgSend(functions "vertexAdditionalBinaryFunctions")])
   {
     v8 = 0;
     do
     {
-      [objc_msgSend(a3 "vertexAdditionalBinaryFunctions")];
+      [objc_msgSend(functions "vertexAdditionalBinaryFunctions")];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -1686,15 +1686,15 @@ uint64_t __88__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_b
       ++v8;
     }
 
-    while (v8 < [objc_msgSend(a3 vertexAdditionalBinaryFunctions]);
+    while (v8 < [objc_msgSend(functions vertexAdditionalBinaryFunctions]);
   }
 
-  if ([objc_msgSend(a3 "fragmentAdditionalBinaryFunctions")])
+  if ([objc_msgSend(functions "fragmentAdditionalBinaryFunctions")])
   {
     v9 = 0;
     do
     {
-      [objc_msgSend(a3 "fragmentAdditionalBinaryFunctions")];
+      [objc_msgSend(functions "fragmentAdditionalBinaryFunctions")];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -1705,15 +1705,15 @@ uint64_t __88__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_b
       ++v9;
     }
 
-    while (v9 < [objc_msgSend(a3 fragmentAdditionalBinaryFunctions]);
+    while (v9 < [objc_msgSend(functions fragmentAdditionalBinaryFunctions]);
   }
 
-  if ([objc_msgSend(a3 "tileAdditionalBinaryFunctions")])
+  if ([objc_msgSend(functions "tileAdditionalBinaryFunctions")])
   {
     v10 = 0;
     do
     {
-      [objc_msgSend(a3 "tileAdditionalBinaryFunctions")];
+      [objc_msgSend(functions "tileAdditionalBinaryFunctions")];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -1724,15 +1724,15 @@ uint64_t __88__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_b
       ++v10;
     }
 
-    while (v10 < [objc_msgSend(a3 tileAdditionalBinaryFunctions]);
+    while (v10 < [objc_msgSend(functions tileAdditionalBinaryFunctions]);
   }
 
-  if ([objc_msgSend(a3 "objectAdditionalBinaryFunctions")])
+  if ([objc_msgSend(functions "objectAdditionalBinaryFunctions")])
   {
     v11 = 0;
     do
     {
-      [objc_msgSend(a3 "objectAdditionalBinaryFunctions")];
+      [objc_msgSend(functions "objectAdditionalBinaryFunctions")];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -1743,15 +1743,15 @@ uint64_t __88__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_b
       ++v11;
     }
 
-    while (v11 < [objc_msgSend(a3 objectAdditionalBinaryFunctions]);
+    while (v11 < [objc_msgSend(functions objectAdditionalBinaryFunctions]);
   }
 
-  if ([objc_msgSend(a3 "meshAdditionalBinaryFunctions")])
+  if ([objc_msgSend(functions "meshAdditionalBinaryFunctions")])
   {
     v12 = 0;
     do
     {
-      [objc_msgSend(a3 "meshAdditionalBinaryFunctions")];
+      [objc_msgSend(functions "meshAdditionalBinaryFunctions")];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -1762,12 +1762,12 @@ uint64_t __88__MTLDebugRenderPipelineState_functionHandleToDebugFunctionHandle_b
       ++v12;
     }
 
-    while (v12 < [objc_msgSend(a3 meshAdditionalBinaryFunctions]);
+    while (v12 < [objc_msgSend(functions meshAdditionalBinaryFunctions]);
   }
 
   _MTLMessageContextEnd();
   v13 = objc_autoreleasePoolPush();
-  v14 = [(MTLToolsDevice *)self->super.super._device newUnwrappedMTL4RenderPipelineBinaryFunctionsDescriptor:a3];
+  v14 = [(MTLToolsDevice *)self->super.super._device newUnwrappedMTL4RenderPipelineBinaryFunctionsDescriptor:functions];
   v15 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v15)
   {

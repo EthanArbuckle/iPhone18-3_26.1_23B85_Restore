@@ -1,16 +1,16 @@
 @interface HUHomeTheaterSetupViewController
 - (HUConfigurationViewControllerDelegate)delegate;
 - (HUHomeTheaterAudioItemModule)tableViewControllerModule;
-- (HUHomeTheaterSetupViewController)initWithAppleTVAccessory:(id)a3 inHome:(id)a4;
-- (HUHomeTheaterSetupViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (HUHomeTheaterSetupViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (HUHomeTheaterSetupViewController)initWithAppleTVAccessory:(id)accessory inHome:(id)home;
+- (HUHomeTheaterSetupViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (HUHomeTheaterSetupViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (UIEdgeInsets)contentInsets;
 - (id)hu_preloadContent;
-- (void)_activateHomeTheater:(id)a3;
-- (void)_doNotActivateHomeTheater:(id)a3;
+- (void)_activateHomeTheater:(id)theater;
+- (void)_doNotActivateHomeTheater:(id)theater;
 - (void)_updateHeightConstraints;
-- (void)homeTheaterItemModuleDidChangeSelectedDestination:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)homeTheaterItemModuleDidChangeSelectedDestination:(id)destination;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateViewConstraints;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -18,12 +18,12 @@
 
 @implementation HUHomeTheaterSetupViewController
 
-- (HUHomeTheaterSetupViewController)initWithAppleTVAccessory:(id)a3 inHome:(id)a4
+- (HUHomeTheaterSetupViewController)initWithAppleTVAccessory:(id)accessory inHome:(id)home
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 hf_displayName];
-  v16 = HULocalizedStringWithFormat(@"HUHomeTheaterSetup_Title", @"%@", v10, v11, v12, v13, v14, v15, v9);
+  accessoryCopy = accessory;
+  homeCopy = home;
+  hf_displayName = [accessoryCopy hf_displayName];
+  v16 = HULocalizedStringWithFormat(@"HUHomeTheaterSetup_Title", @"%@", v10, v11, v12, v13, v14, v15, hf_displayName);
 
   v17 = _HULocalizedStringWithDefaultValue(@"HUHomeTheaterSetup_Detail", @"HUHomeTheaterSetup_Detail", 1);
   v20.receiver = self;
@@ -32,8 +32,8 @@
 
   if (v18)
   {
-    objc_storeStrong(v18 + 154, a3);
-    objc_storeStrong(v18 + 155, a4);
+    objc_storeStrong(v18 + 154, accessory);
+    objc_storeStrong(v18 + 155, home);
     *(v18 + 1304) = xmmword_20D5CAA60;
     *(v18 + 1320) = xmmword_20D5CAA60;
   }
@@ -41,20 +41,20 @@
   return v18;
 }
 
-- (HUHomeTheaterSetupViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (HUHomeTheaterSetupViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v9 = NSStringFromSelector(sel_initWithAppleTVAccessory_inHome_);
-  [v8 handleFailureInMethod:a2 object:self file:@"HUHomeTheaterSetupViewController.m" lineNumber:62 description:{@"%s is unavailable; use %@ instead", "-[HUHomeTheaterSetupViewController initWithTitle:detailText:symbolName:contentLayout:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUHomeTheaterSetupViewController.m" lineNumber:62 description:{@"%s is unavailable; use %@ instead", "-[HUHomeTheaterSetupViewController initWithTitle:detailText:symbolName:contentLayout:]", v9}];
 
   return 0;
 }
 
-- (HUHomeTheaterSetupViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (HUHomeTheaterSetupViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v9 = NSStringFromSelector(sel_initWithAppleTVAccessory_inHome_);
-  [v8 handleFailureInMethod:a2 object:self file:@"HUHomeTheaterSetupViewController.m" lineNumber:67 description:{@"%s is unavailable; use %@ instead", "-[HUHomeTheaterSetupViewController initWithTitle:detailText:icon:contentLayout:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUHomeTheaterSetupViewController.m" lineNumber:67 description:{@"%s is unavailable; use %@ instead", "-[HUHomeTheaterSetupViewController initWithTitle:detailText:icon:contentLayout:]", v9}];
 
   return 0;
 }
@@ -65,49 +65,49 @@
   v143.receiver = self;
   v143.super_class = HUHomeTheaterSetupViewController;
   [(OBBaseWelcomeController *)&v143 viewDidLoad];
-  v3 = [(HUHomeTheaterSetupViewController *)self headerView];
-  v4 = [v3 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v4 withIDDictionary:&unk_282493170];
+  headerView = [(HUHomeTheaterSetupViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_282493170];
 
-  v5 = [MEMORY[0x277D37618] boldButton];
-  [(HUHomeTheaterSetupViewController *)self setUseHomeTheaterButton:v5];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [(HUHomeTheaterSetupViewController *)self setUseHomeTheaterButton:boldButton];
 
-  v6 = [(HUHomeTheaterSetupViewController *)self useHomeTheaterButton];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  useHomeTheaterButton = [(HUHomeTheaterSetupViewController *)self useHomeTheaterButton];
+  [useHomeTheaterButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(HUHomeTheaterSetupViewController *)self useHomeTheaterButton];
+  useHomeTheaterButton2 = [(HUHomeTheaterSetupViewController *)self useHomeTheaterButton];
   v8 = _HULocalizedStringWithDefaultValue(@"HUHomeTheaterSetup_UseHomeTheaterButton", @"HUHomeTheaterSetup_UseHomeTheaterButton", 1);
-  [v7 setTitle:v8 forState:0];
+  [useHomeTheaterButton2 setTitle:v8 forState:0];
 
-  v9 = [(HUHomeTheaterSetupViewController *)self useHomeTheaterButton];
-  [v9 setAccessibilityIdentifier:@"Home.OnboardingView.HomeTheater.SetUp.UseHomeTheaterButton"];
+  useHomeTheaterButton3 = [(HUHomeTheaterSetupViewController *)self useHomeTheaterButton];
+  [useHomeTheaterButton3 setAccessibilityIdentifier:@"Home.OnboardingView.HomeTheater.SetUp.UseHomeTheaterButton"];
 
-  v10 = [(HUHomeTheaterSetupViewController *)self useHomeTheaterButton];
-  [v10 addTarget:self action:sel__activateHomeTheater_ forControlEvents:64];
+  useHomeTheaterButton4 = [(HUHomeTheaterSetupViewController *)self useHomeTheaterButton];
+  [useHomeTheaterButton4 addTarget:self action:sel__activateHomeTheater_ forControlEvents:64];
 
-  v11 = [(HUHomeTheaterSetupViewController *)self buttonTray];
-  v12 = [(HUHomeTheaterSetupViewController *)self useHomeTheaterButton];
-  [v11 addButton:v12];
+  buttonTray = [(HUHomeTheaterSetupViewController *)self buttonTray];
+  useHomeTheaterButton5 = [(HUHomeTheaterSetupViewController *)self useHomeTheaterButton];
+  [buttonTray addButton:useHomeTheaterButton5];
 
-  v13 = [MEMORY[0x277D37650] linkButton];
-  [(HUHomeTheaterSetupViewController *)self setNotNowButton:v13];
+  linkButton = [MEMORY[0x277D37650] linkButton];
+  [(HUHomeTheaterSetupViewController *)self setNotNowButton:linkButton];
 
-  v14 = [(HUHomeTheaterSetupViewController *)self notNowButton];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  notNowButton = [(HUHomeTheaterSetupViewController *)self notNowButton];
+  [notNowButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v15 = [(HUHomeTheaterSetupViewController *)self notNowButton];
+  notNowButton2 = [(HUHomeTheaterSetupViewController *)self notNowButton];
   v16 = _HULocalizedStringWithDefaultValue(@"HUHomeTheaterSetup_NotNowButton", @"HUHomeTheaterSetup_NotNowButton", 1);
-  [v15 setTitle:v16 forState:0];
+  [notNowButton2 setTitle:v16 forState:0];
 
-  v17 = [(HUHomeTheaterSetupViewController *)self notNowButton];
-  [v17 setAccessibilityIdentifier:@"Home.OnboardingView.HomeTheater.SetUp.NotNowButton"];
+  notNowButton3 = [(HUHomeTheaterSetupViewController *)self notNowButton];
+  [notNowButton3 setAccessibilityIdentifier:@"Home.OnboardingView.HomeTheater.SetUp.NotNowButton"];
 
-  v18 = [(HUHomeTheaterSetupViewController *)self notNowButton];
-  [v18 addTarget:self action:sel__doNotActivateHomeTheater_ forControlEvents:64];
+  notNowButton4 = [(HUHomeTheaterSetupViewController *)self notNowButton];
+  [notNowButton4 addTarget:self action:sel__doNotActivateHomeTheater_ forControlEvents:64];
 
-  v19 = [(HUHomeTheaterSetupViewController *)self buttonTray];
-  v20 = [(HUHomeTheaterSetupViewController *)self notNowButton];
-  [v19 addButton:v20];
+  buttonTray2 = [(HUHomeTheaterSetupViewController *)self buttonTray];
+  notNowButton5 = [(HUHomeTheaterSetupViewController *)self notNowButton];
+  [buttonTray2 addButton:notNowButton5];
 
   [(HUHomeTheaterSetupViewController *)self setModalInPresentation:1];
   v21 = objc_alloc(MEMORY[0x277D755E8]);
@@ -115,15 +115,15 @@
   v23 = [v21 initWithImage:v22];
   [(HUHomeTheaterSetupViewController *)self setContentImageView:v23];
 
-  v24 = [(HUHomeTheaterSetupViewController *)self contentImageView];
-  [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentImageView = [(HUHomeTheaterSetupViewController *)self contentImageView];
+  [contentImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v25 = [(HUHomeTheaterSetupViewController *)self contentImageView];
-  [v25 setContentMode:1];
+  contentImageView2 = [(HUHomeTheaterSetupViewController *)self contentImageView];
+  [contentImageView2 setContentMode:1];
 
-  v26 = [(HUHomeTheaterSetupViewController *)self contentView];
-  v27 = [(HUHomeTheaterSetupViewController *)self contentImageView];
-  [v26 addSubview:v27];
+  contentView = [(HUHomeTheaterSetupViewController *)self contentView];
+  contentImageView3 = [(HUHomeTheaterSetupViewController *)self contentImageView];
+  [contentView addSubview:contentImageView3];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -134,153 +134,153 @@
   v28 = [[HUSimpleItemModuleTableViewController alloc] initWithTableViewStyle:1 moduleCreator:v141 moduleControllerBuilder:&__block_literal_global_225];
   [(HUHomeTheaterSetupViewController *)self setTableViewController:v28];
 
-  v29 = [MEMORY[0x277D75348] clearColor];
-  v30 = [(HUHomeTheaterSetupViewController *)self tableViewController];
-  v31 = [v30 view];
-  [v31 setBackgroundColor:v29];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  tableViewController = [(HUHomeTheaterSetupViewController *)self tableViewController];
+  view = [tableViewController view];
+  [view setBackgroundColor:clearColor];
 
-  v32 = [(HUHomeTheaterSetupViewController *)self tableViewController];
-  v33 = [v32 tableView];
-  [v33 setScrollEnabled:0];
+  tableViewController2 = [(HUHomeTheaterSetupViewController *)self tableViewController];
+  tableView = [tableViewController2 tableView];
+  [tableView setScrollEnabled:0];
 
-  v34 = [(HUHomeTheaterSetupViewController *)self traitCollection];
-  v35 = [v34 userInterfaceStyle] != 2;
-  v36 = [(HUHomeTheaterSetupViewController *)self tableViewController];
-  [v36 setShouldUseAlternateCellColor:v35];
+  traitCollection = [(HUHomeTheaterSetupViewController *)self traitCollection];
+  v35 = [traitCollection userInterfaceStyle] != 2;
+  tableViewController3 = [(HUHomeTheaterSetupViewController *)self tableViewController];
+  [tableViewController3 setShouldUseAlternateCellColor:v35];
 
-  v37 = [(HUHomeTheaterSetupViewController *)self tableViewController];
-  [v37 setWantsPreferredContentSize:1];
+  tableViewController4 = [(HUHomeTheaterSetupViewController *)self tableViewController];
+  [tableViewController4 setWantsPreferredContentSize:1];
 
-  v38 = [(HUHomeTheaterSetupViewController *)self tableViewController];
-  v39 = [v38 view];
-  [v39 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableViewController5 = [(HUHomeTheaterSetupViewController *)self tableViewController];
+  view2 = [tableViewController5 view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v40 = [(HUHomeTheaterSetupViewController *)self tableViewController];
-  v41 = [v40 tableView];
-  [v41 setLayoutMargins:{0.0, 1.0, 0.0, 1.0}];
+  tableViewController6 = [(HUHomeTheaterSetupViewController *)self tableViewController];
+  tableView2 = [tableViewController6 tableView];
+  [tableView2 setLayoutMargins:{0.0, 1.0, 0.0, 1.0}];
 
-  v42 = [(HUHomeTheaterSetupViewController *)self tableViewController];
-  [v42 setSectionContentInsetFollowsLayoutMargins:1];
+  tableViewController7 = [(HUHomeTheaterSetupViewController *)self tableViewController];
+  [tableViewController7 setSectionContentInsetFollowsLayoutMargins:1];
 
-  v43 = [(HUHomeTheaterSetupViewController *)self tableViewController];
-  [(HUHomeTheaterSetupViewController *)self addChildViewController:v43];
+  tableViewController8 = [(HUHomeTheaterSetupViewController *)self tableViewController];
+  [(HUHomeTheaterSetupViewController *)self addChildViewController:tableViewController8];
 
-  v44 = [(HUHomeTheaterSetupViewController *)self contentView];
-  v45 = [(HUHomeTheaterSetupViewController *)self tableViewController];
-  v46 = [v45 view];
-  [v44 addSubview:v46];
+  contentView2 = [(HUHomeTheaterSetupViewController *)self contentView];
+  tableViewController9 = [(HUHomeTheaterSetupViewController *)self tableViewController];
+  view3 = [tableViewController9 view];
+  [contentView2 addSubview:view3];
 
-  v47 = [(HUHomeTheaterSetupViewController *)self tableViewController];
-  v48 = [v47 view];
-  v49 = [v48 heightAnchor];
-  v50 = [v49 constraintEqualToConstant:1.0];
+  tableViewController10 = [(HUHomeTheaterSetupViewController *)self tableViewController];
+  view4 = [tableViewController10 view];
+  heightAnchor = [view4 heightAnchor];
+  v50 = [heightAnchor constraintEqualToConstant:1.0];
   tableViewHeightConstraint = self->_tableViewHeightConstraint;
   self->_tableViewHeightConstraint = v50;
 
-  v52 = [(HUHomeTheaterSetupViewController *)self contentView];
-  v53 = [v52 heightAnchor];
-  v54 = [v53 constraintLessThanOrEqualToConstant:1.0];
+  contentView3 = [(HUHomeTheaterSetupViewController *)self contentView];
+  heightAnchor2 = [contentView3 heightAnchor];
+  v54 = [heightAnchor2 constraintLessThanOrEqualToConstant:1.0];
   LODWORD(v55) = 1148829696;
   v56 = [v54 hu_constraintWithPriority:v55];
   contentViewHeightConstraint = self->_contentViewHeightConstraint;
   self->_contentViewHeightConstraint = v56;
 
-  v58 = [(HUHomeTheaterSetupViewController *)self contentImageView];
-  v59 = [v58 widthAnchor];
-  v60 = [(HUHomeTheaterSetupViewController *)self contentView];
-  v61 = [v60 layoutMarginsGuide];
-  v62 = [v61 widthAnchor];
+  contentImageView4 = [(HUHomeTheaterSetupViewController *)self contentImageView];
+  widthAnchor = [contentImageView4 widthAnchor];
+  contentView4 = [(HUHomeTheaterSetupViewController *)self contentView];
+  layoutMarginsGuide = [contentView4 layoutMarginsGuide];
+  widthAnchor2 = [layoutMarginsGuide widthAnchor];
   [(HUHomeTheaterSetupViewController *)self contentInsets];
   v64 = -v63;
   [(HUHomeTheaterSetupViewController *)self contentInsets];
-  v66 = [v59 constraintLessThanOrEqualToAnchor:v62 constant:v64 - v65];
+  v66 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2 constant:v64 - v65];
 
   LODWORD(v67) = 1148846080;
   [v66 setPriority:v67];
-  v68 = [(HUHomeTheaterSetupViewController *)self contentImageView];
-  v69 = [v68 image];
-  [v69 size];
+  contentImageView5 = [(HUHomeTheaterSetupViewController *)self contentImageView];
+  image = [contentImageView5 image];
+  [image size];
   v71 = v70;
-  v72 = [(HUHomeTheaterSetupViewController *)self contentImageView];
-  v73 = [v72 image];
-  [v73 size];
+  contentImageView6 = [(HUHomeTheaterSetupViewController *)self contentImageView];
+  image2 = [contentImageView6 image];
+  [image2 size];
   v75 = v71 / v74;
 
   v117 = MEMORY[0x277CCAAD0];
-  v139 = [(HUHomeTheaterSetupViewController *)self contentImageView];
-  v136 = [v139 topAnchor];
-  v138 = [(HUHomeTheaterSetupViewController *)self contentView];
-  v137 = [v138 layoutMarginsGuide];
-  v135 = [v137 topAnchor];
+  contentImageView7 = [(HUHomeTheaterSetupViewController *)self contentImageView];
+  topAnchor = [contentImageView7 topAnchor];
+  contentView5 = [(HUHomeTheaterSetupViewController *)self contentView];
+  layoutMarginsGuide2 = [contentView5 layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide2 topAnchor];
   [(HUHomeTheaterSetupViewController *)self contentInsets];
-  v134 = [v136 constraintEqualToAnchor:v135 constant:?];
+  v134 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   v148[0] = v134;
-  v133 = [(HUHomeTheaterSetupViewController *)self contentImageView];
-  v131 = [v133 centerXAnchor];
-  v132 = [(HUHomeTheaterSetupViewController *)self contentView];
-  v130 = [v132 layoutMarginsGuide];
-  v129 = [v130 centerXAnchor];
-  v128 = [v131 constraintEqualToAnchor:v129];
+  contentImageView8 = [(HUHomeTheaterSetupViewController *)self contentImageView];
+  centerXAnchor = [contentImageView8 centerXAnchor];
+  contentView6 = [(HUHomeTheaterSetupViewController *)self contentView];
+  layoutMarginsGuide3 = [contentView6 layoutMarginsGuide];
+  centerXAnchor2 = [layoutMarginsGuide3 centerXAnchor];
+  v128 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v148[1] = v128;
-  v127 = [(HUHomeTheaterSetupViewController *)self contentImageView];
-  v125 = [v127 widthAnchor];
-  v126 = [(HUHomeTheaterSetupViewController *)self contentImageView];
-  v124 = [v126 image];
-  [v124 size];
-  v123 = [v125 constraintLessThanOrEqualToConstant:?];
+  contentImageView9 = [(HUHomeTheaterSetupViewController *)self contentImageView];
+  widthAnchor3 = [contentImageView9 widthAnchor];
+  contentImageView10 = [(HUHomeTheaterSetupViewController *)self contentImageView];
+  image3 = [contentImageView10 image];
+  [image3 size];
+  v123 = [widthAnchor3 constraintLessThanOrEqualToConstant:?];
   LODWORD(v76) = 1148846080;
   v122 = [v123 hu_constraintWithPriority:v76];
   v148[2] = v122;
-  v121 = [(HUHomeTheaterSetupViewController *)self contentImageView];
-  v120 = [v121 heightAnchor];
-  v119 = [v120 constraintGreaterThanOrEqualToConstant:150.0];
+  contentImageView11 = [(HUHomeTheaterSetupViewController *)self contentImageView];
+  heightAnchor3 = [contentImageView11 heightAnchor];
+  v119 = [heightAnchor3 constraintGreaterThanOrEqualToConstant:150.0];
   LODWORD(v77) = 1148846080;
   v118 = [v119 hu_constraintWithPriority:v77];
   v148[3] = v118;
-  v116 = [(HUHomeTheaterSetupViewController *)self contentImageView];
-  v114 = [v116 heightAnchor];
-  v115 = [(HUHomeTheaterSetupViewController *)self contentImageView];
-  v113 = [v115 widthAnchor];
-  v112 = [v114 constraintEqualToAnchor:v113 multiplier:v75];
+  contentImageView12 = [(HUHomeTheaterSetupViewController *)self contentImageView];
+  heightAnchor4 = [contentImageView12 heightAnchor];
+  contentImageView13 = [(HUHomeTheaterSetupViewController *)self contentImageView];
+  widthAnchor4 = [contentImageView13 widthAnchor];
+  v112 = [heightAnchor4 constraintEqualToAnchor:widthAnchor4 multiplier:v75];
   LODWORD(v78) = 1148846080;
   v111 = [v112 hu_constraintWithPriority:v78];
   v148[4] = v111;
-  v110 = [(HUHomeTheaterSetupViewController *)self tableViewController];
-  v109 = [v110 view];
-  v107 = [v109 topAnchor];
-  v108 = [(HUHomeTheaterSetupViewController *)self contentImageView];
-  v106 = [v108 bottomAnchor];
-  v105 = [v107 constraintEqualToSystemSpacingBelowAnchor:v106 multiplier:1.0];
+  tableViewController11 = [(HUHomeTheaterSetupViewController *)self tableViewController];
+  view5 = [tableViewController11 view];
+  topAnchor3 = [view5 topAnchor];
+  contentImageView14 = [(HUHomeTheaterSetupViewController *)self contentImageView];
+  bottomAnchor = [contentImageView14 bottomAnchor];
+  v105 = [topAnchor3 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor multiplier:1.0];
   v148[5] = v105;
-  v104 = [(HUHomeTheaterSetupViewController *)self tableViewController];
-  v103 = [v104 view];
-  v101 = [v103 leadingAnchor];
-  v102 = [(HUHomeTheaterSetupViewController *)self contentView];
-  v100 = [v102 leadingAnchor];
-  v99 = [v101 constraintEqualToAnchor:v100];
+  tableViewController12 = [(HUHomeTheaterSetupViewController *)self tableViewController];
+  view6 = [tableViewController12 view];
+  leadingAnchor = [view6 leadingAnchor];
+  contentView7 = [(HUHomeTheaterSetupViewController *)self contentView];
+  leadingAnchor2 = [contentView7 leadingAnchor];
+  v99 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v148[6] = v99;
-  v98 = [(HUHomeTheaterSetupViewController *)self tableViewController];
-  v97 = [v98 view];
-  v95 = [v97 trailingAnchor];
-  v96 = [(HUHomeTheaterSetupViewController *)self contentView];
-  v94 = [v96 trailingAnchor];
-  v93 = [v95 constraintEqualToAnchor:v94];
+  tableViewController13 = [(HUHomeTheaterSetupViewController *)self tableViewController];
+  view7 = [tableViewController13 view];
+  trailingAnchor = [view7 trailingAnchor];
+  contentView8 = [(HUHomeTheaterSetupViewController *)self contentView];
+  trailingAnchor2 = [contentView8 trailingAnchor];
+  v93 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v148[7] = v93;
-  v92 = [(HUHomeTheaterSetupViewController *)self tableViewController];
-  v79 = [v92 view];
-  v80 = [v79 bottomAnchor];
-  v81 = [(HUHomeTheaterSetupViewController *)self contentView];
-  v82 = [v81 layoutMarginsGuide];
-  v83 = [v82 bottomAnchor];
+  tableViewController14 = [(HUHomeTheaterSetupViewController *)self tableViewController];
+  view8 = [tableViewController14 view];
+  bottomAnchor2 = [view8 bottomAnchor];
+  contentView9 = [(HUHomeTheaterSetupViewController *)self contentView];
+  layoutMarginsGuide4 = [contentView9 layoutMarginsGuide];
+  bottomAnchor3 = [layoutMarginsGuide4 bottomAnchor];
   [(HUHomeTheaterSetupViewController *)self contentInsets];
-  v85 = [v80 constraintEqualToAnchor:v83 constant:v84];
+  v85 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:v84];
   v148[8] = v85;
   v148[9] = v66;
   v140 = v66;
-  v86 = [(HUHomeTheaterSetupViewController *)self contentViewHeightConstraint];
-  v148[10] = v86;
-  v87 = [(HUHomeTheaterSetupViewController *)self tableViewHeightConstraint];
-  v148[11] = v87;
+  contentViewHeightConstraint = [(HUHomeTheaterSetupViewController *)self contentViewHeightConstraint];
+  v148[10] = contentViewHeightConstraint;
+  tableViewHeightConstraint = [(HUHomeTheaterSetupViewController *)self tableViewHeightConstraint];
+  v148[11] = tableViewHeightConstraint;
   v88 = [MEMORY[0x277CBEA60] arrayWithObjects:v148 count:12];
   [v117 activateConstraints:v88];
 
@@ -290,7 +290,7 @@
   {
     v90 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v145 = self;
+    selfCopy = self;
     v146 = 2112;
     v147 = v90;
     _os_log_impl(&dword_20CEB6000, v89, OS_LOG_TYPE_DEFAULT, "%@:%@: presented: HTSVC", buf, 0x16u);
@@ -324,15 +324,15 @@ HUHomeTheaterAudioItemModuleController *__47__HUHomeTheaterSetupViewController_v
   return v3;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = HUHomeTheaterSetupViewController;
-  [(HUHomeTheaterSetupViewController *)&v7 traitCollectionDidChange:a3];
-  v4 = [(HUHomeTheaterSetupViewController *)self traitCollection];
-  v5 = [v4 userInterfaceStyle] != 2;
-  v6 = [(HUHomeTheaterSetupViewController *)self tableViewController];
-  [v6 setShouldUseAlternateCellColor:v5];
+  [(HUHomeTheaterSetupViewController *)&v7 traitCollectionDidChange:change];
+  traitCollection = [(HUHomeTheaterSetupViewController *)self traitCollection];
+  v5 = [traitCollection userInterfaceStyle] != 2;
+  tableViewController = [(HUHomeTheaterSetupViewController *)self tableViewController];
+  [tableViewController setShouldUseAlternateCellColor:v5];
 }
 
 - (void)viewWillLayoutSubviews
@@ -353,88 +353,88 @@ HUHomeTheaterAudioItemModuleController *__47__HUHomeTheaterSetupViewController_v
 
 - (id)hu_preloadContent
 {
-  v2 = [(HUHomeTheaterSetupViewController *)self tableViewController];
-  v3 = [v2 hu_preloadContent];
-  v4 = v3;
-  if (v3)
+  tableViewController = [(HUHomeTheaterSetupViewController *)self tableViewController];
+  hu_preloadContent = [tableViewController hu_preloadContent];
+  v4 = hu_preloadContent;
+  if (hu_preloadContent)
   {
-    v5 = v3;
+    futureWithNoResult = hu_preloadContent;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  v6 = v5;
+  v6 = futureWithNoResult;
 
   return v6;
 }
 
-- (void)homeTheaterItemModuleDidChangeSelectedDestination:(id)a3
+- (void)homeTheaterItemModuleDidChangeSelectedDestination:(id)destination
 {
-  v7 = a3;
-  v4 = [(HUHomeTheaterSetupViewController *)self useHomeTheaterButton];
-  v5 = [v7 tappedDestinationIdentifier];
-  if (v5)
+  destinationCopy = destination;
+  useHomeTheaterButton = [(HUHomeTheaterSetupViewController *)self useHomeTheaterButton];
+  tappedDestinationIdentifier = [destinationCopy tappedDestinationIdentifier];
+  if (tappedDestinationIdentifier)
   {
-    [v4 setEnabled:1];
+    [useHomeTheaterButton setEnabled:1];
   }
 
   else
   {
-    v6 = [v7 selectedUncommittedItem];
-    [v4 setEnabled:v6 != 0];
+    selectedUncommittedItem = [destinationCopy selectedUncommittedItem];
+    [useHomeTheaterButton setEnabled:selectedUncommittedItem != 0];
   }
 }
 
 - (void)_updateHeightConstraints
 {
-  v3 = [(HUHomeTheaterSetupViewController *)self tableViewController];
-  [v3 preferredContentSize];
+  tableViewController = [(HUHomeTheaterSetupViewController *)self tableViewController];
+  [tableViewController preferredContentSize];
   v5 = v4;
-  v6 = [(HUHomeTheaterSetupViewController *)self tableViewHeightConstraint];
-  [v6 setConstant:v5];
+  tableViewHeightConstraint = [(HUHomeTheaterSetupViewController *)self tableViewHeightConstraint];
+  [tableViewHeightConstraint setConstant:v5];
 
-  v7 = [(HUHomeTheaterSetupViewController *)self headerView];
-  [v7 frame];
+  headerView = [(HUHomeTheaterSetupViewController *)self headerView];
+  [headerView frame];
   v9 = v8;
 
-  v10 = [(HUHomeTheaterSetupViewController *)self headerView];
-  [v10 frame];
+  headerView2 = [(HUHomeTheaterSetupViewController *)self headerView];
+  [headerView2 frame];
   v12 = v11;
-  v13 = [(HUHomeTheaterSetupViewController *)self contentView];
-  [v13 frame];
+  contentView = [(HUHomeTheaterSetupViewController *)self contentView];
+  [contentView frame];
   v15 = v14;
-  v16 = [(HUHomeTheaterSetupViewController *)self headerView];
-  [v16 frame];
+  headerView3 = [(HUHomeTheaterSetupViewController *)self headerView];
+  [headerView3 frame];
   v17 = v12 + v15 - CGRectGetMaxY(v27);
 
-  v18 = [(HUHomeTheaterSetupViewController *)self buttonTray];
-  [v18 frame];
+  buttonTray = [(HUHomeTheaterSetupViewController *)self buttonTray];
+  [buttonTray frame];
   v20 = v19;
 
-  v21 = [(HUHomeTheaterSetupViewController *)self scrollView];
-  [v21 frame];
+  scrollView = [(HUHomeTheaterSetupViewController *)self scrollView];
+  [scrollView frame];
   MaxY = CGRectGetMaxY(v28);
-  v23 = [(HUHomeTheaterSetupViewController *)self buttonTray];
-  [v23 frame];
+  buttonTray2 = [(HUHomeTheaterSetupViewController *)self buttonTray];
+  [buttonTray2 frame];
   v24 = MaxY - CGRectGetMaxY(v29);
 
-  v25 = [(HUHomeTheaterSetupViewController *)self contentViewHeightConstraint];
-  [v25 setConstant:-v9 - v17 - v20 - v24];
+  contentViewHeightConstraint = [(HUHomeTheaterSetupViewController *)self contentViewHeightConstraint];
+  [contentViewHeightConstraint setConstant:-v9 - v17 - v20 - v24];
 }
 
-- (void)_activateHomeTheater:(id)a3
+- (void)_activateHomeTheater:(id)theater
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  theaterCopy = theater;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
     v24 = v7;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", buf, 0x16u);
@@ -445,32 +445,32 @@ HUHomeTheaterAudioItemModuleController *__47__HUHomeTheaterSetupViewController_v
   {
     v9 = NSStringFromSelector(a2);
     *buf = 138412290;
-    v22 = v9;
+    selfCopy = v9;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@: Setting Up Home Theater", buf, 0xCu);
   }
 
-  v10 = [(HUHomeTheaterSetupViewController *)self tableViewControllerModule];
-  v11 = [v10 commitConfiguration];
+  tableViewControllerModule = [(HUHomeTheaterSetupViewController *)self tableViewControllerModule];
+  commitConfiguration = [tableViewControllerModule commitConfiguration];
 
-  v12 = [(HUHomeTheaterSetupViewController *)self useHomeTheaterButton];
-  v13 = [v12 activityIndicator];
-  [v13 startAnimating];
+  useHomeTheaterButton = [(HUHomeTheaterSetupViewController *)self useHomeTheaterButton];
+  activityIndicator = [useHomeTheaterButton activityIndicator];
+  [activityIndicator startAnimating];
 
-  [v5 setEnabled:0];
+  [theaterCopy setEnabled:0];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __57__HUHomeTheaterSetupViewController__activateHomeTheater___block_invoke;
   v20[3] = &unk_277DBA338;
   v20[4] = self;
-  v14 = [v11 addSuccessBlock:v20];
+  v14 = [commitConfiguration addSuccessBlock:v20];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __57__HUHomeTheaterSetupViewController__activateHomeTheater___block_invoke_72;
   v17[3] = &unk_277DBEFD8;
-  v18 = v5;
+  v18 = theaterCopy;
   v19 = a2;
   v17[4] = self;
-  v15 = v5;
+  v15 = theaterCopy;
   v16 = [v14 addFailureBlock:v17];
 }
 
@@ -521,7 +521,7 @@ void __57__HUHomeTheaterSetupViewController__activateHomeTheater___block_invoke_
   [v9 handleError:v3];
 }
 
-- (void)_doNotActivateHomeTheater:(id)a3
+- (void)_doNotActivateHomeTheater:(id)theater
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
@@ -529,7 +529,7 @@ void __57__HUHomeTheaterSetupViewController__activateHomeTheater___block_invoke_
   {
     v6 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
     v17 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", buf, 0x16u);
@@ -541,8 +541,8 @@ void __57__HUHomeTheaterSetupViewController__activateHomeTheater___block_invoke_
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:2];
   v10 = [v7 dictionaryWithDictionary:v9];
 
-  v11 = [(HUHomeTheaterSetupViewController *)self delegate];
-  [v11 viewController:self didFinishWithConfigurationResults:v10];
+  delegate = [(HUHomeTheaterSetupViewController *)self delegate];
+  [delegate viewController:self didFinishWithConfigurationResults:v10];
 }
 
 - (HUConfigurationViewControllerDelegate)delegate

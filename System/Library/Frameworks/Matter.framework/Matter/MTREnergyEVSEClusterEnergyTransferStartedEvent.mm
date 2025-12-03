@@ -1,6 +1,6 @@
 @interface MTREnergyEVSEClusterEnergyTransferStartedEvent
 - (MTREnergyEVSEClusterEnergyTransferStartedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTREnergyEVSEClusterEnergyTransferStartedEvent);
-  v5 = [(MTREnergyEVSEClusterEnergyTransferStartedEvent *)self sessionID];
-  [(MTREnergyEVSEClusterEnergyTransferStartedEvent *)v4 setSessionID:v5];
+  sessionID = [(MTREnergyEVSEClusterEnergyTransferStartedEvent *)self sessionID];
+  [(MTREnergyEVSEClusterEnergyTransferStartedEvent *)v4 setSessionID:sessionID];
 
-  v6 = [(MTREnergyEVSEClusterEnergyTransferStartedEvent *)self state];
-  [(MTREnergyEVSEClusterEnergyTransferStartedEvent *)v4 setState:v6];
+  state = [(MTREnergyEVSEClusterEnergyTransferStartedEvent *)self state];
+  [(MTREnergyEVSEClusterEnergyTransferStartedEvent *)v4 setState:state];
 
-  v7 = [(MTREnergyEVSEClusterEnergyTransferStartedEvent *)self maximumCurrent];
-  [(MTREnergyEVSEClusterEnergyTransferStartedEvent *)v4 setMaximumCurrent:v7];
+  maximumCurrent = [(MTREnergyEVSEClusterEnergyTransferStartedEvent *)self maximumCurrent];
+  [(MTREnergyEVSEClusterEnergyTransferStartedEvent *)v4 setMaximumCurrent:maximumCurrent];
 
-  v8 = [(MTREnergyEVSEClusterEnergyTransferStartedEvent *)self maximumDischargeCurrent];
-  [(MTREnergyEVSEClusterEnergyTransferStartedEvent *)v4 setMaximumDischargeCurrent:v8];
+  maximumDischargeCurrent = [(MTREnergyEVSEClusterEnergyTransferStartedEvent *)self maximumDischargeCurrent];
+  [(MTREnergyEVSEClusterEnergyTransferStartedEvent *)v4 setMaximumDischargeCurrent:maximumDischargeCurrent];
 
   return v4;
 }

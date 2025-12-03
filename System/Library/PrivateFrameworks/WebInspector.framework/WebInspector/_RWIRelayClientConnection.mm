@@ -1,22 +1,22 @@
 @interface _RWIRelayClientConnection
-- (_RWIRelayClientConnection)initWithDelegate:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)_closeAndNotifyDelegate:(BOOL)a3;
+- (_RWIRelayClientConnection)initWithDelegate:(id)delegate;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)_closeAndNotifyDelegate:(BOOL)delegate;
 - (void)dealloc;
-- (void)dispatchRelayMessage:(id)a3;
-- (void)forwardInvocation:(id)a3;
+- (void)dispatchRelayMessage:(id)message;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation _RWIRelayClientConnection
 
-- (_RWIRelayClientConnection)initWithDelegate:(id)a3
+- (_RWIRelayClientConnection)initWithDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = _RWIRelayClientConnection;
   result = [(_RWIRelayClientConnection *)&v5 init];
   if (result)
   {
-    result->_delegate = a3;
+    result->_delegate = delegate;
   }
 
   return result;
@@ -31,14 +31,14 @@
   [(_RWIRelayClientConnection *)&v3 dealloc];
 }
 
-- (void)_closeAndNotifyDelegate:(BOOL)a3
+- (void)_closeAndNotifyDelegate:(BOOL)delegate
 {
   if (!self->_closed)
   {
-    v3 = a3;
+    delegateCopy = delegate;
     [(_RWIRelayClientConnection *)self closeInternal];
     self->_closed = 1;
-    if (v3)
+    if (delegateCopy)
     {
       [(_RWIRelayClientConnectionDelegate *)self->_delegate clientConnectionDidClose:self];
     }
@@ -47,7 +47,7 @@
   }
 }
 
-- (void)dispatchRelayMessage:(id)a3
+- (void)dispatchRelayMessage:(id)message
 {
   v5 = RWIMessageTraceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -55,8 +55,8 @@
     [_RWIRelayClientConnection dispatchRelayMessage:?];
   }
 
-  traceMessagePayloadIfKeyExists(@"WIRSocketDataKey", a3);
-  v6 = [a3 objectForKey:@"__selector"];
+  traceMessagePayloadIfKeyExists(@"WIRSocketDataKey", message);
+  v6 = [message objectForKey:@"__selector"];
   if (v6)
   {
     v7 = v6;
@@ -66,7 +66,7 @@
       [(_RWIRelayClientConnection *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        v9 = [objc_msgSend(a3 objectForKey:{@"__argument", "mutableCopy"}];
+        v9 = [objc_msgSend(message objectForKey:{@"__argument", "mutableCopy"}];
         [v9 setValue:self forKey:@"RWIServiceConnectionKey"];
         [(_RWIRelayClientConnectionDelegate *)[(_RWIRelayClientConnection *)self delegate] performSelector:v8 withObject:v9];
       }
@@ -74,11 +74,11 @@
   }
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v5 = NSStringFromSelector([a3 selector]);
+  v5 = NSStringFromSelector([invocation selector]);
   v9 = 0;
-  [a3 getArgument:&v9 atIndex:2];
+  [invocation getArgument:&v9 atIndex:2];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v8 = v6;
   [v6 setObject:v5 forKey:@"__selector"];
@@ -94,18 +94,18 @@
   }
 
   traceMessagePayloadIfKeyExists(@"WIRMessageDataKey", v6);
-  [a3 setArgument:&v8 atIndex:2];
-  [a3 retainArguments];
-  [a3 setTarget:self];
-  [a3 setSelector:sel_sendMessage_];
-  [a3 invoke];
+  [invocation setArgument:&v8 atIndex:2];
+  [invocation retainArguments];
+  [invocation setTarget:self];
+  [invocation setSelector:sel_sendMessage_];
+  [invocation invoke];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v4.receiver = self;
   v4.super_class = _RWIRelayClientConnection;
-  result = [(_RWIRelayClientConnection *)&v4 methodSignatureForSelector:a3];
+  result = [(_RWIRelayClientConnection *)&v4 methodSignatureForSelector:selector];
   if (!result)
   {
     return [objc_opt_class() instanceMethodSignatureForSelector:sel_sendMessage_];

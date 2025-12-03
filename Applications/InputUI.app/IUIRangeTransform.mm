@@ -1,55 +1,55 @@
 @interface IUIRangeTransform
-+ (_NSRange)rangeInDocumentState:(id)a3 fromTextRange:(id)a4 inUITextInput:(id)a5;
-+ (id)textRangeInUITextInput:(id)a3 fromRange:(_NSRange)a4 inDocumentState:(id)a5;
++ (_NSRange)rangeInDocumentState:(id)state fromTextRange:(id)range inUITextInput:(id)input;
++ (id)textRangeInUITextInput:(id)input fromRange:(_NSRange)range inDocumentState:(id)state;
 @end
 
 @implementation IUIRangeTransform
 
-+ (_NSRange)rangeInDocumentState:(id)a3 fromTextRange:(id)a4 inUITextInput:(id)a5
++ (_NSRange)rangeInDocumentState:(id)state fromTextRange:(id)range inUITextInput:(id)input
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v8 selectedTextRange];
-  v11 = [v10 end];
+  stateCopy = state;
+  inputCopy = input;
+  rangeCopy = range;
+  selectedTextRange = [inputCopy selectedTextRange];
+  v11 = [selectedTextRange end];
 
-  v12 = [v9 start];
-  v36 = [v8 offsetFromPosition:v12 toPosition:v11];
+  start = [rangeCopy start];
+  v36 = [inputCopy offsetFromPosition:start toPosition:v11];
 
-  v13 = [v9 end];
+  v13 = [rangeCopy end];
 
-  v35 = [v8 offsetFromPosition:v13 toPosition:v11];
-  v14 = [v7 contextBeforeInput];
-  v34 = [v14 length];
-  v15 = [v7 markedText];
-  if (v15)
+  v35 = [inputCopy offsetFromPosition:v13 toPosition:v11];
+  contextBeforeInput = [stateCopy contextBeforeInput];
+  v34 = [contextBeforeInput length];
+  markedText = [stateCopy markedText];
+  if (markedText)
   {
-    v16 = [v7 selectedRangeInMarkedText];
-    v18 = &v16[v17];
+    selectedRangeInMarkedText = [stateCopy selectedRangeInMarkedText];
+    v18 = &selectedRangeInMarkedText[v17];
   }
 
   else
   {
-    v19 = [v7 selectedText];
-    v18 = [v19 length];
+    selectedText = [stateCopy selectedText];
+    v18 = [selectedText length];
   }
 
-  v20 = [v7 contextBeforeInput];
-  v21 = [v20 length];
-  v22 = [v7 markedText];
-  if (v22)
+  contextBeforeInput2 = [stateCopy contextBeforeInput];
+  v21 = [contextBeforeInput2 length];
+  markedText2 = [stateCopy markedText];
+  if (markedText2)
   {
-    [v7 markedText];
+    [stateCopy markedText];
   }
 
   else
   {
-    [v7 selectedText];
+    [stateCopy selectedText];
   }
   v23 = ;
   v24 = [v23 length];
-  v25 = [v7 contextAfterInput];
-  v26 = [v25 length];
+  contextAfterInput = [stateCopy contextAfterInput];
+  v26 = [contextAfterInput length];
 
   v29 = &v34[v18] - v36 < 0 || (v21 + v24 + v26) < &v34[v18] - v35 || v36 < v35;
   if (v29)
@@ -79,13 +79,13 @@
   return result;
 }
 
-+ (id)textRangeInUITextInput:(id)a3 fromRange:(_NSRange)a4 inDocumentState:(id)a5
++ (id)textRangeInUITextInput:(id)input fromRange:(_NSRange)range inDocumentState:(id)state
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
+  length = range.length;
+  location = range.location;
+  inputCopy = input;
+  stateCopy = state;
+  v10 = stateCopy;
   if (location == 0x7FFFFFFFFFFFFFFFLL || (v11 = location + length, (location + length) < 0))
   {
     v18 = 0;
@@ -93,35 +93,35 @@
 
   else
   {
-    v12 = [v9 contextBeforeInput];
-    v13 = [v12 length];
-    v14 = [v10 markedText];
-    if (v14)
+    contextBeforeInput = [stateCopy contextBeforeInput];
+    v13 = [contextBeforeInput length];
+    markedText = [v10 markedText];
+    if (markedText)
     {
-      v15 = [v10 selectedRangeInMarkedText];
-      v17 = &v15[v16];
+      selectedRangeInMarkedText = [v10 selectedRangeInMarkedText];
+      v17 = &selectedRangeInMarkedText[v16];
     }
 
     else
     {
-      v19 = [v10 selectedText];
-      v17 = [v19 length];
+      selectedText = [v10 selectedText];
+      v17 = [selectedText length];
     }
 
     v20 = &v13[v17];
 
     v21 = location - v20;
     v22 = v11 - v20;
-    v23 = [v8 selectedTextRange];
-    v24 = [v23 end];
+    selectedTextRange = [inputCopy selectedTextRange];
+    v24 = [selectedTextRange end];
 
-    v25 = [v8 positionFromPosition:v24 offset:v21];
-    v26 = [v8 positionFromPosition:v24 offset:v22];
+    v25 = [inputCopy positionFromPosition:v24 offset:v21];
+    v26 = [inputCopy positionFromPosition:v24 offset:v22];
     v27 = v26;
     v18 = 0;
     if (v25 && v26)
     {
-      v18 = [v8 textRangeFromPosition:v25 toPosition:v26];
+      v18 = [inputCopy textRangeFromPosition:v25 toPosition:v26];
     }
   }
 

@@ -1,7 +1,7 @@
 @interface STUIStatusBarVisualProvider_RoundierPad
 + (NSDirectionalEdgeInsets)edgeInsets;
 - (id)normalRoundFont;
-- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)a3;
+- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)identifier;
 @end
 
 @implementation STUIStatusBarVisualProvider_RoundierPad
@@ -48,12 +48,12 @@
   return result;
 }
 
-- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)a3
+- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[STUIStatusBarBatteryItem iconDisplayIdentifier];
   v6 = v5;
-  if (v5 == v4)
+  if (v5 == identifierCopy)
   {
   }
 
@@ -61,18 +61,18 @@
   {
     v7 = +[STUIStatusBarBatteryItem staticIconDisplayIdentifier];
 
-    if (v7 != v4)
+    if (v7 != identifierCopy)
     {
       v11.receiver = self;
       v11.super_class = STUIStatusBarVisualProvider_RoundierPad;
-      v8 = [(STUIStatusBarVisualProvider_Pad *)&v11 overriddenStyleAttributesForDisplayItemWithIdentifier:v4];
+      v8 = [(STUIStatusBarVisualProvider_Pad *)&v11 overriddenStyleAttributesForDisplayItemWithIdentifier:identifierCopy];
       goto LABEL_6;
     }
   }
 
   v8 = +[STUIStatusBarStyleAttributes overriddenStyleAttributes];
-  v9 = [(STUIStatusBarVisualProvider_RoundierPad *)self normalRoundFont];
-  [v8 setFont:v9];
+  normalRoundFont = [(STUIStatusBarVisualProvider_RoundierPad *)self normalRoundFont];
+  [v8 setFont:normalRoundFont];
 
 LABEL_6:
 

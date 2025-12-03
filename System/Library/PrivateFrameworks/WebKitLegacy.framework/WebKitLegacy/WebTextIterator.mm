@@ -1,5 +1,5 @@
 @interface WebTextIterator
-- (WebTextIterator)initWithRange:(id)a3;
+- (WebTextIterator)initWithRange:(id)range;
 - (const)currentTextPointer;
 - (id)currentNode;
 - (id)currentRange;
@@ -18,7 +18,7 @@
   [(WebTextIterator *)&v3 dealloc];
 }
 
-- (WebTextIterator)initWithRange:(id)a3
+- (WebTextIterator)initWithRange:(id)range
 {
   v16.receiver = self;
   v16.super_class = WebTextIterator;
@@ -29,7 +29,7 @@
   }
 
   v4->_private = objc_alloc_init(WebTextIteratorPrivate);
-  if (!a3)
+  if (!range)
   {
     return v4;
   }
@@ -365,12 +365,12 @@ LABEL_14:
 
   if (!(v4 >> 31))
   {
-    v7 = self;
+    selfCopy = self;
     v8 = *(v2 + 16);
     v10 = WTF::fastMalloc((2 * v4));
     *(v2 + 24) = v4;
     *(v2 + 16) = v10;
-    self = v7;
+    self = selfCopy;
     if (v8)
     {
       if (v10 == v8)
@@ -380,7 +380,7 @@ LABEL_14:
       }
 
       WTF::fastFree(v8, v9);
-      self = v7;
+      self = selfCopy;
     }
 
     goto LABEL_11;

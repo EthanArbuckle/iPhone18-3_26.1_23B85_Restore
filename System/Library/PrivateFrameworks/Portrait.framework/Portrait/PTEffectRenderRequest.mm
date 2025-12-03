@@ -7,9 +7,9 @@
 - (float)remappedAperture;
 - (uint64_t)reactionsCombinedCropRect;
 - (void)dealloc;
-- (void)setBilbyFloatingMode:(BOOL)a3;
-- (void)setDetectedObjects:(__CFDictionary *)a3;
-- (void)setRelightStrengthStudioLight:(float)a3;
+- (void)setBilbyFloatingMode:(BOOL)mode;
+- (void)setDetectedObjects:(__CFDictionary *)objects;
+- (void)setRelightStrengthStudioLight:(float)light;
 @end
 
 @implementation PTEffectRenderRequest
@@ -60,19 +60,19 @@
   [(PTEffectRenderRequest *)&v4 dealloc];
 }
 
-- (void)setRelightStrengthStudioLight:(float)a3
+- (void)setRelightStrengthStudioLight:(float)light
 {
-  v3 = a3;
-  if (v3 > 1.0)
+  lightCopy = light;
+  if (lightCopy > 1.0)
   {
-    v3 = 1.0;
+    lightCopy = 1.0;
   }
 
-  v4 = fmax(v3, 0.0);
+  v4 = fmax(lightCopy, 0.0);
   self->_relightStrengthStudioLight = v4;
 }
 
-- (void)setDetectedObjects:(__CFDictionary *)a3
+- (void)setDetectedObjects:(__CFDictionary *)objects
 {
   detectedObjects = self->_detectedObjects;
   if (detectedObjects)
@@ -81,16 +81,16 @@
     self->_detectedObjects = 0;
   }
 
-  if (a3)
+  if (objects)
   {
-    self->_detectedObjects = CFRetain(a3);
+    self->_detectedObjects = CFRetain(objects);
   }
 }
 
-- (void)setBilbyFloatingMode:(BOOL)a3
+- (void)setBilbyFloatingMode:(BOOL)mode
 {
   v3 = 4;
-  if (!a3)
+  if (!mode)
   {
     v3 = 0;
   }
@@ -152,11 +152,11 @@
 
 - (uint64_t)reactionsCombinedCropRect
 {
-  [a1 outColorROI];
+  [self outColorROI];
   v3.f64[1] = v2;
   v5.f64[1] = v4;
   *&v12 = vcvt_hight_f32_f64(vcvt_f32_f64(v5), v3).u64[0];
-  [a1 inReactionVideoRect];
+  [self inReactionVideoRect];
   v7.f64[1] = v6;
   v9.f64[1] = v8;
   *&v10 = vcvt_hight_f32_f64(vcvt_f32_f64(v9), v7).u64[0];

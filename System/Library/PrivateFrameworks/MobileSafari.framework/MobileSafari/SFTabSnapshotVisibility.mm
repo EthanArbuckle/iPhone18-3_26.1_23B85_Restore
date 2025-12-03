@@ -1,6 +1,6 @@
 @interface SFTabSnapshotVisibility
 - (SFTabSnapshotVisibility)init;
-- (SFTabSnapshotVisibility)initWithPriority:(double)a3 tier:(unint64_t)a4;
+- (SFTabSnapshotVisibility)initWithPriority:(double)priority tier:(unint64_t)tier;
 @end
 
 @implementation SFTabSnapshotVisibility
@@ -15,11 +15,11 @@
   return [(SFTabSnapshotVisibility *)&v4 init];
 }
 
-- (SFTabSnapshotVisibility)initWithPriority:(double)a3 tier:(unint64_t)a4
+- (SFTabSnapshotVisibility)initWithPriority:(double)priority tier:(unint64_t)tier
 {
   v4 = self + OBJC_IVAR___SFTabSnapshotVisibility_wrapped;
-  *v4 = a3;
-  *(v4 + 1) = a4;
+  *v4 = priority;
+  *(v4 + 1) = tier;
   v6.receiver = self;
   v6.super_class = SFTabSnapshotVisibility;
   return [(SFTabSnapshotVisibility *)&v6 init];

@@ -1,17 +1,17 @@
 @interface ACHBackCompatLegacyAchievementSyncEntity
 + (HDSyncEntityIdentifier)syncEntityIdentifier;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (void)setEarnedInstanceStore:(id)a3;
++ (id)decodeSyncObjectWithData:(id)data;
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error;
++ (void)setEarnedInstanceStore:(id)store;
 @end
 
 @implementation ACHBackCompatLegacyAchievementSyncEntity
 
-+ (void)setEarnedInstanceStore:(id)a3
++ (void)setEarnedInstanceStore:(id)store
 {
-  v3 = a3;
+  storeCopy = store;
   os_unfair_lock_lock(&ivarLock);
-  objc_storeWeak(&_earnedInstanceStore, v3);
+  objc_storeWeak(&_earnedInstanceStore, storeCopy);
 
   os_unfair_lock_unlock(&ivarLock);
 }
@@ -24,39 +24,39 @@
   return v3;
 }
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
   v3 = MEMORY[0x277CE8D08];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[v3 alloc] initWithData:dataCopy];
 
   return v5;
 }
 
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  objectsCopy = objects;
+  storeCopy = store;
+  profileCopy = profile;
   v12 = ACHLogSync();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objectsCopy, "count")}];
     *buf = 138543362;
     v49 = v13;
     _os_log_impl(&dword_221DDC000, v12, OS_LOG_TYPE_DEFAULT, "Legacy Achievement Entity received sync objects, count: %{public}@", buf, 0xCu);
   }
 
-  if ([v9 count])
+  if ([objectsCopy count])
   {
-    v40 = v10;
-    v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v9, "count")}];
+    v40 = storeCopy;
+    v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(objectsCopy, "count")}];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v15 = v9;
+    v15 = objectsCopy;
     v16 = [v15 countByEnumeratingWithState:&v43 objects:v47 count:16];
     if (v16)
     {
@@ -73,7 +73,7 @@
           }
 
           v20 = *(*(&v43 + 1) + 8 * v19);
-          v21 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+          hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
           v22 = ACHEarnedInstanceFromBackCompatCodableAchievement();
 
           if (v22)
@@ -107,7 +107,7 @@
     v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
     if (v24)
     {
-      v10 = v40;
+      storeCopy = v40;
       if (v26)
       {
         v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSObject count](v14, "count")}];
@@ -157,7 +157,7 @@
 
         v35 = [MEMORY[0x277CBEB98] setWithArray:v14];
         v42 = 0;
-        v36 = [objc_opt_class() insertEarnedInstances:v35 provenance:objc_msgSend(v40 useLegacySyncIdentity:"syncProvenance") profile:1 databaseContext:v11 error:{0, &v42}];
+        v36 = [objc_opt_class() insertEarnedInstances:v35 provenance:objc_msgSend(v40 useLegacySyncIdentity:"syncProvenance") profile:1 databaseContext:profileCopy error:{0, &v42}];
         v34 = v42;
         if (v34)
         {
@@ -174,7 +174,7 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v10 = v40;
+    storeCopy = v40;
     if (v26)
     {
       *buf = 0;

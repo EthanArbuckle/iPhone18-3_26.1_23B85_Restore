@@ -1,18 +1,18 @@
 @interface SBKeyboardBrightnessController
 + (BOOL)handlesKeyCommands;
-- (BOOL)_setBrightnessLevel:(float)a3 animated:(BOOL)a4;
-- (SBKeyboardBrightnessController)initWithCoordinator:(id)a3;
-- (void)buttonSetArbiter:(id)a3 performActionForButtonPage:(unsigned __int16)a4 usage:(unsigned __int16)a5;
-- (void)buttonSetArbiterDidReset:(id)a3;
+- (BOOL)_setBrightnessLevel:(float)level animated:(BOOL)animated;
+- (SBKeyboardBrightnessController)initWithCoordinator:(id)coordinator;
+- (void)buttonSetArbiter:(id)arbiter performActionForButtonPage:(unsigned __int16)page usage:(unsigned __int16)usage;
+- (void)buttonSetArbiterDidReset:(id)reset;
 @end
 
 @implementation SBKeyboardBrightnessController
 
-- (SBKeyboardBrightnessController)initWithCoordinator:(id)a3
+- (SBKeyboardBrightnessController)initWithCoordinator:(id)coordinator
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  coordinatorCopy = coordinator;
+  if (!coordinatorCopy)
   {
     [(SBKeyboardBrightnessController *)a2 initWithCoordinator:?];
   }
@@ -23,7 +23,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_coordinator, v5);
+    objc_storeWeak(&v6->_coordinator, coordinatorCopy);
     v8 = objc_alloc_init(MEMORY[0x277CFD3B8]);
     keyboardBrightnessClient = v7->_keyboardBrightnessClient;
     v7->_keyboardBrightnessClient = v8;
@@ -63,50 +63,50 @@ void __52__SBKeyboardBrightnessController_handlesKeyCommands__block_invoke()
   handlesKeyCommands_settings = v0;
 }
 
-- (void)buttonSetArbiter:(id)a3 performActionForButtonPage:(unsigned __int16)a4 usage:(unsigned __int16)a5
+- (void)buttonSetArbiter:(id)arbiter performActionForButtonPage:(unsigned __int16)page usage:(unsigned __int16)usage
 {
-  v5 = a5;
-  v6 = a4;
-  v14 = a3;
-  if (v6 != 12)
+  usageCopy = usage;
+  pageCopy = page;
+  arbiterCopy = arbiter;
+  if (pageCopy != 12)
   {
     [SBKeyboardBrightnessController buttonSetArbiter:a2 performActionForButtonPage:self usage:?];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_coordinator);
   v10 = WeakRetained;
-  if (v5 == 122)
+  if (usageCopy == 122)
   {
-    v11 = self;
+    selfCopy2 = self;
     v12 = 0;
     v13 = 1;
   }
 
   else
   {
-    if (v5 != 121)
+    if (usageCopy != 121)
     {
       goto LABEL_8;
     }
 
-    v11 = self;
+    selfCopy2 = self;
     v12 = 1;
     v13 = 0;
   }
 
-  [WeakRetained brightnessController:v11 performCoordinatedBrightnessChangeForIncrementKeyDown:v12 decrementKeyDown:v13];
+  [WeakRetained brightnessController:selfCopy2 performCoordinatedBrightnessChangeForIncrementKeyDown:v12 decrementKeyDown:v13];
 LABEL_8:
 }
 
-- (void)buttonSetArbiterDidReset:(id)a3
+- (void)buttonSetArbiterDidReset:(id)reset
 {
   WeakRetained = objc_loadWeakRetained(&self->_coordinator);
   [WeakRetained brightnessController:self performCoordinatedBrightnessChangeForIncrementKeyDown:0 decrementKeyDown:0];
 }
 
-- (BOOL)_setBrightnessLevel:(float)a3 animated:(BOOL)a4
+- (BOOL)_setBrightnessLevel:(float)level animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7 = *MEMORY[0x277CFD3C8];
   if (![(KeyboardBrightnessClient *)self->_keyboardBrightnessClient isAmbientFeatureAvailableOnKeyboard:*MEMORY[0x277CFD3C8]]|| ([(KeyboardBrightnessClient *)self->_keyboardBrightnessClient isBacklightSaturatedOnKeyboard:v7]& 1) != 0)
   {
@@ -114,7 +114,7 @@ LABEL_8:
   }
 
   keyboardBrightnessClient = self->_keyboardBrightnessClient;
-  if (v4)
+  if (animatedCopy)
   {
     v11 = 150;
   }
@@ -124,7 +124,7 @@ LABEL_8:
     v11 = 0;
   }
 
-  *&v8 = a3;
+  *&v8 = level;
 
   return [(KeyboardBrightnessClient *)keyboardBrightnessClient setBrightness:v11 fadeSpeed:1 commit:v7 forKeyboard:v8];
 }

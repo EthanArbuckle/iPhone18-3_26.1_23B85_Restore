@@ -7,8 +7,8 @@
 
 - (BOOL)cls_isDatabaseCorruptionError
 {
-  v3 = [(NSError *)self domain];
-  if ([v3 isEqualToString:@"com.apple.SQLite"])
+  domain = [(NSError *)self domain];
+  if ([domain isEqualToString:@"com.apple.SQLite"])
   {
     v4 = [(NSError *)self code]== 11;
   }
@@ -23,12 +23,12 @@
 
 - (BOOL)cls_isConstraintViolation
 {
-  v3 = [(NSError *)self domain];
-  if ([v3 isEqualToString:@"com.apple.SQLite"])
+  domain = [(NSError *)self domain];
+  if ([domain isEqualToString:@"com.apple.SQLite"])
   {
-    v4 = [(NSError *)self code];
+    code = [(NSError *)self code];
 
-    if (v4 == 19)
+    if (code == 19)
     {
       return 1;
     }
@@ -38,20 +38,20 @@
   {
   }
 
-  v6 = [(NSError *)self userInfo];
-  v7 = [v6 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  userInfo = [(NSError *)self userInfo];
+  v7 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
   if (v7)
   {
-    v5 = [v7 cls_isConstraintViolation];
+    cls_isConstraintViolation = [v7 cls_isConstraintViolation];
   }
 
   else
   {
-    v5 = 0;
+    cls_isConstraintViolation = 0;
   }
 
-  return v5;
+  return cls_isConstraintViolation;
 }
 
 @end

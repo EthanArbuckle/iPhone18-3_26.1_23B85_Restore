@@ -1,8 +1,8 @@
 @interface ControlIconDragPreviewDelayCleanupAssertion
 - (NSString)description;
 - (_TtC15ControlCenterUI43ControlIconDragPreviewDelayCleanupAssertion)init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)invalidate;
@@ -12,13 +12,13 @@
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_21EA4BFEC();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_21EA4C56C();
 
   v3 = sub_21EAA8DC0();
@@ -29,7 +29,7 @@
 - (id)succinctDescription
 {
   v3 = objc_allocWithZone(MEMORY[0x277CF0C00]);
-  v4 = self;
+  selfCopy = self;
   result = [v3 initWithObject_];
   if (!result)
   {
@@ -38,22 +38,22 @@
   }
 
   v6 = result;
-  v7 = [result build];
+  build = [result build];
 
-  if (!v7)
+  if (!build)
   {
 LABEL_7:
     __break(1u);
     return result;
   }
 
-  return v7;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = objc_allocWithZone(MEMORY[0x277CF0C00]);
-  v4 = self;
+  selfCopy = self;
   result = [v3 initWithObject_];
   if (result)
   {
@@ -70,14 +70,14 @@ LABEL_7:
   return result;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  if (a3)
+  if (prefix)
   {
     sub_21EAA8E00();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_21EA4C56C();
 
   v5 = sub_21EAA8DC0();
@@ -85,15 +85,15 @@ LABEL_7:
   return v5;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  if (a3)
+  if (prefix)
   {
     sub_21EAA8E00();
   }
 
   v4 = objc_allocWithZone(MEMORY[0x277CF0C00]);
-  v5 = self;
+  selfCopy = self;
   result = [v4 initWithObject_];
   if (result)
   {

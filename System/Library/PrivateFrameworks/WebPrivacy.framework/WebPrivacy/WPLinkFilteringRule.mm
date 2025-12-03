@@ -1,24 +1,24 @@
 @interface WPLinkFilteringRule
-- (WPLinkFilteringRule)initWithQueryParameter:(id)a3 domain:(id)a4 path:(id)a5;
+- (WPLinkFilteringRule)initWithQueryParameter:(id)parameter domain:(id)domain path:(id)path;
 - (id)description;
 @end
 
 @implementation WPLinkFilteringRule
 
-- (WPLinkFilteringRule)initWithQueryParameter:(id)a3 domain:(id)a4 path:(id)a5
+- (WPLinkFilteringRule)initWithQueryParameter:(id)parameter domain:(id)domain path:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  parameterCopy = parameter;
+  domainCopy = domain;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = WPLinkFilteringRule;
   v12 = [(WPLinkFilteringRule *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_queryParameter, a3);
-    objc_storeStrong(&v13->_domain, a4);
-    objc_storeStrong(&v13->_path, a5);
+    objc_storeStrong(&v12->_queryParameter, parameter);
+    objc_storeStrong(&v13->_domain, domain);
+    objc_storeStrong(&v13->_path, path);
     v14 = v13;
   }
 

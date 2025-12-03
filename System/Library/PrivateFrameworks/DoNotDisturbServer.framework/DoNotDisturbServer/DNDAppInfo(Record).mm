@@ -12,19 +12,19 @@
   v8 = [v6 bs_safeDictionaryForKey:@"applicationIdentifier"];
   if (v8)
   {
-    v20 = a1;
+    selfCopy = self;
     v9 = [MEMORY[0x277D058C8] newWithDictionaryRepresentation:v8 context:v7];
     v10 = [v6 bs_safeNumberForKey:@"source"];
     v11 = v10;
     v21 = v7;
     if (v10)
     {
-      v12 = [v10 unsignedIntegerValue];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
     }
 
     else
     {
-      v12 = 0;
+      unsignedIntegerValue = 0;
     }
 
     v14 = [v6 bs_safeStringForKey:@"displayName"];
@@ -50,7 +50,7 @@
       v18 = 0;
     }
 
-    v13 = [[v20 alloc] initWithSource:v12 applicationIdentifier:v9 displayName:v14 storeIconURL:v16 cachedIconURL:v18];
+    v13 = [[selfCopy alloc] initWithSource:unsignedIntegerValue applicationIdentifier:v9 displayName:v14 storeIconURL:v16 cachedIconURL:v18];
 
     v7 = v21;
   }
@@ -67,26 +67,26 @@
 - (id)dictionaryRepresentationWithContext:()Record
 {
   v4 = a3;
-  v5 = [a1 applicationIdentifier];
-  v6 = [v5 dictionaryRepresentationWithContext:v4];
+  applicationIdentifier = [self applicationIdentifier];
+  v6 = [applicationIdentifier dictionaryRepresentationWithContext:v4];
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "source")}];
-  [v7 setObject:v8 forKeyedSubscript:@"source"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "source")}];
+  [dictionary setObject:v8 forKeyedSubscript:@"source"];
 
-  [v7 setObject:v6 forKeyedSubscript:@"applicationIdentifier"];
-  v9 = [a1 displayName];
-  [v7 setObject:v9 forKeyedSubscript:@"displayName"];
+  [dictionary setObject:v6 forKeyedSubscript:@"applicationIdentifier"];
+  displayName = [self displayName];
+  [dictionary setObject:displayName forKeyedSubscript:@"displayName"];
 
-  v10 = [a1 storeIconURL];
-  v11 = [v10 absoluteString];
-  [v7 setObject:v11 forKeyedSubscript:@"storeIconURL"];
+  storeIconURL = [self storeIconURL];
+  absoluteString = [storeIconURL absoluteString];
+  [dictionary setObject:absoluteString forKeyedSubscript:@"storeIconURL"];
 
-  v12 = [a1 cachedIconURL];
-  v13 = [v12 path];
-  [v7 setObject:v13 forKeyedSubscript:@"cachedIconURL"];
+  cachedIconURL = [self cachedIconURL];
+  path = [cachedIconURL path];
+  [dictionary setObject:path forKeyedSubscript:@"cachedIconURL"];
 
-  return v7;
+  return dictionary;
 }
 
 @end

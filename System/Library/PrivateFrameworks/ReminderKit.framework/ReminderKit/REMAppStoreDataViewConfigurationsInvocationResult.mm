@@ -1,87 +1,87 @@
 @interface REMAppStoreDataViewConfigurationsInvocationResult
-- (BOOL)isEqual:(id)a3;
-- (REMAppStoreDataViewConfigurationsInvocationResult)initWithCoder:(id)a3;
-- (REMAppStoreDataViewConfigurationsInvocationResult)initWithCreatedOrCompletedRemindersCountThreshold:(unint64_t)a3 numberOfForegroundsThreshold:(unint64_t)a4 timeIntervalOfInterest:(double)a5 timeIntervalSinceInitialForeground:(double)a6 timeIntervalSinceLastPrompt:(double)a7 timeIntervalSinceLastFetch:(double)a8;
+- (BOOL)isEqual:(id)equal;
+- (REMAppStoreDataViewConfigurationsInvocationResult)initWithCoder:(id)coder;
+- (REMAppStoreDataViewConfigurationsInvocationResult)initWithCreatedOrCompletedRemindersCountThreshold:(unint64_t)threshold numberOfForegroundsThreshold:(unint64_t)foregroundsThreshold timeIntervalOfInterest:(double)interest timeIntervalSinceInitialForeground:(double)foreground timeIntervalSinceLastPrompt:(double)prompt timeIntervalSinceLastFetch:(double)fetch;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMAppStoreDataViewConfigurationsInvocationResult
 
-- (REMAppStoreDataViewConfigurationsInvocationResult)initWithCreatedOrCompletedRemindersCountThreshold:(unint64_t)a3 numberOfForegroundsThreshold:(unint64_t)a4 timeIntervalOfInterest:(double)a5 timeIntervalSinceInitialForeground:(double)a6 timeIntervalSinceLastPrompt:(double)a7 timeIntervalSinceLastFetch:(double)a8
+- (REMAppStoreDataViewConfigurationsInvocationResult)initWithCreatedOrCompletedRemindersCountThreshold:(unint64_t)threshold numberOfForegroundsThreshold:(unint64_t)foregroundsThreshold timeIntervalOfInterest:(double)interest timeIntervalSinceInitialForeground:(double)foreground timeIntervalSinceLastPrompt:(double)prompt timeIntervalSinceLastFetch:(double)fetch
 {
   v15.receiver = self;
   v15.super_class = REMAppStoreDataViewConfigurationsInvocationResult;
   result = [(REMStoreInvocationValueStorage *)&v15 init];
   if (result)
   {
-    result->_createdOrCompletedRemindersCountThreshold = a3;
-    result->_numberOfForegroundsThreshold = a4;
-    result->_timeIntervalOfInterest = a5;
-    result->_timeIntervalSinceInitialForeground = a6;
-    result->_timeIntervalSinceLastPrompt = a7;
-    result->_timeIntervalSinceLastFetch = a8;
+    result->_createdOrCompletedRemindersCountThreshold = threshold;
+    result->_numberOfForegroundsThreshold = foregroundsThreshold;
+    result->_timeIntervalOfInterest = interest;
+    result->_timeIntervalSinceInitialForeground = foreground;
+    result->_timeIntervalSinceLastPrompt = prompt;
+    result->_timeIntervalSinceLastFetch = fetch;
   }
 
   return result;
 }
 
-- (REMAppStoreDataViewConfigurationsInvocationResult)initWithCoder:(id)a3
+- (REMAppStoreDataViewConfigurationsInvocationResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntForKey:@"createdOrCompletedRemindersCountThreshold"];
-  v6 = [v4 decodeIntForKey:@"numberOfForegroundsThreshold"];
-  [v4 decodeDoubleForKey:@"timeIntervalOfInterest"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntForKey:@"createdOrCompletedRemindersCountThreshold"];
+  v6 = [coderCopy decodeIntForKey:@"numberOfForegroundsThreshold"];
+  [coderCopy decodeDoubleForKey:@"timeIntervalOfInterest"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"timeIntervalSinceInitialForeground"];
+  [coderCopy decodeDoubleForKey:@"timeIntervalSinceInitialForeground"];
   v10 = v9;
-  [v4 decodeDoubleForKey:@"timeIntervalSinceLastPrompt"];
+  [coderCopy decodeDoubleForKey:@"timeIntervalSinceLastPrompt"];
   v12 = v11;
-  [v4 decodeDoubleForKey:@"timeIntervalSinceLastFetch"];
+  [coderCopy decodeDoubleForKey:@"timeIntervalSinceLastFetch"];
   v14 = v13;
 
   return [(REMAppStoreDataViewConfigurationsInvocationResult *)self initWithCreatedOrCompletedRemindersCountThreshold:v5 numberOfForegroundsThreshold:v6 timeIntervalOfInterest:v8 timeIntervalSinceInitialForeground:v10 timeIntervalSinceLastPrompt:v12 timeIntervalSinceLastFetch:v14];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[REMAppStoreDataViewConfigurationsInvocationResult createdOrCompletedRemindersCountThreshold](self forKey:{"createdOrCompletedRemindersCountThreshold"), @"createdOrCompletedRemindersCountThreshold"}];
-  [v4 encodeInteger:-[REMAppStoreDataViewConfigurationsInvocationResult numberOfForegroundsThreshold](self forKey:{"numberOfForegroundsThreshold"), @"numberOfForegroundsThreshold"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[REMAppStoreDataViewConfigurationsInvocationResult createdOrCompletedRemindersCountThreshold](self forKey:{"createdOrCompletedRemindersCountThreshold"), @"createdOrCompletedRemindersCountThreshold"}];
+  [coderCopy encodeInteger:-[REMAppStoreDataViewConfigurationsInvocationResult numberOfForegroundsThreshold](self forKey:{"numberOfForegroundsThreshold"), @"numberOfForegroundsThreshold"}];
   [(REMAppStoreDataViewConfigurationsInvocationResult *)self timeIntervalOfInterest];
-  [v4 encodeDouble:@"timeIntervalOfInterest" forKey:?];
+  [coderCopy encodeDouble:@"timeIntervalOfInterest" forKey:?];
   [(REMAppStoreDataViewConfigurationsInvocationResult *)self timeIntervalSinceInitialForeground];
-  [v4 encodeDouble:@"timeIntervalSinceInitialForeground" forKey:?];
+  [coderCopy encodeDouble:@"timeIntervalSinceInitialForeground" forKey:?];
   [(REMAppStoreDataViewConfigurationsInvocationResult *)self timeIntervalSinceLastPrompt];
-  [v4 encodeDouble:@"timeIntervalSinceLastPrompt" forKey:?];
+  [coderCopy encodeDouble:@"timeIntervalSinceLastPrompt" forKey:?];
   [(REMAppStoreDataViewConfigurationsInvocationResult *)self timeIntervalSinceLastFetch];
-  [v4 encodeDouble:@"timeIntervalSinceLastFetch" forKey:?];
+  [coderCopy encodeDouble:@"timeIntervalSinceLastFetch" forKey:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  v5 = [(REMAppStoreDataViewConfigurationsInvocationResult *)self createdOrCompletedRemindersCountThreshold];
-  if (v5 != [v4 createdOrCompletedRemindersCountThreshold])
+  createdOrCompletedRemindersCountThreshold = [(REMAppStoreDataViewConfigurationsInvocationResult *)self createdOrCompletedRemindersCountThreshold];
+  if (createdOrCompletedRemindersCountThreshold != [equalCopy createdOrCompletedRemindersCountThreshold])
   {
     goto LABEL_7;
   }
 
-  v6 = [(REMAppStoreDataViewConfigurationsInvocationResult *)self numberOfForegroundsThreshold];
-  if (v6 != [v4 numberOfForegroundsThreshold])
+  numberOfForegroundsThreshold = [(REMAppStoreDataViewConfigurationsInvocationResult *)self numberOfForegroundsThreshold];
+  if (numberOfForegroundsThreshold != [equalCopy numberOfForegroundsThreshold])
   {
     goto LABEL_7;
   }
 
   [(REMAppStoreDataViewConfigurationsInvocationResult *)self timeIntervalOfInterest];
   v8 = v7;
-  [v4 timeIntervalOfInterest];
+  [equalCopy timeIntervalOfInterest];
   if (v8 != v9)
   {
     goto LABEL_7;
@@ -89,12 +89,12 @@
 
   [(REMAppStoreDataViewConfigurationsInvocationResult *)self timeIntervalSinceInitialForeground];
   v11 = v10;
-  [v4 timeIntervalSinceInitialForeground];
-  if (v11 == v12 && (-[REMAppStoreDataViewConfigurationsInvocationResult timeIntervalSinceLastPrompt](self, "timeIntervalSinceLastPrompt"), v14 = v13, [v4 timeIntervalSinceLastPrompt], v14 == v15))
+  [equalCopy timeIntervalSinceInitialForeground];
+  if (v11 == v12 && (-[REMAppStoreDataViewConfigurationsInvocationResult timeIntervalSinceLastPrompt](self, "timeIntervalSinceLastPrompt"), v14 = v13, [equalCopy timeIntervalSinceLastPrompt], v14 == v15))
   {
     [(REMAppStoreDataViewConfigurationsInvocationResult *)self timeIntervalSinceLastFetch];
     v19 = v18;
-    [v4 timeIntervalSinceLastFetch];
+    [equalCopy timeIntervalSinceLastFetch];
     v16 = v19 == v20;
   }
 
@@ -109,8 +109,8 @@ LABEL_7:
 
 - (unint64_t)hash
 {
-  v3 = [(REMAppStoreDataViewConfigurationsInvocationResult *)self createdOrCompletedRemindersCountThreshold];
-  v4 = ([(REMAppStoreDataViewConfigurationsInvocationResult *)self numberOfForegroundsThreshold]+ v3);
+  createdOrCompletedRemindersCountThreshold = [(REMAppStoreDataViewConfigurationsInvocationResult *)self createdOrCompletedRemindersCountThreshold];
+  v4 = ([(REMAppStoreDataViewConfigurationsInvocationResult *)self numberOfForegroundsThreshold]+ createdOrCompletedRemindersCountThreshold);
   [(REMAppStoreDataViewConfigurationsInvocationResult *)self timeIntervalOfInterest];
   v6 = v5 + v4;
   [(REMAppStoreDataViewConfigurationsInvocationResult *)self timeIntervalSinceInitialForeground];

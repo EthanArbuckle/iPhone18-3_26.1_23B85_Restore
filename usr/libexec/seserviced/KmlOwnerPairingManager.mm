@@ -1,17 +1,17 @@
 @interface KmlOwnerPairingManager
 - (KmlOwnerPairingManager)init;
 - (void)dealloc;
-- (void)handleEncryptionResult:(id)a3 trackingRequest:(id)a4 keyInformation:(id)a5;
-- (void)handleFirstPostPairingTransactionEndResult:(id)a3;
-- (void)handleKeyCreationCancellationResult:(BOOL)a3;
-- (void)handleKeyCreationCompletionResult:(id)a3;
+- (void)handleEncryptionResult:(id)result trackingRequest:(id)request keyInformation:(id)information;
+- (void)handleFirstPostPairingTransactionEndResult:(id)result;
+- (void)handleKeyCreationCancellationResult:(BOOL)result;
+- (void)handleKeyCreationCompletionResult:(id)result;
 - (void)handleKeysExchangeDoneWaitForMailboxes;
 - (void)handleMailboxConfigurationDone;
-- (void)handleOwnerPairingCancellationWithResult:(BOOL)a3;
+- (void)handleOwnerPairingCancellationWithResult:(BOOL)result;
 - (void)handlePairingDidStart;
-- (void)handlePairingTransportSessionFailedWithError:(id)a3;
-- (void)handlePreWarmResult:(id)a3;
-- (void)handleProbingCompletionWithBrandCode:(unint64_t)a3 error:(id)a4;
+- (void)handlePairingTransportSessionFailedWithError:(id)error;
+- (void)handlePreWarmResult:(id)result;
+- (void)handleProbingCompletionWithBrandCode:(unint64_t)code error:(id)error;
 - (void)handleRemoteConfigurationReceived;
 @end
 
@@ -65,21 +65,21 @@
   [(KmlOwnerPairingManager *)&v6 dealloc];
 }
 
-- (void)handlePairingTransportSessionFailedWithError:(id)a3
+- (void)handlePairingTransportSessionFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   opManagerQueue = self->_opManagerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100374924;
   v7[3] = &unk_1004C22F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(opManagerQueue, v7);
 }
 
-- (void)handleOwnerPairingCancellationWithResult:(BOOL)a3
+- (void)handleOwnerPairingCancellationWithResult:(BOOL)result
 {
   opManagerQueue = self->_opManagerQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -87,36 +87,36 @@
   v4[2] = sub_100374BFC;
   v4[3] = &unk_1004C2ED0;
   v4[4] = self;
-  v5 = a3;
+  resultCopy = result;
   dispatch_async(opManagerQueue, v4);
 }
 
-- (void)handleFirstPostPairingTransactionEndResult:(id)a3
+- (void)handleFirstPostPairingTransactionEndResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   opManagerQueue = self->_opManagerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100375AC4;
   v7[3] = &unk_1004C22F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = resultCopy;
+  v6 = resultCopy;
   dispatch_async(opManagerQueue, v7);
 }
 
-- (void)handleProbingCompletionWithBrandCode:(unint64_t)a3 error:(id)a4
+- (void)handleProbingCompletionWithBrandCode:(unint64_t)code error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   opManagerQueue = self->_opManagerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100375D58;
   block[3] = &unk_1004C2B50;
-  v11 = self;
-  v12 = a3;
-  v10 = v6;
-  v8 = v6;
+  selfCopy = self;
+  codeCopy = code;
+  v10 = errorCopy;
+  v8 = errorCopy;
   dispatch_async(opManagerQueue, block);
 }
 
@@ -131,26 +131,26 @@
   dispatch_async(opManagerQueue, block);
 }
 
-- (void)handleKeyCreationCompletionResult:(id)a3
+- (void)handleKeyCreationCompletionResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   opManagerQueue = self->_opManagerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100375E5C;
   v7[3] = &unk_1004C22F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = resultCopy;
+  selfCopy = self;
+  v6 = resultCopy;
   dispatch_async(opManagerQueue, v7);
 }
 
-- (void)handleKeyCreationCancellationResult:(BOOL)a3
+- (void)handleKeyCreationCancellationResult:(BOOL)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = KmlLogger();
   v5 = v4;
-  if (v3)
+  if (resultCopy)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
@@ -179,37 +179,37 @@ LABEL_6:
   }
 }
 
-- (void)handleEncryptionResult:(id)a3 trackingRequest:(id)a4 keyInformation:(id)a5
+- (void)handleEncryptionResult:(id)result trackingRequest:(id)request keyInformation:(id)information
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultCopy = result;
+  requestCopy = request;
+  informationCopy = information;
   opManagerQueue = self->_opManagerQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1003753F4;
   v15[3] = &unk_1004D1B40;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = resultCopy;
+  v17 = requestCopy;
+  v18 = informationCopy;
+  v12 = informationCopy;
+  v13 = requestCopy;
+  v14 = resultCopy;
   dispatch_async(opManagerQueue, v15);
 }
 
-- (void)handlePreWarmResult:(id)a3
+- (void)handlePreWarmResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   opManagerQueue = self->_opManagerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10037632C;
   v7[3] = &unk_1004C22F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = resultCopy;
+  v6 = resultCopy;
   dispatch_async(opManagerQueue, v7);
 }
 

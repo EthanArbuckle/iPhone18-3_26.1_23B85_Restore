@@ -1,49 +1,49 @@
 @interface EXFillTable
-+ (void)readFrom:(_xmlNode *)a3 state:(id)a4;
-+ (void)setDefaultWithState:(id)a3;
++ (void)readFrom:(_xmlNode *)from state:(id)state;
++ (void)setDefaultWithState:(id)state;
 @end
 
 @implementation EXFillTable
 
-+ (void)readFrom:(_xmlNode *)a3 state:(id)a4
++ (void)readFrom:(_xmlNode *)from state:(id)state
 {
-  v5 = a4;
-  if (a3)
+  stateCopy = state;
+  if (from)
   {
-    v12 = v5;
-    v6 = [v5 resources];
-    v7 = [v6 fills];
+    v12 = stateCopy;
+    resources = [stateCopy resources];
+    fills = [resources fills];
 
-    v8 = [v12 EXSpreadsheetMLNamespace];
-    Child = OCXFindChild(a3, v8, "fill");
+    eXSpreadsheetMLNamespace = [v12 EXSpreadsheetMLNamespace];
+    Child = OCXFindChild(from, eXSpreadsheetMLNamespace, "fill");
 
     while (Child)
     {
       v10 = [EXFill edFillFromXmlFillElement:Child state:v12];
-      [v7 addObject:v10];
+      [fills addObject:v10];
 
-      v11 = [v12 EXSpreadsheetMLNamespace];
-      Child = OCXFindNextChild(Child, v11, "fill");
+      eXSpreadsheetMLNamespace2 = [v12 EXSpreadsheetMLNamespace];
+      Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace2, "fill");
     }
 
-    v5 = v12;
+    stateCopy = v12;
   }
 }
 
-+ (void)setDefaultWithState:(id)a3
++ (void)setDefaultWithState:(id)state
 {
-  v9 = a3;
-  v3 = [v9 resources];
-  v4 = [EDPatternFill patternFillWithType:0 foreColorReference:0 backColorReference:0 resources:v3];
+  stateCopy = state;
+  resources = [stateCopy resources];
+  v4 = [EDPatternFill patternFillWithType:0 foreColorReference:0 backColorReference:0 resources:resources];
 
-  v5 = [v9 resources];
-  v6 = [v5 fills];
+  resources2 = [stateCopy resources];
+  fills = [resources2 fills];
 
-  [v6 addObject:v4];
-  v7 = [v9 resources];
-  v8 = [EDPatternFill patternFillWithType:17 foreColorReference:0 backColorReference:0 resources:v7];
+  [fills addObject:v4];
+  resources3 = [stateCopy resources];
+  v8 = [EDPatternFill patternFillWithType:17 foreColorReference:0 backColorReference:0 resources:resources3];
 
-  [v6 addObject:v8];
+  [fills addObject:v8];
 }
 
 @end

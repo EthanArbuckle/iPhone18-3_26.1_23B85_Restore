@@ -1,35 +1,35 @@
 @interface ODIHierarchy
-+ (BOOL)mapIdentifier:(id)a3 state:(id)a4;
-- (CGRect)boundsOfNode:(id)a3;
-- (ODIHierarchy)initWithType:(int)a3 state:(id)a4;
-- (id)infoForNode:(id)a3;
-- (void)createInfoForNode:(id)a3 depth:(int)a4;
++ (BOOL)mapIdentifier:(id)identifier state:(id)state;
+- (CGRect)boundsOfNode:(id)node;
+- (ODIHierarchy)initWithType:(int)type state:(id)state;
+- (id)infoForNode:(id)node;
+- (void)createInfoForNode:(id)node depth:(int)depth;
 - (void)map;
-- (void)mapLogicalBoundsWithXRanges:(const void *)a3;
-- (void)mapNode:(id)a3;
-- (void)mapRangesForNode:(id)a3;
-- (void)setAbsolutePositionOfNode:(id)a3 parentRow:(int)a4 parentXOffset:(float)a5;
+- (void)mapLogicalBoundsWithXRanges:(const void *)ranges;
+- (void)mapNode:(id)node;
+- (void)mapRangesForNode:(id)node;
+- (void)setAbsolutePositionOfNode:(id)node parentRow:(int)row parentXOffset:(float)offset;
 @end
 
 @implementation ODIHierarchy
 
-+ (BOOL)mapIdentifier:(id)a3 state:(id)a4
++ (BOOL)mapIdentifier:(id)identifier state:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"orgChart1"])
+  identifierCopy = identifier;
+  stateCopy = state;
+  if ([identifierCopy isEqualToString:@"orgChart1"])
   {
     v7 = 1;
   }
 
-  else if ([v5 isEqualToString:@"hierarchy3"])
+  else if ([identifierCopy isEqualToString:@"hierarchy3"])
   {
     v7 = 3;
   }
 
   else
   {
-    if (![v5 hasPrefix:@"hierarchy"])
+    if (![identifierCopy hasPrefix:@"hierarchy"])
     {
       v9 = 0;
       goto LABEL_8;
@@ -38,7 +38,7 @@
     v7 = 2;
   }
 
-  v8 = [[ODIHierarchy alloc] initWithType:v7 state:v6];
+  v8 = [[ODIHierarchy alloc] initWithType:v7 state:stateCopy];
   [(ODIHierarchy *)v8 map];
 
   v9 = 1;
@@ -47,16 +47,16 @@ LABEL_8:
   return v9;
 }
 
-- (ODIHierarchy)initWithType:(int)a3 state:(id)a4
+- (ODIHierarchy)initWithType:(int)type state:(id)state
 {
-  v7 = a4;
+  stateCopy = state;
   v14.receiver = self;
   v14.super_class = ODIHierarchy;
   v8 = [(ODIHierarchy *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       v10 = 1;
     }
@@ -66,9 +66,9 @@ LABEL_8:
       v10 = 0x7FFFFFFF;
     }
 
-    v8->mType = a3;
+    v8->mType = type;
     v8->mMaxMappableTreeDepth = v10;
-    objc_storeStrong(&v8->mState, a4);
+    objc_storeStrong(&v8->mState, state);
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     mNodeInfoMap = v9->mNodeInfoMap;
     v9->mNodeInfoMap = v11;
@@ -77,50 +77,50 @@ LABEL_8:
   return v9;
 }
 
-- (id)infoForNode:(id)a3
+- (id)infoForNode:(id)node
 {
   mNodeInfoMap = self->mNodeInfoMap;
-  v4 = [MEMORY[0x277CCAE60] valueWithPointer:a3];
+  v4 = [MEMORY[0x277CCAE60] valueWithPointer:node];
   v5 = [(NSMutableDictionary *)mNodeInfoMap objectForKey:v4];
 
   return v5;
 }
 
-- (void)createInfoForNode:(id)a3 depth:(int)a4
+- (void)createInfoForNode:(id)node depth:(int)depth
 {
-  v4 = *&a4;
-  v13 = a3;
+  v4 = *&depth;
+  nodeCopy = node;
   v6 = objc_alloc_init(ODIHNodeInfo);
   mNodeInfoMap = self->mNodeInfoMap;
-  v8 = [MEMORY[0x277CCAE60] valueWithPointer:v13];
+  v8 = [MEMORY[0x277CCAE60] valueWithPointer:nodeCopy];
   [(NSMutableDictionary *)mNodeInfoMap setObject:v6 forKey:v8];
 
   [(ODIHNodeInfo *)v6 setTreeDepth:v4];
-  v9 = [v13 children];
-  v10 = [v9 count];
+  children = [nodeCopy children];
+  v10 = [children count];
   if (v10)
   {
     for (i = 0; i != v10; ++i)
     {
-      v12 = [v9 objectAtIndex:i];
+      v12 = [children objectAtIndex:i];
       [(ODIHierarchy *)self createInfoForNode:v12 depth:(v4 + 1)];
     }
   }
 }
 
-- (void)mapRangesForNode:(id)a3
+- (void)mapRangesForNode:(id)node
 {
-  v4 = a3;
-  v92 = [(ODIHierarchy *)self infoForNode:v4];
-  v5 = [v92 xRanges];
-  if (((v5[1] - *v5) & 0x7FFFFFFF8) != 0)
+  nodeCopy = node;
+  v92 = [(ODIHierarchy *)self infoForNode:nodeCopy];
+  xRanges = [v92 xRanges];
+  if (((xRanges[1] - *xRanges) & 0x7FFFFFFF8) != 0)
   {
     goto LABEL_94;
   }
 
-  v90 = v4;
-  v6 = [v4 children];
-  v7 = [v6 count];
+  v90 = nodeCopy;
+  children = [nodeCopy children];
+  v7 = [children count];
   if (!v7 || [v92 treeDepth] >= self->mMaxMappableTreeDepth)
   {
     goto LABEL_93;
@@ -142,9 +142,9 @@ LABEL_8:
     v10 = 0;
     do
     {
-      v11 = [v6 objectAtIndex:v10];
-      v12 = [v11 children];
-      v13 = [v12 count];
+      v11 = [children objectAtIndex:v10];
+      children2 = [v11 children];
+      v13 = [children2 count];
       v91 = v13 == 0;
 
       if (v13)
@@ -163,7 +163,7 @@ LABEL_8:
   v16 = 0.0;
   do
   {
-    v17 = [v6 objectAtIndex:v14];
+    v17 = [children objectAtIndex:v14];
     if (![v17 type])
     {
       if (v15)
@@ -187,14 +187,14 @@ LABEL_8:
   v21 = -v16;
   do
   {
-    v22 = [v6 objectAtIndex:v20];
+    v22 = [children objectAtIndex:v20];
     v23 = [(ODIHierarchy *)self infoForNode:v22];
     if ([v22 type])
     {
       goto LABEL_54;
     }
 
-    [v23 setExtraRowsBetweenParentAndSelf:((v5[1] - *v5) >> 3) - v19];
+    [v23 setExtraRowsBetweenParentAndSelf:((xRanges[1] - *xRanges) >> 3) - v19];
     [v23 setConnectToVerticalSide:1];
     v24 = [(ODIHierarchy *)self mapRangesForNode:v22];
     *&v25 = ODIHRangeVector::boundingRange(v24);
@@ -232,7 +232,7 @@ LABEL_8:
           LODWORD(v33) = v32;
         }
 
-        v34 = *v5;
+        v34 = *xRanges;
         if (v33 <= 1)
         {
           v33 = 1;
@@ -243,7 +243,7 @@ LABEL_8:
           v33 = v33;
         }
 
-        v35 = ((v5[1] - *v5) >> 3) - v19;
+        v35 = ((xRanges[1] - *xRanges) >> 3) - v19;
         v36 = (v28 + 4);
         do
         {
@@ -267,7 +267,7 @@ LABEL_51:
         goto LABEL_54;
       }
 
-      v40 = v5[1];
+      v40 = xRanges[1];
       v41 = 8 * v19;
       v19 = v19;
       do
@@ -275,9 +275,9 @@ LABEL_51:
         v42 = *(v28 + v41) + (*(v28 + v41 + 4) * 0.5);
         *&v93 = (v42 + 0.0) * 0.5;
         *(&v93 + 1) = v42;
-        if (v40 >= v5[2])
+        if (v40 >= xRanges[2])
         {
-          v40 = std::vector<ODIHRange,ChAllocator<ODIHRange>>::__emplace_back_slow_path<ODIHRange>(v5, &v93);
+          v40 = std::vector<ODIHRange,ChAllocator<ODIHRange>>::__emplace_back_slow_path<ODIHRange>(xRanges, &v93);
         }
 
         else
@@ -286,7 +286,7 @@ LABEL_51:
           v40 += 8;
         }
 
-        v5[1] = v40;
+        xRanges[1] = v40;
         ++v19;
         v28 = *v24;
         v41 += 8;
@@ -322,15 +322,15 @@ LABEL_51:
       {
         v49 = 0;
         v50 = 0;
-        v51 = v5[1];
+        v51 = xRanges[1];
         do
         {
           v52 = *(v44 + v49) - (*(v44 + v49 + 4) * 0.5);
           *&v93 = (v52 + 0.0) * 0.5;
           *(&v93 + 1) = 0.0 - v52;
-          if (v51 >= v5[2])
+          if (v51 >= xRanges[2])
           {
-            v51 = std::vector<ODIHRange,ChAllocator<ODIHRange>>::__emplace_back_slow_path<ODIHRange>(v5, &v93);
+            v51 = std::vector<ODIHRange,ChAllocator<ODIHRange>>::__emplace_back_slow_path<ODIHRange>(xRanges, &v93);
           }
 
           else
@@ -339,7 +339,7 @@ LABEL_51:
             v51 += 8;
           }
 
-          v5[1] = v51;
+          xRanges[1] = v51;
           ++v50;
           v44 = *v24;
           v49 += 8;
@@ -364,7 +364,7 @@ LABEL_54:
   {
     v53 = 0;
     v54 = 0;
-    v55 = (v5[1] - *v5) >> 3;
+    v55 = (xRanges[1] - *xRanges) >> 3;
     if ([v90 type])
     {
       v56 = v55 == 0;
@@ -387,7 +387,7 @@ LABEL_54:
 
     do
     {
-      v58 = [v6 objectAtIndex:v53];
+      v58 = [children objectAtIndex:v53];
       if ([v58 type] == 2)
       {
         v59 = [(ODIHierarchy *)self infoForNode:v58];
@@ -401,10 +401,10 @@ LABEL_54:
         [v59 xRange];
         *&v93 = v57 + v62;
         HIDWORD(v93) = v63;
-        v64 = v5[1];
-        if (v64 >= v5[2])
+        v64 = xRanges[1];
+        if (v64 >= xRanges[2])
         {
-          v65 = std::vector<ODIHRange,ChAllocator<ODIHRange>>::__emplace_back_slow_path<ODIHRange const&>(v5, &v93);
+          v65 = std::vector<ODIHRange,ChAllocator<ODIHRange>>::__emplace_back_slow_path<ODIHRange const&>(xRanges, &v93);
         }
 
         else
@@ -413,7 +413,7 @@ LABEL_54:
           v65 = (v64 + 8);
         }
 
-        v5[1] = v65;
+        xRanges[1] = v65;
         ++v54;
       }
 
@@ -431,12 +431,12 @@ LABEL_69:
   v95 = 0;
   do
   {
-    v67 = [v6 objectAtIndex:v66];
+    v67 = [children objectAtIndex:v66];
     v68 = [(ODIHierarchy *)self infoForNode:v67];
-    v69 = [v67 type];
-    if (mType != 1 || v69 == 2)
+    type = [v67 type];
+    if (mType != 1 || type == 2)
     {
-      [v68 setExtraRowsBetweenParentAndSelf:(v5[1] - *v5) >> 3];
+      [v68 setExtraRowsBetweenParentAndSelf:(xRanges[1] - *xRanges) >> 3];
       v70 = [(ODIHierarchy *)self mapRangesForNode:v67];
       v71 = ODIHRangeVector::minDistanceTo(&v93, v70);
       v72 = *&v71;
@@ -480,10 +480,10 @@ LABEL_69:
     while (v80);
     for (i = 0; i != v7; ++i)
     {
-      v82 = [v6 objectAtIndex:i];
+      v82 = [children objectAtIndex:i];
       v83 = [(ODIHierarchy *)self infoForNode:v82];
-      v84 = [v82 type];
-      if (mType != 1 || v84 == 2)
+      type2 = [v82 type];
+      if (mType != 1 || type2 == 2)
       {
         *&v85 = v79;
         [v83 addToXOffsetRelativeToParent:v85];
@@ -495,12 +495,12 @@ LABEL_69:
     {
       v86 = 0;
       v87 = 0;
-      v88 = v5[1];
+      v88 = xRanges[1];
       do
       {
-        if (v88 >= v5[2])
+        if (v88 >= xRanges[2])
         {
-          v88 = std::vector<ODIHRange,ChAllocator<ODIHRange>>::__emplace_back_slow_path<ODIHRange const&>(v5, &v77[v86]);
+          v88 = std::vector<ODIHRange,ChAllocator<ODIHRange>>::__emplace_back_slow_path<ODIHRange const&>(xRanges, &v77[v86]);
         }
 
         else
@@ -509,7 +509,7 @@ LABEL_69:
           v88 += 8;
         }
 
-        v5[1] = v88;
+        xRanges[1] = v88;
         ++v87;
         v77 = v93;
         v86 += 2;
@@ -529,45 +529,45 @@ LABEL_93:
   v93 = 0x3F80000000000000;
   LODWORD(v8) = 1.0;
   [v92 setXRange:{0.0, v8}];
-  std::vector<ODIHRange,ChAllocator<ODIHRange>>::insert(v5, *v5, &v93);
+  std::vector<ODIHRange,ChAllocator<ODIHRange>>::insert(xRanges, *xRanges, &v93);
 
-  v4 = v90;
+  nodeCopy = v90;
 LABEL_94:
 
-  return v5;
+  return xRanges;
 }
 
-- (void)mapLogicalBoundsWithXRanges:(const void *)a3
+- (void)mapLogicalBoundsWithXRanges:(const void *)ranges
 {
-  v5 = ODIHRangeVector::boundingRange(a3);
+  v5 = ODIHRangeVector::boundingRange(ranges);
   mState = self->mState;
   v8 = (v5 + (v6 * -0.5));
-  v9 = (((*(a3 + 1) - *a3) >> 3) * 0.6);
+  v9 = (((*(ranges + 1) - *ranges) >> 3) * 0.6);
 
   [(ODIState *)mState setLogicalBounds:v8, -0.300000012, v6, v9];
 }
 
-- (void)setAbsolutePositionOfNode:(id)a3 parentRow:(int)a4 parentXOffset:(float)a5
+- (void)setAbsolutePositionOfNode:(id)node parentRow:(int)row parentXOffset:(float)offset
 {
-  v20 = a3;
+  nodeCopy = node;
   v8 = [(ODIHierarchy *)self infoForNode:?];
   if ([v8 treeDepth] <= self->mMaxMappableTreeDepth)
   {
-    v9 = a4 + [v8 extraRowsBetweenParentAndSelf];
+    v9 = row + [v8 extraRowsBetweenParentAndSelf];
     [v8 setRow:(v9 + 1)];
     [v8 xOffsetRelativeToParent];
     v11 = v10;
     [v8 xRange];
-    v12 = v11 + a5;
+    v12 = v11 + offset;
     *&v14 = v12 + v13;
     [v8 setXRange:v14];
-    v15 = [v20 children];
-    v16 = [v15 count];
+    children = [nodeCopy children];
+    v16 = [children count];
     if (v16)
     {
       for (i = 0; i != v16; ++i)
       {
-        v18 = [v15 objectAtIndex:i];
+        v18 = [children objectAtIndex:i];
         *&v19 = v12;
         [(ODIHierarchy *)self setAbsolutePositionOfNode:v18 parentRow:(v9 + 1) parentXOffset:v19];
       }
@@ -575,9 +575,9 @@ LABEL_94:
   }
 }
 
-- (CGRect)boundsOfNode:(id)a3
+- (CGRect)boundsOfNode:(id)node
 {
-  v3 = [(ODIHierarchy *)self infoForNode:a3];
+  v3 = [(ODIHierarchy *)self infoForNode:node];
   v4 = [v3 row];
   [v3 xRange];
   v6 = TSURectWithCenterAndSize(v5, (v4 * 0.6), 0.800000012);
@@ -596,17 +596,17 @@ LABEL_94:
   return result;
 }
 
-- (void)mapNode:(id)a3
+- (void)mapNode:(id)node
 {
-  v55 = a3;
+  nodeCopy = node;
   v4 = [(ODIHierarchy *)self infoForNode:?];
-  v5 = [v4 treeDepth];
+  treeDepth = [v4 treeDepth];
 
-  if (v5 <= self->mMaxMappableTreeDepth)
+  if (treeDepth <= self->mMaxMappableTreeDepth)
   {
-    if ((v5 & 0x80000000) == 0)
+    if ((treeDepth & 0x80000000) == 0)
     {
-      [(ODIHierarchy *)self boundsOfNode:v55];
+      [(ODIHierarchy *)self boundsOfNode:nodeCopy];
       rect = v6;
       v8 = v7;
       v10 = v9;
@@ -614,22 +614,22 @@ LABEL_94:
       v13 = +[ODIDrawable shapeGeometryForRectangle];
       v14 = [ODIDrawable addShapeWithBounds:v13 rotation:self->mState geometry:v8 state:v10, v12, rect, 0.0];
 
-      [ODIDrawable mapStyleFromPoint:v55 shape:v14 state:self->mState];
-      [ODIText mapTextFromPoint:v55 toShape:v14 isCentered:0 includeChildren:v5 == self->mMaxMappableTreeDepth state:self->mState];
-      if (v5)
+      [ODIDrawable mapStyleFromPoint:nodeCopy shape:v14 state:self->mState];
+      [ODIText mapTextFromPoint:nodeCopy toShape:v14 isCentered:0 includeChildren:treeDepth == self->mMaxMappableTreeDepth state:self->mState];
+      if (treeDepth)
       {
-        v15 = [v55 parent];
-        [(ODIHierarchy *)self boundsOfNode:v15];
+        parent = [nodeCopy parent];
+        [(ODIHierarchy *)self boundsOfNode:parent];
         v17 = v16;
         v19 = v18;
         v21 = v20;
         v23 = v22;
 
         v24 = objc_alloc_init(OITSUBezierPath);
-        v25 = [(ODIHierarchy *)self infoForNode:v55];
-        v26 = [v25 connectToVerticalSide];
+        v25 = [(ODIHierarchy *)self infoForNode:nodeCopy];
+        connectToVerticalSide = [v25 connectToVerticalSide];
 
-        if (v26)
+        if (connectToVerticalSide)
         {
           v57.origin.x = v17;
           v57.origin.y = v19;
@@ -739,7 +739,7 @@ LABEL_94:
           v68.size.width = v12;
           v68.size.height = rect;
           MinY = CGRectGetMinY(v68);
-          v34 = [(ODIHierarchy *)self infoForNode:v55];
+          v34 = [(ODIHierarchy *)self infoForNode:nodeCopy];
           v35 = [v34 row];
 
           [(OITSUBezierPath *)v24 moveToPoint:v53, v31];
@@ -751,14 +751,14 @@ LABEL_94:
         }
 
         mState = self->mState;
-        if (v5 >= 3)
+        if (treeDepth >= 3)
         {
           v41 = 3;
         }
 
         else
         {
-          v41 = v5;
+          v41 = treeDepth;
         }
 
         v42 = [MEMORY[0x277CCACA8] stringWithFormat:@"parChTrans1D%d", (v41 + 1)];
@@ -768,18 +768,18 @@ LABEL_94:
         v43 = [ODIDrawable shapeGeometryForBezierPath:v24 gSpace:?];
         [(ODIState *)self->mState logicalBounds];
         v44 = [ODIDrawable addShapeWithBounds:"addShapeWithBounds:rotation:geometry:state:" rotation:v43 geometry:self->mState state:?];
-        v45 = [v55 parentTransition];
-        [ODIDrawable mapStyleAndTextFromPoint:v45 shape:v44 state:self->mState];
+        parentTransition = [nodeCopy parentTransition];
+        [ODIDrawable mapStyleAndTextFromPoint:parentTransition shape:v44 state:self->mState];
       }
     }
 
-    v46 = [v55 children];
-    v47 = [v46 count];
+    children = [nodeCopy children];
+    v47 = [children count];
     if (v47)
     {
       for (i = 0; i != v47; ++i)
       {
-        v49 = [v46 objectAtIndex:i];
+        v49 = [children objectAtIndex:i];
         [(ODIHierarchy *)self mapNode:v49];
       }
     }
@@ -788,11 +788,11 @@ LABEL_94:
 
 - (void)map
 {
-  v3 = [(ODIState *)self->mState diagram];
-  v10 = [v3 documentPoint];
+  diagram = [(ODIState *)self->mState diagram];
+  documentPoint = [diagram documentPoint];
 
-  [(ODIHierarchy *)self createInfoForNode:v10 depth:0xFFFFFFFFLL];
-  v4 = [(ODIHierarchy *)self mapRangesForNode:v10];
+  [(ODIHierarchy *)self createInfoForNode:documentPoint depth:0xFFFFFFFFLL];
+  v4 = [(ODIHierarchy *)self mapRangesForNode:documentPoint];
   v5 = v4;
   v7 = *v4;
   v6 = v4[1];
@@ -805,8 +805,8 @@ LABEL_94:
 
   v5[1] = &v7[v9];
   [(ODIHierarchy *)self mapLogicalBoundsWithXRanges:v5];
-  [(ODIHierarchy *)self setAbsolutePositionOfNode:v10 parentRow:4294967294 parentXOffset:0.0];
-  [(ODIHierarchy *)self mapNode:v10];
+  [(ODIHierarchy *)self setAbsolutePositionOfNode:documentPoint parentRow:4294967294 parentXOffset:0.0];
+  [(ODIHierarchy *)self mapNode:documentPoint];
 }
 
 @end

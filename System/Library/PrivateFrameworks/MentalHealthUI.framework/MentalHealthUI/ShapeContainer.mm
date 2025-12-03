@@ -1,7 +1,7 @@
 @interface ShapeContainer
 + (Class)layerClass;
-- (_TtC14MentalHealthUI14ShapeContainer)initWithCoder:(id)a3;
-- (_TtC14MentalHealthUI14ShapeContainer)initWithFrame:(CGRect)a3;
+- (_TtC14MentalHealthUI14ShapeContainer)initWithCoder:(id)coder;
+- (_TtC14MentalHealthUI14ShapeContainer)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
 @end
@@ -36,7 +36,7 @@
   v9 = *(&self->super.super.super.isa + OBJC_IVAR____TtC14MentalHealthUI14ShapeContainer_renderer);
   sub_258B02D24();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   v12 = sub_258B02D14();
   v13 = swift_allocObject();
   v14 = MEMORY[0x277D85700];
@@ -45,17 +45,17 @@
   v13[4] = v9;
   sub_258A8F398(0, 0, v7, &unk_258B35800, v13);
 
-  v15.receiver = v11;
+  v15.receiver = selfCopy;
   v15.super_class = ObjectType;
   [(ShapeContainer *)&v15 dealloc];
 }
 
-- (_TtC14MentalHealthUI14ShapeContainer)initWithFrame:(CGRect)a3
+- (_TtC14MentalHealthUI14ShapeContainer)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC14MentalHealthUI14ShapeContainer_renderer) = 0;
   v9 = (self + OBJC_IVAR____TtC14MentalHealthUI14ShapeContainer_lastBounds);
@@ -66,7 +66,7 @@
   return [(ShapeContainer *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC14MentalHealthUI14ShapeContainer)initWithCoder:(id)a3
+- (_TtC14MentalHealthUI14ShapeContainer)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC14MentalHealthUI14ShapeContainer_renderer) = 0;
@@ -75,8 +75,8 @@
   v6[1] = 0u;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v7 = a3;
-  v8 = [(ShapeContainer *)&v10 initWithCoder:v7];
+  coderCopy = coder;
+  v8 = [(ShapeContainer *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

@@ -1,8 +1,8 @@
 @interface HKHorizontalFlowLayout
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
 - (HKHorizontalFlowLayout)init;
-- (void)setLeadingInset:(double)a3;
-- (void)setTrailingInset:(double)a3;
+- (void)setLeadingInset:(double)inset;
+- (void)setTrailingInset:(double)inset;
 @end
 
 @implementation HKHorizontalFlowLayout
@@ -23,32 +23,32 @@
   return v3;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  x = a4.x;
+  x = velocity.x;
   v31.receiver = self;
   v31.super_class = HKHorizontalFlowLayout;
-  [(HKHorizontalFlowLayout *)&v31 targetContentOffsetForProposedContentOffset:a3.x withScrollingVelocity:a3.y, a4.x, a4.y];
+  [(HKHorizontalFlowLayout *)&v31 targetContentOffsetForProposedContentOffset:offset.x withScrollingVelocity:offset.y, velocity.x, velocity.y];
   v7 = v6;
   v9 = v8;
   if (self->_snapsToItemBoundaries || self->_snapsToItemCenters)
   {
-    v10 = [(HKHorizontalFlowLayout *)self collectionView];
-    v11 = [v10 dataSource];
-    v12 = [v10 delegate];
+    collectionView = [(HKHorizontalFlowLayout *)self collectionView];
+    dataSource = [collectionView dataSource];
+    delegate = [collectionView delegate];
     if (objc_opt_respondsToSelector())
     {
       [(UICollectionViewFlowLayout *)self minimumInteritemSpacing];
       v14 = v13;
-      [v10 frame];
+      [collectionView frame];
       v16 = v15 + v15;
-      if ([v10 numberOfSections] >= 1)
+      if ([collectionView numberOfSections] >= 1)
       {
         v17 = 0;
         v18 = 0.0;
         do
         {
-          v19 = [v11 collectionView:v10 numberOfItemsInSection:v17];
+          v19 = [dataSource collectionView:collectionView numberOfItemsInSection:v17];
           if (v19 >= 1)
           {
             v20 = v19;
@@ -56,7 +56,7 @@
             while (1)
             {
               v22 = [MEMORY[0x1E696AC88] indexPathForItem:v21 inSection:v17];
-              [v12 collectionView:v10 layout:self sizeForItemAtIndexPath:v22];
+              [delegate collectionView:collectionView layout:self sizeForItemAtIndexPath:v22];
               v16 = v23;
 
               v24 = v18 + v16;
@@ -87,17 +87,17 @@ LABEL_19:
           ++v17;
         }
 
-        while (v17 < [v10 numberOfSections]);
+        while (v17 < [collectionView numberOfSections]);
       }
 
       if (self->_snapsToItemCenters)
       {
-        [v10 frame];
+        [collectionView frame];
         v7 = v7 + (v26 - v16) * -0.5;
-        [v10 contentInset];
+        [collectionView contentInset];
         if (v7 < -v27)
         {
-          [v10 contentInset];
+          [collectionView contentInset];
           v7 = -v28;
         }
       }
@@ -111,14 +111,14 @@ LABEL_19:
   return result;
 }
 
-- (void)setLeadingInset:(double)a3
+- (void)setLeadingInset:(double)inset
 {
   [(UICollectionViewFlowLayout *)self sectionInset];
 
   [(UICollectionViewFlowLayout *)self setSectionInset:?];
 }
 
-- (void)setTrailingInset:(double)a3
+- (void)setTrailingInset:(double)inset
 {
   [(UICollectionViewFlowLayout *)self sectionInset];
 

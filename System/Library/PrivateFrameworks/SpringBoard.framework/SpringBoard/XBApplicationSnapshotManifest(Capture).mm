@@ -9,42 +9,42 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [v8 configuration];
-  v12 = [v8 scene];
-  v13 = [v12 identifier];
+  configuration = [v8 configuration];
+  scene = [v8 scene];
+  identifier = [scene identifier];
 
-  if (v13)
+  if (identifier)
   {
-    v14 = [a1 createSnapshotWithGroupID:v13];
+    v14 = [self createSnapshotWithGroupID:identifier];
     v15 = [MEMORY[0x277D65680] normalizeSnapshotName:v9];
     [v14 setName:v15];
 
-    if ([v11 orientation] == 1)
+    if ([configuration orientation] == 1)
     {
       [v14 setInterfaceOrientation:1];
     }
 
     else
     {
-      v16 = [v11 settings];
-      [v14 setInterfaceOrientation:{objc_msgSend(v16, "interfaceOrientation")}];
+      settings = [configuration settings];
+      [v14 setInterfaceOrientation:{objc_msgSend(settings, "interfaceOrientation")}];
     }
 
-    [v11 frame];
+    [configuration frame];
     [v14 setReferenceSize:{v17, v18}];
-    v19 = [v11 settings];
-    [v19 frame];
+    settings2 = [configuration settings];
+    [settings2 frame];
     v21 = v20;
     v23 = v22;
-    v24 = [v11 settings];
-    v25 = [v24 displayConfiguration];
-    [v25 bounds];
+    settings3 = [configuration settings];
+    displayConfiguration = [settings3 displayConfiguration];
+    [displayConfiguration bounds];
     v28 = v23 == v27 && v21 == v26;
     [v14 setFullScreen:v28];
 
     [v14 setContentType:0];
-    v29 = [v11 expirationDate];
-    [v14 setExpirationDate:v29];
+    expirationDate = [configuration expirationDate];
+    [v14 setExpirationDate:expirationDate];
 
     [v14 setUserInterfaceStyle:XBGetUIUserInterfaceStyleForSceneSnapshot(v8)];
     v30 = XBGetCustomSafeAreaInsetsForSceneSnapshot(v8);

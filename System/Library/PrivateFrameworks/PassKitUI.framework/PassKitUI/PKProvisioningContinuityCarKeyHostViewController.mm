@@ -1,27 +1,27 @@
 @interface PKProvisioningContinuityCarKeyHostViewController
-- (PKProvisioningContinuityCarKeyHostViewController)initWithHandle:(id)a3 userInfo:(id)a4 parent:(id)a5;
-- (PKProvisioningContinuityCarKeyHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (PKProvisioningContinuityCarKeyHostViewController)initWithHandle:(id)handle userInfo:(id)info parent:(id)parent;
+- (PKProvisioningContinuityCarKeyHostViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKProvisioningContinuityCarKeyHostViewController
 
-- (PKProvisioningContinuityCarKeyHostViewController)initWithHandle:(id)a3 userInfo:(id)a4 parent:(id)a5
+- (PKProvisioningContinuityCarKeyHostViewController)initWithHandle:(id)handle userInfo:(id)info parent:(id)parent
 {
   v6 = sub_1BE052244();
-  v7 = a3;
+  handleCopy = handle;
   swift_unknownObjectRetain();
-  ProvisioningContinuityCarKeyHostViewController.init(handle:userInfo:parent:)(v7, v6);
+  ProvisioningContinuityCarKeyHostViewController.init(handle:userInfo:parent:)(handleCopy, v6);
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  ProvisioningContinuityCarKeyHostViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  ProvisioningContinuityCarKeyHostViewController.viewWillAppear(_:)(appear);
 }
 
-- (PKProvisioningContinuityCarKeyHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PKProvisioningContinuityCarKeyHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,14 +1,14 @@
 @interface AWDSpringBoardBreadcrumb
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasWasTapped:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasWasTapped:(BOOL)tapped;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSpringBoardBreadcrumb
@@ -22,9 +22,9 @@
   [(AWDSpringBoardBreadcrumb *)&v3 dealloc];
 }
 
-- (void)setHasWasTapped:(BOOL)a3
+- (void)setHasWasTapped:(BOOL)tapped
 {
-  if (a3)
+  if (tapped)
   {
     v3 = 2;
   }
@@ -46,35 +46,35 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_wasTapped), @"wasTapped"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_wasTapped), @"wasTapped"}];
   }
 
   type = self->_type;
   if (type)
   {
-    [v3 setObject:type forKey:@"type"];
+    [dictionary setObject:type forKey:@"type"];
   }
 
   entityID = self->_entityID;
   if (entityID)
   {
-    [v3 setObject:entityID forKey:@"entityID"];
+    [dictionary setObject:entityID forKey:@"entityID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -102,37 +102,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 36) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 36) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(a3 + 32) = self->_wasTapped;
-    *(a3 + 36) |= 2u;
+    *(to + 32) = self->_wasTapped;
+    *(to + 36) |= 2u;
   }
 
   if (self->_type)
   {
-    [a3 setType:?];
+    [to setType:?];
   }
 
   if (self->_entityID)
   {
 
-    [a3 setEntityID:?];
+    [to setEntityID:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -148,47 +148,47 @@
     *(v5 + 36) |= 2u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_type copyWithZone:a3];
-  *(v6 + 16) = [(NSString *)self->_entityID copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_type copyWithZone:zone];
+  *(v6 + 16) = [(NSString *)self->_entityID copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
-  v6 = *(a3 + 36);
+  v6 = *(equal + 36);
   if (*&self->_has)
   {
-    if ((*(a3 + 36) & 1) == 0 || self->_timestamp != *(a3 + 1))
+    if ((*(equal + 36) & 1) == 0 || self->_timestamp != *(equal + 1))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(a3 + 36))
+  else if (*(equal + 36))
   {
     goto LABEL_14;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 36) & 2) != 0)
+    if ((*(equal + 36) & 2) != 0)
     {
-      v9 = *(a3 + 32);
+      v9 = *(equal + 32);
       if (self->_wasTapped)
       {
-        if ((*(a3 + 32) & 1) == 0)
+        if ((*(equal + 32) & 1) == 0)
         {
           goto LABEL_14;
         }
       }
 
-      else if (*(a3 + 32))
+      else if (*(equal + 32))
       {
         goto LABEL_14;
       }
@@ -201,17 +201,17 @@ LABEL_14:
     return v5;
   }
 
-  if ((*(a3 + 36) & 2) != 0)
+  if ((*(equal + 36) & 2) != 0)
   {
     goto LABEL_14;
   }
 
 LABEL_9:
   type = self->_type;
-  if (!(type | *(a3 + 3)) || (v5 = [(NSString *)type isEqual:?]) != 0)
+  if (!(type | *(equal + 3)) || (v5 = [(NSString *)type isEqual:?]) != 0)
   {
     entityID = self->_entityID;
-    if (entityID | *(a3 + 2))
+    if (entityID | *(equal + 2))
     {
 
       LOBYTE(v5) = [(NSString *)entityID isEqual:?];
@@ -254,28 +254,28 @@ LABEL_6:
   return v5 ^ [(NSString *)self->_entityID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 36);
+  v5 = *(from + 36);
   if (v5)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 36);
+    v5 = *(from + 36);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_wasTapped = *(a3 + 32);
+    self->_wasTapped = *(from + 32);
     *&self->_has |= 2u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDSpringBoardBreadcrumb *)self setType:?];
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
 
     [(AWDSpringBoardBreadcrumb *)self setEntityID:?];

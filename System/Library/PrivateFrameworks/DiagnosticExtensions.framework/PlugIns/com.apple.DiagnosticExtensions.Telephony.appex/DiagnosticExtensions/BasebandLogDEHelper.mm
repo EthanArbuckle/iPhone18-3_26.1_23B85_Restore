@@ -4,19 +4,19 @@
 - (BOOL)checkifBasebandTraceEnabled;
 - (BOOL)checkifDefaultBasebandProfileInstalled;
 - (BOOL)disableBasebandLog;
-- (BOOL)enableBasebandLog:(id)a3;
+- (BOOL)enableBasebandLog:(id)log;
 - (BOOL)installDELoggingProfile;
 - (BOOL)isCompressionModeOff;
 - (BOOL)triggerBasebandBlindScanning;
 - (BOOL)triggerBasebandDiagnostics;
 - (BOOL)uninstallDELoggingProfile;
-- (BOOL)updateTraceProperties:(array)a3;
+- (BOOL)updateTraceProperties:(array)properties;
 - (BasebandLogDEHelper)init;
 - (id).cxx_construct;
-- (id)collectAttachments:(id)a3;
-- (id)dumpLogWithBasebandReset:(id)a3 :(id)a4;
-- (id)dumpTelephonyLogs:(id)a3 :(BOOL)a4 :(id)a5;
-- (id)previousDumpTimestamp:(id)a3;
+- (id)collectAttachments:(id)attachments;
+- (id)dumpLogWithBasebandReset:(id)reset :(id)a4;
+- (id)dumpTelephonyLogs:(id)logs :(BOOL)a4 :(id)a5;
+- (id)previousDumpTimestamp:(id)timestamp;
 - (unsigned)getAgeLimitForAttachment;
 - (unsigned)getBasebandLogHistorySize;
 - (void)dealloc;
@@ -366,12 +366,12 @@ LABEL_31:
   [(BasebandLogDEHelper *)&v5 dealloc];
 }
 
-- (id)previousDumpTimestamp:(id)a3
+- (id)previousDumpTimestamp:(id)timestamp
 {
-  v4 = a3;
-  v5 = [(BasebandLogDEHelper *)self getAgeLimitForAttachment];
+  timestampCopy = timestamp;
+  getAgeLimitForAttachment = [(BasebandLogDEHelper *)self getAgeLimitForAttachment];
   memset(__p, 170, sizeof(__p));
-  util::findLastLogDumpTimestamp(abm::trace::kSnapshotFolder, abm::trace::kLogDirPrefix, v5, 1, [v4 UTF8String], __p);
+  util::findLastLogDumpTimestamp(abm::trace::kSnapshotFolder, abm::trace::kLogDirPrefix, getAgeLimitForAttachment, 1, [timestampCopy UTF8String], __p);
   if ((SHIBYTE(__p[2]) & 0x80000000) == 0)
   {
     if (!HIBYTE(__p[2]))
@@ -405,13 +405,13 @@ LABEL_11:
   return v7;
 }
 
-- (id)collectAttachments:(id)a3
+- (id)collectAttachments:(id)attachments
 {
-  v155 = a3;
+  attachmentsCopy = attachments;
   v156 = objc_alloc_init(NSMutableArray);
   v158 = 0;
   v159 = 0uLL;
-  if ([v155 isEqualToString:@"BasebandSnapshotFolder"])
+  if ([attachmentsCopy isEqualToString:@"BasebandSnapshotFolder"])
   {
     if (SHIBYTE(v159) < 0)
     {
@@ -429,7 +429,7 @@ LABEL_11:
     goto LABEL_213;
   }
 
-  if ([v155 isEqualToString:@"Crash"])
+  if ([attachmentsCopy isEqualToString:@"Crash"])
   {
     v5 = abm::trace::kMobileCrashReporterFolder;
     v6 = v156;
@@ -924,8 +924,8 @@ LABEL_157:
                           v102 = __p[0];
                         }
 
-                        v103 = [NSString stringWithFormat:@"%s", v102];
-                        [v6 addObject:v103];
+                        v102 = [NSString stringWithFormat:@"%s", v102];
+                        [v6 addObject:v102];
 
                         if (SHIBYTE(__p[2]) < 0)
                         {
@@ -981,12 +981,12 @@ LABEL_48:
     sub_100005880();
   }
 
-  if ([v155 isEqualToString:@"basebandLogLastDumped"])
+  if ([attachmentsCopy isEqualToString:@"basebandLogLastDumped"])
   {
-    v12 = [(BasebandLogDEHelper *)self getAgeLimitForAttachment];
-    v13 = v12;
+    getAgeLimitForAttachment = [(BasebandLogDEHelper *)self getAgeLimitForAttachment];
+    v13 = getAgeLimitForAttachment;
     memset(&buf, 170, 24);
-    util::findLastLogDumpTimestamp(abm::trace::kSnapshotFolder, abm::trace::kLogDirPrefix, v12, 1, 0, &buf);
+    util::findLastLogDumpTimestamp(abm::trace::kSnapshotFolder, abm::trace::kLogDirPrefix, getAgeLimitForAttachment, 1, 0, &buf);
     if ((buf.st_gid & 0x80000000) == 0)
     {
       st_gid_high = HIBYTE(buf.st_gid);
@@ -1175,16 +1175,16 @@ LABEL_201:
     goto LABEL_194;
   }
 
-  if (![v155 length])
+  if (![attachmentsCopy length])
   {
     goto LABEL_213;
   }
 
   v168[23] = 2;
   strcpy(v168, ".*");
-  v22 = [v155 UTF8String];
-  v23 = strlen(v22);
-  v24 = std::string::append(v168, v22, v23);
+  uTF8String = [attachmentsCopy UTF8String];
+  v23 = strlen(uTF8String);
+  v24 = std::string::append(v168, uTF8String, v23);
   v25 = *&v24->__r_.__value_.__l.__data_;
   *&buf.st_uid = *(&v24->__r_.__value_.__l + 2);
   *&buf.st_dev = v25;
@@ -2645,14 +2645,14 @@ LABEL_48:
   if (v87)
   {
 LABEL_38:
-    v22 = [&v21[20] getOSLogHandler];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    getOSLogHandler = [&v21[20] getOSLogHandler];
+    if (os_log_type_enabled(getOSLogHandler, OS_LOG_TYPE_ERROR))
     {
       sub_10001F374(v92, &v87);
       v23 = v92[23] >= 0 ? v92 : *v92;
       *buf = 136315138;
       *&buf[4] = v23;
-      _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Check baseband boot state failed : %s", buf, 0xCu);
+      _os_log_error_impl(&_mh_execute_header, getOSLogHandler, OS_LOG_TYPE_ERROR, "Check baseband boot state failed : %s", buf, 0xCu);
       if ((v92[23] & 0x80000000) != 0)
       {
         operator delete(*v92);
@@ -3014,14 +3014,14 @@ LABEL_148:
                     if (v87)
                     {
 LABEL_149:
-                      v75 = [(__objc2_class_ro *)v74 getOSLogHandler];
-                      if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
+                      getOSLogHandler2 = [(__objc2_class_ro *)v74 getOSLogHandler];
+                      if (os_log_type_enabled(getOSLogHandler2, OS_LOG_TYPE_ERROR))
                       {
                         sub_10001F374(v92, &v87);
                         v76 = v92[23] >= 0 ? v92 : *v92;
                         *buf = 136315138;
                         *&buf[4] = v76;
-                        _os_log_error_impl(&_mh_execute_header, v75, OS_LOG_TYPE_ERROR, "Baseband soft-reset failed : %s", buf, 0xCu);
+                        _os_log_error_impl(&_mh_execute_header, getOSLogHandler2, OS_LOG_TYPE_ERROR, "Baseband soft-reset failed : %s", buf, 0xCu);
                         if ((v92[23] & 0x80000000) != 0)
                         {
                           operator delete(*v92);
@@ -3032,11 +3032,11 @@ LABEL_149:
                     }
 
 LABEL_156:
-                    v77 = [(__objc2_class_ro *)v74 getOSLogHandler];
-                    if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
+                    getOSLogHandler3 = [(__objc2_class_ro *)v74 getOSLogHandler];
+                    if (os_log_type_enabled(getOSLogHandler3, OS_LOG_TYPE_DEFAULT))
                     {
                       *v92 = 0;
-                      _os_log_impl(&_mh_execute_header, v77, OS_LOG_TYPE_DEFAULT, "Baseband soft-reset success", v92, 2u);
+                      _os_log_impl(&_mh_execute_header, getOSLogHandler3, OS_LOG_TYPE_DEFAULT, "Baseband soft-reset success", v92, 2u);
                     }
 
 LABEL_158:
@@ -3788,13 +3788,13 @@ LABEL_35:
   return v23;
 }
 
-- (id)dumpTelephonyLogs:(id)a3 :(BOOL)a4 :(id)a5
+- (id)dumpTelephonyLogs:(id)logs :(BOOL)a4 :(id)a5
 {
   v6 = a4;
-  v78 = a3;
+  logsCopy = logs;
   v79 = a5;
   v8 = xpc_dictionary_create(0, 0, 0);
-  v9 = v78;
+  v9 = logsCopy;
   if (v8 || (v8 = xpc_null_create()) != 0)
   {
     if (xpc_get_type(v8) == &_xpc_type_dictionary)
@@ -3905,8 +3905,8 @@ LABEL_23:
   {
     if ([(BasebandLogDEHelper *)self isCompressionModeOff])
     {
-      v19 = [(BasebandLogDEHelper *)self getBasebandLogHistorySize];
-      if (v19 <= 0x200)
+      getBasebandLogHistorySize = [(BasebandLogDEHelper *)self getBasebandLogHistorySize];
+      if (getBasebandLogHistorySize <= 0x200)
       {
         v20 = 1;
       }
@@ -3934,7 +3934,7 @@ LABEL_23:
         LODWORD(buf.__r_.__value_.__l.__data_) = 136315394;
         *(buf.__r_.__value_.__r.__words + 4) = v24;
         WORD2(buf.__r_.__value_.__r.__words[1]) = 1024;
-        *(&buf.__r_.__value_.__r.__words[1] + 6) = v19;
+        *(&buf.__r_.__value_.__r.__words[1] + 6) = getBasebandLogHistorySize;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Setting compression to %s for log dump based on baseband history size [%d]", &buf, 0x12u);
         if (SHIBYTE(__p[2]) < 0)
         {
@@ -3973,8 +3973,8 @@ LABEL_23:
   xpc_release(v29);
   memset(__p, 170, 24);
   v30 = v9;
-  v31 = [v9 UTF8String];
-  v32 = strlen(v31);
+  uTF8String = [v9 UTF8String];
+  v32 = strlen(uTF8String);
   if (v32 > 0x7FFFFFFFFFFFFFF7)
   {
     sub_100005880();
@@ -4016,7 +4016,7 @@ LABEL_23:
     }
   }
 
-  memmove(p_dst, v31, v33);
+  memmove(p_dst, uTF8String, v33);
   p_dst->__r_.__value_.__s.__data_[v33] = 0;
   size = SHIBYTE(__dst.__r_.__value_.__r.__words[2]);
   if ((SHIBYTE(__dst.__r_.__value_.__r.__words[2]) & 0x8000000000000000) == 0)
@@ -4123,7 +4123,7 @@ LABEL_70:
   __dst.__r_.__value_.__r.__words[2] = v42 | 0x8000000000000000;
   __dst.__r_.__value_.__r.__words[0] = v45;
   v46 = (v45 + v36);
-  v9 = v78;
+  v9 = logsCopy;
 LABEL_80:
   *v46 = 0;
   buf = __dst;
@@ -4379,9 +4379,9 @@ LABEL_137:
   return v76;
 }
 
-- (id)dumpLogWithBasebandReset:(id)a3 :(id)a4
+- (id)dumpLogWithBasebandReset:(id)reset :(id)a4
 {
-  v6 = a3;
+  resetCopy = reset;
   v69 = a4;
   Timestamp::Timestamp(&v74);
   Timestamp::asString();
@@ -4490,9 +4490,9 @@ LABEL_137:
   xpc_release(v17);
   xpc_release(v18);
   memset(__p, 170, 24);
-  v19 = v6;
-  v20 = [v6 UTF8String];
-  v21 = strlen(v20);
+  v19 = resetCopy;
+  uTF8String = [resetCopy UTF8String];
+  v21 = strlen(uTF8String);
   if (v21 > 0x7FFFFFFFFFFFFFF7)
   {
     sub_100005880();
@@ -4534,7 +4534,7 @@ LABEL_137:
     }
   }
 
-  memmove(p_dst, v20, v22);
+  memmove(p_dst, uTF8String, v22);
   p_dst->__r_.__value_.__s.__data_[v22] = 0;
   size = SHIBYTE(__dst.__r_.__value_.__r.__words[2]);
   if ((SHIBYTE(__dst.__r_.__value_.__r.__words[2]) & 0x8000000000000000) == 0)
@@ -4542,7 +4542,7 @@ LABEL_137:
 LABEL_33:
     if (size - 21 < 2)
     {
-      v25 = v6;
+      v25 = resetCopy;
       v26 = size + 2;
       v27 = &__dst;
       v28 = 22;
@@ -4619,7 +4619,7 @@ LABEL_60:
   }
 
   v27 = __dst.__r_.__value_.__r.__words[0];
-  v25 = v6;
+  v25 = resetCopy;
   if (v28 <= 0x3FFFFFFFFFFFFFF2)
   {
     goto LABEL_43;
@@ -4645,7 +4645,7 @@ LABEL_52:
   __dst.__r_.__value_.__r.__words[2] = v33 | 0x8000000000000000;
   __dst.__r_.__value_.__r.__words[0] = v36;
   v37 = (v36 + v26);
-  v6 = v25;
+  resetCopy = v25;
   v30 = v69;
 LABEL_62:
   *v37 = 0;
@@ -5617,7 +5617,7 @@ LABEL_17:
   return v13 == 0;
 }
 
-- (BOOL)updateTraceProperties:(array)a3
+- (BOOL)updateTraceProperties:(array)properties
 {
   if (!self->fManager.__ptr_)
   {
@@ -5634,9 +5634,9 @@ LABEL_8:
     return v10 & 1;
   }
 
-  fObj = a3.var0.fObj;
-  v4 = self;
-  type = xpc_get_type(*a3.var0.fObj);
+  fObj = properties.var0.fObj;
+  selfCopy = self;
+  type = xpc_get_type(*properties.var0.fObj);
   v6 = &_xpc_type_array;
   v7 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -5797,8 +5797,8 @@ LABEL_39:
       *(&v29 + 1) = 0xAAAAAAAAAAAAAAAALL;
       *buf = v29;
       v51 = v29;
-      cntrl = v4->fManager.__cntrl_;
-      ptr = v4->fManager.__ptr_;
+      cntrl = selfCopy->fManager.__cntrl_;
+      ptr = selfCopy->fManager.__ptr_;
       v49 = cntrl;
       if (cntrl)
       {
@@ -5816,7 +5816,7 @@ LABEL_39:
       {
         v34 = fObj;
         v35 = v15;
-        v36 = v4;
+        v36 = selfCopy;
         v37 = v6;
         if ((v31 | 7) == 0x17)
         {
@@ -5833,7 +5833,7 @@ LABEL_39:
         v47 = v38 | 0x8000000000000000;
         __dst[0] = v33;
         v6 = v37;
-        v4 = v36;
+        selfCopy = v36;
         v15 = v35;
         fObj = v34;
         v12 = v42;
@@ -5938,11 +5938,11 @@ LABEL_7:
   return v10 & 1;
 }
 
-- (BOOL)enableBasebandLog:(id)a3
+- (BOOL)enableBasebandLog:(id)log
 {
-  v4 = a3;
-  v5 = [v4 UTF8String];
-  v6 = strlen(v5);
+  logCopy = log;
+  uTF8String = [logCopy UTF8String];
+  v6 = strlen(uTF8String);
   if (v6 >= 0x7FFFFFFFFFFFFFF8)
   {
     sub_100005880();
@@ -5977,7 +5977,7 @@ LABEL_7:
     }
   }
 
-  memmove(v8, v5, v7);
+  memmove(v8, uTF8String, v7);
 LABEL_10:
   *(v7 + v8) = 0;
   util::readPlistToCFDictionary(__dst, cf);

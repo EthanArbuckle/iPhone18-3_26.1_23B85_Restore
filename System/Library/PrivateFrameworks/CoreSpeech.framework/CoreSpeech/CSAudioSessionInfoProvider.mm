@@ -1,20 +1,20 @@
 @interface CSAudioSessionInfoProvider
 + (id)sharedInstance;
 - (CSAudioSessionInfoProvider)init;
-- (unsigned)audioSessionIdForDeviceId:(id)a3;
-- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)a3;
-- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)a3;
-- (void)_audioRouteChanged:(id)a3;
+- (unsigned)audioSessionIdForDeviceId:(id)id;
+- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)crash;
+- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)restart;
+- (void)_audioRouteChanged:(id)changed;
 - (void)_deregisterAudioSessionNotifications;
-- (void)_handleInterruption:(id)a3;
+- (void)_handleInterruption:(id)interruption;
 - (void)_registerAudioRouteChangeNotification;
 - (void)_registerAudioSessionNotifications;
 - (void)_registerInterruptionNotification;
 - (void)_startMonitoring;
 - (void)_stopMonitoring;
 - (void)dealloc;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CSAudioSessionInfoProvider
@@ -40,31 +40,31 @@
   [(CSAudioSessionInfoProvider *)self _registerAudioRouteChangeNotification];
 }
 
-- (void)_audioRouteChanged:(id)a3
+- (void)_audioRouteChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   sessionInfoQueue = self->_sessionInfoQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100026058;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   dispatch_async(sessionInfoQueue, v7);
 }
 
-- (void)_handleInterruption:(id)a3
+- (void)_handleInterruption:(id)interruption
 {
-  v4 = a3;
+  interruptionCopy = interruption;
   sessionInfoQueue = self->_sessionInfoQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000262C4;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = interruptionCopy;
+  v6 = interruptionCopy;
   dispatch_async(sessionInfoQueue, v7);
 }
 
@@ -120,7 +120,7 @@
   [(CSAudioSessionInfoProvider *)self _registerAudioSessionNotifications];
 }
 
-- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)a3
+- (void)CSAudioServerCrashMonitorDidReceiveServerRestart:(id)restart
 {
   sessionInfoQueue = self->_sessionInfoQueue;
   block[0] = _NSConcreteStackBlock;
@@ -131,7 +131,7 @@
   dispatch_async(sessionInfoQueue, block);
 }
 
-- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)a3
+- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)crash
 {
   sessionInfoQueue = self->_sessionInfoQueue;
   block[0] = _NSConcreteStackBlock;
@@ -142,23 +142,23 @@
   dispatch_async(sessionInfoQueue, block);
 }
 
-- (unsigned)audioSessionIdForDeviceId:(id)a3
+- (unsigned)audioSessionIdForDeviceId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = +[CSUtils supportRemoraVoiceTrigger];
-  if (v3 && v4)
+  if (idCopy && v4)
   {
-    v5 = [CSAudioRecordContext contextForRemoraVoiceTriggerWithDeviceId:v3];
-    v6 = [v5 avvcContextSettings];
+    v5 = [CSAudioRecordContext contextForRemoraVoiceTriggerWithDeviceId:idCopy];
+    avvcContextSettings = [v5 avvcContextSettings];
 
     v7 = +[AVVCSessionFactory sharedInstance];
     v15 = 0;
-    v8 = [v7 sessionForContext:v6 error:&v15];
+    v8 = [v7 sessionForContext:avvcContextSettings error:&v15];
     v9 = v15;
 
     if (v8)
     {
-      v10 = [v8 opaqueSessionID];
+      opaqueSessionID = [v8 opaqueSessionID];
     }
 
     else
@@ -167,32 +167,32 @@
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
       {
         v13 = v11;
-        v14 = [v9 localizedDescription];
+        localizedDescription = [v9 localizedDescription];
         *buf = 136315394;
         v17 = "[CSAudioSessionInfoProvider audioSessionIdForDeviceId:]";
         v18 = 2114;
-        v19 = v14;
+        v19 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s Session Query Failed : %{public}@", buf, 0x16u);
       }
 
-      v10 = 0;
+      opaqueSessionID = 0;
     }
   }
 
   else
   {
-    v6 = +[AVAudioSession sharedInstance];
-    v10 = [v6 opaqueSessionID];
+    avvcContextSettings = +[AVAudioSession sharedInstance];
+    opaqueSessionID = [avvcContextSettings opaqueSessionID];
   }
 
-  return v10;
+  return opaqueSessionID;
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     sessionInfoQueue = self->_sessionInfoQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -200,16 +200,16 @@
     v7[2] = sub_100026DC8;
     v7[3] = &unk_100253C48;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(sessionInfoQueue, v7);
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     sessionInfoQueue = self->_sessionInfoQueue;
     v7[0] = _NSConcreteStackBlock;
@@ -217,7 +217,7 @@
     v7[2] = sub_100026ECC;
     v7[3] = &unk_100253C48;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(sessionInfoQueue, v7);
   }
 }

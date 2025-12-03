@@ -1,43 +1,43 @@
 @interface ANAnnounce
-- (ANAnnounce)initWithEndpointIdentifier:(id)a3;
+- (ANAnnounce)initWithEndpointIdentifier:(id)identifier;
 - (ANAnnounceDelegate)delegate;
-- (BOOL)isAnnounceEnabledForAnyAccessoryInHome:(id)a3;
-- (BOOL)isAnnounceEnabledForAnyAccessoryOrUserInHome:(id)a3;
-- (BOOL)isEndpointWithUUID:(id)a3 inRoomWithName:(id)a4;
-- (BOOL)isLocalDeviceInRoom:(id)a3;
+- (BOOL)isAnnounceEnabledForAnyAccessoryInHome:(id)home;
+- (BOOL)isAnnounceEnabledForAnyAccessoryOrUserInHome:(id)home;
+- (BOOL)isEndpointWithUUID:(id)d inRoomWithName:(id)name;
+- (BOOL)isLocalDeviceInRoom:(id)room;
 - (NSArray)receivedAnnouncements;
 - (NSArray)unplayedAnnouncements;
-- (id)announcementForID:(id)a3;
-- (id)contextFromAnnouncement:(id)a3;
-- (id)homeNamesForContext:(id)a3;
+- (id)announcementForID:(id)d;
+- (id)contextFromAnnouncement:(id)announcement;
+- (id)homeNamesForContext:(id)context;
 - (id)receivedAnnouncementIDs;
-- (void)_sendRequestLegacy:(id)a3 completion:(id)a4;
-- (void)announcementForID:(id)a3 reply:(id)a4;
-- (void)broadcastReply:(id)a3 completion:(id)a4;
-- (void)broadcastReply:(id)a3 forAnnouncement:(id)a4 completion:(id)a5;
-- (void)broadcastReply:(id)a3 forAnnouncementID:(id)a4 completion:(id)a5;
+- (void)_sendRequestLegacy:(id)legacy completion:(id)completion;
+- (void)announcementForID:(id)d reply:(id)reply;
+- (void)broadcastReply:(id)reply completion:(id)completion;
+- (void)broadcastReply:(id)reply forAnnouncement:(id)announcement completion:(id)completion;
+- (void)broadcastReply:(id)reply forAnnouncementID:(id)d completion:(id)completion;
 - (void)dealloc;
-- (void)getReceivedAnnouncementsWithCompletionHandler:(id)a3;
-- (void)getScanningDeviceCandidates:(id)a3;
+- (void)getReceivedAnnouncementsWithCompletionHandler:(id)handler;
+- (void)getScanningDeviceCandidates:(id)candidates;
 - (void)invalidate;
-- (void)lastPlayedAnnouncementInfo:(id)a3;
-- (void)localParticipant:(id)a3;
-- (void)mockAnnouncement:(id)a3 forHomeWithName:(id)a4 playbackDeadline:(id)a5 completion:(id)a6;
-- (void)prewarmWithHandler:(id)a3;
-- (void)receivedAnnouncementIDs:(id)a3;
-- (void)sendAnnouncement:(id)a3 toRoomsWithIDs:(id)a4 andZonesWithIDs:(id)a5 inHomeWithID:(id)a6 completion:(id)a7;
-- (void)sendAnnouncement:(id)a3 toRoomsWithNames:(id)a4 andZonesWithNames:(id)a5 inHomeWithName:(id)a6 completion:(id)a7;
-- (void)sendReply:(id)a3 forAnnouncement:(id)a4 completion:(id)a5;
-- (void)sendRequest:(id)a3 completion:(id)a4;
-- (void)validateDestinationFromContext:(id)a3 completion:(id)a4;
+- (void)lastPlayedAnnouncementInfo:(id)info;
+- (void)localParticipant:(id)participant;
+- (void)mockAnnouncement:(id)announcement forHomeWithName:(id)name playbackDeadline:(id)deadline completion:(id)completion;
+- (void)prewarmWithHandler:(id)handler;
+- (void)receivedAnnouncementIDs:(id)ds;
+- (void)sendAnnouncement:(id)announcement toRoomsWithIDs:(id)ds andZonesWithIDs:(id)iDs inHomeWithID:(id)d completion:(id)completion;
+- (void)sendAnnouncement:(id)announcement toRoomsWithNames:(id)names andZonesWithNames:(id)withNames inHomeWithName:(id)name completion:(id)completion;
+- (void)sendReply:(id)reply forAnnouncement:(id)announcement completion:(id)completion;
+- (void)sendRequest:(id)request completion:(id)completion;
+- (void)validateDestinationFromContext:(id)context completion:(id)completion;
 @end
 
 @implementation ANAnnounce
 
-- (ANAnnounce)initWithEndpointIdentifier:(id)a3
+- (ANAnnounce)initWithEndpointIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = ANAnnounce;
   v6 = [(ANAnnounce *)&v22 init];
@@ -53,7 +53,7 @@
       _os_log_impl(&dword_2237C8000, v7, OS_LOG_TYPE_DEFAULT, "%@Creating Connection to %@", buf, 0x16u);
     }
 
-    objc_storeStrong(&v6->_endpointIdentifier, a3);
+    objc_storeStrong(&v6->_endpointIdentifier, identifier);
     v8 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.announced.server" options:4096];
     connection = v6->_connection;
     v6->_connection = v8;
@@ -159,20 +159,20 @@ void __41__ANAnnounce_initWithEndpointIdentifier___block_invoke_91(uint64_t a1)
 - (void)invalidate
 {
   objc_storeWeak(&self->_delegate, 0);
-  v3 = [(ANAnnounce *)self connection];
-  [v3 invalidate];
+  connection = [(ANAnnounce *)self connection];
+  [connection invalidate];
 }
 
-- (void)localParticipant:(id)a3
+- (void)localParticipant:(id)participant
 {
-  v4 = a3;
+  participantCopy = participant;
   connection = self->_connection;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __31__ANAnnounce_localParticipant___block_invoke;
   v8[3] = &unk_2784E1F20;
-  v9 = v4;
-  v6 = v4;
+  v9 = participantCopy;
+  v6 = participantCopy;
   v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v8];
   [v7 localParticipant:v6];
 }
@@ -200,18 +200,18 @@ void __31__ANAnnounce_localParticipant___block_invoke(uint64_t a1, void *a2)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendRequest:(id)a3 completion:(id)a4
+- (void)sendRequest:(id)request completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = ANLogHandleAnnounce();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v19 = &stru_2836DAA20;
     v20 = 2112;
-    v21 = v6;
+    v21 = requestCopy;
     _os_log_impl(&dword_2237C8000, v8, OS_LOG_TYPE_DEFAULT, "%@Sending Request: %@", buf, 0x16u);
   }
 
@@ -220,7 +220,7 @@ void __31__ANAnnounce_localParticipant___block_invoke(uint64_t a1, void *a2)
   v16[1] = 3221225472;
   v16[2] = __37__ANAnnounce_sendRequest_completion___block_invoke;
   v16[3] = &unk_2784E1F20;
-  v10 = v7;
+  v10 = completionCopy;
   v17 = v10;
   v11 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v16];
   v14[0] = MEMORY[0x277D85DD0];
@@ -229,7 +229,7 @@ void __31__ANAnnounce_localParticipant___block_invoke(uint64_t a1, void *a2)
   v14[3] = &unk_2784E2138;
   v15 = v10;
   v12 = v10;
-  [v11 sendRequest:v6 completion:v14];
+  [v11 sendRequest:requestCopy completion:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -288,87 +288,87 @@ void __37__ANAnnounce_sendRequest_completion___block_invoke_96(uint64_t a1, void
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendAnnouncement:(id)a3 toRoomsWithNames:(id)a4 andZonesWithNames:(id)a5 inHomeWithName:(id)a6 completion:(id)a7
+- (void)sendAnnouncement:(id)announcement toRoomsWithNames:(id)names andZonesWithNames:(id)withNames inHomeWithName:(id)name completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v18 = [ANAnnouncementContent contentWithAudioFileURL:a3];
-  v16 = [ANAnnouncementDestination destinationWithHomeName:v13 zoneNames:v14 roomNames:v15];
+  completionCopy = completion;
+  nameCopy = name;
+  withNamesCopy = withNames;
+  namesCopy = names;
+  v18 = [ANAnnouncementContent contentWithAudioFileURL:announcement];
+  v16 = [ANAnnouncementDestination destinationWithHomeName:nameCopy zoneNames:withNamesCopy roomNames:namesCopy];
 
   v17 = [ANAnnouncementRequest requestWithContent:v18 destination:v16];
-  [(ANAnnounce *)self _sendRequestLegacy:v17 completion:v12];
+  [(ANAnnounce *)self _sendRequestLegacy:v17 completion:completionCopy];
 }
 
-- (void)sendAnnouncement:(id)a3 toRoomsWithIDs:(id)a4 andZonesWithIDs:(id)a5 inHomeWithID:(id)a6 completion:(id)a7
+- (void)sendAnnouncement:(id)announcement toRoomsWithIDs:(id)ds andZonesWithIDs:(id)iDs inHomeWithID:(id)d completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v18 = [ANAnnouncementContent contentWithAudioFileURL:a3];
-  v16 = [ANAnnouncementDestination destinationWithHomeIdentifier:v13 zoneIdentifiers:v14 roomIdentifiers:v15];
+  completionCopy = completion;
+  dCopy = d;
+  iDsCopy = iDs;
+  dsCopy = ds;
+  v18 = [ANAnnouncementContent contentWithAudioFileURL:announcement];
+  v16 = [ANAnnouncementDestination destinationWithHomeIdentifier:dCopy zoneIdentifiers:iDsCopy roomIdentifiers:dsCopy];
 
   v17 = [ANAnnouncementRequest requestWithContent:v18 destination:v16];
-  [(ANAnnounce *)self _sendRequestLegacy:v17 completion:v12];
+  [(ANAnnounce *)self _sendRequestLegacy:v17 completion:completionCopy];
 }
 
-- (void)sendReply:(id)a3 forAnnouncement:(id)a4 completion:(id)a5
+- (void)sendReply:(id)reply forAnnouncement:(id)announcement completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v13 = [ANAnnouncementContent contentWithAudioFileURL:a3];
-  v10 = [v9 identifier];
+  completionCopy = completion;
+  announcementCopy = announcement;
+  v13 = [ANAnnouncementContent contentWithAudioFileURL:reply];
+  identifier = [announcementCopy identifier];
 
-  v11 = [ANAnnouncementDestination destinationWithReplyToAnnouncementIdentifier:v10];
+  v11 = [ANAnnouncementDestination destinationWithReplyToAnnouncementIdentifier:identifier];
 
   [v11 setReplyToSender:1];
   v12 = [ANAnnouncementRequest requestWithContent:v13 destination:v11];
-  [(ANAnnounce *)self _sendRequestLegacy:v12 completion:v8];
+  [(ANAnnounce *)self _sendRequestLegacy:v12 completion:completionCopy];
 }
 
-- (void)broadcastReply:(id)a3 forAnnouncement:(id)a4 completion:(id)a5
+- (void)broadcastReply:(id)reply forAnnouncement:(id)announcement completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a4 identifier];
-  [(ANAnnounce *)self broadcastReply:v9 forAnnouncementID:v10 completion:v8];
+  completionCopy = completion;
+  replyCopy = reply;
+  identifier = [announcement identifier];
+  [(ANAnnounce *)self broadcastReply:replyCopy forAnnouncementID:identifier completion:completionCopy];
 }
 
-- (void)broadcastReply:(id)a3 forAnnouncementID:(id)a4 completion:(id)a5
+- (void)broadcastReply:(id)reply forAnnouncementID:(id)d completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v12 = [ANAnnouncementContent contentWithAudioFileURL:a3];
-  v10 = [ANAnnouncementDestination destinationWithReplyToAnnouncementIdentifier:v9];
+  completionCopy = completion;
+  dCopy = d;
+  v12 = [ANAnnouncementContent contentWithAudioFileURL:reply];
+  v10 = [ANAnnouncementDestination destinationWithReplyToAnnouncementIdentifier:dCopy];
 
   v11 = [ANAnnouncementRequest requestWithContent:v12 destination:v10];
-  [(ANAnnounce *)self _sendRequestLegacy:v11 completion:v8];
+  [(ANAnnounce *)self _sendRequestLegacy:v11 completion:completionCopy];
 }
 
-- (void)broadcastReply:(id)a3 completion:(id)a4
+- (void)broadcastReply:(id)reply completion:(id)completion
 {
-  v6 = a4;
-  v9 = [ANAnnouncementContent contentWithAudioFileURL:a3];
+  completionCopy = completion;
+  v9 = [ANAnnouncementContent contentWithAudioFileURL:reply];
   v7 = [ANAnnouncementDestination destinationWithReplyToAnnouncementIdentifier:0];
   v8 = [ANAnnouncementRequest requestWithContent:v9 destination:v7];
-  [(ANAnnounce *)self _sendRequestLegacy:v8 completion:v6];
+  [(ANAnnounce *)self _sendRequestLegacy:v8 completion:completionCopy];
 }
 
-- (void)receivedAnnouncementIDs:(id)a3
+- (void)receivedAnnouncementIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   connection = self->_connection;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __38__ANAnnounce_receivedAnnouncementIDs___block_invoke;
   v9[3] = &unk_2784E1F20;
-  v10 = v4;
-  v6 = v4;
+  v10 = dsCopy;
+  v6 = dsCopy;
   v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v9];
-  v8 = [(ANAnnounce *)self endpointIdentifier];
-  [v7 receivedAnnouncementIdentifiersForEndpointID:v8 reply:v6];
+  endpointIdentifier = [(ANAnnounce *)self endpointIdentifier];
+  [v7 receivedAnnouncementIdentifiersForEndpointID:endpointIdentifier reply:v6];
 }
 
 void __38__ANAnnounce_receivedAnnouncementIDs___block_invoke(uint64_t a1, void *a2)
@@ -406,13 +406,13 @@ void __38__ANAnnounce_receivedAnnouncementIDs___block_invoke(uint64_t a1, void *
   v9[3] = &unk_2784E2160;
   v9[4] = &v10;
   v4 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v9];
-  v5 = [(ANAnnounce *)self endpointIdentifier];
+  endpointIdentifier = [(ANAnnounce *)self endpointIdentifier];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __37__ANAnnounce_receivedAnnouncementIDs__block_invoke_101;
   v8[3] = &unk_2784E2188;
   v8[4] = &v10;
-  [v4 receivedAnnouncementIdentifiersForEndpointID:v5 reply:v8];
+  [v4 receivedAnnouncementIdentifiersForEndpointID:endpointIdentifier reply:v8];
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -443,20 +443,20 @@ void __37__ANAnnounce_receivedAnnouncementIDs__block_invoke(uint64_t a1, void *a
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)announcementForID:(id)a3 reply:(id)a4
+- (void)announcementForID:(id)d reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   connection = self->_connection;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __38__ANAnnounce_announcementForID_reply___block_invoke;
   v12[3] = &unk_2784E1F20;
-  v13 = v6;
-  v8 = v6;
-  v9 = a3;
+  v13 = replyCopy;
+  v8 = replyCopy;
+  dCopy = d;
   v10 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v12];
-  v11 = [(ANAnnounce *)self endpointIdentifier];
-  [v10 announcementForID:v9 endpointID:v11 reply:v8];
+  endpointIdentifier = [(ANAnnounce *)self endpointIdentifier];
+  [v10 announcementForID:dCopy endpointID:endpointIdentifier reply:v8];
 }
 
 void __38__ANAnnounce_announcementForID_reply___block_invoke(uint64_t a1, void *a2)
@@ -479,9 +479,9 @@ void __38__ANAnnounce_announcementForID_reply___block_invoke(uint64_t a1, void *
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)announcementForID:(id)a3
+- (id)announcementForID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -489,13 +489,13 @@ void __38__ANAnnounce_announcementForID_reply___block_invoke(uint64_t a1, void *
   v14 = __Block_byref_object_dispose__0;
   v15 = 0;
   v5 = [(NSXPCConnection *)self->_connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_2];
-  v6 = [(ANAnnounce *)self endpointIdentifier];
+  endpointIdentifier = [(ANAnnounce *)self endpointIdentifier];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __32__ANAnnounce_announcementForID___block_invoke_103;
   v9[3] = &unk_2784E21B0;
   v9[4] = &v10;
-  [v5 announcementForID:v4 endpointID:v6 reply:v9];
+  [v5 announcementForID:dCopy endpointID:endpointIdentifier reply:v9];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -522,19 +522,19 @@ void __32__ANAnnounce_announcementForID___block_invoke(uint64_t a1, void *a2)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getReceivedAnnouncementsWithCompletionHandler:(id)a3
+- (void)getReceivedAnnouncementsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   connection = self->_connection;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__ANAnnounce_getReceivedAnnouncementsWithCompletionHandler___block_invoke;
   v9[3] = &unk_2784E1F20;
-  v10 = v4;
-  v6 = v4;
+  v10 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v9];
-  v8 = [(ANAnnounce *)self endpointIdentifier];
-  [v7 getReceivedAnnouncementsForEndpointID:v8 completionHandler:v6];
+  endpointIdentifier = [(ANAnnounce *)self endpointIdentifier];
+  [v7 getReceivedAnnouncementsForEndpointID:endpointIdentifier completionHandler:v6];
 }
 
 void __60__ANAnnounce_getReceivedAnnouncementsWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -572,13 +572,13 @@ void __60__ANAnnounce_getReceivedAnnouncementsWithCompletionHandler___block_invo
   v9[3] = &unk_2784E2160;
   v9[4] = &v10;
   v4 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v9];
-  v5 = [(ANAnnounce *)self endpointIdentifier];
+  endpointIdentifier = [(ANAnnounce *)self endpointIdentifier];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __35__ANAnnounce_receivedAnnouncements__block_invoke_105;
   v8[3] = &unk_2784E2188;
   v8[4] = &v10;
-  [v4 getReceivedAnnouncementsForEndpointID:v5 completionHandler:v8];
+  [v4 getReceivedAnnouncementsForEndpointID:endpointIdentifier completionHandler:v8];
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -624,13 +624,13 @@ void __35__ANAnnounce_receivedAnnouncements__block_invoke(uint64_t a1, void *a2)
   v9[3] = &unk_2784E2160;
   v9[4] = &v10;
   v4 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v9];
-  v5 = [(ANAnnounce *)self endpointIdentifier];
+  endpointIdentifier = [(ANAnnounce *)self endpointIdentifier];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __35__ANAnnounce_unplayedAnnouncements__block_invoke_106;
   v8[3] = &unk_2784E2188;
   v8[4] = &v10;
-  [v4 getUnplayedAnnouncementsForEndpointID:v5 completionHandler:v8];
+  [v4 getUnplayedAnnouncementsForEndpointID:endpointIdentifier completionHandler:v8];
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -661,19 +661,19 @@ void __35__ANAnnounce_unplayedAnnouncements__block_invoke(uint64_t a1, void *a2)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mockAnnouncement:(id)a3 forHomeWithName:(id)a4 playbackDeadline:(id)a5 completion:(id)a6
+- (void)mockAnnouncement:(id)announcement forHomeWithName:(id)name playbackDeadline:(id)deadline completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   connection = self->_connection;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __75__ANAnnounce_mockAnnouncement_forHomeWithName_playbackDeadline_completion___block_invoke;
   v20[3] = &unk_2784E1F20;
-  v12 = v10;
+  v12 = completionCopy;
   v21 = v12;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  deadlineCopy = deadline;
+  nameCopy = name;
+  announcementCopy = announcement;
   v16 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v20];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -681,7 +681,7 @@ void __35__ANAnnounce_unplayedAnnouncements__block_invoke(uint64_t a1, void *a2)
   v18[3] = &unk_2784E21D8;
   v19 = v12;
   v17 = v12;
-  [v16 mockAnnouncement:v15 forHomeWithName:v14 playbackDeadline:v13 completion:v18];
+  [v16 mockAnnouncement:announcementCopy forHomeWithName:nameCopy playbackDeadline:deadlineCopy completion:v18];
 }
 
 void __75__ANAnnounce_mockAnnouncement_forHomeWithName_playbackDeadline_completion___block_invoke(uint64_t a1, void *a2)
@@ -738,16 +738,16 @@ void __75__ANAnnounce_mockAnnouncement_forHomeWithName_playbackDeadline_completi
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getScanningDeviceCandidates:(id)a3
+- (void)getScanningDeviceCandidates:(id)candidates
 {
-  v4 = a3;
+  candidatesCopy = candidates;
   connection = self->_connection;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__ANAnnounce_getScanningDeviceCandidates___block_invoke;
   v8[3] = &unk_2784E1F20;
-  v9 = v4;
-  v6 = v4;
+  v9 = candidatesCopy;
+  v6 = candidatesCopy;
   v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v8];
   [v7 getScanningDeviceCandidates:v6];
 }
@@ -775,9 +775,9 @@ void __42__ANAnnounce_getScanningDeviceCandidates___block_invoke(uint64_t a1, vo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)contextFromAnnouncement:(id)a3
+- (id)contextFromAnnouncement:(id)announcement
 {
-  v4 = a3;
+  announcementCopy = announcement;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -790,7 +790,7 @@ void __42__ANAnnounce_getScanningDeviceCandidates___block_invoke(uint64_t a1, vo
   v8[2] = __38__ANAnnounce_contextFromAnnouncement___block_invoke_111;
   v8[3] = &unk_2784E2200;
   v8[4] = &v9;
-  [v5 contextFromAnnouncement:v4 reply:v8];
+  [v5 contextFromAnnouncement:announcementCopy reply:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -817,9 +817,9 @@ void __38__ANAnnounce_contextFromAnnouncement___block_invoke(uint64_t a1, void *
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)homeNamesForContext:(id)a3
+- (id)homeNamesForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -838,7 +838,7 @@ void __38__ANAnnounce_contextFromAnnouncement___block_invoke(uint64_t a1, void *
   v9[2] = __34__ANAnnounce_homeNamesForContext___block_invoke_113;
   v9[3] = &unk_2784E2188;
   v9[4] = &v11;
-  [v6 homeNamesForContext:v4 reply:v9];
+  [v6 homeNamesForContext:contextCopy reply:v9];
 
   v7 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -869,9 +869,9 @@ void __34__ANAnnounce_homeNamesForContext___block_invoke(uint64_t a1, void *a2)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isLocalDeviceInRoom:(id)a3
+- (BOOL)isLocalDeviceInRoom:(id)room
 {
-  v4 = a3;
+  roomCopy = room;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -888,7 +888,7 @@ void __34__ANAnnounce_homeNamesForContext___block_invoke(uint64_t a1, void *a2)
   v8[2] = __34__ANAnnounce_isLocalDeviceInRoom___block_invoke_114;
   v8[3] = &unk_2784E2228;
   v8[4] = &v10;
-  [v6 isLocalDeviceInRoom:v4 reply:v8];
+  [v6 isLocalDeviceInRoom:roomCopy reply:v8];
 
   LOBYTE(v6) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
@@ -916,10 +916,10 @@ void __34__ANAnnounce_isLocalDeviceInRoom___block_invoke(uint64_t a1, void *a2)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEndpointWithUUID:(id)a3 inRoomWithName:(id)a4
+- (BOOL)isEndpointWithUUID:(id)d inRoomWithName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  nameCopy = name;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -936,7 +936,7 @@ void __34__ANAnnounce_isLocalDeviceInRoom___block_invoke(uint64_t a1, void *a2)
   v11[2] = __48__ANAnnounce_isEndpointWithUUID_inRoomWithName___block_invoke_116;
   v11[3] = &unk_2784E2228;
   v11[4] = &v13;
-  [v9 isEndpointWithUUID:v6 inRoomWithName:v7 reply:v11];
+  [v9 isEndpointWithUUID:dCopy inRoomWithName:nameCopy reply:v11];
 
   LOBYTE(v9) = *(v14 + 24);
   _Block_object_dispose(&v13, 8);
@@ -964,9 +964,9 @@ void __48__ANAnnounce_isEndpointWithUUID_inRoomWithName___block_invoke(uint64_t 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isAnnounceEnabledForAnyAccessoryInHome:(id)a3
+- (BOOL)isAnnounceEnabledForAnyAccessoryInHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -983,7 +983,7 @@ void __48__ANAnnounce_isEndpointWithUUID_inRoomWithName___block_invoke(uint64_t 
   v8[2] = __53__ANAnnounce_isAnnounceEnabledForAnyAccessoryInHome___block_invoke_117;
   v8[3] = &unk_2784E2228;
   v8[4] = &v10;
-  [v6 isAnnounceEnabledForAnyAccessoryInHome:v4 reply:v8];
+  [v6 isAnnounceEnabledForAnyAccessoryInHome:homeCopy reply:v8];
 
   LOBYTE(v6) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
@@ -1011,9 +1011,9 @@ void __53__ANAnnounce_isAnnounceEnabledForAnyAccessoryInHome___block_invoke(uint
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isAnnounceEnabledForAnyAccessoryOrUserInHome:(id)a3
+- (BOOL)isAnnounceEnabledForAnyAccessoryOrUserInHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -1030,7 +1030,7 @@ void __53__ANAnnounce_isAnnounceEnabledForAnyAccessoryInHome___block_invoke(uint
   v8[2] = __59__ANAnnounce_isAnnounceEnabledForAnyAccessoryOrUserInHome___block_invoke_118;
   v8[3] = &unk_2784E2228;
   v8[4] = &v10;
-  [v6 isAnnounceEnabledForAnyAccessoryOrUserInHome:v4 reply:v8];
+  [v6 isAnnounceEnabledForAnyAccessoryOrUserInHome:homeCopy reply:v8];
 
   LOBYTE(v6) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
@@ -1058,15 +1058,15 @@ void __59__ANAnnounce_isAnnounceEnabledForAnyAccessoryOrUserInHome___block_invok
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prewarmWithHandler:(id)a3
+- (void)prewarmWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   connection = self->_connection;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __33__ANAnnounce_prewarmWithHandler___block_invoke;
   v11[3] = &unk_2784E1F20;
-  v6 = v4;
+  v6 = handlerCopy;
   v12 = v6;
   v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x277D85DD0];
@@ -1131,17 +1131,17 @@ void __33__ANAnnounce_prewarmWithHandler___block_invoke_119(uint64_t a1, void *a
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)validateDestinationFromContext:(id)a3 completion:(id)a4
+- (void)validateDestinationFromContext:(id)context completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   connection = self->_connection;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __56__ANAnnounce_validateDestinationFromContext_completion___block_invoke;
   v14[3] = &unk_2784E1F20;
-  v8 = v6;
+  v8 = completionCopy;
   v15 = v8;
-  v9 = a3;
+  contextCopy = context;
   v10 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1149,7 +1149,7 @@ void __33__ANAnnounce_prewarmWithHandler___block_invoke_119(uint64_t a1, void *a
   v12[3] = &unk_2784E1F20;
   v13 = v8;
   v11 = v8;
-  [v10 validateDestinationFromContext:v9 reply:v12];
+  [v10 validateDestinationFromContext:contextCopy reply:v12];
 }
 
 void __56__ANAnnounce_validateDestinationFromContext_completion___block_invoke(uint64_t a1, void *a2)
@@ -1196,18 +1196,18 @@ void __56__ANAnnounce_validateDestinationFromContext_completion___block_invoke_1
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendRequestLegacy:(id)a3 completion:(id)a4
+- (void)_sendRequestLegacy:(id)legacy completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  legacyCopy = legacy;
+  completionCopy = completion;
   v8 = ANLogHandleAnnounce();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v19 = &stru_2836DAA20;
     v20 = 2112;
-    v21 = v6;
+    v21 = legacyCopy;
     _os_log_impl(&dword_2237C8000, v8, OS_LOG_TYPE_DEFAULT, "%@Sending Request (Legacy): %@", buf, 0x16u);
   }
 
@@ -1216,7 +1216,7 @@ void __56__ANAnnounce_validateDestinationFromContext_completion___block_invoke_1
   v16[1] = 3221225472;
   v16[2] = __44__ANAnnounce__sendRequestLegacy_completion___block_invoke;
   v16[3] = &unk_2784E1F20;
-  v10 = v7;
+  v10 = completionCopy;
   v17 = v10;
   v11 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v16];
   v14[0] = MEMORY[0x277D85DD0];
@@ -1225,7 +1225,7 @@ void __56__ANAnnounce_validateDestinationFromContext_completion___block_invoke_1
   v14[3] = &unk_2784E21D8;
   v15 = v10;
   v12 = v10;
-  [v11 sendRequestLegacy:v6 completion:v14];
+  [v11 sendRequestLegacy:legacyCopy completion:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -1284,16 +1284,16 @@ void __44__ANAnnounce__sendRequestLegacy_completion___block_invoke_121(uint64_t 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lastPlayedAnnouncementInfo:(id)a3
+- (void)lastPlayedAnnouncementInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   connection = self->_connection;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__ANAnnounce_lastPlayedAnnouncementInfo___block_invoke;
   v8[3] = &unk_2784E1F20;
-  v9 = v4;
-  v6 = v4;
+  v9 = infoCopy;
+  v6 = infoCopy;
   v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v8];
   [v7 lastPlayedAnnouncementInfo:v6];
 }

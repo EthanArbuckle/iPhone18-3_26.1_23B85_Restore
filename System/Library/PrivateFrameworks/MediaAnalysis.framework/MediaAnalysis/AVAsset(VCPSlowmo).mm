@@ -61,7 +61,7 @@
         start = v26;
         duration = v25;
         CMTimeRangeMake(&v24, &start, &duration);
-        [a1 vcp_scaleSlowmoTimeRange:&v24 withTimeMapping:v14 inComposition:v15];
+        [self vcp_scaleSlowmoTimeRange:&v24 withTimeMapping:v14 inComposition:v15];
         start = v26;
         duration = v25;
         CMTimeAdd(&v24.start, &start, &duration);
@@ -76,7 +76,7 @@
       *&v24.duration.timescale = *(a5 + 32);
       CMTimeRangeGetEnd(&duration, &v24);
       CMTimeRangeFromTimeToTime(&v24, &start, &duration);
-      [a1 vcp_scaleSlowmoTimeRange:&v24 withTimeMapping:v14 inComposition:v15];
+      [self vcp_scaleSlowmoTimeRange:&v24 withTimeMapping:v14 inComposition:v15];
     }
   }
 }
@@ -88,8 +88,8 @@
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x1E69C0908]);
-    v8 = [v6 privateFileURL];
-    v9 = [v7 initWithURL:v8];
+    privateFileURL = [v6 privateFileURL];
+    v9 = [v7 initWithURL:privateFileURL];
 
     v34 = v9;
     if (v9 && ([v9 hasSlowMotionAdjustments] & 1) != 0)
@@ -97,31 +97,31 @@
       v33 = [objc_alloc(MEMORY[0x1E69C0900]) initWithVideoAsset:0 videoAdjustments:v9];
       if (v33)
       {
-        v10 = [MEMORY[0x1E6988048] composition];
+        composition = [MEMORY[0x1E6988048] composition];
         memset(&v53, 0, sizeof(v53));
         v11 = MEMORY[0x1E6960CC0];
         *&start.start.value = *MEMORY[0x1E6960CC0];
         start.start.epoch = *(MEMORY[0x1E6960CC0] + 16);
-        [a1 duration];
+        [self duration];
         CMTimeRangeFromTimeToTime(&v53, &start.start, &end.start);
         start = v53;
         *&end.start.value = *&v11->value;
         end.start.epoch = v11->epoch;
-        if ([v10 insertTimeRange:&start ofAsset:a1 atTime:&end error:0])
+        if ([composition insertTimeRange:&start ofAsset:self atTime:&end error:0])
         {
           v26 = objc_alloc_init(MEMORY[0x1E69C0888]);
-          v29 = [v26 rampDown];
-          v30 = [v26 rampUp];
+          rampDown = [v26 rampDown];
+          rampUp = [v26 rampUp];
           [v9 slowMotionRate];
           v50 = 0;
           v51 = 0;
-          [v29 computeRampToTargetRate:1 forExport:&v51 outTimeSteps:&v50 outIntermediateRates:?];
+          [rampDown computeRampToTargetRate:1 forExport:&v51 outTimeSteps:&v50 outIntermediateRates:?];
           v31 = v51;
           v32 = v50;
           [v9 slowMotionRate];
           v48 = 0;
           v49 = 0;
-          [v30 computeRampToTargetRate:1 forExport:&v49 outTimeSteps:&v48 outIntermediateRates:?];
+          [rampUp computeRampToTargetRate:1 forExport:&v49 outTimeSteps:&v48 outIntermediateRates:?];
           v27 = v49;
           v28 = v48;
           memset(&start, 0, sizeof(start));
@@ -168,7 +168,7 @@
           if (v15 >= 0.100000001)
           {
             v41 = start;
-            [a1 vcp_scaleRampWithIntervals:v31 andRates:v32 inSlowmoTimerange:&v41 withTimeMapping:v33 inComposition:v10];
+            [self vcp_scaleRampWithIntervals:v31 andRates:v32 inSlowmoTimerange:&v41 withTimeMapping:v33 inComposition:composition];
           }
 
           memset(&v42, 0, sizeof(v42));
@@ -181,19 +181,19 @@
           duration = range.duration;
           [v9 slowMotionRate];
           CMTimeMultiplyByFloat64(&v40, &duration, v16);
-          [v10 scaleTimeRange:&v41 toDuration:&v40];
+          [composition scaleTimeRange:&v41 toDuration:&v40];
           if (Seconds >= 0.100000001)
           {
             v41 = end;
-            [a1 vcp_scaleRampWithIntervals:v27 andRates:v28 inSlowmoTimerange:&v41 withTimeMapping:v33 inComposition:v10];
+            [self vcp_scaleRampWithIntervals:v27 andRates:v28 inSlowmoTimerange:&v41 withTimeMapping:v33 inComposition:composition];
           }
 
           v37 = 0u;
           v38 = 0u;
           v35 = 0u;
           v36 = 0u;
-          v17 = [v10 tracks];
-          v18 = [v17 countByEnumeratingWithState:&v35 objects:v54 count:16];
+          tracks = [composition tracks];
+          v18 = [tracks countByEnumeratingWithState:&v35 objects:v54 count:16];
           if (v18)
           {
             v19 = *v36;
@@ -204,26 +204,26 @@
               {
                 if (*v36 != v19)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(tracks);
                 }
 
                 v22 = *(*(&v35 + 1) + 8 * i);
-                v23 = [v22 mediaType];
-                v24 = [v23 isEqualToString:v20];
+                mediaType = [v22 mediaType];
+                v24 = [mediaType isEqualToString:v20];
 
                 if (v24)
                 {
-                  [v10 removeTrack:v22];
+                  [composition removeTrack:v22];
                 }
               }
 
-              v18 = [v17 countByEnumeratingWithState:&v35 objects:v54 count:16];
+              v18 = [tracks countByEnumeratingWithState:&v35 objects:v54 count:16];
             }
 
             while (v18);
           }
 
-          v14 = v10;
+          v14 = composition;
         }
 
         else

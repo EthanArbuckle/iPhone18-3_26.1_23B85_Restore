@@ -1,9 +1,9 @@
 @interface SRSupplementalCategory
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (SRSupplementalCategory)init;
-- (SRSupplementalCategory)initWithCoder:(id)a3;
-- (SRSupplementalCategory)initWithIdentifier:(id)a3;
+- (SRSupplementalCategory)initWithCoder:(id)coder;
+- (SRSupplementalCategory)initWithIdentifier:(id)identifier;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
 @end
@@ -17,14 +17,14 @@
   return 0;
 }
 
-- (SRSupplementalCategory)initWithIdentifier:(id)a3
+- (SRSupplementalCategory)initWithIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = SRSupplementalCategory;
   v4 = [(SRSupplementalCategory *)&v6 init];
   if (v4)
   {
-    v4->_identifier = [a3 copy];
+    v4->_identifier = [identifier copy];
   }
 
   return v4;
@@ -37,9 +37,9 @@
   [(SRSupplementalCategory *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -51,9 +51,9 @@
   }
 
   identifier = self->_identifier;
-  v6 = [a3 identifier];
+  identifier = [equal identifier];
 
-  return [(NSString *)identifier isEqualToString:v6];
+  return [(NSString *)identifier isEqualToString:identifier];
 }
 
 - (NSString)description
@@ -63,9 +63,9 @@
   return [v3 stringWithFormat:@"%@ <%p>: (identifier: %@)", NSStringFromClass(v4), self, self->_identifier];
 }
 
-- (SRSupplementalCategory)initWithCoder:(id)a3
+- (SRSupplementalCategory)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v4 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
 
   return [(SRSupplementalCategory *)self initWithIdentifier:v4];
 }

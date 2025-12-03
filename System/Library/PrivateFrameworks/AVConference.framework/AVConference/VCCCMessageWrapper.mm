@@ -1,19 +1,19 @@
 @interface VCCCMessageWrapper
-- (BOOL)isEqual:(id)a3;
-- (id)contentAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)contentAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsContent:(id)a3;
+- (int)StringAsContent:(id)content;
 - (int)content;
 - (unint64_t)hash;
 - (void)clearOneofValuesForContent;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setAcknowledgement:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setAcknowledgement:(id)acknowledgement;
+- (void)setMessage:(id)message;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCCCMessageWrapper
@@ -28,24 +28,24 @@
   [(VCCCMessageWrapper *)&v3 dealloc];
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
   [(VCCCMessageWrapper *)self clearOneofValuesForContent];
   *&self->_has |= 1u;
   self->_content = 1;
-  v5 = a3;
+  messageCopy = message;
 
-  self->_message = a3;
+  self->_message = message;
 }
 
-- (void)setAcknowledgement:(id)a3
+- (void)setAcknowledgement:(id)acknowledgement
 {
   [(VCCCMessageWrapper *)self clearOneofValuesForContent];
   *&self->_has |= 1u;
   self->_content = 2;
-  v5 = a3;
+  acknowledgementCopy = acknowledgement;
 
-  self->_acknowledgement = a3;
+  self->_acknowledgement = acknowledgement;
 }
 
 - (int)content
@@ -61,32 +61,32 @@
   }
 }
 
-- (id)contentAsString:(int)a3
+- (id)contentAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    return [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    return [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    return off_1E85F9320[a3];
+    return off_1E85F9320[string];
   }
 }
 
-- (int)StringAsContent:(id)a3
+- (int)StringAsContent:(id)content
 {
-  if ([a3 isEqualToString:@"PBUNSET"])
+  if ([content isEqualToString:@"PBUNSET"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"message"])
+  if ([content isEqualToString:@"message"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"acknowledgement"])
+  if ([content isEqualToString:@"acknowledgement"])
   {
     return 2;
   }
@@ -113,17 +113,17 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   message = self->_message;
   if (message)
   {
-    [v3 setObject:-[VCCCMessage dictionaryRepresentation](message forKey:{"dictionaryRepresentation"), @"message"}];
+    [dictionary setObject:-[VCCCMessage dictionaryRepresentation](message forKey:{"dictionaryRepresentation"), @"message"}];
   }
 
   acknowledgement = self->_acknowledgement;
   if (acknowledgement)
   {
-    [v3 setObject:-[VCCCMessageAcknowledgment dictionaryRepresentation](acknowledgement forKey:{"dictionaryRepresentation"), @"acknowledgement"}];
+    [dictionary setObject:-[VCCCMessageAcknowledgment dictionaryRepresentation](acknowledgement forKey:{"dictionaryRepresentation"), @"acknowledgement"}];
   }
 
   if (*&self->_has)
@@ -139,13 +139,13 @@
       v7 = off_1E85F9320[content];
     }
 
-    [v3 setObject:v7 forKey:@"content"];
+    [dictionary setObject:v7 forKey:@"content"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_message)
   {
@@ -159,29 +159,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 4) = self->_content;
-    *(a3 + 32) |= 1u;
+    *(to + 4) = self->_content;
+    *(to + 32) |= 1u;
   }
 
   if (self->_message)
   {
-    [a3 setMessage:?];
+    [to setMessage:?];
   }
 
   if (self->_acknowledgement)
   {
 
-    [a3 setAcknowledgement:?];
+    [to setAcknowledgement:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -189,25 +189,25 @@
     *(v5 + 32) |= 1u;
   }
 
-  *(v6 + 24) = [(VCCCMessage *)self->_message copyWithZone:a3];
-  *(v6 + 8) = [(VCCCMessageAcknowledgment *)self->_acknowledgement copyWithZone:a3];
+  *(v6 + 24) = [(VCCCMessage *)self->_message copyWithZone:zone];
+  *(v6 + 8) = [(VCCCMessageAcknowledgment *)self->_acknowledgement copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_content != *(a3 + 4))
+      if ((*(equal + 32) & 1) == 0 || self->_content != *(equal + 4))
       {
         goto LABEL_11;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
 LABEL_11:
       LOBYTE(v5) = 0;
@@ -215,10 +215,10 @@ LABEL_11:
     }
 
     message = self->_message;
-    if (!(message | *(a3 + 3)) || (v5 = [(VCCCMessage *)message isEqual:?]) != 0)
+    if (!(message | *(equal + 3)) || (v5 = [(VCCCMessage *)message isEqual:?]) != 0)
     {
       acknowledgement = self->_acknowledgement;
-      if (acknowledgement | *(a3 + 1))
+      if (acknowledgement | *(equal + 1))
       {
 
         LOBYTE(v5) = [(VCCCMessageAcknowledgment *)acknowledgement isEqual:?];
@@ -250,16 +250,16 @@ LABEL_11:
   return v4 ^ [(VCCCMessageAcknowledgment *)self->_acknowledgement hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 32))
+  if (*(from + 32))
   {
-    self->_content = *(a3 + 4);
+    self->_content = *(from + 4);
     *&self->_has |= 1u;
   }
 
   message = self->_message;
-  v6 = *(a3 + 3);
+  v6 = *(from + 3);
   if (message)
   {
     if (v6)
@@ -274,7 +274,7 @@ LABEL_11:
   }
 
   acknowledgement = self->_acknowledgement;
-  v8 = *(a3 + 1);
+  v8 = *(from + 1);
   if (acknowledgement)
   {
     if (v8)

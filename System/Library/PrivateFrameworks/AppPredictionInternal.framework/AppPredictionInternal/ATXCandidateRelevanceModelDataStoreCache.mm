@@ -1,7 +1,7 @@
 @interface ATXCandidateRelevanceModelDataStoreCache
 - (ATXCandidateRelevanceModelDataStoreCache)init;
-- (id)featurizationManagerForFeaturizationManagerId:(int64_t)a3;
-- (void)setFeaturizationManager:(id)a3 forFeaturizationManagerId:(int64_t)a4;
+- (id)featurizationManagerForFeaturizationManagerId:(int64_t)id;
+- (void)setFeaturizationManager:(id)manager forFeaturizationManagerId:(int64_t)id;
 @end
 
 @implementation ATXCandidateRelevanceModelDataStoreCache
@@ -21,22 +21,22 @@
   return v2;
 }
 
-- (id)featurizationManagerForFeaturizationManagerId:(int64_t)a3
+- (id)featurizationManagerForFeaturizationManagerId:(int64_t)id
 {
   featurizationManagers = self->_featurizationManagers;
-  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:id];
   v5 = [(NSMutableDictionary *)featurizationManagers objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)setFeaturizationManager:(id)a3 forFeaturizationManagerId:(int64_t)a4
+- (void)setFeaturizationManager:(id)manager forFeaturizationManagerId:(int64_t)id
 {
   featurizationManagers = self->_featurizationManagers;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithLongLong:a4];
-  [(NSMutableDictionary *)featurizationManagers setObject:v7 forKeyedSubscript:v8];
+  managerCopy = manager;
+  v8 = [v6 numberWithLongLong:id];
+  [(NSMutableDictionary *)featurizationManagers setObject:managerCopy forKeyedSubscript:v8];
 }
 
 @end

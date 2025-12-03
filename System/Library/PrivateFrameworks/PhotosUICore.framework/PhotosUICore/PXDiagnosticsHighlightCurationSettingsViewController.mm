@@ -1,163 +1,163 @@
 @interface PXDiagnosticsHighlightCurationSettingsViewController
 - (NSDictionary)options;
-- (PXDiagnosticsHighlightCurationSettingsViewController)initWithDelegate:(id)a3;
-- (void)_applySettingsGlobally:(id)a3;
-- (void)_cancel:(id)a3;
-- (void)_done:(id)a3;
+- (PXDiagnosticsHighlightCurationSettingsViewController)initWithDelegate:(id)delegate;
+- (void)_applySettingsGlobally:(id)globally;
+- (void)_cancel:(id)_cancel;
+- (void)_done:(id)_done;
 - (void)loadView;
-- (void)setOptions:(id)a3;
+- (void)setOptions:(id)options;
 - (void)viewDidLoad;
 @end
 
 @implementation PXDiagnosticsHighlightCurationSettingsViewController
 
-- (void)_done:(id)a3
+- (void)_done:(id)_done
 {
   delegate = self->_delegate;
-  v5 = [(PXDiagnosticsHighlightCurationSettingsViewController *)self options];
-  [(PXDiagnosticsHighlightCurationSettingsViewControllerDelegate *)delegate applySettings:v5 globally:0];
+  options = [(PXDiagnosticsHighlightCurationSettingsViewController *)self options];
+  [(PXDiagnosticsHighlightCurationSettingsViewControllerDelegate *)delegate applySettings:options globally:0];
 
-  v7 = [(PXDiagnosticsHighlightCurationSettingsViewController *)self navigationController];
-  v6 = [v7 popViewControllerAnimated:1];
+  navigationController = [(PXDiagnosticsHighlightCurationSettingsViewController *)self navigationController];
+  v6 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
-  v4 = [(PXDiagnosticsHighlightCurationSettingsViewController *)self navigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigationController = [(PXDiagnosticsHighlightCurationSettingsViewController *)self navigationController];
+  v3 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)_applySettingsGlobally:(id)a3
+- (void)_applySettingsGlobally:(id)globally
 {
   delegate = self->_delegate;
-  v4 = [(PXDiagnosticsHighlightCurationSettingsViewController *)self options];
-  [(PXDiagnosticsHighlightCurationSettingsViewControllerDelegate *)delegate applySettings:v4 globally:1];
+  options = [(PXDiagnosticsHighlightCurationSettingsViewController *)self options];
+  [(PXDiagnosticsHighlightCurationSettingsViewControllerDelegate *)delegate applySettings:options globally:1];
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
-  objc_storeStrong(&self->_options, a3);
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"doIdenticalDeduping"];
+  objc_storeStrong(&self->_options, options);
+  optionsCopy = options;
+  v6 = [optionsCopy objectForKeyedSubscript:@"doIdenticalDeduping"];
   -[UISwitch setOn:](self->_doIdenticalDedupingSwitch, "setOn:", [v6 BOOLValue]);
 
-  v7 = [v5 objectForKeyedSubscript:@"identicalDedupingTimeInterval"];
-  v8 = [v7 stringValue];
-  [(UITextField *)self->_identicalDedupingTimeIntervalTextField setText:v8];
+  v7 = [optionsCopy objectForKeyedSubscript:@"identicalDedupingTimeInterval"];
+  stringValue = [v7 stringValue];
+  [(UITextField *)self->_identicalDedupingTimeIntervalTextField setText:stringValue];
 
-  v9 = [v5 objectForKeyedSubscript:@"identicalDedupingTimeIntervalForPeople"];
-  v10 = [v9 stringValue];
-  [(UITextField *)self->_identicalDedupingTimeIntervalForPeopleTextField setText:v10];
+  v9 = [optionsCopy objectForKeyedSubscript:@"identicalDedupingTimeIntervalForPeople"];
+  stringValue2 = [v9 stringValue];
+  [(UITextField *)self->_identicalDedupingTimeIntervalForPeopleTextField setText:stringValue2];
 
-  v11 = [v5 objectForKeyedSubscript:@"identicalDedupingMaximumTimeGroupExtension"];
-  v12 = [v11 stringValue];
-  [(UITextField *)self->_identicalDedupingMaximumTimeGroupExtensionTextField setText:v12];
+  v11 = [optionsCopy objectForKeyedSubscript:@"identicalDedupingMaximumTimeGroupExtension"];
+  stringValue3 = [v11 stringValue];
+  [(UITextField *)self->_identicalDedupingMaximumTimeGroupExtensionTextField setText:stringValue3];
 
-  v13 = [v5 objectForKeyedSubscript:@"maximumNumberOfItemsPerIdenticalCluster"];
-  v14 = [v13 stringValue];
-  [(UITextField *)self->_maximumNumberOfItemsPerIdenticalClusterTextField setText:v14];
+  v13 = [optionsCopy objectForKeyedSubscript:@"maximumNumberOfItemsPerIdenticalCluster"];
+  stringValue4 = [v13 stringValue];
+  [(UITextField *)self->_maximumNumberOfItemsPerIdenticalClusterTextField setText:stringValue4];
 
-  v15 = [v5 objectForKeyedSubscript:@"identicalDedupingThreshold"];
-  v16 = [v15 stringValue];
-  [(UITextField *)self->_identicalDedupingThresholdTextField setText:v16];
+  v15 = [optionsCopy objectForKeyedSubscript:@"identicalDedupingThreshold"];
+  stringValue5 = [v15 stringValue];
+  [(UITextField *)self->_identicalDedupingThresholdTextField setText:stringValue5];
 
-  v17 = [v5 objectForKeyedSubscript:@"identicalDedupingThresholdForPeople"];
-  v18 = [v17 stringValue];
-  [(UITextField *)self->_identicalDedupingThresholdForPeopleTextField setText:v18];
+  v17 = [optionsCopy objectForKeyedSubscript:@"identicalDedupingThresholdForPeople"];
+  stringValue6 = [v17 stringValue];
+  [(UITextField *)self->_identicalDedupingThresholdForPeopleTextField setText:stringValue6];
 
-  v19 = [v5 objectForKeyedSubscript:@"identicalDedupingThresholdForBestItems"];
-  v20 = [v19 stringValue];
-  [(UITextField *)self->_identicalDedupingThresholdForBestItemsTextField setText:v20];
+  v19 = [optionsCopy objectForKeyedSubscript:@"identicalDedupingThresholdForBestItems"];
+  stringValue7 = [v19 stringValue];
+  [(UITextField *)self->_identicalDedupingThresholdForBestItemsTextField setText:stringValue7];
 
-  v21 = [v5 objectForKeyedSubscript:@"useFaceprintsForIdenticalDeduping"];
+  v21 = [optionsCopy objectForKeyedSubscript:@"useFaceprintsForIdenticalDeduping"];
   -[UISwitch setOn:](self->_useFaceprintsForIdenticalDedupingSwitch, "setOn:", [v21 BOOLValue]);
 
-  v22 = [v5 objectForKeyedSubscript:@"identicalDedupingFaceprintDistance"];
-  v23 = [v22 stringValue];
-  [(UITextField *)self->_identicalDedupingFaceprintDistanceTextField setText:v23];
+  v22 = [optionsCopy objectForKeyedSubscript:@"identicalDedupingFaceprintDistance"];
+  stringValue8 = [v22 stringValue];
+  [(UITextField *)self->_identicalDedupingFaceprintDistanceTextField setText:stringValue8];
 
-  v24 = [v5 objectForKeyedSubscript:@"doSemanticalDeduping"];
+  v24 = [optionsCopy objectForKeyedSubscript:@"doSemanticalDeduping"];
   -[UISwitch setOn:](self->_doSemanticalDedupingSwitch, "setOn:", [v24 BOOLValue]);
 
-  v25 = [v5 objectForKeyedSubscript:@"semanticalDedupingTimeInterval"];
-  v26 = [v25 stringValue];
-  [(UITextField *)self->_semanticalDedupingTimeIntervalTextField setText:v26];
+  v25 = [optionsCopy objectForKeyedSubscript:@"semanticalDedupingTimeInterval"];
+  stringValue9 = [v25 stringValue];
+  [(UITextField *)self->_semanticalDedupingTimeIntervalTextField setText:stringValue9];
 
-  v27 = [v5 objectForKeyedSubscript:@"semanticalDedupingTimeIntervalForPeople"];
-  v28 = [v27 stringValue];
-  [(UITextField *)self->_semanticalDedupingTimeIntervalForPeopleTextField setText:v28];
+  v27 = [optionsCopy objectForKeyedSubscript:@"semanticalDedupingTimeIntervalForPeople"];
+  stringValue10 = [v27 stringValue];
+  [(UITextField *)self->_semanticalDedupingTimeIntervalForPeopleTextField setText:stringValue10];
 
-  v29 = [v5 objectForKeyedSubscript:@"semanticalDedupingTimeIntervalForPersons"];
-  v30 = [v29 stringValue];
-  [(UITextField *)self->_semanticalDedupingTimeIntervalForPersonsTextField setText:v30];
+  v29 = [optionsCopy objectForKeyedSubscript:@"semanticalDedupingTimeIntervalForPersons"];
+  stringValue11 = [v29 stringValue];
+  [(UITextField *)self->_semanticalDedupingTimeIntervalForPersonsTextField setText:stringValue11];
 
-  v31 = [v5 objectForKeyedSubscript:@"semanticalDedupingMaximumTimeGroupExtension"];
-  v32 = [v31 stringValue];
-  [(UITextField *)self->_semanticalDedupingMaximumTimeGroupExtensionTextField setText:v32];
+  v31 = [optionsCopy objectForKeyedSubscript:@"semanticalDedupingMaximumTimeGroupExtension"];
+  stringValue12 = [v31 stringValue];
+  [(UITextField *)self->_semanticalDedupingMaximumTimeGroupExtensionTextField setText:stringValue12];
 
-  v33 = [v5 objectForKeyedSubscript:@"maximumNumberOfItemsPerSemanticalCluster"];
-  v34 = [v33 stringValue];
-  [(UITextField *)self->_maximumNumberOfItemsPerSemanticalClusterTextField setText:v34];
+  v33 = [optionsCopy objectForKeyedSubscript:@"maximumNumberOfItemsPerSemanticalCluster"];
+  stringValue13 = [v33 stringValue];
+  [(UITextField *)self->_maximumNumberOfItemsPerSemanticalClusterTextField setText:stringValue13];
 
-  v35 = [v5 objectForKeyedSubscript:@"semanticalDedupingThreshold"];
-  v36 = [v35 stringValue];
-  [(UITextField *)self->_semanticalDedupingThresholdTextField setText:v36];
+  v35 = [optionsCopy objectForKeyedSubscript:@"semanticalDedupingThreshold"];
+  stringValue14 = [v35 stringValue];
+  [(UITextField *)self->_semanticalDedupingThresholdTextField setText:stringValue14];
 
-  v37 = [v5 objectForKeyedSubscript:@"semanticalDedupingThresholdForPeople"];
-  v38 = [v37 stringValue];
-  [(UITextField *)self->_semanticalDedupingThresholdForPeopleTextField setText:v38];
+  v37 = [optionsCopy objectForKeyedSubscript:@"semanticalDedupingThresholdForPeople"];
+  stringValue15 = [v37 stringValue];
+  [(UITextField *)self->_semanticalDedupingThresholdForPeopleTextField setText:stringValue15];
 
-  v39 = [v5 objectForKeyedSubscript:@"semanticalDedupingThresholdForPersons"];
-  v40 = [v39 stringValue];
-  [(UITextField *)self->_semanticalDedupingThresholdForPersonsTextField setText:v40];
+  v39 = [optionsCopy objectForKeyedSubscript:@"semanticalDedupingThresholdForPersons"];
+  stringValue16 = [v39 stringValue];
+  [(UITextField *)self->_semanticalDedupingThresholdForPersonsTextField setText:stringValue16];
 
-  v41 = [v5 objectForKeyedSubscript:@"dontSemanticallyDedupePeople"];
+  v41 = [optionsCopy objectForKeyedSubscript:@"dontSemanticallyDedupePeople"];
   -[UISwitch setOn:](self->_doNotSemanticallyDedupePeopleSwitch, "setOn:", [v41 BOOLValue]);
 
-  v42 = [v5 objectForKeyedSubscript:@"dontSemanticallyDedupePersons"];
+  v42 = [optionsCopy objectForKeyedSubscript:@"dontSemanticallyDedupePersons"];
   -[UISwitch setOn:](self->_doNotSemanticallyDedupePersonsSwitch, "setOn:", [v42 BOOLValue]);
 
-  v43 = [v5 objectForKeyedSubscript:@"allowAdaptiveForSemanticalDeduping"];
+  v43 = [optionsCopy objectForKeyedSubscript:@"allowAdaptiveForSemanticalDeduping"];
   -[UISwitch setOn:](self->_allowAdaptiveForSemanticalDedupingSwitch, "setOn:", [v43 BOOLValue]);
 
-  v44 = [v5 objectForKeyedSubscript:@"useOnlyScenesForDeduping"];
+  v44 = [optionsCopy objectForKeyedSubscript:@"useOnlyScenesForDeduping"];
   -[UISwitch setOn:](self->_useOnlyScenesForDedupingSwitch, "setOn:", [v44 BOOLValue]);
 
-  v45 = [v5 objectForKeyedSubscript:@"useAllPersonsForDeduping"];
+  v45 = [optionsCopy objectForKeyedSubscript:@"useAllPersonsForDeduping"];
   -[UISwitch setOn:](self->_useAllPersonsForDedupingSwitch, "setOn:", [v45 BOOLValue]);
 
-  v46 = [v5 objectForKeyedSubscript:@"useFaceQualityForElection"];
+  v46 = [optionsCopy objectForKeyedSubscript:@"useFaceQualityForElection"];
   -[UISwitch setOn:](self->_useFaceQualityForElectionSwitch, "setOn:", [v46 BOOLValue]);
 
-  v47 = [v5 objectForKeyedSubscript:@"doNotDedupeVideos"];
+  v47 = [optionsCopy objectForKeyedSubscript:@"doNotDedupeVideos"];
   -[UISwitch setOn:](self->_doNotDedupeVideosSwitch, "setOn:", [v47 BOOLValue]);
 
-  v48 = [v5 objectForKeyedSubscript:@"doNotDedupeInterestingPortraitsAndLivePictures"];
+  v48 = [optionsCopy objectForKeyedSubscript:@"doNotDedupeInterestingPortraitsAndLivePictures"];
   -[UISwitch setOn:](self->_doNotDedupeInterestingPortraitsAndLivePicturesSwitch, "setOn:", [v48 BOOLValue]);
 
-  v49 = [v5 objectForKeyedSubscript:@"onlyDedupeContiguousItems"];
+  v49 = [optionsCopy objectForKeyedSubscript:@"onlyDedupeContiguousItems"];
   -[UISwitch setOn:](self->_onlyDedupeContiguousItemsSwitch, "setOn:", [v49 BOOLValue]);
 
-  v50 = [v5 objectForKeyedSubscript:@"doDejunk"];
+  v50 = [optionsCopy objectForKeyedSubscript:@"doDejunk"];
   -[UISwitch setOn:](self->_doDejunkSwitch, "setOn:", [v50 BOOLValue]);
 
-  v51 = [v5 objectForKeyedSubscript:@"returnDedupedJunkIfOnlyJunk"];
+  v51 = [optionsCopy objectForKeyedSubscript:@"returnDedupedJunkIfOnlyJunk"];
   -[UISwitch setOn:](self->_returnDedupedJunkIfOnlyJunkSwitch, "setOn:", [v51 BOOLValue]);
 
-  v52 = [v5 objectForKeyedSubscript:@"doFinalPass"];
+  v52 = [optionsCopy objectForKeyedSubscript:@"doFinalPass"];
   -[UISwitch setOn:](self->_doFinalPassSwitch, "setOn:", [v52 BOOLValue]);
 
-  v53 = [v5 objectForKeyedSubscript:@"finalPassTimeInterval"];
-  v54 = [v53 stringValue];
-  [(UITextField *)self->_finalPassTimeIntervalTextField setText:v54];
+  v53 = [optionsCopy objectForKeyedSubscript:@"finalPassTimeInterval"];
+  stringValue17 = [v53 stringValue];
+  [(UITextField *)self->_finalPassTimeIntervalTextField setText:stringValue17];
 
-  v55 = [v5 objectForKeyedSubscript:@"finalPassMaximumTimeGroupExtension"];
-  v56 = [v55 stringValue];
-  [(UITextField *)self->_finalPassMaximumTimeGroupExtensionTextField setText:v56];
+  v55 = [optionsCopy objectForKeyedSubscript:@"finalPassMaximumTimeGroupExtension"];
+  stringValue18 = [v55 stringValue];
+  [(UITextField *)self->_finalPassMaximumTimeGroupExtensionTextField setText:stringValue18];
 
-  v58 = [v5 objectForKeyedSubscript:@"finalPassDedupingThreshold"];
-  v57 = [v58 stringValue];
-  [(UITextField *)self->_finalPassDedupingThresholdTextField setText:v57];
+  v58 = [optionsCopy objectForKeyedSubscript:@"finalPassDedupingThreshold"];
+  stringValue19 = [v58 stringValue];
+  [(UITextField *)self->_finalPassDedupingThresholdTextField setText:stringValue19];
 }
 
 - (NSDictionary)options
@@ -168,43 +168,43 @@
   v78[0] = v76;
   v77[1] = @"identicalDedupingTimeInterval";
   v3 = MEMORY[0x1E696AD98];
-  v75 = [(UITextField *)self->_identicalDedupingTimeIntervalTextField text];
-  [v75 doubleValue];
+  text = [(UITextField *)self->_identicalDedupingTimeIntervalTextField text];
+  [text doubleValue];
   v74 = [v3 numberWithDouble:?];
   v78[1] = v74;
   v77[2] = @"identicalDedupingTimeIntervalForPeople";
   v4 = MEMORY[0x1E696AD98];
-  v73 = [(UITextField *)self->_identicalDedupingTimeIntervalForPeopleTextField text];
-  [v73 doubleValue];
+  text2 = [(UITextField *)self->_identicalDedupingTimeIntervalForPeopleTextField text];
+  [text2 doubleValue];
   v72 = [v4 numberWithDouble:?];
   v78[2] = v72;
   v77[3] = @"identicalDedupingMaximumTimeGroupExtension";
   v5 = MEMORY[0x1E696AD98];
-  v71 = [(UITextField *)self->_identicalDedupingMaximumTimeGroupExtensionTextField text];
-  [v71 doubleValue];
+  text3 = [(UITextField *)self->_identicalDedupingMaximumTimeGroupExtensionTextField text];
+  [text3 doubleValue];
   v70 = [v5 numberWithDouble:?];
   v78[3] = v70;
   v77[4] = @"maximumNumberOfItemsPerIdenticalCluster";
   v6 = MEMORY[0x1E696AD98];
-  v69 = [(UITextField *)self->_maximumNumberOfItemsPerIdenticalClusterTextField text];
-  v68 = [v6 numberWithInteger:{objc_msgSend(v69, "integerValue")}];
+  text4 = [(UITextField *)self->_maximumNumberOfItemsPerIdenticalClusterTextField text];
+  v68 = [v6 numberWithInteger:{objc_msgSend(text4, "integerValue")}];
   v78[4] = v68;
   v77[5] = @"identicalDedupingThreshold";
   v7 = MEMORY[0x1E696AD98];
-  v67 = [(UITextField *)self->_identicalDedupingThresholdTextField text];
-  [v67 doubleValue];
+  text5 = [(UITextField *)self->_identicalDedupingThresholdTextField text];
+  [text5 doubleValue];
   v66 = [v7 numberWithDouble:?];
   v78[5] = v66;
   v77[6] = @"identicalDedupingThresholdForPeople";
   v8 = MEMORY[0x1E696AD98];
-  v65 = [(UITextField *)self->_identicalDedupingThresholdForPeopleTextField text];
-  [v65 doubleValue];
+  text6 = [(UITextField *)self->_identicalDedupingThresholdForPeopleTextField text];
+  [text6 doubleValue];
   v64 = [v8 numberWithDouble:?];
   v78[6] = v64;
   v77[7] = @"identicalDedupingThresholdForBestItems";
   v9 = MEMORY[0x1E696AD98];
-  v63 = [(UITextField *)self->_identicalDedupingThresholdForBestItemsTextField text];
-  [v63 doubleValue];
+  text7 = [(UITextField *)self->_identicalDedupingThresholdForBestItemsTextField text];
+  [text7 doubleValue];
   v62 = [v9 numberWithDouble:?];
   v78[7] = v62;
   v77[8] = @"useFaceprintsForIdenticalDeduping";
@@ -212,8 +212,8 @@
   v78[8] = v61;
   v77[9] = @"identicalDedupingFaceprintDistance";
   v10 = MEMORY[0x1E696AD98];
-  v60 = [(UITextField *)self->_identicalDedupingFaceprintDistanceTextField text];
-  [v60 doubleValue];
+  text8 = [(UITextField *)self->_identicalDedupingFaceprintDistanceTextField text];
+  [text8 doubleValue];
   v59 = [v10 numberWithDouble:?];
   v78[9] = v59;
   v77[10] = @"doSemanticalDeduping";
@@ -221,49 +221,49 @@
   v78[10] = v58;
   v77[11] = @"semanticalDedupingTimeInterval";
   v11 = MEMORY[0x1E696AD98];
-  v57 = [(UITextField *)self->_semanticalDedupingTimeIntervalTextField text];
-  [v57 doubleValue];
+  text9 = [(UITextField *)self->_semanticalDedupingTimeIntervalTextField text];
+  [text9 doubleValue];
   v56 = [v11 numberWithDouble:?];
   v78[11] = v56;
   v77[12] = @"semanticalDedupingTimeIntervalForPeople";
   v12 = MEMORY[0x1E696AD98];
-  v55 = [(UITextField *)self->_semanticalDedupingTimeIntervalForPeopleTextField text];
-  [v55 doubleValue];
+  text10 = [(UITextField *)self->_semanticalDedupingTimeIntervalForPeopleTextField text];
+  [text10 doubleValue];
   v54 = [v12 numberWithDouble:?];
   v78[12] = v54;
   v77[13] = @"semanticalDedupingTimeIntervalForPersons";
   v13 = MEMORY[0x1E696AD98];
-  v53 = [(UITextField *)self->_semanticalDedupingTimeIntervalForPersonsTextField text];
-  [v53 doubleValue];
+  text11 = [(UITextField *)self->_semanticalDedupingTimeIntervalForPersonsTextField text];
+  [text11 doubleValue];
   v52 = [v13 numberWithDouble:?];
   v78[13] = v52;
   v77[14] = @"semanticalDedupingMaximumTimeGroupExtension";
   v14 = MEMORY[0x1E696AD98];
-  v51 = [(UITextField *)self->_semanticalDedupingMaximumTimeGroupExtensionTextField text];
-  [v51 doubleValue];
+  text12 = [(UITextField *)self->_semanticalDedupingMaximumTimeGroupExtensionTextField text];
+  [text12 doubleValue];
   v50 = [v14 numberWithDouble:?];
   v78[14] = v50;
   v77[15] = @"maximumNumberOfItemsPerSemanticalCluster";
   v15 = MEMORY[0x1E696AD98];
-  v49 = [(UITextField *)self->_maximumNumberOfItemsPerSemanticalClusterTextField text];
-  v48 = [v15 numberWithInteger:{objc_msgSend(v49, "integerValue")}];
+  text13 = [(UITextField *)self->_maximumNumberOfItemsPerSemanticalClusterTextField text];
+  v48 = [v15 numberWithInteger:{objc_msgSend(text13, "integerValue")}];
   v78[15] = v48;
   v77[16] = @"semanticalDedupingThreshold";
   v16 = MEMORY[0x1E696AD98];
-  v47 = [(UITextField *)self->_semanticalDedupingThresholdTextField text];
-  [v47 doubleValue];
+  text14 = [(UITextField *)self->_semanticalDedupingThresholdTextField text];
+  [text14 doubleValue];
   v46 = [v16 numberWithDouble:?];
   v78[16] = v46;
   v77[17] = @"semanticalDedupingThresholdForPeople";
   v17 = MEMORY[0x1E696AD98];
-  v45 = [(UITextField *)self->_semanticalDedupingThresholdForPeopleTextField text];
-  [v45 doubleValue];
+  text15 = [(UITextField *)self->_semanticalDedupingThresholdForPeopleTextField text];
+  [text15 doubleValue];
   v44 = [v17 numberWithDouble:?];
   v78[17] = v44;
   v77[18] = @"semanticalDedupingThresholdForPersons";
   v18 = MEMORY[0x1E696AD98];
-  v43 = [(UITextField *)self->_semanticalDedupingThresholdForPersonsTextField text];
-  [v43 doubleValue];
+  text16 = [(UITextField *)self->_semanticalDedupingThresholdForPersonsTextField text];
+  [text16 doubleValue];
   v42 = [v18 numberWithDouble:?];
   v78[18] = v42;
   v77[19] = @"dontSemanticallyDedupePeople";
@@ -304,20 +304,20 @@
   v78[30] = v22;
   v77[31] = @"finalPassTimeInterval";
   v23 = MEMORY[0x1E696AD98];
-  v24 = [(UITextField *)self->_finalPassTimeIntervalTextField text];
-  [v24 doubleValue];
+  text17 = [(UITextField *)self->_finalPassTimeIntervalTextField text];
+  [text17 doubleValue];
   v25 = [v23 numberWithDouble:?];
   v78[31] = v25;
   v77[32] = @"finalPassMaximumTimeGroupExtension";
   v26 = MEMORY[0x1E696AD98];
-  v27 = [(UITextField *)self->_finalPassMaximumTimeGroupExtensionTextField text];
-  [v27 doubleValue];
+  text18 = [(UITextField *)self->_finalPassMaximumTimeGroupExtensionTextField text];
+  [text18 doubleValue];
   v28 = [v26 numberWithDouble:?];
   v78[32] = v28;
   v77[33] = @"finalPassDedupingThreshold";
   v29 = MEMORY[0x1E696AD98];
-  v30 = [(UITextField *)self->_finalPassDedupingThresholdTextField text];
-  [v30 doubleValue];
+  text19 = [(UITextField *)self->_finalPassDedupingThresholdTextField text];
+  [text19 doubleValue];
   v31 = [v29 numberWithDouble:?];
   v78[33] = v31;
   v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v78 forKeys:v77 count:34];
@@ -332,12 +332,12 @@
   v12.super_class = PXDiagnosticsHighlightCurationSettingsViewController;
   [(PXDiagnosticsHighlightCurationSettingsViewController *)&v12 viewDidLoad];
   v3 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancel_];
-  v4 = [(PXDiagnosticsHighlightCurationSettingsViewController *)self navigationItem];
-  [v4 setLeftBarButtonItem:v3];
+  navigationItem = [(PXDiagnosticsHighlightCurationSettingsViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v3];
 
   v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__done_];
-  v6 = [(PXDiagnosticsHighlightCurationSettingsViewController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem2 = [(PXDiagnosticsHighlightCurationSettingsViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v5];
 
   v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:5 target:0 action:0];
   v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:@"Apply Globally" style:0 target:self action:sel__applySettingsGlobally_];
@@ -350,16 +350,16 @@
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:5];
   [(PXDiagnosticsHighlightCurationSettingsViewController *)self setToolbarItems:v10];
 
-  v11 = [(PXDiagnosticsHighlightCurationSettingsViewController *)self navigationController];
-  [v11 setToolbarHidden:0 animated:1];
+  navigationController = [(PXDiagnosticsHighlightCurationSettingsViewController *)self navigationController];
+  [navigationController setToolbarHidden:0 animated:1];
 }
 
 - (void)loadView
 {
   v3 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, 320.0, 480.0}];
   [(PXDiagnosticsHighlightCurationSettingsViewController *)self setView:v3];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v3 setBackgroundColor:systemBackgroundColor];
 
   v5 = v3;
   [v5 frame];
@@ -641,16 +641,16 @@ void __64__PXDiagnosticsHighlightCurationSettingsViewController_loadView__block_
   *(*(*(a1 + 40) + 8) + 24) = *(*(*(a1 + 40) + 8) + 24) + 34.0;
 }
 
-- (PXDiagnosticsHighlightCurationSettingsViewController)initWithDelegate:(id)a3
+- (PXDiagnosticsHighlightCurationSettingsViewController)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = PXDiagnosticsHighlightCurationSettingsViewController;
   v6 = [(PXDiagnosticsHighlightCurationSettingsViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
   }
 
   return v7;

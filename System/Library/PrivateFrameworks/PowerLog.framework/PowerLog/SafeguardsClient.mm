@@ -1,7 +1,7 @@
 @interface SafeguardsClient
 - (SafeguardsClient)init;
 - (void)init;
-- (void)reportExcessiveCPUUseBy:(char)a3[33] pid:(int)a4 path:(char)a5[1024] timestamp:(mach_timespec)a6 observed_cpu_nsecs:(int64_t)a7 observation_nsecs:(int64_t)a8 cpu_nsecs_allowed:(int64_t)a9 limit_window_nsecs:(int64_t)a10 flags:(unint64_t)a11;
+- (void)reportExcessiveCPUUseBy:(char)by[33] pid:(int)pid path:(char)path[1024] timestamp:(mach_timespec)timestamp observed_cpu_nsecs:(int64_t)observed_cpu_nsecs observation_nsecs:(int64_t)observation_nsecs cpu_nsecs_allowed:(int64_t)cpu_nsecs_allowed limit_window_nsecs:(int64_t)self0 flags:(unint64_t)self1;
 @end
 
 @implementation SafeguardsClient
@@ -45,7 +45,7 @@
     {
       LODWORD(location[0]) = 0;
       xpc_user_sessions_get_foreground_uid();
-      v11 = [(NSXPCConnection *)v2->_connection _xpcConnection];
+      _xpcConnection = [(NSXPCConnection *)v2->_connection _xpcConnection];
       xpc_connection_set_target_user_session_uid();
     }
 
@@ -124,7 +124,7 @@ void __24__SafeguardsClient_init__block_invoke_9(uint64_t a1)
   }
 }
 
-- (void)reportExcessiveCPUUseBy:(char)a3[33] pid:(int)a4 path:(char)a5[1024] timestamp:(mach_timespec)a6 observed_cpu_nsecs:(int64_t)a7 observation_nsecs:(int64_t)a8 cpu_nsecs_allowed:(int64_t)a9 limit_window_nsecs:(int64_t)a10 flags:(unint64_t)a11
+- (void)reportExcessiveCPUUseBy:(char)by[33] pid:(int)pid path:(char)path[1024] timestamp:(mach_timespec)timestamp observed_cpu_nsecs:(int64_t)observed_cpu_nsecs observation_nsecs:(int64_t)observation_nsecs cpu_nsecs_allowed:(int64_t)cpu_nsecs_allowed limit_window_nsecs:(int64_t)self0 flags:(unint64_t)self1
 {
   v45 = *MEMORY[0x1E69E9840];
   if (self->_featureEnabled)
@@ -133,7 +133,7 @@ void __24__SafeguardsClient_init__block_invoke_9(uint64_t a1)
     if (os_log_type_enabled(logger, OS_LOG_TYPE_INFO))
     {
       v19 = "";
-      if ((a11 & 0x100000000) != 0)
+      if ((flags & 0x100000000) != 0)
       {
         v19 = "(FATAL) ";
       }
@@ -141,21 +141,21 @@ void __24__SafeguardsClient_init__block_invoke_9(uint64_t a1)
       *buf = 136317186;
       v28 = v19;
       v29 = 2080;
-      v30 = a3;
+      byCopy = by;
       v33 = 2080;
       v31 = 1024;
-      v32 = a4;
-      v34 = a5;
+      pidCopy = pid;
+      pathCopy = path;
       v39 = 1024;
       v35 = 2048;
-      v36 = a7 / 1000000000.0;
+      v36 = observed_cpu_nsecs / 1000000000.0;
       v37 = 2048;
-      v38 = a8 / 1000000000.0;
-      v40 = 100 * a7 / a8;
+      v38 = observation_nsecs / 1000000000.0;
+      v40 = 100 * observed_cpu_nsecs / observation_nsecs;
       v41 = 2048;
-      v42 = a9 / 1000000000.0;
+      v42 = cpu_nsecs_allowed / 1000000000.0;
       v43 = 2048;
-      v44 = a10 / 0x3B9ACA00uLL;
+      v44 = limit_window_nsecs / 0x3B9ACA00uLL;
       _os_log_impl(&dword_1BACB7000, logger, OS_LOG_TYPE_INFO, "Received %sCPU usage trigger: \n  %s[%d] (%s) used %.2fs of CPU over %.2f seconds (averaging %d%%), violating a CPU usage limit of %.2fs over %lld seconds.", buf, 0x54u);
     }
 
@@ -166,10 +166,10 @@ void __24__SafeguardsClient_init__block_invoke_9(uint64_t a1)
     v26[3] = &unk_1E7F18938;
     v26[4] = self;
     v21 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v26];
-    v22 = [MEMORY[0x1E696AEC0] stringWithCString:a3];
-    v23 = [MEMORY[0x1E696AEC0] stringWithCString:a5];
-    LOBYTE(v25) = BYTE4(a11) & 1;
-    [v21 reportExcessiveCPUUseBy:v22 pid:a4 path:v23 endTime:a6 observedValue:a7 observationWindow:a8 limitValue:a9 limitWindow:a10 fatal:v25];
+    v22 = [MEMORY[0x1E696AEC0] stringWithCString:by];
+    v23 = [MEMORY[0x1E696AEC0] stringWithCString:path];
+    LOBYTE(v25) = BYTE4(flags) & 1;
+    [v21 reportExcessiveCPUUseBy:v22 pid:pid path:v23 endTime:timestamp observedValue:observed_cpu_nsecs observationWindow:observation_nsecs limitValue:cpu_nsecs_allowed limitWindow:limit_window_nsecs fatal:v25];
   }
 
   v24 = *MEMORY[0x1E69E9840];
@@ -188,7 +188,7 @@ void __143__SafeguardsClient_reportExcessiveCPUUseBy_pid_path_timestamp_observed
 - (void)init
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v3 = a2;
   xpc_strerror();
   OUTLINED_FUNCTION_2_0();

@@ -1,10 +1,10 @@
 @interface BAUnhandledDownloadEvent
 + (id)classesForSerialization;
-- (BAUnhandledDownloadEvent)initWithCoder:(id)a3;
-- (BAUnhandledDownloadEvent)initWithEventType:(int64_t)a3 download:(id)a4 error:(id)a5;
+- (BAUnhandledDownloadEvent)initWithCoder:(id)coder;
+- (BAUnhandledDownloadEvent)initWithEventType:(int64_t)type download:(id)download error:(id)error;
 - (id)description;
 - (id)typeString;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BAUnhandledDownloadEvent
@@ -21,12 +21,12 @@
   return v3;
 }
 
-- (BAUnhandledDownloadEvent)initWithEventType:(int64_t)a3 download:(id)a4 error:(id)a5
+- (BAUnhandledDownloadEvent)initWithEventType:(int64_t)type download:(id)download error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3 == 2 && !v9)
+  downloadCopy = download;
+  errorCopy = error;
+  v10 = errorCopy;
+  if (type == 2 && !errorCopy)
   {
     result = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT);
     if (result)
@@ -47,8 +47,8 @@
     v12 = v11;
     if (v11)
     {
-      [(BAUnhandledDownloadEvent *)v11 setType:a3];
-      [(BAUnhandledDownloadEvent *)v12 setDownload:v8];
+      [(BAUnhandledDownloadEvent *)v11 setType:type];
+      [(BAUnhandledDownloadEvent *)v12 setDownload:downloadCopy];
       [(BAUnhandledDownloadEvent *)v12 setEventError:v10];
     }
 
@@ -58,9 +58,9 @@
   return result;
 }
 
-- (BAUnhandledDownloadEvent)initWithCoder:(id)a3
+- (BAUnhandledDownloadEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = BAUnhandledDownloadEvent;
   v5 = [(BAUnhandledDownloadEvent *)&v12 init];
@@ -69,15 +69,15 @@
     goto LABEL_6;
   }
 
-  -[BAUnhandledDownloadEvent setType:](v5, "setType:", [v4 decodeIntegerForKey:@"type"]);
+  -[BAUnhandledDownloadEvent setType:](v5, "setType:", [coderCopy decodeIntegerForKey:@"type"]);
   v6 = +[BADownload classesForSerialization];
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"download"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"download"];
   [(BAUnhandledDownloadEvent *)v5 setDownload:v7];
 
-  if ([v4 containsValueForKey:@"eventError"])
+  if ([coderCopy containsValueForKey:@"eventError"])
   {
     v8 = [NSSet setWithObjects:objc_opt_class(), 0];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"eventError"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"eventError"];
     [(BAUnhandledDownloadEvent *)v5 setEventError:v9];
   }
 
@@ -104,32 +104,32 @@ LABEL_6:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeInteger:-[BAUnhandledDownloadEvent type](self forKey:{"type"), @"type"}];
-  v4 = [(BAUnhandledDownloadEvent *)self download];
-  [v7 encodeObject:v4 forKey:@"download"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[BAUnhandledDownloadEvent type](self forKey:{"type"), @"type"}];
+  download = [(BAUnhandledDownloadEvent *)self download];
+  [coderCopy encodeObject:download forKey:@"download"];
 
-  v5 = [(BAUnhandledDownloadEvent *)self eventError];
+  eventError = [(BAUnhandledDownloadEvent *)self eventError];
 
-  if (v5)
+  if (eventError)
   {
-    v6 = [(BAUnhandledDownloadEvent *)self eventError];
-    [v7 encodeObject:v6 forKey:@"eventError"];
+    eventError2 = [(BAUnhandledDownloadEvent *)self eventError];
+    [coderCopy encodeObject:eventError2 forKey:@"eventError"];
   }
 }
 
 - (id)typeString
 {
-  v2 = [(BAUnhandledDownloadEvent *)self type];
+  type = [(BAUnhandledDownloadEvent *)self type];
   v3 = @"Unknown";
-  if (v2 == 2)
+  if (type == 2)
   {
     v3 = @"Download Failed";
   }
 
-  if (v2 == 1)
+  if (type == 1)
   {
     return @"Download Finished";
   }
@@ -142,21 +142,21 @@ LABEL_6:
 
 - (id)description
 {
-  v3 = [(BAUnhandledDownloadEvent *)self type];
-  v4 = [(BAUnhandledDownloadEvent *)self typeString];
-  if (v3 == 2)
+  type = [(BAUnhandledDownloadEvent *)self type];
+  typeString = [(BAUnhandledDownloadEvent *)self typeString];
+  if (type == 2)
   {
-    v5 = [(BAUnhandledDownloadEvent *)self eventError];
-    v6 = [(BAUnhandledDownloadEvent *)self download];
-    v7 = [v6 description];
-    v8 = [NSString stringWithFormat:@"Event: %@ - Error %@ - Download %@", v4, v5, v7];
+    eventError = [(BAUnhandledDownloadEvent *)self eventError];
+    download = [(BAUnhandledDownloadEvent *)self download];
+    v7 = [download description];
+    v8 = [NSString stringWithFormat:@"Event: %@ - Error %@ - Download %@", typeString, eventError, v7];
   }
 
   else
   {
-    v5 = [(BAUnhandledDownloadEvent *)self download];
-    v6 = [v5 description];
-    v8 = [NSString stringWithFormat:@"Event: %@ - Download %@", v4, v6];
+    eventError = [(BAUnhandledDownloadEvent *)self download];
+    download = [eventError description];
+    v8 = [NSString stringWithFormat:@"Event: %@ - Download %@", typeString, download];
   }
 
   return v8;

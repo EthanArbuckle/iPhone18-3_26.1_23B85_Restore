@@ -3,9 +3,9 @@
 - (CGRect)destinationRect;
 - (CGSize)_bottomRightCapSize;
 - (CGSize)_topLeftCapSize;
-- (CUIRenditionSliceInformation)initWithRenditionType:(int64_t)a3 destinationRect:(CGRect)a4 topLeftInset:(CGSize)a5 bottomRightInset:(CGSize)a6;
-- (CUIRenditionSliceInformation)initWithSliceInformation:(id)a3 destinationRect:(CGRect)a4;
-- (double)positionOfSliceBoundary:(unint64_t)a3;
+- (CUIRenditionSliceInformation)initWithRenditionType:(int64_t)type destinationRect:(CGRect)rect topLeftInset:(CGSize)inset bottomRightInset:(CGSize)rightInset;
+- (CUIRenditionSliceInformation)initWithSliceInformation:(id)information destinationRect:(CGRect)rect;
+- (double)positionOfSliceBoundary:(unint64_t)boundary;
 - (id)description;
 @end
 
@@ -24,19 +24,19 @@
   return result;
 }
 
-- (CUIRenditionSliceInformation)initWithSliceInformation:(id)a3 destinationRect:(CGRect)a4
+- (CUIRenditionSliceInformation)initWithSliceInformation:(id)information destinationRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  [a3 destinationRect];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [information destinationRect];
   v11 = v10;
   v13 = v12;
-  [a3 _topLeftCapSize];
+  [information _topLeftCapSize];
   v15 = v14;
   v17 = v16;
-  [a3 _bottomRightCapSize];
+  [information _bottomRightCapSize];
   v20 = v18;
   v21 = v19;
   if (v15 + v18 > width)
@@ -51,21 +51,21 @@
     v21 = height * v19 / v13;
   }
 
-  v22 = *(a3 + 1);
+  v22 = *(information + 1);
 
   return [(CUIRenditionSliceInformation *)self initWithRenditionType:v22 destinationRect:x topLeftInset:y bottomRightInset:width, height, v15, v17, v20, v21];
 }
 
-- (CUIRenditionSliceInformation)initWithRenditionType:(int64_t)a3 destinationRect:(CGRect)a4 topLeftInset:(CGSize)a5 bottomRightInset:(CGSize)a6
+- (CUIRenditionSliceInformation)initWithRenditionType:(int64_t)type destinationRect:(CGRect)rect topLeftInset:(CGSize)inset bottomRightInset:(CGSize)rightInset
 {
-  height = a6.height;
-  width = a6.width;
-  v8 = a5.height;
-  v9 = a5.width;
-  v10 = a4.size.height;
-  v11 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rightInset.height;
+  width = rightInset.width;
+  v8 = inset.height;
+  v9 = inset.width;
+  v10 = rect.size.height;
+  v11 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v16.receiver = self;
   v16.super_class = CUIRenditionSliceInformation;
   result = [(CUIRenditionSliceInformation *)&v16 init];
@@ -75,14 +75,14 @@
     result->_destinationRect.origin.y = y;
     result->_destinationRect.size.width = v11;
     result->_destinationRect.size.height = v10;
-    result->_renditionType = a3;
-    if (a3 <= 999)
+    result->_renditionType = type;
+    if (type <= 999)
     {
-      if (a3 <= 1)
+      if (type <= 1)
       {
-        if (a3 != -1 && a3)
+        if (type != -1 && type)
         {
-          if (a3 == 1)
+          if (type == 1)
           {
             height = 0.0;
             v8 = 0.0;
@@ -92,9 +92,9 @@
         }
       }
 
-      else if ((a3 - 4) >= 6)
+      else if ((type - 4) >= 6)
       {
-        if (a3 == 2)
+        if (type == 2)
         {
           width = 0.0;
           v9 = 0.0;
@@ -104,7 +104,7 @@
       }
     }
 
-    else if ((a3 - 1000) > 0x15 || a3 == 1003)
+    else if ((type - 1000) > 0x15 || type == 1003)
     {
       goto LABEL_6;
     }
@@ -145,12 +145,12 @@ LABEL_6:
   return result;
 }
 
-- (double)positionOfSliceBoundary:(unint64_t)a3
+- (double)positionOfSliceBoundary:(unint64_t)boundary
 {
   result = 0.0;
-  if (a3 <= 3)
+  if (boundary <= 3)
   {
-    return self->_boundaries[a3];
+    return self->_boundaries[boundary];
   }
 
   return result;

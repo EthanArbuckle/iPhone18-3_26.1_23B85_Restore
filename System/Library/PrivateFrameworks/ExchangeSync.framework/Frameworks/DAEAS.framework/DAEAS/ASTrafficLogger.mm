@@ -1,11 +1,11 @@
 @interface ASTrafficLogger
 + (id)_logQueue;
-- (void)_moveLogFileContentsAtPath:(id)a3;
+- (void)_moveLogFileContentsAtPath:(id)path;
 - (void)_openLookasideFile;
 - (void)dealloc;
 - (void)flushLogs;
-- (void)logPlainTextData:(id)a3;
-- (void)logWBXMLData:(id)a3;
+- (void)logPlainTextData:(id)data;
+- (void)logWBXMLData:(id)data;
 @end
 
 @implementation ASTrafficLogger
@@ -27,13 +27,13 @@
 
 - (void)_openLookasideFile
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"ASTrafficLogger.m" lineNumber:33 description:@"_lookasideFilePath is not nil in _openTempLogFile"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"ASTrafficLogger.m" lineNumber:33 description:@"_lookasideFilePath is not nil in _openTempLogFile"];
 }
 
-- (void)_moveLogFileContentsAtPath:(id)a3
+- (void)_moveLogFileContentsAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   isOutgoingTraffic = self->_isOutgoingTraffic;
   v6 = +[ASTrafficLogger _logQueue];
   v8[0] = MEMORY[0x277D85DD0];
@@ -41,8 +41,8 @@
   v8[2] = __46__ASTrafficLogger__moveLogFileContentsAtPath___block_invoke;
   v8[3] = &unk_278FC78C0;
   v10 = isOutgoingTraffic;
-  v9 = v4;
-  v7 = v4;
+  v9 = pathCopy;
+  v7 = pathCopy;
   dispatch_async(v6, v8);
 }
 
@@ -123,37 +123,37 @@ void __46__ASTrafficLogger__moveLogFileContentsAtPath___block_invoke(uint64_t a1
   [(ASTrafficLogger *)&v3 dealloc];
 }
 
-- (void)logWBXMLData:(id)a3
+- (void)logWBXMLData:(id)data
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy)
   {
-    if ([v4 length])
+    if ([dataCopy length])
     {
       lookasideFileHandle = self->_lookasideFileHandle;
       if (lookasideFileHandle || !self->_lookasideFilePath && ([(ASTrafficLogger *)self _openLookasideFile], (lookasideFileHandle = self->_lookasideFileHandle) != 0))
       {
         write([(NSFileHandle *)lookasideFileHandle fileDescriptor], "BLOB_CHUNK", 0xAuLL);
-        v7 = [v5 bytes];
+        bytes = [v5 bytes];
         v8 = [v5 length];
         bzero(__buf, 0x480uLL);
         if (v8 >= 1)
         {
-          v9 = v7 + v8;
+          v9 = bytes + v8;
           do
           {
             v10 = 0;
             v11 = __buf;
             do
             {
-              v13 = v7 + v10 + 1;
-              v12 = *(v7 + v10);
+              v13 = bytes + v10 + 1;
+              v12 = *(bytes + v10);
               v14 = (v12 >> 4) + 87;
               if (v12 < 0xA0)
               {
-                LOBYTE(v14) = (*(v7 + v10) >> 4) | 0x30;
+                LOBYTE(v14) = (*(bytes + v10) >> 4) | 0x30;
               }
 
               *v11 = v14;
@@ -185,7 +185,7 @@ void __46__ASTrafficLogger__moveLogFileContentsAtPath___block_invoke(uint64_t a1
 
             while (v13 < v9);
             write([(NSFileHandle *)self->_lookasideFileHandle fileDescriptor], __buf, v18 - __buf);
-            v7 += v19;
+            bytes += v19;
           }
 
           while (v13 < v9);
@@ -197,21 +197,21 @@ void __46__ASTrafficLogger__moveLogFileContentsAtPath___block_invoke(uint64_t a1
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logPlainTextData:(id)a3
+- (void)logPlainTextData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v8 = v4;
-    if ([v4 length])
+    v8 = dataCopy;
+    if ([dataCopy length])
     {
       lookasideFileHandle = self->_lookasideFileHandle;
       if (lookasideFileHandle || !self->_lookasideFilePath && ([(ASTrafficLogger *)self _openLookasideFile], (lookasideFileHandle = self->_lookasideFileHandle) != 0))
       {
         write([(NSFileHandle *)lookasideFileHandle fileDescriptor], "TEXT_CHUNK", 0xAuLL);
-        v6 = [(NSFileHandle *)self->_lookasideFileHandle fileDescriptor];
+        fileDescriptor = [(NSFileHandle *)self->_lookasideFileHandle fileDescriptor];
         v7 = v8;
-        write(v6, [v8 bytes], objc_msgSend(v8, "length"));
+        write(fileDescriptor, [v8 bytes], objc_msgSend(v8, "length"));
       }
     }
   }

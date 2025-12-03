@@ -2,8 +2,8 @@
 + (id)sharedLedger;
 - (ACDEventLedger)init;
 - (id)historyDescription;
-- (void)recordEvent:(id)a3;
-- (void)simulateCrashWithMessage:(id)a3;
+- (void)recordEvent:(id)event;
+- (void)simulateCrashWithMessage:(id)message;
 @end
 
 @implementation ACDEventLedger
@@ -42,21 +42,21 @@ uint64_t __30__ACDEventLedger_sharedLedger__block_invoke()
   return v2;
 }
 
-- (void)recordEvent:(id)a3
+- (void)recordEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(ACDEventLedger *)self eventLedger];
-  objc_sync_enter(v5);
-  v6 = [(ACDEventLedger *)self eventLedger];
-  [v6 addObject:v4];
+  eventCopy = event;
+  eventLedger = [(ACDEventLedger *)self eventLedger];
+  objc_sync_enter(eventLedger);
+  eventLedger2 = [(ACDEventLedger *)self eventLedger];
+  [eventLedger2 addObject:eventCopy];
 
-  v7 = [(ACDEventLedger *)self eventLedger];
-  v8 = [v7 count];
+  eventLedger3 = [(ACDEventLedger *)self eventLedger];
+  v8 = [eventLedger3 count];
 
   if (v8 >= 0xB)
   {
-    v9 = [(ACDEventLedger *)self eventLedger];
-    [v9 removeObjectAtIndex:0];
+    eventLedger4 = [(ACDEventLedger *)self eventLedger];
+    [eventLedger4 removeObjectAtIndex:0];
   }
 
   crashInfoString = self->_crashInfoString;
@@ -66,11 +66,11 @@ uint64_t __30__ACDEventLedger_sharedLedger__block_invoke()
     self->_crashInfoString = 0;
   }
 
-  v11 = [(ACDEventLedger *)self historyDescription];
-  self->_crashInfoString = strdup([v11 UTF8String]);
+  historyDescription = [(ACDEventLedger *)self historyDescription];
+  self->_crashInfoString = strdup([historyDescription UTF8String]);
 
   qword_2813033E8 = self->_crashInfoString;
-  objc_sync_exit(v5);
+  objc_sync_exit(eventLedger);
 
   if (recordEvent__onceToken != -1)
   {
@@ -82,7 +82,7 @@ uint64_t __30__ACDEventLedger_sharedLedger__block_invoke()
     v12 = _ACDSaveLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [(ACDEventLedger *)v4 recordEvent:v12];
+      [(ACDEventLedger *)eventCopy recordEvent:v12];
     }
   }
 }
@@ -101,18 +101,18 @@ uint64_t __30__ACDEventLedger_recordEvent___block_invoke()
 - (id)historyDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(ACDEventLedger *)self eventLedger];
-  v4 = [v3 description];
+  eventLedger = [(ACDEventLedger *)self eventLedger];
+  v4 = [eventLedger description];
   v5 = [v2 stringWithFormat:@"Event history:\n%@", v4];
 
   return v5;
 }
 
-- (void)simulateCrashWithMessage:(id)a3
+- (void)simulateCrashWithMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = getpid();
-  v5 = v3;
+  v5 = messageCopy;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;

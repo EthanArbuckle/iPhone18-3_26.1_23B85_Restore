@@ -1,23 +1,23 @@
 @interface JavaUtilCalendar
 + (void)initialize;
-- (BOOL)afterWithId:(id)a3;
-- (BOOL)beforeWithId:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)afterWithId:(id)id;
+- (BOOL)beforeWithId:(id)id;
+- (BOOL)isEqual:(id)equal;
 - (JavaUtilCalendar)init;
 - (NSString)description;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)getTime;
-- (int)compareToWithId:(id)a3;
+- (int)compareToWithId:(id)id;
 - (int64_t)getTimeInMillis;
 - (unint64_t)hash;
 - (void)clear;
 - (void)complete;
 - (void)dealloc;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)setTimeInMillisWithLong:(int64_t)a3;
-- (void)setTimeWithJavaUtilDate:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)setTimeInMillisWithLong:(int64_t)long;
+- (void)setTimeWithJavaUtilDate:(id)date;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaUtilCalendar
@@ -30,7 +30,7 @@
   return self;
 }
 
-- (BOOL)afterWithId:(id)a3
+- (BOOL)afterWithId:(id)id
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -38,9 +38,9 @@
     return 0;
   }
 
-  v5 = [(JavaUtilCalendar *)self getTimeInMillis];
+  getTimeInMillis = [(JavaUtilCalendar *)self getTimeInMillis];
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -50,10 +50,10 @@
     JreThrowClassCastException();
   }
 
-  return v5 > [a3 getTimeInMillis];
+  return getTimeInMillis > [id getTimeInMillis];
 }
 
-- (BOOL)beforeWithId:(id)a3
+- (BOOL)beforeWithId:(id)id
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -61,9 +61,9 @@
     return 0;
   }
 
-  v5 = [(JavaUtilCalendar *)self getTimeInMillis];
+  getTimeInMillis = [(JavaUtilCalendar *)self getTimeInMillis];
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -73,7 +73,7 @@
     JreThrowClassCastException();
   }
 
-  return v5 < [a3 getTimeInMillis];
+  return getTimeInMillis < [id getTimeInMillis];
 }
 
 - (void)clear
@@ -117,9 +117,9 @@ LABEL_10:
 {
   v9.receiver = self;
   v9.super_class = JavaUtilCalendar;
-  v3 = [(JavaUtilCalendar *)&v9 clone];
+  clone = [(JavaUtilCalendar *)&v9 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     goto LABEL_9;
   }
@@ -130,22 +130,22 @@ LABEL_10:
   }
 
   fields = self->fields_;
-  if (!fields || (JreStrongAssign(v3 + 2, [(IOSArray *)fields clone]), (isSet = self->isSet_) == 0) || (JreStrongAssign(v3 + 3, [(IOSArray *)isSet clone]), (zone = self->zone_) == 0))
+  if (!fields || (JreStrongAssign(clone + 2, [(IOSArray *)fields clone]), (isSet = self->isSet_) == 0) || (JreStrongAssign(clone + 3, [(IOSArray *)isSet clone]), (zone = self->zone_) == 0))
   {
 LABEL_9:
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilTimeZone *)zone clone];
+  clone2 = [(JavaUtilTimeZone *)zone clone];
   objc_opt_class();
-  if (v7 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone2 && (objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_10:
     JreThrowClassCastException();
   }
 
-  JreStrongAssign(v3 + 9, v7);
-  return v3;
+  JreStrongAssign(clone + 9, clone2);
+  return clone;
 }
 
 - (void)complete
@@ -163,9 +163,9 @@ LABEL_10:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -177,7 +177,7 @@ LABEL_10:
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     [(JavaUtilCalendar *)self getTimeInMillis];
     JreThrowNullPointerException();
@@ -188,40 +188,40 @@ LABEL_10:
     JreThrowClassCastException();
   }
 
-  v5 = [(JavaUtilCalendar *)self getTimeInMillis];
-  if (v5 != [a3 getTimeInMillis])
+  getTimeInMillis = [(JavaUtilCalendar *)self getTimeInMillis];
+  if (getTimeInMillis != [equal getTimeInMillis])
   {
     return 0;
   }
 
-  v6 = [(JavaUtilCalendar *)self isLenient];
-  if (v6 != [a3 isLenient])
+  isLenient = [(JavaUtilCalendar *)self isLenient];
+  if (isLenient != [equal isLenient])
   {
     return 0;
   }
 
-  v7 = [(JavaUtilCalendar *)self getFirstDayOfWeek];
-  if (v7 != [a3 getFirstDayOfWeek])
+  getFirstDayOfWeek = [(JavaUtilCalendar *)self getFirstDayOfWeek];
+  if (getFirstDayOfWeek != [equal getFirstDayOfWeek])
   {
     return 0;
   }
 
-  v8 = [(JavaUtilCalendar *)self getMinimalDaysInFirstWeek];
-  if (v8 != [a3 getMinimalDaysInFirstWeek])
+  getMinimalDaysInFirstWeek = [(JavaUtilCalendar *)self getMinimalDaysInFirstWeek];
+  if (getMinimalDaysInFirstWeek != [equal getMinimalDaysInFirstWeek])
   {
     return 0;
   }
 
-  v9 = [(JavaUtilCalendar *)self getTimeZone];
-  if (!v9)
+  getTimeZone = [(JavaUtilCalendar *)self getTimeZone];
+  if (!getTimeZone)
   {
     JreThrowNullPointerException();
   }
 
-  v10 = v9;
-  v11 = [a3 getTimeZone];
+  v10 = getTimeZone;
+  getTimeZone2 = [equal getTimeZone];
 
-  return [v10 isEqual:v11];
+  return [v10 isEqual:getTimeZone2];
 }
 
 - (id)getTime
@@ -244,16 +244,16 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(JavaUtilCalendar *)self isLenient];
-  v4 = [(JavaUtilCalendar *)self getFirstDayOfWeek];
-  v5 = [(JavaUtilCalendar *)self getMinimalDaysInFirstWeek];
-  v6 = [(JavaUtilCalendar *)self getTimeZone];
-  if (!v6)
+  isLenient = [(JavaUtilCalendar *)self isLenient];
+  getFirstDayOfWeek = [(JavaUtilCalendar *)self getFirstDayOfWeek];
+  getMinimalDaysInFirstWeek = [(JavaUtilCalendar *)self getMinimalDaysInFirstWeek];
+  getTimeZone = [(JavaUtilCalendar *)self getTimeZone];
+  if (!getTimeZone)
   {
     JreThrowNullPointerException();
   }
 
-  if (v3)
+  if (isLenient)
   {
     v7 = 1237;
   }
@@ -263,26 +263,26 @@ LABEL_10:
     v7 = 1231;
   }
 
-  return (v7 + v4 + v5 + [v6 hash]);
+  return (v7 + getFirstDayOfWeek + getMinimalDaysInFirstWeek + [getTimeZone hash]);
 }
 
-- (void)setTimeWithJavaUtilDate:(id)a3
+- (void)setTimeWithJavaUtilDate:(id)date
 {
-  if (!a3)
+  if (!date)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 getTime];
+  getTime = [date getTime];
 
-  [(JavaUtilCalendar *)self setTimeInMillisWithLong:v4];
+  [(JavaUtilCalendar *)self setTimeInMillisWithLong:getTime];
 }
 
-- (void)setTimeInMillisWithLong:(int64_t)a3
+- (void)setTimeInMillisWithLong:(int64_t)long
 {
-  if (!self->isTimeSet_ || !self->areFieldsSet_ || self->time_ != a3)
+  if (!self->isTimeSet_ || !self->areFieldsSet_ || self->time_ != long)
   {
-    self->time_ = a3;
+    self->time_ = long;
     self->isTimeSet_ = 1;
     self->areFieldsSet_ = 0;
     [(JavaUtilCalendar *)self complete];
@@ -367,10 +367,10 @@ LABEL_22:
   return [(JavaLangStringBuilder *)v15 description];
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     v9 = new_JavaLangNullPointerException_initWithNSString_(@"anotherCalendar == null");
     objc_exception_throw(v9);
@@ -381,9 +381,9 @@ LABEL_22:
     JreThrowClassCastException();
   }
 
-  v5 = [(JavaUtilCalendar *)self getTimeInMillis];
-  v6 = [a3 getTimeInMillis];
-  if (v5 == v6)
+  getTimeInMillis = [(JavaUtilCalendar *)self getTimeInMillis];
+  getTimeInMillis2 = [id getTimeInMillis];
+  if (getTimeInMillis == getTimeInMillis2)
   {
     v7 = 0;
   }
@@ -393,7 +393,7 @@ LABEL_22:
     v7 = -1;
   }
 
-  if (v5 > v6)
+  if (getTimeInMillis > getTimeInMillis2)
   {
     return 1;
   }
@@ -404,10 +404,10 @@ LABEL_22:
   }
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
   [(JavaUtilCalendar *)self complete];
-  if (!a3 || (v5 = [a3 putFields]) == 0)
+  if (!stream || (v5 = [stream putFields]) == 0)
   {
     JreThrowNullPointerException();
   }
@@ -425,12 +425,12 @@ LABEL_22:
   [v6 putWithNSString:@"time" withLong:self->time_];
   [v6 putWithNSString:@"zone" withId:self->zone_];
 
-  [a3 writeFields];
+  [stream writeFields];
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3 || (v4 = [a3 readFields]) == 0)
+  if (!stream || (v4 = [stream readFields]) == 0)
   {
     JreThrowNullPointerException();
   }
@@ -482,16 +482,16 @@ LABEL_13:
   [(JavaUtilCalendar *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(JavaUtilCalendar *)self clone];
+  clone = [(JavaUtilCalendar *)self clone];
 
-  return v3;
+  return clone;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v8[5] = off_100456FF0;
     v8[6] = off_100457000;

@@ -17,8 +17,8 @@
     authorizationResult = v2->_authorizationResult;
     v2->_authorizationResult = v3;
 
-    v5 = [MEMORY[0x1E695DEC8] array];
-    [(ASAuthorizationProviderExtensionAuthorizationResult *)v2 setPrivateKeys:v5];
+    array = [MEMORY[0x1E695DEC8] array];
+    [(ASAuthorizationProviderExtensionAuthorizationResult *)v2 setPrivateKeys:array];
 
     v6 = v2;
   }
@@ -38,8 +38,8 @@
     authorizationResult = v5->_authorizationResult;
     v5->_authorizationResult = v6;
 
-    v8 = [MEMORY[0x1E695DEC8] array];
-    [(ASAuthorizationProviderExtensionAuthorizationResult *)v5 setPrivateKeys:v8];
+    array = [MEMORY[0x1E695DEC8] array];
+    [(ASAuthorizationProviderExtensionAuthorizationResult *)v5 setPrivateKeys:array];
 
     v9 = v5;
   }
@@ -60,8 +60,8 @@
     authorizationResult = v8->_authorizationResult;
     v8->_authorizationResult = v9;
 
-    v11 = [MEMORY[0x1E695DEC8] array];
-    [(ASAuthorizationProviderExtensionAuthorizationResult *)v8 setPrivateKeys:v11];
+    array = [MEMORY[0x1E695DEC8] array];
+    [(ASAuthorizationProviderExtensionAuthorizationResult *)v8 setPrivateKeys:array];
 
     v12 = v8;
   }

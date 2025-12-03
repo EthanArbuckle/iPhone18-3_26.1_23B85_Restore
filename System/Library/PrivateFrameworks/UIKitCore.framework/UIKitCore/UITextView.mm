@@ -4,10 +4,10 @@
 + (UITextView)textViewUsingTextLayoutManager:(BOOL)usingTextLayoutManager;
 + (id)_defaultFont;
 + (id)_defaultTextColor;
-- ($BB3B25BBC364C7D98808033881F79914)_saveSizeBeforeLayoutCalculation:(SEL)a3;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)a3;
-- (BOOL)_allowHighlightForTextInteractableItem:(id)a3;
-- (BOOL)_allowInteraction:(int64_t)a3 forTextInteractableItem:(id)a4;
+- ($BB3B25BBC364C7D98808033881F79914)_saveSizeBeforeLayoutCalculation:(SEL)calculation;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)size;
+- (BOOL)_allowHighlightForTextInteractableItem:(id)item;
+- (BOOL)_allowInteraction:(int64_t)interaction forTextInteractableItem:(id)item;
 - (BOOL)_allowsOverflowForIntrinsicSizeCalculation;
 - (BOOL)_areDefaultTextFormattingAffordancesAvailable;
 - (BOOL)_delegatesAllowingLinkInteraction;
@@ -17,7 +17,7 @@
 - (BOOL)_disableAutomaticKeyboardBehavior;
 - (BOOL)_documentRangeEqualToViewportRange;
 - (BOOL)_finishResignFirstResponder;
-- (BOOL)_interactionPossibleWithAttachment:(id)a3;
+- (BOOL)_interactionPossibleWithAttachment:(id)attachment;
 - (BOOL)_isDisplayingLookupViewController;
 - (BOOL)_isDisplayingReferenceLibraryViewController;
 - (BOOL)_isDisplayingShareViewController;
@@ -26,15 +26,15 @@
 - (BOOL)_isInCompactHorizontalSizeClass;
 - (BOOL)_isInteractiveTextSelectionDisabled;
 - (BOOL)_isSelectionVisible;
-- (BOOL)_isSystemAttachment:(id)a3;
+- (BOOL)_isSystemAttachment:(id)attachment;
 - (BOOL)_isTextFormattingControllerPresented;
 - (BOOL)_isTextFormattingInProgress;
 - (BOOL)_isWritingToolsStreamingReplacements;
 - (BOOL)_needsDoubleUpdateConstraintsPass;
 - (BOOL)_ownsInputAccessoryView;
-- (BOOL)_performExternalEditsForWritingToolsSessionIdentifier:(id)a3 action:(int64_t)a4 usingBlock:(id)a5;
+- (BOOL)_performExternalEditsForWritingToolsSessionIdentifier:(id)identifier action:(int64_t)action usingBlock:(id)block;
 - (BOOL)_preserveSelectionDisplayForTextFormatting;
-- (BOOL)_reconfigureWithLayoutManager:(id)a3 triggeredByLayoutManagerAccess:(BOOL)a4 triggeringSelector:(SEL)a5;
+- (BOOL)_reconfigureWithLayoutManager:(id)manager triggeredByLayoutManagerAccess:(BOOL)access triggeringSelector:(SEL)selector;
 - (BOOL)_restoreFirstResponder;
 - (BOOL)_shouldCollectAsKeyView;
 - (BOOL)_shouldHideInputViewsForTextFormatting;
@@ -52,47 +52,47 @@
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
 - (BOOL)canBecomeFocused;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canResignFirstResponder;
 - (BOOL)forceDisableDictation;
 - (BOOL)forceEnableDictation;
 - (BOOL)hasText;
 - (BOOL)isEditing;
 - (BOOL)isWritingToolsActive;
-- (BOOL)keyboardInput:(id)a3 shouldInsertText:(id)a4 isMarkedText:(BOOL)a5;
-- (BOOL)keyboardInput:(id)a3 shouldReplaceTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (BOOL)keyboardInput:(id)a3 shouldReplaceTextInRanges:(id)a4 replacementText:(id)a5;
-- (BOOL)keyboardInputChanged:(id)a3;
-- (BOOL)keyboardInputShouldDelete:(id)a3;
+- (BOOL)keyboardInput:(id)input shouldInsertText:(id)text isMarkedText:(BOOL)markedText;
+- (BOOL)keyboardInput:(id)input shouldReplaceTextInRange:(_NSRange)range replacementText:(id)text;
+- (BOOL)keyboardInput:(id)input shouldReplaceTextInRanges:(id)ranges replacementText:(id)text;
+- (BOOL)keyboardInputChanged:(id)changed;
+- (BOOL)keyboardInputShouldDelete:(id)delete;
 - (BOOL)performFinalGrammarChecking;
-- (BOOL)replaceAnimatedTextPlaceholderWith:(id)a3 completion:(id)a4;
+- (BOOL)replaceAnimatedTextPlaceholderWith:(id)with completion:(id)completion;
 - (BOOL)resignFirstResponder;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (BOOL)supportsAdaptiveImageGlyph;
 - (BOOL)supportsEmojiImageTextAttachments;
-- (BOOL)textInput:(id)a3 shouldChangeCharactersInRanges:(id)a4 replacementText:(id)a5;
-- (BOOL)textInputShouldExtendCaretHeight:(id)a3;
+- (BOOL)textInput:(id)input shouldChangeCharactersInRanges:(id)ranges replacementText:(id)text;
+- (BOOL)textInputShouldExtendCaretHeight:(id)height;
 - (BOOL)tiledViewsDrawAsynchronously;
-- (BOOL)willInteractWithLinkAtPoint:(CGPoint)a3;
-- (CGPoint)_contentOffsetForScrollToVisible:(_NSRange)a3;
-- (CGPoint)_contentOffsetForScrollingToRect:(CGRect)a3;
-- (CGPoint)_convertPointFromRenderSpace:(CGPoint)a3;
-- (CGPoint)_convertPointToRenderSpace:(CGPoint)a3 textPosition:(id)a4;
-- (CGPoint)_convertPointToRenderSpace:(CGPoint)a3 textRange:(id)a4;
+- (BOOL)willInteractWithLinkAtPoint:(CGPoint)point;
+- (CGPoint)_contentOffsetForScrollToVisible:(_NSRange)visible;
+- (CGPoint)_contentOffsetForScrollingToRect:(CGRect)rect;
+- (CGPoint)_convertPointFromRenderSpace:(CGPoint)space;
+- (CGPoint)_convertPointToRenderSpace:(CGPoint)space textPosition:(id)position;
+- (CGPoint)_convertPointToRenderSpace:(CGPoint)space textRange:(id)range;
 - (CGPoint)textContainerOrigin;
-- (CGRect)_boundingRectForRange:(id)a3;
+- (CGRect)_boundingRectForRange:(id)range;
 - (CGRect)_customRenderBounds;
 - (CGRect)_frameOfTrailingWhitespace;
-- (CGRect)_rectForScrollToVisible:(_NSRange)a3;
-- (CGRect)_rectToScrollToVisibleInCellInWindow:(id)a3;
+- (CGRect)_rectForScrollToVisible:(_NSRange)visible;
+- (CGRect)_rectToScrollToVisibleInCellInWindow:(id)window;
 - (CGRect)accessibilityFrame;
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGRect)firstRectForRange:(id)a3;
-- (CGRect)frameForDictationResultPlaceholder:(id)a3;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGRect)firstRectForRange:(id)range;
+- (CGRect)frameForDictationResultPlaceholder:(id)placeholder;
 - (CGRect)visibleRect;
 - (CGRect)visibleRectIgnoringKeyboard;
-- (CGSize)_containerSizeForBoundsSize:(CGSize)a3 allowingOverflow:(BOOL)a4;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
+- (CGSize)_containerSizeForBoundsSize:(CGSize)size allowingOverflow:(BOOL)overflow;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
 - (CGSize)intrinsicContentSize;
 - (Class)_intelligenceBaseClass;
 - (NSArray)selectedRanges;
@@ -125,16 +125,16 @@
 - (UITextView)initWithFrame:(CGRect)frame textContainer:(NSTextContainer *)textContainer;
 - (UIView)inputAccessoryView;
 - (_NSCustomTextRenderingDisplayLink)_customRenderDisplayLink;
-- (_NSRange)_nsRangeForNonNullUITextRange:(id)a3;
-- (_NSRange)_nsRangeForTextKitRanges:(id)a3;
-- (_NSRange)_visibleRangeWithLayout:(BOOL)a3;
+- (_NSRange)_nsRangeForNonNullUITextRange:(id)range;
+- (_NSRange)_nsRangeForTextKitRanges:(id)ranges;
+- (_NSRange)_visibleRangeWithLayout:(BOOL)layout;
 - (_UITextAssistantManager)_textAssistantManager;
 - (_UITextInteractableItemCache)_textInteractableItemCache;
 - (_UITextViewAnimatedPlaceholderSupport)_animatedPlaceholderSupport;
 - (double)_adjustedTextContainerInset;
 - (double)_applicableContentOutsetsFromFonts;
-- (double)_autolayoutSpacingAtEdge:(int)a3 forAttribute:(int64_t)a4 inContainer:(id)a5 isGuide:(BOOL)a6;
-- (double)_autolayoutSpacingAtEdge:(int)a3 forAttribute:(int64_t)a4 nextToNeighbor:(id)a5 edge:(int)a6 attribute:(int64_t)a7 multiplier:(double)a8;
+- (double)_autolayoutSpacingAtEdge:(int)edge forAttribute:(int64_t)attribute inContainer:(id)container isGuide:(BOOL)guide;
+- (double)_autolayoutSpacingAtEdge:(int)edge forAttribute:(int64_t)attribute nextToNeighbor:(id)neighbor edge:(int)a6 attribute:(int64_t)a7 multiplier:(double)multiplier;
 - (double)_baselineOffsetFromBottom;
 - (double)_currentPreferredMaxLayoutWidth;
 - (double)_firstBaselineOffsetFromTop;
@@ -142,15 +142,15 @@
 - (double)_internalLastBaselineOffsetFromBottom;
 - (double)_textFormattingControllerOverlapHeight;
 - (double)lineHeight;
-- (id)_NSTextRangeFromNSRange:(_NSRange)a3;
-- (id)_activityItemsConfigurationAtLocation:(CGPoint)a3;
+- (id)_NSTextRangeFromNSRange:(_NSRange)range;
+- (id)_activityItemsConfigurationAtLocation:(CGPoint)location;
 - (id)_allowedTypingAttributes;
-- (id)_animatorForTextAnimation:(id)a3;
-- (id)_animatorForTextAnimation:(id)a3 notify:(id)a4;
-- (id)_anyTextItemConstrainedToLineAtPoint:(CGPoint)a3;
+- (id)_animatorForTextAnimation:(id)animation;
+- (id)_animatorForTextAnimation:(id)animation notify:(id)notify;
+- (id)_anyTextItemConstrainedToLineAtPoint:(CGPoint)point;
 - (id)_attributedPlaceholder;
-- (id)_attributedStringForInsertionOfAttributedString:(id)a3;
-- (id)_attributesForApplyingFormattingModification:(id *)a3 withAttributes:(id)a4 paragraphStyle:(id)a5 forTypingAttributes:(BOOL)a6;
+- (id)_attributedStringForInsertionOfAttributedString:(id)string;
+- (id)_attributesForApplyingFormattingModification:(id *)modification withAttributes:(id)attributes paragraphStyle:(id)style forTypingAttributes:(BOOL)typingAttributes;
 - (id)_currentDefaultAttributes;
 - (id)_descriptorForTextFormattingOptions;
 - (id)_disabledComponentsForTextFormattingOptions;
@@ -160,200 +160,200 @@
 - (id)_fontInfoForBaselineSpacing;
 - (id)_getDelegateZoomView;
 - (id)_implicitPasteConfigurationClasses;
-- (id)_initWithFrame:(CGRect)a3 textLayoutManagerEnabled:(BOOL)a4;
+- (id)_initWithFrame:(CGRect)frame textLayoutManagerEnabled:(BOOL)enabled;
 - (id)_inputController;
 - (id)_interactionState;
 - (id)_internalTextLayoutController;
 - (id)_layoutDebuggingTitle;
-- (id)_linkTextAttributesForLink:(id)a3 forCharacterAtIndex:(unint64_t)a4;
-- (id)_menuConfigurationForTextInteractableItem:(id)a3 defaultMenu:(id)a4;
-- (id)_newContainerViewWithFrame:(CGRect)a3 textContainer:(id)a4 textLayoutController:(id)a5;
+- (id)_linkTextAttributesForLink:(id)link forCharacterAtIndex:(unint64_t)index;
+- (id)_menuConfigurationForTextInteractableItem:(id)item defaultMenu:(id)menu;
+- (id)_newContainerViewWithFrame:(CGRect)frame textContainer:(id)container textLayoutController:(id)controller;
 - (id)_newTextContainer;
-- (id)_newTextKit1LayoutControllerWithTextContainer:(id)a3 layoutManager:(id)a4 textStorage:(id)a5;
-- (id)_nonNullIntersectionOfUITextRange:(id)a3 withOtherUITextRange:(id)a4;
-- (id)_nonNullUITextRangeForTextKitRanges:(id)a3;
-- (id)_nonNullUITextRangeFromNSRange:(_NSRange)a3;
+- (id)_newTextKit1LayoutControllerWithTextContainer:(id)container layoutManager:(id)manager textStorage:(id)storage;
+- (id)_nonNullIntersectionOfUITextRange:(id)range withOtherUITextRange:(id)textRange;
+- (id)_nonNullUITextRangeForTextKitRanges:(id)ranges;
+- (id)_nonNullUITextRangeFromNSRange:(_NSRange)range;
 - (id)_placeSelectionContainerView;
 - (id)_preferredPresentingControllerForTextFormatting;
-- (id)_primaryActionForTextInteractableItem:(id)a3 defaultAction:(id)a4;
-- (id)_replaceRange:(id)a3 withAttributedText:(id)a4 updatingSelection:(BOOL)a5;
-- (id)_resolvedTypesettingLanguage:(id)a3;
+- (id)_primaryActionForTextInteractableItem:(id)item defaultAction:(id)action;
+- (id)_replaceRange:(id)range withAttributedText:(id)text updatingSelection:(BOOL)selection;
+- (id)_resolvedTypesettingLanguage:(id)language;
 - (id)_scrollViewToAdjustForTextFormattingController;
 - (id)_systemDefaultFocusGroupIdentifier;
-- (id)_targetedPreviewForRange:(id)a3 withRenderingAttributes:(id)a4 includeFullDocument:(BOOL)a5;
-- (id)_targetedPreviewForTextInteractableItem:(id)a3 dismissing:(BOOL)a4;
+- (id)_targetedPreviewForRange:(id)range withRenderingAttributes:(id)attributes includeFullDocument:(BOOL)document;
+- (id)_targetedPreviewForTextInteractableItem:(id)item dismissing:(BOOL)dismissing;
 - (id)_textInputTraits;
-- (id)_textInteractableItemAtPoint:(CGPoint)a3 precision:(unint64_t)a4;
-- (id)_textInteractableItemForTag:(id)a3;
-- (id)_textItemForItem:(id)a3;
-- (id)_textLineRectsForRange:(id)a3;
+- (id)_textInteractableItemAtPoint:(CGPoint)point precision:(unint64_t)precision;
+- (id)_textInteractableItemForTag:(id)tag;
+- (id)_textItemForItem:(id)item;
+- (id)_textLineRectsForRange:(id)range;
 - (id)_writingToolsCoordinator;
-- (id)_writingToolsCoordinator:(id)a3 textHighlightColorForScheme:(id)a4 inHighlightStyle:(id)a5;
-- (id)annotatedSubstringForRange:(id)a3;
+- (id)_writingToolsCoordinator:(id)coordinator textHighlightColorForScheme:(id)scheme inHighlightStyle:(id)style;
+- (id)annotatedSubstringForRange:(id)range;
 - (id)attributedPlaceholders;
-- (id)attributedTextInRange:(id)a3;
+- (id)attributedTextInRange:(id)range;
 - (id)automaticallySelectedOverlay;
-- (id)characterRangeAtPoint:(CGPoint)a3;
-- (id)characterRangeByExtendingPosition:(id)a3 inDirection:(int64_t)a4;
-- (id)closestPositionToPoint:(CGPoint)a3;
-- (id)closestPositionToPoint:(CGPoint)a3 withinRange:(id)a4;
-- (id)editMenuForTextRange:(id)a3 suggestedActions:(id)a4;
-- (id)extractWordArrayFromTokensArray:(id)a3;
-- (id)findInteraction:(id)a3 sessionForView:(id)a4;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)initReadonlyAndUnselectableWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (id)initReadonlyAndUnselectableWithFrame:(CGRect)a3 textContainer:(id)a4 textLayoutManagerEnabled:(BOOL)a5;
+- (id)characterRangeAtPoint:(CGPoint)point;
+- (id)characterRangeByExtendingPosition:(id)position inDirection:(int64_t)direction;
+- (id)closestPositionToPoint:(CGPoint)point;
+- (id)closestPositionToPoint:(CGPoint)point withinRange:(id)range;
+- (id)editMenuForTextRange:(id)range suggestedActions:(id)actions;
+- (id)extractWordArrayFromTokensArray:(id)array;
+- (id)findInteraction:(id)interaction sessionForView:(id)view;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)initReadonlyAndUnselectableWithFrame:(CGRect)frame textContainer:(id)container;
+- (id)initReadonlyAndUnselectableWithFrame:(CGRect)frame textContainer:(id)container textLayoutManagerEnabled:(BOOL)enabled;
 - (id)insertDictationResultPlaceholder;
-- (id)insertTextPlaceholderWithSize:(CGSize)a3;
+- (id)insertTextPlaceholderWithSize:(CGSize)size;
 - (id)largeContentTitle;
 - (id)metadataDictionariesForDictationResults;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)placeholders;
-- (id)positionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(int64_t)a5;
-- (id)positionFromPosition:(id)a3 offset:(int64_t)a4;
-- (id)positionWithinRange:(id)a3 farthestInDirection:(int64_t)a4;
-- (id)rangeWithTextAlternatives:(id *)a3 atPosition:(id)a4;
+- (id)positionFromPosition:(id)position inDirection:(int64_t)direction offset:(int64_t)offset;
+- (id)positionFromPosition:(id)position offset:(int64_t)offset;
+- (id)positionWithinRange:(id)range farthestInDirection:(int64_t)direction;
+- (id)rangeWithTextAlternatives:(id *)alternatives atPosition:(id)position;
 - (id)selectedText;
 - (id)selectionContainerView;
-- (id)selectionRectsForRange:(id)a3;
-- (id)textContainerView:(id)a3 cuiCatalogForTextEffectName:(id)a4;
-- (id)textInRange:(id)a3;
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4;
-- (id)textStylingAtPosition:(id)a3 inDirection:(int64_t)a4;
+- (id)selectionRectsForRange:(id)range;
+- (id)textContainerView:(id)view cuiCatalogForTextEffectName:(id)name;
+- (id)textInRange:(id)range;
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition;
+- (id)textStylingAtPosition:(id)position inDirection:(int64_t)direction;
 - (id)undoManager;
-- (int64_t)_indexForNonNullUITextPosition:(id)a3;
-- (int64_t)baseWritingDirectionForPosition:(id)a3 inDirection:(int64_t)a4;
-- (int64_t)comparePosition:(id)a3 toPosition:(id)a4;
-- (int64_t)offsetFromPosition:(id)a3 toPosition:(id)a4;
+- (int64_t)_indexForNonNullUITextPosition:(id)position;
+- (int64_t)baseWritingDirectionForPosition:(id)position inDirection:(int64_t)direction;
+- (int64_t)comparePosition:(id)position toPosition:(id)toPosition;
+- (int64_t)offsetFromPosition:(id)position toPosition:(id)toPosition;
 - (int64_t)selectionAffinity;
 - (unint64_t)_defaultWritingToolsResultOptions;
 - (unint64_t)_effectiveDataDetectorTypes;
 - (unint64_t)_textLengthToDeleteBeforeSelectedRangeForSmartDelete;
 - (unint64_t)_totalNumberOfTextViewsInLayoutManager;
 - (unint64_t)allowedWritingToolsResultOptions;
-- (void)_addShortcut:(id)a3;
-- (void)_adjustBottomContentInsetForTextFormattingController:(BOOL)a3;
-- (void)_adjustFontForAccessibilityTraits:(BOOL)a3;
+- (void)_addShortcut:(id)shortcut;
+- (void)_adjustBottomContentInsetForTextFormattingController:(BOOL)controller;
+- (void)_adjustFontForAccessibilityTraits:(BOOL)traits;
 - (void)_adjustFontForTypesettingLanguage;
-- (void)_applyHighlightStyle:(id)a3 colorScheme:(id)a4 toTextRange:(id)a5;
-- (void)_applyHighlightStyle:(id)a3 toTextRange:(id)a4;
+- (void)_applyHighlightStyle:(id)style colorScheme:(id)scheme toTextRange:(id)range;
+- (void)_applyHighlightStyle:(id)style toTextRange:(id)range;
 - (void)_applyOptionsToGeometry;
-- (void)_assignTextStorageCheckingForOverrides:(uint64_t)a1;
+- (void)_assignTextStorageCheckingForOverrides:(uint64_t)overrides;
 - (void)_cancelDataDetectors;
-- (void)_changeLineHeightAction:(id)a3 newLineHeight:(id)a4;
+- (void)_changeLineHeightAction:(id)action newLineHeight:(id)height;
 - (void)_cleanUpForResignFirstResponder;
-- (void)_commonInitWithTextContainer:(id)a3 decoding:(BOOL)a4 editable:(BOOL)a5 selectable:(BOOL)a6 draggable:(BOOL)a7 textLayoutManagerEnabled:(BOOL)a8;
-- (void)_configureForLayoutCalculation:(id)a3 inSize:(CGSize)a4;
-- (void)_configureWithTextContainer:(id)a3 layoutManager:(id)a4 textLayoutManagerEnabled:(BOOL)a5;
+- (void)_commonInitWithTextContainer:(id)container decoding:(BOOL)decoding editable:(BOOL)editable selectable:(BOOL)selectable draggable:(BOOL)draggable textLayoutManagerEnabled:(BOOL)enabled;
+- (void)_configureForLayoutCalculation:(id)calculation inSize:(CGSize)size;
+- (void)_configureWithTextContainer:(id)container layoutManager:(id)manager textLayoutManagerEnabled:(BOOL)enabled;
 - (void)_createTextEmphasisBackgroundViewIfNeeded;
-- (void)_define:(id)a3;
-- (void)_deleteBackwardAndNotify:(BOOL)a3;
-- (void)_diagnoseFocusabilityForReport:(id)a3;
+- (void)_define:(id)_define;
+- (void)_deleteBackwardAndNotify:(BOOL)notify;
+- (void)_diagnoseFocusabilityForReport:(id)report;
 - (void)_didFinishSpeechRecognition;
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4;
-- (void)_didRecognizeSpeechStrings:(id)a3;
-- (void)_didRecognizeSpeechTokens:(id)a3;
-- (void)_dismissTextFormattingControllerIfNeededWithAnimation:(BOOL)a3;
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow;
+- (void)_didRecognizeSpeechStrings:(id)strings;
+- (void)_didRecognizeSpeechTokens:(id)tokens;
+- (void)_dismissTextFormattingControllerIfNeededWithAnimation:(BOOL)animation;
 - (void)_ensureUpToDateTextContainerInsetAndNotifyIfNecessary;
-- (void)_findSelected:(id)a3;
+- (void)_findSelected:(id)selected;
 - (void)_hideTextFormattingForResignFirstResponderIfNeeded;
-- (void)_hideTextFormattingOptions:(id)a3;
-- (void)_insertAttributedText:(id)a3 withAnimation:(int64_t)a4 completion:(id)a5;
-- (void)_insertAttributedTextWithoutClosingTyping:(id)a3;
-- (void)_installContainerViewAtIndex:(unint64_t)a3;
-- (void)_intelligenceCollectContentIn:(CGRect)a3 collector:(id)a4;
-- (void)_invalidateLayoutForLinkAttributesChange:(BOOL)a3;
-- (void)_keyboardDidShow:(id)a3;
+- (void)_hideTextFormattingOptions:(id)options;
+- (void)_insertAttributedText:(id)text withAnimation:(int64_t)animation completion:(id)completion;
+- (void)_insertAttributedTextWithoutClosingTyping:(id)typing;
+- (void)_installContainerViewAtIndex:(unint64_t)index;
+- (void)_intelligenceCollectContentIn:(CGRect)in collector:(id)collector;
+- (void)_invalidateLayoutForLinkAttributesChange:(BOOL)change;
+- (void)_keyboardDidShow:(id)show;
 - (void)_layoutPlaceholder;
 - (void)_layoutText;
 - (void)_logWarningForMenuControllerUsage;
 - (void)_notifyDidBeginEditing;
 - (void)_notifyDidEndEditing;
 - (void)_notifyDidScroll;
-- (void)_observedTextViewDidChange:(id)a3;
-- (void)_pasteAttributedString:(id)a3 pasteAsRichText:(BOOL)a4;
+- (void)_observedTextViewDidChange:(id)change;
+- (void)_pasteAttributedString:(id)string pasteAsRichText:(BOOL)text;
 - (void)_performTextFormattingRestoration;
 - (void)_performTextFormattingRestorationIfNeeded;
-- (void)_performTextKit1LayoutCalculation:(id)a3 inSize:(CGSize)a4;
-- (void)_performTextKit2LayoutCalculation:(id)a3 inSize:(CGSize)a4;
-- (void)_populateArchivedSubviews:(id)a3;
+- (void)_performTextKit1LayoutCalculation:(id)calculation inSize:(CGSize)size;
+- (void)_performTextKit2LayoutCalculation:(id)calculation inSize:(CGSize)size;
+- (void)_populateArchivedSubviews:(id)subviews;
 - (void)_prepareForFirstIntrinsicContentSizeCalculation;
-- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)a3;
-- (void)_prepareForTextFormattingControllerPresentationWithConfiguration:(id)a3 sender:(id)a4;
+- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)bounds;
+- (void)_prepareForTextFormattingControllerPresentationWithConfiguration:(id)configuration sender:(id)sender;
 - (void)_prepareForTextFormattingRestoration;
 - (void)_presentTextFormattingController;
-- (void)_promptForReplace:(id)a3;
-- (void)_registerUndoOperationForReplacementWithActionName:(id)a3 replacementText:(id)a4;
-- (void)_removeHighlightsFromTextRange:(id)a3;
-- (void)_replaceRange:(id)a3 withAttributedText:(id)a4 usingAnimation:(int64_t)a5 completion:(id)a6;
-- (void)_replaceRangeUsingColorWipe:(id)a3 withAttributedText:(id)a4 completion:(id)a5;
+- (void)_promptForReplace:(id)replace;
+- (void)_registerUndoOperationForReplacementWithActionName:(id)name replacementText:(id)text;
+- (void)_removeHighlightsFromTextRange:(id)range;
+- (void)_replaceRange:(id)range withAttributedText:(id)text usingAnimation:(int64_t)animation completion:(id)completion;
+- (void)_replaceRangeUsingColorWipe:(id)wipe withAttributedText:(id)text completion:(id)completion;
 - (void)_resetDataDetectorsResults;
 - (void)_resetUsesExplicitPreferredMaxLayoutWidth;
-- (void)_restoreScrollPosition:(id)a3 animated:(BOOL)a4;
-- (void)_restoreSize:(id *)a3 afterLayoutCalculation:(id)a4;
-- (void)_resyncContainerFrameForNonAutolayoutDeferringSizeToFit:(BOOL)a3;
-- (void)_scrollRangeToVisible:(_NSRange)a3 animated:(BOOL)a4;
-- (void)_scrollRect:(CGRect)a3 toVisibleInContainingScrollView:(BOOL)a4;
-- (void)_scrollSelectionToVisibleInContainingScrollView:(BOOL)a3;
+- (void)_restoreScrollPosition:(id)position animated:(BOOL)animated;
+- (void)_restoreSize:(id *)size afterLayoutCalculation:(id)calculation;
+- (void)_resyncContainerFrameForNonAutolayoutDeferringSizeToFit:(BOOL)fit;
+- (void)_scrollRangeToVisible:(_NSRange)visible animated:(BOOL)animated;
+- (void)_scrollRect:(CGRect)rect toVisibleInContainingScrollView:(BOOL)view;
+- (void)_scrollSelectionToVisibleInContainingScrollView:(BOOL)view;
 - (void)_scrollToCaretIfNeeded;
 - (void)_scrollToSelectionIfNeeded;
-- (void)_scrollViewAnimationEnded:(id)a3 finished:(BOOL)a4;
+- (void)_scrollViewAnimationEnded:(id)ended finished:(BOOL)finished;
 - (void)_scrollViewDidEndDecelerating;
-- (void)_scrollViewDidEndDraggingWithDeceleration:(BOOL)a3;
-- (void)_selectionMayChange:(id)a3;
-- (void)_setAllowedTypingAttributes:(id)a3;
-- (void)_setContentOffsetWithoutRecordingScrollPosition:(CGPoint)a3;
-- (void)_setCuiCatalog:(id)a3;
-- (void)_setCuiStyleEffectConfiguration:(id)a3;
-- (void)_setCustomRenderDisplayLink:(id)a3;
-- (void)_setDictationResult:(id)a3 withCorrectionIdentifier:(id)a4;
-- (void)_setEncodedTextKitFlavor:(int64_t)a3;
-- (void)_setExtremeSizingEnabled:(BOOL)a3;
-- (void)_setFrameOrBounds:(CGRect)a3 fromOldRect:(CGRect)a4 settingAction:(id)a5;
-- (void)_setFreezeTextContainerSize:(BOOL)a3;
-- (void)_setHorizontalMargins:(unint64_t)a3;
-- (void)_setInteractionState:(id)a3;
-- (void)_setInteractiveTextSelectionDisabled:(BOOL)a3;
+- (void)_scrollViewDidEndDraggingWithDeceleration:(BOOL)deceleration;
+- (void)_selectionMayChange:(id)change;
+- (void)_setAllowedTypingAttributes:(id)attributes;
+- (void)_setContentOffsetWithoutRecordingScrollPosition:(CGPoint)position;
+- (void)_setCuiCatalog:(id)catalog;
+- (void)_setCuiStyleEffectConfiguration:(id)configuration;
+- (void)_setCustomRenderDisplayLink:(id)link;
+- (void)_setDictationResult:(id)result withCorrectionIdentifier:(id)identifier;
+- (void)_setEncodedTextKitFlavor:(int64_t)flavor;
+- (void)_setExtremeSizingEnabled:(BOOL)enabled;
+- (void)_setFrameOrBounds:(CGRect)bounds fromOldRect:(CGRect)rect settingAction:(id)action;
+- (void)_setFreezeTextContainerSize:(BOOL)size;
+- (void)_setHorizontalMargins:(unint64_t)margins;
+- (void)_setInteractionState:(id)state;
+- (void)_setInteractiveTextSelectionDisabled:(BOOL)disabled;
 - (void)_setNeedsFrameUpdateForCustomRendering;
 - (void)_setNeedsTextLayout;
-- (void)_setOverridePlaceholder:(id)a3 alignment:(int64_t)a4;
-- (void)_setPreferredMaxLayoutWidth:(double)a3;
-- (void)_setShowsEditMenu:(BOOL)a3;
-- (void)_setSiriAnimationDictationStyleWithCharacterInsertionRate:(double)a3 minimumDurationBetweenHypotheses:(double)a4;
-- (void)_setTextColor:(id)a3;
-- (void)_setTextSizeCacheEnabled:(BOOL)a3;
-- (void)_setTypingAttributesTextColor:(id)a3;
-- (void)_setWantsContentAwareTypesettingLanguage:(BOOL)a3;
-- (void)_setWritingToolsCoordinator:(id)a3;
-- (void)_setWritingToolsStreamingReplacements:(BOOL)a3;
+- (void)_setOverridePlaceholder:(id)placeholder alignment:(int64_t)alignment;
+- (void)_setPreferredMaxLayoutWidth:(double)width;
+- (void)_setShowsEditMenu:(BOOL)menu;
+- (void)_setSiriAnimationDictationStyleWithCharacterInsertionRate:(double)rate minimumDurationBetweenHypotheses:(double)hypotheses;
+- (void)_setTextColor:(id)color;
+- (void)_setTextSizeCacheEnabled:(BOOL)enabled;
+- (void)_setTypingAttributesTextColor:(id)color;
+- (void)_setWantsContentAwareTypesettingLanguage:(BOOL)language;
+- (void)_setWritingToolsCoordinator:(id)coordinator;
+- (void)_setWritingToolsStreamingReplacements:(BOOL)replacements;
 - (void)_setupDefaultStyleEffectConfiguration;
-- (void)_share:(id)a3;
-- (void)_showTextFormattingAnimationOptions:(id)a3;
-- (void)_showTextFormattingOptions:(id)a3;
-- (void)_sizingRuleWillChangeShouldClearInsetEdges:(uint64_t)a1;
+- (void)_share:(id)_share;
+- (void)_showTextFormattingAnimationOptions:(id)options;
+- (void)_showTextFormattingOptions:(id)options;
+- (void)_sizingRuleWillChangeShouldClearInsetEdges:(uint64_t)edges;
 - (void)_startDataDetectors;
 - (void)_startDataDetectorsIfNeeded;
-- (void)_startSuppressingKeyboardForTextFormatting:(id)a3;
-- (void)_stopSuppressingKeyboardForTextFormatting:(id)a3;
+- (void)_startSuppressingKeyboardForTextFormatting:(id)formatting;
+- (void)_stopSuppressingKeyboardForTextFormatting:(id)formatting;
 - (void)_syncTypingAttributesToTextContainerAttributesForExtraLineFragment;
-- (void)_textContainerSizeDidChange:(id)a3;
-- (void)_textFormattingDidDisappear:(id)a3;
-- (void)_textFormattingRequestsFirstResponderResignation:(id)a3;
-- (void)_textFormattingRequestsFirstResponderRestoration:(id)a3;
-- (void)_textInput:(id)a3 pasteDelegateDidPasteText:(id)a4 toTextRange:(id)a5;
-- (void)_textInput:(id)a3 pasteDelegateWillPasteText:(id)a4 toTextRange:(id)a5;
-- (void)_textInteractableItem:(id)a3 willDismissMenuWithAnimator:(id)a4;
-- (void)_textInteractableItem:(id)a3 willDisplayMenuWithAnimator:(id)a4;
-- (void)_textStorageDidProcessEditing:(id)a3;
-- (void)_textViewContentPaddingDidChange:(id)a3;
+- (void)_textContainerSizeDidChange:(id)change;
+- (void)_textFormattingDidDisappear:(id)disappear;
+- (void)_textFormattingRequestsFirstResponderResignation:(id)resignation;
+- (void)_textFormattingRequestsFirstResponderRestoration:(id)restoration;
+- (void)_textInput:(id)input pasteDelegateDidPasteText:(id)text toTextRange:(id)range;
+- (void)_textInput:(id)input pasteDelegateWillPasteText:(id)text toTextRange:(id)range;
+- (void)_textInteractableItem:(id)item willDismissMenuWithAnimator:(id)animator;
+- (void)_textInteractableItem:(id)item willDisplayMenuWithAnimator:(id)animator;
+- (void)_textStorageDidProcessEditing:(id)editing;
+- (void)_textViewContentPaddingDidChange:(id)change;
 - (void)_textViewWillPresentTextFormattingOptions;
-- (void)_translate:(id)a3;
-- (void)_transliterateChinese:(id)a3;
+- (void)_translate:(id)_translate;
+- (void)_transliterateChinese:(id)chinese;
 - (void)_updateBaselineInformationDependentOnBounds;
 - (void)_updateContainerTileAndSizingFlags;
 - (void)_updateContentSize;
-- (void)_updateFrameOfTrailingWhitespace:(CGSize)a3;
+- (void)_updateFrameOfTrailingWhitespace:(CGSize)whitespace;
 - (void)_updateInteractionGeometry;
 - (void)_updatePlaceholderVisibility;
 - (void)_updateSelectableInteractions;
@@ -362,158 +362,158 @@
 - (void)_updateTextEffectsConfigurationIfNeeded;
 - (void)_updateTextFormattingController;
 - (void)_updateTextFormattingControllerPresentationSource;
-- (void)_willDrawContentOfSurface:(id)a3 withBlock:(id)a4;
-- (void)_writingToolsCoordinator:(id)a3 didReceiveContexts:(id)a4;
-- (void)addGhostedRange:(id)a3;
-- (void)addTextAlternatives:(id)a3;
-- (void)addTextAlternativesDisplayStyle:(int64_t)a3 toRange:(_NSRange)a4;
+- (void)_willDrawContentOfSurface:(id)surface withBlock:(id)block;
+- (void)_writingToolsCoordinator:(id)coordinator didReceiveContexts:(id)contexts;
+- (void)addGhostedRange:(id)range;
+- (void)addTextAlternatives:(id)alternatives;
+- (void)addTextAlternativesDisplayStyle:(int64_t)style toRange:(_NSRange)range;
 - (void)adjustedContentInsetDidChange;
-- (void)alignCenter:(id)a3;
-- (void)alignJustified:(id)a3;
-- (void)alignLeft:(id)a3;
-- (void)alignRight:(id)a3;
+- (void)alignCenter:(id)center;
+- (void)alignJustified:(id)justified;
+- (void)alignLeft:(id)left;
+- (void)alignRight:(id)right;
 - (void)applyGrammarCheckingIndication;
-- (void)beginFloatingCursorAtPoint:(CGPoint)a3;
+- (void)beginFloatingCursorAtPoint:(CGPoint)point;
 - (void)beginSelectionChange;
-- (void)captureTextFromCamera:(id)a3;
-- (void)copy:(id)a3;
-- (void)cut:(id)a3;
+- (void)captureTextFromCamera:(id)camera;
+- (void)copy:(id)copy;
+- (void)cut:(id)cut;
 - (void)dealloc;
-- (void)decodeRestorableStateWithCoder:(id)a3 includingSelectedTextAndDisplayedViewControllers:(BOOL)a4;
-- (void)decreaseSize:(id)a3;
+- (void)decodeRestorableStateWithCoder:(id)coder includingSelectedTextAndDisplayedViewControllers:(BOOL)controllers;
+- (void)decreaseSize:(id)size;
 - (void)deleteBackward;
-- (void)draggingFinished:(id)a3;
-- (void)drawTextHighlightBackgroundForTextRange:(id)a3 origin:(CGPoint)a4;
+- (void)draggingFinished:(id)finished;
+- (void)drawTextHighlightBackgroundForTextRange:(id)range origin:(CGPoint)origin;
 - (void)droppingFinished;
 - (void)droppingStarted;
-- (void)encodeRestorableStateWithCoder:(id)a3 includingSelectedTextAndDisplayedViewControllers:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeRestorableStateWithCoder:(id)coder includingSelectedTextAndDisplayedViewControllers:(BOOL)controllers;
+- (void)encodeWithCoder:(id)coder;
 - (void)endFloatingCursor;
 - (void)endSelectionChange;
-- (void)findInteraction:(id)a3 didBeginFindSession:(id)a4;
-- (void)findInteraction:(id)a3 didEndFindSession:(id)a4;
-- (void)increaseSize:(id)a3;
-- (void)insertAdaptiveImageGlyph:(id)a3 replacementRange:(id)a4;
+- (void)findInteraction:(id)interaction didBeginFindSession:(id)session;
+- (void)findInteraction:(id)interaction didEndFindSession:(id)session;
+- (void)increaseSize:(id)size;
+- (void)insertAdaptiveImageGlyph:(id)glyph replacementRange:(id)range;
 - (void)insertAnimatedTextPlaceholder;
-- (void)insertAnimatedTextPlaceholderAtLocation:(id)a3 numLines:(double)a4 completion:(id)a5;
-- (void)insertAttributedText:(id)a3;
-- (void)insertDictationResult:(id)a3 withCorrectionIdentifier:(id)a4;
-- (void)insertEmojiImageTextAttachment:(id)a3 replacementRange:(id)a4;
-- (void)insertInputSuggestion:(id)a3;
-- (void)insertText:(id)a3;
-- (void)insertText:(id)a3 alternatives:(id)a4 style:(int64_t)a5;
-- (void)insertTextSuggestion:(id)a3;
+- (void)insertAnimatedTextPlaceholderAtLocation:(id)location numLines:(double)lines completion:(id)completion;
+- (void)insertAttributedText:(id)text;
+- (void)insertDictationResult:(id)result withCorrectionIdentifier:(id)identifier;
+- (void)insertEmojiImageTextAttachment:(id)attachment replacementRange:(id)range;
+- (void)insertInputSuggestion:(id)suggestion;
+- (void)insertText:(id)text;
+- (void)insertText:(id)text alternatives:(id)alternatives style:(int64_t)style;
+- (void)insertTextSuggestion:(id)suggestion;
 - (void)invalidateIntrinsicContentSize;
 - (void)isEditableDidChange;
-- (void)keyboardInputChangedSelection:(id)a3;
+- (void)keyboardInputChangedSelection:(id)selection;
 - (void)layoutSubviews;
-- (void)makeTextWritingDirectionLeftToRight:(id)a3;
-- (void)makeTextWritingDirectionNatural:(id)a3;
-- (void)makeTextWritingDirectionRightToLeft:(id)a3;
-- (void)paste:(id)a3;
-- (void)pasteAndMatchStyle:(id)a3;
-- (void)pasteItemProviders:(id)a3;
+- (void)makeTextWritingDirectionLeftToRight:(id)right;
+- (void)makeTextWritingDirectionNatural:(id)natural;
+- (void)makeTextWritingDirectionRightToLeft:(id)left;
+- (void)paste:(id)paste;
+- (void)pasteAndMatchStyle:(id)style;
+- (void)pasteItemProviders:(id)providers;
 - (void)removeAnimatedTextPlaceholders;
-- (void)removeAnnotation:(id)a3 forRange:(id)a4;
-- (void)removeDictationResultPlaceholder:(id)a3 willInsertResult:(BOOL)a4;
+- (void)removeAnnotation:(id)annotation forRange:(id)range;
+- (void)removeDictationResultPlaceholder:(id)placeholder willInsertResult:(BOOL)result;
 - (void)removeEmojiAlternatives;
-- (void)removeTextPlaceholder:(id)a3;
-- (void)replace:(id)a3;
-- (void)replaceRange:(id)a3 withAnnotatedString:(id)a4 relativeReplacementRange:(_NSRange)a5;
-- (void)replaceRange:(id)a3 withAttributedText:(id)a4;
-- (void)replaceRange:(id)a3 withText:(id)a4;
-- (void)replaceRangeWithTextWithoutClosingTyping:(id)a3 replacementText:(id)a4;
+- (void)removeTextPlaceholder:(id)placeholder;
+- (void)replace:(id)replace;
+- (void)replaceRange:(id)range withAnnotatedString:(id)string relativeReplacementRange:(_NSRange)replacementRange;
+- (void)replaceRange:(id)range withAttributedText:(id)text;
+- (void)replaceRange:(id)range withText:(id)text;
+- (void)replaceRangeWithTextWithoutClosingTyping:(id)typing replacementText:(id)text;
 - (void)scrollRangeToVisible:(NSRange)range;
-- (void)scrollSelectionToVisible:(BOOL)a3;
-- (void)select:(id)a3;
-- (void)selectAll:(id)a3;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setAllowedWritingToolsResultOptions:(unint64_t)a3;
+- (void)scrollSelectionToVisible:(BOOL)visible;
+- (void)select:(id)select;
+- (void)selectAll:(id)all;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setAllowedWritingToolsResultOptions:(unint64_t)options;
 - (void)setAllowsEditingTextAttributes:(BOOL)allowsEditingTextAttributes;
-- (void)setAllowsTextAnimations:(BOOL)a3;
-- (void)setAttributedMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)setAttributedPlaceholder:(id)a3;
-- (void)setAttributedPlaceholders:(id)a3;
+- (void)setAllowsTextAnimations:(BOOL)animations;
+- (void)setAttributedMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)setAttributedPlaceholder:(id)placeholder;
+- (void)setAttributedPlaceholders:(id)placeholders;
 - (void)setAttributedText:(NSAttributedString *)attributedText;
-- (void)setAutomaticallyAdjustsWritingDirection:(BOOL)a3;
-- (void)setBaseWritingDirection:(int64_t)a3 forRange:(id)a4;
-- (void)setBounds:(CGRect)a3;
+- (void)setAutomaticallyAdjustsWritingDirection:(BOOL)direction;
+- (void)setBaseWritingDirection:(int64_t)direction forRange:(id)range;
+- (void)setBounds:(CGRect)bounds;
 - (void)setClearsOnInsertion:(BOOL)clearsOnInsertion;
-- (void)setContentMode:(int64_t)a3;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)setContentToHTMLString:(id)a3;
-- (void)setContinuousSpellCheckingEnabled:(BOOL)a3;
-- (void)setCustomRenderController:(id)a3;
+- (void)setContentMode:(int64_t)mode;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)setContentToHTMLString:(id)string;
+- (void)setContinuousSpellCheckingEnabled:(BOOL)enabled;
+- (void)setCustomRenderController:(id)controller;
 - (void)setDataDetectorTypes:(UIDataDetectorTypes)dataDetectorTypes;
 - (void)setDelegate:(id)delegate;
 - (void)setEditable:(BOOL)editable;
 - (void)setFindInteractionEnabled:(BOOL)findInteractionEnabled;
 - (void)setFont:(UIFont *)font;
-- (void)setForceDisableDictation:(BOOL)a3;
-- (void)setForceEnableDictation:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setInputDelegate:(id)a3;
+- (void)setForceDisableDictation:(BOOL)dictation;
+- (void)setForceEnableDictation:(BOOL)dictation;
+- (void)setFrame:(CGRect)frame;
+- (void)setInputDelegate:(id)delegate;
 - (void)setInputView:(UIView *)inputView;
-- (void)setLineHeight:(double)a3;
+- (void)setLineHeight:(double)height;
 - (void)setLinkTextAttributes:(NSDictionary *)linkTextAttributes;
-- (void)setMarginTop:(unint64_t)a3;
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)setMarkedTextStyle:(id)a3;
+- (void)setMarginTop:(unint64_t)top;
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)setMarkedTextStyle:(id)style;
 - (void)setNeedsDisplay;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
-- (void)setNeedsFrameUpdateForSurface:(id)a3;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
+- (void)setNeedsFrameUpdateForSurface:(id)surface;
 - (void)setNeedsLayout;
-- (void)setScrollEnabled:(BOOL)a3;
-- (void)setSecureTextEntry:(BOOL)a3;
+- (void)setScrollEnabled:(BOOL)enabled;
+- (void)setSecureTextEntry:(BOOL)entry;
 - (void)setSelectable:(BOOL)selectable;
 - (void)setSelectedRange:(NSRange)selectedRange;
-- (void)setSelectedRanges:(id)a3;
-- (void)setSelectedTextRange:(id)a3;
-- (void)setShouldAutoscrollAboveBottom:(BOOL)a3;
-- (void)setShouldPresentSheetsInAWindowLayeredAboveTheKeyboard:(BOOL)a3;
-- (void)setSizingRule:(int64_t)a3;
-- (void)setSupportsAdaptiveImageGlyph:(BOOL)a3;
+- (void)setSelectedRanges:(id)ranges;
+- (void)setSelectedTextRange:(id)range;
+- (void)setShouldAutoscrollAboveBottom:(BOOL)bottom;
+- (void)setShouldPresentSheetsInAWindowLayeredAboveTheKeyboard:(BOOL)keyboard;
+- (void)setSizingRule:(int64_t)rule;
+- (void)setSupportsAdaptiveImageGlyph:(BOOL)glyph;
 - (void)setText:(NSString *)text;
 - (void)setTextAlignment:(NSTextAlignment)textAlignment;
 - (void)setTextContainerInset:(UIEdgeInsets)textContainerInset;
-- (void)setTextFormattingConfiguration:(id)a3;
-- (void)setTiledViewsDrawAsynchronously:(BOOL)a3;
+- (void)setTextFormattingConfiguration:(id)configuration;
+- (void)setTiledViewsDrawAsynchronously:(BOOL)asynchronously;
 - (void)setTypingAttributes:(NSDictionary *)typingAttributes;
-- (void)setUsesTiledViews:(BOOL)a3;
-- (void)startAutoscroll:(CGPoint)a3;
-- (void)startInteractionWithLinkAtPoint:(CGPoint)a3;
-- (void)takeTraitsFrom:(id)a3;
-- (void)textInput:(id)a3 didApplyAttributedText:(id)a4 toCharacterRange:(_NSRange)a5;
-- (void)textInput:(id)a3 undoRedoDidApplyAttributedText:(id)a4 toCharacterRange:(_NSRange)a5;
-- (void)textInputDidChange:(id)a3;
-- (void)textInputDidChangeSelection:(id)a3;
-- (void)textInputDidFinishUndoRedoChanges:(id)a3;
+- (void)setUsesTiledViews:(BOOL)views;
+- (void)startAutoscroll:(CGPoint)autoscroll;
+- (void)startInteractionWithLinkAtPoint:(CGPoint)point;
+- (void)takeTraitsFrom:(id)from;
+- (void)textInput:(id)input didApplyAttributedText:(id)text toCharacterRange:(_NSRange)range;
+- (void)textInput:(id)input undoRedoDidApplyAttributedText:(id)text toCharacterRange:(_NSRange)range;
+- (void)textInputDidChange:(id)change;
+- (void)textInputDidChangeSelection:(id)selection;
+- (void)textInputDidFinishUndoRedoChanges:(id)changes;
 - (void)tintColorDidChange;
-- (void)toggleBoldface:(id)a3;
-- (void)toggleItalics:(id)a3;
-- (void)toggleUnderline:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)toggleBoldface:(id)boldface;
+- (void)toggleItalics:(id)italics;
+- (void)toggleUnderline:(id)underline;
+- (void)traitCollectionDidChange:(id)change;
 - (void)unmarkText;
 - (void)updateAutoscrollAboveBottom;
-- (void)updateFloatingCursorAtPoint:(CGPoint)a3;
-- (void)updateFloatingCursorAtPoint:(CGPoint)a3 animated:(BOOL)a4;
+- (void)updateFloatingCursorAtPoint:(CGPoint)point;
+- (void)updateFloatingCursorAtPoint:(CGPoint)point animated:(BOOL)animated;
 - (void)updateSelection;
 - (void)updateSelectionImmediately;
-- (void)updateTextAttributesWithConversionHandler:(id)a3;
-- (void)validateCommand:(id)a3;
-- (void)willDismissEditMenuWithAnimator:(id)a3;
-- (void)willPresentEditMenuWithAnimator:(id)a3;
-- (void)writingToolsCoordinator:(id)a3 adjustForUpdatedRange:(_NSRange)a4 forTextAnimation:(int64_t)a5 inContext:(id)a6 completion:(id)a7;
-- (void)writingToolsCoordinator:(id)a3 finishTextAnimation:(int64_t)a4 forRange:(_NSRange)a5 inContext:(id)a6 completion:(id)a7;
-- (void)writingToolsCoordinator:(id)a3 prepareForTextAnimation:(int64_t)a4 forRange:(_NSRange)a5 inContext:(id)a6 completion:(id)a7;
-- (void)writingToolsCoordinator:(id)a3 replaceRange:(_NSRange)a4 inContext:(id)a5 proposedText:(id)a6 reason:(int64_t)a7 animationParameters:(id)a8 completion:(id)a9;
-- (void)writingToolsCoordinator:(id)a3 requestsBoundingBezierPathsForRange:(_NSRange)a4 inContext:(id)a5 completion:(id)a6;
-- (void)writingToolsCoordinator:(id)a3 requestsContextsForScope:(int64_t)a4 completion:(id)a5;
-- (void)writingToolsCoordinator:(id)a3 requestsPreviewForTextAnimation:(int64_t)a4 ofRange:(_NSRange)a5 inContext:(id)a6 completion:(id)a7;
-- (void)writingToolsCoordinator:(id)a3 requestsRangeInContextWithIdentifierForPoint:(CGPoint)a4 completion:(id)a5;
-- (void)writingToolsCoordinator:(id)a3 requestsUnderlinePathsForRange:(_NSRange)a4 inContext:(id)a5 completion:(id)a6;
-- (void)writingToolsCoordinator:(id)a3 selectRanges:(id)a4 inContext:(id)a5 completion:(id)a6;
-- (void)writingToolsCoordinator:(id)a3 willChangeToState:(int64_t)a4 completion:(id)a5;
+- (void)updateTextAttributesWithConversionHandler:(id)handler;
+- (void)validateCommand:(id)command;
+- (void)willDismissEditMenuWithAnimator:(id)animator;
+- (void)willPresentEditMenuWithAnimator:(id)animator;
+- (void)writingToolsCoordinator:(id)coordinator adjustForUpdatedRange:(_NSRange)range forTextAnimation:(int64_t)animation inContext:(id)context completion:(id)completion;
+- (void)writingToolsCoordinator:(id)coordinator finishTextAnimation:(int64_t)animation forRange:(_NSRange)range inContext:(id)context completion:(id)completion;
+- (void)writingToolsCoordinator:(id)coordinator prepareForTextAnimation:(int64_t)animation forRange:(_NSRange)range inContext:(id)context completion:(id)completion;
+- (void)writingToolsCoordinator:(id)coordinator replaceRange:(_NSRange)range inContext:(id)context proposedText:(id)text reason:(int64_t)reason animationParameters:(id)parameters completion:(id)completion;
+- (void)writingToolsCoordinator:(id)coordinator requestsBoundingBezierPathsForRange:(_NSRange)range inContext:(id)context completion:(id)completion;
+- (void)writingToolsCoordinator:(id)coordinator requestsContextsForScope:(int64_t)scope completion:(id)completion;
+- (void)writingToolsCoordinator:(id)coordinator requestsPreviewForTextAnimation:(int64_t)animation ofRange:(_NSRange)range inContext:(id)context completion:(id)completion;
+- (void)writingToolsCoordinator:(id)coordinator requestsRangeInContextWithIdentifierForPoint:(CGPoint)point completion:(id)completion;
+- (void)writingToolsCoordinator:(id)coordinator requestsUnderlinePathsForRange:(_NSRange)range inContext:(id)context completion:(id)completion;
+- (void)writingToolsCoordinator:(id)coordinator selectRanges:(id)ranges inContext:(id)context completion:(id)completion;
+- (void)writingToolsCoordinator:(id)coordinator willChangeToState:(int64_t)state completion:(id)completion;
 @end
 
 @implementation UITextView
@@ -528,15 +528,15 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_UITextContainerView *)self->_containerView canvasView];
-  [(UIView *)self convertRect:v11 toView:v4, v6, v8, v10];
+  canvasView = [(_UITextContainerView *)self->_containerView canvasView];
+  [(UIView *)self convertRect:canvasView toView:v4, v6, v8, v10];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  v20 = [(_UITextContainerView *)self->_containerView canvasView];
-  [v20 bounds];
+  canvasView2 = [(_UITextContainerView *)self->_containerView canvasView];
+  [canvasView2 bounds];
   v33.origin.x = v21;
   v33.origin.y = v22;
   v33.size.width = v23;
@@ -565,14 +565,14 @@
 {
   if (dyld_program_sdk_at_least())
   {
-    v3 = [(_UITextLayoutController *)self->_textLayoutController styleEffectConfiguration];
+    styleEffectConfiguration = [(_UITextLayoutController *)self->_textLayoutController styleEffectConfiguration];
 
-    if (!v3)
+    if (!styleEffectConfiguration)
     {
       v6 = objc_alloc_init(MEMORY[0x1E6999430]);
-      v4 = [(UIView *)self traitCollection];
-      v5 = [(UITraitCollection *)v4 _styleEffectAppearanceName];
-      [v6 setAppearanceName:v5];
+      traitCollection = [(UIView *)self traitCollection];
+      _styleEffectAppearanceName = [(UITraitCollection *)traitCollection _styleEffectAppearanceName];
+      [v6 setAppearanceName:_styleEffectAppearanceName];
 
       [(_UITextLayoutController *)self->_textLayoutController setStyleEffectConfiguration:v6];
     }
@@ -581,14 +581,14 @@
 
 - (BOOL)isEditing
 {
-  v3 = [(UIView *)self isFirstResponder];
-  if (v3)
+  isFirstResponder = [(UIView *)self isFirstResponder];
+  if (isFirstResponder)
   {
 
-    LOBYTE(v3) = [(UITextView *)self isEditable];
+    LOBYTE(isFirstResponder) = [(UITextView *)self isEditable];
   }
 
-  return v3;
+  return isFirstResponder;
 }
 
 - (id)_textInputTraits
@@ -600,7 +600,7 @@
   v6 = v5;
   if (v4)
   {
-    v7 = [v5 _textInputTraits];
+    _textInputTraits = [v5 _textInputTraits];
   }
 
   else
@@ -626,18 +626,18 @@
       v8 = textInputTraits;
     }
 
-    v7 = v8;
+    _textInputTraits = v8;
   }
 
-  return v7;
+  return _textInputTraits;
 }
 
 - (UITextInputDelegate)inputDelegate
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained inputDelegate];
+  inputDelegate = [WeakRetained inputDelegate];
 
-  return v3;
+  return inputDelegate;
 }
 
 - (NSDictionary)linkTextAttributes
@@ -651,31 +651,31 @@
 
   else
   {
-    v6 = [(UIView *)self tintColor];
-    if (!v6)
+    tintColor = [(UIView *)self tintColor];
+    if (!tintColor)
     {
-      v6 = [(UIView *)self _normalInheritedTintColor];
+      tintColor = [(UIView *)self _normalInheritedTintColor];
       if ([(UIView *)self tintAdjustmentMode]== UIViewTintAdjustmentModeDimmed)
       {
         v10 = 0.0;
         v11 = 0.0;
-        [v6 getWhite:&v11 alpha:&v10];
+        [tintColor getWhite:&v11 alpha:&v10];
         v7 = [UIColor colorWithWhite:v11 alpha:v10 * 0.8];
 
-        v6 = v7;
+        tintColor = v7;
       }
 
-      if (!v6)
+      if (!tintColor)
       {
-        v9 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v9 handleFailureInMethod:a2 object:self file:@"UITextView.m" lineNumber:6306 description:@"Unable to derive tintColor!"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UITextView.m" lineNumber:6306 description:@"Unable to derive tintColor!"];
 
-        v6 = 0;
+        tintColor = 0;
       }
     }
 
     v12 = *off_1E70EC920;
-    v13[0] = v6;
+    v13[0] = tintColor;
     v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   }
 
@@ -714,9 +714,9 @@ uint64_t __60__UITextView__shouldInvalidateLayoutForLinkAttributesChange__block_
   {
     if (self)
     {
-      v3 = [(UITextView *)&self->super.super.super.super.isa _existingSelectionContainerView];
+      _existingSelectionContainerView = [(UITextView *)&self->super.super.super.super.isa _existingSelectionContainerView];
 
-      if (!v3)
+      if (!_existingSelectionContainerView)
       {
         v4 = [UIView alloc];
         v5 = [(UIView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -727,31 +727,31 @@ uint64_t __60__UITextView__shouldInvalidateLayoutForLinkAttributesChange__block_
       }
     }
 
-    v7 = [(UITextView *)&self->super.super.super.super.isa _existingSelectionContainerView];
+    _existingSelectionContainerView2 = [(UITextView *)&self->super.super.super.super.isa _existingSelectionContainerView];
   }
 
   else
   {
-    v7 = [(UITextView *)self textInputView];
+    _existingSelectionContainerView2 = [(UITextView *)self textInputView];
   }
 
-  return v7;
+  return _existingSelectionContainerView2;
 }
 
 - (UITextRange)markedTextRange
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained markedTextRange];
+  markedTextRange = [WeakRetained markedTextRange];
 
-  return v3;
+  return markedTextRange;
 }
 
 - (UITextInputTokenizer)tokenizer
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained tokenizer];
+  tokenizer = [WeakRetained tokenizer];
 
-  return v3;
+  return tokenizer;
 }
 
 - (BOOL)_needsDoubleUpdateConstraintsPass
@@ -772,34 +772,34 @@ uint64_t __60__UITextView__shouldInvalidateLayoutForLinkAttributesChange__block_
 - (void)_syncTypingAttributesToTextContainerAttributesForExtraLineFragment
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v7 = [WeakRetained typingAttributes];
+  typingAttributes = [WeakRetained typingAttributes];
 
-  v4 = [(UITextView *)self textContainer];
-  v5 = [v4 attributesForExtraLineFragment];
+  textContainer = [(UITextView *)self textContainer];
+  attributesForExtraLineFragment = [textContainer attributesForExtraLineFragment];
 
-  if (v7 != v5 && ([v7 isEqual:v5] & 1) == 0)
+  if (typingAttributes != attributesForExtraLineFragment && ([typingAttributes isEqual:attributesForExtraLineFragment] & 1) == 0)
   {
-    v6 = [(UITextView *)self textContainer];
-    [v6 setAttributesForExtraLineFragment:v7];
+    textContainer2 = [(UITextView *)self textContainer];
+    [textContainer2 setAttributesForExtraLineFragment:typingAttributes];
   }
 }
 
 - (void)_updateContainerTileAndSizingFlags
 {
-  v3 = [(UIScrollView *)self isScrollEnabled];
-  v4 = [(_UITextLayoutController *)self->_textLayoutController canAccessLayoutManager];
-  if (v3)
+  isScrollEnabled = [(UIScrollView *)self isScrollEnabled];
+  canAccessLayoutManager = [(_UITextLayoutController *)self->_textLayoutController canAccessLayoutManager];
+  if (isScrollEnabled)
   {
-    if (v4)
+    if (canAccessLayoutManager)
     {
-      v5 = [(_UITextLayoutController *)self->_textLayoutController layoutManager];
-      [v5 setAllowsNonContiguousLayout:1];
+      layoutManager = [(_UITextLayoutController *)self->_textLayoutController layoutManager];
+      [layoutManager setAllowsNonContiguousLayout:1];
     }
 
     p_textContainer = &self->_textContainer;
-    v7 = [(NSTextContainer *)self->_textContainer layoutOrientation];
+    layoutOrientation = [(NSTextContainer *)self->_textContainer layoutOrientation];
     containerView = self->_containerView;
-    if (v7)
+    if (layoutOrientation)
     {
       [(_UITextContainerView *)containerView setVerticallyResizable:0];
       [(_UITextContainerView *)self->_containerView setHorizontallyResizable:1];
@@ -818,10 +818,10 @@ uint64_t __60__UITextView__shouldInvalidateLayoutForLinkAttributesChange__block_
 
   else
   {
-    if (v4)
+    if (canAccessLayoutManager)
     {
-      v10 = [(_UITextLayoutController *)self->_textLayoutController layoutManager];
-      [v10 setAllowsNonContiguousLayout:0];
+      layoutManager2 = [(_UITextLayoutController *)self->_textLayoutController layoutManager];
+      [layoutManager2 setAllowsNonContiguousLayout:0];
     }
 
     [(_UITextContainerView *)self->_containerView setVerticallyResizable:0];
@@ -847,10 +847,10 @@ uint64_t __60__UITextView__shouldInvalidateLayoutForLinkAttributesChange__block_
 
 - (NSTextLayoutManager)textLayoutManager
 {
-  v2 = [(UITextView *)self textContainer];
-  v3 = [v2 textLayoutManager];
+  textContainer = [(UITextView *)self textContainer];
+  textLayoutManager = [textContainer textLayoutManager];
 
-  return v3;
+  return textLayoutManager;
 }
 
 - (BOOL)_allowsOverflowForIntrinsicSizeCalculation
@@ -860,14 +860,14 @@ uint64_t __60__UITextView__shouldInvalidateLayoutForLinkAttributesChange__block_
   if (v3 == 0.0 && ([(_UITextLayoutController *)self->_textLayoutController canAccessLayoutManager]& 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_inputController);
-    v5 = [WeakRetained typingAttributes];
-    v6 = [v5 valueForKey:*off_1E70EC988];
+    typingAttributes = [WeakRetained typingAttributes];
+    v6 = [typingAttributes valueForKey:*off_1E70EC988];
 
-    v7 = [(UITextView *)self textStorage];
-    v8 = [v7 _ui_resolvedTextAlignmentForParagraphStyle:v6];
+    textStorage = [(UITextView *)self textStorage];
+    v8 = [textStorage _ui_resolvedTextAlignmentForParagraphStyle:v6];
 
-    v9 = [(_UITextContainerView *)self->_containerView layoutOrientation];
-    if (!v9 && v8 != 0)
+    layoutOrientation = [(_UITextContainerView *)self->_containerView layoutOrientation];
+    if (!layoutOrientation && v8 != 0)
     {
       return 0;
     }
@@ -891,9 +891,9 @@ uint64_t __60__UITextView__shouldInvalidateLayoutForLinkAttributesChange__block_
     v8 = self->_interactionAssistant;
     self->_interactionAssistant = v7;
 
-    v9 = [(UITextView *)self tokenizer];
+    tokenizer = [(UITextView *)self tokenizer];
 
-    if (v9)
+    if (tokenizer)
     {
       v10 = +[UITextInputTraits defaultTextInputTraits];
       textInputTraits = self->_textInputTraits;
@@ -902,8 +902,8 @@ uint64_t __60__UITextView__shouldInvalidateLayoutForLinkAttributesChange__block_
 
     else
     {
-      v16 = [(_UITextLayoutControllerBase *)self->_textLayoutController textInputController];
-      objc_storeWeak(&self->_inputController, v16);
+      textInputController = [(_UITextLayoutControllerBase *)self->_textLayoutController textInputController];
+      objc_storeWeak(&self->_inputController, textInputController);
 
       textInputTraits = objc_loadWeakRetained(&self->_inputController);
       [textInputTraits setDelegate:self];
@@ -920,9 +920,9 @@ uint64_t __60__UITextView__shouldInvalidateLayoutForLinkAttributesChange__block_
     [(UITextView *)self didChangeValueForKey:@"editable"];
   }
 
-  v5 = [(UITextView *)self tokenizer];
+  tokenizer2 = [(UITextView *)self tokenizer];
 
-  if (v5)
+  if (tokenizer2)
   {
     v6 = self->_textInputTraits;
     self->_textInputTraits = 0;
@@ -955,20 +955,20 @@ LABEL_18:
 
 - (id)_existingSelectionContainerView
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1[272] selectionContainerView];
-    v3 = v2;
-    if (!v2)
+    selectionContainerView = [self[272] selectionContainerView];
+    v3 = selectionContainerView;
+    if (!selectionContainerView)
     {
-      v3 = v1[345];
+      v3 = selfCopy[345];
     }
 
-    v1 = v3;
+    selfCopy = v3;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __60__UITextView__shouldInvalidateLayoutForLinkAttributesChange__block_invoke(uint64_t a1, void *a2)
@@ -1003,35 +1003,35 @@ void __60__UITextView__shouldInvalidateLayoutForLinkAttributesChange__block_invo
   tvFlags = self->_tvFlags;
   if ((*&tvFlags & 4) != 0)
   {
-    LOBYTE(v5) = 1;
+    LOBYTE(resignFirstResponder) = 1;
   }
 
   else
   {
     self->_tvFlags = (*&tvFlags | 4);
-    v4 = self;
-    v7.receiver = v4;
+    selfCopy = self;
+    v7.receiver = selfCopy;
     v7.super_class = UITextView;
-    v5 = [(UIResponder *)&v7 resignFirstResponder];
-    if (v5)
+    resignFirstResponder = [(UIResponder *)&v7 resignFirstResponder];
+    if (resignFirstResponder)
     {
-      [(UITextView *)&v4->super.super.super.super.isa _cleanUpForResignFirstResponder];
+      [(UITextView *)&selfCopy->super.super.super.super.isa _cleanUpForResignFirstResponder];
     }
 
     *&self->_tvFlags &= ~4uLL;
   }
 
-  return v5;
+  return resignFirstResponder;
 }
 
 - (BOOL)_shouldInvalidateLayoutForLinkAttributesChange
 {
-  v3 = [(_UITextLayoutController *)self->_textLayoutController documentRange];
+  documentRange = [(_UITextLayoutController *)self->_textLayoutController documentRange];
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  if (([v3 isEmpty] & 1) == 0)
+  if (([documentRange isEmpty] & 1) == 0)
   {
     textStorage = self->_textStorage;
     v7[0] = MEMORY[0x1E69E9820];
@@ -1050,29 +1050,29 @@ void __60__UITextView__shouldInvalidateLayoutForLinkAttributesChange__block_invo
 
 - (unint64_t)allowedWritingToolsResultOptions
 {
-  v2 = [(UITextView *)self _textInputTraits];
-  v3 = [v2 allowedWritingToolsResultOptions];
+  _textInputTraits = [(UITextView *)self _textInputTraits];
+  allowedWritingToolsResultOptions = [_textInputTraits allowedWritingToolsResultOptions];
 
-  return v3;
+  return allowedWritingToolsResultOptions;
 }
 
 - (void)_ensureUpToDateTextContainerInsetAndNotifyIfNecessary
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  [*(a1 + 2176) textContainerInset];
+  [*(self + 2176) textContainerInset];
   v6 = v5;
   v7 = v2;
   v8 = v3;
   v9 = v4;
-  v10 = fmax(*(a1 + 2424), *(a1 + 2456));
-  v11 = fmax(*(a1 + 2432), *(a1 + 2464));
-  v12 = fmax(*(a1 + 2440), *(a1 + 2472));
-  v13 = fmax(*(a1 + 2448), *(a1 + 2480));
-  v14 = *(a1 + 2488) >= 0.0 ? v11 : *(a1 + 2488);
+  v10 = fmax(*(self + 2424), *(self + 2456));
+  v11 = fmax(*(self + 2432), *(self + 2464));
+  v12 = fmax(*(self + 2440), *(self + 2472));
+  v13 = fmax(*(self + 2448), *(self + 2480));
+  v14 = *(self + 2488) >= 0.0 ? v11 : *(self + 2488);
   v15 = v14 == v2 && v10 == v6;
   v16 = v15 && v13 == v4;
   if (v16 && v12 == v3)
@@ -1080,15 +1080,15 @@ void __60__UITextView__shouldInvalidateLayoutForLinkAttributesChange__block_invo
     return;
   }
 
-  v18 = [a1 isScrollEnabled];
-  if ((*(a1 + 95) & 2) != 0)
+  isScrollEnabled = [self isScrollEnabled];
+  if ((*(self + 95) & 2) != 0)
   {
-    [a1 bounds];
+    [self bounds];
     v36 = v28;
     v37 = v27;
     v34 = v30;
     v35 = v29;
-    v38 = 0;
+    superview = 0;
     v23 = 1;
 LABEL_23:
     v32 = *MEMORY[0x1E695F060];
@@ -1096,14 +1096,14 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v38 = [a1 superview];
-  [a1 bounds];
+  superview = [self superview];
+  [self bounds];
   v36 = v22;
   v37 = v21;
-  v23 = v38 == 0;
-  if (v38)
+  v23 = superview == 0;
+  if (superview)
   {
-    v24 = v18;
+    v24 = isScrollEnabled;
   }
 
   else
@@ -1118,21 +1118,21 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  [a1 sizeThatFits:{v19, v20}];
+  [self sizeThatFits:{v19, v20}];
   v32 = v25;
   v33 = v26;
   v23 = 0;
 LABEL_24:
-  [*(a1 + 2176) setTextContainerInset:{v10, v14, v12, v13}];
-  if ((v18 & 1) == 0)
+  [*(self + 2176) setTextContainerInset:{v10, v14, v12, v13}];
+  if ((isScrollEnabled & 1) == 0)
   {
-    [a1 _updateBaselineInformationDependentOnBounds];
-    v31 = *(a1 + 88);
+    [self _updateBaselineInformationDependentOnBounds];
+    v31 = *(self + 88);
     if (v23)
     {
-      if ((v31 & 0x200000000000000) != 0 && ([a1 translatesAutoresizingMaskIntoConstraints] & 1) == 0)
+      if ((v31 & 0x200000000000000) != 0 && ([self translatesAutoresizingMaskIntoConstraints] & 1) == 0)
       {
-        [a1 invalidateIntrinsicContentSize];
+        [self invalidateIntrinsicContentSize];
       }
     }
 
@@ -1140,7 +1140,7 @@ LABEL_24:
     {
       if (vabdd_f64(v10 + v12, v6 + v8) > 2.22044605e-16 && (v40.origin.y = v36, v40.origin.x = v37, v40.size.height = v34, v40.size.width = v35, vabdd_f64(CGRectGetHeight(v40), v33) <= 2.22044605e-16) || vabdd_f64(v13 + v14, v7 + v9) > 2.22044605e-16 && (v41.origin.y = v36, v41.origin.x = v37, v41.size.height = v34, v41.size.width = v35, vabdd_f64(CGRectGetWidth(v41), v32) <= 2.22044605e-16))
       {
-        [v38 setNeedsLayout];
+        [superview setNeedsLayout];
       }
     }
   }
@@ -1174,11 +1174,11 @@ LABEL_24:
     return result;
   }
 
-  v2 = [result textContainer];
-  v3 = [v2 textLayoutManager];
-  if (v3)
+  textContainer = [result textContainer];
+  textLayoutManager = [textContainer textLayoutManager];
+  if (textLayoutManager)
   {
-    v4 = v3;
+    v4 = textLayoutManager;
     v5 = _UITextViewAllowSelectionContainerInTextLayoutCanvas();
 
     if (v5)
@@ -1204,9 +1204,9 @@ LABEL_24:
 - (UITextRange)selectedTextRange
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained selectedTextRange];
+  selectedTextRange = [WeakRetained selectedTextRange];
 
-  return v3;
+  return selectedTextRange;
 }
 
 - (BOOL)_shouldStartDataDetectors
@@ -1222,10 +1222,10 @@ LABEL_24:
 + (id)_defaultTextColor
 {
   v2 = +[_UITextAttributeDefaults _unspecifiedDefaults];
-  v3 = [v2 _textView];
-  v4 = [v3 _textColor];
+  _textView = [v2 _textView];
+  _textColor = [_textView _textColor];
 
-  return v4;
+  return _textColor;
 }
 
 - (void)_updateSelectionGestures
@@ -1236,49 +1236,49 @@ LABEL_24:
     {
       if ([(UIView *)self isFirstResponder])
       {
-        v3 = [(UITextView *)self interactionAssistant];
-        [v3 deactivateSelection];
+        interactionAssistant = [(UITextView *)self interactionAssistant];
+        [interactionAssistant deactivateSelection];
       }
 
-      v4 = [(UITextView *)self interactionAssistant];
-      [v4 clearGestureRecognizers:1];
+      interactionAssistant2 = [(UITextView *)self interactionAssistant];
+      [interactionAssistant2 clearGestureRecognizers:1];
 
-      v7 = [(UITextView *)self interactionAssistant];
-      v5 = [v7 _editMenuAssistant];
-      [v5 hideSelectionCommands];
+      interactionAssistant3 = [(UITextView *)self interactionAssistant];
+      _editMenuAssistant = [interactionAssistant3 _editMenuAssistant];
+      [_editMenuAssistant hideSelectionCommands];
     }
 
     else
     {
       if ([(UIView *)self isFirstResponder])
       {
-        v6 = [(UITextView *)self interactionAssistant];
-        [v6 activateSelection];
+        interactionAssistant4 = [(UITextView *)self interactionAssistant];
+        [interactionAssistant4 activateSelection];
       }
 
-      v7 = [(UITextView *)self interactionAssistant];
-      [v7 setGestureRecognizers];
+      interactionAssistant3 = [(UITextView *)self interactionAssistant];
+      [interactionAssistant3 setGestureRecognizers];
     }
   }
 
   else
   {
-    v7 = [(UITextView *)self interactionAssistant];
-    [v7 clearGestureRecognizers:1];
+    interactionAssistant3 = [(UITextView *)self interactionAssistant];
+    [interactionAssistant3 clearGestureRecognizers:1];
   }
 }
 
 - (void)_startDataDetectors
 {
-  v3 = [DataDetectorsUIGetClass(@"DDDetectionController") sharedController];
-  [v3 startURLificationForContainer:self detectedTypes:{-[UITextView _effectiveDataDetectorTypes](self, "_effectiveDataDetectorTypes")}];
+  dataDetectorsUIGetClass(@"DDDetectionController") = [DataDetectorsUIGetClass(@"DDDetectionController") sharedController];
+  [dataDetectorsUIGetClass(@"DDDetectionController") startURLificationForContainer:self detectedTypes:{-[UITextView _effectiveDataDetectorTypes](self, "_effectiveDataDetectorTypes")}];
 }
 
 - (unint64_t)_effectiveDataDetectorTypes
 {
-  v3 = [(UITextView *)self dataDetectorTypes];
+  dataDetectorTypes = [(UITextView *)self dataDetectorTypes];
   result = [(UITextView *)self dataDetectorTypes];
-  if (v3 == -1)
+  if (dataDetectorTypes == -1)
   {
     return result & 0x1FF;
   }
@@ -1293,8 +1293,8 @@ LABEL_24:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(_UITextLayoutController *)self->_textLayoutController textContainers];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  textContainers = [(_UITextLayoutController *)self->_textLayoutController textContainers];
+  v3 = [textContainers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1306,18 +1306,18 @@ LABEL_24:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(textContainers);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) textView];
+        textView = [*(*(&v10 + 1) + 8 * i) textView];
 
-        if (v8)
+        if (textView)
         {
           ++v5;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [textContainers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -1360,50 +1360,50 @@ LABEL_24:
 {
   if (sDataDetectorsUIFrameworkLoaded == 1)
   {
-    v4 = [DataDetectorsUIGetClass(@"DDDetectionController") sharedController];
-    [v4 resetResultsForContainer:self];
+    dataDetectorsUIGetClass(@"DDDetectionController") = [DataDetectorsUIGetClass(@"DDDetectionController") sharedController];
+    [dataDetectorsUIGetClass(@"DDDetectionController") resetResultsForContainer:self];
   }
 }
 
 - (id)_allowedTypingAttributes
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained _allowedTypingAttributes];
+  _allowedTypingAttributes = [WeakRetained _allowedTypingAttributes];
 
-  return v3;
+  return _allowedTypingAttributes;
 }
 
 - (id)_getDelegateZoomView
 {
   v5.receiver = self;
   v5.super_class = UITextView;
-  v3 = [(UIScrollView *)&v5 _getDelegateZoomView];
-  if (!v3)
+  _getDelegateZoomView = [(UIScrollView *)&v5 _getDelegateZoomView];
+  if (!_getDelegateZoomView)
   {
-    v3 = self->_containerView;
+    _getDelegateZoomView = self->_containerView;
   }
 
-  return v3;
+  return _getDelegateZoomView;
 }
 
 - (void)_adjustFontForTypesettingLanguage
 {
-  v3 = [(UITextView *)self text];
-  v4 = [(UITextView *)self _resolvedTypesettingLanguage:v3];
+  text = [(UITextView *)self text];
+  v4 = [(UITextView *)self _resolvedTypesettingLanguage:text];
 
-  v5 = [(UIView *)self traitCollection];
-  v6 = [(UITextView *)self font];
-  v7 = [(UIFont *)v6 _fontAdjustedForTypesettingLanguage:v4];
+  traitCollection = [(UIView *)self traitCollection];
+  font = [(UITextView *)self font];
+  v7 = [(UIFont *)font _fontAdjustedForTypesettingLanguage:v4];
 
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
-  v8 = [(UITextView *)self font];
+  font2 = [(UITextView *)self font];
   v9 = 0;
-  if (v8 && v7)
+  if (font2 && v7)
   {
-    v10 = [(UITextView *)self font];
-    v9 = [v10 isEqual:v7] ^ 1;
+    font3 = [(UITextView *)self font];
+    v9 = [font3 isEqual:v7] ^ 1;
   }
 
   v23 = v9;
@@ -1435,8 +1435,8 @@ LABEL_24:
 - (UIFont)font
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained typingAttributes];
-  v4 = [v3 valueForKey:*off_1E70EC918];
+  typingAttributes = [WeakRetained typingAttributes];
+  v4 = [typingAttributes valueForKey:*off_1E70EC918];
 
   return v4;
 }
@@ -1517,9 +1517,9 @@ void __47__UITextView__adjustFontForTypesettingLanguage__block_invoke_2(uint64_t
 
 - (UIEdgeInsets)alignmentRectInsets
 {
-  v3 = [(UIScrollView *)self isScrollEnabled];
+  isScrollEnabled = [(UIScrollView *)self isScrollEnabled];
   v4 = 0.0;
-  if (v3)
+  if (isScrollEnabled)
   {
     v5 = 0.0;
   }
@@ -1546,18 +1546,18 @@ void __47__UITextView__adjustFontForTypesettingLanguage__block_invoke_2(uint64_t
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(UIScrollView *)self isScrollEnabled];
+  isScrollEnabled = [(UIScrollView *)self isScrollEnabled];
   v4 = -1.0;
   v5 = -1.0;
-  if (v3)
+  if (isScrollEnabled)
   {
     goto LABEL_22;
   }
 
   if (dyld_program_sdk_at_least() && (*(&self->super.super._viewFlags + 6) & 2) != 0)
   {
-    v12 = [(UITextView *)self font];
-    [v12 lineHeight];
+    font = [(UITextView *)self font];
+    [font lineHeight];
     UICeilToViewScale(self);
     v11 = v13;
     v10 = 65536.0;
@@ -1655,13 +1655,13 @@ LABEL_22:
 
 - (double)_adjustedTextContainerInset
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [a1 textContainerInset];
-  return fmax(v2, a1[307]);
+  [self textContainerInset];
+  return fmax(v2, self[307]);
 }
 
 - (void)adjustedContentInsetDidChange
@@ -1677,14 +1677,14 @@ LABEL_22:
   [(UIView *)self->_containerView frame];
   v4 = v3;
   v6 = v5;
-  v7 = [(_UITextContainerView *)self->_containerView layoutOrientation];
-  if (v7 == 1)
+  layoutOrientation = [(_UITextContainerView *)self->_containerView layoutOrientation];
+  if (layoutOrientation == 1)
   {
     [(_UITextViewContentPadding *)self->_bottomContentPadding currentValue];
     v4 = v4 + v9;
   }
 
-  else if (!v7)
+  else if (!layoutOrientation)
   {
     [(_UITextViewContentPadding *)self->_bottomContentPadding currentValue];
     v6 = v6 + v8;
@@ -1726,8 +1726,8 @@ LABEL_22:
     v20 = WeakRetained;
     if (WeakRetained)
     {
-      v21 = [(_UITextViewRestorableScrollPosition *)WeakRetained range];
-      [(UITextView *)self _rectForScrollToVisible:v21, v22];
+      range = [(_UITextViewRestorableScrollPosition *)WeakRetained range];
+      [(UITextView *)self _rectForScrollToVisible:range, v22];
       v20 = WeakRetained;
     }
 
@@ -1747,8 +1747,8 @@ LABEL_22:
         [(NSTextContainer *)self->_textContainer textContainerOrigin];
         v58 = v31;
         v59 = v30;
-        v32 = [(NSTextContainer *)self->_textContainer textView];
-        [(UIView *)self convertPoint:v32 toView:v23, v26];
+        textView = [(NSTextContainer *)self->_textContainer textView];
+        [(UIView *)self convertPoint:textView toView:v23, v26];
         v57 = v33;
         v35 = v34;
 
@@ -1757,8 +1757,8 @@ LABEL_22:
         v39 = v38;
         v41 = v40;
         v43 = v42;
-        v44 = [(NSTextContainer *)self->_textContainer textView];
-        [(UIView *)self convertRect:v44 toView:v37, v39, v41, v43];
+        textView2 = [(NSTextContainer *)self->_textContainer textView];
+        [(UIView *)self convertRect:textView2 toView:v37, v39, v41, v43];
         v46 = v45;
         v48 = v47;
 
@@ -1773,8 +1773,8 @@ LABEL_22:
       scrollTarget = self->_scrollTarget;
       if (scrollTarget)
       {
-        v50 = [(_UITextViewRestorableScrollPosition *)scrollTarget range];
-        [(UITextView *)self _contentOffsetForScrollToVisible:v50, v51];
+        range2 = [(_UITextViewRestorableScrollPosition *)scrollTarget range];
+        [(UITextView *)self _contentOffsetForScrollToVisible:range2, v51];
         v53 = v52;
         v55 = v54;
         [(_UITextViewRestorableScrollPosition *)self->_scrollTarget offsetWithinLine];
@@ -1797,9 +1797,9 @@ LABEL_22:
 
 - (void)_setNeedsTextLayout
 {
-  v3 = [(UIView *)self->_layoutView superview];
+  superview = [(UIView *)self->_layoutView superview];
 
-  if (v3 != self)
+  if (superview != self)
   {
     [(UIView *)self insertSubview:self->_layoutView atIndex:0];
   }
@@ -1812,10 +1812,10 @@ LABEL_22:
 - (NSRange)selectedRange
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained selectedRange];
+  selectedRange = [WeakRetained selectedRange];
   v5 = v4;
 
-  v6 = v3;
+  v6 = selectedRange;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -1824,27 +1824,27 @@ LABEL_22:
 
 - (NSString)text
 {
-  v2 = [(NSTextStorage *)self->_textStorage string];
-  v3 = [v2 copy];
+  string = [(NSTextStorage *)self->_textStorage string];
+  v3 = [string copy];
 
   return v3;
 }
 
 - (void)_updateTextFormattingControllerPresentationSource
 {
-  v3 = [(UIView *)self superview];
-  v4 = v3;
-  if (v3)
+  superview = [(UIView *)self superview];
+  v4 = superview;
+  if (superview)
   {
-    v5 = v3;
+    selfCopy = superview;
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v46 = v5;
+  v46 = selfCopy;
 
   textFormattingViewController = self->_textFormattingViewController;
   if (!textFormattingViewController || [(UIViewController *)textFormattingViewController isBeingDismissed])
@@ -1852,9 +1852,9 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v7 = [(UIViewController *)self->_textFormattingViewController popoverPresentationController];
-  v8 = [v7 sourceView];
-  if (v8 != v46)
+  popoverPresentationController = [(UIViewController *)self->_textFormattingViewController popoverPresentationController];
+  sourceView = [popoverPresentationController sourceView];
+  if (sourceView != v46)
   {
 LABEL_21:
 
@@ -1862,28 +1862,28 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v9 = [(UIViewController *)self->_textFormattingViewController popoverPresentationController];
-  [v9 sourceRect];
+  popoverPresentationController2 = [(UIViewController *)self->_textFormattingViewController popoverPresentationController];
+  [popoverPresentationController2 sourceRect];
   if (!CGRectEqualToRect(v48, *MEMORY[0x1E695F050]))
   {
 
     goto LABEL_21;
   }
 
-  v10 = [(UITextView *)self selectedRange];
-  v12 = v10 + v11;
-  v13 = [(UITextView *)self textStorage];
-  v14 = [v13 length];
+  selectedRange = [(UITextView *)self selectedRange];
+  v12 = selectedRange + v11;
+  textStorage = [(UITextView *)self textStorage];
+  v14 = [textStorage length];
 
   if (v12 <= v14)
   {
     [(UIViewController *)self->_textFormattingViewController preferredContentSize];
     v16 = v15;
     v18 = v17;
-    v19 = [(UIResponder *)self _textInteraction];
-    v20 = [v19 assistantDelegate];
-    v21 = [v20 _editMenuAssistant];
-    [v21 _editMenuTargetRect];
+    _textInteraction = [(UIResponder *)self _textInteraction];
+    assistantDelegate = [_textInteraction assistantDelegate];
+    _editMenuAssistant = [assistantDelegate _editMenuAssistant];
+    [_editMenuAssistant _editMenuTargetRect];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -1894,8 +1894,8 @@ LABEL_22:
     MidY = v32;
     v35 = v34;
     v37 = v36;
-    v38 = [(UIView *)self window];
-    [v38 frame];
+    window = [(UIView *)self window];
+    [window frame];
     v40 = v39;
     v42 = v41;
 
@@ -1918,8 +1918,8 @@ LABEL_22:
 
     if ((v31 != *MEMORY[0x1E695EFF8] || MidY != *(MEMORY[0x1E695EFF8] + 8)) && (v35 != *MEMORY[0x1E695F060] || v37 != *(MEMORY[0x1E695F060] + 8)))
     {
-      v44 = [(UITextFormattingViewController *)self->_textFormattingViewController configuration];
-      if ([v44 _isTextAnimationsConfiguration])
+      configuration = [(UITextFormattingViewController *)self->_textFormattingViewController configuration];
+      if ([configuration _isTextAnimationsConfiguration])
       {
         v45 = -6.0;
       }
@@ -1929,13 +1929,13 @@ LABEL_22:
         v45 = -10.0;
       }
 
-      v7 = [(UIViewController *)self->_textFormattingViewController popoverPresentationController];
+      popoverPresentationController = [(UIViewController *)self->_textFormattingViewController popoverPresentationController];
       v51.origin.x = v31;
       v51.origin.y = MidY;
       v51.size.width = v35;
       v51.size.height = v37;
       v52 = CGRectInset(v51, -10.0, v45);
-      [v7 setSourceRect:{v52.origin.x, v52.origin.y, v52.size.width, v52.size.height}];
+      [popoverPresentationController setSourceRect:{v52.origin.x, v52.origin.y, v52.size.width, v52.size.height}];
       goto LABEL_22;
     }
   }
@@ -2019,15 +2019,15 @@ LABEL_23:
   if (placeholderLabel && ![(UIView *)placeholderLabel isHidden])
   {
     [(UIView *)self bringSubviewToFront:self->_placeholderLabel];
-    v4 = [(UITextView *)self textLayoutController];
-    [v4 extraLineFragmentRect];
+    textLayoutController = [(UITextView *)self textLayoutController];
+    [textLayoutController extraLineFragmentRect];
     v6 = v5;
     v8 = v7;
     rect = v9;
     v11 = v10;
 
-    v12 = [(UITextView *)self font];
-    [v12 ascender];
+    font = [(UITextView *)self font];
+    [font ascender];
     v14 = v8 + v13;
 
     [(UITextView *)self textContainerInset];
@@ -2047,17 +2047,17 @@ LABEL_23:
       horizontalTextContainerGeometryAdjustment = self->_horizontalTextContainerGeometryAdjustment;
     }
 
-    v25 = [(UITextView *)self textContainer];
-    [v25 lineFragmentPadding];
+    textContainer = [(UITextView *)self textContainer];
+    [textContainer lineFragmentPadding];
     v27 = horizontalTextContainerGeometryAdjustment + v26;
 
-    v28 = [(UITextView *)self textContainer];
-    [v28 lineFragmentPadding];
+    textContainer2 = [(UITextView *)self textContainer];
+    [textContainer2 lineFragmentPadding];
     v30 = v23 + v29;
 
     v31 = v6 + v27;
-    v32 = [(UITextView *)self textContainer];
-    [v32 size];
+    textContainer3 = [(UITextView *)self textContainer];
+    [textContainer3 size];
     v34 = v33;
     v49.origin.x = v6;
     v49.origin.y = v8;
@@ -2084,8 +2084,8 @@ LABEL_23:
 
 - (void)updateSelection
 {
-  v2 = [(UITextView *)self interactionAssistant];
-  [v2 setNeedsSelectionDisplayUpdate];
+  interactionAssistant = [(UITextView *)self interactionAssistant];
+  [interactionAssistant setNeedsSelectionDisplayUpdate];
 }
 
 - (CGRect)visibleRect
@@ -2119,9 +2119,9 @@ LABEL_23:
 - (UITextPosition)beginningOfDocument
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained beginningOfDocument];
+  beginningOfDocument = [WeakRetained beginningOfDocument];
 
-  return v3;
+  return beginningOfDocument;
 }
 
 - (void)tintColorDidChange
@@ -2129,9 +2129,9 @@ LABEL_23:
   v7.receiver = self;
   v7.super_class = UITextView;
   [(UIView *)&v7 tintColorDidChange];
-  v3 = [(UITextView *)self _textInputTraits];
-  v4 = [(UIView *)self _inheritedInteractionTintColor];
-  [v3 _setColorsToMatchTintColor:v4];
+  _textInputTraits = [(UITextView *)self _textInputTraits];
+  _inheritedInteractionTintColor = [(UIView *)self _inheritedInteractionTintColor];
+  [_textInputTraits _setColorsToMatchTintColor:_inheritedInteractionTintColor];
 
   if ([(UITextView *)self isEditing])
   {
@@ -2140,11 +2140,11 @@ LABEL_23:
 
   if (!self->_linkTextAttributes && ([(_UITextLayoutController *)self->_textLayoutController canAccessLayoutManager]& 1) == 0)
   {
-    v5 = [(UIView *)self tintColor];
-    v6 = v5;
-    if (v5)
+    tintColor = [(UIView *)self tintColor];
+    v6 = tintColor;
+    if (tintColor)
     {
-      if (([v5 isEqual:self->_cachedTintColor] & 1) == 0)
+      if (([tintColor isEqual:self->_cachedTintColor] & 1) == 0)
       {
         objc_storeStrong(&self->_cachedTintColor, v6);
         [(UITextView *)self _invalidateLayoutForLinkAttributesChange:1];
@@ -2156,11 +2156,11 @@ LABEL_23:
 - (BOOL)_documentRangeEqualToViewportRange
 {
   v3 = [(_UITextLayoutController *)self->_textLayoutController viewportRangeForTextContainer:self->_textContainer];
-  v4 = [(_UITextLayoutController *)self->_textLayoutController documentRange];
+  documentRange = [(_UITextLayoutController *)self->_textLayoutController documentRange];
   if (v3)
   {
     v5 = v3;
-    v6 = v4;
+    v6 = documentRange;
     v7 = v6;
     if (v5 == v6)
     {
@@ -2188,23 +2188,23 @@ LABEL_23:
 
 - (void)_updateBaselineInformationDependentOnBounds
 {
-  v14 = [(UITextView *)self textLayoutController];
-  v3 = [v14 documentRange];
-  if ([v3 isEmpty])
+  textLayoutController = [(UITextView *)self textLayoutController];
+  documentRange = [textLayoutController documentRange];
+  if ([documentRange isEmpty])
   {
     goto LABEL_2;
   }
 
-  v4 = [v14 textContainers];
-  v5 = [v4 count];
+  textContainers = [textLayoutController textContainers];
+  v5 = [textContainers count];
 
   if (v5 == 1)
   {
-    v6 = [(UIView *)self _wantsAutolayout];
-    if (v6)
+    _wantsAutolayout = [(UIView *)self _wantsAutolayout];
+    if (_wantsAutolayout)
     {
-      v3 = [(UIView *)self _layoutEngineCreateIfNecessary];
-      if (!v3)
+      documentRange = [(UIView *)self _layoutEngineCreateIfNecessary];
+      if (!documentRange)
       {
 LABEL_2:
 
@@ -2214,7 +2214,7 @@ LABEL_2:
 
     else
     {
-      v3 = 0;
+      documentRange = 0;
     }
 
     _UIBaselineLayoutBoundsConsultingContentSizeConstraints(self);
@@ -2225,7 +2225,7 @@ LABEL_2:
     {
       self->_firstBaselineOffsetFromTop = v11;
       self->_lastBaselineOffsetFromBottom = v12;
-      if (v6)
+      if (_wantsAutolayout)
       {
         [(UIView *)self _invalidateBaselineConstraints];
       }
@@ -2239,23 +2239,23 @@ LABEL_7:
 
 - (double)_applicableContentOutsetsFromFonts
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
   v2 = 0.0;
-  if ((a1[279] & 0x6000) != 0 && ([a1 isScrollEnabled] & 1) == 0)
+  if ((self[279] & 0x6000) != 0 && ([self isScrollEnabled] & 1) == 0)
   {
-    v3 = [a1 text];
+    text = [self text];
     v4 = +[UILabel _tooBigChars];
-    v5 = [v3 rangeOfCharacterFromSet:v4];
+    v5 = [text rangeOfCharacterFromSet:v4];
 
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = a1[270];
-      v7 = [a1 font];
-      v2 = [UILabel _insetsForAttributedString:v6 withDefaultFont:v7 inView:a1];
+      v6 = self[270];
+      font = [self font];
+      v2 = [UILabel _insetsForAttributedString:v6 withDefaultFont:font inView:self];
     }
   }
 
@@ -2265,14 +2265,14 @@ LABEL_7:
 - (void)dealloc
 {
   v8[5] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v8[0] = *off_1E70ECD50;
   v8[1] = @"_UITextContainerViewSizeDidChange";
   v8[2] = *off_1E70ECAC0;
   v8[3] = @"UIKeyboardDidShowNotification";
   v8[4] = @"UIKeyboardDidChangeFrameNotification";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:5];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   interactionAssistant = self->_interactionAssistant;
   self->_interactionAssistant = 0;
@@ -2298,11 +2298,11 @@ LABEL_7:
   placeholderLabel = self->_placeholderLabel;
   if (placeholderLabel)
   {
-    v4 = [(UIView *)placeholderLabel isHidden];
-    v5 = [(UITextView *)self text];
-    -[UIView setHidden:](self->_placeholderLabel, "setHidden:", [v5 length] != 0);
+    isHidden = [(UIView *)placeholderLabel isHidden];
+    text = [(UITextView *)self text];
+    -[UIView setHidden:](self->_placeholderLabel, "setHidden:", [text length] != 0);
 
-    if (v4 && ![(UIView *)self->_placeholderLabel isHidden])
+    if (isHidden && ![(UIView *)self->_placeholderLabel isHidden])
     {
 
       [(UITextView *)self _setNeedsTextLayout];
@@ -2317,24 +2317,24 @@ LABEL_7:
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_inputController);
-    v5 = [v4 filteredAttributedText];
+    filteredAttributedText = [v4 filteredAttributedText];
   }
 
   else
   {
-    v5 = [(NSTextStorage *)self->_textStorage copy];
+    filteredAttributedText = [(NSTextStorage *)self->_textStorage copy];
   }
 
-  return v5;
+  return filteredAttributedText;
 }
 
 - (NSDictionary)typingAttributes
 {
   [(UITextView *)self _syncTypingAttributesToTextContainerAttributesForExtraLineFragment];
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v4 = [WeakRetained typingAttributes];
+  typingAttributes = [WeakRetained typingAttributes];
 
-  return v4;
+  return typingAttributes;
 }
 
 - (void)invalidateIntrinsicContentSize
@@ -2354,15 +2354,15 @@ LABEL_7:
     if (v3)
     {
       v4 = +[(UISubstituteKeyboardSession *)UITextFormattingKeyboardSession];
-      v5 = [(UITextView *)self _descriptorForTextFormattingOptions];
-      [v4 setFormattingDescriptor:v5];
+      _descriptorForTextFormattingOptions = [(UITextView *)self _descriptorForTextFormattingOptions];
+      [v4 setFormattingDescriptor:_descriptorForTextFormattingOptions];
     }
   }
 
   if (self->_textFormattingViewController)
   {
-    v6 = [(UITextView *)self _descriptorForTextFormattingOptions];
-    [(UITextFormattingViewController *)self->_textFormattingViewController setFormattingDescriptor:v6];
+    _descriptorForTextFormattingOptions2 = [(UITextView *)self _descriptorForTextFormattingOptions];
+    [(UITextFormattingViewController *)self->_textFormattingViewController setFormattingDescriptor:_descriptorForTextFormattingOptions2];
 
     [(UITextView *)self _updateTextFormattingControllerPresentationSource];
   }
@@ -2380,7 +2380,7 @@ LABEL_7:
 
 - (BOOL)_delegatesAllowingTextItemPrimaryActionInteraction
 {
-  v2 = [(UIScrollView *)self delegate];
+  delegate = [(UIScrollView *)self delegate];
   v3 = objc_opt_respondsToSelector();
 
   return v3 & 1;
@@ -2388,12 +2388,12 @@ LABEL_7:
 
 - (void)_scrollToCaretIfNeeded
 {
-  v3 = [(UITextView *)self interactionAssistant];
-  v4 = [v3 activeSelection];
-  v5 = [v4 selectedRange];
-  v6 = [v5 _isCaret];
+  interactionAssistant = [(UITextView *)self interactionAssistant];
+  activeSelection = [interactionAssistant activeSelection];
+  selectedRange = [activeSelection selectedRange];
+  _isCaret = [selectedRange _isCaret];
 
-  if (v6)
+  if (_isCaret)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -2441,9 +2441,9 @@ LABEL_7:
         v33 = v32;
         v35 = v34;
         v37 = v36;
-        v38 = [(UIView *)self _scroller];
-        [v38 bounds];
-        [(UIView *)self convertRect:v38 fromView:?];
+        _scroller = [(UIView *)self _scroller];
+        [_scroller bounds];
+        [(UIView *)self convertRect:_scroller fromView:?];
         v43.origin.x = v31;
         v43.origin.y = v33;
         v43.size.width = v35;
@@ -2475,9 +2475,9 @@ LABEL_7:
 - (UITextPosition)endOfDocument
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained endOfDocument];
+  endOfDocument = [WeakRetained endOfDocument];
 
-  return v3;
+  return endOfDocument;
 }
 
 - (void)_prepareForFirstIntrinsicContentSizeCalculation
@@ -2506,29 +2506,29 @@ LABEL_7:
 
 - (id)_internalTextLayoutController
 {
-  v2 = [(UITextView *)self textLayoutController];
+  textLayoutController = [(UITextView *)self textLayoutController];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
-    v2 = 0;
+    textLayoutController = 0;
   }
 
-  return v2;
+  return textLayoutController;
 }
 
 - (id)_currentDefaultAttributes
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained typingAttributes];
-  v4 = [v3 mutableCopy];
+  typingAttributes = [WeakRetained typingAttributes];
+  v4 = [typingAttributes mutableCopy];
 
   v5 = *off_1E70EC920;
   v6 = [v4 objectForKey:*off_1E70EC920];
 
   if (!v6)
   {
-    v7 = [objc_opt_class() _defaultTextColor];
-    [v4 setObject:v7 forKey:v5];
+    _defaultTextColor = [objc_opt_class() _defaultTextColor];
+    [v4 setObject:_defaultTextColor forKey:v5];
   }
 
   return v4;
@@ -2536,30 +2536,30 @@ LABEL_7:
 
 - (void)_setNeedsFrameUpdateForCustomRendering
 {
-  v3 = [(_UITextContainerView *)self->_containerView canvasView];
-  [v3 setNeedsLayout];
+  canvasView = [(_UITextContainerView *)self->_containerView canvasView];
+  [canvasView setNeedsLayout];
 
-  v4 = [(UIScrollView *)self delegate];
+  delegate = [(UIScrollView *)self delegate];
   if ((*(&self->_tvFlags + 3) & 2) != 0)
   {
-    v5 = v4;
-    [v4 _textViewDidChangeCustomRenderBounds:self];
-    v4 = v5;
+    v5 = delegate;
+    [delegate _textViewDidChangeCustomRenderBounds:self];
+    delegate = v5;
   }
 }
 
 - (void)_updateTextEffectsConfigurationIfNeeded
 {
-  v3 = [(_UITextLayoutController *)self->_textLayoutController styleEffectConfiguration];
-  if (v3)
+  styleEffectConfiguration = [(_UITextLayoutController *)self->_textLayoutController styleEffectConfiguration];
+  if (styleEffectConfiguration)
   {
-    v11 = v3;
-    v4 = [(UIView *)self traitCollection];
-    v5 = [(UITraitCollection *)v4 _styleEffectAppearanceName];
+    v11 = styleEffectConfiguration;
+    traitCollection = [(UIView *)self traitCollection];
+    _styleEffectAppearanceName = [(UITraitCollection *)traitCollection _styleEffectAppearanceName];
 
-    v6 = [v11 appearanceName];
-    v7 = v5;
-    v8 = v6;
+    appearanceName = [v11 appearanceName];
+    v7 = _styleEffectAppearanceName;
+    v8 = appearanceName;
     v9 = v8;
     if (v7 == v8)
     {
@@ -2588,23 +2588,23 @@ LABEL_7:
     }
 
 LABEL_11:
-    v3 = v11;
+    styleEffectConfiguration = v11;
   }
 }
 
 - (UIColor)selectionHighlightColor
 {
-  v3 = [(UITextView *)self textInputTraits];
-  v4 = [v3 selectionHighlightColor];
+  textInputTraits = [(UITextView *)self textInputTraits];
+  selectionHighlightColor = [textInputTraits selectionHighlightColor];
 
   if (+[UITextSelectionDisplayInteraction isModernSelectionViewEnabled](UITextSelectionDisplayInteraction, "isModernSelectionViewEnabled") && (-[UIView traitCollection](self, "traitCollection"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 userInterfaceStyle], v5, v6 == 2))
   {
-    v7 = [v4 colorWithAlphaComponent:0.35];
+    v7 = [selectionHighlightColor colorWithAlphaComponent:0.35];
   }
 
   else
   {
-    v7 = v4;
+    v7 = selectionHighlightColor;
   }
 
   v8 = v7;
@@ -2615,25 +2615,25 @@ LABEL_11:
 - (BOOL)hasText
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained hasText];
+  hasText = [WeakRetained hasText];
 
-  return v3;
+  return hasText;
 }
 
 - (BOOL)forceEnableDictation
 {
-  v2 = [(UITextView *)self _textInputTraits];
-  v3 = [v2 forceEnableDictation];
+  _textInputTraits = [(UITextView *)self _textInputTraits];
+  forceEnableDictation = [_textInputTraits forceEnableDictation];
 
-  return v3;
+  return forceEnableDictation;
 }
 
 - (BOOL)forceDisableDictation
 {
-  v2 = [(UITextView *)self _textInputTraits];
-  v3 = [v2 forceDisableDictation];
+  _textInputTraits = [(UITextView *)self _textInputTraits];
+  forceDisableDictation = [_textInputTraits forceDisableDictation];
 
-  return v3;
+  return forceDisableDictation;
 }
 
 - (BOOL)_supportsTextKit2TextLists
@@ -2674,15 +2674,15 @@ void __51__UITextView_TextLists___supportsTextKit2TextLists__block_invoke()
 {
   if ([(UIView *)self _canHaveWritingToolsCoordinator])
   {
-    v3 = [(UITextView *)self _existingWritingToolsCoordinator];
-    if (!v3)
+    _existingWritingToolsCoordinator = [(UITextView *)self _existingWritingToolsCoordinator];
+    if (!_existingWritingToolsCoordinator)
     {
-      v3 = [[UIWritingToolsCoordinator alloc] initWithDelegate:self];
-      v4 = [(UITextView *)self _textInputTraits];
-      v5 = [v4 allowedWritingToolsResultOptions];
-      if (v5)
+      _existingWritingToolsCoordinator = [[UIWritingToolsCoordinator alloc] initWithDelegate:self];
+      _textInputTraits = [(UITextView *)self _textInputTraits];
+      allowedWritingToolsResultOptions = [_textInputTraits allowedWritingToolsResultOptions];
+      if (allowedWritingToolsResultOptions)
       {
-        v6 = v5;
+        v6 = allowedWritingToolsResultOptions;
       }
 
       else
@@ -2690,54 +2690,54 @@ void __51__UITextView_TextLists___supportsTextKit2TextLists__block_invoke()
         v6 = 2;
       }
 
-      [(UIWritingToolsCoordinator *)v3 setPreferredResultOptions:v6];
-      v7 = [v4 writingToolsBehavior];
-      v8 = [(UITextView *)self textLayoutManager];
-      if (v8)
+      [(UIWritingToolsCoordinator *)_existingWritingToolsCoordinator setPreferredResultOptions:v6];
+      writingToolsBehavior = [_textInputTraits writingToolsBehavior];
+      textLayoutManager = [(UITextView *)self textLayoutManager];
+      if (textLayoutManager)
       {
       }
 
-      else if (v7 <= 2)
+      else if (writingToolsBehavior <= 2)
       {
-        v7 = 2;
+        writingToolsBehavior = 2;
       }
 
-      [(UIWritingToolsCoordinator *)v3 setPreferredBehavior:v7];
-      v9 = [(UITextView *)self selectionContainerView];
-      [(UIWritingToolsCoordinator *)v3 setDecorationContainerView:v9];
+      [(UIWritingToolsCoordinator *)_existingWritingToolsCoordinator setPreferredBehavior:writingToolsBehavior];
+      selectionContainerView = [(UITextView *)self selectionContainerView];
+      [(UIWritingToolsCoordinator *)_existingWritingToolsCoordinator setDecorationContainerView:selectionContainerView];
 
-      [(UIWritingToolsCoordinator *)v3 setIncludesTextListMarkers:[(UITextView *)self _supportsTextKit2TextLists]^ 1];
-      [(UIView *)self addInteraction:v3];
+      [(UIWritingToolsCoordinator *)_existingWritingToolsCoordinator setIncludesTextListMarkers:[(UITextView *)self _supportsTextKit2TextLists]^ 1];
+      [(UIView *)self addInteraction:_existingWritingToolsCoordinator];
     }
   }
 
   else
   {
-    v3 = 0;
+    _existingWritingToolsCoordinator = 0;
   }
 
-  return v3;
+  return _existingWritingToolsCoordinator;
 }
 
 - (id)_existingWritingToolsCoordinator
 {
   v4.receiver = self;
   v4.super_class = UITextView;
-  v2 = [(UIView *)&v4 _writingToolsCoordinator];
+  _writingToolsCoordinator = [(UIView *)&v4 _writingToolsCoordinator];
 
-  return v2;
+  return _writingToolsCoordinator;
 }
 
 - (BOOL)_shouldCollectAsKeyView
 {
-  v3 = [(UIView *)self isUserInteractionEnabled];
-  if (v3)
+  isUserInteractionEnabled = [(UIView *)self isUserInteractionEnabled];
+  if (isUserInteractionEnabled)
   {
 
-    LOBYTE(v3) = [(UITextView *)self isEditable];
+    LOBYTE(isUserInteractionEnabled) = [(UITextView *)self isEditable];
   }
 
-  return v3;
+  return isUserInteractionEnabled;
 }
 
 - (UIView)inputAccessoryView
@@ -2745,25 +2745,25 @@ void __51__UITextView_TextLists___supportsTextKit2TextLists__block_invoke()
   inputAccessoryView = self->_inputAccessoryView;
   if (inputAccessoryView)
   {
-    v3 = inputAccessoryView;
+    inputAccessoryView = inputAccessoryView;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = UITextView;
-    v3 = [(UIResponder *)&v5 inputAccessoryView];
+    inputAccessoryView = [(UIResponder *)&v5 inputAccessoryView];
   }
 
-  return v3;
+  return inputAccessoryView;
 }
 
 - (BOOL)becomeFirstResponder
 {
   if ([(UIView *)self isFirstResponder])
   {
-    LOBYTE(v3) = 1;
-    return v3;
+    LOBYTE(becomeFirstResponder) = 1;
+    return becomeFirstResponder;
   }
 
   if (+[UIResponder _currentChangeIntent](UIResponder, "_currentChangeIntent") == 1 && [(UITextView *)self _shouldBecomeEditableUponFocus]|| +[UIResponder _currentChangeIntent]== 2 && [(UITextView *)self _shouldBecomeEditableUponBecomingTargetOfKeyboardEventDeferringEnvironment])
@@ -2771,10 +2771,10 @@ void __51__UITextView_TextLists___supportsTextKit2TextLists__block_invoke()
     [(UITextView *)self setEditable:1];
   }
 
-  v4 = [(UIView *)self keyboardSceneDelegate];
+  keyboardSceneDelegate = [(UIView *)self keyboardSceneDelegate];
   if (![(UIView *)self isFirstResponder])
   {
-    if ([v4 isOnScreen])
+    if ([keyboardSceneDelegate isOnScreen])
     {
       goto LABEL_12;
     }
@@ -2784,13 +2784,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v5 = [v4 responder];
-  v6 = v5;
-  if (v5 == self)
+  responder = [keyboardSceneDelegate responder];
+  v6 = responder;
+  if (responder == self)
   {
-    v8 = [v4 isOnScreen];
+    isOnScreen = [keyboardSceneDelegate isOnScreen];
 
-    if (v8)
+    if (isOnScreen)
     {
       goto LABEL_12;
     }
@@ -2799,30 +2799,30 @@ LABEL_14:
   }
 
 LABEL_12:
-  [v4 _beginIgnoringReloadInputViews];
+  [keyboardSceneDelegate _beginIgnoringReloadInputViews];
   v7 = 1;
 LABEL_15:
   v15.receiver = self;
   v15.super_class = UITextView;
-  v3 = [(UIView *)&v15 becomeFirstResponder];
-  v9 = [(UITextView *)self isEditable];
-  if (v3)
+  becomeFirstResponder = [(UIView *)&v15 becomeFirstResponder];
+  isEditable = [(UITextView *)self isEditable];
+  if (becomeFirstResponder)
   {
-    v10 = v9;
-    if (v9)
+    v10 = isEditable;
+    if (isEditable)
     {
       [(UITextView *)self _resetDataDetectorsResults];
-      v11 = [(UITextView *)self _textInputTraits];
-      v12 = [(UIView *)self _inheritedInteractionTintColor];
-      [v11 _setColorsToMatchTintColor:v12];
+      _textInputTraits = [(UITextView *)self _textInputTraits];
+      _inheritedInteractionTintColor = [(UIView *)self _inheritedInteractionTintColor];
+      [_textInputTraits _setColorsToMatchTintColor:_inheritedInteractionTintColor];
 
       if ((v7 & 1) == 0)
       {
         [(UITextView *)self _notifyDidBeginEditing];
       }
 
-      v13 = [(_UITextContainerView *)self->_containerView canvasView];
-      [v13 isEditingDidChange];
+      canvasView = [(_UITextContainerView *)self->_containerView canvasView];
+      [canvasView isEditingDidChange];
 
       if ([(UITextView *)self shouldAutoscrollAboveBottom])
       {
@@ -2846,7 +2846,7 @@ LABEL_15:
 
     if (v7)
     {
-      [v4 _endIgnoringReloadInputViews];
+      [keyboardSceneDelegate _endIgnoringReloadInputViews];
       [(UIResponder *)self reloadInputViews];
       if (v10)
       {
@@ -2855,12 +2855,12 @@ LABEL_15:
     }
   }
 
-  else if ((v7 & 1) != 0 && [v4 _endIgnoringReloadInputViews])
+  else if ((v7 & 1) != 0 && [keyboardSceneDelegate _endIgnoringReloadInputViews])
   {
-    [v4 forceReloadInputViews];
+    [keyboardSceneDelegate forceReloadInputViews];
   }
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (void)_notifyDidBeginEditing
@@ -2871,8 +2871,8 @@ LABEL_15:
     [WeakRetained textViewDidBeginEditing:self];
   }
 
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"UITextViewTextDidBeginEditingNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"UITextViewTextDidBeginEditingNotification" object:self];
 }
 
 - (Class)_intelligenceBaseClass
@@ -2882,61 +2882,61 @@ LABEL_15:
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)_intelligenceCollectContentIn:(CGRect)a3 collector:(id)a4
+- (void)_intelligenceCollectContentIn:(CGRect)in collector:(id)collector
 {
-  v5 = a4;
-  v6 = self;
-  _sSo10UITextViewC5UIKitE27_intelligenceCollectContent2in9collectorySo6CGRectV_21UIIntelligenceSupport0J16ElementCollectorCtF_0(v5);
+  collectorCopy = collector;
+  selfCopy = self;
+  _sSo10UITextViewC5UIKitE27_intelligenceCollectContent2in9collectorySo6CGRectV_21UIIntelligenceSupport0J16ElementCollectorCtF_0(collectorCopy);
 }
 
 - (id)largeContentTitle
 {
-  v3 = [(UIView *)self _largeContentStoredProperties];
-  v4 = [v3 didSetLargeContentTitle];
+  _largeContentStoredProperties = [(UIView *)self _largeContentStoredProperties];
+  didSetLargeContentTitle = [_largeContentStoredProperties didSetLargeContentTitle];
 
-  if (v4)
+  if (didSetLargeContentTitle)
   {
     v8.receiver = self;
     v8.super_class = UITextView;
-    v5 = [(UIView *)&v8 largeContentTitle];
+    largeContentTitle = [(UIView *)&v8 largeContentTitle];
   }
 
   else
   {
-    v6 = [(UITextView *)self attributedText];
-    v5 = [v6 string];
+    attributedText = [(UITextView *)self attributedText];
+    largeContentTitle = [attributedText string];
   }
 
-  return v5;
+  return largeContentTitle;
 }
 
 - (void)insertAnimatedTextPlaceholder
 {
-  v3 = [(UITextView *)self endOfDocument];
-  [(UITextView *)self insertAnimatedTextPlaceholderAtLocation:v3 numLines:0.0];
+  endOfDocument = [(UITextView *)self endOfDocument];
+  [(UITextView *)self insertAnimatedTextPlaceholderAtLocation:endOfDocument numLines:0.0];
 }
 
-- (void)insertAnimatedTextPlaceholderAtLocation:(id)a3 numLines:(double)a4 completion:(id)a5
+- (void)insertAnimatedTextPlaceholderAtLocation:(id)location numLines:(double)lines completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  locationCopy = location;
   [(UITextView *)self removeAnimatedTextPlaceholders];
-  v12 = [(UITextView *)self _animatedPlaceholderSupport];
-  v10 = [v12 insertLoadingPlaceholderAtLocation:v9 lines:v8 completion:a4];
+  _animatedPlaceholderSupport = [(UITextView *)self _animatedPlaceholderSupport];
+  v10 = [_animatedPlaceholderSupport insertLoadingPlaceholderAtLocation:locationCopy lines:completionCopy completion:lines];
 
   activeAnimatedPlaceholder = self->_activeAnimatedPlaceholder;
   self->_activeAnimatedPlaceholder = v10;
 }
 
-- (BOOL)replaceAnimatedTextPlaceholderWith:(id)a3 completion:(id)a4
+- (BOOL)replaceAnimatedTextPlaceholderWith:(id)with completion:(id)completion
 {
   activeAnimatedPlaceholder = self->_activeAnimatedPlaceholder;
   if (activeAnimatedPlaceholder)
   {
-    v7 = a4;
-    v8 = a3;
-    v9 = [(UITextView *)self _animatedPlaceholderSupport];
-    [v9 replacePlaceholder:self->_activeAnimatedPlaceholder withText:v8 completion:v7];
+    completionCopy = completion;
+    withCopy = with;
+    _animatedPlaceholderSupport = [(UITextView *)self _animatedPlaceholderSupport];
+    [_animatedPlaceholderSupport replacePlaceholder:self->_activeAnimatedPlaceholder withText:withCopy completion:completionCopy];
   }
 
   return activeAnimatedPlaceholder != 0;
@@ -2946,53 +2946,53 @@ LABEL_15:
 {
   if (self->_activeAnimatedPlaceholder)
   {
-    v3 = [(UITextView *)self _animatedPlaceholderSupport];
-    [v3 removePlaceholder:self->_activeAnimatedPlaceholder];
+    _animatedPlaceholderSupport = [(UITextView *)self _animatedPlaceholderSupport];
+    [_animatedPlaceholderSupport removePlaceholder:self->_activeAnimatedPlaceholder];
 
     activeAnimatedPlaceholder = self->_activeAnimatedPlaceholder;
     self->_activeAnimatedPlaceholder = 0;
   }
 }
 
-- (void)_insertAttributedText:(id)a3 withAnimation:(int64_t)a4 completion:(id)a5
+- (void)_insertAttributedText:(id)text withAnimation:(int64_t)animation completion:(id)completion
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = [(UITextView *)self selectedTextRange];
-  if (!v9)
+  textCopy = text;
+  completionCopy = completion;
+  selectedTextRange = [(UITextView *)self selectedTextRange];
+  if (!selectedTextRange)
   {
-    v10 = [(UITextView *)self endOfDocument];
-    v11 = [(UITextView *)self endOfDocument];
-    v9 = [(UITextView *)self textRangeFromPosition:v10 toPosition:v11];
+    endOfDocument = [(UITextView *)self endOfDocument];
+    endOfDocument2 = [(UITextView *)self endOfDocument];
+    selectedTextRange = [(UITextView *)self textRangeFromPosition:endOfDocument toPosition:endOfDocument2];
   }
 
-  [(UITextView *)self _replaceRange:v9 withAttributedText:v12 usingAnimation:a4 completion:v8];
+  [(UITextView *)self _replaceRange:selectedTextRange withAttributedText:textCopy usingAnimation:animation completion:completionCopy];
 }
 
-- (void)_replaceRange:(id)a3 withAttributedText:(id)a4 usingAnimation:(int64_t)a5 completion:(id)a6
+- (void)_replaceRange:(id)range withAttributedText:(id)text usingAnimation:(int64_t)animation completion:(id)completion
 {
-  v13 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (a5 == 1)
+  rangeCopy = range;
+  textCopy = text;
+  completionCopy = completion;
+  if (animation == 1)
   {
-    v12 = [(UITextView *)self _animatedPlaceholderSupport];
-    [v12 replaceRangeUsingReplacementEffect:v13 withAttributedText:v10 completion:v11];
+    _animatedPlaceholderSupport = [(UITextView *)self _animatedPlaceholderSupport];
+    [_animatedPlaceholderSupport replaceRangeUsingReplacementEffect:rangeCopy withAttributedText:textCopy completion:completionCopy];
   }
 
-  else if (a5 == 2)
+  else if (animation == 2)
   {
-    [(UITextView *)self _replaceRangeUsingColorWipe:v13 withAttributedText:v10 completion:v11];
+    [(UITextView *)self _replaceRangeUsingColorWipe:rangeCopy withAttributedText:textCopy completion:completionCopy];
   }
 }
 
-- (void)_replaceRangeUsingColorWipe:(id)a3 withAttributedText:(id)a4 completion:(id)a5
+- (void)_replaceRangeUsingColorWipe:(id)wipe withAttributedText:(id)text completion:(id)completion
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UITextView *)self _replaceRange:v8 withAttributedText:v9 updatingSelection:1];
+  wipeCopy = wipe;
+  textCopy = text;
+  completionCopy = completion;
+  v11 = [(UITextView *)self _replaceRange:wipeCopy withAttributedText:textCopy updatingSelection:1];
   [(UITextView *)self _boundingRectForRange:v11];
   v13 = v12;
   v15 = v14;
@@ -3006,16 +3006,16 @@ LABEL_15:
   v34[3] = &unk_1E7122758;
   objc_copyWeak(&v35, &location);
   v21 = [(_UIIntelligentTextInsertionAnimatedColor *)v20 initWithBounds:v34 invalidationHandler:v13, v15, v17, v19];
-  v22 = [(UITextView *)self typingAttributes];
-  v23 = [(UITextView *)self textColor];
-  v24 = ResolvedReplacementColorForTypingAttributes(v22, v23);
+  typingAttributes = [(UITextView *)self typingAttributes];
+  textColor = [(UITextView *)self textColor];
+  v24 = ResolvedReplacementColorForTypingAttributes(typingAttributes, textColor);
   [(_UIIntelligentTextInsertionAnimatedColor *)v21 setResolvedColor:v24];
 
   v37 = *off_1E70EC920;
   v38[0] = v21;
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:&v37 count:1];
-  v26 = [(UITextView *)self textLayoutController];
-  [v26 addRenderingAttributes:v25 forRange:v11];
+  textLayoutController = [(UITextView *)self textLayoutController];
+  [textLayoutController addRenderingAttributes:v25 forRange:v11];
 
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
@@ -3026,7 +3026,7 @@ LABEL_15:
   v31 = v27;
   v28 = v11;
   v32 = v28;
-  v29 = v10;
+  v29 = completionCopy;
   v33 = v29;
   PerformStandardAnimatedColorInsertionAnimation(v21, v30);
 
@@ -3074,12 +3074,12 @@ uint64_t __63__UITextView__resolvesNaturalAlignmentWithBaseWritingDirection__blo
   return result;
 }
 
-- (id)_activityItemsConfigurationAtLocation:(CGPoint)a3
+- (id)_activityItemsConfigurationAtLocation:(CGPoint)location
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v4 = [UIActivityItemsConfiguration alloc];
-  v5 = [(UITextView *)self selectedText];
-  v9[0] = v5;
+  selectedText = [(UITextView *)self selectedText];
+  v9[0] = selectedText;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v7 = [(UIActivityItemsConfiguration *)v4 initWithObjects:v6];
 
@@ -3089,9 +3089,9 @@ uint64_t __63__UITextView__resolvesNaturalAlignmentWithBaseWritingDirection__blo
 - (void)setDelegate:(id)delegate
 {
   v4 = delegate;
-  v5 = [(UIScrollView *)self delegate];
+  delegate = [(UIScrollView *)self delegate];
 
-  if (v5 != v4)
+  if (delegate != v4)
   {
     v6 = objc_opt_respondsToSelector();
     v7 = 0x2000000;
@@ -3180,71 +3180,71 @@ uint64_t __63__UITextView__resolvesNaturalAlignmentWithBaseWritingDirection__blo
   [(UIScrollView *)&v26 setDelegate:v4];
 }
 
-- (id)_newContainerViewWithFrame:(CGRect)a3 textContainer:(id)a4 textLayoutController:(id)a5
+- (id)_newContainerViewWithFrame:(CGRect)frame textContainer:(id)container textLayoutController:(id)controller
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
-  v12 = a4;
-  v13 = [[_UITextContainerView alloc] initWithFrame:v11 textLayoutController:v12 textContainer:self delegate:x, y, width, height];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  controllerCopy = controller;
+  containerCopy = container;
+  height = [[_UITextContainerView alloc] initWithFrame:controllerCopy textLayoutController:containerCopy textContainer:self delegate:x, y, width, height];
 
-  [(_UITextContainerView *)v13 setVerticallyResizable:[(UIScrollView *)self isScrollEnabled]];
-  [(_UITextContainerView *)v13 setMaxSize:1.79769313e308, 1.79769313e308];
+  [(_UITextContainerView *)height setVerticallyResizable:[(UIScrollView *)self isScrollEnabled]];
+  [(_UITextContainerView *)height setMaxSize:1.79769313e308, 1.79769313e308];
   if (_UITextViewAllowSelectionContainerInTextLayoutCanvas())
   {
-    [(_UITextContainerView *)v13 setTextEmphasisBackgroundView:self->_textEmphasisBackgroundView withTextView:self];
+    [(_UITextContainerView *)height setTextEmphasisBackgroundView:self->_textEmphasisBackgroundView withTextView:self];
   }
 
-  return v13;
+  return height;
 }
 
-- (id)_newTextKit1LayoutControllerWithTextContainer:(id)a3 layoutManager:(id)a4 textStorage:(id)a5
+- (id)_newTextKit1LayoutControllerWithTextContainer:(id)container layoutManager:(id)manager textStorage:(id)storage
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[_UITextKit1LayoutController alloc] initWithTextView:v10 textContainer:v9 layoutManager:v8 textStorage:?];
+  storageCopy = storage;
+  managerCopy = manager;
+  containerCopy = container;
+  v11 = [[_UITextKit1LayoutController alloc] initWithTextView:containerCopy textContainer:managerCopy layoutManager:storageCopy textStorage:?];
 
-  v12 = [(_UITextKit1LayoutController *)v11 originalLayoutManager];
-  [v12 setAllowsNonContiguousLayout:1];
+  originalLayoutManager = [(_UITextKit1LayoutController *)v11 originalLayoutManager];
+  [originalLayoutManager setAllowsNonContiguousLayout:1];
 
   return v11;
 }
 
-- (void)_assignTextStorageCheckingForOverrides:(uint64_t)a1
+- (void)_assignTextStorageCheckingForOverrides:(uint64_t)overrides
 {
   v7 = a2;
-  if (a1)
+  if (overrides)
   {
-    objc_storeStrong((a1 + 2160), a2);
-    *(a1 + 2232) &= ~0x400000000uLL;
-    if (([*(a1 + 2160) isMemberOfClass:objc_opt_class()] & 1) == 0)
+    objc_storeStrong((overrides + 2160), a2);
+    *(overrides + 2232) &= ~0x400000000uLL;
+    if (([*(overrides + 2160) isMemberOfClass:objc_opt_class()] & 1) == 0)
     {
       v4 = objc_opt_class();
       MethodImplementation = class_getMethodImplementation(v4, sel_replaceCharactersInRange_withAttributedString_);
       v6 = objc_opt_class();
-      *(a1 + 2232) = *(a1 + 2232) & 0xFFFFFFFBFFFFFFFFLL | ((class_getMethodImplementation(v6, sel_replaceCharactersInRange_withAttributedString_) != MethodImplementation) << 34);
+      *(overrides + 2232) = *(overrides + 2232) & 0xFFFFFFFBFFFFFFFFLL | ((class_getMethodImplementation(v6, sel_replaceCharactersInRange_withAttributedString_) != MethodImplementation) << 34);
     }
   }
 }
 
-- (void)_configureWithTextContainer:(id)a3 layoutManager:(id)a4 textLayoutManagerEnabled:(BOOL)a5
+- (void)_configureWithTextContainer:(id)container layoutManager:(id)manager textLayoutManagerEnabled:(BOOL)enabled
 {
-  v5 = a5;
-  obj = a3;
-  v9 = a4;
-  v10 = obj;
-  v11 = v9;
+  enabledCopy = enabled;
+  obj = container;
+  managerCopy = manager;
+  _newTextContainer = obj;
+  v11 = managerCopy;
   if (!obj)
   {
-    v10 = [(UITextView *)self _newTextContainer];
+    _newTextContainer = [(UITextView *)self _newTextContainer];
 LABEL_7:
-    obj = v10;
+    obj = _newTextContainer;
     if (self->_textStorage)
     {
-      if (v5)
+      if (enabledCopy)
       {
 LABEL_9:
         v16 = objc_alloc_init(off_1E70ECBC0);
@@ -3253,9 +3253,9 @@ LABEL_9:
         textLayoutController = self->_textLayoutController;
         self->_textLayoutController = v17;
 
-        v19 = [(_UITextLayoutController *)self->_textLayoutController firstTextContainer];
+        firstTextContainer = [(_UITextLayoutController *)self->_textLayoutController firstTextContainer];
         textContainer = self->_textContainer;
-        self->_textContainer = v19;
+        self->_textContainer = firstTextContainer;
 
         [(UITextView *)self _createTextEmphasisBackgroundViewIfNeeded];
 LABEL_13:
@@ -3269,20 +3269,20 @@ LABEL_13:
       v21 = objc_alloc_init(off_1E70ECC00);
       [(UITextView *)self _assignTextStorageCheckingForOverrides:v21];
 
-      v10 = obj;
-      if (v5)
+      _newTextContainer = obj;
+      if (enabledCopy)
       {
         goto LABEL_9;
       }
     }
 
-    objc_storeStrong(&self->_textContainer, v10);
+    objc_storeStrong(&self->_textContainer, _newTextContainer);
     v16 = [(UITextView *)self _newTextKit1LayoutControllerWithTextContainer:self->_textContainer layoutManager:v11 textStorage:self->_textStorage];
     objc_storeStrong(&self->_textLayoutController, v16);
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v23 = *off_1E70ECD50;
-    v24 = [v16 layoutManager];
-    [v22 addObserver:self selector:sel__observedTextViewDidChange_ name:v23 object:v24];
+    layoutManager = [v16 layoutManager];
+    [defaultCenter addObserver:self selector:sel__observedTextViewDidChange_ name:v23 object:layoutManager];
 
     textEmphasisBackgroundView = self->_textEmphasisBackgroundView;
     if (textEmphasisBackgroundView)
@@ -3304,15 +3304,15 @@ LABEL_13:
   v13 = self->_textLayoutController;
   self->_textLayoutController = v12;
 
-  objc_storeStrong(&self->_textContainer, a3);
-  v14 = [(_UITextLayoutController *)self->_textLayoutController textStorage];
-  [(UITextView *)self _assignTextStorageCheckingForOverrides:v14];
+  objc_storeStrong(&self->_textContainer, container);
+  textStorage = [(_UITextLayoutController *)self->_textLayoutController textStorage];
+  [(UITextView *)self _assignTextStorageCheckingForOverrides:textStorage];
 
-  if (v5)
+  if (enabledCopy)
   {
-    v15 = [obj textLayoutManager];
+    textLayoutManager = [obj textLayoutManager];
 
-    if (v15)
+    if (textLayoutManager)
     {
       [(UITextView *)self _createTextEmphasisBackgroundViewIfNeeded];
     }
@@ -3322,7 +3322,7 @@ LABEL_14:
   containerView = self->_containerView;
   if (containerView)
   {
-    if (v5 && (v28 = _UITextViewAllowSelectionContainerInTextLayoutCanvas(), containerView = self->_containerView, v28))
+    if (enabledCopy && (v28 = _UITextViewAllowSelectionContainerInTextLayoutCanvas(), containerView = self->_containerView, v28))
     {
       [(_UITextContainerView *)containerView setSelectionContainerView:self->_selectionContainerView];
       [(UITextView *)self _createTextEmphasisBackgroundViewIfNeeded];
@@ -3344,16 +3344,16 @@ LABEL_14:
   [(NSTextStorage *)self->_textStorage _setIntentResolver:v31];
 }
 
-- (void)_installContainerViewAtIndex:(unint64_t)a3
+- (void)_installContainerViewAtIndex:(unint64_t)index
 {
   [(_UITextLayoutController *)self->_textLayoutController usedRectForTextContainer:self->_textContainer];
   v6 = v5;
   if (dyld_program_sdk_at_least())
   {
-    v7 = [(UIView *)self traitCollection];
-    v8 = [v7 userInterfaceIdiom];
+    traitCollection = [(UIView *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
     v9 = 8.0;
-    if (v8 == 6)
+    if (userInterfaceIdiom == 6)
     {
       v9 = 2.0;
     }
@@ -3379,14 +3379,14 @@ LABEL_14:
   v17 = *(MEMORY[0x1E695F050] + 16);
   self->_frameOfTrailingWhitespace.origin = *MEMORY[0x1E695F050];
   self->_frameOfTrailingWhitespace.size = v17;
-  v18 = [(UITextView *)self _contentView];
-  [v18 insertSubview:self->_containerView atIndex:a3];
+  _contentView = [(UITextView *)self _contentView];
+  [_contentView insertSubview:self->_containerView atIndex:index];
 }
 
-- (BOOL)_reconfigureWithLayoutManager:(id)a3 triggeredByLayoutManagerAccess:(BOOL)a4 triggeringSelector:(SEL)a5
+- (BOOL)_reconfigureWithLayoutManager:(id)manager triggeredByLayoutManagerAccess:(BOOL)access triggeringSelector:(SEL)selector
 {
-  v5 = a4;
-  v7 = a3;
+  accessCopy = access;
+  managerCopy = manager;
   textLayoutController = self->_textLayoutController;
   if (!textLayoutController || ([(_UITextLayoutController *)textLayoutController canAccessLayoutManager]& 1) != 0 || (tvFlags = self->_tvFlags, (*&tvFlags & 0x1000) != 0))
   {
@@ -3396,20 +3396,20 @@ LABEL_14:
   else
   {
     self->_tvFlags = (*&tvFlags | 0x1000);
-    v10 = [(UITextView *)self _existingWritingToolsCoordinator];
-    v11 = v10;
-    if (v10 && [v10 behavior] != -1)
+    _existingWritingToolsCoordinator = [(UITextView *)self _existingWritingToolsCoordinator];
+    v11 = _existingWritingToolsCoordinator;
+    if (_existingWritingToolsCoordinator && [_existingWritingToolsCoordinator behavior] != -1)
     {
       [v11 setPreferredBehavior:2];
     }
 
-    _UITextViewEnablingCompatibilityMode(self, v5);
+    _UITextViewEnablingCompatibilityMode(self, accessCopy);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __94__UITextView__reconfigureWithLayoutManager_triggeredByLayoutManagerAccess_triggeringSelector___block_invoke;
     v14[3] = &unk_1E70F35B8;
     v14[4] = self;
-    v15 = v7;
+    v15 = managerCopy;
     [UIView performWithoutAnimation:v14];
 
     v12 = 1;
@@ -3461,28 +3461,28 @@ void __94__UITextView__reconfigureWithLayoutManager_triggeredByLayoutManagerAcce
   *(*(a1 + 32) + 2232) &= ~0x1000uLL;
 }
 
-- (void)_setEncodedTextKitFlavor:(int64_t)a3
+- (void)_setEncodedTextKitFlavor:(int64_t)flavor
 {
-  if (self->_textKitCodingFlavor != a3)
+  if (self->_textKitCodingFlavor != flavor)
   {
-    self->_textKitCodingFlavor = a3;
+    self->_textKitCodingFlavor = flavor;
   }
 }
 
-- (void)_commonInitWithTextContainer:(id)a3 decoding:(BOOL)a4 editable:(BOOL)a5 selectable:(BOOL)a6 draggable:(BOOL)a7 textLayoutManagerEnabled:(BOOL)a8
+- (void)_commonInitWithTextContainer:(id)container decoding:(BOOL)decoding editable:(BOOL)editable selectable:(BOOL)selectable draggable:(BOOL)draggable textLayoutManagerEnabled:(BOOL)enabled
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v15 = a3;
+  enabledCopy = enabled;
+  draggableCopy = draggable;
+  selectableCopy = selectable;
+  editableCopy = editable;
+  decodingCopy = decoding;
+  containerCopy = container;
+  containerCopy2 = container;
   v16 = +[_UITextViewVisualStyle inferredVisualStyle];
   visualStyle = self->_visualStyle;
   self->_visualStyle = v16;
 
-  v18 = self;
+  selfCopy = self;
   if (qword_1ED4998D8 != -1)
   {
     dispatch_once(&qword_1ED4998D8, &__block_literal_global_2382);
@@ -3498,25 +3498,25 @@ void __94__UITextView__reconfigureWithLayoutManager_triggeredByLayoutManagerAcce
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
     [qword_1ED4998D0 objectForKeyedSubscript:qword_1ED4998E0];
-    v62 = v13;
-    v21 = v11;
-    v22 = v12;
-    v23 = v9;
-    v24 = v15;
-    v26 = v25 = v10;
+    v62 = containerCopy;
+    v21 = editableCopy;
+    v22 = decodingCopy;
+    v23 = draggableCopy;
+    v24 = containerCopy2;
+    v26 = v25 = selectableCopy;
     v27 = [v20 isEqualToString:v26];
 
-    v10 = v25;
-    v15 = v24;
-    v9 = v23;
-    v12 = v22;
-    v11 = v21;
-    v13 = v62;
+    selectableCopy = v25;
+    containerCopy2 = v24;
+    draggableCopy = v23;
+    decodingCopy = v22;
+    editableCopy = v21;
+    containerCopy = v62;
 
-    v8 = v8 & ~v27;
+    enabledCopy = enabledCopy & ~v27;
   }
 
-  v28 = v18;
+  v28 = selfCopy;
   if ((dyld_program_sdk_at_least() & 1) == 0 && qword_1ED499900 != -1)
   {
     dispatch_once(&qword_1ED499900, &__block_literal_global_2404);
@@ -3525,28 +3525,28 @@ void __94__UITextView__reconfigureWithLayoutManager_triggeredByLayoutManagerAcce
   if (byte_1ED499892 == 1 && (objc_opt_isKindOfClass() & 1) != 0)
   {
 
-    if (v15 && !v28->_textLayoutController)
+    if (containerCopy2 && !v28->_textLayoutController)
     {
-      v29 = [_UITextLayoutControllerBase layoutControllerWithTextView:v28 textContainer:v15];
+      v29 = [_UITextLayoutControllerBase layoutControllerWithTextView:v28 textContainer:containerCopy2];
       textLayoutController = v28->_textLayoutController;
       v28->_textLayoutController = v29;
 
-      objc_storeStrong(&v28->_textContainer, v13);
-      v31 = [(_UITextLayoutController *)v28->_textLayoutController textStorage];
-      [(UITextView *)v28 _assignTextStorageCheckingForOverrides:v31];
+      objc_storeStrong(&v28->_textContainer, containerCopy);
+      textStorage = [(_UITextLayoutController *)v28->_textLayoutController textStorage];
+      [(UITextView *)v28 _assignTextStorageCheckingForOverrides:textStorage];
     }
   }
 
   else
   {
 
-    [(UITextView *)v28 _setUpWithTextContainer:v15 textLayoutManagerEnabled:v8];
+    [(UITextView *)v28 _setUpWithTextContainer:containerCopy2 textLayoutManagerEnabled:enabledCopy];
   }
 
   [(UITextView *)v28 _setupDefaultStyleEffectConfiguration];
-  v32 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v32 addObserver:v28 selector:sel__textStorageDidProcessEditing_ name:*off_1E70ECAC0 object:v28->_textStorage];
-  [v32 addObserver:v28 selector:sel__keyboardDidShow_ name:@"UIKeyboardDidShowNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v28 selector:sel__textStorageDidProcessEditing_ name:*off_1E70ECAC0 object:v28->_textStorage];
+  [defaultCenter addObserver:v28 selector:sel__keyboardDidShow_ name:@"UIKeyboardDidShowNotification" object:0];
   [(UITextView *)v28 _installContainerViewAtIndex:0];
   [(UIView *)v28 setClipsToBounds:1];
   v33 = objc_opt_new();
@@ -3558,8 +3558,8 @@ void __94__UITextView__reconfigureWithLayoutManager_triggeredByLayoutManagerAcce
   v35 = 8.0;
   if (dyld_program_sdk_at_least())
   {
-    v36 = [(UIView *)v28 traitCollection];
-    if ([v36 userInterfaceIdiom] == 6)
+    traitCollection = [(UIView *)v28 traitCollection];
+    if ([traitCollection userInterfaceIdiom] == 6)
     {
       v35 = 2.0;
     }
@@ -3583,14 +3583,14 @@ void __94__UITextView__reconfigureWithLayoutManager_triggeredByLayoutManagerAcce
   bottomContentPadding = v28->_bottomContentPadding;
   v28->_bottomContentPadding = v42;
 
-  if (v12)
+  if (decodingCopy)
   {
     WeakRetained = objc_loadWeakRetained(&v28->_inputController);
 
     if (!WeakRetained)
     {
-      v45 = [(_UITextLayoutControllerBase *)v28->_textLayoutController textInputController];
-      objc_storeWeak(&v28->_inputController, v45);
+      textInputController = [(_UITextLayoutControllerBase *)v28->_textLayoutController textInputController];
+      objc_storeWeak(&v28->_inputController, textInputController);
 
       v46 = objc_loadWeakRetained(&v28->_inputController);
       [v46 setDelegate:v28];
@@ -3602,7 +3602,7 @@ void __94__UITextView__reconfigureWithLayoutManager_triggeredByLayoutManagerAcce
   geometry = v28->_geometry;
   v28->_geometry = v47;
 
-  if (v9)
+  if (draggableCopy)
   {
     v49 = [UITextDragDropSupport installTextDragDropOnView:v28];
     textDragDropSupport = v28->_textDragDropSupport;
@@ -3615,14 +3615,14 @@ void __94__UITextView__reconfigureWithLayoutManager_triggeredByLayoutManagerAcce
   v54 = objc_opt_class();
   v55 = class_getInstanceMethod(v54, sel_insertTextSuggestion_);
   v28->_tvFlags = (*&v28->_tvFlags & 0xFFFFFFFFFBFFFFFFLL | ((Implementation != method_getImplementation(v55)) << 26));
-  [(UITextView *)v28 setEditable:v11];
-  if (!v11)
+  [(UITextView *)v28 setEditable:editableCopy];
+  if (!editableCopy)
   {
-    [(UITextView *)v28 setSelectable:v10];
+    [(UITextView *)v28 setSelectable:selectableCopy];
   }
 
   [(UITextView *)v28 _setShowsEditMenu:1];
-  if (!v12)
+  if (!decodingCopy)
   {
     [(UITextView *)v28 setScrollEnabled:1];
     [(UIScrollView *)v28 setBounces:1];
@@ -3634,15 +3634,15 @@ void __94__UITextView__reconfigureWithLayoutManager_triggeredByLayoutManagerAcce
     [UIView _performSystemAppearanceModifications:v63];
   }
 
-  v56 = [objc_opt_class() _defaultTextColor];
-  [(UITextView *)v28 _setTypingAttributesTextColor:v56];
+  _defaultTextColor = [objc_opt_class() _defaultTextColor];
+  [(UITextView *)v28 _setTypingAttributesTextColor:_defaultTextColor];
 
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
-    v57 = [(UIView *)v28 traitCollection];
-    v58 = [v57 userInterfaceIdiom];
+    traitCollection2 = [(UIView *)v28 traitCollection];
+    userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
 
-    if (v58 == 6)
+    if (userInterfaceIdiom == 6)
     {
       [(UIView *)v28 _setContinuousCornerRadius:4.5];
       [(UITextView *)v28 setTextContainerInset:16.0, 16.0, 16.0, 16.0];
@@ -3655,7 +3655,7 @@ void __94__UITextView__reconfigureWithLayoutManager_triggeredByLayoutManagerAcce
     [(UITextView *)v28 invalidateIntrinsicContentSize];
   }
 
-  [v32 addObserver:v28 selector:sel__textContainerSizeDidChange_ name:@"_UITextContainerViewSizeDidChange" object:v28->_containerView];
+  [defaultCenter addObserver:v28 selector:sel__textContainerSizeDidChange_ name:@"_UITextContainerViewSizeDidChange" object:v28->_containerView];
   v28->_canShowTextFormattingOptions = _os_feature_enabled_impl();
   if (dyld_program_sdk_at_least())
   {
@@ -3664,13 +3664,13 @@ void __94__UITextView__reconfigureWithLayoutManager_triggeredByLayoutManagerAcce
   }
 
   [(UITextView *)v28 setAutomaticallyAdjustsWritingDirection:_os_feature_enabled_impl()];
-  v60 = [(UITextView *)v28 textLayoutManager];
-  if (v60)
+  textLayoutManager = [(UITextView *)v28 textLayoutManager];
+  if (textLayoutManager)
   {
-    v61 = [objc_opt_class() _resolvesNaturalAlignmentWithBaseWritingDirection];
-    if (v61 != [v60 resolvesNaturalAlignmentWithBaseWritingDirection])
+    _resolvesNaturalAlignmentWithBaseWritingDirection = [objc_opt_class() _resolvesNaturalAlignmentWithBaseWritingDirection];
+    if (_resolvesNaturalAlignmentWithBaseWritingDirection != [textLayoutManager resolvesNaturalAlignmentWithBaseWritingDirection])
     {
-      [v60 setResolvesNaturalAlignmentWithBaseWritingDirection:v61];
+      [textLayoutManager setResolvesNaturalAlignmentWithBaseWritingDirection:_resolvesNaturalAlignmentWithBaseWritingDirection];
     }
   }
 }
@@ -3690,25 +3690,25 @@ void __107__UITextView__commonInitWithTextContainer_decoding_editable_selectable
   v9 = textContainer;
   v12.receiver = self;
   v12.super_class = UITextView;
-  v10 = [(UIScrollView *)&v12 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(UIScrollView *)&v12 initWithFrame:x, y, width, height];
+  if (height)
   {
-    -[UITextView _commonInitWithTextContainer:decoding:editable:selectable:draggable:textLayoutManagerEnabled:](v10, "_commonInitWithTextContainer:decoding:editable:selectable:draggable:textLayoutManagerEnabled:", v9, 0, 1, 1, 1, [objc_opt_class() _isTextLayoutManagerEnabled]);
+    -[UITextView _commonInitWithTextContainer:decoding:editable:selectable:draggable:textLayoutManagerEnabled:](height, "_commonInitWithTextContainer:decoding:editable:selectable:draggable:textLayoutManagerEnabled:", v9, 0, 1, 1, 1, [objc_opt_class() _isTextLayoutManagerEnabled]);
   }
 
-  return v10;
+  return height;
 }
 
-- (id)_initWithFrame:(CGRect)a3 textLayoutManagerEnabled:(BOOL)a4
+- (id)_initWithFrame:(CGRect)frame textLayoutManagerEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v8.receiver = self;
   v8.super_class = UITextView;
-  v5 = [(UIScrollView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(UIScrollView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    [(UITextView *)v5 _commonInitWithTextContainer:0 decoding:0 editable:1 selectable:1 draggable:1 textLayoutManagerEnabled:v4];
+    [(UITextView *)v5 _commonInitWithTextContainer:0 decoding:0 editable:1 selectable:1 draggable:1 textLayoutManagerEnabled:enabledCopy];
   }
 
   return v6;
@@ -3717,39 +3717,39 @@ void __107__UITextView__commonInitWithTextContainer_decoding_editable_selectable
 + (UITextView)textViewUsingTextLayoutManager:(BOOL)usingTextLayoutManager
 {
   v3 = usingTextLayoutManager;
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   v5 = [v4 _initWithFrame:v3 textLayoutManagerEnabled:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
 
   return v5;
 }
 
-- (id)initReadonlyAndUnselectableWithFrame:(CGRect)a3 textContainer:(id)a4
+- (id)initReadonlyAndUnselectableWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = -[UITextView initReadonlyAndUnselectableWithFrame:textContainer:textLayoutManagerEnabled:](self, "initReadonlyAndUnselectableWithFrame:textContainer:textLayoutManagerEnabled:", v9, [objc_opt_class() _isTextLayoutManagerEnabled], x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  containerCopy = container;
+  v10 = -[UITextView initReadonlyAndUnselectableWithFrame:textContainer:textLayoutManagerEnabled:](self, "initReadonlyAndUnselectableWithFrame:textContainer:textLayoutManagerEnabled:", containerCopy, [objc_opt_class() _isTextLayoutManagerEnabled], x, y, width, height);
 
   return v10;
 }
 
-- (id)initReadonlyAndUnselectableWithFrame:(CGRect)a3 textContainer:(id)a4 textLayoutManagerEnabled:(BOOL)a5
+- (id)initReadonlyAndUnselectableWithFrame:(CGRect)frame textContainer:(id)container textLayoutManagerEnabled:(BOOL)enabled
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  enabledCopy = enabled;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  containerCopy = container;
   v15.receiver = self;
   v15.super_class = UITextView;
-  v12 = [(UIScrollView *)&v15 initWithFrame:x, y, width, height];
-  v13 = v12;
-  if (v12)
+  height = [(UIScrollView *)&v15 initWithFrame:x, y, width, height];
+  v13 = height;
+  if (height)
   {
-    [(UITextView *)v12 _commonInitWithTextContainer:v11 decoding:0 editable:0 selectable:0 draggable:0 textLayoutManagerEnabled:v5];
+    [(UITextView *)height _commonInitWithTextContainer:containerCopy decoding:0 editable:0 selectable:0 draggable:0 textLayoutManagerEnabled:enabledCopy];
     [(UITextView *)v13 setScrollEnabled:0];
   }
 
@@ -3792,19 +3792,19 @@ void __107__UITextView__commonInitWithTextContainer_decoding_editable_selectable
     [(UITextView *)v5 _setEncodedTextKitFlavor:[(NSCoder *)v4 decodeIntegerForKey:@"UITextViewTextKitCodingFlavor"]];
   }
 
-  v8 = [objc_opt_class() _isTextLayoutManagerEnabled];
-  v9 = [(UITextView *)v5 _encodedTextKitFlavor];
-  if (v9 == 2)
+  _isTextLayoutManagerEnabled = [objc_opt_class() _isTextLayoutManagerEnabled];
+  _encodedTextKitFlavor = [(UITextView *)v5 _encodedTextKitFlavor];
+  if (_encodedTextKitFlavor == 2)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = v8;
+    v10 = _isTextLayoutManagerEnabled;
   }
 
-  if (v9 == 1)
+  if (_encodedTextKitFlavor == 1)
   {
     v11 = 0;
   }
@@ -3865,42 +3865,42 @@ LABEL_31:
   }
 
   [(UITextView *)v5 setDataDetectorTypes:[(NSCoder *)v4 decodeIntegerForKey:@"UIDataDetectorTypes"]];
-  v15 = [(UITextView *)v5 _textInputTraits];
-  [v15 setAutocapitalizationType:2];
+  _textInputTraits = [(UITextView *)v5 _textInputTraits];
+  [_textInputTraits setAutocapitalizationType:2];
   if ([(NSCoder *)v4 containsValueForKey:@"UIAutocapitalizationType"])
   {
-    [v15 setAutocapitalizationType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UIAutocapitalizationType"}];
+    [_textInputTraits setAutocapitalizationType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UIAutocapitalizationType"}];
   }
 
-  [v15 setAutocorrectionType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UIAutocorrectionType"}];
-  [v15 setSpellCheckingType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UISpellCheckingType"}];
-  [v15 setKeyboardType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UIKeyboardType"}];
-  [v15 setKeyboardAppearance:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UIKeyboardAppearance"}];
-  [v15 setReturnKeyType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UIReturnKeyType"}];
-  [v15 setEnablesReturnKeyAutomatically:{-[NSCoder decodeBoolForKey:](v4, "decodeBoolForKey:", @"UIEnablesReturnKeyAutomatically"}];
+  [_textInputTraits setAutocorrectionType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UIAutocorrectionType"}];
+  [_textInputTraits setSpellCheckingType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UISpellCheckingType"}];
+  [_textInputTraits setKeyboardType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UIKeyboardType"}];
+  [_textInputTraits setKeyboardAppearance:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UIKeyboardAppearance"}];
+  [_textInputTraits setReturnKeyType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UIReturnKeyType"}];
+  [_textInputTraits setEnablesReturnKeyAutomatically:{-[NSCoder decodeBoolForKey:](v4, "decodeBoolForKey:", @"UIEnablesReturnKeyAutomatically"}];
   v16 = [(NSCoder *)v4 decodeObjectOfClass:objc_opt_class() forKey:@"UITextContentType"];
-  [v15 setTextContentType:v16];
+  [_textInputTraits setTextContentType:v16];
 
-  [v15 setSmartInsertDeleteType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UITextSmartInsertDeleteType"}];
-  [v15 setSmartQuotesType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UITextSmartQuotesType"}];
-  [v15 setSmartDashesType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UITextSmartDashesType"}];
-  [v15 setInlinePredictionType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UITextInlinePredictionType"}];
-  [v15 setMathExpressionCompletionType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UITextMathExpressionCompletionType"}];
-  [v15 setAllowsTextAnimationsType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UITextAllowsTextAnimationsType"}];
-  [v15 setKeyboardSuggestionOptions:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"TUIKeyboardSuggestionOptions"}];
-  [v15 setWritingToolsBehavior:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UIWritingToolsBehavior"}];
-  [v15 setAllowsNumberPadPopover:{-[NSCoder decodeBoolForKey:](v4, "decodeBoolForKey:", @"UITextAllowsNumberPadPopover"}];
+  [_textInputTraits setSmartInsertDeleteType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UITextSmartInsertDeleteType"}];
+  [_textInputTraits setSmartQuotesType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UITextSmartQuotesType"}];
+  [_textInputTraits setSmartDashesType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UITextSmartDashesType"}];
+  [_textInputTraits setInlinePredictionType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UITextInlinePredictionType"}];
+  [_textInputTraits setMathExpressionCompletionType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UITextMathExpressionCompletionType"}];
+  [_textInputTraits setAllowsTextAnimationsType:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UITextAllowsTextAnimationsType"}];
+  [_textInputTraits setKeyboardSuggestionOptions:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"TUIKeyboardSuggestionOptions"}];
+  [_textInputTraits setWritingToolsBehavior:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", @"UIWritingToolsBehavior"}];
+  [_textInputTraits setAllowsNumberPadPopover:{-[NSCoder decodeBoolForKey:](v4, "decodeBoolForKey:", @"UITextAllowsNumberPadPopover"}];
   v17 = @"UIAllowedWritingToolsResultOptions";
   if ([(NSCoder *)v4 containsValueForKey:@"UIAllowedWritingToolsResultOptions"]|| (v17 = @"UIWritingToolsAllowedInputOptions", [(NSCoder *)v4 containsValueForKey:@"UIWritingToolsAllowedInputOptions"]))
   {
-    [v15 setAllowedWritingToolsResultOptions:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", v17)}];
+    [_textInputTraits setAllowedWritingToolsResultOptions:{-[NSCoder decodeIntegerForKey:](v4, "decodeIntegerForKey:", v17)}];
   }
 
-  [v15 setSecureTextEntry:{-[NSCoder decodeBoolForKey:](v4, "decodeBoolForKey:", @"UISecureTextEntry"}];
+  [_textInputTraits setSecureTextEntry:{-[NSCoder decodeBoolForKey:](v4, "decodeBoolForKey:", @"UISecureTextEntry"}];
   if (![(UIScrollView *)v5 isScrollEnabled]&& [(_UITextLayoutController *)v5->_textLayoutController canAccessLayoutManager])
   {
-    v18 = [(_UITextLayoutController *)v5->_textLayoutController layoutManager];
-    [v18 setAllowsNonContiguousLayout:0];
+    layoutManager = [(_UITextLayoutController *)v5->_textLayoutController layoutManager];
+    [layoutManager setAllowsNonContiguousLayout:0];
   }
 
   if ([(NSCoder *)v4 containsValueForKey:@"UITextViewUsesStandardTextScaling"])
@@ -3920,252 +3920,252 @@ LABEL_46:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = UITextView;
-  [(UIScrollView *)&v22 encodeWithCoder:v4];
-  v5 = [(UITextView *)self attributedText];
-  v6 = v5;
-  if (v5 && [v5 length])
+  [(UIScrollView *)&v22 encodeWithCoder:coderCopy];
+  attributedText = [(UITextView *)self attributedText];
+  v6 = attributedText;
+  if (attributedText && [attributedText length])
   {
-    v7 = [v6 string];
-    [v4 encodeObject:v7 forKey:@"UIText"];
+    string = [v6 string];
+    [coderCopy encodeObject:string forKey:@"UIText"];
 
-    v8 = [(UITextView *)self attributedText];
-    [v4 encodeObject:v8 forKey:@"UIAttributedText"];
+    attributedText2 = [(UITextView *)self attributedText];
+    [coderCopy encodeObject:attributedText2 forKey:@"UIAttributedText"];
   }
 
   if ([(UITextView *)self allowsEditingTextAttributes])
   {
-    [v4 encodeBool:-[UITextView allowsEditingTextAttributes](self forKey:{"allowsEditingTextAttributes"), @"UIAllowsEditingTextAttributes"}];
+    [coderCopy encodeBool:-[UITextView allowsEditingTextAttributes](self forKey:{"allowsEditingTextAttributes"), @"UIAllowsEditingTextAttributes"}];
   }
 
   if ([(UITextView *)self adjustsFontForContentSizeCategory])
   {
-    [v4 encodeBool:1 forKey:@"UIAdjustsFontForContentSizeCategory"];
+    [coderCopy encodeBool:1 forKey:@"UIAdjustsFontForContentSizeCategory"];
   }
 
-  v9 = [(UITextView *)self font];
+  font = [(UITextView *)self font];
 
-  if (v9)
+  if (font)
   {
-    v10 = [(UITextView *)self font];
-    [v4 encodeObject:v10 forKey:@"UIFont"];
+    font2 = [(UITextView *)self font];
+    [coderCopy encodeObject:font2 forKey:@"UIFont"];
   }
 
-  v11 = [(UITextView *)self textColor];
+  textColor = [(UITextView *)self textColor];
 
-  if (v11)
+  if (textColor)
   {
-    v12 = [(UITextView *)self textColor];
-    [v4 encodeObject:v12 forKey:@"UITextColor"];
+    textColor2 = [(UITextView *)self textColor];
+    [coderCopy encodeObject:textColor2 forKey:@"UITextColor"];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v14 = [WeakRetained typingAttributes];
-  v15 = [v14 valueForKey:*off_1E70EC988];
+  typingAttributes = [WeakRetained typingAttributes];
+  v15 = [typingAttributes valueForKey:*off_1E70EC988];
 
   if (v15)
   {
-    v16 = [v15 alignment];
+    alignment = [v15 alignment];
   }
 
   else
   {
-    v16 = 4;
+    alignment = 4;
   }
 
-  [v4 encodeInteger:v16 forKey:@"UITextAlignment"];
+  [coderCopy encodeInteger:alignment forKey:@"UITextAlignment"];
 
   if (![(UITextView *)self isEditable])
   {
-    [v4 encodeBool:0 forKey:@"UIEditable"];
+    [coderCopy encodeBool:0 forKey:@"UIEditable"];
   }
 
   if ([(UITextView *)self dataDetectorTypes])
   {
-    [v4 encodeInteger:-[UITextView dataDetectorTypes](self forKey:{"dataDetectorTypes"), @"UIDataDetectorTypes"}];
+    [coderCopy encodeInteger:-[UITextView dataDetectorTypes](self forKey:{"dataDetectorTypes"), @"UIDataDetectorTypes"}];
   }
 
   if (![(UITextView *)self isSelectable])
   {
-    [v4 encodeBool:0 forKey:@"UISelectable"];
+    [coderCopy encodeBool:0 forKey:@"UISelectable"];
   }
 
   if ([(UITextView *)self isFindInteractionEnabled])
   {
-    [v4 encodeBool:1 forKey:@"UIFindInteractionEnabled"];
+    [coderCopy encodeBool:1 forKey:@"UIFindInteractionEnabled"];
   }
 
-  v17 = [(UITextView *)self _textInputTraits];
-  if ([v17 autocapitalizationType] != 2)
+  _textInputTraits = [(UITextView *)self _textInputTraits];
+  if ([_textInputTraits autocapitalizationType] != 2)
   {
-    [v4 encodeInteger:objc_msgSend(v17 forKey:{"autocapitalizationType"), @"UIAutocapitalizationType"}];
+    [coderCopy encodeInteger:objc_msgSend(_textInputTraits forKey:{"autocapitalizationType"), @"UIAutocapitalizationType"}];
   }
 
-  if ([v17 autocorrectionType])
+  if ([_textInputTraits autocorrectionType])
   {
-    [v4 encodeInteger:objc_msgSend(v17 forKey:{"autocorrectionType"), @"UIAutocorrectionType"}];
+    [coderCopy encodeInteger:objc_msgSend(_textInputTraits forKey:{"autocorrectionType"), @"UIAutocorrectionType"}];
   }
 
-  if ([v17 spellCheckingType])
+  if ([_textInputTraits spellCheckingType])
   {
-    [v4 encodeInteger:objc_msgSend(v17 forKey:{"spellCheckingType"), @"UISpellCheckingType"}];
+    [coderCopy encodeInteger:objc_msgSend(_textInputTraits forKey:{"spellCheckingType"), @"UISpellCheckingType"}];
   }
 
-  if ([v17 keyboardType])
+  if ([_textInputTraits keyboardType])
   {
-    [v4 encodeInteger:objc_msgSend(v17 forKey:{"keyboardType"), @"UIKeyboardType"}];
+    [coderCopy encodeInteger:objc_msgSend(_textInputTraits forKey:{"keyboardType"), @"UIKeyboardType"}];
   }
 
-  if ([v17 keyboardAppearance])
+  if ([_textInputTraits keyboardAppearance])
   {
-    [v4 encodeInteger:objc_msgSend(v17 forKey:{"keyboardAppearance"), @"UIKeyboardAppearance"}];
+    [coderCopy encodeInteger:objc_msgSend(_textInputTraits forKey:{"keyboardAppearance"), @"UIKeyboardAppearance"}];
   }
 
-  if ([v17 returnKeyType])
+  if ([_textInputTraits returnKeyType])
   {
-    [v4 encodeInteger:objc_msgSend(v17 forKey:{"returnKeyType"), @"UIReturnKeyType"}];
+    [coderCopy encodeInteger:objc_msgSend(_textInputTraits forKey:{"returnKeyType"), @"UIReturnKeyType"}];
   }
 
-  if ([v17 enablesReturnKeyAutomatically])
+  if ([_textInputTraits enablesReturnKeyAutomatically])
   {
-    [v4 encodeBool:objc_msgSend(v17 forKey:{"enablesReturnKeyAutomatically"), @"UIEnablesReturnKeyAutomatically"}];
+    [coderCopy encodeBool:objc_msgSend(_textInputTraits forKey:{"enablesReturnKeyAutomatically"), @"UIEnablesReturnKeyAutomatically"}];
   }
 
-  if ([v17 isSecureTextEntry])
+  if ([_textInputTraits isSecureTextEntry])
   {
-    [v4 encodeBool:objc_msgSend(v17 forKey:{"isSecureTextEntry"), @"UISecureTextEntry"}];
+    [coderCopy encodeBool:objc_msgSend(_textInputTraits forKey:{"isSecureTextEntry"), @"UISecureTextEntry"}];
   }
 
-  v18 = [v17 textContentType];
+  textContentType = [_textInputTraits textContentType];
 
-  if (v18)
+  if (textContentType)
   {
-    v19 = [v17 textContentType];
-    [v4 encodeObject:v19 forKey:@"UITextContentType"];
+    textContentType2 = [_textInputTraits textContentType];
+    [coderCopy encodeObject:textContentType2 forKey:@"UITextContentType"];
   }
 
-  if ([v17 smartInsertDeleteType])
+  if ([_textInputTraits smartInsertDeleteType])
   {
-    [v4 encodeInteger:objc_msgSend(v17 forKey:{"smartInsertDeleteType"), @"UITextSmartInsertDeleteType"}];
+    [coderCopy encodeInteger:objc_msgSend(_textInputTraits forKey:{"smartInsertDeleteType"), @"UITextSmartInsertDeleteType"}];
   }
 
-  if ([v17 smartQuotesType])
+  if ([_textInputTraits smartQuotesType])
   {
-    [v4 encodeInteger:objc_msgSend(v17 forKey:{"smartQuotesType"), @"UITextSmartQuotesType"}];
+    [coderCopy encodeInteger:objc_msgSend(_textInputTraits forKey:{"smartQuotesType"), @"UITextSmartQuotesType"}];
   }
 
-  if ([v17 smartDashesType])
+  if ([_textInputTraits smartDashesType])
   {
-    [v4 encodeInteger:objc_msgSend(v17 forKey:{"smartDashesType"), @"UITextSmartDashesType"}];
+    [coderCopy encodeInteger:objc_msgSend(_textInputTraits forKey:{"smartDashesType"), @"UITextSmartDashesType"}];
   }
 
-  if ([v17 inlinePredictionType])
+  if ([_textInputTraits inlinePredictionType])
   {
-    [v4 encodeInteger:objc_msgSend(v17 forKey:{"inlinePredictionType"), @"UITextInlinePredictionType"}];
+    [coderCopy encodeInteger:objc_msgSend(_textInputTraits forKey:{"inlinePredictionType"), @"UITextInlinePredictionType"}];
   }
 
-  if ([v17 mathExpressionCompletionType])
+  if ([_textInputTraits mathExpressionCompletionType])
   {
-    [v4 encodeInteger:objc_msgSend(v17 forKey:{"mathExpressionCompletionType"), @"UITextMathExpressionCompletionType"}];
+    [coderCopy encodeInteger:objc_msgSend(_textInputTraits forKey:{"mathExpressionCompletionType"), @"UITextMathExpressionCompletionType"}];
   }
 
-  if ([v17 allowsTextAnimationsType])
+  if ([_textInputTraits allowsTextAnimationsType])
   {
-    [v4 encodeInteger:objc_msgSend(v17 forKey:{"allowsTextAnimationsType"), @"UITextAllowsTextAnimationsType"}];
+    [coderCopy encodeInteger:objc_msgSend(_textInputTraits forKey:{"allowsTextAnimationsType"), @"UITextAllowsTextAnimationsType"}];
   }
 
-  if ([v17 keyboardSuggestionOptions])
+  if ([_textInputTraits keyboardSuggestionOptions])
   {
-    [v4 encodeInteger:objc_msgSend(v17 forKey:{"keyboardSuggestionOptions"), @"TUIKeyboardSuggestionOptions"}];
+    [coderCopy encodeInteger:objc_msgSend(_textInputTraits forKey:{"keyboardSuggestionOptions"), @"TUIKeyboardSuggestionOptions"}];
   }
 
-  if ([v17 writingToolsBehavior])
+  if ([_textInputTraits writingToolsBehavior])
   {
-    [v4 encodeInteger:objc_msgSend(v17 forKey:{"writingToolsBehavior"), @"UIWritingToolsBehavior"}];
+    [coderCopy encodeInteger:objc_msgSend(_textInputTraits forKey:{"writingToolsBehavior"), @"UIWritingToolsBehavior"}];
   }
 
-  if ([v17 allowedWritingToolsResultOptions])
+  if ([_textInputTraits allowedWritingToolsResultOptions])
   {
-    [v4 encodeInteger:objc_msgSend(v17 forKey:{"allowedWritingToolsResultOptions"), @"UIAllowedWritingToolsResultOptions"}];
+    [coderCopy encodeInteger:objc_msgSend(_textInputTraits forKey:{"allowedWritingToolsResultOptions"), @"UIAllowedWritingToolsResultOptions"}];
   }
 
-  if ([v17 allowsNumberPadPopover])
+  if ([_textInputTraits allowsNumberPadPopover])
   {
-    [v4 encodeBool:objc_msgSend(v17 forKey:{"allowsNumberPadPopover"), @"UITextAllowsNumberPadPopover"}];
+    [coderCopy encodeBool:objc_msgSend(_textInputTraits forKey:{"allowsNumberPadPopover"), @"UITextAllowsNumberPadPopover"}];
   }
 
   if ([(UITextView *)self usesStandardTextScaling])
   {
-    [v4 encodeBool:-[UITextView usesStandardTextScaling](self forKey:{"usesStandardTextScaling"), @"UITextViewUsesStandardTextScaling"}];
+    [coderCopy encodeBool:-[UITextView usesStandardTextScaling](self forKey:{"usesStandardTextScaling"), @"UITextViewUsesStandardTextScaling"}];
   }
 
   if ([(UITextView *)self _encodedTextKitFlavor]>= 1)
   {
-    [v4 encodeInteger:-[UITextView _encodedTextKitFlavor](self forKey:{"_encodedTextKitFlavor"), @"UITextViewTextKitCodingFlavor"}];
+    [coderCopy encodeInteger:-[UITextView _encodedTextKitFlavor](self forKey:{"_encodedTextKitFlavor"), @"UITextViewTextKitCodingFlavor"}];
   }
 
   if ((*(&self->_tvFlags + 1) & 0x40) != 0)
   {
-    [v4 encodeInteger:1 forKey:@"UILetterformAwareSizingRule"];
+    [coderCopy encodeInteger:1 forKey:@"UILetterformAwareSizingRule"];
   }
 
-  v20 = [(UITextView *)self textHighlightAttributes];
+  textHighlightAttributes = [(UITextView *)self textHighlightAttributes];
 
-  if (v20)
+  if (textHighlightAttributes)
   {
-    v21 = [(UITextView *)self textHighlightAttributes];
-    [v4 encodeObject:v21 forKey:@"UITextHighlightAttributes"];
+    textHighlightAttributes2 = [(UITextView *)self textHighlightAttributes];
+    [coderCopy encodeObject:textHighlightAttributes2 forKey:@"UITextHighlightAttributes"];
   }
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v15.receiver = self;
   v15.super_class = UITextView;
-  [(UIScrollView *)&v15 _populateArchivedSubviews:v4];
+  [(UIScrollView *)&v15 _populateArchivedSubviews:subviewsCopy];
   if (self->_containerView)
   {
-    [v4 removeObject:?];
+    [subviewsCopy removeObject:?];
   }
 
-  v5 = [(UITextView *)self interactionAssistant];
-  v6 = [v5 _legacySelectionView];
+  interactionAssistant = [(UITextView *)self interactionAssistant];
+  _legacySelectionView = [interactionAssistant _legacySelectionView];
 
-  if (v6)
+  if (_legacySelectionView)
   {
-    [v4 removeObject:v6];
-    v7 = [v6 rangeView];
-    v8 = [v7 startGrabber];
-    v9 = [v8 _dotView];
+    [subviewsCopy removeObject:_legacySelectionView];
+    rangeView = [_legacySelectionView rangeView];
+    startGrabber = [rangeView startGrabber];
+    _dotView = [startGrabber _dotView];
 
-    if (v9)
+    if (_dotView)
     {
-      [v4 removeObject:v9];
+      [subviewsCopy removeObject:_dotView];
     }
 
-    v10 = [v6 rangeView];
-    v11 = [v10 endGrabber];
-    v12 = [v11 _dotView];
+    rangeView2 = [_legacySelectionView rangeView];
+    endGrabber = [rangeView2 endGrabber];
+    _dotView2 = [endGrabber _dotView];
 
-    if (v12)
+    if (_dotView2)
     {
-      [v4 removeObject:v12];
+      [subviewsCopy removeObject:_dotView2];
     }
   }
 
   if (self->_layoutView)
   {
-    [v4 removeObject:?];
+    [subviewsCopy removeObject:?];
   }
 
-  v13 = [(UITextView *)self interactionAssistant];
-  v14 = [v13 _selectionViewManager];
-  [v14 _filterArchivedSubviews:v4];
+  interactionAssistant2 = [(UITextView *)self interactionAssistant];
+  _selectionViewManager = [interactionAssistant2 _selectionViewManager];
+  [_selectionViewManager _filterArchivedSubviews:subviewsCopy];
 }
 
 - (NSLayoutManager)layoutManager
@@ -4201,53 +4201,53 @@ LABEL_46:
   return [(UIResponder *)&v5 _ownsInputAccessoryView];
 }
 
-- (id)annotatedSubstringForRange:(id)a3
+- (id)annotatedSubstringForRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v6 = [WeakRetained annotatedSubstringForRange:v4];
+  v6 = [WeakRetained annotatedSubstringForRange:rangeCopy];
 
   return v6;
 }
 
-- (void)replaceRange:(id)a3 withAnnotatedString:(id)a4 relativeReplacementRange:(_NSRange)a5
+- (void)replaceRange:(id)range withAnnotatedString:(id)string relativeReplacementRange:(_NSRange)replacementRange
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a4;
-  v10 = a3;
+  length = replacementRange.length;
+  location = replacementRange.location;
+  stringCopy = string;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained replaceRange:v10 withAnnotatedString:v9 relativeReplacementRange:{location, length}];
+  [WeakRetained replaceRange:rangeCopy withAnnotatedString:stringCopy relativeReplacementRange:{location, length}];
 }
 
-- (void)removeAnnotation:(id)a3 forRange:(id)a4
+- (void)removeAnnotation:(id)annotation forRange:(id)range
 {
-  v6 = a4;
-  v7 = a3;
+  rangeCopy = range;
+  annotationCopy = annotation;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained removeAnnotation:v7 forRange:v6];
+  [WeakRetained removeAnnotation:annotationCopy forRange:rangeCopy];
 }
 
-- (void)addTextAlternativesDisplayStyle:(int64_t)a3 toRange:(_NSRange)a4
+- (void)addTextAlternativesDisplayStyle:(int64_t)style toRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = [(_UITextLayoutController *)self->_textLayoutController textRangeForCharacterRange:a4.location, a4.length];
+  length = range.length;
+  location = range.location;
+  v11 = [(_UITextLayoutController *)self->_textLayoutController textRangeForCharacterRange:range.location, range.length];
   textLayoutController = self->_textLayoutController;
   v9 = *off_1E70ECA00;
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:style];
   [(_UITextLayoutController *)textLayoutController addAnnotationAttribute:v9 value:v10 forRange:v11];
 
   [(_UITextLayoutController *)self->_textLayoutController boundingRectForCharacterRange:location, length];
   [(UITextView *)self setNeedsDisplayInRect:?];
 }
 
-- (id)_resolvedTypesettingLanguage:(id)a3
+- (id)_resolvedTypesettingLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [(UIView *)self traitCollection];
-  v6 = [(UITextView *)self text];
-  if (-[UITextView _wantsContentAwareTypesettingLanguage](self, "_wantsContentAwareTypesettingLanguage") && [v4 length] && (v7 = CTFontCopyTallestTextStyleLanguageForString()) != 0)
+  languageCopy = language;
+  traitCollection = [(UIView *)self traitCollection];
+  text = [(UITextView *)self text];
+  if (-[UITextView _wantsContentAwareTypesettingLanguage](self, "_wantsContentAwareTypesettingLanguage") && [languageCopy length] && (v7 = CTFontCopyTallestTextStyleLanguageForString()) != 0)
   {
     v8 = v7;
   }
@@ -4259,9 +4259,9 @@ LABEL_46:
 
   if (![v8 length])
   {
-    v9 = [v5 typesettingLanguage];
+    typesettingLanguage = [traitCollection typesettingLanguage];
 
-    v8 = v9;
+    v8 = typesettingLanguage;
   }
 
   return v8;
@@ -4286,7 +4286,7 @@ LABEL_46:
     }
 
     v7 = [(NSAttributedString *)v4 length];
-    v8 = self;
+    selfCopy = self;
     v9 = v4;
     if (qword_1ED499910 != -1)
     {
@@ -4297,8 +4297,8 @@ LABEL_46:
     v59 = &v58;
     v60 = 0x2020000000;
     v61 = 0;
-    v10 = [(UITextView *)v8 textLayoutController];
-    if ([v10 canAccessLayoutManager])
+    textLayoutController = [(UITextView *)selfCopy textLayoutController];
+    if ([textLayoutController canAccessLayoutManager])
     {
     }
 
@@ -4332,15 +4332,15 @@ LABEL_46:
 
     if (*(v59 + 24) == 1)
     {
-      [(UITextView *)v8 layoutManager];
+      [(UITextView *)selfCopy layoutManager];
     }
 
     _Block_object_dispose(&v58, 8);
 
-    v15 = [(NSAttributedString *)v9 string];
-    v16 = [(UITextView *)v8 _resolvedTypesettingLanguage:v15];
+    string = [(NSAttributedString *)v9 string];
+    v16 = [(UITextView *)selfCopy _resolvedTypesettingLanguage:string];
 
-    if (([(_UITextLayoutController *)v8->_textLayoutController canAccessLayoutManager]& 1) != 0)
+    if (([(_UITextLayoutController *)selfCopy->_textLayoutController canAccessLayoutManager]& 1) != 0)
     {
       v17 = 0;
     }
@@ -4358,11 +4358,11 @@ LABEL_46:
     {
       v18 = v9;
 LABEL_32:
-      if ([(_UITextLayoutController *)v8->_textLayoutController canAccessLayoutManager])
+      if ([(_UITextLayoutController *)selfCopy->_textLayoutController canAccessLayoutManager])
       {
-        v23 = v8->_textLayoutController;
-        v24 = [(_UITextLayoutController *)v23 layoutManager];
-        if ([v24 allowsNonContiguousLayout] && v7)
+        v23 = selfCopy->_textLayoutController;
+        layoutManager = [(_UITextLayoutController *)v23 layoutManager];
+        if ([layoutManager allowsNonContiguousLayout] && v7)
         {
           if (v7 < 5)
           {
@@ -4394,7 +4394,7 @@ LABEL_32:
                   v34 = v35;
                 }
 
-                [v24 defaultLineHeightForFont:v32];
+                [layoutManager defaultLineHeightForFont:v32];
                 v29 = (v29 * v26 + v34 + v36) / (v26 + 1);
                 ++v26;
               }
@@ -4413,11 +4413,11 @@ LABEL_32:
 LABEL_44:
             [off_1E70ECC18 defaultFontSize];
             v37 = [off_1E70ECC18 systemFontOfSize:?];
-            [v24 defaultLineHeightForFont:v37];
+            [layoutManager defaultLineHeightForFont:v37];
             v29 = v38;
           }
 
-          [v24 _setGlyphsPerLineEstimate:0 offsetPerLineEstimate:v29];
+          [layoutManager _setGlyphsPerLineEstimate:0 offsetPerLineEstimate:v29];
         }
       }
 
@@ -4429,14 +4429,14 @@ LABEL_44:
       v4 = v18;
       v50 = v4;
       [(NSTextStorage *)textStorage coordinateEditing:v49];
-      v8->_textContainerInsetAdjustment.top = [(UITextView *)v8 _applicableContentOutsetsFromFonts];
-      v8->_textContainerInsetAdjustment.left = v40;
-      v8->_textContainerInsetAdjustment.bottom = v41;
-      v8->_textContainerInsetAdjustment.right = v42;
-      [(UITextView *)v8 _ensureUpToDateTextContainerInsetAndNotifyIfNecessary];
-      if (([(_UITextLayoutController *)v8->_textLayoutController canAccessLayoutManager]& 1) == 0)
+      selfCopy->_textContainerInsetAdjustment.top = [(UITextView *)selfCopy _applicableContentOutsetsFromFonts];
+      selfCopy->_textContainerInsetAdjustment.left = v40;
+      selfCopy->_textContainerInsetAdjustment.bottom = v41;
+      selfCopy->_textContainerInsetAdjustment.right = v42;
+      [(UITextView *)selfCopy _ensureUpToDateTextContainerInsetAndNotifyIfNecessary];
+      if (([(_UITextLayoutController *)selfCopy->_textLayoutController canAccessLayoutManager]& 1) == 0)
       {
-        [(UITextView *)v8 _layoutText];
+        [(UITextView *)selfCopy _layoutText];
       }
 
       v43 = *off_1E70EC9F8;
@@ -4445,17 +4445,17 @@ LABEL_44:
       v48[1] = 3221225472;
       v48[2] = __32__UITextView_setAttributedText___block_invoke_4;
       v48[3] = &unk_1E7126DC0;
-      v48[4] = v8;
+      v48[4] = selfCopy;
       [(NSAttributedString *)v4 enumerateAttribute:v43 inRange:0 options:v44 usingBlock:0, v48];
-      [(_UITextContainerView *)v8->_containerView setNeedsDisplay];
-      [(UITextView *)v8 _syncTypingAttributesToTextContainerAttributesForExtraLineFragment];
-      [(UITextView *)v8 setSelectedRange:v7, 0];
-      if ([(UITextView *)v8 _shouldStartDataDetectors])
+      [(_UITextContainerView *)selfCopy->_containerView setNeedsDisplay];
+      [(UITextView *)selfCopy _syncTypingAttributesToTextContainerAttributesForExtraLineFragment];
+      [(UITextView *)selfCopy setSelectedRange:v7, 0];
+      if ([(UITextView *)selfCopy _shouldStartDataDetectors])
       {
-        [(UITextView *)v8 _startDataDetectors];
+        [(UITextView *)selfCopy _startDataDetectors];
       }
 
-      [(_UITextInteractableItemCache *)v8->_textInteractableItemCache invalidate];
+      [(_UITextInteractableItemCache *)selfCopy->_textInteractableItemCache invalidate];
 
       goto LABEL_52;
     }
@@ -4465,15 +4465,15 @@ LABEL_26:
     [(NSAttributedString *)v18 beginEditing];
     if (v17)
     {
-      v19 = [objc_opt_class() _defaultFont];
+      _defaultFont = [objc_opt_class() _defaultFont];
       v20 = *off_1E70EC918;
       v54[0] = MEMORY[0x1E69E9820];
       v54[1] = 3221225472;
       v54[2] = __32__UITextView_setAttributedText___block_invoke;
       v54[3] = &unk_1E7126D70;
       v55 = v18;
-      v56 = v19;
-      v21 = v19;
+      v56 = _defaultFont;
+      v21 = _defaultFont;
       [(NSAttributedString *)v55 enumerateAttribute:v20 inRange:0 options:v7 usingBlock:0, v54];
     }
 
@@ -4484,7 +4484,7 @@ LABEL_26:
       v51[1] = 3221225472;
       v51[2] = __32__UITextView_setAttributedText___block_invoke_2;
       v51[3] = &unk_1E7126D98;
-      v51[4] = v8;
+      v51[4] = selfCopy;
       v52 = v16;
       v53 = v18;
       [(NSAttributedString *)v53 enumerateAttribute:v22 inRange:0 options:v7 usingBlock:0, v51];
@@ -4572,7 +4572,7 @@ uint64_t __32__UITextView_setAttributedText___block_invoke_4(uint64_t result, vo
   return result;
 }
 
-- (void)_textStorageDidProcessEditing:(id)a3
+- (void)_textStorageDidProcessEditing:(id)editing
 {
   if ([(UITextView *)self isSelectable]&& [(UIView *)self isFirstResponder])
   {
@@ -4590,7 +4590,7 @@ uint64_t __32__UITextView_setAttributedText___block_invoke_4(uint64_t result, vo
   [(UITextView *)self _updateTextFormattingController];
 }
 
-- (void)_observedTextViewDidChange:(id)a3
+- (void)_observedTextViewDidChange:(id)change
 {
   if ([(UITextView *)self _totalNumberOfTextViewsInLayoutManager]>= 2)
   {
@@ -4599,25 +4599,25 @@ uint64_t __32__UITextView_setAttributedText___block_invoke_4(uint64_t result, vo
   }
 }
 
-- (void)_setContentOffsetWithoutRecordingScrollPosition:(CGPoint)a3
+- (void)_setContentOffsetWithoutRecordingScrollPosition:(CGPoint)position
 {
   ++self->_scrollPositionDontRecordCount;
-  [(UITextView *)self setContentOffset:a3.x, a3.y];
+  [(UITextView *)self setContentOffset:position.x, position.y];
   --self->_scrollPositionDontRecordCount;
 }
 
-- (void)_textViewContentPaddingDidChange:(id)a3
+- (void)_textViewContentPaddingDidChange:(id)change
 {
-  if (self->_bottomContentPadding == a3)
+  if (self->_bottomContentPadding == change)
   {
     [(UITextView *)self _updateContentSize];
   }
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   [(UIScrollView *)self contentOffset];
   v7 = v6;
   v9 = v8;
@@ -4632,9 +4632,9 @@ uint64_t __32__UITextView_setAttributedText___block_invoke_4(uint64_t result, vo
       v12 = !byte_1EA95E774 || v11 <= 0.00000011920929;
       if (!v12 && [(NSTextContainer *)self->_textContainer maximumNumberOfLines]== 1 && [(UIView *)self clipsToBounds])
       {
-        v16 = [(UIView *)self effectiveUserInterfaceLayoutDirection];
+        effectiveUserInterfaceLayoutDirection = [(UIView *)self effectiveUserInterfaceLayoutDirection];
         v17 = x <= 0.00000011920929;
-        if (v16)
+        if (effectiveUserInterfaceLayoutDirection)
         {
           v17 = x >= -0.00000011920929;
         }
@@ -4649,15 +4649,15 @@ uint64_t __32__UITextView_setAttributedText___block_invoke_4(uint64_t result, vo
       }
     }
 
-    v13 = [(_UITextContainerView *)self->_containerView canvasView];
-    [v13 viewportBoundsDidChange];
+    canvasView = [(_UITextContainerView *)self->_containerView canvasView];
+    [canvasView viewportBoundsDidChange];
   }
 
   if (!self->_scrollPositionDontRecordCount)
   {
-    v14 = [(UITextView *)self _restorableScrollPosition];
+    _restorableScrollPosition = [(UITextView *)self _restorableScrollPosition];
     scrollPosition = self->_scrollPosition;
-    self->_scrollPosition = v14;
+    self->_scrollPosition = _restorableScrollPosition;
 
     self->_offsetFromScrollPosition = 0.0;
   }
@@ -4665,18 +4665,18 @@ uint64_t __32__UITextView_setAttributedText___block_invoke_4(uint64_t result, vo
 
 - (void)_notifyDidScroll
 {
-  v3 = [(_UITextContainerView *)self->_containerView canvasView];
-  [v3 isScrollingChangedTo:1];
+  canvasView = [(_UITextContainerView *)self->_containerView canvasView];
+  [canvasView isScrollingChangedTo:1];
 
   v4.receiver = self;
   v4.super_class = UITextView;
   [(UIScrollView *)&v4 _notifyDidScroll];
 }
 
-- (void)_scrollViewDidEndDraggingWithDeceleration:(BOOL)a3
+- (void)_scrollViewDidEndDraggingWithDeceleration:(BOOL)deceleration
 {
-  v3 = a3;
-  if (a3)
+  decelerationCopy = deceleration;
+  if (deceleration)
   {
     y = self->_scrollEndDraggingVelocity.y;
     if (y >= 0.0)
@@ -4687,8 +4687,8 @@ uint64_t __32__UITextView_setAttributedText___block_invoke_4(uint64_t result, vo
         v11 = v10;
         [(UIScrollView *)self contentOffset];
         v13 = v11 + v12;
-        v14 = [(UITextView *)self _containerView];
-        [v14 bounds];
+        _containerView = [(UITextView *)self _containerView];
+        [_containerView bounds];
         v16 = v13 - v15;
 
         if (v16 > 0.0)
@@ -4715,33 +4715,33 @@ LABEL_9:
 
   else
   {
-    v9 = [(_UITextContainerView *)self->_containerView canvasView];
-    [v9 isScrollingChangedTo:0];
+    canvasView = [(_UITextContainerView *)self->_containerView canvasView];
+    [canvasView isScrollingChangedTo:0];
   }
 
   v17.receiver = self;
   v17.super_class = UITextView;
-  [(UIScrollView *)&v17 _scrollViewDidEndDraggingWithDeceleration:v3];
+  [(UIScrollView *)&v17 _scrollViewDidEndDraggingWithDeceleration:decelerationCopy];
 }
 
 - (void)_scrollViewDidEndDecelerating
 {
-  v3 = [(_UITextContainerView *)self->_containerView canvasView];
-  [v3 isScrollingChangedTo:0];
+  canvasView = [(_UITextContainerView *)self->_containerView canvasView];
+  [canvasView isScrollingChangedTo:0];
 
   v4.receiver = self;
   v4.super_class = UITextView;
   [(UIScrollView *)&v4 _scrollViewDidEndDecelerating];
 }
 
-- (void)_scrollViewAnimationEnded:(id)a3 finished:(BOOL)a4
+- (void)_scrollViewAnimationEnded:(id)ended finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = a3;
+  finishedCopy = finished;
+  endedCopy = ended;
   scrollTarget = self->_scrollTarget;
   if (scrollTarget)
   {
-    v8 = !v4;
+    v8 = !finishedCopy;
   }
 
   else
@@ -4762,14 +4762,14 @@ LABEL_9:
     v15 = [(_UITextLayoutController *)textLayoutController textRangeForCharacterRange:v13.location, v13.length];
     [(_UITextLayoutController *)textLayoutController ensureLayoutForRange:v15];
 
-    v16 = [(_UITextViewRestorableScrollPosition *)self->_scrollTarget range];
-    [(UITextView *)self _contentOffsetForScrollToVisible:v16, v17];
+    range = [(_UITextViewRestorableScrollPosition *)self->_scrollTarget range];
+    [(UITextView *)self _contentOffsetForScrollToVisible:range, v17];
     v19 = v18;
     v21 = v20;
     [(_UITextViewRestorableScrollPosition *)self->_scrollTarget offsetWithinLine];
     [(UITextView *)self setContentOffset:v19, v21 + v22];
-    v23 = [(_UITextContainerView *)self->_containerView canvasView];
-    [v23 isScrollingChangedTo:0];
+    canvasView = [(_UITextContainerView *)self->_containerView canvasView];
+    [canvasView isScrollingChangedTo:0];
 
     scrollTarget = self->_scrollTarget;
   }
@@ -4778,10 +4778,10 @@ LABEL_9:
 
   v24.receiver = self;
   v24.super_class = UITextView;
-  [(UIScrollView *)&v24 _scrollViewAnimationEnded:v6 finished:v4];
+  [(UIScrollView *)&v24 _scrollViewAnimationEnded:endedCopy finished:finishedCopy];
 }
 
-- (void)_resyncContainerFrameForNonAutolayoutDeferringSizeToFit:(BOOL)a3
+- (void)_resyncContainerFrameForNonAutolayoutDeferringSizeToFit:(BOOL)fit
 {
   [(UIView *)self->_containerView frame];
   v57 = v5;
@@ -4938,7 +4938,7 @@ LABEL_36:
   }
 
 LABEL_37:
-  if (!a3)
+  if (!fit)
   {
     [(UITextView *)self _updateTextContainerSizeAndSizeToFit];
   }
@@ -4956,29 +4956,29 @@ LABEL_39:
   }
 }
 
-- (void)_sizingRuleWillChangeShouldClearInsetEdges:(uint64_t)a1
+- (void)_sizingRuleWillChangeShouldClearInsetEdges:(uint64_t)edges
 {
-  if (!a1)
+  if (!edges)
   {
     return;
   }
 
-  if (([a1 isScrollEnabled] & 1) == 0)
+  if (([edges isScrollEnabled] & 1) == 0)
   {
-    if ((*(a1 + 95) & 2) != 0)
+    if ((*(edges + 95) & 2) != 0)
     {
       goto LABEL_8;
     }
 
-    v4 = [a1 superview];
-    if (v4)
+    superview = [edges superview];
+    if (superview)
     {
-      v5 = v4;
-      [a1 bounds];
+      v5 = superview;
+      [edges bounds];
       width = v10.size.width;
       height = v10.size.height;
       v8 = CGRectGetHeight(v10);
-      [a1 sizeThatFits:{width, height}];
+      [edges sizeThatFits:{width, height}];
       if (v8 == v9)
       {
         [v5 setNeedsLayout];
@@ -4987,12 +4987,12 @@ LABEL_39:
       goto LABEL_11;
     }
 
-    if ((*(a1 + 95) & 2) != 0)
+    if ((*(edges + 95) & 2) != 0)
     {
 LABEL_8:
-      if (([a1 translatesAutoresizingMaskIntoConstraints] & 1) == 0)
+      if (([edges translatesAutoresizingMaskIntoConstraints] & 1) == 0)
       {
-        [a1 invalidateIntrinsicContentSize];
+        [edges invalidateIntrinsicContentSize];
       }
     }
 
@@ -5004,24 +5004,24 @@ LABEL_11:
   {
     if (a2 == 15)
     {
-      *(a1 + 2456) = 0u;
-      *(a1 + 2472) = 0u;
+      *(edges + 2456) = 0u;
+      *(edges + 2472) = 0u;
     }
 
     else
     {
-      *(a1 + 2456) = 0;
-      *(a1 + 2472) = 0;
+      *(edges + 2456) = 0;
+      *(edges + 2472) = 0;
     }
   }
 }
 
-- (void)setSizingRule:(int64_t)a3
+- (void)setSizingRule:(int64_t)rule
 {
-  if (((*&self->_tvFlags >> 14) & 1) != a3)
+  if (((*&self->_tvFlags >> 14) & 1) != rule)
   {
-    v4 = a3 == 1;
-    if (a3 == 1)
+    v4 = rule == 1;
+    if (rule == 1)
     {
       v5 = 0;
     }
@@ -5040,12 +5040,12 @@ LABEL_11:
   }
 }
 
-- (void)_setExtremeSizingEnabled:(BOOL)a3
+- (void)_setExtremeSizingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(UITextView *)self _isExtremeSizingEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(UITextView *)self _isExtremeSizingEnabled]!= enabled)
   {
-    if (v3)
+    if (enabledCopy)
     {
       v5 = 0;
     }
@@ -5055,7 +5055,7 @@ LABEL_11:
       v5 = 5;
     }
 
-    if (v3)
+    if (enabledCopy)
     {
       v6 = 0x2000;
     }
@@ -5096,24 +5096,24 @@ double __36__UITextView__scrollToCaretIfNeeded__block_invoke(uint64_t a1)
 
 - (BOOL)_isSelectionVisible
 {
-  v2 = [(UITextView *)self interactionAssistant];
-  v3 = [v2 _selectionViewManager];
-  v4 = [v3 _isVisible];
+  interactionAssistant = [(UITextView *)self interactionAssistant];
+  _selectionViewManager = [interactionAssistant _selectionViewManager];
+  _isVisible = [_selectionViewManager _isVisible];
 
-  return v4;
+  return _isVisible;
 }
 
-- (void)_textContainerSizeDidChange:(id)a3
+- (void)_textContainerSizeDidChange:(id)change
 {
   [(UITextView *)self _updateContentSize];
 
   [(UITextView *)self _updateTextFormattingControllerPresentationSource];
 }
 
-- (void)_updateFrameOfTrailingWhitespace:(CGSize)a3
+- (void)_updateFrameOfTrailingWhitespace:(CGSize)whitespace
 {
-  height = a3.height;
-  width = a3.width;
+  height = whitespace.height;
+  width = whitespace.width;
   if ([(NSTextStorage *)self->_textStorage length])
   {
     [(UITextView *)self _rectForScrollToVisible:[(NSTextStorage *)self->_textStorage length], 0];
@@ -5139,20 +5139,20 @@ double __36__UITextView__scrollToCaretIfNeeded__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setFrameOrBounds:(CGRect)a3 fromOldRect:(CGRect)a4 settingAction:(id)a5
+- (void)_setFrameOrBounds:(CGRect)bounds fromOldRect:(CGRect)rect settingAction:(id)action
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  v13 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = bounds.size.height;
+  v9 = bounds.size.width;
+  v10 = bounds.origin.y;
+  v11 = bounds.origin.x;
+  actionCopy = action;
   if ([(UITextView *)self _freezeTextContainerSize])
   {
-    v13[2](v13);
+    actionCopy[2](actionCopy);
     [(UITextView *)self _resyncContainerFrameForNonAutolayoutDeferringSizeToFit:1];
     [(UITextInteractionAssistant *)self->_interactionAssistant updateDisplayedSelection];
   }
@@ -5165,8 +5165,8 @@ double __36__UITextView__scrollToCaretIfNeeded__block_invoke(uint64_t a1)
       v15 = v23;
       if ([(UITextView *)self isEditing])
       {
-        v24 = [(UITextView *)self selectedRange];
-        v14 = v24 < v16 + v15 && v16 < v24 + v25;
+        selectedRange = [(UITextView *)self selectedRange];
+        v14 = selectedRange < v16 + v15 && v16 < selectedRange + v25;
       }
 
       else
@@ -5197,16 +5197,16 @@ double __36__UITextView__scrollToCaretIfNeeded__block_invoke(uint64_t a1)
       v17 = 0;
     }
 
-    v18 = [(UIView *)self layer];
-    v19 = [v18 needsLayoutOnGeometryChange];
+    layer = [(UIView *)self layer];
+    needsLayoutOnGeometryChange = [layer needsLayoutOnGeometryChange];
 
     if (v17)
     {
-      v20 = [(UIView *)self layer];
-      [v20 setNeedsLayoutOnGeometryChange:0];
+      layer2 = [(UIView *)self layer];
+      [layer2 setNeedsLayoutOnGeometryChange:0];
     }
 
-    v13[2](v13);
+    actionCopy[2](actionCopy);
     [(UITextView *)self _resyncContainerFrameForNonAutolayoutDeferringSizeToFit:v17];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -5225,7 +5225,7 @@ double __36__UITextView__scrollToCaretIfNeeded__block_invoke(uint64_t a1)
     aBlock[13] = v16;
     aBlock[14] = v15;
     v32 = v14;
-    v33 = v19;
+    v33 = needsLayoutOnGeometryChange;
     v21 = _Block_copy(aBlock);
     v22 = v21;
     if (v17)
@@ -5290,12 +5290,12 @@ void __58__UITextView__setFrameOrBounds_fromOldRect_settingAction___block_invoke
   [v6 setNeedsLayoutOnGeometryChange:*(a1 + 122)];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -5316,12 +5316,12 @@ id __24__UITextView_setBounds___block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v2, sel_setBounds_, *(a1 + 40), *(a1 + 48), *(a1 + 56), *(a1 + 64));
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -5342,24 +5342,24 @@ id __23__UITextView_setFrame___block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v2, sel_setFrame_, *(a1 + 40), *(a1 + 48), *(a1 + 56), *(a1 + 64));
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v27.receiver = self;
   v27.super_class = UITextView;
   [(UIView *)&v27 setNeedsDisplayInRect:?];
-  v8 = [(_UITextContainerView *)self->_containerView canvasView];
-  [(UIView *)self convertRect:v8 toView:x, y, width, height];
+  canvasView = [(_UITextContainerView *)self->_containerView canvasView];
+  [(UIView *)self convertRect:canvasView toView:x, y, width, height];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [(_UITextContainerView *)self->_containerView canvasView];
-  [v17 bounds];
+  canvasView2 = [(_UITextContainerView *)self->_containerView canvasView];
+  [canvasView2 bounds];
   v31.origin.x = v18;
   v31.origin.y = v19;
   v31.size.width = v20;
@@ -5380,44 +5380,44 @@ id __23__UITextView_setFrame___block_invoke(uint64_t a1)
   v30.size.height = v25;
   if (!CGRectIsEmpty(v30))
   {
-    v26 = [(_UITextContainerView *)self->_containerView canvasView];
-    [v26 setNeedsDisplayInRect:{v22, v23, v24, v25}];
+    canvasView3 = [(_UITextContainerView *)self->_containerView canvasView];
+    [canvasView3 setNeedsDisplayInRect:{v22, v23, v24, v25}];
   }
 }
 
 - (void)_resetUsesExplicitPreferredMaxLayoutWidth
 {
-  v3 = [(UITextView *)self _needsDoubleUpdateConstraintsPass];
+  _needsDoubleUpdateConstraintsPass = [(UITextView *)self _needsDoubleUpdateConstraintsPass];
   *&self->_tvFlags &= ~8uLL;
   self->_preferredMaxLayoutWidth = 0.0;
-  [(UIView *)self _needsDoubleUpdateConstraintsPassMayHaveChangedFrom:v3];
+  [(UIView *)self _needsDoubleUpdateConstraintsPassMayHaveChangedFrom:_needsDoubleUpdateConstraintsPass];
 
   [(UITextView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)_setPreferredMaxLayoutWidth:(double)a3
+- (void)_setPreferredMaxLayoutWidth:(double)width
 {
-  v5 = a3 != 0.0;
-  v6 = [(UITextView *)self _needsDoubleUpdateConstraintsPass];
+  v5 = width != 0.0;
+  _needsDoubleUpdateConstraintsPass = [(UITextView *)self _needsDoubleUpdateConstraintsPass];
   self->_tvFlags = (*&self->_tvFlags & 0xFFFFFFFFFFFFFFF7 | (8 * v5));
-  if (self->_preferredMaxLayoutWidth != a3)
+  if (self->_preferredMaxLayoutWidth != width)
   {
-    self->_preferredMaxLayoutWidth = a3;
+    self->_preferredMaxLayoutWidth = width;
     if (![(UIScrollView *)self isScrollEnabled])
     {
       [(UITextView *)self invalidateIntrinsicContentSize];
     }
   }
 
-  [(UIView *)self _needsDoubleUpdateConstraintsPassMayHaveChangedFrom:v6];
+  [(UIView *)self _needsDoubleUpdateConstraintsPassMayHaveChangedFrom:_needsDoubleUpdateConstraintsPass];
 }
 
 - (double)_firstBaselineOffsetFromTop
 {
   if ((*(&self->super.super._viewFlags + 7) & 2) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"UITextView.m" lineNumber:2638 description:{@"%s only valid when using auto layout", "-[UITextView _firstBaselineOffsetFromTop]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITextView.m" lineNumber:2638 description:{@"%s only valid when using auto layout", "-[UITextView _firstBaselineOffsetFromTop]"}];
   }
 
   return self->_firstBaselineOffsetFromTop;
@@ -5427,8 +5427,8 @@ id __23__UITextView_setFrame___block_invoke(uint64_t a1)
 {
   if ((*(&self->super.super._viewFlags + 7) & 2) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"UITextView.m" lineNumber:2644 description:{@"%s only valid when using auto layout", "-[UITextView _baselineOffsetFromBottom]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITextView.m" lineNumber:2644 description:{@"%s only valid when using auto layout", "-[UITextView _baselineOffsetFromBottom]"}];
   }
 
   return self->_lastBaselineOffsetFromBottom;
@@ -5454,10 +5454,10 @@ id __23__UITextView_setFrame___block_invoke(uint64_t a1)
   return self->_lastBaselineOffsetFromBottom;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   tvFlags = self->_tvFlags;
   if (has_internal_diagnostics)
@@ -5496,10 +5496,10 @@ id __23__UITextView_setFrame___block_invoke(uint64_t a1)
   v31 = 0x3010000000;
   v32 = "";
   v33 = xmmword_18A682EB0;
-  v13 = [(_UITextLayoutController *)self->_textLayoutController documentRange];
-  v14 = [v13 isEmpty];
+  documentRange = [(_UITextLayoutController *)self->_textLayoutController documentRange];
+  isEmpty = [documentRange isEmpty];
 
-  if ((v14 & 1) == 0)
+  if ((isEmpty & 1) == 0)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -5558,7 +5558,7 @@ void __37__UITextView__baselineOffsetsAtSize___block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 40) = v7;
 }
 
-- ($BB3B25BBC364C7D98808033881F79914)_saveSizeBeforeLayoutCalculation:(SEL)a3
+- ($BB3B25BBC364C7D98808033881F79914)_saveSizeBeforeLayoutCalculation:(SEL)calculation
 {
   *&retstr->var0 = 0;
   v5 = a4;
@@ -5573,66 +5573,66 @@ void __37__UITextView__baselineOffsetsAtSize___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_restoreSize:(id *)a3 afterLayoutCalculation:(id)a4
+- (void)_restoreSize:(id *)size afterLayoutCalculation:(id)calculation
 {
-  var0 = a3->var0;
-  v6 = a4;
-  [v6 setWidthTracksTextView:var0];
-  [v6 setHeightTracksTextView:a3->var1];
-  [v6 setSize:{a3->var2.width, a3->var2.height}];
+  var0 = size->var0;
+  calculationCopy = calculation;
+  [calculationCopy setWidthTracksTextView:var0];
+  [calculationCopy setHeightTracksTextView:size->var1];
+  [calculationCopy setSize:{size->var2.width, size->var2.height}];
 }
 
-- (void)_configureForLayoutCalculation:(id)a3 inSize:(CGSize)a4
+- (void)_configureForLayoutCalculation:(id)calculation inSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
-  [v6 setWidthTracksTextView:0];
-  [v6 setHeightTracksTextView:0];
-  [v6 setSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  calculationCopy = calculation;
+  [calculationCopy setWidthTracksTextView:0];
+  [calculationCopy setHeightTracksTextView:0];
+  [calculationCopy setSize:{width, height}];
 }
 
-- (void)_performTextKit2LayoutCalculation:(id)a3 inSize:(CGSize)a4
+- (void)_performTextKit2LayoutCalculation:(id)calculation inSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   textContainer = self->_textContainer;
-  v8 = a3;
-  v9 = [(NSTextContainer *)textContainer textLayoutManager];
-  v10 = [(UITextView *)self textContainer];
-  [v10 size];
+  calculationCopy = calculation;
+  textLayoutManager = [(NSTextContainer *)textContainer textLayoutManager];
+  textContainer = [(UITextView *)self textContainer];
+  [textContainer size];
   v12 = v11;
   v16 = 0uLL;
   v17 = 0;
-  [(UITextView *)self _saveSizeBeforeLayoutCalculation:v10];
-  v13 = [v9 delegate];
+  [(UITextView *)self _saveSizeBeforeLayoutCalculation:textContainer];
+  delegate = [textLayoutManager delegate];
   if (width != v12)
   {
-    [v10 setTextView:0];
+    [textContainer setTextView:0];
   }
 
-  [(UITextView *)self _configureForLayoutCalculation:v10 inSize:width, height];
-  [v9 ensureLayoutForBounds:{0.0, 0.0, width, height}];
-  v8[2](v8, v9, v10);
+  [(UITextView *)self _configureForLayoutCalculation:textContainer inSize:width, height];
+  [textLayoutManager ensureLayoutForBounds:{0.0, 0.0, width, height}];
+  calculationCopy[2](calculationCopy, textLayoutManager, textContainer);
 
   v14 = v16;
   v15 = v17;
-  [(UITextView *)self _restoreSize:&v14 afterLayoutCalculation:v10];
+  [(UITextView *)self _restoreSize:&v14 afterLayoutCalculation:textContainer];
   if (width != v12)
   {
-    [v10 setTextView:self->_containerView];
+    [textContainer setTextView:self->_containerView];
   }
 
-  [v9 setDelegate:v13];
+  [textLayoutManager setDelegate:delegate];
 }
 
-- (void)_performTextKit1LayoutCalculation:(id)a3 inSize:(CGSize)a4
+- (void)_performTextKit1LayoutCalculation:(id)calculation inSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [(UITextView *)self layoutManager];
-  v9 = [(UITextView *)self textContainer];
+  height = size.height;
+  width = size.width;
+  calculationCopy = calculation;
+  layoutManager = [(UITextView *)self layoutManager];
+  textContainer = [(UITextView *)self textContainer];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __55__UITextView__performTextKit1LayoutCalculation_inSize___block_invoke;
@@ -5640,11 +5640,11 @@ void __37__UITextView__baselineOffsetsAtSize___block_invoke(uint64_t a1)
   v15 = width;
   v16 = height;
   v12[4] = self;
-  v13 = v9;
-  v14 = v7;
-  v10 = v7;
-  v11 = v9;
-  [v8 coordinateAccess:v12];
+  v13 = textContainer;
+  v14 = calculationCopy;
+  v10 = calculationCopy;
+  v11 = textContainer;
+  [layoutManager coordinateAccess:v12];
 }
 
 void __55__UITextView__performTextKit1LayoutCalculation_inSize___block_invoke(uint64_t a1, void *a2)
@@ -5687,11 +5687,11 @@ void __55__UITextView__performTextKit1LayoutCalculation_inSize___block_invoke(ui
   [v3 setDelegate:v8];
 }
 
-- (CGSize)_containerSizeForBoundsSize:(CGSize)a3 allowingOverflow:(BOOL)a4
+- (CGSize)_containerSizeForBoundsSize:(CGSize)size allowingOverflow:(BOOL)overflow
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  overflowCopy = overflow;
+  height = size.height;
+  width = size.width;
   [(_UITextContainerView *)self->_containerView textContainerInset];
   v9 = v8;
   v11 = v10;
@@ -5716,7 +5716,7 @@ void __55__UITextView__performTextKit1LayoutCalculation_inSize___block_invoke(ui
   [(UIView *)self convertSize:self->_containerView toView:v17, v16];
   v20 = v18;
   v21 = v19;
-  if (v4)
+  if (overflowCopy)
   {
     if (v18 == 0.0 || [(_UITextContainerView *)self->_containerView layoutOrientation]== 1)
     {
@@ -5763,10 +5763,10 @@ void __55__UITextView__performTextKit1LayoutCalculation_inSize___block_invoke(ui
   return result;
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = _UIViewEnableDebugSignposts();
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
@@ -5796,7 +5796,7 @@ void __55__UITextView__performTextKit1LayoutCalculation_inSize___block_invoke(ui
     v32 = 0u;
   }
 
-  v7 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
   kdebug_trace();
 
   v34 = *MEMORY[0x1E695F060];
@@ -5868,7 +5868,7 @@ void __55__UITextView__performTextKit1LayoutCalculation_inSize___block_invoke(ui
     [v23 UTF8String];
     kdebug_trace_string();
 
-    v24 = [(UIView *)self superview];
+    superview2 = [(UIView *)self superview];
     kdebug_trace();
   }
 
@@ -5934,68 +5934,68 @@ void __39__UITextView__intrinsicSizeWithinSize___block_invoke_3(double *a1, void
   *(v10 + 40) = v9;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v14.receiver = self;
   v14.super_class = UITextView;
-  [(UIScrollView *)&v14 traitCollectionDidChange:v4];
-  v5 = [(UIView *)self traitCollection];
-  v6 = v5;
-  if (v5 && (!v4 || v5[13] != v4[13] || v5[15] != v4[15]))
+  [(UIScrollView *)&v14 traitCollectionDidChange:changeCopy];
+  traitCollection = [(UIView *)self traitCollection];
+  v6 = traitCollection;
+  if (traitCollection && (!changeCopy || traitCollection[13] != changeCopy[13] || traitCollection[15] != changeCopy[15]))
   {
-    -[UITextView _adjustFontForAccessibilityTraits:](self, "_adjustFontForAccessibilityTraits:", [v5 legibilityWeight] != objc_msgSend(v4, "legibilityWeight"));
+    -[UITextView _adjustFontForAccessibilityTraits:](self, "_adjustFontForAccessibilityTraits:", [traitCollection legibilityWeight] != objc_msgSend(changeCopy, "legibilityWeight"));
   }
 
-  v7 = [v6 typesettingLanguage];
-  v8 = [v4 typesettingLanguage];
-  v9 = [v7 isEqualToString:v8];
+  typesettingLanguage = [v6 typesettingLanguage];
+  typesettingLanguage2 = [changeCopy typesettingLanguage];
+  v9 = [typesettingLanguage isEqualToString:typesettingLanguage2];
 
   if ((v9 & 1) == 0)
   {
     [(UITextView *)self _adjustFontForTypesettingLanguage];
   }
 
-  v10 = [(UITextView *)self textLayoutManager];
-  if (v10)
+  textLayoutManager = [(UITextView *)self textLayoutManager];
+  if (textLayoutManager)
   {
-    v11 = [objc_opt_class() _resolvesNaturalAlignmentWithBaseWritingDirection];
-    v12 = [(UITraitCollection *)v6 _resolvesNaturalAlignmentWithBaseWritingDirectionWithDefaultValue:v11];
-    if (v12 != [v10 resolvesNaturalAlignmentWithBaseWritingDirection])
+    _resolvesNaturalAlignmentWithBaseWritingDirection = [objc_opt_class() _resolvesNaturalAlignmentWithBaseWritingDirection];
+    v12 = [(UITraitCollection *)v6 _resolvesNaturalAlignmentWithBaseWritingDirectionWithDefaultValue:_resolvesNaturalAlignmentWithBaseWritingDirection];
+    if (v12 != [textLayoutManager resolvesNaturalAlignmentWithBaseWritingDirection])
     {
-      [v10 setResolvesNaturalAlignmentWithBaseWritingDirection:v12];
+      [textLayoutManager setResolvesNaturalAlignmentWithBaseWritingDirection:v12];
     }
   }
 
-  v13 = [v6 userInterfaceStyle];
-  if (v13 != [v4 userInterfaceStyle])
+  userInterfaceStyle = [v6 userInterfaceStyle];
+  if (userInterfaceStyle != [changeCopy userInterfaceStyle])
   {
     [(UITextView *)self _updateTextEffectsConfigurationIfNeeded];
   }
 }
 
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow
 {
-  v6 = a3;
-  v7 = a4;
+  windowCopy = window;
+  toWindowCopy = toWindow;
   v13.receiver = self;
   v13.super_class = UITextView;
-  [(UIScrollView *)&v13 _didMoveFromWindow:v6 toWindow:v7];
-  if (v7 && dyld_program_sdk_at_least())
+  [(UIScrollView *)&v13 _didMoveFromWindow:windowCopy toWindow:toWindowCopy];
+  if (toWindowCopy && dyld_program_sdk_at_least())
   {
-    v8 = [v7 traitCollection];
-    v9 = [v8 userInterfaceIdiom];
-    v10 = [v6 traitCollection];
-    if (v9 == [v10 userInterfaceIdiom])
+    traitCollection = [toWindowCopy traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+    traitCollection2 = [windowCopy traitCollection];
+    if (userInterfaceIdiom == [traitCollection2 userInterfaceIdiom])
     {
     }
 
     else
     {
-      v11 = [v7 traitCollection];
-      v12 = [v11 userInterfaceIdiom];
+      traitCollection3 = [toWindowCopy traitCollection];
+      userInterfaceIdiom2 = [traitCollection3 userInterfaceIdiom];
 
-      if (v12 == 3)
+      if (userInterfaceIdiom2 == 3)
       {
         [(UITextView *)self _adjustFontForAccessibilityTraits:1];
       }
@@ -6005,28 +6005,28 @@ void __39__UITextView__intrinsicSizeWithinSize___block_invoke_3(double *a1, void
 
 - (id)_layoutDebuggingTitle
 {
-  v3 = [(UITextView *)self text];
-  v4 = v3;
-  if (v3)
+  text = [(UITextView *)self text];
+  v4 = text;
+  if (text)
   {
-    v5 = v3;
+    string = text;
   }
 
   else
   {
-    v6 = [(UITextView *)self attributedText];
-    v5 = [v6 string];
+    attributedText = [(UITextView *)self attributedText];
+    string = [attributedText string];
   }
 
-  return v5;
+  return string;
 }
 
-- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)a3
+- (void)_prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self alignmentRectForFrame:?];
   self->_preferredMaxLayoutWidth = v8;
   v9.receiver = self;
@@ -6034,29 +6034,29 @@ void __39__UITextView__intrinsicSizeWithinSize___block_invoke_3(double *a1, void
   [(UIView *)&v9 _prepareForSecondIntrinsicContentSizeCalculationWithLayoutEngineBounds:x, y, width, height];
 }
 
-- (void)_scrollRect:(CGRect)a3 toVisibleInContainingScrollView:(BOOL)a4
+- (void)_scrollRect:(CGRect)rect toVisibleInContainingScrollView:(BOOL)view
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(UIView *)self _scroller];
-  [v10 convertRect:self fromView:{x, y, width, height}];
+  viewCopy = view;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  _scroller = [(UIView *)self _scroller];
+  [_scroller convertRect:self fromView:{x, y, width, height}];
   v13 = CGRectInset(v12, 0.0, -4.0);
-  [v10 scrollRectToVisible:v4 animated:{v13.origin.x, v13.origin.y, v13.size.width, v13.size.height}];
+  [_scroller scrollRectToVisible:viewCopy animated:{v13.origin.x, v13.origin.y, v13.size.width, v13.size.height}];
 }
 
-- (void)_scrollSelectionToVisibleInContainingScrollView:(BOOL)a3
+- (void)_scrollSelectionToVisibleInContainingScrollView:(BOOL)view
 {
-  v3 = a3;
-  v5 = [(UITextView *)self selectedRange];
-  [(UITextView *)self _rectForScrollToVisible:v5, v6];
+  viewCopy = view;
+  selectedRange = [(UITextView *)self selectedRange];
+  [(UITextView *)self _rectForScrollToVisible:selectedRange, v6];
 
-  [(UITextView *)self _scrollRect:v3 toVisibleInContainingScrollView:?];
+  [(UITextView *)self _scrollRect:viewCopy toVisibleInContainingScrollView:?];
 }
 
-- (void)_keyboardDidShow:(id)a3
+- (void)_keyboardDidShow:(id)show
 {
   if ([(UIView *)self isFirstResponder])
   {
@@ -6083,8 +6083,8 @@ void __39__UITextView__intrinsicSizeWithinSize___block_invoke_3(double *a1, void
 
   else if ([(UIView *)self isFirstResponder])
   {
-    v3 = [(UIView *)self window];
-    v4 = [v3 _isSettingFirstResponder] ^ 1;
+    window = [(UIView *)self window];
+    v4 = [window _isSettingFirstResponder] ^ 1;
   }
 
   else
@@ -6097,13 +6097,13 @@ void __39__UITextView__intrinsicSizeWithinSize___block_invoke_3(double *a1, void
 
 - (BOOL)canBecomeFirstResponder
 {
-  v3 = [(UIView *)self window];
-  if (v3)
+  window = [(UIView *)self window];
+  if (window)
   {
-    v4 = v3;
-    v5 = [(UIView *)self _containedInAbsoluteResponderChain];
+    v4 = window;
+    _containedInAbsoluteResponderChain = [(UIView *)self _containedInAbsoluteResponderChain];
 
-    if (!v5)
+    if (!_containedInAbsoluteResponderChain)
     {
       return 0;
     }
@@ -6146,29 +6146,29 @@ void __39__UITextView__intrinsicSizeWithinSize___block_invoke_3(double *a1, void
 
 - (void)_cleanUpForResignFirstResponder
 {
-  if (a1)
+  if (self)
   {
-    if (([a1 _preserveSelectionDisplayForTextFormatting] & 1) == 0)
+    if (([self _preserveSelectionDisplayForTextFormatting] & 1) == 0)
     {
-      [a1[276] setSelectionDisplayVisible:0];
-      [a1[276] deactivateSelection];
+      [self[276] setSelectionDisplayVisible:0];
+      [self[276] deactivateSelection];
     }
 
-    [a1 _startDataDetectorsIfNeeded];
-    if ([a1 isEditable])
+    [self _startDataDetectorsIfNeeded];
+    if ([self isEditable])
     {
-      [a1 _notifyDidEndEditing];
-      v2 = [a1[272] canvasView];
-      [v2 isEditingDidChange];
+      [self _notifyDidEndEditing];
+      canvasView = [self[272] canvasView];
+      [canvasView isEditingDidChange];
 
-      if ([a1 shouldAutoscrollAboveBottom])
+      if ([self shouldAutoscrollAboveBottom])
       {
-        [a1 updateAutoscrollAboveBottom];
+        [self updateAutoscrollAboveBottom];
       }
     }
 
-    [a1 _updateSelectionGestures];
-    WeakRetained = objc_loadWeakRetained(a1 + 275);
+    [self _updateSelectionGestures];
+    WeakRetained = objc_loadWeakRetained(self + 275);
     [WeakRetained didEndEditing];
   }
 }
@@ -6177,13 +6177,13 @@ void __39__UITextView__intrinsicSizeWithinSize___block_invoke_3(double *a1, void
 {
   v5.receiver = self;
   v5.super_class = UITextView;
-  v3 = [(UIResponder *)&v5 _finishResignFirstResponder];
-  if (v3 && (*&self->_tvFlags & 4) == 0)
+  _finishResignFirstResponder = [(UIResponder *)&v5 _finishResignFirstResponder];
+  if (_finishResignFirstResponder && (*&self->_tvFlags & 4) == 0)
   {
     [(UITextView *)&self->super.super.super.super.isa _cleanUpForResignFirstResponder];
   }
 
-  return v3;
+  return _finishResignFirstResponder;
 }
 
 - (void)_notifyDidEndEditing
@@ -6195,16 +6195,16 @@ void __39__UITextView__intrinsicSizeWithinSize___block_invoke_3(double *a1, void
   }
 
   [(UITextView *)self _hideTextFormattingForResignFirstResponderIfNeeded];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"UITextViewTextDidEndEditingNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"UITextViewTextDidEndEditingNotification" object:self];
 }
 
 - (BOOL)allowsEditingTextAttributes
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained allowsEditingTextAttributes];
+  allowsEditingTextAttributes = [WeakRetained allowsEditingTextAttributes];
 
-  return v3;
+  return allowsEditingTextAttributes;
 }
 
 - (void)setAllowsEditingTextAttributes:(BOOL)allowsEditingTextAttributes
@@ -6214,9 +6214,9 @@ void __39__UITextView__intrinsicSizeWithinSize___block_invoke_3(double *a1, void
   [WeakRetained setAllowsEditingTextAttributes:v3];
 }
 
-- (void)setUsesTiledViews:(BOOL)a3
+- (void)setUsesTiledViews:(BOOL)views
 {
-  v3 = a3;
+  viewsCopy = views;
   if (dyld_program_sdk_at_least())
   {
     if (setUsesTiledViews__once != -1)
@@ -6230,7 +6230,7 @@ void __39__UITextView__intrinsicSizeWithinSize___block_invoke_3(double *a1, void
   {
     textLayoutController = self->_textLayoutController;
 
-    [(_UITextLayoutController *)textLayoutController setUsesTiledViews:v3];
+    [(_UITextLayoutController *)textLayoutController setUsesTiledViews:viewsCopy];
   }
 }
 
@@ -6246,31 +6246,31 @@ void __32__UITextView_setUsesTiledViews___block_invoke()
 
 - (BOOL)tiledViewsDrawAsynchronously
 {
-  v2 = [(_UITextContainerView *)self->_containerView canvasView];
-  v3 = [v2 layer];
-  v4 = [v3 drawsAsynchronously];
+  canvasView = [(_UITextContainerView *)self->_containerView canvasView];
+  layer = [canvasView layer];
+  drawsAsynchronously = [layer drawsAsynchronously];
 
-  return v4;
+  return drawsAsynchronously;
 }
 
-- (void)setTiledViewsDrawAsynchronously:(BOOL)a3
+- (void)setTiledViewsDrawAsynchronously:(BOOL)asynchronously
 {
-  v3 = a3;
-  v5 = [(_UITextContainerView *)self->_containerView canvasView];
-  v4 = [v5 layer];
-  [v4 setDrawsAsynchronously:v3];
+  asynchronouslyCopy = asynchronously;
+  canvasView = [(_UITextContainerView *)self->_containerView canvasView];
+  layer = [canvasView layer];
+  [layer setDrawsAsynchronously:asynchronouslyCopy];
 }
 
-- (void)setCustomRenderController:(id)a3
+- (void)setCustomRenderController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   customRenderController = self->_customRenderController;
-  if (customRenderController != v5)
+  if (customRenderController != controllerCopy)
   {
-    v27 = v5;
+    v27 = controllerCopy;
     self->_customRenderController = 0;
 
-    objc_storeStrong(&self->_customRenderController, a3);
+    objc_storeStrong(&self->_customRenderController, controller);
     [(NSCustomTextRendering *)self->_customRenderController setDelegate:self];
     v7 = objc_opt_respondsToSelector();
     v8 = 0x10000;
@@ -6349,26 +6349,26 @@ void __32__UITextView_setUsesTiledViews___block_invoke()
     }
 
     self->_tvFlags = (*&self->_tvFlags & 0xFFFFFFFFFFBFFFFFLL | v25);
-    v26 = [(_UITextContainerView *)self->_containerView canvasView];
-    [v26 flushElementViews];
+    canvasView = [(_UITextContainerView *)self->_containerView canvasView];
+    [canvasView flushElementViews];
 
-    v5 = v27;
+    controllerCopy = v27;
   }
 }
 
-- (void)setAllowsTextAnimations:(BOOL)a3
+- (void)setAllowsTextAnimations:(BOOL)animations
 {
-  if (self->_allowsTextAnimations != a3)
+  if (self->_allowsTextAnimations != animations)
   {
-    v3 = a3;
-    self->_allowsTextAnimations = a3;
-    v5 = [(UITextView *)self textLayoutManager];
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    [v5 setValue:v6 forKey:@"requiresCTLineRef"];
+    animationsCopy = animations;
+    self->_allowsTextAnimations = animations;
+    textLayoutManager = [(UITextView *)self textLayoutManager];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:animationsCopy];
+    [textLayoutManager setValue:v6 forKey:@"requiresCTLineRef"];
 
-    v7 = [(UITextView *)self _textInputTraits];
-    v8 = v7;
-    if (v3)
+    _textInputTraits = [(UITextView *)self _textInputTraits];
+    v8 = _textInputTraits;
+    if (animationsCopy)
     {
       v9 = 2;
     }
@@ -6378,7 +6378,7 @@ void __32__UITextView_setUsesTiledViews___block_invoke()
       v9 = 1;
     }
 
-    [v7 setAllowsTextAnimationsType:v9];
+    [_textInputTraits setAllowsTextAnimationsType:v9];
 
     if (self->_allowsTextAnimations)
     {
@@ -6391,14 +6391,14 @@ void __32__UITextView_setUsesTiledViews___block_invoke()
       [(UITextView *)self setCustomRenderController:0];
     }
 
-    if (v3)
+    if (animationsCopy)
     {
-      v11 = [(_UITextContainerView *)self->_containerView canvasView];
-      [v11 configureCustomTextRenderer];
+      canvasView = [(_UITextContainerView *)self->_containerView canvasView];
+      [canvasView configureCustomTextRenderer];
     }
 
-    v12 = [(_UITextContainerView *)self->_containerView canvasView];
-    [v12 setNeedsLayout];
+    canvasView2 = [(_UITextContainerView *)self->_containerView canvasView];
+    [canvasView2 setNeedsLayout];
   }
 }
 
@@ -6433,12 +6433,12 @@ void __32__UITextView_setUsesTiledViews___block_invoke()
   return result;
 }
 
-- (void)_setCustomRenderDisplayLink:(id)a3
+- (void)_setCustomRenderDisplayLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   if (objc_opt_respondsToSelector())
   {
-    [(NSCustomTextRendering *)self->_customRenderController setExternalDisplayLink:v4];
+    [(NSCustomTextRendering *)self->_customRenderController setExternalDisplayLink:linkCopy];
   }
 }
 
@@ -6446,25 +6446,25 @@ void __32__UITextView_setUsesTiledViews___block_invoke()
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(NSCustomTextRendering *)self->_customRenderController externalDisplayLink];
+    externalDisplayLink = [(NSCustomTextRendering *)self->_customRenderController externalDisplayLink];
   }
 
   else
   {
-    v3 = 0;
+    externalDisplayLink = 0;
   }
 
-  return v3;
+  return externalDisplayLink;
 }
 
-- (CGPoint)_convertPointFromRenderSpace:(CGPoint)a3
+- (CGPoint)_convertPointFromRenderSpace:(CGPoint)space
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UITextView *)self customRenderController];
-  if (v6 && [(UITextView *)self _customRenderControllerCanConvertPointFromRenderSpace])
+  y = space.y;
+  x = space.x;
+  customRenderController = [(UITextView *)self customRenderController];
+  if (customRenderController && [(UITextView *)self _customRenderControllerCanConvertPointFromRenderSpace])
   {
-    [v6 convertPointFromRenderSpace:{x, y}];
+    [customRenderController convertPointFromRenderSpace:{x, y}];
     x = v7;
     y = v8;
   }
@@ -6476,19 +6476,19 @@ void __32__UITextView_setUsesTiledViews___block_invoke()
   return result;
 }
 
-- (CGPoint)_convertPointToRenderSpace:(CGPoint)a3 textPosition:(id)a4
+- (CGPoint)_convertPointToRenderSpace:(CGPoint)space textPosition:(id)position
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(UITextView *)self customRenderController];
-  if (v8 && [(UITextView *)self _customRenderControllerCanConvertPointToRenderSpaceWithPosition])
+  y = space.y;
+  x = space.x;
+  positionCopy = position;
+  customRenderController = [(UITextView *)self customRenderController];
+  if (customRenderController && [(UITextView *)self _customRenderControllerCanConvertPointToRenderSpaceWithPosition])
   {
-    v9 = v7;
+    v9 = positionCopy;
     v10 = [v9 affinity] == 0;
-    v11 = [v9 location];
+    location = [v9 location];
 
-    [v8 convertPointToRenderSpace:v11 location:v10 affinity:{x, y}];
+    [customRenderController convertPointToRenderSpace:location location:v10 affinity:{x, y}];
     x = v12;
     y = v13;
   }
@@ -6500,32 +6500,32 @@ void __32__UITextView_setUsesTiledViews___block_invoke()
   return result;
 }
 
-- (CGPoint)_convertPointToRenderSpace:(CGPoint)a3 textRange:(id)a4
+- (CGPoint)_convertPointToRenderSpace:(CGPoint)space textRange:(id)range
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(UITextView *)self customRenderController];
-  if (v8)
+  y = space.y;
+  x = space.x;
+  rangeCopy = range;
+  customRenderController = [(UITextView *)self customRenderController];
+  if (customRenderController)
   {
     if ([(UITextView *)self _customRenderControllerCanConvertPointToRenderSpace])
     {
-      v9 = [v7 _unionNSTextRange];
-      [v8 convertPointToRenderSpace:v9 textRange:{x, y}];
+      _unionNSTextRange = [rangeCopy _unionNSTextRange];
+      [customRenderController convertPointToRenderSpace:_unionNSTextRange textRange:{x, y}];
     }
 
     else
     {
       if (![(UITextView *)self _customRenderControllerCanConvertPointToTextAnimationsCoordinateSpace])
       {
-        [v8 convertPointToTextAnimationsCoordinateSpace:{x, y}];
+        [customRenderController convertPointToTextAnimationsCoordinateSpace:{x, y}];
         x = v12;
         y = v13;
         goto LABEL_8;
       }
 
-      v9 = [v7 _unionNSTextRange];
-      [v8 convertPointToTextAnimationsCoordinateSpace:v9 textRange:{x, y}];
+      _unionNSTextRange = [rangeCopy _unionNSTextRange];
+      [customRenderController convertPointToTextAnimationsCoordinateSpace:_unionNSTextRange textRange:{x, y}];
     }
 
     x = v10;
@@ -6541,11 +6541,11 @@ LABEL_8:
   return result;
 }
 
-- (id)_animatorForTextAnimation:(id)a3
+- (id)_animatorForTextAnimation:(id)animation
 {
   if ((*(&self->_tvFlags + 2) & 0x80) != 0)
   {
-    v5 = [(NSCustomTextRendering *)self->_customRenderController animatorForTextAnimation:a3, v3];
+    v5 = [(NSCustomTextRendering *)self->_customRenderController animatorForTextAnimation:animation, v3];
   }
 
   else
@@ -6556,11 +6556,11 @@ LABEL_8:
   return v5;
 }
 
-- (id)_animatorForTextAnimation:(id)a3 notify:(id)a4
+- (id)_animatorForTextAnimation:(id)animation notify:(id)notify
 {
   if ((*(&self->_tvFlags + 2) & 0x80) != 0)
   {
-    v6 = [(NSCustomTextRendering *)self->_customRenderController animatorForTextAnimation:a3 notify:a4, v4];
+    v6 = [(NSCustomTextRendering *)self->_customRenderController animatorForTextAnimation:animation notify:notify, v4];
   }
 
   else
@@ -6571,28 +6571,28 @@ LABEL_8:
   return v6;
 }
 
-- (void)addGhostedRange:(id)a3
+- (void)addGhostedRange:(id)range
 {
-  if (a3)
+  if (range)
   {
     [(_UITextLayoutController *)self->_textLayoutController addGhostedRange:?];
   }
 }
 
-- (void)setScrollEnabled:(BOOL)a3
+- (void)setScrollEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(UITextView *)self _needsDoubleUpdateConstraintsPass];
-  v6 = [(UIScrollView *)self isScrollEnabled];
+  enabledCopy = enabled;
+  _needsDoubleUpdateConstraintsPass = [(UITextView *)self _needsDoubleUpdateConstraintsPass];
+  isScrollEnabled = [(UIScrollView *)self isScrollEnabled];
   v8.receiver = self;
   v8.super_class = UITextView;
-  [(UIScrollView *)&v8 setScrollEnabled:v3];
-  if (v6 != v3)
+  [(UIScrollView *)&v8 setScrollEnabled:enabledCopy];
+  if (isScrollEnabled != enabledCopy)
   {
-    [(UIView *)self _needsDoubleUpdateConstraintsPassMayHaveChangedFrom:v5];
+    [(UIView *)self _needsDoubleUpdateConstraintsPassMayHaveChangedFrom:_needsDoubleUpdateConstraintsPass];
     [(UITextView *)self _updateContainerTileAndSizingFlags];
     [(UITextView *)self _resyncContainerFrameForNonAutolayout];
-    if (v3)
+    if (enabledCopy)
     {
       [(UIView *)self setClipsToBounds:1];
       *&self->_textContainerInsetAdjustment.top = 0u;
@@ -6617,16 +6617,16 @@ LABEL_8:
   }
 }
 
-- (void)_setInteractiveTextSelectionDisabled:(BOOL)a3
+- (void)_setInteractiveTextSelectionDisabled:(BOOL)disabled
 {
   v4 = 16;
-  if (!a3)
+  if (!disabled)
   {
     v4 = 0;
   }
 
   self->_tvFlags = (*&self->_tvFlags & 0xFFFFFFFFFFFFFFEFLL | v4);
-  if (a3 && [(UITextView *)self isEditable])
+  if (disabled && [(UITextView *)self isEditable])
   {
 
     [(UITextView *)self setEditable:0];
@@ -6642,19 +6642,19 @@ LABEL_8:
 
 - (BOOL)_shouldShowEditMenu
 {
-  v3 = [(UITextView *)self _showsEditMenu];
-  if (v3)
+  _showsEditMenu = [(UITextView *)self _showsEditMenu];
+  if (_showsEditMenu)
   {
-    LOBYTE(v3) = ![(UITextView *)self _shouldSuppressEditMenuForTextFormatting];
+    LOBYTE(_showsEditMenu) = ![(UITextView *)self _shouldSuppressEditMenuForTextFormatting];
   }
 
-  return v3;
+  return _showsEditMenu;
 }
 
-- (void)setShouldPresentSheetsInAWindowLayeredAboveTheKeyboard:(BOOL)a3
+- (void)setShouldPresentSheetsInAWindowLayeredAboveTheKeyboard:(BOOL)keyboard
 {
   v3 = 64;
-  if (!a3)
+  if (!keyboard)
   {
     v3 = 0;
   }
@@ -6662,21 +6662,21 @@ LABEL_8:
   self->_tvFlags = (*&self->_tvFlags & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setNeedsFrameUpdateForSurface:(id)a3
+- (void)setNeedsFrameUpdateForSurface:(id)surface
 {
-  v3 = [(_UITextContainerView *)self->_containerView canvasView];
-  [v3 setNeedsLayout];
+  canvasView = [(_UITextContainerView *)self->_containerView canvasView];
+  [canvasView setNeedsLayout];
 }
 
 - (void)_updateInteractionGeometry
 {
-  v2 = [(UITextView *)self interactionAssistant];
-  [v2 updateSelectionForTextAnimation];
+  interactionAssistant = [(UITextView *)self interactionAssistant];
+  [interactionAssistant updateSelectionForTextAnimation];
 }
 
-- (void)_willDrawContentOfSurface:(id)a3 withBlock:(id)a4
+- (void)_willDrawContentOfSurface:(id)surface withBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   if (os_variant_has_internal_diagnostics())
   {
     if (!self)
@@ -6701,40 +6701,40 @@ LABEL_8:
   }
 
   v6 = +[UITraitCollection _currentTraitCollectionIfExists];
-  v7 = [(UIView *)self traitCollection];
-  [UITraitCollection setCurrentTraitCollection:v7];
+  traitCollection = [(UIView *)self traitCollection];
+  [UITraitCollection setCurrentTraitCollection:traitCollection];
 
   v8 = _UISetCurrentFallbackEnvironment(self);
-  v5[2](v5);
+  blockCopy[2](blockCopy);
 
   _UIRestorePreviousFallbackEnvironment(v8);
   [UITraitCollection setCurrentTraitCollection:v6];
 }
 
-- (void)_showTextFormattingOptions:(id)a3
+- (void)_showTextFormattingOptions:(id)options
 {
-  v5 = a3;
-  v4 = [(UITextView *)self _configurationForTextFormattingOptions];
-  if (v4)
+  optionsCopy = options;
+  _configurationForTextFormattingOptions = [(UITextView *)self _configurationForTextFormattingOptions];
+  if (_configurationForTextFormattingOptions)
   {
-    [(UITextView *)self _prepareForTextFormattingControllerPresentationWithConfiguration:v4 sender:v5];
+    [(UITextView *)self _prepareForTextFormattingControllerPresentationWithConfiguration:_configurationForTextFormattingOptions sender:optionsCopy];
   }
 }
 
-- (void)_showTextFormattingAnimationOptions:(id)a3
+- (void)_showTextFormattingAnimationOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if (self->_allowsTextAnimations)
   {
-    v13 = v4;
+    v13 = optionsCopy;
     [(UIResponder *)self _endWritingTools];
     v5 = +[UIKeyboardImpl activeInstance];
     [v5 removeAutocorrection];
 
-    v6 = [(UITextView *)self _supportedAnimationNamesForTextFormatting];
-    v7 = [(UITextView *)self _supportedAnimationTitlesForTextFormatting];
-    v8 = [(UITextView *)self _supportedAnimationAccessibilityHintsForTextFormatting];
-    v9 = [UITextFormattingViewControllerConfiguration _forTextAnimationsUIWithSupportedAnimationNames:v6 titles:v7 accessibilityHints:v8];
+    _supportedAnimationNamesForTextFormatting = [(UITextView *)self _supportedAnimationNamesForTextFormatting];
+    _supportedAnimationTitlesForTextFormatting = [(UITextView *)self _supportedAnimationTitlesForTextFormatting];
+    _supportedAnimationAccessibilityHintsForTextFormatting = [(UITextView *)self _supportedAnimationAccessibilityHintsForTextFormatting];
+    v9 = [UITextFormattingViewControllerConfiguration _forTextAnimationsUIWithSupportedAnimationNames:_supportedAnimationNamesForTextFormatting titles:_supportedAnimationTitlesForTextFormatting accessibilityHints:_supportedAnimationAccessibilityHintsForTextFormatting];
     if (-[UIView isFirstResponder](self, "isFirstResponder") && (-[UIView traitCollection](self, "traitCollection"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 userInterfaceIdiom], v10, !v11))
     {
       v12 = +[(UISubstituteKeyboardSession *)UITextFormattingKeyboardSession];
@@ -6748,14 +6748,14 @@ LABEL_8:
       [(UITextView *)self _prepareForTextFormattingControllerPresentationWithConfiguration:v9 sender:v13];
     }
 
-    v4 = v13;
+    optionsCopy = v13;
   }
 }
 
-- (void)_hideTextFormattingOptions:(id)a3
+- (void)_hideTextFormattingOptions:(id)options
 {
-  v4 = [(UIView *)self traitCollection];
-  if ([v4 userInterfaceIdiom])
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom])
   {
 
     goto LABEL_3;
@@ -6788,20 +6788,20 @@ LABEL_3:
   v58 = __Block_byref_object_copy__217;
   v59 = __Block_byref_object_dispose__217;
   v60 = 0;
-  v40 = [(UITextView *)self _configurationForTextFormattingOptions];
-  v3 = [(UITextView *)self selectedRange];
+  _configurationForTextFormattingOptions = [(UITextView *)self _configurationForTextFormattingOptions];
+  selectedRange = [(UITextView *)self selectedRange];
   v5 = v4;
-  if (v4 && (v6 = v3, v3 + v4 <= [(NSTextStorage *)self->_textStorage length]))
+  if (v4 && (v6 = selectedRange, selectedRange + v4 <= [(NSTextStorage *)self->_textStorage length]))
   {
     v30 = [[UITextFormattingViewControllerFormattingDescriptor alloc] initWithString:self->_textStorage range:v6, v5];
     v31 = v56[5];
     v56[5] = v30;
 
-    v32 = [v40 formattingStyles];
-    if (v32)
+    formattingStyles = [_configurationForTextFormattingOptions formattingStyles];
+    if (formattingStyles)
     {
-      v33 = [v40 formattingStyles];
-      v34 = [v33 count] == 0;
+      formattingStyles2 = [_configurationForTextFormattingOptions formattingStyles];
+      v34 = [formattingStyles2 count] == 0;
 
       if (!v34)
       {
@@ -6810,10 +6810,10 @@ LABEL_3:
         v52[1] = 3221225472;
         v52[2] = __49__UITextView__descriptorForTextFormattingOptions__block_invoke;
         v52[3] = &unk_1E7126998;
-        v53 = v40;
+        v53 = _configurationForTextFormattingOptions;
         v54 = &v55;
         [(NSTextStorage *)textStorage enumerateAttributesInRange:v6 options:v5 usingBlock:0, v52];
-        v14 = v53;
+        formattingStyles5 = v53;
 LABEL_28:
       }
     }
@@ -6822,16 +6822,16 @@ LABEL_28:
   else
   {
     v7 = [UITextFormattingViewControllerFormattingDescriptor alloc];
-    v8 = [(UITextView *)self typingAttributes];
-    v9 = [(UITextFormattingViewControllerFormattingDescriptor *)v7 initWithAttributes:v8];
+    typingAttributes = [(UITextView *)self typingAttributes];
+    v9 = [(UITextFormattingViewControllerFormattingDescriptor *)v7 initWithAttributes:typingAttributes];
     v10 = v56[5];
     v56[5] = v9;
 
-    v11 = [v40 formattingStyles];
-    if (v11)
+    formattingStyles3 = [_configurationForTextFormattingOptions formattingStyles];
+    if (formattingStyles3)
     {
-      v12 = [v40 formattingStyles];
-      v13 = [v12 count] == 0;
+      formattingStyles4 = [_configurationForTextFormattingOptions formattingStyles];
+      v13 = [formattingStyles4 count] == 0;
 
       if (!v13)
       {
@@ -6839,11 +6839,11 @@ LABEL_28:
         v51 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v14 = [v40 formattingStyles];
-        v15 = [v14 countByEnumeratingWithState:&v48 objects:v62 count:16];
+        formattingStyles5 = [_configurationForTextFormattingOptions formattingStyles];
+        v15 = [formattingStyles5 countByEnumeratingWithState:&v48 objects:v62 count:16];
         if (v15)
         {
-          obj = v14;
+          obj = formattingStyles5;
           v42 = *v49;
           while (2)
           {
@@ -6856,15 +6856,15 @@ LABEL_28:
               }
 
               v43 = *(*(&v48 + 1) + 8 * i);
-              v17 = [MEMORY[0x1E695DF90] dictionary];
+              dictionary = [MEMORY[0x1E695DF90] dictionary];
               v46 = 0u;
               v47 = 0u;
               v44 = 0u;
               v45 = 0u;
-              v18 = [v43 attributes];
-              v19 = [v18 allKeys];
+              attributes = [v43 attributes];
+              allKeys = [attributes allKeys];
 
-              v20 = [v19 countByEnumeratingWithState:&v44 objects:v61 count:16];
+              v20 = [allKeys countByEnumeratingWithState:&v44 objects:v61 count:16];
               if (v20)
               {
                 v21 = *v45;
@@ -6874,34 +6874,34 @@ LABEL_28:
                   {
                     if (*v45 != v21)
                     {
-                      objc_enumerationMutation(v19);
+                      objc_enumerationMutation(allKeys);
                     }
 
                     v23 = *(*(&v44 + 1) + 8 * j);
-                    v24 = [(UITextView *)self typingAttributes];
-                    v25 = [v24 valueForKey:v23];
+                    typingAttributes2 = [(UITextView *)self typingAttributes];
+                    v25 = [typingAttributes2 valueForKey:v23];
 
                     if (v25)
                     {
-                      v26 = [(UITextView *)self typingAttributes];
-                      v27 = [v26 valueForKey:v23];
-                      [v17 setValue:v27 forKey:v23];
+                      typingAttributes3 = [(UITextView *)self typingAttributes];
+                      v27 = [typingAttributes3 valueForKey:v23];
+                      [dictionary setValue:v27 forKey:v23];
                     }
                   }
 
-                  v20 = [v19 countByEnumeratingWithState:&v44 objects:v61 count:16];
+                  v20 = [allKeys countByEnumeratingWithState:&v44 objects:v61 count:16];
                 }
 
                 while (v20);
               }
 
-              v28 = [v43 attributes];
-              v29 = [v28 isEqualToDictionary:v17];
+              attributes2 = [v43 attributes];
+              v29 = [attributes2 isEqualToDictionary:dictionary];
 
               if (v29)
               {
-                v36 = [v43 styleKey];
-                [v56[5] setFormattingStyleKey:v36];
+                styleKey = [v43 styleKey];
+                [v56[5] setFormattingStyleKey:styleKey];
 
                 goto LABEL_27;
               }
@@ -6917,7 +6917,7 @@ LABEL_28:
           }
 
 LABEL_27:
-          v14 = obj;
+          formattingStyles5 = obj;
         }
 
         goto LABEL_28;
@@ -7023,9 +7023,9 @@ LABEL_20:
 - (id)_disabledComponentsForTextFormattingOptions
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(_UITextLayoutController *)self->_textLayoutController canAccessLayoutManager];
+  canAccessLayoutManager = [(_UITextLayoutController *)self->_textLayoutController canAccessLayoutManager];
   v3 = MEMORY[0x1E695DFD8];
-  if (v2)
+  if (canAccessLayoutManager)
   {
     v7[0] = @"UITextFormattingViewControllerListStylesComponent";
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
@@ -7040,9 +7040,9 @@ LABEL_20:
   return v5;
 }
 
-- (void)setTextFormattingConfiguration:(id)a3
+- (void)setTextFormattingConfiguration:(id)configuration
 {
-  v4 = [a3 copy];
+  v4 = [configuration copy];
   textFormattingConfiguration = self->_textFormattingConfiguration;
   self->_textFormattingConfiguration = v4;
 }
@@ -7054,11 +7054,11 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(UITextView *)self _configurationForTextFormattingOptions];
-  if (v3)
+  _configurationForTextFormattingOptions = [(UITextView *)self _configurationForTextFormattingOptions];
+  if (_configurationForTextFormattingOptions)
   {
-    v4 = [(UITextView *)self _supportedAnimationNamesForTextFormatting];
-    v5 = v4 == 0;
+    _supportedAnimationNamesForTextFormatting = [(UITextView *)self _supportedAnimationNamesForTextFormatting];
+    v5 = _supportedAnimationNamesForTextFormatting == 0;
   }
 
   else
@@ -7090,16 +7090,16 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(UIViewController *)textFormattingViewController presentingViewController];
-  v4 = v3 != 0;
+  presentingViewController = [(UIViewController *)textFormattingViewController presentingViewController];
+  v4 = presentingViewController != 0;
 
   return v4;
 }
 
 - (BOOL)_isInCompactHorizontalSizeClass
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = [v2 horizontalSizeClass] == 1;
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = [traitCollection horizontalSizeClass] == 1;
 
   return v3;
 }
@@ -7109,24 +7109,24 @@ LABEL_20:
   textFormattingViewController = self->_textFormattingViewController;
   if (textFormattingViewController)
   {
-    v4 = [(UIViewController *)textFormattingViewController popoverPresentationController];
-    v5 = [v4 sourceView];
-    v6 = [(UIView *)self superview];
-    v7 = v6;
-    if (v6)
+    popoverPresentationController = [(UIViewController *)textFormattingViewController popoverPresentationController];
+    sourceView = [popoverPresentationController sourceView];
+    superview = [(UIView *)self superview];
+    v7 = superview;
+    if (superview)
     {
-      v8 = v6;
+      selfCopy = superview;
     }
 
     else
     {
-      v8 = self;
+      selfCopy = self;
     }
 
-    if (v5 == v8)
+    if (sourceView == selfCopy)
     {
-      v10 = [(UITextFormattingViewController *)self->_textFormattingViewController configuration];
-      v9 = [v10 _isTextAnimationsConfiguration] ^ 1;
+      configuration = [(UITextFormattingViewController *)self->_textFormattingViewController configuration];
+      v9 = [configuration _isTextAnimationsConfiguration] ^ 1;
     }
 
     else
@@ -7148,32 +7148,32 @@ LABEL_20:
   textFormattingViewController = self->_textFormattingViewController;
   if (textFormattingViewController)
   {
-    v4 = [(UIViewController *)textFormattingViewController popoverPresentationController];
-    v5 = [v4 sourceView];
-    v6 = [(UIView *)self superview];
-    v7 = v6;
-    if (v6)
+    popoverPresentationController = [(UIViewController *)textFormattingViewController popoverPresentationController];
+    sourceView = [popoverPresentationController sourceView];
+    superview = [(UIView *)self superview];
+    v7 = superview;
+    if (superview)
     {
-      v8 = v6;
+      selfCopy = superview;
     }
 
     else
     {
-      v8 = self;
+      selfCopy = self;
     }
 
-    if (v5 == v8)
+    if (sourceView == selfCopy)
     {
-      v12 = [(UITextFormattingViewController *)self->_textFormattingViewController configuration];
-      v9 = ([v12 _isTextAnimationsConfiguration] & 1) != 0 || -[UITextFormattingViewControllerConfiguration _isTextAnimationsConfiguration](self->_textFormattingRestorationConfiguration, "_isTextAnimationsConfiguration");
+      configuration = [(UITextFormattingViewController *)self->_textFormattingViewController configuration];
+      _isTextAnimationsConfiguration = ([configuration _isTextAnimationsConfiguration] & 1) != 0 || -[UITextFormattingViewControllerConfiguration _isTextAnimationsConfiguration](self->_textFormattingRestorationConfiguration, "_isTextAnimationsConfiguration");
     }
 
     else
     {
-      v9 = [(UITextFormattingViewControllerConfiguration *)self->_textFormattingRestorationConfiguration _isTextAnimationsConfiguration];
+      _isTextAnimationsConfiguration = [(UITextFormattingViewControllerConfiguration *)self->_textFormattingRestorationConfiguration _isTextAnimationsConfiguration];
     }
 
-    return v9;
+    return _isTextAnimationsConfiguration;
   }
 
   else
@@ -7186,18 +7186,18 @@ LABEL_20:
 
 - (void)_textViewWillPresentTextFormattingOptions
 {
-  v3 = [(UITextView *)self _preferredPresentingControllerForTextFormatting];
-  v4 = [v3 presentedViewController];
+  _preferredPresentingControllerForTextFormatting = [(UITextView *)self _preferredPresentingControllerForTextFormatting];
+  presentedViewController = [_preferredPresentingControllerForTextFormatting presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
-    v5 = [(UITextFormattingViewController *)self->_textFormattingViewController configuration];
-    if ([v5 _isTextAnimationsConfiguration])
+    configuration = [(UITextFormattingViewController *)self->_textFormattingViewController configuration];
+    if ([configuration _isTextAnimationsConfiguration])
     {
-      v6 = [(UIView *)self traitCollection];
-      v7 = [v6 userInterfaceIdiom];
+      traitCollection = [(UIView *)self traitCollection];
+      userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-      if (v7 == 6)
+      if (userInterfaceIdiom == 6)
       {
         return;
       }
@@ -7207,16 +7207,16 @@ LABEL_20:
     {
     }
 
-    v9 = [(UITextView *)self _preferredPresentingControllerForTextFormatting];
-    v8 = [v9 presentedViewController];
-    [v8 dismissViewControllerAnimated:1 completion:0];
+    _preferredPresentingControllerForTextFormatting2 = [(UITextView *)self _preferredPresentingControllerForTextFormatting];
+    presentedViewController2 = [_preferredPresentingControllerForTextFormatting2 presentedViewController];
+    [presentedViewController2 dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)_prepareForTextFormattingControllerPresentationWithConfiguration:(id)a3 sender:(id)a4
+- (void)_prepareForTextFormattingControllerPresentationWithConfiguration:(id)configuration sender:(id)sender
 {
-  v25 = a3;
-  v6 = a4;
+  configurationCopy = configuration;
+  senderCopy = sender;
   if (self->_canShowTextFormattingOptions)
   {
     if (self->_textFormattingViewController)
@@ -7225,25 +7225,25 @@ LABEL_20:
       goto LABEL_25;
     }
 
-    [v25 set_preferringDimmingVisible:0];
-    [v25 set_textViewConfiguration:1];
-    v7 = [[UITextFormattingViewController alloc] initWithConfiguration:v25];
+    [configurationCopy set_preferringDimmingVisible:0];
+    [configurationCopy set_textViewConfiguration:1];
+    v7 = [[UITextFormattingViewController alloc] initWithConfiguration:configurationCopy];
     [(UITextFormattingViewController *)v7 _setInternalDelegate:self];
     [(UITextFormattingViewController *)v7 _setEditResponder:self];
     [(UIViewController *)v7 setModalPresentationStyle:7];
-    v8 = [(UIViewController *)v7 popoverPresentationController];
-    [v8 setCanOverlapSourceViewRect:1];
+    popoverPresentationController = [(UIViewController *)v7 popoverPresentationController];
+    [popoverPresentationController setCanOverlapSourceViewRect:1];
 
-    v9 = [(UIViewController *)v7 sheetPresentationController];
-    [v9 setPrefersEdgeAttachedInCompactHeight:1];
+    sheetPresentationController = [(UIViewController *)v7 sheetPresentationController];
+    [sheetPresentationController setPrefersEdgeAttachedInCompactHeight:1];
 
-    v10 = [(UIViewController *)v7 popoverPresentationController];
-    [v10 _setShouldDimPresentingViewTint:0];
+    popoverPresentationController2 = [(UIViewController *)v7 popoverPresentationController];
+    [popoverPresentationController2 _setShouldDimPresentingViewTint:0];
 
-    if ([v25 _isTextAnimationsConfiguration])
+    if ([configurationCopy _isTextAnimationsConfiguration])
     {
-      v11 = [(UIViewController *)v7 popoverPresentationController];
-      [v11 setDelegate:v7];
+      popoverPresentationController3 = [(UIViewController *)v7 popoverPresentationController];
+      [popoverPresentationController3 setDelegate:v7];
     }
 
     if ([(UITextView *)self _isInCompactHorizontalSizeClass]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -7251,7 +7251,7 @@ LABEL_20:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if ([v25 _isTextAnimationsConfiguration])
+        if ([configurationCopy _isTextAnimationsConfiguration])
         {
           v15 = 2;
         }
@@ -7261,33 +7261,33 @@ LABEL_20:
           v15 = 15;
         }
 
-        v16 = [(UIViewController *)v7 popoverPresentationController];
-        [v16 setPermittedArrowDirections:v15];
+        popoverPresentationController4 = [(UIViewController *)v7 popoverPresentationController];
+        [popoverPresentationController4 setPermittedArrowDirections:v15];
 
-        v17 = [(UIViewController *)v7 popoverPresentationController];
-        v18 = [(UIView *)self superview];
-        v19 = v18;
-        if (v18)
+        popoverPresentationController5 = [(UIViewController *)v7 popoverPresentationController];
+        superview = [(UIView *)self superview];
+        v19 = superview;
+        if (superview)
         {
-          v20 = v18;
+          selfCopy = superview;
         }
 
         else
         {
-          v20 = self;
+          selfCopy = self;
         }
 
-        [v17 setSourceView:v20];
+        [popoverPresentationController5 setSourceView:selfCopy];
 
         if ([(UITextView *)self _isInCompactHorizontalSizeClass])
         {
           [(UITextFormattingViewController *)v7 _setShouldDeferFontPickerPresentationToViewController:0];
 LABEL_21:
-          v22 = [(UIView *)self traitCollection];
-          if ([v22 userInterfaceIdiom] == 6)
+          traitCollection = [(UIView *)self traitCollection];
+          if ([traitCollection userInterfaceIdiom] == 6)
           {
-            v23 = [(UITextView *)self _preferredPresentingControllerForTextFormatting];
-            [(UITextFormattingViewController *)v7 _setShouldDeferColorPickerPresentationToViewController:v23];
+            _preferredPresentingControllerForTextFormatting = [(UITextView *)self _preferredPresentingControllerForTextFormatting];
+            [(UITextFormattingViewController *)v7 _setShouldDeferColorPickerPresentationToViewController:_preferredPresentingControllerForTextFormatting];
           }
 
           else
@@ -7304,26 +7304,26 @@ LABEL_21:
         }
 
 LABEL_20:
-        v21 = [(UITextView *)self _preferredPresentingControllerForTextFormatting];
-        [(UITextFormattingViewController *)v7 _setShouldDeferFontPickerPresentationToViewController:v21];
+        _preferredPresentingControllerForTextFormatting2 = [(UITextView *)self _preferredPresentingControllerForTextFormatting];
+        [(UITextFormattingViewController *)v7 _setShouldDeferFontPickerPresentationToViewController:_preferredPresentingControllerForTextFormatting2];
 
         goto LABEL_21;
       }
 
-      v14 = [(UIViewController *)v7 popoverPresentationController];
-      [v14 setPermittedArrowDirections:15];
+      popoverPresentationController6 = [(UIViewController *)v7 popoverPresentationController];
+      [popoverPresentationController6 setPermittedArrowDirections:15];
 
-      v13 = [(UIViewController *)v7 popoverPresentationController];
-      [v13 setSourceView:v6];
+      popoverPresentationController7 = [(UIViewController *)v7 popoverPresentationController];
+      [popoverPresentationController7 setSourceView:senderCopy];
     }
 
     else
     {
-      v12 = [(UIViewController *)v7 popoverPresentationController];
-      [v12 setPermittedArrowDirections:15];
+      popoverPresentationController8 = [(UIViewController *)v7 popoverPresentationController];
+      [popoverPresentationController8 setPermittedArrowDirections:15];
 
-      v13 = [(UIViewController *)v7 popoverPresentationController];
-      [v13 setBarButtonItem:v6];
+      popoverPresentationController7 = [(UIViewController *)v7 popoverPresentationController];
+      [popoverPresentationController7 setBarButtonItem:senderCopy];
     }
 
     goto LABEL_20;
@@ -7334,26 +7334,26 @@ LABEL_25:
 
 - (id)_preferredPresentingControllerForTextFormatting
 {
-  v3 = [(UIView *)self _viewControllerForAncestor];
-  v4 = [(UITextFormattingViewController *)self->_textFormattingViewController configuration];
-  if ([v4 _isTextAnimationsConfiguration])
+  _viewControllerForAncestor = [(UIView *)self _viewControllerForAncestor];
+  configuration = [(UITextFormattingViewController *)self->_textFormattingViewController configuration];
+  if ([configuration _isTextAnimationsConfiguration])
   {
-    v5 = [v3 _isInSheetPresentation];
+    _isInSheetPresentation = [_viewControllerForAncestor _isInSheetPresentation];
 
-    if (v5)
+    if (_isInSheetPresentation)
     {
       goto LABEL_5;
     }
 
-    v4 = [(UIView *)self window];
-    v6 = [v4 rootViewController];
+    configuration = [(UIView *)self window];
+    rootViewController = [configuration rootViewController];
 
-    v3 = v6;
+    _viewControllerForAncestor = rootViewController;
   }
 
 LABEL_5:
 
-  return v3;
+  return _viewControllerForAncestor;
 }
 
 - (void)_presentTextFormattingController
@@ -7364,14 +7364,14 @@ LABEL_5:
     if (self->_textFormattingViewController)
     {
       objc_initWeak(location, self);
-      v3 = [(UITextView *)self _preferredPresentingControllerForTextFormatting];
+      _preferredPresentingControllerForTextFormatting = [(UITextView *)self _preferredPresentingControllerForTextFormatting];
       textFormattingViewController = self->_textFormattingViewController;
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
       v6[2] = __46__UITextView__presentTextFormattingController__block_invoke;
       v6[3] = &unk_1E70F5A28;
       objc_copyWeak(&v7, location);
-      [v3 presentViewController:textFormattingViewController animated:1 completion:v6];
+      [_preferredPresentingControllerForTextFormatting presentViewController:textFormattingViewController animated:1 completion:v6];
 
       [(UITextView *)self _startSuppressingKeyboardForTextFormatting:self->_textFormattingViewController];
       objc_destroyWeak(&v7);
@@ -7405,11 +7405,11 @@ void __46__UITextView__presentTextFormattingController__block_invoke(uint64_t a1
 
 - (id)_scrollViewToAdjustForTextFormattingController
 {
-  v2 = self;
-  v3 = [(UIView *)self superview];
-  if (v3)
+  selfCopy = self;
+  superview = [(UIView *)self superview];
+  if (superview)
   {
-    v4 = v3;
+    v4 = superview;
     v5 = 0;
     do
     {
@@ -7421,12 +7421,12 @@ void __46__UITextView__presentTextFormattingController__block_invoke(uint64_t a1
         v5 = v6;
       }
 
-      v7 = [v4 superview];
+      superview2 = [v4 superview];
 
-      v4 = v7;
+      v4 = superview2;
     }
 
-    while (v7);
+    while (superview2);
   }
 
   else
@@ -7436,31 +7436,31 @@ void __46__UITextView__presentTextFormattingController__block_invoke(uint64_t a1
 
   if (v5)
   {
-    v2 = v5;
+    selfCopy = v5;
   }
 
-  v8 = v2;
+  v8 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)_adjustBottomContentInsetForTextFormattingController:(BOOL)a3
+- (void)_adjustBottomContentInsetForTextFormattingController:(BOOL)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   if (![(UITextView *)self _shouldAdjustKeyboardGuidesForTextFormattingIfNeeded])
   {
-    v5 = [(UITextView *)self _scrollViewToAdjustForTextFormattingController];
+    _scrollViewToAdjustForTextFormattingController = [(UITextView *)self _scrollViewToAdjustForTextFormattingController];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __67__UITextView__adjustBottomContentInsetForTextFormattingController___block_invoke;
     aBlock[3] = &unk_1E70F3590;
     aBlock[4] = self;
     v6 = _Block_copy(aBlock);
-    if (v3)
+    if (controllerCopy)
     {
       [(UITextView *)self _textFormattingControllerOverlapHeight];
       v8 = v7;
-      [v5 adjustedContentInset];
+      [_scrollViewToAdjustForTextFormattingController adjustedContentInset];
       v10 = v8 - v9;
       if (v8 - v9 <= 0.0)
       {
@@ -7469,8 +7469,8 @@ LABEL_9:
         return;
       }
 
-      [v5 contentInset];
-      [v5 contentInset];
+      [_scrollViewToAdjustForTextFormattingController contentInset];
+      [_scrollViewToAdjustForTextFormattingController contentInset];
       v12 = v11;
       v14 = v13;
       v16 = v15;
@@ -7480,7 +7480,7 @@ LABEL_9:
       v36[2] = __67__UITextView__adjustBottomContentInsetForTextFormattingController___block_invoke_2;
       v36[3] = &unk_1E70F3B20;
       v19 = v37;
-      v37[0] = v5;
+      v37[0] = _scrollViewToAdjustForTextFormattingController;
       v37[1] = v12;
       v37[2] = v14;
       *&v37[3] = v18;
@@ -7503,13 +7503,13 @@ LABEL_9:
         goto LABEL_9;
       }
 
-      [v5 contentInset];
+      [_scrollViewToAdjustForTextFormattingController contentInset];
       if (v21 != self->_bottomContentInsetAfterTextFormattingAdjustment)
       {
         goto LABEL_9;
       }
 
-      [v5 contentInset];
+      [_scrollViewToAdjustForTextFormattingController contentInset];
       v23 = v22;
       v25 = v24;
       v27 = v26;
@@ -7519,7 +7519,7 @@ LABEL_9:
       v32[2] = __67__UITextView__adjustBottomContentInsetForTextFormattingController___block_invoke_4;
       v32[3] = &unk_1E70F3B20;
       v19 = v33;
-      v33[0] = v5;
+      v33[0] = _scrollViewToAdjustForTextFormattingController;
       v33[1] = v23;
       v33[2] = v25;
       *&v33[3] = v29;
@@ -7559,20 +7559,20 @@ uint64_t __67__UITextView__adjustBottomContentInsetForTextFormattingController__
   height = 0.0;
   if (self->_textFormattingViewController && [(UITextView *)self _isInCompactHorizontalSizeClass])
   {
-    v4 = [(UIViewController *)self->_textFormattingViewController view];
-    v5 = [(UIViewController *)self->_textFormattingViewController view];
-    v6 = [v5 safeAreaLayoutGuide];
-    [v6 layoutFrame];
-    [v4 convertRect:0 toView:?];
+    view = [(UIViewController *)self->_textFormattingViewController view];
+    view2 = [(UIViewController *)self->_textFormattingViewController view];
+    safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
+    [view convertRect:0 toView:?];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
 
-    v15 = [(UITextView *)self _scrollViewToAdjustForTextFormattingController];
-    v16 = [v15 superview];
-    [v15 frame];
-    [v16 convertRect:0 toView:?];
+    _scrollViewToAdjustForTextFormattingController = [(UITextView *)self _scrollViewToAdjustForTextFormattingController];
+    superview = [_scrollViewToAdjustForTextFormattingController superview];
+    [_scrollViewToAdjustForTextFormattingController frame];
+    [superview convertRect:0 toView:?];
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -7593,12 +7593,12 @@ uint64_t __67__UITextView__adjustBottomContentInsetForTextFormattingController__
   return height;
 }
 
-- (void)_dismissTextFormattingControllerIfNeededWithAnimation:(BOOL)a3
+- (void)_dismissTextFormattingControllerIfNeededWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   if ([(UITextView *)self _isTextFormattingControllerPresented])
   {
-    [(UIViewController *)self->_textFormattingViewController dismissViewControllerAnimated:v3 completion:0];
+    [(UIViewController *)self->_textFormattingViewController dismissViewControllerAnimated:animationCopy completion:0];
   }
 
   else if (self->_textFormattingViewController)
@@ -7641,14 +7641,14 @@ uint64_t __67__UITextView__adjustBottomContentInsetForTextFormattingController__
 
 - (void)_prepareForTextFormattingRestoration
 {
-  v3 = [(UITextFormattingViewController *)self->_textFormattingViewController configuration];
-  v4 = [v3 _isTextAnimationsConfiguration];
+  configuration = [(UITextFormattingViewController *)self->_textFormattingViewController configuration];
+  _isTextAnimationsConfiguration = [configuration _isTextAnimationsConfiguration];
 
-  if (v4)
+  if (_isTextAnimationsConfiguration)
   {
-    v5 = [(UITextFormattingViewController *)self->_textFormattingViewController configuration];
+    configuration2 = [(UITextFormattingViewController *)self->_textFormattingViewController configuration];
     textFormattingRestorationConfiguration = self->_textFormattingRestorationConfiguration;
-    self->_textFormattingRestorationConfiguration = v5;
+    self->_textFormattingRestorationConfiguration = configuration2;
   }
 }
 
@@ -7723,16 +7723,16 @@ uint64_t __67__UITextView__adjustBottomContentInsetForTextFormattingController__
   return placeholders;
 }
 
-- (void)setAttributedPlaceholders:(id)a3
+- (void)setAttributedPlaceholders:(id)placeholders
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  placeholdersCopy = placeholders;
+  v5 = [placeholdersCopy copy];
   attributedPlaceholders = self->_attributedPlaceholders;
   self->_attributedPlaceholders = v5;
 
-  v7 = [v4 firstObject];
+  firstObject = [placeholdersCopy firstObject];
 
-  [(UITextView *)self setAttributedPlaceholder:v7];
+  [(UITextView *)self setAttributedPlaceholder:firstObject];
 }
 
 - (id)attributedPlaceholders
@@ -7747,18 +7747,18 @@ uint64_t __67__UITextView__adjustBottomContentInsetForTextFormattingController__
   return attributedPlaceholders;
 }
 
-- (void)setAttributedPlaceholder:(id)a3
+- (void)setAttributedPlaceholder:(id)placeholder
 {
-  v5 = a3;
-  v14 = v5;
+  placeholderCopy = placeholder;
+  v14 = placeholderCopy;
   if (self->_overriddenPlaceholder)
   {
-    objc_storeStrong(&self->_overriddenPlaceholder, a3);
+    objc_storeStrong(&self->_overriddenPlaceholder, placeholder);
   }
 
   else
   {
-    v6 = v5;
+    v6 = placeholderCopy;
     placeholderLabel = self->_placeholderLabel;
     if (!placeholderLabel)
     {
@@ -7767,16 +7767,16 @@ uint64_t __67__UITextView__adjustBottomContentInsetForTextFormattingController__
       v10 = self->_placeholderLabel;
       self->_placeholderLabel = v9;
 
-      v11 = [(UITextView *)self font];
-      [(UILabel *)self->_placeholderLabel setFont:v11];
+      font = [(UITextView *)self font];
+      [(UILabel *)self->_placeholderLabel setFont:font];
 
       v12 = +[UIColor systemGrayColor];
       [(UILabel *)self->_placeholderLabel setTextColor:v12];
 
       [(UILabel *)self->_placeholderLabel setNumberOfLines:0];
       [(UILabel *)self->_placeholderLabel setAdjustsFontForContentSizeCategory:[(UITextView *)self adjustsFontForContentSizeCategory]];
-      v13 = [(UITextView *)self _contentView];
-      [v13 addSubview:self->_placeholderLabel];
+      _contentView = [(UITextView *)self _contentView];
+      [_contentView addSubview:self->_placeholderLabel];
 
       v6 = v14;
       placeholderLabel = self->_placeholderLabel;
@@ -7789,35 +7789,35 @@ uint64_t __67__UITextView__adjustBottomContentInsetForTextFormattingController__
 
 - (id)_attributedPlaceholder
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 288);
+    v2 = *(self + 288);
     if (v2)
     {
-      a1 = v2;
+      self = v2;
     }
 
     else
     {
-      a1 = [*(a1 + 287) attributedText];
+      self = [*(self + 287) attributedText];
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_setOverridePlaceholder:(id)a3 alignment:(int64_t)a4
+- (void)_setOverridePlaceholder:(id)placeholder alignment:(int64_t)alignment
 {
-  v6 = a3;
-  v14 = v6;
+  placeholderCopy = placeholder;
+  v14 = placeholderCopy;
   if (self->_overriddenPlaceholder)
   {
-    if (v6)
+    if (placeholderCopy)
     {
-      [(UITextView *)self setAttributedPlaceholder:v6];
-      [(UILabel *)self->_placeholderLabel setTextAlignment:a4];
+      [(UITextView *)self setAttributedPlaceholder:placeholderCopy];
+      [(UILabel *)self->_placeholderLabel setTextAlignment:alignment];
     }
 
     else
@@ -7829,13 +7829,13 @@ uint64_t __67__UITextView__adjustBottomContentInsetForTextFormattingController__
     }
   }
 
-  else if (v6)
+  else if (placeholderCopy)
   {
-    v7 = [(UITextView *)self attributedPlaceholder];
-    v8 = v7;
-    if (v7)
+    attributedPlaceholder = [(UITextView *)self attributedPlaceholder];
+    v8 = attributedPlaceholder;
+    if (attributedPlaceholder)
     {
-      v9 = v7;
+      v9 = attributedPlaceholder;
     }
 
     else
@@ -7845,30 +7845,30 @@ uint64_t __67__UITextView__adjustBottomContentInsetForTextFormattingController__
 
     v11 = v9;
 
-    v12 = [(UILabel *)self->_placeholderLabel textAlignment];
+    textAlignment = [(UILabel *)self->_placeholderLabel textAlignment];
     [(UITextView *)self setAttributedPlaceholder:v14];
-    [(UILabel *)self->_placeholderLabel setTextAlignment:a4];
+    [(UILabel *)self->_placeholderLabel setTextAlignment:alignment];
     v13 = self->_overriddenPlaceholder;
     self->_overriddenPlaceholder = v11;
 
-    self->_overriddenPlaceholderAlignment = v12;
+    self->_overriddenPlaceholderAlignment = textAlignment;
   }
 
   [(UITextView *)self _updatePlaceholderVisibility];
 }
 
-- (void)_setTextSizeCacheEnabled:(BOOL)a3
+- (void)_setTextSizeCacheEnabled:(BOOL)enabled
 {
-  if (((((*&self->_tvFlags & 0x400) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_tvFlags & 0x400) == 0) ^ enabled) & 1) == 0)
   {
     v3 = 1024;
-    if (!a3)
+    if (!enabled)
     {
       v3 = 0;
     }
 
     self->_tvFlags = (*&self->_tvFlags & 0xFFFFFFFFFFFFFBFFLL | v3);
-    if (!a3)
+    if (!enabled)
     {
       intrinsicSizeCache = self->_intrinsicSizeCache;
       self->_intrinsicSizeCache = 0;
@@ -7876,30 +7876,30 @@ uint64_t __67__UITextView__adjustBottomContentInsetForTextFormattingController__
   }
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained insertText:v4];
+  [WeakRetained insertText:textCopy];
 }
 
-- (void)insertText:(id)a3 alternatives:(id)a4 style:(int64_t)a5
+- (void)insertText:(id)text alternatives:(id)alternatives style:(int64_t)style
 {
-  v6 = [off_1E70ECBA0 attributedText:a3 withAlternativeTexts:a4 style:a5];
+  v6 = [off_1E70ECBA0 attributedText:text withAlternativeTexts:alternatives style:style];
   v9 = [v6 mutableCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v8 = [WeakRetained typingAttributes];
-  [v9 addAttributes:v8 range:{0, objc_msgSend(v9, "length")}];
+  typingAttributes = [WeakRetained typingAttributes];
+  [v9 addAttributes:typingAttributes range:{0, objc_msgSend(v9, "length")}];
 
   [(UITextView *)self insertAttributedText:v9];
 }
 
-- (void)addTextAlternatives:(id)a3
+- (void)addTextAlternatives:(id)alternatives
 {
-  v4 = a3;
+  alternativesCopy = alternatives;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained addTextAlternatives:v4];
+  [WeakRetained addTextAlternatives:alternativesCopy];
 }
 
 - (void)removeEmojiAlternatives
@@ -7914,9 +7914,9 @@ uint64_t __67__UITextView__adjustBottomContentInsetForTextFormattingController__
   [WeakRetained deleteBackward];
 }
 
-- (void)_deleteBackwardAndNotify:(BOOL)a3
+- (void)_deleteBackwardAndNotify:(BOOL)notify
 {
-  if (a3)
+  if (notify)
   {
 
     [(UITextView *)self deleteBackward];
@@ -7943,9 +7943,9 @@ void __39__UITextView__deleteBackwardAndNotify___block_invoke(uint64_t a1)
 - (unint64_t)_textLengthToDeleteBeforeSelectedRangeForSmartDelete
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained textLengthToDeleteBeforeSelectedRangeForSmartDelete];
+  textLengthToDeleteBeforeSelectedRangeForSmartDelete = [WeakRetained textLengthToDeleteBeforeSelectedRangeForSmartDelete];
 
-  return v3;
+  return textLengthToDeleteBeforeSelectedRangeForSmartDelete;
 }
 
 - (void)beginSelectionChange
@@ -7962,15 +7962,15 @@ void __39__UITextView__deleteBackwardAndNotify___block_invoke(uint64_t a1)
 
 - (void)updateSelectionImmediately
 {
-  v2 = [(UITextView *)self interactionAssistant];
-  [v2 updateDisplayedSelection];
+  interactionAssistant = [(UITextView *)self interactionAssistant];
+  [interactionAssistant updateDisplayedSelection];
 }
 
 - (BOOL)_restoreFirstResponder
 {
-  v3 = [(UITextView *)self interactionAssistant];
-  v4 = v3;
-  if (!v3)
+  interactionAssistant = [(UITextView *)self interactionAssistant];
+  v4 = interactionAssistant;
+  if (!interactionAssistant)
   {
     v7.receiver = self;
     v7.super_class = UITextView;
@@ -7984,7 +7984,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [v3 checkEditabilityAndSetFirstResponderIfNecessary];
+  [interactionAssistant checkEditabilityAndSetFirstResponderIfNecessary];
   if (![(UIView *)self isFirstResponder])
   {
     goto LABEL_5;
@@ -7998,44 +7998,44 @@ LABEL_6:
   return v5;
 }
 
-- (void)beginFloatingCursorAtPoint:(CGPoint)a3
+- (void)beginFloatingCursorAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(UITextView *)self interactionAssistant];
-  [v5 beginFloatingCursorAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  interactionAssistant = [(UITextView *)self interactionAssistant];
+  [interactionAssistant beginFloatingCursorAtPoint:{x, y}];
 }
 
-- (void)updateFloatingCursorAtPoint:(CGPoint)a3
+- (void)updateFloatingCursorAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(UITextView *)self interactionAssistant];
-  [v5 updateFloatingCursorAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  interactionAssistant = [(UITextView *)self interactionAssistant];
+  [interactionAssistant updateFloatingCursorAtPoint:{x, y}];
 }
 
-- (void)updateFloatingCursorAtPoint:(CGPoint)a3 animated:(BOOL)a4
+- (void)updateFloatingCursorAtPoint:(CGPoint)point animated:(BOOL)animated
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v7 = [(UITextView *)self interactionAssistant];
-  [v7 updateFloatingCursorAtPoint:v4 animated:{x, y}];
+  animatedCopy = animated;
+  y = point.y;
+  x = point.x;
+  interactionAssistant = [(UITextView *)self interactionAssistant];
+  [interactionAssistant updateFloatingCursorAtPoint:animatedCopy animated:{x, y}];
 }
 
 - (void)endFloatingCursor
 {
-  v2 = [(UITextView *)self interactionAssistant];
-  [v2 endFloatingCursor];
+  interactionAssistant = [(UITextView *)self interactionAssistant];
+  [interactionAssistant endFloatingCursor];
 }
 
 - (BOOL)canBecomeFocused
 {
-  v2 = self;
-  v3 = [(UIView *)self _focusBehavior];
-  LOBYTE(v2) = [v3 textViewCanBecomeFocused:v2];
+  selfCopy = self;
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  LOBYTE(selfCopy) = [_focusBehavior textViewCanBecomeFocused:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (CGRect)accessibilityFrame
@@ -8052,38 +8052,38 @@ LABEL_6:
 
 - (id)_systemDefaultFocusGroupIdentifier
 {
-  v3 = [(UIView *)self _focusBehavior];
-  v4 = [v3 focusGroupContainmentBehavior];
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  focusGroupContainmentBehavior = [_focusBehavior focusGroupContainmentBehavior];
 
-  if ((v4 & 0x200) != 0)
+  if ((focusGroupContainmentBehavior & 0x200) != 0)
   {
-    v5 = _UIFocusGroupIdentifierForInstance(self);
+    _systemDefaultFocusGroupIdentifier = _UIFocusGroupIdentifierForInstance(self);
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UITextView;
-    v5 = [(UIView *)&v7 _systemDefaultFocusGroupIdentifier];
+    _systemDefaultFocusGroupIdentifier = [(UIView *)&v7 _systemDefaultFocusGroupIdentifier];
   }
 
-  return v5;
+  return _systemDefaultFocusGroupIdentifier;
 }
 
-- (void)_diagnoseFocusabilityForReport:(id)a3
+- (void)_diagnoseFocusabilityForReport:(id)report
 {
-  v5 = a3;
+  reportCopy = report;
   if (![(UITextView *)self isSelectable])
   {
     v4 = [_UIDebugIssue issueWithDescription:@"This text view is not selectable. Text views must return YES from -isSelectable in order to be focusable."];
-    [v5 addIssue:v4];
+    [reportCopy addIssue:v4];
   }
 }
 
-- (id)editMenuForTextRange:(id)a3 suggestedActions:(id)a4
+- (id)editMenuForTextRange:(id)range suggestedActions:(id)actions
 {
-  v6 = a3;
-  v7 = a4;
+  rangeCopy = range;
+  actionsCopy = actions;
   if (![(UITextView *)self _implementsEditMenu])
   {
     goto LABEL_4;
@@ -8092,9 +8092,9 @@ LABEL_6:
   tvFlags = self->_tvFlags;
   if ((*&tvFlags & 0x8000000000) != 0)
   {
-    v10 = [(_UITextLayoutController *)self->_textLayoutController characterRangesForTextRange:v6 clippedToDocument:0];
-    v11 = [(UIScrollView *)self delegate];
-    v9 = [v11 textView:self editMenuForTextInRanges:v10 suggestedActions:v7];
+    delegate2 = [(_UITextLayoutController *)self->_textLayoutController characterRangesForTextRange:rangeCopy clippedToDocument:0];
+    delegate = [(UIScrollView *)self delegate];
+    v9 = [delegate textView:self editMenuForTextInRanges:delegate2 suggestedActions:actionsCopy];
   }
 
   else
@@ -8106,10 +8106,10 @@ LABEL_4:
       goto LABEL_8;
     }
 
-    v12 = [(_UITextLayoutController *)self->_textLayoutController characterRangeForTextRange:v6];
+    v12 = [(_UITextLayoutController *)self->_textLayoutController characterRangeForTextRange:rangeCopy];
     v14 = v13;
-    v10 = [(UIScrollView *)self delegate];
-    v9 = [v10 textView:self editMenuForTextInRange:v12 suggestedActions:{v14, v7}];
+    delegate2 = [(UIScrollView *)self delegate];
+    v9 = [delegate2 textView:self editMenuForTextInRange:v12 suggestedActions:{v14, actionsCopy}];
   }
 
 LABEL_8:
@@ -8117,29 +8117,29 @@ LABEL_8:
   return v9;
 }
 
-- (void)willPresentEditMenuWithAnimator:(id)a3
+- (void)willPresentEditMenuWithAnimator:(id)animator
 {
-  v7 = a3;
-  v4 = [(UIScrollView *)self delegate];
+  animatorCopy = animator;
+  delegate = [(UIScrollView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UIScrollView *)self delegate];
-    [v6 textView:self willPresentEditMenuWithAnimator:v7];
+    delegate2 = [(UIScrollView *)self delegate];
+    [delegate2 textView:self willPresentEditMenuWithAnimator:animatorCopy];
   }
 }
 
-- (void)willDismissEditMenuWithAnimator:(id)a3
+- (void)willDismissEditMenuWithAnimator:(id)animator
 {
-  v7 = a3;
-  v4 = [(UIScrollView *)self delegate];
+  animatorCopy = animator;
+  delegate = [(UIScrollView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UIScrollView *)self delegate];
-    [v6 textView:self willDismissEditMenuWithAnimator:v7];
+    delegate2 = [(UIScrollView *)self delegate];
+    [delegate2 textView:self willDismissEditMenuWithAnimator:animatorCopy];
   }
 }
 
@@ -8153,12 +8153,12 @@ LABEL_8:
   }
 }
 
-- (CGRect)_rectForScrollToVisible:(_NSRange)a3
+- (CGRect)_rectForScrollToVisible:(_NSRange)visible
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(UITextView *)self textStorage];
-  v7 = [v6 length];
+  length = visible.length;
+  location = visible.location;
+  textStorage = [(UITextView *)self textStorage];
+  v7 = [textStorage length];
 
   if (v7)
   {
@@ -8171,18 +8171,18 @@ LABEL_8:
 
       else
       {
-        v8 = [(UITextView *)self textStorage];
-        v9 = [v8 string];
-        location = [v9 rangeOfComposedCharacterSequenceAtIndex:location];
+        textStorage2 = [(UITextView *)self textStorage];
+        string = [textStorage2 string];
+        location = [string rangeOfComposedCharacterSequenceAtIndex:location];
         length = v10;
       }
     }
 
     if (length + location >= v7)
     {
-      v11 = [(UITextView *)self textStorage];
-      v12 = [v11 string];
-      location = [v12 rangeOfComposedCharacterSequenceAtIndex:v7 - 1];
+      textStorage3 = [(UITextView *)self textStorage];
+      string2 = [textStorage3 string];
+      location = [string2 rangeOfComposedCharacterSequenceAtIndex:v7 - 1];
       length = v13;
     }
   }
@@ -8216,8 +8216,8 @@ LABEL_8:
   [(NSTextContainer *)self->_textContainer textContainerOrigin];
   v21 = x + v20;
   v23 = y + v22;
-  v24 = [(NSTextContainer *)self->_textContainer textView];
-  [(UIView *)self convertRect:v24 fromView:v21, v23, width, height];
+  textView = [(NSTextContainer *)self->_textContainer textView];
+  [(UIView *)self convertRect:textView fromView:v21, v23, width, height];
   v26 = v25;
   v28 = v27;
   v30 = v29;
@@ -8234,9 +8234,9 @@ LABEL_8:
   return result;
 }
 
-- (CGPoint)_contentOffsetForScrollToVisible:(_NSRange)a3
+- (CGPoint)_contentOffsetForScrollToVisible:(_NSRange)visible
 {
-  [(UITextView *)self _rectForScrollToVisible:a3.location, a3.length];
+  [(UITextView *)self _rectForScrollToVisible:visible.location, visible.length];
   v5 = v4;
   v7 = v6;
   [(UIScrollView *)self _effectiveContentInset];
@@ -8281,24 +8281,24 @@ LABEL_8:
   return result;
 }
 
-- (_NSRange)_visibleRangeWithLayout:(BOOL)a3
+- (_NSRange)_visibleRangeWithLayout:(BOOL)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   [(UIView *)self bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(NSTextContainer *)self->_textContainer textView];
-  [(UIView *)self convertRect:v13 toView:v6, v8, v10, v12];
+  textView = [(NSTextContainer *)self->_textContainer textView];
+  [(UIView *)self convertRect:textView toView:v6, v8, v10, v12];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
   textLayoutController = self->_textLayoutController;
-  v23 = [(UITextView *)self textContainer];
-  v24 = [(_UITextLayoutController *)textLayoutController textRangeForBounds:v23 inTextContainer:v3 layoutIfNeeded:v15, v17, v19, v21];
+  textContainer = [(UITextView *)self textContainer];
+  v24 = [(_UITextLayoutController *)textLayoutController textRangeForBounds:textContainer inTextContainer:layoutCopy layoutIfNeeded:v15, v17, v19, v21];
 
   v25 = [(_UITextLayoutController *)self->_textLayoutController characterRangeForTextRange:v24];
   v27 = v26;
@@ -8310,9 +8310,9 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)_boundingRectForRange:(id)a3
+- (CGRect)_boundingRectForRange:(id)range
 {
-  [(_UITextLayoutController *)self->_textLayoutController boundingRectForRange:a3];
+  [(_UITextLayoutController *)self->_textLayoutController boundingRectForRange:range];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -8320,30 +8320,30 @@ LABEL_8:
   return result;
 }
 
-- (void)_setSiriAnimationDictationStyleWithCharacterInsertionRate:(double)a3 minimumDurationBetweenHypotheses:(double)a4
+- (void)_setSiriAnimationDictationStyleWithCharacterInsertionRate:(double)rate minimumDurationBetweenHypotheses:(double)hypotheses
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"_UITextViewSiriAnimationStyleDictationRate";
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:rate];
   v10[1] = @"_UITextViewSiriAnimationStyleDictationDuration";
   v11[0] = v6;
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:hypotheses];
   v11[1] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   siriParameters = self->_siriParameters;
   self->_siriParameters = v8;
 }
 
-- (id)extractWordArrayFromTokensArray:(id)a3
+- (id)extractWordArrayFromTokensArray:(id)array
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AD60] string];
+  arrayCopy = array;
+  string = [MEMORY[0x1E696AD60] string];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
@@ -8363,11 +8363,11 @@ LABEL_8:
         v12 = *(*(&v20 + 1) + 8 * i);
         if (([v11 removeSpaceAfter] & 1) == 0 && (objc_msgSend(v12, "removeSpaceBefore") & 1) == 0)
         {
-          [(__CFString *)v4 appendString:@" "];
+          [(__CFString *)string appendString:@" "];
         }
 
-        v13 = [v12 text];
-        [(__CFString *)v4 appendString:v13];
+        text = [v12 text];
+        [(__CFString *)string appendString:text];
 
         v8 = v12;
       }
@@ -8379,7 +8379,7 @@ LABEL_8:
 
     if (v8 && ([v8 removeSpaceAfter] & 1) == 0)
     {
-      [(__CFString *)v4 appendString:@" "];
+      [(__CFString *)string appendString:@" "];
     }
   }
 
@@ -8389,12 +8389,12 @@ LABEL_8:
     v8 = 0;
   }
 
-  v14 = [MEMORY[0x1E695DF70] array];
-  v15 = [(__CFString *)v4 length];
-  v16 = [MEMORY[0x1E695DF58] currentLocale];
+  array = [MEMORY[0x1E695DF70] array];
+  v15 = [(__CFString *)string length];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
   v27.location = 0;
   v27.length = v15;
-  v17 = CFStringTokenizerCreate(0, v4, v27, 3uLL, v16);
+  v17 = CFStringTokenizerCreate(0, string, v27, 3uLL, currentLocale);
   while (1)
   {
 
@@ -8404,29 +8404,29 @@ LABEL_8:
     }
 
     CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v17);
-    v16 = [(__CFString *)v4 substringWithRange:CurrentTokenRange.location, CurrentTokenRange.length];
-    [v14 addObject:v16];
+    currentLocale = [(__CFString *)string substringWithRange:CurrentTokenRange.location, CurrentTokenRange.length];
+    [array addObject:currentLocale];
   }
 
   CFRelease(v17);
 
-  return v14;
+  return array;
 }
 
-- (void)_didRecognizeSpeechTokens:(id)a3
+- (void)_didRecognizeSpeechTokens:(id)tokens
 {
-  v4 = [(UITextView *)self extractWordArrayFromTokensArray:a3];
+  v4 = [(UITextView *)self extractWordArrayFromTokensArray:tokens];
   [(UITextView *)self _didRecognizeSpeechStrings:v4];
 }
 
-- (void)_didRecognizeSpeechStrings:(id)a3
+- (void)_didRecognizeSpeechStrings:(id)strings
 {
-  v11 = a3;
-  v4 = [(UITextView *)self interactionAssistant];
-  [v4 setSelectionDisplayVisible:0];
+  stringsCopy = strings;
+  interactionAssistant = [(UITextView *)self interactionAssistant];
+  [interactionAssistant setSelectionDisplayVisible:0];
 
-  v5 = [(UITextView *)self interactionAssistant];
-  [v5 deactivateSelection];
+  interactionAssistant2 = [(UITextView *)self interactionAssistant];
+  [interactionAssistant2 deactivateSelection];
 
   if (!self->_characterStreamingManager)
   {
@@ -8447,7 +8447,7 @@ LABEL_8:
     }
   }
 
-  [(_UICharacterStreamingManager *)self->_characterStreamingManager setWords:v11];
+  [(_UICharacterStreamingManager *)self->_characterStreamingManager setWords:stringsCopy];
 }
 
 - (void)_didFinishSpeechRecognition
@@ -8462,20 +8462,20 @@ LABEL_8:
   }
 }
 
-- (void)_restoreScrollPosition:(id)a3 animated:(BOOL)a4
+- (void)_restoreScrollPosition:(id)position animated:(BOOL)animated
 {
-  v4 = a4;
-  v15 = a3;
-  v7 = [v15 range];
-  [(UITextView *)self _contentOffsetForScrollToVisible:v7, v8];
+  animatedCopy = animated;
+  positionCopy = position;
+  range = [positionCopy range];
+  [(UITextView *)self _contentOffsetForScrollToVisible:range, v8];
   v10 = v9;
   v12 = v11;
-  [v15 offsetWithinLine];
+  [positionCopy offsetWithinLine];
   v14 = v12 + v13;
-  if (v4)
+  if (animatedCopy)
   {
     [(UIScrollView *)self _setContentOffset:1 animated:0 animationCurve:v10, v14];
-    objc_storeStrong(&self->_scrollTarget, a3);
+    objc_storeStrong(&self->_scrollTarget, position);
   }
 
   else
@@ -8484,11 +8484,11 @@ LABEL_8:
   }
 }
 
-- (void)_scrollRangeToVisible:(_NSRange)a3 animated:(BOOL)a4
+- (void)_scrollRangeToVisible:(_NSRange)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [_UITextViewRestorableScrollPosition restorableScrollPositionWithRange:a3.location, a3.length];
-  [(UITextView *)self _restoreScrollPosition:v6 animated:v4];
+  animatedCopy = animated;
+  v6 = [_UITextViewRestorableScrollPosition restorableScrollPositionWithRange:visible.location, visible.length];
+  [(UITextView *)self _restoreScrollPosition:v6 animated:animatedCopy];
 }
 
 - (void)scrollRangeToVisible:(NSRange)range
@@ -8508,22 +8508,22 @@ LABEL_8:
   [(UITextView *)self _scrollRangeToVisible:location animated:length, v6];
 }
 
-- (void)scrollSelectionToVisible:(BOOL)a3
+- (void)scrollSelectionToVisible:(BOOL)visible
 {
-  v3 = a3;
-  v5 = [(UITextView *)self selectedRange];
-  [(UITextView *)self _rectForScrollToVisible:v5, v6];
+  visibleCopy = visible;
+  selectedRange = [(UITextView *)self selectedRange];
+  [(UITextView *)self _rectForScrollToVisible:selectedRange, v6];
 
-  [(UIScrollView *)self scrollRectToVisible:v3 animated:?];
+  [(UIScrollView *)self scrollRectToVisible:visibleCopy animated:?];
 }
 
-- (CGPoint)_contentOffsetForScrollingToRect:(CGRect)a3
+- (CGPoint)_contentOffsetForScrollingToRect:(CGRect)rect
 {
-  height = a3.size.height;
-  y = a3.origin.y;
+  height = rect.size.height;
+  y = rect.origin.y;
   v18.receiver = self;
   v18.super_class = UITextView;
-  [(UIScrollView *)&v18 _contentOffsetForScrollingToRect:a3.origin.x, a3.origin.y, a3.size.width];
+  [(UIScrollView *)&v18 _contentOffsetForScrollingToRect:rect.origin.x, rect.origin.y, rect.size.width];
   v7 = v6;
   v9 = v8;
   if (!dyld_program_sdk_at_least())
@@ -8587,21 +8587,21 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)_rectToScrollToVisibleInCellInWindow:(id)a3
+- (CGRect)_rectToScrollToVisibleInCellInWindow:(id)window
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  windowCopy = window;
   v5 = *MEMORY[0x1E695F050];
   v6 = *(MEMORY[0x1E695F050] + 8);
   v7 = *(MEMORY[0x1E695F050] + 16);
   v8 = *(MEMORY[0x1E695F050] + 24);
-  v9 = [(UIResponder *)self _textInteraction];
-  v10 = [v9 textInput];
+  _textInteraction = [(UIResponder *)self _textInteraction];
+  textInput = [_textInteraction textInput];
 
-  v11 = [v10 selectedTextRange];
-  if (v11)
+  selectedTextRange = [textInput selectedTextRange];
+  if (selectedTextRange)
   {
-    v12 = [v10 selectionRectsForRange:v11];
+    v12 = [textInput selectionRectsForRange:selectedTextRange];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
@@ -8659,14 +8659,14 @@ LABEL_16:
     v53.size.height = height;
     if (CGRectIsNull(v53))
     {
-      if ([v11 isEmpty])
+      if ([selectedTextRange isEmpty])
       {
-        v25 = [v11 start];
+        start = [selectedTextRange start];
 
-        if (v25)
+        if (start)
         {
-          v26 = [v11 start];
-          [v10 caretRectForPosition:v26];
+          start2 = [selectedTextRange start];
+          [textInput caretRectForPosition:start2];
           x = v27;
           y = v28;
           width = v29;
@@ -8681,8 +8681,8 @@ LABEL_16:
     v54.size.height = height;
     if (!CGRectIsNull(v54))
     {
-      v31 = [v10 textInputView];
-      [v4 convertRect:v31 fromView:{x, y, width, height}];
+      textInputView = [textInput textInputView];
+      [windowCopy convertRect:textInputView fromView:{x, y, width, height}];
       v5 = v32;
       v6 = v33;
       v7 = v34;
@@ -8698,7 +8698,7 @@ LABEL_16:
   {
     v44.receiver = self;
     v44.super_class = UITextView;
-    [(UIView *)&v44 _rectToScrollToVisibleInCellInWindow:v4];
+    [(UIView *)&v44 _rectToScrollToVisibleInCellInWindow:windowCopy];
     v5 = v36;
     v6 = v37;
     v7 = v38;
@@ -8718,10 +8718,10 @@ LABEL_16:
 
 - (id)selectedText
 {
-  v3 = [(UITextView *)self selectedTextRange];
-  if (v3)
+  selectedTextRange = [(UITextView *)self selectedTextRange];
+  if (selectedTextRange)
   {
-    v4 = [(UITextView *)self textInRange:v3];
+    v4 = [(UITextView *)self textInRange:selectedTextRange];
   }
 
   else
@@ -8732,51 +8732,51 @@ LABEL_16:
   return v4;
 }
 
-- (id)textInRange:(id)a3
+- (id)textInRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v6 = [WeakRetained textInRange:v4];
+  v6 = [WeakRetained textInRange:rangeCopy];
 
   return v6;
 }
 
-- (void)insertAttributedText:(id)a3
+- (void)insertAttributedText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained insertAttributedText:v4];
+  [WeakRetained insertAttributedText:textCopy];
 }
 
-- (id)attributedTextInRange:(id)a3
+- (id)attributedTextInRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v6 = [WeakRetained attributedTextInRange:v4];
+  v6 = [WeakRetained attributedTextInRange:rangeCopy];
 
   return v6;
 }
 
-- (void)_setWritingToolsStreamingReplacements:(BOOL)a3
+- (void)_setWritingToolsStreamingReplacements:(BOOL)replacements
 {
-  v3 = a3;
+  replacementsCopy = replacements;
   v17 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v6 = [WeakRetained isWritingToolsStreamingReplacements];
+  isWritingToolsStreamingReplacements = [WeakRetained isWritingToolsStreamingReplacements];
 
-  v7 = [(UITextView *)self undoManager];
+  undoManager = [(UITextView *)self undoManager];
   v8 = objc_loadWeakRetained(&self->_inputController);
-  v9 = [v8 undoManager];
+  undoManager2 = [v8 undoManager];
 
-  if ((v6 & 1) == 0 && v3)
+  if ((isWritingToolsStreamingReplacements & 1) == 0 && replacementsCopy)
   {
     if (*(&self->_tvFlags + 4))
     {
-      v10 = [(UIScrollView *)self delegate];
-      [v10 _textViewWillBeginUndoCoalescingForWritingTools:self];
+      delegate = [(UIScrollView *)self delegate];
+      [delegate _textViewWillBeginUndoCoalescingForWritingTools:self];
     }
 
-    if (v7 != v9)
+    if (undoManager != undoManager2)
     {
       if (os_variant_has_internal_diagnostics() && ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantRewriteLogging, @"UITextAssistantRewriteLogging") & 1) == 0 && byte_1EA95E17C || (_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantProofreadLogging, @"UITextAssistantProofreadLogging") & 1) == 0 && byte_1EA95E184))
       {
@@ -8784,21 +8784,21 @@ LABEL_16:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
           v15 = 138412290;
-          v16 = v7;
+          v16 = undoManager;
           _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_ERROR, ">>>> UITextView will begin undo group in %@ for Writing Tools replacements", &v15, 0xCu);
         }
       }
 
-      [v7 beginUndoGrouping];
+      [undoManager beginUndoGrouping];
     }
   }
 
   v11 = objc_loadWeakRetained(&self->_inputController);
-  [v11 setWritingToolsStreamingReplacements:v3];
+  [v11 setWritingToolsStreamingReplacements:replacementsCopy];
 
-  if (v6 && !v3)
+  if (isWritingToolsStreamingReplacements && !replacementsCopy)
   {
-    if (v7 != v9)
+    if (undoManager != undoManager2)
     {
       if (os_variant_has_internal_diagnostics() && ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantRewriteLogging, @"UITextAssistantRewriteLogging") & 1) == 0 && byte_1EA95E17C || (_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantProofreadLogging, @"UITextAssistantProofreadLogging") & 1) == 0 && byte_1EA95E184))
       {
@@ -8806,18 +8806,18 @@ LABEL_16:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           v15 = 138412290;
-          v16 = v7;
+          v16 = undoManager;
           _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_ERROR, "<<<< UITextView will end undo group in %@ for Writing Tools replacements", &v15, 0xCu);
         }
       }
 
-      [v7 endUndoGrouping];
+      [undoManager endUndoGrouping];
     }
 
     if ((*(&self->_tvFlags + 4) & 2) != 0)
     {
-      v12 = [(UIScrollView *)self delegate];
-      [v12 _textViewDidEndUndoCoalescingForWritingTools:self];
+      delegate2 = [(UIScrollView *)self delegate];
+      [delegate2 _textViewDidEndUndoCoalescingForWritingTools:self];
     }
   }
 }
@@ -8825,103 +8825,103 @@ LABEL_16:
 - (BOOL)_isWritingToolsStreamingReplacements
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained isWritingToolsStreamingReplacements];
+  isWritingToolsStreamingReplacements = [WeakRetained isWritingToolsStreamingReplacements];
 
-  return v3;
+  return isWritingToolsStreamingReplacements;
 }
 
-- (void)replaceRange:(id)a3 withText:(id)a4
+- (void)replaceRange:(id)range withText:(id)text
 {
-  v6 = a4;
-  v7 = a3;
+  textCopy = text;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained replaceRange:v7 withText:v6];
+  [WeakRetained replaceRange:rangeCopy withText:textCopy];
 }
 
-- (void)replaceRange:(id)a3 withAttributedText:(id)a4
+- (void)replaceRange:(id)range withAttributedText:(id)text
 {
-  v6 = a4;
-  v7 = a3;
+  textCopy = text;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained replaceRange:v7 withAttributedText:v6];
+  [WeakRetained replaceRange:rangeCopy withAttributedText:textCopy];
 }
 
-- (void)replaceRangeWithTextWithoutClosingTyping:(id)a3 replacementText:(id)a4
+- (void)replaceRangeWithTextWithoutClosingTyping:(id)typing replacementText:(id)text
 {
-  v6 = a4;
-  v7 = a3;
+  textCopy = text;
+  typingCopy = typing;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained replaceRangeWithTextWithoutClosingTyping:v7 replacementText:v6];
+  [WeakRetained replaceRangeWithTextWithoutClosingTyping:typingCopy replacementText:textCopy];
 }
 
-- (id)_replaceRange:(id)a3 withAttributedText:(id)a4 updatingSelection:(BOOL)a5
+- (id)_replaceRange:(id)range withAttributedText:(id)text updatingSelection:(BOOL)selection
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  selectionCopy = selection;
+  textCopy = text;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v11 = [WeakRetained replaceRange:v9 withAttributedText:v8 updatingSelection:v5];
+  v11 = [WeakRetained replaceRange:rangeCopy withAttributedText:textCopy updatingSelection:selectionCopy];
 
   return v11;
 }
 
-- (void)setSelectedTextRange:(id)a3
+- (void)setSelectedTextRange:(id)range
 {
-  v6 = a3;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
 
   if (WeakRetained)
   {
-    v5 = objc_loadWeakRetained(&self->_inputController);
-    [v5 setSelectedTextRange:v6];
+    interactionAssistant = objc_loadWeakRetained(&self->_inputController);
+    [interactionAssistant setSelectedTextRange:rangeCopy];
   }
 
   else
   {
-    v5 = [(UITextView *)self interactionAssistant];
-    [v5 selectionChanged];
+    interactionAssistant = [(UITextView *)self interactionAssistant];
+    [interactionAssistant selectionChanged];
   }
 }
 
 - (int64_t)selectionAffinity
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained selectionAffinity];
+  selectionAffinity = [WeakRetained selectionAffinity];
 
-  return v3;
+  return selectionAffinity;
 }
 
 - (NSDictionary)markedTextStyle
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained markedTextStyle];
+  markedTextStyle = [WeakRetained markedTextStyle];
 
-  return v3;
+  return markedTextStyle;
 }
 
-- (void)setMarkedTextStyle:(id)a3
+- (void)setMarkedTextStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained setMarkedTextStyle:v4];
+  [WeakRetained setMarkedTextStyle:styleCopy];
 }
 
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained setMarkedText:v7 selectedRange:{location, length}];
+  [WeakRetained setMarkedText:textCopy selectedRange:{location, length}];
 }
 
-- (void)setAttributedMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setAttributedMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained setAttributedMarkedText:v7 selectedRange:{location, length}];
+  [WeakRetained setAttributedMarkedText:textCopy selectedRange:{location, length}];
 }
 
 - (void)unmarkText
@@ -8930,68 +8930,68 @@ LABEL_16:
   [WeakRetained unmarkText];
 }
 
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition
 {
-  v6 = a4;
-  v7 = a3;
+  toPositionCopy = toPosition;
+  positionCopy = position;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v9 = [WeakRetained textRangeFromPosition:v7 toPosition:v6];
+  v9 = [WeakRetained textRangeFromPosition:positionCopy toPosition:toPositionCopy];
 
   return v9;
 }
 
-- (id)positionFromPosition:(id)a3 offset:(int64_t)a4
+- (id)positionFromPosition:(id)position offset:(int64_t)offset
 {
-  v6 = a3;
+  positionCopy = position;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v8 = [WeakRetained positionFromPosition:v6 offset:a4];
+  v8 = [WeakRetained positionFromPosition:positionCopy offset:offset];
 
   return v8;
 }
 
-- (id)positionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(int64_t)a5
+- (id)positionFromPosition:(id)position inDirection:(int64_t)direction offset:(int64_t)offset
 {
-  v8 = a3;
+  positionCopy = position;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v10 = [WeakRetained positionFromPosition:v8 inDirection:a4 offset:a5];
+  v10 = [WeakRetained positionFromPosition:positionCopy inDirection:direction offset:offset];
 
   return v10;
 }
 
-- (int64_t)comparePosition:(id)a3 toPosition:(id)a4
+- (int64_t)comparePosition:(id)position toPosition:(id)toPosition
 {
-  v6 = a4;
-  v7 = a3;
+  toPositionCopy = toPosition;
+  positionCopy = position;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v9 = [WeakRetained comparePosition:v7 toPosition:v6];
+  v9 = [WeakRetained comparePosition:positionCopy toPosition:toPositionCopy];
 
   return v9;
 }
 
-- (int64_t)offsetFromPosition:(id)a3 toPosition:(id)a4
+- (int64_t)offsetFromPosition:(id)position toPosition:(id)toPosition
 {
-  v6 = a4;
-  v7 = a3;
+  toPositionCopy = toPosition;
+  positionCopy = position;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v9 = [WeakRetained offsetFromPosition:v7 toPosition:v6];
+  v9 = [WeakRetained offsetFromPosition:positionCopy toPosition:toPositionCopy];
 
   return v9;
 }
 
-- (id)positionWithinRange:(id)a3 farthestInDirection:(int64_t)a4
+- (id)positionWithinRange:(id)range farthestInDirection:(int64_t)direction
 {
-  v6 = a3;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v8 = [WeakRetained positionWithinRange:v6 farthestInDirection:a4];
+  v8 = [WeakRetained positionWithinRange:rangeCopy farthestInDirection:direction];
 
   return v8;
 }
 
-- (id)characterRangeByExtendingPosition:(id)a3 inDirection:(int64_t)a4
+- (id)characterRangeByExtendingPosition:(id)position inDirection:(int64_t)direction
 {
-  v6 = a3;
+  positionCopy = position;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v8 = [WeakRetained characterRangeByExtendingPosition:v6 inDirection:a4];
+  v8 = [WeakRetained characterRangeByExtendingPosition:positionCopy inDirection:direction];
 
   return v8;
 }
@@ -8999,39 +8999,39 @@ LABEL_16:
 - (id)undoManager
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained undoManager];
+  undoManager = [WeakRetained undoManager];
 
-  return v3;
+  return undoManager;
 }
 
-- (void)setInputDelegate:(id)a3
+- (void)setInputDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained setInputDelegate:v4];
+  [WeakRetained setInputDelegate:delegateCopy];
 }
 
-- (int64_t)baseWritingDirectionForPosition:(id)a3 inDirection:(int64_t)a4
+- (int64_t)baseWritingDirectionForPosition:(id)position inDirection:(int64_t)direction
 {
-  v6 = a3;
+  positionCopy = position;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v8 = [WeakRetained baseWritingDirectionForPosition:v6 inDirection:a4];
+  v8 = [WeakRetained baseWritingDirectionForPosition:positionCopy inDirection:direction];
 
   return v8;
 }
 
-- (void)setBaseWritingDirection:(int64_t)a3 forRange:(id)a4
+- (void)setBaseWritingDirection:(int64_t)direction forRange:(id)range
 {
-  v6 = a4;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained setBaseWritingDirection:a3 forRange:v6];
+  [WeakRetained setBaseWritingDirection:direction forRange:rangeCopy];
 }
 
-- (CGRect)firstRectForRange:(id)a3
+- (CGRect)firstRectForRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained firstRectForRange:v4];
+  [WeakRetained firstRectForRange:rangeCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -9048,11 +9048,11 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
-  v4 = a3;
+  positionCopy = position;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained caretRectForPosition:v4];
+  [WeakRetained caretRectForPosition:positionCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -9069,49 +9069,49 @@ LABEL_16:
   return result;
 }
 
-- (id)textStylingAtPosition:(id)a3 inDirection:(int64_t)a4
+- (id)textStylingAtPosition:(id)position inDirection:(int64_t)direction
 {
-  v6 = a3;
+  positionCopy = position;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v8 = [WeakRetained textStylingAtPosition:v6 inDirection:a4];
+  v8 = [WeakRetained textStylingAtPosition:positionCopy inDirection:direction];
 
   return v8;
 }
 
-- (id)selectionRectsForRange:(id)a3
+- (id)selectionRectsForRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v6 = [WeakRetained selectionRectsForRange:v4];
+  v6 = [WeakRetained selectionRectsForRange:rangeCopy];
 
   return v6;
 }
 
-- (id)closestPositionToPoint:(CGPoint)a3
+- (id)closestPositionToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
   v6 = [WeakRetained closestPositionToPoint:{x, y}];
 
   return v6;
 }
 
-- (id)closestPositionToPoint:(CGPoint)a3 withinRange:(id)a4
+- (id)closestPositionToPoint:(CGPoint)point withinRange:(id)range
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v9 = [WeakRetained closestPositionToPoint:v7 withinRange:{x, y}];
+  v9 = [WeakRetained closestPositionToPoint:rangeCopy withinRange:{x, y}];
 
   return v9;
 }
 
-- (id)characterRangeAtPoint:(CGPoint)a3
+- (id)characterRangeAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
   v6 = [WeakRetained characterRangeAtPoint:{x, y}];
 
@@ -9190,10 +9190,10 @@ LABEL_16:
   }
 }
 
-- (void)_setShowsEditMenu:(BOOL)a3
+- (void)_setShowsEditMenu:(BOOL)menu
 {
   v3 = 2048;
-  if (!a3)
+  if (!menu)
   {
     v3 = 0;
   }
@@ -9201,45 +9201,45 @@ LABEL_16:
   self->_tvFlags = (*&self->_tvFlags & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (BOOL)_isSystemAttachment:(id)a3
+- (BOOL)_isSystemAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v6 = [WeakRetained _isSystemAttachment:v4];
+  v6 = [WeakRetained _isSystemAttachment:attachmentCopy];
 
   return v6;
 }
 
-- (id)insertTextPlaceholderWithSize:(CGSize)a3
+- (id)insertTextPlaceholderWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
   v6 = [WeakRetained insertTextPlaceholderWithSize:{width, height}];
 
   return v6;
 }
 
-- (void)removeTextPlaceholder:(id)a3
+- (void)removeTextPlaceholder:(id)placeholder
 {
-  v4 = a3;
+  placeholderCopy = placeholder;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained removeTextPlaceholder:v4];
+  [WeakRetained removeTextPlaceholder:placeholderCopy];
 }
 
 - (id)insertDictationResultPlaceholder
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained insertDictationResultPlaceholder];
+  insertDictationResultPlaceholder = [WeakRetained insertDictationResultPlaceholder];
 
-  return v3;
+  return insertDictationResultPlaceholder;
 }
 
-- (CGRect)frameForDictationResultPlaceholder:(id)a3
+- (CGRect)frameForDictationResultPlaceholder:(id)placeholder
 {
-  v4 = a3;
+  placeholderCopy = placeholder;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained frameForDictationResultPlaceholder:v4];
+  [WeakRetained frameForDictationResultPlaceholder:placeholderCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -9256,19 +9256,19 @@ LABEL_16:
   return result;
 }
 
-- (void)removeDictationResultPlaceholder:(id)a3 willInsertResult:(BOOL)a4
+- (void)removeDictationResultPlaceholder:(id)placeholder willInsertResult:(BOOL)result
 {
-  v4 = a4;
-  v6 = a3;
+  resultCopy = result;
+  placeholderCopy = placeholder;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained removeDictationResultPlaceholder:v6 willInsertResult:v4];
+  [WeakRetained removeDictationResultPlaceholder:placeholderCopy willInsertResult:resultCopy];
 }
 
-- (id)rangeWithTextAlternatives:(id *)a3 atPosition:(id)a4
+- (id)rangeWithTextAlternatives:(id *)alternatives atPosition:(id)position
 {
-  v6 = a4;
+  positionCopy = position;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v8 = [WeakRetained rangeWithTextAlternatives:a3 atPosition:v6];
+  v8 = [WeakRetained rangeWithTextAlternatives:alternatives atPosition:positionCopy];
 
   return v8;
 }
@@ -9297,28 +9297,28 @@ LABEL_16:
   }
 }
 
-- (void)_setTypingAttributesTextColor:(id)a3
+- (void)_setTypingAttributesTextColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained _addToTypingAttributes:*off_1E70EC920 value:v4];
+  [WeakRetained _addToTypingAttributes:*off_1E70EC920 value:colorCopy];
 
   [(UITextView *)self _syncTypingAttributesToTextContainerAttributesForExtraLineFragment];
 }
 
-- (void)setContinuousSpellCheckingEnabled:(BOOL)a3
+- (void)setContinuousSpellCheckingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained setContinuousSpellCheckingEnabled:v3];
+  [WeakRetained setContinuousSpellCheckingEnabled:enabledCopy];
 }
 
 - (BOOL)performFinalGrammarChecking
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained performFinalGrammarChecking];
+  performFinalGrammarChecking = [WeakRetained performFinalGrammarChecking];
 
-  return v3;
+  return performFinalGrammarChecking;
 }
 
 - (void)applyGrammarCheckingIndication
@@ -9327,9 +9327,9 @@ LABEL_16:
   [WeakRetained applyGrammarCheckingIndication];
 }
 
-- (void)textInputDidChange:(id)a3
+- (void)textInputDidChange:(id)change
 {
-  v13 = a3;
+  changeCopy = change;
   if (self)
   {
     self->_textContainerInsetAdjustment.top = [(UITextView *)self _applicableContentOutsetsFromFonts];
@@ -9339,118 +9339,118 @@ LABEL_16:
   }
 
   [(UITextView *)self _ensureUpToDateTextContainerInsetAndNotifyIfNecessary];
-  v7 = [(_UITextContainerView *)self->_containerView canvasView];
-  [v7 updateContentSizeIfNeeded];
+  canvasView = [(_UITextContainerView *)self->_containerView canvasView];
+  [canvasView updateContentSizeIfNeeded];
 
   [(UITextView *)self _resyncContainerFrameForNonAutolayout];
   [(UITextDragDropSupport *)self->_textDragDropSupport notifyTextInteraction];
-  v8 = [(UIScrollView *)self delegate];
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(UIScrollView *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v8 textViewDidChange:self];
+    [delegate textViewDidChange:self];
   }
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 postNotificationName:@"UITextViewTextDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"UITextViewTextDidChangeNotification" object:self];
 
   [(UITextView *)self _updateTextFormattingController];
   [(UITextView *)self _scrollToSelectionIfNeeded];
-  v10 = [(UIView *)self->_textEmphasisBackgroundView window];
-  if (v10)
+  window = [(UIView *)self->_textEmphasisBackgroundView window];
+  if (window)
   {
-    v11 = v10;
-    v12 = [(UIView *)self->_textEmphasisBackgroundView isHidden];
+    v11 = window;
+    isHidden = [(UIView *)self->_textEmphasisBackgroundView isHidden];
 
-    if (!v12)
+    if (!isHidden)
     {
       [(UIView *)self->_textEmphasisBackgroundView setNeedsDisplay];
     }
   }
 }
 
-- (BOOL)textInputShouldExtendCaretHeight:(id)a3
+- (BOOL)textInputShouldExtendCaretHeight:(id)height
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom] != 5;
+  traitCollection = [(UIView *)self traitCollection];
+  v4 = [traitCollection userInterfaceIdiom] != 5;
 
   return v4;
 }
 
-- (void)textInputDidChangeSelection:(id)a3
+- (void)textInputDidChangeSelection:(id)selection
 {
-  v4 = [(UIScrollView *)self delegate];
+  delegate = [(UIScrollView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 textViewDidChangeSelection:self];
+    [delegate textViewDidChangeSelection:self];
   }
 
   [(UITextView *)self _updateTextFormattingController];
   [(UITextView *)self _scrollToCaretIfNeeded];
 }
 
-- (void)textInputDidFinishUndoRedoChanges:(id)a3
+- (void)textInputDidFinishUndoRedoChanges:(id)changes
 {
   if ([(UITextView *)self isWritingToolsActive])
   {
-    v4 = [(UITextView *)self _existingTextAssistantManager];
-    [v4 finishUndoRedoChanges];
+    _existingTextAssistantManager = [(UITextView *)self _existingTextAssistantManager];
+    [_existingTextAssistantManager finishUndoRedoChanges];
   }
 }
 
-- (void)_textInput:(id)a3 pasteDelegateWillPasteText:(id)a4 toTextRange:(id)a5
+- (void)_textInput:(id)input pasteDelegateWillPasteText:(id)text toTextRange:(id)range
 {
-  v9 = a4;
-  v7 = a5;
+  textCopy = text;
+  rangeCopy = range;
   if ([(UITextView *)self isWritingToolsActive])
   {
-    v8 = [(UITextView *)self _existingTextAssistantManager];
-    [v8 updateForPasteDelegateWillPasteText:v9 toTextRange:v7];
+    _existingTextAssistantManager = [(UITextView *)self _existingTextAssistantManager];
+    [_existingTextAssistantManager updateForPasteDelegateWillPasteText:textCopy toTextRange:rangeCopy];
   }
 }
 
-- (void)_textInput:(id)a3 pasteDelegateDidPasteText:(id)a4 toTextRange:(id)a5
+- (void)_textInput:(id)input pasteDelegateDidPasteText:(id)text toTextRange:(id)range
 {
-  v9 = a4;
-  v7 = a5;
+  textCopy = text;
+  rangeCopy = range;
   if ([(UITextView *)self isWritingToolsActive])
   {
-    v8 = [(UITextView *)self _existingTextAssistantManager];
-    [v8 updateForPasteDelegateDidPasteText:v9 toTextRange:v7];
+    _existingTextAssistantManager = [(UITextView *)self _existingTextAssistantManager];
+    [_existingTextAssistantManager updateForPasteDelegateDidPasteText:textCopy toTextRange:rangeCopy];
   }
 }
 
-- (void)textInput:(id)a3 undoRedoDidApplyAttributedText:(id)a4 toCharacterRange:(_NSRange)a5
+- (void)textInput:(id)input undoRedoDidApplyAttributedText:(id)text toCharacterRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a4;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   if ([(UITextView *)self isWritingToolsActive])
   {
-    v8 = [(UITextView *)self _existingTextAssistantManager];
-    [v8 updateForCharactersInRange:location withReplacement:length isUndoRedo:{v9, 1}];
+    _existingTextAssistantManager = [(UITextView *)self _existingTextAssistantManager];
+    [_existingTextAssistantManager updateForCharactersInRange:location withReplacement:length isUndoRedo:{textCopy, 1}];
   }
 }
 
-- (void)textInput:(id)a3 didApplyAttributedText:(id)a4 toCharacterRange:(_NSRange)a5
+- (void)textInput:(id)input didApplyAttributedText:(id)text toCharacterRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v18 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  inputCopy = input;
+  textCopy = text;
   if (self->_customRenderController && [(UITextView *)self _customRenderControllerPermitsSetTextDidEditRange])
   {
     v11 = [(UITextView *)self _NSTextRangeFromNSRange:location, length];
-    -[NSCustomTextRendering textDidEditRange:replacementLength:](self->_customRenderController, "textDidEditRange:replacementLength:", v11, [v10 length]);
+    -[NSCustomTextRendering textDidEditRange:replacementLength:](self->_customRenderController, "textDidEditRange:replacementLength:", v11, [textCopy length]);
   }
 
-  v12 = [(UITextView *)self _existingTextAssistantManager];
-  if (-[UITextView isWritingToolsActive](self, "isWritingToolsActive") && ([v12 isReplacingTextByRequest] & 1) == 0 && !-[UITextView _isWritingToolsStreamingReplacements](self, "_isWritingToolsStreamingReplacements"))
+  _existingTextAssistantManager = [(UITextView *)self _existingTextAssistantManager];
+  if (-[UITextView isWritingToolsActive](self, "isWritingToolsActive") && ([_existingTextAssistantManager isReplacingTextByRequest] & 1) == 0 && !-[UITextView _isWritingToolsStreamingReplacements](self, "_isWritingToolsStreamingReplacements"))
   {
     WeakRetained = objc_loadWeakRetained(&self->_inputController);
-    v14 = [WeakRetained _undoRedoInProgress];
+    _undoRedoInProgress = [WeakRetained _undoRedoInProgress];
 
-    if (v14)
+    if (_undoRedoInProgress)
     {
       if (os_variant_has_internal_diagnostics() && ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantRewriteLogging, @"UITextAssistantRewriteLogging") & 1) == 0 && byte_1EA95E17C || (_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantProofreadLogging, @"UITextAssistantProofreadLogging") & 1) == 0 && byte_1EA95E184))
       {
@@ -9466,7 +9466,7 @@ LABEL_16:
 
     else
     {
-      [v12 updateForCharactersInRange:location withReplacement:length isUndoRedo:{v10, 0}];
+      [_existingTextAssistantManager updateForCharactersInRange:location withReplacement:length isUndoRedo:{textCopy, 0}];
     }
   }
 }
@@ -9476,18 +9476,18 @@ LABEL_16:
   v4 = font;
   if ([(UIView *)self _shouldNotifyGeometryObserversForBaselineChanges]|| (*(&self->super.super._viewFlags + 16) & 8) != 0)
   {
-    v6 = [(UITextView *)self font];
+    font = [(UITextView *)self font];
     v5 = 1;
   }
 
   else
   {
     v5 = 0;
-    v6 = 0;
+    font = 0;
   }
 
-  v7 = [(UITextView *)self text];
-  v8 = [(UITextView *)self _resolvedTypesettingLanguage:v7];
+  text = [(UITextView *)self text];
+  v8 = [(UITextView *)self _resolvedTypesettingLanguage:text];
 
   v9 = [(UIFont *)v4 _fontAdjustedForTypesettingLanguage:v8];
   v10 = v9;
@@ -9518,9 +9518,9 @@ LABEL_16:
 
   [(UITextView *)self _syncTypingAttributesToTextContainerAttributesForExtraLineFragment];
   v17 = v15;
-  v18 = v6;
+  v18 = font;
   v19 = v18;
-  v20 = v18;
+  superview2 = v18;
   v21 = v17;
   if (v17 == v18)
   {
@@ -9577,15 +9577,15 @@ LABEL_16:
 
     if ((*(&self->super.super._viewFlags + 16) & 8) != 0)
     {
-      v26 = [(UIView *)self superview];
-      v21 = v26;
-      if (!v26 || (*(v26 + 95) & 0x40) != 0)
+      superview = [(UIView *)self superview];
+      v21 = superview;
+      if (!superview || (*(superview + 95) & 0x40) != 0)
       {
         goto LABEL_25;
       }
 
-      v20 = [(UIView *)self superview];
-      [v20 setNeedsLayout];
+      superview2 = [(UIView *)self superview];
+      [superview2 setNeedsLayout];
 LABEL_24:
 
 LABEL_25:
@@ -9614,10 +9614,10 @@ void __22__UITextView_setFont___block_invoke(uint64_t a1, void *a2)
 - (void)setText:(NSString *)text
 {
   v7 = text;
-  v4 = [(UITextView *)self _currentDefaultAttributes];
+  _currentDefaultAttributes = [(UITextView *)self _currentDefaultAttributes];
   if (v7)
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v7 attributes:v4];
+    v5 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v7 attributes:_currentDefaultAttributes];
   }
 
   else
@@ -9632,22 +9632,22 @@ void __22__UITextView_setFont___block_invoke(uint64_t a1, void *a2)
 + (id)_defaultFont
 {
   v2 = +[_UITextAttributeDefaults _unspecifiedDefaults];
-  v3 = [v2 _textView];
-  v4 = [v3 _font];
+  _textView = [v2 _textView];
+  _font = [_textView _font];
 
-  return v4;
+  return _font;
 }
 
-- (void)_setTextColor:(id)a3
+- (void)_setTextColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   textStorage = self->_textStorage;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __28__UITextView__setTextColor___block_invoke;
   v7[3] = &unk_1E7126368;
-  v8 = v4;
-  v6 = v4;
+  v8 = colorCopy;
+  v6 = colorCopy;
   [(NSTextStorage *)textStorage coordinateEditing:v7];
   [(UITextView *)self _setTypingAttributesTextColor:v6];
   [(_UITextContainerView *)self->_containerView setNeedsDisplay];
@@ -9673,8 +9673,8 @@ void __28__UITextView__setTextColor___block_invoke(uint64_t a1, void *a2)
 - (UIColor)textColor
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained typingAttributes];
-  v4 = [v3 valueForKey:*off_1E70EC920];
+  typingAttributes = [WeakRetained typingAttributes];
+  v4 = [typingAttributes valueForKey:*off_1E70EC920];
 
   return v4;
 }
@@ -9689,9 +9689,9 @@ void __28__UITextView__setTextColor___block_invoke(uint64_t a1, void *a2)
   v15[4] = textAlignment;
   [(NSTextStorage *)textStorage coordinateEditing:v15];
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v7 = [WeakRetained typingAttributes];
+  typingAttributes = [WeakRetained typingAttributes];
   v8 = *off_1E70EC988;
-  v9 = [v7 valueForKey:*off_1E70EC988];
+  v9 = [typingAttributes valueForKey:*off_1E70EC988];
   v10 = [v9 mutableCopy];
   v11 = v10;
   if (v10)
@@ -9752,20 +9752,20 @@ void __31__UITextView_setTextAlignment___block_invoke_2(uint64_t a1, void *a2, u
 - (NSTextAlignment)textAlignment
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained typingAttributes];
-  v4 = [v3 valueForKey:*off_1E70EC988];
+  typingAttributes = [WeakRetained typingAttributes];
+  v4 = [typingAttributes valueForKey:*off_1E70EC988];
 
   if (v4)
   {
-    v5 = [v4 alignment];
+    alignment = [v4 alignment];
   }
 
   else
   {
-    v5 = NSTextAlignmentNatural;
+    alignment = NSTextAlignmentNatural;
   }
 
-  return v5;
+  return alignment;
 }
 
 - (void)setSelectedRange:(NSRange)selectedRange
@@ -9778,37 +9778,37 @@ void __31__UITextView_setTextAlignment___block_invoke_2(uint64_t a1, void *a2, u
   [(UITextView *)self updateSelection];
 }
 
-- (void)setSelectedRanges:(id)a3
+- (void)setSelectedRanges:(id)ranges
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 count])
+  rangesCopy = ranges;
+  if (![rangesCopy count])
   {
-    v5 = [(UITextView *)self selectedRanges];
-    v6 = [v5 lastObject];
-    if (v6)
+    selectedRanges = [(UITextView *)self selectedRanges];
+    lastObject = [selectedRanges lastObject];
+    if (lastObject)
     {
-      v7 = [(UITextView *)self selectedRanges];
-      v8 = [v7 lastObject];
-      v9 = [v8 rangeValue];
+      selectedRanges2 = [(UITextView *)self selectedRanges];
+      lastObject2 = [selectedRanges2 lastObject];
+      rangeValue = [lastObject2 rangeValue];
       v11 = v10;
     }
 
     else
     {
-      v9 = 0;
+      rangeValue = 0;
       v11 = 0;
     }
 
-    v12 = [MEMORY[0x1E696B098] valueWithRange:{v9 + v11, 0}];
+    v12 = [MEMORY[0x1E696B098] valueWithRange:{rangeValue + v11, 0}];
     v15[0] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
 
-    v4 = v13;
+    rangesCopy = v13;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained setSelectedRanges:v4];
+  [WeakRetained setSelectedRanges:rangesCopy];
 
   [(UITextView *)self updateSelection];
 }
@@ -9816,9 +9816,9 @@ void __31__UITextView_setTextAlignment___block_invoke_2(uint64_t a1, void *a2, u
 - (NSArray)selectedRanges
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained selectedRanges];
+  selectedRanges = [WeakRetained selectedRanges];
 
-  return v3;
+  return selectedRanges;
 }
 
 - (void)setClearsOnInsertion:(BOOL)clearsOnInsertion
@@ -9828,19 +9828,19 @@ void __31__UITextView_setTextAlignment___block_invoke_2(uint64_t a1, void *a2, u
     self->_clearsOnInsertion = clearsOnInsertion;
     if (clearsOnInsertion)
     {
-      v5 = [(UITextView *)self interactionAssistant];
-      [v5 deactivateSelection];
+      interactionAssistant = [(UITextView *)self interactionAssistant];
+      [interactionAssistant deactivateSelection];
 
       [(UITextView *)self selectAll:self];
     }
 
     else if (![(UITextView *)self isTextDragActive])
     {
-      v6 = [(UITextView *)self interactionAssistant];
-      [v6 activateSelection];
+      interactionAssistant2 = [(UITextView *)self interactionAssistant];
+      [interactionAssistant2 activateSelection];
 
-      v7 = [(UITextView *)self interactionAssistant];
-      [v7 setSelectionDisplayVisible:1];
+      interactionAssistant3 = [(UITextView *)self interactionAssistant];
+      [interactionAssistant3 setSelectionDisplayVisible:1];
     }
 
     [(UITextView *)self _updateSelectionGestures];
@@ -9861,10 +9861,10 @@ void __31__UITextView_setTextAlignment___block_invoke_2(uint64_t a1, void *a2, u
   }
 }
 
-- (void)setContentToHTMLString:(id)a3
+- (void)setContentToHTMLString:(id)string
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [string dataUsingEncoding:4];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x1E696AAB0]);
@@ -9882,10 +9882,10 @@ void __31__UITextView_setTextAlignment___block_invoke_2(uint64_t a1, void *a2, u
   [(UITextView *)self setAttributedText:v7];
 }
 
-- (void)setShouldAutoscrollAboveBottom:(BOOL)a3
+- (void)setShouldAutoscrollAboveBottom:(BOOL)bottom
 {
   v3 = 128;
-  if (!a3)
+  if (!bottom)
   {
     v3 = 0;
   }
@@ -9909,17 +9909,17 @@ void __31__UITextView_setTextAlignment___block_invoke_2(uint64_t a1, void *a2, u
   [(UIScrollView *)self _setContentScrollInset:0.0, 0.0, v3, 0.0];
 }
 
-- (void)setMarginTop:(unint64_t)a3
+- (void)setMarginTop:(unint64_t)top
 {
-  self->_unadjustedTextContainerInset.top = a3;
-  self->_unadjustedTextContainerInset.bottom = a3;
+  self->_unadjustedTextContainerInset.top = top;
+  self->_unadjustedTextContainerInset.bottom = top;
   [(UITextView *)self _ensureUpToDateTextContainerInsetAndNotifyIfNecessary];
 }
 
-- (void)_setHorizontalMargins:(unint64_t)a3
+- (void)_setHorizontalMargins:(unint64_t)margins
 {
-  self->_unadjustedTextContainerInset.left = a3;
-  self->_unadjustedTextContainerInset.right = a3;
+  self->_unadjustedTextContainerInset.left = margins;
+  self->_unadjustedTextContainerInset.right = margins;
   [(UITextView *)self _ensureUpToDateTextContainerInsetAndNotifyIfNecessary];
 }
 
@@ -9947,14 +9947,14 @@ void __31__UITextView_setTextAlignment___block_invoke_2(uint64_t a1, void *a2, u
       self->_offsetFromScrollPosition = self->_offsetFromScrollPosition + v9 - v8;
     }
 
-    v10 = [(_UITextContainerView *)self->_containerView textContainer];
-    [v10 size];
+    textContainer = [(_UITextContainerView *)self->_containerView textContainer];
+    [textContainer size];
     v12 = v11;
     v14 = v13;
 
     [(UITextView *)self _ensureUpToDateTextContainerInsetAndNotifyIfNecessary];
-    v15 = [(_UITextContainerView *)self->_containerView textContainer];
-    [v15 size];
+    textContainer2 = [(_UITextContainerView *)self->_containerView textContainer];
+    [textContainer2 size];
     v17 = v16;
     v19 = v18;
 
@@ -9965,20 +9965,20 @@ void __31__UITextView_setTextAlignment___block_invoke_2(uint64_t a1, void *a2, u
 
     if ((*&self->_tvFlags & 0x20) != 0)
     {
-      v21 = [(UITextView *)self interactionAssistant];
-      [v21 setNeedsSelectionDisplayUpdate];
+      interactionAssistant = [(UITextView *)self interactionAssistant];
+      [interactionAssistant setNeedsSelectionDisplayUpdate];
     }
   }
 }
 
-- (void)setLineHeight:(double)a3
+- (void)setLineHeight:(double)height
 {
   textStorage = self->_textStorage;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __28__UITextView_setLineHeight___block_invoke;
   v4[3] = &__block_descriptor_40_e23_v16__0__NSTextStorage_8l;
-  *&v4[4] = a3;
+  *&v4[4] = height;
   [(NSTextStorage *)textStorage coordinateEditing:v4];
 }
 
@@ -10056,19 +10056,19 @@ uint64_t __24__UITextView_lineHeight__block_invoke_2(uint64_t result, void *a2, 
   return result;
 }
 
-- (void)_invalidateLayoutForLinkAttributesChange:(BOOL)a3
+- (void)_invalidateLayoutForLinkAttributesChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   if ([(UITextView *)self _shouldInvalidateLayoutForLinkAttributesChange])
   {
-    v6 = [(_UITextLayoutController *)self->_textLayoutController documentRange];
+    documentRange = [(_UITextLayoutController *)self->_textLayoutController documentRange];
     if (([(_UITextLayoutController *)self->_textLayoutController canAccessLayoutManager]& 1) == 0)
     {
-      v5 = [(_UITextContainerView *)self->_containerView canvasView];
-      [v5 setLayoutFragmentViewsNeedDisplay:v3];
+      canvasView = [(_UITextContainerView *)self->_containerView canvasView];
+      [canvasView setLayoutFragmentViewsNeedDisplay:changeCopy];
     }
 
-    [(_UITextLayoutController *)self->_textLayoutController invalidateLayoutForRange:v6];
+    [(_UITextLayoutController *)self->_textLayoutController invalidateLayoutForRange:documentRange];
     if ([(_UITextLayoutController *)self->_textLayoutController canAccessLayoutManager])
     {
       [(_UITextContainerView *)self->_containerView setNeedsDisplay];
@@ -10085,12 +10085,12 @@ uint64_t __24__UITextView_lineHeight__block_invoke_2(uint64_t result, void *a2, 
   [(UITextView *)self _invalidateLayoutForLinkAttributesChange:0];
 }
 
-- (void)drawTextHighlightBackgroundForTextRange:(id)a3 origin:(CGPoint)a4
+- (void)drawTextHighlightBackgroundForTextRange:(id)range origin:(CGPoint)origin
 {
-  y = a4.y;
-  x = a4.x;
+  y = origin.y;
+  x = origin.x;
   v41[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  rangeCopy = range;
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)
   {
@@ -10102,23 +10102,23 @@ uint64_t __24__UITextView_lineHeight__block_invoke_2(uint64_t result, void *a2, 
     v10 = ContextStack[3 * (*ContextStack - 1) + 1];
   }
 
-  v11 = [(UITextView *)self textLayoutManager];
-  v12 = v11;
-  if (v10 && v11)
+  textLayoutManager = [(UITextView *)self textLayoutManager];
+  v12 = textLayoutManager;
+  if (v10 && textLayoutManager)
   {
     v32 = v10;
-    v13 = [(UITextView *)self textStorage];
-    v14 = [v13 length];
-    v33 = v8;
-    v41[0] = v8;
+    textStorage = [(UITextView *)self textStorage];
+    v14 = [textStorage length];
+    v33 = rangeCopy;
+    v41[0] = rangeCopy;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:1];
     v16 = [(UITextView *)self _nsRangeForTextKitRanges:v15];
     v18 = v17;
 
     if (v14 < v16 + v18)
     {
-      v31 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v31 handleFailureInMethod:a2 object:self file:@"UITextView.m" lineNumber:6333 description:@"Incorrect textRange"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITextView.m" lineNumber:6333 description:@"Incorrect textRange"];
     }
 
     v19 = 2;
@@ -10158,18 +10158,18 @@ uint64_t __24__UITextView_lineHeight__block_invoke_2(uint64_t result, void *a2, 
     v34[3] = &unk_1E70F8358;
     v39 = v16;
     v40 = v18;
-    v35 = v13;
-    v36 = self;
+    v35 = textStorage;
+    selfCopy = self;
     v37 = v24;
     v38 = v25;
     v27 = v25;
     v28 = v24;
-    v29 = v13;
+    v29 = textStorage;
     [v29 enumerateAttribute:v26 inRange:v23 options:v22 + v21 usingBlock:{0, v34}];
     v30 = [(UITextView *)self _NSTextRangeFromNSRange:v23, v22 + v21];
     [v12 drawTextHighlightBackgroundForRunTextRanges:v28 attributes:v27 documentRange:v30 origin:v32 context:{x, y}];
 
-    v8 = v33;
+    rangeCopy = v33;
   }
 }
 
@@ -10211,56 +10211,56 @@ void __61__UITextView_drawTextHighlightBackgroundForTextRange_origin___block_inv
   [*(a1 + 48) addObject:v10];
 }
 
-- (void)_applyHighlightStyle:(id)a3 toTextRange:(id)a4
+- (void)_applyHighlightStyle:(id)style toTextRange:(id)range
 {
-  v11 = a4;
-  v6 = a3;
-  v7 = [(UITextView *)self attributedTextInRange:v11];
+  rangeCopy = range;
+  styleCopy = style;
+  v7 = [(UITextView *)self attributedTextInRange:rangeCopy];
   v8 = [v7 mutableCopy];
 
-  [v8 addAttribute:*off_1E70ECA80 value:v6 range:{0, objc_msgSend(v8, "length")}];
+  [v8 addAttribute:*off_1E70ECA80 value:styleCopy range:{0, objc_msgSend(v8, "length")}];
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v10 = [WeakRetained replaceRange:v11 withAttributedText:v8 updatingSelection:0];
+  v10 = [WeakRetained replaceRange:rangeCopy withAttributedText:v8 updatingSelection:0];
 }
 
-- (void)_applyHighlightStyle:(id)a3 colorScheme:(id)a4 toTextRange:(id)a5
+- (void)_applyHighlightStyle:(id)style colorScheme:(id)scheme toTextRange:(id)range
 {
-  v14 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(UITextView *)self attributedTextInRange:v14];
+  rangeCopy = range;
+  schemeCopy = scheme;
+  styleCopy = style;
+  v10 = [(UITextView *)self attributedTextInRange:rangeCopy];
   v11 = [v10 mutableCopy];
 
-  [v11 addAttribute:*off_1E70ECA80 value:v9 range:{0, objc_msgSend(v11, "length")}];
-  [v11 addAttribute:*off_1E70ECA40 value:v8 range:{0, objc_msgSend(v11, "length")}];
+  [v11 addAttribute:*off_1E70ECA80 value:styleCopy range:{0, objc_msgSend(v11, "length")}];
+  [v11 addAttribute:*off_1E70ECA40 value:schemeCopy range:{0, objc_msgSend(v11, "length")}];
 
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v13 = [WeakRetained replaceRange:v14 withAttributedText:v11 updatingSelection:0];
+  v13 = [WeakRetained replaceRange:rangeCopy withAttributedText:v11 updatingSelection:0];
 }
 
-- (void)_removeHighlightsFromTextRange:(id)a3
+- (void)_removeHighlightsFromTextRange:(id)range
 {
-  v8 = a3;
-  v4 = [(UITextView *)self attributedTextInRange:v8];
+  rangeCopy = range;
+  v4 = [(UITextView *)self attributedTextInRange:rangeCopy];
   v5 = [v4 mutableCopy];
 
   [v5 removeAttribute:*off_1E70ECA80 range:{0, objc_msgSend(v5, "length")}];
   [v5 removeAttribute:*off_1E70ECA40 range:{0, objc_msgSend(v5, "length")}];
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v7 = [WeakRetained replaceRange:v8 withAttributedText:v5 updatingSelection:0];
+  v7 = [WeakRetained replaceRange:rangeCopy withAttributedText:v5 updatingSelection:0];
 }
 
-- (id)_linkTextAttributesForLink:(id)a3 forCharacterAtIndex:(unint64_t)a4
+- (id)_linkTextAttributesForLink:(id)link forCharacterAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(UIScrollView *)self delegate];
+  linkCopy = link;
+  delegate = [(UIScrollView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v19 = 0;
     v20 = &v19;
     v21 = 0x3010000000;
     v22 = "";
-    v23 = a4;
+    indexCopy = index;
     v24 = 1;
     textStorage = self->_textStorage;
     v15[0] = MEMORY[0x1E69E9820];
@@ -10268,11 +10268,11 @@ void __61__UITextView_drawTextHighlightBackgroundForTextRange_origin___block_inv
     v15[2] = __61__UITextView__linkTextAttributesForLink_forCharacterAtIndex___block_invoke;
     v15[3] = &unk_1E70F9548;
     v17 = &v19;
-    v18 = a4;
-    v9 = v6;
+    indexCopy2 = index;
+    v9 = linkCopy;
     v16 = v9;
     [(NSTextStorage *)textStorage coordinateReading:v15];
-    v10 = [v7 _textView:self linkTextAttributesForLink:v9 inRange:{v20[4], v20[5]}];
+    v10 = [delegate _textView:self linkTextAttributesForLink:v9 inRange:{v20[4], v20[5]}];
 
     _Block_object_dispose(&v19, 8);
   }
@@ -10289,21 +10289,21 @@ void __61__UITextView_drawTextHighlightBackgroundForTextRange_origin___block_inv
 
   if (qword_1ED4998C0 && !v10)
   {
-    v11 = [qword_1ED4998C0 sharedController];
-    v10 = [v11 preferredTextAttributesForLinkAtCharacterIndex:a4 ofStorage:self->_textStorage];
+    sharedController = [qword_1ED4998C0 sharedController];
+    v10 = [sharedController preferredTextAttributesForLinkAtCharacterIndex:index ofStorage:self->_textStorage];
   }
 
   if (v10)
   {
-    v12 = v10;
+    linkTextAttributes = v10;
   }
 
   else
   {
-    v12 = [(UITextView *)self linkTextAttributes];
+    linkTextAttributes = [(UITextView *)self linkTextAttributes];
   }
 
-  v13 = v12;
+  v13 = linkTextAttributes;
 
   return v13;
 }
@@ -10357,61 +10357,61 @@ Class __61__UITextView__linkTextAttributesForLink_forCharacterAtIndex___block_in
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = UITextView;
-  v5 = [(UIScrollView *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIScrollView *)&v8 hitTest:event withEvent:test.x, test.y];
   if (v5 == self->_containerView)
   {
-    v6 = self;
+    selfCopy = self;
 
-    v5 = v6;
+    v5 = selfCopy;
   }
 
   return v5;
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
   if (dyld_program_sdk_at_least())
   {
-    [(UIView *)self->_containerView setContentMode:a3];
+    [(UIView *)self->_containerView setContentMode:mode];
   }
 
   v5.receiver = self;
   v5.super_class = UITextView;
-  [(UIView *)&v5 setContentMode:a3];
+  [(UIView *)&v5 setContentMode:mode];
 }
 
-- (void)_setAllowedTypingAttributes:(id)a3
+- (void)_setAllowedTypingAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained _setAllowedTypingAttributes:v4];
+  [WeakRetained _setAllowedTypingAttributes:attributesCopy];
 }
 
-- (void)_setCuiCatalog:(id)a3
+- (void)_setCuiCatalog:(id)catalog
 {
-  v5 = a3;
-  if (self->_cuiCatalog != v5)
+  catalogCopy = catalog;
+  if (self->_cuiCatalog != catalogCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_cuiCatalog, a3);
+    v6 = catalogCopy;
+    objc_storeStrong(&self->_cuiCatalog, catalog);
     [(UITextView *)self setNeedsDisplay];
-    v5 = v6;
+    catalogCopy = v6;
   }
 }
 
-- (void)_setCuiStyleEffectConfiguration:(id)a3
+- (void)_setCuiStyleEffectConfiguration:(id)configuration
 {
-  v10 = a3;
-  v4 = [(_UITextLayoutController *)self->_textLayoutController styleEffectConfiguration];
+  configurationCopy = configuration;
+  styleEffectConfiguration = [(_UITextLayoutController *)self->_textLayoutController styleEffectConfiguration];
 
-  v5 = v10;
-  if (v4 != v10)
+  v5 = configurationCopy;
+  if (styleEffectConfiguration != configurationCopy)
   {
-    v6 = [v10 copy];
+    v6 = [configurationCopy copy];
     if (!v6)
     {
       if (dyld_program_sdk_at_least())
@@ -10425,28 +10425,28 @@ Class __61__UITextView__linkTextAttributesForLink_forCharacterAtIndex___block_in
       }
     }
 
-    v7 = [v6 appearanceName];
+    appearanceName = [v6 appearanceName];
 
-    if (!v7)
+    if (!appearanceName)
     {
-      v8 = [(UIView *)self traitCollection];
-      v9 = [(UITraitCollection *)v8 _styleEffectAppearanceName];
-      [v6 setAppearanceName:v9];
+      traitCollection = [(UIView *)self traitCollection];
+      _styleEffectAppearanceName = [(UITraitCollection *)traitCollection _styleEffectAppearanceName];
+      [v6 setAppearanceName:_styleEffectAppearanceName];
     }
 
     [(_UITextLayoutController *)self->_textLayoutController setStyleEffectConfiguration:v6];
     [(UITextView *)self setNeedsDisplay];
 
-    v5 = v10;
+    v5 = configurationCopy;
   }
 }
 
-- (void)_setFreezeTextContainerSize:(BOOL)a3
+- (void)_setFreezeTextContainerSize:(BOOL)size
 {
-  v3 = a3;
-  if ([(UITextView *)self _freezeTextContainerSize]!= a3)
+  sizeCopy = size;
+  if ([(UITextView *)self _freezeTextContainerSize]!= size)
   {
-    if (v3)
+    if (sizeCopy)
     {
       [(UITextView *)self textContainerInset];
       self->_beforeFreezingTextContainerInset.top = v5;
@@ -10476,15 +10476,15 @@ Class __61__UITextView__linkTextAttributesForLink_forCharacterAtIndex___block_in
   }
 }
 
-- (id)textContainerView:(id)a3 cuiCatalogForTextEffectName:(id)a4
+- (id)textContainerView:(id)view cuiCatalogForTextEffectName:(id)name
 {
-  v5 = a4;
-  v6 = [(UITextView *)self _cuiCatalog];
-  v7 = [v6 hasStylePresetWithName:v5];
+  nameCopy = name;
+  _cuiCatalog = [(UITextView *)self _cuiCatalog];
+  v7 = [_cuiCatalog hasStylePresetWithName:nameCopy];
 
   if (v7)
   {
-    v8 = v6;
+    v8 = _cuiCatalog;
   }
 
   else
@@ -10495,10 +10495,10 @@ Class __61__UITextView__linkTextAttributesForLink_forCharacterAtIndex___block_in
   return v8;
 }
 
-- (void)startAutoscroll:(CGPoint)a3
+- (void)startAutoscroll:(CGPoint)autoscroll
 {
-  y = a3.y;
-  x = a3.x;
+  y = autoscroll.y;
+  x = autoscroll.x;
   if (!self->_autoscroll)
   {
     v6 = objc_alloc_init(UIAutoscroll);
@@ -10507,11 +10507,11 @@ Class __61__UITextView__linkTextAttributesForLink_forCharacterAtIndex___block_in
   }
 
   v48 = self->_interactionAssistant;
-  v8 = self;
+  selfCopy = self;
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom = [v9 userInterfaceIdiom];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v11 = 32.0;
   }
@@ -10521,31 +10521,31 @@ Class __61__UITextView__linkTextAttributesForLink_forCharacterAtIndex___block_in
     v11 = 8.0;
   }
 
-  [(UIScrollView *)v8 visibleBounds];
+  [(UIScrollView *)selfCopy visibleBounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  [(UITextView *)v8 textContainerInset];
-  v21 = fmax(v20, v8->_textContainerInsetAdjustment.top);
-  horizontalTextContainerGeometryAdjustment = fmax(v22, v8->_textContainerInsetAdjustment.left);
-  v25 = fmax(v24, v8->_textContainerInsetAdjustment.bottom);
-  v27 = fmax(v26, v8->_textContainerInsetAdjustment.right);
-  if (v8->_horizontalTextContainerGeometryAdjustment < 0.0)
+  [(UITextView *)selfCopy textContainerInset];
+  v21 = fmax(v20, selfCopy->_textContainerInsetAdjustment.top);
+  horizontalTextContainerGeometryAdjustment = fmax(v22, selfCopy->_textContainerInsetAdjustment.left);
+  v25 = fmax(v24, selfCopy->_textContainerInsetAdjustment.bottom);
+  v27 = fmax(v26, selfCopy->_textContainerInsetAdjustment.right);
+  if (selfCopy->_horizontalTextContainerGeometryAdjustment < 0.0)
   {
-    horizontalTextContainerGeometryAdjustment = v8->_horizontalTextContainerGeometryAdjustment;
+    horizontalTextContainerGeometryAdjustment = selfCopy->_horizontalTextContainerGeometryAdjustment;
   }
 
   v28 = v13 + horizontalTextContainerGeometryAdjustment;
   v29 = v15 + v21;
   v30 = v17 - (v27 + horizontalTextContainerGeometryAdjustment);
   v31 = v19 - (v21 + v25);
-  [(UIScrollView *)v8 _effectiveContentInset];
+  [(UIScrollView *)selfCopy _effectiveContentInset];
   v33 = v32 + v28;
   v35 = v29 + v34;
   v37 = v30 - (v32 + v36);
   v39 = v31 - (v34 + v38);
-  [(UIScrollView *)v8 contentSize];
+  [(UIScrollView *)selfCopy contentSize];
   v41 = v40;
   v50.origin.x = v33;
   v50.origin.y = v35;
@@ -10582,7 +10582,7 @@ Class __61__UITextView__linkTextAttributesForLink_forCharacterAtIndex___block_in
     {
       v47 = 4;
 LABEL_18:
-      [(UIAutoscroll *)self->_autoscroll startAutoscroll:v48 scrollContainer:v8 point:v47 directions:x repeatInterval:y, 0.075];
+      [(UIAutoscroll *)self->_autoscroll startAutoscroll:v48 scrollContainer:selfCopy point:v47 directions:x repeatInterval:y, 0.075];
       goto LABEL_19;
     }
   }
@@ -10592,15 +10592,15 @@ LABEL_18:
     [(UITextInteractionAssistant *)v48 autoscrollWillNotStart];
   }
 
-  [(UITextView *)v8 cancelAutoscroll];
+  [(UITextView *)selfCopy cancelAutoscroll];
 LABEL_19:
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
+    self->_adjustsFontForContentSizeCategory = category;
     placeholderLabel = self->_placeholderLabel;
     if (placeholderLabel)
     {
@@ -10611,23 +10611,23 @@ LABEL_19:
   }
 }
 
-- (void)_adjustFontForAccessibilityTraits:(BOOL)a3
+- (void)_adjustFontForAccessibilityTraits:(BOOL)traits
 {
-  if (self->_adjustsFontForContentSizeCategory || a3)
+  if (self->_adjustsFontForContentSizeCategory || traits)
   {
-    v4 = [(UIView *)self traitCollection];
-    v5 = [(UITextView *)self font];
-    v6 = [v5 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v4];
+    traitCollection = [(UIView *)self traitCollection];
+    font = [(UITextView *)self font];
+    v6 = [font _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:traitCollection];
 
     v19 = 0;
     v20 = &v19;
     v21 = 0x2020000000;
-    v7 = [(UITextView *)self font];
+    font2 = [(UITextView *)self font];
     v8 = 0;
-    if (v7 && v6)
+    if (font2 && v6)
     {
-      v9 = [(UITextView *)self font];
-      v8 = [v9 isEqual:v6] ^ 1;
+      font3 = [(UITextView *)self font];
+      v8 = [font3 isEqual:v6] ^ 1;
     }
 
     v22 = v8;
@@ -10644,7 +10644,7 @@ LABEL_19:
     v14 = 3221225472;
     v15 = __48__UITextView__adjustFontForAccessibilityTraits___block_invoke;
     v16 = &unk_1E7126390;
-    v12 = v4;
+    v12 = traitCollection;
     v17 = v12;
     v18 = &v19;
     [(NSTextStorage *)textStorage coordinateEditing:&v13];
@@ -10710,12 +10710,12 @@ void __48__UITextView__adjustFontForAccessibilityTraits___block_invoke_2(uint64_
   }
 }
 
-- (void)_setWantsContentAwareTypesettingLanguage:(BOOL)a3
+- (void)_setWantsContentAwareTypesettingLanguage:(BOOL)language
 {
-  if (((((*&self->_tvFlags & 0x8000) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_tvFlags & 0x8000) == 0) ^ language) & 1) == 0)
   {
     v3 = 0x8000;
-    if (!a3)
+    if (!language)
     {
       v3 = 0;
     }
@@ -10725,15 +10725,15 @@ void __48__UITextView__adjustFontForAccessibilityTraits___block_invoke_2(uint64_
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
+  senderCopy = sender;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v8 = [WeakRetained _canHandleResponderAction:a3];
+  v8 = [WeakRetained _canHandleResponderAction:action];
 
   if (!v8)
   {
-    if (sel__showTextFormattingOptions_ == a3)
+    if (sel__showTextFormattingOptions_ == action)
     {
       if ([(UITextView *)self _areDefaultTextFormattingAffordancesAvailable])
       {
@@ -10744,32 +10744,32 @@ void __48__UITextView__adjustFontForAccessibilityTraits___block_invoke_2(uint64_
 
     else
     {
-      if (sel_find_ != a3 && sel_findAndReplace_ != a3 && sel_findNext_ != a3 && sel_findPrevious_ != a3 && sel_useSelectionForFind_ != a3 && sel__findSelected_ != a3)
+      if (sel_find_ != action && sel_findAndReplace_ != action && sel_findNext_ != action && sel_findPrevious_ != action && sel_useSelectionForFind_ != action && sel__findSelected_ != action)
       {
         goto LABEL_26;
       }
 
       if (self->_findInteractionEnabled)
       {
-        if (sel_findAndReplace_ == a3)
+        if (sel_findAndReplace_ == action)
         {
-          v17 = [(UITextView *)self supportsTextReplacement];
+          supportsTextReplacement = [(UITextView *)self supportsTextReplacement];
           goto LABEL_27;
         }
 
-        if (sel_useSelectionForFind_ == a3 || sel__findSelected_ == a3)
+        if (sel_useSelectionForFind_ == action || sel__findSelected_ == action)
         {
-          v9 = [(UITextView *)self selectedTextRange];
-          v10 = [v9 _isRanged];
+          selectedTextRange = [(UITextView *)self selectedTextRange];
+          _isRanged = [selectedTextRange _isRanged];
           goto LABEL_3;
         }
 
 LABEL_26:
         v19.receiver = self;
         v19.super_class = UITextView;
-        v17 = [(UIView *)&v19 canPerformAction:a3 withSender:v6];
+        supportsTextReplacement = [(UIView *)&v19 canPerformAction:action withSender:senderCopy];
 LABEL_27:
-        LOBYTE(v11) = v17;
+        LOBYTE(v11) = supportsTextReplacement;
         goto LABEL_31;
       }
     }
@@ -10778,170 +10778,170 @@ LABEL_27:
     goto LABEL_31;
   }
 
-  v9 = objc_loadWeakRetained(&self->_inputController);
-  v10 = [v9 _shouldHandleResponderAction:a3 withSender:v6];
+  selectedTextRange = objc_loadWeakRetained(&self->_inputController);
+  _isRanged = [selectedTextRange _shouldHandleResponderAction:action withSender:senderCopy];
 LABEL_3:
-  LOBYTE(v11) = v10;
+  LOBYTE(v11) = _isRanged;
 
 LABEL_31:
   return v11;
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  v5 = a3;
+  cutCopy = cut;
   if ([(UITextView *)self keyboardInputShouldDelete:self])
   {
     WeakRetained = objc_loadWeakRetained(&self->_inputController);
-    [WeakRetained cut:v5];
+    [WeakRetained cut:cutCopy];
   }
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v4 = a3;
+  copyCopy = copy;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained copy:v4];
+  [WeakRetained copy:copyCopy];
 
-  v6 = [(UITextView *)self interactionAssistant];
-  [v6 hideSelectionCommands];
+  interactionAssistant = [(UITextView *)self interactionAssistant];
+  [interactionAssistant hideSelectionCommands];
 }
 
-- (void)_define:(id)a3
+- (void)_define:(id)_define
 {
-  v4 = a3;
+  _defineCopy = _define;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained _define:v4];
+  [WeakRetained _define:_defineCopy];
 }
 
-- (void)_translate:(id)a3
+- (void)_translate:(id)_translate
 {
-  v4 = a3;
+  _translateCopy = _translate;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained _translate:v4];
+  [WeakRetained _translate:_translateCopy];
 }
 
 - (BOOL)_isDisplayingReferenceLibraryViewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained _isDisplayingReferenceLibraryViewController];
+  _isDisplayingReferenceLibraryViewController = [WeakRetained _isDisplayingReferenceLibraryViewController];
 
-  return v3;
+  return _isDisplayingReferenceLibraryViewController;
 }
 
-- (void)_share:(id)a3
+- (void)_share:(id)_share
 {
-  v4 = a3;
+  _shareCopy = _share;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained _share:v4];
+  [WeakRetained _share:_shareCopy];
 }
 
 - (BOOL)_isDisplayingTextService
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained _isDisplayingTextService];
+  _isDisplayingTextService = [WeakRetained _isDisplayingTextService];
 
-  return v3;
+  return _isDisplayingTextService;
 }
 
 - (BOOL)_isDisplayingShareViewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained _isDisplayingShareViewController];
+  _isDisplayingShareViewController = [WeakRetained _isDisplayingShareViewController];
 
-  return v3;
+  return _isDisplayingShareViewController;
 }
 
 - (BOOL)_isDisplayingLookupViewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained _isDisplayingLookupViewController];
+  _isDisplayingLookupViewController = [WeakRetained _isDisplayingLookupViewController];
 
-  return v3;
+  return _isDisplayingLookupViewController;
 }
 
-- (void)_selectionMayChange:(id)a3
+- (void)_selectionMayChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained _selectionMayChange:v4];
+  [WeakRetained _selectionMayChange:changeCopy];
 }
 
-- (void)_insertAttributedTextWithoutClosingTyping:(id)a3
+- (void)_insertAttributedTextWithoutClosingTyping:(id)typing
 {
-  v4 = a3;
+  typingCopy = typing;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained _insertAttributedTextWithoutClosingTyping:v4];
+  [WeakRetained _insertAttributedTextWithoutClosingTyping:typingCopy];
 }
 
-- (void)_addShortcut:(id)a3
+- (void)_addShortcut:(id)shortcut
 {
-  v4 = a3;
+  shortcutCopy = shortcut;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained _addShortcut:v4];
+  [WeakRetained _addShortcut:shortcutCopy];
 }
 
 - (BOOL)_isDisplayingShortcutViewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained _isDisplayingShortcutViewController];
+  _isDisplayingShortcutViewController = [WeakRetained _isDisplayingShortcutViewController];
 
-  return v3;
+  return _isDisplayingShortcutViewController;
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
-  v4 = a3;
+  pasteCopy = paste;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained paste:v4];
+  [WeakRetained paste:pasteCopy];
 }
 
-- (void)pasteAndMatchStyle:(id)a3
+- (void)pasteAndMatchStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained pasteAndMatchStyle:v4];
+  [WeakRetained pasteAndMatchStyle:styleCopy];
 }
 
-- (void)_pasteAttributedString:(id)a3 pasteAsRichText:(BOOL)a4
+- (void)_pasteAttributedString:(id)string pasteAsRichText:(BOOL)text
 {
-  v4 = a4;
-  v6 = a3;
+  textCopy = text;
+  stringCopy = string;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained _pasteAttributedString:v6 pasteAsRichText:v4];
+  [WeakRetained _pasteAttributedString:stringCopy pasteAsRichText:textCopy];
 }
 
-- (id)_attributedStringForInsertionOfAttributedString:(id)a3
+- (id)_attributedStringForInsertionOfAttributedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v6 = [WeakRetained _attributedStringForInsertionOfAttributedString:v4];
+  v6 = [WeakRetained _attributedStringForInsertionOfAttributedString:stringCopy];
 
   return v6;
 }
 
-- (void)pasteItemProviders:(id)a3
+- (void)pasteItemProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained pasteItemProviders:v4];
+  [WeakRetained pasteItemProviders:providersCopy];
 }
 
 - (id)_effectivePasteConfiguration
 {
   v8.receiver = self;
   v8.super_class = UITextView;
-  v3 = [(UIResponder *)&v8 _effectivePasteConfiguration];
-  v4 = v3;
-  if (v3)
+  _effectivePasteConfiguration = [(UIResponder *)&v8 _effectivePasteConfiguration];
+  v4 = _effectivePasteConfiguration;
+  if (_effectivePasteConfiguration)
   {
-    v5 = v3;
+    v5 = _effectivePasteConfiguration;
   }
 
   else
   {
-    v6 = [(UITextView *)self _implicitPasteConfigurationClasses];
-    v5 = [UIPasteConfiguration _pasteConfigurationForAcceptingClasses:v6];
+    _implicitPasteConfigurationClasses = [(UITextView *)self _implicitPasteConfigurationClasses];
+    v5 = [UIPasteConfiguration _pasteConfigurationForAcceptingClasses:_implicitPasteConfigurationClasses];
   }
 
   return v5;
@@ -10952,9 +10952,9 @@ LABEL_31:
   v11[4] = *MEMORY[0x1E69E9840];
   if ([(UITextView *)self isEditable])
   {
-    v3 = [(UITextView *)self allowsEditingTextAttributes];
+    allowsEditingTextAttributes = [(UITextView *)self allowsEditingTextAttributes];
     v4 = objc_opt_class();
-    if (v3)
+    if (allowsEditingTextAttributes)
     {
       v11[0] = v4;
       v11[1] = objc_opt_class();
@@ -10985,176 +10985,176 @@ LABEL_31:
   return v8;
 }
 
-- (void)select:(id)a3
+- (void)select:(id)select
 {
-  v3 = [(UITextView *)self interactionAssistant];
-  [v3 selectWord];
+  interactionAssistant = [(UITextView *)self interactionAssistant];
+  [interactionAssistant selectWord];
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
-  v4 = a3;
-  v5 = [(UITextView *)self interactionAssistant];
-  [v5 selectAll:v4];
+  allCopy = all;
+  interactionAssistant = [(UITextView *)self interactionAssistant];
+  [interactionAssistant selectAll:allCopy];
 }
 
-- (void)makeTextWritingDirectionNatural:(id)a3
+- (void)makeTextWritingDirectionNatural:(id)natural
 {
-  v4 = a3;
+  naturalCopy = natural;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained makeTextWritingDirectionNatural:v4];
+  [WeakRetained makeTextWritingDirectionNatural:naturalCopy];
 }
 
-- (void)makeTextWritingDirectionRightToLeft:(id)a3
+- (void)makeTextWritingDirectionRightToLeft:(id)left
 {
-  v4 = a3;
+  leftCopy = left;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained makeTextWritingDirectionRightToLeft:v4];
+  [WeakRetained makeTextWritingDirectionRightToLeft:leftCopy];
 }
 
-- (void)makeTextWritingDirectionLeftToRight:(id)a3
+- (void)makeTextWritingDirectionLeftToRight:(id)right
 {
-  v4 = a3;
+  rightCopy = right;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained makeTextWritingDirectionLeftToRight:v4];
+  [WeakRetained makeTextWritingDirectionLeftToRight:rightCopy];
 }
 
-- (void)toggleBoldface:(id)a3
+- (void)toggleBoldface:(id)boldface
 {
-  v4 = a3;
+  boldfaceCopy = boldface;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained toggleBoldface:v4];
+  [WeakRetained toggleBoldface:boldfaceCopy];
 }
 
-- (void)toggleItalics:(id)a3
+- (void)toggleItalics:(id)italics
 {
-  v4 = a3;
+  italicsCopy = italics;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained toggleItalics:v4];
+  [WeakRetained toggleItalics:italicsCopy];
 }
 
-- (void)toggleUnderline:(id)a3
+- (void)toggleUnderline:(id)underline
 {
-  v4 = a3;
+  underlineCopy = underline;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained toggleUnderline:v4];
+  [WeakRetained toggleUnderline:underlineCopy];
 }
 
-- (void)increaseSize:(id)a3
+- (void)increaseSize:(id)size
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
   [WeakRetained increaseSize:self];
 }
 
-- (void)decreaseSize:(id)a3
+- (void)decreaseSize:(id)size
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
   [WeakRetained decreaseSize:self];
 }
 
-- (void)updateTextAttributesWithConversionHandler:(id)a3
+- (void)updateTextAttributesWithConversionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained updateTextAttributesWithConversionHandler:v4];
+  [WeakRetained updateTextAttributesWithConversionHandler:handlerCopy];
 }
 
-- (void)replace:(id)a3
+- (void)replace:(id)replace
 {
-  v4 = a3;
+  replaceCopy = replace;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained replace:v4];
+  [WeakRetained replace:replaceCopy];
 }
 
-- (void)_promptForReplace:(id)a3
+- (void)_promptForReplace:(id)replace
 {
-  v4 = a3;
+  replaceCopy = replace;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained _promptForReplace:v4];
+  [WeakRetained _promptForReplace:replaceCopy];
 }
 
-- (void)_transliterateChinese:(id)a3
+- (void)_transliterateChinese:(id)chinese
 {
-  v4 = a3;
+  chineseCopy = chinese;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained _transliterateChinese:v4];
+  [WeakRetained _transliterateChinese:chineseCopy];
 }
 
-- (void)alignLeft:(id)a3
+- (void)alignLeft:(id)left
 {
-  v4 = a3;
+  leftCopy = left;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained alignLeft:v4];
+  [WeakRetained alignLeft:leftCopy];
 }
 
-- (void)alignCenter:(id)a3
+- (void)alignCenter:(id)center
 {
-  v4 = a3;
+  centerCopy = center;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained alignCenter:v4];
+  [WeakRetained alignCenter:centerCopy];
 }
 
-- (void)alignJustified:(id)a3
+- (void)alignJustified:(id)justified
 {
-  v4 = a3;
+  justifiedCopy = justified;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained alignJustified:v4];
+  [WeakRetained alignJustified:justifiedCopy];
 }
 
-- (void)alignRight:(id)a3
+- (void)alignRight:(id)right
 {
-  v4 = a3;
+  rightCopy = right;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained alignRight:v4];
+  [WeakRetained alignRight:rightCopy];
 }
 
-- (void)_changeLineHeightAction:(id)a3 newLineHeight:(id)a4
+- (void)_changeLineHeightAction:(id)action newLineHeight:(id)height
 {
-  v6 = a4;
-  v7 = a3;
+  heightCopy = height;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained _changeLineHeightAction:v7 newLineHeight:v6];
+  [WeakRetained _changeLineHeightAction:actionCopy newLineHeight:heightCopy];
 }
 
-- (void)captureTextFromCamera:(id)a3
+- (void)captureTextFromCamera:(id)camera
 {
-  v4 = a3;
+  cameraCopy = camera;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained captureTextFromCamera:v4];
+  [WeakRetained captureTextFromCamera:cameraCopy];
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained validateCommand:v4];
+  [WeakRetained validateCommand:commandCopy];
 }
 
-- (BOOL)keyboardInput:(id)a3 shouldReplaceTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)keyboardInput:(id)input shouldReplaceTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v15[1] = *MEMORY[0x1E69E9840];
   v9 = MEMORY[0x1E696B098];
-  v10 = a5;
-  v11 = a3;
+  textCopy = text;
+  inputCopy = input;
   v12 = [v9 valueWithRange:{location, length}];
   v15[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  LOBYTE(length) = [(UITextView *)self keyboardInput:v11 shouldReplaceTextInRanges:v13 replacementText:v10];
+  LOBYTE(length) = [(UITextView *)self keyboardInput:inputCopy shouldReplaceTextInRanges:v13 replacementText:textCopy];
 
   return length;
 }
 
-- (BOOL)keyboardInput:(id)a3 shouldReplaceTextInRanges:(id)a4 replacementText:(id)a5
+- (BOOL)keyboardInput:(id)input shouldReplaceTextInRanges:(id)ranges replacementText:(id)text
 {
-  v7 = a4;
-  v8 = a5;
+  rangesCopy = ranges;
+  textCopy = text;
   [(UITextView *)self _hideTextFormattingOptions:0];
-  v9 = [(UIScrollView *)self delegate];
+  delegate = [(UIScrollView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v9 textView:self shouldChangeTextInRanges:v7 replacementText:v8];
+    v10 = [delegate textView:self shouldChangeTextInRanges:rangesCopy replacementText:textCopy];
   }
 
   else
@@ -11165,8 +11165,8 @@ LABEL_31:
       goto LABEL_7;
     }
 
-    v11 = [v7 unionRange];
-    v10 = [v9 textView:self shouldChangeTextInRange:v11 replacementText:{v12, v8}];
+    unionRange = [rangesCopy unionRange];
+    v10 = [delegate textView:self shouldChangeTextInRange:unionRange replacementText:{v12, textCopy}];
   }
 
   v13 = v10;
@@ -11175,33 +11175,33 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)keyboardInput:(id)a3 shouldInsertText:(id)a4 isMarkedText:(BOOL)a5
+- (BOOL)keyboardInput:(id)input shouldInsertText:(id)text isMarkedText:(BOOL)markedText
 {
-  v7 = a3;
-  v8 = a4;
+  inputCopy = input;
+  textCopy = text;
   [(UITextView *)self _hideTextFormattingOptions:0];
-  v9 = [(UIScrollView *)self delegate];
+  delegate = [(UIScrollView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(UITextView *)self selectedRanges];
-    v11 = [(UITextView *)v9 textView:self shouldChangeTextInRanges:v10 replacementText:v8];
+    selectedRanges = [(UITextView *)self selectedRanges];
+    v11 = [(UITextView *)delegate textView:self shouldChangeTextInRanges:selectedRanges replacementText:textCopy];
 
     goto LABEL_9;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v12 = [(UITextView *)self selectedRange];
-    v14 = [(UITextView *)v9 textView:self shouldChangeTextInRange:v12 replacementText:v13, v8];
+    selectedRange = [(UITextView *)self selectedRange];
+    textCopy = [(UITextView *)delegate textView:self shouldChangeTextInRange:selectedRange replacementText:v13, textCopy];
 LABEL_8:
-    v11 = v14;
+    v11 = textCopy;
     goto LABEL_9;
   }
 
   v11 = 1;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && v9 != self)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && delegate != self)
   {
-    v14 = [(UITextView *)v9 keyboardInput:v7 shouldInsertText:v8 isMarkedText:0];
+    textCopy = [(UITextView *)delegate keyboardInput:inputCopy shouldInsertText:textCopy isMarkedText:0];
     goto LABEL_8;
   }
 
@@ -11210,17 +11210,17 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)keyboardInputShouldDelete:(id)a3
+- (BOOL)keyboardInputShouldDelete:(id)delete
 {
-  v4 = a3;
+  deleteCopy = delete;
   [(UITextView *)self _hideTextFormattingOptions:0];
-  v5 = [(UIScrollView *)self delegate];
+  delegate = [(UIScrollView *)self delegate];
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v7 = [WeakRetained _rangesForBackwardsDelete];
+  _rangesForBackwardsDelete = [WeakRetained _rangesForBackwardsDelete];
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(UITextView *)v5 textView:self shouldChangeTextInRanges:v7 replacementText:&stru_1EFB14550];
+    v8 = [(UITextView *)delegate textView:self shouldChangeTextInRanges:_rangesForBackwardsDelete replacementText:&stru_1EFB14550];
 LABEL_8:
     v11 = v8;
     goto LABEL_9;
@@ -11228,15 +11228,15 @@ LABEL_8:
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v7 unionRange];
-    v8 = [(UITextView *)v5 textView:self shouldChangeTextInRange:v9 replacementText:v10, &stru_1EFB14550];
+    unionRange = [_rangesForBackwardsDelete unionRange];
+    v8 = [(UITextView *)delegate textView:self shouldChangeTextInRange:unionRange replacementText:v10, &stru_1EFB14550];
     goto LABEL_8;
   }
 
   v11 = 1;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && v5 != self)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && delegate != self)
   {
-    v8 = [(UITextView *)v5 keyboardInputShouldDelete:v4];
+    v8 = [(UITextView *)delegate keyboardInputShouldDelete:deleteCopy];
     goto LABEL_8;
   }
 
@@ -11245,41 +11245,41 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)keyboardInputChanged:(id)a3
+- (BOOL)keyboardInputChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(UIScrollView *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && v5 != self)
+  changedCopy = changed;
+  delegate = [(UIScrollView *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && delegate != self)
   {
-    [(UITextView *)v5 keyboardInputChanged:v4];
+    [(UITextView *)delegate keyboardInputChanged:changedCopy];
   }
 
   return 1;
 }
 
-- (void)keyboardInputChangedSelection:(id)a3
+- (void)keyboardInputChangedSelection:(id)selection
 {
-  v5 = a3;
-  v4 = [(UIScrollView *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && v4 != self)
+  selectionCopy = selection;
+  delegate = [(UIScrollView *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && delegate != self)
   {
-    [(UITextView *)v4 keyboardInputChangedSelection:v5];
+    [(UITextView *)delegate keyboardInputChangedSelection:selectionCopy];
   }
 }
 
 - (id)automaticallySelectedOverlay
 {
-  v4 = [(UIView *)self _enclosingScrollableScrollerIncludingSelf];
-  v5 = v4;
-  if (v4 && ([v4 frame], v7 = v6, -[UITextView font](self, "font"), v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "lineHeight"), v7 > v8 * 3.0))
+  _enclosingScrollableScrollerIncludingSelf = [(UIView *)self _enclosingScrollableScrollerIncludingSelf];
+  v5 = _enclosingScrollableScrollerIncludingSelf;
+  if (_enclosingScrollableScrollerIncludingSelf && ([_enclosingScrollableScrollerIncludingSelf frame], v7 = v6, -[UITextView font](self, "font"), v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "lineHeight"), v7 > v8 * 3.0))
   {
-    v9 = v5;
+    containerView = v5;
   }
 
   else
   {
-    v10 = [(UIView *)self keyboardSceneDelegate];
-    v9 = [v10 containerView];
+    keyboardSceneDelegate = [(UIView *)self keyboardSceneDelegate];
+    containerView = [keyboardSceneDelegate containerView];
 
     if (!v5)
     {
@@ -11289,15 +11289,15 @@ LABEL_9:
 
 LABEL_6:
 
-  return v9;
+  return containerView;
 }
 
-- (void)setSupportsAdaptiveImageGlyph:(BOOL)a3
+- (void)setSupportsAdaptiveImageGlyph:(BOOL)glyph
 {
-  v3 = a3;
+  glyphCopy = glyph;
   *&self->_tvFlags |= 0x800000000uLL;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained setSupportsAdaptiveImageGlyph:v3];
+  [WeakRetained setSupportsAdaptiveImageGlyph:glyphCopy];
 }
 
 - (BOOL)supportsAdaptiveImageGlyph
@@ -11305,9 +11305,9 @@ LABEL_6:
   if ((*(&self->_tvFlags + 4) & 8) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_inputController);
-    v5 = [WeakRetained supportsAdaptiveImageGlyph];
+    supportsAdaptiveImageGlyph = [WeakRetained supportsAdaptiveImageGlyph];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(v3) = supportsAdaptiveImageGlyph;
   }
 
   else
@@ -11328,9 +11328,9 @@ LABEL_6:
   tvFlags = self->_tvFlags;
   if ((*&tvFlags & 0x1000000000) == 0)
   {
-    v4 = [(UIResponder *)self _supportsImagePaste];
+    _supportsImagePaste = [(UIResponder *)self _supportsImagePaste];
     v5 = 0x1000000000;
-    if (v4)
+    if (_supportsImagePaste)
     {
       v5 = 0x3000000000;
     }
@@ -11342,64 +11342,64 @@ LABEL_6:
   return (*&tvFlags >> 37) & 1;
 }
 
-- (void)insertAdaptiveImageGlyph:(id)a3 replacementRange:(id)a4
+- (void)insertAdaptiveImageGlyph:(id)glyph replacementRange:(id)range
 {
-  v6 = a4;
-  v7 = a3;
+  rangeCopy = range;
+  glyphCopy = glyph;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained insertAdaptiveImageGlyph:v7 replacementRange:v6];
+  [WeakRetained insertAdaptiveImageGlyph:glyphCopy replacementRange:rangeCopy];
 }
 
 - (BOOL)supportsEmojiImageTextAttachments
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained supportsEmojiImageTextAttachments];
+  supportsEmojiImageTextAttachments = [WeakRetained supportsEmojiImageTextAttachments];
 
-  return v3;
+  return supportsEmojiImageTextAttachments;
 }
 
-- (void)insertEmojiImageTextAttachment:(id)a3 replacementRange:(id)a4
+- (void)insertEmojiImageTextAttachment:(id)attachment replacementRange:(id)range
 {
-  v6 = a4;
-  v7 = a3;
+  rangeCopy = range;
+  attachmentCopy = attachment;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained insertEmojiImageTextAttachment:v7 replacementRange:v6];
+  [WeakRetained insertEmojiImageTextAttachment:attachmentCopy replacementRange:rangeCopy];
 }
 
-- (void)insertTextSuggestion:(id)a3
+- (void)insertTextSuggestion:(id)suggestion
 {
-  v7 = a3;
-  v4 = [(UIScrollView *)self delegate];
+  suggestionCopy = suggestion;
+  delegate = [(UIScrollView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UIScrollView *)self delegate];
-    [v6 _textView:self insertTextSuggestion:v7];
+    delegate2 = [(UIScrollView *)self delegate];
+    [delegate2 _textView:self insertTextSuggestion:suggestionCopy];
   }
 }
 
-- (void)insertInputSuggestion:(id)a3
+- (void)insertInputSuggestion:(id)suggestion
 {
-  v7 = a3;
-  v4 = [(UIScrollView *)self delegate];
+  suggestionCopy = suggestion;
+  delegate = [(UIScrollView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UIScrollView *)self delegate];
-    [v6 textView:self insertInputSuggestion:v7];
+    delegate2 = [(UIScrollView *)self delegate];
+    [delegate2 textView:self insertInputSuggestion:suggestionCopy];
   }
 }
 
-- (BOOL)textInput:(id)a3 shouldChangeCharactersInRanges:(id)a4 replacementText:(id)a5
+- (BOOL)textInput:(id)input shouldChangeCharactersInRanges:(id)ranges replacementText:(id)text
 {
-  v7 = a4;
-  v8 = a5;
+  rangesCopy = ranges;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&self->super._delegate);
   if (objc_opt_respondsToSelector())
   {
-    if ([WeakRetained textView:self shouldChangeTextInRanges:v7 replacementText:v8])
+    if ([WeakRetained textView:self shouldChangeTextInRanges:rangesCopy replacementText:textCopy])
     {
       goto LABEL_3;
     }
@@ -11412,8 +11412,8 @@ LABEL_6:
       goto LABEL_8;
     }
 
-    v10 = [v7 unionRange];
-    if (v10 != 0x7FFFFFFFFFFFFFFFLL && [WeakRetained textView:self shouldChangeTextInRange:v10 replacementText:{v11, v8}])
+    unionRange = [rangesCopy unionRange];
+    if (unionRange != 0x7FFFFFFFFFFFFFFFLL && [WeakRetained textView:self shouldChangeTextInRange:unionRange replacementText:{v11, textCopy}])
     {
 LABEL_3:
       [(UITextView *)self disableClearsOnInsertion];
@@ -11429,25 +11429,25 @@ LABEL_9:
   return v12;
 }
 
-- (id)_attributesForApplyingFormattingModification:(id *)a3 withAttributes:(id)a4 paragraphStyle:(id)a5 forTypingAttributes:(BOOL)a6
+- (id)_attributesForApplyingFormattingModification:(id *)modification withAttributes:(id)attributes paragraphStyle:(id)style forTypingAttributes:(BOOL)typingAttributes
 {
-  v9 = a5;
-  v10 = a4;
+  styleCopy = style;
+  attributesCopy = attributes;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v12 = [WeakRetained _defaultAttributesForApplyingFormattingModification:a3 withAttributes:v10 paragraphStyle:v9];
+  v12 = [WeakRetained _defaultAttributesForApplyingFormattingModification:modification withAttributes:attributesCopy paragraphStyle:styleCopy];
 
   return v12;
 }
 
-- (void)_textFormattingDidDisappear:(id)a3
+- (void)_textFormattingDidDisappear:(id)disappear
 {
   textFormattingViewController = self->_textFormattingViewController;
-  if (textFormattingViewController == a3)
+  if (textFormattingViewController == disappear)
   {
     self->_textFormattingViewController = 0;
-    v5 = a3;
+    disappearCopy = disappear;
 
-    [(UITextView *)self _stopSuppressingKeyboardForTextFormatting:v5];
+    [(UITextView *)self _stopSuppressingKeyboardForTextFormatting:disappearCopy];
     if (!self->_textFormattingShouldSkipRestoringFirstResponderWhenFinished)
     {
       [(UITextView *)self _restoreFirstResponder];
@@ -11472,7 +11472,7 @@ LABEL_9:
   }
 }
 
-- (void)_textFormattingRequestsFirstResponderRestoration:(id)a3
+- (void)_textFormattingRequestsFirstResponderRestoration:(id)restoration
 {
   self->_forceSelectionDisplayForTextFormatting = 0;
   [(UITextView *)self _restoreFirstResponder];
@@ -11480,14 +11480,14 @@ LABEL_9:
   [(UITextView *)self _updateTextFormattingControllerPresentationSource];
 }
 
-- (void)_textFormattingRequestsFirstResponderResignation:(id)a3
+- (void)_textFormattingRequestsFirstResponderResignation:(id)resignation
 {
   self->_forceSelectionDisplayForTextFormatting = 1;
   self->_textFormattingShouldSkipHidingOnResignFirstResponder = 1;
   [(UITextView *)self resignFirstResponder];
 }
 
-- (void)_startSuppressingKeyboardForTextFormatting:(id)a3
+- (void)_startSuppressingKeyboardForTextFormatting:(id)formatting
 {
   if ([(UITextView *)self _shouldHideInputViewsForTextFormatting])
   {
@@ -11498,73 +11498,73 @@ LABEL_9:
   }
 }
 
-- (void)_stopSuppressingKeyboardForTextFormatting:(id)a3
+- (void)_stopSuppressingKeyboardForTextFormatting:(id)formatting
 {
   textFormattingKeyboardSuppressionAssertion = self->_textFormattingKeyboardSuppressionAssertion;
   self->_textFormattingKeyboardSuppressionAssertion = 0;
 }
 
-- (void)insertDictationResult:(id)a3 withCorrectionIdentifier:(id)a4
+- (void)insertDictationResult:(id)result withCorrectionIdentifier:(id)identifier
 {
-  v8 = a3;
-  v6 = a4;
+  resultCopy = result;
+  identifierCopy = identifier;
   if (objc_opt_respondsToSelector())
   {
-    WeakRetained = [v8 dictationPhraseArray];
+    WeakRetained = [resultCopy dictationPhraseArray];
     [(UITextView *)self insertDictationResult:WeakRetained];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_inputController);
-    [WeakRetained insertDictationResult:v8 withCorrectionIdentifier:v6];
+    [WeakRetained insertDictationResult:resultCopy withCorrectionIdentifier:identifierCopy];
   }
 }
 
-- (void)_setDictationResult:(id)a3 withCorrectionIdentifier:(id)a4
+- (void)_setDictationResult:(id)result withCorrectionIdentifier:(id)identifier
 {
-  v11 = a3;
-  v7 = a4;
-  if (v11 && [v11 count])
+  resultCopy = result;
+  identifierCopy = identifier;
+  if (resultCopy && [resultCopy count])
   {
-    v8 = [UIDictationUtilities dictationPhrasesFromPhraseArray:v11];
+    v8 = [UIDictationUtilities dictationPhrasesFromPhraseArray:resultCopy];
     [v8 setFromKeyboard:0];
     [v8 setTransform:0];
     [v8 setUseServerCapitalization:0];
-    if (!v7)
+    if (!identifierCopy)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"UITextView.m" lineNumber:7366 description:{@"Only Siri calls -[UITextView _setDictationResult:withCorrectionIdentifier:], and it should always supply the correction identifier from the server."}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITextView.m" lineNumber:7366 description:{@"Only Siri calls -[UITextView _setDictationResult:withCorrectionIdentifier:], and it should always supply the correction identifier from the server."}];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_inputController);
-    [WeakRetained _insertDictationResult:v8 withCorrectionIdentifier:v7 replacingRange:0 resultLength:{-[NSTextStorage length](self->_textStorage, "length"), 0}];
+    [WeakRetained _insertDictationResult:v8 withCorrectionIdentifier:identifierCopy replacingRange:0 resultLength:{-[NSTextStorage length](self->_textStorage, "length"), 0}];
   }
 }
 
-- (void)_registerUndoOperationForReplacementWithActionName:(id)a3 replacementText:(id)a4
+- (void)_registerUndoOperationForReplacementWithActionName:(id)name replacementText:(id)text
 {
-  v6 = a4;
-  v7 = a3;
+  textCopy = text;
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained _registerUndoOperationForReplacementWithActionName:v7 replacementText:v6];
+  [WeakRetained _registerUndoOperationForReplacementWithActionName:nameCopy replacementText:textCopy];
 }
 
 - (id)metadataDictionariesForDictationResults
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained metadataDictionariesForDictationResults];
+  metadataDictionariesForDictationResults = [WeakRetained metadataDictionariesForDictationResults];
 
-  return v3;
+  return metadataDictionariesForDictationResults;
 }
 
-- (void)setSecureTextEntry:(BOOL)a3
+- (void)setSecureTextEntry:(BOOL)entry
 {
-  v3 = a3;
-  if ([(UITextView *)self isSecureTextEntry]!= a3)
+  entryCopy = entry;
+  if ([(UITextView *)self isSecureTextEntry]!= entry)
   {
-    v5 = [(UITextView *)self _textInputTraits];
-    [v5 setSecureTextEntry:v3];
+    _textInputTraits = [(UITextView *)self _textInputTraits];
+    [_textInputTraits setSecureTextEntry:entryCopy];
 
     if ([(UITextView *)self _shouldObscureInput])
     {
@@ -11575,92 +11575,92 @@ LABEL_9:
       }
     }
 
-    v7 = [(UITextView *)self interactionAssistant];
-    [v7 updateDisplayedSelection];
+    interactionAssistant = [(UITextView *)self interactionAssistant];
+    [interactionAssistant updateDisplayedSelection];
   }
 }
 
 - (BOOL)_shouldObscureInput
 {
-  v3 = [(UITextView *)self isSecureTextEntry];
-  if (v3)
+  isSecureTextEntry = [(UITextView *)self isSecureTextEntry];
+  if (isSecureTextEntry)
   {
-    LOBYTE(v3) = [(UITextView *)self displaySecureTextUsingPlainText]^ 1;
+    LOBYTE(isSecureTextEntry) = [(UITextView *)self displaySecureTextUsingPlainText]^ 1;
   }
 
-  return v3;
+  return isSecureTextEntry;
 }
 
-- (void)setForceEnableDictation:(BOOL)a3
+- (void)setForceEnableDictation:(BOOL)dictation
 {
-  v3 = a3;
-  v4 = [(UITextView *)self _textInputTraits];
-  [v4 setForceEnableDictation:v3];
+  dictationCopy = dictation;
+  _textInputTraits = [(UITextView *)self _textInputTraits];
+  [_textInputTraits setForceEnableDictation:dictationCopy];
 }
 
-- (void)setForceDisableDictation:(BOOL)a3
+- (void)setForceDisableDictation:(BOOL)dictation
 {
-  v3 = a3;
-  v4 = [(UITextView *)self _textInputTraits];
-  [v4 setForceDisableDictation:v3];
+  dictationCopy = dictation;
+  _textInputTraits = [(UITextView *)self _textInputTraits];
+  [_textInputTraits setForceDisableDictation:dictationCopy];
 }
 
-- (void)takeTraitsFrom:(id)a3
+- (void)takeTraitsFrom:(id)from
 {
-  v4 = a3;
-  v5 = [(UITextView *)self textInputTraits];
-  [v5 takeTraitsFrom:v4];
+  fromCopy = from;
+  textInputTraits = [(UITextView *)self textInputTraits];
+  [textInputTraits takeTraitsFrom:fromCopy];
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  if ([objc_opt_class() instancesRespondToSelector:a3])
+  if ([objc_opt_class() instancesRespondToSelector:selector])
   {
-    v5 = [(UITextView *)self _textInputTraits];
+    _textInputTraits = [(UITextView *)self _textInputTraits];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UITextView;
-    v5 = [(UITextView *)&v7 forwardingTargetForSelector:a3];
+    _textInputTraits = [(UITextView *)&v7 forwardingTargetForSelector:selector];
   }
 
-  return v5;
+  return _textInputTraits;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (sel_insertTextSuggestion_ != a3 || (*(&self->_tvFlags + 3) & 4) != 0)
+  if (sel_insertTextSuggestion_ != selector || (*(&self->_tvFlags + 3) & 4) != 0)
   {
     v7.receiver = self;
     v7.super_class = UITextView;
-    if ([(UITextView *)&v7 respondsToSelector:a3])
+    if ([(UITextView *)&v7 respondsToSelector:selector])
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = [objc_opt_class() instancesRespondToSelector:a3];
+      v5 = [objc_opt_class() instancesRespondToSelector:selector];
     }
   }
 
   else
   {
-    v4 = [(UIScrollView *)self delegate];
+    delegate = [(UIScrollView *)self delegate];
     v5 = objc_opt_respondsToSelector();
   }
 
   return v5 & 1;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+  v4 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   if (!v4)
   {
-    v4 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v4 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   }
 
   return v4;
@@ -11668,8 +11668,8 @@ LABEL_9:
 
 - (void)_cancelDataDetectors
 {
-  v3 = [DataDetectorsUIGetClass(@"DDDetectionController") sharedController];
-  [v3 cancelURLificationForContainer:self];
+  dataDetectorsUIGetClass(@"DDDetectionController") = [DataDetectorsUIGetClass(@"DDDetectionController") sharedController];
+  [dataDetectorsUIGetClass(@"DDDetectionController") cancelURLificationForContainer:self];
 }
 
 - (void)_startDataDetectorsIfNeeded
@@ -11694,11 +11694,11 @@ LABEL_9:
   [(_UITextStorageDraggableGeometry *)geometry setGeometryOptions:defaultTextPreviewOptions_low & 1];
 }
 
-- (id)_targetedPreviewForTextInteractableItem:(id)a3 dismissing:(BOOL)a4
+- (id)_targetedPreviewForTextInteractableItem:(id)item dismissing:(BOOL)dismissing
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6 && (-[UITextView _applyOptionsToGeometry](self, "_applyOptionsToGeometry"), geometry = self->_geometry, [v6 range], v8 = objc_claimAutoreleasedReturnValue(), -[_UITextStorageDraggableGeometry targetedPreviewProviderForTextInRange:dismissing:](geometry, "targetedPreviewProviderForTextInRange:dismissing:", v8, v4), v9 = objc_claimAutoreleasedReturnValue(), v8, v9))
+  dismissingCopy = dismissing;
+  itemCopy = item;
+  if (itemCopy && (-[UITextView _applyOptionsToGeometry](self, "_applyOptionsToGeometry"), geometry = self->_geometry, [itemCopy range], v8 = objc_claimAutoreleasedReturnValue(), -[_UITextStorageDraggableGeometry targetedPreviewProviderForTextInRange:dismissing:](geometry, "targetedPreviewProviderForTextInRange:dismissing:", v8, dismissingCopy), v9 = objc_claimAutoreleasedReturnValue(), v8, v9))
   {
     v10 = (v9)[2](v9, self, 1);
   }
@@ -11713,7 +11713,7 @@ LABEL_9:
 
 - (BOOL)_delegatesAllowingTextItemInteractions
 {
-  v2 = [(UIScrollView *)self delegate];
+  delegate = [(UIScrollView *)self delegate];
   if (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector())
   {
     v3 = 1;
@@ -11729,18 +11729,18 @@ LABEL_9:
 
 - (BOOL)_delegatesAllowingTextItemMenuInteraction
 {
-  v2 = [(UIScrollView *)self delegate];
+  delegate = [(UIScrollView *)self delegate];
   v3 = objc_opt_respondsToSelector();
 
   return v3 & 1;
 }
 
-- (BOOL)_allowInteraction:(int64_t)a3 forTextInteractableItem:(id)a4
+- (BOOL)_allowInteraction:(int64_t)interaction forTextInteractableItem:(id)item
 {
-  v6 = a4;
-  v7 = [(UIScrollView *)self delegate];
-  v8 = a3 != 0;
-  if (a3)
+  itemCopy = item;
+  delegate = [(UIScrollView *)self delegate];
+  v8 = interaction != 0;
+  if (interaction)
   {
     if ([(UITextView *)self _delegatesAllowingTextItemMenuInteraction])
     {
@@ -11753,18 +11753,18 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if ([v6 isLinkItem])
+  if ([itemCopy isLinkItem])
   {
-    v9 = v6;
+    v9 = itemCopy;
     if (objc_opt_respondsToSelector())
     {
       textLayoutController = self->_textLayoutController;
-      v11 = [v9 range];
-      v12 = [(_UITextLayoutController *)textLayoutController characterRangeForTextRange:v11];
+      range = [v9 range];
+      v12 = [(_UITextLayoutController *)textLayoutController characterRangeForTextRange:range];
       v14 = v13;
 
-      v15 = [v9 link];
-      v16 = [v7 textView:self shouldInteractWithURL:v15 inRange:v12 interaction:{v14, v8}];
+      link = [v9 link];
+      v16 = [delegate textView:self shouldInteractWithURL:link inRange:v12 interaction:{v14, v8}];
     }
 
     else
@@ -11776,34 +11776,34 @@ LABEL_9:
       }
 
       v27 = self->_textLayoutController;
-      v28 = [v9 range];
-      v29 = [(_UITextLayoutController *)v27 characterRangeForTextRange:v28];
+      range2 = [v9 range];
+      v29 = [(_UITextLayoutController *)v27 characterRangeForTextRange:range2];
       v31 = v30;
 
-      v15 = [v9 link];
-      v16 = [v7 textView:self shouldInteractWithURL:v15 inRange:{v29, v31}];
+      link = [v9 link];
+      v16 = [delegate textView:self shouldInteractWithURL:link inRange:{v29, v31}];
     }
 
     v19 = v16;
     goto LABEL_18;
   }
 
-  if ([v6 isAttachmentItem])
+  if ([itemCopy isAttachmentItem])
   {
-    v17 = v6;
-    v18 = [v17 attachment];
-    v19 = [off_1E70ECBA8 _attachmentHasImage:v18];
+    v17 = itemCopy;
+    attachment = [v17 attachment];
+    v19 = [off_1E70ECBA8 _attachmentHasImage:attachment];
 
     v20 = dyld_program_sdk_at_least();
     if (objc_opt_respondsToSelector())
     {
       v21 = self->_textLayoutController;
-      v22 = [v17 range];
-      v23 = [(_UITextLayoutController *)v21 characterRangeForTextRange:v22];
+      range3 = [v17 range];
+      v23 = [(_UITextLayoutController *)v21 characterRangeForTextRange:range3];
       v25 = v24;
 
-      v15 = [v17 attachment];
-      v26 = [v7 textView:self shouldInteractWithTextAttachment:v15 inRange:v23 interaction:{v25, v8}];
+      link = [v17 attachment];
+      v26 = [delegate textView:self shouldInteractWithTextAttachment:link inRange:v23 interaction:{v25, v8}];
     }
 
     else
@@ -11816,12 +11816,12 @@ LABEL_19:
       }
 
       v32 = self->_textLayoutController;
-      v33 = [v17 range];
-      v34 = [(_UITextLayoutController *)v32 characterRangeForTextRange:v33];
+      range4 = [v17 range];
+      v34 = [(_UITextLayoutController *)v32 characterRangeForTextRange:range4];
       v36 = v35;
 
-      v15 = [v17 attachment];
-      v26 = [v7 textView:self shouldInteractWithTextAttachment:v15 inRange:{v34, v36}];
+      link = [v17 attachment];
+      v26 = [delegate textView:self shouldInteractWithTextAttachment:link inRange:{v34, v36}];
     }
 
     v19 = v26 & (v20 | v19);
@@ -11837,17 +11837,17 @@ LABEL_20:
   return v19 & 1;
 }
 
-- (BOOL)willInteractWithLinkAtPoint:(CGPoint)a3
+- (BOOL)willInteractWithLinkAtPoint:(CGPoint)point
 {
-  v3 = [(UITextView *)self _textInteractableItemAtPoint:0 precision:a3.x, a3.y];
+  v3 = [(UITextView *)self _textInteractableItemAtPoint:0 precision:point.x, point.y];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)startInteractionWithLinkAtPoint:(CGPoint)a3
+- (void)startInteractionWithLinkAtPoint:(CGPoint)point
 {
-  v3 = [(UITextView *)self _textInteractableItemAtPoint:0 precision:a3.x, a3.y];
+  v3 = [(UITextView *)self _textInteractableItemAtPoint:0 precision:point.x, point.y];
   [v3 invokeDefaultAction];
 }
 
@@ -11866,14 +11866,14 @@ LABEL_20:
   return textInteractableItemCache;
 }
 
-- (id)_anyTextItemConstrainedToLineAtPoint:(CGPoint)a3
+- (id)_anyTextItemConstrainedToLineAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = [(_UITextLayoutController *)self->_textLayoutController nearestPositionAtPoint:self->_textContainer inContainer:?];
   textLayoutController = self->_textLayoutController;
-  v8 = [(_UITextLayoutController *)textLayoutController beginningOfDocument];
-  v9 = [(_UITextLayoutController *)textLayoutController offsetFromPosition:v8 toPosition:v6];
+  beginningOfDocument = [(_UITextLayoutController *)textLayoutController beginningOfDocument];
+  v9 = [(_UITextLayoutController *)textLayoutController offsetFromPosition:beginningOfDocument toPosition:v6];
 
   v10 = [(_UITextLayoutController *)self->_textLayoutController textRangeForLineEnclosingPosition:v6];
   v11 = [(_UITextLayoutController *)self->_textLayoutController characterRangeForTextRange:v10];
@@ -11988,11 +11988,11 @@ void __51__UITextView__anyTextItemConstrainedToLineAtPoint___block_invoke_2(uint
   }
 }
 
-- (id)_textInteractableItemAtPoint:(CGPoint)a3 precision:(unint64_t)a4
+- (id)_textInteractableItemAtPoint:(CGPoint)point precision:(unint64_t)precision
 {
-  y = a3.y;
-  x = a3.x;
-  if (a4 == 2)
+  y = point.y;
+  x = point.x;
+  if (precision == 2)
   {
     v7 = 1.0;
   }
@@ -12150,22 +12150,22 @@ id __53__UITextView__textInteractableItemAtPoint_precision___block_invoke_2(uint
   return result;
 }
 
-- (id)_textItemForItem:(id)a3
+- (id)_textItemForItem:(id)item
 {
   textLayoutController = self->_textLayoutController;
-  v4 = a3;
-  v5 = [v4 range];
-  v6 = [(_UITextLayoutController *)textLayoutController characterRangeForTextRange:v5];
+  itemCopy = item;
+  range = [itemCopy range];
+  v6 = [(_UITextLayoutController *)textLayoutController characterRangeForTextRange:range];
   v8 = v7;
 
-  v9 = [v4 itemRepresentationWithRange:{v6, v8}];
+  v9 = [itemCopy itemRepresentationWithRange:{v6, v8}];
 
   return v9;
 }
 
-- (id)_textInteractableItemForTag:(id)a3
+- (id)_textInteractableItemForTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v35 = 0;
   v36 = &v35;
   v37 = 0x4010000000;
@@ -12192,9 +12192,9 @@ id __53__UITextView__textInteractableItemAtPoint_precision___block_invoke_2(uint
   v18[1] = 3221225472;
   v18[2] = __42__UITextView__textInteractableItemForTag___block_invoke;
   v18[3] = &unk_1E7126FF8;
-  v9 = v4;
+  v9 = tagCopy;
   v19 = v9;
-  v20 = self;
+  selfCopy = self;
   v21 = &v24;
   v22 = &v35;
   v23 = &v30;
@@ -12259,32 +12259,32 @@ uint64_t __42__UITextView__textInteractableItemForTag___block_invoke_2(uint64_t 
   return result;
 }
 
-- (id)_primaryActionForTextInteractableItem:(id)a3 defaultAction:(id)a4
+- (id)_primaryActionForTextInteractableItem:(id)item defaultAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIScrollView *)self delegate];
-  v9 = v7;
+  itemCopy = item;
+  actionCopy = action;
+  delegate = [(UIScrollView *)self delegate];
+  v9 = actionCopy;
   v10 = v9;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(UITextView *)self _textItemForItem:v6];
-    v10 = [v8 textView:self primaryActionForTextItem:v11 defaultAction:v9];
+    v11 = [(UITextView *)self _textItemForItem:itemCopy];
+    v10 = [delegate textView:self primaryActionForTextItem:v11 defaultAction:v9];
   }
 
   return v10;
 }
 
-- (id)_menuConfigurationForTextInteractableItem:(id)a3 defaultMenu:(id)a4
+- (id)_menuConfigurationForTextInteractableItem:(id)item defaultMenu:(id)menu
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIScrollView *)self delegate];
-  v9 = [UITextItemMenuConfiguration configurationWithMenu:v7];
+  itemCopy = item;
+  menuCopy = menu;
+  delegate = [(UIScrollView *)self delegate];
+  v9 = [UITextItemMenuConfiguration configurationWithMenu:menuCopy];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(UITextView *)self _textItemForItem:v6];
-    v11 = [v8 textView:self menuConfigurationForTextItem:v10 defaultMenu:v7];
+    v10 = [(UITextView *)self _textItemForItem:itemCopy];
+    v11 = [delegate textView:self menuConfigurationForTextItem:v10 defaultMenu:menuCopy];
 
     v9 = v11;
   }
@@ -12292,40 +12292,40 @@ uint64_t __42__UITextView__textInteractableItemForTag___block_invoke_2(uint64_t 
   return v9;
 }
 
-- (void)_textInteractableItem:(id)a3 willDisplayMenuWithAnimator:(id)a4
+- (void)_textInteractableItem:(id)item willDisplayMenuWithAnimator:(id)animator
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(UIScrollView *)self delegate];
+  itemCopy = item;
+  animatorCopy = animator;
+  delegate = [(UIScrollView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(UITextView *)self _textItemForItem:v9];
-    [v7 textView:self textItemMenuWillDisplayForTextItem:v8 animator:v6];
+    v8 = [(UITextView *)self _textItemForItem:itemCopy];
+    [delegate textView:self textItemMenuWillDisplayForTextItem:v8 animator:animatorCopy];
   }
 }
 
-- (void)_textInteractableItem:(id)a3 willDismissMenuWithAnimator:(id)a4
+- (void)_textInteractableItem:(id)item willDismissMenuWithAnimator:(id)animator
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(UIScrollView *)self delegate];
+  itemCopy = item;
+  animatorCopy = animator;
+  delegate = [(UIScrollView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(UITextView *)self _textItemForItem:v9];
-    [v7 textView:self textItemMenuWillEndForTextItem:v8 animator:v6];
+    v8 = [(UITextView *)self _textItemForItem:itemCopy];
+    [delegate textView:self textItemMenuWillEndForTextItem:v8 animator:animatorCopy];
   }
 }
 
-- (BOOL)_interactionPossibleWithAttachment:(id)a3
+- (BOOL)_interactionPossibleWithAttachment:(id)attachment
 {
-  if ([off_1E70ECBA8 _attachmentHasImage:a3])
+  if ([off_1E70ECBA8 _attachmentHasImage:attachment])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(UIScrollView *)self delegate];
+    delegate = [(UIScrollView *)self delegate];
     if (objc_opt_respondsToSelector())
     {
       v4 = 1;
@@ -12340,18 +12340,18 @@ uint64_t __42__UITextView__textInteractableItemForTag___block_invoke_2(uint64_t 
   return v4 & 1;
 }
 
-- (BOOL)_allowHighlightForTextInteractableItem:(id)a3
+- (BOOL)_allowHighlightForTextInteractableItem:(id)item
 {
-  v4 = a3;
-  v5 = [(UIScrollView *)self delegate];
+  itemCopy = item;
+  delegate = [(UIScrollView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     textLayoutController = self->_textLayoutController;
-    v7 = [v4 range];
-    v8 = [(_UITextLayoutController *)textLayoutController characterRangeForTextRange:v7];
+    range = [itemCopy range];
+    v8 = [(_UITextLayoutController *)textLayoutController characterRangeForTextRange:range];
     v10 = v9;
 
-    v11 = [v5 _textView:self shouldHighlightForInteractionInRange:{v8, v10}];
+    v11 = [delegate _textView:self shouldHighlightForInteractionInRange:{v8, v10}];
   }
 
   else
@@ -12401,42 +12401,42 @@ uint64_t __42__UITextView__textInteractableItemForTag___block_invoke_2(uint64_t 
   }
 }
 
-- (void)_findSelected:(id)a3
+- (void)_findSelected:(id)selected
 {
-  v4 = a3;
-  [(UITextView *)self useSelectionForFind:v4];
-  [(UITextView *)self find:v4];
+  selectedCopy = selected;
+  [(UITextView *)self useSelectionForFind:selectedCopy];
+  [(UITextView *)self find:selectedCopy];
 }
 
-- (id)findInteraction:(id)a3 sessionForView:(id)a4
+- (id)findInteraction:(id)interaction sessionForView:(id)view
 {
   v4 = [[UITextSearchingFindSession alloc] initWithSearchableObject:self];
 
   return v4;
 }
 
-- (void)findInteraction:(id)a3 didBeginFindSession:(id)a4
+- (void)findInteraction:(id)interaction didBeginFindSession:(id)session
 {
-  [(UITextView *)self didBeginTextSearchOperation:a3];
+  [(UITextView *)self didBeginTextSearchOperation:interaction];
   searchableObject = self->_searchableObject;
 
   [(_UITextViewSearchableObject *)searchableObject didBeginFindSession];
 }
 
-- (void)findInteraction:(id)a3 didEndFindSession:(id)a4
+- (void)findInteraction:(id)interaction didEndFindSession:(id)session
 {
-  [(UITextView *)self didEndTextSearchOperation:a3];
+  [(UITextView *)self didEndTextSearchOperation:interaction];
   searchableObject = self->_searchableObject;
 
   [(_UITextViewSearchableObject *)searchableObject didEndFindSession];
 }
 
-- (id)_textLineRectsForRange:(id)a3
+- (id)_textLineRectsForRange:(id)range
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(UITextView *)self selectionRectsForRange:v4];
+  rangeCopy = range;
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = [(UITextView *)self selectionRectsForRange:rangeCopy];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -12463,7 +12463,7 @@ uint64_t __42__UITextView__textInteractableItemForTag___block_invoke_2(uint64_t 
           v16 = MEMORY[0x1E696B098];
           [v11 rect];
           v17 = [v16 valueWithCGRect:?];
-          [v5 addObject:v17];
+          [array addObject:v17];
         }
       }
 
@@ -12473,15 +12473,15 @@ uint64_t __42__UITextView__textInteractableItemForTag___block_invoke_2(uint64_t 
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (id)_targetedPreviewForRange:(id)a3 withRenderingAttributes:(id)a4 includeFullDocument:(BOOL)a5
+- (id)_targetedPreviewForRange:(id)range withRenderingAttributes:(id)attributes includeFullDocument:(BOOL)document
 {
-  v5 = a5;
+  documentCopy = document;
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  rangeCopy = range;
+  attributesCopy = attributes;
   if (os_variant_has_internal_diagnostics())
   {
     if ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantRewriteLogging, @"UITextAssistantRewriteLogging") & 1) == 0)
@@ -12492,17 +12492,17 @@ uint64_t __42__UITextView__textInteractableItemForTag___block_invoke_2(uint64_t 
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          *&buf[4] = v8;
+          *&buf[4] = rangeCopy;
           *&buf[12] = 2112;
-          *&buf[14] = v9;
+          *&buf[14] = attributesCopy;
           _os_log_impl(&dword_188A29000, v29, OS_LOG_TYPE_ERROR, "Creating targeted preview for range: %@, renderingAttributes: %@", buf, 0x16u);
         }
       }
     }
   }
 
-  v10 = [(UITextView *)self _previewRendererForRange:v8 unifyRects:1];
-  [v10 addRenderingAttributes:v9];
+  v10 = [(UITextView *)self _previewRendererForRange:rangeCopy unifyRects:1];
+  [v10 addRenderingAttributes:attributesCopy];
   [v10 setExcludeBackground:1];
   *buf = 0;
   *&buf[8] = buf;
@@ -12521,7 +12521,7 @@ uint64_t __42__UITextView__textInteractableItemForTag___block_invoke_2(uint64_t 
   aBlock[2] = __83__UITextView__targetedPreviewForRange_withRenderingAttributes_includeFullDocument___block_invoke;
   aBlock[3] = &unk_1E7127020;
   aBlock[4] = self;
-  v11 = v8;
+  v11 = rangeCopy;
   v31 = v11;
   v33 = buf;
   v12 = v10;
@@ -12529,10 +12529,10 @@ uint64_t __42__UITextView__textInteractableItemForTag___block_invoke_2(uint64_t 
   v34 = &v35;
   v13 = _Block_copy(aBlock);
   v14 = v13;
-  if (v5)
+  if (documentCopy)
   {
-    v15 = [(UITextView *)self textContainer];
-    [v15 size];
+    textContainer = [(UITextView *)self textContainer];
+    [textContainer size];
     v17 = v16;
 
     [(UITextView *)self _setFreezeTextContainerSize:1];
@@ -12554,8 +12554,8 @@ uint64_t __42__UITextView__textInteractableItemForTag___block_invoke_2(uint64_t 
     (*(v13 + 2))(v13, 0, 0);
   }
 
-  v18 = [v9 allKeys];
-  [v12 removeRenderingAttributes:v18];
+  allKeys = [attributesCopy allKeys];
+  [v12 removeRenderingAttributes:allKeys];
 
   v19 = [UITextHighlightView preferredPreviewParametersForTextLineRects:v36[5]];
   v20 = [UIPreviewTarget alloc];
@@ -12596,9 +12596,9 @@ void __83__UITextView__targetedPreviewForRange_withRenderingAttributes_includeFu
   return [(UIResponder *)&v3 _defaultWritingToolsResultOptions]& 0xFFFFFFFFFFFFFFF7;
 }
 
-- (void)setAllowedWritingToolsResultOptions:(unint64_t)a3
+- (void)setAllowedWritingToolsResultOptions:(unint64_t)options
 {
-  if (self && (a3 & 8) != 0 && (!_UIIsPrivateMainBundle() || [(UITextView *)self isMemberOfClass:objc_opt_class()]))
+  if (self && (options & 8) != 0 && (!_UIIsPrivateMainBundle() || [(UITextView *)self isMemberOfClass:objc_opt_class()]))
   {
     if (_UIIsPrivateMainBundle() && (os_variant_has_internal_diagnostics() & 1) != 0)
     {
@@ -12613,29 +12613,29 @@ void __83__UITextView__targetedPreviewForRange_withRenderingAttributes_includeFu
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:v5];
   }
 
-  v6 = [(UITextView *)self _textInputTraits];
-  [v6 setAllowedWritingToolsResultOptions:a3];
+  _textInputTraits = [(UITextView *)self _textInputTraits];
+  [_textInputTraits setAllowedWritingToolsResultOptions:options];
 }
 
 - (BOOL)isWritingToolsActive
 {
-  v2 = [(UITextView *)self _existingWritingToolsCoordinator];
-  v3 = [v2 state];
+  _existingWritingToolsCoordinator = [(UITextView *)self _existingWritingToolsCoordinator];
+  state = [_existingWritingToolsCoordinator state];
 
-  return (v3 & 0xFFFFFFFFFFFFFFFELL) == 2;
+  return (state & 0xFFFFFFFFFFFFFFFELL) == 2;
 }
 
-- (void)writingToolsCoordinator:(id)a3 requestsContextsForScope:(int64_t)a4 completion:(id)a5
+- (void)writingToolsCoordinator:(id)coordinator requestsContextsForScope:(int64_t)scope completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  if ([v9 state] == 2)
+  completionCopy = completion;
+  coordinatorCopy = coordinator;
+  if ([coordinatorCopy state] == 2)
   {
     tvFlags = self->_tvFlags;
     if ((*&tvFlags & 0x20000000) != 0)
     {
-      v11 = [(UIScrollView *)self delegate];
-      [v11 textViewWritingToolsWillBegin:self];
+      delegate = [(UIScrollView *)self delegate];
+      [delegate textViewWritingToolsWillBegin:self];
     }
 
     else
@@ -12645,119 +12645,119 @@ void __83__UITextView__targetedPreviewForRange_withRenderingAttributes_includeFu
         goto LABEL_7;
       }
 
-      v11 = [(UIScrollView *)self delegate];
-      [v11 _textViewWillBeginTextAssistantSession:self];
+      delegate = [(UIScrollView *)self delegate];
+      [delegate _textViewWillBeginTextAssistantSession:self];
     }
   }
 
 LABEL_7:
-  v12 = [(UITextView *)self _textAssistantManager];
-  [v12 writingToolsCoordinator:v9 requestsContextsForScope:a4 completion:v8];
+  _textAssistantManager = [(UITextView *)self _textAssistantManager];
+  [_textAssistantManager writingToolsCoordinator:coordinatorCopy requestsContextsForScope:scope completion:completionCopy];
 }
 
-- (void)writingToolsCoordinator:(id)a3 replaceRange:(_NSRange)a4 inContext:(id)a5 proposedText:(id)a6 reason:(int64_t)a7 animationParameters:(id)a8 completion:(id)a9
+- (void)writingToolsCoordinator:(id)coordinator replaceRange:(_NSRange)range inContext:(id)context proposedText:(id)text reason:(int64_t)reason animationParameters:(id)parameters completion:(id)completion
 {
-  length = a4.length;
-  location = a4.location;
-  v16 = a9;
-  v17 = a8;
-  v18 = a6;
-  v19 = a5;
-  v20 = a3;
-  v21 = [(UITextView *)self _textAssistantManager];
-  [v21 writingToolsCoordinator:v20 replaceRange:location inContext:length proposedText:v19 reason:v18 animationParameters:a7 completion:{v17, v16}];
+  length = range.length;
+  location = range.location;
+  completionCopy = completion;
+  parametersCopy = parameters;
+  textCopy = text;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  _textAssistantManager = [(UITextView *)self _textAssistantManager];
+  [_textAssistantManager writingToolsCoordinator:coordinatorCopy replaceRange:location inContext:length proposedText:contextCopy reason:textCopy animationParameters:reason completion:{parametersCopy, completionCopy}];
 }
 
-- (void)writingToolsCoordinator:(id)a3 selectRanges:(id)a4 inContext:(id)a5 completion:(id)a6
+- (void)writingToolsCoordinator:(id)coordinator selectRanges:(id)ranges inContext:(id)context completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(UITextView *)self _textAssistantManager];
-  [v14 writingToolsCoordinator:v13 selectRanges:v12 inContext:v11 completion:v10];
+  completionCopy = completion;
+  contextCopy = context;
+  rangesCopy = ranges;
+  coordinatorCopy = coordinator;
+  _textAssistantManager = [(UITextView *)self _textAssistantManager];
+  [_textAssistantManager writingToolsCoordinator:coordinatorCopy selectRanges:rangesCopy inContext:contextCopy completion:completionCopy];
 }
 
-- (void)writingToolsCoordinator:(id)a3 requestsRangeInContextWithIdentifierForPoint:(CGPoint)a4 completion:(id)a5
+- (void)writingToolsCoordinator:(id)coordinator requestsRangeInContextWithIdentifierForPoint:(CGPoint)point completion:(id)completion
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(UITextView *)self _textAssistantManager];
-  [v11 writingToolsCoordinator:v10 requestsRangeInContextWithIdentifierForPoint:v9 completion:{x, y}];
+  y = point.y;
+  x = point.x;
+  completionCopy = completion;
+  coordinatorCopy = coordinator;
+  _textAssistantManager = [(UITextView *)self _textAssistantManager];
+  [_textAssistantManager writingToolsCoordinator:coordinatorCopy requestsRangeInContextWithIdentifierForPoint:completionCopy completion:{x, y}];
 }
 
-- (void)writingToolsCoordinator:(id)a3 requestsBoundingBezierPathsForRange:(_NSRange)a4 inContext:(id)a5 completion:(id)a6
+- (void)writingToolsCoordinator:(id)coordinator requestsBoundingBezierPathsForRange:(_NSRange)range inContext:(id)context completion:(id)completion
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [(UITextView *)self _textAssistantManager];
-  [v14 writingToolsCoordinator:v13 requestsBoundingBezierPathsForRange:location inContext:length completion:{v12, v11}];
+  length = range.length;
+  location = range.location;
+  completionCopy = completion;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  _textAssistantManager = [(UITextView *)self _textAssistantManager];
+  [_textAssistantManager writingToolsCoordinator:coordinatorCopy requestsBoundingBezierPathsForRange:location inContext:length completion:{contextCopy, completionCopy}];
 }
 
-- (void)writingToolsCoordinator:(id)a3 requestsUnderlinePathsForRange:(_NSRange)a4 inContext:(id)a5 completion:(id)a6
+- (void)writingToolsCoordinator:(id)coordinator requestsUnderlinePathsForRange:(_NSRange)range inContext:(id)context completion:(id)completion
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [(UITextView *)self _textAssistantManager];
-  [v14 writingToolsCoordinator:v13 requestsUnderlinePathsForRange:location inContext:length completion:{v12, v11}];
+  length = range.length;
+  location = range.location;
+  completionCopy = completion;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  _textAssistantManager = [(UITextView *)self _textAssistantManager];
+  [_textAssistantManager writingToolsCoordinator:coordinatorCopy requestsUnderlinePathsForRange:location inContext:length completion:{contextCopy, completionCopy}];
 }
 
-- (void)writingToolsCoordinator:(id)a3 prepareForTextAnimation:(int64_t)a4 forRange:(_NSRange)a5 inContext:(id)a6 completion:(id)a7
+- (void)writingToolsCoordinator:(id)coordinator prepareForTextAnimation:(int64_t)animation forRange:(_NSRange)range inContext:(id)context completion:(id)completion
 {
-  length = a5.length;
-  location = a5.location;
-  v13 = a7;
-  v14 = a6;
-  v15 = a3;
-  v16 = [(UITextView *)self _textAssistantManager];
-  [v16 writingToolsCoordinator:v15 prepareForTextAnimation:a4 forRange:location inContext:length completion:{v14, v13}];
+  length = range.length;
+  location = range.location;
+  completionCopy = completion;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  _textAssistantManager = [(UITextView *)self _textAssistantManager];
+  [_textAssistantManager writingToolsCoordinator:coordinatorCopy prepareForTextAnimation:animation forRange:location inContext:length completion:{contextCopy, completionCopy}];
 }
 
-- (void)writingToolsCoordinator:(id)a3 adjustForUpdatedRange:(_NSRange)a4 forTextAnimation:(int64_t)a5 inContext:(id)a6 completion:(id)a7
+- (void)writingToolsCoordinator:(id)coordinator adjustForUpdatedRange:(_NSRange)range forTextAnimation:(int64_t)animation inContext:(id)context completion:(id)completion
 {
-  length = a4.length;
-  location = a4.location;
-  v13 = a7;
-  v14 = a6;
-  v15 = a3;
-  v16 = [(UITextView *)self _textAssistantManager];
-  [v16 writingToolsCoordinator:v15 adjustForUpdatedRange:location forTextAnimation:length inContext:a5 completion:{v14, v13}];
+  length = range.length;
+  location = range.location;
+  completionCopy = completion;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  _textAssistantManager = [(UITextView *)self _textAssistantManager];
+  [_textAssistantManager writingToolsCoordinator:coordinatorCopy adjustForUpdatedRange:location forTextAnimation:length inContext:animation completion:{contextCopy, completionCopy}];
 }
 
-- (void)writingToolsCoordinator:(id)a3 requestsPreviewForTextAnimation:(int64_t)a4 ofRange:(_NSRange)a5 inContext:(id)a6 completion:(id)a7
+- (void)writingToolsCoordinator:(id)coordinator requestsPreviewForTextAnimation:(int64_t)animation ofRange:(_NSRange)range inContext:(id)context completion:(id)completion
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v45 = *MEMORY[0x1E69E9840];
-  v42 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(UITextView *)self textLayoutManager];
+  coordinatorCopy = coordinator;
+  contextCopy = context;
+  completionCopy = completion;
+  textLayoutManager = [(UITextView *)self textLayoutManager];
 
-  if (v15)
+  if (textLayoutManager)
   {
-    v16 = [(UITextView *)self _textAssistantManager];
-    [v16 writingToolsCoordinator:v42 requestsPreviewForTextAnimation:a4 ofRange:location inContext:length completion:{v13, v14}];
+    _textAssistantManager = [(UITextView *)self _textAssistantManager];
+    [_textAssistantManager writingToolsCoordinator:coordinatorCopy requestsPreviewForTextAnimation:animation ofRange:location inContext:length completion:{contextCopy, completionCopy}];
   }
 
   else if (self)
   {
-    v17 = v14;
+    v17 = completionCopy;
     if (os_variant_has_internal_diagnostics() && ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantRewriteLogging, @"UITextAssistantRewriteLogging") & 1) == 0 && byte_1EA95E17C || (_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantProofreadLogging, @"UITextAssistantProofreadLogging") & 1) == 0 && byte_1EA95E184))
     {
       v39 = *(__UILogGetCategoryCachedImpl("UIWritingToolsCoordinator", &_handleTextKit1PreviewGenerationForTextAnimation_ofRange_completion____s_category) + 8);
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
         v40 = v39;
-        v41 = UIWritingToolsCoordinatorTextAnimationDebugDescription(a4);
+        v41 = UIWritingToolsCoordinatorTextAnimationDebugDescription(animation);
         *buf = 138412290;
         v44 = v41;
         _os_log_impl(&dword_188A29000, v40, OS_LOG_TYPE_ERROR, "Cannot generate preview for %@ in TextKit 1 mode - advanced animation features not supported", buf, 0xCu);
@@ -12774,8 +12774,8 @@ LABEL_7:
 
     else
     {
-      v22 = [(UITextView *)self textStorage];
-      v23 = [v22 length];
+      textStorage = [(UITextView *)self textStorage];
+      v23 = [textStorage length];
 
       v20 = 1.0;
       v21 = 0.0;
@@ -12811,19 +12811,19 @@ LABEL_7:
     }
 
     v29 = [[UIView alloc] initWithFrame:v21, v18, v20, v19];
-    v30 = [(UIView *)self superview];
-    v31 = v30;
-    if (v30)
+    superview = [(UIView *)self superview];
+    v31 = superview;
+    if (superview)
     {
-      v32 = v30;
+      selfCopy = superview;
     }
 
     else
     {
-      v32 = self;
+      selfCopy = self;
     }
 
-    v33 = v32;
+    v33 = selfCopy;
 
     v34 = objc_alloc_init(UIPreviewParameters);
     v35 = +[UIColor clearColor];
@@ -12838,37 +12838,37 @@ LABEL_7:
   }
 }
 
-- (void)writingToolsCoordinator:(id)a3 finishTextAnimation:(int64_t)a4 forRange:(_NSRange)a5 inContext:(id)a6 completion:(id)a7
+- (void)writingToolsCoordinator:(id)coordinator finishTextAnimation:(int64_t)animation forRange:(_NSRange)range inContext:(id)context completion:(id)completion
 {
-  length = a5.length;
-  location = a5.location;
-  v13 = a7;
-  v14 = a6;
-  v15 = a3;
-  v16 = [(UITextView *)self _textAssistantManager];
-  [v16 writingToolsCoordinator:v15 finishTextAnimation:a4 forRange:location inContext:length completion:{v14, v13}];
+  length = range.length;
+  location = range.location;
+  completionCopy = completion;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  _textAssistantManager = [(UITextView *)self _textAssistantManager];
+  [_textAssistantManager writingToolsCoordinator:coordinatorCopy finishTextAnimation:animation forRange:location inContext:length completion:{contextCopy, completionCopy}];
 }
 
-- (void)writingToolsCoordinator:(id)a3 willChangeToState:(int64_t)a4 completion:(id)a5
+- (void)writingToolsCoordinator:(id)coordinator willChangeToState:(int64_t)state completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  coordinatorCopy = coordinator;
+  completionCopy = completion;
   tvFlags = self->_tvFlags;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __67__UITextView_writingToolsCoordinator_willChangeToState_completion___block_invoke;
   aBlock[3] = &unk_1E7127048;
-  v18 = v9;
-  v19 = a4;
+  v18 = completionCopy;
+  stateCopy = state;
   v20 = (tvFlags & 0x40000000) != 0;
-  v16 = v8;
-  v17 = self;
+  v16 = coordinatorCopy;
+  selfCopy = self;
   v21 = (tvFlags & 0x10000000) != 0;
-  v11 = v9;
-  v12 = v8;
+  v11 = completionCopy;
+  v12 = coordinatorCopy;
   v13 = _Block_copy(aBlock);
-  v14 = [(UITextView *)self _textAssistantManager];
-  [v14 writingToolsCoordinator:v12 willChangeToState:a4 completion:v13];
+  _textAssistantManager = [(UITextView *)self _textAssistantManager];
+  [_textAssistantManager writingToolsCoordinator:v12 willChangeToState:state completion:v13];
 }
 
 void __67__UITextView_writingToolsCoordinator_willChangeToState_completion___block_invoke(uint64_t a1)
@@ -12906,33 +12906,33 @@ void __67__UITextView_writingToolsCoordinator_willChangeToState_completion___blo
   }
 }
 
-- (id)_writingToolsCoordinator:(id)a3 textHighlightColorForScheme:(id)a4 inHighlightStyle:(id)a5
+- (id)_writingToolsCoordinator:(id)coordinator textHighlightColorForScheme:(id)scheme inHighlightStyle:(id)style
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(UITextView *)self _textAssistantManager];
-  v12 = [v11 _writingToolsCoordinator:v10 textHighlightColorForScheme:v9 inHighlightStyle:v8];
+  styleCopy = style;
+  schemeCopy = scheme;
+  coordinatorCopy = coordinator;
+  _textAssistantManager = [(UITextView *)self _textAssistantManager];
+  v12 = [_textAssistantManager _writingToolsCoordinator:coordinatorCopy textHighlightColorForScheme:schemeCopy inHighlightStyle:styleCopy];
 
   return v12;
 }
 
-- (void)_writingToolsCoordinator:(id)a3 didReceiveContexts:(id)a4
+- (void)_writingToolsCoordinator:(id)coordinator didReceiveContexts:(id)contexts
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UITextView *)self _textAssistantManager];
-  [v8 _writingToolsCoordinator:v7 didReceiveContexts:v6];
+  contextsCopy = contexts;
+  coordinatorCopy = coordinator;
+  _textAssistantManager = [(UITextView *)self _textAssistantManager];
+  [_textAssistantManager _writingToolsCoordinator:coordinatorCopy didReceiveContexts:contextsCopy];
 }
 
-- (BOOL)_performExternalEditsForWritingToolsSessionIdentifier:(id)a3 action:(int64_t)a4 usingBlock:(id)a5
+- (BOOL)_performExternalEditsForWritingToolsSessionIdentifier:(id)identifier action:(int64_t)action usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  blockCopy = block;
   if ([(UITextView *)self isWritingToolsActive])
   {
-    v10 = [(UITextView *)self _existingTextAssistantManager];
-    v11 = [v10 performExternalEditsForWritingToolsSessionIdentifier:v8 action:a4 usingBlock:v9];
+    _existingTextAssistantManager = [(UITextView *)self _existingTextAssistantManager];
+    v11 = [_existingTextAssistantManager performExternalEditsForWritingToolsSessionIdentifier:identifierCopy action:action usingBlock:blockCopy];
   }
 
   else
@@ -12973,18 +12973,18 @@ void __67__UITextView_writingToolsCoordinator_willChangeToState_completion___blo
   return textAssistantManager;
 }
 
-- (void)_setWritingToolsCoordinator:(id)a3
+- (void)_setWritingToolsCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(UITextView *)self _existingWritingToolsCoordinator];
-  v6 = v5;
-  if (v5 != v4)
+  coordinatorCopy = coordinator;
+  _existingWritingToolsCoordinator = [(UITextView *)self _existingWritingToolsCoordinator];
+  v6 = _existingWritingToolsCoordinator;
+  if (_existingWritingToolsCoordinator != coordinatorCopy)
   {
-    [v5 _setAssociatedTextView:0];
+    [_existingWritingToolsCoordinator _setAssociatedTextView:0];
     v7.receiver = self;
     v7.super_class = UITextView;
-    [(UIView *)&v7 _setWritingToolsCoordinator:v4];
-    [v4 _setAssociatedTextView:self];
+    [(UIView *)&v7 _setWritingToolsCoordinator:coordinatorCopy];
+    [coordinatorCopy _setAssociatedTextView:self];
   }
 }
 
@@ -12992,65 +12992,65 @@ void __67__UITextView_writingToolsCoordinator_willChangeToState_completion___blo
 {
   if (self->_textDragDropSupport)
   {
-    v3 = [(UIView *)self interactions];
-    v4 = [(UITextDragDropSupport *)self->_textDragDropSupport dragInteraction];
-    if ([v3 indexOfObject:v4] == 0x7FFFFFFFFFFFFFFFLL)
+    interactions = [(UIView *)self interactions];
+    dragInteraction = [(UITextDragDropSupport *)self->_textDragDropSupport dragInteraction];
+    if ([interactions indexOfObject:dragInteraction] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v5 = 0;
+      dragInteraction2 = 0;
     }
 
     else
     {
-      v5 = [(UITextDragDropSupport *)self->_textDragDropSupport dragInteraction];
+      dragInteraction2 = [(UITextDragDropSupport *)self->_textDragDropSupport dragInteraction];
     }
   }
 
   else
   {
-    v5 = 0;
+    dragInteraction2 = 0;
   }
 
-  return v5;
+  return dragInteraction2;
 }
 
 - (UIDropInteraction)textDropInteraction
 {
   if (self->_textDragDropSupport)
   {
-    v3 = [(UIView *)self interactions];
-    v4 = [(UITextDragDropSupport *)self->_textDragDropSupport dropInteraction];
-    if ([v3 indexOfObject:v4] == 0x7FFFFFFFFFFFFFFFLL)
+    interactions = [(UIView *)self interactions];
+    dropInteraction = [(UITextDragDropSupport *)self->_textDragDropSupport dropInteraction];
+    if ([interactions indexOfObject:dropInteraction] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v5 = 0;
+      dropInteraction2 = 0;
     }
 
     else
     {
-      v5 = [(UITextDragDropSupport *)self->_textDragDropSupport dropInteraction];
+      dropInteraction2 = [(UITextDragDropSupport *)self->_textDragDropSupport dropInteraction];
     }
   }
 
   else
   {
-    v5 = 0;
+    dropInteraction2 = 0;
   }
 
-  return v5;
+  return dropInteraction2;
 }
 
-- (void)draggingFinished:(id)a3
+- (void)draggingFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   [(UITextView *)self _updateSelectionGestures];
-  v5 = [v4 dragTearoffOccured];
+  dragTearoffOccured = [finishedCopy dragTearoffOccured];
 
-  if ((v5 & 1) == 0)
+  if ((dragTearoffOccured & 1) == 0)
   {
     [(UITextView *)self selectedRange];
     if (v6)
     {
-      v7 = [(UITextView *)self interactionAssistant];
-      [v7 showSelectionCommands];
+      interactionAssistant = [(UITextView *)self interactionAssistant];
+      [interactionAssistant showSelectionCommands];
     }
   }
 }
@@ -13095,17 +13095,17 @@ void __67__UITextView_writingToolsCoordinator_willChangeToState_completion___blo
   return WeakRetained;
 }
 
-- (void)encodeRestorableStateWithCoder:(id)a3 includingSelectedTextAndDisplayedViewControllers:(BOOL)a4
+- (void)encodeRestorableStateWithCoder:(id)coder includingSelectedTextAndDisplayedViewControllers:(BOOL)controllers
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(UITextView *)self isEditable];
-  v8 = [(UITextView *)self selectedRange];
+  controllersCopy = controllers;
+  coderCopy = coder;
+  isEditable = [(UITextView *)self isEditable];
+  selectedRange = [(UITextView *)self selectedRange];
   v10 = v9;
   v11 = v9 != 0;
-  if (v7)
+  if (isEditable)
   {
-    v12 = [(UIView *)self isFirstResponder];
+    isFirstResponder = [(UIView *)self isFirstResponder];
     if (v10)
     {
       v11 = 1;
@@ -13113,23 +13113,23 @@ void __67__UITextView_writingToolsCoordinator_willChangeToState_completion___blo
 
     else
     {
-      v11 = v12;
+      v11 = isFirstResponder;
     }
   }
 
   v18.receiver = self;
   v18.super_class = UITextView;
-  [(UIScrollView *)&v18 encodeRestorableStateWithCoder:v6];
+  [(UIScrollView *)&v18 encodeRestorableStateWithCoder:coderCopy];
   if (v11)
   {
-    [v6 encodeInt:v10 forKey:@"kTextSelectedTextLengthKey"];
-    [v6 encodeInt:v8 forKey:@"kTextSelectedTextLocationKey"];
-    if (v4)
+    [coderCopy encodeInt:v10 forKey:@"kTextSelectedTextLengthKey"];
+    [coderCopy encodeInt:selectedRange forKey:@"kTextSelectedTextLocationKey"];
+    if (controllersCopy)
     {
-      v13 = [(UITextView *)self selectedText];
-      if ([v13 length])
+      selectedText = [(UITextView *)self selectedText];
+      if ([selectedText length])
       {
-        [v6 encodeObject:v13 forKey:@"kTextSelectedTextKey"];
+        [coderCopy encodeObject:selectedText forKey:@"kTextSelectedTextKey"];
       }
 
       if ([(UITextView *)self _isDisplayingShortcutViewController])
@@ -13140,14 +13140,14 @@ void __67__UITextView_writingToolsCoordinator_willChangeToState_completion___blo
       if ([(UITextView *)self _isDisplayingReferenceLibraryViewController])
       {
         v14 = +[UIDevice currentDevice];
-        v15 = [v14 userInterfaceIdiom];
+        userInterfaceIdiom = [v14 userInterfaceIdiom];
 
-        if (!v15)
+        if (!userInterfaceIdiom)
         {
           [UIApp ignoreSnapshotOnNextApplicationLaunch];
         }
 
-        [v6 encodeBool:1 forKey:@"kTextDisplayingReferenceLibraryViewControllerKey"];
+        [coderCopy encodeBool:1 forKey:@"kTextDisplayingReferenceLibraryViewControllerKey"];
       }
 
       if ([(UITextView *)self _isDisplayingShareViewController])
@@ -13157,38 +13157,38 @@ void __67__UITextView_writingToolsCoordinator_willChangeToState_completion___blo
     }
   }
 
-  v16 = [(UITextView *)self _restorableScrollPositionForStateRestoration];
-  v17 = [v16 dictionaryRepresentation];
+  _restorableScrollPositionForStateRestoration = [(UITextView *)self _restorableScrollPositionForStateRestoration];
+  dictionaryRepresentation = [_restorableScrollPositionForStateRestoration dictionaryRepresentation];
 
-  if (v17)
+  if (dictionaryRepresentation)
   {
-    [v6 encodeObject:v17 forKey:@"kTextVisiblePosition"];
+    [coderCopy encodeObject:dictionaryRepresentation forKey:@"kTextVisiblePosition"];
   }
 
-  [v6 encodeBool:v7 forKey:@"kTextEditableKey"];
-  [v6 encodeBool:-[UIView isFirstResponder](self forKey:{"isFirstResponder"), @"kTextFirstResponderKey"}];
+  [coderCopy encodeBool:isEditable forKey:@"kTextEditableKey"];
+  [coderCopy encodeBool:-[UIView isFirstResponder](self forKey:{"isFirstResponder"), @"kTextFirstResponderKey"}];
 }
 
-- (void)decodeRestorableStateWithCoder:(id)a3 includingSelectedTextAndDisplayedViewControllers:(BOOL)a4
+- (void)decodeRestorableStateWithCoder:(id)coder includingSelectedTextAndDisplayedViewControllers:(BOOL)controllers
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 containsValueForKey:@"kTextEditableKey"])
+  controllersCopy = controllers;
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"kTextEditableKey"])
   {
-    -[UITextView setEditable:](self, "setEditable:", [v6 decodeBoolForKey:@"kTextEditableKey"]);
+    -[UITextView setEditable:](self, "setEditable:", [coderCopy decodeBoolForKey:@"kTextEditableKey"]);
   }
 
-  if ([v6 containsValueForKey:@"kTextFirstResponderKey"] && objc_msgSend(v6, "decodeBoolForKey:", @"kTextFirstResponderKey"))
+  if ([coderCopy containsValueForKey:@"kTextFirstResponderKey"] && objc_msgSend(coderCopy, "decodeBoolForKey:", @"kTextFirstResponderKey"))
   {
     [(UITextView *)self becomeFirstResponder];
   }
 
-  if ([v6 containsValueForKey:@"kTextSelectedTextLengthKey"])
+  if ([coderCopy containsValueForKey:@"kTextSelectedTextLengthKey"])
   {
-    if ([v6 containsValueForKey:@"kTextSelectedTextLocationKey"])
+    if ([coderCopy containsValueForKey:@"kTextSelectedTextLocationKey"])
     {
-      v7 = [v6 decodeIntForKey:@"kTextSelectedTextLengthKey"];
-      v8 = [v6 decodeIntForKey:@"kTextSelectedTextLocationKey"];
+      v7 = [coderCopy decodeIntForKey:@"kTextSelectedTextLengthKey"];
+      v8 = [coderCopy decodeIntForKey:@"kTextSelectedTextLocationKey"];
       if ([(UITextView *)self isEditable]|| v7)
       {
         if ([(UIScrollView *)self isProgrammaticScrollEnabled])
@@ -13197,7 +13197,7 @@ void __67__UITextView_writingToolsCoordinator_willChangeToState_completion___blo
           [(UITextView *)self becomeFirstResponder];
           [(UITextView *)self setSelectedRange:v8, v7];
           [(UIScrollView *)self setProgrammaticScrollEnabled:1];
-          if (!v4)
+          if (!controllersCopy)
           {
             goto LABEL_21;
           }
@@ -13207,40 +13207,40 @@ void __67__UITextView_writingToolsCoordinator_willChangeToState_completion___blo
         {
           [(UITextView *)self becomeFirstResponder];
           [(UITextView *)self setSelectedRange:v8, v7];
-          if (!v4)
+          if (!controllersCopy)
           {
             goto LABEL_21;
           }
         }
 
-        v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"kTextSelectedTextKey"];
+        v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kTextSelectedTextKey"];
         if (v9)
         {
-          v10 = [v6 decodeBoolForKey:@"kTextDisplayingShortcutViewControllerKey"];
-          v11 = [v6 decodeBoolForKey:@"kTextDisplayingReferenceLibraryViewControllerKey"];
-          [v6 decodeBoolForKey:@"kTextDisplayingShareViewControllerKey"];
+          v10 = [coderCopy decodeBoolForKey:@"kTextDisplayingShortcutViewControllerKey"];
+          v11 = [coderCopy decodeBoolForKey:@"kTextDisplayingReferenceLibraryViewControllerKey"];
+          [coderCopy decodeBoolForKey:@"kTextDisplayingShareViewControllerKey"];
           if ((v10 & 1) == 0)
           {
             if (v11)
             {
               v12 = +[UIDevice currentDevice];
-              v13 = [v12 userInterfaceIdiom];
+              userInterfaceIdiom = [v12 userInterfaceIdiom];
 
-              if (v13)
+              if (userInterfaceIdiom)
               {
                 block[0] = MEMORY[0x1E69E9820];
                 block[1] = 3221225472;
                 block[2] = __112__UITextView_StateRestoration__decodeRestorableStateWithCoder_includingSelectedTextAndDisplayedViewControllers___block_invoke;
                 block[3] = &unk_1E70F35B8;
                 v23 = v9;
-                v24 = self;
+                selfCopy = self;
                 dispatch_async(MEMORY[0x1E69E96A0], block);
               }
 
               else
               {
-                v14 = [(UITextView *)self selectedText];
-                [v9 isEqualToString:v14];
+                selectedText = [(UITextView *)self selectedText];
+                [v9 isEqualToString:selectedText];
               }
             }
           }
@@ -13252,12 +13252,12 @@ void __67__UITextView_writingToolsCoordinator_willChangeToState_completion___blo
 LABEL_21:
   v21.receiver = self;
   v21.super_class = UITextView;
-  [(UIScrollView *)&v21 decodeRestorableStateWithCoder:v6];
+  [(UIScrollView *)&v21 decodeRestorableStateWithCoder:coderCopy];
   v15 = MEMORY[0x1E695DFD8];
   v16 = objc_opt_class();
   v17 = objc_opt_class();
   v18 = [v15 setWithObjects:{v16, v17, objc_opt_class(), 0}];
-  v19 = [v6 decodeObjectOfClasses:v18 forKey:@"kTextVisiblePosition"];
+  v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"kTextVisiblePosition"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -13288,18 +13288,18 @@ void __112__UITextView_StateRestoration__decodeRestorableStateWithCoder_includin
 {
   v3 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [(UITextView *)self encodeRestorableStateWithCoder:v3 includingSelectedTextAndDisplayedViewControllers:0];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v4;
+  return encodedData;
 }
 
-- (void)_setInteractionState:(id)a3
+- (void)_setInteractionState:(id)state
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696ACD0];
-  v5 = a3;
+  stateCopy = state;
   v10 = 0;
-  v6 = [[v4 alloc] initForReadingFromData:v5 error:&v10];
+  v6 = [[v4 alloc] initForReadingFromData:stateCopy error:&v10];
 
   v7 = v10;
   if (v6)
@@ -13325,9 +13325,9 @@ void __112__UITextView_StateRestoration__decodeRestorableStateWithCoder_includin
   }
 }
 
-- (id)_nonNullUITextRangeForTextKitRanges:(id)a3
+- (id)_nonNullUITextRangeForTextKitRanges:(id)ranges
 {
-  v3 = [(UITextView *)self _rangeForTextKitRanges:a3];
+  v3 = [(UITextView *)self _rangeForTextKitRanges:ranges];
   if (!v3)
   {
     v3 = [_UITextKitTextRange rangeWithRange:0, 0];
@@ -13336,9 +13336,9 @@ void __112__UITextView_StateRestoration__decodeRestorableStateWithCoder_includin
   return v3;
 }
 
-- (id)_nonNullUITextRangeFromNSRange:(_NSRange)a3
+- (id)_nonNullUITextRangeFromNSRange:(_NSRange)range
 {
-  v3 = [(UIResponder *)self _textRangeFromNSRange:a3.location, a3.length];
+  v3 = [(UIResponder *)self _textRangeFromNSRange:range.location, range.length];
   if (!v3)
   {
     v3 = [_UITextKitTextRange rangeWithRange:0, 0];
@@ -13347,15 +13347,15 @@ void __112__UITextView_StateRestoration__decodeRestorableStateWithCoder_includin
   return v3;
 }
 
-- (id)_NSTextRangeFromNSRange:(_NSRange)a3
+- (id)_NSTextRangeFromNSRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(UITextView *)self _internalTextLayoutController];
-  v6 = v5;
-  if (v5)
+  length = range.length;
+  location = range.location;
+  _internalTextLayoutController = [(UITextView *)self _internalTextLayoutController];
+  v6 = _internalTextLayoutController;
+  if (_internalTextLayoutController)
   {
-    v7 = [v5 _rangeForCharacterRange:{location, length}];
+    v7 = [_internalTextLayoutController _rangeForCharacterRange:{location, length}];
   }
 
   else
@@ -13366,9 +13366,9 @@ void __112__UITextView_StateRestoration__decodeRestorableStateWithCoder_includin
   return v7;
 }
 
-- (_NSRange)_nsRangeForNonNullUITextRange:(id)a3
+- (_NSRange)_nsRangeForNonNullUITextRange:(id)range
 {
-  if (a3)
+  if (range)
   {
     v3 = [(UIResponder *)self _nsrangeForTextRange:?];
   }
@@ -13384,9 +13384,9 @@ void __112__UITextView_StateRestoration__decodeRestorableStateWithCoder_includin
   return result;
 }
 
-- (int64_t)_indexForNonNullUITextPosition:(id)a3
+- (int64_t)_indexForNonNullUITextPosition:(id)position
 {
-  if (a3)
+  if (position)
   {
     return [(UIResponder *)self _indexForTextPosition:?];
   }
@@ -13397,9 +13397,9 @@ void __112__UITextView_StateRestoration__decodeRestorableStateWithCoder_includin
   }
 }
 
-- (_NSRange)_nsRangeForTextKitRanges:(id)a3
+- (_NSRange)_nsRangeForTextKitRanges:(id)ranges
 {
-  v4 = [(UITextView *)self _nonNullUITextRangeForTextKitRanges:a3];
+  v4 = [(UITextView *)self _nonNullUITextRangeForTextKitRanges:ranges];
   v5 = [(UIResponder *)self _nsrangeForTextRange:v4];
   v7 = v6;
 
@@ -13410,26 +13410,26 @@ void __112__UITextView_StateRestoration__decodeRestorableStateWithCoder_includin
   return result;
 }
 
-- (id)_nonNullIntersectionOfUITextRange:(id)a3 withOtherUITextRange:(id)a4
+- (id)_nonNullIntersectionOfUITextRange:(id)range withOtherUITextRange:(id)textRange
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIResponder *)self _intersectionOfRange:v6 andRange:v7];
+  rangeCopy = range;
+  textRangeCopy = textRange;
+  v8 = [(UIResponder *)self _intersectionOfRange:rangeCopy andRange:textRangeCopy];
   if (!v8)
   {
-    v9 = [v7 start];
-    v10 = [v6 start];
-    v11 = [v7 start];
-    v12 = [(UITextView *)self comparePosition:v10 toPosition:v11];
+    start = [textRangeCopy start];
+    start2 = [rangeCopy start];
+    start3 = [textRangeCopy start];
+    v12 = [(UITextView *)self comparePosition:start2 toPosition:start3];
 
     if (v12 == -1)
     {
-      v13 = [v6 start];
+      start4 = [rangeCopy start];
 
-      v9 = v13;
+      start = start4;
     }
 
-    v8 = [(UITextView *)self textRangeFromPosition:v9 toPosition:v9];
+    v8 = [(UITextView *)self textRangeFromPosition:start toPosition:start];
   }
 
   return v8;
@@ -13438,16 +13438,16 @@ void __112__UITextView_StateRestoration__decodeRestorableStateWithCoder_includin
 - (BOOL)automaticallyAdjustsWritingDirection
 {
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  v3 = [WeakRetained automaticallyAdjustsWritingDirection];
+  automaticallyAdjustsWritingDirection = [WeakRetained automaticallyAdjustsWritingDirection];
 
-  return v3;
+  return automaticallyAdjustsWritingDirection;
 }
 
-- (void)setAutomaticallyAdjustsWritingDirection:(BOOL)a3
+- (void)setAutomaticallyAdjustsWritingDirection:(BOOL)direction
 {
-  v3 = a3;
+  directionCopy = direction;
   WeakRetained = objc_loadWeakRetained(&self->_inputController);
-  [WeakRetained setAutomaticallyAdjustsWritingDirection:v3];
+  [WeakRetained setAutomaticallyAdjustsWritingDirection:directionCopy];
 }
 
 - (id)_fontInfoForBaselineSpacing
@@ -13462,18 +13462,18 @@ void __112__UITextView_StateRestoration__decodeRestorableStateWithCoder_includin
   return result;
 }
 
-- (double)_autolayoutSpacingAtEdge:(int)a3 forAttribute:(int64_t)a4 inContainer:(id)a5 isGuide:(BOOL)a6
+- (double)_autolayoutSpacingAtEdge:(int)edge forAttribute:(int64_t)attribute inContainer:(id)container isGuide:(BOOL)guide
 {
-  if ((a3 - 5) > 1)
+  if ((edge - 5) > 1)
   {
     v8.receiver = self;
     v8.super_class = UITextView;
-    [(UIView *)&v8 _autolayoutSpacingAtEdge:*&a3 forAttribute:a4 inContainer:a5 isGuide:a6];
+    [(UIView *)&v8 _autolayoutSpacingAtEdge:*&edge forAttribute:attribute inContainer:container isGuide:guide];
   }
 
   else
   {
-    _UIViewBaselineToEdgeSpacing([(UITextView *)self _fontInfoForBaselineSpacing], a3);
+    _UIViewBaselineToEdgeSpacing([(UITextView *)self _fontInfoForBaselineSpacing], edge);
 
     UICeilToViewScale(self);
   }
@@ -13481,16 +13481,16 @@ void __112__UITextView_StateRestoration__decodeRestorableStateWithCoder_includin
   return result;
 }
 
-- (double)_autolayoutSpacingAtEdge:(int)a3 forAttribute:(int64_t)a4 nextToNeighbor:(id)a5 edge:(int)a6 attribute:(int64_t)a7 multiplier:(double)a8
+- (double)_autolayoutSpacingAtEdge:(int)edge forAttribute:(int64_t)attribute nextToNeighbor:(id)neighbor edge:(int)a6 attribute:(int64_t)a7 multiplier:(double)multiplier
 {
   v10 = *&a6;
-  v13 = *&a3;
-  if ((a3 - 5) > 1)
+  v13 = *&edge;
+  if ((edge - 5) > 1)
   {
     goto LABEL_12;
   }
 
-  v15 = a4 - 11;
+  v15 = attribute - 11;
   if (os_variant_has_internal_diagnostics())
   {
     if (v15 < 2)
@@ -13508,7 +13508,7 @@ void __112__UITextView_StateRestoration__decodeRestorableStateWithCoder_includin
 LABEL_12:
     v19.receiver = self;
     v19.super_class = UITextView;
-    [(UIView *)&v19 _autolayoutSpacingAtEdge:v13 forAttribute:a4 nextToNeighbor:a5 edge:v10 attribute:a7 multiplier:a8];
+    [(UIView *)&v19 _autolayoutSpacingAtEdge:v13 forAttribute:attribute nextToNeighbor:neighbor edge:v10 attribute:a7 multiplier:multiplier];
     return result;
   }
 
@@ -13526,7 +13526,7 @@ LABEL_12:
 
 LABEL_4:
 
-  _UIViewBaselineSpacing(self, a5, v13);
+  _UIViewBaselineSpacing(self, neighbor, v13);
   return result;
 }
 

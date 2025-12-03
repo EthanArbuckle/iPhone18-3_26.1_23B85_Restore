@@ -1,22 +1,22 @@
 @interface SUUIFacebookViewElement
-- (SUUIFacebookViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUIFacebookViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUIFacebookViewElement
 
-- (SUUIFacebookViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIFacebookViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v14.receiver = self;
   v14.super_class = SUUIFacebookViewElement;
-  v9 = [(SUUIViewElement *)&v14 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v14 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"type"];
+    v10 = [elementCopy getAttribute:@"type"];
     v9->_facebookType = [v10 isEqualToString:@"large"];
 
-    v11 = [v8 getAttribute:@"url"];
+    v11 = [elementCopy getAttribute:@"url"];
     urlString = v9->_urlString;
     v9->_urlString = v11;
   }
@@ -24,19 +24,19 @@
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SUUIFacebookViewElement;
-  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_facebookType = [(SUUIFacebookViewElement *)v4 facebookType];
-    v7 = [(SUUIFacebookViewElement *)v4 URLString];
+    self->_facebookType = [(SUUIFacebookViewElement *)elementCopy facebookType];
+    uRLString = [(SUUIFacebookViewElement *)elementCopy URLString];
     urlString = self->_urlString;
-    self->_urlString = v7;
+    self->_urlString = uRLString;
   }
 
   return v6;

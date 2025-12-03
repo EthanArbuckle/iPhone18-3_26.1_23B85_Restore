@@ -1,12 +1,12 @@
 @interface NLResourceWrapper
-+ (id)copyAssetURLWithLocale:(id)a3 contentType:(id)a4 contentName:(id)a5;
++ (id)copyAssetURLWithLocale:(id)locale contentType:(id)type contentName:(id)name;
 @end
 
 @implementation NLResourceWrapper
 
-+ (id)copyAssetURLWithLocale:(id)a3 contentType:(id)a4 contentName:(id)a5
++ (id)copyAssetURLWithLocale:(id)locale contentType:(id)type contentName:(id)name
 {
-  CoreNLP::Resource::getAssetResource(a3, a4, a5, 0, &v8);
+  CoreNLP::Resource::getAssetResource(locale, type, name, 0, &v8);
   if (v8 && CoreNLP::Resource::exists(v8, v5))
   {
     v6 = [CoreNLP::Resource::URL(v8) copy];

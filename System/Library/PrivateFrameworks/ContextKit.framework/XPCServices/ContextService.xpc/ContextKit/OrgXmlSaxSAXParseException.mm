@@ -1,16 +1,16 @@
 @interface OrgXmlSaxSAXParseException
 - (void)dealloc;
-- (void)init__WithNSString:(id)a3 withNSString:(id)a4 withInt:(int)a5 withInt:(int)a6;
+- (void)init__WithNSString:(id)string withNSString:(id)sString withInt:(int)int withInt:(int)withInt;
 @end
 
 @implementation OrgXmlSaxSAXParseException
 
-- (void)init__WithNSString:(id)a3 withNSString:(id)a4 withInt:(int)a5 withInt:(int)a6
+- (void)init__WithNSString:(id)string withNSString:(id)sString withInt:(int)int withInt:(int)withInt
 {
-  JreStrongAssign(&self->publicId_, a3);
-  JreStrongAssign(&self->systemId_, a4);
-  self->lineNumber_ = a5;
-  self->columnNumber_ = a6;
+  JreStrongAssign(&self->publicId_, string);
+  JreStrongAssign(&self->systemId_, sString);
+  self->lineNumber_ = int;
+  self->columnNumber_ = withInt;
 }
 
 - (void)dealloc

@@ -12,23 +12,23 @@
 
   if (v6)
   {
-    v5 = [(HDCodableListUserDomainConcept *)v6 name];
-    [a1 _setListName:v5];
+    name = [(HDCodableListUserDomainConcept *)v6 name];
+    [self _setListName:name];
 
-    [a1 _setListType:{-[HDCodableListUserDomainConcept type](v6, "type")}];
+    [self _setListType:{-[HDCodableListUserDomainConcept type](v6, "type")}];
   }
 }
 
 - (id)codableSubclassData
 {
   v2 = objc_alloc_init(HDCodableListUserDomainConcept);
-  v3 = [a1 listName];
-  [(HDCodableListUserDomainConcept *)v2 setName:v3];
+  listName = [self listName];
+  [(HDCodableListUserDomainConcept *)v2 setName:listName];
 
-  -[HDCodableListUserDomainConcept setType:](v2, "setType:", [a1 listType]);
-  v4 = [(HDCodableListUserDomainConcept *)v2 data];
+  -[HDCodableListUserDomainConcept setType:](v2, "setType:", [self listType]);
+  data = [(HDCodableListUserDomainConcept *)v2 data];
 
-  return v4;
+  return data;
 }
 
 @end

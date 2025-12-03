@@ -1,55 +1,55 @@
 @interface HMDLightProfile
 + (id)logCategory;
-+ (id)messageBindingForDispatcher:(id)a3 message:(id)a4 receiver:(id)a5;
-- (BOOL)enableNaturalLightingCharacteristicNotificationsForObserver:(id)a3;
-- (BOOL)shouldRetrySetNaturalLightingEnabledWithError:(id)a3;
++ (id)messageBindingForDispatcher:(id)dispatcher message:(id)message receiver:(id)receiver;
+- (BOOL)enableNaturalLightingCharacteristicNotificationsForObserver:(id)observer;
+- (BOOL)shouldRetrySetNaturalLightingEnabledWithError:(id)error;
 - (BOOL)supportsCHIP;
-- (BOOL)updateActiveTransitionCountWithCharacteristic:(id)a3;
+- (BOOL)updateActiveTransitionCountWithCharacteristic:(id)characteristic;
 - (BOOL)updateEnabledCharacteristicsNotifications;
 - (BOOL)updateNaturalLightingCurve;
 - (HMDHAPAccessory)hapAccessory;
-- (HMDLightProfile)initWithUUID:(id)a3 workQueue:(id)a4 lightService:(id)a5 accessory:(id)a6 characteristicsAvailabilityListener:(id)a7 naturalLightingCurveWriter:(id)a8 dataSource:(id)a9;
-- (HMDLightProfile)initWithUUID:(id)a3 workQueue:(id)a4 lightService:(id)a5 accessory:(id)a6 matterCurveWriter:(id)a7 dataSource:(id)a8;
-- (HMDLightProfile)initWithWorkQueue:(id)a3 lightService:(id)a4 accessory:(id)a5;
+- (HMDLightProfile)initWithUUID:(id)d workQueue:(id)queue lightService:(id)service accessory:(id)accessory characteristicsAvailabilityListener:(id)listener naturalLightingCurveWriter:(id)writer dataSource:(id)source;
+- (HMDLightProfile)initWithUUID:(id)d workQueue:(id)queue lightService:(id)service accessory:(id)accessory matterCurveWriter:(id)writer dataSource:(id)source;
+- (HMDLightProfile)initWithWorkQueue:(id)queue lightService:(id)service accessory:(id)accessory;
 - (HMLightProfileSettings)settings;
 - (NSDate)mostRecentNaturalLightingEnabledDate;
 - (NSDate)mostRecentNaturalLightingUsedDate;
 - (NSSet)availableCharacteristics;
 - (NSSet)readCharacteristicRequests;
-- (id)availableCharacteristicWithType:(id)a3 fromChangedObjects:(id)a4;
-- (id)setNaturalLightingEnabledForMatterLightProfile:(BOOL)a3;
-- (id)updateSettingsWithReadCharacteristicResponsePayload:(id)a3 error:(id *)a4;
-- (void)_handleAccessoryCharacteristicsChanged:(id)a3;
-- (void)callSetNaturalLightingEnabledCompletion:(id)a3 error:(id)a4;
+- (id)availableCharacteristicWithType:(id)type fromChangedObjects:(id)objects;
+- (id)setNaturalLightingEnabledForMatterLightProfile:(BOOL)profile;
+- (id)updateSettingsWithReadCharacteristicResponsePayload:(id)payload error:(id *)error;
+- (void)_handleAccessoryCharacteristicsChanged:(id)changed;
+- (void)callSetNaturalLightingEnabledCompletion:(id)completion error:(id)error;
 - (void)dealloc;
-- (void)disableNaturalLightingCharacteristicNotificationsForObserver:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchNaturalLightingEnabledWithCompletion:(id)a3;
-- (void)handleAccessoryCharacteristicsChanged:(id)a3;
-- (void)handleAccessoryNaturalLightingEnabledDidChangeNotification:(id)a3;
-- (void)handleAccessorySupportsNaturalLightingDidChangeNotification:(id)a3;
-- (void)handleAccessoryUnconfigured:(id)a3;
-- (void)handleColorControlAttributeReport:(id)a3;
-- (void)handleFetchNaturalLightColorTemperatureForBrightnessMessage:(id)a3;
-- (void)handleHomeDidDisableCharacteristicNotification:(id)a3;
-- (void)handleHomeDidEnableCharacteristicNotification:(id)a3;
-- (void)handleHomeNaturalLightingContextUpdated:(id)a3;
-- (void)handleSetNaturalLightingEnabledMessage:(id)a3;
-- (void)handleSetNaturalLightingEnabledMessageForMatterAccessory:(id)a3;
-- (void)listener:(id)a3 didUpdateAvailableCharacteristics:(id)a4;
-- (void)notifyClientsOfUpdatedSettingsWithPreviousSettings:(id)a3;
-- (void)readCharacteristics:(id)a3;
-- (void)readNaturalLightingCharacteristicsWithReason:(id)a3;
-- (void)readNaturalLightingCharacteristicsWithReason:(id)a3 completion:(id)a4;
+- (void)disableNaturalLightingCharacteristicNotificationsForObserver:(id)observer;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchNaturalLightingEnabledWithCompletion:(id)completion;
+- (void)handleAccessoryCharacteristicsChanged:(id)changed;
+- (void)handleAccessoryNaturalLightingEnabledDidChangeNotification:(id)notification;
+- (void)handleAccessorySupportsNaturalLightingDidChangeNotification:(id)notification;
+- (void)handleAccessoryUnconfigured:(id)unconfigured;
+- (void)handleColorControlAttributeReport:(id)report;
+- (void)handleFetchNaturalLightColorTemperatureForBrightnessMessage:(id)message;
+- (void)handleHomeDidDisableCharacteristicNotification:(id)notification;
+- (void)handleHomeDidEnableCharacteristicNotification:(id)notification;
+- (void)handleHomeNaturalLightingContextUpdated:(id)updated;
+- (void)handleSetNaturalLightingEnabledMessage:(id)message;
+- (void)handleSetNaturalLightingEnabledMessageForMatterAccessory:(id)accessory;
+- (void)listener:(id)listener didUpdateAvailableCharacteristics:(id)characteristics;
+- (void)notifyClientsOfUpdatedSettingsWithPreviousSettings:(id)settings;
+- (void)readCharacteristics:(id)characteristics;
+- (void)readNaturalLightingCharacteristicsWithReason:(id)reason;
+- (void)readNaturalLightingCharacteristicsWithReason:(id)reason completion:(id)completion;
 - (void)registerForMessages;
 - (void)resetNaturalLightingEnabledRetryContext;
-- (void)retrySetNaturalLightingEnabledWithContext:(id)a3 error:(id)a4;
-- (void)setNaturalLightingCharacteristicsNotificationEnabled:(BOOL)a3 forObserver:(id)a4;
-- (void)setNaturalLightingEnabled:(BOOL)a3 completion:(id)a4;
+- (void)retrySetNaturalLightingEnabledWithContext:(id)context error:(id)error;
+- (void)setNaturalLightingCharacteristicsNotificationEnabled:(BOOL)enabled forObserver:(id)observer;
+- (void)setNaturalLightingEnabled:(BOOL)enabled completion:(id)completion;
 - (void)synchronizeCurveToAccessory;
-- (void)updateNaturalLightingEnabledForCharacteristic:(id)a3;
-- (void)updateSettingsWithCharacteristics:(id)a3;
-- (void)updateSupportedFeaturesWithCharacteristics:(id)a3;
+- (void)updateNaturalLightingEnabledForCharacteristic:(id)characteristic;
+- (void)updateSettingsWithCharacteristics:(id)characteristics;
+- (void)updateSupportedFeaturesWithCharacteristics:(id)characteristics;
 @end
 
 @implementation HMDLightProfile
@@ -61,19 +61,19 @@
   return WeakRetained;
 }
 
-- (void)readCharacteristics:(id)a3
+- (void)readCharacteristics:(id)characteristics
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 na_map:&__block_literal_global_189];
-  v6 = [(HMDLightProfile *)self hapAccessory];
-  v7 = [v6 home];
+  characteristicsCopy = characteristics;
+  v5 = [characteristicsCopy na_map:&__block_literal_global_189];
+  hapAccessory = [(HMDLightProfile *)self hapAccessory];
+  home = [hapAccessory home];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   v11 = v10;
-  if (v7)
+  if (home)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
@@ -81,19 +81,19 @@
       *buf = 138543618;
       v19 = v12;
       v20 = 2112;
-      v21 = v4;
+      v21 = characteristicsCopy;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_DEBUG, "%{public}@Sending read requests to read characteristics from the accessory: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    objc_initWeak(buf, v9);
-    v13 = [(HMDAccessoryProfile *)v9 description];
+    objc_initWeak(buf, selfCopy);
+    v13 = [(HMDAccessoryProfile *)selfCopy description];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __39__HMDLightProfile_readCharacteristics___block_invoke_190;
     v16[3] = &unk_278687FB0;
     objc_copyWeak(&v17, buf);
-    [v7 readCharacteristicValues:v5 source:1140 sourceForLogging:v13 qualityOfService:-1 withCompletionHandler:v16];
+    [home readCharacteristicValues:v5 source:1140 sourceForLogging:v13 qualityOfService:-1 withCompletionHandler:v16];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(buf);
@@ -120,22 +120,22 @@ void __39__HMDLightProfile_readCharacteristics___block_invoke_190(uint64_t a1)
   WeakRetained = objc_loadWeakRetained((a1 + 32));
 }
 
-- (id)setNaturalLightingEnabledForMatterLightProfile:(BOOL)a3
+- (id)setNaturalLightingEnabledForMatterLightProfile:(BOOL)profile
 {
-  v5 = [(HMDLightProfile *)self matterCurveWriter];
+  matterCurveWriter = [(HMDLightProfile *)self matterCurveWriter];
 
-  if (v5)
+  if (matterCurveWriter)
   {
     v6 = objc_alloc(MEMORY[0x277D0F7A8]);
-    v7 = [(HMDAccessoryProfile *)self workQueue];
-    v8 = [v6 initWithQueue:v7];
+    workQueue = [(HMDAccessoryProfile *)self workQueue];
+    v8 = [v6 initWithQueue:workQueue];
 
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __66__HMDLightProfile_setNaturalLightingEnabledForMatterLightProfile___block_invoke;
     v13[3] = &unk_278687F68;
     v13[4] = self;
-    v14 = a3;
+    profileCopy = profile;
     v9 = [MEMORY[0x277D0F7C0] inContext:v8 perform:v13];
   }
 
@@ -165,21 +165,21 @@ void __66__HMDLightProfile_setNaturalLightingEnabledForMatterLightProfile___bloc
   }
 }
 
-- (void)handleColorControlAttributeReport:(id)a3
+- (void)handleColorControlAttributeReport:(id)report
 {
-  v4 = a3;
-  v5 = [(HMDLightProfile *)self matterCurveWriter];
+  reportCopy = report;
+  matterCurveWriter = [(HMDLightProfile *)self matterCurveWriter];
 
-  if (v5)
+  if (matterCurveWriter)
   {
-    v6 = [(HMDAccessoryProfile *)self workQueue];
+    workQueue = [(HMDAccessoryProfile *)self workQueue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __53__HMDLightProfile_handleColorControlAttributeReport___block_invoke;
     v7[3] = &unk_27868A750;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v6, v7);
+    v8 = reportCopy;
+    dispatch_async(workQueue, v7);
   }
 }
 
@@ -189,42 +189,42 @@ void __53__HMDLightProfile_handleColorControlAttributeReport___block_invoke(uint
   [v2 handleColorControlAttributeReport:*(a1 + 40)];
 }
 
-- (void)handleSetNaturalLightingEnabledMessageForMatterAccessory:(id)a3
+- (void)handleSetNaturalLightingEnabledMessageForMatterAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [(HMDLightProfile *)self hapAccessory];
-  v6 = [v5 home];
+  accessoryCopy = accessory;
+  hapAccessory = [(HMDLightProfile *)self hapAccessory];
+  home = [hapAccessory home];
 
-  if ([v6 isCurrentDeviceConfirmedPrimaryResident])
+  if ([home isCurrentDeviceConfirmedPrimaryResident])
   {
-    v7 = [(HMDLightProfile *)self matterCurveWriter];
+    matterCurveWriter = [(HMDLightProfile *)self matterCurveWriter];
 
-    if (!v7)
+    if (!matterCurveWriter)
     {
       v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-      [v4 respondWithError:v11];
+      [accessoryCopy respondWithError:v11];
 
       goto LABEL_6;
     }
 
-    v8 = [(HMDLightProfile *)self matterCurveWriter];
-    [v8 handleSetNaturalLightingEnabledMessage:v4 lightProfile:self];
+    matterCurveWriter2 = [(HMDLightProfile *)self matterCurveWriter];
+    [matterCurveWriter2 handleSetNaturalLightingEnabledMessage:accessoryCopy lightProfile:self];
   }
 
   else
   {
-    v8 = [v4 mutableCopy];
+    matterCurveWriter2 = [accessoryCopy mutableCopy];
     objc_initWeak(&location, self);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __76__HMDLightProfile_handleSetNaturalLightingEnabledMessageForMatterAccessory___block_invoke;
     v12[3] = &unk_278687F40;
     objc_copyWeak(&v14, &location);
-    v13 = v4;
-    [v8 setResponseHandler:v12];
-    v9 = [(HMDAccessoryProfile *)self uniqueIdentifier];
-    v10 = [(HMDAccessoryProfile *)self workQueue];
-    [v6 redispatchToResidentMessage:v8 target:v9 responseQueue:v10];
+    v13 = accessoryCopy;
+    [matterCurveWriter2 setResponseHandler:v12];
+    uniqueIdentifier = [(HMDAccessoryProfile *)self uniqueIdentifier];
+    workQueue = [(HMDAccessoryProfile *)self workQueue];
+    [home redispatchToResidentMessage:matterCurveWriter2 target:uniqueIdentifier responseQueue:workQueue];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -328,19 +328,19 @@ LABEL_16:
 
 - (BOOL)supportsCHIP
 {
-  v2 = [(HMDLightProfile *)self hapAccessory];
-  v3 = [v2 supportsCHIP];
+  hapAccessory = [(HMDLightProfile *)self hapAccessory];
+  supportsCHIP = [hapAccessory supportsCHIP];
 
-  return v3;
+  return supportsCHIP;
 }
 
-- (void)handleAccessoryNaturalLightingEnabledDidChangeNotification:(id)a3
+- (void)handleAccessoryNaturalLightingEnabledDidChangeNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = object;
   }
 
   else
@@ -350,15 +350,15 @@ LABEL_16:
 
   v6 = v5;
 
-  v7 = [(HMDAccessoryProfile *)self workQueue];
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __78__HMDLightProfile_handleAccessoryNaturalLightingEnabledDidChangeNotification___block_invoke;
   v9[3] = &unk_27868A750;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v8 = v6;
-  dispatch_async(v7, v9);
+  dispatch_async(workQueue, v9);
 }
 
 void __78__HMDLightProfile_handleAccessoryNaturalLightingEnabledDidChangeNotification___block_invoke(uint64_t a1)
@@ -420,15 +420,15 @@ void __78__HMDLightProfile_handleAccessoryNaturalLightingEnabledDidChangeNotific
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAccessorySupportsNaturalLightingDidChangeNotification:(id)a3
+- (void)handleAccessorySupportsNaturalLightingDidChangeNotification:(id)notification
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -441,7 +441,7 @@ void __78__HMDLightProfile_handleAccessoryNaturalLightingEnabledDidChangeNotific
   if ([v7 supportsCHIP] && (_os_feature_enabled_impl() & 1) == 0)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -456,14 +456,14 @@ void __78__HMDLightProfile_handleAccessoryNaturalLightingEnabledDidChangeNotific
 
   else
   {
-    v8 = [(HMDAccessoryProfile *)self workQueue];
+    workQueue = [(HMDAccessoryProfile *)self workQueue];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __79__HMDLightProfile_handleAccessorySupportsNaturalLightingDidChangeNotification___block_invoke;
     v14[3] = &unk_27868A750;
     v15 = v7;
-    v16 = self;
-    dispatch_async(v8, v14);
+    selfCopy2 = self;
+    dispatch_async(workQueue, v14);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -532,15 +532,15 @@ void __79__HMDLightProfile_handleAccessorySupportsNaturalLightingDidChangeNotifi
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHomeNaturalLightingContextUpdated:(id)a3
+- (void)handleHomeNaturalLightingContextUpdated:(id)updated
 {
-  v4 = [(HMDAccessoryProfile *)self workQueue];
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__HMDLightProfile_handleHomeNaturalLightingContextUpdated___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __59__HMDLightProfile_handleHomeNaturalLightingContextUpdated___block_invoke(uint64_t a1)
@@ -629,18 +629,18 @@ void __59__HMDLightProfile_handleHomeNaturalLightingContextUpdated___block_invok
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHomeDidDisableCharacteristicNotification:(id)a3
+- (void)handleHomeDidDisableCharacteristicNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__HMDLightProfile_handleHomeDidDisableCharacteristicNotification___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __66__HMDLightProfile_handleHomeDidDisableCharacteristicNotification___block_invoke(uint64_t a1)
@@ -650,18 +650,18 @@ void __66__HMDLightProfile_handleHomeDidDisableCharacteristicNotification___bloc
   [v1 disableNaturalLightingCharacteristicNotificationsForObserver:v2];
 }
 
-- (void)handleHomeDidEnableCharacteristicNotification:(id)a3
+- (void)handleHomeDidEnableCharacteristicNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__HMDLightProfile_handleHomeDidEnableCharacteristicNotification___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __65__HMDLightProfile_handleHomeDidEnableCharacteristicNotification___block_invoke(uint64_t a1)
@@ -671,32 +671,32 @@ void __65__HMDLightProfile_handleHomeDidEnableCharacteristicNotification___block
   [v1 enableNaturalLightingCharacteristicNotificationsForObserver:v2];
 }
 
-- (void)handleAccessoryCharacteristicsChanged:(id)a3
+- (void)handleAccessoryCharacteristicsChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
+  changedCopy = changed;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__HMDLightProfile_handleAccessoryCharacteristicsChanged___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changedCopy;
+  v6 = changedCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)handleAccessoryUnconfigured:(id)a3
+- (void)handleAccessoryUnconfigured:(id)unconfigured
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
+  unconfiguredCopy = unconfigured;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__HMDLightProfile_handleAccessoryUnconfigured___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = unconfiguredCopy;
+  v6 = unconfiguredCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __47__HMDLightProfile_handleAccessoryUnconfigured___block_invoke(uint64_t a1)
@@ -723,18 +723,18 @@ void __47__HMDLightProfile_handleAccessoryUnconfigured___block_invoke(uint64_t a
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchNaturalLightingEnabledWithCompletion:(id)a3
+- (void)fetchNaturalLightingEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__HMDLightProfile_fetchNaturalLightingEnabledWithCompletion___block_invoke;
   v7[3] = &unk_27868A7A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __61__HMDLightProfile_fetchNaturalLightingEnabledWithCompletion___block_invoke(uint64_t a1)
@@ -780,15 +780,15 @@ void __61__HMDLightProfile_fetchNaturalLightingEnabledWithCompletion___block_inv
   [v12 readNaturalLightingCharacteristicsWithReason:@"Get up to date natural lighting enabled value" completion:v13];
 }
 
-- (void)setNaturalLightingCharacteristicsNotificationEnabled:(BOOL)a3 forObserver:(id)a4
+- (void)setNaturalLightingCharacteristicsNotificationEnabled:(BOOL)enabled forObserver:(id)observer
 {
-  v8 = a4;
-  v6 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  observerCopy = observer;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (a3)
+  if (enabled)
   {
-    v7 = [(HMDLightProfile *)self enableNaturalLightingCharacteristicNotificationsForObserver:v8];
+    v7 = [(HMDLightProfile *)self enableNaturalLightingCharacteristicNotificationsForObserver:observerCopy];
 
     if (v7)
     {
@@ -799,7 +799,7 @@ void __61__HMDLightProfile_fetchNaturalLightingEnabledWithCompletion___block_inv
 
   else
   {
-    [(HMDLightProfile *)self disableNaturalLightingCharacteristicNotificationsForObserver:v8];
+    [(HMDLightProfile *)self disableNaturalLightingCharacteristicNotificationsForObserver:observerCopy];
   }
 }
 
@@ -807,45 +807,45 @@ void __61__HMDLightProfile_fetchNaturalLightingEnabledWithCompletion___block_inv
 {
   if (([(HMDLightProfile *)self supportedFeatures]& 1) != 0)
   {
-    v3 = [(HMDLightProfile *)self lastNaturalLightingUsedDate];
+    lastNaturalLightingUsedDate = [(HMDLightProfile *)self lastNaturalLightingUsedDate];
   }
 
   else
   {
-    v3 = 0;
+    lastNaturalLightingUsedDate = 0;
   }
 
-  return v3;
+  return lastNaturalLightingUsedDate;
 }
 
 - (NSDate)mostRecentNaturalLightingEnabledDate
 {
   if (([(HMDLightProfile *)self supportedFeatures]& 1) != 0)
   {
-    v3 = [(HMDLightProfile *)self lastNaturalLightingEnabledDate];
+    lastNaturalLightingEnabledDate = [(HMDLightProfile *)self lastNaturalLightingEnabledDate];
   }
 
   else
   {
-    v3 = 0;
+    lastNaturalLightingEnabledDate = 0;
   }
 
-  return v3;
+  return lastNaturalLightingEnabledDate;
 }
 
-- (void)setNaturalLightingEnabled:(BOOL)a3 completion:(id)a4
+- (void)setNaturalLightingEnabled:(BOOL)enabled completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(HMDAccessoryProfile *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__HMDLightProfile_setNaturalLightingEnabled_completion___block_invoke;
   block[3] = &unk_278687F18;
-  v11 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = completionCopy;
+  v8 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
 - (HMLightProfileSettings)settings
@@ -857,8 +857,8 @@ void __61__HMDLightProfile_fetchNaturalLightingEnabledWithCompletion___block_inv
 
 - (NSSet)readCharacteristicRequests
 {
-  v2 = [(HMDLightProfile *)self availableCharacteristics];
-  v3 = [v2 na_map:&__block_literal_global_176];
+  availableCharacteristics = [(HMDLightProfile *)self availableCharacteristics];
+  v3 = [availableCharacteristics na_map:&__block_literal_global_176];
 
   if ([v3 count] == 3)
   {
@@ -892,28 +892,28 @@ id __45__HMDLightProfile_readCharacteristicRequests__block_invoke(uint64_t a1, v
   return v4;
 }
 
-- (id)updateSettingsWithReadCharacteristicResponsePayload:(id)a3 error:(id *)a4
+- (id)updateSettingsWithReadCharacteristicResponsePayload:(id)payload error:(id *)error
 {
   v90 = *MEMORY[0x277D85DE8];
-  v75 = a3;
-  v6 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  payloadCopy = payload;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [(HMDLightProfile *)self readCharacteristicRequests];
-  v8 = [v7 na_map:&__block_literal_global_173_266944];
+  readCharacteristicRequests = [(HMDLightProfile *)self readCharacteristicRequests];
+  v8 = [readCharacteristicRequests na_map:&__block_literal_global_173_266944];
 
   if (![v8 count])
   {
     v41 = [MEMORY[0x277CBEB98] set];
     [(HMDLightProfile *)self setReadCharacteristics:v41];
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
+      *error = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
     }
 
     v42 = objc_autoreleasePoolPush();
-    v43 = self;
+    selfCopy = self;
     v44 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
     {
@@ -925,11 +925,11 @@ id __45__HMDLightProfile_readCharacteristicRequests__block_invoke(uint64_t a1, v
 
     objc_autoreleasePoolPop(v42);
 LABEL_56:
-    v62 = 0;
+    settings = 0;
     goto LABEL_57;
   }
 
-  v73 = a4;
+  errorCopy = error;
   v79 = 0u;
   v80 = 0u;
   v77 = 0u;
@@ -944,7 +944,7 @@ LABEL_56:
   v10 = v9;
   v11 = *v78;
   v71 = v8;
-  v72 = self;
+  selfCopy2 = self;
   while (2)
   {
     for (i = 0; i != v10; ++i)
@@ -956,12 +956,12 @@ LABEL_56:
 
       v13 = *(*(&v77 + 1) + 8 * i);
       v76 = 0;
-      v14 = [v75 hmd_valueOfCharacteristic:v13 error:{&v76, v71}];
+      v14 = [payloadCopy hmd_valueOfCharacteristic:v13 error:{&v76, v71}];
       v15 = v76;
       if (!v14)
       {
         v46 = objc_autoreleasePoolPush();
-        v47 = v72;
+        v47 = selfCopy2;
         v48 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
         {
@@ -979,9 +979,9 @@ LABEL_56:
         v50 = [MEMORY[0x277CBEB98] set];
         [(HMDLightProfile *)v47 setReadCharacteristics:v50];
 
-        v51 = v73;
+        v51 = errorCopy;
         v52 = obj;
-        if (v73)
+        if (errorCopy)
         {
           v53 = v15;
           v18 = 0;
@@ -992,8 +992,8 @@ LABEL_56:
         goto LABEL_53;
       }
 
-      v16 = [v13 type];
-      v17 = [v16 isEqualToString:@"0000024B-0000-1000-8000-0026BB765291"];
+      type = [v13 type];
+      v17 = [type isEqualToString:@"0000024B-0000-1000-8000-0026BB765291"];
 
       if (v17)
       {
@@ -1015,7 +1015,7 @@ LABEL_56:
         if (!v19)
         {
           v54 = objc_autoreleasePoolPush();
-          v55 = v72;
+          v55 = selfCopy2;
           v56 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
           {
@@ -1036,8 +1036,8 @@ LABEL_56:
           v60 = [MEMORY[0x277CBEB98] set];
           [(HMDLightProfile *)v55 setReadCharacteristics:v60];
 
-          v51 = v73;
-          if (v73)
+          v51 = errorCopy;
+          if (errorCopy)
           {
             v53 = [MEMORY[0x277CCA9B8] hmErrorWithCode:43];
             v8 = v71;
@@ -1055,15 +1055,15 @@ LABEL_55:
 
       else
       {
-        v22 = [v13 type];
-        if ([v22 isEqualToString:@"00000143-0000-1000-8000-0026BB765291"])
+        type2 = [v13 type];
+        if ([type2 isEqualToString:@"00000143-0000-1000-8000-0026BB765291"])
         {
         }
 
         else
         {
-          v23 = [v13 type];
-          v24 = [v23 isEqualToString:@"00000144-0000-1000-8000-0026BB765291"];
+          type3 = [v13 type];
+          v24 = [type3 isEqualToString:@"00000144-0000-1000-8000-0026BB765291"];
 
           if (!v24)
           {
@@ -1089,7 +1089,7 @@ LABEL_55:
         if (!v25)
         {
           v63 = objc_autoreleasePoolPush();
-          v64 = v72;
+          v64 = selfCopy2;
           v65 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
           {
@@ -1110,9 +1110,9 @@ LABEL_55:
           v68 = [MEMORY[0x277CBEB98] set];
           [(HMDLightProfile *)v64 setReadCharacteristics:v68];
 
-          v51 = v73;
+          v51 = errorCopy;
           v52 = obj;
-          if (v73)
+          if (errorCopy)
           {
             v53 = [MEMORY[0x277CCA9B8] hmErrorWithCode:43];
 LABEL_51:
@@ -1133,7 +1133,7 @@ LABEL_22:
 
     v10 = [obj countByEnumeratingWithState:&v77 objects:v89 count:16];
     v8 = v71;
-    self = v72;
+    self = selfCopy2;
     if (v10)
     {
       continue;
@@ -1146,7 +1146,7 @@ LABEL_24:
 
   [(HMDLightProfile *)self setReadCharacteristics:obj];
   v28 = objc_autoreleasePoolPush();
-  v29 = self;
+  selfCopy3 = self;
   v30 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
   {
@@ -1159,18 +1159,18 @@ LABEL_24:
   }
 
   objc_autoreleasePoolPop(v28);
-  v32 = [(HMDLightProfile *)v29 hapAccessory];
-  v33 = [v32 home];
-  v34 = [v33 naturalLightingContext];
-  if (v34)
+  hapAccessory = [(HMDLightProfile *)selfCopy3 hapAccessory];
+  home = [hapAccessory home];
+  naturalLightingContext = [home naturalLightingContext];
+  if (naturalLightingContext)
   {
-    v35 = v34;
-    v36 = [(HMDLightProfile *)v29 naturalLightingCurve];
+    v35 = naturalLightingContext;
+    naturalLightingCurve = [(HMDLightProfile *)selfCopy3 naturalLightingCurve];
 
-    if (!v36)
+    if (!naturalLightingCurve)
     {
       v37 = objc_autoreleasePoolPush();
-      v38 = v29;
+      v38 = selfCopy3;
       v39 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
       {
@@ -1189,29 +1189,29 @@ LABEL_24:
   {
   }
 
-  v61 = [(HMDLightProfile *)v29 availableCharacteristics];
-  [(HMDLightProfile *)v29 updateSettingsWithCharacteristics:v61];
+  availableCharacteristics = [(HMDLightProfile *)selfCopy3 availableCharacteristics];
+  [(HMDLightProfile *)selfCopy3 updateSettingsWithCharacteristics:availableCharacteristics];
 
-  v62 = [(HMDLightProfile *)v29 settings];
+  settings = [(HMDLightProfile *)selfCopy3 settings];
 LABEL_57:
 
   v69 = *MEMORY[0x277D85DE8];
 
-  return v62;
+  return settings;
 }
 
-- (void)listener:(id)a3 didUpdateAvailableCharacteristics:(id)a4
+- (void)listener:(id)listener didUpdateAvailableCharacteristics:(id)characteristics
 {
-  v5 = a4;
-  v6 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  characteristicsCopy = characteristics;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__HMDLightProfile_listener_didUpdateAvailableCharacteristics___block_invoke;
   v15[3] = &unk_278687EB0;
   v15[4] = self;
-  v7 = [v5 na_filter:v15];
+  v7 = [characteristicsCopy na_filter:v15];
 
   v8 = [v7 na_firstObjectPassingTest:&__block_literal_global_161_266954];
   [(HMDLightProfile *)self setBrightnessCharacteristic:v8];
@@ -1222,14 +1222,14 @@ LABEL_57:
   [(HMDLightProfile *)self updateNaturalLightingCurve];
   [(HMDLightProfile *)self updateSettingsWithCharacteristics:v7];
   [(HMDLightProfile *)self updateEnabledCharacteristicsNotifications];
-  v10 = [(HMDLightProfile *)self readCharacteristicRequests];
-  v11 = [v10 na_map:&__block_literal_global_166_266956];
+  readCharacteristicRequests = [(HMDLightProfile *)self readCharacteristicRequests];
+  v11 = [readCharacteristicRequests na_map:&__block_literal_global_166_266956];
 
-  v12 = [(HMDLightProfile *)self characteristicValueObservers];
-  if ([v12 count])
+  characteristicValueObservers = [(HMDLightProfile *)self characteristicValueObservers];
+  if ([characteristicValueObservers count])
   {
-    v13 = [(HMDLightProfile *)self readCharacteristics];
-    v14 = [v13 isEqual:v11];
+    readCharacteristics = [(HMDLightProfile *)self readCharacteristics];
+    v14 = [readCharacteristics isEqual:v11];
 
     if ((v14 & 1) == 0)
     {
@@ -1267,26 +1267,26 @@ uint64_t __62__HMDLightProfile_listener_didUpdateAvailableCharacteristics___bloc
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HMDLightProfile;
-  v4 = a3;
-  [(HMDAccessoryProfile *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HMDAccessoryProfile *)&v6 encodeWithCoder:coderCopy];
   v5 = [(HMDLightProfile *)self settings:v6.receiver];
-  [v4 encodeObject:v5 forKey:*MEMORY[0x277CD07A8]];
+  [coderCopy encodeObject:v5 forKey:*MEMORY[0x277CD07A8]];
 }
 
 - (NSSet)availableCharacteristics
 {
-  v3 = [(HMDLightProfile *)self characteristicsAvailabilityListener];
-  v4 = [v3 availableCharacteristics];
+  characteristicsAvailabilityListener = [(HMDLightProfile *)self characteristicsAvailabilityListener];
+  availableCharacteristics = [characteristicsAvailabilityListener availableCharacteristics];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__HMDLightProfile_availableCharacteristics__block_invoke;
   v7[3] = &unk_278687EB0;
   v7[4] = self;
-  v5 = [v4 na_filter:v7];
+  v5 = [availableCharacteristics na_filter:v7];
 
   return v5;
 }
@@ -1300,33 +1300,33 @@ uint64_t __43__HMDLightProfile_availableCharacteristics__block_invoke(uint64_t a
   return v5;
 }
 
-- (void)callSetNaturalLightingEnabledCompletion:(id)a3 error:(id)a4
+- (void)callSetNaturalLightingEnabledCompletion:(id)completion error:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  errorCopy = error;
+  completionCopy = completion;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   [(HMDLightProfile *)self setNaturalLightingEnabledRetryContext:0];
-  v8[2](v8, v6);
+  completionCopy[2](completionCopy, errorCopy);
 }
 
-- (BOOL)shouldRetrySetNaturalLightingEnabledWithError:(id)a3
+- (BOOL)shouldRetrySetNaturalLightingEnabledWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 domain];
-  if (![v6 isEqualToString:*MEMORY[0x277CCFD28]])
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:*MEMORY[0x277CCFD28]])
   {
 
     goto LABEL_5;
   }
 
-  v7 = [v4 code];
+  code = [errorCopy code];
 
-  if (v7 != 4)
+  if (code != 4)
   {
 LABEL_5:
     v8 = 0;
@@ -1339,27 +1339,27 @@ LABEL_6:
   return v8;
 }
 
-- (void)retrySetNaturalLightingEnabledWithContext:(id)a3 error:(id)a4
+- (void)retrySetNaturalLightingEnabledWithContext:(id)context error:(id)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  contextCopy = context;
+  errorCopy = error;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [v6 completion];
-  v10 = [v6 naturalLightingEnabled];
-  v11 = [(HMDLightProfile *)self dataSource];
-  v12 = [v11 naturalLightingEnabledMaxRetryCount];
+  completion = [contextCopy completion];
+  naturalLightingEnabled = [contextCopy naturalLightingEnabled];
+  dataSource = [(HMDLightProfile *)self dataSource];
+  naturalLightingEnabledMaxRetryCount = [dataSource naturalLightingEnabledMaxRetryCount];
 
-  v13 = [(HMDLightProfile *)self dataSource];
-  [v13 naturalLightingEnabledRetryInterval];
+  dataSource2 = [(HMDLightProfile *)self dataSource];
+  [dataSource2 naturalLightingEnabledRetryInterval];
   v15 = v14;
 
-  if (v12 < 1 || *&v15 <= 0.0)
+  if (naturalLightingEnabledMaxRetryCount < 1 || *&v15 <= 0.0)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -1367,7 +1367,7 @@ LABEL_6:
       *buf = 138543874;
       v37 = v22;
       v38 = 2048;
-      v39 = v12;
+      v39 = naturalLightingEnabledMaxRetryCount;
       v40 = 2048;
       v41 = v15;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_ERROR, "%{public}@Skipping retry because either retry count: %ld or retry interval: %f is less than or equal to 0", buf, 0x20u);
@@ -1376,13 +1376,13 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v16 = [(HMDLightProfile *)self naturalLightingEnabledRetryContext];
-  v17 = [v16 retryCount] + 1;
+  naturalLightingEnabledRetryContext = [(HMDLightProfile *)self naturalLightingEnabledRetryContext];
+  v17 = [naturalLightingEnabledRetryContext retryCount] + 1;
 
-  if (v17 > v12)
+  if (v17 > naturalLightingEnabledMaxRetryCount)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -1390,24 +1390,24 @@ LABEL_6:
       *buf = 138543874;
       v37 = v21;
       v38 = 2112;
-      v39 = v6;
+      v39 = contextCopy;
       v40 = 2048;
-      v41 = v12;
+      v41 = naturalLightingEnabledMaxRetryCount;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_ERROR, "%{public}@Failed to set Natural Lighting enabled for retry context: %@ exhausted retry attempts: %lu", buf, 0x20u);
     }
 
 LABEL_6:
 
     objc_autoreleasePoolPop(v18);
-    [(HMDLightProfile *)v19 callSetNaturalLightingEnabledCompletion:v9 error:v7];
+    [(HMDLightProfile *)selfCopy2 callSetNaturalLightingEnabledCompletion:completion error:errorCopy];
     goto LABEL_13;
   }
 
-  v23 = [(HMDLightProfile *)self naturalLightingEnabledRetryContext];
-  [v23 setRetryCount:v17];
+  naturalLightingEnabledRetryContext2 = [(HMDLightProfile *)self naturalLightingEnabledRetryContext];
+  [naturalLightingEnabledRetryContext2 setRetryCount:v17];
 
   v24 = objc_autoreleasePoolPush();
-  v25 = self;
+  selfCopy3 = self;
   v26 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
   {
@@ -1415,24 +1415,24 @@ LABEL_6:
     *buf = 138543618;
     v37 = v27;
     v38 = 2112;
-    v39 = v6;
+    v39 = contextCopy;
     _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_INFO, "%{public}@Will retry set Natural Lighting enabled with retry context: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v24);
-  objc_initWeak(buf, v25);
-  v28 = [(HMDLightProfile *)v25 dataSource];
-  v29 = [(HMDAccessoryProfile *)v25 workQueue];
+  objc_initWeak(buf, selfCopy3);
+  dataSource3 = [(HMDLightProfile *)selfCopy3 dataSource];
+  workQueue2 = [(HMDAccessoryProfile *)selfCopy3 workQueue];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __67__HMDLightProfile_retrySetNaturalLightingEnabledWithContext_error___block_invoke;
   v31[3] = &unk_278687E88;
   objc_copyWeak(v34, buf);
-  v32 = v6;
-  v33 = v9;
+  v32 = contextCopy;
+  v33 = completion;
   v34[1] = v15;
-  v35 = v10;
-  [v28 dispatchAfterTimeInterval:v29 queue:v31 block:*&v15];
+  v35 = naturalLightingEnabled;
+  [dataSource3 dispatchAfterTimeInterval:workQueue2 queue:v31 block:*&v15];
 
   objc_destroyWeak(v34);
   objc_destroyWeak(buf);
@@ -1629,36 +1629,36 @@ LABEL_12:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disableNaturalLightingCharacteristicNotificationsForObserver:(id)a3
+- (void)disableNaturalLightingCharacteristicNotificationsForObserver:(id)observer
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  observerCopy = observer;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDLightProfile *)self characteristicValueObservers];
-  [v6 removeObject:v4];
+  characteristicValueObservers = [(HMDLightProfile *)self characteristicValueObservers];
+  [characteristicValueObservers removeObject:observerCopy];
 
-  v7 = [(HMDLightProfile *)self characteristicValueObservers];
-  v8 = [v7 count];
+  characteristicValueObservers2 = [(HMDLightProfile *)self characteristicValueObservers];
+  v8 = [characteristicValueObservers2 count];
 
   if (!v8)
   {
-    v9 = [(HMDLightProfile *)self hapAccessory];
-    v10 = [v9 home];
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 removeObserver:self name:@"HMDAccessoryDisconnectedNotification" object:v9];
+    hapAccessory = [(HMDLightProfile *)self hapAccessory];
+    home = [hapAccessory home];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"HMDAccessoryDisconnectedNotification" object:hapAccessory];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 removeObserver:self name:@"HMDAccessoryCharacteristicsChangedNotification" object:v9];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 removeObserver:self name:@"HMDAccessoryCharacteristicsChangedNotification" object:hapAccessory];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 removeObserver:self name:@"HMDHomeNaturalLightingContextUpdatedNotification" object:v10];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 removeObserver:self name:@"HMDHomeNaturalLightingContextUpdatedNotification" object:home];
 
-    v14 = [(HMDLightProfile *)self notificationEnabledCharacteristics];
-    v15 = [v14 count];
+    notificationEnabledCharacteristics = [(HMDLightProfile *)self notificationEnabledCharacteristics];
+    v15 = [notificationEnabledCharacteristics count];
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_INFO);
     if (v15)
@@ -1669,17 +1669,17 @@ LABEL_12:
         v26 = 138543618;
         v27 = v20;
         v28 = 2112;
-        v29 = v14;
+        v29 = notificationEnabledCharacteristics;
         _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_INFO, "%{public}@Disabling notifications for natural lighting characteristics: %@", &v26, 0x16u);
       }
 
       objc_autoreleasePoolPop(v16);
-      v21 = [v14 allObjects];
-      v22 = [(HMDLightProfile *)v17 clientIdentifier];
-      [v9 setNotificationsEnabled:0 forCharacteristics:v21 clientIdentifier:v22];
+      allObjects = [notificationEnabledCharacteristics allObjects];
+      clientIdentifier = [(HMDLightProfile *)selfCopy clientIdentifier];
+      [hapAccessory setNotificationsEnabled:0 forCharacteristics:allObjects clientIdentifier:clientIdentifier];
 
       v23 = [MEMORY[0x277CBEB98] set];
-      [(HMDLightProfile *)v17 setNotificationEnabledCharacteristics:v23];
+      [(HMDLightProfile *)selfCopy setNotificationEnabledCharacteristics:v23];
     }
 
     else
@@ -1699,46 +1699,46 @@ LABEL_12:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)enableNaturalLightingCharacteristicNotificationsForObserver:(id)a3
+- (BOOL)enableNaturalLightingCharacteristicNotificationsForObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  observerCopy = observer;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDLightProfile *)self characteristicValueObservers];
-  v7 = [v6 count];
+  characteristicValueObservers = [(HMDLightProfile *)self characteristicValueObservers];
+  v7 = [characteristicValueObservers count];
 
-  v8 = [(HMDLightProfile *)self characteristicValueObservers];
-  [v8 addObject:v4];
+  characteristicValueObservers2 = [(HMDLightProfile *)self characteristicValueObservers];
+  [characteristicValueObservers2 addObject:observerCopy];
 
   if (v7)
   {
     return 0;
   }
 
-  v10 = [(HMDLightProfile *)self hapAccessory];
-  v11 = [v10 home];
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 addObserver:self selector:sel_handleAccessoryUnconfigured_ name:@"HMDAccessoryDisconnectedNotification" object:v10];
+  hapAccessory = [(HMDLightProfile *)self hapAccessory];
+  home = [hapAccessory home];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleAccessoryUnconfigured_ name:@"HMDAccessoryDisconnectedNotification" object:hapAccessory];
 
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 addObserver:self selector:sel_handleAccessoryCharacteristicsChanged_ name:@"HMDAccessoryCharacteristicsChangedNotification" object:v10];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_handleAccessoryCharacteristicsChanged_ name:@"HMDAccessoryCharacteristicsChangedNotification" object:hapAccessory];
 
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v14 addObserver:self selector:sel_handleHomeNaturalLightingContextUpdated_ name:@"HMDHomeNaturalLightingContextUpdatedNotification" object:v11];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_handleHomeNaturalLightingContextUpdated_ name:@"HMDHomeNaturalLightingContextUpdatedNotification" object:home];
 
-  v15 = [(HMDLightProfile *)self updateEnabledCharacteristicsNotifications];
-  return v15;
+  updateEnabledCharacteristicsNotifications = [(HMDLightProfile *)self updateEnabledCharacteristicsNotifications];
+  return updateEnabledCharacteristicsNotifications;
 }
 
 - (BOOL)updateEnabledCharacteristicsNotifications
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDLightProfile *)self availableCharacteristics];
-  v5 = [v4 na_firstObjectPassingTest:&__block_literal_global_148_266983];
+  availableCharacteristics = [(HMDLightProfile *)self availableCharacteristics];
+  v5 = [availableCharacteristics na_firstObjectPassingTest:&__block_literal_global_148_266983];
 
   if (v5)
   {
@@ -1750,13 +1750,13 @@ LABEL_12:
     v6 = 0;
   }
 
-  v7 = [(HMDLightProfile *)self characteristicValueObservers];
-  v8 = [v7 count];
+  characteristicValueObservers = [(HMDLightProfile *)self characteristicValueObservers];
+  v8 = [characteristicValueObservers count];
 
   if (!v8)
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy2 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
@@ -1778,7 +1778,7 @@ LABEL_14:
   if (![v6 count])
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy2 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
@@ -1793,30 +1793,30 @@ LABEL_14:
   }
 
   v9 = [v6 count];
-  v10 = [(HMDLightProfile *)self notificationEnabledCharacteristics];
-  v11 = v9 != [v10 count];
+  notificationEnabledCharacteristics = [(HMDLightProfile *)self notificationEnabledCharacteristics];
+  v11 = v9 != [notificationEnabledCharacteristics count];
 
   [(HMDLightProfile *)self setNotificationEnabledCharacteristics:v6];
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy3 = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [(HMDLightProfile *)v13 notificationEnabledCharacteristics];
+    notificationEnabledCharacteristics2 = [(HMDLightProfile *)selfCopy3 notificationEnabledCharacteristics];
     v28 = 138543618;
     v29 = v15;
     v30 = 2112;
-    v31 = v16;
+    v31 = notificationEnabledCharacteristics2;
     _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@Enabling notifications for natural lighting characteristics: %@", &v28, 0x16u);
   }
 
   objc_autoreleasePoolPop(v12);
-  v17 = [(HMDLightProfile *)v13 hapAccessory];
-  v18 = [(HMDLightProfile *)v13 notificationEnabledCharacteristics];
-  v19 = [v18 allObjects];
-  v20 = [(HMDLightProfile *)v13 clientIdentifier];
-  [v17 setNotificationsEnabled:1 forCharacteristics:v19 clientIdentifier:v20];
+  hapAccessory = [(HMDLightProfile *)selfCopy3 hapAccessory];
+  notificationEnabledCharacteristics3 = [(HMDLightProfile *)selfCopy3 notificationEnabledCharacteristics];
+  allObjects = [notificationEnabledCharacteristics3 allObjects];
+  clientIdentifier = [(HMDLightProfile *)selfCopy3 clientIdentifier];
+  [hapAccessory setNotificationsEnabled:1 forCharacteristics:allObjects clientIdentifier:clientIdentifier];
 
 LABEL_15:
   v26 = *MEMORY[0x277D85DE8];
@@ -1834,15 +1834,15 @@ uint64_t __60__HMDLightProfile_updateEnabledCharacteristicsNotifications__block_
 - (void)synchronizeCurveToAccessory
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDLightProfile *)self naturalLightingCurve];
-  if (v4 && (v5 = v4, v6 = [(HMDLightProfile *)self isNaturalLightingEnabled], v5, v6))
+  naturalLightingCurve = [(HMDLightProfile *)self naturalLightingCurve];
+  if (naturalLightingCurve && (v5 = naturalLightingCurve, v6 = [(HMDLightProfile *)self isNaturalLightingEnabled], v5, v6))
   {
-    v17 = [(HMDLightProfile *)self naturalLightingCurveWriter];
-    v7 = [(HMDLightProfile *)self naturalLightingActiveTransitionContext];
-    [v17 synchronizeCurveWithActiveTransitionContext:v7];
+    naturalLightingCurveWriter = [(HMDLightProfile *)self naturalLightingCurveWriter];
+    naturalLightingActiveTransitionContext = [(HMDLightProfile *)self naturalLightingActiveTransitionContext];
+    [naturalLightingCurveWriter synchronizeCurveWithActiveTransitionContext:naturalLightingActiveTransitionContext];
 
     v8 = *MEMORY[0x277D85DE8];
   }
@@ -1850,14 +1850,14 @@ uint64_t __60__HMDLightProfile_updateEnabledCharacteristicsNotifications__block_
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      [(HMDLightProfile *)v10 isNaturalLightingEnabled];
+      [(HMDLightProfile *)selfCopy isNaturalLightingEnabled];
       v13 = HMFBooleanToString();
-      v14 = [(HMDLightProfile *)v10 naturalLightingCurve];
+      naturalLightingCurve2 = [(HMDLightProfile *)selfCopy naturalLightingCurve];
       v15 = HMFBooleanToString();
       *buf = 138543874;
       v19 = v12;
@@ -1873,50 +1873,50 @@ uint64_t __60__HMDLightProfile_updateEnabledCharacteristicsNotifications__block_
   }
 }
 
-- (void)updateSettingsWithCharacteristics:(id)a3
+- (void)updateSettingsWithCharacteristics:(id)characteristics
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  characteristicsCopy = characteristics;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 na_firstObjectPassingTest:&__block_literal_global_144_266989];
+  v6 = [characteristicsCopy na_firstObjectPassingTest:&__block_literal_global_144_266989];
   if (v6)
   {
     [(HMDLightProfile *)self updateActiveTransitionCountWithCharacteristic:v6];
   }
 
-  v7 = [(HMDLightProfile *)self settings];
-  v8 = [(HMDLightProfile *)self naturalLightingActiveTransitionContext];
-  [(HMDLightProfile *)self updateSupportedFeaturesWithCharacteristics:v4];
-  v9 = [v4 na_firstObjectPassingTest:&__block_literal_global_146_266990];
+  settings = [(HMDLightProfile *)self settings];
+  naturalLightingActiveTransitionContext = [(HMDLightProfile *)self naturalLightingActiveTransitionContext];
+  [(HMDLightProfile *)self updateSupportedFeaturesWithCharacteristics:characteristicsCopy];
+  v9 = [characteristicsCopy na_firstObjectPassingTest:&__block_literal_global_146_266990];
   [(HMDLightProfile *)self updateNaturalLightingEnabledForCharacteristic:v9];
-  [(HMDLightProfile *)self notifyClientsOfUpdatedSettingsWithPreviousSettings:v7];
-  v10 = [(HMDLightProfile *)self naturalLightingActiveTransitionContext];
+  [(HMDLightProfile *)self notifyClientsOfUpdatedSettingsWithPreviousSettings:settings];
+  naturalLightingActiveTransitionContext2 = [(HMDLightProfile *)self naturalLightingActiveTransitionContext];
   v11 = HMFEqualObjects();
 
   if ((v11 & 1) == 0)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [(HMDLightProfile *)v13 naturalLightingActiveTransitionContext];
+      naturalLightingActiveTransitionContext3 = [(HMDLightProfile *)selfCopy naturalLightingActiveTransitionContext];
       v20 = 138543874;
       v21 = v15;
       v22 = 2112;
-      v23 = v8;
+      v23 = naturalLightingActiveTransitionContext;
       v24 = 2112;
-      v25 = v16;
+      v25 = naturalLightingActiveTransitionContext3;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@Updating natural lighting active transition context from %@ -> %@", &v20, 0x20u);
     }
 
     objc_autoreleasePoolPop(v12);
-    v17 = [(HMDLightProfile *)v13 naturalLightingCurveWriter];
-    v18 = [(HMDLightProfile *)v13 naturalLightingActiveTransitionContext];
-    [v17 handleActiveTransitionContextUpdated:v18];
+    naturalLightingCurveWriter = [(HMDLightProfile *)selfCopy naturalLightingCurveWriter];
+    naturalLightingActiveTransitionContext4 = [(HMDLightProfile *)selfCopy naturalLightingActiveTransitionContext];
+    [naturalLightingCurveWriter handleActiveTransitionContextUpdated:naturalLightingActiveTransitionContext4];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -1938,18 +1938,18 @@ uint64_t __53__HMDLightProfile_updateSettingsWithCharacteristics___block_invoke(
   return v3;
 }
 
-- (BOOL)updateActiveTransitionCountWithCharacteristic:(id)a3
+- (BOOL)updateActiveTransitionCountWithCharacteristic:(id)characteristic
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  characteristicCopy = characteristic;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 value];
+  value = [characteristicCopy value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = value;
   }
 
   else
@@ -1962,7 +1962,7 @@ uint64_t __53__HMDLightProfile_updateSettingsWithCharacteristics___block_invoke(
   if (!v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -1970,7 +1970,7 @@ uint64_t __53__HMDLightProfile_updateSettingsWithCharacteristics___block_invoke(
       v24 = 138543874;
       v25 = v12;
       v26 = 2112;
-      *v27 = v6;
+      *v27 = value;
       *&v27[8] = 2112;
       v28 = objc_opt_class();
       v13 = "%{public}@Active transition count value: %@ is not of type %@";
@@ -1990,7 +1990,7 @@ LABEL_13:
   if ([v8 integerValue] < 0 || objc_msgSend(v8, "integerValue") >= 256)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -2011,14 +2011,14 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v19 = [v8 unsignedCharValue];
-  if ([(HMDLightProfile *)self activeTransitionsCount]== v19)
+  unsignedCharValue = [v8 unsignedCharValue];
+  if ([(HMDLightProfile *)self activeTransitionsCount]== unsignedCharValue)
   {
     goto LABEL_13;
   }
 
   v20 = objc_autoreleasePoolPush();
-  v21 = self;
+  selfCopy3 = self;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
@@ -2026,14 +2026,14 @@ LABEL_11:
     v24 = 138543874;
     v25 = v23;
     v26 = 1024;
-    *v27 = [(HMDLightProfile *)v21 activeTransitionsCount];
+    *v27 = [(HMDLightProfile *)selfCopy3 activeTransitionsCount];
     *&v27[4] = 1024;
-    *&v27[6] = v19;
+    *&v27[6] = unsignedCharValue;
     _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_INFO, "%{public}@Updating active transition count from (%u -> %u)", &v24, 0x18u);
   }
 
   objc_autoreleasePoolPop(v20);
-  [(HMDLightProfile *)v21 setActiveTransitionsCount:v19];
+  [(HMDLightProfile *)selfCopy3 setActiveTransitionsCount:unsignedCharValue];
   v16 = 1;
 LABEL_14:
 
@@ -2041,25 +2041,25 @@ LABEL_14:
   return v16;
 }
 
-- (void)readNaturalLightingCharacteristicsWithReason:(id)a3 completion:(id)a4
+- (void)readNaturalLightingCharacteristicsWithReason:(id)reason completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  reasonCopy = reason;
+  completionCopy = completion;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [(HMDLightProfile *)self readCharacteristicRequests];
-  if ([v9 count])
+  readCharacteristicRequests = [(HMDLightProfile *)self readCharacteristicRequests];
+  if ([readCharacteristicRequests count])
   {
-    v10 = [(HMDLightProfile *)self hapAccessory];
-    v11 = [v10 home];
+    hapAccessory = [(HMDLightProfile *)self hapAccessory];
+    home = [hapAccessory home];
 
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     v15 = v14;
-    if (v11)
+    if (home)
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
@@ -2067,23 +2067,23 @@ LABEL_14:
         *buf = 138543874;
         v28 = v16;
         v29 = 2112;
-        v30 = v9;
+        v30 = readCharacteristicRequests;
         v31 = 2112;
-        v32 = v6;
+        v32 = reasonCopy;
         _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@Sending read requests to the accessory: %@ with reason: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v12);
-      objc_initWeak(buf, v13);
-      v17 = [v9 allObjects];
-      v18 = [(HMDAccessoryProfile *)v13 description];
+      objc_initWeak(buf, selfCopy);
+      allObjects = [readCharacteristicRequests allObjects];
+      v18 = [(HMDAccessoryProfile *)selfCopy description];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __75__HMDLightProfile_readNaturalLightingCharacteristicsWithReason_completion___block_invoke;
       v24[3] = &unk_278689728;
       objc_copyWeak(&v26, buf);
-      v25 = v7;
-      [v11 readCharacteristicValues:v17 source:1140 sourceForLogging:v18 qualityOfService:-1 withCompletionHandler:v24];
+      v25 = completionCopy;
+      [home readCharacteristicValues:allObjects source:1140 sourceForLogging:v18 qualityOfService:-1 withCompletionHandler:v24];
 
       objc_destroyWeak(&v26);
       objc_destroyWeak(buf);
@@ -2101,17 +2101,17 @@ LABEL_14:
 
       objc_autoreleasePoolPop(v12);
       v22 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      (*(v7 + 2))(v7, 0, v22);
+      (*(completionCopy + 2))(completionCopy, 0, v22);
     }
   }
 
   else
   {
-    v19 = [(HMDLightProfile *)self availableCharacteristics];
-    [(HMDLightProfile *)self updateSettingsWithCharacteristics:v19];
+    availableCharacteristics = [(HMDLightProfile *)self availableCharacteristics];
+    [(HMDLightProfile *)self updateSettingsWithCharacteristics:availableCharacteristics];
 
     v20 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-    (*(v7 + 2))(v7, 0, v20);
+    (*(completionCopy + 2))(completionCopy, 0, v20);
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -2203,48 +2203,48 @@ LABEL_11:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readNaturalLightingCharacteristicsWithReason:(id)a3
+- (void)readNaturalLightingCharacteristicsWithReason:(id)reason
 {
-  v5 = a3;
-  v4 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v4);
+  reasonCopy = reason;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [(HMDLightProfile *)self readNaturalLightingCharacteristicsWithReason:v5 completion:&__block_literal_global_140_267000];
+  [(HMDLightProfile *)self readNaturalLightingCharacteristicsWithReason:reasonCopy completion:&__block_literal_global_140_267000];
 }
 
 - (BOOL)updateNaturalLightingCurve
 {
   v59 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDLightProfile *)self brightnessCharacteristic];
-  v5 = [v4 metadata];
-  v6 = [v5 minimumValue];
-  v7 = [v6 integerValue];
+  brightnessCharacteristic = [(HMDLightProfile *)self brightnessCharacteristic];
+  metadata = [brightnessCharacteristic metadata];
+  minimumValue = [metadata minimumValue];
+  integerValue = [minimumValue integerValue];
 
-  v8 = [(HMDLightProfile *)self brightnessCharacteristic];
-  v9 = [v8 metadata];
-  v10 = [v9 maximumValue];
-  v11 = [v10 integerValue];
+  brightnessCharacteristic2 = [(HMDLightProfile *)self brightnessCharacteristic];
+  metadata2 = [brightnessCharacteristic2 metadata];
+  maximumValue = [metadata2 maximumValue];
+  integerValue2 = [maximumValue integerValue];
 
-  v12 = [(HMDLightProfile *)self colorTemperatureCharacteristic];
-  v13 = [v12 metadata];
-  v14 = [v13 minimumValue];
+  colorTemperatureCharacteristic = [(HMDLightProfile *)self colorTemperatureCharacteristic];
+  metadata3 = [colorTemperatureCharacteristic metadata];
+  minimumValue2 = [metadata3 minimumValue];
 
-  v15 = [(HMDLightProfile *)self colorTemperatureCharacteristic];
-  v16 = [v15 metadata];
-  v17 = [v16 maximumValue];
+  colorTemperatureCharacteristic2 = [(HMDLightProfile *)self colorTemperatureCharacteristic];
+  metadata4 = [colorTemperatureCharacteristic2 metadata];
+  maximumValue2 = [metadata4 maximumValue];
 
-  v18 = [(HMDAccessoryProfile *)self accessory];
-  v19 = [v18 home];
-  v20 = [v19 naturalLightingContext];
-  v21 = [v20 curve];
+  accessory = [(HMDAccessoryProfile *)self accessory];
+  home = [accessory home];
+  naturalLightingContext = [home naturalLightingContext];
+  curve = [naturalLightingContext curve];
 
-  if ([v21 minimumBrightness] < v7 || objc_msgSend(v21, "minimumBrightness") > v11)
+  if ([curve minimumBrightness] < integerValue || objc_msgSend(curve, "minimumBrightness") > integerValue2)
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
@@ -2261,11 +2261,11 @@ LABEL_7:
     *buf = 138544130;
     v52 = v25;
     v53 = 2048;
-    v54 = [v21 minimumBrightness];
+    minimumBrightness = [curve minimumBrightness];
     v55 = 2048;
-    v56 = v7;
+    maximumColorTemperature = integerValue;
     v57 = 2048;
-    v58 = v11;
+    v58 = integerValue2;
     v26 = "%{public}@Not initializing curve because curve minimum brightness is not in supported range %ld (%ld:%ld)";
 LABEL_5:
     _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_INFO, v26, buf, 0x2Au);
@@ -2273,10 +2273,10 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v21 maximumBrightness] < v7 || objc_msgSend(v21, "maximumBrightness") > v11)
+  if ([curve maximumBrightness] < integerValue || objc_msgSend(curve, "maximumBrightness") > integerValue2)
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
@@ -2287,19 +2287,19 @@ LABEL_5:
     *buf = 138544130;
     v52 = v25;
     v53 = 2048;
-    v54 = [v21 maximumBrightness];
+    minimumBrightness = [curve maximumBrightness];
     v55 = 2048;
-    v56 = v7;
+    maximumColorTemperature = integerValue;
     v57 = 2048;
-    v58 = v11;
+    v58 = integerValue2;
     v26 = "%{public}@Not initializing curve because curve maximum brightness is not in supported range %ld (%ld:%ld)";
     goto LABEL_5;
   }
 
-  if (!v14 || !v17)
+  if (!minimumValue2 || !maximumValue2)
   {
     v43 = objc_autoreleasePoolPush();
-    v44 = self;
+    selfCopy6 = self;
     v45 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
@@ -2307,9 +2307,9 @@ LABEL_5:
       *buf = 138543874;
       v52 = v46;
       v53 = 2112;
-      v54 = v14;
+      minimumBrightness = minimumValue2;
       v55 = 2112;
-      v56 = v17;
+      maximumColorTemperature = maximumValue2;
       v47 = "%{public}@Either minimum color temperature: %@ or maximum color temperature: %@";
       goto LABEL_24;
     }
@@ -2320,11 +2320,11 @@ LABEL_25:
     goto LABEL_7;
   }
 
-  v42 = [v14 integerValue];
-  if (v42 > [v17 integerValue])
+  integerValue3 = [minimumValue2 integerValue];
+  if (integerValue3 > [maximumValue2 integerValue])
   {
     v43 = objc_autoreleasePoolPush();
-    v44 = self;
+    selfCopy6 = self;
     v45 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
@@ -2332,9 +2332,9 @@ LABEL_25:
       *buf = 138543874;
       v52 = v46;
       v53 = 2112;
-      v54 = v14;
+      minimumBrightness = minimumValue2;
       v55 = 2112;
-      v56 = v17;
+      maximumColorTemperature = maximumValue2;
       v47 = "%{public}@Minimum color temperature value: %@ is greater than maximum color temperature value: %@";
 LABEL_24:
       _os_log_impl(&dword_229538000, v45, OS_LOG_TYPE_ERROR, v47, buf, 0x20u);
@@ -2345,11 +2345,11 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v48 = [v14 integerValue];
-  if (v48 > [v21 maximumColorTemperature])
+  integerValue4 = [minimumValue2 integerValue];
+  if (integerValue4 > [curve maximumColorTemperature])
   {
     v43 = objc_autoreleasePoolPush();
-    v44 = self;
+    selfCopy6 = self;
     v45 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
@@ -2360,18 +2360,18 @@ LABEL_24:
     *buf = 138543874;
     v52 = v46;
     v53 = 2112;
-    v54 = v14;
+    minimumBrightness = minimumValue2;
     v55 = 2048;
-    v56 = [v21 maximumColorTemperature];
+    maximumColorTemperature = [curve maximumColorTemperature];
     v47 = "%{public}@Minimum color temperature value: %@  is greater than the curve maximum color temperature value: %ld";
     goto LABEL_24;
   }
 
-  v49 = [v17 integerValue];
-  if (v49 < [v21 minimumColorTemperature])
+  integerValue5 = [maximumValue2 integerValue];
+  if (integerValue5 < [curve minimumColorTemperature])
   {
     v43 = objc_autoreleasePoolPush();
-    v44 = self;
+    selfCopy6 = self;
     v45 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
@@ -2382,69 +2382,69 @@ LABEL_24:
     *buf = 138543874;
     v52 = v46;
     v53 = 2112;
-    v54 = v17;
+    minimumBrightness = maximumValue2;
     v55 = 2048;
-    v56 = [v21 minimumColorTemperature];
+    maximumColorTemperature = [curve minimumColorTemperature];
     v47 = "%{public}@Maximum color temperature value: %@  is less than the curve minimum color temperature value: %ld";
     goto LABEL_24;
   }
 
-  v28 = -[HMDNaturalLightingCurve initWithCurve:minimumColorTemperature:maximumColorTemperature:]([HMDNaturalLightingCurve alloc], "initWithCurve:minimumColorTemperature:maximumColorTemperature:", v21, [v14 integerValue], objc_msgSend(v17, "integerValue"));
+  v28 = -[HMDNaturalLightingCurve initWithCurve:minimumColorTemperature:maximumColorTemperature:]([HMDNaturalLightingCurve alloc], "initWithCurve:minimumColorTemperature:maximumColorTemperature:", curve, [minimumValue2 integerValue], objc_msgSend(maximumValue2, "integerValue"));
 LABEL_8:
-  v29 = [(HMDLightProfile *)self naturalLightingCurve];
+  naturalLightingCurve = [(HMDLightProfile *)self naturalLightingCurve];
   v30 = HMFEqualObjects();
 
   if ((v30 & 1) == 0)
   {
     v31 = objc_autoreleasePoolPush();
-    v32 = self;
+    selfCopy7 = self;
     v33 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
     {
       v34 = HMFGetLogIdentifier();
-      v50 = [(HMDLightProfile *)v32 naturalLightingCurve];
-      v35 = v21;
-      v36 = v17;
-      v37 = v14;
-      v38 = [v50 checksum];
-      v39 = [(HMDNaturalLightingCurve *)v28 checksum];
+      naturalLightingCurve2 = [(HMDLightProfile *)selfCopy7 naturalLightingCurve];
+      v35 = curve;
+      v36 = maximumValue2;
+      v37 = minimumValue2;
+      checksum = [naturalLightingCurve2 checksum];
+      checksum2 = [(HMDNaturalLightingCurve *)v28 checksum];
       *buf = 138543874;
       v52 = v34;
       v53 = 2048;
-      v54 = v38;
-      v14 = v37;
-      v17 = v36;
-      v21 = v35;
+      minimumBrightness = checksum;
+      minimumValue2 = v37;
+      maximumValue2 = v36;
+      curve = v35;
       v55 = 2048;
-      v56 = v39;
+      maximumColorTemperature = checksum2;
       _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_INFO, "%{public}@Updated natural lighting curve from %llu -> %llu", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v31);
-    [(HMDLightProfile *)v32 setNaturalLightingCurve:v28];
+    [(HMDLightProfile *)selfCopy7 setNaturalLightingCurve:v28];
   }
 
   v40 = *MEMORY[0x277D85DE8];
   return v30 ^ 1;
 }
 
-- (id)availableCharacteristicWithType:(id)a3 fromChangedObjects:(id)a4
+- (id)availableCharacteristicWithType:(id)type fromChangedObjects:(id)objects
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  typeCopy = type;
+  objectsCopy = objects;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [(HMDLightProfile *)self availableCharacteristics];
+  availableCharacteristics = [(HMDLightProfile *)self availableCharacteristics];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __70__HMDLightProfile_availableCharacteristicWithType_fromChangedObjects___block_invoke;
   v14[3] = &unk_278687DC0;
-  v15 = v9;
-  v16 = v6;
-  v10 = v6;
-  v11 = v9;
-  v12 = [v7 na_firstObjectPassingTest:v14];
+  v15 = availableCharacteristics;
+  v16 = typeCopy;
+  v10 = typeCopy;
+  v11 = availableCharacteristics;
+  v12 = [objectsCopy na_firstObjectPassingTest:v14];
 
   return v12;
 }
@@ -2478,46 +2478,46 @@ uint64_t __70__HMDLightProfile_availableCharacteristicWithType_fromChangedObject
   return v7;
 }
 
-- (void)_handleAccessoryCharacteristicsChanged:(id)a3
+- (void)_handleAccessoryCharacteristicsChanged:(id)changed
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  changedCopy = changed;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v4 name];
+    name = [changedCopy name];
     *buf = 138543618;
     v41 = v9;
     v42 = 2112;
-    v43 = v10;
+    v43 = name;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Handling notification: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [(HMDLightProfile *)v7 settings];
-  v12 = [(HMDLightProfile *)v7 naturalLightingActiveTransitionContext];
-  v13 = [v4 userInfo];
-  v14 = [v13 hmf_arrayForKey:@"kModifiedCharacteristicsKey"];
+  settings = [(HMDLightProfile *)selfCopy settings];
+  naturalLightingActiveTransitionContext = [(HMDLightProfile *)selfCopy naturalLightingActiveTransitionContext];
+  userInfo = [changedCopy userInfo];
+  v14 = [userInfo hmf_arrayForKey:@"kModifiedCharacteristicsKey"];
 
-  v15 = [(HMDLightProfile *)v7 availableCharacteristicWithType:@"00000144-0000-1000-8000-0026BB765291" fromChangedObjects:v14];
-  v16 = [(HMDLightProfile *)v7 hapAccessory];
-  v17 = [v16 home];
-  v18 = [v17 naturalLightingContext];
-  if (v18)
+  v15 = [(HMDLightProfile *)selfCopy availableCharacteristicWithType:@"00000144-0000-1000-8000-0026BB765291" fromChangedObjects:v14];
+  hapAccessory = [(HMDLightProfile *)selfCopy hapAccessory];
+  home = [hapAccessory home];
+  naturalLightingContext = [home naturalLightingContext];
+  if (naturalLightingContext)
   {
-    v19 = v18;
-    v20 = [(HMDLightProfile *)v7 naturalLightingCurve];
+    v19 = naturalLightingContext;
+    naturalLightingCurve = [(HMDLightProfile *)selfCopy naturalLightingCurve];
 
-    if (!v20)
+    if (!naturalLightingCurve)
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = v7;
+      v22 = selfCopy;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
@@ -2538,73 +2538,73 @@ uint64_t __70__HMDLightProfile_availableCharacteristicWithType_fromChangedObject
 
   if (v15)
   {
-    v25 = [(HMDLightProfile *)v7 availableCharacteristics];
-    [(HMDLightProfile *)v7 updateSupportedFeaturesWithCharacteristics:v25];
+    availableCharacteristics = [(HMDLightProfile *)selfCopy availableCharacteristics];
+    [(HMDLightProfile *)selfCopy updateSupportedFeaturesWithCharacteristics:availableCharacteristics];
   }
 
-  v26 = [(HMDLightProfile *)v7 availableCharacteristicWithType:@"00000143-0000-1000-8000-0026BB765291" fromChangedObjects:v14];
+  v26 = [(HMDLightProfile *)selfCopy availableCharacteristicWithType:@"00000143-0000-1000-8000-0026BB765291" fromChangedObjects:v14];
   if (v26)
   {
-    [(HMDLightProfile *)v7 updateNaturalLightingEnabledForCharacteristic:v26];
+    [(HMDLightProfile *)selfCopy updateNaturalLightingEnabledForCharacteristic:v26];
   }
 
-  v27 = [(HMDLightProfile *)v7 availableCharacteristicWithType:@"0000024B-0000-1000-8000-0026BB765291" fromChangedObjects:v14];
-  if (v27 && [(HMDLightProfile *)v7 updateActiveTransitionCountWithCharacteristic:v27])
+  v27 = [(HMDLightProfile *)selfCopy availableCharacteristicWithType:@"0000024B-0000-1000-8000-0026BB765291" fromChangedObjects:v14];
+  if (v27 && [(HMDLightProfile *)selfCopy updateActiveTransitionCountWithCharacteristic:v27])
   {
-    [(HMDLightProfile *)v7 readNaturalLightingCharacteristicsWithReason:@"Active transition count updated"];
+    [(HMDLightProfile *)selfCopy readNaturalLightingCharacteristicsWithReason:@"Active transition count updated"];
   }
 
-  [(HMDLightProfile *)v7 notifyClientsOfUpdatedSettingsWithPreviousSettings:v11];
-  v28 = [(HMDLightProfile *)v7 naturalLightingActiveTransitionContext];
+  [(HMDLightProfile *)selfCopy notifyClientsOfUpdatedSettingsWithPreviousSettings:settings];
+  naturalLightingActiveTransitionContext2 = [(HMDLightProfile *)selfCopy naturalLightingActiveTransitionContext];
   v29 = HMFEqualObjects();
 
   if ((v29 & 1) == 0)
   {
-    v38 = v11;
-    v39 = v4;
+    v38 = settings;
+    v39 = changedCopy;
     v30 = objc_autoreleasePoolPush();
-    v31 = v7;
+    v31 = selfCopy;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
       v33 = HMFGetLogIdentifier();
-      v34 = [(HMDLightProfile *)v31 naturalLightingActiveTransitionContext];
+      naturalLightingActiveTransitionContext3 = [(HMDLightProfile *)v31 naturalLightingActiveTransitionContext];
       *buf = 138543874;
       v41 = v33;
       v42 = 2112;
-      v43 = v12;
+      v43 = naturalLightingActiveTransitionContext;
       v44 = 2112;
-      v45 = v34;
+      v45 = naturalLightingActiveTransitionContext3;
       _os_log_impl(&dword_229538000, v32, OS_LOG_TYPE_INFO, "%{public}@Updating natural lighting active transition context from %@ -> %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v30);
-    v35 = [(HMDLightProfile *)v31 naturalLightingCurveWriter];
-    v36 = [(HMDLightProfile *)v31 naturalLightingActiveTransitionContext];
-    [v35 handleActiveTransitionContextUpdated:v36];
+    naturalLightingCurveWriter = [(HMDLightProfile *)v31 naturalLightingCurveWriter];
+    naturalLightingActiveTransitionContext4 = [(HMDLightProfile *)v31 naturalLightingActiveTransitionContext];
+    [naturalLightingCurveWriter handleActiveTransitionContextUpdated:naturalLightingActiveTransitionContext4];
 
-    v11 = v38;
-    v4 = v39;
+    settings = v38;
+    changedCopy = v39;
   }
 
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSupportedFeaturesWithCharacteristics:(id)a3
+- (void)updateSupportedFeaturesWithCharacteristics:(id)characteristics
 {
   v83 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  characteristicsCopy = characteristics;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 na_firstObjectPassingTest:&__block_literal_global_267019];
+  v6 = [characteristicsCopy na_firstObjectPassingTest:&__block_literal_global_267019];
   if (v6)
   {
-    v7 = [v4 na_firstObjectPassingTest:&__block_literal_global_122];
+    v7 = [characteristicsCopy na_firstObjectPassingTest:&__block_literal_global_122];
     if (!v7)
     {
       v41 = objc_autoreleasePoolPush();
-      v42 = self;
+      selfCopy = self;
       v43 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
       {
@@ -2615,7 +2615,7 @@ uint64_t __70__HMDLightProfile_availableCharacteristicWithType_fromChangedObject
         v79 = 2112;
         v80 = v45;
         v81 = 2112;
-        v82 = v4;
+        v82 = characteristicsCopy;
         _os_log_impl(&dword_229538000, v43, OS_LOG_TYPE_INFO, "%{public}@Characteristic Color Temperature: %@ is not supported, available characteristics: %@", buf, 0x20u);
       }
 
@@ -2623,11 +2623,11 @@ uint64_t __70__HMDLightProfile_availableCharacteristicWithType_fromChangedObject
       goto LABEL_49;
     }
 
-    v8 = [v4 na_firstObjectPassingTest:&__block_literal_global_125_267022];
+    v8 = [characteristicsCopy na_firstObjectPassingTest:&__block_literal_global_125_267022];
     if (!v8)
     {
       v46 = objc_autoreleasePoolPush();
-      v47 = self;
+      selfCopy2 = self;
       v48 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
       {
@@ -2638,7 +2638,7 @@ uint64_t __70__HMDLightProfile_availableCharacteristicWithType_fromChangedObject
         v79 = 2112;
         v80 = v50;
         v81 = 2112;
-        v82 = v4;
+        v82 = characteristicsCopy;
         _os_log_impl(&dword_229538000, v48, OS_LOG_TYPE_INFO, "%{public}@Characteristics Brightness: %@ is not supported, available characteristics: %@", buf, 0x20u);
       }
 
@@ -2646,20 +2646,20 @@ uint64_t __70__HMDLightProfile_availableCharacteristicWithType_fromChangedObject
       goto LABEL_48;
     }
 
-    v9 = [v4 na_firstObjectPassingTest:&__block_literal_global_128_267024];
+    v9 = [characteristicsCopy na_firstObjectPassingTest:&__block_literal_global_128_267024];
     if (v9)
     {
       [(HMDLightProfile *)self setNaturalLightingSupported:1];
-      v10 = [(HMDLightProfile *)self naturalLightingCurve];
+      naturalLightingCurve = [(HMDLightProfile *)self naturalLightingCurve];
 
-      if (v10)
+      if (naturalLightingCurve)
       {
         v73 = v9;
-        v11 = [v9 value];
+        value = [v9 value];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = v11;
+          v12 = value;
         }
 
         else
@@ -2670,24 +2670,24 @@ uint64_t __70__HMDLightProfile_availableCharacteristicWithType_fromChangedObject
         v13 = v12;
 
         v14 = objc_autoreleasePoolPush();
-        v15 = self;
+        selfCopy3 = self;
         v16 = HMFGetOSLogHandle();
         v17 = v16;
         if (v13)
         {
-          v71 = v11;
+          v71 = value;
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
           {
             HMFGetLogIdentifier();
             v19 = v18 = v13;
-            v20 = [(__CFString *)v18 hmf_hexadecimalRepresentation];
+            hmf_hexadecimalRepresentation = [(__CFString *)v18 hmf_hexadecimalRepresentation];
             *buf = 138543618;
             v78 = v19;
             v79 = 2112;
-            v80 = v20;
+            v80 = hmf_hexadecimalRepresentation;
             _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_DEBUG, "%{public}@Decoding supported value transition configuration: %@", buf, 0x16u);
 
-            v11 = v71;
+            value = v71;
             v13 = v18;
           }
 
@@ -2699,17 +2699,17 @@ uint64_t __70__HMDLightProfile_availableCharacteristicWithType_fromChangedObject
           if (v21)
           {
             v69 = v13;
-            v22 = [v21 transitions];
+            transitions = [v21 transitions];
             v74[0] = MEMORY[0x277D85DD0];
             v74[1] = 3221225472;
             v74[2] = __62__HMDLightProfile_updateSupportedFeaturesWithCharacteristics___block_invoke_130;
             v74[3] = &unk_278687D90;
             v23 = v7;
             v75 = v23;
-            v24 = [v22 na_firstObjectPassingTest:v74];
+            v24 = [transitions na_firstObjectPassingTest:v74];
 
             v25 = objc_autoreleasePoolPush();
-            v26 = v15;
+            v26 = selfCopy3;
             v27 = HMFGetOSLogHandle();
             v28 = os_log_type_enabled(v27, OS_LOG_TYPE_INFO);
             v29 = v24;
@@ -2728,16 +2728,16 @@ uint64_t __70__HMDLightProfile_availableCharacteristicWithType_fromChangedObject
 
               objc_autoreleasePoolPop(v25);
               [(HMDLightProfile *)v26 setSupportedFeatures:1];
-              v32 = [(HMDLightProfile *)v26 hapAccessory];
-              v33 = [v32 home];
-              if ([v33 isCurrentDeviceConfirmedPrimaryResident])
+              hapAccessory = [(HMDLightProfile *)v26 hapAccessory];
+              home = [hapAccessory home];
+              if ([home isCurrentDeviceConfirmedPrimaryResident])
               {
-                v34 = [v33 naturalLightingContext];
+                naturalLightingContext = [home naturalLightingContext];
 
-                if (v34)
+                if (naturalLightingContext)
                 {
                   v35 = [MEMORY[0x277CCABB0] numberWithBool:1];
-                  v36 = [v32 saveSupportsNaturalLighting:v35];
+                  v36 = [hapAccessory saveSupportsNaturalLighting:v35];
                 }
               }
             }
@@ -2762,20 +2762,20 @@ uint64_t __70__HMDLightProfile_availableCharacteristicWithType_fromChangedObject
 
             v9 = v73;
 
-            v11 = v71;
+            value = v71;
             v13 = v69;
           }
 
           else
           {
             v60 = objc_autoreleasePoolPush();
-            v61 = v15;
+            v61 = selfCopy3;
             v62 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
             {
               HMFGetLogIdentifier();
               v63 = v13;
-              v65 = v64 = v11;
+              v65 = v64 = value;
               *buf = 138543874;
               v78 = v65;
               v79 = 2112;
@@ -2784,7 +2784,7 @@ uint64_t __70__HMDLightProfile_availableCharacteristicWithType_fromChangedObject
               v82 = v72;
               _os_log_impl(&dword_229538000, v62, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode the supported value transition configuration from: %@ error: %@", buf, 0x20u);
 
-              v11 = v64;
+              value = v64;
               v13 = v63;
             }
 
@@ -2801,7 +2801,7 @@ uint64_t __70__HMDLightProfile_availableCharacteristicWithType_fromChangedObject
             *buf = 138543618;
             v78 = v59;
             v79 = 2112;
-            v80 = v11;
+            v80 = value;
             _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_ERROR, "%{public}@Supported Value Transition Configuration Characteristic value: %@ is not of expected type NSData", buf, 0x16u);
 
             v13 = 0;
@@ -2815,7 +2815,7 @@ uint64_t __70__HMDLightProfile_availableCharacteristicWithType_fromChangedObject
       }
 
       v51 = objc_autoreleasePoolPush();
-      v52 = self;
+      selfCopy5 = self;
       v53 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
       {
@@ -2833,7 +2833,7 @@ uint64_t __70__HMDLightProfile_availableCharacteristicWithType_fromChangedObject
     else
     {
       v51 = objc_autoreleasePoolPush();
-      v52 = self;
+      selfCopy5 = self;
       v53 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
       {
@@ -2843,7 +2843,7 @@ uint64_t __70__HMDLightProfile_availableCharacteristicWithType_fromChangedObject
         v79 = 2112;
         v80 = @"00000144-0000-1000-8000-0026BB765291";
         v81 = 2112;
-        v82 = v4;
+        v82 = characteristicsCopy;
         v55 = "%{public}@Supported Value Transition Characteristic: %@ is not supported, available characteristics: %@";
         v56 = v53;
         v57 = OS_LOG_TYPE_INFO;
@@ -2863,7 +2863,7 @@ LABEL_49:
   }
 
   v37 = objc_autoreleasePoolPush();
-  v38 = self;
+  selfCopy6 = self;
   v39 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
   {
@@ -2873,7 +2873,7 @@ LABEL_49:
     v79 = 2112;
     v80 = @"00000143-0000-1000-8000-0026BB765291";
     v81 = 2112;
-    v82 = v4;
+    v82 = characteristicsCopy;
     _os_log_impl(&dword_229538000, v39, OS_LOG_TYPE_INFO, "%{public}@Value Transition Control Characteristic: %@ is not supported, available characteristics: %@", buf, 0x20u);
   }
 
@@ -2935,15 +2935,15 @@ uint64_t __62__HMDLightProfile_updateSupportedFeaturesWithCharacteristics___bloc
   return v3;
 }
 
-- (void)updateNaturalLightingEnabledForCharacteristic:(id)a3
+- (void)updateNaturalLightingEnabledForCharacteristic:(id)characteristic
 {
   v70 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  characteristicCopy = characteristic;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -2951,18 +2951,18 @@ uint64_t __62__HMDLightProfile_updateSupportedFeaturesWithCharacteristics___bloc
     *buf = 138543618;
     v67 = v9;
     v68 = 2112;
-    v69 = v4;
+    v69 = characteristicCopy;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Updating natural lighting enabled with characteristic: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDLightProfile *)v7 colorTemperatureCharacteristic];
-  if (!v10)
+  colorTemperatureCharacteristic = [(HMDLightProfile *)selfCopy colorTemperatureCharacteristic];
+  if (!colorTemperatureCharacteristic)
   {
-    [(HMDLightProfile *)v7 setNaturalLightingEnabled:0];
-    [(HMDLightProfile *)v7 setNaturalLightingActiveTransitionContext:0];
+    [(HMDLightProfile *)selfCopy setNaturalLightingEnabled:0];
+    [(HMDLightProfile *)selfCopy setNaturalLightingActiveTransitionContext:0];
     v26 = objc_autoreleasePoolPush();
-    v27 = v7;
+    v27 = selfCopy;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -2984,12 +2984,12 @@ LABEL_20:
     goto LABEL_44;
   }
 
-  if (!v4)
+  if (!characteristicCopy)
   {
-    [(HMDLightProfile *)v7 setNaturalLightingEnabled:0];
-    [(HMDLightProfile *)v7 setNaturalLightingActiveTransitionContext:0];
+    [(HMDLightProfile *)selfCopy setNaturalLightingEnabled:0];
+    [(HMDLightProfile *)selfCopy setNaturalLightingActiveTransitionContext:0];
     v26 = objc_autoreleasePoolPush();
-    v27 = v7;
+    v27 = selfCopy;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -3005,11 +3005,11 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v11 = [v4 value];
+  value = [characteristicCopy value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v11;
+    v12 = value;
   }
 
   else
@@ -3022,22 +3022,22 @@ LABEL_20:
   if (v13)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = v7;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       v17 = HMFGetLogIdentifier();
-      v18 = [v13 hmf_hexadecimalRepresentation];
+      hmf_hexadecimalRepresentation = [v13 hmf_hexadecimalRepresentation];
       *buf = 138543618;
       v67 = v17;
       v68 = 2112;
-      v69 = v18;
+      v69 = hmf_hexadecimalRepresentation;
       _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_DEBUG, "%{public}@Decoding Value Transition Control Characteristic value: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v14);
     v19 = [MEMORY[0x277CFEAB8] parsedFromData:v13 error:0];
-    v20 = [v19 naturalLightingEnabledForCharacteristic:v10];
+    v20 = [v19 naturalLightingEnabledForCharacteristic:colorTemperatureCharacteristic];
     if (v20)
     {
       v21 = objc_autoreleasePoolPush();
@@ -3053,7 +3053,7 @@ LABEL_20:
 
       objc_autoreleasePoolPop(v21);
       -[HMDLightProfile setNaturalLightingEnabled:](v22, "setNaturalLightingEnabled:", [v20 BOOLValue]);
-      v25 = [v19 naturalLightingActiveTransitionContextForCharacteristic:v10];
+      v25 = [v19 naturalLightingActiveTransitionContextForCharacteristic:colorTemperatureCharacteristic];
       [(HMDLightProfile *)v22 setNaturalLightingActiveTransitionContext:v25];
     }
 
@@ -3061,9 +3061,9 @@ LABEL_20:
     {
       v65 = v19;
       v25 = [MEMORY[0x277CFEAC0] parsedFromData:v13 error:0];
-      v37 = [v25 valueTransition];
-      v38 = [(HMDLightProfile *)v15 colorTemperatureCharacteristic];
-      v39 = [v37 naturalLightingActiveTransitionContextForCharacteristic:v38];
+      valueTransition = [v25 valueTransition];
+      colorTemperatureCharacteristic2 = [(HMDLightProfile *)v15 colorTemperatureCharacteristic];
+      v39 = [valueTransition naturalLightingActiveTransitionContextForCharacteristic:colorTemperatureCharacteristic2];
 
       if (v39)
       {
@@ -3084,8 +3084,8 @@ LABEL_20:
 
       else
       {
-        v44 = [v25 transitionState];
-        if ([v44 isValid])
+        transitionState = [v25 transitionState];
+        if ([transitionState isValid])
         {
           v45 = objc_autoreleasePoolPush();
           v46 = v15;
@@ -3093,7 +3093,7 @@ LABEL_20:
           if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
           {
             contexta = HMFGetLogIdentifier();
-            [v44 activeTransitionContexts];
+            [transitionState activeTransitionContexts];
             v48 = v61 = v45;
             *buf = 138543618;
             v67 = contexta;
@@ -3105,9 +3105,9 @@ LABEL_20:
           }
 
           objc_autoreleasePoolPop(v45);
-          -[HMDLightProfile setNaturalLightingEnabled:](v46, "setNaturalLightingEnabled:", [v44 isNaturalLightingEnabledForCharacteristic:v10]);
-          v49 = [v25 transitionState];
-          v50 = [v49 naturalLightingActiveTransitionContextForCharacteristic:v10];
+          -[HMDLightProfile setNaturalLightingEnabled:](v46, "setNaturalLightingEnabled:", [transitionState isNaturalLightingEnabledForCharacteristic:colorTemperatureCharacteristic]);
+          transitionState2 = [v25 transitionState];
+          v50 = [transitionState2 naturalLightingActiveTransitionContextForCharacteristic:colorTemperatureCharacteristic];
           [(HMDLightProfile *)v46 setNaturalLightingActiveTransitionContext:v50];
         }
 
@@ -3115,28 +3115,28 @@ LABEL_20:
         {
           v51 = [MEMORY[0x277CFEAE8] parsedFromData:v13 error:0];
 
-          v52 = [v51 isValid];
+          isValid = [v51 isValid];
           context = objc_autoreleasePoolPush();
           v53 = v15;
           v54 = HMFGetOSLogHandle();
           v55 = v54;
-          if (v52)
+          if (isValid)
           {
             if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
             {
               v62 = HMFGetLogIdentifier();
-              v56 = [v51 activeTransitionContexts];
+              activeTransitionContexts = [v51 activeTransitionContexts];
               *buf = 138543618;
               v67 = v62;
               v68 = 2112;
-              v69 = v56;
-              v57 = v56;
+              v69 = activeTransitionContexts;
+              v57 = activeTransitionContexts;
               _os_log_impl(&dword_229538000, v55, OS_LOG_TYPE_INFO, "%{public}@Parsed the Value Transition Control Characteristic value update as Transition State, active transition contexts are: %@", buf, 0x16u);
             }
 
             objc_autoreleasePoolPop(context);
-            -[HMDLightProfile setNaturalLightingEnabled:](v53, "setNaturalLightingEnabled:", [v51 isNaturalLightingEnabledForCharacteristic:v10]);
-            v58 = [v51 naturalLightingActiveTransitionContextForCharacteristic:v10];
+            -[HMDLightProfile setNaturalLightingEnabled:](v53, "setNaturalLightingEnabled:", [v51 isNaturalLightingEnabledForCharacteristic:colorTemperatureCharacteristic]);
+            v58 = [v51 naturalLightingActiveTransitionContextForCharacteristic:colorTemperatureCharacteristic];
             [(HMDLightProfile *)v53 setNaturalLightingActiveTransitionContext:v58];
           }
 
@@ -3155,7 +3155,7 @@ LABEL_20:
             objc_autoreleasePoolPop(context);
           }
 
-          v44 = v51;
+          transitionState = v51;
         }
       }
 
@@ -3165,10 +3165,10 @@ LABEL_20:
 
   else
   {
-    [(HMDLightProfile *)v7 setNaturalLightingEnabled:0];
-    [(HMDLightProfile *)v7 setNaturalLightingActiveTransitionContext:0];
+    [(HMDLightProfile *)selfCopy setNaturalLightingEnabled:0];
+    [(HMDLightProfile *)selfCopy setNaturalLightingActiveTransitionContext:0];
     v33 = objc_autoreleasePoolPush();
-    v34 = v7;
+    v34 = selfCopy;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
@@ -3176,7 +3176,7 @@ LABEL_20:
       *buf = 138543618;
       v67 = v36;
       v68 = 2112;
-      v69 = v11;
+      v69 = value;
       _os_log_impl(&dword_229538000, v35, OS_LOG_TYPE_ERROR, "%{public}@Value Transition Control Characteristic value is not of type data: %@", buf, 0x16u);
     }
 
@@ -3187,42 +3187,42 @@ LABEL_44:
   v60 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyClientsOfUpdatedSettingsWithPreviousSettings:(id)a3
+- (void)notifyClientsOfUpdatedSettingsWithPreviousSettings:(id)settings
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  settingsCopy = settings;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDLightProfile *)self settings];
-  v7 = [v6 isEqual:v4];
+  settings = [(HMDLightProfile *)self settings];
+  v7 = [settings isEqual:settingsCopy];
 
   if ((v7 & 1) == 0)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [(HMDLightProfile *)v9 settings];
+      settings2 = [(HMDLightProfile *)selfCopy settings];
       *buf = 138543874;
       v50 = v11;
       v51 = 2112;
-      v52 = v4;
+      v52 = settingsCopy;
       v53 = 2112;
-      v54 = v12;
+      v54 = settings2;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Updating settings from %@ to %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v13 = [(HMDLightProfile *)v9 settings];
-    v14 = [v13 supportedFeatures] & 1;
+    settings3 = [(HMDLightProfile *)selfCopy settings];
+    v14 = [settings3 supportedFeatures] & 1;
 
-    if (v14 != ([v4 supportedFeatures] & 1))
+    if (v14 != ([settingsCopy supportedFeatures] & 1))
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = v9;
+      v16 = selfCopy;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
@@ -3239,73 +3239,73 @@ LABEL_44:
       }
 
       objc_autoreleasePoolPop(v15);
-      v21 = [(HMDAccessoryProfile *)v16 accessory];
-      v22 = [v21 home];
-      v23 = [v22 homeManager];
-      [v23 assistantSyncDataChanged:@"Natural lighting support updated"];
+      accessory = [(HMDAccessoryProfile *)v16 accessory];
+      home = [accessory home];
+      homeManager = [home homeManager];
+      [homeManager assistantSyncDataChanged:@"Natural lighting support updated"];
     }
 
-    v24 = [(HMDLightProfile *)v9 isNaturalLightingEnabled];
-    v25 = [v4 isNaturalLightingEnabled];
-    if (v24)
+    isNaturalLightingEnabled = [(HMDLightProfile *)selfCopy isNaturalLightingEnabled];
+    isNaturalLightingEnabled2 = [settingsCopy isNaturalLightingEnabled];
+    if (isNaturalLightingEnabled)
     {
-      if ((v25 & 1) == 0)
+      if ((isNaturalLightingEnabled2 & 1) == 0)
       {
-        v26 = [(HMDLightProfile *)v9 lastNaturalLightingEnabledDate];
-        v27 = [(HMDLightProfile *)v9 dataSource];
-        v28 = [v27 date];
-        [(HMDLightProfile *)v9 setLastNaturalLightingUsedDate:v28];
-        [(HMDLightProfile *)v9 setLastNaturalLightingEnabledDate:v28];
+        lastNaturalLightingEnabledDate = [(HMDLightProfile *)selfCopy lastNaturalLightingEnabledDate];
+        dataSource = [(HMDLightProfile *)selfCopy dataSource];
+        date = [dataSource date];
+        [(HMDLightProfile *)selfCopy setLastNaturalLightingUsedDate:date];
+        [(HMDLightProfile *)selfCopy setLastNaturalLightingEnabledDate:date];
 
         v29 = objc_autoreleasePoolPush();
-        v30 = v9;
+        v30 = selfCopy;
         v31 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
         {
           v32 = HMFGetLogIdentifier();
-          v33 = [(HMDLightProfile *)v30 lastNaturalLightingEnabledDate];
+          lastNaturalLightingEnabledDate2 = [(HMDLightProfile *)v30 lastNaturalLightingEnabledDate];
           *buf = 138543874;
           v50 = v32;
           v51 = 2112;
-          v52 = v33;
+          v52 = lastNaturalLightingEnabledDate2;
           v53 = 2112;
-          v54 = v26;
+          v54 = lastNaturalLightingEnabledDate;
           _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_DEBUG, "%{public}@Updating lastNaturalLightingEnabledDate to: %@ from: %@", buf, 0x20u);
         }
 
         objc_autoreleasePoolPop(v29);
       }
 
-      if (![(HMDLightProfile *)v9 supportsCHIP])
+      if (![(HMDLightProfile *)selfCopy supportsCHIP])
       {
-        [(HMDLightProfile *)v9 synchronizeCurveToAccessory];
+        [(HMDLightProfile *)selfCopy synchronizeCurveToAccessory];
       }
     }
 
-    else if (v25)
+    else if (isNaturalLightingEnabled2)
     {
-      v34 = [(HMDLightProfile *)v9 dataSource];
-      v35 = [v34 date];
-      [(HMDLightProfile *)v9 setLastNaturalLightingUsedDate:v35];
+      dataSource2 = [(HMDLightProfile *)selfCopy dataSource];
+      date2 = [dataSource2 date];
+      [(HMDLightProfile *)selfCopy setLastNaturalLightingUsedDate:date2];
     }
 
-    v36 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v36 postNotificationName:@"HMDLightProfile.SettingsUpdated" object:v9];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"HMDLightProfile.SettingsUpdated" object:selfCopy];
 
-    v37 = [(HMDLightProfile *)v9 settings];
-    v38 = encodeRootObjectForIncomingXPCMessage(v37, 0);
+    settings4 = [(HMDLightProfile *)selfCopy settings];
+    v38 = encodeRootObjectForIncomingXPCMessage(settings4, 0);
     v48 = v38;
     v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
 
     v40 = objc_alloc(MEMORY[0x277D0F820]);
-    v41 = [(HMDAccessoryProfile *)v9 uniqueIdentifier];
-    v42 = [v40 initWithTarget:v41];
+    uniqueIdentifier = [(HMDAccessoryProfile *)selfCopy uniqueIdentifier];
+    v42 = [v40 initWithTarget:uniqueIdentifier];
 
     v43 = objc_alloc(MEMORY[0x277D0F848]);
     v44 = [v43 initWithName:*MEMORY[0x277CD07B0] destination:v42 payload:v39];
     [v44 setRequiresSPIEntitlement];
-    v45 = [(HMDAccessoryProfile *)v9 msgDispatcher];
-    [v45 sendMessage:v44];
+    msgDispatcher = [(HMDAccessoryProfile *)selfCopy msgDispatcher];
+    [msgDispatcher sendMessage:v44];
   }
 
   v46 = *MEMORY[0x277D85DE8];
@@ -3314,14 +3314,14 @@ LABEL_44:
 - (void)resetNaturalLightingEnabledRetryContext
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDLightProfile *)self naturalLightingEnabledRetryContext];
-  if (v4)
+  naturalLightingEnabledRetryContext = [(HMDLightProfile *)self naturalLightingEnabledRetryContext];
+  if (naturalLightingEnabledRetryContext)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -3329,48 +3329,48 @@ LABEL_44:
       v12 = 138543618;
       v13 = v8;
       v14 = 2112;
-      v15 = v4;
+      v15 = naturalLightingEnabledRetryContext;
       _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Resetting natural lighting context: %@", &v12, 0x16u);
     }
 
     objc_autoreleasePoolPop(v5);
     v9 = [MEMORY[0x277CCA9B8] hmErrorWithCode:23];
-    v10 = [v4 completion];
-    (v10)[2](v10, v9);
+    completion = [naturalLightingEnabledRetryContext completion];
+    (completion)[2](completion, v9);
 
-    [(HMDLightProfile *)v6 setNaturalLightingEnabledRetryContext:0];
+    [(HMDLightProfile *)selfCopy setNaturalLightingEnabledRetryContext:0];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFetchNaturalLightColorTemperatureForBrightnessMessage:(id)a3
+- (void)handleFetchNaturalLightColorTemperatureForBrightnessMessage:(id)message
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v4 messagePayload];
+    messagePayload = [messageCopy messagePayload];
     *buf = 138543618;
     v47 = v9;
     v48 = 2112;
-    v49 = v10;
+    v49 = messagePayload;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Received message to fetch color temperature for brightness: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [v4 numberForKey:*MEMORY[0x277CD0768]];
+  v11 = [messageCopy numberForKey:*MEMORY[0x277CD0768]];
   if ([v11 integerValue] < 0)
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = v7;
+    v26 = selfCopy;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -3383,49 +3383,49 @@ LABEL_44:
     }
 
     objc_autoreleasePoolPop(v25);
-    v12 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    [v4 respondWithError:v12];
+    hapAccessory = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
+    [messageCopy respondWithError:hapAccessory];
   }
 
   else
   {
-    v12 = [(HMDLightProfile *)v7 hapAccessory];
-    v13 = [v12 home];
-    v14 = [v13 naturalLightingContext];
-    if (v14)
+    hapAccessory = [(HMDLightProfile *)selfCopy hapAccessory];
+    home = [hapAccessory home];
+    naturalLightingContext = [home naturalLightingContext];
+    if (naturalLightingContext)
     {
-      v15 = [(HMDLightProfile *)v7 naturalLightingCurve];
-      if ([v12 supportsCHIP])
+      naturalLightingCurve = [(HMDLightProfile *)selfCopy naturalLightingCurve];
+      if ([hapAccessory supportsCHIP])
       {
-        v16 = [v14 curve];
+        curve = [naturalLightingContext curve];
 
-        v15 = v16;
+        naturalLightingCurve = curve;
       }
 
-      if (v15)
+      if (naturalLightingCurve)
       {
-        v43 = v13;
-        v17 = [(HMDLightProfile *)v7 dataSource];
-        v18 = [(HMDLightProfile *)v7 dataSource];
-        v19 = [v18 date];
-        v42 = v14;
-        v20 = [v14 timeZone];
-        v21 = [v17 millisecondsElapsedSinceStartOfDayWithDate:v19 timeZone:v20];
+        v43 = home;
+        dataSource = [(HMDLightProfile *)selfCopy dataSource];
+        dataSource2 = [(HMDLightProfile *)selfCopy dataSource];
+        date = [dataSource2 date];
+        v42 = naturalLightingContext;
+        timeZone = [naturalLightingContext timeZone];
+        v21 = [dataSource millisecondsElapsedSinceStartOfDayWithDate:date timeZone:timeZone];
 
-        v22 = [v15 colorTemperatureForBrightness:objc_msgSend(v11 millisecondsElapsedSinceStartOfDay:{"integerValue"), v21}];
+        v22 = [naturalLightingCurve colorTemperatureForBrightness:objc_msgSend(v11 millisecondsElapsedSinceStartOfDay:{"integerValue"), v21}];
         v23 = v22;
         if (v22)
         {
           v44 = *MEMORY[0x277CD0778];
           v45 = v22;
           v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
-          [v4 respondWithPayload:v24];
+          [messageCopy respondWithPayload:v24];
         }
 
         else
         {
           v37 = objc_autoreleasePoolPush();
-          v38 = v7;
+          v38 = selfCopy;
           v39 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
           {
@@ -3439,17 +3439,17 @@ LABEL_44:
 
           objc_autoreleasePoolPop(v37);
           v24 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-          [v4 respondWithError:v24];
+          [messageCopy respondWithError:v24];
         }
 
-        v14 = v42;
-        v13 = v43;
+        naturalLightingContext = v42;
+        home = v43;
       }
 
       else
       {
         v33 = objc_autoreleasePoolPush();
-        v34 = v7;
+        v34 = selfCopy;
         v35 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
@@ -3463,14 +3463,14 @@ LABEL_44:
 
         objc_autoreleasePoolPop(v33);
         v23 = [MEMORY[0x277CCA9B8] hmErrorWithCode:21];
-        [v4 respondWithError:v23];
+        [messageCopy respondWithError:v23];
       }
     }
 
     else
     {
       v29 = objc_autoreleasePoolPush();
-      v30 = v7;
+      v30 = selfCopy;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
@@ -3480,66 +3480,66 @@ LABEL_44:
         v48 = 2112;
         v49 = 0;
         v50 = 2112;
-        v51 = v13;
+        v51 = home;
         _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_ERROR, "%{public}@Natural lighting context not set for home (%@:%@)", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v29);
-      v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:21];
-      [v4 respondWithError:v15];
+      naturalLightingCurve = [MEMORY[0x277CCA9B8] hmErrorWithCode:21];
+      [messageCopy respondWithError:naturalLightingCurve];
     }
   }
 
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSetNaturalLightingEnabledMessage:(id)a3
+- (void)handleSetNaturalLightingEnabledMessage:(id)message
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v4 messagePayload];
-    v11 = [(HMDLightProfile *)v7 hapAccessory];
-    [v11 supportsCHIP];
+    messagePayload = [messageCopy messagePayload];
+    hapAccessory = [(HMDLightProfile *)selfCopy hapAccessory];
+    [hapAccessory supportsCHIP];
     v12 = HMFBooleanToString();
     *buf = 138543874;
     v26 = v9;
     v27 = 2112;
-    v28 = v10;
+    v28 = messagePayload;
     v29 = 2112;
     v30 = v12;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Received message to set Natural Lighting setting: %@ supportsCHIP: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v13 = [(HMDLightProfile *)v7 hapAccessory];
-  v14 = [v13 supportsCHIP];
+  hapAccessory2 = [(HMDLightProfile *)selfCopy hapAccessory];
+  supportsCHIP = [hapAccessory2 supportsCHIP];
 
-  if (v14)
+  if (supportsCHIP)
   {
-    [(HMDLightProfile *)v7 handleSetNaturalLightingEnabledMessageForMatterAccessory:v4];
+    [(HMDLightProfile *)selfCopy handleSetNaturalLightingEnabledMessageForMatterAccessory:messageCopy];
   }
 
   else
   {
-    v15 = [v4 BOOLForKey:*MEMORY[0x277CD0798]];
-    v16 = [v4 BOOLForKey:*MEMORY[0x277CD07A0]];
+    v15 = [messageCopy BOOLForKey:*MEMORY[0x277CD0798]];
+    v16 = [messageCopy BOOLForKey:*MEMORY[0x277CD07A0]];
     v19 = MEMORY[0x277D85DD0];
     v20 = 3221225472;
     v21 = __58__HMDLightProfile_handleSetNaturalLightingEnabledMessage___block_invoke;
     v22 = &unk_27868A1D8;
-    v23 = v4;
-    v24 = v7;
+    v23 = messageCopy;
+    v24 = selfCopy;
     v17 = _Block_copy(&v19);
-    [(HMDLightProfile *)v7 setNaturalLightingEnabled:v15 shouldRetryOnFailure:v16 completion:v17, v19, v20, v21, v22];
+    [(HMDLightProfile *)selfCopy setNaturalLightingEnabled:v15 shouldRetryOnFailure:v16 completion:v17, v19, v20, v21, v22];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -3572,35 +3572,35 @@ void __58__HMDLightProfile_handleSetNaturalLightingEnabledMessage___block_invoke
 - (void)registerForMessages
 {
   v58 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryProfile *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDLightProfile *)self hapAccessory];
-  v5 = [v4 home];
-  v6 = v5;
-  if (v4 && v5)
+  hapAccessory = [(HMDLightProfile *)self hapAccessory];
+  home = [hapAccessory home];
+  v6 = home;
+  if (hapAccessory && home)
   {
-    v7 = [v5 naturalLightingContext];
+    naturalLightingContext = [home naturalLightingContext];
 
-    if (v7)
+    if (naturalLightingContext)
     {
-      v8 = [(HMDLightProfile *)self settings];
-      v9 = [v4 supportsNaturalLighting];
-      -[HMDLightProfile setNaturalLightingSupported:](self, "setNaturalLightingSupported:", [v9 BOOLValue]);
+      settings = [(HMDLightProfile *)self settings];
+      supportsNaturalLighting = [hapAccessory supportsNaturalLighting];
+      -[HMDLightProfile setNaturalLightingSupported:](self, "setNaturalLightingSupported:", [supportsNaturalLighting BOOLValue]);
 
       [(HMDLightProfile *)self setSupportedFeatures:[(HMDLightProfile *)self isNaturalLightingSupported]];
-      v10 = [v4 naturalLightingEnabled];
-      -[HMDLightProfile setNaturalLightingEnabled:](self, "setNaturalLightingEnabled:", [v10 BOOLValue]);
+      naturalLightingEnabled = [hapAccessory naturalLightingEnabled];
+      -[HMDLightProfile setNaturalLightingEnabled:](self, "setNaturalLightingEnabled:", [naturalLightingEnabled BOOLValue]);
 
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v14 = HMFGetLogIdentifier();
-        [(HMDLightProfile *)v12 isNaturalLightingSupported];
+        [(HMDLightProfile *)selfCopy isNaturalLightingSupported];
         v15 = HMFBooleanToString();
-        [(HMDLightProfile *)v12 isNaturalLightingEnabled];
+        [(HMDLightProfile *)selfCopy isNaturalLightingEnabled];
         v16 = HMFBooleanToString();
         *buf = 138543874;
         v53 = v14;
@@ -3612,72 +3612,72 @@ void __58__HMDLightProfile_handleSetNaturalLightingEnabledMessage___block_invoke
       }
 
       objc_autoreleasePoolPop(v11);
-      if ([(HMDLightProfile *)v12 isNaturalLightingSupported]|| [(HMDLightProfile *)v12 isNaturalLightingEnabled])
+      if ([(HMDLightProfile *)selfCopy isNaturalLightingSupported]|| [(HMDLightProfile *)selfCopy isNaturalLightingEnabled])
       {
-        [(HMDLightProfile *)v12 notifyClientsOfUpdatedSettingsWithPreviousSettings:v8];
+        [(HMDLightProfile *)selfCopy notifyClientsOfUpdatedSettingsWithPreviousSettings:settings];
       }
     }
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:self selector:sel_handleAccessorySupportsNaturalLightingDidChangeNotification_ name:@"HMDAccessorySupportsNaturalLightingDidChangeNotification" object:v4];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_handleAccessorySupportsNaturalLightingDidChangeNotification_ name:@"HMDAccessorySupportsNaturalLightingDidChangeNotification" object:hapAccessory];
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:self selector:sel_handleAccessoryNaturalLightingEnabledDidChangeNotification_ name:@"HMDAccessoryNaturalLightingEnabledDidChangeNotification" object:v4];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_handleAccessoryNaturalLightingEnabledDidChangeNotification_ name:@"HMDAccessoryNaturalLightingEnabledDidChangeNotification" object:hapAccessory];
 
-    if ([v4 supportsCHIP])
+    if ([hapAccessory supportsCHIP])
     {
       goto LABEL_22;
     }
 
-    v19 = [v4 matterNodeID];
-    if (v19)
+    matterNodeID = [hapAccessory matterNodeID];
+    if (matterNodeID)
     {
-      v20 = v19;
-      v21 = [v4 matterNodeID];
-      v22 = [v21 isEqual:&unk_283E75038];
+      v20 = matterNodeID;
+      matterNodeID2 = [hapAccessory matterNodeID];
+      v22 = [matterNodeID2 isEqual:&unk_283E75038];
 
       if ((v22 & 1) == 0)
       {
 LABEL_22:
-        v30 = [(HMDLightProfile *)self matterCurveWriter];
-        [v30 configureWithLightProfile:self];
+        matterCurveWriter = [(HMDLightProfile *)self matterCurveWriter];
+        [matterCurveWriter configureWithLightProfile:self];
 LABEL_27:
 
         goto LABEL_28;
       }
     }
 
-    v23 = [(HMDLightProfile *)self naturalLightingCurveWriter];
-    [v23 configureWithLightProfile:self];
+    naturalLightingCurveWriter = [(HMDLightProfile *)self naturalLightingCurveWriter];
+    [naturalLightingCurveWriter configureWithLightProfile:self];
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 addObserver:self selector:sel_handleHomeDidEnableCharacteristicNotification_ name:@"HMDHomeDidEnableCharacteristicNotifyEventNotification" object:v6];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel_handleHomeDidEnableCharacteristicNotification_ name:@"HMDHomeDidEnableCharacteristicNotifyEventNotification" object:v6];
 
-    v25 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v25 addObserver:self selector:sel_handleHomeDidDisableCharacteristicNotification_ name:@"HMDHomeDidDisableCharacteristicNotifyEventNotification" object:v6];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:self selector:sel_handleHomeDidDisableCharacteristicNotification_ name:@"HMDHomeDidDisableCharacteristicNotifyEventNotification" object:v6];
 
-    v26 = [(HMDLightProfile *)self characteristicsAvailabilityListener];
-    [v26 setDelegate:self];
+    characteristicsAvailabilityListener = [(HMDLightProfile *)self characteristicsAvailabilityListener];
+    [characteristicsAvailabilityListener setDelegate:self];
 
-    v27 = [(HMDLightProfile *)self characteristicsAvailabilityListener];
-    [v27 start];
+    characteristicsAvailabilityListener2 = [(HMDLightProfile *)self characteristicsAvailabilityListener];
+    [characteristicsAvailabilityListener2 start];
 
     if ([v6 hasCharacteristicNotificationRegistrations] && -[HMDLightProfile enableNaturalLightingCharacteristicNotificationsForObserver:](self, "enableNaturalLightingCharacteristicNotificationsForObserver:", v6))
     {
       [(HMDLightProfile *)self readNaturalLightingCharacteristicsWithReason:@"Characteristic notifications enabled"];
     }
 
-    v28 = [v6 featuresDataSource];
-    v29 = [v28 isMessageBindingsEnabled];
+    featuresDataSource = [v6 featuresDataSource];
+    isMessageBindingsEnabled = [featuresDataSource isMessageBindingsEnabled];
 
-    if ((v29 & 1) == 0)
+    if ((isMessageBindingsEnabled & 1) == 0)
     {
-      v30 = [HMDXPCMessagePolicy policyWithEntitlements:5];
+      matterCurveWriter = [HMDXPCMessagePolicy policyWithEntitlements:5];
       v31 = +[HMDRemoteMessagePolicy defaultSecurePolicy];
       v32 = [HMDUserMessagePolicy userMessagePolicyWithHome:v6 userPrivilege:0 remoteAccessRequired:0];
-      if ([v4 supportsCHIP])
+      if ([hapAccessory supportsCHIP])
       {
-        v49 = v30;
+        v49 = matterCurveWriter;
         v50 = v31;
         v51 = v32;
         v33 = MEMORY[0x277CBEA60];
@@ -3687,7 +3687,7 @@ LABEL_27:
 
       else
       {
-        v48 = v30;
+        v48 = matterCurveWriter;
         v33 = MEMORY[0x277CBEA60];
         v34 = &v48;
         v35 = 1;
@@ -3695,7 +3695,7 @@ LABEL_27:
 
       v40 = [v33 arrayWithObjects:v34 count:{v35, v48, v49, v50, v51}];
       v41 = objc_autoreleasePoolPush();
-      v42 = self;
+      selfCopy2 = self;
       v43 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
       {
@@ -3708,11 +3708,11 @@ LABEL_27:
       }
 
       objc_autoreleasePoolPop(v41);
-      v45 = [(HMDAccessoryProfile *)v42 msgDispatcher];
-      [v45 registerForMessage:*MEMORY[0x277CD0790] receiver:v42 policies:v40 selector:sel_handleSetNaturalLightingEnabledMessage_];
+      msgDispatcher = [(HMDAccessoryProfile *)selfCopy2 msgDispatcher];
+      [msgDispatcher registerForMessage:*MEMORY[0x277CD0790] receiver:selfCopy2 policies:v40 selector:sel_handleSetNaturalLightingEnabledMessage_];
 
-      v46 = [(HMDAccessoryProfile *)v42 msgDispatcher];
-      [v46 registerForMessage:*MEMORY[0x277CD0780] receiver:v42 policies:v40 selector:sel_handleFetchNaturalLightColorTemperatureForBrightnessMessage_];
+      msgDispatcher2 = [(HMDAccessoryProfile *)selfCopy2 msgDispatcher];
+      [msgDispatcher2 registerForMessage:*MEMORY[0x277CD0780] receiver:selfCopy2 policies:v40 selector:sel_handleFetchNaturalLightColorTemperatureForBrightnessMessage_];
 
       goto LABEL_27;
     }
@@ -3721,7 +3721,7 @@ LABEL_27:
   else
   {
     v36 = objc_autoreleasePoolPush();
-    v37 = self;
+    selfCopy3 = self;
     v38 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
@@ -3742,151 +3742,151 @@ LABEL_28:
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_hapAccessory);
-  v4 = [(NSSet *)self->_notificationEnabledCharacteristics allObjects];
-  [WeakRetained setNotificationsEnabled:0 forCharacteristics:v4 clientIdentifier:self->_clientIdentifier];
+  allObjects = [(NSSet *)self->_notificationEnabledCharacteristics allObjects];
+  [WeakRetained setNotificationsEnabled:0 forCharacteristics:allObjects clientIdentifier:self->_clientIdentifier];
 
   v5.receiver = self;
   v5.super_class = HMDLightProfile;
   [(HMDLightProfile *)&v5 dealloc];
 }
 
-- (HMDLightProfile)initWithUUID:(id)a3 workQueue:(id)a4 lightService:(id)a5 accessory:(id)a6 matterCurveWriter:(id)a7 dataSource:(id)a8
+- (HMDLightProfile)initWithUUID:(id)d workQueue:(id)queue lightService:(id)service accessory:(id)accessory matterCurveWriter:(id)writer dataSource:(id)source
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v15 = a5;
-  v16 = a6;
-  v25 = a7;
-  v24 = a8;
-  v27[0] = v15;
+  serviceCopy = service;
+  accessoryCopy = accessory;
+  writerCopy = writer;
+  sourceCopy = source;
+  v27[0] = serviceCopy;
   v17 = MEMORY[0x277CBEA60];
-  v18 = a4;
-  v19 = a3;
+  queueCopy = queue;
+  dCopy = d;
   v20 = [v17 arrayWithObjects:v27 count:1];
   v26.receiver = self;
   v26.super_class = HMDLightProfile;
-  v21 = [(HMDAccessoryProfile *)&v26 initWithAccessory:v16 uniqueIdentifier:v19 services:v20 workQueue:v18];
+  v21 = [(HMDAccessoryProfile *)&v26 initWithAccessory:accessoryCopy uniqueIdentifier:dCopy services:v20 workQueue:queueCopy];
 
   if (v21)
   {
-    objc_storeStrong(&v21->_service, a5);
-    objc_storeWeak(&v21->_hapAccessory, v16);
-    objc_storeStrong(&v21->_matterCurveWriter, a7);
-    objc_storeStrong(&v21->_dataSource, a8);
+    objc_storeStrong(&v21->_service, service);
+    objc_storeWeak(&v21->_hapAccessory, accessoryCopy);
+    objc_storeStrong(&v21->_matterCurveWriter, writer);
+    objc_storeStrong(&v21->_dataSource, source);
   }
 
   v22 = *MEMORY[0x277D85DE8];
   return v21;
 }
 
-- (HMDLightProfile)initWithUUID:(id)a3 workQueue:(id)a4 lightService:(id)a5 accessory:(id)a6 characteristicsAvailabilityListener:(id)a7 naturalLightingCurveWriter:(id)a8 dataSource:(id)a9
+- (HMDLightProfile)initWithUUID:(id)d workQueue:(id)queue lightService:(id)service accessory:(id)accessory characteristicsAvailabilityListener:(id)listener naturalLightingCurveWriter:(id)writer dataSource:(id)source
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v16 = a5;
-  v17 = a6;
-  v36 = a7;
-  v35 = a8;
-  v34 = a9;
-  v38[0] = v16;
+  serviceCopy = service;
+  accessoryCopy = accessory;
+  listenerCopy = listener;
+  writerCopy = writer;
+  sourceCopy = source;
+  v38[0] = serviceCopy;
   v18 = MEMORY[0x277CBEA60];
-  v19 = a4;
-  v20 = a3;
+  queueCopy = queue;
+  dCopy = d;
   v21 = [v18 arrayWithObjects:v38 count:1];
   v37.receiver = self;
   v37.super_class = HMDLightProfile;
-  v22 = [(HMDAccessoryProfile *)&v37 initWithAccessory:v17 uniqueIdentifier:v20 services:v21 workQueue:v19];
+  v22 = [(HMDAccessoryProfile *)&v37 initWithAccessory:accessoryCopy uniqueIdentifier:dCopy services:v21 workQueue:queueCopy];
 
   if (v22)
   {
-    objc_storeStrong(&v22->_service, a5);
-    objc_storeStrong(&v22->_characteristicsAvailabilityListener, a7);
-    objc_storeWeak(&v22->_hapAccessory, v17);
+    objc_storeStrong(&v22->_service, service);
+    objc_storeStrong(&v22->_characteristicsAvailabilityListener, listener);
+    objc_storeWeak(&v22->_hapAccessory, accessoryCopy);
     v23 = [MEMORY[0x277CBEB98] set];
     notificationEnabledCharacteristics = v22->_notificationEnabledCharacteristics;
     v22->_notificationEnabledCharacteristics = v23;
 
     v25 = MEMORY[0x277CCACA8];
-    v26 = [MEMORY[0x277CCAD78] UUID];
-    v27 = [v26 UUIDString];
-    v28 = [v25 stringWithFormat:@"%@.HMDLightProfile.%@", @"com.apple.HomeKitDaemon", v27];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v28 = [v25 stringWithFormat:@"%@.HMDLightProfile.%@", @"com.apple.HomeKitDaemon", uUIDString];
     clientIdentifier = v22->_clientIdentifier;
     v22->_clientIdentifier = v28;
 
-    objc_storeStrong(&v22->_naturalLightingCurveWriter, a8);
-    objc_storeStrong(&v22->_dataSource, a9);
-    v30 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v22->_naturalLightingCurveWriter, writer);
+    objc_storeStrong(&v22->_dataSource, source);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     characteristicValueObservers = v22->_characteristicValueObservers;
-    v22->_characteristicValueObservers = v30;
+    v22->_characteristicValueObservers = weakObjectsHashTable;
   }
 
   v32 = *MEMORY[0x277D85DE8];
   return v22;
 }
 
-- (HMDLightProfile)initWithWorkQueue:(id)a3 lightService:(id)a4 accessory:(id)a5
+- (HMDLightProfile)initWithWorkQueue:(id)queue lightService:(id)service accessory:(id)accessory
 {
   v61[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  serviceCopy = service;
+  accessoryCopy = accessory;
   v53 = objc_alloc_init(HMDLightProfileDataSource);
   v11 = MEMORY[0x277CCACA8];
-  v12 = [v9 instanceID];
-  v13 = [v11 stringWithFormat:@"%@", v12];
+  instanceID = [serviceCopy instanceID];
+  v13 = [v11 stringWithFormat:@"%@", instanceID];
 
   v14 = MEMORY[0x277CCAD78];
-  v15 = [v10 uuid];
+  uuid = [accessoryCopy uuid];
   v61[0] = v13;
   v61[1] = @"2BB698E3-7C61-4B4F-B60A-33194DF41A06";
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:2];
-  v17 = [v14 hm_deriveUUIDFromBaseUUID:v15 withSalts:v16];
+  v17 = [v14 hm_deriveUUIDFromBaseUUID:uuid withSalts:v16];
 
   if (!_os_feature_enabled_impl())
   {
     goto LABEL_5;
   }
 
-  if ([v10 supportsCHIP])
+  if ([accessoryCopy supportsCHIP])
   {
     goto LABEL_9;
   }
 
-  v18 = [v10 matterNodeID];
-  if (!v18)
+  matterNodeID = [accessoryCopy matterNodeID];
+  if (!matterNodeID)
   {
     goto LABEL_5;
   }
 
-  v19 = v18;
-  v20 = [v10 matterNodeID];
-  v21 = [v20 isEqual:&unk_283E75038];
+  v19 = matterNodeID;
+  matterNodeID2 = [accessoryCopy matterNodeID];
+  v21 = [matterNodeID2 isEqual:&unk_283E75038];
 
   if ((v21 & 1) == 0)
   {
 LABEL_9:
     v41 = +[HMDDeviceCapabilities deviceCapabilities];
-    v42 = [v41 isResidentCapable];
+    isResidentCapable = [v41 isResidentCapable];
 
-    if (v42)
+    if (isResidentCapable)
     {
       v43 = objc_autoreleasePoolPush();
-      v44 = self;
+      selfCopy = self;
       v45 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
       {
         HMFGetLogIdentifier();
         v46 = v52 = v43;
-        v47 = [v10 name];
+        name = [accessoryCopy name];
         *buf = 138543618;
         v58 = v46;
         v59 = 2112;
-        v60 = v47;
+        v60 = name;
         _os_log_impl(&dword_229538000, v45, OS_LOG_TYPE_INFO, "%{public}@HMDLightProfile creating matter curve writer for accessory: %@", buf, 0x16u);
 
         v43 = v52;
       }
 
       objc_autoreleasePoolPop(v43);
-      v32 = [[HMDNaturalLightingMatterCurveWriter alloc] initWithWorkQueue:v8 accessory:v10];
+      v32 = [[HMDNaturalLightingMatterCurveWriter alloc] initWithWorkQueue:queueCopy accessory:accessoryCopy];
     }
 
     else
@@ -3895,7 +3895,7 @@ LABEL_9:
     }
 
     v39 = v53;
-    v40 = [(HMDLightProfile *)self initWithUUID:v17 workQueue:v8 lightService:v9 accessory:v10 matterCurveWriter:v32 dataSource:v53];
+    v40 = [(HMDLightProfile *)self initWithUUID:v17 workQueue:queueCopy lightService:serviceCopy accessory:accessoryCopy matterCurveWriter:v32 dataSource:v53];
   }
 
   else
@@ -3903,23 +3903,23 @@ LABEL_9:
 LABEL_5:
     v51 = v13;
     v22 = +[HMDDeviceCapabilities deviceCapabilities];
-    v23 = [v22 isResidentCapable];
+    isResidentCapable2 = [v22 isResidentCapable];
 
-    if (v23)
+    if (isResidentCapable2)
     {
-      v50 = [v10 home];
+      home = [accessoryCopy home];
       v24 = MEMORY[0x277CCACA8];
-      v25 = [v50 name];
-      [v10 name];
-      v26 = v8;
-      v27 = v9;
+      name2 = [home name];
+      [accessoryCopy name];
+      v26 = queueCopy;
+      v27 = serviceCopy;
       v29 = v28 = self;
-      v30 = [v17 UUIDString];
-      v31 = [v24 stringWithFormat:@"%@/%@/%@", v25, v29, v30];
+      uUIDString = [v17 UUIDString];
+      v31 = [v24 stringWithFormat:@"%@/%@/%@", name2, v29, uUIDString];
 
       self = v28;
-      v9 = v27;
-      v8 = v26;
+      serviceCopy = v27;
+      queueCopy = v26;
 
       v32 = [[HMDNaturalLightingCurveWriter alloc] initWithUUID:v17 workQueue:v26 logIdentifier:v31];
     }
@@ -3942,9 +3942,9 @@ LABEL_5:
     v54 = *MEMORY[0x277CD0EA0];
     v55 = v36;
     v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
-    v38 = [[HMDCharacteristicsAvailabilityListener alloc] initWithAccessory:v10 workQueue:v8 interestedCharacteristicTypesByServiceType:v37];
+    v38 = [[HMDCharacteristicsAvailabilityListener alloc] initWithAccessory:accessoryCopy workQueue:queueCopy interestedCharacteristicTypesByServiceType:v37];
     v39 = v53;
-    v40 = [(HMDLightProfile *)self initWithUUID:v17 workQueue:v8 lightService:v9 accessory:v10 characteristicsAvailabilityListener:v38 naturalLightingCurveWriter:v32 dataSource:v53];
+    v40 = [(HMDLightProfile *)self initWithUUID:v17 workQueue:queueCopy lightService:serviceCopy accessory:accessoryCopy characteristicsAvailabilityListener:v38 naturalLightingCurveWriter:v32 dataSource:v53];
 
     v13 = v51;
   }
@@ -3973,16 +3973,16 @@ void __30__HMDLightProfile_logCategory__block_invoke()
   logCategory__hmf_once_v78_267107 = v1;
 }
 
-+ (id)messageBindingForDispatcher:(id)a3 message:(id)a4 receiver:(id)a5
++ (id)messageBindingForDispatcher:(id)dispatcher message:(id)message receiver:(id)receiver
 {
   v54[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dispatcherCopy = dispatcher;
+  messageCopy = message;
+  receiverCopy = receiver;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = receiverCopy;
   }
 
   else
@@ -3992,12 +3992,12 @@ void __30__HMDLightProfile_logCategory__block_invoke()
 
   v12 = v11;
 
-  v13 = [v12 hapAccessory];
-  v14 = [v13 home];
-  v15 = v14;
-  if (v13)
+  hapAccessory = [v12 hapAccessory];
+  home = [hapAccessory home];
+  v15 = home;
+  if (hapAccessory)
   {
-    v16 = v14 == 0;
+    v16 = home == 0;
   }
 
   else
@@ -4008,7 +4008,7 @@ void __30__HMDLightProfile_logCategory__block_invoke()
   if (v16)
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = a1;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -4024,14 +4024,14 @@ void __30__HMDLightProfile_logCategory__block_invoke()
 
   else
   {
-    v47 = v8;
+    v47 = dispatcherCopy;
     v22 = [HMDXPCMessagePolicy policyWithEntitlements:5];
     v23 = +[HMDRemoteMessagePolicy defaultSecurePolicy];
     v24 = [HMDUserMessagePolicy userMessagePolicyWithHome:v15 userPrivilege:0 remoteAccessRequired:0];
-    v25 = [v13 supportsCHIP];
+    supportsCHIP = [hapAccessory supportsCHIP];
     v45 = v23;
     v46 = v22;
-    if (v25)
+    if (supportsCHIP)
     {
       v54[0] = v22;
       v54[1] = v23;
@@ -4051,7 +4051,7 @@ void __30__HMDLightProfile_logCategory__block_invoke()
 
     v29 = [v26 arrayWithObjects:v27 count:{v28, v24}];
     v30 = objc_autoreleasePoolPush();
-    v31 = a1;
+    selfCopy2 = self;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
@@ -4064,11 +4064,11 @@ void __30__HMDLightProfile_logCategory__block_invoke()
     }
 
     objc_autoreleasePoolPop(v30);
-    v34 = [v9 name];
-    v35 = [v34 isEqualToString:*MEMORY[0x277CD0790]];
+    name = [messageCopy name];
+    v35 = [name isEqualToString:*MEMORY[0x277CD0790]];
 
-    v36 = [v9 name];
-    v37 = v36;
+    name2 = [messageCopy name];
+    v37 = name2;
     if (v35)
     {
       v21 = HMFCreateMessageBinding();
@@ -4079,26 +4079,26 @@ void __30__HMDLightProfile_logCategory__block_invoke()
 
     else
     {
-      v40 = [v36 isEqualToString:*MEMORY[0x277CD0780]];
+      v40 = [name2 isEqualToString:*MEMORY[0x277CD0780]];
 
       v39 = v44;
       if (v40)
       {
-        v41 = [v9 name];
+        name3 = [messageCopy name];
         v21 = HMFCreateMessageBinding();
       }
 
       else
       {
-        v48.receiver = v31;
+        v48.receiver = selfCopy2;
         v48.super_class = &OBJC_METACLASS___HMDLightProfile;
-        v21 = objc_msgSendSuper2(&v48, sel_messageBindingForDispatcher_message_receiver_, v47, v9, v10);
+        v21 = objc_msgSendSuper2(&v48, sel_messageBindingForDispatcher_message_receiver_, v47, messageCopy, receiverCopy);
       }
 
       v38 = v46;
     }
 
-    v8 = v47;
+    dispatcherCopy = v47;
   }
 
   v42 = *MEMORY[0x277D85DE8];

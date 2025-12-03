@@ -1,22 +1,22 @@
 @interface GPBUInt64BoolDictionary
-- (BOOL)getBool:(BOOL *)a3 forKey:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (GPBUInt64BoolDictionary)initWithBools:(const BOOL *)a3 forKeys:(const unint64_t *)a4 count:(unint64_t)a5;
-- (GPBUInt64BoolDictionary)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)computeSerializedSizeAsField:(id)a3;
-- (void)addEntriesFromDictionary:(id)a3;
+- (BOOL)getBool:(BOOL *)bool forKey:(unint64_t)key;
+- (BOOL)isEqual:(id)equal;
+- (GPBUInt64BoolDictionary)initWithBools:(const BOOL *)bools forKeys:(const unint64_t *)keys count:(unint64_t)count;
+- (GPBUInt64BoolDictionary)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)computeSerializedSizeAsField:(id)field;
+- (void)addEntriesFromDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)enumerateForTextFormat:(id)a3;
-- (void)enumerateKeysAndBoolsUsingBlock:(id)a3;
-- (void)removeBoolForKey:(unint64_t)a3;
-- (void)setGPBGenericValue:(id *)a3 forGPBGenericValueKey:(id *)a4;
-- (void)writeToCodedOutputStream:(id)a3 asField:(id)a4;
+- (void)enumerateForTextFormat:(id)format;
+- (void)enumerateKeysAndBoolsUsingBlock:(id)block;
+- (void)removeBoolForKey:(unint64_t)key;
+- (void)setGPBGenericValue:(id *)value forGPBGenericValueKey:(id *)key;
+- (void)writeToCodedOutputStream:(id)stream asField:(id)field;
 @end
 
 @implementation GPBUInt64BoolDictionary
 
-- (GPBUInt64BoolDictionary)initWithBools:(const BOOL *)a3 forKeys:(const unint64_t *)a4 count:(unint64_t)a5
+- (GPBUInt64BoolDictionary)initWithBools:(const BOOL *)bools forKeys:(const unint64_t *)keys count:(unint64_t)count
 {
   v14.receiver = self;
   v14.super_class = GPBUInt64BoolDictionary;
@@ -24,21 +24,21 @@
   if (v8)
   {
     v8->_dictionary = objc_alloc_init(NSMutableDictionary);
-    if (a4)
+    if (keys)
     {
-      if (a3 && a5)
+      if (bools && count)
       {
         do
         {
           dictionary = v8->_dictionary;
-          v10 = *a3++;
+          v10 = *bools++;
           v11 = [NSNumber numberWithBool:v10];
-          v12 = *a4++;
+          v12 = *keys++;
           [(NSMutableDictionary *)dictionary setObject:v11 forKey:[NSNumber numberWithUnsignedLongLong:v12]];
-          --a5;
+          --count;
         }
 
-        while (a5);
+        while (count);
       }
     }
   }
@@ -46,13 +46,13 @@
   return v8;
 }
 
-- (GPBUInt64BoolDictionary)initWithDictionary:(id)a3
+- (GPBUInt64BoolDictionary)initWithDictionary:(id)dictionary
 {
   v4 = [(GPBUInt64BoolDictionary *)self initWithBools:0 forKeys:0 count:0];
   v5 = v4;
-  if (a3 && v4)
+  if (dictionary && v4)
   {
-    [(NSMutableDictionary *)v4->_dictionary addEntriesFromDictionary:*(a3 + 2)];
+    [(NSMutableDictionary *)v4->_dictionary addEntriesFromDictionary:*(dictionary + 2)];
   }
 
   return v5;
@@ -70,16 +70,16 @@
   [(GPBUInt64BoolDictionary *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [GPBUInt64BoolDictionary allocWithZone:a3];
+  v4 = [GPBUInt64BoolDictionary allocWithZone:zone];
 
   return [(GPBUInt64BoolDictionary *)v4 initWithDictionary:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -91,55 +91,55 @@
   }
 
   dictionary = self->_dictionary;
-  v6 = *(a3 + 2);
+  v6 = *(equal + 2);
 
   return [(NSMutableDictionary *)dictionary isEqual:v6];
 }
 
-- (void)enumerateKeysAndBoolsUsingBlock:(id)a3
+- (void)enumerateKeysAndBoolsUsingBlock:(id)block
 {
   v7 = 0;
   dictionary = self->_dictionary;
-  v5 = [(NSMutableDictionary *)dictionary keyEnumerator];
+  keyEnumerator = [(NSMutableDictionary *)dictionary keyEnumerator];
   do
   {
-    v6 = [v5 nextObject];
-    if (!v6)
+    nextObject = [keyEnumerator nextObject];
+    if (!nextObject)
     {
       break;
     }
 
-    (*(a3 + 2))(a3, [v6 unsignedLongLongValue], objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](dictionary, "objectForKeyedSubscript:", v6), "BOOLValue"), &v7);
+    (*(block + 2))(block, [nextObject unsignedLongLongValue], objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](dictionary, "objectForKeyedSubscript:", nextObject), "BOOLValue"), &v7);
   }
 
   while (v7 != 1);
 }
 
-- (unint64_t)computeSerializedSizeAsField:(id)a3
+- (unint64_t)computeSerializedSizeAsField:(id)field
 {
   dictionary = self->_dictionary;
   result = [(NSMutableDictionary *)dictionary count];
   if (result)
   {
     v6 = result;
-    v7 = *(*(a3 + 1) + 30);
-    v8 = [a3 mapKeyDataType];
-    v9 = [(NSMutableDictionary *)dictionary keyEnumerator];
-    v10 = [v9 nextObject];
-    if (v10)
+    v7 = *(*(field + 1) + 30);
+    mapKeyDataType = [field mapKeyDataType];
+    keyEnumerator = [(NSMutableDictionary *)dictionary keyEnumerator];
+    nextObject = [keyEnumerator nextObject];
+    if (nextObject)
     {
-      v11 = v10;
+      nextObject2 = nextObject;
       v12 = 0;
       do
       {
-        v13 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:v11];
-        v14 = sub_10031EA6C([v11 unsignedLongLongValue], 1, v8);
+        v13 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:nextObject2];
+        v14 = sub_10031EA6C([nextObject2 unsignedLongLongValue], 1, mapKeyDataType);
         v15 = sub_10031FF38([v13 BOOLValue], 2, v7) + v14;
         v12 += v15 + GPBComputeRawVarint32SizeForInteger(v15);
-        v11 = [v9 nextObject];
+        nextObject2 = [keyEnumerator nextObject];
       }
 
-      while (v11);
+      while (nextObject2);
     }
 
     else
@@ -147,76 +147,76 @@
       v12 = 0;
     }
 
-    return v12 + GPBComputeWireFormatTagSize(*(*(a3 + 1) + 16), 15) * v6;
+    return v12 + GPBComputeWireFormatTagSize(*(*(field + 1) + 16), 15) * v6;
   }
 
   return result;
 }
 
-- (void)writeToCodedOutputStream:(id)a3 asField:(id)a4
+- (void)writeToCodedOutputStream:(id)stream asField:(id)field
 {
-  v7 = *(*(a4 + 1) + 30);
-  v8 = [a4 mapKeyDataType];
-  Tag = GPBWireFormatMakeTag(*(*(a4 + 1) + 16), 2);
+  v7 = *(*(field + 1) + 30);
+  mapKeyDataType = [field mapKeyDataType];
+  Tag = GPBWireFormatMakeTag(*(*(field + 1) + 16), 2);
   dictionary = self->_dictionary;
-  v11 = [(NSMutableDictionary *)dictionary keyEnumerator];
-  v12 = [v11 nextObject];
-  if (v12)
+  keyEnumerator = [(NSMutableDictionary *)dictionary keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v13 = v12;
+    nextObject2 = nextObject;
     do
     {
-      v14 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:v13];
-      [a3 writeInt32NoTag:Tag];
-      v15 = [v13 unsignedLongLongValue];
-      v16 = [v14 BOOLValue];
-      v17 = sub_10031EA6C(v15, 1, v8);
-      [a3 writeInt32NoTag:{sub_10031FF38(v16, 2, v7) + v17}];
-      sub_10031EC7C(a3, v15, 1, v8);
-      sub_1003200BC(a3, v16, 2, v7);
-      v13 = [v11 nextObject];
+      v14 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:nextObject2];
+      [stream writeInt32NoTag:Tag];
+      unsignedLongLongValue = [nextObject2 unsignedLongLongValue];
+      bOOLValue = [v14 BOOLValue];
+      v17 = sub_10031EA6C(unsignedLongLongValue, 1, mapKeyDataType);
+      [stream writeInt32NoTag:{sub_10031FF38(bOOLValue, 2, v7) + v17}];
+      sub_10031EC7C(stream, unsignedLongLongValue, 1, mapKeyDataType);
+      sub_1003200BC(stream, bOOLValue, 2, v7);
+      nextObject2 = [keyEnumerator nextObject];
     }
 
-    while (v13);
+    while (nextObject2);
   }
 }
 
-- (void)setGPBGenericValue:(id *)a3 forGPBGenericValueKey:(id *)a4
+- (void)setGPBGenericValue:(id *)value forGPBGenericValueKey:(id *)key
 {
   dictionary = self->_dictionary;
-  v6 = [NSNumber numberWithBool:a3->var0];
-  v7 = [NSNumber numberWithUnsignedLongLong:a4->var2];
+  v6 = [NSNumber numberWithBool:value->var0];
+  v7 = [NSNumber numberWithUnsignedLongLong:key->var2];
 
   [(NSMutableDictionary *)dictionary setObject:v6 forKey:v7];
 }
 
-- (void)enumerateForTextFormat:(id)a3
+- (void)enumerateForTextFormat:(id)format
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10032A758;
   v3[3] = &unk_1004359E0;
-  v3[4] = a3;
+  v3[4] = format;
   [(GPBUInt64BoolDictionary *)self enumerateKeysAndBoolsUsingBlock:v3];
 }
 
-- (BOOL)getBool:(BOOL *)a3 forKey:(unint64_t)a4
+- (BOOL)getBool:(BOOL *)bool forKey:(unint64_t)key
 {
-  v5 = [(NSMutableDictionary *)self->_dictionary objectForKey:[NSNumber numberWithUnsignedLongLong:a4]];
+  v5 = [(NSMutableDictionary *)self->_dictionary objectForKey:[NSNumber numberWithUnsignedLongLong:key]];
   v6 = v5;
-  if (a3 && v5)
+  if (bool && v5)
   {
-    *a3 = [v5 BOOLValue];
+    *bool = [v5 BOOLValue];
   }
 
   return v6 != 0;
 }
 
-- (void)addEntriesFromDictionary:(id)a3
+- (void)addEntriesFromDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    [(NSMutableDictionary *)self->_dictionary addEntriesFromDictionary:*(a3 + 2)];
+    [(NSMutableDictionary *)self->_dictionary addEntriesFromDictionary:*(dictionary + 2)];
     autocreator = self->_autocreator;
     if (autocreator)
     {
@@ -226,10 +226,10 @@
   }
 }
 
-- (void)removeBoolForKey:(unint64_t)a3
+- (void)removeBoolForKey:(unint64_t)key
 {
   dictionary = self->_dictionary;
-  v4 = [NSNumber numberWithUnsignedLongLong:a3];
+  v4 = [NSNumber numberWithUnsignedLongLong:key];
 
   [(NSMutableDictionary *)dictionary removeObjectForKey:v4];
 }

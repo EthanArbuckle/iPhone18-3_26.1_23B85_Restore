@@ -1,15 +1,15 @@
 @interface CNPhotoAssetCreationHelper
 + (id)log;
-+ (void)createAssetFromImage:(id)a3 completionHandler:(id)a4;
++ (void)createAssetFromImage:(id)image completionHandler:(id)handler;
 @end
 
 @implementation CNPhotoAssetCreationHelper
 
-+ (void)createAssetFromImage:(id)a3 completionHandler:(id)a4
++ (void)createAssetFromImage:(id)image completionHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  imageCopy = image;
+  handlerCopy = handler;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
@@ -25,13 +25,13 @@
     v13[1] = 3221225472;
     v13[2] = __69__CNPhotoAssetCreationHelper_createAssetFromImage_completionHandler___block_invoke;
     v13[3] = &unk_1E74E56F0;
-    v14 = v5;
+    v14 = imageCopy;
     v15 = v17;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __69__CNPhotoAssetCreationHelper_createAssetFromImage_completionHandler___block_invoke_2;
     v10[3] = &unk_1E74E4810;
-    v11 = v6;
+    v11 = handlerCopy;
     v12 = v17;
     [v7 performChanges:v13 completionHandler:v10];
 

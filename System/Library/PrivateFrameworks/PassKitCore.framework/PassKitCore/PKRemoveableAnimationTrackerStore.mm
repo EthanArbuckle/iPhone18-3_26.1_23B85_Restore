@@ -209,11 +209,11 @@ LABEL_23:
 {
   if (self)
   {
-    v3 = self;
+    selfCopy = self;
     self = [(NSMutableArray *)self->_trackers count];
     if (self)
     {
-      self = [(NSMutableArray *)v3->_trackers copy];
+      self = [(NSMutableArray *)selfCopy->_trackers copy];
     }
 
     v2 = vars8;

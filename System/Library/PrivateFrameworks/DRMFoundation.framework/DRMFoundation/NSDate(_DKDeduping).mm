@@ -12,7 +12,7 @@
   }
 
   v2 = MEMORY[0x277CBEAA8];
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
   v4 = [v2 dateWithTimeIntervalSinceReferenceDate:floor(v3)];
   os_unfair_lock_lock(&_os_dedup_lock_11);
   v5 = [_os_dedup_set_10 member:v4];

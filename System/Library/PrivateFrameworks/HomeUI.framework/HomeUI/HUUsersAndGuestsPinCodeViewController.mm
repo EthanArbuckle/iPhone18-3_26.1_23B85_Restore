@@ -1,30 +1,30 @@
 @interface HUUsersAndGuestsPinCodeViewController
 - (BOOL)_isEditingGuestList;
 - (BOOL)_shouldShowInvitePeople;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
 - (HFPinCodeManager)pinCodeManager;
 - (HUPresentationDelegate)presentationDelegate;
-- (HUUsersAndGuestsPinCodeViewController)initWithSourceItem:(id)a3 pinCodeManager:(id)a4 home:(id)a5 forAccessory:(id)a6;
+- (HUUsersAndGuestsPinCodeViewController)initWithSourceItem:(id)item pinCodeManager:(id)manager home:(id)home forAccessory:(id)accessory;
 - (id)_addPinCodeItem;
-- (id)buildItemModuleControllerForModule:(id)a3;
-- (id)finishPresentation:(id)a3 animated:(BOOL)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)buildItemModuleControllerForModule:(id)module;
+- (id)finishPresentation:(id)presentation animated:(BOOL)animated;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)hideSpinner;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
 - (void)showSpinner;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)userSwitchCell:(id)a3 didTurnOn:(BOOL)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)userSwitchCell:(id)cell didTurnOn:(BOOL)on;
 @end
 
 @implementation HUUsersAndGuestsPinCodeViewController
 
-- (HUUsersAndGuestsPinCodeViewController)initWithSourceItem:(id)a3 pinCodeManager:(id)a4 home:(id)a5 forAccessory:(id)a6
+- (HUUsersAndGuestsPinCodeViewController)initWithSourceItem:(id)item pinCodeManager:(id)manager home:(id)home forAccessory:(id)accessory
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = a5;
-  v12 = [[HUUsersAndGuestsPinCodeItemManager alloc] initWithPinCodeManager:v9 delegate:self home:v11 forAccessory:v10];
+  managerCopy = manager;
+  accessoryCopy = accessory;
+  homeCopy = home;
+  v12 = [[HUUsersAndGuestsPinCodeItemManager alloc] initWithPinCodeManager:managerCopy delegate:self home:homeCopy forAccessory:accessoryCopy];
 
   v17.receiver = self;
   v17.super_class = HUUsersAndGuestsPinCodeViewController;
@@ -32,7 +32,7 @@
   v14 = v13;
   if (v13)
   {
-    [(HUUsersAndGuestsPinCodeViewController *)v13 setPinCodeManager:v9];
+    [(HUUsersAndGuestsPinCodeViewController *)v13 setPinCodeManager:managerCopy];
     v15 = _HULocalizedStringWithDefaultValue(@"HUUsersAndGuestsPinCodesTitle", @"HUUsersAndGuestsPinCodesTitle", 1);
     [(HUUsersAndGuestsPinCodeViewController *)v14 setTitle:v15];
 
@@ -46,8 +46,8 @@
 {
   v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v5];
-  v4 = [(HUUsersAndGuestsPinCodeViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(HUUsersAndGuestsPinCodeViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
   [v5 startAnimating];
 }
@@ -55,12 +55,12 @@
 - (void)hideSpinner
 {
   objc_opt_class();
-  v3 = [(HUUsersAndGuestsPinCodeViewController *)self navigationItem];
-  v4 = [v3 rightBarButtonItem];
-  v5 = [v4 customView];
+  navigationItem = [(HUUsersAndGuestsPinCodeViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  customView = [rightBarButtonItem customView];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = customView;
   }
 
   else
@@ -70,39 +70,39 @@
 
   v8 = v6;
 
-  v7 = [(HUUsersAndGuestsPinCodeViewController *)self navigationItem];
-  [v7 setRightBarButtonItem:0];
+  navigationItem2 = [(HUUsersAndGuestsPinCodeViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:0];
 
   [v8 stopAnimating];
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v3 = a3;
+  moduleCopy = module;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    NSLog(&cfstr_UnexpectedModu.isa, v3);
+    NSLog(&cfstr_UnexpectedModu.isa, moduleCopy);
   }
 
-  v4 = [[HUPinCodeListModuleController alloc] initWithModule:v3];
+  v4 = [[HUPinCodeListModuleController alloc] initWithModule:moduleCopy];
 
   return v4;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 userItemProvider];
-  v8 = [v7 items];
-  v9 = [v8 containsObject:v5];
+  itemCopy = item;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  userItemProvider = [itemManager userItemProvider];
+  items = [userItemProvider items];
+  v9 = [items containsObject:itemCopy];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [v6 transformedGuestUserItemProvider];
-    v11 = [v10 items];
-    v12 = [v11 containsObject:v5];
+    transformedGuestUserItemProvider = [itemManager transformedGuestUserItemProvider];
+    items2 = [transformedGuestUserItemProvider items];
+    v12 = [items2 containsObject:itemCopy];
 
     if (v12)
     {
@@ -111,12 +111,12 @@
 
     else
     {
-      v13 = [v6 restoreHomeKeyAccessItem];
-      v14 = [v5 isEqual:v13];
+      restoreHomeKeyAccessItem = [itemManager restoreHomeKeyAccessItem];
+      v14 = [itemCopy isEqual:restoreHomeKeyAccessItem];
 
       if ((v14 & 1) == 0)
       {
-        NSLog(&cfstr_UnrecognizedIt.isa, v5);
+        NSLog(&cfstr_UnrecognizedIt.isa, itemCopy);
       }
     }
   }
@@ -126,19 +126,19 @@
   return v15;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v37 = a3;
-  v7 = a4;
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 userItemProvider];
-  v10 = [v9 items];
-  v11 = [v10 containsObject:v7];
+  cellCopy = cell;
+  itemCopy = item;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  userItemProvider = [itemManager userItemProvider];
+  items = [userItemProvider items];
+  v11 = [items containsObject:itemCopy];
 
   if (v11)
   {
     objc_opt_class();
-    v12 = v37;
+    v12 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v13 = v12;
@@ -152,13 +152,13 @@
     v14 = v13;
 
     [v14 setAccessoryType:0];
-    v15 = [v7 latestResults];
-    v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+    latestResults = [itemCopy latestResults];
+    v16 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
     v17 = [v16 stringByAppendingString:@".UsersAndGuests"];
     [v14 setAccessibilityIdentifier:v17];
 
-    v18 = [v7 latestResults];
-    v19 = [v18 objectForKeyedSubscript:*MEMORY[0x277D14120]];
+    latestResults2 = [itemCopy latestResults];
+    v19 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D14120]];
 
     if (v19)
     {
@@ -168,9 +168,9 @@
 
   else
   {
-    v20 = [v8 transformedGuestUserItemProvider];
-    v21 = [v20 items];
-    v22 = [v21 containsObject:v7];
+    transformedGuestUserItemProvider = [itemManager transformedGuestUserItemProvider];
+    items2 = [transformedGuestUserItemProvider items];
+    v22 = [items2 containsObject:itemCopy];
 
     if (!v22)
     {
@@ -178,7 +178,7 @@
     }
 
     objc_opt_class();
-    v23 = v37;
+    v23 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v24 = v23;
@@ -191,28 +191,28 @@
 
     v14 = v24;
 
-    v25 = [v7 latestResults];
-    v19 = [v25 objectForKeyedSubscript:*MEMORY[0x277D14120]];
+    latestResults3 = [itemCopy latestResults];
+    v19 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D14120]];
 
     if (v19)
     {
       [v14 setUserHandle:v19];
     }
 
-    v26 = [HUListContentConfigurationUtilities labelDefaultConfigurationForItem:v7];
+    v26 = [HUListContentConfigurationUtilities labelDefaultConfigurationForItem:itemCopy];
     [v14 setShowAccessLevelDescription:1];
     [v26 setPrefersSideBySideTextAndSecondaryText:0];
     [v23 setContentConfiguration:v26];
-    v27 = [v7 latestResults];
+    latestResults4 = [itemCopy latestResults];
     v28 = *MEMORY[0x277D13DC8];
-    v29 = [v27 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+    v29 = [latestResults4 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
     [v23 setAccessibilityIdentifier:v29];
 
     if ([(HUUsersAndGuestsPinCodeViewController *)self _isEditingGuestList])
     {
       [v23 setAccessoryType:1];
-      v30 = [v7 latestResults];
-      v31 = [v30 objectForKeyedSubscript:v28];
+      latestResults5 = [itemCopy latestResults];
+      v31 = [latestResults5 objectForKeyedSubscript:v28];
       [v23 setAccessibilityIdentifier:v31];
     }
 
@@ -232,25 +232,25 @@
 
     [v34 setOverrideDefaultContentConfiguration:0];
     [v34 setDelegate:self];
-    v35 = [v7 latestResults];
-    v36 = [v35 objectForKeyedSubscript:v28];
+    latestResults6 = [itemCopy latestResults];
+    v36 = [latestResults6 objectForKeyedSubscript:v28];
     [v34 setAccessibilityIdentifier:v36];
   }
 
 LABEL_20:
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
-  v10 = [v8 userItemProvider];
-  v11 = [v10 items];
-  v12 = [v11 containsObject:v9];
+  viewCopy = view;
+  pathCopy = path;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
+  userItemProvider = [itemManager userItemProvider];
+  items = [userItemProvider items];
+  v12 = [items containsObject:v9];
 
-  if (v12 & 1) != 0 || !-[HUUsersAndGuestsPinCodeViewController _isEditingGuestList](self, "_isEditingGuestList") && ([v8 transformedGuestUserItemProvider], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "items"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "containsObject:", v9), v15, v14, (v16))
+  if (v12 & 1) != 0 || !-[HUUsersAndGuestsPinCodeViewController _isEditingGuestList](self, "_isEditingGuestList") && ([itemManager transformedGuestUserItemProvider], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "items"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "containsObject:", v9), v15, v14, (v16))
   {
     v13 = 0;
   }
@@ -259,36 +259,36 @@ LABEL_20:
   {
     v18.receiver = self;
     v18.super_class = HUUsersAndGuestsPinCodeViewController;
-    v13 = [(HUItemTableViewController *)&v18 tableView:v6 shouldHighlightRowAtIndexPath:v7];
+    v13 = [(HUItemTableViewController *)&v18 tableView:viewCopy shouldHighlightRowAtIndexPath:pathCopy];
   }
 
   return v13;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v19.receiver = self;
   v19.super_class = HUUsersAndGuestsPinCodeViewController;
-  v6 = a4;
-  v7 = [(HUItemTableViewController *)&v19 tableView:a3 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [(HUItemTableViewController *)&v19 tableView:view cellForRowAtIndexPath:pathCopy];
   v8 = [(HUItemTableViewController *)self itemManager:v19.receiver];
-  v9 = [v8 displayedItemAtIndexPath:v6];
+  v9 = [v8 displayedItemAtIndexPath:pathCopy];
 
   if ([(HUUsersAndGuestsPinCodeViewController *)self _shouldShowInvitePeople])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [(HUUsersAndGuestsPinCodeViewController *)self _addPinCodeItem];
-      v11 = [v9 isEqual:v10];
+      _addPinCodeItem = [(HUUsersAndGuestsPinCodeViewController *)self _addPinCodeItem];
+      v11 = [v9 isEqual:_addPinCodeItem];
 
       if (v11)
       {
         objc_opt_class();
-        v12 = [v7 contentConfiguration];
+        contentConfiguration = [v7 contentConfiguration];
         if (objc_opt_isKindOfClass())
         {
-          v13 = v12;
+          v13 = contentConfiguration;
         }
 
         else
@@ -302,8 +302,8 @@ LABEL_20:
         [v14 setText:v15];
 
         [v7 setContentConfiguration:v14];
-        v16 = [v9 latestResults];
-        v17 = [v16 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+        latestResults = [v9 latestResults];
+        v17 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
         [v7 setAccessibilityIdentifier:v17];
       }
     }
@@ -312,22 +312,22 @@ LABEL_20:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v64 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HUItemTableViewController *)self itemManager];
-  v10 = [v9 displayedItemAtIndexPath:v8];
+  viewCopy = view;
+  pathCopy = path;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v10 = [itemManager displayedItemAtIndexPath:pathCopy];
 
-  v11 = [(HUItemTableViewController *)self itemManager];
-  objc_initWeak(&location, v11);
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  objc_initWeak(&location, itemManager2);
 
   v12 = HFLogForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v59 = self;
+    selfCopy = self;
     v60 = 2080;
     v61 = "[HUUsersAndGuestsPinCodeViewController tableView:didSelectRowAtIndexPath:]";
     v62 = 2112;
@@ -337,19 +337,19 @@ LABEL_20:
 
   if ([(HUUsersAndGuestsPinCodeViewController *)self _shouldShowInvitePeople])
   {
-    v13 = [(HUUsersAndGuestsPinCodeViewController *)self _addPinCodeItem];
-    v14 = [v10 isEqual:v13];
+    _addPinCodeItem = [(HUUsersAndGuestsPinCodeViewController *)self _addPinCodeItem];
+    v14 = [v10 isEqual:_addPinCodeItem];
 
     if (v14)
     {
-      v15 = [(HUItemTableViewController *)self itemManager];
-      v16 = [v15 home];
-      if ([v16 hasOnboardedForAccessCode])
+      itemManager3 = [(HUItemTableViewController *)self itemManager];
+      home = [itemManager3 home];
+      if ([home hasOnboardedForAccessCode])
       {
-        v17 = [(HUItemTableViewController *)self itemManager];
-        v18 = [v17 home];
-        v19 = [v18 accessories];
-        v20 = [v19 na_any:&__block_literal_global_155];
+        itemManager4 = [(HUItemTableViewController *)self itemManager];
+        home2 = [itemManager4 home];
+        accessories = [home2 accessories];
+        v20 = [accessories na_any:&__block_literal_global_155];
       }
 
       else
@@ -358,21 +358,21 @@ LABEL_20:
       }
 
       v47 = [HUAddPersonRoleViewController alloc];
-      v48 = [(HUItemTableViewController *)self itemManager];
-      v49 = [v48 home];
-      v27 = [(HUAddPersonRoleViewController *)v47 initWithHome:v49];
+      itemManager5 = [(HUItemTableViewController *)self itemManager];
+      home3 = [itemManager5 home];
+      v27 = [(HUAddPersonRoleViewController *)v47 initWithHome:home3];
 
       if (v20)
       {
-        v50 = [(HUUsersAndGuestsPinCodeViewController *)self pinCodeManager];
-        [(HUAddPersonRoleViewController *)v27 setPinCodeManager:v50];
+        pinCodeManager = [(HUUsersAndGuestsPinCodeViewController *)self pinCodeManager];
+        [(HUAddPersonRoleViewController *)v27 setPinCodeManager:pinCodeManager];
       }
 
       [(HUAddPersonRoleViewController *)v27 setPresentationDelegate:self];
       v30 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v27];
       [(HUAddPersonRoleViewController *)v30 setModalPresentationStyle:2];
       [(HUUsersAndGuestsPinCodeViewController *)self presentViewController:v30 animated:1 completion:0];
-      [v7 deselectRowAtIndexPath:v8 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 LABEL_25:
 
       goto LABEL_26;
@@ -382,9 +382,9 @@ LABEL_25:
   if ([(HUUsersAndGuestsPinCodeViewController *)self _isEditingGuestList])
   {
     v21 = objc_loadWeakRetained(&location);
-    v22 = [v21 transformedGuestUserItemProvider];
-    v23 = [v22 items];
-    v24 = [v23 containsObject:v10];
+    transformedGuestUserItemProvider = [v21 transformedGuestUserItemProvider];
+    items = [transformedGuestUserItemProvider items];
+    v24 = [items containsObject:v10];
 
     if (v24)
     {
@@ -403,10 +403,10 @@ LABEL_25:
       v27 = v26;
 
       objc_opt_class();
-      v28 = [(HUAddPersonRoleViewController *)v27 sourceItem];
+      sourceItem = [(HUAddPersonRoleViewController *)v27 sourceItem];
       if (objc_opt_isKindOfClass())
       {
-        v29 = v28;
+        v29 = sourceItem;
       }
 
       else
@@ -417,13 +417,13 @@ LABEL_25:
       v30 = v29;
 
       v31 = [HUEditUserViewController alloc];
-      v32 = [(HUUsersAndGuestsPinCodeViewController *)self pinCodeManager];
-      v33 = [v32 home];
-      v34 = [(HUUsersAndGuestsPinCodeViewController *)self pinCodeManager];
-      v35 = [(HUEditUserViewController *)v31 initWithItem:v30 home:v33 pinCodeManager:v34];
+      pinCodeManager2 = [(HUUsersAndGuestsPinCodeViewController *)self pinCodeManager];
+      home4 = [pinCodeManager2 home];
+      pinCodeManager3 = [(HUUsersAndGuestsPinCodeViewController *)self pinCodeManager];
+      v35 = [(HUEditUserViewController *)v31 initWithItem:v30 home:home4 pinCodeManager:pinCodeManager3];
 
-      v36 = [(HUUsersAndGuestsPinCodeViewController *)self navigationController];
-      v37 = [v36 hu_pushPreloadableViewController:v35 animated:1];
+      navigationController = [(HUUsersAndGuestsPinCodeViewController *)self navigationController];
+      v37 = [navigationController hu_pushPreloadableViewController:v35 animated:1];
 
       goto LABEL_25;
     }
@@ -431,15 +431,15 @@ LABEL_25:
 
   v56.receiver = self;
   v56.super_class = HUUsersAndGuestsPinCodeViewController;
-  [(HUItemTableViewController *)&v56 tableView:v7 didSelectRowAtIndexPath:v8];
-  [v7 deselectRowAtIndexPath:v8 animated:1];
+  [(HUItemTableViewController *)&v56 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   v38 = objc_loadWeakRetained(&location);
-  v39 = [v38 restoreHomeKeyAccessItem];
-  v40 = [v10 isEqual:v39];
+  restoreHomeKeyAccessItem = [v38 restoreHomeKeyAccessItem];
+  v40 = [v10 isEqual:restoreHomeKeyAccessItem];
 
   if (v40)
   {
-    v41 = [v7 cellForRowAtIndexPath:v8];
+    v41 = [viewCopy cellForRowAtIndexPath:pathCopy];
     objc_opt_class();
     v27 = v41;
     if (objc_opt_isKindOfClass())
@@ -457,7 +457,7 @@ LABEL_25:
     [(HUAddPersonRoleViewController *)v43 setShowSpinner:1];
     objc_initWeak(buf, self);
     v44 = objc_loadWeakRetained(&location);
-    v45 = [v44 restoreFuture];
+    restoreFuture = [v44 restoreFuture];
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __75__HUUsersAndGuestsPinCodeViewController_tableView_didSelectRowAtIndexPath___block_invoke_2;
@@ -468,7 +468,7 @@ LABEL_25:
     v55[1] = a2;
     v30 = v43;
     v53 = v30;
-    v46 = [v45 addSuccessBlock:v51];
+    v46 = [restoreFuture addSuccessBlock:v51];
 
     objc_destroyWeak(v55);
     objc_destroyWeak(&v54);
@@ -517,13 +517,13 @@ uint64_t __75__HUUsersAndGuestsPinCodeViewController_tableView_didSelectRowAtInd
   return [v8 setShowSpinner:0];
 }
 
-- (id)finishPresentation:(id)a3 animated:(BOOL)a4
+- (id)finishPresentation:(id)presentation animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 conformsToProtocol:&unk_2824C3AE0])
+  animatedCopy = animated;
+  presentationCopy = presentation;
+  if ([presentationCopy conformsToProtocol:&unk_2824C3AE0])
   {
-    v7 = v6;
+    v7 = presentationCopy;
   }
 
   else
@@ -532,52 +532,52 @@ uint64_t __75__HUUsersAndGuestsPinCodeViewController_tableView_didSelectRowAtInd
   }
 
   v8 = v7;
-  v9 = [v8 requiresPresentingViewControllerDismissal];
+  requiresPresentingViewControllerDismissal = [v8 requiresPresentingViewControllerDismissal];
 
-  if (v9)
+  if (requiresPresentingViewControllerDismissal)
   {
-    v10 = [(HUUsersAndGuestsPinCodeViewController *)self presentationDelegate];
-    v11 = [v10 finishPresentation:self animated:v4];
+    presentationDelegate = [(HUUsersAndGuestsPinCodeViewController *)self presentationDelegate];
+    v11 = [presentationDelegate finishPresentation:self animated:animatedCopy];
   }
 
   else
   {
-    v11 = [(UIViewController *)self hu_dismissViewControllerAnimated:v4];
+    v11 = [(UIViewController *)self hu_dismissViewControllerAnimated:animatedCopy];
   }
 
   return v11;
 }
 
-- (void)userSwitchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)userSwitchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
+  onCopy = on;
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  cellCopy = cell;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = NSStringFromSelector(a2);
-    v10 = [v7 text];
-    v11 = [v7 item];
+    text = [cellCopy text];
+    item = [cellCopy item];
     *buf = 138413314;
-    v31 = self;
+    selfCopy = self;
     v32 = 2112;
     v33 = v9;
     v34 = 2112;
-    v35 = v10;
+    v35 = text;
     v36 = 1024;
-    v37 = v4;
+    v37 = onCopy;
     v38 = 2112;
-    v39 = v11;
+    v39 = item;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped on switch cell '%@' | isOn = %{BOOL}d | item = %@", buf, 0x30u);
   }
 
-  v12 = [(HUItemTableViewController *)self itemManager];
+  itemManager = [(HUItemTableViewController *)self itemManager];
   objc_opt_class();
-  v13 = [v7 item];
+  item2 = [cellCopy item];
   if (objc_opt_isKindOfClass())
   {
-    v14 = v13;
+    v14 = item2;
   }
 
   else
@@ -587,17 +587,17 @@ uint64_t __75__HUUsersAndGuestsPinCodeViewController_tableView_didSelectRowAtInd
 
   v15 = v14;
 
-  v16 = [v15 sourceItem];
+  sourceItem = [v15 sourceItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     objc_opt_class();
-    v18 = [v15 sourceItem];
+    sourceItem2 = [v15 sourceItem];
     if (objc_opt_isKindOfClass())
     {
-      v19 = v18;
+      v19 = sourceItem2;
     }
 
     else
@@ -607,18 +607,18 @@ uint64_t __75__HUUsersAndGuestsPinCodeViewController_tableView_didSelectRowAtInd
 
     v20 = v19;
 
-    v21 = [v12 enableRestrictedGuestAccessSetting:v4 forItem:v20];
+    v21 = [itemManager enableRestrictedGuestAccessSetting:onCopy forItem:v20];
 
     v24 = MEMORY[0x277D85DD0];
     v25 = 3221225472;
     v26 = __66__HUUsersAndGuestsPinCodeViewController_userSwitchCell_didTurnOn___block_invoke;
     v27 = &unk_277DB7EB8;
-    v28 = v7;
-    v29 = v4;
+    v28 = cellCopy;
+    v29 = onCopy;
     v22 = [v21 addCompletionBlock:&v24];
   }
 
-  v23 = [v12 reloadAndUpdateAllItemsFromSenderSelector:{a2, v24, v25, v26, v27}];
+  v23 = [itemManager reloadAndUpdateAllItemsFromSenderSelector:{a2, v24, v25, v26, v27}];
 }
 
 void __66__HUUsersAndGuestsPinCodeViewController_userSwitchCell_didTurnOn___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -645,13 +645,13 @@ void __66__HUUsersAndGuestsPinCodeViewController_userSwitchCell_didTurnOn___bloc
 
 - (id)_addPinCodeItem
 {
-  v2 = [(HUItemTableViewController *)self itemModuleControllers];
-  v3 = [v2 na_firstObjectPassingTest:&__block_literal_global_98_0];
+  itemModuleControllers = [(HUItemTableViewController *)self itemModuleControllers];
+  v3 = [itemModuleControllers na_firstObjectPassingTest:&__block_literal_global_98_0];
 
-  v4 = [v3 module];
-  v5 = [v4 addPinCodeItem];
+  module = [v3 module];
+  addPinCodeItem = [module addPinCodeItem];
 
-  return v5;
+  return addPinCodeItem;
 }
 
 BOOL __56__HUUsersAndGuestsPinCodeViewController__addPinCodeItem__block_invoke(uint64_t a1, void *a2)
@@ -678,11 +678,11 @@ BOOL __56__HUUsersAndGuestsPinCodeViewController__addPinCodeItem__block_invoke(u
 
 - (BOOL)_isEditingGuestList
 {
-  v2 = [(HUItemTableViewController *)self itemModuleControllers];
-  v3 = [v2 na_firstObjectPassingTest:&__block_literal_global_100_0];
+  itemModuleControllers = [(HUItemTableViewController *)self itemModuleControllers];
+  v3 = [itemModuleControllers na_firstObjectPassingTest:&__block_literal_global_100_0];
 
-  LOBYTE(v2) = [v3 editing];
-  return v2;
+  LOBYTE(itemModuleControllers) = [v3 editing];
+  return itemModuleControllers;
 }
 
 BOOL __60__HUUsersAndGuestsPinCodeViewController__isEditingGuestList__block_invoke(uint64_t a1, void *a2)
@@ -710,17 +710,17 @@ BOOL __60__HUUsersAndGuestsPinCodeViewController__isEditingGuestList__block_invo
 - (BOOL)_shouldShowInvitePeople
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [(HUItemTableViewController *)self itemManager];
-  v3 = [v2 home];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  home = [itemManager home];
 
-  v4 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v5 = [v4 homeManager];
-  v6 = [v5 hasOptedToHH2];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
+  hasOptedToHH2 = [homeManager hasOptedToHH2];
 
-  if (v6)
+  if (hasOptedToHH2)
   {
-    v7 = [v3 residentDevices];
-    v8 = [v7 count] != 0;
+    residentDevices = [home residentDevices];
+    v8 = [residentDevices count] != 0;
   }
 
   else
@@ -731,17 +731,17 @@ BOOL __60__HUUsersAndGuestsPinCodeViewController__isEditingGuestList__block_invo
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v3 residentDevices];
+    residentDevices2 = [home residentDevices];
     v12 = 136316162;
     v13 = "[HUUsersAndGuestsPinCodeViewController _shouldShowInvitePeople]";
     v14 = 1024;
     v15 = v8;
     v16 = 1024;
-    v17 = v6;
+    v17 = hasOptedToHH2;
     v18 = 2048;
-    v19 = [v10 count];
+    v19 = [residentDevices2 count];
     v20 = 2112;
-    v21 = v3;
+    v21 = home;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "(%s) shouldShowInvitePeople = %{BOOL}d because hasOptedToHH2 = %{BOOL}d | residentDevices.count = %ld | home %@", &v12, 0x2Cu);
   }
 

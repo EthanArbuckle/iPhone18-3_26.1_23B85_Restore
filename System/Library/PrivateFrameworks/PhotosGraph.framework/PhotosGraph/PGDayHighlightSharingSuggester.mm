@@ -1,24 +1,24 @@
 @interface PGDayHighlightSharingSuggester
-+ (BOOL)canSuggestHighlightNodeWithoutPeople:(id)a3 loggingConnection:(id)a4;
-+ (BOOL)shouldSuggestHighlightNode:(id)a3 neighborScoreComputer:(id)a4 loggingConnection:(id)a5;
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4;
++ (BOOL)canSuggestHighlightNodeWithoutPeople:(id)people loggingConnection:(id)connection;
++ (BOOL)shouldSuggestHighlightNode:(id)node neighborScoreComputer:(id)computer loggingConnection:(id)connection;
+- (id)suggestionsWithOptions:(id)options progress:(id)progress;
 @end
 
 @implementation PGDayHighlightSharingSuggester
 
-+ (BOOL)canSuggestHighlightNodeWithoutPeople:(id)a3 loggingConnection:(id)a4
++ (BOOL)canSuggestHighlightNodeWithoutPeople:(id)people loggingConnection:(id)connection
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (![v5 isInteresting])
+  peopleCopy = people;
+  connectionCopy = connection;
+  if (![peopleCopy isInteresting])
   {
     goto LABEL_7;
   }
 
-  v7 = [v5 localEndDate];
-  v8 = [v5 localStartDate];
-  [v7 timeIntervalSinceDate:v8];
+  localEndDate = [peopleCopy localEndDate];
+  localStartDate = [peopleCopy localStartDate];
+  [localEndDate timeIntervalSinceDate:localStartDate];
   v10 = v9;
 
   if (v10 < 7200.0)
@@ -26,21 +26,21 @@
     goto LABEL_7;
   }
 
-  v11 = [v5 collection];
-  v12 = [v11 momentNodes];
-  v13 = [v12 numberOfAssets];
+  collection = [peopleCopy collection];
+  momentNodes = [collection momentNodes];
+  numberOfAssets = [momentNodes numberOfAssets];
 
-  if (v13 >= 0x1E)
+  if (numberOfAssets >= 0x1E)
   {
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412802;
-      v18 = v5;
+      v18 = peopleCopy;
       v19 = 2048;
       v20 = v10;
       v21 = 2048;
-      v22 = v13;
-      _os_log_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_DEFAULT, "[Sharing Suggestion] Considering highlight node %@ interesting enough to suggest without person detected in it (duration %.0f, number of assets %lu).", &v17, 0x20u);
+      v22 = numberOfAssets;
+      _os_log_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_DEFAULT, "[Sharing Suggestion] Considering highlight node %@ interesting enough to suggest without person detected in it (duration %.0f, number of assets %lu).", &v17, 0x20u);
     }
 
     v14 = 1;
@@ -56,38 +56,38 @@ LABEL_7:
   return v14;
 }
 
-+ (BOOL)shouldSuggestHighlightNode:(id)a3 neighborScoreComputer:(id)a4 loggingConnection:(id)a5
++ (BOOL)shouldSuggestHighlightNode:(id)node neighborScoreComputer:(id)computer loggingConnection:(id)connection
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  [a4 neighborScoreWithHighlightNode:v7];
+  nodeCopy = node;
+  connectionCopy = connection;
+  [computer neighborScoreWithHighlightNode:nodeCopy];
   v10 = v9;
-  v11 = [v7 isInteresting];
-  v12 = [v7 isSmartInteresting];
-  v13 = [v7 meaningLabels];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  isInteresting = [nodeCopy isInteresting];
+  isSmartInteresting = [nodeCopy isSmartInteresting];
+  meaningLabels = [nodeCopy meaningLabels];
+  if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138413314;
-    v24 = v7;
+    v24 = nodeCopy;
     v25 = 1024;
-    v26 = v11;
+    v26 = isInteresting;
     v27 = 1024;
-    v28 = v12;
+    v28 = isSmartInteresting;
     v29 = 2048;
     v30 = v10;
     v31 = 2112;
-    v32 = v13;
-    _os_log_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_DEFAULT, "[Sharing Suggestion] Highlight node %@: isInteresting %d, isSmartInteresting %d, neighborScore %.2f, meanings %@", &v23, 0x2Cu);
+    v32 = meaningLabels;
+    _os_log_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_DEFAULT, "[Sharing Suggestion] Highlight node %@: isInteresting %d, isSmartInteresting %d, neighborScore %.2f, meanings %@", &v23, 0x2Cu);
   }
 
-  if (!((v10 > 0.43) | (v11 | v12) & 1) && ![v13 count])
+  if (!((v10 > 0.43) | (isInteresting | isSmartInteresting) & 1) && ![meaningLabels count])
   {
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v23) = 0;
       v18 = "[Sharing Suggestion] Highlight node not interesting for sharing.";
-      v19 = v8;
+      v19 = connectionCopy;
       v20 = 2;
       goto LABEL_14;
     }
@@ -97,19 +97,19 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v7 isPartOfTrip])
+  if ([nodeCopy isPartOfTrip])
   {
     v14 = +[PGGraph mostSignificantMeaningLabels];
-    v15 = [v13 intersectsSet:v14];
+    v15 = [meaningLabels intersectsSet:v14];
 
-    v16 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
+    v16 = os_log_type_enabled(connectionCopy, OS_LOG_TYPE_DEFAULT);
     if (v15)
     {
       if (v16)
       {
         v23 = 138412290;
-        v24 = v13;
-        _os_log_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_DEFAULT, "[Sharing Suggestion] Highlight node is contained in a trip and meaningful enough for sharing (%@).", &v23, 0xCu);
+        v24 = meaningLabels;
+        _os_log_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_DEFAULT, "[Sharing Suggestion] Highlight node is contained in a trip and meaningful enough for sharing (%@).", &v23, 0xCu);
       }
 
       goto LABEL_9;
@@ -118,9 +118,9 @@ LABEL_15:
     if (v16)
     {
       v23 = 138412290;
-      v24 = v13;
+      v24 = meaningLabels;
       v18 = "[Sharing Suggestion] Highlight node is contained in a trip, but not meaningful enough for sharing (%@).";
-      v19 = v8;
+      v19 = connectionCopy;
       v20 = 12;
 LABEL_14:
       _os_log_impl(&dword_22F0FC000, v19, OS_LOG_TYPE_DEFAULT, v18, &v23, v20);
@@ -138,40 +138,40 @@ LABEL_16:
   return v17;
 }
 
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)suggestionsWithOptions:(id)options progress:(id)progress
 {
-  v5 = a3;
+  optionsCopy = options;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [(PGAbstractSuggester *)self session];
-  v8 = [v7 photoLibrary];
-  v9 = [v7 loggingConnection];
-  v10 = [v7 workingContext];
-  v11 = [v10 curationManager];
-  v12 = [v7 curationContext];
-  v13 = [v10 serviceManager];
+  session = [(PGAbstractSuggester *)self session];
+  photoLibrary = [session photoLibrary];
+  loggingConnection = [session loggingConnection];
+  workingContext = [session workingContext];
+  curationManager = [workingContext curationManager];
+  curationContext = [session curationContext];
+  serviceManager = [workingContext serviceManager];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __66__PGDayHighlightSharingSuggester_suggestionsWithOptions_progress___block_invoke;
   v26[3] = &unk_2788847A0;
-  v27 = v5;
-  v28 = v7;
-  v29 = v9;
-  v30 = v8;
-  v31 = v13;
-  v32 = self;
-  v33 = v10;
-  v34 = v11;
-  v35 = v12;
+  v27 = optionsCopy;
+  v28 = session;
+  v29 = loggingConnection;
+  v30 = photoLibrary;
+  v31 = serviceManager;
+  selfCopy = self;
+  v33 = workingContext;
+  v34 = curationManager;
+  v35 = curationContext;
   v14 = v6;
   v36 = v14;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = v13;
-  v19 = v8;
-  v20 = v9;
-  v21 = v7;
-  v22 = v5;
+  v15 = curationContext;
+  v16 = curationManager;
+  v17 = workingContext;
+  v18 = serviceManager;
+  v19 = photoLibrary;
+  v20 = loggingConnection;
+  v21 = session;
+  v22 = optionsCopy;
   [v17 performSynchronousConcurrentGraphReadUsingBlock:v26];
   v23 = v36;
   v24 = v14;

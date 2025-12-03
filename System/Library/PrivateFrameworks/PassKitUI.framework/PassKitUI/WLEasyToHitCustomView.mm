@@ -1,14 +1,14 @@
 @interface WLEasyToHitCustomView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (UIEdgeInsets)margins;
 @end
 
 @implementation WLEasyToHitCustomView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(WLEasyToHitCustomView *)self bounds];
   [(WLEasyToHitCustomView *)self margins];
   UIRectInset();

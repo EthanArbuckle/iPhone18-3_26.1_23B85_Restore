@@ -13,7 +13,7 @@
 
   v2 = escape__set;
 
-  return [a1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  return [self stringByAddingPercentEncodingWithAllowedCharacters:v2];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface HMSettingBooleanValue
-- (BOOL)isEqual:(id)a3;
-- (HMSettingBooleanValue)initWithBoolValue:(BOOL)a3;
-- (HMSettingBooleanValue)initWithPayload:(id)a3;
-- (HMSettingBooleanValue)initWithProtoPayload:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMSettingBooleanValue)initWithBoolValue:(BOOL)value;
+- (HMSettingBooleanValue)initWithPayload:(id)payload;
+- (HMSettingBooleanValue)initWithProtoPayload:(id)payload;
 - (id)attributeDescriptions;
 - (id)payloadCopy;
 - (id)protoPayload;
@@ -10,10 +10,10 @@
 
 @implementation HMSettingBooleanValue
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v8) = 1;
   }
@@ -23,7 +23,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -34,8 +34,8 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMSettingBooleanValue *)self BOOLValue];
-      v8 = v7 ^ [(HMSettingBooleanValue *)v6 BOOLValue]^ 1;
+      bOOLValue = [(HMSettingBooleanValue *)self BOOLValue];
+      v8 = bOOLValue ^ [(HMSettingBooleanValue *)v6 BOOLValue]^ 1;
     }
 
     else
@@ -52,37 +52,37 @@
   v12[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = HMSettingBooleanValue;
-  v3 = [(HMImmutableSettingValue *)&v11 attributeDescriptions];
+  attributeDescriptions = [(HMImmutableSettingValue *)&v11 attributeDescriptions];
   v4 = objc_alloc(MEMORY[0x1E69A29C8]);
   [(HMSettingBooleanValue *)self BOOLValue];
   v5 = HMFBooleanToString();
   v6 = [v4 initWithName:@"BOOLValue" value:v5];
   v12[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  v8 = [v3 arrayByAddingObjectsFromArray:v7];
+  v8 = [attributeDescriptions arrayByAddingObjectsFromArray:v7];
 
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-- (HMSettingBooleanValue)initWithProtoPayload:(id)a3
+- (HMSettingBooleanValue)initWithProtoPayload:(id)payload
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 hasBoolValueEvent])
+  payloadCopy = payload;
+  if ([payloadCopy hasBoolValueEvent])
   {
-    v5 = [v4 BOOLValueEvent];
-    if ([v5 hasValue])
+    bOOLValueEvent = [payloadCopy BOOLValueEvent];
+    if ([bOOLValueEvent hasValue])
     {
-      v6 = -[HMSettingBooleanValue initWithBoolValue:](self, "initWithBoolValue:", [v5 value]);
-      v7 = v6;
+      selfCopy2 = -[HMSettingBooleanValue initWithBoolValue:](self, "initWithBoolValue:", [bOOLValueEvent value]);
+      v7 = selfCopy2;
     }
 
     else
     {
       v11 = objc_autoreleasePoolPush();
-      v6 = self;
+      selfCopy2 = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
@@ -90,7 +90,7 @@
         v16 = 138543618;
         v17 = v13;
         v18 = 2112;
-        v19 = v4;
+        v19 = payloadCopy;
         _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode setting value due to no BOOL value in BOOL value event in proto payload: %@", &v16, 0x16u);
       }
 
@@ -102,7 +102,7 @@
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy2 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -110,7 +110,7 @@
       v16 = 138543618;
       v17 = v10;
       v18 = 2112;
-      v19 = v4;
+      v19 = payloadCopy;
       _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode setting value due to no BOOL value event type in proto payload: %@", &v16, 0x16u);
     }
 
@@ -132,17 +132,17 @@
   return v3;
 }
 
-- (HMSettingBooleanValue)initWithPayload:(id)a3
+- (HMSettingBooleanValue)initWithPayload:(id)payload
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  payloadCopy = payload;
   v14 = 0;
-  v5 = [v4 hmf_BOOLForKey:@"HMImmutableSettingValuePayloadKey" error:&v14];
+  v5 = [payloadCopy hmf_BOOLForKey:@"HMImmutableSettingValuePayloadKey" error:&v14];
   v6 = v14;
   if (v6)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -150,7 +150,7 @@
       *buf = 138543618;
       v16 = v10;
       v17 = 2112;
-      v18 = v4;
+      v18 = payloadCopy;
       _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode setting BOOLean value due to no BOOL value in payload: %@", buf, 0x16u);
     }
 
@@ -160,8 +160,8 @@
 
   else
   {
-    v8 = [(HMSettingBooleanValue *)self initWithBoolValue:v5];
-    v11 = v8;
+    selfCopy = [(HMSettingBooleanValue *)self initWithBoolValue:v5];
+    v11 = selfCopy;
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -173,8 +173,8 @@
   v12[2] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = HMSettingBooleanValue;
-  v3 = [(HMImmutableSettingValue *)&v10 payloadCopy];
-  v4 = [v3 mutableCopy];
+  payloadCopy = [(HMImmutableSettingValue *)&v10 payloadCopy];
+  v4 = [payloadCopy mutableCopy];
 
   v11[0] = @"HMImmutableSettingValueTypePayloadKey";
   v11[1] = @"HMImmutableSettingValuePayloadKey";
@@ -190,14 +190,14 @@
   return v7;
 }
 
-- (HMSettingBooleanValue)initWithBoolValue:(BOOL)a3
+- (HMSettingBooleanValue)initWithBoolValue:(BOOL)value
 {
   v5.receiver = self;
   v5.super_class = HMSettingBooleanValue;
   result = [(HMImmutableSettingValue *)&v5 initSettingValue];
   if (result)
   {
-    result->_BOOLValue = a3;
+    result->_BOOLValue = value;
   }
 
   return result;

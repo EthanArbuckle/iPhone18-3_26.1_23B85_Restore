@@ -1,9 +1,9 @@
 @interface EDPersonaPersistenceLayoutManager
 + (OS_os_log)log;
-+ (id)baseAccountDirectoryForPersonaIdentifier:(id)a3;
-+ (id)baseAccountDirectoryPathForPersonaIdentifier:(id)a3;
-+ (id)iOS_baseAccountDirectoryPathForPersonaIdentifier:(id)a3;
-+ (id)macOS_baseAccountDirectoryPathForPersonaIdentifier:(id)a3;
++ (id)baseAccountDirectoryForPersonaIdentifier:(id)identifier;
++ (id)baseAccountDirectoryPathForPersonaIdentifier:(id)identifier;
++ (id)iOS_baseAccountDirectoryPathForPersonaIdentifier:(id)identifier;
++ (id)macOS_baseAccountDirectoryPathForPersonaIdentifier:(id)identifier;
 @end
 
 @implementation EDPersonaPersistenceLayoutManager
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __40__EDPersonaPersistenceLayoutManager_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_78 != -1)
   {
     dispatch_once(&log_onceToken_78, block);
@@ -33,24 +33,24 @@ void __40__EDPersonaPersistenceLayoutManager_log__block_invoke(uint64_t a1)
   log_log_78 = v1;
 }
 
-+ (id)baseAccountDirectoryForPersonaIdentifier:(id)a3
++ (id)baseAccountDirectoryForPersonaIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E695DFF8];
-  v4 = [a1 baseAccountDirectoryPathForPersonaIdentifier:a3];
+  v4 = [self baseAccountDirectoryPathForPersonaIdentifier:identifier];
   v5 = [v3 fileURLWithPath:v4 isDirectory:1];
 
   return v5;
 }
 
-+ (id)baseAccountDirectoryPathForPersonaIdentifier:(id)a3
++ (id)baseAccountDirectoryPathForPersonaIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69DF068] sharedManager];
-  v6 = [v5 currentPersona];
+  identifierCopy = identifier;
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
   v18 = 0;
-  v7 = [v6 copyCurrentPersonaContextWithError:&v18];
+  v7 = [currentPersona copyCurrentPersonaContextWithError:&v18];
   v8 = v18;
   if (v8)
   {
@@ -58,8 +58,8 @@ void __40__EDPersonaPersistenceLayoutManager_log__block_invoke(uint64_t a1)
     v10 = +[EDPersonaPersistenceLayoutManager log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
-      v11 = [v9 ef_publicDescription];
-      [(EDPersonaPersistenceLayoutManager *)v4 baseAccountDirectoryPathForPersonaIdentifier:v11, v19];
+      ef_publicDescription = [v9 ef_publicDescription];
+      [(EDPersonaPersistenceLayoutManager *)identifierCopy baseAccountDirectoryPathForPersonaIdentifier:ef_publicDescription, v19];
     }
 
     v12 = 0;
@@ -67,14 +67,14 @@ void __40__EDPersonaPersistenceLayoutManager_log__block_invoke(uint64_t a1)
 
   else
   {
-    v9 = [v6 generateAndRestorePersonaContextWithIdentityString:v4];
+    v9 = [currentPersona generateAndRestorePersonaContextWithIdentityString:identifierCopy];
     if (v9)
     {
       v13 = +[EDPersonaPersistenceLayoutManager log];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
       {
-        v14 = [v9 ef_publicDescription];
-        [(EDPersonaPersistenceLayoutManager *)v4 baseAccountDirectoryPathForPersonaIdentifier:v14, v19];
+        ef_publicDescription2 = [v9 ef_publicDescription];
+        [(EDPersonaPersistenceLayoutManager *)identifierCopy baseAccountDirectoryPathForPersonaIdentifier:ef_publicDescription2, v19];
       }
 
       v12 = 0;
@@ -82,11 +82,11 @@ void __40__EDPersonaPersistenceLayoutManager_log__block_invoke(uint64_t a1)
 
     else
     {
-      v12 = [a1 iOS_baseAccountDirectoryPathForPersonaIdentifier:v4];
+      v12 = [self iOS_baseAccountDirectoryPathForPersonaIdentifier:identifierCopy];
       v9 = 0;
     }
 
-    v15 = [v6 restorePersonaWithSavedPersonaContext:v7];
+    v15 = [currentPersona restorePersonaWithSavedPersonaContext:v7];
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -94,18 +94,18 @@ void __40__EDPersonaPersistenceLayoutManager_log__block_invoke(uint64_t a1)
   return v12;
 }
 
-+ (id)macOS_baseAccountDirectoryPathForPersonaIdentifier:(id)a3
++ (id)macOS_baseAccountDirectoryPathForPersonaIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 containerURLForSecurityApplicationGroupIdentifier:@"com.apple.MailPersonaStorage"];
-  v5 = [v4 path];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"com.apple.MailPersonaStorage"];
+  path = [v4 path];
 
-  return v5;
+  return path;
 }
 
-+ (id)iOS_baseAccountDirectoryPathForPersonaIdentifier:(id)a3
++ (id)iOS_baseAccountDirectoryPathForPersonaIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v13 = 1;
   v4 = container_create_or_lookup_app_group_paths_for_current_user();
   if (v4)
@@ -118,9 +118,9 @@ void __40__EDPersonaPersistenceLayoutManager_log__block_invoke(uint64_t a1)
     v12[4] = v5;
     xpc_dictionary_apply(v4, v12);
     v6 = [v5 objectForKeyedSubscript:@"com.apple.MailPersonaStorage"];
-    v7 = [v6 absoluteString];
+    absoluteString = [v6 absoluteString];
 
-    if (!v7)
+    if (!absoluteString)
     {
       v8 = +[EDPersonaPersistenceLayoutManager log];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -129,7 +129,7 @@ void __40__EDPersonaPersistenceLayoutManager_log__block_invoke(uint64_t a1)
       }
     }
 
-    v9 = v7;
+    v9 = absoluteString;
 
     v10 = v9;
   }
@@ -139,7 +139,7 @@ void __40__EDPersonaPersistenceLayoutManager_log__block_invoke(uint64_t a1)
     v9 = +[EDPersonaPersistenceLayoutManager log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [(EDPersonaPersistenceLayoutManager *)v3 iOS_baseAccountDirectoryPathForPersonaIdentifier:v9];
+      [(EDPersonaPersistenceLayoutManager *)identifierCopy iOS_baseAccountDirectoryPathForPersonaIdentifier:v9];
     }
 
     v10 = 0;

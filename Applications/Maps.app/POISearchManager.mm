@@ -1,35 +1,35 @@
 @interface POISearchManager
 - (POISearchManager)init;
-- (id)searchResultForIdentifier:(id)a3;
-- (void)_cacheAndHandleSearchResult:(id)a3 identifier:(id)a4 completionHandlers:(id)a5;
-- (void)_setLoading:(BOOL)a3 forIdentifier:(id)a4;
-- (void)_updateActivityIndicatorForIdentifier:(id)a3;
-- (void)searchForIdentifier:(id)a3 allowExpired:(BOOL)a4 traits:(id)a5 completionHandler:(id)a6 searchResultType:(unsigned int)a7 callbackQueue:(id)a8;
-- (void)setCanShowActivityIndicator:(BOOL)a3 forIdentifier:(id)a4;
+- (id)searchResultForIdentifier:(id)identifier;
+- (void)_cacheAndHandleSearchResult:(id)result identifier:(id)identifier completionHandlers:(id)handlers;
+- (void)_setLoading:(BOOL)loading forIdentifier:(id)identifier;
+- (void)_updateActivityIndicatorForIdentifier:(id)identifier;
+- (void)searchForIdentifier:(id)identifier allowExpired:(BOOL)expired traits:(id)traits completionHandler:(id)handler searchResultType:(unsigned int)type callbackQueue:(id)queue;
+- (void)setCanShowActivityIndicator:(BOOL)indicator forIdentifier:(id)identifier;
 @end
 
 @implementation POISearchManager
 
-- (void)searchForIdentifier:(id)a3 allowExpired:(BOOL)a4 traits:(id)a5 completionHandler:(id)a6 searchResultType:(unsigned int)a7 callbackQueue:(id)a8
+- (void)searchForIdentifier:(id)identifier allowExpired:(BOOL)expired traits:(id)traits completionHandler:(id)handler searchResultType:(unsigned int)type callbackQueue:(id)queue
 {
-  v12 = a4;
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  expiredCopy = expired;
+  identifierCopy = identifier;
+  traitsCopy = traits;
+  handlerCopy = handler;
+  queueCopy = queue;
   v18 = sub_1009E39B0();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v37 = v14;
+    v37 = identifierCopy;
     v38 = 1024;
-    v39 = v12;
+    v39 = expiredCopy;
     v40 = 1024;
-    v41 = a7;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Performing search for identifier %@, allow expired %u, searchResultType %u", buf, 0x18u);
   }
 
-  v19 = sub_1009E3A04(v14);
+  v19 = sub_1009E3A04(identifierCopy);
 
   v20 = [(NSMapTable *)self->_completionHandlers objectForKey:v19];
   v21 = v20;
@@ -39,18 +39,18 @@
     [(NSMapTable *)self->_completionHandlers setObject:v21 forKey:v19];
   }
 
-  if (v16)
+  if (handlerCopy)
   {
-    v22 = [v16 copy];
+    v22 = [handlerCopy copy];
     [v21 addObject:v22];
   }
 
   if (!v20)
   {
-    [v15 setSource:2];
+    [traitsCopy setSource:2];
     v23 = sub_1009E39B0();
     v24 = os_log_type_enabled(v23, OS_LOG_TYPE_INFO);
-    if (v12)
+    if (expiredCopy)
     {
       if (v24)
       {
@@ -61,7 +61,7 @@
       v25 = +[MKMapService sharedService];
       v35 = v19;
       v26 = [NSArray arrayWithObjects:&v35 count:1];
-      v27 = [v25 ticketForIdentifiers:v26 resultProviderID:0 contentProvider:0 traits:v15];
+      v27 = [v25 ticketForIdentifiers:v26 resultProviderID:0 contentProvider:0 traits:traitsCopy];
     }
 
     else
@@ -73,7 +73,7 @@
       }
 
       v25 = +[MKMapService sharedService];
-      v27 = [v25 ticketForNonExpiredIdentifier:v19 resultProviderID:0 contentProvider:0 traits:v15];
+      v27 = [v25 ticketForNonExpiredIdentifier:v19 resultProviderID:0 contentProvider:0 traits:traitsCopy];
     }
 
     v30[0] = _NSConcreteStackBlock;
@@ -82,23 +82,23 @@
     v30[3] = &unk_1016315C0;
     v31 = v21;
     v32 = v19;
-    v33 = self;
-    v34 = a7;
+    selfCopy = self;
+    typeCopy2 = type;
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_1009E3D64;
     v28[3] = &unk_101661570;
     v28[4] = self;
     v29 = v32;
-    [v27 submitWithHandler:v30 queue:v17 networkActivity:v28];
+    [v27 submitWithHandler:v30 queue:queueCopy networkActivity:v28];
   }
 }
 
-- (void)_cacheAndHandleSearchResult:(id)a3 identifier:(id)a4 completionHandlers:(id)a5
+- (void)_cacheAndHandleSearchResult:(id)result identifier:(id)identifier completionHandlers:(id)handlers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultCopy = result;
+  identifierCopy = identifier;
+  handlersCopy = handlers;
   poiCache = self->_poiCache;
   if (!poiCache)
   {
@@ -112,12 +112,12 @@
     poiCache = self->_poiCache;
   }
 
-  [(NSCache *)poiCache setObject:v8 forKey:v9];
+  [(NSCache *)poiCache setObject:resultCopy forKey:identifierCopy];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v15 = v10;
+  v15 = handlersCopy;
   v16 = [v15 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v16)
   {
@@ -144,25 +144,25 @@
     while (v17);
   }
 
-  [(NSMapTable *)self->_completionHandlers removeObjectForKey:v9, v20];
-  [(POISearchManager *)self setCanShowActivityIndicator:0 forIdentifier:v9];
+  [(NSMapTable *)self->_completionHandlers removeObjectForKey:identifierCopy, v20];
+  [(POISearchManager *)self setCanShowActivityIndicator:0 forIdentifier:identifierCopy];
 }
 
-- (id)searchResultForIdentifier:(id)a3
+- (id)searchResultForIdentifier:(id)identifier
 {
-  v4 = sub_1009E3A04(a3);
+  v4 = sub_1009E3A04(identifier);
   v5 = [(NSCache *)self->_poiCache objectForKey:v4];
 
   return v5;
 }
 
-- (void)_setLoading:(BOOL)a3 forIdentifier:(id)a4
+- (void)_setLoading:(BOOL)loading forIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = a4;
+  loadingCopy = loading;
+  identifierCopy = identifier;
   loadingForBusinessIDs = self->_loadingForBusinessIDs;
-  v11 = v6;
-  if (v4)
+  v11 = identifierCopy;
+  if (loadingCopy)
   {
     if (!loadingForBusinessIDs)
     {
@@ -177,19 +177,19 @@
 
   else
   {
-    [(NSMutableDictionary *)loadingForBusinessIDs removeObjectForKey:v6];
+    [(NSMutableDictionary *)loadingForBusinessIDs removeObjectForKey:identifierCopy];
   }
 
   [(POISearchManager *)self _updateActivityIndicatorForIdentifier:v11];
 }
 
-- (void)setCanShowActivityIndicator:(BOOL)a3 forIdentifier:(id)a4
+- (void)setCanShowActivityIndicator:(BOOL)indicator forIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = sub_1009E3A04(a4);
+  indicatorCopy = indicator;
+  v6 = sub_1009E3A04(identifier);
   canShowActivityIndicatorForBusinessIDs = self->_canShowActivityIndicatorForBusinessIDs;
   v11 = v6;
-  if (v4)
+  if (indicatorCopy)
   {
     if (!canShowActivityIndicatorForBusinessIDs)
     {
@@ -210,21 +210,21 @@
   [(POISearchManager *)self _updateActivityIndicatorForIdentifier:v11];
 }
 
-- (void)_updateActivityIndicatorForIdentifier:(id)a3
+- (void)_updateActivityIndicatorForIdentifier:(id)identifier
 {
-  v16 = a3;
-  v4 = [(NSMutableDictionary *)self->_canShowActivityIndicatorForBusinessIDs objectForKeyedSubscript:v16];
-  v5 = [v4 BOOLValue];
+  identifierCopy = identifier;
+  v4 = [(NSMutableDictionary *)self->_canShowActivityIndicatorForBusinessIDs objectForKeyedSubscript:identifierCopy];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = [(NSMutableDictionary *)self->_loadingForBusinessIDs objectForKeyedSubscript:v16];
-  v7 = [v6 BOOLValue];
+  v6 = [(NSMutableDictionary *)self->_loadingForBusinessIDs objectForKeyedSubscript:identifierCopy];
+  bOOLValue2 = [v6 BOOLValue];
 
-  v8 = v5 & v7;
-  v9 = [(NSMutableDictionary *)self->_loadingTokensForBusinessIDs objectForKeyedSubscript:v16];
+  v8 = bOOLValue & bOOLValue2;
+  v9 = [(NSMutableDictionary *)self->_loadingTokensForBusinessIDs objectForKeyedSubscript:identifierCopy];
   if (v8 == 1 && v9 == 0)
   {
     v12 = +[LoadingIndicatorController sharedController];
-    v11 = [v12 beginShowingLoadingIndicator];
+    beginShowingLoadingIndicator = [v12 beginShowingLoadingIndicator];
 
     loadingTokensForBusinessIDs = self->_loadingTokensForBusinessIDs;
     if (!loadingTokensForBusinessIDs)
@@ -236,15 +236,15 @@
       loadingTokensForBusinessIDs = self->_loadingTokensForBusinessIDs;
     }
 
-    [(NSMutableDictionary *)loadingTokensForBusinessIDs setObject:v11 forKeyedSubscript:v16];
+    [(NSMutableDictionary *)loadingTokensForBusinessIDs setObject:beginShowingLoadingIndicator forKeyedSubscript:identifierCopy];
   }
 
   else
   {
-    v11 = v9;
+    beginShowingLoadingIndicator = v9;
     if (!((v9 == 0) | v8 & 1))
     {
-      [(NSMutableDictionary *)self->_loadingTokensForBusinessIDs removeObjectForKey:v16];
+      [(NSMutableDictionary *)self->_loadingTokensForBusinessIDs removeObjectForKey:identifierCopy];
     }
   }
 }

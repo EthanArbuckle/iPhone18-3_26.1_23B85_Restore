@@ -1,51 +1,51 @@
 @interface MTLTelemetrySamplerState
-- (MTLTelemetrySamplerState)initWithBaseSamplerState:(id)a3 device:(id)a4 descriptor:(id)a5;
+- (MTLTelemetrySamplerState)initWithBaseSamplerState:(id)state device:(id)device descriptor:(id)descriptor;
 - (void)dealloc;
-- (void)setSamplerStatsWithDescriptor:(id)a3 telemetryStat:(MTLTelemetrySamplerStatRec *)a4;
+- (void)setSamplerStatsWithDescriptor:(id)descriptor telemetryStat:(MTLTelemetrySamplerStatRec *)stat;
 @end
 
 @implementation MTLTelemetrySamplerState
 
-- (void)setSamplerStatsWithDescriptor:(id)a3 telemetryStat:(MTLTelemetrySamplerStatRec *)a4
+- (void)setSamplerStatsWithDescriptor:(id)descriptor telemetryStat:(MTLTelemetrySamplerStatRec *)stat
 {
-  if (![a3 mipFilter])
+  if (![descriptor mipFilter])
   {
     goto LABEL_19;
   }
 
-  count = a4->var1.count;
+  count = stat->var1.count;
   if (!count)
   {
-    a4->var1.max = 1;
+    stat->var1.max = 1;
 LABEL_8:
-    a4->var1.min = 1;
+    stat->var1.min = 1;
     goto LABEL_9;
   }
 
-  if (!a4->var1.max)
+  if (!stat->var1.max)
   {
-    a4->var1.max = 1;
+    stat->var1.max = 1;
   }
 
-  if (a4->var1.min >= 2)
+  if (stat->var1.min >= 2)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
-  ++a4->var1.total;
-  a4->var1.count = count + 1;
-  if ([a3 minFilter] == 1 || objc_msgSend(a3, "magFilter") == 1)
+  ++stat->var1.total;
+  stat->var1.count = count + 1;
+  if ([descriptor minFilter] == 1 || objc_msgSend(descriptor, "magFilter") == 1)
   {
-    v7 = a4->var2.count;
+    v7 = stat->var2.count;
     if (v7)
     {
-      if (!a4->var2.max)
+      if (!stat->var2.max)
       {
-        a4->var2.max = 1;
+        stat->var2.max = 1;
       }
 
-      if (a4->var2.min < 2)
+      if (stat->var2.min < 2)
       {
         goto LABEL_18;
       }
@@ -53,30 +53,30 @@ LABEL_9:
 
     else
     {
-      a4->var2.max = 1;
+      stat->var2.max = 1;
     }
 
-    a4->var2.min = 1;
+    stat->var2.min = 1;
 LABEL_18:
-    ++a4->var2.total;
-    a4->var2.count = v7 + 1;
+    ++stat->var2.total;
+    stat->var2.count = v7 + 1;
   }
 
 LABEL_19:
-  if (![a3 normalizedCoordinates])
+  if (![descriptor normalizedCoordinates])
   {
     goto LABEL_28;
   }
 
-  v8 = a4->var3.count;
+  v8 = stat->var3.count;
   if (v8)
   {
-    if (!a4->var3.max)
+    if (!stat->var3.max)
     {
-      a4->var3.max = 1;
+      stat->var3.max = 1;
     }
 
-    if (a4->var3.min < 2)
+    if (stat->var3.min < 2)
     {
       goto LABEL_27;
     }
@@ -84,29 +84,29 @@ LABEL_19:
 
   else
   {
-    a4->var3.max = 1;
+    stat->var3.max = 1;
   }
 
-  a4->var3.min = 1;
+  stat->var3.min = 1;
 LABEL_27:
-  ++a4->var3.total;
-  a4->var3.count = v8 + 1;
+  ++stat->var3.total;
+  stat->var3.count = v8 + 1;
 LABEL_28:
-  v9 = [a3 maxAnisotropy];
-  if (!v9)
+  maxAnisotropy = [descriptor maxAnisotropy];
+  if (!maxAnisotropy)
   {
     goto LABEL_37;
   }
 
-  v10 = a4->var4.count;
+  v10 = stat->var4.count;
   if (v10)
   {
-    if (a4->var4.max < v9)
+    if (stat->var4.max < maxAnisotropy)
     {
-      a4->var4.max = v9;
+      stat->var4.max = maxAnisotropy;
     }
 
-    if (a4->var4.min <= v9)
+    if (stat->var4.min <= maxAnisotropy)
     {
       goto LABEL_36;
     }
@@ -114,53 +114,53 @@ LABEL_28:
 
   else
   {
-    a4->var4.max = v9;
+    stat->var4.max = maxAnisotropy;
   }
 
-  a4->var4.min = v9;
+  stat->var4.min = maxAnisotropy;
 LABEL_36:
-  a4->var4.total += v9;
-  a4->var4.count = v10 + 1;
+  stat->var4.total += maxAnisotropy;
+  stat->var4.count = v10 + 1;
 LABEL_37:
-  [a3 lodMinClamp];
-  var3 = a4->var5.var3;
+  [descriptor lodMinClamp];
+  var3 = stat->var5.var3;
   if (!var3)
   {
-    a4->var5.var1 = v11;
+    stat->var5.var1 = v11;
 LABEL_43:
-    a4->var5.var0 = v11;
+    stat->var5.var0 = v11;
     goto LABEL_44;
   }
 
-  if (v11 > a4->var5.var1)
+  if (v11 > stat->var5.var1)
   {
-    a4->var5.var1 = v11;
+    stat->var5.var1 = v11;
   }
 
-  if (v11 < a4->var5.var0)
+  if (v11 < stat->var5.var0)
   {
     goto LABEL_43;
   }
 
 LABEL_44:
-  a4->var5.var2 = v11 + a4->var5.var2;
-  a4->var5.var3 = var3 + 1;
-  [a3 lodMaxClamp];
+  stat->var5.var2 = v11 + stat->var5.var2;
+  stat->var5.var3 = var3 + 1;
+  [descriptor lodMaxClamp];
   if (v13 == 3.4028e38)
   {
     goto LABEL_53;
   }
 
-  [a3 lodMaxClamp];
-  v15 = a4->var6.var3;
+  [descriptor lodMaxClamp];
+  v15 = stat->var6.var3;
   if (v15)
   {
-    if (v14 > a4->var6.var1)
+    if (v14 > stat->var6.var1)
     {
-      a4->var6.var1 = v14;
+      stat->var6.var1 = v14;
     }
 
-    if (v14 >= a4->var6.var0)
+    if (v14 >= stat->var6.var0)
     {
       goto LABEL_52;
     }
@@ -168,26 +168,26 @@ LABEL_44:
 
   else
   {
-    a4->var6.var1 = v14;
+    stat->var6.var1 = v14;
   }
 
-  a4->var6.var0 = v14;
+  stat->var6.var0 = v14;
 LABEL_52:
-  a4->var6.var2 = v14 + a4->var6.var2;
-  a4->var6.var3 = v15 + 1;
+  stat->var6.var2 = v14 + stat->var6.var2;
+  stat->var6.var3 = v15 + 1;
 LABEL_53:
-  v16 = [a3 lodAverage];
-  if (v16)
+  lodAverage = [descriptor lodAverage];
+  if (lodAverage)
   {
-    v17 = a4->var7.count;
+    v17 = stat->var7.count;
     if (v17)
     {
-      if (a4->var7.max < v16)
+      if (stat->var7.max < lodAverage)
       {
-        a4->var7.max = v16;
+        stat->var7.max = lodAverage;
       }
 
-      if (a4->var7.min <= v16)
+      if (stat->var7.min <= lodAverage)
       {
         goto LABEL_61;
       }
@@ -195,36 +195,36 @@ LABEL_53:
 
     else
     {
-      a4->var7.max = v16;
+      stat->var7.max = lodAverage;
     }
 
-    a4->var7.min = v16;
+    stat->var7.min = lodAverage;
 LABEL_61:
-    ++a4->var7.total;
-    a4->var7.count = v17 + 1;
+    ++stat->var7.total;
+    stat->var7.count = v17 + 1;
   }
 
-  ++a4->var0;
+  ++stat->var0;
 }
 
-- (MTLTelemetrySamplerState)initWithBaseSamplerState:(id)a3 device:(id)a4 descriptor:(id)a5
+- (MTLTelemetrySamplerState)initWithBaseSamplerState:(id)state device:(id)device descriptor:(id)descriptor
 {
   v11.receiver = self;
   v11.super_class = MTLTelemetrySamplerState;
-  v7 = [(MTLToolsObject *)&v11 initWithBaseObject:a3 parent:?];
+  v7 = [(MTLToolsObject *)&v11 initWithBaseObject:state parent:?];
   if (v7)
   {
-    *(&v7->super.super._externalReferences + 4) = [a5 maxAnisotropy] > 1;
-    if ([a4 enableTelemetry])
+    *(&v7->super.super._externalReferences + 4) = [descriptor maxAnisotropy] > 1;
+    if ([device enableTelemetry])
     {
-      v8 = *(a4 + 91);
+      v8 = *(device + 91);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __71__MTLTelemetrySamplerState_initWithBaseSamplerState_device_descriptor___block_invoke;
       block[3] = &unk_2787B38D0;
-      block[4] = a4;
+      block[4] = device;
       block[5] = v7;
-      block[6] = a5;
+      block[6] = descriptor;
       dispatch_sync(v8, block);
     }
   }

@@ -1,17 +1,17 @@
 @interface WiFiBatteryManager
-- (BOOL)configureWiFiClientAndRegisterWithBatteryModule:(BOOL)a3 :(__WiFiManager *)a4 :(id)a5 :(id)a6;
-- (BOOL)isPowerResourceAvailable:(unint64_t)a3;
+- (BOOL)configureWiFiClientAndRegisterWithBatteryModule:(BOOL)module :(__WiFiManager *)a4 :(id)a5 :(id)a6;
+- (BOOL)isPowerResourceAvailable:(unint64_t)available;
 - (BOOL)setupDevice:(void *)deviceManager;
-- (WiFiBatteryManager)initWithContext:(void *)a3;
+- (WiFiBatteryManager)initWithContext:(void *)context;
 - (id)WiFiBatteryManagerPopulatePowerTable;
-- (id)getDutyCycleForPowerNumber:(unint64_t)a3;
+- (id)getDutyCycleForPowerNumber:(unint64_t)number;
 - (int)admissionCheck;
-- (int)requestPowerResource:(unint64_t)a3 withDetails:(void *)a4;
-- (unint64_t)WiFiBatteryManagerHandleCpmsAllocatedBudgetReturnIndex:(id)a3;
-- (unint64_t)getClosestAllowedLowerPowerNumber:(unint64_t)a3;
-- (void)WiFiBatteryManagerCpmsCallbackConfiguration:(__WiFiManager *)a3;
-- (void)WiFiBatteryManagerHandlePowerAdmissionResponse:(unint64_t)a3;
-- (void)WiFiBatteryManagerPpmCallbackConfiguration:(__WiFiManager *)a3;
+- (int)requestPowerResource:(unint64_t)resource withDetails:(void *)details;
+- (unint64_t)WiFiBatteryManagerHandleCpmsAllocatedBudgetReturnIndex:(id)index;
+- (unint64_t)getClosestAllowedLowerPowerNumber:(unint64_t)number;
+- (void)WiFiBatteryManagerCpmsCallbackConfiguration:(__WiFiManager *)configuration;
+- (void)WiFiBatteryManagerHandlePowerAdmissionResponse:(unint64_t)response;
+- (void)WiFiBatteryManagerPpmCallbackConfiguration:(__WiFiManager *)configuration;
 - (void)dealloc;
 - (void)releasePowerResources;
 @end
@@ -20,8 +20,8 @@
 
 - (int)admissionCheck
 {
-  v3 = [(WiFiBatteryManager *)self pendingRequests];
-  v4 = [v3 count];
+  pendingRequests = [(WiFiBatteryManager *)self pendingRequests];
+  v4 = [pendingRequests count];
 
   if (!v4)
   {
@@ -36,8 +36,8 @@
     goto LABEL_21;
   }
 
-  v5 = [(WiFiBatteryManager *)self pendingRequests];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  pendingRequests2 = [(WiFiBatteryManager *)self pendingRequests];
+  v6 = [pendingRequests2 objectAtIndexedSubscript:0];
 
   if (v6 && (v7 = [v6 bytes]) != 0)
   {
@@ -143,7 +143,7 @@ LABEL_22:
   return v12;
 }
 
-- (WiFiBatteryManager)initWithContext:(void *)a3
+- (WiFiBatteryManager)initWithContext:(void *)context
 {
   v31.receiver = self;
   v31.super_class = WiFiBatteryManager;
@@ -160,8 +160,8 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v4->_manager = a3;
-  if (!a3)
+  v4->_manager = context;
+  if (!context)
   {
     v25 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -288,9 +288,9 @@ LABEL_22:
   pendingRequests = v5->_pendingRequests;
   v5->_pendingRequests = v21;
 
-  v23 = [(WiFiBatteryManager *)v5 pendingRequests];
+  pendingRequests = [(WiFiBatteryManager *)v5 pendingRequests];
 
-  if (!v23)
+  if (!pendingRequests)
   {
     v25 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -456,9 +456,9 @@ LABEL_30:
   return v21;
 }
 
-- (BOOL)configureWiFiClientAndRegisterWithBatteryModule:(BOOL)a3 :(__WiFiManager *)a4 :(id)a5 :(id)a6
+- (BOOL)configureWiFiClientAndRegisterWithBatteryModule:(BOOL)module :(__WiFiManager *)a4 :(id)a5 :(id)a6
 {
-  v8 = a3;
+  moduleCopy = module;
   v10 = a5;
   v11 = a6;
   if (!self)
@@ -472,7 +472,7 @@ LABEL_30:
     goto LABEL_13;
   }
 
-  if (!v8)
+  if (!moduleCopy)
   {
     [(WiFiBatteryManager *)self WiFiBatteryManagerPpmCallbackConfiguration:a4];
     v16 = [v10 registerForNotificationsWithError:0 handler:self->_WiFiBatteryManagerPpmAsyncNotificationHandler];
@@ -506,27 +506,27 @@ LABEL_14:
   objc_copyWeak(&v22, &location);
   [(CPMSClientDescription *)self->_wifiClientDescriptionRef setGetCurrentPower:v21];
   [(CPMSClientDescription *)self->_wifiClientDescriptionRef setPowerBudgetUpdateMinimumPeriod:1000];
-  v12 = [(WiFiBatteryManager *)self WiFiBatteryManagerPopulatePowerTable];
-  v13 = [NSDictionary dictionaryWithDictionary:v12];
+  wiFiBatteryManagerPopulatePowerTable = [(WiFiBatteryManager *)self WiFiBatteryManagerPopulatePowerTable];
+  v13 = [NSDictionary dictionaryWithDictionary:wiFiBatteryManagerPopulatePowerTable];
   [(CPMSClientDescription *)self->_wifiClientDescriptionRef setPowerLevels:v13];
 
   [(CPMSClientDescription *)self->_wifiClientDescriptionRef setClientId:[(WiFiBatteryManager *)self wifiCPMSHandle]];
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
   [(WiFiBatteryManager *)self WiFiBatteryManagerCpmsCallbackConfiguration:a4];
-  v14 = [(WiFiBatteryManager *)self cpmsAsyncNotificationCallback];
-  [(CPMSClientDescription *)self->_wifiClientDescriptionRef setNotificationCallback:v14];
+  cpmsAsyncNotificationCallback = [(WiFiBatteryManager *)self cpmsAsyncNotificationCallback];
+  [(CPMSClientDescription *)self->_wifiClientDescriptionRef setNotificationCallback:cpmsAsyncNotificationCallback];
 
   v15 = [v11 registerClientWithDescription:self->_wifiClientDescriptionRef error:0];
   v16 = 0;
 LABEL_6:
-  v17 = !v8;
+  v17 = !moduleCopy;
   if ((v15 & 1) == 0 && (v16 & 1) == 0)
   {
     sub_100174384();
   }
 
-  if ((v15 & v8 & 1) == 0)
+  if ((v15 & moduleCopy & 1) == 0)
   {
     goto LABEL_14;
   }
@@ -572,12 +572,12 @@ LABEL_15:
   v15 = [NSDictionary dictionaryWithObject:v3 forKey:kCPMSPowerTimeScale100ms];
   [(WiFiBatteryManager *)self setWifiDevicePowerLevels100ms:v15];
 
-  v16 = [(WiFiBatteryManager *)self wifiDevicePowerLevels100ms];
+  wifiDevicePowerLevels100ms = [(WiFiBatteryManager *)self wifiDevicePowerLevels100ms];
 
-  return v16;
+  return wifiDevicePowerLevels100ms;
 }
 
-- (void)WiFiBatteryManagerCpmsCallbackConfiguration:(__WiFiManager *)a3
+- (void)WiFiBatteryManagerCpmsCallbackConfiguration:(__WiFiManager *)configuration
 {
   objc_initWeak(&location, self);
   v8[0] = 0;
@@ -599,7 +599,7 @@ LABEL_15:
   objc_destroyWeak(&location);
 }
 
-- (void)WiFiBatteryManagerPpmCallbackConfiguration:(__WiFiManager *)a3
+- (void)WiFiBatteryManagerPpmCallbackConfiguration:(__WiFiManager *)configuration
 {
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
@@ -665,7 +665,7 @@ LABEL_15:
   [(WiFiBatteryManager *)&v14 dealloc];
 }
 
-- (void)WiFiBatteryManagerHandlePowerAdmissionResponse:(unint64_t)a3
+- (void)WiFiBatteryManagerHandlePowerAdmissionResponse:(unint64_t)response
 {
   if (!self)
   {
@@ -673,10 +673,10 @@ LABEL_15:
     return;
   }
 
-  if ([(WiFiBatteryManager *)self availableResource]== a3)
+  if ([(WiFiBatteryManager *)self availableResource]== response)
   {
-    v5 = [(WiFiBatteryManager *)self pendingRequests];
-    v6 = [v5 count];
+    pendingRequests = [(WiFiBatteryManager *)self pendingRequests];
+    v6 = [pendingRequests count];
 
     if (!v6)
     {
@@ -684,8 +684,8 @@ LABEL_15:
       return;
     }
 
-    v7 = [(WiFiBatteryManager *)self pendingRequests];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    pendingRequests2 = [(WiFiBatteryManager *)self pendingRequests];
+    v8 = [pendingRequests2 objectAtIndexedSubscript:0];
 
     if (!v8 || (v9 = [v8 bytes]) == 0)
     {
@@ -710,37 +710,37 @@ LABEL_15:
     v12 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: WiFiBatteryMgmt : Changed budget from battery module. Previous value :%lu and new value :%lu ", "-[WiFiBatteryManager WiFiBatteryManagerHandlePowerAdmissionResponse:]", -[WiFiBatteryManager availableResource](self, "availableResource"), a3}];
+      [off_100298C40 WFLog:3 message:{"%s: WiFiBatteryMgmt : Changed budget from battery module. Previous value :%lu and new value :%lu ", "-[WiFiBatteryManager WiFiBatteryManagerHandlePowerAdmissionResponse:]", -[WiFiBatteryManager availableResource](self, "availableResource"), response}];
     }
 
     objc_autoreleasePoolPop(v12);
-    [(WiFiBatteryManager *)self setAvailableResource:a3];
-    if (a3)
+    [(WiFiBatteryManager *)self setAvailableResource:response];
+    if (response)
     {
-      v13 = [(WiFiBatteryManager *)self availableResource];
+      availableResource = [(WiFiBatteryManager *)self availableResource];
     }
 
     else
     {
-      v13 = 0;
+      availableResource = 0;
     }
 
-    [(WiFiBatteryManager *)self setClaimedResource:v13];
+    [(WiFiBatteryManager *)self setClaimedResource:availableResource];
     [(WiFiBatteryManager *)self WiFiDeviceManagerHandleInterfaceAvailability:[(WiFiBatteryManager *)self availableResource]];
     [(WiFiBatteryManager *)self WiFiDeviceManagerHandlePowerBudgetChange:[(WiFiBatteryManager *)self availableResource]];
   }
 
-  v14 = [(WiFiBatteryManager *)self pendingRequests];
-  v15 = [v14 count];
+  pendingRequests3 = [(WiFiBatteryManager *)self pendingRequests];
+  v15 = [pendingRequests3 count];
 
   if (v15)
   {
-    v16 = [(WiFiBatteryManager *)self pendingRequests];
-    [v16 removeLastObject];
+    pendingRequests4 = [(WiFiBatteryManager *)self pendingRequests];
+    [pendingRequests4 removeLastObject];
   }
 
-  v17 = [(WiFiBatteryManager *)self pendingRequests];
-  v18 = [v17 count];
+  pendingRequests5 = [(WiFiBatteryManager *)self pendingRequests];
+  v18 = [pendingRequests5 count];
 
   if (v18)
   {
@@ -749,53 +749,53 @@ LABEL_15:
   }
 }
 
-- (int)requestPowerResource:(unint64_t)a3 withDetails:(void *)a4
+- (int)requestPowerResource:(unint64_t)resource withDetails:(void *)details
 {
-  v19[0] = a3;
-  v19[1] = a4;
+  v19[0] = resource;
+  v19[1] = details;
   v6 = [[NSData alloc] initWithBytes:v19 length:16];
   if (v6)
   {
-    v7 = [(WiFiBatteryManager *)self pendingRequests];
-    [v7 addObject:v6];
+    pendingRequests = [(WiFiBatteryManager *)self pendingRequests];
+    [pendingRequests addObject:v6];
 
     v8 = objc_autoreleasePoolPush();
     v9 = off_100298C40;
     if (off_100298C40)
     {
       v10 = @"Unknown";
-      if (a3 == 1)
+      if (resource == 1)
       {
         v10 = @"Hosted Network";
       }
 
-      if (!a3)
+      if (!resource)
       {
         v10 = @"AutoJoin";
       }
 
       v11 = v10;
-      v12 = [(WiFiBatteryManager *)self pendingRequests];
-      [v9 WFLog:3 message:{"WiFiBatteryMgmt : %s: Power resource request for %@ added. Pending=%lu.", "-[WiFiBatteryManager requestPowerResource:withDetails:]", v11, objc_msgSend(v12, "count")}];
+      pendingRequests2 = [(WiFiBatteryManager *)self pendingRequests];
+      [v9 WFLog:3 message:{"WiFiBatteryMgmt : %s: Power resource request for %@ added. Pending=%lu.", "-[WiFiBatteryManager requestPowerResource:withDetails:]", v11, objc_msgSend(pendingRequests2, "count")}];
     }
 
     objc_autoreleasePoolPop(v8);
-    v13 = [(WiFiBatteryManager *)self pendingRequests];
-    v14 = [v13 count];
+    pendingRequests3 = [(WiFiBatteryManager *)self pendingRequests];
+    v14 = [pendingRequests3 count];
 
     if (v14 == 1)
     {
-      v15 = [(WiFiBatteryManager *)self admissionCheck];
-      if (v15)
+      admissionCheck = [(WiFiBatteryManager *)self admissionCheck];
+      if (admissionCheck)
       {
-        v16 = [(WiFiBatteryManager *)self pendingRequests];
-        [v16 removeObjectAtIndex:0];
+        pendingRequests4 = [(WiFiBatteryManager *)self pendingRequests];
+        [pendingRequests4 removeObjectAtIndex:0];
       }
     }
 
     else
     {
-      v15 = 0;
+      admissionCheck = 0;
     }
   }
 
@@ -808,10 +808,10 @@ LABEL_15:
     }
 
     objc_autoreleasePoolPop(v17);
-    v15 = -3901;
+    admissionCheck = -3901;
   }
 
-  return v15;
+  return admissionCheck;
 }
 
 - (void)releasePowerResources
@@ -831,9 +831,9 @@ LABEL_15:
   objc_autoreleasePoolPop(v4);
   if ([(WiFiBatteryManager *)self cpmsActive])
   {
-    v5 = [(WiFiBatteryManager *)self cpmsActive];
+    cpmsActive = [(WiFiBatteryManager *)self cpmsActive];
     v6 = objc_autoreleasePoolPush();
-    if (v5)
+    if (cpmsActive)
     {
       if (off_100298C40)
       {
@@ -867,11 +867,11 @@ LABEL_15:
   }
 }
 
-- (id)getDutyCycleForPowerNumber:(unint64_t)a3
+- (id)getDutyCycleForPowerNumber:(unint64_t)number
 {
   if (self->_cpmsContPowerSupport)
   {
-    if (self->_pMax <= a3)
+    if (self->_pMax <= number)
     {
       v8 = &off_1002811D0;
     }
@@ -879,8 +879,8 @@ LABEL_15:
     else
     {
       pMin = self->_pMin;
-      v4 = a3 >= pMin;
-      v5 = a3 - pMin;
+      v4 = number >= pMin;
+      v5 = number - pMin;
       if (v4)
       {
         [NSNumber numberWithInt:((self->_ratioDutyPower * v5) + LODWORD(self->_dutyMin))];
@@ -897,22 +897,22 @@ LABEL_15:
   else
   {
     powerToDutyCycleTable100ms = self->_powerToDutyCycleTable100ms;
-    v7 = [NSNumber numberWithInt:a3];
+    v7 = [NSNumber numberWithInt:number];
     v8 = [(NSDictionary *)powerToDutyCycleTable100ms objectForKey:v7];
   }
 
   return v8;
 }
 
-- (unint64_t)getClosestAllowedLowerPowerNumber:(unint64_t)a3
+- (unint64_t)getClosestAllowedLowerPowerNumber:(unint64_t)number
 {
-  if (a3 && self->_pMin <= a3)
+  if (number && self->_pMin <= number)
   {
     v5 = 0;
     while (1)
     {
-      v6 = self->_wifiChipPowerTable.powerTable[v5];
-      if (v6 <= a3)
+      intValue = self->_wifiChipPowerTable.powerTable[v5];
+      if (intValue <= number)
       {
         break;
       }
@@ -929,155 +929,155 @@ LABEL_15:
     v7 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: WiFiBatteryMgmt : Ignoring invalid power value (%lu) and using max power instead.", "-[WiFiBatteryManager getClosestAllowedLowerPowerNumber:]", a3}];
+      [off_100298C40 WFLog:3 message:{"%s: WiFiBatteryMgmt : Ignoring invalid power value (%lu) and using max power instead.", "-[WiFiBatteryManager getClosestAllowedLowerPowerNumber:]", number}];
     }
 
     objc_autoreleasePoolPop(v7);
     v8 = [(WiFiBatteryManager *)self getPowerNumberForDutyCycle:100];
-    v6 = [v8 intValue];
+    intValue = [v8 intValue];
   }
 
-  return v6;
+  return intValue;
 }
 
-- (unint64_t)WiFiBatteryManagerHandleCpmsAllocatedBudgetReturnIndex:(id)a3
+- (unint64_t)WiFiBatteryManagerHandleCpmsAllocatedBudgetReturnIndex:(id)index
 {
-  v4 = a3;
+  indexCopy = index;
   v5 = kCPMSPowerTimeScale100ms;
-  v6 = [v4 objectForKey:kCPMSPowerTimeScale100ms];
-  v7 = [v6 intValue];
+  v6 = [indexCopy objectForKey:kCPMSPowerTimeScale100ms];
+  intValue = [v6 intValue];
 
   v8 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: WiFiBatteryMgmt : budget100ms : %lu", "-[WiFiBatteryManager WiFiBatteryManagerHandleCpmsAllocatedBudgetReturnIndex:]", v7}];
+    [off_100298C40 WFLog:3 message:{"%s: WiFiBatteryMgmt : budget100ms : %lu", "-[WiFiBatteryManager WiFiBatteryManagerHandleCpmsAllocatedBudgetReturnIndex:]", intValue}];
   }
 
   objc_autoreleasePoolPop(v8);
   v9 = kCPMSPowerTimeScale1s;
-  v10 = [v4 objectForKey:kCPMSPowerTimeScale1s];
-  v11 = [v10 intValue];
+  v10 = [indexCopy objectForKey:kCPMSPowerTimeScale1s];
+  intValue2 = [v10 intValue];
 
   v12 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: WiFiBatteryMgmt : budget1s : %lu", "-[WiFiBatteryManager WiFiBatteryManagerHandleCpmsAllocatedBudgetReturnIndex:]", v11}];
+    [off_100298C40 WFLog:3 message:{"%s: WiFiBatteryMgmt : budget1s : %lu", "-[WiFiBatteryManager WiFiBatteryManagerHandleCpmsAllocatedBudgetReturnIndex:]", intValue2}];
   }
 
   objc_autoreleasePoolPop(v12);
-  if (!v11)
+  if (!intValue2)
   {
     v13 = [(WiFiBatteryManager *)self getPowerNumberForDutyCycle:100];
-    v11 = [v13 intValue];
+    intValue2 = [v13 intValue];
   }
 
   if (self->_cpmsContPowerSupport)
   {
     pUnconstrained = self->_pUnconstrained;
-    if (pUnconstrained < v7)
+    if (pUnconstrained < intValue)
     {
       v15 = [(WiFiBatteryManager *)self getPowerNumberForDutyCycle:100];
-      v7 = [v15 intValue];
+      intValue = [v15 intValue];
 
       pUnconstrained = self->_pUnconstrained;
     }
 
     pMin = self->_pMin;
-    if (v7 <= pMin)
+    if (intValue <= pMin)
     {
-      v7 = self->_pMin;
+      intValue = self->_pMin;
     }
 
-    if (v11 > pUnconstrained)
+    if (intValue2 > pUnconstrained)
     {
       v17 = [(WiFiBatteryManager *)self getPowerNumberForDutyCycle:100];
-      v11 = [v17 intValue];
+      intValue2 = [v17 intValue];
 
       pMin = self->_pMin;
     }
 
-    if (v11 <= pMin)
+    if (intValue2 <= pMin)
     {
-      v11 = pMin;
+      intValue2 = pMin;
     }
   }
 
   else
   {
-    v18 = [(WiFiBatteryManager *)self getDutyCycleForPowerNumber:v7];
-    v19 = [v18 intValue];
+    v18 = [(WiFiBatteryManager *)self getDutyCycleForPowerNumber:intValue];
+    intValue3 = [v18 intValue];
 
-    if (!v19)
+    if (!intValue3)
     {
       v20 = objc_autoreleasePoolPush();
       if (off_100298C40)
       {
-        [off_100298C40 WFLog:4 message:{"%s: WiFiBatteryMgmt : Illegal budget100ms value : %lu", "-[WiFiBatteryManager WiFiBatteryManagerHandleCpmsAllocatedBudgetReturnIndex:]", v7}];
+        [off_100298C40 WFLog:4 message:{"%s: WiFiBatteryMgmt : Illegal budget100ms value : %lu", "-[WiFiBatteryManager WiFiBatteryManagerHandleCpmsAllocatedBudgetReturnIndex:]", intValue}];
       }
 
       objc_autoreleasePoolPop(v20);
-      v7 = [(WiFiBatteryManager *)self getClosestAllowedLowerPowerNumber:v7];
+      intValue = [(WiFiBatteryManager *)self getClosestAllowedLowerPowerNumber:intValue];
       v21 = objc_autoreleasePoolPush();
       if (off_100298C40)
       {
-        [off_100298C40 WFLog:3 message:{"%s: WiFiBatteryMgmt : Closest lower legal budget100ms value : %lu", "-[WiFiBatteryManager WiFiBatteryManagerHandleCpmsAllocatedBudgetReturnIndex:]", v7}];
+        [off_100298C40 WFLog:3 message:{"%s: WiFiBatteryMgmt : Closest lower legal budget100ms value : %lu", "-[WiFiBatteryManager WiFiBatteryManagerHandleCpmsAllocatedBudgetReturnIndex:]", intValue}];
       }
 
       objc_autoreleasePoolPop(v21);
     }
 
-    v22 = [(WiFiBatteryManager *)self getDutyCycleForPowerNumber:v11];
-    v23 = [v22 intValue];
+    v22 = [(WiFiBatteryManager *)self getDutyCycleForPowerNumber:intValue2];
+    intValue4 = [v22 intValue];
 
-    if (!v23)
+    if (!intValue4)
     {
       v24 = objc_autoreleasePoolPush();
       if (off_100298C40)
       {
-        [off_100298C40 WFLog:4 message:{"%s: WiFiBatteryMgmt : Illegal budget1s value : %lu", "-[WiFiBatteryManager WiFiBatteryManagerHandleCpmsAllocatedBudgetReturnIndex:]", v11}];
+        [off_100298C40 WFLog:4 message:{"%s: WiFiBatteryMgmt : Illegal budget1s value : %lu", "-[WiFiBatteryManager WiFiBatteryManagerHandleCpmsAllocatedBudgetReturnIndex:]", intValue2}];
       }
 
       objc_autoreleasePoolPop(v24);
-      v11 = [(WiFiBatteryManager *)self getClosestAllowedLowerPowerNumber:v11];
+      intValue2 = [(WiFiBatteryManager *)self getClosestAllowedLowerPowerNumber:intValue2];
       v25 = objc_autoreleasePoolPush();
       if (off_100298C40)
       {
-        [off_100298C40 WFLog:3 message:{"%s: WiFiBatteryMgmt : Closest lower legal budget1s value : %lu", "-[WiFiBatteryManager WiFiBatteryManagerHandleCpmsAllocatedBudgetReturnIndex:]", v11}];
+        [off_100298C40 WFLog:3 message:{"%s: WiFiBatteryMgmt : Closest lower legal budget1s value : %lu", "-[WiFiBatteryManager WiFiBatteryManagerHandleCpmsAllocatedBudgetReturnIndex:]", intValue2}];
       }
 
       objc_autoreleasePoolPop(v25);
     }
   }
 
-  if (v7 >= v11)
+  if (intValue >= intValue2)
   {
-    v26 = v11;
+    v26 = intValue2;
   }
 
   else
   {
-    v26 = v7;
+    v26 = intValue;
   }
 
-  v27 = [(WiFiBatteryManager *)self cachedBudget];
-  v28 = [NSNumber numberWithInt:v7];
-  [v27 setObject:v28 forKey:v5];
+  cachedBudget = [(WiFiBatteryManager *)self cachedBudget];
+  v28 = [NSNumber numberWithInt:intValue];
+  [cachedBudget setObject:v28 forKey:v5];
 
-  v29 = [(WiFiBatteryManager *)self cachedBudget];
-  v30 = [NSNumber numberWithInt:v11];
-  [v29 setObject:v30 forKey:v9];
+  cachedBudget2 = [(WiFiBatteryManager *)self cachedBudget];
+  v30 = [NSNumber numberWithInt:intValue2];
+  [cachedBudget2 setObject:v30 forKey:v9];
 
   v31 = [(WiFiBatteryManager *)self getDutyCycleForPowerNumber:v26];
-  v32 = [v31 intValue];
+  intValue5 = [v31 intValue];
 
-  return v32;
+  return intValue5;
 }
 
-- (BOOL)isPowerResourceAvailable:(unint64_t)a3
+- (BOOL)isPowerResourceAvailable:(unint64_t)available
 {
   if (self)
   {
-    if (a3 > 1)
+    if (available > 1)
     {
       v6 = objc_autoreleasePoolPush();
       if (off_100298C40)
@@ -1115,12 +1115,12 @@ LABEL_15:
     }
 
     v10 = @"Hosted Network";
-    if (a3 != 1)
+    if (available != 1)
     {
       v10 = @"Unknown";
     }
 
-    if (!a3)
+    if (!available)
     {
       v10 = @"AutoJoin";
     }

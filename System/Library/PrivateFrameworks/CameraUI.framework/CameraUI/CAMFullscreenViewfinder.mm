@@ -1,13 +1,13 @@
 @interface CAMFullscreenViewfinder
 - ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForBadgeTray;
-- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForBottomCenteredView:(SEL)a3 margins:(id)a4;
-- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForBottomCenteredView:(SEL)a3 margins:(id)a4 aroundFrame:(CGSize)a5;
-- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForFilterNameBadge:(SEL)a3;
-- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForInstructionLabel:(SEL)a3 belowInstructionLabelGeometry:(id)a4 elapsedTimeViewGeometry:(id *)a5;
+- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForBottomCenteredView:(SEL)view margins:(id)margins;
+- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForBottomCenteredView:(SEL)view margins:(id)margins aroundFrame:(CGSize)frame;
+- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForFilterNameBadge:(SEL)badge;
+- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForInstructionLabel:(SEL)label belowInstructionLabelGeometry:(id)geometry elapsedTimeViewGeometry:(id *)viewGeometry;
 - ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForLandscapeLightingBadge;
 - ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForMRCButton;
-- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForSmartStyleNameBadge:(SEL)a3;
-- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForTextInteractionInsertWithViewport:(SEL)a3;
+- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForSmartStyleNameBadge:(SEL)badge;
+- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForTextInteractionInsertWithViewport:(SEL)viewport;
 - (BOOL)_canLayoutLightingControls;
 - (BOOL)_isViewportAnimatorVelocityZero;
 - (BOOL)_shouldShowSpatialCaptureRecordingIndicator;
@@ -19,16 +19,16 @@
 - (BOOL)_showSmartStylePicker;
 - (BOOL)_wantsReticle;
 - (BOOL)isApertureSliderVisible;
-- (BOOL)isControlDrawerPresentedModallyWithControlType:(int64_t)a3;
+- (BOOL)isControlDrawerPresentedModallyWithControlType:(int64_t)type;
 - (BOOL)isExposureSliderVisible;
 - (BOOL)isIntensitySliderVisible;
 - (BOOL)isNightModeSliderVisible;
 - (BOOL)isReticleAnimating;
 - (BOOL)isSmartStylePickerVisible;
 - (BOOL)overCaptureGradientVisible;
-- (BOOL)requestPreviewUpdateForSemanticStyleAnimated:(BOOL)a3;
-- (BOOL)shouldAccessibilityGestureBeginForHUDManager:(id)a3;
-- (CAMFullscreenViewfinder)initWithMetalContext:(id)a3;
+- (BOOL)requestPreviewUpdateForSemanticStyleAnimated:(BOOL)animated;
+- (BOOL)shouldAccessibilityGestureBeginForHUDManager:(id)manager;
+- (CAMFullscreenViewfinder)initWithMetalContext:(id)context;
 - (CAMFullscreenViewfinderDelegate)delegate;
 - (CEKFluidBehaviorSettings)_viewportSettings;
 - (CGRect)_frameForActionInfoView;
@@ -37,13 +37,13 @@
 - (CGRect)_frameForExternalChromeTopBar;
 - (CGRect)_frameForFlipButton;
 - (CGRect)_frameForLightingControl;
-- (CGRect)_frameForPreviewOverlaysInViewport:(CGRect)a3;
+- (CGRect)_frameForPreviewOverlaysInViewport:(CGRect)viewport;
 - (CGRect)_frameForPreviewView;
-- (CGRect)_frameForSpatialRecordingIndicatorWithElapsedTimeViewGeometry:(id *)a3 orientation:(int64_t)a4;
+- (CGRect)_frameForSpatialRecordingIndicatorWithElapsedTimeViewGeometry:(id *)geometry orientation:(int64_t)orientation;
 - (CGRect)_frameForSpotlightControlPanel;
-- (CGRect)_imageAnalysisButtonAlignmentRectForCenterY:(double)a3;
-- (CGRect)_imageAnalysisButtonFrameForCenterY:(double)a3;
-- (CGRect)_imageAnalysisButtonFrameForZoomControl:(id)a3 zoomSlider:(id)a4;
+- (CGRect)_imageAnalysisButtonAlignmentRectForCenterY:(double)y;
+- (CGRect)_imageAnalysisButtonFrameForCenterY:(double)y;
+- (CGRect)_imageAnalysisButtonFrameForZoomControl:(id)control zoomSlider:(id)slider;
 - (CGRect)_viewportAnimatorRectPresentationValue;
 - (CGRect)_viewportAnimatorRectValue;
 - (CGRect)_viewportAnimatorViewportFrame;
@@ -52,32 +52,32 @@
 - (CGRect)frameForReticleViewport;
 - (CGSize)panoramaCaptureSize;
 - (double)_additionalBottomPaddingForLightingControl;
-- (double)_centerYForZoomControl:(id)a3 zoomSlider:(id)a4;
+- (double)_centerYForZoomControl:(id)control zoomSlider:(id)slider;
 - (double)_referenceYForControlsAboveShutterButton;
 - (double)_trueVideoAnimationDuration;
 - (double)_viewportAnimatorPercentComplete;
 - (double)overCaptureGradientHeight;
 - (double)previewAspectRatio;
-- (id)_visibleInstructionLabelForInstructionLabelValue:(int64_t)a3;
-- (id)descriptionOverlayViewForKey:(id)a3;
-- (id)hudItemForAccessibilityHUDManager:(id)a3;
+- (id)_visibleInstructionLabelForInstructionLabelValue:(int64_t)value;
+- (id)descriptionOverlayViewForKey:(id)key;
+- (id)hudItemForAccessibilityHUDManager:(id)manager;
 - (id)touchingRecognizersToCancel;
 - (int64_t)_viewportAspectRatioForControlsOverPreview;
 - (unint64_t)_badgeFontStyle;
 - (unint64_t)interfaceModulation;
-- (void)_animateQuietUIActive:(BOOL)a3 animations:(id)a4 completion:(id)a5;
+- (void)_animateQuietUIActive:(BOOL)active animations:(id)animations completion:(id)completion;
 - (void)_applyTextInsertContentInsets;
-- (void)_createViewIfNeededForInstructionLabel:(int64_t)a3 isPrimary:(BOOL)a4;
+- (void)_createViewIfNeededForInstructionLabel:(int64_t)label isPrimary:(BOOL)primary;
 - (void)_didFinishChangingPreviewGeometry;
-- (void)_ensureBlurFilterForContentView:(id)a3;
-- (void)_insertBackgroundSubview:(id)a3;
-- (void)_insertStylePicker:(id)a3;
-- (void)_iterateViewsForHUDManager:(id)a3 withItemFoundBlock:(id)a4;
+- (void)_ensureBlurFilterForContentView:(id)view;
+- (void)_insertBackgroundSubview:(id)subview;
+- (void)_insertStylePicker:(id)picker;
+- (void)_iterateViewsForHUDManager:(id)manager withItemFoundBlock:(id)block;
 - (void)_layoutPanoramaView;
 - (void)_layoutSemanticStyleMaskedBadges;
 - (void)_layoutSmartStyleNameBadge;
-- (void)_layoutViewportWithFrame:(CGRect)a3 previewFrame:(CGRect)a4;
-- (void)_layoutViewportWithFrame:(CGRect)a3 previewFrame:(CGRect)a4 trueVideoTransitionPercentComplete:(double)a5 smartFramingTransitionPercentComplete:(double)a6;
+- (void)_layoutViewportWithFrame:(CGRect)frame previewFrame:(CGRect)previewFrame;
+- (void)_layoutViewportWithFrame:(CGRect)frame previewFrame:(CGRect)previewFrame trueVideoTransitionPercentComplete:(double)complete smartFramingTransitionPercentComplete:(double)percentComplete;
 - (void)_layoutZoomControlForExternalChrome;
 - (void)_layoutZoomControls;
 - (void)_layoutZoomSliderForExternalChrome;
@@ -85,100 +85,100 @@
 - (void)_loadPortraitControlsIfNeeded;
 - (void)_loadSemanticStyleControlsIfNeeded;
 - (void)_loadSmartStyleControlsIfNeeded;
-- (void)_setNeedsLayoutAnimated:(BOOL)a3;
-- (void)_setSmartStyleControlsVisible:(BOOL)a3 animated:(BOOL)a4 notifyDelegate:(BOOL)a5;
-- (void)_setViewportAnimatorFrame:(CGRect)a3 withDuration:(double)a4 timingCurve:(id)a5;
-- (void)_setViewportAnimatorRectValue:(CGRect)a3;
-- (void)_transitionView:(id)a3 fromOrientation:(int64_t)a4 toOrientation:(int64_t)a5;
-- (void)_transitionView:(id)a3 isFlippingInPlace:(BOOL)a4;
-- (void)_updateContentView:(id)a3 forQuietUIActive:(BOOL)a4;
-- (void)_updateDisabledModeOverlayViewportFrame:(CGRect)a3;
+- (void)_setNeedsLayoutAnimated:(BOOL)animated;
+- (void)_setSmartStyleControlsVisible:(BOOL)visible animated:(BOOL)animated notifyDelegate:(BOOL)delegate;
+- (void)_setViewportAnimatorFrame:(CGRect)frame withDuration:(double)duration timingCurve:(id)curve;
+- (void)_setViewportAnimatorRectValue:(CGRect)value;
+- (void)_transitionView:(id)view fromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation;
+- (void)_transitionView:(id)view isFlippingInPlace:(BOOL)place;
+- (void)_updateContentView:(id)view forQuietUIActive:(BOOL)active;
+- (void)_updateDisabledModeOverlayViewportFrame:(CGRect)frame;
 - (void)_updateForLayoutCompleted;
-- (void)_updateForSemanticStyleControlsDidChangeVisibility:(BOOL)a3 animated:(BOOL)a4;
+- (void)_updateForSemanticStyleControlsDidChangeVisibility:(BOOL)visibility animated:(BOOL)animated;
 - (void)_updateGeometryForElapsedTimeAndInstructionLabels;
 - (void)_updateLightingControlClipping;
-- (void)_updatePortraitControlsHighlightAnimated:(BOOL)a3;
-- (void)_updatePreviewAlignmentGuideForViewportFrame:(CGRect)a3;
-- (void)_updatePreviewLayerForPreviewFrame:(CGRect)a3 viewportFrame:(CGRect)a4 trueVideoTransitionPercentComplete:(double)a5 smartFramingTransitionPercentComplete:(double)a6;
-- (void)_updateQuietUIAnimated:(BOOL)a3;
+- (void)_updatePortraitControlsHighlightAnimated:(BOOL)animated;
+- (void)_updatePreviewAlignmentGuideForViewportFrame:(CGRect)frame;
+- (void)_updatePreviewLayerForPreviewFrame:(CGRect)frame viewportFrame:(CGRect)viewportFrame trueVideoTransitionPercentComplete:(double)complete smartFramingTransitionPercentComplete:(double)percentComplete;
+- (void)_updateQuietUIAnimated:(BOOL)animated;
 - (void)_updateReticle;
-- (void)_updateReticleForViewportFrame:(CGRect)a3;
-- (void)_updateSemanticStylePicker:(id)a3 forViewportFrame:(CGRect)a4;
-- (void)_updateSubviewsVisibilityAnimated:(BOOL)a3;
+- (void)_updateReticleForViewportFrame:(CGRect)frame;
+- (void)_updateSemanticStylePicker:(id)picker forViewportFrame:(CGRect)frame;
+- (void)_updateSubviewsVisibilityAnimated:(BOOL)animated;
 - (void)_updateTintColors;
-- (void)_updateViewportVectorAnimatorWithInitialViewportFrame:(CGRect)a3 destinationViewportFrame:(CGRect)a4 response:(double)a5;
-- (void)_updateZoomControlForLayoutConflictsAnimated:(BOOL)a3;
-- (void)adoptMachineReadableCodeButton:(id)a3 fromOriginalParent:(id)a4 animated:(BOOL)a5;
-- (void)animator:(id)a3 didUpdateValuesForKeys:(id)a4;
-- (void)controlDrawer:(id)a3 didChangeExpanded:(BOOL)a4 forControlType:(int64_t)a5 animated:(BOOL)a6 updatePreferredDrawerControl:(BOOL)a7;
+- (void)_updateViewportVectorAnimatorWithInitialViewportFrame:(CGRect)frame destinationViewportFrame:(CGRect)viewportFrame response:(double)response;
+- (void)_updateZoomControlForLayoutConflictsAnimated:(BOOL)animated;
+- (void)adoptMachineReadableCodeButton:(id)button fromOriginalParent:(id)parent animated:(BOOL)animated;
+- (void)animator:(id)animator didUpdateValuesForKeys:(id)keys;
+- (void)controlDrawer:(id)drawer didChangeExpanded:(BOOL)expanded forControlType:(int64_t)type animated:(BOOL)animated updatePreferredDrawerControl:(BOOL)control;
 - (void)createTimerIndicatorView;
-- (void)dismissMachineReadableCodeButtonAnimated:(BOOL)a3;
-- (void)dismissModalControlDrawerIfNeededForReason:(int64_t)a3;
+- (void)dismissMachineReadableCodeButtonAnimated:(BOOL)animated;
+- (void)dismissModalControlDrawerIfNeededForReason:(int64_t)reason;
 - (void)layoutSubviews;
-- (void)machineReadableCodeButtonDidTapDismiss:(id)a3;
+- (void)machineReadableCodeButtonDidTapDismiss:(id)dismiss;
 - (void)prepareForResumingUsingCrossfade;
-- (void)presentControlDrawerModally:(BOOL)a3 forReason:(int64_t)a4 controlType:(int64_t)a5;
-- (void)reloadSemanticStyleBadgesDelayIfNeeded:(BOOL)a3;
+- (void)presentControlDrawerModally:(BOOL)modally forReason:(int64_t)reason controlType:(int64_t)type;
+- (void)reloadSemanticStyleBadgesDelayIfNeeded:(BOOL)needed;
 - (void)removeInflightBlurAnimations;
-- (void)selectedByAccessibilityHUDManager:(id)a3;
-- (void)semanticStylePickerDidChangeSelectedStyle:(id)a3;
-- (void)semanticStylePickerDidScroll:(id)a3;
-- (void)setChromeView:(id)a3;
-- (void)setControlDrawerExpanded:(BOOL)a3 forReason:(int64_t)a4 animated:(BOOL)a5;
-- (void)setControlDrawerVisible:(BOOL)a3 modeUIVisible:(BOOL)a4 animated:(BOOL)a5;
-- (void)setDescriptionOverlayView:(id)a3 forKey:(id)a4;
-- (void)setDeviceOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setDisabledModeOverlayView:(id)a3;
-- (void)setElapsedTimeViewVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setExternalChromeFilterScrubberVisible:(BOOL)a3;
-- (void)setExternalChromeSemanticStyleControlsVisible:(BOOL)a3;
-- (void)setExternalChromeShutterButtonFrame:(CGRect)a3 animated:(BOOL)a4;
-- (void)setExternalChromeSmartStyleControlsVisible:(BOOL)a3;
-- (void)setExternalChromeTopInset:(double)a3 animated:(BOOL)a4;
-- (void)setFlipAspectRatioButtonVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setFlipButtonVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setImageAnalysisButton:(id)a3;
-- (void)setImageAnalysisButtonVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setInterfaceModulation:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setLightingNameBadgesHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setMaterial:(int64_t)a3 withDuration:(double)a4;
-- (void)setOffsetZoomButtonForFlipAspectRatioButton:(BOOL)a3 animated:(BOOL)a4;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setOrientationInstructionBackgroundBlurred:(BOOL)a3 animated:(BOOL)a4;
-- (void)setOrientationInstructionVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setOverCaptureGradientHeight:(double)a3 animated:(BOOL)a4;
-- (void)setOverCaptureGradientVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setPanoramaCaptureSize:(CGSize)a3;
-- (void)setPanoramaView:(id)a3;
-- (void)setPhotoVideoModeSwitchVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setPortraitControlsAllowed:(BOOL)a3 animated:(BOOL)a4;
-- (void)setPreviewAlignmentGuideVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setPreviewView:(id)a3;
-- (void)setShallowDepthOfFieldStatus:(int64_t)a3 animated:(BOOL)a4;
-- (void)setShowingStandardControls:(BOOL)a3;
-- (void)setShutterControlVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSmartFramingFieldOfView:(int64_t)a3 useTransition:(BOOL)a4 animated:(BOOL)a5;
-- (void)setSpatialCaptureRecordingIndicatorVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSpotlightControl:(int64_t)a3 animated:(BOOL)a4;
-- (void)setStereoCaptureStatus:(int64_t)a3 animated:(BOOL)a4;
-- (void)setStereoCaptureStatus:(int64_t)a3 useHoldStillStereoLowLightInstruction:(BOOL)a4 animated:(BOOL)a5;
-- (void)setSystemOverlayVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setTextInteractionInsert:(id)a3;
-- (void)setTimerIndicatorVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setTrueVideoState:(unint64_t)a3;
-- (void)setUseHoldStillStereoLowLightInstruction:(BOOL)a3;
-- (void)setViewportAspectRatio:(int64_t)a3 animated:(BOOL)a4;
-- (void)setVisibleInstructionLabel:(int64_t)a3 animated:(BOOL)a4;
-- (void)setVisibleInstructionLabel:(int64_t)a3 visibleSecondaryInstructionLabel:(int64_t)a4 animated:(BOOL)a5;
-- (void)setVisiblePreviewSuggestionButton:(int64_t)a3 animated:(BOOL)a4;
-- (void)setWantsSmartStylePicker:(BOOL)a3 animated:(BOOL)a4;
-- (void)setZoomControlVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setZoomStyle:(unint64_t)a3;
+- (void)selectedByAccessibilityHUDManager:(id)manager;
+- (void)semanticStylePickerDidChangeSelectedStyle:(id)style;
+- (void)semanticStylePickerDidScroll:(id)scroll;
+- (void)setChromeView:(id)view;
+- (void)setControlDrawerExpanded:(BOOL)expanded forReason:(int64_t)reason animated:(BOOL)animated;
+- (void)setControlDrawerVisible:(BOOL)visible modeUIVisible:(BOOL)iVisible animated:(BOOL)animated;
+- (void)setDescriptionOverlayView:(id)view forKey:(id)key;
+- (void)setDeviceOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setDisabledModeOverlayView:(id)view;
+- (void)setElapsedTimeViewVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setExternalChromeFilterScrubberVisible:(BOOL)visible;
+- (void)setExternalChromeSemanticStyleControlsVisible:(BOOL)visible;
+- (void)setExternalChromeShutterButtonFrame:(CGRect)frame animated:(BOOL)animated;
+- (void)setExternalChromeSmartStyleControlsVisible:(BOOL)visible;
+- (void)setExternalChromeTopInset:(double)inset animated:(BOOL)animated;
+- (void)setFlipAspectRatioButtonVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setFlipButtonVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setImageAnalysisButton:(id)button;
+- (void)setImageAnalysisButtonVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setInterfaceModulation:(unint64_t)modulation animated:(BOOL)animated;
+- (void)setLightingNameBadgesHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setMaterial:(int64_t)material withDuration:(double)duration;
+- (void)setOffsetZoomButtonForFlipAspectRatioButton:(BOOL)button animated:(BOOL)animated;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setOrientationInstructionBackgroundBlurred:(BOOL)blurred animated:(BOOL)animated;
+- (void)setOrientationInstructionVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setOverCaptureGradientHeight:(double)height animated:(BOOL)animated;
+- (void)setOverCaptureGradientVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setPanoramaCaptureSize:(CGSize)size;
+- (void)setPanoramaView:(id)view;
+- (void)setPhotoVideoModeSwitchVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setPortraitControlsAllowed:(BOOL)allowed animated:(BOOL)animated;
+- (void)setPreviewAlignmentGuideVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setPreviewView:(id)view;
+- (void)setShallowDepthOfFieldStatus:(int64_t)status animated:(BOOL)animated;
+- (void)setShowingStandardControls:(BOOL)controls;
+- (void)setShutterControlVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setSmartFramingFieldOfView:(int64_t)view useTransition:(BOOL)transition animated:(BOOL)animated;
+- (void)setSpatialCaptureRecordingIndicatorVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setSpotlightControl:(int64_t)control animated:(BOOL)animated;
+- (void)setStereoCaptureStatus:(int64_t)status animated:(BOOL)animated;
+- (void)setStereoCaptureStatus:(int64_t)status useHoldStillStereoLowLightInstruction:(BOOL)instruction animated:(BOOL)animated;
+- (void)setSystemOverlayVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setTextInteractionInsert:(id)insert;
+- (void)setTimerIndicatorVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setTrueVideoState:(unint64_t)state;
+- (void)setUseHoldStillStereoLowLightInstruction:(BOOL)instruction;
+- (void)setViewportAspectRatio:(int64_t)ratio animated:(BOOL)animated;
+- (void)setVisibleInstructionLabel:(int64_t)label animated:(BOOL)animated;
+- (void)setVisibleInstructionLabel:(int64_t)label visibleSecondaryInstructionLabel:(int64_t)instructionLabel animated:(BOOL)animated;
+- (void)setVisiblePreviewSuggestionButton:(int64_t)button animated:(BOOL)animated;
+- (void)setWantsSmartStylePicker:(BOOL)picker animated:(BOOL)animated;
+- (void)setZoomControlVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setZoomStyle:(unint64_t)style;
 @end
 
 @implementation CAMFullscreenViewfinder
 
-- (CAMFullscreenViewfinder)initWithMetalContext:(id)a3
+- (CAMFullscreenViewfinder)initWithMetalContext:(id)context
 {
   v46[1] = *MEMORY[0x1E69E9840];
   v45.receiver = self;
@@ -187,14 +187,14 @@
   v4 = *(MEMORY[0x1E695F058] + 8);
   v5 = *(MEMORY[0x1E695F058] + 16);
   v6 = *(MEMORY[0x1E695F058] + 24);
-  v7 = [(CAMFullscreenViewfinder *)&v45 initWithFrame:a3, *MEMORY[0x1E695F058], v4, v5, v6];
+  v7 = [(CAMFullscreenViewfinder *)&v45 initWithFrame:context, *MEMORY[0x1E695F058], v4, v5, v6];
   v8 = v7;
   if (v7)
   {
     v7->_showingStandardControls = 1;
     v7->_canCreateElapsedTimeView = 1;
-    v9 = [MEMORY[0x1E69DC888] blackColor];
-    [(CAMFullscreenViewfinder *)v8 setBackgroundColor:v9];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(CAMFullscreenViewfinder *)v8 setBackgroundColor:blackColor];
 
     v8->_controlDrawerVisible = 1;
     v8->_modeUIVisible = 1;
@@ -203,8 +203,8 @@
     v8->__previewContainerView = v10;
 
     v12 = v8->__previewContainerView;
-    v13 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v12 setBackgroundColor:v13];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)v12 setBackgroundColor:blackColor2];
 
     v14 = objc_alloc_init(CAMBadgeTray);
     badgeTray = v8->_badgeTray;
@@ -297,18 +297,18 @@
 
 - (BOOL)_wantsReticle
 {
-  v3 = [(CAMFullscreenViewfinder *)self _overCapturePreviewLayer];
-  if (v3)
+  _overCapturePreviewLayer = [(CAMFullscreenViewfinder *)self _overCapturePreviewLayer];
+  if (_overCapturePreviewLayer)
   {
-    v4 = [(CAMFullscreenViewfinder *)self isShowingStandardControls];
+    isShowingStandardControls = [(CAMFullscreenViewfinder *)self isShowingStandardControls];
   }
 
   else
   {
-    v4 = 0;
+    isShowingStandardControls = 0;
   }
 
-  return v4;
+  return isShowingStandardControls;
 }
 
 - (void)_updateReticle
@@ -338,13 +338,13 @@
   }
 }
 
-- (void)_insertBackgroundSubview:(id)a3
+- (void)_insertBackgroundSubview:(id)subview
 {
-  if (a3)
+  if (subview)
   {
-    v4 = a3;
-    v5 = [(CAMFullscreenViewfinder *)self _previewContainerView];
-    [(CAMFullscreenViewfinder *)self insertSubview:v4 aboveSubview:v5];
+    subviewCopy = subview;
+    _previewContainerView = [(CAMFullscreenViewfinder *)self _previewContainerView];
+    [(CAMFullscreenViewfinder *)self insertSubview:subviewCopy aboveSubview:_previewContainerView];
   }
 }
 
@@ -356,29 +356,29 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CAMFullscreenViewfinder *)self elapsedTimeView];
-  if (v11)
+  elapsedTimeView = [(CAMFullscreenViewfinder *)self elapsedTimeView];
+  if (elapsedTimeView)
   {
-    v12 = [(CAMFullscreenViewfinder *)self isElapsedTimeViewVisible];
+    isElapsedTimeViewVisible = [(CAMFullscreenViewfinder *)self isElapsedTimeViewVisible];
   }
 
   else
   {
-    v12 = 0;
+    isElapsedTimeViewVisible = 0;
   }
 
-  v13 = [(CAMFullscreenViewfinder *)self _layout];
+  _layout = [(CAMFullscreenViewfinder *)self _layout];
   v75 = 0u;
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v14 = [(CAMFullscreenViewfinder *)self orientation];
-  v15 = [(CAMFullscreenViewfinder *)self isSystemOverlayVisible];
-  if (v13)
+  orientation = [(CAMFullscreenViewfinder *)self orientation];
+  isSystemOverlayVisible = [(CAMFullscreenViewfinder *)self isSystemOverlayVisible];
+  if (_layout)
   {
-    [v13 geometryForElapsedTimeView:v11 viewportFrame:v14 orientation:v15 systemOverlayVisible:{v4, v6, v8, v10}];
+    [_layout geometryForElapsedTimeView:elapsedTimeView viewportFrame:orientation orientation:isSystemOverlayVisible systemOverlayVisible:{v4, v6, v8, v10}];
   }
 
   else
@@ -391,7 +391,7 @@
     v72 = 0u;
   }
 
-  if (v12)
+  if (isElapsedTimeViewVisible)
   {
     v67 = v73;
     v68 = v74;
@@ -399,7 +399,7 @@
     v70 = v76;
     v65 = v71;
     v66 = v72;
-    CAMViewSetGeometry(v11, &v65);
+    CAMViewSetGeometry(elapsedTimeView, &v65);
     v67 = v73;
     v68 = v74;
     v69 = v75;
@@ -424,8 +424,8 @@
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v18 = [(CAMFullscreenViewfinder *)self _createdPrimaryInstructionLabels];
-  v19 = [v18 countByEnumeratingWithState:&v61 objects:v78 count:16];
+  _createdPrimaryInstructionLabels = [(CAMFullscreenViewfinder *)self _createdPrimaryInstructionLabels];
+  v19 = [_createdPrimaryInstructionLabels countByEnumeratingWithState:&v61 objects:v78 count:16];
   if (v19)
   {
     v20 = v19;
@@ -442,7 +442,7 @@
       {
         if (*v62 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(_createdPrimaryInstructionLabels);
         }
 
         v23 = *(*(&v61 + 1) + 8 * i);
@@ -474,7 +474,7 @@
         CAMApplyAnimationSensitiveGeometryToView(&v49, v23);
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v61 objects:v78 count:16];
+      v20 = [_createdPrimaryInstructionLabels countByEnumeratingWithState:&v61 objects:v78 count:16];
     }
 
     while (v20);
@@ -507,8 +507,8 @@
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v26 = [(CAMFullscreenViewfinder *)self _createdSecondaryInstructionLabels];
-  v27 = [v26 countByEnumeratingWithState:&v39 objects:v77 count:16];
+  _createdSecondaryInstructionLabels = [(CAMFullscreenViewfinder *)self _createdSecondaryInstructionLabels];
+  v27 = [_createdSecondaryInstructionLabels countByEnumeratingWithState:&v39 objects:v77 count:16];
   if (v27)
   {
     v28 = v27;
@@ -519,7 +519,7 @@
       {
         if (*v40 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(_createdSecondaryInstructionLabels);
         }
 
         v31 = *(*(&v39 + 1) + 8 * j);
@@ -551,26 +551,26 @@
         CAMApplyAnimationSensitiveGeometryToView(&v43, v31);
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v39 objects:v77 count:16];
+      v28 = [_createdSecondaryInstructionLabels countByEnumeratingWithState:&v39 objects:v77 count:16];
     }
 
     while (v28);
   }
 }
 
-- (void)_layoutViewportWithFrame:(CGRect)a3 previewFrame:(CGRect)a4
+- (void)_layoutViewportWithFrame:(CGRect)frame previewFrame:(CGRect)previewFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  v13 = [(CAMFullscreenViewfinder *)self trueVideoState];
+  height = previewFrame.size.height;
+  width = previewFrame.size.width;
+  y = previewFrame.origin.y;
+  x = previewFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
+  trueVideoState = [(CAMFullscreenViewfinder *)self trueVideoState];
   v14 = 0.0;
-  if (v13 == 2)
+  if (trueVideoState == 2)
   {
     v14 = 1.0;
   }
@@ -578,41 +578,41 @@
   [(CAMFullscreenViewfinder *)self _layoutViewportWithFrame:v11 previewFrame:v10 trueVideoTransitionPercentComplete:v9 smartFramingTransitionPercentComplete:v8, x, y, width, height, *&v14, 0];
 }
 
-- (void)_layoutViewportWithFrame:(CGRect)a3 previewFrame:(CGRect)a4 trueVideoTransitionPercentComplete:(double)a5 smartFramingTransitionPercentComplete:(double)a6
+- (void)_layoutViewportWithFrame:(CGRect)frame previewFrame:(CGRect)previewFrame trueVideoTransitionPercentComplete:(double)complete smartFramingTransitionPercentComplete:(double)percentComplete
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  width = previewFrame.size.width;
+  height = previewFrame.size.height;
+  y = previewFrame.origin.y;
+  x = previewFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
   [(CAMFullscreenViewfinder *)self _updateReticleForViewportFrame:?];
-  [(CAMFullscreenViewfinder *)self _updatePreviewLayerForPreviewFrame:x viewportFrame:y trueVideoTransitionPercentComplete:width smartFramingTransitionPercentComplete:height, v11, v10, v9, v8, *&a5, *&a6];
+  [(CAMFullscreenViewfinder *)self _updatePreviewLayerForPreviewFrame:x viewportFrame:y trueVideoTransitionPercentComplete:width smartFramingTransitionPercentComplete:height, v11, v10, v9, v8, *&complete, *&percentComplete];
   [(CAMFullscreenViewfinder *)self _updatePreviewAlignmentGuideForViewportFrame:v11, v10, v9, v8];
-  v13 = [(CAMFullscreenViewfinder *)self semanticStylePicker];
-  [(CAMFullscreenViewfinder *)self _updateSemanticStylePicker:v13 forViewportFrame:v11, v10, v9, v8];
+  semanticStylePicker = [(CAMFullscreenViewfinder *)self semanticStylePicker];
+  [(CAMFullscreenViewfinder *)self _updateSemanticStylePicker:semanticStylePicker forViewportFrame:v11, v10, v9, v8];
 
-  v14 = [(CAMFullscreenViewfinder *)self smartStylePicker];
-  [(CAMFullscreenViewfinder *)self _updateSemanticStylePicker:v14 forViewportFrame:v11, v10, v9, v8];
+  smartStylePicker = [(CAMFullscreenViewfinder *)self smartStylePicker];
+  [(CAMFullscreenViewfinder *)self _updateSemanticStylePicker:smartStylePicker forViewportFrame:v11, v10, v9, v8];
 
   [(CAMFullscreenViewfinder *)self _updateDisabledModeOverlayViewportFrame:v11, v10, v9, v8];
-  v15 = [(CAMFullscreenViewfinder *)self _overCapturePreviewLayer];
-  if (!v15)
+  _overCapturePreviewLayer = [(CAMFullscreenViewfinder *)self _overCapturePreviewLayer];
+  if (!_overCapturePreviewLayer)
   {
-    v16 = [(CAMFullscreenViewfinder *)self previewView];
-    [v16 bounds];
+    previewView = [(CAMFullscreenViewfinder *)self previewView];
+    [previewView bounds];
     v11 = v17;
     v10 = v18;
     v9 = v19;
     v8 = v20;
   }
 
-  v21 = [(CAMFullscreenViewfinder *)self previewView];
-  [v21 setViewportFrame:{v11, v10, v9, v8}];
+  previewView2 = [(CAMFullscreenViewfinder *)self previewView];
+  [previewView2 setViewportFrame:{v11, v10, v9, v8}];
 
-  v22 = [(CAMFullscreenViewfinder *)self _descriptionOverlayViewByKey];
+  _descriptionOverlayViewByKey = [(CAMFullscreenViewfinder *)self _descriptionOverlayViewByKey];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __138__CAMFullscreenViewfinder__layoutViewportWithFrame_previewFrame_trueVideoTransitionPercentComplete_smartFramingTransitionPercentComplete___block_invoke;
@@ -621,7 +621,7 @@
   *&v25[5] = v10;
   *&v25[6] = v9;
   *&v25[7] = v8;
-  [v22 enumerateKeysAndObjectsUsingBlock:v25];
+  [_descriptionOverlayViewByKey enumerateKeysAndObjectsUsingBlock:v25];
 }
 
 - (void)layoutSubviews
@@ -631,9 +631,9 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CAMFullscreenViewfinder *)self shutterControl];
-  v12 = [(CAMFullscreenViewfinder *)self _layout];
-  if (!v12)
+  shutterControl = [(CAMFullscreenViewfinder *)self shutterControl];
+  _layout = [(CAMFullscreenViewfinder *)self _layout];
+  if (!_layout)
   {
     v230.origin.x = v4;
     v230.origin.y = v6;
@@ -641,28 +641,28 @@
     v230.size.height = v10;
     if (CGRectIsEmpty(v230))
     {
-      v12 = 0;
+      _layout = 0;
     }
 
     else
     {
       v13 = [CAMFullscreenViewfinderLayout alloc];
-      [v11 intrinsicContentSize];
-      v12 = [(CAMFullscreenViewfinderLayout *)v13 initWithReferenceBounds:v4 shutterIntrinsicSize:v6, v8, v10, v14, v15];
-      objc_storeStrong(&self->__layout, v12);
+      [shutterControl intrinsicContentSize];
+      _layout = [(CAMFullscreenViewfinderLayout *)v13 initWithReferenceBounds:v4 shutterIntrinsicSize:v6, v8, v10, v14, v15];
+      objc_storeStrong(&self->__layout, _layout);
     }
   }
 
-  [(CAMFullscreenViewfinderLayout *)v12 setReferenceBounds:v4, v6, v8, v10];
-  [v11 intrinsicContentSize];
-  [(CAMFullscreenViewfinderLayout *)v12 setShutterIntrinsicSize:?];
-  v16 = [(CAMFullscreenViewfinder *)self window];
-  v17 = [v16 screen];
-  [v17 scale];
-  [(CAMFullscreenViewfinderLayout *)v12 setScreenScale:?];
+  [(CAMFullscreenViewfinderLayout *)_layout setReferenceBounds:v4, v6, v8, v10];
+  [shutterControl intrinsicContentSize];
+  [(CAMFullscreenViewfinderLayout *)_layout setShutterIntrinsicSize:?];
+  window = [(CAMFullscreenViewfinder *)self window];
+  screen = [window screen];
+  [screen scale];
+  [(CAMFullscreenViewfinderLayout *)_layout setScreenScale:?];
 
-  v18 = [(CAMFullscreenViewfinder *)self chromeView];
-  [v18 setFrame:{v4, v6, v8, v10}];
+  chromeView = [(CAMFullscreenViewfinder *)self chromeView];
+  [chromeView setFrame:{v4, v6, v8, v10}];
 
   [(CAMFullscreenViewfinder *)self _frameForPreviewView];
   v207 = v20;
@@ -675,8 +675,8 @@
   v214 = v27;
   v211 = v28;
   [(CAMFullscreenViewfinder *)self _setViewportAnimatorFrame:?];
-  v29 = [(CAMFullscreenViewfinder *)self _previewContainerView];
-  [v29 setFrame:{v4, v6, v8, v10}];
+  _previewContainerView = [(CAMFullscreenViewfinder *)self _previewContainerView];
+  [_previewContainerView setFrame:{v4, v6, v8, v10}];
 
   [(CAMFullscreenViewfinder *)self _frameForContentClippingContainer];
   v215 = v6;
@@ -685,88 +685,88 @@
   v33 = v32;
   v35 = v34;
   v37 = v36;
-  v38 = [(CAMFullscreenViewfinder *)self _contentClippingContainer];
-  [v38 setFrame:{v31, v33, v35, v37}];
+  _contentClippingContainer = [(CAMFullscreenViewfinder *)self _contentClippingContainer];
+  [_contentClippingContainer setFrame:{v31, v33, v35, v37}];
 
-  v39 = [(CAMFullscreenViewfinder *)self _modulatingContentView];
-  v40 = [v39 superview];
-  [(CAMFullscreenViewfinder *)self convertRect:v40 toView:v216, v215, v8, v10];
+  _modulatingContentView = [(CAMFullscreenViewfinder *)self _modulatingContentView];
+  superview = [_modulatingContentView superview];
+  [(CAMFullscreenViewfinder *)self convertRect:superview toView:v216, v215, v8, v10];
   v42 = v41;
   v44 = v43;
   v46 = v45;
   v48 = v47;
-  v49 = [(CAMFullscreenViewfinder *)self _modulatingContentView];
-  [v49 setFrame:{v42, v44, v46, v48}];
+  _modulatingContentView2 = [(CAMFullscreenViewfinder *)self _modulatingContentView];
+  [_modulatingContentView2 setFrame:{v42, v44, v46, v48}];
 
-  v50 = [(CAMFullscreenViewfinder *)self _contentView];
-  [v50 setBounds:{v216, v215, v8, v10}];
+  _contentView = [(CAMFullscreenViewfinder *)self _contentView];
+  [_contentView setBounds:{v216, v215, v8, v10}];
 
   UIRectGetCenter();
   v52 = v51;
   v54 = v53;
-  v55 = [(CAMFullscreenViewfinder *)self _contentView];
-  [v55 setCenter:{v52, v54}];
+  _contentView2 = [(CAMFullscreenViewfinder *)self _contentView];
+  [_contentView2 setCenter:{v52, v54}];
 
-  v56 = [(CAMFullscreenViewfinder *)self _contentViewBelowShutter];
-  [v56 setBounds:{v216, v215, v8, v10}];
+  _contentViewBelowShutter = [(CAMFullscreenViewfinder *)self _contentViewBelowShutter];
+  [_contentViewBelowShutter setBounds:{v216, v215, v8, v10}];
 
   UIRectGetCenter();
   v58 = v57;
   v60 = v59;
-  v61 = [(CAMFullscreenViewfinder *)self _contentViewBelowShutter];
-  [v61 setCenter:{v58, v60}];
+  _contentViewBelowShutter2 = [(CAMFullscreenViewfinder *)self _contentViewBelowShutter];
+  [_contentViewBelowShutter2 setCenter:{v58, v60}];
 
-  v62 = [(CAMFullscreenViewfinder *)self _chromeContentView];
-  [v62 setBounds:{v216, v215, v8, v10}];
+  _chromeContentView = [(CAMFullscreenViewfinder *)self _chromeContentView];
+  [_chromeContentView setBounds:{v216, v215, v8, v10}];
 
   UIRectGetCenter();
   v64 = v63;
   v66 = v65;
-  v67 = [(CAMFullscreenViewfinder *)self _chromeContentView];
-  [v67 setCenter:{v64, v66}];
+  _chromeContentView2 = [(CAMFullscreenViewfinder *)self _chromeContentView];
+  [_chromeContentView2 setCenter:{v64, v66}];
 
   UIRectGetCenter();
   v69 = v68;
   v71 = v70;
-  v72 = [(CAMFullscreenViewfinder *)self previewView];
-  [v72 setCenter:{v69, v71}];
+  previewView = [(CAMFullscreenViewfinder *)self previewView];
+  [previewView setCenter:{v69, v71}];
 
   v73 = *MEMORY[0x1E695EFF8];
   v74 = *(MEMORY[0x1E695EFF8] + 8);
-  v75 = [(CAMFullscreenViewfinder *)self previewView];
+  previewView2 = [(CAMFullscreenViewfinder *)self previewView];
   v205 = v22;
-  [v75 setBounds:{v73, v74, v22, v24}];
+  [previewView2 setBounds:{v73, v74, v22, v24}];
 
   [(CAMFullscreenViewfinder *)self _frameForFlipButton];
   v77 = v76;
   v79 = v78;
   v81 = v80;
   v83 = v82;
-  v84 = [(CAMFullscreenViewfinder *)self flipButton];
-  [v84 setFrame:{v77, v79, v81, v83}];
+  flipButton = [(CAMFullscreenViewfinder *)self flipButton];
+  [flipButton setFrame:{v77, v79, v81, v83}];
 
-  v85 = [(CAMFullscreenViewfinder *)self badgeTray];
+  badgeTray = [(CAMFullscreenViewfinder *)self badgeTray];
   [(CAMFullscreenViewfinder *)self _geometryForBadgeTray];
-  CAMViewSetGeometry(v85, &v224);
+  CAMViewSetGeometry(badgeTray, &v224);
 
-  v86 = [(CAMFullscreenViewfinder *)self _reticleView];
-  [v86 setFrame:{v216, v215, v8, v10}];
+  _reticleView = [(CAMFullscreenViewfinder *)self _reticleView];
+  [_reticleView setFrame:{v216, v215, v8, v10}];
 
-  v87 = [(CAMFullscreenViewfinder *)self timerIndicator];
+  timerIndicator = [(CAMFullscreenViewfinder *)self timerIndicator];
   v88 = v211;
   CAMViewGeometryForOrientedFrame(1, &v224, v212, v214, v213, v211);
-  CAMViewSetGeometry(v87, &v224);
+  CAMViewSetGeometry(timerIndicator, &v224);
 
   [(CAMFullscreenViewfinder *)self externalChromeTopInset];
   if (v214 <= v89)
   {
-    v90 = [(CAMFullscreenViewfinder *)self timerIndicator];
+    timerIndicator2 = [(CAMFullscreenViewfinder *)self timerIndicator];
     UIRectInsetEdges();
     CAMViewGeometryForOrientedFrame(1, &v224, v91, v92, v93, v94);
-    CAMViewSetGeometry(v90, &v224);
+    CAMViewSetGeometry(timerIndicator2, &v224);
   }
 
-  v95 = [(CAMFullscreenViewfinder *)self _descriptionOverlayViewByKey];
+  _descriptionOverlayViewByKey = [(CAMFullscreenViewfinder *)self _descriptionOverlayViewByKey];
   v223[0] = MEMORY[0x1E69E9820];
   v223[1] = 3221225472;
   v223[2] = __41__CAMFullscreenViewfinder_layoutSubviews__block_invoke;
@@ -775,14 +775,14 @@
   *&v223[5] = v215;
   *&v223[6] = v8;
   *&v223[7] = v10;
-  [v95 enumerateKeysAndObjectsUsingBlock:v223];
+  [_descriptionOverlayViewByKey enumerateKeysAndObjectsUsingBlock:v223];
 
-  v96 = [(CAMFullscreenViewfinder *)self flipButton];
-  [v96 center];
-  [v11 setLockButtonCenterRightInset:v8 - v97];
+  flipButton2 = [(CAMFullscreenViewfinder *)self flipButton];
+  [flipButton2 center];
+  [shutterControl setLockButtonCenterRightInset:v8 - v97];
 
-  v98 = [(CAMFullscreenViewfinder *)self _layout];
-  [v98 alignmentRectForBottomRightControlOfSize:{42.0, 42.0}];
+  _layout2 = [(CAMFullscreenViewfinder *)self _layout];
+  [_layout2 alignmentRectForBottomRightControlOfSize:{42.0, 42.0}];
   v100 = v99;
   v102 = v101;
   v104 = v103;
@@ -793,46 +793,46 @@
   v231.size.width = v104;
   v231.size.height = v106;
   v107 = v212;
-  [v11 setPauseResumeButtonCenterLeftInset:v8 - CGRectGetMidX(v231)];
-  [(CAMFullscreenViewfinderLayout *)v12 frameForShutterControl:v11];
-  [v11 setFrame:?];
+  [shutterControl setPauseResumeButtonCenterLeftInset:v8 - CGRectGetMidX(v231)];
+  [(CAMFullscreenViewfinderLayout *)_layout frameForShutterControl:shutterControl];
+  [shutterControl setFrame:?];
   if (![(CAMFullscreenViewfinder *)self isReticleAnimating])
   {
     [(CAMFullscreenViewfinder *)self _layoutViewportWithFrame:v212 previewFrame:v214, v213, v211, v209, v207, v205, v24];
   }
 
-  v108 = [(CAMFullscreenViewfinder *)self previewView];
+  previewView3 = [(CAMFullscreenViewfinder *)self previewView];
   [(CAMFullscreenViewfinder *)self _frameForPreviewOverlaysInViewport:v212, v214, v213, v211];
-  [v108 convertRect:self fromView:?];
+  [previewView3 convertRect:self fromView:?];
   v110 = v109;
   v112 = v111;
   v114 = v113;
   v116 = v115;
-  v117 = [(CAMFullscreenViewfinder *)self previewView];
-  [v117 setOverlayFrame:{v110, v112, v114, v116}];
+  previewView4 = [(CAMFullscreenViewfinder *)self previewView];
+  [previewView4 setOverlayFrame:{v110, v112, v114, v116}];
 
   [(CAMFullscreenViewfinder *)self _layoutZoomControls];
-  v118 = [(CAMFullscreenViewfinder *)self imageAnalysisButton];
-  v119 = [(CAMFullscreenViewfinder *)self zoomSlider];
-  v120 = [(CAMFullscreenViewfinder *)self zoomControl];
-  v121 = [(CAMFullscreenViewfinder *)self traitCollection];
-  v122 = [v121 preferredContentSizeCategory];
-  [CAMZoomButton circleDiameterForContentSize:v122];
+  imageAnalysisButton = [(CAMFullscreenViewfinder *)self imageAnalysisButton];
+  zoomSlider = [(CAMFullscreenViewfinder *)self zoomSlider];
+  zoomControl = [(CAMFullscreenViewfinder *)self zoomControl];
+  traitCollection = [(CAMFullscreenViewfinder *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [CAMZoomButton circleDiameterForContentSize:preferredContentSizeCategory];
   v124 = v123;
 
-  [v118 setBackgroundDiameter:v124];
+  [imageAnalysisButton setBackgroundDiameter:v124];
   if (objc_opt_respondsToSelector())
   {
-    [v118 setGlyphScale:0.8];
+    [imageAnalysisButton setGlyphScale:0.8];
   }
 
-  [(CAMFullscreenViewfinder *)self _imageAnalysisButtonFrameForZoomControl:v120 zoomSlider:v119];
-  [v118 setFrame:?];
-  v125 = [(CAMFullscreenViewfinder *)self flipAspectRatioButton];
+  [(CAMFullscreenViewfinder *)self _imageAnalysisButtonFrameForZoomControl:zoomControl zoomSlider:zoomSlider];
+  [imageAnalysisButton setFrame:?];
+  flipAspectRatioButton = [(CAMFullscreenViewfinder *)self flipAspectRatioButton];
 
-  if (v125)
+  if (flipAspectRatioButton)
   {
-    [(CAMFullscreenViewfinder *)self _centerYForZoomControl:v120 zoomSlider:v119];
+    [(CAMFullscreenViewfinder *)self _centerYForZoomControl:zoomControl zoomSlider:zoomSlider];
     [(CAMFullscreenViewfinder *)self _imageAnalysisButtonAlignmentRectForCenterY:?];
     v233 = CGRectInset(v232, -3.0, -3.0);
     y = v233.origin.y;
@@ -845,46 +845,46 @@
       v130 = v124 * 0.5 + 3.0 + v130;
     }
 
-    v131 = [(CAMFullscreenViewfinder *)self flipAspectRatioButton];
-    [v131 setFrame:{v130, y, width, height}];
+    flipAspectRatioButton2 = [(CAMFullscreenViewfinder *)self flipAspectRatioButton];
+    [flipAspectRatioButton2 setFrame:{v130, y, width, height}];
 
     v88 = v211;
     v107 = v212;
   }
 
-  v206 = v120;
-  v208 = v119;
-  v210 = v11;
-  v132 = [(CAMFullscreenViewfinder *)self _textInteractionBackground];
-  [v132 setFrame:{v216, v215, v8, v10}];
+  v206 = zoomControl;
+  v208 = zoomSlider;
+  v210 = shutterControl;
+  _textInteractionBackground = [(CAMFullscreenViewfinder *)self _textInteractionBackground];
+  [_textInteractionBackground setFrame:{v216, v215, v8, v10}];
 
-  v133 = [(CAMFullscreenViewfinder *)self textInteractionInsert];
+  textInteractionInsert = [(CAMFullscreenViewfinder *)self textInteractionInsert];
   [(CAMFullscreenViewfinder *)self _geometryForTextInteractionInsertWithViewport:v107, v214, v213, v88];
-  CAMViewSetGeometry(v133, &v224);
-  [v118 backgroundDiameter];
-  [v133 setPreferredQuickActionButtonHeight:?];
-  v134 = [v133 actionInfoView];
-  if (v134)
+  CAMViewSetGeometry(textInteractionInsert, &v224);
+  [imageAnalysisButton backgroundDiameter];
+  [textInteractionInsert setPreferredQuickActionButtonHeight:?];
+  actionInfoView = [textInteractionInsert actionInfoView];
+  if (actionInfoView)
   {
     [(CAMFullscreenViewfinder *)self _frameForActionInfoView];
-    [v134 setFrame:?];
+    [actionInfoView setFrame:?];
   }
 
   [(CAMFullscreenViewfinder *)self _applyTextInsertContentInsets];
-  v135 = [(CAMFullscreenViewfinder *)self machineReadableCodeButton];
-  if (v135)
+  machineReadableCodeButton = [(CAMFullscreenViewfinder *)self machineReadableCodeButton];
+  if (machineReadableCodeButton)
   {
     UIEdgeInsetsMakeWithEdges();
-    [v135 setHitTestInsets:?];
+    [machineReadableCodeButton setHitTestInsets:?];
     [(CAMFullscreenViewfinder *)self _geometryForMRCButton];
-    CAMViewSetGeometry(v135, &v224);
+    CAMViewSetGeometry(machineReadableCodeButton, &v224);
   }
 
-  v136 = [(CAMFullscreenViewfinder *)self controlDrawer];
-  if (v136)
+  controlDrawer = [(CAMFullscreenViewfinder *)self controlDrawer];
+  if (controlDrawer)
   {
     [(CAMFullscreenViewfinder *)self _frameForControlDrawer];
-    [v136 setFrame:?];
+    [controlDrawer setFrame:?];
   }
 
   [(CAMFullscreenViewfinder *)self _updateGeometryForElapsedTimeAndInstructionLabels];
@@ -893,8 +893,8 @@
   v140 = v139;
   v142 = v141;
   v144 = v143;
-  v145 = [(CAMFullscreenViewfinder *)self spotlightControlPanel];
-  [v145 setFrame:{v138, v140, v142, v144}];
+  spotlightControlPanel = [(CAMFullscreenViewfinder *)self spotlightControlPanel];
+  [spotlightControlPanel setFrame:{v138, v140, v142, v144}];
 
   if ([(CAMFullscreenViewfinder *)self _canLayoutLightingControls])
   {
@@ -907,15 +907,15 @@
     v155 = v154;
     [(CAMFullscreenViewfinder *)self _additionalBottomPaddingForLightingControl];
     v157 = v156;
-    v158 = [(CAMFullscreenViewfinder *)self lightingControl];
-    [v158 setAdditionalBottomPadding:v157];
+    lightingControl = [(CAMFullscreenViewfinder *)self lightingControl];
+    [lightingControl setAdditionalBottomPadding:v157];
 
-    v159 = [(CAMFullscreenViewfinder *)self lightingControl];
-    [v159 setFrame:{v147, v149, v152, v155}];
+    lightingControl2 = [(CAMFullscreenViewfinder *)self lightingControl];
+    [lightingControl2 setFrame:{v147, v149, v152, v155}];
 
-    v160 = [(CAMFullscreenViewfinder *)self zoomControl];
-    v161 = [(CAMFullscreenViewfinder *)self zoomSlider];
-    [(CAMFullscreenViewfinder *)self _centerYForZoomControl:v160 zoomSlider:v161];
+    zoomControl2 = [(CAMFullscreenViewfinder *)self zoomControl];
+    zoomSlider2 = [(CAMFullscreenViewfinder *)self zoomSlider];
+    [(CAMFullscreenViewfinder *)self _centerYForZoomControl:zoomControl2 zoomSlider:zoomSlider2];
     v163 = v162;
 
     v234.origin.x = v147;
@@ -925,8 +925,8 @@
     v88 = v153;
     v107 = v150;
     v164 = CGRectGetMaxY(v234) - v163;
-    v165 = [(CAMFullscreenViewfinder *)self lightingControl];
-    [v165 setCollapsedSelectionCenterPointBottomInset:v164];
+    lightingControl3 = [(CAMFullscreenViewfinder *)self lightingControl];
+    [lightingControl3 setCollapsedSelectionCenterPointBottomInset:v164];
 
     v228 = 0u;
     v229 = 0u;
@@ -935,60 +935,60 @@
     v224 = 0u;
     v225 = 0u;
     [(CAMFullscreenViewfinder *)self _geometryForLandscapeLightingBadge];
-    v166 = [(CAMFullscreenViewfinder *)self lightingNameBadge];
+    lightingNameBadge = [(CAMFullscreenViewfinder *)self lightingNameBadge];
     v219 = v226;
     v220 = v227;
     v221 = v228;
     v222 = v229;
     v217 = v224;
     v218 = v225;
-    CAMApplyAnimationSensitiveGeometryToView(&v217, v166);
+    CAMApplyAnimationSensitiveGeometryToView(&v217, lightingNameBadge);
   }
 
-  v167 = [(CAMFullscreenViewfinder *)self filterNameBadge];
+  filterNameBadge = [(CAMFullscreenViewfinder *)self filterNameBadge];
 
-  if (v167)
+  if (filterNameBadge)
   {
-    v168 = [(CAMFullscreenViewfinder *)self filterNameBadge];
+    filterNameBadge2 = [(CAMFullscreenViewfinder *)self filterNameBadge];
     v228 = 0u;
     v229 = 0u;
     v226 = 0u;
     v227 = 0u;
     v224 = 0u;
     v225 = 0u;
-    [(CAMFullscreenViewfinder *)self _geometryForFilterNameBadge:v168];
+    [(CAMFullscreenViewfinder *)self _geometryForFilterNameBadge:filterNameBadge2];
     v219 = v226;
     v220 = v227;
     v221 = v228;
     v222 = v229;
     v217 = v224;
     v218 = v225;
-    CAMApplyAnimationSensitiveGeometryToView(&v217, v168);
+    CAMApplyAnimationSensitiveGeometryToView(&v217, filterNameBadge2);
   }
 
   [(CAMFullscreenViewfinder *)self _layoutSemanticStyleMaskedBadges];
-  v169 = [(CAMFullscreenViewfinder *)self panoramaView];
+  panoramaView = [(CAMFullscreenViewfinder *)self panoramaView];
 
-  if (v169)
+  if (panoramaView)
   {
     [(CAMFullscreenViewfinder *)self _layoutPanoramaView];
   }
 
-  v170 = [(CAMFullscreenViewfinder *)self _orientationInstructionView];
+  _orientationInstructionView = [(CAMFullscreenViewfinder *)self _orientationInstructionView];
 
-  if (v170)
+  if (_orientationInstructionView)
   {
-    v171 = [(CAMFullscreenViewfinder *)self _orientationInstructionView];
-    [v171 setFrame:{v107, v214, v213, v88}];
+    _orientationInstructionView2 = [(CAMFullscreenViewfinder *)self _orientationInstructionView];
+    [_orientationInstructionView2 setFrame:{v107, v214, v213, v88}];
   }
 
-  v172 = [(CAMFullscreenViewfinder *)self spatialCaptureRecordingIndicator];
-  if (v172)
+  spatialCaptureRecordingIndicator = [(CAMFullscreenViewfinder *)self spatialCaptureRecordingIndicator];
+  if (spatialCaptureRecordingIndicator)
   {
-    v173 = v172;
-    v174 = [(CAMFullscreenViewfinder *)self isSpatialCaptureRecordingIndicatorVisible];
+    v173 = spatialCaptureRecordingIndicator;
+    isSpatialCaptureRecordingIndicatorVisible = [(CAMFullscreenViewfinder *)self isSpatialCaptureRecordingIndicatorVisible];
 
-    if (v174)
+    if (isSpatialCaptureRecordingIndicatorVisible)
     {
       v228 = 0u;
       v229 = 0u;
@@ -996,13 +996,13 @@
       v227 = 0u;
       v224 = 0u;
       v225 = 0u;
-      v175 = [(CAMFullscreenViewfinder *)self _layout];
-      v176 = [(CAMFullscreenViewfinder *)self elapsedTimeView];
-      v177 = [(CAMFullscreenViewfinder *)self orientation];
-      v178 = [(CAMFullscreenViewfinder *)self isSystemOverlayVisible];
-      if (v175)
+      _layout3 = [(CAMFullscreenViewfinder *)self _layout];
+      elapsedTimeView = [(CAMFullscreenViewfinder *)self elapsedTimeView];
+      orientation = [(CAMFullscreenViewfinder *)self orientation];
+      isSystemOverlayVisible = [(CAMFullscreenViewfinder *)self isSystemOverlayVisible];
+      if (_layout3)
       {
-        [v175 geometryForElapsedTimeView:v176 viewportFrame:v177 orientation:v178 systemOverlayVisible:{v107, v214, v213, v88}];
+        [_layout3 geometryForElapsedTimeView:elapsedTimeView viewportFrame:orientation orientation:isSystemOverlayVisible systemOverlayVisible:{v107, v214, v213, v88}];
       }
 
       else
@@ -1015,20 +1015,20 @@
         v225 = 0u;
       }
 
-      v179 = [(CAMFullscreenViewfinder *)self orientation];
+      orientation2 = [(CAMFullscreenViewfinder *)self orientation];
       v219 = v226;
       v220 = v227;
       v221 = v228;
       v222 = v229;
       v217 = v224;
       v218 = v225;
-      [(CAMFullscreenViewfinder *)self _frameForSpatialRecordingIndicatorWithElapsedTimeViewGeometry:&v217 orientation:v179];
+      [(CAMFullscreenViewfinder *)self _frameForSpatialRecordingIndicatorWithElapsedTimeViewGeometry:&v217 orientation:orientation2];
       v181 = v180;
       v183 = v182;
       v185 = v184;
       v187 = v186;
-      v188 = [(CAMFullscreenViewfinder *)self spatialCaptureRecordingIndicator];
-      [v188 setFrame:{v181, v183, v185, v187}];
+      spatialCaptureRecordingIndicator2 = [(CAMFullscreenViewfinder *)self spatialCaptureRecordingIndicator];
+      [spatialCaptureRecordingIndicator2 setFrame:{v181, v183, v185, v187}];
     }
   }
 
@@ -1037,8 +1037,8 @@
   v192 = v191;
   v194 = v193;
   v196 = v195;
-  v197 = [(CAMFullscreenViewfinder *)self _layout];
-  [v197 alignmentRectForShutterControl];
+  _layout4 = [(CAMFullscreenViewfinder *)self _layout];
+  [_layout4 alignmentRectForShutterControl];
   v199 = v198;
 
   v235.origin.x = v190;
@@ -1051,21 +1051,21 @@
   v201 = v237.origin.y;
   v202 = v237.size.width;
   v203 = v237.size.height;
-  v204 = [(CAMFullscreenViewfinder *)self photoVideoModeSwitch];
-  [v204 setFrame:{x, v201, v202, v203}];
+  photoVideoModeSwitch = [(CAMFullscreenViewfinder *)self photoVideoModeSwitch];
+  [photoVideoModeSwitch setFrame:{x, v201, v202, v203}];
 
   [(CAMFullscreenViewfinder *)self _layoutSmartStyleNameBadge];
   [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:0];
   [(CAMFullscreenViewfinder *)self _updateTintColors];
 }
 
-- (void)_setViewportAnimatorFrame:(CGRect)a3 withDuration:(double)a4 timingCurve:(id)a5
+- (void)_setViewportAnimatorFrame:(CGRect)frame withDuration:(double)duration timingCurve:(id)curve
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  curveCopy = curve;
   v17.origin.x = x;
   v17.origin.y = y;
   v17.size.width = width;
@@ -1073,14 +1073,14 @@
   if (!CGRectIsEmpty(v17))
   {
     v11 = +[CAMCaptureCapabilities capabilities];
-    v12 = [v11 isViewportSpringAnimationSupported];
+    isViewportSpringAnimationSupported = [v11 isViewportSpringAnimationSupported];
 
-    if (v12)
+    if (isViewportSpringAnimationSupported)
     {
-      if (a4 > 0.0)
+      if (duration > 0.0)
       {
         [(CAMFullscreenViewfinder *)self _viewportAnimatorViewportFrame];
-        [CAMFullscreenViewfinder _updateViewportVectorAnimatorWithInitialViewportFrame:"_updateViewportVectorAnimatorWithInitialViewportFrame:destinationViewportFrame:response:" destinationViewportFrame:*&a4 response:?];
+        [CAMFullscreenViewfinder _updateViewportVectorAnimatorWithInitialViewportFrame:"_updateViewportVectorAnimatorWithInitialViewportFrame:destinationViewportFrame:response:" destinationViewportFrame:*&duration response:?];
       }
 
       [(CAMFullscreenViewfinder *)self _setViewportAnimatorViewportFrame:x, y, width, height];
@@ -1098,45 +1098,45 @@
         v13 = 1.0;
       }
 
-      v14 = [(CAMFullscreenViewfinder *)self _viewportAnimator];
-      [v14 setValue:@"CAMViewfinderAnimatorViewportOriginXKey" forKey:v15 duration:x timingCurve:a4];
-      [v14 setValue:@"CAMViewfinderAnimatorViewportOriginYKey" forKey:v15 duration:y timingCurve:a4];
-      [v14 setValue:@"CAMViewfinderAnimatorViewportWidthKey" forKey:v15 duration:width timingCurve:a4];
-      [v14 setValue:@"CAMViewfinderAnimatorViewportHeightKey" forKey:v15 duration:height timingCurve:a4];
-      [v14 setValue:@"CAMViewfinderAnimatorTrueVideoTransitionPercentCompleteKey" forKey:v15 duration:v13 timingCurve:a4];
+      _viewportAnimator = [(CAMFullscreenViewfinder *)self _viewportAnimator];
+      [_viewportAnimator setValue:@"CAMViewfinderAnimatorViewportOriginXKey" forKey:curveCopy duration:x timingCurve:duration];
+      [_viewportAnimator setValue:@"CAMViewfinderAnimatorViewportOriginYKey" forKey:curveCopy duration:y timingCurve:duration];
+      [_viewportAnimator setValue:@"CAMViewfinderAnimatorViewportWidthKey" forKey:curveCopy duration:width timingCurve:duration];
+      [_viewportAnimator setValue:@"CAMViewfinderAnimatorViewportHeightKey" forKey:curveCopy duration:height timingCurve:duration];
+      [_viewportAnimator setValue:@"CAMViewfinderAnimatorTrueVideoTransitionPercentCompleteKey" forKey:curveCopy duration:v13 timingCurve:duration];
       if ([(CAMFullscreenViewfinder *)self _useSmartFramingTransition])
       {
-        [v14 setValue:@"CAMViewfinderAnimatorSmartFramingTransitionPercentCompleteKey" forKey:v15 duration:1.0 timingCurve:a4];
+        [_viewportAnimator setValue:@"CAMViewfinderAnimatorSmartFramingTransitionPercentCompleteKey" forKey:curveCopy duration:1.0 timingCurve:duration];
       }
     }
   }
 }
 
-- (void)animator:(id)a3 didUpdateValuesForKeys:(id)a4
+- (void)animator:(id)animator didUpdateValuesForKeys:(id)keys
 {
-  v5 = a3;
-  [v5 valueForKey:@"CAMViewfinderAnimatorViewportOriginXKey"];
+  animatorCopy = animator;
+  [animatorCopy valueForKey:@"CAMViewfinderAnimatorViewportOriginXKey"];
   UIRoundToViewScale();
   v7 = v6;
-  [v5 valueForKey:@"CAMViewfinderAnimatorViewportOriginYKey"];
+  [animatorCopy valueForKey:@"CAMViewfinderAnimatorViewportOriginYKey"];
   UIRoundToViewScale();
   v9 = v8;
-  [v5 valueForKey:@"CAMViewfinderAnimatorViewportWidthKey"];
+  [animatorCopy valueForKey:@"CAMViewfinderAnimatorViewportWidthKey"];
   UIRoundToViewScale();
   v11 = v10;
-  [v5 valueForKey:@"CAMViewfinderAnimatorViewportHeightKey"];
+  [animatorCopy valueForKey:@"CAMViewfinderAnimatorViewportHeightKey"];
   UIRoundToViewScale();
   v13 = v12;
-  [v5 valueForKey:@"CAMViewfinderAnimatorTrueVideoTransitionPercentCompleteKey"];
+  [animatorCopy valueForKey:@"CAMViewfinderAnimatorTrueVideoTransitionPercentCompleteKey"];
   v15 = v14;
-  [v5 valueForKey:@"CAMViewfinderAnimatorSmartFramingTransitionPercentCompleteKey"];
+  [animatorCopy valueForKey:@"CAMViewfinderAnimatorSmartFramingTransitionPercentCompleteKey"];
   v17 = v16;
 
   [MEMORY[0x1E6979518] begin];
   [(CAMFullscreenViewfinder *)self _frameForPreviewView];
   [(CAMFullscreenViewfinder *)self _layoutViewportWithFrame:v7 previewFrame:v9 trueVideoTransitionPercentComplete:v11 smartFramingTransitionPercentComplete:v13, v18, v19, v20, v21, v15, v17];
-  v22 = [(CAMFullscreenViewfinder *)self previewView];
-  [v22 layoutIfNeeded];
+  previewView = [(CAMFullscreenViewfinder *)self previewView];
+  [previewView layoutIfNeeded];
 
   v23 = MEMORY[0x1E6979518];
 
@@ -1146,22 +1146,22 @@
 - (void)_didFinishChangingPreviewGeometry
 {
   [(CAMFullscreenViewfinder *)self set_useSmartFramingTransition:0];
-  v3 = [(CAMFullscreenViewfinder *)self delegate];
-  [v3 fullscreenViewfinderDidFinishChangingPreviewGeometry:self];
+  delegate = [(CAMFullscreenViewfinder *)self delegate];
+  [delegate fullscreenViewfinderDidFinishChangingPreviewGeometry:self];
 }
 
 - (BOOL)isReticleAnimating
 {
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 isViewportSpringAnimationSupported];
+  isViewportSpringAnimationSupported = [v3 isViewportSpringAnimationSupported];
 
-  if (v4)
+  if (isViewportSpringAnimationSupported)
   {
-    v5 = [(CAMFullscreenViewfinder *)self _viewportVectorAnimator];
-    if (v5)
+    _viewportVectorAnimator = [(CAMFullscreenViewfinder *)self _viewportVectorAnimator];
+    if (_viewportVectorAnimator)
     {
-      v6 = [(CAMFullscreenViewfinder *)self _viewportVectorAnimator];
-      LODWORD(self) = [v6 isInvalidated] ^ 1;
+      _viewportVectorAnimator2 = [(CAMFullscreenViewfinder *)self _viewportVectorAnimator];
+      LODWORD(self) = [_viewportVectorAnimator2 isInvalidated] ^ 1;
     }
 
     else
@@ -1172,25 +1172,25 @@
 
   else
   {
-    v5 = [(CAMFullscreenViewfinder *)self _viewportAnimator];
-    LOBYTE(self) = [v5 isAnimating];
+    _viewportVectorAnimator = [(CAMFullscreenViewfinder *)self _viewportAnimator];
+    LOBYTE(self) = [_viewportVectorAnimator isAnimating];
   }
 
   return self;
 }
 
-- (void)_updateViewportVectorAnimatorWithInitialViewportFrame:(CGRect)a3 destinationViewportFrame:(CGRect)a4 response:(double)a5
+- (void)_updateViewportVectorAnimatorWithInitialViewportFrame:(CGRect)frame destinationViewportFrame:(CGRect)viewportFrame response:(double)response
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  v11 = a3.origin.y;
-  v12 = a3.origin.x;
-  v14 = [(CAMFullscreenViewfinder *)self _viewportVectorAnimator];
-  if (!v14 || (v15 = v14, -[CAMFullscreenViewfinder _viewportVectorAnimator](self, "_viewportVectorAnimator"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 isInvalidated], v16, v15, v17))
+  height = viewportFrame.size.height;
+  width = viewportFrame.size.width;
+  y = viewportFrame.origin.y;
+  x = viewportFrame.origin.x;
+  v9 = frame.size.height;
+  v10 = frame.size.width;
+  v11 = frame.origin.y;
+  v12 = frame.origin.x;
+  _viewportVectorAnimator = [(CAMFullscreenViewfinder *)self _viewportVectorAnimator];
+  if (!_viewportVectorAnimator || (v15 = _viewportVectorAnimator, -[CAMFullscreenViewfinder _viewportVectorAnimator](self, "_viewportVectorAnimator"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 isInvalidated], v16, v15, v17))
   {
     objc_initWeak(&location, self);
     v18 = MEMORY[0x1E6993860];
@@ -1206,8 +1206,8 @@
     objc_destroyWeak(&location);
   }
 
-  v20 = [(CAMFullscreenViewfinder *)self _viewportSettings];
-  [v20 setResponse:a5];
+  _viewportSettings = [(CAMFullscreenViewfinder *)self _viewportSettings];
+  [_viewportSettings setResponse:response];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __115__CAMFullscreenViewfinder__updateViewportVectorAnimatorWithInitialViewportFrame_destinationViewportFrame_response___block_invoke_2;
@@ -1217,7 +1217,7 @@
   *&v21[6] = y;
   *&v21[7] = width;
   *&v21[8] = height;
-  [MEMORY[0x1E69DD250] cek_animateWithSettings:v20 mode:3 animations:v21 completion:0];
+  [MEMORY[0x1E69DD250] cek_animateWithSettings:_viewportSettings mode:3 animations:v21 completion:0];
 }
 
 uint64_t __115__CAMFullscreenViewfinder__updateViewportVectorAnimatorWithInitialViewportFrame_destinationViewportFrame_response___block_invoke(uint64_t a1)
@@ -1261,13 +1261,13 @@ LABEL_8:
   return v19;
 }
 
-- (void)_setViewportAnimatorRectValue:(CGRect)a3
+- (void)_setViewportAnimatorRectValue:(CGRect)value
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(CAMFullscreenViewfinder *)self _viewportVectorAnimator];
+  height = value.size.height;
+  width = value.size.width;
+  y = value.origin.y;
+  x = value.origin.x;
+  _viewportVectorAnimator = [(CAMFullscreenViewfinder *)self _viewportVectorAnimator];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__CAMFullscreenViewfinder__setViewportAnimatorRectValue___block_invoke;
@@ -1276,7 +1276,7 @@ LABEL_8:
   *&v8[5] = y;
   *&v8[6] = width;
   *&v8[7] = height;
-  [v7 _mutateValue:v8];
+  [_viewportVectorAnimator _mutateValue:v8];
 }
 
 double __57__CAMFullscreenViewfinder__setViewportAnimatorRectValue___block_invoke(uint64_t a1, uint64_t a2)
@@ -1292,13 +1292,13 @@ double __57__CAMFullscreenViewfinder__setViewportAnimatorRectValue___block_invok
 
 - (CGRect)_viewportAnimatorRectValue
 {
-  v2 = [(CAMFullscreenViewfinder *)self _viewportVectorAnimator];
-  v3 = [v2 _value];
+  _viewportVectorAnimator = [(CAMFullscreenViewfinder *)self _viewportVectorAnimator];
+  _value = [_viewportVectorAnimator _value];
 
-  v4 = *v3;
-  v5 = v3[1];
-  v6 = v3[2];
-  v7 = v3[3];
+  v4 = *_value;
+  v5 = _value[1];
+  v6 = _value[2];
+  v7 = _value[3];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -1308,13 +1308,13 @@ double __57__CAMFullscreenViewfinder__setViewportAnimatorRectValue___block_invok
 
 - (CGRect)_viewportAnimatorRectPresentationValue
 {
-  v2 = [(CAMFullscreenViewfinder *)self _viewportVectorAnimator];
-  v3 = [v2 _presentationValue];
+  _viewportVectorAnimator = [(CAMFullscreenViewfinder *)self _viewportVectorAnimator];
+  _presentationValue = [_viewportVectorAnimator _presentationValue];
 
-  v4 = *v3;
-  v5 = v3[1];
-  v6 = v3[2];
-  v7 = v3[3];
+  v4 = *_presentationValue;
+  v5 = _presentationValue[1];
+  v6 = _presentationValue[2];
+  v7 = _presentationValue[3];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -1324,16 +1324,16 @@ double __57__CAMFullscreenViewfinder__setViewportAnimatorRectValue___block_invok
 
 - (double)_viewportAnimatorPercentComplete
 {
-  v2 = [(CAMFullscreenViewfinder *)self _viewportVectorAnimator];
-  v3 = [v2 _presentationValue];
+  _viewportVectorAnimator = [(CAMFullscreenViewfinder *)self _viewportVectorAnimator];
+  _presentationValue = [_viewportVectorAnimator _presentationValue];
 
-  return *(v3 + 32);
+  return *(_presentationValue + 32);
 }
 
 - (BOOL)_isViewportAnimatorVelocityZero
 {
-  v2 = [(CAMFullscreenViewfinder *)self _viewportVectorAnimator];
-  [v2 _velocity];
+  _viewportVectorAnimator = [(CAMFullscreenViewfinder *)self _viewportVectorAnimator];
+  [_viewportVectorAnimator _velocity];
 
   if (!BSFloatIsZero() || !BSFloatIsZero() || !BSFloatIsZero() || !BSFloatIsZero())
   {
@@ -1359,9 +1359,9 @@ double __57__CAMFullscreenViewfinder__setViewportAnimatorRectValue___block_invok
   return viewportSettings;
 }
 
-- (void)_setNeedsLayoutAnimated:(BOOL)a3
+- (void)_setNeedsLayoutAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(CAMFullscreenViewfinder *)self setNeedsLayout];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -1370,7 +1370,7 @@ double __57__CAMFullscreenViewfinder__setViewportAnimatorRectValue___block_invok
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
   v6 = v5;
-  if (v3)
+  if (animatedCopy)
   {
     [(CAMFullscreenViewfinder *)self _trueVideoAnimationDuration];
     v10 = 0.5;
@@ -1404,7 +1404,7 @@ double __57__CAMFullscreenViewfinder__setViewportAnimatorRectValue___block_invok
     v15 = 3221225472;
     v16 = __51__CAMFullscreenViewfinder__setNeedsLayoutAnimated___block_invoke_3;
     v17 = &unk_1E76F77D8;
-    v18 = self;
+    selfCopy = self;
     v19 = v6;
     [v13 animateWithDuration:2 delay:v20 options:&v14 animations:v11 completion:0.0];
     [MEMORY[0x1E6979518] commit];
@@ -1443,12 +1443,12 @@ uint64_t __51__CAMFullscreenViewfinder__setNeedsLayoutAnimated___block_invoke_3(
 
 - (double)_trueVideoAnimationDuration
 {
-  v3 = [(CAMFullscreenViewfinder *)self useSlowerTrueVideoTransitionAnimationDuration];
-  v4 = [(CAMFullscreenViewfinder *)self trueVideoState];
-  if (v4 == 1)
+  useSlowerTrueVideoTransitionAnimationDuration = [(CAMFullscreenViewfinder *)self useSlowerTrueVideoTransitionAnimationDuration];
+  trueVideoState = [(CAMFullscreenViewfinder *)self trueVideoState];
+  if (trueVideoState == 1)
   {
     [(CAMFullscreenViewfinder *)self _trueVideoModeSwitchToCaptureAnimationDurationOverride];
-    v6 = !v3;
+    v6 = !useSlowerTrueVideoTransitionAnimationDuration;
     v7 = 0.7;
     v8 = 0.966;
   }
@@ -1456,13 +1456,13 @@ uint64_t __51__CAMFullscreenViewfinder__setNeedsLayoutAnimated___block_invoke_3(
   else
   {
     result = 0.0;
-    if (v4 != 3)
+    if (trueVideoState != 3)
     {
       return result;
     }
 
     [(CAMFullscreenViewfinder *)self _trueVideoModeSwitchFromCaptureAnimationDurationOverride];
-    v6 = !v3;
+    v6 = !useSlowerTrueVideoTransitionAnimationDuration;
     v7 = 0.586;
     v8 = 1.0;
   }
@@ -1484,15 +1484,15 @@ uint64_t __51__CAMFullscreenViewfinder__setNeedsLayoutAnimated___block_invoke_3(
 {
   if (![(CAMFullscreenViewfinder *)self isControlDrawerExpanded])
   {
-    v3 = [(CAMFullscreenViewfinder *)self controlDrawer];
-    [v3 collapseExpandableButtonsAnimated:0 updatePreferredDrawerControl:0];
+    controlDrawer = [(CAMFullscreenViewfinder *)self controlDrawer];
+    [controlDrawer collapseExpandableButtonsAnimated:0 updatePreferredDrawerControl:0];
   }
 }
 
 - (CGRect)currentFourThreeViewportFrame
 {
-  v3 = [(CAMFullscreenViewfinder *)self _layout];
-  [v3 viewportFrameForAspectRatio:0 accessoryAreaExpanded:-[CAMFullscreenViewfinder isControlDrawerExpanded](self smartStyleControlsExpanded:{"isControlDrawerExpanded"), -[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
+  _layout = [(CAMFullscreenViewfinder *)self _layout];
+  [_layout viewportFrameForAspectRatio:0 accessoryAreaExpanded:-[CAMFullscreenViewfinder isControlDrawerExpanded](self smartStyleControlsExpanded:{"isControlDrawerExpanded"), -[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1516,14 +1516,14 @@ uint64_t __51__CAMFullscreenViewfinder__setNeedsLayoutAnimated___block_invoke_3(
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CAMFullscreenViewfinder *)self _overCapturePreviewLayer];
+  _overCapturePreviewLayer = [(CAMFullscreenViewfinder *)self _overCapturePreviewLayer];
 
-  if (!v11)
+  if (!_overCapturePreviewLayer)
   {
-    v12 = [(CAMFullscreenViewfinder *)self viewportAspectRatio];
-    if ((v12 - 2) >= 3)
+    viewportAspectRatio = [(CAMFullscreenViewfinder *)self viewportAspectRatio];
+    if ((viewportAspectRatio - 2) >= 3)
     {
-      v13 = v12;
+      v13 = viewportAspectRatio;
     }
 
     else
@@ -1531,8 +1531,8 @@ uint64_t __51__CAMFullscreenViewfinder__setNeedsLayoutAnimated___block_invoke_3(
       v13 = 0;
     }
 
-    v14 = [(CAMFullscreenViewfinder *)self _layout];
-    [v14 viewportFrameForAspectRatio:v13 accessoryAreaExpanded:-[CAMFullscreenViewfinder isControlDrawerExpanded](self smartStyleControlsExpanded:{"isControlDrawerExpanded"), -[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
+    _layout = [(CAMFullscreenViewfinder *)self _layout];
+    [_layout viewportFrameForAspectRatio:v13 accessoryAreaExpanded:-[CAMFullscreenViewfinder isControlDrawerExpanded](self smartStyleControlsExpanded:{"isControlDrawerExpanded"), -[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
     v4 = v15;
     v6 = v16;
     v8 = v17;
@@ -1559,12 +1559,12 @@ uint64_t __51__CAMFullscreenViewfinder__setNeedsLayoutAnimated___block_invoke_3(
   return result;
 }
 
-- (CGRect)_frameForPreviewOverlaysInViewport:(CGRect)a3
+- (CGRect)_frameForPreviewOverlaysInViewport:(CGRect)viewport
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = viewport.size.height;
+  width = viewport.size.width;
+  y = viewport.origin.y;
+  x = viewport.origin.x;
   [(CAMFullscreenViewfinder *)self _frameForExternalChromeTopBar];
   v20.origin.x = v7;
   v20.origin.y = v8;
@@ -1606,20 +1606,20 @@ uint64_t __51__CAMFullscreenViewfinder__setNeedsLayoutAnimated___block_invoke_3(
   return result;
 }
 
-- (void)_updatePreviewLayerForPreviewFrame:(CGRect)a3 viewportFrame:(CGRect)a4 trueVideoTransitionPercentComplete:(double)a5 smartFramingTransitionPercentComplete:(double)a6
+- (void)_updatePreviewLayerForPreviewFrame:(CGRect)frame viewportFrame:(CGRect)viewportFrame trueVideoTransitionPercentComplete:(double)complete smartFramingTransitionPercentComplete:(double)percentComplete
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
-  v15 = [(CAMFullscreenViewfinder *)self _overCapturePreviewLayer];
-  if (v15)
+  height = viewportFrame.size.height;
+  width = viewportFrame.size.width;
+  y = viewportFrame.origin.y;
+  x = viewportFrame.origin.x;
+  v10 = frame.size.height;
+  v11 = frame.size.width;
+  v12 = frame.origin.y;
+  v13 = frame.origin.x;
+  _overCapturePreviewLayer = [(CAMFullscreenViewfinder *)self _overCapturePreviewLayer];
+  if (_overCapturePreviewLayer)
   {
-    v27 = v15;
+    v27 = _overCapturePreviewLayer;
     UIRectGetCenter();
     v18 = (v16 - v13) / v11;
     v19 = (v17 - v12) / v10;
@@ -1635,29 +1635,29 @@ uint64_t __51__CAMFullscreenViewfinder__setNeedsLayoutAnimated___block_invoke_3(
       v21 = 1;
     }
 
-    v24 = [(CAMFullscreenViewfinder *)self trueVideoState];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [(CAMFullscreenViewfinder *)self _useSmartFramingTransition]&& !v24)
+    trueVideoState = [(CAMFullscreenViewfinder *)self trueVideoState];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [(CAMFullscreenViewfinder *)self _useSmartFramingTransition]&& !trueVideoState)
     {
-      v25 = [CAMCaptureConversions AVCaptureSmartFramingFieldOfViewForCAMCaptureSmartFramingFieldOfView:[(CAMFullscreenViewfinder *)self smartFramingFieldOfView]];
-      [v27 setPrimaryCaptureRectAspectRatio:v25 centerPoint:height / width smartFramingTransitionPercentComplete:v19 smartFramingTransitionTargetFieldOfView:{v18, a6}];
-      v26 = [(CAMFullscreenViewfinder *)self delegate];
-      [v26 fullscreenViewfinder:self didChangePreviewGeometryWithViewportFrame:{x, y, width, height}];
+      delegate2 = [CAMCaptureConversions AVCaptureSmartFramingFieldOfViewForCAMCaptureSmartFramingFieldOfView:[(CAMFullscreenViewfinder *)self smartFramingFieldOfView]];
+      [v27 setPrimaryCaptureRectAspectRatio:delegate2 centerPoint:height / width smartFramingTransitionPercentComplete:v19 smartFramingTransitionTargetFieldOfView:{v18, percentComplete}];
+      delegate = [(CAMFullscreenViewfinder *)self delegate];
+      [delegate fullscreenViewfinder:self didChangePreviewGeometryWithViewportFrame:{x, y, width, height}];
     }
 
     else
     {
-      v15 = v27;
+      _overCapturePreviewLayer = v27;
       if (!v21)
       {
         goto LABEL_14;
       }
 
-      [v27 setPrimaryCaptureRectAspectRatio:height / width centerPoint:v19 trueVideoTransitionPercentComplete:{v18, a5}];
-      v25 = [(CAMFullscreenViewfinder *)self delegate];
-      [v25 fullscreenViewfinder:self didChangePreviewGeometryWithViewportFrame:{x, y, width, height}];
+      [v27 setPrimaryCaptureRectAspectRatio:height / width centerPoint:v19 trueVideoTransitionPercentComplete:{v18, complete}];
+      delegate2 = [(CAMFullscreenViewfinder *)self delegate];
+      [delegate2 fullscreenViewfinder:self didChangePreviewGeometryWithViewportFrame:{x, y, width, height}];
     }
 
-    v15 = v27;
+    _overCapturePreviewLayer = v27;
   }
 
 LABEL_14:
@@ -1665,60 +1665,60 @@ LABEL_14:
 
 - (double)previewAspectRatio
 {
-  v2 = [(CAMFullscreenViewfinder *)self _overCapturePreviewLayer];
-  [v2 primaryCaptureRectAspectRatio];
+  _overCapturePreviewLayer = [(CAMFullscreenViewfinder *)self _overCapturePreviewLayer];
+  [_overCapturePreviewLayer primaryCaptureRectAspectRatio];
   v4 = 1.0 / v3;
 
   return v4;
 }
 
-- (BOOL)requestPreviewUpdateForSemanticStyleAnimated:(BOOL)a3
+- (BOOL)requestPreviewUpdateForSemanticStyleAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v60 = *MEMORY[0x1E69E9840];
   v5 = +[CAMCaptureCapabilities capabilities];
-  v6 = [v5 smartStylesSupported];
+  smartStylesSupported = [v5 smartStylesSupported];
 
-  if (v6)
+  if (smartStylesSupported)
   {
     return 0;
   }
 
-  v7 = [(CAMFullscreenViewfinder *)self delegate];
-  v8 = [v7 fullscreenViewfinderCanUpdatePreviewSemanticStyles:self];
+  delegate = [(CAMFullscreenViewfinder *)self delegate];
+  v8 = [delegate fullscreenViewfinderCanUpdatePreviewSemanticStyles:self];
 
   if (!v8)
   {
     return 0;
   }
 
-  v9 = [(CAMFullscreenViewfinder *)self _overCapturePreviewLayer];
-  v10 = [(CAMFullscreenViewfinder *)self isSemanticStyleControlVisible];
-  v11 = [(CAMFullscreenViewfinder *)self delegate];
-  v12 = v11;
-  if (v10)
+  _overCapturePreviewLayer = [(CAMFullscreenViewfinder *)self _overCapturePreviewLayer];
+  isSemanticStyleControlVisible = [(CAMFullscreenViewfinder *)self isSemanticStyleControlVisible];
+  delegate2 = [(CAMFullscreenViewfinder *)self delegate];
+  v12 = delegate2;
+  if (isSemanticStyleControlVisible)
   {
-    v13 = [v11 fullscreenViewfinderSemanticStyleList:self];
+    v13 = [delegate2 fullscreenViewfinderSemanticStyleList:self];
 
-    v14 = [(CAMFullscreenViewfinder *)self semanticStylePicker];
-    v15 = [v14 selectedStyleIndex];
+    semanticStylePicker = [(CAMFullscreenViewfinder *)self semanticStylePicker];
+    selectedStyleIndex = [semanticStylePicker selectedStyleIndex];
 
-    if (v15 <= 1)
+    if (selectedStyleIndex <= 1)
     {
       v16 = 1;
     }
 
     else
     {
-      v16 = v15;
+      v16 = selectedStyleIndex;
     }
 
     v17 = v16 - 1;
     v52 = v13;
     v18 = [v13 count];
-    if (v15 + 1 < (v18 - 1))
+    if (selectedStyleIndex + 1 < (v18 - 1))
     {
-      v19 = v15 + 1;
+      v19 = selectedStyleIndex + 1;
     }
 
     else
@@ -1734,11 +1734,11 @@ LABEL_14:
       v23 = v17;
       do
       {
-        v24 = [(CAMFullscreenViewfinder *)self semanticStylePicker];
-        [v24 presentatationStyleRectAtIndex:v23];
+        semanticStylePicker2 = [(CAMFullscreenViewfinder *)self semanticStylePicker];
+        [semanticStylePicker2 presentatationStyleRectAtIndex:v23];
 
-        v25 = [(CAMFullscreenViewfinder *)self semanticStylePicker];
-        [v25 bounds];
+        semanticStylePicker3 = [(CAMFullscreenViewfinder *)self semanticStylePicker];
+        [semanticStylePicker3 bounds];
         CEKNormalizeRect();
         v27 = v26;
         v29 = v28;
@@ -1758,9 +1758,9 @@ LABEL_14:
     v35 = v20 + 1;
     v36 = v52;
     v37 = [v52 subarrayWithRange:{v17, v35}];
-    if ([v9 isSemanticStyleRenderingEnabled])
+    if ([_overCapturePreviewLayer isSemanticStyleRenderingEnabled])
     {
-      v51 = v9;
+      v51 = _overCapturePreviewLayer;
       v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v55 = 0u;
       v56 = 0u;
@@ -1787,16 +1787,16 @@ LABEL_14:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v45 = [v44 avSemanticStyle];
-              [v38 addObject:v45];
+              avSemanticStyle = [v44 avSemanticStyle];
+              [v38 addObject:avSemanticStyle];
             }
 
             else
             {
-              v45 = os_log_create("com.apple.camera", "Camera");
-              if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
+              avSemanticStyle = os_log_create("com.apple.camera", "Camera");
+              if (os_log_type_enabled(avSemanticStyle, OS_LOG_TYPE_ERROR))
               {
-                [(CAMFullscreenViewfinder *)&buf requestPreviewUpdateForSemanticStyleAnimated:v54, v45];
+                [(CAMFullscreenViewfinder *)&buf requestPreviewUpdateForSemanticStyleAnimated:v54, avSemanticStyle];
               }
             }
 
@@ -1811,7 +1811,7 @@ LABEL_14:
       }
 
       v46 = [v38 count];
-      v9 = v51;
+      _overCapturePreviewLayer = v51;
       if (v46 == [v21 count])
       {
         [v51 setSemanticStyles:v38 semanticStylesRegions:v21];
@@ -1824,14 +1824,14 @@ LABEL_14:
 
   else
   {
-    v48 = [v11 fullscreenViewfinderSelectedSemanticStyle:self];
+    v48 = [delegate2 fullscreenViewfinderSelectedSemanticStyle:self];
 
-    if ([v9 isSemanticStyleRenderingEnabled])
+    if ([_overCapturePreviewLayer isSemanticStyleRenderingEnabled])
     {
       if (!v48 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v49 = [v48 avSemanticStyle];
-        [v9 setSemanticStyle:v49 animated:v3];
+        avSemanticStyle2 = [v48 avSemanticStyle];
+        [_overCapturePreviewLayer setSemanticStyle:avSemanticStyle2 animated:animatedCopy];
       }
     }
   }
@@ -1839,62 +1839,62 @@ LABEL_14:
   return 1;
 }
 
-- (void)_updateReticleForViewportFrame:(CGRect)a3
+- (void)_updateReticleForViewportFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  y = a3.origin.y;
-  [(CAMFullscreenViewfinder *)self bounds:a3.origin.x];
+  height = frame.size.height;
+  y = frame.origin.y;
+  [(CAMFullscreenViewfinder *)self bounds:frame.origin.x];
   v7 = v6 - (y + height);
-  v8 = [(CAMFullscreenViewfinder *)self _reticleView];
-  [v8 setViewportTopInset:0 bottomInset:y animated:v7];
-  [v8 layoutIfNeeded];
+  _reticleView = [(CAMFullscreenViewfinder *)self _reticleView];
+  [_reticleView setViewportTopInset:0 bottomInset:y animated:v7];
+  [_reticleView layoutIfNeeded];
 }
 
-- (void)_updatePreviewAlignmentGuideForViewportFrame:(CGRect)a3
+- (void)_updatePreviewAlignmentGuideForViewportFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CAMFullscreenViewfinder *)self previewAlignmentGuide];
-  [v8 setFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  previewAlignmentGuide = [(CAMFullscreenViewfinder *)self previewAlignmentGuide];
+  [previewAlignmentGuide setFrame:{x, y, width, height}];
 
-  v9 = [(CAMFullscreenViewfinder *)self previewAlignmentGuide];
-  [v9 layoutIfNeeded];
+  previewAlignmentGuide2 = [(CAMFullscreenViewfinder *)self previewAlignmentGuide];
+  [previewAlignmentGuide2 layoutIfNeeded];
 }
 
-- (void)_updateSemanticStylePicker:(id)a3 forViewportFrame:(CGRect)a4
+- (void)_updateSemanticStylePicker:(id)picker forViewportFrame:(CGRect)frame
 {
-  if (a3)
+  if (picker)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    v13 = a3;
-    [v13 setFrame:{x, y, width, height}];
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
+    pickerCopy = picker;
+    [pickerCopy setFrame:{x, y, width, height}];
     [(CAMFullscreenViewfinder *)self frameForReticleViewport];
     v10 = v9;
     v12 = v11;
     [(CAMFullscreenViewfinder *)self externalChromeShutterButtonFrame];
-    [v13 setContentBottomMargin:v10 + v12 - CGRectGetMinY(v15) + 15.0];
-    [v13 layoutIfNeeded];
+    [pickerCopy setContentBottomMargin:v10 + v12 - CGRectGetMinY(v15) + 15.0];
+    [pickerCopy layoutIfNeeded];
   }
 }
 
 - (CGRect)_frameForSpotlightControlPanel
 {
-  v3 = [(CAMFullscreenViewfinder *)self _viewportAspectRatioForControlsOverPreview];
-  v4 = [(CAMFullscreenViewfinder *)self isControlDrawerExpanded];
-  v5 = [(CAMFullscreenViewfinder *)self _layout];
-  [v5 viewportFrameForAspectRatio:v3 accessoryAreaExpanded:v4 smartStyleControlsExpanded:{-[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
+  _viewportAspectRatioForControlsOverPreview = [(CAMFullscreenViewfinder *)self _viewportAspectRatioForControlsOverPreview];
+  isControlDrawerExpanded = [(CAMFullscreenViewfinder *)self isControlDrawerExpanded];
+  _layout = [(CAMFullscreenViewfinder *)self _layout];
+  [_layout viewportFrameForAspectRatio:_viewportAspectRatioForControlsOverPreview accessoryAreaExpanded:isControlDrawerExpanded smartStyleControlsExpanded:{-[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(CAMFullscreenViewfinder *)self _layout];
-  [v14 viewportFrameForAspectRatio:1 accessoryAreaExpanded:-[CAMFullscreenViewfinder isControlDrawerExpanded](self smartStyleControlsExpanded:{"isControlDrawerExpanded"), -[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
+  _layout2 = [(CAMFullscreenViewfinder *)self _layout];
+  [_layout2 viewportFrameForAspectRatio:1 accessoryAreaExpanded:-[CAMFullscreenViewfinder isControlDrawerExpanded](self smartStyleControlsExpanded:{"isControlDrawerExpanded"), -[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -1923,9 +1923,9 @@ LABEL_14:
 
 - (CGRect)frameForReticleViewport
 {
-  v3 = [(CAMFullscreenViewfinder *)self viewportAspectRatio];
-  v4 = [(CAMFullscreenViewfinder *)self _layout];
-  [v4 viewportFrameForAspectRatio:v3 accessoryAreaExpanded:-[CAMFullscreenViewfinder isControlDrawerExpanded](self smartStyleControlsExpanded:{"isControlDrawerExpanded"), -[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
+  viewportAspectRatio = [(CAMFullscreenViewfinder *)self viewportAspectRatio];
+  _layout = [(CAMFullscreenViewfinder *)self _layout];
+  [_layout viewportFrameForAspectRatio:viewportAspectRatio accessoryAreaExpanded:-[CAMFullscreenViewfinder isControlDrawerExpanded](self smartStyleControlsExpanded:{"isControlDrawerExpanded"), -[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -1953,8 +1953,8 @@ LABEL_14:
 
 - (CGRect)_frameForContentClippingContainer
 {
-  v2 = [(CAMFullscreenViewfinder *)self _layout];
-  [v2 frameForContentClippingContainer];
+  _layout = [(CAMFullscreenViewfinder *)self _layout];
+  [_layout frameForContentClippingContainer];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1971,25 +1971,25 @@ LABEL_14:
   return result;
 }
 
-- (void)_updateDisabledModeOverlayViewportFrame:(CGRect)a3
+- (void)_updateDisabledModeOverlayViewportFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CAMFullscreenViewfinder *)self disabledModeOverlayView];
-  [v8 setViewportFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  disabledModeOverlayView = [(CAMFullscreenViewfinder *)self disabledModeOverlayView];
+  [disabledModeOverlayView setViewportFrame:{x, y, width, height}];
 
   [(CAMFullscreenViewfinder *)self bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(CAMFullscreenViewfinder *)self disabledModeOverlayView];
-  [v17 setFrame:{v10, v12, v14, v16}];
+  disabledModeOverlayView2 = [(CAMFullscreenViewfinder *)self disabledModeOverlayView];
+  [disabledModeOverlayView2 setFrame:{v10, v12, v14, v16}];
 
-  v18 = [(CAMFullscreenViewfinder *)self disabledModeOverlayView];
-  [v18 layoutIfNeeded];
+  disabledModeOverlayView3 = [(CAMFullscreenViewfinder *)self disabledModeOverlayView];
+  [disabledModeOverlayView3 layoutIfNeeded];
 }
 
 - (void)_layoutZoomControls
@@ -2010,24 +2010,24 @@ LABEL_14:
   v5 = 0.0;
   if ([(CAMFullscreenViewfinder *)self offsetZoomButtonForFlipAspectRatioButton])
   {
-    v6 = [(CAMFullscreenViewfinder *)self traitCollection];
-    v7 = [v6 preferredContentSizeCategory];
-    [CAMZoomButton circleDiameterForContentSize:v7];
+    traitCollection = [(CAMFullscreenViewfinder *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    [CAMZoomButton circleDiameterForContentSize:preferredContentSizeCategory];
     v5 = -(v8 * 0.5 + 3.0);
   }
 
-  v9 = [(CAMFullscreenViewfinder *)self zoomControl];
+  zoomControl = [(CAMFullscreenViewfinder *)self zoomControl];
   [(CAMFullscreenViewfinder *)self bounds];
-  [CAMZoomControlUtilities layoutForExternalChromeZoomControl:"layoutForExternalChromeZoomControl:bounds:viewportFrame:referenceYForControlsAboveShutterButton:xOffset:" bounds:v9 viewportFrame:v4 referenceYForControlsAboveShutterButton:*&v5 xOffset:?];
+  [CAMZoomControlUtilities layoutForExternalChromeZoomControl:"layoutForExternalChromeZoomControl:bounds:viewportFrame:referenceYForControlsAboveShutterButton:xOffset:" bounds:zoomControl viewportFrame:v4 referenceYForControlsAboveShutterButton:*&v5 xOffset:?];
 }
 
 - (void)_layoutZoomSliderForExternalChrome
 {
-  v3 = [(CAMFullscreenViewfinder *)self zoomSlider];
+  zoomSlider = [(CAMFullscreenViewfinder *)self zoomSlider];
 
-  if (v3)
+  if (zoomSlider)
   {
-    v24 = [(CAMFullscreenViewfinder *)self zoomSlider];
+    zoomSlider2 = [(CAMFullscreenViewfinder *)self zoomSlider];
     [(CAMFullscreenViewfinder *)self externalChromeShutterButtonFrame];
     v5 = v4;
     v7 = v6;
@@ -2039,7 +2039,7 @@ LABEL_14:
     v17 = v16;
     v19 = v18;
     [(CAMFullscreenViewfinder *)self bounds];
-    [CAMZoomSliderUtilities layoutZoomSlider:v24 forLayoutStyle:0 bottomBarAlignmentRect:0 bottomBarTransparent:*MEMORY[0x1E695F058] shutterButtonAlignmentRect:*(MEMORY[0x1E695F058] + 8) previewViewAlignmentRect:*(MEMORY[0x1E695F058] + 16) viewfinderViewAlignmentRect:*(MEMORY[0x1E695F058] + 24), v5, v7, v9, v11, v13, v15, v17, v19, v20, v21, v22, v23];
+    [CAMZoomSliderUtilities layoutZoomSlider:zoomSlider2 forLayoutStyle:0 bottomBarAlignmentRect:0 bottomBarTransparent:*MEMORY[0x1E695F058] shutterButtonAlignmentRect:*(MEMORY[0x1E695F058] + 8) previewViewAlignmentRect:*(MEMORY[0x1E695F058] + 16) viewfinderViewAlignmentRect:*(MEMORY[0x1E695F058] + 24), v5, v7, v9, v11, v13, v15, v17, v19, v20, v21, v22, v23];
   }
 }
 
@@ -2055,9 +2055,9 @@ LABEL_14:
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(CAMFullscreenViewfinder *)self _viewportAspectRatioForControlsOverPreview];
+  _viewportAspectRatioForControlsOverPreview = [(CAMFullscreenViewfinder *)self _viewportAspectRatioForControlsOverPreview];
   +[CAMChromeViewSpec shutterTopPadding];
-  [CAMZoomControlUtilities referenceYForControlsAboveShutterButtonFrame:v19 viewportFrame:v4 aspectRatio:v6 shutterTopPadding:v8, v10, v12, v14, v16, v18, v20];
+  [CAMZoomControlUtilities referenceYForControlsAboveShutterButtonFrame:_viewportAspectRatioForControlsOverPreview viewportFrame:v4 aspectRatio:v6 shutterTopPadding:v8, v10, v12, v14, v16, v18, v20];
   return result;
 }
 
@@ -2068,9 +2068,9 @@ LABEL_14:
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(CAMFullscreenViewfinder *)self orientation];
+  orientation = [(CAMFullscreenViewfinder *)self orientation];
   v14 = MEMORY[0x1E695F058];
-  v15 = [(CAMFullscreenViewfinder *)self isElapsedTimeViewVisible];
+  isElapsedTimeViewVisible = [(CAMFullscreenViewfinder *)self isElapsedTimeViewVisible];
   v16 = [(CAMFullscreenViewfinder *)self _visibleInstructionLabelForInstructionLabelValue:[(CAMFullscreenViewfinder *)self visibleInstructionLabel]];
   v17 = [(CAMFullscreenViewfinder *)self _visibleInstructionLabelForInstructionLabelValue:[(CAMFullscreenViewfinder *)self visibleSecondaryInstructionLabel]];
   v69 = 0u;
@@ -2079,13 +2079,13 @@ LABEL_14:
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v18 = [(CAMFullscreenViewfinder *)self _layout];
-  v19 = [(CAMFullscreenViewfinder *)self elapsedTimeView];
-  v20 = [(CAMFullscreenViewfinder *)self orientation];
-  v21 = [(CAMFullscreenViewfinder *)self isSystemOverlayVisible];
-  if (v18)
+  _layout = [(CAMFullscreenViewfinder *)self _layout];
+  elapsedTimeView = [(CAMFullscreenViewfinder *)self elapsedTimeView];
+  orientation2 = [(CAMFullscreenViewfinder *)self orientation];
+  isSystemOverlayVisible = [(CAMFullscreenViewfinder *)self isSystemOverlayVisible];
+  if (_layout)
   {
-    [v18 geometryForElapsedTimeView:v19 viewportFrame:v20 orientation:v21 systemOverlayVisible:{v6, v8, v10, v12}];
+    [_layout geometryForElapsedTimeView:elapsedTimeView viewportFrame:orientation2 orientation:isSystemOverlayVisible systemOverlayVisible:{v6, v8, v10, v12}];
   }
 
   else
@@ -2107,7 +2107,7 @@ LABEL_14:
   v39 = v22;
   v36 = v25;
   v37 = v24;
-  if (v15)
+  if (isElapsedTimeViewVisible)
   {
     v61 = v67;
     v62 = v68;
@@ -2117,7 +2117,7 @@ LABEL_14:
     v60 = v66;
     if (!(v16 | v17))
     {
-      if (v13 - 3 > 1)
+      if (orientation - 3 > 1)
       {
         goto LABEL_13;
       }
@@ -2214,9 +2214,9 @@ LABEL_12:
   v24 = v29;
   v25 = v30;
 LABEL_13:
-  if (v13 >= 3)
+  if (orientation >= 3)
   {
-    if (v13 == 3)
+    if (orientation == 3)
     {
       rect = v10;
       v76.origin.x = v22;
@@ -2247,7 +2247,7 @@ LABEL_13:
       v79.size.width = rect;
       v79.size.height = v12;
       v6 = CGRectGetMaxX(v79) + -40.0 - v32;
-      if (!(v15 | ![(CAMFullscreenViewfinder *)self isSystemOverlayVisible]) && [(CAMFullscreenViewfinder *)self visibleInstructionLabel])
+      if (!(isElapsedTimeViewVisible | ![(CAMFullscreenViewfinder *)self isSystemOverlayVisible]) && [(CAMFullscreenViewfinder *)self visibleInstructionLabel])
       {
         v6 = v6 + -28.0;
       }
@@ -2255,7 +2255,7 @@ LABEL_13:
 
     else
     {
-      if (v13 != 4)
+      if (orientation != 4)
       {
         goto LABEL_27;
       }
@@ -2298,7 +2298,7 @@ LABEL_13:
   v8 = MinY;
   v12 = 40.0;
 LABEL_27:
-  CAMViewGeometryForOrientedFrame(v13, retstr, v6, v8, v10, v12);
+  CAMViewGeometryForOrientedFrame(orientation, retstr, v6, v8, v10, v12);
 
   return result;
 }
@@ -2321,8 +2321,8 @@ LABEL_27:
 
 - (CGRect)_frameForControlDrawer
 {
-  v3 = [(CAMFullscreenViewfinder *)self _layout];
-  [v3 alignmentRectForShutterControl];
+  _layout = [(CAMFullscreenViewfinder *)self _layout];
+  [_layout alignmentRectForShutterControl];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -2360,9 +2360,9 @@ LABEL_27:
 
 - (CGRect)_frameForFlipButton
 {
-  v3 = [(CAMFullscreenViewfinder *)self _layout];
-  v4 = [(CAMFullscreenViewfinder *)self flipButton];
-  [v3 frameForBottomRightControl:v4];
+  _layout = [(CAMFullscreenViewfinder *)self _layout];
+  flipButton = [(CAMFullscreenViewfinder *)self flipButton];
+  [_layout frameForBottomRightControl:flipButton];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -2381,11 +2381,11 @@ LABEL_27:
 
 - ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForMRCButton
 {
-  v35 = [(CAMFullscreenViewfinder *)self machineReadableCodeButton];
-  v5 = [(CAMFullscreenViewfinder *)self orientation];
-  v6 = [(CAMFullscreenViewfinder *)self zoomControl];
-  v7 = [(CAMFullscreenViewfinder *)self zoomSlider];
-  [(CAMFullscreenViewfinder *)self _centerYForZoomControl:v6 zoomSlider:v7];
+  machineReadableCodeButton = [(CAMFullscreenViewfinder *)self machineReadableCodeButton];
+  orientation = [(CAMFullscreenViewfinder *)self orientation];
+  zoomControl = [(CAMFullscreenViewfinder *)self zoomControl];
+  zoomSlider = [(CAMFullscreenViewfinder *)self zoomSlider];
+  [(CAMFullscreenViewfinder *)self _centerYForZoomControl:zoomControl zoomSlider:zoomSlider];
   MidX = v8;
 
   [(CAMFullscreenViewfinder *)self _imageAnalysisButtonAlignmentRectForCenterY:MidX];
@@ -2394,7 +2394,7 @@ LABEL_27:
   width = v37.size.width;
   height = v37.size.height;
   v38 = CGRectInset(v37, -5.0, -5.0);
-  if (v5 - 3 > 1)
+  if (orientation - 3 > 1)
   {
     v29 = v38.origin.x;
     [(CAMFullscreenViewfinder *)self bounds];
@@ -2405,9 +2405,9 @@ LABEL_27:
   else
   {
     v33 = v38.origin.y;
-    v14 = [(CAMFullscreenViewfinder *)self _viewportAspectRatioForControlsOverPreview];
-    v15 = [(CAMFullscreenViewfinder *)self _layout];
-    [v15 viewportFrameForAspectRatio:v14 accessoryAreaExpanded:-[CAMFullscreenViewfinder isControlDrawerExpanded](self smartStyleControlsExpanded:{"isControlDrawerExpanded"), -[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
+    _viewportAspectRatioForControlsOverPreview = [(CAMFullscreenViewfinder *)self _viewportAspectRatioForControlsOverPreview];
+    _layout = [(CAMFullscreenViewfinder *)self _layout];
+    [_layout viewportFrameForAspectRatio:_viewportAspectRatioForControlsOverPreview accessoryAreaExpanded:-[CAMFullscreenViewfinder isControlDrawerExpanded](self smartStyleControlsExpanded:{"isControlDrawerExpanded"), -[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
     v17 = v16;
     v19 = v18;
     v34 = MidX;
@@ -2435,10 +2435,10 @@ LABEL_27:
   *&retstr->var2.a = 0u;
   retstr->var0.origin = 0u;
   retstr->var0.size = 0u;
-  [(CAMFullscreenViewfinder *)self _geometryForBottomCenteredView:v35 margins:v28, v27];
-  if (v5 >= 3)
+  [(CAMFullscreenViewfinder *)self _geometryForBottomCenteredView:machineReadableCodeButton margins:v28, v27];
+  if (orientation >= 3)
   {
-    if (v5 != 4)
+    if (orientation != 4)
     {
       goto LABEL_9;
     }
@@ -2464,9 +2464,9 @@ LABEL_9:
 
 - (BOOL)_canLayoutLightingControls
 {
-  v3 = [(CAMFullscreenViewfinder *)self lightingControl];
+  lightingControl = [(CAMFullscreenViewfinder *)self lightingControl];
 
-  if (!v3)
+  if (!lightingControl)
   {
     return 0;
   }
@@ -2476,27 +2476,27 @@ LABEL_9:
 
 - (CGRect)_frameForLightingControl
 {
-  v3 = [(CAMFullscreenViewfinder *)self lightingControl];
-  v4 = [(CAMFullscreenViewfinder *)self viewportAspectRatio];
-  if (v4 == 1)
+  lightingControl = [(CAMFullscreenViewfinder *)self lightingControl];
+  viewportAspectRatio = [(CAMFullscreenViewfinder *)self viewportAspectRatio];
+  if (viewportAspectRatio == 1)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = v4;
+    v5 = viewportAspectRatio;
   }
 
-  v6 = [(CAMFullscreenViewfinder *)self _layout];
-  [v6 viewportFrameForAspectRatio:v5 accessoryAreaExpanded:-[CAMFullscreenViewfinder isControlDrawerExpanded](self smartStyleControlsExpanded:{"isControlDrawerExpanded"), -[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
+  _layout = [(CAMFullscreenViewfinder *)self _layout];
+  [_layout viewportFrameForAspectRatio:v5 accessoryAreaExpanded:-[CAMFullscreenViewfinder isControlDrawerExpanded](self smartStyleControlsExpanded:{"isControlDrawerExpanded"), -[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
   v8 = v7;
   v10 = v9;
 
-  [v3 contentHeightForWidth:v10];
+  [lightingControl contentHeightForWidth:v10];
   v12 = v11;
   [(CAMFullscreenViewfinder *)self _referenceYForControlsAboveShutterButton];
-  [v3 frameForAlignmentRect:{v8, v13 - v12, v10, v12}];
+  [lightingControl frameForAlignmentRect:{v8, v13 - v12, v10, v12}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -2515,8 +2515,8 @@ LABEL_9:
 
 - (double)_additionalBottomPaddingForLightingControl
 {
-  v3 = [(CAMFullscreenViewfinder *)self _layout];
-  [v3 viewportFrameForAspectRatio:-[CAMFullscreenViewfinder viewportAspectRatio](self accessoryAreaExpanded:"viewportAspectRatio") smartStyleControlsExpanded:{-[CAMFullscreenViewfinder isControlDrawerExpanded](self, "isControlDrawerExpanded"), -[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
+  _layout = [(CAMFullscreenViewfinder *)self _layout];
+  [_layout viewportFrameForAspectRatio:-[CAMFullscreenViewfinder viewportAspectRatio](self accessoryAreaExpanded:"viewportAspectRatio") smartStyleControlsExpanded:{-[CAMFullscreenViewfinder isControlDrawerExpanded](self, "isControlDrawerExpanded"), -[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -2556,10 +2556,10 @@ LABEL_9:
 
   else
   {
-    v4 = [(CAMFullscreenViewfinder *)self viewportAspectRatio];
-    if (v4 <= 6)
+    viewportAspectRatio = [(CAMFullscreenViewfinder *)self viewportAspectRatio];
+    if (viewportAspectRatio <= 6)
     {
-      v3 = 0x6Du >> v4;
+      v3 = 0x6Du >> viewportAspectRatio;
     }
 
     else
@@ -2568,13 +2568,13 @@ LABEL_9:
     }
   }
 
-  v5 = [(CAMFullscreenViewfinder *)self lightingControl];
-  [v5 setClipsToBounds:v3 & 1];
+  lightingControl = [(CAMFullscreenViewfinder *)self lightingControl];
+  [lightingControl setClipsToBounds:v3 & 1];
 }
 
-- (CGRect)_imageAnalysisButtonFrameForZoomControl:(id)a3 zoomSlider:(id)a4
+- (CGRect)_imageAnalysisButtonFrameForZoomControl:(id)control zoomSlider:(id)slider
 {
-  [(CAMFullscreenViewfinder *)self _centerYForZoomControl:a3 zoomSlider:a4];
+  [(CAMFullscreenViewfinder *)self _centerYForZoomControl:control zoomSlider:slider];
 
   [(CAMFullscreenViewfinder *)self _imageAnalysisButtonFrameForCenterY:?];
   result.size.height = v8;
@@ -2584,27 +2584,27 @@ LABEL_9:
   return result;
 }
 
-- (double)_centerYForZoomControl:(id)a3 zoomSlider:(id)a4
+- (double)_centerYForZoomControl:(id)control zoomSlider:(id)slider
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  controlCopy = control;
+  sliderCopy = slider;
+  v8 = sliderCopy;
+  if (controlCopy)
   {
-    v9 = [(CAMFullscreenViewfinder *)self traitCollection];
-    v10 = [v9 preferredContentSizeCategory];
-    [CAMZoomButton circleDiameterForContentSize:v10];
+    traitCollection = [(CAMFullscreenViewfinder *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    [CAMZoomButton circleDiameterForContentSize:preferredContentSizeCategory];
     v12 = v11;
 
-    [v6 frame];
+    [controlCopy frame];
     v14 = v13;
-    [v6 zoomButtonMaxYWhenContracted];
+    [controlCopy zoomButtonMaxYWhenContracted];
     MidY = v15 + v14 + v12 * -0.5;
   }
 
-  else if (v7)
+  else if (sliderCopy)
   {
-    [v7 frame];
+    [sliderCopy frame];
     MidY = CGRectGetMidY(v18);
   }
 
@@ -2616,15 +2616,15 @@ LABEL_9:
   return MidY;
 }
 
-- (CGRect)_imageAnalysisButtonAlignmentRectForCenterY:(double)a3
+- (CGRect)_imageAnalysisButtonAlignmentRectForCenterY:(double)y
 {
-  v4 = [(CAMFullscreenViewfinder *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  [CAMZoomButton circleDiameterForContentSize:v5];
+  traitCollection = [(CAMFullscreenViewfinder *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [CAMZoomButton circleDiameterForContentSize:preferredContentSizeCategory];
   v7 = v6;
 
-  v8 = [(CAMFullscreenViewfinder *)self _layout];
-  [v8 alignmentRectForBottomRightControlOfSize:{v7, v7}];
+  _layout = [(CAMFullscreenViewfinder *)self _layout];
+  [_layout alignmentRectForBottomRightControlOfSize:{v7, v7}];
 
   UIRoundToViewScale();
   UIRectCenteredXInRectScale();
@@ -2635,9 +2635,9 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)_imageAnalysisButtonFrameForCenterY:(double)a3
+- (CGRect)_imageAnalysisButtonFrameForCenterY:(double)y
 {
-  [(CAMFullscreenViewfinder *)self _imageAnalysisButtonAlignmentRectForCenterY:a3];
+  [(CAMFullscreenViewfinder *)self _imageAnalysisButtonAlignmentRectForCenterY:y];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -2657,19 +2657,19 @@ LABEL_9:
   return CGRectInset(*&v14, v13, -15.0);
 }
 
-- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForInstructionLabel:(SEL)a3 belowInstructionLabelGeometry:(id)a4 elapsedTimeViewGeometry:(id *)a5
+- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForInstructionLabel:(SEL)label belowInstructionLabelGeometry:(id)geometry elapsedTimeViewGeometry:(id *)viewGeometry
 {
-  v10 = a4;
+  geometryCopy = geometry;
   [(CAMFullscreenViewfinder *)self frameForReticleViewport];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(CAMFullscreenViewfinder *)self orientation];
-  v20 = v19;
+  orientation = [(CAMFullscreenViewfinder *)self orientation];
+  v20 = orientation;
   *retstr = *CAMViewGeometryZero;
-  v21 = v19 - 3;
-  if ((v19 - 3) >= 2)
+  v21 = orientation - 3;
+  if ((orientation - 3) >= 2)
   {
     v22 = v18;
   }
@@ -2679,7 +2679,7 @@ LABEL_9:
     v22 = v16;
   }
 
-  if ((v19 - 3) >= 2)
+  if ((orientation - 3) >= 2)
   {
     v23 = v16;
   }
@@ -2689,7 +2689,7 @@ LABEL_9:
     v23 = v18;
   }
 
-  [v10 sizeThatFits:{v23 + -25.0, v22 + -25.0}];
+  [geometryCopy sizeThatFits:{v23 + -25.0, v22 + -25.0}];
   v25 = v24;
   v27 = v26;
 
@@ -2706,7 +2706,7 @@ LABEL_9:
   {
     if ([(CAMFullscreenViewfinder *)self _showSemanticStylePicker])
     {
-      v32 = [(CAMFullscreenViewfinder *)self semanticStylePicker];
+      semanticStylePicker = [(CAMFullscreenViewfinder *)self semanticStylePicker];
     }
 
     else
@@ -2716,11 +2716,11 @@ LABEL_9:
         goto LABEL_13;
       }
 
-      v32 = [(CAMFullscreenViewfinder *)self smartStylePicker];
+      semanticStylePicker = [(CAMFullscreenViewfinder *)self smartStylePicker];
     }
 
-    v33 = v32;
-    [v32 spacerWidth];
+    v33 = semanticStylePicker;
+    [semanticStylePicker spacerWidth];
     v31 = v31 + v34 + 10.0;
   }
 
@@ -2755,14 +2755,14 @@ LABEL_13:
   v83 = *CAMViewGeometryZero;
   v84 = *&CAMViewGeometryZero[16];
   IsEqualToViewGeometry = CAMViewGeometryIsEqualToViewGeometry(&origin, &v83);
-  v46 = *&a5->var2.a;
-  var1 = a5->var1;
+  v46 = *&viewGeometry->var2.a;
+  var1 = viewGeometry->var1;
   v92 = v46;
-  v47 = *&a5->var2.tx;
-  v93 = *&a5->var2.c;
+  v47 = *&viewGeometry->var2.tx;
+  v93 = *&viewGeometry->var2.c;
   v94 = v47;
-  v48 = a5->var0.size;
-  origin = a5->var0.origin;
+  v48 = viewGeometry->var0.size;
+  origin = viewGeometry->var0.origin;
   v90 = v48;
   v85 = *&CAMViewGeometryZero[32];
   v86 = *&CAMViewGeometryZero[48];
@@ -2771,14 +2771,14 @@ LABEL_13:
   v83 = *CAMViewGeometryZero;
   v84 = *&CAMViewGeometryZero[16];
   v49 = CAMViewGeometryIsEqualToViewGeometry(&origin, &v83);
-  v50 = *&a5->var2.a;
-  var1 = a5->var1;
+  v50 = *&viewGeometry->var2.a;
+  var1 = viewGeometry->var1;
   v92 = v50;
-  v51 = *&a5->var2.tx;
-  v93 = *&a5->var2.c;
+  v51 = *&viewGeometry->var2.tx;
+  v93 = *&viewGeometry->var2.c;
   v94 = v51;
-  v52 = a5->var0.size;
-  origin = a5->var0.origin;
+  v52 = viewGeometry->var0.size;
+  origin = viewGeometry->var0.origin;
   v90 = v52;
   CAMFrameForGeometry(&origin);
   v57 = v56;
@@ -2891,17 +2891,17 @@ LABEL_40:
 
 - ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForLandscapeLightingBadge
 {
-  v5 = [(CAMFullscreenViewfinder *)self lightingNameBadge];
-  v6 = v5;
+  lightingNameBadge = [(CAMFullscreenViewfinder *)self lightingNameBadge];
+  v6 = lightingNameBadge;
   retstr->var0.origin = 0u;
   retstr->var0.size = 0u;
   retstr->var1 = 0u;
   *&retstr->var2.a = 0u;
   *&retstr->var2.c = 0u;
   *&retstr->var2.tx = 0u;
-  if (v5)
+  if (lightingNameBadge)
   {
-    CAMViewGetGeometry(v5, retstr);
+    CAMViewGetGeometry(lightingNameBadge, retstr);
     [v6 bounds];
     v7 = CGRectEqualToRect(v15, *MEMORY[0x1E695F058]);
   }
@@ -2931,33 +2931,33 @@ LABEL_40:
   return result;
 }
 
-- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForBottomCenteredView:(SEL)a3 margins:(id)a4
+- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForBottomCenteredView:(SEL)view margins:(id)margins
 {
   height = a5.height;
   width = a5.width;
-  v19 = a4;
-  v8 = [(CAMFullscreenViewfinder *)self _viewportAspectRatioForControlsOverPreview];
-  v9 = [(CAMFullscreenViewfinder *)self _layout];
-  [v9 viewportFrameForAspectRatio:v8 accessoryAreaExpanded:-[CAMFullscreenViewfinder isControlDrawerExpanded](self smartStyleControlsExpanded:{"isControlDrawerExpanded"), -[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
+  marginsCopy = margins;
+  _viewportAspectRatioForControlsOverPreview = [(CAMFullscreenViewfinder *)self _viewportAspectRatioForControlsOverPreview];
+  _layout = [(CAMFullscreenViewfinder *)self _layout];
+  [_layout viewportFrameForAspectRatio:_viewportAspectRatioForControlsOverPreview accessoryAreaExpanded:-[CAMFullscreenViewfinder isControlDrawerExpanded](self smartStyleControlsExpanded:{"isControlDrawerExpanded"), -[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  [(CAMFullscreenViewfinder *)self _geometryForBottomCenteredView:v19 margins:width aroundFrame:height, v11, v13, v15, v17];
+  [(CAMFullscreenViewfinder *)self _geometryForBottomCenteredView:marginsCopy margins:width aroundFrame:height, v11, v13, v15, v17];
 
   return result;
 }
 
-- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForBottomCenteredView:(SEL)a3 margins:(id)a4 aroundFrame:(CGSize)a5
+- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForBottomCenteredView:(SEL)view margins:(id)margins aroundFrame:(CGSize)frame
 {
   height = a6.size.height;
   width = a6.size.width;
   y = a6.origin.y;
   x = a6.origin.x;
-  v10 = a5.height;
-  v11 = a5.width;
-  v14 = a4;
+  v10 = frame.height;
+  v11 = frame.width;
+  marginsCopy = margins;
   v43.origin.x = x;
   v43.origin.y = y;
   v43.size.width = width;
@@ -2967,23 +2967,23 @@ LABEL_40:
   v16 = v44.origin.y;
   v32 = v44.size.width;
   v33 = v44.size.height;
-  v17 = [(CAMFullscreenViewfinder *)self orientation];
+  orientation = [(CAMFullscreenViewfinder *)self orientation];
   v41 = 0u;
   v42 = 0u;
   v40 = 0u;
-  CAMOrientationTransform(v17, &v40);
-  [v14 sizeThatFits:{vmlaq_n_f64(vmulq_n_f64(v41, v33), v40, v32)}];
+  CAMOrientationTransform(orientation, &v40);
+  [marginsCopy sizeThatFits:{vmlaq_n_f64(vmulq_n_f64(v41, v33), v40, v32)}];
   v19 = v18;
   v21 = v20;
 
   UIRectGetCenter();
   v38 = v22;
   v39 = v23;
-  if (v17 >= 3)
+  if (orientation >= 3)
   {
     v24 = v32;
     v25 = v33;
-    if (v17 == 3)
+    if (orientation == 3)
     {
       v29 = v15;
       v30 = v16;
@@ -2992,7 +2992,7 @@ LABEL_40:
 
     else
     {
-      if (v17 != 4)
+      if (orientation != 4)
       {
         goto LABEL_8;
       }
@@ -3050,7 +3050,7 @@ LABEL_8:
   return result;
 }
 
-- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForTextInteractionInsertWithViewport:(SEL)a3
+- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForTextInteractionInsertWithViewport:(SEL)viewport
 {
   height = a4.size.height;
   width = a4.size.width;
@@ -3062,51 +3062,51 @@ LABEL_8:
   *&retstr->var2.a = 0u;
   retstr->var0.origin = 0u;
   retstr->var0.size = 0u;
-  v9 = [(CAMFullscreenViewfinder *)self orientation];
+  orientation = [(CAMFullscreenViewfinder *)self orientation];
 
-  CAMViewGeometryForOrientedFrame(v9, retstr, x, y, width, height);
+  CAMViewGeometryForOrientedFrame(orientation, retstr, x, y, width, height);
   return result;
 }
 
 - (void)_applyTextInsertContentInsets
 {
-  v40 = [(CAMFullscreenViewfinder *)self textInteractionInsert];
-  [v40 contentInsets];
+  textInteractionInsert = [(CAMFullscreenViewfinder *)self textInteractionInsert];
+  [textInteractionInsert contentInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CAMFullscreenViewfinder *)self orientation];
-  v12 = [(CAMFullscreenViewfinder *)self imageAnalysisInstructionLabel];
+  orientation = [(CAMFullscreenViewfinder *)self orientation];
+  imageAnalysisInstructionLabel = [(CAMFullscreenViewfinder *)self imageAnalysisInstructionLabel];
 
-  if (v12)
+  if (imageAnalysisInstructionLabel)
   {
-    v13 = [(CAMFullscreenViewfinder *)self imageAnalysisInstructionLabel];
-    [v13 frame];
+    imageAnalysisInstructionLabel2 = [(CAMFullscreenViewfinder *)self imageAnalysisInstructionLabel];
+    [imageAnalysisInstructionLabel2 frame];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(CAMFullscreenViewfinder *)self imageAnalysisInstructionLabel];
-    v23 = [v22 superview];
-    [v40 convertRect:v23 fromView:{v15, v17, v19, v21}];
+    imageAnalysisInstructionLabel3 = [(CAMFullscreenViewfinder *)self imageAnalysisInstructionLabel];
+    superview = [imageAnalysisInstructionLabel3 superview];
+    [textInteractionInsert convertRect:superview fromView:{v15, v17, v19, v21}];
     v25 = v24;
     v27 = v26;
 
-    if (v11 == 2)
+    if (orientation == 2)
     {
-      [v40 bounds];
+      [textInteractionInsert bounds];
       v8 = v28 + v29 - v25 + 8.0;
       [(CAMFullscreenViewfinder *)self _frameForActionInfoView];
       v32 = v31;
 LABEL_5:
       v34 = v32 + v30;
-      [v40 bounds];
+      [textInteractionInsert bounds];
       v4 = v34 - v35 + 8.0;
       goto LABEL_8;
     }
 
-    [v40 bounds];
+    [textInteractionInsert bounds];
     v4 = v25 + v27 - v36 + 8.0;
     [(CAMFullscreenViewfinder *)self _frameForActionInfoView];
     v32 = v37;
@@ -3116,45 +3116,45 @@ LABEL_5:
   {
     [(CAMFullscreenViewfinder *)self _frameForActionInfoView];
     v32 = v33;
-    if (v11 == 2)
+    if (orientation == 2)
     {
       goto LABEL_5;
     }
   }
 
-  [v40 bounds];
+  [textInteractionInsert bounds];
   v8 = v38 + v39 - v32 + 8.0;
 LABEL_8:
-  [v40 setContentInsets:{v4, v6, v8, v10}];
+  [textInteractionInsert setContentInsets:{v4, v6, v8, v10}];
 }
 
 - (CGRect)_frameForActionInfoView
 {
-  v3 = [(CAMFullscreenViewfinder *)self imageAnalysisButton];
-  v4 = [(CAMFullscreenViewfinder *)self textInteractionInsert];
-  [v3 bounds];
-  [v4 convertRect:v3 fromView:?];
+  imageAnalysisButton = [(CAMFullscreenViewfinder *)self imageAnalysisButton];
+  textInteractionInsert = [(CAMFullscreenViewfinder *)self textInteractionInsert];
+  [imageAnalysisButton bounds];
+  [textInteractionInsert convertRect:imageAnalysisButton fromView:?];
   x = v37.origin.x;
   y = v37.origin.y;
   width = v37.size.width;
   height = v37.size.height;
   v9 = CGRectGetWidth(v37);
-  [v3 backgroundDiameter];
+  [imageAnalysisButton backgroundDiameter];
   v36 = (v9 - v10) * 0.5;
-  [v4 bounds];
+  [textInteractionInsert bounds];
   v11 = CGRectGetWidth(v38);
-  [v3 backgroundDiameter];
+  [imageAnalysisButton backgroundDiameter];
   v13 = v12;
-  v14 = [v4 imageInteraction];
-  [v14 actionInfoEdgeInsets];
+  imageInteraction = [textInteractionInsert imageInteraction];
+  [imageInteraction actionInfoEdgeInsets];
   v16 = v15;
 
-  v17 = [(CAMFullscreenViewfinder *)self orientation];
-  if (v17 > 2)
+  orientation = [(CAMFullscreenViewfinder *)self orientation];
+  if (orientation > 2)
   {
-    if (v17 == 3)
+    if (orientation == 3)
     {
-      [v4 bounds];
+      [textInteractionInsert bounds];
       CGRectGetMaxY(v48);
       v49.origin.x = x;
       v49.origin.y = y;
@@ -3169,7 +3169,7 @@ LABEL_8:
       goto LABEL_10;
     }
 
-    if (v17 != 4)
+    if (orientation != 4)
     {
       goto LABEL_10;
     }
@@ -3177,9 +3177,9 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (v17 >= 2)
+  if (orientation >= 2)
   {
-    if (v17 != 2)
+    if (orientation != 2)
     {
       goto LABEL_10;
     }
@@ -3254,58 +3254,58 @@ LABEL_10:
 
 - (void)_layoutPanoramaView
 {
-  v3 = [(CAMFullscreenViewfinder *)self panoramaView];
+  panoramaView = [(CAMFullscreenViewfinder *)self panoramaView];
   v53 = 0u;
   v54 = 0u;
   v52 = 0u;
   v4 = [(CAMFullscreenViewfinder *)self previewView:CAMTransformCorrectingForOrientation([(CAMFullscreenViewfinder *)self previewViewOrientation]];
-  v5 = [(CAMFullscreenViewfinder *)self window];
-  v6 = [v5 screen];
-  [v6 _referenceBounds];
+  window = [(CAMFullscreenViewfinder *)self window];
+  screen = [window screen];
+  [screen _referenceBounds];
 
-  [v3 panoramaCaptureSize];
+  [panoramaView panoramaCaptureSize];
   [CAMPanoramaUtilities panoramaViewSizeForCaptureSize:3 referenceBounds:*MEMORY[0x1E695F058] chromeSidebarFrame:*(MEMORY[0x1E695F058] + 8) layoutStyle:*(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v8 = v7;
   v10 = v9;
   [v4 center];
   v12 = v11;
   v14 = v13;
-  [v3 setBounds:{0.0, 0.0, v8, v10}];
-  [v3 setCenter:{v12, v14}];
+  [panoramaView setBounds:{0.0, 0.0, v8, v10}];
+  [panoramaView setCenter:{v12, v14}];
   v51[0] = v52;
   v51[1] = v53;
   v51[2] = v54;
-  [v3 setTransform:v51];
-  v15 = [(CAMFullscreenViewfinder *)self zoomControl];
-  if (v15)
+  [panoramaView setTransform:v51];
+  zoomControl = [(CAMFullscreenViewfinder *)self zoomControl];
+  if (zoomControl)
   {
-    v16 = v15;
-    v17 = [(CAMFullscreenViewfinder *)self isZoomControlVisible];
+    v16 = zoomControl;
+    isZoomControlVisible = [(CAMFullscreenViewfinder *)self isZoomControlVisible];
 
-    if (v17)
+    if (isZoomControlVisible)
     {
-      v18 = [(CAMFullscreenViewfinder *)self panoramaView];
-      [v18 layoutIfNeeded];
+      panoramaView2 = [(CAMFullscreenViewfinder *)self panoramaView];
+      [panoramaView2 layoutIfNeeded];
 
-      v19 = [(CAMFullscreenViewfinder *)self zoomControl];
-      [v19 buttonPlatterDefaultFrame];
+      zoomControl2 = [(CAMFullscreenViewfinder *)self zoomControl];
+      [zoomControl2 buttonPlatterDefaultFrame];
       v21 = v20;
       v23 = v22;
       v25 = v24;
       v27 = v26;
-      v28 = [(CAMFullscreenViewfinder *)self zoomControl];
-      [(CAMFullscreenViewfinder *)self convertRect:v28 fromView:v21, v23, v25, v27];
+      zoomControl3 = [(CAMFullscreenViewfinder *)self zoomControl];
+      [(CAMFullscreenViewfinder *)self convertRect:zoomControl3 fromView:v21, v23, v25, v27];
       v30 = v29;
 
-      v31 = [(CAMFullscreenViewfinder *)self panoramaView];
-      v32 = [v31 instructionView];
-      [v32 frame];
+      panoramaView3 = [(CAMFullscreenViewfinder *)self panoramaView];
+      instructionView = [panoramaView3 instructionView];
+      [instructionView frame];
       v34 = v33;
       v36 = v35;
       v38 = v37;
       v40 = v39;
-      v41 = [(CAMFullscreenViewfinder *)self panoramaView];
-      [(CAMFullscreenViewfinder *)self convertRect:v41 fromView:v34, v36, v38, v40];
+      panoramaView4 = [(CAMFullscreenViewfinder *)self panoramaView];
+      [(CAMFullscreenViewfinder *)self convertRect:panoramaView4 fromView:v34, v36, v38, v40];
       v43 = v42;
       v45 = v44;
       v47 = v46;
@@ -3323,42 +3323,42 @@ LABEL_10:
 
       if (v50 > 0.0)
       {
-        [v3 setCenter:{v12, v14 - v50}];
+        [panoramaView setCenter:{v12, v14 - v50}];
       }
     }
   }
 }
 
-- (CGRect)_frameForSpatialRecordingIndicatorWithElapsedTimeViewGeometry:(id *)a3 orientation:(int64_t)a4
+- (CGRect)_frameForSpatialRecordingIndicatorWithElapsedTimeViewGeometry:(id *)geometry orientation:(int64_t)orientation
 {
-  width = a3->var0.size.width;
-  height = a3->var0.size.height;
+  width = geometry->var0.size.width;
+  height = geometry->var0.size.height;
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  CAMOrientationTransform(a4, v15);
+  CAMOrientationTransform(orientation, v15);
   CAMViewGeometryMake(v15, &v16, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), 0.0, 0.0, height, height);
-  if (a4 >= 3)
+  if (orientation >= 3)
   {
     v8 = height * 0.5 + width * 0.5 + 10.0;
-    if (a4 == 3)
+    if (orientation == 3)
     {
-      x = a3->var1.x;
-      v10 = v8 + a3->var1.y;
+      x = geometry->var1.x;
+      v10 = v8 + geometry->var1.y;
     }
 
     else
     {
-      if (a4 != 4)
+      if (orientation != 4)
       {
         goto LABEL_8;
       }
 
-      x = a3->var1.x;
-      v10 = a3->var1.y - v8;
+      x = geometry->var1.x;
+      v10 = geometry->var1.y - v8;
     }
 
     *&v18 = x;
@@ -3389,8 +3389,8 @@ LABEL_8:
 
 - (void)_layoutSmartStyleNameBadge
 {
-  v3 = [(CAMFullscreenViewfinder *)self smartStyleNameBadge];
-  if (v3)
+  smartStyleNameBadge = [(CAMFullscreenViewfinder *)self smartStyleNameBadge];
+  if (smartStyleNameBadge)
   {
     v9 = 0u;
     v10 = 0u;
@@ -3398,18 +3398,18 @@ LABEL_8:
     v8 = 0u;
     v5 = 0u;
     v6 = 0u;
-    [(CAMFullscreenViewfinder *)self _geometryForSmartStyleNameBadge:v3];
+    [(CAMFullscreenViewfinder *)self _geometryForSmartStyleNameBadge:smartStyleNameBadge];
     v4[2] = v7;
     v4[3] = v8;
     v4[4] = v9;
     v4[5] = v10;
     v4[0] = v5;
     v4[1] = v6;
-    CAMApplyAnimationSensitiveGeometryToView(v4, v3);
+    CAMApplyAnimationSensitiveGeometryToView(v4, smartStyleNameBadge);
   }
 }
 
-- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForSmartStyleNameBadge:(SEL)a3
+- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForSmartStyleNameBadge:(SEL)badge
 {
   v15 = a4;
   if (([(CAMFullscreenViewfinder *)self orientation]- 3) > 1)
@@ -3428,8 +3428,8 @@ LABEL_8:
   else
   {
     v6 = CAMPixelWidthForView(self) + 10.0 + 10.0;
-    v7 = [(CAMFullscreenViewfinder *)self smartStylePicker];
-    [v7 spacerWidth];
+    smartStylePicker = [(CAMFullscreenViewfinder *)self smartStylePicker];
+    [smartStylePicker spacerWidth];
     v9 = v6 + v8;
 
     [(CAMFullscreenViewfinder *)self frameForReticleViewport];
@@ -3439,7 +3439,7 @@ LABEL_8:
   return result;
 }
 
-- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForFilterNameBadge:(SEL)a3
+- ($3B1716E7537CC2F16D6737AAC3CCCADB)_geometryForFilterNameBadge:(SEL)badge
 {
   *&retstr->var2.c = 0u;
   *&retstr->var2.tx = 0u;
@@ -3451,138 +3451,138 @@ LABEL_8:
   result = [(CAMFullscreenViewfinder *)self orientation];
   if (&result[-1].var2.ty + 7 <= 1)
   {
-    v9 = [(CAMFullscreenViewfinder *)self zoomControl];
-    v7 = [(CAMFullscreenViewfinder *)self zoomSlider];
-    [(CAMFullscreenViewfinder *)self _centerYForZoomControl:v9 zoomSlider:v7];
+    zoomControl = [(CAMFullscreenViewfinder *)self zoomControl];
+    zoomSlider = [(CAMFullscreenViewfinder *)self zoomSlider];
+    [(CAMFullscreenViewfinder *)self _centerYForZoomControl:zoomControl zoomSlider:zoomSlider];
     retstr->var1.y = v8;
   }
 
   return result;
 }
 
-- (void)setSmartFramingFieldOfView:(int64_t)a3 useTransition:(BOOL)a4 animated:(BOOL)a5
+- (void)setSmartFramingFieldOfView:(int64_t)view useTransition:(BOOL)transition animated:(BOOL)animated
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (self->_smartFramingFieldOfView != a3)
+  if (self->_smartFramingFieldOfView != view)
   {
-    v5 = a5;
-    v6 = a4;
-    self->_smartFramingFieldOfView = a3;
+    animatedCopy = animated;
+    transitionCopy = transition;
+    self->_smartFramingFieldOfView = view;
     v9 = os_log_create("com.apple.camera", "SmartFraming");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = @"NO";
-      if (v6)
+      if (transitionCopy)
       {
         v10 = @"YES";
       }
 
       v11 = v10;
       v13 = 134349314;
-      v14 = a3;
+      viewCopy = view;
       v15 = 2114;
       v16 = v11;
       _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "Setting smartFramingFieldOfView to: %{public}ld using transition: %{public}@", &v13, 0x16u);
     }
 
-    if (v6)
+    if (transitionCopy)
     {
-      v12 = [(CAMFullscreenViewfinder *)self _viewportAnimator];
-      [v12 setValue:@"CAMViewfinderAnimatorSmartFramingTransitionPercentCompleteKey" forKey:0.0];
+      _viewportAnimator = [(CAMFullscreenViewfinder *)self _viewportAnimator];
+      [_viewportAnimator setValue:@"CAMViewfinderAnimatorSmartFramingTransitionPercentCompleteKey" forKey:0.0];
 
       [(CAMFullscreenViewfinder *)self set_useSmartFramingTransition:1];
-      [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:v5];
+      [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:animatedCopy];
     }
   }
 }
 
-- (void)setOverCaptureGradientVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setOverCaptureGradientVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(CAMFullscreenViewfinder *)self _reticleView];
-  [v6 setOverCaptureGradientVisible:v5 animated:v4];
+  animatedCopy = animated;
+  visibleCopy = visible;
+  _reticleView = [(CAMFullscreenViewfinder *)self _reticleView];
+  [_reticleView setOverCaptureGradientVisible:visibleCopy animated:animatedCopy];
 }
 
 - (BOOL)overCaptureGradientVisible
 {
-  v2 = [(CAMFullscreenViewfinder *)self _reticleView];
-  v3 = [v2 overCaptureGradientVisible];
+  _reticleView = [(CAMFullscreenViewfinder *)self _reticleView];
+  overCaptureGradientVisible = [_reticleView overCaptureGradientVisible];
 
-  return v3;
+  return overCaptureGradientVisible;
 }
 
-- (void)setOverCaptureGradientHeight:(double)a3 animated:(BOOL)a4
+- (void)setOverCaptureGradientHeight:(double)height animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(CAMFullscreenViewfinder *)self _reticleView];
-  [v6 setOverCaptureGradientHeight:v4 animated:a3];
+  animatedCopy = animated;
+  _reticleView = [(CAMFullscreenViewfinder *)self _reticleView];
+  [_reticleView setOverCaptureGradientHeight:animatedCopy animated:height];
 }
 
 - (double)overCaptureGradientHeight
 {
-  v2 = [(CAMFullscreenViewfinder *)self _reticleView];
-  [v2 overCaptureGradientHeight];
+  _reticleView = [(CAMFullscreenViewfinder *)self _reticleView];
+  [_reticleView overCaptureGradientHeight];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPortraitControlsAllowed:(BOOL)a3 animated:(BOOL)a4
+- (void)setPortraitControlsAllowed:(BOOL)allowed animated:(BOOL)animated
 {
-  if (self->_portraitControlsAllowed != a3)
+  if (self->_portraitControlsAllowed != allowed)
   {
-    v4 = a4;
+    animatedCopy = animated;
     [(CAMFullscreenViewfinder *)self _loadPortraitControlsIfNeeded];
-    if (v4)
+    if (animatedCopy)
     {
       [(CAMFullscreenViewfinder *)self layoutIfNeeded];
     }
 
-    self->_portraitControlsAllowed = a3;
-    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:v4];
+    self->_portraitControlsAllowed = allowed;
+    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:animatedCopy];
 
-    [(CAMFullscreenViewfinder *)self _updateZoomControlForLayoutConflictsAnimated:v4];
+    [(CAMFullscreenViewfinder *)self _updateZoomControlForLayoutConflictsAnimated:animatedCopy];
   }
 }
 
-- (void)setShallowDepthOfFieldStatus:(int64_t)a3 animated:(BOOL)a4
+- (void)setShallowDepthOfFieldStatus:(int64_t)status animated:(BOOL)animated
 {
-  if (self->_shallowDepthOfFieldStatus != a3)
+  if (self->_shallowDepthOfFieldStatus != status)
   {
-    v4 = a4;
-    if (a4)
+    animatedCopy = animated;
+    if (animated)
     {
       [(CAMFullscreenViewfinder *)self layoutIfNeeded];
     }
 
-    self->_shallowDepthOfFieldStatus = a3;
-    v7 = [(CAMFullscreenViewfinder *)self portraitInstructionLabel];
-    [v7 setShallowDepthOfFieldStatus:a3];
+    self->_shallowDepthOfFieldStatus = status;
+    portraitInstructionLabel = [(CAMFullscreenViewfinder *)self portraitInstructionLabel];
+    [portraitInstructionLabel setShallowDepthOfFieldStatus:status];
 
-    [(CAMFullscreenViewfinder *)self _updatePortraitControlsHighlightAnimated:v4];
+    [(CAMFullscreenViewfinder *)self _updatePortraitControlsHighlightAnimated:animatedCopy];
 
-    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:v4];
+    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:animatedCopy];
   }
 }
 
-- (void)setLightingNameBadgesHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setLightingNameBadgesHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  if (self->_lightingNameBadgesHidden != a3)
+  if (self->_lightingNameBadgesHidden != hidden)
   {
-    self->_lightingNameBadgesHidden = a3;
-    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:a4];
+    self->_lightingNameBadgesHidden = hidden;
+    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animated];
   }
 }
 
 - (void)_loadPortraitControlsIfNeeded
 {
-  v3 = [(CAMFullscreenViewfinder *)self lightingControl];
+  lightingControl = [(CAMFullscreenViewfinder *)self lightingControl];
 
-  if (!v3)
+  if (!lightingControl)
   {
-    v12 = [(CAMFullscreenViewfinder *)self _contentView];
-    v4 = [(CAMFullscreenViewfinder *)self _contentViewBelowShutter];
+    _contentView = [(CAMFullscreenViewfinder *)self _contentView];
+    _contentViewBelowShutter = [(CAMFullscreenViewfinder *)self _contentViewBelowShutter];
     v5 = objc_alloc_init(MEMORY[0x1E6993868]);
     lightingControl = self->_lightingControl;
     self->_lightingControl = v5;
@@ -3593,8 +3593,8 @@ LABEL_8:
     [(CEKLightingControl *)self->_lightingControl preloadEffectChangeAnimation];
     [(CEKLightingControl *)self->_lightingControl setNameBadgeHidden:([(CAMFullscreenViewfinder *)self orientation]- 3) < 2];
     v7 = self->_lightingControl;
-    v8 = [(CAMFullscreenViewfinder *)self zoomControl];
-    [CAMView view:v4 insertSubview:v7 belowSubview:v8];
+    zoomControl = [(CAMFullscreenViewfinder *)self zoomControl];
+    [CAMView view:_contentViewBelowShutter insertSubview:v7 belowSubview:zoomControl];
 
     v9 = objc_alloc_init(MEMORY[0x1E6993878]);
     lightingNameBadge = self->_lightingNameBadge;
@@ -3603,26 +3603,26 @@ LABEL_8:
     [(CEKLightingNameBadge *)self->_lightingNameBadge setUserInteractionEnabled:0];
     [(CEKLightingNameBadge *)self->_lightingNameBadge setFontStyle:[(CAMFullscreenViewfinder *)self _badgeFontStyle]];
     [(CEKLightingNameBadge *)self->_lightingNameBadge setDelegate:self];
-    [v12 addSubview:self->_lightingNameBadge];
+    [_contentView addSubview:self->_lightingNameBadge];
     [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:0];
     [(CAMFullscreenViewfinder *)self _updatePortraitControlsHighlightAnimated:0];
     [(CAMFullscreenViewfinder *)self _updateLightingControlClipping];
-    v11 = [(CAMFullscreenViewfinder *)self delegate];
-    [v11 fullscreenViewfinderDidCreatePortraitControls:self];
+    delegate = [(CAMFullscreenViewfinder *)self delegate];
+    [delegate fullscreenViewfinderDidCreatePortraitControls:self];
   }
 }
 
-- (void)_updatePortraitControlsHighlightAnimated:(BOOL)a3
+- (void)_updatePortraitControlsHighlightAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CAMFullscreenViewfinder *)self shallowDepthOfFieldStatus];
-  v6 = v5 < 0xF;
-  v7 = 0x6202u >> v5;
-  v8 = [(CAMFullscreenViewfinder *)self lightingControl];
-  [v8 setHighlighted:v6 & v7 animated:v3];
+  animatedCopy = animated;
+  shallowDepthOfFieldStatus = [(CAMFullscreenViewfinder *)self shallowDepthOfFieldStatus];
+  v6 = shallowDepthOfFieldStatus < 0xF;
+  v7 = 0x6202u >> shallowDepthOfFieldStatus;
+  lightingControl = [(CAMFullscreenViewfinder *)self lightingControl];
+  [lightingControl setHighlighted:v6 & v7 animated:animatedCopy];
 
-  v9 = [(CAMFullscreenViewfinder *)self lightingNameBadge];
-  [v9 setHighlighted:v6 & v7];
+  lightingNameBadge = [(CAMFullscreenViewfinder *)self lightingNameBadge];
+  [lightingNameBadge setHighlighted:v6 & v7];
 }
 
 - (void)_loadFilterControlsIfNeeded
@@ -3635,56 +3635,56 @@ LABEL_8:
 
     [(CEKBadgeView *)self->_filterNameBadge setDelegate:self];
     [(CEKBadgeTextView *)self->_filterNameBadge setFontStyle:[(CAMFullscreenViewfinder *)self _badgeFontStyle]];
-    v5 = [(CAMFullscreenViewfinder *)self _contentView];
-    [v5 addSubview:self->_filterNameBadge];
+    _contentView = [(CAMFullscreenViewfinder *)self _contentView];
+    [_contentView addSubview:self->_filterNameBadge];
   }
 }
 
-- (void)setWantsSmartStylePicker:(BOOL)a3 animated:(BOOL)a4
+- (void)setWantsSmartStylePicker:(BOOL)picker animated:(BOOL)animated
 {
-  if (self->_wantsSmartStylePicker != a3)
+  if (self->_wantsSmartStylePicker != picker)
   {
-    self->_wantsSmartStylePicker = a3;
-    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:a4];
+    self->_wantsSmartStylePicker = picker;
+    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animated];
   }
 }
 
 - (BOOL)isSmartStylePickerVisible
 {
-  v3 = [(CAMFullscreenViewfinder *)self smartStyleControlsVisible];
-  if (v3)
+  smartStyleControlsVisible = [(CAMFullscreenViewfinder *)self smartStyleControlsVisible];
+  if (smartStyleControlsVisible)
   {
 
-    LOBYTE(v3) = [(CAMFullscreenViewfinder *)self wantsSmartStylePicker];
+    LOBYTE(smartStyleControlsVisible) = [(CAMFullscreenViewfinder *)self wantsSmartStylePicker];
   }
 
-  return v3;
+  return smartStyleControlsVisible;
 }
 
-- (void)_setSmartStyleControlsVisible:(BOOL)a3 animated:(BOOL)a4 notifyDelegate:(BOOL)a5
+- (void)_setSmartStyleControlsVisible:(BOOL)visible animated:(BOOL)animated notifyDelegate:(BOOL)delegate
 {
-  if (self->_smartStyleControlsVisible != a3)
+  if (self->_smartStyleControlsVisible != visible)
   {
-    v5 = a5;
-    v6 = a4;
-    v7 = a3;
-    if (a3)
+    delegateCopy = delegate;
+    animatedCopy = animated;
+    visibleCopy = visible;
+    if (visible)
     {
       [(CAMFullscreenViewfinder *)self _loadSmartStyleControlsIfNeeded];
     }
 
-    if (v6)
+    if (animatedCopy)
     {
       [(CAMFullscreenViewfinder *)self layoutIfNeeded];
     }
 
-    self->_smartStyleControlsVisible = v7;
-    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:v6];
-    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:v6];
-    if (v5)
+    self->_smartStyleControlsVisible = visibleCopy;
+    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animatedCopy];
+    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:animatedCopy];
+    if (delegateCopy)
     {
-      v9 = [(CAMFullscreenViewfinder *)self delegate];
-      [v9 fullscreenViewfinder:self didChangeSmartStyleControlsVisibility:v7 animated:v6];
+      delegate = [(CAMFullscreenViewfinder *)self delegate];
+      [delegate fullscreenViewfinder:self didChangeSmartStyleControlsVisibility:visibleCopy animated:animatedCopy];
     }
   }
 }
@@ -3700,8 +3700,8 @@ LABEL_8:
     [(CAMSmartStyleNameBadge *)self->_smartStyleNameBadge setUserInteractionEnabled:0];
     [(CEKBadgeView *)self->_smartStyleNameBadge setDelegate:self];
     [(CEKBadgeTextView *)self->_smartStyleNameBadge setFontStyle:[(CAMFullscreenViewfinder *)self _badgeFontStyle]];
-    v5 = [(CAMFullscreenViewfinder *)self _contentView];
-    [v5 addSubview:self->_smartStyleNameBadge];
+    _contentView = [(CAMFullscreenViewfinder *)self _contentView];
+    [_contentView addSubview:self->_smartStyleNameBadge];
 
     v6 = objc_alloc_init(CAMSemanticStylePicker);
     smartStylePicker = self->_smartStylePicker;
@@ -3712,14 +3712,14 @@ LABEL_8:
     [(CAMSemanticStylePicker *)self->_smartStylePicker setDelegate:self];
     [(CAMSemanticStylePicker *)self->_smartStylePicker setExpanded:0];
     [(CAMSemanticStylePicker *)self->_smartStylePicker setMaterial:[(CAMFullscreenViewfinder *)self material]];
-    v8 = [MEMORY[0x1E69DC888] blackColor];
-    [(CAMSemanticStylePicker *)self->_smartStylePicker setMaterialColor:v8];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(CAMSemanticStylePicker *)self->_smartStylePicker setMaterialColor:blackColor];
 
     [(CAMSemanticStylePicker *)self->_smartStylePicker setPageControlMaxNumberOfDots:5];
     [(CAMFullscreenViewfinder *)self _insertStylePicker:self->_smartStylePicker];
     [(CAMSmartStyleNameBadge *)self->_smartStyleNameBadge setAlpha:0.0];
-    v9 = [(CAMFullscreenViewfinder *)self delegate];
-    [v9 fullscreenViewfinderDidCreateSmartStyleControls:self];
+    delegate = [(CAMFullscreenViewfinder *)self delegate];
+    [delegate fullscreenViewfinderDidCreateSmartStyleControls:self];
 
     v10 = self->_smartStylePicker;
     [(CAMFullscreenViewfinder *)self frameForReticleViewport];
@@ -3729,24 +3729,24 @@ LABEL_8:
   }
 }
 
-- (void)_insertStylePicker:(id)a3
+- (void)_insertStylePicker:(id)picker
 {
-  v4 = a3;
-  v5 = [(CAMFullscreenViewfinder *)self chromeView];
-  v6 = v5;
-  if (v5)
+  pickerCopy = picker;
+  chromeView = [(CAMFullscreenViewfinder *)self chromeView];
+  v6 = chromeView;
+  if (chromeView)
   {
-    v7 = v5;
+    _reticleView = chromeView;
   }
 
   else
   {
-    v7 = [(CAMFullscreenViewfinder *)self _reticleView];
+    _reticleView = [(CAMFullscreenViewfinder *)self _reticleView];
   }
 
-  v8 = v7;
+  v8 = _reticleView;
 
-  [CAMView view:self insertSubview:v4 belowSubview:v8];
+  [CAMView view:self insertSubview:pickerCopy belowSubview:v8];
 }
 
 - (void)_loadSemanticStyleControlsIfNeeded
@@ -3759,28 +3759,28 @@ LABEL_8:
     self->_semanticStylePicker = v3;
 
     [(CAMSemanticStylePicker *)self->_semanticStylePicker setDelegate:self];
-    v5 = [(CAMFullscreenViewfinder *)self delegate];
-    v9 = [v5 fullscreenViewfinderSemanticStyleList:self];
+    delegate = [(CAMFullscreenViewfinder *)self delegate];
+    v9 = [delegate fullscreenViewfinderSemanticStyleList:self];
 
     -[CAMSemanticStylePicker setNumberOfStyles:](self->_semanticStylePicker, "setNumberOfStyles:", [v9 count]);
     [(CAMSemanticStylePicker *)self->_semanticStylePicker setExpanded:0];
     [(CAMSemanticStylePicker *)self->_semanticStylePicker setMaterial:[(CAMFullscreenViewfinder *)self material]];
-    v6 = [MEMORY[0x1E69DC888] blackColor];
-    [(CAMSemanticStylePicker *)self->_semanticStylePicker setMaterialColor:v6];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(CAMSemanticStylePicker *)self->_semanticStylePicker setMaterialColor:blackColor];
 
     [(CAMFullscreenViewfinder *)self _insertStylePicker:self->_semanticStylePicker];
     v7 = self->_semanticStylePicker;
     [(CAMFullscreenViewfinder *)self frameForReticleViewport];
     [(CAMFullscreenViewfinder *)self _updateSemanticStylePicker:v7 forViewportFrame:?];
-    v8 = [(CAMFullscreenViewfinder *)self delegate];
-    [v8 fullscreenViewfinderDidCreateSemanticStyleControls:self];
+    delegate2 = [(CAMFullscreenViewfinder *)self delegate];
+    [delegate2 fullscreenViewfinderDidCreateSemanticStyleControls:self];
   }
 }
 
-- (void)reloadSemanticStyleBadgesDelayIfNeeded:(BOOL)a3
+- (void)reloadSemanticStyleBadgesDelayIfNeeded:(BOOL)needed
 {
-  v5 = [(CAMFullscreenViewfinder *)self delegate];
-  v6 = [v5 fullscreenViewfinderSemanticStyleList:self];
+  delegate = [(CAMFullscreenViewfinder *)self delegate];
+  v6 = [delegate fullscreenViewfinderSemanticStyleList:self];
 
   if (!self->__semanticStyleBadges)
   {
@@ -3791,8 +3791,8 @@ LABEL_8:
 
   while (1)
   {
-    v12 = [(CAMFullscreenViewfinder *)self _semanticStyleBadges];
-    v13 = [v12 count];
+    _semanticStyleBadges = [(CAMFullscreenViewfinder *)self _semanticStyleBadges];
+    v13 = [_semanticStyleBadges count];
     v14 = [v6 count];
 
     if (v13 <= v14)
@@ -3800,16 +3800,16 @@ LABEL_8:
       break;
     }
 
-    v9 = [(CAMFullscreenViewfinder *)self _semanticStyleBadges];
-    v10 = [v9 lastObject];
+    _semanticStyleBadges2 = [(CAMFullscreenViewfinder *)self _semanticStyleBadges];
+    lastObject = [_semanticStyleBadges2 lastObject];
 
-    [v10 removeFromSuperview];
-    v11 = [(CAMFullscreenViewfinder *)self _semanticStyleBadges];
-    [v11 removeLastObject];
+    [lastObject removeFromSuperview];
+    _semanticStyleBadges3 = [(CAMFullscreenViewfinder *)self _semanticStyleBadges];
+    [_semanticStyleBadges3 removeLastObject];
   }
 
-  v15 = [(CAMFullscreenViewfinder *)self _semanticStyleBadges];
-  v16 = [v15 count];
+  _semanticStyleBadges4 = [(CAMFullscreenViewfinder *)self _semanticStyleBadges];
+  v16 = [_semanticStyleBadges4 count];
   v17 = [v6 count];
 
   if (v16 < v17)
@@ -3817,21 +3817,21 @@ LABEL_8:
     do
     {
       v18 = objc_alloc_init(CAMSemanticStyleMaskedBadge);
-      v19 = [(CAMSemanticStyleMaskedBadge *)v18 badgeView];
-      [v19 setDelegate:self];
+      badgeView = [(CAMSemanticStyleMaskedBadge *)v18 badgeView];
+      [badgeView setDelegate:self];
 
-      v20 = [(CAMFullscreenViewfinder *)self _badgeFontStyle];
-      v21 = [(CAMSemanticStyleMaskedBadge *)v18 badgeView];
-      [v21 setFontStyle:v20];
+      _badgeFontStyle = [(CAMFullscreenViewfinder *)self _badgeFontStyle];
+      badgeView2 = [(CAMSemanticStyleMaskedBadge *)v18 badgeView];
+      [badgeView2 setFontStyle:_badgeFontStyle];
 
-      v22 = [(CAMFullscreenViewfinder *)self _semanticStyleBadges];
-      [v22 addObject:v18];
+      _semanticStyleBadges5 = [(CAMFullscreenViewfinder *)self _semanticStyleBadges];
+      [_semanticStyleBadges5 addObject:v18];
 
-      v23 = [(CAMFullscreenViewfinder *)self _contentView];
-      [v23 addSubview:v18];
+      _contentView = [(CAMFullscreenViewfinder *)self _contentView];
+      [_contentView addSubview:v18];
 
-      v24 = [(CAMFullscreenViewfinder *)self _semanticStyleBadges];
-      v25 = [v24 count];
+      _semanticStyleBadges6 = [(CAMFullscreenViewfinder *)self _semanticStyleBadges];
+      v25 = [_semanticStyleBadges6 count];
       v26 = [v6 count];
     }
 
@@ -3843,7 +3843,7 @@ LABEL_8:
   v27[2] = __66__CAMFullscreenViewfinder_reloadSemanticStyleBadgesDelayIfNeeded___block_invoke;
   v27[3] = &unk_1E76F7800;
   v27[4] = self;
-  v28 = a3;
+  neededCopy = needed;
   [v6 enumerateObjectsUsingBlock:v27];
 }
 
@@ -3857,41 +3857,41 @@ void __66__CAMFullscreenViewfinder_reloadSemanticStyleBadgesDelayIfNeeded___bloc
   [v8 setSemanticStyle:v6 delayIfNeeded:*(a1 + 40)];
 }
 
-- (void)semanticStylePickerDidChangeSelectedStyle:(id)a3
+- (void)semanticStylePickerDidChangeSelectedStyle:(id)style
 {
-  v8 = a3;
-  v4 = [(CAMFullscreenViewfinder *)self semanticStylePicker];
+  styleCopy = style;
+  semanticStylePicker = [(CAMFullscreenViewfinder *)self semanticStylePicker];
 
-  if (v4 == v8)
+  if (semanticStylePicker == styleCopy)
   {
-    v7 = [(CAMFullscreenViewfinder *)self delegate];
-    [v7 fullscreenViewfinderDidChangeSemanticStyle:self];
+    delegate = [(CAMFullscreenViewfinder *)self delegate];
+    [delegate fullscreenViewfinderDidChangeSemanticStyle:self];
   }
 
   else
   {
-    v5 = [(CAMFullscreenViewfinder *)self smartStylePicker];
+    smartStylePicker = [(CAMFullscreenViewfinder *)self smartStylePicker];
 
-    v6 = v8;
-    if (v5 != v8)
+    v6 = styleCopy;
+    if (smartStylePicker != styleCopy)
     {
       goto LABEL_6;
     }
 
-    v7 = [(CAMFullscreenViewfinder *)self delegate];
-    [v7 fullscreenViewfinderDidChangeSelectedSmartStyle:self];
+    delegate = [(CAMFullscreenViewfinder *)self delegate];
+    [delegate fullscreenViewfinderDidChangeSelectedSmartStyle:self];
   }
 
-  v6 = v8;
+  v6 = styleCopy;
 LABEL_6:
 }
 
-- (void)semanticStylePickerDidScroll:(id)a3
+- (void)semanticStylePickerDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = [(CAMFullscreenViewfinder *)self semanticStylePicker];
+  scrollCopy = scroll;
+  semanticStylePicker = [(CAMFullscreenViewfinder *)self semanticStylePicker];
 
-  if (v5 == v4)
+  if (semanticStylePicker == scrollCopy)
   {
     [(CAMFullscreenViewfinder *)self _layoutSemanticStyleMaskedBadges];
 
@@ -3901,39 +3901,39 @@ LABEL_6:
 
 - (void)_layoutSemanticStyleMaskedBadges
 {
-  v3 = [(CAMFullscreenViewfinder *)self _viewportAspectRatioForControlsOverPreview];
-  v4 = [(CAMFullscreenViewfinder *)self _layout];
-  [v4 viewportFrameForAspectRatio:v3 accessoryAreaExpanded:-[CAMFullscreenViewfinder isControlDrawerExpanded](self smartStyleControlsExpanded:{"isControlDrawerExpanded"), -[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
+  _viewportAspectRatioForControlsOverPreview = [(CAMFullscreenViewfinder *)self _viewportAspectRatioForControlsOverPreview];
+  _layout = [(CAMFullscreenViewfinder *)self _layout];
+  [_layout viewportFrameForAspectRatio:_viewportAspectRatioForControlsOverPreview accessoryAreaExpanded:-[CAMFullscreenViewfinder isControlDrawerExpanded](self smartStyleControlsExpanded:{"isControlDrawerExpanded"), -[CAMFullscreenViewfinder smartStyleControlsVisible](self, "smartStyleControlsVisible")}];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(CAMFullscreenViewfinder *)self orientation];
-  if (v13 >= 3)
+  orientation = [(CAMFullscreenViewfinder *)self orientation];
+  if (orientation >= 3)
   {
     v24 = v8;
     v25 = v6;
-    if (v13 - 3 >= 2)
+    if (orientation - 3 >= 2)
     {
       v27 = 0.0;
     }
 
     else
     {
-      v28 = [(CAMFullscreenViewfinder *)self semanticStylePicker];
-      [v28 spacerWidth];
+      semanticStylePicker = [(CAMFullscreenViewfinder *)self semanticStylePicker];
+      [semanticStylePicker spacerWidth];
       v27 = 10.0 + 15.0 + v29;
     }
   }
 
   else
   {
-    v14 = [(CAMFullscreenViewfinder *)self semanticStylePicker];
-    v15 = [(CAMFullscreenViewfinder *)self semanticStylePicker];
-    v16 = [v15 pageControl];
-    [v16 frame];
-    [v14 convertRect:self toView:?];
+    semanticStylePicker2 = [(CAMFullscreenViewfinder *)self semanticStylePicker];
+    semanticStylePicker3 = [(CAMFullscreenViewfinder *)self semanticStylePicker];
+    pageControl = [semanticStylePicker3 pageControl];
+    [pageControl frame];
+    [semanticStylePicker2 convertRect:self toView:?];
     rect.origin.x = v17;
     v19 = v18;
     v21 = v20;
@@ -3953,19 +3953,19 @@ LABEL_6:
     v27 = MaxY - CGRectGetMinY(v41) + 4.0;
   }
 
-  v30 = [(CAMFullscreenViewfinder *)self _semanticStyleBadges];
+  _semanticStyleBadges = [(CAMFullscreenViewfinder *)self _semanticStyleBadges];
   *&rect.origin.y = MEMORY[0x1E69E9820];
   *&rect.size.width = 3221225472;
   *&rect.size.height = __59__CAMFullscreenViewfinder__layoutSemanticStyleMaskedBadges__block_invoke;
   v32 = &unk_1E76F7828;
-  v33 = self;
+  selfCopy = self;
   v34 = v27;
   v35 = v27;
   v36 = v25;
   v37 = v24;
   v38 = v10;
   v39 = v12;
-  [v30 enumerateObjectsUsingBlock:&rect.origin.y];
+  [_semanticStyleBadges enumerateObjectsUsingBlock:&rect.origin.y];
 }
 
 void __59__CAMFullscreenViewfinder__layoutSemanticStyleMaskedBadges__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -4031,57 +4031,57 @@ void __59__CAMFullscreenViewfinder__layoutSemanticStyleMaskedBadges__block_invok
   [v5 setBadgeLeftInset:x - v29];
 }
 
-- (void)setViewportAspectRatio:(int64_t)a3 animated:(BOOL)a4
+- (void)setViewportAspectRatio:(int64_t)ratio animated:(BOOL)animated
 {
-  if (self->_viewportAspectRatio != a3)
+  if (self->_viewportAspectRatio != ratio)
   {
-    v4 = a4;
-    if (a4)
+    animatedCopy = animated;
+    if (animated)
     {
       [(CAMFullscreenViewfinder *)self layoutIfNeeded];
     }
 
-    self->_viewportAspectRatio = a3;
-    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:v4];
+    self->_viewportAspectRatio = ratio;
+    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:animatedCopy];
 
     [(CAMFullscreenViewfinder *)self _updateLightingControlClipping];
   }
 }
 
-- (void)setControlDrawerExpanded:(BOOL)a3 forReason:(int64_t)a4 animated:(BOOL)a5
+- (void)setControlDrawerExpanded:(BOOL)expanded forReason:(int64_t)reason animated:(BOOL)animated
 {
-  if (self->_controlDrawerExpanded == a3)
+  if (self->_controlDrawerExpanded == expanded)
   {
     return;
   }
 
-  v5 = a5;
-  v7 = a3;
-  v9 = [(CAMFullscreenViewfinder *)self controlDrawer];
+  animatedCopy = animated;
+  expandedCopy = expanded;
+  controlDrawer = [(CAMFullscreenViewfinder *)self controlDrawer];
 
-  if (!v9 && v7)
+  if (!controlDrawer && expandedCopy)
   {
     v10 = [[CAMControlDrawer alloc] initWithLayoutStyle:3];
     [(CAMFullscreenViewfinder *)self _setControlDrawer:v10];
 
-    v11 = [(CAMFullscreenViewfinder *)self orientation];
-    v12 = [(CAMFullscreenViewfinder *)self controlDrawer];
-    [v12 setOrientation:v11];
+    orientation = [(CAMFullscreenViewfinder *)self orientation];
+    controlDrawer2 = [(CAMFullscreenViewfinder *)self controlDrawer];
+    [controlDrawer2 setOrientation:orientation];
 
-    v13 = [(CAMFullscreenViewfinder *)self controlDrawer];
-    [v13 setPresentationDelegate:self];
+    controlDrawer3 = [(CAMFullscreenViewfinder *)self controlDrawer];
+    [controlDrawer3 setPresentationDelegate:self];
 
-    v14 = [(CAMFullscreenViewfinder *)self _contentView];
-    v15 = [(CAMFullscreenViewfinder *)self controlDrawer];
-    [v14 addSubview:v15];
+    _contentView = [(CAMFullscreenViewfinder *)self _contentView];
+    controlDrawer4 = [(CAMFullscreenViewfinder *)self controlDrawer];
+    [_contentView addSubview:controlDrawer4];
 
-    v16 = [(CAMFullscreenViewfinder *)self delegate];
-    [v16 fullscreenViewfinderDidCreateControlDrawer:self];
+    delegate = [(CAMFullscreenViewfinder *)self delegate];
+    [delegate fullscreenViewfinderDidCreateControlDrawer:self];
   }
 
-  v17 = [(CAMFullscreenViewfinder *)self controlDrawer];
-  v33 = v17;
-  if ((a4 & 0xFFFFFFFFFFFFFFFBLL) != 0 || !v7)
+  controlDrawer5 = [(CAMFullscreenViewfinder *)self controlDrawer];
+  v33 = controlDrawer5;
+  if ((reason & 0xFFFFFFFFFFFFFFFBLL) != 0 || !expandedCopy)
   {
     v18 = -1;
   }
@@ -4089,14 +4089,14 @@ void __59__CAMFullscreenViewfinder__layoutSemanticStyleMaskedBadges__block_invok
   else
   {
     v18 = -1;
-    if ([v17 expandedControlType] == -1)
+    if ([controlDrawer5 expandedControlType] == -1)
     {
-      v19 = [(CAMFullscreenViewfinder *)self delegate];
-      v20 = [v19 expandedControlTypeForExpandingDrawerInFullscreenViewfinder:self];
+      delegate2 = [(CAMFullscreenViewfinder *)self delegate];
+      v20 = [delegate2 expandedControlTypeForExpandingDrawerInFullscreenViewfinder:self];
 
-      v21 = [v33 visibleControlTypes];
+      visibleControlTypes = [v33 visibleControlTypes];
       v22 = [MEMORY[0x1E696AD98] numberWithInteger:v20];
-      v23 = [v21 containsObject:v22];
+      v23 = [visibleControlTypes containsObject:v22];
 
       if (v23)
       {
@@ -4110,33 +4110,33 @@ void __59__CAMFullscreenViewfinder__layoutSemanticStyleMaskedBadges__block_invok
     }
   }
 
-  if (v5)
+  if (animatedCopy)
   {
     [(CAMFullscreenViewfinder *)self layoutIfNeeded];
   }
 
-  self->_controlDrawerExpanded = v7;
-  [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:v5];
-  [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:v5];
-  if (!v7)
+  self->_controlDrawerExpanded = expandedCopy;
+  [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animatedCopy];
+  [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:animatedCopy];
+  if (!expandedCopy)
   {
     [(CAMFullscreenViewfinder *)self _setControlDrawerPresentedModally:0];
 LABEL_22:
-    [(CAMFullscreenViewfinder *)self _setSmartStyleControlsVisible:v7 animated:v5 notifyDelegate:1];
+    [(CAMFullscreenViewfinder *)self _setSmartStyleControlsVisible:expandedCopy animated:animatedCopy notifyDelegate:1];
     goto LABEL_23;
   }
 
-  v24 = [v33 visibleControlTypes];
-  v25 = [v24 count];
+  visibleControlTypes2 = [v33 visibleControlTypes];
+  v25 = [visibleControlTypes2 count];
 
   if (v25 == 1)
   {
-    v26 = [v33 visibleControlTypes];
-    v27 = [v26 firstObject];
-    v28 = [v27 integerValue];
+    visibleControlTypes3 = [v33 visibleControlTypes];
+    firstObject = [visibleControlTypes3 firstObject];
+    integerValue = [firstObject integerValue];
 
     v29 = v33;
-    v30 = v28;
+    v30 = integerValue;
     v31 = 0;
   }
 
@@ -4149,7 +4149,7 @@ LABEL_22:
 
     v29 = v33;
     v30 = v18;
-    v31 = v5;
+    v31 = animatedCopy;
   }
 
   [v29 expandControlForType:v30 animated:v31 updatePreferredDrawerControl:0];
@@ -4160,78 +4160,78 @@ LABEL_21:
   }
 
 LABEL_23:
-  v32 = [(CAMFullscreenViewfinder *)self delegate];
-  [v32 fullscreenViewfinder:self didChangeControlDrawerVisibility:v7 animated:v5 forReason:a4];
+  delegate3 = [(CAMFullscreenViewfinder *)self delegate];
+  [delegate3 fullscreenViewfinder:self didChangeControlDrawerVisibility:expandedCopy animated:animatedCopy forReason:reason];
 }
 
-- (void)presentControlDrawerModally:(BOOL)a3 forReason:(int64_t)a4 controlType:(int64_t)a5
+- (void)presentControlDrawerModally:(BOOL)modally forReason:(int64_t)reason controlType:(int64_t)type
 {
-  v7 = a3;
-  v9 = [(CAMFullscreenViewfinder *)self isControlDrawerExpanded];
-  v10 = [(CAMFullscreenViewfinder *)self _isControlDrawerPresentedModally];
-  if (v7 && (v10 || !v9))
+  modallyCopy = modally;
+  isControlDrawerExpanded = [(CAMFullscreenViewfinder *)self isControlDrawerExpanded];
+  _isControlDrawerPresentedModally = [(CAMFullscreenViewfinder *)self _isControlDrawerPresentedModally];
+  if (modallyCopy && (_isControlDrawerPresentedModally || !isControlDrawerExpanded))
   {
-    v11 = [(CAMFullscreenViewfinder *)self delegate];
-    [v11 fullscreenViewFinder:self willPresentControlDrawerModallyForControlType:a5 reason:a4];
+    delegate = [(CAMFullscreenViewfinder *)self delegate];
+    [delegate fullscreenViewFinder:self willPresentControlDrawerModallyForControlType:type reason:reason];
 
-    [(CAMFullscreenViewfinder *)self setControlDrawerExpanded:1 forReason:a4 animated:1];
-    v12 = [(CAMFullscreenViewfinder *)self controlDrawer];
-    [v12 expandControlForType:a5 animated:v9 updatePreferredDrawerControl:a4 == 1];
+    [(CAMFullscreenViewfinder *)self setControlDrawerExpanded:1 forReason:reason animated:1];
+    controlDrawer = [(CAMFullscreenViewfinder *)self controlDrawer];
+    [controlDrawer expandControlForType:type animated:isControlDrawerExpanded updatePreferredDrawerControl:reason == 1];
 
     [(CAMFullscreenViewfinder *)self _setControlDrawerPresentedModally:1];
   }
 
   else
   {
-    [(CAMFullscreenViewfinder *)self setControlDrawerExpanded:1 forReason:a4 animated:1];
-    v13 = [(CAMFullscreenViewfinder *)self controlDrawer];
-    [v13 expandControlForType:a5 animated:v9 updatePreferredDrawerControl:a4 == 1];
+    [(CAMFullscreenViewfinder *)self setControlDrawerExpanded:1 forReason:reason animated:1];
+    controlDrawer2 = [(CAMFullscreenViewfinder *)self controlDrawer];
+    [controlDrawer2 expandControlForType:type animated:isControlDrawerExpanded updatePreferredDrawerControl:reason == 1];
   }
 }
 
-- (BOOL)isControlDrawerPresentedModallyWithControlType:(int64_t)a3
+- (BOOL)isControlDrawerPresentedModallyWithControlType:(int64_t)type
 {
   if (![(CAMFullscreenViewfinder *)self isControlDrawerExpanded]|| ![(CAMFullscreenViewfinder *)self _isControlDrawerPresentedModally])
   {
     return 0;
   }
 
-  v5 = [(CAMFullscreenViewfinder *)self controlDrawer];
-  v6 = [v5 isControlExpandedForType:a3];
+  controlDrawer = [(CAMFullscreenViewfinder *)self controlDrawer];
+  v6 = [controlDrawer isControlExpandedForType:type];
 
   return v6;
 }
 
-- (void)dismissModalControlDrawerIfNeededForReason:(int64_t)a3
+- (void)dismissModalControlDrawerIfNeededForReason:(int64_t)reason
 {
   if ([(CAMFullscreenViewfinder *)self _isControlDrawerPresentedModally])
   {
     [(CAMFullscreenViewfinder *)self _setControlDrawerPresentedModally:0];
-    v5 = [(CAMFullscreenViewfinder *)self controlDrawer];
-    v7 = [v5 expandedControl];
+    controlDrawer = [(CAMFullscreenViewfinder *)self controlDrawer];
+    expandedControl = [controlDrawer expandedControl];
 
-    if (v7)
+    if (expandedControl)
     {
-      v6 = [(CAMFullscreenViewfinder *)self delegate];
-      [v6 fullscreenViewFinder:self willDismissControlDrawerModallyForControlType:objc_msgSend(v7 reason:{"controlType"), a3}];
+      delegate = [(CAMFullscreenViewfinder *)self delegate];
+      [delegate fullscreenViewFinder:self willDismissControlDrawerModallyForControlType:objc_msgSend(expandedControl reason:{"controlType"), reason}];
     }
 
-    [(CAMFullscreenViewfinder *)self setControlDrawerExpanded:0 forReason:a3 animated:1];
+    [(CAMFullscreenViewfinder *)self setControlDrawerExpanded:0 forReason:reason animated:1];
   }
 }
 
-- (void)controlDrawer:(id)a3 didChangeExpanded:(BOOL)a4 forControlType:(int64_t)a5 animated:(BOOL)a6 updatePreferredDrawerControl:(BOOL)a7
+- (void)controlDrawer:(id)drawer didChangeExpanded:(BOOL)expanded forControlType:(int64_t)type animated:(BOOL)animated updatePreferredDrawerControl:(BOOL)control
 {
-  v7 = a7;
-  v8 = a6;
-  v10 = a4;
-  v15 = a3;
-  if (!v10)
+  controlCopy = control;
+  animatedCopy = animated;
+  expandedCopy = expanded;
+  drawerCopy = drawer;
+  if (!expandedCopy)
   {
     [(CAMFullscreenViewfinder *)self _setControlDrawerPresentedModally:0];
   }
 
-  switch(a5)
+  switch(type)
   {
     case 4:
       [(CAMFullscreenViewfinder *)self _loadFilterControlsIfNeeded];
@@ -4239,20 +4239,20 @@ LABEL_23:
       break;
     case 11:
       [(CAMFullscreenViewfinder *)self _loadSmartStyleControlsIfNeeded];
-      [(CAMFullscreenViewfinder *)self _setSmartStyleControlsVisible:v10 animated:v10 | v8 notifyDelegate:1];
+      [(CAMFullscreenViewfinder *)self _setSmartStyleControlsVisible:expandedCopy animated:expandedCopy | animatedCopy notifyDelegate:1];
       break;
     case 10:
-      [(CAMFullscreenViewfinder *)self _updateForSemanticStyleControlsDidChangeVisibility:v10 animated:v8];
+      [(CAMFullscreenViewfinder *)self _updateForSemanticStyleControlsDidChangeVisibility:expandedCopy animated:animatedCopy];
       break;
   }
 
-  v12 = [(CAMFullscreenViewfinder *)self delegate];
-  [v12 fullscreenViewfinder:self didChangeExpanded:v10 forDrawerControlOfType:a5 animated:v8 updatePreferredDrawerControl:v7];
+  delegate = [(CAMFullscreenViewfinder *)self delegate];
+  [delegate fullscreenViewfinder:self didChangeExpanded:expandedCopy forDrawerControlOfType:type animated:animatedCopy updatePreferredDrawerControl:controlCopy];
 
-  if (!v10)
+  if (!expandedCopy)
   {
-    v13 = [v15 visibleControlTypes];
-    v14 = [v13 count];
+    visibleControlTypes = [drawerCopy visibleControlTypes];
+    v14 = [visibleControlTypes count];
 
     if (v14 == 1)
     {
@@ -4261,111 +4261,111 @@ LABEL_23:
   }
 }
 
-- (void)_updateForSemanticStyleControlsDidChangeVisibility:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateForSemanticStyleControlsDidChangeVisibility:(BOOL)visibility animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  visibilityCopy = visibility;
   [(CAMFullscreenViewfinder *)self _loadSemanticStyleControlsIfNeeded];
   [(CAMFullscreenViewfinder *)self requestPreviewUpdateForSemanticStyleAnimated:0];
-  [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:v4];
-  v7 = [(CAMFullscreenViewfinder *)self delegate];
-  [v7 fullscreenViewfinder:self didChangeExpanded:v5 forDrawerControlOfType:10 animated:v4 updatePreferredDrawerControl:0];
+  [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animatedCopy];
+  delegate = [(CAMFullscreenViewfinder *)self delegate];
+  [delegate fullscreenViewfinder:self didChangeExpanded:visibilityCopy forDrawerControlOfType:10 animated:animatedCopy updatePreferredDrawerControl:0];
 }
 
 - (BOOL)isApertureSliderVisible
 {
-  v3 = [(CAMFullscreenViewfinder *)self isControlDrawerExpanded];
-  if (v3)
+  isControlDrawerExpanded = [(CAMFullscreenViewfinder *)self isControlDrawerExpanded];
+  if (isControlDrawerExpanded)
   {
-    v4 = [(CAMFullscreenViewfinder *)self controlDrawer];
-    v5 = [v4 isApertureSliderExpanded];
+    controlDrawer = [(CAMFullscreenViewfinder *)self controlDrawer];
+    isApertureSliderExpanded = [controlDrawer isApertureSliderExpanded];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isControlDrawerExpanded) = isApertureSliderExpanded;
   }
 
-  return v3;
+  return isControlDrawerExpanded;
 }
 
 - (BOOL)isIntensitySliderVisible
 {
-  v3 = [(CAMFullscreenViewfinder *)self isControlDrawerExpanded];
-  if (v3)
+  isControlDrawerExpanded = [(CAMFullscreenViewfinder *)self isControlDrawerExpanded];
+  if (isControlDrawerExpanded)
   {
-    v4 = [(CAMFullscreenViewfinder *)self controlDrawer];
-    v5 = [v4 isIntensitySliderExpanded];
+    controlDrawer = [(CAMFullscreenViewfinder *)self controlDrawer];
+    isIntensitySliderExpanded = [controlDrawer isIntensitySliderExpanded];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isControlDrawerExpanded) = isIntensitySliderExpanded;
   }
 
-  return v3;
+  return isControlDrawerExpanded;
 }
 
 - (BOOL)isNightModeSliderVisible
 {
-  v3 = [(CAMFullscreenViewfinder *)self isControlDrawerExpanded];
-  if (v3)
+  isControlDrawerExpanded = [(CAMFullscreenViewfinder *)self isControlDrawerExpanded];
+  if (isControlDrawerExpanded)
   {
-    v4 = [(CAMFullscreenViewfinder *)self controlDrawer];
-    v5 = [v4 isNightModeSliderExpanded];
+    controlDrawer = [(CAMFullscreenViewfinder *)self controlDrawer];
+    isNightModeSliderExpanded = [controlDrawer isNightModeSliderExpanded];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isControlDrawerExpanded) = isNightModeSliderExpanded;
   }
 
-  return v3;
+  return isControlDrawerExpanded;
 }
 
 - (BOOL)isExposureSliderVisible
 {
-  v3 = [(CAMFullscreenViewfinder *)self isControlDrawerExpanded];
-  if (v3)
+  isControlDrawerExpanded = [(CAMFullscreenViewfinder *)self isControlDrawerExpanded];
+  if (isControlDrawerExpanded)
   {
-    v4 = [(CAMFullscreenViewfinder *)self controlDrawer];
-    v5 = [v4 isExposureSliderExpanded];
+    controlDrawer = [(CAMFullscreenViewfinder *)self controlDrawer];
+    isExposureSliderExpanded = [controlDrawer isExposureSliderExpanded];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isControlDrawerExpanded) = isExposureSliderExpanded;
   }
 
-  return v3;
+  return isControlDrawerExpanded;
 }
 
-- (void)setSpotlightControl:(int64_t)a3 animated:(BOOL)a4
+- (void)setSpotlightControl:(int64_t)control animated:(BOOL)animated
 {
-  if (self->_spotlightControl != a3)
+  if (self->_spotlightControl != control)
   {
-    v4 = a4;
-    v7 = [(CAMFullscreenViewfinder *)self spotlightControlPanel];
-    v8 = [(CAMFullscreenViewfinder *)self _wantsSpotlightControlPanelForControl:a3];
+    animatedCopy = animated;
+    spotlightControlPanel = [(CAMFullscreenViewfinder *)self spotlightControlPanel];
+    v8 = [(CAMFullscreenViewfinder *)self _wantsSpotlightControlPanelForControl:control];
     v9 = v8;
-    if (!v7 && v8)
+    if (!spotlightControlPanel && v8)
     {
-      v7 = objc_alloc_init(CAMSpotlightControlPanel);
-      [(CAMSpotlightControlPanel *)v7 setOrientation:[(CAMFullscreenViewfinder *)self orientation]];
-      v10 = [(CAMFullscreenViewfinder *)self _contentView];
-      [v10 addSubview:v7];
+      spotlightControlPanel = objc_alloc_init(CAMSpotlightControlPanel);
+      [(CAMSpotlightControlPanel *)spotlightControlPanel setOrientation:[(CAMFullscreenViewfinder *)self orientation]];
+      _contentView = [(CAMFullscreenViewfinder *)self _contentView];
+      [_contentView addSubview:spotlightControlPanel];
 
-      [(CAMFullscreenViewfinder *)self _setSpotlightControlPanel:v7];
-      v11 = [(CAMFullscreenViewfinder *)self delegate];
-      [v11 fullscreenViewfinderDidCreateSpotlightControlPanel:self];
+      [(CAMFullscreenViewfinder *)self _setSpotlightControlPanel:spotlightControlPanel];
+      delegate = [(CAMFullscreenViewfinder *)self delegate];
+      [delegate fullscreenViewfinderDidCreateSpotlightControlPanel:self];
     }
 
     if (v9)
     {
       v12 = [(CAMFullscreenViewfinder *)self _wantsSpotlightControlPanelForControl:self->_spotlightControl];
-      v13 = [(CAMFullscreenViewfinder *)self spotlightControlPanel];
-      [v13 setSpotlightControl:a3 animated:v12];
+      spotlightControlPanel2 = [(CAMFullscreenViewfinder *)self spotlightControlPanel];
+      [spotlightControlPanel2 setSpotlightControl:control animated:v12];
     }
 
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v15 = [(CAMFullscreenViewfinder *)self _badgesForSpotlightControls];
-    v16 = [v15 objectForKeyedSubscript:v14];
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:control];
+    _badgesForSpotlightControls = [(CAMFullscreenViewfinder *)self _badgesForSpotlightControls];
+    v16 = [_badgesForSpotlightControls objectForKeyedSubscript:v14];
 
     if (v16)
     {
-      if (v4)
+      if (animatedCopy)
       {
 LABEL_9:
         [(CAMFullscreenViewfinder *)self layoutIfNeeded];
-        self->_spotlightControl = a3;
+        self->_spotlightControl = control;
         [(CAMFullscreenViewfinder *)self setNeedsLayout];
         [(CAMFullscreenViewfinder *)self _updateQuietUIAnimated:1];
         [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:1];
@@ -4383,13 +4383,13 @@ LABEL_17:
 
     else
     {
-      if (a3 == 2)
+      if (control == 2)
       {
         v16 = objc_alloc_init(CAMFocusLockBadge);
         [(CAMFocusLockBadge *)v16 setFocusLockType:2];
       }
 
-      else if (a3 == 3)
+      else if (control == 3)
       {
         v16 = objc_alloc_init(CAMShallowDepthOfFieldBadge);
         [(CAMFocusLockBadge *)v16 setShallowDepthOfFieldStatus:1];
@@ -4400,36 +4400,36 @@ LABEL_17:
         v16 = 0;
       }
 
-      v17 = [(CAMFullscreenViewfinder *)self _contentView];
-      [v17 addSubview:v16];
+      _contentView2 = [(CAMFullscreenViewfinder *)self _contentView];
+      [_contentView2 addSubview:v16];
 
-      v18 = [(CAMFullscreenViewfinder *)self _badgesForSpotlightControls];
-      [v18 setObject:v16 forKeyedSubscript:v14];
+      _badgesForSpotlightControls2 = [(CAMFullscreenViewfinder *)self _badgesForSpotlightControls];
+      [_badgesForSpotlightControls2 setObject:v16 forKeyedSubscript:v14];
 
-      if (v4)
+      if (animatedCopy)
       {
         goto LABEL_9;
       }
     }
 
-    self->_spotlightControl = a3;
+    self->_spotlightControl = control;
     [(CAMFullscreenViewfinder *)self setNeedsLayout];
     [(CAMFullscreenViewfinder *)self _updateQuietUIAnimated:0];
     goto LABEL_17;
   }
 }
 
-- (void)_updateQuietUIAnimated:(BOOL)a3
+- (void)_updateQuietUIAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CAMFullscreenViewfinder *)self spotlightControl];
-  if (v5 == 1)
+  animatedCopy = animated;
+  spotlightControl = [(CAMFullscreenViewfinder *)self spotlightControl];
+  if (spotlightControl == 1)
   {
-    v6 = [(CAMFullscreenViewfinder *)self _contentView];
-    [(CAMFullscreenViewfinder *)self _ensureBlurFilterForContentView:v6];
+    _contentView = [(CAMFullscreenViewfinder *)self _contentView];
+    [(CAMFullscreenViewfinder *)self _ensureBlurFilterForContentView:_contentView];
 
-    v7 = [(CAMFullscreenViewfinder *)self _contentViewBelowShutter];
-    [(CAMFullscreenViewfinder *)self _ensureBlurFilterForContentView:v7];
+    _contentViewBelowShutter = [(CAMFullscreenViewfinder *)self _contentViewBelowShutter];
+    [(CAMFullscreenViewfinder *)self _ensureBlurFilterForContentView:_contentViewBelowShutter];
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -4437,12 +4437,12 @@ LABEL_17:
   v10[2] = __50__CAMFullscreenViewfinder__updateQuietUIAnimated___block_invoke;
   v10[3] = &unk_1E76F7850;
   v10[4] = self;
-  v11 = v5 == 1;
+  v11 = spotlightControl == 1;
   v8 = _Block_copy(v10);
   v9 = v8;
-  if (v3)
+  if (animatedCopy)
   {
-    [(CAMFullscreenViewfinder *)self _animateQuietUIActive:v5 == 1 animations:v8 completion:0];
+    [(CAMFullscreenViewfinder *)self _animateQuietUIActive:spotlightControl == 1 animations:v8 completion:0];
   }
 
   else
@@ -4466,12 +4466,12 @@ uint64_t __50__CAMFullscreenViewfinder__updateQuietUIAnimated___block_invoke(uin
   return [v6 _updateSubviewsVisibilityAnimated:0];
 }
 
-- (void)_animateQuietUIActive:(BOOL)a3 animations:(id)a4 completion:(id)a5
+- (void)_animateQuietUIActive:(BOOL)active animations:(id)animations completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v8 = MEMORY[0x1E69DD280];
-  v9 = a4;
-  if (a3)
+  animationsCopy = animations;
+  if (active)
   {
     v10 = 0.8;
     v11 = 1.0;
@@ -4489,9 +4489,9 @@ uint64_t __50__CAMFullscreenViewfinder__updateQuietUIAnimated___block_invoke(uin
   v15[1] = 3221225472;
   v15[2] = __71__CAMFullscreenViewfinder__animateQuietUIActive_animations_completion___block_invoke;
   v15[3] = &unk_1E76F7878;
-  v16 = v7;
-  v14 = v7;
-  [v13 _animateUsingSpringBehavior:v12 tracking:0 animations:v9 completion:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [v13 _animateUsingSpringBehavior:v12 tracking:0 animations:animationsCopy completion:v15];
 }
 
 uint64_t __71__CAMFullscreenViewfinder__animateQuietUIActive_animations_completion___block_invoke(uint64_t a1)
@@ -4505,38 +4505,38 @@ uint64_t __71__CAMFullscreenViewfinder__animateQuietUIActive_animations_completi
   return result;
 }
 
-- (void)_ensureBlurFilterForContentView:(id)a3
+- (void)_ensureBlurFilterForContentView:(id)view
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 subviews];
-  v5 = [v4 count];
+  viewCopy = view;
+  subviews = [viewCopy subviews];
+  v5 = [subviews count];
 
   if (v5)
   {
-    v6 = [v3 layer];
-    v7 = [v6 valueForKeyPath:@"filters.gaussianBlur"];
+    layer = [viewCopy layer];
+    v7 = [layer valueForKeyPath:@"filters.gaussianBlur"];
     if (!v7)
     {
       v7 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979928]];
       [v7 setName:@"gaussianBlur"];
       v9[0] = v7;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-      [v6 setFilters:v8];
+      [layer setFilters:v8];
     }
   }
 }
 
-- (void)_updateContentView:(id)a3 forQuietUIActive:(BOOL)a4
+- (void)_updateContentView:(id)view forQuietUIActive:(BOOL)active
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 subviews];
-  v7 = [v6 count];
+  activeCopy = active;
+  viewCopy = view;
+  subviews = [viewCopy subviews];
+  v7 = [subviews count];
 
   if (v7)
   {
-    if (v4)
+    if (activeCopy)
     {
       v8 = 1.03;
     }
@@ -4546,7 +4546,7 @@ uint64_t __71__CAMFullscreenViewfinder__animateQuietUIActive_animations_completi
       v8 = 1.0;
     }
 
-    if (v4)
+    if (activeCopy)
     {
       v9 = 10.0;
     }
@@ -4556,25 +4556,25 @@ uint64_t __71__CAMFullscreenViewfinder__animateQuietUIActive_animations_completi
       v9 = 0.0;
     }
 
-    v10 = !v4;
-    v11 = [v5 layer];
+    v10 = !activeCopy;
+    layer = [viewCopy layer];
     v12 = [MEMORY[0x1E696AD98] numberWithDouble:v9];
-    [v11 setValue:v12 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+    [layer setValue:v12 forKeyPath:@"filters.gaussianBlur.inputRadius"];
 
     CGAffineTransformMakeScale(&v14, v8, v8);
     v13 = v14;
-    [v5 setTransform:&v13];
-    [v5 setAlpha:v10];
+    [viewCopy setTransform:&v13];
+    [viewCopy setAlpha:v10];
   }
 }
 
 - (BOOL)_shouldShowSpatialCaptureRecordingIndicator
 {
-  v3 = [(CAMFullscreenViewfinder *)self isSpatialCaptureRecordingIndicatorVisible];
-  v4 = [(CAMFullscreenViewfinder *)self orientation];
-  v5 = v4 == 3;
-  result = v4 != 3 && v3;
-  if (v5 && v3)
+  isSpatialCaptureRecordingIndicatorVisible = [(CAMFullscreenViewfinder *)self isSpatialCaptureRecordingIndicatorVisible];
+  orientation = [(CAMFullscreenViewfinder *)self orientation];
+  v5 = orientation == 3;
+  result = orientation != 3 && isSpatialCaptureRecordingIndicatorVisible;
+  if (v5 && isSpatialCaptureRecordingIndicatorVisible)
   {
     return ![(CAMFullscreenViewfinder *)self isSystemOverlayVisible];
   }
@@ -4582,28 +4582,28 @@ uint64_t __71__CAMFullscreenViewfinder__animateQuietUIActive_animations_completi
   return result;
 }
 
-- (void)setSpatialCaptureRecordingIndicatorVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setSpatialCaptureRecordingIndicatorVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_spatialCaptureRecordingIndicatorVisible != a3)
+  if (self->_spatialCaptureRecordingIndicatorVisible != visible)
   {
     v16 = v7;
     v17 = v6;
     v18 = v5;
     v19 = v4;
-    v10 = a4;
-    self->_spatialCaptureRecordingIndicatorVisible = a3;
-    if (a3)
+    animatedCopy = animated;
+    self->_spatialCaptureRecordingIndicatorVisible = visible;
+    if (visible)
     {
-      v12 = [(CAMFullscreenViewfinder *)self spatialCaptureRecordingIndicator];
+      spatialCaptureRecordingIndicator = [(CAMFullscreenViewfinder *)self spatialCaptureRecordingIndicator];
 
-      if (!v12)
+      if (!spatialCaptureRecordingIndicator)
       {
         v13 = objc_alloc_init(CAMSpatialCaptureRecordingIndicator);
         [(CAMSpatialCaptureRecordingIndicator *)v13 setOrientation:[(CAMFullscreenViewfinder *)self orientation]];
-        v14 = [(CAMFullscreenViewfinder *)self _modulatingContentView];
-        [v14 addSubview:v13];
+        _modulatingContentView = [(CAMFullscreenViewfinder *)self _modulatingContentView];
+        [_modulatingContentView addSubview:v13];
 
-        if (v10)
+        if (animatedCopy)
         {
           [(CAMSpatialCaptureRecordingIndicator *)v13 setAlpha:0.0];
         }
@@ -4617,114 +4617,114 @@ uint64_t __71__CAMFullscreenViewfinder__animateQuietUIActive_animations_completi
       [(CAMFullscreenViewfinder *)self setNeedsLayout];
     }
 
-    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:v10];
+    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animatedCopy];
   }
 }
 
-- (void)setOrientationInstructionVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setOrientationInstructionVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_orientationInstructionVisible != a3)
+  if (self->_orientationInstructionVisible != visible)
   {
-    v5 = a4;
-    self->_orientationInstructionVisible = a3;
-    if (a3)
+    animatedCopy = animated;
+    self->_orientationInstructionVisible = visible;
+    if (visible)
     {
-      v7 = [(CAMFullscreenViewfinder *)self _orientationInstructionView];
+      _orientationInstructionView = [(CAMFullscreenViewfinder *)self _orientationInstructionView];
 
-      if (!v7)
+      if (!_orientationInstructionView)
       {
         v8 = objc_alloc_init(CAMOrientationInstructionView);
         [(CAMOrientationInstructionView *)v8 setOrientation:[(CAMFullscreenViewfinder *)self deviceOrientation]];
         [(CAMOrientationInstructionView *)v8 setHasBlurredBackground:[(CAMFullscreenViewfinder *)self isOrientationInstructionBackgroundBlurred] animated:0];
         [(CAMFullscreenViewfinder *)self _insertBackgroundSubview:v8];
         [(CAMFullscreenViewfinder *)self _setOrientationInstructionView:v8];
-        if (v5)
+        if (animatedCopy)
         {
           [(CAMOrientationInstructionView *)v8 setAlpha:0.0];
         }
       }
     }
 
-    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:v5];
+    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animatedCopy];
   }
 }
 
-- (void)setOrientationInstructionBackgroundBlurred:(BOOL)a3 animated:(BOOL)a4
+- (void)setOrientationInstructionBackgroundBlurred:(BOOL)blurred animated:(BOOL)animated
 {
-  if (self->_orientationInstructionBackgroundBlurred != a3)
+  if (self->_orientationInstructionBackgroundBlurred != blurred)
   {
-    v5 = a4;
-    v6 = a3;
-    self->_orientationInstructionBackgroundBlurred = a3;
-    v7 = [(CAMFullscreenViewfinder *)self _orientationInstructionView];
-    [v7 setHasBlurredBackground:v6 animated:v5];
+    animatedCopy = animated;
+    blurredCopy = blurred;
+    self->_orientationInstructionBackgroundBlurred = blurred;
+    _orientationInstructionView = [(CAMFullscreenViewfinder *)self _orientationInstructionView];
+    [_orientationInstructionView setHasBlurredBackground:blurredCopy animated:animatedCopy];
   }
 }
 
-- (void)setStereoCaptureStatus:(int64_t)a3 animated:(BOOL)a4
+- (void)setStereoCaptureStatus:(int64_t)status animated:(BOOL)animated
 {
-  if (self->_stereoCaptureStatus != a3)
+  if (self->_stereoCaptureStatus != status)
   {
-    v4 = a4;
-    self->_stereoCaptureStatus = a3;
-    v7 = [(CAMFullscreenViewfinder *)self spatialCaptureInstructionLabel];
+    animatedCopy = animated;
+    self->_stereoCaptureStatus = status;
+    spatialCaptureInstructionLabel = [(CAMFullscreenViewfinder *)self spatialCaptureInstructionLabel];
 
-    if (v7)
+    if (spatialCaptureInstructionLabel)
     {
-      if (v4)
+      if (animatedCopy)
       {
         [(CAMFullscreenViewfinder *)self layoutIfNeeded];
       }
 
-      v8 = [(CAMFullscreenViewfinder *)self spatialCaptureInstructionLabel];
-      [v8 setStereoCaptureStatus:a3];
+      spatialCaptureInstructionLabel2 = [(CAMFullscreenViewfinder *)self spatialCaptureInstructionLabel];
+      [spatialCaptureInstructionLabel2 setStereoCaptureStatus:status];
 
-      [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:v4];
+      [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:animatedCopy];
     }
   }
 }
 
-- (void)setUseHoldStillStereoLowLightInstruction:(BOOL)a3
+- (void)setUseHoldStillStereoLowLightInstruction:(BOOL)instruction
 {
-  v3 = a3;
-  v5 = [(CAMFullscreenViewfinder *)self stereoCaptureStatus];
+  instructionCopy = instruction;
+  stereoCaptureStatus = [(CAMFullscreenViewfinder *)self stereoCaptureStatus];
 
-  [(CAMFullscreenViewfinder *)self setStereoCaptureStatus:v5 useHoldStillStereoLowLightInstruction:v3 animated:0];
+  [(CAMFullscreenViewfinder *)self setStereoCaptureStatus:stereoCaptureStatus useHoldStillStereoLowLightInstruction:instructionCopy animated:0];
 }
 
-- (void)setStereoCaptureStatus:(int64_t)a3 useHoldStillStereoLowLightInstruction:(BOOL)a4 animated:(BOOL)a5
+- (void)setStereoCaptureStatus:(int64_t)status useHoldStillStereoLowLightInstruction:(BOOL)instruction animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  if (self->_stereoCaptureStatus != a3 || self->_useHoldStillStereoLowLightInstruction != a4)
+  animatedCopy = animated;
+  instructionCopy = instruction;
+  if (self->_stereoCaptureStatus != status || self->_useHoldStillStereoLowLightInstruction != instruction)
   {
-    self->_stereoCaptureStatus = a3;
-    self->_useHoldStillStereoLowLightInstruction = a4;
-    v9 = [(CAMFullscreenViewfinder *)self spatialCaptureInstructionLabel];
+    self->_stereoCaptureStatus = status;
+    self->_useHoldStillStereoLowLightInstruction = instruction;
+    spatialCaptureInstructionLabel = [(CAMFullscreenViewfinder *)self spatialCaptureInstructionLabel];
 
-    if (v9)
+    if (spatialCaptureInstructionLabel)
     {
-      if (v5)
+      if (animatedCopy)
       {
         [(CAMFullscreenViewfinder *)self layoutIfNeeded];
       }
 
-      v10 = [(CAMFullscreenViewfinder *)self spatialCaptureInstructionLabel];
-      [v10 setStereoCaptureStatus:a3];
+      spatialCaptureInstructionLabel2 = [(CAMFullscreenViewfinder *)self spatialCaptureInstructionLabel];
+      [spatialCaptureInstructionLabel2 setStereoCaptureStatus:status];
 
-      v11 = [(CAMFullscreenViewfinder *)self spatialCaptureInstructionLabel];
-      [v11 setUseHoldStillLowLightInstruction:v6];
+      spatialCaptureInstructionLabel3 = [(CAMFullscreenViewfinder *)self spatialCaptureInstructionLabel];
+      [spatialCaptureInstructionLabel3 setUseHoldStillLowLightInstruction:instructionCopy];
 
-      [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:v5];
+      [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:animatedCopy];
     }
   }
 }
 
-- (void)setShowingStandardControls:(BOOL)a3
+- (void)setShowingStandardControls:(BOOL)controls
 {
-  if (self->_showingStandardControls != a3)
+  if (self->_showingStandardControls != controls)
   {
-    self->_showingStandardControls = a3;
+    self->_showingStandardControls = controls;
     [(CAMFullscreenViewfinder *)self _updateReticle];
     [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:0];
 
@@ -4736,15 +4736,15 @@ uint64_t __71__CAMFullscreenViewfinder__animateQuietUIActive_animations_completi
 {
   if ([(CAMFullscreenViewfinder *)self isControlDrawerVisible])
   {
-    v3 = [(CAMFullscreenViewfinder *)self isControlDrawerExpanded];
+    isControlDrawerExpanded = [(CAMFullscreenViewfinder *)self isControlDrawerExpanded];
   }
 
   else
   {
-    v3 = 0;
+    isControlDrawerExpanded = 0;
   }
 
-  return [(CAMFullscreenViewfinder *)self _shouldShowControls]&& v3;
+  return [(CAMFullscreenViewfinder *)self _shouldShowControls]&& isControlDrawerExpanded;
 }
 
 - (BOOL)_showModeView
@@ -4767,11 +4767,11 @@ uint64_t __71__CAMFullscreenViewfinder__animateQuietUIActive_animations_completi
 {
   if ([(CAMFullscreenViewfinder *)self isZoomControlVisible])
   {
-    v3 = [(CAMFullscreenViewfinder *)self machineReadableCodeButton];
-    if (v3 && ([(CAMFullscreenViewfinder *)self orientation]- 3) >= 2)
+    machineReadableCodeButton = [(CAMFullscreenViewfinder *)self machineReadableCodeButton];
+    if (machineReadableCodeButton && ([(CAMFullscreenViewfinder *)self orientation]- 3) >= 2)
     {
-      v5 = [(CAMFullscreenViewfinder *)self zoomControl];
-      [v5 edgeMargin];
+      zoomControl = [(CAMFullscreenViewfinder *)self zoomControl];
+      [zoomControl edgeMargin];
       v4 = v6 != 0.0;
     }
 
@@ -4821,16 +4821,16 @@ uint64_t __71__CAMFullscreenViewfinder__animateQuietUIActive_animations_completi
 
 - (BOOL)_showSmartStylePicker
 {
-  v3 = [(CAMFullscreenViewfinder *)self spotlightControl];
-  v4 = [(CAMFullscreenViewfinder *)self isSmartStylePickerVisible];
-  v5 = v3 != 1 && v4;
+  spotlightControl = [(CAMFullscreenViewfinder *)self spotlightControl];
+  isSmartStylePickerVisible = [(CAMFullscreenViewfinder *)self isSmartStylePickerVisible];
+  v5 = spotlightControl != 1 && isSmartStylePickerVisible;
   return v5 & [(CAMFullscreenViewfinder *)self _shouldShowControls];
 }
 
-- (void)_updateSubviewsVisibilityAnimated:(BOOL)a3
+- (void)_updateSubviewsVisibilityAnimated:(BOOL)animated
 {
-  v3 = a3;
-  if (a3)
+  animatedCopy = animated;
+  if (animated)
   {
     v5 = 0.3;
   }
@@ -4840,15 +4840,15 @@ uint64_t __71__CAMFullscreenViewfinder__animateQuietUIActive_animations_completi
     v5 = 0.0;
   }
 
-  v6 = [(CAMFullscreenViewfinder *)self _showControlDrawer];
-  v7 = [(CAMFullscreenViewfinder *)self _showModeView];
-  v8 = [(CAMFullscreenViewfinder *)self controlDrawer];
-  v33 = v8;
-  if (v3 && v6 != v7)
+  _showControlDrawer = [(CAMFullscreenViewfinder *)self _showControlDrawer];
+  _showModeView = [(CAMFullscreenViewfinder *)self _showModeView];
+  controlDrawer = [(CAMFullscreenViewfinder *)self controlDrawer];
+  v33 = controlDrawer;
+  if (animatedCopy && _showControlDrawer != _showModeView)
   {
-    if (v6)
+    if (_showControlDrawer)
     {
-      v9 = v8;
+      v9 = controlDrawer;
     }
 
     else
@@ -4856,14 +4856,14 @@ uint64_t __71__CAMFullscreenViewfinder__animateQuietUIActive_animations_completi
       v9 = 0;
     }
 
-    if (v6)
+    if (_showControlDrawer)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = v8;
+      v10 = controlDrawer;
     }
 
     v11 = v9;
@@ -4892,15 +4892,15 @@ uint64_t __71__CAMFullscreenViewfinder__animateQuietUIActive_animations_completi
     v40[1] = 3221225472;
     v40[2] = __61__CAMFullscreenViewfinder__updateSubviewsVisibilityAnimated___block_invoke_3;
     v40[3] = &unk_1E76F7850;
-    v41 = v8;
-    v42 = v6;
+    v41 = controlDrawer;
+    v42 = _showControlDrawer;
     [CAMView animateIfNeededWithDuration:v40 animations:v5];
     v14 = v41;
   }
 
-  v17 = [(CAMFullscreenViewfinder *)self machineReadableCodeButton];
+  machineReadableCodeButton = [(CAMFullscreenViewfinder *)self machineReadableCodeButton];
 
-  if (v17)
+  if (machineReadableCodeButton)
   {
     v18 = ([(CAMFullscreenViewfinder *)self orientation]- 5) < 0xFFFFFFFFFFFFFFFELL;
   }
@@ -4910,41 +4910,41 @@ uint64_t __71__CAMFullscreenViewfinder__animateQuietUIActive_animations_completi
     v18 = 1;
   }
 
-  v19 = [(CAMFullscreenViewfinder *)self lightingControl];
-  v20 = [(CAMFullscreenViewfinder *)self _showPortraitControls];
+  lightingControl = [(CAMFullscreenViewfinder *)self lightingControl];
+  _showPortraitControls = [(CAMFullscreenViewfinder *)self _showPortraitControls];
   v21 = [(CAMFullscreenViewfinder *)self _showLandscapeLightingBadge]&& v18;
-  if (v20)
+  if (_showPortraitControls)
   {
     v22 = (v21 & 1) != 0 || [(CAMFullscreenViewfinder *)self lightingNameBadgesHidden];
-    [v19 setNameBadgeHidden:v22 animated:v3];
+    [lightingControl setNameBadgeHidden:v22 animated:animatedCopy];
   }
 
-  v23 = [(CAMFullscreenViewfinder *)self spotlightControl];
-  v24 = [(CAMFullscreenViewfinder *)self _showSemanticStylePicker];
-  v25 = [(CAMFullscreenViewfinder *)self semanticStylePicker];
-  [v25 setExpanded:v24 animated:v3];
+  spotlightControl = [(CAMFullscreenViewfinder *)self spotlightControl];
+  _showSemanticStylePicker = [(CAMFullscreenViewfinder *)self _showSemanticStylePicker];
+  semanticStylePicker = [(CAMFullscreenViewfinder *)self semanticStylePicker];
+  [semanticStylePicker setExpanded:_showSemanticStylePicker animated:animatedCopy];
 
-  v26 = [(CAMFullscreenViewfinder *)self _showSmartStylePicker];
-  v27 = v23 == 1;
-  v28 = v23 == 1 || v3;
-  v29 = [(CAMFullscreenViewfinder *)self smartStylePicker];
-  [v29 setExpanded:v26 animated:v28];
+  _showSmartStylePicker = [(CAMFullscreenViewfinder *)self _showSmartStylePicker];
+  v27 = spotlightControl == 1;
+  v28 = spotlightControl == 1 || animatedCopy;
+  smartStylePicker = [(CAMFullscreenViewfinder *)self smartStylePicker];
+  [smartStylePicker setExpanded:_showSmartStylePicker animated:v28];
 
-  v30 = [(CAMFullscreenViewfinder *)self _reticleView];
-  [v30 setCornersVisible:!v24 && !v26 && !v27 animated:v3];
+  _reticleView = [(CAMFullscreenViewfinder *)self _reticleView];
+  [_reticleView setCornersVisible:!_showSemanticStylePicker && !_showSmartStylePicker && !v27 animated:animatedCopy];
 
-  v31 = [(CAMFullscreenViewfinder *)self _shouldShowControls];
+  _shouldShowControls = [(CAMFullscreenViewfinder *)self _shouldShowControls];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __61__CAMFullscreenViewfinder__updateSubviewsVisibilityAnimated___block_invoke_4;
   v34[3] = &unk_1E76F78A0;
-  v36 = v31;
+  v36 = _shouldShowControls;
   v37 = v21;
-  v38 = v24;
+  v38 = _showSemanticStylePicker;
   v34[4] = self;
-  v35 = v19;
-  v39 = v20;
-  v32 = v19;
+  v35 = lightingControl;
+  v39 = _showPortraitControls;
+  v32 = lightingControl;
   [CAMView animateIfNeededWithDuration:v34 animations:v5];
 }
 
@@ -5386,11 +5386,11 @@ void __61__CAMFullscreenViewfinder__updateSubviewsVisibilityAnimated___block_inv
   aBlock[8] = v6;
   aBlock[4] = self;
   v7 = _Block_copy(aBlock);
-  v8 = [(CAMFullscreenViewfinder *)self controlDrawer];
-  v7[2](v7, v8);
+  controlDrawer = [(CAMFullscreenViewfinder *)self controlDrawer];
+  v7[2](v7, controlDrawer);
 
-  v9 = [(CAMFullscreenViewfinder *)self flipButton];
-  v7[2](v7, v9);
+  flipButton = [(CAMFullscreenViewfinder *)self flipButton];
+  v7[2](v7, flipButton);
 }
 
 void __44__CAMFullscreenViewfinder__updateTintColors__block_invoke(uint64_t a1, void *a2)
@@ -5412,28 +5412,28 @@ void __44__CAMFullscreenViewfinder__updateTintColors__block_invoke(uint64_t a1, 
   [v3 setTintColor:v6];
 }
 
-- (void)setVisibleInstructionLabel:(int64_t)a3 animated:(BOOL)a4
+- (void)setVisibleInstructionLabel:(int64_t)label animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(CAMFullscreenViewfinder *)self visibleSecondaryInstructionLabel];
+  animatedCopy = animated;
+  visibleSecondaryInstructionLabel = [(CAMFullscreenViewfinder *)self visibleSecondaryInstructionLabel];
 
-  [(CAMFullscreenViewfinder *)self setVisibleInstructionLabel:a3 visibleSecondaryInstructionLabel:v7 animated:v4];
+  [(CAMFullscreenViewfinder *)self setVisibleInstructionLabel:label visibleSecondaryInstructionLabel:visibleSecondaryInstructionLabel animated:animatedCopy];
 }
 
-- (void)_createViewIfNeededForInstructionLabel:(int64_t)a3 isPrimary:(BOOL)a4
+- (void)_createViewIfNeededForInstructionLabel:(int64_t)label isPrimary:(BOOL)primary
 {
-  v4 = a4;
-  v7 = [(CAMFullscreenViewfinder *)self _modulatingContentView];
-  if (a3 <= 5)
+  primaryCopy = primary;
+  _modulatingContentView = [(CAMFullscreenViewfinder *)self _modulatingContentView];
+  if (label <= 5)
   {
-    v43 = v7;
-    if (a3 <= 2)
+    v43 = _modulatingContentView;
+    if (label <= 2)
     {
-      if (a3 == 1)
+      if (label == 1)
       {
-        v21 = [(CAMFullscreenViewfinder *)self portraitInstructionLabel];
+        portraitInstructionLabel = [(CAMFullscreenViewfinder *)self portraitInstructionLabel];
 
-        if (v21)
+        if (portraitInstructionLabel)
         {
           goto LABEL_39;
         }
@@ -5441,23 +5441,23 @@ void __44__CAMFullscreenViewfinder__updateTintColors__block_invoke(uint64_t a1, 
         v22 = objc_alloc_init(CAMPortraitModeInstructionLabel);
         [(CAMFullscreenViewfinder *)self _setPortraitInstructionLabel:v22];
 
-        v23 = [(CAMFullscreenViewfinder *)self shallowDepthOfFieldStatus];
-        v24 = [(CAMFullscreenViewfinder *)self portraitInstructionLabel];
-        [v24 setShallowDepthOfFieldStatus:v23];
+        shallowDepthOfFieldStatus = [(CAMFullscreenViewfinder *)self shallowDepthOfFieldStatus];
+        portraitInstructionLabel2 = [(CAMFullscreenViewfinder *)self portraitInstructionLabel];
+        [portraitInstructionLabel2 setShallowDepthOfFieldStatus:shallowDepthOfFieldStatus];
 
-        v18 = [(CAMFullscreenViewfinder *)self portraitInstructionLabel];
+        portraitInstructionLabel3 = [(CAMFullscreenViewfinder *)self portraitInstructionLabel];
       }
 
       else
       {
-        if (a3 != 2)
+        if (label != 2)
         {
           goto LABEL_40;
         }
 
-        v16 = [(CAMFullscreenViewfinder *)self qrCodeInstructionLabel];
+        qrCodeInstructionLabel = [(CAMFullscreenViewfinder *)self qrCodeInstructionLabel];
 
-        if (v16)
+        if (qrCodeInstructionLabel)
         {
           goto LABEL_39;
         }
@@ -5465,15 +5465,15 @@ void __44__CAMFullscreenViewfinder__updateTintColors__block_invoke(uint64_t a1, 
         v17 = objc_alloc_init(CAMQRCodeInstructionLabel);
         [(CAMFullscreenViewfinder *)self _setQRCodeInstructionLabel:v17];
 
-        v18 = [(CAMFullscreenViewfinder *)self qrCodeInstructionLabel];
+        portraitInstructionLabel3 = [(CAMFullscreenViewfinder *)self qrCodeInstructionLabel];
       }
     }
 
-    else if (a3 == 3)
+    else if (label == 3)
     {
-      v27 = [(CAMFullscreenViewfinder *)self nightModeInstructionLabel];
+      nightModeInstructionLabel = [(CAMFullscreenViewfinder *)self nightModeInstructionLabel];
 
-      if (v27)
+      if (nightModeInstructionLabel)
       {
         goto LABEL_39;
       }
@@ -5481,36 +5481,36 @@ void __44__CAMFullscreenViewfinder__updateTintColors__block_invoke(uint64_t a1, 
       v28 = objc_alloc_init(CAMNightModeInstructionLabel);
       [(CAMFullscreenViewfinder *)self _setNightModeInstructionLabel:v28];
 
-      v18 = [(CAMFullscreenViewfinder *)self nightModeInstructionLabel];
+      portraitInstructionLabel3 = [(CAMFullscreenViewfinder *)self nightModeInstructionLabel];
     }
 
     else
     {
-      if (a3 != 4)
+      if (label != 4)
       {
-        v8 = [(CAMFullscreenViewfinder *)self imageAnalysisInstructionLabel];
+        imageAnalysisInstructionLabel = [(CAMFullscreenViewfinder *)self imageAnalysisInstructionLabel];
 
-        if (!v8)
+        if (!imageAnalysisInstructionLabel)
         {
           v9 = objc_alloc_init(CAMImageAnalysisInstructionLabel);
           [(CAMFullscreenViewfinder *)self _setImageAnalysisInstructionLabel:v9];
 
-          v10 = [(CAMFullscreenViewfinder *)self imageAnalysisInstructionLabel];
-          v11 = self;
+          imageAnalysisInstructionLabel2 = [(CAMFullscreenViewfinder *)self imageAnalysisInstructionLabel];
+          selfCopy = self;
 
           v12 = 0;
-          v43 = v11;
+          v43 = selfCopy;
           goto LABEL_34;
         }
 
 LABEL_39:
-        v7 = v43;
+        _modulatingContentView = v43;
         goto LABEL_40;
       }
 
-      v35 = [(CAMFullscreenViewfinder *)self flashCompromisedInstructionLabel];
+      flashCompromisedInstructionLabel = [(CAMFullscreenViewfinder *)self flashCompromisedInstructionLabel];
 
-      if (v35)
+      if (flashCompromisedInstructionLabel)
       {
         goto LABEL_39;
       }
@@ -5518,20 +5518,20 @@ LABEL_39:
       v36 = objc_alloc_init(CAMFlashCompromisedInstructionLabel);
       [(CAMFullscreenViewfinder *)self _setFlashCompromisedInstructionLabel:v36];
 
-      v18 = [(CAMFullscreenViewfinder *)self flashCompromisedInstructionLabel];
+      portraitInstructionLabel3 = [(CAMFullscreenViewfinder *)self flashCompromisedInstructionLabel];
     }
 
     goto LABEL_33;
   }
 
-  if (a3 <= 7)
+  if (label <= 7)
   {
-    v43 = v7;
-    if (a3 == 6)
+    v43 = _modulatingContentView;
+    if (label == 6)
     {
-      v25 = [(CAMFullscreenViewfinder *)self freeResourcesInstructionLabel];
+      freeResourcesInstructionLabel = [(CAMFullscreenViewfinder *)self freeResourcesInstructionLabel];
 
-      if (v25)
+      if (freeResourcesInstructionLabel)
       {
         goto LABEL_39;
       }
@@ -5539,13 +5539,13 @@ LABEL_39:
       v26 = objc_alloc_init(CAMFreeResourcesInstructionLabel);
       [(CAMFullscreenViewfinder *)self _setFreeResourcesInstructionLabel:v26];
 
-      v15 = [(CAMFullscreenViewfinder *)self freeResourcesInstructionLabel];
+      freeResourcesInstructionLabel2 = [(CAMFullscreenViewfinder *)self freeResourcesInstructionLabel];
       goto LABEL_24;
     }
 
-    v19 = [(CAMFullscreenViewfinder *)self deviceTooHotInstructionLabel];
+    deviceTooHotInstructionLabel = [(CAMFullscreenViewfinder *)self deviceTooHotInstructionLabel];
 
-    if (v19)
+    if (deviceTooHotInstructionLabel)
     {
       goto LABEL_39;
     }
@@ -5553,22 +5553,22 @@ LABEL_39:
     v20 = objc_alloc_init(CAMDeviceTooHotInstructionLabel);
     [(CAMFullscreenViewfinder *)self _setDeviceTooHotInstructionLabel:v20];
 
-    v18 = [(CAMFullscreenViewfinder *)self deviceTooHotInstructionLabel];
+    portraitInstructionLabel3 = [(CAMFullscreenViewfinder *)self deviceTooHotInstructionLabel];
 LABEL_33:
-    v10 = v18;
+    imageAnalysisInstructionLabel2 = portraitInstructionLabel3;
     v12 = 0;
 LABEL_34:
-    if (v10)
+    if (imageAnalysisInstructionLabel2)
     {
-      [v10 setUserInteractionEnabled:v12];
-      [v10 setStyle:1];
-      [v10 setDelegate:self];
-      [(CAMFullscreenViewfinder *)v43 addSubview:v10];
-      v39 = [(CAMFullscreenViewfinder *)self _instructionLabelByValue];
-      v40 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-      [v39 setObject:v10 forKeyedSubscript:v40];
+      [imageAnalysisInstructionLabel2 setUserInteractionEnabled:v12];
+      [imageAnalysisInstructionLabel2 setStyle:1];
+      [imageAnalysisInstructionLabel2 setDelegate:self];
+      [(CAMFullscreenViewfinder *)v43 addSubview:imageAnalysisInstructionLabel2];
+      _instructionLabelByValue = [(CAMFullscreenViewfinder *)self _instructionLabelByValue];
+      v40 = [MEMORY[0x1E696AD98] numberWithInteger:label];
+      [_instructionLabelByValue setObject:imageAnalysisInstructionLabel2 forKeyedSubscript:v40];
 
-      if (v4)
+      if (primaryCopy)
       {
         [(CAMFullscreenViewfinder *)self _createdPrimaryInstructionLabels];
       }
@@ -5578,21 +5578,21 @@ LABEL_34:
         [(CAMFullscreenViewfinder *)self _createdSecondaryInstructionLabels];
       }
       v41 = ;
-      [v41 addObject:v10];
+      [v41 addObject:imageAnalysisInstructionLabel2];
 
-      v42 = [(CAMFullscreenViewfinder *)self delegate];
-      [v42 fullscreenViewfinder:self didCreateInstructionLabel:a3];
+      delegate = [(CAMFullscreenViewfinder *)self delegate];
+      [delegate fullscreenViewfinder:self didCreateInstructionLabel:label];
     }
 
     goto LABEL_39;
   }
 
-  if (a3 == 8)
+  if (label == 8)
   {
-    v43 = v7;
-    v29 = [(CAMFullscreenViewfinder *)self spatialCaptureInstructionLabel];
+    v43 = _modulatingContentView;
+    spatialCaptureInstructionLabel = [(CAMFullscreenViewfinder *)self spatialCaptureInstructionLabel];
 
-    if (v29)
+    if (spatialCaptureInstructionLabel)
     {
       goto LABEL_39;
     }
@@ -5600,44 +5600,44 @@ LABEL_34:
     v30 = objc_alloc_init(CAMSpatialCaptureInstructionLabel);
     [(CAMFullscreenViewfinder *)self _setSpatialCaptureInstructionLabel:v30];
 
-    v31 = [(CAMFullscreenViewfinder *)self stereoCaptureStatus];
-    v32 = [(CAMFullscreenViewfinder *)self spatialCaptureInstructionLabel];
-    [v32 setStereoCaptureStatus:v31];
+    stereoCaptureStatus = [(CAMFullscreenViewfinder *)self stereoCaptureStatus];
+    spatialCaptureInstructionLabel2 = [(CAMFullscreenViewfinder *)self spatialCaptureInstructionLabel];
+    [spatialCaptureInstructionLabel2 setStereoCaptureStatus:stereoCaptureStatus];
 
-    v33 = [(CAMFullscreenViewfinder *)self useHoldStillStereoLowLightInstruction];
-    v34 = [(CAMFullscreenViewfinder *)self spatialCaptureInstructionLabel];
-    [v34 setUseHoldStillLowLightInstruction:v33];
+    useHoldStillStereoLowLightInstruction = [(CAMFullscreenViewfinder *)self useHoldStillStereoLowLightInstruction];
+    spatialCaptureInstructionLabel3 = [(CAMFullscreenViewfinder *)self spatialCaptureInstructionLabel];
+    [spatialCaptureInstructionLabel3 setUseHoldStillLowLightInstruction:useHoldStillStereoLowLightInstruction];
 
-    v18 = [(CAMFullscreenViewfinder *)self spatialCaptureInstructionLabel];
+    portraitInstructionLabel3 = [(CAMFullscreenViewfinder *)self spatialCaptureInstructionLabel];
     goto LABEL_33;
   }
 
-  if (a3 == 9)
+  if (label == 9)
   {
     if (self->_smartStyleCategoryInstructionLabel)
     {
       goto LABEL_40;
     }
 
-    v43 = v7;
+    v43 = _modulatingContentView;
     v37 = objc_alloc_init(CAMSmartStyleCategoryInstructionLabel);
     smartStyleCategoryInstructionLabel = self->_smartStyleCategoryInstructionLabel;
     self->_smartStyleCategoryInstructionLabel = v37;
 
-    v18 = self->_smartStyleCategoryInstructionLabel;
+    portraitInstructionLabel3 = self->_smartStyleCategoryInstructionLabel;
     goto LABEL_33;
   }
 
-  if (a3 == 10 && !self->_cleanLensesInstructionLabel)
+  if (label == 10 && !self->_cleanLensesInstructionLabel)
   {
-    v43 = v7;
+    v43 = _modulatingContentView;
     v13 = objc_alloc_init(CAMCleanLensesInstructionLabel);
     cleanLensesInstructionLabel = self->_cleanLensesInstructionLabel;
     self->_cleanLensesInstructionLabel = v13;
 
-    v15 = self->_cleanLensesInstructionLabel;
+    freeResourcesInstructionLabel2 = self->_cleanLensesInstructionLabel;
 LABEL_24:
-    v10 = v15;
+    imageAnalysisInstructionLabel2 = freeResourcesInstructionLabel2;
     v12 = 1;
     goto LABEL_34;
   }
@@ -5645,99 +5645,99 @@ LABEL_24:
 LABEL_40:
 }
 
-- (id)_visibleInstructionLabelForInstructionLabelValue:(int64_t)a3
+- (id)_visibleInstructionLabelForInstructionLabelValue:(int64_t)value
 {
-  v4 = [(CAMFullscreenViewfinder *)self _instructionLabelByValue];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  _instructionLabelByValue = [(CAMFullscreenViewfinder *)self _instructionLabelByValue];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:value];
+  v6 = [_instructionLabelByValue objectForKeyedSubscript:v5];
 
   return v6;
 }
 
-- (void)setVisibleInstructionLabel:(int64_t)a3 visibleSecondaryInstructionLabel:(int64_t)a4 animated:(BOOL)a5
+- (void)setVisibleInstructionLabel:(int64_t)label visibleSecondaryInstructionLabel:(int64_t)instructionLabel animated:(BOOL)animated
 {
-  v5 = a5;
-  if (*&self->_visibleInstructionLabel != __PAIR128__(a4, a3))
+  animatedCopy = animated;
+  if (*&self->_visibleInstructionLabel != __PAIR128__(instructionLabel, label))
   {
-    [(CAMFullscreenViewfinder *)self _createViewIfNeededForInstructionLabel:a3 isPrimary:1];
-    [(CAMFullscreenViewfinder *)self _createViewIfNeededForInstructionLabel:a4 isPrimary:0];
-    if (v5)
+    [(CAMFullscreenViewfinder *)self _createViewIfNeededForInstructionLabel:label isPrimary:1];
+    [(CAMFullscreenViewfinder *)self _createViewIfNeededForInstructionLabel:instructionLabel isPrimary:0];
+    if (animatedCopy)
     {
       [(CAMFullscreenViewfinder *)self layoutIfNeeded];
     }
 
     visibleInstructionLabel = self->_visibleInstructionLabel;
     visibleSecondaryInstructionLabel = self->_visibleSecondaryInstructionLabel;
-    self->_visibleInstructionLabel = a3;
-    self->_visibleSecondaryInstructionLabel = a4;
-    if (a3 && !visibleInstructionLabel || a4 && !visibleSecondaryInstructionLabel)
+    self->_visibleInstructionLabel = label;
+    self->_visibleSecondaryInstructionLabel = instructionLabel;
+    if (label && !visibleInstructionLabel || instructionLabel && !visibleSecondaryInstructionLabel)
     {
       [(CAMFullscreenViewfinder *)self _updateGeometryForElapsedTimeAndInstructionLabels];
     }
 
-    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:v5];
+    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:animatedCopy];
   }
 }
 
 - (unint64_t)_badgeFontStyle
 {
   v2 = +[CAMCaptureCapabilities capabilities];
-  v3 = [v2 sfCameraFontSupported];
+  sfCameraFontSupported = [v2 sfCameraFontSupported];
 
-  return v3;
+  return sfCameraFontSupported;
 }
 
-- (void)_transitionView:(id)a3 fromOrientation:(int64_t)a4 toOrientation:(int64_t)a5
+- (void)_transitionView:(id)view fromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation
 {
-  if (a3)
+  if (view)
   {
-    v5 = ((a5 - 1) | (a4 - 1)) < 2;
-    v6 = a3;
-    v8 = CAMSnapshotForFadingOrientationTransition(v6, v5);
-    v7 = [v6 superview];
+    v5 = ((toOrientation - 1) | (orientation - 1)) < 2;
+    viewCopy = view;
+    v8 = CAMSnapshotForFadingOrientationTransition(viewCopy, v5);
+    superview = [viewCopy superview];
 
-    [v7 addSubview:v8];
+    [superview addSubview:v8];
   }
 }
 
-- (void)_transitionView:(id)a3 isFlippingInPlace:(BOOL)a4
+- (void)_transitionView:(id)view isFlippingInPlace:(BOOL)place
 {
-  if (a3)
+  if (view)
   {
-    v4 = a4;
-    v5 = a3;
-    v7 = CAMSnapshotForFadingOrientationTransition(v5, v4);
-    v6 = [v5 superview];
+    placeCopy = place;
+    viewCopy = view;
+    v7 = CAMSnapshotForFadingOrientationTransition(viewCopy, placeCopy);
+    superview = [viewCopy superview];
 
-    [v6 addSubview:v7];
+    [superview addSubview:v7];
   }
 }
 
-- (void)setControlDrawerVisible:(BOOL)a3 modeUIVisible:(BOOL)a4 animated:(BOOL)a5
+- (void)setControlDrawerVisible:(BOOL)visible modeUIVisible:(BOOL)iVisible animated:(BOOL)animated
 {
-  v5 = a5;
-  if (self->_controlDrawerVisible != a3 || self->_modeUIVisible != a4)
+  animatedCopy = animated;
+  if (self->_controlDrawerVisible != visible || self->_modeUIVisible != iVisible)
   {
-    if (a5)
+    if (animated)
     {
       [(CAMFullscreenViewfinder *)self layoutIfNeeded];
     }
 
-    self->_controlDrawerVisible = a3;
-    self->_modeUIVisible = a4;
+    self->_controlDrawerVisible = visible;
+    self->_modeUIVisible = iVisible;
 
-    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:v5];
+    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:animatedCopy];
   }
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
   v117 = *MEMORY[0x1E69E9840];
   orientation = self->_orientation;
-  if (orientation != a3)
+  if (orientation != orientation)
   {
-    v5 = a4;
-    if (a4)
+    animatedCopy = animated;
+    if (animated)
     {
       v8 = 0.3;
     }
@@ -5747,41 +5747,41 @@ LABEL_40:
       v8 = 0.0;
     }
 
-    self->_orientation = a3;
-    v9 = [(CAMFullscreenViewfinder *)self controlDrawer];
-    [v9 setOrientation:a3 animated:v5];
+    self->_orientation = orientation;
+    controlDrawer = [(CAMFullscreenViewfinder *)self controlDrawer];
+    [controlDrawer setOrientation:orientation animated:animatedCopy];
 
-    v10 = [(CAMFullscreenViewfinder *)self shutterControl];
-    [v10 setOrientation:a3 animated:v5];
+    shutterControl = [(CAMFullscreenViewfinder *)self shutterControl];
+    [shutterControl setOrientation:orientation animated:animatedCopy];
 
-    v11 = [(CAMFullscreenViewfinder *)self timerIndicator];
-    [v11 setOrientation:a3 animated:v5];
+    timerIndicator = [(CAMFullscreenViewfinder *)self timerIndicator];
+    [timerIndicator setOrientation:orientation animated:animatedCopy];
 
-    v12 = [(CAMFullscreenViewfinder *)self spotlightControlPanel];
-    [v12 setOrientation:a3 animated:v5];
+    spotlightControlPanel = [(CAMFullscreenViewfinder *)self spotlightControlPanel];
+    [spotlightControlPanel setOrientation:orientation animated:animatedCopy];
 
-    v13 = [(CAMFullscreenViewfinder *)self flipAspectRatioButton];
-    [v13 setOrientation:a3 animated:v5];
+    flipAspectRatioButton = [(CAMFullscreenViewfinder *)self flipAspectRatioButton];
+    [flipAspectRatioButton setOrientation:orientation animated:animatedCopy];
 
-    v14 = [(CAMFullscreenViewfinder *)self lightingControl];
-    [v14 setOrientation:a3];
+    lightingControl = [(CAMFullscreenViewfinder *)self lightingControl];
+    [lightingControl setOrientation:orientation];
 
-    v15 = [(CAMFullscreenViewfinder *)self photoVideoModeSwitch];
-    [v15 setOrientation:a3 animated:v5];
+    photoVideoModeSwitch = [(CAMFullscreenViewfinder *)self photoVideoModeSwitch];
+    [photoVideoModeSwitch setOrientation:orientation animated:animatedCopy];
 
-    v16 = [(CAMFullscreenViewfinder *)self _descriptionOverlayViewByKey];
+    _descriptionOverlayViewByKey = [(CAMFullscreenViewfinder *)self _descriptionOverlayViewByKey];
     v112[0] = MEMORY[0x1E69E9820];
     v112[1] = 3221225472;
     v112[2] = __51__CAMFullscreenViewfinder_setOrientation_animated___block_invoke;
     v112[3] = &__block_descriptor_41_e55_v32__0___NSCopying__8__CAMDescriptionOverlayView_16_B24l;
-    v112[4] = a3;
-    v113 = v5;
-    [v16 enumerateKeysAndObjectsUsingBlock:v112];
+    v112[4] = orientation;
+    v113 = animatedCopy;
+    [_descriptionOverlayViewByKey enumerateKeysAndObjectsUsingBlock:v112];
 
-    v17 = [(CAMFullscreenViewfinder *)self disabledModeOverlayView];
-    [v17 setOrientation:a3 animated:v5];
+    disabledModeOverlayView = [(CAMFullscreenViewfinder *)self disabledModeOverlayView];
+    [disabledModeOverlayView setOrientation:orientation animated:animatedCopy];
 
-    v18 = [(CAMFullscreenViewfinder *)self imageAnalysisButton];
+    imageAnalysisButton = [(CAMFullscreenViewfinder *)self imageAnalysisButton];
     [(CAMFullscreenViewfinder *)self frameForReticleViewport];
     v20 = v19;
     v22 = v21;
@@ -5796,58 +5796,58 @@ LABEL_40:
     v108 = v21;
     v109 = v23;
     v110 = v25;
-    v60 = v18;
+    v60 = imageAnalysisButton;
     v106 = v60;
-    v111 = a3;
+    orientationCopy = orientation;
     [CAMView animateIfNeededWithDuration:v105 animations:v8];
-    v64 = [(CAMFullscreenViewfinder *)self badgeTray];
-    v27 = [(CAMFullscreenViewfinder *)self lightingNameBadge];
-    v28 = [(CAMFullscreenViewfinder *)self filterNameBadge];
-    v29 = [(CAMFullscreenViewfinder *)self smartStyleNameBadge];
-    v30 = [(CAMFullscreenViewfinder *)self elapsedTimeView];
+    badgeTray = [(CAMFullscreenViewfinder *)self badgeTray];
+    lightingNameBadge = [(CAMFullscreenViewfinder *)self lightingNameBadge];
+    filterNameBadge = [(CAMFullscreenViewfinder *)self filterNameBadge];
+    smartStyleNameBadge = [(CAMFullscreenViewfinder *)self smartStyleNameBadge];
+    elapsedTimeView = [(CAMFullscreenViewfinder *)self elapsedTimeView];
     [(CAMFullscreenViewfinder *)self machineReadableCodeButton];
-    v63 = v62 = v27;
-    v61 = v30;
-    if (v5)
+    v63 = v62 = lightingNameBadge;
+    v61 = elapsedTimeView;
+    if (animatedCopy)
     {
-      [(CAMFullscreenViewfinder *)self _transitionView:v64 fromOrientation:orientation toOrientation:a3];
+      [(CAMFullscreenViewfinder *)self _transitionView:badgeTray fromOrientation:orientation toOrientation:orientation];
       if ([(CAMFullscreenViewfinder *)self isElapsedTimeViewVisible])
       {
-        [(CAMFullscreenViewfinder *)self _transitionView:v30 fromOrientation:orientation toOrientation:a3];
+        [(CAMFullscreenViewfinder *)self _transitionView:elapsedTimeView fromOrientation:orientation toOrientation:orientation];
       }
 
       v31 = [(CAMFullscreenViewfinder *)self _visibleInstructionLabelForInstructionLabelValue:[(CAMFullscreenViewfinder *)self visibleInstructionLabel]];
       if (v31)
       {
-        [(CAMFullscreenViewfinder *)self _transitionView:v31 fromOrientation:orientation toOrientation:a3];
+        [(CAMFullscreenViewfinder *)self _transitionView:v31 fromOrientation:orientation toOrientation:orientation];
       }
 
       v32 = [(CAMFullscreenViewfinder *)self _visibleInstructionLabelForInstructionLabelValue:[(CAMFullscreenViewfinder *)self visibleSecondaryInstructionLabel]];
       if (v32)
       {
-        [(CAMFullscreenViewfinder *)self _transitionView:v32 fromOrientation:orientation toOrientation:a3];
+        [(CAMFullscreenViewfinder *)self _transitionView:v32 fromOrientation:orientation toOrientation:orientation];
       }
 
       if ([(CAMFullscreenViewfinder *)self _showFilterNameBadge])
       {
-        [(CAMFullscreenViewfinder *)self _transitionView:v28 fromOrientation:orientation toOrientation:a3];
+        [(CAMFullscreenViewfinder *)self _transitionView:filterNameBadge fromOrientation:orientation toOrientation:orientation];
       }
 
       if ([(CAMFullscreenViewfinder *)self _showSmartStyleNameBadge])
       {
-        [(CAMFullscreenViewfinder *)self _transitionView:v29 fromOrientation:orientation toOrientation:a3];
+        [(CAMFullscreenViewfinder *)self _transitionView:smartStyleNameBadge fromOrientation:orientation toOrientation:orientation];
       }
 
       if ([(CAMFullscreenViewfinder *)self _showSemanticStylePicker])
       {
-        v65 = v29;
-        v66 = v28;
+        v65 = smartStyleNameBadge;
+        v66 = filterNameBadge;
         v103 = 0u;
         v104 = 0u;
         v101 = 0u;
         v102 = 0u;
-        v33 = [(CAMFullscreenViewfinder *)self _semanticStyleBadges];
-        v34 = [v33 countByEnumeratingWithState:&v101 objects:v116 count:16];
+        _semanticStyleBadges = [(CAMFullscreenViewfinder *)self _semanticStyleBadges];
+        v34 = [_semanticStyleBadges countByEnumeratingWithState:&v101 objects:v116 count:16];
         if (v34)
         {
           v35 = v34;
@@ -5858,40 +5858,40 @@ LABEL_40:
             {
               if (*v102 != v36)
               {
-                objc_enumerationMutation(v33);
+                objc_enumerationMutation(_semanticStyleBadges);
               }
 
-              [(CAMFullscreenViewfinder *)self _transitionView:*(*(&v101 + 1) + 8 * i) fromOrientation:orientation toOrientation:a3];
+              [(CAMFullscreenViewfinder *)self _transitionView:*(*(&v101 + 1) + 8 * i) fromOrientation:orientation toOrientation:orientation];
             }
 
-            v35 = [v33 countByEnumeratingWithState:&v101 objects:v116 count:16];
+            v35 = [_semanticStyleBadges countByEnumeratingWithState:&v101 objects:v116 count:16];
           }
 
           while (v35);
         }
 
-        v30 = v61;
-        v27 = v62;
-        v28 = v66;
-        v29 = v65;
+        elapsedTimeView = v61;
+        lightingNameBadge = v62;
+        filterNameBadge = v66;
+        smartStyleNameBadge = v65;
       }
 
       if (v63)
       {
-        [(CAMFullscreenViewfinder *)self _transitionView:v63 fromOrientation:orientation toOrientation:a3];
+        [(CAMFullscreenViewfinder *)self _transitionView:v63 fromOrientation:orientation toOrientation:orientation];
       }
 
-      v38 = [(CAMFullscreenViewfinder *)self _showLandscapeLightingBadge];
-      if (((orientation - 3) | (a3 - 3)) <= 1 && v38)
+      _showLandscapeLightingBadge = [(CAMFullscreenViewfinder *)self _showLandscapeLightingBadge];
+      if (((orientation - 3) | (orientation - 3)) <= 1 && _showLandscapeLightingBadge)
       {
-        [(CAMFullscreenViewfinder *)self _transitionView:v27 fromOrientation:orientation toOrientation:a3];
+        [(CAMFullscreenViewfinder *)self _transitionView:lightingNameBadge fromOrientation:orientation toOrientation:orientation];
       }
     }
 
-    v39 = [(CAMFullscreenViewfinder *)self isElapsedTimeViewVisible];
-    v40 = [v30 layer];
-    v41 = [v40 animationForKey:@"opacity"];
-    v42 = v41 == 0 || v39;
+    isElapsedTimeViewVisible = [(CAMFullscreenViewfinder *)self isElapsedTimeViewVisible];
+    layer = [elapsedTimeView layer];
+    v41 = [layer animationForKey:@"opacity"];
+    v42 = v41 == 0 || isElapsedTimeViewVisible;
 
     v99 = 0u;
     v100 = 0u;
@@ -5899,11 +5899,11 @@ LABEL_40:
     v98 = 0u;
     v95 = 0u;
     v96 = 0u;
-    v43 = [(CAMFullscreenViewfinder *)self _layout];
-    v44 = [(CAMFullscreenViewfinder *)self isSystemOverlayVisible];
-    if (v43)
+    _layout = [(CAMFullscreenViewfinder *)self _layout];
+    isSystemOverlayVisible = [(CAMFullscreenViewfinder *)self isSystemOverlayVisible];
+    if (_layout)
     {
-      [v43 geometryForElapsedTimeView:v30 viewportFrame:a3 orientation:v44 systemOverlayVisible:{v20, v22, v24, v26}];
+      [_layout geometryForElapsedTimeView:elapsedTimeView viewportFrame:orientation orientation:isSystemOverlayVisible systemOverlayVisible:{v20, v22, v24, v26}];
     }
 
     else
@@ -5924,21 +5924,21 @@ LABEL_40:
       v94 = v100;
       v89 = v95;
       v90 = v96;
-      CAMViewSetGeometry(v30, &v89);
+      CAMViewSetGeometry(elapsedTimeView, &v89);
     }
 
     [(CAMFullscreenViewfinder *)self _geometryForBadgeTray];
-    CAMViewSetGeometry(v64, &v89);
+    CAMViewSetGeometry(badgeTray, &v89);
     [(CAMFullscreenViewfinder *)self _geometryForLandscapeLightingBadge];
-    CAMViewSetGeometry(v27, &v89);
-    [(CAMFullscreenViewfinder *)self _geometryForBottomCenteredView:v28];
-    CAMViewSetGeometry(v28, &v89);
-    [(CAMFullscreenViewfinder *)self _geometryForSmartStyleNameBadge:v29];
-    CAMViewSetGeometry(v29, &v89);
+    CAMViewSetGeometry(lightingNameBadge, &v89);
+    [(CAMFullscreenViewfinder *)self _geometryForBottomCenteredView:filterNameBadge];
+    CAMViewSetGeometry(filterNameBadge, &v89);
+    [(CAMFullscreenViewfinder *)self _geometryForSmartStyleNameBadge:smartStyleNameBadge];
+    CAMViewSetGeometry(smartStyleNameBadge, &v89);
     [(CAMFullscreenViewfinder *)self _geometryForMRCButton];
     CAMViewSetGeometry(v63, &v89);
     [(CAMFullscreenViewfinder *)self _layoutSemanticStyleMaskedBadges];
-    if (v39)
+    if (isElapsedTimeViewVisible)
     {
       v91 = v97;
       v92 = v98;
@@ -5964,8 +5964,8 @@ LABEL_40:
     v88 = 0u;
     v85 = 0u;
     v86 = 0u;
-    v47 = [(CAMFullscreenViewfinder *)self _createdPrimaryInstructionLabels];
-    v48 = [v47 countByEnumeratingWithState:&v85 objects:v115 count:16];
+    _createdPrimaryInstructionLabels = [(CAMFullscreenViewfinder *)self _createdPrimaryInstructionLabels];
+    v48 = [_createdPrimaryInstructionLabels countByEnumeratingWithState:&v85 objects:v115 count:16];
     if (v48)
     {
       v49 = v48;
@@ -5976,7 +5976,7 @@ LABEL_40:
         {
           if (*v86 != v50)
           {
-            objc_enumerationMutation(v47);
+            objc_enumerationMutation(_createdPrimaryInstructionLabels);
           }
 
           v52 = *(*(&v85 + 1) + 8 * j);
@@ -5994,7 +5994,7 @@ LABEL_40:
           CAMViewSetGeometry(v52, &v79);
         }
 
-        v49 = [v47 countByEnumeratingWithState:&v85 objects:v115 count:16];
+        v49 = [_createdPrimaryInstructionLabels countByEnumeratingWithState:&v85 objects:v115 count:16];
       }
 
       while (v49);
@@ -6012,8 +6012,8 @@ LABEL_40:
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v54 = [(CAMFullscreenViewfinder *)self _createdSecondaryInstructionLabels];
-    v55 = [v54 countByEnumeratingWithState:&v68 objects:v114 count:16];
+    _createdSecondaryInstructionLabels = [(CAMFullscreenViewfinder *)self _createdSecondaryInstructionLabels];
+    v55 = [_createdSecondaryInstructionLabels countByEnumeratingWithState:&v68 objects:v114 count:16];
     if (v55)
     {
       v56 = v55;
@@ -6024,7 +6024,7 @@ LABEL_40:
         {
           if (*v69 != v57)
           {
-            objc_enumerationMutation(v54);
+            objc_enumerationMutation(_createdSecondaryInstructionLabels);
           }
 
           v59 = *(*(&v68 + 1) + 8 * k);
@@ -6044,13 +6044,13 @@ LABEL_40:
           CAMViewSetGeometry(v59, v78);
         }
 
-        v56 = [v54 countByEnumeratingWithState:&v68 objects:v114 count:16];
+        v56 = [_createdSecondaryInstructionLabels countByEnumeratingWithState:&v68 objects:v114 count:16];
       }
 
       while (v56);
     }
 
-    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:v5];
+    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animatedCopy];
   }
 }
 
@@ -6108,152 +6108,152 @@ void __51__CAMFullscreenViewfinder_setOrientation_animated___block_invoke_2(uint
   [*(a1 + 32) _applyTextInsertContentInsets];
 }
 
-- (void)setDeviceOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setDeviceOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (self->_deviceOrientation != a3)
+  if (self->_deviceOrientation != orientation)
   {
-    v5 = a4;
-    self->_deviceOrientation = a3;
-    v9 = [(CAMFullscreenViewfinder *)self _orientationInstructionView];
-    v8 = v5 && [(CAMFullscreenViewfinder *)self isOrientationInstructionVisible];
-    [v9 setOrientation:a3 animated:v8];
+    animatedCopy = animated;
+    self->_deviceOrientation = orientation;
+    _orientationInstructionView = [(CAMFullscreenViewfinder *)self _orientationInstructionView];
+    v8 = animatedCopy && [(CAMFullscreenViewfinder *)self isOrientationInstructionVisible];
+    [_orientationInstructionView setOrientation:orientation animated:v8];
   }
 }
 
-- (void)setShutterControlVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setShutterControlVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_shutterControlVisible != a3)
+  if (self->_shutterControlVisible != visible)
   {
-    self->_shutterControlVisible = a3;
-    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:a4];
+    self->_shutterControlVisible = visible;
+    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animated];
   }
 }
 
-- (void)setFlipButtonVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setFlipButtonVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_flipButtonVisible != a3)
+  if (self->_flipButtonVisible != visible)
   {
-    self->_flipButtonVisible = a3;
-    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:a4];
+    self->_flipButtonVisible = visible;
+    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animated];
   }
 }
 
-- (void)setPhotoVideoModeSwitchVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setPhotoVideoModeSwitchVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_photoVideoModeSwitchVisible != a3)
+  if (self->_photoVideoModeSwitchVisible != visible)
   {
-    self->_photoVideoModeSwitchVisible = a3;
-    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:a4];
+    self->_photoVideoModeSwitchVisible = visible;
+    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animated];
   }
 }
 
-- (void)setSystemOverlayVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setSystemOverlayVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_systemOverlayVisible != a3)
+  if (self->_systemOverlayVisible != visible)
   {
-    self->_systemOverlayVisible = a3;
-    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:a4];
+    self->_systemOverlayVisible = visible;
+    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:animated];
   }
 }
 
-- (void)setZoomControlVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setZoomControlVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_zoomControlVisible != a3)
+  if (self->_zoomControlVisible != visible)
   {
-    v4 = a4;
-    if (a4)
+    animatedCopy = animated;
+    if (animated)
     {
       [(CAMFullscreenViewfinder *)self layoutIfNeeded];
     }
 
-    self->_zoomControlVisible = a3;
-    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:v4];
+    self->_zoomControlVisible = visible;
+    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:animatedCopy];
 
-    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:v4];
+    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animatedCopy];
   }
 }
 
-- (void)setZoomStyle:(unint64_t)a3
+- (void)setZoomStyle:(unint64_t)style
 {
-  if (self->_zoomStyle == a3)
+  if (self->_zoomStyle == style)
   {
     return;
   }
 
-  self->_zoomStyle = a3;
-  if (a3 == 1)
+  self->_zoomStyle = style;
+  if (style == 1)
   {
     v7 = [[CAMZoomControl alloc] initWithLayoutStyle:3];
     [(CAMFullscreenViewfinder *)self _setZoomControl:v7];
 
     self->_zoomControlVisible = 1;
-    v8 = [(CAMFullscreenViewfinder *)self _contentViewBelowShutter];
-    v9 = [(CAMFullscreenViewfinder *)self zoomControl];
-    [v8 addSubview:v9];
+    _contentViewBelowShutter = [(CAMFullscreenViewfinder *)self _contentViewBelowShutter];
+    zoomControl = [(CAMFullscreenViewfinder *)self zoomControl];
+    [_contentViewBelowShutter addSubview:zoomControl];
 
     [(CAMFullscreenViewfinder *)self _updateZoomControlForLayoutConflictsAnimated:0];
   }
 
   else
   {
-    if (a3 == 2)
+    if (style == 2)
     {
-      v4 = [(CAMFullscreenViewfinder *)self zoomControl];
-      [v4 removeFromSuperview];
+      zoomControl2 = [(CAMFullscreenViewfinder *)self zoomControl];
+      [zoomControl2 removeFromSuperview];
 
       [(CAMFullscreenViewfinder *)self _setZoomControl:0];
       v5 = [[CAMZoomSlider alloc] initWithLayoutStyle:0];
       [(CAMFullscreenViewfinder *)self _setZoomSlider:v5];
 
-      v12 = [(CAMFullscreenViewfinder *)self _contentView];
-      v6 = [(CAMFullscreenViewfinder *)self zoomSlider];
-      [v12 addSubview:v6];
+      _contentView = [(CAMFullscreenViewfinder *)self _contentView];
+      zoomSlider = [(CAMFullscreenViewfinder *)self zoomSlider];
+      [_contentView addSubview:zoomSlider];
 
       return;
     }
 
-    v10 = [(CAMFullscreenViewfinder *)self zoomControl];
-    [v10 removeFromSuperview];
+    zoomControl3 = [(CAMFullscreenViewfinder *)self zoomControl];
+    [zoomControl3 removeFromSuperview];
 
     [(CAMFullscreenViewfinder *)self _setZoomControl:0];
   }
 
-  v11 = [(CAMFullscreenViewfinder *)self zoomSlider];
-  [v11 removeFromSuperview];
+  zoomSlider2 = [(CAMFullscreenViewfinder *)self zoomSlider];
+  [zoomSlider2 removeFromSuperview];
 
   [(CAMFullscreenViewfinder *)self _setZoomSlider:0];
 }
 
-- (void)_updateZoomControlForLayoutConflictsAnimated:(BOOL)a3
+- (void)_updateZoomControlForLayoutConflictsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CAMFullscreenViewfinder *)self visibleSuggestionButtonType];
-  v6 = [(CAMFullscreenViewfinder *)self isImageAnalysisButtonVisible]|| [(CAMFullscreenViewfinder *)self _showPortraitControls];
-  v7 = [(CAMFullscreenViewfinder *)self zoomControl];
-  [v7 setHasPlatterConflictLeft:v5 != 0 animated:v3];
+  animatedCopy = animated;
+  visibleSuggestionButtonType = [(CAMFullscreenViewfinder *)self visibleSuggestionButtonType];
+  _showPortraitControls = [(CAMFullscreenViewfinder *)self isImageAnalysisButtonVisible]|| [(CAMFullscreenViewfinder *)self _showPortraitControls];
+  zoomControl = [(CAMFullscreenViewfinder *)self zoomControl];
+  [zoomControl setHasPlatterConflictLeft:visibleSuggestionButtonType != 0 animated:animatedCopy];
 
-  v8 = [(CAMFullscreenViewfinder *)self zoomControl];
-  [v8 setHasPlatterConflictRight:v6 animated:v3];
+  zoomControl2 = [(CAMFullscreenViewfinder *)self zoomControl];
+  [zoomControl2 setHasPlatterConflictRight:_showPortraitControls animated:animatedCopy];
 }
 
-- (void)setVisiblePreviewSuggestionButton:(int64_t)a3 animated:(BOOL)a4
+- (void)setVisiblePreviewSuggestionButton:(int64_t)button animated:(BOOL)animated
 {
-  if (self->_visibleSuggestionButtonType != a3)
+  if (self->_visibleSuggestionButtonType != button)
   {
-    self->_visibleSuggestionButtonType = a3;
-    [(CAMFullscreenViewfinder *)self _updateZoomControlForLayoutConflictsAnimated:a4];
+    self->_visibleSuggestionButtonType = button;
+    [(CAMFullscreenViewfinder *)self _updateZoomControlForLayoutConflictsAnimated:animated];
   }
 }
 
-- (void)setElapsedTimeViewVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setElapsedTimeViewVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_elapsedTimeViewVisible != a3)
+  if (self->_elapsedTimeViewVisible != visible)
   {
-    v4 = a4;
-    if (a3)
+    animatedCopy = animated;
+    if (visible)
     {
-      v7 = [(CAMFullscreenViewfinder *)self elapsedTimeView];
-      if (v7)
+      elapsedTimeView = [(CAMFullscreenViewfinder *)self elapsedTimeView];
+      if (elapsedTimeView)
       {
       }
 
@@ -6264,10 +6264,10 @@ void __51__CAMFullscreenViewfinder_setOrientation_animated___block_invoke_2(uint
         self->_elapsedTimeView = v8;
 
         [(CAMElapsedTimeView *)self->_elapsedTimeView setDelegate:self];
-        v10 = [(CAMFullscreenViewfinder *)self _modulatingContentView];
-        [v10 addSubview:self->_elapsedTimeView];
+        _modulatingContentView = [(CAMFullscreenViewfinder *)self _modulatingContentView];
+        [_modulatingContentView addSubview:self->_elapsedTimeView];
 
-        if (v4)
+        if (animatedCopy)
         {
           [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:0];
         }
@@ -6278,14 +6278,14 @@ void __51__CAMFullscreenViewfinder_setOrientation_animated___block_invoke_2(uint
       v14 = v13;
       v16 = v15;
       v18 = v17;
-      v19 = [(CAMFullscreenViewfinder *)self elapsedTimeView];
-      v20 = [(CAMFullscreenViewfinder *)self _layout];
+      elapsedTimeView2 = [(CAMFullscreenViewfinder *)self elapsedTimeView];
+      _layout = [(CAMFullscreenViewfinder *)self _layout];
       v21 = self->_elapsedTimeView;
-      v22 = [(CAMFullscreenViewfinder *)self orientation];
-      v23 = [(CAMFullscreenViewfinder *)self isSystemOverlayVisible];
-      if (v20)
+      orientation = [(CAMFullscreenViewfinder *)self orientation];
+      isSystemOverlayVisible = [(CAMFullscreenViewfinder *)self isSystemOverlayVisible];
+      if (_layout)
       {
-        [v20 geometryForElapsedTimeView:v21 viewportFrame:v22 orientation:v23 systemOverlayVisible:{v12, v14, v16, v18}];
+        [_layout geometryForElapsedTimeView:v21 viewportFrame:orientation orientation:isSystemOverlayVisible systemOverlayVisible:{v12, v14, v16, v18}];
       }
 
       else
@@ -6298,17 +6298,17 @@ void __51__CAMFullscreenViewfinder_setOrientation_animated___block_invoke_2(uint
         v25 = 0u;
       }
 
-      CAMViewSetGeometry(v19, &v24);
+      CAMViewSetGeometry(elapsedTimeView2, &v24);
     }
 
-    if (v4)
+    if (animatedCopy)
     {
       [(CAMFullscreenViewfinder *)self layoutIfNeeded];
     }
 
-    self->_elapsedTimeViewVisible = a3;
-    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:v4, v24, v25, v26, v27, v28, v29];
-    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:v4];
+    self->_elapsedTimeViewVisible = visible;
+    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:animatedCopy, v24, v25, v26, v27, v28, v29];
+    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animatedCopy];
   }
 }
 
@@ -6316,76 +6316,76 @@ void __51__CAMFullscreenViewfinder_setOrientation_animated___block_invoke_2(uint
 {
   v4 = objc_alloc_init(CAMTimerIndicatorView);
   [(CAMTimerIndicatorView *)v4 setOrientation:[(CAMFullscreenViewfinder *)self orientation] animated:0];
-  v3 = [(CAMFullscreenViewfinder *)self _contentView];
-  [v3 addSubview:v4];
+  _contentView = [(CAMFullscreenViewfinder *)self _contentView];
+  [_contentView addSubview:v4];
 
   [(CAMFullscreenViewfinder *)self _setTimerIndicator:v4];
 }
 
-- (void)setTimerIndicatorVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setTimerIndicatorVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_timerIndicatorVisible != a3)
+  if (self->_timerIndicatorVisible != visible)
   {
-    v4 = a4;
-    if (a4)
+    animatedCopy = animated;
+    if (animated)
     {
       [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:0];
     }
 
-    self->_timerIndicatorVisible = a3;
+    self->_timerIndicatorVisible = visible;
 
-    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:v4];
+    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animatedCopy];
   }
 }
 
-- (void)setPreviewAlignmentGuideVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setPreviewAlignmentGuideVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_previewAlignmentGuideVisible != a3)
+  if (self->_previewAlignmentGuideVisible != visible)
   {
-    v4 = a4;
-    if (a3 && !self->_previewAlignmentGuide)
+    animatedCopy = animated;
+    if (visible && !self->_previewAlignmentGuide)
     {
       v7 = objc_alloc_init(CAMPreviewAlignmentGuide);
       [(CAMFullscreenViewfinder *)self _setPreviewAlignmentGuide:v7];
-      v8 = [(CAMFullscreenViewfinder *)self _contentView];
-      [v8 addSubview:v7];
+      _contentView = [(CAMFullscreenViewfinder *)self _contentView];
+      [_contentView addSubview:v7];
 
-      if (v4)
+      if (animatedCopy)
       {
         [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:0];
       }
     }
 
-    self->_previewAlignmentGuideVisible = a3;
+    self->_previewAlignmentGuideVisible = visible;
 
-    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:v4];
+    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animatedCopy];
   }
 }
 
-- (void)setPreviewView:(id)a3
+- (void)setPreviewView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   previewView = self->_previewView;
-  if (previewView != v5)
+  if (previewView != viewCopy)
   {
-    v13 = v5;
-    v7 = [(CAMPreviewView *)previewView superview];
+    v13 = viewCopy;
+    superview = [(CAMPreviewView *)previewView superview];
 
-    if (v7 == self)
+    if (superview == self)
     {
       [(CAMPreviewView *)self->_previewView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_previewView, a3);
-    v8 = [(CAMFullscreenViewfinder *)self interfaceModulation];
-    v9 = [(CAMPreviewView *)self->_previewView overlayContainerView];
-    [v9 setInterfaceModulation:v8];
+    objc_storeStrong(&self->_previewView, view);
+    interfaceModulation = [(CAMFullscreenViewfinder *)self interfaceModulation];
+    overlayContainerView = [(CAMPreviewView *)self->_previewView overlayContainerView];
+    [overlayContainerView setInterfaceModulation:interfaceModulation];
 
-    v10 = [(CAMPreviewView *)v13 videoPreviewLayer];
+    videoPreviewLayer = [(CAMPreviewView *)v13 videoPreviewLayer];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = videoPreviewLayer;
     }
 
     else
@@ -6394,8 +6394,8 @@ void __51__CAMFullscreenViewfinder_setOrientation_animated___block_invoke_2(uint
     }
 
     [(CAMFullscreenViewfinder *)self _setOverCapturePreviewLayer:v11];
-    v12 = [(CAMFullscreenViewfinder *)self _previewContainerView];
-    [v12 addSubview:v13];
+    _previewContainerView = [(CAMFullscreenViewfinder *)self _previewContainerView];
+    [_previewContainerView addSubview:v13];
 
     [(CAMFullscreenViewfinder *)self _updateReticle];
   }
@@ -6403,42 +6403,42 @@ void __51__CAMFullscreenViewfinder_setOrientation_animated___block_invoke_2(uint
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPanoramaView:(id)a3
+- (void)setPanoramaView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   panoramaView = self->_panoramaView;
-  if (panoramaView != v5)
+  if (panoramaView != viewCopy)
   {
-    v9 = v5;
-    v7 = [(CAMPanoramaView *)panoramaView superview];
+    v9 = viewCopy;
+    superview = [(CAMPanoramaView *)panoramaView superview];
 
-    if (v7 == self)
+    if (superview == self)
     {
       [(CAMPanoramaView *)self->_panoramaView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_panoramaView, a3);
-    v8 = [(CAMFullscreenViewfinder *)self _modulatingContentView];
-    [v8 addSubview:v9];
+    objc_storeStrong(&self->_panoramaView, view);
+    _modulatingContentView = [(CAMFullscreenViewfinder *)self _modulatingContentView];
+    [_modulatingContentView addSubview:v9];
   }
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPanoramaCaptureSize:(CGSize)a3
+- (void)setPanoramaCaptureSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CAMFullscreenViewfinder *)self panoramaView];
-  [v6 setPanoramaCaptureSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  panoramaView = [(CAMFullscreenViewfinder *)self panoramaView];
+  [panoramaView setPanoramaCaptureSize:{width, height}];
 
   [(CAMFullscreenViewfinder *)self setNeedsLayout];
 }
 
 - (CGSize)panoramaCaptureSize
 {
-  v2 = [(CAMFullscreenViewfinder *)self panoramaView];
-  [v2 panoramaCaptureSize];
+  panoramaView = [(CAMFullscreenViewfinder *)self panoramaView];
+  [panoramaView panoramaCaptureSize];
   v4 = v3;
   v6 = v5;
 
@@ -6449,20 +6449,20 @@ void __51__CAMFullscreenViewfinder_setOrientation_animated___block_invoke_2(uint
   return result;
 }
 
-- (void)setTrueVideoState:(unint64_t)a3
+- (void)setTrueVideoState:(unint64_t)state
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (self->_trueVideoState != a3)
+  if (self->_trueVideoState != state)
   {
-    self->_trueVideoState = a3;
-    if (a3 > 3)
+    self->_trueVideoState = state;
+    if (state > 3)
     {
       v3 = 0;
     }
 
     else
     {
-      v3 = off_1E76F79F8[a3];
+      v3 = off_1E76F79F8[state];
     }
 
     v4 = os_log_create("com.apple.camera", "Capture");
@@ -6475,96 +6475,96 @@ void __51__CAMFullscreenViewfinder_setOrientation_animated___block_invoke_2(uint
   }
 }
 
-- (void)setFlipAspectRatioButtonVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setFlipAspectRatioButtonVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_flipAspectRatioButtonVisible != a3)
+  if (self->_flipAspectRatioButtonVisible != visible)
   {
-    v4 = a4;
-    if (a4)
+    animatedCopy = animated;
+    if (animated)
     {
       [(CAMFullscreenViewfinder *)self layoutIfNeeded];
     }
 
-    self->_flipAspectRatioButtonVisible = a3;
-    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:v4];
-    v7 = [(CAMFullscreenViewfinder *)self flipAspectRatioButton];
+    self->_flipAspectRatioButtonVisible = visible;
+    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:animatedCopy];
+    flipAspectRatioButton = [(CAMFullscreenViewfinder *)self flipAspectRatioButton];
 
-    if (v7)
+    if (flipAspectRatioButton)
     {
 
-      [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:v4];
+      [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animatedCopy];
     }
 
     else
     {
       v10 = objc_alloc_init(CAMFlipAspectRatioButton);
       [(CAMFullscreenViewfinder *)self _setFlipAspectRatioButton:?];
-      v8 = [(CAMFullscreenViewfinder *)self delegate];
-      [v8 fullScreenViewfinderDidCreateFlipAspectRatioButton:self];
+      delegate = [(CAMFullscreenViewfinder *)self delegate];
+      [delegate fullScreenViewfinderDidCreateFlipAspectRatioButton:self];
 
-      if (v4)
+      if (animatedCopy)
       {
         [(CAMFlipAspectRatioButton *)v10 setAlpha:0.0];
       }
 
       [(CAMFlipAspectRatioButton *)v10 setOrientation:[(CAMFullscreenViewfinder *)self orientation]];
-      v9 = [(CAMFullscreenViewfinder *)self _contentView];
-      [v9 addSubview:v10];
+      _contentView = [(CAMFullscreenViewfinder *)self _contentView];
+      [_contentView addSubview:v10];
 
-      [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:v4];
+      [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animatedCopy];
     }
   }
 }
 
-- (void)setOffsetZoomButtonForFlipAspectRatioButton:(BOOL)a3 animated:(BOOL)a4
+- (void)setOffsetZoomButtonForFlipAspectRatioButton:(BOOL)button animated:(BOOL)animated
 {
-  if (self->_offsetZoomButtonForFlipAspectRatioButton != a3)
+  if (self->_offsetZoomButtonForFlipAspectRatioButton != button)
   {
-    v4 = a4;
-    if (a4)
+    animatedCopy = animated;
+    if (animated)
     {
       [(CAMFullscreenViewfinder *)self layoutIfNeeded];
     }
 
-    self->_offsetZoomButtonForFlipAspectRatioButton = a3;
+    self->_offsetZoomButtonForFlipAspectRatioButton = button;
 
-    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:v4];
+    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:animatedCopy];
   }
 }
 
-- (void)setChromeView:(id)a3
+- (void)setChromeView:(id)view
 {
-  v5 = a3;
-  if (self->_chromeView != v5)
+  viewCopy = view;
+  if (self->_chromeView != viewCopy)
   {
-    v8 = v5;
-    v6 = [(CAMFullscreenViewfinder *)self _chromeContentView];
-    v7 = [(UIView *)self->_chromeView superview];
+    v8 = viewCopy;
+    _chromeContentView = [(CAMFullscreenViewfinder *)self _chromeContentView];
+    superview = [(UIView *)self->_chromeView superview];
 
-    if (v7 == v6)
+    if (superview == _chromeContentView)
     {
       [(UIView *)self->_chromeView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_chromeView, a3);
-    [v6 addSubview:v8];
+    objc_storeStrong(&self->_chromeView, view);
+    [_chromeContentView addSubview:v8];
     [(CAMFullscreenViewfinder *)self setNeedsLayout];
 
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)setExternalChromeShutterButtonFrame:(CGRect)a3 animated:(BOOL)a4
+- (void)setExternalChromeShutterButtonFrame:(CGRect)frame animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  animatedCopy = animated;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_externalChromeShutterButtonFrame = &self->_externalChromeShutterButtonFrame;
-  if (!CGRectEqualToRect(self->_externalChromeShutterButtonFrame, a3))
+  if (!CGRectEqualToRect(self->_externalChromeShutterButtonFrame, frame))
   {
-    v11 = [(CAMFullscreenViewfinder *)self _isValidExternalChromeShutterButtonFrame]& v4;
+    v11 = [(CAMFullscreenViewfinder *)self _isValidExternalChromeShutterButtonFrame]& animatedCopy;
     if (v11 == 1)
     {
       [(CAMFullscreenViewfinder *)self layoutIfNeeded];
@@ -6579,79 +6579,79 @@ void __51__CAMFullscreenViewfinder_setOrientation_animated___block_invoke_2(uint
   }
 }
 
-- (void)setExternalChromeSmartStyleControlsVisible:(BOOL)a3
+- (void)setExternalChromeSmartStyleControlsVisible:(BOOL)visible
 {
-  if (self->_externalChromeSmartStyleControlsVisible != a3)
+  if (self->_externalChromeSmartStyleControlsVisible != visible)
   {
-    self->_externalChromeSmartStyleControlsVisible = a3;
+    self->_externalChromeSmartStyleControlsVisible = visible;
     [CAMFullscreenViewfinder _setSmartStyleControlsVisible:"_setSmartStyleControlsVisible:animated:notifyDelegate:" animated:? notifyDelegate:?];
   }
 }
 
-- (void)setExternalChromeSemanticStyleControlsVisible:(BOOL)a3
+- (void)setExternalChromeSemanticStyleControlsVisible:(BOOL)visible
 {
-  if (self->_externalChromeSemanticStyleControlsVisible != a3)
+  if (self->_externalChromeSemanticStyleControlsVisible != visible)
   {
-    self->_externalChromeSemanticStyleControlsVisible = a3;
+    self->_externalChromeSemanticStyleControlsVisible = visible;
     [CAMFullscreenViewfinder _updateForSemanticStyleControlsDidChangeVisibility:"_updateForSemanticStyleControlsDidChangeVisibility:animated:" animated:?];
   }
 }
 
-- (void)setExternalChromeFilterScrubberVisible:(BOOL)a3
+- (void)setExternalChromeFilterScrubberVisible:(BOOL)visible
 {
-  if (self->_externalChromeFilterScrubberVisible != a3)
+  if (self->_externalChromeFilterScrubberVisible != visible)
   {
-    self->_externalChromeFilterScrubberVisible = a3;
+    self->_externalChromeFilterScrubberVisible = visible;
     [(CAMFullscreenViewfinder *)self _loadFilterControlsIfNeeded];
 
     [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:1];
   }
 }
 
-- (void)setExternalChromeTopInset:(double)a3 animated:(BOOL)a4
+- (void)setExternalChromeTopInset:(double)inset animated:(BOOL)animated
 {
-  if (self->_externalChromeTopInset != a3)
+  if (self->_externalChromeTopInset != inset)
   {
-    v5 = a4;
-    if (a4)
+    animatedCopy = animated;
+    if (animated)
     {
       [(CAMFullscreenViewfinder *)self layoutIfNeeded];
     }
 
-    self->_externalChromeTopInset = a3;
+    self->_externalChromeTopInset = inset;
 
-    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:v5];
+    [(CAMFullscreenViewfinder *)self _setNeedsLayoutAnimated:animatedCopy];
   }
 }
 
-- (void)setDescriptionOverlayView:(id)a3 forKey:(id)a4
+- (void)setDescriptionOverlayView:(id)view forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAMFullscreenViewfinder *)self _descriptionOverlayViewByKey];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  viewCopy = view;
+  keyCopy = key;
+  _descriptionOverlayViewByKey = [(CAMFullscreenViewfinder *)self _descriptionOverlayViewByKey];
+  v9 = [_descriptionOverlayViewByKey objectForKeyedSubscript:keyCopy];
   v10 = v9;
-  if (v9 != v6)
+  if (v9 != viewCopy)
   {
-    v11 = [v9 superview];
+    superview = [v9 superview];
 
-    if (v11 == self)
+    if (superview == self)
     {
       v12 = dispatch_time(0, 1000000000);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __60__CAMFullscreenViewfinder_setDescriptionOverlayView_forKey___block_invoke;
       block[3] = &unk_1E76F7938;
-      v14 = v8;
-      v15 = v7;
+      v14 = _descriptionOverlayViewByKey;
+      v15 = keyCopy;
       v16 = v10;
       dispatch_after(v12, MEMORY[0x1E69E96A0], block);
     }
 
-    [v8 setObject:v6 forKeyedSubscript:v7];
-    [v6 setOrientation:{-[CAMFullscreenViewfinder orientation](self, "orientation")}];
-    [v6 setBlackoutFrameVisible:0];
-    [(CAMFullscreenViewfinder *)self _insertBackgroundSubview:v6];
+    [_descriptionOverlayViewByKey setObject:viewCopy forKeyedSubscript:keyCopy];
+    [viewCopy setOrientation:{-[CAMFullscreenViewfinder orientation](self, "orientation")}];
+    [viewCopy setBlackoutFrameVisible:0];
+    [(CAMFullscreenViewfinder *)self _insertBackgroundSubview:viewCopy];
   }
 }
 
@@ -6668,51 +6668,51 @@ void __60__CAMFullscreenViewfinder_setDescriptionOverlayView_forKey___block_invo
   }
 }
 
-- (id)descriptionOverlayViewForKey:(id)a3
+- (id)descriptionOverlayViewForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CAMFullscreenViewfinder *)self _descriptionOverlayViewByKey];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  _descriptionOverlayViewByKey = [(CAMFullscreenViewfinder *)self _descriptionOverlayViewByKey];
+  v6 = [_descriptionOverlayViewByKey objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (void)setDisabledModeOverlayView:(id)a3
+- (void)setDisabledModeOverlayView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   disabledModeOverlayView = self->_disabledModeOverlayView;
-  if (disabledModeOverlayView != v5)
+  if (disabledModeOverlayView != viewCopy)
   {
-    v8 = v5;
-    v7 = [(CAMDisabledModeOverlayView *)disabledModeOverlayView superview];
+    v8 = viewCopy;
+    superview = [(CAMDisabledModeOverlayView *)disabledModeOverlayView superview];
 
-    if (v7 == self)
+    if (superview == self)
     {
       [(CAMDisabledModeOverlayView *)self->_disabledModeOverlayView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_disabledModeOverlayView, a3);
+    objc_storeStrong(&self->_disabledModeOverlayView, view);
     [(CAMDisabledModeOverlayView *)self->_disabledModeOverlayView setOrientation:[(CAMFullscreenViewfinder *)self orientation]];
     disabledModeOverlayView = [(CAMFullscreenViewfinder *)self _insertBackgroundSubview:v8];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](disabledModeOverlayView, v5);
+  MEMORY[0x1EEE66BB8](disabledModeOverlayView, viewCopy);
 }
 
-- (void)setMaterial:(int64_t)a3 withDuration:(double)a4
+- (void)setMaterial:(int64_t)material withDuration:(double)duration
 {
-  if (self->_material != a3)
+  if (self->_material != material)
   {
-    self->_material = a3;
-    v8 = [(CAMFullscreenViewfinder *)self _reticleView];
-    [v8 setMaterial:a3 withDuration:a4];
+    self->_material = material;
+    _reticleView = [(CAMFullscreenViewfinder *)self _reticleView];
+    [_reticleView setMaterial:material withDuration:duration];
 
-    v9 = [(CAMFullscreenViewfinder *)self semanticStylePicker];
-    [v9 setMaterial:a3 withDuration:a4];
+    semanticStylePicker = [(CAMFullscreenViewfinder *)self semanticStylePicker];
+    [semanticStylePicker setMaterial:material withDuration:duration];
 
-    v10 = [(CAMFullscreenViewfinder *)self smartStylePicker];
-    [v10 setMaterial:a3 withDuration:a4];
+    smartStylePicker = [(CAMFullscreenViewfinder *)self smartStylePicker];
+    [smartStylePicker setMaterial:material withDuration:duration];
 
     [(CAMFullscreenViewfinder *)self _updateLightingControlClipping];
   }
@@ -6720,18 +6720,18 @@ void __60__CAMFullscreenViewfinder_setDescriptionOverlayView_forKey___block_invo
 
 - (unint64_t)interfaceModulation
 {
-  v2 = [(CAMFullscreenViewfinder *)self _modulatingContentView];
-  v3 = [v2 interfaceModulation];
+  _modulatingContentView = [(CAMFullscreenViewfinder *)self _modulatingContentView];
+  interfaceModulation = [_modulatingContentView interfaceModulation];
 
-  return v3;
+  return interfaceModulation;
 }
 
-- (void)setInterfaceModulation:(unint64_t)a3 animated:(BOOL)a4
+- (void)setInterfaceModulation:(unint64_t)modulation animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(CAMFullscreenViewfinder *)self _modulatingContentView];
-  v8 = v7;
-  if (a3 - 1 <= 1 && !v7)
+  animatedCopy = animated;
+  _modulatingContentView = [(CAMFullscreenViewfinder *)self _modulatingContentView];
+  v8 = _modulatingContentView;
+  if (modulation - 1 <= 1 && !_modulatingContentView)
   {
     v9 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -6740,54 +6740,54 @@ void __60__CAMFullscreenViewfinder_setDescriptionOverlayView_forKey___block_invo
     }
   }
 
-  [v8 setInterfaceModulation:a3 animated:v4];
-  v10 = [(CAMFullscreenViewfinder *)self previewView];
-  v11 = [v10 overlayContainerView];
-  [v11 setInterfaceModulation:a3 animated:v4];
+  [v8 setInterfaceModulation:modulation animated:animatedCopy];
+  previewView = [(CAMFullscreenViewfinder *)self previewView];
+  overlayContainerView = [previewView overlayContainerView];
+  [overlayContainerView setInterfaceModulation:modulation animated:animatedCopy];
 }
 
-- (void)setImageAnalysisButtonVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setImageAnalysisButtonVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_imageAnalysisButtonVisible != a3)
+  if (self->_imageAnalysisButtonVisible != visible)
   {
-    v4 = a4;
-    self->_imageAnalysisButtonVisible = a3;
-    [(CAMFullscreenViewfinder *)self _updateZoomControlForLayoutConflictsAnimated:a4];
-    v6 = [(CAMFullscreenViewfinder *)self imageAnalysisButton];
+    animatedCopy = animated;
+    self->_imageAnalysisButtonVisible = visible;
+    [(CAMFullscreenViewfinder *)self _updateZoomControlForLayoutConflictsAnimated:animated];
+    imageAnalysisButton = [(CAMFullscreenViewfinder *)self imageAnalysisButton];
 
-    if (v6)
+    if (imageAnalysisButton)
     {
 
-      [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:v4];
+      [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animatedCopy];
     }
   }
 }
 
-- (void)setImageAnalysisButton:(id)a3
+- (void)setImageAnalysisButton:(id)button
 {
-  v11 = a3;
-  v5 = self;
-  imageAnalysisButton = v5->_imageAnalysisButton;
-  if (imageAnalysisButton == v11)
+  buttonCopy = button;
+  selfCopy = self;
+  imageAnalysisButton = selfCopy->_imageAnalysisButton;
+  if (imageAnalysisButton == buttonCopy)
   {
-    v7 = [(CAMImageAnalysisButton *)v11 superview];
+    superview = [(CAMImageAnalysisButton *)buttonCopy superview];
 
-    if (v7 == v5)
+    if (superview == selfCopy)
     {
       goto LABEL_9;
     }
 
-    imageAnalysisButton = v5->_imageAnalysisButton;
+    imageAnalysisButton = selfCopy->_imageAnalysisButton;
   }
 
-  v8 = [(CAMImageAnalysisButton *)imageAnalysisButton superview];
-  if (v8 == v5)
+  superview2 = [(CAMImageAnalysisButton *)imageAnalysisButton superview];
+  if (superview2 == selfCopy)
   {
-    v9 = v5->_imageAnalysisButton;
+    v9 = selfCopy->_imageAnalysisButton;
 
-    if (v9 != v11)
+    if (v9 != buttonCopy)
     {
-      [(CAMImageAnalysisButton *)v5->_imageAnalysisButton removeFromSuperview];
+      [(CAMImageAnalysisButton *)selfCopy->_imageAnalysisButton removeFromSuperview];
     }
   }
 
@@ -6795,74 +6795,74 @@ void __60__CAMFullscreenViewfinder_setDescriptionOverlayView_forKey___block_invo
   {
   }
 
-  objc_storeStrong(&v5->_imageAnalysisButton, a3);
-  [(VKImageAnalysisButton *)v5->_imageAnalysisButton setInhibitGlassMaterial:1];
-  v10 = [MEMORY[0x1E69DC888] clearColor];
-  [(VKImageAnalysisButton *)v5->_imageAnalysisButton setCameraModeBackgroundColor:v10];
+  objc_storeStrong(&selfCopy->_imageAnalysisButton, button);
+  [(VKImageAnalysisButton *)selfCopy->_imageAnalysisButton setInhibitGlassMaterial:1];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(VKImageAnalysisButton *)selfCopy->_imageAnalysisButton setCameraModeBackgroundColor:clearColor];
 
-  [(VKImageAnalysisButton *)v5->_imageAnalysisButton setFunction:1];
-  [(CAMFullscreenViewfinder *)v5 addSubview:v11];
-  [(CAMFullscreenViewfinder *)v5 _updateSubviewsVisibilityAnimated:0];
+  [(VKImageAnalysisButton *)selfCopy->_imageAnalysisButton setFunction:1];
+  [(CAMFullscreenViewfinder *)selfCopy addSubview:buttonCopy];
+  [(CAMFullscreenViewfinder *)selfCopy _updateSubviewsVisibilityAnimated:0];
 LABEL_9:
 }
 
-- (void)setTextInteractionInsert:(id)a3
+- (void)setTextInteractionInsert:(id)insert
 {
-  v4 = a3;
+  insertCopy = insert;
   textInteractionInsert = self->_textInteractionInsert;
-  if (textInteractionInsert != v4)
+  if (textInteractionInsert != insertCopy)
   {
     [(VKTextLiftingView *)textInteractionInsert removeFromSuperview];
-    self->_textInteractionInsert = v4;
-    v6 = self;
-    v7 = [(CAMFullscreenViewfinder *)v6 imageAnalysisButton];
-    if (v4)
+    self->_textInteractionInsert = insertCopy;
+    selfCopy = self;
+    imageAnalysisButton = [(CAMFullscreenViewfinder *)selfCopy imageAnalysisButton];
+    if (insertCopy)
     {
-      [(CAMFullscreenViewfinder *)v6 insertSubview:v4 belowSubview:v7];
-      [(CAMFullscreenViewfinder *)v6 frameForReticleViewport];
-      [(CAMFullscreenViewfinder *)v6 _geometryForTextInteractionInsertWithViewport:?];
-      CAMViewSetGeometry(v4, &v9);
-      [v7 backgroundDiameter];
-      [(VKTextLiftingView *)v4 setPreferredQuickActionButtonHeight:?];
-      v8 = [(VKTextLiftingView *)v4 actionInfoView];
-      if (v8)
+      [(CAMFullscreenViewfinder *)selfCopy insertSubview:insertCopy belowSubview:imageAnalysisButton];
+      [(CAMFullscreenViewfinder *)selfCopy frameForReticleViewport];
+      [(CAMFullscreenViewfinder *)selfCopy _geometryForTextInteractionInsertWithViewport:?];
+      CAMViewSetGeometry(insertCopy, &v9);
+      [imageAnalysisButton backgroundDiameter];
+      [(VKTextLiftingView *)insertCopy setPreferredQuickActionButtonHeight:?];
+      actionInfoView = [(VKTextLiftingView *)insertCopy actionInfoView];
+      if (actionInfoView)
       {
-        [(CAMFullscreenViewfinder *)v6 _frameForActionInfoView];
-        [v8 setFrame:?];
+        [(CAMFullscreenViewfinder *)selfCopy _frameForActionInfoView];
+        [actionInfoView setFrame:?];
       }
 
-      [(CAMFullscreenViewfinder *)v6 _applyTextInsertContentInsets];
+      [(CAMFullscreenViewfinder *)selfCopy _applyTextInsertContentInsets];
     }
   }
 }
 
-- (void)adoptMachineReadableCodeButton:(id)a3 fromOriginalParent:(id)a4 animated:(BOOL)a5
+- (void)adoptMachineReadableCodeButton:(id)button fromOriginalParent:(id)parent animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CAMFullscreenViewfinder *)self machineReadableCodeButton];
-  v11 = v10;
-  if (v10 == v8)
+  animatedCopy = animated;
+  buttonCopy = button;
+  parentCopy = parent;
+  machineReadableCodeButton = [(CAMFullscreenViewfinder *)self machineReadableCodeButton];
+  v11 = machineReadableCodeButton;
+  if (machineReadableCodeButton == buttonCopy)
   {
-    v13 = os_log_create("com.apple.camera", "Camera");
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    _modulatingContentView = os_log_create("com.apple.camera", "Camera");
+    if (os_log_type_enabled(_modulatingContentView, OS_LOG_TYPE_ERROR))
     {
-      [CAMFullscreenViewfinder adoptMachineReadableCodeButton:v13 fromOriginalParent:? animated:?];
+      [CAMFullscreenViewfinder adoptMachineReadableCodeButton:_modulatingContentView fromOriginalParent:? animated:?];
     }
   }
 
   else
   {
-    if (v10)
+    if (machineReadableCodeButton)
     {
-      [(CAMFullscreenViewfinder *)self dismissMachineReadableCodeButtonAnimated:v5];
+      [(CAMFullscreenViewfinder *)self dismissMachineReadableCodeButtonAnimated:animatedCopy];
     }
 
-    [(CAMFullscreenViewfinder *)self _setMachineReadableCodeButton:v8];
-    if (v9)
+    [(CAMFullscreenViewfinder *)self _setMachineReadableCodeButton:buttonCopy];
+    if (parentCopy)
     {
-      v12 = v5;
+      v12 = animatedCopy;
     }
 
     else
@@ -6870,22 +6870,22 @@ LABEL_9:
       v12 = 0;
     }
 
-    v13 = [(CAMFullscreenViewfinder *)self _modulatingContentView];
+    _modulatingContentView = [(CAMFullscreenViewfinder *)self _modulatingContentView];
     if (v12)
     {
-      [v8 center];
-      [v9 convertPoint:v13 toView:?];
-      [v8 setCenter:?];
+      [buttonCopy center];
+      [parentCopy convertPoint:_modulatingContentView toView:?];
+      [buttonCopy setCenter:?];
     }
 
-    else if (v5)
+    else if (animatedCopy)
     {
-      [v8 setAlpha:0.0];
+      [buttonCopy setAlpha:0.0];
     }
 
-    [v8 setDismissable:1];
-    [v8 setDelegate:self];
-    [v13 addSubview:v8];
+    [buttonCopy setDismissable:1];
+    [buttonCopy setDelegate:self];
+    [_modulatingContentView addSubview:buttonCopy];
     if (v12)
     {
       v17[0] = MEMORY[0x1E69E9820];
@@ -6896,14 +6896,14 @@ LABEL_9:
       [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v17 usingSpringWithDamping:0 initialSpringVelocity:0.5 options:0.0 animations:1.0 completion:1.0];
     }
 
-    else if (v5)
+    else if (animatedCopy)
     {
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __86__CAMFullscreenViewfinder_adoptMachineReadableCodeButton_fromOriginalParent_animated___block_invoke_2;
       v14[3] = &unk_1E76F7960;
-      v15 = v8;
-      v16 = self;
+      v15 = buttonCopy;
+      selfCopy = self;
       [CAMView animateIfNeededWithDuration:v14 animations:0.3];
     }
   }
@@ -6917,14 +6917,14 @@ uint64_t __86__CAMFullscreenViewfinder_adoptMachineReadableCodeButton_fromOrigin
   return [v2 _updateSubviewsVisibilityAnimated:0];
 }
 
-- (void)dismissMachineReadableCodeButtonAnimated:(BOOL)a3
+- (void)dismissMachineReadableCodeButtonAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CAMFullscreenViewfinder *)self machineReadableCodeButton];
-  if (v5)
+  animatedCopy = animated;
+  machineReadableCodeButton = [(CAMFullscreenViewfinder *)self machineReadableCodeButton];
+  if (machineReadableCodeButton)
   {
     [(CAMFullscreenViewfinder *)self _setMachineReadableCodeButton:0];
-    if (v3)
+    if (animatedCopy)
     {
       v6 = 0.3;
     }
@@ -6938,23 +6938,23 @@ uint64_t __86__CAMFullscreenViewfinder_adoptMachineReadableCodeButton_fromOrigin
     v12[1] = 3221225472;
     v12[2] = __68__CAMFullscreenViewfinder_dismissMachineReadableCodeButtonAnimated___block_invoke;
     v12[3] = &unk_1E76F77B0;
-    v13 = v5;
+    v13 = machineReadableCodeButton;
     v7 = MEMORY[0x1E69E9820];
     v8 = 3221225472;
     v9 = __68__CAMFullscreenViewfinder_dismissMachineReadableCodeButtonAnimated___block_invoke_2;
     v10 = &unk_1E76F7988;
     v11 = v13;
     [CAMView animateIfNeededWithDuration:v12 animations:&v7 completion:v6];
-    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:v3, v7, v8, v9, v10];
+    [(CAMFullscreenViewfinder *)self _updateSubviewsVisibilityAnimated:animatedCopy, v7, v8, v9, v10];
   }
 }
 
-- (void)machineReadableCodeButtonDidTapDismiss:(id)a3
+- (void)machineReadableCodeButtonDidTapDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = [(CAMFullscreenViewfinder *)self machineReadableCodeButton];
+  dismissCopy = dismiss;
+  machineReadableCodeButton = [(CAMFullscreenViewfinder *)self machineReadableCodeButton];
 
-  if (v5 == v4)
+  if (machineReadableCodeButton == dismissCopy)
   {
     v6 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -6970,13 +6970,13 @@ uint64_t __86__CAMFullscreenViewfinder_adoptMachineReadableCodeButton_fromOrigin
 - (void)removeInflightBlurAnimations
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(CAMFullscreenViewfinder *)self _previewContainerView];
+  _previewContainerView = [(CAMFullscreenViewfinder *)self _previewContainerView];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [v2 subviews];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  subviews = [_previewContainerView subviews];
+  v4 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -6988,7 +6988,7 @@ uint64_t __86__CAMFullscreenViewfinder_adoptMachineReadableCodeButton_fromOrigin
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -7002,7 +7002,7 @@ uint64_t __86__CAMFullscreenViewfinder_adoptMachineReadableCodeButton_fromOrigin
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -7012,13 +7012,13 @@ uint64_t __86__CAMFullscreenViewfinder_adoptMachineReadableCodeButton_fromOrigin
 - (void)prepareForResumingUsingCrossfade
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(CAMFullscreenViewfinder *)self _previewContainerView];
+  _previewContainerView = [(CAMFullscreenViewfinder *)self _previewContainerView];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [v2 subviews];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  subviews = [_previewContainerView subviews];
+  v4 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -7030,7 +7030,7 @@ uint64_t __86__CAMFullscreenViewfinder_adoptMachineReadableCodeButton_fromOrigin
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -7044,7 +7044,7 @@ uint64_t __86__CAMFullscreenViewfinder_adoptMachineReadableCodeButton_fromOrigin
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -7053,39 +7053,39 @@ uint64_t __86__CAMFullscreenViewfinder_adoptMachineReadableCodeButton_fromOrigin
 
 - (id)touchingRecognizersToCancel
 {
-  v2 = [(CAMFullscreenViewfinder *)self controlDrawer];
-  v3 = [v2 touchingRecognizersToCancel];
+  controlDrawer = [(CAMFullscreenViewfinder *)self controlDrawer];
+  touchingRecognizersToCancel = [controlDrawer touchingRecognizersToCancel];
 
-  return v3;
+  return touchingRecognizersToCancel;
 }
 
-- (void)_iterateViewsForHUDManager:(id)a3 withItemFoundBlock:(id)a4
+- (void)_iterateViewsForHUDManager:(id)manager withItemFoundBlock:(id)block
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  [a3 locationOfAccessibilityGestureInView:self];
+  blockCopy = block;
+  [manager locationOfAccessibilityGestureInView:self];
   v8 = v7;
   v10 = v9;
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(CAMFullscreenViewfinder *)self isFlipButtonVisible])
   {
-    v12 = [(CAMFullscreenViewfinder *)self flipButton];
+    flipButton = [(CAMFullscreenViewfinder *)self flipButton];
 
-    if (v12)
+    if (flipButton)
     {
-      v13 = [(CAMFullscreenViewfinder *)self flipButton];
-      [v11 addObject:v13];
+      flipButton2 = [(CAMFullscreenViewfinder *)self flipButton];
+      [array addObject:flipButton2];
     }
   }
 
   if ([(CAMFullscreenViewfinder *)self _showControlDrawer])
   {
-    v14 = [(CAMFullscreenViewfinder *)self controlDrawer];
+    controlDrawer = [(CAMFullscreenViewfinder *)self controlDrawer];
 
-    if (v14)
+    if (controlDrawer)
     {
-      v15 = [(CAMFullscreenViewfinder *)self controlDrawer];
-      [v11 addObject:v15];
+      controlDrawer2 = [(CAMFullscreenViewfinder *)self controlDrawer];
+      [array addObject:controlDrawer2];
     }
   }
 
@@ -7093,7 +7093,7 @@ uint64_t __86__CAMFullscreenViewfinder_adoptMachineReadableCodeButton_fromOrigin
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v16 = v11;
+  v16 = array;
   v17 = [v16 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v17)
   {
@@ -7115,7 +7115,7 @@ uint64_t __86__CAMFullscreenViewfinder_adoptMachineReadableCodeButton_fromOrigin
         v28.y = v10;
         if (CGRectContainsPoint(v29, v28))
         {
-          v6[2](v6, v21);
+          blockCopy[2](blockCopy, v21);
           goto LABEL_17;
         }
       }
@@ -7133,9 +7133,9 @@ uint64_t __86__CAMFullscreenViewfinder_adoptMachineReadableCodeButton_fromOrigin
 LABEL_17:
 }
 
-- (id)hudItemForAccessibilityHUDManager:(id)a3
+- (id)hudItemForAccessibilityHUDManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -7147,7 +7147,7 @@ LABEL_17:
   v8[2] = __61__CAMFullscreenViewfinder_hudItemForAccessibilityHUDManager___block_invoke;
   v8[3] = &unk_1E76F79B0;
   v10 = &v11;
-  v5 = v4;
+  v5 = managerCopy;
   v9 = v5;
   [(CAMFullscreenViewfinder *)self _iterateViewsForHUDManager:v5 withItemFoundBlock:v8];
   v6 = v12[5];
@@ -7167,21 +7167,21 @@ uint64_t __61__CAMFullscreenViewfinder_hudItemForAccessibilityHUDManager___block
   return MEMORY[0x1EEE66BB8](v3, v5);
 }
 
-- (void)selectedByAccessibilityHUDManager:(id)a3
+- (void)selectedByAccessibilityHUDManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__CAMFullscreenViewfinder_selectedByAccessibilityHUDManager___block_invoke;
   v6[3] = &unk_1E76F79D8;
-  v7 = v4;
-  v5 = v4;
+  v7 = managerCopy;
+  v5 = managerCopy;
   [(CAMFullscreenViewfinder *)self _iterateViewsForHUDManager:v5 withItemFoundBlock:v6];
 }
 
-- (BOOL)shouldAccessibilityGestureBeginForHUDManager:(id)a3
+- (BOOL)shouldAccessibilityGestureBeginForHUDManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -7191,7 +7191,7 @@ uint64_t __61__CAMFullscreenViewfinder_hudItemForAccessibilityHUDManager___block
   v7[2] = __72__CAMFullscreenViewfinder_shouldAccessibilityGestureBeginForHUDManager___block_invoke;
   v7[3] = &unk_1E76F79B0;
   v9 = &v10;
-  v5 = v4;
+  v5 = managerCopy;
   v8 = v5;
   [(CAMFullscreenViewfinder *)self _iterateViewsForHUDManager:v5 withItemFoundBlock:v7];
   LOBYTE(self) = *(v11 + 24);

@@ -1,16 +1,16 @@
 @interface TSSIMUnlockDetailViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (TSSIMUnlockDetailViewAccessibility)initWithActionType:(int64_t)a3 actionSubtype:(int64_t)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (TSSIMUnlockDetailViewAccessibility)initWithActionType:(int64_t)type actionSubtype:(int64_t)subtype;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation TSSIMUnlockDetailViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TSSIMUnlockDetailView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"TSSIMUnlockDetailView" hasInstanceMethod:@"initWithActionType:actionSubtype:" withFullSignature:{"@", "q", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TSSIMUnlockDetailView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"TSSIMUnlockDetailView" hasInstanceMethod:@"initWithActionType:actionSubtype:" withFullSignature:{"@", "q", "q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -22,11 +22,11 @@
   [v3 _accessibilityAddTrait:*MEMORY[0x29EDC7F80]];
 }
 
-- (TSSIMUnlockDetailViewAccessibility)initWithActionType:(int64_t)a3 actionSubtype:(int64_t)a4
+- (TSSIMUnlockDetailViewAccessibility)initWithActionType:(int64_t)type actionSubtype:(int64_t)subtype
 {
   v7.receiver = self;
   v7.super_class = TSSIMUnlockDetailViewAccessibility;
-  v4 = [(TSSIMUnlockDetailViewAccessibility *)&v7 initWithActionType:a3 actionSubtype:a4];
+  v4 = [(TSSIMUnlockDetailViewAccessibility *)&v7 initWithActionType:type actionSubtype:subtype];
   v5 = v4;
   if (v4)
   {

@@ -1,16 +1,16 @@
 @interface SUUIProxyScrollView
 - (void)didMoveToWindow;
-- (void)setContentInset:(UIEdgeInsets)a3;
+- (void)setContentInset:(UIEdgeInsets)inset;
 @end
 
 @implementation SUUIProxyScrollView
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
   [(SUUIProxyScrollView *)self contentInset];
   v9 = v8;
   v11 = v10;
@@ -22,10 +22,10 @@
   [(SUUIProxyScrollView *)self contentInset];
   if (v19 != v11 || v16 != v9 || v18 != v15 || v17 != v13)
   {
-    v23 = [(SUUIProxyScrollView *)self delegate];
+    delegate = [(SUUIProxyScrollView *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v23 scrollViewDidChangeContentInset:self];
+      [delegate scrollViewDidChangeContentInset:self];
     }
   }
 }
@@ -35,10 +35,10 @@
   v4.receiver = self;
   v4.super_class = SUUIProxyScrollView;
   [(SUUIProxyScrollView *)&v4 didMoveToWindow];
-  v3 = [(SUUIProxyScrollView *)self delegate];
+  delegate = [(SUUIProxyScrollView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 scrollViewDidMoveToWindow:self];
+    [delegate scrollViewDidMoveToWindow:self];
   }
 }
 

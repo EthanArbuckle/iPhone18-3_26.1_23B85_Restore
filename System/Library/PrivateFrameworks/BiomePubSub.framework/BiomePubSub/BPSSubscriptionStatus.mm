@@ -1,8 +1,8 @@
 @interface BPSSubscriptionStatus
 + (id)awaitingSubscription;
-+ (id)subscribedWithSubscription:(id)a3;
++ (id)subscribedWithSubscription:(id)subscription;
 + (id)terminal;
-- (BPSSubscriptionStatus)initWithState:(int64_t)a3 subscription:(id)a4;
+- (BPSSubscriptionStatus)initWithState:(int64_t)state subscription:(id)subscription;
 @end
 
 @implementation BPSSubscriptionStatus
@@ -14,10 +14,10 @@
   return v2;
 }
 
-+ (id)subscribedWithSubscription:(id)a3
++ (id)subscribedWithSubscription:(id)subscription
 {
-  v3 = a3;
-  v4 = [[BPSSubscriptionStatus alloc] initWithState:1 subscription:v3];
+  subscriptionCopy = subscription;
+  v4 = [[BPSSubscriptionStatus alloc] initWithState:1 subscription:subscriptionCopy];
 
   return v4;
 }
@@ -29,17 +29,17 @@
   return v2;
 }
 
-- (BPSSubscriptionStatus)initWithState:(int64_t)a3 subscription:(id)a4
+- (BPSSubscriptionStatus)initWithState:(int64_t)state subscription:(id)subscription
 {
-  v7 = a4;
+  subscriptionCopy = subscription;
   v11.receiver = self;
   v11.super_class = BPSSubscriptionStatus;
   v8 = [(BPSSubscriptionStatus *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_state = a3;
-    objc_storeStrong(&v8->_subscription, a4);
+    v8->_state = state;
+    objc_storeStrong(&v8->_subscription, subscription);
   }
 
   return v9;

@@ -1,54 +1,54 @@
 @interface _SFPBSymbolImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBSymbolImage)initWithDictionary:(id)a3;
-- (_SFPBSymbolImage)initWithFacade:(id)a3;
-- (_SFPBSymbolImage)initWithJSON:(id)a3;
+- (_SFPBSymbolImage)initWithDictionary:(id)dictionary;
+- (_SFPBSymbolImage)initWithFacade:(id)facade;
+- (_SFPBSymbolImage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setSymbolName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setSymbolName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBSymbolImage
 
-- (_SFPBSymbolImage)initWithFacade:(id)a3
+- (_SFPBSymbolImage)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBSymbolImage *)self init];
   if (v5)
   {
-    v6 = [v4 symbolName];
+    symbolName = [facadeCopy symbolName];
 
-    if (v6)
+    if (symbolName)
     {
-      v7 = [v4 symbolName];
-      [(_SFPBSymbolImage *)v5 setSymbolName:v7];
+      symbolName2 = [facadeCopy symbolName];
+      [(_SFPBSymbolImage *)v5 setSymbolName:symbolName2];
     }
 
-    if ([v4 hasPunchThroughBackground])
+    if ([facadeCopy hasPunchThroughBackground])
     {
-      -[_SFPBSymbolImage setPunchThroughBackground:](v5, "setPunchThroughBackground:", [v4 punchThroughBackground]);
+      -[_SFPBSymbolImage setPunchThroughBackground:](v5, "setPunchThroughBackground:", [facadeCopy punchThroughBackground]);
     }
 
-    if ([v4 hasBackgroundColor])
+    if ([facadeCopy hasBackgroundColor])
     {
-      -[_SFPBSymbolImage setBackgroundColor:](v5, "setBackgroundColor:", [v4 backgroundColor]);
+      -[_SFPBSymbolImage setBackgroundColor:](v5, "setBackgroundColor:", [facadeCopy backgroundColor]);
     }
 
-    if ([v4 hasPrimaryColor])
+    if ([facadeCopy hasPrimaryColor])
     {
-      -[_SFPBSymbolImage setPrimaryColor:](v5, "setPrimaryColor:", [v4 primaryColor]);
+      -[_SFPBSymbolImage setPrimaryColor:](v5, "setPrimaryColor:", [facadeCopy primaryColor]);
     }
 
-    if ([v4 hasSecondaryColor])
+    if ([facadeCopy hasSecondaryColor])
     {
-      -[_SFPBSymbolImage setSecondaryColor:](v5, "setSecondaryColor:", [v4 secondaryColor]);
+      -[_SFPBSymbolImage setSecondaryColor:](v5, "setSecondaryColor:", [facadeCopy secondaryColor]);
     }
 
-    if ([v4 hasFillStyle])
+    if ([facadeCopy hasFillStyle])
     {
-      -[_SFPBSymbolImage setFillStyle:](v5, "setFillStyle:", [v4 fillStyle]);
+      -[_SFPBSymbolImage setFillStyle:](v5, "setFillStyle:", [facadeCopy fillStyle]);
     }
 
     v8 = v5;
@@ -57,15 +57,15 @@
   return v5;
 }
 
-- (_SFPBSymbolImage)initWithDictionary:(id)a3
+- (_SFPBSymbolImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = _SFPBSymbolImage;
   v5 = [(_SFPBSymbolImage *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"symbolName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"symbolName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,35 +73,35 @@
       [(_SFPBSymbolImage *)v5 setSymbolName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"punchThroughBackground"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"punchThroughBackground"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBSymbolImage setPunchThroughBackground:](v5, "setPunchThroughBackground:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"backgroundColor"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"backgroundColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBSymbolImage setBackgroundColor:](v5, "setBackgroundColor:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"primaryColor"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"primaryColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBSymbolImage setPrimaryColor:](v5, "setPrimaryColor:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"secondaryColor"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"secondaryColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBSymbolImage setSecondaryColor:](v5, "setSecondaryColor:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"fillStyle"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"fillStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,30 +114,30 @@
   return v5;
 }
 
-- (_SFPBSymbolImage)initWithJSON:(id)a3
+- (_SFPBSymbolImage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBSymbolImage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBSymbolImage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBSymbolImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -150,85 +150,85 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_backgroundColor)
   {
-    v4 = [(_SFPBSymbolImage *)self backgroundColor];
-    if (v4 >= 8)
+    backgroundColor = [(_SFPBSymbolImage *)self backgroundColor];
+    if (backgroundColor >= 8)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", backgroundColor];
     }
 
     else
     {
-      v5 = off_1E7ACE470[v4];
+      v5 = off_1E7ACE470[backgroundColor];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"backgroundColor"];
+    [dictionary setObject:v5 forKeyedSubscript:@"backgroundColor"];
   }
 
   if (self->_fillStyle)
   {
-    v6 = [(_SFPBSymbolImage *)self fillStyle];
-    if (v6 >= 3)
+    fillStyle = [(_SFPBSymbolImage *)self fillStyle];
+    if (fillStyle >= 3)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", fillStyle];
     }
 
     else
     {
-      v7 = off_1E7ACE548[v6];
+      v7 = off_1E7ACE548[fillStyle];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"fillStyle"];
+    [dictionary setObject:v7 forKeyedSubscript:@"fillStyle"];
   }
 
   if (self->_primaryColor)
   {
-    v8 = [(_SFPBSymbolImage *)self primaryColor];
-    if (v8 >= 8)
+    primaryColor = [(_SFPBSymbolImage *)self primaryColor];
+    if (primaryColor >= 8)
     {
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v8];
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", primaryColor];
     }
 
     else
     {
-      v9 = off_1E7ACE470[v8];
+      v9 = off_1E7ACE470[primaryColor];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"primaryColor"];
+    [dictionary setObject:v9 forKeyedSubscript:@"primaryColor"];
   }
 
   if (self->_punchThroughBackground)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBSymbolImage punchThroughBackground](self, "punchThroughBackground")}];
-    [v3 setObject:v10 forKeyedSubscript:@"punchThroughBackground"];
+    [dictionary setObject:v10 forKeyedSubscript:@"punchThroughBackground"];
   }
 
   if (self->_secondaryColor)
   {
-    v11 = [(_SFPBSymbolImage *)self secondaryColor];
-    if (v11 >= 8)
+    secondaryColor = [(_SFPBSymbolImage *)self secondaryColor];
+    if (secondaryColor >= 8)
     {
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v11];
+      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", secondaryColor];
     }
 
     else
     {
-      v12 = off_1E7ACE470[v11];
+      v12 = off_1E7ACE470[secondaryColor];
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"secondaryColor"];
+    [dictionary setObject:v12 forKeyedSubscript:@"secondaryColor"];
   }
 
   if (self->_symbolName)
   {
-    v13 = [(_SFPBSymbolImage *)self symbolName];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"symbolName"];
+    symbolName = [(_SFPBSymbolImage *)self symbolName];
+    v14 = [symbolName copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"symbolName"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -247,18 +247,18 @@
   return v4 ^ v3 ^ (2654435761 * self->_backgroundColor) ^ (2654435761 * self->_primaryColor) ^ (2654435761 * self->_secondaryColor) ^ (2654435761 * self->_fillStyle);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = [(_SFPBSymbolImage *)self symbolName];
-  v6 = [v4 symbolName];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  symbolName = [(_SFPBSymbolImage *)self symbolName];
+  symbolName2 = [equalCopy symbolName];
+  v7 = symbolName2;
+  if ((symbolName != 0) == (symbolName2 == 0))
   {
 
 LABEL_13:
@@ -266,13 +266,13 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v8 = [(_SFPBSymbolImage *)self symbolName];
-  if (v8)
+  symbolName3 = [(_SFPBSymbolImage *)self symbolName];
+  if (symbolName3)
   {
-    v9 = v8;
-    v10 = [(_SFPBSymbolImage *)self symbolName];
-    v11 = [v4 symbolName];
-    v12 = [v10 isEqual:v11];
+    v9 = symbolName3;
+    symbolName4 = [(_SFPBSymbolImage *)self symbolName];
+    symbolName5 = [equalCopy symbolName];
+    v12 = [symbolName4 isEqual:symbolName5];
 
     if (!v12)
     {
@@ -285,41 +285,41 @@ LABEL_13:
   }
 
   punchThroughBackground = self->_punchThroughBackground;
-  if (punchThroughBackground != [v4 punchThroughBackground])
+  if (punchThroughBackground != [equalCopy punchThroughBackground])
   {
     goto LABEL_13;
   }
 
   backgroundColor = self->_backgroundColor;
-  if (backgroundColor != [v4 backgroundColor])
+  if (backgroundColor != [equalCopy backgroundColor])
   {
     goto LABEL_13;
   }
 
   primaryColor = self->_primaryColor;
-  if (primaryColor != [v4 primaryColor])
+  if (primaryColor != [equalCopy primaryColor])
   {
     goto LABEL_13;
   }
 
   secondaryColor = self->_secondaryColor;
-  if (secondaryColor != [v4 secondaryColor])
+  if (secondaryColor != [equalCopy secondaryColor])
   {
     goto LABEL_13;
   }
 
   fillStyle = self->_fillStyle;
-  v18 = fillStyle == [v4 fillStyle];
+  v18 = fillStyle == [equalCopy fillStyle];
 LABEL_14:
 
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_SFPBSymbolImage *)self symbolName];
-  if (v4)
+  toCopy = to;
+  symbolName = [(_SFPBSymbolImage *)self symbolName];
+  if (symbolName)
   {
     PBDataWriterWriteStringField();
   }
@@ -344,18 +344,18 @@ LABEL_14:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_SFPBSymbolImage *)self fillStyle];
-  v6 = v7;
-  if (v5)
+  fillStyle = [(_SFPBSymbolImage *)self fillStyle];
+  v6 = toCopy;
+  if (fillStyle)
   {
     PBDataWriterWriteInt32Field();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 
-- (void)setSymbolName:(id)a3
+- (void)setSymbolName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   symbolName = self->_symbolName;
   self->_symbolName = v4;
 

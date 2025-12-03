@@ -1,26 +1,26 @@
 @interface PGMeaningfulEventProcessor
-+ (id)_legacyMeaningResultForResult:(id)a3 requiredCriteriaByIdentifier:(id)a4;
-+ (id)_postProcessBirthdaysWithResults:(id)a3 forMoment:(id)a4;
-+ (id)_postProcessResults:(id)a3 forMoment:(id)a4;
-+ (id)processRequiredCriteria:(id)a3 forMoment:(id)a4 meaningfulEventProcessorCache:(id)a5 serviceManager:(id)a6;
++ (id)_legacyMeaningResultForResult:(id)result requiredCriteriaByIdentifier:(id)identifier;
++ (id)_postProcessBirthdaysWithResults:(id)results forMoment:(id)moment;
++ (id)_postProcessResults:(id)results forMoment:(id)moment;
++ (id)processRequiredCriteria:(id)criteria forMoment:(id)moment meaningfulEventProcessorCache:(id)cache serviceManager:(id)manager;
 @end
 
 @implementation PGMeaningfulEventProcessor
 
-+ (id)_postProcessBirthdaysWithResults:(id)a3 forMoment:(id)a4
++ (id)_postProcessBirthdaysWithResults:(id)results forMoment:(id)moment
 {
   v130 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v83 = a4;
+  resultsCopy = results;
+  momentCopy = moment;
   v94 = [MEMORY[0x277CBEB58] set];
   v93 = [MEMORY[0x277CBEB58] set];
   v91 = [MEMORY[0x277CBEB58] set];
-  v95 = [v83 hasEdgeWithLabel:@"CELEBRATING" domain:401];
+  v95 = [momentCopy hasEdgeWithLabel:@"CELEBRATING" domain:401];
   v121 = 0u;
   v122 = 0u;
   v123 = 0u;
   v124 = 0u;
-  obj = v5;
+  obj = resultsCopy;
   v6 = [obj countByEnumeratingWithState:&v121 objects:v129 count:16];
   if (v6)
   {
@@ -35,12 +35,12 @@
         }
 
         v9 = *(*(&v121 + 1) + 8 * i);
-        v10 = [v9 requiredCriteria];
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:@"Birthday"];
+        requiredCriteria = [v9 requiredCriteria];
+        identifier = [requiredCriteria identifier];
+        v12 = [identifier isEqualToString:@"Birthday"];
         if ((v12 & 1) == 0)
         {
-          v13 = [v11 isEqualToString:@"WeakBirthday"];
+          v13 = [identifier isEqualToString:@"WeakBirthday"];
           v14 = v91;
           if (!v13)
           {
@@ -48,7 +48,7 @@
           }
         }
 
-        if (!v95 || ([v10 additionalInfo], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "objectForKeyedSubscript:", @"birthday.isOnDate"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "BOOLValue"), v16, v15, v17))
+        if (!v95 || ([requiredCriteria additionalInfo], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "objectForKeyedSubscript:", @"birthday.isOnDate"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "BOOLValue"), v16, v15, v17))
         {
           if (v12)
           {
@@ -107,8 +107,8 @@ LABEL_22:
   }
 
   v24 = v23;
-  v82 = [v83 graph];
-  v25 = [v82 meNode];
+  graph = [momentCopy graph];
+  meNode = [graph meNode];
   v119 = 0u;
   v120 = 0u;
   v117 = 0u;
@@ -117,14 +117,14 @@ LABEL_22:
   v26 = [v88 countByEnumeratingWithState:&v117 objects:v128 count:16];
   if (v26)
   {
-    v27 = 0;
+    nodes = 0;
     v96 = 0;
     v28 = *v118;
     v29 = 1;
     do
     {
       v30 = 0;
-      v31 = v27;
+      v31 = nodes;
       do
       {
         if (*v118 != v28)
@@ -133,18 +133,18 @@ LABEL_22:
         }
 
         v32 = *(*(&v117 + 1) + 8 * v30);
-        v33 = [v32 requiredCriteria];
-        v34 = [v33 peopleTrait];
-        v27 = [v34 nodes];
+        requiredCriteria2 = [v32 requiredCriteria];
+        peopleTrait = [requiredCriteria2 peopleTrait];
+        nodes = [peopleTrait nodes];
 
         if (v31)
         {
-          v29 &= [v31 isEqual:v27];
+          v29 &= [v31 isEqual:nodes];
         }
 
-        if (v25)
+        if (meNode)
         {
-          if ([v27 containsNode:v25])
+          if ([nodes containsNode:meNode])
           {
             if (!v96 || ([v32 score], v36 = v35, objc_msgSend(v96, "score"), v36 > v37))
             {
@@ -156,7 +156,7 @@ LABEL_22:
         }
 
         ++v30;
-        v31 = v27;
+        v31 = nodes;
       }
 
       while (v26 != v30);
@@ -167,12 +167,12 @@ LABEL_22:
 
     if ((v29 & 1) == 0)
     {
-      v39 = [v96 requiredCriteria];
-      v40 = [v39 additionalInfo];
-      v41 = [v40 objectForKeyedSubscript:@"birthday.isOnDate"];
-      v42 = [v41 BOOLValue];
+      requiredCriteria3 = [v96 requiredCriteria];
+      additionalInfo = [requiredCriteria3 additionalInfo];
+      v41 = [additionalInfo objectForKeyedSubscript:@"birthday.isOnDate"];
+      bOOLValue = [v41 BOOLValue];
 
-      if (((v96 != 0) & v42) == 1)
+      if (((v96 != 0) & bOOLValue) == 1)
       {
         [v81 addObject:?];
       }
@@ -199,12 +199,12 @@ LABEL_22:
               }
 
               v48 = *(*(&v113 + 1) + 8 * j);
-              v49 = [v48 requiredCriteria];
-              v50 = [v49 additionalInfo];
-              v51 = [v50 objectForKeyedSubscript:@"birthday.isOnDate"];
-              v52 = [v51 BOOLValue];
+              requiredCriteria4 = [v48 requiredCriteria];
+              additionalInfo2 = [requiredCriteria4 additionalInfo];
+              v51 = [additionalInfo2 objectForKeyedSubscript:@"birthday.isOnDate"];
+              bOOLValue2 = [v51 BOOLValue];
 
-              if (v52)
+              if (bOOLValue2)
               {
                 [v87 addObject:v48];
               }
@@ -231,7 +231,7 @@ LABEL_22:
         v88 = v54;
         if ([v54 count] >= 2)
         {
-          v55 = [(MAElementCollection *)[PGGraphPersonNodeCollection alloc] initWithGraph:v82];
+          v55 = [(MAElementCollection *)[PGGraphPersonNodeCollection alloc] initWithGraph:graph];
           v111 = 0u;
           v112 = 0u;
           v109 = 0u;
@@ -250,16 +250,16 @@ LABEL_22:
                   objc_enumerationMutation(v90);
                 }
 
-                v59 = [*(*(&v109 + 1) + 8 * k) requiredCriteria];
-                v60 = [v59 peopleTrait];
-                v61 = [v60 nodes];
+                requiredCriteria5 = [*(*(&v109 + 1) + 8 * k) requiredCriteria];
+                peopleTrait2 = [requiredCriteria5 peopleTrait];
+                nodes2 = [peopleTrait2 nodes];
 
-                v62 = [v61 localIdentifiers];
-                v63 = [v62 anyObject];
+                localIdentifiers = [nodes2 localIdentifiers];
+                anyObject = [localIdentifiers anyObject];
 
-                if ([v63 length])
+                if ([anyObject length])
                 {
-                  v64 = [(MAElementCollection *)v55 collectionByFormingUnionWith:v61];
+                  v64 = [(MAElementCollection *)v55 collectionByFormingUnionWith:nodes2];
 
                   v55 = v64;
                 }
@@ -285,7 +285,7 @@ LABEL_22:
           v85 = v65;
           v103 = v85;
           v104 = &v105;
-          [v83 enumeratePersonEdgesAndNodesUsingBlock:v101];
+          [momentCopy enumeratePersonEdgesAndNodesUsingBlock:v101];
           v67 = [MEMORY[0x277CBEB58] set];
           v68 = v106[3];
           v97 = 0u;
@@ -310,19 +310,19 @@ LABEL_22:
                 }
 
                 v72 = *(*(&v97 + 1) + 8 * m);
-                v73 = [v72 requiredCriteria];
-                v74 = [v73 peopleTrait];
-                v75 = [v74 nodes];
+                requiredCriteria6 = [v72 requiredCriteria];
+                peopleTrait3 = [requiredCriteria6 peopleTrait];
+                nodes3 = [peopleTrait3 nodes];
 
-                v76 = [v75 localIdentifiers];
-                v77 = [v76 anyObject];
+                localIdentifiers2 = [nodes3 localIdentifiers];
+                anyObject2 = [localIdentifiers2 anyObject];
 
-                if ([v77 length])
+                if ([anyObject2 length])
                 {
-                  v78 = [v85 objectForKeyedSubscript:v77];
-                  v79 = [v78 unsignedIntegerValue];
+                  v78 = [v85 objectForKeyedSubscript:anyObject2];
+                  unsignedIntegerValue = [v78 unsignedIntegerValue];
 
-                  if (v70 <= v79)
+                  if (v70 <= unsignedIntegerValue)
                   {
                     [v88 addObject:v72];
                   }
@@ -349,7 +349,7 @@ LABEL_22:
   {
 
     v96 = 0;
-    v27 = 0;
+    nodes = 0;
   }
 
   [v81 unionSet:v88];
@@ -384,26 +384,26 @@ void __73__PGMeaningfulEventProcessor__postProcessBirthdaysWithResults_forMoment
   }
 }
 
-+ (id)_legacyMeaningResultForResult:(id)a3 requiredCriteriaByIdentifier:(id)a4
++ (id)_legacyMeaningResultForResult:(id)result requiredCriteriaByIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 requiredCriteria];
-  v8 = [v7 identifier];
+  resultCopy = result;
+  identifierCopy = identifier;
+  requiredCriteria = [resultCopy requiredCriteria];
+  identifier = [requiredCriteria identifier];
 
-  if ([v8 isEqualToString:@"AmusementPark"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Festival"))
+  if ([identifier isEqualToString:@"AmusementPark"] & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", @"Festival"))
   {
     v9 = kPGGraphNodeMeaningEntertainment;
   }
 
-  else if ([v8 isEqualToString:@"Concert"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Dance") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Theater"))
+  else if ([identifier isEqualToString:@"Concert"] & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", @"Dance") & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", @"Theater"))
   {
     v9 = kPGGraphNodeMeaningPerformance;
   }
 
   else
   {
-    if (![v8 isEqualToString:@"Wedding"])
+    if (![identifier isEqualToString:@"Wedding"])
     {
       goto LABEL_12;
     }
@@ -411,15 +411,15 @@ void __73__PGMeaningfulEventProcessor__postProcessBirthdaysWithResults_forMoment
     v9 = kPGGraphNodeMeaningGathering;
   }
 
-  v10 = [v6 objectForKeyedSubscript:*v9];
-  v11 = [v10 firstObject];
+  v10 = [identifierCopy objectForKeyedSubscript:*v9];
+  firstObject = [v10 firstObject];
 
-  if (v11)
+  if (firstObject)
   {
     v12 = [PGMeaningfulEventMatchingResult alloc];
-    v13 = [v5 isMatching];
-    [v5 score];
-    v15 = -[PGMeaningfulEventMatchingResult initWithIsMatching:score:isReliable:requiredCriteria:](v12, "initWithIsMatching:score:isReliable:requiredCriteria:", v13, [v5 isReliable], v11, v14);
+    isMatching = [resultCopy isMatching];
+    [resultCopy score];
+    v15 = -[PGMeaningfulEventMatchingResult initWithIsMatching:score:isReliable:requiredCriteria:](v12, "initWithIsMatching:score:isReliable:requiredCriteria:", isMatching, [resultCopy isReliable], firstObject, v14);
 
     goto LABEL_13;
   }
@@ -431,18 +431,18 @@ LABEL_13:
   return v15;
 }
 
-+ (id)_postProcessResults:(id)a3 forMoment:(id)a4
++ (id)_postProcessResults:(id)results forMoment:(id)moment
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] > 1)
+  resultsCopy = results;
+  momentCopy = moment;
+  if ([resultsCopy count] > 1)
   {
-    v8 = [a1 _postProcessBirthdaysWithResults:v6 forMoment:v7];
+    v8 = [self _postProcessBirthdaysWithResults:resultsCopy forMoment:momentCopy];
   }
 
   else
   {
-    v8 = v6;
+    v8 = resultsCopy;
   }
 
   v9 = v8;
@@ -450,13 +450,13 @@ LABEL_13:
   return v9;
 }
 
-+ (id)processRequiredCriteria:(id)a3 forMoment:(id)a4 meaningfulEventProcessorCache:(id)a5 serviceManager:(id)a6
++ (id)processRequiredCriteria:(id)criteria forMoment:(id)moment meaningfulEventProcessorCache:(id)cache serviceManager:(id)manager
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [[PGMeaningfulEventMatchingCriteria alloc] initWithMoment:v13 cache:v12 serviceManager:v11];
+  criteriaCopy = criteria;
+  managerCopy = manager;
+  cacheCopy = cache;
+  momentCopy = moment;
+  v14 = [[PGMeaningfulEventMatchingCriteria alloc] initWithMoment:momentCopy cache:cacheCopy serviceManager:managerCopy];
 
   v15 = [MEMORY[0x277CBEB58] set];
   v16 = [MEMORY[0x277CBEB58] set];
@@ -466,15 +466,15 @@ LABEL_13:
   v23[3] = &unk_27887F460;
   v24 = v16;
   v25 = v14;
-  v27 = v10;
-  v28 = a1;
+  v27 = criteriaCopy;
+  selfCopy = self;
   v26 = v15;
-  v17 = v10;
+  v17 = criteriaCopy;
   v18 = v15;
   v19 = v14;
   v20 = v16;
   [v17 enumerateKeysAndObjectsUsingBlock:v23];
-  v21 = [a1 _postProcessResults:v18 forMoment:v13];
+  v21 = [self _postProcessResults:v18 forMoment:momentCopy];
 
   return v21;
 }

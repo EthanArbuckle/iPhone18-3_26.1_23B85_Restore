@@ -1,14 +1,14 @@
 @interface NRGPBFullSyncRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)iconVariantsAtIndex:(unint64_t)a3;
-- (void)addBundleIDs:(id)a3;
-- (void)copyTo:(id)a3;
+- (int)iconVariantsAtIndex:(unint64_t)index;
+- (void)addBundleIDs:(id)ds;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRGPBFullSyncRequest
@@ -21,36 +21,36 @@
   [(NRGPBFullSyncRequest *)&v3 dealloc];
 }
 
-- (int)iconVariantsAtIndex:(unint64_t)a3
+- (int)iconVariantsAtIndex:(unint64_t)index
 {
   p_iconVariants = &self->_iconVariants;
   count = self->_iconVariants.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_iconVariants->list[a3];
+  return p_iconVariants->list[index];
 }
 
-- (void)addBundleIDs:(id)a3
+- (void)addBundleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   bundleIDs = self->_bundleIDs;
-  v8 = v4;
+  v8 = dsCopy;
   if (!bundleIDs)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_bundleIDs;
     self->_bundleIDs = v6;
 
-    v4 = v8;
+    dsCopy = v8;
     bundleIDs = self->_bundleIDs;
   }
 
-  [(NSMutableArray *)bundleIDs addObject:v4];
+  [(NSMutableArray *)bundleIDs addObject:dsCopy];
 }
 
 - (id)description
@@ -58,8 +58,8 @@
   v7.receiver = self;
   v7.super_class = NRGPBFullSyncRequest;
   v3 = [(NRGPBFullSyncRequest *)&v7 description];
-  v4 = [(NRGPBFullSyncRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NRGPBFullSyncRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -79,9 +79,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_iconVariants.count)
   {
     v5 = 0;
@@ -125,42 +125,42 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   if ([(NRGPBFullSyncRequest *)self iconVariantsCount])
   {
-    [v11 clearIconVariants];
-    v4 = [(NRGPBFullSyncRequest *)self iconVariantsCount];
-    if (v4)
+    [toCopy clearIconVariants];
+    iconVariantsCount = [(NRGPBFullSyncRequest *)self iconVariantsCount];
+    if (iconVariantsCount)
     {
-      v5 = v4;
+      v5 = iconVariantsCount;
       for (i = 0; i != v5; ++i)
       {
-        [v11 addIconVariants:{-[NRGPBFullSyncRequest iconVariantsAtIndex:](self, "iconVariantsAtIndex:", i)}];
+        [toCopy addIconVariants:{-[NRGPBFullSyncRequest iconVariantsAtIndex:](self, "iconVariantsAtIndex:", i)}];
       }
     }
   }
 
   if ([(NRGPBFullSyncRequest *)self bundleIDsCount])
   {
-    [v11 clearBundleIDs];
-    v7 = [(NRGPBFullSyncRequest *)self bundleIDsCount];
-    if (v7)
+    [toCopy clearBundleIDs];
+    bundleIDsCount = [(NRGPBFullSyncRequest *)self bundleIDsCount];
+    if (bundleIDsCount)
     {
-      v8 = v7;
+      v8 = bundleIDsCount;
       for (j = 0; j != v8; ++j)
       {
         v10 = [(NRGPBFullSyncRequest *)self bundleIDsAtIndex:j];
-        [v11 addBundleIDs:v10];
+        [toCopy addBundleIDs:v10];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedInt32Copy();
   v15 = 0u;
   v16 = 0u;
@@ -182,7 +182,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addBundleIDs:v11];
 
         v10 = v10 + 1;
@@ -198,13 +198,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && PBRepeatedInt32IsEqual())
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && PBRepeatedInt32IsEqual())
   {
     bundleIDs = self->_bundleIDs;
-    if (bundleIDs | v4[4])
+    if (bundleIDs | equalCopy[4])
     {
       v6 = [(NSMutableArray *)bundleIDs isEqual:?];
     }
@@ -223,16 +223,16 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = [v4 iconVariantsCount];
-  if (v5)
+  fromCopy = from;
+  iconVariantsCount = [fromCopy iconVariantsCount];
+  if (iconVariantsCount)
   {
-    v6 = v5;
+    v6 = iconVariantsCount;
     for (i = 0; i != v6; ++i)
     {
-      -[NRGPBFullSyncRequest addIconVariants:](self, "addIconVariants:", [v4 iconVariantsAtIndex:i]);
+      -[NRGPBFullSyncRequest addIconVariants:](self, "addIconVariants:", [fromCopy iconVariantsAtIndex:i]);
     }
   }
 
@@ -240,7 +240,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = v4[4];
+  v8 = fromCopy[4];
   v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {

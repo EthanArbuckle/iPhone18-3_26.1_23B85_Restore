@@ -14,7 +14,7 @@
 
 - (void)serverDidDie
 {
-  v2 = self;
+  selfCopy = self;
   sub_2584D4098();
 }
 

@@ -1,20 +1,20 @@
 @interface RMAccountHelper
-+ (BOOL)_removeAccount:(id)a3 store:(id)a4 error:(id *)a5;
-+ (BOOL)removeAccountWithEnrollmentURL:(id)a3 error:(id *)a4;
-+ (BOOL)removeAccountWithIdentifier:(id)a3 error:(id *)a4;
-+ (BOOL)updateAccountWithIdentifier:(id)a3 enrollmentURL:(id)a4 personaID:(id)a5 error:(id *)a6;
-+ (id)_createAccountWithEnrollmentURL:(id)a3 username:(id)a4 personaID:(id)a5 description:(id)a6 error:(id *)a7;
-+ (id)createAccountWithEnrollmentURL:(id)a3 username:(id)a4 personaID:(id)a5 description:(id)a6 error:(id *)a7;
++ (BOOL)_removeAccount:(id)account store:(id)store error:(id *)error;
++ (BOOL)removeAccountWithEnrollmentURL:(id)l error:(id *)error;
++ (BOOL)removeAccountWithIdentifier:(id)identifier error:(id *)error;
++ (BOOL)updateAccountWithIdentifier:(id)identifier enrollmentURL:(id)l personaID:(id)d error:(id *)error;
++ (id)_createAccountWithEnrollmentURL:(id)l username:(id)username personaID:(id)d description:(id)description error:(id *)error;
++ (id)createAccountWithEnrollmentURL:(id)l username:(id)username personaID:(id)d description:(id)description error:(id *)error;
 @end
 
 @implementation RMAccountHelper
 
-+ (id)createAccountWithEnrollmentURL:(id)a3 username:(id)a4 personaID:(id)a5 description:(id)a6 error:(id *)a7
++ (id)createAccountWithEnrollmentURL:(id)l username:(id)username personaID:(id)d description:(id)description error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  lCopy = l;
+  usernameCopy = username;
+  dCopy = d;
+  descriptionCopy = description;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
@@ -33,23 +33,23 @@
   v25[2] = __87__RMAccountHelper_createAccountWithEnrollmentURL_username_personaID_description_error___block_invoke;
   v25[3] = &unk_1E8705E78;
   v30 = &v39;
-  v32 = a1;
-  v17 = v12;
+  selfCopy = self;
+  v17 = lCopy;
   v26 = v17;
-  v18 = v13;
+  v18 = usernameCopy;
   v27 = v18;
-  v19 = v14;
+  v19 = dCopy;
   v28 = v19;
-  v20 = v15;
+  v20 = descriptionCopy;
   v29 = v20;
   v31 = &v33;
   v21 = [v16 performBlockUnderPersona:v19 block:v25];
-  if (a7)
+  if (error)
   {
     v22 = v34[5];
     if (v22)
     {
-      *a7 = v22;
+      *error = v22;
     }
   }
 
@@ -77,19 +77,19 @@ void __87__RMAccountHelper_createAccountWithEnrollmentURL_username_personaID_des
   *(v9 + 40) = v8;
 }
 
-+ (id)_createAccountWithEnrollmentURL:(id)a3 username:(id)a4 personaID:(id)a5 description:(id)a6 error:(id *)a7
++ (id)_createAccountWithEnrollmentURL:(id)l username:(id)username personaID:(id)d description:(id)description error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [MEMORY[0x1E6959A48] rm_defaultStore];
-  v16 = [MEMORY[0x1E6959A28] rm_createTestAccountWithStore:v15 username:v12 description:v14 enrollmentURL:v11];
+  lCopy = l;
+  usernameCopy = username;
+  dCopy = d;
+  descriptionCopy = description;
+  rm_defaultStore = [MEMORY[0x1E6959A48] rm_defaultStore];
+  v16 = [MEMORY[0x1E6959A28] rm_createTestAccountWithStore:rm_defaultStore username:usernameCopy description:descriptionCopy enrollmentURL:lCopy];
   v17 = v16;
-  if (v13)
+  if (dCopy)
   {
-    [v16 rm_setPersonaIdentifier:v13];
+    [v16 rm_setPersonaIdentifier:dCopy];
   }
 
   v31 = 0;
@@ -106,7 +106,7 @@ void __87__RMAccountHelper_createAccountWithEnrollmentURL_username_personaID_des
   v30 = &v31;
   v19 = v18;
   v29 = v19;
-  [v15 saveAccount:v17 withCompletionHandler:&v25];
+  [rm_defaultStore saveAccount:v17 withCompletionHandler:&v25];
   [v19 waitForCompletion];
   if (v32[5])
   {
@@ -120,27 +120,27 @@ void __87__RMAccountHelper_createAccountWithEnrollmentURL_username_personaID_des
       +[RMAccountHelper _createAccountWithEnrollmentURL:username:personaID:description:error:];
     }
 
-    if (a7 && (v21 = v32[5]) != 0)
+    if (error && (v21 = v32[5]) != 0)
     {
-      v22 = 0;
-      *a7 = v21;
+      identifier = 0;
+      *error = v21;
     }
 
     else
     {
-      v22 = 0;
+      identifier = 0;
     }
   }
 
   else
   {
-    v22 = [v17 identifier];
+    identifier = [v17 identifier];
   }
 
   _Block_object_dispose(&v31, 8);
   v23 = *MEMORY[0x1E69E9840];
 
-  return v22;
+  return identifier;
 }
 
 void __88__RMAccountHelper__createAccountWithEnrollmentURL_username_personaID_description_error___block_invoke(uint64_t a1, int a2, id obj)
@@ -150,11 +150,11 @@ void __88__RMAccountHelper__createAccountWithEnrollmentURL_username_personaID_de
   [*(a1 + 32) complete];
 }
 
-+ (BOOL)updateAccountWithIdentifier:(id)a3 enrollmentURL:(id)a4 personaID:(id)a5 error:(id *)a6
++ (BOOL)updateAccountWithIdentifier:(id)identifier enrollmentURL:(id)l personaID:(id)d error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  lCopy = l;
+  dCopy = d;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -171,20 +171,20 @@ void __88__RMAccountHelper__createAccountWithEnrollmentURL_username_personaID_de
   v20[2] = __77__RMAccountHelper_updateAccountWithIdentifier_enrollmentURL_personaID_error___block_invoke;
   v20[3] = &unk_1E8705EF0;
   v24 = &v32;
-  v13 = v9;
+  v13 = identifierCopy;
   v21 = v13;
   v25 = &v26;
-  v14 = v11;
+  v14 = dCopy;
   v22 = v14;
-  v15 = v10;
+  v15 = lCopy;
   v23 = v15;
   v16 = [v12 performBlockUnderPersona:v14 block:v20];
-  if (a6)
+  if (error)
   {
     v17 = v27[5];
     if (v17)
     {
-      *a6 = v17;
+      *error = v17;
     }
   }
 
@@ -226,44 +226,44 @@ void __77__RMAccountHelper_updateAccountWithIdentifier_enrollmentURL_personaID_e
   [v3 rm_setEnrollmentURL:*(a1 + 40)];
 }
 
-+ (BOOL)removeAccountWithIdentifier:(id)a3 error:(id *)a4
++ (BOOL)removeAccountWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = +[RMLog accountHelper];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     +[RMAccountHelper removeAccountWithIdentifier:error:];
   }
 
-  v8 = [MEMORY[0x1E6959A48] rm_defaultStore];
-  v9 = [v8 rm_remoteManagementAccountForIdentifier:v6];
-  v10 = [a1 _removeAccount:v9 store:v8 error:a4];
+  rm_defaultStore = [MEMORY[0x1E6959A48] rm_defaultStore];
+  v9 = [rm_defaultStore rm_remoteManagementAccountForIdentifier:identifierCopy];
+  v10 = [self _removeAccount:v9 store:rm_defaultStore error:error];
 
   return v10;
 }
 
-+ (BOOL)removeAccountWithEnrollmentURL:(id)a3 error:(id *)a4
++ (BOOL)removeAccountWithEnrollmentURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = +[RMLog accountHelper];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     +[RMAccountHelper removeAccountWithEnrollmentURL:error:];
   }
 
-  v8 = [MEMORY[0x1E6959A48] rm_defaultStore];
-  v9 = [v8 rm_remoteManagementAccountForEnrollmentURL:v6];
-  v10 = [a1 _removeAccount:v9 store:v8 error:a4];
+  rm_defaultStore = [MEMORY[0x1E6959A48] rm_defaultStore];
+  v9 = [rm_defaultStore rm_remoteManagementAccountForEnrollmentURL:lCopy];
+  v10 = [self _removeAccount:v9 store:rm_defaultStore error:error];
 
   return v10;
 }
 
-+ (BOOL)_removeAccount:(id)a3 store:(id)a4 error:(id *)a5
++ (BOOL)_removeAccount:(id)account store:(id)store error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  accountCopy = account;
+  storeCopy = store;
+  if (accountCopy)
   {
     v25 = 0;
     v26 = &v25;
@@ -279,7 +279,7 @@ void __77__RMAccountHelper_updateAccountWithIdentifier_enrollmentURL_personaID_e
     v24 = &v25;
     v10 = v9;
     v23 = v10;
-    [v8 removeAccount:v7 withCompletionHandler:&v19];
+    [storeCopy removeAccount:accountCopy withCompletionHandler:&v19];
     [v10 waitForCompletion];
     v11 = v26[5];
     v12 = v11 == 0;
@@ -288,19 +288,19 @@ void __77__RMAccountHelper_updateAccountWithIdentifier_enrollmentURL_personaID_e
       v13 = +[RMLog accountHelper];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [v7 identifier];
+        [accountCopy identifier];
         objc_claimAutoreleasedReturnValue();
         [v26[5] description];
         objc_claimAutoreleasedReturnValue();
         +[RMAccountHelper _createAccountWithEnrollmentURL:username:personaID:description:error:];
       }
 
-      if (a5)
+      if (error)
       {
         v14 = v26[5];
         if (v14)
         {
-          *a5 = v14;
+          *error = v14;
         }
       }
     }

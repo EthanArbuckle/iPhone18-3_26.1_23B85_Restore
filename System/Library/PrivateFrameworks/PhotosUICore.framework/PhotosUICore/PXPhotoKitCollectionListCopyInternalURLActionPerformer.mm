@@ -1,25 +1,25 @@
 @interface PXPhotoKitCollectionListCopyInternalURLActionPerformer
-+ (BOOL)canPerformOnCollectionList:(id)a3;
++ (BOOL)canPerformOnCollectionList:(id)list;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitCollectionListCopyInternalURLActionPerformer
 
-+ (BOOL)canPerformOnCollectionList:(id)a3
++ (BOOL)canPerformOnCollectionList:(id)list
 {
   v3 = +[PXRootSettings sharedInstance];
-  v4 = [v3 canShowInternalUI];
+  canShowInternalUI = [v3 canShowInternalUI];
 
-  return v4;
+  return canShowInternalUI;
 }
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotoKitCollectionListActionPerformer *)self collectionList];
-  v5 = [v3 px_navigationURL];
+  collectionList = [(PXPhotoKitCollectionListActionPerformer *)self collectionList];
+  px_navigationURL = [collectionList px_navigationURL];
 
-  v4 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  [v4 setURL:v5];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  [generalPasteboard setURL:px_navigationURL];
 
   [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:1 error:0];
 }

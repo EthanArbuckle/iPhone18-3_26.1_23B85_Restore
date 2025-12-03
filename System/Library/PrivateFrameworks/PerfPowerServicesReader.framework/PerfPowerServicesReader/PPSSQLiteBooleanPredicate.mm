@@ -1,8 +1,8 @@
 @interface PPSSQLiteBooleanPredicate
 + (id)falsePredicate;
 + (id)truePredicate;
-- (BOOL)isEqual:(id)a3;
-- (id)sqlForEntity:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)sqlForEntity:(id)entity;
 @end
 
 @implementation PPSSQLiteBooleanPredicate
@@ -23,15 +23,15 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = PPSSQLiteBooleanPredicate;
-  if ([(PPSSQLitePredicate *)&v8 isEqual:v4])
+  if ([(PPSSQLitePredicate *)&v8 isEqual:equalCopy])
   {
-    v5 = [(PPSSQLiteBooleanPredicate *)self BOOLeanValue];
-    v6 = v5 ^ [v4 BOOLeanValue] ^ 1;
+    bOOLeanValue = [(PPSSQLiteBooleanPredicate *)self BOOLeanValue];
+    v6 = bOOLeanValue ^ [equalCopy BOOLeanValue] ^ 1;
   }
 
   else
@@ -42,9 +42,9 @@
   return v6;
 }
 
-- (id)sqlForEntity:(id)a3
+- (id)sqlForEntity:(id)entity
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%d)", -[PPSSQLiteBooleanPredicate BOOLeanValue](self, "BOOLeanValue", a3)];
+  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%d)", -[PPSSQLiteBooleanPredicate BOOLeanValue](self, "BOOLeanValue", entity)];
 
   return v3;
 }

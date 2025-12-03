@@ -9,14 +9,14 @@
 {
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC10ContactsUI22CNAvatarPosterPairView_viewModelSubscriber))
   {
-    v3 = self;
+    selfCopy = self;
 
     sub_199DF83AC();
   }
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;
@@ -26,7 +26,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_199AD7B14();
 }
 

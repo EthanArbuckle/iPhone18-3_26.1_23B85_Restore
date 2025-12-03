@@ -1,36 +1,36 @@
 @interface TUIImpressionController
 + (BOOL)debugEnabled;
-+ (void)setDebugEnabled:(BOOL)a3;
-- (TUIImpressionController)initWithFeedId:(id)a3 delegate:(id)a4 tracker:(id)a5 queue:(id)a6;
++ (void)setDebugEnabled:(BOOL)enabled;
+- (TUIImpressionController)initWithFeedId:(id)id delegate:(id)delegate tracker:(id)tracker queue:(id)queue;
 - (TUIImpressionControllerDelegate)delegate;
-- (void)collectAndFlush:(BOOL)a3 accumulatedImpressionsAtTime:(double)a4 withCompletion:(id)a5;
-- (void)collectAndFlush:(BOOL)a3 accumulatedImpressionsWithCompletion:(id)a4;
-- (void)collectVisibleImpressionsWithCompletion:(id)a3;
-- (void)q_collectImpressions:(id)a3 time:(double)a4 flush:(BOOL)a5 stats:(id)a6;
-- (void)q_collectImpressions:(id)a3 time:(double)a4 threshold:(double)a5 flush:(BOOL)a6 stats:(id)a7;
+- (void)collectAndFlush:(BOOL)flush accumulatedImpressionsAtTime:(double)time withCompletion:(id)completion;
+- (void)collectAndFlush:(BOOL)flush accumulatedImpressionsWithCompletion:(id)completion;
+- (void)collectVisibleImpressionsWithCompletion:(id)completion;
+- (void)q_collectImpressions:(id)impressions time:(double)time flush:(BOOL)flush stats:(id)stats;
+- (void)q_collectImpressions:(id)impressions time:(double)time threshold:(double)threshold flush:(BOOL)flush stats:(id)stats;
 - (void)q_scheduleRefreshIfNeeded;
 - (void)q_updateSnapshot;
-- (void)q_updateSnapshotIfNeededWithTime:(double)a3;
+- (void)q_updateSnapshotIfNeededWithTime:(double)time;
 - (void)reset;
 - (void)teardown;
-- (void)visibleContentsChanged:(id)a3;
+- (void)visibleContentsChanged:(id)changed;
 @end
 
 @implementation TUIImpressionController
 
-- (TUIImpressionController)initWithFeedId:(id)a3 delegate:(id)a4 tracker:(id)a5 queue:(id)a6
+- (TUIImpressionController)initWithFeedId:(id)id delegate:(id)delegate tracker:(id)tracker queue:(id)queue
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  delegateCopy = delegate;
+  trackerCopy = tracker;
+  queueCopy = queue;
   v22.receiver = self;
   v22.super_class = TUIImpressionController;
   v13 = [(TUIImpressionController *)&v22 init];
   v14 = v13;
   if (v13)
   {
-    v13->_feedId.uniqueIdentifier = a3.var0;
-    objc_storeStrong(&v13->_queue, a6);
+    v13->_feedId.uniqueIdentifier = id.var0;
+    objc_storeStrong(&v13->_queue, queue);
     v15 = objc_alloc_init(TUIImpressionConfiguration);
     configuration = v14->_configuration;
     v14->_configuration = v15;
@@ -39,9 +39,9 @@
     q_stats = v14->_q_stats;
     v14->_q_stats = v17;
 
-    objc_storeWeak(&v14->_delegate, v10);
-    objc_storeStrong(&v14->_tracker, a5);
-    [v11 addVisibilityObserver:v14];
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    objc_storeStrong(&v14->_tracker, tracker);
+    [trackerCopy addVisibilityObserver:v14];
     if (+[TUIImpressionController debugEnabled])
     {
       v19 = [[TUIImpressionSnapshot alloc] initWithMap:0];
@@ -60,21 +60,21 @@
   self->_tracker = 0;
 }
 
-- (void)q_updateSnapshotIfNeededWithTime:(double)a3
+- (void)q_updateSnapshotIfNeededWithTime:(double)time
 {
   if (+[TUIImpressionController debugEnabled])
   {
     v5 = objc_opt_new();
     [(TUIImpressionConfiguration *)self->_configuration timingThreshold];
-    [(TUIImpressionController *)self q_collectImpressions:v5 time:0 threshold:self->_q_stats flush:a3 stats:v6];
+    [(TUIImpressionController *)self q_collectImpressions:v5 time:0 threshold:self->_q_stats flush:time stats:v6];
     v20 = v5;
     v7 = [[TUIImpressionSnapshot alloc] initWithMap:v5];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = [(TUIImpressionSnapshot *)self->_q_previousSnapshot impressions];
-    v9 = [v8 countByEnumeratingWithState:&v21 objects:v27 count:16];
+    impressions = [(TUIImpressionSnapshot *)self->_q_previousSnapshot impressions];
+    v9 = [impressions countByEnumeratingWithState:&v21 objects:v27 count:16];
     if (v9)
     {
       v10 = v9;
@@ -85,14 +85,14 @@
         {
           if (*v22 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(impressions);
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
           if ([v13 timingCount])
           {
-            v14 = [v13 identifier];
-            v15 = [(TUIImpressionSnapshot *)v7 impressionForIdentifier:v14];
+            identifier = [v13 identifier];
+            v15 = [(TUIImpressionSnapshot *)v7 impressionForIdentifier:identifier];
 
             if (!v15 || ![v15 timingCount])
             {
@@ -108,7 +108,7 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v21 objects:v27 count:16];
+        v10 = [impressions countByEnumeratingWithState:&v21 objects:v27 count:16];
       }
 
       while (v10);
@@ -152,55 +152,55 @@
   [(TUIImpressionController *)self q_updateSnapshotIfNeededWithTime:v3];
 }
 
-- (void)q_collectImpressions:(id)a3 time:(double)a4 flush:(BOOL)a5 stats:(id)a6
+- (void)q_collectImpressions:(id)impressions time:(double)time flush:(BOOL)flush stats:(id)stats
 {
-  v6 = a5;
+  flushCopy = flush;
   configuration = self->_configuration;
-  v11 = a6;
-  v13 = a3;
+  statsCopy = stats;
+  impressionsCopy = impressions;
   [(TUIImpressionConfiguration *)configuration timingThreshold];
-  [(TUIImpressionController *)self q_collectImpressions:v13 time:v6 threshold:v11 flush:a4 stats:v12];
+  [(TUIImpressionController *)self q_collectImpressions:impressionsCopy time:flushCopy threshold:statsCopy flush:time stats:v12];
 }
 
-- (void)q_collectImpressions:(id)a3 time:(double)a4 threshold:(double)a5 flush:(BOOL)a6 stats:(id)a7
+- (void)q_collectImpressions:(id)impressions time:(double)time threshold:(double)threshold flush:(BOOL)flush stats:(id)stats
 {
-  v8 = a6;
-  v11 = a3;
-  v12 = a7;
-  v13 = [v12 impressions];
+  flushCopy = flush;
+  impressionsCopy = impressions;
+  statsCopy = stats;
+  impressions = [statsCopy impressions];
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_21EFC;
   v19 = &unk_25E268;
-  v23 = v8;
-  v21 = a4;
-  v22 = a5;
-  v14 = v11;
+  v23 = flushCopy;
+  timeCopy = time;
+  thresholdCopy = threshold;
+  v14 = impressionsCopy;
   v20 = v14;
-  [v13 enumerateKeysAndObjectsUsingBlock:&v16];
+  [impressions enumerateKeysAndObjectsUsingBlock:&v16];
 
-  if (v8)
+  if (flushCopy)
   {
-    v15 = [v12 impressions];
-    [v15 removeAllObjects];
+    impressions2 = [statsCopy impressions];
+    [impressions2 removeAllObjects];
   }
 }
 
-- (void)visibleContentsChanged:(id)a3
+- (void)visibleContentsChanged:(id)changed
 {
-  v4 = a3;
-  [v4 timestamp];
+  changedCopy = changed;
+  [changedCopy timestamp];
   v6 = v5;
   [(TUIImpressionConfiguration *)self->_configuration timingThreshold];
   v8 = v7;
-  v9 = [v4 rootNode];
-  sub_22088(v9, self->_q_stats, v6, v8);
+  rootNode = [changedCopy rootNode];
+  sub_22088(rootNode, self->_q_stats, v6, v8);
 
-  v10 = [v4 rootNode];
+  rootNode2 = [changedCopy rootNode];
   q_currentVisible = self->_q_currentVisible;
-  self->_q_currentVisible = v10;
+  self->_q_currentVisible = rootNode2;
 
-  [v4 timestamp];
+  [changedCopy timestamp];
   v13 = v12;
 
   [(TUIImpressionController *)self q_updateSnapshotIfNeededWithTime:v13];
@@ -219,33 +219,33 @@
   dispatch_async(queue, v5);
 }
 
-- (void)collectAndFlush:(BOOL)a3 accumulatedImpressionsWithCompletion:(id)a4
+- (void)collectAndFlush:(BOOL)flush accumulatedImpressionsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  [(TUIImpressionController *)self collectAndFlush:v4 accumulatedImpressionsAtTime:v6 withCompletion:sub_19F7C()];
+  flushCopy = flush;
+  completionCopy = completion;
+  [(TUIImpressionController *)self collectAndFlush:flushCopy accumulatedImpressionsAtTime:completionCopy withCompletion:sub_19F7C()];
 }
 
-- (void)collectAndFlush:(BOOL)a3 accumulatedImpressionsAtTime:(double)a4 withCompletion:(id)a5
+- (void)collectAndFlush:(BOOL)flush accumulatedImpressionsAtTime:(double)time withCompletion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_22748;
   v11[3] = &unk_25E290;
-  v13 = a4;
-  v14 = a3;
+  timeCopy = time;
+  flushCopy = flush;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = completionCopy;
+  v10 = completionCopy;
   dispatch_async(queue, v11);
 }
 
-- (void)collectVisibleImpressionsWithCompletion:(id)a3
+- (void)collectVisibleImpressionsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = sub_19F7C();
     queue = self->_queue;
@@ -255,7 +255,7 @@
     block[3] = &unk_25E2B8;
     v9 = v5;
     block[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, block);
   }
 }
@@ -270,12 +270,12 @@
   return byte_2E6040;
 }
 
-+ (void)setDebugEnabled:(BOOL)a3
++ (void)setDebugEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  byte_2E6040 = a3;
+  enabledCopy = enabled;
+  byte_2E6040 = enabled;
   v4 = +[NSUserDefaults standardUserDefaults];
-  [v4 setBool:v3 forKey:@"TUIOverlayImpressions"];
+  [v4 setBool:enabledCopy forKey:@"TUIOverlayImpressions"];
 }
 
 - (TUIImpressionControllerDelegate)delegate

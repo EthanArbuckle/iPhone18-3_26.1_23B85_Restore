@@ -1,142 +1,142 @@
 @interface AKAccountTelemetryHook
-- (AKAccountTelemetryHook)initWithAccount:(id)a3;
-- (AKAccountTelemetryHook)initWithAltDSID:(id)a3;
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (AKAccountTelemetryHook)initWithAccount:(id)account;
+- (AKAccountTelemetryHook)initWithAltDSID:(id)d;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_setAccountAccessTelemetryOptIn:(id)a3;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_setAccountAccessTelemetryOptIn:(id)in;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AKAccountTelemetryHook
 
-- (AKAccountTelemetryHook)initWithAltDSID:(id)a3
+- (AKAccountTelemetryHook)initWithAltDSID:(id)d
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
-  v12 = 0;
+  objc_storeStrong(location, d);
+  v3 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v3;
   v10.super_class = AKAccountTelemetryHook;
   v9 = [(AKAccountTelemetryHook *)&v10 init];
-  v12 = v9;
-  objc_storeStrong(&v12, v9);
+  selfCopy = v9;
+  objc_storeStrong(&selfCopy, v9);
   if (v9)
   {
-    v8 = [MEMORY[0x277CF0130] sharedInstance];
-    v4 = [v8 authKitAccountWithAltDSID:location[0] error:0];
-    account = v12->_account;
-    v12->_account = v4;
+    mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+    v4 = [mEMORY[0x277CF0130] authKitAccountWithAltDSID:location[0] error:0];
+    account = selfCopy->_account;
+    selfCopy->_account = v4;
     MEMORY[0x277D82BD8](account);
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](mEMORY[0x277CF0130]);
   }
 
-  v7 = MEMORY[0x277D82BE0](v12);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (AKAccountTelemetryHook)initWithAccount:(id)a3
+- (AKAccountTelemetryHook)initWithAccount:(id)account
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, account);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = AKAccountTelemetryHook;
   v6 = [(AKAccountTelemetryHook *)&v7 init];
-  v9 = v6;
-  objc_storeStrong(&v9, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    objc_storeStrong(&v9->_account, location[0]);
+    objc_storeStrong(&selfCopy->_account, location[0]);
   }
 
-  v5 = MEMORY[0x277D82BE0](v9);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, element);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, attributes);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
+  objc_storeStrong(&v10, model);
   v9 = 0;
-  objc_storeStrong(&v9, a6);
-  [(AKAccountTelemetryHook *)v13 _setAccountAccessTelemetryOptIn:v9];
+  objc_storeStrong(&v9, completion);
+  [(AKAccountTelemetryHook *)selfCopy _setAccountAccessTelemetryOptIn:v9];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(AKAccountTelemetryHook *)v7 _setAccountAccessTelemetryOptIn:v5];
+  objc_storeStrong(&v5, completion);
+  [(AKAccountTelemetryHook *)selfCopy _setAccountAccessTelemetryOptIn:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [location[0] name];
-  v5 = [v4 isEqualToString:@"account:telemetry"];
-  MEMORY[0x277D82BD8](v4);
+  objc_storeStrong(location, element);
+  name = [location[0] name];
+  v5 = [name isEqualToString:@"account:telemetry"];
+  MEMORY[0x277D82BD8](name);
   objc_storeStrong(location, 0);
   return v5;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [location[0] clientInfo];
-  v7 = [v5 objectForKey:@"action"];
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
+  objc_storeStrong(location, model);
+  clientInfo = [location[0] clientInfo];
+  v7 = [clientInfo objectForKey:@"action"];
+  *&v3 = MEMORY[0x277D82BD8](clientInfo).n128_u64[0];
   v6 = [v7 isEqualToString:{@"account:telemetry", v3}];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
   return v6;
 }
 
-- (void)_setAccountAccessTelemetryOptIn:(id)a3
+- (void)_setAccountAccessTelemetryOptIn:(id)in
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, in);
   queue = dispatch_get_global_queue(25, 0);
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __58__AKAccountTelemetryHook__setAccountAccessTelemetryOptIn___block_invoke;
   v8 = &unk_2784A63C8;
-  v9 = MEMORY[0x277D82BE0](v12);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   v10 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v4);
   MEMORY[0x277D82BD8](queue);

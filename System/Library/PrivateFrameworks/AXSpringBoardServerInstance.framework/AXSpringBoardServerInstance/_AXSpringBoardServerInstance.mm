@@ -1,7 +1,7 @@
 @interface _AXSpringBoardServerInstance
 + (id)springBoardServerInstance;
 - (AXSpringBoardServerInstanceDelegate)delegate;
-- (BOOL)_hasReachabilityHandlerForClientPort:(unsigned int)a3;
+- (BOOL)_hasReachabilityHandlerForClientPort:(unsigned int)port;
 - (BOOL)_inSetupMode;
 - (BOOL)hasActiveCall;
 - (BOOL)hasActiveEndpointCall;
@@ -9,183 +9,183 @@
 - (BOOL)hasActiveOrPendingCallOrFaceTime;
 - (BOOL)onlySystemGesturesDisabledHolderIsGuidedAccess;
 - (BOOL)shouldAllowActiveWatchToAutoAnswer;
-- (BOOL)shouldBlockGestureActivation:(unint64_t)a3;
+- (BOOL)shouldBlockGestureActivation:(unint64_t)activation;
 - (_AXSpringBoardServerInstance)init;
-- (id)_actionHandling:(id)a3;
-- (id)_activateSOSMode:(id)a3;
-- (id)_allowedMedusaGestures:(id)a3;
-- (id)_appNameFromPid:(id)a3;
-- (id)_areSystemGesturesDisabledByAccessibility:(id)a3;
-- (id)_areSystemGesturesDisabledNatively:(id)a3;
-- (id)_armApplePay:(id)a3;
-- (id)_assertionClientForPort:(unsigned int)a3;
-- (id)_canSetDockIconActivationMode:(id)a3;
-- (id)_cancelGestureActivation:(id)a3;
-- (id)_cancelSiriDismissalForAssistiveTouch:(id)a3;
-- (id)_connectedDevicesHaveAssistiveTouchCustomActions:(id)a3;
-- (id)_connectedDevicesRequireAssistiveTouch:(id)a3;
-- (id)_copyStringToPasteboard:(id)a3;
-- (id)_diminishJindo:(id)a3;
-- (id)_dismissAppSwitcher:(id)a3;
-- (id)_dismissShelfSwitcher:(id)a3;
-- (id)_dismissSiri:(id)a3;
-- (id)_getActiveInterfaceOrientation:(id)a3;
-- (id)_getApplicationOrientation:(id)a3;
-- (id)_getPid:(id)a3;
-- (id)_getSplashImageForApp:(id)a3;
-- (id)_handleAcquireAssertion:(id)a3;
-- (id)_handleBluetoothPowerEnabled:(id)a3;
-- (id)_handleDisplayIdentifierForSceneIdentifier:(id)a3;
-- (id)_handleFreezeClarityUILoadingScreen:(id)a3;
-- (id)_handleGetFocusedAppPID:(id)a3;
-- (id)_handleGetFocusedApps:(id)a3;
-- (id)_handleGetFocusedOccludedAppScenes:(id)a3;
-- (id)_handleGetPurpleBuddyPID:(id)a3;
-- (id)_handleGetRunningAppPIDs:(id)a3;
-- (id)_handleInstalledApps:(id)a3;
-- (id)_handleInternalApps:(id)a3;
-- (id)_handleIsChamoisOrFlexibleWindowingEnabled:(id)a3;
-- (id)_handleIsInspectorMinimized:(id)a3;
-- (id)_handleIsMagnifierVisible:(id)a3;
-- (id)_handleIsMenuBarModal:(id)a3;
-- (id)_handleIsMenuBarVisible:(id)a3;
-- (id)_handleIsPurpleBuddyAppFrontmost:(id)a3;
-- (id)_handleIsSettingsAppFrontmost:(id)a3;
-- (id)_handleIsSystemAppFrontmost:(id)a3;
-- (id)_handleIsSystemAppShowingAnAlert:(id)a3;
-- (id)_handleLaunchMagnifierApp:(id)a3;
-- (id)_handleLaunchOnboardingViewService:(id)a3;
-- (id)_handleLaunchVoiceOverImageExplorerViewService:(id)a3;
-- (id)_handleLaunchVoiceOverQuickSettingsViewService:(id)a3;
-- (id)_handleLoadGAXBundleForUnmanagedASAM:(id)a3;
-- (id)_handleNativeFocusedApplication:(id)a3;
-- (id)_handlePresentNearbyDeviceControlPicker:(id)a3;
-- (id)_handleReactivateInCallService:(id)a3;
-- (id)_handleRelinquishAssertion:(id)a3;
-- (id)_handleRevealSpotlight:(id)a3;
-- (id)_handleSetBluetoothPowerEnabled:(id)a3;
-- (id)_handleSetMenuBarVisible:(id)a3;
-- (id)_handleSetVoiceOverEnabled:(id)a3;
-- (id)_handleSetZoomEnabled:(id)a3;
-- (id)_handleSpringBoardInfoQuery:(id)a3;
-- (id)_handleToggleIncomingCall:(id)a3;
-- (id)_handleToggleSpotlight:(id)a3;
-- (id)_handleVoiceOverEnabled:(id)a3;
-- (id)_handleZoomEnabled:(id)a3;
-- (id)_hasActiveCall:(id)a3;
-- (id)_hasActiveEndpointCall:(id)a3;
-- (id)_hasActiveOrPendingCall:(id)a3;
-- (id)_hasActiveOrPendingCallOrFaceTime:(id)a3;
-- (id)_hideAlert:(id)a3;
-- (id)_hideRemoteView:(id)a3;
+- (id)_actionHandling:(id)handling;
+- (id)_activateSOSMode:(id)mode;
+- (id)_allowedMedusaGestures:(id)gestures;
+- (id)_appNameFromPid:(id)pid;
+- (id)_areSystemGesturesDisabledByAccessibility:(id)accessibility;
+- (id)_areSystemGesturesDisabledNatively:(id)natively;
+- (id)_armApplePay:(id)pay;
+- (id)_assertionClientForPort:(unsigned int)port;
+- (id)_canSetDockIconActivationMode:(id)mode;
+- (id)_cancelGestureActivation:(id)activation;
+- (id)_cancelSiriDismissalForAssistiveTouch:(id)touch;
+- (id)_connectedDevicesHaveAssistiveTouchCustomActions:(id)actions;
+- (id)_connectedDevicesRequireAssistiveTouch:(id)touch;
+- (id)_copyStringToPasteboard:(id)pasteboard;
+- (id)_diminishJindo:(id)jindo;
+- (id)_dismissAppSwitcher:(id)switcher;
+- (id)_dismissShelfSwitcher:(id)switcher;
+- (id)_dismissSiri:(id)siri;
+- (id)_getActiveInterfaceOrientation:(id)orientation;
+- (id)_getApplicationOrientation:(id)orientation;
+- (id)_getPid:(id)pid;
+- (id)_getSplashImageForApp:(id)app;
+- (id)_handleAcquireAssertion:(id)assertion;
+- (id)_handleBluetoothPowerEnabled:(id)enabled;
+- (id)_handleDisplayIdentifierForSceneIdentifier:(id)identifier;
+- (id)_handleFreezeClarityUILoadingScreen:(id)screen;
+- (id)_handleGetFocusedAppPID:(id)d;
+- (id)_handleGetFocusedApps:(id)apps;
+- (id)_handleGetFocusedOccludedAppScenes:(id)scenes;
+- (id)_handleGetPurpleBuddyPID:(id)d;
+- (id)_handleGetRunningAppPIDs:(id)ds;
+- (id)_handleInstalledApps:(id)apps;
+- (id)_handleInternalApps:(id)apps;
+- (id)_handleIsChamoisOrFlexibleWindowingEnabled:(id)enabled;
+- (id)_handleIsInspectorMinimized:(id)minimized;
+- (id)_handleIsMagnifierVisible:(id)visible;
+- (id)_handleIsMenuBarModal:(id)modal;
+- (id)_handleIsMenuBarVisible:(id)visible;
+- (id)_handleIsPurpleBuddyAppFrontmost:(id)frontmost;
+- (id)_handleIsSettingsAppFrontmost:(id)frontmost;
+- (id)_handleIsSystemAppFrontmost:(id)frontmost;
+- (id)_handleIsSystemAppShowingAnAlert:(id)alert;
+- (id)_handleLaunchMagnifierApp:(id)app;
+- (id)_handleLaunchOnboardingViewService:(id)service;
+- (id)_handleLaunchVoiceOverImageExplorerViewService:(id)service;
+- (id)_handleLaunchVoiceOverQuickSettingsViewService:(id)service;
+- (id)_handleLoadGAXBundleForUnmanagedASAM:(id)m;
+- (id)_handleNativeFocusedApplication:(id)application;
+- (id)_handlePresentNearbyDeviceControlPicker:(id)picker;
+- (id)_handleReactivateInCallService:(id)service;
+- (id)_handleRelinquishAssertion:(id)assertion;
+- (id)_handleRevealSpotlight:(id)spotlight;
+- (id)_handleSetBluetoothPowerEnabled:(id)enabled;
+- (id)_handleSetMenuBarVisible:(id)visible;
+- (id)_handleSetVoiceOverEnabled:(id)enabled;
+- (id)_handleSetZoomEnabled:(id)enabled;
+- (id)_handleSpringBoardInfoQuery:(id)query;
+- (id)_handleToggleIncomingCall:(id)call;
+- (id)_handleToggleSpotlight:(id)spotlight;
+- (id)_handleVoiceOverEnabled:(id)enabled;
+- (id)_handleZoomEnabled:(id)enabled;
+- (id)_hasActiveCall:(id)call;
+- (id)_hasActiveEndpointCall:(id)call;
+- (id)_hasActiveOrPendingCall:(id)call;
+- (id)_hasActiveOrPendingCallOrFaceTime:(id)time;
+- (id)_hideAlert:(id)alert;
+- (id)_hideRemoteView:(id)view;
 - (id)_initServer;
-- (id)_installGuestPassAcceptDialogGesture:(id)a3;
-- (id)_installGuestPassPINGesture:(id)a3;
-- (id)_isAppSwitcherVisible:(id)a3;
-- (id)_isContinuitySessionActive:(id)a3;
-- (id)_isControlCenterVisible:(id)a3;
-- (id)_isDarkModeActive:(id)a3;
-- (id)_isDockVisible:(id)a3;
-- (id)_isGuidedAccessActive:(id)a3;
-- (id)_isLockScreenVisible:(id)a3;
-- (id)_isLongLookNotificationVisible:(id)a3;
-- (id)_isMakingEmergencyCall:(id)a3;
-- (id)_isMediaPlaying:(id)a3;
-- (id)_isNotificationCenterVisible:(id)a3;
-- (id)_isOrientationLocked:(id)a3;
-- (id)_isPIPWindowVisible:(id)a3;
-- (id)_isPasscodeLockVisible:(id)a3;
-- (id)_isPointInAXInspector:(id)a3;
-- (id)_isRingerMuted:(id)a3;
-- (id)_isShelfSwitcherVisible:(id)a3;
-- (id)_isShowingHomescreen:(id)a3;
-- (id)_isShowingNonSystemApp:(id)a3;
-- (id)_isShowingRemoteView:(id)a3;
-- (id)_isSideSwitchUsedForOrientation:(id)a3;
-- (id)_isSiriVisible:(id)a3;
-- (id)_isSpeakThisTemporarilyDisabled:(id)a3;
-- (id)_isSpotlightVisible:(id)a3;
-- (id)_isSyncingRestoringResettingOrUpdating:(id)a3;
-- (id)_isSystemSleeping:(id)a3;
-- (id)_isTypeToSiriVisible:(id)a3;
-- (id)_isVoiceControlRunning:(id)a3;
-- (id)_jindoAppIdentifiers:(id)a3;
-- (id)_launchAccessibilityReader:(id)a3;
-- (id)_medusaApps:(id)a3;
-- (id)_openAppSwitcher:(id)a3;
-- (id)_openCommandAndControlCommands:(id)a3;
-- (id)_openCommandAndControlSettings:(id)a3;
-- (id)_openCommandAndControlVocabulary:(id)a3;
-- (id)_openCustomGestureCreationForAST:(id)a3;
-- (id)_openCustomGestureCreationForSCAT:(id)a3;
-- (id)_openTypeToSiri:(id)a3;
-- (id)_openVoiceControl:(id)a3;
-- (id)_pauseMedia:(id)a3;
-- (id)_performMedusaGesture:(id)a3;
-- (id)_reachabilityActive:(id)a3;
-- (id)_reachabilityEnabled:(id)a3;
-- (id)_reachabilityHandling:(id)a3;
-- (id)_reachabilityOffset:(id)a3;
-- (id)_rebootDevice:(id)a3;
-- (id)_removeGuestPassAcceptDialogGesture:(id)a3;
-- (id)_resetDimTimer:(id)a3;
-- (id)_resumeMedia:(id)a3;
-- (id)_setCaptionPanelContextId:(id)a3;
-- (id)_setDockIconActivationMode:(id)a3;
-- (id)_setOrientation:(id)a3;
-- (id)_setOrientationLocked:(id)a3;
-- (id)_setSpeechPlaybackControls:(id)a3;
-- (id)_showAlert:(id)a3;
-- (id)_showControlCenter:(id)a3;
-- (id)_showNotificationCenter:(id)a3;
-- (id)_showRemoteView:(id)a3;
-- (id)_simulateEdgePressHaptics:(id)a3;
-- (id)_startHearingAidServer:(id)a3;
-- (id)_toggleAppLibrary:(id)a3;
-- (id)_toggleBackgroundSounds:(id)a3;
-- (id)_toggleConversationBoost:(id)a3;
-- (id)_toggleDarkMode:(id)a3;
-- (id)_toggleDetectionMode:(id)a3;
-- (id)_toggleDock:(id)a3;
-- (id)_toggleHearingControl:(id)a3;
-- (id)_toggleLiveTranscription:(id)a3;
-- (id)_toggleNotificationCenter:(id)a3;
-- (id)_toggleQuickNote:(id)a3;
-- (id)_toggleTorch:(id)a3;
-- (id)_topEventPidOverride:(id)a3;
-- (id)_unlockDevice:(id)a3;
-- (id)_visibleTripleClickItems:(id)a3;
-- (id)_volumeLevel:(id)a3;
-- (id)_wakeUpDeviceIfNecessary:(id)a3;
-- (void)_accessibilityRetrieveAVSystemControlData:(id)a3 withCompletionBlock:(id)a4;
-- (void)_biomeDonationLargeTextDidChange:(id)a3;
+- (id)_installGuestPassAcceptDialogGesture:(id)gesture;
+- (id)_installGuestPassPINGesture:(id)gesture;
+- (id)_isAppSwitcherVisible:(id)visible;
+- (id)_isContinuitySessionActive:(id)active;
+- (id)_isControlCenterVisible:(id)visible;
+- (id)_isDarkModeActive:(id)active;
+- (id)_isDockVisible:(id)visible;
+- (id)_isGuidedAccessActive:(id)active;
+- (id)_isLockScreenVisible:(id)visible;
+- (id)_isLongLookNotificationVisible:(id)visible;
+- (id)_isMakingEmergencyCall:(id)call;
+- (id)_isMediaPlaying:(id)playing;
+- (id)_isNotificationCenterVisible:(id)visible;
+- (id)_isOrientationLocked:(id)locked;
+- (id)_isPIPWindowVisible:(id)visible;
+- (id)_isPasscodeLockVisible:(id)visible;
+- (id)_isPointInAXInspector:(id)inspector;
+- (id)_isRingerMuted:(id)muted;
+- (id)_isShelfSwitcherVisible:(id)visible;
+- (id)_isShowingHomescreen:(id)homescreen;
+- (id)_isShowingNonSystemApp:(id)app;
+- (id)_isShowingRemoteView:(id)view;
+- (id)_isSideSwitchUsedForOrientation:(id)orientation;
+- (id)_isSiriVisible:(id)visible;
+- (id)_isSpeakThisTemporarilyDisabled:(id)disabled;
+- (id)_isSpotlightVisible:(id)visible;
+- (id)_isSyncingRestoringResettingOrUpdating:(id)updating;
+- (id)_isSystemSleeping:(id)sleeping;
+- (id)_isTypeToSiriVisible:(id)visible;
+- (id)_isVoiceControlRunning:(id)running;
+- (id)_jindoAppIdentifiers:(id)identifiers;
+- (id)_launchAccessibilityReader:(id)reader;
+- (id)_medusaApps:(id)apps;
+- (id)_openAppSwitcher:(id)switcher;
+- (id)_openCommandAndControlCommands:(id)commands;
+- (id)_openCommandAndControlSettings:(id)settings;
+- (id)_openCommandAndControlVocabulary:(id)vocabulary;
+- (id)_openCustomGestureCreationForAST:(id)t;
+- (id)_openCustomGestureCreationForSCAT:(id)t;
+- (id)_openTypeToSiri:(id)siri;
+- (id)_openVoiceControl:(id)control;
+- (id)_pauseMedia:(id)media;
+- (id)_performMedusaGesture:(id)gesture;
+- (id)_reachabilityActive:(id)active;
+- (id)_reachabilityEnabled:(id)enabled;
+- (id)_reachabilityHandling:(id)handling;
+- (id)_reachabilityOffset:(id)offset;
+- (id)_rebootDevice:(id)device;
+- (id)_removeGuestPassAcceptDialogGesture:(id)gesture;
+- (id)_resetDimTimer:(id)timer;
+- (id)_resumeMedia:(id)media;
+- (id)_setCaptionPanelContextId:(id)id;
+- (id)_setDockIconActivationMode:(id)mode;
+- (id)_setOrientation:(id)orientation;
+- (id)_setOrientationLocked:(id)locked;
+- (id)_setSpeechPlaybackControls:(id)controls;
+- (id)_showAlert:(id)alert;
+- (id)_showControlCenter:(id)center;
+- (id)_showNotificationCenter:(id)center;
+- (id)_showRemoteView:(id)view;
+- (id)_simulateEdgePressHaptics:(id)haptics;
+- (id)_startHearingAidServer:(id)server;
+- (id)_toggleAppLibrary:(id)library;
+- (id)_toggleBackgroundSounds:(id)sounds;
+- (id)_toggleConversationBoost:(id)boost;
+- (id)_toggleDarkMode:(id)mode;
+- (id)_toggleDetectionMode:(id)mode;
+- (id)_toggleDock:(id)dock;
+- (id)_toggleHearingControl:(id)control;
+- (id)_toggleLiveTranscription:(id)transcription;
+- (id)_toggleNotificationCenter:(id)center;
+- (id)_toggleQuickNote:(id)note;
+- (id)_toggleTorch:(id)torch;
+- (id)_topEventPidOverride:(id)override;
+- (id)_unlockDevice:(id)device;
+- (id)_visibleTripleClickItems:(id)items;
+- (id)_volumeLevel:(id)level;
+- (id)_wakeUpDeviceIfNecessary:(id)necessary;
+- (void)_accessibilityRetrieveAVSystemControlData:(id)data withCompletionBlock:(id)block;
+- (void)_biomeDonationLargeTextDidChange:(id)change;
 - (void)_handleLiveTranscriptionStatusChange;
 - (void)_initializeAutoAnswerWatchObserver;
 - (void)_initializeBiomeStreamDonations;
 - (void)_initializeHandlers;
 - (void)_initializeHearing;
 - (void)_initializeLiveTranscriptionObserver;
-- (void)_performBlockAsynchronously:(id)a3 afterDelay:(double)a4;
+- (void)_performBlockAsynchronously:(id)asynchronously afterDelay:(double)delay;
 - (void)_performValidation;
 - (void)_playSafetySoundAndHaptic;
-- (void)_proximityDidChange:(id)a3;
+- (void)_proximityDidChange:(id)change;
 - (void)_rampUpCallVolume;
-- (void)_rampUpCallVolumeFromVolume:(float)a3 toVolume:(float)a4 totalDuration:(float)a5 progress:(float)a6;
+- (void)_rampUpCallVolumeFromVolume:(float)volume toVolume:(float)toVolume totalDuration:(float)duration progress:(float)progress;
 - (void)_registerServerAndNotifyClients;
-- (void)_removeReachabilityHandler:(unsigned int)a3;
+- (void)_removeReachabilityHandler:(unsigned int)handler;
 - (void)_requestOnWristState;
-- (void)_setAVCallRoute:(id)a3 rampUp:(BOOL)a4;
-- (void)_setCallRoute:(int)a3 ifCurrentlyRoutedTo:(id)a4 rampUp:(BOOL)a5;
-- (void)_setCallRoute:(int)a3 ifCurrentlyRoutedTo:(id)a4 withRoutes:(id)a5 rampUp:(BOOL)a6;
-- (void)_setDashboardSystemGesturesDisabled:(BOOL)a3;
-- (void)_setSystemGesturesEnabled:(BOOL)a3;
+- (void)_setAVCallRoute:(id)route rampUp:(BOOL)up;
+- (void)_setCallRoute:(int)route ifCurrentlyRoutedTo:(id)to rampUp:(BOOL)up;
+- (void)_setCallRoute:(int)route ifCurrentlyRoutedTo:(id)to withRoutes:(id)routes rampUp:(BOOL)up;
+- (void)_setDashboardSystemGesturesDisabled:(BOOL)disabled;
+- (void)_setSystemGesturesEnabled:(BOOL)enabled;
 - (void)_setupAssertionServerIfNeeded;
-- (void)_springBoardFinishedLaunching:(id)a3;
-- (void)_updateProcess:(id)a3;
+- (void)_springBoardFinishedLaunching:(id)launching;
+- (void)_updateProcess:(id)process;
 - (void)dealloc;
-- (void)didReceiveIncomingData:(id)a3;
-- (void)springBoardActionOccurred:(int64_t)a3 withPayload:(id)a4;
-- (void)userChangedRouteNotification:(id)a3;
+- (void)didReceiveIncomingData:(id)data;
+- (void)springBoardActionOccurred:(int64_t)occurred withPayload:(id)payload;
+- (void)userChangedRouteNotification:(id)notification;
 @end
 
 @implementation _AXSpringBoardServerInstance
@@ -204,11 +204,11 @@
 
 - (BOOL)hasActiveOrPendingCallOrFaceTime
 {
-  v2 = self;
-  v3 = [(_AXSpringBoardServerInstance *)self delegate];
-  LOBYTE(v2) = [v3 hasActiveOrPendingCallOrFaceTimeWithServerInstance:v2];
+  selfCopy = self;
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  LOBYTE(selfCopy) = [delegate hasActiveOrPendingCallOrFaceTimeWithServerInstance:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (AXSpringBoardServerInstanceDelegate)delegate
@@ -218,16 +218,16 @@
   return WeakRetained;
 }
 
-- (void)springBoardActionOccurred:(int64_t)a3 withPayload:(id)a4
+- (void)springBoardActionOccurred:(int64_t)occurred withPayload:(id)payload
 {
-  v6 = a4;
-  v7 = [(_AXSpringBoardServerInstance *)self actionHandlerHelper];
-  [v7 notifyActionOccurredWithType:a3 payload:v6];
+  payloadCopy = payload;
+  actionHandlerHelper = [(_AXSpringBoardServerInstance *)self actionHandlerHelper];
+  [actionHandlerHelper notifyActionOccurredWithType:occurred payload:payloadCopy];
 
-  if (a3 == 2 && UIAccessibilityIsVoiceOverRunning())
+  if (occurred == 2 && UIAccessibilityIsVoiceOverRunning())
   {
-    v8 = [(_AXSpringBoardServerInstance *)self delegate];
-    v9 = [v8 isRingerMutedWithServerInstance:self];
+    delegate = [(_AXSpringBoardServerInstance *)self delegate];
+    v9 = [delegate isRingerMutedWithServerInstance:self];
 
     if ((v9 & 1) == 0)
     {
@@ -237,11 +237,11 @@
   }
 }
 
-- (BOOL)shouldBlockGestureActivation:(unint64_t)a3
+- (BOOL)shouldBlockGestureActivation:(unint64_t)activation
 {
-  if (a3 != 4)
+  if (activation != 4)
   {
-    if (a3 == 2)
+    if (activation == 2)
     {
       if ((AXCancelControlCenter & 1) != 0 || [(_AXSpringBoardServerInstance *)self disableControlCenterAssertionHeld])
       {
@@ -249,7 +249,7 @@
       }
     }
 
-    else if (a3 == 1 && ((AXCancelShowNotificationGesture & 1) != 0 || [(_AXSpringBoardServerInstance *)self disableNotificationCenterAssertionHeld]))
+    else if (activation == 1 && ((AXCancelShowNotificationGesture & 1) != 0 || [(_AXSpringBoardServerInstance *)self disableNotificationCenterAssertionHeld]))
     {
       return 1;
     }
@@ -260,25 +260,25 @@
   return (AXCancelShowHUD & 1) != 0;
 }
 
-- (BOOL)_hasReachabilityHandlerForClientPort:(unsigned int)a3
+- (BOOL)_hasReachabilityHandlerForClientPort:(unsigned int)port
 {
   reachabilityHandlers = self->_reachabilityHandlers;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __69___AXSpringBoardServerInstance__hasReachabilityHandlerForClientPort___block_invoke;
   v5[3] = &__block_descriptor_36_e28_B32__0__AXIPCClient_8Q16_B24l;
-  v6 = a3;
+  portCopy = port;
   return [(NSMutableArray *)reachabilityHandlers indexOfObjectPassingTest:v5]!= 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)_removeReachabilityHandler:(unsigned int)a3
+- (void)_removeReachabilityHandler:(unsigned int)handler
 {
   reachabilityHandlers = self->_reachabilityHandlers;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59___AXSpringBoardServerInstance__removeReachabilityHandler___block_invoke;
   v6[3] = &__block_descriptor_36_e15_B32__0_8Q16_B24l;
-  v7 = a3;
+  handlerCopy = handler;
   v5 = [(NSMutableArray *)reachabilityHandlers indexesOfObjectsPassingTest:v6];
   if (v5)
   {
@@ -288,32 +288,32 @@
 
 - (BOOL)hasActiveCall
 {
-  v2 = self;
-  v3 = [(_AXSpringBoardServerInstance *)self delegate];
-  LOBYTE(v2) = [v3 hasActiveCallWithServerInstance:v2];
+  selfCopy = self;
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  LOBYTE(selfCopy) = [delegate hasActiveCallWithServerInstance:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)hasActiveEndpointCall
 {
-  v2 = self;
-  v3 = [(_AXSpringBoardServerInstance *)self delegate];
-  LOBYTE(v2) = [v3 hasActiveEndpointCallWithServerInstance:v2];
+  selfCopy = self;
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  LOBYTE(selfCopy) = [delegate hasActiveEndpointCallWithServerInstance:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)hasActiveOrPendingCall
 {
-  v2 = self;
-  v3 = [(_AXSpringBoardServerInstance *)self delegate];
-  LOBYTE(v2) = [v3 hasActiveOrPendingCallWithServerInstance:v2];
+  selfCopy = self;
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  LOBYTE(selfCopy) = [delegate hasActiveOrPendingCallWithServerInstance:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)userChangedRouteNotification:(id)a3
+- (void)userChangedRouteNotification:(id)notification
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   v4 = *MEMORY[0x277CE7CB0];
@@ -321,12 +321,12 @@
   CFNotificationCenterPostNotification(DarwinNotifyCenter, v4, 0, 0, 1u);
 }
 
-- (void)_proximityDidChange:(id)a3
+- (void)_proximityDidChange:(id)change
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277D67B30]];
-  v6 = [v5 BOOLValue];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D67B30]];
+  bOOLValue = [v5 BOOLValue];
 
   if (UIAccessibilityIsVoiceOverRunning() && [(_AXSpringBoardServerInstance *)self hasActiveCall]&& _AXSVoiceOverTouchShouldRouteToSpeakerWithProximity())
   {
@@ -334,14 +334,14 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v13[0] = 67109120;
-      v13[1] = v6;
+      v13[1] = bOOLValue;
       _os_log_impl(&dword_21FE6B000, v7, OS_LOG_TYPE_DEFAULT, "Proximity Changed (%d) triggering an audio route change", v13, 8u);
     }
 
-    if (v6)
+    if (bOOLValue)
     {
       v8 = @"Speaker";
-      v9 = self;
+      selfCopy2 = self;
       v10 = 0;
       v11 = 0;
     }
@@ -349,21 +349,21 @@
     else
     {
       v8 = @"Receiver";
-      v9 = self;
+      selfCopy2 = self;
       v10 = 2;
       v11 = 1;
     }
 
-    [(_AXSpringBoardServerInstance *)v9 _setCallRoute:v10 ifCurrentlyRoutedTo:v8 rampUp:v11];
+    [(_AXSpringBoardServerInstance *)selfCopy2 _setCallRoute:v10 ifCurrentlyRoutedTo:v8 rampUp:v11];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_accessibilityRetrieveAVSystemControlData:(id)a3 withCompletionBlock:(id)a4
+- (void)_accessibilityRetrieveAVSystemControlData:(id)data withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  blockCopy = block;
   avSystemRetrievalQueue = self->_avSystemRetrievalQueue;
   if (!avSystemRetrievalQueue)
   {
@@ -378,16 +378,16 @@
   v13[1] = 3221225472;
   v13[2] = __94___AXSpringBoardServerInstance__accessibilityRetrieveAVSystemControlData_withCompletionBlock___block_invoke;
   v13[3] = &unk_27842C3C0;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = dataCopy;
+  v15 = blockCopy;
+  v11 = blockCopy;
+  v12 = dataCopy;
   dispatch_async(avSystemRetrievalQueue, v13);
 }
 
-- (void)_setCallRoute:(int)a3 ifCurrentlyRoutedTo:(id)a4 rampUp:(BOOL)a5
+- (void)_setCallRoute:(int)route ifCurrentlyRoutedTo:(id)to rampUp:(BOOL)up
 {
-  v8 = a4;
+  toCopy = to;
   if ([(_AXSpringBoardServerInstance *)self hasActiveOrPendingCallOrFaceTime])
   {
     v15[0] = 0;
@@ -406,40 +406,40 @@
     v9[2] = __73___AXSpringBoardServerInstance__setCallRoute_ifCurrentlyRoutedTo_rampUp___block_invoke_349;
     v9[3] = &unk_27842C3E8;
     v9[4] = self;
-    v12 = a3;
-    v10 = v8;
+    routeCopy = route;
+    v10 = toCopy;
     v11 = v15;
-    v13 = a5;
+    upCopy = up;
     [(_AXSpringBoardServerInstance *)self _accessibilityRetrieveAVSystemControlData:v14 withCompletionBlock:v9];
 
     _Block_object_dispose(v15, 8);
   }
 }
 
-- (void)_setCallRoute:(int)a3 ifCurrentlyRoutedTo:(id)a4 withRoutes:(id)a5 rampUp:(BOOL)a6
+- (void)_setCallRoute:(int)route ifCurrentlyRoutedTo:(id)to withRoutes:(id)routes rampUp:(BOOL)up
 {
-  v31 = a6;
+  upCopy = up;
   v76 = *MEMORY[0x277D85DE8];
-  v34 = a4;
-  v33 = a5;
-  v7 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v8 = [v7 displayedCall];
-  if (v8)
+  toCopy = to;
+  routesCopy = routes;
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  displayedCall = [mEMORY[0x277D6EDF8] displayedCall];
+  if (displayedCall)
   {
 
 LABEL_4:
-    v10 = [MEMORY[0x277D6EDD0] sharedAudioSystemController];
-    v11 = [v8 audioCategory];
-    v12 = [v8 audioMode];
-    v32 = [v10 pickableRoutesForCategory:v11 andMode:v12];
+    mEMORY[0x277D6EDD0] = [MEMORY[0x277D6EDD0] sharedAudioSystemController];
+    audioCategory = [displayedCall audioCategory];
+    audioMode = [displayedCall audioMode];
+    v32 = [mEMORY[0x277D6EDD0] pickableRoutesForCategory:audioCategory andMode:audioMode];
 
     goto LABEL_5;
   }
 
-  v9 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v8 = [v9 currentVideoCall];
+  mEMORY[0x277D6EDF8]2 = [MEMORY[0x277D6EDF8] sharedInstance];
+  displayedCall = [mEMORY[0x277D6EDF8]2 currentVideoCall];
 
-  if (v8)
+  if (displayedCall)
   {
     goto LABEL_4;
   }
@@ -494,7 +494,7 @@ LABEL_5:
   v36[3] = __Block_byref_object_copy__2;
   v36[4] = __Block_byref_object_dispose__2;
   v37 = 0;
-  v13 = [v32 arrayByAddingObjectsFromArray:v33];
+  v13 = [v32 arrayByAddingObjectsFromArray:routesCopy];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __84___AXSpringBoardServerInstance__setCallRoute_ifCurrentlyRoutedTo_withRoutes_rampUp___block_invoke;
@@ -512,8 +512,8 @@ LABEL_5:
   v14 = v67[5];
   if (!v14)
   {
-    v15 = [MEMORY[0x277D26E58] sharedAVSystemController];
-    v16 = [v15 attributeForKey:*MEMORY[0x277D26C70]];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+    v16 = [mEMORY[0x277D26E58] attributeForKey:*MEMORY[0x277D26C70]];
     v17 = v67[5];
     v67[5] = v16;
 
@@ -522,16 +522,16 @@ LABEL_5:
 
   v18 = [v14 valueForKey:*MEMORY[0x277D26AE0]];
   v19 = v18;
-  if (!v34 || [v18 isEqualToString:v34])
+  if (!toCopy || [v18 isEqualToString:toCopy])
   {
-    v20 = [MEMORY[0x277D12E20] sharedInstance];
-    v21 = [v20 pairedHearingAids];
-    if (v21)
+    mEMORY[0x277D12E20] = [MEMORY[0x277D12E20] sharedInstance];
+    pairedHearingAids = [mEMORY[0x277D12E20] pairedHearingAids];
+    if (pairedHearingAids)
     {
-      v22 = [MEMORY[0x277D12E20] sharedInstance];
-      v23 = [v22 isiCloudPaired];
+      mEMORY[0x277D12E20]2 = [MEMORY[0x277D12E20] sharedInstance];
+      isiCloudPaired = [mEMORY[0x277D12E20]2 isiCloudPaired];
 
-      if (!v23)
+      if (!isiCloudPaired)
       {
         v24 = HCLogHearing();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -549,12 +549,12 @@ LABEL_5:
     {
     }
 
-    if (a3 == 2)
+    if (route == 2)
     {
       v26 = v61;
     }
 
-    else if (a3 == 1)
+    else if (route == 1)
     {
       v25 = v49[5];
       if (v25)
@@ -573,7 +573,7 @@ LABEL_26:
           objc_storeStrong(&AXPreviousCallRoute, v67[5]);
         }
 
-        [(_AXSpringBoardServerInstance *)self _setAVCallRoute:v25 rampUp:v31];
+        [(_AXSpringBoardServerInstance *)self _setAVCallRoute:v25 rampUp:upCopy];
         goto LABEL_31;
       }
 
@@ -583,7 +583,7 @@ LABEL_26:
     else
     {
       v25 = 0;
-      if (a3 || !v34)
+      if (route || !toCopy)
       {
         goto LABEL_26;
       }
@@ -599,7 +599,7 @@ LABEL_26:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v73 = v34;
+    v73 = toCopy;
     v74 = 2112;
     v75 = v19;
     _os_log_impl(&dword_21FE6B000, v25, OS_LOG_TYPE_DEFAULT, "Not switching call route to %@ as it did not match expected route (%@)", buf, 0x16u);
@@ -622,25 +622,25 @@ LABEL_31:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setAVCallRoute:(id)a3 rampUp:(BOOL)a4
+- (void)_setAVCallRoute:(id)route rampUp:(BOOL)up
 {
-  v4 = a4;
+  upCopy = up;
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  routeCopy = route;
+  if (routeCopy)
   {
     v7 = HCLogHearing();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v6;
+      v12 = routeCopy;
       _os_log_impl(&dword_21FE6B000, v7, OS_LOG_TYPE_DEFAULT, "Changing route to %@", &v11, 0xCu);
     }
 
-    v8 = [MEMORY[0x277D26E58] sharedAVSystemController];
-    [v8 setAttribute:v6 forKey:*MEMORY[0x277D26C70] error:0];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+    [mEMORY[0x277D26E58] setAttribute:routeCopy forKey:*MEMORY[0x277D26C70] error:0];
 
-    if (v4)
+    if (upCopy)
     {
       [(_AXSpringBoardServerInstance *)self _rampUpCallVolume];
     }
@@ -668,8 +668,8 @@ LABEL_31:
   }
 
   v11 = 0.0;
-  v4 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  v5 = [v4 getVolume:&v11 forCategory:@"PhoneCall"];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+  v5 = [mEMORY[0x277D26E58] getVolume:&v11 forCategory:@"PhoneCall"];
 
   if (v5)
   {
@@ -690,7 +690,7 @@ LABEL_31:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_rampUpCallVolumeFromVolume:(float)a3 toVolume:(float)a4 totalDuration:(float)a5 progress:(float)a6
+- (void)_rampUpCallVolumeFromVolume:(float)volume toVolume:(float)toVolume totalDuration:(float)duration progress:(float)progress
 {
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
@@ -698,10 +698,10 @@ LABEL_31:
   block[2] = __92___AXSpringBoardServerInstance__rampUpCallVolumeFromVolume_toVolume_totalDuration_progress___block_invoke;
   block[3] = &unk_27842C438;
   objc_copyWeak(&v19, &location);
-  v20 = a4;
-  v21 = a3;
-  v22 = a6;
-  v23 = a5;
+  toVolumeCopy = toVolume;
+  volumeCopy = volume;
+  progressCopy = progress;
+  durationCopy = duration;
   v11 = dispatch_block_create(0, block);
   v12 = MEMORY[0x277CBEBB8];
   v16[0] = MEMORY[0x277D85DD0];
@@ -740,8 +740,8 @@ LABEL_31:
   CFNotificationCenterRemoveObserver(LocalCenter, self, *MEMORY[0x277D679E0], 0);
   v4 = CFNotificationCenterGetLocalCenter();
   CFNotificationCenterRemoveObserver(v4, self, *MEMORY[0x277D6EFD8], 0);
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, 0, *MEMORY[0x277D81DB8], 0);
@@ -770,9 +770,9 @@ LABEL_31:
     reachabilityHandlers = v2->_reachabilityHandlers;
     v2->_reachabilityHandlers = v5;
 
-    v7 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     assertionClients = v2->_assertionClients;
-    v2->_assertionClients = v7;
+    v2->_assertionClients = strongToStrongObjectsMapTable;
 
     v9 = objc_alloc(MEMORY[0x277CE7D98]);
     v10 = [v9 initWithServiceName:*MEMORY[0x277CE7CA8] perPidService:0];
@@ -780,8 +780,8 @@ LABEL_31:
     v2->_server = v10;
 
     [(_AXSpringBoardServerInstance *)v2 _performValidation];
-    v12 = [MEMORY[0x277D75128] sharedApplication];
-    v13 = [v12 safeBoolForKey:@"_hasFinishedLaunching"];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    v13 = [mEMORY[0x277D75128] safeBoolForKey:@"_hasFinishedLaunching"];
 
     if (v13)
     {
@@ -792,8 +792,8 @@ LABEL_31:
     {
       LOBYTE(v29) = 1;
       _AXLogWithFacility();
-      v14 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v14 addObserver:v2 selector:sel__springBoardFinishedLaunching_ name:*MEMORY[0x277D76668] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v2 selector:sel__springBoardFinishedLaunching_ name:*MEMORY[0x277D76668] object:0];
     }
 
     [(_AXSpringBoardServerInstance *)v2 _initializeHearing];
@@ -807,33 +807,33 @@ LABEL_31:
     CFNotificationCenterAddObserver(v17, v2, incomingCallStateChanged, *MEMORY[0x277D67A40], 0, 0);
     v18 = CFNotificationCenterGetLocalCenter();
     CFNotificationCenterAddObserver(v18, v2, incomingCallStateChanged, @"SBFaceTimeStateChangedNotification", 0, 0);
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 addObserver:v2 selector:sel__proximityDidChange_ name:*MEMORY[0x277D67AA0] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__proximityDidChange_ name:*MEMORY[0x277D67AA0] object:0];
 
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 addObserver:v2 selector:sel_userChangedRouteNotification_ name:@"MPAVRoutingControllerDidPickRouteNotification" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_userChangedRouteNotification_ name:@"MPAVRoutingControllerDidPickRouteNotification" object:0];
 
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v21 addObserver:v2 selector:sel_bluetoothPairingDidChange_ name:*MEMORY[0x277CF31F8] object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v2 selector:sel_bluetoothPairingDidChange_ name:*MEMORY[0x277CF31F8] object:0];
 
-    v22 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v22 postNotificationName:AXSpringBoardServerInstanceDidInitializeNotification object:v2];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter5 postNotificationName:AXSpringBoardServerInstanceDidInitializeNotification object:v2];
 
     v23 = IOHIDManagerCreate(*MEMORY[0x277CBECE8], 0);
     v2->_hidManager = v23;
     IOHIDManagerRegisterDeviceMatchingCallback(v23, hidDeviceCallback, v2);
     IOHIDManagerRegisterInputValueCallback(v2->_hidManager, inputValueCallback, v2);
-    v24 = [MEMORY[0x277CBEB18] array];
-    [v24 addObject:&unk_2833B1800];
-    [v24 addObject:&unk_2833B1828];
-    [v24 addObject:&unk_2833B1850];
-    [v24 addObject:&unk_2833B1878];
+    array = [MEMORY[0x277CBEB18] array];
+    [array addObject:&unk_2833B1800];
+    [array addObject:&unk_2833B1828];
+    [array addObject:&unk_2833B1850];
+    [array addObject:&unk_2833B1878];
     if (AXHasCapability())
     {
-      [v24 addObject:&unk_2833B18A0];
+      [array addObject:&unk_2833B18A0];
     }
 
-    IOHIDManagerSetDeviceMatchingMultiple(v2->_hidManager, v24);
+    IOHIDManagerSetDeviceMatchingMultiple(v2->_hidManager, array);
     hidManager = v2->_hidManager;
     Current = CFRunLoopGetCurrent();
     IOHIDManagerScheduleWithRunLoop(hidManager, Current, *MEMORY[0x277CBF058]);
@@ -843,10 +843,10 @@ LABEL_31:
   return v2;
 }
 
-- (void)_springBoardFinishedLaunching:(id)a3
+- (void)_springBoardFinishedLaunching:(id)launching
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D76668] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76668] object:0];
 
   [(_AXSpringBoardServerInstance *)self _registerServerAndNotifyClients];
 
@@ -880,28 +880,28 @@ LABEL_31:
   [(_AXSpringBoardServerInstance *)self _initializeLiveTranscriptionObserver];
 }
 
-- (void)_updateProcess:(id)a3
+- (void)_updateProcess:(id)process
 {
-  v9 = a3;
-  v3 = [v9 identity];
-  v4 = [v3 safeValueForKey:@"hostIdentity"];
+  processCopy = process;
+  identity = [processCopy identity];
+  v4 = [identity safeValueForKey:@"hostIdentity"];
   v5 = [v4 safeStringForKey:@"embeddedApplicationIdentifier"];
   v6 = [v5 isEqualToString:*MEMORY[0x277CE68E8]];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [v9 currentState];
-    v8 = [v7 taskState];
+    currentState = [processCopy currentState];
+    taskState = [currentState taskState];
 
-    if (v8 == 3 || (RBSTaskStateIsRunning() & 1) == 0)
+    if (taskState == 3 || (RBSTaskStateIsRunning() & 1) == 0)
     {
-      [v9 pid];
+      [processCopy pid];
       AXPidSuspend();
     }
 
     else
     {
-      [v9 pid];
+      [processCopy pid];
       AXPidUnsuspend();
     }
   }
@@ -1009,10 +1009,10 @@ LABEL_31:
   [(AXIPCServer *)self->_server setHandlerWithTarget:self selector:sel__getSplashImageForApp_ forKey:4089 possibleRequiredEntitlements:@"com.apple.AXUIViewService", 0];
   [(AXIPCServer *)self->_server setHandlerWithTarget:self selector:sel__handleDisplayIdentifierForSceneIdentifier_ forKey:4120 possibleRequiredEntitlements:@"com.apple.accessibility.AccessibilityUIServer", 0];
   [(AXIPCServer *)self->_server setHandlerWithTarget:self selector:sel__connectedDevicesRequireAssistiveTouch_ forKey:4101 possibleRequiredEntitlements:@"com.apple.CoreRoutine.preferences", 0];
-  v3 = [MEMORY[0x277CE7E20] sharedInstance];
-  v4 = [v3 laserEnabled];
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  laserEnabled = [mEMORY[0x277CE7E20] laserEnabled];
 
-  if (v4)
+  if (laserEnabled)
   {
     [(AXIPCServer *)self->_server setHandlerWithTarget:self selector:sel__connectedDevicesHaveAssistiveTouchCustomActions_ forKey:4109 possibleRequiredEntitlements:@"com.apple.CoreRoutine.preferences", 0];
   }
@@ -1064,7 +1064,7 @@ LABEL_31:
   [(AXIPCServer *)self->_server setHandlerWithTarget:self selector:sel__handleIsChamoisOrFlexibleWindowingEnabled_ forKey:4141 possibleRequiredEntitlements:@"com.apple.assistivetouch.daemon", 0];
 }
 
-- (void)_biomeDonationLargeTextDidChange:(id)a3
+- (void)_biomeDonationLargeTextDidChange:(id)change
 {
   v3 = _AXSCopyPreferredContentSizeCategoryNameGlobal();
   v4 = v3;
@@ -1077,17 +1077,17 @@ LABEL_31:
       _os_log_impl(&dword_21FE6B000, v5, OS_LOG_TYPE_INFO, "Donating text size changed to TipKit", v9, 2u);
     }
 
-    v6 = [MEMORY[0x277CF1B58] discoverabilitySignal];
-    v7 = [v6 source];
+    discoverabilitySignal = [MEMORY[0x277CF1B58] discoverabilitySignal];
+    source = [discoverabilitySignal source];
     v8 = [objc_alloc(MEMORY[0x277CF1938]) initWithIdentifier:@"com.apple.accessibility.textsize.changed" bundleID:@"com.apple.accessibility" context:0];
-    [v7 sendEvent:v8];
+    [source sendEvent:v8];
   }
 }
 
 - (void)_initializeBiomeStreamDonations
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__biomeDonationLargeTextDidChange_ name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__biomeDonationLargeTextDidChange_ name:*MEMORY[0x277D76810] object:0];
 
   [(_AXSpringBoardServerInstance *)self _biomeDonationLargeTextDidChange:0];
 }
@@ -1104,25 +1104,25 @@ LABEL_31:
   v5 = dispatch_get_global_queue(0, 0);
   dispatch_after(v4, v5, v3);
 
-  v6 = [MEMORY[0x277D12E20] sharedInstance];
-  [v6 registerUpdateBlock:v3 forRetrieveSelector:sel_pairedHearingAids withListener:self];
+  mEMORY[0x277D12E20] = [MEMORY[0x277D12E20] sharedInstance];
+  [mEMORY[0x277D12E20] registerUpdateBlock:v3 forRetrieveSelector:sel_pairedHearingAids withListener:self];
 
-  v7 = [MEMORY[0x277D3A1D0] sharedInstance];
-  [v7 registerUpdateBlock:v3 forRetrieveSelector:sel_personalMediaConfiguration withListener:self];
+  mEMORY[0x277D3A1D0] = [MEMORY[0x277D3A1D0] sharedInstance];
+  [mEMORY[0x277D3A1D0] registerUpdateBlock:v3 forRetrieveSelector:sel_personalMediaConfiguration withListener:self];
 
-  v8 = [MEMORY[0x277D12E18] sharedInstance];
-  [v8 registerUpdateBlock:v3 forRetrieveSelector:sel_comfortSoundsEnabled withListener:self];
+  mEMORY[0x277D12E18] = [MEMORY[0x277D12E18] sharedInstance];
+  [mEMORY[0x277D12E18] registerUpdateBlock:v3 forRetrieveSelector:sel_comfortSoundsEnabled withListener:self];
 }
 
-- (void)_performBlockAsynchronously:(id)a3 afterDelay:(double)a4
+- (void)_performBlockAsynchronously:(id)asynchronously afterDelay:(double)delay
 {
-  if (a3)
+  if (asynchronously)
   {
-    v4 = (a4 * 1000000000.0);
-    v5 = a3;
+    v4 = (delay * 1000000000.0);
+    asynchronouslyCopy = asynchronously;
     v6 = dispatch_time(0, v4);
     v7 = dispatch_get_global_queue(0, 0);
-    dispatch_after(v6, v7, v5);
+    dispatch_after(v6, v7, asynchronouslyCopy);
   }
 }
 
@@ -1130,8 +1130,8 @@ LABEL_31:
 {
   if (AXDeviceIsPhone())
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
-    [(_AXSpringBoardServerInstance *)self setWatchActiveWristState:v3];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(_AXSpringBoardServerInstance *)self setWatchActiveWristState:dictionary];
 
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
@@ -1145,12 +1145,12 @@ LABEL_31:
 - (void)_requestOnWristState
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CE6968] sharedInstance];
-  v3 = [v2 ignoreLogging];
+  mEMORY[0x277CE6968] = [MEMORY[0x277CE6968] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6968] ignoreLogging];
 
-  if ((v3 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v4 = [MEMORY[0x277CE6968] identifier];
+    identifier = [MEMORY[0x277CE6968] identifier];
     v5 = AXLoggerForFacility();
 
     v6 = AXOSLogLevelFromAXLogLevel();
@@ -1167,29 +1167,29 @@ LABEL_31:
     }
   }
 
-  v9 = [MEMORY[0x277CE6A88] sharedInstance];
-  v10 = [v9 publishMessage:&unk_2833B18C8 priority:1 requestingResponse:1];
+  mEMORY[0x277CE6A88] = [MEMORY[0x277CE6A88] sharedInstance];
+  v10 = [mEMORY[0x277CE6A88] publishMessage:&unk_2833B18C8 priority:1 requestingResponse:1];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveIncomingData:(id)a3
+- (void)didReceiveIncomingData:(id)data
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CE6968] sharedInstance];
-  v6 = [v5 ignoreLogging];
+  dataCopy = data;
+  mEMORY[0x277CE6968] = [MEMORY[0x277CE6968] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6968] ignoreLogging];
 
-  if ((v6 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v7 = [MEMORY[0x277CE6968] identifier];
+    identifier = [MEMORY[0x277CE6968] identifier];
     v8 = AXLoggerForFacility();
 
     v9 = AXOSLogLevelFromAXLogLevel();
     if (os_log_type_enabled(v8, v9))
     {
       v10 = AXColorizeFormatLog();
-      v19 = v4;
+      v19 = dataCopy;
       v11 = _AXStringForArgs();
       if (os_log_type_enabled(v8, v9))
       {
@@ -1200,23 +1200,23 @@ LABEL_31:
     }
   }
 
-  v12 = [v4 objectForKeyedSubscript:{*MEMORY[0x277CE6A78], v19}];
+  v12 = [dataCopy objectForKeyedSubscript:{*MEMORY[0x277CE6A78], v19}];
   v13 = [v12 objectForKeyedSubscript:@"onWristState"];
-  v14 = [v13 BOOLValue];
+  bOOLValue = [v13 BOOLValue];
 
-  v15 = [v4 objectForKeyedSubscript:*MEMORY[0x277CE6A58]];
+  v15 = [dataCopy objectForKeyedSubscript:*MEMORY[0x277CE6A58]];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v15 length])
   {
-    v16 = [MEMORY[0x277CCABB0] numberWithBool:v14];
-    v17 = [(_AXSpringBoardServerInstance *)self watchActiveWristState];
-    [v17 setObject:v16 forKeyedSubscript:v15];
+    v16 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
+    watchActiveWristState = [(_AXSpringBoardServerInstance *)self watchActiveWristState];
+    [watchActiveWristState setObject:v16 forKeyedSubscript:v15];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_assertionClientForPort:(unsigned int)a3
+- (id)_assertionClientForPort:(unsigned int)port
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -1239,7 +1239,7 @@ LABEL_31:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 serviceMachPort] == a3)
+        if ([v9 serviceMachPort] == port)
         {
           v10 = v9;
           goto LABEL_11;
@@ -1267,26 +1267,26 @@ LABEL_11:
 - (BOOL)_inSetupMode
 {
   v2 = +[AXSpringBoardServerHelper sharedServerHelper];
-  v3 = [v2 isBuddyRunning];
+  isBuddyRunning = [v2 isBuddyRunning];
 
-  return v3;
+  return isBuddyRunning;
 }
 
 - (void)_performValidation
 {
-  v2 = [MEMORY[0x277CE69B0] sharedInstance];
-  [v2 performValidations:&__block_literal_global_897 withPreValidationHandler:&__block_literal_global_1130 postValidationHandler:0];
+  mEMORY[0x277CE69B0] = [MEMORY[0x277CE69B0] sharedInstance];
+  [mEMORY[0x277CE69B0] performValidations:&__block_literal_global_897 withPreValidationHandler:&__block_literal_global_1130 postValidationHandler:0];
 }
 
-- (void)_setSystemGesturesEnabled:(BOOL)a3
+- (void)_setSystemGesturesEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v18 = *MEMORY[0x277D85DE8];
   v5 = AXLogAssertions();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 67109120;
-    DWORD1(buf) = v3;
+    DWORD1(buf) = enabledCopy;
     _os_log_impl(&dword_21FE6B000, v5, OS_LOG_TYPE_INFO, "System gestures enabled: %d", &buf, 8u);
   }
 
@@ -1302,9 +1302,9 @@ LABEL_11:
 
   v8 = [(_AXSpringBoardServerInstance *)self _accessibilityValueForKey:@"AXScreenshotAssertion"];
   v9 = v8;
-  if (v3 || v8)
+  if (enabledCopy || v8)
   {
-    if (v3 && v8)
+    if (enabledCopy && v8)
     {
       [v8 invalidate];
       [(_AXSpringBoardServerInstance *)self _accessibilityRemoveValueForKey:v9];
@@ -1339,8 +1339,8 @@ LABEL_11:
 
 - (BOOL)onlySystemGesturesDisabledHolderIsGuidedAccess
 {
-  v2 = [(_AXSpringBoardServerInstance *)self assertionServer];
-  v3 = [v2 clientsHoldingAssertionOfType:*MEMORY[0x277CE79F0]];
+  assertionServer = [(_AXSpringBoardServerInstance *)self assertionServer];
+  v3 = [assertionServer clientsHoldingAssertionOfType:*MEMORY[0x277CE79F0]];
   v4 = [v3 isEqualToArray:&unk_2833B1768];
 
   return v4;
@@ -1348,9 +1348,9 @@ LABEL_11:
 
 - (void)_setupAssertionServerIfNeeded
 {
-  v3 = [(_AXSpringBoardServerInstance *)self assertionServer];
+  assertionServer = [(_AXSpringBoardServerInstance *)self assertionServer];
 
-  if (!v3)
+  if (!assertionServer)
   {
     v4 = objc_alloc_init(MEMORY[0x277CE7E90]);
     [(_AXSpringBoardServerInstance *)self setAssertionServer:v4];
@@ -1373,11 +1373,11 @@ LABEL_11:
   }
 }
 
-- (void)_setDashboardSystemGesturesDisabled:(BOOL)a3
+- (void)_setDashboardSystemGesturesDisabled:(BOOL)disabled
 {
-  v3 = a3;
+  disabledCopy = disabled;
   v5 = @"disabling dashboard system gestures";
-  if (a3)
+  if (disabled)
   {
     v5 = @"reenabling dashboard system gestures";
   }
@@ -1386,7 +1386,7 @@ LABEL_11:
   v7 = v5;
   _AXLogWithFacility();
   v8 = [(_AXSpringBoardServerInstance *)self delegate:v6];
-  [v8 setDashBoardSystemGesturesEnabled:!v3 withServerInstance:self];
+  [v8 setDashBoardSystemGesturesEnabled:!disabledCopy withServerInstance:self];
 }
 
 - (BOOL)shouldAllowActiveWatchToAutoAnswer
@@ -1394,33 +1394,33 @@ LABEL_11:
   v81 = *MEMORY[0x277D85DE8];
   if (AXDeviceIsPhone())
   {
-    v3 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v4 = [v3 getActivePairedDevice];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
-    if (v4)
+    if (getActivePairedDevice)
     {
-      v5 = [v4 valueForProperty:*MEMORY[0x277D2BB28]];
-      v6 = [v5 BOOLValue];
+      v5 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BB28]];
+      bOOLValue = [v5 BOOLValue];
 
-      if (!v6)
+      if (!bOOLValue)
       {
-        v17 = [MEMORY[0x277D2BCF8] sharedInstance];
-        v18 = [v17 deviceIDForNRDevice:v4];
-        v10 = [v18 UUIDString];
+        mEMORY[0x277D2BCF8]2 = [MEMORY[0x277D2BCF8] sharedInstance];
+        v18 = [mEMORY[0x277D2BCF8]2 deviceIDForNRDevice:getActivePairedDevice];
+        uUIDString = [v18 UUIDString];
 
-        v19 = [MEMORY[0x277CE6968] sharedInstance];
-        LOBYTE(v18) = [v19 ignoreLogging];
+        mEMORY[0x277CE6968] = [MEMORY[0x277CE6968] sharedInstance];
+        LOBYTE(v18) = [mEMORY[0x277CE6968] ignoreLogging];
 
         if ((v18 & 1) == 0)
         {
-          v20 = [MEMORY[0x277CE6968] identifier];
+          identifier = [MEMORY[0x277CE6968] identifier];
           v21 = AXLoggerForFacility();
 
           v22 = AXOSLogLevelFromAXLogLevel();
           if (os_log_type_enabled(v21, v22))
           {
             v23 = AXColorizeFormatLog();
-            v71 = v10;
+            v71 = uUIDString;
             v24 = _AXStringForArgs();
             if (os_log_type_enabled(v21, v22))
             {
@@ -1431,17 +1431,17 @@ LABEL_11:
           }
         }
 
-        v25 = [MEMORY[0x277CE6A88] sharedInstance];
-        v26 = [v25 connectedDevices];
+        mEMORY[0x277CE6A88] = [MEMORY[0x277CE6A88] sharedInstance];
+        connectedDevices = [mEMORY[0x277CE6A88] connectedDevices];
 
-        if (![v26 count])
+        if (![connectedDevices count])
         {
-          v27 = [MEMORY[0x277CE6968] sharedInstance];
-          v28 = [v27 ignoreLogging];
+          mEMORY[0x277CE6968]2 = [MEMORY[0x277CE6968] sharedInstance];
+          ignoreLogging = [mEMORY[0x277CE6968]2 ignoreLogging];
 
-          if ((v28 & 1) == 0)
+          if ((ignoreLogging & 1) == 0)
           {
-            v29 = [MEMORY[0x277CE6968] identifier];
+            identifier2 = [MEMORY[0x277CE6968] identifier];
             v30 = AXLoggerForFacility();
 
             v31 = AXOSLogLevelFromAXLogLevel();
@@ -1459,19 +1459,19 @@ LABEL_11:
           }
         }
 
-        v34 = [MEMORY[0x277CE6968] sharedInstance];
-        v35 = [v34 ignoreLogging];
+        mEMORY[0x277CE6968]3 = [MEMORY[0x277CE6968] sharedInstance];
+        ignoreLogging2 = [mEMORY[0x277CE6968]3 ignoreLogging];
 
-        if ((v35 & 1) == 0)
+        if ((ignoreLogging2 & 1) == 0)
         {
-          v36 = [MEMORY[0x277CE6968] identifier];
+          identifier3 = [MEMORY[0x277CE6968] identifier];
           v37 = AXLoggerForFacility();
 
           v38 = AXOSLogLevelFromAXLogLevel();
           if (os_log_type_enabled(v37, v38))
           {
             v39 = AXColorizeFormatLog();
-            v72 = v26;
+            v72 = connectedDevices;
             v40 = _AXStringForArgs();
             if (os_log_type_enabled(v37, v38))
             {
@@ -1486,7 +1486,7 @@ LABEL_11:
         v77 = 0u;
         v74 = 0u;
         v75 = 0u;
-        v12 = v26;
+        v12 = connectedDevices;
         v41 = [v12 countByEnumeratingWithState:&v74 objects:v78 count:16];
         if (v41)
         {
@@ -1503,7 +1503,7 @@ LABEL_32:
             }
 
             v46 = [*(*(&v74 + 1) + 8 * v45) objectForKeyedSubscript:{v44, v72}];
-            v47 = [v46 isEqualToString:v10];
+            v47 = [v46 isEqualToString:uUIDString];
 
             if (v47)
             {
@@ -1523,11 +1523,11 @@ LABEL_32:
           }
 
           v13 = *MEMORY[0x277D81C18];
-          v50 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:v13 pairedDevice:v4];
+          v50 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:v13 pairedDevice:getActivePairedDevice];
           if ([v50 BOOLForKey:*MEMORY[0x277CE7ED8]])
           {
-            v51 = [(_AXSpringBoardServerInstance *)self watchActiveWristState];
-            v52 = [v51 objectForKeyedSubscript:v10];
+            watchActiveWristState = [(_AXSpringBoardServerInstance *)self watchActiveWristState];
+            v52 = [watchActiveWristState objectForKeyedSubscript:uUIDString];
 
             if (!v52)
             {
@@ -1537,12 +1537,12 @@ LABEL_32:
               v73[3] = &unk_27842BB18;
               v73[4] = self;
               [(_AXSpringBoardServerInstance *)self _performBlockAsynchronously:v73 afterDelay:3.0];
-              v53 = [MEMORY[0x277CE6968] sharedInstance];
-              v54 = [v53 ignoreLogging];
+              mEMORY[0x277CE6968]4 = [MEMORY[0x277CE6968] sharedInstance];
+              ignoreLogging3 = [mEMORY[0x277CE6968]4 ignoreLogging];
 
-              if ((v54 & 1) == 0)
+              if ((ignoreLogging3 & 1) == 0)
               {
-                v55 = [MEMORY[0x277CE6968] identifier];
+                identifier4 = [MEMORY[0x277CE6968] identifier];
                 v56 = AXLoggerForFacility();
 
                 v57 = AXOSLogLevelFromAXLogLevel();
@@ -1560,20 +1560,20 @@ LABEL_32:
               }
             }
 
-            v14 = [v52 BOOLValue];
+            bOOLValue2 = [v52 BOOLValue];
             goto LABEL_65;
           }
 
-          v61 = [MEMORY[0x277CE6968] sharedInstance];
-          v62 = [v61 ignoreLogging];
+          mEMORY[0x277CE6968]5 = [MEMORY[0x277CE6968] sharedInstance];
+          ignoreLogging4 = [mEMORY[0x277CE6968]5 ignoreLogging];
 
-          if (v62)
+          if (ignoreLogging4)
           {
-            v14 = 0;
+            bOOLValue2 = 0;
             goto LABEL_66;
           }
 
-          v65 = [MEMORY[0x277CE6968] identifier];
+          identifier5 = [MEMORY[0x277CE6968] identifier];
           v52 = AXLoggerForFacility();
 
           v66 = AXOSLogLevelFromAXLogLevel();
@@ -1594,18 +1594,18 @@ LABEL_32:
         {
 LABEL_38:
 
-          v48 = [MEMORY[0x277CE6968] sharedInstance];
-          v49 = [v48 ignoreLogging];
+          mEMORY[0x277CE6968]6 = [MEMORY[0x277CE6968] sharedInstance];
+          ignoreLogging5 = [mEMORY[0x277CE6968]6 ignoreLogging];
 
-          if (v49)
+          if (ignoreLogging5)
           {
-            v14 = 0;
+            bOOLValue2 = 0;
 LABEL_68:
 
             goto LABEL_69;
           }
 
-          v63 = [MEMORY[0x277CE6968] identifier];
+          identifier6 = [MEMORY[0x277CE6968] identifier];
           v13 = AXLoggerForFacility();
 
           v64 = AXOSLogLevelFromAXLogLevel();
@@ -1624,32 +1624,32 @@ LABEL_68:
           }
         }
 
-        v14 = 0;
+        bOOLValue2 = 0;
 LABEL_65:
 
 LABEL_66:
         goto LABEL_67;
       }
 
-      v7 = [MEMORY[0x277CE6968] sharedInstance];
-      v8 = [v7 ignoreLogging];
+      mEMORY[0x277CE6968]7 = [MEMORY[0x277CE6968] sharedInstance];
+      ignoreLogging6 = [mEMORY[0x277CE6968]7 ignoreLogging];
 
-      if ((v8 & 1) == 0)
+      if ((ignoreLogging6 & 1) == 0)
       {
-        v9 = [MEMORY[0x277CE6968] identifier];
-        v10 = AXLoggerForFacility();
+        identifier7 = [MEMORY[0x277CE6968] identifier];
+        uUIDString = AXLoggerForFacility();
 
         v11 = AXOSLogLevelFromAXLogLevel();
-        if (os_log_type_enabled(v10, v11))
+        if (os_log_type_enabled(uUIDString, v11))
         {
           v12 = AXColorizeFormatLog();
           v13 = _AXStringForArgs();
-          if (os_log_type_enabled(v10, v11))
+          if (os_log_type_enabled(uUIDString, v11))
           {
             *buf = 138543362;
             v80 = v13;
 LABEL_52:
-            _os_log_impl(&dword_21FE6B000, v10, v11, "%{public}@", buf, 0xCu);
+            _os_log_impl(&dword_21FE6B000, uUIDString, v11, "%{public}@", buf, 0xCu);
             goto LABEL_59;
           }
 
@@ -1662,20 +1662,20 @@ LABEL_52:
 
     else
     {
-      v15 = [MEMORY[0x277CE6968] sharedInstance];
-      v16 = [v15 ignoreLogging];
+      mEMORY[0x277CE6968]8 = [MEMORY[0x277CE6968] sharedInstance];
+      ignoreLogging7 = [mEMORY[0x277CE6968]8 ignoreLogging];
 
-      if ((v16 & 1) == 0)
+      if ((ignoreLogging7 & 1) == 0)
       {
-        v60 = [MEMORY[0x277CE6968] identifier];
-        v10 = AXLoggerForFacility();
+        identifier8 = [MEMORY[0x277CE6968] identifier];
+        uUIDString = AXLoggerForFacility();
 
         v11 = AXOSLogLevelFromAXLogLevel();
-        if (os_log_type_enabled(v10, v11))
+        if (os_log_type_enabled(uUIDString, v11))
         {
           v12 = AXColorizeFormatLog();
           v13 = _AXStringForArgs();
-          if (os_log_type_enabled(v10, v11))
+          if (os_log_type_enabled(uUIDString, v11))
           {
             *buf = 138543362;
             v80 = v13;
@@ -1683,37 +1683,37 @@ LABEL_52:
           }
 
 LABEL_59:
-          v14 = 0;
+          bOOLValue2 = 0;
 LABEL_67:
 
           goto LABEL_68;
         }
 
 LABEL_53:
-        v14 = 0;
+        bOOLValue2 = 0;
 LABEL_69:
 
         goto LABEL_70;
       }
     }
 
-    v14 = 0;
+    bOOLValue2 = 0;
 LABEL_70:
 
     goto LABEL_71;
   }
 
-  v14 = 0;
+  bOOLValue2 = 0;
 LABEL_71:
   v69 = *MEMORY[0x277D85DE8];
-  return v14;
+  return bOOLValue2;
 }
 
-- (id)_getApplicationOrientation:(id)a3
+- (id)_getApplicationOrientation:(id)orientation
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 safeIntegerForKey:@"activeInterfaceOrientation"];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v4 = [mEMORY[0x277D75128] safeIntegerForKey:@"activeInterfaceOrientation"];
 
   if ((v4 - 1) < 4)
   {
@@ -1737,7 +1737,7 @@ LABEL_71:
   return v9;
 }
 
-- (id)_getPid:(id)a3
+- (id)_getPid:(id)pid
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CE7D90]);
@@ -1752,85 +1752,85 @@ LABEL_71:
   return v6;
 }
 
-- (id)_showAlert:(id)a3
+- (id)_showAlert:(id)alert
 {
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 objectForKey:@"alertType"];
+  alertCopy = alert;
+  payload = [alertCopy payload];
+  v6 = [payload objectForKey:@"alertType"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 integerValue];
-    v8 = [(_AXSpringBoardServerInstance *)self delegate];
+    integerValue = [v6 integerValue];
+    delegate = [(_AXSpringBoardServerInstance *)self delegate];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __43___AXSpringBoardServerInstance__showAlert___block_invoke;
     v12[3] = &unk_27842C570;
-    v13 = v4;
-    v9 = [v13 payload];
-    v10 = [v9 objectForKey:@"data"];
-    [v8 serverInstance:self showAlertType:v7 withHandler:v12 withData:v10];
+    v13 = alertCopy;
+    payload2 = [v13 payload];
+    v10 = [payload2 objectForKey:@"data"];
+    [delegate serverInstance:self showAlertType:integerValue withHandler:v12 withData:v10];
   }
 
   return 0;
 }
 
-- (id)_hideAlert:(id)a3
+- (id)_hideAlert:(id)alert
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 hideAlertWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate hideAlertWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_showRemoteView:(id)a3
+- (id)_showRemoteView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 objectForKey:@"remoteViewType"];
+  viewCopy = view;
+  payload = [viewCopy payload];
+  v6 = [payload objectForKey:@"remoteViewType"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 integerValue];
-    v8 = [(_AXSpringBoardServerInstance *)self delegate];
-    v9 = [v4 payload];
-    v10 = [v9 objectForKey:@"data"];
-    [v8 serverInstance:self showRemoteViewType:v7 withData:v10];
+    integerValue = [v6 integerValue];
+    delegate = [(_AXSpringBoardServerInstance *)self delegate];
+    payload2 = [viewCopy payload];
+    v10 = [payload2 objectForKey:@"data"];
+    [delegate serverInstance:self showRemoteViewType:integerValue withData:v10];
   }
 
   return 0;
 }
 
-- (id)_hideRemoteView:(id)a3
+- (id)_hideRemoteView:(id)view
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"remoteViewType"];
+  payload = [view payload];
+  v5 = [payload objectForKey:@"remoteViewType"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 integerValue];
-    v7 = [(_AXSpringBoardServerInstance *)self delegate];
-    [v7 serverInstance:self hideRemoteViewType:v6];
+    integerValue = [v5 integerValue];
+    delegate = [(_AXSpringBoardServerInstance *)self delegate];
+    [delegate serverInstance:self hideRemoteViewType:integerValue];
   }
 
   return 0;
 }
 
-- (id)_isShowingRemoteView:(id)a3
+- (id)_isShowingRemoteView:(id)view
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"remoteViewType"];
+  payload = [view payload];
+  v5 = [payload objectForKey:@"remoteViewType"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 integerValue];
-    v7 = [(_AXSpringBoardServerInstance *)self delegate];
-    v8 = [v7 serverInstance:self isShowingRemoteViewType:v6];
+    integerValue = [v5 integerValue];
+    delegate = [(_AXSpringBoardServerInstance *)self delegate];
+    v8 = [delegate serverInstance:self isShowingRemoteViewType:integerValue];
 
     v9 = objc_alloc(MEMORY[0x277CE7D90]);
     v15 = @"result";
@@ -1850,14 +1850,14 @@ LABEL_71:
   return v12;
 }
 
-- (id)_isMakingEmergencyCall:(id)a3
+- (id)_isMakingEmergencyCall:(id)call
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(_AXSpringBoardServerInstance *)self delegate];
-  v7 = [v5 numberWithBool:{objc_msgSend(v6, "isMakingEmergencyCallWithServerInstance:", self)}];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v7 = [v5 numberWithBool:{objc_msgSend(delegate, "isMakingEmergencyCallWithServerInstance:", self)}];
   v13[0] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v9 = [v4 initWithKey:4005 payload:v8];
@@ -1867,7 +1867,7 @@ LABEL_71:
   return v9;
 }
 
-- (id)_hasActiveCall:(id)a3
+- (id)_hasActiveCall:(id)call
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277CE7D90]);
@@ -1882,7 +1882,7 @@ LABEL_71:
   return v7;
 }
 
-- (id)_hasActiveEndpointCall:(id)a3
+- (id)_hasActiveEndpointCall:(id)call
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277CE7D90]);
@@ -1897,7 +1897,7 @@ LABEL_71:
   return v7;
 }
 
-- (id)_hasActiveOrPendingCall:(id)a3
+- (id)_hasActiveOrPendingCall:(id)call
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277CE7D90]);
@@ -1912,7 +1912,7 @@ LABEL_71:
   return v7;
 }
 
-- (id)_hasActiveOrPendingCallOrFaceTime:(id)a3
+- (id)_hasActiveOrPendingCallOrFaceTime:(id)time
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277CE7D90]);
@@ -1927,13 +1927,13 @@ LABEL_71:
   return v7;
 }
 
-- (id)_topEventPidOverride:(id)a3
+- (id)_topEventPidOverride:(id)override
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v3 = [*MEMORY[0x277D76620] safeValueForKey:@"_isSpringBoardShowingAnAlert"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     v5 = getpid();
   }
@@ -1957,99 +1957,99 @@ LABEL_71:
   return v11;
 }
 
-- (id)_openAppSwitcher:(id)a3
+- (id)_openAppSwitcher:(id)switcher
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 openAppSwitcherWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate openAppSwitcherWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_dismissAppSwitcher:(id)a3
+- (id)_dismissAppSwitcher:(id)switcher
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 dismissAppSwitcherWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate dismissAppSwitcherWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_dismissShelfSwitcher:(id)a3
+- (id)_dismissShelfSwitcher:(id)switcher
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 dismissShelfSwitcherWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate dismissShelfSwitcherWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_simulateEdgePressHaptics:(id)a3
+- (id)_simulateEdgePressHaptics:(id)haptics
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 simulateEdgePressHaptics:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate simulateEdgePressHaptics:self];
 
   return 0;
 }
 
-- (id)_toggleAppLibrary:(id)a3
+- (id)_toggleAppLibrary:(id)library
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 toggleAppLibraryWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate toggleAppLibraryWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_toggleQuickNote:(id)a3
+- (id)_toggleQuickNote:(id)note
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 toggleQuickNoteWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate toggleQuickNoteWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_wakeUpDeviceIfNecessary:(id)a3
+- (id)_wakeUpDeviceIfNecessary:(id)necessary
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 wakeUpDeviceIfNecessaryWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate wakeUpDeviceIfNecessaryWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_unlockDevice:(id)a3
+- (id)_unlockDevice:(id)device
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 unlockDeviceWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate unlockDeviceWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_rebootDevice:(id)a3
+- (id)_rebootDevice:(id)device
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 rebootDeviceWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate rebootDeviceWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_dismissSiri:(id)a3
+- (id)_dismissSiri:(id)siri
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 dismissSiriWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate dismissSiriWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_toggleNotificationCenter:(id)a3
+- (id)_toggleNotificationCenter:(id)center
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 toggleNotificationCenterWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate toggleNotificationCenterWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_isNotificationCenterVisible:(id)a3
+- (id)_isNotificationCenterVisible:(id)visible
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isNotificationCenterVisibleWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isNotificationCenterVisibleWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -2063,11 +2063,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_isLongLookNotificationVisible:(id)a3
+- (id)_isLongLookNotificationVisible:(id)visible
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isLongLookNotificationVisibleWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isLongLookNotificationVisibleWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -2081,32 +2081,32 @@ LABEL_71:
   return v9;
 }
 
-- (id)_openVoiceControl:(id)a3
+- (id)_openVoiceControl:(id)control
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 openVoiceControlWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate openVoiceControlWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_openTypeToSiri:(id)a3
+- (id)_openTypeToSiri:(id)siri
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 openTypeToSiriWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate openTypeToSiriWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_getActiveInterfaceOrientation:(id)a3
+- (id)_getActiveInterfaceOrientation:(id)orientation
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 safeValueForKey:@"_frontMostAppOrientation"];
-  v5 = [v4 integerValue];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v4 = [mEMORY[0x277D75128] safeValueForKey:@"_frontMostAppOrientation"];
+  integerValue = [v4 integerValue];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"orientation";
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
   v13[0] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v9 = [v6 initWithKey:4000 payload:v8];
@@ -2116,20 +2116,20 @@ LABEL_71:
   return v9;
 }
 
-- (id)_actionHandling:(id)a3
+- (id)_actionHandling:(id)handling
 {
-  v4 = a3;
-  v5 = [(_AXSpringBoardServerInstance *)self actionHandlerHelper];
-  v6 = [v5 handleActionHandlerRegistrationMessage:v4];
+  handlingCopy = handling;
+  actionHandlerHelper = [(_AXSpringBoardServerInstance *)self actionHandlerHelper];
+  v6 = [actionHandlerHelper handleActionHandlerRegistrationMessage:handlingCopy];
 
   return v6;
 }
 
-- (id)_isVoiceControlRunning:(id)a3
+- (id)_isVoiceControlRunning:(id)running
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isVoiceControlRunningWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isVoiceControlRunningWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -2143,11 +2143,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_isSystemSleeping:(id)a3
+- (id)_isSystemSleeping:(id)sleeping
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isSystemSleepingWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isSystemSleepingWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -2161,11 +2161,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_volumeLevel:(id)a3
+- (id)_volumeLevel:(id)level
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 volumeLevelWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate volumeLevelWithServerInstance:self];
   v6 = v5;
 
   v7 = objc_alloc(MEMORY[0x277CE7D90]);
@@ -2180,11 +2180,11 @@ LABEL_71:
   return v10;
 }
 
-- (id)_isOrientationLocked:(id)a3
+- (id)_isOrientationLocked:(id)locked
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isOrientationLockedWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isOrientationLockedWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -2198,42 +2198,42 @@ LABEL_71:
   return v9;
 }
 
-- (id)_setOrientation:(id)a3
+- (id)_setOrientation:(id)orientation
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"orientation"];
-  v6 = [v5 integerValue];
+  payload = [orientation payload];
+  v5 = [payload objectForKey:@"orientation"];
+  integerValue = [v5 integerValue];
 
-  v7 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v7 serverInstance:self setOrientation:v6];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate serverInstance:self setOrientation:integerValue];
 
   return 0;
 }
 
-- (id)_setOrientationLocked:(id)a3
+- (id)_setOrientationLocked:(id)locked
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"locked"];
-  v6 = [v5 BOOLValue];
+  payload = [locked payload];
+  v5 = [payload objectForKey:@"locked"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v7 serverInstance:self setOrientationLocked:v6];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate serverInstance:self setOrientationLocked:bOOLValue];
 
   return 0;
 }
 
-- (id)_isSideSwitchUsedForOrientation:(id)a3
+- (id)_isSideSwitchUsedForOrientation:(id)orientation
 {
   v3 = [objc_alloc(MEMORY[0x277CE7D90]) initWithKey:4016 payload:&unk_2833B18F0];
 
   return v3;
 }
 
-- (id)_isRingerMuted:(id)a3
+- (id)_isRingerMuted:(id)muted
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isRingerMutedWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isRingerMutedWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -2247,11 +2247,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_reachabilityOffset:(id)a3
+- (id)_reachabilityOffset:(id)offset
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 reachabilityOffsetWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate reachabilityOffsetWithServerInstance:self];
   v6 = v5;
 
   v7 = objc_alloc(MEMORY[0x277CE7D90]);
@@ -2266,11 +2266,11 @@ LABEL_71:
   return v10;
 }
 
-- (id)_handleToggleIncomingCall:(id)a3
+- (id)_handleToggleIncomingCall:(id)call
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 handleToggleIncomingCallWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate handleToggleIncomingCallWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -2284,43 +2284,43 @@ LABEL_71:
   return v9;
 }
 
-- (id)_reachabilityActive:(id)a3
+- (id)_reachabilityActive:(id)active
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:@"active"];
-  v6 = [v5 BOOLValue];
+  payload = [active payload];
+  v5 = [payload objectForKeyedSubscript:@"active"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v7 setReachabilityActive:v6];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate setReachabilityActive:bOOLValue];
 
   return 0;
 }
 
-- (id)_reachabilityEnabled:(id)a3
+- (id)_reachabilityEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(_AXSpringBoardServerInstance *)self delegate];
-  v6 = [v4 payload];
+  enabledCopy = enabled;
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  payload = [enabledCopy payload];
 
-  v7 = [v6 objectForKeyedSubscript:@"enabled"];
-  [v5 serverInstance:self setReachabilityEnabled:{objc_msgSend(v7, "BOOLValue")}];
+  v7 = [payload objectForKeyedSubscript:@"enabled"];
+  [delegate serverInstance:self setReachabilityEnabled:{objc_msgSend(v7, "BOOLValue")}];
 
   return 0;
 }
 
-- (id)_reachabilityHandling:(id)a3
+- (id)_reachabilityHandling:(id)handling
 {
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 objectForKey:@"register"];
-  v7 = [v6 BOOLValue];
+  handlingCopy = handling;
+  payload = [handlingCopy payload];
+  v6 = [payload objectForKey:@"register"];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v4 clientPort];
-  if (v7)
+  clientPort = [handlingCopy clientPort];
+  if (bOOLValue)
   {
-    if (![(_AXSpringBoardServerInstance *)self _hasReachabilityHandlerForClientPort:v8])
+    if (![(_AXSpringBoardServerInstance *)self _hasReachabilityHandlerForClientPort:clientPort])
     {
-      v9 = [objc_alloc(MEMORY[0x277CE7D88]) initWithPort:v8];
+      v9 = [objc_alloc(MEMORY[0x277CE7D88]) initWithPort:clientPort];
       LODWORD(v10) = 1.0;
       [v9 setTimeout:v10];
       [v9 connectWithError:0];
@@ -2329,7 +2329,7 @@ LABEL_71:
       v13[2] = __54___AXSpringBoardServerInstance__reachabilityHandling___block_invoke;
       v13[3] = &unk_27842BF68;
       v13[4] = self;
-      v14 = v8;
+      v14 = clientPort;
       [v9 setPortDeathHandler:v13];
       [(NSMutableArray *)self->_reachabilityHandlers addObject:v9];
     }
@@ -2337,7 +2337,7 @@ LABEL_71:
 
   else
   {
-    [(_AXSpringBoardServerInstance *)self _removeReachabilityHandler:v8];
+    [(_AXSpringBoardServerInstance *)self _removeReachabilityHandler:clientPort];
   }
 
   v11 = [objc_alloc(MEMORY[0x277CE7D90]) initWithKey:4056 payload:&unk_2833B1918];
@@ -2345,59 +2345,59 @@ LABEL_71:
   return v11;
 }
 
-- (id)_openCustomGestureCreationForAST:(id)a3
+- (id)_openCustomGestureCreationForAST:(id)t
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 openCustomGestureCreationForASTWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate openCustomGestureCreationForASTWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_openCustomGestureCreationForSCAT:(id)a3
+- (id)_openCustomGestureCreationForSCAT:(id)t
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 openCustomGestureCreationForSCATWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate openCustomGestureCreationForSCATWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_openCommandAndControlSettings:(id)a3
+- (id)_openCommandAndControlSettings:(id)settings
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 openCommandAndControlSettingsWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate openCommandAndControlSettingsWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_openCommandAndControlCommands:(id)a3
+- (id)_openCommandAndControlCommands:(id)commands
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 openCommandAndControlCommandsWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate openCommandAndControlCommandsWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_openCommandAndControlVocabulary:(id)a3
+- (id)_openCommandAndControlVocabulary:(id)vocabulary
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 openCommandAndControlVocabularyWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate openCommandAndControlVocabularyWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_diminishJindo:(id)a3
+- (id)_diminishJindo:(id)jindo
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 diminishJindoWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate diminishJindoWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_jindoAppIdentifiers:(id)a3
+- (id)_jindoAppIdentifiers:(id)identifiers
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 jindoAppBundleIndentifiersWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate jindoAppBundleIndentifiersWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v11 = @"result";
@@ -2410,50 +2410,50 @@ LABEL_71:
   return v8;
 }
 
-- (id)_toggleDetectionMode:(id)a3
+- (id)_toggleDetectionMode:(id)mode
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 toggleDetectionModeWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate toggleDetectionModeWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_toggleConversationBoost:(id)a3
+- (id)_toggleConversationBoost:(id)boost
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 toggleConversationBoostWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate toggleConversationBoostWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_launchAccessibilityReader:(id)a3
+- (id)_launchAccessibilityReader:(id)reader
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 launchAccessibilityReaderWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate launchAccessibilityReaderWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_cancelGestureActivation:(id)a3
+- (id)_cancelGestureActivation:(id)activation
 {
-  v3 = a3;
-  v4 = [v3 payload];
-  v5 = [v4 objectForKey:@"type"];
-  v6 = [v5 intValue];
+  activationCopy = activation;
+  payload = [activationCopy payload];
+  v5 = [payload objectForKey:@"type"];
+  intValue = [v5 intValue];
 
-  v7 = [v3 payload];
-  v8 = [v7 objectForKey:@"cancelEnabled"];
-  v9 = [v8 BOOLValue];
+  payload2 = [activationCopy payload];
+  v8 = [payload2 objectForKey:@"cancelEnabled"];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = v6 - 1;
-  if (v6 - 1) <= 7 && ((0x8Bu >> v10))
+  v10 = intValue - 1;
+  if (intValue - 1) <= 7 && ((0x8Bu >> v10))
   {
     v11 = off_27842C6B8[v10];
-    *off_27842C678[v10] = v9;
+    *off_27842C678[v10] = bOOLValue;
     v12 = *v11;
-    [v3 clientPort];
+    [activationCopy clientPort];
     AXIncrefSendRight();
-    *v11 = [v3 clientPort];
+    *v11 = [activationCopy clientPort];
     if (v12)
     {
       if (mach_port_deallocate(*MEMORY[0x277D85F48], v12))
@@ -2466,10 +2466,10 @@ LABEL_71:
   return 0;
 }
 
-- (id)_toggleHearingControl:(id)a3
+- (id)_toggleHearingControl:(id)control
 {
   v3 = *MEMORY[0x277D76620];
-  v4 = a3;
+  controlCopy = control;
   v5 = [v3 safeValueForKey:@"windowSceneManager"];
   v6 = [v5 safeValueForKey:@"embeddedDisplayWindowScene"];
   v7 = [v6 safeValueForKey:@"switcherController"];
@@ -2478,9 +2478,9 @@ LABEL_71:
   v8 = +[AXSBHearingAidDeviceController sharedController];
   [v8 isShowingHearingAidControl];
 
-  v9 = [v4 payload];
+  payload = [controlCopy payload];
 
-  v10 = [v9 valueForKey:@"visible"];
+  v10 = [payload valueForKey:@"visible"];
 
   if (v10)
   {
@@ -2494,43 +2494,43 @@ LABEL_71:
   return 0;
 }
 
-- (id)_setCaptionPanelContextId:(id)a3
+- (id)_setCaptionPanelContextId:(id)id
 {
-  v3 = [a3 payload];
-  v4 = [v3 valueForKey:@"contextId"];
-  v5 = [v4 integerValue];
+  payload = [id payload];
+  v4 = [payload valueForKey:@"contextId"];
+  integerValue = [v4 integerValue];
 
-  if (__axCaptionPanelContextId != v5)
+  if (__axCaptionPanelContextId != integerValue)
   {
-    __axCaptionPanelContextId = v5;
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 postNotificationName:AXCaptionPanelContextDidChangeNotification object:0];
+    __axCaptionPanelContextId = integerValue;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:AXCaptionPanelContextDidChangeNotification object:0];
   }
 
   return 0;
 }
 
-- (id)_handleToggleSpotlight:(id)a3
+- (id)_handleToggleSpotlight:(id)spotlight
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 toggleSpotlightWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate toggleSpotlightWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_handleRevealSpotlight:(id)a3
+- (id)_handleRevealSpotlight:(id)spotlight
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 revealSpotlightWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate revealSpotlightWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_isDarkModeActive:(id)a3
+- (id)_isDarkModeActive:(id)active
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isDarkModeActiveWithServiceInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isDarkModeActiveWithServiceInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -2544,11 +2544,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_toggleDarkMode:(id)a3
+- (id)_toggleDarkMode:(id)mode
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 toggleDarkModeWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate toggleDarkModeWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -2562,11 +2562,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_isGuidedAccessActive:(id)a3
+- (id)_isGuidedAccessActive:(id)active
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isGuidedAccessActiveWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isGuidedAccessActiveWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -2580,11 +2580,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_isSpotlightVisible:(id)a3
+- (id)_isSpotlightVisible:(id)visible
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isSpotlightVisibleWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isSpotlightVisibleWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -2598,11 +2598,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_isPIPWindowVisible:(id)a3
+- (id)_isPIPWindowVisible:(id)visible
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isPIPWindowVisibleWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isPIPWindowVisibleWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -2616,35 +2616,35 @@ LABEL_71:
   return v9;
 }
 
-- (id)_handleLoadGAXBundleForUnmanagedASAM:(id)a3
+- (id)_handleLoadGAXBundleForUnmanagedASAM:(id)m
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 forceLoadGAXBundleWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate forceLoadGAXBundleWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_handleReactivateInCallService:(id)a3
+- (id)_handleReactivateInCallService:(id)service
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 reactivateInCallServiceWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate reactivateInCallServiceWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_handleLaunchMagnifierApp:(id)a3
+- (id)_handleLaunchMagnifierApp:(id)app
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 launchMagnifierAppWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate launchMagnifierAppWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_handleIsMagnifierVisible:(id)a3
+- (id)_handleIsMagnifierVisible:(id)visible
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isMagnifierVisibleWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isMagnifierVisibleWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -2658,41 +2658,41 @@ LABEL_71:
   return v9;
 }
 
-- (id)_handleLaunchOnboardingViewService:(id)a3
+- (id)_handleLaunchOnboardingViewService:(id)service
 {
-  v4 = a3;
-  v5 = [(_AXSpringBoardServerInstance *)self delegate];
-  v6 = [v4 payload];
+  serviceCopy = service;
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  payload = [serviceCopy payload];
 
-  [v5 launchOnboardingViewServiceWithServerInstance:self data:v6];
+  [delegate launchOnboardingViewServiceWithServerInstance:self data:payload];
   return 0;
 }
 
-- (id)_handleLaunchVoiceOverQuickSettingsViewService:(id)a3
+- (id)_handleLaunchVoiceOverQuickSettingsViewService:(id)service
 {
-  v4 = a3;
-  v5 = [(_AXSpringBoardServerInstance *)self delegate];
-  v6 = [v4 payload];
+  serviceCopy = service;
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  payload = [serviceCopy payload];
 
-  [v5 launchVoiceOverQuickSettingsViewServiceWithServerInstance:self data:v6];
+  [delegate launchVoiceOverQuickSettingsViewServiceWithServerInstance:self data:payload];
   return 0;
 }
 
-- (id)_handleLaunchVoiceOverImageExplorerViewService:(id)a3
+- (id)_handleLaunchVoiceOverImageExplorerViewService:(id)service
 {
-  v4 = a3;
-  v5 = [(_AXSpringBoardServerInstance *)self delegate];
-  v6 = [v4 payload];
+  serviceCopy = service;
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  payload = [serviceCopy payload];
 
-  [v5 launchVoiceOverImageExplorerViewServiceWithServerInstance:self forData:v6];
+  [delegate launchVoiceOverImageExplorerViewServiceWithServerInstance:self forData:payload];
   return 0;
 }
 
-- (id)_visibleTripleClickItems:(id)a3
+- (id)_visibleTripleClickItems:(id)items
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 visibleTripleClickItemsWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate visibleTripleClickItemsWithServerInstance:self];
 
   if (v5)
   {
@@ -2713,24 +2713,24 @@ LABEL_71:
   return v7;
 }
 
-- (id)_handleIsInspectorMinimized:(id)a3
+- (id)_handleIsInspectorMinimized:(id)minimized
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D76620];
   v4 = *MEMORY[0x277D76620];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [*v3 _accessibilityIsInspectorMinimized];
+    _accessibilityIsInspectorMinimized = [*v3 _accessibilityIsInspectorMinimized];
   }
 
   else
   {
-    v5 = 0;
+    _accessibilityIsInspectorMinimized = 0;
   }
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:_accessibilityIsInspectorMinimized];
   v13[0] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v9 = [v6 initWithKey:4052 payload:v8];
@@ -2740,16 +2740,16 @@ LABEL_71:
   return v9;
 }
 
-- (id)_isPointInAXInspector:(id)a3
+- (id)_isPointInAXInspector:(id)inspector
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  inspectorCopy = inspector;
   v4 = MEMORY[0x277D76620];
   v5 = *MEMORY[0x277D76620];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v3 payload];
-    v7 = [v6 objectForKey:@"record"];
+    payload = [inspectorCopy payload];
+    v7 = [payload objectForKey:@"record"];
 
     v8 = [*v4 _accessibilityIsPointInAXInspector:v7];
   }
@@ -2771,18 +2771,18 @@ LABEL_71:
   return v12;
 }
 
-- (id)_isMediaPlaying:(id)a3
+- (id)_isMediaPlaying:(id)playing
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 clientPort];
+  playingCopy = playing;
+  clientPort = [playingCopy clientPort];
   v34 = 0;
   v35[0] = &v34;
   v35[1] = 0x3032000000;
   v35[2] = __Block_byref_object_copy__2;
   v35[3] = __Block_byref_object_dispose__2;
   v36 = 0;
-  v6 = [objc_alloc(MEMORY[0x277CE7D88]) initWithPort:v5];
+  v6 = [objc_alloc(MEMORY[0x277CE7D88]) initWithPort:clientPort];
   LODWORD(v7) = 1.0;
   [v6 setTimeout:v7];
   v30 = 0;
@@ -2805,15 +2805,15 @@ LABEL_71:
   v17 = AXLogSpringboardServer();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [v4 payload];
+    payload = [playingCopy payload];
     *buf = 138412290;
-    v38 = v18;
+    v38 = payload;
     _os_log_impl(&dword_21FE6B000, v17, OS_LOG_TYPE_INFO, "Fetching is playing: %@", buf, 0xCu);
   }
 
-  v19 = [(_AXSpringBoardServerInstance *)self delegate];
-  v20 = [v4 payload];
-  v21 = [v20 objectForKey:@"bundleId"];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  payload2 = [playingCopy payload];
+  v21 = [payload2 objectForKey:@"bundleId"];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __48___AXSpringBoardServerInstance__isMediaPlaying___block_invoke;
@@ -2822,7 +2822,7 @@ LABEL_71:
   v22 = v6;
   v26 = v22;
   v28 = &v34;
-  [v19 isMediaPlayingWithServerInstance:self forBundleId:v21 completion:v25];
+  [delegate isMediaPlayingWithServerInstance:self forBundleId:v21 completion:v25];
 
   _Block_object_dispose(&v30, 8);
   _Block_object_dispose(&v34, 8);
@@ -2831,39 +2831,39 @@ LABEL_71:
   return 0;
 }
 
-- (id)_pauseMedia:(id)a3
+- (id)_pauseMedia:(id)media
 {
-  v4 = a3;
-  v5 = [(_AXSpringBoardServerInstance *)self delegate];
-  v6 = [v4 payload];
+  mediaCopy = media;
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  payload = [mediaCopy payload];
 
-  v7 = [v6 objectForKey:@"bundleId"];
-  [v5 serverInstance:self pauseMedia:1 forBundleId:v7];
+  v7 = [payload objectForKey:@"bundleId"];
+  [delegate serverInstance:self pauseMedia:1 forBundleId:v7];
 
   return 0;
 }
 
-- (id)_resumeMedia:(id)a3
+- (id)_resumeMedia:(id)media
 {
-  v4 = a3;
-  v5 = [(_AXSpringBoardServerInstance *)self delegate];
-  v6 = [v4 payload];
+  mediaCopy = media;
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  payload = [mediaCopy payload];
 
-  v7 = [v6 objectForKey:@"bundleId"];
-  [v5 serverInstance:self pauseMedia:0 forBundleId:v7];
+  v7 = [payload objectForKey:@"bundleId"];
+  [delegate serverInstance:self pauseMedia:0 forBundleId:v7];
 
   return 0;
 }
 
-- (id)_resetDimTimer:(id)a3
+- (id)_resetDimTimer:(id)timer
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 resetDimTimerWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate resetDimTimerWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_startHearingAidServer:(id)a3
+- (id)_startHearingAidServer:(id)server
 {
   v3 = +[AXSBHearingAidDeviceController sharedController];
   [v3 startServer];
@@ -2871,51 +2871,51 @@ LABEL_71:
   return 0;
 }
 
-- (id)_showControlCenter:(id)a3
+- (id)_showControlCenter:(id)center
 {
-  v4 = a3;
-  v5 = [(_AXSpringBoardServerInstance *)self delegate];
-  v6 = [v4 payload];
+  centerCopy = center;
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  payload = [centerCopy payload];
 
-  v7 = [v6 objectForKey:@"show"];
-  [v5 serverInstance:self showControlCenter:{objc_msgSend(v7, "BOOLValue")}];
+  v7 = [payload objectForKey:@"show"];
+  [delegate serverInstance:self showControlCenter:{objc_msgSend(v7, "BOOLValue")}];
 
   return 0;
 }
 
-- (id)_toggleDock:(id)a3
+- (id)_toggleDock:(id)dock
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 toggleDockWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate toggleDockWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_armApplePay:(id)a3
+- (id)_armApplePay:(id)pay
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 armApplePayWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate armApplePayWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_showNotificationCenter:(id)a3
+- (id)_showNotificationCenter:(id)center
 {
-  v4 = a3;
-  v5 = [(_AXSpringBoardServerInstance *)self delegate];
-  v6 = [v4 payload];
+  centerCopy = center;
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  payload = [centerCopy payload];
 
-  v7 = [v6 objectForKey:@"show"];
-  [v5 serverInstance:self showNotificationCenter:{objc_msgSend(v7, "BOOLValue")}];
+  v7 = [payload objectForKey:@"show"];
+  [delegate serverInstance:self showNotificationCenter:{objc_msgSend(v7, "BOOLValue")}];
 
   return 0;
 }
 
-- (id)_isControlCenterVisible:(id)a3
+- (id)_isControlCenterVisible:(id)visible
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isControlCenterVisibleWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isControlCenterVisibleWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -2929,33 +2929,33 @@ LABEL_71:
   return v9;
 }
 
-- (id)_copyStringToPasteboard:(id)a3
+- (id)_copyStringToPasteboard:(id)pasteboard
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = [a3 payload];
-  v4 = [v3 objectForKey:@"string"];
+  payload = [pasteboard payload];
+  v4 = [payload objectForKey:@"string"];
 
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    v6 = [*MEMORY[0x277CE1EB0] identifier];
-    [v5 setObject:v4 forKey:v6];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    identifier = [*MEMORY[0x277CE1EB0] identifier];
+    [dictionary setObject:v4 forKey:identifier];
 
-    v7 = [MEMORY[0x277D75810] generalPasteboard];
-    v11[0] = v5;
+    generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+    v11[0] = dictionary;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-    [v7 setItems:v8];
+    [generalPasteboard setItems:v8];
   }
 
   v9 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (id)_isSiriVisible:(id)a3
+- (id)_isSiriVisible:(id)visible
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isSiriVisibleWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isSiriVisibleWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -2969,11 +2969,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_isShowingHomescreen:(id)a3
+- (id)_isShowingHomescreen:(id)homescreen
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isShowingHomescreenWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isShowingHomescreenWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -2987,11 +2987,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_isContinuitySessionActive:(id)a3
+- (id)_isContinuitySessionActive:(id)active
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isContinuitySessionActiveWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isContinuitySessionActiveWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -3005,11 +3005,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_isAppSwitcherVisible:(id)a3
+- (id)_isAppSwitcherVisible:(id)visible
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isAppSwitcherVisibleWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isAppSwitcherVisibleWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -3023,11 +3023,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_isTypeToSiriVisible:(id)a3
+- (id)_isTypeToSiriVisible:(id)visible
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isTypeToSiriVisibleWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isTypeToSiriVisibleWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -3041,11 +3041,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_isShelfSwitcherVisible:(id)a3
+- (id)_isShelfSwitcherVisible:(id)visible
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isShelfSwitcherVisibleWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isShelfSwitcherVisibleWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -3059,11 +3059,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_isDockVisible:(id)a3
+- (id)_isDockVisible:(id)visible
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isDockVisibleWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isDockVisibleWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -3077,11 +3077,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_isShowingNonSystemApp:(id)a3
+- (id)_isShowingNonSystemApp:(id)app
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isShowingNonSystemAppWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isShowingNonSystemAppWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -3095,11 +3095,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_isPasscodeLockVisible:(id)a3
+- (id)_isPasscodeLockVisible:(id)visible
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isPasscodeLockVisibleWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isPasscodeLockVisibleWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -3113,11 +3113,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_isLockScreenVisible:(id)a3
+- (id)_isLockScreenVisible:(id)visible
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isLockScreenVisibleWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isLockScreenVisibleWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -3131,11 +3131,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_isSyncingRestoringResettingOrUpdating:(id)a3
+- (id)_isSyncingRestoringResettingOrUpdating:(id)updating
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isSyncingRestoringResettingOrUpdatingWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isSyncingRestoringResettingOrUpdatingWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -3149,11 +3149,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_areSystemGesturesDisabledNatively:(id)a3
+- (id)_areSystemGesturesDisabledNatively:(id)natively
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 areSystemGesturesDisabledNativelyWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate areSystemGesturesDisabledNativelyWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -3167,11 +3167,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_areSystemGesturesDisabledByAccessibility:(id)a3
+- (id)_areSystemGesturesDisabledByAccessibility:(id)accessibility
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 areSystemGesturesDisabledByAccessibilityWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate areSystemGesturesDisabledByAccessibilityWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -3185,15 +3185,15 @@ LABEL_71:
   return v9;
 }
 
-- (id)_handleSpringBoardInfoQuery:(id)a3
+- (id)_handleSpringBoardInfoQuery:(id)query
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"query"];
-  v6 = [v5 unsignedIntegerValue];
+  payload = [query payload];
+  v5 = [payload objectForKey:@"query"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [(_AXSpringBoardServerInstance *)self delegate];
-  v8 = [v7 serverInstance:self springBoardSystemInfoQuery:v6];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v8 = [delegate serverInstance:self springBoardSystemInfoQuery:unsignedIntegerValue];
 
   v9 = objc_alloc(MEMORY[0x277CE7D90]);
   v14 = @"result";
@@ -3206,11 +3206,11 @@ LABEL_71:
   return v11;
 }
 
-- (id)_handleInstalledApps:(id)a3
+- (id)_handleInstalledApps:(id)apps
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 installedAppsWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate installedAppsWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v11 = @"result";
@@ -3223,11 +3223,11 @@ LABEL_71:
   return v8;
 }
 
-- (id)_handleInternalApps:(id)a3
+- (id)_handleInternalApps:(id)apps
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 internalAppsWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate internalAppsWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v11 = @"result";
@@ -3240,17 +3240,17 @@ LABEL_71:
   return v8;
 }
 
-- (id)_setSpeechPlaybackControls:(id)a3
+- (id)_setSpeechPlaybackControls:(id)controls
 {
-  v4 = a3;
-  v5 = [v4 clientPort];
-  v6 = [v4 payload];
-  v7 = [v6 objectForKey:@"show"];
-  v8 = [v7 BOOLValue];
+  controlsCopy = controls;
+  clientPort = [controlsCopy clientPort];
+  payload = [controlsCopy payload];
+  v7 = [payload objectForKey:@"show"];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
-    v9 = [objc_alloc(MEMORY[0x277CE7D88]) initWithPort:v5];
+    v9 = [objc_alloc(MEMORY[0x277CE7D88]) initWithPort:clientPort];
     currentSpeakerClient = self->_currentSpeakerClient;
     self->_currentSpeakerClient = v9;
 
@@ -3265,7 +3265,7 @@ LABEL_71:
     v13 = WeakRetained;
     v18 = v13;
     objc_copyWeak(&v20, &location);
-    v19 = self;
+    selfCopy = self;
     [(AXIPCClient *)v12 setPortDeathHandler:v17];
     objc_destroyWeak(&v20);
 
@@ -3279,16 +3279,16 @@ LABEL_71:
   }
 
   v15 = objc_loadWeakRetained(&self->_delegate);
-  [v15 serverInstance:self showSpeechPlaybackControls:v8];
+  [v15 serverInstance:self showSpeechPlaybackControls:bOOLValue];
 
   return 0;
 }
 
-- (id)_isSpeakThisTemporarilyDisabled:(id)a3
+- (id)_isSpeakThisTemporarilyDisabled:(id)disabled
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isSpeakThisTemporarilyDisabledWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isSpeakThisTemporarilyDisabledWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -3302,37 +3302,37 @@ LABEL_71:
   return v9;
 }
 
-- (id)_handleAcquireAssertion:(id)a3
+- (id)_handleAcquireAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277CE7C68]];
-  v7 = [v4 payload];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277CE7C60]];
-  v9 = [v4 clientPort];
+  assertionCopy = assertion;
+  payload = [assertionCopy payload];
+  v6 = [payload objectForKeyedSubscript:*MEMORY[0x277CE7C68]];
+  payload2 = [assertionCopy payload];
+  v8 = [payload2 objectForKeyedSubscript:*MEMORY[0x277CE7C60]];
+  clientPort = [assertionCopy clientPort];
 
-  [(_AXSpringBoardServerInstance *)self acquireAssertionWithType:v6 identifier:v8 clientPort:v9];
+  [(_AXSpringBoardServerInstance *)self acquireAssertionWithType:v6 identifier:v8 clientPort:clientPort];
   return 0;
 }
 
-- (id)_handleRelinquishAssertion:(id)a3
+- (id)_handleRelinquishAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277CE7C68]];
-  v7 = [v4 payload];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277CE7C60]];
-  v9 = [v4 clientPort];
+  assertionCopy = assertion;
+  payload = [assertionCopy payload];
+  v6 = [payload objectForKeyedSubscript:*MEMORY[0x277CE7C68]];
+  payload2 = [assertionCopy payload];
+  v8 = [payload2 objectForKeyedSubscript:*MEMORY[0x277CE7C60]];
+  clientPort = [assertionCopy clientPort];
 
-  [(_AXSpringBoardServerInstance *)self relinquishAssertionWithType:v6 identifier:v8 clientPort:v9];
+  [(_AXSpringBoardServerInstance *)self relinquishAssertionWithType:v6 identifier:v8 clientPort:clientPort];
   return 0;
 }
 
-- (id)_handleIsSystemAppShowingAnAlert:(id)a3
+- (id)_handleIsSystemAppShowingAnAlert:(id)alert
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isSystemAppShowingAnAlertWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isSystemAppShowingAnAlertWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -3346,11 +3346,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_handleGetFocusedAppPID:(id)a3
+- (id)_handleGetFocusedAppPID:(id)d
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 focusedAppPIDWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate focusedAppPIDWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v11 = @"result";
@@ -3363,11 +3363,11 @@ LABEL_71:
   return v8;
 }
 
-- (id)_handleGetPurpleBuddyPID:(id)a3
+- (id)_handleGetPurpleBuddyPID:(id)d
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 purpleBuddyPIDWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate purpleBuddyPIDWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -3381,11 +3381,11 @@ LABEL_71:
   return v9;
 }
 
-- (id)_handleGetRunningAppPIDs:(id)a3
+- (id)_handleGetRunningAppPIDs:(id)ds
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 runningAppPIDsWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate runningAppPIDsWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v11 = @"result";
@@ -3398,11 +3398,11 @@ LABEL_71:
   return v8;
 }
 
-- (id)_handleGetFocusedApps:(id)a3
+- (id)_handleGetFocusedApps:(id)apps
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 focusedAppsWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate focusedAppsWithServerInstance:self];
 
   if (v5)
   {
@@ -3441,14 +3441,14 @@ LABEL_10:
   return v10;
 }
 
-- (id)_handleDisplayIdentifierForSceneIdentifier:(id)a3
+- (id)_handleDisplayIdentifierForSceneIdentifier:(id)identifier
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:@"sceneIdentifier"];
+  payload = [identifier payload];
+  v5 = [payload objectForKeyedSubscript:@"sceneIdentifier"];
 
-  v6 = [(_AXSpringBoardServerInstance *)self delegate];
-  v7 = [v6 displayIdentifierForSceneIdentifier:v5 serverInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v7 = [delegate displayIdentifierForSceneIdentifier:v5 serverInstance:self];
 
   if (v7)
   {
@@ -3487,11 +3487,11 @@ LABEL_10:
   return v12;
 }
 
-- (id)_handleGetFocusedOccludedAppScenes:(id)a3
+- (id)_handleGetFocusedOccludedAppScenes:(id)scenes
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 focusedOccludedAppScenesWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate focusedOccludedAppScenesWithServerInstance:self];
 
   if (v5)
   {
@@ -3530,15 +3530,15 @@ LABEL_10:
   return v10;
 }
 
-- (id)_handleIsSystemAppFrontmost:(id)a3
+- (id)_handleIsSystemAppFrontmost:(id)frontmost
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"excludeSiri"];
-  v6 = [v5 BOOLValue];
+  payload = [frontmost payload];
+  v5 = [payload objectForKey:@"excludeSiri"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [(_AXSpringBoardServerInstance *)self delegate];
-  v8 = [v7 isSystemAppFrontmostExcludingSiri:v6 withServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v8 = [delegate isSystemAppFrontmostExcludingSiri:bOOLValue withServerInstance:self];
 
   v9 = objc_alloc(MEMORY[0x277CE7D90]);
   v15 = @"result";
@@ -3552,11 +3552,11 @@ LABEL_10:
   return v12;
 }
 
-- (id)_handleIsPurpleBuddyAppFrontmost:(id)a3
+- (id)_handleIsPurpleBuddyAppFrontmost:(id)frontmost
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isPurpleBuddyAppFrontmostWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isPurpleBuddyAppFrontmostWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -3570,11 +3570,11 @@ LABEL_10:
   return v9;
 }
 
-- (id)_handleIsSettingsAppFrontmost:(id)a3
+- (id)_handleIsSettingsAppFrontmost:(id)frontmost
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isSettingsAppFrontmostWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isSettingsAppFrontmostWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -3588,11 +3588,11 @@ LABEL_10:
   return v9;
 }
 
-- (id)_appNameFromPid:(id)a3
+- (id)_appNameFromPid:(id)pid
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:@"pid"];
+  payload = [pid payload];
+  v5 = [payload objectForKeyedSubscript:@"pid"];
 
   v6 = AXLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -3600,8 +3600,8 @@ LABEL_10:
     [_AXSpringBoardServerInstance _appNameFromPid:];
   }
 
-  v7 = [(_AXSpringBoardServerInstance *)self delegate];
-  v8 = [v7 appNameFromPid:objc_msgSend(v5 withServerInstance:{"intValue"), self}];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v8 = [delegate appNameFromPid:objc_msgSend(v5 withServerInstance:{"intValue"), self}];
 
   v9 = &stru_2833AA238;
   if (v8)
@@ -3622,23 +3622,23 @@ LABEL_10:
   return v13;
 }
 
-- (id)_toggleLiveTranscription:(id)a3
+- (id)_toggleLiveTranscription:(id)transcription
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 toggleLiveTranscriptionWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate toggleLiveTranscriptionWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_handleNativeFocusedApplication:(id)a3
+- (id)_handleNativeFocusedApplication:(id)application
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = [(_AXSpringBoardServerInstance *)self delegate];
-  v4 = [v3 nativeFocusedApplication];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  nativeFocusedApplication = [delegate nativeFocusedApplication];
 
   v5 = objc_alloc(MEMORY[0x277CE7D90]);
   v11 = @"result";
-  v6 = [MEMORY[0x277CCABB0] numberWithInt:v4];
+  v6 = [MEMORY[0x277CCABB0] numberWithInt:nativeFocusedApplication];
   v12[0] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v8 = [v5 initWithKey:4123 payload:v7];
@@ -3671,17 +3671,17 @@ LABEL_10:
 - (void)_handleLiveTranscriptionStatusChange
 {
   v6 = *MEMORY[0x277D85DE8];
-  v3 = [a1 localizedDescription];
+  localizedDescription = [self localizedDescription];
   OUTLINED_FUNCTION_0();
   _os_log_error_impl(&dword_21FE6B000, a2, OS_LOG_TYPE_ERROR, "Live Transcription error, coudn't execute launch request: %@", v5, 0xCu);
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_handleBluetoothPowerEnabled:(id)a3
+- (id)_handleBluetoothPowerEnabled:(id)enabled
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  enabledCopy = enabled;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -3711,15 +3711,15 @@ LABEL_10:
   return v10;
 }
 
-- (id)_handleSetBluetoothPowerEnabled:(id)a3
+- (id)_handleSetBluetoothPowerEnabled:(id)enabled
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKeyedSubscript:@"result"];
-  v5 = [v4 BOOLValue];
+  payload = [enabled payload];
+  v4 = [payload objectForKeyedSubscript:@"result"];
+  bOOLValue = [v4 BOOLValue];
 
   v6 = [objc_alloc(MEMORY[0x277CBE010]) init];
   v7 = v6;
-  if (v5)
+  if (bOOLValue)
   {
     v8 = 5;
   }
@@ -3734,17 +3734,17 @@ LABEL_10:
   return 0;
 }
 
-- (id)_handleSetVoiceOverEnabled:(id)a3
+- (id)_handleSetVoiceOverEnabled:(id)enabled
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKeyedSubscript:@"result"];
+  payload = [enabled payload];
+  v4 = [payload objectForKeyedSubscript:@"result"];
   [v4 BOOLValue];
   _AXSVoiceOverTouchSetEnabled();
 
   return 0;
 }
 
-- (id)_handleVoiceOverEnabled:(id)a3
+- (id)_handleVoiceOverEnabled:(id)enabled
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CE7D90]);
@@ -3759,17 +3759,17 @@ LABEL_10:
   return v6;
 }
 
-- (id)_handleSetZoomEnabled:(id)a3
+- (id)_handleSetZoomEnabled:(id)enabled
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKeyedSubscript:@"result"];
+  payload = [enabled payload];
+  v4 = [payload objectForKeyedSubscript:@"result"];
   [v4 BOOLValue];
   _AXSZoomTouchSetEnabled();
 
   return 0;
 }
 
-- (id)_handleZoomEnabled:(id)a3
+- (id)_handleZoomEnabled:(id)enabled
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CE7D90]);
@@ -3784,27 +3784,27 @@ LABEL_10:
   return v6;
 }
 
-- (id)_handleFreezeClarityUILoadingScreen:(id)a3
+- (id)_handleFreezeClarityUILoadingScreen:(id)screen
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 freezeClarityUILoadingScreenWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate freezeClarityUILoadingScreenWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_handlePresentNearbyDeviceControlPicker:(id)a3
+- (id)_handlePresentNearbyDeviceControlPicker:(id)picker
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 presentNearbyDeviceControlPickerWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate presentNearbyDeviceControlPickerWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_allowedMedusaGestures:(id)a3
+- (id)_allowedMedusaGestures:(id)gestures
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 allowedMedusaGesturesWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate allowedMedusaGesturesWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v11 = @"result";
@@ -3817,23 +3817,23 @@ LABEL_10:
   return v8;
 }
 
-- (id)_toggleBackgroundSounds:(id)a3
+- (id)_toggleBackgroundSounds:(id)sounds
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 toggleBackgroundSoundsWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate toggleBackgroundSoundsWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_performMedusaGesture:(id)a3
+- (id)_performMedusaGesture:(id)gesture
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:@"gesture"];
-  v6 = [v5 unsignedIntegerValue];
+  payload = [gesture payload];
+  v5 = [payload objectForKeyedSubscript:@"gesture"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [(_AXSpringBoardServerInstance *)self delegate];
-  v8 = [v7 serverInstance:self performMedusaGesture:v6];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v8 = [delegate serverInstance:self performMedusaGesture:unsignedIntegerValue];
 
   v9 = objc_alloc(MEMORY[0x277CE7D90]);
   v15 = @"result";
@@ -3847,11 +3847,11 @@ LABEL_10:
   return v12;
 }
 
-- (id)_medusaApps:(id)a3
+- (id)_medusaApps:(id)apps
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 medusaAppsWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate medusaAppsWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v11 = @"result";
@@ -3864,23 +3864,23 @@ LABEL_10:
   return v8;
 }
 
-- (id)_setDockIconActivationMode:(id)a3
+- (id)_setDockIconActivationMode:(id)mode
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:@"mode"];
-  v6 = [v5 unsignedIntegerValue];
+  payload = [mode payload];
+  v5 = [payload objectForKeyedSubscript:@"mode"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v7 serverInstance:self setDockIconActivationMode:v6];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate serverInstance:self setDockIconActivationMode:unsignedIntegerValue];
 
   return 0;
 }
 
-- (id)_canSetDockIconActivationMode:(id)a3
+- (id)_canSetDockIconActivationMode:(id)mode
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 canSetDockIconActivationModeForServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate canSetDockIconActivationModeForServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -3894,23 +3894,23 @@ LABEL_10:
   return v9;
 }
 
-- (id)_activateSOSMode:(id)a3
+- (id)_activateSOSMode:(id)mode
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 activateSOSModeWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate activateSOSModeWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_connectedDevicesRequireAssistiveTouch:(id)a3
+- (id)_connectedDevicesRequireAssistiveTouch:(id)touch
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = [(_AXSpringBoardServerInstance *)self delegate];
-  v4 = [v3 connectedDevicesRequireAssistiveTouch];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  connectedDevicesRequireAssistiveTouch = [delegate connectedDevicesRequireAssistiveTouch];
 
   v5 = objc_alloc(MEMORY[0x277CE7D90]);
   v11 = @"result";
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:connectedDevicesRequireAssistiveTouch];
   v12[0] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v8 = [v5 initWithKey:4101 payload:v7];
@@ -3920,15 +3920,15 @@ LABEL_10:
   return v8;
 }
 
-- (id)_connectedDevicesHaveAssistiveTouchCustomActions:(id)a3
+- (id)_connectedDevicesHaveAssistiveTouchCustomActions:(id)actions
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = [(_AXSpringBoardServerInstance *)self delegate];
-  v4 = [v3 currentDevicesHaveAssistiveTouchCustomActions];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  currentDevicesHaveAssistiveTouchCustomActions = [delegate currentDevicesHaveAssistiveTouchCustomActions];
 
   v5 = objc_alloc(MEMORY[0x277CE7D90]);
   v11 = @"result";
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:currentDevicesHaveAssistiveTouchCustomActions];
   v12[0] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v8 = [v5 initWithKey:4109 payload:v7];
@@ -3938,32 +3938,32 @@ LABEL_10:
   return v8;
 }
 
-- (id)_cancelSiriDismissalForAssistiveTouch:(id)a3
+- (id)_cancelSiriDismissalForAssistiveTouch:(id)touch
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 cancelSiriDismissalForAssistiveTouchWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate cancelSiriDismissalForAssistiveTouchWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_toggleTorch:(id)a3
+- (id)_toggleTorch:(id)torch
 {
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v4 toggleTorchWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate toggleTorchWithServerInstance:self];
 
   return 0;
 }
 
-- (id)_getSplashImageForApp:(id)a3
+- (id)_getSplashImageForApp:(id)app
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"bundleIdentifier"];
+  payload = [app payload];
+  v5 = [payload objectForKey:@"bundleIdentifier"];
 
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(_AXSpringBoardServerInstance *)self delegate];
-    v7 = [v6 serverInstance:self splashImageForAppWithBundleIdentifier:v5];
+    delegate = [(_AXSpringBoardServerInstance *)self delegate];
+    v7 = [delegate serverInstance:self splashImageForAppWithBundleIdentifier:v5];
 
     if (v7)
     {
@@ -3991,47 +3991,47 @@ LABEL_10:
   return v10;
 }
 
-- (id)_installGuestPassPINGesture:(id)a3
+- (id)_installGuestPassPINGesture:(id)gesture
 {
-  v3 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v3 installGuestPassPINGesture];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate installGuestPassPINGesture];
 
   return 0;
 }
 
-- (id)_installGuestPassAcceptDialogGesture:(id)a3
+- (id)_installGuestPassAcceptDialogGesture:(id)gesture
 {
-  v3 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v3 installGuestPassAcceptDialogGesture];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate installGuestPassAcceptDialogGesture];
 
   return 0;
 }
 
-- (id)_removeGuestPassAcceptDialogGesture:(id)a3
+- (id)_removeGuestPassAcceptDialogGesture:(id)gesture
 {
-  v3 = [(_AXSpringBoardServerInstance *)self delegate];
-  [v3 removeGuestPassAcceptDialogGesture];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  [delegate removeGuestPassAcceptDialogGesture];
 
   return 0;
 }
 
-- (id)_handleSetMenuBarVisible:(id)a3
+- (id)_handleSetMenuBarVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [(_AXSpringBoardServerInstance *)self delegate];
-  v6 = [v4 payload];
+  visibleCopy = visible;
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  payload = [visibleCopy payload];
 
-  v7 = [v6 objectForKeyedSubscript:@"result"];
-  [v5 serverInstance:self setMenuBarVisible:{objc_msgSend(v7, "BOOLValue")}];
+  v7 = [payload objectForKeyedSubscript:@"result"];
+  [delegate serverInstance:self setMenuBarVisible:{objc_msgSend(v7, "BOOLValue")}];
 
   return 0;
 }
 
-- (id)_handleIsMenuBarVisible:(id)a3
+- (id)_handleIsMenuBarVisible:(id)visible
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isMenuBarVisibleWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isMenuBarVisibleWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -4045,11 +4045,11 @@ LABEL_10:
   return v9;
 }
 
-- (id)_handleIsMenuBarModal:(id)a3
+- (id)_handleIsMenuBarModal:(id)modal
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isMenuBarModalWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isMenuBarModalWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";
@@ -4063,11 +4063,11 @@ LABEL_10:
   return v9;
 }
 
-- (id)_handleIsChamoisOrFlexibleWindowingEnabled:(id)a3
+- (id)_handleIsChamoisOrFlexibleWindowingEnabled:(id)enabled
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [(_AXSpringBoardServerInstance *)self delegate];
-  v5 = [v4 isChamoisOrFlexibleWindowingEnabledWithServerInstance:self];
+  delegate = [(_AXSpringBoardServerInstance *)self delegate];
+  v5 = [delegate isChamoisOrFlexibleWindowingEnabledWithServerInstance:self];
 
   v6 = objc_alloc(MEMORY[0x277CE7D90]);
   v12 = @"result";

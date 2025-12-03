@@ -1,31 +1,31 @@
 @interface PPAttendee
 - (BOOL)isCurrentUser;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)emailAddress;
 - (NSString)name;
 - (NSURL)url;
-- (PPAttendee)initWithCoder:(id)a3;
-- (PPAttendee)initWithEKParticipant:(id)a3;
+- (PPAttendee)initWithCoder:(id)coder;
+- (PPAttendee)initWithEKParticipant:(id)participant;
 - (id)_plist;
 - (id)description;
-- (id)initWithIndex:(void *)a3 inBackingPlists:;
+- (id)initWithIndex:(void *)index inBackingPlists:;
 - (unint64_t)hash;
 - (unsigned)status;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPAttendee
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(self) = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     if (self)
@@ -46,20 +46,20 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"nam"];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"nam"];
   v4 = [v3 hash];
 
-  v5 = [v2 objectForKeyedSubscript:@"eml"];
+  v5 = [_plist objectForKeyedSubscript:@"eml"];
   v6 = [v5 hash] - v4 + 32 * v4;
 
-  v7 = [v2 objectForKeyedSubscript:@"url"];
+  v7 = [_plist objectForKeyedSubscript:@"url"];
   v8 = [v7 hash] - v6 + 32 * v6;
 
-  v9 = [v2 objectForKeyedSubscript:@"icu"];
+  v9 = [_plist objectForKeyedSubscript:@"icu"];
   v10 = [v9 hash] - v8 + 32 * v8;
 
-  v11 = [v2 objectForKeyedSubscript:@"sta"];
+  v11 = [_plist objectForKeyedSubscript:@"sta"];
   v12 = [v11 hash] - v10 + 32 * v10;
 
   return v12;
@@ -67,34 +67,34 @@
 
 - (id)_plist
 {
-  if (a1)
+  if (self)
   {
-    a1 = [*(a1 + 8) objectAtIndexedSubscript:*(a1 + 16)];
+    self = [*(self + 8) objectAtIndexedSubscript:*(self + 16)];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(PPAttendee *)self name];
-  [v7 encodeObject:v4 forKey:@"nam"];
+  coderCopy = coder;
+  name = [(PPAttendee *)self name];
+  [coderCopy encodeObject:name forKey:@"nam"];
 
-  v5 = [(PPAttendee *)self emailAddress];
-  [v7 encodeObject:v5 forKey:@"eml"];
+  emailAddress = [(PPAttendee *)self emailAddress];
+  [coderCopy encodeObject:emailAddress forKey:@"eml"];
 
   v6 = [(PPAttendee *)self url];
-  [v7 encodeObject:v6 forKey:@"url"];
+  [coderCopy encodeObject:v6 forKey:@"url"];
 
-  [v7 encodeBool:-[PPAttendee isCurrentUser](self forKey:{"isCurrentUser"), @"icu"}];
-  [v7 encodeInt32:-[PPAttendee status](self forKey:{"status"), @"sta"}];
+  [coderCopy encodeBool:-[PPAttendee isCurrentUser](self forKey:{"isCurrentUser"), @"icu"}];
+  [coderCopy encodeInt32:-[PPAttendee status](self forKey:{"status"), @"sta"}];
 }
 
-- (PPAttendee)initWithCoder:(id)a3
+- (PPAttendee)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_autoreleasePoolPush();
   v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
@@ -102,64 +102,64 @@
   v8 = objc_autoreleasePoolPush();
   v9 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v8);
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"url"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"url"];
   if (v10)
   {
-    v11 = [v4 decodeObjectOfClasses:v7 forKey:@"nam"];
-    v12 = [v4 decodeObjectOfClasses:v7 forKey:@"eml"];
-    self = -[PPAttendee initWithName:emailAddress:url:isCurrentUser:status:](self, "initWithName:emailAddress:url:isCurrentUser:status:", v11, v12, v10, [v4 decodeBoolForKey:@"icu"], objc_msgSend(v4, "decodeInt32ForKey:", @"sta"));
+    v11 = [coderCopy decodeObjectOfClasses:v7 forKey:@"nam"];
+    v12 = [coderCopy decodeObjectOfClasses:v7 forKey:@"eml"];
+    self = -[PPAttendee initWithName:emailAddress:url:isCurrentUser:status:](self, "initWithName:emailAddress:url:isCurrentUser:status:", v11, v12, v10, [coderCopy decodeBoolForKey:@"icu"], objc_msgSend(coderCopy, "decodeInt32ForKey:", @"sta"));
 
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
   objc_autoreleasePoolPop(v5);
-  return v13;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(PPAttendee *)self name];
-  v5 = [(PPAttendee *)self emailAddress];
-  v6 = [v3 initWithFormat:@"<PPAttendee n:'%@' e:'%@'>", v4, v5];
+  name = [(PPAttendee *)self name];
+  emailAddress = [(PPAttendee *)self emailAddress];
+  v6 = [v3 initWithFormat:@"<PPAttendee n:'%@' e:'%@'>", name, emailAddress];
 
   return v6;
 }
 
 - (unsigned)status
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"sta"];
-  v4 = [v3 unsignedCharValue];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"sta"];
+  unsignedCharValue = [v3 unsignedCharValue];
 
-  return v4;
+  return unsignedCharValue;
 }
 
 - (BOOL)isCurrentUser
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"icu"];
-  v4 = [v3 BOOLValue];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"icu"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSURL)url
 {
   v4 = objc_alloc(MEMORY[0x1E695DFF8]);
-  v5 = [(PPAttendee *)self _plist];
-  v6 = [v5 objectForKeyedSubscript:@"url"];
+  _plist = [(PPAttendee *)self _plist];
+  v6 = [_plist objectForKeyedSubscript:@"url"];
   v7 = [v4 initWithString:v6];
 
   if (!v7)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PPEvent.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"url"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPEvent.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"url"}];
   }
 
   return v7;
@@ -167,51 +167,51 @@
 
 - (NSString)emailAddress
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"eml"];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"eml"];
 
   return v3;
 }
 
 - (NSString)name
 {
-  v2 = [(PPAttendee *)self _plist];
-  v3 = [v2 objectForKeyedSubscript:@"nam"];
+  _plist = [(PPAttendee *)self _plist];
+  v3 = [_plist objectForKeyedSubscript:@"nam"];
 
   return v3;
 }
 
-- (PPAttendee)initWithEKParticipant:(id)a3
+- (PPAttendee)initWithEKParticipant:(id)participant
 {
-  v4 = a3;
+  participantCopy = participant;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 name];
-  v7 = [v4 emailAddress];
-  v8 = [v7 lowercaseString];
-  v9 = [v4 URL];
-  v10 = -[PPAttendee initWithName:emailAddress:url:isCurrentUser:status:](self, "initWithName:emailAddress:url:isCurrentUser:status:", v6, v8, v9, [v4 isCurrentUser], objc_msgSend(v4, "participantStatus"));
+  name = [participantCopy name];
+  emailAddress = [participantCopy emailAddress];
+  lowercaseString = [emailAddress lowercaseString];
+  v9 = [participantCopy URL];
+  v10 = -[PPAttendee initWithName:emailAddress:url:isCurrentUser:status:](self, "initWithName:emailAddress:url:isCurrentUser:status:", name, lowercaseString, v9, [participantCopy isCurrentUser], objc_msgSend(participantCopy, "participantStatus"));
 
   objc_autoreleasePoolPop(v5);
   return v10;
 }
 
-- (id)initWithIndex:(void *)a3 inBackingPlists:
+- (id)initWithIndex:(void *)index inBackingPlists:
 {
-  v6 = a3;
-  if (a1)
+  indexCopy = index;
+  if (self)
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = PPAttendee;
     v7 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v7;
+    self = v7;
     if (v7)
     {
       v7[2] = a2;
-      objc_storeStrong(v7 + 1, a3);
+      objc_storeStrong(v7 + 1, index);
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

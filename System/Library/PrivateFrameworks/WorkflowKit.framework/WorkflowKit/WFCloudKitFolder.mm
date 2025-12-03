@@ -1,22 +1,22 @@
 @interface WFCloudKitFolder
-+ (BOOL)isFolderRecordID:(id)a3;
++ (BOOL)isFolderRecordID:(id)d;
 + (NSDictionary)properties;
-+ (id)collectionIdentifierForRecordID:(id)a3;
++ (id)collectionIdentifierForRecordID:(id)d;
 + (id)encryptedNameProperty;
 + (id)nameProperty;
-+ (id)recordIDWithZoneID:(id)a3 collectionIdentifier:(id)a4;
-- (WFCloudKitFolder)initWithIdentifier:(id)a3 name:(id)a4 icon:(unsigned __int16)a5 encryptedSchemaVersion:(int64_t)a6;
++ (id)recordIDWithZoneID:(id)d collectionIdentifier:(id)identifier;
+- (WFCloudKitFolder)initWithIdentifier:(id)identifier name:(id)name icon:(unsigned __int16)icon encryptedSchemaVersion:(int64_t)version;
 @end
 
 @implementation WFCloudKitFolder
 
-+ (id)collectionIdentifierForRecordID:(id)a3
++ (id)collectionIdentifierForRecordID:(id)d
 {
-  v3 = [a3 recordName];
+  recordName = [d recordName];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-", @"WFFolder"];
-  if ([v3 hasPrefix:v4])
+  if ([recordName hasPrefix:v4])
   {
-    v5 = [v3 substringFromIndex:{objc_msgSend(v4, "length")}];
+    v5 = [recordName substringFromIndex:{objc_msgSend(v4, "length")}];
   }
 
   else
@@ -27,22 +27,22 @@
   return v5;
 }
 
-+ (BOOL)isFolderRecordID:(id)a3
++ (BOOL)isFolderRecordID:(id)d
 {
-  v3 = [a3 recordName];
-  v4 = [v3 hasPrefix:@"WFFolder"];
+  recordName = [d recordName];
+  v4 = [recordName hasPrefix:@"WFFolder"];
 
   return v4;
 }
 
-+ (id)recordIDWithZoneID:(id)a3 collectionIdentifier:(id)a4
++ (id)recordIDWithZoneID:(id)d collectionIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dCopy = d;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
+  if (dCopy)
   {
-    if (v8)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -50,8 +50,8 @@
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"WFCloudKitFolder.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"zoneID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCloudKitFolder.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"zoneID"}];
 
     if (v9)
     {
@@ -59,12 +59,12 @@
     }
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v14 handleFailureInMethod:a2 object:a1 file:@"WFCloudKitFolder.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"collectionIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFCloudKitFolder.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"collectionIdentifier"}];
 
 LABEL_3:
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"WFFolder", v9];
-  v11 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v10 zoneID:v7];
+  v11 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v10 zoneID:dCopy];
 
   return v11;
 }
@@ -108,14 +108,14 @@ LABEL_3:
   v3 = [WFCloudKitItemProperty scalarPropertyWithName:"scalarPropertyWithName:nilValue:" nilValue:?];
   v11[0] = v3;
   v10[1] = @"name";
-  v4 = [a1 nameProperty];
-  v11[1] = v4;
+  nameProperty = [self nameProperty];
+  v11[1] = nameProperty;
   v10[2] = @"encryptedSchemaVersion";
   v5 = [WFCloudKitItemProperty scalarPropertyWithName:"scalarPropertyWithName:nilValue:" nilValue:?];
   v11[2] = v5;
   v10[3] = @"encryptedName";
-  v6 = [a1 encryptedNameProperty];
-  v11[3] = v6;
+  encryptedNameProperty = [self encryptedNameProperty];
+  v11[3] = encryptedNameProperty;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:4];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -123,18 +123,18 @@ LABEL_3:
   return v7;
 }
 
-- (WFCloudKitFolder)initWithIdentifier:(id)a3 name:(id)a4 icon:(unsigned __int16)a5 encryptedSchemaVersion:(int64_t)a6
+- (WFCloudKitFolder)initWithIdentifier:(id)identifier name:(id)name icon:(unsigned __int16)icon encryptedSchemaVersion:(int64_t)version
 {
-  v11 = a3;
-  v12 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v13 = [(WFCloudKitFolder *)self init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_identifier, a3);
-    objc_storeStrong(&v14->_name, a4);
-    v14->_icon = a5;
-    v14->_encryptedSchemaVersion = a6;
+    objc_storeStrong(&v13->_identifier, identifier);
+    objc_storeStrong(&v14->_name, name);
+    v14->_icon = icon;
+    v14->_encryptedSchemaVersion = version;
     v15 = v14;
   }
 

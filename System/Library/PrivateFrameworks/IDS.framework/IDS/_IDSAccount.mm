@@ -1,7 +1,7 @@
 @interface _IDSAccount
 - (BOOL)_isApplePaySharingService;
 - (BOOL)_isEnabled;
-- (BOOL)_isInvisibleAlias:(id)a3;
+- (BOOL)_isInvisibleAlias:(id)alias;
 - (BOOL)_isMagnoliaService;
 - (BOOL)_isRemoteWidgetService;
 - (BOOL)_isThumperService;
@@ -41,10 +41,10 @@
 - (NSString)regionID;
 - (NSString)serviceName;
 - (NSString)uniqueID;
-- (_IDSAccount)initWithDictionary:(id)a3 uniqueID:(id)a4 serviceName:(id)a5 delegateContext:(id)a6;
-- (_IDSAccount)initWithLoginID:(id)a3 uniqueID:(id)a4 serviceName:(id)a5 delegateContext:(id)a6;
+- (_IDSAccount)initWithDictionary:(id)dictionary uniqueID:(id)d serviceName:(id)name delegateContext:(id)context;
+- (_IDSAccount)initWithLoginID:(id)d uniqueID:(id)iD serviceName:(id)name delegateContext:(id)context;
 - (id)_keychainRegistration;
-- (id)_objectForKey:(id)a3;
+- (id)_objectForKey:(id)key;
 - (id)_registeredURIs;
 - (int)accountType;
 - (int)profileValidationErrorReason;
@@ -53,51 +53,51 @@
 - (int64_t)profileValidationStatus;
 - (void)_callCloudConnectedDevicesChanged;
 - (void)_callConnectedDevicesChanged;
-- (void)_callDelegatesRespondingToSelector:(SEL)a3 withPreCallbacksBlock:(id)a4 callbackBlock:(id)a5 postCallbacksBlock:(id)a6 group:(id)a7;
+- (void)_callDelegatesRespondingToSelector:(SEL)selector withPreCallbacksBlock:(id)block callbackBlock:(id)callbackBlock postCallbacksBlock:(id)callbacksBlock group:(id)group;
 - (void)_callDevicesChanged;
 - (void)_callNearbyDevicesChanged;
-- (void)_callRegistrationDelegatesWithBlock:(id)a3;
+- (void)_callRegistrationDelegatesWithBlock:(id)block;
 - (void)_connect;
 - (void)_loadCachedDevices;
 - (void)_reloadCachedDevices;
-- (void)_setIsEnabled:(BOOL)a3;
-- (void)_setObject:(id)a3 forKey:(id)a4;
-- (void)_updateDependentDevicesWithDevicesInfo:(id)a3;
-- (void)account:(id)a3 aliasesChanged:(id)a4;
-- (void)account:(id)a3 dependentDevicesUpdated:(id)a4;
-- (void)account:(id)a3 dependentDevicesUpdatedUponReconnect:(id)a4;
-- (void)account:(id)a3 displayNameChanged:(id)a4;
-- (void)account:(id)a3 localDeviceAdded:(id)a4;
-- (void)account:(id)a3 localDeviceRemoved:(id)a4;
-- (void)account:(id)a3 loginChanged:(id)a4;
-- (void)account:(id)a3 profileChanged:(id)a4;
-- (void)account:(id)a3 pseudonymsChanged:(id)a4;
-- (void)account:(id)a3 registrationStatusInfoChanged:(id)a4;
-- (void)account:(id)a3 vettedAliasesChanged:(id)a4;
-- (void)addAliases:(id)a3;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)addRegistrationDelegate:(id)a3 queue:(id)a4;
+- (void)_setIsEnabled:(BOOL)enabled;
+- (void)_setObject:(id)object forKey:(id)key;
+- (void)_updateDependentDevicesWithDevicesInfo:(id)info;
+- (void)account:(id)account aliasesChanged:(id)changed;
+- (void)account:(id)account dependentDevicesUpdated:(id)updated;
+- (void)account:(id)account dependentDevicesUpdatedUponReconnect:(id)reconnect;
+- (void)account:(id)account displayNameChanged:(id)changed;
+- (void)account:(id)account localDeviceAdded:(id)added;
+- (void)account:(id)account localDeviceRemoved:(id)removed;
+- (void)account:(id)account loginChanged:(id)changed;
+- (void)account:(id)account profileChanged:(id)changed;
+- (void)account:(id)account pseudonymsChanged:(id)changed;
+- (void)account:(id)account registrationStatusInfoChanged:(id)changed;
+- (void)account:(id)account vettedAliasesChanged:(id)changed;
+- (void)addAliases:(id)aliases;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)addRegistrationDelegate:(id)delegate queue:(id)queue;
 - (void)authenticateAccount;
 - (void)deactivateAndPurgeIdentify;
 - (void)dealloc;
 - (void)forceRemoveAccount;
 - (void)passwordUpdated;
-- (void)refreshRegistrationForAccount:(id)a3;
+- (void)refreshRegistrationForAccount:(id)account;
 - (void)registerAccount;
-- (void)removeAliases:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)removeRegistrationDelegate:(id)a3;
-- (void)setAccountInfo:(id)a3;
-- (void)setAuthToken:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setPassword:(id)a3;
-- (void)setRegionBasePhoneNumber:(id)a3;
-- (void)setRegionID:(id)a3;
+- (void)removeAliases:(id)aliases;
+- (void)removeDelegate:(id)delegate;
+- (void)removeRegistrationDelegate:(id)delegate;
+- (void)setAccountInfo:(id)info;
+- (void)setAuthToken:(id)token;
+- (void)setDisplayName:(id)name;
+- (void)setPassword:(id)password;
+- (void)setRegionBasePhoneNumber:(id)number;
+- (void)setRegionID:(id)d;
 - (void)unregisterAccount;
-- (void)unvalidateAliases:(id)a3;
-- (void)updateAccountWithAccountInfo:(id)a3;
-- (void)updateAuthorizationCredentials:(id)a3 token:(id)a4;
-- (void)validateAliases:(id)a3;
+- (void)unvalidateAliases:(id)aliases;
+- (void)updateAccountWithAccountInfo:(id)info;
+- (void)updateAuthorizationCredentials:(id)credentials token:(id)token;
+- (void)validateAliases:(id)aliases;
 - (void)validateProfile;
 @end
 
@@ -106,21 +106,21 @@
 - (int)accountType
 {
   v2 = [(_IDSAccount *)self _objectForKey:*MEMORY[0x1E69A5560]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (BOOL)canSend
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B355C0();
     }
@@ -156,9 +156,9 @@
             }
 
             v13 = [*(*(&v17 + 1) + 8 * i) URI];
-            v14 = [v13 unprefixedURI];
+            unprefixedURI = [v13 unprefixedURI];
 
-            if (v14 && ![v14 isEqualToIgnoringCase:v11])
+            if (unprefixedURI && ![unprefixedURI isEqualToIgnoringCase:v11])
             {
 
               v6 = 1;
@@ -193,12 +193,12 @@ LABEL_20:
 - (BOOL)isActive
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35360();
     }
@@ -220,12 +220,12 @@ LABEL_20:
 - (BOOL)_isiCloudPairingService
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B34BA8();
     }
@@ -248,12 +248,12 @@ LABEL_20:
 - (BOOL)_isThumperService
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B34C40();
     }
@@ -265,12 +265,12 @@ LABEL_20:
 - (BOOL)_isMagnoliaService
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B34CD8();
     }
@@ -282,12 +282,12 @@ LABEL_20:
 - (BOOL)_isRemoteWidgetService
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B34E08();
     }
@@ -298,22 +298,22 @@ LABEL_20:
 
 - (int)registrationStatus
 {
-  v2 = [(_IDSAccount *)self registrationInfo];
-  v3 = [v2 objectForKey:*MEMORY[0x1E69A5620]];
-  v4 = [v3 integerValue];
+  registrationInfo = [(_IDSAccount *)self registrationInfo];
+  v3 = [registrationInfo objectForKey:*MEMORY[0x1E69A5620]];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (NSString)uniqueID
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35820();
     }
@@ -327,12 +327,12 @@ LABEL_20:
 - (BOOL)_isEnabled
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B358B8();
     }
@@ -344,12 +344,12 @@ LABEL_20:
 - (NSArray)aliases
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35658();
     }
@@ -369,12 +369,12 @@ LABEL_20:
 - (NSDictionary)accountInfo
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35490();
     }
@@ -388,12 +388,12 @@ LABEL_20:
 - (NSString)serviceName
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B356F0();
     }
@@ -407,12 +407,12 @@ LABEL_20:
 - (NSArray)devices
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35F2C();
     }
@@ -427,12 +427,12 @@ LABEL_20:
 - (void)_loadCachedDevices
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35D64();
     }
@@ -444,9 +444,9 @@ LABEL_20:
     [v6 blockUntilConnected];
 
     v7 = +[IDSDaemonController sharedInstance];
-    v8 = [v7 listener];
-    v9 = [(_IDSAccount *)self uniqueID];
-    v10 = [v8 dependentDevicesForAccount:v9];
+    listener = [v7 listener];
+    uniqueID = [(_IDSAccount *)self uniqueID];
+    v10 = [listener dependentDevicesForAccount:uniqueID];
 
     [(_IDSAccount *)self _updateDependentDevicesWithDevicesInfo:v10];
     self->_devicesLoaded = 1;
@@ -456,12 +456,12 @@ LABEL_20:
 - (NSDate)lastGDRDate
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B364C8();
     }
@@ -483,12 +483,12 @@ LABEL_20:
 - (void)_callDevicesChanged
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B360F4();
     }
@@ -508,12 +508,12 @@ LABEL_20:
 - (NSArray)accountRegisteredURIs
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B367CC();
     }
@@ -523,15 +523,15 @@ LABEL_20:
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    registeredURIs = v6;
   }
 
   else
   {
-    v8 = [(_IDSAccount *)self registeredURIs];
+    registeredURIs = [(_IDSAccount *)self registeredURIs];
   }
 
-  v9 = v8;
+  v9 = registeredURIs;
 
   v10 = [v9 __imArrayByApplyingBlock:&unk_1F09E6960];
 
@@ -541,12 +541,12 @@ LABEL_20:
 - (void)_connect
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B36B74();
     }
@@ -603,12 +603,12 @@ LABEL_12:
 - (BOOL)isInTransientRegistrationState
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B352C8();
     }
@@ -620,21 +620,21 @@ LABEL_12:
 - (NSString)description
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B36ADC();
     }
   }
 
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(_IDSAccount *)self serviceName];
-  v8 = [(_IDSAccount *)self loginID];
-  v9 = [(_IDSAccount *)self uniqueID];
+  serviceName = [(_IDSAccount *)self serviceName];
+  loginID = [(_IDSAccount *)self loginID];
+  uniqueID = [(_IDSAccount *)self uniqueID];
   [(_IDSAccount *)self accountType];
   v10 = _StringForIDSAccountType();
   if ([(_IDSAccount *)self canSend])
@@ -657,24 +657,24 @@ LABEL_12:
     v12 = @"NO";
   }
 
-  v13 = [v6 stringWithFormat:@"<%p:%@:%@:%@:%@:%@:%@>", self, v7, v8, v9, v10, v11, v12];
+  v13 = [v6 stringWithFormat:@"<%p:%@:%@:%@:%@:%@:%@>", self, serviceName, loginID, uniqueID, v10, v11, v12];
 
   return v13;
 }
 
-- (_IDSAccount)initWithDictionary:(id)a3 uniqueID:(id)a4 serviceName:(id)a5 delegateContext:(id)a6
+- (_IDSAccount)initWithDictionary:(id)dictionary uniqueID:(id)d serviceName:(id)name delegateContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  nameCopy = name;
+  contextCopy = context;
   v14 = +[IDSInternalQueueController sharedInstance];
-  v15 = [v14 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v14 assertQueueIsCurrent];
 
-  if (v15)
+  if (assertQueueIsCurrent)
   {
-    v16 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B349C4();
     }
@@ -686,14 +686,14 @@ LABEL_12:
     goto LABEL_23;
   }
 
-  if (![v12 length])
+  if (![nameCopy length])
   {
-    v18 = [v10 objectForKey:*MEMORY[0x1E69A5640]];
+    v18 = [dictionaryCopy objectForKey:*MEMORY[0x1E69A5640]];
 
-    v12 = v18;
+    nameCopy = v18;
   }
 
-  if (![v12 length])
+  if (![nameCopy length])
   {
     v21 = +[IDSLogging Accounts];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -705,15 +705,15 @@ LABEL_12:
   }
 
   v19 = *MEMORY[0x1E69A5560];
-  v20 = [v10 objectForKey:*MEMORY[0x1E69A5560]];
+  v20 = [dictionaryCopy objectForKey:*MEMORY[0x1E69A5560]];
   if (!v20)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithInt:1];
-    v24 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_INFO))
     {
       v37[0] = 0;
-      _os_log_impl(&dword_1959FF000, v24, OS_LOG_TYPE_INFO, "No account type specified, setting to Apple ID", v37, 2u);
+      _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_INFO, "No account type specified, setting to Apple ID", v37, 2u);
     }
 
     goto LABEL_20;
@@ -724,23 +724,23 @@ LABEL_12:
   if (IDSIsValidAccountType())
   {
 LABEL_20:
-    objc_storeStrong(&v17->_uniqueID, a4);
-    objc_storeStrong(&v17->_service, v12);
+    objc_storeStrong(&v17->_uniqueID, d);
+    objc_storeStrong(&v17->_service, nameCopy);
     if (!v17->_uniqueID)
     {
-      v25 = [MEMORY[0x1E696AEC0] stringGUID];
+      stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
       uniqueID = v17->_uniqueID;
-      v17->_uniqueID = v25;
+      v17->_uniqueID = stringGUID;
     }
 
-    v27 = [v10 mutableCopy];
+    v27 = [dictionaryCopy mutableCopy];
     [(NSDictionary *)v27 setObject:v21 forKey:v19];
     [(NSDictionary *)v27 setObject:v17->_service forKey:*MEMORY[0x1E69A5640]];
     accountConfig = v17->_accountConfig;
     v17->_accountConfig = v27;
     v29 = v27;
 
-    v30 = [MEMORY[0x1E6995700] weakRefWithObject:v13];
+    v30 = [MEMORY[0x1E6995700] weakRefWithObject:contextCopy];
     delegateContext = v17->_delegateContext;
     v17->_delegateContext = v30;
 
@@ -750,8 +750,8 @@ LABEL_20:
 
     v34 = +[IDSDaemonController sharedInstance];
 
-    v35 = [v34 listener];
-    [v35 addHandler:v17];
+    listener = [v34 listener];
+    [listener addHandler:v17];
 
     [(_IDSAccount *)v17 _connect];
     [(_IDSAccount *)v17 _loadCachedDevices];
@@ -776,19 +776,19 @@ LABEL_24:
   return v23;
 }
 
-- (_IDSAccount)initWithLoginID:(id)a3 uniqueID:(id)a4 serviceName:(id)a5 delegateContext:(id)a6
+- (_IDSAccount)initWithLoginID:(id)d uniqueID:(id)iD serviceName:(id)name delegateContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  nameCopy = name;
+  contextCopy = context;
   v14 = +[IDSInternalQueueController sharedInstance];
-  v15 = [v14 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v14 assertQueueIsCurrent];
 
-  if (v15)
+  if (assertQueueIsCurrent)
   {
-    v16 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B34B10();
     }
@@ -800,15 +800,15 @@ LABEL_24:
     goto LABEL_8;
   }
 
-  if ([v12 length])
+  if ([nameCopy length])
   {
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v18 setObject:v10 forKey:*MEMORY[0x1E69A55B8]];
+    [v18 setObject:dCopy forKey:*MEMORY[0x1E69A55B8]];
     v19 = [MEMORY[0x1E696AD98] numberWithInt:1];
     [v18 setObject:v19 forKey:*MEMORY[0x1E69A5560]];
 
-    objc_storeStrong(&v17->_uniqueID, a4);
-    objc_storeStrong(&v17->_service, a5);
+    objc_storeStrong(&v17->_uniqueID, iD);
+    objc_storeStrong(&v17->_service, name);
     v20 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:v18];
     accountConfig = v17->_accountConfig;
     v17->_accountConfig = v20;
@@ -817,13 +817,13 @@ LABEL_24:
     serviceToken = v17->_serviceToken;
     v17->_serviceToken = v22;
 
-    v24 = [MEMORY[0x1E6995700] weakRefWithObject:v13];
+    v24 = [MEMORY[0x1E6995700] weakRefWithObject:contextCopy];
     delegateContext = v17->_delegateContext;
     v17->_delegateContext = v24;
 
     v26 = +[IDSDaemonController sharedInstance];
-    v27 = [v26 listener];
-    [v27 addHandler:v17];
+    listener = [v26 listener];
+    [listener addHandler:v17];
 
     [(_IDSAccount *)v17 _connect];
 LABEL_8:
@@ -849,8 +849,8 @@ LABEL_12:
   [v3 removeListenerID:self->_serviceToken];
 
   v4 = +[IDSDaemonController sharedInstance];
-  v5 = [v4 listener];
-  [v5 removeHandler:self];
+  listener = [v4 listener];
+  [listener removeHandler:self];
 
   v6.receiver = self;
   v6.super_class = _IDSAccount;
@@ -860,12 +860,12 @@ LABEL_12:
 - (BOOL)_isApplePaySharingService
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B34D70();
     }
@@ -882,56 +882,56 @@ LABEL_12:
   }
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v8 assertQueueIsCurrent];
 
-  if (v9)
+  if (assertQueueIsCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B34EA0();
     }
   }
 
-  if (v6)
+  if (delegateCopy)
   {
-    if (v7)
+    if (queueCopy)
     {
-      v11 = [(NSMapTable *)self->_delegateToInfo objectForKey:v6];
+      v11 = [(NSMapTable *)self->_delegateToInfo objectForKey:delegateCopy];
 
       if (!v11)
       {
         if (!self->_delegateToInfo)
         {
-          v12 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+          weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
           delegateToInfo = self->_delegateToInfo;
-          self->_delegateToInfo = v12;
+          self->_delegateToInfo = weakToStrongObjectsMapTable;
         }
 
         v14 = objc_alloc_init(MEMORY[0x1E69A5228]);
-        [v14 setQueue:v7];
-        [(NSMapTable *)self->_delegateToInfo setObject:v14 forKey:v6];
+        [v14 setQueue:queueCopy];
+        [(NSMapTable *)self->_delegateToInfo setObject:v14 forKey:delegateCopy];
       }
     }
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  delegateCopy = delegate;
+  v5 = delegateCopy;
+  if (delegateCopy)
   {
-    v7 = v4;
-    [(NSMapTable *)self->_delegateToInfo removeObjectForKey:v4];
-    v4 = [(NSMapTable *)self->_delegateToInfo count];
+    v7 = delegateCopy;
+    [(NSMapTable *)self->_delegateToInfo removeObjectForKey:delegateCopy];
+    delegateCopy = [(NSMapTable *)self->_delegateToInfo count];
     v5 = v7;
-    if (!v4)
+    if (!delegateCopy)
     {
       delegateToInfo = self->_delegateToInfo;
       self->_delegateToInfo = 0;
@@ -940,28 +940,28 @@ LABEL_12:
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](delegateCopy, v5);
 }
 
-- (void)_callDelegatesRespondingToSelector:(SEL)a3 withPreCallbacksBlock:(id)a4 callbackBlock:(id)a5 postCallbacksBlock:(id)a6 group:(id)a7
+- (void)_callDelegatesRespondingToSelector:(SEL)selector withPreCallbacksBlock:(id)block callbackBlock:(id)callbackBlock postCallbacksBlock:(id)callbacksBlock group:(id)group
 {
   v67 = *MEMORY[0x1E69E9840];
-  v50 = a4;
-  v12 = a5;
-  v49 = a6;
-  v13 = a7;
-  v14 = v13;
-  v51 = v12;
-  if (v12)
+  blockCopy = block;
+  callbackBlockCopy = callbackBlock;
+  callbacksBlockCopy = callbacksBlock;
+  groupCopy = group;
+  groupCopy6 = groupCopy;
+  v51 = callbackBlockCopy;
+  if (callbackBlockCopy)
   {
-    group = v13;
+    group = groupCopy;
     v15 = +[IDSInternalQueueController sharedInstance];
-    v16 = [v15 assertQueueIsCurrent];
+    assertQueueIsCurrent = [v15 assertQueueIsCurrent];
 
-    if (v16)
+    if (assertQueueIsCurrent)
     {
-      v17 = [MEMORY[0x1E69A5270] utilities];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      utilities = [MEMORY[0x1E69A5270] utilities];
+      if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
       {
         sub_195B34F38();
       }
@@ -1002,7 +1002,7 @@ LABEL_12:
             v28 = 1;
           }
 
-          if (!v28 && (!a3 || (objc_opt_respondsToSelector() & 1) != 0))
+          if (!v28 && (!selector || (objc_opt_respondsToSelector() & 1) != 0))
           {
             [v18 addObject:v25];
             [v19 addObject:v27];
@@ -1016,7 +1016,7 @@ LABEL_12:
     }
 
     objc_autoreleasePoolPop(context);
-    v14 = group;
+    groupCopy6 = group;
     if ([v18 count])
     {
       v29 = 1;
@@ -1029,63 +1029,63 @@ LABEL_12:
         [v19 removeObjectAtIndex:0];
         objc_autoreleasePoolPop(v30);
         v33 = [v18 count];
-        v34 = [v32 queue];
-        if (v14)
+        queue = [v32 queue];
+        if (groupCopy6)
         {
-          dispatch_group_enter(v14);
+          dispatch_group_enter(groupCopy6);
         }
 
         v35 = +[IDSInternalQueueController sharedInstance];
-        v36 = [v35 queue];
+        queue2 = [v35 queue];
 
-        if (v34 == v36)
+        if (queue == queue2)
         {
-          if (a3)
+          if (selector)
           {
-            v14 = group;
-            if (v50 != 0 && (v29 & 1) != 0)
+            groupCopy6 = group;
+            if (blockCopy != 0 && (v29 & 1) != 0)
             {
-              v50[2](v50, 1);
+              blockCopy[2](blockCopy, 1);
             }
 
             (v51)[2](v51, v31);
-            if (v49 && !v33)
+            if (callbacksBlockCopy && !v33)
             {
-              v49[2](v49, 1);
+              callbacksBlockCopy[2](callbacksBlockCopy, 1);
             }
           }
 
           else
           {
             (v51)[2](v51, v31);
-            v14 = group;
+            groupCopy6 = group;
           }
 
           v43 = objc_opt_self();
           v44 = objc_opt_self();
-          if (!v14)
+          if (!groupCopy6)
           {
             goto LABEL_42;
           }
         }
 
-        else if (v34)
+        else if (queue)
         {
           v53[0] = MEMORY[0x1E69E9820];
           v53[1] = 3221225472;
           v53[2] = sub_195AA34E8;
           v53[3] = &unk_1E7440E10;
-          v59 = a3;
+          selectorCopy = selector;
           v60 = v29 & 1;
-          v56 = v50;
+          v56 = blockCopy;
           v57 = v51;
           v54 = v31;
           v61 = v33 == 0;
-          v58 = v49;
+          v58 = callbacksBlockCopy;
           v55 = v32;
           v37 = MEMORY[0x19A8BBEF0](v53);
           v38 = v37;
-          if (v34 == MEMORY[0x1E69E96A0])
+          if (queue == MEMORY[0x1E69E96A0])
           {
             v39 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v37);
           }
@@ -1097,15 +1097,15 @@ LABEL_12:
 
           v42 = v39;
 
-          v14 = group;
+          groupCopy6 = group;
           if (group)
           {
-            dispatch_group_async(group, v34, v42);
+            dispatch_group_async(group, queue, v42);
           }
 
           else
           {
-            dispatch_async(v34, v42);
+            dispatch_async(queue, v42);
           }
 
           if (!group)
@@ -1118,14 +1118,14 @@ LABEL_12:
         {
           v40 = objc_opt_self();
           v41 = objc_opt_self();
-          v14 = group;
+          groupCopy6 = group;
           if (!group)
           {
             goto LABEL_42;
           }
         }
 
-        dispatch_group_leave(v14);
+        dispatch_group_leave(groupCopy6);
 LABEL_42:
 
         v29 = 0;
@@ -1141,63 +1141,63 @@ LABEL_42:
   v47 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addRegistrationDelegate:(id)a3 queue:(id)a4
+- (void)addRegistrationDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v8 assertQueueIsCurrent];
 
-  if (v9)
+  if (assertQueueIsCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B34FD0();
     }
   }
 
-  if (v6)
+  if (delegateCopy)
   {
-    if (v7)
+    if (queueCopy)
     {
-      v11 = [(NSMapTable *)self->_registrationDelegateToInfo objectForKey:v6];
+      v11 = [(NSMapTable *)self->_registrationDelegateToInfo objectForKey:delegateCopy];
 
       if (!v11)
       {
         if (!self->_registrationDelegateToInfo)
         {
-          v12 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+          weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
           registrationDelegateToInfo = self->_registrationDelegateToInfo;
-          self->_registrationDelegateToInfo = v12;
+          self->_registrationDelegateToInfo = weakToStrongObjectsMapTable;
         }
 
         v14 = objc_alloc_init(MEMORY[0x1E69A5228]);
-        [v14 setQueue:v7];
-        [(NSMapTable *)self->_registrationDelegateToInfo setObject:v14 forKey:v6];
+        [v14 setQueue:queueCopy];
+        [(NSMapTable *)self->_registrationDelegateToInfo setObject:v14 forKey:delegateCopy];
       }
     }
   }
 }
 
-- (void)removeRegistrationDelegate:(id)a3
+- (void)removeRegistrationDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35068();
     }
   }
 
-  if (v4)
+  if (delegateCopy)
   {
-    [(NSMapTable *)self->_registrationDelegateToInfo removeObjectForKey:v4];
+    [(NSMapTable *)self->_registrationDelegateToInfo removeObjectForKey:delegateCopy];
     if (![(NSMapTable *)self->_registrationDelegateToInfo count])
     {
       registrationDelegateToInfo = self->_registrationDelegateToInfo;
@@ -1206,23 +1206,23 @@ LABEL_42:
   }
 }
 
-- (void)_callRegistrationDelegatesWithBlock:(id)a3
+- (void)_callRegistrationDelegatesWithBlock:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35100();
     }
   }
 
-  if (v4)
+  if (blockCopy)
   {
     v22 = 0u;
     v23 = 0u;
@@ -1245,17 +1245,17 @@ LABEL_42:
 
           v13 = *(*(&v20 + 1) + 8 * i);
           v14 = [(NSMapTable *)self->_registrationDelegateToInfo objectForKey:v13];
-          v15 = [v14 queue];
-          if (v15)
+          queue = [v14 queue];
+          if (queue)
           {
             v18[0] = MEMORY[0x1E69E9820];
             v18[1] = 3221225472;
             v18[2] = sub_195AA3960;
             v18[3] = &unk_1E743F110;
-            v16 = v4;
+            v16 = blockCopy;
             v18[4] = v13;
             v19 = v16;
-            dispatch_async(v15, v18);
+            dispatch_async(queue, v18);
           }
         }
 
@@ -1269,102 +1269,102 @@ LABEL_42:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_objectForKey:(id)a3
+- (id)_objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35198();
     }
   }
 
-  v8 = [(NSDictionary *)self->_accountConfig objectForKey:v4];
+  v8 = [(NSDictionary *)self->_accountConfig objectForKey:keyCopy];
 
   return v8;
 }
 
-- (void)_setObject:(id)a3 forKey:(id)a4
+- (void)_setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v8 assertQueueIsCurrent];
 
-  if (v9)
+  if (assertQueueIsCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35230();
     }
   }
 
-  if (v6 && v7)
+  if (objectCopy && keyCopy)
   {
     v11 = [(NSDictionary *)self->_accountConfig mutableCopy];
-    [v11 setObject:v6 forKey:v7];
+    [v11 setObject:objectCopy forKey:keyCopy];
     v12 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:v11];
     accountConfig = self->_accountConfig;
     self->_accountConfig = v12;
   }
 }
 
-- (void)setAccountInfo:(id)a3
+- (void)setAccountInfo:(id)info
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  infoCopy = info;
   v6 = +[IDSInternalQueueController sharedInstance];
-  v7 = [v6 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v6 assertQueueIsCurrent];
 
-  if (v7)
+  if (assertQueueIsCurrent)
   {
-    v8 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B353F8();
     }
   }
 
-  if (self->_accountConfig != v5)
+  if (self->_accountConfig != infoCopy)
   {
-    objc_storeStrong(&self->_accountConfig, a3);
-    v9 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    objc_storeStrong(&self->_accountConfig, info);
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_INFO))
     {
       v11 = 138412546;
-      v12 = v5;
+      v12 = infoCopy;
       v13 = 2112;
-      v14 = self;
-      _os_log_impl(&dword_1959FF000, v9, OS_LOG_TYPE_INFO, "New account info %@ for %@", &v11, 0x16u);
+      selfCopy = self;
+      _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_INFO, "New account info %@ for %@", &v11, 0x16u);
     }
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateAccountWithAccountInfo:(id)a3
+- (void)updateAccountWithAccountInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v6 = +[IDSDaemonController sharedInstance];
-  v5 = [(_IDSAccount *)self uniqueID];
-  [v6 updateAccount:v5 withAccountInfo:v4];
+  uniqueID = [(_IDSAccount *)self uniqueID];
+  [v6 updateAccount:uniqueID withAccountInfo:infoCopy];
 }
 
 - (NSDictionary)profileInfo
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35528();
     }
@@ -1377,8 +1377,8 @@ LABEL_42:
 
 - (NSDictionary)regionServerContext
 {
-  v2 = [(_IDSAccount *)self profileInfo];
-  v3 = [v2 objectForKey:*MEMORY[0x1E69A55E0]];
+  profileInfo = [(_IDSAccount *)self profileInfo];
+  v3 = [profileInfo objectForKey:*MEMORY[0x1E69A55E0]];
 
   return v3;
 }
@@ -1392,8 +1392,8 @@ LABEL_42:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v3 = [(_IDSAccount *)self handles];
-    v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    handles = [(_IDSAccount *)self handles];
+    v4 = [handles countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v4)
     {
       v5 = v4;
@@ -1405,7 +1405,7 @@ LABEL_42:
         {
           if (*v18 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(handles);
           }
 
           v9 = *(*(&v17 + 1) + 8 * i);
@@ -1417,8 +1417,8 @@ LABEL_42:
           else
           {
             v11 = [v9 URI];
-            v12 = [v11 unprefixedURI];
-            v10 = [v12 isEqualToIgnoringCase:v7];
+            unprefixedURI = [v11 unprefixedURI];
+            v10 = [unprefixedURI isEqualToIgnoringCase:v7];
           }
 
           if ([v9 isUserVisible])
@@ -1438,7 +1438,7 @@ LABEL_42:
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v5 = [handles countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v5)
         {
           continue;
@@ -1463,29 +1463,29 @@ LABEL_19:
 
 - (NSArray)aliasStrings
 {
-  v2 = [(_IDSAccount *)self aliases];
-  v3 = [v2 __imArrayByApplyingBlock:&unk_1F09E6900];
+  aliases = [(_IDSAccount *)self aliases];
+  v3 = [aliases __imArrayByApplyingBlock:&unk_1F09E6900];
 
   return v3;
 }
 
 - (NSArray)vettedAliases
 {
-  v3 = [(_IDSAccount *)self aliasesToRegister];
+  aliasesToRegister = [(_IDSAccount *)self aliasesToRegister];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_195AA40C8;
   v6[3] = &unk_1E7441878;
   v6[4] = self;
-  v4 = [v3 __imArrayByFilteringWithBlock:v6];
+  v4 = [aliasesToRegister __imArrayByFilteringWithBlock:v6];
 
   return v4;
 }
 
-- (BOOL)_isInvisibleAlias:(id)a3
+- (BOOL)_isInvisibleAlias:(id)alias
 {
-  v4 = a3;
-  if ([v4 hasSuffix:@"inbox.appleid.apple.com"])
+  aliasCopy = alias;
+  if ([aliasCopy hasSuffix:@"inbox.appleid.apple.com"])
   {
     v5 = 1;
   }
@@ -1493,7 +1493,7 @@ LABEL_19:
   else
   {
     v6 = [(_IDSAccount *)self _objectForKey:*MEMORY[0x1E69A55A0]];
-    v5 = [v6 containsObject:v4];
+    v5 = [v6 containsObject:aliasCopy];
   }
 
   return v5;
@@ -1529,7 +1529,7 @@ LABEL_19:
         v6 = *(*(&v40 + 1) + 8 * v5);
         v7 = [obj objectForKeyedSubscript:{v6, v28}];
         v34 = [MEMORY[0x1E69A5428] URIWithPrefixedURI:v6];
-        v33 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v36 = 0u;
         v37 = 0u;
         v38 = 0u;
@@ -1554,8 +1554,8 @@ LABEL_19:
               v15 = [v13 objectForKeyedSubscript:v4];
               v16 = [v14 initWithDictionaryRepresentation:v15];
 
-              v17 = [v16 allowedServices];
-              v18 = [v17 containsObject:self->_service];
+              allowedServices = [v16 allowedServices];
+              v18 = [allowedServices containsObject:self->_service];
 
               if (v18)
               {
@@ -1576,7 +1576,7 @@ LABEL_19:
                 if (!v22)
                 {
                   v23 = [objc_alloc(MEMORY[0x1E69A5390]) initWithURI:v21 maskedURI:v34 properties:v16];
-                  [v33 addObject:v23];
+                  [array addObject:v23];
                 }
               }
             }
@@ -1587,9 +1587,9 @@ LABEL_19:
           while (v10);
         }
 
-        if ([v33 count])
+        if ([array count])
         {
-          v24 = [v33 copy];
+          v24 = [array copy];
           [v28 setObject:v24 forKeyedSubscript:v34];
         }
 
@@ -1613,8 +1613,8 @@ LABEL_19:
 {
   v45 = *MEMORY[0x1E69E9840];
   v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [(_IDSAccount *)self accountInfo];
-  v4 = [v3 objectForKey:*MEMORY[0x1E69A5600]];
+  accountInfo = [(_IDSAccount *)self accountInfo];
+  v4 = [accountInfo objectForKey:*MEMORY[0x1E69A5600]];
 
   v41 = 0u;
   v42 = 0u;
@@ -1665,8 +1665,8 @@ LABEL_19:
               v16 = [v14 objectForKeyedSubscript:v5];
               v17 = [v15 initWithDictionaryRepresentation:v16];
 
-              v18 = [v17 allowedServices];
-              v19 = [v18 containsObject:self->_service];
+              allowedServices = [v17 allowedServices];
+              v19 = [allowedServices containsObject:self->_service];
 
               if (v19)
               {
@@ -1717,162 +1717,162 @@ LABEL_19:
 - (NSString)primaryServiceName
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35788();
     }
   }
 
-  v6 = [(_IDSAccount *)self _objectForKey:*MEMORY[0x1E69A55C0]];
-  if (!v6)
+  serviceName = [(_IDSAccount *)self _objectForKey:*MEMORY[0x1E69A55C0]];
+  if (!serviceName)
   {
-    v6 = [(_IDSAccount *)self serviceName];
+    serviceName = [(_IDSAccount *)self serviceName];
   }
 
-  return v6;
+  return serviceName;
 }
 
-- (void)_setIsEnabled:(BOOL)a3
+- (void)_setIsEnabled:(BOOL)enabled
 {
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35950();
     }
   }
 
-  self->_isEnabled = a3;
+  self->_isEnabled = enabled;
 }
 
 - (BOOL)isTemporary
 {
   v2 = [(_IDSAccount *)self _objectForKey:*MEMORY[0x1E69A55A8]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isUserDisabled
 {
   v2 = [(_IDSAccount *)self _objectForKey:*MEMORY[0x1E69A5658]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setPassword:(id)a3
+- (void)setPassword:(id)password
 {
-  v4 = a3;
+  passwordCopy = password;
   v6 = +[IDSDaemonController sharedInstance];
-  v5 = [(_IDSAccount *)self uniqueID];
-  [v6 passwordChanged:v4 forAccount:v5];
+  uniqueID = [(_IDSAccount *)self uniqueID];
+  [v6 passwordChanged:passwordCopy forAccount:uniqueID];
 }
 
-- (void)setAuthToken:(id)a3
+- (void)setAuthToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v6 = +[IDSDaemonController sharedInstance];
-  v5 = [(_IDSAccount *)self uniqueID];
-  [v6 authTokenChanged:v4 forAccount:v5];
+  uniqueID = [(_IDSAccount *)self uniqueID];
+  [v6 authTokenChanged:tokenCopy forAccount:uniqueID];
 }
 
 - (int)registrationError
 {
-  v2 = [(_IDSAccount *)self registrationInfo];
-  v3 = [v2 objectForKey:*MEMORY[0x1E69A64A8]];
-  v4 = [v3 intValue];
+  registrationInfo = [(_IDSAccount *)self registrationInfo];
+  v3 = [registrationInfo objectForKey:*MEMORY[0x1E69A64A8]];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (NSDictionary)registrationAlertInfo
 {
-  v2 = [(_IDSAccount *)self registrationInfo];
-  v3 = [v2 objectForKey:*MEMORY[0x1E69A64A0]];
+  registrationInfo = [(_IDSAccount *)self registrationInfo];
+  v3 = [registrationInfo objectForKey:*MEMORY[0x1E69A64A0]];
 
   return v3;
 }
 
 - (int64_t)profileValidationStatus
 {
-  v2 = [(_IDSAccount *)self profileInfo];
-  v3 = [v2 objectForKey:*MEMORY[0x1E69A55F0]];
-  v4 = [v3 integerValue];
+  profileInfo = [(_IDSAccount *)self profileInfo];
+  v3 = [profileInfo objectForKey:*MEMORY[0x1E69A55F0]];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (int)profileValidationErrorReason
 {
-  v2 = [(_IDSAccount *)self profileInfo];
-  v3 = [v2 objectForKey:*MEMORY[0x1E69A55E8]];
-  v4 = [v3 intValue];
+  profileInfo = [(_IDSAccount *)self profileInfo];
+  v3 = [profileInfo objectForKey:*MEMORY[0x1E69A55E8]];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (NSString)regionID
 {
-  v2 = [(_IDSAccount *)self profileInfo];
-  v3 = [v2 objectForKey:*MEMORY[0x1E69A55D8]];
+  profileInfo = [(_IDSAccount *)self profileInfo];
+  v3 = [profileInfo objectForKey:*MEMORY[0x1E69A55D8]];
 
   return v3;
 }
 
-- (void)setRegionID:(id)a3
+- (void)setRegionID:(id)d
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B359E8();
     }
   }
 
-  if (v4)
+  if (dCopy)
   {
-    v8 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v20 = v4;
+      v20 = dCopy;
       v21 = 2112;
-      v22 = self;
-      _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "Account setting regionID {regionID: %@, account: %@}", buf, 0x16u);
+      selfCopy = self;
+      _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "Account setting regionID {regionID: %@, account: %@}", buf, 0x16u);
     }
 
-    v9 = [(_IDSAccount *)self profileInfo];
-    v10 = [v9 mutableCopy];
+    profileInfo = [(_IDSAccount *)self profileInfo];
+    v10 = [profileInfo mutableCopy];
     v11 = v10;
     if (v10)
     {
-      v12 = v10;
+      dictionary = v10;
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v13 = v12;
+    v13 = dictionary;
 
-    [v13 setObject:v4 forKey:*MEMORY[0x1E69A55D8]];
+    [v13 setObject:dCopy forKey:*MEMORY[0x1E69A55D8]];
     v14 = [v13 copy];
     v18 = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
@@ -1885,56 +1885,56 @@ LABEL_19:
 
 - (NSString)regionBasePhoneNumber
 {
-  v2 = [(_IDSAccount *)self profileInfo];
-  v3 = [v2 objectForKey:*MEMORY[0x1E69A55C8]];
+  profileInfo = [(_IDSAccount *)self profileInfo];
+  v3 = [profileInfo objectForKey:*MEMORY[0x1E69A55C8]];
 
   return v3;
 }
 
-- (void)setRegionBasePhoneNumber:(id)a3
+- (void)setRegionBasePhoneNumber:(id)number
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  numberCopy = number;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35A80();
     }
   }
 
-  if (v4)
+  if (numberCopy)
   {
-    v8 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v20 = v4;
+      v20 = numberCopy;
       v21 = 2112;
-      v22 = self;
-      _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "Account setting regionBasePhoneNumber {regionBasePhoneNumber: %@, account: %@}", buf, 0x16u);
+      selfCopy = self;
+      _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "Account setting regionBasePhoneNumber {regionBasePhoneNumber: %@, account: %@}", buf, 0x16u);
     }
 
-    v9 = [(_IDSAccount *)self profileInfo];
-    v10 = [v9 mutableCopy];
+    profileInfo = [(_IDSAccount *)self profileInfo];
+    v10 = [profileInfo mutableCopy];
     v11 = v10;
     if (v10)
     {
-      v12 = v10;
+      dictionary = v10;
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v13 = v12;
+    v13 = dictionary;
 
-    [v13 setObject:v4 forKey:*MEMORY[0x1E69A55C8]];
+    [v13 setObject:numberCopy forKey:*MEMORY[0x1E69A55C8]];
     v14 = [v13 copy];
     v18 = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
@@ -1945,52 +1945,52 @@ LABEL_19:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35B18();
     }
   }
 
-  if (v4)
+  if (nameCopy)
   {
-    v8 = v4;
+    null = nameCopy;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v9 = v8;
+  v9 = null;
   v12 = *MEMORY[0x1E69A5598];
-  v13[0] = v8;
+  v13[0] = null;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   [(_IDSAccount *)self updateAccountWithAccountInfo:v10];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateDependentDevicesWithDevicesInfo:(id)a3
+- (void)_updateDependentDevicesWithDevicesInfo:(id)info
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35BB0();
     }
@@ -2009,7 +2009,7 @@ LABEL_19:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v12 = v4;
+  v12 = infoCopy;
   v13 = [v12 countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v13)
   {
@@ -2026,16 +2026,16 @@ LABEL_19:
         }
 
         v17 = [[IDSDevice alloc] _initWithDictionary:*(*(&v28 + 1) + 8 * v16)];
-        v18 = [self->_delegateContext object];
-        [v17 _setAccount:v18];
+        object = [self->_delegateContext object];
+        [v17 _setAccount:object];
 
-        v19 = [v17 _internal];
-        if ([v19 isLocallyPaired])
+        _internal = [v17 _internal];
+        if ([_internal isLocallyPaired])
         {
-          v20 = [(_IDSAccount *)self _isiCloudPairingService];
+          _isiCloudPairingService = [(_IDSAccount *)self _isiCloudPairingService];
 
           p_suppressedDevices = &self->_suppressedDevices;
-          if (v20)
+          if (_isiCloudPairingService)
           {
             goto LABEL_20;
           }
@@ -2045,26 +2045,26 @@ LABEL_19:
         {
         }
 
-        v22 = [v17 _internal];
-        if ([v22 supportsiCloudPairing])
+        _internal2 = [v17 _internal];
+        if ([_internal2 supportsiCloudPairing])
         {
         }
 
         else
         {
-          v23 = [(_IDSAccount *)self _isiCloudPairingService];
+          _isiCloudPairingService2 = [(_IDSAccount *)self _isiCloudPairingService];
 
           p_suppressedDevices = &self->_suppressedDevices;
-          if (v23)
+          if (_isiCloudPairingService2)
           {
             goto LABEL_20;
           }
         }
 
-        v24 = [MEMORY[0x1E69A6138] registration];
-        if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
+        registration = [MEMORY[0x1E69A6138] registration];
+        if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
         {
-          sub_195B35C48(v32, v17, &v33, v24);
+          sub_195B35C48(v32, v17, &v33, registration);
         }
 
         p_suppressedDevices = &self->_devices;
@@ -2081,8 +2081,8 @@ LABEL_20:
     while (v14);
   }
 
-  v25 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+  registration2 = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEBUG))
   {
     sub_195B35CC0(p_devices);
   }
@@ -2094,35 +2094,35 @@ LABEL_20:
 {
   v13 = *MEMORY[0x1E69E9840];
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35DFC();
     }
   }
 
-  v6 = [MEMORY[0x1E69A6138] reloadAccounts];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  reloadAccounts = [MEMORY[0x1E69A6138] reloadAccounts];
+  if (os_log_type_enabled(reloadAccounts, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(_IDSAccount *)self devices];
+    devices = [(_IDSAccount *)self devices];
     v11 = 138412290;
-    v12 = v7;
-    _os_log_impl(&dword_1959FF000, v6, OS_LOG_TYPE_DEFAULT, "Devices before %@", &v11, 0xCu);
+    v12 = devices;
+    _os_log_impl(&dword_1959FF000, reloadAccounts, OS_LOG_TYPE_DEFAULT, "Devices before %@", &v11, 0xCu);
   }
 
   self->_devicesLoaded = 0;
   [(_IDSAccount *)self _loadCachedDevices];
-  v8 = [MEMORY[0x1E69A6138] reloadAccounts];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  reloadAccounts2 = [MEMORY[0x1E69A6138] reloadAccounts];
+  if (os_log_type_enabled(reloadAccounts2, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(_IDSAccount *)self devices];
+    devices2 = [(_IDSAccount *)self devices];
     v11 = 138412290;
-    v12 = v9;
-    _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "Devices after %@", &v11, 0xCu);
+    v12 = devices2;
+    _os_log_impl(&dword_1959FF000, reloadAccounts2, OS_LOG_TYPE_DEFAULT, "Devices after %@", &v11, 0xCu);
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -2131,12 +2131,12 @@ LABEL_20:
 - (NSArray)suppressedDevices
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35E94();
     }
@@ -2152,25 +2152,25 @@ LABEL_20:
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B35FC4();
     }
   }
 
   [(_IDSAccount *)self _loadCachedDevices];
-  v6 = [(NSMutableArray *)self->_devices _copyForEnumerating];
+  _copyForEnumerating = [(NSMutableArray *)self->_devices _copyForEnumerating];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v6;
+  v8 = _copyForEnumerating;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -2186,10 +2186,10 @@ LABEL_20:
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 _internal];
-        v15 = [v14 isNearby];
+        _internal = [v13 _internal];
+        isNearby = [_internal isNearby];
 
-        if (v15)
+        if (isNearby)
         {
           [v7 addObject:v13];
         }
@@ -2210,25 +2210,25 @@ LABEL_20:
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3605C();
     }
   }
 
   [(_IDSAccount *)self _loadCachedDevices];
-  v6 = [(NSMutableArray *)self->_devices _copyForEnumerating];
+  _copyForEnumerating = [(NSMutableArray *)self->_devices _copyForEnumerating];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v6;
+  v8 = _copyForEnumerating;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -2244,10 +2244,10 @@ LABEL_20:
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 _internal];
-        v15 = [v14 isConnected];
+        _internal = [v13 _internal];
+        isConnected = [_internal isConnected];
 
-        if (v15)
+        if (isConnected)
         {
           [v7 addObject:v13];
         }
@@ -2267,25 +2267,25 @@ LABEL_20:
 - (void)_callNearbyDevicesChanged
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B3618C();
     }
   }
 
-  v6 = [(_IDSAccount *)self nearbyDevices];
-  v7 = [v6 copy];
+  nearbyDevices = [(_IDSAccount *)self nearbyDevices];
+  v7 = [nearbyDevices copy];
 
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = sub_195AA5B68;
   v12 = &unk_1E74418A0;
-  v13 = self;
+  selfCopy = self;
   v14 = v7;
   v8 = v7;
   [(_IDSAccount *)self _callDelegatesWithBlock:&v9];
@@ -2295,19 +2295,19 @@ LABEL_20:
 - (void)_callConnectedDevicesChanged
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B36224();
     }
   }
 
-  v6 = [(_IDSAccount *)self connectedDevices];
-  v7 = [v6 copy];
+  connectedDevices = [(_IDSAccount *)self connectedDevices];
+  v7 = [connectedDevices copy];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -2322,12 +2322,12 @@ LABEL_20:
 - (void)_callCloudConnectedDevicesChanged
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B362BC();
     }
@@ -2347,53 +2347,53 @@ LABEL_20:
 - (id)_keychainRegistration
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B36354();
     }
   }
 
-  v6 = [(_IDSAccount *)self accountType];
-  v7 = v6;
-  switch(v6)
+  accountType = [(_IDSAccount *)self accountType];
+  v7 = accountType;
+  switch(accountType)
   {
     case 0:
-      v10 = [(_IDSAccount *)self userUniqueIdentifier];
+      userUniqueIdentifier = [(_IDSAccount *)self userUniqueIdentifier];
       goto LABEL_13;
     case 1:
-      v10 = [(_IDSAccount *)self loginID];
+      userUniqueIdentifier = [(_IDSAccount *)self loginID];
 LABEL_13:
-      v8 = v10;
+      registration = userUniqueIdentifier;
       goto LABEL_15;
     case 2:
-      v8 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+      registration = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
       {
-        sub_195B363EC(v8);
+        sub_195B363EC(registration);
       }
 
       v9 = 0;
       goto LABEL_18;
   }
 
-  v8 = 0;
+  registration = 0;
 LABEL_15:
-  v11 = [(_IDSAccount *)self primaryServiceName];
-  if (![v11 length])
+  primaryServiceName = [(_IDSAccount *)self primaryServiceName];
+  if (![primaryServiceName length])
   {
-    v12 = [(_IDSAccount *)self serviceName];
+    serviceName = [(_IDSAccount *)self serviceName];
 
-    v11 = v12;
+    primaryServiceName = serviceName;
   }
 
-  v13 = [MEMORY[0x1E69A53C0] sharedInstance];
+  mEMORY[0x1E69A53C0] = [MEMORY[0x1E69A53C0] sharedInstance];
   v14 = _IDSRegistrationServiceTypeForString();
-  v9 = [v13 registrationWithServiceType:v14 accountType:v7 isTemporary:-[_IDSAccount isTemporary](self value:{"isTemporary"), v8}];
+  v9 = [mEMORY[0x1E69A53C0] registrationWithServiceType:v14 accountType:v7 isTemporary:-[_IDSAccount isTemporary](self value:{"isTemporary"), registration}];
 
 LABEL_18:
 
@@ -2403,22 +2403,22 @@ LABEL_18:
 - (NSDate)nextRegistrationDate
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B36430();
     }
   }
 
-  v6 = [(_IDSAccount *)self _keychainRegistration];
-  v7 = v6;
-  if (v6)
+  _keychainRegistration = [(_IDSAccount *)self _keychainRegistration];
+  v7 = _keychainRegistration;
+  if (_keychainRegistration)
   {
-    v8 = [v6 objectForKey:@"next-registration-date"];
+    v8 = [_keychainRegistration objectForKey:@"next-registration-date"];
   }
 
   else
@@ -2432,22 +2432,22 @@ LABEL_18:
 - (NSDate)dateRegistered
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B36560();
     }
   }
 
-  v6 = [(_IDSAccount *)self _keychainRegistration];
-  v7 = v6;
-  if (v6)
+  _keychainRegistration = [(_IDSAccount *)self _keychainRegistration];
+  v7 = _keychainRegistration;
+  if (_keychainRegistration)
   {
-    v8 = [v6 objectForKey:@"registration-date"];
+    v8 = [_keychainRegistration objectForKey:@"registration-date"];
   }
 
   else
@@ -2461,12 +2461,12 @@ LABEL_18:
 - (id)_registeredURIs
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B365F8();
     }
@@ -2474,7 +2474,7 @@ LABEL_18:
 
   if ([(_IDSAccount *)self accountType]== 2)
   {
-    v6 = [(_IDSAccount *)self loginID];
+    loginID = [(_IDSAccount *)self loginID];
     v7 = _IDSCopyIDForPhoneNumberWithOptions();
 
     if (v7)
@@ -2486,11 +2486,11 @@ LABEL_10:
     }
   }
 
-  v9 = [(_IDSAccount *)self _keychainRegistration];
-  v7 = v9;
-  if (v9)
+  _keychainRegistration = [(_IDSAccount *)self _keychainRegistration];
+  v7 = _keychainRegistration;
+  if (_keychainRegistration)
   {
-    v8 = [v9 objectForKey:@"uris"];
+    v8 = [_keychainRegistration objectForKey:@"uris"];
     goto LABEL_10;
   }
 
@@ -2503,53 +2503,53 @@ LABEL_12:
 - (NSArray)registeredURIs
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B36690();
     }
   }
 
-  v6 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
   {
     sub_195B36728(self);
   }
 
-  v7 = [(_IDSAccount *)self _registeredURIs];
+  _registeredURIs = [(_IDSAccount *)self _registeredURIs];
 
-  return v7;
+  return _registeredURIs;
 }
 
 - (NSData)registrationCertificate
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B36864();
     }
   }
 
-  v6 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
   {
     sub_195B368FC(self);
   }
 
-  v7 = [(_IDSAccount *)self _keychainRegistration];
-  v8 = v7;
-  if (v7)
+  _keychainRegistration = [(_IDSAccount *)self _keychainRegistration];
+  v8 = _keychainRegistration;
+  if (_keychainRegistration)
   {
-    v9 = [v7 objectForKey:@"ids-registration-cert"];
+    v9 = [_keychainRegistration objectForKey:@"ids-registration-cert"];
   }
 
   else
@@ -2563,28 +2563,28 @@ LABEL_12:
 - (NSData)pushToken
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B369A0();
     }
   }
 
-  v6 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
   {
     sub_195B36A38(self);
   }
 
-  v7 = [(_IDSAccount *)self _keychainRegistration];
-  v8 = v7;
-  if (v7)
+  _keychainRegistration = [(_IDSAccount *)self _keychainRegistration];
+  v8 = _keychainRegistration;
+  if (_keychainRegistration)
   {
-    v9 = [v7 objectForKey:@"push-token"];
+    v9 = [_keychainRegistration objectForKey:@"push-token"];
   }
 
   else
@@ -2595,37 +2595,37 @@ LABEL_12:
   return v9;
 }
 
-- (void)account:(id)a3 registrationStatusInfoChanged:(id)a4
+- (void)account:(id)account registrationStatusInfoChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  changedCopy = changed;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v8 assertQueueIsCurrent];
 
-  if (v9)
+  if (assertQueueIsCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B36C84();
     }
   }
 
-  if ([v6 isEqualToString:self->_uniqueID])
+  if ([accountCopy isEqualToString:self->_uniqueID])
   {
     v11 = [(_IDSAccount *)self accountType]!= 2 && [(_IDSAccount *)self registrationStatus]== 5;
-    v12 = [(_IDSAccount *)self canSend];
-    v13 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+    canSend = [(_IDSAccount *)self canSend];
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
     {
       sub_195B36D1C();
     }
 
     v14 = [(NSDictionary *)self->_accountConfig mutableCopy];
     v15 = v14;
-    if (v7)
+    if (changedCopy)
     {
-      [v14 setObject:v7 forKey:*MEMORY[0x1E69A5618]];
+      [v14 setObject:changedCopy forKey:*MEMORY[0x1E69A5618]];
     }
 
     else
@@ -2635,63 +2635,63 @@ LABEL_12:
 
     objc_storeStrong(&self->_accountConfig, v15);
     v16 = +[IDSDaemonController sharedInstance];
-    v17 = [v16 listener];
-    [v17 updateAccount:v6 withAccountInfo:self->_accountConfig];
+    listener = [v16 listener];
+    [listener updateAccount:accountCopy withAccountInfo:self->_accountConfig];
 
-    v18 = [(_IDSAccount *)self uniqueID];
+    uniqueID = [(_IDSAccount *)self uniqueID];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = sub_195AA68A4;
     v24[3] = &unk_1E74418E8;
-    v19 = v18;
+    v19 = uniqueID;
     v25 = v19;
-    v26 = v7;
+    v26 = changedCopy;
     [(_IDSAccount *)self _callRegistrationDelegatesWithBlock:v24];
     v20 = [(_IDSAccount *)self accountType]!= 2 && [(_IDSAccount *)self registrationStatus]== 5;
-    v21 = [(_IDSAccount *)self canSend];
-    if (v12 != v21 || v11 != v20)
+    canSend2 = [(_IDSAccount *)self canSend];
+    if (canSend != canSend2 || v11 != v20)
     {
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = sub_195AA6904;
       v22[3] = &unk_1E7441910;
       v22[4] = self;
-      v23 = v21;
+      v23 = canSend2;
       [(_IDSAccount *)self _callDelegatesWithBlock:v22];
     }
   }
 }
 
-- (void)account:(id)a3 aliasesChanged:(id)a4
+- (void)account:(id)account aliasesChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  changedCopy = changed;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v8 assertQueueIsCurrent];
 
-  if (v9)
+  if (assertQueueIsCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B36D84();
     }
   }
 
-  if ([v6 isEqualToString:self->_uniqueID])
+  if ([accountCopy isEqualToString:self->_uniqueID])
   {
-    v11 = [(_IDSAccount *)self canSend];
-    v12 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    canSend = [(_IDSAccount *)self canSend];
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
     {
       sub_195B36E1C();
     }
 
     v13 = [(NSDictionary *)self->_accountConfig mutableCopy];
     v14 = v13;
-    if (v7)
+    if (changedCopy)
     {
-      [v13 setObject:v7 forKey:*MEMORY[0x1E69A5580]];
+      [v13 setObject:changedCopy forKey:*MEMORY[0x1E69A5580]];
     }
 
     else
@@ -2700,58 +2700,58 @@ LABEL_12:
     }
 
     objc_storeStrong(&self->_accountConfig, v14);
-    v15 = [(_IDSAccount *)self uniqueID];
+    uniqueID = [(_IDSAccount *)self uniqueID];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = sub_195AA6BAC;
     v20[3] = &unk_1E74418E8;
-    v16 = v15;
+    v16 = uniqueID;
     v21 = v16;
-    v22 = v7;
+    v22 = changedCopy;
     [(_IDSAccount *)self _callRegistrationDelegatesWithBlock:v20];
-    v17 = [(_IDSAccount *)self canSend];
-    if (v11 != v17)
+    canSend2 = [(_IDSAccount *)self canSend];
+    if (canSend != canSend2)
     {
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = sub_195AA6C0C;
       v18[3] = &unk_1E7441910;
       v18[4] = self;
-      v19 = v17;
+      v19 = canSend2;
       [(_IDSAccount *)self _callDelegatesWithBlock:v18];
     }
   }
 }
 
-- (void)account:(id)a3 vettedAliasesChanged:(id)a4
+- (void)account:(id)account vettedAliasesChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  changedCopy = changed;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v8 assertQueueIsCurrent];
 
-  if (v9)
+  if (assertQueueIsCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B36E84();
     }
   }
 
-  if ([v6 isEqualToString:self->_uniqueID])
+  if ([accountCopy isEqualToString:self->_uniqueID])
   {
-    v11 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
     {
       sub_195B36F1C();
     }
 
     v12 = [(NSDictionary *)self->_accountConfig mutableCopy];
     v13 = v12;
-    if (v7)
+    if (changedCopy)
     {
-      [(NSDictionary *)v12 setObject:v7 forKey:*MEMORY[0x1E69A5668]];
+      [(NSDictionary *)v12 setObject:changedCopy forKey:*MEMORY[0x1E69A5668]];
     }
 
     else
@@ -2763,47 +2763,47 @@ LABEL_12:
     self->_accountConfig = v13;
     v15 = v13;
 
-    v16 = [(_IDSAccount *)self uniqueID];
+    uniqueID = [(_IDSAccount *)self uniqueID];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = sub_195AA6E44;
     v18[3] = &unk_1E74418E8;
-    v19 = v16;
-    v20 = v7;
-    v17 = v16;
+    v19 = uniqueID;
+    v20 = changedCopy;
+    v17 = uniqueID;
     [(_IDSAccount *)self _callRegistrationDelegatesWithBlock:v18];
   }
 }
 
-- (void)account:(id)a3 profileChanged:(id)a4
+- (void)account:(id)account profileChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  changedCopy = changed;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v8 assertQueueIsCurrent];
 
-  if (v9)
+  if (assertQueueIsCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B36F90();
     }
   }
 
-  if ([v6 isEqualToString:self->_uniqueID])
+  if ([accountCopy isEqualToString:self->_uniqueID])
   {
-    v11 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
     {
       sub_195B37028();
     }
 
     v12 = [(NSDictionary *)self->_accountConfig mutableCopy];
     v13 = v12;
-    if (v7)
+    if (changedCopy)
     {
-      [(NSDictionary *)v12 setObject:v7 forKey:*MEMORY[0x1E69A55D0]];
+      [(NSDictionary *)v12 setObject:changedCopy forKey:*MEMORY[0x1E69A55D0]];
     }
 
     else
@@ -2815,47 +2815,47 @@ LABEL_12:
     self->_accountConfig = v13;
     v15 = v13;
 
-    v16 = [(_IDSAccount *)self uniqueID];
+    uniqueID = [(_IDSAccount *)self uniqueID];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = sub_195AA7064;
     v18[3] = &unk_1E74418E8;
-    v19 = v16;
-    v20 = v7;
-    v17 = v16;
+    v19 = uniqueID;
+    v20 = changedCopy;
+    v17 = uniqueID;
     [(_IDSAccount *)self _callRegistrationDelegatesWithBlock:v18];
   }
 }
 
-- (void)account:(id)a3 loginChanged:(id)a4
+- (void)account:(id)account loginChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  changedCopy = changed;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v8 assertQueueIsCurrent];
 
-  if (v9)
+  if (assertQueueIsCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B37090();
     }
   }
 
-  if ([v6 isEqualToString:self->_uniqueID])
+  if ([accountCopy isEqualToString:self->_uniqueID])
   {
-    v11 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
     {
       sub_195B37128();
     }
 
     v12 = [(NSDictionary *)self->_accountConfig mutableCopy];
     v13 = v12;
-    if (v7)
+    if (changedCopy)
     {
-      [(NSDictionary *)v12 setObject:v7 forKey:*MEMORY[0x1E69A55B8]];
+      [(NSDictionary *)v12 setObject:changedCopy forKey:*MEMORY[0x1E69A55B8]];
     }
 
     else
@@ -2867,47 +2867,47 @@ LABEL_12:
     self->_accountConfig = v13;
     v15 = v13;
 
-    v16 = [(_IDSAccount *)self uniqueID];
+    uniqueID = [(_IDSAccount *)self uniqueID];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = sub_195AA7284;
     v18[3] = &unk_1E74418E8;
-    v19 = v16;
-    v20 = v7;
-    v17 = v16;
+    v19 = uniqueID;
+    v20 = changedCopy;
+    v17 = uniqueID;
     [(_IDSAccount *)self _callRegistrationDelegatesWithBlock:v18];
   }
 }
 
-- (void)account:(id)a3 displayNameChanged:(id)a4
+- (void)account:(id)account displayNameChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  changedCopy = changed;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v8 assertQueueIsCurrent];
 
-  if (v9)
+  if (assertQueueIsCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B37190();
     }
   }
 
-  if ([v6 isEqualToString:self->_uniqueID])
+  if ([accountCopy isEqualToString:self->_uniqueID])
   {
-    v11 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
     {
       sub_195B37228();
     }
 
     v12 = [(NSDictionary *)self->_accountConfig mutableCopy];
     v13 = v12;
-    if (v7)
+    if (changedCopy)
     {
-      [(NSDictionary *)v12 setObject:v7 forKey:*MEMORY[0x1E69A5598]];
+      [(NSDictionary *)v12 setObject:changedCopy forKey:*MEMORY[0x1E69A5598]];
     }
 
     else
@@ -2919,52 +2919,52 @@ LABEL_12:
     self->_accountConfig = v13;
     v15 = v13;
 
-    v16 = [(_IDSAccount *)self uniqueID];
+    uniqueID = [(_IDSAccount *)self uniqueID];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = sub_195AA74A4;
     v18[3] = &unk_1E74418E8;
-    v19 = v16;
-    v20 = v7;
-    v17 = v16;
+    v19 = uniqueID;
+    v20 = changedCopy;
+    v17 = uniqueID;
     [(_IDSAccount *)self _callRegistrationDelegatesWithBlock:v18];
   }
 }
 
-- (void)account:(id)a3 pseudonymsChanged:(id)a4
+- (void)account:(id)account pseudonymsChanged:(id)changed
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  changedCopy = changed;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v8 assertQueueIsCurrent];
 
-  if (v9)
+  if (assertQueueIsCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B37290();
     }
   }
 
-  if ([v6 isEqualToString:self->_uniqueID])
+  if ([accountCopy isEqualToString:self->_uniqueID])
   {
-    v11 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v23 = v6;
+      v23 = accountCopy;
       v24 = 2112;
-      v25 = v7;
-      _os_log_impl(&dword_1959FF000, v11, OS_LOG_TYPE_DEFAULT, "Account %@ received pseudonyms changed: %@", buf, 0x16u);
+      v25 = changedCopy;
+      _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "Account %@ received pseudonyms changed: %@", buf, 0x16u);
     }
 
     v12 = [(NSDictionary *)self->_accountConfig mutableCopy];
     v13 = v12;
-    if (v7)
+    if (changedCopy)
     {
-      [(NSDictionary *)v12 setObject:v7 forKey:*MEMORY[0x1E69A5600]];
+      [(NSDictionary *)v12 setObject:changedCopy forKey:*MEMORY[0x1E69A5600]];
     }
 
     else
@@ -2976,204 +2976,204 @@ LABEL_12:
     self->_accountConfig = v13;
     v15 = v13;
 
-    v16 = [(_IDSAccount *)self uniqueID];
+    uniqueID = [(_IDSAccount *)self uniqueID];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = sub_195AA771C;
     v19[3] = &unk_1E74418E8;
-    v20 = v16;
-    v21 = v7;
-    v17 = v16;
+    v20 = uniqueID;
+    v21 = changedCopy;
+    v17 = uniqueID;
     [(_IDSAccount *)self _callRegistrationDelegatesWithBlock:v19];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)account:(id)a3 dependentDevicesUpdated:(id)a4
+- (void)account:(id)account dependentDevicesUpdated:(id)updated
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  updatedCopy = updated;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v8 assertQueueIsCurrent];
 
-  if (v9)
+  if (assertQueueIsCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B37328();
     }
   }
 
-  if ([v6 isEqualToString:self->_uniqueID])
+  if ([accountCopy isEqualToString:self->_uniqueID])
   {
-    v11 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
     {
       sub_195B373C0();
     }
 
     self->_devicesLoaded = 1;
-    [(_IDSAccount *)self _updateDependentDevicesWithDevicesInfo:v7];
+    [(_IDSAccount *)self _updateDependentDevicesWithDevicesInfo:updatedCopy];
     [(_IDSAccount *)self _callDevicesChanged];
   }
 }
 
-- (void)account:(id)a3 dependentDevicesUpdatedUponReconnect:(id)a4
+- (void)account:(id)account dependentDevicesUpdatedUponReconnect:(id)reconnect
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  reconnectCopy = reconnect;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v8 assertQueueIsCurrent];
 
-  if (v9)
+  if (assertQueueIsCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B37428();
     }
   }
 
-  if ([v6 isEqualToString:self->_uniqueID])
+  if ([accountCopy isEqualToString:self->_uniqueID])
   {
-    v11 = [MEMORY[0x1E69A6138] accountEnabled];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    accountEnabled = [MEMORY[0x1E69A6138] accountEnabled];
+    if (os_log_type_enabled(accountEnabled, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
+      v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(reconnectCopy, "count")}];
       v14 = 138412546;
-      v15 = v6;
+      v15 = accountCopy;
       v16 = 2112;
       v17 = v12;
-      _os_log_impl(&dword_1959FF000, v11, OS_LOG_TYPE_DEFAULT, "Account received %@ dependentDevicesUpdatedUponReconnect (devices count: %@)", &v14, 0x16u);
+      _os_log_impl(&dword_1959FF000, accountEnabled, OS_LOG_TYPE_DEFAULT, "Account received %@ dependentDevicesUpdatedUponReconnect (devices count: %@)", &v14, 0x16u);
     }
 
     self->_devicesLoaded = 1;
-    [(_IDSAccount *)self _updateDependentDevicesWithDevicesInfo:v7];
+    [(_IDSAccount *)self _updateDependentDevicesWithDevicesInfo:reconnectCopy];
     [(_IDSAccount *)self _callDevicesChanged];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)account:(id)a3 localDeviceAdded:(id)a4
+- (void)account:(id)account localDeviceAdded:(id)added
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  addedCopy = added;
   v8 = +[IDSInternalQueueController sharedInstance];
-  v9 = [v8 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v8 assertQueueIsCurrent];
 
-  if (v9)
+  if (assertQueueIsCurrent)
   {
-    v10 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B374C0();
     }
   }
 
-  if ([v6 isEqualToString:self->_uniqueID])
+  if ([accountCopy isEqualToString:self->_uniqueID])
   {
-    v11 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412546;
-      v20 = v6;
+      v20 = accountCopy;
       v21 = 2112;
-      v22 = v7;
-      _os_log_impl(&dword_1959FF000, v11, OS_LOG_TYPE_DEFAULT, "Account received %@ localDeviceAdded %@", &v19, 0x16u);
+      v22 = addedCopy;
+      _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "Account received %@ localDeviceAdded %@", &v19, 0x16u);
     }
 
     v12 = +[IDSDaemonController sharedInstance];
-    v13 = [v12 listener];
-    v14 = [(_IDSAccount *)self uniqueID];
-    v15 = [v13 dependentDevicesForAccount:v14];
+    listener = [v12 listener];
+    uniqueID = [(_IDSAccount *)self uniqueID];
+    v15 = [listener dependentDevicesForAccount:uniqueID];
 
     [(_IDSAccount *)self _updateDependentDevicesWithDevicesInfo:v15];
     [(_IDSAccount *)self _callNearbyDevicesChanged];
-    v16 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    registration2 = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
     {
       v17 = [(NSMutableArray *)self->_devices __imArrayByApplyingBlock:&unk_1F09E6980];
       v19 = 138412290;
       v20 = v17;
-      _os_log_impl(&dword_1959FF000, v16, OS_LOG_TYPE_DEFAULT, "Devices updated %@", &v19, 0xCu);
+      _os_log_impl(&dword_1959FF000, registration2, OS_LOG_TYPE_DEFAULT, "Devices updated %@", &v19, 0xCu);
     }
   }
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)account:(id)a3 localDeviceRemoved:(id)a4
+- (void)account:(id)account localDeviceRemoved:(id)removed
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:self->_uniqueID])
+  accountCopy = account;
+  removedCopy = removed;
+  if ([accountCopy isEqualToString:self->_uniqueID])
   {
-    v8 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412546;
-      v17 = v6;
+      v17 = accountCopy;
       v18 = 2112;
-      v19 = v7;
-      _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "Account received %@ localDeviceRemoved %@", &v16, 0x16u);
+      v19 = removedCopy;
+      _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "Account received %@ localDeviceRemoved %@", &v16, 0x16u);
     }
 
     v9 = +[IDSDaemonController sharedInstance];
-    v10 = [v9 listener];
-    v11 = [(_IDSAccount *)self uniqueID];
-    v12 = [v10 dependentDevicesForAccount:v11];
+    listener = [v9 listener];
+    uniqueID = [(_IDSAccount *)self uniqueID];
+    v12 = [listener dependentDevicesForAccount:uniqueID];
 
     [(_IDSAccount *)self _updateDependentDevicesWithDevicesInfo:v12];
     [(_IDSAccount *)self _callNearbyDevicesChanged];
-    v13 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    registration2 = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
     {
       v14 = [(NSMutableArray *)self->_devices __imArrayByApplyingBlock:&unk_1F09E69A0];
       v16 = 138412290;
       v17 = v14;
-      _os_log_impl(&dword_1959FF000, v13, OS_LOG_TYPE_DEFAULT, "Devices updated %@", &v16, 0xCu);
+      _os_log_impl(&dword_1959FF000, registration2, OS_LOG_TYPE_DEFAULT, "Devices updated %@", &v16, 0xCu);
     }
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)refreshRegistrationForAccount:(id)a3
+- (void)refreshRegistrationForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = +[IDSInternalQueueController sharedInstance];
-  v6 = [v5 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v5 assertQueueIsCurrent];
 
-  if (v6)
+  if (assertQueueIsCurrent)
   {
-    v7 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B37558();
     }
   }
 
-  if ([v4 isEqualToString:self->_uniqueID])
+  if ([accountCopy isEqualToString:self->_uniqueID])
   {
-    v8 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
     {
       sub_195B375F0();
     }
 
-    v9 = [(_IDSAccount *)self uniqueID];
+    uniqueID = [(_IDSAccount *)self uniqueID];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_195AA7F60;
     v11[3] = &unk_1E7441938;
-    v12 = v9;
-    v10 = v9;
+    v12 = uniqueID;
+    v10 = uniqueID;
     [(_IDSAccount *)self _callRegistrationDelegatesWithBlock:v11];
   }
 }
@@ -3181,77 +3181,77 @@ LABEL_12:
 - (void)authenticateAccount
 {
   v4 = +[IDSDaemonController sharedInstance];
-  v3 = [(_IDSAccount *)self uniqueID];
-  [v4 authenticateAccount:v3];
+  uniqueID = [(_IDSAccount *)self uniqueID];
+  [v4 authenticateAccount:uniqueID];
 }
 
 - (void)passwordUpdated
 {
   v4 = +[IDSDaemonController sharedInstance];
-  v3 = [(_IDSAccount *)self uniqueID];
-  [v4 passwordUpdatedForAccount:v3];
+  uniqueID = [(_IDSAccount *)self uniqueID];
+  [v4 passwordUpdatedForAccount:uniqueID];
 }
 
-- (void)updateAuthorizationCredentials:(id)a3 token:(id)a4
+- (void)updateAuthorizationCredentials:(id)credentials token:(id)token
 {
-  v6 = a4;
-  v7 = a3;
+  tokenCopy = token;
+  credentialsCopy = credentials;
   v9 = +[IDSDaemonController sharedInstance];
-  v8 = [(_IDSAccount *)self uniqueID];
-  [v9 updateAuthorizationCredentials:v7 token:v6 forAccount:v8];
+  uniqueID = [(_IDSAccount *)self uniqueID];
+  [v9 updateAuthorizationCredentials:credentialsCopy token:tokenCopy forAccount:uniqueID];
 }
 
 - (void)validateProfile
 {
   v4 = +[IDSDaemonController sharedInstance];
-  v3 = [(_IDSAccount *)self uniqueID];
-  [v4 validateProfileForAccount:v3];
+  uniqueID = [(_IDSAccount *)self uniqueID];
+  [v4 validateProfileForAccount:uniqueID];
 }
 
-- (void)addAliases:(id)a3
+- (void)addAliases:(id)aliases
 {
-  v4 = a3;
+  aliasesCopy = aliases;
   v6 = +[IDSDaemonController sharedInstance];
-  v5 = [(_IDSAccount *)self uniqueID];
-  [v6 addAliases:v4 toAccount:v5];
+  uniqueID = [(_IDSAccount *)self uniqueID];
+  [v6 addAliases:aliasesCopy toAccount:uniqueID];
 }
 
-- (void)removeAliases:(id)a3
+- (void)removeAliases:(id)aliases
 {
-  v4 = a3;
+  aliasesCopy = aliases;
   v6 = +[IDSDaemonController sharedInstance];
-  v5 = [(_IDSAccount *)self uniqueID];
-  [v6 removeAliases:v4 fromAccount:v5];
+  uniqueID = [(_IDSAccount *)self uniqueID];
+  [v6 removeAliases:aliasesCopy fromAccount:uniqueID];
 }
 
-- (void)validateAliases:(id)a3
+- (void)validateAliases:(id)aliases
 {
-  v4 = a3;
+  aliasesCopy = aliases;
   v6 = +[IDSDaemonController sharedInstance];
-  v5 = [(_IDSAccount *)self uniqueID];
-  [v6 validateAliases:v4 forAccount:v5];
+  uniqueID = [(_IDSAccount *)self uniqueID];
+  [v6 validateAliases:aliasesCopy forAccount:uniqueID];
 }
 
-- (void)unvalidateAliases:(id)a3
+- (void)unvalidateAliases:(id)aliases
 {
-  v4 = a3;
+  aliasesCopy = aliases;
   v6 = +[IDSDaemonController sharedInstance];
-  v5 = [(_IDSAccount *)self uniqueID];
-  [v6 unvalidateAliases:v4 forAccount:v5];
+  uniqueID = [(_IDSAccount *)self uniqueID];
+  [v6 unvalidateAliases:aliasesCopy forAccount:uniqueID];
 }
 
 - (void)registerAccount
 {
   v4 = +[IDSDaemonController sharedInstance];
-  v3 = [(_IDSAccount *)self uniqueID];
-  [v4 registerAccount:v3];
+  uniqueID = [(_IDSAccount *)self uniqueID];
+  [v4 registerAccount:uniqueID];
 }
 
 - (void)unregisterAccount
 {
   v4 = +[IDSDaemonController sharedInstance];
-  v3 = [(_IDSAccount *)self uniqueID];
-  [v4 unregisterAccount:v3];
+  uniqueID = [(_IDSAccount *)self uniqueID];
+  [v4 unregisterAccount:uniqueID];
 }
 
 - (void)forceRemoveAccount
@@ -3259,14 +3259,14 @@ LABEL_12:
   if ([(_IDSAccount *)self isTemporary]&& ![(_IDSAccount *)self accountType])
   {
     v5 = +[IDSDaemonController sharedInstance];
-    v4 = [(_IDSAccount *)self uniqueID];
-    [v5 forceRemoveAccount:v4];
+    uniqueID = [(_IDSAccount *)self uniqueID];
+    [v5 forceRemoveAccount:uniqueID];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_ERROR))
     {
       sub_195B37664();
     }
@@ -3276,8 +3276,8 @@ LABEL_12:
 - (void)deactivateAndPurgeIdentify
 {
   v4 = +[IDSDaemonController sharedInstance];
-  v3 = [(_IDSAccount *)self uniqueID];
-  [v4 deactivateAndPurgeIdentifyForAccount:v3];
+  uniqueID = [(_IDSAccount *)self uniqueID];
+  [v4 deactivateAndPurgeIdentifyForAccount:uniqueID];
 }
 
 @end

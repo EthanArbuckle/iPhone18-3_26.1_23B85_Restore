@@ -1,52 +1,52 @@
 @interface PXPath
-+ (id)pathWithEllipseInRect:(CGRect)a3;
-+ (id)pathWithRect:(CGRect)a3;
-+ (id)pathWithRoundedRect:(CGRect)a3 cornerRadius:(double)a4;
++ (id)pathWithEllipseInRect:(CGRect)rect;
++ (id)pathWithRect:(CGRect)rect;
++ (id)pathWithRoundedRect:(CGRect)rect cornerRadius:(double)radius;
 - (CGRect)boundingRect;
-- (PXPath)initWithPoints:(CGPoint *)a3 count:(int64_t)a4;
-- (PXPath)initWithRect:(CGRect)a3 withRoundedCorners:(int)a4 cornerRadii:(id)a5 smoothPillShapes:(BOOL)a6;
-- (void)addContinuousCornerToPath:(CGPath *)a3 trueCorner:(CGPoint)a4 cornerRadius:(CGSize)a5 corners:(unint64_t)a6 portion:(unint64_t)a7 clockwise:(BOOL)a8 fullRadius:(BOOL)a9;
-- (void)addLineToPointX:(double)a3 y:(double)a4;
+- (PXPath)initWithPoints:(CGPoint *)points count:(int64_t)count;
+- (PXPath)initWithRect:(CGRect)rect withRoundedCorners:(int)corners cornerRadii:(id)radii smoothPillShapes:(BOOL)shapes;
+- (void)addContinuousCornerToPath:(CGPath *)path trueCorner:(CGPoint)corner cornerRadius:(CGSize)radius corners:(unint64_t)corners portion:(unint64_t)portion clockwise:(BOOL)clockwise fullRadius:(BOOL)fullRadius;
+- (void)addLineToPointX:(double)x y:(double)y;
 @end
 
 @implementation PXPath
 
-- (void)addContinuousCornerToPath:(CGPath *)a3 trueCorner:(CGPoint)a4 cornerRadius:(CGSize)a5 corners:(unint64_t)a6 portion:(unint64_t)a7 clockwise:(BOOL)a8 fullRadius:(BOOL)a9
+- (void)addContinuousCornerToPath:(CGPath *)path trueCorner:(CGPoint)corner cornerRadius:(CGSize)radius corners:(unint64_t)corners portion:(unint64_t)portion clockwise:(BOOL)clockwise fullRadius:(BOOL)fullRadius
 {
-  v9 = a8;
-  v10 = a7;
-  x = a4.x;
-  if (a5.width < a5.height)
+  clockwiseCopy = clockwise;
+  portionCopy = portion;
+  x = corner.x;
+  if (radius.width < radius.height)
   {
-    a5.height = a5.width;
+    radius.height = radius.width;
   }
 
   v14 = 0.980263;
-  if (a9)
+  if (fullRadius)
   {
     v14 = 1.0;
   }
 
-  height = a5.height;
-  if (a9)
+  height = radius.height;
+  if (fullRadius)
   {
-    v15 = a5.height;
+    v15 = radius.height;
   }
 
   else
   {
-    v15 = a5.height * 0.95;
+    v15 = radius.height * 0.95;
   }
 
   v95 = v14;
   v16 = 0.0;
-  if (a6 - 1 <= 3)
+  if (corners - 1 <= 3)
   {
-    v16 = dbl_1A53821E0[a6 - 1];
+    v16 = dbl_1A53821E0[corners - 1];
   }
 
   v17 = v15 * (1.0 - v14);
-  if (a7 == 2)
+  if (portion == 2)
   {
     v96 = v16;
     v18 = -v17;
@@ -54,7 +54,7 @@
     v19 = *MEMORY[0x1E695EFF8];
   }
 
-  else if (a7 == 1)
+  else if (portion == 1)
   {
     v96 = v16 + 20.0;
     v19 = -v17;
@@ -62,7 +62,7 @@
     v18 = *(MEMORY[0x1E695EFF8] + 8);
   }
 
-  else if (a7)
+  else if (portion)
   {
     v96 = v16 + 20.0;
     v94 = 50.0;
@@ -79,7 +79,7 @@
     v19 = -v17;
   }
 
-  v20 = _interiorPointForCorner(a6, v19, v18, *MEMORY[0x1E695EFF8]);
+  v20 = _interiorPointForCorner(corners, v19, v18, *MEMORY[0x1E695EFF8]);
   v91 = v21;
   v92 = v20;
   v22 = v15 * 0.33 * 0.666666667;
@@ -90,40 +90,40 @@
   v27 = v23 + v23 + v25;
   v28 = v23 + v23 + v27;
   v29 = v25 + v24 * 0.33;
-  v89 = _interiorPointForCorner(a6, v27, 0.0, x);
+  v89 = _interiorPointForCorner(corners, v27, 0.0, x);
   v90 = v30;
-  v87 = _interiorPointForCorner(a6, v26, 0.0, x);
+  v87 = _interiorPointForCorner(corners, v26, 0.0, x);
   v88 = v31;
-  v32 = _interiorPointForCorner(a6, v29, v24, x);
+  v32 = _interiorPointForCorner(corners, v29, v24, x);
   v79 = v33;
   v80 = v32;
-  v34 = _interiorPointForCorner(a6, v24, v29, x);
+  v34 = _interiorPointForCorner(corners, v24, v29, x);
   v75 = v35;
   v76 = v34;
-  v85 = _interiorPointForCorner(a6, 0.0, v26, x);
+  v85 = _interiorPointForCorner(corners, 0.0, v26, x);
   v86 = v36;
-  v83 = _interiorPointForCorner(a6, 0.0, v27, x);
+  v83 = _interiorPointForCorner(corners, 0.0, v27, x);
   v84 = v37;
-  v38 = _interiorPointForCorner(a6, 0.0, v28, x);
+  v38 = _interiorPointForCorner(corners, 0.0, v28, x);
   v81 = v39;
   v82 = v38;
-  v40 = _interiorPointForCorner(a6, v28, 0.0, x);
+  v40 = _interiorPointForCorner(corners, v28, 0.0, x);
   v77 = v41;
   v78 = v40;
-  v42 = _interiorPointForCorner(a6, v15, v15, x);
+  v42 = _interiorPointForCorner(corners, v15, v15, x);
   v44 = v43;
-  v45 = _interiorPointForCorner(a6, height, 0.0, x);
+  v45 = _interiorPointForCorner(corners, height, 0.0, x);
   v47 = v46;
-  v48 = _interiorPointForCorner(a6, 0.0, height, x);
+  v48 = _interiorPointForCorner(corners, 0.0, height, x);
   v50 = v49;
   memset(&m, 0, sizeof(m));
   CGAffineTransformMakeTranslation(&m, v92, v91);
-  if (v9)
+  if (clockwiseCopy)
   {
-    if (v10)
+    if (portionCopy)
     {
       p_m = &m;
-      v51 = a3;
+      pathCopy2 = path;
       v53 = v83;
       v54 = v84;
       v55 = v85;
@@ -134,7 +134,7 @@
 
     else
     {
-      v51 = a3;
+      pathCopy2 = path;
       p_m = 0;
       v53 = v48;
       v54 = v50;
@@ -144,12 +144,12 @@
       v58 = v50;
     }
 
-    CGPathAddCurveToPoint(v51, p_m, v53, v54, v55, v56, v57, v58);
-    CGPathAddArc(a3, &m, v42, v44, v95 * v15, (v94 + v96) * 0.0174532925, v96 * 0.0174532925, 1);
-    if ((v10 & 2) != 0)
+    CGPathAddCurveToPoint(pathCopy2, p_m, v53, v54, v55, v56, v57, v58);
+    CGPathAddArc(path, &m, v42, v44, v95 * v15, (v94 + v96) * 0.0174532925, v96 * 0.0174532925, 1);
+    if ((portionCopy & 2) != 0)
     {
       v68 = &m;
-      v67 = a3;
+      pathCopy8 = path;
       v69 = v87;
       v70 = v88;
       v71 = v89;
@@ -160,7 +160,7 @@
 
     else
     {
-      v67 = a3;
+      pathCopy8 = path;
       v68 = 0;
       v69 = v45;
       v70 = v47;
@@ -173,10 +173,10 @@
 
   else
   {
-    if (v10)
+    if (portionCopy)
     {
       v60 = &m;
-      v59 = a3;
+      pathCopy6 = path;
       v61 = v89;
       v62 = v90;
       v63 = v87;
@@ -187,7 +187,7 @@
 
     else
     {
-      v59 = a3;
+      pathCopy6 = path;
       v60 = 0;
       v61 = v45;
       v62 = v47;
@@ -197,12 +197,12 @@
       v66 = v47;
     }
 
-    CGPathAddCurveToPoint(v59, v60, v61, v62, v63, v64, v65, v66);
-    CGPathAddArc(a3, &m, v42, v44, v95 * v15, v96 * 0.0174532925, (v94 + v96) * 0.0174532925, 0);
-    if ((v10 & 2) != 0)
+    CGPathAddCurveToPoint(pathCopy6, v60, v61, v62, v63, v64, v65, v66);
+    CGPathAddArc(path, &m, v42, v44, v95 * v15, v96 * 0.0174532925, (v94 + v96) * 0.0174532925, 0);
+    if ((portionCopy & 2) != 0)
     {
       v68 = &m;
-      v67 = a3;
+      pathCopy8 = path;
       v69 = v85;
       v70 = v86;
       v71 = v83;
@@ -213,7 +213,7 @@
 
     else
     {
-      v67 = a3;
+      pathCopy8 = path;
       v68 = 0;
       v69 = v48;
       v70 = v50;
@@ -224,44 +224,44 @@
     }
   }
 
-  CGPathAddCurveToPoint(v67, v68, v69, v70, v71, v72, v73, v74);
+  CGPathAddCurveToPoint(pathCopy8, v68, v69, v70, v71, v72, v73, v74);
 }
 
-- (PXPath)initWithRect:(CGRect)a3 withRoundedCorners:(int)a4 cornerRadii:(id)a5 smoothPillShapes:(BOOL)a6
+- (PXPath)initWithRect:(CGRect)rect withRoundedCorners:(int)corners cornerRadii:(id)radii smoothPillShapes:(BOOL)shapes
 {
-  v6 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
-  v12 = a5;
+  shapesCopy = shapes;
+  height = rect.size.height;
+  width = rect.size.width;
+  v9 = rect.origin.y;
+  v10 = rect.origin.x;
+  radiiCopy = radii;
   Mutable = CGPathCreateMutable();
-  v14 = [v12 objectAtIndex:0];
+  v14 = [radiiCopy objectAtIndex:0];
   [v14 sizeValue];
   v16 = v15 * 1.528665;
-  v17 = [v12 objectAtIndex:0];
+  v17 = [radiiCopy objectAtIndex:0];
   [v17 sizeValue];
   v73 = v18 * 1.528665;
 
-  v19 = [v12 objectAtIndex:1];
+  v19 = [radiiCopy objectAtIndex:1];
   [v19 sizeValue];
   v75 = v20 * 1.528665;
-  v21 = [v12 objectAtIndex:1];
+  v21 = [radiiCopy objectAtIndex:1];
   [v21 sizeValue];
   y = v22;
 
   v23 = 3;
-  v24 = [v12 objectAtIndex:3];
+  v24 = [radiiCopy objectAtIndex:3];
   [v24 sizeValue];
   v26 = v25 * 1.528665;
-  v27 = [v12 objectAtIndex:3];
+  v27 = [radiiCopy objectAtIndex:3];
   [v27 sizeValue];
   v68 = v28;
 
-  v29 = [v12 objectAtIndex:2];
+  v29 = [radiiCopy objectAtIndex:2];
   [v29 sizeValue];
   v31 = v30 * 1.528665;
-  v32 = [v12 objectAtIndex:2];
+  v32 = [radiiCopy objectAtIndex:2];
 
   [v32 sizeValue];
   v74 = v33 * 1.528665;
@@ -365,10 +365,10 @@
   v47 = v42 | v23 | v44 | v45;
   if (!v47)
   {
-    v6 = 0;
+    shapesCopy = 0;
   }
 
-  v48 = v35 && v6;
+  v48 = v35 && shapesCopy;
   v77.origin.x = v10;
   v77.origin.y = v9;
   v77.size.width = width;
@@ -424,7 +424,7 @@ LABEL_35:
 
   v62 = v51;
   v54 = v72;
-  if ((v46 & v6) != 1)
+  if ((v46 & shapesCopy) != 1)
   {
     v55 = v76;
     goto LABEL_35;
@@ -480,8 +480,8 @@ LABEL_36:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v2 = [(PXPath *)self points];
-  v3 = [v2 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  points = [(PXPath *)self points];
+  v3 = [points countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v3)
   {
     v4 = v3;
@@ -496,7 +496,7 @@ LABEL_36:
       {
         if (*v25 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(points);
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
@@ -529,7 +529,7 @@ LABEL_36:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v4 = [points countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v4);
@@ -554,14 +554,14 @@ LABEL_36:
   return result;
 }
 
-- (void)addLineToPointX:(double)a3 y:(double)a4
+- (void)addLineToPointX:(double)x y:(double)y
 {
-  v6 = [SPCCurvePoint pointWithX:a3 y:a4];
-  v5 = [(PXPath *)self points];
-  [v5 addObject:v6];
+  v6 = [SPCCurvePoint pointWithX:x y:y];
+  points = [(PXPath *)self points];
+  [points addObject:v6];
 }
 
-- (PXPath)initWithPoints:(CGPoint *)a3 count:(int64_t)a4
+- (PXPath)initWithPoints:(CGPoint *)points count:(int64_t)count
 {
   v11.receiver = self;
   v11.super_class = PXPath;
@@ -572,32 +572,32 @@ LABEL_36:
     points = v6->_points;
     v6->_points = v7;
 
-    if (a4 >= 1)
+    if (count >= 1)
     {
-      p_y = &a3->y;
+      p_y = &points->y;
       do
       {
         [(PXPath *)v6 addLineToPointX:*(p_y - 1) y:*p_y];
         p_y += 2;
-        --a4;
+        --count;
       }
 
-      while (a4);
+      while (count);
     }
   }
 
   return v6;
 }
 
-+ (id)pathWithRoundedRect:(CGRect)a3 cornerRadius:(double)a4
++ (id)pathWithRoundedRect:(CGRect)rect cornerRadius:(double)radius
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v14[4] = *MEMORY[0x1E69E9840];
-  v9 = [MEMORY[0x1E696B098] valueWithSize:{a4, a4}];
-  v10 = [a1 alloc];
+  v9 = [MEMORY[0x1E696B098] valueWithSize:{radius, radius}];
+  v10 = [self alloc];
   v14[0] = v9;
   v14[1] = v9;
   v14[2] = v9;
@@ -608,21 +608,21 @@ LABEL_36:
   return v12;
 }
 
-+ (id)pathWithEllipseInRect:(CGRect)a3
++ (id)pathWithEllipseInRect:(CGRect)rect
 {
-  v3 = objc_alloc_init(a1);
+  v3 = objc_alloc_init(self);
 
   return v3;
 }
 
-+ (id)pathWithRect:(CGRect)a3
++ (id)pathWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v19 = *MEMORY[0x1E69E9840];
-  MinX = CGRectGetMinX(a3);
+  MinX = CGRectGetMinX(rect);
   v21.origin.x = x;
   v21.origin.y = y;
   v21.size.width = width;
@@ -645,7 +645,7 @@ LABEL_36:
   v16 = MaxY;
   v17 = MaxX;
   v18 = MinY;
-  v11 = [[a1 alloc] initWithPoints:v13 count:4];
+  v11 = [[self alloc] initWithPoints:v13 count:4];
   [v11 closeSubpath];
 
   return v11;

@@ -1,21 +1,21 @@
 @interface MADSharedTextEncoder
-+ (MADSharedTextEncoder)textEncoderWithVersion:(unint64_t)a3 extendedContextLength:(BOOL)a4;
-+ (int64_t)revisionForVersion:(unint64_t)a3;
-+ (unint64_t)contextLength:(BOOL)a3;
-- (BOOL)_runOnInput:(id)a3 output:(id *)a4 error:(id *)a5;
-- (BOOL)loadResources:(id *)a3;
-- (BOOL)runOnInput:(id)a3 output:(id *)a4 error:(id *)a5;
-- (MADSharedTextEncoder)initWithTextEncoderWithVersion:(unint64_t)a3 extendedContextLength:(BOOL)a4;
++ (MADSharedTextEncoder)textEncoderWithVersion:(unint64_t)version extendedContextLength:(BOOL)length;
++ (int64_t)revisionForVersion:(unint64_t)version;
++ (unint64_t)contextLength:(BOOL)length;
+- (BOOL)_runOnInput:(id)input output:(id *)output error:(id *)error;
+- (BOOL)loadResources:(id *)resources;
+- (BOOL)runOnInput:(id)input output:(id *)output error:(id *)error;
+- (MADSharedTextEncoder)initWithTextEncoderWithVersion:(unint64_t)version extendedContextLength:(BOOL)length;
 @end
 
 @implementation MADSharedTextEncoder
 
-+ (int64_t)revisionForVersion:(unint64_t)a3
++ (int64_t)revisionForVersion:(unint64_t)version
 {
-  v3 = a3;
+  versionCopy = version;
   v7 = *MEMORY[0x1E69E9840];
-  v4 = a3 - 1;
-  if (a3 - 1 < 9 && ((0x15Fu >> v4) & 1) != 0)
+  v4 = version - 1;
+  if (version - 1 < 9 && ((0x15Fu >> v4) & 1) != 0)
   {
     return qword_1C9F636C0[v4];
   }
@@ -23,16 +23,16 @@
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = versionCopy;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unknown embedding version specified (%d)", v6, 8u);
   }
 
   return 0;
 }
 
-+ (unint64_t)contextLength:(BOOL)a3
++ (unint64_t)contextLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     return 512;
   }
@@ -43,9 +43,9 @@
   }
 }
 
-- (MADSharedTextEncoder)initWithTextEncoderWithVersion:(unint64_t)a3 extendedContextLength:(BOOL)a4
+- (MADSharedTextEncoder)initWithTextEncoderWithVersion:(unint64_t)version extendedContextLength:(BOOL)length
 {
-  v4 = a4;
+  lengthCopy = length;
   v54 = *MEMORY[0x1E69E9840];
   v47.receiver = self;
   v47.super_class = MADSharedTextEncoder;
@@ -56,7 +56,7 @@
   }
 
   v46 = 0;
-  v7 = [MEMORY[0x1E6999168] createForRevision:objc_msgSend(objc_opt_class() error:{"revisionForVersion:", a3), &v46}];
+  v7 = [MEMORY[0x1E6999168] createForRevision:objc_msgSend(objc_opt_class() error:{"revisionForVersion:", version), &v46}];
   v8 = v46;
   if (!v7)
   {
@@ -71,9 +71,9 @@
     goto LABEL_42;
   }
 
-  v9 = [objc_opt_class() computeBackend];
-  v10 = v9;
-  if (v9 && ([v7 setInferenceBackend:{objc_msgSend(v9, "integerValue")}] & 1) == 0)
+  computeBackend = [objc_opt_class() computeBackend];
+  v10 = computeBackend;
+  if (computeBackend && ([v7 setInferenceBackend:{objc_msgSend(computeBackend, "integerValue")}] & 1) == 0)
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -113,9 +113,9 @@
 
   if (v6->_textEncoder)
   {
-    if (a3 <= 9 && ((1 << a3) & 0x3A0) != 0)
+    if (version <= 9 && ((1 << version) & 0x3A0) != 0)
     {
-      v44 = [objc_opt_class() contextLength:v4];
+      v44 = [objc_opt_class() contextLength:lengthCopy];
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
@@ -152,10 +152,10 @@
         v29 = qos_class_self();
         v30 = VCPMAQoSDescription(v29);
         v31 = v30;
-        v32 = [v30 UTF8String];
+        uTF8String = [v30 UTF8String];
         v33 = "Failure";
         *buf = 136446722;
-        v49 = v32;
+        v49 = uTF8String;
         if (!v25)
         {
           v33 = "Success";
@@ -183,10 +183,10 @@
       }
 
       v8 = 0;
-      v6->_extendedContextLength = v4;
+      v6->_extendedContextLength = lengthCopy;
     }
 
-    v6->_version = a3;
+    v6->_version = version;
     v40 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v41 = dispatch_queue_create("MADSharedTextEncoder", v40);
     queue = v6->_queue;
@@ -216,14 +216,14 @@ LABEL_46:
   return v39;
 }
 
-+ (MADSharedTextEncoder)textEncoderWithVersion:(unint64_t)a3 extendedContextLength:(BOOL)a4
++ (MADSharedTextEncoder)textEncoderWithVersion:(unint64_t)version extendedContextLength:(BOOL)length
 {
-  v4 = [[MADSharedTextEncoder alloc] initWithTextEncoderWithVersion:a3 extendedContextLength:a4];
+  v4 = [[MADSharedTextEncoder alloc] initWithTextEncoderWithVersion:version extendedContextLength:length];
 
   return v4;
 }
 
-- (BOOL)loadResources:(id *)a3
+- (BOOL)loadResources:(id *)resources
 {
   v21 = *MEMORY[0x1E69E9840];
   v15 = 0;
@@ -255,9 +255,9 @@ LABEL_46:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Text encoder failed to load resource (%@)", buf, 0xCu);
     }
 
-    if (a3)
+    if (resources)
     {
-      *a3 = [v10[5] copy];
+      *resources = [v10[5] copy];
     }
   }
 
@@ -331,10 +331,10 @@ void __38__MADSharedTextEncoder_loadResources___block_invoke(void *a1)
   }
 }
 
-- (BOOL)_runOnInput:(id)a3 output:(id *)a4 error:(id *)a5
+- (BOOL)_runOnInput:(id)input output:(id *)output error:(id *)error
 {
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  inputCopy = input;
   v9 = VCPSignPostPersistentLog();
   v10 = os_signpost_id_generate(v9);
 
@@ -351,7 +351,7 @@ void __38__MADSharedTextEncoder_loadResources___block_invoke(void *a1)
 
   textEncoder = self->_textEncoder;
   v44 = 0;
-  [(CSUTextEncoder *)textEncoder runOnInput:v8 error:&v44];
+  [(CSUTextEncoder *)textEncoder runOnInput:inputCopy error:&v44];
   v15 = v44;
   v16 = +[MADStateHandler sharedStateHandler];
   [v16 exitKnownTimeoutRisk];
@@ -360,11 +360,11 @@ void __38__MADSharedTextEncoder_loadResources___block_invoke(void *a1)
   v18 = v17;
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
   {
-    v43 = v8;
+    v43 = inputCopy;
     v19 = qos_class_self();
     v20 = VCPMAQoSDescription(v19);
     v21 = v20;
-    v22 = [v20 UTF8String];
+    uTF8String = [v20 UTF8String];
     if (v15)
     {
       v23 = "Failure";
@@ -378,7 +378,7 @@ void __38__MADSharedTextEncoder_loadResources___block_invoke(void *a1)
     v24 = atomic_load(&self->_isWarm);
     v25 = [objc_opt_class() contextLength:self->_extendedContextLength];
     *buf = 136446978;
-    v50 = v22;
+    v50 = uTF8String;
     v51 = 2082;
     v52 = v23;
     v53 = 2050;
@@ -387,28 +387,28 @@ void __38__MADSharedTextEncoder_loadResources___block_invoke(void *a1)
     v56 = v25;
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v18, OS_SIGNPOST_INTERVAL_END, v10, "CSUTextEncoder_runOnInput", "QoS=%{public, signpost.telemetry:string1}s Status=%{public, signpost.telemetry:string2}s IsWarm=%{public, signpost.telemetry:number1}lld ContextLength=%{public, signpost.telemetry:number2}lld  enableTelemetry=YES ", buf, 0x2Au);
 
-    v8 = v43;
+    inputCopy = v43;
   }
 
   if (!v15)
   {
     atomic_store(1u, &self->_isWarm);
     v35 = MEMORY[0x1E69AE300];
-    v36 = [(CSUTextEncoder *)self->_textEncoder inferenceOutputs];
-    v37 = [v36 CSUTextEmbedding];
-    v31 = [v35 embeddingFromMultiArray:v37 version:self->_version];
+    inferenceOutputs = [(CSUTextEncoder *)self->_textEncoder inferenceOutputs];
+    cSUTextEmbedding = [inferenceOutputs CSUTextEmbedding];
+    v31 = [v35 embeddingFromMultiArray:cSUTextEmbedding version:self->_version];
 
     if (v31)
     {
-      if (!a4)
+      if (!output)
       {
         v33 = 1;
         goto LABEL_27;
       }
 
       v31 = v31;
-      v34 = *a4;
-      *a4 = v31;
+      v34 = *output;
+      *output = v31;
       v33 = 1;
     }
 
@@ -429,9 +429,9 @@ void __38__MADSharedTextEncoder_loadResources___block_invoke(void *a1)
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
-        objc_storeStrong(a5, v34);
+        objc_storeStrong(error, v34);
       }
 
       v33 = 0;
@@ -457,12 +457,12 @@ void __38__MADSharedTextEncoder_loadResources___block_invoke(void *a1)
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
   }
 
-  if (a5)
+  if (error)
   {
     v31 = v31;
     v33 = 0;
-    v34 = *a5;
-    *a5 = v31;
+    v34 = *error;
+    *error = v31;
 LABEL_26:
 
     goto LABEL_27;
@@ -474,9 +474,9 @@ LABEL_27:
   return v33;
 }
 
-- (BOOL)runOnInput:(id)a3 output:(id *)a4 error:(id *)a5
+- (BOOL)runOnInput:(id)input output:(id *)output error:(id *)error
 {
-  v8 = a3;
+  inputCopy = input;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -494,15 +494,15 @@ LABEL_27:
   block[3] = &unk_1E83517F8;
   v15 = &v24;
   block[4] = self;
-  v10 = v8;
+  v10 = inputCopy;
   v16 = &v18;
-  v17 = a4;
+  outputCopy = output;
   v14 = v10;
   dispatch_sync(queue, block);
   v11 = *(v25 + 24);
-  if (a5 && (v25[3] & 1) == 0)
+  if (error && (v25[3] & 1) == 0)
   {
-    *a5 = [v19[5] copy];
+    *error = [v19[5] copy];
     v11 = *(v25 + 24);
   }
 

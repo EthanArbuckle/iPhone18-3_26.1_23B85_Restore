@@ -1,23 +1,23 @@
 @interface NTKCornerComplicationConfiguration
-- (NTKCornerComplicationConfiguration)initWithTopLeftComplication:(unint64_t)a3 topRightComplication:(unint64_t)a4 bottomLeftComplication:(unint64_t)a5 bottomRightComplication:(unint64_t)a6;
+- (NTKCornerComplicationConfiguration)initWithTopLeftComplication:(unint64_t)complication topRightComplication:(unint64_t)rightComplication bottomLeftComplication:(unint64_t)leftComplication bottomRightComplication:(unint64_t)bottomRightComplication;
 - (id)complicationSlotDescriptors;
 - (id)orderedComplicationSlots;
-- (id)richComplicationSlotsForDevice:(id)a3;
+- (id)richComplicationSlotsForDevice:(id)device;
 @end
 
 @implementation NTKCornerComplicationConfiguration
 
-- (NTKCornerComplicationConfiguration)initWithTopLeftComplication:(unint64_t)a3 topRightComplication:(unint64_t)a4 bottomLeftComplication:(unint64_t)a5 bottomRightComplication:(unint64_t)a6
+- (NTKCornerComplicationConfiguration)initWithTopLeftComplication:(unint64_t)complication topRightComplication:(unint64_t)rightComplication bottomLeftComplication:(unint64_t)leftComplication bottomRightComplication:(unint64_t)bottomRightComplication
 {
   v11.receiver = self;
   v11.super_class = NTKCornerComplicationConfiguration;
   result = [(NTKCornerComplicationConfiguration *)&v11 init];
   if (result)
   {
-    result->_topLeftComplication = a3;
-    result->_topRightComplication = a4;
-    result->_bottomLeftComplication = a5;
-    result->_bottomRightComplication = a6;
+    result->_topLeftComplication = complication;
+    result->_topRightComplication = rightComplication;
+    result->_bottomLeftComplication = leftComplication;
+    result->_bottomRightComplication = bottomRightComplication;
   }
 
   return result;
@@ -26,9 +26,9 @@
 - (id)complicationSlotDescriptors
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v23 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v3 = NTKAllSignatureCircularTypes();
-  [v23 addIndexes:v3];
+  [indexSet addIndexes:v3];
 
   v4 = NTKAllSignatureCornerTypes();
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_topLeftComplication];
@@ -80,7 +80,7 @@
   return v2;
 }
 
-- (id)richComplicationSlotsForDevice:(id)a3
+- (id)richComplicationSlotsForDevice:(id)device
 {
   v5[4] = *MEMORY[0x277D85DE8];
   v5[0] = @"top-left";

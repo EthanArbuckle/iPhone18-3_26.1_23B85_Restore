@@ -1,28 +1,28 @@
 @interface JRSchemaSegmentedTupleCount
-- (BOOL)isEqual:(id)a3;
-- (JRSchemaSegmentedTupleCount)initWithDictionary:(id)a3;
-- (JRSchemaSegmentedTupleCount)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JRSchemaSegmentedTupleCount)initWithDictionary:(id)dictionary;
+- (JRSchemaSegmentedTupleCount)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addTupleCandidates:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTupleCandidates:(id)candidates;
+- (void)writeTo:(id)to;
 @end
 
 @implementation JRSchemaSegmentedTupleCount
 
-- (JRSchemaSegmentedTupleCount)initWithDictionary:(id)a3
+- (JRSchemaSegmentedTupleCount)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = JRSchemaSegmentedTupleCount;
   v5 = [(JRSchemaSegmentedTupleCount *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"tupleCandidates"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"tupleCandidates"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"count", v18}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"count", v18}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,30 +79,30 @@
   return v5;
 }
 
-- (JRSchemaSegmentedTupleCount)initWithJSON:(id)a3
+- (JRSchemaSegmentedTupleCount)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(JRSchemaSegmentedTupleCount *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(JRSchemaSegmentedTupleCount *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(JRSchemaSegmentedTupleCount *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -116,16 +116,16 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[JRSchemaSegmentedTupleCount count](self, "count")}];
-    [v3 setObject:v4 forKeyedSubscript:@"count"];
+    [dictionary setObject:v4 forKeyedSubscript:@"count"];
   }
 
   if ([(NSArray *)self->_tupleCandidates count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -145,16 +145,16 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          if (v11)
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v5 addObject:v11];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v12 = [MEMORY[0x1E695DFB0] null];
-            [v5 addObject:v12];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -164,12 +164,12 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"tupleCandidates"];
+    [dictionary setObject:array forKeyedSubscript:@"tupleCandidates"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v14];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v14];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -188,18 +188,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(JRSchemaSegmentedTupleCount *)self tupleCandidates];
-  v6 = [v4 tupleCandidates];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  tupleCandidates = [(JRSchemaSegmentedTupleCount *)self tupleCandidates];
+  tupleCandidates2 = [equalCopy tupleCandidates];
+  v7 = tupleCandidates2;
+  if ((tupleCandidates != 0) == (tupleCandidates2 == 0))
   {
 
 LABEL_12:
@@ -207,13 +207,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(JRSchemaSegmentedTupleCount *)self tupleCandidates];
-  if (v8)
+  tupleCandidates3 = [(JRSchemaSegmentedTupleCount *)self tupleCandidates];
+  if (tupleCandidates3)
   {
-    v9 = v8;
-    v10 = [(JRSchemaSegmentedTupleCount *)self tupleCandidates];
-    v11 = [v4 tupleCandidates];
-    v12 = [v10 isEqual:v11];
+    v9 = tupleCandidates3;
+    tupleCandidates4 = [(JRSchemaSegmentedTupleCount *)self tupleCandidates];
+    tupleCandidates5 = [equalCopy tupleCandidates];
+    v12 = [tupleCandidates4 isEqual:tupleCandidates5];
 
     if (!v12)
     {
@@ -225,7 +225,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -233,7 +233,7 @@ LABEL_12:
   if (*&self->_has)
   {
     count = self->_count;
-    if (count != [v4 count])
+    if (count != [equalCopy count])
     {
       goto LABEL_12;
     }
@@ -245,10 +245,10 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -286,32 +286,32 @@ LABEL_13:
   }
 }
 
-- (void)addTupleCandidates:(id)a3
+- (void)addTupleCandidates:(id)candidates
 {
-  v4 = a3;
+  candidatesCopy = candidates;
   tupleCandidates = self->_tupleCandidates;
-  v8 = v4;
+  v8 = candidatesCopy;
   if (!tupleCandidates)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_tupleCandidates;
-    self->_tupleCandidates = v6;
+    self->_tupleCandidates = array;
 
-    v4 = v8;
+    candidatesCopy = v8;
     tupleCandidates = self->_tupleCandidates;
   }
 
-  [(NSArray *)tupleCandidates addObject:v4];
+  [(NSArray *)tupleCandidates addObject:candidatesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = JRSchemaSegmentedTupleCount;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(JRSchemaSegmentedTupleCount *)self tupleCandidates:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(JRSchemaSegmentedTupleCount *)self setTupleCandidates:v7];
 

@@ -1,52 +1,52 @@
 @interface CNPhotoPickerRecentsProvider
 + (id)log;
-+ (id)poseConfigurationFromAvatarRecord:(id)a3 contactImage:(id)a4;
-+ (id)poseConfigurationFromContactImage:(id)a3;
-- (CNPhotoPickerRecentsProvider)initWithVisualIdentity:(id)a3;
-- (id)defaultProviderItemWithContactImage:(id)a3 renderingQueue:(id)a4 callbackQueue:(id)a5;
-- (id)loadItemsForSize:(CGSize)a3 scale:(double)a4 RTL:(BOOL)a5 renderingQueue:(id)a6 callbackQueue:(id)a7 itemDelegate:(id)a8;
-- (id)providerItemForContactImage:(id)a3 size:(CGSize)a4 scale:(double)a5 RTL:(BOOL)a6 renderingQueue:(id)a7 callbackQueue:(id)a8 fallbackToDefaultItem:(BOOL)a9;
++ (id)poseConfigurationFromAvatarRecord:(id)record contactImage:(id)image;
++ (id)poseConfigurationFromContactImage:(id)image;
+- (CNPhotoPickerRecentsProvider)initWithVisualIdentity:(id)identity;
+- (id)defaultProviderItemWithContactImage:(id)image renderingQueue:(id)queue callbackQueue:(id)callbackQueue;
+- (id)loadItemsForSize:(CGSize)size scale:(double)scale RTL:(BOOL)l renderingQueue:(id)queue callbackQueue:(id)callbackQueue itemDelegate:(id)delegate;
+- (id)providerItemForContactImage:(id)image size:(CGSize)size scale:(double)scale RTL:(BOOL)l renderingQueue:(id)queue callbackQueue:(id)callbackQueue fallbackToDefaultItem:(BOOL)item;
 @end
 
 @implementation CNPhotoPickerRecentsProvider
 
-- (id)defaultProviderItemWithContactImage:(id)a3 renderingQueue:(id)a4 callbackQueue:(id)a5
+- (id)defaultProviderItemWithContactImage:(id)image renderingQueue:(id)queue callbackQueue:(id)callbackQueue
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  callbackQueueCopy = callbackQueue;
+  queueCopy = queue;
+  imageCopy = image;
   v10 = [CNPhotoPickerRecentsProviderItem alloc];
-  v11 = [v9 imageData];
-  v12 = [v9 variant];
-  [v9 cropRect];
-  v13 = [(CNPhotoPickerProviderItem *)v10 initWithImageData:v11 thumbnailImageData:0 fullscreenImageData:0 imageFilterName:v12 cropRect:v8 renderingQueue:v7 callbackQueue:?];
+  imageData = [imageCopy imageData];
+  variant = [imageCopy variant];
+  [imageCopy cropRect];
+  v13 = [(CNPhotoPickerProviderItem *)v10 initWithImageData:imageData thumbnailImageData:0 fullscreenImageData:0 imageFilterName:variant cropRect:queueCopy renderingQueue:callbackQueueCopy callbackQueue:?];
 
-  v14 = [v9 identifier];
+  identifier = [imageCopy identifier];
 
-  [(CNPhotoPickerProviderItem *)v13 setRecentsIdentifier:v14];
+  [(CNPhotoPickerProviderItem *)v13 setRecentsIdentifier:identifier];
 
   return v13;
 }
 
-- (id)providerItemForContactImage:(id)a3 size:(CGSize)a4 scale:(double)a5 RTL:(BOOL)a6 renderingQueue:(id)a7 callbackQueue:(id)a8 fallbackToDefaultItem:(BOOL)a9
+- (id)providerItemForContactImage:(id)image size:(CGSize)size scale:(double)scale RTL:(BOOL)l renderingQueue:(id)queue callbackQueue:(id)callbackQueue fallbackToDefaultItem:(BOOL)item
 {
-  v9 = a9;
-  v12 = a6;
-  height = a4.height;
-  width = a4.width;
-  v17 = a3;
-  v18 = a7;
-  v19 = a8;
-  v20 = [v17 source];
-  if (v20 == 4)
+  itemCopy = item;
+  lCopy = l;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
+  queueCopy = queue;
+  callbackQueueCopy = callbackQueue;
+  source = [imageCopy source];
+  if (source == 4)
   {
     v53 = *MEMORY[0x1E6996568];
-    v54 = [v17 displayString];
-    LODWORD(v53) = (*(v53 + 16))(v53, v54);
+    displayString = [imageCopy displayString];
+    LODWORD(v53) = (*(v53 + 16))(v53, displayString);
 
     if (v53)
     {
-      v55 = !v9;
+      v55 = !itemCopy;
     }
 
     else
@@ -57,13 +57,13 @@
     if (v55)
     {
       v56 = [CNPhotoPickerEmojiProviderItem alloc];
-      v57 = [v17 displayString];
-      v58 = [v17 variant];
-      v59 = [CNPhotoPickerVariantsManager colorVariantWithColorNamed:v58];
-      v30 = [(CNPhotoPickerEmojiProviderItem *)v56 initWithStringRepresentation:v57 backgroundColorVariant:v59 size:width, height];
+      displayString2 = [imageCopy displayString];
+      variant = [imageCopy variant];
+      v59 = [CNPhotoPickerVariantsManager colorVariantWithColorNamed:variant];
+      height = [(CNPhotoPickerEmojiProviderItem *)v56 initWithStringRepresentation:displayString2 backgroundColorVariant:v59 size:width, height];
 
-      v60 = [v17 identifier];
-      [(CNPhotoPickerProviderItem *)v30 setRecentsIdentifier:v60];
+      identifier = [imageCopy identifier];
+      [(CNPhotoPickerProviderItem *)height setRecentsIdentifier:identifier];
 
       goto LABEL_24;
     }
@@ -71,126 +71,126 @@
     goto LABEL_17;
   }
 
-  if (v20 == 3)
+  if (source == 3)
   {
-    v35 = [v17 variant];
+    variant2 = [imageCopy variant];
 
-    if (v35)
+    if (variant2)
     {
       v36 = [CNPhotoPickerAnimojiProviderItem alloc];
-      v37 = [v17 imageData];
-      [v17 cropRect];
+      imageData = [imageCopy imageData];
+      [imageCopy cropRect];
       v39 = v38;
       v41 = v40;
       v43 = v42;
       v45 = v44;
-      v46 = [v17 variant];
-      v47 = [CNPhotoPickerVariantsManager colorVariantWithColorNamed:v46];
-      v30 = [(CNPhotoPickerAnimojiProviderItem *)v36 initWithOriginalImageData:v37 cropRect:v47 backgroundColorVariant:v39, v41, v43, v45];
+      variant3 = [imageCopy variant];
+      v47 = [CNPhotoPickerVariantsManager colorVariantWithColorNamed:variant3];
+      height = [(CNPhotoPickerAnimojiProviderItem *)v36 initWithOriginalImageData:imageData cropRect:v47 backgroundColorVariant:v39, v41, v43, v45];
 
-      v48 = [v17 identifier];
-      [(CNPhotoPickerProviderItem *)v30 setRecentsIdentifier:v48];
+      identifier2 = [imageCopy identifier];
+      [(CNPhotoPickerProviderItem *)height setRecentsIdentifier:identifier2];
 
-      v49 = [v17 poseConfigurationData];
+      poseConfigurationData = [imageCopy poseConfigurationData];
 
-      if (!v49)
+      if (!poseConfigurationData)
       {
         goto LABEL_24;
       }
 
       v50 = MEMORY[0x1E695CF08];
-      v51 = [v17 sourceIdentifier];
-      v21 = [v50 avatarRecordForIdentifier:v51];
+      sourceIdentifier = [imageCopy sourceIdentifier];
+      v21 = [v50 avatarRecordForIdentifier:sourceIdentifier];
 
       if (v21)
       {
-        [(CNPhotoPickerEmojiProviderItem *)v30 setAvatarRecord:v21];
-        v52 = [objc_opt_class() poseConfigurationFromAvatarRecord:v21 contactImage:v17];
-        [(CNPhotoPickerEmojiProviderItem *)v30 setPoseConfiguration:v52];
+        [(CNPhotoPickerEmojiProviderItem *)height setAvatarRecord:v21];
+        v52 = [objc_opt_class() poseConfigurationFromAvatarRecord:v21 contactImage:imageCopy];
+        [(CNPhotoPickerEmojiProviderItem *)height setPoseConfiguration:v52];
       }
 
       goto LABEL_23;
     }
 
-    if (!v9)
+    if (!itemCopy)
     {
-      v30 = 0;
+      height = 0;
       goto LABEL_24;
     }
 
 LABEL_17:
-    v30 = [(CNPhotoPickerRecentsProvider *)self defaultProviderItemWithContactImage:v17 renderingQueue:v18 callbackQueue:v19];
+    height = [(CNPhotoPickerRecentsProvider *)self defaultProviderItemWithContactImage:imageCopy renderingQueue:queueCopy callbackQueue:callbackQueueCopy];
     goto LABEL_24;
   }
 
-  if (v20 != 1)
+  if (source != 1)
   {
     goto LABEL_17;
   }
 
   v21 = +[CNAvatarImageRendererSettings defaultSettings];
   v22 = [[CNAvatarImageRenderer alloc] initWithSettings:v21];
-  v23 = [v17 variant];
+  variant4 = [imageCopy variant];
 
-  if (v23)
+  if (variant4)
   {
     v24 = objc_alloc(MEMORY[0x1E69BDC50]);
-    v25 = [v17 variant];
-    v26 = [v24 initWithColorName:v25];
+    variant5 = [imageCopy variant];
+    v26 = [v24 initWithColorName:variant5];
 
-    v27 = [CNAvatarImageRenderingScope scopeWithPointSize:v12 scale:0 rightToLeft:v26 style:width color:height, a5];
+    scale = [CNAvatarImageRenderingScope scopeWithPointSize:lCopy scale:0 rightToLeft:v26 style:width color:height, scale];
     v28 = [CNPhotoPickerMonogramProviderItem alloc];
-    v29 = [v17 imageData];
-    v30 = [(CNPhotoPickerMonogramProviderItem *)v28 initWithImageData:v29 thumbnailImageData:0 fullscreenImageData:0 cropRect:v27 renderingScope:v22 avatarRenderer:1 isVariantOptionItem:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+    imageData2 = [imageCopy imageData];
+    height = [(CNPhotoPickerMonogramProviderItem *)v28 initWithImageData:imageData2 thumbnailImageData:0 fullscreenImageData:0 cropRect:scale renderingScope:v22 avatarRenderer:1 isVariantOptionItem:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
-    v31 = [v17 displayString];
-    [(CNPhotoPickerEmojiProviderItem *)v30 setMonogramText:v31];
+    displayString3 = [imageCopy displayString];
+    [(CNPhotoPickerEmojiProviderItem *)height setMonogramText:displayString3];
 
-    v32 = [(CNPhotoPickerRecentsProvider *)self visualIdentity];
-    v33 = [v32 mutableCopy];
-    [(CNPhotoPickerEmojiProviderItem *)v30 setVisualIdentity:v33];
+    visualIdentity = [(CNPhotoPickerRecentsProvider *)self visualIdentity];
+    v33 = [visualIdentity mutableCopy];
+    [(CNPhotoPickerEmojiProviderItem *)height setVisualIdentity:v33];
 
-    [(CNPhotoPickerEmojiProviderItem *)v30 setAvatarRenderer:v22];
-    [(CNPhotoPickerEmojiProviderItem *)v30 setRenderingScope:v27];
-    v34 = [v17 identifier];
-    [(CNPhotoPickerProviderItem *)v30 setRecentsIdentifier:v34];
+    [(CNPhotoPickerEmojiProviderItem *)height setAvatarRenderer:v22];
+    [(CNPhotoPickerEmojiProviderItem *)height setRenderingScope:scale];
+    identifier3 = [imageCopy identifier];
+    [(CNPhotoPickerProviderItem *)height setRecentsIdentifier:identifier3];
   }
 
-  else if (v9)
+  else if (itemCopy)
   {
-    v30 = [(CNPhotoPickerRecentsProvider *)self defaultProviderItemWithContactImage:v17 renderingQueue:v18 callbackQueue:v19];
+    height = [(CNPhotoPickerRecentsProvider *)self defaultProviderItemWithContactImage:imageCopy renderingQueue:queueCopy callbackQueue:callbackQueueCopy];
   }
 
   else
   {
-    v30 = 0;
+    height = 0;
   }
 
 LABEL_23:
 LABEL_24:
 
-  return v30;
+  return height;
 }
 
-- (id)loadItemsForSize:(CGSize)a3 scale:(double)a4 RTL:(BOOL)a5 renderingQueue:(id)a6 callbackQueue:(id)a7 itemDelegate:(id)a8
+- (id)loadItemsForSize:(CGSize)size scale:(double)scale RTL:(BOOL)l renderingQueue:(id)queue callbackQueue:(id)callbackQueue itemDelegate:(id)delegate
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v47[1] = *MEMORY[0x1E69E9840];
-  v30 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = [(CNPhotoPickerRecentsProvider *)self visualIdentity];
-  v18 = [v17 identifier];
+  queueCopy = queue;
+  callbackQueueCopy = callbackQueue;
+  delegateCopy = delegate;
+  visualIdentity = [(CNPhotoPickerRecentsProvider *)self visualIdentity];
+  identifier = [visualIdentity identifier];
 
-  if (v18)
+  if (identifier)
   {
     [(CNPhotoPickerRecentsProvider *)self setContainsContactImage:0];
     [(CNPhotoPickerRecentsProvider *)self setContainsMonogram:0];
     v19 = objc_alloc_init(MEMORY[0x1E695CFB0]);
-    v20 = [(CNPhotoPickerRecentsProvider *)self visualIdentity];
-    v21 = [v20 identifier];
-    v22 = [v19 recentImagesForContactWithIdentifier:v21];
+    visualIdentity2 = [(CNPhotoPickerRecentsProvider *)self visualIdentity];
+    identifier2 = [visualIdentity2 identifier];
+    v22 = [v19 recentImagesForContactWithIdentifier:identifier2];
 
     v23 = objc_alloc_init(MEMORY[0x1E695CDA8]);
     v46 = 0;
@@ -212,12 +212,12 @@ LABEL_24:
       v31[4] = self;
       v36 = width;
       v37 = height;
-      v38 = a4;
-      v39 = a5;
-      v32 = v30;
-      v33 = v15;
+      scaleCopy = scale;
+      lCopy = l;
+      v32 = queueCopy;
+      v33 = callbackQueueCopy;
       v35 = &v40;
-      v34 = v16;
+      v34 = delegateCopy;
       v26 = [v24 _cn_compactMap:v31];
       if (v41[5])
       {
@@ -302,20 +302,20 @@ LABEL_16:
   return v23;
 }
 
-- (CNPhotoPickerRecentsProvider)initWithVisualIdentity:(id)a3
+- (CNPhotoPickerRecentsProvider)initWithVisualIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v13.receiver = self;
   v13.super_class = CNPhotoPickerRecentsProvider;
   v6 = [(CNPhotoPickerRecentsProvider *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_visualIdentity, a3);
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
+    objc_storeStrong(&v6->_visualIdentity, identity);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v7->identifier;
-    v7->identifier = v9;
+    v7->identifier = uUIDString;
 
     v11 = v7;
   }
@@ -323,18 +323,18 @@ LABEL_16:
   return v7;
 }
 
-+ (id)poseConfigurationFromContactImage:(id)a3
++ (id)poseConfigurationFromContactImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   v4 = MEMORY[0x1E695CF08];
-  v5 = [v3 sourceIdentifier];
-  v6 = [v4 avatarRecordForIdentifier:v5];
+  sourceIdentifier = [imageCopy sourceIdentifier];
+  v6 = [v4 avatarRecordForIdentifier:sourceIdentifier];
 
   if (v6)
   {
     v7 = MEMORY[0x1E695CF08];
-    v8 = [v3 poseConfigurationData];
-    v9 = [v7 poseConfigurationForData:v8 withAvatarRecord:v6];
+    poseConfigurationData = [imageCopy poseConfigurationData];
+    v9 = [v7 poseConfigurationForData:poseConfigurationData withAvatarRecord:v6];
   }
 
   else
@@ -345,12 +345,12 @@ LABEL_16:
   return v9;
 }
 
-+ (id)poseConfigurationFromAvatarRecord:(id)a3 contactImage:(id)a4
++ (id)poseConfigurationFromAvatarRecord:(id)record contactImage:(id)image
 {
   v5 = MEMORY[0x1E695CF08];
-  v6 = a3;
-  v7 = [a4 poseConfigurationData];
-  v8 = [v5 poseConfigurationForData:v7 withAvatarRecord:v6];
+  recordCopy = record;
+  poseConfigurationData = [image poseConfigurationData];
+  v8 = [v5 poseConfigurationForData:poseConfigurationData withAvatarRecord:recordCopy];
 
   return v8;
 }

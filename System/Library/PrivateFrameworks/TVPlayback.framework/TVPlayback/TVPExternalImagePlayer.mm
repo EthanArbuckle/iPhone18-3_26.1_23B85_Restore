@@ -1,36 +1,36 @@
 @interface TVPExternalImagePlayer
-- (TVPExternalImagePlayer)initWithMediaItem:(id)a3 referenceTime:(id *)a4 forDate:(id)a5;
-- (double)_timeAfterRemovingInterstitials:(double)a3;
+- (TVPExternalImagePlayer)initWithMediaItem:(id)item referenceTime:(id *)time forDate:(id)date;
+- (double)_timeAfterRemovingInterstitials:(double)interstitials;
 - (void)_cancelAllImageLoads;
-- (void)_cancelStaleImageLoadsForTime:(double)a3;
-- (void)_displayLinkTimerFired:(id)a3;
+- (void)_cancelStaleImageLoadsForTime:(double)time;
+- (void)_displayLinkTimerFired:(id)fired;
 - (void)_loadImagesIfNecessary;
-- (void)_updateImageIntervalWithRate:(double)a3;
-- (void)setElapsedTime:(id *)a3;
-- (void)setRate:(double)a3;
-- (void)setReferenceTime:(id *)a3;
+- (void)_updateImageIntervalWithRate:(double)rate;
+- (void)setElapsedTime:(id *)time;
+- (void)setRate:(double)rate;
+- (void)setReferenceTime:(id *)time;
 @end
 
 @implementation TVPExternalImagePlayer
 
-- (TVPExternalImagePlayer)initWithMediaItem:(id)a3 referenceTime:(id *)a4 forDate:(id)a5
+- (TVPExternalImagePlayer)initWithMediaItem:(id)item referenceTime:(id *)time forDate:(id)date
 {
-  v9 = a3;
-  v10 = a5;
+  itemCopy = item;
+  dateCopy = date;
   v18.receiver = self;
   v18.super_class = TVPExternalImagePlayer;
   v11 = [(TVPExternalImagePlayer *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_mediaItem, a3);
+    objc_storeStrong(&v11->_mediaItem, item);
     v13 = MEMORY[0x277CC08F0];
     *&v12->_elapsedTime.value = *MEMORY[0x277CC08F0];
     v12->_elapsedTime.epoch = *(v13 + 16);
-    var3 = a4->var3;
-    *&v12->_referenceTime.value = *&a4->var0;
+    var3 = time->var3;
+    *&v12->_referenceTime.value = *&time->var0;
     v12->_referenceTime.epoch = var3;
-    objc_storeStrong(&v12->_referenceDate, a5);
+    objc_storeStrong(&v12->_referenceDate, date);
     v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
     imageInfosBeingLoaded = v12->_imageInfosBeingLoaded;
     v12->_imageInfosBeingLoaded = v15;
@@ -39,23 +39,23 @@
   return v12;
 }
 
-- (void)setRate:(double)a3
+- (void)setRate:(double)rate
 {
-  if (self->_rate != a3)
+  if (self->_rate != rate)
   {
-    self->_rate = a3;
-    if (a3 == 0.0)
+    self->_rate = rate;
+    if (rate == 0.0)
     {
-      v4 = [(TVPExternalImagePlayer *)self displayLink];
-      [v4 invalidate];
+      displayLink = [(TVPExternalImagePlayer *)self displayLink];
+      [displayLink invalidate];
 
       [(TVPExternalImagePlayer *)self setDisplayLink:0];
       [(TVPExternalImagePlayer *)self setPreviousTimestamp:0.0];
-      v5 = [(TVPExternalImagePlayer *)self imageInfosBeingLoaded];
-      [v5 removeAllObjects];
+      imageInfosBeingLoaded = [(TVPExternalImagePlayer *)self imageInfosBeingLoaded];
+      [imageInfosBeingLoaded removeAllObjects];
 
-      v6 = [(TVPExternalImagePlayer *)self imageLoader];
-      [v6 invalidate];
+      imageLoader = [(TVPExternalImagePlayer *)self imageLoader];
+      [imageLoader invalidate];
 
       [(TVPExternalImagePlayer *)self setImageLoader:0];
 
@@ -64,12 +64,12 @@
 
     else
     {
-      v7 = [(TVPExternalImagePlayer *)self imageLoader];
+      imageLoader2 = [(TVPExternalImagePlayer *)self imageLoader];
 
-      if (!v7)
+      if (!imageLoader2)
       {
-        v8 = [(TVPExternalImagePlayer *)self mediaItem];
-        v9 = [v8 mediaItemMetadataForProperty:@"TVPMediaItemMetadataExternalImageConfig"];
+        mediaItem = [(TVPExternalImagePlayer *)self mediaItem];
+        v9 = [mediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataExternalImageConfig"];
 
         if (v9)
         {
@@ -81,39 +81,39 @@
       [(TVPExternalImagePlayer *)self _cancelAllImageLoads];
       [(TVPExternalImagePlayer *)self _updateImageIntervalWithRate:self->_rate];
       [(TVPExternalImagePlayer *)self _loadImagesIfNecessary];
-      v11 = [(TVPExternalImagePlayer *)self displayLink];
+      displayLink2 = [(TVPExternalImagePlayer *)self displayLink];
 
-      if (!v11)
+      if (!displayLink2)
       {
         v13 = [MEMORY[0x277CD9E48] displayLinkWithTarget:self selector:sel__displayLinkTimerFired_];
         [v13 setPreferredFramesPerSecond:30];
         [(TVPExternalImagePlayer *)self setDisplayLink:v13];
-        v12 = [MEMORY[0x277CBEB88] mainRunLoop];
-        [v13 addToRunLoop:v12 forMode:*MEMORY[0x277CBE738]];
+        mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+        [v13 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
       }
     }
   }
 }
 
-- (void)setElapsedTime:(id *)a3
+- (void)setElapsedTime:(id *)time
 {
-  if ((a3->var2 & 0x1D) == 1)
+  if ((time->var2 & 0x1D) == 1)
   {
-    v3 = *&a3->var0;
-    self->_elapsedTime.epoch = a3->var3;
+    v3 = *&time->var0;
+    self->_elapsedTime.epoch = time->var3;
     *&self->_elapsedTime.value = v3;
   }
 }
 
-- (void)_displayLinkTimerFired:(id)a3
+- (void)_displayLinkTimerFired:(id)fired
 {
-  v4 = a3;
-  [v4 timestamp];
+  firedCopy = fired;
+  [firedCopy timestamp];
   v6 = v5;
   [(TVPExternalImagePlayer *)self previousTimestamp];
   if (v7 == 0.0)
   {
-    v8 = v6 + -1.0 / [v4 preferredFramesPerSecond];
+    v8 = v6 + -1.0 / [firedCopy preferredFramesPerSecond];
   }
 
   else
@@ -129,15 +129,15 @@
   v11 = Seconds + (v6 - v8) * v10;
   memset(&time, 0, sizeof(time));
   CMTimeMakeWithSeconds(&time, v11, 1000000);
-  v12 = [(TVPExternalImagePlayer *)self referenceDate];
-  if (v12)
+  referenceDate = [(TVPExternalImagePlayer *)self referenceDate];
+  if (referenceDate)
   {
     memset(&v30, 0, sizeof(v30));
     [(TVPExternalImagePlayer *)self referenceTime];
     v28 = time;
     CMTimeSubtract(&v30, &v28, &rhs);
     rhs = v30;
-    v13 = [v12 dateByAddingTimeInterval:CMTimeGetSeconds(&rhs)];
+    v13 = [referenceDate dateByAddingTimeInterval:CMTimeGetSeconds(&rhs)];
   }
 
   else
@@ -156,23 +156,23 @@
   if (floor(v16) != floor(v15))
   {
     [(TVPExternalImagePlayer *)self _cancelStaleImageLoadsForTime:v16];
-    v18 = [(TVPExternalImagePlayer *)self imageLoader];
+    imageLoader = [(TVPExternalImagePlayer *)self imageLoader];
     [(TVPExternalImagePlayer *)self imageInterval];
-    [v18 closestImageTimeForTime:v17 imageInterval:v19];
+    [imageLoader closestImageTimeForTime:v17 imageInterval:v19];
     v21 = v20;
     [(TVPExternalImagePlayer *)self currentImageTime];
-    if (v22 != v21 && [v18 imageIsLoadedForTime:v21])
+    if (v22 != v21 && [imageLoader imageIsLoadedForTime:v21])
     {
-      v23 = [v18 loadedImageForTime:v21];
+      v23 = [imageLoader loadedImageForTime:v21];
       if (v23)
       {
         [(TVPExternalImagePlayer *)self setCurrentImage:v23];
-        v24 = [(TVPExternalImagePlayer *)self imageUpdateBlock];
+        imageUpdateBlock = [(TVPExternalImagePlayer *)self imageUpdateBlock];
 
-        if (v24)
+        if (imageUpdateBlock)
         {
-          v25 = [(TVPExternalImagePlayer *)self imageUpdateBlock];
-          (v25)[2](v25, v23);
+          imageUpdateBlock2 = [(TVPExternalImagePlayer *)self imageUpdateBlock];
+          (imageUpdateBlock2)[2](imageUpdateBlock2, v23);
         }
 
         [(TVPExternalImagePlayer *)self setCurrentImageTime:v21];
@@ -180,22 +180,22 @@
     }
   }
 
-  v26 = [(TVPExternalImagePlayer *)self elapsedTimeUpdateBlock];
-  if (v26)
+  elapsedTimeUpdateBlock = [(TVPExternalImagePlayer *)self elapsedTimeUpdateBlock];
+  if (elapsedTimeUpdateBlock)
   {
     [(TVPExternalImagePlayer *)self rate];
-    v27 = v26[2];
+    v27 = elapsedTimeUpdateBlock[2];
     v30 = time;
     rhs = v32;
-    v27(v26, &v30, &rhs, v13);
+    v27(elapsedTimeUpdateBlock, &v30, &rhs, v13);
   }
 }
 
 - (void)_loadImagesIfNecessary
 {
   v44 = *MEMORY[0x277D85DE8];
-  v32 = [(TVPExternalImagePlayer *)self imageLoader];
-  if (v32)
+  imageLoader = [(TVPExternalImagePlayer *)self imageLoader];
+  if (imageLoader)
   {
     [(TVPExternalImagePlayer *)self rate];
     v4 = v3;
@@ -205,17 +205,17 @@
     [(TVPExternalImagePlayer *)self _timeAfterRemovingInterstitials:CMTimeGetSeconds(&time)];
     v6 = v5;
     [(TVPExternalImagePlayer *)self imageInterval];
-    [v32 closestImageTimeForTime:v4 + v6 imageInterval:v7];
+    [imageLoader closestImageTimeForTime:v4 + v6 imageInterval:v7];
     v9 = v8;
     [(TVPExternalImagePlayer *)self imageInterval];
     v11 = v10;
     v31 = objc_alloc_init(MEMORY[0x277CBEB18]);
     if (v4 <= 0.0)
     {
-      [v32 firstImageTime];
+      [imageLoader firstImageTime];
       for (i = v15; v9 >= i; v9 = v9 - v11)
       {
-        if (([v32 imageIsLoadedForTime:{v9, v31}] & 1) == 0)
+        if (([imageLoader imageIsLoadedForTime:{v9, v31}] & 1) == 0)
         {
           v17 = objc_alloc_init(TVPPlaybackImageLoadInfo);
           [(TVPPlaybackImageLoadInfo *)v17 setRequestedTime:v9];
@@ -226,10 +226,10 @@
 
     else
     {
-      [v32 lastImageTime];
+      [imageLoader lastImageTime];
       for (j = v12; v9 <= j; v9 = v11 + v9)
       {
-        if (([v32 imageIsLoadedForTime:{v9, v31}] & 1) == 0)
+        if (([imageLoader imageIsLoadedForTime:{v9, v31}] & 1) == 0)
         {
           v14 = objc_alloc_init(TVPPlaybackImageLoadInfo);
           [(TVPPlaybackImageLoadInfo *)v14 setRequestedTime:v9];
@@ -261,12 +261,12 @@
             }
 
             v23 = *(*(&v37 + 1) + 8 * v22);
-            v24 = [(TVPExternalImagePlayer *)self imageInfosBeingLoaded];
-            v25 = [(TVPExternalImagePlayer *)self imageInfosBeingLoaded];
-            v26 = [v24 indexOfObject:v23 inSortedRange:0 options:objc_msgSend(v25 usingComparator:{"count"), 1024, &__block_literal_global_7}];
+            imageInfosBeingLoaded = [(TVPExternalImagePlayer *)self imageInfosBeingLoaded];
+            imageInfosBeingLoaded2 = [(TVPExternalImagePlayer *)self imageInfosBeingLoaded];
+            v26 = [imageInfosBeingLoaded indexOfObject:v23 inSortedRange:0 options:objc_msgSend(imageInfosBeingLoaded2 usingComparator:{"count"), 1024, &__block_literal_global_7}];
 
-            v27 = [(TVPExternalImagePlayer *)self imageInfosBeingLoaded];
-            [v27 insertObject:v23 atIndex:v26];
+            imageInfosBeingLoaded3 = [(TVPExternalImagePlayer *)self imageInfosBeingLoaded];
+            [imageInfosBeingLoaded3 insertObject:v23 atIndex:v26];
 
             ++v22;
           }
@@ -285,7 +285,7 @@
       v35[2] = __48__TVPExternalImagePlayer__loadImagesIfNecessary__block_invoke_2;
       v35[3] = &unk_279D7BD50;
       objc_copyWeak(&v36, &time);
-      v29 = [v32 loadImagesForTimes:v28 maxSize:v35 withHandler:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+      v29 = [imageLoader loadImagesForTimes:v28 maxSize:v35 withHandler:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
 
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
@@ -389,28 +389,28 @@ void __48__TVPExternalImagePlayer__loadImagesIfNecessary__block_invoke_2_11(uint
 
 - (void)_cancelAllImageLoads
 {
-  v5 = [(TVPExternalImagePlayer *)self imageLoader];
-  v3 = [(TVPExternalImagePlayer *)self imageInfosBeingLoaded];
-  v4 = [v3 valueForKey:@"identifier"];
-  [v5 cancelImageLoadingForIdentifiers:v4];
+  imageLoader = [(TVPExternalImagePlayer *)self imageLoader];
+  imageInfosBeingLoaded = [(TVPExternalImagePlayer *)self imageInfosBeingLoaded];
+  v4 = [imageInfosBeingLoaded valueForKey:@"identifier"];
+  [imageLoader cancelImageLoadingForIdentifiers:v4];
 }
 
-- (void)_cancelStaleImageLoadsForTime:(double)a3
+- (void)_cancelStaleImageLoadsForTime:(double)time
 {
   v5 = objc_alloc_init(MEMORY[0x277CCAB58]);
   [(TVPExternalImagePlayer *)self rate];
   v7 = v6;
-  v8 = [(TVPExternalImagePlayer *)self imageInfosBeingLoaded];
+  imageInfosBeingLoaded = [(TVPExternalImagePlayer *)self imageInfosBeingLoaded];
   if (v7 <= 0.0)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __56__TVPExternalImagePlayer__cancelStaleImageLoadsForTime___block_invoke_2;
     v11[3] = &unk_279D7BDA0;
-    *&v12[1] = a3;
+    *&v12[1] = time;
     v9 = v12;
     v12[0] = v5;
-    [v8 enumerateObjectsWithOptions:2 usingBlock:v11];
+    [imageInfosBeingLoaded enumerateObjectsWithOptions:2 usingBlock:v11];
   }
 
   else
@@ -419,14 +419,14 @@ void __48__TVPExternalImagePlayer__loadImagesIfNecessary__block_invoke_2_11(uint
     v13[1] = 3221225472;
     v13[2] = __56__TVPExternalImagePlayer__cancelStaleImageLoadsForTime___block_invoke;
     v13[3] = &unk_279D7BDA0;
-    *&v14[1] = a3;
+    *&v14[1] = time;
     v9 = v14;
     v14[0] = v5;
-    [v8 enumerateObjectsUsingBlock:v13];
+    [imageInfosBeingLoaded enumerateObjectsUsingBlock:v13];
   }
 
-  v10 = [(TVPExternalImagePlayer *)self imageInfosBeingLoaded];
-  [v10 removeObjectsAtIndexes:v5];
+  imageInfosBeingLoaded2 = [(TVPExternalImagePlayer *)self imageInfosBeingLoaded];
+  [imageInfosBeingLoaded2 removeObjectsAtIndexes:v5];
 }
 
 uint64_t __56__TVPExternalImagePlayer__cancelStaleImageLoadsForTime___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -465,33 +465,33 @@ uint64_t __56__TVPExternalImagePlayer__cancelStaleImageLoadsForTime___block_invo
   return result;
 }
 
-- (void)_updateImageIntervalWithRate:(double)a3
+- (void)_updateImageIntervalWithRate:(double)rate
 {
-  v5 = [(TVPExternalImagePlayer *)self mediaItem];
-  v7 = [v5 mediaItemMetadataForProperty:@"TVPMediaItemMetadataExternalImageConfig"];
+  mediaItem = [(TVPExternalImagePlayer *)self mediaItem];
+  v7 = [mediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataExternalImageConfig"];
 
   [v7 imageInterval];
-  [(TVPExternalImagePlayer *)self setImageInterval:(vcvtpd_s64_f64(fabs(a3) * 0.25 / v6) * v6)];
+  [(TVPExternalImagePlayer *)self setImageInterval:(vcvtpd_s64_f64(fabs(rate) * 0.25 / v6) * v6)];
 }
 
-- (double)_timeAfterRemovingInterstitials:(double)a3
+- (double)_timeAfterRemovingInterstitials:(double)interstitials
 {
-  v4 = [(TVPExternalImagePlayer *)self mediaItem];
-  v5 = [v4 mediaItemMetadataForProperty:@"TVPMediaItemMetadataInterstitialCollection"];
+  mediaItem = [(TVPExternalImagePlayer *)self mediaItem];
+  v5 = [mediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataInterstitialCollection"];
 
   if (v5)
   {
-    [v5 timeAdjustedByRemovingInterstitials:a3];
-    a3 = v6;
+    [v5 timeAdjustedByRemovingInterstitials:interstitials];
+    interstitials = v6;
   }
 
-  return a3;
+  return interstitials;
 }
 
-- (void)setReferenceTime:(id *)a3
+- (void)setReferenceTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_referenceTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_referenceTime.epoch = time->var3;
   *&self->_referenceTime.value = v3;
 }
 

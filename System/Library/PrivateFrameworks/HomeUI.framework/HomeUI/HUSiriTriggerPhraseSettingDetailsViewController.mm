@@ -1,31 +1,31 @@
 @interface HUSiriTriggerPhraseSettingDetailsViewController
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
 - (HUSiriTriggerPhraseSettingDelegate)delegate;
-- (HUSiriTriggerPhraseSettingDetailsViewController)initWithAccessoryGroupItem:(id)a3;
-- (HUSiriTriggerPhraseSettingDetailsViewController)initWithAccessorySettingItem:(id)a3;
-- (HUSiriTriggerPhraseSettingDetailsViewController)initWithHome:(id)a3 delegate:(id)a4;
+- (HUSiriTriggerPhraseSettingDetailsViewController)initWithAccessoryGroupItem:(id)item;
+- (HUSiriTriggerPhraseSettingDetailsViewController)initWithAccessorySettingItem:(id)item;
+- (HUSiriTriggerPhraseSettingDetailsViewController)initWithHome:(id)home delegate:(id)delegate;
 - (void)_commonInit;
-- (void)_preflightCheckToAllowSwitchingSiriTriggerForMediaItem:(id)a3 changingToOn:(BOOL)a4 withCompletion:(id)a5;
+- (void)_preflightCheckToAllowSwitchingSiriTriggerForMediaItem:(id)item changingToOn:(BOOL)on withCompletion:(id)completion;
 - (void)_updateFooterText;
-- (void)setInProgressTriggerPhraseUpdateIndex:(int64_t)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (void)setInProgressTriggerPhraseUpdateIndex:(int64_t)index;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 @end
 
 @implementation HUSiriTriggerPhraseSettingDetailsViewController
 
-- (HUSiriTriggerPhraseSettingDetailsViewController)initWithAccessorySettingItem:(id)a3
+- (HUSiriTriggerPhraseSettingDetailsViewController)initWithAccessorySettingItem:(id)item
 {
-  v4 = a3;
-  v5 = [[HUSiriTriggerPhraseSettingDetailsItemManager alloc] initWithSourceItem:v4 delegate:self];
+  itemCopy = item;
+  v5 = [[HUSiriTriggerPhraseSettingDetailsItemManager alloc] initWithSourceItem:itemCopy delegate:self];
 
   [(HUSiriTriggerPhraseSettingDetailsViewController *)self setSiriSettingsDetailsItemManager:v5];
-  v6 = [(HUSiriTriggerPhraseSettingDetailsViewController *)self siriSettingsDetailsItemManager];
+  siriSettingsDetailsItemManager = [(HUSiriTriggerPhraseSettingDetailsViewController *)self siriSettingsDetailsItemManager];
   v10.receiver = self;
   v10.super_class = HUSiriTriggerPhraseSettingDetailsViewController;
-  v7 = [(HUItemTableViewController *)&v10 initWithItemManager:v6 tableViewStyle:1];
+  v7 = [(HUItemTableViewController *)&v10 initWithItemManager:siriSettingsDetailsItemManager tableViewStyle:1];
 
   if (v7)
   {
@@ -38,24 +38,24 @@
   return v7;
 }
 
-- (HUSiriTriggerPhraseSettingDetailsViewController)initWithHome:(id)a3 delegate:(id)a4
+- (HUSiriTriggerPhraseSettingDetailsViewController)initWithHome:(id)home delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v7 = MEMORY[0x277D146D0];
-  v8 = a3;
-  v9 = [[v7 alloc] initWithHome:v8];
+  homeCopy = home;
+  v9 = [[v7 alloc] initWithHome:homeCopy];
 
   v10 = [[HUSiriTriggerPhraseSettingDetailsItemManager alloc] initWithSourceItem:v9 delegate:self];
   [(HUSiriTriggerPhraseSettingDetailsViewController *)self setSiriSettingsDetailsItemManager:v10];
 
-  v11 = [(HUSiriTriggerPhraseSettingDetailsViewController *)self siriSettingsDetailsItemManager];
+  siriSettingsDetailsItemManager = [(HUSiriTriggerPhraseSettingDetailsViewController *)self siriSettingsDetailsItemManager];
   v14.receiver = self;
   v14.super_class = HUSiriTriggerPhraseSettingDetailsViewController;
-  v12 = [(HUItemTableViewController *)&v14 initWithItemManager:v11 tableViewStyle:1];
+  v12 = [(HUItemTableViewController *)&v14 initWithItemManager:siriSettingsDetailsItemManager tableViewStyle:1];
 
   if (v12)
   {
-    objc_storeWeak(&v12->_delegate, v6);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
     [(HUSiriTriggerPhraseSettingDetailsViewController *)v12 _commonInit];
   }
 
@@ -71,18 +71,18 @@
   [(HUSiriTriggerPhraseSettingDetailsViewController *)self setTitle:v3];
 }
 
-- (HUSiriTriggerPhraseSettingDetailsViewController)initWithAccessoryGroupItem:(id)a3
+- (HUSiriTriggerPhraseSettingDetailsViewController)initWithAccessoryGroupItem:(id)item
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithAccessoryGroupItem_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUSiriTriggerPhraseSettingDetailsViewController.m" lineNumber:76 description:{@"%s is unavailable; use %@ instead", "-[HUSiriTriggerPhraseSettingDetailsViewController initWithAccessoryGroupItem:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUSiriTriggerPhraseSettingDetailsViewController.m" lineNumber:76 description:{@"%s is unavailable; use %@ instead", "-[HUSiriTriggerPhraseSettingDetailsViewController initWithAccessoryGroupItem:]", v6}];
 
   return 0;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   objc_opt_isKindOfClass();
 
@@ -91,13 +91,13 @@
   return v5;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  cellCopy = cell;
+  itemCopy = item;
+  pathCopy = path;
   objc_opt_class();
-  v30 = v8;
+  v30 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v11 = v30;
@@ -111,7 +111,7 @@
   v12 = v11;
 
   objc_opt_class();
-  v13 = v9;
+  v13 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v14 = v13;
@@ -126,19 +126,19 @@
 
   if (v15)
   {
-    v16 = [v13 latestResults];
+    latestResults = [v13 latestResults];
     v17 = *MEMORY[0x277D13FE8];
-    v18 = [v16 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+    v18 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
     v19 = [v18 BOOLValue] ? 3 : 0;
     [v30 setAccessoryType:v19];
 
-    v20 = [v13 latestResults];
-    v21 = [v20 objectForKeyedSubscript:v17];
-    v22 = [v21 BOOLValue];
+    latestResults2 = [v13 latestResults];
+    v21 = [latestResults2 objectForKeyedSubscript:v17];
+    bOOLValue = [v21 BOOLValue];
 
-    if (v22)
+    if (bOOLValue)
     {
-      -[HUSiriTriggerPhraseSettingDetailsViewController setSelectedSiriTriggerPhraseIndex:](self, "setSelectedSiriTriggerPhraseIndex:", [v10 row]);
+      -[HUSiriTriggerPhraseSettingDetailsViewController setSelectedSiriTriggerPhraseIndex:](self, "setSelectedSiriTriggerPhraseIndex:", [pathCopy row]);
     }
   }
 
@@ -147,8 +147,8 @@
     [v12 setDelegate:self];
   }
 
-  v23 = [(HUItemTableViewController *)self itemManager];
-  v24 = [v23 titleForSection:{objc_msgSend(v10, "section")}];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v24 = [itemManager titleForSection:{objc_msgSend(pathCopy, "section")}];
 
   v25 = MEMORY[0x277CCACA8];
   v26 = objc_opt_class();
@@ -158,44 +158,44 @@
   [v30 setAccessibilityIdentifier:v29];
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a5;
+  animatedCopy = animated;
+  cellCopy = cell;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = HUSiriTriggerPhraseSettingDetailsViewController;
-  v12 = a4;
-  [(HUItemTableViewController *)&v15 updateCell:v10 forItem:v12 indexPath:v11 animated:v6];
+  itemCopy = item;
+  [(HUItemTableViewController *)&v15 updateCell:cellCopy forItem:itemCopy indexPath:pathCopy animated:animatedCopy];
   objc_opt_class();
-  LOBYTE(v6) = objc_opt_isKindOfClass();
+  LOBYTE(animatedCopy) = objc_opt_isKindOfClass();
 
-  if (v6)
+  if (animatedCopy)
   {
-    v13 = [v11 row];
+    v13 = [pathCopy row];
     if (v13 == [(HUSiriTriggerPhraseSettingDetailsViewController *)self inProgressTriggerPhraseUpdateIndex])
     {
       v14 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
       [v14 startAnimating];
-      [v10 setAccessoryView:v14];
+      [cellCopy setAccessoryView:v14];
     }
 
     else
     {
-      [v10 setAccessoryView:0];
+      [cellCopy setAccessoryView:0];
     }
   }
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HUSiriTriggerPhraseSettingDetailsViewController *)self tableView];
-  v8 = [v7 indexPathForCell:v6];
+  onCopy = on;
+  cellCopy = cell;
+  tableView = [(HUSiriTriggerPhraseSettingDetailsViewController *)self tableView];
+  v8 = [tableView indexPathForCell:cellCopy];
 
-  v9 = [(HUItemTableViewController *)self itemManager];
-  v10 = [v9 displayedItemAtIndexPath:v8];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v10 = [itemManager displayedItemAtIndexPath:v8];
 
   objc_opt_class();
   v11 = v10;
@@ -211,11 +211,11 @@
 
   v13 = v12;
 
-  v14 = [v13 sourceItem];
+  sourceItem = [v13 sourceItem];
   v15 = &unk_28251AE08;
-  if ([v14 conformsToProtocol:v15])
+  if ([sourceItem conformsToProtocol:v15])
   {
-    v16 = v14;
+    v16 = sourceItem;
   }
 
   else
@@ -229,13 +229,13 @@
   v20[1] = 3221225472;
   v20[2] = __72__HUSiriTriggerPhraseSettingDetailsViewController_switchCell_didTurnOn___block_invoke;
   v20[3] = &unk_277DBDD10;
-  v21 = v6;
+  v21 = cellCopy;
   v22 = v17;
-  v24 = v4;
-  v23 = self;
+  v24 = onCopy;
+  selfCopy = self;
   v18 = v17;
-  v19 = v6;
-  [(HUSiriTriggerPhraseSettingDetailsViewController *)self _preflightCheckToAllowSwitchingSiriTriggerForMediaItem:v18 changingToOn:v4 withCompletion:v20];
+  v19 = cellCopy;
+  [(HUSiriTriggerPhraseSettingDetailsViewController *)self _preflightCheckToAllowSwitchingSiriTriggerForMediaItem:v18 changingToOn:onCopy withCompletion:v20];
 }
 
 void __72__HUSiriTriggerPhraseSettingDetailsViewController_switchCell_didTurnOn___block_invoke(uint64_t a1, void *a2)
@@ -391,26 +391,26 @@ uint64_t __72__HUSiriTriggerPhraseSettingDetailsViewController_switchCell_didTur
   return [*(a1 + 40) setOn:(*(a1 + 48) & 1) == 0 animated:1];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = HUSiriTriggerPhraseSettingDetailsViewController;
-  [(HUItemTableViewController *)&v17 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(HUSiriTriggerPhraseSettingDetailsViewController *)self selectedSiriTriggerPhraseIndex];
-  if (v8 != [v7 row])
+  [(HUItemTableViewController *)&v17 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  selectedSiriTriggerPhraseIndex = [(HUSiriTriggerPhraseSettingDetailsViewController *)self selectedSiriTriggerPhraseIndex];
+  if (selectedSiriTriggerPhraseIndex != [pathCopy row])
   {
-    v9 = [(HUSiriTriggerPhraseSettingDetailsViewController *)self siriSettingsDetailsItemManager];
-    v10 = [v9 displayedItemAtIndexPath:v7];
+    siriSettingsDetailsItemManager = [(HUSiriTriggerPhraseSettingDetailsViewController *)self siriSettingsDetailsItemManager];
+    v10 = [siriSettingsDetailsItemManager displayedItemAtIndexPath:pathCopy];
 
-    v11 = [v6 cellForRowAtIndexPath:v7];
-    v12 = [(HUSiriTriggerPhraseSettingDetailsViewController *)self siriSettingsDetailsItemManager];
-    v13 = [v12 updateSiriTriggerPhrase:v10];
+    v11 = [viewCopy cellForRowAtIndexPath:pathCopy];
+    siriSettingsDetailsItemManager2 = [(HUSiriTriggerPhraseSettingDetailsViewController *)self siriSettingsDetailsItemManager];
+    v13 = [siriSettingsDetailsItemManager2 updateSiriTriggerPhrase:v10];
 
-    -[HUSiriTriggerPhraseSettingDetailsViewController setInProgressTriggerPhraseUpdateIndex:](self, "setInProgressTriggerPhraseUpdateIndex:", [v7 row]);
-    -[HUSiriTriggerPhraseSettingDetailsViewController setSelectedSiriTriggerPhraseIndex:](self, "setSelectedSiriTriggerPhraseIndex:", [v7 row]);
+    -[HUSiriTriggerPhraseSettingDetailsViewController setInProgressTriggerPhraseUpdateIndex:](self, "setInProgressTriggerPhraseUpdateIndex:", [pathCopy row]);
+    -[HUSiriTriggerPhraseSettingDetailsViewController setSelectedSiriTriggerPhraseIndex:](self, "setSelectedSiriTriggerPhraseIndex:", [pathCopy row]);
     v14 = HFLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -429,7 +429,7 @@ uint64_t __72__HUSiriTriggerPhraseSettingDetailsViewController_switchCell_didTur
     v15 = [v13 addCompletionBlock:v16];
   }
 
-  [v6 deselectRowAtIndexPath:v7 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 void __85__HUSiriTriggerPhraseSettingDetailsViewController_tableView_didSelectRowAtIndexPath___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -442,45 +442,45 @@ void __85__HUSiriTriggerPhraseSettingDetailsViewController_tableView_didSelectRo
   }
 }
 
-- (void)_preflightCheckToAllowSwitchingSiriTriggerForMediaItem:(id)a3 changingToOn:(BOOL)a4 withCompletion:(id)a5
+- (void)_preflightCheckToAllowSwitchingSiriTriggerForMediaItem:(id)item changingToOn:(BOOL)on withCompletion:(id)completion
 {
-  v6 = a4;
+  onCopy = on;
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if ([v8 isSiriEndpointAccessory] && v6)
+  itemCopy = item;
+  completionCopy = completion;
+  if ([itemCopy isSiriEndpointAccessory] && onCopy)
   {
-    v10 = [v8 accessories];
-    v11 = [v10 anyObject];
+    accessories = [itemCopy accessories];
+    anyObject = [accessories anyObject];
 
-    v12 = [v11 hf_siriEndpointProfile];
-    v13 = [v12 currentAssistant];
+    hf_siriEndpointProfile = [anyObject hf_siriEndpointProfile];
+    currentAssistant = [hf_siriEndpointProfile currentAssistant];
     v14 = HFLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v46 = v13;
+      v46 = currentAssistant;
       v47 = 1024;
-      v48 = [v13 isSiriAssistant];
+      isSiriAssistant = [currentAssistant isSiriAssistant];
       _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "currentAssistant = %@, currentAssistant.isSiriAssistant = %{BOOL}d", buf, 0x12u);
     }
 
-    if (v13 && ([v13 isSiriAssistant] & 1) == 0)
+    if (currentAssistant && ([currentAssistant isSiriAssistant] & 1) == 0)
     {
-      v40 = self;
+      selfCopy = self;
       v16 = HFLogForCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v46 = v13;
+        v46 = currentAssistant;
         _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "Accessory has a different assistant = %@", buf, 0xCu);
       }
 
-      v17 = [v13 name];
-      v15 = HULocalizedStringWithFormat(@"HUSiriEndpoint_TurnOffAssistant_AlertTitle", @"%@", v18, v19, v20, v21, v22, v23, v17);
+      name = [currentAssistant name];
+      v15 = HULocalizedStringWithFormat(@"HUSiriEndpoint_TurnOffAssistant_AlertTitle", @"%@", v18, v19, v20, v21, v22, v23, name);
 
-      v24 = [v13 name];
-      v39 = HULocalizedStringWithFormat(@"HUSiriEndpoint_TurnOffAssistant_AlertMessage", @"%@", v25, v26, v27, v28, v29, v30, v24);
+      name2 = [currentAssistant name];
+      v39 = HULocalizedStringWithFormat(@"HUSiriEndpoint_TurnOffAssistant_AlertMessage", @"%@", v25, v26, v27, v28, v29, v30, name2);
 
       v31 = [MEMORY[0x277D75110] alertControllerWithTitle:v15 message:v39 preferredStyle:1];
       v32 = MEMORY[0x277D750F8];
@@ -489,7 +489,7 @@ void __85__HUSiriTriggerPhraseSettingDetailsViewController_tableView_didSelectRo
       v43[1] = 3221225472;
       v43[2] = __134__HUSiriTriggerPhraseSettingDetailsViewController__preflightCheckToAllowSwitchingSiriTriggerForMediaItem_changingToOn_withCompletion___block_invoke;
       v43[3] = &unk_277DBBA20;
-      v34 = v9;
+      v34 = completionCopy;
       v44 = v34;
       v35 = [v32 actionWithTitle:v33 style:0 handler:v43];
       [v31 addAction:v35];
@@ -504,20 +504,20 @@ void __85__HUSiriTriggerPhraseSettingDetailsViewController_tableView_didSelectRo
       v38 = [v36 actionWithTitle:v37 style:1 handler:v41];
       [v31 addAction:v38];
 
-      [(HUSiriTriggerPhraseSettingDetailsViewController *)v40 presentViewController:v31 animated:1 completion:0];
+      [(HUSiriTriggerPhraseSettingDetailsViewController *)selfCopy presentViewController:v31 animated:1 completion:0];
     }
 
     else
     {
       v15 = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEC38]];
-      (*(v9 + 2))(v9, v15);
+      (*(completionCopy + 2))(completionCopy, v15);
     }
   }
 
   else
   {
-    v11 = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEC38]];
-    (*(v9 + 2))(v9, v11);
+    anyObject = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEC38]];
+    (*(completionCopy + 2))(completionCopy, anyObject);
   }
 }
 
@@ -539,20 +539,20 @@ void __134__HUSiriTriggerPhraseSettingDetailsViewController__preflightCheckToAll
 
 - (void)_updateFooterText
 {
-  v3 = [(HUSiriTriggerPhraseSettingDetailsViewController *)self siriSettingsDetailsItemManager];
-  [v3 recalculateVisibilityAndSortAllItems];
+  siriSettingsDetailsItemManager = [(HUSiriTriggerPhraseSettingDetailsViewController *)self siriSettingsDetailsItemManager];
+  [siriSettingsDetailsItemManager recalculateVisibilityAndSortAllItems];
 
-  v4 = [(HUSiriTriggerPhraseSettingDetailsViewController *)self tableView];
-  [v4 reloadData];
+  tableView = [(HUSiriTriggerPhraseSettingDetailsViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)setInProgressTriggerPhraseUpdateIndex:(int64_t)a3
+- (void)setInProgressTriggerPhraseUpdateIndex:(int64_t)index
 {
-  if (self->_inProgressTriggerPhraseUpdateIndex != a3)
+  if (self->_inProgressTriggerPhraseUpdateIndex != index)
   {
     v5 = objc_opt_new();
-    v6 = [(HUSiriTriggerPhraseSettingDetailsViewController *)self siriSettingsDetailsItemManager];
-    v7 = [v6 displayedItemsInSection:0];
+    siriSettingsDetailsItemManager = [(HUSiriTriggerPhraseSettingDetailsViewController *)self siriSettingsDetailsItemManager];
+    v7 = [siriSettingsDetailsItemManager displayedItemsInSection:0];
     v8 = [v7 count];
 
     inProgressTriggerPhraseUpdateIndex = self->_inProgressTriggerPhraseUpdateIndex;
@@ -562,22 +562,22 @@ void __134__HUSiriTriggerPhraseSettingDetailsViewController__preflightCheckToAll
       [v5 addObject:v11];
     }
 
-    if (a3 != 0x7FFFFFFFFFFFFFFFLL && v8 > a3)
+    if (index != 0x7FFFFFFFFFFFFFFFLL && v8 > index)
     {
-      v12 = [MEMORY[0x277CCAA70] indexPathForRow:a3 inSection:0];
+      v12 = [MEMORY[0x277CCAA70] indexPathForRow:index inSection:0];
       [v5 addObject:v12];
     }
 
-    self->_inProgressTriggerPhraseUpdateIndex = a3;
+    self->_inProgressTriggerPhraseUpdateIndex = index;
     if ([v5 count])
     {
-      v13 = [(HUItemTableViewController *)self itemManager];
-      v14 = [v13 diffableDataSourceDisabled];
+      itemManager = [(HUItemTableViewController *)self itemManager];
+      diffableDataSourceDisabled = [itemManager diffableDataSourceDisabled];
 
-      if (v14)
+      if (diffableDataSourceDisabled)
       {
-        v15 = [(HUSiriTriggerPhraseSettingDetailsViewController *)self tableView];
-        [v15 reloadRowsAtIndexPaths:v5 withRowAnimation:5];
+        tableView = [(HUSiriTriggerPhraseSettingDetailsViewController *)self tableView];
+        [tableView reloadRowsAtIndexPaths:v5 withRowAnimation:5];
       }
 
       else
@@ -588,8 +588,8 @@ void __134__HUSiriTriggerPhraseSettingDetailsViewController__preflightCheckToAll
         v18[3] = &unk_277DBBD18;
         v18[4] = self;
         v16 = [v5 na_map:v18];
-        v17 = [(HUSiriTriggerPhraseSettingDetailsViewController *)self siriSettingsDetailsItemManager];
-        [v17 reloadUIRepresentationForItems:v16 withAnimation:0];
+        siriSettingsDetailsItemManager2 = [(HUSiriTriggerPhraseSettingDetailsViewController *)self siriSettingsDetailsItemManager];
+        [siriSettingsDetailsItemManager2 reloadUIRepresentationForItems:v16 withAnimation:0];
       }
     }
   }

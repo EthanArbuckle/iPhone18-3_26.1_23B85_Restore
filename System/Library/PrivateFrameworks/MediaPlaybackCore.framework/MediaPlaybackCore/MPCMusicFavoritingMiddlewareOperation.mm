@@ -1,5 +1,5 @@
 @interface MPCMusicFavoritingMiddlewareOperation
-- (MPCMusicFavoritingMiddlewareOperation)initWithMiddleware:(id)a3 playerRequest:(id)a4;
+- (MPCMusicFavoritingMiddlewareOperation)initWithMiddleware:(id)middleware playerRequest:(id)request;
 - (NSArray)inputProtocols;
 - (void)execute;
 @end
@@ -18,15 +18,15 @@
 - (void)execute
 {
   v59 = *MEMORY[0x1E69E9840];
-  v3 = [(MPCPlayerRequest *)self->_playerRequest userIdentity];
-  if (v3)
+  userIdentity = [(MPCPlayerRequest *)self->_playerRequest userIdentity];
+  if (userIdentity)
   {
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v4 = [(MPCMusicFavoritingMiddlewareOperation *)self inputOperations];
-    v5 = [v4 objectForKey:&unk_1F45D1498];
+    inputOperations = [(MPCMusicFavoritingMiddlewareOperation *)self inputOperations];
+    v5 = [inputOperations objectForKey:&unk_1F45D1498];
 
     v6 = [v5 countByEnumeratingWithState:&v53 objects:v58 count:16];
     if (v6)
@@ -41,8 +41,8 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v53 + 1) + 8 * v8) controller];
-        if (v9)
+        controller = [*(*(&v53 + 1) + 8 * v8) controller];
+        if (controller)
         {
           break;
         }
@@ -63,17 +63,17 @@ LABEL_4:
     else
     {
 LABEL_10:
-      v9 = 0;
+      controller = 0;
     }
 
-    v10 = [v9 resolvedPlayerPath];
-    v11 = [v10 isSystemMusicPath];
+    resolvedPlayerPath = [controller resolvedPlayerPath];
+    isSystemMusicPath = [resolvedPlayerPath isSystemMusicPath];
 
-    if (v11)
+    if (isSystemMusicPath)
     {
-      v12 = [MEMORY[0x1E69E44D0] sharedMonitorForIdentity:v3];
-      v13 = [v12 subscriptionStatus];
-      [(MPCMusicFavoritingMiddleware *)self->_middleware setRequestingUserSubscriptionStatus:v13];
+      v12 = [MEMORY[0x1E69E44D0] sharedMonitorForIdentity:userIdentity];
+      subscriptionStatus = [v12 subscriptionStatus];
+      [(MPCMusicFavoritingMiddleware *)self->_middleware setRequestingUserSubscriptionStatus:subscriptionStatus];
       v47 = 0;
       v48 = &v47;
       v49 = 0x3032000000;
@@ -94,7 +94,7 @@ LABEL_10:
       v41[1] = 3221225472;
       v41[2] = __48__MPCMusicFavoritingMiddlewareOperation_execute__block_invoke_2;
       v41[3] = &unk_1E8237F98;
-      v17 = v13;
+      v17 = subscriptionStatus;
       v42 = v17;
       v18 = v16;
       v43 = v18;
@@ -115,8 +115,8 @@ LABEL_10:
       v34[3] = &unk_1E8238488;
       v34[4] = &v35;
       v22 = [v21 initWithBlock:v34];
-      v23 = [MEMORY[0x1E69706D8] sharedDeviceLibraryController];
-      v24 = [MEMORY[0x1E696AD88] defaultCenter];
+      mEMORY[0x1E69706D8] = [MEMORY[0x1E69706D8] sharedDeviceLibraryController];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v25 = *MEMORY[0x1E696FBF0];
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
@@ -124,7 +124,7 @@ LABEL_10:
       v32[3] = &unk_1E8237FC0;
       v26 = v18;
       v33 = v26;
-      v27 = [v24 addObserverForName:v25 object:v23 queue:0 usingBlock:v32];
+      v27 = [defaultCenter addObserverForName:v25 object:mEMORY[0x1E69706D8] queue:0 usingBlock:v32];
       v28 = v36[5];
       v36[5] = v27;
 
@@ -169,18 +169,18 @@ void __48__MPCMusicFavoritingMiddlewareOperation_execute__block_invoke_3(uint64_
   [v2 removeObserver:*(*(*(a1 + 32) + 8) + 40)];
 }
 
-- (MPCMusicFavoritingMiddlewareOperation)initWithMiddleware:(id)a3 playerRequest:(id)a4
+- (MPCMusicFavoritingMiddlewareOperation)initWithMiddleware:(id)middleware playerRequest:(id)request
 {
-  v7 = a3;
-  v8 = a4;
+  middlewareCopy = middleware;
+  requestCopy = request;
   v12.receiver = self;
   v12.super_class = MPCMusicFavoritingMiddlewareOperation;
   v9 = [(MPAsyncOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_middleware, a3);
-    objc_storeStrong(&v10->_playerRequest, a4);
+    objc_storeStrong(&v9->_middleware, middleware);
+    objc_storeStrong(&v10->_playerRequest, request);
   }
 
   return v10;

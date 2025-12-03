@@ -1,13 +1,13 @@
 @interface PKAccountWebServiceTermsDataRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceTermsDataRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  informationCopy = information;
   baseURL = self->_baseURL;
   if (!baseURL)
   {
@@ -72,16 +72,16 @@ LABEL_14:
   v20[2] = @"termsData";
   v20[3] = termsIdentifier;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:4];
-  v9 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:v8 queryParameters:0 appleAccountInformation:v4];
+  v9 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:v8 queryParameters:0 appleAccountInformation:informationCopy];
 
   [v9 setHTTPMethod:@"POST"];
   [v9 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v10 = [MEMORY[0x1E695DF90] dictionary];
-  v11 = v10;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v11 = dictionary;
   termsDataFormat = self->_termsDataFormat;
   if (termsDataFormat)
   {
-    [v10 setObject:termsDataFormat forKey:@"format"];
+    [dictionary setObject:termsDataFormat forKey:@"format"];
   }
 
   v13 = [objc_opt_class() _HTTPBodyWithDictionary:v11];

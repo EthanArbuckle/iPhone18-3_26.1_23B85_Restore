@@ -1,19 +1,19 @@
 @interface NUChannelControlFormat
 + (id)controlFormatForRect;
-+ (id)controlFormatWithSchema:(id)a3;
-+ (id)controlFormatWithSetting:(id)a3;
++ (id)controlFormatWithSchema:(id)schema;
++ (id)controlFormatWithSetting:(id)setting;
 - (BOOL)isArray;
-- (BOOL)isCompatibleWithChannelFormat:(id)a3;
-- (BOOL)isEqualToChannelFormat:(id)a3;
-- (BOOL)requiresSubchannelDataForKey:(id)a3;
-- (BOOL)validateChannelData:(id)a3 error:(id *)a4;
+- (BOOL)isCompatibleWithChannelFormat:(id)format;
+- (BOOL)isEqualToChannelFormat:(id)format;
+- (BOOL)requiresSubchannelDataForKey:(id)key;
+- (BOOL)validateChannelData:(id)data error:(id *)error;
 - (NUChannelControlFormat)init;
-- (NUChannelControlFormat)initWithControlType:(int64_t)a3 dataModel:(id)a4;
+- (NUChannelControlFormat)initWithControlType:(int64_t)type dataModel:(id)model;
 - (id)arrayItemFormat;
 - (id)debugDescription;
 - (id)description;
 - (id)elementChannel;
-- (id)subchannelFormatForKey:(id)a3;
+- (id)subchannelFormatForKey:(id)key;
 - (id)subchannelKeys;
 - (int64_t)expressionType;
 - (unint64_t)hash;
@@ -25,21 +25,21 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NUChannelControlFormat *)self controlType];
+  controlType = [(NUChannelControlFormat *)self controlType];
   v6 = @"???";
-  if (v5 == 2)
+  if (controlType == 2)
   {
     v6 = @"schema";
   }
 
-  if (v5 == 1)
+  if (controlType == 1)
   {
     v6 = @"setting";
   }
 
   v7 = v6;
-  v8 = [(NUChannelControlFormat *)self dataModel];
-  v9 = [v8 debugDescription];
+  dataModel = [(NUChannelControlFormat *)self dataModel];
+  v9 = [dataModel debugDescription];
   v10 = [v3 stringWithFormat:@"<%@:%p type:%@ model:%@>", v4, self, v7, v9];
 
   return v10;
@@ -47,37 +47,37 @@
 
 - (id)description
 {
-  v3 = [(NUChannelControlFormat *)self controlType];
-  if (v3 == 1)
+  controlType = [(NUChannelControlFormat *)self controlType];
+  if (controlType == 1)
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [(NUModel *)self->_dataModel type];
-    if ((v9 - 1) > 6)
+    type = [(NUModel *)self->_dataModel type];
+    if ((type - 1) > 6)
     {
       v10 = @"???";
     }
 
     else
     {
-      v10 = off_1E810B208[v9 - 1];
+      v10 = off_1E810B208[type - 1];
     }
 
-    v5 = v10;
-    v7 = [v8 stringWithFormat:@"setting:%@", v5];
+    identifier = v10;
+    v7 = [v8 stringWithFormat:@"setting:%@", identifier];
   }
 
   else
   {
-    if (v3 != 2)
+    if (controlType != 2)
     {
       v7 = @"???";
       goto LABEL_10;
     }
 
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(NUModel *)self->_dataModel identifier];
-    v6 = [(__CFString *)v5 name];
-    v7 = [v4 stringWithFormat:@"schema:%@", v6];
+    identifier = [(NUModel *)self->_dataModel identifier];
+    name = [(__CFString *)identifier name];
+    v7 = [v4 stringWithFormat:@"schema:%@", name];
   }
 
 LABEL_10:
@@ -85,18 +85,18 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)validateChannelData:(id)a3 error:(id *)a4
+- (BOOL)validateChannelData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = NUChannelControlFormat;
-  if ([(NUChannelFormat *)&v12 validateChannelData:v6 error:a4])
+  if ([(NUChannelFormat *)&v12 validateChannelData:dataCopy error:error])
   {
-    v7 = v6;
-    v8 = [(NUChannelControlFormat *)self dataModel];
-    v9 = [v7 value];
+    v7 = dataCopy;
+    dataModel = [(NUChannelControlFormat *)self dataModel];
+    value = [v7 value];
 
-    v10 = [v8 validate:v9 error:a4];
+    v10 = [dataModel validate:value error:error];
   }
 
   else
@@ -107,29 +107,29 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)isCompatibleWithChannelFormat:(id)a3
+- (BOOL)isCompatibleWithChannelFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v5 = [v4 controlType];
-  if (v5 != [(NUChannelControlFormat *)self controlType])
+  controlType = [formatCopy controlType];
+  if (controlType != [(NUChannelControlFormat *)self controlType])
   {
     goto LABEL_9;
   }
 
-  v6 = [(NUChannelControlFormat *)self controlType];
-  if (v6 != 1)
+  controlType2 = [(NUChannelControlFormat *)self controlType];
+  if (controlType2 != 1)
   {
-    if (v6 == 2)
+    if (controlType2 == 2)
     {
-      v7 = [(NUChannelControlFormat *)self dataModel];
-      v8 = [v4 dataModel];
-      if ([v7 isEqual:v8])
+      dataModel = [(NUChannelControlFormat *)self dataModel];
+      dataModel2 = [formatCopy dataModel];
+      if ([dataModel isEqual:dataModel2])
       {
 LABEL_6:
         v9 = 1;
@@ -139,7 +139,7 @@ LABEL_16:
       }
 
       v15 = +[NUSourceSchema sharedSourceSchema];
-      if ([v7 isEqual:v15])
+      if ([dataModel isEqual:v15])
       {
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
@@ -161,12 +161,12 @@ LABEL_16:
     goto LABEL_8;
   }
 
-  v10 = [(NUChannelControlFormat *)self dataModel];
-  v11 = [v10 type];
-  v12 = [v4 dataModel];
-  v13 = [v12 type];
+  dataModel3 = [(NUChannelControlFormat *)self dataModel];
+  type = [dataModel3 type];
+  dataModel4 = [formatCopy dataModel];
+  type2 = [dataModel4 type];
 
-  if (v11 != v13)
+  if (type != type2)
   {
 LABEL_9:
     v9 = 0;
@@ -180,15 +180,15 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)isEqualToChannelFormat:(id)a3
+- (BOOL)isEqualToChannelFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [v4 controlType], v5 == -[NUChannelControlFormat controlType](self, "controlType")))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [formatCopy controlType], v5 == -[NUChannelControlFormat controlType](self, "controlType")))
   {
-    v6 = [v4 dataModel];
-    v7 = [(NUChannelControlFormat *)self dataModel];
-    v8 = [v6 isEqual:v7];
+    dataModel = [formatCopy dataModel];
+    dataModel2 = [(NUChannelControlFormat *)self dataModel];
+    v8 = [dataModel isEqual:dataModel2];
   }
 
   else
@@ -215,15 +215,15 @@ LABEL_10:
     return 4;
   }
 
-  v3 = [(NUChannelControlFormat *)self dataModel];
-  v4 = [v3 type];
+  dataModel = [(NUChannelControlFormat *)self dataModel];
+  type = [dataModel type];
   v5 = 3;
-  if (v4 != 3)
+  if (type != 3)
   {
     v5 = 4;
   }
 
-  if (v4 == 1)
+  if (type == 1)
   {
     v6 = 1;
   }
@@ -239,8 +239,8 @@ LABEL_10:
 - (id)elementChannel
 {
   v3 = [NUChannelElementFormat alloc];
-  v4 = [(NUChannelControlFormat *)self arrayItemFormat];
-  v5 = [(NUChannelElementFormat *)v3 initWithRepresentedFormat:v4];
+  arrayItemFormat = [(NUChannelControlFormat *)self arrayItemFormat];
+  v5 = [(NUChannelElementFormat *)v3 initWithRepresentedFormat:arrayItemFormat];
 
   v6 = [[NUChannel alloc] initWithName:@"$item" format:v5];
 
@@ -251,14 +251,14 @@ LABEL_10:
 {
   if ([(NUChannelControlFormat *)self controlType]== 2)
   {
-    v3 = [(NUChannelControlFormat *)self dataModel];
-    if ([v3 type] == 2 && (objc_msgSend(v3, "contents"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "count"), v4, v5 == 1))
+    dataModel = [(NUChannelControlFormat *)self dataModel];
+    if ([dataModel type] == 2 && (objc_msgSend(dataModel, "contents"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "count"), v4, v5 == 1))
     {
-      v6 = [v3 contents];
-      v7 = [v6 allKeys];
-      v8 = [v7 firstObject];
+      contents = [dataModel contents];
+      allKeys = [contents allKeys];
+      firstObject = [allKeys firstObject];
 
-      v9 = [(NUChannelControlFormat *)self subchannelFormatForKey:v8];
+      v9 = [(NUChannelControlFormat *)self subchannelFormatForKey:firstObject];
     }
 
     else
@@ -279,11 +279,11 @@ LABEL_10:
 {
   if ([(NUChannelControlFormat *)self controlType]== 2)
   {
-    v3 = [(NUChannelControlFormat *)self dataModel];
-    if ([v3 type] == 2)
+    dataModel = [(NUChannelControlFormat *)self dataModel];
+    if ([dataModel type] == 2)
     {
-      v4 = [v3 contents];
-      v5 = [v4 count];
+      contents = [dataModel contents];
+      v5 = [contents count];
 
       if (v5 == 1)
       {
@@ -299,53 +299,53 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)requiresSubchannelDataForKey:(id)a3
+- (BOOL)requiresSubchannelDataForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NUChannelControlFormat *)self controlType];
-  if (v5 == 1)
+  keyCopy = key;
+  controlType = [(NUChannelControlFormat *)self controlType];
+  if (controlType == 1)
   {
     goto LABEL_14;
   }
 
-  if (v5 == 2)
+  if (controlType == 2)
   {
-    v6 = [(NUChannelControlFormat *)self dataModel];
-    v7 = [v6 type];
-    v8 = 0;
-    if (v7 <= 1)
+    dataModel = [(NUChannelControlFormat *)self dataModel];
+    type = [dataModel type];
+    isRequired = 0;
+    if (type <= 1)
     {
-      if (v7)
+      if (type)
       {
-        if (v7 != 1)
+        if (type != 1)
         {
 LABEL_13:
 
 LABEL_14:
-          v6 = [(NUChannelControlFormat *)self dataModel];
-          v8 = [v6 isRequired];
+          dataModel = [(NUChannelControlFormat *)self dataModel];
+          isRequired = [dataModel isRequired];
           goto LABEL_15;
         }
 
 LABEL_11:
-        v11 = [v6 settings];
-        v9 = [v11 objectForKeyedSubscript:v4];
+        settings = [dataModel settings];
+        requiredContents = [settings objectForKeyedSubscript:keyCopy];
 
-        v10 = [v9 isRequired];
+        isRequired2 = [requiredContents isRequired];
         goto LABEL_12;
       }
     }
 
-    else if (v7 != 2)
+    else if (type != 2)
     {
-      if (v7 != 3)
+      if (type != 3)
       {
-        if (v7 == 4)
+        if (type == 4)
         {
-          v9 = [v6 requiredContents];
-          v10 = [v9 containsObject:v4];
+          requiredContents = [dataModel requiredContents];
+          isRequired2 = [requiredContents containsObject:keyCopy];
 LABEL_12:
-          v8 = v10;
+          isRequired = isRequired2;
 
           goto LABEL_15;
         }
@@ -361,29 +361,29 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v8 = 0;
+  isRequired = 0;
 LABEL_16:
 
-  return v8;
+  return isRequired;
 }
 
-- (id)subchannelFormatForKey:(id)a3
+- (id)subchannelFormatForKey:(id)key
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NUChannelControlFormat *)self controlType];
-  if (v5 == 1)
+  keyCopy = key;
+  controlType = [(NUChannelControlFormat *)self controlType];
+  if (controlType == 1)
   {
-    v6 = [(NUChannelControlFormat *)self dataModel];
-    v13 = [v6 type];
-    if (v13 <= 7)
+    dataModel = [(NUChannelControlFormat *)self dataModel];
+    type = [dataModel type];
+    if (type <= 7)
     {
-      if (v13 == 4)
+      if (type == 4)
       {
-        v15 = [v6 properties];
+        properties = [dataModel properties];
 LABEL_29:
-        v18 = v15;
-        v10 = [v15 objectForKeyedSubscript:v4];
+        v18 = properties;
+        v10 = [properties objectForKeyedSubscript:keyCopy];
 
         if (v10)
         {
@@ -408,7 +408,7 @@ LABEL_37:
         v22 = 138412546;
         v23 = v21;
         v24 = 2112;
-        v25 = v4;
+        v25 = keyCopy;
         _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Unsupported subchannel format %@:%@", &v22, 0x16u);
       }
     }
@@ -418,20 +418,20 @@ LABEL_15:
     goto LABEL_33;
   }
 
-  if (v5 != 2)
+  if (controlType != 2)
   {
     v8 = 0;
     goto LABEL_34;
   }
 
-  v6 = [(NUChannelControlFormat *)self dataModel];
-  v7 = [v6 type];
+  dataModel = [(NUChannelControlFormat *)self dataModel];
+  type2 = [dataModel type];
   v8 = 0;
-  if (v7 <= 1)
+  if (type2 <= 1)
   {
-    if (v7)
+    if (type2)
     {
-      if (v7 != 1)
+      if (type2 != 1)
       {
         goto LABEL_33;
       }
@@ -453,11 +453,11 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  switch(v7)
+  switch(type2)
   {
     case 2:
-      v16 = [v6 contents];
-      v10 = [v16 objectForKeyedSubscript:v4];
+      contents = [dataModel contents];
+      v10 = [contents objectForKeyedSubscript:keyCopy];
 
       if (v10)
       {
@@ -472,11 +472,11 @@ LABEL_31:
       goto LABEL_32;
     case 3:
 LABEL_19:
-      v15 = [v6 settings];
+      properties = [dataModel settings];
       goto LABEL_29;
     case 4:
-      v9 = [v6 contents];
-      v10 = [v9 objectForKeyedSubscript:v4];
+      contents2 = [dataModel contents];
+      v10 = [contents2 objectForKeyedSubscript:keyCopy];
 
       if (v10)
       {
@@ -509,39 +509,39 @@ LABEL_34:
 
 - (id)subchannelKeys
 {
-  v3 = [(NUChannelControlFormat *)self controlType];
-  if (v3 == 1)
+  controlType = [(NUChannelControlFormat *)self controlType];
+  if (controlType == 1)
   {
-    v4 = [(NUChannelControlFormat *)self dataModel];
-    if ([v4 type] == 4)
+    dataModel = [(NUChannelControlFormat *)self dataModel];
+    if ([dataModel type] == 4)
     {
-      v7 = [v4 properties];
+      properties = [dataModel properties];
 LABEL_15:
-      v8 = v7;
-      v6 = [v7 allKeys];
+      v8 = properties;
+      allKeys = [properties allKeys];
 
       goto LABEL_16;
     }
 
-    v6 = 0;
+    allKeys = 0;
   }
 
   else
   {
-    if (v3 != 2)
+    if (controlType != 2)
     {
-      v6 = 0;
+      allKeys = 0;
       goto LABEL_17;
     }
 
-    v4 = [(NUChannelControlFormat *)self dataModel];
-    v5 = [v4 type];
-    v6 = 0;
-    if (v5 <= 2)
+    dataModel = [(NUChannelControlFormat *)self dataModel];
+    type = [dataModel type];
+    allKeys = 0;
+    if (type <= 2)
     {
-      if (v5 != 1)
+      if (type != 1)
       {
-        if (v5 != 2)
+        if (type != 2)
         {
           goto LABEL_16;
         }
@@ -550,19 +550,19 @@ LABEL_15:
       }
 
 LABEL_14:
-      v7 = [v4 settings];
+      properties = [dataModel settings];
       goto LABEL_15;
     }
 
-    if (v5 == 3)
+    if (type == 3)
     {
       goto LABEL_14;
     }
 
-    if (v5 == 4)
+    if (type == 4)
     {
 LABEL_12:
-      v7 = [v4 contents];
+      properties = [dataModel contents];
       goto LABEL_15;
     }
   }
@@ -571,14 +571,14 @@ LABEL_16:
 
 LABEL_17:
 
-  return v6;
+  return allKeys;
 }
 
-- (NUChannelControlFormat)initWithControlType:(int64_t)a3 dataModel:(id)a4
+- (NUChannelControlFormat)initWithControlType:(int64_t)type dataModel:(id)model
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (!v6)
+  modelCopy = model;
+  if (!modelCopy)
   {
     v11 = NUAssertLogger_4187();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -599,8 +599,8 @@ LABEL_17:
         v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v18;
         v30 = 2114;
@@ -611,8 +611,8 @@ LABEL_17:
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -621,11 +621,11 @@ LABEL_17:
     _NUAssertFailHandler("[NUChannelControlFormat initWithControlType:dataModel:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 1411, @"Invalid parameter not satisfying: %s", v23, v24, v25, v26, "dataModel != nil");
   }
 
-  v7 = v6;
+  v7 = modelCopy;
   v27.receiver = self;
   v27.super_class = NUChannelControlFormat;
   v8 = [(NUChannelControlFormat *)&v27 init];
-  v8->_controlType = a3;
+  v8->_controlType = type;
   dataModel = v8->_dataModel;
   v8->_dataModel = v7;
 
@@ -678,8 +678,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -695,8 +695,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -714,25 +714,25 @@ LABEL_14:
 
 + (id)controlFormatForRect
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = objc_alloc_init(NURectSetting);
   v4 = [v2 initWithControlType:1 dataModel:v3];
 
   return v4;
 }
 
-+ (id)controlFormatWithSetting:(id)a3
++ (id)controlFormatWithSetting:(id)setting
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithControlType:1 dataModel:v4];
+  settingCopy = setting;
+  v5 = [[self alloc] initWithControlType:1 dataModel:settingCopy];
 
   return v5;
 }
 
-+ (id)controlFormatWithSchema:(id)a3
++ (id)controlFormatWithSchema:(id)schema
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithControlType:2 dataModel:v4];
+  schemaCopy = schema;
+  v5 = [[self alloc] initWithControlType:2 dataModel:schemaCopy];
 
   return v5;
 }

@@ -1,20 +1,20 @@
 @interface AXHAListenerHelper
-- (AXHAListenerHelper)initWithListenerAddress:(id)a3;
+- (AXHAListenerHelper)initWithListenerAddress:(id)address;
 - (void)dealloc;
 @end
 
 @implementation AXHAListenerHelper
 
-- (AXHAListenerHelper)initWithListenerAddress:(id)a3
+- (AXHAListenerHelper)initWithListenerAddress:(id)address
 {
-  v5 = a3;
+  addressCopy = address;
   v9.receiver = self;
   v9.super_class = AXHAListenerHelper;
   v6 = [(AXHAListenerHelper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listenerAddress, a3);
+    objc_storeStrong(&v6->_listenerAddress, address);
   }
 
   return v7;

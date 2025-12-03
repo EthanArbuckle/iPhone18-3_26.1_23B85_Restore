@@ -9,9 +9,9 @@
 {
   v28 = a4;
   v7 = a5;
-  v26 = a1;
-  v8 = [a1 layer];
-  v9 = [v8 valueForKeyPath:@"filters.colorMatrix"];
+  selfCopy = self;
+  layer = [self layer];
+  v9 = [layer valueForKeyPath:@"filters.colorMatrix"];
   v10 = MEMORY[0x277CDA440];
   if (v9 && ([MEMORY[0x277CBEB68] null], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqual:", v9), v11, !v12))
   {
@@ -31,7 +31,7 @@
     [v13 setValue:v14 forKey:*v10];
   }
 
-  v16 = [v8 valueForKeyPath:@"filters.vibrantColorMatrix"];
+  v16 = [layer valueForKeyPath:@"filters.vibrantColorMatrix"];
   if (v16 && ([MEMORY[0x277CBEB68] null], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isEqual:", v16), v17, !v18))
   {
     v19 = 0;
@@ -67,14 +67,14 @@
     v29[1] = 3221225472;
     v29[2] = __94__UIView_AmbientUI__amui_applyRedModeFilterAnimated_withCoordinatedAnimationBlock_completion___block_invoke;
     v29[3] = &unk_278C7A4E0;
-    v30 = v8;
+    v30 = layer;
     v31 = v23;
     v32 = v28;
     v24 = MEMORY[0x245CAD9D0](v29);
     v25 = v24;
     if (a3)
     {
-      [MEMORY[0x277D75D18] transitionWithView:v26 duration:5242882 options:v24 animations:v21 completion:1.2];
+      [MEMORY[0x277D75D18] transitionWithView:selfCopy duration:5242882 options:v24 animations:v21 completion:1.2];
     }
 
     else
@@ -92,12 +92,12 @@
 {
   v8 = a4;
   v9 = a5;
-  v10 = [a1 layer];
-  v11 = [v10 valueForKeyPath:@"filters.colorMatrix"];
+  layer = [self layer];
+  v11 = [layer valueForKeyPath:@"filters.colorMatrix"];
   if (v11)
   {
-    v12 = [MEMORY[0x277CBEB68] null];
-    v13 = [v12 isEqual:v11] ^ 1;
+    null = [MEMORY[0x277CBEB68] null];
+    v13 = [null isEqual:v11] ^ 1;
   }
 
   else
@@ -105,11 +105,11 @@
     v13 = 0;
   }
 
-  v14 = [v10 valueForKeyPath:@"filters.vibrantColorMatrix"];
+  v14 = [layer valueForKeyPath:@"filters.vibrantColorMatrix"];
   if (v14)
   {
-    v15 = [MEMORY[0x277CBEB68] null];
-    v16 = [v15 isEqual:v14] ^ 1;
+    null2 = [MEMORY[0x277CBEB68] null];
+    v16 = [null2 isEqual:v14] ^ 1;
   }
 
   else
@@ -122,7 +122,7 @@
   v23[2] = __94__UIView_AmbientUI__amui_clearRedModeFilterAnimated_withCoordinatedAnimationBlock_completion___block_invoke;
   v23[3] = &unk_278C7A508;
   v28 = v13;
-  v17 = v10;
+  v17 = layer;
   v24 = v17;
   v18 = v11;
   v25 = v18;
@@ -135,7 +135,7 @@
   v22 = v21;
   if (a3)
   {
-    [MEMORY[0x277D75D18] transitionWithView:a1 duration:5242882 options:v21 animations:v9 completion:1.2];
+    [MEMORY[0x277D75D18] transitionWithView:self duration:5242882 options:v21 animations:v9 completion:1.2];
   }
 
   else

@@ -1,21 +1,21 @@
 @interface NPKTransientAssertion
-- (NPKTransientAssertion)initWithQueue:(id)a3;
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3;
+- (NPKTransientAssertion)initWithQueue:(id)queue;
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler;
 - (void)_handleInterruption;
 - (void)_handleInvalidation;
 - (void)_resyncState;
 - (void)dealloc;
-- (void)didEnterFieldForPassesWithUniqueIDs:(id)a3;
-- (void)handleDelegatedDoublePressEventWithSource:(unint64_t)a3;
-- (void)handleTerminalAuthenticationRequestedForPassWithUniqueID:(id)a3;
+- (void)didEnterFieldForPassesWithUniqueIDs:(id)ds;
+- (void)handleDelegatedDoublePressEventWithSource:(unint64_t)source;
+- (void)handleTerminalAuthenticationRequestedForPassWithUniqueID:(id)d;
 - (void)invalidate;
 @end
 
 @implementation NPKTransientAssertion
 
-- (NPKTransientAssertion)initWithQueue:(id)a3
+- (NPKTransientAssertion)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = NPKTransientAssertion;
   v5 = [(NPKTransientAssertion *)&v16 init];
@@ -40,12 +40,12 @@
     v11[3] = &unk_279945030;
     objc_copyWeak(&v12, &location);
     [(NSXPCConnection *)v6 setInvalidationHandler:v11];
-    if (!v4)
+    if (!queueCopy)
     {
-      v4 = dispatch_queue_create("NPKTransientAssertionQueue", 0);
+      queueCopy = dispatch_queue_create("NPKTransientAssertionQueue", 0);
     }
 
-    [(NSXPCConnection *)v6 _setQueue:v4];
+    [(NSXPCConnection *)v6 _setQueue:queueCopy];
     [(NSXPCConnection *)v6 resume];
     xpcConnection = v5->_xpcConnection;
     v5->_xpcConnection = v6;
@@ -125,10 +125,10 @@ void __39__NPKTransientAssertion_initWithQueue___block_invoke_120(uint64_t a1)
   [(NPKTransientAssertion *)&v4 dealloc];
 }
 
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_xpcConnection)
   {
     objc_initWeak(location, self);
@@ -138,7 +138,7 @@ void __39__NPKTransientAssertion_initWithQueue___block_invoke_120(uint64_t a1)
     v16[2] = __60__NPKTransientAssertion__remoteObjectProxyWithErrorHandler___block_invoke;
     v16[3] = &unk_279945A70;
     objc_copyWeak(&v18, location);
-    v17 = v4;
+    v17 = handlerCopy;
     v6 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v16];
 
     objc_destroyWeak(&v18);
@@ -162,7 +162,7 @@ void __39__NPKTransientAssertion_initWithQueue___block_invoke_120(uint64_t a1)
       }
     }
 
-    if (v4)
+    if (handlerCopy)
     {
       v11 = MEMORY[0x277CCA9B8];
       v19 = *MEMORY[0x277CCA450];
@@ -170,7 +170,7 @@ void __39__NPKTransientAssertion_initWithQueue___block_invoke_120(uint64_t a1)
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
       v13 = [v11 errorWithDomain:@"com.apple.NPKErrorDomain" code:-1000 userInfo:v12];
 
-      (*(v4 + 2))(v4, v13);
+      (*(handlerCopy + 2))(handlerCopy, v13);
     }
 
     v6 = 0;
@@ -227,7 +227,7 @@ void __60__NPKTransientAssertion__remoteObjectProxyWithErrorHandler___block_invo
   self->_xpcConnection = 0;
 }
 
-- (void)handleDelegatedDoublePressEventWithSource:(unint64_t)a3
+- (void)handleDelegatedDoublePressEventWithSource:(unint64_t)source
 {
   v9 = *MEMORY[0x277D85DE8];
   v3 = pk_Payment_log();
@@ -247,7 +247,7 @@ void __60__NPKTransientAssertion__remoteObjectProxyWithErrorHandler___block_invo
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleTerminalAuthenticationRequestedForPassWithUniqueID:(id)a3
+- (void)handleTerminalAuthenticationRequestedForPassWithUniqueID:(id)d
 {
   v9 = *MEMORY[0x277D85DE8];
   v3 = pk_Payment_log();
@@ -267,7 +267,7 @@ void __60__NPKTransientAssertion__remoteObjectProxyWithErrorHandler___block_invo
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didEnterFieldForPassesWithUniqueIDs:(id)a3
+- (void)didEnterFieldForPassesWithUniqueIDs:(id)ds
 {
   v9 = *MEMORY[0x277D85DE8];
   v3 = pk_Payment_log();

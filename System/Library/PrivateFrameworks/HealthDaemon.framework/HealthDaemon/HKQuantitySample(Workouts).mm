@@ -7,9 +7,9 @@
 - (id)hdw_dateInterval
 {
   v2 = objc_alloc(MEMORY[0x277CCA970]);
-  v3 = [a1 startDate];
-  v4 = [a1 endDate];
-  v5 = [v2 initWithStartDate:v3 endDate:v4];
+  startDate = [self startDate];
+  endDate = [self endDate];
+  v5 = [v2 initWithStartDate:startDate endDate:endDate];
 
   return v5;
 }

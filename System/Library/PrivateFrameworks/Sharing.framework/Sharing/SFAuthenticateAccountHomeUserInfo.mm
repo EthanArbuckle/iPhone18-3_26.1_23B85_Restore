@@ -1,22 +1,22 @@
 @interface SFAuthenticateAccountHomeUserInfo
-- (SFAuthenticateAccountHomeUserInfo)initWithHomeUUID:(id)a3 userUUID:(id)a4 isRMVEnabled:(BOOL)a5;
+- (SFAuthenticateAccountHomeUserInfo)initWithHomeUUID:(id)d userUUID:(id)iD isRMVEnabled:(BOOL)enabled;
 @end
 
 @implementation SFAuthenticateAccountHomeUserInfo
 
-- (SFAuthenticateAccountHomeUserInfo)initWithHomeUUID:(id)a3 userUUID:(id)a4 isRMVEnabled:(BOOL)a5
+- (SFAuthenticateAccountHomeUserInfo)initWithHomeUUID:(id)d userUUID:(id)iD isRMVEnabled:(BOOL)enabled
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = SFAuthenticateAccountHomeUserInfo;
   v11 = [(SFAuthenticateAccountHomeUserInfo *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_homeUniqueIdentifier, a3);
-    objc_storeStrong(&v12->_userUniqueIdentifier, a4);
-    v12->_isRMVEnabled = a5;
+    objc_storeStrong(&v11->_homeUniqueIdentifier, d);
+    objc_storeStrong(&v12->_userUniqueIdentifier, iD);
+    v12->_isRMVEnabled = enabled;
   }
 
   return v12;

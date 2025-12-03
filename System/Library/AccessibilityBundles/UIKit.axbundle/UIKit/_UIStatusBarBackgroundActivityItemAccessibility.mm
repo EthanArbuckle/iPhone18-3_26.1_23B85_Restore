@@ -1,26 +1,26 @@
 @interface _UIStatusBarBackgroundActivityItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axBackgroundActivityLabelByType:(uint64_t)a1;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axBackgroundActivityLabelByType:(uint64_t)type;
 - (id)_axStatusBarModern;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)createDisplayItemForIdentifier:(id)a3;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)createDisplayItemForIdentifier:(id)identifier;
 - (uint64_t)_accessibilityHasRequestedForceUpdate;
 - (uint64_t)_accessibilitySetHasRequestedForceUpdate:(uint64_t)result;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axApplyLabelToBackground;
-- (void)_axSetupIconViewWithUpdateData:(id)a3;
+- (void)_axSetupIconViewWithUpdateData:(id)data;
 @end
 
 @implementation _UIStatusBarBackgroundActivityItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v9 = location;
   v8 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"_UIStatusBarItemUpdate";
   [location[0] validateClass:?];
   v7 = @"_UIStatusBarBackgroundActivityItem";
@@ -43,11 +43,11 @@
   objc_storeStrong(v9, v8);
 }
 
-- (id)_axBackgroundActivityLabelByType:(uint64_t)a1
+- (id)_axBackgroundActivityLabelByType:(uint64_t)type
 {
-  v7 = a1;
+  typeCopy = type;
   v6 = a2;
-  if (a1)
+  if (type)
   {
     v5 = 0;
     location = 0;
@@ -197,10 +197,10 @@
 
 - (void)_axApplyLabelToBackground
 {
-  v24 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v23 = [v24 _accessibilityValueForKey:@"AccessibilityStatusBarUpdateData"];
+    v23 = [selfCopy _accessibilityValueForKey:@"AccessibilityStatusBarUpdateData"];
     NSClassFromString(&cfstr_Uistatusbarite_3.isa);
     if (objc_opt_isKindOfClass())
     {
@@ -208,11 +208,11 @@
       v5 = [v4 safeIntegerForKey:@"type"];
       MEMORY[0x29EDC9740](v4);
       v22[1] = v5;
-      v22[0] = [(_UIStatusBarBackgroundActivityItemAccessibility *)v24 _axBackgroundActivityLabelByType:v5];
+      v22[0] = [(_UIStatusBarBackgroundActivityItemAccessibility *)selfCopy _axBackgroundActivityLabelByType:v5];
       NSClassFromString(&cfstr_Uistatusbarpil_1.isa);
       if (objc_opt_isKindOfClass() & 1) != 0 || (NSClassFromString(&cfstr_Uistatusbarful.isa), (objc_opt_isKindOfClass()))
       {
-        v21 = [v24 safeUIViewForKey:@"backgroundView"];
+        v21 = [selfCopy safeUIViewForKey:@"backgroundView"];
         objc_initWeak(&location, v21);
         v3 = v21;
         v13 = MEMORY[0x29EDCA5F8];
@@ -223,7 +223,7 @@
         v18 = MEMORY[0x29EDC9748](v22[0]);
         objc_copyWeak(&v19, &location);
         [v3 _setAccessibilityLabelBlock:&v13];
-        v2 = [v24 safeUIViewForKey:@"combinedView"];
+        v2 = [selfCopy safeUIViewForKey:@"combinedView"];
         v6 = MEMORY[0x29EDCA5F8];
         v7 = -1073741824;
         v8 = 0;
@@ -243,7 +243,7 @@
 
       else
       {
-        v1 = [v24 safeUIViewForKey:@"backgroundView"];
+        v1 = [selfCopy safeUIViewForKey:@"backgroundView"];
         [v1 setAccessibilityLabel:v22[0]];
         MEMORY[0x29EDC9740](v1);
       }
@@ -257,7 +257,7 @@
 
 - (uint64_t)_accessibilityHasRequestedForceUpdate
 {
-  if (a1)
+  if (self)
   {
     v2 = __UIAccessibilityGetAssociatedBool() & 1;
   }
@@ -282,15 +282,15 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   v13.receiver = self;
   v13.super_class = _UIStatusBarBackgroundActivityItemAccessibility;
   [(_UIStatusBarBackgroundActivityItemAccessibility *)&v13 _accessibilityLoadAccessibilityInformation];
-  v12 = [(_UIStatusBarBackgroundActivityItemAccessibility *)v15 _accessibilityValueForKey:@"AccessibilityStatusBarUpdateData"];
-  if (!v12 && ([(_UIStatusBarBackgroundActivityItemAccessibility *)v15 _accessibilityHasRequestedForceUpdate]& 1) == 0)
+  v12 = [(_UIStatusBarBackgroundActivityItemAccessibility *)selfCopy _accessibilityValueForKey:@"AccessibilityStatusBarUpdateData"];
+  if (!v12 && ([(_UIStatusBarBackgroundActivityItemAccessibility *)selfCopy _accessibilityHasRequestedForceUpdate]& 1) == 0)
   {
-    [_UIStatusBarBackgroundActivityItemAccessibility _accessibilitySetHasRequestedForceUpdate:v15];
+    [_UIStatusBarBackgroundActivityItemAccessibility _accessibilitySetHasRequestedForceUpdate:selfCopy];
     v3 = MEMORY[0x29EDCA578];
     v2 = MEMORY[0x29EDCA578];
     queue = v3;
@@ -299,40 +299,40 @@
     v8 = 0;
     v9 = __93___UIStatusBarBackgroundActivityItemAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
     v10 = &unk_29F30C7C8;
-    v11 = MEMORY[0x29EDC9748](v15);
+    v11 = MEMORY[0x29EDC9748](selfCopy);
     dispatch_async(queue, &v6);
     MEMORY[0x29EDC9740](queue);
     objc_storeStrong(&v11, 0);
   }
 
-  [(_UIStatusBarBackgroundActivityItemAccessibility *)v15 _axApplyLabelToBackground];
-  v5 = [(_UIStatusBarBackgroundActivityItemAccessibility *)v15 safeUIViewForKey:@"imageView"];
+  [(_UIStatusBarBackgroundActivityItemAccessibility *)selfCopy _axApplyLabelToBackground];
+  v5 = [(_UIStatusBarBackgroundActivityItemAccessibility *)selfCopy safeUIViewForKey:@"imageView"];
   [v5 setIsAccessibilityElement:0];
-  [(_UIStatusBarBackgroundActivityItemAccessibility *)v15 _axSetupIconViewWithUpdateData:v12];
+  [(_UIStatusBarBackgroundActivityItemAccessibility *)selfCopy _axSetupIconViewWithUpdateData:v12];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(&v12, 0);
 }
 
 - (id)_axStatusBarModern
 {
-  v3 = [(_UIStatusBarBackgroundActivityItemAccessibility *)self _axBackgroundView];
-  v4 = [v3 _accessibilityAncestorIsKindOf:objc_opt_class()];
-  MEMORY[0x29EDC9740](v3);
+  _axBackgroundView = [(_UIStatusBarBackgroundActivityItemAccessibility *)self _axBackgroundView];
+  v4 = [_axBackgroundView _accessibilityAncestorIsKindOf:objc_opt_class()];
+  MEMORY[0x29EDC9740](_axBackgroundView);
 
   return v4;
 }
 
-- (void)_axSetupIconViewWithUpdateData:(id)a3
+- (void)_axSetupIconViewWithUpdateData:(id)data
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   NSClassFromString(&cfstr_Uistatusbarful.isa);
   if (objc_opt_isKindOfClass())
   {
     v31 = 0;
-    v30 = [(_UIStatusBarBackgroundActivityItemAccessibility *)v34 safeUIViewForKey:@"iconView"];
+    v30 = [(_UIStatusBarBackgroundActivityItemAccessibility *)selfCopy safeUIViewForKey:@"iconView"];
     if (location[0])
     {
       v18 = [location[0] safeValueForKeyPath:@"data.backgroundActivityEntry"];
@@ -341,24 +341,24 @@
       v29 = v19;
       if (v19 == 6 || v29 == 7)
       {
-        v28 = [(_UIStatusBarBackgroundActivityItemAccessibility *)v34 _axBackgroundView];
-        v27 = [(_UIStatusBarBackgroundActivityItemAccessibility *)v34 _axStatusBarModern];
-        if (v28)
+        _axBackgroundView = [(_UIStatusBarBackgroundActivityItemAccessibility *)selfCopy _axBackgroundView];
+        _axStatusBarModern = [(_UIStatusBarBackgroundActivityItemAccessibility *)selfCopy _axStatusBarModern];
+        if (_axBackgroundView)
         {
-          [v27 frame];
+          [_axStatusBarModern frame];
           v26[9] = v5;
           v26[10] = v6;
           v26[11] = v4;
           v26[12] = v7;
           if (*&v4 != 0.0)
           {
-            [v27 frame];
+            [_axStatusBarModern frame];
             v26[5] = v8;
             v26[6] = v9;
             v26[7] = v10;
             v26[8] = v11;
             v17 = *&v10;
-            [v28 frame];
+            [_axBackgroundView frame];
             v26[1] = v12;
             v26[2] = v13;
             v26[3] = v14;
@@ -366,7 +366,7 @@
             if (v17 == *&v14)
             {
               [v30 _setIsAccessibilityElementBlock:{&__block_literal_global_62, v17}];
-              v26[0] = [(_UIStatusBarBackgroundActivityItemAccessibility *)v34 _axBackgroundActivityLabelByType:v29];
+              v26[0] = [(_UIStatusBarBackgroundActivityItemAccessibility *)selfCopy _axBackgroundActivityLabelByType:v29];
               v16 = v30;
               v20 = MEMORY[0x29EDCA5F8];
               v21 = -1073741824;
@@ -382,8 +382,8 @@
           }
         }
 
-        objc_storeStrong(&v27, 0);
-        objc_storeStrong(&v28, 0);
+        objc_storeStrong(&_axStatusBarModern, 0);
+        objc_storeStrong(&_axBackgroundView, 0);
       }
     }
 
@@ -405,16 +405,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)createDisplayItemForIdentifier:(id)a3
+- (id)createDisplayItemForIdentifier:(id)identifier
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5.receiver = v8;
+  objc_storeStrong(location, identifier);
+  v5.receiver = selfCopy;
   v5.super_class = _UIStatusBarBackgroundActivityItemAccessibility;
   v6 = [(_UIStatusBarBackgroundActivityItemAccessibility *)&v5 createDisplayItemForIdentifier:location[0]];
-  [(_UIStatusBarBackgroundActivityItemAccessibility *)v8 _axApplyLabelToBackground];
+  [(_UIStatusBarBackgroundActivityItemAccessibility *)selfCopy _axApplyLabelToBackground];
   v4 = MEMORY[0x29EDC9748](v6);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
@@ -422,19 +422,19 @@
   return v4;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v7.receiver = v11;
+  objc_storeStrong(&v9, item);
+  v7.receiver = selfCopy;
   v7.super_class = _UIStatusBarBackgroundActivityItemAccessibility;
   v8 = [(_UIStatusBarBackgroundActivityItemAccessibility *)&v7 applyUpdate:location[0] toDisplayItem:v9];
-  [(_UIStatusBarBackgroundActivityItemAccessibility *)v11 _accessibilitySetRetainedValue:location[0] forKey:@"AccessibilityStatusBarUpdateData"];
-  [(_UIStatusBarBackgroundActivityItemAccessibility *)v11 _accessibilityLoadAccessibilityInformation];
+  [(_UIStatusBarBackgroundActivityItemAccessibility *)selfCopy _accessibilitySetRetainedValue:location[0] forKey:@"AccessibilityStatusBarUpdateData"];
+  [(_UIStatusBarBackgroundActivityItemAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation];
   v6 = MEMORY[0x29EDC9748](v8);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);

@@ -3,7 +3,7 @@
 - (NSLocale)locale;
 - (_TtP19LiveTranscriptionUI27AXLTSettingsManagerProtocol_)delegate;
 - (id)fontObjc;
-- (void)setLocale:(id)a3;
+- (void)setLocale:(id)locale;
 - (void)updateBackgroundColor;
 - (void)updateNubbitIdleOpacity;
 - (void)updateTextColor;
@@ -42,13 +42,13 @@
   return v11;
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
   v5 = sub_100003968(&qword_100063820, &qword_100048F80);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (locale)
   {
     static Locale._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for Locale();
@@ -63,7 +63,7 @@
 
   v11 = OBJC_IVAR___AXLTSettingsManager_locale;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_100026EAC(v8, self + v11);
   swift_endAccess();
 }
@@ -82,19 +82,19 @@
 
 - (void)updateNubbitIdleOpacity
 {
-  v2 = self;
+  selfCopy = self;
   sub_100028014();
 }
 
 - (void)updateTextColor
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000282D4();
 }
 
 - (void)updateBackgroundColor
 {
-  v2 = self;
+  selfCopy = self;
   sub_100028D8C();
 }
 

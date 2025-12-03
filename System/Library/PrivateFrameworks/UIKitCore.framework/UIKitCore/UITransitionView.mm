@@ -1,31 +1,31 @@
 @interface UITransitionView
-+ (double)defaultDurationForTransition:(int)a3;
-- (BOOL)_isTransitioningFromFromView:(id)a3;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (BOOL)transition:(int)a3 fromView:(id)a4 toView:(id)a5 removeFromView:(BOOL)a6;
-- (BOOL)transition:(int)a3 toView:(id)a4;
-- (UITransitionView)initWithCoder:(id)a3;
-- (UITransitionView)initWithFrame:(CGRect)a3;
-- (double)durationForTransition:(int)a3;
-- (id)_traitCollectionForChildEnvironment:(id)a3;
++ (double)defaultDurationForTransition:(int)transition;
+- (BOOL)_isTransitioningFromFromView:(id)view;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (BOOL)transition:(int)transition fromView:(id)view toView:(id)toView removeFromView:(BOOL)fromView;
+- (BOOL)transition:(int)transition toView:(id)view;
+- (UITransitionView)initWithCoder:(id)coder;
+- (UITransitionView)initWithFrame:(CGRect)frame;
+- (double)durationForTransition:(int)transition;
+- (id)_traitCollectionForChildEnvironment:(id)environment;
 - (id)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_didCompleteTransition:(BOOL)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_didCompleteTransition:(BOOL)transition;
 - (void)_didStartTransition;
-- (void)_startTransition:(int)a3 withDuration:(double)a4;
-- (void)_transitionDidStopFinished:(BOOL)a3;
-- (void)_viewDidMoveFromScreen:(id)a3 toScreen:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_startTransition:(int)transition withDuration:(double)duration;
+- (void)_transitionDidStopFinished:(BOOL)finished;
+- (void)_viewDidMoveFromScreen:(id)screen toScreen:(id)toScreen;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)notifyDidCompleteTransition:(id)a3;
+- (void)notifyDidCompleteTransition:(id)transition;
 - (void)safeAreaInsetsDidChange;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setIgnoresInteractionEvents:(BOOL)a3;
-- (void)setRasterizesOnTransition:(BOOL)a3;
-- (void)setShouldNotifyDidCompleteImmediately:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)willMoveToSuperview:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setIgnoresInteractionEvents:(BOOL)events;
+- (void)setRasterizesOnTransition:(BOOL)transition;
+- (void)setShouldNotifyDidCompleteImmediately:(BOOL)immediately;
+- (void)traitCollectionDidChange:(id)change;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation UITransitionView
@@ -42,8 +42,8 @@
   v4.receiver = self;
   v4.super_class = UITransitionView;
   [(UIView *)&v4 safeAreaInsetsDidChange];
-  v3 = [(UIView *)self _presentationControllerToNotifyOnLayoutSubviews];
-  [v3 _containerViewSafeAreaInsetsDidChange];
+  _presentationControllerToNotifyOnLayoutSubviews = [(UIView *)self _presentationControllerToNotifyOnLayoutSubviews];
+  [_presentationControllerToNotifyOnLayoutSubviews _containerViewSafeAreaInsetsDidChange];
 }
 
 - (void)layoutSubviews
@@ -51,8 +51,8 @@
   v4.receiver = self;
   v4.super_class = UITransitionView;
   [(UIView *)&v4 layoutSubviews];
-  v3 = [(UIView *)self _presentationControllerToNotifyOnLayoutSubviews];
-  [v3 _containerViewLayoutSubviews];
+  _presentationControllerToNotifyOnLayoutSubviews = [(UIView *)self _presentationControllerToNotifyOnLayoutSubviews];
+  [_presentationControllerToNotifyOnLayoutSubviews _containerViewLayoutSubviews];
 }
 
 - (void)_didStartTransition
@@ -72,11 +72,11 @@
   }
 }
 
-- (UITransitionView)initWithFrame:(CGRect)a3
+- (UITransitionView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UITransitionView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -90,30 +90,30 @@
   return v4;
 }
 
-- (UITransitionView)initWithCoder:(id)a3
+- (UITransitionView)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = UITransitionView;
-  v5 = [(UIView *)&v15 initWithCoder:v4];
+  v5 = [(UIView *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UIFromView"];
+    v6 = [coderCopy decodeObjectForKey:@"UIFromView"];
     fromView = v5->_fromView;
     v5->_fromView = v6;
 
-    v8 = [v4 decodeObjectForKey:@"UIToView"];
+    v8 = [coderCopy decodeObjectForKey:@"UIToView"];
     toView = v5->_toView;
     v5->_toView = v8;
 
-    v10 = [v4 decodeObjectForKey:@"UIFirstResponderToRemember"];
+    v10 = [coderCopy decodeObjectForKey:@"UIFirstResponderToRemember"];
     firstResponderToRemember = v5->_firstResponderToRemember;
     v5->_firstResponderToRemember = v10;
 
-    v12 = [v4 decodeObjectForKey:@"UIDelegate"];
+    v12 = [coderCopy decodeObjectForKey:@"UIDelegate"];
     objc_storeWeak(&v5->_delegate, v12);
 
-    if ([v4 decodeBoolForKey:@"UIIgnoresInteractionEvents"])
+    if ([coderCopy decodeBoolForKey:@"UIIgnoresInteractionEvents"])
     {
       v13 = 2;
     }
@@ -124,54 +124,54 @@
     }
 
     *&v5->_transitionViewFlags = *&v5->_transitionViewFlags & 0xFEFD | v13;
-    v5->_textEffectsVisibilityLevel = [v4 decodeIntForKey:@"UITextEffectsVisibilityLevel"];
+    v5->_textEffectsVisibilityLevel = [coderCopy decodeIntForKey:@"UITextEffectsVisibilityLevel"];
     [(UITransitionView *)v5 setAnimationTimingCurve:7];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UITransitionView;
-  [(UIView *)&v9 encodeWithCoder:v4];
+  [(UIView *)&v9 encodeWithCoder:coderCopy];
   fromView = self->_fromView;
   if (fromView)
   {
-    [v4 encodeObject:fromView forKey:@"UIFromView"];
+    [coderCopy encodeObject:fromView forKey:@"UIFromView"];
   }
 
   toView = self->_toView;
   if (toView)
   {
-    [v4 encodeObject:toView forKey:@"UIToView"];
+    [coderCopy encodeObject:toView forKey:@"UIToView"];
   }
 
   firstResponderToRemember = self->_firstResponderToRemember;
   if (firstResponderToRemember)
   {
-    [v4 encodeConditionalObject:firstResponderToRemember forKey:@"UIFirstResponderToRemember"];
+    [coderCopy encodeConditionalObject:firstResponderToRemember forKey:@"UIFirstResponderToRemember"];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
-    [v4 encodeConditionalObject:WeakRetained forKey:@"UIDelegate"];
+    [coderCopy encodeConditionalObject:WeakRetained forKey:@"UIDelegate"];
   }
 
   if ((*&self->_transitionViewFlags & 2) != 0)
   {
-    [v4 encodeBool:1 forKey:@"UIIgnoresInteractionEvents"];
+    [coderCopy encodeBool:1 forKey:@"UIIgnoresInteractionEvents"];
   }
 
-  [v4 encodeInt:self->_textEffectsVisibilityLevel forKey:@"UITextEffectsVisibilityLevel"];
+  [coderCopy encodeInt:self->_textEffectsVisibilityLevel forKey:@"UITextEffectsVisibilityLevel"];
 }
 
-- (double)durationForTransition:(int)a3
+- (double)durationForTransition:(int)transition
 {
-  v3 = *&a3;
+  v3 = *&transition;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
   if (WeakRetained)
@@ -199,22 +199,22 @@
   return v9;
 }
 
-+ (double)defaultDurationForTransition:(int)a3
++ (double)defaultDurationForTransition:(int)transition
 {
-  if (a3 > 0xF)
+  if (transition > 0xF)
   {
     return 0.4;
   }
 
   else
   {
-    return dbl_18A683988[a3];
+    return dbl_18A683988[transition];
   }
 }
 
-- (void)setShouldNotifyDidCompleteImmediately:(BOOL)a3
+- (void)setShouldNotifyDidCompleteImmediately:(BOOL)immediately
 {
-  if (a3)
+  if (immediately)
   {
     v3 = 4;
   }
@@ -227,32 +227,32 @@
   *&self->_transitionViewFlags = *&self->_transitionViewFlags & 0xFFFB | v3;
 }
 
-- (void)_didCompleteTransition:(BOOL)a3
+- (void)_didCompleteTransition:(BOOL)transition
 {
-  v40 = a3;
+  transitionCopy = transition;
   v46 = *MEMORY[0x1E69E9840];
-  v4 = [(UIView *)self->_toView layer];
-  [v4 setShouldRasterize:0];
+  layer = [(UIView *)self->_toView layer];
+  [layer setShouldRasterize:0];
 
-  v5 = [(UIView *)self->_toView layer];
-  [v5 setPreloadsCache:0];
+  layer2 = [(UIView *)self->_toView layer];
+  [layer2 setPreloadsCache:0];
 
-  v6 = [(UIView *)self->_fromView layer];
-  [v6 setShouldRasterize:0];
+  layer3 = [(UIView *)self->_fromView layer];
+  [layer3 setShouldRasterize:0];
 
-  v7 = [(UIView *)self->_fromView layer];
-  [v7 setPreloadsCache:0];
+  layer4 = [(UIView *)self->_fromView layer];
+  [layer4 setPreloadsCache:0];
 
   transitionViewFlags = self->_transitionViewFlags;
   if ((*&transitionViewFlags & 0x20) != 0)
   {
     v9 = (*&transitionViewFlags >> 7) & 1;
-    v10 = [(UIView *)self->_toView layer];
-    [v10 setAllowsGroupOpacity:v9];
+    layer5 = [(UIView *)self->_toView layer];
+    [layer5 setAllowsGroupOpacity:v9];
 
     v11 = (*&self->_transitionViewFlags >> 6) & 1;
-    v12 = [(UIView *)self->_fromView layer];
-    [v12 setAllowsGroupOpacity:v11];
+    layer6 = [(UIView *)self->_fromView layer];
+    [layer6 setAllowsGroupOpacity:v11];
   }
 
   v43 = 0u;
@@ -274,8 +274,8 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v41 + 1) + 8 * i) layer];
-        [v18 setFrozen:0];
+        layer7 = [*(*(&v41 + 1) + 8 * i) layer];
+        [layer7 setFrozen:0];
       }
 
       v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v41 objects:v45 count:16];
@@ -292,9 +292,9 @@
   {
     if (fromView != self->_toView)
     {
-      v21 = [(UIView *)fromView superview];
+      superview = [(UIView *)fromView superview];
 
-      if (v21 == self)
+      if (superview == self)
       {
         v39 = self->_transitionViewFlags;
         if ((v39 & 0x400) != 0)
@@ -333,7 +333,7 @@
   self->_originalWindow = 0;
 
   v25 = MEMORY[0x1E695DF90];
-  v26 = [MEMORY[0x1E696AD98] numberWithBool:v40];
+  v26 = [MEMORY[0x1E696AD98] numberWithBool:transitionCopy];
   v27 = self->_fromView;
   v28 = [MEMORY[0x1E696AD98] numberWithBool:(*&self->_transitionViewFlags >> 10) & 1];
   v29 = [v25 dictionaryWithObjectsAndKeys:{v26, @"finished", v27, @"fromView", v28, @"removeFromView", 0}];
@@ -389,12 +389,12 @@ LABEL_24:
 LABEL_25:
 }
 
-- (BOOL)transition:(int)a3 toView:(id)a4
+- (BOOL)transition:(int)transition toView:(id)view
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = [(UIView *)self subviews];
-  v8 = [v7 count];
+  v4 = *&transition;
+  viewCopy = view;
+  subviews = [(UIView *)self subviews];
+  v8 = [subviews count];
   if (v8 < 1)
   {
     v9 = 0;
@@ -402,26 +402,26 @@ LABEL_25:
 
   else
   {
-    v9 = [v7 objectAtIndex:(v8 - 1)];
+    v9 = [subviews objectAtIndex:(v8 - 1)];
   }
 
-  v10 = [(UITransitionView *)self transition:v4 fromView:v9 toView:v6];
+  v10 = [(UITransitionView *)self transition:v4 fromView:v9 toView:viewCopy];
 
   return v10;
 }
 
-- (void)notifyDidCompleteTransition:(id)a3
+- (void)notifyDidCompleteTransition:(id)transition
 {
-  v8 = a3;
-  v4 = [(UITransitionView *)self delegate];
-  if (v4)
+  transitionCopy = transition;
+  delegate = [(UITransitionView *)self delegate];
+  if (delegate)
   {
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v8 objectForKey:@"fromView"];
-      v6 = [v8 objectForKey:@"toView"];
-      v7 = [v8 objectForKey:@"removeFromView"];
-      [v4 transitionViewDidComplete:self fromView:v5 toView:v6 removeFromView:{objc_msgSend(v7, "BOOLValue")}];
+      v5 = [transitionCopy objectForKey:@"fromView"];
+      v6 = [transitionCopy objectForKey:@"toView"];
+      v7 = [transitionCopy objectForKey:@"removeFromView"];
+      [delegate transitionViewDidComplete:self fromView:v5 toView:v6 removeFromView:{objc_msgSend(v7, "BOOLValue")}];
 
 LABEL_6:
 LABEL_7:
@@ -431,34 +431,34 @@ LABEL_7:
 
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v8 objectForKey:@"fromView"];
-      v6 = [v8 objectForKey:@"toView"];
-      [v4 transitionViewDidComplete:self fromView:v5 toView:v6];
+      v5 = [transitionCopy objectForKey:@"fromView"];
+      v6 = [transitionCopy objectForKey:@"toView"];
+      [delegate transitionViewDidComplete:self fromView:v5 toView:v6];
       goto LABEL_6;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v8 objectForKey:@"finished"];
-      [v4 transitionViewDidComplete:self finished:{objc_msgSend(v5, "BOOLValue")}];
+      v5 = [transitionCopy objectForKey:@"finished"];
+      [delegate transitionViewDidComplete:self finished:{objc_msgSend(v5, "BOOLValue")}];
       goto LABEL_7;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v4 transitionViewDidComplete:self];
+      [delegate transitionViewDidComplete:self];
     }
   }
 
 LABEL_8:
 }
 
-- (BOOL)transition:(int)a3 fromView:(id)a4 toView:(id)a5 removeFromView:(BOOL)a6
+- (BOOL)transition:(int)transition fromView:(id)view toView:(id)toView removeFromView:(BOOL)fromView
 {
-  v6 = a6;
-  v8 = *&a3;
-  v10 = a4;
-  v11 = a5;
+  fromViewCopy = fromView;
+  v8 = *&transition;
+  viewCopy = view;
+  toViewCopy = toView;
   transitionViewFlags = self->_transitionViewFlags;
   if (transitionViewFlags)
   {
@@ -470,25 +470,25 @@ LABEL_8:
     [UIApp setIgnoresInteractionEvents:1];
   }
 
-  v79 = [(UIView *)self subviews];
+  subviews = [(UIView *)self subviews];
   v13 = +[UIDevice currentDevice];
-  v14 = [v13 userInterfaceIdiom];
+  userInterfaceIdiom = [v13 userInterfaceIdiom];
 
-  if ((v14 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     goto LABEL_14;
   }
 
-  if (v10)
+  if (viewCopy)
   {
     goto LABEL_8;
   }
 
-  if ([v79 count])
+  if ([subviews count])
   {
-    v10 = [v79 objectAtIndex:0];
+    viewCopy = [subviews objectAtIndex:0];
 LABEL_8:
-    if (!v11)
+    if (!toViewCopy)
     {
       goto LABEL_9;
     }
@@ -496,25 +496,25 @@ LABEL_8:
     goto LABEL_14;
   }
 
-  v10 = 0;
-  if (!v11)
+  viewCopy = 0;
+  if (!toViewCopy)
   {
 LABEL_9:
-    if ([v79 count] < 2)
+    if ([subviews count] < 2)
     {
-      v11 = 0;
+      toViewCopy = 0;
     }
 
     else
     {
       v15 = dyld_program_sdk_at_least();
-      v16 = [v79 objectAtIndex:1];
-      v11 = v16;
+      v16 = [subviews objectAtIndex:1];
+      toViewCopy = v16;
       if (v15)
       {
-        v17 = [v79 objectAtIndex:v16 != v10];
+        viewCopy = [subviews objectAtIndex:v16 != viewCopy];
 
-        v11 = v17;
+        toViewCopy = viewCopy;
       }
     }
   }
@@ -522,12 +522,12 @@ LABEL_9:
 LABEL_14:
   [(UITransitionView *)self durationForTransition:v8];
   v19 = v18;
-  v20 = [v10 firstResponder];
-  v21 = [v20 _responderForBecomeFirstResponder];
+  firstResponder = [viewCopy firstResponder];
+  _responderForBecomeFirstResponder = [firstResponder _responderForBecomeFirstResponder];
 
-  if ([v10 _containsResponder:v21])
+  if ([viewCopy _containsResponder:_responderForBecomeFirstResponder])
   {
-    v22 = v21;
+    v22 = _responderForBecomeFirstResponder;
   }
 
   else
@@ -536,11 +536,11 @@ LABEL_14:
   }
 
   v77 = v22;
-  objc_storeStrong(&self->_fromView, v10);
-  v78 = v11;
-  objc_storeStrong(&self->_toView, v11);
+  objc_storeStrong(&self->_fromView, viewCopy);
+  v78 = toViewCopy;
+  objc_storeStrong(&self->_toView, toViewCopy);
   objc_storeStrong(&self->_firstResponderToRemember, v22);
-  if (v6)
+  if (fromViewCopy)
   {
     v23 = 1024;
   }
@@ -551,16 +551,16 @@ LABEL_14:
   }
 
   *&self->_transitionViewFlags = *&self->_transitionViewFlags & 0xFBFF | v23;
-  if (v8 && v19 != 0.0 && ((+[UIDevice currentDevice](UIDevice, "currentDevice"), v24 = objc_claimAutoreleasedReturnValue(), v25 = [v24 userInterfaceIdiom], v24, (v25 & 0xFFFFFFFFFFFFFFFBLL) == 1) || ((fromView = self->_fromView) != 0 || !v6) && (toView = self->_toView, fromView != toView) && (toView || v8 > 0x13 || ((1 << v8) & 0xC0100) == 0)))
+  if (v8 && v19 != 0.0 && ((+[UIDevice currentDevice](UIDevice, "currentDevice"), v24 = objc_claimAutoreleasedReturnValue(), v25 = [v24 userInterfaceIdiom], v24, (v25 & 0xFFFFFFFFFFFFFFFBLL) == 1) || ((fromView = self->_fromView) != 0 || !fromViewCopy) && (toView = self->_toView, fromView != toView) && (toView || v8 > 0x13 || ((1 << v8) & 0xC0100) == 0)))
   {
-    v26 = [(UIView *)self window];
+    window = [(UIView *)self window];
     originalWindow = self->_originalWindow;
-    self->_originalWindow = v26;
+    self->_originalWindow = window;
 
     [(UIWindow *)self->_originalWindow beginDisablingInterfaceAutorotation];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v29 = [(UIView *)self window];
-    *&self->_transitionViewFlags = *&self->_transitionViewFlags & 0xFFF7 | (8 * (v29 != 0));
+    window2 = [(UIView *)self window];
+    *&self->_transitionViewFlags = *&self->_transitionViewFlags & 0xFFF7 | (8 * (window2 != 0));
 
     if ((*&self->_transitionViewFlags & 8) != 0 && (!WeakRetained || (objc_opt_respondsToSelector() & 1) != 0 && [(UITransitionView *)WeakRetained transitionViewShouldUseViewControllerCallbacks]))
     {
@@ -589,9 +589,9 @@ LABEL_14:
     v35 = self->_toView;
     if (v35)
     {
-      v36 = [(UIView *)v35 superview];
+      superview = [(UIView *)v35 superview];
 
-      if (v36 != self)
+      if (superview != self)
       {
         [(UIView *)self addSubview:self->_toView];
       }
@@ -601,7 +601,7 @@ LABEL_14:
   [(UITransitionView *)self _didStartTransition];
   if (v32)
   {
-    v11 = v78;
+    toViewCopy = v78;
     v38 = *MEMORY[0x1E695EFF8];
     v37 = *(MEMORY[0x1E695EFF8] + 8);
     switch(v8)
@@ -641,21 +641,21 @@ LABEL_73:
       case 9:
       case 12:
       case 20:
-        v56 = [(UIView *)self subviews];
-        v57 = v56;
+        subviews2 = [(UIView *)self subviews];
+        v57 = subviews2;
         if (self->_toView)
         {
           if (self->_fromView)
           {
-            v58 = [v56 indexOfObject:?];
+            v58 = [subviews2 indexOfObject:?];
             v59 = v58 >= [v57 indexOfObject:self->_toView];
-            v11 = v78;
+            toViewCopy = v78;
             if (!v59)
             {
               v60 = [v57 indexOfObject:self->_fromView];
               v61 = [v57 indexOfObject:self->_toView];
               v62 = v60;
-              v11 = v78;
+              toViewCopy = v78;
               [(UIView *)self exchangeSubviewAtIndex:v62 withSubviewAtIndex:v61];
             }
           }
@@ -679,20 +679,20 @@ LABEL_74:
 
         if ([(UITransitionView *)self rasterizesOnTransition])
         {
-          v68 = [(UIView *)self->_toView layer];
-          [v68 setShouldRasterize:1];
+          layer = [(UIView *)self->_toView layer];
+          [layer setShouldRasterize:1];
 
-          v69 = [(UIView *)self window];
-          v70 = [v69 screen];
-          [v70 scale];
+          window3 = [(UIView *)self window];
+          screen = [window3 screen];
+          [screen scale];
           v72 = v71;
           [(UIView *)self->_toView layer];
           v74 = v73 = WeakRetained;
           [v74 setRasterizationScale:v72];
 
-          v11 = v78;
-          v75 = [(UIView *)self->_toView layer];
-          [v75 setPreloadsCache:1];
+          toViewCopy = v78;
+          layer2 = [(UIView *)self->_toView layer];
+          [layer2 setPreloadsCache:1];
 
           WeakRetained = v73;
         }
@@ -722,9 +722,9 @@ LABEL_74:
       v42 = v41;
       v44 = v43;
       v45 = +[UIDevice currentDevice];
-      v46 = [v45 userInterfaceIdiom];
+      userInterfaceIdiom2 = [v45 userInterfaceIdiom];
 
-      if ((v46 & 0xFFFFFFFFFFFFFFFBLL) == 1 || (v47 = self->_fromView) == 0)
+      if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1 || (v47 = self->_fromView) == 0)
       {
         v47 = self->_toView;
       }
@@ -759,17 +759,17 @@ LABEL_74:
     }
 
     [(UITransitionView *)self _didCompleteTransition:1];
-    v11 = v78;
+    toViewCopy = v78;
   }
 
 LABEL_83:
   return (transitionViewFlags & 1) == 0;
 }
 
-- (BOOL)_isTransitioningFromFromView:(id)a3
+- (BOOL)_isTransitioningFromFromView:(id)view
 {
-  v4 = a3;
-  if ([(UITransitionView *)self isTransitioning]&& self->_fromView == v4)
+  viewCopy = view;
+  if ([(UITransitionView *)self isTransitioning]&& self->_fromView == viewCopy)
   {
     v5 = 1;
   }
@@ -784,9 +784,9 @@ LABEL_83:
   return v5;
 }
 
-- (void)setRasterizesOnTransition:(BOOL)a3
+- (void)setRasterizesOnTransition:(BOOL)transition
 {
-  if (a3)
+  if (transition)
   {
     v3 = 256;
   }
@@ -799,9 +799,9 @@ LABEL_83:
   *&self->_transitionViewFlags = *&self->_transitionViewFlags & 0xFEFF | v3;
 }
 
-- (void)setIgnoresInteractionEvents:(BOOL)a3
+- (void)setIgnoresInteractionEvents:(BOOL)events
 {
-  if (a3)
+  if (events)
   {
     v3 = 2;
   }
@@ -814,7 +814,7 @@ LABEL_83:
   *&self->_transitionViewFlags = *&self->_transitionViewFlags & 0xFFFD | v3;
 }
 
-- (void)_startTransition:(int)a3 withDuration:(double)a4
+- (void)_startTransition:(int)transition withDuration:(double)duration
 {
   v70 = *MEMORY[0x1E69E9840];
   *&self->_transitionViewFlags |= 1u;
@@ -844,28 +844,28 @@ LABEL_83:
   aBlock[4] = self;
   aBlock[5] = transitionID;
   v18 = _Block_copy(aBlock);
-  v19 = a3 & 0xFFFFFFFE;
+  v19 = transition & 0xFFFFFFFE;
   v20 = animationTimingCurve << 16;
-  if (a3 <= 0xE && ((1 << a3) & 0x6C00) != 0)
+  if (transition <= 0xE && ((1 << transition) & 0x6C00) != 0)
   {
     if (v19 == 10)
     {
       v21 = 0x200000;
-      if (a3 == 10)
+      if (transition == 10)
       {
         v21 = 0x100000;
       }
 
-      [UIView transitionFromView:self->_fromView toView:self->_toView duration:v20 | v21 options:v18 completion:a4];
+      [UIView transitionFromView:self->_fromView toView:self->_toView duration:v20 | v21 options:v18 completion:duration];
     }
 
-    else if (a3 == 14)
+    else if (transition == 14)
     {
       [(UIView *)self insertSubview:self->_fromView atIndex:0];
-      [UIView _animateWithFilter:200 filterView:self->_toView filterValue:v20 | 0x10000 duration:v18 delay:0.0 options:a4 completion:0.0];
+      [UIView _animateWithFilter:200 filterView:self->_toView filterValue:v20 | 0x10000 duration:v18 delay:0.0 options:duration completion:0.0];
     }
 
-    else if (a3 == 13)
+    else if (transition == 13)
     {
       [(UIView *)self insertSubview:self->_toView atIndex:0];
       [(UIView *)self->_toView layoutBelowIfNeeded];
@@ -937,35 +937,35 @@ LABEL_83:
       self->_curlUpRevealedHeight = v39 - MaxY;
       [(UIView *)self->_toView bounds];
       _UIViewCurlUpTransitionToTime(&self->_curlUpRevealedHeight, v41, v42);
-      [UIView _animateWithFilter:200 filterView:self->_fromView filterValue:v20 | 0x20000 duration:v18 delay:self->_curlUpRevealedHeight options:a4 completion:0.0];
+      [UIView _animateWithFilter:200 filterView:self->_fromView filterValue:v20 | 0x20000 duration:v18 delay:self->_curlUpRevealedHeight options:duration completion:0.0];
     }
   }
 
   else
   {
     v43 = v19 == 16;
-    v44 = a3 - 12;
-    v45 = a3 != 6;
-    v46 = a3 == 9 || toView == 0;
+    v44 = transition - 12;
+    v45 = transition != 6;
+    v46 = transition == 9 || toView == 0;
     v63[0] = MEMORY[0x1E69E9820];
     v63[1] = 3221225472;
-    v47 = v46 || a3 == 20;
+    v47 = v46 || transition == 20;
     v63[2] = __50__UITransitionView__startTransition_withDuration___block_invoke_2;
     v63[3] = &__block_descriptor_48_e24_v24__0___v___8___v__B_16l;
-    v49 = !v47 && (a3 - 18) < 0xFFFFFFFE && a3 != 6;
-    *&v63[4] = a4;
+    v49 = !v47 && (transition - 18) < 0xFFFFFFFE && transition != 6;
+    *&v63[4] = duration;
     v63[5] = v20;
     v58[0] = MEMORY[0x1E69E9820];
     v58[1] = 3221225472;
-    v50 = a3 == 8 || fromView == 0;
+    v50 = transition == 8 || fromView == 0;
     v58[2] = __50__UITransitionView__startTransition_withDuration___block_invoke_6;
     v58[3] = &unk_1E712ADF8;
-    if (v50 || (a3 - 20) >= 0xFFFFFFFC)
+    if (v50 || (transition - 20) >= 0xFFFFFFFC)
     {
       v45 = 0;
     }
 
-    v59 = a3;
+    transitionCopy = transition;
     v52 = __CFADD__(v44, 2);
     v53 = v44 < 0xFFFFFFFE && v49;
     if (v52)
@@ -979,12 +979,12 @@ LABEL_83:
     v58[8] = v9;
     v58[9] = v11;
     v58[10] = v13;
-    *&v58[11] = a4;
+    *&v58[11] = duration;
     v60 = v45;
     v61 = v53;
     v58[6] = v65;
     v62 = v43;
-    [UIView conditionallyAnimate:a4 > 0.0 withAnimation:v63 layout:v58 completion:v18];
+    [UIView conditionallyAnimate:duration > 0.0 withAnimation:v63 layout:v58 completion:v18];
   }
 
   _Block_object_dispose(v65, 8);
@@ -1386,26 +1386,26 @@ void __50__UITransitionView__startTransition_withDuration___block_invoke_7(uint6
   }
 }
 
-- (void)_transitionDidStopFinished:(BOOL)a3
+- (void)_transitionDidStopFinished:(BOOL)finished
 {
   if (*&self->_transitionViewFlags)
   {
-    v3 = a3;
+    finishedCopy = finished;
     if ((*&self->_transitionViewFlags & 0x200) != 0)
     {
       [(UIWindow *)self->_originalWindow endDisablingInterfaceAutorotation];
       *&self->_transitionViewFlags &= ~0x200u;
     }
 
-    [(UITransitionView *)self _didCompleteTransition:v3];
+    [(UITransitionView *)self _didCompleteTransition:finishedCopy];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v12.receiver = self;
   v12.super_class = UITransitionView;
-  v5 = [(UIView *)&v12 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIView *)&v12 hitTest:event withEvent:test.x, test.y];
   if (self->_ignoreDirectTouchEvents)
   {
     v6 = 0;
@@ -1413,10 +1413,10 @@ void __50__UITransitionView__startTransition_withDuration___block_invoke_7(uint6
 
   else
   {
-    v7 = [(UIView *)self _presentationControllerToNotifyOnLayoutSubviews];
-    v8 = [v7 _containerViewShouldIgnoreDirectTouchEvents];
+    _presentationControllerToNotifyOnLayoutSubviews = [(UIView *)self _presentationControllerToNotifyOnLayoutSubviews];
+    _containerViewShouldIgnoreDirectTouchEvents = [_presentationControllerToNotifyOnLayoutSubviews _containerViewShouldIgnoreDirectTouchEvents];
 
-    v6 = v8 ^ 1;
+    v6 = _containerViewShouldIgnoreDirectTouchEvents ^ 1;
   }
 
   if (v5 == self && v6 == 0)
@@ -1432,10 +1432,10 @@ void __50__UITransitionView__startTransition_withDuration___block_invoke_7(uint6
   return v10;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"sublayerTransform"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"sublayerTransform"])
   {
     v5 = 1;
   }
@@ -1444,49 +1444,49 @@ void __50__UITransitionView__startTransition_withDuration___block_invoke_7(uint6
   {
     v7.receiver = self;
     v7.super_class = UITransitionView;
-    v5 = [(UIView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(UIView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v5.receiver = self;
   v5.super_class = UITransitionView;
-  [(UIView *)&v5 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(UIView *)self _presentationControllerToNotifyOnLayoutSubviews];
-  [v4 _containerViewBoundsDidChange];
+  [(UIView *)&v5 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
+  _presentationControllerToNotifyOnLayoutSubviews = [(UIView *)self _presentationControllerToNotifyOnLayoutSubviews];
+  [_presentationControllerToNotifyOnLayoutSubviews _containerViewBoundsDidChange];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = UITransitionView;
-  [(UIView *)&v5 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(UIView *)self _presentationControllerToNotifyOnLayoutSubviews];
-  [v4 _containerViewBoundsDidChange];
+  [(UIView *)&v5 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  _presentationControllerToNotifyOnLayoutSubviews = [(UIView *)self _presentationControllerToNotifyOnLayoutSubviews];
+  [_presentationControllerToNotifyOnLayoutSubviews _containerViewBoundsDidChange];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = UITransitionView;
-  [(UIView *)&v5 traitCollectionDidChange:a3];
-  v4 = [(UIView *)self _presentationControllerToNotifyOnLayoutSubviews];
-  [v4 _containerViewTraitCollectionDidChange];
+  [(UIView *)&v5 traitCollectionDidChange:change];
+  _presentationControllerToNotifyOnLayoutSubviews = [(UIView *)self _presentationControllerToNotifyOnLayoutSubviews];
+  [_presentationControllerToNotifyOnLayoutSubviews _containerViewTraitCollectionDidChange];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v4 = a3;
+  superviewCopy = superview;
   v7.receiver = self;
   v7.super_class = UITransitionView;
-  [(UIView *)&v7 willMoveToSuperview:v4];
-  v5 = [(UITransitionView *)self delegate];
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_respondsToSelector() & 1) != 0)
+  [(UIView *)&v7 willMoveToSuperview:superviewCopy];
+  delegate = [(UITransitionView *)self delegate];
+  if (delegate && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v6 = [v5 overrideTextEffectsVisibilityLevelForTransitionView:self];
+    v6 = [delegate overrideTextEffectsVisibilityLevelForTransitionView:self];
   }
 
   else
@@ -1497,38 +1497,38 @@ void __50__UITransitionView__startTransition_withDuration___block_invoke_7(uint6
   self->_textEffectsVisibilityLevel = v6;
 }
 
-- (void)_viewDidMoveFromScreen:(id)a3 toScreen:(id)a4
+- (void)_viewDidMoveFromScreen:(id)screen toScreen:(id)toScreen
 {
   v8.receiver = self;
   v8.super_class = UITransitionView;
-  v6 = a4;
-  [(UIView *)&v8 _viewDidMoveFromScreen:a3 toScreen:v6];
+  toScreenCopy = toScreen;
+  [(UIView *)&v8 _viewDidMoveFromScreen:screen toScreen:toScreenCopy];
   v7 = [(UIView *)self _presentationControllerToNotifyOnLayoutSubviews:v8.receiver];
-  [v7 _containerViewScreenDidChangeToScreen:v6];
+  [v7 _containerViewScreenDidChangeToScreen:toScreenCopy];
 }
 
-- (id)_traitCollectionForChildEnvironment:(id)a3
+- (id)_traitCollectionForChildEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  v5 = [(UIView *)self _presentationControllerToNotifyOnLayoutSubviews];
-  v6 = v5;
-  if (!v5 || ([v5 _presentedViewForOverrideTraits], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 != v4))
+  _presentationControllerToNotifyOnLayoutSubviews = [(UIView *)self _presentationControllerToNotifyOnLayoutSubviews];
+  v6 = _presentationControllerToNotifyOnLayoutSubviews;
+  if (!_presentationControllerToNotifyOnLayoutSubviews || ([_presentationControllerToNotifyOnLayoutSubviews _presentedViewForOverrideTraits], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 != environmentCopy))
   {
 
 LABEL_5:
     v10.receiver = self;
     v10.super_class = UITransitionView;
-    v8 = [(UIView *)&v10 _traitCollectionForChildEnvironment:v4];
+    v8 = [(UIView *)&v10 _traitCollectionForChildEnvironment:environmentCopy];
     goto LABEL_6;
   }
 
-  v8 = [v6 _traitCollectionForChildEnvironment:v4];
+  v8 = [v6 _traitCollectionForChildEnvironment:environmentCopy];
 
 LABEL_6:
 

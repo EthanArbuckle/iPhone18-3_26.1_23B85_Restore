@@ -1,20 +1,20 @@
 @interface PSSpecifier
-- (SEL)_aaui_selectorForKey:(id)a3;
+- (SEL)_aaui_selectorForKey:(id)key;
 - (id)aaui_performSuperGetter;
-- (void)aaui_overrideAccessorsWithTarget:(id)a3 getter:(SEL)a4 setter:(SEL)a5;
-- (void)aaui_performSuperSetterWithValue:(id)a3;
+- (void)aaui_overrideAccessorsWithTarget:(id)target getter:(SEL)getter setter:(SEL)setter;
+- (void)aaui_performSuperSetterWithValue:(id)value;
 @end
 
 @implementation PSSpecifier
 
-- (void)aaui_overrideAccessorsWithTarget:(id)a3 getter:(SEL)a4 setter:(SEL)a5
+- (void)aaui_overrideAccessorsWithTarget:(id)target getter:(SEL)getter setter:(SEL)setter
 {
-  v14 = a3;
+  targetCopy = target;
   v8 = [(PSSpecifier *)self propertyForKey:@"_aaui_overridenTarget"];
   if (!v8)
   {
-    v9 = [(PSSpecifier *)self target];
-    [(PSSpecifier *)self setProperty:v9 forKey:@"_aaui_overridenTarget"];
+    target = [(PSSpecifier *)self target];
+    [(PSSpecifier *)self setProperty:target forKey:@"_aaui_overridenTarget"];
   }
 
   v10 = [(PSSpecifier *)self propertyForKey:@"_aaui_overridenGetter"];
@@ -31,9 +31,9 @@
     [(PSSpecifier *)self setProperty:v13 forKey:@"_aaui_overridenSetter"];
   }
 
-  [(PSSpecifier *)self setTarget:v14];
-  *(self + OBJC_IVAR___PSSpecifier_getter) = a4;
-  *(self + OBJC_IVAR___PSSpecifier_setter) = a5;
+  [(PSSpecifier *)self setTarget:targetCopy];
+  *(self + OBJC_IVAR___PSSpecifier_getter) = getter;
+  *(self + OBJC_IVAR___PSSpecifier_setter) = setter;
 }
 
 - (id)aaui_performSuperGetter
@@ -53,9 +53,9 @@
   return v6;
 }
 
-- (void)aaui_performSuperSetterWithValue:(id)a3
+- (void)aaui_performSuperSetterWithValue:(id)value
 {
-  v7 = a3;
+  valueCopy = value;
   v4 = [(PSSpecifier *)self propertyForKey:@"_aaui_overridenTarget"];
   v5 = [(PSSpecifier *)self _aaui_selectorForKey:@"_aaui_overridenSetter"];
   if (v5)
@@ -63,14 +63,14 @@
     v6 = v5;
     if (objc_opt_respondsToSelector())
     {
-      ([v4 methodForSelector:v6])(v4, v6, v7, self);
+      ([v4 methodForSelector:v6])(v4, v6, valueCopy, self);
     }
   }
 }
 
-- (SEL)_aaui_selectorForKey:(id)a3
+- (SEL)_aaui_selectorForKey:(id)key
 {
-  v3 = [(PSSpecifier *)self propertyForKey:a3];
+  v3 = [(PSSpecifier *)self propertyForKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

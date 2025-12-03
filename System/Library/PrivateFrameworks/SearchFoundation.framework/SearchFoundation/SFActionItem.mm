@@ -1,40 +1,40 @@
 @interface SFActionItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFActionItem)initWithCoder:(id)a3;
-- (SFActionItem)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFActionItem)initWithCoder:(id)coder;
+- (SFActionItem)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFActionItem
 
 - (unint64_t)hash
 {
-  v65 = [(SFActionItem *)self label];
-  v3 = [v65 hash];
-  v64 = [(SFActionItem *)self labelForLocalMedia];
-  v4 = [v64 hash] ^ v3;
+  label = [(SFActionItem *)self label];
+  v3 = [label hash];
+  labelForLocalMedia = [(SFActionItem *)self labelForLocalMedia];
+  v4 = [labelForLocalMedia hash] ^ v3;
   v5 = v4 ^ [(SFActionItem *)self isOverlay];
-  v63 = [(SFActionItem *)self storeIdentifiers];
-  v6 = [v63 hash];
+  storeIdentifiers = [(SFActionItem *)self storeIdentifiers];
+  v6 = [storeIdentifiers hash];
   v7 = v5 ^ v6 ^ [(SFActionItem *)self requiresLocalMedia];
-  v62 = [(SFActionItem *)self localMediaIdentifier];
-  v8 = [v62 hash];
-  v61 = [(SFActionItem *)self punchout];
-  v9 = v8 ^ [v61 hash];
-  v60 = [(SFActionItem *)self applicationBundleIdentifier];
-  v10 = v9 ^ [v60 hash];
-  v59 = [(SFActionItem *)self contactIdentifier];
-  v55 = v7 ^ v10 ^ [v59 hash];
-  v58 = [(SFActionItem *)self phoneNumber];
-  v11 = [v58 hash];
-  v57 = [(SFActionItem *)self email];
-  v12 = v11 ^ [v57 hash];
-  v56 = [(SFActionItem *)self mapsData];
-  v52 = v12 ^ [v56 hash];
+  localMediaIdentifier = [(SFActionItem *)self localMediaIdentifier];
+  v8 = [localMediaIdentifier hash];
+  punchout = [(SFActionItem *)self punchout];
+  v9 = v8 ^ [punchout hash];
+  applicationBundleIdentifier = [(SFActionItem *)self applicationBundleIdentifier];
+  v10 = v9 ^ [applicationBundleIdentifier hash];
+  contactIdentifier = [(SFActionItem *)self contactIdentifier];
+  v55 = v7 ^ v10 ^ [contactIdentifier hash];
+  phoneNumber = [(SFActionItem *)self phoneNumber];
+  v11 = [phoneNumber hash];
+  email = [(SFActionItem *)self email];
+  v12 = v11 ^ [email hash];
+  mapsData = [(SFActionItem *)self mapsData];
+  v52 = v12 ^ [mapsData hash];
   [(SFActionItem *)self latitude];
   if (v13 < 0.0)
   {
@@ -56,60 +56,60 @@
   *v18.i64 = round(v17);
   *v19.i64 = *v18.i64 - trunc(*v18.i64 * 5.42101086e-20) * 1.84467441e19;
   v47 = (*vbslq_s8(v53, v19, v18).i64 * 2654435760.0) + vcvtd_n_u64_f64(v17 - *v18.i64, 0x40uLL);
-  v54 = [(SFActionItem *)self provider];
-  v45 = [v54 hash];
-  v51 = [(SFActionItem *)self offerType];
-  v43 = [v51 hash];
-  v50 = [(SFActionItem *)self type];
-  v42 = [v50 hash];
-  v48 = [(SFActionItem *)self labelITunes];
-  v40 = [v48 hash];
-  v39 = [(SFActionItem *)self isITunes];
-  v46 = [(SFActionItem *)self icon];
-  v37 = [v46 hash];
-  v44 = [(SFActionItem *)self baseIcon];
-  v35 = [v44 hash];
-  v41 = [(SFActionItem *)self location];
-  v34 = [v41 hash];
-  v38 = [(SFActionItem *)self messageIdentifier];
-  v33 = [v38 hash];
-  v36 = [(SFActionItem *)self messageURL];
-  v32 = [v36 hash];
-  v20 = [(SFActionItem *)self persistentID];
-  v31 = [v20 hash];
-  v21 = [(SFActionItem *)self mediaEntityType];
-  v22 = [(SFActionItem *)self universalLibraryID];
-  v23 = [v22 hash];
-  v24 = [(SFActionItem *)self interactionContentType];
-  v25 = [v24 hash];
-  v26 = [(SFActionItem *)self customDirectionsPunchout];
-  v27 = [v26 hash];
-  v28 = [(SFActionItem *)self shouldSearchDirectionsAlongCurrentRoute];
-  v29 = v40 ^ v39 ^ v37 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v21 ^ v23 ^ v25 ^ v27 ^ v28 ^ [(SFActionItem *)self directionsMode];
+  provider = [(SFActionItem *)self provider];
+  v45 = [provider hash];
+  offerType = [(SFActionItem *)self offerType];
+  v43 = [offerType hash];
+  type = [(SFActionItem *)self type];
+  v42 = [type hash];
+  labelITunes = [(SFActionItem *)self labelITunes];
+  v40 = [labelITunes hash];
+  isITunes = [(SFActionItem *)self isITunes];
+  icon = [(SFActionItem *)self icon];
+  v37 = [icon hash];
+  baseIcon = [(SFActionItem *)self baseIcon];
+  v35 = [baseIcon hash];
+  location = [(SFActionItem *)self location];
+  v34 = [location hash];
+  messageIdentifier = [(SFActionItem *)self messageIdentifier];
+  v33 = [messageIdentifier hash];
+  messageURL = [(SFActionItem *)self messageURL];
+  v32 = [messageURL hash];
+  persistentID = [(SFActionItem *)self persistentID];
+  v31 = [persistentID hash];
+  mediaEntityType = [(SFActionItem *)self mediaEntityType];
+  universalLibraryID = [(SFActionItem *)self universalLibraryID];
+  v23 = [universalLibraryID hash];
+  interactionContentType = [(SFActionItem *)self interactionContentType];
+  v25 = [interactionContentType hash];
+  customDirectionsPunchout = [(SFActionItem *)self customDirectionsPunchout];
+  v27 = [customDirectionsPunchout hash];
+  shouldSearchDirectionsAlongCurrentRoute = [(SFActionItem *)self shouldSearchDirectionsAlongCurrentRoute];
+  v29 = v40 ^ isITunes ^ v37 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ mediaEntityType ^ v23 ^ v25 ^ v27 ^ shouldSearchDirectionsAlongCurrentRoute ^ [(SFActionItem *)self directionsMode];
 
   return v55 ^ v52 ^ v45 ^ v43 ^ v49 ^ v47 ^ v42 ^ v29;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
     goto LABEL_150;
   }
 
-  if (![(SFActionItem *)v6 isMemberOfClass:objc_opt_class()])
+  if (![(SFActionItem *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v17 = 0;
     goto LABEL_150;
   }
 
-  v7 = v6;
-  v242 = [(SFActionItem *)self label];
-  v241 = [(SFActionItem *)v7 label];
-  v239 = v241 == 0;
-  v240 = v242 != 0;
+  v7 = equalCopy;
+  label = [(SFActionItem *)self label];
+  label2 = [(SFActionItem *)v7 label];
+  v239 = label2 == 0;
+  v240 = label != 0;
   if (v240 == v239)
   {
     v229 = 0;
@@ -172,15 +172,15 @@
     goto LABEL_15;
   }
 
-  v9 = [(SFActionItem *)self label];
-  v3 = v9 != 0;
-  v195 = v9;
-  if (v9)
+  label3 = [(SFActionItem *)self label];
+  customDirectionsPunchout2 = label3 != 0;
+  v195 = label3;
+  if (label3)
   {
-    v10 = [(SFActionItem *)self label];
+    label4 = [(SFActionItem *)self label];
     [(SFActionItem *)v7 label];
-    v191 = v192 = v10;
-    if (![v10 isEqual:?])
+    v191 = v192 = label4;
+    if (![label4 isEqual:?])
     {
       v229 = 0;
       memset(v227, 0, sizeof(v227));
@@ -244,10 +244,10 @@
     }
   }
 
-  v194 = [(SFActionItem *)self labelForLocalMedia];
-  v193 = [(SFActionItem *)v7 labelForLocalMedia];
-  *&v238[16] = v3;
-  if ((v194 != 0) == (v193 == 0))
+  labelForLocalMedia = [(SFActionItem *)self labelForLocalMedia];
+  labelForLocalMedia2 = [(SFActionItem *)v7 labelForLocalMedia];
+  *&v238[16] = customDirectionsPunchout2;
+  if ((labelForLocalMedia != 0) == (labelForLocalMedia2 == 0))
   {
     *&v238[8] = 0;
     memset(v227, 0, sizeof(v227));
@@ -310,15 +310,15 @@
     goto LABEL_15;
   }
 
-  v18 = [(SFActionItem *)self labelForLocalMedia];
-  v4 = v18 != 0;
-  v190 = v18;
-  if (v18)
+  labelForLocalMedia3 = [(SFActionItem *)self labelForLocalMedia];
+  customDirectionsPunchout3 = labelForLocalMedia3 != 0;
+  v190 = labelForLocalMedia3;
+  if (labelForLocalMedia3)
   {
-    v19 = [(SFActionItem *)self labelForLocalMedia];
+    labelForLocalMedia4 = [(SFActionItem *)self labelForLocalMedia];
     [(SFActionItem *)v7 labelForLocalMedia];
-    v188 = v189 = v19;
-    if (![v19 isEqual:?])
+    v188 = v189 = labelForLocalMedia4;
+    if (![labelForLocalMedia4 isEqual:?])
     {
       *&v238[4] = 0;
       v11 = 0;
@@ -384,9 +384,9 @@
     }
   }
 
-  v28 = [(SFActionItem *)self isOverlay];
-  *&v238[12] = v4;
-  if (v28 != [(SFActionItem *)v7 isOverlay])
+  isOverlay = [(SFActionItem *)self isOverlay];
+  *&v238[12] = customDirectionsPunchout3;
+  if (isOverlay != [(SFActionItem *)v7 isOverlay])
   {
     *&v238[4] = 0;
     v11 = 0;
@@ -450,9 +450,9 @@
     goto LABEL_15;
   }
 
-  v187 = [(SFActionItem *)self storeIdentifiers];
-  v186 = [(SFActionItem *)v7 storeIdentifiers];
-  if ((v187 != 0) == (v186 == 0))
+  storeIdentifiers = [(SFActionItem *)self storeIdentifiers];
+  storeIdentifiers2 = [(SFActionItem *)v7 storeIdentifiers];
+  if ((storeIdentifiers != 0) == (storeIdentifiers2 == 0))
   {
     v227[0] = 0;
     v227[1] = 0;
@@ -517,15 +517,15 @@
     goto LABEL_15;
   }
 
-  v29 = [(SFActionItem *)self storeIdentifiers];
-  v30 = v29 != 0;
-  v185 = v29;
-  if (v29)
+  storeIdentifiers3 = [(SFActionItem *)self storeIdentifiers];
+  v30 = storeIdentifiers3 != 0;
+  v185 = storeIdentifiers3;
+  if (storeIdentifiers3)
   {
-    v31 = [(SFActionItem *)self storeIdentifiers];
+    storeIdentifiers4 = [(SFActionItem *)self storeIdentifiers];
     [(SFActionItem *)v7 storeIdentifiers];
-    v183 = v184 = v31;
-    if (![v31 isEqual:?])
+    v183 = v184 = storeIdentifiers4;
+    if (![storeIdentifiers4 isEqual:?])
     {
       *(v227 + 4) = 0;
       *v238 = 0;
@@ -599,8 +599,8 @@
     *&v238[8] = 0;
   }
 
-  v32 = [(SFActionItem *)self requiresLocalMedia];
-  if (v32 != [(SFActionItem *)v7 requiresLocalMedia])
+  requiresLocalMedia = [(SFActionItem *)self requiresLocalMedia];
+  if (requiresLocalMedia != [(SFActionItem *)v7 requiresLocalMedia])
   {
     *(v227 + 4) = 0;
     *v238 = 0;
@@ -665,9 +665,9 @@
     goto LABEL_15;
   }
 
-  v182 = [(SFActionItem *)self localMediaIdentifier];
-  v181 = [(SFActionItem *)v7 localMediaIdentifier];
-  if ((v182 != 0) == (v181 == 0))
+  localMediaIdentifier = [(SFActionItem *)self localMediaIdentifier];
+  localMediaIdentifier2 = [(SFActionItem *)v7 localMediaIdentifier];
+  if ((localMediaIdentifier != 0) == (localMediaIdentifier2 == 0))
   {
     v227[1] = 0x100000000;
     *v238 = 0;
@@ -731,15 +731,15 @@
     goto LABEL_15;
   }
 
-  v33 = [(SFActionItem *)self localMediaIdentifier];
-  v34 = v33 != 0;
-  v180 = v33;
-  if (v33)
+  localMediaIdentifier3 = [(SFActionItem *)self localMediaIdentifier];
+  v34 = localMediaIdentifier3 != 0;
+  v180 = localMediaIdentifier3;
+  if (localMediaIdentifier3)
   {
-    v35 = [(SFActionItem *)self localMediaIdentifier];
+    localMediaIdentifier4 = [(SFActionItem *)self localMediaIdentifier];
     [(SFActionItem *)v7 localMediaIdentifier];
-    v176 = v177 = v35;
-    if (![v35 isEqual:?])
+    v176 = v177 = localMediaIdentifier4;
+    if (![localMediaIdentifier4 isEqual:?])
     {
       v11 = 0;
       v227[0] = 0x100000000;
@@ -811,9 +811,9 @@
     *&v238[4] = 0;
   }
 
-  v179 = [(SFActionItem *)self punchout];
-  v178 = [(SFActionItem *)v7 punchout];
-  if ((v179 != 0) == (v178 == 0))
+  punchout = [(SFActionItem *)self punchout];
+  punchout2 = [(SFActionItem *)v7 punchout];
+  if ((punchout != 0) == (punchout2 == 0))
   {
     v227[0] = 0x100000000;
     *v238 = 0;
@@ -877,15 +877,15 @@
     goto LABEL_15;
   }
 
-  v36 = [(SFActionItem *)self punchout];
-  v37 = v36 != 0;
-  v175 = v36;
-  if (v36)
+  punchout3 = [(SFActionItem *)self punchout];
+  v37 = punchout3 != 0;
+  v175 = punchout3;
+  if (punchout3)
   {
-    v38 = [(SFActionItem *)self punchout];
+    punchout4 = [(SFActionItem *)self punchout];
     [(SFActionItem *)v7 punchout];
-    v171 = v172 = v38;
-    if (![v38 isEqual:?])
+    v171 = v172 = punchout4;
+    if (![punchout4 isEqual:?])
     {
       v225 = 0;
       v12 = 0;
@@ -957,9 +957,9 @@
     *v238 = 0;
   }
 
-  v174 = [(SFActionItem *)self applicationBundleIdentifier];
-  v173 = [(SFActionItem *)v7 applicationBundleIdentifier];
-  if ((v174 != 0) == (v173 == 0))
+  applicationBundleIdentifier = [(SFActionItem *)self applicationBundleIdentifier];
+  applicationBundleIdentifier2 = [(SFActionItem *)v7 applicationBundleIdentifier];
+  if ((applicationBundleIdentifier != 0) == (applicationBundleIdentifier2 == 0))
   {
     v12 = 0;
     v249 = 0;
@@ -1023,14 +1023,14 @@
 
   else
   {
-    v39 = [(SFActionItem *)self applicationBundleIdentifier];
-    v249 = v39 != 0;
-    v170 = v39;
-    if (!v39 || (-[SFActionItem applicationBundleIdentifier](self, "applicationBundleIdentifier"), v40 = objc_claimAutoreleasedReturnValue(), -[SFActionItem applicationBundleIdentifier](v7, "applicationBundleIdentifier"), v167 = v40, v166 = objc_claimAutoreleasedReturnValue(), [v40 isEqual:?]))
+    applicationBundleIdentifier3 = [(SFActionItem *)self applicationBundleIdentifier];
+    v249 = applicationBundleIdentifier3 != 0;
+    v170 = applicationBundleIdentifier3;
+    if (!applicationBundleIdentifier3 || (-[SFActionItem applicationBundleIdentifier](self, "applicationBundleIdentifier"), v40 = objc_claimAutoreleasedReturnValue(), -[SFActionItem applicationBundleIdentifier](v7, "applicationBundleIdentifier"), v167 = v40, v166 = objc_claimAutoreleasedReturnValue(), [v40 isEqual:?]))
     {
-      v169 = [(SFActionItem *)self contactIdentifier];
-      v168 = [(SFActionItem *)v7 contactIdentifier];
-      if ((v169 != 0) == (v168 == 0))
+      contactIdentifier = [(SFActionItem *)self contactIdentifier];
+      contactIdentifier2 = [(SFActionItem *)v7 contactIdentifier];
+      if ((contactIdentifier != 0) == (contactIdentifier2 == 0))
       {
         v224 = 0;
         v248 = 0;
@@ -1093,14 +1093,14 @@
 
       else
       {
-        v41 = [(SFActionItem *)self contactIdentifier];
-        v248 = v41 != 0;
-        v165 = v41;
-        if (!v41 || (-[SFActionItem contactIdentifier](self, "contactIdentifier"), v42 = objc_claimAutoreleasedReturnValue(), -[SFActionItem contactIdentifier](v7, "contactIdentifier"), v162 = v42, v161 = objc_claimAutoreleasedReturnValue(), [v42 isEqual:?]))
+        contactIdentifier3 = [(SFActionItem *)self contactIdentifier];
+        v248 = contactIdentifier3 != 0;
+        v165 = contactIdentifier3;
+        if (!contactIdentifier3 || (-[SFActionItem contactIdentifier](self, "contactIdentifier"), v42 = objc_claimAutoreleasedReturnValue(), -[SFActionItem contactIdentifier](v7, "contactIdentifier"), v162 = v42, v161 = objc_claimAutoreleasedReturnValue(), [v42 isEqual:?]))
         {
-          v164 = [(SFActionItem *)self phoneNumber];
-          v163 = [(SFActionItem *)v7 phoneNumber];
-          if ((v164 != 0) == (v163 == 0))
+          phoneNumber = [(SFActionItem *)self phoneNumber];
+          phoneNumber2 = [(SFActionItem *)v7 phoneNumber];
+          if ((phoneNumber != 0) == (phoneNumber2 == 0))
           {
             v221 = 0;
             v247 = 0;
@@ -1162,14 +1162,14 @@
 
           else
           {
-            v43 = [(SFActionItem *)self phoneNumber];
-            v247 = v43 != 0;
-            v160 = v43;
-            if (!v43 || (-[SFActionItem phoneNumber](self, "phoneNumber"), v44 = objc_claimAutoreleasedReturnValue(), -[SFActionItem phoneNumber](v7, "phoneNumber"), v157 = v44, v156 = objc_claimAutoreleasedReturnValue(), [v44 isEqual:?]))
+            phoneNumber3 = [(SFActionItem *)self phoneNumber];
+            v247 = phoneNumber3 != 0;
+            v160 = phoneNumber3;
+            if (!phoneNumber3 || (-[SFActionItem phoneNumber](self, "phoneNumber"), v44 = objc_claimAutoreleasedReturnValue(), -[SFActionItem phoneNumber](v7, "phoneNumber"), v157 = v44, v156 = objc_claimAutoreleasedReturnValue(), [v44 isEqual:?]))
             {
-              v159 = [(SFActionItem *)self email];
-              v158 = [(SFActionItem *)v7 email];
-              if ((v159 != 0) == (v158 == 0))
+              email = [(SFActionItem *)self email];
+              email2 = [(SFActionItem *)v7 email];
+              if ((email != 0) == (email2 == 0))
               {
                 v216 = 0;
                 v246 = 0;
@@ -1230,14 +1230,14 @@
 
               else
               {
-                v45 = [(SFActionItem *)self email];
-                v246 = v45 != 0;
-                v155 = v45;
-                if (!v45 || (-[SFActionItem email](self, "email"), v46 = objc_claimAutoreleasedReturnValue(), -[SFActionItem email](v7, "email"), v152 = v46, v151 = objc_claimAutoreleasedReturnValue(), [v46 isEqual:?]))
+                email3 = [(SFActionItem *)self email];
+                v246 = email3 != 0;
+                v155 = email3;
+                if (!email3 || (-[SFActionItem email](self, "email"), v46 = objc_claimAutoreleasedReturnValue(), -[SFActionItem email](v7, "email"), v152 = v46, v151 = objc_claimAutoreleasedReturnValue(), [v46 isEqual:?]))
                 {
-                  v154 = [(SFActionItem *)self mapsData];
-                  v153 = [(SFActionItem *)v7 mapsData];
-                  if ((v154 != 0) == (v153 == 0))
+                  mapsData = [(SFActionItem *)self mapsData];
+                  mapsData2 = [(SFActionItem *)v7 mapsData];
+                  if ((mapsData != 0) == (mapsData2 == 0))
                   {
                     v196 = 0;
                     v245 = 0;
@@ -1297,10 +1297,10 @@
 
                   else
                   {
-                    v47 = [(SFActionItem *)self mapsData];
-                    v245 = v47 != 0;
-                    v150 = v47;
-                    if (!v47 || (-[SFActionItem mapsData](self, "mapsData"), v48 = objc_claimAutoreleasedReturnValue(), -[SFActionItem mapsData](v7, "mapsData"), v148 = objc_claimAutoreleasedReturnValue(), v149 = v48, [v48 isEqual:?]))
+                    mapsData3 = [(SFActionItem *)self mapsData];
+                    v245 = mapsData3 != 0;
+                    v150 = mapsData3;
+                    if (!mapsData3 || (-[SFActionItem mapsData](self, "mapsData"), v48 = objc_claimAutoreleasedReturnValue(), -[SFActionItem mapsData](v7, "mapsData"), v148 = objc_claimAutoreleasedReturnValue(), v149 = v48, [v48 isEqual:?]))
                     {
                       [(SFActionItem *)self latitude];
                       v50 = v49;
@@ -1364,9 +1364,9 @@
 
                       else
                       {
-                        v147 = [(SFActionItem *)self provider];
-                        v146 = [(SFActionItem *)v7 provider];
-                        if ((v147 != 0) == (v146 == 0))
+                        provider = [(SFActionItem *)self provider];
+                        provider2 = [(SFActionItem *)v7 provider];
+                        if ((provider != 0) == (provider2 == 0))
                         {
                           v215 = 0;
                           v244 = 0;
@@ -1425,14 +1425,14 @@
 
                         else
                         {
-                          v55 = [(SFActionItem *)self provider];
-                          v244 = v55 != 0;
-                          v145 = v55;
-                          if (!v55 || (-[SFActionItem provider](self, "provider"), v56 = objc_claimAutoreleasedReturnValue(), -[SFActionItem provider](v7, "provider"), v141 = objc_claimAutoreleasedReturnValue(), v142 = v56, [v56 isEqual:?]))
+                          provider3 = [(SFActionItem *)self provider];
+                          v244 = provider3 != 0;
+                          v145 = provider3;
+                          if (!provider3 || (-[SFActionItem provider](self, "provider"), v56 = objc_claimAutoreleasedReturnValue(), -[SFActionItem provider](v7, "provider"), v141 = objc_claimAutoreleasedReturnValue(), v142 = v56, [v56 isEqual:?]))
                           {
-                            v144 = [(SFActionItem *)self offerType];
-                            v143 = [(SFActionItem *)v7 offerType];
-                            if ((v144 != 0) == (v143 == 0))
+                            offerType = [(SFActionItem *)self offerType];
+                            offerType2 = [(SFActionItem *)v7 offerType];
+                            if ((offerType != 0) == (offerType2 == 0))
                             {
                               v209 = 0;
                               v243 = 0;
@@ -1490,14 +1490,14 @@
 
                             else
                             {
-                              v57 = [(SFActionItem *)self offerType];
-                              v243 = v57 != 0;
-                              v140 = v57;
-                              if (!v57 || (-[SFActionItem offerType](self, "offerType"), v58 = objc_claimAutoreleasedReturnValue(), -[SFActionItem offerType](v7, "offerType"), v136 = objc_claimAutoreleasedReturnValue(), v137 = v58, [v58 isEqual:?]))
+                              offerType3 = [(SFActionItem *)self offerType];
+                              v243 = offerType3 != 0;
+                              v140 = offerType3;
+                              if (!offerType3 || (-[SFActionItem offerType](self, "offerType"), v58 = objc_claimAutoreleasedReturnValue(), -[SFActionItem offerType](v7, "offerType"), v136 = objc_claimAutoreleasedReturnValue(), v137 = v58, [v58 isEqual:?]))
                               {
-                                v139 = [(SFActionItem *)self type];
-                                v138 = [(SFActionItem *)v7 type];
-                                if ((v139 != 0) == (v138 == 0))
+                                type = [(SFActionItem *)self type];
+                                type2 = [(SFActionItem *)v7 type];
+                                if ((type != 0) == (type2 == 0))
                                 {
                                   v205 = 0;
                                   v237 = 0;
@@ -1554,14 +1554,14 @@
 
                                 else
                                 {
-                                  v59 = [(SFActionItem *)self type];
-                                  v237 = v59 != 0;
-                                  v135 = v59;
-                                  if (!v59 || (-[SFActionItem type](self, "type"), v60 = objc_claimAutoreleasedReturnValue(), -[SFActionItem type](v7, "type"), v133 = objc_claimAutoreleasedReturnValue(), v134 = v60, [v60 isEqual:?]))
+                                  type3 = [(SFActionItem *)self type];
+                                  v237 = type3 != 0;
+                                  v135 = type3;
+                                  if (!type3 || (-[SFActionItem type](self, "type"), v60 = objc_claimAutoreleasedReturnValue(), -[SFActionItem type](v7, "type"), v133 = objc_claimAutoreleasedReturnValue(), v134 = v60, [v60 isEqual:?]))
                                   {
-                                    v132 = [(SFActionItem *)self labelITunes];
-                                    v131 = [(SFActionItem *)v7 labelITunes];
-                                    if ((v132 != 0) == (v131 == 0))
+                                    labelITunes = [(SFActionItem *)self labelITunes];
+                                    labelITunes2 = [(SFActionItem *)v7 labelITunes];
+                                    if ((labelITunes != 0) == (labelITunes2 == 0))
                                     {
                                       v199 = 0;
                                       v236 = 0;
@@ -1617,17 +1617,17 @@
 
                                     else
                                     {
-                                      v61 = [(SFActionItem *)self labelITunes];
-                                      v236 = v61 != 0;
-                                      v130 = v61;
-                                      if (!v61 || (-[SFActionItem labelITunes](self, "labelITunes"), v62 = objc_claimAutoreleasedReturnValue(), -[SFActionItem labelITunes](v7, "labelITunes"), v128 = objc_claimAutoreleasedReturnValue(), v129 = v62, [v62 isEqual:?]))
+                                      labelITunes3 = [(SFActionItem *)self labelITunes];
+                                      v236 = labelITunes3 != 0;
+                                      v130 = labelITunes3;
+                                      if (!labelITunes3 || (-[SFActionItem labelITunes](self, "labelITunes"), v62 = objc_claimAutoreleasedReturnValue(), -[SFActionItem labelITunes](v7, "labelITunes"), v128 = objc_claimAutoreleasedReturnValue(), v129 = v62, [v62 isEqual:?]))
                                       {
-                                        v63 = [(SFActionItem *)self isITunes];
-                                        if (v63 == [(SFActionItem *)v7 isITunes])
+                                        isITunes = [(SFActionItem *)self isITunes];
+                                        if (isITunes == [(SFActionItem *)v7 isITunes])
                                         {
-                                          v125 = [(SFActionItem *)self icon];
-                                          v123 = [(SFActionItem *)v7 icon];
-                                          if ((v125 != 0) == (v123 == 0))
+                                          icon = [(SFActionItem *)self icon];
+                                          icon2 = [(SFActionItem *)v7 icon];
+                                          if ((icon != 0) == (icon2 == 0))
                                           {
                                             v210 = 0;
                                             v235 = 0;
@@ -1682,14 +1682,14 @@
 
                                           else
                                           {
-                                            v64 = [(SFActionItem *)self icon];
-                                            v235 = v64 != 0;
-                                            v121 = v64;
-                                            if (!v64 || (-[SFActionItem icon](self, "icon"), v65 = objc_claimAutoreleasedReturnValue(), -[SFActionItem icon](v7, "icon"), v126 = objc_claimAutoreleasedReturnValue(), v127 = v65, [v65 isEqual:?]))
+                                            icon3 = [(SFActionItem *)self icon];
+                                            v235 = icon3 != 0;
+                                            v121 = icon3;
+                                            if (!icon3 || (-[SFActionItem icon](self, "icon"), v65 = objc_claimAutoreleasedReturnValue(), -[SFActionItem icon](v7, "icon"), v126 = objc_claimAutoreleasedReturnValue(), v127 = v65, [v65 isEqual:?]))
                                             {
-                                              v120 = [(SFActionItem *)self baseIcon];
-                                              v117 = [(SFActionItem *)v7 baseIcon];
-                                              if ((v120 != 0) == (v117 == 0))
+                                              baseIcon = [(SFActionItem *)self baseIcon];
+                                              baseIcon2 = [(SFActionItem *)v7 baseIcon];
+                                              if ((baseIcon != 0) == (baseIcon2 == 0))
                                               {
                                                 v211 = 0;
                                                 v234 = 0;
@@ -1743,14 +1743,14 @@
 
                                               else
                                               {
-                                                v66 = [(SFActionItem *)self baseIcon];
-                                                v234 = v66 != 0;
-                                                v116 = v66;
-                                                if (!v66 || (-[SFActionItem baseIcon](self, "baseIcon"), v67 = objc_claimAutoreleasedReturnValue(), -[SFActionItem baseIcon](v7, "baseIcon"), v124 = v67, v122 = objc_claimAutoreleasedReturnValue(), [v67 isEqual:?]))
+                                                baseIcon3 = [(SFActionItem *)self baseIcon];
+                                                v234 = baseIcon3 != 0;
+                                                v116 = baseIcon3;
+                                                if (!baseIcon3 || (-[SFActionItem baseIcon](self, "baseIcon"), v67 = objc_claimAutoreleasedReturnValue(), -[SFActionItem baseIcon](v7, "baseIcon"), v124 = v67, v122 = objc_claimAutoreleasedReturnValue(), [v67 isEqual:?]))
                                                 {
-                                                  v115 = [(SFActionItem *)self location];
-                                                  v112 = [(SFActionItem *)v7 location];
-                                                  if ((v115 != 0) == (v112 == 0))
+                                                  location = [(SFActionItem *)self location];
+                                                  location2 = [(SFActionItem *)v7 location];
+                                                  if ((location != 0) == (location2 == 0))
                                                   {
                                                     v213 = 0;
                                                     v233 = 0;
@@ -1803,14 +1803,14 @@
 
                                                   else
                                                   {
-                                                    v68 = [(SFActionItem *)self location];
-                                                    v233 = v68 != 0;
-                                                    v111 = v68;
-                                                    if (!v68 || (-[SFActionItem location](self, "location"), v69 = objc_claimAutoreleasedReturnValue(), -[SFActionItem location](v7, "location"), v118 = objc_claimAutoreleasedReturnValue(), v119 = v69, [v69 isEqual:?]))
+                                                    location3 = [(SFActionItem *)self location];
+                                                    v233 = location3 != 0;
+                                                    v111 = location3;
+                                                    if (!location3 || (-[SFActionItem location](self, "location"), v69 = objc_claimAutoreleasedReturnValue(), -[SFActionItem location](v7, "location"), v118 = objc_claimAutoreleasedReturnValue(), v119 = v69, [v69 isEqual:?]))
                                                     {
-                                                      v110 = [(SFActionItem *)self messageIdentifier];
-                                                      v108 = [(SFActionItem *)v7 messageIdentifier];
-                                                      if ((v110 != 0) == (v108 == 0))
+                                                      messageIdentifier = [(SFActionItem *)self messageIdentifier];
+                                                      messageIdentifier2 = [(SFActionItem *)v7 messageIdentifier];
+                                                      if ((messageIdentifier != 0) == (messageIdentifier2 == 0))
                                                       {
                                                         v214 = 0;
                                                         v232 = 0;
@@ -1862,14 +1862,14 @@
 
                                                       else
                                                       {
-                                                        v70 = [(SFActionItem *)self messageIdentifier];
-                                                        v232 = v70 != 0;
-                                                        v106 = v70;
-                                                        if (!v70 || (-[SFActionItem messageIdentifier](self, "messageIdentifier"), v71 = objc_claimAutoreleasedReturnValue(), -[SFActionItem messageIdentifier](v7, "messageIdentifier"), v113 = objc_claimAutoreleasedReturnValue(), v114 = v71, [v71 isEqual:?]))
+                                                        messageIdentifier3 = [(SFActionItem *)self messageIdentifier];
+                                                        v232 = messageIdentifier3 != 0;
+                                                        v106 = messageIdentifier3;
+                                                        if (!messageIdentifier3 || (-[SFActionItem messageIdentifier](self, "messageIdentifier"), v71 = objc_claimAutoreleasedReturnValue(), -[SFActionItem messageIdentifier](v7, "messageIdentifier"), v113 = objc_claimAutoreleasedReturnValue(), v114 = v71, [v71 isEqual:?]))
                                                         {
-                                                          v105 = [(SFActionItem *)self messageURL];
-                                                          v104 = [(SFActionItem *)v7 messageURL];
-                                                          if ((v105 != 0) == (v104 == 0))
+                                                          messageURL = [(SFActionItem *)self messageURL];
+                                                          messageURL2 = [(SFActionItem *)v7 messageURL];
+                                                          if ((messageURL != 0) == (messageURL2 == 0))
                                                           {
                                                             v219 = 0;
                                                             v231 = 0;
@@ -1920,14 +1920,14 @@
 
                                                           else
                                                           {
-                                                            v72 = [(SFActionItem *)self messageURL];
-                                                            v231 = v72 != 0;
-                                                            v101 = v72;
-                                                            if (!v72 || (-[SFActionItem messageURL](self, "messageURL"), v73 = objc_claimAutoreleasedReturnValue(), -[SFActionItem messageURL](v7, "messageURL"), v109 = v73, v107 = objc_claimAutoreleasedReturnValue(), [v73 isEqual:?]))
+                                                            messageURL3 = [(SFActionItem *)self messageURL];
+                                                            v231 = messageURL3 != 0;
+                                                            v101 = messageURL3;
+                                                            if (!messageURL3 || (-[SFActionItem messageURL](self, "messageURL"), v73 = objc_claimAutoreleasedReturnValue(), -[SFActionItem messageURL](v7, "messageURL"), v109 = v73, v107 = objc_claimAutoreleasedReturnValue(), [v73 isEqual:?]))
                                                             {
-                                                              v100 = [(SFActionItem *)self persistentID];
-                                                              v99 = [(SFActionItem *)v7 persistentID];
-                                                              if ((v100 != 0) == (v99 == 0))
+                                                              persistentID = [(SFActionItem *)self persistentID];
+                                                              persistentID2 = [(SFActionItem *)v7 persistentID];
+                                                              if ((persistentID != 0) == (persistentID2 == 0))
                                                               {
                                                                 v220 = 0;
                                                                 v230 = 0;
@@ -1977,17 +1977,17 @@
 
                                                               else
                                                               {
-                                                                v74 = [(SFActionItem *)self persistentID];
-                                                                v230 = v74 != 0;
-                                                                v96 = v74;
-                                                                if (!v74 || (-[SFActionItem persistentID](self, "persistentID"), v75 = objc_claimAutoreleasedReturnValue(), -[SFActionItem persistentID](v7, "persistentID"), v102 = objc_claimAutoreleasedReturnValue(), v103 = v75, [v75 isEqual:?]))
+                                                                persistentID3 = [(SFActionItem *)self persistentID];
+                                                                v230 = persistentID3 != 0;
+                                                                v96 = persistentID3;
+                                                                if (!persistentID3 || (-[SFActionItem persistentID](self, "persistentID"), v75 = objc_claimAutoreleasedReturnValue(), -[SFActionItem persistentID](v7, "persistentID"), v102 = objc_claimAutoreleasedReturnValue(), v103 = v75, [v75 isEqual:?]))
                                                                 {
-                                                                  v76 = [(SFActionItem *)self mediaEntityType];
-                                                                  if (v76 == [(SFActionItem *)v7 mediaEntityType])
+                                                                  mediaEntityType = [(SFActionItem *)self mediaEntityType];
+                                                                  if (mediaEntityType == [(SFActionItem *)v7 mediaEntityType])
                                                                   {
-                                                                    v95 = [(SFActionItem *)self universalLibraryID];
-                                                                    v94 = [(SFActionItem *)v7 universalLibraryID];
-                                                                    if ((v95 != 0) == (v94 == 0))
+                                                                    universalLibraryID = [(SFActionItem *)self universalLibraryID];
+                                                                    universalLibraryID2 = [(SFActionItem *)v7 universalLibraryID];
+                                                                    if ((universalLibraryID != 0) == (universalLibraryID2 == 0))
                                                                     {
                                                                       v226 = 0;
                                                                       v228 = 0;
@@ -2036,15 +2036,15 @@
 
                                                                     else
                                                                     {
-                                                                      v77 = [(SFActionItem *)self universalLibraryID];
-                                                                      HIDWORD(v228) = v77 != 0;
-                                                                      v91 = v77;
-                                                                      if (!v77 || (-[SFActionItem universalLibraryID](self, "universalLibraryID"), v78 = objc_claimAutoreleasedReturnValue(), -[SFActionItem universalLibraryID](v7, "universalLibraryID"), v97 = objc_claimAutoreleasedReturnValue(), v98 = v78, [v78 isEqual:?]))
+                                                                      universalLibraryID3 = [(SFActionItem *)self universalLibraryID];
+                                                                      HIDWORD(v228) = universalLibraryID3 != 0;
+                                                                      v91 = universalLibraryID3;
+                                                                      if (!universalLibraryID3 || (-[SFActionItem universalLibraryID](self, "universalLibraryID"), v78 = objc_claimAutoreleasedReturnValue(), -[SFActionItem universalLibraryID](v7, "universalLibraryID"), v97 = objc_claimAutoreleasedReturnValue(), v98 = v78, [v78 isEqual:?]))
                                                                       {
-                                                                        v90 = [(SFActionItem *)self interactionContentType];
-                                                                        v79 = v90 != 0;
-                                                                        v89 = [(SFActionItem *)v7 interactionContentType];
-                                                                        if (v79 == (v89 == 0))
+                                                                        interactionContentType = [(SFActionItem *)self interactionContentType];
+                                                                        v79 = interactionContentType != 0;
+                                                                        interactionContentType2 = [(SFActionItem *)v7 interactionContentType];
+                                                                        if (v79 == (interactionContentType2 == 0))
                                                                         {
                                                                           v13 = 0;
                                                                           v14 = 0;
@@ -2093,15 +2093,15 @@
 
                                                                         else
                                                                         {
-                                                                          v80 = [(SFActionItem *)self interactionContentType];
-                                                                          LODWORD(v228) = v80 != 0;
-                                                                          v88 = v80;
-                                                                          if (!v80 || (-[SFActionItem interactionContentType](self, "interactionContentType"), v79 = objc_claimAutoreleasedReturnValue(), -[SFActionItem interactionContentType](v7, "interactionContentType"), v92 = objc_claimAutoreleasedReturnValue(), v93 = v79, [v79 isEqual:?]))
+                                                                          interactionContentType3 = [(SFActionItem *)self interactionContentType];
+                                                                          LODWORD(v228) = interactionContentType3 != 0;
+                                                                          v88 = interactionContentType3;
+                                                                          if (!interactionContentType3 || (-[SFActionItem interactionContentType](self, "interactionContentType"), v79 = objc_claimAutoreleasedReturnValue(), -[SFActionItem interactionContentType](v7, "interactionContentType"), v92 = objc_claimAutoreleasedReturnValue(), v93 = v79, [v79 isEqual:?]))
                                                                           {
-                                                                            v86 = [(SFActionItem *)self customDirectionsPunchout];
-                                                                            v4 = v86 != 0;
-                                                                            v3 = [(SFActionItem *)v7 customDirectionsPunchout];
-                                                                            if (v4 == (v3 == 0))
+                                                                            customDirectionsPunchout = [(SFActionItem *)self customDirectionsPunchout];
+                                                                            customDirectionsPunchout3 = customDirectionsPunchout != 0;
+                                                                            customDirectionsPunchout2 = [(SFActionItem *)v7 customDirectionsPunchout];
+                                                                            if (customDirectionsPunchout3 == (customDirectionsPunchout2 == 0))
                                                                             {
                                                                               v15 = 0;
                                                                               v16 = 0;
@@ -2149,14 +2149,14 @@
 
                                                                             else
                                                                             {
-                                                                              v4 = [(SFActionItem *)self customDirectionsPunchout];
-                                                                              if (!v4 || (-[SFActionItem customDirectionsPunchout](self, "customDirectionsPunchout"), v81 = objc_claimAutoreleasedReturnValue(), -[SFActionItem customDirectionsPunchout](v7, "customDirectionsPunchout"), v82 = objc_claimAutoreleasedReturnValue(), v87 = v81, v83 = v81, v79 = v82, [v83 isEqual:?]))
+                                                                              customDirectionsPunchout3 = [(SFActionItem *)self customDirectionsPunchout];
+                                                                              if (!customDirectionsPunchout3 || (-[SFActionItem customDirectionsPunchout](self, "customDirectionsPunchout"), v81 = objc_claimAutoreleasedReturnValue(), -[SFActionItem customDirectionsPunchout](v7, "customDirectionsPunchout"), v82 = objc_claimAutoreleasedReturnValue(), v87 = v81, v83 = v81, v79 = v82, [v83 isEqual:?]))
                                                                               {
-                                                                                v84 = [(SFActionItem *)self shouldSearchDirectionsAlongCurrentRoute];
-                                                                                if (v84 == [(SFActionItem *)v7 shouldSearchDirectionsAlongCurrentRoute])
+                                                                                shouldSearchDirectionsAlongCurrentRoute = [(SFActionItem *)self shouldSearchDirectionsAlongCurrentRoute];
+                                                                                if (shouldSearchDirectionsAlongCurrentRoute == [(SFActionItem *)v7 shouldSearchDirectionsAlongCurrentRoute])
                                                                                 {
-                                                                                  v85 = [(SFActionItem *)self directionsMode];
-                                                                                  v17 = v85 == [(SFActionItem *)v7 directionsMode];
+                                                                                  directionsMode = [(SFActionItem *)self directionsMode];
+                                                                                  v17 = directionsMode == [(SFActionItem *)v7 directionsMode];
                                                                                 }
 
                                                                                 else
@@ -2204,7 +2204,7 @@
                                                                                 v13 = 1;
                                                                                 v14 = 1;
                                                                                 v15 = 1;
-                                                                                v16 = v4 != 0;
+                                                                                v16 = customDirectionsPunchout3 != 0;
                                                                               }
 
                                                                               else
@@ -3619,107 +3619,107 @@ LABEL_150:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFActionItem *)self label];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  label = [(SFActionItem *)self label];
+  v6 = [label copy];
   [v4 setLabel:v6];
 
-  v7 = [(SFActionItem *)self labelForLocalMedia];
-  v8 = [v7 copy];
+  labelForLocalMedia = [(SFActionItem *)self labelForLocalMedia];
+  v8 = [labelForLocalMedia copy];
   [v4 setLabelForLocalMedia:v8];
 
   [v4 setIsOverlay:{-[SFActionItem isOverlay](self, "isOverlay")}];
-  v9 = [(SFActionItem *)self storeIdentifiers];
-  v10 = [v9 copy];
+  storeIdentifiers = [(SFActionItem *)self storeIdentifiers];
+  v10 = [storeIdentifiers copy];
   [v4 setStoreIdentifiers:v10];
 
   [v4 setRequiresLocalMedia:{-[SFActionItem requiresLocalMedia](self, "requiresLocalMedia")}];
-  v11 = [(SFActionItem *)self localMediaIdentifier];
-  v12 = [v11 copy];
+  localMediaIdentifier = [(SFActionItem *)self localMediaIdentifier];
+  v12 = [localMediaIdentifier copy];
   [v4 setLocalMediaIdentifier:v12];
 
-  v13 = [(SFActionItem *)self punchout];
-  v14 = [v13 copy];
+  punchout = [(SFActionItem *)self punchout];
+  v14 = [punchout copy];
   [v4 setPunchout:v14];
 
-  v15 = [(SFActionItem *)self applicationBundleIdentifier];
-  v16 = [v15 copy];
+  applicationBundleIdentifier = [(SFActionItem *)self applicationBundleIdentifier];
+  v16 = [applicationBundleIdentifier copy];
   [v4 setApplicationBundleIdentifier:v16];
 
-  v17 = [(SFActionItem *)self contactIdentifier];
-  v18 = [v17 copy];
+  contactIdentifier = [(SFActionItem *)self contactIdentifier];
+  v18 = [contactIdentifier copy];
   [v4 setContactIdentifier:v18];
 
-  v19 = [(SFActionItem *)self phoneNumber];
-  v20 = [v19 copy];
+  phoneNumber = [(SFActionItem *)self phoneNumber];
+  v20 = [phoneNumber copy];
   [v4 setPhoneNumber:v20];
 
-  v21 = [(SFActionItem *)self email];
-  v22 = [v21 copy];
+  email = [(SFActionItem *)self email];
+  v22 = [email copy];
   [v4 setEmail:v22];
 
-  v23 = [(SFActionItem *)self mapsData];
-  v24 = [v23 copy];
+  mapsData = [(SFActionItem *)self mapsData];
+  v24 = [mapsData copy];
   [v4 setMapsData:v24];
 
   [(SFActionItem *)self latitude];
   [v4 setLatitude:?];
   [(SFActionItem *)self longitude];
   [v4 setLongitude:?];
-  v25 = [(SFActionItem *)self provider];
-  v26 = [v25 copy];
+  provider = [(SFActionItem *)self provider];
+  v26 = [provider copy];
   [v4 setProvider:v26];
 
-  v27 = [(SFActionItem *)self offerType];
-  v28 = [v27 copy];
+  offerType = [(SFActionItem *)self offerType];
+  v28 = [offerType copy];
   [v4 setOfferType:v28];
 
-  v29 = [(SFActionItem *)self type];
-  v30 = [v29 copy];
+  type = [(SFActionItem *)self type];
+  v30 = [type copy];
   [v4 setType:v30];
 
-  v31 = [(SFActionItem *)self labelITunes];
-  v32 = [v31 copy];
+  labelITunes = [(SFActionItem *)self labelITunes];
+  v32 = [labelITunes copy];
   [v4 setLabelITunes:v32];
 
   [v4 setIsITunes:{-[SFActionItem isITunes](self, "isITunes")}];
-  v33 = [(SFActionItem *)self icon];
-  v34 = [v33 copy];
+  icon = [(SFActionItem *)self icon];
+  v34 = [icon copy];
   [v4 setIcon:v34];
 
-  v35 = [(SFActionItem *)self baseIcon];
-  v36 = [v35 copy];
+  baseIcon = [(SFActionItem *)self baseIcon];
+  v36 = [baseIcon copy];
   [v4 setBaseIcon:v36];
 
-  v37 = [(SFActionItem *)self location];
-  v38 = [v37 copy];
+  location = [(SFActionItem *)self location];
+  v38 = [location copy];
   [v4 setLocation:v38];
 
-  v39 = [(SFActionItem *)self messageIdentifier];
-  v40 = [v39 copy];
+  messageIdentifier = [(SFActionItem *)self messageIdentifier];
+  v40 = [messageIdentifier copy];
   [v4 setMessageIdentifier:v40];
 
-  v41 = [(SFActionItem *)self messageURL];
-  v42 = [v41 copy];
+  messageURL = [(SFActionItem *)self messageURL];
+  v42 = [messageURL copy];
   [v4 setMessageURL:v42];
 
-  v43 = [(SFActionItem *)self persistentID];
-  v44 = [v43 copy];
+  persistentID = [(SFActionItem *)self persistentID];
+  v44 = [persistentID copy];
   [v4 setPersistentID:v44];
 
   [v4 setMediaEntityType:{-[SFActionItem mediaEntityType](self, "mediaEntityType")}];
-  v45 = [(SFActionItem *)self universalLibraryID];
-  v46 = [v45 copy];
+  universalLibraryID = [(SFActionItem *)self universalLibraryID];
+  v46 = [universalLibraryID copy];
   [v4 setUniversalLibraryID:v46];
 
-  v47 = [(SFActionItem *)self interactionContentType];
-  v48 = [v47 copy];
+  interactionContentType = [(SFActionItem *)self interactionContentType];
+  v48 = [interactionContentType copy];
   [v4 setInteractionContentType:v48];
 
-  v49 = [(SFActionItem *)self customDirectionsPunchout];
-  v50 = [v49 copy];
+  customDirectionsPunchout = [(SFActionItem *)self customDirectionsPunchout];
+  v50 = [customDirectionsPunchout copy];
   [v4 setCustomDirectionsPunchout:v50];
 
   [v4 setShouldSearchDirectionsAlongCurrentRoute:{-[SFActionItem shouldSearchDirectionsAlongCurrentRoute](self, "shouldSearchDirectionsAlongCurrentRoute")}];
@@ -3730,31 +3730,31 @@ LABEL_150:
 - (NSData)jsonData
 {
   v2 = [[_SFPBActionItem alloc] initWithFacade:self];
-  v3 = [(_SFPBActionItem *)v2 jsonData];
+  jsonData = [(_SFPBActionItem *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBActionItem alloc] initWithFacade:self];
-  v3 = [(_SFPBActionItem *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBActionItem *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBActionItem alloc] initWithFacade:self];
-  v5 = [(_SFPBActionItem *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBActionItem *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFActionItem)initWithCoder:(id)a3
+- (SFActionItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBActionItem alloc] initWithData:v5];
   v7 = [(SFActionItem *)self initWithProtobuf:v6];
@@ -3762,39 +3762,39 @@ LABEL_150:
   return v7;
 }
 
-- (SFActionItem)initWithProtobuf:(id)a3
+- (SFActionItem)initWithProtobuf:(id)protobuf
 {
   v82 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v80.receiver = self;
   v80.super_class = SFActionItem;
   v5 = [(SFActionItem *)&v80 init];
 
   if (v5)
   {
-    v6 = [v4 label];
+    label = [protobufCopy label];
 
-    if (v6)
+    if (label)
     {
-      v7 = [v4 label];
-      [(SFActionItem *)v5 setLabel:v7];
+      label2 = [protobufCopy label];
+      [(SFActionItem *)v5 setLabel:label2];
     }
 
-    v8 = [v4 labelForLocalMedia];
+    labelForLocalMedia = [protobufCopy labelForLocalMedia];
 
-    if (v8)
+    if (labelForLocalMedia)
     {
-      v9 = [v4 labelForLocalMedia];
-      [(SFActionItem *)v5 setLabelForLocalMedia:v9];
+      labelForLocalMedia2 = [protobufCopy labelForLocalMedia];
+      [(SFActionItem *)v5 setLabelForLocalMedia:labelForLocalMedia2];
     }
 
-    if ([v4 isOverlay])
+    if ([protobufCopy isOverlay])
     {
-      -[SFActionItem setIsOverlay:](v5, "setIsOverlay:", [v4 isOverlay]);
+      -[SFActionItem setIsOverlay:](v5, "setIsOverlay:", [protobufCopy isOverlay]);
     }
 
-    v10 = [v4 storeIdentifiers];
-    if (v10)
+    storeIdentifiers = [protobufCopy storeIdentifiers];
+    if (storeIdentifiers)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -3808,8 +3808,8 @@ LABEL_150:
     v79 = 0u;
     v76 = 0u;
     v77 = 0u;
-    v12 = [v4 storeIdentifiers];
-    v13 = [v12 countByEnumeratingWithState:&v76 objects:v81 count:16];
+    storeIdentifiers2 = [protobufCopy storeIdentifiers];
+    v13 = [storeIdentifiers2 countByEnumeratingWithState:&v76 objects:v81 count:16];
     if (v13)
     {
       v14 = v13;
@@ -3820,7 +3820,7 @@ LABEL_150:
         {
           if (*v77 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(storeIdentifiers2);
           }
 
           v17 = *(*(&v76 + 1) + 8 * i);
@@ -3830,225 +3830,225 @@ LABEL_150:
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v76 objects:v81 count:16];
+        v14 = [storeIdentifiers2 countByEnumeratingWithState:&v76 objects:v81 count:16];
       }
 
       while (v14);
     }
 
     [(SFActionItem *)v5 setStoreIdentifiers:v11];
-    if ([v4 requiresLocalMedia])
+    if ([protobufCopy requiresLocalMedia])
     {
-      -[SFActionItem setRequiresLocalMedia:](v5, "setRequiresLocalMedia:", [v4 requiresLocalMedia]);
+      -[SFActionItem setRequiresLocalMedia:](v5, "setRequiresLocalMedia:", [protobufCopy requiresLocalMedia]);
     }
 
-    v18 = [v4 localMediaIdentifier];
+    localMediaIdentifier = [protobufCopy localMediaIdentifier];
 
-    if (v18)
+    if (localMediaIdentifier)
     {
-      v19 = [v4 localMediaIdentifier];
-      [(SFActionItem *)v5 setLocalMediaIdentifier:v19];
+      localMediaIdentifier2 = [protobufCopy localMediaIdentifier];
+      [(SFActionItem *)v5 setLocalMediaIdentifier:localMediaIdentifier2];
     }
 
-    v20 = [v4 punchout];
+    punchout = [protobufCopy punchout];
 
-    if (v20)
+    if (punchout)
     {
       v21 = [SFPunchout alloc];
-      v22 = [v4 punchout];
-      v23 = [(SFPunchout *)v21 initWithProtobuf:v22];
+      punchout2 = [protobufCopy punchout];
+      v23 = [(SFPunchout *)v21 initWithProtobuf:punchout2];
       [(SFActionItem *)v5 setPunchout:v23];
     }
 
-    v24 = [v4 applicationBundleIdentifier];
+    applicationBundleIdentifier = [protobufCopy applicationBundleIdentifier];
 
-    if (v24)
+    if (applicationBundleIdentifier)
     {
-      v25 = [v4 applicationBundleIdentifier];
-      [(SFActionItem *)v5 setApplicationBundleIdentifier:v25];
+      applicationBundleIdentifier2 = [protobufCopy applicationBundleIdentifier];
+      [(SFActionItem *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier2];
     }
 
-    v26 = [v4 contactIdentifier];
+    contactIdentifier = [protobufCopy contactIdentifier];
 
-    if (v26)
+    if (contactIdentifier)
     {
-      v27 = [v4 contactIdentifier];
-      [(SFActionItem *)v5 setContactIdentifier:v27];
+      contactIdentifier2 = [protobufCopy contactIdentifier];
+      [(SFActionItem *)v5 setContactIdentifier:contactIdentifier2];
     }
 
-    v28 = [v4 phoneNumber];
+    phoneNumber = [protobufCopy phoneNumber];
 
-    if (v28)
+    if (phoneNumber)
     {
-      v29 = [v4 phoneNumber];
-      [(SFActionItem *)v5 setPhoneNumber:v29];
+      phoneNumber2 = [protobufCopy phoneNumber];
+      [(SFActionItem *)v5 setPhoneNumber:phoneNumber2];
     }
 
-    v30 = [v4 email];
+    email = [protobufCopy email];
 
-    if (v30)
+    if (email)
     {
-      v31 = [v4 email];
-      [(SFActionItem *)v5 setEmail:v31];
+      email2 = [protobufCopy email];
+      [(SFActionItem *)v5 setEmail:email2];
     }
 
-    v32 = [v4 mapsData];
+    mapsData = [protobufCopy mapsData];
 
-    if (v32)
+    if (mapsData)
     {
-      v33 = [v4 mapsData];
-      [(SFActionItem *)v5 setMapsData:v33];
+      mapsData2 = [protobufCopy mapsData];
+      [(SFActionItem *)v5 setMapsData:mapsData2];
     }
 
-    v34 = [v4 latitude];
+    latitude = [protobufCopy latitude];
 
-    if (v34)
+    if (latitude)
     {
-      v35 = [v4 latitude];
-      [v35 doubleValue];
+      latitude2 = [protobufCopy latitude];
+      [latitude2 doubleValue];
       [(SFActionItem *)v5 setLatitude:?];
     }
 
-    v36 = [v4 longitude];
+    longitude = [protobufCopy longitude];
 
-    if (v36)
+    if (longitude)
     {
-      v37 = [v4 longitude];
-      [v37 doubleValue];
+      longitude2 = [protobufCopy longitude];
+      [longitude2 doubleValue];
       [(SFActionItem *)v5 setLongitude:?];
     }
 
-    v38 = [v4 provider];
+    provider = [protobufCopy provider];
 
-    if (v38)
+    if (provider)
     {
-      v39 = [v4 provider];
-      [(SFActionItem *)v5 setProvider:v39];
+      provider2 = [protobufCopy provider];
+      [(SFActionItem *)v5 setProvider:provider2];
     }
 
-    v40 = [v4 offerType];
+    offerType = [protobufCopy offerType];
 
-    if (v40)
+    if (offerType)
     {
-      v41 = [v4 offerType];
-      [(SFActionItem *)v5 setOfferType:v41];
+      offerType2 = [protobufCopy offerType];
+      [(SFActionItem *)v5 setOfferType:offerType2];
     }
 
-    v42 = [v4 type];
+    type = [protobufCopy type];
 
-    if (v42)
+    if (type)
     {
-      v43 = [v4 type];
-      [(SFActionItem *)v5 setType:v43];
+      type2 = [protobufCopy type];
+      [(SFActionItem *)v5 setType:type2];
     }
 
-    v44 = [v4 labelITunes];
+    labelITunes = [protobufCopy labelITunes];
 
-    if (v44)
+    if (labelITunes)
     {
-      v45 = [v4 labelITunes];
-      [(SFActionItem *)v5 setLabelITunes:v45];
+      labelITunes2 = [protobufCopy labelITunes];
+      [(SFActionItem *)v5 setLabelITunes:labelITunes2];
     }
 
-    if ([v4 isITunes])
+    if ([protobufCopy isITunes])
     {
-      -[SFActionItem setIsITunes:](v5, "setIsITunes:", [v4 isITunes]);
+      -[SFActionItem setIsITunes:](v5, "setIsITunes:", [protobufCopy isITunes]);
     }
 
-    v46 = [v4 icon];
+    icon = [protobufCopy icon];
 
-    if (v46)
+    if (icon)
     {
       v47 = [SFImage alloc];
-      v48 = [v4 icon];
-      v49 = [(SFImage *)v47 initWithProtobuf:v48];
+      icon2 = [protobufCopy icon];
+      v49 = [(SFImage *)v47 initWithProtobuf:icon2];
       [(SFActionItem *)v5 setIcon:v49];
     }
 
-    v50 = [v4 baseIcon];
+    baseIcon = [protobufCopy baseIcon];
 
-    if (v50)
+    if (baseIcon)
     {
       v51 = [SFImage alloc];
-      v52 = [v4 baseIcon];
-      v53 = [(SFImage *)v51 initWithProtobuf:v52];
+      baseIcon2 = [protobufCopy baseIcon];
+      v53 = [(SFImage *)v51 initWithProtobuf:baseIcon2];
       [(SFActionItem *)v5 setBaseIcon:v53];
     }
 
-    v54 = [v4 location];
+    location = [protobufCopy location];
 
-    if (v54)
+    if (location)
     {
       v55 = [SFLatLng alloc];
-      v56 = [v4 location];
-      v57 = [(SFLatLng *)v55 initWithProtobuf:v56];
+      location2 = [protobufCopy location];
+      v57 = [(SFLatLng *)v55 initWithProtobuf:location2];
       [(SFActionItem *)v5 setLocation:v57];
     }
 
-    v58 = [v4 messageIdentifier];
+    messageIdentifier = [protobufCopy messageIdentifier];
 
-    if (v58)
+    if (messageIdentifier)
     {
-      v59 = [v4 messageIdentifier];
-      [(SFActionItem *)v5 setMessageIdentifier:v59];
+      messageIdentifier2 = [protobufCopy messageIdentifier];
+      [(SFActionItem *)v5 setMessageIdentifier:messageIdentifier2];
     }
 
-    v60 = [v4 messageURL];
+    messageURL = [protobufCopy messageURL];
 
-    if (v60)
+    if (messageURL)
     {
-      v61 = [v4 messageURL];
-      v62 = _SFPBURLHandwrittenTranslator(v61);
+      messageURL2 = [protobufCopy messageURL];
+      v62 = _SFPBURLHandwrittenTranslator(messageURL2);
       [(SFActionItem *)v5 setMessageURL:v62];
     }
 
-    v63 = [v4 persistentID];
+    persistentID = [protobufCopy persistentID];
 
-    if (v63)
+    if (persistentID)
     {
-      v64 = [v4 persistentID];
-      [(SFActionItem *)v5 setPersistentID:v64];
+      persistentID2 = [protobufCopy persistentID];
+      [(SFActionItem *)v5 setPersistentID:persistentID2];
     }
 
-    if ([v4 mediaEntityType])
+    if ([protobufCopy mediaEntityType])
     {
-      -[SFActionItem setMediaEntityType:](v5, "setMediaEntityType:", [v4 mediaEntityType]);
+      -[SFActionItem setMediaEntityType:](v5, "setMediaEntityType:", [protobufCopy mediaEntityType]);
     }
 
-    v65 = [v4 universalLibraryID];
+    universalLibraryID = [protobufCopy universalLibraryID];
 
-    if (v65)
+    if (universalLibraryID)
     {
-      v66 = [v4 universalLibraryID];
-      [(SFActionItem *)v5 setUniversalLibraryID:v66];
+      universalLibraryID2 = [protobufCopy universalLibraryID];
+      [(SFActionItem *)v5 setUniversalLibraryID:universalLibraryID2];
     }
 
-    v67 = [v4 interactionContentType];
+    interactionContentType = [protobufCopy interactionContentType];
 
-    if (v67)
+    if (interactionContentType)
     {
-      v68 = [v4 interactionContentType];
-      [(SFActionItem *)v5 setInteractionContentType:v68];
+      interactionContentType2 = [protobufCopy interactionContentType];
+      [(SFActionItem *)v5 setInteractionContentType:interactionContentType2];
     }
 
-    v69 = [v4 customDirectionsPunchout];
+    customDirectionsPunchout = [protobufCopy customDirectionsPunchout];
 
-    if (v69)
+    if (customDirectionsPunchout)
     {
       v70 = [SFPunchout alloc];
-      v71 = [v4 customDirectionsPunchout];
-      v72 = [(SFPunchout *)v70 initWithProtobuf:v71];
+      customDirectionsPunchout2 = [protobufCopy customDirectionsPunchout];
+      v72 = [(SFPunchout *)v70 initWithProtobuf:customDirectionsPunchout2];
       [(SFActionItem *)v5 setCustomDirectionsPunchout:v72];
     }
 
-    if ([v4 shouldSearchDirectionsAlongCurrentRoute])
+    if ([protobufCopy shouldSearchDirectionsAlongCurrentRoute])
     {
-      -[SFActionItem setShouldSearchDirectionsAlongCurrentRoute:](v5, "setShouldSearchDirectionsAlongCurrentRoute:", [v4 shouldSearchDirectionsAlongCurrentRoute]);
+      -[SFActionItem setShouldSearchDirectionsAlongCurrentRoute:](v5, "setShouldSearchDirectionsAlongCurrentRoute:", [protobufCopy shouldSearchDirectionsAlongCurrentRoute]);
     }
 
-    if ([v4 directionsMode])
+    if ([protobufCopy directionsMode])
     {
-      -[SFActionItem setDirectionsMode:](v5, "setDirectionsMode:", [v4 directionsMode]);
+      -[SFActionItem setDirectionsMode:](v5, "setDirectionsMode:", [protobufCopy directionsMode]);
     }
 
     v73 = v5;

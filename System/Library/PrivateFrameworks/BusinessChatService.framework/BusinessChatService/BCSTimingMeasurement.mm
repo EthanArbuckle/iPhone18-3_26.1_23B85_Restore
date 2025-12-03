@@ -1,5 +1,5 @@
 @interface BCSTimingMeasurement
-+ (id)newTimingMeasurement:(int64_t)a3 withHandlers:(id)a4;
++ (id)newTimingMeasurement:(int64_t)measurement withHandlers:(id)handlers;
 - (double)duration;
 - (void)begin;
 - (void)end;
@@ -7,11 +7,11 @@
 
 @implementation BCSTimingMeasurement
 
-+ (id)newTimingMeasurement:(int64_t)a3 withHandlers:(id)a4
++ (id)newTimingMeasurement:(int64_t)measurement withHandlers:(id)handlers
 {
-  v6 = a4;
+  handlersCopy = handlers;
   v7 = [BCSTimingMeasurement alloc];
-  v8 = v6;
+  v8 = handlersCopy;
   if (v7)
   {
     v11.receiver = v7;
@@ -20,8 +20,8 @@
     v7 = v9;
     if (v9)
     {
-      v9->_timingMeasurementType = a3;
-      objc_storeStrong(&v9->_realTimeMeasurementHandlers, a4);
+      v9->_timingMeasurementType = measurement;
+      objc_storeStrong(&v9->_realTimeMeasurementHandlers, handlers);
     }
   }
 
@@ -32,11 +32,11 @@
 {
   if (!self || !objc_getProperty(self, a2, 8, 1))
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    v5 = v3;
+    date = [MEMORY[0x277CBEAA8] date];
+    v5 = date;
     if (self)
     {
-      objc_setProperty_atomic(self, v4, v3, 8);
+      objc_setProperty_atomic(self, v4, date, 8);
 
       realTimeMeasurementHandlers = self->_realTimeMeasurementHandlers;
     }
@@ -68,8 +68,8 @@
 
       if (!Property)
       {
-        v7 = [MEMORY[0x277CBEAA8] date];
-        objc_setProperty_atomic(self, v8, v7, 16);
+        date = [MEMORY[0x277CBEAA8] date];
+        objc_setProperty_atomic(self, v8, date, 16);
 
         realTimeMeasurementHandlers = self->_realTimeMeasurementHandlers;
         v10[0] = MEMORY[0x277D85DD0];

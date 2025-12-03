@@ -1,11 +1,11 @@
 @interface SeparatorSpacerReusableView
-- (_TtC8AppStore27SeparatorSpacerReusableView)initWithCoder:(id)a3;
+- (_TtC8AppStore27SeparatorSpacerReusableView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation SeparatorSpacerReusableView
 
-- (_TtC8AppStore27SeparatorSpacerReusableView)initWithCoder:(id)a3
+- (_TtC8AppStore27SeparatorSpacerReusableView)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC8AppStore27SeparatorSpacerReusableView_separatorInsets);
   v4 = *&UIEdgeInsetsZero.bottom;
@@ -20,7 +20,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100443B7C();
 }
 

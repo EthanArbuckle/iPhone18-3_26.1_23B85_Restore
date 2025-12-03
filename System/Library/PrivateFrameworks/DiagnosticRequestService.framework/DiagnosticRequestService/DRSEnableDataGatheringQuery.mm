@@ -1,23 +1,23 @@
 @interface DRSEnableDataGatheringQuery
-+ (id)_ON_MOC_QUEUE_enableDataGatheringQueriesForFilterPredicate:(id)a3 context:(id)a4 sortDescriptors:(id)a5 fetchLimit:(unint64_t)a6 errorOut:(id *)a7;
-+ (id)_ON_MOC_QUEUE_enableDataGatheringQueryForID:(id)a3 context:(id)a4;
-+ (id)cachedQueryResponseForQuery:(id)a3 inContext:(id)a4 errorOut:(id *)a5;
-+ (id)enableDataGatheringQueriesForFilterPredicate:(id)a3 context:(id)a4 sortDescriptors:(id)a5 fetchLimit:(unint64_t)a6 errorOut:(id *)a7;
-+ (id)enableDataGatheringQueryForID:(id)a3 context:(id)a4;
++ (id)_ON_MOC_QUEUE_enableDataGatheringQueriesForFilterPredicate:(id)predicate context:(id)context sortDescriptors:(id)descriptors fetchLimit:(unint64_t)limit errorOut:(id *)out;
++ (id)_ON_MOC_QUEUE_enableDataGatheringQueryForID:(id)d context:(id)context;
++ (id)cachedQueryResponseForQuery:(id)query inContext:(id)context errorOut:(id *)out;
++ (id)enableDataGatheringQueriesForFilterPredicate:(id)predicate context:(id)context sortDescriptors:(id)descriptors fetchLimit:(unint64_t)limit errorOut:(id *)out;
++ (id)enableDataGatheringQueryForID:(id)d context:(id)context;
 + (id)leastRecentDateFirstSortDescriptor;
 + (id)mostRecentDateFirstSortDescriptor;
-- (BOOL)doesMatchCachedQuery:(id)a3;
-- (BOOL)isEqualToDataGatheringQuery:(id)a3;
+- (BOOL)doesMatchCachedQuery:(id)query;
+- (BOOL)isEqualToDataGatheringQuery:(id)query;
 - (BOOL)submitQuery;
 - (DRSDecisionServerBatchRequest)pbBatchInstance;
-- (DRSEnableDataGatheringQuery)initWithXPCDict:(id)a3;
+- (DRSEnableDataGatheringQuery)initWithXPCDict:(id)dict;
 - (NSString)debugDescription;
 - (NSString)responseString;
-- (id)_initWithMO_ON_MOC_QUEUE:(id)a3;
+- (id)_initWithMO_ON_MOC_QUEUE:(id)e;
 - (id)jsonCompatibleDictionaryRepresentation;
 - (id)protobufRepresentation;
-- (void)queryFinishedWithDecision:(id)a3 error:(id)a4;
-- (void)updateContextWithDataGatheringQuery_ON_MOC_QUEUE:(id)a3;
+- (void)queryFinishedWithDecision:(id)decision error:(id)error;
+- (void)updateContextWithDataGatheringQuery_ON_MOC_QUEUE:(id)e;
 @end
 
 @implementation DRSEnableDataGatheringQuery
@@ -28,22 +28,22 @@
   {
     v3 = objc_alloc_init(DRSProtoEnableDataGatheringRequest);
     v4 = objc_alloc_init(DRSProtoRequestDescription);
-    v5 = [(DRSEnableDataGatheringQuery *)self teamID];
-    [(DRSProtoRequestDescription *)v4 setTeamId:v5];
+    teamID = [(DRSEnableDataGatheringQuery *)self teamID];
+    [(DRSProtoRequestDescription *)v4 setTeamId:teamID];
 
-    v6 = [(DRSEnableDataGatheringQuery *)self issueCategory];
-    [(DRSProtoRequestDescription *)v4 setIssueCategory:v6];
+    issueCategory = [(DRSEnableDataGatheringQuery *)self issueCategory];
+    [(DRSProtoRequestDescription *)v4 setIssueCategory:issueCategory];
 
-    v7 = [(DRSEnableDataGatheringQuery *)self contextDictionaryData];
-    [(DRSProtoRequestDescription *)v4 setContextDictionaryData:v7];
+    contextDictionaryData = [(DRSEnableDataGatheringQuery *)self contextDictionaryData];
+    [(DRSProtoRequestDescription *)v4 setContextDictionaryData:contextDictionaryData];
 
-    v8 = [(DRSEnableDataGatheringQuery *)self queryDate];
-    [v8 timeIntervalSince1970];
+    queryDate = [(DRSEnableDataGatheringQuery *)self queryDate];
+    [queryDate timeIntervalSince1970];
     [(DRSProtoRequestDescription *)v4 setRequestTime:v9];
 
     [(DRSProtoEnableDataGatheringRequest *)v3 setRequestDescription:v4];
-    v10 = [(DRSEnableDataGatheringQuery *)self logType];
-    [(DRSProtoEnableDataGatheringRequest *)v3 setLogType:v10];
+    logType = [(DRSEnableDataGatheringQuery *)self logType];
+    [(DRSProtoEnableDataGatheringRequest *)v3 setLogType:logType];
 
     [(DRSProtoEnableDataGatheringRequest *)v3 setIsContinue:[(DRSEnableDataGatheringQuery *)self isContinue]];
   }
@@ -73,15 +73,15 @@
 - (NSString)debugDescription
 {
   v20 = objc_alloc(MEMORY[0x277CCACA8]);
-  v19 = [(DRSEnableDataGatheringQuery *)self build];
-  v21 = [(DRSEnableDataGatheringQuery *)self queryID];
-  v18 = [v21 UUIDString];
-  v3 = [(DRSEnableDataGatheringQuery *)self responseString];
-  v4 = [(DRSEnableDataGatheringQuery *)self rejectionReason];
-  v5 = v4;
-  if (v4)
+  build = [(DRSEnableDataGatheringQuery *)self build];
+  queryID = [(DRSEnableDataGatheringQuery *)self queryID];
+  uUIDString = [queryID UUIDString];
+  responseString = [(DRSEnableDataGatheringQuery *)self responseString];
+  rejectionReason = [(DRSEnableDataGatheringQuery *)self rejectionReason];
+  v5 = rejectionReason;
+  if (rejectionReason)
   {
-    v6 = v4;
+    v6 = rejectionReason;
   }
 
   else
@@ -89,10 +89,10 @@
     v6 = @"-";
   }
 
-  v7 = [(DRSEnableDataGatheringQuery *)self attemptCount];
-  v8 = [(DRSEnableDataGatheringQuery *)self teamID];
-  v9 = [(DRSEnableDataGatheringQuery *)self issueCategory];
-  v10 = [(DRSEnableDataGatheringQuery *)self logType];
+  attemptCount = [(DRSEnableDataGatheringQuery *)self attemptCount];
+  teamID = [(DRSEnableDataGatheringQuery *)self teamID];
+  issueCategory = [(DRSEnableDataGatheringQuery *)self issueCategory];
+  logType = [(DRSEnableDataGatheringQuery *)self logType];
   if ([(DRSEnableDataGatheringQuery *)self isContinue])
   {
     v11 = @"Continue";
@@ -103,8 +103,8 @@
     v11 = @"Initial";
   }
 
-  v12 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
-  v13 = [v12 debugDescription];
+  contextDictionary = [(DRSEnableDataGatheringQuery *)self contextDictionary];
+  v13 = [contextDictionary debugDescription];
   v14 = v13;
   v15 = @"-";
   if (v13)
@@ -112,28 +112,28 @@
     v15 = v13;
   }
 
-  v16 = [v20 initWithFormat:@"%@ %@ %@ %@ %u %@/%@ %@ %@ %@", v19, v18, v3, v6, v7, v8, v9, v10, v11, v15];
+  v16 = [v20 initWithFormat:@"%@ %@ %@ %@ %u %@/%@ %@ %@ %@", build, uUIDString, responseString, v6, attemptCount, teamID, issueCategory, logType, v11, v15];
 
   return v16;
 }
 
 - (NSString)responseString
 {
-  v2 = [(DRSEnableDataGatheringQuery *)self response];
-  if (v2 > 3)
+  response = [(DRSEnableDataGatheringQuery *)self response];
+  if (response > 3)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return &off_27899F9B8[v2]->isa;
+    return &off_27899F9B8[response]->isa;
   }
 }
 
-- (id)_initWithMO_ON_MOC_QUEUE:(id)a3
+- (id)_initWithMO_ON_MOC_QUEUE:(id)e
 {
-  v4 = a3;
+  eCopy = e;
   v30.receiver = self;
   v30.super_class = DRSEnableDataGatheringQuery;
   v5 = [(DRSEnableDataGatheringQuery *)&v30 init];
@@ -142,56 +142,56 @@
     goto LABEL_5;
   }
 
-  v6 = [v4 contextDictionaryData];
+  contextDictionaryData = [eCopy contextDictionaryData];
   contextDictionaryData = v5->_contextDictionaryData;
-  v5->_contextDictionaryData = v6;
+  v5->_contextDictionaryData = contextDictionaryData;
 
   if (!v5->_contextDictionaryData)
   {
     goto LABEL_4;
   }
 
-  v8 = [(DRSEnableDataGatheringQuery *)v5 contextDictionaryData];
-  v9 = DRSDictionaryForData(v8);
+  contextDictionaryData2 = [(DRSEnableDataGatheringQuery *)v5 contextDictionaryData];
+  v9 = DRSDictionaryForData(contextDictionaryData2);
   contextDictionary = v5->_contextDictionary;
   v5->_contextDictionary = v9;
 
-  v11 = [(DRSEnableDataGatheringQuery *)v5 contextDictionary];
+  contextDictionary = [(DRSEnableDataGatheringQuery *)v5 contextDictionary];
 
-  if (v11)
+  if (contextDictionary)
   {
 LABEL_4:
-    v12 = [v4 teamID];
+    teamID = [eCopy teamID];
     teamID = v5->_teamID;
-    v5->_teamID = v12;
+    v5->_teamID = teamID;
 
-    v14 = [v4 issueCategory];
+    issueCategory = [eCopy issueCategory];
     issueCategory = v5->_issueCategory;
-    v5->_issueCategory = v14;
+    v5->_issueCategory = issueCategory;
 
-    v16 = [v4 build];
+    build = [eCopy build];
     build = v5->_build;
-    v5->_build = v16;
+    v5->_build = build;
 
-    v18 = [v4 queryDate];
+    queryDate = [eCopy queryDate];
     queryDate = v5->_queryDate;
-    v5->_queryDate = v18;
+    v5->_queryDate = queryDate;
 
-    v20 = [v4 logType];
+    logType = [eCopy logType];
     logType = v5->_logType;
-    v5->_logType = v20;
+    v5->_logType = logType;
 
-    v5->_response = [v4 response];
-    v22 = [v4 queryID];
+    v5->_response = [eCopy response];
+    queryID = [eCopy queryID];
     queryID = v5->_queryID;
-    v5->_queryID = v22;
+    v5->_queryID = queryID;
 
-    v5->_attemptCount = [v4 attemptCount];
-    v24 = [v4 rejectionReason];
+    v5->_attemptCount = [eCopy attemptCount];
+    rejectionReason = [eCopy rejectionReason];
     rejectionReason = v5->_rejectionReason;
-    v5->_rejectionReason = v24;
+    v5->_rejectionReason = rejectionReason;
 
-    v5->_isContinue = [v4 isContinue];
+    v5->_isContinue = [eCopy isContinue];
 LABEL_5:
     v26 = v5;
     goto LABEL_6;
@@ -210,15 +210,15 @@ LABEL_6:
   return v26;
 }
 
-- (DRSEnableDataGatheringQuery)initWithXPCDict:(id)a3
+- (DRSEnableDataGatheringQuery)initWithXPCDict:(id)dict
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  string = xpc_dictionary_get_string(v4, "TeamID");
-  v6 = xpc_dictionary_get_string(v4, "Category");
-  v7 = xpc_dictionary_get_string(v4, "LogType");
+  dictCopy = dict;
+  string = xpc_dictionary_get_string(dictCopy, "TeamID");
+  v6 = xpc_dictionary_get_string(dictCopy, "Category");
+  v7 = xpc_dictionary_get_string(dictCopy, "LogType");
   length = 0;
-  data = xpc_dictionary_get_data(v4, "ContextDict", &length);
+  data = xpc_dictionary_get_data(dictCopy, "ContextDict", &length);
 
   if (data)
   {
@@ -320,7 +320,7 @@ LABEL_6:
       }
     }
 
-    v37 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -345,20 +345,20 @@ LABEL_6:
       logType = v22->_logType;
       v22->_logType = v27;
 
-      v29 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       queryDate = v22->_queryDate;
-      v22->_queryDate = v29;
+      v22->_queryDate = date;
 
-      v31 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
       queryID = v22->_queryID;
-      v22->_queryID = v31;
+      v22->_queryID = uUID;
 
       v22->_response = 2;
       v22->_attemptCount = 0;
       v33 = +[DRSSystemProfile sharedInstance];
-      v34 = [v33 build];
+      build = [v33 build];
       build = v22->_build;
-      v22->_build = v34;
+      v22->_build = build;
 
       rejectionReason = v22->_rejectionReason;
       v22->_rejectionReason = 0;
@@ -367,29 +367,29 @@ LABEL_6:
     }
 
     self = v22;
-    v37 = self;
+    selfCopy = self;
   }
 
   v39 = *MEMORY[0x277D85DE8];
-  return v37;
+  return selfCopy;
 }
 
-+ (id)_ON_MOC_QUEUE_enableDataGatheringQueryForID:(id)a3 context:(id)a4
++ (id)_ON_MOC_QUEUE_enableDataGatheringQueryForID:(id)d context:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v7 = MEMORY[0x277CCAC30];
-  v8 = a4;
-  v9 = [v7 predicateWithFormat:@"queryID == %@", v6];
+  contextCopy = context;
+  dCopy = [v7 predicateWithFormat:@"queryID == %@", dCopy];
   v17 = 0;
-  v10 = [a1 _ON_MOC_QUEUE_enableDataGatheringQueriesForFilterPredicate:v9 context:v8 sortDescriptors:0 fetchLimit:0 errorOut:&v17];
+  v10 = [self _ON_MOC_QUEUE_enableDataGatheringQueriesForFilterPredicate:dCopy context:contextCopy sortDescriptors:0 fetchLimit:0 errorOut:&v17];
 
   v11 = v17;
   if (v10 && [v10 count])
   {
     if ([v10 count] == 1)
     {
-      v12 = [v10 firstObject];
+      firstObject = [v10 firstObject];
       goto LABEL_9;
     }
 
@@ -398,47 +398,47 @@ LABEL_6:
     {
       v14 = [v10 count];
       *buf = 138543618;
-      v19 = v6;
+      v19 = dCopy;
       v20 = 2048;
       v21 = v14;
       _os_signpost_emit_with_name_impl(&dword_232906000, v13, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "QueryMangedObjectFetchUnexpectedMatches", "Query for UUID %{public}@ found %lu objects", buf, 0x16u);
     }
   }
 
-  v12 = 0;
+  firstObject = 0;
 LABEL_9:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return firstObject;
 }
 
-+ (id)_ON_MOC_QUEUE_enableDataGatheringQueriesForFilterPredicate:(id)a3 context:(id)a4 sortDescriptors:(id)a5 fetchLimit:(unint64_t)a6 errorOut:(id *)a7
++ (id)_ON_MOC_QUEUE_enableDataGatheringQueriesForFilterPredicate:(id)predicate context:(id)context sortDescriptors:(id)descriptors fetchLimit:(unint64_t)limit errorOut:(id *)out
 {
-  v12 = a4;
+  contextCopy = context;
   v13 = MEMORY[0x277CBE428];
-  v14 = a5;
-  v15 = a3;
-  v16 = [a1 entityName];
-  v17 = [v13 fetchRequestWithEntityName:v16];
+  descriptorsCopy = descriptors;
+  predicateCopy = predicate;
+  entityName = [self entityName];
+  v17 = [v13 fetchRequestWithEntityName:entityName];
 
-  [v17 setPredicate:v15];
-  [v17 setSortDescriptors:v14];
+  [v17 setPredicate:predicateCopy];
+  [v17 setSortDescriptors:descriptorsCopy];
 
-  if (a6)
+  if (limit)
   {
-    [v17 setFetchLimit:a6];
+    [v17 setFetchLimit:limit];
   }
 
   v24 = 0;
-  v18 = [v12 executeFetchRequest:v17 error:&v24];
+  v18 = [contextCopy executeFetchRequest:v17 error:&v24];
   v19 = v24;
   v20 = v19;
   if (v19)
   {
     v21 = v19;
     v22 = 0;
-    *a7 = v20;
+    *out = v20;
   }
 
   else
@@ -487,11 +487,11 @@ void __65__DRSEnableDataGatheringQuery_leastRecentDateFirstSortDescriptor__block
   leastRecentDateFirstSortDescriptor_leastRecentDateSortDescriptor_0 = v0;
 }
 
-+ (id)enableDataGatheringQueriesForFilterPredicate:(id)a3 context:(id)a4 sortDescriptors:(id)a5 fetchLimit:(unint64_t)a6 errorOut:(id *)a7
++ (id)enableDataGatheringQueriesForFilterPredicate:(id)predicate context:(id)context sortDescriptors:(id)descriptors fetchLimit:(unint64_t)limit errorOut:(id *)out
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  predicateCopy = predicate;
+  contextCopy = context;
+  descriptorsCopy = descriptors;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -508,20 +508,20 @@ void __65__DRSEnableDataGatheringQuery_leastRecentDateFirstSortDescriptor__block
   v20[1] = 3221225472;
   v20[2] = __120__DRSEnableDataGatheringQuery_enableDataGatheringQueriesForFilterPredicate_context_sortDescriptors_fetchLimit_errorOut___block_invoke;
   v20[3] = &unk_27899F998;
-  v26 = a1;
-  v15 = v12;
+  selfCopy = self;
+  v15 = predicateCopy;
   v21 = v15;
-  v16 = v13;
+  v16 = contextCopy;
   v22 = v16;
-  v17 = v14;
+  v17 = descriptorsCopy;
   v23 = v17;
   v24 = &v28;
-  v27 = a6;
+  limitCopy = limit;
   v25 = &v34;
   [v16 performBlockAndWait:v20];
-  if (a7)
+  if (out)
   {
-    *a7 = v29[5];
+    *out = v29[5];
   }
 
   v18 = v35[5];
@@ -609,24 +609,24 @@ LABEL_12:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)cachedQueryResponseForQuery:(id)a3 inContext:(id)a4 errorOut:(id *)a5
++ (id)cachedQueryResponseForQuery:(id)query inContext:(id)context errorOut:(id *)out
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  queryCopy = query;
+  contextCopy = context;
   v9 = MEMORY[0x277CCAC30];
-  v10 = [v7 teamID];
-  v11 = [v7 issueCategory];
-  v12 = [v7 logType];
-  v13 = [v7 build];
-  v14 = [v9 predicateWithFormat:@"teamID == %@ AND issueCategory == %@ AND logType == %@ AND build == %@", v10, v11, v12, v13];
+  teamID = [queryCopy teamID];
+  issueCategory = [queryCopy issueCategory];
+  logType = [queryCopy logType];
+  build = [queryCopy build];
+  v14 = [v9 predicateWithFormat:@"teamID == %@ AND issueCategory == %@ AND logType == %@ AND build == %@", teamID, issueCategory, logType, build];
 
   v15 = +[DRSEnableDataGatheringQuery mostRecentDateFirstSortDescriptor];
   v33[0] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
 
   v31 = 0;
-  v17 = [a1 enableDataGatheringQueriesForFilterPredicate:v14 context:v8 sortDescriptors:v16 fetchLimit:1 errorOut:&v31];
+  v17 = [self enableDataGatheringQueriesForFilterPredicate:v14 context:contextCopy sortDescriptors:v16 fetchLimit:1 errorOut:&v31];
   v18 = v31;
   if (v17 && [v17 count])
   {
@@ -638,7 +638,7 @@ LABEL_12:
     v20 = [v19 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v20)
     {
-      v26 = v8;
+      v26 = contextCopy;
       v21 = *v28;
       while (2)
       {
@@ -650,7 +650,7 @@ LABEL_12:
           }
 
           v23 = *(*(&v27 + 1) + 8 * i);
-          if ([v7 doesMatchCachedQuery:v23])
+          if ([queryCopy doesMatchCachedQuery:v23])
           {
             v20 = v23;
             goto LABEL_14;
@@ -667,7 +667,7 @@ LABEL_12:
       }
 
 LABEL_14:
-      v8 = v26;
+      contextCopy = v26;
     }
   }
 
@@ -681,22 +681,22 @@ LABEL_14:
   return v20;
 }
 
-+ (id)enableDataGatheringQueryForID:(id)a3 context:(id)a4
++ (id)enableDataGatheringQueryForID:(id)d context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v7 = MEMORY[0x277CCAC30];
-  v8 = a4;
-  v9 = [v7 predicateWithFormat:@"queryID == %@", v6];
+  contextCopy = context;
+  dCopy = [v7 predicateWithFormat:@"queryID == %@", dCopy];
   v24 = 0;
-  v10 = [a1 enableDataGatheringQueriesForFilterPredicate:v9 context:v8 sortDescriptors:0 fetchLimit:1 errorOut:&v24];
+  v10 = [self enableDataGatheringQueriesForFilterPredicate:dCopy context:contextCopy sortDescriptors:0 fetchLimit:1 errorOut:&v24];
 
   v11 = v24;
   if (v10 && [v10 count])
   {
     if ([v10 count] == 1)
     {
-      v12 = [v10 firstObject];
+      firstObject = [v10 firstObject];
       goto LABEL_16;
     }
 
@@ -705,7 +705,7 @@ LABEL_14:
     {
       v21 = [v10 count];
       *buf = 138543618;
-      v26 = v6;
+      v26 = dCopy;
       v27 = 2048;
       v28 = v21;
       v17 = "QueryMangedObjectFetchUnexpectedMatches";
@@ -723,12 +723,12 @@ LABEL_14:
       v13 = DPLogHandle_CoreDataError();
       if (os_signpost_enabled(v13))
       {
-        v14 = [v11 localizedDescription];
-        v15 = v14;
+        localizedDescription = [v11 localizedDescription];
+        v15 = localizedDescription;
         v16 = @"Unknown";
-        if (v14)
+        if (localizedDescription)
         {
-          v16 = v14;
+          v16 = localizedDescription;
         }
 
         *buf = 138543362;
@@ -743,7 +743,7 @@ LABEL_14:
     if (os_signpost_enabled(v13))
     {
       *buf = 138543362;
-      v26 = v6;
+      v26 = dCopy;
       v17 = "QueryMangedObjectFetchMiss";
       v18 = "No cached query with MO ID %{public}@";
       v19 = v13;
@@ -755,128 +755,128 @@ LABEL_14:
 
 LABEL_15:
 
-  v12 = 0;
+  firstObject = 0;
 LABEL_16:
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return firstObject;
 }
 
-- (void)updateContextWithDataGatheringQuery_ON_MOC_QUEUE:(id)a3
+- (void)updateContextWithDataGatheringQuery_ON_MOC_QUEUE:(id)e
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eCopy = e;
   v5 = objc_opt_class();
-  v6 = [(DRSEnableDataGatheringQuery *)self queryID];
-  v7 = [v5 _ON_MOC_QUEUE_enableDataGatheringQueryForID:v6 context:v4];
+  queryID = [(DRSEnableDataGatheringQuery *)self queryID];
+  v7 = [v5 _ON_MOC_QUEUE_enableDataGatheringQueryForID:queryID context:eCopy];
 
   if (!v7)
   {
     v8 = DPLogHandle_EnableDataGatheringQuery();
     if (os_signpost_enabled(v8))
     {
-      v9 = [(DRSEnableDataGatheringQuery *)self queryID];
+      queryID2 = [(DRSEnableDataGatheringQuery *)self queryID];
       v19 = 138543362;
-      v20 = v9;
+      v20 = queryID2;
       _os_signpost_emit_with_name_impl(&dword_232906000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "QueryMangedObjectFetchMiss", "No cached query with MO ID %{public}@", &v19, 0xCu);
     }
 
-    v7 = [[DRSEnableDataGatheringQueryMO alloc] initWithContext:v4];
-    v10 = [(DRSEnableDataGatheringQuery *)self teamID];
-    [(DRSEnableDataGatheringQueryMO *)v7 setTeamID:v10];
+    v7 = [[DRSEnableDataGatheringQueryMO alloc] initWithContext:eCopy];
+    teamID = [(DRSEnableDataGatheringQuery *)self teamID];
+    [(DRSEnableDataGatheringQueryMO *)v7 setTeamID:teamID];
 
-    v11 = [(DRSEnableDataGatheringQuery *)self issueCategory];
-    [(DRSEnableDataGatheringQueryMO *)v7 setIssueCategory:v11];
+    issueCategory = [(DRSEnableDataGatheringQuery *)self issueCategory];
+    [(DRSEnableDataGatheringQueryMO *)v7 setIssueCategory:issueCategory];
 
-    v12 = [(DRSEnableDataGatheringQuery *)self logType];
-    [(DRSEnableDataGatheringQueryMO *)v7 setLogType:v12];
+    logType = [(DRSEnableDataGatheringQuery *)self logType];
+    [(DRSEnableDataGatheringQueryMO *)v7 setLogType:logType];
 
-    v13 = [(DRSEnableDataGatheringQuery *)self contextDictionaryData];
-    [(DRSEnableDataGatheringQueryMO *)v7 setContextDictionaryData:v13];
+    contextDictionaryData = [(DRSEnableDataGatheringQuery *)self contextDictionaryData];
+    [(DRSEnableDataGatheringQueryMO *)v7 setContextDictionaryData:contextDictionaryData];
 
-    v14 = [(DRSEnableDataGatheringQuery *)self build];
-    [(DRSEnableDataGatheringQueryMO *)v7 setBuild:v14];
+    build = [(DRSEnableDataGatheringQuery *)self build];
+    [(DRSEnableDataGatheringQueryMO *)v7 setBuild:build];
 
-    v15 = [(DRSEnableDataGatheringQuery *)self queryDate];
-    [(DRSEnableDataGatheringQueryMO *)v7 setQueryDate:v15];
+    queryDate = [(DRSEnableDataGatheringQuery *)self queryDate];
+    [(DRSEnableDataGatheringQueryMO *)v7 setQueryDate:queryDate];
 
-    v16 = [(DRSEnableDataGatheringQuery *)self queryID];
-    [(DRSEnableDataGatheringQueryMO *)v7 setQueryID:v16];
+    queryID3 = [(DRSEnableDataGatheringQuery *)self queryID];
+    [(DRSEnableDataGatheringQueryMO *)v7 setQueryID:queryID3];
   }
 
   [(DRSEnableDataGatheringQueryMO *)v7 setResponse:[(DRSEnableDataGatheringQuery *)self response]];
   [(DRSEnableDataGatheringQueryMO *)v7 setAttemptCount:[(DRSEnableDataGatheringQuery *)self attemptCount]];
-  v17 = [(DRSEnableDataGatheringQuery *)self rejectionReason];
-  [(DRSEnableDataGatheringQueryMO *)v7 setRejectionReason:v17];
+  rejectionReason = [(DRSEnableDataGatheringQuery *)self rejectionReason];
+  [(DRSEnableDataGatheringQueryMO *)v7 setRejectionReason:rejectionReason];
 
   [(DRSEnableDataGatheringQueryMO *)v7 setIsContinue:[(DRSEnableDataGatheringQuery *)self isContinue]];
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqualToDataGatheringQuery:(id)a3
+- (BOOL)isEqualToDataGatheringQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(DRSEnableDataGatheringQuery *)self teamID];
-  v6 = [v4 teamID];
-  v7 = [v5 isEqualToString:v6];
+  queryCopy = query;
+  teamID = [(DRSEnableDataGatheringQuery *)self teamID];
+  teamID2 = [queryCopy teamID];
+  v7 = [teamID isEqualToString:teamID2];
 
   if (!v7)
   {
     goto LABEL_19;
   }
 
-  v8 = [(DRSEnableDataGatheringQuery *)self issueCategory];
-  v9 = [v4 issueCategory];
-  v10 = [v8 isEqualToString:v9];
+  issueCategory = [(DRSEnableDataGatheringQuery *)self issueCategory];
+  issueCategory2 = [queryCopy issueCategory];
+  v10 = [issueCategory isEqualToString:issueCategory2];
 
   if (!v10)
   {
     goto LABEL_19;
   }
 
-  v11 = [(DRSEnableDataGatheringQuery *)self logType];
-  v12 = [v4 logType];
-  v13 = [v11 isEqualToString:v12];
+  logType = [(DRSEnableDataGatheringQuery *)self logType];
+  logType2 = [queryCopy logType];
+  v13 = [logType isEqualToString:logType2];
 
   if (!v13)
   {
     goto LABEL_19;
   }
 
-  v14 = [(DRSEnableDataGatheringQuery *)self build];
-  v15 = [v4 build];
-  v16 = [v14 isEqualToString:v15];
+  build = [(DRSEnableDataGatheringQuery *)self build];
+  build2 = [queryCopy build];
+  v16 = [build isEqualToString:build2];
 
   if (!v16)
   {
     goto LABEL_19;
   }
 
-  v17 = [(DRSEnableDataGatheringQuery *)self queryDate];
-  v18 = [v4 queryDate];
-  v19 = [v17 isEqualToDate:v18];
+  queryDate = [(DRSEnableDataGatheringQuery *)self queryDate];
+  queryDate2 = [queryCopy queryDate];
+  v19 = [queryDate isEqualToDate:queryDate2];
 
   if (!v19)
   {
     goto LABEL_19;
   }
 
-  v20 = [(DRSEnableDataGatheringQuery *)self queryID];
-  v21 = [v4 queryID];
-  v22 = [v20 isEqual:v21];
+  queryID = [(DRSEnableDataGatheringQuery *)self queryID];
+  queryID2 = [queryCopy queryID];
+  v22 = [queryID isEqual:queryID2];
 
   if (!v22)
   {
     goto LABEL_19;
   }
 
-  v23 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
-  if (v23 && (v24 = v23, [v4 contextDictionary], v25 = objc_claimAutoreleasedReturnValue(), v25, v24, v25))
+  contextDictionary = [(DRSEnableDataGatheringQuery *)self contextDictionary];
+  if (contextDictionary && (v24 = contextDictionary, [queryCopy contextDictionary], v25 = objc_claimAutoreleasedReturnValue(), v25, v24, v25))
   {
-    v26 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
-    v27 = [v4 contextDictionary];
-    v28 = [v26 isEqualToDictionary:v27];
+    contextDictionary2 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
+    contextDictionary3 = [queryCopy contextDictionary];
+    v28 = [contextDictionary2 isEqualToDictionary:contextDictionary3];
 
     if ((v28 & 1) == 0)
     {
@@ -886,31 +886,31 @@ LABEL_16:
 
   else
   {
-    v29 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
-    if (v29)
+    contextDictionary4 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
+    if (contextDictionary4)
     {
       goto LABEL_18;
     }
 
-    v30 = [v4 contextDictionary];
+    contextDictionary5 = [queryCopy contextDictionary];
 
-    if (v30)
+    if (contextDictionary5)
     {
       goto LABEL_19;
     }
   }
 
-  v31 = [(DRSEnableDataGatheringQuery *)self rejectionReason];
-  if (v31)
+  rejectionReason = [(DRSEnableDataGatheringQuery *)self rejectionReason];
+  if (rejectionReason)
   {
-    v32 = v31;
-    v33 = [v4 rejectionReason];
+    v32 = rejectionReason;
+    rejectionReason2 = [queryCopy rejectionReason];
 
-    if (v33)
+    if (rejectionReason2)
     {
-      v34 = [(DRSEnableDataGatheringQuery *)self rejectionReason];
-      v35 = [v4 rejectionReason];
-      v36 = [v34 isEqualToString:v35];
+      rejectionReason3 = [(DRSEnableDataGatheringQuery *)self rejectionReason];
+      rejectionReason4 = [queryCopy rejectionReason];
+      v36 = [rejectionReason3 isEqualToString:rejectionReason4];
 
       if ((v36 & 1) == 0)
       {
@@ -921,30 +921,30 @@ LABEL_16:
     }
   }
 
-  v29 = [(DRSEnableDataGatheringQuery *)self rejectionReason];
-  if (v29)
+  contextDictionary4 = [(DRSEnableDataGatheringQuery *)self rejectionReason];
+  if (contextDictionary4)
   {
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v39 = [v4 rejectionReason];
+  rejectionReason5 = [queryCopy rejectionReason];
 
-  if (v39)
+  if (rejectionReason5)
   {
     goto LABEL_19;
   }
 
 LABEL_22:
-  v40 = [(DRSEnableDataGatheringQuery *)self attemptCount];
-  if (v40 == [v4 attemptCount])
+  attemptCount = [(DRSEnableDataGatheringQuery *)self attemptCount];
+  if (attemptCount == [queryCopy attemptCount])
   {
-    v41 = [(DRSEnableDataGatheringQuery *)self isContinue];
-    if (v41 == [v4 isContinue])
+    isContinue = [(DRSEnableDataGatheringQuery *)self isContinue];
+    if (isContinue == [queryCopy isContinue])
     {
-      v42 = [(DRSEnableDataGatheringQuery *)self response];
-      v37 = v42 == [v4 response];
+      response = [(DRSEnableDataGatheringQuery *)self response];
+      v37 = response == [queryCopy response];
       goto LABEL_20;
     }
   }
@@ -956,39 +956,39 @@ LABEL_20:
   return v37;
 }
 
-- (BOOL)doesMatchCachedQuery:(id)a3
+- (BOOL)doesMatchCachedQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(DRSEnableDataGatheringQuery *)self teamID];
-  v6 = [v4 teamID];
-  v7 = [v5 isEqualToString:v6];
+  queryCopy = query;
+  teamID = [(DRSEnableDataGatheringQuery *)self teamID];
+  teamID2 = [queryCopy teamID];
+  v7 = [teamID isEqualToString:teamID2];
 
   if (v7)
   {
-    v8 = [(DRSEnableDataGatheringQuery *)self issueCategory];
-    v9 = [v4 issueCategory];
-    v10 = [v8 isEqualToString:v9];
+    issueCategory = [(DRSEnableDataGatheringQuery *)self issueCategory];
+    issueCategory2 = [queryCopy issueCategory];
+    v10 = [issueCategory isEqualToString:issueCategory2];
 
     if (v10)
     {
-      v11 = [(DRSEnableDataGatheringQuery *)self logType];
-      v12 = [v4 logType];
-      v13 = [v11 isEqualToString:v12];
+      logType = [(DRSEnableDataGatheringQuery *)self logType];
+      logType2 = [queryCopy logType];
+      v13 = [logType isEqualToString:logType2];
 
       if (v13)
       {
-        v14 = [(DRSEnableDataGatheringQuery *)self build];
-        v15 = [v4 build];
-        v16 = [v14 isEqualToString:v15];
+        build = [(DRSEnableDataGatheringQuery *)self build];
+        build2 = [queryCopy build];
+        v16 = [build isEqualToString:build2];
 
         if (v16)
         {
-          v17 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
-          if (v17 && (v18 = v17, [v4 contextDictionary], v19 = objc_claimAutoreleasedReturnValue(), v19, v18, v19))
+          contextDictionary = [(DRSEnableDataGatheringQuery *)self contextDictionary];
+          if (contextDictionary && (v18 = contextDictionary, [queryCopy contextDictionary], v19 = objc_claimAutoreleasedReturnValue(), v19, v18, v19))
           {
-            v20 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
-            v21 = [v4 contextDictionary];
-            v22 = [v20 isEqualToDictionary:v21];
+            contextDictionary2 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
+            contextDictionary3 = [queryCopy contextDictionary];
+            v22 = [contextDictionary2 isEqualToDictionary:contextDictionary3];
 
             if (v22)
             {
@@ -998,16 +998,16 @@ LABEL_20:
 
           else
           {
-            v23 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
-            if (v23)
+            contextDictionary4 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
+            if (contextDictionary4)
             {
             }
 
             else
             {
-              v24 = [v4 contextDictionary];
+              contextDictionary5 = [queryCopy contextDictionary];
 
-              if (!v24)
+              if (!contextDictionary5)
               {
 LABEL_14:
                 v25 = 1;
@@ -1031,20 +1031,20 @@ LABEL_13:
   v30 = *MEMORY[0x277D85DE8];
   ++self->_attemptCount;
   v4 = DPLogHandle_CKCodeServer();
-  v5 = [(DRSEnableDataGatheringQuery *)self queryID];
-  v6 = [v5 hash];
+  queryID = [(DRSEnableDataGatheringQuery *)self queryID];
+  v6 = [queryID hash];
 
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v4))
   {
-    v7 = [(DRSEnableDataGatheringQuery *)self queryID];
-    v8 = [(DRSEnableDataGatheringQuery *)self teamID];
-    v9 = [(DRSEnableDataGatheringQuery *)self issueCategory];
-    v10 = [(DRSEnableDataGatheringQuery *)self logType];
-    v11 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
-    if (v11)
+    queryID2 = [(DRSEnableDataGatheringQuery *)self queryID];
+    teamID = [(DRSEnableDataGatheringQuery *)self teamID];
+    issueCategory = [(DRSEnableDataGatheringQuery *)self issueCategory];
+    logType = [(DRSEnableDataGatheringQuery *)self logType];
+    contextDictionary = [(DRSEnableDataGatheringQuery *)self contextDictionary];
+    if (contextDictionary)
     {
-      v2 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
-      v12 = [v2 debugDescription];
+      contextDictionary2 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
+      v12 = [contextDictionary2 debugDescription];
     }
 
     else
@@ -1053,83 +1053,83 @@ LABEL_13:
     }
 
     v20 = 138544386;
-    v21 = v7;
+    v21 = queryID2;
     v22 = 2114;
-    v23 = v8;
+    v23 = teamID;
     v24 = 2114;
-    v25 = v9;
+    v25 = issueCategory;
     v26 = 2114;
-    v27 = v10;
+    v27 = logType;
     v28 = 2114;
     v29 = v12;
     _os_signpost_emit_with_name_impl(&dword_232906000, v4, OS_SIGNPOST_INTERVAL_BEGIN, v6, "EnableDataGatheringQuery", "Began request to decision server to enable data gathering for query ID %{public}@, %{public, name=teamID}@/%{public, name=issueCategory}@/%{public, name=logType}@ %{public, name=contextDictionary}@", &v20, 0x34u);
-    if (v11)
+    if (contextDictionary)
     {
     }
   }
 
-  v13 = [(DRSEnableDataGatheringQuery *)self response];
-  if (v13 != 2)
+  response = [(DRSEnableDataGatheringQuery *)self response];
+  if (response != 2)
   {
     v14 = DPLogHandle_CKCodeServer();
-    v15 = [(DRSEnableDataGatheringQuery *)self queryID];
-    v16 = [v15 hash];
+    queryID3 = [(DRSEnableDataGatheringQuery *)self queryID];
+    v16 = [queryID3 hash];
 
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
     {
-      v17 = [(DRSEnableDataGatheringQuery *)self responseString];
+      responseString = [(DRSEnableDataGatheringQuery *)self responseString];
       v20 = 138543362;
-      v21 = v17;
+      v21 = responseString;
       _os_signpost_emit_with_name_impl(&dword_232906000, v14, OS_SIGNPOST_INTERVAL_END, v16, "EnableDataGatheringQuery", "FAILED: Query in unexpected state: %{public}@", &v20, 0xCu);
     }
   }
 
-  result = v13 == 2;
+  result = response == 2;
   v19 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (void)queryFinishedWithDecision:(id)a3 error:(id)a4
+- (void)queryFinishedWithDecision:(id)decision error:(id)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  decisionCopy = decision;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (errorCopy)
   {
-    v9 = [v7 localizedDescription];
-    v10 = v9;
+    localizedDescription = [errorCopy localizedDescription];
+    v10 = localizedDescription;
     v11 = @"Unknown";
-    if (v9)
+    if (localizedDescription)
     {
-      v11 = v9;
+      v11 = localizedDescription;
     }
 
-    v12 = v11;
+    errorString2 = v11;
 
     goto LABEL_5;
   }
 
-  v19 = [v6 errorString];
+  errorString = [decisionCopy errorString];
 
-  if (v19)
+  if (errorString)
   {
-    v12 = [v6 errorString];
-    if (v12)
+    errorString2 = [decisionCopy errorString];
+    if (errorString2)
     {
 LABEL_5:
-      v13 = [(DRSEnableDataGatheringQuery *)self attemptCount];
+      attemptCount = [(DRSEnableDataGatheringQuery *)self attemptCount];
       rejectionReason = DPLogHandle_CKCodeServer();
-      v15 = [(DRSEnableDataGatheringQuery *)self queryID];
-      v16 = [v15 hash];
+      queryID = [(DRSEnableDataGatheringQuery *)self queryID];
+      v16 = [queryID hash];
 
       v17 = v16 - 1;
-      if (v13 < 3)
+      if (attemptCount < 3)
       {
         if (v17 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(rejectionReason))
         {
           v29 = 138543362;
-          v30 = v12;
+          v30 = errorString2;
           _os_signpost_emit_with_name_impl(&dword_232906000, rejectionReason, OS_SIGNPOST_INTERVAL_END, v16, "EnableDataGatheringQuery", "Attempt failed due to error: %{public}@", &v29, 0xCu);
         }
       }
@@ -1139,47 +1139,47 @@ LABEL_5:
         if (v17 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(rejectionReason))
         {
           v29 = 138543362;
-          v30 = v12;
+          v30 = errorString2;
           _os_signpost_emit_with_name_impl(&dword_232906000, rejectionReason, OS_SIGNPOST_INTERVAL_END, v16, "EnableDataGatheringQuery", "Query invalidated due to attempt count. Last error:%{public}@", &v29, 0xCu);
         }
 
         self->_response = 3;
         rejectionReason = self->_rejectionReason;
-        self->_rejectionReason = &v12->isa;
-        v12 = v12;
+        self->_rejectionReason = &errorString2->isa;
+        errorString2 = errorString2;
       }
 
       goto LABEL_14;
     }
   }
 
-  v20 = [v6 acceptedNum];
-  v21 = [v20 BOOLValue];
+  acceptedNum = [decisionCopy acceptedNum];
+  bOOLValue = [acceptedNum BOOLValue];
 
-  self->_response = v21;
+  self->_response = bOOLValue;
   v22 = self->_rejectionReason;
   self->_rejectionReason = 0;
 
-  v12 = DPLogHandle_CKCodeServer();
-  v23 = [(DRSEnableDataGatheringQuery *)self queryID];
-  v24 = [v23 hash];
+  errorString2 = DPLogHandle_CKCodeServer();
+  queryID2 = [(DRSEnableDataGatheringQuery *)self queryID];
+  v24 = [queryID2 hash];
 
-  if (v24 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
+  if (v24 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(errorString2))
   {
-    v25 = [(DRSEnableDataGatheringQuery *)self responseString];
-    v26 = [(DRSEnableDataGatheringQuery *)self rejectionReason];
-    v27 = v26;
+    responseString = [(DRSEnableDataGatheringQuery *)self responseString];
+    rejectionReason = [(DRSEnableDataGatheringQuery *)self rejectionReason];
+    v27 = rejectionReason;
     v28 = @"-";
-    if (v26)
+    if (rejectionReason)
     {
-      v28 = v26;
+      v28 = rejectionReason;
     }
 
     v29 = 138543618;
-    v30 = v25;
+    v30 = responseString;
     v31 = 2114;
     v32 = v28;
-    _os_signpost_emit_with_name_impl(&dword_232906000, v12, OS_SIGNPOST_INTERVAL_END, v24, "EnableDataGatheringQuery", "Query successful with response: %{public}@, rejection reason: %{public}@", &v29, 0x16u);
+    _os_signpost_emit_with_name_impl(&dword_232906000, errorString2, OS_SIGNPOST_INTERVAL_END, v24, "EnableDataGatheringQuery", "Query successful with response: %{public}@, rejection reason: %{public}@", &v29, 0x16u);
   }
 
 LABEL_14:
@@ -1193,28 +1193,28 @@ LABEL_14:
   v3 = objc_autoreleasePoolPush();
   v4 = objc_alloc_init(MEMORY[0x277CCAA68]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [(DRSEnableDataGatheringQuery *)self build];
-  [v5 setObject:v6 forKeyedSubscript:@"build"];
+  build = [(DRSEnableDataGatheringQuery *)self build];
+  [v5 setObject:build forKeyedSubscript:@"build"];
 
-  v7 = [(DRSEnableDataGatheringQuery *)self queryDate];
-  v8 = [v4 stringFromDate:v7];
+  queryDate = [(DRSEnableDataGatheringQuery *)self queryDate];
+  v8 = [v4 stringFromDate:queryDate];
   [v5 setObject:v8 forKeyedSubscript:@"date"];
 
-  v9 = [(DRSEnableDataGatheringQuery *)self teamID];
-  [v5 setObject:v9 forKeyedSubscript:@"teamID"];
+  teamID = [(DRSEnableDataGatheringQuery *)self teamID];
+  [v5 setObject:teamID forKeyedSubscript:@"teamID"];
 
-  v10 = [(DRSEnableDataGatheringQuery *)self issueCategory];
-  [v5 setObject:v10 forKeyedSubscript:@"issueCategory"];
+  issueCategory = [(DRSEnableDataGatheringQuery *)self issueCategory];
+  [v5 setObject:issueCategory forKeyedSubscript:@"issueCategory"];
 
-  v11 = [(DRSEnableDataGatheringQuery *)self responseString];
-  [v5 setObject:v11 forKeyedSubscript:@"response"];
+  responseString = [(DRSEnableDataGatheringQuery *)self responseString];
+  [v5 setObject:responseString forKeyedSubscript:@"response"];
 
-  v12 = [(DRSEnableDataGatheringQuery *)self logType];
-  [v5 setObject:v12 forKeyedSubscript:@"logType"];
+  logType = [(DRSEnableDataGatheringQuery *)self logType];
+  [v5 setObject:logType forKeyedSubscript:@"logType"];
 
-  v13 = [(DRSEnableDataGatheringQuery *)self queryID];
-  v14 = [v13 UUIDString];
-  [v5 setObject:v14 forKeyedSubscript:@"queryID"];
+  queryID = [(DRSEnableDataGatheringQuery *)self queryID];
+  uUIDString = [queryID UUIDString];
+  [v5 setObject:uUIDString forKeyedSubscript:@"queryID"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{-[DRSEnableDataGatheringQuery attemptCount](self, "attemptCount")}];
   [v5 setObject:v15 forKeyedSubscript:@"uploadAttemptCount"];
@@ -1222,26 +1222,26 @@ LABEL_14:
   v16 = [MEMORY[0x277CCABB0] numberWithBool:{-[DRSEnableDataGatheringQuery isContinue](self, "isContinue")}];
   [v5 setObject:v16 forKeyedSubscript:@"isContinue"];
 
-  v17 = [(DRSEnableDataGatheringQuery *)self rejectionReason];
+  rejectionReason = [(DRSEnableDataGatheringQuery *)self rejectionReason];
 
-  if (v17)
+  if (rejectionReason)
   {
-    v18 = [(DRSEnableDataGatheringQuery *)self rejectionReason];
-    [v5 setObject:v18 forKeyedSubscript:@"rejectionReason"];
+    rejectionReason2 = [(DRSEnableDataGatheringQuery *)self rejectionReason];
+    [v5 setObject:rejectionReason2 forKeyedSubscript:@"rejectionReason"];
   }
 
-  v19 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
+  contextDictionary = [(DRSEnableDataGatheringQuery *)self contextDictionary];
 
-  if (v19)
+  if (contextDictionary)
   {
     v20 = MEMORY[0x277CCAAA0];
-    v21 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
-    LODWORD(v20) = [v20 isValidJSONObject:v21];
+    contextDictionary2 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
+    LODWORD(v20) = [v20 isValidJSONObject:contextDictionary2];
 
     if (v20)
     {
-      v22 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
-      [v5 setObject:v22 forKeyedSubscript:@"contextDictionary"];
+      contextDictionary3 = [(DRSEnableDataGatheringQuery *)self contextDictionary];
+      [v5 setObject:contextDictionary3 forKeyedSubscript:@"contextDictionary"];
     }
 
     else

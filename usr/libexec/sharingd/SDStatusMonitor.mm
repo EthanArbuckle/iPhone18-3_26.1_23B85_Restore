@@ -7,8 +7,8 @@
 - (BOOL)bluetoothEnabled;
 - (BOOL)bluetoothEnabledIncludingRestricted;
 - (BOOL)bypassLTKeyAbort;
-- (BOOL)contactIdentifierIsBlocked:(id)a3;
-- (BOOL)contactIsBlocked:(id)a3;
+- (BOOL)contactIdentifierIsBlocked:(id)blocked;
+- (BOOL)contactIsBlocked:(id)blocked;
 - (BOOL)deviceInBiolockout;
 - (BOOL)deviceIsInClassD;
 - (BOOL)deviceKeyBagLocked;
@@ -26,10 +26,10 @@
 - (BOOL)iCloudSharedPhotoLibraryEnabled;
 - (BOOL)isAirDropAllowed;
 - (BOOL)isAirDropReady;
-- (BOOL)isCarKitSessionWireless:(id)a3;
+- (BOOL)isCarKitSessionWireless:(id)wireless;
 - (BOOL)isClarityBoardEnabled;
 - (BOOL)isLocalDeviceMeDevice;
-- (BOOL)isScreenOnForBacklightState:(int64_t)a3;
+- (BOOL)isScreenOnForBacklightState:(int64_t)state;
 - (BOOL)lostModeEnabled;
 - (BOOL)lteConnectionShows4G;
 - (BOOL)myAppleIDIsManaged;
@@ -38,7 +38,7 @@
 - (BOOL)screenStateSupportsAirDrop;
 - (BOOL)signedIntoPrimaryiCloudAccount;
 - (BOOL)simStateReady;
-- (BOOL)verifyAndParseValidationRecordData:(id)a3 intoDictionary:(id *)a4;
+- (BOOL)verifyAndParseValidationRecordData:(id)data intoDictionary:(id *)dictionary;
 - (BOOL)wirelessCarPlay;
 - (BOOL)wirelessEnabled;
 - (CNContact)meCard;
@@ -79,7 +79,7 @@
 - (SFPowerSource)localPowerSource;
 - (__SecCertificate)_copyMyAppleIDCertificate;
 - (__SecCertificate)_copyMyAppleIDIntermediateCertificate;
-- (__SecCertificate)copyCertificateForRealName:(id)a3;
+- (__SecCertificate)copyCertificateForRealName:(id)name;
 - (__SecCertificate)copyMyAppleIDCertificate;
 - (__SecIdentity)_copyMyAppleIDSecIdentity;
 - (__SecIdentity)copyMyAppleIDSecIdentity;
@@ -88,41 +88,41 @@
 - (double)_everyoneModeExpiryInterval;
 - (id)_everyoneModeExpiryDate;
 - (id)_myAppleID;
-- (id)addAdditionalInformationToMeCard:(id)a3;
+- (id)addAdditionalInformationToMeCard:(id)card;
 - (id)awdlDevice;
-- (id)awdlInfoForPeerWithServiceName:(id)a3;
+- (id)awdlInfoForPeerWithServiceName:(id)name;
 - (id)awdlNetwork;
 - (id)awdlStateInfo;
-- (id)commonNameForCertificate:(__SecCertificate *)a3;
-- (id)contactHandlesForShortHashes:(id)a3;
-- (id)contactWithContactIdentifier:(id)a3;
-- (id)contactWithPreferredIdentifierForContacts:(id)a3;
-- (id)contactsForEmailHash:(id)a3 phoneHash:(id)a4;
-- (id)contactsWithPhoneNumberOrEmail:(id)a3 keys:(id)a4;
-- (id)createHostNameKey:(id)a3;
+- (id)commonNameForCertificate:(__SecCertificate *)certificate;
+- (id)contactHandlesForShortHashes:(id)hashes;
+- (id)contactWithContactIdentifier:(id)identifier;
+- (id)contactWithPreferredIdentifierForContacts:(id)contacts;
+- (id)contactsForEmailHash:(id)hash phoneHash:(id)phoneHash;
+- (id)contactsWithPhoneNumberOrEmail:(id)email keys:(id)keys;
+- (id)createHostNameKey:(id)key;
 - (id)defaultWiFiDevice;
-- (id)emailAddressesForAppleID:(id)a3;
-- (id)emailOrPhoneForEmailHash:(id)a3 phoneHash:(id)a4;
-- (id)emailsForContact:(id)a3;
-- (id)instantMessageEmailsForContact:(id)a3;
-- (id)mountPointsForServer:(id)a3;
+- (id)emailAddressesForAppleID:(id)d;
+- (id)emailOrPhoneForEmailHash:(id)hash phoneHash:(id)phoneHash;
+- (id)emailsForContact:(id)contact;
+- (id)instantMessageEmailsForContact:(id)contact;
+- (id)mountPointsForServer:(id)server;
 - (id)newDiscoverableMode;
-- (id)odiskMountPointsForServer:(id)a3;
-- (id)phoneNumbersForAppleID:(id)a3;
-- (id)phoneNumbersForContact:(id)a3;
+- (id)odiskMountPointsForServer:(id)server;
+- (id)phoneNumbersForAppleID:(id)d;
+- (id)phoneNumbersForContact:(id)contact;
 - (id)reconciledDiscoverableMode;
-- (id)serverNameForHost:(id)a3;
-- (id)stringForWatchWristState:(int64_t)a3;
+- (id)serverNameForHost:(id)host;
+- (id)stringForWatchWristState:(int64_t)state;
 - (id)systemMonitor;
 - (id)unifiedAppleIDInfo;
-- (id)verifiedIdentityForAppleID:(id)a3;
-- (id)wifiSSIDForSSIDHash:(id)a3;
+- (id)verifiedIdentityForAppleID:(id)d;
+- (id)wifiSSIDForSSIDHash:(id)hash;
 - (int)pairedWatchLockState;
 - (int64_t)appleIDAccountState;
 - (int64_t)autoHotspotState;
 - (int64_t)deviceKeyBagState;
 - (int64_t)discoverableLevel;
-- (int64_t)familyHotspotStateForAltDSID:(id)a3;
+- (int64_t)familyHotspotStateForAltDSID:(id)d;
 - (int64_t)pairedWatchWristState;
 - (int64_t)signalStrength;
 - (unint64_t)ultraWideBandState;
@@ -131,27 +131,27 @@
 - (unsigned)wifiPasswordSharingAvailability;
 - (void)_cancelCheckForEveryoneModeExpiry;
 - (void)_checkEveryoneModeExpiry;
-- (void)_expireEveryoneModeAndOnlySetDefault:(BOOL)a3;
+- (void)_expireEveryoneModeAndOnlySetDefault:(BOOL)default;
 - (void)_scheduleCheckForEveryoneModeExpiry;
-- (void)_updateEveryoneModeExpiryDateOnChange:(id)a3;
+- (void)_updateEveryoneModeExpiryDateOnChange:(id)change;
 - (void)activate;
 - (void)activateSystemMonitor;
-- (void)addPreventExitForLocaleReason:(id)a3;
-- (void)addServerName:(id)a3 forHostName:(id)a4;
-- (void)appleIDAccountInfoChanged:(id)a3;
-- (void)backlight:(id)a3 activatingWithEvent:(id)a4;
-- (void)backlight:(id)a3 deactivatingWithEvent:(id)a4;
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvents:(id)a5 abortedEvents:(id)a6;
-- (void)bluetoothActivatedWithError:(id)a3;
+- (void)addPreventExitForLocaleReason:(id)reason;
+- (void)addServerName:(id)name forHostName:(id)hostName;
+- (void)appleIDAccountInfoChanged:(id)changed;
+- (void)backlight:(id)backlight activatingWithEvent:(id)event;
+- (void)backlight:(id)backlight deactivatingWithEvent:(id)event;
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvents:(id)events abortedEvents:(id)abortedEvents;
+- (void)bluetoothActivatedWithError:(id)error;
 - (void)bluetoothAddressChanged;
-- (void)bluetoothDidSetPowerStateWithError:(id)a3;
+- (void)bluetoothDidSetPowerStateWithError:(id)error;
 - (void)bluetoothMonitorInvalidated;
 - (void)bluetoothStateChanged;
-- (void)cacheCertificate:(__SecCertificate *)a3 forRealName:(id)a4;
-- (void)cacheIdentity:(id)a3;
-- (void)carplayMonitorDiedNotification:(id)a3;
-- (void)carplayStatusNotification:(id)a3;
-- (void)cellularDataEnabled:(BOOL *)a3 airplaneMode:(BOOL *)a4;
+- (void)cacheCertificate:(__SecCertificate *)certificate forRealName:(id)name;
+- (void)cacheIdentity:(id)identity;
+- (void)carplayMonitorDiedNotification:(id)notification;
+- (void)carplayStatusNotification:(id)notification;
+- (void)cellularDataEnabled:(BOOL *)enabled airplaneMode:(BOOL *)mode;
 - (void)clearComputerName;
 - (void)clearConsoleUser;
 - (void)clearLocalHostName;
@@ -159,24 +159,24 @@
 - (void)clearMyAppleIDInfo;
 - (void)clearMyIconAndHash;
 - (void)clearWirelessState;
-- (void)contactStoreDidChange:(id)a3;
+- (void)contactStoreDidChange:(id)change;
 - (void)d2dEncryptionChanged;
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4;
-- (void)fetchDataStatusWithContext:(id)a3;
-- (void)fetchLTEShows4GWithContext:(id)a3;
-- (void)fetchSIMStatusWithContext:(id)a3;
-- (void)fetchSignalStrengthWithContext:(id)a3;
-- (void)fetchSubscriptionContextWithCompletion:(id)a3;
+- (void)dataStatus:(id)status dataStatusInfo:(id)info;
+- (void)fetchDataStatusWithContext:(id)context;
+- (void)fetchLTEShows4GWithContext:(id)context;
+- (void)fetchSIMStatusWithContext:(id)context;
+- (void)fetchSignalStrengthWithContext:(id)context;
+- (void)fetchSubscriptionContextWithCompletion:(id)completion;
 - (void)fixAltDSIDIfNeeded;
-- (void)forceAWDLDeviceRefresh:(__WiFiDeviceClient *)a3;
-- (void)handleAWDLState:(id)a3;
+- (void)forceAWDLDeviceRefresh:(__WiFiDeviceClient *)refresh;
+- (void)handleAWDLState:(id)state;
 - (void)handleAppleAccountSignIn;
 - (void)handleAppleAccountSignOut;
-- (void)handleCarKitSessionStateChanged:(id)a3;
-- (void)handleDynamicStoreCallback:(__SCDynamicStore *)a3 changedKeys:(__CFArray *)a4;
-- (void)handleMISStateChanged:(id)a3;
-- (void)handleNameMonitorCallBack:(const char *)a3 flags:(unsigned int)a4 error:(int)a5;
-- (void)handleSleepWakeCallBack:(unsigned int)a3 messageArguement:(void *)a4;
+- (void)handleCarKitSessionStateChanged:(id)changed;
+- (void)handleDynamicStoreCallback:(__SCDynamicStore *)callback changedKeys:(__CFArray *)keys;
+- (void)handleMISStateChanged:(id)changed;
+- (void)handleNameMonitorCallBack:(const char *)back flags:(unsigned int)flags error:(int)error;
+- (void)handleSleepWakeCallBack:(unsigned int)back messageArguement:(void *)arguement;
 - (void)handleWiFiPasswordSharingChanged;
 - (void)installAirplaneModeMonitor;
 - (void)installAppleIDAccountInfoMonitor;
@@ -206,29 +206,29 @@
 - (void)installWifiInterfaceMonitor;
 - (void)installWirelessCarPlayMonitor;
 - (void)installWirelessMonitor;
-- (void)logAirDropTransactionForClientServer:(BOOL)a3 beginEnd:(BOOL)a4 count:(int)a5;
+- (void)logAirDropTransactionForClientServer:(BOOL)server beginEnd:(BOOL)end count:(int)count;
 - (void)logWiFiPowerState;
-- (void)managedConfigurationSettingsChanged:(id)a3;
-- (void)meCardChanged:(id)a3;
-- (void)postNotification:(id)a3 userInfo:(id)a4;
-- (void)pushDateForPreventExitForLocaleReason:(id)a3 expirationDate:(id)a4;
+- (void)managedConfigurationSettingsChanged:(id)changed;
+- (void)meCardChanged:(id)changed;
+- (void)postNotification:(id)notification userInfo:(id)info;
+- (void)pushDateForPreventExitForLocaleReason:(id)reason expirationDate:(id)date;
 - (void)reloadSMBConfInfo;
-- (void)removePreventExitForLocaleReason:(id)a3;
-- (void)removeServerName:(id)a3;
-- (void)resetMeCardWithReason:(id)a3;
+- (void)removePreventExitForLocaleReason:(id)reason;
+- (void)removeServerName:(id)name;
+- (void)resetMeCardWithReason:(id)reason;
 - (void)restartBonjourNameMonitor;
 - (void)retryInstallBluetoothMonitor;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
-- (void)setAirDropPublished:(BOOL)a3;
-- (void)setBluetoothEnabled:(BOOL)a3;
-- (void)setDiscoverableMode:(id)a3;
-- (void)setFinderServer:(id)a3;
-- (void)setODiskMountPoints:(id)a3;
-- (void)setServerMountPoints:(id)a3;
-- (void)setWirelessEnabled:(BOOL)a3;
-- (void)signalStrengthChanged:(id)a3 info:(id)a4;
-- (void)simStatusDidChange:(id)a3 status:(id)a4;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
+- (void)setAirDropPublished:(BOOL)published;
+- (void)setBluetoothEnabled:(BOOL)enabled;
+- (void)setDiscoverableMode:(id)mode;
+- (void)setFinderServer:(id)server;
+- (void)setODiskMountPoints:(id)points;
+- (void)setServerMountPoints:(id)points;
+- (void)setWirelessEnabled:(BOOL)enabled;
+- (void)signalStrengthChanged:(id)changed info:(id)info;
+- (void)simStatusDidChange:(id)change status:(id)status;
 - (void)subscriptionInfoDidChange;
 - (void)uninstallBonjourNameMonitor;
 - (void)uninstallCarPlayStatusMonitor;
@@ -236,20 +236,20 @@
 - (void)updateAirDropAllowed;
 - (void)updateAutoHotspotState;
 - (void)updateBlacklistedAppBundleIDs;
-- (void)updateDataStatus:(id)a3;
+- (void)updateDataStatus:(id)status;
 - (void)updateDiscoverableMode;
 - (void)updateFamilyHotspotState;
-- (void)updateLTEShows4G:(BOOL)a3;
-- (void)updateLocalPowerSource:(id)a3;
-- (void)updateMediaAccessControlSetting:(BOOL)a3;
-- (void)updatePairedWatchLockState:(int)a3;
-- (void)updatePairedWatchWristState:(int64_t)a3;
+- (void)updateLTEShows4G:(BOOL)g;
+- (void)updateLocalPowerSource:(id)source;
+- (void)updateMediaAccessControlSetting:(BOOL)setting;
+- (void)updatePairedWatchLockState:(int)state;
+- (void)updatePairedWatchWristState:(int64_t)state;
 - (void)updatePersonalHotspotAllowed;
-- (void)updateSIMStatus:(id)a3;
-- (void)updateSignalStrength:(id)a3;
-- (void)updateWatchWristState:(int64_t)a3;
-- (void)updateWifiState:(int64_t)a3;
-- (void)updateWirelessCritical:(BOOL)a3;
+- (void)updateSIMStatus:(id)status;
+- (void)updateSignalStrength:(id)strength;
+- (void)updateWatchWristState:(int64_t)state;
+- (void)updateWifiState:(int64_t)state;
+- (void)updateWirelessCritical:(BOOL)critical;
 - (void)updateWirelessDevice;
 @end
 
@@ -345,19 +345,19 @@
   screenOn = self->_screenOn;
   if (!screenOn)
   {
-    v4 = [(objc_class *)off_100972FA0() sharedBacklight];
-    v5 = [v4 backlightState];
+    sharedBacklight = [(objc_class *)off_100972FA0() sharedBacklight];
+    backlightState = [sharedBacklight backlightState];
 
-    v6 = [NSNumber numberWithBool:[(SDStatusMonitor *)self isScreenOnForBacklightState:v5]];
+    v6 = [NSNumber numberWithBool:[(SDStatusMonitor *)self isScreenOnForBacklightState:backlightState]];
     v7 = self->_screenOn;
     self->_screenOn = v6;
 
     screenOn = self->_screenOn;
   }
 
-  v8 = [(NSNumber *)screenOn BOOLValue];
+  bOOLValue = [(NSNumber *)screenOn BOOLValue];
   pthread_mutex_unlock(&stru_100972F48);
-  return v8;
+  return bOOLValue;
 }
 
 - (BOOL)iCloudSharedPhotoLibraryEnabled
@@ -407,9 +407,9 @@
 
 - (BOOL)deviceKeyBagUnlocked
 {
-  v3 = [(SDStatusMonitor *)self deviceKeyBagState];
-  v4 = v3 + 8;
-  if (v3 + 8) < 0x10 && ((0xFF01u >> v4))
+  deviceKeyBagState = [(SDStatusMonitor *)self deviceKeyBagState];
+  v4 = deviceKeyBagState + 8;
+  if (deviceKeyBagState + 8) < 0x10 && ((0xFF01u >> v4))
   {
     v5 = 0x8900u >> v4;
   }
@@ -420,7 +420,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = [(SDStatusMonitor *)self deviceKeyBagState];
+      deviceKeyBagState2 = [(SDStatusMonitor *)self deviceKeyBagState];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Unknown keybag state: %ld File a radar against Sharing | all", &v8, 0xCu);
     }
 
@@ -448,9 +448,9 @@
 
 - (BOOL)deviceKeyBagLocked
 {
-  v3 = [(SDStatusMonitor *)self deviceKeyBagState];
-  v4 = v3 + 8;
-  if (v3 + 8) < 0x10 && ((0xFF01u >> v4))
+  deviceKeyBagState = [(SDStatusMonitor *)self deviceKeyBagState];
+  v4 = deviceKeyBagState + 8;
+  if (deviceKeyBagState + 8) < 0x10 && ((0xFF01u >> v4))
   {
     v5 = 0x76FFu >> v4;
   }
@@ -461,7 +461,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = [(SDStatusMonitor *)self deviceKeyBagState];
+      deviceKeyBagState2 = [(SDStatusMonitor *)self deviceKeyBagState];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Unknown keybag state: %ld File a radar against Sharing | all", &v8, 0xCu);
     }
 
@@ -548,7 +548,7 @@ LABEL_11:
     [NSArray arrayWithObjects:v34 count:7];
     v4 = MGCopyMultipleAnswers();
     v5 = [v4 objectForKeyedSubscript:@"IsSimulator"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
     v7 = [v4 objectForKeyedSubscript:@"ReleaseType"];
     v8 = v7;
@@ -562,7 +562,7 @@ LABEL_11:
     v32 = v10;
 
     v11 = @"Simulator";
-    if (!v6)
+    if (!bOOLValue)
     {
       v11 = v10;
     }
@@ -588,19 +588,19 @@ LABEL_11:
   [NSArray arrayWithObjects:v33 count:2];
   v21 = MGCopyMultipleAnswers();
   v22 = [v21 objectForKeyedSubscript:@"BatteryIsCharging"];
-  v23 = [v22 BOOLValue];
+  bOOLValue2 = [v22 BOOLValue];
 
   v24 = @"not charging";
-  if (v23)
+  if (bOOLValue2)
   {
     v24 = @"charging";
   }
 
   v25 = v24;
   v26 = [v21 objectForKeyedSubscript:@"BatteryCurrentCapacity"];
-  v27 = [v26 integerValue];
+  integerValue = [v26 integerValue];
 
-  v28 = [v3[266] stringWithFormat:@"%d%% (%@)", v27, v25];
+  v28 = [v3[266] stringWithFormat:@"%d%% (%@)", integerValue, v25];
 
   v29 = [(NSString *)self->_deviceInformation stringByAppendingString:v28];
 
@@ -638,17 +638,17 @@ LABEL_11:
 - (int64_t)pairedWatchWristState
 {
   v2 = +[SDPairedDeviceAgent sharedAgent];
-  v3 = [v2 wristState];
+  wristState = [v2 wristState];
 
-  return v3;
+  return wristState;
 }
 
 - (unsigned)wifiPasswordSharingAvailability
 {
-  v3 = [(SDStatusMonitor *)self copyMyAppleIDSecIdentity];
-  if (v3)
+  copyMyAppleIDSecIdentity = [(SDStatusMonitor *)self copyMyAppleIDSecIdentity];
+  if (copyMyAppleIDSecIdentity)
   {
-    CFRelease(v3);
+    CFRelease(copyMyAppleIDSecIdentity);
     v4 = 0;
   }
 
@@ -658,9 +658,9 @@ LABEL_11:
   }
 
   v5 = +[MCProfileConnection sharedConnection];
-  v6 = [v5 isPasswordProximityAutoFillRequestingAllowed];
+  isPasswordProximityAutoFillRequestingAllowed = [v5 isPasswordProximityAutoFillRequestingAllowed];
 
-  if (v6)
+  if (isPasswordProximityAutoFillRequestingAllowed)
   {
     v7 = v4;
   }
@@ -680,9 +680,9 @@ LABEL_11:
     v8 = v7 | 2;
   }
 
-  v9 = [(SDStatusMonitor *)self myAppleID];
+  myAppleID = [(SDStatusMonitor *)self myAppleID];
 
-  if (v9)
+  if (myAppleID)
   {
     v10 = v8;
   }
@@ -692,15 +692,15 @@ LABEL_11:
     v10 = v8 | 0x20;
   }
 
-  v11 = [(SDStatusMonitor *)self myAppleIDValidationRecord];
-  if (!v11)
+  myAppleIDValidationRecord = [(SDStatusMonitor *)self myAppleIDValidationRecord];
+  if (!myAppleIDValidationRecord)
   {
     goto LABEL_15;
   }
 
-  v12 = v11;
-  v13 = [(SDStatusMonitor *)self myAppleIDValidationRecord];
-  v14 = [v13 objectForKeyedSubscript:@"AppleIDAccountValidationRecordData"];
+  v12 = myAppleIDValidationRecord;
+  myAppleIDValidationRecord2 = [(SDStatusMonitor *)self myAppleIDValidationRecord];
+  v14 = [myAppleIDValidationRecord2 objectForKeyedSubscript:@"AppleIDAccountValidationRecordData"];
 
   if (!v14)
   {
@@ -722,9 +722,9 @@ LABEL_15:
 - (__SecIdentity)copyMyAppleIDSecIdentity
 {
   pthread_mutex_lock(&stru_100972F48);
-  v3 = [(SDStatusMonitor *)self _copyMyAppleIDSecIdentity];
+  _copyMyAppleIDSecIdentity = [(SDStatusMonitor *)self _copyMyAppleIDSecIdentity];
   pthread_mutex_unlock(&stru_100972F48);
-  return v3;
+  return _copyMyAppleIDSecIdentity;
 }
 
 - (__SecIdentity)_copyMyAppleIDSecIdentity
@@ -735,11 +735,11 @@ LABEL_15:
     goto LABEL_5;
   }
 
-  v4 = [(SDStatusMonitor *)self _myAppleID];
-  if (v4)
+  _myAppleID = [(SDStatusMonitor *)self _myAppleID];
+  if (_myAppleID)
   {
     v5 = +[SDAppleIDAgent sharedAgent];
-    self->_myAppleIDSecIdentity = [v5 copyIdentityForAppleID:v4];
+    self->_myAppleIDSecIdentity = [v5 copyIdentityForAppleID:_myAppleID];
   }
 
   result = self->_myAppleIDSecIdentity;
@@ -760,9 +760,9 @@ LABEL_5:
   {
     v4 = objc_alloc_init(ACAccountStore);
     v5 = sub_10001F47C(v4);
-    v6 = [v5 username];
+    username = [v5 username];
     v7 = self->_myAppleID;
-    self->_myAppleID = v6;
+    self->_myAppleID = username;
 
     myAppleID = self->_myAppleID;
   }
@@ -789,19 +789,19 @@ LABEL_5:
 - (NSString)myAppleID
 {
   pthread_mutex_lock(&stru_100972F48);
-  v3 = [(SDStatusMonitor *)self _myAppleID];
+  _myAppleID = [(SDStatusMonitor *)self _myAppleID];
   pthread_mutex_unlock(&stru_100972F48);
 
-  return v3;
+  return _myAppleID;
 }
 
 - (NSDictionary)myAppleIDValidationRecord
 {
-  v2 = [(SDStatusMonitor *)self myAppleID];
-  if (v2)
+  myAppleID = [(SDStatusMonitor *)self myAppleID];
+  if (myAppleID)
   {
     v3 = +[SDAppleIDAgent sharedAgent];
-    v4 = [v3 validationRecordInfoForAppleID:v2];
+    v4 = [v3 validationRecordInfoForAppleID:myAppleID];
   }
 
   else
@@ -935,9 +935,9 @@ LABEL_5:
 - (BOOL)isClarityBoardEnabled
 {
   v2 = +[CLFSystemShellSwitcher sharedSystemShellSwitcher];
-  v3 = [v2 isClarityBoardEnabled];
+  isClarityBoardEnabled = [v2 isClarityBoardEnabled];
 
-  return v3;
+  return isClarityBoardEnabled;
 }
 
 - (BOOL)wirelessEnabled
@@ -959,15 +959,15 @@ LABEL_5:
 
 - (int64_t)discoverableLevel
 {
-  v2 = [(SDStatusMonitor *)self discoverableMode];
-  if (CFEqual(v2, kSFOperationDiscoverableModeEveryone))
+  discoverableMode = [(SDStatusMonitor *)self discoverableMode];
+  if (CFEqual(discoverableMode, kSFOperationDiscoverableModeEveryone))
   {
     v3 = 2;
   }
 
   else
   {
-    v3 = CFEqual(v2, kSFOperationDiscoverableModeContactsOnly) != 0;
+    v3 = CFEqual(discoverableMode, kSFOperationDiscoverableModeContactsOnly) != 0;
   }
 
   return v3;
@@ -987,18 +987,18 @@ LABEL_5:
 
 - (BOOL)screenStateSupportsAirDrop
 {
-  v2 = self;
-  if ([(SDStatusMonitor *)v2 screenOn])
+  selfCopy = self;
+  if ([(SDStatusMonitor *)selfCopy screenOn])
   {
-    v3 = 1;
+    isMirroringActive = 1;
   }
 
   else
   {
-    v3 = [(SDStatusMonitor *)v2 isMirroringActive];
+    isMirroringActive = [(SDStatusMonitor *)selfCopy isMirroringActive];
   }
 
-  return v3;
+  return isMirroringActive;
 }
 
 - (int64_t)signalStrength
@@ -1009,9 +1009,9 @@ LABEL_5:
   }
 
   pthread_mutex_lock(&stru_100972F48);
-  v3 = [(NSNumber *)self->_coreTelephonySignalStrength integerValue];
+  integerValue = [(NSNumber *)self->_coreTelephonySignalStrength integerValue];
   pthread_mutex_unlock(&stru_100972F48);
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)lteConnectionShows4G
@@ -1025,13 +1025,13 @@ LABEL_5:
 - (unsigned)networkType
 {
   pthread_mutex_lock(&stru_100972F48);
-  v3 = [(CTDataStatus *)self->_coreTelephonyDataStatus indicator];
-  v4 = [(CTDataStatus *)self->_coreTelephonyDataStatus indicatorOverride];
-  v5 = [(CTDataStatus *)self->_coreTelephonyDataStatus radioTechnology];
+  indicator = [(CTDataStatus *)self->_coreTelephonyDataStatus indicator];
+  indicatorOverride = [(CTDataStatus *)self->_coreTelephonyDataStatus indicatorOverride];
+  radioTechnology = [(CTDataStatus *)self->_coreTelephonyDataStatus radioTechnology];
   pthread_mutex_unlock(&stru_100972F48);
-  if (v3 <= 2)
+  if (indicator <= 2)
   {
-    if (v5 - 3 < 3)
+    if (radioTechnology - 3 < 3)
     {
       v6 = 1;
     }
@@ -1041,7 +1041,7 @@ LABEL_5:
       v6 = 2;
     }
 
-    if (v3 == 2)
+    if (indicator == 2)
     {
       v7 = 3;
     }
@@ -1051,15 +1051,15 @@ LABEL_5:
       v7 = 0;
     }
 
-    if (v3 != 1)
+    if (indicator != 1)
     {
       return v7;
     }
   }
 
-  else if ((v3 - 3) >= 3)
+  else if ((indicator - 3) >= 3)
   {
-    if (v3 == 7)
+    if (indicator == 7)
     {
       if ([(SDStatusMonitor *)self lteConnectionShows4G])
       {
@@ -1072,7 +1072,7 @@ LABEL_5:
       }
     }
 
-    else if (v3 == 8)
+    else if (indicator == 8)
     {
       return 8;
     }
@@ -1083,7 +1083,7 @@ LABEL_5:
     }
   }
 
-  else if (v4 == 7)
+  else if (indicatorOverride == 7)
   {
     return 6;
   }
@@ -1099,9 +1099,9 @@ LABEL_5:
 - (SFPowerSource)localPowerSource
 {
   v2 = +[SDPairedDeviceAgent sharedAgent];
-  v3 = [v2 powerSource];
+  powerSource = [v2 powerSource];
 
-  return v3;
+  return powerSource;
 }
 
 - (BOOL)familyHotspotEnabled
@@ -1258,8 +1258,8 @@ LABEL_5:
 
 - (void)activateSystemMonitor
 {
-  v2 = [(SDStatusMonitor *)self systemMonitor];
-  [v2 activateWithCompletion:0];
+  systemMonitor = [(SDStatusMonitor *)self systemMonitor];
+  [systemMonitor activateWithCompletion:0];
 }
 
 - (void)clearMonitorCache
@@ -1320,10 +1320,10 @@ LABEL_5:
   [(SDStatusMonitor *)self resetMeCardWithReason:v15];
 }
 
-- (void)addServerName:(id)a3 forHostName:(id)a4
+- (void)addServerName:(id)name forHostName:(id)hostName
 {
-  v10 = a3;
-  v6 = a4;
+  nameCopy = name;
+  hostNameCopy = hostName;
   pthread_mutex_lock(&stru_100972F48);
   if (!self->_serverNames)
   {
@@ -1332,22 +1332,22 @@ LABEL_5:
     self->_serverNames = v7;
   }
 
-  v9 = [(SDStatusMonitor *)self createHostNameKey:v6];
+  v9 = [(SDStatusMonitor *)self createHostNameKey:hostNameCopy];
   if (v9)
   {
-    [(NSMutableDictionary *)self->_serverNames setValue:v10 forKey:v9];
+    [(NSMutableDictionary *)self->_serverNames setValue:nameCopy forKey:v9];
   }
 
   pthread_mutex_unlock(&stru_100972F48);
 }
 
-- (id)createHostNameKey:(id)a3
+- (id)createHostNameKey:(id)key
 {
-  v3 = a3;
-  v4 = [v3 length];
-  v5 = [v3 lowercaseString];
+  keyCopy = key;
+  v4 = [keyCopy length];
+  lowercaseString = [keyCopy lowercaseString];
 
-  v6 = [v5 mutableCopy];
+  v6 = [lowercaseString mutableCopy];
   if ([v6 hasSuffix:@"."])
   {
     [v6 deleteCharactersInRange:{v4 - 1, 1}];
@@ -1358,28 +1358,28 @@ LABEL_5:
 
 - (BOOL)isAirDropReady
 {
-  v3 = [(SDStatusMonitor *)self wirelessEnabled];
-  v4 = [(SDStatusMonitor *)self wirelessCarPlay];
-  v5 = [(SDStatusMonitor *)self bluetoothEnabledIncludingRestricted];
-  v6 = [(SDStatusMonitor *)self enableAirDropReceiving];
+  wirelessEnabled = [(SDStatusMonitor *)self wirelessEnabled];
+  wirelessCarPlay = [(SDStatusMonitor *)self wirelessCarPlay];
+  bluetoothEnabledIncludingRestricted = [(SDStatusMonitor *)self bluetoothEnabledIncludingRestricted];
+  enableAirDropReceiving = [(SDStatusMonitor *)self enableAirDropReceiving];
   IsVirtualMachine = SFDeviceIsVirtualMachine();
-  v8 = [(SDStatusMonitor *)self isClarityBoardEnabled];
-  v9 = [(SDStatusMonitor *)self isMulticastAdvertisementsDisabled];
-  v10 = v6 & v5 & v3 ^ 1 | v4 | v8 | v9;
+  isClarityBoardEnabled = [(SDStatusMonitor *)self isClarityBoardEnabled];
+  isMulticastAdvertisementsDisabled = [(SDStatusMonitor *)self isMulticastAdvertisementsDisabled];
+  v10 = enableAirDropReceiving & bluetoothEnabledIncludingRestricted & wirelessEnabled ^ 1 | wirelessCarPlay | isClarityBoardEnabled | isMulticastAdvertisementsDisabled;
   if (v10)
   {
-    v11 = v9;
+    v11 = isMulticastAdvertisementsDisabled;
     v12 = airdrop_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14[0] = 67110400;
-      v14[1] = v3 & 1;
+      v14[1] = wirelessEnabled & 1;
       v15 = 1024;
-      v16 = v5 & 1;
+      v16 = bluetoothEnabledIncludingRestricted & 1;
       v17 = 1024;
-      v18 = v4 & 1;
+      v18 = wirelessCarPlay & 1;
       v19 = 1024;
-      v20 = v6;
+      v20 = enableAirDropReceiving;
       v21 = 1024;
       v22 = IsVirtualMachine;
       v23 = 1024;
@@ -1391,11 +1391,11 @@ LABEL_5:
   return (v10 & 1) == 0;
 }
 
-- (id)mountPointsForServer:(id)a3
+- (id)mountPointsForServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   pthread_mutex_lock(&stru_100972F48);
-  v5 = [(NSDictionary *)self->_mountPoints objectForKeyedSubscript:v4];
+  v5 = [(NSDictionary *)self->_mountPoints objectForKeyedSubscript:serverCopy];
 
   v6 = [v5 copy];
   pthread_mutex_unlock(&stru_100972F48);
@@ -1409,31 +1409,31 @@ LABEL_5:
   {
     if ([(SDStatusMonitor *)self isAirDropReady])
     {
-      v3 = [(SDStatusMonitor *)self reconciledDiscoverableMode];
-      if (![v3 isEqual:kSFOperationDiscoverableModeContactsOnly])
+      reconciledDiscoverableMode = [(SDStatusMonitor *)self reconciledDiscoverableMode];
+      if (![reconciledDiscoverableMode isEqual:kSFOperationDiscoverableModeContactsOnly])
       {
-        return v3;
+        return reconciledDiscoverableMode;
       }
 
-      v4 = [(SDStatusMonitor *)self appleIDAccountState];
-      v5 = [(SDStatusMonitor *)self eduModeEnabled];
-      v6 = v5;
-      if (v4 == 1 && !v5)
+      appleIDAccountState = [(SDStatusMonitor *)self appleIDAccountState];
+      eduModeEnabled = [(SDStatusMonitor *)self eduModeEnabled];
+      v6 = eduModeEnabled;
+      if (appleIDAccountState == 1 && !eduModeEnabled)
       {
-        return v3;
+        return reconciledDiscoverableMode;
       }
 
       v10 = airdrop_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        if (v4 > 0xE)
+        if (appleIDAccountState > 0xE)
         {
           v11 = @"?";
         }
 
         else
         {
-          v11 = *(&off_1008D50A0 + v4);
+          v11 = *(&off_1008D50A0 + appleIDAccountState);
         }
 
         v13 = 138412546;
@@ -1460,11 +1460,11 @@ LABEL_5:
   return v9;
 }
 
-- (id)odiskMountPointsForServer:(id)a3
+- (id)odiskMountPointsForServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   pthread_mutex_lock(&stru_100972F48);
-  v5 = [(NSDictionary *)self->_odisksMountPoints objectForKeyedSubscript:v4];
+  v5 = [(NSDictionary *)self->_odisksMountPoints objectForKeyedSubscript:serverCopy];
 
   v6 = [v5 copy];
   pthread_mutex_unlock(&stru_100972F48);
@@ -1478,13 +1478,13 @@ LABEL_5:
   v4 = [v3 objectForKey:kSFOperationDiscoverableModeKey];
   if (v4)
   {
-    v5 = v4;
+    defaultDiscoverableMode = v4;
     v6 = @"User Defaults";
   }
 
   else
   {
-    v5 = [(SDStatusMonitor *)self defaultDiscoverableMode];
+    defaultDiscoverableMode = [(SDStatusMonitor *)self defaultDiscoverableMode];
     v6 = @"Default";
   }
 
@@ -1492,22 +1492,22 @@ LABEL_5:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v9 = 138412546;
-    v10 = v5;
+    v10 = defaultDiscoverableMode;
     v11 = 2112;
     v12 = v6;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Reconciled discoverable mode: %@ (%@)", &v9, 0x16u);
   }
 
-  return v5;
+  return defaultDiscoverableMode;
 }
 
-- (void)removeServerName:(id)a3
+- (void)removeServerName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   pthread_mutex_lock(&stru_100972F48);
   if (self->_serverNames)
   {
-    v4 = [(SDStatusMonitor *)self createHostNameKey:v5];
+    v4 = [(SDStatusMonitor *)self createHostNameKey:nameCopy];
     if (v4)
     {
       [(NSMutableDictionary *)self->_serverNames removeObjectForKey:v4];
@@ -1517,13 +1517,13 @@ LABEL_5:
   pthread_mutex_unlock(&stru_100972F48);
 }
 
-- (id)serverNameForHost:(id)a3
+- (id)serverNameForHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   pthread_mutex_lock(&stru_100972F48);
   if (self->_serverNames)
   {
-    v5 = [(SDStatusMonitor *)self createHostNameKey:v4];
+    v5 = [(SDStatusMonitor *)self createHostNameKey:hostCopy];
     if (v5)
     {
       v6 = [(NSMutableDictionary *)self->_serverNames objectForKeyedSubscript:v5];
@@ -1545,13 +1545,13 @@ LABEL_5:
   return v6;
 }
 
-- (void)setODiskMountPoints:(id)a3
+- (void)setODiskMountPoints:(id)points
 {
-  v5 = a3;
+  pointsCopy = points;
   pthread_mutex_lock(&stru_100972F48);
-  if (sub_100118058(self->_odisksMountPoints, v5))
+  if (sub_100118058(self->_odisksMountPoints, pointsCopy))
   {
-    objc_storeStrong(&self->_odisksMountPoints, a3);
+    objc_storeStrong(&self->_odisksMountPoints, points);
     pthread_mutex_unlock(&stru_100972F48);
     [(SDStatusMonitor *)self postNotification:@"com.apple.sharingd.ODiskMountPointsChanged"];
   }
@@ -1562,25 +1562,25 @@ LABEL_5:
   }
 }
 
-- (void)setDiscoverableMode:(id)a3
+- (void)setDiscoverableMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   pthread_mutex_lock(&stru_100972F48);
   v5 = +[NSUserDefaults standardUserDefaults];
-  [v5 setObject:v4 forKey:kSFOperationDiscoverableModeKey];
+  [v5 setObject:modeCopy forKey:kSFOperationDiscoverableModeKey];
 
   [v5 synchronize];
   pthread_mutex_unlock(&stru_100972F48);
   [(SDStatusMonitor *)self updateDiscoverableMode];
 }
 
-- (void)setServerMountPoints:(id)a3
+- (void)setServerMountPoints:(id)points
 {
-  v5 = a3;
+  pointsCopy = points;
   pthread_mutex_lock(&stru_100972F48);
-  if (sub_100118058(self->_mountPoints, v5))
+  if (sub_100118058(self->_mountPoints, pointsCopy))
   {
-    objc_storeStrong(&self->_mountPoints, a3);
+    objc_storeStrong(&self->_mountPoints, points);
     pthread_mutex_unlock(&stru_100972F48);
     [(SDStatusMonitor *)self postNotification:@"com.apple.sharingd.MountPointsChanged"];
   }
@@ -1594,15 +1594,15 @@ LABEL_5:
 - (void)updateDiscoverableMode
 {
   [(SDStatusMonitor *)self _checkEveryoneModeExpiry];
-  v3 = [(SDStatusMonitor *)self newDiscoverableMode];
+  newDiscoverableMode = [(SDStatusMonitor *)self newDiscoverableMode];
   pthread_mutex_lock(&stru_100972F48);
   v4 = self->_currentDiscoverableMode;
-  v5 = [v3 isEqual:v4];
-  objc_storeStrong(&self->_currentDiscoverableMode, v3);
+  v5 = [newDiscoverableMode isEqual:v4];
+  objc_storeStrong(&self->_currentDiscoverableMode, newDiscoverableMode);
   pthread_mutex_unlock(&stru_100972F48);
   if ((v5 & 1) == 0 && v4)
   {
-    [(SDStatusMonitor *)self _updateEveryoneModeExpiryDateOnChange:v3];
+    [(SDStatusMonitor *)self _updateEveryoneModeExpiryDateOnChange:newDiscoverableMode];
   }
 
   if ((v5 & 1) == 0)
@@ -1610,24 +1610,24 @@ LABEL_5:
     [(SDStatusMonitor *)self postNotification:@"com.apple.sharingd.DiscoverableModeChanged"];
     if (self->_airDropModeNotifyToken != -1)
     {
-      if ([v3 isEqual:kSFOperationDiscoverableModeOff])
+      if ([newDiscoverableMode isEqual:kSFOperationDiscoverableModeOff])
       {
         v6 = 1;
       }
 
-      else if ([v3 isEqual:kSFOperationDiscoverableModeContactsOnly])
+      else if ([newDiscoverableMode isEqual:kSFOperationDiscoverableModeContactsOnly])
       {
         v6 = 2;
       }
 
-      else if ([v3 isEqual:kSFOperationDiscoverableModeEveryone])
+      else if ([newDiscoverableMode isEqual:kSFOperationDiscoverableModeEveryone])
       {
         v6 = 3;
       }
 
       else
       {
-        v6 = [v3 isEqual:kSFOperationDiscoverableModeDisabled];
+        v6 = [newDiscoverableMode isEqual:kSFOperationDiscoverableModeDisabled];
       }
 
       notify_set_state(self->_airDropModeNotifyToken, v6);
@@ -1640,7 +1640,7 @@ LABEL_5:
       v8 = 138412546;
       v9 = v4;
       v10 = 2112;
-      v11 = v3;
+      v11 = newDiscoverableMode;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Discoverable mode changed from %@ to %@, posting notification", &v8, 0x16u);
     }
   }
@@ -1648,13 +1648,13 @@ LABEL_5:
 
 - (int64_t)appleIDAccountState
 {
-  v3 = [(SDStatusMonitor *)self myAppleID];
+  myAppleID = [(SDStatusMonitor *)self myAppleID];
 
-  if (v3)
+  if (myAppleID)
   {
     v4 = +[SDAppleIDAgent sharedAgent];
-    v5 = [(SDStatusMonitor *)self myAppleID];
-    v6 = [v4 accountStatusForAppleID:v5];
+    myAppleID2 = [(SDStatusMonitor *)self myAppleID];
+    v6 = [v4 accountStatusForAppleID:myAppleID2];
 
     v7 = [v6 objectForKeyedSubscript:@"AccountState"];
     v8 = CFGetInt64();
@@ -1686,9 +1686,9 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)verifyAndParseValidationRecordData:(id)a3 intoDictionary:(id *)a4
+- (BOOL)verifyAndParseValidationRecordData:(id)data intoDictionary:(id *)dictionary
 {
-  v5 = a3;
+  dataCopy = data;
   mach_absolute_time();
   v6 = SFAppleIDParseValidationRecordDataSync();
 
@@ -1703,19 +1703,19 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Verified validation record data (%ld ms)\n", &v10, 0xCu);
     }
 
-    if (a4)
+    if (dictionary)
     {
       v8 = v6;
-      *a4 = v6;
+      *dictionary = v6;
     }
   }
 
   return v6 != 0;
 }
 
-- (void)cacheCertificate:(__SecCertificate *)a3 forRealName:(id)a4
+- (void)cacheCertificate:(__SecCertificate *)certificate forRealName:(id)name
 {
-  v9 = a4;
+  nameCopy = name;
   pthread_mutex_lock(&stru_100972F48);
   if (!self->_certificates)
   {
@@ -1724,18 +1724,18 @@ LABEL_5:
     self->_certificates = v6;
   }
 
-  v8 = [v9 lowercaseString];
-  if (v8)
+  lowercaseString = [nameCopy lowercaseString];
+  if (lowercaseString)
   {
-    [(NSMutableDictionary *)self->_certificates setValue:a3 forKey:v8];
+    [(NSMutableDictionary *)self->_certificates setValue:certificate forKey:lowercaseString];
   }
 
   pthread_mutex_unlock(&stru_100972F48);
 }
 
-- (void)cacheIdentity:(id)a3
+- (void)cacheIdentity:(id)identity
 {
-  v8 = a3;
+  identityCopy = identity;
   pthread_mutex_lock(&stru_100972F48);
   if (!self->_identities)
   {
@@ -1744,12 +1744,12 @@ LABEL_5:
     self->_identities = v4;
   }
 
-  v6 = [v8 emailOrPhone];
-  v7 = [v6 lowercaseString];
+  emailOrPhone = [identityCopy emailOrPhone];
+  lowercaseString = [emailOrPhone lowercaseString];
 
-  if (v7)
+  if (lowercaseString)
   {
-    [(NSMutableDictionary *)self->_identities setValue:v8 forKey:v7];
+    [(NSMutableDictionary *)self->_identities setValue:identityCopy forKey:lowercaseString];
   }
 
   pthread_mutex_unlock(&stru_100972F48);
@@ -1804,7 +1804,7 @@ LABEL_5:
   pthread_mutex_unlock(&stru_100972F48);
 }
 
-- (id)commonNameForCertificate:(__SecCertificate *)a3
+- (id)commonNameForCertificate:(__SecCertificate *)certificate
 {
   v3 = SecCertificateCopyCommonNames();
   if (v3)
@@ -1843,13 +1843,13 @@ LABEL_5:
   return v5;
 }
 
-- (__SecCertificate)copyCertificateForRealName:(id)a3
+- (__SecCertificate)copyCertificateForRealName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   pthread_mutex_lock(&stru_100972F48);
-  v5 = [v4 lowercaseString];
+  lowercaseString = [nameCopy lowercaseString];
 
-  v6 = [(NSMutableDictionary *)self->_certificates objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->_certificates objectForKeyedSubscript:lowercaseString];
 
   pthread_mutex_unlock(&stru_100972F48);
   return v6;
@@ -1858,9 +1858,9 @@ LABEL_5:
 - (__SecCertificate)copyMyAppleIDCertificate
 {
   pthread_mutex_lock(&stru_100972F48);
-  v3 = [(SDStatusMonitor *)self _copyMyAppleIDCertificate];
+  _copyMyAppleIDCertificate = [(SDStatusMonitor *)self _copyMyAppleIDCertificate];
   pthread_mutex_unlock(&stru_100972F48);
-  return v3;
+  return _copyMyAppleIDCertificate;
 }
 
 - (__SecCertificate)_copyMyAppleIDCertificate
@@ -1868,12 +1868,12 @@ LABEL_5:
   if (!self->_myAppleIDCertificate)
   {
     v3 = +[SDAppleIDAgent sharedAgent];
-    v4 = [v3 myAccount];
+    myAccount = [v3 myAccount];
 
-    if (v4)
+    if (myAccount)
     {
-      v5 = [v4 identity];
-      self->_myAppleIDCertificate = [v5 copyCertificate];
+      identity = [myAccount identity];
+      self->_myAppleIDCertificate = [identity copyCertificate];
     }
   }
 
@@ -1895,15 +1895,15 @@ LABEL_5:
   if (!myAppleIDIntermediateCertificate)
   {
     v4 = +[SDAppleIDAgent sharedAgent];
-    v5 = [v4 myAccount];
+    myAccount = [v4 myAccount];
 
-    if (v5)
+    if (myAccount)
     {
-      v6 = [v5 identity];
-      v7 = [v6 copyIntermediateCertificate];
+      identity = [myAccount identity];
+      copyIntermediateCertificate = [identity copyIntermediateCertificate];
 
       pthread_mutex_lock(&stru_100972F48);
-      self->_myAppleIDIntermediateCertificate = v7;
+      self->_myAppleIDIntermediateCertificate = copyIntermediateCertificate;
       pthread_mutex_unlock(&stru_100972F48);
     }
   }
@@ -1925,16 +1925,16 @@ LABEL_5:
   return v9;
 }
 
-- (id)emailAddressesForAppleID:(id)a3
+- (id)emailAddressesForAppleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[SDAppleIDAgent sharedAgent];
-  v5 = [v4 accountForAppleID:v3];
+  v5 = [v4 accountForAppleID:dCopy];
 
-  v6 = [v5 contactInfo];
-  v7 = [v6 validatedEmailAddresses];
+  contactInfo = [v5 contactInfo];
+  validatedEmailAddresses = [contactInfo validatedEmailAddresses];
 
-  return v7;
+  return validatedEmailAddresses;
 }
 
 - (void)fixAltDSIDIfNeeded
@@ -1951,7 +1951,7 @@ LABEL_5:
       v7[3] = &unk_1008D4D40;
       v8 = v3;
       v9 = v4;
-      v10 = self;
+      selfCopy = self;
       [v8 aa_updatePropertiesForAppleAccount:v9 completion:v7];
 
       v5 = v8;
@@ -1995,27 +1995,27 @@ LABEL_5:
   [(SDStatusMonitor *)self postNotification:@"com.apple.sharingd.AppleAccountSignOut"];
 }
 
-- (id)phoneNumbersForAppleID:(id)a3
+- (id)phoneNumbersForAppleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[SDAppleIDAgent sharedAgent];
-  v5 = [v4 accountForAppleID:v3];
+  v5 = [v4 accountForAppleID:dCopy];
 
-  v6 = [v5 contactInfo];
-  v7 = [v6 validatedPhoneNumbers];
+  contactInfo = [v5 contactInfo];
+  validatedPhoneNumbers = [contactInfo validatedPhoneNumbers];
 
-  return v7;
+  return validatedPhoneNumbers;
 }
 
 - (id)unifiedAppleIDInfo
 {
-  v3 = [(SDStatusMonitor *)self copyMyAppleIDSecIdentity];
-  if (v3)
+  copyMyAppleIDSecIdentity = [(SDStatusMonitor *)self copyMyAppleIDSecIdentity];
+  if (copyMyAppleIDSecIdentity)
   {
-    v4 = v3;
-    v5 = [(SDStatusMonitor *)self myAppleIDEmailAddresses];
-    v30 = [(SDStatusMonitor *)self myAppleIDPhoneNumbers];
-    if (-[NSObject count](v5, "count") || [v30 count])
+    v4 = copyMyAppleIDSecIdentity;
+    myAppleIDEmailAddresses = [(SDStatusMonitor *)self myAppleIDEmailAddresses];
+    myAppleIDPhoneNumbers = [(SDStatusMonitor *)self myAppleIDPhoneNumbers];
+    if (-[NSObject count](myAppleIDEmailAddresses, "count") || [myAppleIDPhoneNumbers count])
     {
       v6 = objc_opt_new();
       v7 = objc_opt_new();
@@ -2023,7 +2023,7 @@ LABEL_5:
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v8 = v5;
+      v8 = myAppleIDEmailAddresses;
       v9 = [v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
       if (v9)
       {
@@ -2055,7 +2055,7 @@ LABEL_5:
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v14 = v30;
+      v14 = myAppleIDPhoneNumbers;
       v15 = [v14 countByEnumeratingWithState:&v32 objects:v40 count:16];
       if (v15)
       {
@@ -2148,11 +2148,11 @@ LABEL_5:
 
   else
   {
-    v5 = daemon_log();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    myAppleIDEmailAddresses = daemon_log();
+    if (os_log_type_enabled(myAppleIDEmailAddresses, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "No Apple ID certificate", buf, 2u);
+      _os_log_impl(&_mh_execute_header, myAppleIDEmailAddresses, OS_LOG_TYPE_DEFAULT, "No Apple ID certificate", buf, 2u);
     }
 
     v23 = 0;
@@ -2161,13 +2161,13 @@ LABEL_5:
   return v23;
 }
 
-- (id)verifiedIdentityForAppleID:(id)a3
+- (id)verifiedIdentityForAppleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   pthread_mutex_lock(&stru_100972F48);
-  v5 = [v4 lowercaseString];
+  lowercaseString = [dCopy lowercaseString];
 
-  v6 = [(NSMutableDictionary *)self->_identities objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->_identities objectForKeyedSubscript:lowercaseString];
   pthread_mutex_unlock(&stru_100972F48);
 
   return v6;
@@ -2185,9 +2185,9 @@ LABEL_5:
   return awdlDevice;
 }
 
-- (id)awdlInfoForPeerWithServiceName:(id)a3
+- (id)awdlInfoForPeerWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   [(SDStatusMonitor *)self awdlPeerList];
   v25 = 0u;
   v26 = 0u;
@@ -2234,7 +2234,7 @@ LABEL_5:
                   objc_enumerationMutation(v15);
                 }
 
-                if ([*(*(&v21 + 1) + 8 * j) containsString:v4])
+                if ([*(*(&v21 + 1) + 8 * j) containsString:nameCopy])
                 {
 
                   goto LABEL_21;
@@ -2338,51 +2338,51 @@ LABEL_15:
   return v3;
 }
 
-- (id)addAdditionalInformationToMeCard:(id)a3
+- (id)addAdditionalInformationToMeCard:(id)card
 {
-  v4 = [a3 mutableCopy];
-  v5 = [(SDStatusMonitor *)self _myAppleID];
-  if (v5)
+  v4 = [card mutableCopy];
+  _myAppleID = [(SDStatusMonitor *)self _myAppleID];
+  if (_myAppleID)
   {
     v6 = +[SDAppleIDAgent sharedAgent];
-    v7 = [v6 accountForAppleID:v5];
+    v7 = [v6 accountForAppleID:_myAppleID];
 
     if (v7)
     {
-      v8 = [v4 givenName];
-      v9 = [v8 length];
+      givenName = [v4 givenName];
+      v9 = [givenName length];
 
       if (!v9)
       {
-        v10 = [v7 contactInfo];
-        v11 = [v10 firstName];
-        [v4 setGivenName:v11];
+        contactInfo = [v7 contactInfo];
+        firstName = [contactInfo firstName];
+        [v4 setGivenName:firstName];
       }
 
-      v50 = v5;
-      v12 = [v4 familyName];
-      v13 = [v12 length];
+      v50 = _myAppleID;
+      familyName = [v4 familyName];
+      v13 = [familyName length];
 
       if (!v13)
       {
-        v14 = [v7 contactInfo];
-        v15 = [v14 lastName];
-        [v4 setFamilyName:v15];
+        contactInfo2 = [v7 contactInfo];
+        lastName = [contactInfo2 lastName];
+        [v4 setFamilyName:lastName];
       }
 
       v52 = v4;
-      v16 = [v4 phoneNumbers];
-      v17 = [NSMutableArray arrayWithArray:v16];
+      phoneNumbers = [v4 phoneNumbers];
+      v17 = [NSMutableArray arrayWithArray:phoneNumbers];
 
       v51 = v7;
-      v18 = [v7 contactInfo];
-      v19 = [v18 validatedPhoneNumbers];
+      contactInfo3 = [v7 contactInfo];
+      validatedPhoneNumbers = [contactInfo3 validatedPhoneNumbers];
 
       v59 = 0u;
       v60 = 0u;
       v57 = 0u;
       v58 = 0u;
-      v20 = v19;
+      v20 = validatedPhoneNumbers;
       v21 = [v20 countByEnumeratingWithState:&v57 objects:v70 count:16];
       if (v21)
       {
@@ -2412,17 +2412,17 @@ LABEL_15:
       }
 
       [v52 setPhoneNumbers:v17];
-      v29 = [v52 emailAddresses];
-      v30 = [NSMutableArray arrayWithArray:v29];
+      emailAddresses = [v52 emailAddresses];
+      v30 = [NSMutableArray arrayWithArray:emailAddresses];
 
-      v31 = [v7 contactInfo];
-      v32 = [v31 validatedEmailAddresses];
+      contactInfo4 = [v7 contactInfo];
+      validatedEmailAddresses = [contactInfo4 validatedEmailAddresses];
 
       v55 = 0u;
       v56 = 0u;
       v53 = 0u;
       v54 = 0u;
-      v33 = v32;
+      v33 = validatedEmailAddresses;
       v34 = [v33 countByEnumeratingWithState:&v53 objects:v69 count:16];
       if (v34)
       {
@@ -2452,14 +2452,14 @@ LABEL_15:
       v39 = daemon_log();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
-        v40 = [v52 givenName];
-        v41 = [v52 familyName];
+        givenName2 = [v52 givenName];
+        familyName2 = [v52 familyName];
         v42 = [v20 componentsJoinedByString:{@", "}];
         v43 = [v33 componentsJoinedByString:{@", "}];
         *buf = 138413059;
-        v62 = v40;
+        v62 = givenName2;
         v63 = 2112;
-        v64 = v41;
+        v64 = familyName2;
         v65 = 2113;
         v66 = v42;
         v67 = 2113;
@@ -2470,7 +2470,7 @@ LABEL_15:
       }
 
       v44 = v4;
-      v5 = v50;
+      _myAppleID = v50;
       v7 = v51;
     }
 
@@ -2516,20 +2516,20 @@ LABEL_15:
   pthread_mutex_unlock(&stru_100972F48);
 }
 
-- (id)contactsForEmailHash:(id)a3 phoneHash:(id)a4
+- (id)contactsForEmailHash:(id)hash phoneHash:(id)phoneHash
 {
-  v6 = a3;
-  v7 = a4;
+  hashCopy = hash;
+  phoneHashCopy = phoneHash;
   v8 = objc_opt_new();
-  if (v6)
+  if (hashCopy)
   {
-    v9 = [(SDAirDropContactHashManager *)self->_contactHashManager contactsForCombinedHash:v6];
+    v9 = [(SDAirDropContactHashManager *)self->_contactHashManager contactsForCombinedHash:hashCopy];
     [v8 unionSet:v9];
   }
 
-  if (v7)
+  if (phoneHashCopy)
   {
-    v10 = [(SDAirDropContactHashManager *)self->_contactHashManager contactsForCombinedHash:v7];
+    v10 = [(SDAirDropContactHashManager *)self->_contactHashManager contactsForCombinedHash:phoneHashCopy];
     [v8 unionSet:v10];
   }
 
@@ -2538,15 +2538,15 @@ LABEL_15:
   return v11;
 }
 
-- (BOOL)contactIdentifierIsBlocked:(id)a3
+- (BOOL)contactIdentifierIsBlocked:(id)blocked
 {
   v11[0] = CNContactPhoneNumbersKey;
   v11[1] = CNContactEmailAddressesKey;
-  v4 = a3;
+  blockedCopy = blocked;
   v5 = [NSArray arrayWithObjects:v11 count:2];
   contactStore = self->_contactStore;
   v10 = 0;
-  v7 = [(CNContactStore *)contactStore unifiedContactWithIdentifier:v4 keysToFetch:v5 error:&v10];
+  v7 = [(CNContactStore *)contactStore unifiedContactWithIdentifier:blockedCopy keysToFetch:v5 error:&v10];
 
   if (v7)
   {
@@ -2561,15 +2561,15 @@ LABEL_15:
   return v8;
 }
 
-- (BOOL)contactIsBlocked:(id)a3
+- (BOOL)contactIsBlocked:(id)blocked
 {
-  v3 = a3;
+  blockedCopy = blocked;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v4 = [v3 emailAddresses];
-  v5 = [v4 countByEnumeratingWithState:&v34 objects:v43 count:16];
+  emailAddresses = [blockedCopy emailAddresses];
+  v5 = [emailAddresses countByEnumeratingWithState:&v34 objects:v43 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2580,24 +2580,24 @@ LABEL_15:
       {
         if (*v35 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(emailAddresses);
         }
 
         v9 = *(*(&v34 + 1) + 8 * i);
-        v10 = [(objc_class *)off_100972F88() sharedPrivacyManager];
-        v11 = [v9 value];
-        v12 = [v10 isIncomingCommunicationBlockedForEmailAddress:v11];
+        sharedPrivacyManager = [(objc_class *)off_100972F88() sharedPrivacyManager];
+        value = [v9 value];
+        v12 = [sharedPrivacyManager isIncomingCommunicationBlockedForEmailAddress:value];
 
         if (v12)
         {
           v13 = airdrop_log();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v24 = [v9 value];
+            value2 = [v9 value];
             *buf = 141558275;
             v40 = 1752392040;
             v41 = 2113;
-            v42 = v24;
+            v42 = value2;
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Incoming communications blocked for email address %{private, mask.hash}@", buf, 0x16u);
           }
 
@@ -2608,7 +2608,7 @@ LABEL_23:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v34 objects:v43 count:16];
+      v6 = [emailAddresses countByEnumeratingWithState:&v34 objects:v43 count:16];
       if (v6)
       {
         continue;
@@ -2622,11 +2622,11 @@ LABEL_23:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = [v3 phoneNumbers];
-  v13 = [v4 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  emailAddresses = [blockedCopy phoneNumbers];
+  v13 = [emailAddresses countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v13)
   {
-    v28 = v3;
+    v28 = blockedCopy;
     v29 = *v31;
     while (2)
     {
@@ -2634,39 +2634,39 @@ LABEL_23:
       {
         if (*v31 != v29)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(emailAddresses);
         }
 
-        v15 = v4;
+        v15 = emailAddresses;
         v16 = *(*(&v30 + 1) + 8 * j);
-        v17 = [(objc_class *)off_100972F88() sharedPrivacyManager];
+        sharedPrivacyManager2 = [(objc_class *)off_100972F88() sharedPrivacyManager];
         v18 = off_100972F90();
-        v19 = [v16 value];
-        v20 = [v19 stringValue];
+        value3 = [v16 value];
+        stringValue = [value3 stringValue];
         v21 = off_1009731B0();
-        v22 = [(objc_class *)v18 phoneNumberWithDigits:v20 countryCode:v21];
-        v23 = [v17 isIncomingCommunicationBlockedForPhoneNumber:v22];
+        v22 = [(objc_class *)v18 phoneNumberWithDigits:stringValue countryCode:v21];
+        v23 = [sharedPrivacyManager2 isIncomingCommunicationBlockedForPhoneNumber:v22];
 
         if (v23)
         {
           v13 = airdrop_log();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v25 = [v16 value];
-            v26 = [v25 stringValue];
+            value4 = [v16 value];
+            stringValue2 = [value4 stringValue];
             *buf = 141558275;
             v40 = 1752392040;
             v41 = 2113;
-            v42 = v26;
+            v42 = stringValue2;
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Incoming communications blocked for phone number %{private, mask.hash}@", buf, 0x16u);
           }
 
-          v3 = v28;
-          v4 = v15;
+          blockedCopy = v28;
+          emailAddresses = v15;
           goto LABEL_23;
         }
 
-        v4 = v15;
+        emailAddresses = v15;
       }
 
       v13 = [v15 countByEnumeratingWithState:&v30 objects:v38 count:16];
@@ -2678,7 +2678,7 @@ LABEL_23:
       break;
     }
 
-    v3 = v28;
+    blockedCopy = v28;
   }
 
 LABEL_24:
@@ -2686,31 +2686,31 @@ LABEL_24:
   return v13;
 }
 
-- (id)contactHandlesForShortHashes:(id)a3
+- (id)contactHandlesForShortHashes:(id)hashes
 {
-  v4 = a3;
+  hashesCopy = hashes;
   v5 = daemon_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = hashesCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Querying handles for short hashes %@", &v8, 0xCu);
   }
 
-  v6 = [(SDAirDropContactHashManager *)self->_contactHashManager contactHandlesForShortHashes:v4];
+  v6 = [(SDAirDropContactHashManager *)self->_contactHashManager contactHandlesForShortHashes:hashesCopy];
 
   return v6;
 }
 
-- (id)contactWithPreferredIdentifierForContacts:(id)a3
+- (id)contactWithPreferredIdentifierForContacts:(id)contacts
 {
-  v4 = a3;
-  v5 = [v4 anyObject];
+  contactsCopy = contacts;
+  anyObject = [contactsCopy anyObject];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = v4;
+  v6 = contactsCopy;
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
@@ -2727,28 +2727,28 @@ LABEL_24:
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        v12 = [(SDStatusMonitor *)self meCard];
-        v13 = [v12 identifier];
-        v14 = [v11 identifier];
-        v15 = [v13 isEqualToString:v14];
+        meCard = [(SDStatusMonitor *)self meCard];
+        identifier = [meCard identifier];
+        identifier2 = [v11 identifier];
+        v15 = [identifier isEqualToString:identifier2];
 
         if (v15)
         {
-          v20 = [(SDStatusMonitor *)self meCard];
+          meCard2 = [(SDStatusMonitor *)self meCard];
           v6 = obj;
 
           goto LABEL_13;
         }
 
-        v16 = [v5 identifier];
-        v17 = [v11 identifier];
-        v18 = [v16 compare:v17];
+        identifier3 = [anyObject identifier];
+        identifier4 = [v11 identifier];
+        v18 = [identifier3 compare:identifier4];
 
         if (v18 == 1)
         {
           v19 = v11;
 
-          v5 = v19;
+          anyObject = v19;
         }
       }
 
@@ -2763,47 +2763,47 @@ LABEL_24:
     }
   }
 
-  v5 = v5;
-  v20 = v5;
+  anyObject = anyObject;
+  meCard2 = anyObject;
 LABEL_13:
 
-  return v20;
+  return meCard2;
 }
 
-- (id)contactsWithPhoneNumberOrEmail:(id)a3 keys:(id)a4
+- (id)contactsWithPhoneNumberOrEmail:(id)email keys:(id)keys
 {
-  v6 = a4;
-  v7 = a3;
-  if ([(SDStatusMonitor *)self isEmail:v7])
+  keysCopy = keys;
+  emailCopy = email;
+  if ([(SDStatusMonitor *)self isEmail:emailCopy])
   {
-    v8 = [CNContact predicateForContactsMatchingEmailAddress:v7];
+    v8 = [CNContact predicateForContactsMatchingEmailAddress:emailCopy];
   }
 
   else
   {
-    v9 = [CNPhoneNumber phoneNumberWithStringValue:v7];
+    v9 = [CNPhoneNumber phoneNumberWithStringValue:emailCopy];
 
     v8 = [CNContact predicateForContactsMatchingPhoneNumber:v9];
-    v7 = v9;
+    emailCopy = v9;
   }
 
-  v10 = [(CNContactStore *)self->_contactStore unifiedContactsMatchingPredicate:v8 keysToFetch:v6 error:0];
+  v10 = [(CNContactStore *)self->_contactStore unifiedContactsMatchingPredicate:v8 keysToFetch:keysCopy error:0];
 
   v11 = [NSSet setWithArray:v10];
 
   return v11;
 }
 
-- (id)contactWithContactIdentifier:(id)a3
+- (id)contactWithContactIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SDStatusMonitor *)self meCard];
-  v6 = [v5 identifier];
-  v7 = [v6 isEqual:v4];
+  identifierCopy = identifier;
+  meCard = [(SDStatusMonitor *)self meCard];
+  identifier = [meCard identifier];
+  v7 = [identifier isEqual:identifierCopy];
 
   if (v7)
   {
-    v8 = [(SDStatusMonitor *)self meCard];
+    meCard2 = [(SDStatusMonitor *)self meCard];
   }
 
   else
@@ -2818,7 +2818,7 @@ LABEL_13:
     v10 = +[_TtC16DaemoniOSLibrary27SDAirDropContactHashManager GeneralContactKeysToFetch];
     v11 = [v9 initWithKeysToFetch:v10];
 
-    v27 = v4;
+    v27 = identifierCopy;
     v12 = [NSArray arrayWithObjects:&v27 count:1];
     v13 = [CNContact predicateForContactsWithIdentifiers:v12];
     [v11 setPredicate:v13];
@@ -2841,24 +2841,24 @@ LABEL_13:
       }
     }
 
-    v8 = v22[5];
+    meCard2 = v22[5];
 
     _Block_object_dispose(&v21, 8);
   }
 
-  return v8;
+  return meCard2;
 }
 
-- (id)emailsForContact:(id)a3
+- (id)emailsForContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = objc_opt_new();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v3 emailAddresses];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  emailAddresses = [contactCopy emailAddresses];
+  v6 = [emailAddresses countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2869,14 +2869,14 @@ LABEL_13:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(emailAddresses);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) value];
-        [v4 addObject:v10];
+        value = [*(*(&v12 + 1) + 8 * i) value];
+        [v4 addObject:value];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [emailAddresses countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -2885,14 +2885,14 @@ LABEL_13:
   return v4;
 }
 
-- (id)emailOrPhoneForEmailHash:(id)a3 phoneHash:(id)a4
+- (id)emailOrPhoneForEmailHash:(id)hash phoneHash:(id)phoneHash
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  hashCopy = hash;
+  phoneHashCopy = phoneHash;
+  v8 = phoneHashCopy;
+  if (hashCopy)
   {
-    v9 = [(SDAirDropContactHashManager *)self->_contactHashManager emailOrPhoneForCombinedHash:v6];
+    v9 = [(SDAirDropContactHashManager *)self->_contactHashManager emailOrPhoneForCombinedHash:hashCopy];
     if (!v8)
     {
       goto LABEL_7;
@@ -2902,7 +2902,7 @@ LABEL_13:
   else
   {
     v9 = 0;
-    if (!v7)
+    if (!phoneHashCopy)
     {
       goto LABEL_7;
     }
@@ -2918,16 +2918,16 @@ LABEL_7:
   return v9;
 }
 
-- (id)instantMessageEmailsForContact:(id)a3
+- (id)instantMessageEmailsForContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 instantMessageAddresses];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  instantMessageAddresses = [contactCopy instantMessageAddresses];
+  v6 = [instantMessageAddresses countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2938,19 +2938,19 @@ LABEL_7:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(instantMessageAddresses);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) value];
-        v11 = [v10 username];
-        [v11 rangeOfString:@"@"];
+        value = [*(*(&v14 + 1) + 8 * i) value];
+        username = [value username];
+        [username rangeOfString:@"@"];
         if (v12)
         {
-          [v4 addObject:v11];
+          [v4 addObject:username];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [instantMessageAddresses countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -3011,28 +3011,28 @@ LABEL_7:
   return meCard;
 }
 
-- (void)resetMeCardWithReason:(id)a3
+- (void)resetMeCardWithReason:(id)reason
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100226AC8;
   v5[3] = &unk_1008CE028;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  reasonCopy = reason;
+  selfCopy = self;
+  v4 = reasonCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (id)phoneNumbersForContact:(id)a3
+- (id)phoneNumbersForContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v3 phoneNumbers];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  phoneNumbers = [contactCopy phoneNumbers];
+  v6 = [phoneNumbers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3043,15 +3043,15 @@ LABEL_7:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(phoneNumbers);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) value];
-        v11 = [v10 stringValue];
-        [v4 addObject:v11];
+        value = [*(*(&v13 + 1) + 8 * i) value];
+        stringValue = [value stringValue];
+        [v4 addObject:stringValue];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [phoneNumbers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -3089,7 +3089,7 @@ LABEL_7:
 
 - (void)updateAutoHotspotState
 {
-  v3 = [(NSNumber *)self->_personalHotspotAutoState integerValue];
+  integerValue = [(NSNumber *)self->_personalHotspotAutoState integerValue];
   wifiManager = self->_wifiManager;
   AutoInstantHotspotMode = WiFiManagerClientGetAutoInstantHotspotMode();
   if (AutoInstantHotspotMode <= 2)
@@ -3106,30 +3106,30 @@ LABEL_7:
   personalHotspotAutoState = self->_personalHotspotAutoState;
   self->_personalHotspotAutoState = v7;
 
-  if (v3 != [(NSNumber *)self->_personalHotspotAutoState integerValue])
+  if (integerValue != [(NSNumber *)self->_personalHotspotAutoState integerValue])
   {
     v9 = daemon_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      if (v3 > 2)
+      if (integerValue > 2)
       {
         v10 = "?";
       }
 
       else
       {
-        v10 = off_1008D5118[v3];
+        v10 = off_1008D5118[integerValue];
       }
 
-      v11 = [(NSNumber *)self->_personalHotspotAutoState integerValue];
-      if (v11 > 2)
+      integerValue2 = [(NSNumber *)self->_personalHotspotAutoState integerValue];
+      if (integerValue2 > 2)
       {
         v12 = "?";
       }
 
       else
       {
-        v12 = off_1008D5118[v11];
+        v12 = off_1008D5118[integerValue2];
       }
 
       v13 = 136315394;
@@ -3143,7 +3143,7 @@ LABEL_7:
   }
 }
 
-- (void)cellularDataEnabled:(BOOL *)a3 airplaneMode:(BOOL *)a4
+- (void)cellularDataEnabled:(BOOL *)enabled airplaneMode:(BOOL *)mode
 {
   coreTelephonyServerConnection = self->_coreTelephonyServerConnection;
   if (_CTServerConnectionGetCellularDataSettings())
@@ -3155,21 +3155,21 @@ LABEL_7:
     }
   }
 
-  if (a3)
+  if (enabled)
   {
-    *a3 = 0;
+    *enabled = 0;
   }
 
-  if (a4)
+  if (mode)
   {
-    *a4 = 0;
+    *mode = 0;
   }
 }
 
-- (int64_t)familyHotspotStateForAltDSID:(id)a3
+- (int64_t)familyHotspotStateForAltDSID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
+  dCopy = d;
+  v5 = dCopy;
   if (!self->_personalHotspotFamilyStates)
   {
     [(SDStatusMonitor *)self updateFamilyHotspotState];
@@ -3179,21 +3179,21 @@ LABEL_7:
     }
 
 LABEL_5:
-    v7 = -1;
+    integerValue = -1;
     goto LABEL_6;
   }
 
-  if (!v4)
+  if (!dCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v6 = [(NSMutableDictionary *)self->_personalHotspotFamilyStates objectForKeyedSubscript:v5];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
 LABEL_6:
-  return v7;
+  return integerValue;
 }
 
 - (void)updateFamilyHotspotState
@@ -3240,7 +3240,7 @@ LABEL_6:
   v20 = v11;
   v12 = v8;
   v21 = v12;
-  v22 = self;
+  selfCopy = self;
   v23 = &v30;
   v24 = &v26;
   [v12 enumerateObjectsUsingBlock:&v16];
@@ -3296,13 +3296,13 @@ LABEL_6:
 
 - (void)updatePersonalHotspotAllowed
 {
-  v3 = [(NSNumber *)self->_personalHotspotAllowed BOOLValue];
+  bOOLValue = [(NSNumber *)self->_personalHotspotAllowed BOOLValue];
   v4 = +[MCProfileConnection sharedConnection];
   v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isPersonalHotspotModificationAllowed]);
   personalHotspotAllowed = self->_personalHotspotAllowed;
   self->_personalHotspotAllowed = v5;
 
-  if (v3 != [(NSNumber *)self->_personalHotspotAllowed BOOLValue])
+  if (bOOLValue != [(NSNumber *)self->_personalHotspotAllowed BOOLValue])
   {
 
     [(SDStatusMonitor *)self postNotification:@"com.apple.sharingd.PersonalHotspotAllowedChanged"];
@@ -3317,67 +3317,67 @@ LABEL_6:
   return self;
 }
 
-- (void)addPreventExitForLocaleReason:(id)a3
+- (void)addPreventExitForLocaleReason:(id)reason
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100227784;
   v7[3] = &unk_1008CE028;
-  v8 = v4;
-  v9 = v5;
-  v6 = v4;
+  v8 = reasonCopy;
+  v9 = selfCopy;
+  v6 = reasonCopy;
   dispatch_async(&_dispatch_main_q, v7);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)pushDateForPreventExitForLocaleReason:(id)a3 expirationDate:(id)a4
+- (void)pushDateForPreventExitForLocaleReason:(id)reason expirationDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  reasonCopy = reason;
+  dateCopy = date;
+  if (dateCopy)
   {
-    v8 = self;
-    objc_sync_enter(v8);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100227914;
     block[3] = &unk_1008CE900;
-    v10 = v6;
-    v11 = v8;
-    v12 = v7;
+    v10 = reasonCopy;
+    v11 = selfCopy;
+    v12 = dateCopy;
     dispatch_async(&_dispatch_main_q, block);
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)removePreventExitForLocaleReason:(id)a3
+- (void)removePreventExitForLocaleReason:(id)reason
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100227A80;
   v7[3] = &unk_1008CE028;
-  v8 = v4;
-  v9 = v5;
-  v6 = v4;
+  v8 = reasonCopy;
+  v9 = selfCopy;
+  v6 = reasonCopy;
   dispatch_async(&_dispatch_main_q, v7);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)postNotification:(id)a3 userInfo:(id)a4
+- (void)postNotification:(id)notification userInfo:(id)info
 {
-  v5 = a4;
-  v6 = a3;
+  infoCopy = info;
+  notificationCopy = notification;
   v7 = +[NSNotificationCenter defaultCenter];
-  [v7 postNotificationName:v6 object:0 userInfo:v5];
+  [v7 postNotificationName:notificationCopy object:0 userInfo:infoCopy];
 }
 
 - (__WiFiManagerClient)wifiManager
@@ -3405,9 +3405,9 @@ LABEL_6:
   return wifiDevice;
 }
 
-- (id)wifiSSIDForSSIDHash:(id)a3
+- (id)wifiSSIDForSSIDHash:(id)hash
 {
-  v4 = a3;
+  hashCopy = hash;
   pthread_mutex_lock(&stru_100972F48);
   ssidHashes = self->_ssidHashes;
   if (!ssidHashes)
@@ -3439,13 +3439,13 @@ LABEL_6:
             if (WiFiNetworkGetShareMode() == 3)
             {
               v14 = WiFiNetworkGetSSID();
-              v15 = [v14 UTF8String];
-              if (v15)
+              uTF8String = [v14 UTF8String];
+              if (uTF8String)
               {
-                v16 = v15;
+                v16 = uTF8String;
                 v28 = 0u;
                 v29 = 0u;
-                v17 = strlen(v15);
+                v17 = strlen(uTF8String);
                 CC_SHA256(v16, v17, &v28);
                 v18 = [[NSData alloc] initWithBytes:&v28 length:3];
                 [(NSMutableDictionary *)self->_ssidHashes setObject:v14 forKeyedSubscript:v18, v28, v29];
@@ -3461,11 +3461,11 @@ LABEL_6:
     v19 = +[SDHotspotAgent sharedAgent];
     if ([v19 isTetheringInUse])
     {
-      v20 = [v19 hotspotName];
-      v21 = [v20 UTF8String];
+      hotspotName = [v19 hotspotName];
+      uTF8String2 = [hotspotName UTF8String];
       v22 = daemon_log();
       v23 = v22;
-      if (v21)
+      if (uTF8String2)
       {
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
@@ -3475,10 +3475,10 @@ LABEL_6:
 
         v28 = 0u;
         v29 = 0u;
-        v24 = strlen(v21);
-        CC_SHA256(v21, v24, &v28);
+        v24 = strlen(uTF8String2);
+        CC_SHA256(uTF8String2, v24, &v28);
         v25 = [[NSData alloc] initWithBytes:&v28 length:3];
-        [(NSMutableDictionary *)self->_ssidHashes setObject:v20 forKeyedSubscript:v25, v28, v29];
+        [(NSMutableDictionary *)self->_ssidHashes setObject:hotspotName forKeyedSubscript:v25, v28, v29];
       }
 
       else
@@ -3493,16 +3493,16 @@ LABEL_6:
     ssidHashes = self->_ssidHashes;
   }
 
-  v26 = [(NSMutableDictionary *)ssidHashes objectForKeyedSubscript:v4];
+  v26 = [(NSMutableDictionary *)ssidHashes objectForKeyedSubscript:hashCopy];
   pthread_mutex_unlock(&stru_100972F48);
 
   return v26;
 }
 
-- (void)setAirDropPublished:(BOOL)a3
+- (void)setAirDropPublished:(BOOL)published
 {
-  self->_airDropPublished = a3;
-  if (a3)
+  self->_airDropPublished = published;
+  if (published)
   {
     [(SDStatusMonitor *)self postNotification:@"com.apple.sharingd.AirDropPublished"];
   }
@@ -3533,11 +3533,11 @@ LABEL_6:
   }
 }
 
-- (void)setBluetoothEnabled:(BOOL)a3
+- (void)setBluetoothEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   pthread_mutex_lock(&stru_100972F48);
-  if (v3)
+  if (enabledCopy)
   {
     v5 = 5;
   }
@@ -3571,15 +3571,15 @@ LABEL_6:
   return v3;
 }
 
-- (void)setFinderServer:(id)a3
+- (void)setFinderServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   pthread_mutex_lock(&stru_100972F48);
   WeakRetained = objc_loadWeakRetained(&self->_finderServer);
 
-  objc_storeWeak(&self->_finderServer, v4);
+  objc_storeWeak(&self->_finderServer, serverCopy);
   pthread_mutex_unlock(&stru_100972F48);
-  if (WeakRetained != v4)
+  if (WeakRetained != serverCopy)
   {
     [(SDStatusMonitor *)self updateDiscoverableMode];
 
@@ -3587,7 +3587,7 @@ LABEL_6:
   }
 }
 
-- (void)setWirelessEnabled:(BOOL)a3
+- (void)setWirelessEnabled:(BOOL)enabled
 {
   pthread_mutex_lock(&stru_100972F48);
   if (self->_wifiManager)
@@ -3609,19 +3609,19 @@ LABEL_6:
 
 - (NSDictionary)awdlInfo
 {
-  v3 = [(SDStatusMonitor *)self awdlState];
-  v4 = v3;
-  if (v3)
+  awdlState = [(SDStatusMonitor *)self awdlState];
+  v4 = awdlState;
+  if (awdlState)
   {
-    v5 = v3;
+    awdlStateInfo = awdlState;
   }
 
   else
   {
-    v5 = [(SDStatusMonitor *)self awdlStateInfo];
+    awdlStateInfo = [(SDStatusMonitor *)self awdlStateInfo];
   }
 
-  v6 = v5;
+  v6 = awdlStateInfo;
 
   v7 = [v6 objectForKeyedSubscript:@"AWDL_INFO"];
 
@@ -3630,19 +3630,19 @@ LABEL_6:
 
 - (NSArray)awdlPeerList
 {
-  v3 = [(SDStatusMonitor *)self awdlState];
-  v4 = v3;
-  if (v3)
+  awdlState = [(SDStatusMonitor *)self awdlState];
+  v4 = awdlState;
+  if (awdlState)
   {
-    v5 = v3;
+    awdlStateInfo = awdlState;
   }
 
   else
   {
-    v5 = [(SDStatusMonitor *)self awdlStateInfo];
+    awdlStateInfo = [(SDStatusMonitor *)self awdlStateInfo];
   }
 
-  v6 = v5;
+  v6 = awdlStateInfo;
 
   v7 = [v6 objectForKeyedSubscript:@"LINK_CHANGED_PEER_LIST"];
 
@@ -3651,9 +3651,9 @@ LABEL_6:
 
 - (id)awdlStateInfo
 {
-  v3 = [(SDStatusMonitor *)self awdlDevice];
+  awdlDevice = [(SDStatusMonitor *)self awdlDevice];
 
-  if (v3)
+  if (awdlDevice)
   {
     awdlDevice = self->_awdlDevice;
     if (WiFiDeviceClientCopyInterfaceStateInfo())
@@ -3689,10 +3689,10 @@ LABEL_6:
 
 - (NSData)bluetoothAddress
 {
-  v2 = [(SDStatusMonitor *)self systemMonitor];
-  v3 = [v2 bluetoothAddressData];
+  systemMonitor = [(SDStatusMonitor *)self systemMonitor];
+  bluetoothAddressData = [systemMonitor bluetoothAddressData];
 
-  return v3;
+  return bluetoothAddressData;
 }
 
 - (NSString)bonjourName
@@ -3823,18 +3823,18 @@ LABEL_6:
 {
   v2 = objc_alloc_init(ACAccountStore);
   v3 = sub_10001F47C(v2);
-  v4 = [v3 username];
+  username = [v3 username];
 
-  return v4;
+  return username;
 }
 
 - (NSString)myAltDSID
 {
   v2 = objc_alloc_init(ACAccountStore);
   v3 = sub_10001F47C(v2);
-  v4 = [v3 aa_altDSID];
+  aa_altDSID = [v3 aa_altDSID];
 
-  return v4;
+  return aa_altDSID;
 }
 
 - (NSString)myAppleIDCommonName
@@ -3842,12 +3842,12 @@ LABEL_6:
   pthread_mutex_lock(&stru_100972F48);
   if (!self->_myAppleIDCommonName)
   {
-    v3 = [(SDStatusMonitor *)self _copyMyAppleIDSecIdentity];
-    if (v3)
+    _copyMyAppleIDSecIdentity = [(SDStatusMonitor *)self _copyMyAppleIDSecIdentity];
+    if (_copyMyAppleIDSecIdentity)
     {
-      v4 = v3;
+      v4 = _copyMyAppleIDSecIdentity;
       certificateRef = 0;
-      if (SecIdentityCopyCertificate(v3, &certificateRef))
+      if (SecIdentityCopyCertificate(_copyMyAppleIDSecIdentity, &certificateRef))
       {
         v5 = daemon_log();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -3878,8 +3878,8 @@ LABEL_6:
 - (NSArray)myAppleIDEmailAddresses
 {
   pthread_mutex_lock(&stru_100972F48);
-  v3 = [(SDStatusMonitor *)self _myAppleID];
-  v4 = [(SDStatusMonitor *)self emailAddressesForAppleID:v3];
+  _myAppleID = [(SDStatusMonitor *)self _myAppleID];
+  v4 = [(SDStatusMonitor *)self emailAddressesForAppleID:_myAppleID];
 
   pthread_mutex_unlock(&stru_100972F48);
 
@@ -3891,8 +3891,8 @@ LABEL_6:
   pthread_mutex_lock(&stru_100972F48);
   if (!self->_myEmailHashes)
   {
-    v3 = [(SDStatusMonitor *)self _myAppleID];
-    v4 = [(SDStatusMonitor *)self emailAddressesForAppleID:v3];
+    _myAppleID = [(SDStatusMonitor *)self _myAppleID];
+    v4 = [(SDStatusMonitor *)self emailAddressesForAppleID:_myAppleID];
 
     if (v4)
     {
@@ -3957,8 +3957,8 @@ LABEL_6:
   pthread_mutex_lock(&stru_100972F48);
   if (!self->_myPhoneHashes)
   {
-    v3 = [(SDStatusMonitor *)self _myAppleID];
-    v4 = [(SDStatusMonitor *)self phoneNumbersForAppleID:v3];
+    _myAppleID = [(SDStatusMonitor *)self _myAppleID];
+    v4 = [(SDStatusMonitor *)self phoneNumbersForAppleID:_myAppleID];
 
     if (v4)
     {
@@ -4020,8 +4020,8 @@ LABEL_6:
 - (NSArray)myAppleIDPhoneNumbers
 {
   pthread_mutex_lock(&stru_100972F48);
-  v3 = [(SDStatusMonitor *)self _myAppleID];
-  v4 = [(SDStatusMonitor *)self phoneNumbersForAppleID:v3];
+  _myAppleID = [(SDStatusMonitor *)self _myAppleID];
+  v4 = [(SDStatusMonitor *)self phoneNumbersForAppleID:_myAppleID];
 
   pthread_mutex_unlock(&stru_100972F48);
   if (v4)
@@ -4040,21 +4040,21 @@ LABEL_6:
 - (NSString)myEmail
 {
   pthread_mutex_lock(&stru_100972F48);
-  v3 = [(SDStatusMonitor *)self meCard];
-  v4 = [v3 emailAddresses];
-  v5 = [v4 firstObject];
-  v6 = [v5 value];
+  meCard = [(SDStatusMonitor *)self meCard];
+  emailAddresses = [meCard emailAddresses];
+  firstObject = [emailAddresses firstObject];
+  value = [firstObject value];
 
   pthread_mutex_unlock(&stru_100972F48);
 
-  return v6;
+  return value;
 }
 
 - (NSString)myName
 {
   pthread_mutex_lock(&stru_100972F48);
-  v3 = [(SDStatusMonitor *)self meCard];
-  v4 = [CNContactFormatter stringFromContact:v3 style:0];
+  meCard = [(SDStatusMonitor *)self meCard];
+  v4 = [CNContactFormatter stringFromContact:meCard style:0];
 
   pthread_mutex_unlock(&stru_100972F48);
 
@@ -4064,35 +4064,35 @@ LABEL_6:
 - (NSString)myGivenName
 {
   pthread_mutex_lock(&stru_100972F48);
-  v3 = [(SDStatusMonitor *)self meCard];
-  v4 = [v3 givenName];
+  meCard = [(SDStatusMonitor *)self meCard];
+  givenName = [meCard givenName];
 
   pthread_mutex_unlock(&stru_100972F48);
 
-  return v4;
+  return givenName;
 }
 
 - (NSString)myPrimaryEmail
 {
   v2 = objc_alloc_init(ACAccountStore);
   v3 = sub_10001F47C(v2);
-  v4 = [v3 aa_primaryEmail];
+  aa_primaryEmail = [v3 aa_primaryEmail];
 
-  return v4;
+  return aa_primaryEmail;
 }
 
 - (NSData)myMediumHashes
 {
-  v2 = [(SDStatusMonitor *)self unifiedAppleIDInfo];
-  v3 = [_TtC16DaemoniOSLibrary27SDAirDropContactHashManager obfuscatedMediumHashDataForStrings:v2];
+  unifiedAppleIDInfo = [(SDStatusMonitor *)self unifiedAppleIDInfo];
+  v3 = [_TtC16DaemoniOSLibrary27SDAirDropContactHashManager obfuscatedMediumHashDataForStrings:unifiedAppleIDInfo];
 
   return v3;
 }
 
 - (NSData)myShortHashesForAirDrop
 {
-  v2 = [(SDStatusMonitor *)self unifiedAppleIDInfo];
-  v3 = [_TtC16DaemoniOSLibrary27SDAirDropContactHashManager btleAdvertisementDataForStrings:v2];
+  unifiedAppleIDInfo = [(SDStatusMonitor *)self unifiedAppleIDInfo];
+  v3 = [_TtC16DaemoniOSLibrary27SDAirDropContactHashManager btleAdvertisementDataForStrings:unifiedAppleIDInfo];
 
   return v3;
 }
@@ -4121,13 +4121,13 @@ LABEL_6:
 
 - (NSString)someComputerName
 {
-  v3 = [(SDStatusMonitor *)self computerName];
-  if (!v3)
+  computerName = [(SDStatusMonitor *)self computerName];
+  if (!computerName)
   {
-    v3 = [(SDStatusMonitor *)self modelName];
+    computerName = [(SDStatusMonitor *)self modelName];
   }
 
-  return v3;
+  return computerName;
 }
 
 - (NSString)workgroup
@@ -4154,13 +4154,13 @@ LABEL_6:
 
 - (void)updateAirDropAllowed
 {
-  v3 = [(NSNumber *)self->_airDropAllowed BOOLValue];
+  bOOLValue = [(NSNumber *)self->_airDropAllowed BOOLValue];
   v4 = +[MCProfileConnection sharedConnection];
   v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isAirDropAllowed]);
   airDropAllowed = self->_airDropAllowed;
   self->_airDropAllowed = v5;
 
-  if (v3 != [(NSNumber *)self->_airDropAllowed BOOLValue])
+  if (bOOLValue != [(NSNumber *)self->_airDropAllowed BOOLValue])
   {
 
     [(SDStatusMonitor *)self postNotification:@"com.apple.sharingd.AirDropAllowedChanged"];
@@ -4169,10 +4169,10 @@ LABEL_6:
 
 - (BOOL)isLocalDeviceMeDevice
 {
-  v2 = [(SDStatusMonitor *)self systemMonitor];
-  v3 = [v2 meDeviceIsMe];
+  systemMonitor = [(SDStatusMonitor *)self systemMonitor];
+  meDeviceIsMe = [systemMonitor meDeviceIsMe];
 
-  return v3;
+  return meDeviceIsMe;
 }
 
 - (BOOL)altDSIDNeedsFixing
@@ -4182,11 +4182,11 @@ LABEL_6:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 aa_altDSID];
-    if (v5)
+    aa_altDSID = [v3 aa_altDSID];
+    if (aa_altDSID)
     {
-      v6 = [v4 aa_primaryEmail];
-      v7 = [v5 isEqualToString:v6];
+      aa_primaryEmail = [v4 aa_primaryEmail];
+      v7 = [aa_altDSID isEqualToString:aa_primaryEmail];
 
       if (v7)
       {
@@ -4199,8 +4199,8 @@ LABEL_6:
 
       else
       {
-        v10 = [v4 username];
-        v11 = [v5 isEqualToString:v10];
+        username = [v4 username];
+        v11 = [aa_altDSID isEqualToString:username];
 
         if (!v11)
         {
@@ -4364,22 +4364,22 @@ LABEL_23:
 
 - (BOOL)deviceIsInClassD
 {
-  v2 = [(SDStatusMonitor *)self systemMonitor];
-  v3 = [v2 firstUnlocked];
+  systemMonitor = [(SDStatusMonitor *)self systemMonitor];
+  firstUnlocked = [systemMonitor firstUnlocked];
 
-  return v3 ^ 1;
+  return firstUnlocked ^ 1;
 }
 
 - (BOOL)deviceKeyBagUnlockedAndScreenOn
 {
-  v3 = [(SDStatusMonitor *)self deviceKeyBagUnlocked];
-  if (v3)
+  deviceKeyBagUnlocked = [(SDStatusMonitor *)self deviceKeyBagUnlocked];
+  if (deviceKeyBagUnlocked)
   {
 
-    LOBYTE(v3) = [(SDStatusMonitor *)self screenOn];
+    LOBYTE(deviceKeyBagUnlocked) = [(SDStatusMonitor *)self screenOn];
   }
 
-  return v3;
+  return deviceKeyBagUnlocked;
 }
 
 - (BOOL)eduModeEnabled
@@ -4415,8 +4415,8 @@ LABEL_23:
 
 - (BOOL)finderAirDropEnabled
 {
-  v2 = [(SDStatusMonitor *)self finderServer];
-  v3 = v2 != 0;
+  finderServer = [(SDStatusMonitor *)self finderServer];
+  v3 = finderServer != 0;
 
   return v3;
 }
@@ -4434,9 +4434,9 @@ LABEL_23:
     handoffVisible = self->_handoffVisible;
   }
 
-  v6 = [(NSNumber *)handoffVisible BOOLValue];
+  bOOLValue = [(NSNumber *)handoffVisible BOOLValue];
   pthread_mutex_unlock(&stru_100972F48);
-  return v6;
+  return bOOLValue;
 }
 
 - (BOOL)lostModeEnabled
@@ -4453,9 +4453,9 @@ LABEL_23:
 {
   v2 = objc_alloc_init(ACAccountStore);
   v3 = sub_10001F47C(v2);
-  v4 = [v3 aa_isManagedAppleID];
+  aa_isManagedAppleID = [v3 aa_isManagedAppleID];
 
-  return v4;
+  return aa_isManagedAppleID;
 }
 
 - (BOOL)signedIntoPrimaryiCloudAccount
@@ -4480,11 +4480,11 @@ LABEL_23:
     carKitSessionStatus = self->_carKitSessionStatus;
   }
 
-  v6 = [(CARSessionStatus *)carKitSessionStatus currentSession];
+  currentSession = [(CARSessionStatus *)carKitSessionStatus currentSession];
   pthread_mutex_unlock(&stru_100972F48);
-  if (v6)
+  if (currentSession)
   {
-    v7 = [(SDStatusMonitor *)self isCarKitSessionWireless:v6];
+    v7 = [(SDStatusMonitor *)self isCarKitSessionWireless:currentSession];
   }
 
   else
@@ -4495,22 +4495,22 @@ LABEL_23:
   return v7;
 }
 
-- (void)logAirDropTransactionForClientServer:(BOOL)a3 beginEnd:(BOOL)a4 count:(int)a5
+- (void)logAirDropTransactionForClientServer:(BOOL)server beginEnd:(BOOL)end count:(int)count
 {
-  v6 = a4;
-  v7 = a3;
+  endCopy = end;
+  serverCopy = server;
   v8 = airdrop_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"server";
-    if (v7)
+    if (serverCopy)
     {
       v9 = @"client";
     }
 
     v11 = 138412802;
     v12 = v9;
-    if (v6)
+    if (endCopy)
     {
       v10 = @"begin";
     }
@@ -4523,14 +4523,14 @@ LABEL_23:
     v13 = 2112;
     v14 = v10;
     v15 = 1024;
-    v16 = a5;
+    countCopy = count;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "AirDrop %@ transaction %@ (%d)", &v11, 0x1Cu);
   }
 }
 
-- (void)updateMediaAccessControlSetting:(BOOL)a3
+- (void)updateMediaAccessControlSetting:(BOOL)setting
 {
-  v3 = a3;
+  settingCopy = setting;
   v8 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.airplay"];
   v5 = [v8 BOOLForKey:@"accessControlLevel"];
   v6 = [v8 BOOLForKey:@"p2pAllow"];
@@ -4548,7 +4548,7 @@ LABEL_23:
   if (self->_mediaAccessControlSetting != v7)
   {
     self->_mediaAccessControlSetting = v7;
-    if (v3)
+    if (settingCopy)
     {
       [(SDStatusMonitor *)self postNotification:@"com.apple.sharingd.MediaAccessControlSettingChanged"];
     }
@@ -4563,7 +4563,7 @@ LABEL_23:
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, sub_10022A65C, v4, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
-- (void)appleIDAccountInfoChanged:(id)a3
+- (void)appleIDAccountInfoChanged:(id)changed
 {
   v4 = daemon_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -4586,7 +4586,7 @@ LABEL_23:
   [v4 addObserver:self selector:"appleIDAccountInfoChanged:" name:SFAppleIDValidationRecordDidChangeNotification object:0];
 }
 
-- (void)forceAWDLDeviceRefresh:(__WiFiDeviceClient *)a3
+- (void)forceAWDLDeviceRefresh:(__WiFiDeviceClient *)refresh
 {
   v4 = daemon_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -4598,14 +4598,14 @@ LABEL_23:
   self->_awdlDevice = 0;
 }
 
-- (void)updateWirelessCritical:(BOOL)a3
+- (void)updateWirelessCritical:(BOOL)critical
 {
-  v3 = a3;
+  criticalCopy = critical;
   v5 = daemon_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (criticalCopy)
     {
       v6 = @"YES";
     }
@@ -4615,17 +4615,17 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "updateWirelessCritical inCriticalState=%@", &v7, 0xCu);
   }
 
-  self->_wirelessCritical = v3;
+  self->_wirelessCritical = criticalCopy;
   [(SDStatusMonitor *)self postNotification:@"com.apple.sharingd.WirelessCriticalChanged"];
 }
 
-- (void)handleAWDLState:(id)a3
+- (void)handleAWDLState:(id)state
 {
-  v4 = a3;
-  v5 = [(SDStatusMonitor *)self awdlState];
-  v6 = [v5 objectForKeyedSubscript:@"AWDL_INFO"];
+  stateCopy = state;
+  awdlState = [(SDStatusMonitor *)self awdlState];
+  v6 = [awdlState objectForKeyedSubscript:@"AWDL_INFO"];
 
-  v7 = [v4 objectForKeyedSubscript:@"AWDL_INFO"];
+  v7 = [stateCopy objectForKeyedSubscript:@"AWDL_INFO"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v11 = auto_unlock_log();
@@ -4653,7 +4653,7 @@ LABEL_23:
     }
 
     pthread_mutex_lock(&stru_100972F48);
-    v9 = [v4 copy];
+    v9 = [stateCopy copy];
     awdlState = self->_awdlState;
     self->_awdlState = v9;
 
@@ -4918,38 +4918,38 @@ LABEL_52:
   }
 }
 
-- (void)updateWifiState:(int64_t)a3
+- (void)updateWifiState:(int64_t)state
 {
   if (self->_wifiInterfaceMonitor)
   {
     pthread_mutex_lock(&stru_100972F48);
     v5 = self->_wifiInterfaceMonitor;
     pthread_mutex_unlock(&stru_100972F48);
-    v6 = [(CWFInterface *)v5 channel];
-    if (v6)
+    channel = [(CWFInterface *)v5 channel];
+    if (channel)
     {
-      v7 = [(CWFInterface *)v5 channel];
-      v8 = [v7 is2GHz];
+      channel2 = [(CWFInterface *)v5 channel];
+      is2GHz = [channel2 is2GHz];
     }
 
     else
     {
-      v8 = 0;
+      is2GHz = 0;
     }
 
-    v9 = [(CWFInterface *)v5 currentKnownNetworkProfile];
-    v10 = [v9 isPersonalHotspot];
+    currentKnownNetworkProfile = [(CWFInterface *)v5 currentKnownNetworkProfile];
+    isPersonalHotspot = [currentKnownNetworkProfile isPersonalHotspot];
 
-    v11 = [(CWFInterface *)v5 powerOn];
+    powerOn = [(CWFInterface *)v5 powerOn];
     pthread_mutex_lock(&stru_100972F48);
-    self->_isUsing2GHzWifi = v8;
-    self->_isWifiPersonalHotspot = v10;
+    self->_isUsing2GHzWifi = is2GHz;
+    self->_isWifiPersonalHotspot = isPersonalHotspot;
     pthread_mutex_unlock(&stru_100972F48);
     v12 = daemon_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = @"NO";
-      if (v11)
+      if (powerOn)
       {
         v14 = @"YES";
       }
@@ -4959,7 +4959,7 @@ LABEL_52:
         v14 = @"NO";
       }
 
-      if (v8)
+      if (is2GHz)
       {
         v15 = @"YES";
       }
@@ -4973,7 +4973,7 @@ LABEL_52:
       *v21 = v14;
       *&v21[8] = 2112;
       v22 = v15;
-      if (v10)
+      if (isPersonalHotspot)
       {
         v13 = @"YES";
       }
@@ -4983,7 +4983,7 @@ LABEL_52:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "WifiState: wirelessEnabled: %@ - isUsing2GHz: %@ - isWifiPersonalHotspot: %@\n", &v20, 0x20u);
     }
 
-    if (a3 == 8)
+    if (state == 8)
     {
       v16 = ([(CWFInterface *)v5 opMode]>> 3) & 1;
       v17 = ([(CWFInterface *)v5 opMode]>> 1) & 1;
@@ -5003,19 +5003,19 @@ LABEL_52:
     }
 
     pthread_mutex_lock(&stru_100972F48);
-    if (self->_wirelessEnabled == v11)
+    if (self->_wirelessEnabled == powerOn)
     {
       pthread_mutex_unlock(&stru_100972F48);
     }
 
     else
     {
-      self->_wirelessEnabled = v11;
+      self->_wirelessEnabled = powerOn;
       v19 = daemon_log();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 67109120;
-        *v21 = v11;
+        *v21 = powerOn;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "WifiPowerChange: wirelessEnabled: %d", &v20, 8u);
       }
 
@@ -5123,8 +5123,8 @@ LABEL_52:
   v7[2] = sub_10022C3A8;
   v7[3] = &unk_1008CDD98;
   objc_copyWeak(&v8, &location);
-  v6 = [(SDStatusMonitor *)self systemMonitor];
-  [v6 setBluetoothAddressChangedHandler:v7];
+  systemMonitor = [(SDStatusMonitor *)self systemMonitor];
+  [systemMonitor setBluetoothAddressChangedHandler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -5135,15 +5135,15 @@ LABEL_52:
   v3 = daemon_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CBController *)self->_bluetoothController bluetoothState];
-    if (v4 > 0xA)
+    bluetoothState = [(CBController *)self->_bluetoothController bluetoothState];
+    if (bluetoothState > 0xA)
     {
       v5 = "?";
     }
 
     else
     {
-      v5 = off_1008D5130[v4];
+      v5 = off_1008D5130[bluetoothState];
     }
 
     v6 = 136315138;
@@ -5155,17 +5155,17 @@ LABEL_52:
   [(SDStatusMonitor *)self postNotification:@"com.apple.sharingd.BluetoothPowerChanged"];
 }
 
-- (void)bluetoothActivatedWithError:(id)a3
+- (void)bluetoothActivatedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (errorCopy)
   {
     if (v6)
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = errorCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Bluetooth controller failed to activate - error: %@", &v7, 0xCu);
     }
   }
@@ -5182,17 +5182,17 @@ LABEL_52:
   }
 }
 
-- (void)bluetoothDidSetPowerStateWithError:(id)a3
+- (void)bluetoothDidSetPowerStateWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = daemon_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (errorCopy)
   {
     if (v5)
     {
       v9 = 138412290;
-      v10 = v3;
+      v10 = errorCopy;
       v6 = "Bluetooth controller failed to set power state - error: %@";
       v7 = v4;
       v8 = 12;
@@ -5288,7 +5288,7 @@ LABEL_6:
   pthread_mutex_unlock(&stru_100972F48);
 }
 
-- (void)carplayMonitorDiedNotification:(id)a3
+- (void)carplayMonitorDiedNotification:(id)notification
 {
   v4 = daemon_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -5302,12 +5302,12 @@ LABEL_6:
   [(SDStatusMonitor *)self carplayStatusNotification:0];
 }
 
-- (void)carplayStatusNotification:(id)a3
+- (void)carplayStatusNotification:(id)notification
 {
-  v4 = [(objc_class *)off_100972FA8() sharedAVSystemController];
+  sharedAVSystemController = [(objc_class *)off_100972FA8() sharedAVSystemController];
   v5 = off_100972FB0();
-  v6 = [v4 attributeForKey:v5];
-  v7 = [v6 BOOLValue];
+  v6 = [sharedAVSystemController attributeForKey:v5];
+  bOOLValue = [v6 BOOLValue];
 
   v8 = daemon_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -5323,7 +5323,7 @@ LABEL_6:
       v10 = "off";
     }
 
-    if (v7)
+    if (bOOLValue)
     {
       v9 = "on";
     }
@@ -5335,13 +5335,13 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "CarPlay status changed: %s -> %s", &v11, 0x16u);
   }
 
-  self->_carplayConnected = v7;
+  self->_carplayConnected = bOOLValue;
   [(SDStatusMonitor *)self postNotification:@"com.apple.sharingd.CarPlayStatusChanged"];
 }
 
 - (void)installCarPlayStatusMonitor
 {
-  v3 = [(objc_class *)off_100972FA8() sharedAVSystemController];
+  sharedAVSystemController = [(objc_class *)off_100972FA8() sharedAVSystemController];
   v4 = off_100972FB8();
   v13[0] = v4;
   v5 = off_100972FC0();
@@ -5349,7 +5349,7 @@ LABEL_6:
   v6 = [NSArray arrayWithObjects:v13 count:2];
 
   v7 = off_100972FC8();
-  [v3 setAttribute:v6 forKey:v7 error:0];
+  [sharedAVSystemController setAttribute:v6 forKey:v7 error:0];
 
   v8 = +[NSNotificationCenter defaultCenter];
   v9 = off_100972FB8();
@@ -5359,7 +5359,7 @@ LABEL_6:
   [v8 addObserver:self selector:"carplayStatusNotification:" name:v10 object:0];
 
   v11 = off_100972FB0();
-  v12 = [v3 attributeForKey:v11];
+  v12 = [sharedAVSystemController attributeForKey:v11];
   self->_carplayConnected = [v12 BOOLValue];
 }
 
@@ -5381,17 +5381,17 @@ LABEL_6:
   pthread_mutex_unlock(&stru_100972F48);
 }
 
-- (BOOL)isCarKitSessionWireless:(id)a3
+- (BOOL)isCarKitSessionWireless:(id)wireless
 {
-  v3 = [a3 configuration];
-  v4 = [v3 transportType] == 3;
+  configuration = [wireless configuration];
+  v4 = [configuration transportType] == 3;
 
   return v4;
 }
 
-- (void)handleCarKitSessionStateChanged:(id)a3
+- (void)handleCarKitSessionStateChanged:(id)changed
 {
-  if ([(SDStatusMonitor *)self isCarKitSessionWireless:a3])
+  if ([(SDStatusMonitor *)self isCarKitSessionWireless:changed])
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -5402,9 +5402,9 @@ LABEL_6:
   }
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  [(SDStatusMonitor *)self handleCarKitSessionStateChanged:a3];
+  [(SDStatusMonitor *)self handleCarKitSessionStateChanged:connect];
   v3 = daemon_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -5413,9 +5413,9 @@ LABEL_6:
   }
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  [(SDStatusMonitor *)self handleCarKitSessionStateChanged:a3];
+  [(SDStatusMonitor *)self handleCarKitSessionStateChanged:disconnect];
   v3 = daemon_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -5443,7 +5443,7 @@ LABEL_6:
   self->_smartCoverMonitor = v3;
 }
 
-- (void)contactStoreDidChange:(id)a3
+- (void)contactStoreDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -5453,7 +5453,7 @@ LABEL_6:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)meCardChanged:(id)a3
+- (void)meCardChanged:(id)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -5503,22 +5503,22 @@ LABEL_6:
   [(SDStatusMonitor *)self fetchSubscriptionContextWithCompletion:v7];
 }
 
-- (void)fetchSubscriptionContextWithCompletion:(id)a3
+- (void)fetchSubscriptionContextWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   coreTelephonyClient = self->_coreTelephonyClient;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10022D600;
   v7[3] = &unk_1008D4E28;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CoreTelephonyClient *)coreTelephonyClient getPreferredDataSubscriptionContext:v7];
 }
 
-- (void)fetchLTEShows4GWithContext:(id)a3
+- (void)fetchLTEShows4GWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [[CTBundle alloc] initWithBundleType:1];
   coreTelephonyClient = self->_coreTelephonyClient;
   v7[0] = _NSConcreteStackBlock;
@@ -5526,10 +5526,10 @@ LABEL_6:
   v7[2] = sub_10022D7D8;
   v7[3] = &unk_1008D4E50;
   v7[4] = self;
-  [(CoreTelephonyClient *)coreTelephonyClient copyCarrierBundleValueWithDefault:v4 key:@"DataIndicatorOverrideForLTE" bundleType:v5 completion:v7];
+  [(CoreTelephonyClient *)coreTelephonyClient copyCarrierBundleValueWithDefault:contextCopy key:@"DataIndicatorOverrideForLTE" bundleType:v5 completion:v7];
 }
 
-- (void)fetchSIMStatusWithContext:(id)a3
+- (void)fetchSIMStatusWithContext:(id)context
 {
   coreTelephonyClient = self->_coreTelephonyClient;
   v4[0] = _NSConcreteStackBlock;
@@ -5537,10 +5537,10 @@ LABEL_6:
   v4[2] = sub_10022D904;
   v4[3] = &unk_1008D4E78;
   v4[4] = self;
-  [(CoreTelephonyClient *)coreTelephonyClient getSIMStatus:a3 completion:v4];
+  [(CoreTelephonyClient *)coreTelephonyClient getSIMStatus:context completion:v4];
 }
 
-- (void)fetchDataStatusWithContext:(id)a3
+- (void)fetchDataStatusWithContext:(id)context
 {
   coreTelephonyClient = self->_coreTelephonyClient;
   v4[0] = _NSConcreteStackBlock;
@@ -5548,10 +5548,10 @@ LABEL_6:
   v4[2] = sub_10022D9F0;
   v4[3] = &unk_1008D4EA0;
   v4[4] = self;
-  [(CoreTelephonyClient *)coreTelephonyClient getDataStatus:a3 completion:v4];
+  [(CoreTelephonyClient *)coreTelephonyClient getDataStatus:context completion:v4];
 }
 
-- (void)fetchSignalStrengthWithContext:(id)a3
+- (void)fetchSignalStrengthWithContext:(id)context
 {
   coreTelephonyClient = self->_coreTelephonyClient;
   v4[0] = _NSConcreteStackBlock;
@@ -5559,20 +5559,20 @@ LABEL_6:
   v4[2] = sub_10022DADC;
   v4[3] = &unk_1008D4EC8;
   v4[4] = self;
-  [(CoreTelephonyClient *)coreTelephonyClient getSignalStrengthInfo:a3 completion:v4];
+  [(CoreTelephonyClient *)coreTelephonyClient getSignalStrengthInfo:context completion:v4];
 }
 
-- (void)updateLTEShows4G:(BOOL)a3
+- (void)updateLTEShows4G:(BOOL)g
 {
-  v3 = a3;
+  gCopy = g;
   pthread_mutex_lock(&stru_100972F48);
-  if (self->_coreTelephonyLTEShows4G != v3)
+  if (self->_coreTelephonyLTEShows4G != gCopy)
   {
     v5 = daemon_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (gCopy)
       {
         v6 = @"YES";
       }
@@ -5582,17 +5582,17 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating LTE shows 4G %@", &v7, 0xCu);
     }
 
-    self->_coreTelephonyLTEShows4G = v3;
+    self->_coreTelephonyLTEShows4G = gCopy;
   }
 
   pthread_mutex_unlock(&stru_100972F48);
 }
 
-- (void)updateSIMStatus:(id)a3
+- (void)updateSIMStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   pthread_mutex_lock(&stru_100972F48);
-  if ([(NSString *)self->_coreTelephonySIMStatus isEqualToString:v4])
+  if ([(NSString *)self->_coreTelephonySIMStatus isEqualToString:statusCopy])
   {
     v5 = 0;
   }
@@ -5607,23 +5607,23 @@ LABEL_6:
 
     else
     {
-      v5 = [v4 isEqualToString:v6];
+      v5 = [statusCopy isEqualToString:v6];
     }
   }
 
-  if (![(NSString *)self->_coreTelephonySIMStatus isEqualToString:v4])
+  if (![(NSString *)self->_coreTelephonySIMStatus isEqualToString:statusCopy])
   {
     v7 = daemon_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = statusCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Updating SIM status %@", &v9, 0xCu);
     }
   }
 
   coreTelephonySIMStatus = self->_coreTelephonySIMStatus;
-  self->_coreTelephonySIMStatus = v4;
+  self->_coreTelephonySIMStatus = statusCopy;
 
   pthread_mutex_unlock(&stru_100972F48);
   if (v5)
@@ -5632,11 +5632,11 @@ LABEL_6:
   }
 }
 
-- (void)updateDataStatus:(id)a3
+- (void)updateDataStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   pthread_mutex_lock(&stru_100972F48);
-  if ([v4 isEqual:self->_coreTelephonyDataStatus])
+  if ([statusCopy isEqual:self->_coreTelephonyDataStatus])
   {
     pthread_mutex_unlock(&stru_100972F48);
   }
@@ -5647,11 +5647,11 @@ LABEL_6:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = statusCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating data status %@", &v8, 0xCu);
     }
 
-    v6 = [v4 copy];
+    v6 = [statusCopy copy];
     coreTelephonyDataStatus = self->_coreTelephonyDataStatus;
     self->_coreTelephonyDataStatus = v6;
 
@@ -5660,12 +5660,12 @@ LABEL_6:
   }
 }
 
-- (void)updateSignalStrength:(id)a3
+- (void)updateSignalStrength:(id)strength
 {
-  v4 = a3;
+  strengthCopy = strength;
   pthread_mutex_lock(&stru_100972F48);
-  v5 = [v4 displayBars];
-  if ([(NSNumber *)self->_coreTelephonySignalStrength isEqualToNumber:v5])
+  displayBars = [strengthCopy displayBars];
+  if ([(NSNumber *)self->_coreTelephonySignalStrength isEqualToNumber:displayBars])
   {
     pthread_mutex_unlock(&stru_100972F48);
   }
@@ -5676,13 +5676,13 @@ LABEL_6:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134217984;
-      v10 = [v5 integerValue];
+      integerValue = [displayBars integerValue];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Updating signal strength %ld bars", &v9, 0xCu);
     }
 
-    v7 = [v4 displayBars];
+    displayBars2 = [strengthCopy displayBars];
     coreTelephonySignalStrength = self->_coreTelephonySignalStrength;
-    self->_coreTelephonySignalStrength = v7;
+    self->_coreTelephonySignalStrength = displayBars2;
 
     pthread_mutex_unlock(&stru_100972F48);
     [(SDStatusMonitor *)self postNotification:@"com.apple.sharingd.SignalStrengthChanged"];
@@ -5706,43 +5706,43 @@ LABEL_6:
   [(SDStatusMonitor *)self fetchSubscriptionContextWithCompletion:v4];
 }
 
-- (void)simStatusDidChange:(id)a3 status:(id)a4
+- (void)simStatusDidChange:(id)change status:(id)status
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10022E180;
   v4[3] = &unk_1008D4E00;
   v4[4] = self;
-  [(SDStatusMonitor *)self fetchSubscriptionContextWithCompletion:v4, a4];
+  [(SDStatusMonitor *)self fetchSubscriptionContextWithCompletion:v4, status];
 }
 
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4
+- (void)dataStatus:(id)status dataStatusInfo:(id)info
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10022E200;
   v4[3] = &unk_1008D4E00;
   v4[4] = self;
-  [(SDStatusMonitor *)self fetchSubscriptionContextWithCompletion:v4, a4];
+  [(SDStatusMonitor *)self fetchSubscriptionContextWithCompletion:v4, info];
 }
 
-- (void)signalStrengthChanged:(id)a3 info:(id)a4
+- (void)signalStrengthChanged:(id)changed info:(id)info
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10022E280;
   v4[3] = &unk_1008D4E00;
   v4[4] = self;
-  [(SDStatusMonitor *)self fetchSubscriptionContextWithCompletion:v4, a4];
+  [(SDStatusMonitor *)self fetchSubscriptionContextWithCompletion:v4, info];
 }
 
-- (void)handleDynamicStoreCallback:(__SCDynamicStore *)a3 changedKeys:(__CFArray *)a4
+- (void)handleDynamicStoreCallback:(__SCDynamicStore *)callback changedKeys:(__CFArray *)keys
 {
   cf2 = SCDynamicStoreKeyCreateNetworkInterfaceEntity(0, kSCDynamicStoreDomainState, @"awdl0", kSCEntNetLink);
   v6 = SCDynamicStoreKeyCreate(0, @"%@/%@/%@", kSCDynamicStoreDomainState, kSCCompNetwork, @"MulticastDNS");
   ComputerName = SCDynamicStoreKeyCreateComputerName(0);
   HostNames = SCDynamicStoreKeyCreateHostNames(0);
-  Count = CFArrayGetCount(a4);
+  Count = CFArrayGetCount(keys);
   if (Count < 1)
   {
     goto LABEL_21;
@@ -5755,7 +5755,7 @@ LABEL_6:
   v13 = 0;
   do
   {
-    ValueAtIndex = CFArrayGetValueAtIndex(a4, v11);
+    ValueAtIndex = CFArrayGetValueAtIndex(keys, v11);
     if (CFEqual(ValueAtIndex, ComputerName))
     {
       [(SDStatusMonitor *)self clearComputerName];
@@ -5784,7 +5784,7 @@ LABEL_6:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v19 = a4;
+        keysCopy = keys;
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "SDStatusMonitor: Unknown keys changed (%@)", buf, 0xCu);
       }
     }
@@ -5958,7 +5958,7 @@ LABEL_13:
   [(SDStatusMonitor *)self managedConfigurationSettingsChanged:0];
 }
 
-- (void)managedConfigurationSettingsChanged:(id)a3
+- (void)managedConfigurationSettingsChanged:(id)changed
 {
   [(SDStatusMonitor *)self updateAirDropAllowed];
   [(SDStatusMonitor *)self updatePersonalHotspotAllowed];
@@ -5969,11 +5969,11 @@ LABEL_13:
 - (void)updateBlacklistedAppBundleIDs
 {
   v3 = +[MCProfileConnection sharedConnection];
-  v4 = [v3 effectiveBlockedAppBundleIDs];
+  effectiveBlockedAppBundleIDs = [v3 effectiveBlockedAppBundleIDs];
 
-  v5 = [(SDStatusMonitor *)self effectiveBlockedAppBundleIDs];
-  v8 = v4;
-  v6 = v5;
+  effectiveBlockedAppBundleIDs2 = [(SDStatusMonitor *)self effectiveBlockedAppBundleIDs];
+  v8 = effectiveBlockedAppBundleIDs;
+  v6 = effectiveBlockedAppBundleIDs2;
   if (v8 == v6)
   {
 
@@ -5998,11 +5998,11 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)handleNameMonitorCallBack:(const char *)a3 flags:(unsigned int)a4 error:(int)a5
+- (void)handleNameMonitorCallBack:(const char *)back flags:(unsigned int)flags error:(int)error
 {
-  v6 = a4;
+  flagsCopy = flags;
   pthread_mutex_lock(&stru_100972F48);
-  if (a5)
+  if (error)
   {
     v9 = daemon_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -6014,9 +6014,9 @@ LABEL_8:
     self->_nameMonitor = 0;
   }
 
-  else if ((v6 & 2) != 0)
+  else if ((flagsCopy & 2) != 0)
   {
-    v10 = CFStringCreateWithCString(0, a3, 0x8000100u);
+    v10 = CFStringCreateWithCString(0, back, 0x8000100u);
     if (sub_100118058(self->_bonjourName, v10))
     {
       v11 = [(__CFString *)v10 copy];
@@ -6033,12 +6033,12 @@ LABEL_8:
   pthread_mutex_unlock(&stru_100972F48);
 }
 
-- (void)updatePairedWatchWristState:(int64_t)a3
+- (void)updatePairedWatchWristState:(int64_t)state
 {
   v5 = daemon_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(SDStatusMonitor *)self stringForWatchWristState:a3];
+    v6 = [(SDStatusMonitor *)self stringForWatchWristState:state];
     v7 = 138412290;
     v8 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Paired watch wrist state changed: %@", &v7, 0xCu);
@@ -6050,18 +6050,18 @@ LABEL_8:
 - (int)pairedWatchLockState
 {
   v2 = +[SDPairedDeviceAgent sharedAgent];
-  v3 = [v2 lockState];
+  lockState = [v2 lockState];
 
-  return v3;
+  return lockState;
 }
 
-- (void)updatePairedWatchLockState:(int)a3
+- (void)updatePairedWatchLockState:(int)state
 {
   v5 = daemon_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = a3;
+    v6[1] = state;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Paired watch wrist lock changed: %d", v6, 8u);
   }
 
@@ -6074,7 +6074,7 @@ LABEL_8:
   [v3 addObserver:self selector:"handleMISStateChanged:" name:@"com.apple.sharingd.HotspotMISStateChanged" object:0];
 }
 
-- (void)handleMISStateChanged:(id)a3
+- (void)handleMISStateChanged:(id)changed
 {
   v4 = airdrop_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -6086,7 +6086,7 @@ LABEL_8:
   [(SDStatusMonitor *)self updateDiscoverableMode];
 }
 
-- (void)updateLocalPowerSource:(id)a3
+- (void)updateLocalPowerSource:(id)source
 {
   v4 = CUMainQueue();
   block[0] = _NSConcreteStackBlock;
@@ -6097,10 +6097,10 @@ LABEL_8:
   dispatch_async(v4, block);
 }
 
-- (void)handleSleepWakeCallBack:(unsigned int)a3 messageArguement:(void *)a4
+- (void)handleSleepWakeCallBack:(unsigned int)back messageArguement:(void *)arguement
 {
-  HIDWORD(v6) = a3 + 536870288;
-  LODWORD(v6) = a3 + 536870288;
+  HIDWORD(v6) = back + 536870288;
+  LODWORD(v6) = back + 536870288;
   v5 = v6 >> 4;
   if (v5 > 1)
   {
@@ -6165,7 +6165,7 @@ LABEL_8:
       }
     }
 
-    IOAllowPowerChange(self->_rootPort, a4);
+    IOAllowPowerChange(self->_rootPort, arguement);
   }
 }
 
@@ -6270,11 +6270,11 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Installing backlight services monitor", v5, 2u);
   }
 
-  v4 = [(objc_class *)off_100972FA0() sharedBacklight];
-  [v4 addObserver:self];
+  sharedBacklight = [(objc_class *)off_100972FA0() sharedBacklight];
+  [sharedBacklight addObserver:self];
 }
 
-- (void)backlight:(id)a3 activatingWithEvent:(id)a4
+- (void)backlight:(id)backlight activatingWithEvent:(id)event
 {
   v5 = daemon_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -6285,7 +6285,7 @@ LABEL_11:
   [(SDStatusMonitor *)self screenOnStateChangedTo:1];
 }
 
-- (void)backlight:(id)a3 deactivatingWithEvent:(id)a4
+- (void)backlight:(id)backlight deactivatingWithEvent:(id)event
 {
   v5 = daemon_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -6296,28 +6296,28 @@ LABEL_11:
   [(SDStatusMonitor *)self screenOnStateChangedTo:0];
 }
 
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvents:(id)a5 abortedEvents:(id)a6
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvents:(id)events abortedEvents:(id)abortedEvents
 {
   v8 = daemon_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_10023273C(self, a4, v8);
+    sub_10023273C(self, state, v8);
   }
 
   if (CFPrefs_GetInt64())
   {
     pthread_mutex_lock(&stru_100972F48);
-    v9 = [(SDStatusMonitor *)self isScreenOnForBacklightState:a4];
+    v9 = [(SDStatusMonitor *)self isScreenOnForBacklightState:state];
     screenOn = self->_screenOn;
     if (screenOn)
     {
-      v11 = [(NSNumber *)screenOn BOOLValue];
+      bOOLValue = [(NSNumber *)screenOn BOOLValue];
       v12 = [NSNumber numberWithBool:v9];
       v13 = self->_screenOn;
       self->_screenOn = v12;
 
       pthread_mutex_unlock(&stru_100972F48);
-      if (v9 == v11)
+      if (v9 == bOOLValue)
       {
         return;
       }
@@ -6335,9 +6335,9 @@ LABEL_11:
     v16 = daemon_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(NSNumber *)self->_screenOn BOOLValue];
+      bOOLValue2 = [(NSNumber *)self->_screenOn BOOLValue];
       v18 = @"Off";
-      if (v17)
+      if (bOOLValue2)
       {
         v18 = @"On";
       }
@@ -6351,9 +6351,9 @@ LABEL_11:
   }
 }
 
-- (BOOL)isScreenOnForBacklightState:(int64_t)a3
+- (BOOL)isScreenOnForBacklightState:(int64_t)state
 {
-  if (a3 >= 4)
+  if (state >= 4)
   {
     v9 = v3;
     v10 = v4;
@@ -6369,7 +6369,7 @@ LABEL_11:
 
   else
   {
-    v5 = 0xCu >> (a3 & 0xF);
+    v5 = 0xCu >> (state & 0xF);
   }
 
   return v5 & 1;
@@ -6473,21 +6473,21 @@ LABEL_11:
 - (unint64_t)ultraWideBandState
 {
   v2 = +[SDRapportBrowser sharedRapportBrowser];
-  v3 = [v2 ultraWideBandState];
+  ultraWideBandState = [v2 ultraWideBandState];
 
-  return v3;
+  return ultraWideBandState;
 }
 
-- (void)updateWatchWristState:(int64_t)a3
+- (void)updateWatchWristState:(int64_t)state
 {
   watchWristState = self->_watchWristState;
-  self->_watchWristState = a3;
-  if (watchWristState != a3)
+  self->_watchWristState = state;
+  if (watchWristState != state)
   {
     v6 = daemon_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(SDStatusMonitor *)self stringForWatchWristState:a3];
+      v7 = [(SDStatusMonitor *)self stringForWatchWristState:state];
       v8 = 138412290;
       v9 = v7;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Watch wrist state changed: %@", &v8, 0xCu);
@@ -6497,24 +6497,24 @@ LABEL_11:
   }
 }
 
-- (id)stringForWatchWristState:(int64_t)a3
+- (id)stringForWatchWristState:(int64_t)state
 {
-  if (a3 > 3)
+  if (state > 3)
   {
     return @"Unexpected";
   }
 
   else
   {
-    return *(&off_1008D5188 + a3);
+    return *(&off_1008D5188 + state);
   }
 }
 
 - (void)handleWiFiPasswordSharingChanged
 {
-  v2 = [SFPasswordSharingAvailabilityNotification UTF8String];
+  uTF8String = [SFPasswordSharingAvailabilityNotification UTF8String];
 
-  notify_post(v2);
+  notify_post(uTF8String);
 }
 
 - (void)installWiFiPasswordSharingMonitor
@@ -6584,9 +6584,9 @@ LABEL_11:
   v3 = daemon_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SDStatusMonitor *)self wirelessEnabled];
+    wirelessEnabled = [(SDStatusMonitor *)self wirelessEnabled];
     v5 = "off";
-    if (v4)
+    if (wirelessEnabled)
     {
       v5 = "on";
     }
@@ -6599,11 +6599,11 @@ LABEL_11:
 
 - (BOOL)_isEveryoneModeExpired
 {
-  v2 = [(SDStatusMonitor *)self _everyoneModeExpiryDate];
-  if (v2)
+  _everyoneModeExpiryDate = [(SDStatusMonitor *)self _everyoneModeExpiryDate];
+  if (_everyoneModeExpiryDate)
   {
     v3 = +[NSDate now];
-    v4 = [v3 laterDate:v2];
+    v4 = [v3 laterDate:_everyoneModeExpiryDate];
     v5 = [v4 isEqualToDate:v3];
   }
 
@@ -6680,9 +6680,9 @@ LABEL_10:
   }
 }
 
-- (void)_expireEveryoneModeAndOnlySetDefault:(BOOL)a3
+- (void)_expireEveryoneModeAndOnlySetDefault:(BOOL)default
 {
-  v3 = a3;
+  defaultCopy = default;
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = kSFOperationDiscoverableModeKey;
   v7 = [v5 objectForKey:kSFOperationDiscoverableModeKey];
@@ -6703,7 +6703,7 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Everyone mode expired - setting to %@", &v13, 0xCu);
   }
 
-  if (v3)
+  if (defaultCopy)
   {
     pthread_mutex_lock(&stru_100972F48);
     v12 = +[NSUserDefaults standardUserDefaults];
@@ -6720,12 +6720,12 @@ LABEL_10:
   [(SDStatusMonitor *)self _cancelCheckForEveryoneModeExpiry];
 }
 
-- (void)_updateEveryoneModeExpiryDateOnChange:(id)a3
+- (void)_updateEveryoneModeExpiryDateOnChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (SFDeviceTimeLimitEveryoneMode())
   {
-    if ([v4 isEqual:kSFOperationDiscoverableModeEveryone])
+    if ([changeCopy isEqual:kSFOperationDiscoverableModeEveryone])
     {
       pthread_mutex_lock(&stru_100972F48);
       v5 = +[NSDate now];
@@ -6844,11 +6844,11 @@ LABEL_10:
 
 - (double)_currentEveryoneModeExpiryInterval
 {
-  v2 = [(SDStatusMonitor *)self _everyoneModeExpiryDate];
-  v3 = v2;
-  if (v2)
+  _everyoneModeExpiryDate = [(SDStatusMonitor *)self _everyoneModeExpiryDate];
+  v3 = _everyoneModeExpiryDate;
+  if (_everyoneModeExpiryDate)
   {
-    [v2 timeIntervalSinceNow];
+    [_everyoneModeExpiryDate timeIntervalSinceNow];
     if (v4 >= 0.0)
     {
       v5 = v4;

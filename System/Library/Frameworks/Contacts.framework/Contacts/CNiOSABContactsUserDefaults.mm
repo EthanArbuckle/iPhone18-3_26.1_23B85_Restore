@@ -2,7 +2,7 @@
 - (BOOL)isShortNameFormatEnabled;
 - (BOOL)shortNameFormatPrefersNicknames;
 - (CNiOSABContactsUserDefaults)init;
-- (CNiOSABContactsUserDefaults)initWithABWrapper:(id)a3;
+- (CNiOSABContactsUserDefaults)initWithABWrapper:(id)wrapper;
 - (id)countryCode;
 - (id)filteredGroupAndContainerIDs;
 - (int64_t)displayNameOrder;
@@ -10,18 +10,18 @@
 - (int64_t)newContactDisplayNameOrder;
 - (int64_t)shortNameFormat;
 - (int64_t)sortOrder;
-- (void)_registerObserverForKey:(id)a3;
-- (void)_unregisterObserverForKey:(id)a3;
-- (void)addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6;
+- (void)_registerObserverForKey:(id)key;
+- (void)_unregisterObserverForKey:(id)key;
+- (void)addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context;
 - (void)dealloc;
 - (void)flushCache;
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4;
-- (void)setDisplayNameOrder:(int64_t)a3;
-- (void)setFilteredGroupAndContainerIDs:(id)a3;
-- (void)setLastIgnoredNewDuplicatesCount:(int64_t)a3;
-- (void)setShortNameFormat:(int64_t)a3;
-- (void)setShortNameFormatEnabled:(BOOL)a3;
-- (void)setShortNameFormatPrefersNicknames:(BOOL)a3;
+- (void)removeObserver:(id)observer forKeyPath:(id)path;
+- (void)setDisplayNameOrder:(int64_t)order;
+- (void)setFilteredGroupAndContainerIDs:(id)ds;
+- (void)setLastIgnoredNewDuplicatesCount:(int64_t)count;
+- (void)setShortNameFormat:(int64_t)format;
+- (void)setShortNameFormatEnabled:(BOOL)enabled;
+- (void)setShortNameFormatPrefersNicknames:(BOOL)nicknames;
 @end
 
 @implementation CNiOSABContactsUserDefaults
@@ -65,10 +65,10 @@ id __59__CNiOSABContactsUserDefaults_filteredGroupAndContainerIDs__block_invoke(
 - (int64_t)sortOrder
 {
   v3 = [(NSCache *)self->_valueCache objectForKey:@"sortOrder"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   if (v3)
   {
-    v5 = v4;
+    v5 = integerValue;
   }
 
   else
@@ -103,10 +103,10 @@ uint64_t __40__CNiOSABContactsUserDefaults_sortOrder__block_invoke(uint64_t a1)
 - (int64_t)displayNameOrder
 {
   v3 = [(NSCache *)self->_valueCache objectForKey:@"displayNameOrder"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   if (v3)
   {
-    v5 = v4;
+    v5 = integerValue;
   }
 
   else
@@ -141,57 +141,57 @@ uint64_t __47__CNiOSABContactsUserDefaults_displayNameOrder__block_invoke(uint64
 - (BOOL)isShortNameFormatEnabled
 {
   v3 = [(NSCache *)self->_valueCache objectForKey:@"shortNameFormatEnabled"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   if (v3)
   {
-    v5 = v4;
+    aBPersonGetShortNameFormatEnabled = integerValue;
   }
 
   else
   {
-    v6 = [(CNiOSABContactsUserDefaults *)self abWrapper];
-    v5 = [v6 ABPersonGetShortNameFormatEnabled];
+    abWrapper = [(CNiOSABContactsUserDefaults *)self abWrapper];
+    aBPersonGetShortNameFormatEnabled = [abWrapper ABPersonGetShortNameFormatEnabled];
 
     valueCache = self->_valueCache;
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:aBPersonGetShortNameFormatEnabled];
     [(NSCache *)valueCache setObject:v8 forKey:@"shortNameFormatEnabled"];
   }
 
-  return v5 != 0;
+  return aBPersonGetShortNameFormatEnabled != 0;
 }
 
 - (BOOL)shortNameFormatPrefersNicknames
 {
   v3 = [(NSCache *)self->_valueCache objectForKey:@"shortNameFormatPrefersNicknames"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   if (v3)
   {
-    v5 = v4;
+    aBPersonGetShortNamePreferNicknames = integerValue;
   }
 
   else
   {
-    v6 = [(CNiOSABContactsUserDefaults *)self abWrapper];
-    v5 = [v6 ABPersonGetShortNamePreferNicknames];
+    abWrapper = [(CNiOSABContactsUserDefaults *)self abWrapper];
+    aBPersonGetShortNamePreferNicknames = [abWrapper ABPersonGetShortNamePreferNicknames];
 
     valueCache = self->_valueCache;
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:aBPersonGetShortNamePreferNicknames];
     [(NSCache *)valueCache setObject:v8 forKey:@"shortNameFormatPrefersNicknames"];
   }
 
-  return v5 != 0;
+  return aBPersonGetShortNamePreferNicknames != 0;
 }
 
-- (CNiOSABContactsUserDefaults)initWithABWrapper:(id)a3
+- (CNiOSABContactsUserDefaults)initWithABWrapper:(id)wrapper
 {
-  v5 = a3;
+  wrapperCopy = wrapper;
   v14.receiver = self;
   v14.super_class = CNiOSABContactsUserDefaults;
   v6 = [(CNContactsUserDefaults *)&v14 init];
   if (v6)
   {
     ABInitialize();
-    objc_storeStrong(&v6->_abWrapper, a3);
+    objc_storeStrong(&v6->_abWrapper, wrapper);
     v7 = objc_alloc_init(MEMORY[0x1E695DEE0]);
     valueCache = v6->_valueCache;
     v6->_valueCache = v7;
@@ -219,70 +219,70 @@ uint64_t __47__CNiOSABContactsUserDefaults_displayNameOrder__block_invoke(uint64
 
 - (void)flushCache
 {
-  v2 = [(CNiOSABContactsUserDefaults *)self valueCache];
-  [v2 removeAllObjects];
+  valueCache = [(CNiOSABContactsUserDefaults *)self valueCache];
+  [valueCache removeAllObjects];
 }
 
-- (void)_registerObserverForKey:(id)a3
+- (void)_registerObserverForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CNiOSABContactsUserDefaults *)self observerCountPerKey];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  observerCountPerKey = [(CNiOSABContactsUserDefaults *)self observerCountPerKey];
+  v6 = [observerCountPerKey objectForKeyedSubscript:keyCopy];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v6, "unsignedIntegerValue") + 1}];
 
-  v7 = [(CNiOSABContactsUserDefaults *)self observerCountPerKey];
-  [v7 setObject:v8 forKeyedSubscript:v4];
+  observerCountPerKey2 = [(CNiOSABContactsUserDefaults *)self observerCountPerKey];
+  [observerCountPerKey2 setObject:v8 forKeyedSubscript:keyCopy];
 }
 
-- (void)_unregisterObserverForKey:(id)a3
+- (void)_unregisterObserverForKey:(id)key
 {
-  v9 = a3;
-  v4 = [(CNiOSABContactsUserDefaults *)self observerCountPerKey];
-  v5 = [v4 objectForKeyedSubscript:v9];
+  keyCopy = key;
+  observerCountPerKey = [(CNiOSABContactsUserDefaults *)self observerCountPerKey];
+  v5 = [observerCountPerKey objectForKeyedSubscript:keyCopy];
 
-  v6 = [v5 unsignedIntegerValue];
-  if (v6 == 1)
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
+  if (unsignedIntegerValue == 1)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6 - 1];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue - 1];
   }
 
-  v8 = [(CNiOSABContactsUserDefaults *)self observerCountPerKey];
-  [v8 setObject:v7 forKeyedSubscript:v9];
+  observerCountPerKey2 = [(CNiOSABContactsUserDefaults *)self observerCountPerKey];
+  [observerCountPerKey2 setObject:v7 forKeyedSubscript:keyCopy];
 }
 
-- (void)addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6
+- (void)addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context
 {
-  v10 = a4;
-  v11 = a3;
-  [(CNiOSABContactsUserDefaults *)self _registerObserverForKey:v10];
+  pathCopy = path;
+  observerCopy = observer;
+  [(CNiOSABContactsUserDefaults *)self _registerObserverForKey:pathCopy];
   v12.receiver = self;
   v12.super_class = CNiOSABContactsUserDefaults;
-  [(CNiOSABContactsUserDefaults *)&v12 addObserver:v11 forKeyPath:v10 options:a5 context:a6];
+  [(CNiOSABContactsUserDefaults *)&v12 addObserver:observerCopy forKeyPath:pathCopy options:options context:context];
 }
 
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4
+- (void)removeObserver:(id)observer forKeyPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [(CNiOSABContactsUserDefaults *)self _unregisterObserverForKey:v6];
+  pathCopy = path;
+  observerCopy = observer;
+  [(CNiOSABContactsUserDefaults *)self _unregisterObserverForKey:pathCopy];
   v8.receiver = self;
   v8.super_class = CNiOSABContactsUserDefaults;
-  [(CNiOSABContactsUserDefaults *)&v8 removeObserver:v7 forKeyPath:v6];
+  [(CNiOSABContactsUserDefaults *)&v8 removeObserver:observerCopy forKeyPath:pathCopy];
 }
 
 - (int64_t)newContactDisplayNameOrder
 {
   v3 = [(NSCache *)self->_valueCache objectForKey:@"newContactDisplayNameOrder"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   if (v3)
   {
-    v5 = v4;
+    v5 = integerValue;
   }
 
   else
@@ -330,33 +330,33 @@ uint64_t __57__CNiOSABContactsUserDefaults_newContactDisplayNameOrder__block_inv
   }
 }
 
-- (void)setDisplayNameOrder:(int64_t)a3
+- (void)setDisplayNameOrder:(int64_t)order
 {
   [(NSCache *)self->_valueCache removeObjectForKey:@"displayNameOrder"];
   v5 = +[CNiOSABConstantsMapping CNToABCompositeNameFormatConstantsMapping];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:order];
   v7 = [v5 mappedConstant:v6];
-  v8 = [v7 unsignedIntValue];
+  unsignedIntValue = [v7 unsignedIntValue];
 
-  v9 = [(CNiOSABContactsUserDefaults *)self abWrapper];
-  [v9 ABPersonSetCompositeNameFormat:v8];
+  abWrapper = [(CNiOSABContactsUserDefaults *)self abWrapper];
+  [abWrapper ABPersonSetCompositeNameFormat:unsignedIntValue];
 }
 
-- (void)setShortNameFormat:(int64_t)a3
+- (void)setShortNameFormat:(int64_t)format
 {
   [(NSCache *)self->_valueCache removeObjectForKey:@"shortNameFormat"];
   v5 = +[CNiOSABConstantsMapping CNToABPersonShortNameFormatConstantsMapping];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:format];
   v11 = [v5 mappedConstant:v6];
 
-  v7 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
   v8 = v11;
-  if (v11 != v7)
+  if (v11 != null)
   {
-    v9 = [v11 unsignedIntValue];
-    v10 = [(CNiOSABContactsUserDefaults *)self abWrapper];
-    [v10 ABPersonSetShortNameFormat:v9];
+    unsignedIntValue = [v11 unsignedIntValue];
+    abWrapper = [(CNiOSABContactsUserDefaults *)self abWrapper];
+    [abWrapper ABPersonSetShortNameFormat:unsignedIntValue];
 
     v8 = v11;
   }
@@ -365,10 +365,10 @@ uint64_t __57__CNiOSABContactsUserDefaults_newContactDisplayNameOrder__block_inv
 - (int64_t)shortNameFormat
 {
   v3 = [(NSCache *)self->_valueCache objectForKey:@"shortNameFormat"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   if (v3)
   {
-    v5 = v4;
+    v5 = integerValue;
   }
 
   else
@@ -400,12 +400,12 @@ uint64_t __46__CNiOSABContactsUserDefaults_shortNameFormat__block_invoke(uint64_
   return v6;
 }
 
-- (void)setShortNameFormatEnabled:(BOOL)a3
+- (void)setShortNameFormatEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(NSCache *)self->_valueCache removeObjectForKey:@"shortNameFormatEnabled"];
-  v5 = [(CNiOSABContactsUserDefaults *)self abWrapper];
-  [v5 ABPersonSetShortNameFormatEnabled:v3];
+  abWrapper = [(CNiOSABContactsUserDefaults *)self abWrapper];
+  [abWrapper ABPersonSetShortNameFormatEnabled:enabledCopy];
 }
 
 uint64_t __55__CNiOSABContactsUserDefaults_isShortNameFormatEnabled__block_invoke(uint64_t a1)
@@ -416,12 +416,12 @@ uint64_t __55__CNiOSABContactsUserDefaults_isShortNameFormatEnabled__block_invok
   return v2;
 }
 
-- (void)setShortNameFormatPrefersNicknames:(BOOL)a3
+- (void)setShortNameFormatPrefersNicknames:(BOOL)nicknames
 {
-  v3 = a3;
+  nicknamesCopy = nicknames;
   [(NSCache *)self->_valueCache removeObjectForKey:@"shortNameFormatPrefersNicknames"];
-  v5 = [(CNiOSABContactsUserDefaults *)self abWrapper];
-  [v5 ABPersonSetShortNamePreferNicknames:v3];
+  abWrapper = [(CNiOSABContactsUserDefaults *)self abWrapper];
+  [abWrapper ABPersonSetShortNamePreferNicknames:nicknamesCopy];
 }
 
 uint64_t __62__CNiOSABContactsUserDefaults_shortNameFormatPrefersNicknames__block_invoke(uint64_t a1)
@@ -460,35 +460,35 @@ id __42__CNiOSABContactsUserDefaults_countryCode__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setFilteredGroupAndContainerIDs:(id)a3
+- (void)setFilteredGroupAndContainerIDs:(id)ds
 {
   valueCache = self->_valueCache;
-  v5 = a3;
+  dsCopy = ds;
   [(NSCache *)valueCache removeObjectForKey:@"filteredGroupAndContainerIDs"];
-  v6 = [(CNiOSABContactsUserDefaults *)self abWrapper];
-  [v6 setDisplayedContactsFilterRepresentationPref:v5];
+  abWrapper = [(CNiOSABContactsUserDefaults *)self abWrapper];
+  [abWrapper setDisplayedContactsFilterRepresentationPref:dsCopy];
 }
 
 - (int64_t)lastIgnoredNewDuplicatesCount
 {
   v3 = [(NSCache *)self->_valueCache objectForKey:@"lastIgnoredNewDuplicatesCount"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
   if (v3)
   {
-    v5 = v4;
+    lastIgnoredNewDuplicatesCount = integerValue;
   }
 
   else
   {
-    v6 = [(CNiOSABContactsUserDefaults *)self abWrapper];
-    v5 = [v6 lastIgnoredNewDuplicatesCount];
+    abWrapper = [(CNiOSABContactsUserDefaults *)self abWrapper];
+    lastIgnoredNewDuplicatesCount = [abWrapper lastIgnoredNewDuplicatesCount];
 
     valueCache = self->_valueCache;
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:lastIgnoredNewDuplicatesCount];
     [(NSCache *)valueCache setObject:v8 forKey:@"lastIgnoredNewDuplicatesCount"];
   }
 
-  return v5;
+  return lastIgnoredNewDuplicatesCount;
 }
 
 uint64_t __60__CNiOSABContactsUserDefaults_lastIgnoredNewDuplicatesCount__block_invoke(uint64_t a1)
@@ -499,11 +499,11 @@ uint64_t __60__CNiOSABContactsUserDefaults_lastIgnoredNewDuplicatesCount__block_
   return v2;
 }
 
-- (void)setLastIgnoredNewDuplicatesCount:(int64_t)a3
+- (void)setLastIgnoredNewDuplicatesCount:(int64_t)count
 {
   [(NSCache *)self->_valueCache removeObjectForKey:@"lastIgnoredNewDuplicatesCount"];
-  v5 = [(CNiOSABContactsUserDefaults *)self abWrapper];
-  [v5 setLastIgnoredNewDuplicatesCount:a3];
+  abWrapper = [(CNiOSABContactsUserDefaults *)self abWrapper];
+  [abWrapper setLastIgnoredNewDuplicatesCount:count];
 }
 
 @end

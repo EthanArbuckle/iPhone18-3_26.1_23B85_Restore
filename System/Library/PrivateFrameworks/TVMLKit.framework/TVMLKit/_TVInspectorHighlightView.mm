@@ -1,20 +1,20 @@
 @interface _TVInspectorHighlightView
 - (UIWindow)targetWindow;
-- (_TVInspectorHighlightView)initWithFrame:(CGRect)a3;
-- (void)highlightView:(id)a3;
+- (_TVInspectorHighlightView)initWithFrame:(CGRect)frame;
+- (void)highlightView:(id)view;
 - (void)layoutSubviews;
-- (void)setBorderColor:(id)a3;
+- (void)setBorderColor:(id)color;
 @end
 
 @implementation _TVInspectorHighlightView
 
-- (_TVInspectorHighlightView)initWithFrame:(CGRect)a3
+- (_TVInspectorHighlightView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v21.receiver = self;
   v21.super_class = _TVInspectorHighlightView;
-  v5 = [(_TVInspectorHighlightView *)&v21 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(_TVInspectorHighlightView *)&v21 initWithFrame:frame.origin.x, frame.origin.y];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277D75D18]);
@@ -24,13 +24,13 @@
 
     [(UIView *)v5->_highlightView setAlpha:0.5];
     v9 = v5->_highlightView;
-    v10 = [MEMORY[0x277D75348] greenColor];
-    [(UIView *)v9 setBackgroundColor:v10];
+    greenColor = [MEMORY[0x277D75348] greenColor];
+    [(UIView *)v9 setBackgroundColor:greenColor];
 
     [(_TVInspectorHighlightView *)v5 addSubview:v5->_highlightView];
     [(_TVInspectorHighlightView *)v5 setUserInteractionEnabled:0];
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [(_TVInspectorHighlightView *)v5 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(_TVInspectorHighlightView *)v5 setBackgroundColor:clearColor];
 
     [(_TVInspectorHighlightView *)v5 setOpaque:0];
     [(_TVInspectorHighlightView *)v5 setAlpha:1.0];
@@ -43,12 +43,12 @@
     v16 = [MEMORY[0x277D75348] colorWithRed:1.0 green:0.980392157 blue:0.803921569 alpha:1.0];
     [(_TVInspectorHighlightMetadataView *)v15 setBackgroundColor:v16];
 
-    v17 = [(_TVInspectorHighlightMetadataView *)v5->_metadataView layer];
-    v18 = [MEMORY[0x277D75348] blackColor];
-    [v17 setBorderColor:{objc_msgSend(v18, "CGColor")}];
+    layer = [(_TVInspectorHighlightMetadataView *)v5->_metadataView layer];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [layer setBorderColor:{objc_msgSend(blackColor, "CGColor")}];
 
-    v19 = [(_TVInspectorHighlightMetadataView *)v5->_metadataView layer];
-    [v19 setBorderWidth:1.0];
+    layer2 = [(_TVInspectorHighlightMetadataView *)v5->_metadataView layer];
+    [layer2 setBorderWidth:1.0];
 
     [(_TVInspectorHighlightView *)v5 addSubview:v5->_metadataView];
   }
@@ -56,47 +56,47 @@
   return v5;
 }
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
-  v5 = a3;
-  if (self->_borderColor != v5)
+  colorCopy = color;
+  if (self->_borderColor != colorCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_borderColor, a3);
-    v6 = [(UIView *)self->_highlightView layer];
-    [v6 setBorderColor:{-[UIColor CGColor](self->_borderColor, "CGColor")}];
+    v8 = colorCopy;
+    objc_storeStrong(&self->_borderColor, color);
+    layer = [(UIView *)self->_highlightView layer];
+    [layer setBorderColor:{-[UIColor CGColor](self->_borderColor, "CGColor")}];
 
-    v7 = [(UIView *)self->_highlightView layer];
-    [v7 setBorderWidth:1.0];
+    layer2 = [(UIView *)self->_highlightView layer];
+    [layer2 setBorderWidth:1.0];
 
-    v5 = v8;
+    colorCopy = v8;
   }
 }
 
-- (void)highlightView:(id)a3
+- (void)highlightView:(id)view
 {
-  v18 = a3;
+  viewCopy = view;
   [(_TVInspectorHighlightView *)self removeFromSuperview];
-  v4 = v18;
-  if (v18)
+  v4 = viewCopy;
+  if (viewCopy)
   {
-    v5 = [(_TVInspectorHighlightView *)self window];
-    v6 = v5;
-    if (v5)
+    window = [(_TVInspectorHighlightView *)self window];
+    v6 = window;
+    if (window)
     {
-      v7 = v5;
+      window2 = window;
     }
 
     else
     {
-      v7 = [v18 window];
+      window2 = [viewCopy window];
     }
 
-    v8 = v7;
+    v8 = window2;
 
-    v9 = [v18 superview];
-    [v18 frame];
-    [v9 convertRect:v8 toView:?];
+    superview = [viewCopy superview];
+    [viewCopy frame];
+    [superview convertRect:v8 toView:?];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -107,7 +107,7 @@
     [(_TVInspectorHighlightView *)self setFrame:v11, v13, v15, v17];
     [(_TVInspectorHighlightView *)self setNeedsLayout];
 
-    v4 = v18;
+    v4 = viewCopy;
   }
 }
 
@@ -131,21 +131,21 @@
   [v13 addAttribute:v14 value:v15 range:{0, objc_msgSend(v12, "length")}];
 
   v16 = *MEMORY[0x277D740C0];
-  v17 = [MEMORY[0x277D75348] lightGrayColor];
-  [v13 addAttribute:v16 value:v17 range:{0, objc_msgSend(v12, "length")}];
+  lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+  [v13 addAttribute:v16 value:lightGrayColor range:{0, objc_msgSend(v12, "length")}];
 
-  v18 = [MEMORY[0x277D75348] blackColor];
+  blackColor = [MEMORY[0x277D75348] blackColor];
   v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%g ", *&v8];
   v20 = [v12 rangeOfString:v19];
-  [v13 addAttribute:v16 value:v18 range:{v20, v21}];
+  [v13 addAttribute:v16 value:blackColor range:{v20, v21}];
 
-  v22 = [MEMORY[0x277D75348] blackColor];
+  blackColor2 = [MEMORY[0x277D75348] blackColor];
   v23 = [MEMORY[0x277CCACA8] stringWithFormat:@" %g", *&v10];
   v24 = [v12 rangeOfString:v23];
-  [v13 addAttribute:v16 value:v22 range:{v24, v25}];
+  [v13 addAttribute:v16 value:blackColor2 range:{v24, v25}];
 
-  v26 = [(_TVInspectorHighlightMetadataView *)self->_metadataView frameLabel];
-  [v26 setAttributedText:v13];
+  frameLabel = [(_TVInspectorHighlightMetadataView *)self->_metadataView frameLabel];
+  [frameLabel setAttributedText:v13];
 
   v82 = 20.0;
   [(_TVInspectorHighlightMetadataView *)self->_metadataView sizeThatFits:1.79769313e308];
@@ -155,17 +155,17 @@
   v88.size.width = v8;
   v88.size.height = v10;
   v29 = CGRectGetHeight(v88) + 5.0;
-  v30 = [(_TVInspectorHighlightView *)self superview];
-  [v30 bounds];
+  superview = [(_TVInspectorHighlightView *)self superview];
+  [superview bounds];
   v32 = v31;
   v34 = v33;
   v36 = v35;
   v38 = v37;
 
-  v39 = [(_TVInspectorHighlightView *)self superview];
+  superview2 = [(_TVInspectorHighlightView *)self superview];
   v83 = v29;
   v84 = v28;
-  [(_TVInspectorHighlightView *)self convertRect:v39 toView:0.0, v29, v28, 20.0];
+  [(_TVInspectorHighlightView *)self convertRect:superview2 toView:0.0, v29, v28, 20.0];
   v41 = v40;
   v43 = v42;
   v45 = v44;
@@ -222,8 +222,8 @@
       v94.size.width = v78;
       v94.size.height = v47;
       v41 = v58 - CGRectGetWidth(v94);
-      v59 = [(_TVInspectorHighlightView *)self superview];
-      [v59 convertRect:self toView:{v41, rect, v78, v47}];
+      superview3 = [(_TVInspectorHighlightView *)self superview];
+      [superview3 convertRect:self toView:{v41, rect, v78, v47}];
       v55 = v60;
       v83 = v61;
       v84 = v62;
@@ -283,8 +283,8 @@
       v101.size.width = v56;
       v101.size.height = v47;
       v72 = Height - CGRectGetHeight(v101) + -5.0;
-      v73 = [(_TVInspectorHighlightView *)self superview];
-      [v73 convertRect:self toView:{v79, v72, v56, v47}];
+      superview4 = [(_TVInspectorHighlightView *)self superview];
+      [superview4 convertRect:self toView:{v79, v72, v56, v47}];
       v68 = v74;
       v70 = v75;
       v67 = v76;

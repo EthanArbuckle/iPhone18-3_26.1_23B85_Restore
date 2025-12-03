@@ -1,25 +1,25 @@
 @interface CDPDDeviceSecretValidator
-- (BOOL)_isFailedSecret:(id)a3 forDevice:(id)a4;
-- (BOOL)_isInvalidICSCError:(id)a3;
+- (BOOL)_isFailedSecret:(id)secret forDevice:(id)device;
+- (BOOL)_isInvalidICSCError:(id)error;
 - (CDPDDeviceSecretValidator)init;
-- (CDPDDeviceSecretValidator)initWithContext:(id)a3 delegate:(id)a4;
+- (CDPDDeviceSecretValidator)initWithContext:(id)context delegate:(id)delegate;
 - (CDPDDeviceSecretValidatorDelegate)delegate;
-- (id)_failedSecretsForDevice:(id)a3;
+- (id)_failedSecretsForDevice:(id)device;
 - (id)_failedSingleICSCs;
-- (id)_handleMultiCSCRecoveryFailureForDevice:(id)a3 recoveryError:(id)a4 secret:(id)a5;
-- (void)_attemptToRecoverDevice:(id)a3 withSecret:(id)a4 completion:(id)a5;
-- (void)_attemptToRecoverWithRecoveryKey:(id)a3 completion:(id)a4;
-- (void)_handleDelegateValidationError:(id)a3;
-- (void)_handleMultiCSCRecoveryResults:(id)a3 clique:(id)a4 type:(unint64_t)a5 secret:(id)a6 device:(id)a7 completion:(id)a8;
-- (void)_handleRecoveryFailureForFinalDevice:(id)a3 completion:(id)a4;
-- (void)_performSingleiCSCRecoveryWithSecret:(id)a3 type:(unint64_t)a4 completion:(id)a5;
-- (void)approveFromAnotherDeviceWithCompletion:(id)a3;
-- (void)attemptToJoinCircleWithPiggybacking:(id)a3 withCompletion:(id)a4;
-- (void)cancelValidationWithError:(id)a3;
-- (void)supportedEscapeOfferMaskCompletion:(id)a3;
-- (void)validateCustodianRecoveryInfo:(id)a3 withCompletion:(id)a4;
-- (void)validateRecoveryKey:(id)a3 withCompletion:(id)a4;
-- (void)validateSecret:(id)a3 devices:(id)a4 type:(unint64_t)a5 withCompletion:(id)a6;
+- (id)_handleMultiCSCRecoveryFailureForDevice:(id)device recoveryError:(id)error secret:(id)secret;
+- (void)_attemptToRecoverDevice:(id)device withSecret:(id)secret completion:(id)completion;
+- (void)_attemptToRecoverWithRecoveryKey:(id)key completion:(id)completion;
+- (void)_handleDelegateValidationError:(id)error;
+- (void)_handleMultiCSCRecoveryResults:(id)results clique:(id)clique type:(unint64_t)type secret:(id)secret device:(id)device completion:(id)completion;
+- (void)_handleRecoveryFailureForFinalDevice:(id)device completion:(id)completion;
+- (void)_performSingleiCSCRecoveryWithSecret:(id)secret type:(unint64_t)type completion:(id)completion;
+- (void)approveFromAnotherDeviceWithCompletion:(id)completion;
+- (void)attemptToJoinCircleWithPiggybacking:(id)piggybacking withCompletion:(id)completion;
+- (void)cancelValidationWithError:(id)error;
+- (void)supportedEscapeOfferMaskCompletion:(id)completion;
+- (void)validateCustodianRecoveryInfo:(id)info withCompletion:(id)completion;
+- (void)validateRecoveryKey:(id)key withCompletion:(id)completion;
+- (void)validateSecret:(id)secret devices:(id)devices type:(unint64_t)type withCompletion:(id)completion;
 @end
 
 @implementation CDPDDeviceSecretValidator
@@ -31,13 +31,13 @@
   v2 = [(CDPDDeviceSecretValidator *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     failedSecrets = v2->_failedSecrets;
-    v2->_failedSecrets = v3;
+    v2->_failedSecrets = dictionary;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     recoveryErrors = v2->_recoveryErrors;
-    v2->_recoveryErrors = v5;
+    v2->_recoveryErrors = dictionary2;
 
     v7 = [MEMORY[0x277CBEB58] set];
     failedRecoveryKeys = v2->_failedRecoveryKeys;
@@ -47,27 +47,27 @@
   return v2;
 }
 
-- (CDPDDeviceSecretValidator)initWithContext:(id)a3 delegate:(id)a4
+- (CDPDDeviceSecretValidator)initWithContext:(id)context delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  delegateCopy = delegate;
   v9 = [(CDPDDeviceSecretValidator *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;
 }
 
-- (void)_attemptToRecoverDevice:(id)a3 withSecret:(id)a4 completion:(id)a5
+- (void)_attemptToRecoverDevice:(id)device withSecret:(id)secret completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(CDPDDeviceSecretValidator *)self _isFailedSecret:v9 forDevice:v8])
+  deviceCopy = device;
+  secretCopy = secret;
+  completionCopy = completion;
+  if ([(CDPDDeviceSecretValidator *)self _isFailedSecret:secretCopy forDevice:deviceCopy])
   {
     v11 = _CDPLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -76,14 +76,14 @@
     }
 
     v12 = _CDPStateError();
-    v10[2](v10, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 
   else
   {
     v12 = objc_alloc_init(CDPDSecureBackupContext);
-    [(CDPDSecureBackupContext *)v12 setDevice:v8];
-    [(CDPDSecureBackupContext *)v12 setRecoverySecret:v9];
+    [(CDPDSecureBackupContext *)v12 setDevice:deviceCopy];
+    [(CDPDSecureBackupContext *)v12 setRecoverySecret:secretCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v14 = objc_opt_respondsToSelector();
 
@@ -99,7 +99,7 @@
     v17[2] = __75__CDPDDeviceSecretValidator__attemptToRecoverDevice_withSecret_completion___block_invoke;
     v17[3] = &unk_278E24EA8;
     v17[4] = self;
-    v18 = v10;
+    v18 = completionCopy;
     [v16 secretValidator:self recoverSecureBackupWithContext:v12 completion:v17];
   }
 }
@@ -144,11 +144,11 @@ void __75__CDPDDeviceSecretValidator__attemptToRecoverDevice_withSecret_completi
   }
 }
 
-- (void)_attemptToRecoverWithRecoveryKey:(id)a3 completion:(id)a4
+- (void)_attemptToRecoverWithRecoveryKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(NSMutableSet *)self->_failedRecoveryKeys containsObject:v6])
+  keyCopy = key;
+  completionCopy = completion;
+  if ([(NSMutableSet *)self->_failedRecoveryKeys containsObject:keyCopy])
   {
     v8 = _CDPLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -157,13 +157,13 @@ void __75__CDPDDeviceSecretValidator__attemptToRecoverDevice_withSecret_completi
     }
 
     v9 = _CDPStateError();
-    v7[2](v7, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
   }
 
   else
   {
     v9 = objc_alloc_init(CDPDSecureBackupContext);
-    [(CDPDSecureBackupContext *)v9 setRecoveryKey:v6];
+    [(CDPDSecureBackupContext *)v9 setRecoveryKey:keyCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v11 = objc_opt_respondsToSelector();
 
@@ -179,7 +179,7 @@ void __75__CDPDDeviceSecretValidator__attemptToRecoverDevice_withSecret_completi
     v14[2] = __73__CDPDDeviceSecretValidator__attemptToRecoverWithRecoveryKey_completion___block_invoke;
     v14[3] = &unk_278E24EA8;
     v14[4] = self;
-    v15 = v7;
+    v15 = completionCopy;
     [v13 secretValidator:self recoverSecureBackupWithContext:v9 completion:v14];
   }
 }
@@ -224,19 +224,19 @@ void __73__CDPDDeviceSecretValidator__attemptToRecoverWithRecoveryKey_completion
   }
 }
 
-- (void)validateRecoveryKey:(id)a3 withCompletion:(id)a4
+- (void)validateRecoveryKey:(id)key withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  keyCopy = key;
+  completionCopy = completion;
+  if (keyCopy)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __64__CDPDDeviceSecretValidator_validateRecoveryKey_withCompletion___block_invoke;
     v10[3] = &unk_278E25620;
     v10[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = keyCopy;
+    v12 = completionCopy;
     [(CDPDDeviceSecretValidator *)self _attemptToRecoverWithRecoveryKey:v11 completion:v10];
   }
 
@@ -249,7 +249,7 @@ void __73__CDPDDeviceSecretValidator__attemptToRecoverWithRecoveryKey_completion
     }
 
     v9 = _CDPStateError();
-    (*(v7 + 2))(v7, 0, 1, v9);
+    (*(completionCopy + 2))(completionCopy, 0, 1, v9);
   }
 }
 
@@ -274,11 +274,11 @@ void __64__CDPDDeviceSecretValidator_validateRecoveryKey_withCompletion___block_
   }
 }
 
-- (void)validateSecret:(id)a3 devices:(id)a4 type:(unint64_t)a5 withCompletion:(id)a6
+- (void)validateSecret:(id)secret devices:(id)devices type:(unint64_t)type withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  secretCopy = secret;
+  devicesCopy = devices;
+  completionCopy = completion;
   if ([(CDPDDeviceSecretValidator *)self isUsingMultipleICSC])
   {
     v13 = _CDPLogSystem();
@@ -288,10 +288,10 @@ void __64__CDPDDeviceSecretValidator_validateRecoveryKey_withCompletion___block_
     }
 
     self->_isAttemptingRecovery = 1;
-    v14 = [v11 mutableCopy];
-    v15 = [v14 firstObject];
+    v14 = [devicesCopy mutableCopy];
+    firstObject = [v14 firstObject];
     currentDevice = self->_currentDevice;
-    self->_currentDevice = v15;
+    self->_currentDevice = firstObject;
 
     v17 = self->_currentDevice;
     v19[0] = MEMORY[0x277D85DD0];
@@ -299,10 +299,10 @@ void __64__CDPDDeviceSecretValidator_validateRecoveryKey_withCompletion___block_
     v19[2] = __72__CDPDDeviceSecretValidator_validateSecret_devices_type_withCompletion___block_invoke;
     v19[3] = &unk_278E25648;
     v19[4] = self;
-    v24 = a5;
-    v20 = v10;
-    v23 = v12;
-    v21 = v11;
+    typeCopy = type;
+    v20 = secretCopy;
+    v23 = completionCopy;
+    v21 = devicesCopy;
     v22 = v14;
     v18 = v14;
     [(CDPDDeviceSecretValidator *)self _attemptToRecoverDevice:v17 withSecret:v20 completion:v19];
@@ -311,7 +311,7 @@ void __64__CDPDDeviceSecretValidator_validateRecoveryKey_withCompletion___block_
   else
   {
     self->_isAttemptingRecovery = 1;
-    [(CDPDDeviceSecretValidator *)self _performSingleiCSCRecoveryWithSecret:v10 type:a5 completion:v12];
+    [(CDPDDeviceSecretValidator *)self _performSingleiCSCRecoveryWithSecret:secretCopy type:type completion:completionCopy];
   }
 }
 
@@ -384,10 +384,10 @@ LABEL_18:
   [v4 _handleMultiCSCRecoveryResults:a2 clique:0 type:v15 secret:v5 device:v14 completion:v16];
 }
 
-- (void)_handleRecoveryFailureForFinalDevice:(id)a3 completion:(id)a4
+- (void)_handleRecoveryFailureForFinalDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -418,7 +418,7 @@ LABEL_18:
       v31[2] = __77__CDPDDeviceSecretValidator__handleRecoveryFailureForFinalDevice_completion___block_invoke;
       v31[3] = &unk_278E255A0;
       v31[4] = self;
-      v32 = v7;
+      v32 = completionCopy;
       [v14 secretValidator:self didFailRecoveryWithErrors:v15 completion:v31];
 
       v16 = v32;
@@ -477,8 +477,8 @@ LABEL_18:
       v29[2] = __77__CDPDDeviceSecretValidator__handleRecoveryFailureForFinalDevice_completion___block_invoke_36;
       v29[3] = &unk_278E255A0;
       v29[4] = self;
-      v30 = v7;
-      [v25 secretValidator:self didFailRecovery:v6 withError:v16 completion:v29];
+      v30 = completionCopy;
+      [v25 secretValidator:self didFailRecovery:deviceCopy withError:v16 completion:v29];
 
       v26 = v30;
     }
@@ -562,9 +562,9 @@ void __77__CDPDDeviceSecretValidator__handleRecoveryFailureForFinalDevice_comple
   *(*(a1 + 32) + 56) = 0;
 }
 
-- (void)cancelValidationWithError:(id)a3
+- (void)cancelValidationWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -572,7 +572,7 @@ void __77__CDPDDeviceSecretValidator__handleRecoveryFailureForFinalDevice_comple
     _os_log_impl(&dword_24510B000, v5, OS_LOG_TYPE_DEFAULT, "cancelValidationWithError was called", buf, 2u);
   }
 
-  if ([v4 isLoginHardLimit])
+  if ([errorCopy isLoginHardLimit])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v7 = objc_opt_respondsToSelector();
@@ -586,26 +586,26 @@ void __77__CDPDDeviceSecretValidator__handleRecoveryFailureForFinalDevice_comple
       v13[2] = __55__CDPDDeviceSecretValidator_cancelValidationWithError___block_invoke;
       v13[3] = &unk_278E24BB0;
       v13[4] = self;
-      [v8 secretValidator:self didFailRecovery:currentDevice withError:v4 completion:v13];
+      [v8 secretValidator:self didFailRecovery:currentDevice withError:errorCopy completion:v13];
 LABEL_10:
 
       goto LABEL_11;
     }
   }
 
-  v10 = [(CDPDDeviceSecretValidator *)self validSecretHandler];
+  validSecretHandler = [(CDPDDeviceSecretValidator *)self validSecretHandler];
 
-  if (v10)
+  if (validSecretHandler)
   {
     v11 = objc_alloc_init(CDPDRemoteSecretValidationResult);
     v8 = v11;
-    if (v4)
+    if (errorCopy)
     {
       [(CDPDRemoteSecretValidationResult *)v11 setUserDidCancel:1];
     }
 
-    v12 = [(CDPDDeviceSecretValidator *)self validSecretHandler];
-    (v12)[2](v12, v8, v4);
+    validSecretHandler2 = [(CDPDDeviceSecretValidator *)self validSecretHandler];
+    (validSecretHandler2)[2](validSecretHandler2, v8, errorCopy);
 
     goto LABEL_10;
   }
@@ -613,45 +613,45 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)_handleDelegateValidationError:(id)a3
+- (void)_handleDelegateValidationError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:*MEMORY[0x277CFD418]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:*MEMORY[0x277CFD418]];
 
   if (!v6)
   {
 LABEL_6:
-    v8 = [(CDPDDeviceSecretValidator *)self validSecretHandler];
+    validSecretHandler = [(CDPDDeviceSecretValidator *)self validSecretHandler];
 
-    if (!v8)
+    if (!validSecretHandler)
     {
       goto LABEL_9;
     }
 
-    v9 = [(CDPDDeviceSecretValidator *)self validSecretHandler];
-    (*(v9 + 16))(v9, 0, v4);
+    validSecretHandler2 = [(CDPDDeviceSecretValidator *)self validSecretHandler];
+    (*(validSecretHandler2 + 16))(validSecretHandler2, 0, errorCopy);
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v7 = [v4 code];
-  if (v7 == -5210)
+  code = [errorCopy code];
+  if (code == -5210)
   {
-    v9 = _CDPLogSystem();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    validSecretHandler2 = _CDPLogSystem();
+    if (os_log_type_enabled(validSecretHandler2, OS_LOG_TYPE_DEFAULT))
     {
       *v13 = 0;
-      _os_log_impl(&dword_24510B000, v9, OS_LOG_TYPE_DEFAULT, "Event handled, skipping call to valid secret handler", v13, 2u);
+      _os_log_impl(&dword_24510B000, validSecretHandler2, OS_LOG_TYPE_DEFAULT, "Event handled, skipping call to valid secret handler", v13, 2u);
     }
 
     goto LABEL_8;
   }
 
-  if (v7 != -5208)
+  if (code != -5208)
   {
-    if (v7 == -5209)
+    if (code == -5209)
     {
       [(CDPDDeviceSecretValidator *)self approveFromAnotherDeviceWithCompletion:0];
       goto LABEL_9;
@@ -662,31 +662,31 @@ LABEL_8:
 
   v10 = objc_alloc_init(CDPDRemoteSecretValidationResult);
   [(CDPDRemoteSecretValidationResult *)v10 setUserDidReset:1];
-  v11 = [(CDPDDeviceSecretValidator *)self validSecretHandler];
+  validSecretHandler3 = [(CDPDDeviceSecretValidator *)self validSecretHandler];
 
-  if (v11)
+  if (validSecretHandler3)
   {
-    v12 = [(CDPDDeviceSecretValidator *)self validSecretHandler];
-    (v12)[2](v12, v10, v4);
+    validSecretHandler4 = [(CDPDDeviceSecretValidator *)self validSecretHandler];
+    (validSecretHandler4)[2](validSecretHandler4, v10, errorCopy);
   }
 
 LABEL_9:
 }
 
-- (id)_handleMultiCSCRecoveryFailureForDevice:(id)a3 recoveryError:(id)a4 secret:(id)a5
+- (id)_handleMultiCSCRecoveryFailureForDevice:(id)device recoveryError:(id)error secret:(id)secret
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
+  deviceCopy = device;
+  errorCopy = error;
+  secretCopy = secret;
+  v11 = errorCopy;
   if ([(CDPDDeviceSecretValidator *)self _isInvalidICSCError:v11])
   {
-    [v8 setRemainingAttempts:{objc_msgSend(v8, "remainingAttempts") - 1}];
-    v12 = [(CDPDDeviceSecretValidator *)self _failedSecretsForDevice:v8];
-    [v12 addObject:v10];
-    v13 = [v11 domain];
-    v14 = [v13 isEqualToString:*MEMORY[0x277CFD418]];
+    [deviceCopy setRemainingAttempts:{objc_msgSend(deviceCopy, "remainingAttempts") - 1}];
+    v12 = [(CDPDDeviceSecretValidator *)self _failedSecretsForDevice:deviceCopy];
+    [v12 addObject:secretCopy];
+    domain = [v11 domain];
+    v14 = [domain isEqualToString:*MEMORY[0x277CFD418]];
 
     v15 = v11;
     if ((v14 & 1) == 0)
@@ -700,27 +700,27 @@ LABEL_9:
 
   else if ([v11 code] == 14 || (v15 = v11, objc_msgSend(v11, "code") == 14))
   {
-    [v8 setRemainingAttempts:0];
+    [deviceCopy setRemainingAttempts:0];
     v15 = v11;
   }
 
-  [(NSMutableDictionary *)self->_recoveryErrors setObject:v15 forKey:v8];
+  [(NSMutableDictionary *)self->_recoveryErrors setObject:v15 forKey:deviceCopy];
 
   v17 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-- (id)_failedSecretsForDevice:(id)a3
+- (id)_failedSecretsForDevice:(id)device
 {
-  v4 = [a3 recordID];
-  if (v4)
+  recordID = [device recordID];
+  if (recordID)
   {
-    v5 = [(NSMutableDictionary *)self->_failedSecrets objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_failedSecrets objectForKey:recordID];
     if (!v5)
     {
       v5 = [MEMORY[0x277CBEB58] set];
-      [(NSMutableDictionary *)self->_failedSecrets setObject:v5 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_failedSecrets setObject:v5 forKeyedSubscript:recordID];
     }
   }
 
@@ -747,70 +747,70 @@ LABEL_9:
   return failedSingleICSCs;
 }
 
-- (BOOL)_isFailedSecret:(id)a3 forDevice:(id)a4
+- (BOOL)_isFailedSecret:(id)secret forDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 recordID];
+  secretCopy = secret;
+  deviceCopy = device;
+  recordID = [deviceCopy recordID];
 
-  if (v8)
+  if (recordID)
   {
     failedSecrets = self->_failedSecrets;
-    v10 = [v7 recordID];
-    v11 = [(NSMutableDictionary *)failedSecrets objectForKeyedSubscript:v10];
-    v12 = [v11 containsObject:v6];
+    recordID2 = [deviceCopy recordID];
+    v11 = [(NSMutableDictionary *)failedSecrets objectForKeyedSubscript:recordID2];
+    v12 = [v11 containsObject:secretCopy];
   }
 
   else
   {
-    v12 = [(NSMutableSet *)self->_failedSingleICSCs containsObject:v6];
+    v12 = [(NSMutableSet *)self->_failedSingleICSCs containsObject:secretCopy];
   }
 
   return v12;
 }
 
-- (void)_handleMultiCSCRecoveryResults:(id)a3 clique:(id)a4 type:(unint64_t)a5 secret:(id)a6 device:(id)a7 completion:(id)a8
+- (void)_handleMultiCSCRecoveryResults:(id)results clique:(id)clique type:(unint64_t)type secret:(id)secret device:(id)device completion:(id)completion
 {
-  v19 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = a8;
+  resultsCopy = results;
+  secretCopy = secret;
+  deviceCopy = device;
+  completionCopy = completion;
   [(NSMutableDictionary *)self->_recoveryErrors removeAllObjects];
-  if (v15)
+  if (completionCopy)
   {
-    (*(v15 + 2))(v15, 1, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0, 0);
   }
 
   if (self->_validSecretHandler)
   {
     v16 = objc_alloc_init(CDPDRemoteSecretValidationResult);
-    [(CDPDRemoteSecretValidationResult *)v16 setDevice:v14];
-    [(CDPDRemoteSecretValidationResult *)v16 setValidSecret:v13];
-    [(CDPDRemoteSecretValidationResult *)v16 setSecretType:a5];
-    v17 = [v19 recoveredInfo];
-    [(CDPDRemoteSecretValidationResult *)v16 setRecoveredInfo:v17];
+    [(CDPDRemoteSecretValidationResult *)v16 setDevice:deviceCopy];
+    [(CDPDRemoteSecretValidationResult *)v16 setValidSecret:secretCopy];
+    [(CDPDRemoteSecretValidationResult *)v16 setSecretType:type];
+    recoveredInfo = [resultsCopy recoveredInfo];
+    [(CDPDRemoteSecretValidationResult *)v16 setRecoveredInfo:recoveredInfo];
 
-    v18 = [v19 recoveredClique];
-    [(CDPDRemoteSecretValidationResult *)v16 setRecoveredClique:v18];
+    recoveredClique = [resultsCopy recoveredClique];
+    [(CDPDRemoteSecretValidationResult *)v16 setRecoveredClique:recoveredClique];
 
     (*(self->_validSecretHandler + 2))();
   }
 }
 
-- (void)_performSingleiCSCRecoveryWithSecret:(id)a3 type:(unint64_t)a4 completion:(id)a5
+- (void)_performSingleiCSCRecoveryWithSecret:(id)secret type:(unint64_t)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  secretCopy = secret;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __82__CDPDDeviceSecretValidator__performSingleiCSCRecoveryWithSecret_type_completion___block_invoke;
   v12[3] = &unk_278E25670;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a4;
-  v10 = v8;
-  v11 = v9;
+  v13 = secretCopy;
+  v14 = completionCopy;
+  typeCopy = type;
+  v10 = secretCopy;
+  v11 = completionCopy;
   [(CDPDDeviceSecretValidator *)self _attemptToRecoverDevice:0 withSecret:v10 completion:v12];
 }
 
@@ -909,46 +909,46 @@ LABEL_24:
   }
 }
 
-- (void)supportedEscapeOfferMaskCompletion:(id)a3
+- (void)supportedEscapeOfferMaskCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v5 = a3;
-    (*(a3 + 2))(v5, [(CDPDDeviceSecretValidator *)self supportedEscapeOfferMask]);
+    completionCopy = completion;
+    (*(completion + 2))(completionCopy, [(CDPDDeviceSecretValidator *)self supportedEscapeOfferMask]);
   }
 }
 
-- (void)approveFromAnotherDeviceWithCompletion:(id)a3
+- (void)approveFromAnotherDeviceWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 0, 0);
+    (*(completion + 2))(completion, 0, 0);
   }
 }
 
-- (void)validateCustodianRecoveryInfo:(id)a3 withCompletion:(id)a4
+- (void)validateCustodianRecoveryInfo:(id)info withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0, 0);
+    (*(completion + 2))(completion, 0, 0);
   }
 }
 
-- (void)attemptToJoinCircleWithPiggybacking:(id)a3 withCompletion:(id)a4
+- (void)attemptToJoinCircleWithPiggybacking:(id)piggybacking withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0, 0);
+    (*(completion + 2))(completion, 0, 0);
   }
 }
 
-- (BOOL)_isInvalidICSCError:(id)a3
+- (BOOL)_isInvalidICSCError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277CFB2F0]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CFB2F0]])
   {
-    v5 = [v3 code] == 26;
+    v5 = [errorCopy code] == 26;
   }
 
   else
@@ -956,7 +956,7 @@ LABEL_24:
     v5 = 0;
   }
 
-  v6 = [v3 cdp_isCDPErrorWithCode:-5205];
+  v6 = [errorCopy cdp_isCDPErrorWithCode:-5205];
   return (v6 | v5) & 1;
 }
 

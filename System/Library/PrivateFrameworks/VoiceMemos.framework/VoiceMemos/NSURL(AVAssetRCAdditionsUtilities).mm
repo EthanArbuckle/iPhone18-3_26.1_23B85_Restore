@@ -7,15 +7,15 @@
 
 - (id)temporaryMovieLink:()AVAssetRCAdditionsUtilities
 {
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 URLForDirectory:99 inDomain:1 appropriateForURL:a1 create:1 error:a3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:self create:1 error:a3];
   if (v6)
   {
-    v7 = [a1 lastPathComponent];
-    v8 = [v6 URLByAppendingPathComponent:v7];
+    lastPathComponent = [self lastPathComponent];
+    v8 = [v6 URLByAppendingPathComponent:lastPathComponent];
     v9 = [v8 rc_URLByReplacingPathExtensionWithExtension:@"qt"];
 
-    if ([v5 linkItemAtURL:a1 toURL:v9 error:a3])
+    if ([defaultManager linkItemAtURL:self toURL:v9 error:a3])
     {
       v10 = v9;
     }
@@ -38,15 +38,15 @@
 
 - (uint64_t)isQuickTime
 {
-  v1 = [a1 pathExtension];
-  if ([v1 isEqualToString:@"qta"])
+  pathExtension = [self pathExtension];
+  if ([pathExtension isEqualToString:@"qta"])
   {
     v2 = 1;
   }
 
   else
   {
-    v2 = [v1 isEqualToString:@"qt"];
+    v2 = [pathExtension isEqualToString:@"qt"];
   }
 
   return v2;

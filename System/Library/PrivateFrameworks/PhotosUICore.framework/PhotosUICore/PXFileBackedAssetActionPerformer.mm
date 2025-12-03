@@ -1,15 +1,15 @@
 @interface PXFileBackedAssetActionPerformer
-+ (BOOL)canPerformWithActionManager:(id)a3 error:(id *)a4;
++ (BOOL)canPerformWithActionManager:(id)manager error:(id *)error;
 @end
 
 @implementation PXFileBackedAssetActionPerformer
 
-+ (BOOL)canPerformWithActionManager:(id)a3 error:(id *)a4
++ (BOOL)canPerformWithActionManager:(id)manager error:(id *)error
 {
-  v5 = [a3 _selectionSnapshotForPerformerClass:{a1, a4}];
+  v5 = [manager _selectionSnapshotForPerformerClass:{self, error}];
   if (v5)
   {
-    v6 = [a1 canPerformWithSelectionSnapshot:v5];
+    v6 = [self canPerformWithSelectionSnapshot:v5];
   }
 
   else

@@ -8,22 +8,22 @@
 
 - (id)cam_uppercaseStringWithPreferredLocale
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 preferredLocalizations];
-  v4 = [v3 firstObject];
-  v5 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v4];
-  v6 = [a1 uppercaseStringWithLocale:v5];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  preferredLocalizations = [mainBundle preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
+  v5 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:firstObject];
+  v6 = [self uppercaseStringWithLocale:v5];
 
   return v6;
 }
 
 - (id)cam_capitalizedStringWithPreferredLocale
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 preferredLocalizations];
-  v4 = [v3 firstObject];
-  v5 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v4];
-  v6 = [a1 capitalizedStringWithLocale:v5];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  preferredLocalizations = [mainBundle preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
+  v5 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:firstObject];
+  v6 = [self capitalizedStringWithLocale:v5];
 
   return v6;
 }

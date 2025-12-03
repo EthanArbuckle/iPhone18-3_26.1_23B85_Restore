@@ -10,9 +10,9 @@
 - (id)drivable;
 - (void)_clearReleaseTimer;
 - (void)_clearRepeatTimer;
-- (void)_handleButton:(unint64_t)a3 state:(unint64_t)a4;
+- (void)_handleButton:(unint64_t)button state:(unint64_t)state;
 - (void)_incrementValue;
-- (void)_issueUpdateWithValue:(double)a3;
+- (void)_issueUpdateWithValue:(double)value;
 - (void)_releaseCurrentlyPressedButton;
 - (void)dealloc;
 - (void)pressDown;
@@ -47,9 +47,9 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(_UIFluidSliderDiscreteButtonDriver *)self name];
+    name = [(_UIFluidSliderDiscreteButtonDriver *)self name];
     v6 = 138412546;
-    v7 = v5;
+    v7 = name;
     v8 = 2080;
     v9 = "[_UIFluidSliderDiscreteButtonDriver pressUp]";
     _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "[FluidSlider Physical Button Update] %@: %s", &v6, 0x16u);
@@ -65,9 +65,9 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(_UIFluidSliderDiscreteButtonDriver *)self name];
+    name = [(_UIFluidSliderDiscreteButtonDriver *)self name];
     v6 = 138412546;
-    v7 = v5;
+    v7 = name;
     v8 = 2080;
     v9 = "[_UIFluidSliderDiscreteButtonDriver releaseUp]";
     _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "[FluidSlider Physical Button Update] %@: %s", &v6, 0x16u);
@@ -83,9 +83,9 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(_UIFluidSliderDiscreteButtonDriver *)self name];
+    name = [(_UIFluidSliderDiscreteButtonDriver *)self name];
     v6 = 138412546;
-    v7 = v5;
+    v7 = name;
     v8 = 2080;
     v9 = "[_UIFluidSliderDiscreteButtonDriver pressDown]";
     _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "[FluidSlider Physical Button Update] %@: %s", &v6, 0x16u);
@@ -101,9 +101,9 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(_UIFluidSliderDiscreteButtonDriver *)self name];
+    name = [(_UIFluidSliderDiscreteButtonDriver *)self name];
     v6 = 138412546;
-    v7 = v5;
+    v7 = name;
     v8 = 2080;
     v9 = "[_UIFluidSliderDiscreteButtonDriver releaseDown]";
     _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "[FluidSlider Physical Button Update] %@: %s", &v6, 0x16u);
@@ -119,21 +119,21 @@
   return NSStringFromClass(v2);
 }
 
-- (void)_handleButton:(unint64_t)a3 state:(unint64_t)a4
+- (void)_handleButton:(unint64_t)button state:(unint64_t)state
 {
-  if (a4)
+  if (state)
   {
-    if (a4 == 1)
+    if (state == 1)
     {
-      v33 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v33 handleFailureInMethod:a2 object:self file:@"_UIFluidSliderDiscreteButtonDriver.m" lineNumber:115 description:{@"Received a button update in the changed state. This is a discrete driver, so this shouldn't be possible."}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFluidSliderDiscreteButtonDriver.m" lineNumber:115 description:{@"Received a button update in the changed state. This is a discrete driver, so this shouldn't be possible."}];
     }
 
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     [(_UIFluidSliderDiscreteButtonDriver *)self set_lastReleaseTimestamp:?];
-    v5 = [(_UIFluidSliderDiscreteButtonDriver *)self _isRepeating];
+    _isRepeating = [(_UIFluidSliderDiscreteButtonDriver *)self _isRepeating];
     [(_UIFluidSliderDiscreteButtonDriver *)self _clearRepeatTimer];
-    if (v5)
+    if (_isRepeating)
     {
 
       [(_UIFluidSliderDiscreteButtonDriver *)self _releaseCurrentlyPressedButton];
@@ -144,7 +144,7 @@
     [(_UIFluidSliderDiscreteButtonDriver *)self set_releaseTimer:v27];
 
     objc_initWeak(&location, self);
-    v21 = [(_UIFluidSliderDiscreteButtonDriver *)self _releaseTimer];
+    _releaseTimer = [(_UIFluidSliderDiscreteButtonDriver *)self _releaseTimer];
     [(_UIFluidSliderDiscreteButtonDriver *)self _minimumPressDuration];
     v29 = v28;
     v30 = MEMORY[0x1E69E96A0];
@@ -155,7 +155,7 @@
     v34[2] = __58___UIFluidSliderDiscreteButtonDriver__handleButton_state___block_invoke_2;
     v34[3] = &unk_1E710D988;
     objc_copyWeak(&v35, &location);
-    [v21 scheduleWithFireInterval:v30 leewayInterval:v34 queue:v29 handler:0.0];
+    [_releaseTimer scheduleWithFireInterval:v30 leewayInterval:v34 queue:v29 handler:0.0];
 LABEL_17:
 
     objc_destroyWeak(v26 + 4);
@@ -163,9 +163,9 @@ LABEL_17:
     return;
   }
 
-  v7 = [(_UIFluidSliderDiscreteButtonDriver *)self _releaseTimer];
+  _releaseTimer2 = [(_UIFluidSliderDiscreteButtonDriver *)self _releaseTimer];
 
-  if (v7)
+  if (_releaseTimer2)
   {
     [(_UIFluidSliderDiscreteButtonDriver *)self _clearReleaseTimer];
     [(_UIFluidSliderDiscreteButtonDriver *)self _releaseCurrentlyPressedButton];
@@ -178,14 +178,14 @@ LABEL_17:
   [(_UIFluidSliderDiscreteButtonDriver *)self _minimumPressDuration];
   v13 = v12;
   [(_UIFluidSliderDiscreteButtonDriver *)self set_lastReleaseTimestamp:0.0];
-  [(_UIFluidSliderDiscreteButtonDriver *)self set_pressedButton:a3];
-  v14 = [(_UIFluidSliderDiscreteButtonDriver *)self drivable];
-  [v14 value];
+  [(_UIFluidSliderDiscreteButtonDriver *)self set_pressedButton:button];
+  drivable = [(_UIFluidSliderDiscreteButtonDriver *)self drivable];
+  [drivable value];
   [(_UIFluidSliderDiscreteButtonDriver *)self set_value:?];
 
-  v15 = [(_UIFluidSliderDiscreteButtonDriver *)self _repeatTimer];
+  _repeatTimer = [(_UIFluidSliderDiscreteButtonDriver *)self _repeatTimer];
 
-  if (!v15)
+  if (!_repeatTimer)
   {
     [(_UIFluidSliderDiscreteButtonDriver *)self _incrementValue];
     v16 = [objc_alloc(MEMORY[0x1E698E5E8]) initWithIdentifier:@"com.apple.UIKit.DiscreteButtonDriverRepeatTimer"];
@@ -201,7 +201,7 @@ LABEL_17:
       v18 = v20;
     }
 
-    v21 = [(_UIFluidSliderDiscreteButtonDriver *)self _repeatTimer];
+    _releaseTimer = [(_UIFluidSliderDiscreteButtonDriver *)self _repeatTimer];
     [(_UIFluidSliderDiscreteButtonDriver *)self _repeatCadence];
     v23 = v22;
     v24 = MEMORY[0x1E69E96A0];
@@ -212,7 +212,7 @@ LABEL_17:
     v36[2] = __58___UIFluidSliderDiscreteButtonDriver__handleButton_state___block_invoke;
     v36[3] = &unk_1E710D988;
     objc_copyWeak(&v37, &location);
-    [v21 scheduleRepeatingWithFireInterval:v24 repeatInterval:v36 leewayInterval:v18 queue:v23 handler:0.0];
+    [_releaseTimer scheduleRepeatingWithFireInterval:v24 repeatInterval:v36 leewayInterval:v18 queue:v23 handler:0.0];
     goto LABEL_17;
   }
 }
@@ -237,12 +237,12 @@ LABEL_17:
 {
   if ([(_UIFluidSliderDiscreteButtonDriver *)self _pressedButton])
   {
-    v3 = [(_UIFluidSliderDiscreteButtonDriver *)self _pressedButton];
-    v4 = [(_UIFluidSliderDiscreteButtonDriver *)self drivable];
-    v5 = 1.0 / [v4 stepCount];
+    _pressedButton = [(_UIFluidSliderDiscreteButtonDriver *)self _pressedButton];
+    drivable = [(_UIFluidSliderDiscreteButtonDriver *)self drivable];
+    v5 = 1.0 / [drivable stepCount];
 
     [(_UIFluidSliderDiscreteButtonDriver *)self _value];
-    if (v3 != 1)
+    if (_pressedButton != 1)
     {
       v5 = -v5;
     }
@@ -260,8 +260,8 @@ LABEL_17:
 - (void)_releaseCurrentlyPressedButton
 {
   [(_UIFluidSliderDiscreteButtonDriver *)self set_pressedButton:0];
-  v3 = [(_UIFluidSliderDiscreteButtonDriver *)self drivable];
-  [v3 value];
+  drivable = [(_UIFluidSliderDiscreteButtonDriver *)self drivable];
+  [drivable value];
   v5 = v4;
 
   v6 = fmax(fmin(v5, 1.0), 0.0);
@@ -269,20 +269,20 @@ LABEL_17:
   [(_UIFluidSliderDiscreteButtonDriver *)self _issueUpdateWithValue:v6];
 }
 
-- (void)_issueUpdateWithValue:(double)a3
+- (void)_issueUpdateWithValue:(double)value
 {
-  v5 = [(_UIFluidSliderDiscreteButtonDriver *)self _pressedButton];
+  _pressedButton = [(_UIFluidSliderDiscreteButtonDriver *)self _pressedButton];
   [(_UIFluidSliderDiscreteButtonDriver *)self stretchAmount];
   v7 = v6;
-  v8 = [(_UIFluidSliderDiscreteButtonDriver *)self drivable];
-  [v8 currentTrackLength];
+  drivable = [(_UIFluidSliderDiscreteButtonDriver *)self drivable];
+  [drivable currentTrackLength];
   v10 = v7 / v9;
 
   [(_UIFluidSliderDiscreteButtonDriver *)self _range];
-  v13 = fmax(v11, fmin(a3, v12));
+  v13 = fmax(v11, fmin(value, v12));
   if (v10 != 0.0)
   {
-    if (v11 <= a3)
+    if (v11 <= value)
     {
       v14 = v10;
     }
@@ -292,60 +292,60 @@ LABEL_17:
       v14 = -v10;
     }
 
-    v13 = v13 + v14 * (1.0 - 1.0 / ((a3 - v13) / v14 * 0.55 + 1.0));
+    v13 = v13 + v14 * (1.0 - 1.0 / ((value - v13) / v14 * 0.55 + 1.0));
   }
 
   v15 = +[_UIFluidSliderSettingsDomain rootSettings];
-  v16 = [v15 discreteButtonDriverSettings];
+  discreteButtonDriverSettings = [v15 discreteButtonDriverSettings];
 
-  if (v5)
+  if (_pressedButton)
   {
-    v17 = [(_UIFluidSliderDiscreteButtonDriver *)self _pressedButton];
-    v18 = [(_UIFluidSliderDiscreteButtonDriver *)self trackAxis];
-    if (v17 == 1)
+    _pressedButton2 = [(_UIFluidSliderDiscreteButtonDriver *)self _pressedButton];
+    trackAxis = [(_UIFluidSliderDiscreteButtonDriver *)self trackAxis];
+    if (_pressedButton2 == 1)
     {
-      if (v18 == 1)
+      if (trackAxis == 1)
       {
-        [v16 horizontalVolumeUpScale];
+        [discreteButtonDriverSettings horizontalVolumeUpScale];
       }
 
       else
       {
-        [v16 verticalVolumeUpScale];
+        [discreteButtonDriverSettings verticalVolumeUpScale];
       }
     }
 
-    else if (v18 == 1)
+    else if (trackAxis == 1)
     {
-      [v16 horizontalVolumeDownScale];
+      [discreteButtonDriverSettings horizontalVolumeDownScale];
     }
 
     else
     {
-      [v16 verticalVolumeDownScale];
+      [discreteButtonDriverSettings verticalVolumeDownScale];
     }
 
     v22 = v19;
-    v20 = [(_UIFluidSliderDiscreteButtonDriver *)self _isRepeating];
-    v21 = [v16 update];
+    _isRepeating = [(_UIFluidSliderDiscreteButtonDriver *)self _isRepeating];
+    update = [discreteButtonDriverSettings update];
   }
 
   else
   {
-    v20 = [(_UIFluidSliderDiscreteButtonDriver *)self _isRepeating];
-    v21 = [v16 settle];
+    _isRepeating = [(_UIFluidSliderDiscreteButtonDriver *)self _isRepeating];
+    update = [discreteButtonDriverSettings settle];
     v22 = 1.0;
   }
 
-  v23 = v5 != 0;
-  v24 = [v21 springAnimationBehavior];
+  v23 = _pressedButton != 0;
+  springAnimationBehavior = [update springAnimationBehavior];
 
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __60___UIFluidSliderDiscreteButtonDriver__issueUpdateWithValue___block_invoke;
   v26[3] = &unk_1E7116870;
   v25 = 2;
-  if (v20)
+  if (_isRepeating)
   {
     v25 = 3;
   }
@@ -356,18 +356,18 @@ LABEL_17:
   v26[7] = v23;
   v26[8] = v25;
   v26[9] = 0xBFF0000000000000;
-  [UIView _animateUsingSpringBehavior:v24 tracking:0 animations:v26 completion:0];
+  [UIView _animateUsingSpringBehavior:springAnimationBehavior tracking:0 animations:v26 completion:0];
 }
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_range
 {
-  v3 = [(_UIFluidSliderDiscreteButtonDriver *)self drivable];
-  v4 = [v3 isLocked];
+  drivable = [(_UIFluidSliderDiscreteButtonDriver *)self drivable];
+  isLocked = [drivable isLocked];
 
-  if (v4)
+  if (isLocked)
   {
-    v5 = [(_UIFluidSliderDiscreteButtonDriver *)self drivable];
-    [v5 value];
+    drivable2 = [(_UIFluidSliderDiscreteButtonDriver *)self drivable];
+    [drivable2 value];
     v7 = v6;
 
     v8 = v7;
@@ -387,8 +387,8 @@ LABEL_17:
 
 - (double)_trackLength
 {
-  v2 = [(_UIFluidSliderDiscreteButtonDriver *)self drivable];
-  [v2 currentTrackLength];
+  drivable = [(_UIFluidSliderDiscreteButtonDriver *)self drivable];
+  [drivable currentTrackLength];
   v4 = v3;
 
   return v4;
@@ -405,8 +405,8 @@ LABEL_17:
 - (double)_repeatDelay
 {
   v2 = +[_UIFluidSliderSettingsDomain rootSettings];
-  v3 = [v2 discreteButtonDriverSettings];
-  [v3 repeatDelay];
+  discreteButtonDriverSettings = [v2 discreteButtonDriverSettings];
+  [discreteButtonDriverSettings repeatDelay];
   v5 = v4;
 
   return v5;
@@ -415,8 +415,8 @@ LABEL_17:
 - (double)_repeatCadence
 {
   v2 = +[_UIFluidSliderSettingsDomain rootSettings];
-  v3 = [v2 discreteButtonDriverSettings];
-  [v3 repeatCadence];
+  discreteButtonDriverSettings = [v2 discreteButtonDriverSettings];
+  [discreteButtonDriverSettings repeatCadence];
   v5 = v4;
 
   return v5;
@@ -425,8 +425,8 @@ LABEL_17:
 - (double)_minimumPressDuration
 {
   v2 = +[_UIFluidSliderSettingsDomain rootSettings];
-  v3 = [v2 discreteButtonDriverSettings];
-  [v3 minimumPressDuration];
+  discreteButtonDriverSettings = [v2 discreteButtonDriverSettings];
+  [discreteButtonDriverSettings minimumPressDuration];
   v5 = v4;
 
   return v5;

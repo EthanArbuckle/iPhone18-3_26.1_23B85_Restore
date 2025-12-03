@@ -1,8 +1,8 @@
 @interface HMDAccessorySettingsBackingStoreTransactionReceiver
-- (HMDAccessorySettingsBackingStoreTransactionReceiver)initWithDelegate:(id)a3;
+- (HMDAccessorySettingsBackingStoreTransactionReceiver)initWithDelegate:(id)delegate;
 - (HMDAccessorySettingsBackingStoreTransactionReceiverDelegate)delegate;
-- (void)transactionObjectRemoved:(id)a3 message:(id)a4;
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
+- (void)transactionObjectRemoved:(id)removed message:(id)message;
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message;
 @end
 
 @implementation HMDAccessorySettingsBackingStoreTransactionReceiver
@@ -14,12 +14,12 @@
   return WeakRetained;
 }
 
-- (void)transactionObjectRemoved:(id)a3 message:(id)a4
+- (void)transactionObjectRemoved:(id)removed message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDAccessorySettingsBackingStoreTransactionReceiver *)self delegate];
-  v9 = v6;
+  removedCopy = removed;
+  messageCopy = message;
+  delegate = [(HMDAccessorySettingsBackingStoreTransactionReceiver *)self delegate];
+  v9 = removedCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -41,9 +41,9 @@
     v26[3] = &unk_278688D58;
     v26[4] = self;
     v27 = v11;
-    v28 = v7;
+    v28 = messageCopy;
     v12 = v11;
-    [v8 handleRemovedSettingModel:v12 completion:v26];
+    [delegate handleRemovedSettingModel:v12 completion:v26];
 
     v13 = v27;
   }
@@ -72,9 +72,9 @@
       v23[3] = &unk_278688D58;
       v23[4] = self;
       v24 = v16;
-      v25 = v7;
+      v25 = messageCopy;
       v12 = v16;
-      [v8 handleRemovedGroupModel:v12 completion:v23];
+      [delegate handleRemovedGroupModel:v12 completion:v23];
 
       v13 = v24;
     }
@@ -98,7 +98,7 @@
       if (!v19)
       {
         v12 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-        [v7 respondWithError:v12];
+        [messageCopy respondWithError:v12];
         goto LABEL_17;
       }
 
@@ -108,9 +108,9 @@
       v20[3] = &unk_278688D58;
       v20[4] = self;
       v21 = v19;
-      v22 = v7;
+      v22 = messageCopy;
       v12 = v19;
-      [v8 handleRemovedSettingConstraintModel:v12 completion:v20];
+      [delegate handleRemovedSettingConstraintModel:v12 completion:v20];
 
       v13 = v21;
     }
@@ -230,12 +230,12 @@ void __88__HMDAccessorySettingsBackingStoreTransactionReceiver_transactionObject
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(HMDAccessorySettingsBackingStoreTransactionReceiver *)self delegate];
-  v10 = v7;
+  valuesCopy = values;
+  messageCopy = message;
+  delegate = [(HMDAccessorySettingsBackingStoreTransactionReceiver *)self delegate];
+  v10 = valuesCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -257,9 +257,9 @@ void __88__HMDAccessorySettingsBackingStoreTransactionReceiver_transactionObject
     v27[3] = &unk_278688D58;
     v27[4] = self;
     v28 = v12;
-    v29 = v8;
+    v29 = messageCopy;
     v13 = v12;
-    [v9 handleUpdatedGroupModel:v13 completion:v27];
+    [delegate handleUpdatedGroupModel:v13 completion:v27];
 
     v14 = v28;
   }
@@ -288,9 +288,9 @@ void __88__HMDAccessorySettingsBackingStoreTransactionReceiver_transactionObject
       v24[3] = &unk_278674A00;
       v24[4] = self;
       v25 = v17;
-      v26 = v8;
+      v26 = messageCopy;
       v13 = v17;
-      [v9 handleUpdatedSettingModel:v13 completion:v24];
+      [delegate handleUpdatedSettingModel:v13 completion:v24];
 
       v14 = v25;
     }
@@ -314,7 +314,7 @@ void __88__HMDAccessorySettingsBackingStoreTransactionReceiver_transactionObject
       if (!v20)
       {
         v13 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-        [v8 respondWithError:v13];
+        [messageCopy respondWithError:v13];
         goto LABEL_17;
       }
 
@@ -324,9 +324,9 @@ void __88__HMDAccessorySettingsBackingStoreTransactionReceiver_transactionObject
       v21[3] = &unk_278688D58;
       v21[4] = self;
       v22 = v20;
-      v23 = v8;
+      v23 = messageCopy;
       v13 = v20;
-      [v9 handleUpdatedSettingConstraintModel:v13 completion:v21];
+      [delegate handleUpdatedSettingConstraintModel:v13 completion:v21];
 
       v14 = v22;
     }
@@ -450,16 +450,16 @@ void __98__HMDAccessorySettingsBackingStoreTransactionReceiver_transactionObject
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAccessorySettingsBackingStoreTransactionReceiver)initWithDelegate:(id)a3
+- (HMDAccessorySettingsBackingStoreTransactionReceiver)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = HMDAccessorySettingsBackingStoreTransactionReceiver;
   v5 = [(HMDAccessorySettingsBackingStoreTransactionReceiver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;

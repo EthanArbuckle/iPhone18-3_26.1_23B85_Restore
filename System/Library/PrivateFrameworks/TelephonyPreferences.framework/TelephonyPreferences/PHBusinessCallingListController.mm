@@ -1,6 +1,6 @@
 @interface PHBusinessCallingListController
 - (PHBusinessCallingListController)init;
-- (id)groupFooterTextFor:(id)a3;
+- (id)groupFooterTextFor:(id)for;
 - (id)specifiers;
 - (void)activeSubscriptionsDidChange;
 - (void)willEnterForeground;
@@ -16,12 +16,12 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(PHBusinessCallingListController *)v2 specifier];
+    specifier = [(PHBusinessCallingListController *)v2 specifier];
 
-    if (v4)
+    if (specifier)
     {
-      v5 = [(PHBusinessCallingListController *)v3 specifier];
-      v6 = [v5 propertyForKey:@"PHBrandedCallingControllerKey"];
+      specifier2 = [(PHBusinessCallingListController *)v3 specifier];
+      v6 = [specifier2 propertyForKey:@"PHBrandedCallingControllerKey"];
       brandedCallingController = v3->_brandedCallingController;
       v3->_brandedCallingController = v6;
 
@@ -39,8 +39,8 @@
     businessConnectCallingController = v3->_businessConnectCallingController;
     v3->_businessConnectCallingController = v12;
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v3 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
   }
 
   return v3;
@@ -70,9 +70,9 @@
   else
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v7 = [(PHBusinessCallingListController *)self specifier];
+    specifier = [(PHBusinessCallingListController *)self specifier];
 
-    if (!v7)
+    if (!specifier)
     {
       goto LABEL_14;
     }
@@ -82,8 +82,8 @@
       goto LABEL_6;
     }
 
-    v8 = [(PHBusinessCallingListController *)self specifier];
-    v9 = [v8 propertyForKey:@"PHBrandedCallingControllerKey"];
+    specifier2 = [(PHBusinessCallingListController *)self specifier];
+    v9 = [specifier2 propertyForKey:@"PHBrandedCallingControllerKey"];
     brandedCallingController = self->_brandedCallingController;
     self->_brandedCallingController = v9;
 
@@ -92,16 +92,16 @@
     {
 LABEL_6:
       v31 = v2;
-      v11 = [(PHBusinessConnectCallingController *)self->_businessConnectCallingController specifiers];
-      [v6 addObjectsFromArray:v11];
+      specifiers = [(PHBusinessConnectCallingController *)self->_businessConnectCallingController specifiers];
+      [v6 addObjectsFromArray:specifiers];
 
-      v12 = [(PHBrandedCallingController *)self->_brandedCallingController activeContextsSupportingBrandedCalling];
+      activeContextsSupportingBrandedCalling = [(PHBrandedCallingController *)self->_brandedCallingController activeContextsSupportingBrandedCalling];
       v13 = MEMORY[0x277D3FAD8];
       v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v15 = [v14 localizedStringForKey:@"BRANDED_CALLING_GROUP_HEADER" value:&stru_282D54710 table:@"CallDirectorySettings"];
       v16 = [v13 groupSpecifierWithID:@"BrandedCallingGroup" name:v15];
 
-      v17 = [(PHBusinessCallingListController *)self groupFooterTextFor:v12];
+      v17 = [(PHBusinessCallingListController *)self groupFooterTextFor:activeContextsSupportingBrandedCalling];
       [v16 setProperty:v17 forKey:*MEMORY[0x277D3FF88]];
 
       [v6 addObject:v16];
@@ -109,7 +109,7 @@ LABEL_6:
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      obj = v12;
+      obj = activeContextsSupportingBrandedCalling;
       v18 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
       if (v18)
       {
@@ -128,9 +128,9 @@ LABEL_6:
             v23 = *(*(&v33 + 1) + 8 * i);
             v24 = [PHBrandedCallingSwitchSpecifier alloc];
             ctClient = self->_ctClient;
-            v26 = [v23 context];
-            v27 = [v23 carrierName];
-            v28 = [(PHBrandedCallingSwitchSpecifier *)v24 initWithCoreTelephonyClient:ctClient context:v26 carrierName:v27];
+            context = [v23 context];
+            carrierName = [v23 carrierName];
+            v28 = [(PHBrandedCallingSwitchSpecifier *)v24 initWithCoreTelephonyClient:ctClient context:context carrierName:carrierName];
             v6 = v22;
             [v22 addObject:v28];
           }
@@ -168,32 +168,32 @@ LABEL_14:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (id)groupFooterTextFor:(id)a3
+- (id)groupFooterTextFor:(id)for
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  forCopy = for;
+  if ([forCopy count] == 1)
   {
     v4 = MEMORY[0x277CCACA8];
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:@"BRANDED_CALLING_SINGLE_CARRIER_FOOTER_TEXT" value:&stru_282D54710 table:@"CallDirectorySettings"];
-    v7 = [v3 objectAtIndexedSubscript:0];
-    v8 = [v7 carrierName];
-    v9 = [v4 stringWithFormat:v6, v8];
+    v7 = [forCopy objectAtIndexedSubscript:0];
+    carrierName = [v7 carrierName];
+    v9 = [v4 stringWithFormat:v6, carrierName];
 LABEL_5:
 
     goto LABEL_7;
   }
 
-  if ([v3 count] == 2)
+  if ([forCopy count] == 2)
   {
     v10 = MEMORY[0x277CCACA8];
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:@"BRANDED_CALLING_TWO_CARRIER_FOOTER_TEXT" value:&stru_282D54710 table:@"CallDirectorySettings"];
-    v7 = [v3 objectAtIndexedSubscript:0];
-    v8 = [v7 carrierName];
-    v11 = [v3 objectAtIndexedSubscript:1];
-    v12 = [v11 carrierName];
-    v9 = [v10 stringWithFormat:v6, v8, v12];
+    v7 = [forCopy objectAtIndexedSubscript:0];
+    carrierName = [v7 carrierName];
+    v11 = [forCopy objectAtIndexedSubscript:1];
+    carrierName2 = [v11 carrierName];
+    v9 = [v10 stringWithFormat:v6, carrierName, carrierName2];
 
     goto LABEL_5;
   }

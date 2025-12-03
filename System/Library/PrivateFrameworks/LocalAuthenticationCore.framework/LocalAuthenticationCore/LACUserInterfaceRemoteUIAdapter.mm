@@ -1,30 +1,30 @@
 @interface LACUserInterfaceRemoteUIAdapter
-- (LACUserInterfaceRemoteUIAdapter)initWithConnectionProvider:(id)a3 replyQueue:(id)a4;
-- (void)_activateConnectionForRequest:(id)a3;
-- (void)_finishWithError:(id)a3;
-- (void)connectionDidActivate:(id)a3;
-- (void)connectionDidInterrupt:(id)a3;
-- (void)connectionDidInvalidate:(id)a3;
+- (LACUserInterfaceRemoteUIAdapter)initWithConnectionProvider:(id)provider replyQueue:(id)queue;
+- (void)_activateConnectionForRequest:(id)request;
+- (void)_finishWithError:(id)error;
+- (void)connectionDidActivate:(id)activate;
+- (void)connectionDidInterrupt:(id)interrupt;
+- (void)connectionDidInvalidate:(id)invalidate;
 - (void)dealloc;
-- (void)processRequest:(id)a3 completion:(id)a4;
-- (void)terminateWithReason:(id)a3;
-- (void)uiDismissedForRequest:(id)a3 error:(id)a4;
+- (void)processRequest:(id)request completion:(id)completion;
+- (void)terminateWithReason:(id)reason;
+- (void)uiDismissedForRequest:(id)request error:(id)error;
 @end
 
 @implementation LACUserInterfaceRemoteUIAdapter
 
-- (LACUserInterfaceRemoteUIAdapter)initWithConnectionProvider:(id)a3 replyQueue:(id)a4
+- (LACUserInterfaceRemoteUIAdapter)initWithConnectionProvider:(id)provider replyQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = LACUserInterfaceRemoteUIAdapter;
   v9 = [(LACUserInterfaceRemoteUIAdapter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connectionProvider, a3);
-    objc_storeStrong(&v10->_replyQueue, a4);
+    objc_storeStrong(&v9->_connectionProvider, provider);
+    objc_storeStrong(&v10->_replyQueue, queue);
   }
 
   return v10;
@@ -44,26 +44,26 @@
   [(LACUserInterfaceRemoteUIAdapter *)&v5 dealloc];
 }
 
-- (void)processRequest:(id)a3 completion:(id)a4
+- (void)processRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   if (self->_handler)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ instance is already in use", self];
-    v9 = [LACError errorWithCode:-1000 debugDescription:v8];
+    remoteObject = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ instance is already in use", self];
+    v9 = [LACError errorWithCode:-1000 debugDescription:remoteObject];
     [(LACUserInterfaceRemoteUIAdapter *)self _finishWithError:v9];
   }
 
   else
   {
-    [(LACUserInterfaceRemoteUIAdapter *)self _activateConnectionForRequest:v6];
-    v10 = _Block_copy(v7);
+    [(LACUserInterfaceRemoteUIAdapter *)self _activateConnectionForRequest:requestCopy];
+    v10 = _Block_copy(completionCopy);
     handler = self->_handler;
     self->_handler = v10;
 
-    v8 = [(LACXPCConnection *)self->_connection remoteObject];
-    if (v8)
+    remoteObject = [(LACXPCConnection *)self->_connection remoteObject];
+    if (remoteObject)
     {
       objc_initWeak(&location, self);
       v13[0] = MEMORY[0x1E69E9820];
@@ -71,7 +71,7 @@
       v13[2] = __61__LACUserInterfaceRemoteUIAdapter_processRequest_completion___block_invoke;
       v13[3] = &unk_1E7A97238;
       objc_copyWeak(&v14, &location);
-      [v8 showUIForRequest:v6 completion:v13];
+      [remoteObject showUIForRequest:requestCopy completion:v13];
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
       goto LABEL_6;
@@ -107,17 +107,17 @@ void __61__LACUserInterfaceRemoteUIAdapter_processRequest_completion___block_inv
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)terminateWithReason:(id)a3
+- (void)terminateWithReason:(id)reason
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = LACLogUI();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v4;
+    v10 = reasonCopy;
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "%@ terminating with reason: %{public}@", &v7, 0x16u);
   }
 
@@ -125,48 +125,48 @@ void __61__LACUserInterfaceRemoteUIAdapter_processRequest_completion___block_inv
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)uiDismissedForRequest:(id)a3 error:(id)a4
+- (void)uiDismissedForRequest:(id)request error:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   v6 = LACLogUI();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
-    v11 = v5;
+    v11 = errorCopy;
     _os_log_impl(&dword_1B0233000, v6, OS_LOG_TYPE_DEFAULT, "%@ UI dismissed with error: %{public}@", &v8, 0x16u);
   }
 
-  [(LACUserInterfaceRemoteUIAdapter *)self _finishWithError:v5];
+  [(LACUserInterfaceRemoteUIAdapter *)self _finishWithError:errorCopy];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connectionDidActivate:(id)a3
+- (void)connectionDidActivate:(id)activate
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  activateCopy = activate;
   v4 = LACLogUI();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = activateCopy;
     _os_log_impl(&dword_1B0233000, v4, OS_LOG_TYPE_DEFAULT, "%@ Activated", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connectionDidInterrupt:(id)a3
+- (void)connectionDidInterrupt:(id)interrupt
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  interruptCopy = interrupt;
   v5 = LACLogUI();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = interruptCopy;
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "%@ Interrupted", &v8, 0xCu);
   }
 
@@ -176,15 +176,15 @@ void __61__LACUserInterfaceRemoteUIAdapter_processRequest_completion___block_inv
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connectionDidInvalidate:(id)a3
+- (void)connectionDidInvalidate:(id)invalidate
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  invalidateCopy = invalidate;
   v5 = LACLogUI();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = invalidateCopy;
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "%@ Invalidated", &v8, 0xCu);
   }
 
@@ -194,9 +194,9 @@ void __61__LACUserInterfaceRemoteUIAdapter_processRequest_completion___block_inv
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_activateConnectionForRequest:(id)a3
+- (void)_activateConnectionForRequest:(id)request
 {
-  v4 = [(LACUserInterfaceConnectionProviding *)self->_connectionProvider makeConnectionForRequest:a3 withExportedObject:self];
+  v4 = [(LACUserInterfaceConnectionProviding *)self->_connectionProvider makeConnectionForRequest:request withExportedObject:self];
   connection = self->_connection;
   self->_connection = v4;
 
@@ -206,10 +206,10 @@ void __61__LACUserInterfaceRemoteUIAdapter_processRequest_completion___block_inv
   [(LACXPCConnection *)v6 activate];
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   handler = self->_handler;
   v6 = LACLogUI();
   v7 = v6;
@@ -218,9 +218,9 @@ void __61__LACUserInterfaceRemoteUIAdapter_processRequest_completion___block_inv
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v21 = self;
+      selfCopy = self;
       v22 = 2114;
-      v23 = v4;
+      v23 = errorCopy;
       _os_log_impl(&dword_1B0233000, v7, OS_LOG_TYPE_DEFAULT, "%@ finishing with error: %{public}@", buf, 0x16u);
     }
 
@@ -238,7 +238,7 @@ void __61__LACUserInterfaceRemoteUIAdapter_processRequest_completion___block_inv
     v16 = __52__LACUserInterfaceRemoteUIAdapter__finishWithError___block_invoke;
     v17 = &unk_1E7A95798;
     v19 = v8;
-    v18 = v4;
+    v18 = errorCopy;
     v7 = v8;
     dispatch_async(replyQueue, &v14);
     [(LACXPCConnection *)v11 invalidate:v14];
@@ -246,7 +246,7 @@ void __61__LACUserInterfaceRemoteUIAdapter_processRequest_completion___block_inv
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(LACUserInterfaceRemoteUIAdapter *)v4 _finishWithError:v7];
+    [(LACUserInterfaceRemoteUIAdapter *)errorCopy _finishWithError:v7];
   }
 
   v13 = *MEMORY[0x1E69E9840];

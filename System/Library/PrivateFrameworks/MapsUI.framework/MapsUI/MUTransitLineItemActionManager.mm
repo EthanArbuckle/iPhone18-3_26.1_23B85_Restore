@@ -1,14 +1,14 @@
 @interface MUTransitLineItemActionManager
 - (MUTransitLineItemActionManager)init;
-- (MUTransitLineItemActionManager)initWithDelegate:(id)a3 analyticsDelegate:(id)a4;
+- (MUTransitLineItemActionManager)initWithDelegate:(id)delegate analyticsDelegate:(id)analyticsDelegate;
 - (id)createFooterActions;
-- (id)createRowActionsWithStyle:(unint64_t)a3;
-- (void)performAction:(id)a3 options:(id)a4 completion:(id)a5;
+- (id)createRowActionsWithStyle:(unint64_t)style;
+- (void)performAction:(id)action options:(id)options completion:(id)completion;
 @end
 
 @implementation MUTransitLineItemActionManager
 
-- (MUTransitLineItemActionManager)initWithDelegate:(id)a3 analyticsDelegate:(id)a4
+- (MUTransitLineItemActionManager)initWithDelegate:(id)delegate analyticsDelegate:(id)analyticsDelegate
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();
@@ -29,7 +29,7 @@
   return result;
 }
 
-- (id)createRowActionsWithStyle:(unint64_t)a3
+- (id)createRowActionsWithStyle:(unint64_t)style
 {
   if (_s6MapsUI28TransitLineItemActionManagerC19createFooterActionsSaySo011MKPlaceCardfE0CGSgyF_0())
   {
@@ -45,12 +45,12 @@
   return v3;
 }
 
-- (void)performAction:(id)a3 options:(id)a4 completion:(id)a5
+- (void)performAction:(id)action options:(id)options completion:(id)completion
 {
-  v8 = _Block_copy(a5);
-  if (a4)
+  v8 = _Block_copy(completion);
+  if (options)
   {
-    a4 = sub_1C584F5D0();
+    options = sub_1C584F5D0();
   }
 
   if (v8)
@@ -59,9 +59,9 @@
     v8 = sub_1C5742978;
   }
 
-  v9 = a3;
-  v10 = self;
-  TransitLineItemActionManager.performAction(_:options:completion:)(a3, a4, v8);
+  actionCopy = action;
+  selfCopy = self;
+  TransitLineItemActionManager.performAction(_:options:completion:)(action, options, v8);
   sub_1C5632FA8(v8);
 }
 

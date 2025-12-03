@@ -1,6 +1,6 @@
 @interface EPUnlockAssertionManager
-+ (id)newService:(id)a3;
-- (EPUnlockAssertionManager)initWithQueue:(id)a3;
++ (id)newService:(id)service;
+- (EPUnlockAssertionManager)initWithQueue:(id)queue;
 - (void)createResource;
 - (void)destroyResource;
 - (void)update;
@@ -8,22 +8,22 @@
 
 @implementation EPUnlockAssertionManager
 
-+ (id)newService:(id)a3
++ (id)newService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = objc_opt_new();
-  v5 = [v3 queue];
+  queue = [serviceCopy queue];
 
-  v6 = [v4 initWithQueue:v5];
+  v6 = [v4 initWithQueue:queue];
   return v6;
 }
 
-- (EPUnlockAssertionManager)initWithQueue:(id)a3
+- (EPUnlockAssertionManager)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = EPUnlockAssertionManager;
-  v5 = [(EPResourceManager *)&v10 initWithQueue:v4];
+  v5 = [(EPResourceManager *)&v10 initWithQueue:queueCopy];
   v6 = v5;
   if (v5)
   {
@@ -33,7 +33,7 @@
     block[2] = sub_1000E2610;
     block[3] = &unk_100175660;
     v9 = v5;
-    dispatch_async(v4, block);
+    dispatch_async(queueCopy, block);
   }
 
   return v6;
@@ -45,13 +45,13 @@
   v8.super_class = EPUnlockAssertionManager;
   [(EPResourceManager *)&v8 createResource];
   v3 = kMobileKeyBagLockStatusNotifyToken;
-  v4 = [(EPResourceManager *)self queue];
+  queue = [(EPResourceManager *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000E27AC;
   v7[3] = &unk_1001759E8;
   v7[4] = self;
-  LODWORD(v3) = notify_register_dispatch(v3, &self->_notifyToken, v4, v7);
+  LODWORD(v3) = notify_register_dispatch(v3, &self->_notifyToken, queue, v7);
 
   if (v3)
   {
@@ -138,7 +138,7 @@ LABEL_33:
     assertionError = self->_assertionError;
     self->_assertionError = 0;
 
-    v17 = self;
+    selfCopy3 = self;
     v18 = 0;
     goto LABEL_34;
   }
@@ -234,18 +234,18 @@ LABEL_33:
     if (!self->_assertion)
     {
       v27 = self->_assertionError;
-      v17 = self;
+      selfCopy3 = self;
       v18 = 2;
       goto LABEL_35;
     }
   }
 
-  v17 = self;
+  selfCopy3 = self;
   v18 = 1;
 LABEL_34:
   v27 = 0;
 LABEL_35:
-  [(EPResourceManager *)v17 setAvailability:v18 withError:v27];
+  [(EPResourceManager *)selfCopy3 setAvailability:v18 withError:v27];
 }
 
 @end

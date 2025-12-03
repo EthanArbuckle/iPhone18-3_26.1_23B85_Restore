@@ -1,360 +1,360 @@
 @interface CESRSpeechParameters
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CESRSpeechParameters)initWithCoder:(id)a3;
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 dictationUIInteractionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29 enableEmojiRecognition:(BOOL)a30 enableAutoPunctuation:(BOOL)a31 enableVoiceCommands:(BOOL)a32;
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 dictationUIInteractionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29 enableEmojiRecognition:(BOOL)a30 enableAutoPunctuation:(BOOL)a31 enableVoiceCommands:(BOOL)a32 sharedUserInfos:(id)a33 prefixText:(id)a34 postfixText:(id)a35 selectedText:(id)a36 powerContext:(id)a37;
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 dictationUIInteractionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29 enableEmojiRecognition:(BOOL)a30 enableAutoPunctuation:(BOOL)a31 enableVoiceCommands:(BOOL)a32 sharedUserInfos:(id)a33 prefixText:(id)a34 postfixText:(id)a35 selectedText:(id)a36 powerContext:(id)a37 recognitionStart:(double)a38;
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 dictationUIInteractionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29 enableEmojiRecognition:(BOOL)a30 enableAutoPunctuation:(BOOL)a31 enableVoiceCommands:(BOOL)a32 sharedUserInfos:(id)a33 prefixText:(id)a34 postfixText:(id)a35 selectedText:(id)a36 powerContext:(id)a37 recognitionStart:(double)a38 shouldGenerateVoiceCommandCandidates:(BOOL)a39;
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 dictationUIInteractionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29 enableEmojiRecognition:(BOOL)a30 enableAutoPunctuation:(BOOL)a31 enableVoiceCommands:(BOOL)a32 sharedUserInfos:(id)a33 prefixText:(id)a34 postfixText:(id)a35 selectedText:(id)a36 powerContext:(id)a37 recognitionStart:(double)a38 shouldGenerateVoiceCommandCandidates:(BOOL)a39 asrId:(id)a40;
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 dictationUIInteractionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29 enableEmojiRecognition:(BOOL)a30 enableAutoPunctuation:(BOOL)a31 enableVoiceCommands:(BOOL)a32 sharedUserInfos:(id)a33 prefixText:(id)a34 postfixText:(id)a35 selectedText:(id)a36 powerContext:(id)a37 recognitionStart:(double)a38 shouldGenerateVoiceCommandCandidates:(BOOL)a39 asrId:(id)a40 activeUserInfo:(id)a41;
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 dictationUIInteractionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29 enableEmojiRecognition:(BOOL)a30 enableAutoPunctuation:(BOOL)a31 enableVoiceCommands:(BOOL)a32 sharedUserInfos:(id)a33 prefixText:(id)a34 postfixText:(id)a35 selectedText:(id)a36 powerContext:(id)a37 recognitionStart:(double)a38 shouldGenerateVoiceCommandCandidates:(BOOL)a39 asrId:(id)a40 activeUserInfo:(id)a41 messagesContext:(id)a42;
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 dictationUIInteractionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29 sharedUserIds:(id)a30 enableEmojiRecognition:(BOOL)a31 enableAutoPunctuation:(BOOL)a32;
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 dictationUIInteractionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29 sharedUserIds:(id)a30 enableEmojiRecognition:(BOOL)a31 enableAutoPunctuation:(BOOL)a32 enableVoiceCommands:(BOOL)a33;
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 interactionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29;
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 interactionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 maximumRecognitionDuration:(double)a22 endpointStart:(double)a23 inputOrigin:(id)a24 location:(id)a25 jitGrammar:(id)a26 deliverEagerPackage:(BOOL)a27 disableDeliveringAsrFeatures:(BOOL)a28;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (CESRSpeechParameters)initWithCoder:(id)coder;
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier dictationUIInteractionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features enableEmojiRecognition:(BOOL)language0 enableAutoPunctuation:(BOOL)language1 enableVoiceCommands:(BOOL)language2;
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier dictationUIInteractionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features enableEmojiRecognition:(BOOL)language0 enableAutoPunctuation:(BOOL)language1 enableVoiceCommands:(BOOL)language2 sharedUserInfos:(id)language3 prefixText:(id)language4 postfixText:(id)language5 selectedText:(id)language6 powerContext:(id)language7;
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier dictationUIInteractionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features enableEmojiRecognition:(BOOL)language0 enableAutoPunctuation:(BOOL)language1 enableVoiceCommands:(BOOL)language2 sharedUserInfos:(id)language3 prefixText:(id)language4 postfixText:(id)language5 selectedText:(id)language6 powerContext:(id)language7 recognitionStart:(double)language8;
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier dictationUIInteractionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features enableEmojiRecognition:(BOOL)language0 enableAutoPunctuation:(BOOL)language1 enableVoiceCommands:(BOOL)language2 sharedUserInfos:(id)language3 prefixText:(id)language4 postfixText:(id)language5 selectedText:(id)language6 powerContext:(id)language7 recognitionStart:(double)language8 shouldGenerateVoiceCommandCandidates:(BOOL)language9;
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier dictationUIInteractionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features enableEmojiRecognition:(BOOL)language0 enableAutoPunctuation:(BOOL)language1 enableVoiceCommands:(BOOL)language2 sharedUserInfos:(id)language3 prefixText:(id)language4 postfixText:(id)language5 selectedText:(id)language6 powerContext:(id)language7 recognitionStart:(double)language8 shouldGenerateVoiceCommandCandidates:(BOOL)language9 asrId:(id)identifier0;
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier dictationUIInteractionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features enableEmojiRecognition:(BOOL)language0 enableAutoPunctuation:(BOOL)language1 enableVoiceCommands:(BOOL)language2 sharedUserInfos:(id)language3 prefixText:(id)language4 postfixText:(id)language5 selectedText:(id)language6 powerContext:(id)language7 recognitionStart:(double)language8 shouldGenerateVoiceCommandCandidates:(BOOL)language9 asrId:(id)identifier0 activeUserInfo:(id)identifier1;
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier dictationUIInteractionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features enableEmojiRecognition:(BOOL)language0 enableAutoPunctuation:(BOOL)language1 enableVoiceCommands:(BOOL)language2 sharedUserInfos:(id)language3 prefixText:(id)language4 postfixText:(id)language5 selectedText:(id)language6 powerContext:(id)language7 recognitionStart:(double)language8 shouldGenerateVoiceCommandCandidates:(BOOL)language9 asrId:(id)identifier0 activeUserInfo:(id)identifier1 messagesContext:(id)identifier2;
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier dictationUIInteractionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features sharedUserIds:(id)language0 enableEmojiRecognition:(BOOL)language1 enableAutoPunctuation:(BOOL)language2;
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier dictationUIInteractionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features sharedUserIds:(id)language0 enableEmojiRecognition:(BOOL)language1 enableAutoPunctuation:(BOOL)language2 enableVoiceCommands:(BOOL)language3;
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier interactionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features;
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier interactionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CESRSpeechParameters
 
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 dictationUIInteractionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29 enableEmojiRecognition:(BOOL)a30 enableAutoPunctuation:(BOOL)a31 enableVoiceCommands:(BOOL)a32 sharedUserInfos:(id)a33 prefixText:(id)a34 postfixText:(id)a35 selectedText:(id)a36 powerContext:(id)a37 recognitionStart:(double)a38 shouldGenerateVoiceCommandCandidates:(BOOL)a39 asrId:(id)a40 activeUserInfo:(id)a41
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier dictationUIInteractionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features enableEmojiRecognition:(BOOL)language0 enableAutoPunctuation:(BOOL)language1 enableVoiceCommands:(BOOL)language2 sharedUserInfos:(id)language3 prefixText:(id)language4 postfixText:(id)language5 selectedText:(id)language6 powerContext:(id)language7 recognitionStart:(double)language8 shouldGenerateVoiceCommandCandidates:(BOOL)language9 asrId:(id)identifier0 activeUserInfo:(id)identifier1
 {
-  LOBYTE(v44) = a39;
-  *(&v43 + 3) = __PAIR16__(a32, a31);
-  *(&v43 + 1) = __PAIR16__(a30, a29);
-  LOBYTE(v43) = a28;
-  *(&v42 + 7) = __PAIR16__(a22, a21);
-  *(&v42 + 5) = __PAIR16__(a20, a19);
-  *(&v42 + 3) = __PAIR16__(a18, a17);
-  *(&v42 + 1) = __PAIR16__(a16, a15);
-  LOBYTE(v42) = a14;
-  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:recognitionStart:shouldGenerateVoiceCommandCandidates:asrId:activeUserInfo:messagesContext:" requestIdentifier:a3 dictationUIInteractionIdentifier:a4 task:a5 loggingContext:a6 applicationName:a7 profile:a8 overrides:a23 modelOverrideURL:a24 originalAudioFileURL:a38 codec:a9 narrowband:a10 detectUtterances:a11 censorSpeech:a12 farField:a13 secureOfflineOnly:v42 shouldStoreAudioOnDevice:a25 continuousListening:a26 shouldHandleCapitalization:a27 isSpeechAPIRequest:v43 maximumRecognitionDuration:a33 endpointStart:a34 inputOrigin:a35 location:a36 jitGrammar:a37 deliverEagerPackage:v44 disableDeliveringAsrFeatures:a40 enableEmojiRecognition:a41 enableAutoPunctuation:0 enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:? recognitionStart:? shouldGenerateVoiceCommandCandidates:? asrId:? activeUserInfo:? messagesContext:?];
+  LOBYTE(v44) = candidates;
+  *(&v43 + 3) = __PAIR16__(commands, punctuation);
+  *(&v43 + 1) = __PAIR16__(recognition, features);
+  LOBYTE(v43) = package;
+  *(&v42 + 7) = __PAIR16__(request, capitalization);
+  *(&v42 + 5) = __PAIR16__(listening, device);
+  *(&v42 + 3) = __PAIR16__(only, field);
+  *(&v42 + 1) = __PAIR16__(speech, utterances);
+  LOBYTE(v42) = narrowband;
+  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:recognitionStart:shouldGenerateVoiceCommandCandidates:asrId:activeUserInfo:messagesContext:" requestIdentifier:language dictationUIInteractionIdentifier:identifier task:interactionIdentifier loggingContext:task applicationName:context profile:name overrides:duration modelOverrideURL:start originalAudioFileURL:recognitionStart codec:profile narrowband:overrides detectUtterances:l censorSpeech:rL farField:codec secureOfflineOnly:v42 shouldStoreAudioOnDevice:origin continuousListening:location shouldHandleCapitalization:grammar isSpeechAPIRequest:v43 maximumRecognitionDuration:infos endpointStart:text inputOrigin:postfixText location:selectedText jitGrammar:powerContext deliverEagerPackage:v44 disableDeliveringAsrFeatures:id enableEmojiRecognition:info enableAutoPunctuation:0 enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:? recognitionStart:? shouldGenerateVoiceCommandCandidates:? asrId:? activeUserInfo:? messagesContext:?];
 }
 
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 dictationUIInteractionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29 enableEmojiRecognition:(BOOL)a30 enableAutoPunctuation:(BOOL)a31 enableVoiceCommands:(BOOL)a32 sharedUserInfos:(id)a33 prefixText:(id)a34 postfixText:(id)a35 selectedText:(id)a36 powerContext:(id)a37 recognitionStart:(double)a38 shouldGenerateVoiceCommandCandidates:(BOOL)a39 asrId:(id)a40
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier dictationUIInteractionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features enableEmojiRecognition:(BOOL)language0 enableAutoPunctuation:(BOOL)language1 enableVoiceCommands:(BOOL)language2 sharedUserInfos:(id)language3 prefixText:(id)language4 postfixText:(id)language5 selectedText:(id)language6 powerContext:(id)language7 recognitionStart:(double)language8 shouldGenerateVoiceCommandCandidates:(BOOL)language9 asrId:(id)identifier0
 {
-  LOBYTE(v43) = a39;
-  *(&v42 + 3) = __PAIR16__(a32, a31);
-  *(&v42 + 1) = __PAIR16__(a30, a29);
-  LOBYTE(v42) = a28;
-  *(&v41 + 7) = __PAIR16__(a22, a21);
-  *(&v41 + 5) = __PAIR16__(a20, a19);
-  *(&v41 + 3) = __PAIR16__(a18, a17);
-  *(&v41 + 1) = __PAIR16__(a16, a15);
-  LOBYTE(v41) = a14;
-  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:recognitionStart:shouldGenerateVoiceCommandCandidates:asrId:activeUserInfo:" requestIdentifier:a3 dictationUIInteractionIdentifier:a4 task:a5 loggingContext:a6 applicationName:a7 profile:a8 overrides:a23 modelOverrideURL:a24 originalAudioFileURL:a38 codec:a9 narrowband:a10 detectUtterances:a11 censorSpeech:a12 farField:a13 secureOfflineOnly:v41 shouldStoreAudioOnDevice:a25 continuousListening:a26 shouldHandleCapitalization:a27 isSpeechAPIRequest:v42 maximumRecognitionDuration:a33 endpointStart:a34 inputOrigin:a35 location:a36 jitGrammar:a37 deliverEagerPackage:v43 disableDeliveringAsrFeatures:a40 enableEmojiRecognition:0 enableAutoPunctuation:? enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:? recognitionStart:? shouldGenerateVoiceCommandCandidates:? asrId:? activeUserInfo:?];
+  LOBYTE(v43) = candidates;
+  *(&v42 + 3) = __PAIR16__(commands, punctuation);
+  *(&v42 + 1) = __PAIR16__(recognition, features);
+  LOBYTE(v42) = package;
+  *(&v41 + 7) = __PAIR16__(request, capitalization);
+  *(&v41 + 5) = __PAIR16__(listening, device);
+  *(&v41 + 3) = __PAIR16__(only, field);
+  *(&v41 + 1) = __PAIR16__(speech, utterances);
+  LOBYTE(v41) = narrowband;
+  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:recognitionStart:shouldGenerateVoiceCommandCandidates:asrId:activeUserInfo:" requestIdentifier:language dictationUIInteractionIdentifier:identifier task:interactionIdentifier loggingContext:task applicationName:context profile:name overrides:duration modelOverrideURL:start originalAudioFileURL:recognitionStart codec:profile narrowband:overrides detectUtterances:l censorSpeech:rL farField:codec secureOfflineOnly:v41 shouldStoreAudioOnDevice:origin continuousListening:location shouldHandleCapitalization:grammar isSpeechAPIRequest:v42 maximumRecognitionDuration:infos endpointStart:text inputOrigin:postfixText location:selectedText jitGrammar:powerContext deliverEagerPackage:v43 disableDeliveringAsrFeatures:id enableEmojiRecognition:0 enableAutoPunctuation:? enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:? recognitionStart:? shouldGenerateVoiceCommandCandidates:? asrId:? activeUserInfo:?];
 }
 
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 dictationUIInteractionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29 enableEmojiRecognition:(BOOL)a30 enableAutoPunctuation:(BOOL)a31 enableVoiceCommands:(BOOL)a32 sharedUserInfos:(id)a33 prefixText:(id)a34 postfixText:(id)a35 selectedText:(id)a36 powerContext:(id)a37 recognitionStart:(double)a38 shouldGenerateVoiceCommandCandidates:(BOOL)a39
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier dictationUIInteractionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features enableEmojiRecognition:(BOOL)language0 enableAutoPunctuation:(BOOL)language1 enableVoiceCommands:(BOOL)language2 sharedUserInfos:(id)language3 prefixText:(id)language4 postfixText:(id)language5 selectedText:(id)language6 powerContext:(id)language7 recognitionStart:(double)language8 shouldGenerateVoiceCommandCandidates:(BOOL)language9
 {
-  LOBYTE(v42) = a39;
-  *(&v41 + 3) = __PAIR16__(a32, a31);
-  *(&v41 + 1) = __PAIR16__(a30, a29);
-  LOBYTE(v41) = a28;
-  *(&v40 + 7) = __PAIR16__(a22, a21);
-  *(&v40 + 5) = __PAIR16__(a20, a19);
-  *(&v40 + 3) = __PAIR16__(a18, a17);
-  *(&v40 + 1) = __PAIR16__(a16, a15);
-  LOBYTE(v40) = a14;
-  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:recognitionStart:shouldGenerateVoiceCommandCandidates:asrId:" requestIdentifier:a3 dictationUIInteractionIdentifier:a4 task:a5 loggingContext:a6 applicationName:a7 profile:a8 overrides:a23 modelOverrideURL:a24 originalAudioFileURL:a38 codec:a9 narrowband:a10 detectUtterances:a11 censorSpeech:a12 farField:a13 secureOfflineOnly:v40 shouldStoreAudioOnDevice:a25 continuousListening:a26 shouldHandleCapitalization:a27 isSpeechAPIRequest:v41 maximumRecognitionDuration:a33 endpointStart:a34 inputOrigin:a35 location:a36 jitGrammar:a37 deliverEagerPackage:v42 disableDeliveringAsrFeatures:0 enableEmojiRecognition:? enableAutoPunctuation:? enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:? recognitionStart:? shouldGenerateVoiceCommandCandidates:? asrId:?];
+  LOBYTE(v42) = candidates;
+  *(&v41 + 3) = __PAIR16__(commands, punctuation);
+  *(&v41 + 1) = __PAIR16__(recognition, features);
+  LOBYTE(v41) = package;
+  *(&v40 + 7) = __PAIR16__(request, capitalization);
+  *(&v40 + 5) = __PAIR16__(listening, device);
+  *(&v40 + 3) = __PAIR16__(only, field);
+  *(&v40 + 1) = __PAIR16__(speech, utterances);
+  LOBYTE(v40) = narrowband;
+  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:recognitionStart:shouldGenerateVoiceCommandCandidates:asrId:" requestIdentifier:language dictationUIInteractionIdentifier:identifier task:interactionIdentifier loggingContext:task applicationName:context profile:name overrides:duration modelOverrideURL:start originalAudioFileURL:recognitionStart codec:profile narrowband:overrides detectUtterances:l censorSpeech:rL farField:codec secureOfflineOnly:v40 shouldStoreAudioOnDevice:origin continuousListening:location shouldHandleCapitalization:grammar isSpeechAPIRequest:v41 maximumRecognitionDuration:infos endpointStart:text inputOrigin:postfixText location:selectedText jitGrammar:powerContext deliverEagerPackage:v42 disableDeliveringAsrFeatures:0 enableEmojiRecognition:? enableAutoPunctuation:? enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:? recognitionStart:? shouldGenerateVoiceCommandCandidates:? asrId:?];
 }
 
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 dictationUIInteractionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29 enableEmojiRecognition:(BOOL)a30 enableAutoPunctuation:(BOOL)a31 enableVoiceCommands:(BOOL)a32 sharedUserInfos:(id)a33 prefixText:(id)a34 postfixText:(id)a35 selectedText:(id)a36 powerContext:(id)a37 recognitionStart:(double)a38
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier dictationUIInteractionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features enableEmojiRecognition:(BOOL)language0 enableAutoPunctuation:(BOOL)language1 enableVoiceCommands:(BOOL)language2 sharedUserInfos:(id)language3 prefixText:(id)language4 postfixText:(id)language5 selectedText:(id)language6 powerContext:(id)language7 recognitionStart:(double)language8
 {
   LOBYTE(v41) = 0;
-  *(&v40 + 3) = __PAIR16__(a32, a31);
-  *(&v40 + 1) = __PAIR16__(a30, a29);
-  LOBYTE(v40) = a28;
-  *(&v39 + 7) = __PAIR16__(a22, a21);
-  *(&v39 + 5) = __PAIR16__(a20, a19);
-  *(&v39 + 3) = __PAIR16__(a18, a17);
-  *(&v39 + 1) = __PAIR16__(a16, a15);
-  LOBYTE(v39) = a14;
-  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:recognitionStart:shouldGenerateVoiceCommandCandidates:" requestIdentifier:a3 dictationUIInteractionIdentifier:a4 task:a5 loggingContext:a6 applicationName:a7 profile:a8 overrides:a23 modelOverrideURL:a24 originalAudioFileURL:a38 codec:a9 narrowband:a10 detectUtterances:a11 censorSpeech:a12 farField:a13 secureOfflineOnly:v39 shouldStoreAudioOnDevice:a25 continuousListening:a26 shouldHandleCapitalization:a27 isSpeechAPIRequest:v40 maximumRecognitionDuration:a33 endpointStart:a34 inputOrigin:a35 location:a36 jitGrammar:a37 deliverEagerPackage:v41 disableDeliveringAsrFeatures:? enableEmojiRecognition:? enableAutoPunctuation:? enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:? recognitionStart:? shouldGenerateVoiceCommandCandidates:?];
+  *(&v40 + 3) = __PAIR16__(commands, punctuation);
+  *(&v40 + 1) = __PAIR16__(recognition, features);
+  LOBYTE(v40) = package;
+  *(&v39 + 7) = __PAIR16__(request, capitalization);
+  *(&v39 + 5) = __PAIR16__(listening, device);
+  *(&v39 + 3) = __PAIR16__(only, field);
+  *(&v39 + 1) = __PAIR16__(speech, utterances);
+  LOBYTE(v39) = narrowband;
+  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:recognitionStart:shouldGenerateVoiceCommandCandidates:" requestIdentifier:language dictationUIInteractionIdentifier:identifier task:interactionIdentifier loggingContext:task applicationName:context profile:name overrides:duration modelOverrideURL:start originalAudioFileURL:recognitionStart codec:profile narrowband:overrides detectUtterances:l censorSpeech:rL farField:codec secureOfflineOnly:v39 shouldStoreAudioOnDevice:origin continuousListening:location shouldHandleCapitalization:grammar isSpeechAPIRequest:v40 maximumRecognitionDuration:infos endpointStart:text inputOrigin:postfixText location:selectedText jitGrammar:powerContext deliverEagerPackage:v41 disableDeliveringAsrFeatures:? enableEmojiRecognition:? enableAutoPunctuation:? enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:? recognitionStart:? shouldGenerateVoiceCommandCandidates:?];
 }
 
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 dictationUIInteractionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29 enableEmojiRecognition:(BOOL)a30 enableAutoPunctuation:(BOOL)a31 enableVoiceCommands:(BOOL)a32 sharedUserInfos:(id)a33 prefixText:(id)a34 postfixText:(id)a35 selectedText:(id)a36 powerContext:(id)a37
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier dictationUIInteractionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features enableEmojiRecognition:(BOOL)language0 enableAutoPunctuation:(BOOL)language1 enableVoiceCommands:(BOOL)language2 sharedUserInfos:(id)language3 prefixText:(id)language4 postfixText:(id)language5 selectedText:(id)language6 powerContext:(id)language7
 {
 
-  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:recognitionStart:" requestIdentifier:a3 dictationUIInteractionIdentifier:a4 task:a5 loggingContext:a6 applicationName:a7 profile:a23 overrides:a24 modelOverrideURL:0.0 originalAudioFileURL:? codec:? narrowband:? detectUtterances:? censorSpeech:? farField:? secureOfflineOnly:? shouldStoreAudioOnDevice:? continuousListening:? shouldHandleCapitalization:? isSpeechAPIRequest:? maximumRecognitionDuration:? endpointStart:? inputOrigin:? location:? jitGrammar:? deliverEagerPackage:? disableDeliveringAsrFeatures:? enableEmojiRecognition:? enableAutoPunctuation:? enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:? recognitionStart:?];
+  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:recognitionStart:" requestIdentifier:language dictationUIInteractionIdentifier:identifier task:interactionIdentifier loggingContext:task applicationName:context profile:duration overrides:start modelOverrideURL:0.0 originalAudioFileURL:? codec:? narrowband:? detectUtterances:? censorSpeech:? farField:? secureOfflineOnly:? shouldStoreAudioOnDevice:? continuousListening:? shouldHandleCapitalization:? isSpeechAPIRequest:? maximumRecognitionDuration:? endpointStart:? inputOrigin:? location:? jitGrammar:? deliverEagerPackage:? disableDeliveringAsrFeatures:? enableEmojiRecognition:? enableAutoPunctuation:? enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:? recognitionStart:?];
 }
 
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 dictationUIInteractionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29 sharedUserIds:(id)a30 enableEmojiRecognition:(BOOL)a31 enableAutoPunctuation:(BOOL)a32 enableVoiceCommands:(BOOL)a33
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier dictationUIInteractionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features sharedUserIds:(id)language0 enableEmojiRecognition:(BOOL)language1 enableAutoPunctuation:(BOOL)language2 enableVoiceCommands:(BOOL)language3
 {
-  *(&v35 + 3) = __PAIR16__(a33, a32);
-  BYTE2(v35) = a31;
-  LOWORD(v35) = __PAIR16__(a29, a28);
-  *(&v34 + 7) = __PAIR16__(a22, a21);
-  *(&v34 + 5) = __PAIR16__(a20, a19);
-  *(&v34 + 3) = __PAIR16__(a18, a17);
-  *(&v34 + 1) = __PAIR16__(a16, a15);
-  LOBYTE(v34) = a14;
-  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:" requestIdentifier:a3 dictationUIInteractionIdentifier:a4 task:a5 loggingContext:a6 applicationName:a7 profile:a8 overrides:a23 modelOverrideURL:a24 originalAudioFileURL:a9 codec:a10 narrowband:a11 detectUtterances:a12 censorSpeech:a13 farField:v34 secureOfflineOnly:a25 shouldStoreAudioOnDevice:a26 continuousListening:a27 shouldHandleCapitalization:v35 isSpeechAPIRequest:0 maximumRecognitionDuration:0 endpointStart:0 inputOrigin:0 location:0 jitGrammar:? deliverEagerPackage:? disableDeliveringAsrFeatures:? enableEmojiRecognition:? enableAutoPunctuation:? enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:?];
+  *(&v35 + 3) = __PAIR16__(commands, punctuation);
+  BYTE2(v35) = recognition;
+  LOWORD(v35) = __PAIR16__(features, package);
+  *(&v34 + 7) = __PAIR16__(request, capitalization);
+  *(&v34 + 5) = __PAIR16__(listening, device);
+  *(&v34 + 3) = __PAIR16__(only, field);
+  *(&v34 + 1) = __PAIR16__(speech, utterances);
+  LOBYTE(v34) = narrowband;
+  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:" requestIdentifier:language dictationUIInteractionIdentifier:identifier task:interactionIdentifier loggingContext:task applicationName:context profile:name overrides:duration modelOverrideURL:start originalAudioFileURL:profile codec:overrides narrowband:l detectUtterances:rL censorSpeech:codec farField:v34 secureOfflineOnly:origin shouldStoreAudioOnDevice:location continuousListening:grammar shouldHandleCapitalization:v35 isSpeechAPIRequest:0 maximumRecognitionDuration:0 endpointStart:0 inputOrigin:0 location:0 jitGrammar:? deliverEagerPackage:? disableDeliveringAsrFeatures:? enableEmojiRecognition:? enableAutoPunctuation:? enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:?];
 }
 
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 dictationUIInteractionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29 enableEmojiRecognition:(BOOL)a30 enableAutoPunctuation:(BOOL)a31 enableVoiceCommands:(BOOL)a32
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier dictationUIInteractionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features enableEmojiRecognition:(BOOL)language0 enableAutoPunctuation:(BOOL)language1 enableVoiceCommands:(BOOL)language2
 {
-  *(&v34 + 3) = __PAIR16__(a32, a31);
-  *(&v34 + 1) = __PAIR16__(a30, a29);
-  LOBYTE(v34) = a28;
-  *(&v33 + 7) = __PAIR16__(a22, a21);
-  *(&v33 + 5) = __PAIR16__(a20, a19);
-  *(&v33 + 3) = __PAIR16__(a18, a17);
-  *(&v33 + 1) = __PAIR16__(a16, a15);
-  LOBYTE(v33) = a14;
-  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:" requestIdentifier:a3 dictationUIInteractionIdentifier:a4 task:a5 loggingContext:a6 applicationName:a7 profile:a8 overrides:a23 modelOverrideURL:a24 originalAudioFileURL:a9 codec:a10 narrowband:a11 detectUtterances:a12 censorSpeech:a13 farField:v33 secureOfflineOnly:a25 shouldStoreAudioOnDevice:a26 continuousListening:a27 shouldHandleCapitalization:v34 isSpeechAPIRequest:0 maximumRecognitionDuration:0 endpointStart:0 inputOrigin:0 location:0 jitGrammar:? deliverEagerPackage:? disableDeliveringAsrFeatures:? enableEmojiRecognition:? enableAutoPunctuation:? enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:?];
+  *(&v34 + 3) = __PAIR16__(commands, punctuation);
+  *(&v34 + 1) = __PAIR16__(recognition, features);
+  LOBYTE(v34) = package;
+  *(&v33 + 7) = __PAIR16__(request, capitalization);
+  *(&v33 + 5) = __PAIR16__(listening, device);
+  *(&v33 + 3) = __PAIR16__(only, field);
+  *(&v33 + 1) = __PAIR16__(speech, utterances);
+  LOBYTE(v33) = narrowband;
+  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:" requestIdentifier:language dictationUIInteractionIdentifier:identifier task:interactionIdentifier loggingContext:task applicationName:context profile:name overrides:duration modelOverrideURL:start originalAudioFileURL:profile codec:overrides narrowband:l detectUtterances:rL censorSpeech:codec farField:v33 secureOfflineOnly:origin shouldStoreAudioOnDevice:location continuousListening:grammar shouldHandleCapitalization:v34 isSpeechAPIRequest:0 maximumRecognitionDuration:0 endpointStart:0 inputOrigin:0 location:0 jitGrammar:? deliverEagerPackage:? disableDeliveringAsrFeatures:? enableEmojiRecognition:? enableAutoPunctuation:? enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:?];
 }
 
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 dictationUIInteractionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29 sharedUserIds:(id)a30 enableEmojiRecognition:(BOOL)a31 enableAutoPunctuation:(BOOL)a32
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier dictationUIInteractionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features sharedUserIds:(id)language0 enableEmojiRecognition:(BOOL)language1 enableAutoPunctuation:(BOOL)language2
 {
   BYTE4(v34) = 0;
-  WORD1(v34) = __PAIR16__(a32, a31);
-  LOWORD(v34) = __PAIR16__(a29, a28);
-  *(&v33 + 7) = __PAIR16__(a22, a21);
-  *(&v33 + 5) = __PAIR16__(a20, a19);
-  *(&v33 + 3) = __PAIR16__(a18, a17);
-  *(&v33 + 1) = __PAIR16__(a16, a15);
-  LOBYTE(v33) = a14;
-  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:" requestIdentifier:a3 dictationUIInteractionIdentifier:a4 task:a5 loggingContext:a6 applicationName:a7 profile:a8 overrides:a23 modelOverrideURL:a24 originalAudioFileURL:a9 codec:a10 narrowband:a11 detectUtterances:a12 censorSpeech:a13 farField:v33 secureOfflineOnly:a25 shouldStoreAudioOnDevice:a26 continuousListening:a27 shouldHandleCapitalization:v34 isSpeechAPIRequest:0 maximumRecognitionDuration:0 endpointStart:0 inputOrigin:0 location:0 jitGrammar:? deliverEagerPackage:? disableDeliveringAsrFeatures:? enableEmojiRecognition:? enableAutoPunctuation:? enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:?];
+  WORD1(v34) = __PAIR16__(punctuation, recognition);
+  LOWORD(v34) = __PAIR16__(features, package);
+  *(&v33 + 7) = __PAIR16__(request, capitalization);
+  *(&v33 + 5) = __PAIR16__(listening, device);
+  *(&v33 + 3) = __PAIR16__(only, field);
+  *(&v33 + 1) = __PAIR16__(speech, utterances);
+  LOBYTE(v33) = narrowband;
+  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:" requestIdentifier:language dictationUIInteractionIdentifier:identifier task:interactionIdentifier loggingContext:task applicationName:context profile:name overrides:duration modelOverrideURL:start originalAudioFileURL:profile codec:overrides narrowband:l detectUtterances:rL censorSpeech:codec farField:v33 secureOfflineOnly:origin shouldStoreAudioOnDevice:location continuousListening:grammar shouldHandleCapitalization:v34 isSpeechAPIRequest:0 maximumRecognitionDuration:0 endpointStart:0 inputOrigin:0 location:0 jitGrammar:? deliverEagerPackage:? disableDeliveringAsrFeatures:? enableEmojiRecognition:? enableAutoPunctuation:? enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:?];
 }
 
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 interactionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier interactionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features
 {
   BYTE4(v31) = 0;
-  LODWORD(v31) = __PAIR16__(a29, a28);
-  *(&v30 + 7) = __PAIR16__(a22, a21);
-  *(&v30 + 5) = __PAIR16__(a20, a19);
-  *(&v30 + 3) = __PAIR16__(a18, a17);
-  *(&v30 + 1) = __PAIR16__(a16, a15);
-  LOBYTE(v30) = a14;
-  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:" requestIdentifier:a3 dictationUIInteractionIdentifier:a4 task:a5 loggingContext:a6 applicationName:a7 profile:a8 overrides:a23 modelOverrideURL:a24 originalAudioFileURL:a9 codec:a10 narrowband:a11 detectUtterances:a12 censorSpeech:a13 farField:v30 secureOfflineOnly:a25 shouldStoreAudioOnDevice:a26 continuousListening:a27 shouldHandleCapitalization:v31 isSpeechAPIRequest:0 maximumRecognitionDuration:0 endpointStart:0 inputOrigin:0 location:0 jitGrammar:? deliverEagerPackage:? disableDeliveringAsrFeatures:? enableEmojiRecognition:? enableAutoPunctuation:? enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:?];
+  LODWORD(v31) = __PAIR16__(features, package);
+  *(&v30 + 7) = __PAIR16__(request, capitalization);
+  *(&v30 + 5) = __PAIR16__(listening, device);
+  *(&v30 + 3) = __PAIR16__(only, field);
+  *(&v30 + 1) = __PAIR16__(speech, utterances);
+  LOBYTE(v30) = narrowband;
+  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:" requestIdentifier:language dictationUIInteractionIdentifier:identifier task:interactionIdentifier loggingContext:task applicationName:context profile:name overrides:duration modelOverrideURL:start originalAudioFileURL:profile codec:overrides narrowband:l detectUtterances:rL censorSpeech:codec farField:v30 secureOfflineOnly:origin shouldStoreAudioOnDevice:location continuousListening:grammar shouldHandleCapitalization:v31 isSpeechAPIRequest:0 maximumRecognitionDuration:0 endpointStart:0 inputOrigin:0 location:0 jitGrammar:? deliverEagerPackage:? disableDeliveringAsrFeatures:? enableEmojiRecognition:? enableAutoPunctuation:? enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:?];
 }
 
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 interactionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 maximumRecognitionDuration:(double)a22 endpointStart:(double)a23 inputOrigin:(id)a24 location:(id)a25 jitGrammar:(id)a26 deliverEagerPackage:(BOOL)a27 disableDeliveringAsrFeatures:(BOOL)a28
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier interactionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features
 {
   BYTE4(v31) = 0;
-  LODWORD(v31) = __PAIR16__(a28, a27);
+  LODWORD(v31) = __PAIR16__(features, package);
   LOBYTE(v30) = 0;
-  HIWORD(v29) = __PAIR16__(a21, a20);
-  WORD2(v29) = __PAIR16__(a19, a18);
-  WORD1(v29) = __PAIR16__(a17, a16);
-  LOWORD(v29) = __PAIR16__(a15, a14);
-  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:" requestIdentifier:a3 dictationUIInteractionIdentifier:a4 task:a5 loggingContext:a6 applicationName:a7 profile:a8 overrides:a22 modelOverrideURL:a23 originalAudioFileURL:a9 codec:a10 narrowband:a11 detectUtterances:a12 censorSpeech:a13 farField:v29 secureOfflineOnly:v30 shouldStoreAudioOnDevice:a24 continuousListening:a25 shouldHandleCapitalization:a26 isSpeechAPIRequest:v31 maximumRecognitionDuration:0 endpointStart:0 inputOrigin:0 location:0 jitGrammar:0 deliverEagerPackage:? disableDeliveringAsrFeatures:? enableEmojiRecognition:? enableAutoPunctuation:? enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:?];
+  HIWORD(v29) = __PAIR16__(capitalization, listening);
+  WORD2(v29) = __PAIR16__(device, only);
+  WORD1(v29) = __PAIR16__(field, speech);
+  LOWORD(v29) = __PAIR16__(utterances, narrowband);
+  return [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:" requestIdentifier:language dictationUIInteractionIdentifier:identifier task:interactionIdentifier loggingContext:task applicationName:context profile:name overrides:duration modelOverrideURL:start originalAudioFileURL:profile codec:overrides narrowband:l detectUtterances:rL censorSpeech:codec farField:v29 secureOfflineOnly:v30 shouldStoreAudioOnDevice:origin continuousListening:location shouldHandleCapitalization:grammar isSpeechAPIRequest:v31 maximumRecognitionDuration:0 endpointStart:0 inputOrigin:0 location:0 jitGrammar:0 deliverEagerPackage:? disableDeliveringAsrFeatures:? enableEmojiRecognition:? enableAutoPunctuation:? enableVoiceCommands:? sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:?];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   language = self->_language;
-  v23 = a3;
-  [v23 encodeObject:language forKey:@"CESRSpeechParameters::language"];
-  [v23 encodeObject:self->_requestIdentifier forKey:@"CESRSpeechParameters::requestIdentifier"];
-  [v23 encodeObject:self->_dictationUIInteractionIdentifier forKey:@"CESRSpeechParameters::dictationUIInteractionIdentifier"];
-  [v23 encodeObject:self->_task forKey:@"CESRSpeechParameters::task"];
-  [v23 encodeObject:self->_loggingContext forKey:@"CESRSpeechParameters::loggingContext"];
-  [v23 encodeObject:self->_applicationName forKey:@"CESRSpeechParameters::applicationName"];
-  [v23 encodeObject:self->_profile forKey:@"CESRSpeechParameters::profile"];
-  [v23 encodeObject:self->_overrides forKey:@"CESRSpeechParameters::overrides"];
-  [v23 encodeObject:self->_modelOverrideURL forKey:@"CESRSpeechParameters::modelOverrideURL"];
-  [v23 encodeObject:self->_originalAudioFileURL forKey:@"CESRSpeechParameters::originalAudioFileURL"];
-  [v23 encodeObject:self->_codec forKey:@"CESRSpeechParameters::codec"];
+  coderCopy = coder;
+  [coderCopy encodeObject:language forKey:@"CESRSpeechParameters::language"];
+  [coderCopy encodeObject:self->_requestIdentifier forKey:@"CESRSpeechParameters::requestIdentifier"];
+  [coderCopy encodeObject:self->_dictationUIInteractionIdentifier forKey:@"CESRSpeechParameters::dictationUIInteractionIdentifier"];
+  [coderCopy encodeObject:self->_task forKey:@"CESRSpeechParameters::task"];
+  [coderCopy encodeObject:self->_loggingContext forKey:@"CESRSpeechParameters::loggingContext"];
+  [coderCopy encodeObject:self->_applicationName forKey:@"CESRSpeechParameters::applicationName"];
+  [coderCopy encodeObject:self->_profile forKey:@"CESRSpeechParameters::profile"];
+  [coderCopy encodeObject:self->_overrides forKey:@"CESRSpeechParameters::overrides"];
+  [coderCopy encodeObject:self->_modelOverrideURL forKey:@"CESRSpeechParameters::modelOverrideURL"];
+  [coderCopy encodeObject:self->_originalAudioFileURL forKey:@"CESRSpeechParameters::originalAudioFileURL"];
+  [coderCopy encodeObject:self->_codec forKey:@"CESRSpeechParameters::codec"];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_narrowband];
-  [v23 encodeObject:v5 forKey:@"CESRSpeechParameters::narrowband"];
+  [coderCopy encodeObject:v5 forKey:@"CESRSpeechParameters::narrowband"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_detectUtterances];
-  [v23 encodeObject:v6 forKey:@"CESRSpeechParameters::detectUtterances"];
+  [coderCopy encodeObject:v6 forKey:@"CESRSpeechParameters::detectUtterances"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_censorSpeech];
-  [v23 encodeObject:v7 forKey:@"CESRSpeechParameters::censorSpeech"];
+  [coderCopy encodeObject:v7 forKey:@"CESRSpeechParameters::censorSpeech"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:self->_farField];
-  [v23 encodeObject:v8 forKey:@"CESRSpeechParameters::farField"];
+  [coderCopy encodeObject:v8 forKey:@"CESRSpeechParameters::farField"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_secureOfflineOnly];
-  [v23 encodeObject:v9 forKey:@"CESRSpeechParameters::secureOfflineOnly"];
+  [coderCopy encodeObject:v9 forKey:@"CESRSpeechParameters::secureOfflineOnly"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_shouldStoreAudioOnDevice];
-  [v23 encodeObject:v10 forKey:@"CESRSpeechParameters::shouldStoreAudioOnDevice"];
+  [coderCopy encodeObject:v10 forKey:@"CESRSpeechParameters::shouldStoreAudioOnDevice"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_continuousListening];
-  [v23 encodeObject:v11 forKey:@"CESRSpeechParameters::continuousListening"];
+  [coderCopy encodeObject:v11 forKey:@"CESRSpeechParameters::continuousListening"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_shouldHandleCapitalization];
-  [v23 encodeObject:v12 forKey:@"CESRSpeechParameters::shouldHandleCapitalization"];
+  [coderCopy encodeObject:v12 forKey:@"CESRSpeechParameters::shouldHandleCapitalization"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithBool:self->_isSpeechAPIRequest];
-  [v23 encodeObject:v13 forKey:@"CESRSpeechParameters::isSpeechAPIRequest"];
+  [coderCopy encodeObject:v13 forKey:@"CESRSpeechParameters::isSpeechAPIRequest"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:self->_maximumRecognitionDuration];
-  [v23 encodeObject:v14 forKey:@"CESRSpeechParameters::maximumRecognitionDuration"];
+  [coderCopy encodeObject:v14 forKey:@"CESRSpeechParameters::maximumRecognitionDuration"];
 
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:self->_endpointStart];
-  [v23 encodeObject:v15 forKey:@"CESRSpeechParameters::endpointStart"];
+  [coderCopy encodeObject:v15 forKey:@"CESRSpeechParameters::endpointStart"];
 
-  [v23 encodeObject:self->_inputOrigin forKey:@"CESRSpeechParameters::inputOrigin"];
-  [v23 encodeObject:self->_location forKey:@"CESRSpeechParameters::location"];
-  [v23 encodeObject:self->_jitGrammar forKey:@"CESRSpeechParameters::jitGrammar"];
+  [coderCopy encodeObject:self->_inputOrigin forKey:@"CESRSpeechParameters::inputOrigin"];
+  [coderCopy encodeObject:self->_location forKey:@"CESRSpeechParameters::location"];
+  [coderCopy encodeObject:self->_jitGrammar forKey:@"CESRSpeechParameters::jitGrammar"];
   v16 = [MEMORY[0x277CCABB0] numberWithBool:self->_deliverEagerPackage];
-  [v23 encodeObject:v16 forKey:@"CESRSpeechParameters::deliverEagerPackage"];
+  [coderCopy encodeObject:v16 forKey:@"CESRSpeechParameters::deliverEagerPackage"];
 
   v17 = [MEMORY[0x277CCABB0] numberWithBool:self->_disableDeliveringAsrFeatures];
-  [v23 encodeObject:v17 forKey:@"CESRSpeechParameters::disableDeliveringAsrFeatures"];
+  [coderCopy encodeObject:v17 forKey:@"CESRSpeechParameters::disableDeliveringAsrFeatures"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithBool:self->_enableEmojiRecognition];
-  [v23 encodeObject:v18 forKey:@"CESRSpeechParameters::enableEmojiRecognition"];
+  [coderCopy encodeObject:v18 forKey:@"CESRSpeechParameters::enableEmojiRecognition"];
 
   v19 = [MEMORY[0x277CCABB0] numberWithBool:self->_enableAutoPunctuation];
-  [v23 encodeObject:v19 forKey:@"CESRSpeechParameters::enableAutoPunctuation"];
+  [coderCopy encodeObject:v19 forKey:@"CESRSpeechParameters::enableAutoPunctuation"];
 
   v20 = [MEMORY[0x277CCABB0] numberWithBool:self->_enableVoiceCommands];
-  [v23 encodeObject:v20 forKey:@"CESRSpeechParameters::enableVoiceCommands"];
+  [coderCopy encodeObject:v20 forKey:@"CESRSpeechParameters::enableVoiceCommands"];
 
-  [v23 encodeObject:self->_sharedUserInfos forKey:@"CESRSpeechParameters::sharedUserInfos"];
-  [v23 encodeObject:self->_prefixText forKey:@"CESRSpeechParameters::prefixText"];
-  [v23 encodeObject:self->_postfixText forKey:@"CESRSpeechParameters::postfixText"];
-  [v23 encodeObject:self->_selectedText forKey:@"CESRSpeechParameters::selectedText"];
-  [v23 encodeObject:self->_powerContext forKey:@"CESRSpeechParameters::powerContext"];
+  [coderCopy encodeObject:self->_sharedUserInfos forKey:@"CESRSpeechParameters::sharedUserInfos"];
+  [coderCopy encodeObject:self->_prefixText forKey:@"CESRSpeechParameters::prefixText"];
+  [coderCopy encodeObject:self->_postfixText forKey:@"CESRSpeechParameters::postfixText"];
+  [coderCopy encodeObject:self->_selectedText forKey:@"CESRSpeechParameters::selectedText"];
+  [coderCopy encodeObject:self->_powerContext forKey:@"CESRSpeechParameters::powerContext"];
   v21 = [MEMORY[0x277CCABB0] numberWithDouble:self->_recognitionStart];
-  [v23 encodeObject:v21 forKey:@"CESRSpeechParameters::recognitionStart"];
+  [coderCopy encodeObject:v21 forKey:@"CESRSpeechParameters::recognitionStart"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithBool:self->_shouldGenerateVoiceCommandCandidates];
-  [v23 encodeObject:v22 forKey:@"CESRSpeechParameters::shouldGenerateVoiceCommandCandidates"];
+  [coderCopy encodeObject:v22 forKey:@"CESRSpeechParameters::shouldGenerateVoiceCommandCandidates"];
 
-  [v23 encodeObject:self->_asrId forKey:@"CESRSpeechParameters::asrId"];
-  [v23 encodeObject:self->_activeUserInfo forKey:@"CESRSpeechParameters::activeUserInfo"];
-  [v23 encodeObject:self->_messagesContext forKey:@"CESRSpeechParameters::messagesContext"];
+  [coderCopy encodeObject:self->_asrId forKey:@"CESRSpeechParameters::asrId"];
+  [coderCopy encodeObject:self->_activeUserInfo forKey:@"CESRSpeechParameters::activeUserInfo"];
+  [coderCopy encodeObject:self->_messagesContext forKey:@"CESRSpeechParameters::messagesContext"];
 }
 
-- (CESRSpeechParameters)initWithCoder:(id)a3
+- (CESRSpeechParameters)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v85 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::language"];
-  v84 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::requestIdentifier"];
-  v86 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::dictationUIInteractionIdentifier"];
-  v77 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::task"];
+  coderCopy = coder;
+  v85 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::language"];
+  v84 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::requestIdentifier"];
+  v86 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::dictationUIInteractionIdentifier"];
+  v77 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::task"];
   v4 = MEMORY[0x277CBEB98];
   v5 = objc_opt_class();
   v6 = [v4 setWithObjects:{v5, objc_opt_class(), 0}];
-  v76 = [v3 decodeObjectOfClasses:v6 forKey:@"CESRSpeechParameters::loggingContext"];
+  v76 = [coderCopy decodeObjectOfClasses:v6 forKey:@"CESRSpeechParameters::loggingContext"];
 
-  v75 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::applicationName"];
-  v83 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::profile"];
+  v75 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::applicationName"];
+  v83 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::profile"];
   v7 = MEMORY[0x277CBEB98];
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = [v7 setWithObjects:{v8, v9, objc_opt_class(), 0}];
-  v74 = [v3 decodeObjectOfClasses:v10 forKey:@"CESRSpeechParameters::overrides"];
+  v74 = [coderCopy decodeObjectOfClasses:v10 forKey:@"CESRSpeechParameters::overrides"];
 
-  v73 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::modelOverrideURL"];
-  v64 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::originalAudioFileURL"];
-  v63 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::codec"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::narrowband"];
-  v72 = [v11 BOOLValue];
+  v73 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::modelOverrideURL"];
+  v64 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::originalAudioFileURL"];
+  v63 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::codec"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::narrowband"];
+  bOOLValue = [v11 BOOLValue];
 
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::detectUtterances"];
-  v71 = [v12 BOOLValue];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::detectUtterances"];
+  bOOLValue2 = [v12 BOOLValue];
 
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::censorSpeech"];
-  v70 = [v13 BOOLValue];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::censorSpeech"];
+  bOOLValue3 = [v13 BOOLValue];
 
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::farField"];
-  v69 = [v14 BOOLValue];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::farField"];
+  bOOLValue4 = [v14 BOOLValue];
 
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::secureOfflineOnly"];
-  v68 = [v15 BOOLValue];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::secureOfflineOnly"];
+  bOOLValue5 = [v15 BOOLValue];
 
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::shouldStoreAudioOnDevice"];
-  v67 = [v16 BOOLValue];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::shouldStoreAudioOnDevice"];
+  bOOLValue6 = [v16 BOOLValue];
 
-  v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::continuousListening"];
-  v66 = [v17 BOOLValue];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::continuousListening"];
+  bOOLValue7 = [v17 BOOLValue];
 
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::shouldHandleCapitalization"];
-  v65 = [v18 BOOLValue];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::shouldHandleCapitalization"];
+  bOOLValue8 = [v18 BOOLValue];
 
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::isSpeechAPIRequest"];
-  v62 = [v19 BOOLValue];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::isSpeechAPIRequest"];
+  bOOLValue9 = [v19 BOOLValue];
 
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::maximumRecognitionDuration"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::maximumRecognitionDuration"];
   [v20 doubleValue];
   v22 = v21;
 
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::endpointStart"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::endpointStart"];
   [v23 doubleValue];
   v25 = v24;
 
-  v82 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::inputOrigin"];
-  v81 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::location"];
+  v82 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::inputOrigin"];
+  v81 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::location"];
   v26 = MEMORY[0x277CBEB98];
   v27 = objc_opt_class();
   v28 = [v26 setWithObjects:{v27, objc_opt_class(), 0}];
-  v58 = [v3 decodeObjectOfClasses:v28 forKey:@"CESRSpeechParameters::jitGrammar"];
+  v58 = [coderCopy decodeObjectOfClasses:v28 forKey:@"CESRSpeechParameters::jitGrammar"];
 
-  v29 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::deliverEagerPackage"];
-  v61 = [v29 BOOLValue];
+  v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::deliverEagerPackage"];
+  bOOLValue10 = [v29 BOOLValue];
 
-  v30 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::disableDeliveringAsrFeatures"];
-  v60 = [v30 BOOLValue];
+  v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::disableDeliveringAsrFeatures"];
+  bOOLValue11 = [v30 BOOLValue];
 
-  v31 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::enableEmojiRecognition"];
-  v59 = [v31 BOOLValue];
+  v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::enableEmojiRecognition"];
+  bOOLValue12 = [v31 BOOLValue];
 
-  v32 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::enableAutoPunctuation"];
-  v57 = [v32 BOOLValue];
+  v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::enableAutoPunctuation"];
+  bOOLValue13 = [v32 BOOLValue];
 
-  v33 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::enableVoiceCommands"];
-  v56 = [v33 BOOLValue];
+  v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::enableVoiceCommands"];
+  bOOLValue14 = [v33 BOOLValue];
 
   v34 = MEMORY[0x277CBEB98];
   v35 = objc_opt_class();
   v36 = [v34 setWithObjects:{v35, objc_opt_class(), 0}];
-  v80 = [v3 decodeObjectOfClasses:v36 forKey:@"CESRSpeechParameters::sharedUserInfos"];
+  v80 = [coderCopy decodeObjectOfClasses:v36 forKey:@"CESRSpeechParameters::sharedUserInfos"];
 
-  v55 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::prefixText"];
-  v54 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::postfixText"];
-  v53 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::selectedText"];
-  v52 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::powerContext"];
-  v37 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::recognitionStart"];
+  v55 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::prefixText"];
+  v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::postfixText"];
+  v53 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::selectedText"];
+  v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::powerContext"];
+  v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::recognitionStart"];
   [v37 doubleValue];
   v39 = v38;
 
-  v40 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::shouldGenerateVoiceCommandCandidates"];
+  v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::shouldGenerateVoiceCommandCandidates"];
   LOBYTE(v9) = [v40 BOOLValue];
 
-  v51 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::asrId"];
-  v41 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::activeUserInfo"];
+  v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::asrId"];
+  v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CESRSpeechParameters::activeUserInfo"];
   v42 = MEMORY[0x277CBEB98];
   v43 = objc_opt_class();
   v44 = [v42 setWithObjects:{v43, objc_opt_class(), 0}];
-  v45 = [v3 decodeObjectOfClasses:v44 forKey:@"CESRSpeechParameters::messagesContext"];
+  v45 = [coderCopy decodeObjectOfClasses:v44 forKey:@"CESRSpeechParameters::messagesContext"];
 
   LOBYTE(v50) = v9;
-  BYTE4(v49) = v56;
-  BYTE3(v49) = v57;
-  BYTE2(v49) = v59;
-  BYTE1(v49) = v60;
-  LOBYTE(v49) = v61;
-  LOBYTE(v48) = v62;
-  HIBYTE(v47) = v65;
-  BYTE6(v47) = v66;
-  BYTE5(v47) = v67;
-  BYTE4(v47) = v68;
-  BYTE3(v47) = v69;
-  BYTE2(v47) = v70;
-  BYTE1(v47) = v71;
-  LOBYTE(v47) = v72;
+  BYTE4(v49) = bOOLValue14;
+  BYTE3(v49) = bOOLValue13;
+  BYTE2(v49) = bOOLValue12;
+  BYTE1(v49) = bOOLValue11;
+  LOBYTE(v49) = bOOLValue10;
+  LOBYTE(v48) = bOOLValue9;
+  HIBYTE(v47) = bOOLValue8;
+  BYTE6(v47) = bOOLValue7;
+  BYTE5(v47) = bOOLValue6;
+  BYTE4(v47) = bOOLValue5;
+  BYTE3(v47) = bOOLValue4;
+  BYTE2(v47) = bOOLValue3;
+  BYTE1(v47) = bOOLValue2;
+  LOBYTE(v47) = bOOLValue;
   v79 = [CESRSpeechParameters initWithLanguage:"initWithLanguage:requestIdentifier:dictationUIInteractionIdentifier:task:loggingContext:applicationName:profile:overrides:modelOverrideURL:originalAudioFileURL:codec:narrowband:detectUtterances:censorSpeech:farField:secureOfflineOnly:shouldStoreAudioOnDevice:continuousListening:shouldHandleCapitalization:isSpeechAPIRequest:maximumRecognitionDuration:endpointStart:inputOrigin:location:jitGrammar:deliverEagerPackage:disableDeliveringAsrFeatures:enableEmojiRecognition:enableAutoPunctuation:enableVoiceCommands:sharedUserInfos:prefixText:postfixText:selectedText:powerContext:recognitionStart:shouldGenerateVoiceCommandCandidates:asrId:activeUserInfo:messagesContext:" requestIdentifier:v85 dictationUIInteractionIdentifier:v84 task:v86 loggingContext:v77 applicationName:v76 profile:v75 overrides:v22 modelOverrideURL:v25 originalAudioFileURL:v39 codec:v83 narrowband:v74 detectUtterances:v73 censorSpeech:v64 farField:v63 secureOfflineOnly:v47 shouldStoreAudioOnDevice:v48 continuousListening:v82 shouldHandleCapitalization:v81 isSpeechAPIRequest:v58 maximumRecognitionDuration:v49 endpointStart:v80 inputOrigin:v55 location:v54 jitGrammar:v53 deliverEagerPackage:v52 disableDeliveringAsrFeatures:v50 enableEmojiRecognition:v51 enableAutoPunctuation:v41 enableVoiceCommands:v45 sharedUserInfos:? prefixText:? postfixText:? selectedText:? powerContext:? recognitionStart:? shouldGenerateVoiceCommandCandidates:? asrId:? activeUserInfo:? messagesContext:?];
 
   return v79;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v55 = 1;
   }
@@ -364,7 +364,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       narrowband = self->_narrowband;
       if (narrowband != [(CESRSpeechParameters *)v5 narrowband])
       {
@@ -439,118 +439,118 @@
         goto LABEL_50;
       }
 
-      v20 = self;
+      selfCopy = self;
       disableDeliveringAsrFeatures = self->_disableDeliveringAsrFeatures;
       if (disableDeliveringAsrFeatures != [(CESRSpeechParameters *)v5 disableDeliveringAsrFeatures])
       {
         goto LABEL_50;
       }
 
-      enableEmojiRecognition = v20->_enableEmojiRecognition;
-      if (enableEmojiRecognition == [(CESRSpeechParameters *)v5 enableEmojiRecognition]&& (enableAutoPunctuation = v20->_enableAutoPunctuation, enableAutoPunctuation == [(CESRSpeechParameters *)v5 enableAutoPunctuation]) && (enableVoiceCommands = v20->_enableVoiceCommands, enableVoiceCommands == [(CESRSpeechParameters *)v5 enableVoiceCommands]) && (recognitionStart = v20->_recognitionStart, [(CESRSpeechParameters *)v5 recognitionStart], recognitionStart == v26) && (shouldGenerateVoiceCommandCandidates = v20->_shouldGenerateVoiceCommandCandidates, shouldGenerateVoiceCommandCandidates == [(CESRSpeechParameters *)v5 shouldGenerateVoiceCommandCandidates]))
+      enableEmojiRecognition = selfCopy->_enableEmojiRecognition;
+      if (enableEmojiRecognition == [(CESRSpeechParameters *)v5 enableEmojiRecognition]&& (enableAutoPunctuation = selfCopy->_enableAutoPunctuation, enableAutoPunctuation == [(CESRSpeechParameters *)v5 enableAutoPunctuation]) && (enableVoiceCommands = selfCopy->_enableVoiceCommands, enableVoiceCommands == [(CESRSpeechParameters *)v5 enableVoiceCommands]) && (recognitionStart = selfCopy->_recognitionStart, [(CESRSpeechParameters *)v5 recognitionStart], recognitionStart == v26) && (shouldGenerateVoiceCommandCandidates = selfCopy->_shouldGenerateVoiceCommandCandidates, shouldGenerateVoiceCommandCandidates == [(CESRSpeechParameters *)v5 shouldGenerateVoiceCommandCandidates]))
       {
-        v28 = [(CESRSpeechParameters *)v5 language];
-        language = v20->_language;
-        if (language == v28 || [(NSString *)language isEqual:v28])
+        language = [(CESRSpeechParameters *)v5 language];
+        language = selfCopy->_language;
+        if (language == language || [(NSString *)language isEqual:language])
         {
-          v30 = [(CESRSpeechParameters *)v5 requestIdentifier];
-          requestIdentifier = v20->_requestIdentifier;
-          if (requestIdentifier == v30 || [(NSString *)requestIdentifier isEqual:v30])
+          requestIdentifier = [(CESRSpeechParameters *)v5 requestIdentifier];
+          requestIdentifier = selfCopy->_requestIdentifier;
+          if (requestIdentifier == requestIdentifier || [(NSString *)requestIdentifier isEqual:requestIdentifier])
           {
-            v32 = [(CESRSpeechParameters *)v5 dictationUIInteractionIdentifier];
-            dictationUIInteractionIdentifier = v20->_dictationUIInteractionIdentifier;
-            if (dictationUIInteractionIdentifier == v32 || [(NSString *)dictationUIInteractionIdentifier isEqual:v32])
+            dictationUIInteractionIdentifier = [(CESRSpeechParameters *)v5 dictationUIInteractionIdentifier];
+            dictationUIInteractionIdentifier = selfCopy->_dictationUIInteractionIdentifier;
+            if (dictationUIInteractionIdentifier == dictationUIInteractionIdentifier || [(NSString *)dictationUIInteractionIdentifier isEqual:dictationUIInteractionIdentifier])
             {
-              v34 = [(CESRSpeechParameters *)v5 task];
-              task = v20->_task;
-              if (task == v34 || [(NSString *)task isEqual:v34])
+              task = [(CESRSpeechParameters *)v5 task];
+              task = selfCopy->_task;
+              if (task == task || [(NSString *)task isEqual:task])
               {
-                v36 = [(CESRSpeechParameters *)v5 loggingContext];
-                loggingContext = v20->_loggingContext;
-                if (loggingContext == v36 || [(NSArray *)loggingContext isEqual:v36])
+                loggingContext = [(CESRSpeechParameters *)v5 loggingContext];
+                loggingContext = selfCopy->_loggingContext;
+                if (loggingContext == loggingContext || [(NSArray *)loggingContext isEqual:loggingContext])
                 {
-                  v38 = [(CESRSpeechParameters *)v5 applicationName];
-                  applicationName = v20->_applicationName;
-                  if (applicationName == v38 || [(NSString *)applicationName isEqual:v38])
+                  applicationName = [(CESRSpeechParameters *)v5 applicationName];
+                  applicationName = selfCopy->_applicationName;
+                  if (applicationName == applicationName || [(NSString *)applicationName isEqual:applicationName])
                   {
-                    v40 = [(CESRSpeechParameters *)v5 profile];
-                    profile = v20->_profile;
-                    if (profile == v40 || [(NSData *)profile isEqual:v40])
+                    profile = [(CESRSpeechParameters *)v5 profile];
+                    profile = selfCopy->_profile;
+                    if (profile == profile || [(NSData *)profile isEqual:profile])
                     {
-                      v42 = [(CESRSpeechParameters *)v5 overrides];
-                      overrides = v20->_overrides;
-                      v89 = v42;
-                      if (overrides == v42 || [(NSDictionary *)overrides isEqual:v42])
+                      overrides = [(CESRSpeechParameters *)v5 overrides];
+                      overrides = selfCopy->_overrides;
+                      v89 = overrides;
+                      if (overrides == overrides || [(NSDictionary *)overrides isEqual:overrides])
                       {
-                        v44 = [(CESRSpeechParameters *)v5 modelOverrideURL];
-                        modelOverrideURL = v20->_modelOverrideURL;
-                        v88 = v44;
-                        if (modelOverrideURL == v44 || [(NSURL *)modelOverrideURL isEqual:v44])
+                        modelOverrideURL = [(CESRSpeechParameters *)v5 modelOverrideURL];
+                        modelOverrideURL = selfCopy->_modelOverrideURL;
+                        v88 = modelOverrideURL;
+                        if (modelOverrideURL == modelOverrideURL || [(NSURL *)modelOverrideURL isEqual:modelOverrideURL])
                         {
-                          v46 = [(CESRSpeechParameters *)v5 originalAudioFileURL];
-                          originalAudioFileURL = v20->_originalAudioFileURL;
-                          v87 = v46;
-                          if (originalAudioFileURL == v46 || [(NSURL *)originalAudioFileURL isEqual:v46])
+                          originalAudioFileURL = [(CESRSpeechParameters *)v5 originalAudioFileURL];
+                          originalAudioFileURL = selfCopy->_originalAudioFileURL;
+                          v87 = originalAudioFileURL;
+                          if (originalAudioFileURL == originalAudioFileURL || [(NSURL *)originalAudioFileURL isEqual:originalAudioFileURL])
                           {
-                            v48 = [(CESRSpeechParameters *)v5 codec];
-                            codec = v20->_codec;
-                            v86 = v48;
-                            if (codec == v48 || [(NSString *)codec isEqual:v48])
+                            codec = [(CESRSpeechParameters *)v5 codec];
+                            codec = selfCopy->_codec;
+                            v86 = codec;
+                            if (codec == codec || [(NSString *)codec isEqual:codec])
                             {
-                              v50 = [(CESRSpeechParameters *)v5 inputOrigin];
-                              inputOrigin = v20->_inputOrigin;
-                              v85 = v50;
-                              if (inputOrigin == v50 || [(NSString *)inputOrigin isEqual:v50])
+                              inputOrigin = [(CESRSpeechParameters *)v5 inputOrigin];
+                              inputOrigin = selfCopy->_inputOrigin;
+                              v85 = inputOrigin;
+                              if (inputOrigin == inputOrigin || [(NSString *)inputOrigin isEqual:inputOrigin])
                               {
-                                v52 = [(CESRSpeechParameters *)v5 location];
-                                location = v20->_location;
-                                v84 = v52;
-                                if (location == v52 || ([(CLLocation *)location distanceFromLocation:v52], v54 == 0.0))
+                                location = [(CESRSpeechParameters *)v5 location];
+                                location = selfCopy->_location;
+                                v84 = location;
+                                if (location == location || ([(CLLocation *)location distanceFromLocation:location], v54 == 0.0))
                                 {
-                                  v57 = [(CESRSpeechParameters *)v5 jitGrammar];
-                                  jitGrammar = v20->_jitGrammar;
-                                  v83 = v57;
-                                  if (jitGrammar == v57 || [(NSArray *)jitGrammar isEqual:v57])
+                                  jitGrammar = [(CESRSpeechParameters *)v5 jitGrammar];
+                                  jitGrammar = selfCopy->_jitGrammar;
+                                  v83 = jitGrammar;
+                                  if (jitGrammar == jitGrammar || [(NSArray *)jitGrammar isEqual:jitGrammar])
                                   {
-                                    v59 = [(CESRSpeechParameters *)v5 sharedUserInfos];
-                                    sharedUserInfos = v20->_sharedUserInfos;
-                                    v82 = v59;
-                                    if (sharedUserInfos == v59 || [(NSArray *)sharedUserInfos isEqual:v59])
+                                    sharedUserInfos = [(CESRSpeechParameters *)v5 sharedUserInfos];
+                                    sharedUserInfos = selfCopy->_sharedUserInfos;
+                                    v82 = sharedUserInfos;
+                                    if (sharedUserInfos == sharedUserInfos || [(NSArray *)sharedUserInfos isEqual:sharedUserInfos])
                                     {
-                                      v61 = [(CESRSpeechParameters *)v5 prefixText];
-                                      prefixText = v20->_prefixText;
-                                      v81 = v61;
-                                      if (prefixText == v61 || [(NSString *)prefixText isEqual:v61])
+                                      prefixText = [(CESRSpeechParameters *)v5 prefixText];
+                                      prefixText = selfCopy->_prefixText;
+                                      v81 = prefixText;
+                                      if (prefixText == prefixText || [(NSString *)prefixText isEqual:prefixText])
                                       {
-                                        v63 = [(CESRSpeechParameters *)v5 postfixText];
-                                        postfixText = v20->_postfixText;
-                                        v80 = v63;
-                                        if (postfixText == v63 || [(NSString *)postfixText isEqual:v63])
+                                        postfixText = [(CESRSpeechParameters *)v5 postfixText];
+                                        postfixText = selfCopy->_postfixText;
+                                        v80 = postfixText;
+                                        if (postfixText == postfixText || [(NSString *)postfixText isEqual:postfixText])
                                         {
-                                          v65 = [(CESRSpeechParameters *)v5 selectedText];
-                                          selectedText = v20->_selectedText;
-                                          v79 = v65;
-                                          if (selectedText == v65 || [(NSString *)selectedText isEqual:v65])
+                                          selectedText = [(CESRSpeechParameters *)v5 selectedText];
+                                          selectedText = selfCopy->_selectedText;
+                                          v79 = selectedText;
+                                          if (selectedText == selectedText || [(NSString *)selectedText isEqual:selectedText])
                                           {
-                                            v67 = [(CESRSpeechParameters *)v5 powerContext];
-                                            powerContext = v20->_powerContext;
-                                            v78 = v67;
-                                            if (powerContext == v67 || [(AFPowerContextPolicy *)powerContext isEqual:v67])
+                                            powerContext = [(CESRSpeechParameters *)v5 powerContext];
+                                            powerContext = selfCopy->_powerContext;
+                                            v78 = powerContext;
+                                            if (powerContext == powerContext || [(AFPowerContextPolicy *)powerContext isEqual:powerContext])
                                             {
-                                              v69 = [(CESRSpeechParameters *)v5 asrId];
-                                              asrId = v20->_asrId;
-                                              v77 = v69;
-                                              if (asrId == v69 || [(NSUUID *)asrId isEqual:v69])
+                                              asrId = [(CESRSpeechParameters *)v5 asrId];
+                                              asrId = selfCopy->_asrId;
+                                              v77 = asrId;
+                                              if (asrId == asrId || [(NSUUID *)asrId isEqual:asrId])
                                               {
-                                                v71 = [(CESRSpeechParameters *)v5 activeUserInfo];
-                                                activeUserInfo = v20->_activeUserInfo;
-                                                v76 = v71;
-                                                if (activeUserInfo == v71 || [(AFASRSharedUserInfo *)activeUserInfo isEqual:v71])
+                                                activeUserInfo = [(CESRSpeechParameters *)v5 activeUserInfo];
+                                                activeUserInfo = selfCopy->_activeUserInfo;
+                                                v76 = activeUserInfo;
+                                                if (activeUserInfo == activeUserInfo || [(AFASRSharedUserInfo *)activeUserInfo isEqual:activeUserInfo])
                                                 {
-                                                  v73 = [(CESRSpeechParameters *)v5 messagesContext];
-                                                  messagesContext = v20->_messagesContext;
-                                                  v75 = v73;
-                                                  v55 = messagesContext == v73 || [(NSArray *)messagesContext isEqual:v73];
+                                                  messagesContext = [(CESRSpeechParameters *)v5 messagesContext];
+                                                  messagesContext = selfCopy->_messagesContext;
+                                                  v75 = messagesContext;
+                                                  v55 = messagesContext == messagesContext || [(NSArray *)messagesContext isEqual:messagesContext];
                                                 }
 
                                                 else
@@ -759,7 +759,7 @@ LABEL_50:
   return v48 ^ v49;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v130[40] = *MEMORY[0x277D85DE8];
   v112 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -768,46 +768,46 @@ LABEL_50:
   v128 = [(CESRSpeechParameters *)&v129 description];
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v127 = [(NSString *)self->_language description];
-  v126 = [v4 initWithFormat:@"language = %@", v127];
-  v130[0] = v126;
+  v127 = [v4 initWithFormat:@"language = %@", v127];
+  v130[0] = v127;
   v5 = objc_alloc(MEMORY[0x277CCACA8]);
   v125 = [(NSString *)self->_requestIdentifier description];
-  v124 = [v5 initWithFormat:@"requestIdentifier = %@", v125];
-  v130[1] = v124;
+  v125 = [v5 initWithFormat:@"requestIdentifier = %@", v125];
+  v130[1] = v125;
   v6 = objc_alloc(MEMORY[0x277CCACA8]);
   v123 = [(NSString *)self->_dictationUIInteractionIdentifier description];
-  v122 = [v6 initWithFormat:@"dictationUIInteractionIdentifier = %@", v123];
-  v130[2] = v122;
+  v123 = [v6 initWithFormat:@"dictationUIInteractionIdentifier = %@", v123];
+  v130[2] = v123;
   v7 = objc_alloc(MEMORY[0x277CCACA8]);
   v121 = [(NSString *)self->_task description];
-  v120 = [v7 initWithFormat:@"task = %@", v121];
-  v130[3] = v120;
+  v121 = [v7 initWithFormat:@"task = %@", v121];
+  v130[3] = v121;
   v8 = objc_alloc(MEMORY[0x277CCACA8]);
   v119 = [(NSArray *)self->_loggingContext description];
-  v118 = [v8 initWithFormat:@"loggingContext = %@", v119];
-  v130[4] = v118;
+  v119 = [v8 initWithFormat:@"loggingContext = %@", v119];
+  v130[4] = v119;
   v9 = objc_alloc(MEMORY[0x277CCACA8]);
   v117 = [(NSString *)self->_applicationName description];
-  v116 = [v9 initWithFormat:@"applicationName = %@", v117];
-  v130[5] = v116;
+  v117 = [v9 initWithFormat:@"applicationName = %@", v117];
+  v130[5] = v117;
   v115 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"profile = (%ld bytes)", -[NSData length](self->_profile, "length")];
   v130[6] = v115;
   v10 = objc_alloc(MEMORY[0x277CCACA8]);
   v114 = [(NSDictionary *)self->_overrides description];
-  v111 = [v10 initWithFormat:@"overrides = %@", v114];
-  v130[7] = v111;
+  v114 = [v10 initWithFormat:@"overrides = %@", v114];
+  v130[7] = v114;
   v11 = objc_alloc(MEMORY[0x277CCACA8]);
   v110 = [(NSURL *)self->_modelOverrideURL description];
-  v109 = [v11 initWithFormat:@"modelOverrideURL = %@", v110];
-  v130[8] = v109;
+  v110 = [v11 initWithFormat:@"modelOverrideURL = %@", v110];
+  v130[8] = v110;
   v12 = objc_alloc(MEMORY[0x277CCACA8]);
   v108 = [(NSURL *)self->_originalAudioFileURL description];
-  v107 = [v12 initWithFormat:@"originalAudioFileURL = %@", v108];
-  v130[9] = v107;
+  v108 = [v12 initWithFormat:@"originalAudioFileURL = %@", v108];
+  v130[9] = v108;
   v13 = objc_alloc(MEMORY[0x277CCACA8]);
   v106 = [(NSString *)self->_codec description];
-  v105 = [v13 initWithFormat:@"codec = %@", v106];
-  v130[10] = v105;
+  v106 = [v13 initWithFormat:@"codec = %@", v106];
+  v130[10] = v106;
   v14 = objc_alloc(MEMORY[0x277CCACA8]);
   if (self->_narrowband)
   {
@@ -1113,138 +1113,138 @@ LABEL_50:
   return v113;
 }
 
-- (CESRSpeechParameters)initWithLanguage:(id)a3 requestIdentifier:(id)a4 dictationUIInteractionIdentifier:(id)a5 task:(id)a6 loggingContext:(id)a7 applicationName:(id)a8 profile:(id)a9 overrides:(id)a10 modelOverrideURL:(id)a11 originalAudioFileURL:(id)a12 codec:(id)a13 narrowband:(BOOL)a14 detectUtterances:(BOOL)a15 censorSpeech:(BOOL)a16 farField:(BOOL)a17 secureOfflineOnly:(BOOL)a18 shouldStoreAudioOnDevice:(BOOL)a19 continuousListening:(BOOL)a20 shouldHandleCapitalization:(BOOL)a21 isSpeechAPIRequest:(BOOL)a22 maximumRecognitionDuration:(double)a23 endpointStart:(double)a24 inputOrigin:(id)a25 location:(id)a26 jitGrammar:(id)a27 deliverEagerPackage:(BOOL)a28 disableDeliveringAsrFeatures:(BOOL)a29 enableEmojiRecognition:(BOOL)a30 enableAutoPunctuation:(BOOL)a31 enableVoiceCommands:(BOOL)a32 sharedUserInfos:(id)a33 prefixText:(id)a34 postfixText:(id)a35 selectedText:(id)a36 powerContext:(id)a37 recognitionStart:(double)a38 shouldGenerateVoiceCommandCandidates:(BOOL)a39 asrId:(id)a40 activeUserInfo:(id)a41 messagesContext:(id)a42
+- (CESRSpeechParameters)initWithLanguage:(id)language requestIdentifier:(id)identifier dictationUIInteractionIdentifier:(id)interactionIdentifier task:(id)task loggingContext:(id)context applicationName:(id)name profile:(id)profile overrides:(id)self0 modelOverrideURL:(id)self1 originalAudioFileURL:(id)self2 codec:(id)self3 narrowband:(BOOL)self4 detectUtterances:(BOOL)self5 censorSpeech:(BOOL)self6 farField:(BOOL)self7 secureOfflineOnly:(BOOL)self8 shouldStoreAudioOnDevice:(BOOL)self9 continuousListening:(BOOL)listening shouldHandleCapitalization:(BOOL)capitalization isSpeechAPIRequest:(BOOL)request maximumRecognitionDuration:(double)duration endpointStart:(double)start inputOrigin:(id)origin location:(id)location jitGrammar:(id)grammar deliverEagerPackage:(BOOL)package disableDeliveringAsrFeatures:(BOOL)features enableEmojiRecognition:(BOOL)language0 enableAutoPunctuation:(BOOL)language1 enableVoiceCommands:(BOOL)language2 sharedUserInfos:(id)language3 prefixText:(id)language4 postfixText:(id)language5 selectedText:(id)language6 powerContext:(id)language7 recognitionStart:(double)language8 shouldGenerateVoiceCommandCandidates:(BOOL)language9 asrId:(id)identifier0 activeUserInfo:(id)identifier1 messagesContext:(id)identifier2
 {
-  v118 = a3;
-  v50 = a4;
-  v51 = a5;
-  v117 = a6;
-  v52 = a7;
-  v53 = a8;
-  v54 = a9;
-  v116 = a10;
-  v55 = a11;
-  v56 = a12;
-  v57 = a13;
-  v58 = a25;
-  v115 = a26;
-  v114 = a27;
-  v113 = a33;
-  v112 = a34;
-  v111 = a35;
-  v110 = a36;
-  v109 = a37;
-  v108 = a40;
-  v107 = a41;
-  v106 = a42;
+  languageCopy = language;
+  identifierCopy = identifier;
+  interactionIdentifierCopy = interactionIdentifier;
+  taskCopy = task;
+  contextCopy = context;
+  nameCopy = name;
+  profileCopy = profile;
+  overridesCopy = overrides;
+  lCopy = l;
+  rLCopy = rL;
+  codecCopy = codec;
+  originCopy = origin;
+  locationCopy = location;
+  grammarCopy = grammar;
+  infosCopy = infos;
+  textCopy = text;
+  postfixTextCopy = postfixText;
+  selectedTextCopy = selectedText;
+  powerContextCopy = powerContext;
+  idCopy = id;
+  infoCopy = info;
+  messagesContextCopy = messagesContext;
   v119.receiver = self;
   v119.super_class = CESRSpeechParameters;
   v59 = [(CESRSpeechParameters *)&v119 init];
   if (v59)
   {
-    v60 = [v118 copy];
+    v60 = [languageCopy copy];
     language = v59->_language;
     v59->_language = v60;
 
-    v62 = [v50 copy];
+    v62 = [identifierCopy copy];
     requestIdentifier = v59->_requestIdentifier;
     v59->_requestIdentifier = v62;
 
-    v64 = [v51 copy];
+    v64 = [interactionIdentifierCopy copy];
     dictationUIInteractionIdentifier = v59->_dictationUIInteractionIdentifier;
     v59->_dictationUIInteractionIdentifier = v64;
 
-    v66 = [v117 copy];
+    v66 = [taskCopy copy];
     task = v59->_task;
     v59->_task = v66;
 
-    v68 = [v52 copy];
+    v68 = [contextCopy copy];
     loggingContext = v59->_loggingContext;
     v59->_loggingContext = v68;
 
-    v70 = [v53 copy];
+    v70 = [nameCopy copy];
     applicationName = v59->_applicationName;
     v59->_applicationName = v70;
 
-    v72 = [v54 copy];
+    v72 = [profileCopy copy];
     profile = v59->_profile;
     v59->_profile = v72;
 
-    v74 = [v116 copy];
+    v74 = [overridesCopy copy];
     overrides = v59->_overrides;
     v59->_overrides = v74;
 
-    v76 = [v55 copy];
+    v76 = [lCopy copy];
     modelOverrideURL = v59->_modelOverrideURL;
     v59->_modelOverrideURL = v76;
 
-    v78 = [v56 copy];
+    v78 = [rLCopy copy];
     originalAudioFileURL = v59->_originalAudioFileURL;
     v59->_originalAudioFileURL = v78;
 
-    v80 = [v57 copy];
+    v80 = [codecCopy copy];
     codec = v59->_codec;
     v59->_codec = v80;
 
-    v59->_narrowband = a14;
-    v59->_detectUtterances = a15;
-    v59->_censorSpeech = a16;
-    v59->_farField = a17;
-    v59->_secureOfflineOnly = a18;
-    v59->_shouldStoreAudioOnDevice = a19;
-    v59->_continuousListening = a20;
-    v59->_shouldHandleCapitalization = a21;
-    v59->_isSpeechAPIRequest = a22;
-    v59->_maximumRecognitionDuration = a23;
-    v59->_endpointStart = a24;
-    v82 = [v58 copy];
+    v59->_narrowband = narrowband;
+    v59->_detectUtterances = utterances;
+    v59->_censorSpeech = speech;
+    v59->_farField = field;
+    v59->_secureOfflineOnly = only;
+    v59->_shouldStoreAudioOnDevice = device;
+    v59->_continuousListening = listening;
+    v59->_shouldHandleCapitalization = capitalization;
+    v59->_isSpeechAPIRequest = request;
+    v59->_maximumRecognitionDuration = duration;
+    v59->_endpointStart = start;
+    v82 = [originCopy copy];
     inputOrigin = v59->_inputOrigin;
     v59->_inputOrigin = v82;
 
-    v84 = [v115 copy];
+    v84 = [locationCopy copy];
     location = v59->_location;
     v59->_location = v84;
 
-    v86 = [v114 copy];
+    v86 = [grammarCopy copy];
     jitGrammar = v59->_jitGrammar;
     v59->_jitGrammar = v86;
 
-    v59->_deliverEagerPackage = a28;
-    v59->_disableDeliveringAsrFeatures = a29;
-    v59->_enableEmojiRecognition = a30;
-    v59->_enableAutoPunctuation = a31;
-    v59->_enableVoiceCommands = a32;
-    v88 = [v113 copy];
+    v59->_deliverEagerPackage = package;
+    v59->_disableDeliveringAsrFeatures = features;
+    v59->_enableEmojiRecognition = recognition;
+    v59->_enableAutoPunctuation = punctuation;
+    v59->_enableVoiceCommands = commands;
+    v88 = [infosCopy copy];
     sharedUserInfos = v59->_sharedUserInfos;
     v59->_sharedUserInfos = v88;
 
-    v90 = [v112 copy];
+    v90 = [textCopy copy];
     prefixText = v59->_prefixText;
     v59->_prefixText = v90;
 
-    v92 = [v111 copy];
+    v92 = [postfixTextCopy copy];
     postfixText = v59->_postfixText;
     v59->_postfixText = v92;
 
-    v94 = [v110 copy];
+    v94 = [selectedTextCopy copy];
     selectedText = v59->_selectedText;
     v59->_selectedText = v94;
 
-    v96 = [v109 copy];
+    v96 = [powerContextCopy copy];
     powerContext = v59->_powerContext;
     v59->_powerContext = v96;
 
-    v59->_recognitionStart = a38;
-    v59->_shouldGenerateVoiceCommandCandidates = a39;
-    v98 = [v108 copy];
+    v59->_recognitionStart = recognitionStart;
+    v59->_shouldGenerateVoiceCommandCandidates = candidates;
+    v98 = [idCopy copy];
     asrId = v59->_asrId;
     v59->_asrId = v98;
 
-    v100 = [v107 copy];
+    v100 = [infoCopy copy];
     activeUserInfo = v59->_activeUserInfo;
     v59->_activeUserInfo = v100;
 
-    v102 = [v106 copy];
+    v102 = [messagesContextCopy copy];
     messagesContext = v59->_messagesContext;
     v59->_messagesContext = v102;
   }
@@ -1252,36 +1252,36 @@ LABEL_50:
   return v59;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_CESRSpeechParametersMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_CESRSpeechParametersMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_CESRSpeechParametersMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(CESRSpeechParameters *)self copy];
+    generate = [(CESRSpeechParameters *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_CESRSpeechParametersMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_CESRSpeechParametersMutation *)v4 generate];
+  generate = [(_CESRSpeechParametersMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

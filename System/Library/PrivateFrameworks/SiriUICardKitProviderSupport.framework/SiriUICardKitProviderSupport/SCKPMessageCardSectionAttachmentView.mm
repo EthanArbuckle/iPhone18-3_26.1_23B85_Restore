@@ -1,30 +1,30 @@
 @interface SCKPMessageCardSectionAttachmentView
-- (CGSize)_translateImageSizeForMaxSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SCKPMessageCardSectionAttachmentView)initWithAttachment:(id)a3;
+- (CGSize)_translateImageSizeForMaxSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SCKPMessageCardSectionAttachmentView)initWithAttachment:(id)attachment;
 - (SCKPMessageCardSectionAttachmentViewDelegate)delegate;
-- (id)_thumbnailImageForVideoURL:(id)a3;
-- (id)_videoDurationStringForVideoURL:(id)a3;
-- (void)_handleTap:(id)a3;
-- (void)_linkViewMetadataDidBecomeComplete:(id)a3;
-- (void)_loadAttachment:(id)a3;
-- (void)_loadAttachmentFromFileURL:(id)a3 type:(int)a4;
-- (void)_loadLinkWith:(id)a3 metadata:(id)a4;
+- (id)_thumbnailImageForVideoURL:(id)l;
+- (id)_videoDurationStringForVideoURL:(id)l;
+- (void)_handleTap:(id)tap;
+- (void)_linkViewMetadataDidBecomeComplete:(id)complete;
+- (void)_loadAttachment:(id)attachment;
+- (void)_loadAttachmentFromFileURL:(id)l type:(int)type;
+- (void)_loadLinkWith:(id)with metadata:(id)metadata;
 - (void)layoutSubviews;
 @end
 
 @implementation SCKPMessageCardSectionAttachmentView
 
-- (SCKPMessageCardSectionAttachmentView)initWithAttachment:(id)a3
+- (SCKPMessageCardSectionAttachmentView)initWithAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v9.receiver = self;
   v9.super_class = SCKPMessageCardSectionAttachmentView;
   v5 = [(SCKPMessageCardSectionAttachmentView *)&v9 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v6 = v5;
   if (v5)
   {
-    [(SCKPMessageCardSectionAttachmentView *)v5 _loadAttachment:v4];
+    [(SCKPMessageCardSectionAttachmentView *)v5 _loadAttachment:attachmentCopy];
     v7 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v6 action:sel__handleTap_];
     [(SCKPMessageCardSectionAttachmentView *)v6 addGestureRecognizer:v7];
   }
@@ -32,28 +32,28 @@
   return v6;
 }
 
-- (void)_loadAttachment:(id)a3
+- (void)_loadAttachment:(id)attachment
 {
-  v4 = a3;
-  v7 = [v4 url];
+  attachmentCopy = attachment;
+  v7 = [attachmentCopy url];
   if ([v7 isFileURL])
   {
-    v5 = [v4 type];
+    type = [attachmentCopy type];
 
-    [(SCKPMessageCardSectionAttachmentView *)self _loadAttachmentFromFileURL:v7 type:v5];
+    [(SCKPMessageCardSectionAttachmentView *)self _loadAttachmentFromFileURL:v7 type:type];
   }
 
   else
   {
-    v6 = [v4 linkMetadata];
+    linkMetadata = [attachmentCopy linkMetadata];
 
-    [(SCKPMessageCardSectionAttachmentView *)self _loadLinkWith:v7 metadata:v6];
+    [(SCKPMessageCardSectionAttachmentView *)self _loadLinkWith:v7 metadata:linkMetadata];
   }
 }
 
-- (void)_loadAttachmentFromFileURL:(id)a3 type:(int)a4
+- (void)_loadAttachmentFromFileURL:(id)l type:(int)type
 {
-  v30 = a3;
+  lCopy = l;
   v6 = objc_alloc_init(MEMORY[0x277D75D18]);
   imageContainer = self->_imageContainer;
   self->_imageContainer = v6;
@@ -65,18 +65,18 @@
   [(UIView *)self->_imageContainer addSubview:self->_imageView];
   [(SCKPMessageCardSectionAttachmentView *)self addSubview:self->_imageContainer];
   v10 = MEMORY[0x277CE1CB8];
-  v11 = [v30 pathExtension];
-  v12 = [v10 typeWithFilenameExtension:v11];
+  pathExtension = [lCopy pathExtension];
+  v12 = [v10 typeWithFilenameExtension:pathExtension];
 
   if ([v12 conformsToType:*MEMORY[0x277CE1DB0]])
   {
     v13 = MEMORY[0x277D755B8];
-    v14 = [v30 path];
-    v15 = [v13 imageWithContentsOfFile:v14];
+    path = [lCopy path];
+    v15 = [v13 imageWithContentsOfFile:path];
 
     [(UIImageView *)self->_imageView setImage:v15];
     [(UIImageView *)self->_imageView setContentMode:1];
-    if (a4 == 2)
+    if (type == 2)
     {
       v16 = [MEMORY[0x277CD9D60] livePhotoBadgeImageWithOptions:1];
       v17 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v16];
@@ -90,7 +90,7 @@
 
   else if ([v12 conformsToType:*MEMORY[0x277CE1E00]])
   {
-    v15 = [(SCKPMessageCardSectionAttachmentView *)self _thumbnailImageForVideoURL:v30];
+    v15 = [(SCKPMessageCardSectionAttachmentView *)self _thumbnailImageForVideoURL:lCopy];
     v19 = [SCKPGradientView alloc];
     v20 = [(SCKPGradientView *)v19 initWithGradientType:*MEMORY[0x277CDA690]];
     gradientView = self->_gradientView;
@@ -104,16 +104,16 @@
     self->_videoDurationLabel = v22;
 
     v24 = self->_videoDurationLabel;
-    v25 = [(SCKPMessageCardSectionAttachmentView *)self _videoDurationStringForVideoURL:v30];
+    v25 = [(SCKPMessageCardSectionAttachmentView *)self _videoDurationStringForVideoURL:lCopy];
     [(UILabel *)v24 setText:v25];
 
     v26 = self->_videoDurationLabel;
-    v27 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v26 setBackgroundColor:v27];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v26 setBackgroundColor:clearColor];
 
     v28 = self->_videoDurationLabel;
-    v29 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v28 setTextColor:v29];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v28 setTextColor:whiteColor];
 
     [(UILabel *)self->_videoDurationLabel setTextAlignment:2];
     [(UIView *)self->_imageContainer addSubview:self->_videoDurationLabel];
@@ -132,13 +132,13 @@
   [(UIView *)self->_imageContainer setUserInteractionEnabled:0];
 }
 
-- (void)_loadLinkWith:(id)a3 metadata:(id)a4
+- (void)_loadLinkWith:(id)with metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  withCopy = with;
+  metadataCopy = metadata;
+  if (!metadataCopy)
   {
-    if (!v6)
+    if (!withCopy)
     {
       v10 = 0;
       goto LABEL_11;
@@ -148,7 +148,7 @@
     [v8 setTimeout:5.0];
     v10 = objc_alloc_init(MEMORY[0x277CD46D0]);
     v12 = objc_alloc_init(MEMORY[0x277CD46C8]);
-    [v12 setURL:v6];
+    [v12 setURL:withCopy];
     [v10 _setMetadata:v12 isFinal:0];
     objc_initWeak(&location, self);
     v13 = MEMORY[0x277D85DD0];
@@ -156,7 +156,7 @@
     v15 = __63__SCKPMessageCardSectionAttachmentView__loadLinkWith_metadata___block_invoke;
     v16 = &unk_279C600D0;
     objc_copyWeak(&v18, &location);
-    v17 = v6;
+    v17 = withCopy;
     [v8 startFetchingMetadataForURL:v17 completionHandler:&v13];
 
     objc_destroyWeak(&v18);
@@ -176,7 +176,7 @@ LABEL_11:
   }
 
   v20 = 0;
-  v8 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v7 error:&v20];
+  v8 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:metadataCopy error:&v20];
   v9 = v20;
   if (!v9)
   {
@@ -252,10 +252,10 @@ void __63__SCKPMessageCardSectionAttachmentView__loadLinkWith_metadata___block_i
   }
 }
 
-- (id)_thumbnailImageForVideoURL:(id)a3
+- (id)_thumbnailImageForVideoURL:(id)l
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CE6650]) initWithURL:v3 options:0];
+  lCopy = l;
+  v4 = [objc_alloc(MEMORY[0x277CE6650]) initWithURL:lCopy options:0];
   v5 = [objc_alloc(MEMORY[0x277CE6408]) initWithAsset:v4];
   [v5 setAppliesPreferredTrackTransform:1];
   CMTimeMake(&v12, 0, 1);
@@ -267,7 +267,7 @@ void __63__SCKPMessageCardSectionAttachmentView__loadLinkWith_metadata___block_i
     v8 = *MEMORY[0x277CF93F0];
     if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_ERROR))
     {
-      [(SCKPMessageCardSectionAttachmentView *)v7 _thumbnailImageForVideoURL:v3, v8];
+      [(SCKPMessageCardSectionAttachmentView *)v7 _thumbnailImageForVideoURL:lCopy, v8];
     }
 
     v9 = 0;
@@ -283,11 +283,11 @@ void __63__SCKPMessageCardSectionAttachmentView__loadLinkWith_metadata___block_i
   return v9;
 }
 
-- (id)_videoDurationStringForVideoURL:(id)a3
+- (id)_videoDurationStringForVideoURL:(id)l
 {
   v3 = MEMORY[0x277CE6650];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithURL:v4 options:0];
+  lCopy = l;
+  v5 = [[v3 alloc] initWithURL:lCopy options:0];
 
   [v5 duration];
   [v5 duration];
@@ -296,7 +296,7 @@ void __63__SCKPMessageCardSectionAttachmentView__loadLinkWith_metadata___block_i
   return v6;
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277CEF098];
@@ -307,13 +307,13 @@ void __63__SCKPMessageCardSectionAttachmentView__loadLinkWith_metadata___block_i
     _os_log_impl(&dword_26950D000, v4, OS_LOG_TYPE_DEFAULT, "%s #messages: Tap on attachment - punching out", &v7, 0xCu);
   }
 
-  v5 = [(SCKPMessageCardSectionAttachmentView *)self delegate];
-  [v5 userDidTapAttachmentView:self];
+  delegate = [(SCKPMessageCardSectionAttachmentView *)self delegate];
+  [delegate userDidTapAttachmentView:self];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (self->_linkView)
   {
@@ -333,9 +333,9 @@ void __63__SCKPMessageCardSectionAttachmentView__loadLinkWith_metadata___block_i
 
   else if (self->_imageView)
   {
-    width = a3.width;
+    width = fits.width;
     v5 = 200.0;
-    [(SCKPMessageCardSectionAttachmentView *)self _translateImageSizeForMaxSize:a3.width, 200.0];
+    [(SCKPMessageCardSectionAttachmentView *)self _translateImageSizeForMaxSize:fits.width, 200.0];
     if (v6 <= width)
     {
       width = v6;
@@ -421,15 +421,15 @@ void __63__SCKPMessageCardSectionAttachmentView__loadLinkWith_metadata___block_i
   }
 }
 
-- (CGSize)_translateImageSizeForMaxSize:(CGSize)a3
+- (CGSize)_translateImageSizeForMaxSize:(CGSize)size
 {
-  height = a3.height;
-  v5 = [(UIImageView *)self->_imageView image];
-  [v5 size];
+  height = size.height;
+  image = [(UIImageView *)self->_imageView image];
+  [image size];
   v7 = v6;
 
-  v8 = [(UIImageView *)self->_imageView image];
-  [v8 size];
+  image2 = [(UIImageView *)self->_imageView image];
+  [image2 size];
   v10 = v9;
 
   v11 = 0.0;
@@ -445,9 +445,9 @@ void __63__SCKPMessageCardSectionAttachmentView__loadLinkWith_metadata___block_i
   return result;
 }
 
-- (void)_linkViewMetadataDidBecomeComplete:(id)a3
+- (void)_linkViewMetadataDidBecomeComplete:(id)complete
 {
-  [a3 _setPreferredSizeClass:3];
+  [complete _setPreferredSizeClass:3];
   [(SCKPMessageCardSectionAttachmentView *)self setNeedsLayout];
 
   [(SCKPMessageCardSectionAttachmentView *)self layoutIfNeeded];

@@ -1,15 +1,15 @@
 @interface PGGraphPartOfWeekEdge
 + (id)filter;
-- (id)initFromMomentNode:(id)a3 toPartOfWeekNode:(id)a4;
+- (id)initFromMomentNode:(id)node toPartOfWeekNode:(id)weekNode;
 @end
 
 @implementation PGGraphPartOfWeekEdge
 
-- (id)initFromMomentNode:(id)a3 toPartOfWeekNode:(id)a4
+- (id)initFromMomentNode:(id)node toPartOfWeekNode:(id)weekNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphPartOfWeekEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:weekNode];
 }
 
 + (id)filter

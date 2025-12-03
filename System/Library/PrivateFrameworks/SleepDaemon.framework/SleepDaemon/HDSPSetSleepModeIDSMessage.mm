@@ -1,15 +1,15 @@
 @interface HDSPSetSleepModeIDSMessage
-- (HDSPSetSleepModeIDSMessage)initWithCoder:(id)a3;
-- (HDSPSetSleepModeIDSMessage)initWithSleepModeOn:(BOOL)a3;
+- (HDSPSetSleepModeIDSMessage)initWithCoder:(id)coder;
+- (HDSPSetSleepModeIDSMessage)initWithSleepModeOn:(BOOL)on;
 - (NSString)identifier;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation HDSPSetSleepModeIDSMessage
 
-- (HDSPSetSleepModeIDSMessage)initWithSleepModeOn:(BOOL)a3
+- (HDSPSetSleepModeIDSMessage)initWithSleepModeOn:(BOOL)on
 {
   v8.receiver = self;
   v8.super_class = HDSPSetSleepModeIDSMessage;
@@ -17,7 +17,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_sleepModeOn = a3;
+    v4->_sleepModeOn = on;
     v6 = v4;
   }
 
@@ -31,15 +31,15 @@
   return NSStringFromClass(v2);
 }
 
-- (HDSPSetSleepModeIDSMessage)initWithCoder:(id)a3
+- (HDSPSetSleepModeIDSMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = HDSPSetSleepModeIDSMessage;
   v5 = [(HDSPSetSleepModeIDSMessage *)&v8 init];
   if (v5)
   {
-    v5->_sleepModeOn = [v4 decodeBoolForKey:@"sleepModeOn"];
+    v5->_sleepModeOn = [coderCopy decodeBoolForKey:@"sleepModeOn"];
     v6 = v5;
   }
 
@@ -48,10 +48,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(HDSPSetSleepModeIDSMessage *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(HDSPSetSleepModeIDSMessage *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -62,12 +62,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(HDSPSetSleepModeIDSMessage *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(HDSPSetSleepModeIDSMessage *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

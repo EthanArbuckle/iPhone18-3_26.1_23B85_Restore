@@ -1,29 +1,29 @@
 @interface MPMediaKitContentReporter
 + (MPMediaKitContentReporter)sharedReporter;
 - (MPMediaKitContentReporter)init;
-- (id)_dictionariesForType:(int64_t)a3;
+- (id)_dictionariesForType:(int64_t)type;
 - (id)_reportConcernBagDictionary;
-- (id)contentReportKindStringForType:(int64_t)a3;
-- (id)contentReportTypeStringForType:(int64_t)a3;
-- (id)contentReporterURLOperation:(id)a3 bodyData:(id)a4 withCompletion:(id)a5;
-- (id)reportsForType:(int64_t)a3 contentID:(id)a4 commentText:(id)a5 concernParentItemID:(id)a6 concernParentItemType:(id)a7;
-- (id)urlLoadRequestWithRequest:(id)a3 requestContext:(id)a4;
-- (void)_performWithBag:(id)a3;
-- (void)submitReport:(id)a3 body:(id)a4 completion:(id)a5;
+- (id)contentReportKindStringForType:(int64_t)type;
+- (id)contentReportTypeStringForType:(int64_t)type;
+- (id)contentReporterURLOperation:(id)operation bodyData:(id)data withCompletion:(id)completion;
+- (id)reportsForType:(int64_t)type contentID:(id)d commentText:(id)text concernParentItemID:(id)iD concernParentItemType:(id)itemType;
+- (id)urlLoadRequestWithRequest:(id)request requestContext:(id)context;
+- (void)_performWithBag:(id)bag;
+- (void)submitReport:(id)report body:(id)body completion:(id)completion;
 @end
 
 @implementation MPMediaKitContentReporter
 
-- (id)urlLoadRequestWithRequest:(id)a3 requestContext:(id)a4
+- (id)urlLoadRequestWithRequest:(id)request requestContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 clientInfo];
+  contextCopy = context;
+  requestCopy = request;
+  clientInfo = [contextCopy clientInfo];
   v8 = MRMediaRemoteCopyLocalDeviceSystemMediaApplicationDisplayID();
   v9 = MEMORY[0x1E69E43B0];
-  v10 = [v7 clientIdentifier];
-  v11 = [v7 clientVersion];
-  v12 = [v9 clientInfoForMusicKitRequestWithClientIdentifier:v10 clientVersion:v11 bundleIdentifier:v8];
+  clientIdentifier = [clientInfo clientIdentifier];
+  clientVersion = [clientInfo clientVersion];
+  v12 = [v9 clientInfoForMusicKitRequestWithClientIdentifier:clientIdentifier clientVersion:clientVersion bundleIdentifier:v8];
 
   v13 = objc_alloc(MEMORY[0x1E69E4478]);
   v20 = MEMORY[0x1E69E9820];
@@ -31,12 +31,12 @@
   v22 = __70__MPMediaKitContentReporter_urlLoadRequestWithRequest_requestContext___block_invoke;
   v23 = &unk_1E767C7F8;
   v24 = v12;
-  v25 = v5;
-  v14 = v5;
+  v25 = contextCopy;
+  v14 = contextCopy;
   v15 = v12;
   v16 = [v13 initWithBlock:&v20];
   v17 = objc_alloc(MEMORY[0x1E69E4480]);
-  v18 = [v17 initWithURLRequest:v6 requestContext:{v16, v20, v21, v22, v23}];
+  v18 = [v17 initWithURLRequest:requestCopy requestContext:{v16, v20, v21, v22, v23}];
 
   return v18;
 }
@@ -50,23 +50,23 @@ void __70__MPMediaKitContentReporter_urlLoadRequestWithRequest_requestContext___
   [v4 setIdentity:v5];
 }
 
-- (id)contentReporterURLOperation:(id)a3 bodyData:(id)a4 withCompletion:(id)a5
+- (id)contentReporterURLOperation:(id)operation bodyData:(id)data withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  dataCopy = data;
+  completionCopy = completion;
   v11 = objc_alloc(MEMORY[0x1E69E43A0]);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __81__MPMediaKitContentReporter_contentReporterURLOperation_bodyData_withCompletion___block_invoke;
   v17[3] = &unk_1E767C520;
-  v18 = v8;
-  v19 = v9;
-  v20 = self;
-  v21 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v18 = operationCopy;
+  v19 = dataCopy;
+  selfCopy = self;
+  v21 = completionCopy;
+  v12 = completionCopy;
+  v13 = dataCopy;
+  v14 = operationCopy;
   v15 = [v11 initWithStartHandler:v17];
 
   return v15;
@@ -106,29 +106,29 @@ void __81__MPMediaKitContentReporter_contentReporterURLOperation_bodyData_withCo
   [*(a1 + 32) finishWithError:v5];
 }
 
-- (id)contentReportTypeStringForType:(int64_t)a3
+- (id)contentReportTypeStringForType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return &stru_1F149ECA8;
   }
 
   else
   {
-    return off_1E767C5A0[a3];
+    return off_1E767C5A0[type];
   }
 }
 
-- (id)contentReportKindStringForType:(int64_t)a3
+- (id)contentReportKindStringForType:(int64_t)type
 {
-  if (a3 > 5)
+  if (type > 5)
   {
     return &stru_1F149ECA8;
   }
 
   else
   {
-    return off_1E767C570[a3];
+    return off_1E767C570[type];
   }
 }
 
@@ -179,32 +179,32 @@ void __56__MPMediaKitContentReporter__reportConcernBagDictionary__block_invoke(u
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_dictionariesForType:(int64_t)a3
+- (id)_dictionariesForType:(int64_t)type
 {
-  if (a3 > 5)
+  if (type > 5)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_1E767C540[a3];
-    v4 = [(MPMediaKitContentReporter *)self _reportConcernBagDictionary];
-    v5 = [v4 objectForKey:v3];
+    v3 = off_1E767C540[type];
+    _reportConcernBagDictionary = [(MPMediaKitContentReporter *)self _reportConcernBagDictionary];
+    v5 = [_reportConcernBagDictionary objectForKey:v3];
   }
 
   return v5;
 }
 
-- (id)reportsForType:(int64_t)a3 contentID:(id)a4 commentText:(id)a5 concernParentItemID:(id)a6 concernParentItemType:(id)a7
+- (id)reportsForType:(int64_t)type contentID:(id)d commentText:(id)text concernParentItemID:(id)iD concernParentItemType:(id)itemType
 {
   v35 = *MEMORY[0x1E69E9840];
-  v29 = a4;
-  v28 = a5;
-  v27 = a6;
-  v12 = a7;
-  v13 = a3;
-  v14 = [(MPMediaKitContentReporter *)self _dictionariesForType:a3];
+  dCopy = d;
+  textCopy = text;
+  iDCopy = iD;
+  itemTypeCopy = itemType;
+  typeCopy = type;
+  v14 = [(MPMediaKitContentReporter *)self _dictionariesForType:type];
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (v14)
   {
@@ -234,13 +234,13 @@ void __56__MPMediaKitContentReporter__reportConcernBagDictionary__block_invoke(u
             v22 = [v21 objectForKey:@"label"];
             v23 = [v21 objectForKey:@"id"];
             v24 = objc_alloc_init(MPMediaKitContentReport);
-            [(MPMediaKitContentReport *)v24 setConcernItemType:v13];
+            [(MPMediaKitContentReport *)v24 setConcernItemType:typeCopy];
             [(MPMediaKitContentReport *)v24 setConcernTypeID:v23];
             [(MPMediaKitContentReport *)v24 setDisplayText:v22];
-            [(MPMediaKitContentReport *)v24 setCommentText:v28];
-            [(MPMediaKitContentReport *)v24 setConcernItemID:v29];
-            [(MPMediaKitContentReport *)v24 setParentContentID:v27];
-            [(MPMediaKitContentReport *)v24 setParentConcernType:v12];
+            [(MPMediaKitContentReport *)v24 setCommentText:textCopy];
+            [(MPMediaKitContentReport *)v24 setConcernItemID:dCopy];
+            [(MPMediaKitContentReport *)v24 setParentContentID:iDCopy];
+            [(MPMediaKitContentReport *)v24 setParentConcernType:itemTypeCopy];
             [v15 addObject:v24];
           }
         }
@@ -257,21 +257,21 @@ void __56__MPMediaKitContentReporter__reportConcernBagDictionary__block_invoke(u
   return v15;
 }
 
-- (void)_performWithBag:(id)a3
+- (void)_performWithBag:(id)bag
 {
-  v3 = a3;
+  bagCopy = bag;
   v4 = objc_alloc(MEMORY[0x1E69E4618]);
-  v5 = [MEMORY[0x1E69E4680] activeAccount];
-  v6 = [v4 initWithIdentity:v5];
+  activeAccount = [MEMORY[0x1E69E4680] activeAccount];
+  v6 = [v4 initWithIdentity:activeAccount];
 
-  v7 = [MEMORY[0x1E69E4658] sharedBagProvider];
+  mEMORY[0x1E69E4658] = [MEMORY[0x1E69E4658] sharedBagProvider];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__MPMediaKitContentReporter__performWithBag___block_invoke;
   v9[3] = &unk_1E767C620;
-  v10 = v3;
-  v8 = v3;
-  [v7 getBagForRequestContext:v6 withCompletionHandler:v9];
+  v10 = bagCopy;
+  v8 = bagCopy;
+  [mEMORY[0x1E69E4658] getBagForRequestContext:v6 withCompletionHandler:v9];
 }
 
 uint64_t __45__MPMediaKitContentReporter__performWithBag___block_invoke(uint64_t result, uint64_t a2, uint64_t a3)
@@ -284,27 +284,27 @@ uint64_t __45__MPMediaKitContentReporter__performWithBag___block_invoke(uint64_t
   return result;
 }
 
-- (void)submitReport:(id)a3 body:(id)a4 completion:(id)a5
+- (void)submitReport:(id)report body:(id)body completion:(id)completion
 {
   v45[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v36 = a5;
+  reportCopy = report;
+  bodyCopy = body;
+  completionCopy = completion;
   v35 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
   v10 = MEMORY[0x1E695DF90];
   v44[0] = @"kind";
-  v11 = -[MPMediaKitContentReporter contentReportKindStringForType:](self, "contentReportKindStringForType:", [v8 concernItemType]);
+  v11 = -[MPMediaKitContentReporter contentReportKindStringForType:](self, "contentReportKindStringForType:", [reportCopy concernItemType]);
   v45[0] = v11;
   v44[1] = @"reason";
-  v12 = [v8 concernTypeID];
-  v45[1] = v12;
+  concernTypeID = [reportCopy concernTypeID];
+  v45[1] = concernTypeID;
   v44[2] = @"comments";
-  v13 = [v8 commentText];
-  v14 = v13;
+  commentText = [reportCopy commentText];
+  v14 = commentText;
   v15 = &stru_1F149ECA8;
-  if (v13)
+  if (commentText)
   {
-    v15 = v13;
+    v15 = commentText;
   }
 
   v45[2] = v15;
@@ -313,38 +313,38 @@ uint64_t __45__MPMediaKitContentReporter__performWithBag___block_invoke(uint64_t
 
   v18 = MEMORY[0x1E695DF90];
   v42[0] = @"id";
-  v19 = [v8 concernItemID];
+  concernItemID = [reportCopy concernItemID];
   v42[1] = @"type";
-  v43[0] = v19;
-  v20 = -[MPMediaKitContentReporter contentReportTypeStringForType:](self, "contentReportTypeStringForType:", [v8 concernItemType]);
+  v43[0] = concernItemID;
+  v20 = -[MPMediaKitContentReporter contentReportTypeStringForType:](self, "contentReportTypeStringForType:", [reportCopy concernItemType]);
   v43[1] = v20;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:2];
   v22 = [v18 dictionaryWithDictionary:v21];
 
-  v23 = v9;
+  v23 = bodyCopy;
   v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v9)
+  if (bodyCopy)
   {
-    v25 = v9;
+    v25 = bodyCopy;
     v26 = v35;
   }
 
   else
   {
-    v27 = [v8 parentContentID];
+    parentContentID = [reportCopy parentContentID];
     v26 = v35;
-    if (v27)
+    if (parentContentID)
     {
-      v28 = v27;
-      v29 = [v8 parentConcernType];
+      v28 = parentContentID;
+      parentConcernType = [reportCopy parentConcernType];
 
-      if (v29)
+      if (parentConcernType)
       {
-        v30 = [v8 parentContentID];
-        [v24 setObject:v30 forKeyedSubscript:@"id"];
+        parentContentID2 = [reportCopy parentContentID];
+        [v24 setObject:parentContentID2 forKeyedSubscript:@"id"];
 
-        v31 = [v8 parentConcernType];
-        [v24 setObject:v31 forKeyedSubscript:@"type"];
+        parentConcernType2 = [reportCopy parentConcernType];
+        [v24 setObject:parentConcernType2 forKeyedSubscript:@"type"];
 
         [v35 addObject:v24];
       }
@@ -367,8 +367,8 @@ uint64_t __45__MPMediaKitContentReporter__performWithBag___block_invoke(uint64_t
   v37[3] = &unk_1E767C5F8;
   v37[4] = self;
   v38 = v25;
-  v39 = v36;
-  v33 = v36;
+  v39 = completionCopy;
+  v33 = completionCopy;
   v34 = v25;
   [(MPMediaKitContentReporter *)self _performWithBag:v37];
 }

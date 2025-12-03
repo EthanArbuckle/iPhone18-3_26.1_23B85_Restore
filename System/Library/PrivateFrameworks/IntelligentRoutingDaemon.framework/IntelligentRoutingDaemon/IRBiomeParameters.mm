@@ -1,15 +1,15 @@
 @interface IRBiomeParameters
 - (Class)biomeEventClass;
-- (IRBiomeParameters)initWithBiomeEventType:(int64_t)a3;
+- (IRBiomeParameters)initWithBiomeEventType:(int64_t)type;
 - (id)contextPublisher;
-- (id)queryPublisherWithOptions:(id)a3;
+- (id)queryPublisherWithOptions:(id)options;
 - (void)biomeEventClass;
 - (void)contextPublisher;
 @end
 
 @implementation IRBiomeParameters
 
-- (IRBiomeParameters)initWithBiomeEventType:(int64_t)a3
+- (IRBiomeParameters)initWithBiomeEventType:(int64_t)type
 {
   v7.receiver = self;
   v7.super_class = IRBiomeParameters;
@@ -17,31 +17,31 @@
   v5 = v4;
   if (v4)
   {
-    [(IRBiomeParameters *)v4 setEventType:a3];
+    [(IRBiomeParameters *)v4 setEventType:type];
   }
 
   return v5;
 }
 
-- (id)queryPublisherWithOptions:(id)a3
+- (id)queryPublisherWithOptions:(id)options
 {
-  v5 = a3;
-  v6 = [(IRBiomeParameters *)self eventType];
-  if (v6 <= 1)
+  optionsCopy = options;
+  eventType = [(IRBiomeParameters *)self eventType];
+  if (eventType <= 1)
   {
-    if (v6 == 1)
+    if (eventType == 1)
     {
       v7 = BiomeLibrary();
-      v8 = [v7 Device];
-      v10 = [v8 Wireless];
-      v11 = [v10 WiFi];
-      v3 = [v11 publisherWithOptions:v5];
+      device = [v7 Device];
+      wireless = [device Wireless];
+      wiFi = [wireless WiFi];
+      v3 = [wiFi publisherWithOptions:optionsCopy];
 
 LABEL_9:
       goto LABEL_10;
     }
 
-    if (!v6)
+    if (!eventType)
     {
       goto LABEL_16;
     }
@@ -49,20 +49,20 @@ LABEL_9:
 
   else
   {
-    switch(v6)
+    switch(eventType)
     {
       case 2:
         v7 = BiomeLibrary();
-        v8 = [v7 Media];
-        v9 = [v8 Route];
+        device = [v7 Media];
+        route = [device Route];
         goto LABEL_8;
       case 3:
         v7 = BiomeLibrary();
-        v8 = [v7 Device];
-        v9 = [v8 Metadata];
+        device = [v7 Device];
+        route = [device Metadata];
 LABEL_8:
-        v10 = v9;
-        v3 = [v9 publisherWithOptions:v5];
+        wireless = route;
+        v3 = [route publisherWithOptions:optionsCopy];
         goto LABEL_9;
       case 4:
 LABEL_16:
@@ -77,22 +77,22 @@ LABEL_10:
 
 - (id)contextPublisher
 {
-  v4 = [(IRBiomeParameters *)self eventType];
-  if (v4 <= 1)
+  eventType = [(IRBiomeParameters *)self eventType];
+  if (eventType <= 1)
   {
-    if (v4 == 1)
+    if (eventType == 1)
     {
       v5 = BiomeLibrary();
-      v6 = [v5 Device];
-      v8 = [v6 Wireless];
-      v9 = [v8 WiFi];
-      v2 = [v9 DSLPublisher];
+      device = [v5 Device];
+      wireless = [device Wireless];
+      wiFi = [wireless WiFi];
+      dSLPublisher = [wiFi DSLPublisher];
 
 LABEL_9:
       goto LABEL_10;
     }
 
-    if (!v4)
+    if (!eventType)
     {
       goto LABEL_16;
     }
@@ -100,20 +100,20 @@ LABEL_9:
 
   else
   {
-    switch(v4)
+    switch(eventType)
     {
       case 2:
         v5 = BiomeLibrary();
-        v6 = [v5 Media];
-        v7 = [v6 Route];
+        device = [v5 Media];
+        route = [device Route];
         goto LABEL_8;
       case 3:
         v5 = BiomeLibrary();
-        v6 = [v5 Device];
-        v7 = [v6 Metadata];
+        device = [v5 Device];
+        route = [device Metadata];
 LABEL_8:
-        v8 = v7;
-        v2 = [v7 DSLPublisher];
+        wireless = route;
+        dSLPublisher = [route DSLPublisher];
         goto LABEL_9;
       case 4:
 LABEL_16:
@@ -123,21 +123,21 @@ LABEL_16:
 
 LABEL_10:
 
-  return v2;
+  return dSLPublisher;
 }
 
 - (Class)biomeEventClass
 {
-  v3 = [(IRBiomeParameters *)self eventType];
-  if (v3 <= 1)
+  eventType = [(IRBiomeParameters *)self eventType];
+  if (eventType <= 1)
   {
-    if (v3 == 1)
+    if (eventType == 1)
     {
       v5 = 0x277CF1138;
       goto LABEL_8;
     }
 
-    if (!v3)
+    if (!eventType)
     {
 LABEL_15:
       [(IRBiomeParameters *)self biomeEventClass];
@@ -146,7 +146,7 @@ LABEL_15:
 
   else
   {
-    switch(v3)
+    switch(eventType)
     {
       case 2:
         v5 = 0x277CF1330;
@@ -196,7 +196,7 @@ LABEL_8:
   v4 = dispatch_get_specific(*MEMORY[0x277D21308]);
   if (OUTLINED_FUNCTION_4())
   {
-    v5 = *(a1 + 8);
+    v5 = *(self + 8);
     v6 = v1;
     v7 = IRBiomeEventTypeToString(v5);
     [v7 UTF8String];
@@ -221,7 +221,7 @@ LABEL_8:
   v4 = dispatch_get_specific(*MEMORY[0x277D21308]);
   if (OUTLINED_FUNCTION_4())
   {
-    v5 = *(a1 + 8);
+    v5 = *(self + 8);
     v6 = v1;
     v7 = IRBiomeEventTypeToString(v5);
     [v7 UTF8String];

@@ -1,22 +1,22 @@
 @interface WFTriggerConfigurationViewController
-+ (Class)viewControllerClassForTriggerClass:(Class)a3;
-- (WFTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4;
++ (Class)viewControllerClassForTriggerClass:(Class)class;
+- (WFTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode;
 - (WFTriggerConfigurationViewControllerDelegate)delegate;
-- (id)configureAdditionalCellsIfNeeded:(id)a3 indexPath:(id)a4 sectionInfo:(id)a5;
+- (id)configureAdditionalCellsIfNeeded:(id)needed indexPath:(id)path sectionInfo:(id)info;
 - (id)customSections;
 - (id)sections;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (id)tableViewCellClasses;
-- (int64_t)numberOfRowsInSectionWithInfo:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)numberOfRowsInSectionWithInfo:(id)info;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)cancel;
-- (void)didSelectRowAtIndexPath:(id)a3 withSectionInfo:(id)a4;
-- (void)dismiss:(id)a3;
+- (void)didSelectRowAtIndexPath:(id)path withSectionInfo:(id)info;
+- (void)dismiss:(id)dismiss;
 - (void)finish;
 - (void)loadView;
-- (void)notifySwitchChanged:(id)a3;
-- (void)recurSwitchChanged:(id)a3;
+- (void)notifySwitchChanged:(id)changed;
+- (void)recurSwitchChanged:(id)changed;
 - (void)updateNextButtonEnabledState;
 - (void)viewDidLoad;
 @end
@@ -30,34 +30,34 @@
   return WeakRetained;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = a3;
+  viewCopy = view;
   result = [MEMORY[0x277CBEAD8] raise:@"Subclass must override" format:@"Subclasses must override [WFTriggerConfigurationViewController tableView:numberOfRowsInSection:]"];
   __break(1u);
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   result = [MEMORY[0x277CBEAD8] raise:@"Subclass must override" format:@"Subclasses must override [WFTriggerConfigurationViewController tableView:cellForRowAtIndexPath:]"];
   __break(1u);
   return result;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(WFTriggerConfigurationViewController *)self tableViewHeaderString];
-    v4 = WFAutomationTableSectionHeaderViewWithTitle(v5);
+    tableViewHeaderString = [(WFTriggerConfigurationViewController *)self tableViewHeaderString];
+    v4 = WFAutomationTableSectionHeaderViewWithTitle(tableViewHeaderString);
   }
 
   return v4;
@@ -65,50 +65,50 @@
 
 - (void)finish
 {
-  v3 = [(WFTriggerConfigurationViewController *)self trigger];
-  v4 = [v3 hasValidConfiguration];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  hasValidConfiguration = [trigger hasValidConfiguration];
 
-  if (v4)
+  if (hasValidConfiguration)
   {
-    v6 = [(WFTriggerConfigurationViewController *)self delegate];
-    v5 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v6 triggerConfigurationViewController:self didFinishWithTrigger:v5];
+    delegate = [(WFTriggerConfigurationViewController *)self delegate];
+    trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+    [delegate triggerConfigurationViewController:self didFinishWithTrigger:trigger2];
   }
 }
 
 - (void)cancel
 {
-  v4 = [(WFTriggerConfigurationViewController *)self delegate];
+  delegate = [(WFTriggerConfigurationViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"WFTriggerConfigurationViewController.m" lineNumber:228 description:@"Tried to cancel WFTriggerConfigurationViewController but missing delegate with cancel implementation"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerConfigurationViewController.m" lineNumber:228 description:@"Tried to cancel WFTriggerConfigurationViewController but missing delegate with cancel implementation"];
   }
 
-  v6 = [(WFTriggerConfigurationViewController *)self delegate];
+  delegate2 = [(WFTriggerConfigurationViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v9 = [(WFTriggerConfigurationViewController *)self delegate];
-    [v9 triggerConfigurationViewControllerDidCancel:self];
+    delegate3 = [(WFTriggerConfigurationViewController *)self delegate];
+    [delegate3 triggerConfigurationViewControllerDidCancel:self];
   }
 }
 
-- (void)recurSwitchChanged:(id)a3
+- (void)recurSwitchChanged:(id)changed
 {
-  v4 = [a3 isOn];
+  isOn = [changed isOn];
 
-  [(WFTriggerConfigurationViewController *)self setShouldRecur:v4];
+  [(WFTriggerConfigurationViewController *)self setShouldRecur:isOn];
 }
 
-- (void)notifySwitchChanged:(id)a3
+- (void)notifySwitchChanged:(id)changed
 {
-  v4 = [a3 isOn];
+  isOn = [changed isOn];
 
-  [(WFTriggerConfigurationViewController *)self setShouldNotify:v4];
+  [(WFTriggerConfigurationViewController *)self setShouldNotify:isOn];
 }
 
 - (id)customSections
@@ -128,13 +128,13 @@
 - (id)sections
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v3 = [(WFTriggerConfigurationViewController *)self customSections];
-  v4 = [v3 mutableCopy];
+  customSections = [(WFTriggerConfigurationViewController *)self customSections];
+  v4 = [customSections mutableCopy];
 
-  v5 = [(WFTriggerConfigurationViewController *)self trigger];
-  v6 = [objc_opt_class() isAllowedToRunAutomatically];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  isAllowedToRunAutomatically = [objc_opt_class() isAllowedToRunAutomatically];
 
-  if (v6)
+  if (isAllowedToRunAutomatically)
   {
     v7 = objc_alloc(MEMORY[0x277CBEB18]);
     v8 = WFLocalizedString(@"Run After Confirmation");
@@ -146,10 +146,10 @@
 
     if ([(WFTriggerConfigurationViewController *)self runImmediately])
     {
-      v12 = [(WFTriggerConfigurationViewController *)self trigger];
-      v13 = [objc_opt_class() requiresNotification];
+      trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+      requiresNotification = [objc_opt_class() requiresNotification];
 
-      if ((v13 & 1) == 0)
+      if ((requiresNotification & 1) == 0)
       {
         v14 = WFLocalizedString(@"Notify When Run");
         [v11 addObject:v14];
@@ -190,15 +190,15 @@
   return v4;
 }
 
-- (int64_t)numberOfRowsInSectionWithInfo:(id)a3
+- (int64_t)numberOfRowsInSectionWithInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"identifier"];
+  infoCopy = info;
+  v4 = [infoCopy objectForKeyedSubscript:@"identifier"];
   v5 = [v4 isEqualToString:@"runImmediately"];
 
-  if (v5 || ([v3 objectForKeyedSubscript:@"identifier"], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", @"runRepeatedly"), v8, v9) && _os_feature_enabled_impl())
+  if (v5 || ([infoCopy objectForKeyedSubscript:@"identifier"], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", @"runRepeatedly"), v8, v9) && _os_feature_enabled_impl())
   {
-    v6 = [v3 objectForKeyedSubscript:@"items"];
+    v6 = [infoCopy objectForKeyedSubscript:@"items"];
     if (v6)
     {
       objc_opt_class();
@@ -231,76 +231,76 @@
   return v10;
 }
 
-- (void)didSelectRowAtIndexPath:(id)a3 withSectionInfo:(id)a4
+- (void)didSelectRowAtIndexPath:(id)path withSectionInfo:(id)info
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:@"identifier"];
+  pathCopy = path;
+  infoCopy = info;
+  v7 = [infoCopy objectForKeyedSubscript:@"identifier"];
   v8 = [v7 isEqualToString:@"runImmediately"];
 
   if (v8)
   {
-    if ([v16 row])
+    if ([pathCopy row])
     {
-      v9 = self;
+      selfCopy2 = self;
       v10 = 1;
     }
 
     else
     {
-      v9 = self;
+      selfCopy2 = self;
       v10 = 0;
     }
 
-    [(WFTriggerConfigurationViewController *)v9 setRunImmediately:v10];
+    [(WFTriggerConfigurationViewController *)selfCopy2 setRunImmediately:v10];
 LABEL_10:
-    v15 = [(WFTriggerConfigurationViewController *)self tableView];
-    [v15 reloadData];
+    tableView = [(WFTriggerConfigurationViewController *)self tableView];
+    [tableView reloadData];
 
     goto LABEL_11;
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"identifier"];
+  v11 = [infoCopy objectForKeyedSubscript:@"identifier"];
   v12 = [v11 isEqualToString:@"runRepeatedly"];
 
   if (v12 && _os_feature_enabled_impl())
   {
-    if ([v16 row])
+    if ([pathCopy row])
     {
-      v13 = self;
+      selfCopy4 = self;
       v14 = 1;
     }
 
     else
     {
-      v13 = self;
+      selfCopy4 = self;
       v14 = 0;
     }
 
-    [(WFTriggerConfigurationViewController *)v13 setShouldRecur:v14];
+    [(WFTriggerConfigurationViewController *)selfCopy4 setShouldRecur:v14];
     goto LABEL_10;
   }
 
 LABEL_11:
 }
 
-- (id)configureAdditionalCellsIfNeeded:(id)a3 indexPath:(id)a4 sectionInfo:(id)a5
+- (id)configureAdditionalCellsIfNeeded:(id)needed indexPath:(id)path sectionInfo:(id)info
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  neededCopy = needed;
+  pathCopy = path;
+  infoCopy = info;
+  if (!neededCopy)
   {
-    v34 = [MEMORY[0x277CCA890] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"WFTriggerConfigurationViewController.m" lineNumber:103 description:@"No cell provided for configuing run immediately"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerConfigurationViewController.m" lineNumber:103 description:@"No cell provided for configuing run immediately"];
   }
 
-  v12 = [v11 objectForKeyedSubscript:@"identifier"];
+  v12 = [infoCopy objectForKeyedSubscript:@"identifier"];
   v13 = [v12 isEqualToString:@"runImmediately"];
 
   if (!v13)
   {
-    v17 = [v11 objectForKeyedSubscript:@"identifier"];
+    v17 = [infoCopy objectForKeyedSubscript:@"identifier"];
     v18 = [v17 isEqualToString:@"runRepeatedly"];
 
     if (!v18 || !_os_feature_enabled_impl())
@@ -308,13 +308,13 @@ LABEL_11:
       goto LABEL_22;
     }
 
-    v19 = [v11 objectForKeyedSubscript:@"items"];
-    v20 = [v19 objectAtIndexedSubscript:{objc_msgSend(v10, "row")}];
-    v21 = [v9 textLabel];
-    [v21 setText:v20];
+    v19 = [infoCopy objectForKeyedSubscript:@"items"];
+    v20 = [v19 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+    textLabel = [neededCopy textLabel];
+    [textLabel setText:v20];
 
-    [v9 setAccessoryType:0];
-    if (([v10 row] || -[WFTriggerConfigurationViewController shouldRecur](self, "shouldRecur")) && (objc_msgSend(v10, "row") != 1 || !-[WFTriggerConfigurationViewController shouldRecur](self, "shouldRecur")))
+    [neededCopy setAccessoryType:0];
+    if (([pathCopy row] || -[WFTriggerConfigurationViewController shouldRecur](self, "shouldRecur")) && (objc_msgSend(pathCopy, "row") != 1 || !-[WFTriggerConfigurationViewController shouldRecur](self, "shouldRecur")))
     {
       goto LABEL_22;
     }
@@ -322,31 +322,31 @@ LABEL_11:
     goto LABEL_8;
   }
 
-  v14 = [v11 objectForKeyedSubscript:@"items"];
-  v15 = [v14 objectAtIndexedSubscript:{objc_msgSend(v10, "row")}];
-  v16 = [v9 textLabel];
-  [v16 setText:v15];
+  v14 = [infoCopy objectForKeyedSubscript:@"items"];
+  v15 = [v14 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  textLabel2 = [neededCopy textLabel];
+  [textLabel2 setText:v15];
 
-  [v9 setAccessoryType:0];
-  if (![v10 row] && !-[WFTriggerConfigurationViewController runImmediately](self, "runImmediately") || objc_msgSend(v10, "row") == 1 && -[WFTriggerConfigurationViewController runImmediately](self, "runImmediately"))
+  [neededCopy setAccessoryType:0];
+  if (![pathCopy row] && !-[WFTriggerConfigurationViewController runImmediately](self, "runImmediately") || objc_msgSend(pathCopy, "row") == 1 && -[WFTriggerConfigurationViewController runImmediately](self, "runImmediately"))
   {
 LABEL_8:
-    [v9 setAccessoryType:3];
+    [neededCopy setAccessoryType:3];
     goto LABEL_22;
   }
 
-  if ([v10 row] == 2 && -[WFTriggerConfigurationViewController runImmediately](self, "runImmediately"))
+  if ([pathCopy row] == 2 && -[WFTriggerConfigurationViewController runImmediately](self, "runImmediately"))
   {
-    v22 = [(WFTriggerConfigurationViewController *)self tableView];
+    tableView = [(WFTriggerConfigurationViewController *)self tableView];
     v23 = objc_opt_class();
     v24 = NSStringFromClass(v23);
-    v25 = [v22 dequeueReusableCellWithIdentifier:v24 forIndexPath:v10];
+    v25 = [tableView dequeueReusableCellWithIdentifier:v24 forIndexPath:pathCopy];
 
     [v25 setSelectionStyle:0];
-    v26 = [v11 objectForKeyedSubscript:@"items"];
-    v27 = [v26 objectAtIndexedSubscript:{objc_msgSend(v10, "row")}];
-    v28 = [v25 textLabel];
-    [v28 setText:v27];
+    v26 = [infoCopy objectForKeyedSubscript:@"items"];
+    v27 = [v26 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+    textLabel3 = [v25 textLabel];
+    [textLabel3 setText:v27];
 
     v29 = v25;
     if (v29)
@@ -370,25 +370,25 @@ LABEL_8:
 
     v32 = v30;
 
-    v33 = [v32 switchControl];
+    switchControl = [v32 switchControl];
 
-    [v33 setOn:{-[WFTriggerConfigurationViewController shouldNotify](self, "shouldNotify")}];
-    [v33 addTarget:self action:sel_notifySwitchChanged_ forControlEvents:4096];
+    [switchControl setOn:{-[WFTriggerConfigurationViewController shouldNotify](self, "shouldNotify")}];
+    [switchControl addTarget:self action:sel_notifySwitchChanged_ forControlEvents:4096];
 
     goto LABEL_23;
   }
 
 LABEL_22:
-  v29 = v9;
+  v29 = neededCopy;
 LABEL_23:
 
   return v29;
 }
 
-- (void)dismiss:(id)a3
+- (void)dismiss:(id)dismiss
 {
-  v4 = [(WFTriggerConfigurationViewController *)self navigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigationController = [(WFTriggerConfigurationViewController *)self navigationController];
+  v3 = [navigationController popViewControllerAnimated:1];
 }
 
 - (void)viewDidLoad
@@ -401,17 +401,17 @@ LABEL_23:
 
 - (void)updateNextButtonEnabledState
 {
-  v3 = [(WFTriggerConfigurationViewController *)self trigger];
-  v4 = [v3 hasValidConfiguration];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  hasValidConfiguration = [trigger hasValidConfiguration];
 
-  v5 = [(WFTriggerConfigurationViewController *)self navigationItem];
-  v6 = [v5 rightBarButtonItem];
-  [v6 setEnabled:v4];
+  navigationItem = [(WFTriggerConfigurationViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:hasValidConfiguration];
 
   if ([(WFTriggerConfigurationViewController *)self mode])
   {
-    v7 = [(WFTriggerConfigurationViewController *)self navigationItem];
-    [v7 setHidesBackButton:v4 ^ 1];
+    navigationItem2 = [(WFTriggerConfigurationViewController *)self navigationItem];
+    [navigationItem2 setHidesBackButton:hasValidConfiguration ^ 1];
   }
 }
 
@@ -420,8 +420,8 @@ LABEL_23:
   v26 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D75B40]);
   v4 = [v3 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  v5 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-  [(UITableView *)v4 setBackgroundColor:v5];
+  systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+  [(UITableView *)v4 setBackgroundColor:systemGroupedBackgroundColor];
 
   [(UITableView *)v4 setDataSource:self];
   [(UITableView *)v4 setDelegate:self];
@@ -430,11 +430,11 @@ LABEL_23:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(WFTriggerConfigurationViewController *)self tableViewCellClasses];
+  tableViewCellClasses = [(WFTriggerConfigurationViewController *)self tableViewCellClasses];
   v24[0] = objc_opt_class();
   v24[1] = objc_opt_class();
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
-  v8 = [v6 setByAddingObjectsFromArray:v7];
+  v8 = [tableViewCellClasses setByAddingObjectsFromArray:v7];
 
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v9)
@@ -473,22 +473,22 @@ LABEL_23:
   [(WFTriggerConfigurationViewController *)self setView:v19];
 }
 
-- (WFTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4
+- (WFTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode
 {
-  v7 = a3;
+  triggerCopy = trigger;
   v20.receiver = self;
   v20.super_class = WFTriggerConfigurationViewController;
   v8 = [(WFTriggerConfigurationViewController *)&v20 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_trigger, a3);
-    v9->_mode = a4;
-    if (a4)
+    objc_storeStrong(&v8->_trigger, trigger);
+    v9->_mode = mode;
+    if (mode)
     {
       v10 = objc_opt_class();
-      v11 = [MEMORY[0x277D7A048] defaultContext];
-      v12 = [v10 localizedDisplayNameWithContext:v11];
+      defaultContext = [MEMORY[0x277D7A048] defaultContext];
+      v12 = [v10 localizedDisplayNameWithContext:defaultContext];
       [(WFTriggerConfigurationViewController *)v9 setTitle:v12];
 
       v13 = @"Done";
@@ -502,8 +502,8 @@ LABEL_23:
     v14 = objc_alloc(MEMORY[0x277D751E0]);
     v15 = WFLocalizedString(v13);
     v16 = [v14 initWithTitle:v15 style:2 target:v9 action:sel_finish];
-    v17 = [(WFTriggerConfigurationViewController *)v9 navigationItem];
-    [v17 setRightBarButtonItem:v16];
+    navigationItem = [(WFTriggerConfigurationViewController *)v9 navigationItem];
+    [navigationItem setRightBarButtonItem:v16];
 
     [(WFTriggerConfigurationViewController *)v9 updateNextButtonEnabledState];
     v18 = v9;
@@ -512,40 +512,40 @@ LABEL_23:
   return v9;
 }
 
-+ (Class)viewControllerClassForTriggerClass:(Class)a3
++ (Class)viewControllerClassForTriggerClass:(Class)class
 {
-  v3 = a3;
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  classCopy = class;
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
     goto LABEL_4;
   }
 
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:a1 file:@"WFTriggerConfigurationViewController.m" lineNumber:241 description:{@"Invalid parameter not satisfying: %@", @"[triggerClass isSubclassOfClass:[WFTrigger class]]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerConfigurationViewController.m" lineNumber:241 description:{@"Invalid parameter not satisfying: %@", @"[triggerClass isSubclassOfClass:[WFTrigger class]]"}];
   while (1)
   {
 
 LABEL_4:
-    if (v3 == objc_opt_class())
+    if (classCopy == objc_opt_class())
     {
       v10 = 0;
       goto LABEL_10;
     }
 
-    v7 = NSStringFromClass(v3);
-    v6 = [v7 stringByAppendingString:@"ConfigurationViewController"];
+    v7 = NSStringFromClass(classCopy);
+    currentHandler = [v7 stringByAppendingString:@"ConfigurationViewController"];
 
-    v8 = NSClassFromString(v6);
+    v8 = NSClassFromString(currentHandler);
     if (v8)
     {
       v9 = v8;
-      if ([(objc_class *)v8 isSubclassOfClass:a1])
+      if ([(objc_class *)v8 isSubclassOfClass:self])
       {
         break;
       }
     }
 
-    v3 = [(objc_class *)v3 superclass];
+    classCopy = [(objc_class *)classCopy superclass];
   }
 
   v10 = v9;

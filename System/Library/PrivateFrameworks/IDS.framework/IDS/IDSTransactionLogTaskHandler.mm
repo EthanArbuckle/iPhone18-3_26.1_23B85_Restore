@@ -1,19 +1,19 @@
 @interface IDSTransactionLogTaskHandler
-+ (id)handlerWithTask:(id)a3 delegate:(id)a4 queue:(id)a5;
++ (id)handlerWithTask:(id)task delegate:(id)delegate queue:(id)queue;
 - (id)_init;
 - (void)perform;
 @end
 
 @implementation IDSTransactionLogTaskHandler
 
-+ (id)handlerWithTask:(id)a3 delegate:(id)a4 queue:(id)a5
++ (id)handlerWithTask:(id)task delegate:(id)delegate queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 isMemberOfClass:objc_opt_class()])
+  taskCopy = task;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  if ([taskCopy isMemberOfClass:objc_opt_class()])
   {
-    v12 = [[IDSTransactionLogBaseTaskHandler alloc] initWithTask:v9 delegate:v10 queue:v11];
+    v12 = [[IDSTransactionLogBaseTaskHandler alloc] initWithTask:taskCopy delegate:delegateCopy queue:queueCopy];
   }
 
   else
@@ -21,14 +21,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v9;
-      v12 = [[IDSTransactionLogSyncTaskHandler alloc] initWithTask:v13 delegate:v10 queue:v11];
+      v13 = taskCopy;
+      v12 = [[IDSTransactionLogSyncTaskHandler alloc] initWithTask:v13 delegate:delegateCopy queue:queueCopy];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:a1 file:@"IDSTransactionLogTaskHandler.m" lineNumber:55 description:@"Unexpected task type"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"IDSTransactionLogTaskHandler.m" lineNumber:55 description:@"Unexpected task type"];
 
       v12 = 0;
     }
@@ -46,8 +46,8 @@
 
 - (void)perform
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"IDSTransactionLogTaskHandler.m" lineNumber:65 description:@"Abstract method"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"IDSTransactionLogTaskHandler.m" lineNumber:65 description:@"Abstract method"];
 }
 
 @end

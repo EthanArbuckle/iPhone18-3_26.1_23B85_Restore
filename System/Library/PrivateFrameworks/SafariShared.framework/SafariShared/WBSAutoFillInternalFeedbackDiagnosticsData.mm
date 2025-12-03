@@ -14,9 +14,9 @@
   if (v2)
   {
     v3 = [MEMORY[0x1E695DF00] now];
-    v4 = [v3 safari_filenameFormattedString];
+    safari_filenameFormattedString = [v3 safari_filenameFormattedString];
     creationDateString = v2->_creationDateString;
-    v2->_creationDateString = v4;
+    v2->_creationDateString = safari_filenameFormattedString;
 
     v6 = v2;
   }
@@ -27,9 +27,9 @@
 - (id)writeTemporaryFileWithFormMetadata
 {
   v58 = *MEMORY[0x1E69E9840];
-  v3 = [(WBSAutoFillInternalFeedbackDiagnosticsData *)self formMetadata];
+  formMetadata = [(WBSAutoFillInternalFeedbackDiagnosticsData *)self formMetadata];
 
-  if (v3)
+  if (formMetadata)
   {
     v4 = [(NSSet *)self->_sensitiveValuesForRedaction mutableCopy];
     v5 = v4;
@@ -49,7 +49,7 @@
     v53 = 0u;
     v51 = 0u;
     v50 = 0u;
-    v40 = self;
+    selfCopy = self;
     obj = self->_formMetadata;
     v9 = [(NSArray *)obj countByEnumeratingWithState:&v50 objects:v57 count:16];
     if (v9)
@@ -70,8 +70,8 @@
           v47 = 0u;
           v48 = 0u;
           v49 = 0u;
-          v14 = [v13 controls];
-          v15 = [v14 countByEnumeratingWithState:&v46 objects:v56 count:16];
+          controls = [v13 controls];
+          v15 = [controls countByEnumeratingWithState:&v46 objects:v56 count:16];
           if (v15)
           {
             v16 = v15;
@@ -82,20 +82,20 @@
               {
                 if (*v47 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(controls);
                 }
 
                 v19 = *(*(&v46 + 1) + 8 * j);
-                v20 = [v19 value];
+                value = [v19 value];
 
-                if (v20)
+                if (value)
                 {
-                  v21 = [v19 value];
-                  [v8 addObject:v21];
+                  value2 = [v19 value];
+                  [v8 addObject:value2];
                 }
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v46 objects:v56 count:16];
+              v16 = [controls countByEnumeratingWithState:&v46 objects:v56 count:16];
             }
 
             while (v16);
@@ -108,14 +108,14 @@
       while (v10);
     }
 
-    v22 = [(WBSAutoFillInternalFeedbackDiagnosticsData *)v40 formMetadata];
+    formMetadata2 = [(WBSAutoFillInternalFeedbackDiagnosticsData *)selfCopy formMetadata];
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
     v44[2] = __80__WBSAutoFillInternalFeedbackDiagnosticsData_writeTemporaryFileWithFormMetadata__block_invoke;
     v44[3] = &unk_1E7FB6A58;
     v23 = v8;
     v45 = v23;
-    v24 = [v22 safari_mapObjectsUsingBlock:v44];
+    v24 = [formMetadata2 safari_mapObjectsUsingBlock:v44];
 
     v43 = 0;
     v25 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v24 options:1 error:&v43];
@@ -125,8 +125,8 @@
       v27 = MEMORY[0x1E695DFF8];
       v28 = NSTemporaryDirectory();
       v29 = MEMORY[0x1E696AEC0];
-      v30 = [(NSURL *)v40->_url host];
-      v31 = [v29 stringWithFormat:@"form-metadata-%@-%@.json", v30, v40->_creationDateString];
+      host = [(NSURL *)selfCopy->_url host];
+      v31 = [v29 stringWithFormat:@"form-metadata-%@-%@.json", host, selfCopy->_creationDateString];
       v32 = [v28 stringByAppendingPathComponent:v31];
       v33 = [v27 fileURLWithPath:v32 isDirectory:0];
 
@@ -145,9 +145,9 @@
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
         {
           v37 = v36;
-          v38 = [v34 safari_privacyPreservingDescription];
+          safari_privacyPreservingDescription = [v34 safari_privacyPreservingDescription];
           *buf = 138543362;
-          v55 = v38;
+          v55 = safari_privacyPreservingDescription;
           _os_log_impl(&dword_1BB6F3000, v37, OS_LOG_TYPE_DEFAULT, "Encountered error writing temporary file with form metadata: %{public}@", buf, 0xCu);
         }
 
@@ -193,11 +193,11 @@ id __80__WBSAutoFillInternalFeedbackDiagnosticsData_writeTemporaryFileWithFormMe
 - (void)writeTemporaryFileWithFormMetadata
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = [a2 safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [a2 safari_privacyPreservingDescription];
   v5 = 138543362;
-  v6 = v4;
-  _os_log_error_impl(&dword_1BB6F3000, v3, OS_LOG_TYPE_ERROR, "Encountered error generating JSON data with form metadata: %{public}@", &v5, 0xCu);
+  v6 = safari_privacyPreservingDescription;
+  _os_log_error_impl(&dword_1BB6F3000, selfCopy, OS_LOG_TYPE_ERROR, "Encountered error generating JSON data with form metadata: %{public}@", &v5, 0xCu);
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface SHSheetOptionsViewContext
-- (SHSheetOptionsViewContext)initWithCustomizationGroups:(id)a3;
+- (SHSheetOptionsViewContext)initWithCustomizationGroups:(id)groups;
 - (UIViewController)itemPreviewViewController;
 - (id)description;
 @end
 
 @implementation SHSheetOptionsViewContext
 
-- (SHSheetOptionsViewContext)initWithCustomizationGroups:(id)a3
+- (SHSheetOptionsViewContext)initWithCustomizationGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   v9.receiver = self;
   v9.super_class = SHSheetOptionsViewContext;
   v5 = [(SHSheetOptionsViewContext *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [groupsCopy copy];
     customizationGroups = v5->_customizationGroups;
     v5->_customizationGroups = v6;
   }
@@ -28,9 +28,9 @@
   v9.receiver = self;
   v9.super_class = SHSheetOptionsViewContext;
   v4 = [(SHSheetOptionsViewContext *)&v9 description];
-  v5 = [(SHSheetOptionsViewContext *)self customizationGroups];
-  v6 = [(SHSheetOptionsViewContext *)self itemPreviewViewController];
-  v7 = [v3 stringWithFormat:@"<%@ customizationGroups:%@ itemPreviewViewController:%@>", v4, v5, v6];
+  customizationGroups = [(SHSheetOptionsViewContext *)self customizationGroups];
+  itemPreviewViewController = [(SHSheetOptionsViewContext *)self itemPreviewViewController];
+  v7 = [v3 stringWithFormat:@"<%@ customizationGroups:%@ itemPreviewViewController:%@>", v4, customizationGroups, itemPreviewViewController];
 
   return v7;
 }

@@ -1,45 +1,45 @@
 @interface CSOnDeviceCompilationUtils
-+ (BOOL)isBnnsIrNameForCurrentBuild:(id)a3;
-+ (BOOL)validateSecondPassCheckerCompilation:(id)a3 error:(id *)a4;
-+ (id)_getBaseNamingWithHashToUse:(id)a3 milName:(id)a4 configVersion:(id)a5;
-+ (id)_getCachedIrsFromConfigFile:(id)a3 modelType:(int64_t)a4 CSAsset:(id)a5 cachedIrDir:(id)a6;
-+ (id)getCachedIrFromConfigPath:(id)a3 modelTye:(int64_t)a4 asset:(id)a5;
-+ (id)getCachedIrFromMilFilePath:(id)a3 modelTye:(int64_t)a4 asset:(id)a5;
-+ (id)getCachedIrFromMilFilePath:(id)a3 modelTye:(int64_t)a4 asset:(id)a5 cachedIrHomePath:(id)a6;
-+ (id)getCachedIrsFromCSAsset:(id)a3 cachedIrDir:(id)a4;
-+ (id)getIrNameFromModelNameForCompile:(id)a3 locale:(id)a4 assetVersion:(id)a5 hashToUse:(id)a6;
-+ (id)getModelCompiledDirWithModelType:(int64_t)a3 basePath:(id)a4;
-+ (id)getModelConfigsWithAsset:(id)a3 modelType:(int64_t)a4;
-+ (id)getModelNameFromMilFilePath:(id)a3;
-+ (id)readMilFilePathFromConfig:(id)a3 modelType:(int64_t)a4;
-+ (id)sortCachedIrsByLastAccessTimeStamp:(id)a3;
-+ (int64_t)getBackendTypeFromModelFile:(id)a3;
++ (BOOL)isBnnsIrNameForCurrentBuild:(id)build;
++ (BOOL)validateSecondPassCheckerCompilation:(id)compilation error:(id *)error;
++ (id)_getBaseNamingWithHashToUse:(id)use milName:(id)name configVersion:(id)version;
++ (id)_getCachedIrsFromConfigFile:(id)file modelType:(int64_t)type CSAsset:(id)asset cachedIrDir:(id)dir;
++ (id)getCachedIrFromConfigPath:(id)path modelTye:(int64_t)tye asset:(id)asset;
++ (id)getCachedIrFromMilFilePath:(id)path modelTye:(int64_t)tye asset:(id)asset;
++ (id)getCachedIrFromMilFilePath:(id)path modelTye:(int64_t)tye asset:(id)asset cachedIrHomePath:(id)homePath;
++ (id)getCachedIrsFromCSAsset:(id)asset cachedIrDir:(id)dir;
++ (id)getIrNameFromModelNameForCompile:(id)compile locale:(id)locale assetVersion:(id)version hashToUse:(id)use;
++ (id)getModelCompiledDirWithModelType:(int64_t)type basePath:(id)path;
++ (id)getModelConfigsWithAsset:(id)asset modelType:(int64_t)type;
++ (id)getModelNameFromMilFilePath:(id)path;
++ (id)readMilFilePathFromConfig:(id)config modelType:(int64_t)type;
++ (id)sortCachedIrsByLastAccessTimeStamp:(id)stamp;
++ (int64_t)getBackendTypeFromModelFile:(id)file;
 @end
 
 @implementation CSOnDeviceCompilationUtils
 
-+ (BOOL)validateSecondPassCheckerCompilation:(id)a3 error:(id *)a4
++ (BOOL)validateSecondPassCheckerCompilation:(id)compilation error:(id *)error
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  compilationCopy = compilation;
+  if (compilationCopy)
   {
-    v6 = [CSVoiceTriggerSecondPassConfigDecoder decodeConfigFrom:v5 forFirstPassSource:0];
-    v7 = [v6 configPathRecognizer];
-    if (v7 && ([MEMORY[0x1E696AC08] defaultManager], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "fileExistsAtPath:", v7), v8, (v9 & 1) != 0))
+    v6 = [CSVoiceTriggerSecondPassConfigDecoder decodeConfigFrom:compilationCopy forFirstPassSource:0];
+    configPathRecognizer = [v6 configPathRecognizer];
+    if (configPathRecognizer && ([MEMORY[0x1E696AC08] defaultManager], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "fileExistsAtPath:", configPathRecognizer), v8, (v9 & 1) != 0))
     {
-      v10 = [CSOnDeviceCompilationUtils readMilFilePathFromConfig:v7 modelType:1];
+      v10 = [CSOnDeviceCompilationUtils readMilFilePathFromConfig:configPathRecognizer modelType:1];
       if (v10)
       {
-        v11 = [MEMORY[0x1E696AC08] defaultManager];
-        v12 = [v11 fileExistsAtPath:v10];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        v12 = [defaultManager fileExistsAtPath:v10];
 
         if (v12)
         {
           v13 = [CSOnDeviceCompilationUtils getMilConfigFromMilFilePath:v10];
           v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-          v15 = [v5 identity];
-          v16 = [v14 initWithFormat:@"%@.temp.bnnsir", v15];
+          identity = [compilationCopy identity];
+          v16 = [v14 initWithFormat:@"%@.temp.bnnsir", identity];
 
           v17 = NSTemporaryDirectory();
           v46 = v16;
@@ -49,43 +49,43 @@
           [MEMORY[0x1E699BA40] compileWithModelMilPath:v10 bnnsIrOutPath:v18 milConfigPath:v13 errorOut:&v47];
           v19 = v47;
           v20 = v19;
-          if (a4 && v19)
+          if (error && v19)
           {
-            v21 = [v19 localizedDescription];
+            localizedDescription = [v19 localizedDescription];
             v43 = *MEMORY[0x1E699B9B0];
             v44 = MEMORY[0x1E696ABC0];
             v48 = *MEMORY[0x1E696A578];
-            v22 = v21;
+            v22 = localizedDescription;
             v45 = v18;
             v42 = v20;
             if ([v22 containsString:@"bnns error message: "] && (v23 = objc_msgSend(v22, "rangeOfString:", @"bnns error message: "), v23 != 0x7FFFFFFFFFFFFFFFLL))
             {
               v33 = [v22 substringFromIndex:v23 + v24];
               v41 = [v33 componentsSeparatedByString:@"[stack trace: ]"];
-              v25 = [v41 firstObject];
+              firstObject = [v41 firstObject];
             }
 
             else
             {
-              v25 = @"Unkown error";
+              firstObject = @"Unkown error";
             }
 
-            v49 = v25;
+            v49 = firstObject;
             [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
             v35 = v34 = v22;
-            *a4 = [v44 errorWithDomain:v43 code:3 userInfo:v35];
+            *error = [v44 errorWithDomain:v43 code:3 userInfo:v35];
 
             v18 = v45;
             v20 = v42;
           }
 
-          v36 = [MEMORY[0x1E696AC08] defaultManager];
-          v37 = [v36 fileExistsAtPath:v18];
+          defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+          v37 = [defaultManager2 fileExistsAtPath:v18];
 
           if (v37)
           {
-            v38 = [MEMORY[0x1E696AC08] defaultManager];
-            [v38 removeItemAtPath:v18 error:0];
+            defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+            [defaultManager3 removeItemAtPath:v18 error:0];
           }
 
           v28 = v20 == 0;
@@ -94,7 +94,7 @@
         }
       }
 
-      if (a4)
+      if (error)
       {
         v31 = MEMORY[0x1E696ABC0];
         v32 = *MEMORY[0x1E699B9B0];
@@ -102,7 +102,7 @@
         v51 = @"mil file path is not found";
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
         [v31 errorWithDomain:v32 code:3 userInfo:v13];
-        *a4 = v28 = 0;
+        *error = v28 = 0;
 LABEL_25:
 
         goto LABEL_26;
@@ -113,7 +113,7 @@ LABEL_25:
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         v28 = 0;
 LABEL_27:
@@ -127,7 +127,7 @@ LABEL_27:
       v53 = @"configfile for secondpass checker is not found";
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
       [v26 errorWithDomain:v27 code:3 userInfo:v10];
-      *a4 = v28 = 0;
+      *error = v28 = 0;
     }
 
 LABEL_26:
@@ -135,7 +135,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (a4)
+  if (error)
   {
     v29 = MEMORY[0x1E696ABC0];
     v30 = *MEMORY[0x1E699B9B0];
@@ -143,7 +143,7 @@ LABEL_26:
     v55[0] = @"asset is nil";
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:&v54 count:1];
     [v29 errorWithDomain:v30 code:3 userInfo:v6];
-    *a4 = v28 = 0;
+    *error = v28 = 0;
 LABEL_28:
 
     goto LABEL_29;
@@ -156,13 +156,13 @@ LABEL_29:
   return v28;
 }
 
-+ (id)_getCachedIrsFromConfigFile:(id)a3 modelType:(int64_t)a4 CSAsset:(id)a5 cachedIrDir:(id)a6
++ (id)_getCachedIrsFromConfigFile:(id)file modelType:(int64_t)type CSAsset:(id)asset cachedIrDir:(id)dir
 {
-  v9 = a5;
-  v10 = [CSOnDeviceCompilationUtils readMilFilePathFromConfig:a3 modelType:a4];
+  assetCopy = asset;
+  v10 = [CSOnDeviceCompilationUtils readMilFilePathFromConfig:file modelType:type];
   if (v10)
   {
-    v11 = [a1 getCachedIrFromMilFilePath:v10 modelTye:a4 asset:v9];
+    v11 = [self getCachedIrFromMilFilePath:v10 modelTye:type asset:assetCopy];
   }
 
   else
@@ -173,71 +173,71 @@ LABEL_29:
   return v11;
 }
 
-+ (id)_getBaseNamingWithHashToUse:(id)a3 milName:(id)a4 configVersion:(id)a5
++ (id)_getBaseNamingWithHashToUse:(id)use milName:(id)name configVersion:(id)version
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  versionCopy = version;
+  nameCopy = name;
+  useCopy = use;
   v10 = MGGetStringAnswer();
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@-%@-%@", v10, v9, v8, v7];
+  versionCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@-%@-%@", v10, useCopy, nameCopy, versionCopy];
 
-  return v11;
+  return versionCopy;
 }
 
-+ (id)getModelConfigsWithAsset:(id)a3 modelType:(int64_t)a4
++ (id)getModelConfigsWithAsset:(id)asset modelType:(int64_t)type
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  v7 = 0;
-  if (a4 <= 2)
+  assetCopy = asset;
+  v6 = assetCopy;
+  allObjects = 0;
+  if (type <= 2)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
-      v13 = [CSVoiceTriggerSecondPassConfigDecoder fetchAllVoiceTriggerSecondPassRecognizer:v5];
+      getAllNldaConfigFiles = [CSVoiceTriggerSecondPassConfigDecoder fetchAllVoiceTriggerSecondPassRecognizer:assetCopy];
     }
 
     else
     {
-      if (a4 != 2)
+      if (type != 2)
       {
         goto LABEL_25;
       }
 
-      v13 = [v5 getAllNldaConfigFiles];
+      getAllNldaConfigFiles = [assetCopy getAllNldaConfigFiles];
     }
 
     goto LABEL_24;
   }
 
-  switch(a4)
+  switch(type)
   {
     case 3:
-      v13 = [v5 getAllMitigationConfigFiles];
+      getAllNldaConfigFiles = [assetCopy getAllMitigationConfigFiles];
 LABEL_24:
-      v7 = v13;
+      allObjects = getAllNldaConfigFiles;
       break;
     case 4:
       v12 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      v14 = [v6 progCheckerRecognizerConfigFiles];
-      v15 = [v6 contConvRecognizerConfigFiles];
-      if (v14)
+      progCheckerRecognizerConfigFiles = [v6 progCheckerRecognizerConfigFiles];
+      contConvRecognizerConfigFiles = [v6 contConvRecognizerConfigFiles];
+      if (progCheckerRecognizerConfigFiles)
       {
-        [v12 addObjectsFromArray:v14];
+        [v12 addObjectsFromArray:progCheckerRecognizerConfigFiles];
       }
 
-      if (v15)
+      if (contConvRecognizerConfigFiles)
       {
-        [v12 addObjectsFromArray:v15];
+        [v12 addObjectsFromArray:contConvRecognizerConfigFiles];
       }
 
-      v7 = [v12 allObjects];
+      allObjects = [v12 allObjects];
 
       goto LABEL_22;
     case 5:
-      v7 = [v5 resourcePath];
+      allObjects = [assetCopy resourcePath];
 
-      if (v7)
+      if (allObjects)
       {
         if (CSIsHorseman_onceToken != -1)
         {
@@ -245,8 +245,8 @@ LABEL_24:
         }
 
         v8 = CSIsHorseman_isHorseman;
-        v9 = [v6 resourcePath];
-        v10 = v9;
+        resourcePath = [v6 resourcePath];
+        v10 = resourcePath;
         if (v8)
         {
           v11 = @"spid/spid.json";
@@ -257,17 +257,17 @@ LABEL_24:
           v11 = @"sr/sr.json";
         }
 
-        v12 = [v9 stringByAppendingPathComponent:v11];
+        v12 = [resourcePath stringByAppendingPathComponent:v11];
 
         if (v12)
         {
           v18[0] = v12;
-          v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
+          allObjects = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
         }
 
         else
         {
-          v7 = 0;
+          allObjects = 0;
         }
 
 LABEL_22:
@@ -280,17 +280,17 @@ LABEL_25:
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return allObjects;
 }
 
-+ (id)getModelCompiledDirWithModelType:(int64_t)a3 basePath:(id)a4
++ (id)getModelCompiledDirWithModelType:(int64_t)type basePath:(id)path
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = v5;
-  if (a3 > 2)
+  pathCopy = path;
+  v6 = pathCopy;
+  if (type > 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
         v7 = @"neuralCombiner";
@@ -306,7 +306,7 @@ LABEL_25:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 0:
         v7 = @"CSTempModel";
@@ -317,7 +317,7 @@ LABEL_25:
       case 2:
         v7 = @"odld";
 LABEL_17:
-        v9 = [v5 stringByAppendingPathComponent:v7];
+        v9 = [pathCopy stringByAppendingPathComponent:v7];
         goto LABEL_18;
     }
   }
@@ -328,7 +328,7 @@ LABEL_17:
     v12 = 136315394;
     v13 = "+[CSOnDeviceCompilationUtils getModelCompiledDirWithModelType:basePath:]";
     v14 = 2048;
-    v15 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_1DDA4B000, v8, OS_LOG_TYPE_DEFAULT, "%s Does not support model type: %lu", &v12, 0x16u);
   }
 
@@ -340,29 +340,29 @@ LABEL_18:
   return v9;
 }
 
-+ (BOOL)isBnnsIrNameForCurrentBuild:(id)a3
++ (BOOL)isBnnsIrNameForCurrentBuild:(id)build
 {
-  v3 = a3;
+  buildCopy = build;
   v4 = MGGetStringAnswer();
-  v5 = [v3 hasPrefix:v4];
+  v5 = [buildCopy hasPrefix:v4];
 
   return v5;
 }
 
-+ (id)sortCachedIrsByLastAccessTimeStamp:(id)a3
++ (id)sortCachedIrsByLastAccessTimeStamp:(id)stamp
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  stampCopy = stamp;
+  if (stampCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v31 = v3;
+    v31 = stampCopy;
     v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v5 = v3;
+    v5 = stampCopy;
     v6 = [v5 countByEnumeratingWithState:&v37 objects:v49 count:16];
     if (v6)
     {
@@ -381,13 +381,13 @@ LABEL_18:
           v11 = *(*(&v37 + 1) + 8 * i);
           if (v11)
           {
-            v12 = [MEMORY[0x1E696AC08] defaultManager];
-            v13 = [v12 fileExistsAtPath:v11];
+            defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+            v13 = [defaultManager fileExistsAtPath:v11];
 
             if (v13)
             {
-              v14 = [MEMORY[0x1E696AC08] defaultManager];
-              v15 = [v14 attributesOfItemAtPath:v11 error:0];
+              defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+              v15 = [defaultManager2 attributesOfItemAtPath:v11 error:0];
 
               if (v15)
               {
@@ -458,7 +458,7 @@ LABEL_18:
       while (v25);
     }
 
-    v3 = v31;
+    stampCopy = v31;
   }
 
   else
@@ -471,31 +471,31 @@ LABEL_18:
   return v4;
 }
 
-+ (id)getCachedIrFromMilFilePath:(id)a3 modelTye:(int64_t)a4 asset:(id)a5
++ (id)getCachedIrFromMilFilePath:(id)path modelTye:(int64_t)tye asset:(id)asset
 {
-  v8 = a5;
-  v9 = a3;
+  assetCopy = asset;
+  pathCopy = path;
   v10 = +[CSFPreferences sharedPreferences];
-  v11 = [v10 getOnDeviceCompilationCacheDirectory];
+  getOnDeviceCompilationCacheDirectory = [v10 getOnDeviceCompilationCacheDirectory];
 
-  v12 = [a1 getCachedIrFromMilFilePath:v9 modelTye:a4 asset:v8 cachedIrHomePath:v11];
+  v12 = [self getCachedIrFromMilFilePath:pathCopy modelTye:tye asset:assetCopy cachedIrHomePath:getOnDeviceCompilationCacheDirectory];
 
   return v12;
 }
 
-+ (id)getCachedIrFromMilFilePath:(id)a3 modelTye:(int64_t)a4 asset:(id)a5 cachedIrHomePath:(id)a6
++ (id)getCachedIrFromMilFilePath:(id)path modelTye:(int64_t)tye asset:(id)asset cachedIrHomePath:(id)homePath
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (v9 && [v9 hasSuffix:@"mil"])
+  pathCopy = path;
+  assetCopy = asset;
+  homePathCopy = homePath;
+  if (pathCopy && [pathCopy hasSuffix:@"mil"])
   {
-    v12 = [CSOnDeviceCompilationUtils getModelNameFromMilFilePath:v9];
-    v13 = [CSOnDeviceCompilationUtils getModelCompiledDirWithModelType:a4 basePath:v11];
+    v12 = [CSOnDeviceCompilationUtils getModelNameFromMilFilePath:pathCopy];
+    v13 = [CSOnDeviceCompilationUtils getModelCompiledDirWithModelType:tye basePath:homePathCopy];
     v14 = [CSUtils getSiriLanguageWithFallback:@"en-US"];
-    v15 = [v10 configVersion];
-    v16 = [v10 hashFromResourcePath];
-    v17 = [CSOnDeviceCompilationUtils getIrNameFromModelNameForCompile:v12 locale:v14 assetVersion:v15 hashToUse:v16];
+    configVersion = [assetCopy configVersion];
+    hashFromResourcePath = [assetCopy hashFromResourcePath];
+    v17 = [CSOnDeviceCompilationUtils getIrNameFromModelNameForCompile:v12 locale:v14 assetVersion:configVersion hashToUse:hashFromResourcePath];
     v18 = [v13 stringByAppendingPathComponent:v17];
   }
 
@@ -507,25 +507,25 @@ LABEL_18:
   return v18;
 }
 
-+ (id)getCachedIrFromConfigPath:(id)a3 modelTye:(int64_t)a4 asset:(id)a5
++ (id)getCachedIrFromConfigPath:(id)path modelTye:(int64_t)tye asset:(id)asset
 {
-  v7 = a5;
-  v8 = [CSOnDeviceCompilationUtils readMilFilePathFromConfig:a3 modelType:a4];
-  v9 = [CSOnDeviceCompilationUtils getCachedIrFromMilFilePath:v8 modelTye:a4 asset:v7];
+  assetCopy = asset;
+  v8 = [CSOnDeviceCompilationUtils readMilFilePathFromConfig:path modelType:tye];
+  v9 = [CSOnDeviceCompilationUtils getCachedIrFromMilFilePath:v8 modelTye:tye asset:assetCopy];
 
   return v9;
 }
 
-+ (id)getCachedIrsFromCSAsset:(id)a3 cachedIrDir:(id)a4
++ (id)getCachedIrsFromCSAsset:(id)asset cachedIrDir:(id)dir
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  assetCopy = asset;
+  dirCopy = dir;
+  v8 = dirCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (assetCopy && dirCopy)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v11 = [CSOnDeviceCompilationModelListDecoder decodeConfigFrom:v6];
+    v11 = [CSOnDeviceCompilationModelListDecoder decodeConfigFrom:assetCopy];
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
@@ -533,9 +533,9 @@ LABEL_18:
     v28[3] = &unk_1E865BA08;
     v13 = v11;
     v29 = v13;
-    v14 = v6;
+    v14 = assetCopy;
     v30 = v14;
-    v33 = a1;
+    selfCopy = self;
     v15 = v12;
     v31 = v15;
     v16 = v10;
@@ -551,7 +551,7 @@ LABEL_18:
     v21 = 3221225472;
     v22 = __66__CSOnDeviceCompilationUtils_getCachedIrsFromCSAsset_cachedIrDir___block_invoke_2;
     v23 = &unk_1E865BA30;
-    v27 = a1;
+    selfCopy2 = self;
     v24 = v14;
     v25 = v8;
     v26 = v15;
@@ -666,15 +666,15 @@ void __66__CSOnDeviceCompilationUtils_getCachedIrsFromCSAsset_cachedIrDir___bloc
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (int64_t)getBackendTypeFromModelFile:(id)a3
++ (int64_t)getBackendTypeFromModelFile:(id)file
 {
-  v3 = a3;
-  if ([v3 hasSuffix:@".bnns.mil"])
+  fileCopy = file;
+  if ([fileCopy hasSuffix:@".bnns.mil"])
   {
     v4 = 1;
   }
 
-  else if ([v3 hasSuffix:@".mil"])
+  else if ([fileCopy hasSuffix:@".mil"])
   {
     v4 = 2;
   }
@@ -687,16 +687,16 @@ void __66__CSOnDeviceCompilationUtils_getCachedIrsFromCSAsset_cachedIrDir___bloc
   return v4;
 }
 
-+ (id)getIrNameFromModelNameForCompile:(id)a3 locale:(id)a4 assetVersion:(id)a5 hashToUse:(id)a6
++ (id)getIrNameFromModelNameForCompile:(id)compile locale:(id)locale assetVersion:(id)version hashToUse:(id)use
 {
   v6 = 0;
-  if (a5 && a4 && a3 && a6)
+  if (version && locale && compile && use)
   {
-    v11 = a4;
-    v12 = [a1 _getBaseNamingWithHashToUse:a6 milName:a3 configVersion:a5];
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"-%@", v11];
+    localeCopy = locale;
+    v12 = [self _getBaseNamingWithHashToUse:use milName:compile configVersion:version];
+    localeCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"-%@", localeCopy];
 
-    v14 = [v12 stringByAppendingString:v13];
+    v14 = [v12 stringByAppendingString:localeCopy];
 
     v6 = [v14 stringByAppendingPathExtension:@"bnnsir"];
   }
@@ -704,63 +704,63 @@ void __66__CSOnDeviceCompilationUtils_getCachedIrsFromCSAsset_cachedIrDir___bloc
   return v6;
 }
 
-+ (id)getModelNameFromMilFilePath:(id)a3
++ (id)getModelNameFromMilFilePath:(id)path
 {
-  v3 = [a3 pathComponents];
-  [v3 count];
-  v4 = [v3 objectAtIndexedSubscript:{objc_msgSend(v3, "count") - 2}];
+  pathComponents = [path pathComponents];
+  [pathComponents count];
+  v4 = [pathComponents objectAtIndexedSubscript:{objc_msgSend(pathComponents, "count") - 2}];
   v5 = [v4 stringByReplacingOccurrencesOfString:@".mlmodelc" withString:&stru_1F58FE330];
 
   return v5;
 }
 
-+ (id)readMilFilePathFromConfig:(id)a3 modelType:(int64_t)a4
++ (id)readMilFilePathFromConfig:(id)config modelType:(int64_t)type
 {
-  v5 = a3;
-  if (!v5)
+  configCopy = config;
+  if (!configCopy)
   {
-    v7 = 0;
+    firstObject = 0;
     goto LABEL_18;
   }
 
   v6 = 0;
-  if (a4 > 3)
+  if (type > 3)
   {
-    v7 = 0;
-    if ((a4 - 4) >= 2)
+    firstObject = 0;
+    if ((type - 4) >= 2)
     {
       goto LABEL_17;
     }
   }
 
-  else if (a4 != 1)
+  else if (type != 1)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
-      v7 = [CSFModelConfigDecoder decodeJsonFromFile:v5];
-      v8 = [v5 stringByDeletingLastPathComponent];
-      v9 = [CSFModelConfigDecoder getOdldModelFileFromConfigDict:v7 resourcePath:v8];
+      firstObject = [CSFModelConfigDecoder decodeJsonFromFile:configCopy];
+      stringByDeletingLastPathComponent = [configCopy stringByDeletingLastPathComponent];
+      v9 = [CSFModelConfigDecoder getOdldModelFileFromConfigDict:firstObject resourcePath:stringByDeletingLastPathComponent];
       goto LABEL_13;
     }
 
-    v7 = 0;
-    if (a4 == 3)
+    firstObject = 0;
+    if (type == 3)
     {
-      v7 = [CSFModelConfigDecoder decodeJsonFromFile:v5];
-      v8 = [v5 stringByDeletingLastPathComponent];
-      v9 = [CSFModelConfigDecoder getNCModelFileFromConfigDict:v7 resourcePath:v8];
+      firstObject = [CSFModelConfigDecoder decodeJsonFromFile:configCopy];
+      stringByDeletingLastPathComponent = [configCopy stringByDeletingLastPathComponent];
+      v9 = [CSFModelConfigDecoder getNCModelFileFromConfigDict:firstObject resourcePath:stringByDeletingLastPathComponent];
 LABEL_13:
       v6 = v9;
 
       if (v6 && [v6 hasSuffix:@"mil"])
       {
         v6 = v6;
-        v7 = v6;
+        firstObject = v6;
       }
 
       else
       {
-        v7 = 0;
+        firstObject = 0;
       }
 
       goto LABEL_17;
@@ -769,13 +769,13 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v10 = [CSUtils readValuesFromJsonFile:v5 keyword:@"model-file"];
-  v7 = [v10 firstObject];
+  v10 = [CSUtils readValuesFromJsonFile:configCopy keyword:@"model-file"];
+  firstObject = [v10 firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [v5 stringByDeletingLastPathComponent];
-    v9 = [v8 stringByAppendingPathComponent:v7];
+    stringByDeletingLastPathComponent = [configCopy stringByDeletingLastPathComponent];
+    v9 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:firstObject];
     goto LABEL_13;
   }
 
@@ -784,7 +784,7 @@ LABEL_17:
 
 LABEL_18:
 
-  return v7;
+  return firstObject;
 }
 
 @end

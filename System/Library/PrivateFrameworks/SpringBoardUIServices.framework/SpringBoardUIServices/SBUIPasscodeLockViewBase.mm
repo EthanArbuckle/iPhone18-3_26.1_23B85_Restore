@@ -11,19 +11,19 @@
 - (BOOL)hasBiometricAuthenticationCapabilityEnabled;
 - (BOOL)isBiometricLockedOut;
 - (BOOL)resignFirstResponder;
-- (SBUIPasscodeLockViewBase)initWithFrame:(CGRect)a3;
+- (SBUIPasscodeLockViewBase)initWithFrame:(CGRect)frame;
 - (SBUIPasscodeLockViewDelegate)delegate;
-- (double)_biometricViewAlphaFromPasscodeLockViewState:(int64_t)a3;
+- (double)_biometricViewAlphaFromPasscodeLockViewState:(int64_t)state;
 - (double)_luminanceBoostFromDisplayBrightness;
 - (double)_luminanceBoostFromLegibility;
-- (double)_numberPadOffsetFromTopOfScreen:(id)a3;
-- (double)passcodeBiometricAuthenticationViewNumberPadAncillaryButtonOffsetFromTopOfScreen:(id)a3;
-- (double)passcodeBiometricAuthenticationViewSideButtonsOffsetFromCenter:(id)a3;
+- (double)_numberPadOffsetFromTopOfScreen:(id)screen;
+- (double)passcodeBiometricAuthenticationViewNumberPadAncillaryButtonOffsetFromTopOfScreen:(id)screen;
+- (double)passcodeBiometricAuthenticationViewSideButtonsOffsetFromCenter:(id)center;
 - (id)_defaultStatusText;
-- (id)_deviceSpecificTemperatureStringForTemperatureState:(unint64_t)a3;
+- (id)_deviceSpecificTemperatureStringForTemperatureState:(unint64_t)state;
 - (id)_proudLockContainerViewControllerToUpdate;
-- (unint64_t)_statusStateForLockoutState:(unint64_t)a3;
-- (void)_advanceToPasscodeForMatchFailure:(BOOL)a3;
+- (unint64_t)_statusStateForLockoutState:(unint64_t)state;
+- (void)_advanceToPasscodeForMatchFailure:(BOOL)failure;
 - (void)_advanceToPasscodeTimerFired;
 - (void)_applyProudLockContainerViewControllerConfiguration;
 - (void)_armAdvanceToPasscodeTimer;
@@ -36,68 +36,68 @@
 - (void)_luminanceBoostDidChange;
 - (void)_noteScreenBrightnessDidChange;
 - (void)_notifyDelegatePasscodeEnteredViaMesa;
-- (void)_overrideBiometricMatchingEnabled:(BOOL)a3 forReason:(id)a4;
-- (void)_playAuthenticationFeedbackForSuccess:(BOOL)a3 jiggleLock:(BOOL)a4;
+- (void)_overrideBiometricMatchingEnabled:(BOOL)enabled forReason:(id)reason;
+- (void)_playAuthenticationFeedbackForSuccess:(BOOL)success jiggleLock:(BOOL)lock;
 - (void)_resetForFailedBiometricAttempt;
-- (void)_resetForFailedPasscode:(BOOL)a3;
+- (void)_resetForFailedPasscode:(BOOL)passcode;
 - (void)_resetProudLockAndTitleTextForFailedBiometricAttempt;
 - (void)_screenBrightnessReallyDidChange;
 - (void)_sendDelegateKeypadKeyDown;
 - (void)_sendDelegateKeypadKeyUp;
-- (void)_setBiometricMatchingState:(unint64_t)a3;
-- (void)_setLegibilitySettings:(id)a3;
-- (void)_setLuminosityBoost:(double)a3;
-- (void)_setPasscodeLockViewState:(int64_t)a3 animated:(BOOL)a4;
-- (void)_setStatusState:(unint64_t)a3 animated:(BOOL)a4;
-- (void)_setStatusStateSwipeToRetryAnimated:(BOOL)a3;
-- (void)_setStatusSubtitleText:(id)a3;
-- (void)_setStatusText:(id)a3;
-- (void)_setSuppressTitleText:(BOOL)a3 animated:(BOOL)a4;
+- (void)_setBiometricMatchingState:(unint64_t)state;
+- (void)_setLegibilitySettings:(id)settings;
+- (void)_setLuminosityBoost:(double)boost;
+- (void)_setPasscodeLockViewState:(int64_t)state animated:(BOOL)animated;
+- (void)_setStatusState:(unint64_t)state animated:(BOOL)animated;
+- (void)_setStatusStateSwipeToRetryAnimated:(BOOL)animated;
+- (void)_setStatusSubtitleText:(id)text;
+- (void)_setStatusText:(id)text;
+- (void)_setSuppressTitleText:(BOOL)text animated:(BOOL)animated;
 - (void)_updateBiometricAlpha;
-- (void)_updateBiometricGlyphForBioEvent:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_updateBiometricGlyphForBioEvent:(unint64_t)event animated:(BOOL)animated completion:(id)completion;
 - (void)_updateBiometricLayout;
-- (void)_updateProudLockForBioEvent:(unint64_t)a3;
-- (void)_updateProudLockForBioUnlockWithCompletion:(id)a3;
-- (void)_updateStatusStateForLockoutIfNecessaryAnimatedly:(BOOL)a3;
-- (void)_updateStatusTextForBioEvent:(unint64_t)a3 animated:(BOOL)a4;
-- (void)autofillForSuccessfulMesaAttemptWithCompletion:(id)a3;
-- (void)beginTransitionToState:(int64_t)a3;
-- (void)biometricResource:(id)a3 matchingEnabledDidChange:(BOOL)a4;
-- (void)biometricResource:(id)a3 observeEvent:(unint64_t)a4;
+- (void)_updateProudLockForBioEvent:(unint64_t)event;
+- (void)_updateProudLockForBioUnlockWithCompletion:(id)completion;
+- (void)_updateStatusStateForLockoutIfNecessaryAnimatedly:(BOOL)animatedly;
+- (void)_updateStatusTextForBioEvent:(unint64_t)event animated:(BOOL)animated;
+- (void)autofillForSuccessfulMesaAttemptWithCompletion:(id)completion;
+- (void)beginTransitionToState:(int64_t)state;
+- (void)biometricResource:(id)resource matchingEnabledDidChange:(BOOL)change;
+- (void)biometricResource:(id)resource observeEvent:(unint64_t)event;
 - (void)dealloc;
-- (void)didEndTransitionToState:(int64_t)a3;
+- (void)didEndTransitionToState:(int64_t)state;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 - (void)noteBottomFaceHasBeenOccluded;
-- (void)passcodeBiometricAuthenticationViewCancelButtonHit:(id)a3;
-- (void)passcodeBiometricAuthenticationViewEmergencyCallButtonHit:(id)a3;
-- (void)passcodeBiometricAuthenticationViewUsePasscodeButtonHit:(id)a3;
-- (void)phoneUnlockWithVisionController:(id)a3 attemptFailedWithError:(id)a4;
-- (void)phoneUnlockWithWatchControllerAttemptFailed:(id)a3 withError:(id)a4;
-- (void)providerLegibilitySettingsChanged:(id)a3;
-- (void)resetForFailedMesaAttemptWithStatusText:(id)a3 andSubtitle:(id)a4;
+- (void)passcodeBiometricAuthenticationViewCancelButtonHit:(id)hit;
+- (void)passcodeBiometricAuthenticationViewEmergencyCallButtonHit:(id)hit;
+- (void)passcodeBiometricAuthenticationViewUsePasscodeButtonHit:(id)hit;
+- (void)phoneUnlockWithVisionController:(id)controller attemptFailedWithError:(id)error;
+- (void)phoneUnlockWithWatchControllerAttemptFailed:(id)failed withError:(id)error;
+- (void)providerLegibilitySettingsChanged:(id)changed;
+- (void)resetForFailedMesaAttemptWithStatusText:(id)text andSubtitle:(id)subtitle;
 - (void)resetForScreenOff;
 - (void)resetForSuccess;
-- (void)setAllowsAutomaticBiometricPresentationTransition:(BOOL)a3;
-- (void)setBackgroundAlpha:(double)a3;
-- (void)setBackgroundLegibilitySettingsProvider:(id)a3;
-- (void)setBiometricAuthenticationAllowed:(BOOL)a3;
-- (void)setBiometricResource:(id)a3;
-- (void)setOverrideProudLockContainerViewController:(id)a3;
-- (void)setPlaysKeypadSounds:(BOOL)a3;
-- (void)setPoseidonContainerView:(id)a3;
-- (void)setPoseidonContainerViewController:(id)a3;
-- (void)setProudLockConfiguration:(id *)a3;
-- (void)setScreenOn:(BOOL)a3;
-- (void)setShowsProudLock:(BOOL)a3;
-- (void)setTransitionContext:(id *)a3;
-- (void)setUsesBiometricPresentation:(BOOL)a3;
-- (void)updateForTransitionToPasscodeView:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateStatusTextAnimated:(BOOL)a3;
-- (void)updateTransitionWithProgress:(double)a3;
-- (void)willEndTransitionToState:(int64_t)a3;
-- (void)willMoveToSuperview:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setAllowsAutomaticBiometricPresentationTransition:(BOOL)transition;
+- (void)setBackgroundAlpha:(double)alpha;
+- (void)setBackgroundLegibilitySettingsProvider:(id)provider;
+- (void)setBiometricAuthenticationAllowed:(BOOL)allowed;
+- (void)setBiometricResource:(id)resource;
+- (void)setOverrideProudLockContainerViewController:(id)controller;
+- (void)setPlaysKeypadSounds:(BOOL)sounds;
+- (void)setPoseidonContainerView:(id)view;
+- (void)setPoseidonContainerViewController:(id)controller;
+- (void)setProudLockConfiguration:(id *)configuration;
+- (void)setScreenOn:(BOOL)on;
+- (void)setShowsProudLock:(BOOL)lock;
+- (void)setTransitionContext:(id *)context;
+- (void)setUsesBiometricPresentation:(BOOL)presentation;
+- (void)updateForTransitionToPasscodeView:(BOOL)view animated:(BOOL)animated;
+- (void)updateStatusTextAnimated:(BOOL)animated;
+- (void)updateTransitionWithProgress:(double)progress;
+- (void)willEndTransitionToState:(int64_t)state;
+- (void)willMoveToSuperview:(id)superview;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation SBUIPasscodeLockViewBase
@@ -115,20 +115,20 @@
     v4 = v6 + 0.0 * (v7 - v6);
   }
 
-  v8 = [(SBUIPasscodeLockViewBase *)self biometricAuthenticationView];
-  [v8 setAlpha:v4];
+  biometricAuthenticationView = [(SBUIPasscodeLockViewBase *)self biometricAuthenticationView];
+  [biometricAuthenticationView setAlpha:v4];
 }
 
 - (void)_evaluateBiometricMatchingState
 {
   v3 = [(NSMutableSet *)self->_biometricMatchingEnabledOverrideReasons count];
-  v4 = [(SBUIPasscodeLockViewBase *)self window];
+  window = [(SBUIPasscodeLockViewBase *)self window];
 
-  if (v4 || v3)
+  if (window || v3)
   {
     if (self->_isBiometricAuthenticationAllowed)
     {
-      v6 = [(SBUIPasscodeLockViewBase *)self _canRecognizeBiometricAuthentication];
+      _canRecognizeBiometricAuthentication = [(SBUIPasscodeLockViewBase *)self _canRecognizeBiometricAuthentication];
       if (v3)
       {
         v5 = 1;
@@ -136,7 +136,7 @@
 
       else
       {
-        v5 = v6;
+        v5 = _canRecognizeBiometricAuthentication;
       }
     }
 
@@ -160,20 +160,20 @@
   v10 = 0;
   v11 = 0;
   [(SBUIPasscodeLockViewBase *)self transitionContext];
-  v3 = [(SBUIPasscodeLockViewBase *)self isTransitioning];
-  if (self->_passcodeLockViewState == 1 && (v9 != v10 ? (v4 = v3) : (v4 = 0), !v4))
+  isTransitioning = [(SBUIPasscodeLockViewBase *)self isTransitioning];
+  if (self->_passcodeLockViewState == 1 && (v9 != v10 ? (v4 = isTransitioning) : (v4 = 0), !v4))
   {
-    v5 = [(SBUIPasscodeEntryField *)self->_entryField becomeFirstResponder];
+    becomeFirstResponder = [(SBUIPasscodeEntryField *)self->_entryField becomeFirstResponder];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SBUIPasscodeLockViewBase;
-    v5 = [(SBUIPasscodeLockViewBase *)&v8 becomeFirstResponder];
+    becomeFirstResponder = [(SBUIPasscodeLockViewBase *)&v8 becomeFirstResponder];
   }
 
-  v6 = v5;
+  v6 = becomeFirstResponder;
   [(SBUIPasscodeLockViewBase *)self _evaluateMatchingAndHandleBiometricAuthenticationIfNeeded];
   return v6;
 }
@@ -185,7 +185,7 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SBUIPasscodeLockViewBase *)self isTransitioning];
+  isTransitioning = [(SBUIPasscodeLockViewBase *)self isTransitioning];
   y = v6;
   width = v8;
   height = v10;
@@ -194,7 +194,7 @@
   v17 = v8;
   v18 = v6;
   v19 = v4;
-  if (!v11)
+  if (!isTransitioning)
   {
     passcodeLockViewState = self->_passcodeLockViewState;
     if (passcodeLockViewState)
@@ -254,9 +254,9 @@
   proudLockContainerViewController = self->_proudLockContainerViewController;
   if (proudLockContainerViewController)
   {
-    v24 = [(SBUIProudLockContainerViewController *)proudLockContainerViewController view];
-    [v24 setFrame:{v4, v6, v8, v10}];
-    [(SBUIPasscodeLockViewBase *)self bringSubviewToFront:v24];
+    view = [(SBUIProudLockContainerViewController *)proudLockContainerViewController view];
+    [view setFrame:{v4, v6, v8, v10}];
+    [(SBUIPasscodeLockViewBase *)self bringSubviewToFront:view];
   }
 }
 
@@ -293,8 +293,8 @@
 
 - (void)_clearBrightnessChangeTimer
 {
-  v3 = [(SBUIPasscodeLockViewBase *)self screenBrightnessChangedTimer];
-  [v3 invalidate];
+  screenBrightnessChangedTimer = [(SBUIPasscodeLockViewBase *)self screenBrightnessChangedTimer];
+  [screenBrightnessChangedTimer invalidate];
 
   [(SBUIPasscodeLockViewBase *)self setScreenBrightnessChangedTimer:0];
 }
@@ -314,8 +314,8 @@
   v6 = 0.0;
   v7 = 0.0;
   v5 = 0.0;
-  v2 = [(_UILegibilitySettings *)self->_legibilitySettings contentColor];
-  [v2 getRed:&v7 green:&v6 blue:&v5 alpha:0];
+  contentColor = [(_UILegibilitySettings *)self->_legibilitySettings contentColor];
+  [contentColor getRed:&v7 green:&v6 blue:&v5 alpha:0];
 
   [MEMORY[0x1E69DC888] _luminanceWithRed:v7 green:v6 blue:v5];
   if (v3 < 0.1)
@@ -360,7 +360,7 @@
 
 - (void)_noteScreenBrightnessDidChange
 {
-  v4 = [(SBUIPasscodeLockViewBase *)self screenBrightnessChangedTimer];
+  screenBrightnessChangedTimer = [(SBUIPasscodeLockViewBase *)self screenBrightnessChangedTimer];
   [(SBUIPasscodeLockViewBase *)self setScreenBrightnessChangedTimer:0];
   if (fabs(self->_currentBacklightLevel) >= 2.22044605e-16)
   {
@@ -373,7 +373,7 @@
     [(SBUIPasscodeLockViewBase *)self _screenBrightnessReallyDidChange];
   }
 
-  [v4 invalidate];
+  [screenBrightnessChangedTimer invalidate];
 }
 
 - (void)_updateBiometricLayout
@@ -395,8 +395,8 @@
 
 - (BOOL)_proudLockShowingBiometricStates
 {
-  v2 = [(SBUIPasscodeLockViewBase *)self _proudLockContainerViewControllerToUpdate];
-  v3 = v2 != 0;
+  _proudLockContainerViewControllerToUpdate = [(SBUIPasscodeLockViewBase *)self _proudLockContainerViewControllerToUpdate];
+  v3 = _proudLockContainerViewControllerToUpdate != 0;
 
   return v3;
 }
@@ -416,7 +416,7 @@
 
 - (id)_defaultStatusText
 {
-  v3 = [(SBUIPasscodeLockViewBase *)self _orientation];
+  _orientation = [(SBUIPasscodeLockViewBase *)self _orientation];
   if (self->_deviceHasBeenUnlockedOnceSinceBoot && self->_isBiometricAuthenticationAllowed && [(SBUIBiometricResource *)self->_biometricResource hasBiometricAuthenticationCapabilityEnabled]&& [(SBUIBiometricResource *)self->_biometricResource hasMesaSupport]&& [(SBUIBiometricResource *)self->_biometricResource isMatchingEnabled])
   {
     v4 = @"PASSCODE_MESA_ENTRY_PROMPT";
@@ -427,7 +427,7 @@
     v4 = @"PASSCODE_ENTRY_PROMPT";
   }
 
-  v5 = _SBUIAXAwareLocalizedStringForKey(v4, v3);
+  v5 = _SBUIAXAwareLocalizedStringForKey(v4, _orientation);
 
   return v5;
 }
@@ -472,9 +472,9 @@
   v6.super_class = SBUIPasscodeLockViewBase;
   [(SBUIPasscodeLockViewBase *)&v6 didMoveToWindow];
   [(SBUIPasscodeLockViewBase *)self _evaluateBiometricMatchingState];
-  v3 = [(SBUIPasscodeLockViewBase *)self window];
+  window = [(SBUIPasscodeLockViewBase *)self window];
 
-  if (!v3)
+  if (!window)
   {
     if ([(SBUIPasscodeLockViewBase *)self isFirstResponder])
     {
@@ -506,25 +506,25 @@
   {
     if (![(SBUIPasscodeEntryField *)self->_entryField resignFirstResponder])
     {
-      LOBYTE(v3) = 0;
-      return v3;
+      LOBYTE(isFirstResponder) = 0;
+      return isFirstResponder;
     }
   }
 
   else
   {
-    v3 = [(SBUIPasscodeLockViewBase *)self isFirstResponder];
-    if (!v3)
+    isFirstResponder = [(SBUIPasscodeLockViewBase *)self isFirstResponder];
+    if (!isFirstResponder)
     {
-      return v3;
+      return isFirstResponder;
     }
 
     v5.receiver = self;
     v5.super_class = SBUIPasscodeLockViewBase;
-    v3 = [(SBUIPasscodeLockViewBase *)&v5 resignFirstResponder];
-    if (!v3)
+    isFirstResponder = [(SBUIPasscodeLockViewBase *)&v5 resignFirstResponder];
+    if (!isFirstResponder)
     {
-      return v3;
+      return isFirstResponder;
     }
   }
 
@@ -535,8 +535,8 @@
     [(SBUIPasscodeLockViewBase *)self _resetStatusText];
   }
 
-  LOBYTE(v3) = 1;
-  return v3;
+  LOBYTE(isFirstResponder) = 1;
+  return isFirstResponder;
 }
 
 - (void)dealloc
@@ -544,8 +544,8 @@
   [(SBUIBiometricResource *)self->_biometricResource removeObserver:self];
   [(SBUIPasscodeLockViewBase *)self _clearBrightnessChangeTimer];
   [(SBUIPasscodeLockViewBase *)self _setBiometricMatchingState:0];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(SBFLegibilitySettingsProvider *)self->_backgroundLegibilitySettingsProvider setDelegate:0];
   if ([(_UIKBFeedbackGenerating *)self->_keyboardFeedbackBehavior isActive])
@@ -562,11 +562,11 @@
   [(SBUIPasscodeLockViewBase *)&v5 dealloc];
 }
 
-- (SBUIPasscodeLockViewBase)initWithFrame:(CGRect)a3
+- (SBUIPasscodeLockViewBase)initWithFrame:(CGRect)frame
 {
   v31.receiver = self;
   v31.super_class = SBUIPasscodeLockViewBase;
-  v3 = [(SBUIPasscodeLockViewBase *)&v31 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBUIPasscodeLockViewBase *)&v31 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -602,10 +602,10 @@
     [(SBUIPasscodeLockViewBase *)v4 setShowsCancelButton:1];
     [(SBUIPasscodeLockViewBase *)v4 setShowsEmergencyCallButton:MGGetBoolAnswer()];
     [(SBUIPasscodeLockViewBase *)v4 setShowsStatusField:1];
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v21 = *MEMORY[0x1E69DE368];
-    v22 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v20 addObserver:v4 selector:sel__noteScreenBrightnessDidChange name:v21 object:v22];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [defaultCenter addObserver:v4 selector:sel__noteScreenBrightnessDidChange name:v21 object:mainScreen];
 
     [(SBUIPasscodeLockViewBase *)v4 _noteScreenBrightnessDidChange];
     v4->_allowsStatusTextUpdatingOnResignFirstResponder = 1;
@@ -628,40 +628,40 @@
   return v4;
 }
 
-- (void)setUsesBiometricPresentation:(BOOL)a3
+- (void)setUsesBiometricPresentation:(BOOL)presentation
 {
-  v3 = a3;
+  presentationCopy = presentation;
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = [(SBUIBiometricResource *)self->_biometricResource biometricLockoutState];
-  v6 = [(SBUIBiometricResource *)self->_biometricResource hasBiometricAuthenticationCapabilityEnabled];
-  v7 = v6;
-  if (v5)
+  biometricLockoutState = [(SBUIBiometricResource *)self->_biometricResource biometricLockoutState];
+  hasBiometricAuthenticationCapabilityEnabled = [(SBUIBiometricResource *)self->_biometricResource hasBiometricAuthenticationCapabilityEnabled];
+  v7 = hasBiometricAuthenticationCapabilityEnabled;
+  if (biometricLockoutState)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = !v3 || !v6;
+    v8 = !presentationCopy || !hasBiometricAuthenticationCapabilityEnabled;
   }
 
   [(SBUIPasscodeLockViewBase *)self _setPasscodeLockViewState:v8 animated:0];
   if (v8 == 1 && v7)
   {
-    if (v5)
+    if (biometricLockoutState)
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v11 = @"SBUIPasscodeLockViewBiometricTransitionToPasscodeReasonKey";
       v12[0] = @"SBUIPasscodeLockViewBiometricTransitionToPasscodeReasonBioLockout";
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-      [v9 postNotificationName:@"SBUIPasscodeLockViewBiometricTransitionToPasscode" object:self userInfo:v10];
+      [defaultCenter postNotificationName:@"SBUIPasscodeLockViewBiometricTransitionToPasscode" object:self userInfo:v10];
     }
   }
 }
 
-- (void)setShowsProudLock:(BOOL)a3
+- (void)setShowsProudLock:(BOOL)lock
 {
-  v4 = a3 & ~[(SBUIPasscodeLockViewBase *)self _accountingForExternallyShownProudLock];
+  v4 = lock & ~[(SBUIPasscodeLockViewBase *)self _accountingForExternallyShownProudLock];
   if (self->_showsProudLock != v4)
   {
     self->_showsProudLock = v4;
@@ -681,8 +681,8 @@
       v13[1] = v9;
       [(SBUIProudLockContainerViewController *)v7 setConfiguration:v13];
       [(SBUIProudLockContainerViewController *)self->_proudLockContainerViewController setSuppressNotLooking:1];
-      v10 = [(SBUIProudLockContainerViewController *)self->_proudLockContainerViewController view];
-      [(SBUIPasscodeLockViewBase *)self addSubview:v10];
+      view = [(SBUIProudLockContainerViewController *)self->_proudLockContainerViewController view];
+      [(SBUIPasscodeLockViewBase *)self addSubview:view];
 
       [(SBUIProudLockContainerViewController *)self->_proudLockContainerViewController viewWillAppear:0];
     }
@@ -690,8 +690,8 @@
     else
     {
       [(SBUIProudLockContainerViewController *)self->_proudLockContainerViewController viewDidDisappear:0];
-      v11 = [(SBUIProudLockContainerViewController *)self->_proudLockContainerViewController view];
-      [v11 removeFromSuperview];
+      view2 = [(SBUIProudLockContainerViewController *)self->_proudLockContainerViewController view];
+      [view2 removeFromSuperview];
 
       v12 = self->_proudLockContainerViewController;
       self->_proudLockContainerViewController = 0;
@@ -699,41 +699,41 @@
   }
 }
 
-- (void)setPoseidonContainerView:(id)a3
+- (void)setPoseidonContainerView:(id)view
 {
-  v5 = a3;
-  if (self->_poseidonContainerView != v5)
+  viewCopy = view;
+  if (self->_poseidonContainerView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_poseidonContainerView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_poseidonContainerView, view);
     [(SBUIPasscodeLockViewBase *)self addSubview:self->_poseidonContainerView];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setPoseidonContainerViewController:(id)a3
+- (void)setPoseidonContainerViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_poseidonContainerViewController != v5)
+  controllerCopy = controller;
+  if (self->_poseidonContainerViewController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_poseidonContainerViewController, a3);
+    v6 = controllerCopy;
+    objc_storeStrong(&self->_poseidonContainerViewController, controller);
     [(SBUIPoseidonContainerViewController *)self->_poseidonContainerViewController setAuthenticationInformationProvider:self];
     [(SBUIPoseidonContainerViewController *)self->_poseidonContainerViewController showCoaching:1];
-    v5 = v6;
+    controllerCopy = v6;
   }
 }
 
-- (void)setOverrideProudLockContainerViewController:(id)a3
+- (void)setOverrideProudLockContainerViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   overrideProudLockContainerViewController = self->_overrideProudLockContainerViewController;
-  if (overrideProudLockContainerViewController != v5)
+  if (overrideProudLockContainerViewController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(SBUIProudLockContainerViewController *)overrideProudLockContainerViewController setSuppressScanningState:1];
     [(SBUIProudLockContainerViewController *)self->_overrideProudLockContainerViewController setSuppressNotLooking:0];
-    objc_storeStrong(&self->_overrideProudLockContainerViewController, a3);
+    objc_storeStrong(&self->_overrideProudLockContainerViewController, controller);
     [(SBUIProudLockContainerViewController *)self->_overrideProudLockContainerViewController setSuppressScanningState:0];
     [(SBUIProudLockContainerViewController *)self->_overrideProudLockContainerViewController setSuppressNotLooking:1];
     if (!self->_overrideProudLockContainerViewController)
@@ -742,13 +742,13 @@
     }
 
     overrideProudLockContainerViewController = [(SBUIPasscodeLockViewBase *)self _applyProudLockContainerViewControllerConfiguration];
-    v5 = v7;
+    controllerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](overrideProudLockContainerViewController, v5);
+  MEMORY[0x1EEE66BB8](overrideProudLockContainerViewController, controllerCopy);
 }
 
-- (void)setProudLockConfiguration:(id *)a3
+- (void)setProudLockConfiguration:(id *)configuration
 {
   p_proudLockConfiguration = &self->_proudLockConfiguration;
   v6 = *&self->_proudLockConfiguration.durationToSuppressCameraCoveredWhenWakingWithSmartCover;
@@ -758,20 +758,20 @@
   v7 = *&self->_proudLockConfiguration.bkCoachingHintsEnabled;
   v15[0] = *&self->_proudLockConfiguration.showScanningState;
   v15[1] = v7;
-  v8 = *&a3->var7;
-  v14[2] = *&a3->var5;
+  v8 = *&configuration->var7;
+  v14[2] = *&configuration->var5;
   v14[3] = v8;
-  v14[4] = *&a3->var9;
-  v9 = *&a3->var3;
-  v14[0] = *&a3->var0;
+  v14[4] = *&configuration->var9;
+  v9 = *&configuration->var3;
+  v14[0] = *&configuration->var0;
   v14[1] = v9;
   if (!SBUIProudLockContainerViewControllerConfigurationEqualToConfiguration(v15, v14))
   {
-    v10 = *&a3->var3;
-    v11 = *&a3->var5;
-    v12 = *&a3->var7;
-    *&p_proudLockConfiguration->coachingDelaysUnlock = *&a3->var9;
-    v13 = *&a3->var0;
+    v10 = *&configuration->var3;
+    v11 = *&configuration->var5;
+    v12 = *&configuration->var7;
+    *&p_proudLockConfiguration->coachingDelaysUnlock = *&configuration->var9;
+    v13 = *&configuration->var0;
     *&p_proudLockConfiguration->minimumDurationShowingCoaching = v11;
     *&p_proudLockConfiguration->durationToSuppressCameraCoveredWhenWakingWithSmartCover = v12;
     *&p_proudLockConfiguration->showScanningState = v13;
@@ -806,18 +806,18 @@
   return [(SBUIBiometricResource *)biometricResource hasPoseidonSupport];
 }
 
-- (void)_setPasscodeLockViewState:(int64_t)a3 animated:(BOOL)a4
+- (void)_setPasscodeLockViewState:(int64_t)state animated:(BOOL)animated
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_passcodeLockViewState != a3)
+  if (self->_passcodeLockViewState != state)
   {
-    v4 = a4;
-    self->_passcodeLockViewState = a3;
+    animatedCopy = animated;
+    self->_passcodeLockViewState = state;
     v7 = SBLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"SBUIPasscodeLockViewStateBiometric";
-      if (a3 == 1)
+      if (state == 1)
       {
         v8 = @"SBUIPasscodeLockViewStatePasscode";
       }
@@ -828,7 +828,7 @@
       _os_log_impl(&dword_1A9A79000, v7, OS_LOG_TYPE_DEFAULT, "Setting passcode lock view state to: %@", buf, 0xCu);
     }
 
-    if (v4)
+    if (animatedCopy)
     {
       v10 = 0.3;
     }
@@ -838,7 +838,7 @@
       v10 = 0.0;
     }
 
-    if (v4)
+    if (animatedCopy)
     {
       v11 = 0.57;
     }
@@ -855,9 +855,9 @@
       if (passcodeLockViewState == 1)
       {
         [(SBUIPasscodeLockViewBase *)self willTransitionToPasscodeView];
-        if (v4)
+        if (animatedCopy)
         {
-          LOBYTE(v4) = !self->_forceOnlyFadeAnimations;
+          LOBYTE(animatedCopy) = !self->_forceOnlyFadeAnimations;
         }
 
         v16[0] = MEMORY[0x1E69E9820];
@@ -865,9 +865,9 @@
         v16[2] = __63__SBUIPasscodeLockViewBase__setPasscodeLockViewState_animated___block_invoke;
         v16[3] = &unk_1E789DA60;
         v16[4] = self;
-        v17 = v4;
+        v17 = animatedCopy;
         [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v16 options:0 animations:v10 completion:0.0];
-        if (!v4)
+        if (!animatedCopy)
         {
           [(SBUIPasscodeLockViewBase *)self updateForTransitionToPasscodeView:1 animated:0];
         }
@@ -905,10 +905,10 @@
       }
     }
 
-    v13 = [(SBUIPasscodeLockViewBase *)self delegate];
+    delegate = [(SBUIPasscodeLockViewBase *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v13 passcodeLockViewStateChange:self];
+      [delegate passcodeLockViewStateChange:self];
     }
   }
 }
@@ -941,9 +941,9 @@ uint64_t __63__SBUIPasscodeLockViewBase__setPasscodeLockViewState_animated___blo
   if (![(SBUIPasscodeLockViewBase *)self _setAuthenticationViewTypeToFaceIDWithWatch])
   {
     v3 = +[SBUIPeriocularController sharedInstance];
-    v4 = [v3 periocularEnabled];
+    periocularEnabled = [v3 periocularEnabled];
 
-    if ((v4 & 1) == 0)
+    if ((periocularEnabled & 1) == 0)
     {
 
       [(SBUIPasscodeLockViewBase *)self _advanceToPasscodeForMatchFailure:1];
@@ -977,21 +977,21 @@ uint64_t __63__SBUIPasscodeLockViewBase__setPasscodeLockViewState_animated___blo
 
 - (BOOL)isBiometricLockedOut
 {
-  v2 = [(SBUIPasscodeLockViewBase *)self biometricResource];
-  v3 = [v2 biometricLockoutState] != 0;
+  biometricResource = [(SBUIPasscodeLockViewBase *)self biometricResource];
+  v3 = [biometricResource biometricLockoutState] != 0;
 
   return v3;
 }
 
 - (BOOL)hasBiometricAuthenticationCapabilityEnabled
 {
-  v2 = [(SBUIPasscodeLockViewBase *)self biometricResource];
-  v3 = [v2 hasBiometricAuthenticationCapabilityEnabled];
+  biometricResource = [(SBUIPasscodeLockViewBase *)self biometricResource];
+  hasBiometricAuthenticationCapabilityEnabled = [biometricResource hasBiometricAuthenticationCapabilityEnabled];
 
-  return v3;
+  return hasBiometricAuthenticationCapabilityEnabled;
 }
 
-- (void)beginTransitionToState:(int64_t)a3
+- (void)beginTransitionToState:(int64_t)state
 {
   v14 = *MEMORY[0x1E69E9840];
   if ([(SBUIPasscodeLockViewBase *)self isTransitioning])
@@ -1003,7 +1003,7 @@ uint64_t __63__SBUIPasscodeLockViewBase__setPasscodeLockViewState_animated___blo
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"SBUIPasscodeLockViewStateBiometric";
-    if (a3 == 1)
+    if (state == 1)
     {
       v7 = @"SBUIPasscodeLockViewStatePasscode";
     }
@@ -1016,7 +1016,7 @@ uint64_t __63__SBUIPasscodeLockViewBase__setPasscodeLockViewState_animated___blo
 
   passcodeLockViewState = self->_passcodeLockViewState;
   *&buf = passcodeLockViewState;
-  *(&buf + 1) = a3;
+  *(&buf + 1) = state;
   v13 = 0;
   [(SBUIPasscodeLockViewBase *)self setTransitionContext:&buf];
   [(SBUIPasscodeLockViewBase *)self setIsTransitioning:1];
@@ -1026,7 +1026,7 @@ uint64_t __63__SBUIPasscodeLockViewBase__setPasscodeLockViewState_animated___blo
   v11[3] = &unk_1E789DA38;
   v11[4] = self;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v11];
-  if (!a3 && passcodeLockViewState == 1)
+  if (!state && passcodeLockViewState == 1)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -1047,37 +1047,37 @@ uint64_t __51__SBUIPasscodeLockViewBase_beginTransitionToState___block_invoke(ui
   return [v2 setAlpha:1.0];
 }
 
-- (void)updateTransitionWithProgress:(double)a3
+- (void)updateTransitionWithProgress:(double)progress
 {
   v7 = 0uLL;
-  v8 = 0.0;
+  progressCopy = 0.0;
   [(SBUIPasscodeLockViewBase *)self transitionContext];
-  v8 = a3;
+  progressCopy = progress;
   v5 = v7;
-  v6 = a3;
+  progressCopy2 = progress;
   [(SBUIPasscodeLockViewBase *)self setTransitionContext:&v5];
   [(SBUIPasscodeLockViewBase *)self _updateBiometricAlpha];
 }
 
-- (void)willEndTransitionToState:(int64_t)a3
+- (void)willEndTransitionToState:(int64_t)state
 {
   v7 = 0uLL;
   v8 = 0;
   [(SBUIPasscodeLockViewBase *)self transitionContext];
-  *(&v7 + 1) = a3;
+  *(&v7 + 1) = state;
   v5 = v7;
   v6 = v8;
   [(SBUIPasscodeLockViewBase *)self setTransitionContext:&v5];
 }
 
-- (void)didEndTransitionToState:(int64_t)a3
+- (void)didEndTransitionToState:(int64_t)state
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"SBUIPasscodeLockViewStateBiometric";
-    if (a3 == 1)
+    if (state == 1)
     {
       v6 = @"SBUIPasscodeLockViewStatePasscode";
     }
@@ -1091,7 +1091,7 @@ uint64_t __51__SBUIPasscodeLockViewBase_beginTransitionToState___block_invoke(ui
   buf = 0uLL;
   v10 = 0;
   [(SBUIPasscodeLockViewBase *)self transitionContext];
-  if (a3 == 1 && buf == 1)
+  if (state == 1 && buf == 1)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -1103,7 +1103,7 @@ uint64_t __51__SBUIPasscodeLockViewBase_beginTransitionToState___block_invoke(ui
   }
 
   [(SBUIPasscodeLockViewBase *)self setIsTransitioning:0];
-  [(SBUIPasscodeLockViewBase *)self _setPasscodeLockViewState:a3 animated:0];
+  [(SBUIPasscodeLockViewBase *)self _setPasscodeLockViewState:state animated:0];
 }
 
 uint64_t __52__SBUIPasscodeLockViewBase_didEndTransitionToState___block_invoke(uint64_t a1)
@@ -1114,10 +1114,10 @@ uint64_t __52__SBUIPasscodeLockViewBase_didEndTransitionToState___block_invoke(u
   return [v2 setAlpha:1.0];
 }
 
-- (double)_biometricViewAlphaFromPasscodeLockViewState:(int64_t)a3
+- (double)_biometricViewAlphaFromPasscodeLockViewState:(int64_t)state
 {
   result = 0.0;
-  if (!a3)
+  if (!state)
   {
     return 1.0;
   }
@@ -1125,14 +1125,14 @@ uint64_t __52__SBUIPasscodeLockViewBase_didEndTransitionToState___block_invoke(u
   return result;
 }
 
-- (void)setAllowsAutomaticBiometricPresentationTransition:(BOOL)a3
+- (void)setAllowsAutomaticBiometricPresentationTransition:(BOOL)transition
 {
-  if (self->_allowsAutomaticBiometricPresentationTransition != a3)
+  if (self->_allowsAutomaticBiometricPresentationTransition != transition)
   {
-    self->_allowsAutomaticBiometricPresentationTransition = a3;
+    self->_allowsAutomaticBiometricPresentationTransition = transition;
     if (!self->_passcodeLockViewState)
     {
-      if (a3)
+      if (transition)
       {
         [(SBUIPasscodeLockViewBase *)self _armAdvanceToPasscodeTimer];
         self->_proudLockConfiguration.substate = 2;
@@ -1165,15 +1165,15 @@ uint64_t __52__SBUIPasscodeLockViewBase_didEndTransitionToState___block_invoke(u
 - (void)_advanceToPasscodeTimerFired
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SBUIPasscodeLockViewBase *)self unlockDestination];
+  unlockDestination = [(SBUIPasscodeLockViewBase *)self unlockDestination];
 
-  if (!v3)
+  if (!unlockDestination)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v8 = @"SBUIPasscodeLockViewBiometricTransitionToPasscodeReasonKey";
     v9[0] = @"SBUIPasscodeLockViewBiometricTransitionToPasscodeReasonTimerExpired";
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-    [v4 postNotificationName:@"SBUIPasscodeLockViewBiometricTransitionToPasscode" object:self userInfo:v5];
+    [defaultCenter postNotificationName:@"SBUIPasscodeLockViewBiometricTransitionToPasscode" object:self userInfo:v5];
   }
 
   [(SBUIPasscodeLockViewBase *)self _advanceToPasscodeForMatchFailure:0];
@@ -1185,9 +1185,9 @@ uint64_t __52__SBUIPasscodeLockViewBase_didEndTransitionToState___block_invoke(u
   }
 }
 
-- (void)_advanceToPasscodeForMatchFailure:(BOOL)a3
+- (void)_advanceToPasscodeForMatchFailure:(BOOL)failure
 {
-  v3 = a3;
+  failureCopy = failure;
   v9 = *MEMORY[0x1E69E9840];
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1199,14 +1199,14 @@ uint64_t __52__SBUIPasscodeLockViewBase_didEndTransitionToState___block_invoke(u
   }
 
   [(SBUIPasscodeLockViewBase *)self _disarmAdvanceToPasscodeTimer];
-  if (v3)
+  if (failureCopy)
   {
     [(SBUIPasscodeLockViewBase *)self _setStatusStateSwipeToRetryAnimated:0];
     [(SBUIPasscodeLockViewBase *)self _setSuppressTitleText:0 animated:0];
     [(SBUIPasscodeLockViewBase *)self layoutIfNeeded];
   }
 
-  if (![(SBUIPasscodeLockViewBase *)self confirmedNotInPocket]&& !v3 && self->_shouldConsiderTapGuard || self->_alwaysShowPasscodeButtonForFaceIDMatchFailure)
+  if (![(SBUIPasscodeLockViewBase *)self confirmedNotInPocket]&& !failureCopy && self->_shouldConsiderTapGuard || self->_alwaysShowPasscodeButtonForFaceIDMatchFailure)
   {
     [(SBUIPasscodeBiometricAuthenticationView *)self->_biometricAuthenticationView setAncillaryButtonsVisible:1];
     [(SBUIPasscodeBiometricAuthenticationView *)self->_biometricAuthenticationView setFaceIDUsePasscodeButtonVisible:1];
@@ -1224,9 +1224,9 @@ uint64_t __52__SBUIPasscodeLockViewBase_didEndTransitionToState___block_invoke(u
   self->_shouldConsiderTapGuard = 0;
 }
 
-- (void)updateForTransitionToPasscodeView:(BOOL)a3 animated:(BOOL)a4
+- (void)updateForTransitionToPasscodeView:(BOOL)view animated:(BOOL)animated
 {
-  v5 = [(SBUIPasscodeLockViewBase *)self window:a3];
+  v5 = [(SBUIPasscodeLockViewBase *)self window:view];
   v6 = v5 != 0;
 
   [(SBUIPasscodeLockViewBase *)self _overrideBiometricMatchingEnabled:v6 forReason:@"PasscodeLockViewTransitionToPasscode"];
@@ -1235,15 +1235,15 @@ uint64_t __52__SBUIPasscodeLockViewBase_didEndTransitionToState___block_invoke(u
   [(SBUIPasscodeLockViewBase *)self _overrideBiometricMatchingEnabled:0 forReason:@"PasscodeLockViewTransitionToPasscode"];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v6.receiver = self;
   v6.super_class = SBUIPasscodeLockViewBase;
   [(SBUIPasscodeLockViewBase *)&v6 willMoveToSuperview:?];
-  if (a3)
+  if (superview)
   {
-    v5 = [(SBUIPasscodeLockViewBase *)self _proudLockShowingBiometricStates];
-    if ([(SBUIBiometricResource *)self->_biometricResource hasPearlSupport]&& [(SBUIBiometricResource *)self->_biometricResource hasBiometricAuthenticationCapabilityEnabled]&& (v5 & [(SBUIBiometricResource *)self->_biometricResource isMatchingEnabled]) == 1)
+    _proudLockShowingBiometricStates = [(SBUIPasscodeLockViewBase *)self _proudLockShowingBiometricStates];
+    if ([(SBUIBiometricResource *)self->_biometricResource hasPearlSupport]&& [(SBUIBiometricResource *)self->_biometricResource hasBiometricAuthenticationCapabilityEnabled]&& (_proudLockShowingBiometricStates & [(SBUIBiometricResource *)self->_biometricResource isMatchingEnabled]) == 1)
     {
       [(SBUIPasscodeLockViewBase *)self _setSuppressTitleText:1 animated:0];
     }
@@ -1264,23 +1264,23 @@ uint64_t __52__SBUIPasscodeLockViewBase_didEndTransitionToState___block_invoke(u
 - (void)resetForSuccess
 {
   [(SBUIPasscodeLockViewBase *)self reset];
-  v3 = [(SBUIPasscodeLockViewBase *)self _proudLockContainerViewControllerToUpdate];
-  [v3 setAuthenticated:1];
+  _proudLockContainerViewControllerToUpdate = [(SBUIPasscodeLockViewBase *)self _proudLockContainerViewControllerToUpdate];
+  [_proudLockContainerViewControllerToUpdate setAuthenticated:1];
 
   poseidonContainerViewController = self->_poseidonContainerViewController;
 
   [(SBUIPoseidonContainerViewController *)poseidonContainerViewController showCoaching:0];
 }
 
-- (void)setBiometricResource:(id)a3
+- (void)setBiometricResource:(id)resource
 {
-  v5 = a3;
+  resourceCopy = resource;
   biometricResource = self->_biometricResource;
-  v7 = v5;
-  if (biometricResource != v5)
+  v7 = resourceCopy;
+  if (biometricResource != resourceCopy)
   {
     [(SBUIBiometricResource *)biometricResource removeObserver:self];
-    objc_storeStrong(&self->_biometricResource, a3);
+    objc_storeStrong(&self->_biometricResource, resource);
     [(SBUIBiometricResource *)self->_biometricResource addObserver:self];
     if (self->_biometricResource)
     {
@@ -1290,24 +1290,24 @@ uint64_t __52__SBUIPasscodeLockViewBase_didEndTransitionToState___block_invoke(u
   }
 }
 
-- (void)setPlaysKeypadSounds:(BOOL)a3
+- (void)setPlaysKeypadSounds:(BOOL)sounds
 {
-  if (self->_playsKeypadSounds != a3)
+  if (self->_playsKeypadSounds != sounds)
   {
-    self->_playsKeypadSounds = a3;
-    if (a3)
+    self->_playsKeypadSounds = sounds;
+    if (sounds)
     {
       [(_UIKBFeedbackGenerating *)self->_keyboardFeedbackBehavior activateWithCompletionBlock:0];
     }
   }
 }
 
-- (void)setScreenOn:(BOOL)a3
+- (void)setScreenOn:(BOOL)on
 {
-  if (self->_screenOn != a3)
+  if (self->_screenOn != on)
   {
-    self->_screenOn = a3;
-    if (!a3)
+    self->_screenOn = on;
+    if (!on)
     {
       [(SBUIPasscodeLockViewBase *)self resetForScreenOff];
       if ([(_UIKBFeedbackGenerating *)self->_keyboardFeedbackBehavior isActive])
@@ -1320,63 +1320,63 @@ uint64_t __52__SBUIPasscodeLockViewBase_didEndTransitionToState___block_invoke(u
   }
 }
 
-- (void)setBackgroundAlpha:(double)a3
+- (void)setBackgroundAlpha:(double)alpha
 {
-  if (self->_backgroundAlpha != a3)
+  if (self->_backgroundAlpha != alpha)
   {
-    self->_backgroundAlpha = a3;
-    v5 = [(SBUIPasscodeLockViewBase *)self customBackgroundColor];
-    v4 = [v5 colorWithAlphaComponent:self->_backgroundAlpha];
+    self->_backgroundAlpha = alpha;
+    customBackgroundColor = [(SBUIPasscodeLockViewBase *)self customBackgroundColor];
+    v4 = [customBackgroundColor colorWithAlphaComponent:self->_backgroundAlpha];
     [(SBUIPasscodeLockViewBase *)self setBackgroundColor:v4];
   }
 }
 
-- (void)setBackgroundLegibilitySettingsProvider:(id)a3
+- (void)setBackgroundLegibilitySettingsProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   backgroundLegibilitySettingsProvider = self->_backgroundLegibilitySettingsProvider;
-  if (backgroundLegibilitySettingsProvider != v5)
+  if (backgroundLegibilitySettingsProvider != providerCopy)
   {
-    v7 = v5;
+    v7 = providerCopy;
     [(SBFLegibilitySettingsProvider *)backgroundLegibilitySettingsProvider setDelegate:0];
-    objc_storeStrong(&self->_backgroundLegibilitySettingsProvider, a3);
+    objc_storeStrong(&self->_backgroundLegibilitySettingsProvider, provider);
     [(SBFLegibilitySettingsProvider *)self->_backgroundLegibilitySettingsProvider setDelegate:self];
     backgroundLegibilitySettingsProvider = [(SBUIPasscodeLockViewBase *)self providerLegibilitySettingsChanged:self->_backgroundLegibilitySettingsProvider];
-    v5 = v7;
+    providerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](backgroundLegibilitySettingsProvider, v5);
+  MEMORY[0x1EEE66BB8](backgroundLegibilitySettingsProvider, providerCopy);
 }
 
-- (void)resetForFailedMesaAttemptWithStatusText:(id)a3 andSubtitle:(id)a4
+- (void)resetForFailedMesaAttemptWithStatusText:(id)text andSubtitle:(id)subtitle
 {
-  v6 = a4;
-  v7 = a3;
+  subtitleCopy = subtitle;
+  textCopy = text;
   [(SBUIPasscodeLockViewBase *)self _resetForFailedBiometricAttempt];
-  [(SBUIPasscodeLockViewBase *)self updateStatusText:v7 subtitle:v6 animated:1];
+  [(SBUIPasscodeLockViewBase *)self updateStatusText:textCopy subtitle:subtitleCopy animated:1];
 }
 
-- (void)autofillForSuccessfulMesaAttemptWithCompletion:(id)a3
+- (void)autofillForSuccessfulMesaAttemptWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SBUIPasscodeLockViewBase *)self _entryField];
-  [v5 _autofillForBiometricAuthenticationWithCompletion:v4];
+  completionCopy = completion;
+  _entryField = [(SBUIPasscodeLockViewBase *)self _entryField];
+  [_entryField _autofillForBiometricAuthenticationWithCompletion:completionCopy];
 }
 
-- (void)setBiometricAuthenticationAllowed:(BOOL)a3
+- (void)setBiometricAuthenticationAllowed:(BOOL)allowed
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (self->_isBiometricAuthenticationAllowed != a3)
+  if (self->_isBiometricAuthenticationAllowed != allowed)
   {
     [(SBUIPasscodeLockViewBase *)self updateStatusTextAnimated:1];
-    self->_isBiometricAuthenticationAllowed = a3;
-    if (!a3 && self->_pendingBioUnlock)
+    self->_isBiometricAuthenticationAllowed = allowed;
+    if (!allowed && self->_pendingBioUnlock)
     {
       v5 = SBLogCommon();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v6 = 134217984;
-        v7 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_INFO, "Disabling matching for passcode lock view (%p) but there is a pending bio unlock", &v6, 0xCu);
       }
 
@@ -1387,14 +1387,14 @@ uint64_t __52__SBUIPasscodeLockViewBase_didEndTransitionToState___block_invoke(u
   }
 }
 
-- (void)_setBiometricMatchingState:(unint64_t)a3
+- (void)_setBiometricMatchingState:(unint64_t)state
 {
-  if (self->_biometricMatchingState == a3)
+  if (self->_biometricMatchingState == state)
   {
     return;
   }
 
-  self->_biometricMatchingState = a3;
+  self->_biometricMatchingState = state;
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
@@ -1425,19 +1425,19 @@ LABEL_9:
   [(BSInvalidatable *)v7 invalidate];
 }
 
-- (void)_overrideBiometricMatchingEnabled:(BOOL)a3 forReason:(id)a4
+- (void)_overrideBiometricMatchingEnabled:(BOOL)enabled forReason:(id)reason
 {
-  v4 = a3;
-  v7 = a4;
-  v12 = v7;
-  if (!v7)
+  enabledCopy = enabled;
+  reasonCopy = reason;
+  v12 = reasonCopy;
+  if (!reasonCopy)
   {
     [SBUIPasscodeLockViewBase _overrideBiometricMatchingEnabled:a2 forReason:self];
-    v7 = 0;
+    reasonCopy = 0;
   }
 
   biometricMatchingEnabledOverrideReasons = self->_biometricMatchingEnabledOverrideReasons;
-  if (v4)
+  if (enabledCopy)
   {
     if (!biometricMatchingEnabledOverrideReasons)
     {
@@ -1445,16 +1445,16 @@ LABEL_9:
       v10 = self->_biometricMatchingEnabledOverrideReasons;
       self->_biometricMatchingEnabledOverrideReasons = v9;
 
-      v7 = v12;
+      reasonCopy = v12;
       biometricMatchingEnabledOverrideReasons = self->_biometricMatchingEnabledOverrideReasons;
     }
 
-    [(NSMutableSet *)biometricMatchingEnabledOverrideReasons addObject:v7];
+    [(NSMutableSet *)biometricMatchingEnabledOverrideReasons addObject:reasonCopy];
   }
 
   else
   {
-    [(NSMutableSet *)biometricMatchingEnabledOverrideReasons removeObject:v7];
+    [(NSMutableSet *)biometricMatchingEnabledOverrideReasons removeObject:reasonCopy];
     if ([(NSMutableSet *)self->_biometricMatchingEnabledOverrideReasons count])
     {
       goto LABEL_10;
@@ -1468,37 +1468,37 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  if (a3)
+  if (window)
   {
     [(SBUIPasscodeLockViewBase *)self _luminanceBoostDidChange];
   }
 }
 
-- (void)_setLegibilitySettings:(id)a3
+- (void)_setLegibilitySettings:(id)settings
 {
-  v5 = a3;
-  if (self->_legibilitySettings != v5)
+  settingsCopy = settings;
+  if (self->_legibilitySettings != settingsCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_legibilitySettings, a3);
-    v6 = [(SBUIPasscodeLockViewBase *)self _proudLockContainerViewControllerToUpdate];
-    [v6 setLegibilitySettings:self->_legibilitySettings];
+    v7 = settingsCopy;
+    objc_storeStrong(&self->_legibilitySettings, settings);
+    _proudLockContainerViewControllerToUpdate = [(SBUIPasscodeLockViewBase *)self _proudLockContainerViewControllerToUpdate];
+    [_proudLockContainerViewControllerToUpdate setLegibilitySettings:self->_legibilitySettings];
 
     [(SBUIProudLockContainerViewController *)self->_proudLockContainerViewController setLegibilitySettings:self->_legibilitySettings];
     [(SBUIPasscodeLockViewBase *)self _evaluateLuminance];
-    v5 = v7;
+    settingsCopy = v7;
   }
 }
 
-- (void)_setLuminosityBoost:(double)a3
+- (void)_setLuminosityBoost:(double)boost
 {
-  if (self->_luminanceBoost != a3)
+  if (self->_luminanceBoost != boost)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_luminanceBoost = a3;
+    self->_luminanceBoost = boost;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __48__SBUIPasscodeLockViewBase__setLuminosityBoost___block_invoke;
@@ -1510,10 +1510,10 @@ LABEL_10:
 
 - (void)_sendDelegateKeypadKeyDown
 {
-  v3 = [(SBUIPasscodeLockViewBase *)self delegate];
-  if (v3)
+  delegate = [(SBUIPasscodeLockViewBase *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
+    v4 = delegate;
     if (objc_opt_respondsToSelector())
     {
       [v4 passcodeLockViewKeypadKeyDown:self];
@@ -1525,10 +1525,10 @@ LABEL_10:
 
 - (void)_sendDelegateKeypadKeyUp
 {
-  v3 = [(SBUIPasscodeLockViewBase *)self delegate];
-  if (v3)
+  delegate = [(SBUIPasscodeLockViewBase *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
+    v4 = delegate;
     if (objc_opt_respondsToSelector())
     {
       [v4 passcodeLockViewKeypadKeyUp:self];
@@ -1538,35 +1538,35 @@ LABEL_10:
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)_updateStatusStateForLockoutIfNecessaryAnimatedly:(BOOL)a3
+- (void)_updateStatusStateForLockoutIfNecessaryAnimatedly:(BOOL)animatedly
 {
   if (self->_isBiometricAuthenticationAllowed)
   {
-    v3 = a3;
+    animatedlyCopy = animatedly;
     if (![(SBUIPasscodeLockViewBase *)self _statusState])
     {
-      v5 = [(SBUIBiometricResource *)self->_biometricResource biometricLockoutState];
+      biometricLockoutState = [(SBUIBiometricResource *)self->_biometricResource biometricLockoutState];
       if ([(SBUIBiometricResource *)self->_biometricResource hasBiometricAuthenticationCapabilityEnabled])
       {
-        if ([(SBUIBiometricResource *)self->_biometricResource isMatchingEnabled]&& v5 != 0)
+        if ([(SBUIBiometricResource *)self->_biometricResource isMatchingEnabled]&& biometricLockoutState != 0)
         {
-          v7 = [(SBUIPasscodeLockViewBase *)self _statusStateForLockoutState:v5];
+          v7 = [(SBUIPasscodeLockViewBase *)self _statusStateForLockoutState:biometricLockoutState];
 
-          [(SBUIPasscodeLockViewBase *)self _setStatusState:v7 animated:v3];
+          [(SBUIPasscodeLockViewBase *)self _setStatusState:v7 animated:animatedlyCopy];
         }
       }
     }
   }
 }
 
-- (double)_numberPadOffsetFromTopOfScreen:(id)a3
+- (double)_numberPadOffsetFromTopOfScreen:(id)screen
 {
-  v5 = a3;
-  v6 = [(SBUIPasscodeLockViewBase *)self _isBoundsPortraitOriented];
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  screenCopy = screen;
+  _isBoundsPortraitOriented = [(SBUIPasscodeLockViewBase *)self _isBoundsPortraitOriented];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v9 = v8 & 0xFFFFFFFFFFFFFFFBLL;
+  v9 = userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL;
   v10 = __sb__runningInSpringBoard();
   v11 = v10;
   if (v10)
@@ -1580,8 +1580,8 @@ LABEL_10:
 
   else
   {
-    v8 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v8 userInterfaceIdiom])
+    userInterfaceIdiom = [MEMORY[0x1E69DC938] currentDevice];
+    if ([userInterfaceIdiom userInterfaceIdiom])
     {
       v12 = 0;
 LABEL_13:
@@ -1599,8 +1599,8 @@ LABEL_13:
 
   else
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -1615,11 +1615,11 @@ LABEL_13:
   }
 
 LABEL_14:
-  if (v9 == 1 || !v6 || v12)
+  if (v9 == 1 || !_isBoundsPortraitOriented || v12)
   {
-    if (v9 == 1 || v6)
+    if (v9 == 1 || _isBoundsPortraitOriented)
     {
-      [MEMORY[0x1E69D3FE8] pinNumberPadBaseOffsetFromTopOfScreen:v6];
+      [MEMORY[0x1E69D3FE8] pinNumberPadBaseOffsetFromTopOfScreen:_isBoundsPortraitOriented];
       v21 = v20;
     }
 
@@ -1633,7 +1633,7 @@ LABEL_14:
       v21 = (v26 - v25) * 0.75;
     }
 
-    [v5 _distanceToTopOfFirstButton];
+    [screenCopy _distanceToTopOfFirstButton];
     v19 = v21 - v27;
   }
 
@@ -1641,7 +1641,7 @@ LABEL_14:
   {
     [(SBUIPasscodeLockViewBase *)self bounds];
     v17 = v16;
-    [v5 bounds];
+    [screenCopy bounds];
     v19 = v17 - v18;
   }
 
@@ -1659,61 +1659,61 @@ LABEL_14:
   }
 }
 
-- (void)_setStatusText:(id)a3
+- (void)_setStatusText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   statusText = self->_statusText;
-  v9 = v4;
-  if (!statusText || (v6 = [(NSString *)statusText isEqualToString:v4], v4 = v9, (v6 & 1) == 0))
+  v9 = textCopy;
+  if (!statusText || (setNeedsStatusTextUpdate = [(NSString *)statusText isEqualToString:textCopy], textCopy = v9, (setNeedsStatusTextUpdate & 1) == 0))
   {
-    v7 = [v4 copy];
+    v7 = [textCopy copy];
     v8 = self->_statusText;
     self->_statusText = v7;
 
-    v6 = [(SBUIPasscodeLockViewBase *)self setNeedsStatusTextUpdate];
-    v4 = v9;
+    setNeedsStatusTextUpdate = [(SBUIPasscodeLockViewBase *)self setNeedsStatusTextUpdate];
+    textCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](v6, v4);
+  MEMORY[0x1EEE66BB8](setNeedsStatusTextUpdate, textCopy);
 }
 
-- (void)_setStatusSubtitleText:(id)a3
+- (void)_setStatusSubtitleText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   statusSubtitleText = self->_statusSubtitleText;
-  v9 = v4;
-  if (!statusSubtitleText || (v6 = [(NSString *)statusSubtitleText isEqualToString:v4], v4 = v9, (v6 & 1) == 0))
+  v9 = textCopy;
+  if (!statusSubtitleText || (setNeedsStatusTextUpdate = [(NSString *)statusSubtitleText isEqualToString:textCopy], textCopy = v9, (setNeedsStatusTextUpdate & 1) == 0))
   {
-    v7 = [v4 copy];
+    v7 = [textCopy copy];
     v8 = self->_statusSubtitleText;
     self->_statusSubtitleText = v7;
 
-    v6 = [(SBUIPasscodeLockViewBase *)self setNeedsStatusTextUpdate];
-    v4 = v9;
+    setNeedsStatusTextUpdate = [(SBUIPasscodeLockViewBase *)self setNeedsStatusTextUpdate];
+    textCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](v6, v4);
+  MEMORY[0x1EEE66BB8](setNeedsStatusTextUpdate, textCopy);
 }
 
-- (void)_setSuppressTitleText:(BOOL)a3 animated:(BOOL)a4
+- (void)_setSuppressTitleText:(BOOL)text animated:(BOOL)animated
 {
-  if (self->_suppressTitleText != a3)
+  if (self->_suppressTitleText != text)
   {
-    self->_suppressTitleText = a3;
-    [(SBUIPasscodeLockViewBase *)self updateStatusTextAnimated:a4];
+    self->_suppressTitleText = text;
+    [(SBUIPasscodeLockViewBase *)self updateStatusTextAnimated:animated];
   }
 }
 
-- (void)updateStatusTextAnimated:(BOOL)a3
+- (void)updateStatusTextAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SBUIPasscodeLockViewBase *)self _statusState];
-  v6 = [(SBUIPasscodeLockViewBase *)self _orientation];
-  switch(v5)
+  animatedCopy = animated;
+  _statusState = [(SBUIPasscodeLockViewBase *)self _statusState];
+  _orientation = [(SBUIPasscodeLockViewBase *)self _orientation];
+  switch(_statusState)
   {
     case 1uLL:
       v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v7 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v7 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
       if ([(SBUIBiometricResource *)self->_biometricResource hasPearlSupport])
       {
@@ -1726,7 +1726,7 @@ LABEL_14:
       }
 
       v10 = [MEMORY[0x1E69DC938] modelSpecificLocalizedStringKeyForKey:v9];
-      v11 = _SBUIAXAwareLocalizedStringForKey(v10, v6);
+      v11 = _SBUIAXAwareLocalizedStringForKey(v10, _orientation);
       v12 = SBLogCommon();
       if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
@@ -1738,9 +1738,9 @@ LABEL_14:
       goto LABEL_57;
     case 2uLL:
       v28 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v28 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v28 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
-      v11 = _SBUIPasscodeLocalizeStringForMesaOrPearlKey(@"MESA_NEEDS_PASSCODE_BIO_LOCKOUT", @"FACE_ID_NEEDS_PASSCODE_BIO_LOCKOUT", self->_biometricResource, v6);
+      v11 = _SBUIPasscodeLocalizeStringForMesaOrPearlKey(@"MESA_NEEDS_PASSCODE_BIO_LOCKOUT", @"FACE_ID_NEEDS_PASSCODE_BIO_LOCKOUT", self->_biometricResource, _orientation);
       v10 = SBLogCommon();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -1752,9 +1752,9 @@ LABEL_14:
       goto LABEL_79;
     case 3uLL:
       v24 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v24 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v24 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
-      v11 = _SBUIPasscodeLocalizeStringForMesaOrPearlKey(@"MESA_NEEDS_PASSCODE", @"FACE_ID_NEEDS_PASSCODE", self->_biometricResource, v6);
+      v11 = _SBUIPasscodeLocalizeStringForMesaOrPearlKey(@"MESA_NEEDS_PASSCODE", @"FACE_ID_NEEDS_PASSCODE", self->_biometricResource, _orientation);
       v10 = SBLogCommon();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -1766,9 +1766,9 @@ LABEL_14:
       goto LABEL_79;
     case 4uLL:
       v26 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v26 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v26 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
-      v11 = _SBUIPasscodeLocalizeStringForMesaOrPearlKey(@"MESA_NEEDS_PASSCODE", @"FACE_ID_NEEDS_PASSCODE", self->_biometricResource, v6);
+      v11 = _SBUIPasscodeLocalizeStringForMesaOrPearlKey(@"MESA_NEEDS_PASSCODE", @"FACE_ID_NEEDS_PASSCODE", self->_biometricResource, _orientation);
       v10 = SBLogCommon();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -1780,7 +1780,7 @@ LABEL_14:
       goto LABEL_79;
     case 5uLL:
       v18 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v18 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v18 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
       if ([(SBUIBiometricResource *)self->_biometricResource hasPearlSupport])
       {
@@ -1793,7 +1793,7 @@ LABEL_14:
       }
 
       v10 = [MEMORY[0x1E69DC938] modelSpecificLocalizedStringKeyForKey:v19];
-      v11 = _SBUIAXAwareLocalizedStringForKey(v10, v6);
+      v11 = _SBUIAXAwareLocalizedStringForKey(v10, _orientation);
       v12 = SBLogCommon();
       if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
@@ -1805,7 +1805,7 @@ LABEL_14:
       goto LABEL_57;
     case 6uLL:
       v31 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v31 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v31 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
       if ([(SBUIBiometricResource *)self->_biometricResource hasPearlSupport])
       {
@@ -1818,7 +1818,7 @@ LABEL_14:
       }
 
       v10 = [MEMORY[0x1E69DC938] modelSpecificLocalizedStringKeyForKey:v32];
-      v11 = _SBUIAXAwareLocalizedStringForKey(v10, v6);
+      v11 = _SBUIAXAwareLocalizedStringForKey(v10, _orientation);
       v12 = SBLogCommon();
       if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
@@ -1830,7 +1830,7 @@ LABEL_14:
       goto LABEL_57;
     case 7uLL:
       v36 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v36 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v36 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
       if ([(SBUIBiometricResource *)self->_biometricResource hasPearlSupport])
       {
@@ -1843,7 +1843,7 @@ LABEL_14:
       }
 
       v10 = [MEMORY[0x1E69DC938] modelSpecificLocalizedStringKeyForKey:v37];
-      v11 = _SBUIAXAwareLocalizedStringForKey(v10, v6);
+      v11 = _SBUIAXAwareLocalizedStringForKey(v10, _orientation);
       v12 = SBLogCommon();
       if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
@@ -1859,7 +1859,7 @@ LABEL_58:
       goto LABEL_80;
     case 8uLL:
       v27 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v27 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT_RETRY" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v27 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT_RETRY" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
       v10 = SBLogCommon();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1872,9 +1872,9 @@ LABEL_58:
       goto LABEL_35;
     case 9uLL:
       v40 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v40 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT_RETRY" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v40 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT_RETRY" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
-      v11 = _SBUIAXAwareLocalizedStringForKey(@"MESA_IS_DIRTY", v6);
+      v11 = _SBUIAXAwareLocalizedStringForKey(@"MESA_IS_DIRTY", _orientation);
       v10 = SBLogCommon();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -1886,7 +1886,7 @@ LABEL_58:
       goto LABEL_79;
     case 0xAuLL:
       v21 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v21 localizedStringForKey:@"SWIPE_UP_TO_RETRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v21 localizedStringForKey:@"SWIPE_UP_TO_RETRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
       v10 = SBLogCommon();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1903,9 +1903,9 @@ LABEL_36:
       goto LABEL_80;
     case 0xBuLL:
       v39 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v39 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v39 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
-      v11 = _SBUIAXAwareLocalizedStringForKey(@"WATCH_LOCKED_PROMPT", v6);
+      v11 = _SBUIAXAwareLocalizedStringForKey(@"WATCH_LOCKED_PROMPT", _orientation);
       v10 = SBLogCommon();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -1917,9 +1917,9 @@ LABEL_36:
       goto LABEL_79;
     case 0xCuLL:
       v17 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v17 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v17 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
-      v11 = _SBUIAXAwareLocalizedStringForKey(@"SLEEP_MODE_PROMPT", v6);
+      v11 = _SBUIAXAwareLocalizedStringForKey(@"SLEEP_MODE_PROMPT", _orientation);
       v10 = SBLogCommon();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -1931,11 +1931,11 @@ LABEL_36:
       goto LABEL_79;
     case 0xDuLL:
       v20 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v20 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v20 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
       if (MGGetBoolAnswer())
       {
-        v11 = _SBUIAXAwareLocalizedStringForKey(@"WATCH_WLAN_OFF_PROMPT", v6);
+        v11 = _SBUIAXAwareLocalizedStringForKey(@"WATCH_WLAN_OFF_PROMPT", _orientation);
         v10 = SBLogCommon();
         if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
@@ -1948,7 +1948,7 @@ LABEL_36:
 
       else
       {
-        v11 = _SBUIAXAwareLocalizedStringForKey(@"WATCH_WIFI_OFF_PROMPT", v6);
+        v11 = _SBUIAXAwareLocalizedStringForKey(@"WATCH_WIFI_OFF_PROMPT", _orientation);
         v10 = SBLogCommon();
         if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
@@ -1962,9 +1962,9 @@ LABEL_36:
       goto LABEL_79;
     case 0xEuLL:
       v35 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v35 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v35 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
-      v11 = _SBUIAXAwareLocalizedStringForKey(@"WATCH_OUT_OF_RANGE_PROMPT", v6);
+      v11 = _SBUIAXAwareLocalizedStringForKey(@"WATCH_OUT_OF_RANGE_PROMPT", _orientation);
       v10 = SBLogCommon();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -1976,9 +1976,9 @@ LABEL_36:
       goto LABEL_79;
     case 0xFuLL:
       v16 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v16 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v16 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
-      v11 = _SBUIAXAwareLocalizedStringForKey(@"PHONE_BT_OFF_PROMPT", v6);
+      v11 = _SBUIAXAwareLocalizedStringForKey(@"PHONE_BT_OFF_PROMPT", _orientation);
       v10 = SBLogCommon();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -1990,11 +1990,11 @@ LABEL_36:
       goto LABEL_79;
     case 0x10uLL:
       v25 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v25 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v25 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
       if (MGGetBoolAnswer())
       {
-        v11 = _SBUIAXAwareLocalizedStringForKey(@"PHONE_WLAN_OFF_PROMPT", v6);
+        v11 = _SBUIAXAwareLocalizedStringForKey(@"PHONE_WLAN_OFF_PROMPT", _orientation);
         v10 = SBLogCommon();
         if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
@@ -2007,7 +2007,7 @@ LABEL_36:
 
       else
       {
-        v11 = _SBUIAXAwareLocalizedStringForKey(@"PHONE_WIFI_OFF_PROMPT", v6);
+        v11 = _SBUIAXAwareLocalizedStringForKey(@"PHONE_WIFI_OFF_PROMPT", _orientation);
         v10 = SBLogCommon();
         if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
@@ -2021,11 +2021,11 @@ LABEL_36:
       goto LABEL_79;
     case 0x11uLL:
       v14 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v14 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v14 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
       if (MGGetBoolAnswer())
       {
-        v11 = _SBUIAXAwareLocalizedStringForKey(@"PHONE_BT_AND_WLAN_OFF_PROMPT", v6);
+        v11 = _SBUIAXAwareLocalizedStringForKey(@"PHONE_BT_AND_WLAN_OFF_PROMPT", _orientation);
         v10 = SBLogCommon();
         if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
@@ -2038,7 +2038,7 @@ LABEL_36:
 
       else
       {
-        v11 = _SBUIAXAwareLocalizedStringForKey(@"PHONE_BT_AND_WIFI_OFF_PROMPT", v6);
+        v11 = _SBUIAXAwareLocalizedStringForKey(@"PHONE_BT_AND_WIFI_OFF_PROMPT", _orientation);
         v10 = SBLogCommon();
         if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
@@ -2053,25 +2053,25 @@ LABEL_79:
       _os_log_impl(&dword_1A9A79000, v10, OS_LOG_TYPE_DEFAULT, v15, buf, 2u);
 LABEL_80:
 
-      if (!v8)
+      if (!_defaultStatusText)
       {
 LABEL_81:
-        v8 = [(SBUIPasscodeLockViewBase *)self _defaultStatusText];
+        _defaultStatusText = [(SBUIPasscodeLockViewBase *)self _defaultStatusText];
       }
 
       if (self->_suppressTitleText && ![v11 length])
       {
 
-        v8 = @" ";
+        _defaultStatusText = @" ";
       }
 
-      [(SBUIPasscodeLockViewBase *)self _setStatusText:v8];
+      [(SBUIPasscodeLockViewBase *)self _setStatusText:_defaultStatusText];
       [(SBUIPasscodeLockViewBase *)self _setStatusSubtitleText:v11];
       if (self->_needStatusTextUpdate)
       {
-        v45 = [(SBUIPasscodeLockViewBase *)self _statusText];
-        v46 = [(SBUIPasscodeLockViewBase *)self _statusSubtitleText];
-        [(SBUIPasscodeLockViewBase *)self updateStatusText:v45 subtitle:v46 animated:v3];
+        _statusText = [(SBUIPasscodeLockViewBase *)self _statusText];
+        _statusSubtitleText = [(SBUIPasscodeLockViewBase *)self _statusSubtitleText];
+        [(SBUIPasscodeLockViewBase *)self updateStatusText:_statusText subtitle:_statusSubtitleText animated:animatedCopy];
 
         self->_needStatusTextUpdate = 0;
       }
@@ -2079,9 +2079,9 @@ LABEL_81:
       return;
     case 0x12uLL:
       v29 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v29 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v29 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
-      v11 = _SBUIAXAwareLocalizedStringForKey(@"PHONE_UNLOCK_REQUIRED_PROMPT", v6);
+      v11 = _SBUIAXAwareLocalizedStringForKey(@"PHONE_UNLOCK_REQUIRED_PROMPT", _orientation);
       v10 = SBLogCommon();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -2093,9 +2093,9 @@ LABEL_81:
       goto LABEL_79;
     case 0x13uLL:
       v38 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v38 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v38 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
-      v11 = _SBUIAXAwareLocalizedStringForKey(@"GENERIC_WATCH_UNLOCK_ERROR_PROMPT", v6);
+      v11 = _SBUIAXAwareLocalizedStringForKey(@"GENERIC_WATCH_UNLOCK_ERROR_PROMPT", _orientation);
       v10 = SBLogCommon();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -2107,7 +2107,7 @@ LABEL_81:
       goto LABEL_79;
     case 0x14uLL:
       v43 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v43 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v43 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
       v11 = SBUIStringForPhoneUnlockWithWatchErrorCode(self->_errorCode);
       v10 = SBLogCommon();
@@ -2121,9 +2121,9 @@ LABEL_81:
       goto LABEL_79;
     case 0x15uLL:
       v30 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v30 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v30 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
-      v11 = _SBUIAXAwareLocalizedStringForKey(@"FACE_ID_INTERLOCKED", v6);
+      v11 = _SBUIAXAwareLocalizedStringForKey(@"FACE_ID_INTERLOCKED", _orientation);
       v10 = SBLogCommon();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -2135,10 +2135,10 @@ LABEL_81:
       goto LABEL_79;
     case 0x16uLL:
       v33 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v33 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v33 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
       v34 = [(SBUIPasscodeLockViewBase *)self _deviceSpecificTemperatureStringForTemperatureState:1];
-      v11 = _SBUIAXAwareLocalizedStringForKey(v34, v6);
+      v11 = _SBUIAXAwareLocalizedStringForKey(v34, _orientation);
 
       v10 = SBLogCommon();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2151,10 +2151,10 @@ LABEL_81:
       goto LABEL_79;
     case 0x17uLL:
       v41 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v41 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v41 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
       v42 = [(SBUIPasscodeLockViewBase *)self _deviceSpecificTemperatureStringForTemperatureState:0];
-      v11 = _SBUIAXAwareLocalizedStringForKey(v42, v6);
+      v11 = _SBUIAXAwareLocalizedStringForKey(v42, _orientation);
 
       v10 = SBLogCommon();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2167,9 +2167,9 @@ LABEL_81:
       goto LABEL_79;
     case 0x18uLL:
       v44 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v44 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v44 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
-      v11 = _SBUIAXAwareLocalizedStringForKey(@"FACE_ID_UNSUPPORTED_GLASSES_PROMPT", v6);
+      v11 = _SBUIAXAwareLocalizedStringForKey(@"FACE_ID_UNSUPPORTED_GLASSES_PROMPT", _orientation);
       v10 = SBLogCommon();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -2181,9 +2181,9 @@ LABEL_81:
       goto LABEL_79;
     case 0x19uLL:
       v23 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v8 = [v23 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
+      _defaultStatusText = [v23 localizedStringForKey:@"PASSCODE_ENTRY_PROMPT" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
-      v11 = _SBUIAXAwareLocalizedStringForKey(@"FACE_ID_PERIOCULAR_TIMED_OUT_PROMPT", v6);
+      v11 = _SBUIAXAwareLocalizedStringForKey(@"FACE_ID_PERIOCULAR_TIMED_OUT_PROMPT", _orientation);
       v10 = SBLogCommon();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -2202,10 +2202,10 @@ LABEL_81:
       else
       {
         v47 = MEMORY[0x1E696AEC0];
-        v48 = _SBUIAXAwareLocalizedStringForKey(@"PASSCODE_AFTER_REBOOT", v6);
-        v49 = [MEMORY[0x1E69DC938] currentDevice];
-        v50 = [v49 model];
-        v11 = [v47 stringWithFormat:v48, v50];
+        v48 = _SBUIAXAwareLocalizedStringForKey(@"PASSCODE_AFTER_REBOOT", _orientation);
+        currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+        model = [currentDevice model];
+        v11 = [v47 stringWithFormat:v48, model];
 
         v51 = SBLogCommon();
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
@@ -2219,17 +2219,17 @@ LABEL_81:
   }
 }
 
-- (id)_deviceSpecificTemperatureStringForTemperatureState:(unint64_t)a3
+- (id)_deviceSpecificTemperatureStringForTemperatureState:(unint64_t)state
 {
-  v4 = [(SBUIBiometricResource *)self->_biometricResource hasPearlSupport];
+  hasPearlSupport = [(SBUIBiometricResource *)self->_biometricResource hasPearlSupport];
   v5 = @"MESA";
-  if (v4)
+  if (hasPearlSupport)
   {
     v5 = @"FACE_ID";
   }
 
   v6 = @"COLD";
-  if (a3 == 1)
+  if (state == 1)
   {
     v6 = @"HOT";
   }
@@ -2240,50 +2240,50 @@ LABEL_81:
   return v8;
 }
 
-- (unint64_t)_statusStateForLockoutState:(unint64_t)a3
+- (unint64_t)_statusStateForLockoutState:(unint64_t)state
 {
-  if (a3 - 1 > 8)
+  if (state - 1 > 8)
   {
     return 0;
   }
 
   else
   {
-    return qword_1A9B2A7F0[a3 - 1];
+    return qword_1A9B2A7F0[state - 1];
   }
 }
 
-- (void)_setStatusState:(unint64_t)a3 animated:(BOOL)a4
+- (void)_setStatusState:(unint64_t)state animated:(BOOL)animated
 {
-  if (self->_statusState != a3)
+  if (self->_statusState != state)
   {
-    v4 = a4;
-    self->_statusState = a3;
+    animatedCopy = animated;
+    self->_statusState = state;
     if (![(SBUIPasscodeLockViewBase *)self _statusStateShouldNotUpdateForUnsupportedGlassesFeedback:?])
     {
-      [(SBUIPasscodeLockViewBase *)self updateStatusTextAnimated:v4];
+      [(SBUIPasscodeLockViewBase *)self updateStatusTextAnimated:animatedCopy];
     }
 
-    self->_previousStatusState = a3;
+    self->_previousStatusState = state;
   }
 }
 
-- (void)_resetForFailedPasscode:(BOOL)a3
+- (void)_resetForFailedPasscode:(BOOL)passcode
 {
-  v3 = a3;
+  passcodeCopy = passcode;
   [(SBUIPasscodeLockViewBase *)self _playAuthenticationFeedbackForSuccess:0 jiggleLock:1];
   entryField = self->_entryField;
 
-  [(SBUIPasscodeEntryField *)entryField _resetForFailedPasscode:v3];
+  [(SBUIPasscodeEntryField *)entryField _resetForFailedPasscode:passcodeCopy];
 }
 
-- (void)_playAuthenticationFeedbackForSuccess:(BOOL)a3 jiggleLock:(BOOL)a4
+- (void)_playAuthenticationFeedbackForSuccess:(BOOL)success jiggleLock:(BOOL)lock
 {
-  v5 = a3;
-  v7 = [(SBUIBiometricResource *)self->_biometricResource hasPearlSupport];
-  if (v5)
+  successCopy = success;
+  hasPearlSupport = [(SBUIBiometricResource *)self->_biometricResource hasPearlSupport];
+  if (successCopy)
   {
-    if (v7)
+    if (hasPearlSupport)
     {
       v8 = _AXSPearlAuthenticationHapticsEnabled();
       v9 = 1014;
@@ -2302,7 +2302,7 @@ LABEL_81:
   else
   {
     v9 = 1001;
-    if (v7)
+    if (hasPearlSupport)
     {
       v9 = 1015;
     }
@@ -2315,7 +2315,7 @@ LABEL_81:
   v11[3] = &unk_1E789E248;
   v11[4] = self;
   v11[5] = v9;
-  v12 = a4;
+  lockCopy = lock;
   [(UINotificationFeedbackGenerator *)authenticationFeedbackBehavior activateWithCompletionBlock:v11];
 }
 
@@ -2357,28 +2357,28 @@ void __77__SBUIPasscodeLockViewBase__playAuthenticationFeedbackForSuccess_jiggle
 - (void)_resetProudLockAndTitleTextForFailedBiometricAttempt
 {
   v3 = +[SBUIBiometricResource sharedInstance];
-  v4 = [v3 hasPearlSupport];
+  hasPearlSupport = [v3 hasPearlSupport];
 
-  if (v4)
+  if (hasPearlSupport)
   {
     [(SBUIPasscodeLockViewBase *)self _setStatusStateSwipeToRetryAnimated:1];
   }
 
   [(SBUIPasscodeLockViewBase *)self _setSuppressTitleText:0 animated:1];
-  v5 = [(SBUIPasscodeLockViewBase *)self _entryField];
-  v6 = [v5 stringValue];
-  v7 = [v6 length];
+  _entryField = [(SBUIPasscodeLockViewBase *)self _entryField];
+  stringValue = [_entryField stringValue];
+  v7 = [stringValue length];
 
-  v8 = [(SBUIPasscodeLockViewBase *)self _proudLockContainerViewControllerToUpdate];
-  v9 = v8;
+  _proudLockContainerViewControllerToUpdate = [(SBUIPasscodeLockViewBase *)self _proudLockContainerViewControllerToUpdate];
+  v9 = _proudLockContainerViewControllerToUpdate;
   if (v7)
   {
-    [v8 reset];
+    [_proudLockContainerViewControllerToUpdate reset];
   }
 
   else
   {
-    [v8 updateLockForBiometricMatchFailure];
+    [_proudLockContainerViewControllerToUpdate updateLockForBiometricMatchFailure];
   }
 }
 
@@ -2400,13 +2400,13 @@ void __77__SBUIPasscodeLockViewBase__playAuthenticationFeedbackForSuccess_jiggle
 
     else
     {
-      v6 = [(SBUIPasscodeLockViewBase *)self _entryField];
+      _entryField = [(SBUIPasscodeLockViewBase *)self _entryField];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __59__SBUIPasscodeLockViewBase__resetForFailedBiometricAttempt__block_invoke;
       v8[3] = &unk_1E789DA38;
       v8[4] = self;
-      [v6 _autofillForBiometricAuthenticationWithCompletion:v8];
+      [_entryField _autofillForBiometricAuthenticationWithCompletion:v8];
     }
   }
 
@@ -2526,8 +2526,8 @@ _BYTE *__78__SBUIPasscodeLockViewBase__handleNonPasscodeAuthenticationAndUpdateP
 {
   [(SBUIPasscodeLockViewBase *)self _disarmAdvanceToPasscodeTimer];
   [(SBUIPasscodeLockViewBase *)self _playAuthenticationFeedbackForSuccess:1 jiggleLock:0];
-  v3 = [(SBUIPasscodeLockViewBase *)self _entryField];
-  [v3 _autofillForBiometricAuthenticationWithCompletion:0];
+  _entryField = [(SBUIPasscodeLockViewBase *)self _entryField];
+  [_entryField _autofillForBiometricAuthenticationWithCompletion:0];
 
   if ([(SBUIPasscodeLockViewBase *)self _accountingForExternallyShownProudLock])
   {
@@ -2550,10 +2550,10 @@ _BYTE *__78__SBUIPasscodeLockViewBase__handleNonPasscodeAuthenticationAndUpdateP
 
 - (void)_notifyDelegatePasscodeEnteredViaMesa
 {
-  v3 = [(SBUIPasscodeLockViewBase *)self delegate];
-  if (v3)
+  delegate = [(SBUIPasscodeLockViewBase *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
+    v4 = delegate;
     if (objc_opt_respondsToSelector())
     {
       [v4 passcodeLockViewPasscodeEnteredViaMesa:self];
@@ -2563,50 +2563,50 @@ _BYTE *__78__SBUIPasscodeLockViewBase__handleNonPasscodeAuthenticationAndUpdateP
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)_updateProudLockForBioUnlockWithCompletion:(id)a3
+- (void)_updateProudLockForBioUnlockWithCompletion:(id)completion
 {
-  v8 = a3;
+  completionCopy = completion;
   if ([(SBUIPasscodeLockViewBase *)self _proudLockShowingBiometricStates])
   {
-    v4 = [(SBUIPasscodeLockViewBase *)self _accountingForExternallyShownProudLock];
-    v5 = [(SBUIPasscodeLockViewBase *)self _proudLockContainerViewControllerToUpdate];
-    v6 = v5;
-    if (!v4)
+    _accountingForExternallyShownProudLock = [(SBUIPasscodeLockViewBase *)self _accountingForExternallyShownProudLock];
+    _proudLockContainerViewControllerToUpdate = [(SBUIPasscodeLockViewBase *)self _proudLockContainerViewControllerToUpdate];
+    v6 = _proudLockContainerViewControllerToUpdate;
+    if (!_accountingForExternallyShownProudLock)
     {
-      [v5 setAuthenticated:1 completion:v8];
+      [_proudLockContainerViewControllerToUpdate setAuthenticated:1 completion:completionCopy];
 
       goto LABEL_7;
     }
 
-    [v5 setAuthenticated:1 completion:0];
+    [_proudLockContainerViewControllerToUpdate setAuthenticated:1 completion:0];
   }
 
-  v7 = v8;
-  if (!v8)
+  v7 = completionCopy;
+  if (!completionCopy)
   {
     goto LABEL_8;
   }
 
-  (*(v8 + 2))(v8);
+  (*(completionCopy + 2))(completionCopy);
 LABEL_7:
-  v7 = v8;
+  v7 = completionCopy;
 LABEL_8:
 }
 
-- (void)_updateProudLockForBioEvent:(unint64_t)a3
+- (void)_updateProudLockForBioEvent:(unint64_t)event
 {
-  if (a3 != 4)
+  if (event != 4)
   {
-    v5 = [(SBUIPasscodeLockViewBase *)self _proudLockContainerViewControllerToUpdate];
-    [v5 handleBiometricEvent:a3];
+    _proudLockContainerViewControllerToUpdate = [(SBUIPasscodeLockViewBase *)self _proudLockContainerViewControllerToUpdate];
+    [_proudLockContainerViewControllerToUpdate handleBiometricEvent:event];
   }
 }
 
-- (void)_updateStatusTextForBioEvent:(unint64_t)a3 animated:(BOOL)a4
+- (void)_updateStatusTextForBioEvent:(unint64_t)event animated:(BOOL)animated
 {
-  v6 = [(SBUIBiometricResource *)self->_biometricResource hasPearlSupport:a3];
+  v6 = [(SBUIBiometricResource *)self->_biometricResource hasPearlSupport:event];
   statusState = 1;
-  switch(a3)
+  switch(event)
   {
     case 5uLL:
     case 6uLL:
@@ -2659,11 +2659,11 @@ LABEL_8:
   [(SBUIPasscodeLockViewBase *)self _setStatusState:statusState];
 }
 
-- (void)_updateBiometricGlyphForBioEvent:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_updateBiometricGlyphForBioEvent:(unint64_t)event animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(SBUIBiometricResource *)self->_biometricResource hasPearlSupport];
+  animatedCopy = animated;
+  completionCopy = completion;
+  hasPearlSupport = [(SBUIBiometricResource *)self->_biometricResource hasPearlSupport];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -2680,38 +2680,38 @@ LABEL_8:
   v12[5] = &v13;
   v10 = MEMORY[0x1AC58E960](v12);
   v11 = v10;
-  if (!self->_passcodeLockViewState && !v9)
+  if (!self->_passcodeLockViewState && !hasPearlSupport)
   {
-    if (a3 - 9 >= 3)
+    if (event - 9 >= 3)
     {
-      if (a3 >= 2)
+      if (event >= 2)
       {
-        if (a3 != 4)
+        if (event != 4)
         {
           goto LABEL_9;
         }
 
-        a3 = 12;
+        event = 12;
       }
     }
 
     else
     {
-      a3 = 0;
+      event = 0;
     }
 
-    (*(v10 + 16))(v10, a3);
+    (*(v10 + 16))(v10, event);
   }
 
 LABEL_9:
   if (*(v18 + 24) == 1)
   {
-    [(SBUIPasscodeBiometricAuthenticationView *)self->_biometricAuthenticationView setGlyphViewState:v14[3] animated:v5 completion:v8];
+    [(SBUIPasscodeBiometricAuthenticationView *)self->_biometricAuthenticationView setGlyphViewState:v14[3] animated:animatedCopy completion:completionCopy];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    v8[2](v8, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   _Block_object_dispose(&v13, 8);
@@ -2725,13 +2725,13 @@ uint64_t __81__SBUIPasscodeLockViewBase__updateBiometricGlyphForBioEvent_animate
   return result;
 }
 
-- (void)_setStatusStateSwipeToRetryAnimated:(BOOL)a3
+- (void)_setStatusStateSwipeToRetryAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(SBUIPasscodeLockViewBase *)self canSuggestSwipeToRetry])
   {
     phoneUnlockWithWatchFailedStatusState = self->_phoneUnlockWithWatchFailedStatusState;
-    v6 = self;
+    selfCopy2 = self;
     if (!phoneUnlockWithWatchFailedStatusState)
     {
       phoneUnlockWithWatchFailedStatusState = 10;
@@ -2740,30 +2740,30 @@ uint64_t __81__SBUIPasscodeLockViewBase__updateBiometricGlyphForBioEvent_animate
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     phoneUnlockWithWatchFailedStatusState = 0;
   }
 
-  [(SBUIPasscodeLockViewBase *)v6 _setStatusState:phoneUnlockWithWatchFailedStatusState animated:v3];
+  [(SBUIPasscodeLockViewBase *)selfCopy2 _setStatusState:phoneUnlockWithWatchFailedStatusState animated:animatedCopy];
 }
 
-- (void)providerLegibilitySettingsChanged:(id)a3
+- (void)providerLegibilitySettingsChanged:(id)changed
 {
-  v4 = [(SBFLegibilitySettingsProvider *)self->_backgroundLegibilitySettingsProvider legibilitySettings];
-  v5 = v4;
-  if (v4)
+  legibilitySettings = [(SBFLegibilitySettingsProvider *)self->_backgroundLegibilitySettingsProvider legibilitySettings];
+  v5 = legibilitySettings;
+  if (legibilitySettings)
   {
-    v6 = v4;
-    v4 = [(SBUIPasscodeLockViewBase *)self _setLegibilitySettings:v4];
+    v6 = legibilitySettings;
+    legibilitySettings = [(SBUIPasscodeLockViewBase *)self _setLegibilitySettings:legibilitySettings];
     v5 = v6;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](legibilitySettings, v5);
 }
 
-- (void)biometricResource:(id)a3 matchingEnabledDidChange:(BOOL)a4
+- (void)biometricResource:(id)resource matchingEnabledDidChange:(BOOL)change
 {
-  if (a4)
+  if (change)
   {
     [(SBUIPasscodeLockViewBase *)self _updateStatusStateForLockoutIfNecessaryAnimatedly:0];
 
@@ -2796,13 +2796,13 @@ void __71__SBUIPasscodeLockViewBase_biometricResource_matchingEnabledDidChange__
   }
 }
 
-- (void)biometricResource:(id)a3 observeEvent:(unint64_t)a4
+- (void)biometricResource:(id)resource observeEvent:(unint64_t)event
 {
   if ([(SBUIPasscodeLockViewBase *)self _canRecognizeBiometricAuthentication])
   {
-    if (a4 - 9 > 2)
+    if (event - 9 > 2)
     {
-      switch(a4)
+      switch(event)
       {
         case 0uLL:
           biometricAuthenticationView = self->_biometricAuthenticationView;
@@ -2825,10 +2825,10 @@ LABEL_38:
         case 0x19uLL:
         case 0x1AuLL:
         case 0x21uLL:
-          [(SBUIPasscodeLockViewBase *)self _updateStatusTextForBioEvent:a4 animated:1];
+          [(SBUIPasscodeLockViewBase *)self _updateStatusTextForBioEvent:event animated:1];
           [(SBUIPasscodeLockViewBase *)self _setPasscodeLockViewState:1 animated:1];
-          v6 = [(SBUIPasscodeLockViewBase *)self _proudLockContainerViewControllerToUpdate];
-          [v6 setAuthenticated:0];
+          _proudLockContainerViewControllerToUpdate = [(SBUIPasscodeLockViewBase *)self _proudLockContainerViewControllerToUpdate];
+          [_proudLockContainerViewControllerToUpdate setAuthenticated:0];
 
           break;
         case 0xDuLL:
@@ -2855,14 +2855,14 @@ LABEL_38:
           [(SBUIPasscodeLockViewBase *)self _setAuthenticationViewTypeToFaceIDWithWatch];
           break;
         case 0x1EuLL:
-          v15 = self;
+          selfCopy2 = self;
           v16 = 30;
           goto LABEL_42;
         case 0x20uLL:
-          v15 = self;
+          selfCopy2 = self;
           v16 = 32;
 LABEL_42:
-          [(SBUIPasscodeLockViewBase *)v15 _updateStatusTextForBioEvent:v16 animated:1];
+          [(SBUIPasscodeLockViewBase *)selfCopy2 _updateStatusTextForBioEvent:v16 animated:1];
           [(SBUIPasscodeLockViewBase *)self _advanceToPasscodeForMatchFailure:0];
           break;
         default:
@@ -2874,13 +2874,13 @@ LABEL_42:
     {
       [(SBUIPasscodeBiometricAuthenticationView *)self->_biometricAuthenticationView setGlyphViewState:0];
       [(SBUIPasscodeLockViewBase *)self _resetForFailedBiometricAttempt];
-      [(SBUIPasscodeLockViewBase *)self _updateStatusTextForBioEvent:a4 animated:1];
+      [(SBUIPasscodeLockViewBase *)self _updateStatusTextForBioEvent:event animated:1];
     }
 
-    [(SBUIPasscodeLockViewBase *)self _updateBiometricGlyphForBioEvent:a4 animated:1 completion:0];
-    [(SBUIPasscodeLockViewBase *)self _updateProudLockForBioEvent:a4];
-    v7 = [(SBUIPasscodeLockViewBase *)self isBiometricLockedOut];
-    if (a4 == 4 || v7)
+    [(SBUIPasscodeLockViewBase *)self _updateBiometricGlyphForBioEvent:event animated:1 completion:0];
+    [(SBUIPasscodeLockViewBase *)self _updateProudLockForBioEvent:event];
+    isBiometricLockedOut = [(SBUIPasscodeLockViewBase *)self isBiometricLockedOut];
+    if (event == 4 || isBiometricLockedOut)
     {
       poseidonContainerViewController = self->_poseidonContainerViewController;
 
@@ -2890,9 +2890,9 @@ LABEL_42:
     return;
   }
 
-  if ((a4 & 0xFFFFFFFFFFFFFFFCLL) == 8)
+  if ((event & 0xFFFFFFFFFFFFFFFCLL) == 8)
   {
-    if (a4 == 11)
+    if (event == 11)
     {
 LABEL_6:
 
@@ -2903,22 +2903,22 @@ LABEL_6:
     goto LABEL_19;
   }
 
-  if (a4 > 0x21)
+  if (event > 0x21)
   {
     return;
   }
 
-  if (((1 << a4) & 0x2070000A0) != 0)
+  if (((1 << event) & 0x2070000A0) != 0)
   {
 LABEL_19:
 
-    [(SBUIPasscodeLockViewBase *)self _updateStatusTextForBioEvent:a4 animated:0];
+    [(SBUIPasscodeLockViewBase *)self _updateStatusTextForBioEvent:event animated:0];
     return;
   }
 
-  if (a4 != 4)
+  if (event != 4)
   {
-    if (a4 != 6)
+    if (event != 6)
     {
       return;
     }
@@ -2928,9 +2928,9 @@ LABEL_19:
 
   if (self->_isBiometricAuthenticationAllowed)
   {
-    v9 = [(SBUIPasscodeLockViewBase *)self window];
+    window = [(SBUIPasscodeLockViewBase *)self window];
 
-    if (v9)
+    if (window)
     {
       v10 = SBLogBiometricResource();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2968,7 +2968,7 @@ void __59__SBUIPasscodeLockViewBase_biometricResource_observeEvent___block_invok
   }
 }
 
-- (double)passcodeBiometricAuthenticationViewSideButtonsOffsetFromCenter:(id)a3
+- (double)passcodeBiometricAuthenticationViewSideButtonsOffsetFromCenter:(id)center
 {
   +[SBUIPasscodeLockNumberPad _inputButtonCircleSize];
   v5 = v4;
@@ -2976,10 +2976,10 @@ void __59__SBUIPasscodeLockViewBase_biometricResource_observeEvent___block_invok
   v7 = v6 * 3.0 + v5 * 3.0;
   +[SBUIPasscodeLockNumberPad _inputButtonCircleSpacing];
   v9 = v7 + v8 * 3.0;
-  v10 = [MEMORY[0x1E69DC938] currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v11 & 0xFFFFFFFFFFFFFFFBLL) == 1 || [(SBUIPasscodeLockViewBase *)self _isBoundsPortraitOriented])
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 || [(SBUIPasscodeLockViewBase *)self _isBoundsPortraitOriented])
   {
     return v9 / 3.0;
   }
@@ -2990,7 +2990,7 @@ void __59__SBUIPasscodeLockViewBase_biometricResource_observeEvent___block_invok
   }
 }
 
-- (double)passcodeBiometricAuthenticationViewNumberPadAncillaryButtonOffsetFromTopOfScreen:(id)a3
+- (double)passcodeBiometricAuthenticationViewNumberPadAncillaryButtonOffsetFromTopOfScreen:(id)screen
 {
   v4 = [[SBUIPasscodeLockNumberPad alloc] initWithDefaultSizeAndLightStyle:0];
   [(SBUIPasscodeLockViewBase *)self _numberPadOffsetFromTopOfScreen:v4];
@@ -3001,26 +3001,26 @@ void __59__SBUIPasscodeLockViewBase_biometricResource_observeEvent___block_invok
   return v8;
 }
 
-- (void)passcodeBiometricAuthenticationViewUsePasscodeButtonHit:(id)a3
+- (void)passcodeBiometricAuthenticationViewUsePasscodeButtonHit:(id)hit
 {
   v7[1] = *MEMORY[0x1E69E9840];
   [(SBUIPasscodeBiometricAuthenticationView *)self->_biometricAuthenticationView setAncillaryButtonsVisible:0];
   [(SBUIPasscodeBiometricAuthenticationView *)self->_biometricAuthenticationView setFaceIDUsePasscodeButtonVisible:0];
   [(SBUIPasscodeLockViewBase *)self _setPasscodeLockViewState:1 animated:1];
   [(SBUIPasscodeLockViewBase *)self _disarmAdvanceToPasscodeTimer];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6 = @"SBUIPasscodeLockViewBiometricTransitionToPasscodeReasonKey";
   v7[0] = @"SBUIPasscodeLockViewBiometricTransitionToPasscodeReasonUserRequested";
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
-  [v4 postNotificationName:@"SBUIPasscodeLockViewBiometricTransitionToPasscode" object:self userInfo:v5];
+  [defaultCenter postNotificationName:@"SBUIPasscodeLockViewBiometricTransitionToPasscode" object:self userInfo:v5];
 }
 
-- (void)passcodeBiometricAuthenticationViewCancelButtonHit:(id)a3
+- (void)passcodeBiometricAuthenticationViewCancelButtonHit:(id)hit
 {
-  v4 = [(SBUIPasscodeLockViewBase *)self delegate];
-  if (v4)
+  delegate = [(SBUIPasscodeLockViewBase *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
+    v5 = delegate;
     if (objc_opt_respondsToSelector())
     {
       [v5 passcodeLockViewCancelButtonPressed:self];
@@ -3030,12 +3030,12 @@ void __59__SBUIPasscodeLockViewBase_biometricResource_observeEvent___block_invok
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)passcodeBiometricAuthenticationViewEmergencyCallButtonHit:(id)a3
+- (void)passcodeBiometricAuthenticationViewEmergencyCallButtonHit:(id)hit
 {
-  v4 = [(SBUIPasscodeLockViewBase *)self delegate];
-  if (v4)
+  delegate = [(SBUIPasscodeLockViewBase *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
+    v5 = delegate;
     if (objc_opt_respondsToSelector())
     {
       [v5 passcodeLockViewEmergencyCallButtonPressed:self];
@@ -3045,53 +3045,53 @@ void __59__SBUIPasscodeLockViewBase_biometricResource_observeEvent___block_invok
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)phoneUnlockWithWatchControllerAttemptFailed:(id)a3 withError:(id)a4
+- (void)phoneUnlockWithWatchControllerAttemptFailed:(id)failed withError:(id)error
 {
-  v15 = a4;
+  errorCopy = error;
   v5 = +[SBUIPeriocularController sharedInstance];
-  v6 = [v5 periocularEnabled];
+  periocularEnabled = [v5 periocularEnabled];
 
   v7 = +[SBUIPhoneUnlockWithVisionController sharedInstance];
-  v8 = [v7 isPhoneUnlockEnabledAndRequirementsMet];
+  isPhoneUnlockEnabledAndRequirementsMet = [v7 isPhoneUnlockEnabledAndRequirementsMet];
 
-  if (v8 & 1) != 0 || (v6)
+  if (isPhoneUnlockEnabledAndRequirementsMet & 1) != 0 || (periocularEnabled)
   {
     goto LABEL_36;
   }
 
-  v9 = [v15 code];
+  code = [errorCopy code];
   v10 = +[SBUIPhoneUnlockWithWatchController sharedInstance];
-  v11 = [v10 showRawErrorCodes];
+  showRawErrorCodes = [v10 showRawErrorCodes];
 
-  if (v11)
+  if (showRawErrorCodes)
   {
     self->_phoneUnlockWithWatchFailedStatusState = 20;
     v12 = &OBJC_IVAR___SBUIPasscodeLockViewBase__errorCode;
-    v13 = v9;
+    v13 = code;
     goto LABEL_34;
   }
 
   v12 = &OBJC_IVAR___SBUIPasscodeLockViewBase__phoneUnlockWithWatchFailedStatusState;
   v13 = 11;
-  if (v9 > 127)
+  if (code > 127)
   {
-    if (v9 > 198)
+    if (code > 198)
     {
-      if ((v9 - 213) < 4)
+      if ((code - 213) < 4)
       {
         v12 = &OBJC_IVAR___SBUIPasscodeLockViewBase__phoneUnlockWithWatchFailedStatusState;
         v13 = 18;
         goto LABEL_34;
       }
 
-      if (v9 == 199)
+      if (code == 199)
       {
         v12 = &OBJC_IVAR___SBUIPasscodeLockViewBase__phoneUnlockWithWatchFailedStatusState;
         v13 = 13;
         goto LABEL_34;
       }
 
-      if (v9 == 204)
+      if (code == 204)
       {
         v12 = &OBJC_IVAR___SBUIPasscodeLockViewBase__phoneUnlockWithWatchFailedStatusState;
         v13 = 12;
@@ -3101,8 +3101,8 @@ void __59__SBUIPasscodeLockViewBase_biometricResource_observeEvent___block_invok
 
     else
     {
-      v14 = v9 + 0x80;
-      if ((v9 - 128) <= 0x3A)
+      v14 = code + 0x80;
+      if ((code - 128) <= 0x3A)
       {
         if (((1 << v14) & 0x400000000000A09) != 0)
         {
@@ -3127,17 +3127,17 @@ LABEL_9:
     goto LABEL_33;
   }
 
-  if (v9 > 113)
+  if (code > 113)
   {
-    if (v9 > 122)
+    if (code > 122)
     {
-      if (v9 == 123)
+      if (code == 123)
       {
         v13 = 15;
         goto LABEL_34;
       }
 
-      if (v9 == 124)
+      if (code == 124)
       {
         v13 = 17;
         goto LABEL_34;
@@ -3146,12 +3146,12 @@ LABEL_9:
 
     else
     {
-      if (v9 == 114)
+      if (code == 114)
       {
         goto LABEL_9;
       }
 
-      if (v9 == 120)
+      if (code == 120)
       {
         v13 = 16;
         goto LABEL_34;
@@ -3161,14 +3161,14 @@ LABEL_9:
     goto LABEL_33;
   }
 
-  if (v9 == 101)
+  if (code == 101)
   {
     goto LABEL_9;
   }
 
-  if (v9 != 102)
+  if (code != 102)
   {
-    if (v9 == 103)
+    if (code == 103)
     {
       goto LABEL_9;
     }
@@ -3189,9 +3189,9 @@ LABEL_34:
 LABEL_36:
 }
 
-- (void)phoneUnlockWithVisionController:(id)a3 attemptFailedWithError:(id)a4
+- (void)phoneUnlockWithVisionController:(id)controller attemptFailedWithError:(id)error
 {
-  [(SBUIPasscodeLockViewBase *)self _advanceToPasscodeForMatchFailure:1, a4];
+  [(SBUIPasscodeLockViewBase *)self _advanceToPasscodeForMatchFailure:1, error];
   if (![(SBUIBiometricResource *)self->_biometricResource biometricLockoutState])
   {
 
@@ -3211,10 +3211,10 @@ LABEL_36:
   return self;
 }
 
-- (void)setTransitionContext:(id *)a3
+- (void)setTransitionContext:(id *)context
 {
-  var2 = a3->var2;
-  *&self->_transitionContext.fromState = *&a3->var0;
+  var2 = context->var2;
+  *&self->_transitionContext.fromState = *&context->var0;
   self->_transitionContext.progress = var2;
 }
 

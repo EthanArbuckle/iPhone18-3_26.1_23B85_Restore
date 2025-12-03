@@ -1,68 +1,68 @@
 @interface HACCContentViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
 - (CGRect)collapsedFrame;
-- (HACCContentViewController)initWithContentModule:(unint64_t)a3 andDelegate:(id)a4;
-- (id)_axIdentifierForModule:(unint64_t)a3;
-- (id)contentViewForControlType:(unint64_t)a3 module:(unint64_t)a4 delegate:(id)a5;
-- (unint64_t)controlTypeForModule:(unint64_t)a3;
+- (HACCContentViewController)initWithContentModule:(unint64_t)module andDelegate:(id)delegate;
+- (id)_axIdentifierForModule:(unint64_t)module;
+- (id)contentViewForControlType:(unint64_t)type module:(unint64_t)module delegate:(id)delegate;
+- (unint64_t)controlTypeForModule:(unint64_t)module;
 - (void)_contentViewSubscribeListeners;
 - (void)_contentViewUnsubscribeListeners;
-- (void)_handleTapGestureRecognizer:(id)a3;
-- (void)addExpandedView:(id)a3 shouldAlwaysExpand:(BOOL)a4;
-- (void)removeExpandedView:(id)a3;
+- (void)_handleTapGestureRecognizer:(id)recognizer;
+- (void)addExpandedView:(id)view shouldAlwaysExpand:(BOOL)expand;
+- (void)removeExpandedView:(id)view;
 - (void)updateViewConstraints;
-- (void)updateWithValue:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)updateWithValue:(id)value;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HACCContentViewController
 
-- (HACCContentViewController)initWithContentModule:(unint64_t)a3 andDelegate:(id)a4
+- (HACCContentViewController)initWithContentModule:(unint64_t)module andDelegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = HACCContentViewController;
   v7 = [(HACCContentViewController *)&v23 init];
   v8 = v7;
   if (v7)
   {
-    v7->_controlType = [(HACCContentViewController *)v7 controlTypeForModule:a3];
-    v9 = [(HACCContentViewController *)v8 view];
-    v10 = [MEMORY[0x277D75348] clearColor];
-    [v9 setBackgroundColor:v10];
+    v7->_controlType = [(HACCContentViewController *)v7 controlTypeForModule:module];
+    view = [(HACCContentViewController *)v8 view];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [view setBackgroundColor:clearColor];
 
-    v11 = [(HACCContentViewController *)v8 view];
-    [v11 setOpaque:1];
+    view2 = [(HACCContentViewController *)v8 view];
+    [view2 setOpaque:1];
 
-    v12 = [(HACCContentViewController *)v8 contentViewForControlType:v8->_controlType module:a3 delegate:v6];
+    v12 = [(HACCContentViewController *)v8 contentViewForControlType:v8->_controlType module:module delegate:delegateCopy];
     contentView = v8->_contentView;
     v8->_contentView = v12;
 
-    v14 = [(HACCContentViewController *)v8 view];
-    [v14 setTag:HUICCViewTagForModule(a3)];
+    view3 = [(HACCContentViewController *)v8 view];
+    [view3 setTag:HUICCViewTagForModule(module)];
 
-    v15 = [(HACCContentViewController *)v8 view];
-    [v15 addSubview:v8->_contentView];
+    view4 = [(HACCContentViewController *)v8 view];
+    [view4 addSubview:v8->_contentView];
 
     v16 = v8->_contentView;
-    v17 = [(HACCContentViewController *)v8 _axIdentifierForModule:a3];
+    v17 = [(HACCContentViewController *)v8 _axIdentifierForModule:module];
     [(HACCContentModule *)v16 setAccessibilityIdentifier:v17];
 
     v18 = v8->_contentView;
-    v19 = [(HACCContentViewController *)v8 view];
-    [v19 bounds];
+    view5 = [(HACCContentViewController *)v8 view];
+    [view5 bounds];
     [(HACCContentModule *)v18 setFrame:?];
 
-    [(HACCContentModule *)v8->_contentView setDelegate:v6];
-    [(HACCContentModule *)v8->_contentView setModule:a3];
+    [(HACCContentModule *)v8->_contentView setDelegate:delegateCopy];
+    [(HACCContentModule *)v8->_contentView setModule:module];
     [(HACCContentModule *)v8->_contentView setAutoresizingMask:18];
     [(HACCContentModule *)v8->_contentView updateValue];
     [(HACCContentViewController *)v8 updateViewConstraints];
     v20 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v8 action:sel__handleTapGestureRecognizer_];
     [v20 setDelegate:v8];
-    v21 = [(HACCContentViewController *)v8 view];
-    [v21 addGestureRecognizer:v20];
+    view6 = [(HACCContentViewController *)v8 view];
+    [view6 addGestureRecognizer:v20];
 
     [(HACCContentViewController *)v8 setTapRecognizer:v20];
   }
@@ -70,19 +70,19 @@
   return v8;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = HACCContentViewController;
-  [(HACCContentViewController *)&v4 viewWillAppear:a3];
+  [(HACCContentViewController *)&v4 viewWillAppear:appear];
   [(HACCContentViewController *)self _contentViewSubscribeListeners];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = HACCContentViewController;
-  [(HACCContentViewController *)&v4 viewDidDisappear:a3];
+  [(HACCContentViewController *)&v4 viewDidDisappear:disappear];
   [(HACCContentViewController *)self _contentViewUnsubscribeListeners];
 }
 
@@ -106,13 +106,13 @@
   }
 }
 
-- (void)updateWithValue:(id)a3
+- (void)updateWithValue:(id)value
 {
-  v14 = a3;
+  valueCopy = value;
   if ([(HACCContentModule *)self->_contentView module]== 23 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v4 = *MEMORY[0x277D12DC8];
-    v5 = v14;
+    v5 = valueCopy;
     v6 = [v5 objectForKey:v4];
     [v6 floatValue];
     v8 = v7;
@@ -123,8 +123,8 @@
 
     v12 = [v5 objectForKey:*MEMORY[0x277D12DD0]];
 
-    v13 = [v12 unsignedIntegerValue];
-    [(HACCContentModule *)self->_contentView updateViewsWithSlowLeq:v13 fastLeq:v8 andThreshold:v11];
+    unsignedIntegerValue = [v12 unsignedIntegerValue];
+    [(HACCContentModule *)self->_contentView updateViewsWithSlowLeq:unsignedIntegerValue fastLeq:v8 andThreshold:v11];
   }
 
   else
@@ -138,37 +138,37 @@
   v8.receiver = self;
   v8.super_class = HACCContentViewController;
   [(HACCContentViewController *)&v8 updateViewConstraints];
-  v3 = [(HACCContentViewController *)self view];
-  v4 = [(HACCContentViewController *)self view];
-  v5 = [v4 constraints];
-  [v3 removeConstraints:v5];
+  view = [(HACCContentViewController *)self view];
+  view2 = [(HACCContentViewController *)self view];
+  constraints = [view2 constraints];
+  [view removeConstraints:constraints];
 
   [(HACCContentModule *)self->_contentView setHidden:0];
   [(HACCContentModule *)self->_contentView updateConstraints];
   contentView = self->_contentView;
-  v7 = [(HACCContentViewController *)self view];
-  [v7 bounds];
+  view3 = [(HACCContentViewController *)self view];
+  [view3 bounds];
   [(HACCContentModule *)contentView setFrame:?];
 }
 
-- (unint64_t)controlTypeForModule:(unint64_t)a3
+- (unint64_t)controlTypeForModule:(unint64_t)module
 {
-  if (a3 > 0x26)
+  if (module > 0x26)
   {
     return 1;
   }
 
   else
   {
-    return qword_2521A95B0[a3];
+    return qword_2521A95B0[module];
   }
 }
 
-- (id)contentViewForControlType:(unint64_t)a3 module:(unint64_t)a4 delegate:(id)a5
+- (id)contentViewForControlType:(unint64_t)type module:(unint64_t)module delegate:(id)delegate
 {
-  v8 = a5;
-  v9 = v8;
-  switch(a3)
+  delegateCopy = delegate;
+  v9 = delegateCopy;
+  switch(type)
   {
     case 0uLL:
       v15 = HACCStatusView;
@@ -180,7 +180,7 @@
       v15 = HUICCBackgroundSoundsButton;
       goto LABEL_11;
     case 3uLL:
-      if ([v8 shouldShowHeadphoneLevelUnavailable])
+      if ([delegateCopy shouldShowHeadphoneLevelUnavailable])
       {
         v15 = HUIHeadphoneLevelUnavailableView;
 LABEL_11:
@@ -211,7 +211,7 @@ LABEL_20:
     case 8uLL:
     case 0xAuLL:
       v10 = [HUICCMenuCheckmarkView alloc];
-      v11 = [(HUICCMenuCheckmarkView *)v10 initWithFrame:a4 andModule:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+      v11 = [(HUICCMenuCheckmarkView *)v10 initWithFrame:module andModule:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
       goto LABEL_21;
     case 9uLL:
       v14 = HACCSSLButton;
@@ -219,10 +219,10 @@ LABEL_20:
     case 0xBuLL:
       v12 = HUICCTextView;
 LABEL_13:
-      v11 = [[v12 alloc] initWithModule:a4 andDelegate:v9];
+      v11 = [[v12 alloc] initWithModule:module andDelegate:v9];
       goto LABEL_21;
     case 0xCuLL:
-      v13 = [[HUICCMenuTextView alloc] initWithModule:a4 andDelegate:v8];
+      v13 = [[HUICCMenuTextView alloc] initWithModule:module andDelegate:delegateCopy];
       objc_initWeak(&location, v13);
       objc_initWeak(&from, self);
       v18[0] = MEMORY[0x277D85DD0];
@@ -238,7 +238,7 @@ LABEL_13:
       objc_destroyWeak(&location);
       break;
     case 0xDuLL:
-      v11 = [[HUICCFooterView alloc] initWithModule:a4];
+      v11 = [[HUICCFooterView alloc] initWithModule:module];
 LABEL_21:
       v13 = v11;
       break;
@@ -268,16 +268,16 @@ void __71__HACCContentViewController_contentViewForControlType_module_delegate__
   [v7 viewController:v8 didExpand:1];
 }
 
-- (void)addExpandedView:(id)a3 shouldAlwaysExpand:(BOOL)a4
+- (void)addExpandedView:(id)view shouldAlwaysExpand:(BOOL)expand
 {
-  v4 = a4;
-  v7 = a3;
+  expandCopy = expand;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = self->_contentView;
-    [(HACCContentModule *)v6 addExpandedView:v7];
-    if (v4 && [(HACCContentModule *)v6 supportsExpanding])
+    [(HACCContentModule *)v6 addExpandedView:viewCopy];
+    if (expandCopy && [(HACCContentModule *)v6 supportsExpanding])
     {
       [(HACCContentModule *)v6 setIsExpanded:1];
       [(HACCContentViewController *)self setShouldAlwaysExpand:1];
@@ -285,20 +285,20 @@ void __71__HACCContentViewController_contentViewForControlType_module_delegate__
   }
 }
 
-- (void)removeExpandedView:(id)a3
+- (void)removeExpandedView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(HACCContentModule *)self->_contentView removeExpandedView:v4];
+    [(HACCContentModule *)self->_contentView removeExpandedView:viewCopy];
   }
 }
 
-- (void)_handleTapGestureRecognizer:(id)a3
+- (void)_handleTapGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  if ((!v5 || [v5 state] == 3) && !-[HACCContentViewController shouldAlwaysExpand](self, "shouldAlwaysExpand"))
+  recognizerCopy = recognizer;
+  if ((!recognizerCopy || [recognizerCopy state] == 3) && !-[HACCContentViewController shouldAlwaysExpand](self, "shouldAlwaysExpand"))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -317,26 +317,26 @@ void __71__HACCContentViewController_contentViewForControlType_module_delegate__
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = [a4 view];
-  v7 = [v5 view];
+  recognizerCopy = recognizer;
+  view = [gestureRecognizer view];
+  view2 = [recognizerCopy view];
 
-  LOBYTE(v5) = [v6 isDescendantOfView:v7];
-  return v5;
+  LOBYTE(recognizerCopy) = [view isDescendantOfView:view2];
+  return recognizerCopy;
 }
 
-- (id)_axIdentifierForModule:(unint64_t)a3
+- (id)_axIdentifierForModule:(unint64_t)module
 {
-  if (a3 > 0x26)
+  if (module > 0x26)
   {
     return 0;
   }
 
   else
   {
-    return off_2796F7708[a3];
+    return off_2796F7708[module];
   }
 }
 

@@ -1,7 +1,7 @@
 @interface UIDictationTipModelessInputHandler
 - (BOOL)shouldShowModelessInputTip;
 - (UIDictationTipHandlerDelegate)delegate;
-- (UIDictationTipModelessInputHandler)initWithDelegate:(id)a3;
+- (UIDictationTipModelessInputHandler)initWithDelegate:(id)delegate;
 - (void)processSoftwareKeyboardInteraction;
 - (void)processUserInteractionEnded;
 - (void)resetDictationTipModelessHandlerSignalFlags;
@@ -20,16 +20,16 @@
   [(UIDictationTipModelessInputHandler *)self setShouldAttemptToShowModelessTip:0];
 }
 
-- (UIDictationTipModelessInputHandler)initWithDelegate:(id)a3
+- (UIDictationTipModelessInputHandler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = UIDictationTipModelessInputHandler;
   v5 = [(UIDictationTipModelessInputHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(UIDictationTipModelessInputHandler *)v5 setDelegate:v4];
+    [(UIDictationTipModelessInputHandler *)v5 setDelegate:delegateCopy];
   }
 
   [(UIDictationTipModelessInputHandler *)v6 resetDictationTipModelessHandlerSignalFlags];
@@ -39,8 +39,8 @@
 
 - (void)processSoftwareKeyboardInteraction
 {
-  v3 = [(UIDictationTipModelessInputHandler *)self delegate];
-  v4 = [v3 dictationTipShown:6];
+  delegate = [(UIDictationTipModelessInputHandler *)self delegate];
+  v4 = [delegate dictationTipShown:6];
 
   if ((v4 & 1) == 0 && [(UIDictationTipModelessInputHandler *)self modelessInputTipDictationStoppedSignal])
   {
@@ -51,8 +51,8 @@
 
 - (void)processUserInteractionEnded
 {
-  v3 = [(UIDictationTipModelessInputHandler *)self delegate];
-  v4 = [v3 dictationTipShown:6];
+  delegate = [(UIDictationTipModelessInputHandler *)self delegate];
+  v4 = [delegate dictationTipShown:6];
 
   if ((v4 & 1) == 0 && [(UIDictationTipModelessInputHandler *)self modelessInputTipDictationStoppedSignal])
   {
@@ -91,9 +91,9 @@
   if (+[UIKeyboard isModelessActive](UIKeyboard, "isModelessActive") && (+[UIKeyboardPreferencesController sharedPreferencesController](UIKeyboardPreferencesController, "sharedPreferencesController"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 BOOLForPreferenceKey:@"DictationCommandTipsEnabled"], v3, v4))
   {
     v5 = +[UIDictationController activeInstance];
-    v6 = [v5 shouldSuppressSoftwareKeyboard];
+    shouldSuppressSoftwareKeyboard = [v5 shouldSuppressSoftwareKeyboard];
 
-    v7 = v6 ^ 1;
+    v7 = shouldSuppressSoftwareKeyboard ^ 1;
   }
 
   else
@@ -108,8 +108,8 @@
 {
   v5 = _UILocalizedString(@"ModelessInputTipTitle", @"Type and Speak", @"Type and Speak");
   v3 = _UILocalizedString(@"ModelessInputTipDescription", @"You can edit text with the keyboard while you dictate.", @"You can edit text with the keyboard while you dictate.");
-  v4 = [(UIDictationTipModelessInputHandler *)self delegate];
-  [v4 finalizeTextWithTipType:6 title:v5 andTipDescription:v3];
+  delegate = [(UIDictationTipModelessInputHandler *)self delegate];
+  [delegate finalizeTextWithTipType:6 title:v5 andTipDescription:v3];
 
   [(UIDictationTipModelessInputHandler *)self resetDictationTipModelessHandlerSignalFlags];
 }

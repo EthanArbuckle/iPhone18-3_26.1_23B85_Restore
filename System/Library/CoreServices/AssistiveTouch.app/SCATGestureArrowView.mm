@@ -1,68 +1,68 @@
 @interface SCATGestureArrowView
-+ (void)getCurveArcCenter:(CGPoint *)a3 startAngle:(double *)a4 endAngle:(double *)a5 updatedFingerAngle:(double *)a6 updatedFingerCenter:(CGPoint *)a7 withFingerAngle:(double)a8 fingerCenter:(CGPoint)a9 curveRadius:(double)a10 distanceToMove:(double)a11 onLeft:(BOOL)a12;
++ (void)getCurveArcCenter:(CGPoint *)center startAngle:(double *)angle endAngle:(double *)endAngle updatedFingerAngle:(double *)fingerAngle updatedFingerCenter:(CGPoint *)fingerCenter withFingerAngle:(double)withFingerAngle fingerCenter:(CGPoint)a9 curveRadius:(double)self0 distanceToMove:(double)self1 onLeft:(BOOL)self2;
 - (CGPath)_arrowPath;
 - (CGPath)_arrowPathInBoundingBoxAtOrigin;
-- (CGPath)_newCurvedArrowPathWithIntervals:(unint64_t)a3;
+- (CGPath)_newCurvedArrowPathWithIntervals:(unint64_t)intervals;
 - (CGPath)_newCurvedGrayArrowOutlinePath;
 - (CGPath)_newDefaultArrowPath;
 - (CGPath)_newGrayArrowOutlinePath;
-- (CGPath)_newStraightArrowPathWithIntervals:(unint64_t)a3;
+- (CGPath)_newStraightArrowPathWithIntervals:(unint64_t)intervals;
 - (CGPath)_newStraightGrayArrowOutlinePath;
 - (CGPoint)tailPoint;
 - (CGRect)_frameNeeded;
 - (CGRect)scatFrame;
-- (SCATGestureArrowView)initWithFrame:(CGRect)a3;
+- (SCATGestureArrowView)initWithFrame:(CGRect)frame;
 - (SCATGestureDrawingView)gestureDrawingView;
-- (double)_distanceForCurveWithRadius:(double)a3 onLeft:(BOOL)a4;
+- (double)_distanceForCurveWithRadius:(double)radius onLeft:(BOOL)left;
 - (double)_distanceForPreview;
 - (id)_fingerCircleImage;
-- (void)_addArrowHeadToPath:(CGPath *)a3 baseLeftPoint:(CGPoint)a4 baseRightPoint:(CGPoint)a5 tipPoint:(CGPoint)a6;
-- (void)_addCircleWithRadius:(double)a3 inContext:(CGContext *)a4;
-- (void)_addGrayArrowHeadLineToPath:(CGPath *)a3 bottomPoint:(CGPoint)a4 tipPoint:(CGPoint)a5 sideAngle:(double)a6 sideLength:(double)a7 outlineThickness:(double)a8 innerThickness:(double)a9;
-- (void)_addGrayArrowHeadToPath:(CGPath *)a3 tipAngle:(double)a4 tipPoint:(CGPoint)a5;
-- (void)_addGrayFingerIfNecessaryToPath:(CGPath *)a3;
-- (void)_clearCircleWithRadius:(double)a3 center:(CGPoint)a4 inContext:(CGContext *)a5;
-- (void)_clearCircleWithRadius:(double)a3 inContext:(CGContext *)a4;
-- (void)_drawCurvedLineInIntervals:(unint64_t)a3 spacingBetweenIntervals:(double)a4 drawingBlock:(id)a5;
-- (void)_drawFingerAtArrowHeadInContext:(CGContext *)a3;
-- (void)_drawGrayArrowInContext:(CGContext *)a3;
-- (void)_drawLineOfCirclesInContext:(CGContext *)a3;
-- (void)_drawStraightLineInIntervals:(unint64_t)a3 spacingBetweenIntervals:(double)a4 drawingBlock:(id)a5;
-- (void)_fillArrowPath:(CGPath *)a3 inContext:(CGContext *)a4;
-- (void)_getCurveRadius:(double *)a3 onLeft:(BOOL *)a4;
+- (void)_addArrowHeadToPath:(CGPath *)path baseLeftPoint:(CGPoint)point baseRightPoint:(CGPoint)rightPoint tipPoint:(CGPoint)tipPoint;
+- (void)_addCircleWithRadius:(double)radius inContext:(CGContext *)context;
+- (void)_addGrayArrowHeadLineToPath:(CGPath *)path bottomPoint:(CGPoint)point tipPoint:(CGPoint)tipPoint sideAngle:(double)angle sideLength:(double)length outlineThickness:(double)thickness innerThickness:(double)innerThickness;
+- (void)_addGrayArrowHeadToPath:(CGPath *)path tipAngle:(double)angle tipPoint:(CGPoint)point;
+- (void)_addGrayFingerIfNecessaryToPath:(CGPath *)path;
+- (void)_clearCircleWithRadius:(double)radius center:(CGPoint)center inContext:(CGContext *)context;
+- (void)_clearCircleWithRadius:(double)radius inContext:(CGContext *)context;
+- (void)_drawCurvedLineInIntervals:(unint64_t)intervals spacingBetweenIntervals:(double)betweenIntervals drawingBlock:(id)block;
+- (void)_drawFingerAtArrowHeadInContext:(CGContext *)context;
+- (void)_drawGrayArrowInContext:(CGContext *)context;
+- (void)_drawLineOfCirclesInContext:(CGContext *)context;
+- (void)_drawStraightLineInIntervals:(unint64_t)intervals spacingBetweenIntervals:(double)betweenIntervals drawingBlock:(id)block;
+- (void)_fillArrowPath:(CGPath *)path inContext:(CGContext *)context;
+- (void)_getCurveRadius:(double *)radius onLeft:(BOOL *)left;
 - (void)_propertyDidChange;
 - (void)_uncacheArrowPaths;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)setCurvature:(double)a3;
-- (void)setDistance:(double)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setPressed:(BOOL)a3;
-- (void)setStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4;
-- (void)setStyle:(unint64_t)a3;
-- (void)setTailAngle:(double)a3;
-- (void)setTailPoint:(CGPoint)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setCurvature:(double)curvature;
+- (void)setDistance:(double)distance;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setPressed:(BOOL)pressed;
+- (void)setStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint;
+- (void)setStyle:(unint64_t)style;
+- (void)setTailAngle:(double)angle;
+- (void)setTailPoint:(CGPoint)point;
 @end
 
 @implementation SCATGestureArrowView
 
-+ (void)getCurveArcCenter:(CGPoint *)a3 startAngle:(double *)a4 endAngle:(double *)a5 updatedFingerAngle:(double *)a6 updatedFingerCenter:(CGPoint *)a7 withFingerAngle:(double)a8 fingerCenter:(CGPoint)a9 curveRadius:(double)a10 distanceToMove:(double)a11 onLeft:(BOOL)a12
++ (void)getCurveArcCenter:(CGPoint *)center startAngle:(double *)angle endAngle:(double *)endAngle updatedFingerAngle:(double *)fingerAngle updatedFingerCenter:(CGPoint *)fingerCenter withFingerAngle:(double)withFingerAngle fingerCenter:(CGPoint)a9 curveRadius:(double)self0 distanceToMove:(double)self1 onLeft:(BOOL)self2
 {
   y = a9.y;
   x = a9.x;
-  v20 = a8 + -1.57079633;
-  v21 = a8 + 1.57079633;
-  if (a12)
+  v20 = withFingerAngle + -1.57079633;
+  v21 = withFingerAngle + 1.57079633;
+  if (left)
   {
-    v22 = a8 + -1.57079633;
+    v22 = withFingerAngle + -1.57079633;
   }
 
   else
   {
-    v22 = a8 + 1.57079633;
+    v22 = withFingerAngle + 1.57079633;
   }
 
-  if (a12)
+  if (left)
   {
     v23 = v21;
   }
@@ -72,9 +72,9 @@
     v23 = v20;
   }
 
-  v24 = a11 / a10;
-  v25 = -(a11 / a10);
-  if (a12)
+  v24 = move / radius;
+  v25 = -(move / radius);
+  if (left)
   {
     v26 = -1.57079633;
   }
@@ -84,7 +84,7 @@
     v26 = 1.57079633;
   }
 
-  if (a12)
+  if (left)
   {
     v27 = v25;
   }
@@ -95,43 +95,43 @@
   }
 
   v28 = __sincos_stret(v22);
-  v29 = x + a10 * v28.__cosval;
-  v30 = y + a10 * v28.__sinval;
+  v29 = x + radius * v28.__cosval;
+  v30 = y + radius * v28.__sinval;
   v31 = v23 + v27;
   v32 = __sincos_stret(v23 + v27);
-  if (a3)
+  if (center)
   {
-    a3->x = v29;
-    a3->y = v30;
+    center->x = v29;
+    center->y = v30;
   }
 
-  if (a4)
+  if (angle)
   {
-    *a4 = v23;
+    *angle = v23;
   }
 
-  if (a5)
+  if (endAngle)
   {
-    *a5 = v31;
+    *endAngle = v31;
   }
 
-  if (a6)
+  if (fingerAngle)
   {
-    *a6 = v26 + v31;
+    *fingerAngle = v26 + v31;
   }
 
-  if (a7)
+  if (fingerCenter)
   {
-    a7->x = v29 + a10 * v32.__cosval;
-    a7->y = v30 + a10 * v32.__sinval;
+    fingerCenter->x = v29 + radius * v32.__cosval;
+    fingerCenter->y = v30 + radius * v32.__sinval;
   }
 }
 
-- (SCATGestureArrowView)initWithFrame:(CGRect)a3
+- (SCATGestureArrowView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SCATGestureArrowView;
-  v3 = [(SCATGestureArrowView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SCATGestureArrowView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -162,12 +162,12 @@
   [(SCATGestureArrowView *)&v5 dealloc];
 }
 
-- (void)setStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4
+- (void)setStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = endPoint.y;
+  x = endPoint.x;
+  v6 = point.y;
+  v7 = point.x;
   [(SCATGestureArrowView *)self setTailPoint:?];
   v9 = y - v6;
   v10 = x - v7;
@@ -187,85 +187,85 @@
   return result;
 }
 
-- (void)setTailPoint:(CGPoint)a3
+- (void)setTailPoint:(CGPoint)point
 {
-  if (self->_tailPoint.x != a3.x || self->_tailPoint.y != a3.y)
+  if (self->_tailPoint.x != point.x || self->_tailPoint.y != point.y)
   {
-    self->_tailPoint = a3;
+    self->_tailPoint = point;
     [(SCATGestureArrowView *)self _propertyDidChange];
   }
 }
 
-- (void)setTailAngle:(double)a3
+- (void)setTailAngle:(double)angle
 {
-  if (self->_tailAngle != a3)
+  if (self->_tailAngle != angle)
   {
-    self->_tailAngle = a3;
+    self->_tailAngle = angle;
     [(SCATGestureArrowView *)self _propertyDidChange];
   }
 }
 
-- (void)setCurvature:(double)a3
+- (void)setCurvature:(double)curvature
 {
-  if (self->_curvature != a3)
+  if (self->_curvature != curvature)
   {
-    self->_curvature = a3;
+    self->_curvature = curvature;
     [(SCATGestureArrowView *)self _propertyDidChange];
   }
 }
 
-- (void)setDistance:(double)a3
+- (void)setDistance:(double)distance
 {
-  if (self->_distance != a3)
+  if (self->_distance != distance)
   {
-    self->_distance = a3;
+    self->_distance = distance;
     [(SCATGestureArrowView *)self _propertyDidChange];
   }
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(SCATGestureArrowView *)self _propertyDidChange];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(SCATGestureArrowView *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(SCATGestureArrowView *)self isHighlighted];
   v6.receiver = self;
   v6.super_class = SCATGestureArrowView;
-  [(SCATGestureArrowView *)&v6 setHighlighted:v3];
-  if (v5 != v3)
+  [(SCATGestureArrowView *)&v6 setHighlighted:highlightedCopy];
+  if (isHighlighted != highlightedCopy)
   {
     [(SCATGestureArrowView *)self setNeedsDisplay];
   }
 }
 
-- (void)setPressed:(BOOL)a3
+- (void)setPressed:(BOOL)pressed
 {
-  if (self->_pressed != a3)
+  if (self->_pressed != pressed)
   {
-    self->_pressed = a3;
+    self->_pressed = pressed;
     [(SCATGestureArrowView *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
-  v5 = [(SCATGestureArrowView *)self _isGrayArrow];
-  if ((v5 & 1) != 0 || (-[SCATGestureArrowView distance](self, "distance"), v7 = v6, +[SCATStyleProvider sharedStyleProvider](SCATStyleProvider, "sharedStyleProvider"), v8 = objc_claimAutoreleasedReturnValue(), [v8 arrowHeadBaseOffset], v10 = v9, v8, v7 > v10))
+  _isGrayArrow = [(SCATGestureArrowView *)self _isGrayArrow];
+  if ((_isGrayArrow & 1) != 0 || (-[SCATGestureArrowView distance](self, "distance"), v7 = v6, +[SCATStyleProvider sharedStyleProvider](SCATStyleProvider, "sharedStyleProvider"), v8 = objc_claimAutoreleasedReturnValue(), [v8 arrowHeadBaseOffset], v10 = v9, v8, v7 > v10))
   {
     if (![(SCATGestureArrowView *)self style])
     {
       [(SCATGestureArrowView *)self _drawLineOfCirclesInContext:CurrentContext];
     }
 
-    if (v5)
+    if (_isGrayArrow)
     {
       if ([(SCATGestureArrowView *)self style]== 6)
       {
@@ -277,9 +277,9 @@
 
     else
     {
-      v11 = [(SCATGestureArrowView *)self _arrowPath];
+      _arrowPath = [(SCATGestureArrowView *)self _arrowPath];
 
-      [(SCATGestureArrowView *)self _fillArrowPath:v11 inContext:?];
+      [(SCATGestureArrowView *)self _fillArrowPath:_arrowPath inContext:?];
     }
   }
 }
@@ -313,10 +313,10 @@
 
   else
   {
-    v7 = [(SCATGestureArrowView *)self _fingerCircleImage];
-    [v7 size];
+    _fingerCircleImage = [(SCATGestureArrowView *)self _fingerCircleImage];
+    [_fingerCircleImage size];
     v9 = v8 * -0.5;
-    [v7 size];
+    [_fingerCircleImage size];
     v11 = v10 * -0.5;
     v20.origin.x = x;
     v20.origin.y = y;
@@ -352,10 +352,10 @@
   [(SCATGestureArrowView *)self setNeedsDisplay];
 }
 
-- (void)_drawStraightLineInIntervals:(unint64_t)a3 spacingBetweenIntervals:(double)a4 drawingBlock:(id)a5
+- (void)_drawStraightLineInIntervals:(unint64_t)intervals spacingBetweenIntervals:(double)betweenIntervals drawingBlock:(id)block
 {
-  v18 = a5;
-  if (!a3)
+  blockCopy = block;
+  if (!intervals)
   {
     _AXAssert();
   }
@@ -366,44 +366,44 @@
   v11 = v10;
   v13 = v12;
   [(SCATGestureArrowView *)self tailAngle];
-  if (a3)
+  if (intervals)
   {
-    v15 = (v9 - (a3 - 1) * a4) / a3;
+    v15 = (v9 - (intervals - 1) * betweenIntervals) / intervals;
     v16 = __sincos_stret(v14);
     v17 = 0;
     do
     {
-      v18[2](v18, v17 == 0, --a3 == 0, v11, v13, v11 + v15 * v16.__cosval, v13 + v15 * v16.__sinval);
-      v11 = v11 + v15 * v16.__cosval + a4 * v16.__cosval;
-      v13 = v13 + v15 * v16.__sinval + a4 * v16.__sinval;
+      blockCopy[2](blockCopy, v17 == 0, --intervals == 0, v11, v13, v11 + v15 * v16.__cosval, v13 + v15 * v16.__sinval);
+      v11 = v11 + v15 * v16.__cosval + betweenIntervals * v16.__cosval;
+      v13 = v13 + v15 * v16.__sinval + betweenIntervals * v16.__sinval;
       --v17;
     }
 
-    while (a3);
+    while (intervals);
   }
 }
 
-- (void)_getCurveRadius:(double *)a3 onLeft:(BOOL *)a4
+- (void)_getCurveRadius:(double *)radius onLeft:(BOOL *)left
 {
-  if (a3)
+  if (radius)
   {
     [(SCATGestureArrowView *)self curvature];
-    *a3 = fabs(1.0 / v7);
+    *radius = fabs(1.0 / v7);
   }
 
-  if (a4)
+  if (left)
   {
     [(SCATGestureArrowView *)self curvature];
-    *a4 = v8 < 0.0;
+    *left = v8 < 0.0;
   }
 }
 
-- (double)_distanceForCurveWithRadius:(double)a3 onLeft:(BOOL)a4
+- (double)_distanceForCurveWithRadius:(double)radius onLeft:(BOOL)left
 {
   [(SCATGestureArrowView *)self distance];
-  if (result >= a3 * 3.0 * 3.14159265 * 0.5)
+  if (result >= radius * 3.0 * 3.14159265 * 0.5)
   {
-    return a3 * 3.0 * 3.14159265 * 0.5;
+    return radius * 3.0 * 3.14159265 * 0.5;
   }
 
   return result;
@@ -441,10 +441,10 @@
   return v5;
 }
 
-- (void)_drawCurvedLineInIntervals:(unint64_t)a3 spacingBetweenIntervals:(double)a4 drawingBlock:(id)a5
+- (void)_drawCurvedLineInIntervals:(unint64_t)intervals spacingBetweenIntervals:(double)betweenIntervals drawingBlock:(id)block
 {
-  v8 = a5;
-  if (!a3)
+  blockCopy = block;
+  if (!intervals)
   {
     _AXAssert();
   }
@@ -466,11 +466,11 @@
     v10 = 1.0;
   }
 
-  if (a3)
+  if (intervals)
   {
     v11 = 0;
-    v18 = a4 / v23 * v10;
-    v12 = v10 * ((vabdd_f64(v19, v20) - (a3 - 1) * fabs(v18)) / a3);
+    v18 = betweenIntervals / v23 * v10;
+    v12 = v10 * ((vabdd_f64(v19, v20) - (intervals - 1) * fabs(v18)) / intervals);
     do
     {
       x = v21.x;
@@ -479,12 +479,12 @@
       y = v21.y;
       v17 = v21.y + v14 * v15.__sinval;
       __sincos_stret(v12 + v9);
-      v8[2](v8, v22, v11 == 0, --a3 == 0, x, y, v14, v9, v12 + v9, x + v14 * v15.__cosval, v17);
+      blockCopy[2](blockCopy, v22, v11 == 0, --intervals == 0, x, y, v14, v9, v12 + v9, x + v14 * v15.__cosval, v17);
       v9 = v18 + v12 + v9;
       --v11;
     }
 
-    while (a3);
+    while (intervals);
   }
 }
 
@@ -510,12 +510,12 @@
   result = self->_arrowPathInBoundingBoxAtOrigin;
   if (!result)
   {
-    v4 = [(SCATGestureArrowView *)self _arrowPath];
+    _arrowPath = [(SCATGestureArrowView *)self _arrowPath];
     [(SCATGestureArrowView *)self bounds:0];
     v6 = -v5;
     [(SCATGestureArrowView *)self bounds];
     CGAffineTransformMakeTranslation(&v8, v6, -v7);
-    result = CGPathCreateCopyByTransformingPath(v4, &v8);
+    result = CGPathCreateCopyByTransformingPath(_arrowPath, &v8);
     self->_arrowPathInBoundingBoxAtOrigin = result;
   }
 
@@ -543,41 +543,41 @@
   return result;
 }
 
-- (void)_addGrayArrowHeadLineToPath:(CGPath *)a3 bottomPoint:(CGPoint)a4 tipPoint:(CGPoint)a5 sideAngle:(double)a6 sideLength:(double)a7 outlineThickness:(double)a8 innerThickness:(double)a9
+- (void)_addGrayArrowHeadLineToPath:(CGPath *)path bottomPoint:(CGPoint)point tipPoint:(CGPoint)tipPoint sideAngle:(double)angle sideLength:(double)length outlineThickness:(double)thickness innerThickness:(double)innerThickness
 {
-  y = a4.y;
-  v25 = a4.y;
-  x = a4.x;
-  v12 = a4.x;
-  v14 = a9 * 0.5;
-  v15 = a9 * 0.5 + a8;
-  v16 = __sincos_stret(a6 + 1.57079633);
+  y = point.y;
+  v25 = point.y;
+  x = point.x;
+  v12 = point.x;
+  v14 = innerThickness * 0.5;
+  v15 = innerThickness * 0.5 + thickness;
+  v16 = __sincos_stret(angle + 1.57079633);
   v17 = v16.__cosval * v15;
   v23 = v16.__cosval * v15;
   v18 = v16.__sinval * v15;
-  v19 = __sincos_stret(a6);
-  v22 = a8;
-  v27 = v19.__sinval * a8;
-  v28 = v19.__cosval * a8;
+  v19 = __sincos_stret(angle);
+  thicknessCopy = thickness;
+  v27 = v19.__sinval * thickness;
+  v28 = v19.__cosval * thickness;
   v20 = v19.__cosval * v15;
   v21 = v19.__sinval * v15;
-  CGPathMoveToPoint(a3, 0, v12 - v17, y - v18);
-  CGPathAddLineToPoint(a3, 0, a5.x - v17, a5.y - v18);
-  CGPathAddArcToPoint(a3, 0, v20 + a5.x - v17, v21 + a5.y - v18, a5.x - v16.__cosval * v14 + v20, a5.y - v16.__sinval * v14 + v21, v22);
-  CGPathAddLineToPoint(a3, 0, a5.x + v16.__cosval * v14 + v20, a5.y + v16.__sinval * v14 + v21);
-  CGPathAddArcToPoint(a3, 0, v20 + a5.x + v23, v21 + a5.y + v18, a5.x + v23, a5.y + v18, v22);
-  CGPathAddLineToPoint(a3, 0, x + v23, v25 + v18);
-  CGPathAddArcToPoint(a3, 0, x + v23 - v28, v25 + v18 - v27, x + v16.__cosval * v14 - v28, v25 + v16.__sinval * v14 - v27, v22);
-  CGPathAddLineToPoint(a3, 0, x - v16.__cosval * v14 - v28, v25 - v16.__sinval * v14 - v27);
-  CGPathAddArcToPoint(a3, 0, v12 - v17 - v28, y - v18 - v27, v12 - v17, y - v18, v22);
+  CGPathMoveToPoint(path, 0, v12 - v17, y - v18);
+  CGPathAddLineToPoint(path, 0, tipPoint.x - v17, tipPoint.y - v18);
+  CGPathAddArcToPoint(path, 0, v20 + tipPoint.x - v17, v21 + tipPoint.y - v18, tipPoint.x - v16.__cosval * v14 + v20, tipPoint.y - v16.__sinval * v14 + v21, thicknessCopy);
+  CGPathAddLineToPoint(path, 0, tipPoint.x + v16.__cosval * v14 + v20, tipPoint.y + v16.__sinval * v14 + v21);
+  CGPathAddArcToPoint(path, 0, v20 + tipPoint.x + v23, v21 + tipPoint.y + v18, tipPoint.x + v23, tipPoint.y + v18, thicknessCopy);
+  CGPathAddLineToPoint(path, 0, x + v23, v25 + v18);
+  CGPathAddArcToPoint(path, 0, x + v23 - v28, v25 + v18 - v27, x + v16.__cosval * v14 - v28, v25 + v16.__sinval * v14 - v27, thicknessCopy);
+  CGPathAddLineToPoint(path, 0, x - v16.__cosval * v14 - v28, v25 - v16.__sinval * v14 - v27);
+  CGPathAddArcToPoint(path, 0, v12 - v17 - v28, y - v18 - v27, v12 - v17, y - v18, thicknessCopy);
 
-  CGPathCloseSubpath(a3);
+  CGPathCloseSubpath(path);
 }
 
-- (void)_addGrayArrowHeadToPath:(CGPath *)a3 tipAngle:(double)a4 tipPoint:(CGPoint)a5
+- (void)_addGrayArrowHeadToPath:(CGPath *)path tipAngle:(double)angle tipPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
+  y = point.y;
+  x = point.x;
   v21 = +[SCATStyleProvider sharedStyleProvider];
   if ([(SCATGestureArrowView *)self style]== 5)
   {
@@ -590,20 +590,20 @@
   }
 
   v11 = v10;
-  v12 = a4 + -0.785398163;
-  v20 = a4 + -0.785398163;
-  v13 = a4 + 0.785398163;
+  v12 = angle + -0.785398163;
+  v20 = angle + -0.785398163;
+  v13 = angle + 0.785398163;
   v14 = __sincos_stret(v13);
   v15 = __sincos_stret(v12);
   [v21 controlArrowOutlineThickness];
   v17 = v16;
   [v21 controlArrowThickness];
   v19 = v18;
-  [(SCATGestureArrowView *)self _addGrayArrowHeadLineToPath:a3 bottomPoint:x - v11 * v14.__cosval tipPoint:y - v11 * v14.__sinval sideAngle:x sideLength:y outlineThickness:v13 innerThickness:v11, v17, v18];
-  [(SCATGestureArrowView *)self _addGrayArrowHeadLineToPath:a3 bottomPoint:x - v11 * v15.__cosval tipPoint:y - v11 * v15.__sinval sideAngle:x sideLength:y outlineThickness:v20 innerThickness:v11, v17, v19];
+  [(SCATGestureArrowView *)self _addGrayArrowHeadLineToPath:path bottomPoint:x - v11 * v14.__cosval tipPoint:y - v11 * v14.__sinval sideAngle:x sideLength:y outlineThickness:v13 innerThickness:v11, v17, v18];
+  [(SCATGestureArrowView *)self _addGrayArrowHeadLineToPath:path bottomPoint:x - v11 * v15.__cosval tipPoint:y - v11 * v15.__sinval sideAngle:x sideLength:y outlineThickness:v20 innerThickness:v11, v17, v19];
 }
 
-- (void)_addGrayFingerIfNecessaryToPath:(CGPath *)a3
+- (void)_addGrayFingerIfNecessaryToPath:(CGPath *)path
 {
   if ([(SCATGestureArrowView *)self style]== 3)
   {
@@ -615,12 +615,12 @@
     [(SCATGestureArrowView *)self tailPoint];
     v10 = v9 + v8 * 0.5;
     [(SCATGestureArrowView *)self tailPoint];
-    CGPathMoveToPoint(a3, 0, v10, v8 * 0.5 + v11);
+    CGPathMoveToPoint(path, 0, v10, v8 * 0.5 + v11);
     [(SCATGestureArrowView *)self tailPoint];
     v13 = v12;
     [(SCATGestureArrowView *)self tailPoint];
-    CGPathAddArc(a3, 0, v13, v14, v8, 0.0, 6.28318531, 0);
-    CGPathCloseSubpath(a3);
+    CGPathAddArc(path, 0, v13, v14, v8, 0.0, 6.28318531, 0);
+    CGPathCloseSubpath(path);
   }
 }
 
@@ -682,46 +682,46 @@
   }
 }
 
-- (void)_clearCircleWithRadius:(double)a3 inContext:(CGContext *)a4
+- (void)_clearCircleWithRadius:(double)radius inContext:(CGContext *)context
 {
   [(SCATGestureArrowView *)self tailPoint];
 
-  [(SCATGestureArrowView *)self _clearCircleWithRadius:a4 center:a3 inContext:v7, v8];
+  [(SCATGestureArrowView *)self _clearCircleWithRadius:context center:radius inContext:v7, v8];
 }
 
-- (void)_clearCircleWithRadius:(double)a3 center:(CGPoint)a4 inContext:(CGContext *)a5
+- (void)_clearCircleWithRadius:(double)radius center:(CGPoint)center inContext:(CGContext *)context
 {
-  y = a4.y;
-  x = a4.x;
-  CGContextSaveGState(a5);
-  CGContextSetBlendMode(a5, kCGBlendModeClear);
-  CGContextAddArc(a5, x, y, a3, 0.0, 6.28318531, 0);
-  CGContextFillPath(a5);
+  y = center.y;
+  x = center.x;
+  CGContextSaveGState(context);
+  CGContextSetBlendMode(context, kCGBlendModeClear);
+  CGContextAddArc(context, x, y, radius, 0.0, 6.28318531, 0);
+  CGContextFillPath(context);
 
-  CGContextRestoreGState(a5);
+  CGContextRestoreGState(context);
 }
 
-- (void)_addCircleWithRadius:(double)a3 inContext:(CGContext *)a4
+- (void)_addCircleWithRadius:(double)radius inContext:(CGContext *)context
 {
   [(SCATGestureArrowView *)self tailPoint];
 
-  [(SCATGestureArrowView *)self _addCircleWithRadius:a4 center:a3 inContext:v7, v8];
+  [(SCATGestureArrowView *)self _addCircleWithRadius:context center:radius inContext:v7, v8];
 }
 
-- (void)_drawGrayArrowInContext:(CGContext *)a3
+- (void)_drawGrayArrowInContext:(CGContext *)context
 {
   v5 = +[SCATStyleProvider sharedStyleProvider];
-  CGContextAddPath(a3, [(SCATGestureArrowView *)self _arrowPath]);
-  v6 = [v5 controlArrowOutlineColor];
-  CGContextSetFillColorWithColor(a3, [v6 CGColor]);
-  CGContextFillPath(a3);
+  CGContextAddPath(context, [(SCATGestureArrowView *)self _arrowPath]);
+  controlArrowOutlineColor = [v5 controlArrowOutlineColor];
+  CGContextSetFillColorWithColor(context, [controlArrowOutlineColor CGColor]);
+  CGContextFillPath(context);
   if ([(SCATGestureArrowView *)self style]== 3)
   {
     [v5 grayFingerInnerRadius];
     v8 = v7;
     [v5 controlArrowOutlineThickness];
-    [(SCATGestureArrowView *)self _clearCircleWithRadius:a3 inContext:v8 - v9];
-    CGContextBeginTransparencyLayer(a3, 0);
+    [(SCATGestureArrowView *)self _clearCircleWithRadius:context inContext:v8 - v9];
+    CGContextBeginTransparencyLayer(context, 0);
   }
 
   if (([(SCATGestureArrowView *)self isHighlighted]& 1) != 0)
@@ -750,7 +750,7 @@
   v37[1] = 3221225472;
   v37[2] = sub_100095BFC;
   v37[3] = &unk_1001D5F90;
-  v37[4] = a3;
+  v37[4] = context;
   v37[5] = v13;
   v14 = objc_retainBlock(v37);
   [(SCATGestureArrowView *)self curvature];
@@ -760,7 +760,7 @@
     v34[1] = 3221225472;
     v34[2] = sub_100095CBC;
     v34[3] = &unk_1001D5FB8;
-    v36[1] = a3;
+    v36[1] = context;
     v16 = v35;
     v35[0] = v10;
     v36[2] = v12;
@@ -777,7 +777,7 @@
     v29 = 3221225472;
     v30 = sub_100095D84;
     v31 = &unk_1001D5FE0;
-    v33[1] = a3;
+    v33[1] = context;
     v16 = v32;
     v32[0] = v10;
     v33[2] = v12;
@@ -791,28 +791,28 @@
   if ([(SCATGestureArrowView *)self style]== 3)
   {
     [v5 grayFingerInnerRadius];
-    [(SCATGestureArrowView *)self _clearCircleWithRadius:a3 inContext:?];
+    [(SCATGestureArrowView *)self _clearCircleWithRadius:context inContext:?];
     [v5 grayFingerInnerRadius];
     v21 = v20;
     [v5 controlArrowThickness];
-    [(SCATGestureArrowView *)self _addCircleWithRadius:a3 inContext:v21 + v22 * 0.5];
-    CGContextStrokePath(a3);
+    [(SCATGestureArrowView *)self _addCircleWithRadius:context inContext:v21 + v22 * 0.5];
+    CGContextStrokePath(context);
     [v5 grayFingerInnerRadius];
     v24 = v23;
     [v5 controlArrowOutlineThickness];
-    [(SCATGestureArrowView *)self _addCircleWithRadius:a3 inContext:v24 - v25];
-    v26 = [v5 grayFingerInnerFill];
-    CGContextSetFillColorWithColor(a3, [v26 CGColor]);
+    [(SCATGestureArrowView *)self _addCircleWithRadius:context inContext:v24 - v25];
+    grayFingerInnerFill = [v5 grayFingerInnerFill];
+    CGContextSetFillColorWithColor(context, [grayFingerInnerFill CGColor]);
 
-    CGContextFillPath(a3);
+    CGContextFillPath(context);
     [v5 grayFingerInnerCircleOuterRadius];
-    [(SCATGestureArrowView *)self _clearCircleWithRadius:a3 inContext:?];
+    [(SCATGestureArrowView *)self _clearCircleWithRadius:context inContext:?];
     [v5 grayFingerInnerCircleOuterRadius];
-    [(SCATGestureArrowView *)self _addCircleWithRadius:a3 inContext:?];
-    CGContextSetFillColorWithColor(a3, [v6 CGColor]);
-    CGContextFillPath(a3);
+    [(SCATGestureArrowView *)self _addCircleWithRadius:context inContext:?];
+    CGContextSetFillColorWithColor(context, [controlArrowOutlineColor CGColor]);
+    CGContextFillPath(context);
     [v5 grayFingerInnerCircleInnerRadius];
-    [(SCATGestureArrowView *)self _addCircleWithRadius:a3 inContext:?];
+    [(SCATGestureArrowView *)self _addCircleWithRadius:context inContext:?];
     if ([(SCATGestureArrowView *)self isPressed])
     {
       [v5 controlArrowHighlightedColor];
@@ -823,26 +823,26 @@
       [v5 controlArrowColor];
     }
     v27 = ;
-    CGContextSetFillColorWithColor(a3, [v27 CGColor]);
-    CGContextFillPath(a3);
-    CGContextEndTransparencyLayer(a3);
+    CGContextSetFillColorWithColor(context, [v27 CGColor]);
+    CGContextFillPath(context);
+    CGContextEndTransparencyLayer(context);
   }
 
   else if ([(SCATGestureArrowView *)self shouldClearFingerCircle]|| [(SCATGestureArrowView *)self style]== 6)
   {
     [v5 grayFingerOuterRadius];
-    [(SCATGestureArrowView *)self _clearCircleWithRadius:a3 inContext:?];
+    [(SCATGestureArrowView *)self _clearCircleWithRadius:context inContext:?];
   }
 }
 
-- (void)_drawFingerAtArrowHeadInContext:(CGContext *)a3
+- (void)_drawFingerAtArrowHeadInContext:(CGContext *)context
 {
   v31 = +[SCATStyleProvider sharedStyleProvider];
-  v5 = [v31 controlArrowOutlineColor];
-  v6 = [v5 CGColor];
+  controlArrowOutlineColor = [v31 controlArrowOutlineColor];
+  cGColor = [controlArrowOutlineColor CGColor];
 
-  v7 = [v31 controlArrowColor];
-  v8 = [v7 CGColor];
+  controlArrowColor = [v31 controlArrowColor];
+  cGColor2 = [controlArrowColor CGColor];
 
   [(SCATGestureArrowView *)self tailPoint];
   v10 = v9;
@@ -859,32 +859,32 @@
   [v31 grayFingerInnerRadius];
   v22 = v21;
   [v31 controlArrowThickness];
-  [(SCATGestureArrowView *)self _addCircleWithRadius:a3 center:v22 + v23 * 0.5 inContext:v14, v20];
-  CGContextSetStrokeColorWithColor(a3, v6);
+  [(SCATGestureArrowView *)self _addCircleWithRadius:context center:v22 + v23 * 0.5 inContext:v14, v20];
+  CGContextSetStrokeColorWithColor(context, cGColor);
   [v31 controlArrowOutlineThickness];
   v25 = v24;
   [v31 controlArrowThickness];
-  CGContextSetLineWidth(a3, v26 + v25 * 2.0);
-  CGContextStrokePath(a3);
+  CGContextSetLineWidth(context, v26 + v25 * 2.0);
+  CGContextStrokePath(context);
   [v31 grayFingerInnerRadius];
   v28 = v27;
   [v31 controlArrowThickness];
-  [(SCATGestureArrowView *)self _addCircleWithRadius:a3 center:v28 + v29 * 0.5 inContext:v14, v20];
-  CGContextSetStrokeColorWithColor(a3, v8);
+  [(SCATGestureArrowView *)self _addCircleWithRadius:context center:v28 + v29 * 0.5 inContext:v14, v20];
+  CGContextSetStrokeColorWithColor(context, cGColor2);
   [v31 controlArrowThickness];
-  CGContextSetLineWidth(a3, v30);
-  CGContextStrokePath(a3);
+  CGContextSetLineWidth(context, v30);
+  CGContextStrokePath(context);
   [v31 grayFingerInnerCircleOuterRadius];
-  [SCATGestureArrowView _addCircleWithRadius:"_addCircleWithRadius:center:inContext:" center:a3 inContext:?];
-  CGContextSetFillColorWithColor(a3, v6);
-  CGContextFillPath(a3);
+  [SCATGestureArrowView _addCircleWithRadius:"_addCircleWithRadius:center:inContext:" center:context inContext:?];
+  CGContextSetFillColorWithColor(context, cGColor);
+  CGContextFillPath(context);
   [v31 grayFingerInnerCircleInnerRadius];
-  [SCATGestureArrowView _addCircleWithRadius:"_addCircleWithRadius:center:inContext:" center:a3 inContext:?];
-  CGContextSetFillColorWithColor(a3, v8);
-  CGContextFillPath(a3);
+  [SCATGestureArrowView _addCircleWithRadius:"_addCircleWithRadius:center:inContext:" center:context inContext:?];
+  CGContextSetFillColorWithColor(context, cGColor2);
+  CGContextFillPath(context);
 }
 
-- (void)_fillArrowPath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)_fillArrowPath:(CGPath *)path inContext:(CGContext *)context
 {
   if ([(SCATGestureArrowView *)self _isGrayArrow])
   {
@@ -892,16 +892,16 @@
   }
 
   v9 = +[SCATStyleProvider sharedStyleProvider];
-  CGContextAddPath(a4, a3);
-  v6 = [v9 previewColor];
-  CGContextSetFillColorWithColor(a4, [v6 CGColor]);
-  CGContextFillPath(a4);
-  CGContextAddPath(a4, a3);
+  CGContextAddPath(context, path);
+  previewColor = [v9 previewColor];
+  CGContextSetFillColorWithColor(context, [previewColor CGColor]);
+  CGContextFillPath(context);
+  CGContextAddPath(context, path);
   [v9 previewOutlineThickness];
-  CGContextSetLineWidth(a4, v7);
-  v8 = [v9 previewOutlineColor];
-  CGContextSetStrokeColorWithColor(a4, [v8 CGColor]);
-  CGContextStrokePath(a4);
+  CGContextSetLineWidth(context, v7);
+  previewOutlineColor = [v9 previewOutlineColor];
+  CGContextSetStrokeColorWithColor(context, [previewOutlineColor CGColor]);
+  CGContextStrokePath(context);
 }
 
 - (CGPath)_newDefaultArrowPath
@@ -940,14 +940,14 @@
   }
 }
 
-- (void)_addArrowHeadToPath:(CGPath *)a3 baseLeftPoint:(CGPoint)a4 baseRightPoint:(CGPoint)a5 tipPoint:(CGPoint)a6
+- (void)_addArrowHeadToPath:(CGPath *)path baseLeftPoint:(CGPoint)point baseRightPoint:(CGPoint)rightPoint tipPoint:(CGPoint)tipPoint
 {
-  v6 = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
-  v10 = a4.y;
-  v11 = a4.x;
+  v6 = tipPoint.y;
+  x = tipPoint.x;
+  v8 = rightPoint.y;
+  v9 = rightPoint.x;
+  v10 = point.y;
+  v11 = point.x;
   if ([(SCATGestureArrowView *)self _isGrayArrow])
   {
     _AXAssert();
@@ -963,14 +963,14 @@
   v19 = atan2(v6 - v17, x - v18);
   v20 = 3.14159265 - v14;
   v21 = __sincos_stret(v19 - v20);
-  CGPathAddLineToPoint(a3, 0, v11 + v16 * v21.__cosval, v10 + v16 * v21.__sinval);
-  CGPathAddLineToPoint(a3, 0, x, y);
+  CGPathAddLineToPoint(path, 0, v11 + v16 * v21.__cosval, v10 + v16 * v21.__sinval);
+  CGPathAddLineToPoint(path, 0, x, y);
   v22 = __sincos_stret(v20 + v19);
-  CGPathAddLineToPoint(a3, 0, v9 + v16 * v22.__cosval, v8 + v16 * v22.__sinval);
-  CGPathAddLineToPoint(a3, 0, v9, v8);
+  CGPathAddLineToPoint(path, 0, v9 + v16 * v22.__cosval, v8 + v16 * v22.__sinval);
+  CGPathAddLineToPoint(path, 0, v9, v8);
 }
 
-- (CGPath)_newStraightArrowPathWithIntervals:(unint64_t)a3
+- (CGPath)_newStraightArrowPathWithIntervals:(unint64_t)intervals
 {
   if ([(SCATGestureArrowView *)self _isGrayArrow])
   {
@@ -995,14 +995,14 @@
   v21 = Mutable;
   v22 = v6;
   v17 = v7;
-  v18 = self;
+  selfCopy = self;
   v14 = v7;
-  [(SCATGestureArrowView *)self _drawStraightLineInIntervals:a3 spacingBetweenIntervals:v16 drawingBlock:5.0];
+  [(SCATGestureArrowView *)self _drawStraightLineInIntervals:intervals spacingBetweenIntervals:v16 drawingBlock:5.0];
 
   return Mutable;
 }
 
-- (CGPath)_newCurvedArrowPathWithIntervals:(unint64_t)a3
+- (CGPath)_newCurvedArrowPathWithIntervals:(unint64_t)intervals
 {
   if ([(SCATGestureArrowView *)self _isGrayArrow])
   {
@@ -1020,9 +1020,9 @@
   v14 = v7;
   v15 = Mutable;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   v9 = v5;
-  [(SCATGestureArrowView *)self _drawCurvedLineInIntervals:a3 spacingBetweenIntervals:v11 drawingBlock:5.0];
+  [(SCATGestureArrowView *)self _drawCurvedLineInIntervals:intervals spacingBetweenIntervals:v11 drawingBlock:5.0];
 
   return Mutable;
 }
@@ -1039,10 +1039,10 @@
   return v3;
 }
 
-- (void)_drawLineOfCirclesInContext:(CGContext *)a3
+- (void)_drawLineOfCirclesInContext:(CGContext *)context
 {
-  v4 = [(SCATGestureArrowView *)self _fingerCircleImage];
-  [v4 size];
+  _fingerCircleImage = [(SCATGestureArrowView *)self _fingerCircleImage];
+  [_fingerCircleImage size];
   v6 = v5;
   [(SCATGestureArrowView *)self _distanceForPreview];
   v8 = v7;
@@ -1068,7 +1068,7 @@
     v17[2] = sub_100096C18;
     v17[3] = &unk_1001D6078;
     v19 = v21;
-    v18 = v4;
+    v18 = _fingerCircleImage;
     v20 = v10;
     v11 = objc_retainBlock(v17);
     [(SCATGestureArrowView *)self curvature];

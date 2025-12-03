@@ -1,38 +1,38 @@
 @interface WFImageCropAction
-+ (id)imageByCroppingImage:(id)a3 toRect:(CGRect)a4;
-- (void)runAsynchronouslyWithInput:(id)a3;
++ (id)imageByCroppingImage:(id)image toRect:(CGRect)rect;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFImageCropAction
 
-+ (id)imageByCroppingImage:(id)a3 toRect:(CGRect)a4
++ (id)imageByCroppingImage:(id)image toRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  imageCopy = image;
   memset(&v29, 0, sizeof(v29));
-  v9 = [v8 orientation];
-  switch(v9)
+  orientation = [imageCopy orientation];
+  switch(orientation)
   {
     case 3:
       CGAffineTransformMakeRotation(&v28, -3.14159265);
-      [v8 sizeInPoints];
+      [imageCopy sizeInPoints];
       v15 = -v14;
-      [v8 sizeInPoints];
+      [imageCopy sizeInPoints];
       v11 = -v16;
       v12 = v15;
       goto LABEL_7;
     case 6:
       CGAffineTransformMakeRotation(&v28, -1.57079633);
-      [v8 sizeInPoints];
+      [imageCopy sizeInPoints];
       v12 = -v13;
       v11 = 0.0;
       goto LABEL_7;
     case 8:
       CGAffineTransformMakeRotation(&v28, 1.57079633);
-      [v8 sizeInPoints];
+      [imageCopy sizeInPoints];
       v11 = -v10;
       v12 = 0.0;
 LABEL_7:
@@ -45,38 +45,38 @@ LABEL_7:
   *&v29.c = v17;
   *&v29.tx = *(MEMORY[0x277CBF2C0] + 32);
 LABEL_9:
-  [v8 scale];
+  [imageCopy scale];
   v19 = v18;
-  [v8 scale];
+  [imageCopy scale];
   v27 = v29;
   CGAffineTransformScale(&v28, &v27, v19, v20);
   v29 = v28;
-  v21 = [v8 CGImage];
+  cGImage = [imageCopy CGImage];
   v28 = v29;
   v31.origin.x = x;
   v31.origin.y = y;
   v31.size.width = width;
   v31.size.height = height;
   v32 = CGRectApplyAffineTransform(v31, &v28);
-  v22 = CGImageCreateWithImageInRect(v21, v32);
+  v22 = CGImageCreateWithImageInRect(cGImage, v32);
   v23 = MEMORY[0x277D79FC8];
-  [v8 scale];
-  v25 = [v23 imageWithCGImage:v22 scale:objc_msgSend(v8 orientation:{"orientation"), v24}];
+  [imageCopy scale];
+  v25 = [v23 imageWithCGImage:v22 scale:objc_msgSend(imageCopy orientation:{"orientation"), v24}];
   CGImageRelease(v22);
 
   return v25;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = objc_opt_class();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__WFImageCropAction_runAsynchronouslyWithInput___block_invoke;
   v6[3] = &unk_278C211D0;
   v6[4] = self;
-  [v4 generateCollectionByCoercingToItemClass:v5 completionHandler:v6];
+  [inputCopy generateCollectionByCoercingToItemClass:v5 completionHandler:v6];
 }
 
 void __48__WFImageCropAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)

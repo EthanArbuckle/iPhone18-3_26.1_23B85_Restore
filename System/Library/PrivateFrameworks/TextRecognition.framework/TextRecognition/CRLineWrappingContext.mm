@@ -1,50 +1,50 @@
 @interface CRLineWrappingContext
-+ (BOOL)_usesWordTokensForLocale:(uint64_t)a1;
-- (BOOL)classifierShouldCorrectOverwrappingWithEvaluation:(int64_t)a3 correctionMode:(int64_t)a4;
-- (BOOL)classifierShouldInsertLineBreakForEvaluationResult:(id)a3 threshold:(float)a4 useThresholdOverride:(BOOL)a5;
++ (BOOL)_usesWordTokensForLocale:(uint64_t)locale;
+- (BOOL)classifierShouldCorrectOverwrappingWithEvaluation:(int64_t)evaluation correctionMode:(int64_t)mode;
+- (BOOL)classifierShouldInsertLineBreakForEvaluationResult:(id)result threshold:(float)threshold useThresholdOverride:(BOOL)override;
 - (BOOL)isClassifierAvailable;
 - (BOOL)isRTL;
-- (BOOL)isValidWordString:(id)a3;
-- (BOOL)shouldAllowWhitespaceDelimiterForString:(id)a3;
+- (BOOL)isValidWordString:(id)string;
+- (BOOL)shouldAllowWhitespaceDelimiterForString:(id)string;
 - (BOOL)shouldConsiderLetterCase;
 - (BOOL)usesWordTokens;
 - (CRLineWrappable)lastFeature;
-- (CRLineWrappingContext)initWithLocale:(id)a3;
+- (CRLineWrappingContext)initWithLocale:(id)locale;
 - (NSArray)contextResults;
 - (double)averageLineHeight;
 - (double)averageVerticalSpacing;
-- (double)charLMScoreByAddingString:(id)a3 eosScore:(double *)a4;
-- (double)wordLMScoreByAddingTokens:(const void *)a3;
+- (double)charLMScoreByAddingString:(id)string eosScore:(double *)score;
+- (double)wordLMScoreByAddingTokens:(const void *)tokens;
 - (id).cxx_construct;
 - (vector<unsigned)tokenizeStringIntoWords:(CRLineWrappingContext *)self;
-- (void)addResult:(id)a3 mergeOversegmentation:(BOOL)a4;
-- (void)contextByAddingNewTokens:(void *)a3;
+- (void)addResult:(id)result mergeOversegmentation:(BOOL)oversegmentation;
+- (void)contextByAddingNewTokens:(void *)tokens;
 - (void)dealloc;
 - (void)resetContext;
-- (void)startWithResult:(id)a3 contextSize:(int64_t)a4;
+- (void)startWithResult:(id)result contextSize:(int64_t)size;
 @end
 
 @implementation CRLineWrappingContext
 
-- (CRLineWrappingContext)initWithLocale:(id)a3
+- (CRLineWrappingContext)initWithLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   v13.receiver = self;
   v13.super_class = CRLineWrappingContext;
   v6 = [(CRLineWrappingContext *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_locale, a3);
+    objc_storeStrong(&v6->_locale, locale);
     v8 = +[CRLanguageResourcesManager lineWrappingManager];
     lrManager = v7->_lrManager;
     v7->_lrManager = v8;
 
-    [(CRLanguageResourcesManager *)v7->_lrManager addSubscriber:v7 forLocale:v5];
+    [(CRLanguageResourcesManager *)v7->_lrManager addSubscriber:v7 forLocale:localeCopy];
     v7->_active = 0;
-    if ([CRLineWrappingClassifier localeIsSupported:v5])
+    if ([CRLineWrappingClassifier localeIsSupported:localeCopy])
     {
-      v10 = [[CRLineWrappingClassifier alloc] initWithLocale:v5];
+      v10 = [[CRLineWrappingClassifier alloc] initWithLocale:localeCopy];
       classifier = v7->_classifier;
       v7->_classifier = v10;
     }
@@ -65,9 +65,9 @@
   return v2;
 }
 
-- (void)startWithResult:(id)a3 contextSize:(int64_t)a4
+- (void)startWithResult:(id)result contextSize:(int64_t)size
 {
-  v6 = a3;
+  resultCopy = result;
   if ([(CRLineWrappingContext *)self active])
   {
     v7 = CROSLogForCategory(0);
@@ -83,32 +83,32 @@
     self->_active = 1;
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v6, 0}];
+  v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{resultCopy, 0}];
   if (self)
   {
     objc_setProperty_atomic(self, v8, v9, 64);
   }
 
-  v10 = [v6 paragraphText];
-  v12 = v10;
+  paragraphText = [resultCopy paragraphText];
+  v12 = paragraphText;
   if (self)
   {
-    objc_setProperty_atomic(self, v11, v10, 40);
+    objc_setProperty_atomic(self, v11, paragraphText, 40);
 
-    self->_contextSize = a4;
+    self->_contextSize = size;
   }
 
   else
   {
   }
 
-  v13 = [(CRLineWrappingContext *)self locale];
-  v14 = [CRLineWrappingContext _usesWordTokensForLocale:v13];
+  locale = [(CRLineWrappingContext *)self locale];
+  v14 = [CRLineWrappingContext _usesWordTokensForLocale:locale];
 
   if (v14)
   {
-    v15 = [v6 paragraphText];
-    [(CRLineWrappingContext *)self tokenizeStringIntoWords:v15];
+    paragraphText2 = [resultCopy paragraphText];
+    [(CRLineWrappingContext *)self tokenizeStringIntoWords:paragraphText2];
 
     [(CRLineWrappingContext *)&v18 contextByAddingNewTokens:buf];
     begin = self->_contextTokens.__begin_;
@@ -137,14 +137,14 @@
 
   self->_lineCount = 1;
 LABEL_18:
-  [v6 featureInTestSize];
+  [resultCopy featureInTestSize];
   if (self)
   {
     self->_lineHeightSum = v17;
   }
 }
 
-+ (BOOL)_usesWordTokensForLocale:(uint64_t)a1
++ (BOOL)_usesWordTokensForLocale:(uint64_t)locale
 {
   v2 = a2;
   objc_opt_self();
@@ -153,15 +153,15 @@ LABEL_18:
   return v3;
 }
 
-- (void)contextByAddingNewTokens:(void *)a3
+- (void)contextByAddingNewTokens:(void *)tokens
 {
-  *a1 = 0;
-  a1[1] = 0;
-  a1[2] = 0;
+  *self = 0;
+  self[1] = 0;
+  self[2] = 0;
   if (a2)
   {
     v3 = a2[10];
-    v4 = a3[1] - *a3;
+    v4 = tokens[1] - *tokens;
     v5 = v3 - (v4 >> 2);
     if (v5 >= 1)
     {
@@ -185,9 +185,9 @@ LABEL_18:
           std::vector<float>::__vallocate[abi:ne200100](v10, (4 * v8) >> 2);
         }
 
-        *a1 = 0;
-        a1[1] = 0;
-        a1[2] = 0;
+        *self = 0;
+        self[1] = 0;
+        self[2] = 0;
       }
     }
 
@@ -205,7 +205,7 @@ LABEL_18:
     {
       if (!(v9 >> 62))
       {
-        std::__allocate_at_least[abi:ne200100]<std::allocator<int>>(a1, v9);
+        std::__allocate_at_least[abi:ne200100]<std::allocator<int>>(self, v9);
       }
 
       std::vector<unsigned long>::__throw_length_error[abi:ne200100]();
@@ -264,11 +264,11 @@ LABEL_18:
   return lineHeightSum / [(CRLineWrappingContext *)self lineCount];
 }
 
-- (void)addResult:(id)a3 mergeOversegmentation:(BOOL)a4
+- (void)addResult:(id)result mergeOversegmentation:(BOOL)oversegmentation
 {
-  v4 = a4;
+  oversegmentationCopy = oversegmentation;
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  resultCopy = result;
   if (![(CRLineWrappingContext *)self active])
   {
     v7 = CROSLogForCategory(0);
@@ -279,31 +279,31 @@ LABEL_18:
     }
   }
 
-  v8 = [v6 featureInTest];
-  v9 = [v8 locale];
-  v10 = [v9 languageIdentifier];
-  v11 = [(CRLineWrappingContext *)self locale];
-  v12 = [v10 isEqualToString:v11];
+  featureInTest = [resultCopy featureInTest];
+  locale = [featureInTest locale];
+  languageIdentifier = [locale languageIdentifier];
+  locale2 = [(CRLineWrappingContext *)self locale];
+  v12 = [languageIdentifier isEqualToString:locale2];
 
   if ((v12 & 1) == 0)
   {
     v13 = CROSLogForCategory(0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v6 featureInTest];
-      v15 = [v14 locale];
-      v16 = [(CRLineWrappingContext *)self locale];
+      featureInTest2 = [resultCopy featureInTest];
+      locale3 = [featureInTest2 locale];
+      locale4 = [(CRLineWrappingContext *)self locale];
       *buf = 138412546;
-      *&buf[4] = v15;
+      *&buf[4] = locale3;
       *&buf[12] = 2112;
-      *&buf[14] = v16;
+      *&buf[14] = locale4;
       _os_log_impl(&dword_1B40D2000, v13, OS_LOG_TYPE_ERROR, "Attempting to add a feature with locale %@ to a context with locale %@", buf, 0x16u);
     }
   }
 
-  if (v6)
+  if (resultCopy)
   {
-    [v6 featureTokens];
+    [resultCopy featureTokens];
   }
 
   else
@@ -325,13 +325,13 @@ LABEL_18:
     std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>(&self->_contextTokens.__begin_, *buf, *&buf[8], (*&buf[8] - *buf) >> 2);
   }
 
-  v18 = [v6 paragraphText];
+  paragraphText = [resultCopy paragraphText];
   if (self)
   {
-    objc_setProperty_atomic(self, v17, v18, 40);
+    objc_setProperty_atomic(self, v17, paragraphText, 40);
   }
 
-  if ([v6 isOversegmented] & v4) == 1 && (!self ? (v20 = 0) : (v20 = objc_getProperty(self, v19, 64, 1)), objc_msgSend(v20, "lastObject"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "featureInTest"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_opt_respondsToSelector(), v22, v21, (v23))
+  if ([resultCopy isOversegmented] & oversegmentationCopy) == 1 && (!self ? (v20 = 0) : (v20 = objc_getProperty(self, v19, 64, 1)), objc_msgSend(v20, "lastObject"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "featureInTest"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_opt_respondsToSelector(), v22, v21, (v23))
   {
     if (self)
     {
@@ -343,7 +343,7 @@ LABEL_18:
       Property = 0;
     }
 
-    v26 = [Property lastObject];
+    lastObject = [Property lastObject];
     if (self)
     {
       v27 = objc_getProperty(self, v25, 64, 1);
@@ -355,7 +355,7 @@ LABEL_18:
     }
 
     [v27 removeLastObject];
-    v29 = [v26 resultByMerging:v6];
+    v29 = [lastObject resultByMerging:resultCopy];
     if (self)
     {
       v30 = objc_getProperty(self, v28, 64, 1);
@@ -369,17 +369,17 @@ LABEL_18:
     [v30 addObject:v29];
     [v29 featureInTestSize];
     v32 = v31;
-    [v26 featureInTestSize];
+    [lastObject featureInTestSize];
     if (self)
     {
       self->_lineHeightSum = v32 - v33 + self->_lineHeightSum;
     }
 
-    if ([v26 contributesToVerticalSpacing])
+    if ([lastObject contributesToVerticalSpacing])
     {
       [v29 verticalSpacing];
       v35 = v34;
-      [v26 verticalSpacing];
+      [lastObject verticalSpacing];
       if (self)
       {
         self->_verticalSpacingSum = v35 - v36 + self->_verticalSpacingSum;
@@ -399,13 +399,13 @@ LABEL_18:
       v37 = 0;
     }
 
-    [v37 addObject:v6];
+    [v37 addObject:resultCopy];
     ++self->_lineCount;
-    [v6 featureInTestSize];
+    [resultCopy featureInTestSize];
     self->_lineHeightSum = v38 + self->_lineHeightSum;
-    if ([v6 contributesToVerticalSpacing])
+    if ([resultCopy contributesToVerticalSpacing])
     {
-      [v6 verticalSpacing];
+      [resultCopy verticalSpacing];
       self->_verticalSpacingSum = v39 + self->_verticalSpacingSum;
       ++self->_verticalSpacingSumCount;
     }
@@ -425,10 +425,10 @@ LABEL_18:
     self = objc_getProperty(self, a2, 64, 1);
   }
 
-  v2 = [(CRLineWrappingContext *)self lastObject];
-  v3 = [v2 featureInTest];
+  lastObject = [(CRLineWrappingContext *)self lastObject];
+  featureInTest = [lastObject featureInTest];
 
-  return v3;
+  return featureInTest;
 }
 
 - (vector<unsigned)tokenizeStringIntoWords:(CRLineWrappingContext *)self
@@ -472,7 +472,7 @@ LABEL_18:
     }
 
     v13 = Property;
-    v14 = [(CRLineWrappingContext *)self locale];
+    locale = [(CRLineWrappingContext *)self locale];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3321888768;
     v17[2] = __49__CRLineWrappingContext_tokenizeStringIntoWords___block_invoke;
@@ -483,7 +483,7 @@ LABEL_18:
     std::vector<unsigned char>::__init_with_size[abi:ne200100]<unsigned char *,unsigned char *>(&__p, 0, 0, 0);
     v21 = v22;
     v17[4] = &v23;
-    [v13 lockResourcesForLocale:v14 sender:self block:v17];
+    [v13 lockResourcesForLocale:locale sender:self block:v17];
 
     v15 = v24;
     retstr->__end_ = 0;
@@ -561,9 +561,9 @@ void __49__CRLineWrappingContext_tokenizeStringIntoWords___block_invoke_2(uint64
   }
 }
 
-- (BOOL)isValidWordString:(id)a3
+- (BOOL)isValidWordString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -579,15 +579,15 @@ void __49__CRLineWrappingContext_tokenizeStringIntoWords___block_invoke_2(uint64
   }
 
   v7 = Property;
-  v8 = [(CRLineWrappingContext *)self locale];
+  locale = [(CRLineWrappingContext *)self locale];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __43__CRLineWrappingContext_isValidWordString___block_invoke;
   v12[3] = &unk_1E7BC2E08;
-  v9 = v5;
+  v9 = stringCopy;
   v13 = v9;
   v14 = &v15;
-  [v7 lockResourcesForLocale:v8 sender:self block:v12];
+  [v7 lockResourcesForLocale:locale sender:self block:v12];
 
   v10 = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
@@ -616,13 +616,13 @@ void __43__CRLineWrappingContext_isValidWordString___block_invoke(uint64_t a1, v
 
 - (BOOL)isRTL
 {
-  v2 = [(CRLineWrappingContext *)self locale];
-  v3 = [CRImageReader languageIsArabic:v2];
+  locale = [(CRLineWrappingContext *)self locale];
+  v3 = [CRImageReader languageIsArabic:locale];
 
   return v3;
 }
 
-- (double)wordLMScoreByAddingTokens:(const void *)a3
+- (double)wordLMScoreByAddingTokens:(const void *)tokens
 {
   if (![(CRLineWrappingContext *)self usesWordTokens])
   {
@@ -637,8 +637,8 @@ void __43__CRLineWrappingContext_isValidWordString___block_invoke(uint64_t a1, v
   v30 = 0;
   v31 = 0;
   v32 = 0;
-  v6 = *a3;
-  v5 = *(a3 + 1);
+  v6 = *tokens;
+  v5 = *(tokens + 1);
   if (v6 == v5)
   {
     return -1.79769313e308;
@@ -709,7 +709,7 @@ LABEL_10:
     }
 
     v18 = objc_getProperty(self, v10, 72, 1);
-    v19 = [(CRLineWrappingContext *)self locale];
+    locale = [(CRLineWrappingContext *)self locale];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3321888768;
     v22[2] = __51__CRLineWrappingContext_wordLMScoreByAddingTokens___block_invoke;
@@ -720,7 +720,7 @@ LABEL_10:
     v25 = 0;
     __p = 0;
     std::vector<unsigned int>::__init_with_size[abi:ne200100]<unsigned int *,unsigned int *>(&__p, v30, v31, &v31[-v30] >> 2);
-    [v18 lockResourcesForLocale:v19 sender:self block:v22];
+    [v18 lockResourcesForLocale:locale sender:self block:v22];
 
     v20 = *(v27 + 3);
     v21 = exp(v20);
@@ -806,9 +806,9 @@ void __51__CRLineWrappingContext_wordLMScoreByAddingTokens___block_invoke(void *
   }
 }
 
-- (double)charLMScoreByAddingString:(id)a3 eosScore:(double *)a4
+- (double)charLMScoreByAddingString:(id)string eosScore:(double *)score
 {
-  v6 = a3;
+  stringCopy = string;
   v51[0] = 0;
   v51[1] = v51;
   v51[2] = 0x3032000000;
@@ -819,8 +819,8 @@ void __51__CRLineWrappingContext_wordLMScoreByAddingTokens___block_invoke(void *
   v48 = &v47;
   v49 = 0x2020000000;
   v50 = 0;
-  v7 = [(CRLineWrappingContext *)self locale];
-  if ([CRImageReader languageIsThai:v7])
+  locale = [(CRLineWrappingContext *)self locale];
+  if ([CRImageReader languageIsThai:locale])
   {
     v8 = 5;
   }
@@ -839,9 +839,9 @@ void __51__CRLineWrappingContext_wordLMScoreByAddingTokens___block_invoke(void *
   v45 = 0;
   v46 = 0;
   v44 = 0;
-  v9 = [(CRLineWrappingContext *)self text];
-  v10 = [(CRLineWrappingContext *)self text];
-  v11 = [v10 length];
+  text = [(CRLineWrappingContext *)self text];
+  text2 = [(CRLineWrappingContext *)self text];
+  v11 = [text2 length];
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = __60__CRLineWrappingContext_charLMScoreByAddingString_eosScore___block_invoke;
@@ -850,7 +850,7 @@ void __51__CRLineWrappingContext_wordLMScoreByAddingTokens___block_invoke(void *
   v42[7] = &v47;
   v42[4] = self;
   v42[5] = v51;
-  [v9 enumerateSubstringsInRange:0 options:v11 usingBlock:{v8 | 0x100, v42}];
+  [text enumerateSubstringsInRange:0 options:v11 usingBlock:{v8 | 0x100, v42}];
 
   if (v48[3])
   {
@@ -869,14 +869,14 @@ void __51__CRLineWrappingContext_wordLMScoreByAddingTokens___block_invoke(void *
     v34 = 0;
     v35 = 0;
     __p = 0;
-    v12 = [v6 length];
+    v12 = [stringCopy length];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __60__CRLineWrappingContext_charLMScoreByAddingString_eosScore___block_invoke_2;
     v26[3] = &unk_1E7BC2E58;
     v26[4] = &v36;
     v26[5] = &v27;
-    [v6 enumerateSubstringsInRange:0 options:v12 usingBlock:{v8, v26}];
+    [stringCopy enumerateSubstringsInRange:0 options:v12 usingBlock:{v8, v26}];
     if (![v37[5] count] || v28[7] == v28[6])
     {
       v19 = -1.79769313e308;
@@ -899,7 +899,7 @@ void __51__CRLineWrappingContext_wordLMScoreByAddingTokens___block_invoke(void *
       }
 
       v15 = Property;
-      v16 = [(CRLineWrappingContext *)self locale];
+      locale2 = [(CRLineWrappingContext *)self locale];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __60__CRLineWrappingContext_charLMScoreByAddingString_eosScore___block_invoke_3;
@@ -910,8 +910,8 @@ void __51__CRLineWrappingContext_wordLMScoreByAddingTokens___block_invoke(void *
       v21[7] = &v47;
       v21[8] = &v36;
       v21[9] = v51;
-      v21[10] = a4;
-      [v15 lockResourcesForLocale:v16 sender:self block:v21];
+      v21[10] = score;
+      [v15 lockResourcesForLocale:locale2 sender:self block:v21];
 
       v17 = *(v23 + 3);
       v18 = exp(v17);
@@ -1130,20 +1130,20 @@ LABEL_28:
   }
 }
 
-- (BOOL)shouldAllowWhitespaceDelimiterForString:(id)a3
+- (BOOL)shouldAllowWhitespaceDelimiterForString:(id)string
 {
-  v4 = a3;
-  v5 = [(CRLineWrappingContext *)self locale];
-  v6 = [CRImageReader languageIsThai:v5];
+  stringCopy = string;
+  locale = [(CRLineWrappingContext *)self locale];
+  v6 = [CRImageReader languageIsThai:locale];
 
   if (v6)
   {
     v14 = 0.0;
-    [(CRLineWrappingContext *)self charLMScoreByAddingString:v4 eosScore:&v14];
+    [(CRLineWrappingContext *)self charLMScoreByAddingString:stringCopy eosScore:&v14];
     v8 = v7;
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@" %@", v4];
+    stringCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@" %@", stringCopy];
     v13 = 0.0;
-    [(CRLineWrappingContext *)self charLMScoreByAddingString:v9 eosScore:&v13];
+    [(CRLineWrappingContext *)self charLMScoreByAddingString:stringCopy eosScore:&v13];
     v11 = v8 <= v10 && v14 <= v13;
   }
 
@@ -1165,22 +1165,22 @@ LABEL_28:
   return self != 0;
 }
 
-- (BOOL)classifierShouldCorrectOverwrappingWithEvaluation:(int64_t)a3 correctionMode:(int64_t)a4
+- (BOOL)classifierShouldCorrectOverwrappingWithEvaluation:(int64_t)evaluation correctionMode:(int64_t)mode
 {
-  v6 = [(CRLineWrappingContext *)self isClassifierAvailable];
-  v7 = a3 < 0xA;
-  if (a4 != 1)
+  isClassifierAvailable = [(CRLineWrappingContext *)self isClassifierAvailable];
+  v7 = evaluation < 0xA;
+  if (mode != 1)
   {
     v7 = 0;
   }
 
-  v8 = a4 == 2 || v7;
-  if (!v6)
+  v8 = mode == 2 || v7;
+  if (!isClassifierAvailable)
   {
     v8 = 0;
   }
 
-  return a3 >= 2 && v8;
+  return evaluation >= 2 && v8;
 }
 
 void __54__CRLineWrappingContext__probabilityThresholdOverride__block_invoke()
@@ -1211,18 +1211,18 @@ void __54__CRLineWrappingContext__probabilityThresholdOverride__block_invoke()
   qword_1ED960188 = v0;
 }
 
-- (BOOL)classifierShouldInsertLineBreakForEvaluationResult:(id)a3 threshold:(float)a4 useThresholdOverride:(BOOL)a5
+- (BOOL)classifierShouldInsertLineBreakForEvaluationResult:(id)result threshold:(float)threshold useThresholdOverride:(BOOL)override
 {
-  v5 = a5;
+  overrideCopy = override;
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  resultCopy = result;
   if (self && objc_getProperty(self, v8, 112, 1))
   {
     v11 = [objc_getProperty(self v10];
-    v12 = [v9 featureInTest];
-    v13 = [(CRLineWrappingContext *)self lastFeature];
-    [v9 imageSize];
-    v14 = [CRWrappingClassifierFeatureExtractor extractFeatureMultiArrayForLocale:v11 textFeature:v12 lastFeature:v13 evaluation:v9 imageSize:?];
+    featureInTest = [resultCopy featureInTest];
+    lastFeature = [(CRLineWrappingContext *)self lastFeature];
+    [resultCopy imageSize];
+    v14 = [CRWrappingClassifierFeatureExtractor extractFeatureMultiArrayForLocale:v11 textFeature:featureInTest lastFeature:lastFeature evaluation:resultCopy imageSize:?];
 
     if (v14)
     {
@@ -1244,7 +1244,7 @@ void __54__CRLineWrappingContext__probabilityThresholdOverride__block_invoke()
 
       if (v17)
       {
-        if (v5)
+        if (overrideCopy)
         {
           if (qword_1ED960190 != -1)
           {
@@ -1252,18 +1252,18 @@ void __54__CRLineWrappingContext__probabilityThresholdOverride__block_invoke()
           }
 
           v21 = qword_1ED960188;
-          v22 = [(CRLineWrappingContext *)self locale];
-          v23 = [v21 objectForKeyedSubscript:v22];
+          locale = [(CRLineWrappingContext *)self locale];
+          v23 = [v21 objectForKeyedSubscript:locale];
 
           if (v23)
           {
             [v23 floatValue];
-            a4 = v24;
+            threshold = v24;
           }
         }
 
         [v17 wrappingProbability];
-        v26 = v25 <= a4;
+        v26 = v25 <= threshold;
       }
 
       else
@@ -1302,41 +1302,41 @@ void __54__CRLineWrappingContext__probabilityThresholdOverride__block_invoke()
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 72, 1);
   }
 
-  v3 = self;
-  v4 = [(CRLineWrappingContext *)v2 locale];
-  [(CRLineWrappingContext *)v3 removeSubscriber:v2 forLocale:v4];
+  selfCopy2 = self;
+  locale = [(CRLineWrappingContext *)selfCopy locale];
+  [(CRLineWrappingContext *)selfCopy2 removeSubscriber:selfCopy forLocale:locale];
 
-  v5.receiver = v2;
+  v5.receiver = selfCopy;
   v5.super_class = CRLineWrappingContext;
   [(CRLineWrappingContext *)&v5 dealloc];
 }
 
 - (BOOL)usesWordTokens
 {
-  v2 = [(CRLineWrappingContext *)self locale];
-  v3 = [CRLineWrappingContext _usesWordTokensForLocale:v2];
+  locale = [(CRLineWrappingContext *)self locale];
+  v3 = [CRLineWrappingContext _usesWordTokensForLocale:locale];
 
   return v3;
 }
 
 - (BOOL)shouldConsiderLetterCase
 {
-  v3 = [(CRLineWrappingContext *)self locale];
-  if ([CRImageReader languageIsLatin:v3])
+  locale = [(CRLineWrappingContext *)self locale];
+  if ([CRImageReader languageIsLatin:locale])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CRLineWrappingContext *)self locale];
-    v4 = [CRImageReader languageIsCyrillic:v5];
+    locale2 = [(CRLineWrappingContext *)self locale];
+    v4 = [CRImageReader languageIsCyrillic:locale2];
   }
 
   return v4;

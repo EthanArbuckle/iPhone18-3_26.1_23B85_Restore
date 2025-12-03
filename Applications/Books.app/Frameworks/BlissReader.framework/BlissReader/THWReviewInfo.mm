@@ -1,23 +1,23 @@
 @interface THWReviewInfo
-- (THWReviewInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 stageGeometry:(id)a6;
+- (THWReviewInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style stageGeometry:(id)stageGeometry;
 - (id)childEnumerator;
-- (id)questionAtIndex:(unint64_t)a3;
-- (void)addQuestion:(id)a3;
+- (id)questionAtIndex:(unint64_t)index;
+- (void)addQuestion:(id)question;
 - (void)dealloc;
-- (void)updateWithUniqueID:(id)a3 contentNodeGUID:(id)a4;
+- (void)updateWithUniqueID:(id)d contentNodeGUID:(id)iD;
 @end
 
 @implementation THWReviewInfo
 
-- (THWReviewInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 stageGeometry:(id)a6
+- (THWReviewInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style stageGeometry:(id)stageGeometry
 {
   v10.receiver = self;
   v10.super_class = THWReviewInfo;
-  v8 = [(THWReviewInfo *)&v10 initWithContext:a3 geometry:a4];
+  v8 = [(THWReviewInfo *)&v10 initWithContext:context geometry:geometry];
   if (v8)
   {
-    v8->_style = a5;
-    v8->_stageGeometry = a6;
+    v8->_style = style;
+    v8->_stageGeometry = stageGeometry;
   }
 
   return v8;
@@ -30,9 +30,9 @@
   [(THWReviewInfo *)&v3 dealloc];
 }
 
-- (void)addQuestion:(id)a3
+- (void)addQuestion:(id)question
 {
-  if (a3)
+  if (question)
   {
     questions = self->_questions;
     if (!questions)
@@ -41,26 +41,26 @@
       self->_questions = questions;
     }
 
-    [(NSMutableArray *)questions addObject:a3];
+    [(NSMutableArray *)questions addObject:question];
   }
 }
 
-- (id)questionAtIndex:(unint64_t)a3
+- (id)questionAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_questions count]<= a3)
+  if ([(NSMutableArray *)self->_questions count]<= index)
   {
     return 0;
   }
 
   questions = self->_questions;
 
-  return [(NSMutableArray *)questions objectAtIndex:a3];
+  return [(NSMutableArray *)questions objectAtIndex:index];
 }
 
-- (void)updateWithUniqueID:(id)a3 contentNodeGUID:(id)a4
+- (void)updateWithUniqueID:(id)d contentNodeGUID:(id)iD
 {
   v7 = [NSString alloc];
-  self->_reviewID = [v7 initWithFormat:@"%@%@:%@", kTHWReviewWidgetInfoIDPrefix, a4, a3];
+  self->_reviewID = [v7 initWithFormat:@"%@%@:%@", kTHWReviewWidgetInfoIDPrefix, iD, d];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -80,7 +80,7 @@
           objc_enumerationMutation(obj);
         }
 
-        [*(*(&v13 + 1) + 8 * i) setQuestionID:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%@:%@:%lu", kTHWReviewWidgetInfoQuestionDescriptionIDPrefix, a4, a3, -[NSMutableArray indexOfObjectIdenticalTo:](self->_questions, "indexOfObjectIdenticalTo:", *(*(&v13 + 1) + 8 * i)))}];
+        [*(*(&v13 + 1) + 8 * i) setQuestionID:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@%@:%@:%lu", kTHWReviewWidgetInfoQuestionDescriptionIDPrefix, iD, d, -[NSMutableArray indexOfObjectIdenticalTo:](self->_questions, "indexOfObjectIdenticalTo:", *(*(&v13 + 1) + 8 * i)))}];
       }
 
       v9 = [(NSMutableArray *)obj countByEnumeratingWithState:&v13 objects:v17 count:16];

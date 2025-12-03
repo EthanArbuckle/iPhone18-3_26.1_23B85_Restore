@@ -1,32 +1,32 @@
 @interface LPROnboardingAddLicensePlatePageViewController
-- (BOOL)plateIsValid:(id)a3;
-- (LPROnboardingAddLicensePlatePageViewController)initWithScenario:(int64_t)a3 vehicle:(id)a4 delegate:(id)a5 region:(id)a6 lprRules:(id)a7 powerTypes:(id)a8;
-- (id)_powerTitleAtRow:(int64_t)a3;
+- (BOOL)plateIsValid:(id)valid;
+- (LPROnboardingAddLicensePlatePageViewController)initWithScenario:(int64_t)scenario vehicle:(id)vehicle delegate:(id)delegate region:(id)region lprRules:(id)rules powerTypes:(id)types;
+- (id)_powerTitleAtRow:(int64_t)row;
 - (id)licensePlateRules;
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (void)_didEditTextField:(id)a3;
-- (void)handleSingleTap:(id)a3;
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (void)_didEditTextField:(id)field;
+- (void)handleSingleTap:(id)tap;
 - (void)nextButtonPressed;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)virtualGarageDidUpdate:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)virtualGarageDidUpdate:(id)update;
 @end
 
 @implementation LPROnboardingAddLicensePlatePageViewController
 
-- (void)virtualGarageDidUpdate:(id)a3
+- (void)virtualGarageDidUpdate:(id)update
 {
-  v12 = a3;
+  updateCopy = update;
   if (self->_isAddingVehicle)
   {
     v4 = +[MKMapService sharedService];
-    v5 = [v12 vehicles];
-    v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 count]);
-    v7 = [v6 stringValue];
-    [v4 captureUserAction:2107 onTarget:660 eventValue:v7];
+    vehicles = [updateCopy vehicles];
+    v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [vehicles count]);
+    stringValue = [v6 stringValue];
+    [v4 captureUserAction:2107 onTarget:660 eventValue:stringValue];
 
     self->_isAddingVehicle = 0;
   }
@@ -34,10 +34,10 @@
   if (self->_isSubmittingLicensePlate)
   {
     v8 = +[MKMapService sharedService];
-    v9 = [v12 vehicles];
-    v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 count]);
-    v11 = [v10 stringValue];
-    [v8 captureUserAction:2114 onTarget:660 eventValue:v11];
+    vehicles2 = [updateCopy vehicles];
+    v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [vehicles2 count]);
+    stringValue2 = [v10 stringValue];
+    [v8 captureUserAction:2114 onTarget:660 eventValue:stringValue2];
 
     self->_isSubmittingLicensePlate = 0;
   }
@@ -45,16 +45,16 @@
 
 - (void)nextButtonPressed
 {
-  v3 = [(LPROnboardingAddLicensePlatePageViewController *)self regionCode];
-  v4 = [(LPROnboardingAddLicensePlatePageViewController *)self licensePlateTextField];
-  v5 = [v4 text];
-  v6 = [v5 uppercaseString];
-  v21 = [NSString stringWithFormat:@"%@%@", v3, v6];
+  regionCode = [(LPROnboardingAddLicensePlatePageViewController *)self regionCode];
+  licensePlateTextField = [(LPROnboardingAddLicensePlatePageViewController *)self licensePlateTextField];
+  text = [licensePlateTextField text];
+  uppercaseString = [text uppercaseString];
+  v21 = [NSString stringWithFormat:@"%@%@", regionCode, uppercaseString];
 
   if ([(LPROnboardingAddLicensePlatePageViewController *)self plateIsValid:v21])
   {
-    v7 = [(LPROnboardingAddLicensePlatePageViewController *)self vehicle];
-    [v7 setLicensePlate:v21];
+    vehicle = [(LPROnboardingAddLicensePlatePageViewController *)self vehicle];
+    [vehicle setLicensePlate:v21];
 
     self->_isAddingVehicle = self->_scenario == 0;
     self->_isSubmittingLicensePlate = 1;
@@ -62,40 +62,40 @@
     scenario = self->_scenario;
     vehicle = self->_vehicle;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v12 = [(LPROnboardingAddLicensePlatePageViewController *)self powerButton];
-    v13 = [v12 titleLabel];
-    v14 = [v13 text];
-    v15 = [(LPRConfirmPageViewController *)v8 initWithScenario:scenario vehicle:vehicle delegate:WeakRetained vehicleTypeTitle:v14];
+    powerButton = [(LPROnboardingAddLicensePlatePageViewController *)self powerButton];
+    titleLabel = [powerButton titleLabel];
+    text2 = [titleLabel text];
+    v15 = [(LPRConfirmPageViewController *)v8 initWithScenario:scenario vehicle:vehicle delegate:WeakRetained vehicleTypeTitle:text2];
 
-    v16 = [(LPROnboardingAddLicensePlatePageViewController *)self navigationController];
-    [v16 pushViewController:v15 animated:1];
+    navigationController = [(LPROnboardingAddLicensePlatePageViewController *)self navigationController];
+    [navigationController pushViewController:v15 animated:1];
   }
 
   else
   {
     v15 = +[NSBundle mainBundle];
-    v16 = [(LPRConfirmPageViewController *)v15 localizedStringForKey:@"[LPR Onboarding] error message title" value:@"localized string not found" table:0];
+    navigationController = [(LPRConfirmPageViewController *)v15 localizedStringForKey:@"[LPR Onboarding] error message title" value:@"localized string not found" table:0];
     v17 = +[NSBundle mainBundle];
     v18 = [v17 localizedStringForKey:@"[LPR Onboarding] error message body" value:@"localized string not found" table:0];
     v19 = +[NSBundle mainBundle];
     v20 = [v19 localizedStringForKey:@"[LPR Onboarding] error confirmation" value:@"localized string not found" table:0];
-    [(LPROnboardingAddLicensePlatePageViewController *)self _maps_presentSimpleAlertWithTitle:v16 message:v18 dismissalActionTitle:v20];
+    [(LPROnboardingAddLicensePlatePageViewController *)self _maps_presentSimpleAlertWithTitle:navigationController message:v18 dismissalActionTitle:v20];
   }
 }
 
-- (BOOL)plateIsValid:(id)a3
+- (BOOL)plateIsValid:(id)valid
 {
-  v4 = a3;
-  v33 = self;
-  v5 = [(LPROnboardingAddLicensePlatePageViewController *)self licensePlateRules];
-  v6 = v5;
-  if (v5)
+  validCopy = valid;
+  selfCopy = self;
+  licensePlateRules = [(LPROnboardingAddLicensePlatePageViewController *)self licensePlateRules];
+  v6 = licensePlateRules;
+  if (licensePlateRules)
   {
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v7 = v5;
+    v7 = licensePlateRules;
     v8 = [v7 countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v8)
     {
@@ -113,28 +113,28 @@
           }
 
           v12 = *(*(&v35 + 1) + 8 * i);
-          v13 = [v4 length];
+          v13 = [validCopy length];
           if (v13 >= [v12 minLength] && v13 <= objc_msgSend(v12, "maxLength"))
           {
-            v14 = [v12 regularExpression];
+            regularExpression = [v12 regularExpression];
             v34 = 0;
-            v15 = [NSRegularExpression regularExpressionWithPattern:v14 options:1 error:&v34];
+            v15 = [NSRegularExpression regularExpressionWithPattern:regularExpression options:1 error:&v34];
             v16 = v34;
 
-            if ([v15 numberOfMatchesInString:v4 options:0 range:{0, v13}])
+            if ([v15 numberOfMatchesInString:validCopy options:0 range:{0, v13}])
             {
-              v17 = [v12 validCharacters];
+              validCharacters = [v12 validCharacters];
 
-              if (v17)
+              if (validCharacters)
               {
-                v18 = [v12 validCharacters];
-                v19 = [(LPROnboardingAddLicensePlatePageViewController *)v33 regionCode];
-                v20 = [NSString stringWithFormat:@"%@%@", v18, v19];
+                validCharacters2 = [v12 validCharacters];
+                regionCode = [(LPROnboardingAddLicensePlatePageViewController *)selfCopy regionCode];
+                v20 = [NSString stringWithFormat:@"%@%@", validCharacters2, regionCode];
 
                 v21 = [NSCharacterSet characterSetWithCharactersInString:v20];
-                v22 = [v21 invertedSet];
+                invertedSet = [v21 invertedSet];
 
-                v23 = [v4 rangeOfCharacterFromSet:v22];
+                v23 = [validCopy rangeOfCharacterFromSet:invertedSet];
                 if (v23 != 0x7FFFFFFFFFFFFFFFLL)
                 {
                   v29 = 0;
@@ -142,8 +142,8 @@
                 }
               }
 
-              v24 = [v12 impliedPowerTypeKeys];
-              if (!v24 || (v25 = v24, -[LPROnboardingAddLicensePlatePageViewController vehicle](v33, "vehicle"), v26 = objc_claimAutoreleasedReturnValue(), [v26 lprPowerType], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v25, "containsObject:", v27), v27, v26, v25, (v28 & 1) != 0))
+              impliedPowerTypeKeys = [v12 impliedPowerTypeKeys];
+              if (!impliedPowerTypeKeys || (v25 = impliedPowerTypeKeys, -[LPROnboardingAddLicensePlatePageViewController vehicle](selfCopy, "vehicle"), v26 = objc_claimAutoreleasedReturnValue(), [v26 lprPowerType], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v25, "containsObject:", v27), v27, v26, v25, (v28 & 1) != 0))
               {
                 v29 = 1;
 LABEL_22:
@@ -189,59 +189,59 @@ LABEL_23:
 
 - (id)licensePlateRules
 {
-  v3 = [(LPROnboardingAddLicensePlatePageViewController *)self currentRegion];
-  v4 = [v3 info];
-  v5 = [v4 licensePlateValidationRules];
+  currentRegion = [(LPROnboardingAddLicensePlatePageViewController *)self currentRegion];
+  info = [currentRegion info];
+  licensePlateValidationRules = [info licensePlateValidationRules];
 
-  if (v5)
+  if (licensePlateValidationRules)
   {
-    v6 = [(LPROnboardingAddLicensePlatePageViewController *)self currentRegion];
-    v7 = [v6 info];
-    v8 = [v7 licensePlateValidationRules];
+    currentRegion2 = [(LPROnboardingAddLicensePlatePageViewController *)self currentRegion];
+    info2 = [currentRegion2 info];
+    licensePlateValidationRules2 = [info2 licensePlateValidationRules];
   }
 
   else
   {
-    v9 = [(LPROnboardingAddLicensePlatePageViewController *)self lprRules];
-    v6 = [v9 regions];
+    lprRules = [(LPROnboardingAddLicensePlatePageViewController *)self lprRules];
+    currentRegion2 = [lprRules regions];
 
-    v7 = [v6 firstObject];
-    v10 = [v7 info];
-    v8 = [v10 licensePlateValidationRules];
+    info2 = [currentRegion2 firstObject];
+    v7Info = [info2 info];
+    licensePlateValidationRules2 = [v7Info licensePlateValidationRules];
   }
 
-  return v8;
+  return licensePlateValidationRules2;
 }
 
-- (void)_didEditTextField:(id)a3
+- (void)_didEditTextField:(id)field
 {
-  v7 = [a3 text];
-  v4 = [v7 length] != 0;
-  v5 = [(LPROnboardingAddLicensePlatePageViewController *)self navigationItem];
-  v6 = [v5 rightBarButtonItem];
-  [v6 setEnabled:v4];
+  text = [field text];
+  v4 = [text length] != 0;
+  navigationItem = [(LPROnboardingAddLicensePlatePageViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v4];
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v7 = [(LPROnboardingAddLicensePlatePageViewController *)self powerButton:a3];
-  v8 = [(LPROnboardingAddLicensePlatePageViewController *)self _powerTitleAtRow:a4];
+  v7 = [(LPROnboardingAddLicensePlatePageViewController *)self powerButton:view];
+  v8 = [(LPROnboardingAddLicensePlatePageViewController *)self _powerTitleAtRow:row];
   [v7 setTitle:v8 forState:0];
 
-  v9 = [(LPROnboardingAddLicensePlatePageViewController *)self powerButton];
-  [v9 sizeToFit];
+  powerButton = [(LPROnboardingAddLicensePlatePageViewController *)self powerButton];
+  [powerButton sizeToFit];
 
-  v12 = [(LPROnboardingAddLicensePlatePageViewController *)self powerTypesKey];
-  v10 = [v12 objectAtIndexedSubscript:a4];
-  v11 = [(LPROnboardingAddLicensePlatePageViewController *)self vehicle];
-  [v11 setLprPowerType:v10];
+  powerTypesKey = [(LPROnboardingAddLicensePlatePageViewController *)self powerTypesKey];
+  v10 = [powerTypesKey objectAtIndexedSubscript:row];
+  vehicle = [(LPROnboardingAddLicensePlatePageViewController *)self vehicle];
+  [vehicle setLprPowerType:v10];
 }
 
-- (id)pickerView:(id)a3 viewForRow:(int64_t)a4 forComponent:(int64_t)a5 reusingView:(id)a6
+- (id)pickerView:(id)view viewForRow:(int64_t)row forComponent:(int64_t)component reusingView:(id)reusingView
 {
-  v8 = a6;
-  v9 = v8;
-  if (!v8)
+  reusingViewCopy = reusingView;
+  v9 = reusingViewCopy;
+  if (!reusingViewCopy)
   {
     v9 = objc_alloc_init(UILabel);
     v10 = [UIFont systemFontOfSize:20.0 weight:UIFontWeightMedium];
@@ -250,21 +250,21 @@ LABEL_23:
     [v9 setTextAlignment:1];
   }
 
-  v11 = [(LPROnboardingAddLicensePlatePageViewController *)self _powerTitleAtRow:a4];
+  v11 = [(LPROnboardingAddLicensePlatePageViewController *)self _powerTitleAtRow:row];
   [v9 setText:v11];
 
   return v9;
 }
 
-- (id)_powerTitleAtRow:(int64_t)a3
+- (id)_powerTitleAtRow:(int64_t)row
 {
-  v5 = [(LPROnboardingAddLicensePlatePageViewController *)self powerTypes];
-  v6 = [(LPROnboardingAddLicensePlatePageViewController *)self powerTypesKey];
-  v7 = [v6 objectAtIndexedSubscript:a3];
-  v8 = [v5 objectForKey:v7];
+  powerTypes = [(LPROnboardingAddLicensePlatePageViewController *)self powerTypes];
+  powerTypesKey = [(LPROnboardingAddLicensePlatePageViewController *)self powerTypesKey];
+  v7 = [powerTypesKey objectAtIndexedSubscript:row];
+  v8 = [powerTypes objectForKey:v7];
 
-  v9 = [v8 titles];
-  v10 = [GEOLocalizedString bestStringForCurrentLocale:v9 fallbackToFirstAvailable:0];
+  titles = [v8 titles];
+  v10 = [GEOLocalizedString bestStringForCurrentLocale:titles fallbackToFirstAvailable:0];
 
   if (v10)
   {
@@ -281,55 +281,55 @@ LABEL_23:
   return v11;
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  v4 = [(LPROnboardingAddLicensePlatePageViewController *)self powerTypesKey:a3];
+  v4 = [(LPROnboardingAddLicensePlatePageViewController *)self powerTypesKey:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (void)handleSingleTap:(id)a3
+- (void)handleSingleTap:(id)tap
 {
-  v3 = [(LPROnboardingAddLicensePlatePageViewController *)self view];
-  [v3 endEditing:1];
+  view = [(LPROnboardingAddLicensePlatePageViewController *)self view];
+  [view endEditing:1];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = LPROnboardingAddLicensePlatePageViewController;
-  [(LPROnboardingAddLicensePlatePageViewController *)&v7 viewWillDisappear:a3];
-  v4 = [(LPROnboardingAddLicensePlatePageViewController *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  [(LPROnboardingAddLicensePlatePageViewController *)&v7 viewWillDisappear:disappear];
+  traitCollection = [(LPROnboardingAddLicensePlatePageViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v5)
+  if (!userInterfaceIdiom)
   {
     v6 = +[UIApplication sharedMapsDelegate];
     [v6 setLockedOrientations:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v10.receiver = self;
   v10.super_class = LPROnboardingAddLicensePlatePageViewController;
   [(LPROnboardingAddLicensePlatePageViewController *)&v10 viewWillAppear:?];
-  v5 = [(LPROnboardingAddLicensePlatePageViewController *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [(LPROnboardingAddLicensePlatePageViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v6)
+  if (!userInterfaceIdiom)
   {
     v7 = +[UIApplication sharedMapsDelegate];
     [v7 setLockedOrientations:2];
 
     v8 = +[UIDevice currentDevice];
-    [v8 setOrientation:1 animated:v3];
+    [v8 setOrientation:1 animated:appearCopy];
   }
 
-  v9 = [(LPROnboardingAddLicensePlatePageViewController *)self licensePlateTextField];
-  [v9 becomeFirstResponder];
+  licensePlateTextField = [(LPROnboardingAddLicensePlatePageViewController *)self licensePlateTextField];
+  [licensePlateTextField becomeFirstResponder];
 }
 
 - (void)viewDidLoad
@@ -337,8 +337,8 @@ LABEL_23:
   v245.receiver = self;
   v245.super_class = LPROnboardingAddLicensePlatePageViewController;
   [(LPROnboardingAddLicensePlatePageViewController *)&v245 viewDidLoad];
-  v3 = [(LPROnboardingAddLicensePlatePageViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"LPROnboardingAddLicensePlatePageView"];
+  view = [(LPROnboardingAddLicensePlatePageViewController *)self view];
+  [view setAccessibilityIdentifier:@"LPROnboardingAddLicensePlatePageView"];
 
   v4 = objc_alloc_init(UIScrollView);
   scrollView = self->_scrollView;
@@ -350,8 +350,8 @@ LABEL_23:
   [(UIScrollView *)self->_scrollView setClipsToBounds:1];
   [(UIScrollView *)self->_scrollView setScrollEnabled:1];
   [(UIScrollView *)self->_scrollView setKeyboardDismissMode:1];
-  v6 = [(LPROnboardingAddLicensePlatePageViewController *)self view];
-  [v6 addSubview:self->_scrollView];
+  view2 = [(LPROnboardingAddLicensePlatePageViewController *)self view];
+  [view2 addSubview:self->_scrollView];
 
   v7 = objc_alloc_init(UIView);
   containerView = self->_containerView;
@@ -363,32 +363,32 @@ LABEL_23:
   [v9 setCancelsTouchesInView:0];
   v235 = v9;
   [(UIView *)self->_containerView addGestureRecognizer:v9];
-  v10 = [(LPROnboardingAddLicensePlatePageViewController *)self powerTypes];
-  v11 = [v10 allKeys];
-  [(LPROnboardingAddLicensePlatePageViewController *)self setPowerTypesKey:v11];
+  powerTypes = [(LPROnboardingAddLicensePlatePageViewController *)self powerTypes];
+  allKeys = [powerTypes allKeys];
+  [(LPROnboardingAddLicensePlatePageViewController *)self setPowerTypesKey:allKeys];
 
   v12 = objc_alloc_init(UIPickerView);
   [(LPROnboardingAddLicensePlatePageViewController *)self setPowerPicker:v12];
 
-  v13 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
-  [v13 setAccessibilityIdentifier:@"PowerPicker"];
+  powerPicker = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
+  [powerPicker setAccessibilityIdentifier:@"PowerPicker"];
 
-  v14 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
-  [v14 setDataSource:self];
+  powerPicker2 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
+  [powerPicker2 setDataSource:self];
 
-  v15 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
-  [v15 setDelegate:self];
+  powerPicker3 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
+  [powerPicker3 setDelegate:self];
 
-  v16 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+  powerPicker4 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
+  [powerPicker4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v17 = self->_containerView;
-  v18 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
-  [(UIView *)v17 addSubview:v18];
+  powerPicker5 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
+  [(UIView *)v17 addSubview:powerPicker5];
 
   v19 = +[UIColor systemBackgroundColor];
-  v20 = [(LPROnboardingAddLicensePlatePageViewController *)self view];
-  [v20 setBackgroundColor:v19];
+  view3 = [(LPROnboardingAddLicensePlatePageViewController *)self view];
+  [view3 setBackgroundColor:v19];
 
   v21 = objc_alloc_init(MapsThemeLabel);
   [(MapsThemeLabel *)v21 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -463,8 +463,8 @@ LABEL_23:
   v42 = [UIFont fontWithDescriptor:v41 size:0.0];
   [(MapsThemeLabel *)v40 setFont:v42];
 
-  v43 = [(LPROnboardingAddLicensePlatePageViewController *)self regionCode];
-  [(MapsThemeLabel *)v40 setText:v43];
+  regionCode = [(LPROnboardingAddLicensePlatePageViewController *)self regionCode];
+  [(MapsThemeLabel *)v40 setText:regionCode];
 
   LODWORD(v44) = 1148846080;
   [(MapsThemeLabel *)v40 setContentHuggingPriority:0 forAxis:v44];
@@ -487,10 +487,10 @@ LABEL_23:
   [v46 setFont:v50];
 
   [v46 setAutocapitalizationType:3];
-  v51 = [(LPROnboardingAddLicensePlatePageViewController *)self vehicle];
-  v52 = [v51 licensePlate];
-  v53 = [(LPROnboardingAddLicensePlatePageViewController *)self regionCode];
-  v54 = [v52 stringByReplacingOccurrencesOfString:v53 withString:&stru_1016631F0];
+  vehicle = [(LPROnboardingAddLicensePlatePageViewController *)self vehicle];
+  licensePlate = [vehicle licensePlate];
+  regionCode2 = [(LPROnboardingAddLicensePlatePageViewController *)self regionCode];
+  v54 = [licensePlate stringByReplacingOccurrencesOfString:regionCode2 withString:&stru_1016631F0];
   [v46 setText:v54];
 
   [v46 addTarget:self action:"_didEditTextField:" forControlEvents:0x20000];
@@ -519,8 +519,8 @@ LABEL_23:
   v60 = [MapsThemeButton buttonWithType:1];
   [v60 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v60 setAccessibilityIdentifier:@"PowerButton"];
-  v61 = [v60 titleLabel];
-  [v61 setAdjustsFontForContentSizeCategory:1];
+  titleLabel = [v60 titleLabel];
+  [titleLabel setAdjustsFontForContentSizeCategory:1];
 
   v62 = [(LPROnboardingAddLicensePlatePageViewController *)self _powerTitleAtRow:0];
   [v60 setTitle:v62 forState:0];
@@ -528,19 +528,19 @@ LABEL_23:
   v234 = v34;
   v63 = [v34 fontDescriptorWithSymbolicTraits:2];
   v64 = [UIFont fontWithDescriptor:v63 size:0.0];
-  v65 = [v60 titleLabel];
-  [v65 setFont:v64];
+  titleLabel2 = [v60 titleLabel];
+  [titleLabel2 setFont:v64];
 
   [v60 _accessibilitySetInterfaceStyleIntent:1];
-  v66 = [v60 layer];
-  [v66 setCornerRadius:8.0];
+  layer = [v60 layer];
+  [layer setCornerRadius:8.0];
 
   [v60 setContentHorizontalAlignment:4];
-  v67 = [v60 titleLabel];
-  [v67 setMinimumScaleFactor:0.5];
+  titleLabel3 = [v60 titleLabel];
+  [titleLabel3 setMinimumScaleFactor:0.5];
 
-  v68 = [v60 titleLabel];
-  [v68 setAdjustsFontSizeToFitWidth:1];
+  titleLabel4 = [v60 titleLabel];
+  [titleLabel4 setAdjustsFontSizeToFitWidth:1];
 
   [(LPROnboardingAddLicensePlatePageViewController *)self setPowerButton:v60];
   v237 = v60;
@@ -554,8 +554,8 @@ LABEL_23:
   v70 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
   [(MapsThemeLabel *)v69 setFont:v70];
 
-  v71 = [(MapsThemeLabel *)v69 font];
-  [v71 pointSize];
+  font = [(MapsThemeLabel *)v69 font];
+  [font pointSize];
   if (10.0 / v72 > 1.0)
   {
     [(MapsThemeLabel *)v69 setMinimumScaleFactor:1.0];
@@ -563,8 +563,8 @@ LABEL_23:
 
   else
   {
-    v73 = [(MapsThemeLabel *)v69 font];
-    [v73 pointSize];
+    font2 = [(MapsThemeLabel *)v69 font];
+    [font2 pointSize];
     [(MapsThemeLabel *)v69 setMinimumScaleFactor:10.0 / v74];
   }
 
@@ -581,212 +581,212 @@ LABEL_23:
   v79 = +[NSBundle mainBundle];
   v80 = [v79 localizedStringForKey:@"Next" value:@"localized string not found" table:0];
   v81 = [v78 initWithTitle:v80 style:0 target:self action:"nextButtonPressed"];
-  v82 = [(LPROnboardingAddLicensePlatePageViewController *)self navigationItem];
-  [v82 setRightBarButtonItem:v81];
+  navigationItem = [(LPROnboardingAddLicensePlatePageViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v81];
 
-  v83 = [(LPROnboardingAddLicensePlatePageViewController *)self navigationItem];
-  v84 = [v83 rightBarButtonItem];
-  [v84 setAccessibilityIdentifier:@"RightBarButtonItem"];
+  navigationItem2 = [(LPROnboardingAddLicensePlatePageViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+  [rightBarButtonItem setAccessibilityIdentifier:@"RightBarButtonItem"];
 
-  v85 = [(LPROnboardingAddLicensePlatePageViewController *)self vehicle];
-  v86 = [v85 licensePlate];
-  v87 = [v86 length] != 0;
-  v88 = [(LPROnboardingAddLicensePlatePageViewController *)self navigationItem];
-  v89 = [v88 rightBarButtonItem];
-  [v89 setEnabled:v87];
+  vehicle2 = [(LPROnboardingAddLicensePlatePageViewController *)self vehicle];
+  licensePlate2 = [vehicle2 licensePlate];
+  v87 = [licensePlate2 length] != 0;
+  navigationItem3 = [(LPROnboardingAddLicensePlatePageViewController *)self navigationItem];
+  rightBarButtonItem2 = [navigationItem3 rightBarButtonItem];
+  [rightBarButtonItem2 setEnabled:v87];
 
-  v236 = [(LPROnboardingAddLicensePlatePageViewController *)self view];
-  v231 = [(UIScrollView *)self->_scrollView topAnchor];
-  v232 = [(LPROnboardingAddLicensePlatePageViewController *)self view];
-  v230 = [v232 topAnchor];
-  v229 = [v231 constraintEqualToAnchor:v230];
+  view4 = [(LPROnboardingAddLicensePlatePageViewController *)self view];
+  topAnchor = [(UIScrollView *)self->_scrollView topAnchor];
+  view5 = [(LPROnboardingAddLicensePlatePageViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v229 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v246[0] = v229;
-  v227 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v228 = [(LPROnboardingAddLicensePlatePageViewController *)self view];
-  v226 = [v228 leadingAnchor];
-  v225 = [v227 constraintEqualToAnchor:v226];
+  leadingAnchor = [(UIScrollView *)self->_scrollView leadingAnchor];
+  view6 = [(LPROnboardingAddLicensePlatePageViewController *)self view];
+  leadingAnchor2 = [view6 leadingAnchor];
+  v225 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v246[1] = v225;
-  v223 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v224 = [(LPROnboardingAddLicensePlatePageViewController *)self view];
-  v222 = [v224 trailingAnchor];
-  v221 = [v223 constraintEqualToAnchor:v222];
+  trailingAnchor = [(UIScrollView *)self->_scrollView trailingAnchor];
+  view7 = [(LPROnboardingAddLicensePlatePageViewController *)self view];
+  trailingAnchor2 = [view7 trailingAnchor];
+  v221 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v246[2] = v221;
-  v220 = [(UIScrollView *)self->_scrollView contentLayoutGuide];
-  v218 = [v220 widthAnchor];
-  v219 = [(LPROnboardingAddLicensePlatePageViewController *)self view];
-  v217 = [v219 widthAnchor];
-  v216 = [v218 constraintEqualToAnchor:v217];
+  contentLayoutGuide = [(UIScrollView *)self->_scrollView contentLayoutGuide];
+  widthAnchor = [contentLayoutGuide widthAnchor];
+  view8 = [(LPROnboardingAddLicensePlatePageViewController *)self view];
+  widthAnchor2 = [view8 widthAnchor];
+  v216 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v246[3] = v216;
-  v214 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v215 = [(LPROnboardingAddLicensePlatePageViewController *)self view];
-  v213 = [v215 bottomAnchor];
-  v212 = [v214 constraintEqualToAnchor:v213];
+  bottomAnchor = [(UIScrollView *)self->_scrollView bottomAnchor];
+  view9 = [(LPROnboardingAddLicensePlatePageViewController *)self view];
+  bottomAnchor2 = [view9 bottomAnchor];
+  v212 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v246[4] = v212;
-  v211 = [(UIView *)self->_containerView topAnchor];
-  v210 = [(UIScrollView *)self->_scrollView topAnchor];
-  v209 = [v211 constraintEqualToAnchor:v210];
+  topAnchor3 = [(UIView *)self->_containerView topAnchor];
+  topAnchor4 = [(UIScrollView *)self->_scrollView topAnchor];
+  v209 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v246[5] = v209;
-  v208 = [(UIView *)self->_containerView leadingAnchor];
-  v207 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v206 = [v208 constraintEqualToAnchor:v207];
+  leadingAnchor3 = [(UIView *)self->_containerView leadingAnchor];
+  leadingAnchor4 = [(UIScrollView *)self->_scrollView leadingAnchor];
+  v206 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v246[6] = v206;
-  v205 = [(UIView *)self->_containerView trailingAnchor];
-  v204 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v203 = [v205 constraintEqualToAnchor:v204];
+  trailingAnchor3 = [(UIView *)self->_containerView trailingAnchor];
+  trailingAnchor4 = [(UIScrollView *)self->_scrollView trailingAnchor];
+  v203 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v246[7] = v203;
-  v202 = [(UIView *)self->_containerView bottomAnchor];
-  v201 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v200 = [v202 constraintEqualToAnchor:v201];
+  bottomAnchor3 = [(UIView *)self->_containerView bottomAnchor];
+  bottomAnchor4 = [(UIScrollView *)self->_scrollView bottomAnchor];
+  v200 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v246[8] = v200;
-  v198 = [(MapsThemeLabel *)v243 topAnchor];
-  v199 = [(UIView *)self->_containerView safeAreaLayoutGuide];
-  v197 = [v199 topAnchor];
-  v196 = [v198 constraintEqualToAnchor:v197 constant:25.0];
+  topAnchor5 = [(MapsThemeLabel *)v243 topAnchor];
+  safeAreaLayoutGuide = [(UIView *)self->_containerView safeAreaLayoutGuide];
+  topAnchor6 = [safeAreaLayoutGuide topAnchor];
+  v196 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:25.0];
   v246[9] = v196;
-  v195 = [(MapsThemeLabel *)v243 centerXAnchor];
-  v194 = [(UIView *)self->_containerView centerXAnchor];
-  v193 = [v195 constraintEqualToAnchor:v194];
+  centerXAnchor = [(MapsThemeLabel *)v243 centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_containerView centerXAnchor];
+  v193 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v246[10] = v193;
-  v192 = [(MapsThemeLabel *)v243 widthAnchor];
-  v191 = [(UIView *)self->_containerView widthAnchor];
-  v190 = [v192 constraintEqualToAnchor:v191 multiplier:0.899999976];
+  widthAnchor3 = [(MapsThemeLabel *)v243 widthAnchor];
+  widthAnchor4 = [(UIView *)self->_containerView widthAnchor];
+  v190 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 multiplier:0.899999976];
   v246[11] = v190;
-  v189 = [(MapsThemeLabel *)v242 topAnchor];
-  v188 = [(MapsThemeLabel *)v243 bottomAnchor];
-  v187 = [v189 constraintEqualToAnchor:v188 constant:15.0];
+  topAnchor7 = [(MapsThemeLabel *)v242 topAnchor];
+  bottomAnchor5 = [(MapsThemeLabel *)v243 bottomAnchor];
+  v187 = [topAnchor7 constraintEqualToAnchor:bottomAnchor5 constant:15.0];
   v246[12] = v187;
-  v186 = [(MapsThemeLabel *)v242 centerXAnchor];
-  v185 = [(MapsThemeLabel *)v243 centerXAnchor];
-  v184 = [v186 constraintEqualToAnchor:v185];
+  centerXAnchor3 = [(MapsThemeLabel *)v242 centerXAnchor];
+  centerXAnchor4 = [(MapsThemeLabel *)v243 centerXAnchor];
+  v184 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v246[13] = v184;
-  v183 = [(MapsThemeLabel *)v242 widthAnchor];
-  v182 = [(UIView *)self->_containerView widthAnchor];
-  v181 = [v183 constraintEqualToAnchor:v182 multiplier:0.899999976];
+  widthAnchor5 = [(MapsThemeLabel *)v242 widthAnchor];
+  widthAnchor6 = [(UIView *)self->_containerView widthAnchor];
+  v181 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6 multiplier:0.899999976];
   v246[14] = v181;
-  v180 = [(MapsThemeLabel *)v241 topAnchor];
-  v179 = [(MapsThemeLabel *)v242 bottomAnchor];
-  v178 = [v180 constraintEqualToAnchor:v179 constant:45.0];
+  topAnchor8 = [(MapsThemeLabel *)v241 topAnchor];
+  bottomAnchor6 = [(MapsThemeLabel *)v242 bottomAnchor];
+  v178 = [topAnchor8 constraintEqualToAnchor:bottomAnchor6 constant:45.0];
   v246[15] = v178;
-  v177 = [(MapsThemeLabel *)v241 leadingAnchor];
-  v176 = [(UIView *)self->_containerView leadingAnchor];
-  v175 = [v177 constraintEqualToAnchor:v176 constant:15.0];
+  leadingAnchor5 = [(MapsThemeLabel *)v241 leadingAnchor];
+  leadingAnchor6 = [(UIView *)self->_containerView leadingAnchor];
+  v175 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:15.0];
   v246[16] = v175;
-  v174 = [(MapsThemeLabel *)v241 trailingAnchor];
-  v173 = [(MapsThemeLabel *)v240 leadingAnchor];
-  v172 = [v174 constraintLessThanOrEqualToAnchor:v173 constant:-2.0];
+  trailingAnchor5 = [(MapsThemeLabel *)v241 trailingAnchor];
+  leadingAnchor7 = [(MapsThemeLabel *)v240 leadingAnchor];
+  v172 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:leadingAnchor7 constant:-2.0];
   v246[17] = v172;
-  v171 = [(MapsThemeLabel *)v240 leadingAnchor];
-  v170 = [(UIView *)self->_containerView centerXAnchor];
-  v169 = [v171 constraintEqualToAnchor:v170 constant:-15.0];
+  leadingAnchor8 = [(MapsThemeLabel *)v240 leadingAnchor];
+  centerXAnchor5 = [(UIView *)self->_containerView centerXAnchor];
+  v169 = [leadingAnchor8 constraintEqualToAnchor:centerXAnchor5 constant:-15.0];
   v246[18] = v169;
-  v168 = [(MapsThemeLabel *)v240 centerYAnchor];
-  v167 = [(MapsThemeLabel *)v241 centerYAnchor];
-  v166 = [v168 constraintEqualToAnchor:v167];
+  centerYAnchor = [(MapsThemeLabel *)v240 centerYAnchor];
+  centerYAnchor2 = [(MapsThemeLabel *)v241 centerYAnchor];
+  v166 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v246[19] = v166;
-  v165 = [v239 leadingAnchor];
-  v164 = [(MapsThemeLabel *)v240 trailingAnchor];
-  v163 = [v165 constraintEqualToAnchor:v164 constant:15.0];
+  leadingAnchor9 = [v239 leadingAnchor];
+  trailingAnchor6 = [(MapsThemeLabel *)v240 trailingAnchor];
+  v163 = [leadingAnchor9 constraintEqualToAnchor:trailingAnchor6 constant:15.0];
   v246[20] = v163;
-  v162 = [v239 centerYAnchor];
-  v161 = [(MapsThemeLabel *)v241 centerYAnchor];
-  v160 = [v162 constraintEqualToAnchor:v161];
+  centerYAnchor3 = [v239 centerYAnchor];
+  centerYAnchor4 = [(MapsThemeLabel *)v241 centerYAnchor];
+  v160 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v246[21] = v160;
-  v159 = [v239 trailingAnchor];
-  v158 = [(UIView *)self->_containerView trailingAnchor];
-  v157 = [v159 constraintEqualToAnchor:v158 constant:-15.0];
+  trailingAnchor7 = [v239 trailingAnchor];
+  trailingAnchor8 = [(UIView *)self->_containerView trailingAnchor];
+  v157 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-15.0];
   v246[22] = v157;
-  v156 = [(MapsThemeLabel *)v238 topAnchor];
-  v155 = [(MapsThemeLabel *)v241 bottomAnchor];
-  v154 = [v156 constraintEqualToAnchor:v155 constant:25.0];
+  topAnchor9 = [(MapsThemeLabel *)v238 topAnchor];
+  bottomAnchor7 = [(MapsThemeLabel *)v241 bottomAnchor];
+  v154 = [topAnchor9 constraintEqualToAnchor:bottomAnchor7 constant:25.0];
   v246[23] = v154;
-  v153 = [(MapsThemeLabel *)v238 leadingAnchor];
-  v152 = [(MapsThemeLabel *)v241 leadingAnchor];
-  v151 = [v153 constraintEqualToAnchor:v152];
+  leadingAnchor10 = [(MapsThemeLabel *)v238 leadingAnchor];
+  leadingAnchor11 = [(MapsThemeLabel *)v241 leadingAnchor];
+  v151 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11];
   v246[24] = v151;
-  v150 = [(MapsThemeLabel *)v238 trailingAnchor];
-  v149 = [v237 leadingAnchor];
-  v148 = [v150 constraintLessThanOrEqualToAnchor:v149];
+  trailingAnchor9 = [(MapsThemeLabel *)v238 trailingAnchor];
+  leadingAnchor12 = [v237 leadingAnchor];
+  v148 = [trailingAnchor9 constraintLessThanOrEqualToAnchor:leadingAnchor12];
   v246[25] = v148;
-  v147 = [v237 leadingAnchor];
-  v146 = [(UIView *)self->_containerView centerXAnchor];
-  v145 = [v147 constraintEqualToAnchor:v146 constant:-15.0];
+  leadingAnchor13 = [v237 leadingAnchor];
+  centerXAnchor6 = [(UIView *)self->_containerView centerXAnchor];
+  v145 = [leadingAnchor13 constraintEqualToAnchor:centerXAnchor6 constant:-15.0];
   v246[26] = v145;
-  v144 = [v237 centerYAnchor];
-  v143 = [(MapsThemeLabel *)v238 centerYAnchor];
-  v142 = [v144 constraintEqualToAnchor:v143];
+  centerYAnchor5 = [v237 centerYAnchor];
+  centerYAnchor6 = [(MapsThemeLabel *)v238 centerYAnchor];
+  v142 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   v246[27] = v142;
-  v141 = [v237 trailingAnchor];
-  v140 = [(UIView *)self->_containerView trailingAnchor];
-  v139 = [v141 constraintEqualToAnchor:v140 constant:-15.0];
+  trailingAnchor10 = [v237 trailingAnchor];
+  trailingAnchor11 = [(UIView *)self->_containerView trailingAnchor];
+  v139 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11 constant:-15.0];
   v246[28] = v139;
-  v138 = [(MapsThemeLabel *)v69 topAnchor];
-  v137 = [(MapsThemeLabel *)v238 bottomAnchor];
-  v136 = [v138 constraintEqualToAnchor:v137 constant:25.0];
+  topAnchor10 = [(MapsThemeLabel *)v69 topAnchor];
+  bottomAnchor8 = [(MapsThemeLabel *)v238 bottomAnchor];
+  v136 = [topAnchor10 constraintEqualToAnchor:bottomAnchor8 constant:25.0];
   v246[29] = v136;
   v90 = v69;
-  v135 = [(MapsThemeLabel *)v69 leadingAnchor];
-  v134 = [(MapsThemeLabel *)v241 leadingAnchor];
-  v133 = [v135 constraintEqualToAnchor:v134];
+  leadingAnchor14 = [(MapsThemeLabel *)v69 leadingAnchor];
+  leadingAnchor15 = [(MapsThemeLabel *)v241 leadingAnchor];
+  v133 = [leadingAnchor14 constraintEqualToAnchor:leadingAnchor15];
   v246[30] = v133;
-  v132 = [(MapsThemeLabel *)v69 widthAnchor];
-  v131 = [(UIView *)self->_containerView widthAnchor];
-  v130 = [v132 constraintEqualToAnchor:v131 multiplier:0.899999976];
+  widthAnchor7 = [(MapsThemeLabel *)v69 widthAnchor];
+  widthAnchor8 = [(UIView *)self->_containerView widthAnchor];
+  v130 = [widthAnchor7 constraintEqualToAnchor:widthAnchor8 multiplier:0.899999976];
   v246[31] = v130;
-  v129 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
-  v128 = [v129 widthAnchor];
-  v127 = [(UIView *)self->_containerView widthAnchor];
-  v126 = [v128 constraintEqualToAnchor:v127];
+  powerPicker6 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
+  widthAnchor9 = [powerPicker6 widthAnchor];
+  widthAnchor10 = [(UIView *)self->_containerView widthAnchor];
+  v126 = [widthAnchor9 constraintEqualToAnchor:widthAnchor10];
   v246[32] = v126;
-  v125 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
-  v124 = [v125 heightAnchor];
-  v123 = [v124 constraintEqualToConstant:170.0];
+  powerPicker7 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
+  heightAnchor = [powerPicker7 heightAnchor];
+  v123 = [heightAnchor constraintEqualToConstant:170.0];
   v246[33] = v123;
-  v91 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
-  v92 = [v91 bottomAnchor];
-  v93 = [(UIView *)self->_containerView bottomAnchor];
-  v94 = [v92 constraintEqualToAnchor:v93];
+  powerPicker8 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
+  bottomAnchor9 = [powerPicker8 bottomAnchor];
+  bottomAnchor10 = [(UIView *)self->_containerView bottomAnchor];
+  v94 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10];
   v246[34] = v94;
-  v95 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
-  v96 = [v95 topAnchor];
+  powerPicker9 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
+  topAnchor11 = [powerPicker9 topAnchor];
   v233 = v90;
-  v97 = [(MapsThemeLabel *)v90 bottomAnchor];
-  v98 = [v96 constraintGreaterThanOrEqualToAnchor:v97];
+  bottomAnchor11 = [(MapsThemeLabel *)v90 bottomAnchor];
+  v98 = [topAnchor11 constraintGreaterThanOrEqualToAnchor:bottomAnchor11];
   v246[35] = v98;
   v99 = [NSArray arrayWithObjects:v246 count:36];
-  [v236 addConstraints:v99];
+  [view4 addConstraints:v99];
 
-  v100 = [(LPROnboardingAddLicensePlatePageViewController *)self vehicle];
-  v101 = [v100 lprPowerType];
+  vehicle3 = [(LPROnboardingAddLicensePlatePageViewController *)self vehicle];
+  lprPowerType = [vehicle3 lprPowerType];
 
-  v102 = [(LPROnboardingAddLicensePlatePageViewController *)self powerTypesKey];
-  v103 = v102;
-  if (v101)
+  powerTypesKey = [(LPROnboardingAddLicensePlatePageViewController *)self powerTypesKey];
+  powerPicker11 = powerTypesKey;
+  if (lprPowerType)
   {
-    v104 = [v102 count];
+    v104 = [powerTypesKey count];
 
     if (v104 >= 1)
     {
       v105 = 0;
       do
       {
-        v106 = [(LPROnboardingAddLicensePlatePageViewController *)self vehicle];
-        v107 = [v106 lprPowerType];
-        if (v107)
+        vehicle4 = [(LPROnboardingAddLicensePlatePageViewController *)self vehicle];
+        lprPowerType2 = [vehicle4 lprPowerType];
+        if (lprPowerType2)
         {
-          v108 = v107;
-          v109 = [(LPROnboardingAddLicensePlatePageViewController *)self vehicle];
-          v110 = [v109 lprPowerType];
-          v111 = [(LPROnboardingAddLicensePlatePageViewController *)self powerTypesKey];
-          v112 = [v111 objectAtIndexedSubscript:v105];
-          v113 = [v110 isEqualToString:v112];
+          v108 = lprPowerType2;
+          vehicle5 = [(LPROnboardingAddLicensePlatePageViewController *)self vehicle];
+          lprPowerType3 = [vehicle5 lprPowerType];
+          powerTypesKey2 = [(LPROnboardingAddLicensePlatePageViewController *)self powerTypesKey];
+          v112 = [powerTypesKey2 objectAtIndexedSubscript:v105];
+          v113 = [lprPowerType3 isEqualToString:v112];
 
           if (v113)
           {
-            v122 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
-            [v122 selectRow:v105 inComponent:0 animated:1];
+            powerPicker10 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
+            [powerPicker10 selectRow:v105 inComponent:0 animated:1];
 
-            v103 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
-            [(LPROnboardingAddLicensePlatePageViewController *)self pickerView:v103 didSelectRow:v105 inComponent:0];
+            powerPicker11 = [(LPROnboardingAddLicensePlatePageViewController *)self powerPicker];
+            [(LPROnboardingAddLicensePlatePageViewController *)self pickerView:powerPicker11 didSelectRow:v105 inComponent:0];
             goto LABEL_16;
           }
         }
@@ -796,8 +796,8 @@ LABEL_23:
         }
 
         ++v105;
-        v114 = [(LPROnboardingAddLicensePlatePageViewController *)self powerTypesKey];
-        v115 = [v114 count];
+        powerTypesKey3 = [(LPROnboardingAddLicensePlatePageViewController *)self powerTypesKey];
+        v115 = [powerTypesKey3 count];
       }
 
       while (v105 < v115);
@@ -811,47 +811,47 @@ LABEL_23:
       _os_log_impl(&_mh_execute_header, v116, OS_LOG_TYPE_ERROR, "Failed to match current power type onto new region. Will fallback to the first available power type", buf, 2u);
     }
 
-    v103 = [(LPROnboardingAddLicensePlatePageViewController *)self powerTypesKey];
-    v118 = [v103 firstObject];
-    v119 = [(LPROnboardingAddLicensePlatePageViewController *)self vehicle];
-    [v119 setLprPowerType:v118];
+    powerPicker11 = [(LPROnboardingAddLicensePlatePageViewController *)self powerTypesKey];
+    firstObject = [powerPicker11 firstObject];
+    vehicle6 = [(LPROnboardingAddLicensePlatePageViewController *)self vehicle];
+    [vehicle6 setLprPowerType:firstObject];
   }
 
   else
   {
-    v120 = [v102 firstObject];
-    v121 = [(LPROnboardingAddLicensePlatePageViewController *)self vehicle];
-    [v121 setLprPowerType:v120];
+    firstObject2 = [powerTypesKey firstObject];
+    vehicle7 = [(LPROnboardingAddLicensePlatePageViewController *)self vehicle];
+    [vehicle7 setLprPowerType:firstObject2];
 
 LABEL_16:
     v117 = v233;
   }
 }
 
-- (LPROnboardingAddLicensePlatePageViewController)initWithScenario:(int64_t)a3 vehicle:(id)a4 delegate:(id)a5 region:(id)a6 lprRules:(id)a7 powerTypes:(id)a8
+- (LPROnboardingAddLicensePlatePageViewController)initWithScenario:(int64_t)scenario vehicle:(id)vehicle delegate:(id)delegate region:(id)region lprRules:(id)rules powerTypes:(id)types
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  vehicleCopy = vehicle;
+  delegateCopy = delegate;
+  regionCopy = region;
+  rulesCopy = rules;
+  typesCopy = types;
   v26.receiver = self;
   v26.super_class = LPROnboardingAddLicensePlatePageViewController;
   v19 = [(LPROnboardingAddLicensePlatePageViewController *)&v26 init];
   v20 = v19;
   if (v19)
   {
-    [(LPROnboardingAddLicensePlatePageViewController *)v19 setVehicle:v14];
-    v21 = [v16 info];
-    v22 = [v21 licensePlateTemplate];
-    v23 = [v22 stringByReplacingOccurrencesOfString:@" " withString:&stru_1016631F0];
+    [(LPROnboardingAddLicensePlatePageViewController *)v19 setVehicle:vehicleCopy];
+    info = [regionCopy info];
+    licensePlateTemplate = [info licensePlateTemplate];
+    v23 = [licensePlateTemplate stringByReplacingOccurrencesOfString:@" " withString:&stru_1016631F0];
     [(LPROnboardingAddLicensePlatePageViewController *)v20 setRegionCode:v23];
 
-    [(LPROnboardingAddLicensePlatePageViewController *)v20 setCurrentRegion:v16];
-    [(LPROnboardingAddLicensePlatePageViewController *)v20 setLprRules:v17];
-    [(LPROnboardingAddLicensePlatePageViewController *)v20 setPowerTypes:v18];
-    v20->_scenario = a3;
-    objc_storeWeak(&v20->_delegate, v15);
+    [(LPROnboardingAddLicensePlatePageViewController *)v20 setCurrentRegion:regionCopy];
+    [(LPROnboardingAddLicensePlatePageViewController *)v20 setLprRules:rulesCopy];
+    [(LPROnboardingAddLicensePlatePageViewController *)v20 setPowerTypes:typesCopy];
+    v20->_scenario = scenario;
+    objc_storeWeak(&v20->_delegate, delegateCopy);
     v24 = +[VGVirtualGarageService sharedService];
     [v24 registerObserver:v20];
   }

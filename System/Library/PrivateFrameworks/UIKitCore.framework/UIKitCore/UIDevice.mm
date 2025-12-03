@@ -4,10 +4,10 @@
 + (BOOL)_isWatch;
 + (BOOL)_isWatchCompanion;
 + (UIDevice)currentDevice;
-+ (id)modelSpecificLocalizedStringKeyForKey:(id)a3;
-+ (int64_t)currentDeviceOrientationAllowingAmbiguous:(BOOL)a3;
++ (id)modelSpecificLocalizedStringKeyForKey:(id)key;
++ (int64_t)currentDeviceOrientationAllowingAmbiguous:(BOOL)ambiguous;
 + (void)invalidateSystemSoundEnablement;
-+ (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
++ (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (BOOL)_hasTouchPad;
 - (BOOL)_supportsDeepColor;
 - (BOOL)_supportsForceTouch;
@@ -22,35 +22,35 @@
 - (UIDeviceOrientation)orientation;
 - (UIUserInterfaceIdiom)userInterfaceIdiom;
 - (float)batteryLevel;
-- (id)_deviceInfoForKey:(__CFString *)a3;
+- (id)_deviceInfoForKey:(__CFString *)key;
 - (id)_tapticEngine;
 - (int64_t)_feedbackSupportLevel;
 - (int64_t)_nativeScreenGamut;
 - (uint64_t)_peripheralFeedbackSupportLevel;
-- (void)_enableDeviceOrientationEvents:(BOOL)a3;
+- (void)_enableDeviceOrientationEvents:(BOOL)events;
 - (void)_hardwareKeyboardAvailabilityChanged;
 - (void)_loadRemoteDeviceInfoIfNeeded;
-- (void)_performShimmedRequestIfPossibleForDeviceOrientation:(int64_t)a3;
-- (void)_playSystemSound:(unsigned int)a3;
-- (void)_registerForSystemSounds:(id)a3;
-- (void)_setActiveUserInterfaceIdiom:(int64_t)a3;
-- (void)_setBacklightLevel:(float)a3;
-- (void)_setBatteryLevel:(float)a3;
-- (void)_setBatteryState:(int64_t)a3;
-- (void)_setExpectsFaceContactInLandscape:(BOOL)a3;
-- (void)_setHasTouchPad:(BOOL)a3;
-- (void)_setProximityState:(BOOL)a3;
-- (void)_unregisterForSystemSounds:(id)a3;
-- (void)_updateSystemSoundActiveStatus:(id)a3;
+- (void)_performShimmedRequestIfPossibleForDeviceOrientation:(int64_t)orientation;
+- (void)_playSystemSound:(unsigned int)sound;
+- (void)_registerForSystemSounds:(id)sounds;
+- (void)_setActiveUserInterfaceIdiom:(int64_t)idiom;
+- (void)_setBacklightLevel:(float)level;
+- (void)_setBatteryLevel:(float)level;
+- (void)_setBatteryState:(int64_t)state;
+- (void)_setExpectsFaceContactInLandscape:(BOOL)landscape;
+- (void)_setHasTouchPad:(BOOL)pad;
+- (void)_setProximityState:(BOOL)state;
+- (void)_unregisterForSystemSounds:(id)sounds;
+- (void)_updateSystemSoundActiveStatus:(id)status;
 - (void)beginGeneratingDeviceOrientationNotifications;
 - (void)dealloc;
 - (void)endGeneratingDeviceOrientationNotifications;
 - (void)playInputClick;
 - (void)setBatteryMonitoringEnabled:(BOOL)batteryMonitoringEnabled;
-- (void)setOrientation:(int64_t)a3;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
 - (void)setProximityMonitoringEnabled:(BOOL)proximityMonitoringEnabled;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation UIDevice
@@ -61,7 +61,7 @@
   block[1] = 3221225472;
   block[2] = __25__UIDevice_currentDevice__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49E790 != -1)
   {
     dispatch_once(&qword_1ED49E790, block);
@@ -407,15 +407,15 @@ uint64_t __59__UIDevice__UIFeedbackEngineSupport___feedbackSupportLevel__block_i
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)_loadRemoteDeviceInfoIfNeeded
@@ -723,42 +723,42 @@ uint64_t __79__UIDevice__UIFeedbackEnginePeripheralSupport___peripheralFeedbackS
   return result;
 }
 
-- (void)_enableDeviceOrientationEvents:(BOOL)a3
+- (void)_enableDeviceOrientationEvents:(BOOL)events
 {
   if (([UIApp _isSpringBoard] & 1) == 0)
   {
-    v4 = [UIApp _mainScene];
+    _mainScene = [UIApp _mainScene];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __52__UIDevice_Private___enableDeviceOrientationEvents___block_invoke;
     v5[3] = &__block_descriptor_33_e49_v16__0__UIMutableApplicationSceneClientSettings_8l;
-    v6 = a3;
-    [v4 updateUIClientSettingsWithBlock:v5];
+    eventsCopy = events;
+    [_mainScene updateUIClientSettingsWithBlock:v5];
   }
 }
 
-+ (int64_t)currentDeviceOrientationAllowingAmbiguous:(BOOL)a3
++ (int64_t)currentDeviceOrientationAllowingAmbiguous:(BOOL)ambiguous
 {
-  v3 = a3;
+  ambiguousCopy = ambiguous;
   v4 = +[UIDevice currentDevice];
   v5 = [v4 userInterfaceIdiom] != 6;
 
-  v6 = [UIApp _mainScene];
-  v7 = [v6 settings];
+  _mainScene = [UIApp _mainScene];
+  settings = [_mainScene settings];
 
-  if (v7)
+  if (settings)
   {
-    if ([v7 isUISubclass])
+    if ([settings isUISubclass])
     {
-      v8 = [v7 deviceOrientation];
-      if (v8 || v3)
+      deviceOrientation = [settings deviceOrientation];
+      if (deviceOrientation || ambiguousCopy)
       {
         goto LABEL_12;
       }
     }
   }
 
-  if (v3)
+  if (ambiguousCopy)
   {
     v9 = &_MergedGlobals_1151;
     v10 = &dword_1ED49E75C;
@@ -773,7 +773,7 @@ LABEL_11:
     v13 = *v10;
     state64 = 0;
     notify_get_state(v13, &state64);
-    v8 = state64;
+    deviceOrientation = state64;
     goto LABEL_12;
   }
 
@@ -789,7 +789,7 @@ LABEL_11:
 LABEL_10:
   v12 = notify_register_check(v11, v10);
   *v9 = v12 == 0;
-  v8 = v5;
+  deviceOrientation = v5;
   if (!v12)
   {
     goto LABEL_11;
@@ -797,7 +797,7 @@ LABEL_10:
 
 LABEL_12:
 
-  return v8;
+  return deviceOrientation;
 }
 
 - (void)dealloc
@@ -811,7 +811,7 @@ LABEL_12:
   [(UIDevice *)&v5 dealloc];
 }
 
-- (id)_deviceInfoForKey:(__CFString *)a3
+- (id)_deviceInfoForKey:(__CFString *)key
 {
   v3 = MGCopyAnswer();
 
@@ -820,31 +820,31 @@ LABEL_12:
 
 - (NSString)name
 {
-  if (!UISelfHasEntitlement(@"com.apple.developer.device-information.user-assigned-device-name") || ([(UIDevice *)self _deviceInfoForKey:@"UserAssignedDeviceName"], (v3 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!UISelfHasEntitlement(@"com.apple.developer.device-information.user-assigned-device-name") || ([(UIDevice *)self _deviceInfoForKey:@"UserAssignedDeviceName"], (model = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v3 = [(UIDevice *)self model];
+    model = [(UIDevice *)self model];
   }
 
-  return v3;
+  return model;
 }
 
 - (NSUUID)identifierForVendor
 {
-  v2 = [MEMORY[0x1E6963608] defaultWorkspace];
-  v3 = [v2 deviceIdentifierForVendor];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  deviceIdentifierForVendor = [defaultWorkspace deviceIdentifierForVendor];
 
-  return v3;
+  return deviceIdentifierForVendor;
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
   v14 = *MEMORY[0x1E69E9840];
   if (self->_numDeviceOrientationObservers >= 1)
   {
-    v4 = a3;
-    if (((*&self->_deviceFlags >> 3) & 7) != a3)
+    orientationCopy = orientation;
+    if (((*&self->_deviceFlags >> 3) & 7) != orientation)
     {
-      v6 = a4;
+      animatedCopy = animated;
       if (qword_1ED49E878 != -1)
       {
         dispatch_once(&qword_1ED49E878, &__block_literal_global_452);
@@ -854,22 +854,22 @@ LABEL_12:
       if (os_log_type_enabled(qword_1ED49E870, OS_LOG_TYPE_DEBUG))
       {
         *buf = 67240192;
-        v13 = v4;
+        v13 = orientationCopy;
         _os_log_debug_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEBUG, "Setting device orientation to %{public}d and sending notification.", buf, 8u);
       }
 
-      *&self->_deviceFlags = *&self->_deviceFlags & 0xFFC7 | (8 * (v4 & 7));
+      *&self->_deviceFlags = *&self->_deviceFlags & 0xFFC7 | (8 * (orientationCopy & 7));
       v8 = objc_alloc(MEMORY[0x1E695DF20]);
-      v9 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+      v9 = [MEMORY[0x1E696AD98] numberWithBool:animatedCopy];
       v10 = [v8 initWithObjectsAndKeys:{v9, @"UIDeviceOrientationRotateAnimatedUserInfoKey", 0}];
 
-      v11 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v11 postNotificationName:@"UIDeviceOrientationDidChangeNotification" object:self userInfo:v10];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"UIDeviceOrientationDidChangeNotification" object:self userInfo:v10];
     }
   }
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
   v5 = *(__UILogGetCategoryCachedImpl("Orientation", &setOrientation____s_category) + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -880,11 +880,11 @@ LABEL_12:
 
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
-    a3 &= 0xFu;
-    [(UIDevice *)self _performShimmedRequestIfPossibleForDeviceOrientation:a3];
+    orientation &= 0xFu;
+    [(UIDevice *)self _performShimmedRequestIfPossibleForDeviceOrientation:orientation];
   }
 
-  [(UIDevice *)self setOrientation:a3 animated:1];
+  [(UIDevice *)self setOrientation:orientation animated:1];
 }
 
 - (void)setBatteryMonitoringEnabled:(BOOL)batteryMonitoringEnabled
@@ -1144,34 +1144,34 @@ LABEL_31:
   }
 }
 
-- (void)_setExpectsFaceContactInLandscape:(BOOL)a3
+- (void)_setExpectsFaceContactInLandscape:(BOOL)landscape
 {
-  v3 = a3;
+  landscapeCopy = landscape;
   if (MGGetBoolAnswer())
   {
     deviceFlags = self->_deviceFlags;
-    if (((deviceFlags & 4) == 0) == v3)
+    if (((deviceFlags & 4) == 0) == landscapeCopy)
     {
-      v6 = v3 ? 4 : 0;
+      v6 = landscapeCopy ? 4 : 0;
       *&self->_deviceFlags = deviceFlags & 0xFFFB | v6;
       if ((deviceFlags & 2) != 0)
       {
         v7 = UIApp;
 
-        [v7 setExpectsFaceContact:1 inLandscape:v3];
+        [v7 setExpectsFaceContact:1 inLandscape:landscapeCopy];
       }
     }
   }
 }
 
-- (void)_setActiveUserInterfaceIdiom:(int64_t)a3
+- (void)_setActiveUserInterfaceIdiom:(int64_t)idiom
 {
   if (initializeActiveUserInterfaceIdiom_once != -1)
   {
     dispatch_once(&initializeActiveUserInterfaceIdiom_once, &__block_literal_global_518);
   }
 
-  sActiveUserInterfaceIdiom = a3;
+  sActiveUserInterfaceIdiom = idiom;
 }
 
 - (void)playInputClick
@@ -1209,26 +1209,26 @@ LABEL_31:
   }
 }
 
-- (void)_setBacklightLevel:(float)a3
+- (void)_setBacklightLevel:(float)level
 {
-  v4 = [objc_opt_self() mainScreen];
-  v5 = [_UISceneLifecycleMultiplexer mostActiveWindowSceneOnScreen:v4];
+  mainScreen = [objc_opt_self() mainScreen];
+  v5 = [_UISceneLifecycleMultiplexer mostActiveWindowSceneOnScreen:mainScreen];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __31__UIDevice__setBacklightLevel___block_invoke;
   v6[3] = &__block_descriptor_36_e49_v16__0__UIMutableApplicationSceneClientSettings_8l;
-  v7 = a3;
+  levelCopy = level;
   [v5 _updateUIClientSettingsWithBlock:v6];
 }
 
-+ (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
++ (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (_KVOContext == a6)
+  if (_KVOContext == context)
   {
     if (pthread_main_np() == 1)
     {
 
-      [a1 invalidateSystemSoundEnablement];
+      [self invalidateSystemSoundEnablement];
     }
 
     else
@@ -1237,22 +1237,22 @@ LABEL_31:
       block[1] = 3221225472;
       block[2] = __59__UIDevice_observeValueForKeyPath_ofObject_change_context___block_invoke;
       block[3] = &__block_descriptor_40_e5_v8__0l;
-      block[4] = a1;
+      block[4] = self;
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___UIDevice;
-    objc_msgSendSuper2(&v7, sel_observeValueForKeyPath_ofObject_change_context_, a3, a4, a5);
+    objc_msgSendSuper2(&v7, sel_observeValueForKeyPath_ofObject_change_context_, path, object, change);
   }
 }
 
-- (void)_updateSystemSoundActiveStatus:(id)a3
+- (void)_updateSystemSoundActiveStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   if (pthread_main_np())
   {
     UpdateSystemSoundActiveStatus();
@@ -1265,19 +1265,19 @@ LABEL_31:
     v5[2] = __43__UIDevice__updateSystemSoundActiveStatus___block_invoke;
     v5[3] = &unk_1E70F35B8;
     v5[4] = self;
-    v6 = v4;
+    v6 = statusCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v5);
   }
 }
 
-- (void)_registerForSystemSounds:(id)a3
+- (void)_registerForSystemSounds:(id)sounds
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  soundsCopy = sounds;
+  v5 = soundsCopy;
+  if (soundsCopy)
   {
     v6 = qword_1ED49E7A0;
-    value = v4;
+    value = soundsCopy;
     if (qword_1ED49E7A0 || (qword_1ED49E7A0 = CFArrayCreateMutable(0, 0, 0), [MEMORY[0x1E696AD88] defaultCenter], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "addObserver:selector:name:object:", self, sel__updateSystemSoundActiveStatus_, @"UIApplicationSuspendedNotification", 0), objc_msgSend(v7, "addObserver:selector:name:object:", self, sel__updateSystemSoundActiveStatus_, @"UIApplicationSuspendedEventsOnlyNotification", 0), v7, v5 = value, (v6 = qword_1ED49E7A0) != 0))
     {
       v11.length = CFArrayGetCount(v6);
@@ -1294,32 +1294,32 @@ LABEL_31:
   }
 }
 
-- (void)_unregisterForSystemSounds:(id)a3
+- (void)_unregisterForSystemSounds:(id)sounds
 {
-  v3 = a3;
-  if (v3)
+  soundsCopy = sounds;
+  if (soundsCopy)
   {
     v4 = qword_1ED49E7A0;
     if (qword_1ED49E7A0)
     {
-      value = v3;
+      value = soundsCopy;
       v8.length = CFArrayGetCount(qword_1ED49E7A0);
       v8.location = 0;
       FirstIndexOfValue = CFArrayGetFirstIndexOfValue(v4, v8, value);
-      v3 = value;
+      soundsCopy = value;
       if (FirstIndexOfValue != -1)
       {
         CFArrayRemoveValueAtIndex(qword_1ED49E7A0, FirstIndexOfValue);
         UpdateSystemSoundActiveStatus();
-        v3 = value;
+        soundsCopy = value;
       }
     }
   }
 }
 
-- (void)_playSystemSound:(unsigned int)a3
+- (void)_playSystemSound:(unsigned int)sound
 {
-  v3 = *&a3;
+  v3 = *&sound;
   if (IsSystemSoundEnabled())
   {
     v8 = 0;
@@ -1343,9 +1343,9 @@ LABEL_31:
 
     else
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void __AudioServicesPlaySystemSound(SystemSoundID)"];
-      [v6 handleFailureInFunction:v7 file:@"UIDevice.m" lineNumber:95 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v7 file:@"UIDevice.m" lineNumber:95 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
@@ -1359,18 +1359,18 @@ LABEL_31:
   if ((IsHardwareKeyboardAttached != 0) == ((deviceFlags & 0x800) == 0))
   {
     *&self->_deviceFlags = deviceFlags & 0xF7FF | ((IsHardwareKeyboardAttached != 0) << 11);
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"_UIDeviceHardwareKeyboardAvailabilityDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_UIDeviceHardwareKeyboardAvailabilityDidChangeNotification" object:0];
   }
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   if (pthread_main_np() == 1)
   {
-    if ([v7 isEqualToString:@"orientation"])
+    if ([keyCopy isEqualToString:@"orientation"])
     {
       v8 = *(__UILogGetCategoryCachedImpl("Orientation", &setValue_forKey____s_category) + 8);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1382,7 +1382,7 @@ LABEL_31:
       if ((dyld_program_sdk_at_least() & 1) == 0)
       {
         v9 = objc_opt_class();
-        v10 = v6;
+        v10 = valueCopy;
         if (v9)
         {
           if (objc_opt_isKindOfClass())
@@ -1403,8 +1403,8 @@ LABEL_31:
 
         v12 = v11;
 
-        v13 = [v12 unsignedIntValue];
-        [(UIDevice *)self _performShimmedRequestIfPossibleForDeviceOrientation:v13];
+        unsignedIntValue = [v12 unsignedIntValue];
+        [(UIDevice *)self _performShimmedRequestIfPossibleForDeviceOrientation:unsignedIntValue];
       }
     }
 
@@ -1412,22 +1412,22 @@ LABEL_31:
     {
       v14.receiver = self;
       v14.super_class = UIDevice;
-      [(UIDevice *)&v14 setValue:v6 forKey:v7];
+      [(UIDevice *)&v14 setValue:valueCopy forKey:keyCopy];
     }
   }
 }
 
-- (void)_performShimmedRequestIfPossibleForDeviceOrientation:(int64_t)a3
+- (void)_performShimmedRequestIfPossibleForDeviceOrientation:(int64_t)orientation
 {
   IsValid = BSInterfaceOrientationIsValid();
-  if (a3 && IsValid)
+  if (orientation && IsValid)
   {
     v5 = [_UISceneLifecycleMultiplexer mostActiveSceneWithTest:&__block_literal_global_169_0];
     if (v5)
     {
       v7 = v5;
       v6 = objc_alloc_init(UIWindowSceneGeometryPreferencesIOS);
-      [(UIWindowSceneGeometryPreferencesIOS *)v6 setInterfaceOrientations:1 << a3];
+      [(UIWindowSceneGeometryPreferencesIOS *)v6 setInterfaceOrientations:1 << orientation];
       [v7 requestGeometryUpdateWithPreferences:v6 errorHandler:0];
 
       v5 = v7;
@@ -1452,12 +1452,12 @@ uint64_t __65__UIDevice__performShimmedRequestIfPossibleForDeviceOrientation___b
   return isKindOfClass & 1;
 }
 
-+ (id)modelSpecificLocalizedStringKeyForKey:(id)a3
++ (id)modelSpecificLocalizedStringKeyForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = MGCopyAnswer();
-  v5 = [v4 uppercaseString];
-  v6 = [v5 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [uppercaseString stringByReplacingOccurrencesOfString:@" " withString:@"_"];
 
   if ([v6 hasSuffix:@"_SIMULATOR"])
   {
@@ -1466,17 +1466,17 @@ uint64_t __65__UIDevice__performShimmedRequestIfPossibleForDeviceOrientation___b
     v6 = v7;
   }
 
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", v3, v6];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%@", keyCopy, v6];
 
   return v8;
 }
 
-- (void)_setProximityState:(BOOL)a3
+- (void)_setProximityState:(BOOL)state
 {
   deviceFlags = self->_deviceFlags;
-  if (((((deviceFlags & 0x100) == 0) ^ a3) & 1) == 0)
+  if (((((deviceFlags & 0x100) == 0) ^ state) & 1) == 0)
   {
-    if (a3)
+    if (state)
     {
       v6 = 256;
     }
@@ -1487,32 +1487,32 @@ uint64_t __65__UIDevice__performShimmedRequestIfPossibleForDeviceOrientation___b
     }
 
     *&self->_deviceFlags = deviceFlags & 0xFEFF | v6;
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"UIDeviceProximityStateDidChangeNotification" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"UIDeviceProximityStateDidChangeNotification" object:self userInfo:0];
   }
 }
 
-- (void)_setBatteryState:(int64_t)a3
+- (void)_setBatteryState:(int64_t)state
 {
   deviceFlags = self->_deviceFlags;
-  if (deviceFlags >> 6 != a3)
+  if (deviceFlags >> 6 != state)
   {
-    *&self->_deviceFlags = deviceFlags & 0xFF3F | ((a3 & 3) << 6);
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"UIDeviceBatteryStateDidChangeNotification" object:self userInfo:0];
+    *&self->_deviceFlags = deviceFlags & 0xFF3F | ((state & 3) << 6);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"UIDeviceBatteryStateDidChangeNotification" object:self userInfo:0];
   }
 }
 
-- (void)_setBatteryLevel:(float)a3
+- (void)_setBatteryLevel:(float)level
 {
-  v3 = fminf(fmaxf(roundf(a3 * 100.0) / 100.0, 0.0), 1.0);
+  v3 = fminf(fmaxf(roundf(level * 100.0) / 100.0, 0.0), 1.0);
   if (v3 != self->_batteryLevel)
   {
     self->_batteryLevel = v3;
     if ((*&self->_deviceFlags & 0xC0) != 0)
     {
-      v5 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v5 postNotificationName:@"UIDeviceBatteryLevelDidChangeNotification" object:self userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"UIDeviceBatteryLevelDidChangeNotification" object:self userInfo:0];
     }
   }
 }
@@ -1563,9 +1563,9 @@ const char *__41__UIDevice_UIDevicePrivate___hasTouchPad__block_invoke()
   return result;
 }
 
-- (void)_setHasTouchPad:(BOOL)a3
+- (void)_setHasTouchPad:(BOOL)pad
 {
-  if (a3)
+  if (pad)
   {
     v3 = 1536;
   }

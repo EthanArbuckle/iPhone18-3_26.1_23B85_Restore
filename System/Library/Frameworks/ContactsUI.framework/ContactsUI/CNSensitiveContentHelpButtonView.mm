@@ -1,5 +1,5 @@
 @interface CNSensitiveContentHelpButtonView
-- (CNSensitiveContentHelpButtonView)initWithManager:(id)a3;
+- (CNSensitiveContentHelpButtonView)initWithManager:(id)manager;
 - (CNSensitiveContentHelpButtonViewDelegate)delegate;
 - (id)hidePhotoAction;
 - (int64_t)menuOptions;
@@ -7,8 +7,8 @@
 - (void)configureButton;
 - (void)configureConstraints;
 - (void)configureVibrancyView;
-- (void)didAskForMoreHelp:(id)a3;
-- (void)didBlockContact:(id)a3;
+- (void)didAskForMoreHelp:(id)help;
+- (void)didBlockContact:(id)contact;
 - (void)hideContent;
 - (void)presentMoreHelpMenu;
 @end
@@ -22,59 +22,59 @@
   return WeakRetained;
 }
 
-- (void)didAskForMoreHelp:(id)a3
+- (void)didAskForMoreHelp:(id)help
 {
   v5 = objc_alloc_init(MEMORY[0x1E69CA908]);
-  v4 = [(CNSensitiveContentHelpButtonView *)self delegate];
-  [v4 sensitiveContentHelpButtonView:self didRequestToPresentMoreHelp:v5];
+  delegate = [(CNSensitiveContentHelpButtonView *)self delegate];
+  [delegate sensitiveContentHelpButtonView:self didRequestToPresentMoreHelp:v5];
 }
 
-- (void)didBlockContact:(id)a3
+- (void)didBlockContact:(id)contact
 {
-  v4 = [(CNSensitiveContentHelpButtonView *)self delegate];
-  [v4 sensitiveContentHelpButtonView:self didRequestToBlockContact:1];
+  delegate = [(CNSensitiveContentHelpButtonView *)self delegate];
+  [delegate sensitiveContentHelpButtonView:self didRequestToBlockContact:1];
 }
 
 - (void)addHidePhotoActionIfNeeded
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNSensitiveContentHelpButtonView *)self delegate];
-  v4 = [v3 canSensitiveContentHelpButtonViewHidePhoto:self];
+  delegate = [(CNSensitiveContentHelpButtonView *)self delegate];
+  v4 = [delegate canSensitiveContentHelpButtonViewHidePhoto:self];
 
-  v5 = [(CNSensitiveContentHelpButtonView *)self moreHelpMenu];
-  v6 = v5;
+  moreHelpMenu = [(CNSensitiveContentHelpButtonView *)self moreHelpMenu];
+  moreHelpMenu2 = moreHelpMenu;
   if (v4)
   {
-    v7 = [v5 actions];
-    v8 = [(CNSensitiveContentHelpButtonView *)self hidePhotoAction];
-    v9 = [v7 _cn_containsObject:v8];
+    actions = [moreHelpMenu actions];
+    hidePhotoAction = [(CNSensitiveContentHelpButtonView *)self hidePhotoAction];
+    v9 = [actions _cn_containsObject:hidePhotoAction];
 
     if (v9)
     {
       return;
     }
 
-    v6 = [(CNSensitiveContentHelpButtonView *)self moreHelpMenu];
-    v10 = [(CNSensitiveContentHelpButtonView *)self hidePhotoAction];
-    v16[0] = v10;
-    v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-    v12 = [(CNSensitiveContentHelpButtonView *)self moreHelpMenu];
-    v13 = [v12 actions];
-    v14 = [v11 arrayByAddingObjectsFromArray:v13];
-    [v6 _setActions:v14];
+    moreHelpMenu2 = [(CNSensitiveContentHelpButtonView *)self moreHelpMenu];
+    hidePhotoAction2 = [(CNSensitiveContentHelpButtonView *)self hidePhotoAction];
+    v16[0] = hidePhotoAction2;
+    actions3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
+    moreHelpMenu3 = [(CNSensitiveContentHelpButtonView *)self moreHelpMenu];
+    actions2 = [moreHelpMenu3 actions];
+    v14 = [actions3 arrayByAddingObjectsFromArray:actions2];
+    [moreHelpMenu2 _setActions:v14];
   }
 
   else
   {
-    v10 = [(CNSensitiveContentHelpButtonView *)self moreHelpMenu];
-    v11 = [v10 actions];
+    hidePhotoAction2 = [(CNSensitiveContentHelpButtonView *)self moreHelpMenu];
+    actions3 = [hidePhotoAction2 actions];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __62__CNSensitiveContentHelpButtonView_addHidePhotoActionIfNeeded__block_invoke;
     v15[3] = &unk_1E74E3290;
     v15[4] = self;
-    v12 = [v11 _cn_filter:v15];
-    [v6 _setActions:v12];
+    moreHelpMenu3 = [actions3 _cn_filter:v15];
+    [moreHelpMenu2 _setActions:moreHelpMenu3];
   }
 }
 
@@ -92,34 +92,34 @@ BOOL __62__CNSensitiveContentHelpButtonView_addHidePhotoActionIfNeeded__block_in
   v3 = [MEMORY[0x1E69CA8F8] menuWithOptions:{-[CNSensitiveContentHelpButtonView menuOptions](self, "menuOptions")}];
   [(CNSensitiveContentHelpButtonView *)self setMoreHelpMenu:v3];
 
-  v4 = [(CNSensitiveContentHelpButtonView *)self moreHelpMenu];
-  [v4 setMenuDelegate:self];
+  moreHelpMenu = [(CNSensitiveContentHelpButtonView *)self moreHelpMenu];
+  [moreHelpMenu setMenuDelegate:self];
 
   [(CNSensitiveContentHelpButtonView *)self addHidePhotoActionIfNeeded];
-  v5 = [(CNSensitiveContentHelpButtonView *)self delegate];
-  [v5 sensitiveContentHelpButtonView:self didRequestToPresentMenu:self->_moreHelpMenu];
+  delegate = [(CNSensitiveContentHelpButtonView *)self delegate];
+  [delegate sensitiveContentHelpButtonView:self didRequestToPresentMenu:self->_moreHelpMenu];
 }
 
 - (int64_t)menuOptions
 {
-  v3 = [(CNSensitiveContentHelpButtonView *)self sensitiveContentAnalysisManager];
-  v4 = [v3 canShowBlockContactUI];
+  sensitiveContentAnalysisManager = [(CNSensitiveContentHelpButtonView *)self sensitiveContentAnalysisManager];
+  canShowBlockContactUI = [sensitiveContentAnalysisManager canShowBlockContactUI];
 
-  if (!v4)
+  if (!canShowBlockContactUI)
   {
     return 0;
   }
 
-  v5 = [(CNSensitiveContentHelpButtonView *)self delegate];
-  v6 = [v5 canSensitiveContentHelpButtonBlockContact:self];
+  delegate = [(CNSensitiveContentHelpButtonView *)self delegate];
+  v6 = [delegate canSensitiveContentHelpButtonBlockContact:self];
 
   return v6;
 }
 
 - (void)hideContent
 {
-  v3 = [(CNSensitiveContentHelpButtonView *)self delegate];
-  [v3 sensitiveContentHelpButtonView:self didSetContentHidden:1];
+  delegate = [(CNSensitiveContentHelpButtonView *)self delegate];
+  [delegate sensitiveContentHelpButtonView:self didSetContentHidden:1];
 }
 
 - (id)hidePhotoAction
@@ -141,45 +141,45 @@ BOOL __62__CNSensitiveContentHelpButtonView_addHidePhotoActionIfNeeded__block_in
 {
   v37[8] = *MEMORY[0x1E69E9840];
   v23 = MEMORY[0x1E696ACD8];
-  v36 = [(CNSensitiveContentHelpButtonView *)self vibrancyView];
-  v35 = [v36 topAnchor];
-  v34 = [(CNSensitiveContentHelpButtonView *)self topAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  vibrancyView = [(CNSensitiveContentHelpButtonView *)self vibrancyView];
+  topAnchor = [vibrancyView topAnchor];
+  topAnchor2 = [(CNSensitiveContentHelpButtonView *)self topAnchor];
+  v33 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v37[0] = v33;
-  v32 = [(CNSensitiveContentHelpButtonView *)self vibrancyView];
-  v31 = [v32 bottomAnchor];
-  v30 = [(CNSensitiveContentHelpButtonView *)self bottomAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  vibrancyView2 = [(CNSensitiveContentHelpButtonView *)self vibrancyView];
+  bottomAnchor = [vibrancyView2 bottomAnchor];
+  bottomAnchor2 = [(CNSensitiveContentHelpButtonView *)self bottomAnchor];
+  v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v37[1] = v29;
-  v28 = [(CNSensitiveContentHelpButtonView *)self vibrancyView];
-  v27 = [v28 leadingAnchor];
-  v26 = [(CNSensitiveContentHelpButtonView *)self leadingAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  vibrancyView3 = [(CNSensitiveContentHelpButtonView *)self vibrancyView];
+  leadingAnchor = [vibrancyView3 leadingAnchor];
+  leadingAnchor2 = [(CNSensitiveContentHelpButtonView *)self leadingAnchor];
+  v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v37[2] = v25;
-  v24 = [(CNSensitiveContentHelpButtonView *)self vibrancyView];
-  v22 = [v24 trailingAnchor];
-  v21 = [(CNSensitiveContentHelpButtonView *)self trailingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  vibrancyView4 = [(CNSensitiveContentHelpButtonView *)self vibrancyView];
+  trailingAnchor = [vibrancyView4 trailingAnchor];
+  trailingAnchor2 = [(CNSensitiveContentHelpButtonView *)self trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v37[3] = v20;
-  v19 = [(CNSensitiveContentHelpButtonView *)self button];
-  v18 = [v19 topAnchor];
-  v17 = [(CNSensitiveContentHelpButtonView *)self topAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  button = [(CNSensitiveContentHelpButtonView *)self button];
+  topAnchor3 = [button topAnchor];
+  topAnchor4 = [(CNSensitiveContentHelpButtonView *)self topAnchor];
+  v16 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v37[4] = v16;
-  v15 = [(CNSensitiveContentHelpButtonView *)self button];
-  v14 = [v15 bottomAnchor];
-  v13 = [(CNSensitiveContentHelpButtonView *)self bottomAnchor];
-  v3 = [v14 constraintEqualToAnchor:v13];
+  button2 = [(CNSensitiveContentHelpButtonView *)self button];
+  bottomAnchor3 = [button2 bottomAnchor];
+  bottomAnchor4 = [(CNSensitiveContentHelpButtonView *)self bottomAnchor];
+  v3 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v37[5] = v3;
-  v4 = [(CNSensitiveContentHelpButtonView *)self button];
-  v5 = [v4 leadingAnchor];
-  v6 = [(CNSensitiveContentHelpButtonView *)self leadingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  button3 = [(CNSensitiveContentHelpButtonView *)self button];
+  leadingAnchor3 = [button3 leadingAnchor];
+  leadingAnchor4 = [(CNSensitiveContentHelpButtonView *)self leadingAnchor];
+  v7 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v37[6] = v7;
-  v8 = [(CNSensitiveContentHelpButtonView *)self button];
-  v9 = [v8 trailingAnchor];
-  v10 = [(CNSensitiveContentHelpButtonView *)self trailingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  button4 = [(CNSensitiveContentHelpButtonView *)self button];
+  trailingAnchor3 = [button4 trailingAnchor];
+  trailingAnchor4 = [(CNSensitiveContentHelpButtonView *)self trailingAnchor];
+  v11 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v37[7] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:8];
   [v23 activateConstraints:v12];
@@ -190,11 +190,11 @@ BOOL __62__CNSensitiveContentHelpButtonView_addHidePhotoActionIfNeeded__block_in
   v7 = [MEMORY[0x1E69DC730] effectWithStyle:16];
   v3 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v7];
   [(UIVisualEffectView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(UIVisualEffectView *)v3 layer];
-  [v4 setMasksToBounds:1];
+  layer = [(UIVisualEffectView *)v3 layer];
+  [layer setMasksToBounds:1];
 
-  v5 = [(UIVisualEffectView *)v3 layer];
-  [v5 setCornerRadius:18.0];
+  layer2 = [(UIVisualEffectView *)v3 layer];
+  [layer2 setCornerRadius:18.0];
 
   vibrancyView = self->_vibrancyView;
   self->_vibrancyView = v3;
@@ -202,42 +202,42 @@ BOOL __62__CNSensitiveContentHelpButtonView_addHidePhotoActionIfNeeded__block_in
 
 - (void)configureButton
 {
-  v9 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
-  [v9 setCornerStyle:4];
-  v3 = [MEMORY[0x1E69DC888] whiteColor];
-  [v9 setBaseForegroundColor:v3];
+  grayButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+  [grayButtonConfiguration setCornerStyle:4];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [grayButtonConfiguration setBaseForegroundColor:whiteColor];
 
-  [v9 setButtonSize:2];
+  [grayButtonConfiguration setButtonSize:2];
   v4 = CNContactsUIBundle();
   v5 = [v4 localizedStringForKey:@"SENSITIVE_CONTENT_HELP_BUTTON_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
-  [v9 setTitle:v5];
+  [grayButtonConfiguration setTitle:v5];
 
   v6 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"exclamationmark.triangle.fill"];
-  [v9 setImage:v6];
+  [grayButtonConfiguration setImage:v6];
 
-  [v9 setImagePadding:2.0];
-  [v9 setContentInsets:{6.0, 10.0, 6.0, 10.0}];
-  v7 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v9 primaryAction:0];
+  [grayButtonConfiguration setImagePadding:2.0];
+  [grayButtonConfiguration setContentInsets:{6.0, 10.0, 6.0, 10.0}];
+  v7 = [MEMORY[0x1E69DC738] buttonWithConfiguration:grayButtonConfiguration primaryAction:0];
   [(UIButton *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)v7 addTarget:self action:sel_didTapButton forControlEvents:64];
   button = self->_button;
   self->_button = v7;
 }
 
-- (CNSensitiveContentHelpButtonView)initWithManager:(id)a3
+- (CNSensitiveContentHelpButtonView)initWithManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = CNSensitiveContentHelpButtonView;
   v6 = [(CNSensitiveContentHelpButtonView *)&v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sensitiveContentAnalysisManager, a3);
+    objc_storeStrong(&v6->_sensitiveContentAnalysisManager, manager);
     [(CNSensitiveContentHelpButtonView *)v7 configureButton];
     [(CNSensitiveContentHelpButtonView *)v7 configureVibrancyView];
-    v8 = [(UIVisualEffectView *)v7->_vibrancyView contentView];
-    [v8 addSubview:v7->_button];
+    contentView = [(UIVisualEffectView *)v7->_vibrancyView contentView];
+    [contentView addSubview:v7->_button];
 
     [(CNSensitiveContentHelpButtonView *)v7 addSubview:v7->_vibrancyView];
     [(CNSensitiveContentHelpButtonView *)v7 configureConstraints];

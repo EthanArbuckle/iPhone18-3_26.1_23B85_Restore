@@ -1,6 +1,6 @@
 @interface NCCGlanceUtility
 + (NCCGlanceUtility)sharedUtility;
-+ (id)substituteFocusSymbolNameIfNecessary:(id)a3;
++ (id)substituteFocusSymbolNameIfNecessary:(id)necessary;
 - (BOOL)companionSupportsGreyMatter;
 - (BOOL)companionSupportsR2;
 - (BOOL)isEitherDeviceGreenTea;
@@ -9,9 +9,9 @@
 - (NCCGlanceUtility)init;
 - (NSString)UDID;
 - (NSString)companionProductType;
-- (void)_updateNRDevice:(id)a3;
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5;
-- (void)runOrQueueForPairedOrFirstUnlockAction:(id)a3;
+- (void)_updateNRDevice:(id)device;
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value;
+- (void)runOrQueueForPairedOrFirstUnlockAction:(id)action;
 @end
 
 @implementation NCCGlanceUtility
@@ -29,28 +29,28 @@
     v2->_workQueue = v4;
 
     v2->_propertyLock._os_unfair_lock_opaque = 0;
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     onPairedActions = v2->_onPairedActions;
-    v2->_onPairedActions = v6;
+    v2->_onPairedActions = array;
 
-    v8 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     onFirstUnlockActions = v2->_onFirstUnlockActions;
-    v2->_onFirstUnlockActions = v8;
+    v2->_onFirstUnlockActions = array2;
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v2 selector:sel__updateNRDevice_ name:*MEMORY[0x277D2BC48] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__updateNRDevice_ name:*MEMORY[0x277D2BC48] object:0];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v2 selector:sel__updateNRDevice_ name:*MEMORY[0x277D2BC50] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__updateNRDevice_ name:*MEMORY[0x277D2BC50] object:0];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v2 selector:sel__updateNRDevice_ name:*MEMORY[0x277D2BC68] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel__updateNRDevice_ name:*MEMORY[0x277D2BC68] object:0];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v2 selector:sel__updateNRDevice_ name:*MEMORY[0x277D2BC78] object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v2 selector:sel__updateNRDevice_ name:*MEMORY[0x277D2BC78] object:0];
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v2 selector:sel__updateNRDevice_ name:*MEMORY[0x277D2BC88] object:0];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter5 addObserver:v2 selector:sel__updateNRDevice_ name:*MEMORY[0x277D2BC88] object:0];
 
     [(NCCGlanceUtility *)v2 _updateNRDevice:0];
   }
@@ -58,15 +58,15 @@
   return v2;
 }
 
-- (void)_updateNRDevice:(id)a3
+- (void)_updateNRDevice:(id)device
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [a3 name];
-  v5 = v4;
+  name = [device name];
+  v5 = name;
   v6 = @"<nil>";
-  if (v4)
+  if (name)
   {
-    v6 = v4;
+    v6 = name;
   }
 
   v7 = v6;
@@ -266,17 +266,17 @@ uint64_t __33__NCCGlanceUtility_sharedUtility__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)substituteFocusSymbolNameIfNecessary:(id)a3
++ (id)substituteFocusSymbolNameIfNecessary:(id)necessary
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"emoji.face.grinning"])
+  necessaryCopy = necessary;
+  if ([necessaryCopy isEqualToString:@"emoji.face.grinning"])
   {
     v4 = @"emoji.face.grinning.inverse";
   }
 
   else
   {
-    v4 = v3;
+    v4 = necessaryCopy;
   }
 
   return v4;
@@ -332,50 +332,50 @@ uint64_t __33__NCCGlanceUtility_sharedUtility__block_invoke()
   return isEitherDeviceGreenTea;
 }
 
-- (void)runOrQueueForPairedOrFirstUnlockAction:(id)a3
+- (void)runOrQueueForPairedOrFirstUnlockAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if ([(NCCGlanceUtility *)self maybePaired])
   {
     if (MKBDeviceUnlockedSinceBoot() == 1)
     {
-      v4[2](v4, 0);
+      actionCopy[2](actionCopy, 0);
     }
 
     else
     {
-      [(NCCGlanceUtility *)self runOrQueueForPairedOrFirstUnlockAction:v4, v5];
+      [(NCCGlanceUtility *)self runOrQueueForPairedOrFirstUnlockAction:actionCopy, v5];
     }
   }
 
   else
   {
-    [(NCCGlanceUtility *)self runOrQueueForPairedOrFirstUnlockAction:v4];
+    [(NCCGlanceUtility *)self runOrQueueForPairedOrFirstUnlockAction:actionCopy];
   }
 }
 
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  changeCopy = change;
+  valueCopy = value;
   v11 = +[NCCLogging ncc];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 pairingID];
+    pairingID = [deviceCopy pairingID];
     v13 = 134218754;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v12;
+    v16 = pairingID;
     v17 = 2112;
-    v18 = v9;
+    v18 = changeCopy;
     v19 = 2112;
-    v20 = v10;
+    v20 = valueCopy;
     _os_log_impl(&dword_25AF0B000, v11, OS_LOG_TYPE_DEFAULT, "propertyDidChange: self: (%p); device: (%@); property: (%@); fromValue: (%@)", &v13, 0x2Au);
   }
 
-  if ([v9 isEqualToString:*MEMORY[0x277D2BD48]])
+  if ([changeCopy isEqualToString:*MEMORY[0x277D2BD48]])
   {
     [(NCCGlanceUtility *)self _updateNRDevice:0];
   }

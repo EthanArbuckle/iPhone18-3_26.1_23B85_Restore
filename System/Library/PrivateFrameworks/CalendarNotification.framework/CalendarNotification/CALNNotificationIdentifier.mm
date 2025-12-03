@@ -1,34 +1,34 @@
 @interface CALNNotificationIdentifier
 + (id)_allowedCharacterSetForEncodingNotificationIdentifierComponents;
-+ (id)_constructNotificationIdentifierStringRepresentationFromComponents:(id)a3;
-+ (id)_deconstructNotificationIdentifierStringRepresentationIntoComponents:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNotificationIdentifier:(id)a3;
-- (CALNNotificationIdentifier)initWithSourceIdentifier:(id)a3 sourceClientIdentifier:(id)a4;
-- (CALNNotificationIdentifier)initWithSourceIdentifier:(id)a3 sourceClientIdentifier:(id)a4 stringRepresentation:(id)a5;
-- (CALNNotificationIdentifier)initWithStringRepresentation:(id)a3;
++ (id)_constructNotificationIdentifierStringRepresentationFromComponents:(id)components;
++ (id)_deconstructNotificationIdentifierStringRepresentationIntoComponents:(id)components;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNotificationIdentifier:(id)identifier;
+- (CALNNotificationIdentifier)initWithSourceIdentifier:(id)identifier sourceClientIdentifier:(id)clientIdentifier;
+- (CALNNotificationIdentifier)initWithSourceIdentifier:(id)identifier sourceClientIdentifier:(id)clientIdentifier stringRepresentation:(id)representation;
+- (CALNNotificationIdentifier)initWithStringRepresentation:(id)representation;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation CALNNotificationIdentifier
 
-+ (id)_constructNotificationIdentifierStringRepresentationFromComponents:(id)a3
++ (id)_constructNotificationIdentifierStringRepresentationFromComponents:(id)components
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  componentsCopy = components;
   v5 = +[CALNLogSubsystem defaultCategory];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     +[CALNNotificationIdentifier _constructNotificationIdentifierStringRepresentationFromComponents:];
   }
 
-  v6 = [v4 sourceIdentifier];
-  v7 = [v4 sourceClientIdentifier];
-  if (![v6 length])
+  sourceIdentifier = [componentsCopy sourceIdentifier];
+  sourceClientIdentifier = [componentsCopy sourceClientIdentifier];
+  if (![sourceIdentifier length])
   {
-    v8 = +[CALNLogSubsystem defaultCategory];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    _allowedCharacterSetForEncodingNotificationIdentifierComponents = +[CALNLogSubsystem defaultCategory];
+    if (os_log_type_enabled(_allowedCharacterSetForEncodingNotificationIdentifierComponents, OS_LOG_TYPE_ERROR))
     {
       +[CALNNotificationIdentifier _constructNotificationIdentifierStringRepresentationFromComponents:];
     }
@@ -36,10 +36,10 @@
     goto LABEL_13;
   }
 
-  if (![v7 length])
+  if (![sourceClientIdentifier length])
   {
-    v8 = +[CALNLogSubsystem defaultCategory];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    _allowedCharacterSetForEncodingNotificationIdentifierComponents = +[CALNLogSubsystem defaultCategory];
+    if (os_log_type_enabled(_allowedCharacterSetForEncodingNotificationIdentifierComponents, OS_LOG_TYPE_ERROR))
     {
       +[CALNNotificationIdentifier _constructNotificationIdentifierStringRepresentationFromComponents:];
     }
@@ -49,11 +49,11 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  v8 = [a1 _allowedCharacterSetForEncodingNotificationIdentifierComponents];
-  v9 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:v8];
+  _allowedCharacterSetForEncodingNotificationIdentifierComponents = [self _allowedCharacterSetForEncodingNotificationIdentifierComponents];
+  v9 = [sourceIdentifier stringByAddingPercentEncodingWithAllowedCharacters:_allowedCharacterSetForEncodingNotificationIdentifierComponents];
   if (v9)
   {
-    v10 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:v8];
+    v10 = [sourceClientIdentifier stringByAddingPercentEncodingWithAllowedCharacters:_allowedCharacterSetForEncodingNotificationIdentifierComponents];
     v16[0] = v9;
     v16[1] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
@@ -82,28 +82,28 @@ LABEL_18:
   return v12;
 }
 
-+ (id)_deconstructNotificationIdentifierStringRepresentationIntoComponents:(id)a3
++ (id)_deconstructNotificationIdentifierStringRepresentationIntoComponents:(id)components
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  componentsCopy = components;
   v4 = +[CALNLogSubsystem defaultCategory];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     +[CALNNotificationIdentifier _deconstructNotificationIdentifierStringRepresentationIntoComponents:];
   }
 
-  v5 = [v3 componentsSeparatedByString:@"/"];
+  v5 = [componentsCopy componentsSeparatedByString:@"/"];
   if ([v5 count] == 2)
   {
     v6 = [v5 objectAtIndexedSubscript:0];
     v7 = [v5 objectAtIndexedSubscript:1];
-    v8 = [v6 stringByRemovingPercentEncoding];
-    v9 = [v7 stringByRemovingPercentEncoding];
-    if ([v8 length])
+    stringByRemovingPercentEncoding = [v6 stringByRemovingPercentEncoding];
+    stringByRemovingPercentEncoding2 = [v7 stringByRemovingPercentEncoding];
+    if ([stringByRemovingPercentEncoding length])
     {
-      if ([v9 length])
+      if ([stringByRemovingPercentEncoding2 length])
       {
-        v10 = [[CALNNotificationIdentifierComponents alloc] initWithSourceIdentifier:v8 sourceClientIdentifier:v9];
+        v10 = [[CALNNotificationIdentifierComponents alloc] initWithSourceIdentifier:stringByRemovingPercentEncoding sourceClientIdentifier:stringByRemovingPercentEncoding2];
         v11 = +[CALNLogSubsystem defaultCategory];
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
@@ -146,7 +146,7 @@ LABEL_16:
     v19 = 2114;
     v20 = v5;
     v21 = 2114;
-    v22 = v3;
+    v22 = componentsCopy;
     _os_log_impl(&dword_242909000, v6, OS_LOG_TYPE_DEFAULT, "Cannot deconstruct notification identifier string representation into components since there are an unexpected number of encoded components. Expected encoded component count: %{public}@. Actual encoded component count: %{public}@. Encoded components: %{public}@. String representation: %{public}@.", &v15, 0x2Au);
   }
 
@@ -179,16 +179,16 @@ void __93__CALNNotificationIdentifier__allowedCharacterSetForEncodingNotificatio
   _allowedCharacterSetForEncodingNotificationIdentifierComponents_allowedCharacterSet = v1;
 }
 
-- (CALNNotificationIdentifier)initWithSourceIdentifier:(id)a3 sourceClientIdentifier:(id)a4
+- (CALNNotificationIdentifier)initWithSourceIdentifier:(id)identifier sourceClientIdentifier:(id)clientIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[CALNNotificationIdentifierComponents alloc] initWithSourceIdentifier:v6 sourceClientIdentifier:v7];
+  identifierCopy = identifier;
+  clientIdentifierCopy = clientIdentifier;
+  v8 = [[CALNNotificationIdentifierComponents alloc] initWithSourceIdentifier:identifierCopy sourceClientIdentifier:clientIdentifierCopy];
   v9 = [objc_opt_class() _constructNotificationIdentifierStringRepresentationFromComponents:v8];
   if (v9)
   {
-    self = [(CALNNotificationIdentifier *)self initWithSourceIdentifier:v6 sourceClientIdentifier:v7 stringRepresentation:v9];
-    v10 = self;
+    self = [(CALNNotificationIdentifier *)self initWithSourceIdentifier:identifierCopy sourceClientIdentifier:clientIdentifierCopy stringRepresentation:v9];
+    selfCopy = self;
   }
 
   else
@@ -199,24 +199,24 @@ void __93__CALNNotificationIdentifier__allowedCharacterSetForEncodingNotificatio
       [CALNNotificationIdentifier initWithSourceIdentifier:sourceClientIdentifier:];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (CALNNotificationIdentifier)initWithStringRepresentation:(id)a3
+- (CALNNotificationIdentifier)initWithStringRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _deconstructNotificationIdentifierStringRepresentationIntoComponents:v4];
+  representationCopy = representation;
+  v5 = [objc_opt_class() _deconstructNotificationIdentifierStringRepresentationIntoComponents:representationCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 sourceIdentifier];
-    v8 = [v6 sourceClientIdentifier];
-    self = [(CALNNotificationIdentifier *)self initWithSourceIdentifier:v7 sourceClientIdentifier:v8 stringRepresentation:v4];
+    sourceIdentifier = [v5 sourceIdentifier];
+    sourceClientIdentifier = [v6 sourceClientIdentifier];
+    self = [(CALNNotificationIdentifier *)self initWithSourceIdentifier:sourceIdentifier sourceClientIdentifier:sourceClientIdentifier stringRepresentation:representationCopy];
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -227,31 +227,31 @@ void __93__CALNNotificationIdentifier__allowedCharacterSetForEncodingNotificatio
       [CALNNotificationIdentifier initWithStringRepresentation:];
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (CALNNotificationIdentifier)initWithSourceIdentifier:(id)a3 sourceClientIdentifier:(id)a4 stringRepresentation:(id)a5
+- (CALNNotificationIdentifier)initWithSourceIdentifier:(id)identifier sourceClientIdentifier:(id)clientIdentifier stringRepresentation:(id)representation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  clientIdentifierCopy = clientIdentifier;
+  representationCopy = representation;
   v19.receiver = self;
   v19.super_class = CALNNotificationIdentifier;
   v11 = [(CALNNotificationIdentifier *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     sourceIdentifier = v11->_sourceIdentifier;
     v11->_sourceIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [clientIdentifierCopy copy];
     sourceClientIdentifier = v11->_sourceClientIdentifier;
     v11->_sourceClientIdentifier = v14;
 
-    v16 = [v10 copy];
+    v16 = [representationCopy copy];
     stringRepresentation = v11->_stringRepresentation;
     v11->_stringRepresentation = v16;
   }
@@ -261,44 +261,44 @@ void __93__CALNNotificationIdentifier__allowedCharacterSetForEncodingNotificatio
 
 - (unint64_t)hash
 {
-  v3 = [(CALNNotificationIdentifier *)self sourceIdentifier];
-  v4 = [v3 hash];
+  sourceIdentifier = [(CALNNotificationIdentifier *)self sourceIdentifier];
+  v4 = [sourceIdentifier hash];
 
-  v5 = [(CALNNotificationIdentifier *)self sourceClientIdentifier];
-  v6 = [v5 hash] ^ v4;
+  sourceClientIdentifier = [(CALNNotificationIdentifier *)self sourceClientIdentifier];
+  v6 = [sourceClientIdentifier hash] ^ v4;
 
-  v7 = [(CALNNotificationIdentifier *)self sourceIdentifier];
-  v8 = [v7 hash];
+  sourceIdentifier2 = [(CALNNotificationIdentifier *)self sourceIdentifier];
+  v8 = [sourceIdentifier2 hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CALNNotificationIdentifier *)self isEqualToNotificationIdentifier:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CALNNotificationIdentifier *)self isEqualToNotificationIdentifier:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToNotificationIdentifier:(id)a3
+- (BOOL)isEqualToNotificationIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (self == v4)
+  identifierCopy = identifier;
+  if (self == identifierCopy)
   {
     v13 = 1;
   }
 
   else
   {
-    v5 = [(CALNNotificationIdentifier *)self sourceIdentifier];
-    v6 = [(CALNNotificationIdentifier *)v4 sourceIdentifier];
+    sourceIdentifier = [(CALNNotificationIdentifier *)self sourceIdentifier];
+    sourceIdentifier2 = [(CALNNotificationIdentifier *)identifierCopy sourceIdentifier];
     v7 = CalEqualStrings();
 
-    if (v7 && ([(CALNNotificationIdentifier *)self sourceClientIdentifier], v8 = objc_claimAutoreleasedReturnValue(), [(CALNNotificationIdentifier *)v4 sourceClientIdentifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = CalEqualStrings(), v9, v8, v10))
+    if (v7 && ([(CALNNotificationIdentifier *)self sourceClientIdentifier], v8 = objc_claimAutoreleasedReturnValue(), [(CALNNotificationIdentifier *)identifierCopy sourceClientIdentifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = CalEqualStrings(), v9, v8, v10))
     {
-      v11 = [(CALNNotificationIdentifier *)self stringRepresentation];
-      v12 = [(CALNNotificationIdentifier *)v4 stringRepresentation];
+      stringRepresentation = [(CALNNotificationIdentifier *)self stringRepresentation];
+      stringRepresentation2 = [(CALNNotificationIdentifier *)identifierCopy stringRepresentation];
       v13 = CalEqualStrings();
     }
 
@@ -315,10 +315,10 @@ void __93__CALNNotificationIdentifier__allowedCharacterSetForEncodingNotificatio
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CALNNotificationIdentifier *)self sourceIdentifier];
-  v6 = [(CALNNotificationIdentifier *)self sourceClientIdentifier];
-  v7 = [(CALNNotificationIdentifier *)self stringRepresentation];
-  v8 = [v3 stringWithFormat:@"<%@: %p>(sourceIdentifier = %@, sourceClientIdentifier = %@, stringRepresentation = %@)", v4, self, v5, v6, v7];
+  sourceIdentifier = [(CALNNotificationIdentifier *)self sourceIdentifier];
+  sourceClientIdentifier = [(CALNNotificationIdentifier *)self sourceClientIdentifier];
+  stringRepresentation = [(CALNNotificationIdentifier *)self stringRepresentation];
+  v8 = [v3 stringWithFormat:@"<%@: %p>(sourceIdentifier = %@, sourceClientIdentifier = %@, stringRepresentation = %@)", v4, self, sourceIdentifier, sourceClientIdentifier, stringRepresentation];
 
   return v8;
 }

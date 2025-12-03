@@ -1,14 +1,14 @@
 @interface PPClientFeedbackHelper
 - (NSString)clientIdentifier;
-- (PPClientFeedbackHelper)initWithParentObject:(id)a3;
-- (void)setClientIdentifier:(id)a3;
+- (PPClientFeedbackHelper)initWithParentObject:(id)object;
+- (void)setClientIdentifier:(id)identifier;
 @end
 
 @implementation PPClientFeedbackHelper
 
-- (PPClientFeedbackHelper)initWithParentObject:(id)a3
+- (PPClientFeedbackHelper)initWithParentObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v10.receiver = self;
   v10.super_class = PPClientFeedbackHelper;
   v5 = [(PPClientFeedbackHelper *)&v10 init];
@@ -25,43 +25,43 @@
 
 - (NSString)clientIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_clientIdentifier;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_clientIdentifier;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setClientIdentifier:(id)a3
+- (void)setClientIdentifier:(id)identifier
 {
-  v10 = a3;
-  if (![v10 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PPClientFeedbackHelper.m" lineNumber:18 description:@"clientIdentifier must not be nil or zero length"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPClientFeedbackHelper.m" lineNumber:18 description:@"clientIdentifier must not be nil or zero length"];
   }
 
-  if ([v10 length] >= 0xB)
+  if ([identifierCopy length] >= 0xB)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PPClientFeedbackHelper.m" lineNumber:19 description:{@"clientIdentifier was longer than %d characters.  Please choose a shorter identifer", 10}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PPClientFeedbackHelper.m" lineNumber:19 description:{@"clientIdentifier was longer than %d characters.  Please choose a shorter identifer", 10}];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  if (([v10 isEqualToString:v6->_clientIdentifier] & 1) == 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (([identifierCopy isEqualToString:selfCopy->_clientIdentifier] & 1) == 0)
   {
-    if ([(NSString *)v6->_clientIdentifier length])
+    if ([(NSString *)selfCopy->_clientIdentifier length])
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:v6 file:@"PPClientFeedbackHelper.m" lineNumber:22 description:{@"clientIdentifier cannot be set twice on the same %@ to different values.  It is currently set to %@. If two different clients are needed in the same process, initialize with init instead of using defaultStore."}], v6->_parentObjectClass, v6->_clientIdentifier);
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:selfCopy file:@"PPClientFeedbackHelper.m" lineNumber:22 description:{@"clientIdentifier cannot be set twice on the same %@ to different values.  It is currently set to %@. If two different clients are needed in the same process, initialize with init instead of using defaultStore."}], selfCopy->_parentObjectClass, selfCopy->_clientIdentifier);
     }
 
-    objc_storeStrong(&v6->_clientIdentifier, a3);
+    objc_storeStrong(&selfCopy->_clientIdentifier, identifier);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 @end

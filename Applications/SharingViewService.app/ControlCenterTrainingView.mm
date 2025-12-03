@@ -8,10 +8,10 @@
 - (CGSize)intrinsicContentSize
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  v4 = dbl_100170F00[(v3 & 0xFFFFFFFFFFFFFFFBLL) == 1];
-  v5 = dbl_100170F10[(v3 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  v4 = dbl_100170F00[(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  v5 = dbl_100170F10[(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
   result.height = v5;
   result.width = v4;
   return result;
@@ -28,9 +28,9 @@
 
   v4 = v3;
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v7 = "ipad";
   }
@@ -43,9 +43,9 @@
   v8 = [NSString stringWithFormat:@"ControlCenter-PressToExpand%@~%s", v4, v7];
 
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom2 = [v9 userInterfaceIdiom];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v11 = [NSString stringWithFormat:@"%@-D73", v8];
 

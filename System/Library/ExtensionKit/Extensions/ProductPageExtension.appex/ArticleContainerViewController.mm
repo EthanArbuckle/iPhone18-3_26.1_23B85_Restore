@@ -1,16 +1,16 @@
 @interface ArticleContainerViewController
 - (UIViewController)childViewControllerForStatusBarHidden;
-- (_TtC20ProductPageExtension30ArticleContainerViewController)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtension30ArticleContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20ProductPageExtension30ArticleContainerViewController)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtension30ArticleContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)loadView;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation ArticleContainerViewController
 
-- (_TtC20ProductPageExtension30ArticleContainerViewController)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension30ArticleContainerViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension30ArticleContainerViewController_allowTraitCollectionOverrides) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension30ArticleContainerViewController_previousShouldOverrideTraitCollections) = 0;
@@ -21,33 +21,33 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005BA830();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005BABBC();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(ArticleContainerViewController *)&v6 traitCollectionDidChange:v4];
+  [(ArticleContainerViewController *)&v6 traitCollectionDidChange:changeCopy];
   sub_1005BA960();
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(ArticleContainerViewController *)v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(ArticleContainerViewController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -60,12 +60,12 @@
 
 - (UIViewController)childViewControllerForStatusBarHidden
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension30ArticleContainerViewController_wrapperViewController) topViewController];
+  topViewController = [*(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension30ArticleContainerViewController_wrapperViewController) topViewController];
 
-  return v2;
+  return topViewController;
 }
 
-- (_TtC20ProductPageExtension30ArticleContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20ProductPageExtension30ArticleContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

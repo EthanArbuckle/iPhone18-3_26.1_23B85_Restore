@@ -1,6 +1,6 @@
 @interface UISelectionTapRecognizer
 - (BOOL)isCloseToSelection;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation UISelectionTapRecognizer
@@ -8,29 +8,29 @@
 - (BOOL)isCloseToSelection
 {
   v72 = *MEMORY[0x1E69E9840];
-  v3 = [(UISelectionTapRecognizer *)self textView];
-  v4 = [v3 interactionAssistant];
-  v5 = [v4 activeSelection];
+  textView = [(UISelectionTapRecognizer *)self textView];
+  interactionAssistant = [textView interactionAssistant];
+  activeSelection = [interactionAssistant activeSelection];
 
-  v6 = [v5 selectedRange];
+  selectedRange = [activeSelection selectedRange];
 
-  if (v6)
+  if (selectedRange)
   {
-    v7 = [v5 selectedRange];
-    v8 = [v7 isEmpty];
+    selectedRange2 = [activeSelection selectedRange];
+    isEmpty = [selectedRange2 isEmpty];
 
-    if (v8)
+    if (isEmpty)
     {
-      [v5 caretRect];
+      [activeSelection caretRect];
       v10 = v9;
       v12 = v11;
       v14 = v13;
       v16 = v15;
-      v17 = [(UISelectionTapRecognizer *)self textView];
-      v18 = [v17 _proxyTextInput];
-      v19 = [v18 textInputView];
-      v20 = [(UIGestureRecognizer *)self view];
-      [v19 convertRect:v20 toView:{v10, v12, v14, v16}];
+      textView2 = [(UISelectionTapRecognizer *)self textView];
+      _proxyTextInput = [textView2 _proxyTextInput];
+      textInputView = [_proxyTextInput textInputView];
+      view = [(UIGestureRecognizer *)self view];
+      [textInputView convertRect:view toView:{v10, v12, v14, v16}];
       v22 = v21;
       v24 = v23;
       v26 = v25;
@@ -42,8 +42,8 @@
 
     else
     {
-      v32 = [v5 selectionRects];
-      if ([v32 count])
+      selectionRects = [activeSelection selectionRects];
+      if ([selectionRects count])
       {
         v33 = *MEMORY[0x1E695F058];
         v34 = *(MEMORY[0x1E695F058] + 8);
@@ -53,7 +53,7 @@
         v70 = 0u;
         v67 = 0u;
         v68 = 0u;
-        v37 = v32;
+        v37 = selectionRects;
         v38 = [v37 countByEnumeratingWithState:&v67 objects:v71 count:16];
         if (v38)
         {
@@ -96,11 +96,11 @@
           while (v39);
         }
 
-        v51 = [(UISelectionTapRecognizer *)self textView];
-        v52 = [v51 _proxyTextInput];
-        v53 = [v52 textInputView];
-        v54 = [(UIGestureRecognizer *)self view];
-        [v53 convertRect:v54 toView:{v33, v34, v35, v36}];
+        textView3 = [(UISelectionTapRecognizer *)self textView];
+        _proxyTextInput2 = [textView3 _proxyTextInput];
+        textInputView2 = [_proxyTextInput2 textInputView];
+        view2 = [(UIGestureRecognizer *)self view];
+        [textInputView2 convertRect:view2 toView:{v33, v34, v35, v36}];
         v56 = v55;
         v58 = v57;
         v60 = v59;
@@ -126,7 +126,7 @@
   return v31;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   if (self)
   {
@@ -138,14 +138,14 @@
     v5 = 0;
   }
 
-  if ((a3 - 4) >= 0xFFFFFFFFFFFFFFFDLL && !v5 && ![(UISelectionTapRecognizer *)self isCloseToSelection])
+  if ((state - 4) >= 0xFFFFFFFFFFFFFFFDLL && !v5 && ![(UISelectionTapRecognizer *)self isCloseToSelection])
   {
-    a3 = 5;
+    state = 5;
   }
 
   v6.receiver = self;
   v6.super_class = UISelectionTapRecognizer;
-  [(UIGestureRecognizer *)&v6 setState:a3];
+  [(UIGestureRecognizer *)&v6 setState:state];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface NSPersonNameComponents
-+ (id)__componentsRequiredForScriptDetectionWithPhoneticDesired:(BOOL)a3;
++ (id)__componentsRequiredForScriptDetectionWithPhoneticDesired:(BOOL)desired;
 + (id)_allComponents;
 + (id)_allProperties;
 - (BOOL)_isEmpty;
-- (BOOL)isEqualToComponents:(id)a3;
+- (BOOL)isEqualToComponents:(id)components;
 - (NSPersonNameComponents)init;
-- (NSPersonNameComponents)initWithCoder:(id)a3;
-- (id)_scriptDeterminingStringRepresentationWithPhoneticDesired:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSPersonNameComponents)initWithCoder:(id)coder;
+- (id)_scriptDeterminingStringRepresentationWithPhoneticDesired:(BOOL)desired;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSPersonNameComponents
@@ -42,8 +42,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [objc_opt_class() _allProperties];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v13 count:16];
+  _allProperties = [objc_opt_class() _allProperties];
+  v4 = [_allProperties countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (!v4)
   {
     return 1;
@@ -58,7 +58,7 @@
     {
       if (*v15 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(_allProperties);
       }
 
       v9 = [(NSPersonNameComponents *)self valueForKeyPath:*(*(&v14 + 1) + 8 * i)];
@@ -77,7 +77,7 @@
       v7 &= v11;
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v14 objects:v13 count:16];
+    v5 = [_allProperties countByEnumeratingWithState:&v14 objects:v13 count:16];
   }
 
   while (v5);
@@ -155,47 +155,47 @@ uint64_t __30__NSPersonNameComponents_hash__block_invoke(uint64_t a1, uint64_t a
   return [NSString stringWithFormat:@"%@ {givenName = %@, familyName = %@, middleName = %@, namePrefix = %@, nameSuffix = %@, nickname = %@ phoneticRepresentation = %@ }", [(NSPersonNameComponents *)&v3 description], [(NSPersonNameComponents *)self givenName], [(NSPersonNameComponents *)self familyName], [(NSPersonNameComponents *)self middleName], [(NSPersonNameComponents *)self namePrefix], [(NSPersonNameComponents *)self nameSuffix], [(NSPersonNameComponents *)self nickname], [(NSPersonNameComponents *)self phoneticRepresentation]];
 }
 
-- (NSPersonNameComponents)initWithCoder:(id)a3
+- (NSPersonNameComponents)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPersonNameComponents cannot be decoded by non-keyed archivers" userInfo:0]);
   }
 
-  if (self && [a3 containsValueForKey:@"NS.nameComponentsPrivate"])
+  if (self && [coder containsValueForKey:@"NS.nameComponentsPrivate"])
   {
-    self->_private = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NS.nameComponentsPrivate", "copy"}];
+    self->_private = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NS.nameComponentsPrivate", "copy"}];
   }
 
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPersonNameComponents cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   v5 = self->_private;
 
-  [a3 encodeObject:v5 forKey:@"NS.nameComponentsPrivate"];
+  [coder encodeObject:v5 forKey:@"NS.nameComponentsPrivate"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  v5[1] = [self->_private copyWithZone:a3];
+  v5[1] = [self->_private copyWithZone:zone];
   return v5;
 }
 
-- (BOOL)isEqualToComponents:(id)a3
+- (BOOL)isEqualToComponents:(id)components
 {
-  v3 = a3;
+  componentsCopy = components;
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (components)
   {
     v5 = +[NSPersonNameComponents _allProperties];
     v8 = 0;
@@ -207,14 +207,14 @@ uint64_t __30__NSPersonNameComponents_hash__block_invoke(uint64_t a1, uint64_t a
     v7[2] = __46__NSPersonNameComponents_isEqualToComponents___block_invoke;
     v7[3] = &unk_1E69F3F58;
     v7[4] = self;
-    v7[5] = v3;
+    v7[5] = componentsCopy;
     v7[6] = &v8;
     [v5 enumerateObjectsUsingBlock:v7];
-    LOBYTE(v3) = *(v9 + 24);
+    LOBYTE(componentsCopy) = *(v9 + 24);
     _Block_object_dispose(&v8, 8);
   }
 
-  return v3 & 1;
+  return componentsCopy & 1;
 }
 
 uint64_t __46__NSPersonNameComponents_isEqualToComponents___block_invoke(uint64_t a1, uint64_t a2, _BYTE *a3)
@@ -240,10 +240,10 @@ uint64_t __46__NSPersonNameComponents_isEqualToComponents___block_invoke(uint64_
   return result;
 }
 
-+ (id)__componentsRequiredForScriptDetectionWithPhoneticDesired:(BOOL)a3
++ (id)__componentsRequiredForScriptDetectionWithPhoneticDesired:(BOOL)desired
 {
   v6[3] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (desired)
   {
     v6[0] = @"phoneticRepresentation.givenName";
     v6[1] = @"phoneticRepresentation.middleName";
@@ -262,16 +262,16 @@ uint64_t __46__NSPersonNameComponents_isEqualToComponents___block_invoke(uint64_
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v3 count:3];
 }
 
-- (id)_scriptDeterminingStringRepresentationWithPhoneticDesired:(BOOL)a3
+- (id)_scriptDeterminingStringRepresentationWithPhoneticDesired:(BOOL)desired
 {
-  v3 = a3;
+  desiredCopy = desired;
   v18 = *MEMORY[0x1E69E9840];
   v5 = +[(NSString *)NSMutableString];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [NSPersonNameComponents __componentsRequiredForScriptDetectionWithPhoneticDesired:v3];
+  v6 = [NSPersonNameComponents __componentsRequiredForScriptDetectionWithPhoneticDesired:desiredCopy];
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (v7)
   {

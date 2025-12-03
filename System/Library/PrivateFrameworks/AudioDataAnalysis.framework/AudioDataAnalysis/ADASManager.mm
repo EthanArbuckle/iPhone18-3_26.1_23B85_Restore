@@ -1,34 +1,34 @@
 @interface ADASManager
 - (ADASManager)init;
 - (BOOL)_isAlertSupported;
-- (BOOL)_isDeviceMandatoryForHAENotification:(BOOL)a3;
+- (BOOL)_isDeviceMandatoryForHAENotification:(BOOL)notification;
 - (BOOL)nanoSettingsAvailable;
 - (BOOL)shouldSufaceHAENotificationMigrationAlert;
 - (id)_getCurrentVolumeLimit;
-- (id)_getDefaultsFor:(id)a3;
-- (id)_getDefaultsKey:(id)a3;
-- (id)_getDeviceSpecificDefaultsFor:(id)a3;
-- (id)_migrateVolumeLimitThreshold:(BOOL)a3;
-- (id)_setDefaultValueIfNeeded:(id)a3 nano:(BOOL)a4 sync:(BOOL)a5;
-- (id)_setDefaultsFor:(id)a3 value:(id)a4;
-- (id)_setDeviceSpecificDefaultsFor:(id)a3 value:(id)a4;
-- (id)getNanoPreferenceFor:(id)a3;
-- (id)getNanoPreferencesFor:(id)a3;
-- (id)getPreferenceFor:(id)a3;
-- (id)getPreferencesFor:(id)a3;
-- (id)setNanoPreferenceFor:(id)a3 value:(id)a4 notify:(BOOL)a5;
-- (id)setPreferenceFor:(id)a3 value:(id)a4 notify:(BOOL)a5;
+- (id)_getDefaultsFor:(id)for;
+- (id)_getDefaultsKey:(id)key;
+- (id)_getDeviceSpecificDefaultsFor:(id)for;
+- (id)_migrateVolumeLimitThreshold:(BOOL)threshold;
+- (id)_setDefaultValueIfNeeded:(id)needed nano:(BOOL)nano sync:(BOOL)sync;
+- (id)_setDefaultsFor:(id)for value:(id)value;
+- (id)_setDeviceSpecificDefaultsFor:(id)for value:(id)value;
+- (id)getNanoPreferenceFor:(id)for;
+- (id)getNanoPreferencesFor:(id)for;
+- (id)getPreferenceFor:(id)for;
+- (id)getPreferencesFor:(id)for;
+- (id)setNanoPreferenceFor:(id)for value:(id)value notify:(BOOL)notify;
+- (id)setPreferenceFor:(id)for value:(id)value notify:(BOOL)notify;
 - (void)_clearCurrentVolumeLimit;
-- (void)_donateSignalToTipsKit:(BOOL)a3;
+- (void)_donateSignalToTipsKit:(BOOL)kit;
 - (void)_getCurrentVolumeLimit;
-- (void)_notify:(id)a3;
-- (void)_syncNanoDeviceSpecificForRead:(id)a3;
-- (void)_syncNanoForRead:(id)a3;
-- (void)_syncNanoForWrite:(id)a3;
+- (void)_notify:(id)_notify;
+- (void)_syncNanoDeviceSpecificForRead:(id)read;
+- (void)_syncNanoForRead:(id)read;
+- (void)_syncNanoForWrite:(id)write;
 - (void)didSurfaceMigrationAlert;
-- (void)migrateKeyEnableHAEHKMeasurement:(BOOL)a3;
-- (void)removeNanoPreferenceFor:(id)a3 notify:(BOOL)a4;
-- (void)removePreferenceFor:(id)a3 notify:(BOOL)a4;
+- (void)migrateKeyEnableHAEHKMeasurement:(BOOL)measurement;
+- (void)removeNanoPreferenceFor:(id)for notify:(BOOL)notify;
+- (void)removePreferenceFor:(id)for notify:(BOOL)notify;
 @end
 
 @implementation ADASManager
@@ -48,23 +48,23 @@
   return v2;
 }
 
-- (id)setPreferenceFor:(id)a3 value:(id)a4 notify:(BOOL)a5
+- (id)setPreferenceFor:(id)for value:(id)value notify:(BOOL)notify
 {
-  v5 = a5;
+  notifyCopy = notify;
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  forCopy = for;
+  valueCopy = value;
   v10 = ADAFLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138412546;
-    v24 = v8;
+    v24 = forCopy;
     v25 = 2112;
-    v26 = v9;
+    v26 = valueCopy;
     _os_log_impl(&dword_241579000, v10, OS_LOG_TYPE_DEFAULT, "set preference for %@ to %@", &v23, 0x16u);
   }
 
-  v11 = [(ADASManager *)self _getDefaultsKey:v8];
+  v11 = [(ADASManager *)self _getDefaultsKey:forCopy];
   if (!v11)
   {
     v15 = "yek!";
@@ -73,7 +73,7 @@ LABEL_11:
     goto LABEL_22;
   }
 
-  if (!v9)
+  if (!valueCopy)
   {
     v16 = ADAFLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -85,7 +85,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v12 = [(ADASManager *)self _setDefaultsFor:v11 value:v9];
+  v12 = [(ADASManager *)self _setDefaultsFor:v11 value:valueCopy];
   v13 = v12;
   if (v12)
   {
@@ -94,7 +94,7 @@ LABEL_11:
 
   else
   {
-    v14 = [(ADASManager *)self _setChainedKeys:v8 val:v9 nano:0 modifiedKeys:0];
+    v14 = [(ADASManager *)self _setChainedKeys:forCopy val:valueCopy nano:0 modifiedKeys:0];
     if (v14)
     {
       v17 = ADAFLog();
@@ -105,10 +105,10 @@ LABEL_11:
     }
 
     [(ADASManager *)self _sync];
-    if (v5)
+    if (notifyCopy)
     {
-      v18 = [(ADASPreferenceStore *)self->_prefStore specialDarwinKeys];
-      v19 = [v18 objectForKey:v8];
+      specialDarwinKeys = [(ADASPreferenceStore *)self->_prefStore specialDarwinKeys];
+      v19 = [specialDarwinKeys objectForKey:forCopy];
 
       if (v19)
       {
@@ -130,12 +130,12 @@ LABEL_22:
   return v13;
 }
 
-- (id)setNanoPreferenceFor:(id)a3 value:(id)a4 notify:(BOOL)a5
+- (id)setNanoPreferenceFor:(id)for value:(id)value notify:(BOOL)notify
 {
-  v5 = a5;
+  notifyCopy = notify;
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  forCopy = for;
+  valueCopy = value;
   if (![(ADASManager *)self nanoSettingsAvailable])
   {
     v17 = ADAFLog();
@@ -148,7 +148,7 @@ LABEL_22:
     goto LABEL_19;
   }
 
-  if (!v9)
+  if (!valueCopy)
   {
     v19 = ADAFLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -162,7 +162,7 @@ LABEL_19:
     goto LABEL_22;
   }
 
-  v10 = [(ADASManager *)self _getDefaultsKey:v8];
+  v10 = [(ADASManager *)self _getDefaultsKey:forCopy];
   if (v10)
   {
     v11 = ADAFLog();
@@ -173,11 +173,11 @@ LABEL_19:
       _os_log_impl(&dword_241579000, v11, OS_LOG_TYPE_DEFAULT, "setting nano preference for key: %@", buf, 0xCu);
     }
 
-    v12 = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
-    [v12 setObject:v9 forKey:v10];
+    coreAudioDomain = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
+    [coreAudioDomain setObject:valueCopy forKey:v10];
 
     v13 = [objc_alloc(MEMORY[0x277CBEB58]) initWithObjects:{v10, 0}];
-    v14 = [(ADASManager *)self _setChainedKeys:v8 val:v9 nano:1 modifiedKeys:v13];
+    v14 = [(ADASManager *)self _setChainedKeys:forCopy val:valueCopy nano:1 modifiedKeys:v13];
     if (v14)
     {
       v15 = ADAFLog();
@@ -188,7 +188,7 @@ LABEL_19:
     }
 
     [(ADASManager *)self _syncNanoForWrite:v13];
-    if (v5)
+    if (notifyCopy)
     {
       [(ADASManager *)self _notify:@"NanoHAESettingsChanged"];
     }
@@ -207,15 +207,15 @@ LABEL_22:
   return v16;
 }
 
-- (id)getPreferenceFor:(id)a3
+- (id)getPreferenceFor:(id)for
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  forCopy = for;
   [(ADASManager *)self _sync];
-  v5 = [(ADASManager *)self _getSpecialKeys:v4 nano:0];
+  v5 = [(ADASManager *)self _getSpecialKeys:forCopy nano:0];
   if (!v5)
   {
-    v6 = [(ADASManager *)self _getDefaultsKey:v4];
+    v6 = [(ADASManager *)self _getDefaultsKey:forCopy];
     if (v6)
     {
       v5 = [(ADASManager *)self _getDefaultsFor:v6];
@@ -241,7 +241,7 @@ LABEL_22:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v4;
+    v12 = forCopy;
     v13 = 2112;
     v14 = v5;
     _os_log_impl(&dword_241579000, v8, OS_LOG_TYPE_DEFAULT, "get preference: %@ -> %@", &v11, 0x16u);
@@ -252,27 +252,27 @@ LABEL_22:
   return v5;
 }
 
-- (id)getNanoPreferenceFor:(id)a3
+- (id)getNanoPreferenceFor:(id)for
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  forCopy = for;
   v5 = ADAFLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v4;
+    v18 = forCopy;
     _os_log_impl(&dword_241579000, v5, OS_LOG_TYPE_DEFAULT, "get nano preference for %@", &v17, 0xCu);
   }
 
   if ([(ADASManager *)self nanoSettingsAvailable])
   {
-    v6 = [(ADASManager *)self _getSpecialKeys:v4 nano:1];
+    v6 = [(ADASManager *)self _getSpecialKeys:forCopy nano:1];
     if (v6)
     {
       goto LABEL_19;
     }
 
-    v7 = [(ADASManager *)self _getDefaultsKey:v4];
+    v7 = [(ADASManager *)self _getDefaultsKey:forCopy];
     v8 = v7;
     if (v7)
     {
@@ -282,8 +282,8 @@ LABEL_22:
       v11 = [v9 setWithArray:v10];
       [(ADASManager *)self _syncNanoForRead:v11];
 
-      v12 = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
-      v6 = [v12 objectForKey:v8];
+      coreAudioDomain = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
+      v6 = [coreAudioDomain objectForKey:v8];
 
       if (!v6)
       {
@@ -301,7 +301,7 @@ LABEL_19:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           v17 = 138412546;
-          v18 = v4;
+          v18 = forCopy;
           v19 = 2112;
           v20 = v6;
           _os_log_impl(&dword_241579000, v14, OS_LOG_TYPE_DEFAULT, "get nano preference: %@ -> %@", &v17, 0x16u);
@@ -344,20 +344,20 @@ LABEL_21:
   return v6;
 }
 
-- (void)removePreferenceFor:(id)a3 notify:(BOOL)a4
+- (void)removePreferenceFor:(id)for notify:(BOOL)notify
 {
-  v4 = a4;
+  notifyCopy = notify;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  forCopy = for;
   v7 = ADAFLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v6;
+    v16 = forCopy;
     _os_log_impl(&dword_241579000, v7, OS_LOG_TYPE_DEFAULT, "remove preference for %@", &v15, 0xCu);
   }
 
-  v8 = [(ADASManager *)self _getDefaultsKey:v6];
+  v8 = [(ADASManager *)self _getDefaultsKey:forCopy];
   if (!v8)
   {
     v12 = ADAFLog();
@@ -370,12 +370,12 @@ LABEL_21:
   }
 
   v9 = [(ADASManager *)self _setDefaultsFor:v8 value:0];
-  v10 = [(ADASManager *)self _setChainedKeys:v6 val:0 nano:0 modifiedKeys:0];
+  v10 = [(ADASManager *)self _setChainedKeys:forCopy val:0 nano:0 modifiedKeys:0];
   [(ADASManager *)self _sync];
-  if (v4)
+  if (notifyCopy)
   {
-    v11 = [(ADASPreferenceStore *)self->_prefStore specialDarwinKeys];
-    v12 = [v11 objectForKey:v6];
+    specialDarwinKeys = [(ADASPreferenceStore *)self->_prefStore specialDarwinKeys];
+    v12 = [specialDarwinKeys objectForKey:forCopy];
 
     if (v12)
     {
@@ -394,22 +394,22 @@ LABEL_11:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeNanoPreferenceFor:(id)a3 notify:(BOOL)a4
+- (void)removeNanoPreferenceFor:(id)for notify:(BOOL)notify
 {
-  v4 = a4;
+  notifyCopy = notify;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  forCopy = for;
   v7 = ADAFLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = forCopy;
     _os_log_impl(&dword_241579000, v7, OS_LOG_TYPE_DEFAULT, "remove nano preference for %@", buf, 0xCu);
   }
 
   if ([(ADASManager *)self nanoSettingsAvailable])
   {
-    v8 = [(ADASManager *)self _getDefaultsKey:v6];
+    v8 = [(ADASManager *)self _getDefaultsKey:forCopy];
     v9 = ADAFLog();
     v10 = v9;
     if (v8)
@@ -421,11 +421,11 @@ LABEL_11:
         _os_log_impl(&dword_241579000, v10, OS_LOG_TYPE_DEFAULT, "removing nano preference for defaults key %@", buf, 0xCu);
       }
 
-      v11 = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
-      [v11 removeObjectForKey:v8];
+      coreAudioDomain = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
+      [coreAudioDomain removeObjectForKey:v8];
 
       v10 = [objc_alloc(MEMORY[0x277CBEB58]) initWithObjects:{v8, 0}];
-      v12 = [(ADASManager *)self _setChainedKeys:v6 val:0 nano:1 modifiedKeys:v10];
+      v12 = [(ADASManager *)self _setChainedKeys:forCopy val:0 nano:1 modifiedKeys:v10];
       if (v12)
       {
         v13 = ADAFLog();
@@ -436,7 +436,7 @@ LABEL_11:
       }
 
       [(ADASManager *)self _syncNanoForWrite:v10];
-      if (v4)
+      if (notifyCopy)
       {
         [(ADASManager *)self _notify:@"NanoHAESettingsChanged"];
       }
@@ -460,20 +460,20 @@ LABEL_11:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getPreferencesFor:(id)a3
+- (id)getPreferencesFor:(id)for
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
+  forCopy = for;
   v6 = objc_alloc_init(v4);
   [(ADASManager *)self _sync];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __33__ADASManager_getPreferencesFor___block_invoke;
   v13 = &unk_278CE1308;
-  v14 = self;
+  selfCopy = self;
   v15 = v6;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:&v10];
+  [forCopy enumerateObjectsUsingBlock:&v10];
 
   [(ADASManager *)self _sync:v10];
   v8 = [v7 copy];
@@ -539,12 +539,12 @@ LABEL_7:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getNanoPreferencesFor:(id)a3
+- (id)getNanoPreferencesFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   if ([(ADASManager *)self nanoSettingsAvailable])
   {
-    v5 = [MEMORY[0x277CBEB98] setWithArray:v4];
+    v5 = [MEMORY[0x277CBEB98] setWithArray:forCopy];
     [(ADASManager *)self _syncNanoForRead:v5];
 
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -552,11 +552,11 @@ LABEL_7:
     v12 = 3221225472;
     v13 = __37__ADASManager_getNanoPreferencesFor___block_invoke;
     v14 = &unk_278CE1308;
-    v15 = self;
+    selfCopy = self;
     v16 = v6;
     v7 = v6;
-    [v4 enumerateObjectsUsingBlock:&v11];
-    v8 = [MEMORY[0x277CBEB98] setWithArray:{v4, v11, v12, v13, v14, v15}];
+    [forCopy enumerateObjectsUsingBlock:&v11];
+    v8 = [MEMORY[0x277CBEB98] setWithArray:{forCopy, v11, v12, v13, v14, selfCopy}];
     [(ADASManager *)self _syncNanoForWrite:v8];
 
     v9 = [v7 copy];
@@ -647,120 +647,120 @@ LABEL_16:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_setDefaultsFor:(id)a3 value:(id)a4
+- (id)_setDefaultsFor:(id)for value:(id)value
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  forCopy = for;
+  valueCopy = value;
+  if (!valueCopy)
   {
     v7 = ADAFLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 136315138;
-      v11 = [(__CFString *)v5 UTF8String];
+      uTF8String = [(__CFString *)forCopy UTF8String];
       _os_log_impl(&dword_241579000, v7, OS_LOG_TYPE_DEFAULT, "removing key: %s", &v10, 0xCu);
     }
   }
 
-  CFPreferencesSetAppValue(v5, v6, @"com.apple.coreaudio");
+  CFPreferencesSetAppValue(forCopy, valueCopy, @"com.apple.coreaudio");
 
   v8 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (id)_setDeviceSpecificDefaultsFor:(id)a3 value:(id)a4
+- (id)_setDeviceSpecificDefaultsFor:(id)for value:(id)value
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  forCopy = for;
+  valueCopy = value;
+  if (!valueCopy)
   {
     v7 = ADAFLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v5;
+      v11 = forCopy;
       _os_log_impl(&dword_241579000, v7, OS_LOG_TYPE_DEFAULT, "removing key: %@", &v10, 0xCu);
     }
   }
 
-  CFPreferencesSetAppValue(v5, v6, @"com.apple.coreaudio.device");
+  CFPreferencesSetAppValue(forCopy, valueCopy, @"com.apple.coreaudio.device");
 
   v8 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (id)_getDefaultsFor:(id)a3
+- (id)_getDefaultsFor:(id)for
 {
-  v3 = CFPreferencesCopyAppValue(a3, @"com.apple.coreaudio");
+  v3 = CFPreferencesCopyAppValue(for, @"com.apple.coreaudio");
 
   return v3;
 }
 
-- (id)_getDeviceSpecificDefaultsFor:(id)a3
+- (id)_getDeviceSpecificDefaultsFor:(id)for
 {
-  v3 = CFPreferencesCopyAppValue(a3, @"com.apple.coreaudio.device");
+  v3 = CFPreferencesCopyAppValue(for, @"com.apple.coreaudio.device");
 
   return v3;
 }
 
-- (void)_notify:(id)a3
+- (void)_notify:(id)_notify
 {
-  name = a3;
+  name = _notify;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, name, 0, 0, 1u);
 }
 
-- (void)_syncNanoForRead:(id)a3
+- (void)_syncNanoForRead:(id)read
 {
-  v4 = a3;
+  readCopy = read;
   v5 = objc_opt_new();
-  [v5 synchronizeNanoDomain:@"com.apple.coreaudio" keys:v4];
+  [v5 synchronizeNanoDomain:@"com.apple.coreaudio" keys:readCopy];
 
-  v7 = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
-  v6 = [v7 synchronize];
+  coreAudioDomain = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
+  synchronize = [coreAudioDomain synchronize];
 }
 
-- (void)_syncNanoDeviceSpecificForRead:(id)a3
+- (void)_syncNanoDeviceSpecificForRead:(id)read
 {
-  v4 = a3;
+  readCopy = read;
   v5 = objc_opt_new();
-  [v5 synchronizeNanoDomain:@"com.apple.coreaudio.device" keys:v4];
+  [v5 synchronizeNanoDomain:@"com.apple.coreaudio.device" keys:readCopy];
 
-  v7 = [(ADASPreferenceStore *)self->_prefStore coreAudioDeviceDomain];
-  v6 = [v7 synchronize];
+  coreAudioDeviceDomain = [(ADASPreferenceStore *)self->_prefStore coreAudioDeviceDomain];
+  synchronize = [coreAudioDeviceDomain synchronize];
 }
 
-- (void)_syncNanoForWrite:(id)a3
+- (void)_syncNanoForWrite:(id)write
 {
   prefStore = self->_prefStore;
-  v4 = a3;
-  v5 = [(ADASPreferenceStore *)prefStore coreAudioDomain];
-  v6 = [v5 synchronize];
+  writeCopy = write;
+  coreAudioDomain = [(ADASPreferenceStore *)prefStore coreAudioDomain];
+  synchronize = [coreAudioDomain synchronize];
 
   v7 = objc_opt_new();
-  [v7 synchronizeNanoDomain:@"com.apple.coreaudio" keys:v4];
+  [v7 synchronizeNanoDomain:@"com.apple.coreaudio" keys:writeCopy];
 }
 
-- (id)_setDefaultValueIfNeeded:(id)a3 nano:(BOOL)a4 sync:(BOOL)a5
+- (id)_setDefaultValueIfNeeded:(id)needed nano:(BOOL)nano sync:(BOOL)sync
 {
-  v5 = a5;
-  v6 = a4;
+  syncCopy = sync;
+  nanoCopy = nano;
   v28[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(ADASPreferenceStore *)self->_prefStore defaultValues];
-  v10 = [v9 objectForKey:v8];
+  neededCopy = needed;
+  defaultValues = [(ADASPreferenceStore *)self->_prefStore defaultValues];
+  v10 = [defaultValues objectForKey:neededCopy];
 
   if (v10)
   {
-    v11 = [v8 isEqualToString:@"EnableHAELiveMonitor"];
-    if (v6)
+    v11 = [neededCopy isEqualToString:@"EnableHAELiveMonitor"];
+    if (nanoCopy)
     {
       if (v11)
       {
-        v12 = [(ADASPreferenceStore *)self->_prefStore coreAudioDeviceDomain];
-        v13 = [v12 objectForKey:@"HAENFeatureMandatory"];
+        coreAudioDeviceDomain = [(ADASPreferenceStore *)self->_prefStore coreAudioDeviceDomain];
+        v13 = [coreAudioDeviceDomain objectForKey:@"HAENFeatureMandatory"];
 
         if (v13 && ([v13 BOOLValue] & 1) == 0)
         {
@@ -769,13 +769,13 @@ LABEL_16:
         }
       }
 
-      v14 = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
-      [v14 setObject:v10 forKey:v8];
+      coreAudioDomain = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
+      [coreAudioDomain setObject:v10 forKey:neededCopy];
 
-      if (v5)
+      if (syncCopy)
       {
         v15 = MEMORY[0x277CBEB98];
-        v28[0] = v8;
+        v28[0] = neededCopy;
         v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
         v17 = [v15 setWithArray:v16];
         [(ADASManager *)self _syncNanoForWrite:v17];
@@ -795,8 +795,8 @@ LABEL_16:
         }
       }
 
-      v20 = [(ADASManager *)self _setDefaultsFor:v8 value:v10];
-      if (v5)
+      v20 = [(ADASManager *)self _setDefaultsFor:neededCopy value:v10];
+      if (syncCopy)
       {
         [(ADASManager *)self _sync];
       }
@@ -806,7 +806,7 @@ LABEL_16:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       v24 = 138412546;
-      v25 = v8;
+      v25 = neededCopy;
       v26 = 2112;
       v27 = v10;
       _os_log_impl(&dword_241579000, v21, OS_LOG_TYPE_DEFAULT, "setting default value for key [ %@ ] -> [ %@ ]", &v24, 0x16u);
@@ -818,11 +818,11 @@ LABEL_16:
   return v10;
 }
 
-- (void)migrateKeyEnableHAEHKMeasurement:(BOOL)a3
+- (void)migrateKeyEnableHAEHKMeasurement:(BOOL)measurement
 {
-  v3 = a3;
+  measurementCopy = measurement;
   v21[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (measurement)
   {
     v5 = MEMORY[0x277CBEB98];
     v21[0] = @"EnableHAEHKWrite";
@@ -831,11 +831,11 @@ LABEL_16:
     v7 = [v5 setWithArray:v6];
     [(ADASManager *)self _syncNanoForRead:v7];
 
-    v8 = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
-    v9 = [v8 objectForKey:@"EnableHAEHKWrite"];
+    coreAudioDomain = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
+    v9 = [coreAudioDomain objectForKey:@"EnableHAEHKWrite"];
 
-    v10 = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
-    v11 = [v10 objectForKey:@"HAENSampleTransient"];
+    coreAudioDomain2 = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
+    v11 = [coreAudioDomain2 objectForKey:@"HAENSampleTransient"];
 
     if (!v11)
     {
@@ -848,11 +848,11 @@ LABEL_5:
 
         if (([v9 BOOLValue] & 1) == 0)
         {
-          if (v3)
+          if (measurementCopy)
           {
-            v14 = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
+            coreAudioDomain3 = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
             v15 = [MEMORY[0x277CCABB0] numberWithBool:1];
-            [v14 setObject:v15 forKey:@"HAENSurfaceMigrationAlert"];
+            [coreAudioDomain3 setObject:v15 forKey:@"HAENSurfaceMigrationAlert"];
 
 LABEL_11:
             v16 = [(ADASManager *)self setNanoPreferenceFor:@"_ADAFPreferenceKeyHAESampleTransient" value:v11 notify:0];
@@ -874,7 +874,7 @@ LABEL_13:
         v11 = v12;
       }
 
-      if (v3)
+      if (measurementCopy)
       {
         goto LABEL_11;
       }
@@ -898,17 +898,17 @@ LABEL_14:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_migrateVolumeLimitThreshold:(BOOL)a3
+- (id)_migrateVolumeLimitThreshold:(BOOL)threshold
 {
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__0;
   v17 = __Block_byref_object_dispose__0;
-  if (a3)
+  if (threshold)
   {
-    v5 = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
-    v18 = [v5 objectForKey:@"VolumeLimitThreshold"];
+    coreAudioDomain = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
+    v18 = [coreAudioDomain objectForKey:@"VolumeLimitThreshold"];
   }
 
   else
@@ -925,7 +925,7 @@ LABEL_14:
     block[1] = 3221225472;
     block[2] = __44__ADASManager__migrateVolumeLimitThreshold___block_invoke;
     block[3] = &unk_278CE1330;
-    v12 = a3;
+    thresholdCopy = threshold;
     block[4] = self;
     block[5] = &v13;
     dispatch_after(v7, v8, block);
@@ -1108,16 +1108,16 @@ LABEL_10:
   v3 = [(ADASManager *)self _getDefaultsFor:@"HAENMigrationAlertSurfaced"];
   if ([v3 BOOLValue])
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
     v5 = [(ADASManager *)self _getDefaultsFor:@"HAENSurfaceMigrationAlert"];
-    v4 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)didSurfaceMigrationAlert
@@ -1139,20 +1139,20 @@ LABEL_10:
   }
 }
 
-- (id)_getDefaultsKey:(id)a3
+- (id)_getDefaultsKey:(id)key
 {
   prefStore = self->_prefStore;
-  v4 = a3;
-  v5 = [(ADASPreferenceStore *)prefStore keyMap];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  keyMap = [(ADASPreferenceStore *)prefStore keyMap];
+  v6 = [keyMap objectForKey:keyCopy];
 
   return v6;
 }
 
-- (BOOL)_isDeviceMandatoryForHAENotification:(BOOL)a3
+- (BOOL)_isDeviceMandatoryForHAENotification:(BOOL)notification
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (notification)
   {
     v4 = MEMORY[0x277CBEB98];
     v21[0] = @"HAENFeatureMandatoryOverride";
@@ -1160,8 +1160,8 @@ LABEL_10:
     v6 = [v4 setWithArray:v5];
     [(ADASManager *)self _syncNanoForRead:v6];
 
-    v7 = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
-    v8 = [v7 objectForKey:@"HAENFeatureMandatoryOverride"];
+    coreAudioDomain = [(ADASPreferenceStore *)self->_prefStore coreAudioDomain];
+    v8 = [coreAudioDomain objectForKey:@"HAENFeatureMandatoryOverride"];
 
     if (!v8)
     {
@@ -1171,8 +1171,8 @@ LABEL_10:
       v11 = [v9 setWithArray:v10];
       [(ADASManager *)self _syncNanoDeviceSpecificForRead:v11];
 
-      v12 = [(ADASPreferenceStore *)self->_prefStore coreAudioDeviceDomain];
-      v8 = [v12 objectForKey:@"HAENFeatureMandatory"];
+      coreAudioDeviceDomain = [(ADASPreferenceStore *)self->_prefStore coreAudioDeviceDomain];
+      v8 = [coreAudioDeviceDomain objectForKey:@"HAENFeatureMandatory"];
 
       if (!v8)
       {
@@ -1218,10 +1218,10 @@ LABEL_13:
   }
 
 LABEL_14:
-  v15 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
   v16 = *MEMORY[0x277D85DE8];
-  return v15;
+  return bOOLValue;
 }
 
 - (BOOL)_isAlertSupported
@@ -1260,24 +1260,24 @@ LABEL_14:
 
 - (BOOL)nanoSettingsAvailable
 {
-  v2 = self;
+  selfCopy = self;
   [(ADASPreferenceStore *)self->_prefStore initNPSDomain];
-  v3 = [(ADASPreferenceStore *)v2->_prefStore coreAudioDomain];
-  LOBYTE(v2) = v3 != 0;
+  coreAudioDomain = [(ADASPreferenceStore *)selfCopy->_prefStore coreAudioDomain];
+  LOBYTE(selfCopy) = coreAudioDomain != 0;
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)_donateSignalToTipsKit:(BOOL)a3
+- (void)_donateSignalToTipsKit:(BOOL)kit
 {
-  v3 = a3;
+  kitCopy = kit;
   v4 = BiomeLibrary();
-  v5 = [v4 Discoverability];
-  v10 = [v5 Signals];
+  discoverability = [v4 Discoverability];
+  signals = [discoverability Signals];
 
-  v6 = [v10 source];
+  source = [signals source];
   v7 = objc_alloc(MEMORY[0x277CF1160]);
-  if (v3)
+  if (kitCopy)
   {
     v8 = @"true";
   }
@@ -1288,7 +1288,7 @@ LABEL_14:
   }
 
   v9 = [v7 initWithContentIdentifier:@"com.apple.Health.Hearing.HAENOptIn" context:v8 osBuild:0 userInfo:0];
-  [v6 sendEvent:v9];
+  [source sendEvent:v9];
 }
 
 - (void)setPreferenceFor:value:notify:.cold.1()

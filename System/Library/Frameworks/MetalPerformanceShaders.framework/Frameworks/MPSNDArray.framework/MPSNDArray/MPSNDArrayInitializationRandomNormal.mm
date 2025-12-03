@@ -1,20 +1,20 @@
 @interface MPSNDArrayInitializationRandomNormal
-- (MPSNDArrayInitializationRandomNormal)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayInitializationRandomNormal)initWithDevice:(id)a3 mean:(float)a4 standardDeviation:(float)a5 seed:(unint64_t)a6;
-- (MPSNDArrayInitializationRandomNormal)initWithDevice:(id)a3 sourceCount:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (unint64_t)kernelDimensionalityForDestinationArray:(id)a3;
+- (MPSNDArrayInitializationRandomNormal)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayInitializationRandomNormal)initWithDevice:(id)device mean:(float)mean standardDeviation:(float)deviation seed:(unint64_t)seed;
+- (MPSNDArrayInitializationRandomNormal)initWithDevice:(id)device sourceCount:(unint64_t)count;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (unint64_t)kernelDimensionalityForDestinationArray:(id)array;
 @end
 
 @implementation MPSNDArrayInitializationRandomNormal
 
-- (unint64_t)kernelDimensionalityForDestinationArray:(id)a3
+- (unint64_t)kernelDimensionalityForDestinationArray:(id)array
 {
-  v4 = *(a3 + *MEMORY[0x277CD73F0]);
+  v4 = *(array + *MEMORY[0x277CD73F0]);
   if (v4)
   {
     v5 = 0;
-    v6 = *(a3 + *MEMORY[0x277CD73D8]);
+    v6 = *(array + *MEMORY[0x277CD73D8]);
     while (1)
     {
       v34 = v6;
@@ -33,7 +33,7 @@
   else
   {
 LABEL_5:
-    result = [a3 numberOfDimensions];
+    result = [array numberOfDimensions];
     if (result < 2)
     {
       v11 = 1;
@@ -43,7 +43,7 @@ LABEL_5:
     {
       v8 = *MEMORY[0x277CD7410];
       v9 = *MEMORY[0x277CD7418];
-      if (*(a3 + *MEMORY[0x277CD7400]) != (*(a3 + *MEMORY[0x277CD73C8]) >> 3) * *(a3 + v8) || *(a3 + v9) != 0)
+      if (*(array + *MEMORY[0x277CD7400]) != (*(array + *MEMORY[0x277CD73C8]) >> 3) * *(array + v8) || *(array + v9) != 0)
       {
         return v4 != 0;
       }
@@ -61,20 +61,20 @@ LABEL_5:
         }
       }
 
-      v12 = (a3 + *MEMORY[0x277CD73D0]);
+      v12 = (array + *MEMORY[0x277CD73D0]);
       v14 = v12[2];
       v13 = v12[3];
       v16 = *v12;
       v15 = v12[1];
-      v17 = (a3 + v8);
+      v17 = (array + v8);
       v19 = v17[2];
       v18 = v17[3];
       v21 = *v17;
       v20 = v17[1];
-      v23 = *(a3 + v9 + 32);
-      v22 = *(a3 + v9 + 48);
-      v25 = *(a3 + v9);
-      v24 = *(a3 + v9 + 16);
+      v23 = *(array + v9 + 32);
+      v22 = *(array + v9 + 48);
+      v25 = *(array + v9);
+      v24 = *(array + v9 + 16);
       v11 = 2;
       while (1)
       {
@@ -123,23 +123,23 @@ LABEL_5:
   }
 }
 
-- (MPSNDArrayInitializationRandomNormal)initWithDevice:(id)a3 mean:(float)a4 standardDeviation:(float)a5 seed:(unint64_t)a6
+- (MPSNDArrayInitializationRandomNormal)initWithDevice:(id)device mean:(float)mean standardDeviation:(float)deviation seed:(unint64_t)seed
 {
   v16.receiver = self;
   v16.super_class = MPSNDArrayInitializationRandomNormal;
-  v9 = [(MPSNDArrayInitialization *)&v16 initWithDevice:a3 sourceCount:0];
+  v9 = [(MPSNDArrayInitialization *)&v16 initWithDevice:device sourceCount:0];
   if (v9)
   {
     v10 = objc_autoreleasePoolPush();
-    *&v11 = a4;
-    *&v12 = a5;
+    *&v11 = mean;
+    *&v12 = deviation;
     v13 = [MEMORY[0x277CD7280] normalDistributionDescriptorWithMean:v11 standardDeviation:v12];
     v9->super._distribution = v13;
     v14 = v13;
     objc_autoreleasePoolPop(v10);
-    *(&v9->super._constantValue + 1) = a4;
-    v9->_mean = a5;
-    v9->super._seed = a6;
+    *(&v9->super._constantValue + 1) = mean;
+    v9->_mean = deviation;
+    v9->super._seed = seed;
     v9->super.super._encode = EncodeRandomInitialization;
     v9->super.super.super._encodeData = v9;
   }
@@ -147,18 +147,18 @@ LABEL_5:
   return v9;
 }
 
-- (MPSNDArrayInitializationRandomNormal)initWithDevice:(id)a3 sourceCount:(unint64_t)a4
+- (MPSNDArrayInitializationRandomNormal)initWithDevice:(id)device sourceCount:(unint64_t)count
 {
   LODWORD(v4) = 1028443341;
-  [(MPSNDArrayInitializationRandomNormal *)self initWithDevice:a3 mean:0 standardDeviation:0.0 seed:v4];
+  [(MPSNDArrayInitializationRandomNormal *)self initWithDevice:device mean:0 standardDeviation:0.0 seed:v4];
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNDArrayInitializationRandomNormal;
-  result = [(MPSNDArrayInitialization *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayInitialization *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 17) = EncodeRandomInitialization;
@@ -170,11 +170,11 @@ LABEL_5:
   return result;
 }
 
-- (MPSNDArrayInitializationRandomNormal)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayInitializationRandomNormal)initWithCoder:(id)coder device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayInitializationRandomNormal;
-  result = [(MPSNDArrayInitialization *)&v5 initWithCoder:a3 device:a4];
+  result = [(MPSNDArrayInitialization *)&v5 initWithCoder:coder device:device];
   if (result)
   {
     result->super.super._encode = EncodeRandomInitialization;

@@ -1,22 +1,22 @@
 @interface ECDKIMVerifier
-- (BOOL)_verifyMessageBodyData:(id)a3 withOptions:(int64_t)a4 usingSignature:(id)a5;
-- (BOOL)_verifyMessageHeaders:(id)a3 usingSignature:(id)a4 publicKeySource:(id)a5 error:(id *)a6;
-- (BOOL)verifyMessageData:(id)a3 options:(int64_t)a4;
-- (BOOL)verifyMessageData:(id)a3 publicKeySource:(id)a4 options:(int64_t)a5;
-- (BOOL)verifyMessageWithContext:(id)a3 options:(int64_t)a4 error:(id *)a5;
-- (BOOL)verifyMessageWithContext:(id)a3 publicKeySource:(id)a4 options:(int64_t)a5 error:(id *)a6;
+- (BOOL)_verifyMessageBodyData:(id)data withOptions:(int64_t)options usingSignature:(id)signature;
+- (BOOL)_verifyMessageHeaders:(id)headers usingSignature:(id)signature publicKeySource:(id)source error:(id *)error;
+- (BOOL)verifyMessageData:(id)data options:(int64_t)options;
+- (BOOL)verifyMessageData:(id)data publicKeySource:(id)source options:(int64_t)options;
+- (BOOL)verifyMessageWithContext:(id)context options:(int64_t)options error:(id *)error;
+- (BOOL)verifyMessageWithContext:(id)context publicKeySource:(id)source options:(int64_t)options error:(id *)error;
 - (ECDKIMVerifier)init;
-- (ECDKIMVerifier)initWithPublicKeySource:(id)a3;
-- (id)_base64HashBodyData:(id)a3 usingSignature:(id)a4;
-- (id)_canonicalizeHeaders:(id)a3 usingRelaxedAlgorithmWithSignatureHeader:(id)a4;
-- (id)_canonicalizeHeaders:(id)a3 usingSimpleAlgorithmWithSignatureHeader:(id)a4;
-- (id)_relaxedCanonicalizationForHeaderName:(id)a3 headerBody:(id)a4;
-- (id)_verifyMessage:(id)a3 withDKIMSignatureHeaders:(id)a4 publicKeySource:(id)a5 options:(int64_t)a6 error:(id *)a7;
-- (id)verifiableMessageForMessageData:(id)a3 dkimSignatureHeaders:(id *)a4 error:(id *)a5;
-- (id)verificationContextForMessageData:(id)a3 error:(id *)a4;
-- (id)verifyMessage:(id)a3 withDKIMSignatureHeaders:(id)a4 options:(int64_t)a5 error:(id *)a6;
-- (void)_canonicalizeBodyDataUsingRelaxedAlgorithm:(id)a3;
-- (void)_canonicalizeBodyDataUsingSimpleAlgorithm:(id)a3;
+- (ECDKIMVerifier)initWithPublicKeySource:(id)source;
+- (id)_base64HashBodyData:(id)data usingSignature:(id)signature;
+- (id)_canonicalizeHeaders:(id)headers usingRelaxedAlgorithmWithSignatureHeader:(id)header;
+- (id)_canonicalizeHeaders:(id)headers usingSimpleAlgorithmWithSignatureHeader:(id)header;
+- (id)_relaxedCanonicalizationForHeaderName:(id)name headerBody:(id)body;
+- (id)_verifyMessage:(id)message withDKIMSignatureHeaders:(id)headers publicKeySource:(id)source options:(int64_t)options error:(id *)error;
+- (id)verifiableMessageForMessageData:(id)data dkimSignatureHeaders:(id *)headers error:(id *)error;
+- (id)verificationContextForMessageData:(id)data error:(id *)error;
+- (id)verifyMessage:(id)message withDKIMSignatureHeaders:(id)headers options:(int64_t)options error:(id *)error;
+- (void)_canonicalizeBodyDataUsingRelaxedAlgorithm:(id)algorithm;
+- (void)_canonicalizeBodyDataUsingSimpleAlgorithm:(id)algorithm;
 @end
 
 @implementation ECDKIMVerifier
@@ -28,16 +28,16 @@ uint64_t ___ef_log_ECDKIMVerifier_block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (ECDKIMVerifier)initWithPublicKeySource:(id)a3
+- (ECDKIMVerifier)initWithPublicKeySource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = ECDKIMVerifier;
   v6 = [(ECDKIMVerifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_publicKeySource, a3);
+    objc_storeStrong(&v6->_publicKeySource, source);
   }
 
   return v7;
@@ -51,31 +51,31 @@ uint64_t ___ef_log_ECDKIMVerifier_block_invoke()
   return v4;
 }
 
-- (id)verifiableMessageForMessageData:(id)a3 dkimSignatureHeaders:(id *)a4 error:(id *)a5
+- (id)verifiableMessageForMessageData:(id)data dkimSignatureHeaders:(id *)headers error:(id *)error
 {
   v58 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  if (a4)
+  dataCopy = data;
+  if (headers)
   {
-    *a4 = 0;
+    *headers = 0;
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   v54 = 168626701;
   v42 = [MEMORY[0x277CBEA90] dataWithBytes:&v54 length:4];
-  v7 = [v43 ef_rangeOfData:?];
+  v7 = [dataCopy ef_rangeOfData:?];
   v9 = v8;
-  v41 = a5;
+  errorCopy = error;
   if (v8)
   {
     v10 = v7;
-    v39 = [v43 ef_subdataToIndex:{objc_msgSend(@"\r\n", "length") + v7}];
+    v39 = [dataCopy ef_subdataToIndex:{objc_msgSend(@"\r\n", "length") + v7}];
     v40 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v39 encoding:4];
-    v37 = [v43 ef_subdataFromIndex:v10 + v9];
+    v37 = [dataCopy ef_subdataFromIndex:v10 + v9];
     v38 = [[ECRawMessageHeaders alloc] initWithHeaderString:v40];
     v36 = [(ECRawMessageHeaders *)v38 headersForKey:@"dkim-signature"];
     v44 = objc_opt_new();
@@ -100,10 +100,10 @@ uint64_t ___ef_log_ECDKIMVerifier_block_invoke()
 
           v16 = *(*(&v50 + 1) + 8 * i);
           v17 = [ECDKIMMessageHeader alloc];
-          v18 = [v16 transmittedName];
-          v19 = [v16 body];
+          transmittedName = [v16 transmittedName];
+          body = [v16 body];
           v49 = 0;
-          v20 = [(ECDKIMMessageHeader *)v17 initWithHeaderFieldName:v18 headerBody:v19 error:&v49];
+          v20 = [(ECDKIMMessageHeader *)v17 initWithHeaderFieldName:transmittedName headerBody:body error:&v49];
           v21 = v49;
 
           if (v21)
@@ -111,8 +111,8 @@ uint64_t ___ef_log_ECDKIMVerifier_block_invoke()
             v22 = _ef_log_ECDKIMVerifier();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
             {
-              v23 = [v21 ef_publicDescription];
-              [(ECDKIMVerifier *)v23 verifiableMessageForMessageData:buf dkimSignatureHeaders:&v56 error:v22];
+              ef_publicDescription = [v21 ef_publicDescription];
+              [(ECDKIMVerifier *)ef_publicDescription verifiableMessageForMessageData:buf dkimSignatureHeaders:&v56 error:v22];
             }
 
             v12 = v21;
@@ -120,14 +120,14 @@ uint64_t ___ef_log_ECDKIMVerifier_block_invoke()
 
           else
           {
-            v24 = [(ECDKIMMessageHeader *)v20 agentOrUserIdentifier];
-            v25 = [(ECDKIMMessageHeader *)v20 signingDomainIdentifier];
-            v26 = [v24 ef_hasCaseInsensitiveSuffix:v25];
+            agentOrUserIdentifier = [(ECDKIMMessageHeader *)v20 agentOrUserIdentifier];
+            signingDomainIdentifier = [(ECDKIMMessageHeader *)v20 signingDomainIdentifier];
+            v26 = [agentOrUserIdentifier ef_hasCaseInsensitiveSuffix:signingDomainIdentifier];
 
             if (v26)
             {
-              v27 = [(ECDKIMMessageHeader *)v20 signedHeaderFields];
-              v28 = [v27 containsObject:@"from"];
+              signedHeaderFields = [(ECDKIMMessageHeader *)v20 signedHeaderFields];
+              v28 = [signedHeaderFields containsObject:@"from"];
 
               if (v28)
               {
@@ -166,20 +166,20 @@ LABEL_23:
 
     if ([v44 count] || !v12)
     {
-      if (a4)
+      if (headers)
       {
         v33 = v44;
-        *a4 = v44;
+        *headers = v44;
       }
 
       v31 = [[ECDKIMVerifiableMessage alloc] initWithHeaders:v38 bodyData:v37];
     }
 
-    else if (v41)
+    else if (errorCopy)
     {
       v30 = v12;
       v31 = 0;
-      *v41 = v12;
+      *errorCopy = v12;
     }
 
     else
@@ -196,10 +196,10 @@ LABEL_23:
       [ECDKIMVerifier verifiableMessageForMessageData:v32 dkimSignatureHeaders:? error:?];
     }
 
-    if (a5)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"ECDKIMVerifier" code:1 userInfo:0];
-      *a5 = v31 = 0;
+      *error = v31 = 0;
     }
 
     else
@@ -213,37 +213,37 @@ LABEL_23:
   return v31;
 }
 
-- (BOOL)verifyMessageData:(id)a3 options:(int64_t)a4
+- (BOOL)verifyMessageData:(id)data options:(int64_t)options
 {
   v10 = 0;
-  v6 = [(ECDKIMVerifier *)self verifiableMessageForMessageData:a3 dkimSignatureHeaders:&v10 error:0];
+  v6 = [(ECDKIMVerifier *)self verifiableMessageForMessageData:data dkimSignatureHeaders:&v10 error:0];
   v7 = v10;
-  v8 = [(ECDKIMVerifier *)self verifyMessage:v6 withDKIMSignatureHeaders:v7 options:a4 error:0];
+  v8 = [(ECDKIMVerifier *)self verifyMessage:v6 withDKIMSignatureHeaders:v7 options:options error:0];
 
   return v8 != 0;
 }
 
-- (id)verifyMessage:(id)a3 withDKIMSignatureHeaders:(id)a4 options:(int64_t)a5 error:(id *)a6
+- (id)verifyMessage:(id)message withDKIMSignatureHeaders:(id)headers options:(int64_t)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(ECDKIMVerifier *)self publicKeySource];
-  v13 = [(ECDKIMVerifier *)self _verifyMessage:v10 withDKIMSignatureHeaders:v11 publicKeySource:v12 options:a5 error:a6];
+  messageCopy = message;
+  headersCopy = headers;
+  publicKeySource = [(ECDKIMVerifier *)self publicKeySource];
+  v13 = [(ECDKIMVerifier *)self _verifyMessage:messageCopy withDKIMSignatureHeaders:headersCopy publicKeySource:publicKeySource options:options error:error];
 
   return v13;
 }
 
-- (id)_verifyMessage:(id)a3 withDKIMSignatureHeaders:(id)a4 publicKeySource:(id)a5 options:(int64_t)a6 error:(id *)a7
+- (id)_verifyMessage:(id)message withDKIMSignatureHeaders:(id)headers publicKeySource:(id)source options:(int64_t)options error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v11 = a4;
-  v29 = a5;
+  messageCopy = message;
+  headersCopy = headers;
+  sourceCopy = source;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v11;
+  obj = headersCopy;
   v12 = [obj countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v12)
   {
@@ -258,13 +258,13 @@ LABEL_3:
       }
 
       v15 = *(*(&v33 + 1) + 8 * v14);
-      if ((a6 & 2) != 0)
+      if ((options & 2) != 0)
       {
-        v18 = [v31 bodyData];
-        v19 = [(ECDKIMVerifier *)self _verifyMessageBodyData:v18 withOptions:a6 usingSignature:v15];
+        bodyData = [messageCopy bodyData];
+        v19 = [(ECDKIMVerifier *)self _verifyMessageBodyData:bodyData withOptions:options usingSignature:v15];
 
         v16 = !v19;
-        if ((a6 & 1) == 0)
+        if ((options & 1) == 0)
         {
 LABEL_8:
           v17 = 0;
@@ -275,26 +275,26 @@ LABEL_8:
       else
       {
         v16 = 0;
-        if ((a6 & 1) == 0)
+        if ((options & 1) == 0)
         {
           goto LABEL_8;
         }
       }
 
-      v20 = [v31 headers];
+      headers = [messageCopy headers];
       v32 = 0;
-      v21 = [(ECDKIMVerifier *)self _verifyMessageHeaders:v20 usingSignature:v15 publicKeySource:v29 error:&v32];
+      v21 = [(ECDKIMVerifier *)self _verifyMessageHeaders:headers usingSignature:v15 publicKeySource:sourceCopy error:&v32];
       v22 = v32;
 
       if (v22)
       {
-        if (a7)
+        if (error)
         {
           v24 = MEMORY[0x277CCA9B8];
           v37 = *MEMORY[0x277CCA7E8];
           v38 = v22;
           v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-          *a7 = [v24 errorWithDomain:@"ECDKIMVerifier" code:0 userInfo:v25];
+          *error = [v24 errorWithDomain:@"ECDKIMVerifier" code:0 userInfo:v25];
         }
 
         v23 = 0;
@@ -305,9 +305,9 @@ LABEL_8:
 LABEL_12:
       if (((v16 | v17) & 1) == 0)
       {
-        if (a7)
+        if (error)
         {
-          *a7 = 0;
+          *error = 0;
         }
 
         v23 = v15;
@@ -329,10 +329,10 @@ LABEL_23:
     }
   }
 
-  if (a7)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"ECDKIMVerifier" code:1 userInfo:0];
-    *a7 = v23 = 0;
+    *error = v23 = 0;
   }
 
   else
@@ -347,15 +347,15 @@ LABEL_24:
   return v23;
 }
 
-- (BOOL)_verifyMessageBodyData:(id)a3 withOptions:(int64_t)a4 usingSignature:(id)a5
+- (BOOL)_verifyMessageBodyData:(id)data withOptions:(int64_t)options usingSignature:(id)signature
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [a3 mutableCopy];
-  v10 = [v8 bodyCanonicalizationAlgorithm];
-  if (v10)
+  optionsCopy = options;
+  signatureCopy = signature;
+  v9 = [data mutableCopy];
+  bodyCanonicalizationAlgorithm = [signatureCopy bodyCanonicalizationAlgorithm];
+  if (bodyCanonicalizationAlgorithm)
   {
-    if (v10 == 1)
+    if (bodyCanonicalizationAlgorithm == 1)
     {
       [(ECDKIMVerifier *)self _canonicalizeBodyDataUsingRelaxedAlgorithm:v9];
     }
@@ -366,26 +366,26 @@ LABEL_24:
     [(ECDKIMVerifier *)self _canonicalizeBodyDataUsingSimpleAlgorithm:v9];
   }
 
-  v11 = [v8 bodyLength];
-  if (!v11)
+  bodyLength = [signatureCopy bodyLength];
+  if (!bodyLength)
   {
     goto LABEL_7;
   }
 
-  v12 = [v8 bodyLength];
-  v13 = [v12 unsignedIntegerValue];
+  bodyLength2 = [signatureCopy bodyLength];
+  unsignedIntegerValue = [bodyLength2 unsignedIntegerValue];
   v14 = [v9 length];
 
-  if (v13 == v14)
+  if (unsignedIntegerValue == v14)
   {
     goto LABEL_7;
   }
 
-  v18 = [v8 bodyLength];
-  v19 = [v18 unsignedIntegerValue];
+  bodyLength3 = [signatureCopy bodyLength];
+  unsignedIntegerValue2 = [bodyLength3 unsignedIntegerValue];
   v20 = [v9 length];
 
-  if (v19 > v20)
+  if (unsignedIntegerValue2 > v20)
   {
     v21 = _ef_log_ECDKIMVerifier();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -399,7 +399,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ((v5 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
     v21 = _ef_log_ECDKIMVerifier();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -412,22 +412,22 @@ LABEL_14:
   }
 
 LABEL_7:
-  v15 = [(ECDKIMVerifier *)self _base64HashBodyData:v9 usingSignature:v8];
-  v16 = [v8 canonicalizedBodyHash];
-  v17 = [v15 isEqualToString:v16];
+  v15 = [(ECDKIMVerifier *)self _base64HashBodyData:v9 usingSignature:signatureCopy];
+  canonicalizedBodyHash = [signatureCopy canonicalizedBodyHash];
+  v17 = [v15 isEqualToString:canonicalizedBodyHash];
 
 LABEL_15:
   return v17;
 }
 
-- (id)_base64HashBodyData:(id)a3 usingSignature:(id)a4
+- (id)_base64HashBodyData:(id)data usingSignature:(id)signature
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 hashingAlgorithm];
-  if (v7)
+  dataCopy = data;
+  signatureCopy = signature;
+  hashingAlgorithm = [signatureCopy hashingAlgorithm];
+  if (hashingAlgorithm)
   {
-    v8 = 32 * (v7 == 1);
+    v8 = 32 * (hashingAlgorithm == 1);
   }
 
   else
@@ -436,33 +436,33 @@ LABEL_15:
   }
 
   v9 = [MEMORY[0x277CBEB28] dataWithLength:v8];
-  v10 = [v6 bodyLength];
-  if (v10)
+  bodyLength = [signatureCopy bodyLength];
+  if (bodyLength)
   {
-    v11 = [v6 bodyLength];
-    v12 = [v11 unsignedIntegerValue];
+    bodyLength2 = [signatureCopy bodyLength];
+    unsignedIntegerValue = [bodyLength2 unsignedIntegerValue];
   }
 
   else
   {
-    v12 = [v5 length];
+    unsignedIntegerValue = [dataCopy length];
   }
 
-  v13 = [v5 subdataWithRange:{0, v12}];
-  v14 = [v13 bytes];
+  v13 = [dataCopy subdataWithRange:{0, unsignedIntegerValue}];
+  bytes = [v13 bytes];
 
-  v15 = [v6 hashingAlgorithm];
-  if (v15)
+  hashingAlgorithm2 = [signatureCopy hashingAlgorithm];
+  if (hashingAlgorithm2)
   {
-    if (v15 == 1)
+    if (hashingAlgorithm2 == 1)
     {
-      CC_SHA256(v14, v12, [v9 mutableBytes]);
+      CC_SHA256(bytes, unsignedIntegerValue, [v9 mutableBytes]);
     }
   }
 
   else
   {
-    CC_SHA1(v14, v12, [v9 mutableBytes]);
+    CC_SHA1(bytes, unsignedIntegerValue, [v9 mutableBytes]);
   }
 
   v16 = [v9 base64EncodedStringWithOptions:0];
@@ -470,24 +470,24 @@ LABEL_15:
   return v16;
 }
 
-- (BOOL)_verifyMessageHeaders:(id)a3 usingSignature:(id)a4 publicKeySource:(id)a5 error:(id *)a6
+- (BOOL)_verifyMessageHeaders:(id)headers usingSignature:(id)signature publicKeySource:(id)source error:(id *)error
 {
-  v32 = self;
+  selfCopy = self;
   v65 = *MEMORY[0x277D85DE8];
-  v35 = a4;
-  v34 = a5;
-  v8 = [a3 allHeaders];
-  v9 = [v8 reverseObjectEnumerator];
-  v38 = [v9 allObjects];
+  signatureCopy = signature;
+  sourceCopy = source;
+  allHeaders = [headers allHeaders];
+  reverseObjectEnumerator = [allHeaders reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v10 = objc_opt_new();
   v61 = 0u;
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v11 = [v35 signedHeaderFields];
-  obj = v11;
-  v12 = [v11 countByEnumeratingWithState:&v59 objects:v64 count:16];
+  signedHeaderFields = [signatureCopy signedHeaderFields];
+  obj = signedHeaderFields;
+  v12 = [signedHeaderFields countByEnumeratingWithState:&v59 objects:v64 count:16];
   if (v12)
   {
     v37 = *v60;
@@ -506,7 +506,7 @@ LABEL_15:
         v56 = 0u;
         v57 = 0u;
         v58 = 0u;
-        v15 = v38;
+        v15 = allObjects;
         v16 = [v15 countByEnumeratingWithState:&v55 objects:v63 count:16];
         if (v16)
         {
@@ -521,8 +521,8 @@ LABEL_15:
               }
 
               v19 = *(*(&v55 + 1) + 8 * j);
-              v20 = [v19 name];
-              if ([v20 isEqualToString:v14])
+              name = [v19 name];
+              if ([name isEqualToString:v14])
               {
                 v21 = [v10 containsObject:v19];
 
@@ -547,23 +547,23 @@ LABEL_15:
 LABEL_17:
       }
 
-      v11 = obj;
+      signedHeaderFields = obj;
       v12 = [obj countByEnumeratingWithState:&v59 objects:v64 count:16];
     }
 
     while (v12);
   }
 
-  v22 = [v35 headerCanonicalizationAlgorithm];
-  if (!v22)
+  headerCanonicalizationAlgorithm = [signatureCopy headerCanonicalizationAlgorithm];
+  if (!headerCanonicalizationAlgorithm)
   {
-    v23 = [(ECDKIMVerifier *)v32 _canonicalizeHeaders:v10 usingSimpleAlgorithmWithSignatureHeader:v35];
+    v23 = [(ECDKIMVerifier *)selfCopy _canonicalizeHeaders:v10 usingSimpleAlgorithmWithSignatureHeader:signatureCopy];
     goto LABEL_23;
   }
 
-  if (v22 == 1)
+  if (headerCanonicalizationAlgorithm == 1)
   {
-    v23 = [(ECDKIMVerifier *)v32 _canonicalizeHeaders:v10 usingRelaxedAlgorithmWithSignatureHeader:v35];
+    v23 = [(ECDKIMVerifier *)selfCopy _canonicalizeHeaders:v10 usingRelaxedAlgorithmWithSignatureHeader:signatureCopy];
 LABEL_23:
     v24 = v23;
     goto LABEL_25;
@@ -581,8 +581,8 @@ LABEL_25:
   v48 = __Block_byref_object_copy_;
   v49 = __Block_byref_object_dispose_;
   v50 = 0;
-  v25 = [v35 signingDomainIdentifier];
-  v26 = [v35 selector];
+  signingDomainIdentifier = [signatureCopy signingDomainIdentifier];
+  selector = [signatureCopy selector];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __77__ECDKIMVerifier__verifyMessageHeaders_usingSignature_publicKeySource_error___block_invoke;
@@ -591,13 +591,13 @@ LABEL_25:
   v44 = &v45;
   v27 = v24;
   v41 = v27;
-  v28 = v35;
+  v28 = signatureCopy;
   v42 = v28;
-  [v34 getPublicKeyRecordsFromDomain:v25 withSelector:v26 completionHandler:v40];
+  [sourceCopy getPublicKeyRecordsFromDomain:signingDomainIdentifier withSelector:selector completionHandler:v40];
 
-  if (a6)
+  if (error)
   {
-    *a6 = v46[5];
+    *error = v46[5];
   }
 
   v29 = *(v52 + 24);
@@ -709,91 +709,91 @@ LABEL_22:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_canonicalizeBodyDataUsingSimpleAlgorithm:(id)a3
+- (void)_canonicalizeBodyDataUsingSimpleAlgorithm:(id)algorithm
 {
-  v13 = a3;
-  v3 = [MEMORY[0x277CBEA90] ef_crlfData];
-  v4 = [v13 ef_hasSuffix:v3];
+  algorithmCopy = algorithm;
+  ef_crlfData = [MEMORY[0x277CBEA90] ef_crlfData];
+  v4 = [algorithmCopy ef_hasSuffix:ef_crlfData];
 
   if (v4)
   {
-    while ([v13 length] >= 4)
+    while ([algorithmCopy length] >= 4)
     {
-      v5 = [v13 length];
-      v6 = [MEMORY[0x277CBEA90] ef_crlfData];
-      v7 = [v13 subdataWithRange:{v5 - 4, objc_msgSend(v6, "length")}];
-      v8 = [MEMORY[0x277CBEA90] ef_crlfData];
-      v9 = [v7 isEqualToData:v8];
+      v5 = [algorithmCopy length];
+      ef_crlfData2 = [MEMORY[0x277CBEA90] ef_crlfData];
+      v7 = [algorithmCopy subdataWithRange:{v5 - 4, objc_msgSend(ef_crlfData2, "length")}];
+      ef_crlfData3 = [MEMORY[0x277CBEA90] ef_crlfData];
+      v9 = [v7 isEqualToData:ef_crlfData3];
 
       if (!v9)
       {
         break;
       }
 
-      v10 = [v13 length];
-      v11 = [MEMORY[0x277CBEA90] ef_crlfData];
-      [v13 ef_deleteBytesInRange:{v10 - 4, objc_msgSend(v11, "length")}];
+      v10 = [algorithmCopy length];
+      ef_crlfData4 = [MEMORY[0x277CBEA90] ef_crlfData];
+      [algorithmCopy ef_deleteBytesInRange:{v10 - 4, objc_msgSend(ef_crlfData4, "length")}];
     }
   }
 
   else
   {
-    v12 = [MEMORY[0x277CBEA90] ef_crlfData];
-    [v13 appendData:v12];
+    ef_crlfData5 = [MEMORY[0x277CBEA90] ef_crlfData];
+    [algorithmCopy appendData:ef_crlfData5];
   }
 }
 
-- (void)_canonicalizeBodyDataUsingRelaxedAlgorithm:(id)a3
+- (void)_canonicalizeBodyDataUsingRelaxedAlgorithm:(id)algorithm
 {
-  v3 = a3;
+  algorithmCopy = algorithm;
   v14 = 2336;
   v4 = [MEMORY[0x277CBEA90] dataWithBytes:&v14 length:2];
-  v5 = [MEMORY[0x277CBEA90] ef_crlfData];
-  [v3 ef_deleteBytesInData:v4 beforeOccurrencesOfData:v5];
+  ef_crlfData = [MEMORY[0x277CBEA90] ef_crlfData];
+  [algorithmCopy ef_deleteBytesInData:v4 beforeOccurrencesOfData:ef_crlfData];
 
   v13 = 32;
-  v6 = [MEMORY[0x277CBEA90] dataWithBytes:&v13 length:1];
-  [v3 ef_replaceContiguousSequencesOfBytesInData:v4 withData:v6];
+  ef_crlfData3 = [MEMORY[0x277CBEA90] dataWithBytes:&v13 length:1];
+  [algorithmCopy ef_replaceContiguousSequencesOfBytesInData:v4 withData:ef_crlfData3];
   while (1)
   {
 
-    v7 = [MEMORY[0x277CBEA90] ef_crlfData];
-    v8 = [v3 ef_hasSuffix:v7];
+    ef_crlfData2 = [MEMORY[0x277CBEA90] ef_crlfData];
+    v8 = [algorithmCopy ef_hasSuffix:ef_crlfData2];
 
     if (!v8)
     {
       break;
     }
 
-    v9 = [v3 length];
-    v6 = [MEMORY[0x277CBEA90] ef_crlfData];
-    [v3 ef_deleteBytesInRange:{v9 - 2, objc_msgSend(v6, "length")}];
+    v9 = [algorithmCopy length];
+    ef_crlfData3 = [MEMORY[0x277CBEA90] ef_crlfData];
+    [algorithmCopy ef_deleteBytesInRange:{v9 - 2, objc_msgSend(ef_crlfData3, "length")}];
   }
 
-  if ([v3 length])
+  if ([algorithmCopy length])
   {
-    v10 = [MEMORY[0x277CBEA90] ef_crlfData];
-    v11 = [v3 ef_hasSuffix:v10];
+    ef_crlfData4 = [MEMORY[0x277CBEA90] ef_crlfData];
+    v11 = [algorithmCopy ef_hasSuffix:ef_crlfData4];
 
     if ((v11 & 1) == 0)
     {
-      v12 = [MEMORY[0x277CBEA90] ef_crlfData];
-      [v3 appendData:v12];
+      ef_crlfData5 = [MEMORY[0x277CBEA90] ef_crlfData];
+      [algorithmCopy appendData:ef_crlfData5];
     }
   }
 }
 
-- (id)_canonicalizeHeaders:(id)a3 usingSimpleAlgorithmWithSignatureHeader:(id)a4
+- (id)_canonicalizeHeaders:(id)headers usingSimpleAlgorithmWithSignatureHeader:(id)header
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  headersCopy = headers;
+  headerCopy = header;
   v7 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v5;
+  v8 = headersCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -808,9 +808,9 @@ LABEL_22:
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 transmittedName];
-        v14 = [v12 body];
-        [v7 appendFormat:@"%@:%@", v13, v14, v19];
+        transmittedName = [v12 transmittedName];
+        body = [v12 body];
+        [v7 appendFormat:@"%@:%@", transmittedName, body, v19];
       }
 
       v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -819,9 +819,9 @@ LABEL_22:
     while (v9);
   }
 
-  v15 = [v6 headerNameForCanonicalization];
-  v16 = [v6 bodyForCanonicalization];
-  [v7 appendFormat:@"%@:%@", v15, v16];
+  headerNameForCanonicalization = [headerCopy headerNameForCanonicalization];
+  bodyForCanonicalization = [headerCopy bodyForCanonicalization];
+  [v7 appendFormat:@"%@:%@", headerNameForCanonicalization, bodyForCanonicalization];
 
   while ([v7 hasSuffix:@"\r\n"])
   {
@@ -833,17 +833,17 @@ LABEL_22:
   return v7;
 }
 
-- (id)_canonicalizeHeaders:(id)a3 usingRelaxedAlgorithmWithSignatureHeader:(id)a4
+- (id)_canonicalizeHeaders:(id)headers usingRelaxedAlgorithmWithSignatureHeader:(id)header
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  headersCopy = headers;
+  headerCopy = header;
   v8 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v6;
+  v9 = headersCopy;
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
@@ -858,9 +858,9 @@ LABEL_22:
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v13 name];
-        v15 = [v13 body];
-        v16 = [(ECDKIMVerifier *)self _relaxedCanonicalizationForHeaderName:v14 headerBody:v15];
+        name = [v13 name];
+        body = [v13 body];
+        v16 = [(ECDKIMVerifier *)self _relaxedCanonicalizationForHeaderName:name headerBody:body];
 
         [v8 appendString:v16];
       }
@@ -871,9 +871,9 @@ LABEL_22:
     while (v10);
   }
 
-  v17 = [v7 headerNameForCanonicalization];
-  v18 = [v7 bodyForCanonicalization];
-  v19 = [(ECDKIMVerifier *)self _relaxedCanonicalizationForHeaderName:v17 headerBody:v18];
+  headerNameForCanonicalization = [headerCopy headerNameForCanonicalization];
+  bodyForCanonicalization = [headerCopy bodyForCanonicalization];
+  v19 = [(ECDKIMVerifier *)self _relaxedCanonicalizationForHeaderName:headerNameForCanonicalization headerBody:bodyForCanonicalization];
 
   [v8 appendString:v19];
   while ([v8 hasSuffix:@"\r\n"])
@@ -886,35 +886,35 @@ LABEL_22:
   return v8;
 }
 
-- (id)_relaxedCanonicalizationForHeaderName:(id)a3 headerBody:(id)a4
+- (id)_relaxedCanonicalizationForHeaderName:(id)name headerBody:(id)body
 {
-  v5 = a4;
-  v6 = [a3 lowercaseString];
-  v7 = [v6 mutableCopy];
+  bodyCopy = body;
+  lowercaseString = [name lowercaseString];
+  v7 = [lowercaseString mutableCopy];
 
-  v8 = [v5 mutableCopy];
+  v8 = [bodyCopy mutableCopy];
   [v8 ef_rfc5322Unfold];
-  v9 = [MEMORY[0x277CCA900] ef_rfc6376WhitespaceCharacterSet];
-  [v8 ef_replaceContiguousSequencesOfCharactersInSet:v9 withString:@" "];
+  ef_rfc6376WhitespaceCharacterSet = [MEMORY[0x277CCA900] ef_rfc6376WhitespaceCharacterSet];
+  [v8 ef_replaceContiguousSequencesOfCharactersInSet:ef_rfc6376WhitespaceCharacterSet withString:@" "];
 
-  v10 = [MEMORY[0x277CCA900] ef_rfc6376WhitespaceCharacterSet];
-  [v8 ef_trimTrailingCharactersInSetIgnoringNewline:v10];
+  ef_rfc6376WhitespaceCharacterSet2 = [MEMORY[0x277CCA900] ef_rfc6376WhitespaceCharacterSet];
+  [v8 ef_trimTrailingCharactersInSetIgnoringNewline:ef_rfc6376WhitespaceCharacterSet2];
 
-  v11 = [MEMORY[0x277CCA900] ef_rfc6376WhitespaceCharacterSet];
-  [v7 ef_trimTrailingCharactersInSet:v11];
+  ef_rfc6376WhitespaceCharacterSet3 = [MEMORY[0x277CCA900] ef_rfc6376WhitespaceCharacterSet];
+  [v7 ef_trimTrailingCharactersInSet:ef_rfc6376WhitespaceCharacterSet3];
 
-  v12 = [MEMORY[0x277CCA900] ef_rfc6376WhitespaceCharacterSet];
-  [v8 ef_trimLeadingCharactersInSet:v12];
+  ef_rfc6376WhitespaceCharacterSet4 = [MEMORY[0x277CCA900] ef_rfc6376WhitespaceCharacterSet];
+  [v8 ef_trimLeadingCharactersInSet:ef_rfc6376WhitespaceCharacterSet4];
 
   v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v7, v8];
 
   return v13;
 }
 
-- (id)verificationContextForMessageData:(id)a3 error:(id *)a4
+- (id)verificationContextForMessageData:(id)data error:(id *)error
 {
   v12 = 0;
-  v5 = [(ECDKIMVerifier *)self verifiableMessageForMessageData:a3 dkimSignatureHeaders:&v12 error:a4];
+  v5 = [(ECDKIMVerifier *)self verifiableMessageForMessageData:data dkimSignatureHeaders:&v12 error:error];
   v6 = v12;
   v7 = v6;
   if (!v5)
@@ -935,10 +935,10 @@ LABEL_22:
     _os_log_impl(&dword_22D092000, v9, OS_LOG_TYPE_DEFAULT, "No DKIM signature headers found.", v11, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"ECDKIMVerifier" code:1 userInfo:0];
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -952,43 +952,43 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)verifyMessageData:(id)a3 publicKeySource:(id)a4 options:(int64_t)a5
+- (BOOL)verifyMessageData:(id)data publicKeySource:(id)source options:(int64_t)options
 {
-  v8 = a4;
+  sourceCopy = source;
   v13 = 0;
-  v9 = [(ECDKIMVerifier *)self verifiableMessageForMessageData:a3 dkimSignatureHeaders:&v13 error:0];
+  v9 = [(ECDKIMVerifier *)self verifiableMessageForMessageData:data dkimSignatureHeaders:&v13 error:0];
   v10 = v13;
-  v11 = [(ECDKIMVerifier *)self _verifyMessage:v9 withDKIMSignatureHeaders:v10 publicKeySource:v8 options:a5 error:0];
+  v11 = [(ECDKIMVerifier *)self _verifyMessage:v9 withDKIMSignatureHeaders:v10 publicKeySource:sourceCopy options:options error:0];
 
   return v11 != 0;
 }
 
-- (BOOL)verifyMessageWithContext:(id)a3 options:(int64_t)a4 error:(id *)a5
+- (BOOL)verifyMessageWithContext:(id)context options:(int64_t)options error:(id *)error
 {
-  v8 = a3;
-  v9 = [(ECDKIMVerifier *)self publicKeySource];
-  LOBYTE(a5) = [(ECDKIMVerifier *)self verifyMessageWithContext:v8 publicKeySource:v9 options:a4 error:a5];
+  contextCopy = context;
+  publicKeySource = [(ECDKIMVerifier *)self publicKeySource];
+  LOBYTE(error) = [(ECDKIMVerifier *)self verifyMessageWithContext:contextCopy publicKeySource:publicKeySource options:options error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)verifyMessageWithContext:(id)a3 publicKeySource:(id)a4 options:(int64_t)a5 error:(id *)a6
+- (BOOL)verifyMessageWithContext:(id)context publicKeySource:(id)source options:(int64_t)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  if ([v10 requireFullBodySignature])
+  contextCopy = context;
+  sourceCopy = source;
+  if ([contextCopy requireFullBodySignature])
   {
-    v12 = a5 | 4;
+    optionsCopy = options | 4;
   }
 
   else
   {
-    v12 = a5;
+    optionsCopy = options;
   }
 
-  v13 = [v10 verifiableMessage];
-  v14 = [v10 dkimSignatureHeaders];
-  v15 = [(ECDKIMVerifier *)self _verifyMessage:v13 withDKIMSignatureHeaders:v14 publicKeySource:v11 options:v12 error:a6];
+  verifiableMessage = [contextCopy verifiableMessage];
+  dkimSignatureHeaders = [contextCopy dkimSignatureHeaders];
+  v15 = [(ECDKIMVerifier *)self _verifyMessage:verifiableMessage withDKIMSignatureHeaders:dkimSignatureHeaders publicKeySource:sourceCopy options:optionsCopy error:error];
   v16 = v15 != 0;
 
   return v16;

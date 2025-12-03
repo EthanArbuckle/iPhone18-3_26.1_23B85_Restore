@@ -1,20 +1,20 @@
 @interface MXDiskSpaceUsageMetric
-- (MXDiskSpaceUsageMetric)initWithCoder:(id)a3;
-- (MXDiskSpaceUsageMetric)initWithTotalBinaryFileSize:(id)a3 totalBinaryFileCount:(unint64_t)a4 totalDataFileSize:(id)a5 totalDataFileCount:(unint64_t)a6 totalCacheFolderSize:(id)a7 totalCloneSize:(id)a8 totalDiskSpaceUsedSize:(id)a9 totalDiskSpaceCapacity:(id)a10;
+- (MXDiskSpaceUsageMetric)initWithCoder:(id)coder;
+- (MXDiskSpaceUsageMetric)initWithTotalBinaryFileSize:(id)size totalBinaryFileCount:(unint64_t)count totalDataFileSize:(id)fileSize totalDataFileCount:(unint64_t)fileCount totalCacheFolderSize:(id)folderSize totalCloneSize:(id)cloneSize totalDiskSpaceUsedSize:(id)usedSize totalDiskSpaceCapacity:(id)self0;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXDiskSpaceUsageMetric
 
-- (MXDiskSpaceUsageMetric)initWithTotalBinaryFileSize:(id)a3 totalBinaryFileCount:(unint64_t)a4 totalDataFileSize:(id)a5 totalDataFileCount:(unint64_t)a6 totalCacheFolderSize:(id)a7 totalCloneSize:(id)a8 totalDiskSpaceUsedSize:(id)a9 totalDiskSpaceCapacity:(id)a10
+- (MXDiskSpaceUsageMetric)initWithTotalBinaryFileSize:(id)size totalBinaryFileCount:(unint64_t)count totalDataFileSize:(id)fileSize totalDataFileCount:(unint64_t)fileCount totalCacheFolderSize:(id)folderSize totalCloneSize:(id)cloneSize totalDiskSpaceUsedSize:(id)usedSize totalDiskSpaceCapacity:(id)self0
 {
-  v26 = a3;
-  v25 = a5;
-  v24 = a7;
-  v15 = a8;
-  v16 = a9;
-  v17 = a10;
+  sizeCopy = size;
+  fileSizeCopy = fileSize;
+  folderSizeCopy = folderSize;
+  cloneSizeCopy = cloneSize;
+  usedSizeCopy = usedSize;
+  capacityCopy = capacity;
   v27.receiver = self;
   v27.super_class = MXDiskSpaceUsageMetric;
   v18 = [(MXMetric *)&v27 init];
@@ -25,16 +25,16 @@
   }
 
   v20 = 0;
-  if (v26 && v25 && v24 && v15 && v16 && v17)
+  if (sizeCopy && fileSizeCopy && folderSizeCopy && cloneSizeCopy && usedSizeCopy && capacityCopy)
   {
-    objc_storeStrong(&v18->_totalBinaryFileSize, a3);
-    v19->_totalBinaryFileCount = a4;
-    objc_storeStrong(&v19->_totalDataFileSize, a5);
-    v19->_totalDataFileCount = a6;
-    objc_storeStrong(&v19->_totalCacheFolderSize, a7);
-    objc_storeStrong(&v19->_totalCloneSize, a8);
-    objc_storeStrong(&v19->_totalDiskSpaceUsedSize, a9);
-    objc_storeStrong(&v19->_totalDiskSpaceCapacity, a10);
+    objc_storeStrong(&v18->_totalBinaryFileSize, size);
+    v19->_totalBinaryFileCount = count;
+    objc_storeStrong(&v19->_totalDataFileSize, fileSize);
+    v19->_totalDataFileCount = fileCount;
+    objc_storeStrong(&v19->_totalCacheFolderSize, folderSize);
+    objc_storeStrong(&v19->_totalCloneSize, cloneSize);
+    objc_storeStrong(&v19->_totalDiskSpaceUsedSize, usedSize);
+    objc_storeStrong(&v19->_totalDiskSpaceCapacity, capacity);
 LABEL_9:
     v20 = v19;
   }
@@ -42,53 +42,53 @@ LABEL_9:
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MXDiskSpaceUsageMetric;
-  v4 = a3;
-  [(MXMetric *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_totalBinaryFileSize forKey:{@"totalBinaryFileSize", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_totalBinaryFileCount forKey:@"totalBinaryFileCount"];
-  [v4 encodeObject:self->_totalDataFileSize forKey:@"totalDataFileSize"];
-  [v4 encodeInteger:self->_totalDataFileCount forKey:@"totalDataFileCount"];
-  [v4 encodeObject:self->_totalCacheFolderSize forKey:@"totalCacheFolderSize"];
-  [v4 encodeObject:self->_totalCloneSize forKey:@"totalCloneSize"];
-  [v4 encodeObject:self->_totalDiskSpaceUsedSize forKey:@"totalDiskSpaceUsedSize"];
-  [v4 encodeObject:self->_totalDiskSpaceCapacity forKey:@"totalDiskSpaceCapacity"];
+  coderCopy = coder;
+  [(MXMetric *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_totalBinaryFileSize forKey:{@"totalBinaryFileSize", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_totalBinaryFileCount forKey:@"totalBinaryFileCount"];
+  [coderCopy encodeObject:self->_totalDataFileSize forKey:@"totalDataFileSize"];
+  [coderCopy encodeInteger:self->_totalDataFileCount forKey:@"totalDataFileCount"];
+  [coderCopy encodeObject:self->_totalCacheFolderSize forKey:@"totalCacheFolderSize"];
+  [coderCopy encodeObject:self->_totalCloneSize forKey:@"totalCloneSize"];
+  [coderCopy encodeObject:self->_totalDiskSpaceUsedSize forKey:@"totalDiskSpaceUsedSize"];
+  [coderCopy encodeObject:self->_totalDiskSpaceCapacity forKey:@"totalDiskSpaceCapacity"];
 }
 
-- (MXDiskSpaceUsageMetric)initWithCoder:(id)a3
+- (MXDiskSpaceUsageMetric)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = MXDiskSpaceUsageMetric;
-  v5 = [(MXMetric *)&v19 initWithCoder:v4];
+  v5 = [(MXMetric *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalBinaryFileSize"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalBinaryFileSize"];
     totalBinaryFileSize = v5->_totalBinaryFileSize;
     v5->_totalBinaryFileSize = v6;
 
-    v5->_totalBinaryFileCount = [v4 decodeIntegerForKey:@"totalBinaryFileCount"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalDataFileSize"];
+    v5->_totalBinaryFileCount = [coderCopy decodeIntegerForKey:@"totalBinaryFileCount"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalDataFileSize"];
     totalDataFileSize = v5->_totalDataFileSize;
     v5->_totalDataFileSize = v8;
 
-    v5->_totalDataFileCount = [v4 decodeIntegerForKey:@"totalDataFileCount"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalCacheFolderSize"];
+    v5->_totalDataFileCount = [coderCopy decodeIntegerForKey:@"totalDataFileCount"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalCacheFolderSize"];
     totalCacheFolderSize = v5->_totalCacheFolderSize;
     v5->_totalCacheFolderSize = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalCloneSize"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalCloneSize"];
     totalCloneSize = v5->_totalCloneSize;
     v5->_totalCloneSize = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalDiskSpaceUsedSize"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalDiskSpaceUsedSize"];
     totalDiskSpaceUsedSize = v5->_totalDiskSpaceUsedSize;
     v5->_totalDiskSpaceUsedSize = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalDiskSpaceCapacity"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalDiskSpaceCapacity"];
     totalDiskSpaceCapacity = v5->_totalDiskSpaceCapacity;
     v5->_totalDiskSpaceCapacity = v16;
   }
@@ -101,16 +101,16 @@ LABEL_9:
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v38.receiver = self;
   v38.super_class = MXDiskSpaceUsageMetric;
-  v4 = [(MXMetric *)&v38 toDictionary];
-  [v3 addEntriesFromDictionary:v4];
+  toDictionary = [(MXMetric *)&v38 toDictionary];
+  [v3 addEntriesFromDictionary:toDictionary];
 
   if (self->_totalBinaryFileSize)
   {
-    v5 = [(MXMetric *)self measurementFormatter];
+    measurementFormatter = [(MXMetric *)self measurementFormatter];
     totalBinaryFileSize = self->_totalBinaryFileSize;
-    v7 = [MEMORY[0x277CCAE18] kilobytes];
-    v8 = [(NSMeasurement *)totalBinaryFileSize measurementByConvertingToUnit:v7];
-    v9 = [v5 stringFromMeasurement:v8];
+    kilobytes = [MEMORY[0x277CCAE18] kilobytes];
+    v8 = [(NSMeasurement *)totalBinaryFileSize measurementByConvertingToUnit:kilobytes];
+    v9 = [measurementFormatter stringFromMeasurement:v8];
     [v3 setObject:v9 forKey:@"totalBinaryFileSize"];
   }
 
@@ -119,11 +119,11 @@ LABEL_9:
 
   if (self->_totalDataFileSize)
   {
-    v11 = [(MXMetric *)self measurementFormatter];
+    measurementFormatter2 = [(MXMetric *)self measurementFormatter];
     totalDataFileSize = self->_totalDataFileSize;
-    v13 = [MEMORY[0x277CCAE18] kilobytes];
-    v14 = [(NSMeasurement *)totalDataFileSize measurementByConvertingToUnit:v13];
-    v15 = [v11 stringFromMeasurement:v14];
+    kilobytes2 = [MEMORY[0x277CCAE18] kilobytes];
+    v14 = [(NSMeasurement *)totalDataFileSize measurementByConvertingToUnit:kilobytes2];
+    v15 = [measurementFormatter2 stringFromMeasurement:v14];
     [v3 setObject:v15 forKey:@"totalDataFileSize"];
   }
 
@@ -132,41 +132,41 @@ LABEL_9:
 
   if (self->_totalCacheFolderSize)
   {
-    v17 = [(MXMetric *)self measurementFormatter];
+    measurementFormatter3 = [(MXMetric *)self measurementFormatter];
     totalCacheFolderSize = self->_totalCacheFolderSize;
-    v19 = [MEMORY[0x277CCAE18] kilobytes];
-    v20 = [(NSMeasurement *)totalCacheFolderSize measurementByConvertingToUnit:v19];
-    v21 = [v17 stringFromMeasurement:v20];
+    kilobytes3 = [MEMORY[0x277CCAE18] kilobytes];
+    v20 = [(NSMeasurement *)totalCacheFolderSize measurementByConvertingToUnit:kilobytes3];
+    v21 = [measurementFormatter3 stringFromMeasurement:v20];
     [v3 setObject:v21 forKey:@"totalCacheFolderSize"];
   }
 
   if (self->_totalCloneSize)
   {
-    v22 = [(MXMetric *)self measurementFormatter];
+    measurementFormatter4 = [(MXMetric *)self measurementFormatter];
     totalCloneSize = self->_totalCloneSize;
-    v24 = [MEMORY[0x277CCAE18] kilobytes];
-    v25 = [(NSMeasurement *)totalCloneSize measurementByConvertingToUnit:v24];
-    v26 = [v22 stringFromMeasurement:v25];
+    kilobytes4 = [MEMORY[0x277CCAE18] kilobytes];
+    v25 = [(NSMeasurement *)totalCloneSize measurementByConvertingToUnit:kilobytes4];
+    v26 = [measurementFormatter4 stringFromMeasurement:v25];
     [v3 setObject:v26 forKey:@"totalCloneSize"];
   }
 
   if (self->_totalDiskSpaceUsedSize)
   {
-    v27 = [(MXMetric *)self measurementFormatter];
+    measurementFormatter5 = [(MXMetric *)self measurementFormatter];
     totalDiskSpaceUsedSize = self->_totalDiskSpaceUsedSize;
-    v29 = [MEMORY[0x277CCAE18] kilobytes];
-    v30 = [(NSMeasurement *)totalDiskSpaceUsedSize measurementByConvertingToUnit:v29];
-    v31 = [v27 stringFromMeasurement:v30];
+    kilobytes5 = [MEMORY[0x277CCAE18] kilobytes];
+    v30 = [(NSMeasurement *)totalDiskSpaceUsedSize measurementByConvertingToUnit:kilobytes5];
+    v31 = [measurementFormatter5 stringFromMeasurement:v30];
     [v3 setObject:v31 forKey:@"totalDiskSpaceUsedSize"];
   }
 
   if (self->_totalDiskSpaceCapacity)
   {
-    v32 = [(MXMetric *)self measurementFormatter];
+    measurementFormatter6 = [(MXMetric *)self measurementFormatter];
     totalDiskSpaceCapacity = self->_totalDiskSpaceCapacity;
-    v34 = [MEMORY[0x277CCAE18] kilobytes];
-    v35 = [(NSMeasurement *)totalDiskSpaceCapacity measurementByConvertingToUnit:v34];
-    v36 = [v32 stringFromMeasurement:v35];
+    kilobytes6 = [MEMORY[0x277CCAE18] kilobytes];
+    v35 = [(NSMeasurement *)totalDiskSpaceCapacity measurementByConvertingToUnit:kilobytes6];
+    v36 = [measurementFormatter6 stringFromMeasurement:v35];
     [v3 setObject:v36 forKey:@"totalDiskSpaceCapacity"];
   }
 

@@ -1,9 +1,9 @@
 @interface VKCRemoveBackgroundVideoRequestHandler
 - (VKCRemoveBackgroundVideoRequestHandler)init;
-- (void)_didEndForRequest:(uint64_t)a1;
-- (void)_willBeginForRequest:(uint64_t)a1;
-- (void)cancelRequest:(id)a3;
-- (void)performRequest:(id)a3 previewResultAvailable:(id)a4 progress:(id)a5 completion:(id)a6;
+- (void)_didEndForRequest:(uint64_t)request;
+- (void)_willBeginForRequest:(uint64_t)request;
+- (void)cancelRequest:(id)request;
+- (void)performRequest:(id)request previewResultAvailable:(id)available progress:(id)progress completion:(id)completion;
 @end
 
 @implementation VKCRemoveBackgroundVideoRequestHandler
@@ -15,9 +15,9 @@
   v2 = [(VKCRemoveBackgroundVideoRequestHandler *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69AE3E0] service];
+    service = [MEMORY[0x1E69AE3E0] service];
     service = v2->_service;
-    v2->_service = v3;
+    v2->_service = service;
 
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(MEMORY[0x1E69E96A8], DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v6 = dispatch_queue_attr_make_with_qos_class(v5, QOS_CLASS_USER_INTERACTIVE, 0);
@@ -30,16 +30,16 @@
   return v2;
 }
 
-- (void)performRequest:(id)a3 previewResultAvailable:(id)a4 progress:(id)a5 completion:(id)a6
+- (void)performRequest:(id)request previewResultAvailable:(id)available progress:(id)progress completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  availableCopy = available;
+  progressCopy = progress;
+  completionCopy = completion;
   if (vk_deviceSupportsRemoveBackground())
   {
     v39 = 0;
-    v14 = [(VKCRemoveBackgroundVideoRequestHandler *)self isValidRequest:v10 error:&v39];
+    v14 = [(VKCRemoveBackgroundVideoRequestHandler *)self isValidRequest:requestCopy error:&v39];
     v15 = v39;
     if (v14)
     {
@@ -50,11 +50,11 @@
       block[1] = 3221225472;
       block[2] = __100__VKCRemoveBackgroundVideoRequestHandler_performRequest_previewResultAvailable_progress_completion___block_invoke;
       block[3] = &unk_1E7BE5E00;
-      v33 = v10;
-      v34 = self;
-      v36 = v13;
-      v37 = v12;
-      v38 = v11;
+      v33 = requestCopy;
+      selfCopy = self;
+      v36 = completionCopy;
+      v37 = progressCopy;
+      v38 = availableCopy;
       v35 = v29;
       v31 = v29;
       dispatch_async(queue, block);
@@ -79,14 +79,14 @@
     }
   }
 
-  if (v11)
+  if (availableCopy)
   {
-    (*(v11 + 2))(v11, 0);
+    (*(availableCopy + 2))(availableCopy, 0);
   }
 
-  if (v13)
+  if (completionCopy)
   {
-    (*(v13 + 2))(v13, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
   }
 
 LABEL_11:
@@ -285,17 +285,17 @@ void __100__VKCRemoveBackgroundVideoRequestHandler_performRequest_previewResultA
   }
 }
 
-- (void)cancelRequest:(id)a3
+- (void)cancelRequest:(id)request
 {
   service = self->_service;
-  v4 = [a3 madRequestID];
+  madRequestID = [request madRequestID];
 
-  [(MADService *)service cancelRequestID:v4];
+  [(MADService *)service cancelRequestID:madRequestID];
 }
 
-- (void)_willBeginForRequest:(uint64_t)a1
+- (void)_willBeginForRequest:(uint64_t)request
 {
-  if (a1)
+  if (request)
   {
     v1 = _VKSignpostLog();
     if (os_signpost_enabled(v1))
@@ -312,9 +312,9 @@ void __100__VKCRemoveBackgroundVideoRequestHandler_performRequest_previewResultA
   }
 }
 
-- (void)_didEndForRequest:(uint64_t)a1
+- (void)_didEndForRequest:(uint64_t)request
 {
-  if (a1)
+  if (request)
   {
     v1 = _VKSignpostLog();
     if (os_signpost_enabled(v1))

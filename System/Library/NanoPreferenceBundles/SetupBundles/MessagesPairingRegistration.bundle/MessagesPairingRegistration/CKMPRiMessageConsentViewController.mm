@@ -5,9 +5,9 @@
 - (id)detailString;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)_registerPhoneNumberPermissionEnabled:(BOOL)a3;
-- (void)alternateButtonPressed:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)_registerPhoneNumberPermissionEnabled:(BOOL)enabled;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)suggestedButtonPressed:(id)pressed;
 @end
 
 @implementation CKMPRiMessageConsentViewController
@@ -58,23 +58,23 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   [(CKMPRiMessageConsentViewController *)self _registerPhoneNumberPermissionEnabled:1];
-  v4 = [(CKMPRiMessageConsentViewController *)self miniFlowDelegate];
-  [v4 miniFlowStepComplete:self];
+  miniFlowDelegate = [(CKMPRiMessageConsentViewController *)self miniFlowDelegate];
+  [miniFlowDelegate miniFlowStepComplete:self];
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
   [(CKMPRiMessageConsentViewController *)self _registerPhoneNumberPermissionEnabled:0];
-  v4 = [(CKMPRiMessageConsentViewController *)self miniFlowDelegate];
-  [v4 miniFlowStepComplete:self];
+  miniFlowDelegate = [(CKMPRiMessageConsentViewController *)self miniFlowDelegate];
+  [miniFlowDelegate miniFlowStepComplete:self];
 }
 
-- (void)_registerPhoneNumberPermissionEnabled:(BOOL)a3
+- (void)_registerPhoneNumberPermissionEnabled:(BOOL)enabled
 {
-  v27 = a3;
+  enabledCopy = enabled;
   if (IMOSLoggingEnabled())
   {
     v3 = OSLogHandleForIMFoundationCategory();
@@ -83,7 +83,7 @@
       *buf = 136315394;
       v35 = "[CKMPRiMessageConsentViewController _registerPhoneNumberPermissionEnabled:]";
       v36 = 1024;
-      LODWORD(v37[0]) = v27;
+      LODWORD(v37[0]) = enabledCopy;
       _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "%s - %d", buf, 0x12u);
     }
   }
@@ -170,7 +170,7 @@ LABEL_23:
   if (v9)
   {
     v38 = @"enableRegistration";
-    v14 = [NSNumber numberWithBool:v27];
+    v14 = [NSNumber numberWithBool:enabledCopy];
     v39 = v14;
     v15 = [NSDictionary dictionaryWithObjects:&v39 forKeys:&v38 count:1];
     v16 = IDSCopyIDForDevice();
@@ -197,12 +197,12 @@ LABEL_23:
     }
 
     v22 = BPSGetActiveDevice();
-    v23 = [v22 pairingID];
-    v24 = [v23 UUIDString];
-    v25 = [@"kEnableMessages-" stringByAppendingString:v24];
+    pairingID = [v22 pairingID];
+    uUIDString = [pairingID UUIDString];
+    v25 = [@"kEnableMessages-" stringByAppendingString:uUIDString];
 
     v26 = &kCFBooleanTrue;
-    if (!v27)
+    if (!enabledCopy)
     {
       v26 = &kCFBooleanFalse;
     }

@@ -1,20 +1,20 @@
 @interface ISBiometricUpdateTouchIDSettingsOperation
-- (ISBiometricUpdateTouchIDSettingsOperation)initWithAccountIdentifier:(id)a3;
+- (ISBiometricUpdateTouchIDSettingsOperation)initWithAccountIdentifier:(id)identifier;
 - (id)_newUpdateTouchIDSettingsOperation;
 - (void)run;
 @end
 
 @implementation ISBiometricUpdateTouchIDSettingsOperation
 
-- (ISBiometricUpdateTouchIDSettingsOperation)initWithAccountIdentifier:(id)a3
+- (ISBiometricUpdateTouchIDSettingsOperation)initWithAccountIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = ISBiometricUpdateTouchIDSettingsOperation;
   v5 = [(ISOperation *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     status = v5->_status;
     v5->_status = v6;
 
@@ -56,25 +56,25 @@
   {
     v12 = *MEMORY[0x277D6A110];
     v13 = SSError();
-    v14 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v14)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v14 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
-    if ([v14 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v15 |= 2u;
+      shouldLog |= 2u;
     }
 
-    v16 = [v14 OSLogObject];
-    if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
-      v15 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v15)
+    if (shouldLog)
     {
       *v201 = 138543362;
       *&v201[4] = objc_opt_class();
@@ -99,25 +99,25 @@
     goto LABEL_224;
   }
 
-  v4 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v4)
+  mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38]2)
   {
-    v4 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
-  if ([v4 shouldLogToDisk])
+  shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+  if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
   {
-    v5 |= 2u;
+    shouldLog2 |= 2u;
   }
 
-  v6 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
-    v5 &= 2u;
+    shouldLog2 &= 2u;
   }
 
-  if (v5)
+  if (shouldLog2)
   {
     v7 = objc_opt_class();
     status = self->_status;
@@ -145,25 +145,25 @@
 
   if ([(ISBiometricUpdateTouchIDSettingsOperation *)self regeneratePublicKey])
   {
-    v20 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v20)
+    mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]3)
     {
-      v20 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v21 = [v20 shouldLog];
-    if ([v20 shouldLogToDisk])
+    shouldLog3 = [mEMORY[0x277D69B38]3 shouldLog];
+    if ([mEMORY[0x277D69B38]3 shouldLogToDisk])
     {
-      v21 |= 2u;
+      shouldLog3 |= 2u;
     }
 
-    v22 = [v20 OSLogObject];
-    if (!os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [mEMORY[0x277D69B38]3 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
-      v21 &= 2u;
+      shouldLog3 &= 2u;
     }
 
-    if (v21)
+    if (shouldLog3)
     {
       v23 = objc_opt_class();
       *v201 = 138543362;
@@ -178,9 +178,9 @@
         goto LABEL_34;
       }
 
-      v22 = [MEMORY[0x277CCACA8] stringWithCString:v25 encoding:{4, v201, v162}];
+      oSLogObject3 = [MEMORY[0x277CCACA8] stringWithCString:v25 encoding:{4, v201, v162}];
       free(v25);
-      v161 = v22;
+      v161 = oSLogObject3;
       SSFileLog();
     }
 
@@ -197,25 +197,25 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    v30 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v30)
+    mEMORY[0x277D69B38]4 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]4)
     {
-      v30 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]4 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v31 = [v30 shouldLog];
-    if ([v30 shouldLogToDisk])
+    shouldLog4 = [mEMORY[0x277D69B38]4 shouldLog];
+    if ([mEMORY[0x277D69B38]4 shouldLogToDisk])
     {
-      v31 |= 2u;
+      shouldLog4 |= 2u;
     }
 
-    v32 = [v30 OSLogObject];
-    if (!os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+    oSLogObject4 = [mEMORY[0x277D69B38]4 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
     {
-      v31 &= 2u;
+      shouldLog4 &= 2u;
     }
 
-    if (v31)
+    if (shouldLog4)
     {
       v33 = objc_opt_class();
       v34 = self->_status;
@@ -237,9 +237,9 @@ LABEL_45:
         goto LABEL_46;
       }
 
-      v32 = [MEMORY[0x277CCACA8] stringWithCString:v36 encoding:{4, v201, v162}];
+      oSLogObject4 = [MEMORY[0x277CCACA8] stringWithCString:v36 encoding:{4, v201, v162}];
       free(v36);
-      v161 = v32;
+      v161 = oSLogObject4;
       SSFileLog();
     }
 
@@ -264,25 +264,25 @@ LABEL_47:
     {
       v80 = *MEMORY[0x277D6A110];
       v168 = SSError();
-      v81 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-      if (!v81)
+      mEMORY[0x277D69B38]5 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+      if (!mEMORY[0x277D69B38]5)
       {
-        v81 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38]5 = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v82 = [v81 shouldLog];
-      if ([v81 shouldLogToDisk])
+      shouldLog5 = [mEMORY[0x277D69B38]5 shouldLog];
+      if ([mEMORY[0x277D69B38]5 shouldLogToDisk])
       {
-        v82 |= 2u;
+        shouldLog5 |= 2u;
       }
 
-      v83 = [v81 OSLogObject];
-      if (!os_log_type_enabled(v83, OS_LOG_TYPE_ERROR))
+      oSLogObject5 = [mEMORY[0x277D69B38]5 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
       {
-        v82 &= 2u;
+        shouldLog5 &= 2u;
       }
 
-      if (!v82)
+      if (!shouldLog5)
       {
         goto LABEL_129;
       }
@@ -291,25 +291,25 @@ LABEL_47:
     else if (v75)
     {
       v168 = v75;
-      v81 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-      if (!v81)
+      mEMORY[0x277D69B38]5 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+      if (!mEMORY[0x277D69B38]5)
       {
-        v81 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38]5 = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v92 = [v81 shouldLog];
-      if ([v81 shouldLogToDisk])
+      shouldLog6 = [mEMORY[0x277D69B38]5 shouldLog];
+      if ([mEMORY[0x277D69B38]5 shouldLogToDisk])
       {
-        v92 |= 2u;
+        shouldLog6 |= 2u;
       }
 
-      v83 = [v81 OSLogObject];
-      if (!os_log_type_enabled(v83, OS_LOG_TYPE_ERROR))
+      oSLogObject5 = [mEMORY[0x277D69B38]5 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
       {
-        v92 &= 2u;
+        shouldLog6 &= 2u;
       }
 
-      if (!v92)
+      if (!shouldLog6)
       {
         goto LABEL_129;
       }
@@ -324,25 +324,25 @@ LABEL_47:
       }
 
       v168 = v78;
-      v81 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-      if (!v81)
+      mEMORY[0x277D69B38]5 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+      if (!mEMORY[0x277D69B38]5)
       {
-        v81 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38]5 = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v100 = [v81 shouldLog];
-      if ([v81 shouldLogToDisk])
+      shouldLog7 = [mEMORY[0x277D69B38]5 shouldLog];
+      if ([mEMORY[0x277D69B38]5 shouldLogToDisk])
       {
-        v100 |= 2u;
+        shouldLog7 |= 2u;
       }
 
-      v83 = [v81 OSLogObject];
-      if (!os_log_type_enabled(v83, OS_LOG_TYPE_ERROR))
+      oSLogObject5 = [mEMORY[0x277D69B38]5 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
       {
-        v100 &= 2u;
+        shouldLog7 &= 2u;
       }
 
-      if (!v100)
+      if (!shouldLog7)
       {
         goto LABEL_129;
       }
@@ -389,25 +389,25 @@ LABEL_131:
         v111 = *MEMORY[0x277D6A110];
         v112 = SSError();
 
-        v113 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-        if (!v113)
+        mEMORY[0x277D69B38]6 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+        if (!mEMORY[0x277D69B38]6)
         {
-          v113 = [MEMORY[0x277D69B38] sharedConfig];
+          mEMORY[0x277D69B38]6 = [MEMORY[0x277D69B38] sharedConfig];
         }
 
-        v114 = [v113 shouldLog];
-        if ([v113 shouldLogToDisk])
+        shouldLog8 = [mEMORY[0x277D69B38]6 shouldLog];
+        if ([mEMORY[0x277D69B38]6 shouldLogToDisk])
         {
-          v114 |= 2u;
+          shouldLog8 |= 2u;
         }
 
-        v115 = [v113 OSLogObject];
-        if (!os_log_type_enabled(v115, OS_LOG_TYPE_ERROR))
+        oSLogObject6 = [mEMORY[0x277D69B38]6 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
         {
-          v114 &= 2u;
+          shouldLog8 &= 2u;
         }
 
-        if (!v114)
+        if (!shouldLog8)
         {
           goto LABEL_178;
         }
@@ -417,25 +417,25 @@ LABEL_131:
       {
         v112 = group;
 
-        v113 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-        if (!v113)
+        mEMORY[0x277D69B38]6 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+        if (!mEMORY[0x277D69B38]6)
         {
-          v113 = [MEMORY[0x277D69B38] sharedConfig];
+          mEMORY[0x277D69B38]6 = [MEMORY[0x277D69B38] sharedConfig];
         }
 
-        v116 = [v113 shouldLog];
-        if ([v113 shouldLogToDisk])
+        shouldLog9 = [mEMORY[0x277D69B38]6 shouldLog];
+        if ([mEMORY[0x277D69B38]6 shouldLogToDisk])
         {
-          v116 |= 2u;
+          shouldLog9 |= 2u;
         }
 
-        v115 = [v113 OSLogObject];
-        if (!os_log_type_enabled(v115, OS_LOG_TYPE_ERROR))
+        oSLogObject6 = [mEMORY[0x277D69B38]6 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
         {
-          v116 &= 2u;
+          shouldLog9 &= 2u;
         }
 
-        if (!v116)
+        if (!shouldLog9)
         {
           goto LABEL_178;
         }
@@ -456,25 +456,25 @@ LABEL_131:
 
         v112 = v164;
 
-        v113 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-        if (!v113)
+        mEMORY[0x277D69B38]6 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+        if (!mEMORY[0x277D69B38]6)
         {
-          v113 = [MEMORY[0x277D69B38] sharedConfig];
+          mEMORY[0x277D69B38]6 = [MEMORY[0x277D69B38] sharedConfig];
         }
 
-        v124 = [v113 shouldLog];
-        if ([v113 shouldLogToDisk])
+        shouldLog10 = [mEMORY[0x277D69B38]6 shouldLog];
+        if ([mEMORY[0x277D69B38]6 shouldLogToDisk])
         {
-          v124 |= 2u;
+          shouldLog10 |= 2u;
         }
 
-        v115 = [v113 OSLogObject];
-        if (!os_log_type_enabled(v115, OS_LOG_TYPE_ERROR))
+        oSLogObject6 = [mEMORY[0x277D69B38]6 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
         {
-          v124 &= 2u;
+          shouldLog10 &= 2u;
         }
 
-        if (!v124)
+        if (!shouldLog10)
         {
           goto LABEL_178;
         }
@@ -496,9 +496,9 @@ LABEL_131:
         goto LABEL_179;
       }
 
-      v115 = [MEMORY[0x277CCACA8] stringWithCString:v128 encoding:{4, v201, v162}];
+      oSLogObject6 = [MEMORY[0x277CCACA8] stringWithCString:v128 encoding:{4, v201, v162}];
       free(v128);
-      v161 = v115;
+      v161 = oSLogObject6;
       SSFileLog();
 LABEL_178:
 
@@ -523,43 +523,43 @@ LABEL_222:
           goto LABEL_223;
         }
 
-        v169 = [(ISBiometricUpdateTouchIDSettingsOperation *)self _newUpdateTouchIDSettingsOperation];
+        _newUpdateTouchIDSettingsOperation = [(ISBiometricUpdateTouchIDSettingsOperation *)self _newUpdateTouchIDSettingsOperation];
         v135 = +[(ISDataProvider *)ISProtocolDataProvider];
-        [v169 setDataProvider:v135];
+        [_newUpdateTouchIDSettingsOperation setDataProvider:v135];
 
         v175 = v112;
-        LODWORD(v135) = [(ISOperation *)self runSubOperation:v169 returningError:&v175];
+        LODWORD(v135) = [(ISOperation *)self runSubOperation:_newUpdateTouchIDSettingsOperation returningError:&v175];
         v13 = v175;
 
         if (!v135)
         {
-          v137 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-          if (!v137)
+          mEMORY[0x277D69B38]7 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+          if (!mEMORY[0x277D69B38]7)
           {
-            v137 = [MEMORY[0x277D69B38] sharedConfig];
+            mEMORY[0x277D69B38]7 = [MEMORY[0x277D69B38] sharedConfig];
           }
 
-          v148 = [v137 shouldLog];
-          if ([v137 shouldLogToDisk])
+          shouldLog11 = [mEMORY[0x277D69B38]7 shouldLog];
+          if ([mEMORY[0x277D69B38]7 shouldLogToDisk])
           {
-            v148 |= 2u;
+            shouldLog11 |= 2u;
           }
 
-          v139 = [v137 OSLogObject];
-          if (!os_log_type_enabled(v139, OS_LOG_TYPE_ERROR))
+          oSLogObject7 = [mEMORY[0x277D69B38]7 OSLogObject];
+          if (!os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_ERROR))
           {
-            v148 &= 2u;
+            shouldLog11 &= 2u;
           }
 
-          if (v148)
+          if (shouldLog11)
           {
             v149 = objc_opt_class();
             v150 = v149;
-            v151 = [v13 localizedDescription];
+            localizedDescription = [v13 localizedDescription];
             *v201 = 138543618;
             *&v201[4] = v149;
             *&v201[12] = 2114;
-            *&v201[14] = v151;
+            *&v201[14] = localizedDescription;
             LODWORD(v162) = 22;
             v161 = v201;
             v152 = _os_log_send_and_compose_impl();
@@ -571,9 +571,9 @@ LABEL_221:
               goto LABEL_222;
             }
 
-            v139 = [MEMORY[0x277CCACA8] stringWithCString:v152 encoding:{4, v201, v162}];
+            oSLogObject7 = [MEMORY[0x277CCACA8] stringWithCString:v152 encoding:{4, v201, v162}];
             free(v152);
-            v161 = v139;
+            v161 = oSLogObject7;
             SSFileLog();
           }
 
@@ -582,8 +582,8 @@ LABEL_220:
           goto LABEL_221;
         }
 
-        v136 = [v169 dataProvider];
-        v137 = [v136 output];
+        dataProvider = [_newUpdateTouchIDSettingsOperation dataProvider];
+        mEMORY[0x277D69B38]7 = [dataProvider output];
 
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -591,25 +591,25 @@ LABEL_220:
           v153 = *MEMORY[0x277D6A110];
           v154 = SSError();
 
-          v139 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-          if (!v139)
+          oSLogObject7 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+          if (!oSLogObject7)
           {
-            v139 = [MEMORY[0x277D69B38] sharedConfig];
+            oSLogObject7 = [MEMORY[0x277D69B38] sharedConfig];
           }
 
-          v155 = [v139 shouldLog];
-          if ([v139 shouldLogToDisk])
+          shouldLog12 = [oSLogObject7 shouldLog];
+          if ([oSLogObject7 shouldLogToDisk])
           {
-            v155 |= 2u;
+            shouldLog12 |= 2u;
           }
 
-          v140 = [v139 OSLogObject];
-          if (!os_log_type_enabled(v140, OS_LOG_TYPE_ERROR))
+          v139OSLogObject = [oSLogObject7 OSLogObject];
+          if (!os_log_type_enabled(v139OSLogObject, OS_LOG_TYPE_ERROR))
           {
-            v155 &= 2u;
+            shouldLog12 &= 2u;
           }
 
-          if (v155)
+          if (shouldLog12)
           {
             v156 = objc_opt_class();
             *v201 = 138543362;
@@ -625,9 +625,9 @@ LABEL_220:
               goto LABEL_220;
             }
 
-            v140 = [MEMORY[0x277CCACA8] stringWithCString:v158 encoding:{4, v201, v162}];
+            v139OSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v158 encoding:{4, v201, v162}];
             free(v158);
-            v161 = v140;
+            v161 = v139OSLogObject;
             SSFileLog();
           }
 
@@ -635,32 +635,32 @@ LABEL_220:
           goto LABEL_219;
         }
 
-        v138 = [v137 objectForKey:@"status"];
-        v139 = v138;
+        v138 = [mEMORY[0x277D69B38]7 objectForKey:@"status"];
+        oSLogObject7 = v138;
         if (v138)
         {
           self->_resultBlock = [v138 integerValue];
         }
 
-        v140 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-        if (!v140)
+        v139OSLogObject = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+        if (!v139OSLogObject)
         {
-          v140 = [MEMORY[0x277D69B38] sharedConfig];
+          v139OSLogObject = [MEMORY[0x277D69B38] sharedConfig];
         }
 
-        v141 = [v140 shouldLog];
-        if ([v140 shouldLogToDisk])
+        shouldLog13 = [v139OSLogObject shouldLog];
+        if ([v139OSLogObject shouldLogToDisk])
         {
-          v141 |= 2u;
+          shouldLog13 |= 2u;
         }
 
-        v142 = [v140 OSLogObject];
-        if (!os_log_type_enabled(v142, OS_LOG_TYPE_DEFAULT))
+        v140OSLogObject = [v139OSLogObject OSLogObject];
+        if (!os_log_type_enabled(v140OSLogObject, OS_LOG_TYPE_DEFAULT))
         {
-          v141 &= 2u;
+          shouldLog13 &= 2u;
         }
 
-        if (v141)
+        if (shouldLog13)
         {
           v143 = objc_opt_class();
           v144 = MEMORY[0x277CCABB0];
@@ -682,9 +682,9 @@ LABEL_219:
             goto LABEL_220;
           }
 
-          v142 = [MEMORY[0x277CCACA8] stringWithCString:v147 encoding:{4, v201, v162}];
+          v140OSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v147 encoding:{4, v201, v162}];
           free(v147);
-          v161 = v142;
+          v161 = v140OSLogObject;
           SSFileLog();
         }
 
@@ -700,9 +700,9 @@ LABEL_180:
       goto LABEL_181;
     }
 
-    v83 = [MEMORY[0x277CCACA8] stringWithCString:v104 encoding:{4, v201, v162}];
+    oSLogObject5 = [MEMORY[0x277CCACA8] stringWithCString:v104 encoding:{4, v201, v162}];
     free(v104);
-    v161 = v83;
+    v161 = oSLogObject5;
     SSFileLog();
 LABEL_129:
 
@@ -743,27 +743,27 @@ LABEL_129:
   v39 = dispatch_time(0, 60000000000);
   if (dispatch_group_wait(v37, v39))
   {
-    v40 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v40)
+    mEMORY[0x277D69B38]8 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]8)
     {
-      v40 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]8 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v41 = [v40 shouldLog];
-    v42 = [v40 shouldLogToDisk];
-    v43 = [v40 OSLogObject];
-    v44 = v43;
-    if (v42)
+    shouldLog14 = [mEMORY[0x277D69B38]8 shouldLog];
+    shouldLogToDisk = [mEMORY[0x277D69B38]8 shouldLogToDisk];
+    oSLogObject8 = [mEMORY[0x277D69B38]8 OSLogObject];
+    v44 = oSLogObject8;
+    if (shouldLogToDisk)
     {
-      v41 |= 2u;
+      shouldLog14 |= 2u;
     }
 
-    if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject8, OS_LOG_TYPE_ERROR))
     {
-      v41 &= 2u;
+      shouldLog14 &= 2u;
     }
 
-    if (v41)
+    if (shouldLog14)
     {
       v45 = objc_opt_class();
       v195 = 138543362;
@@ -818,17 +818,17 @@ LABEL_60:
 
   if ([*(*&v201[8] + 40) count] && objc_msgSend(v187[5], "count"))
   {
-    v58 = [(ISBiometricUpdateTouchIDSettingsOperation *)self _newUpdateTouchIDSettingsOperation];
+    _newUpdateTouchIDSettingsOperation2 = [(ISBiometricUpdateTouchIDSettingsOperation *)self _newUpdateTouchIDSettingsOperation];
     v59 = +[(ISDataProvider *)ISProtocolDataProvider];
-    [v58 setDataProvider:v59];
+    [_newUpdateTouchIDSettingsOperation2 setDataProvider:v59];
 
     v180 = 0;
-    LODWORD(v59) = [(ISOperation *)self runSubOperation:v58 returningError:&v180];
+    LODWORD(v59) = [(ISOperation *)self runSubOperation:_newUpdateTouchIDSettingsOperation2 returningError:&v180];
     v13 = v180;
     if (v59)
     {
-      v60 = [v58 dataProvider];
-      v61 = [v60 output];
+      dataProvider2 = [_newUpdateTouchIDSettingsOperation2 dataProvider];
+      output = [dataProvider2 output];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -836,27 +836,27 @@ LABEL_60:
         v117 = *MEMORY[0x277D6A110];
         v171 = SSError();
 
-        v62 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-        if (!v62)
+        mEMORY[0x277D69B38]9 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+        if (!mEMORY[0x277D69B38]9)
         {
-          v62 = [MEMORY[0x277D69B38] sharedConfig];
+          mEMORY[0x277D69B38]9 = [MEMORY[0x277D69B38] sharedConfig];
         }
 
-        v118 = [v62 shouldLog];
-        v119 = [v62 shouldLogToDisk];
-        v120 = [v62 OSLogObject];
-        v72 = v120;
-        if (v119)
+        shouldLog15 = [mEMORY[0x277D69B38]9 shouldLog];
+        shouldLogToDisk2 = [mEMORY[0x277D69B38]9 shouldLogToDisk];
+        oSLogObject9 = [mEMORY[0x277D69B38]9 OSLogObject];
+        v72 = oSLogObject9;
+        if (shouldLogToDisk2)
         {
-          v118 |= 2u;
+          shouldLog15 |= 2u;
         }
 
-        if (!os_log_type_enabled(v120, OS_LOG_TYPE_ERROR))
+        if (!os_log_type_enabled(oSLogObject9, OS_LOG_TYPE_ERROR))
         {
-          v118 &= 2u;
+          shouldLog15 &= 2u;
         }
 
-        if (v118)
+        if (shouldLog15)
         {
           v121 = objc_opt_class();
           v195 = 138543362;
@@ -884,35 +884,35 @@ LABEL_163:
         goto LABEL_164;
       }
 
-      v62 = v61;
-      v167 = [v62 objectForKey:@"status"];
+      mEMORY[0x277D69B38]9 = output;
+      v167 = [mEMORY[0x277D69B38]9 objectForKey:@"status"];
       if (v167)
       {
         self->_resultBlock = [v167 integerValue];
       }
 
-      v63 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-      if (!v63)
+      mEMORY[0x277D69B38]10 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+      if (!mEMORY[0x277D69B38]10)
       {
-        v63 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38]10 = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v64 = [v63 shouldLog];
-      v65 = [v63 shouldLogToDisk];
-      v170 = v63;
-      v66 = [v63 OSLogObject];
-      v67 = v66;
-      if (v65)
+      shouldLog16 = [mEMORY[0x277D69B38]10 shouldLog];
+      shouldLogToDisk3 = [mEMORY[0x277D69B38]10 shouldLogToDisk];
+      v170 = mEMORY[0x277D69B38]10;
+      oSLogObject10 = [mEMORY[0x277D69B38]10 OSLogObject];
+      v67 = oSLogObject10;
+      if (shouldLogToDisk3)
       {
-        v64 |= 2u;
+        shouldLog16 |= 2u;
       }
 
-      if (!os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled(oSLogObject10, OS_LOG_TYPE_DEFAULT))
       {
-        v64 &= 2u;
+        shouldLog16 &= 2u;
       }
 
-      if (v64)
+      if (shouldLog16)
       {
         v68 = objc_opt_class();
         v69 = [MEMORY[0x277CCABB0] numberWithInteger:self->_resultBlock];
@@ -944,29 +944,29 @@ LABEL_76:
       goto LABEL_76;
     }
 
-    v61 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v61)
+    output = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!output)
     {
-      v61 = [MEMORY[0x277D69B38] sharedConfig];
+      output = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v93 = [v61 shouldLog];
-    v94 = [v61 shouldLogToDisk];
-    v95 = [v61 OSLogObject];
-    v62 = v95;
-    if (v94)
+    shouldLog17 = [output shouldLog];
+    shouldLogToDisk4 = [output shouldLogToDisk];
+    oSLogObject11 = [output OSLogObject];
+    mEMORY[0x277D69B38]9 = oSLogObject11;
+    if (shouldLogToDisk4)
     {
-      v93 |= 2u;
+      shouldLog17 |= 2u;
     }
 
-    if (os_log_type_enabled(v95, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oSLogObject11, OS_LOG_TYPE_ERROR))
     {
-      v96 = v93;
+      v96 = shouldLog17;
     }
 
     else
     {
-      v96 = v93 & 2;
+      v96 = shouldLog17 & 2;
     }
 
     if (!v96)
@@ -975,20 +975,20 @@ LABEL_76:
     }
 
     v97 = objc_opt_class();
-    v98 = [v13 localizedDescription];
+    localizedDescription2 = [v13 localizedDescription];
     v195 = 138543618;
     v196 = v97;
     v197 = 2114;
-    v198 = v98;
+    v198 = localizedDescription2;
     LODWORD(v162) = 22;
     v161 = &v195;
     v99 = _os_log_send_and_compose_impl();
 
     if (v99)
     {
-      v62 = [MEMORY[0x277CCACA8] stringWithCString:v99 encoding:{4, &v195, v162}];
+      mEMORY[0x277D69B38]9 = [MEMORY[0x277CCACA8] stringWithCString:v99 encoding:{4, &v195, v162}];
       free(v99);
-      v161 = v62;
+      v161 = mEMORY[0x277D69B38]9;
       SSFileLog();
 LABEL_165:
     }
@@ -998,29 +998,29 @@ LABEL_166:
     goto LABEL_167;
   }
 
-  v58 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v58)
+  _newUpdateTouchIDSettingsOperation2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!_newUpdateTouchIDSettingsOperation2)
   {
-    v58 = [MEMORY[0x277D69B38] sharedConfig];
+    _newUpdateTouchIDSettingsOperation2 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v84 = [v58 shouldLog];
-  v85 = [v58 shouldLogToDisk];
-  v86 = [v58 OSLogObject];
-  v61 = v86;
-  if (v85)
+  shouldLog18 = [_newUpdateTouchIDSettingsOperation2 shouldLog];
+  shouldLogToDisk5 = [_newUpdateTouchIDSettingsOperation2 shouldLogToDisk];
+  oSLogObject12 = [_newUpdateTouchIDSettingsOperation2 OSLogObject];
+  output = oSLogObject12;
+  if (shouldLogToDisk5)
   {
-    v84 |= 2u;
+    shouldLog18 |= 2u;
   }
 
-  if (os_log_type_enabled(v86, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(oSLogObject12, OS_LOG_TYPE_ERROR))
   {
-    v87 = v84;
+    v87 = shouldLog18;
   }
 
   else
   {
-    v87 = v84 & 2;
+    v87 = shouldLog18 & 2;
   }
 
   if (!v87)
@@ -1045,9 +1045,9 @@ LABEL_99:
 
   if (v91)
   {
-    v61 = [MEMORY[0x277CCACA8] stringWithCString:v91 encoding:{4, &v195, v162}];
+    output = [MEMORY[0x277CCACA8] stringWithCString:v91 encoding:{4, &v195, v162}];
     free(v91);
-    v161 = v61;
+    v161 = output;
     SSFileLog();
     goto LABEL_99;
   }
@@ -1063,10 +1063,10 @@ LABEL_223:
 LABEL_224:
   [(ISOperation *)self setError:v13, v161];
   [(ISOperation *)self setSuccess:v13 == 0];
-  v159 = [(ISBiometricUpdateTouchIDSettingsOperation *)self resultBlock];
-  if (v159)
+  resultBlock = [(ISBiometricUpdateTouchIDSettingsOperation *)self resultBlock];
+  if (resultBlock)
   {
-    (v159)[2](v159, [(ISBiometricUpdateTouchIDSettingsOperation *)self status], v13);
+    (resultBlock)[2](resultBlock, [(ISBiometricUpdateTouchIDSettingsOperation *)self status], v13);
   }
 
 LABEL_227:
@@ -1452,32 +1452,32 @@ void __48__ISBiometricUpdateTouchIDSettingsOperation_run__block_invoke_2(uint64_
     goto LABEL_34;
   }
 
-  v6 = [(ISBiometricUpdateTouchIDSettingsOperation *)self certChainPrimary];
-  if ([v6 count])
+  certChainPrimary = [(ISBiometricUpdateTouchIDSettingsOperation *)self certChainPrimary];
+  if ([certChainPrimary count])
   {
-    [v5 setObject:v6 forKey:@"primaryX509Chain"];
+    [v5 setObject:certChainPrimary forKey:@"primaryX509Chain"];
     goto LABEL_18;
   }
 
-  v7 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v7)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v7 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v8 = [v7 shouldLog];
-  if ([v7 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  v10 = [v7 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v11 = v9;
   }
@@ -1492,7 +1492,7 @@ void __48__ISBiometricUpdateTouchIDSettingsOperation_run__block_invoke_2(uint64_
     goto LABEL_16;
   }
 
-  v12 = v6;
+  v12 = certChainPrimary;
   v13 = objc_opt_class();
   v51 = v3;
   v14 = MEMORY[0x277CCABB0];
@@ -1500,7 +1500,7 @@ void __48__ISBiometricUpdateTouchIDSettingsOperation_run__block_invoke_2(uint64_
   v15 = [v14 numberWithUnsignedInteger:{objc_msgSend(v12, "count")}];
   v54 = 138543618;
   v55 = v13;
-  v6 = v12;
+  certChainPrimary = v12;
   v56 = 2112;
   v57 = v15;
   LODWORD(v47) = 22;
@@ -1510,37 +1510,37 @@ void __48__ISBiometricUpdateTouchIDSettingsOperation_run__block_invoke_2(uint64_
   v3 = v51;
   if (v16)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithCString:v16 encoding:{4, &v54, v47}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v16 encoding:{4, &v54, v47}];
     free(v16);
-    v46 = v10;
+    v46 = oSLogObject;
     SSFileLog();
 LABEL_16:
   }
 
 LABEL_18:
-  v17 = [(ISBiometricUpdateTouchIDSettingsOperation *)self certChainExtended];
-  if (![v17 count])
+  certChainExtended = [(ISBiometricUpdateTouchIDSettingsOperation *)self certChainExtended];
+  if (![certChainExtended count])
   {
-    v52 = v6;
-    v18 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v18)
+    v52 = certChainPrimary;
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]2)
     {
-      v18 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v19 = [v18 shouldLog];
-    if ([v18 shouldLogToDisk])
+    shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+    if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
     {
-      v20 = v19 | 2;
+      v20 = shouldLog2 | 2;
     }
 
     else
     {
-      v20 = v19;
+      v20 = shouldLog2;
     }
 
-    v21 = [v18 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v22 = v20;
     }
@@ -1557,7 +1557,7 @@ LABEL_18:
       v25 = v5;
       v26 = MEMORY[0x277CCABB0];
       v49 = v24;
-      v27 = [v26 numberWithUnsignedInteger:{objc_msgSend(v17, "count")}];
+      v27 = [v26 numberWithUnsignedInteger:{objc_msgSend(certChainExtended, "count")}];
       v54 = 138543618;
       v55 = v24;
       v3 = v23;
@@ -1572,20 +1572,20 @@ LABEL_18:
       {
 LABEL_32:
 
-        v6 = v52;
+        certChainPrimary = v52;
         goto LABEL_33;
       }
 
-      v21 = [MEMORY[0x277CCACA8] stringWithCString:v28 encoding:{4, &v54, v47}];
+      oSLogObject2 = [MEMORY[0x277CCACA8] stringWithCString:v28 encoding:{4, &v54, v47}];
       free(v28);
-      v46 = v21;
+      v46 = oSLogObject2;
       SSFileLog();
     }
 
     goto LABEL_32;
   }
 
-  [v5 setObject:v17 forKey:@"extendedX509Chain"];
+  [v5 setObject:certChainExtended forKey:@"extendedX509Chain"];
 LABEL_33:
 
 LABEL_34:
@@ -1602,25 +1602,25 @@ LABEL_34:
     v29 = 0;
   }
 
-  v30 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v30)
+  mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38]3)
   {
-    v30 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v31 = [v30 shouldLog];
-  if ([v30 shouldLogToDisk])
+  shouldLog3 = [mEMORY[0x277D69B38]3 shouldLog];
+  if ([mEMORY[0x277D69B38]3 shouldLogToDisk])
   {
-    v32 = v31 | 2;
+    v32 = shouldLog3 | 2;
   }
 
   else
   {
-    v32 = v31;
+    v32 = shouldLog3;
   }
 
-  v33 = [v30 OSLogObject];
-  if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+  oSLogObject3 = [mEMORY[0x277D69B38]3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
   {
     v34 = v32;
   }
@@ -1637,7 +1637,7 @@ LABEL_34:
 
   v35 = v5;
   v36 = v4;
-  v37 = self;
+  selfCopy = self;
   v38 = v3;
   v39 = objc_opt_class();
   v40 = MEMORY[0x277CCABB0];
@@ -1646,7 +1646,7 @@ LABEL_34:
   v54 = 138543618;
   v55 = v39;
   v3 = v38;
-  self = v37;
+  self = selfCopy;
   v4 = v36;
   v5 = v35;
   v56 = 2114;
@@ -1656,7 +1656,7 @@ LABEL_34:
 
   if (v42)
   {
-    v33 = [MEMORY[0x277CCACA8] stringWithCString:v42 encoding:{4, &v54, v47}];
+    oSLogObject3 = [MEMORY[0x277CCACA8] stringWithCString:v42 encoding:{4, &v54, v47}];
     free(v42);
     SSFileLog();
 LABEL_48:

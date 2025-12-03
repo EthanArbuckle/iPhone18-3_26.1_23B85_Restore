@@ -1,46 +1,46 @@
 @interface EKCalendarAccountEditItem
-- (BOOL)calendarEditor:(id)a3 shouldSelectSubitem:(unint64_t)a4;
+- (BOOL)calendarEditor:(id)editor shouldSelectSubitem:(unint64_t)subitem;
 - (BOOL)canAddCalendarToMoreThanOneAccount;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (id)currentSource;
-- (id)initLimitedToSource:(id)a3;
-- (void)accountTableViewController:(id)a3 selectedSourceChanged:(id)a4;
-- (void)calendarEditor:(id)a3 didSelectSubitem:(unint64_t)a4;
+- (id)initLimitedToSource:(id)source;
+- (void)accountTableViewController:(id)controller selectedSourceChanged:(id)changed;
+- (void)calendarEditor:(id)editor didSelectSubitem:(unint64_t)subitem;
 @end
 
 @implementation EKCalendarAccountEditItem
 
-- (id)initLimitedToSource:(id)a3
+- (id)initLimitedToSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = EKCalendarAccountEditItem;
   v6 = [(EKCalendarAccountEditItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_limitedToSource, a3);
+    objc_storeStrong(&v6->_limitedToSource, source);
   }
 
   return v7;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   v4 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:1 reuseIdentifier:@"EKCalendarAccountEditItem"];
   v5 = EventKitUIBundle();
   v6 = [v5 localizedStringForKey:@"Account" value:&stru_1F4EF6790 table:0];
-  v7 = [v4 textLabel];
-  [v7 setText:v6];
+  textLabel = [v4 textLabel];
+  [textLabel setText:v6];
 
   [v4 setAccessibilityIdentifier:@"calendar-account-cell"];
-  v8 = [(EKCalendarAccountEditItem *)self currentSource];
-  v9 = CalDisplayedTitleForSourceAsCalendarTarget(v8);
-  v10 = [v4 detailTextLabel];
-  [v10 setText:v9];
+  currentSource = [(EKCalendarAccountEditItem *)self currentSource];
+  v9 = CalDisplayedTitleForSourceAsCalendarTarget(currentSource);
+  detailTextLabel = [v4 detailTextLabel];
+  [detailTextLabel setText:v9];
 
-  v11 = [v4 detailTextLabel];
-  [v11 setAccessibilityIdentifier:@"calendar-current-selected-account"];
+  detailTextLabel2 = [v4 detailTextLabel];
+  [detailTextLabel2 setAccessibilityIdentifier:@"calendar-current-selected-account"];
 
   if ([(EKCalendarAccountEditItem *)self canAddCalendarToMoreThanOneAccount]&& [(EKCalendarAccountEditItem *)self editable])
   {
@@ -58,8 +58,8 @@
 - (BOOL)canAddCalendarToMoreThanOneAccount
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(EKCalendarEditItem *)self delegate];
-  if (![v3 isNewCalendar])
+  delegate = [(EKCalendarEditItem *)self delegate];
+  if (![delegate isNewCalendar])
   {
 
     return 0;
@@ -76,8 +76,8 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(EKEventStore *)self->super._store sources];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  sources = [(EKEventStore *)self->super._store sources];
+  v6 = [sources countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -89,7 +89,7 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sources);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -100,16 +100,16 @@
             continue;
           }
 
-          v12 = [v11 constraints];
-          if ([v12 supportsSubscribedCalendars])
+          constraints = [v11 constraints];
+          if ([constraints supportsSubscribedCalendars])
           {
           }
 
           else
           {
-            v13 = [v11 sourceType];
+            sourceType = [v11 sourceType];
 
-            if (v13 != 4)
+            if (sourceType != 4)
             {
               continue;
             }
@@ -124,7 +124,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [sources countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (!v7)
       {
         v14 = v8 > 1;
@@ -141,9 +141,9 @@ LABEL_24:
 
 - (id)currentSource
 {
-  v3 = [(EKCalendar *)self->super._calendar source];
+  source = [(EKCalendar *)self->super._calendar source];
 
-  if (!v3)
+  if (!source)
   {
     v4 = [EKCalendarEditor fetchInitialSourceWithLimitedToSource:self->_limitedToSource calendar:self->super._calendar store:self->super._store];
     [(EKCalendar *)self->super._calendar setSource:v4];
@@ -155,9 +155,9 @@ LABEL_24:
   return [(EKCalendar *)calendar source];
 }
 
-- (BOOL)calendarEditor:(id)a3 shouldSelectSubitem:(unint64_t)a4
+- (BOOL)calendarEditor:(id)editor shouldSelectSubitem:(unint64_t)subitem
 {
-  v5 = [(EKCalendarAccountEditItem *)self canAddCalendarToMoreThanOneAccount:a3];
+  v5 = [(EKCalendarAccountEditItem *)self canAddCalendarToMoreThanOneAccount:editor];
   if (v5)
   {
 
@@ -167,32 +167,32 @@ LABEL_24:
   return v5;
 }
 
-- (void)calendarEditor:(id)a3 didSelectSubitem:(unint64_t)a4
+- (void)calendarEditor:(id)editor didSelectSubitem:(unint64_t)subitem
 {
-  if ([(EKCalendarAccountEditItem *)self canAddCalendarToMoreThanOneAccount:a3])
+  if ([(EKCalendarAccountEditItem *)self canAddCalendarToMoreThanOneAccount:editor])
   {
     v9 = [[EKCalendarAccountTableViewController alloc] initWithCalendar:self->super._calendar andStore:self->super._store];
     [(EKCalendarAccountTableViewController *)v9 setDelegate:self];
-    v5 = [(EKCalendarAccountEditItem *)self currentSource];
-    v6 = [v5 sourceIdentifier];
-    [(EKCalendarAccountTableViewController *)v9 setCurrentSourceIdentifier:v6];
+    currentSource = [(EKCalendarAccountEditItem *)self currentSource];
+    sourceIdentifier = [currentSource sourceIdentifier];
+    [(EKCalendarAccountTableViewController *)v9 setCurrentSourceIdentifier:sourceIdentifier];
 
-    v7 = [(EKCalendarEditItem *)self delegate];
-    v8 = [v7 owningNavigationController];
-    [v8 pushViewController:v9 animated:1];
+    delegate = [(EKCalendarEditItem *)self delegate];
+    owningNavigationController = [delegate owningNavigationController];
+    [owningNavigationController pushViewController:v9 animated:1];
   }
 }
 
-- (void)accountTableViewController:(id)a3 selectedSourceChanged:(id)a4
+- (void)accountTableViewController:(id)controller selectedSourceChanged:(id)changed
 {
-  v8 = a4;
-  v5 = [(EKCalendarEditItem *)self delegate];
+  changedCopy = changed;
+  delegate = [(EKCalendarEditItem *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(EKCalendarEditItem *)self delegate];
-    [v7 accountEditItem:self selectedSourceChanged:v8];
+    delegate2 = [(EKCalendarEditItem *)self delegate];
+    [delegate2 accountEditItem:self selectedSourceChanged:changedCopy];
   }
 }
 

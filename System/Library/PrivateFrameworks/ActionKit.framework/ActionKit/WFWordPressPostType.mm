@@ -23,7 +23,7 @@
 + (id)allowedSecureCodingClassesByPropertyKey
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___WFWordPressPostType;
   v2 = objc_msgSendSuper2(&v7, sel_allowedSecureCodingClassesByPropertyKey);
   v3 = [v2 mutableCopy];

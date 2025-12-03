@@ -6,7 +6,7 @@
 
 - (uint64_t)firstChildNodeWithGeometry
 {
-  v1 = [a1 childNodesPassingTest:&__block_literal_global_75];
+  v1 = [self childNodesPassingTest:&__block_literal_global_75];
   result = [v1 count];
   if (result)
   {

@@ -1,39 +1,39 @@
 @interface UITableViewCellFocusableReorderControl
-- (BOOL)_shouldHandlePressEvent:(id)a3;
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
-- (UITableViewCellFocusableReorderControl)initWithTableViewCell:(id)a3;
-- (void)_arrowButton:(int64_t)a3;
+- (BOOL)_shouldHandlePressEvent:(id)event;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
+- (UITableViewCellFocusableReorderControl)initWithTableViewCell:(id)cell;
+- (void)_arrowButton:(int64_t)button;
 - (void)_beginIndirectTracking;
-- (void)_downArrowButton:(id)a3;
+- (void)_downArrowButton:(id)button;
 - (void)_endIndirectTracking;
-- (void)_panRecognizer:(id)a3;
-- (void)_upArrowButton:(id)a3;
+- (void)_panRecognizer:(id)recognizer;
+- (void)_upArrowButton:(id)button;
 - (void)_updateFloatingViewForCurrentTraits;
-- (void)_updateFocusedFloatingContentView:(BOOL)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)floatingContentView:(id)a3 didFinishTransitioningToState:(unint64_t)a4;
-- (void)floatingContentView:(id)a3 isTransitioningFromState:(unint64_t)a4 toState:(unint64_t)a5;
+- (void)_updateFocusedFloatingContentView:(BOOL)view;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)floatingContentView:(id)view didFinishTransitioningToState:(unint64_t)state;
+- (void)floatingContentView:(id)view isTransitioningFromState:(unint64_t)state toState:(unint64_t)toState;
 - (void)layoutSubviews;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UITableViewCellFocusableReorderControl
 
-- (UITableViewCellFocusableReorderControl)initWithTableViewCell:(id)a3
+- (UITableViewCellFocusableReorderControl)initWithTableViewCell:(id)cell
 {
   v4.receiver = self;
   v4.super_class = UITableViewCellFocusableReorderControl;
-  return [(UITableViewCellReorderControl *)&v4 initWithTableViewCell:a3];
+  return [(UITableViewCellReorderControl *)&v4 initWithTableViewCell:cell];
 }
 
 - (void)_updateFloatingViewForCurrentTraits
 {
   WeakRetained = objc_loadWeakRetained(&self->super._cell);
-  v4 = [WeakRetained traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  traitCollection = [WeakRetained traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   if (self->_cellHasReorderingAppearance)
   {
@@ -45,7 +45,7 @@
 
   else
   {
-    v7 = v5 == 1000 || v5 == 2;
+    v7 = userInterfaceStyle == 1000 || userInterfaceStyle == 2;
     v9 = self->_floatingContentView;
     if (v7)
     {
@@ -72,11 +72,11 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = UITableViewCellFocusableReorderControl;
-  [(UIView *)&v4 traitCollectionDidChange:a3];
+  [(UIView *)&v4 traitCollectionDidChange:change];
   [(UITableViewCellReorderControl *)self _updateImageView];
   [(UITableViewCellFocusableReorderControl *)self _updateFloatingViewForCurrentTraits];
 }
@@ -90,12 +90,12 @@
   [(_UIFloatingContentView *)self->_floatingContentView setFrame:?];
 }
 
-- (void)floatingContentView:(id)a3 isTransitioningFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)floatingContentView:(id)view isTransitioningFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v8 = a3;
-  if (a5 == 4)
+  viewCopy = view;
+  if (toState == 4)
   {
-    v11 = v8;
+    v11 = viewCopy;
     WeakRetained = objc_loadWeakRetained(&self->super._cell);
     [WeakRetained _transitionToReorderingAppearance:1];
 
@@ -105,23 +105,23 @@
 
   else
   {
-    if (a4 != 4)
+    if (state != 4)
     {
       goto LABEL_6;
     }
 
-    v11 = v8;
+    v11 = viewCopy;
     v10 = objc_loadWeakRetained(&self->super._cell);
     [v10 _transitionToReorderingAppearance:0];
   }
 
-  v8 = v11;
+  viewCopy = v11;
 LABEL_6:
 }
 
-- (void)floatingContentView:(id)a3 didFinishTransitioningToState:(unint64_t)a4
+- (void)floatingContentView:(id)view didFinishTransitioningToState:(unint64_t)state
 {
-  if (a4 != 4 && self->_cellHasReorderingAppearance)
+  if (state != 4 && self->_cellHasReorderingAppearance)
   {
     WeakRetained = objc_loadWeakRetained(&self->super._cell);
     [WeakRetained _finishTransitioningToReorderingAppearance:0];
@@ -132,10 +132,10 @@ LABEL_6:
   }
 }
 
-- (void)_updateFocusedFloatingContentView:(BOOL)a3
+- (void)_updateFocusedFloatingContentView:(BOOL)view
 {
-  v3 = a3;
-  v5 = [(UIControl *)self state];
+  viewCopy = view;
+  state = [(UIControl *)self state];
   if ([(UIControl *)self isTracking])
   {
     v6 = 4;
@@ -143,23 +143,23 @@ LABEL_6:
 
   else
   {
-    v6 = v5;
+    v6 = state;
   }
 
   floatingContentView = self->_floatingContentView;
 
-  [(_UIFloatingContentView *)floatingContentView setControlState:v6 animated:v3];
+  [(_UIFloatingContentView *)floatingContentView setControlState:v6 animated:viewCopy];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = UITableViewCellFocusableReorderControl;
-  v6 = a3;
-  [(UIView *)&v8 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedView];
+  contextCopy = context;
+  [(UIView *)&v8 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedView = [contextCopy nextFocusedView];
 
-  if ([(UIControl *)self isTracking]&& v7 != self)
+  if ([(UIControl *)self isTracking]&& nextFocusedView != self)
   {
     [(UIControl *)self setHighlighted:0];
     [(UITableViewCellFocusableReorderControl *)self _endIndirectTracking];
@@ -169,9 +169,9 @@ LABEL_6:
   [(UITableViewCellReorderControl *)self _updateImageView];
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ([(UIControl *)self isTracking])
   {
     v5 = 0;
@@ -181,7 +181,7 @@ LABEL_6:
   {
     v7.receiver = self;
     v7.super_class = UITableViewCellFocusableReorderControl;
-    v5 = [(UIView *)&v7 shouldUpdateFocusInContext:v4];
+    v5 = [(UIView *)&v7 shouldUpdateFocusInContext:contextCopy];
   }
 
   return v5;
@@ -237,19 +237,19 @@ LABEL_6:
   [(UITableViewCellFocusableReorderControl *)self _updateFocusedFloatingContentView:1];
 }
 
-- (BOOL)_shouldHandlePressEvent:(id)a3
+- (BOOL)_shouldHandlePressEvent:(id)event
 {
-  v4 = [a3 _lastPreparedPress];
-  v5 = [v4 type] == 4 && -[UIControl isEnabled](self, "isEnabled") && -[UIView isFocused](self, "isFocused");
+  _lastPreparedPress = [event _lastPreparedPress];
+  v5 = [_lastPreparedPress type] == 4 && -[UIControl isEnabled](self, "isEnabled") && -[UIView isFocused](self, "isFocused");
 
   return v5;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UITableViewCellFocusableReorderControl *)self _shouldHandlePressEvent:v7])
+  beganCopy = began;
+  eventCopy = event;
+  if ([(UITableViewCellFocusableReorderControl *)self _shouldHandlePressEvent:eventCopy])
   {
     [(UIControl *)self setHighlighted:1];
     [(UITableViewCellFocusableReorderControl *)self _updateFocusedFloatingContentView:1];
@@ -259,15 +259,15 @@ LABEL_6:
   {
     v8.receiver = self;
     v8.super_class = UITableViewCellFocusableReorderControl;
-    [(UIResponder *)&v8 pressesBegan:v6 withEvent:v7];
+    [(UIResponder *)&v8 pressesBegan:beganCopy withEvent:eventCopy];
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UITableViewCellFocusableReorderControl *)self _shouldHandlePressEvent:v7])
+  endedCopy = ended;
+  eventCopy = event;
+  if ([(UITableViewCellFocusableReorderControl *)self _shouldHandlePressEvent:eventCopy])
   {
     [(UIControl *)self setHighlighted:0];
     [(UITableViewCellFocusableReorderControl *)self _updateFocusedFloatingContentView:1];
@@ -286,15 +286,15 @@ LABEL_6:
   {
     v8.receiver = self;
     v8.super_class = UITableViewCellFocusableReorderControl;
-    [(UIResponder *)&v8 pressesEnded:v6 withEvent:v7];
+    [(UIResponder *)&v8 pressesEnded:endedCopy withEvent:eventCopy];
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UITableViewCellFocusableReorderControl *)self _shouldHandlePressEvent:v7])
+  cancelledCopy = cancelled;
+  eventCopy = event;
+  if ([(UITableViewCellFocusableReorderControl *)self _shouldHandlePressEvent:eventCopy])
   {
     [(UIControl *)self setHighlighted:0];
     [(_UIFloatingContentView *)self->_floatingContentView setControlState:[(UIControl *)self state] animated:1];
@@ -308,44 +308,44 @@ LABEL_6:
   {
     v8.receiver = self;
     v8.super_class = UITableViewCellFocusableReorderControl;
-    [(UIResponder *)&v8 pressesCancelled:v6 withEvent:v7];
+    [(UIResponder *)&v8 pressesCancelled:cancelledCopy withEvent:eventCopy];
   }
 }
 
-- (void)_panRecognizer:(id)a3
+- (void)_panRecognizer:(id)recognizer
 {
-  v16 = a3;
+  recognizerCopy = recognizer;
   if ([(UIControl *)self isTracking])
   {
-    v4 = [v16 state];
-    if (v4 == 2)
+    state = [recognizerCopy state];
+    if (state == 2)
     {
       WeakRetained = objc_loadWeakRetained(&self->super._cell);
-      v8 = [WeakRetained _tableView];
-      v9 = [v8 _scrollView];
-      [v9 frame];
+      _tableView = [WeakRetained _tableView];
+      _scrollView = [_tableView _scrollView];
+      [_scrollView frame];
       Height = CGRectGetHeight(v18);
-      v11 = [(UIView *)self _screen];
-      [v11 bounds];
+      _screen = [(UIView *)self _screen];
+      [_screen bounds];
       v12 = Height / CGRectGetHeight(v19);
 
       v13 = objc_loadWeakRetained(&self->super._cell);
-      [v16 locationInView:self];
+      [recognizerCopy locationInView:self];
       v15 = round(v12 * (v14 - self->super._downPoint.y));
       *&v15 = v15;
       [v13 _grabberDragged:self yDelta:v15];
     }
 
-    else if (v4 == 1)
+    else if (state == 1)
     {
-      [v16 locationInView:self];
+      [recognizerCopy locationInView:self];
       self->super._downPoint.x = v5;
       self->super._downPoint.y = v6;
     }
   }
 }
 
-- (void)_arrowButton:(int64_t)a3
+- (void)_arrowButton:(int64_t)button
 {
   if ([(UIControl *)self isTracking])
   {
@@ -353,8 +353,8 @@ LABEL_6:
     [WeakRetained frame];
     Height = CGRectGetHeight(v13);
     v7 = objc_loadWeakRetained(&self->super._cell);
-    v8 = [v7 _tableView];
-    [v8 _rowSpacing];
+    _tableView = [v7 _tableView];
+    [_tableView _rowSpacing];
     v10 = Height + v9;
 
     v12[1] = 3221225472;
@@ -362,7 +362,7 @@ LABEL_6:
     v12[0] = MEMORY[0x1E69E9820];
     v12[2] = __55__UITableViewCellFocusableReorderControl__arrowButton___block_invoke;
     v12[3] = &unk_1E70F32F0;
-    if (a3)
+    if (button)
     {
       v11 = v10;
     }
@@ -381,18 +381,18 @@ void __55__UITableViewCellFocusableReorderControl__arrowButton___block_invoke(ui
   [WeakRetained _grabberDragged:*(a1 + 32) yDelta:v2];
 }
 
-- (void)_upArrowButton:(id)a3
+- (void)_upArrowButton:(id)button
 {
-  if ([a3 state] == 3)
+  if ([button state] == 3)
   {
 
     [(UITableViewCellFocusableReorderControl *)self _arrowButton:0];
   }
 }
 
-- (void)_downArrowButton:(id)a3
+- (void)_downArrowButton:(id)button
 {
-  if ([a3 state] == 3)
+  if ([button state] == 3)
   {
 
     [(UITableViewCellFocusableReorderControl *)self _arrowButton:1];

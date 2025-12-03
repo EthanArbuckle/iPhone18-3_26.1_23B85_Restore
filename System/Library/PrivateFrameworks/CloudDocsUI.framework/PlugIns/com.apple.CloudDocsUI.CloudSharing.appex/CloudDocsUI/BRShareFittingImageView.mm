@@ -1,62 +1,62 @@
 @interface BRShareFittingImageView
-- (BRShareFittingImageView)initWithFrame:(CGRect)a3;
+- (BRShareFittingImageView)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (void)setImage:(id)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (void)setImage:(id)image;
 @end
 
 @implementation BRShareFittingImageView
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v16.receiver = self;
   v16.super_class = BRShareFittingImageView;
-  [(BRShareFittingImageView *)&v16 setImage:v4];
+  [(BRShareFittingImageView *)&v16 setImage:imageCopy];
   if (([(BRShareFittingImageView *)self translatesAutoresizingMaskIntoConstraints]& 1) == 0)
   {
-    v5 = [(BRShareFittingImageView *)self aspectRatioConstraint];
+    aspectRatioConstraint = [(BRShareFittingImageView *)self aspectRatioConstraint];
 
-    if (v5)
+    if (aspectRatioConstraint)
     {
-      v6 = [(BRShareFittingImageView *)self aspectRatioConstraint];
-      [(BRShareFittingImageView *)self removeConstraint:v6];
+      aspectRatioConstraint2 = [(BRShareFittingImageView *)self aspectRatioConstraint];
+      [(BRShareFittingImageView *)self removeConstraint:aspectRatioConstraint2];
     }
 
-    if (v4)
+    if (imageCopy)
     {
-      [v4 size];
-      if (v7 <= 0.0 || ([v4 size], v8 <= 0.0))
+      [imageCopy size];
+      if (v7 <= 0.0 || ([imageCopy size], v8 <= 0.0))
       {
-        v15 = cdui_default_log();
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
+        aspectRatioConstraint3 = cdui_default_log();
+        if (os_log_type_enabled(aspectRatioConstraint3, OS_LOG_TYPE_FAULT))
         {
-          sub_10002D708(v4, v15);
+          sub_10002D708(imageCopy, aspectRatioConstraint3);
         }
       }
 
       else
       {
-        v9 = [(BRShareFittingImageView *)self widthAnchor];
-        v10 = [(BRShareFittingImageView *)self heightAnchor];
-        [v4 size];
+        widthAnchor = [(BRShareFittingImageView *)self widthAnchor];
+        heightAnchor = [(BRShareFittingImageView *)self heightAnchor];
+        [imageCopy size];
         v12 = v11;
-        [v4 size];
-        v14 = [v9 constraintEqualToAnchor:v10 multiplier:v12 / v13];
+        [imageCopy size];
+        v14 = [widthAnchor constraintEqualToAnchor:heightAnchor multiplier:v12 / v13];
         [(BRShareFittingImageView *)self setAspectRatioConstraint:v14];
 
-        v15 = [(BRShareFittingImageView *)self aspectRatioConstraint];
-        [v15 setActive:1];
+        aspectRatioConstraint3 = [(BRShareFittingImageView *)self aspectRatioConstraint];
+        [aspectRatioConstraint3 setActive:1];
       }
     }
   }
 }
 
-- (BRShareFittingImageView)initWithFrame:(CGRect)a3
+- (BRShareFittingImageView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = BRShareFittingImageView;
-  v3 = [(BRShareFittingImageView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BRShareFittingImageView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -78,8 +78,8 @@
   [(BRShareFittingImageView *)&v19 intrinsicContentSize];
   v9 = v8;
   v11 = v10;
-  v12 = [(BRShareFittingImageView *)self traitCollection];
-  [v12 displayScale];
+  traitCollection = [(BRShareFittingImageView *)self traitCollection];
+  [traitCollection displayScale];
   v14 = sub_100028B24(CGRectZero.origin.x, y, v5, v7, v9, v11, v13);
   v16 = v15;
 
@@ -90,17 +90,17 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  v4 = fmin(a3.width, a3.height);
+  v4 = fmin(size.width, size.height);
   y = CGRectZero.origin.y;
   v17.receiver = self;
   v17.super_class = BRShareFittingImageView;
   [(BRShareFittingImageView *)&v17 intrinsicContentSize];
   v7 = v6;
   v9 = v8;
-  v10 = [(BRShareFittingImageView *)self traitCollection];
-  [v10 displayScale];
+  traitCollection = [(BRShareFittingImageView *)self traitCollection];
+  [traitCollection displayScale];
   v12 = sub_100028B24(CGRectZero.origin.x, y, v4, v4, v7, v9, v11);
   v14 = v13;
 

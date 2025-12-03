@@ -1,16 +1,16 @@
 @interface PBEditMenuPasteButtonDrawing
 - (CGSize)drawingSize;
-- (PBEditMenuPasteButtonDrawing)initWithStyle:(id)a3 tag:(id)a4;
+- (PBEditMenuPasteButtonDrawing)initWithStyle:(id)style tag:(id)tag;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4;
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point;
 @end
 
 @implementation PBEditMenuPasteButtonDrawing
 
-- (PBEditMenuPasteButtonDrawing)initWithStyle:(id)a3 tag:(id)a4
+- (PBEditMenuPasteButtonDrawing)initWithStyle:(id)style tag:(id)tag
 {
-  v6 = a3;
-  v7 = a4;
+  styleCopy = style;
+  tagCopy = tag;
   v53.receiver = self;
   v53.super_class = PBEditMenuPasteButtonDrawing;
   v8 = [(PBEditMenuPasteButtonDrawing *)&v53 init];
@@ -19,25 +19,25 @@
     goto LABEL_29;
   }
 
-  v9 = +[UISPasteVariant variantForSecureName:](UISPasteVariant, "variantForSecureName:", [v7 secureName]);
-  [v7 size];
+  v9 = +[UISPasteVariant variantForSecureName:](UISPasteVariant, "variantForSecureName:", [tagCopy secureName]);
+  [tagCopy size];
   v8->_size.width = v10;
   v8->_size.height = v11;
   v12 = kCTUIFontTextStyleSubhead;
-  v13 = [v6 newFontForTextStyle:kCTUIFontTextStyleSubhead attributes:0];
-  [v7 contentOrigin];
+  v13 = [styleCopy newFontForTextStyle:kCTUIFontTextStyleSubhead attributes:0];
+  [tagCopy contentOrigin];
   v15 = v14;
   v17 = v16;
-  v18 = [v7 displayMode];
-  v19 = [v7 displayMode];
+  displayMode = [tagCopy displayMode];
+  displayMode2 = [tagCopy displayMode];
   width = CGSizeZero.width;
   height = CGSizeZero.height;
-  if (v19)
+  if (displayMode2)
   {
-    v22 = [v9 glyph];
-    v23 = [v6 assetGlyphWithName:v22 glyphSize:2 textStyle:v12];
+    glyph = [v9 glyph];
+    v23 = [styleCopy assetGlyphWithName:glyph glyphSize:2 textStyle:v12];
 
-    v24 = [[UISVectorGlyphDrawing alloc] initWithVectorGlyph:v23 tintColor:{objc_msgSend(v6, "tintColor")}];
+    v24 = [[UISVectorGlyphDrawing alloc] initWithVectorGlyph:v23 tintColor:{objc_msgSend(styleCopy, "tintColor")}];
     glyph = v8->_glyph;
     v8->_glyph = v24;
 
@@ -55,10 +55,10 @@
     v29 = CGSizeZero.width;
   }
 
-  if (v18 != 1)
+  if (displayMode != 1)
   {
-    v52 = [v6 layoutDirection] != 0;
-    v51 = [v6 hasAccessibilityContentSizeCategory] ^ 1;
+    v52 = [styleCopy layoutDirection] != 0;
+    v51 = [styleCopy hasAccessibilityContentSizeCategory] ^ 1;
     settings.spec = kCTParagraphStyleSpecifierAlignment;
     settings.valueSize = 1;
     settings.value = &v52;
@@ -66,15 +66,15 @@
     v58 = 1;
     v59 = &v51;
     v32 = CTParagraphStyleCreate(&settings, 2uLL);
-    v33 = [v6 localization];
-    v34 = [v9 localizedStringForLocalization:v33];
+    localization = [styleCopy localization];
+    v34 = [v9 localizedStringForLocalization:localization];
 
     v55[0] = v13;
     v54[0] = kCTFontAttributeName;
     v54[1] = kCTForegroundColorAttributeName;
-    v35 = [v6 tintColor];
+    tintColor = [styleCopy tintColor];
     v54[2] = kCTParagraphStyleAttributeName;
-    v55[1] = v35;
+    v55[1] = tintColor;
     v55[2] = v32;
     v36 = [NSDictionary dictionaryWithObjects:v55 forKeys:v54 count:3];
     CFRelease(v32);
@@ -88,7 +88,7 @@
       v37 = v8->_size.width + v15 * -2.0 - (v29 + 6.0);
     }
 
-    v38 = [[UISTextParagraphDrawing alloc] initWithString:v34 attributes:v36 size:objc_msgSend(v6 numberOfLines:"hasAccessibilityContentSizeCategory") ^ 1 scale:{v37, 0.0, objc_msgSend(v6, "displayScale")}];
+    v38 = [[UISTextParagraphDrawing alloc] initWithString:v34 attributes:v36 size:objc_msgSend(styleCopy numberOfLines:"hasAccessibilityContentSizeCategory") ^ 1 scale:{v37, 0.0, objc_msgSend(styleCopy, "displayScale")}];
     titleDrawing = v8->_titleDrawing;
     v8->_titleDrawing = v38;
 
@@ -98,7 +98,7 @@
   }
 
   CFRelease(v13);
-  if ([v6 layoutDirection])
+  if ([styleCopy layoutDirection])
   {
     v42 = v8->_size.width;
     v15 = v42 - v15 - v29;
@@ -194,17 +194,17 @@ LABEL_30:
   return result;
 }
 
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  CGContextSaveGState(a3);
-  [(UISTextParagraphDrawing *)self->_titleDrawing drawInContext:a3 atPoint:x + self->_titleOffset.x, y + self->_titleOffset.y];
-  CGContextRestoreGState(a3);
-  CGContextSaveGState(a3);
-  [(UISVectorGlyphDrawing *)self->_glyph drawInContext:a3 atPoint:x + self->_glyphOffset.x, y + self->_glyphOffset.y];
+  y = point.y;
+  x = point.x;
+  CGContextSaveGState(context);
+  [(UISTextParagraphDrawing *)self->_titleDrawing drawInContext:context atPoint:x + self->_titleOffset.x, y + self->_titleOffset.y];
+  CGContextRestoreGState(context);
+  CGContextSaveGState(context);
+  [(UISVectorGlyphDrawing *)self->_glyph drawInContext:context atPoint:x + self->_glyphOffset.x, y + self->_glyphOffset.y];
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
 @end

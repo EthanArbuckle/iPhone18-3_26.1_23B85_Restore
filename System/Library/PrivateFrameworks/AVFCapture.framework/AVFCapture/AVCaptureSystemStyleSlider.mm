@@ -1,33 +1,33 @@
 @interface AVCaptureSystemStyleSlider
-- (AVCaptureSystemStyleSlider)initWithSession:(id)a3 parameter:(int64_t)a4 action:(id)a5;
+- (AVCaptureSystemStyleSlider)initWithSession:(id)session parameter:(int64_t)parameter action:(id)action;
 - (id)actionQueue;
 - (id)overlayControl;
 - (id)overlayUpdate;
 - (void)dealloc;
-- (void)enqueueActionWithUpdate:(id)a3;
+- (void)enqueueActionWithUpdate:(id)update;
 - (void)installObservers;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)overlayVisibilityDidChange:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)overlayVisibilityDidChange:(BOOL)change;
 - (void)removeObservers;
 @end
 
 @implementation AVCaptureSystemStyleSlider
 
-- (AVCaptureSystemStyleSlider)initWithSession:(id)a3 parameter:(int64_t)a4 action:(id)a5
+- (AVCaptureSystemStyleSlider)initWithSession:(id)session parameter:(int64_t)parameter action:(id)action
 {
   v10.receiver = self;
   v10.super_class = AVCaptureSystemStyleSlider;
-  v8 = [(AVCaptureControl *)&v10 initSubclass];
-  if (v8)
+  initSubclass = [(AVCaptureControl *)&v10 initSubclass];
+  if (initSubclass)
   {
-    v8->_sessionReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:a3];
-    v8->_action = [a5 copy];
-    v8->_parameter = a4;
-    v8->_actionLock._os_unfair_lock_opaque = 0;
-    v8->_changeSmartStyleInProcess = 1;
+    initSubclass->_sessionReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:session];
+    initSubclass->_action = [action copy];
+    initSubclass->_parameter = parameter;
+    initSubclass->_actionLock._os_unfair_lock_opaque = 0;
+    initSubclass->_changeSmartStyleInProcess = 1;
   }
 
-  return v8;
+  return initSubclass;
 }
 
 - (void)dealloc
@@ -86,10 +86,10 @@
 
   v5 = v6;
 LABEL_8:
-  v7 = [(AVCaptureSystemStyleSlider *)self overlayControl];
+  overlayControl = [(AVCaptureSystemStyleSlider *)self overlayControl];
   LODWORD(v8) = v5;
 
-  return [v7 updateWithFloatValue:v8];
+  return [overlayControl updateWithFloatValue:v8];
 }
 
 - (id)actionQueue
@@ -132,14 +132,14 @@ LABEL_8:
   os_unfair_lock_unlock(&self->_actionLock);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   os_unfair_lock_lock(&self->_actionLock);
   observing = self->_observing;
   os_unfair_lock_unlock(&self->_actionLock);
-  if ([a3 isEqualToString:@"smartStyle"] && -[AVWeakReference referencedObject](self->_sessionReference, "referencedObject") == a4)
+  if ([path isEqualToString:@"smartStyle"] && -[AVWeakReference referencedObject](self->_sessionReference, "referencedObject") == object)
   {
-    v11 = [a5 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    v11 = [change objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
     if (observing && v11 != 0)
     {
       v13 = v11;
@@ -170,57 +170,57 @@ LABEL_8:
         }
 
         v16 = [(CAMOverlayServiceSlider *)self->_overlayControl updateWithFloatValue:v15];
-        v17 = [(AVCaptureControl *)self overlay];
+        overlay = [(AVCaptureControl *)self overlay];
 
-        [(AVCaptureControlsOverlay *)v17 updateControl:v16];
+        [(AVCaptureControlsOverlay *)overlay updateControl:v16];
       }
     }
   }
 }
 
-- (void)enqueueActionWithUpdate:(id)a3
+- (void)enqueueActionWithUpdate:(id)update
 {
-  [a3 floatValue];
+  [update floatValue];
   v5 = v4;
-  v6 = [(AVWeakReference *)self->_sessionReference referencedObject];
-  if (!v6)
+  referencedObject = [(AVWeakReference *)self->_sessionReference referencedObject];
+  if (!referencedObject)
   {
     return;
   }
 
-  v7 = v6;
-  v8 = [v6 activeSmartStyle];
-  v9 = v8;
+  v7 = referencedObject;
+  activeSmartStyle = [referencedObject activeSmartStyle];
+  v9 = activeSmartStyle;
   parameter = self->_parameter;
   switch(parameter)
   {
     case 0:
-      v21 = [(AVCaptureSmartStyle *)v8 cast];
+      cast = [(AVCaptureSmartStyle *)activeSmartStyle cast];
       [(AVCaptureSmartStyle *)v9 toneBias];
       v23 = v22;
       [(AVCaptureSmartStyle *)v9 colorBias];
       LODWORD(v17) = LODWORD(v16);
-      v15 = v21;
+      v15 = cast;
       LODWORD(v16) = v5;
       LODWORD(v14) = v23;
       goto LABEL_8;
     case 2:
-      v18 = [(AVCaptureSmartStyle *)v8 cast];
+      cast2 = [(AVCaptureSmartStyle *)activeSmartStyle cast];
       [(AVCaptureSmartStyle *)v9 intensity];
       v20 = v19;
       [(AVCaptureSmartStyle *)v9 colorBias];
       LODWORD(v17) = LODWORD(v16);
-      v15 = v18;
+      v15 = cast2;
       LODWORD(v16) = v20;
       LODWORD(v14) = v5;
       goto LABEL_8;
     case 1:
-      v11 = [(AVCaptureSmartStyle *)v8 cast];
+      cast3 = [(AVCaptureSmartStyle *)activeSmartStyle cast];
       [(AVCaptureSmartStyle *)v9 intensity];
       v13 = v12;
       [(AVCaptureSmartStyle *)v9 toneBias];
       LODWORD(v14) = LODWORD(v16);
-      v15 = v11;
+      v15 = cast3;
       LODWORD(v16) = v13;
       LODWORD(v17) = v5;
 LABEL_8:
@@ -246,19 +246,19 @@ LABEL_8:
   }
 }
 
-- (void)overlayVisibilityDidChange:(BOOL)a3
+- (void)overlayVisibilityDidChange:(BOOL)change
 {
   v6.receiver = self;
   v6.super_class = AVCaptureSystemStyleSlider;
   [(AVCaptureControl *)&v6 overlayVisibilityDidChange:?];
-  if (!a3)
+  if (!change)
   {
-    v5 = [(AVWeakReference *)self->_sessionReference referencedObject];
-    if (v5)
+    referencedObject = [(AVWeakReference *)self->_sessionReference referencedObject];
+    if (referencedObject)
     {
       if (self->_changeSmartStyleInProcess && self->_smartStyleHasChanged)
       {
-        [v5 saveSystemStyleOverrideToDefaults:{objc_msgSend(v5, "smartStyle")}];
+        [referencedObject saveSystemStyleOverrideToDefaults:{objc_msgSend(referencedObject, "smartStyle")}];
         self->_smartStyleHasChanged = 0;
       }
     }

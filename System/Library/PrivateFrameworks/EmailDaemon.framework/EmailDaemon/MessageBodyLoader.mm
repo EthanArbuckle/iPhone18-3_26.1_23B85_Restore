@@ -2,61 +2,61 @@
 + (OS_os_log)log;
 + (OS_os_log)signpostLog;
 + (id)attachmentManager;
-+ (id)loaderForAccount:(id)a3;
-+ (void)_setSharedLoaderForTesting:(id)a3 account:(id)a4;
++ (id)loaderForAccount:(id)account;
++ (void)_setSharedLoaderForTesting:(id)testing account:(id)account;
 + (void)accountsDidChange;
 + (void)applicationWillResume;
 + (void)applicationWillSuspend;
 + (void)initialize;
 + (void)pause;
 + (void)resume;
-- (BOOL)_nts_isProcessingMessage:(id)a3;
-- (BOOL)isProcessingMessage:(id)a3;
+- (BOOL)_nts_isProcessingMessage:(id)message;
+- (BOOL)isProcessingMessage:(id)message;
 - (BOOL)networkFetchingAllowed;
 - (MessageBodyLoader)init;
-- (MessageBodyLoader)initWithLibrary:(id)a3;
+- (MessageBodyLoader)initWithLibrary:(id)library;
 - (id)copyDiagnosticInformation;
 - (unint64_t)signpostID;
 - (void)_cancelSleepIfNeeded;
 - (void)_clearResumeTime;
-- (void)_clientLoadFinished:(id)a3;
-- (void)_finishedCullingMessageList:(id)a3;
+- (void)_clientLoadFinished:(id)finished;
+- (void)_finishedCullingMessageList:(id)list;
 - (void)_getNextClientOrMessage;
-- (void)_getNextClientOrMessageFinished:(id)a3;
-- (void)_logStats:(BOOL)a3;
-- (void)_messageFlagsChanged:(id)a3;
-- (void)_messageLoadFinished:(id)a3;
-- (void)_messagesAdded:(id)a3;
-- (void)_messagesWillBeCompacted:(id)a3;
-- (void)_nts_insertClient:(id)a3;
-- (void)_nts_removeClient:(id)a3;
-- (void)_recordStats:(id)a3;
+- (void)_getNextClientOrMessageFinished:(id)finished;
+- (void)_logStats:(BOOL)stats;
+- (void)_messageFlagsChanged:(id)changed;
+- (void)_messageLoadFinished:(id)finished;
+- (void)_messagesAdded:(id)added;
+- (void)_messagesWillBeCompacted:(id)compacted;
+- (void)_nts_insertClient:(id)client;
+- (void)_nts_removeClient:(id)client;
+- (void)_recordStats:(id)stats;
 - (void)_releasePowerAssertion;
-- (void)_removeNewMessages:(id)a3;
-- (void)_removeNewMessages_nts:(id)a3;
-- (void)_removeViewingMessages:(id)a3;
+- (void)_removeNewMessages:(id)messages;
+- (void)_removeNewMessages_nts:(id)messages_nts;
+- (void)_removeViewingMessages:(id)messages;
 - (void)_retainPowerAssertion;
-- (void)_setIsRunning:(BOOL)a3;
+- (void)_setIsRunning:(BOOL)running;
 - (void)_start;
 - (void)_tryProcessingQueues;
 - (void)_waitUntilNotRunning;
-- (void)addMessage:(id)a3;
-- (void)addMessages:(id)a3;
-- (void)addMessages_nts:(id)a3;
-- (void)addSingleMessageClient:(id)a3;
+- (void)addMessage:(id)message;
+- (void)addMessages:(id)messages;
+- (void)addMessages_nts:(id)messages_nts;
+- (void)addSingleMessageClient:(id)client;
 - (void)applicationWillResume;
 - (void)assertionDidExpire;
-- (void)beginAddingNewMessagesForStore:(id)a3;
+- (void)beginAddingNewMessagesForStore:(id)store;
 - (void)dealloc;
 - (void)disableNetworkFetching;
 - (void)enableNetworkFetching;
-- (void)removeSingleMessageClient:(id)a3;
+- (void)removeSingleMessageClient:(id)client;
 - (void)resume;
 - (void)startup;
-- (void)stopAddingNewMessagesForStore:(id)a3;
+- (void)stopAddingNewMessagesForStore:(id)store;
 - (void)systemDidWake;
 - (void)userStoppedViewingMessages;
-- (void)userViewingMessages:(id)a3;
+- (void)userViewingMessages:(id)messages;
 @end
 
 @implementation MessageBodyLoader
@@ -67,7 +67,7 @@
   block[1] = 3221225472;
   block[2] = sub_10003DFFC;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001856F0 != -1)
   {
     dispatch_once(&qword_1001856F0, block);
@@ -80,8 +80,8 @@
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
@@ -92,7 +92,7 @@
   block[1] = 3221225472;
   block[2] = sub_10003E164;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100185700 != -1)
   {
     dispatch_once(&qword_100185700, block);
@@ -105,7 +105,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_alloc_init(NSMutableDictionary);
     v3 = qword_100185708;
@@ -113,32 +113,32 @@
   }
 }
 
-+ (void)_setSharedLoaderForTesting:(id)a3 account:(id)a4
++ (void)_setSharedLoaderForTesting:(id)testing account:(id)account
 {
-  v8 = a3;
-  v5 = a4;
+  testingCopy = testing;
+  accountCopy = account;
   v6 = qword_100185708;
-  v7 = [v5 uniqueID];
-  [v6 setObject:v8 forKeyedSubscript:v7];
+  uniqueID = [accountCopy uniqueID];
+  [v6 setObject:testingCopy forKeyedSubscript:uniqueID];
 
-  [v8 startup];
+  [testingCopy startup];
 }
 
-+ (id)loaderForAccount:(id)a3
++ (id)loaderForAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 uniqueID];
-  if (v4)
+  accountCopy = account;
+  uniqueID = [accountCopy uniqueID];
+  if (uniqueID)
   {
     v5 = qword_100185708;
     objc_sync_enter(v5);
-    v6 = [qword_100185708 objectForKeyedSubscript:v4];
+    v6 = [qword_100185708 objectForKeyedSubscript:uniqueID];
     if (!v6)
     {
       v6 = objc_alloc_init(MessageBodyLoader);
-      [(MessageBodyLoader *)v6 setAccount:v3];
+      [(MessageBodyLoader *)v6 setAccount:accountCopy];
       [(MessageBodyLoader *)v6 startup];
-      [qword_100185708 setObject:v6 forKeyedSubscript:v4];
+      [qword_100185708 setObject:v6 forKeyedSubscript:uniqueID];
     }
 
     objc_sync_exit(v5);
@@ -156,8 +156,8 @@
 {
   obj = qword_100185708;
   objc_sync_enter(obj);
-  v2 = [qword_100185708 allValues];
-  [v2 makeObjectsPerformSelector:"pause"];
+  allValues = [qword_100185708 allValues];
+  [allValues makeObjectsPerformSelector:"pause"];
 
   objc_sync_exit(obj);
 }
@@ -166,8 +166,8 @@
 {
   obj = qword_100185708;
   objc_sync_enter(obj);
-  v2 = [qword_100185708 allValues];
-  [v2 makeObjectsPerformSelector:"resume"];
+  allValues = [qword_100185708 allValues];
+  [allValues makeObjectsPerformSelector:"resume"];
 
   objc_sync_exit(obj);
 }
@@ -175,9 +175,9 @@
 + (id)attachmentManager
 {
   v2 = sub_100027C70();
-  v3 = [v2 defaultAttachmentManager];
+  defaultAttachmentManager = [v2 defaultAttachmentManager];
 
-  return v3;
+  return defaultAttachmentManager;
 }
 
 - (MessageBodyLoader)init
@@ -188,9 +188,9 @@
   return v4;
 }
 
-- (MessageBodyLoader)initWithLibrary:(id)a3
+- (MessageBodyLoader)initWithLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v35.receiver = self;
   v35.super_class = MessageBodyLoader;
   v6 = [(MessageBodyLoader *)&v35 init];
@@ -228,17 +228,17 @@
 
     v22 = v6->_cancelationToken;
     v23 = +[MFPowerController sharedInstance];
-    v24 = [v23 powerObservable];
+    powerObservable = [v23 powerObservable];
     v29 = _NSConcreteStackBlock;
     v30 = 3221225472;
     v31 = sub_10004003C;
     v32 = &unk_1001578A8;
     objc_copyWeak(&v33, &location);
     v25 = [EFObserver observerWithResultBlock:&v29];
-    v26 = [v24 subscribe:{v25, v29, v30, v31, v32}];
+    v26 = [powerObservable subscribe:{v25, v29, v30, v31, v32}];
     [(EFManualCancelationToken *)v22 addCancelable:v26];
 
-    objc_storeStrong(&v6->_library, a3);
+    objc_storeStrong(&v6->_library, library);
     v27 = +[MFDiagnostics sharedController];
     [v27 addDiagnosticsGenerator:v6];
 
@@ -255,7 +255,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "startup: %@", &v5, 0xCu);
   }
 
@@ -302,13 +302,13 @@
   v3 = objc_alloc_init(NSMutableString);
   [v3 appendString:@"\n"];
   [v3 appendString:@"==== Message Body Loader ====\n"];
-  v4 = [(MessageBodyLoader *)self account];
-  [v3 appendFormat:@"  Account         : %@\n", v4];
+  account = [(MessageBodyLoader *)self account];
+  [v3 appendFormat:@"  Account         : %@\n", account];
 
   [v3 appendFormat:@"  Running         : %d\n", *(self + 120) & 1];
-  v5 = [(MessageBodyLoader *)self isPaused];
+  isPaused = [(MessageBodyLoader *)self isPaused];
   v6 = "NO";
-  if (v5)
+  if (isPaused)
   {
     v6 = "YES";
   }
@@ -347,9 +347,9 @@
     [v16 handleFailureInMethod:a2 object:self file:@"MessageBodyLoader.m" lineNumber:448 description:@"should not try to process queues while we're running a task."];
   }
 
-  v3 = [(MessageBodyLoader *)self isPaused];
+  isPaused = [(MessageBodyLoader *)self isPaused];
   v4 = *(self + 120);
-  if (v3)
+  if (isPaused)
   {
     v4 &= ~4u;
     *(self + 120) = v4;
@@ -391,8 +391,8 @@
         [v10 setMessages:self->_newMessages];
         v11 = [MFMonitoredInvocation mf_invocationWithSelector:"run" target:v10];
         v12 = +[NSNotificationCenter defaultCenter];
-        v13 = [v11 monitor];
-        [v12 addObserver:self selector:"_finishedCullingMessageList:" name:MonitoredActivityEnded object:v13];
+        monitor = [v11 monitor];
+        [v12 addObserver:self selector:"_finishedCullingMessageList:" name:MonitoredActivityEnded object:monitor];
 
         [(MFInvocationQueue *)self->_workQueue addInvocation:v11];
         *(self + 120) |= 2u;
@@ -435,94 +435,94 @@
   [v6 setViewingMessages:self->_userViewingMessages];
   v3 = [MFMonitoredInvocation mf_invocationWithSelector:"run" target:v6];
   v4 = +[NSNotificationCenter defaultCenter];
-  v5 = [v3 monitor];
-  [v4 addObserver:self selector:"_getNextClientOrMessageFinished:" name:MonitoredActivityEnded object:v5];
+  monitor = [v3 monitor];
+  [v4 addObserver:self selector:"_getNextClientOrMessageFinished:" name:MonitoredActivityEnded object:monitor];
 
   [(MFInvocationQueue *)self->_workQueue addInvocation:v3];
   *(self + 120) |= 2u;
 }
 
-- (void)_finishedCullingMessageList:(id)a3
+- (void)_finishedCullingMessageList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100040ABC;
   v7[3] = &unk_1001563D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = listCopy;
+  v6 = listCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_clientLoadFinished:(id)a3
+- (void)_clientLoadFinished:(id)finished
 {
-  v5 = a3;
+  finishedCopy = finished;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100040C50;
   block[3] = &unk_100157098;
   block[4] = self;
-  v9 = v5;
+  v9 = finishedCopy;
   v10 = a2;
-  v7 = v5;
+  v7 = finishedCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_messageLoadFinished:(id)a3
+- (void)_messageLoadFinished:(id)finished
 {
-  v5 = a3;
+  finishedCopy = finished;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100040F84;
   block[3] = &unk_100157098;
   block[4] = self;
-  v9 = v5;
+  v9 = finishedCopy;
   v10 = a2;
-  v7 = v5;
+  v7 = finishedCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_getNextClientOrMessageFinished:(id)a3
+- (void)_getNextClientOrMessageFinished:(id)finished
 {
-  v5 = a3;
+  finishedCopy = finished;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100041304;
   block[3] = &unk_100157098;
   block[4] = self;
-  v9 = v5;
+  v9 = finishedCopy;
   v10 = a2;
-  v7 = v5;
+  v7 = finishedCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_messagesAdded:(id)a3
+- (void)_messagesAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000418C8;
   v7[3] = &unk_1001563D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = addedCopy;
+  selfCopy = self;
+  v6 = addedCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_removeNewMessages_nts:(id)a3
+- (void)_removeNewMessages_nts:(id)messages_nts
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  messages_ntsCopy = messages_nts;
+  v5 = [messages_ntsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -532,16 +532,16 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(messages_ntsCopy);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         [(NSMutableSet *)self->_newMessageSet removeObject:v8, v12];
         newMessageMailboxQuota = self->_newMessageMailboxQuota;
-        v10 = [v8 mailbox];
-        if (v10)
+        mailbox = [v8 mailbox];
+        if (mailbox)
         {
-          v11 = v10;
+          v11 = mailbox;
         }
 
         else
@@ -552,119 +552,119 @@
         [(NSCountedSet *)newMessageMailboxQuota removeObject:v11];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [messages_ntsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 
-  [(NSMutableArray *)self->_newMessages removeObjectsInArray:v4];
+  [(NSMutableArray *)self->_newMessages removeObjectsInArray:messages_ntsCopy];
 }
 
-- (void)_removeNewMessages:(id)a3
+- (void)_removeNewMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100041B70;
   v7[3] = &unk_1001563D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = messagesCopy;
+  v6 = messagesCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_removeViewingMessages:(id)a3
+- (void)_removeViewingMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100041C14;
   v7[3] = &unk_1001563D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = messagesCopy;
+  v6 = messagesCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_messagesWillBeCompacted:(id)a3
+- (void)_messagesWillBeCompacted:(id)compacted
 {
-  v4 = a3;
+  compactedCopy = compacted;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100041CB8;
   v7[3] = &unk_1001563D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = compactedCopy;
+  selfCopy = self;
+  v6 = compactedCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_messageFlagsChanged:(id)a3
+- (void)_messageFlagsChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100041DF0;
   v7[3] = &unk_1001563D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)addSingleMessageClient:(id)a3
+- (void)addSingleMessageClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100042078;
   v7[3] = &unk_1001563D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)removeSingleMessageClient:(id)a3
+- (void)removeSingleMessageClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100042160;
   v7[3] = &unk_1001563D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
-- (void)_nts_insertClient:(id)a3
+- (void)_nts_insertClient:(id)client
 {
-  v4 = a3;
-  v5 = objc_getAssociatedObject(v4, off_100183720);
+  clientCopy = client;
+  v5 = objc_getAssociatedObject(clientCopy, off_100183720);
   if (!v5)
   {
     v21[0] = @"ordering";
-    [v4 ordering];
+    [clientCopy ordering];
     v6 = [NSNumber numberWithDouble:?];
     v21[1] = @"priority";
     v22[0] = v6;
-    v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 priority]);
+    v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [clientCopy priority]);
     v22[1] = v7;
     v8 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
 
-    objc_setAssociatedObject(v4, off_100183720, v8, 0x301);
+    objc_setAssociatedObject(clientCopy, off_100183720, v8, 0x301);
     v5 = v8;
   }
 
-  v9 = [(NSMutableArray *)self->_clients ef_insertObject:v4 usingSortFunction:sub_1000423F4 context:0 allowDuplicates:0];
+  v9 = [(NSMutableArray *)self->_clients ef_insertObject:clientCopy usingSortFunction:sub_1000423F4 context:0 allowDuplicates:0];
   v10 = +[MessageBodyLoader log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -673,7 +673,7 @@
     v13 = 138413058;
     v14 = v11;
     v15 = 2048;
-    v16 = v4;
+    v16 = clientCopy;
     v17 = 2048;
     v18 = v9;
     v19 = 2048;
@@ -682,11 +682,11 @@
   }
 }
 
-- (void)_nts_removeClient:(id)a3
+- (void)_nts_removeClient:(id)client
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_clients ef_removeObject:v4 usingSortFunction:sub_1000423F4 context:0];
-  objc_setAssociatedObject(v4, off_100183720, 0, 0x301);
+  clientCopy = client;
+  v5 = [(NSMutableArray *)self->_clients ef_removeObject:clientCopy usingSortFunction:sub_1000423F4 context:0];
+  objc_setAssociatedObject(clientCopy, off_100183720, 0, 0x301);
   v6 = +[MessageBodyLoader log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -695,7 +695,7 @@
     v9 = 138413058;
     v10 = v7;
     v11 = 2048;
-    v12 = v4;
+    v12 = clientCopy;
     v13 = 2048;
     v14 = v5;
     v15 = 2048;
@@ -704,20 +704,20 @@
   }
 }
 
-- (void)addMessage:(id)a3
+- (void)addMessage:(id)message
 {
-  v4 = [NSArray arrayWithObjects:a3, 0];
+  v4 = [NSArray arrayWithObjects:message, 0];
   [(MessageBodyLoader *)self addMessages:?];
 }
 
-- (void)addMessages_nts:(id)a3
+- (void)addMessages_nts:(id)messages_nts
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  messages_ntsCopy = messages_nts;
+  v5 = [messages_ntsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = 0;
@@ -728,7 +728,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(messages_ntsCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -737,10 +737,10 @@
           [(NSMutableArray *)self->_newMessages addObject:v9];
           [(NSMutableSet *)self->_newMessageSet addObject:v9];
           newMessageMailboxQuota = self->_newMessageMailboxQuota;
-          v11 = [v9 mailbox];
-          if (v11)
+          mailbox = [v9 mailbox];
+          if (mailbox)
           {
-            v12 = v11;
+            v12 = mailbox;
           }
 
           else
@@ -754,7 +754,7 @@
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [messages_ntsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -771,23 +771,23 @@
   }
 }
 
-- (void)addMessages:(id)a3
+- (void)addMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100042A2C;
   v7[3] = &unk_1001563D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = messagesCopy;
+  v6 = messagesCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (BOOL)isProcessingMessage:(id)a3
+- (BOOL)isProcessingMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -797,10 +797,10 @@
   block[1] = 3221225472;
   block[2] = sub_100042B04;
   block[3] = &unk_100157618;
-  v9 = v4;
+  v9 = messageCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = messageCopy;
   dispatch_sync(dispatchQueue, block);
   LOBYTE(dispatchQueue) = *(v12 + 24);
 
@@ -808,10 +808,10 @@
   return dispatchQueue;
 }
 
-- (BOOL)_nts_isProcessingMessage:(id)a3
+- (BOOL)_nts_isProcessingMessage:(id)message
 {
-  v4 = a3;
-  if (([(MFMailMessage *)self->_currentMessage isEqual:v4]& 1) != 0 || ([(NSMutableSet *)self->_newMessageSet containsObject:v4]& 1) != 0)
+  messageCopy = message;
+  if (([(MFMailMessage *)self->_currentMessage isEqual:messageCopy]& 1) != 0 || ([(NSMutableSet *)self->_newMessageSet containsObject:messageCopy]& 1) != 0)
   {
     v5 = 1;
   }
@@ -823,52 +823,52 @@
     v8[1] = 3221225472;
     v8[2] = sub_100042C24;
     v8[3] = &unk_1001578F8;
-    v9 = v4;
+    v9 = messageCopy;
     v5 = [(NSMutableArray *)clients ef_any:v8];
   }
 
   return v5;
 }
 
-- (void)beginAddingNewMessagesForStore:(id)a3
+- (void)beginAddingNewMessagesForStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100042D10;
   v7[3] = &unk_1001563D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = storeCopy;
+  v6 = storeCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
-- (void)stopAddingNewMessagesForStore:(id)a3
+- (void)stopAddingNewMessagesForStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100042EAC;
   v7[3] = &unk_1001563D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = storeCopy;
+  selfCopy = self;
+  v6 = storeCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
-- (void)userViewingMessages:(id)a3
+- (void)userViewingMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100043004;
   v7[3] = &unk_1001563D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = messagesCopy;
+  v6 = messagesCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -908,14 +908,14 @@
   [(MessageBodyLoader *)self mf_unlock];
 }
 
-- (void)_setIsRunning:(BOOL)a3
+- (void)_setIsRunning:(BOOL)running
 {
-  v3 = a3;
+  runningCopy = running;
   [(MessageBodyLoader *)self mf_lock];
   v5 = *(self + 120);
-  if ((v5 & 1) != v3)
+  if ((v5 & 1) != runningCopy)
   {
-    *(self + 120) = v5 & 0xFE | v3;
+    *(self + 120) = v5 & 0xFE | runningCopy;
     v6 = +[MessageBodyLoader log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -931,15 +931,15 @@
     v9 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     [MFPowerController powerlog:@"MBL" eventData:v9, v15];
 
-    if (v3)
+    if (runningCopy)
     {
       [(MessageBodyLoader *)self _retainPowerAssertion];
       v10 = +[MessageBodyLoader signpostLog];
-      v11 = [(MessageBodyLoader *)self signpostID];
-      if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
+      signpostID = [(MessageBodyLoader *)self signpostID];
+      if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_BEGIN, v11, "MBL PROCESSING", "", buf, 2u);
+        _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_BEGIN, signpostID, "MBL PROCESSING", "", buf, 2u);
       }
     }
 
@@ -947,11 +947,11 @@
     {
       [(MessageBodyLoader *)self _releasePowerAssertion];
       v12 = +[MessageBodyLoader signpostLog];
-      v13 = [(MessageBodyLoader *)self signpostID];
-      if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
+      signpostID2 = [(MessageBodyLoader *)self signpostID];
+      if (signpostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_INTERVAL_END, v13, "MBL PROCESSING", "", buf, 2u);
+        _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_INTERVAL_END, signpostID2, "MBL PROCESSING", "", buf, 2u);
       }
 
       [(MessageBodyLoader *)self _logStats:1];
@@ -980,13 +980,13 @@
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v6 = objc_opt_new();
-        v7 = [(MessageBodyLoader *)self account];
+        account = [(MessageBodyLoader *)self account];
         v8 = [(NSMutableSet *)self->_newMessageSet count];
         newMessageSet = self->_newMessageSet;
         v10 = 138413058;
         v11 = v6;
         v12 = 2112;
-        v13 = v7;
+        v13 = account;
         v14 = 2048;
         v15 = v8;
         v16 = 2112;
@@ -1044,8 +1044,8 @@
 {
   obj = qword_100185708;
   objc_sync_enter(obj);
-  v2 = [qword_100185708 allValues];
-  [v2 makeObjectsPerformSelector:"applicationWillSuspend"];
+  allValues = [qword_100185708 allValues];
+  [allValues makeObjectsPerformSelector:"applicationWillSuspend"];
 
   objc_sync_exit(obj);
 }
@@ -1065,8 +1065,8 @@
 {
   obj = qword_100185708;
   objc_sync_enter(obj);
-  v2 = [qword_100185708 allValues];
-  [v2 makeObjectsPerformSelector:"applicationWillResume"];
+  allValues = [qword_100185708 allValues];
+  [allValues makeObjectsPerformSelector:"applicationWillResume"];
 
   objc_sync_exit(obj);
 }
@@ -1079,8 +1079,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [qword_100185708 allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allKeys = [qword_100185708 allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -1090,7 +1090,7 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -1102,7 +1102,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -1111,26 +1111,26 @@
   objc_sync_exit(v2);
 }
 
-- (void)_recordStats:(id)a3
+- (void)_recordStats:(id)stats
 {
-  v4 = a3;
-  v5 = [(MFActivityMonitor *)self->_currentMonitor bytesRead];
-  v6 = [(MFActivityMonitor *)self->_currentMonitor bytesWritten];
-  v7 = v6;
-  if (v5 > 0 || v6 >= 1)
+  statsCopy = stats;
+  bytesRead = [(MFActivityMonitor *)self->_currentMonitor bytesRead];
+  bytesWritten = [(MFActivityMonitor *)self->_currentMonitor bytesWritten];
+  v7 = bytesWritten;
+  if (bytesRead > 0 || bytesWritten >= 1)
   {
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v4 libraryID];
+      libraryID = [statsCopy libraryID];
     }
 
     else
     {
-      v9 = 0;
+      libraryID = 0;
     }
 
-    v29 = [v4 account];
-    v10 = [v29 loggingIdentifier];
+    account = [statsCopy account];
+    loggingIdentifier = [account loggingIdentifier];
     Current = CFAbsoluteTimeGetCurrent();
     [(MFActivityMonitor *)self->_currentMonitor startTime];
     v13 = v12;
@@ -1140,32 +1140,32 @@
     v15 = +[MessageBodyLoader log];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v29 loggingIdentifier];
+      loggingIdentifier2 = [account loggingIdentifier];
       v17 = NSStringFromBOOL();
       *buf = 138413570;
-      v31 = v16;
+      v31 = loggingIdentifier2;
       v32 = 2048;
-      v33 = v9;
+      v33 = libraryID;
       v34 = 2048;
       v35 = Current - v13;
       v36 = 1024;
       v37 = v7;
       v38 = 1024;
-      v39 = v5;
+      v39 = bytesRead;
       v40 = 2112;
       v41 = v17;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "account=%@; lid=%lld; duration=%.2fs; tx=%d; rx=%d; wifi=%@", buf, 0x36u);
     }
 
-    v18 = [(MFActivityMonitor *)self->_currentMonitor error];
-    if (v18)
+    error = [(MFActivityMonitor *)self->_currentMonitor error];
+    if (error)
     {
       v19 = +[MessageBodyLoader log];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v18 ef_publicDescription];
+        ef_publicDescription = [error ef_publicDescription];
         *buf = 138543362;
-        v31 = v20;
+        v31 = ef_publicDescription;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "an error occurred while loading message: %{public}@", buf, 0xCu);
       }
     }
@@ -1180,9 +1180,9 @@
       bytesPerAccount = self->_bytesPerAccount;
     }
 
-    v24 = [(NSMutableDictionary *)bytesPerAccount objectForKey:v10];
+    v24 = [(NSMutableDictionary *)bytesPerAccount objectForKey:loggingIdentifier];
     v25 = v24;
-    v26 = v7 + v5;
+    v26 = v7 + bytesRead;
     if (v24)
     {
       v26 += [v24 unsignedIntegerValue];
@@ -1190,13 +1190,13 @@
 
     v27 = self->_bytesPerAccount;
     v28 = [NSNumber numberWithUnsignedInteger:v26];
-    [(NSMutableDictionary *)v27 setObject:v28 forKey:v10];
+    [(NSMutableDictionary *)v27 setObject:v28 forKey:loggingIdentifier];
   }
 }
 
-- (void)_logStats:(BOOL)a3
+- (void)_logStats:(BOOL)stats
 {
-  v14 = a3;
+  statsCopy = stats;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -1261,7 +1261,7 @@
     while (v4);
   }
 
-  if (v14)
+  if (statsCopy)
   {
     bytesPerAccount = self->_bytesPerAccount;
     self->_bytesPerAccount = 0;

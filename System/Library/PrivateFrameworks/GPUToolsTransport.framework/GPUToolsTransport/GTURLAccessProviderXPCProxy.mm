@@ -1,24 +1,24 @@
 @interface GTURLAccessProviderXPCProxy
-- (BOOL)respondsToSelector:(SEL)a3;
-- (GTURLAccessProviderXPCProxy)initWithConnection:(id)a3 remoteProperties:(id)a4;
-- (id)makeURL:(id)a3;
-- (id)urlForPath:(id)a3;
-- (void)copyIdentifier:(id)a3 toDevice:(id)a4 completionHandler:(id)a5;
-- (void)copyIdentifier:(id)a3 toDevice:(id)a4 directory:(id)a5 completionHandler:(id)a6;
-- (void)securityScopedURLFromSandboxID:(id)a3 completionHandler:(id)a4;
-- (void)transferIdentifier:(id)a3 toDevice:(id)a4 completionHandler:(id)a5;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (GTURLAccessProviderXPCProxy)initWithConnection:(id)connection remoteProperties:(id)properties;
+- (id)makeURL:(id)l;
+- (id)urlForPath:(id)path;
+- (void)copyIdentifier:(id)identifier toDevice:(id)device completionHandler:(id)handler;
+- (void)copyIdentifier:(id)identifier toDevice:(id)device directory:(id)directory completionHandler:(id)handler;
+- (void)securityScopedURLFromSandboxID:(id)d completionHandler:(id)handler;
+- (void)transferIdentifier:(id)identifier toDevice:(id)device completionHandler:(id)handler;
 @end
 
 @implementation GTURLAccessProviderXPCProxy
 
-- (GTURLAccessProviderXPCProxy)initWithConnection:(id)a3 remoteProperties:(id)a4
+- (GTURLAccessProviderXPCProxy)initWithConnection:(id)connection remoteProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  propertiesCopy = properties;
   v8 = &unk_2860EEDF0;
-  v9 = [v7 protocolName];
+  protocolName = [propertiesCopy protocolName];
   v10 = NSStringFromProtocol(v8);
-  v11 = [v9 isEqualToString:v10];
+  v11 = [protocolName isEqualToString:v10];
 
   if (v11)
   {
@@ -28,34 +28,34 @@
     if (v12)
     {
       v13 = [GTServiceConnection alloc];
-      v14 = [v7 deviceUDID];
-      v15 = -[GTServiceConnection initWithConnection:device:port:](v13, "initWithConnection:device:port:", v6, v14, [v7 servicePort]);
+      deviceUDID = [propertiesCopy deviceUDID];
+      v15 = -[GTServiceConnection initWithConnection:device:port:](v13, "initWithConnection:device:port:", connectionCopy, deviceUDID, [propertiesCopy servicePort]);
       connection = v12->_connection;
       v12->_connection = v15;
 
       v17 = [GTServiceProperties protocolMethods:v8];
-      v18 = [v7 protocolMethods];
-      v19 = newSetWithArrayMinusArray(v17, v18);
+      protocolMethods = [propertiesCopy protocolMethods];
+      v19 = newSetWithArrayMinusArray(v17, protocolMethods);
       ignoreMethods = v12->_ignoreMethods;
       v12->_ignoreMethods = v19;
     }
 
     self = v12;
-    v21 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   ignoreMethods = self->_ignoreMethods;
-  v6 = NSStringFromSelector(a3);
+  v6 = NSStringFromSelector(selector);
   if ([(NSSet *)ignoreMethods containsObject:v6])
   {
     v7 = 0;
@@ -65,20 +65,20 @@
   {
     v9.receiver = self;
     v9.super_class = GTURLAccessProviderXPCProxy;
-    v7 = [(GTURLAccessProviderXPCProxy *)&v9 respondsToSelector:a3];
+    v7 = [(GTURLAccessProviderXPCProxy *)&v9 respondsToSelector:selector];
   }
 
   return v7;
 }
 
-- (void)securityScopedURLFromSandboxID:(id)a3 completionHandler:(id)a4
+- (void)securityScopedURLFromSandboxID:(id)d completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  dCopy = d;
   empty = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(empty, "_cmd", Name);
-  xpc_dictionary_set_nsobject(empty, "identifier", v8);
+  xpc_dictionary_set_nsobject(empty, "identifier", dCopy);
 
   *task_info_out = 0u;
   v22 = 0u;
@@ -114,8 +114,8 @@
   v18[1] = 3221225472;
   v18[2] = __80__GTURLAccessProviderXPCProxy_securityScopedURLFromSandboxID_completionHandler___block_invoke;
   v18[3] = &unk_279661050;
-  v19 = v7;
-  v17 = v7;
+  v19 = handlerCopy;
+  v17 = handlerCopy;
   [(GTXPCConnection *)connection sendMessage:empty replyHandler:v18];
 }
 
@@ -153,18 +153,18 @@ void __80__GTURLAccessProviderXPCProxy_securityScopedURLFromSandboxID_completion
   }
 }
 
-- (id)makeURL:(id)a3
+- (id)makeURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   empty = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(empty, "_cmd", Name);
-  xpc_dictionary_set_nsobject(empty, "url", v5);
-  v8 = [(GTXPCConnection *)self->_connection connection];
+  xpc_dictionary_set_nsobject(empty, "url", lCopy);
+  connection = [(GTXPCConnection *)self->_connection connection];
   xpc_connection_get_audit_token();
 
   v9 = *MEMORY[0x277D861B8];
-  [v5 fileSystemRepresentation];
+  [lCopy fileSystemRepresentation];
 
   v10 = *MEMORY[0x277D861E8];
   v11 = sandbox_extension_issue_file_to_process();
@@ -190,25 +190,25 @@ void __80__GTURLAccessProviderXPCProxy_securityScopedURLFromSandboxID_completion
   return nsobject;
 }
 
-- (void)transferIdentifier:(id)a3 toDevice:(id)a4 completionHandler:(id)a5
+- (void)transferIdentifier:(id)identifier toDevice:(id)device completionHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  handlerCopy = handler;
+  deviceCopy = device;
+  identifierCopy = identifier;
   empty = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(empty, "_cmd", Name);
-  xpc_dictionary_set_nsobject(empty, "identifier", v11);
+  xpc_dictionary_set_nsobject(empty, "identifier", identifierCopy);
 
-  v14 = [v10 UTF8String];
-  xpc_dictionary_set_string(empty, "deviceUDID", v14);
+  uTF8String = [deviceCopy UTF8String];
+  xpc_dictionary_set_string(empty, "deviceUDID", uTF8String);
   connection = self->_connection;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __77__GTURLAccessProviderXPCProxy_transferIdentifier_toDevice_completionHandler___block_invoke;
   v17[3] = &unk_279661050;
-  v18 = v9;
-  v16 = v9;
+  v18 = handlerCopy;
+  v16 = handlerCopy;
   [(GTXPCConnection *)connection sendMessage:empty replyHandler:v17];
 }
 
@@ -228,25 +228,25 @@ void __77__GTURLAccessProviderXPCProxy_transferIdentifier_toDevice_completionHan
   }
 }
 
-- (void)copyIdentifier:(id)a3 toDevice:(id)a4 completionHandler:(id)a5
+- (void)copyIdentifier:(id)identifier toDevice:(id)device completionHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  handlerCopy = handler;
+  deviceCopy = device;
+  identifierCopy = identifier;
   empty = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(empty, "_cmd", Name);
-  xpc_dictionary_set_nsobject(empty, "identifier", v11);
+  xpc_dictionary_set_nsobject(empty, "identifier", identifierCopy);
 
-  v14 = [v10 UTF8String];
-  xpc_dictionary_set_string(empty, "deviceUDID", v14);
+  uTF8String = [deviceCopy UTF8String];
+  xpc_dictionary_set_string(empty, "deviceUDID", uTF8String);
   connection = self->_connection;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __73__GTURLAccessProviderXPCProxy_copyIdentifier_toDevice_completionHandler___block_invoke;
   v17[3] = &unk_279661050;
-  v18 = v9;
-  v16 = v9;
+  v18 = handlerCopy;
+  v16 = handlerCopy;
   [(GTXPCConnection *)connection sendMessage:empty replyHandler:v17];
 }
 
@@ -267,15 +267,15 @@ void __73__GTURLAccessProviderXPCProxy_copyIdentifier_toDevice_completionHandler
   }
 }
 
-- (id)urlForPath:(id)a3
+- (id)urlForPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   empty = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(empty, "_cmd", Name);
-  v8 = [v5 UTF8String];
+  uTF8String = [pathCopy UTF8String];
 
-  xpc_dictionary_set_string(empty, "path", v8);
+  xpc_dictionary_set_string(empty, "path", uTF8String);
   v9 = [(GTXPCConnection *)self->_connection sendMessageWithReplySync:empty error:0];
   if (v9)
   {
@@ -297,27 +297,27 @@ void __73__GTURLAccessProviderXPCProxy_copyIdentifier_toDevice_completionHandler
   return nsobject;
 }
 
-- (void)copyIdentifier:(id)a3 toDevice:(id)a4 directory:(id)a5 completionHandler:(id)a6
+- (void)copyIdentifier:(id)identifier toDevice:(id)device directory:(id)directory completionHandler:(id)handler
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  handlerCopy = handler;
+  directoryCopy = directory;
+  deviceCopy = device;
+  identifierCopy = identifier;
   empty = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(empty, "_cmd", Name);
-  xpc_dictionary_set_nsobject(empty, "identifier", v14);
+  xpc_dictionary_set_nsobject(empty, "identifier", identifierCopy);
 
-  v17 = [v13 UTF8String];
-  xpc_dictionary_set_string(empty, "deviceUDID", v17);
-  xpc_dictionary_set_nsobject(empty, "dir", v12);
+  uTF8String = [deviceCopy UTF8String];
+  xpc_dictionary_set_string(empty, "deviceUDID", uTF8String);
+  xpc_dictionary_set_nsobject(empty, "dir", directoryCopy);
   v29 = 0u;
   v30 = 0u;
-  v18 = [(GTXPCConnection *)self->_connection connection];
+  connection = [(GTXPCConnection *)self->_connection connection];
   xpc_connection_get_audit_token();
 
   v19 = *MEMORY[0x277D861C0];
-  [v12 fileSystemRepresentation];
+  [directoryCopy fileSystemRepresentation];
 
   v20 = *MEMORY[0x277D861E8];
   v27 = 0u;
@@ -335,8 +335,8 @@ void __73__GTURLAccessProviderXPCProxy_copyIdentifier_toDevice_completionHandler
   v25[1] = 3221225472;
   v25[2] = __83__GTURLAccessProviderXPCProxy_copyIdentifier_toDevice_directory_completionHandler___block_invoke;
   v25[3] = &unk_279661050;
-  v26 = v11;
-  v24 = v11;
+  v26 = handlerCopy;
+  v24 = handlerCopy;
   [(GTXPCConnection *)connection sendMessage:empty replyHandler:v25];
 }
 

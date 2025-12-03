@@ -1,50 +1,50 @@
 @interface SFLocationTypeInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFLocationTypeInfo)initWithCoder:(id)a3;
-- (SFLocationTypeInfo)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFLocationTypeInfo)initWithCoder:(id)coder;
+- (SFLocationTypeInfo)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFLocationTypeInfo
 
 - (unint64_t)hash
 {
-  v2 = [(SFLocationTypeInfo *)self address];
-  v3 = [v2 hash];
+  address = [(SFLocationTypeInfo *)self address];
+  v3 = [address hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFLocationTypeInfo *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(SFLocationTypeInfo *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(SFLocationTypeInfo *)self address];
-    v7 = [(SFLocationTypeInfo *)v5 address];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    address = [(SFLocationTypeInfo *)self address];
+    address2 = [(SFLocationTypeInfo *)v5 address];
+    if ((address != 0) == (address2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(SFLocationTypeInfo *)self address];
-      if (v8)
+      address3 = [(SFLocationTypeInfo *)self address];
+      if (address3)
       {
-        v9 = [(SFLocationTypeInfo *)self address];
-        v10 = [(SFLocationTypeInfo *)v5 address];
-        v11 = [v9 isEqual:v10];
+        address4 = [(SFLocationTypeInfo *)self address];
+        address5 = [(SFLocationTypeInfo *)v5 address];
+        v11 = [address4 isEqual:address5];
       }
 
       else
@@ -62,11 +62,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFLocationTypeInfo *)self address];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  address = [(SFLocationTypeInfo *)self address];
+  v6 = [address copy];
   [v4 setAddress:v6];
 
   return v4;
@@ -75,31 +75,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBLocationTypeInfo alloc] initWithFacade:self];
-  v3 = [(_SFPBLocationTypeInfo *)v2 jsonData];
+  jsonData = [(_SFPBLocationTypeInfo *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBLocationTypeInfo alloc] initWithFacade:self];
-  v3 = [(_SFPBLocationTypeInfo *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBLocationTypeInfo *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBLocationTypeInfo alloc] initWithFacade:self];
-  v5 = [(_SFPBLocationTypeInfo *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBLocationTypeInfo *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFLocationTypeInfo)initWithCoder:(id)a3
+- (SFLocationTypeInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBLocationTypeInfo alloc] initWithData:v5];
   v7 = [(SFLocationTypeInfo *)self initWithProtobuf:v6];
@@ -107,20 +107,20 @@
   return v7;
 }
 
-- (SFLocationTypeInfo)initWithProtobuf:(id)a3
+- (SFLocationTypeInfo)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = SFLocationTypeInfo;
   v5 = [(SFLocationTypeInfo *)&v10 init];
   if (v5)
   {
-    v6 = [v4 address];
+    address = [protobufCopy address];
 
-    if (v6)
+    if (address)
     {
-      v7 = [v4 address];
-      [(SFLocationTypeInfo *)v5 setAddress:v7];
+      address2 = [protobufCopy address];
+      [(SFLocationTypeInfo *)v5 setAddress:address2];
     }
 
     v8 = v5;

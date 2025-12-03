@@ -1,15 +1,15 @@
 @interface CSFlashlightQuickAction
 - (CSFlashlightQuickAction)init;
-- (CSFlashlightQuickAction)initWithFlashlightController:(id)a3;
-- (CSFlashlightQuickAction)initWithLockoutController:(id)a3;
+- (CSFlashlightQuickAction)initWithFlashlightController:(id)controller;
+- (CSFlashlightQuickAction)initWithLockoutController:(id)controller;
 - (int64_t)appearance;
-- (void)_deviceBlockStateDidChangeNotification:(id)a3;
-- (void)_featureLockStateDidChangeNotification:(id)a3;
+- (void)_deviceBlockStateDidChangeNotification:(id)notification;
+- (void)_featureLockStateDidChangeNotification:(id)notification;
 - (void)_setupIfNecessary;
-- (void)buttonVisibilityChangedTo:(BOOL)a3;
+- (void)buttonVisibilityChangedTo:(BOOL)to;
 - (void)fireAction;
-- (void)flashlightAvailabilityDidChange:(BOOL)a3;
-- (void)flashlightLevelDidChange:(unint64_t)a3;
+- (void)flashlightAvailabilityDidChange:(BOOL)change;
+- (void)flashlightLevelDidChange:(unint64_t)change;
 - (void)tearDown;
 - (void)touchEnded;
 @end
@@ -34,17 +34,17 @@
   if (![(CSFlashlightQuickAction *)self _isFlashlightOn])
   {
     [(SBUIFlashlightController *)self->_flashlightController coolDown];
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self name:*MEMORY[0x277D66030] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D66030] object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x277D67A50] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 removeObserver:self name:*MEMORY[0x277D67A50] object:0];
 
     flashlightController = self->_flashlightController;
     self->_flashlightController = 0;
 
-    v6 = [(CSQuickAction *)self delegate];
-    [v6 allowsInteractionDidChangeForAction:self];
+    delegate = [(CSQuickAction *)self delegate];
+    [delegate allowsInteractionDidChangeForAction:self];
   }
 }
 
@@ -52,60 +52,60 @@
 {
   if ([MEMORY[0x277D679B8] deviceSupportsFlashlight] && !self->_flashlightController)
   {
-    v3 = [MEMORY[0x277D679B8] sharedInstance];
+    mEMORY[0x277D679B8] = [MEMORY[0x277D679B8] sharedInstance];
     flashlightController = self->_flashlightController;
-    self->_flashlightController = v3;
+    self->_flashlightController = mEMORY[0x277D679B8];
 
     [(SBUIFlashlightController *)self->_flashlightController addObserver:self];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:self selector:sel__deviceBlockStateDidChangeNotification_ name:*MEMORY[0x277D66030] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__deviceBlockStateDidChangeNotification_ name:*MEMORY[0x277D66030] object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:self selector:sel__featureLockStateDidChangeNotification_ name:*MEMORY[0x277D67A50] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__featureLockStateDidChangeNotification_ name:*MEMORY[0x277D67A50] object:0];
 
     [(CSQuickAction *)self setSelected:[(CSFlashlightQuickAction *)self isSelected]];
-    v7 = [(CSQuickAction *)self delegate];
-    [v7 allowsInteractionDidChangeForAction:self];
+    delegate = [(CSQuickAction *)self delegate];
+    [delegate allowsInteractionDidChangeForAction:self];
   }
 }
 
 - (CSFlashlightQuickAction)init
 {
-  v3 = [MEMORY[0x277D679B8] sharedInstance];
-  v4 = [(CSFlashlightQuickAction *)self initWithFlashlightController:v3];
+  mEMORY[0x277D679B8] = [MEMORY[0x277D679B8] sharedInstance];
+  v4 = [(CSFlashlightQuickAction *)self initWithFlashlightController:mEMORY[0x277D679B8]];
 
   return v4;
 }
 
-- (CSFlashlightQuickAction)initWithFlashlightController:(id)a3
+- (CSFlashlightQuickAction)initWithFlashlightController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = CSFlashlightQuickAction;
   v6 = [(CSFlashlightQuickAction *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_flashlightController, a3);
+    objc_storeStrong(&v6->_flashlightController, controller);
     [(SBUIFlashlightController *)v7->_flashlightController addObserver:v7];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v7 selector:sel__deviceBlockStateDidChangeNotification_ name:*MEMORY[0x277D66030] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__deviceBlockStateDidChangeNotification_ name:*MEMORY[0x277D66030] object:0];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v7 selector:sel__featureLockStateDidChangeNotification_ name:*MEMORY[0x277D67A50] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel__featureLockStateDidChangeNotification_ name:*MEMORY[0x277D67A50] object:0];
   }
 
   return v7;
 }
 
-- (CSFlashlightQuickAction)initWithLockoutController:(id)a3
+- (CSFlashlightQuickAction)initWithLockoutController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = [(CSFlashlightQuickAction *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lockoutController, a3);
+    objc_storeStrong(&v6->_lockoutController, controller);
   }
 
   return v7;
@@ -113,9 +113,9 @@
 
 - (void)fireAction
 {
-  v3 = [(CSFlashlightQuickAction *)self _isFlashlightOn];
+  _isFlashlightOn = [(CSFlashlightQuickAction *)self _isFlashlightOn];
   flashlightController = self->_flashlightController;
-  if (v3)
+  if (_isFlashlightOn)
   {
 
     [(SBUIFlashlightController *)flashlightController turnFlashlightOffForReason:@"Lock Screen Buttons"];
@@ -138,9 +138,9 @@
   }
 }
 
-- (void)buttonVisibilityChangedTo:(BOOL)a3
+- (void)buttonVisibilityChangedTo:(BOOL)to
 {
-  if (a3)
+  if (to)
   {
     [(CSFlashlightQuickAction *)self _setupIfNecessary];
   }
@@ -151,7 +151,7 @@
   }
 }
 
-- (void)_deviceBlockStateDidChangeNotification:(id)a3
+- (void)_deviceBlockStateDidChangeNotification:(id)notification
 {
   if ([(CSFlashlightQuickAction *)self _isFlashlightOn]&& [(SBFLockOutStatusProvider *)self->_lockoutController isBlocked])
   {
@@ -161,13 +161,13 @@
   }
 }
 
-- (void)_featureLockStateDidChangeNotification:(id)a3
+- (void)_featureLockStateDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277D67B30]];
-  v6 = [v5 BOOLValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D67B30]];
+  bOOLValue = [v5 BOOLValue];
 
-  if ([(CSFlashlightQuickAction *)self _isFlashlightOn]&& v6)
+  if ([(CSFlashlightQuickAction *)self _isFlashlightOn]&& bOOLValue)
   {
     flashlightController = self->_flashlightController;
 
@@ -175,16 +175,16 @@
   }
 }
 
-- (void)flashlightLevelDidChange:(unint64_t)a3
+- (void)flashlightLevelDidChange:(unint64_t)change
 {
-  v4 = [(CSQuickAction *)self delegate];
-  [v4 isSelectedDidChangeForAction:self];
+  delegate = [(CSQuickAction *)self delegate];
+  [delegate isSelectedDidChangeForAction:self];
 }
 
-- (void)flashlightAvailabilityDidChange:(BOOL)a3
+- (void)flashlightAvailabilityDidChange:(BOOL)change
 {
-  v4 = [(CSQuickAction *)self delegate];
-  [v4 allowsInteractionDidChangeForAction:self];
+  delegate = [(CSQuickAction *)self delegate];
+  [delegate allowsInteractionDidChangeForAction:self];
 }
 
 @end

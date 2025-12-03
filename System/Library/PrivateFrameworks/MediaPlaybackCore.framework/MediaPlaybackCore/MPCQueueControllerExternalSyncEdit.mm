@@ -1,12 +1,12 @@
 @interface MPCQueueControllerExternalSyncEdit
-- (void)setTargetContentItemID:(id)a3;
+- (void)setTargetContentItemID:(id)d;
 @end
 
 @implementation MPCQueueControllerExternalSyncEdit
 
-- (void)setTargetContentItemID:(id)a3
+- (void)setTargetContentItemID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   targetContentItemID = self->_targetContentItemID;
   self->_targetContentItemID = v4;
 

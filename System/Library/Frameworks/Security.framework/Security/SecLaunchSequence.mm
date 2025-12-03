@@ -1,14 +1,14 @@
 @interface SecLaunchSequence
 - (BOOL)firstLaunch;
-- (SecLaunchSequence)initWithRocketName:(id)a3;
+- (SecLaunchSequence)initWithRocketName:(id)name;
 - (id)eventsByTime;
 - (id)eventsRelativeTime;
 - (id)metricsReport;
-- (void)addAttribute:(id)a3 value:(id)a4;
-- (void)addDependantLaunch:(id)a3 child:(id)a4;
-- (void)addEvent:(id)a3;
+- (void)addAttribute:(id)attribute value:(id)value;
+- (void)addDependantLaunch:(id)launch child:(id)child;
+- (void)addEvent:(id)event;
 - (void)launch;
-- (void)setFirstLaunch:(BOOL)a3;
+- (void)setFirstLaunch:(BOOL)launch;
 @end
 
 @implementation SecLaunchSequence
@@ -20,25 +20,25 @@
   objc_sync_enter(obj);
   v2 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v2 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(SecLaunchSequence *)obj events];
+  array = [MEMORY[0x1E695DF70] array];
+  events = [(SecLaunchSequence *)obj events];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __33__SecLaunchSequence_eventsByTime__block_invoke;
   v26[3] = &unk_1E70D4BC0;
   v20 = v2;
   v27 = v20;
-  v5 = v3;
+  v5 = array;
   v28 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v26];
+  [events enumerateKeysAndObjectsUsingBlock:v26];
 
   [v5 sortUsingSelector:sel_compare_];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [(SecLaunchSequence *)obj attributes];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v29 count:16];
+  attributes = [(SecLaunchSequence *)obj attributes];
+  v7 = [attributes countByEnumeratingWithState:&v22 objects:v29 count:16];
   if (v7)
   {
     v8 = *v23;
@@ -48,19 +48,19 @@
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(attributes);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
         v11 = MEMORY[0x1E696AEC0];
-        v12 = [(SecLaunchSequence *)obj attributes];
-        v13 = [v12 objectForKeyedSubscript:v10];
+        attributes2 = [(SecLaunchSequence *)obj attributes];
+        v13 = [attributes2 objectForKeyedSubscript:v10];
         v14 = [v13 description];
         v15 = [v11 stringWithFormat:@"attr: %@: %@", v10, v14, v20];
         [v5 addObject:v15];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v22 objects:v29 count:16];
+      v7 = [attributes countByEnumeratingWithState:&v22 objects:v29 count:16];
     }
 
     while (v7);
@@ -92,29 +92,29 @@ void __33__SecLaunchSequence_eventsByTime__block_invoke(uint64_t a1, uint64_t a2
 
 - (id)eventsRelativeTime
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(SecLaunchSequence *)self events];
+  array = [MEMORY[0x1E695DF70] array];
+  events = [(SecLaunchSequence *)self events];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __39__SecLaunchSequence_eventsRelativeTime__block_invoke;
   v17[3] = &unk_1E70D4C10;
-  v18 = v3;
-  v5 = v3;
-  [v4 enumerateKeysAndObjectsUsingBlock:v17];
+  v18 = array;
+  v5 = array;
+  [events enumerateKeysAndObjectsUsingBlock:v17];
 
   [v5 sortUsingComparator:&__block_literal_global_1613];
   v6 = [v5 objectAtIndexedSubscript:0];
-  v7 = [v6 date];
+  date = [v6 date];
 
-  v8 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __39__SecLaunchSequence_eventsRelativeTime__block_invoke_3;
   v14[3] = &unk_1E70D4C58;
-  v15 = v7;
-  v9 = v8;
+  v15 = date;
+  v9 = array2;
   v16 = v9;
-  v10 = v7;
+  v10 = date;
   [v5 enumerateObjectsUsingBlock:v14];
   v11 = v16;
   v12 = v9;
@@ -168,21 +168,21 @@ uint64_t __39__SecLaunchSequence_eventsRelativeTime__block_invoke_2(uint64_t a1,
 
 - (id)metricsReport
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(SecLaunchSequence *)self launched])
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    v5 = [(SecLaunchSequence *)v4 dependantLaunches];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    dependantLaunches = [(SecLaunchSequence *)selfCopy dependantLaunches];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __34__SecLaunchSequence_metricsReport__block_invoke;
     v17[3] = &unk_1E70D4BE8;
-    v17[4] = v4;
-    [v5 enumerateKeysAndObjectsUsingBlock:v17];
+    v17[4] = selfCopy;
+    [dependantLaunches enumerateKeysAndObjectsUsingBlock:v17];
 
     v6 = [SecLaunchEvent alloc];
-    if ([(SecLaunchSequence *)v4 firstLaunch])
+    if ([(SecLaunchSequence *)selfCopy firstLaunch])
     {
       v7 = @"first-launch";
     }
@@ -193,24 +193,24 @@ uint64_t __39__SecLaunchSequence_eventsRelativeTime__block_invoke_2(uint64_t a1,
     }
 
     v8 = [(SecLaunchEvent *)v6 initWithName:v7];
-    v9 = [(SecLaunchSequence *)v4 events];
-    v10 = [(SecLaunchEvent *)v8 name];
-    [v9 setObject:v8 forKeyedSubscript:v10];
+    events = [(SecLaunchSequence *)selfCopy events];
+    name = [(SecLaunchEvent *)v8 name];
+    [events setObject:v8 forKeyedSubscript:name];
 
-    v11 = [(SecLaunchSequence *)v4 eventsRelativeTime];
-    [v3 setObject:v11 forKeyedSubscript:@"events"];
+    eventsRelativeTime = [(SecLaunchSequence *)selfCopy eventsRelativeTime];
+    [dictionary setObject:eventsRelativeTime forKeyedSubscript:@"events"];
 
-    v12 = [(SecLaunchSequence *)v4 attributes];
-    v13 = [v12 count];
+    attributes = [(SecLaunchSequence *)selfCopy attributes];
+    v13 = [attributes count];
 
     if (v13)
     {
-      v14 = [(SecLaunchSequence *)v4 attributes];
-      [v3 setObject:v14 forKeyedSubscript:@"attributes"];
+      attributes2 = [(SecLaunchSequence *)selfCopy attributes];
+      [dictionary setObject:attributes2 forKeyedSubscript:@"attributes"];
     }
 
-    objc_sync_exit(v4);
-    v15 = v3;
+    objc_sync_exit(selfCopy);
+    v15 = dictionary;
   }
 
   else
@@ -268,23 +268,23 @@ void __34__SecLaunchSequence_metricsReport__block_invoke_2(uint64_t a1, void *a2
   [v10 setObject:v12 forKeyedSubscript:v11];
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
-  v10 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    if (![(SecLaunchSequence *)v4 launched])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (![(SecLaunchSequence *)selfCopy launched])
     {
-      v5 = [(SecLaunchSequence *)v4 events];
-      v6 = [v5 count];
+      events = [(SecLaunchSequence *)selfCopy events];
+      v6 = [events count];
 
       if (v6 <= 0x64)
       {
-        v7 = [(SecLaunchSequence *)v4 events];
-        v8 = [v7 objectForKeyedSubscript:v10];
+        events2 = [(SecLaunchSequence *)selfCopy events];
+        v8 = [events2 objectForKeyedSubscript:eventCopy];
 
         if (v8)
         {
@@ -293,77 +293,77 @@ void __34__SecLaunchSequence_metricsReport__block_invoke_2(uint64_t a1, void *a2
 
         else
         {
-          v8 = [[SecLaunchEvent alloc] initWithName:v10];
+          v8 = [[SecLaunchEvent alloc] initWithName:eventCopy];
         }
 
-        v9 = [(SecLaunchSequence *)v4 events];
-        [v9 setObject:v8 forKeyedSubscript:v10];
+        events3 = [(SecLaunchSequence *)selfCopy events];
+        [events3 setObject:v8 forKeyedSubscript:eventCopy];
       }
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)addAttribute:(id)a3 value:(id)a4
+- (void)addAttribute:(id)attribute value:(id)value
 {
-  v11 = a3;
-  v6 = a4;
+  attributeCopy = attribute;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    if (![(SecLaunchSequence *)v7 launched])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (![(SecLaunchSequence *)selfCopy launched])
     {
-      v8 = [(SecLaunchSequence *)v7 attributes];
+      attributes = [(SecLaunchSequence *)selfCopy attributes];
 
-      if (!v8)
+      if (!attributes)
       {
-        v9 = [MEMORY[0x1E695DF90] dictionary];
-        [(SecLaunchSequence *)v7 setAttributes:v9];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        [(SecLaunchSequence *)selfCopy setAttributes:dictionary];
       }
 
-      v10 = [(SecLaunchSequence *)v7 attributes];
-      [v10 setObject:v6 forKeyedSubscript:v11];
+      attributes2 = [(SecLaunchSequence *)selfCopy attributes];
+      [attributes2 setObject:valueCopy forKeyedSubscript:attributeCopy];
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)addDependantLaunch:(id)a3 child:(id)a4
+- (void)addDependantLaunch:(id)launch child:(id)child
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (![(SecLaunchSequence *)v7 launched])
+  launchCopy = launch;
+  childCopy = child;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(SecLaunchSequence *)selfCopy launched])
   {
-    v8 = [(SecLaunchSequence *)v7 dependantLaunches];
-    v9 = [v8 objectForKeyedSubscript:v13];
+    dependantLaunches = [(SecLaunchSequence *)selfCopy dependantLaunches];
+    v9 = [dependantLaunches objectForKeyedSubscript:launchCopy];
 
     if (!v9)
     {
-      v10 = [(SecLaunchSequence *)v7 dependantLaunches];
-      [v10 setObject:v6 forKeyedSubscript:v13];
+      dependantLaunches2 = [(SecLaunchSequence *)selfCopy dependantLaunches];
+      [dependantLaunches2 setObject:childCopy forKeyedSubscript:launchCopy];
 
-      v11 = [(SecLaunchSequence *)v7 launchOperation];
-      v12 = [v6 launchOperation];
-      [v11 addDependency:v12];
+      launchOperation = [(SecLaunchSequence *)selfCopy launchOperation];
+      launchOperation2 = [childCopy launchOperation];
+      [launchOperation addDependency:launchOperation2];
     }
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setFirstLaunch:(BOOL)a3
+- (void)setFirstLaunch:(BOOL)launch
 {
   obj = self;
   objc_sync_enter(obj);
   if (![(SecLaunchSequence *)obj launched])
   {
-    obj->_firstLaunch = a3;
+    obj->_firstLaunch = launch;
   }
 
   objc_sync_exit(obj);
@@ -371,27 +371,27 @@ void __34__SecLaunchSequence_metricsReport__block_invoke_2(uint64_t a1, void *a2
 
 - (BOOL)firstLaunch
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  firstLaunch = v2->_firstLaunch;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  firstLaunch = selfCopy->_firstLaunch;
+  objc_sync_exit(selfCopy);
 
   return firstLaunch;
 }
 
-- (SecLaunchSequence)initWithRocketName:(id)a3
+- (SecLaunchSequence)initWithRocketName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = SecLaunchSequence;
   v6 = [(SecLaunchSequence *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v6->_name, name);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     events = v7->_events;
-    v7->_events = v8;
+    v7->_events = dictionary;
 
     v10 = [[SecLaunchEvent alloc] initWithName:@"started"];
     [(NSMutableDictionary *)v7->_events setObject:v10 forKeyedSubscript:@"started"];
@@ -400,9 +400,9 @@ void __34__SecLaunchSequence_metricsReport__block_invoke_2(uint64_t a1, void *a2
     launchOperation = v7->_launchOperation;
     v7->_launchOperation = v11;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     dependantLaunches = v7->_dependantLaunches;
-    v7->_dependantLaunches = v13;
+    v7->_dependantLaunches = dictionary2;
   }
 
   return v7;

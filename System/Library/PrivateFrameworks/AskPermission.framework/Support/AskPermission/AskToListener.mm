@@ -1,14 +1,14 @@
 @interface AskToListener
-- (void)didReceiveResponse:(id)a3;
+- (void)didReceiveResponse:(id)response;
 @end
 
 @implementation AskToListener
 
-- (void)didReceiveResponse:(id)a3
+- (void)didReceiveResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
 
-  sub_10002DDF4(v3);
+  sub_10002DDF4(responseCopy);
 }
 
 @end

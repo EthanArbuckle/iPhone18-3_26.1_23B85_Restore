@@ -1,15 +1,15 @@
 @interface PGGraphIsHomeWorkEdge
 + (id)filter;
-- (id)initFromAddressNode:(id)a3 toHomeWorkNode:(id)a4;
+- (id)initFromAddressNode:(id)node toHomeWorkNode:(id)workNode;
 @end
 
 @implementation PGGraphIsHomeWorkEdge
 
-- (id)initFromAddressNode:(id)a3 toHomeWorkNode:(id)a4
+- (id)initFromAddressNode:(id)node toHomeWorkNode:(id)workNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphIsHomeWorkEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:workNode];
 }
 
 + (id)filter

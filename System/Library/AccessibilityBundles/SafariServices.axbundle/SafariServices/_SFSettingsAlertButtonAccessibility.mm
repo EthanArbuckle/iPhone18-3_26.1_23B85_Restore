@@ -1,19 +1,19 @@
 @interface _SFSettingsAlertButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation _SFSettingsAlertButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_SFSettingsAlertButton" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIControl" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"_SFSettingsAlertButton" hasInstanceMethod:@"image" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_SFSettingsAlertButton" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_SFSettingsAlertButton" isKindOfClass:@"UIControl"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_SFSettingsAlertButton" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIControl" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"_SFSettingsAlertButton" hasInstanceMethod:@"image" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_SFSettingsAlertButton" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_SFSettingsAlertButton" isKindOfClass:@"UIControl"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -28,14 +28,14 @@
 
   v6 = v5 | v3;
   v7 = [(_SFSettingsAlertButtonAccessibility *)self safeValueForKey:@"image"];
-  v8 = [v7 accessibilityIdentifier];
-  if ([v8 isEqualToString:@"checkmark"])
+  accessibilityIdentifier = [v7 accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"checkmark"])
   {
     v9 = [(_SFSettingsAlertButtonAccessibility *)self safeUIViewForKey:@"imageView"];
-    v10 = [v9 _accessibilityViewIsVisible];
+    _accessibilityViewIsVisible = [v9 _accessibilityViewIsVisible];
 
     v11 = *MEMORY[0x29EDC7FC0];
-    if ((v10 & 1) == 0)
+    if ((_accessibilityViewIsVisible & 1) == 0)
     {
       v11 = 0;
     }
@@ -52,9 +52,9 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(_SFSettingsAlertButtonAccessibility *)self accessibilityUserDefinedLabel];
+  accessibilityUserDefinedLabel = [(_SFSettingsAlertButtonAccessibility *)self accessibilityUserDefinedLabel];
 
-  if (v3)
+  if (accessibilityUserDefinedLabel)
   {
     [(_SFSettingsAlertButtonAccessibility *)self accessibilityUserDefinedLabel];
   }

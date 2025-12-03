@@ -1,41 +1,41 @@
 @interface SBUICallToActionLabel
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)description;
-- (SBUICallToActionLabel)initWithFrame:(CGRect)a3;
+- (SBUICallToActionLabel)initWithFrame:(CGRect)frame;
 - (double)baselineOffset;
 - (id)_callToActionFont;
-- (id)_fontWithTextStyle:(id)a3 symbolicTraits:(unsigned int)a4 withMaximumFontSizeCategory:(id)a5;
+- (id)_fontWithTextStyle:(id)style symbolicTraits:(unsigned int)traits withMaximumFontSizeCategory:(id)category;
 - (void)_actuallyRunGradientAnimation;
-- (void)_addAnimationCompletionBlockIfNecessary:(id)a3;
+- (void)_addAnimationCompletionBlockIfNecessary:(id)necessary;
 - (void)_createGradientLayer;
 - (void)_createLabel;
 - (void)_executePostAnimationCompletionBlocks;
 - (void)_invalidateGradientAnimationTimer;
-- (void)_preferredTextSizeChanged:(id)a3;
-- (void)_resetGradientAndLabelBefore:(BOOL)a3;
-- (void)_runFadeAnimationForFadingOut:(BOOL)a3 duration:(double)a4 completion:(id)a5;
-- (void)_runGradientAnimation:(BOOL)a3;
+- (void)_preferredTextSizeChanged:(id)changed;
+- (void)_resetGradientAndLabelBefore:(BOOL)before;
+- (void)_runFadeAnimationForFadingOut:(BOOL)out duration:(double)duration completion:(id)completion;
+- (void)_runGradientAnimation:(BOOL)animation;
 - (void)_timerTriggered;
-- (void)_updateLabelTextWithLanguage:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)_updateLabelTextWithLanguage:(id)language;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)didMoveToSuperview;
-- (void)fadeInImmediately:(BOOL)a3 completion:(id)a4;
-- (void)fadeOutWithDuration:(double)a3 completion:(id)a4;
+- (void)fadeInImmediately:(BOOL)immediately completion:(id)completion;
+- (void)fadeOutWithDuration:(double)duration completion:(id)completion;
 - (void)layoutSubviews;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setState:(unint64_t)a3;
-- (void)setText:(id)a3 forLanguage:(id)a4 animated:(BOOL)a5;
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setState:(unint64_t)state;
+- (void)setText:(id)text forLanguage:(id)language animated:(BOOL)animated;
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated;
 - (void)sizeToFit;
 @end
 
 @implementation SBUICallToActionLabel
 
-- (SBUICallToActionLabel)initWithFrame:(CGRect)a3
+- (SBUICallToActionLabel)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SBUICallToActionLabel;
-  v3 = [(SBUICallToActionLabel *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBUICallToActionLabel *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -47,8 +47,8 @@
     [(SBUICallToActionLabel *)v3 setState:0];
     [(SBUICallToActionLabel *)v3 bs_setHitTestingDisabled:1];
     [(SBUICallToActionLabel *)v3 setAccessibilityIdentifier:@"call-to-action-label"];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v3 selector:sel__preferredTextSizeChanged_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__preferredTextSizeChanged_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v3;
@@ -56,9 +56,9 @@
 
 - (void)didMoveToSuperview
 {
-  v3 = [(SBUICallToActionLabel *)self superview];
+  superview = [(SBUICallToActionLabel *)self superview];
 
-  if (!v3)
+  if (!superview)
   {
     [(SBUICallToActionLabel *)self cancelFadeInTimerIfNecessary];
     gradientLayer = self->_gradientLayer;
@@ -101,98 +101,98 @@
   [(SBUICallToActionLabel *)self setBounds:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(SBUILegibilityLabel *)self->_label sizeThatFits:a3.width, a3.height];
+  [(SBUILegibilityLabel *)self->_label sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v6 = a3;
+  settingsCopy = settings;
   if (([(_UILegibilitySettings *)self->_legibilitySettings sb_isEqualToLegibilitySettings:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
-    v5 = [(SBUICallToActionLabel *)self label];
-    [v5 setLegibilitySettings:v6];
+    objc_storeStrong(&self->_legibilitySettings, settings);
+    label = [(SBUICallToActionLabel *)self label];
+    [label setLegibilitySettings:settingsCopy];
   }
 }
 
 - (double)baselineOffset
 {
-  v2 = [(SBUICallToActionLabel *)self label];
-  [v2 baselineOffset];
+  label = [(SBUICallToActionLabel *)self label];
+  [label baselineOffset];
   v4 = v3;
 
   return v4;
 }
 
-- (void)fadeInImmediately:(BOOL)a3 completion:(id)a4
+- (void)fadeInImmediately:(BOOL)immediately completion:(id)completion
 {
-  v4 = a3;
-  v7 = a4;
-  v6 = [(SBUICallToActionLabel *)self state];
-  if (v6 > 1)
+  immediatelyCopy = immediately;
+  completionCopy = completion;
+  state = [(SBUICallToActionLabel *)self state];
+  if (state > 1)
   {
-    if (v6 == 2)
+    if (state == 2)
     {
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7);
+        completionCopy[2](completionCopy);
       }
     }
 
-    else if (v6 == 3)
+    else if (state == 3)
     {
-      [(SBUICallToActionLabel *)self _runFadeAnimationForFadingOut:0 duration:v7 completion:0.4];
+      [(SBUICallToActionLabel *)self _runFadeAnimationForFadingOut:0 duration:completionCopy completion:0.4];
     }
   }
 
-  else if (v6)
+  else if (state)
   {
-    if (v6 == 1)
+    if (state == 1)
     {
-      [(SBUICallToActionLabel *)self _addAnimationCompletionBlockIfNecessary:v7];
+      [(SBUICallToActionLabel *)self _addAnimationCompletionBlockIfNecessary:completionCopy];
     }
   }
 
   else
   {
-    [(SBUICallToActionLabel *)self _addAnimationCompletionBlockIfNecessary:v7];
-    [(SBUICallToActionLabel *)self _runGradientAnimation:v4];
+    [(SBUICallToActionLabel *)self _addAnimationCompletionBlockIfNecessary:completionCopy];
+    [(SBUICallToActionLabel *)self _runGradientAnimation:immediatelyCopy];
   }
 
   MEMORY[0x1EEE66BE0]();
 }
 
-- (void)fadeOutWithDuration:(double)a3 completion:(id)a4
+- (void)fadeOutWithDuration:(double)duration completion:(id)completion
 {
-  v7 = a4;
-  v6 = [(SBUICallToActionLabel *)self state];
-  if (v6 - 1 < 2)
+  completionCopy = completion;
+  state = [(SBUICallToActionLabel *)self state];
+  if (state - 1 < 2)
   {
-    [(SBUICallToActionLabel *)self _runFadeAnimationForFadingOut:1 duration:v7 completion:a3];
+    [(SBUICallToActionLabel *)self _runFadeAnimationForFadingOut:1 duration:completionCopy completion:duration];
   }
 
-  else if (!v6 || v6 == 3)
+  else if (!state || state == 3)
   {
     [(SBUICallToActionLabel *)self _invalidateGradientAnimationTimer];
     [(CAGradientLayer *)self->_gradientLayer removeAnimationForKey:@"call-to-action"];
-    if (v7)
+    if (completionCopy)
     {
-      v7[2]();
+      completionCopy[2]();
     }
   }
 }
 
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a3;
-  if (a4)
+  visibleCopy = visible;
+  if (animated)
   {
-    if (a3)
+    if (visible)
     {
 
       [(SBUICallToActionLabel *)self fadeIn];
@@ -207,7 +207,7 @@
 
   else
   {
-    if (a3)
+    if (visible)
     {
       v6 = 2;
     }
@@ -218,7 +218,7 @@
     }
 
     [(SBUICallToActionLabel *)self setState:v6];
-    [(SBUICallToActionLabel *)self _resetGradientAndLabelBefore:!v4];
+    [(SBUICallToActionLabel *)self _resetGradientAndLabelBefore:!visibleCopy];
     [(SBUICallToActionLabel *)self _invalidateGradientAnimationTimer];
     [(CAGradientLayer *)self->_gradientLayer removeAnimationForKey:@"call-to-action"];
 
@@ -226,14 +226,14 @@
   }
 }
 
-- (void)setText:(id)a3 forLanguage:(id)a4 animated:(BOOL)a5
+- (void)setText:(id)text forLanguage:(id)language animated:(BOOL)animated
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!self->_text || ([v8 isEqualToString:?] & 1) == 0)
+  textCopy = text;
+  languageCopy = language;
+  if (!self->_text || ([textCopy isEqualToString:?] & 1) == 0)
   {
-    v10 = [v8 copy];
+    v10 = [textCopy copy];
     text = self->_text;
     self->_text = v10;
 
@@ -263,7 +263,7 @@
       _os_log_impl(&dword_1A9A79000, v12, OS_LOG_TYPE_INFO, "Changing call to action text: %@ (animated: %@, current state: %{public}@)", buf, 0x20u);
     }
 
-    if (a5)
+    if (animated)
     {
       objc_initWeak(buf, self);
       v20 = MEMORY[0x1E69E9820];
@@ -271,7 +271,7 @@
       v22 = __54__SBUICallToActionLabel_setText_forLanguage_animated___block_invoke;
       v23 = &unk_1E78A0260;
       objc_copyWeak(&v25, buf);
-      v24 = v9;
+      v24 = languageCopy;
       v18 = MEMORY[0x1AC58E960](&v20);
       v19 = [(SBUICallToActionLabel *)self state:v20];
       if (v19 - 1 < 2)
@@ -298,7 +298,7 @@
 
     else
     {
-      [(SBUICallToActionLabel *)self _updateLabelTextWithLanguage:v9];
+      [(SBUICallToActionLabel *)self _updateLabelTextWithLanguage:languageCopy];
     }
   }
 }
@@ -326,17 +326,17 @@ void __54__SBUICallToActionLabel_setText_forLanguage_animated___block_invoke(uin
   }
 
   [v3 appendString:v6 withName:@"state"];
-  v7 = [v4 build];
+  build = [v4 build];
 
-  return v7;
+  return build;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     v4 = SBLogDashBoardCallToActionLabel();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -358,18 +358,18 @@ void __54__SBUICallToActionLabel_setText_forLanguage_animated___block_invoke(uin
   }
 }
 
-- (void)_updateLabelTextWithLanguage:(id)a3
+- (void)_updateLabelTextWithLanguage:(id)language
 {
-  v8 = a3;
-  v4 = [(SBUICallToActionLabel *)self label];
+  languageCopy = language;
+  label = [(SBUICallToActionLabel *)self label];
   v5 = _UIAdaptLocalizedStringForView();
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v5];
-    if (v8)
+    if (languageCopy)
     {
-      v7 = [v6 string];
-      [v6 addAttribute:@"NSLanguage" value:v8 range:{0, objc_msgSend(v7, "length")}];
+      string = [v6 string];
+      [v6 addAttribute:@"NSLanguage" value:languageCopy range:{0, objc_msgSend(string, "length")}];
     }
   }
 
@@ -378,20 +378,20 @@ void __54__SBUICallToActionLabel_setText_forLanguage_animated___block_invoke(uin
     v6 = 0;
   }
 
-  [v4 setAttributedText:v6];
-  [v4 setNumberOfLines:4];
+  [label setAttributedText:v6];
+  [label setNumberOfLines:4];
 }
 
 - (void)_createLabel
 {
-  v10 = [(SBUICallToActionLabel *)self _callToActionFont];
+  _callToActionFont = [(SBUICallToActionLabel *)self _callToActionFont];
   v3 = [SBUILegibilityLabel alloc];
   v4 = [MEMORY[0x1E69DD5B8] sharedInstanceForStyle:1];
-  v5 = [(SBUICallToActionLabel *)self text];
-  v6 = [(SBUILegibilityLabel *)v3 initWithSettings:v4 strength:v5 string:v10 font:0.25];
+  text = [(SBUICallToActionLabel *)self text];
+  v6 = [(SBUILegibilityLabel *)v3 initWithSettings:v4 strength:text string:_callToActionFont font:0.25];
 
-  v7 = [v10 fontDescriptor];
-  [v7 pointSize];
+  fontDescriptor = [_callToActionFont fontDescriptor];
+  [fontDescriptor pointSize];
   v9 = v8;
 
   [(SBUILegibilityLabel *)v6 setMinimumScaleFactor:(v9 + -2.0) / v9];
@@ -410,8 +410,8 @@ void __54__SBUICallToActionLabel_setText_forLanguage_animated___block_invoke(uin
   v5 = _callToActionFont_callToActionFont;
   if (!_callToActionFont_callToActionFont)
   {
-    v6 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-    if (UIContentSizeCategoryIsAccessibilityCategory(v6))
+    preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+    if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
     {
       v7 = 32770;
     }
@@ -440,8 +440,8 @@ LABEL_30:
 
     else
     {
-      v6 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([(NSString *)v6 userInterfaceIdiom])
+      preferredContentSizeCategory = [MEMORY[0x1E69DC938] currentDevice];
+      if ([(NSString *)preferredContentSizeCategory userInterfaceIdiom])
       {
         v10 = *MEMORY[0x1E69DDC28];
         goto LABEL_29;
@@ -466,8 +466,8 @@ LABEL_30:
 
     else
     {
-      v2 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v2 userInterfaceIdiom])
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice userInterfaceIdiom])
       {
         v10 = *MEMORY[0x1E69DDC30];
         goto LABEL_35;
@@ -483,8 +483,8 @@ LABEL_30:
 
     else
     {
-      v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v3 _referenceBounds];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -553,24 +553,24 @@ void __42__SBUICallToActionLabel__callToActionFont__block_invoke_2()
   _callToActionFont_callToActionFont = 0;
 }
 
-- (id)_fontWithTextStyle:(id)a3 symbolicTraits:(unsigned int)a4 withMaximumFontSizeCategory:(id)a5
+- (id)_fontWithTextStyle:(id)style symbolicTraits:(unsigned int)traits withMaximumFontSizeCategory:(id)category
 {
-  v6 = *&a4;
-  v7 = a3;
-  v8 = a5;
-  v9 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  v10 = UIContentSizeCategoryCompareToCategory(v9, v8);
+  v6 = *&traits;
+  styleCopy = style;
+  categoryCopy = category;
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, categoryCopy);
 
   v11 = MEMORY[0x1E69DB880];
   if (v10 == NSOrderedAscending)
   {
-    v13 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v7];
+    v13 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:styleCopy];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:v8];
-    v13 = [v11 preferredFontDescriptorWithTextStyle:v7 compatibleWithTraitCollection:v12];
+    v12 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:categoryCopy];
+    v13 = [v11 preferredFontDescriptorWithTextStyle:styleCopy compatibleWithTraitCollection:v12];
   }
 
   v14 = [v13 fontDescriptorWithSymbolicTraits:v6];
@@ -586,35 +586,35 @@ void __42__SBUICallToActionLabel__callToActionFont__block_invoke_2()
   [v3 setType:*MEMORY[0x1E6979DB0]];
   [v3 setStartPoint:{0.5, 0.5}];
   [v3 setEndPoint:{1.0, 1.0}];
-  v4 = [MEMORY[0x1E69DC888] whiteColor];
-  v10[0] = [v4 CGColor];
-  v5 = [MEMORY[0x1E69DC888] clearColor];
-  v10[1] = [v5 CGColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v10[0] = [whiteColor CGColor];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  v10[1] = [clearColor CGColor];
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
   [v3 setColors:v6];
 
   [(SBUICallToActionLabel *)self _resetGradientAndLabelBefore:1];
-  v7 = [(SBUICallToActionLabel *)self layer];
-  [v7 addSublayer:v3];
+  layer = [(SBUICallToActionLabel *)self layer];
+  [layer addSublayer:v3];
 
   [(SBUICallToActionLabel *)self setGradientLayer:v3];
-  v8 = [(SBUICallToActionLabel *)self label];
-  v9 = [v8 layer];
-  [v9 setMask:v3];
+  label = [(SBUICallToActionLabel *)self label];
+  layer2 = [label layer];
+  [layer2 setMask:v3];
 }
 
-- (void)_preferredTextSizeChanged:(id)a3
+- (void)_preferredTextSizeChanged:(id)changed
 {
   label = self->_label;
-  v5 = [(SBUICallToActionLabel *)self _callToActionFont];
-  [(SBUILegibilityLabel *)label setFont:v5];
+  _callToActionFont = [(SBUICallToActionLabel *)self _callToActionFont];
+  [(SBUILegibilityLabel *)label setFont:_callToActionFont];
 
   [(SBUICallToActionLabel *)self _updateLabelTextWithLanguage:0];
 }
 
-- (void)_runGradientAnimation:(BOOL)a3
+- (void)_runGradientAnimation:(BOOL)animation
 {
-  if (a3)
+  if (animation)
   {
     [(SBUICallToActionLabel *)self _invalidateGradientAnimationTimer];
     v4 = SBLogDashBoardCallToActionLabel();
@@ -628,9 +628,9 @@ void __42__SBUICallToActionLabel__callToActionFont__block_invoke_2()
 
   else
   {
-    v5 = [(SBUICallToActionLabel *)self animationTimer];
+    animationTimer = [(SBUICallToActionLabel *)self animationTimer];
 
-    if (!v5)
+    if (!animationTimer)
     {
       v6 = SBLogDashBoardCallToActionLabel();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -680,9 +680,9 @@ void __42__SBUICallToActionLabel__callToActionFont__block_invoke_2()
   _os_log_debug_impl(&dword_1A9A79000, v1, OS_LOG_TYPE_DEBUG, "%{public}@: adding gradient animation: %@", v2, 0x16u);
 }
 
-- (void)_runFadeAnimationForFadingOut:(BOOL)a3 duration:(double)a4 completion:(id)a5
+- (void)_runFadeAnimationForFadingOut:(BOOL)out duration:(double)duration completion:(id)completion
 {
-  if (a3)
+  if (out)
   {
     v8 = 3;
   }
@@ -692,25 +692,25 @@ void __42__SBUICallToActionLabel__callToActionFont__block_invoke_2()
     v8 = 1;
   }
 
-  v9 = a5;
+  completionCopy = completion;
   [(SBUICallToActionLabel *)self setState:v8];
   [(SBUICallToActionLabel *)self _invalidateGradientAnimationTimer];
   [(CAGradientLayer *)self->_gradientLayer removeAnimationForKey:@"call-to-action"];
-  [(SBUICallToActionLabel *)self _addAnimationCompletionBlockIfNecessary:v9];
+  [(SBUICallToActionLabel *)self _addAnimationCompletionBlockIfNecessary:completionCopy];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __75__SBUICallToActionLabel__runFadeAnimationForFadingOut_duration_completion___block_invoke;
   v12[3] = &unk_1E789DA60;
   v12[4] = self;
-  v13 = a3;
+  outCopy = out;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __75__SBUICallToActionLabel__runFadeAnimationForFadingOut_duration_completion___block_invoke_2;
   v10[3] = &unk_1E789E2F8;
-  v11 = a3;
+  outCopy2 = out;
   v10[4] = self;
-  [MEMORY[0x1E69DD250] animateWithDuration:4 delay:v12 options:v10 animations:a4 completion:0.0];
+  [MEMORY[0x1E69DD250] animateWithDuration:4 delay:v12 options:v10 animations:duration completion:0.0];
 }
 
 uint64_t __75__SBUICallToActionLabel__runFadeAnimationForFadingOut_duration_completion___block_invoke(uint64_t a1)
@@ -737,14 +737,14 @@ uint64_t __75__SBUICallToActionLabel__runFadeAnimationForFadingOut_duration_comp
   return [v2 _executePostAnimationCompletionBlocks];
 }
 
-- (void)_resetGradientAndLabelBefore:(BOOL)a3
+- (void)_resetGradientAndLabelBefore:(BOOL)before
 {
-  v3 = a3;
+  beforeCopy = before;
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   [(SBUILegibilityLabel *)self->_label setAlpha:1.0];
   gradientLayer = self->_gradientLayer;
-  if (v3)
+  if (beforeCopy)
   {
     [(CAGradientLayer *)gradientLayer setLocations:&unk_1F1DB5C68];
     v6 = self->_gradientLayer;
@@ -765,12 +765,12 @@ uint64_t __75__SBUICallToActionLabel__runFadeAnimationForFadingOut_duration_comp
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)_addAnimationCompletionBlockIfNecessary:(id)a3
+- (void)_addAnimationCompletionBlockIfNecessary:(id)necessary
 {
-  if (a3)
+  if (necessary)
   {
     animationCompletionBlocks = self->_animationCompletionBlocks;
-    v5 = [a3 copy];
+    v5 = [necessary copy];
     v4 = MEMORY[0x1AC58E960]();
     [(NSMutableArray *)animationCompletionBlocks addObject:v4];
   }
@@ -813,16 +813,16 @@ uint64_t __75__SBUICallToActionLabel__runFadeAnimationForFadingOut_duration_comp
   [(NSMutableArray *)self->_animationCompletionBlocks removeAllObjects];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
+  finishedCopy = finished;
   v6 = SBLogDashBoardCallToActionLabel();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [SBUICallToActionLabel animationDidStop:finished:];
   }
 
-  if (v4 && [(SBUICallToActionLabel *)self state]== 1)
+  if (finishedCopy && [(SBUICallToActionLabel *)self state]== 1)
   {
     [(SBUICallToActionLabel *)self setState:2];
     [(SBUICallToActionLabel *)self _executePostAnimationCompletionBlocks];

@@ -8,153 +8,153 @@
 - (void)setDefaultValues
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
   v5 = 0.33;
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v5 = 0.25;
   }
 
   [(_UIKBFeedbackGeneratorSettings *)self setTypingFastInterval:v5];
   v6 = +[UIDevice currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  userInterfaceIdiom2 = [v6 userInterfaceIdiom];
 
-  [(_UIKBFeedbackGeneratorSettings *)self setTypingSlowInterval:dbl_18A67E140[(v7 & 0xFFFFFFFFFFFFFFFBLL) == 1]];
-  v8 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioVolume];
-  [v8 setDefaultValues];
+  [(_UIKBFeedbackGeneratorSettings *)self setTypingSlowInterval:dbl_18A67E140[(userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1]];
+  indivisualKeyAudioVolume = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioVolume];
+  [indivisualKeyAudioVolume setDefaultValues];
 
-  v9 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioVolume];
-  [v9 setDecayInterval:0.6];
+  indivisualKeyAudioVolume2 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioVolume];
+  [indivisualKeyAudioVolume2 setDecayInterval:0.6];
 
-  v10 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioVolume];
-  [v10 setIntervalWeight:0.88];
+  indivisualKeyAudioVolume3 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioVolume];
+  [indivisualKeyAudioVolume3 setIntervalWeight:0.88];
 
   v11 = +[UIDevice currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  userInterfaceIdiom3 = [v11 userInterfaceIdiom];
 
-  v13 = dbl_18A67E150[(v12 & 0xFFFFFFFFFFFFFFFBLL) == 1];
-  v14 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioVolume];
-  [v14 setMin:v13];
+  v13 = dbl_18A67E150[(userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  indivisualKeyAudioVolume4 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioVolume];
+  [indivisualKeyAudioVolume4 setMin:v13];
 
-  v15 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioVolume];
-  [v15 setMax:1.0];
+  indivisualKeyAudioVolume5 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioVolume];
+  [indivisualKeyAudioVolume5 setMax:1.0];
 
-  v16 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioVolume];
-  [v16 setRandomInPercentage:10.0];
+  indivisualKeyAudioVolume6 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioVolume];
+  [indivisualKeyAudioVolume6 setRandomInPercentage:10.0];
 
-  v17 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyHaptic];
-  [v17 setDefaultValues];
+  indivisualKeyHaptic = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyHaptic];
+  [indivisualKeyHaptic setDefaultValues];
 
-  v18 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyHaptic];
-  [v18 setMin:1.0];
+  indivisualKeyHaptic2 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyHaptic];
+  [indivisualKeyHaptic2 setMin:1.0];
 
-  v19 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyHaptic];
-  [v19 setMax:0.9];
+  indivisualKeyHaptic3 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyHaptic];
+  [indivisualKeyHaptic3 setMax:0.9];
 
-  v20 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyHaptic];
-  [v20 setIntervalWeight:0.0];
+  indivisualKeyHaptic4 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyHaptic];
+  [indivisualKeyHaptic4 setIntervalWeight:0.0];
 
-  v21 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyHaptic];
-  [v21 setRandomInPercentage:5.0];
+  indivisualKeyHaptic5 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyHaptic];
+  [indivisualKeyHaptic5 setRandomInPercentage:5.0];
 
-  v22 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioPitch];
-  [v22 setDefaultValues];
+  indivisualKeyAudioPitch = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioPitch];
+  [indivisualKeyAudioPitch setDefaultValues];
 
-  v23 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioPitch];
-  [v23 setDecayInterval:0.66];
+  indivisualKeyAudioPitch2 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioPitch];
+  [indivisualKeyAudioPitch2 setDecayInterval:0.66];
 
-  v24 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioPitch];
-  [v24 setIntervalWeight:0.2];
+  indivisualKeyAudioPitch3 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioPitch];
+  [indivisualKeyAudioPitch3 setIntervalWeight:0.2];
 
-  v25 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioPitch];
-  [v25 setRandomInPercentage:29.0];
+  indivisualKeyAudioPitch4 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioPitch];
+  [indivisualKeyAudioPitch4 setRandomInPercentage:29.0];
 
-  v26 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioPitch];
-  [v26 setMin:0.02];
+  indivisualKeyAudioPitch5 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioPitch];
+  [indivisualKeyAudioPitch5 setMin:0.02];
 
-  v27 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioPitch];
-  [v27 setMax:0.0];
+  indivisualKeyAudioPitch6 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioPitch];
+  [indivisualKeyAudioPitch6 setMax:0.0];
 
-  v28 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioPan];
-  [v28 setDefaultValues];
+  indivisualKeyAudioPan = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioPan];
+  [indivisualKeyAudioPan setDefaultValues];
 
-  v29 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioPan];
-  [v29 setMin:0.0];
+  indivisualKeyAudioPan2 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioPan];
+  [indivisualKeyAudioPan2 setMin:0.0];
 
-  v30 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioPan];
-  [v30 setMax:0.0];
+  indivisualKeyAudioPan3 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioPan];
+  [indivisualKeyAudioPan3 setMax:0.0];
 
-  v31 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioBrightness];
-  [v31 setDefaultValues];
+  indivisualKeyAudioBrightness = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioBrightness];
+  [indivisualKeyAudioBrightness setDefaultValues];
 
-  v32 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioBrightness];
-  [v32 setDecayInterval:0.86];
+  indivisualKeyAudioBrightness2 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioBrightness];
+  [indivisualKeyAudioBrightness2 setDecayInterval:0.86];
 
-  v33 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioBrightness];
-  [v33 setIntervalWeight:0.38];
+  indivisualKeyAudioBrightness3 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioBrightness];
+  [indivisualKeyAudioBrightness3 setIntervalWeight:0.38];
 
-  v34 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioBrightness];
-  [v34 setMin:-0.05];
+  indivisualKeyAudioBrightness4 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioBrightness];
+  [indivisualKeyAudioBrightness4 setMin:-0.05];
 
-  v35 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioBrightness];
-  [v35 setMax:0.0];
+  indivisualKeyAudioBrightness5 = [(_UIKBFeedbackGeneratorSettings *)self indivisualKeyAudioBrightness];
+  [indivisualKeyAudioBrightness5 setMax:0.0];
 
-  v36 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioVolume];
-  [v36 setDefaultValues];
+  predictiveTextAudioVolume = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioVolume];
+  [predictiveTextAudioVolume setDefaultValues];
 
-  v37 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioVolume];
-  [v37 setMin:0.6];
+  predictiveTextAudioVolume2 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioVolume];
+  [predictiveTextAudioVolume2 setMin:0.6];
 
-  v38 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioVolume];
-  [v38 setMax:0.95];
+  predictiveTextAudioVolume3 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioVolume];
+  [predictiveTextAudioVolume3 setMax:0.95];
 
   [(_UIKBFeedbackGeneratorSettings *)self setPredictiveTextMinLength:1];
   [(_UIKBFeedbackGeneratorSettings *)self setPredictiveTextMaxLength:10];
-  v39 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioPitch];
-  [v39 setDefaultValues];
+  predictiveTextAudioPitch = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioPitch];
+  [predictiveTextAudioPitch setDefaultValues];
 
-  v40 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioPitch];
-  [v40 setMin:0.7];
+  predictiveTextAudioPitch2 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioPitch];
+  [predictiveTextAudioPitch2 setMin:0.7];
 
-  v41 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioPitch];
-  [v41 setMax:0.0];
+  predictiveTextAudioPitch3 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioPitch];
+  [predictiveTextAudioPitch3 setMax:0.0];
 
-  v42 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioPan];
-  [v42 setDefaultValues];
+  predictiveTextAudioPan = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioPan];
+  [predictiveTextAudioPan setDefaultValues];
 
-  v43 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioPan];
-  [v43 setMin:0.0];
+  predictiveTextAudioPan2 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioPan];
+  [predictiveTextAudioPan2 setMin:0.0];
 
-  v44 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioPan];
-  [v44 setMax:0.0];
+  predictiveTextAudioPan3 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioPan];
+  [predictiveTextAudioPan3 setMax:0.0];
 
-  v45 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioBrightness];
-  [v45 setDefaultValues];
+  predictiveTextAudioBrightness = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioBrightness];
+  [predictiveTextAudioBrightness setDefaultValues];
 
-  v46 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioBrightness];
-  [v46 setMin:-0.2];
+  predictiveTextAudioBrightness2 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioBrightness];
+  [predictiveTextAudioBrightness2 setMin:-0.2];
 
-  v47 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioBrightness];
-  [v47 setMax:0.0];
+  predictiveTextAudioBrightness3 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextAudioBrightness];
+  [predictiveTextAudioBrightness3 setMax:0.0];
 
-  v48 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextHaptic];
-  [v48 setDefaultValues];
+  predictiveTextHaptic = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextHaptic];
+  [predictiveTextHaptic setDefaultValues];
 
-  v49 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextHaptic];
-  [v49 setMin:1.0];
+  predictiveTextHaptic2 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextHaptic];
+  [predictiveTextHaptic2 setMin:1.0];
 
-  v50 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextHaptic];
-  [v50 setMax:0.9];
+  predictiveTextHaptic3 = [(_UIKBFeedbackGeneratorSettings *)self predictiveTextHaptic];
+  [predictiveTextHaptic3 setMax:0.9];
 
   [(_UIKBFeedbackGeneratorSettings *)self setPredictiveTextFeedbackOption:1];
   [(_UIKBFeedbackGeneratorSettings *)self setPredictiveTextOddAudioPitch:0.06];
   [(_UIKBFeedbackGeneratorSettings *)self setPredictiveTextEvenAudioPitch:-0.04];
   [(_UIKBFeedbackGeneratorSettings *)self setPredictiveTextLongAudioBrightness:-0.05];
   v51 = +[UIDevice currentDevice];
-  v52 = [v51 userInterfaceIdiom];
+  userInterfaceIdiom4 = [v51 userInterfaceIdiom];
 
-  [(_UIKBFeedbackGeneratorSettings *)self setPredictiveTextShortAudioBrightness:dbl_18A67E160[(v52 & 0xFFFFFFFFFFFFFFFBLL) == 1]];
+  [(_UIKBFeedbackGeneratorSettings *)self setPredictiveTextShortAudioBrightness:dbl_18A67E160[(userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) == 1]];
   [(_UIKBFeedbackGeneratorSettings *)self setAutoShutdownTimeout:2.0];
   [(_UIKBFeedbackGeneratorSettings *)self setSystemRingerVolumeMin:0.0625];
   [(_UIKBFeedbackGeneratorSettings *)self setSystemRingerVolumeMax:1.0];

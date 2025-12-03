@@ -1,22 +1,22 @@
 @interface FAAgeRangeDaemonListener
-+ (id)createAndReturnError:(id *)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (id)createAndReturnError:(id *)error;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (FAAgeRangeDaemonListener)init;
 @end
 
 @implementation FAAgeRangeDaemonListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100026EFC(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_100026EFC(connectionCopy);
 
   return v9 & 1;
 }
 
-+ (id)createAndReturnError:(id *)a3
++ (id)createAndReturnError:(id *)error
 {
   v3 = objc_allocWithZone(type metadata accessor for AgeRangeDaemonListener());
   v4 = sub_100026624(sub_100026A9C, 0);

@@ -1,21 +1,21 @@
 @interface DNDNotificationsService
-- (DNDNotificationsService)initWithClientIdentifier:(id)a3;
-- (id)_modeConfigurationForIdentifier:(id)a3;
-- (id)_modeForIdentifier:(id)a3;
-- (void)_setModeConfiguration:(id)a3;
-- (void)activitySuggestionClient:(id)a3 didSuggestSettingUpActivity:(id)a4;
-- (void)activitySuggestionClient:(id)a3 didSuggestTriggersForConfiguredActivity:(id)a4;
+- (DNDNotificationsService)initWithClientIdentifier:(id)identifier;
+- (id)_modeConfigurationForIdentifier:(id)identifier;
+- (id)_modeForIdentifier:(id)identifier;
+- (void)_setModeConfiguration:(id)configuration;
+- (void)activitySuggestionClient:(id)client didSuggestSettingUpActivity:(id)activity;
+- (void)activitySuggestionClient:(id)client didSuggestTriggersForConfiguredActivity:(id)activity;
 - (void)resume;
-- (void)settingsService:(id)a3 didReceiveUpdatedBehaviorSettings:(id)a4;
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)settingsService:(id)service didReceiveUpdatedBehaviorSettings:(id)settings;
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation DNDNotificationsService
 
-- (DNDNotificationsService)initWithClientIdentifier:(id)a3
+- (DNDNotificationsService)initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = DNDNotificationsService;
   v5 = [(DNDNotificationsService *)&v20 init];
@@ -26,19 +26,19 @@
     queue = v5->_queue;
     v5->_queue = v7;
 
-    v9 = [MEMORY[0x277D05980] serviceForClientIdentifier:v4];
+    v9 = [MEMORY[0x277D05980] serviceForClientIdentifier:identifierCopy];
     notificationsAssertionService = v5->_notificationsAssertionService;
     v5->_notificationsAssertionService = v9;
 
-    v11 = [MEMORY[0x277D05AB0] serviceForClientIdentifier:v4];
+    v11 = [MEMORY[0x277D05AB0] serviceForClientIdentifier:identifierCopy];
     notificationsStateService = v5->_notificationsStateService;
     v5->_notificationsStateService = v11;
 
-    v13 = [MEMORY[0x277D05A98] serviceForClientIdentifier:v4];
+    v13 = [MEMORY[0x277D05A98] serviceForClientIdentifier:identifierCopy];
     notificationsSettingsService = v5->_notificationsSettingsService;
     v5->_notificationsSettingsService = v13;
 
-    v15 = [MEMORY[0x277D059C8] serviceForClientIdentifier:v4];
+    v15 = [MEMORY[0x277D059C8] serviceForClientIdentifier:identifierCopy];
     notificationsModeConfigurationService = v5->_notificationsModeConfigurationService;
     v5->_notificationsModeConfigurationService = v15;
 
@@ -81,17 +81,17 @@ uint64_t __33__DNDNotificationsService_resume__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)activitySuggestionClient:(id)a3 didSuggestSettingUpActivity:(id)a4
+- (void)activitySuggestionClient:(id)client didSuggestSettingUpActivity:(id)activity
 {
-  v5 = a4;
+  activityCopy = activity;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __80__DNDNotificationsService_activitySuggestionClient_didSuggestSettingUpActivity___block_invoke;
   v8[3] = &unk_278F88500;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = activityCopy;
+  v7 = activityCopy;
   dispatch_async(queue, v8);
 }
 
@@ -184,17 +184,17 @@ void __80__DNDNotificationsService_activitySuggestionClient_didSuggestSettingUpA
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activitySuggestionClient:(id)a3 didSuggestTriggersForConfiguredActivity:(id)a4
+- (void)activitySuggestionClient:(id)client didSuggestTriggersForConfiguredActivity:(id)activity
 {
-  v5 = a4;
+  activityCopy = activity;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __92__DNDNotificationsService_activitySuggestionClient_didSuggestTriggersForConfiguredActivity___block_invoke;
   v8[3] = &unk_278F88500;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = activityCopy;
+  v7 = activityCopy;
   dispatch_async(queue, v8);
 }
 
@@ -327,15 +327,15 @@ void __92__DNDNotificationsService_activitySuggestionClient_didSuggestTriggersFo
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  updateCopy = update;
   v6 = DNDLogNotifications;
   if (os_log_type_enabled(DNDLogNotifications, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v5;
+    v13 = updateCopy;
     _os_log_impl(&dword_249121000, v6, OS_LOG_TYPE_DEFAULT, "Did receive state update; stateUpdate=%{public}@", buf, 0xCu);
   }
 
@@ -345,8 +345,8 @@ void __92__DNDNotificationsService_activitySuggestionClient_didSuggestTriggersFo
   v10[2] = __74__DNDNotificationsService_stateService_didReceiveDoNotDisturbStateUpdate___block_invoke;
   v10[3] = &unk_278F88500;
   v10[4] = self;
-  v11 = v5;
-  v8 = v5;
+  v11 = updateCopy;
+  v8 = updateCopy;
   dispatch_async(queue, v10);
 
   v9 = *MEMORY[0x277D85DE8];
@@ -361,15 +361,15 @@ void __74__DNDNotificationsService_stateService_didReceiveDoNotDisturbStateUpdat
   *(v3 + 72) = v2;
 }
 
-- (void)settingsService:(id)a3 didReceiveUpdatedBehaviorSettings:(id)a4
+- (void)settingsService:(id)service didReceiveUpdatedBehaviorSettings:(id)settings
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  settingsCopy = settings;
   v6 = DNDLogNotifications;
   if (os_log_type_enabled(DNDLogNotifications, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v5;
+    v13 = settingsCopy;
     _os_log_impl(&dword_249121000, v6, OS_LOG_TYPE_DEFAULT, "Did receive updated behavior settings; settings=%{public}@", buf, 0xCu);
   }
 
@@ -379,8 +379,8 @@ void __74__DNDNotificationsService_stateService_didReceiveDoNotDisturbStateUpdat
   v10[2] = __77__DNDNotificationsService_settingsService_didReceiveUpdatedBehaviorSettings___block_invoke;
   v10[3] = &unk_278F88500;
   v10[4] = self;
-  v11 = v5;
-  v8 = v5;
+  v11 = settingsCopy;
+  v8 = settingsCopy;
   dispatch_async(queue, v10);
 
   v9 = *MEMORY[0x277D85DE8];
@@ -396,37 +396,37 @@ uint64_t __77__DNDNotificationsService_settingsService_didReceiveUpdatedBehavior
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
   v66 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 actionIdentifier];
-  v10 = [v7 notification];
-  v11 = [v10 request];
-  v12 = [v11 content];
-  v13 = [v12 categoryIdentifier];
+  responseCopy = response;
+  handlerCopy = handler;
+  actionIdentifier = [responseCopy actionIdentifier];
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
+  categoryIdentifier = [content categoryIdentifier];
 
   v14 = DNDLogNotifications;
   if (os_log_type_enabled(DNDLogNotifications, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v63 = v13;
+    v63 = categoryIdentifier;
     v64 = 2114;
-    v65 = v9;
+    v65 = actionIdentifier;
     _os_log_impl(&dword_249121000, v14, OS_LOG_TYPE_DEFAULT, "Did receive notification response; categoryIdentifier = %{public}@; actionIdentifier: %{public}@", buf, 0x16u);
   }
 
-  if (![v13 isEqualToString:@"suggestion.setup"] || !objc_msgSend(v9, "isEqualToString:", @"suggestion.setup.accept"))
+  if (![categoryIdentifier isEqualToString:@"suggestion.setup"] || !objc_msgSend(actionIdentifier, "isEqualToString:", @"suggestion.setup.accept"))
   {
-    if ([v13 isEqualToString:@"suggestion.setup"] && ((objc_msgSend(v9, "isEqualToString:", @"suggestion.setup.decline") & 1) != 0 || objc_msgSend(v9, "isEqualToString:", *MEMORY[0x277CE20F0])))
+    if ([categoryIdentifier isEqualToString:@"suggestion.setup"] && ((objc_msgSend(actionIdentifier, "isEqualToString:", @"suggestion.setup.decline") & 1) != 0 || objc_msgSend(actionIdentifier, "isEqualToString:", *MEMORY[0x277CE20F0])))
     {
-      v25 = [v7 notification];
-      v26 = [v25 request];
-      v27 = [v26 content];
-      v23 = [v27 userInfo];
+      notification2 = [responseCopy notification];
+      request2 = [notification2 request];
+      content2 = [request2 content];
+      userInfo = [content2 userInfo];
 
-      v28 = [v23 objectForKey:@"suggestionUUID"];
+      v28 = [userInfo objectForKey:@"suggestionUUID"];
       v29 = DNDLogNotifications;
       if (os_log_type_enabled(DNDLogNotifications, OS_LOG_TYPE_DEFAULT))
       {
@@ -442,7 +442,7 @@ uint64_t __77__DNDNotificationsService_settingsService_didReceiveUpdatedBehavior
       v54[3] = &unk_278F88550;
       v54[4] = self;
       v55 = v28;
-      v56 = v8;
+      v56 = handlerCopy;
       v22 = v28;
       dispatch_async(v30, v54);
 
@@ -450,14 +450,14 @@ uint64_t __77__DNDNotificationsService_settingsService_didReceiveUpdatedBehavior
       goto LABEL_25;
     }
 
-    if ([v13 isEqualToString:@"suggestion.trigger"] && objc_msgSend(v9, "isEqualToString:", @"suggestion.trigger.accept"))
+    if ([categoryIdentifier isEqualToString:@"suggestion.trigger"] && objc_msgSend(actionIdentifier, "isEqualToString:", @"suggestion.trigger.accept"))
     {
-      v31 = [v7 notification];
-      v32 = [v31 request];
-      v33 = [v32 content];
-      v23 = [v33 userInfo];
+      notification3 = [responseCopy notification];
+      request3 = [notification3 request];
+      content3 = [request3 content];
+      userInfo = [content3 userInfo];
 
-      v34 = [v23 objectForKey:@"suggestionUUID"];
+      v34 = [userInfo objectForKey:@"suggestionUUID"];
       v35 = DNDLogNotifications;
       if (os_log_type_enabled(DNDLogNotifications, OS_LOG_TYPE_DEFAULT))
       {
@@ -473,7 +473,7 @@ uint64_t __77__DNDNotificationsService_settingsService_didReceiveUpdatedBehavior
       v51[3] = &unk_278F88550;
       v51[4] = self;
       v52 = v34;
-      v53 = v8;
+      v53 = handlerCopy;
       v22 = v34;
       dispatch_async(v36, v51);
 
@@ -481,14 +481,14 @@ uint64_t __77__DNDNotificationsService_settingsService_didReceiveUpdatedBehavior
       goto LABEL_25;
     }
 
-    if ([v13 isEqualToString:@"suggestion.trigger"] && ((objc_msgSend(v9, "isEqualToString:", @"suggestion.trigger.decline") & 1) != 0 || objc_msgSend(v9, "isEqualToString:", *MEMORY[0x277CE20F0])))
+    if ([categoryIdentifier isEqualToString:@"suggestion.trigger"] && ((objc_msgSend(actionIdentifier, "isEqualToString:", @"suggestion.trigger.decline") & 1) != 0 || objc_msgSend(actionIdentifier, "isEqualToString:", *MEMORY[0x277CE20F0])))
     {
-      v37 = [v7 notification];
-      v38 = [v37 request];
-      v39 = [v38 content];
-      v23 = [v39 userInfo];
+      notification4 = [responseCopy notification];
+      request4 = [notification4 request];
+      content4 = [request4 content];
+      userInfo = [content4 userInfo];
 
-      v40 = [v23 objectForKey:@"suggestionUUID"];
+      v40 = [userInfo objectForKey:@"suggestionUUID"];
       v41 = DNDLogNotifications;
       if (os_log_type_enabled(DNDLogNotifications, OS_LOG_TYPE_DEFAULT))
       {
@@ -504,7 +504,7 @@ uint64_t __77__DNDNotificationsService_settingsService_didReceiveUpdatedBehavior
       v48[3] = &unk_278F88550;
       v48[4] = self;
       v49 = v40;
-      v50 = v8;
+      v50 = handlerCopy;
       v22 = v40;
       dispatch_async(v42, v48);
 
@@ -512,7 +512,7 @@ uint64_t __77__DNDNotificationsService_settingsService_didReceiveUpdatedBehavior
       goto LABEL_25;
     }
 
-    if (![v9 isEqualToString:@"stop"])
+    if (![actionIdentifier isEqualToString:@"stop"])
     {
       goto LABEL_27;
     }
@@ -520,7 +520,7 @@ uint64_t __77__DNDNotificationsService_settingsService_didReceiveUpdatedBehavior
     notificationsAssertionService = self->_notificationsAssertionService;
     v47 = 0;
     v45 = [(DNDModeAssertionService *)notificationsAssertionService invalidateAllActiveModeAssertionsWithError:&v47];
-    v23 = v47;
+    userInfo = v47;
     v46 = DNDLogNotifications;
     if (v45)
     {
@@ -528,7 +528,7 @@ uint64_t __77__DNDNotificationsService_settingsService_didReceiveUpdatedBehavior
       {
         *buf = 0;
         _os_log_impl(&dword_249121000, v46, OS_LOG_TYPE_DEFAULT, "Invalidated all assertions", buf, 2u);
-        if (!v8)
+        if (!handlerCopy)
         {
           goto LABEL_26;
         }
@@ -540,7 +540,7 @@ uint64_t __77__DNDNotificationsService_settingsService_didReceiveUpdatedBehavior
     else if (os_log_type_enabled(DNDLogNotifications, OS_LOG_TYPE_ERROR))
     {
       [DNDNotificationsService userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:];
-      if (!v8)
+      if (!handlerCopy)
       {
         goto LABEL_26;
       }
@@ -548,22 +548,22 @@ uint64_t __77__DNDNotificationsService_settingsService_didReceiveUpdatedBehavior
       goto LABEL_35;
     }
 
-    if (!v8)
+    if (!handlerCopy)
     {
       goto LABEL_26;
     }
 
 LABEL_35:
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
     goto LABEL_26;
   }
 
-  v15 = [v7 notification];
-  v16 = [v15 request];
-  v17 = [v16 content];
-  v18 = [v17 userInfo];
+  notification5 = [responseCopy notification];
+  request5 = [notification5 request];
+  content5 = [request5 content];
+  userInfo2 = [content5 userInfo];
 
-  v19 = [v18 objectForKey:@"suggestionUUID"];
+  v19 = [userInfo2 objectForKey:@"suggestionUUID"];
   v20 = DNDLogNotifications;
   if (os_log_type_enabled(DNDLogNotifications, OS_LOG_TYPE_DEFAULT))
   {
@@ -577,12 +577,12 @@ LABEL_35:
   block[1] = 3221225472;
   block[2] = __103__DNDNotificationsService_userNotificationCenter_didReceiveNotificationResponse_withCompletionHandler___block_invoke;
   block[3] = &unk_278F88528;
-  v58 = v18;
-  v59 = self;
+  v58 = userInfo2;
+  selfCopy = self;
   v60 = v19;
-  v61 = v8;
+  v61 = handlerCopy;
   v22 = v19;
-  v23 = v18;
+  userInfo = userInfo2;
   dispatch_async(v21, block);
 
   v24 = v58;
@@ -809,9 +809,9 @@ uint64_t __103__DNDNotificationsService_userNotificationCenter_didReceiveNotific
   return result;
 }
 
-- (id)_modeForIdentifier:(id)a3
+- (id)_modeForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   notificationsModeConfigurationService = self->_notificationsModeConfigurationService;
   v12 = 0;
   v6 = [(DNDModeConfigurationService *)notificationsModeConfigurationService availableModesReturningError:&v12];
@@ -832,7 +832,7 @@ uint64_t __103__DNDNotificationsService_userNotificationCenter_didReceiveNotific
     v10[1] = 3221225472;
     v10[2] = __46__DNDNotificationsService__modeForIdentifier___block_invoke;
     v10[3] = &unk_278F88578;
-    v11 = v4;
+    v11 = identifierCopy;
     v8 = [v6 bs_firstObjectPassingTest:v10];
   }
 
@@ -848,9 +848,9 @@ uint64_t __46__DNDNotificationsService__modeForIdentifier___block_invoke(uint64_
   return v5;
 }
 
-- (id)_modeConfigurationForIdentifier:(id)a3
+- (id)_modeConfigurationForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   notificationsModeConfigurationService = self->_notificationsModeConfigurationService;
   v13 = 0;
   v6 = [(DNDModeConfigurationService *)notificationsModeConfigurationService modeConfigurationsReturningError:&v13];
@@ -867,13 +867,13 @@ uint64_t __46__DNDNotificationsService__modeForIdentifier___block_invoke(uint64_
 
   else
   {
-    v9 = [v6 allValues];
+    allValues = [v6 allValues];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __59__DNDNotificationsService__modeConfigurationForIdentifier___block_invoke;
     v11[3] = &unk_278F885A0;
-    v12 = v4;
-    v8 = [v9 bs_firstObjectPassingTest:v11];
+    v12 = identifierCopy;
+    v8 = [allValues bs_firstObjectPassingTest:v11];
   }
 
   return v8;
@@ -889,11 +889,11 @@ uint64_t __59__DNDNotificationsService__modeConfigurationForIdentifier___block_i
   return v6;
 }
 
-- (void)_setModeConfiguration:(id)a3
+- (void)_setModeConfiguration:(id)configuration
 {
   notificationsModeConfigurationService = self->_notificationsModeConfigurationService;
   v5 = 0;
-  [(DNDModeConfigurationService *)notificationsModeConfigurationService setModeConfiguration:a3 error:&v5];
+  [(DNDModeConfigurationService *)notificationsModeConfigurationService setModeConfiguration:configuration error:&v5];
   v4 = v5;
   if (v4 && os_log_type_enabled(DNDLogNotifications, OS_LOG_TYPE_ERROR))
   {

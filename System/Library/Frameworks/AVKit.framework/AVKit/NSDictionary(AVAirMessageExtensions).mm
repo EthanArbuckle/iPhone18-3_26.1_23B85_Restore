@@ -7,13 +7,13 @@
 - (id)airMessageCanonicalForm
 {
   v25 = *MEMORY[0x1E69E9840];
-  v2 = [a1 mutableCopy];
+  v2 = [self mutableCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v4)
   {
     v6 = v4;
@@ -27,13 +27,13 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v9 = *(*(&v18 + 1) + 8 * v8);
         v10 = [v2 objectForKeyedSubscript:{v9, v17, v18}];
-        v11 = [MEMORY[0x1E695DFB0] null];
-        v12 = [v10 isEqual:v11];
+        null = [MEMORY[0x1E695DFB0] null];
+        v12 = [v10 isEqual:null];
 
         if (v12)
         {
@@ -43,8 +43,8 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v10 stringValue];
-          [v2 setObject:v13 forKeyedSubscript:v9];
+          stringValue = [v10 stringValue];
+          [v2 setObject:stringValue forKeyedSubscript:v9];
         }
 
         else
@@ -77,7 +77,7 @@ LABEL_10:
       }
 
       while (v6 != v8);
-      v15 = [v3 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v15 = [selfCopy countByEnumeratingWithState:&v18 objects:v24 count:16];
       v6 = v15;
     }
 

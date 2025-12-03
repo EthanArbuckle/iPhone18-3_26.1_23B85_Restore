@@ -1,7 +1,7 @@
 @interface MPSCNNDilatedPoolingMaxGradient
 - (MPSCNNDilatedPoolingMaxGradient)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSCNNDilatedPoolingMaxGradient)initWithDevice:(id)device kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight dilationRateX:(NSUInteger)dilationRateX dilationRateY:(NSUInteger)dilationRateY strideInPixelsX:(NSUInteger)strideInPixelsX strideInPixelsY:(NSUInteger)strideInPixelsY;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 @end
 
 @implementation MPSCNNDilatedPoolingMaxGradient
@@ -40,11 +40,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v13.receiver = self;
   v13.super_class = MPSCNNDilatedPoolingMaxGradient;
-  result = [(MPSCNNPoolingGradient *)&v13 copyWithZone:a3 device:a4];
+  result = [(MPSCNNPoolingGradient *)&v13 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 47) = sub_239BB2C54;

@@ -1,64 +1,64 @@
 @interface CKTranscriptTypingIndicatorCell
 - (BOOL)_disableRasterizeInAnimations;
-- (CKTranscriptTypingIndicatorCell)initWithFrame:(CGRect)a3;
+- (CKTranscriptTypingIndicatorCell)initWithFrame:(CGRect)frame;
 - (CKTypingIndicatorLayerProtocol)indicatorLayer;
 - (CKTypingView)typingView;
 - (void)_updateGroupOpacityOnCellLayer;
-- (void)ckLayerDidBecomeVisible:(BOOL)a3;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
+- (void)ckLayerDidBecomeVisible:(BOOL)visible;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
 - (void)layoutSubviewsForAlignmentContents;
-- (void)performInsertion:(id)a3;
-- (void)performRemoval:(id)a3;
+- (void)performInsertion:(id)insertion;
+- (void)performRemoval:(id)removal;
 - (void)prepareForReuse;
 - (void)resetTypingView;
-- (void)setIndicatorLayer:(id)a3;
-- (void)setOrientation:(char)a3;
-- (void)setTraitCollection:(id)a3;
-- (void)setTraitCollectionForIndicatorLayer:(id)a3;
+- (void)setIndicatorLayer:(id)layer;
+- (void)setOrientation:(char)orientation;
+- (void)setTraitCollection:(id)collection;
+- (void)setTraitCollectionForIndicatorLayer:(id)layer;
 - (void)startGrowAnimation;
 - (void)startPulseAnimation;
 - (void)startShrinkAnimation;
 - (void)stopPulseAnimation;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CKTranscriptTypingIndicatorCell
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
+  animatedCopy = animated;
+  itemCopy = item;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v16.receiver = self;
     v16.super_class = CKTranscriptTypingIndicatorCell;
-    [(CKTranscriptCell *)&v16 configureForChatItem:v12 context:v13 animated:v9 animationDuration:a7 animationCurve:a6];
-    v14 = [v12 indicatorLayer];
-    [(CKTranscriptTypingIndicatorCell *)self setIndicatorLayer:v14];
+    [(CKTranscriptCell *)&v16 configureForChatItem:itemCopy context:contextCopy animated:animatedCopy animationDuration:curve animationCurve:duration];
+    indicatorLayer = [itemCopy indicatorLayer];
+    [(CKTranscriptTypingIndicatorCell *)self setIndicatorLayer:indicatorLayer];
 
-    v15 = [v12 transcriptTraitCollection];
-    [(CKTranscriptTypingIndicatorCell *)self setTraitCollection:v15];
+    transcriptTraitCollection = [itemCopy transcriptTraitCollection];
+    [(CKTranscriptTypingIndicatorCell *)self setTraitCollection:transcriptTraitCollection];
     [(CKTranscriptTypingIndicatorCell *)self startPulseAnimation];
   }
 
   else
   {
-    v15 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    transcriptTraitCollection = IMLogHandleForCategory();
+    if (os_log_type_enabled(transcriptTraitCollection, OS_LOG_TYPE_ERROR))
     {
       [CKTranscriptTypingIndicatorCell(CKChatItem) configureForChatItem:context:animated:animationDuration:animationCurve:];
     }
   }
 }
 
-- (CKTranscriptTypingIndicatorCell)initWithFrame:(CGRect)a3
+- (CKTranscriptTypingIndicatorCell)initWithFrame:(CGRect)frame
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = CKTranscriptTypingIndicatorCell;
-  v3 = [(CKTranscriptCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTranscriptCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -78,8 +78,8 @@
   {
     v4 = [CKTypingView alloc];
     v5 = [(CKTypingView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    v6 = [(CKTypingView *)v5 baseLayer];
-    [v6 setCkLayerDelegate:self];
+    baseLayer = [(CKTypingView *)v5 baseLayer];
+    [baseLayer setCkLayerDelegate:self];
 
     v7 = self->_typingView;
     self->_typingView = v5;
@@ -96,20 +96,20 @@
   typingView = self->_typingView;
   self->_typingView = 0;
 
-  v4 = [(CKEditableCollectionViewCell *)self contentView];
-  v5 = [(CKTranscriptTypingIndicatorCell *)self typingView];
-  [v4 addSubview:v5];
+  contentView = [(CKEditableCollectionViewCell *)self contentView];
+  typingView = [(CKTranscriptTypingIndicatorCell *)self typingView];
+  [contentView addSubview:typingView];
 
   [(CKTranscriptTypingIndicatorCell *)self setPulsingInProgress:0];
 }
 
 - (void)_updateGroupOpacityOnCellLayer
 {
-  v3 = [(CKTranscriptTypingIndicatorCell *)self traitCollection];
-  v4 = [v3 isTranscriptBackgroundActive];
+  traitCollection = [(CKTranscriptTypingIndicatorCell *)self traitCollection];
+  isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
 
-  v5 = [(CKTranscriptTypingIndicatorCell *)self layer];
-  [v5 setAllowsGroupOpacity:v4 ^ 1u];
+  layer = [(CKTranscriptTypingIndicatorCell *)self layer];
+  [layer setAllowsGroupOpacity:isTranscriptBackgroundActive ^ 1u];
 }
 
 - (void)prepareForReuse
@@ -120,15 +120,15 @@
   [(CKTranscriptTypingIndicatorCell *)self resetTypingView];
 }
 
-- (void)setOrientation:(char)a3
+- (void)setOrientation:(char)orientation
 {
-  v3 = a3;
-  if ([(CKEditableCollectionViewCell *)self orientation]!= a3)
+  orientationCopy = orientation;
+  if ([(CKEditableCollectionViewCell *)self orientation]!= orientation)
   {
     v16.receiver = self;
     v16.super_class = CKTranscriptTypingIndicatorCell;
-    [(CKEditableCollectionViewCell *)&v16 setOrientation:v3];
-    if (v3 == 2)
+    [(CKEditableCollectionViewCell *)&v16 setOrientation:orientationCopy];
+    if (orientationCopy == 2)
     {
       v15 = 0uLL;
       v5 = 1.0;
@@ -145,13 +145,13 @@
       v15 = v7;
     }
 
-    v8 = [(CKTranscriptTypingIndicatorCell *)self typingView];
-    v9 = [v8 layer];
+    typingView = [(CKTranscriptTypingIndicatorCell *)self typingView];
+    layer = [typingView layer];
     v10 = v6;
     v11 = v15;
     v12 = v5;
     v13 = v14;
-    [v9 setAffineTransform:&v10];
+    [layer setAffineTransform:&v10];
 
     [(CKTranscriptTypingIndicatorCell *)self setNeedsLayout];
   }
@@ -168,9 +168,9 @@
   v8 = v7;
   v10 = v9;
   v11 = +[_TtC7ChatKit36CKTypingIndicatorVisualConfiguration platformConfiguration];
-  v12 = [(CKTranscriptTypingIndicatorCell *)self typingView];
-  v13 = [v12 layer];
-  [v13 frame];
+  typingView = [(CKTranscriptTypingIndicatorCell *)self typingView];
+  layer = [typingView layer];
+  [layer frame];
   v15 = v14;
   v17 = v16;
 
@@ -196,16 +196,16 @@
     v22 = v4 - (v24 - v26 * v27);
   }
 
-  v28 = [(CKTranscriptTypingIndicatorCell *)self typingView];
-  v29 = [v28 layer];
-  [v29 setFrame:{v22, (v19 - v21) * 0.5, v15, v17}];
+  typingView2 = [(CKTranscriptTypingIndicatorCell *)self typingView];
+  layer2 = [typingView2 layer];
+  [layer2 setFrame:{v22, (v19 - v21) * 0.5, v15, v17}];
 }
 
-- (void)performInsertion:(id)a3
+- (void)performInsertion:(id)insertion
 {
-  v4 = a3;
+  insertionCopy = insertion;
   [(CKTranscriptTypingIndicatorCell *)self startGrowAnimation];
-  v5 = v4;
+  v5 = insertionCopy;
   im_dispatch_after();
 }
 
@@ -220,21 +220,21 @@ uint64_t __52__CKTranscriptTypingIndicatorCell_performInsertion___block_invoke(u
   return result;
 }
 
-- (void)performRemoval:(id)a3
+- (void)performRemoval:(id)removal
 {
-  v5 = a3;
+  removalCopy = removal;
   [(CKTranscriptTypingIndicatorCell *)self stopPulseAnimation];
-  v4 = v5;
-  if (v5)
+  v4 = removalCopy;
+  if (removalCopy)
   {
-    (*(v5 + 2))(v5, 1);
-    v4 = v5;
+    (*(removalCopy + 2))(removalCopy, 1);
+    v4 = removalCopy;
   }
 }
 
-- (void)ckLayerDidBecomeVisible:(BOOL)a3
+- (void)ckLayerDidBecomeVisible:(BOOL)visible
 {
-  if (a3)
+  if (visible)
   {
     [(CKTranscriptTypingIndicatorCell *)self startPulseAnimation];
   }
@@ -245,72 +245,72 @@ uint64_t __52__CKTranscriptTypingIndicatorCell_performInsertion___block_invoke(u
   }
 }
 
-- (void)setIndicatorLayer:(id)a3
+- (void)setIndicatorLayer:(id)layer
 {
-  v7 = a3;
+  layerCopy = layer;
   if (!-[CKTranscriptTypingIndicatorCell pulsingInProgress](self, "pulsingInProgress") || (-[CKTranscriptTypingIndicatorCell typingView](self, "typingView"), v4 = objc_claimAutoreleasedReturnValue(), [v4 indicatorLayer], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
   {
-    v6 = [(CKTranscriptTypingIndicatorCell *)self typingView];
-    [v6 setIndicatorLayer:v7];
+    typingView = [(CKTranscriptTypingIndicatorCell *)self typingView];
+    [typingView setIndicatorLayer:layerCopy];
 
     [(CKTranscriptTypingIndicatorCell *)self setNeedsLayout];
   }
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  [(CKTranscriptTypingIndicatorCell *)self setTraitCollectionForIndicatorLayer:a3];
+  [(CKTranscriptTypingIndicatorCell *)self setTraitCollectionForIndicatorLayer:collection];
 
   [(CKTranscriptTypingIndicatorCell *)self _updateGroupOpacityOnCellLayer];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = CKTranscriptTypingIndicatorCell;
-  [(CKTranscriptTypingIndicatorCell *)&v5 traitCollectionDidChange:a3];
-  v4 = [(CKTranscriptTypingIndicatorCell *)self traitCollection];
-  [(CKTranscriptTypingIndicatorCell *)self setTraitCollectionForIndicatorLayer:v4];
+  [(CKTranscriptTypingIndicatorCell *)&v5 traitCollectionDidChange:change];
+  traitCollection = [(CKTranscriptTypingIndicatorCell *)self traitCollection];
+  [(CKTranscriptTypingIndicatorCell *)self setTraitCollectionForIndicatorLayer:traitCollection];
 }
 
-- (void)setTraitCollectionForIndicatorLayer:(id)a3
+- (void)setTraitCollectionForIndicatorLayer:(id)layer
 {
-  v5 = a3;
-  v4 = [(CKTranscriptTypingIndicatorCell *)self indicatorLayer];
+  layerCopy = layer;
+  indicatorLayer = [(CKTranscriptTypingIndicatorCell *)self indicatorLayer];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setTraitCollection:v5];
+    [indicatorLayer setTraitCollection:layerCopy];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v5 transcriptBackgroundLuminosity];
-    [v4 setTranscriptBackgroundLuminance:?];
+    [layerCopy transcriptBackgroundLuminosity];
+    [indicatorLayer setTranscriptBackgroundLuminance:?];
   }
 }
 
 - (CKTypingIndicatorLayerProtocol)indicatorLayer
 {
-  v2 = [(CKTranscriptTypingIndicatorCell *)self typingView];
-  v3 = [v2 indicatorLayer];
+  typingView = [(CKTranscriptTypingIndicatorCell *)self typingView];
+  indicatorLayer = [typingView indicatorLayer];
 
-  return v3;
+  return indicatorLayer;
 }
 
 - (void)startGrowAnimation
 {
-  v3 = [(CKTranscriptTypingIndicatorCell *)self typingView];
-  v2 = [v3 indicatorLayer];
-  [v2 startGrowAnimation];
+  typingView = [(CKTranscriptTypingIndicatorCell *)self typingView];
+  indicatorLayer = [typingView indicatorLayer];
+  [indicatorLayer startGrowAnimation];
 }
 
 - (void)startPulseAnimation
 {
   if (![(CKTranscriptTypingIndicatorCell *)self pulsingInProgress])
   {
-    v3 = [(CKTranscriptTypingIndicatorCell *)self typingView];
-    v4 = [v3 indicatorLayer];
-    [v4 startPulseAnimation];
+    typingView = [(CKTranscriptTypingIndicatorCell *)self typingView];
+    indicatorLayer = [typingView indicatorLayer];
+    [indicatorLayer startPulseAnimation];
 
     [(CKTranscriptTypingIndicatorCell *)self setPulsingInProgress:1];
   }
@@ -318,26 +318,26 @@ uint64_t __52__CKTranscriptTypingIndicatorCell_performInsertion___block_invoke(u
 
 - (void)stopPulseAnimation
 {
-  v3 = [(CKTranscriptTypingIndicatorCell *)self typingView];
-  v4 = [v3 indicatorLayer];
-  [v4 stopPulseAnimation];
+  typingView = [(CKTranscriptTypingIndicatorCell *)self typingView];
+  indicatorLayer = [typingView indicatorLayer];
+  [indicatorLayer stopPulseAnimation];
 
   [(CKTranscriptTypingIndicatorCell *)self setPulsingInProgress:0];
 }
 
 - (void)startShrinkAnimation
 {
-  v3 = [(CKTranscriptTypingIndicatorCell *)self typingView];
-  v2 = [v3 indicatorLayer];
-  [v2 startShrinkAnimationWithCompletionBlock:0];
+  typingView = [(CKTranscriptTypingIndicatorCell *)self typingView];
+  indicatorLayer = [typingView indicatorLayer];
+  [indicatorLayer startShrinkAnimationWithCompletionBlock:0];
 }
 
 - (BOOL)_disableRasterizeInAnimations
 {
-  v2 = [(CKTranscriptTypingIndicatorCell *)self traitCollection];
-  v3 = [v2 isTranscriptBackgroundActive];
+  traitCollection = [(CKTranscriptTypingIndicatorCell *)self traitCollection];
+  isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
 
-  return v3;
+  return isTranscriptBackgroundActive;
 }
 
 @end

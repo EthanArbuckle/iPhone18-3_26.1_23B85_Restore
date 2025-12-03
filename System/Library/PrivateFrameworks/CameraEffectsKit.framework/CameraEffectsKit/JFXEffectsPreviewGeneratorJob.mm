@@ -1,21 +1,21 @@
 @interface JFXEffectsPreviewGeneratorJob
-- (JFXEffectsPreviewGeneratorJob)initWithRenderOutputs:(id)a3 callbackKeys:(id)a4;
+- (JFXEffectsPreviewGeneratorJob)initWithRenderOutputs:(id)outputs callbackKeys:(id)keys;
 @end
 
 @implementation JFXEffectsPreviewGeneratorJob
 
-- (JFXEffectsPreviewGeneratorJob)initWithRenderOutputs:(id)a3 callbackKeys:(id)a4
+- (JFXEffectsPreviewGeneratorJob)initWithRenderOutputs:(id)outputs callbackKeys:(id)keys
 {
-  v7 = a3;
-  v8 = a4;
+  outputsCopy = outputs;
+  keysCopy = keys;
   v12.receiver = self;
   v12.super_class = JFXEffectsPreviewGeneratorJob;
   v9 = [(JFXEffectsPreviewGeneratorJob *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_outputNodes, a3);
-    objc_storeStrong(&v10->_callbackKeys, a4);
+    objc_storeStrong(&v9->_outputNodes, outputs);
+    objc_storeStrong(&v10->_callbackKeys, keys);
   }
 
   return v10;

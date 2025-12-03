@@ -8,19 +8,19 @@
 
 - (void)applicationWillTerminate
 {
-  v2 = self;
+  selfCopy = self;
   sub_26B6E0084("AppState - applicationWillTerminate");
 }
 
 - (void)applicationDidEnterBackgroundNotification
 {
-  v2 = self;
+  selfCopy = self;
   sub_26B6E0084("AppState - applicationDidEnterBackgroundNotification");
 }
 
 - (void)applicationWillEnterForegroundNotification
 {
-  v2 = self;
+  selfCopy = self;
   sub_26B6E0084("AppState - applicationWillEnterForegroundNotification");
 }
 

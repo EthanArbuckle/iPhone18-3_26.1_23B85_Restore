@@ -2,18 +2,18 @@
 + (SFExtensionsProfilesDataSource)extensionsProfilesDataSource;
 + (WBSPrivacyProxyAvailabilityManager)privacyProxyAvailabilityManager;
 + (WBTabGroupManager)tabGroupManager;
-+ (id)_alertToDeleteBrowsingDataFiles:(id)a3 importedDataClassification:(int64_t)a4;
++ (id)_alertToDeleteBrowsingDataFiles:(id)files importedDataClassification:(int64_t)classification;
 + (id)_createTabGroupManagerForClearingHistory;
 + (id)_tabCollection;
 + (void)initialize;
 - (BOOL)_areContentBlockersEnabled;
 - (BOOL)_isCloudHistoryEnabled;
-- (BOOL)isAutoFillAvailable:(id)a3;
-- (BOOL)isBlockAllNewWebsiteDataRestricted:(id)a3;
-- (BOOL)isFavoritesFolderRestricted:(id)a3;
-- (BOOL)isLockedPrivateBrowsingRestricted:(id)a3;
-- (BOOL)isTabBarAvailable:(id)a3;
-- (BOOL)isTrackerProtectionRestricted:(id)a3;
+- (BOOL)isAutoFillAvailable:(id)available;
+- (BOOL)isBlockAllNewWebsiteDataRestricted:(id)restricted;
+- (BOOL)isFavoritesFolderRestricted:(id)restricted;
+- (BOOL)isLockedPrivateBrowsingRestricted:(id)restricted;
+- (BOOL)isTabBarAvailable:(id)available;
+- (BOOL)isTrackerProtectionRestricted:(id)restricted;
 - (SafariSettingsController)init;
 - (id)_biometryNameForLockedPrivateBrowsingToggle;
 - (id)_defaultWebExtensionController;
@@ -31,7 +31,7 @@
 - (id)_specifierForNewProfile;
 - (id)_specifierForPrivateSearchEngine;
 - (id)_specifierForPrivateSearchEngineToUseDefaultSearchEngineValue;
-- (id)_specifierForProfile:(id)a3;
+- (id)_specifierForProfile:(id)profile;
 - (id)_specifierForProfileGroup;
 - (id)_specifierForSearchFieldPosition;
 - (id)_specifierForSelectingFavoritesBarButtonStyle;
@@ -42,39 +42,39 @@
 - (id)blockAllNewWebsiteDataEnabled;
 - (id)favoritesFolderTitle;
 - (id)inAppWebBrowsingSettingsFeatureDescriptionCell;
-- (id)isBlockPopUpsEnabled:(id)a3;
+- (id)isBlockPopUpsEnabled:(id)enabled;
 - (id)isHideBarsWhileScrollingEnabled;
-- (id)isSafariBrowsingAssistantEnabled:(id)a3;
-- (id)isSafariFraudWarningEnabled:(id)a3;
+- (id)isSafariBrowsingAssistantEnabled:(id)enabled;
+- (id)isSafariFraudWarningEnabled:(id)enabled;
 - (id)privacyProxyAvailabilitySpecifier;
-- (id)readPrivateBrowsingUsesNormalBrowsingSearchEngineToggle:(id)a3;
-- (id)safariReadPrivateSearchEnginePreferenceValue:(id)a3;
+- (id)readPrivateBrowsingUsesNormalBrowsingSearchEngineToggle:(id)toggle;
+- (id)safariReadPrivateSearchEnginePreferenceValue:(id)value;
 - (id)siteSpecificSearchSettingsEnabledString;
 - (id)specifiers;
-- (id)specifiersForPerSitePreferencesForSettingsPersona:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)specifiersForPerSitePreferencesForSettingsPersona:(int64_t)persona;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)trackerProtectionEnabled;
-- (unint64_t)clearHistoryViewController:(id)a3 numberOfTabsToBeClosedForProfilesWithIdentifiers:(id)a4;
-- (void)_bookmarksDidReload:(id)a3;
-- (void)_cancelBlockAllCookiesPrompt:(id)a3;
-- (void)_clearNewTabOverrideIfNecessaryOnChange:(id)a3;
-- (void)_confirmBlockAllCookies:(id)a3;
-- (void)_copyFile:(id)a3 toFile:(id)a4;
-- (void)_determineIfAuthenticationIsAvailableForLockedPrivateBrowsingWithCompletionHandler:(id)a3;
-- (void)_fetchExportLocationWithCompletionHandler:(id)a3;
+- (unint64_t)clearHistoryViewController:(id)controller numberOfTabsToBeClosedForProfilesWithIdentifiers:(id)identifiers;
+- (void)_bookmarksDidReload:(id)reload;
+- (void)_cancelBlockAllCookiesPrompt:(id)prompt;
+- (void)_clearNewTabOverrideIfNecessaryOnChange:(id)change;
+- (void)_confirmBlockAllCookies:(id)cookies;
+- (void)_copyFile:(id)file toFile:(id)toFile;
+- (void)_determineIfAuthenticationIsAvailableForLockedPrivateBrowsingWithCompletionHandler:(id)handler;
+- (void)_fetchExportLocationWithCompletionHandler:(id)handler;
 - (void)_hardwareKeyboardAvailabilityDidChange;
-- (void)_hideInternetAddressChanged:(id)a3;
+- (void)_hideInternetAddressChanged:(id)changed;
 - (void)_importButtonTapped;
 - (void)_mobileSafariChangedExtensionSettings;
-- (void)_presentPrivacyFlowWithBundleIdentifier:(id)a3;
-- (void)_primaryAppleAccountDidChange:(id)a3;
-- (void)_safariClearHistoryAndDataAddedAfterDate:(id)a3 beforeDate:(id)a4 profileIdentifier:(id)a5 clearAllProfiles:(BOOL)a6 closeTabs:(BOOL)a7;
-- (void)_setSafariAcceptCookiesForPolicy:(unint64_t)a3;
-- (void)_setSafariPreferencesPerSiteSettingsSync:(id)a3 forSpecifier:(id)a4;
-- (void)_setSearchEngineLocalizedTitlesForSearchEngineSpecifier:(id)a3;
-- (void)_setUpPrivateSearchEngineVisibility:(BOOL)a3 forSpecifier:(id)a4 withPrivateEngineSpecifier:(id)a5;
-- (void)_setValueForClosingTabsAutomatically:(id)a3;
-- (void)_showExportSheetWithCompletionHandler:(id)a3;
+- (void)_presentPrivacyFlowWithBundleIdentifier:(id)identifier;
+- (void)_primaryAppleAccountDidChange:(id)change;
+- (void)_safariClearHistoryAndDataAddedAfterDate:(id)date beforeDate:(id)beforeDate profileIdentifier:(id)identifier clearAllProfiles:(BOOL)profiles closeTabs:(BOOL)tabs;
+- (void)_setSafariAcceptCookiesForPolicy:(unint64_t)policy;
+- (void)_setSafariPreferencesPerSiteSettingsSync:(id)sync forSpecifier:(id)specifier;
+- (void)_setSearchEngineLocalizedTitlesForSearchEngineSpecifier:(id)specifier;
+- (void)_setUpPrivateSearchEngineVisibility:(BOOL)visibility forSpecifier:(id)specifier withPrivateEngineSpecifier:(id)engineSpecifier;
+- (void)_setValueForClosingTabsAutomatically:(id)automatically;
+- (void)_showExportSheetWithCompletionHandler:(id)handler;
 - (void)_synchronizeNanoUserDefaults;
 - (void)_updateDownloadsFolderTitle;
 - (void)_updateOpenLinksSpecifier;
@@ -84,38 +84,38 @@
 - (void)_updateSpecifierForNewDocumentShortcutBehaviorIfNeeded;
 - (void)_updateUserRestrictedState;
 - (void)clearWebBrowsingData;
-- (void)createEditProfileViewControllerDidChangeProfilesData:(id)a3;
+- (void)createEditProfileViewControllerDidChangeProfilesData:(id)data;
 - (void)dealloc;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)importViewController:(id)a3 didDismissAfterSuccessfulImportingDataFromFileURL:(id)a4 importedDataClassification:(int64_t)a5;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)queryControllerDidUpdate:(id)a3 resultDifference:(id)a4;
-- (void)safariBrowsingAssistantToggled:(id)a3 forSpecifier:(id)a4;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)importViewController:(id)controller didDismissAfterSuccessfulImportingDataFromFileURL:(id)l importedDataClassification:(int64_t)classification;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)queryControllerDidUpdate:(id)update resultDifference:(id)difference;
+- (void)safariBrowsingAssistantToggled:(id)toggled forSpecifier:(id)specifier;
 - (void)safariClearHistoryAndData;
 - (void)safariClearHistoryAndDataAndTabs;
-- (void)safariFraudWarningsToggled:(id)a3 forSpecifier:(id)a4;
-- (void)safariSetPrivateSearchEngine:(id)a3 forSpecifier:(id)a4;
-- (void)safariToggleBlockAllNewWebsiteData:(id)a3 forSpecifier:(id)a4;
-- (void)safariTogglePrivateBrowsingRequiresAuthentication:(id)a3 forSpecifier:(id)a4;
-- (void)safariToggleTrackerProtection:(id)a3 forSpecifier:(id)a4;
-- (void)setCookieStoragePolicy:(unint64_t)a3 andNotifySpecifierWithID:(id)a4;
-- (void)setPrivateBrowsingToUseNormalBrowsingSearchEngineSelection:(id)a3 forSpecifier:(id)a4;
-- (void)setSearchEngineInSpecifiers:(id)a3 forPrivateBrowsing:(BOOL)a4;
-- (void)setSearchSuggestionsEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setUpSearchSuggestionText:(BOOL)a3;
-- (void)showClearHistoryAndDataConfirmation:(id)a3;
-- (void)showCreateEditProfileSheet:(id)a3;
-- (void)tabGroupManager:(id)a3 didRemoveProfileWithIdentifier:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)safariFraudWarningsToggled:(id)toggled forSpecifier:(id)specifier;
+- (void)safariSetPrivateSearchEngine:(id)engine forSpecifier:(id)specifier;
+- (void)safariToggleBlockAllNewWebsiteData:(id)data forSpecifier:(id)specifier;
+- (void)safariTogglePrivateBrowsingRequiresAuthentication:(id)authentication forSpecifier:(id)specifier;
+- (void)safariToggleTrackerProtection:(id)protection forSpecifier:(id)specifier;
+- (void)setCookieStoragePolicy:(unint64_t)policy andNotifySpecifierWithID:(id)d;
+- (void)setPrivateBrowsingToUseNormalBrowsingSearchEngineSelection:(id)selection forSpecifier:(id)specifier;
+- (void)setSearchEngineInSpecifiers:(id)specifiers forPrivateBrowsing:(BOOL)browsing;
+- (void)setSearchSuggestionsEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setUpSearchSuggestionText:(BOOL)text;
+- (void)showClearHistoryAndDataConfirmation:(id)confirmation;
+- (void)showCreateEditProfileSheet:(id)sheet;
+- (void)tabGroupManager:(id)manager didRemoveProfileWithIdentifier:(id)identifier;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)updateBiometricAuthenticationAndPasscodeAvailabilityForLockedPrivateBrowsing;
 - (void)willBecomeActive;
 @end
 
 @implementation SafariSettingsController
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  [(SafariSettingsController *)self reloadSpecifiers:a3];
+  [(SafariSettingsController *)self reloadSpecifiers:notification];
 
   [(SafariSettingsController *)self _updateUserRestrictedState];
 }
@@ -157,8 +157,8 @@
     [v11 safari_resetWebKitExperimentalFeaturesIfNeeded:v10];
 
     v12 = +[NSNotificationCenter defaultCenter];
-    v13 = [objc_opt_class() privacyProxyAvailabilityManager];
-    [v12 addObserver:v2 selector:"_hideInternetAddressChanged:" name:WBSPrivacyProxyChangeNotification object:v13];
+    privacyProxyAvailabilityManager = [objc_opt_class() privacyProxyAvailabilityManager];
+    [v12 addObserver:v2 selector:"_hideInternetAddressChanged:" name:WBSPrivacyProxyChangeNotification object:privacyProxyAvailabilityManager];
 
     v14 = +[NSDistributedNotificationCenter defaultCenter];
     v15 = [NSUserDefaults safari_notificationNameForUserDefaultsKey:SuppressSearchSuggestionsDefaultsKey];
@@ -209,8 +209,8 @@
     v31 = +[NSDistributedNotificationCenter defaultCenter];
     [v31 addObserver:v2 selector:"_mobileSafariChangedExtensionSettings" name:kMobileSafariChangedExtensionSettingsNotification object:0];
 
-    v32 = [(SafariSettingsController *)v2 _defaultWebExtensionController];
-    [v32 addObserver:v2];
+    _defaultWebExtensionController = [(SafariSettingsController *)v2 _defaultWebExtensionController];
+    [_defaultWebExtensionController addObserver:v2];
 
     [v12 addObserver:v2 selector:"_clearNewTabOverrideIfNecessaryOnChange:" name:WBSExtensionWasRemovedNotification object:0];
     [v12 addObserver:v2 selector:"_clearNewTabOverrideIfNecessaryOnChange:" name:WBSExtensionEnabledStateDidChangeNotification object:0];
@@ -232,16 +232,16 @@
     v35 = [WBSWebExtensionSQLiteStoreMigrator alloc];
     v36 = +[NSUserDefaults safari_browserDefaults];
     v37 = +[NSFileManager defaultManager];
-    v38 = [v37 safari_settingsDirectoryURL];
-    v39 = [v35 initWithUserDefaults:v36 safariContainerSettingsDirectoryURL:v38];
+    safari_settingsDirectoryURL = [v37 safari_settingsDirectoryURL];
+    v39 = [v35 initWithUserDefaults:v36 safariContainerSettingsDirectoryURL:safari_settingsDirectoryURL];
 
     [v39 migrateSQLiteStorageToWebKitIfNecessary];
-    v40 = [objc_opt_class() tabGroupManager];
+    tabGroupManager = [objc_opt_class() tabGroupManager];
     v41 = +[WBTabGroupSyncAgentProxy sharedProxy];
-    [v40 addTabGroupObserver:v41];
+    [tabGroupManager addTabGroupObserver:v41];
 
-    v42 = [objc_opt_class() tabGroupManager];
-    [v42 addTabGroupObserver:v2];
+    tabGroupManager2 = [objc_opt_class() tabGroupManager];
+    [tabGroupManager2 addTabGroupObserver:v2];
 
     [v12 addObserver:v2 selector:"_managedBookmarksDidChange:" name:WBSManagedBookmarksDidChangeNotification object:0];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -276,8 +276,8 @@ void __32__SafariSettingsController_init__block_invoke(uint64_t a1)
 {
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
-  v4 = [(SafariSettingsController *)self _defaultWebExtensionController];
-  [v4 removeObserver:self];
+  _defaultWebExtensionController = [(SafariSettingsController *)self _defaultWebExtensionController];
+  [_defaultWebExtensionController removeObserver:self];
 
   [v3 removeObserver:self name:WBSExtensionWasRemovedNotification object:0];
   [v3 removeObserver:self name:WBSExtensionEnabledStateDidChangeNotification object:0];
@@ -319,7 +319,7 @@ void __42__SafariSettingsController__tabCollection__block_invoke(id a1)
   block[1] = 3221225472;
   block[2] = __43__SafariSettingsController_tabGroupManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (tabGroupManager_once != -1)
   {
     dispatch_once(&tabGroupManager_once, block);
@@ -352,8 +352,8 @@ void __43__SafariSettingsController_tabGroupManager__block_invoke(uint64_t a1)
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v6 windowStates];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  windowStates = [v6 windowStates];
+  v8 = [windowStates countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -364,13 +364,13 @@ void __43__SafariSettingsController_tabGroupManager__block_invoke(uint64_t a1)
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(windowStates);
         }
 
         [v6 registerWindowState:*(*(&v13 + 1) + 8 * i)];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [windowStates countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -385,7 +385,7 @@ void __43__SafariSettingsController_tabGroupManager__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __56__SafariSettingsController_extensionsProfilesDataSource__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (extensionsProfilesDataSource_once != -1)
   {
     dispatch_once(&extensionsProfilesDataSource_once, block);
@@ -407,9 +407,9 @@ void __56__SafariSettingsController_extensionsProfilesDataSource__block_invoke(u
 
 - (id)_defaultWebExtensionController
 {
-  v2 = [objc_opt_class() extensionsProfilesDataSource];
-  v3 = [v2 profileServerIDToWebExtensionsControllers];
-  v4 = [v3 objectForKeyedSubscript:WBSDefaultProfileIdentifier];
+  extensionsProfilesDataSource = [objc_opt_class() extensionsProfilesDataSource];
+  profileServerIDToWebExtensionsControllers = [extensionsProfilesDataSource profileServerIDToWebExtensionsControllers];
+  v4 = [profileServerIDToWebExtensionsControllers objectForKeyedSubscript:WBSDefaultProfileIdentifier];
 
   return v4;
 }
@@ -435,22 +435,22 @@ void __59__SafariSettingsController_privacyProxyAvailabilityManager__block_invok
 
 - (id)inAppWebBrowsingSettingsFeatureDescriptionCell
 {
-  v3 = [(SafariSettingsController *)self traitCollection];
+  traitCollection = [(SafariSettingsController *)self traitCollection];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(SafariSettingsController *)self traitCollection];
-    v5 = [v4 pe_isSettingsFeatureDescriptionCellSupported];
+    traitCollection2 = [(SafariSettingsController *)self traitCollection];
+    pe_isSettingsFeatureDescriptionCellSupported = [traitCollection2 pe_isSettingsFeatureDescriptionCellSupported];
 
-    if (!v5)
+    if (!pe_isSettingsFeatureDescriptionCellSupported)
     {
       v7 = 0;
       goto LABEL_7;
     }
 
     +[NSBundle safari_isMobileSafariInstalled];
-    v3 = _WBSLocalizedString();
+    traitCollection = _WBSLocalizedString();
     v6 = _WBSLocalizedString();
-    v7 = [PSSpecifier preferenceSpecifierNamed:v3 target:self set:0 get:0 detail:0 cell:-1 edit:0];
+    v7 = [PSSpecifier preferenceSpecifierNamed:traitCollection target:self set:0 get:0 detail:0 cell:-1 edit:0];
     [v7 setIdentifier:@"PLACARD"];
     [v7 setProperty:objc_opt_class() forKey:PSCellClassKey];
     [v7 setProperty:v6 forKey:PSTableCellSubtitleTextKey];
@@ -469,10 +469,10 @@ LABEL_7:
 
 - (id)privacyProxyAvailabilitySpecifier
 {
-  v3 = [objc_opt_class() privacyProxyAvailabilityManager];
-  v4 = [v3 isPrivacyProxyFreeTierAvailable];
+  privacyProxyAvailabilityManager = [objc_opt_class() privacyProxyAvailabilityManager];
+  isPrivacyProxyFreeTierAvailable = [privacyProxyAvailabilityManager isPrivacyProxyFreeTierAvailable];
 
-  if (v4)
+  if (isPrivacyProxyFreeTierAvailable)
   {
     v5 = SafariSettingsLocalizedString(@"Hide Internet Address Title", @"Safari");
     v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:"_hideInternetAddressDetailText" detail:objc_opt_class() cell:2 edit:0];
@@ -507,27 +507,27 @@ LABEL_7:
   return v4;
 }
 
-- (void)safariSetPrivateSearchEngine:(id)a3 forSpecifier:(id)a4
+- (void)safariSetPrivateSearchEngine:(id)engine forSpecifier:(id)specifier
 {
-  v6 = a4;
-  v8 = a3;
-  [(SafariSettingsController *)self _setSearchEngineLocalizedTitlesForSearchEngineSpecifier:v6];
-  [PSRootController setPreferenceValue:v8 specifier:v6];
+  specifierCopy = specifier;
+  engineCopy = engine;
+  [(SafariSettingsController *)self _setSearchEngineLocalizedTitlesForSearchEngineSpecifier:specifierCopy];
+  [PSRootController setPreferenceValue:engineCopy specifier:specifierCopy];
 
-  if ([v8 isEqualToString:@"Default"])
+  if ([engineCopy isEqualToString:@"Default"])
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v8;
+    v7 = engineCopy;
   }
 
   [(SafariSettingsListController *)self setSafariSharedDefaultsValue:v7 forKey:_SFPrivateSearchEngineStringDefaultsKey];
 }
 
-- (id)safariReadPrivateSearchEnginePreferenceValue:(id)a3
+- (id)safariReadPrivateSearchEnginePreferenceValue:(id)value
 {
   v3 = [(SafariSettingsListController *)self safariSharedDefaultsValueForKey:_SFPrivateSearchEngineStringDefaultsKey];
   v4 = v3;
@@ -586,22 +586,22 @@ LABEL_7:
   return v4;
 }
 
-- (void)_setUpPrivateSearchEngineVisibility:(BOOL)a3 forSpecifier:(id)a4 withPrivateEngineSpecifier:(id)a5
+- (void)_setUpPrivateSearchEngineVisibility:(BOOL)visibility forSpecifier:(id)specifier withPrivateEngineSpecifier:(id)engineSpecifier
 {
-  v6 = a3;
-  v25 = a4;
-  v8 = a5;
+  visibilityCopy = visibility;
+  specifierCopy = specifier;
+  engineSpecifierCopy = engineSpecifier;
   v9 = [(SafariSettingsController *)self specifierForID:@"SEARCH_SUGGESTION_SETTING"];
   v10 = [(SafariSettingsController *)self readPreferenceValue:v9];
 
-  if (v6)
+  if (visibilityCopy)
   {
     v11 = [(SafariSettingsController *)self specifierForID:@"SEARCH_ENGINE_SETTING"];
     v12 = [(SafariSettingsController *)self readPreferenceValue:v11];
 
     v13 = [(SafariSettingsController *)self specifierForID:@"SEARCH_ENGINE_SETTING"];
-    v14 = [v13 performGetter];
-    [(SafariSettingsController *)self safariSetPrivateSearchEngine:v14 forSpecifier:v8];
+    performGetter = [v13 performGetter];
+    [(SafariSettingsController *)self safariSetPrivateSearchEngine:performGetter forSpecifier:engineSpecifierCopy];
 
     -[SafariSettingsController setUpSearchSuggestionText:](self, "setUpSearchSuggestionText:", [v10 BOOLValue]);
     v15 = [(SafariSettingsController *)self specifierForID:@"SEARCH"];
@@ -613,9 +613,9 @@ LABEL_7:
 
     v18 = +[NSUserDefaults safari_browserDefaults];
     v19 = [v18 stringForKey:v17];
-    [(SafariSettingsController *)self safariSetPrivateSearchEngine:v19 forSpecifier:v8];
+    [(SafariSettingsController *)self safariSetPrivateSearchEngine:v19 forSpecifier:engineSpecifierCopy];
 
-    [(SafariSettingsController *)self removeSpecifier:v8 animated:1];
+    [(SafariSettingsController *)self removeSpecifier:engineSpecifierCopy animated:1];
   }
 
   else
@@ -624,53 +624,53 @@ LABEL_7:
     v21 = [v20 stringForKey:WBSLastPrivateSearchEngineStringExplicitlyChosenByUserKey];
     if (v21)
     {
-      [(SafariSettingsController *)self safariSetPrivateSearchEngine:v21 forSpecifier:v8];
+      [(SafariSettingsController *)self safariSetPrivateSearchEngine:v21 forSpecifier:engineSpecifierCopy];
     }
 
     else
     {
       v22 = +[_SFSearchEngineController sharedInstance];
       v23 = [v22 defaultSearchEngineNameForPrivateBrowsing:1];
-      [(SafariSettingsController *)self safariSetPrivateSearchEngine:v23 forSpecifier:v8];
+      [(SafariSettingsController *)self safariSetPrivateSearchEngine:v23 forSpecifier:engineSpecifierCopy];
     }
 
     -[SafariSettingsController setUpSearchSuggestionText:](self, "setUpSearchSuggestionText:", [v10 BOOLValue]);
     v24 = [(SafariSettingsController *)self specifierForID:@"SEARCH"];
     [(SafariSettingsController *)self reloadSpecifier:v24 animated:0];
 
-    [(SafariSettingsController *)self insertSpecifier:v8 afterSpecifier:v25 animated:1];
+    [(SafariSettingsController *)self insertSpecifier:engineSpecifierCopy afterSpecifier:specifierCopy animated:1];
   }
 }
 
-- (void)setPrivateBrowsingToUseNormalBrowsingSearchEngineSelection:(id)a3 forSpecifier:(id)a4
+- (void)setPrivateBrowsingToUseNormalBrowsingSearchEngineSelection:(id)selection forSpecifier:(id)specifier
 {
-  v12 = a3;
-  v6 = a4;
-  [(SafariSettingsController *)self setPreferenceValue:v12 specifier:v6];
+  selectionCopy = selection;
+  specifierCopy = specifier;
+  [(SafariSettingsController *)self setPreferenceValue:selectionCopy specifier:specifierCopy];
   v7 = [(SafariSettingsController *)self specifierForID:@"PRIVATE_SEARCH_ENGINE_SETTING"];
-  v8 = [v12 BOOLValue];
+  bOOLValue = [selectionCopy BOOLValue];
   if (v7)
   {
-    [(SafariSettingsController *)self _setUpPrivateSearchEngineVisibility:v8 forSpecifier:v6 withPrivateEngineSpecifier:v7];
+    [(SafariSettingsController *)self _setUpPrivateSearchEngineVisibility:bOOLValue forSpecifier:specifierCopy withPrivateEngineSpecifier:v7];
   }
 
   else
   {
-    v9 = [(SafariSettingsController *)self _specifierForPrivateSearchEngine];
-    [(SafariSettingsController *)self _setUpPrivateSearchEngineVisibility:v8 forSpecifier:v6 withPrivateEngineSpecifier:v9];
+    _specifierForPrivateSearchEngine = [(SafariSettingsController *)self _specifierForPrivateSearchEngine];
+    [(SafariSettingsController *)self _setUpPrivateSearchEngineVisibility:bOOLValue forSpecifier:specifierCopy withPrivateEngineSpecifier:_specifierForPrivateSearchEngine];
   }
 
-  if (([v12 BOOLValue] & 1) == 0)
+  if (([selectionCopy BOOLValue] & 1) == 0)
   {
-    v10 = [(SafariSettingsController *)self specifiers];
-    v11 = [v10 mutableCopy];
+    specifiers = [(SafariSettingsController *)self specifiers];
+    v11 = [specifiers mutableCopy];
     [(SafariSettingsController *)self setSearchEngineInSpecifiers:v11 forPrivateBrowsing:1];
   }
 }
 
-- (id)readPrivateBrowsingUsesNormalBrowsingSearchEngineToggle:(id)a3
+- (id)readPrivateBrowsingUsesNormalBrowsingSearchEngineToggle:(id)toggle
 {
-  v3 = [(SafariSettingsController *)self readPreferenceValue:a3];
+  v3 = [(SafariSettingsController *)self readPreferenceValue:toggle];
   v4 = v3;
   if (v3)
   {
@@ -687,21 +687,21 @@ LABEL_7:
   return v5;
 }
 
-- (void)setSearchEngineInSpecifiers:(id)a3 forPrivateBrowsing:(BOOL)a4
+- (void)setSearchEngineInSpecifiers:(id)specifiers forPrivateBrowsing:(BOOL)browsing
 {
-  v4 = a4;
-  v6 = a3;
-  v17 = v6;
-  if (v4)
+  browsingCopy = browsing;
+  specifiersCopy = specifiers;
+  v17 = specifiersCopy;
+  if (browsingCopy)
   {
-    v7 = [v6 specifierForID:@"PRIVATE_SEARCH_ENGINE_SETTING"];
+    v7 = [specifiersCopy specifierForID:@"PRIVATE_SEARCH_ENGINE_SETTING"];
     [(SafariSettingsController *)self _setSearchEngineLocalizedTitlesForSearchEngineSpecifier:v7];
     [v7 setProperty:@"Default" forKey:PSDefaultValueKey];
   }
 
   else
   {
-    v7 = [v6 specifierForID:@"SEARCH_ENGINE_SETTING"];
+    v7 = [specifiersCopy specifierForID:@"SEARCH_ENGINE_SETTING"];
     [(SafariSettingsController *)self _setSearchEngineLocalizedTitlesForSearchEngineSpecifier:v7];
     v8 = +[_SFSearchEngineController sharedInstance];
     v9 = [v8 defaultSearchEngineNameForPrivateBrowsing:0];
@@ -713,8 +713,8 @@ LABEL_7:
   if (v11)
   {
     v12 = +[_SFSearchEngineController sharedInstance];
-    v13 = [v12 searchEngineNames];
-    v14 = [v13 indexOfObject:v11];
+    searchEngineNames = [v12 searchEngineNames];
+    v14 = [searchEngineNames indexOfObject:v11];
 
     if (v14 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -728,9 +728,9 @@ LABEL_7:
   }
 }
 
-- (void)_setSearchEngineLocalizedTitlesForSearchEngineSpecifier:(id)a3
+- (void)_setSearchEngineLocalizedTitlesForSearchEngineSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   +[_SFSearchEngineController loadSystemLanguageProperties];
   v4 = +[_SFSearchEngineController sharedInstance];
   v5 = +[NSMutableArray array];
@@ -738,8 +738,8 @@ LABEL_7:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v4 enginesAvailableForUnifiedFieldSearching];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  enginesAvailableForUnifiedFieldSearching = [v4 enginesAvailableForUnifiedFieldSearching];
+  v7 = [enginesAvailableForUnifiedFieldSearching countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -751,27 +751,27 @@ LABEL_7:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(enginesAvailableForUnifiedFieldSearching);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * v10) displayName];
-        [v5 addObject:v11];
+        displayName = [*(*(&v16 + 1) + 8 * v10) displayName];
+        [v5 addObject:displayName];
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [enginesAvailableForUnifiedFieldSearching countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
   }
 
   v12 = [v5 copy];
-  v13 = [v4 searchEngineNames];
-  v14 = [v13 copy];
+  searchEngineNames = [v4 searchEngineNames];
+  v14 = [searchEngineNames copy];
   v15 = [v12 copy];
-  [v3 setValues:v14 titles:v12 shortTitles:v15];
+  [specifierCopy setValues:v14 titles:v12 shortTitles:v15];
 }
 
 - (id)specifiers
@@ -783,22 +783,22 @@ LABEL_7:
     goto LABEL_89;
   }
 
-  v4 = self;
+  selfCopy = self;
   v129 = OBJC_IVAR___PSListController__specifiers;
   v5 = [(SafariSettingsController *)self loadSpecifiersFromPlistName:@"Safari" target:self];
   v6 = [v5 indexOfSpecifierWithID:@"CLEAR_HISTORY_AND_DATA"];
-  v7 = [(SafariSettingsController *)v4 specifiersForPerSitePreferencesForSettingsPersona:0];
+  v7 = [(SafariSettingsController *)selfCopy specifiersForPerSitePreferencesForSettingsPersona:0];
   v8 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", v6 + 1, [v7 count]);
   [v5 insertObjects:v7 atIndexes:v8];
 
   v130 = [v5 specifierForID:@"SEARCH_SUGGESTION_SETTING"];
-  v9 = [(SafariSettingsController *)v4 readPreferenceValue:?];
+  v9 = [(SafariSettingsController *)selfCopy readPreferenceValue:?];
   v10 = [v5 specifierForID:@"SEARCH"];
-  searchGroupSettingsSpecifier = v4->_searchGroupSettingsSpecifier;
-  v4->_searchGroupSettingsSpecifier = v10;
+  searchGroupSettingsSpecifier = selfCopy->_searchGroupSettingsSpecifier;
+  selfCopy->_searchGroupSettingsSpecifier = v10;
 
   v128 = v9;
-  -[SafariSettingsController setUpSearchSuggestionText:](v4, "setUpSearchSuggestionText:", [v9 BOOLValue]);
+  -[SafariSettingsController setUpSearchSuggestionText:](selfCopy, "setUpSearchSuggestionText:", [v9 BOOLValue]);
   v12 = [v5 specifierForID:@"PRIVACY"];
   v13 = localizedPrivacyButtonTitleForBundleIdentifier(@"com.apple.onboarding.safari");
   [v12 setProperty:v13 forKey:PSFooterHyperlinkViewTitleKey];
@@ -808,7 +808,7 @@ LABEL_7:
   v14 = NSStringFromRange(v153);
   [v12 setProperty:v14 forKey:PSFooterHyperlinkViewLinkRangeKey];
 
-  v15 = [NSValue valueWithNonretainedObject:v4];
+  v15 = [NSValue valueWithNonretainedObject:selfCopy];
   [v12 setProperty:v15 forKey:PSFooterHyperlinkViewTargetKey];
 
   v127 = v12;
@@ -822,23 +822,23 @@ LABEL_7:
   v19 = [v5 indexOfSpecifierWithID:@"ALWAYS_SHOW_BOOKMARKS_BAR"];
   if (_SFDeviceIsPad() && v19 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v20 = [(SafariSettingsController *)v4 _specifierForSelectingFavoritesBarButtonStyle];
-    [v5 insertObject:v20 atIndex:v19 + 1];
+    _specifierForSelectingFavoritesBarButtonStyle = [(SafariSettingsController *)selfCopy _specifierForSelectingFavoritesBarButtonStyle];
+    [v5 insertObject:_specifierForSelectingFavoritesBarButtonStyle atIndex:v19 + 1];
   }
 
-  v21 = [(SafariSettingsController *)v4 isTabBarAvailable:0];
+  v21 = [(SafariSettingsController *)selfCopy isTabBarAvailable:0];
   v22 = +[UIDevice currentDevice];
-  v23 = [v22 userInterfaceIdiom];
+  userInterfaceIdiom = [v22 userInterfaceIdiom];
 
   v131 = v7;
-  if (v23 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
-    v24 = [(SafariSettingsController *)v4 _specifierForEnablingStandaloneTabBar];
-    if (v24)
+    _specifierForEnablingStandaloneTabBar = [(SafariSettingsController *)selfCopy _specifierForEnablingStandaloneTabBar];
+    if (_specifierForEnablingStandaloneTabBar)
     {
       v25 = [v5 indexOfSpecifierWithID:@"TABS"];
-      v26 = [(SafariSettingsController *)v4 _specifierForEnablingStandaloneTabBar];
-      [v5 insertObject:v26 atIndex:v25 + 1];
+      _specifierForEnablingStandaloneTabBar2 = [(SafariSettingsController *)selfCopy _specifierForEnablingStandaloneTabBar];
+      [v5 insertObject:_specifierForEnablingStandaloneTabBar2 atIndex:v25 + 1];
 
       v27 = 2;
     }
@@ -857,7 +857,7 @@ LABEL_14:
 
     v31 = 0;
     v30 = [v5 indexOfSpecifierWithID:@"TABS"] + v27;
-    if (v23 == &dword_0 + 1)
+    if (userInterfaceIdiom == &dword_0 + 1)
     {
       goto LABEL_20;
     }
@@ -878,11 +878,11 @@ LABEL_14:
   v30 = [v5 indexOfSpecifierWithID:@"TABS"] + 1;
   v31 = 1;
 LABEL_17:
-  v33 = [(SafariSettingsController *)v4 _specifierForSearchFieldPosition];
-  [v33 setIdentifier:@"SEARCH_POSITION"];
-  if (v33)
+  _specifierForSearchFieldPosition = [(SafariSettingsController *)selfCopy _specifierForSearchFieldPosition];
+  [_specifierForSearchFieldPosition setIdentifier:@"SEARCH_POSITION"];
+  if (_specifierForSearchFieldPosition)
   {
-    [v5 insertObject:v33 atIndex:v30++];
+    [v5 insertObject:_specifierForSearchFieldPosition atIndex:v30++];
   }
 
 LABEL_20:
@@ -897,77 +897,77 @@ LABEL_20:
     v35 = v30;
   }
 
-  v36 = [(SafariSettingsController *)v4 _specifierForEnablingBackgroundColorInTabBar];
-  [v5 insertObject:v36 atIndex:v35];
+  _specifierForEnablingBackgroundColorInTabBar = [(SafariSettingsController *)selfCopy _specifierForEnablingBackgroundColorInTabBar];
+  [v5 insertObject:_specifierForEnablingBackgroundColorInTabBar atIndex:v35];
 
   [v5 removeObjectAtIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"ACCESSIBILITY"}];
-  if (_SFDeviceIsPad() && v4->_hardwareKeyboardIsAvailable)
+  if (_SFDeviceIsPad() && selfCopy->_hardwareKeyboardIsAvailable)
   {
-    v37 = [(SafariSettingsController *)v4 _specifierForNewDocumentShortcutBehavior];
-    [v5 insertObject:v37 atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"OPEN_LINKS_IN_BACKGROUND_IPAD"}];
+    _specifierForNewDocumentShortcutBehavior = [(SafariSettingsController *)selfCopy _specifierForNewDocumentShortcutBehavior];
+    [v5 insertObject:_specifierForNewDocumentShortcutBehavior atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"OPEN_LINKS_IN_BACKGROUND_IPAD"}];
   }
 
   v38 = +[WBSManagedNewTabPageController sharedController];
-  v39 = [v38 managedNewTabPageState];
+  managedNewTabPageState = [v38 managedNewTabPageState];
 
-  v40 = [(SafariSettingsController *)v4 _newTabsOpenWithSpecifier];
-  newTabOverrideSettingsSpecifier = v4->_newTabOverrideSettingsSpecifier;
-  v4->_newTabOverrideSettingsSpecifier = v40;
+  _newTabsOpenWithSpecifier = [(SafariSettingsController *)selfCopy _newTabsOpenWithSpecifier];
+  newTabOverrideSettingsSpecifier = selfCopy->_newTabOverrideSettingsSpecifier;
+  selfCopy->_newTabOverrideSettingsSpecifier = _newTabsOpenWithSpecifier;
 
-  if (v39)
+  if (managedNewTabPageState)
   {
-    v42 = [(SafariSettingsController *)v4 _specifierForClosingTabsAutomatically];
-    [v5 insertObject:v42 atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"PRIVACY"}];
+    _specifierForClosingTabsAutomatically = [(SafariSettingsController *)selfCopy _specifierForClosingTabsAutomatically];
+    [v5 insertObject:_specifierForClosingTabsAutomatically atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"PRIVACY"}];
 
     v43 = [PSSpecifier groupSpecifierWithID:@"NEW_TABS_OPEN_WITH"];
     v44 = _WBSLocalizedString();
     [v43 setProperty:v44 forKey:v18];
 
     [v5 insertObject:v43 atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"PRIVACY"}];
-    v45 = v4->_newTabOverrideSettingsSpecifier;
+    _specifierForClosingTabsAutomatically2 = selfCopy->_newTabOverrideSettingsSpecifier;
   }
 
   else
   {
-    v46 = v4->_newTabOverrideSettingsSpecifier;
+    v46 = selfCopy->_newTabOverrideSettingsSpecifier;
     if (v46)
     {
       [v5 insertObject:v46 atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"PRIVACY"}];
     }
 
-    v45 = [(SafariSettingsController *)v4 _specifierForClosingTabsAutomatically];
-    v43 = v45;
+    _specifierForClosingTabsAutomatically2 = [(SafariSettingsController *)selfCopy _specifierForClosingTabsAutomatically];
+    v43 = _specifierForClosingTabsAutomatically2;
   }
 
-  [v5 insertObject:v45 atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"PRIVACY"}];
+  [v5 insertObject:_specifierForClosingTabsAutomatically2 atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"PRIVACY"}];
 
   v136 = v5;
   if (+[WBSFeatureAvailability isSafariProfilesEnabled])
   {
-    v47 = [(SafariSettingsController *)v4 _specifierForProfileGroup];
-    [v5 insertObject:v47 atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"PRIVACY"}];
+    _specifierForProfileGroup = [(SafariSettingsController *)selfCopy _specifierForProfileGroup];
+    [v5 insertObject:_specifierForProfileGroup atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"PRIVACY"}];
 
-    v48 = [(SafariSettingsController *)v4 _specifierForNewProfile];
-    [v5 insertObject:v48 atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"PRIVACY"}];
+    _specifierForNewProfile = [(SafariSettingsController *)selfCopy _specifierForNewProfile];
+    [v5 insertObject:_specifierForNewProfile atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"PRIVACY"}];
 
     v49 = [v5 indexOfSpecifierWithID:@"NEW_PROFILE"];
-    v50 = [objc_opt_class() tabGroupManager];
+    tabGroupManager = [objc_opt_class() tabGroupManager];
     v51 = v18;
-    if ([v50 hasMultipleProfiles])
+    if ([tabGroupManager hasMultipleProfiles])
     {
-      v52 = [v50 profiles];
+      profiles = [tabGroupManager profiles];
     }
 
     else
     {
-      v52 = &__NSArray0__struct;
+      profiles = &__NSArray0__struct;
     }
 
     v145 = 0u;
     v146 = 0u;
     v143 = 0u;
     v144 = 0u;
-    v53 = v52;
+    v53 = profiles;
     v54 = [v53 countByEnumeratingWithState:&v143 objects:v151 count:16];
     if (v54)
     {
@@ -984,7 +984,7 @@ LABEL_20:
             objc_enumerationMutation(v53);
           }
 
-          v59 = [(SafariSettingsController *)v4 _specifierForProfile:*(*(&v143 + 1) + 8 * v57)];
+          v59 = [(SafariSettingsController *)selfCopy _specifierForProfile:*(*(&v143 + 1) + 8 * v57)];
           v49 = v58 + 1;
           [v136 insertObject:v59 atIndex:v58];
 
@@ -1004,19 +1004,19 @@ LABEL_20:
   }
 
   v60 = SafariSettingsLocalizedString(@"Downloads", @"Safari");
-  v61 = [PSSpecifier preferenceSpecifierNamed:v60 target:v4 set:0 get:"_downloadsFolderTitle" detail:objc_opt_class() cell:2 edit:0];
-  downloadsSettingsSpecifier = v4->_downloadsSettingsSpecifier;
-  v4->_downloadsSettingsSpecifier = v61;
+  v61 = [PSSpecifier preferenceSpecifierNamed:v60 target:selfCopy set:0 get:"_downloadsFolderTitle" detail:objc_opt_class() cell:2 edit:0];
+  downloadsSettingsSpecifier = selfCopy->_downloadsSettingsSpecifier;
+  selfCopy->_downloadsSettingsSpecifier = v61;
 
   v134 = PSIDKey;
-  [(PSSpecifier *)v4->_downloadsSettingsSpecifier setProperty:@"DOWNLOADS" forKey:?];
-  [v5 insertObject:v4->_downloadsSettingsSpecifier atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"TABS"}];
-  [(SafariSettingsController *)v4 _updateDownloadsFolderTitle];
-  v63 = [(SafariSettingsController *)v4 privacyProxyAvailabilitySpecifier];
-  hideInternetAddressSettingsSpecifier = v4->_hideInternetAddressSettingsSpecifier;
-  v4->_hideInternetAddressSettingsSpecifier = v63;
+  [(PSSpecifier *)selfCopy->_downloadsSettingsSpecifier setProperty:@"DOWNLOADS" forKey:?];
+  [v5 insertObject:selfCopy->_downloadsSettingsSpecifier atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"TABS"}];
+  [(SafariSettingsController *)selfCopy _updateDownloadsFolderTitle];
+  privacyProxyAvailabilitySpecifier = [(SafariSettingsController *)selfCopy privacyProxyAvailabilitySpecifier];
+  hideInternetAddressSettingsSpecifier = selfCopy->_hideInternetAddressSettingsSpecifier;
+  selfCopy->_hideInternetAddressSettingsSpecifier = privacyProxyAvailabilitySpecifier;
 
-  v65 = v4->_hideInternetAddressSettingsSpecifier;
+  v65 = selfCopy->_hideInternetAddressSettingsSpecifier;
   if (v65)
   {
     [v5 insertObject:v65 atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"TRACKER_PROTECTION"}];
@@ -1024,12 +1024,12 @@ LABEL_20:
 
   if (+[WBSFeatureAvailability isLockedPrivateBrowsingEnabled])
   {
-    v66 = [(SafariSettingsController *)v4 _biometryNameForLockedPrivateBrowsingToggle];
-    v67 = [PSSpecifier preferenceSpecifierNamed:v66 target:v4 set:"safariTogglePrivateBrowsingRequiresAuthentication:forSpecifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
-    lockedPrivateBrowingSettingsSpecifier = v4->_lockedPrivateBrowingSettingsSpecifier;
-    v4->_lockedPrivateBrowingSettingsSpecifier = v67;
+    _biometryNameForLockedPrivateBrowsingToggle = [(SafariSettingsController *)selfCopy _biometryNameForLockedPrivateBrowsingToggle];
+    v67 = [PSSpecifier preferenceSpecifierNamed:_biometryNameForLockedPrivateBrowsingToggle target:selfCopy set:"safariTogglePrivateBrowsingRequiresAuthentication:forSpecifier:" get:"readPreferenceValue:" detail:0 cell:6 edit:0];
+    lockedPrivateBrowingSettingsSpecifier = selfCopy->_lockedPrivateBrowingSettingsSpecifier;
+    selfCopy->_lockedPrivateBrowingSettingsSpecifier = v67;
 
-    v69 = v4->_lockedPrivateBrowingSettingsSpecifier;
+    v69 = selfCopy->_lockedPrivateBrowingSettingsSpecifier;
     v149[0] = PSContainerBundleIDKey;
     v149[1] = PSDefaultsKey;
     v150[0] = @"com.apple.mobilesafari";
@@ -1042,7 +1042,7 @@ LABEL_20:
     v71 = [NSDictionary dictionaryWithObjects:v150 forKeys:v149 count:4];
     [(PSSpecifier *)v69 setProperties:v71];
 
-    if (v4->_hideInternetAddressSettingsSpecifier)
+    if (selfCopy->_hideInternetAddressSettingsSpecifier)
     {
       v72 = 2;
     }
@@ -1052,28 +1052,28 @@ LABEL_20:
       v72 = 1;
     }
 
-    [v5 insertObject:v4->_lockedPrivateBrowingSettingsSpecifier atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"TRACKER_PROTECTION"}];
+    [v5 insertObject:selfCopy->_lockedPrivateBrowingSettingsSpecifier atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"TRACKER_PROTECTION"}];
   }
 
   if (+[WBSBrowsingAssistantController isAvailableInCurrentLocale])
   {
     v73 = SafariSettingsLocalizedString(@"Highlights", @"Safari");
-    v74 = [PSSpecifier preferenceSpecifierNamed:v73 target:v4 set:"safariBrowsingAssistantToggled:forSpecifier:" get:"isSafariBrowsingAssistantEnabled:" detail:0 cell:6 edit:0];
+    v74 = [PSSpecifier preferenceSpecifierNamed:v73 target:selfCopy set:"safariBrowsingAssistantToggled:forSpecifier:" get:"isSafariBrowsingAssistantEnabled:" detail:0 cell:6 edit:0];
 
     [v5 insertObject:v74 atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"WARN_ABOUT_FRAUDULENT_WEBSITES"}];
   }
 
-  v75 = [(SafariSettingsController *)v4 _specifierForHTTPSOnly];
-  [v5 insertObject:v75 atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"WARN_ABOUT_FRAUDULENT_WEBSITES"}];
+  _specifierForHTTPSOnly = [(SafariSettingsController *)selfCopy _specifierForHTTPSOnly];
+  [v5 insertObject:_specifierForHTTPSOnly atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"WARN_ABOUT_FRAUDULENT_WEBSITES"}];
 
   v76 = SafariSettingsLocalizedString(@"Extensions Title", @"Extensions");
-  v77 = [PSSpecifier preferenceSpecifierNamed:v76 target:v4 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
-  webExtensionSettingsSpecifier = v4->_webExtensionSettingsSpecifier;
-  v4->_webExtensionSettingsSpecifier = v77;
+  v77 = [PSSpecifier preferenceSpecifierNamed:v76 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+  webExtensionSettingsSpecifier = selfCopy->_webExtensionSettingsSpecifier;
+  selfCopy->_webExtensionSettingsSpecifier = v77;
 
-  [(PSSpecifier *)v4->_webExtensionSettingsSpecifier setProperty:@"WEB_EXTENSIONS" forKey:v134];
-  [v5 insertObject:v4->_webExtensionSettingsSpecifier atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"DOWNLOADS"}];
-  v132 = v4;
+  [(PSSpecifier *)selfCopy->_webExtensionSettingsSpecifier setProperty:@"WEB_EXTENSIONS" forKey:v134];
+  [v5 insertObject:selfCopy->_webExtensionSettingsSpecifier atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"DOWNLOADS"}];
+  v132 = selfCopy;
   if (isInternalInstall())
   {
     v79 = +[NSUserDefaults safari_browserDefaults];
@@ -1130,20 +1130,20 @@ LABEL_20:
         while (v82);
       }
 
-      v4 = v132;
+      selfCopy = v132;
       v5 = v136;
       v18 = v124;
     }
   }
 
-  [(SafariSettingsController *)v4 setSearchEngineInSpecifiers:v5 forPrivateBrowsing:0];
-  v93 = [(SafariSettingsController *)v4 _specifierForPrivateSearchEngineToUseDefaultSearchEngineValue];
-  [v5 insertObject:v93 atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"SEARCH_ENGINE_SETTING"}];
-  v135 = [v93 performGetter];
-  if (([v135 BOOLValue] & 1) == 0)
+  [(SafariSettingsController *)selfCopy setSearchEngineInSpecifiers:v5 forPrivateBrowsing:0];
+  _specifierForPrivateSearchEngineToUseDefaultSearchEngineValue = [(SafariSettingsController *)selfCopy _specifierForPrivateSearchEngineToUseDefaultSearchEngineValue];
+  [v5 insertObject:_specifierForPrivateSearchEngineToUseDefaultSearchEngineValue atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"SEARCH_ENGINE_SETTING"}];
+  performGetter = [_specifierForPrivateSearchEngineToUseDefaultSearchEngineValue performGetter];
+  if (([performGetter BOOLValue] & 1) == 0)
   {
-    v94 = [(SafariSettingsController *)v132 _specifierForPrivateSearchEngine];
-    [v5 insertObject:v94 atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"SEARCH_ENGINE_SETTING"}];
+    _specifierForPrivateSearchEngine = [(SafariSettingsController *)v132 _specifierForPrivateSearchEngine];
+    [v5 insertObject:_specifierForPrivateSearchEngine atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"SEARCH_ENGINE_SETTING"}];
 
     [(SafariSettingsController *)v132 setSearchEngineInSpecifiers:v5 forPrivateBrowsing:1];
     v95 = [v5 specifierForID:@"SEARCH_SUGGESTION_SETTING"];
@@ -1154,8 +1154,8 @@ LABEL_20:
 
   if ((_SFDeviceIsPad() & 1) == 0)
   {
-    v97 = [(SafariSettingsController *)v132 _specifierForShowRecentSearchesToggle];
-    [v5 insertObject:v97 atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"SIRI_SUGGESTIONS"}];
+    _specifierForShowRecentSearchesToggle = [(SafariSettingsController *)v132 _specifierForShowRecentSearchesToggle];
+    [v5 insertObject:_specifierForShowRecentSearchesToggle atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"SIRI_SUGGESTIONS"}];
   }
 
   v98 = [v5 specifierForID:@"HISTORY_AND_WEBSITE_DATA"];
@@ -1168,11 +1168,11 @@ LABEL_20:
     [v98 setProperty:v100 forKey:v18];
   }
 
-  v101 = [(SafariSettingsController *)v132 _specifierForImportButton];
-  [v5 insertObject:v101 atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"CLEAR_HISTORY_AND_DATA"}];
+  _specifierForImportButton = [(SafariSettingsController *)v132 _specifierForImportButton];
+  [v5 insertObject:_specifierForImportButton atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"CLEAR_HISTORY_AND_DATA"}];
 
-  v102 = [(SafariSettingsController *)v132 _specifierForExportButton];
-  [v5 insertObject:v102 atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"CLEAR_HISTORY_AND_DATA"}];
+  _specifierForExportButton = [(SafariSettingsController *)v132 _specifierForExportButton];
+  [v5 insertObject:_specifierForExportButton atIndex:{objc_msgSend(v5, "indexOfSpecifierWithID:", @"CLEAR_HISTORY_AND_DATA"}];
 
   [NSSet setWithObjects:@"BLOCK_ALL_NEW_COOKIES", @"PRIVATE_CLICK_MEASUREMENT", @"APPLE_PAY_DISCLOSURE_ALLOWED", 0];
   v137[0] = _NSConcreteStackBlock;
@@ -1200,8 +1200,8 @@ LABEL_20:
       systemDefaultBrowserPolicyProvider = v132->_systemDefaultBrowserPolicyProvider;
     }
 
-    v109 = [(AUSystemSettingsSpecifiersProvider *)systemDefaultBrowserPolicyProvider specifiers];
-    v110 = [v109 safari_firstObjectPassingTest:&__block_literal_global_324];
+    specifiers = [(AUSystemSettingsSpecifiersProvider *)systemDefaultBrowserPolicyProvider specifiers];
+    v110 = [specifiers safari_firstObjectPassingTest:&__block_literal_global_324];
     if (v110)
     {
       v111 = 0x800000;
@@ -1239,15 +1239,15 @@ LABEL_20:
   v117 = [v112 count];
   if (v117)
   {
-    v118 = [NSIndexSet indexSetWithIndexesInRange:0, v117];
-    [v136 insertObjects:v112 atIndexes:v118];
+    v117 = [NSIndexSet indexSetWithIndexesInRange:0, v117];
+    [v136 insertObjects:v112 atIndexes:v117];
   }
 
   [(SafariSettingsListController *)v132 updateRestrictionsForSpecifiers:v136];
   v119 = +[WBSManagedNewTabPageController sharedController];
-  v120 = [v119 managedNewTabPageState];
+  managedNewTabPageState2 = [v119 managedNewTabPageState];
 
-  if (v120)
+  if (managedNewTabPageState2)
   {
     [(PSSpecifier *)v132->_newTabOverrideSettingsSpecifier setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
   }
@@ -1279,42 +1279,42 @@ BOOL __38__SafariSettingsController_specifiers__block_invoke_2(id a1, PSSpecifie
   return v3;
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 safari_stringForKey:@"action"];
+  lCopy = l;
+  completionCopy = completion;
+  v8 = [lCopy safari_stringForKey:@"action"];
   if ([v8 isEqualToString:@"showExportSheet"])
   {
-    [(SafariSettingsController *)self _showExportSheetWithCompletionHandler:v7];
+    [(SafariSettingsController *)self _showExportSheetWithCompletionHandler:completionCopy];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SafariSettingsController;
-    [(SafariSettingsController *)&v9 handleURL:v6 withCompletion:v7];
+    [(SafariSettingsController *)&v9 handleURL:lCopy withCompletion:completionCopy];
   }
 }
 
 - (id)_newTabsOpenWithSpecifier
 {
-  v3 = [(SafariSettingsController *)self _defaultWebExtensionController];
-  v4 = [v3 tabOverridePreferencesManager];
-  v5 = [v4 sortedComposedIdentifiersForExtensionsWithOverridePages];
-  v6 = [v5 count];
+  _defaultWebExtensionController = [(SafariSettingsController *)self _defaultWebExtensionController];
+  tabOverridePreferencesManager = [_defaultWebExtensionController tabOverridePreferencesManager];
+  sortedComposedIdentifiersForExtensionsWithOverridePages = [tabOverridePreferencesManager sortedComposedIdentifiersForExtensionsWithOverridePages];
+  v6 = [sortedComposedIdentifiersForExtensionsWithOverridePages count];
 
   v7 = +[WBSManagedNewTabPageController sharedController];
-  v8 = [v7 managedNewTabPageState];
+  managedNewTabPageState = [v7 managedNewTabPageState];
 
-  if (!(v8 | v6))
+  if (!(managedNewTabPageState | v6))
   {
     return 0;
   }
 
   v10 = [PSSpecifier alloc];
   v11 = SafariSettingsLocalizedString(@"New Tab Override Title", @"Extensions");
-  if (v8)
+  if (managedNewTabPageState)
   {
     v12 = 0;
     v13 = -1;
@@ -1326,13 +1326,13 @@ BOOL __38__SafariSettingsController_specifiers__block_invoke_2(id a1, PSSpecifie
     v13 = 2;
   }
 
-  v14 = v8 == 0;
+  v14 = managedNewTabPageState == 0;
   v9 = [v10 initWithName:v11 target:self set:0 get:"_tabOverrideTopLevelDetailString" detail:v12 cell:v13 edit:0];
 
   v20 = @"profileID";
-  v15 = [(SafariSettingsController *)self _defaultWebExtensionController];
-  v16 = [v15 profileServerID];
-  v21 = v16;
+  _defaultWebExtensionController2 = [(SafariSettingsController *)self _defaultWebExtensionController];
+  profileServerID = [_defaultWebExtensionController2 profileServerID];
+  v21 = profileServerID;
   v17 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
   [v9 setUserInfo:v17];
 
@@ -1417,12 +1417,12 @@ id __55__SafariSettingsController__updateDownloadsFolderTitle__block_invoke_354(
   return [v6 reloadSpecifier:v7 animated:1];
 }
 
-- (BOOL)isFavoritesFolderRestricted:(id)a3
+- (BOOL)isFavoritesFolderRestricted:(id)restricted
 {
   v3 = +[WBWebFilterSettings sharedWebFilterSettings];
-  v4 = [v3 usesAllowedSitesOnly];
+  usesAllowedSitesOnly = [v3 usesAllowedSitesOnly];
 
-  return v4;
+  return usesAllowedSitesOnly;
 }
 
 - (id)favoritesFolderTitle
@@ -1437,11 +1437,11 @@ id __55__SafariSettingsController__updateDownloadsFolderTitle__block_invoke_354(
   v5 = +[NSUserDefaults safari_browserDefaults];
   if ([v5 BOOLForKey:WBSFavoritesFolderIsTopLevelManagedBookmarksFolderKey])
   {
-    v6 = [(WBSManagedBookmarksController *)self->_managedBookmarksController managedBookmarks];
+    managedBookmarks = [(WBSManagedBookmarksController *)self->_managedBookmarksController managedBookmarks];
 
-    if (v6)
+    if (managedBookmarks)
     {
-      v7 = [(WBSManagedBookmarksController *)self->_managedBookmarksController topLevelBookmarksFolderTitle];
+      topLevelBookmarksFolderTitle = [(WBSManagedBookmarksController *)self->_managedBookmarksController topLevelBookmarksFolderTitle];
       goto LABEL_8;
     }
   }
@@ -1450,15 +1450,15 @@ id __55__SafariSettingsController__updateDownloadsFolderTitle__block_invoke_354(
   {
   }
 
-  v8 = [(WebBookmarkCollection *)self->_bookmarkCollection favoritesFolder];
-  v7 = [v8 localizedTitle];
+  favoritesFolder = [(WebBookmarkCollection *)self->_bookmarkCollection favoritesFolder];
+  topLevelBookmarksFolderTitle = [favoritesFolder localizedTitle];
 
 LABEL_8:
 
-  return v7;
+  return topLevelBookmarksFolderTitle;
 }
 
-- (void)_bookmarksDidReload:(id)a3
+- (void)_bookmarksDidReload:(id)reload
 {
   v4 = [(SafariSettingsController *)self specifierForID:@"FAVORITES_FOLDER"];
   [(SafariSettingsController *)self reloadSpecifier:v4];
@@ -1631,16 +1631,16 @@ void __104__SafariSettingsController_updateBiometricAuthenticationAndPasscodeAva
   }
 }
 
-- (void)_determineIfAuthenticationIsAvailableForLockedPrivateBrowsingWithCompletionHandler:(id)a3
+- (void)_determineIfAuthenticationIsAvailableForLockedPrivateBrowsingWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = dispatch_get_global_queue(25, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __111__SafariSettingsController__determineIfAuthenticationIsAvailableForLockedPrivateBrowsingWithCompletionHandler___block_invoke;
   block[3] = &unk_8A628;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(v4, block);
 }
 
@@ -1653,7 +1653,7 @@ uint64_t __111__SafariSettingsController__determineIfAuthenticationIsAvailableFo
   return v2();
 }
 
-- (id)isSafariFraudWarningEnabled:(id)a3
+- (id)isSafariFraudWarningEnabled:(id)enabled
 {
   v3 = +[NSUserDefaults safari_browserDefaults];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 safari_warnAboutFraudulentWebsites]);
@@ -1661,35 +1661,35 @@ uint64_t __111__SafariSettingsController__determineIfAuthenticationIsAvailableFo
   return v4;
 }
 
-- (void)safariFraudWarningsToggled:(id)a3 forSpecifier:(id)a4
+- (void)safariFraudWarningsToggled:(id)toggled forSpecifier:(id)specifier
 {
-  v6 = a3;
-  [PSRootController setPreferenceValue:v6 specifier:a4];
+  toggledCopy = toggled;
+  [PSRootController setPreferenceValue:toggledCopy specifier:specifier];
   v7 = [NSUserDefaults alloc];
   v8 = _SFSafeBrowsingPreferencesPlistPath();
   v11 = [v7 initWithSuiteName:v8];
 
-  v9 = [v6 BOOLValue];
-  [v11 setBool:v9 forKey:SSBSafeBrowsingEnabledDefaultsKey];
+  bOOLValue = [toggledCopy BOOLValue];
+  [v11 setBool:bOOLValue forKey:SSBSafeBrowsingEnabledDefaultsKey];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, SSBSafeBrowsingEnabledStateDidChangeNotification, 0, 0, 0);
   [(SafariSettingsController *)self _synchronizeNanoUserDefaults];
 }
 
-- (id)isSafariBrowsingAssistantEnabled:(id)a3
+- (id)isSafariBrowsingAssistantEnabled:(id)enabled
 {
   v3 = +[WBSBrowsingAssistantController hasUserConsent];
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)safariBrowsingAssistantToggled:(id)a3 forSpecifier:(id)a4
+- (void)safariBrowsingAssistantToggled:(id)toggled forSpecifier:(id)specifier
 {
-  v6 = a3;
-  [PSRootController setPreferenceValue:v6 specifier:a4];
-  LODWORD(a4) = [v6 BOOLValue];
+  toggledCopy = toggled;
+  [PSRootController setPreferenceValue:toggledCopy specifier:specifier];
+  LODWORD(specifier) = [toggledCopy BOOLValue];
 
-  if (a4)
+  if (specifier)
   {
     v7 = &off_90BB0;
   }
@@ -1704,22 +1704,22 @@ uint64_t __111__SafariSettingsController__determineIfAuthenticationIsAvailableFo
   [(SafariSettingsListController *)self setSafariDefaultsValue:v7 forKey:v8];
 }
 
-- (void)_copyFile:(id)a3 toFile:(id)a4
+- (void)_copyFile:(id)file toFile:(id)toFile
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  fileCopy = file;
+  toFileCopy = toFile;
+  v7 = toFileCopy;
+  if (fileCopy && toFileCopy)
   {
     v8 = +[NSFileManager defaultManager];
     [v8 _web_removeFileOnlyAtPath:v7];
     v12 = 0;
-    v9 = [v8 copyItemAtPath:v5 toPath:v7 error:&v12];
+    v9 = [v8 copyItemAtPath:fileCopy toPath:v7 error:&v12];
     v10 = v12;
     v11 = v10;
     if ((v9 & 1) == 0)
     {
-      NSLog(@"Failed to copy Default Safari image file '%@' to '%@', with error: %@", v5, v7, v10);
+      NSLog(@"Failed to copy Default Safari image file '%@' to '%@', with error: %@", fileCopy, v7, v10);
     }
   }
 }
@@ -1739,7 +1739,7 @@ uint64_t __111__SafariSettingsController__determineIfAuthenticationIsAvailableFo
   [v5 synchronizeUserDefaultsDomain:@"com.apple.mobilesafari" keys:v6 container:@"com.apple.mobilesafari"];
 }
 
-- (BOOL)isTabBarAvailable:(id)a3
+- (BOOL)isTabBarAvailable:(id)available
 {
   v3 = +[UIScreen mainScreen];
   [v3 bounds];
@@ -1748,14 +1748,14 @@ uint64_t __111__SafariSettingsController__determineIfAuthenticationIsAvailableFo
   return v6;
 }
 
-- (void)safariTogglePrivateBrowsingRequiresAuthentication:(id)a3 forSpecifier:(id)a4
+- (void)safariTogglePrivateBrowsingRequiresAuthentication:(id)authentication forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 BOOLValue])
+  authenticationCopy = authentication;
+  specifierCopy = specifier;
+  if ([authenticationCopy BOOLValue])
   {
-    [PSRootController setPreferenceValue:v6 specifier:v7];
-    [(SafariSettingsListController *)self setSafariDefaultsValue:v6 forKey:WBSPrivateBrowsingRequiresAuthenticationPreferenceKey];
+    [PSRootController setPreferenceValue:authenticationCopy specifier:specifierCopy];
+    [(SafariSettingsListController *)self setSafariDefaultsValue:authenticationCopy forKey:WBSPrivateBrowsingRequiresAuthenticationPreferenceKey];
   }
 
   else
@@ -1764,9 +1764,9 @@ uint64_t __111__SafariSettingsController__determineIfAuthenticationIsAvailableFo
     v8[1] = 3221225472;
     v8[2] = __91__SafariSettingsController_safariTogglePrivateBrowsingRequiresAuthentication_forSpecifier___block_invoke;
     v8[3] = &unk_8A650;
-    v9 = v7;
-    v10 = self;
-    v11 = v6;
+    v9 = specifierCopy;
+    selfCopy = self;
+    v11 = authenticationCopy;
     [_SFSettingsAuthentication authenticateForSettings:self allowAuthenticationReuse:0 completionHandler:v8];
   }
 }
@@ -1800,14 +1800,14 @@ id __91__SafariSettingsController_safariTogglePrivateBrowsingRequiresAuthenticat
   v3 = @"Require Passcode to Unlock Private Browsing";
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
     v5 = @"Require Face ID to Unlock Private Browsing";
-    if (v4 != 2)
+    if (intValue != 2)
     {
       v5 = @"Require Passcode to Unlock Private Browsing";
     }
 
-    if (v4 == 1)
+    if (intValue == 1)
     {
       v3 = @"Require Touch ID to Unlock Private Browsing";
     }
@@ -1889,11 +1889,11 @@ id __91__SafariSettingsController_safariTogglePrivateBrowsingRequiresAuthenticat
   return v4;
 }
 
-- (void)_setSafariPreferencesPerSiteSettingsSync:(id)a3 forSpecifier:(id)a4
+- (void)_setSafariPreferencesPerSiteSettingsSync:(id)sync forSpecifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [sync BOOLValue];
   v6 = WBSEnablePerSiteSettingsSyncPreferenceKey;
-  if (v5)
+  if (bOOLValue)
   {
     [(SafariSettingsListController *)self setSafariDefaultsValue:&__kCFBooleanTrue forKey:WBSEnablePerSiteSettingsSyncPreferenceKey];
     v7 = +[WBSSafariBookmarksSyncAgentProxy sharedProxy];
@@ -1910,7 +1910,7 @@ id __91__SafariSettingsController_safariTogglePrivateBrowsingRequiresAuthenticat
   }
 }
 
-- (id)specifiersForPerSitePreferencesForSettingsPersona:(int64_t)a3
+- (id)specifiersForPerSitePreferencesForSettingsPersona:(int64_t)persona
 {
   v5 = +[NSMutableArray array];
   v6 = SafariSettingsLocalizedString(@"Websites Group Title", @"Safari");
@@ -1919,8 +1919,8 @@ id __91__SafariSettingsController_safariTogglePrivateBrowsingRequiresAuthenticat
 
   if (self->_safariSyncEnabled)
   {
-    v8 = [(SafariSettingsController *)self _specifierForEnablingPerSiteSettingSync];
-    [v5 addObject:v8];
+    _specifierForEnablingPerSiteSettingSync = [(SafariSettingsController *)self _specifierForEnablingPerSiteSettingSync];
+    [v5 addObject:_specifierForEnablingPerSiteSettingSync];
 
     v9 = [PSSpecifier groupSpecifierWithID:@"SPACE_CELL_FOR_PER_SITE_SETTINGS_SYNC_TOGGLE"];
     [v5 addObject:v9];
@@ -1938,14 +1938,14 @@ id __91__SafariSettingsController_safariTogglePrivateBrowsingRequiresAuthenticat
   v15 = [PSSpecifier preferenceSpecifierNamed:v14 target:0 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
   [v5 addObject:v15];
 
-  if (!a3)
+  if (!persona)
   {
     if (+[WBSFeatureAvailability isSafariProfilesEnabled])
     {
-      v16 = [objc_opt_class() tabGroupManager];
-      v17 = [v16 hasMultipleProfiles];
+      tabGroupManager = [objc_opt_class() tabGroupManager];
+      hasMultipleProfiles = [tabGroupManager hasMultipleProfiles];
 
-      if (v17)
+      if (hasMultipleProfiles)
       {
         v18 = SafariSettingsLocalizedString(@"Profiles Title", @"Profiles");
         v19 = [PSSpecifier preferenceSpecifierNamed:v18 target:0 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
@@ -1989,10 +1989,10 @@ id __91__SafariSettingsController_safariTogglePrivateBrowsingRequiresAuthenticat
   v3 = [PSSpecifier groupSpecifierWithID:@"PROFILES" name:v2];
 
   [v3 setIdentifier:@"PROFILES"];
-  v4 = [objc_opt_class() tabGroupManager];
-  v5 = [v4 hasMultipleProfiles];
+  tabGroupManager = [objc_opt_class() tabGroupManager];
+  hasMultipleProfiles = [tabGroupManager hasMultipleProfiles];
   v6 = @"Profiles Footer Text No Profile";
-  if (v5)
+  if (hasMultipleProfiles)
   {
     v6 = @"Profiles Footer Text";
   }
@@ -2009,22 +2009,22 @@ id __91__SafariSettingsController_safariTogglePrivateBrowsingRequiresAuthenticat
   return v3;
 }
 
-- (id)_specifierForProfile:(id)a3
+- (id)_specifierForProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+  profileCopy = profile;
+  title = [profileCopy title];
+  v6 = [PSSpecifier preferenceSpecifierNamed:title target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
   v7 = objc_alloc_init(SafariProfileSettingsUserInfo);
-  [(SafariProfileSettingsUserInfo *)v7 setProfile:v4];
+  [(SafariProfileSettingsUserInfo *)v7 setProfile:profileCopy];
   [(SafariProfileSettingsUserInfo *)v7 setDelegate:self];
-  v8 = [objc_opt_class() tabGroupManager];
-  [(SafariProfileSettingsUserInfo *)v7 setTabGroupManager:v8];
+  tabGroupManager = [objc_opt_class() tabGroupManager];
+  [(SafariProfileSettingsUserInfo *)v7 setTabGroupManager:tabGroupManager];
 
   [v6 setUserInfo:v7];
-  v9 = [v4 identifier];
+  identifier = [profileCopy identifier];
 
-  v10 = [@"PROFILE_" stringByAppendingString:v9];
+  v10 = [@"PROFILE_" stringByAppendingString:identifier];
   [v6 setIdentifier:v10];
 
   return v6;
@@ -2130,12 +2130,12 @@ LABEL_13:
     v21 = v20 = self;
     v22 = [(SafariSettingsVisualPickerImageButtonConfiguration *)v19 initWithTitle:v21 preferenceValue:&off_90BF8 imageName:v30];
 
-    v23 = [(SafariSettingsController *)v20 traitCollection];
-    v24 = [v23 preferredContentSizeCategory];
-    v25 = [(SafariSettingsController *)v20 view];
+    traitCollection = [(SafariSettingsController *)v20 traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    view = [(SafariSettingsController *)v20 view];
     SFCapsuleCollectionViewMaximumContentSizeCategoryForMinibar();
     v27 = v26 = v11;
-    [(SafariSettingsVisualPickerImageButtonConfiguration *)v22 setEnabled:UIContentSizeCategoryCompareToCategory(v24, v27) != NSOrderedDescending];
+    [(SafariSettingsVisualPickerImageButtonConfiguration *)v22 setEnabled:UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, v27) != NSOrderedDescending];
 
     v11 = v26;
     [v18 insertObject:v22 atIndex:0];
@@ -2150,9 +2150,9 @@ LABEL_13:
 {
   v3 = SafariSettingsLocalizedString(@"Allow Website Tinting", @"TabBar");
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if (v5 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     v6 = SafariSettingsLocalizedString(@"Show Color in Tab Bar", @"TabBar");
 
@@ -2216,8 +2216,8 @@ LABEL_13:
     if (hardwareKeyboardIsAvailable && v4 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = [*&self->super.PSListController_opaque[v3] indexOfSpecifierWithID:@"OPEN_LINKS_IN_BACKGROUND_IPAD"];
-      v8 = [(SafariSettingsController *)self _specifierForNewDocumentShortcutBehavior];
-      [(SafariSettingsController *)self insertSpecifier:v8 atIndex:v7 + 1 animated:1];
+      _specifierForNewDocumentShortcutBehavior = [(SafariSettingsController *)self _specifierForNewDocumentShortcutBehavior];
+      [(SafariSettingsController *)self insertSpecifier:_specifierForNewDocumentShortcutBehavior atIndex:v7 + 1 animated:1];
     }
 
     else if (!hardwareKeyboardIsAvailable && v4 != 0x7FFFFFFFFFFFFFFFLL)
@@ -2353,28 +2353,28 @@ void __47__SafariSettingsController__importButtonTapped__block_invoke(uint64_t a
   [*(a1 + 32) presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)importViewController:(id)a3 didDismissAfterSuccessfulImportingDataFromFileURL:(id)a4 importedDataClassification:(int64_t)a5
+- (void)importViewController:(id)controller didDismissAfterSuccessfulImportingDataFromFileURL:(id)l importedDataClassification:(int64_t)classification
 {
-  v7 = a4;
+  lCopy = l;
   v8 = objc_opt_class();
-  v11 = v7;
+  v11 = lCopy;
   v9 = [NSArray arrayWithObjects:&v11 count:1];
 
-  v10 = [v8 _alertToDeleteBrowsingDataFiles:v9 importedDataClassification:a5];
+  v10 = [v8 _alertToDeleteBrowsingDataFiles:v9 importedDataClassification:classification];
 
   [(SafariSettingsController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-+ (id)_alertToDeleteBrowsingDataFiles:(id)a3 importedDataClassification:(int64_t)a4
++ (id)_alertToDeleteBrowsingDataFiles:(id)files importedDataClassification:(int64_t)classification
 {
-  v5 = a3;
-  v6 = [v5 firstObject];
-  v7 = [v6 lastPathComponent];
+  filesCopy = files;
+  firstObject = [filesCopy firstObject];
+  lastPathComponent = [firstObject lastPathComponent];
 
   v8 = _WBSLocalizedString();
-  v9 = [NSString localizedStringWithFormat:v8, v7];
+  v9 = [NSString localizedStringWithFormat:v8, lastPathComponent];
 
-  if (a4 > 2)
+  if (classification > 2)
   {
     v10 = 0;
   }
@@ -2390,13 +2390,13 @@ void __47__SafariSettingsController__importButtonTapped__block_invoke(uint64_t a
   [v11 addAction:v13];
 
   v14 = _WBSLocalizedString();
-  v15 = [NSString stringWithFormat:v14, v7];
+  v15 = [NSString stringWithFormat:v14, lastPathComponent];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = __87__SafariSettingsController__alertToDeleteBrowsingDataFiles_importedDataClassification___block_invoke_2;
   v19[3] = &unk_896F0;
-  v20 = v5;
-  v16 = v5;
+  v20 = filesCopy;
+  v16 = filesCopy;
   v17 = [UIAlertAction actionWithTitle:v15 style:2 handler:v19];
   [v11 addAction:v17];
 
@@ -2470,16 +2470,16 @@ void __87__SafariSettingsController__alertToDeleteBrowsingDataFiles_importedData
   return v4;
 }
 
-- (void)_showExportSheetWithCompletionHandler:(id)a3
+- (void)_showExportSheetWithCompletionHandler:(id)handler
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __66__SafariSettingsController__showExportSheetWithCompletionHandler___block_invoke;
   v4[3] = &unk_8A720;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(SafariSettingsController *)v5 _fetchExportLocationWithCompletionHandler:v4];
+  selfCopy = self;
+  handlerCopy = handler;
+  v3 = handlerCopy;
+  [(SafariSettingsController *)selfCopy _fetchExportLocationWithCompletionHandler:v4];
 }
 
 void __66__SafariSettingsController__showExportSheetWithCompletionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -2490,16 +2490,16 @@ void __66__SafariSettingsController__showExportSheetWithCompletionHandler___bloc
   [*(a1 + 32) presentViewController:v3 animated:1 completion:*(a1 + 40)];
 }
 
-- (void)_fetchExportLocationWithCompletionHandler:(id)a3
+- (void)_fetchExportLocationWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_alloc_init(DOCDownloadSettings);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __70__SafariSettingsController__fetchExportLocationWithCompletionHandler___block_invoke;
   v6[3] = &unk_8A748;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [v4 fetchDefaultDownloadsLocationItem:v6];
 }
 
@@ -2567,11 +2567,11 @@ void __70__SafariSettingsController__fetchExportLocationWithCompletionHandler___
   return [NSNumber numberWithUnsignedInteger:v2];
 }
 
-- (void)_setValueForClosingTabsAutomatically:(id)a3
+- (void)_setValueForClosingTabsAutomatically:(id)automatically
 {
-  v3 = [a3 integerValue];
+  integerValue = [automatically integerValue];
 
-  [WBSAutomaticTabClosingUtilities setAutomaticTabClosingInterval:v3];
+  [WBSAutomaticTabClosingUtilities setAutomaticTabClosingInterval:integerValue];
 }
 
 - (id)_valueForAutomaticallyDownloadReadingListItems
@@ -2591,7 +2591,7 @@ void __70__SafariSettingsController__fetchExportLocationWithCompletionHandler___
   return v3;
 }
 
-- (BOOL)isLockedPrivateBrowsingRestricted:(id)a3
+- (BOOL)isLockedPrivateBrowsingRestricted:(id)restricted
 {
   v3 = [(SafariSettingsListController *)self safariDefaultsValueForKey:WBSPasscodeIsAvailablePreferenceKey];
   objc_opt_class();
@@ -2608,9 +2608,9 @@ void __70__SafariSettingsController__fetchExportLocationWithCompletionHandler___
   return v4;
 }
 
-- (void)setUpSearchSuggestionText:(BOOL)a3
+- (void)setUpSearchSuggestionText:(BOOL)text
 {
-  v3 = a3;
+  textCopy = text;
   v19 = localizedPrivacyButtonTitleForBundleIdentifier(@"com.apple.onboarding.sirisuggestions");
   searchGroupSettingsSpecifier = self->_searchGroupSettingsSpecifier;
   v6 = [NSValue valueWithNonretainedObject:self];
@@ -2627,11 +2627,11 @@ void __70__SafariSettingsController__fetchExportLocationWithCompletionHandler___
 
   v9 = +[_SFSearchEngineController sharedInstance];
   v10 = [v9 engineInfoFor:v7];
-  v11 = [v10 shortName];
+  shortName = [v10 shortName];
 
-  if ([v11 isEqualToString:WBSSearchProviderShortNameGoogle])
+  if ([shortName isEqualToString:WBSSearchProviderShortNameGoogle])
   {
-    v12 = !v3;
+    v12 = !textCopy;
   }
 
   else
@@ -2663,19 +2663,19 @@ void __70__SafariSettingsController__fetchExportLocationWithCompletionHandler___
   }
 }
 
-- (void)setSearchSuggestionsEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setSearchSuggestionsEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v6 = a3;
-  [(SafariSettingsController *)self setPreferenceValue:v6 specifier:a4];
-  v7 = [v6 BOOLValue];
+  enabledCopy = enabled;
+  [(SafariSettingsController *)self setPreferenceValue:enabledCopy specifier:specifier];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [(SafariSettingsController *)self setUpSearchSuggestionText:v7];
+  [(SafariSettingsController *)self setUpSearchSuggestionText:bOOLValue];
   searchGroupSettingsSpecifier = self->_searchGroupSettingsSpecifier;
 
   [(SafariSettingsController *)self reloadSpecifier:searchGroupSettingsSpecifier];
 }
 
-- (void)showClearHistoryAndDataConfirmation:(id)a3
+- (void)showClearHistoryAndDataConfirmation:(id)confirmation
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -2686,8 +2686,8 @@ void __70__SafariSettingsController__fetchExportLocationWithCompletionHandler___
   if ((+[NSBundle safari_isMobileSafariInstalled]& 1) != 0)
   {
     v5 = [SFClearHistoryViewController alloc];
-    v6 = [objc_opt_class() tabGroupManager];
-    v7 = [v5 initWithTabGroupManager:v6 activeProfileIdentifier:0];
+    tabGroupManager = [objc_opt_class() tabGroupManager];
+    v7 = [v5 initWithTabGroupManager:tabGroupManager activeProfileIdentifier:0];
 
     [v7 setDelegate:self];
     v8 = [[UINavigationController alloc] initWithRootViewController:v7];
@@ -2763,13 +2763,13 @@ void __64__SafariSettingsController_showClearHistoryAndDataConfirmation___block_
   }
 }
 
-- (void)_safariClearHistoryAndDataAddedAfterDate:(id)a3 beforeDate:(id)a4 profileIdentifier:(id)a5 clearAllProfiles:(BOOL)a6 closeTabs:(BOOL)a7
+- (void)_safariClearHistoryAndDataAddedAfterDate:(id)date beforeDate:(id)beforeDate profileIdentifier:(id)identifier clearAllProfiles:(BOOL)profiles closeTabs:(BOOL)tabs
 {
-  v7 = a7;
-  v74 = a6;
-  v80 = a3;
-  v75 = a4;
-  v79 = a5;
+  tabsCopy = tabs;
+  profilesCopy = profiles;
+  dateCopy = date;
+  beforeDateCopy = beforeDate;
+  identifierCopy = identifier;
   group = dispatch_group_create();
   v10 = WBS_LOG_CHANNEL_PREFIXWebsiteData();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2792,24 +2792,24 @@ void __64__SafariSettingsController_showClearHistoryAndDataConfirmation___block_
   }
 
   killSafariViewService();
-  v72 = [WBSettingsTask taskForDeletingHistoryAfterDate:v80 beforeDate:v75 forProfileIdentifier:v79 clearAllProfiles:v74];
+  v72 = [WBSettingsTask taskForDeletingHistoryAfterDate:dateCopy beforeDate:beforeDateCopy forProfileIdentifier:identifierCopy clearAllProfiles:profilesCopy];
   v13 = +[SafariSettingsTaskHandler sharedHandler];
   [v13 enqueueTask:v72];
 
-  v78 = [objc_opt_class() _createTabGroupManagerForClearingHistory];
-  if (v7)
+  _createTabGroupManagerForClearingHistory = [objc_opt_class() _createTabGroupManagerForClearingHistory];
+  if (tabsCopy)
   {
-    if (v74)
+    if (profilesCopy)
     {
-      v14 = [v78 allProfileIdentifiers];
-      [v78 closeAllTabsInProfilesWithIdentifiers:v14];
+      allProfileIdentifiers = [_createTabGroupManagerForClearingHistory allProfileIdentifiers];
+      [_createTabGroupManagerForClearingHistory closeAllTabsInProfilesWithIdentifiers:allProfileIdentifiers];
 
       v99 = 0u;
       v100 = 0u;
       v97 = 0u;
       v98 = 0u;
-      v15 = [v78 allNamedProfileIdentifiers];
-      v16 = [v15 countByEnumeratingWithState:&v97 objects:v103 count:16];
+      allNamedProfileIdentifiers = [_createTabGroupManagerForClearingHistory allNamedProfileIdentifiers];
+      v16 = [allNamedProfileIdentifiers countByEnumeratingWithState:&v97 objects:v103 count:16];
       if (v16)
       {
         v17 = *v98;
@@ -2819,7 +2819,7 @@ void __64__SafariSettingsController_showClearHistoryAndDataConfirmation___block_
           {
             if (*v98 != v17)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(allNamedProfileIdentifiers);
             }
 
             v19 = *(*(&v97 + 1) + 8 * i);
@@ -2827,7 +2827,7 @@ void __64__SafariSettingsController_showClearHistoryAndDataConfirmation___block_
             [v20 clearSavedTabsForProfileWithIdentifier:v19 closingDatabase:0];
           }
 
-          v16 = [v15 countByEnumeratingWithState:&v97 objects:v103 count:16];
+          v16 = [allNamedProfileIdentifiers countByEnumeratingWithState:&v97 objects:v103 count:16];
         }
 
         while (v16);
@@ -2839,23 +2839,23 @@ void __64__SafariSettingsController_showClearHistoryAndDataConfirmation___block_
 
     else
     {
-      v22 = [NSSet setWithObject:v79];
-      [v78 closeAllTabsInProfilesWithIdentifiers:v22];
+      v22 = [NSSet setWithObject:identifierCopy];
+      [_createTabGroupManagerForClearingHistory closeAllTabsInProfilesWithIdentifiers:v22];
 
       v21 = +[_SFBrowserSavedState sharedBrowserSavedState];
-      [v21 clearSavedTabsForProfileWithIdentifier:v79 closingDatabase:1];
+      [v21 clearSavedTabsForProfileWithIdentifier:identifierCopy closingDatabase:1];
     }
   }
 
   v77 = +[NSDate distantPast];
-  if (v74)
+  if (profilesCopy)
   {
-    [v78 allProfileIdentifiers];
+    [_createTabGroupManagerForClearingHistory allProfileIdentifiers];
   }
 
   else
   {
-    [NSSet setWithObject:v79];
+    [NSSet setWithObject:identifierCopy];
   }
   v23 = ;
   v24 = +[_SFBrowserSavedState sharedBrowserSavedState];
@@ -2884,7 +2884,7 @@ void __64__SafariSettingsController_showClearHistoryAndDataConfirmation___block_
         [v29 clearRecentlyClosedTabsForProfileWithIdentifier:v28];
 
         v30 = +[WBSSiriIntelligenceDonor sharedInstance];
-        [v30 removeAllCoreSpotlightTabDataDonatedBySafariForProfileWithIdentifier:v79];
+        [v30 removeAllCoreSpotlightTabDataDonatedBySafariForProfileWithIdentifier:identifierCopy];
 
         v31 = SafariFrequentlyVisitedSitesBannedURLStoreURLForProfileWithIdentifier(v28);
         if (v31)
@@ -2893,11 +2893,11 @@ void __64__SafariSettingsController_showClearHistoryAndDataConfirmation___block_
           v33 = [[WBSFrequentlyVisitedSitesBannedURLStore alloc] initWithStoreURL:v31 history:0];
           v34 = [FrequentlyVisitedSitesController alloc];
           v35 = +[WebBookmarkCollection safariBookmarkCollection];
-          v36 = [v78 tabCollection];
-          v37 = [(FrequentlyVisitedSitesController *)v34 initWithBookmarkCollection:v35 history:0 bannedURLStore:v33 tabCollection:v36 profileIdentifier:v28];
+          tabCollection = [_createTabGroupManagerForClearingHistory tabCollection];
+          v37 = [(FrequentlyVisitedSitesController *)v34 initWithBookmarkCollection:v35 history:0 bannedURLStore:v33 tabCollection:tabCollection profileIdentifier:v28];
           [(FrequentlyVisitedSitesController *)v37 clearFrequentlyVisitedSites];
 
-          if ([v80 isEqualToDate:v77])
+          if ([dateCopy isEqualToDate:v77])
           {
             [v33 removeAllURLStrings];
             [WBSDigitalHealthManager deleteAllUsageHistoryWithProfileIdentifier:v28];
@@ -2905,11 +2905,11 @@ void __64__SafariSettingsController_showClearHistoryAndDataConfirmation___block_
 
           else
           {
-            [WBSDigitalHealthManager deleteUsageHistoryFromDate:v80 toDate:v75 profileIdentifier:v28];
+            [WBSDigitalHealthManager deleteUsageHistoryFromDate:dateCopy toDate:beforeDateCopy profileIdentifier:v28];
           }
 
           v38 = +[WBSIgnoredSiriSuggestedSitesController sharedController];
-          [v38 removeIgnoredSiriSuggestedSitesInProfile:v28 afterDate:v80];
+          [v38 removeIgnoredSiriSuggestedSitesInProfile:v28 afterDate:dateCopy];
         }
       }
 
@@ -2928,12 +2928,12 @@ void __64__SafariSettingsController_showClearHistoryAndDataConfirmation___block_
   }
 
   v40 = +[WBSBiomeDonationManager sharedManager];
-  [v40 clearEventsDonatedSinceDate:v80];
+  [v40 clearEventsDonatedSinceDate:dateCopy];
 
   v41 = objc_alloc_init(_SFRecentWebSearchesController);
   [v41 clearRecentSearches];
-  v42 = [v79 isEqualToString:WBSDefaultProfileIdentifier];
-  if ((v42 | v74) == 1)
+  v42 = [identifierCopy isEqualToString:WBSDefaultProfileIdentifier];
+  if ((v42 | profilesCopy) == 1)
   {
     v43 = objc_alloc_init(SBSApplicationService);
     [v43 deleteSnapshotsForApplicationIdentifier:@"com.apple.mobilesafari"];
@@ -2980,16 +2980,16 @@ void __64__SafariSettingsController_showClearHistoryAndDataConfirmation___block_
     [(SafariSettingsListController *)self postDistributedNotificationNamed:@"com.apple.mobilesafari.ClearHistory"];
     if (v42)
     {
-      v56 = v74;
-      if (!v74)
+      v56 = profilesCopy;
+      if (!profilesCopy)
       {
-        v56 = [v78 hasMultipleProfiles] ^ 1;
+        v56 = [_createTabGroupManagerForClearingHistory hasMultipleProfiles] ^ 1;
       }
     }
 
     else
     {
-      v56 = v74;
+      v56 = profilesCopy;
     }
 
     self->_recentlyClearedHistoryAndWebSiteData = v56;
@@ -3172,7 +3172,7 @@ id __48__SafariSettingsController_clearWebBrowsingData__block_invoke_2(uint64_t 
   return [*(a1 + 32) postDistributedNotificationNamed:@"com.apple.mobilesafari.ClearHistoryAndWebsiteData"];
 }
 
-- (BOOL)isAutoFillAvailable:(id)a3
+- (BOOL)isAutoFillAvailable:(id)available
 {
   if ((+[UIApplication isRunningInStoreDemoMode]& 1) != 0)
   {
@@ -3193,25 +3193,25 @@ id __48__SafariSettingsController_clearWebBrowsingData__block_invoke_2(uint64_t 
 
 - (BOOL)_isCloudHistoryEnabled
 {
-  v2 = [(SafariSettingsFeatureManager *)self->_featureManager isCloudHistorySyncAvailable];
-  if (v2)
+  isCloudHistorySyncAvailable = [(SafariSettingsFeatureManager *)self->_featureManager isCloudHistorySyncAvailable];
+  if (isCloudHistorySyncAvailable)
   {
     v3 = objc_alloc_init(ACAccountStore);
-    v4 = [v3 aa_primaryAppleAccount];
-    v5 = [v4 isEnabledForDataclass:kAccountDataclassBookmarks];
+    aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
+    v5 = [aa_primaryAppleAccount isEnabledForDataclass:kAccountDataclassBookmarks];
 
-    LOBYTE(v2) = v5;
+    LOBYTE(isCloudHistorySyncAvailable) = v5;
   }
 
-  return v2;
+  return isCloudHistorySyncAvailable;
 }
 
 - (id)siteSpecificSearchSettingsEnabledString
 {
   v2 = [(SafariSettingsListController *)self safariDefaultsValueForKey:@"DisableWebsiteSpecificSearch"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  if (v3)
+  if (bOOLValue)
   {
     v4 = @"Off";
   }
@@ -3226,7 +3226,7 @@ id __48__SafariSettingsController_clearWebBrowsingData__block_invoke_2(uint64_t 
   return v5;
 }
 
-- (id)isBlockPopUpsEnabled:(id)a3
+- (id)isBlockPopUpsEnabled:(id)enabled
 {
   v3 = +[NSUserDefaults safari_browserDefaults];
   v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v3 safari_javaScriptCanOpenWindowsAutomatically] ^ 1);
@@ -3234,12 +3234,12 @@ id __48__SafariSettingsController_clearWebBrowsingData__block_invoke_2(uint64_t 
   return v4;
 }
 
-- (BOOL)isTrackerProtectionRestricted:(id)a3
+- (BOOL)isTrackerProtectionRestricted:(id)restricted
 {
   v4 = +[NSHTTPCookieStorage sharedHTTPCookieStorage];
-  v5 = [v4 webui_safariCookieAcceptPolicyEnumValue];
+  webui_safariCookieAcceptPolicyEnumValue = [v4 webui_safariCookieAcceptPolicyEnumValue];
 
-  if (v5 == &dword_0 + 1)
+  if (webui_safariCookieAcceptPolicyEnumValue == &dword_0 + 1)
   {
     return 1;
   }
@@ -3268,14 +3268,14 @@ id __48__SafariSettingsController_clearWebBrowsingData__block_invoke_2(uint64_t 
   return v3;
 }
 
-- (void)setCookieStoragePolicy:(unint64_t)a3 andNotifySpecifierWithID:(id)a4
+- (void)setCookieStoragePolicy:(unint64_t)policy andNotifySpecifierWithID:(id)d
 {
-  v6 = a4;
-  [(SafariSettingsController *)self _setSafariAcceptCookiesForPolicy:a3];
+  dCopy = d;
+  [(SafariSettingsController *)self _setSafariAcceptCookiesForPolicy:policy];
   v7 = +[NSHTTPCookieStorage sharedHTTPCookieStorage];
   [v7 webui_applySafariCookieAcceptPolicy];
 
-  v8 = [(SafariSettingsController *)self specifierForID:v6];
+  v8 = [(SafariSettingsController *)self specifierForID:dCopy];
 
   [(SafariSettingsController *)self reloadSpecifier:v8];
   v9 = webuiCookieAcceptPolicyPreferencesKey;
@@ -3283,9 +3283,9 @@ id __48__SafariSettingsController_clearWebBrowsingData__block_invoke_2(uint64_t 
   [(SafariSettingsListController *)self postDistributedNotificationNamed:v9];
 }
 
-- (void)safariToggleTrackerProtection:(id)a3 forSpecifier:(id)a4
+- (void)safariToggleTrackerProtection:(id)protection forSpecifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([protection BOOLValue])
   {
     v5 = 2;
   }
@@ -3298,7 +3298,7 @@ id __48__SafariSettingsController_clearWebBrowsingData__block_invoke_2(uint64_t 
   [(SafariSettingsController *)self setCookieStoragePolicy:v5 andNotifySpecifierWithID:@"BLOCK_ALL_NEW_COOKIES"];
 }
 
-- (BOOL)isBlockAllNewWebsiteDataRestricted:(id)a3
+- (BOOL)isBlockAllNewWebsiteDataRestricted:(id)restricted
 {
   v3 = [(MCProfileConnection *)self->_profileConnection valueRestrictionForFeature:MCFeatureSafariAcceptCookies];
   v4 = v3;
@@ -3319,14 +3319,14 @@ id __48__SafariSettingsController_clearWebBrowsingData__block_invoke_2(uint64_t 
 - (id)blockAllNewWebsiteDataEnabled
 {
   v2 = +[NSHTTPCookieStorage sharedHTTPCookieStorage];
-  v3 = [v2 webui_safariCookieAcceptPolicyEnumValue];
+  webui_safariCookieAcceptPolicyEnumValue = [v2 webui_safariCookieAcceptPolicyEnumValue];
 
-  return [NSNumber numberWithInt:v3 == &dword_0 + 1];
+  return [NSNumber numberWithInt:webui_safariCookieAcceptPolicyEnumValue == &dword_0 + 1];
 }
 
-- (void)safariToggleBlockAllNewWebsiteData:(id)a3 forSpecifier:(id)a4
+- (void)safariToggleBlockAllNewWebsiteData:(id)data forSpecifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([data BOOLValue])
   {
     v5 = [PSConfirmationSpecifier preferenceSpecifierNamed:&stru_8BB60 target:self set:0 get:0 detail:0 cell:-1 edit:0];
     v11[0] = PSConfirmationTitleKey;
@@ -3357,7 +3357,7 @@ id __48__SafariSettingsController_clearWebBrowsingData__block_invoke_2(uint64_t 
   }
 }
 
-- (void)_confirmBlockAllCookies:(id)a3
+- (void)_confirmBlockAllCookies:(id)cookies
 {
   [(SafariSettingsController *)self _updateBlockAllNewWebsiteDataPolicyToBlockAllWebsiteData:1];
   v3 = WBAllWebsiteDataProfileIdentifier;
@@ -3365,21 +3365,21 @@ id __48__SafariSettingsController_clearWebBrowsingData__block_invoke_2(uint64_t 
   [SafariStorageSettingsController deleteAllDataForProfileWithIdentifier:v3];
 }
 
-- (void)_cancelBlockAllCookiesPrompt:(id)a3
+- (void)_cancelBlockAllCookiesPrompt:(id)prompt
 {
   v4 = [(SafariSettingsController *)self specifierForID:@"BLOCK_ALL_NEW_COOKIES"];
   [(SafariSettingsController *)self reloadSpecifier:v4];
 }
 
-- (void)_setSafariAcceptCookiesForPolicy:(unint64_t)a3
+- (void)_setSafariAcceptCookiesForPolicy:(unint64_t)policy
 {
   v3 = 0.0;
-  if (a3 == 2)
+  if (policy == 2)
   {
     *&v3 = 1.5;
   }
 
-  if (!a3)
+  if (!policy)
   {
     *&v3 = 2.0;
   }
@@ -3397,8 +3397,8 @@ id __48__SafariSettingsController_clearWebBrowsingData__block_invoke_2(uint64_t 
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v3 = self->_contentBlockerExtensions;
-    v23 = [(NSArray *)v3 countByEnumeratingWithState:&v32 objects:v38 count:16];
+    allValues = self->_contentBlockerExtensions;
+    v23 = [(NSArray *)allValues countByEnumeratingWithState:&v32 objects:v38 count:16];
     if (v23)
     {
       v4 = *v33;
@@ -3409,18 +3409,18 @@ id __48__SafariSettingsController_clearWebBrowsingData__block_invoke_2(uint64_t 
         {
           if (*v33 != v4)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
 
           v6 = *(*(&v32 + 1) + 8 * i);
-          v7 = [objc_opt_class() extensionsProfilesDataSource];
-          v8 = [v7 profileServerIDToContentBlockerManagers];
+          extensionsProfilesDataSource = [objc_opt_class() extensionsProfilesDataSource];
+          profileServerIDToContentBlockerManagers = [extensionsProfilesDataSource profileServerIDToContentBlockerManagers];
 
           v30 = 0u;
           v31 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v9 = v8;
+          v9 = profileServerIDToContentBlockerManagers;
           v10 = [v9 countByEnumeratingWithState:&v28 objects:v37 count:16];
           if (v10)
           {
@@ -3458,7 +3458,7 @@ id __48__SafariSettingsController_clearWebBrowsingData__block_invoke_2(uint64_t 
           v4 = v22;
         }
 
-        v23 = [(NSArray *)v3 countByEnumeratingWithState:&v32 objects:v38 count:16];
+        v23 = [(NSArray *)allValues countByEnumeratingWithState:&v32 objects:v38 count:16];
       }
 
       while (v23);
@@ -3468,11 +3468,11 @@ id __48__SafariSettingsController_clearWebBrowsingData__block_invoke_2(uint64_t 
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v16 = [objc_opt_class() extensionsProfilesDataSource];
-    v17 = [v16 profileServerIDToWebExtensionsControllers];
-    v3 = [v17 allValues];
+    extensionsProfilesDataSource2 = [objc_opt_class() extensionsProfilesDataSource];
+    profileServerIDToWebExtensionsControllers = [extensionsProfilesDataSource2 profileServerIDToWebExtensionsControllers];
+    allValues = [profileServerIDToWebExtensionsControllers allValues];
 
-    v18 = [(NSArray *)v3 countByEnumeratingWithState:&v24 objects:v36 count:16];
+    v18 = [(NSArray *)allValues countByEnumeratingWithState:&v24 objects:v36 count:16];
     if (v18)
     {
       v19 = *v25;
@@ -3482,7 +3482,7 @@ LABEL_19:
       {
         if (*v25 != v19)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v24 + 1) + 8 * v20) anyWebExtensionContentBlockerEnabled])
@@ -3492,7 +3492,7 @@ LABEL_19:
 
         if (v18 == ++v20)
         {
-          v18 = [(NSArray *)v3 countByEnumeratingWithState:&v24 objects:v36 count:16];
+          v18 = [(NSArray *)allValues countByEnumeratingWithState:&v24 objects:v36 count:16];
           if (v18)
           {
             goto LABEL_19;
@@ -3572,11 +3572,11 @@ LABEL_29:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [objc_opt_class() extensionsProfilesDataSource];
-  v4 = [v3 profileServerIDToWebExtensionsControllers];
-  v5 = [v4 allValues];
+  extensionsProfilesDataSource = [objc_opt_class() extensionsProfilesDataSource];
+  profileServerIDToWebExtensionsControllers = [extensionsProfilesDataSource profileServerIDToWebExtensionsControllers];
+  allValues = [profileServerIDToWebExtensionsControllers allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3588,7 +3588,7 @@ LABEL_29:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * v9) extensionSettingsWereUpdatedExternallyFromSettingsApp:0];
@@ -3596,7 +3596,7 @@ LABEL_29:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
@@ -3605,29 +3605,29 @@ LABEL_29:
 
 - (id)_tabOverrideTopLevelDetailString
 {
-  v2 = [(SafariSettingsController *)self _defaultWebExtensionController];
-  v3 = [SafariNewTabOverrideSettingsController topLevelDetailStringWithWebExtensionsController:v2];
+  _defaultWebExtensionController = [(SafariSettingsController *)self _defaultWebExtensionController];
+  v3 = [SafariNewTabOverrideSettingsController topLevelDetailStringWithWebExtensionsController:_defaultWebExtensionController];
 
   return v3;
 }
 
-- (void)_clearNewTabOverrideIfNecessaryOnChange:(id)a3
+- (void)_clearNewTabOverrideIfNecessaryOnChange:(id)change
 {
-  v4 = [(SafariSettingsController *)self _defaultWebExtensionController];
-  v5 = [SafariNewTabOverrideSettingsController canUseCurrentNewTabOverrideSelectionWithWebExtensionsController:v4];
+  _defaultWebExtensionController = [(SafariSettingsController *)self _defaultWebExtensionController];
+  v5 = [SafariNewTabOverrideSettingsController canUseCurrentNewTabOverrideSelectionWithWebExtensionsController:_defaultWebExtensionController];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SafariSettingsController *)self _defaultWebExtensionController];
-    v7 = [v6 tabOverridePreferencesManager];
+    _defaultWebExtensionController2 = [(SafariSettingsController *)self _defaultWebExtensionController];
+    tabOverridePreferencesManager = [_defaultWebExtensionController2 tabOverridePreferencesManager];
     v8 = +[NSUserDefaults safari_browserDefaults];
-    [v7 clearNewTabBehaviorInDefaults:v8 fromUserGesture:0];
+    [tabOverridePreferencesManager clearNewTabBehaviorInDefaults:v8 fromUserGesture:0];
 
     [(SafariSettingsController *)self reloadSpecifiers];
   }
 }
 
-- (void)_hideInternetAddressChanged:(id)a3
+- (void)_hideInternetAddressChanged:(id)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -3650,13 +3650,13 @@ void *__56__SafariSettingsController__hideInternetAddressChanged___block_invoke(
 
 - (id)_hideInternetAddressDetailText
 {
-  v2 = [objc_opt_class() privacyProxyAvailabilityManager];
-  v3 = [v2 isPrivacyProxyOnInICloudSettings];
+  privacyProxyAvailabilityManager = [objc_opt_class() privacyProxyAvailabilityManager];
+  isPrivacyProxyOnInICloudSettings = [privacyProxyAvailabilityManager isPrivacyProxyOnInICloudSettings];
 
-  v4 = [objc_opt_class() privacyProxyAvailabilityManager];
-  v5 = [v4 state];
+  privacyProxyAvailabilityManager2 = [objc_opt_class() privacyProxyAvailabilityManager];
+  state = [privacyProxyAvailabilityManager2 state];
 
-  if (!v5)
+  if (!state)
   {
     v7 = @"Hide Internet Address Off Item Title";
 LABEL_10:
@@ -3664,11 +3664,11 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if (v5 == &dword_0 + 1)
+  if (state == &dword_0 + 1)
   {
     v6 = @"Hide Internet Address Trackers List Item Title";
 LABEL_6:
-    if (v3)
+    if (isPrivacyProxyOnInICloudSettings)
     {
       v7 = v6;
     }
@@ -3681,7 +3681,7 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  if (v5 == &dword_0 + 2)
+  if (state == &dword_0 + 2)
   {
     v6 = @"Hide Internet Address Trackers and Websites List Item Title";
     goto LABEL_6;
@@ -3693,41 +3693,41 @@ LABEL_12:
   return v8;
 }
 
-- (void)_presentPrivacyFlowWithBundleIdentifier:(id)a3
+- (void)_presentPrivacyFlowWithBundleIdentifier:(id)identifier
 {
-  v4 = [OBPrivacyPresenter presenterForPrivacySplashWithIdentifier:a3];
+  v4 = [OBPrivacyPresenter presenterForPrivacySplashWithIdentifier:identifier];
   [v4 setPresentingViewController:self];
   [v4 present];
 }
 
-- (void)showCreateEditProfileSheet:(id)a3
+- (void)showCreateEditProfileSheet:(id)sheet
 {
-  v4 = a3;
+  sheetCopy = sheet;
   v9 = objc_alloc_init(CreateEditProfileViewController);
-  v5 = [v4 userInfo];
+  userInfo = [sheetCopy userInfo];
 
   v6 = objc_alloc_init(SafariProfileSettingsUserInfo);
-  [(SafariProfileSettingsUserInfo *)v6 setProfile:v5];
+  [(SafariProfileSettingsUserInfo *)v6 setProfile:userInfo];
   [(SafariProfileSettingsUserInfo *)v6 setDelegate:self];
-  v7 = [objc_opt_class() tabGroupManager];
-  [(SafariProfileSettingsUserInfo *)v6 setTabGroupManager:v7];
+  tabGroupManager = [objc_opt_class() tabGroupManager];
+  [(SafariProfileSettingsUserInfo *)v6 setTabGroupManager:tabGroupManager];
 
   [(CreateEditProfileViewController *)v9 setUserInfo:v6];
-  if (v5)
+  if (userInfo)
   {
-    v8 = [(SafariSettingsController *)self navigationController];
-    [v8 pushViewController:v9 animated:1];
+    navigationController = [(SafariSettingsController *)self navigationController];
+    [navigationController pushViewController:v9 animated:1];
   }
 
   else
   {
-    v8 = [[UINavigationController alloc] initWithRootViewController:v9];
-    [v8 setModalPresentationStyle:2];
-    [(SafariSettingsController *)self presentViewController:v8 animated:1 completion:0];
+    navigationController = [[UINavigationController alloc] initWithRootViewController:v9];
+    [navigationController setModalPresentationStyle:2];
+    [(SafariSettingsController *)self presentViewController:navigationController animated:1 completion:0];
   }
 }
 
-- (void)createEditProfileViewControllerDidChangeProfilesData:(id)a3
+- (void)createEditProfileViewControllerDidChangeProfilesData:(id)data
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -3737,60 +3737,60 @@ LABEL_12:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (unint64_t)clearHistoryViewController:(id)a3 numberOfTabsToBeClosedForProfilesWithIdentifiers:(id)a4
+- (unint64_t)clearHistoryViewController:(id)controller numberOfTabsToBeClosedForProfilesWithIdentifiers:(id)identifiers
 {
-  v4 = a4;
-  v5 = [objc_opt_class() _createTabGroupManagerForClearingHistory];
-  v6 = [v5 numberOfTabsToBeClosedForProfilesWithIdentifiers:v4];
+  identifiersCopy = identifiers;
+  _createTabGroupManagerForClearingHistory = [objc_opt_class() _createTabGroupManagerForClearingHistory];
+  v6 = [_createTabGroupManagerForClearingHistory numberOfTabsToBeClosedForProfilesWithIdentifiers:identifiersCopy];
 
   return v6;
 }
 
-- (void)tabGroupManager:(id)a3 didRemoveProfileWithIdentifier:(id)a4
+- (void)tabGroupManager:(id)manager didRemoveProfileWithIdentifier:(id)identifier
 {
-  v4 = [a3 profileWithIdentifier:a4];
-  v5 = [v4 identifierForExtensions];
+  v4 = [manager profileWithIdentifier:identifier];
+  identifierForExtensions = [v4 identifierForExtensions];
 
-  if (v5)
+  if (identifierForExtensions)
   {
     v6 = WBS_LOG_CHANNEL_PREFIXWebExtensions();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v13 = 138477827;
-      v14 = v5;
+      v14 = identifierForExtensions;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "Profile with server ID %{private}@ was deleted, updating controller map to make sure state is deleted", &v13, 0xCu);
     }
 
-    v7 = [objc_opt_class() extensionsProfilesDataSource];
-    v8 = [v7 profileServerIDToWebExtensionsControllers];
-    v9 = [v8 objectForKeyedSubscript:v5];
+    extensionsProfilesDataSource = [objc_opt_class() extensionsProfilesDataSource];
+    profileServerIDToWebExtensionsControllers = [extensionsProfilesDataSource profileServerIDToWebExtensionsControllers];
+    v9 = [profileServerIDToWebExtensionsControllers objectForKeyedSubscript:identifierForExtensions];
 
-    v10 = [objc_opt_class() extensionsProfilesDataSource];
-    v11 = [v10 profileServerIDToContentBlockerManagers];
-    v12 = [v11 objectForKeyedSubscript:v5];
+    extensionsProfilesDataSource2 = [objc_opt_class() extensionsProfilesDataSource];
+    profileServerIDToContentBlockerManagers = [extensionsProfilesDataSource2 profileServerIDToContentBlockerManagers];
+    v12 = [profileServerIDToContentBlockerManagers objectForKeyedSubscript:identifierForExtensions];
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v12 = a4;
-  v7 = [(SafariSettingsController *)self specifierAtIndexPath:a5];
-  v8 = [v7 identifier];
-  v9 = [v8 isEqualToString:@"SIRI_SUGGESTIONS"];
+  cellCopy = cell;
+  v7 = [(SafariSettingsController *)self specifierAtIndexPath:path];
+  identifier = [v7 identifier];
+  v9 = [identifier isEqualToString:@"SIRI_SUGGESTIONS"];
 
   if (v9)
   {
-    v10 = [(SafariSettingsController *)self areSiriSuggestionsSupported];
-    v11 = [v12 accessoryView];
-    [v11 setEnabled:v10];
-    if (!v10)
+    areSiriSuggestionsSupported = [(SafariSettingsController *)self areSiriSuggestionsSupported];
+    accessoryView = [cellCopy accessoryView];
+    [accessoryView setEnabled:areSiriSuggestionsSupported];
+    if (!areSiriSuggestionsSupported)
     {
-      [v11 setOn:0];
+      [accessoryView setOn:0];
     }
   }
 }
 
-- (void)_primaryAppleAccountDidChange:(id)a3
+- (void)_primaryAppleAccountDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -3800,17 +3800,17 @@ LABEL_12:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)queryControllerDidUpdate:(id)a3 resultDifference:(id)a4
+- (void)queryControllerDidUpdate:(id)update resultDifference:(id)difference
 {
-  v5 = a3;
+  updateCopy = update;
   discoveryNotificationQueue = self->_discoveryNotificationQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __70__SafariSettingsController_queryControllerDidUpdate_resultDifference___block_invoke;
   v8[3] = &unk_896A0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = updateCopy;
+  selfCopy = self;
+  v7 = updateCopy;
   dispatch_async(discoveryNotificationQueue, v8);
 }
 
@@ -3848,19 +3848,19 @@ void __70__SafariSettingsController_queryControllerDidUpdate_resultDifference___
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v12.receiver = self;
   v12.super_class = SafariSettingsController;
-  v6 = a4;
-  v7 = [(SafariSettingsController *)&v12 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(SafariSettingsController *)self specifierAtIndexPath:v6, v12.receiver, v12.super_class];
+  pathCopy = path;
+  v7 = [(SafariSettingsController *)&v12 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(SafariSettingsController *)self specifierAtIndexPath:pathCopy, v12.receiver, v12.super_class];
 
-  v9 = [v8 identifier];
-  LODWORD(v6) = [v9 isEqualToString:@"SIRI_AND_SEARCH"];
+  identifier = [v8 identifier];
+  LODWORD(pathCopy) = [identifier isEqualToString:@"SIRI_AND_SEARCH"];
 
-  v10 = [v7 textLabel];
-  [v10 setNumberOfLines:v6];
+  textLabel = [v7 textLabel];
+  [textLabel setNumberOfLines:pathCopy];
 
   return v7;
 }

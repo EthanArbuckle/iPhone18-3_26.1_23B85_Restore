@@ -1,45 +1,45 @@
 @interface GKMatchmakerExtensionViewController
-- (GKMatchmakerExtensionViewController)initWithCoder:(id)a3;
+- (GKMatchmakerExtensionViewController)initWithCoder:(id)coder;
 - (id)hostObjectProxy;
-- (void)activateGroupActivitiesForMultiplayerP2PViewController:(id)a3;
+- (void)activateGroupActivitiesForMultiplayerP2PViewController:(id)controller;
 - (void)applicationWillEnterForeground;
 - (void)constructContentViewController;
-- (void)disconnectMatchForMultiplayerP2PViewController:(id)a3;
+- (void)disconnectMatchForMultiplayerP2PViewController:(id)controller;
 - (void)dismissWithGameController;
-- (void)endGroupActivitiesForMultiplayerP2PViewController:(id)a3;
-- (void)messageFromClient:(id)a3;
-- (void)multiplayerP2PViewController:(id)a3 cancelInviteToPlayer:(id)a4;
-- (void)multiplayerP2PViewController:(id)a3 didFinishWithError:(id)a4;
-- (void)multiplayerP2PViewController:(id)a3 sendData:(id)a4;
-- (void)multiplayerP2PViewController:(id)a3 setShareInvitees:(id)a4;
-- (void)multiplayerP2PViewController:(id)a3 shareMatchWithRequest:(id)a4 handler:(id)a5;
-- (void)multiplayerP2PViewController:(id)a3 startMatchingWithRequest:(id)a4;
-- (void)multiplayerP2PViewController:(id)a3 startMatchingWithRequest:(id)a4 devicePushToken:(id)a5;
-- (void)multiplayerP2PViewControllerCancelMatching:(id)a3;
-- (void)multiplayerP2PViewControllerPresentSharePlaySharingController:(id)a3;
-- (void)multiplayerPicker:(id)a3 didPickPlayers:(id)a4 messageGroups:(id)a5 customMessage:(id)a6;
-- (void)multiplayerPickerDidCancel:(id)a3;
+- (void)endGroupActivitiesForMultiplayerP2PViewController:(id)controller;
+- (void)messageFromClient:(id)client;
+- (void)multiplayerP2PViewController:(id)controller cancelInviteToPlayer:(id)player;
+- (void)multiplayerP2PViewController:(id)controller didFinishWithError:(id)error;
+- (void)multiplayerP2PViewController:(id)controller sendData:(id)data;
+- (void)multiplayerP2PViewController:(id)controller setShareInvitees:(id)invitees;
+- (void)multiplayerP2PViewController:(id)controller shareMatchWithRequest:(id)request handler:(id)handler;
+- (void)multiplayerP2PViewController:(id)controller startMatchingWithRequest:(id)request;
+- (void)multiplayerP2PViewController:(id)controller startMatchingWithRequest:(id)request devicePushToken:(id)token;
+- (void)multiplayerP2PViewControllerCancelMatching:(id)matching;
+- (void)multiplayerP2PViewControllerPresentSharePlaySharingController:(id)controller;
+- (void)multiplayerPicker:(id)picker didPickPlayers:(id)players messageGroups:(id)groups customMessage:(id)message;
+- (void)multiplayerPickerDidCancel:(id)cancel;
 - (void)navigateToSharePlayChiclet;
-- (void)requestRecipientProperties:(id)a3;
-- (void)setCanStartWithMinimumPlayers:(BOOL)a3;
-- (void)setDefaultInvitationMessage:(id)a3;
-- (void)setExistingPlayers:(id)a3;
-- (void)setHosted:(BOOL)a3;
-- (void)setInitialState:(id)a3 withReply:(id)a4;
-- (void)setIsEligibleForGroupSession:(BOOL)a3;
-- (void)setMatchmakingMode:(int64_t)a3;
-- (void)setNearbyPlayer:(id)a3 reachable:(BOOL)a4;
-- (void)startBrowsingForNearbyPlayersWithReachableHandler:(id)a3;
+- (void)requestRecipientProperties:(id)properties;
+- (void)setCanStartWithMinimumPlayers:(BOOL)players;
+- (void)setDefaultInvitationMessage:(id)message;
+- (void)setExistingPlayers:(id)players;
+- (void)setHosted:(BOOL)hosted;
+- (void)setInitialState:(id)state withReply:(id)reply;
+- (void)setIsEligibleForGroupSession:(BOOL)session;
+- (void)setMatchmakingMode:(int64_t)mode;
+- (void)setNearbyPlayer:(id)player reachable:(BOOL)reachable;
+- (void)startBrowsingForNearbyPlayersWithReachableHandler:(id)handler;
 - (void)stopBrowsingForNearbyPlayers;
 @end
 
 @implementation GKMatchmakerExtensionViewController
 
-- (GKMatchmakerExtensionViewController)initWithCoder:(id)a3
+- (GKMatchmakerExtensionViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = GKMatchmakerExtensionViewController;
-  v3 = [(GKMatchmakerExtensionViewController *)&v6 initWithCoder:a3];
+  v3 = [(GKMatchmakerExtensionViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -49,39 +49,39 @@
   return v4;
 }
 
-- (void)setInitialState:(id)a3 withReply:(id)a4
+- (void)setInitialState:(id)state withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:GKExtensionItemMatchesHosted];
+  stateCopy = state;
+  replyCopy = reply;
+  v8 = [stateCopy objectForKeyedSubscript:GKExtensionItemMatchesHosted];
   -[GKMatchmakerExtensionViewController setHosted:](self, "setHosted:", [v8 BOOLValue]);
 
-  v9 = [v6 objectForKeyedSubscript:GKExtensionItemMatchesMatchmakingMode];
+  v9 = [stateCopy objectForKeyedSubscript:GKExtensionItemMatchesMatchmakingMode];
   -[GKMatchmakerExtensionViewController setMatchmakingMode:](self, "setMatchmakingMode:", [v9 integerValue]);
 
-  v10 = [v6 objectForKeyedSubscript:GKExtensionItemMatchesFastStartEnabled];
+  v10 = [stateCopy objectForKeyedSubscript:GKExtensionItemMatchesFastStartEnabled];
   -[GKMatchmakerExtensionViewController setCanStartWithMinimumPlayers:](self, "setCanStartWithMinimumPlayers:", [v10 BOOLValue]);
 
-  v11 = [v6 objectForKeyedSubscript:GKExtensionItemMatchesGroupSessionEligible];
+  v11 = [stateCopy objectForKeyedSubscript:GKExtensionItemMatchesGroupSessionEligible];
   -[GKMatchmakerExtensionViewController setIsEligibleForGroupSession:](self, "setIsEligibleForGroupSession:", [v11 BOOLValue]);
 
-  v12 = [v6 objectForKeyedSubscript:GKExtensionItemEntitledToGroupActivities];
+  v12 = [stateCopy objectForKeyedSubscript:GKExtensionItemEntitledToGroupActivities];
   -[GKMatchmakerExtensionViewController setIsEntitledToUseGroupActivities:](self, "setIsEntitledToUseGroupActivities:", [v12 BOOLValue]);
 
-  v13 = [v6 objectForKeyedSubscript:@"playerPickerContext"];
+  v13 = [stateCopy objectForKeyedSubscript:@"playerPickerContext"];
   [(GKMatchmakerExtensionViewController *)self setPlayerPickerContext:v13];
 
-  v14 = [v6 objectForKeyedSubscript:GKExtensionItemPlayerInternalsKey];
+  v14 = [stateCopy objectForKeyedSubscript:GKExtensionItemPlayerInternalsKey];
   [(GKMatchmakerExtensionViewController *)self setExistingPlayers:v14];
 
-  v15 = [v6 objectForKeyedSubscript:GKExtensionItemMatchesMatchRequestInternal];
+  v15 = [stateCopy objectForKeyedSubscript:GKExtensionItemMatchesMatchRequestInternal];
   if (v15)
   {
     v16 = [[GKMatchRequest alloc] initWithInternalRepresentation:v15];
     [(GKMatchmakerExtensionViewController *)self setMatchRequest:v16];
   }
 
-  v17 = [v6 objectForKeyedSubscript:GKExtensionItemMatchesAcceptedInviteInternal];
+  v17 = [stateCopy objectForKeyedSubscript:GKExtensionItemMatchesAcceptedInviteInternal];
   if (v17)
   {
     v18 = [[GKInvite alloc] initWithInternalRepresentation:v17];
@@ -90,148 +90,148 @@
 
   v19.receiver = self;
   v19.super_class = GKMatchmakerExtensionViewController;
-  [(GKMatchmakerExtensionViewController *)&v19 setInitialState:v6 withReply:v7];
+  [(GKMatchmakerExtensionViewController *)&v19 setInitialState:stateCopy withReply:replyCopy];
 }
 
 - (void)constructContentViewController
 {
-  v3 = [(GKMatchmakerExtensionViewController *)self acceptedInvite];
-  if (v3 || ([(GKMatchmakerExtensionViewController *)self matchRequest], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  acceptedInvite = [(GKMatchmakerExtensionViewController *)self acceptedInvite];
+  if (acceptedInvite || ([(GKMatchmakerExtensionViewController *)self matchRequest], (acceptedInvite = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v32 = [(GKMatchmakerExtensionViewController *)self playerPickerContext];
+    playerPickerContext = [(GKMatchmakerExtensionViewController *)self playerPickerContext];
 
-    if (!v32)
+    if (!playerPickerContext)
     {
       return;
     }
   }
 
-  v4 = [(GKMatchmakerExtensionViewController *)self playerPickerContext];
+  playerPickerContext2 = [(GKMatchmakerExtensionViewController *)self playerPickerContext];
 
-  if (v4)
+  if (playerPickerContext2)
   {
     v5 = [GKDashboardMultiplayerPickerViewController alloc];
-    v6 = [(GKMatchmakerExtensionViewController *)self playerPickerContext];
-    v7 = [v6 maxPlayers];
-    v8 = [(GKMatchmakerExtensionViewController *)self playerPickerContext];
-    v9 = [v8 excludedPlayers];
-    v10 = [(GKMatchmakerExtensionViewController *)self playerPickerContext];
-    v11 = [v5 initWithMaxSelectable:v7 hiddenPlayers:v9 nearbyOnly:0 pickerOrigin:{objc_msgSend(v10, "pickerOrigin")}];
+    playerPickerContext3 = [(GKMatchmakerExtensionViewController *)self playerPickerContext];
+    maxPlayers = [playerPickerContext3 maxPlayers];
+    playerPickerContext4 = [(GKMatchmakerExtensionViewController *)self playerPickerContext];
+    excludedPlayers = [playerPickerContext4 excludedPlayers];
+    playerPickerContext5 = [(GKMatchmakerExtensionViewController *)self playerPickerContext];
+    delegatedContentViewController = [v5 initWithMaxSelectable:maxPlayers hiddenPlayers:excludedPlayers nearbyOnly:0 pickerOrigin:{objc_msgSend(playerPickerContext5, "pickerOrigin")}];
 
-    [v11 setMultiplayerPickerDelegate:self];
-    [v11 setNearbyDelegate:self];
+    [delegatedContentViewController setMultiplayerPickerDelegate:self];
+    [delegatedContentViewController setNearbyDelegate:self];
     v12 = +[GKPreferences shared];
-    [v11 setSupportsNearby:{objc_msgSend(v12, "shouldAllowNearbyMultiplayer")}];
+    [delegatedContentViewController setSupportsNearby:{objc_msgSend(v12, "shouldAllowNearbyMultiplayer")}];
 
 LABEL_8:
-    [(GKMatchmakerExtensionViewController *)self setContentViewController:v11];
+    [(GKMatchmakerExtensionViewController *)self setContentViewController:delegatedContentViewController];
     goto LABEL_9;
   }
 
-  v13 = [(GKMatchmakerExtensionViewController *)self acceptedInvite];
+  acceptedInvite2 = [(GKMatchmakerExtensionViewController *)self acceptedInvite];
 
-  if (v13)
+  if (acceptedInvite2)
   {
     v14 = [GKMultiplayerP2PViewController alloc];
-    v15 = [(GKMatchmakerExtensionViewController *)self acceptedInvite];
-    v16 = [v14 initWithAcceptedInvite:v15];
+    acceptedInvite3 = [(GKMatchmakerExtensionViewController *)self acceptedInvite];
+    v16 = [v14 initWithAcceptedInvite:acceptedInvite3];
     [(GKMatchmakerExtensionViewController *)self setDelegatedContentViewController:v16];
 
-    v11 = [(GKMatchmakerExtensionViewController *)self delegatedContentViewController];
+    delegatedContentViewController = [(GKMatchmakerExtensionViewController *)self delegatedContentViewController];
     goto LABEL_8;
   }
 
-  v33 = [(GKMatchmakerExtensionViewController *)self matchRequest];
+  matchRequest = [(GKMatchmakerExtensionViewController *)self matchRequest];
 
-  if (v33)
+  if (matchRequest)
   {
     v34 = [GKMultiplayerP2PViewController alloc];
-    v35 = [(GKMatchmakerExtensionViewController *)self matchRequest];
-    v36 = [v34 initWithMatchRequest:v35];
+    matchRequest2 = [(GKMatchmakerExtensionViewController *)self matchRequest];
+    v36 = [v34 initWithMatchRequest:matchRequest2];
     [(GKMatchmakerExtensionViewController *)self setDelegatedContentViewController:v36];
 
-    v37 = [(GKMatchmakerExtensionViewController *)self canStartWithMinimumPlayers];
-    v38 = [(GKMatchmakerExtensionViewController *)self delegatedContentViewController];
-    [v38 setCanStartWithMinimumPlayers:v37];
+    canStartWithMinimumPlayers = [(GKMatchmakerExtensionViewController *)self canStartWithMinimumPlayers];
+    delegatedContentViewController2 = [(GKMatchmakerExtensionViewController *)self delegatedContentViewController];
+    [delegatedContentViewController2 setCanStartWithMinimumPlayers:canStartWithMinimumPlayers];
 
-    v39 = [(GKMatchmakerExtensionViewController *)self matchRequest];
+    matchRequest3 = [(GKMatchmakerExtensionViewController *)self matchRequest];
     v40 = +[GKGame currentGame];
-    v41 = [(GKMatchmakerExtensionViewController *)self delegatedContentViewController];
+    delegatedContentViewController3 = [(GKMatchmakerExtensionViewController *)self delegatedContentViewController];
     v53[0] = _NSConcreteStackBlock;
     v53[1] = 3221225472;
     v53[2] = sub_100002504;
     v53[3] = &unk_100020960;
     v53[4] = self;
-    v42 = [_TtC29GameCenterMatchmakerExtension38MultiplayerModeSelectionViewController viewControllerWithRequest:v39 game:v40 multiplayerViewController:v41 dismissHandler:v53];
+    v42 = [_TtC29GameCenterMatchmakerExtension38MultiplayerModeSelectionViewController viewControllerWithRequest:matchRequest3 game:v40 multiplayerViewController:delegatedContentViewController3 dismissHandler:v53];
     [(GKMatchmakerExtensionViewController *)self setContentViewController:v42];
 
-    v43 = [(GKMatchmakerExtensionViewController *)self matchmakingMode];
-    v44 = [(GKMatchmakerExtensionViewController *)self contentViewController];
-    [v44 setOriginalMatchmakingMode:v43];
+    matchmakingMode = [(GKMatchmakerExtensionViewController *)self matchmakingMode];
+    contentViewController = [(GKMatchmakerExtensionViewController *)self contentViewController];
+    [contentViewController setOriginalMatchmakingMode:matchmakingMode];
 
-    v45 = [(GKMatchmakerExtensionViewController *)self isEligibleForGroupSession];
-    v46 = [(GKMatchmakerExtensionViewController *)self contentViewController];
-    [v46 setIsEligibleForGroupSession:v45];
+    isEligibleForGroupSession = [(GKMatchmakerExtensionViewController *)self isEligibleForGroupSession];
+    contentViewController2 = [(GKMatchmakerExtensionViewController *)self contentViewController];
+    [contentViewController2 setIsEligibleForGroupSession:isEligibleForGroupSession];
 
-    v47 = [(GKMatchmakerExtensionViewController *)self isEntitledToUseGroupActivities];
-    v48 = [(GKMatchmakerExtensionViewController *)self contentViewController];
-    [v48 setIsEntitledToUseGroupActivities:v47];
+    isEntitledToUseGroupActivities = [(GKMatchmakerExtensionViewController *)self isEntitledToUseGroupActivities];
+    contentViewController3 = [(GKMatchmakerExtensionViewController *)self contentViewController];
+    [contentViewController3 setIsEntitledToUseGroupActivities:isEntitledToUseGroupActivities];
 
     goto LABEL_10;
   }
 
   v49 = [NSString stringWithFormat:@"Configuration failure for GKMatchmakerExtensionViewController."];
   v50 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/GameCenterMatchmakerExtension/GKMatchmakerExtensionViewController.m"];
-  v51 = [v50 lastPathComponent];
-  v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (NO)\n[%s (%s:%d)]", v49, "-[GKMatchmakerExtensionViewController constructContentViewController]", [v51 UTF8String], 143);
+  lastPathComponent = [v50 lastPathComponent];
+  delegatedContentViewController = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (NO)\n[%s (%s:%d)]", v49, "-[GKMatchmakerExtensionViewController constructContentViewController]", [lastPathComponent UTF8String], 143);
 
-  [NSException raise:@"GameKit Exception" format:@"%@", v11];
+  [NSException raise:@"GameKit Exception" format:@"%@", delegatedContentViewController];
 LABEL_9:
 
 LABEL_10:
-  v17 = [(GKMatchmakerExtensionViewController *)self playerPickerContext];
+  playerPickerContext6 = [(GKMatchmakerExtensionViewController *)self playerPickerContext];
 
-  if (!v17)
+  if (!playerPickerContext6)
   {
     v18 = +[GKGame currentGame];
-    v19 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
-    [v19 setGame:v18];
+    multiplayerViewController = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+    [multiplayerViewController setGame:v18];
 
-    v20 = [(GKMatchmakerExtensionViewController *)self hosted];
-    v21 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
-    [v21 setHosted:v20];
+    hosted = [(GKMatchmakerExtensionViewController *)self hosted];
+    multiplayerViewController2 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+    [multiplayerViewController2 setHosted:hosted];
 
-    v22 = [(GKMatchmakerExtensionViewController *)self matchmakingMode];
-    v23 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
-    [v23 setMatchmakingMode:v22];
+    matchmakingMode2 = [(GKMatchmakerExtensionViewController *)self matchmakingMode];
+    multiplayerViewController3 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+    [multiplayerViewController3 setMatchmakingMode:matchmakingMode2];
 
-    v24 = [(GKMatchmakerExtensionViewController *)self existingPlayers];
-    v25 = [v24 count];
+    existingPlayers = [(GKMatchmakerExtensionViewController *)self existingPlayers];
+    v25 = [existingPlayers count];
 
     if (v25)
     {
-      v26 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
-      v27 = [(GKMatchmakerExtensionViewController *)self existingPlayers];
-      [v26 setExistingPlayers:v27];
+      multiplayerViewController4 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+      existingPlayers2 = [(GKMatchmakerExtensionViewController *)self existingPlayers];
+      [multiplayerViewController4 setExistingPlayers:existingPlayers2];
 
-      v28 = [(GKMatchmakerExtensionViewController *)self contentViewController];
+      contentViewController4 = [(GKMatchmakerExtensionViewController *)self contentViewController];
 
-      if (v28)
+      if (contentViewController4)
       {
-        v29 = [(GKMatchmakerExtensionViewController *)self contentViewController];
-        [v29 setSkipModeSelection:1];
+        contentViewController5 = [(GKMatchmakerExtensionViewController *)self contentViewController];
+        [contentViewController5 setSkipModeSelection:1];
       }
     }
 
-    v30 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
-    [v30 setDelegate:self];
+    multiplayerViewController5 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+    [multiplayerViewController5 setDelegate:self];
 
-    v31 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
-    [v31 setNearbyDelegate:self];
+    multiplayerViewController6 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+    [multiplayerViewController6 setNearbyDelegate:self];
   }
 
   [(GKMatchmakerExtensionViewController *)self setAdjustTopConstraint:0];
@@ -240,12 +240,12 @@ LABEL_10:
   [(GKMatchmakerExtensionViewController *)&v52 constructContentViewController];
 }
 
-- (void)messageFromClient:(id)a3
+- (void)messageFromClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = GKExtensionProtocolSecureCodedClasses();
   v21 = 0;
-  v6 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v5 fromData:v4 error:&v21];
+  v6 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v5 fromData:clientCopy error:&v21];
   v7 = v21;
 
   if (v7)
@@ -263,7 +263,7 @@ LABEL_10:
   }
 
   v10 = [v6 objectForKeyedSubscript:GKExtensionMessageCommandKey];
-  v11 = [v10 integerValue];
+  integerValue = [v10 integerValue];
 
   v12 = [v6 objectForKeyedSubscript:GKExtensionMessageParamKey];
   if (!os_log_GKGeneral)
@@ -279,7 +279,7 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Got messageFromClient: %@", buf, 0xCu);
   }
 
-  switch(v11)
+  switch(integerValue)
   {
     case 0x1BuLL:
       -[GKMatchmakerExtensionViewController setHosted:](self, "setHosted:", [v12 BOOLValue]);
@@ -299,35 +299,35 @@ LABEL_10:
       [(GKMatchmakerExtensionViewController *)self setDefaultInvitationMessage:v12];
       break;
     case 0x20uLL:
-      v15 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
-      [v15 setAutomatchPlayerCount:{objc_msgSend(v12, "integerValue")}];
+      multiplayerViewController = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+      [multiplayerViewController setAutomatchPlayerCount:{objc_msgSend(v12, "integerValue")}];
       goto LABEL_32;
     case 0x21uLL:
-      v15 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+      multiplayerViewController = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
       v16 = [v6 objectForKeyedSubscript:GKExtensionMessagePlayerInternal];
-      [v15 setPlayer:v16 responded:{objc_msgSend(v12, "integerValue")}];
+      [multiplayerViewController setPlayer:v16 responded:{objc_msgSend(v12, "integerValue")}];
       goto LABEL_31;
     case 0x22uLL:
-      v15 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+      multiplayerViewController = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
       v16 = [v6 objectForKeyedSubscript:GKExtensionMessagePlayerInternal];
-      [v15 setPlayer:v16 connected:{objc_msgSend(v12, "BOOLValue")}];
+      [multiplayerViewController setPlayer:v16 connected:{objc_msgSend(v12, "BOOLValue")}];
       goto LABEL_31;
     case 0x23uLL:
-      v15 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+      multiplayerViewController = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
       v16 = [v6 objectForKeyedSubscript:GKExtensionMessagePlayerInternal];
-      [v15 setPlayer:v16 sentData:v12];
+      [multiplayerViewController setPlayer:v16 sentData:v12];
       goto LABEL_31;
     case 0x24uLL:
-      v15 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
-      [v15 setInvitesFailedWithError:v12];
+      multiplayerViewController = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+      [multiplayerViewController setInvitesFailedWithError:v12];
       goto LABEL_32;
     case 0x25uLL:
-      v15 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
-      [v15 setAutomatchFailedWithError:v12];
+      multiplayerViewController = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+      [multiplayerViewController setAutomatchFailedWithError:v12];
       goto LABEL_32;
     case 0x26uLL:
-      v15 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
-      [v15 inviterCancelled];
+      multiplayerViewController = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+      [multiplayerViewController inviterCancelled];
       goto LABEL_32;
     case 0x27uLL:
       v19 = [v6 objectForKeyedSubscript:GKExtensionMessagePlayerID];
@@ -341,9 +341,9 @@ LABEL_26:
     case 0x29uLL:
       break;
     case 0x30uLL:
-      v15 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+      multiplayerViewController = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
       v16 = [v6 objectForKeyedSubscript:GKExtensionMessagePlayerInternal];
-      [v15 setConnectingStateForPlayer:v16];
+      [multiplayerViewController setConnectingStateForPlayer:v16];
       goto LABEL_31;
     case 0x31uLL:
       -[GKMatchmakerExtensionViewController setMatchmakingMode:](self, "setMatchmakingMode:", [v12 integerValue]);
@@ -352,11 +352,11 @@ LABEL_26:
       -[GKMatchmakerExtensionViewController setCanStartWithMinimumPlayers:](self, "setCanStartWithMinimumPlayers:", [v12 BOOLValue]);
       break;
     case 0x34uLL:
-      v15 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+      multiplayerViewController = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
       v16 = [v6 objectForKeyedSubscript:GKExtensionMessagePlayerInternal];
       v17 = [v12 objectForKeyedSubscript:@"pushToken"];
       v18 = [v12 objectForKeyedSubscript:@"participantIdentifier"];
-      [v15 groupActivityJoiningPlayer:v16 devicePushToken:v17 participantServerIdentifier:v18];
+      [multiplayerViewController groupActivityJoiningPlayer:v16 devicePushToken:v17 participantServerIdentifier:v18];
 
       goto LABEL_31;
     case 0x38uLL:
@@ -370,9 +370,9 @@ LABEL_26:
 
       break;
     case 0x3DuLL:
-      v15 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+      multiplayerViewController = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
       v16 = [v6 objectForKeyedSubscript:GKExtensionMessagePlayerInternal];
-      [v15 updateRecipientProperties:v12 forPlayer:v16];
+      [multiplayerViewController updateRecipientProperties:v12 forPlayer:v16];
 LABEL_31:
 
 LABEL_32:
@@ -380,126 +380,126 @@ LABEL_32:
     default:
       v20.receiver = self;
       v20.super_class = GKMatchmakerExtensionViewController;
-      [(GKMatchmakerExtensionViewController *)&v20 messageFromClient:v4];
+      [(GKMatchmakerExtensionViewController *)&v20 messageFromClient:clientCopy];
       break;
   }
 }
 
-- (void)setHosted:(BOOL)a3
+- (void)setHosted:(BOOL)hosted
 {
-  v3 = a3;
-  self->_hosted = a3;
-  v5 = [(GKMatchmakerExtensionViewController *)self contentViewController];
+  hostedCopy = hosted;
+  self->_hosted = hosted;
+  contentViewController = [(GKMatchmakerExtensionViewController *)self contentViewController];
 
-  if (v5)
+  if (contentViewController)
   {
-    v6 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
-    [v6 setHosted:v3];
+    multiplayerViewController = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+    [multiplayerViewController setHosted:hostedCopy];
   }
 }
 
-- (void)setCanStartWithMinimumPlayers:(BOOL)a3
+- (void)setCanStartWithMinimumPlayers:(BOOL)players
 {
-  v3 = a3;
-  self->_canStartWithMinimumPlayers = a3;
-  v5 = [(GKMatchmakerExtensionViewController *)self contentViewController];
+  playersCopy = players;
+  self->_canStartWithMinimumPlayers = players;
+  contentViewController = [(GKMatchmakerExtensionViewController *)self contentViewController];
 
-  if (v5)
+  if (contentViewController)
   {
-    v6 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
-    [v6 setCanStartWithMinimumPlayers:v3];
+    multiplayerViewController = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+    [multiplayerViewController setCanStartWithMinimumPlayers:playersCopy];
   }
 }
 
-- (void)setIsEligibleForGroupSession:(BOOL)a3
+- (void)setIsEligibleForGroupSession:(BOOL)session
 {
-  v3 = a3;
-  self->_isEligibleForGroupSession = a3;
-  v5 = [(GKMatchmakerExtensionViewController *)self contentViewController];
+  sessionCopy = session;
+  self->_isEligibleForGroupSession = session;
+  contentViewController = [(GKMatchmakerExtensionViewController *)self contentViewController];
 
-  if (v5)
+  if (contentViewController)
   {
-    v6 = [(GKMatchmakerExtensionViewController *)self contentViewController];
-    [v6 setIsEligibleForGroupSession:v3];
+    contentViewController2 = [(GKMatchmakerExtensionViewController *)self contentViewController];
+    [contentViewController2 setIsEligibleForGroupSession:sessionCopy];
   }
 }
 
 - (void)navigateToSharePlayChiclet
 {
-  v3 = [(GKMatchmakerExtensionViewController *)self contentViewController];
+  contentViewController = [(GKMatchmakerExtensionViewController *)self contentViewController];
 
-  if (v3)
+  if (contentViewController)
   {
-    v4 = [(GKMatchmakerExtensionViewController *)self contentViewController];
-    [v4 launchSharePlayChiclet];
+    contentViewController2 = [(GKMatchmakerExtensionViewController *)self contentViewController];
+    [contentViewController2 launchSharePlayChiclet];
   }
 }
 
-- (void)setMatchmakingMode:(int64_t)a3
+- (void)setMatchmakingMode:(int64_t)mode
 {
-  self->_matchmakingMode = a3;
-  v5 = [(GKMatchmakerExtensionViewController *)self contentViewController];
+  self->_matchmakingMode = mode;
+  contentViewController = [(GKMatchmakerExtensionViewController *)self contentViewController];
 
-  if (v5)
+  if (contentViewController)
   {
-    v6 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
-    [v6 setMatchmakingMode:a3];
+    multiplayerViewController = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+    [multiplayerViewController setMatchmakingMode:mode];
   }
 }
 
-- (void)setExistingPlayers:(id)a3
+- (void)setExistingPlayers:(id)players
 {
-  v9 = a3;
-  if (self->_existingPlayers != v9)
+  playersCopy = players;
+  if (self->_existingPlayers != playersCopy)
   {
-    objc_storeStrong(&self->_existingPlayers, a3);
-    v5 = [(GKMatchmakerExtensionViewController *)self contentViewController];
-    if (v5)
+    objc_storeStrong(&self->_existingPlayers, players);
+    contentViewController = [(GKMatchmakerExtensionViewController *)self contentViewController];
+    if (contentViewController)
     {
-      v6 = v5;
+      v6 = contentViewController;
       v7 = [(NSArray *)self->_existingPlayers count];
 
       if (v7)
       {
-        v8 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
-        [v8 setExistingPlayers:v9];
+        multiplayerViewController = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+        [multiplayerViewController setExistingPlayers:playersCopy];
       }
     }
   }
 }
 
-- (void)setDefaultInvitationMessage:(id)a3
+- (void)setDefaultInvitationMessage:(id)message
 {
-  v10 = a3;
-  v4 = [(GKMatchmakerExtensionViewController *)self matchRequest];
-  v5 = [v4 inviteMessage];
+  messageCopy = message;
+  matchRequest = [(GKMatchmakerExtensionViewController *)self matchRequest];
+  inviteMessage = [matchRequest inviteMessage];
 
-  if (v5 != v10)
+  if (inviteMessage != messageCopy)
   {
-    v6 = [(GKMatchmakerExtensionViewController *)self matchRequest];
-    [v6 setInviteMessage:v10];
+    matchRequest2 = [(GKMatchmakerExtensionViewController *)self matchRequest];
+    [matchRequest2 setInviteMessage:messageCopy];
 
-    v7 = [(GKMatchmakerExtensionViewController *)self contentViewController];
+    contentViewController = [(GKMatchmakerExtensionViewController *)self contentViewController];
 
-    if (v7)
+    if (contentViewController)
     {
-      v8 = [(GKMatchRequest *)self->_matchRequest inviteMessage];
-      v9 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
-      [v9 setDefaultInvitationMessage:v8];
+      inviteMessage2 = [(GKMatchRequest *)self->_matchRequest inviteMessage];
+      multiplayerViewController = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+      [multiplayerViewController setDefaultInvitationMessage:inviteMessage2];
     }
   }
 }
 
-- (void)setNearbyPlayer:(id)a3 reachable:(BOOL)a4
+- (void)setNearbyPlayer:(id)player reachable:(BOOL)reachable
 {
-  v4 = a4;
-  v8 = a3;
-  v6 = [(GKMatchmakerExtensionViewController *)self nearbyPlayerHandler];
+  reachableCopy = reachable;
+  playerCopy = player;
+  nearbyPlayerHandler = [(GKMatchmakerExtensionViewController *)self nearbyPlayerHandler];
 
-  if (v6)
+  if (nearbyPlayerHandler)
   {
-    v7 = [(GKMatchmakerExtensionViewController *)self nearbyPlayerHandler];
-    (v7)[2](v7, v8, v4);
+    nearbyPlayerHandler2 = [(GKMatchmakerExtensionViewController *)self nearbyPlayerHandler];
+    (nearbyPlayerHandler2)[2](nearbyPlayerHandler2, playerCopy, reachableCopy);
   }
 }
 
@@ -508,72 +508,72 @@ LABEL_32:
   v3 = +[GKPreferences shared];
   [v3 invalidate];
 
-  v4 = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
-  [v4 applicationWillEnterForeground];
+  multiplayerViewController = [(GKMatchmakerExtensionViewController *)self multiplayerViewController];
+  [multiplayerViewController applicationWillEnterForeground];
 }
 
 - (id)hostObjectProxy
 {
-  v2 = [(GKMatchmakerExtensionViewController *)self extensionContext];
-  v3 = [v2 _auxiliaryConnection];
-  v4 = [v3 remoteObjectProxyWithErrorHandler:&stru_1000209A0];
+  extensionContext = [(GKMatchmakerExtensionViewController *)self extensionContext];
+  _auxiliaryConnection = [extensionContext _auxiliaryConnection];
+  v4 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&stru_1000209A0];
 
   return v4;
 }
 
-- (void)multiplayerP2PViewController:(id)a3 didFinishWithError:(id)a4
+- (void)multiplayerP2PViewController:(id)controller didFinishWithError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v5 = [NSMutableDictionary dictionaryWithObjectsAndKeys:&off_1000211B8, GKExtensionMessageCommandKey, 0];
-  if (v6)
+  if (errorCopy)
   {
-    [v5 setObject:v6 forKeyedSubscript:GKExtensionMessageParamKey];
+    [v5 setObject:errorCopy forKeyedSubscript:GKExtensionMessageParamKey];
   }
 
   [(GKMatchmakerExtensionViewController *)self sendMessageToClient:v5];
 }
 
-- (void)multiplayerP2PViewController:(id)a3 shareMatchWithRequest:(id)a4 handler:(id)a5
+- (void)multiplayerP2PViewController:(id)controller shareMatchWithRequest:(id)request handler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = [(GKMatchmakerExtensionViewController *)self hostObjectProxy];
-  v9 = [v8 internal];
+  handlerCopy = handler;
+  requestCopy = request;
+  hostObjectProxy = [(GKMatchmakerExtensionViewController *)self hostObjectProxy];
+  internal = [requestCopy internal];
 
-  [v10 shareMatchWithRequest:v9 handler:v7];
+  [hostObjectProxy shareMatchWithRequest:internal handler:handlerCopy];
 }
 
-- (void)multiplayerP2PViewController:(id)a3 setShareInvitees:(id)a4
+- (void)multiplayerP2PViewController:(id)controller setShareInvitees:(id)invitees
 {
   v7[0] = GKExtensionMessageCommandKey;
   v7[1] = GKExtensionMessageParamKey;
   v8[0] = &off_1000211D0;
-  v8[1] = a4;
-  v5 = a4;
+  v8[1] = invitees;
+  inviteesCopy = invitees;
   v6 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   [(GKMatchmakerExtensionViewController *)self sendMessageToClient:v6];
 }
 
-- (void)multiplayerP2PViewController:(id)a3 startMatchingWithRequest:(id)a4
+- (void)multiplayerP2PViewController:(id)controller startMatchingWithRequest:(id)request
 {
   v8[0] = &off_1000211E8;
   v7[0] = GKExtensionMessageCommandKey;
   v7[1] = GKExtensionMessageParamKey;
-  v5 = [a4 internal];
-  v8[1] = v5;
+  internal = [request internal];
+  v8[1] = internal;
   v6 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:2];
   [(GKMatchmakerExtensionViewController *)self sendMessageToClient:v6];
 }
 
-- (void)multiplayerP2PViewController:(id)a3 startMatchingWithRequest:(id)a4 devicePushToken:(id)a5
+- (void)multiplayerP2PViewController:(id)controller startMatchingWithRequest:(id)request devicePushToken:(id)token
 {
   v13[0] = @"request";
-  v7 = a5;
-  v8 = [a4 internal];
+  tokenCopy = token;
+  internal = [request internal];
   v13[1] = @"pushToken";
-  v14[0] = v8;
-  v14[1] = v7;
+  v14[0] = internal;
+  v14[1] = tokenCopy;
   v9 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2];
 
   v11[0] = GKExtensionMessageCommandKey;
@@ -585,7 +585,7 @@ LABEL_32:
   [(GKMatchmakerExtensionViewController *)self sendMessageToClient:v10];
 }
 
-- (void)activateGroupActivitiesForMultiplayerP2PViewController:(id)a3
+- (void)activateGroupActivitiesForMultiplayerP2PViewController:(id)controller
 {
   v5[0] = GKExtensionMessageCommandKey;
   v5[1] = GKExtensionMessageParamKey;
@@ -595,7 +595,7 @@ LABEL_32:
   [(GKMatchmakerExtensionViewController *)self sendMessageToClient:v4];
 }
 
-- (void)endGroupActivitiesForMultiplayerP2PViewController:(id)a3
+- (void)endGroupActivitiesForMultiplayerP2PViewController:(id)controller
 {
   v5[0] = GKExtensionMessageCommandKey;
   v5[1] = GKExtensionMessageParamKey;
@@ -605,7 +605,7 @@ LABEL_32:
   [(GKMatchmakerExtensionViewController *)self sendMessageToClient:v4];
 }
 
-- (void)multiplayerP2PViewControllerPresentSharePlaySharingController:(id)a3
+- (void)multiplayerP2PViewControllerPresentSharePlaySharingController:(id)controller
 {
   v5[0] = GKExtensionMessageCommandKey;
   v5[1] = GKExtensionMessageParamKey;
@@ -615,7 +615,7 @@ LABEL_32:
   [(GKMatchmakerExtensionViewController *)self sendMessageToClient:v4];
 }
 
-- (void)disconnectMatchForMultiplayerP2PViewController:(id)a3
+- (void)disconnectMatchForMultiplayerP2PViewController:(id)controller
 {
   v5[0] = GKExtensionMessageCommandKey;
   v5[1] = GKExtensionMessageParamKey;
@@ -625,31 +625,31 @@ LABEL_32:
   [(GKMatchmakerExtensionViewController *)self sendMessageToClient:v4];
 }
 
-- (void)multiplayerP2PViewController:(id)a3 cancelInviteToPlayer:(id)a4
+- (void)multiplayerP2PViewController:(id)controller cancelInviteToPlayer:(id)player
 {
   v7[0] = GKExtensionMessageCommandKey;
   v7[1] = GKExtensionMessageParamKey;
   v8[0] = &off_100021278;
-  v8[1] = a4;
-  v5 = a4;
+  v8[1] = player;
+  playerCopy = player;
   v6 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   [(GKMatchmakerExtensionViewController *)self sendMessageToClient:v6];
 }
 
-- (void)multiplayerP2PViewController:(id)a3 sendData:(id)a4
+- (void)multiplayerP2PViewController:(id)controller sendData:(id)data
 {
   v7[0] = GKExtensionMessageCommandKey;
   v7[1] = GKExtensionMessageParamKey;
   v8[0] = &off_100021290;
-  v8[1] = a4;
-  v5 = a4;
+  v8[1] = data;
+  dataCopy = data;
   v6 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   [(GKMatchmakerExtensionViewController *)self sendMessageToClient:v6];
 }
 
-- (void)multiplayerP2PViewControllerCancelMatching:(id)a3
+- (void)multiplayerP2PViewControllerCancelMatching:(id)matching
 {
   v5 = GKExtensionMessageCommandKey;
   v6 = &off_1000212A8;
@@ -657,9 +657,9 @@ LABEL_32:
   [(GKMatchmakerExtensionViewController *)self sendMessageToClient:v4];
 }
 
-- (void)startBrowsingForNearbyPlayersWithReachableHandler:(id)a3
+- (void)startBrowsingForNearbyPlayersWithReachableHandler:(id)handler
 {
-  [(GKMatchmakerExtensionViewController *)self setNearbyPlayerHandler:a3];
+  [(GKMatchmakerExtensionViewController *)self setNearbyPlayerHandler:handler];
   v5[0] = GKExtensionMessageCommandKey;
   v5[1] = GKExtensionMessageParamKey;
   v6[0] = &off_1000212C0;
@@ -678,13 +678,13 @@ LABEL_32:
   [(GKMatchmakerExtensionViewController *)self sendMessageToClient:v3];
 }
 
-- (void)requestRecipientProperties:(id)a3
+- (void)requestRecipientProperties:(id)properties
 {
   v6[0] = GKExtensionMessageCommandKey;
   v6[1] = GKExtensionMessageParamKey;
   v7[0] = &off_1000212D8;
-  v7[1] = a3;
-  v4 = a3;
+  v7[1] = properties;
+  propertiesCopy = properties;
   v5 = [NSDictionary dictionaryWithObjects:v7 forKeys:v6 count:2];
 
   [(GKMatchmakerExtensionViewController *)self sendMessageToClient:v5];
@@ -707,12 +707,12 @@ LABEL_32:
   [(GKMatchmakerExtensionViewController *)self extensionIsCanceling];
 }
 
-- (void)multiplayerPicker:(id)a3 didPickPlayers:(id)a4 messageGroups:(id)a5 customMessage:(id)a6
+- (void)multiplayerPicker:(id)picker didPickPlayers:(id)players messageGroups:(id)groups customMessage:(id)message
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pickerCopy = picker;
+  playersCopy = players;
+  groupsCopy = groups;
+  messageCopy = message;
   if (!os_log_GKGeneral)
   {
     v14 = GKOSLoggers();
@@ -722,15 +722,15 @@ LABEL_32:
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v22 = v11;
+    v22 = playersCopy;
     v23 = 2112;
-    v24 = v13;
+    v24 = messageCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Extension - player picker - didPickPlayers: %@, customMessage: %@", buf, 0x16u);
   }
 
   v16 = +[NSMutableDictionary dictionary];
-  v17 = [v11 _gkInternalsFromPlayers];
-  [v16 setObject:v17 forKeyedSubscript:@"players"];
+  _gkInternalsFromPlayers = [playersCopy _gkInternalsFromPlayers];
+  [v16 setObject:_gkInternalsFromPlayers forKeyedSubscript:@"players"];
 
   v19[0] = GKExtensionMessageCommandKey;
   v19[1] = GKExtensionMessageParamKey;
@@ -739,15 +739,15 @@ LABEL_32:
   v18 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:2];
   [(GKMatchmakerExtensionViewController *)self sendMessageToClient:v18];
 
-  [v10 dismissViewControllerAnimated:1 completion:0];
+  [pickerCopy dismissViewControllerAnimated:1 completion:0];
   [(GKMatchmakerExtensionViewController *)self extensionIsCanceling];
 }
 
-- (void)multiplayerPickerDidCancel:(id)a3
+- (void)multiplayerPickerDidCancel:(id)cancel
 {
   v9 = GKExtensionMessageCommandKey;
   v10 = &off_100021308;
-  v4 = a3;
+  cancelCopy = cancel;
   v5 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   [(GKMatchmakerExtensionViewController *)self sendMessageToClient:v5];
 
@@ -763,7 +763,7 @@ LABEL_32:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Extension - player picker - didCancel", v8, 2u);
   }
 
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  [cancelCopy dismissViewControllerAnimated:1 completion:0];
 
   [(GKMatchmakerExtensionViewController *)self extensionIsCanceling];
 }

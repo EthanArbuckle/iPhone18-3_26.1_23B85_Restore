@@ -3,7 +3,7 @@
 - (GKRandomSource)init;
 - (GKRandomSource)initWithCoder:(NSCoder *)aDecoder;
 - (NSArray)arrayByShufflingObjectsInArray:(NSArray *)array;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation GKRandomSource
@@ -29,7 +29,7 @@
   return p_super;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
 

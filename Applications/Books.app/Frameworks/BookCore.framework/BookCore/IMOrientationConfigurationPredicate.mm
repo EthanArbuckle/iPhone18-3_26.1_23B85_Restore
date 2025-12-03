@@ -1,48 +1,48 @@
 @interface IMOrientationConfigurationPredicate
 + (id)landscapePredicate;
 + (id)portraitPredicate;
-- (BOOL)evaluateWithContext:(id)a3;
-- (IMOrientationConfigurationPredicate)initWithType:(unint64_t)a3;
+- (BOOL)evaluateWithContext:(id)context;
+- (IMOrientationConfigurationPredicate)initWithType:(unint64_t)type;
 @end
 
 @implementation IMOrientationConfigurationPredicate
 
 + (id)portraitPredicate
 {
-  v2 = [[a1 alloc] initWithType:0];
+  v2 = [[self alloc] initWithType:0];
 
   return v2;
 }
 
 + (id)landscapePredicate
 {
-  v2 = [[a1 alloc] initWithType:1];
+  v2 = [[self alloc] initWithType:1];
 
   return v2;
 }
 
-- (IMOrientationConfigurationPredicate)initWithType:(unint64_t)a3
+- (IMOrientationConfigurationPredicate)initWithType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = IMOrientationConfigurationPredicate;
   result = [(IMConfigurationPredicate *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
 }
 
-- (BOOL)evaluateWithContext:(id)a3
+- (BOOL)evaluateWithContext:(id)context
 {
-  [a3 im_frameEnvironmentBounds];
+  [context im_frameEnvironmentBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(IMOrientationConfigurationPredicate *)self type];
-  if (v12 == 1)
+  type = [(IMOrientationConfigurationPredicate *)self type];
+  if (type == 1)
   {
     v18.origin.x = v5;
     v18.origin.y = v7;
@@ -57,7 +57,7 @@
     return Width > Height;
   }
 
-  if (!v12)
+  if (!type)
   {
     v16.origin.x = v5;
     v16.origin.y = v7;

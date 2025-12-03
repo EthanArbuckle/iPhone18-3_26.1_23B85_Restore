@@ -1,80 +1,80 @@
 @interface PUICALocalRenderer
-- (BOOL)archiveRenderingOfRequest:(id)a3 toURL:(id)a4 error:(id *)a5;
-- (BOOL)usesCoreImageForState:(PUIRenderState *)a3;
-- (PUICALocalRenderer)initWithColorSpace:(CGColorSpace *)a3;
-- (PUICALocalRenderer)initWithDevice:(id)a3 colorSpace:(CGColorSpace *)a4;
-- (PUICALocalRenderer)initWithDevice:(id)a3 commmandQueue:(id)a4 colorSpace:(CGColorSpace *)a5;
+- (BOOL)archiveRenderingOfRequest:(id)request toURL:(id)l error:(id *)error;
+- (BOOL)usesCoreImageForState:(PUIRenderState *)state;
+- (PUICALocalRenderer)initWithColorSpace:(CGColorSpace *)space;
+- (PUICALocalRenderer)initWithDevice:(id)device colorSpace:(CGColorSpace *)space;
+- (PUICALocalRenderer)initWithDevice:(id)device commmandQueue:(id)queue colorSpace:(CGColorSpace *)space;
 - (id)CIContext;
-- (id)newCommandBufferWithCompletion:(id)a3;
-- (id)newSurfaceWithSize:(CGSize)a3 colorSpace:(CGColorSpace *)a4 outOptions:(unint64_t *)a5;
-- (id)newTextureWithSize:(CGSize)a3 colorSpace:(CGColorSpace *)a4;
-- (id)nextFrameHandlerWithCompletion:(id)a3;
-- (id)renderCIImage:(id)a3 toSurface:(id)a4 completionHandler:(id)a5;
-- (id)renderFrameToTexture:(id)a3 configureWithTransaction:(id)a4 completionHandler:(id)a5;
-- (id)renderRequest:(id)a3 error:(id *)a4;
-- (id)renderState:(PUIRenderState *)a3 error:(id *)a4;
-- (id)rendererForDestination:(id)a3;
-- (unint64_t)pixelFormatForBSIOSurfaceOptions:(unint64_t)a3;
-- (void)configureWithTransaction:(id)a3;
+- (id)newCommandBufferWithCompletion:(id)completion;
+- (id)newSurfaceWithSize:(CGSize)size colorSpace:(CGColorSpace *)space outOptions:(unint64_t *)options;
+- (id)newTextureWithSize:(CGSize)size colorSpace:(CGColorSpace *)space;
+- (id)nextFrameHandlerWithCompletion:(id)completion;
+- (id)renderCIImage:(id)image toSurface:(id)surface completionHandler:(id)handler;
+- (id)renderFrameToTexture:(id)texture configureWithTransaction:(id)transaction completionHandler:(id)handler;
+- (id)renderRequest:(id)request error:(id *)error;
+- (id)renderState:(PUIRenderState *)state error:(id *)error;
+- (id)rendererForDestination:(id)destination;
+- (unint64_t)pixelFormatForBSIOSurfaceOptions:(unint64_t)options;
+- (void)configureWithTransaction:(id)transaction;
 - (void)dealloc;
-- (void)renderRequest:(id)a3 completionHandler:(id)a4;
-- (void)renderState:(PUIRenderState *)a3 completionHandler:(id)a4;
+- (void)renderRequest:(id)request completionHandler:(id)handler;
+- (void)renderState:(PUIRenderState *)state completionHandler:(id)handler;
 - (void)resetState;
-- (void)setIdentifier:(id)a3;
-- (void)setLogger:(id)a3;
-- (void)setRenderState:(PUIRenderState *)a3;
-- (void)updateStateWithTransaction:(PUIRenderState *)a3;
+- (void)setIdentifier:(id)identifier;
+- (void)setLogger:(id)logger;
+- (void)setRenderState:(PUIRenderState *)state;
+- (void)updateStateWithTransaction:(PUIRenderState *)transaction;
 @end
 
 @implementation PUICALocalRenderer
 
-- (PUICALocalRenderer)initWithColorSpace:(CGColorSpace *)a3
+- (PUICALocalRenderer)initWithColorSpace:(CGColorSpace *)space
 {
   v5 = MTLCreateSystemDefaultDevice();
   if (v5)
   {
-    self = [(PUICALocalRenderer *)self initWithDevice:v5 colorSpace:a3];
-    v6 = self;
+    self = [(PUICALocalRenderer *)self initWithDevice:v5 colorSpace:space];
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (PUICALocalRenderer)initWithDevice:(id)a3 colorSpace:(CGColorSpace *)a4
+- (PUICALocalRenderer)initWithDevice:(id)device colorSpace:(CGColorSpace *)space
 {
-  v6 = a3;
-  v7 = [v6 newCommandQueue];
-  if (v7)
+  deviceCopy = device;
+  newCommandQueue = [deviceCopy newCommandQueue];
+  if (newCommandQueue)
   {
-    self = [(PUICALocalRenderer *)self initWithDevice:v6 commmandQueue:v7 colorSpace:a4];
-    v8 = self;
+    self = [(PUICALocalRenderer *)self initWithDevice:deviceCopy commmandQueue:newCommandQueue colorSpace:space];
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (PUICALocalRenderer)initWithDevice:(id)a3 commmandQueue:(id)a4 colorSpace:(CGColorSpace *)a5
+- (PUICALocalRenderer)initWithDevice:(id)device commmandQueue:(id)queue colorSpace:(CGColorSpace *)space
 {
-  v9 = a3;
-  v10 = a4;
+  deviceCopy = device;
+  queueCopy = queue;
   v24.receiver = self;
   v24.super_class = PUICALocalRenderer;
   v11 = [(PUICALocalRenderer *)&v24 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_device, a3);
-    objc_storeStrong(&v12->_commandQueue, a4);
+    objc_storeStrong(&v11->_device, device);
+    objc_storeStrong(&v12->_commandQueue, queue);
     v13 = PUILogRendering();
     logger = v12->_logger;
     v12->_logger = v13;
@@ -91,9 +91,9 @@
     v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.command-queue", v12->_identifier];
     [(MTLCommandQueue *)commandQueue setLabel:v19];
 
-    if (a5)
+    if (space)
     {
-      v20 = CGColorSpaceRetain(a5);
+      v20 = CGColorSpaceRetain(space);
     }
 
     else
@@ -123,13 +123,13 @@
   [(PUICALocalRenderer *)&v3 dealloc];
 }
 
-- (void)setLogger:(id)a3
+- (void)setLogger:(id)logger
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  loggerCopy = logger;
+  v7 = loggerCopy;
+  if (loggerCopy)
   {
-    v5 = v4;
+    v5 = loggerCopy;
   }
 
   else
@@ -141,11 +141,11 @@
   self->_logger = v5;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = [a3 copy];
+    v4 = [identifier copy];
   }
 
   else
@@ -161,22 +161,22 @@
   [(MTLCommandQueue *)commandQueue setLabel:v7];
 }
 
-- (id)renderState:(PUIRenderState *)a3 error:(id *)a4
+- (id)renderState:(PUIRenderState *)state error:(id *)error
 {
-  outputPixelSize = a3->outputPixelSize;
-  layer = a3->layer;
-  scale = a3->scale;
+  outputPixelSize = state->outputPixelSize;
+  layer = state->layer;
+  scale = state->scale;
   v7 = layer;
   v24 = v7;
-  v8 = a3->image;
+  v8 = state->image;
   v25 = v8;
   if (self)
   {
     if ([(PUICALocalRenderer *)self usesCoreImageForState:&outputPixelSize])
     {
       v21 = 0;
-      v9 = [(PUICALocalRenderer *)self newSurfaceWithSize:self->_colorSpace colorSpace:&v21 outOptions:a3->outputPixelSize.width, a3->outputPixelSize.height];
-      v10 = [(PUICALocalRenderer *)self renderCIImage:a3->image toSurface:v9 completionHandler:0];
+      iosurface = [(PUICALocalRenderer *)self newSurfaceWithSize:self->_colorSpace colorSpace:&v21 outOptions:state->outputPixelSize.width, state->outputPixelSize.height];
+      v10 = [(PUICALocalRenderer *)self renderCIImage:state->image toSurface:iosurface completionHandler:0];
       [v10 waitUntilCompleted];
 
       goto LABEL_6;
@@ -188,26 +188,26 @@
     v11 = v8;
   }
 
-  v12 = [(PUICALocalRenderer *)self newTextureWithSize:self->_colorSpace colorSpace:a3->outputPixelSize.width, a3->outputPixelSize.height];
+  v12 = [(PUICALocalRenderer *)self newTextureWithSize:self->_colorSpace colorSpace:state->outputPixelSize.width, state->outputPixelSize.height];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3254779904;
   v16[2] = __40__PUICALocalRenderer_renderState_error___block_invoke;
   v16[3] = &unk_1F1C6D2C0;
   v16[4] = self;
-  v17 = a3->outputPixelSize;
-  v13 = a3->layer;
-  v18 = a3->scale;
+  v17 = state->outputPixelSize;
+  v13 = state->layer;
+  v18 = state->scale;
   v19 = v13;
-  v20 = a3->image;
+  v20 = state->image;
   v14 = [(PUICALocalRenderer *)self renderFrameToTexture:v12 configureWithTransaction:v16 completionHandler:0];
   [v14 waitUntilCompleted];
   [(PUICALocalRenderer *)self resetState];
-  v9 = [v12 iosurface];
+  iosurface = [v12 iosurface];
   [v12 setPurgeableState:4];
 
 LABEL_6:
 
-  return v9;
+  return iosurface;
 }
 
 void __40__PUICALocalRenderer_renderState_error___block_invoke(uint64_t a1)
@@ -231,15 +231,15 @@ void __40__PUICALocalRenderer_renderState_error___block_invoke(uint64_t a1)
   }
 }
 
-- (void)renderState:(PUIRenderState *)a3 completionHandler:(id)a4
+- (void)renderState:(PUIRenderState *)state completionHandler:(id)handler
 {
-  v6 = a4;
-  outputPixelSize = a3->outputPixelSize;
-  layer = a3->layer;
-  scale = a3->scale;
+  handlerCopy = handler;
+  outputPixelSize = state->outputPixelSize;
+  layer = state->layer;
+  scale = state->scale;
   v8 = layer;
   v34 = v8;
-  v9 = a3->image;
+  v9 = state->image;
   v35 = v9;
   if (!self)
   {
@@ -251,25 +251,25 @@ void __40__PUICALocalRenderer_renderState_error___block_invoke(uint64_t a1)
   if (![(PUICALocalRenderer *)self usesCoreImageForState:&outputPixelSize])
   {
 LABEL_5:
-    v16 = [(PUICALocalRenderer *)self newTextureWithSize:self->_colorSpace colorSpace:a3->outputPixelSize.width, a3->outputPixelSize.height];
+    v16 = [(PUICALocalRenderer *)self newTextureWithSize:self->_colorSpace colorSpace:state->outputPixelSize.width, state->outputPixelSize.height];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3254779904;
     v23[2] = __52__PUICALocalRenderer_renderState_completionHandler___block_invoke_2;
     v23[3] = &unk_1F1C6D2C0;
     v23[4] = self;
-    v24 = a3->outputPixelSize;
-    v17 = a3->layer;
-    v25 = a3->scale;
+    v24 = state->outputPixelSize;
+    v17 = state->layer;
+    v25 = state->scale;
     v26 = v17;
-    v27 = a3->image;
+    v27 = state->image;
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __52__PUICALocalRenderer_renderState_completionHandler___block_invoke_3;
     v19[3] = &unk_1E7854908;
     v12 = v16;
     v20 = v12;
-    v21 = self;
-    v22 = v6;
+    selfCopy = self;
+    v22 = handlerCopy;
     v18 = [(PUICALocalRenderer *)self renderFrameToTexture:v12 configureWithTransaction:v23 completionHandler:v19];
 
     v14 = v27;
@@ -277,13 +277,13 @@ LABEL_5:
   }
 
   v31 = 0;
-  v10 = [(PUICALocalRenderer *)self newSurfaceWithSize:self->_colorSpace colorSpace:&v31 outOptions:a3->outputPixelSize.width, a3->outputPixelSize.height];
-  image = a3->image;
+  v10 = [(PUICALocalRenderer *)self newSurfaceWithSize:self->_colorSpace colorSpace:&v31 outOptions:state->outputPixelSize.width, state->outputPixelSize.height];
+  image = state->image;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __52__PUICALocalRenderer_renderState_completionHandler___block_invoke;
   v28[3] = &unk_1E78548E0;
-  v30 = v6;
+  v30 = handlerCopy;
   v12 = v10;
   v29 = v12;
   v13 = [(PUICALocalRenderer *)self renderCIImage:image toSurface:v12 completionHandler:v28];
@@ -321,10 +321,10 @@ void __52__PUICALocalRenderer_renderState_completionHandler___block_invoke_3(uin
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)renderRequest:(id)a3 error:(id *)a4
+- (id)renderRequest:(id)request error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  requestCopy = request;
   v7 = renderRequest_error__count++;
   v8 = PUILogCommon();
   v9 = os_signpost_id_generate(v8);
@@ -354,16 +354,16 @@ void __52__PUICALocalRenderer_renderState_completionHandler___block_invoke_3(uin
   v41 = 0;
   *&buf[16] = 0x3FF0000000000000;
   v32 = 0;
-  v15 = [v6 configureState:buf error:&v32];
+  v15 = [requestCopy configureState:buf error:&v32];
   v16 = v32;
   v17 = v16;
   if ((v15 & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v21 = v16;
       v20 = 0;
-      *a4 = v17;
+      *error = v17;
       goto LABEL_13;
     }
 
@@ -385,7 +385,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v20 = [(PUICALocalRenderer *)self renderState:&v28 error:a4];
+  v20 = [(PUICALocalRenderer *)self renderState:&v28 error:error];
 LABEL_13:
   v23 = PUILogCommon();
   v24 = v23;
@@ -411,16 +411,16 @@ LABEL_13:
   return v20;
 }
 
-- (void)renderRequest:(id)a3 completionHandler:(id)a4
+- (void)renderRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v18 = *MEMORY[0x1E695F060];
   v20 = 0;
   v21 = 0;
   v19 = 0x3FF0000000000000;
   v17 = 0;
-  v8 = [v6 configureState:&v18 error:&v17];
+  v8 = [requestCopy configureState:&v18 error:&v17];
   v9 = v17;
   if (v8)
   {
@@ -432,7 +432,7 @@ LABEL_13:
     v16 = v11;
     if (self)
     {
-      [(PUICALocalRenderer *)self renderState:&v13 completionHandler:v7];
+      [(PUICALocalRenderer *)self renderState:&v13 completionHandler:handlerCopy];
     }
 
     else
@@ -443,24 +443,24 @@ LABEL_13:
 
   else
   {
-    v7[2](v7, 0, v9);
+    handlerCopy[2](handlerCopy, 0, v9);
   }
 }
 
-- (BOOL)archiveRenderingOfRequest:(id)a3 toURL:(id)a4 error:(id *)a5
+- (BOOL)archiveRenderingOfRequest:(id)request toURL:(id)l error:(id *)error
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 path];
-  if (v10)
+  requestCopy = request;
+  lCopy = l;
+  path = [lCopy path];
+  if (path)
   {
     v30 = *MEMORY[0x1E695F060];
     v32 = 0;
     v33 = 0;
     v31 = 0x3FF0000000000000;
     v29 = 0;
-    v11 = [v8 configureState:&v30 error:&v29];
+    v11 = [requestCopy configureState:&v30 error:&v29];
     v12 = v29;
     v13 = v12;
     if (v11)
@@ -476,13 +476,13 @@ LABEL_13:
       v28 = v33;
       [(PUICALocalRenderer *)self configureWithTransaction:v24];
       v36 = *MEMORY[0x1E6979630];
-      v14 = [*MEMORY[0x1E6982E00] identifier];
-      v37 = v14;
+      identifier = [*MEMORY[0x1E6982E00] identifier];
+      v37 = identifier;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
 
       v16 = CAMLEncodeLayerTreeToPathWithOptions();
       [(PUICALocalRenderer *)self resetState];
-      if (a5)
+      if (error)
       {
         v17 = v16;
       }
@@ -501,17 +501,17 @@ LABEL_13:
         v35[0] = @"CoreAnimation failed to write .ca file to URL.";
         v35[1] = @"Check CoreAnimation logs.";
         v34[2] = *MEMORY[0x1E696A998];
-        v35[2] = v9;
+        v35[2] = lCopy;
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:3];
-        *a5 = [v18 errorWithDomain:*MEMORY[0x1E696A250] code:512 userInfo:v20];
+        *error = [v18 errorWithDomain:*MEMORY[0x1E696A250] code:512 userInfo:v20];
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v22 = v12;
       v16 = 0;
-      *a5 = v13;
+      *error = v13;
     }
 
     else
@@ -522,14 +522,14 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if (a5)
+  if (error)
   {
     v21 = MEMORY[0x1E696ABC0];
     v38 = *MEMORY[0x1E696A998];
-    v39[0] = v9;
+    v39[0] = lCopy;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:&v38 count:1];
     [v21 errorWithDomain:*MEMORY[0x1E696A250] code:4 userInfo:v13];
-    *a5 = v16 = 0;
+    *error = v16 = 0;
 LABEL_16:
 
     goto LABEL_17;
@@ -562,15 +562,15 @@ void __60__PUICALocalRenderer_archiveRenderingOfRequest_toURL_error___block_invo
   }
 }
 
-- (void)updateStateWithTransaction:(PUIRenderState *)a3
+- (void)updateStateWithTransaction:(PUIRenderState *)transaction
 {
   [MEMORY[0x1E6979518] begin];
-  outputPixelSize = a3->outputPixelSize;
-  layer = a3->layer;
-  scale = a3->scale;
+  outputPixelSize = transaction->outputPixelSize;
+  layer = transaction->layer;
+  scale = transaction->scale;
   v6 = layer;
   v11 = v6;
-  v7 = a3->image;
+  v7 = transaction->image;
   v12 = v7;
   if (self)
   {
@@ -588,14 +588,14 @@ void __60__PUICALocalRenderer_archiveRenderingOfRequest_toURL_error___block_invo
   [MEMORY[0x1E6979518] flush];
 }
 
-- (void)setRenderState:(PUIRenderState *)a3
+- (void)setRenderState:(PUIRenderState *)state
 {
-  v5 = a3->layer;
+  v5 = state->layer;
   v6 = self->_currentRenderState.layer;
   if (v6)
   {
-    v7 = [(PUIViewportLayer *)self->_viewportLayer contentLayer];
-    [v7 replaceSublayer:v6 with:v5];
+    contentLayer = [(PUIViewportLayer *)self->_viewportLayer contentLayer];
+    [contentLayer replaceSublayer:v6 with:v5];
   }
 
   else
@@ -605,8 +605,8 @@ void __60__PUICALocalRenderer_archiveRenderingOfRequest_toURL_error___block_invo
       goto LABEL_6;
     }
 
-    v7 = [(PUIViewportLayer *)self->_viewportLayer contentLayer];
-    [v7 addSublayer:v5];
+    contentLayer = [(PUIViewportLayer *)self->_viewportLayer contentLayer];
+    [contentLayer addSublayer:v5];
   }
 
 LABEL_6:
@@ -614,12 +614,12 @@ LABEL_6:
   viewportLayer = self->_viewportLayer;
   BSRectWithSize();
   [(PUIViewportLayer *)viewportLayer setFrame:?];
-  [(PUIViewportLayer *)self->_viewportLayer setScale:a3->scale];
+  [(PUIViewportLayer *)self->_viewportLayer setScale:state->scale];
   [(PUIViewportLayer *)self->_viewportLayer setNeedsLayout];
   [(CALayer *)v5 setNeedsLayout];
-  __copy_assignment_8_8_t0w24_s24_s32(&self->_currentRenderState, a3);
+  __copy_assignment_8_8_t0w24_s24_s32(&self->_currentRenderState, state);
 
-  image = a3->image;
+  image = state->image;
 }
 
 - (void)resetState
@@ -669,29 +669,29 @@ LABEL_6:
   return ciContext;
 }
 
-- (id)renderCIImage:(id)a3 toSurface:(id)a4 completionHandler:(id)a5
+- (id)renderCIImage:(id)image toSurface:(id)surface completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PUICALocalRenderer *)self CIContext];
-  v12 = [objc_alloc(MEMORY[0x1E695F678]) initWithIOSurface:v9];
+  handlerCopy = handler;
+  surfaceCopy = surface;
+  imageCopy = image;
+  cIContext = [(PUICALocalRenderer *)self CIContext];
+  v12 = [objc_alloc(MEMORY[0x1E695F678]) initWithIOSurface:surfaceCopy];
 
-  v13 = [v11 startTaskToRender:v10 toDestination:v12 error:0];
+  v13 = [cIContext startTaskToRender:imageCopy toDestination:v12 error:0];
 
-  v14 = [(PUICALocalRenderer *)self nextFrameHandlerWithCompletion:v8];
+  v14 = [(PUICALocalRenderer *)self nextFrameHandlerWithCompletion:handlerCopy];
 
   return v14;
 }
 
-- (void)configureWithTransaction:(id)a3
+- (void)configureWithTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   [MEMORY[0x1E6979518] begin];
-  if (v4)
+  if (transactionCopy)
   {
     v3 = objc_autoreleasePoolPush();
-    v4[2]();
+    transactionCopy[2]();
     objc_autoreleasePoolPop(v3);
   }
 
@@ -699,12 +699,12 @@ LABEL_6:
   [MEMORY[0x1E6979518] flush];
 }
 
-- (id)renderFrameToTexture:(id)a3 configureWithTransaction:(id)a4 completionHandler:(id)a5
+- (id)renderFrameToTexture:(id)texture configureWithTransaction:(id)transaction completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(PUICALocalRenderer *)self rendererForDestination:a3];
-  [(PUICALocalRenderer *)self configureWithTransaction:v9];
+  handlerCopy = handler;
+  transactionCopy = transaction;
+  v10 = [(PUICALocalRenderer *)self rendererForDestination:texture];
+  [(PUICALocalRenderer *)self configureWithTransaction:transactionCopy];
 
   [(PUIViewportLayer *)self->_viewportLayer bounds];
   [v10 setBounds:?];
@@ -712,14 +712,14 @@ LABEL_6:
   [v10 beginFrameAtTime:0 timeStamp:?];
   [v10 render];
   [v10 endFrame];
-  v11 = [(PUICALocalRenderer *)self nextFrameHandlerWithCompletion:v8];
+  v11 = [(PUICALocalRenderer *)self nextFrameHandlerWithCompletion:handlerCopy];
 
   return v11;
 }
 
-- (id)nextFrameHandlerWithCompletion:(id)a3
+- (id)nextFrameHandlerWithCompletion:(id)completion
 {
-  v4 = [(PUICALocalRenderer *)self newCommandBufferWithCompletion:a3];
+  v4 = [(PUICALocalRenderer *)self newCommandBufferWithCompletion:completion];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.next-frame-waiter", self->_identifier];
   [v4 setLabel:v5];
 
@@ -729,24 +729,24 @@ LABEL_6:
   return v4;
 }
 
-- (id)newCommandBufferWithCompletion:(id)a3
+- (id)newCommandBufferWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  if (v4)
+  completionCopy = completion;
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  if (completionCopy)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __53__PUICALocalRenderer_newCommandBufferWithCompletion___block_invoke;
     v7[3] = &unk_1E7854930;
-    v8 = v4;
-    [v5 addCompletedHandler:v7];
+    v8 = completionCopy;
+    [commandBuffer addCompletedHandler:v7];
   }
 
-  return v5;
+  return commandBuffer;
 }
 
-- (id)rendererForDestination:(id)a3
+- (id)rendererForDestination:(id)destination
 {
   v12[3] = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E6979F08];
@@ -758,22 +758,22 @@ LABEL_6:
   v11[2] = *MEMORY[0x1E6979F10];
   v12[2] = self->_commandQueue;
   v6 = MEMORY[0x1E695DF20];
-  v7 = a3;
+  destinationCopy = destination;
   v8 = [v6 dictionaryWithObjects:v12 forKeys:v11 count:3];
-  v9 = [MEMORY[0x1E6979428] rendererWithMTLTexture:v7 options:v8];
+  v9 = [MEMORY[0x1E6979428] rendererWithMTLTexture:destinationCopy options:v8];
   [v9 setLayer:self->_viewportLayer];
-  [v9 setDestination:v7];
+  [v9 setDestination:destinationCopy];
 
   return v9;
 }
 
-- (id)newSurfaceWithSize:(CGSize)a3 colorSpace:(CGColorSpace *)a4 outOptions:(unint64_t *)a5
+- (id)newSurfaceWithSize:(CGSize)size colorSpace:(CGColorSpace *)space outOptions:(unint64_t *)options
 {
-  height = a3.height;
-  width = a3.width;
-  if (CGColorSpaceIsWideGamutRGB(a4))
+  height = size.height;
+  width = size.width;
+  if (CGColorSpaceIsWideGamutRGB(space))
   {
-    Name = CGColorSpaceGetName(a4);
+    Name = CGColorSpaceGetName(space);
     v10 = 5;
     if (Name == *MEMORY[0x1E695F110])
     {
@@ -788,7 +788,7 @@ LABEL_6:
 
   v15 = v10;
   v11 = [MEMORY[0x1E696CDE8] bs_IOSurfaceWithWidth:width height:height options:&v15];
-  v12 = CGColorSpaceCopyPropertyList(a4);
+  v12 = CGColorSpaceCopyPropertyList(space);
   if (v12)
   {
     v13 = v12;
@@ -796,18 +796,18 @@ LABEL_6:
     CFRelease(v13);
   }
 
-  if (a5)
+  if (options)
   {
-    *a5 = v15;
+    *options = v15;
   }
 
   return v11;
 }
 
-- (id)newTextureWithSize:(CGSize)a3 colorSpace:(CGColorSpace *)a4
+- (id)newTextureWithSize:(CGSize)size colorSpace:(CGColorSpace *)space
 {
   v10 = 0;
-  v5 = [(PUICALocalRenderer *)self newSurfaceWithSize:a4 colorSpace:&v10 outOptions:a3.width, a3.height];
+  v5 = [(PUICALocalRenderer *)self newSurfaceWithSize:space colorSpace:&v10 outOptions:size.width, size.height];
   v6 = [(PUICALocalRenderer *)self pixelFormatForBSIOSurfaceOptions:v10];
   v7 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:v6 width:objc_msgSend(v5 height:"width") mipmapped:objc_msgSend(v5, "height"), 0];
   [v7 setAllowGPUOptimizedContents:0];
@@ -817,21 +817,21 @@ LABEL_6:
   return v8;
 }
 
-- (unint64_t)pixelFormatForBSIOSurfaceOptions:(unint64_t)a3
+- (unint64_t)pixelFormatForBSIOSurfaceOptions:(unint64_t)options
 {
   v3 = 80;
   v4 = 554;
-  if ((a3 & 1) == 0)
+  if ((options & 1) == 0)
   {
     v4 = 550;
   }
 
-  if ((a3 & 2) != 0)
+  if ((options & 2) != 0)
   {
     v3 = v4;
   }
 
-  if ((a3 & 4) != 0)
+  if ((options & 4) != 0)
   {
     return 115;
   }
@@ -842,9 +842,9 @@ LABEL_6:
   }
 }
 
-- (BOOL)usesCoreImageForState:(PUIRenderState *)a3
+- (BOOL)usesCoreImageForState:(PUIRenderState *)state
 {
-  v4 = a3->image != 0;
+  v4 = state->image != 0;
 
   return v4;
 }

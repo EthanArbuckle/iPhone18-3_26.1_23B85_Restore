@@ -2,19 +2,19 @@
 + (BOOL)clamshellIsClosed;
 + (id)sharedInstance;
 + (void)initialize;
-- (FigCaptureSystemStatus)initWithQueue:(id)a3;
+- (FigCaptureSystemStatus)initWithQueue:(id)queue;
 - (void)_setupClamshellStateChangeHandler;
 - (void)_setupPowerStateChangeHandler;
-- (void)clamshellStateChangeHandler:(BOOL)a3;
+- (void)clamshellStateChangeHandler:(BOOL)handler;
 - (void)dealloc;
-- (void)powerStateChangeHandler:(unint64_t)a3 args:(void *)a4;
+- (void)powerStateChangeHandler:(unint64_t)handler args:(void *)args;
 @end
 
 @implementation FigCaptureSystemStatus
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -41,7 +41,7 @@ FigCaptureSystemStatus *__40__FigCaptureSystemStatus_sharedInstance__block_invok
   return result;
 }
 
-- (FigCaptureSystemStatus)initWithQueue:(id)a3
+- (FigCaptureSystemStatus)initWithQueue:(id)queue
 {
   v9.receiver = self;
   v9.super_class = FigCaptureSystemStatus;
@@ -49,9 +49,9 @@ FigCaptureSystemStatus *__40__FigCaptureSystemStatus_sharedInstance__block_invok
   v5 = v4;
   if (v4)
   {
-    v4->_queue = a3;
+    v4->_queue = queue;
     atomic_store(0, &v4->_systemState);
-    dispatch_assert_queue_not_V2(a3);
+    dispatch_assert_queue_not_V2(queue);
     queue = v5->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -108,12 +108,12 @@ uint64_t __40__FigCaptureSystemStatus_initWithQueue___block_invoke(uint64_t a1)
   [(FigCaptureSystemStatus *)&v7 dealloc];
 }
 
-- (void)clamshellStateChangeHandler:(BOOL)a3
+- (void)clamshellStateChangeHandler:(BOOL)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
   v5 = atomic_load(&self->_systemState);
-  if (v3)
+  if (handlerCopy)
   {
     if (dword_1EB58E780)
     {
@@ -150,7 +150,7 @@ uint64_t __40__FigCaptureSystemStatus_initWithQueue___block_invoke(uint64_t a1)
   }
 }
 
-- (void)powerStateChangeHandler:(unint64_t)a3 args:(void *)a4
+- (void)powerStateChangeHandler:(unint64_t)handler args:(void *)args
 {
   if (dword_1EB58E780)
   {
@@ -160,9 +160,9 @@ uint64_t __40__FigCaptureSystemStatus_initWithQueue___block_invoke(uint64_t a1)
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  if (a3 == 3758097024)
+  if (handler == 3758097024)
   {
-    IOAllowPowerChange(self->_powerNotifierConnect, a4);
+    IOAllowPowerChange(self->_powerNotifierConnect, args);
     v8 = atomic_load(&self->_systemState);
     if (dword_1EB58E780)
     {
@@ -175,9 +175,9 @@ uint64_t __40__FigCaptureSystemStatus_initWithQueue___block_invoke(uint64_t a1)
     goto LABEL_13;
   }
 
-  if (a3 == 3758097008)
+  if (handler == 3758097008)
   {
-    IOAllowPowerChange(self->_powerNotifierConnect, a4);
+    IOAllowPowerChange(self->_powerNotifierConnect, args);
   }
 
   v8 = atomic_load(&self->_systemState);

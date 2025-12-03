@@ -1,18 +1,18 @@
 @interface MFMailboxPersistence_iOS
 + (OS_dispatch_queue)mailboxCacheQueue;
-- (BOOL)createMailbox:(id)a3 parentMailboxID:(id)a4;
-- (BOOL)deleteMailbox:(id)a3;
-- (BOOL)moveMailbox:(id)a3 newParentMailboxID:(id)a4;
-- (BOOL)renameMailbox:(id)a3 newName:(id)a4;
-- (EDMailboxRowID_s)insertDatabaseRowForMailboxURL:(id)a3;
+- (BOOL)createMailbox:(id)mailbox parentMailboxID:(id)d;
+- (BOOL)deleteMailbox:(id)mailbox;
+- (BOOL)moveMailbox:(id)mailbox newParentMailboxID:(id)d;
+- (BOOL)renameMailbox:(id)mailbox newName:(id)name;
+- (EDMailboxRowID_s)insertDatabaseRowForMailboxURL:(id)l;
 - (MFMailMessageLibrary)library;
-- (MFMailboxPersistence_iOS)initWithMailboxProvider:(id)a3 database:(id)a4 library:(id)a5;
+- (MFMailboxPersistence_iOS)initWithMailboxProvider:(id)provider database:(id)database library:(id)library;
 - (id)frecentMailboxes;
-- (id)mailboxDatabaseIDsForMailboxObjectIDs:(id)a3 createIfNecessary:(BOOL)a4;
-- (id)mailboxDatabaseIDsForMailboxURLStrings:(id)a3;
-- (id)mailboxURLForMailboxDatabaseID:(EDMailboxRowID_s)a3;
-- (void)recordFrecencyEventWithMailboxesWithIDs:(id)a3;
-- (void)serverCountsForMailboxScope:(id)a3 block:(id)a4;
+- (id)mailboxDatabaseIDsForMailboxObjectIDs:(id)ds createIfNecessary:(BOOL)necessary;
+- (id)mailboxDatabaseIDsForMailboxURLStrings:(id)strings;
+- (id)mailboxURLForMailboxDatabaseID:(EDMailboxRowID_s)d;
+- (void)recordFrecencyEventWithMailboxesWithIDs:(id)ds;
+- (void)serverCountsForMailboxScope:(id)scope block:(id)block;
 - (void)testRecordFrecencyEventsForAllMailboxes;
 - (void)testResetFrecencyForAllMailboxes;
 @end
@@ -26,20 +26,20 @@
   return WeakRetained;
 }
 
-- (MFMailboxPersistence_iOS)initWithMailboxProvider:(id)a3 database:(id)a4 library:(id)a5
+- (MFMailboxPersistence_iOS)initWithMailboxProvider:(id)provider database:(id)database library:(id)library
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 persistence];
-  v12 = [v11 hookRegistry];
+  providerCopy = provider;
+  databaseCopy = database;
+  libraryCopy = library;
+  persistence = [libraryCopy persistence];
+  hookRegistry = [persistence hookRegistry];
   v15.receiver = self;
   v15.super_class = MFMailboxPersistence_iOS;
-  v13 = [(EDMailboxPersistence *)&v15 initWithMailboxProvider:v8 database:v9 hookRegistry:v12];
+  v13 = [(EDMailboxPersistence *)&v15 initWithMailboxProvider:providerCopy database:databaseCopy hookRegistry:hookRegistry];
 
   if (v13)
   {
-    objc_storeWeak(&v13->_library, v10);
+    objc_storeWeak(&v13->_library, libraryCopy);
   }
 
   return v13;
@@ -57,47 +57,47 @@
   return v3;
 }
 
-- (id)mailboxDatabaseIDsForMailboxObjectIDs:(id)a3 createIfNecessary:(BOOL)a4
+- (id)mailboxDatabaseIDsForMailboxObjectIDs:(id)ds createIfNecessary:(BOOL)necessary
 {
-  v6 = a3;
-  v7 = [(MFMailboxPersistence_iOS *)self library];
+  dsCopy = ds;
+  library = [(MFMailboxPersistence_iOS *)self library];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __84__MFMailboxPersistence_iOS_mailboxDatabaseIDsForMailboxObjectIDs_createIfNecessary___block_invoke;
   v11[3] = &unk_1E7AA61C8;
-  v14 = a4;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = [v6 ef_compactMap:v11];
+  necessaryCopy = necessary;
+  v12 = library;
+  selfCopy = self;
+  v8 = library;
+  v9 = [dsCopy ef_compactMap:v11];
 
   return v9;
 }
 
-- (id)mailboxDatabaseIDsForMailboxURLStrings:(id)a3
+- (id)mailboxDatabaseIDsForMailboxURLStrings:(id)strings
 {
-  v4 = a3;
-  if ([v4 count])
+  stringsCopy = strings;
+  if ([stringsCopy count])
   {
-    v5 = [v4 allObjects];
-    v6 = [v5 ef_longestCommonPrefix];
+    allObjects = [stringsCopy allObjects];
+    ef_longestCommonPrefix = [allObjects ef_longestCommonPrefix];
 
     v14 = 0;
     v15 = &v14;
     v16 = 0x3032000000;
     v17 = __Block_byref_object_copy__14;
     v18 = __Block_byref_object_dispose__14;
-    v19 = [MEMORY[0x1E695DF90] dictionary];
-    v7 = [(EDMailboxPersistence *)self database];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    database = [(EDMailboxPersistence *)self database];
     v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailboxPersistence_iOS mailboxDatabaseIDsForMailboxURLStrings:]"];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __67__MFMailboxPersistence_iOS_mailboxDatabaseIDsForMailboxURLStrings___block_invoke;
     v11[3] = &unk_1E7AA3528;
-    v11[4] = v6;
-    v12 = v4;
+    v11[4] = ef_longestCommonPrefix;
+    v12 = stringsCopy;
     v13 = &v14;
-    [v7 __performReadWithCaller:v8 usingBlock:v11];
+    [database __performReadWithCaller:v8 usingBlock:v11];
 
     v9 = v15[5];
     _Block_object_dispose(&v14, 8);
@@ -111,16 +111,16 @@
   return v9;
 }
 
-- (EDMailboxRowID_s)insertDatabaseRowForMailboxURL:(id)a3
+- (EDMailboxRowID_s)insertDatabaseRowForMailboxURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(MEMORY[0x1E699B608]);
   v16 = 0;
   v17 = &v16;
   v18 = 0x2810000000;
   v19 = "";
   v20 = 0;
-  v6 = [(EDMailboxPersistence *)self database];
+  database = [(EDMailboxPersistence *)self database];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailboxPersistence_iOS insertDatabaseRowForMailboxURL:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -128,10 +128,10 @@
   v12[3] = &unk_1E7AA3528;
   v8 = v5;
   v13 = v8;
-  v9 = v4;
+  v9 = lCopy;
   v14 = v9;
   v15 = &v16;
-  [v6 __performWriteWithCaller:v7 usingBlock:v12];
+  [database __performWriteWithCaller:v7 usingBlock:v12];
 
   v10.var0 = v17[4];
   _Block_object_dispose(&v16, 8);
@@ -139,9 +139,9 @@
   return v10;
 }
 
-- (id)mailboxURLForMailboxDatabaseID:(EDMailboxRowID_s)a3
+- (id)mailboxURLForMailboxDatabaseID:(EDMailboxRowID_s)d
 {
-  if (a3.var0)
+  if (d.var0)
   {
     v9 = 0;
     v10 = &v9;
@@ -149,15 +149,15 @@
     v12 = __Block_byref_object_copy__14;
     v13 = __Block_byref_object_dispose__14;
     v14 = 0;
-    v4 = [(EDMailboxPersistence *)self database];
+    database = [(EDMailboxPersistence *)self database];
     v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailboxPersistence_iOS mailboxURLForMailboxDatabaseID:]"];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __59__MFMailboxPersistence_iOS_mailboxURLForMailboxDatabaseID___block_invoke;
     v8[3] = &unk_1E7AA3E00;
     v8[4] = &v9;
-    v8[5] = a3.var0;
-    [v4 __performReadWithCaller:v5 usingBlock:v8];
+    v8[5] = d.var0;
+    [database __performReadWithCaller:v5 usingBlock:v8];
 
     v6 = v10[5];
     _Block_object_dispose(&v9, 8);
@@ -171,106 +171,106 @@
   return v6;
 }
 
-- (BOOL)createMailbox:(id)a3 parentMailboxID:(id)a4
+- (BOOL)createMailbox:(id)mailbox parentMailboxID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EDMailboxPersistence *)self mailboxProvider];
-  v9 = [v8 legacyMailboxForObjectID:v7];
+  mailboxCopy = mailbox;
+  dCopy = d;
+  mailboxProvider = [(EDMailboxPersistence *)self mailboxProvider];
+  v9 = [mailboxProvider legacyMailboxForObjectID:dCopy];
 
-  v10 = [v9 account];
-  v11 = [v10 newMailboxWithParent:v9 name:v6];
+  account = [v9 account];
+  v11 = [account newMailboxWithParent:v9 name:mailboxCopy];
   if (v11)
   {
-    [v10 saveState];
+    [account saveState];
   }
 
   return v11 != 0;
 }
 
-- (BOOL)deleteMailbox:(id)a3
+- (BOOL)deleteMailbox:(id)mailbox
 {
-  v4 = a3;
-  v5 = [(EDMailboxPersistence *)self mailboxProvider];
-  v6 = [v5 legacyMailboxForObjectID:v4];
+  mailboxCopy = mailbox;
+  mailboxProvider = [(EDMailboxPersistence *)self mailboxProvider];
+  v6 = [mailboxProvider legacyMailboxForObjectID:mailboxCopy];
 
-  v7 = [v6 account];
-  v8 = [v7 deleteMailbox:v6];
+  account = [v6 account];
+  v8 = [account deleteMailbox:v6];
 
   return v8;
 }
 
-- (BOOL)moveMailbox:(id)a3 newParentMailboxID:(id)a4
+- (BOOL)moveMailbox:(id)mailbox newParentMailboxID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EDMailboxPersistence *)self mailboxProvider];
-  v9 = [v8 legacyMailboxForObjectID:v6];
+  mailboxCopy = mailbox;
+  dCopy = d;
+  mailboxProvider = [(EDMailboxPersistence *)self mailboxProvider];
+  v9 = [mailboxProvider legacyMailboxForObjectID:mailboxCopy];
 
-  v10 = [(EDMailboxPersistence *)self mailboxProvider];
-  v11 = [v10 legacyMailboxForObjectID:v7];
+  mailboxProvider2 = [(EDMailboxPersistence *)self mailboxProvider];
+  v11 = [mailboxProvider2 legacyMailboxForObjectID:dCopy];
 
-  v12 = [v11 account];
-  LOBYTE(v10) = [v12 moveMailbox:v9 intoParent:v11];
+  account = [v11 account];
+  LOBYTE(mailboxProvider2) = [account moveMailbox:v9 intoParent:v11];
 
-  return v10;
+  return mailboxProvider2;
 }
 
-- (BOOL)renameMailbox:(id)a3 newName:(id)a4
+- (BOOL)renameMailbox:(id)mailbox newName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EDMailboxPersistence *)self mailboxProvider];
-  v9 = [v8 legacyMailboxForObjectID:v6];
+  mailboxCopy = mailbox;
+  nameCopy = name;
+  mailboxProvider = [(EDMailboxPersistence *)self mailboxProvider];
+  v9 = [mailboxProvider legacyMailboxForObjectID:mailboxCopy];
 
-  v10 = [v9 account];
-  LOBYTE(v8) = [v10 renameMailbox:v9 newName:v7];
+  account = [v9 account];
+  LOBYTE(mailboxProvider) = [account renameMailbox:v9 newName:nameCopy];
 
-  return v8;
+  return mailboxProvider;
 }
 
 - (id)frecentMailboxes
 {
-  v2 = [(MFMailboxPersistence_iOS *)self library];
-  v3 = [v2 mailboxFrecencyController];
-  v4 = [v3 frecentMailboxes];
+  library = [(MFMailboxPersistence_iOS *)self library];
+  mailboxFrecencyController = [library mailboxFrecencyController];
+  frecentMailboxes = [mailboxFrecencyController frecentMailboxes];
 
-  return v4;
+  return frecentMailboxes;
 }
 
-- (void)recordFrecencyEventWithMailboxesWithIDs:(id)a3
+- (void)recordFrecencyEventWithMailboxesWithIDs:(id)ds
 {
-  v6 = a3;
-  v4 = [(MFMailboxPersistence_iOS *)self library];
-  v5 = [v4 mailboxFrecencyController];
-  [v5 recordEventWithMailboxIDs:v6];
+  dsCopy = ds;
+  library = [(MFMailboxPersistence_iOS *)self library];
+  mailboxFrecencyController = [library mailboxFrecencyController];
+  [mailboxFrecencyController recordEventWithMailboxIDs:dsCopy];
 }
 
 - (void)testRecordFrecencyEventsForAllMailboxes
 {
-  v3 = [(MFMailboxPersistence_iOS *)self library];
-  v2 = [v3 mailboxFrecencyController];
-  [v2 testRecordFrecencyEventsForAllMailboxes];
+  library = [(MFMailboxPersistence_iOS *)self library];
+  mailboxFrecencyController = [library mailboxFrecencyController];
+  [mailboxFrecencyController testRecordFrecencyEventsForAllMailboxes];
 }
 
 - (void)testResetFrecencyForAllMailboxes
 {
-  v3 = [(MFMailboxPersistence_iOS *)self library];
-  v2 = [v3 mailboxFrecencyController];
-  [v2 testResetFrecencyForAllMailboxes];
+  library = [(MFMailboxPersistence_iOS *)self library];
+  mailboxFrecencyController = [library mailboxFrecencyController];
+  [mailboxFrecencyController testResetFrecencyForAllMailboxes];
 }
 
-- (void)serverCountsForMailboxScope:(id)a3 block:(id)a4
+- (void)serverCountsForMailboxScope:(id)scope block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E699AD28] allMailboxesScope];
+  scopeCopy = scope;
+  blockCopy = block;
+  allMailboxesScope = [MEMORY[0x1E699AD28] allMailboxesScope];
 
-  if (v8 == v6)
+  if (allMailboxesScope == scopeCopy)
   {
     v13 = 0;
 LABEL_9:
-    v14 = [(EDMailboxPersistence *)self database];
+    database = [(EDMailboxPersistence *)self database];
     v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMailboxPersistence_iOS serverCountsForMailboxScope:block:]"];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -278,14 +278,14 @@ LABEL_9:
     v17[3] = &unk_1E7AA6210;
     v16 = v13;
     v18 = v16;
-    v19 = v7;
-    [v14 __performReadWithCaller:v15 usingBlock:v17];
+    v19 = blockCopy;
+    [database __performReadWithCaller:v15 usingBlock:v17];
 
     goto LABEL_10;
   }
 
   v20 = 0;
-  v9 = [v6 allMailboxObjectIDsWithMailboxTypeResolver:self forExclusion:&v20];
+  v9 = [scopeCopy allMailboxObjectIDsWithMailboxTypeResolver:self forExclusion:&v20];
   v10 = [(MFMailboxPersistence_iOS *)self mailboxDatabaseIDsForMailboxObjectIDs:v9 createIfNecessary:0];
   if ([v10 count])
   {

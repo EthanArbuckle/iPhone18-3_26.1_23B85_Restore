@@ -1,31 +1,31 @@
 @interface COMessageSessionConsumer
 - (COMessageChannel)messageChannel;
-- (COMessageSessionConsumer)initWithChannel:(id)a3 subTopic:(id)a4 delegate:(id)a5 dispatchQueue:(id)a6;
+- (COMessageSessionConsumer)initWithChannel:(id)channel subTopic:(id)topic delegate:(id)delegate dispatchQueue:(id)queue;
 - (COMessageSessionConsumerDelegate)delegate;
 - (id)description;
 @end
 
 @implementation COMessageSessionConsumer
 
-- (COMessageSessionConsumer)initWithChannel:(id)a3 subTopic:(id)a4 delegate:(id)a5 dispatchQueue:(id)a6
+- (COMessageSessionConsumer)initWithChannel:(id)channel subTopic:(id)topic delegate:(id)delegate dispatchQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  channelCopy = channel;
+  topicCopy = topic;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = COMessageSessionConsumer;
   v14 = [(COMessageSessionConsumer *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_messageChannel, v10);
-    objc_storeStrong(&v15->_subTopic, a4);
-    objc_storeWeak(&v15->_delegate, v12);
-    objc_storeStrong(&v15->_delegateQueue, a6);
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeWeak(&v14->_messageChannel, channelCopy);
+    objc_storeStrong(&v15->_subTopic, topic);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    objc_storeStrong(&v15->_delegateQueue, queue);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sessions = v15->_sessions;
-    v15->_sessions = v16;
+    v15->_sessions = dictionary;
   }
 
   return v15;

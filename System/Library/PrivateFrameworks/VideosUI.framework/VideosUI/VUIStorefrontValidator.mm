@@ -1,29 +1,29 @@
 @interface VUIStorefrontValidator
-+ (void)isValidStorefront:(id)a3 sharedStorefront:(id)a4 completion:(id)a5;
++ (void)isValidStorefront:(id)storefront sharedStorefront:(id)sharedStorefront completion:(id)completion;
 @end
 
 @implementation VUIStorefrontValidator
 
-+ (void)isValidStorefront:(id)a3 sharedStorefront:(id)a4 completion:(id)a5
++ (void)isValidStorefront:(id)storefront sharedStorefront:(id)sharedStorefront completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  storefrontCopy = storefront;
+  sharedStorefrontCopy = sharedStorefront;
+  completionCopy = completion;
   v10 = +[VUITVAppLauncher sharedInstance];
-  v11 = [v10 appController];
-  v12 = [v11 appContext];
+  appController = [v10 appController];
+  appContext = [appController appContext];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __72__VUIStorefrontValidator_isValidStorefront_sharedStorefront_completion___block_invoke;
   v16[3] = &unk_1E872DD88;
-  v17 = v7;
-  v18 = v8;
-  v19 = v9;
-  v13 = v9;
-  v14 = v8;
-  v15 = v7;
-  [v12 evaluate:v16];
+  v17 = storefrontCopy;
+  v18 = sharedStorefrontCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = sharedStorefrontCopy;
+  v15 = storefrontCopy;
+  [appContext evaluate:v16];
 }
 
 void __72__VUIStorefrontValidator_isValidStorefront_sharedStorefront_completion___block_invoke(uint64_t a1, void *a2)

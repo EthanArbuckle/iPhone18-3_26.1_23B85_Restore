@@ -29,14 +29,14 @@
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 accountProperties];
-        v11 = [v10 objectForKeyedSubscript:@"primaryAccount"];
-        v12 = [v11 BOOLValue];
+        accountProperties = [v9 accountProperties];
+        v11 = [accountProperties objectForKeyedSubscript:@"primaryAccount"];
+        bOOLValue = [v11 BOOLValue];
 
-        if (v12)
+        if (bOOLValue)
         {
-          v14 = [v9 accountProperties];
-          v13 = [v14 objectForKeyedSubscript:@"appleId"];
+          accountProperties2 = [v9 accountProperties];
+          v13 = [accountProperties2 objectForKeyedSubscript:@"appleId"];
 
           goto LABEL_11;
         }

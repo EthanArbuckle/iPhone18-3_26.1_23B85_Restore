@@ -1,11 +1,11 @@
 @interface SFSafariSettingsWebBookmarksConnectionDelegate
 - (_TtC14SafariServicesP33_9CDEB92B0A88DE10255B35415E73116246SFSafariSettingsWebBookmarksConnectionDelegate)init;
-- (void)connection:(id)a3 didCloseWithError:(id)a4;
+- (void)connection:(id)connection didCloseWithError:(id)error;
 @end
 
 @implementation SFSafariSettingsWebBookmarksConnectionDelegate
 
-- (void)connection:(id)a3 didCloseWithError:(id)a4
+- (void)connection:(id)connection didCloseWithError:(id)error
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC7DEE08);
   MEMORY[0x1EEE9AC00]();

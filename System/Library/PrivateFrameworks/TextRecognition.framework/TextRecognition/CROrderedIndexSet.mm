@@ -1,28 +1,28 @@
 @interface CROrderedIndexSet
-- (CROrderedIndexSet)initWithArray:(id)a3;
+- (CROrderedIndexSet)initWithArray:(id)array;
 - (NSArray)indices;
 - (id)objects;
-- (id)subIndexSetWithRange:(_NSRange)a3;
+- (id)subIndexSetWithRange:(_NSRange)range;
 - (unint64_t)count;
 - (void)addAllIndices;
-- (void)addIndex:(unint64_t)a3;
-- (void)addIndexSet:(id)a3;
-- (void)addIndices:(id)a3;
-- (void)enumerateObjectsUsingBlock:(id)a3;
+- (void)addIndex:(unint64_t)index;
+- (void)addIndexSet:(id)set;
+- (void)addIndices:(id)indices;
+- (void)enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation CROrderedIndexSet
 
-- (CROrderedIndexSet)initWithArray:(id)a3
+- (CROrderedIndexSet)initWithArray:(id)array
 {
-  v5 = a3;
+  arrayCopy = array;
   v13.receiver = self;
   v13.super_class = CROrderedIndexSet;
   v6 = [(CROrderedIndexSet *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sourceArray, a3);
+    objc_storeStrong(&v6->_sourceArray, array);
     v8 = objc_opt_new();
     indexedObjects = v7->_indexedObjects;
     v7->_indexedObjects = v8;
@@ -35,18 +35,18 @@
   return v7;
 }
 
-- (id)subIndexSetWithRange:(_NSRange)a3
+- (id)subIndexSetWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(CROrderedIndexSet *)self indices];
-  v7 = [v6 subarrayWithRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  indices = [(CROrderedIndexSet *)self indices];
+  v7 = [indices subarrayWithRange:{location, length}];
 
   if (v7)
   {
     v8 = [CROrderedIndexSet alloc];
-    v9 = [(CROrderedIndexSet *)self sourceArray];
-    v10 = [(CROrderedIndexSet *)v8 initWithArray:v9];
+    sourceArray = [(CROrderedIndexSet *)self sourceArray];
+    v10 = [(CROrderedIndexSet *)v8 initWithArray:sourceArray];
 
     [(CROrderedIndexSet *)v10 addIndices:v7];
   }
@@ -61,74 +61,74 @@
 
 - (NSArray)indices
 {
-  v2 = [(CROrderedIndexSet *)self indicesSet];
-  v3 = [v2 array];
+  indicesSet = [(CROrderedIndexSet *)self indicesSet];
+  array = [indicesSet array];
 
-  return v3;
+  return array;
 }
 
 - (id)objects
 {
-  v2 = [(CROrderedIndexSet *)self indexedObjects];
-  v3 = [v2 copy];
+  indexedObjects = [(CROrderedIndexSet *)self indexedObjects];
+  v3 = [indexedObjects copy];
 
   return v3;
 }
 
 - (unint64_t)count
 {
-  v2 = [(CROrderedIndexSet *)self indices];
-  v3 = [v2 count];
+  indices = [(CROrderedIndexSet *)self indices];
+  v3 = [indices count];
 
   return v3;
 }
 
-- (void)addIndex:(unint64_t)a3
+- (void)addIndex:(unint64_t)index
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [(CROrderedIndexSet *)self sourceArray];
-  v6 = [v5 count];
+  sourceArray = [(CROrderedIndexSet *)self sourceArray];
+  v6 = [sourceArray count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v14 = CROSLogForCategory(0);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
     {
       *buf = 134217984;
-      v17 = a3;
+      indexCopy = index;
       _os_log_impl(&dword_1B40D2000, v14, OS_LOG_TYPE_FAULT, "Attempting to add an out-of-bounds index %lu to ordered index set", buf, 0xCu);
     }
   }
 
   else
   {
-    v7 = [(CROrderedIndexSet *)self indicesSet];
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    v9 = [v7 containsObject:v8];
+    indicesSet = [(CROrderedIndexSet *)self indicesSet];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+    v9 = [indicesSet containsObject:v8];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [(CROrderedIndexSet *)self indicesSet];
-      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-      [v10 addObject:v11];
+      indicesSet2 = [(CROrderedIndexSet *)self indicesSet];
+      v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+      [indicesSet2 addObject:v11];
 
-      v15 = [(CROrderedIndexSet *)self indexedObjects];
-      v12 = [(CROrderedIndexSet *)self sourceArray];
-      v13 = [v12 objectAtIndexedSubscript:a3];
-      [v15 addObject:v13];
+      indexedObjects = [(CROrderedIndexSet *)self indexedObjects];
+      sourceArray2 = [(CROrderedIndexSet *)self sourceArray];
+      v13 = [sourceArray2 objectAtIndexedSubscript:index];
+      [indexedObjects addObject:v13];
     }
   }
 }
 
-- (void)addIndices:(id)a3
+- (void)addIndices:(id)indices
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  indicesCopy = indices;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [indicesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -140,31 +140,31 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indicesCopy);
         }
 
         -[CROrderedIndexSet addIndex:](self, "addIndex:", [*(*(&v9 + 1) + 8 * v8++) unsignedIntegerValue]);
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [indicesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)addIndexSet:(id)a3
+- (void)addIndexSet:(id)set
 {
-  v4 = a3;
-  v5 = [v4 sourceArray];
-  v6 = [(CROrderedIndexSet *)self sourceArray];
-  v7 = [v5 isEqual:v6];
+  setCopy = set;
+  sourceArray = [setCopy sourceArray];
+  sourceArray2 = [(CROrderedIndexSet *)self sourceArray];
+  v7 = [sourceArray isEqual:sourceArray2];
 
   if (v7)
   {
-    v8 = [v4 indices];
-    [(CROrderedIndexSet *)self addIndices:v8];
+    indices = [setCopy indices];
+    [(CROrderedIndexSet *)self addIndices:indices];
   }
 
   else
@@ -180,8 +180,8 @@
 
 - (void)addAllIndices
 {
-  v3 = [(CROrderedIndexSet *)self sourceArray];
-  v4 = [v3 count];
+  sourceArray = [(CROrderedIndexSet *)self sourceArray];
+  v4 = [sourceArray count];
 
   if (v4)
   {
@@ -189,26 +189,26 @@
     do
     {
       [(CROrderedIndexSet *)self addIndex:v5++];
-      v6 = [(CROrderedIndexSet *)self sourceArray];
-      v7 = [v6 count];
+      sourceArray2 = [(CROrderedIndexSet *)self sourceArray];
+      v7 = [sourceArray2 count];
     }
 
     while (v5 < v7);
   }
 }
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CROrderedIndexSet *)self indices];
+  blockCopy = block;
+  indices = [(CROrderedIndexSet *)self indices];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__CROrderedIndexSet_enumerateObjectsUsingBlock___block_invoke;
   v7[3] = &unk_1E7BC2D60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [indices enumerateObjectsUsingBlock:v7];
 }
 
 void __48__CROrderedIndexSet_enumerateObjectsUsingBlock___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)

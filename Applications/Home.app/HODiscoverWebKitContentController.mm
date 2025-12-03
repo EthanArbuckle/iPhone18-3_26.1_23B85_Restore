@@ -1,38 +1,38 @@
 @interface HODiscoverWebKitContentController
-- (HODiscoverWebKitContentController)initWithDelegate:(id)a3;
+- (HODiscoverWebKitContentController)initWithDelegate:(id)delegate;
 - (HODiscoverWebKitContentControllerDelegate)delegate;
-- (id)parseURLForThemeType:(id)a3;
-- (void)contentViewed:(id)a3;
-- (void)openLink:(id)a3;
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4;
+- (id)parseURLForThemeType:(id)type;
+- (void)contentViewed:(id)viewed;
+- (void)openLink:(id)link;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message;
 @end
 
 @implementation HODiscoverWebKitContentController
 
-- (HODiscoverWebKitContentController)initWithDelegate:(id)a3
+- (HODiscoverWebKitContentController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = HODiscoverWebKitContentController;
   v5 = [(HODiscoverWebKitContentController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message
 {
-  v18 = a4;
-  v5 = [v18 name];
+  messageCopy = message;
+  name = [messageCopy name];
   objc_opt_class();
-  v6 = [v18 body];
+  body = [messageCopy body];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = body;
   }
 
   else
@@ -59,10 +59,10 @@
 
   v12 = v11;
 
-  v13 = [v5 isEqualToString:v12];
+  v13 = [name isEqualToString:v12];
   if (v13)
   {
-    [(HODiscoverWebKitContentController *)self openLink:v18];
+    [(HODiscoverWebKitContentController *)self openLink:messageCopy];
   }
 
   else
@@ -81,39 +81,39 @@
 
     v16 = v15;
 
-    v17 = [v5 isEqualToString:v16];
+    v17 = [name isEqualToString:v16];
     if (v17)
     {
-      [(HODiscoverWebKitContentController *)self contentViewed:v18];
+      [(HODiscoverWebKitContentController *)self contentViewed:messageCopy];
     }
   }
 }
 
-- (void)contentViewed:(id)a3
+- (void)contentViewed:(id)viewed
 {
-  v6 = [a3 body];
-  v3 = [v6 objectForKeyedSubscript:@"id"];
-  v4 = [v6 objectForKeyedSubscript:@"locale"];
+  body = [viewed body];
+  v3 = [body objectForKeyedSubscript:@"id"];
+  v4 = [body objectForKeyedSubscript:@"locale"];
   v5 = +[NSMutableDictionary dictionary];
   [v5 setObject:v3 forKeyedSubscript:HFAnalyticsDiscoverTabContentViewedIDKey];
   [v5 setObject:v4 forKeyedSubscript:HFAnalyticsDiscoverTabContentViewedLocaleKey];
   [HFAnalytics sendEvent:11 withData:v5];
 }
 
-- (void)openLink:(id)a3
+- (void)openLink:(id)link
 {
-  v17 = [a3 body];
-  v4 = [v17 objectForKeyedSubscript:@"transition"];
-  v5 = [v17 objectForKeyedSubscript:@"url"];
+  body = [link body];
+  v4 = [body objectForKeyedSubscript:@"transition"];
+  v5 = [body objectForKeyedSubscript:@"url"];
   v6 = [NSURL URLWithString:v5];
   if ([v4 isEqualToString:@"push"])
   {
-    v7 = [(HODiscoverWebKitContentController *)self delegate];
+    delegate = [(HODiscoverWebKitContentController *)self delegate];
 
-    if (v7)
+    if (delegate)
     {
-      v8 = [(HODiscoverWebKitContentController *)self delegate];
-      [v8 pushNewDiscoverWebViewControllerWithURLString:v5];
+      delegate2 = [(HODiscoverWebKitContentController *)self delegate];
+      [delegate2 pushNewDiscoverWebViewControllerWithURLString:v5];
     }
 
     goto LABEL_12;
@@ -123,12 +123,12 @@
   {
     if ([v4 isEqualToString:@"external"])
     {
-      v14 = [(HODiscoverWebKitContentController *)self delegate];
+      delegate3 = [(HODiscoverWebKitContentController *)self delegate];
 
-      if (v14)
+      if (delegate3)
       {
-        v15 = [(HODiscoverWebKitContentController *)self delegate];
-        [v15 exitToAppleStoreAppOrSafariWithURL:v6];
+        delegate4 = [(HODiscoverWebKitContentController *)self delegate];
+        [delegate4 exitToAppleStoreAppOrSafariWithURL:v6];
 
         v13 = v4;
         goto LABEL_13;
@@ -138,17 +138,17 @@
     goto LABEL_12;
   }
 
-  v9 = [(HODiscoverWebKitContentController *)self delegate];
+  delegate5 = [(HODiscoverWebKitContentController *)self delegate];
 
-  if (!v9)
+  if (!delegate5)
   {
 LABEL_12:
     v13 = 0;
     goto LABEL_13;
   }
 
-  v10 = [(HODiscoverWebKitContentController *)self delegate];
-  [v10 presentModalDiscoverWebViewControllerWithURLString:v5];
+  delegate6 = [(HODiscoverWebKitContentController *)self delegate];
+  [delegate6 presentModalDiscoverWebViewControllerWithURLString:v5];
 
   v11 = [(HODiscoverWebKitContentController *)self parseURLForThemeType:v5];
   if (v11)
@@ -169,21 +169,21 @@ LABEL_13:
   }
 }
 
-- (id)parseURLForThemeType:(id)a3
+- (id)parseURLForThemeType:(id)type
 {
-  v3 = a3;
-  v4 = [v3 length];
+  typeCopy = type;
+  v4 = [typeCopy length];
   v17 = 0;
   v5 = [NSRegularExpression regularExpressionWithPattern:@"(?<=theme=)([a-zA-Z]|_)+" options:0 error:&v17];
   v6 = v17;
-  v7 = [v5 firstMatchInString:v3 options:0 range:{0, v4}];
+  v7 = [v5 firstMatchInString:typeCopy options:0 range:{0, v4}];
   if (v7)
   {
     v8 = [NSSet setWithArray:&off_1000CB428];
-    v9 = [v7 range];
-    v11 = [v3 substringWithRange:{v9, v10}];
-    v12 = [v11 lowercaseString];
-    v13 = [v8 containsObject:v12];
+    range = [v7 range];
+    v11 = [typeCopy substringWithRange:{range, v10}];
+    lowercaseString = [v11 lowercaseString];
+    v13 = [v8 containsObject:lowercaseString];
 
     if (v13)
     {

@@ -1,41 +1,41 @@
 @interface SBCornerFingerGestureClassifier
-- (BOOL)classifySwipeWithOffsettedAngle:(double)a3 distanceToCorner:(double)a4 portrait:(BOOL)a5;
-- (SBCornerFingerGestureClassifier)initWithSettings:(id)a3;
+- (BOOL)classifySwipeWithOffsettedAngle:(double)angle distanceToCorner:(double)corner portrait:(BOOL)portrait;
+- (SBCornerFingerGestureClassifier)initWithSettings:(id)settings;
 @end
 
 @implementation SBCornerFingerGestureClassifier
 
-- (SBCornerFingerGestureClassifier)initWithSettings:(id)a3
+- (SBCornerFingerGestureClassifier)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v9.receiver = self;
   v9.super_class = SBCornerFingerGestureClassifier;
   v6 = [(SBCornerFingerGestureClassifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
   }
 
   return v7;
 }
 
-- (BOOL)classifySwipeWithOffsettedAngle:(double)a3 distanceToCorner:(double)a4 portrait:(BOOL)a5
+- (BOOL)classifySwipeWithOffsettedAngle:(double)angle distanceToCorner:(double)corner portrait:(BOOL)portrait
 {
-  v5 = a5;
-  if (a3 < -180.0)
+  portraitCopy = portrait;
+  if (angle < -180.0)
   {
     [SBCornerFingerGestureClassifier classifySwipeWithOffsettedAngle:distanceToCorner:portrait:];
   }
 
-  if (a3 > 180.0)
+  if (angle > 180.0)
   {
     [SBCornerFingerGestureClassifier classifySwipeWithOffsettedAngle:distanceToCorner:portrait:];
   }
 
-  v9 = [(SBCornerFingerPanGestureSettings *)self->_settings angleDegreesAscendingLUT:v5];
-  v10 = [(SBCornerFingerPanGestureSettings *)self->_settings distanceMillimetersValues:v5];
-  v11 = [(SBCornerFingerPanGestureSettings *)self->_settings vectorCount:v5];
+  v9 = [(SBCornerFingerPanGestureSettings *)self->_settings angleDegreesAscendingLUT:portraitCopy];
+  v10 = [(SBCornerFingerPanGestureSettings *)self->_settings distanceMillimetersValues:portraitCopy];
+  v11 = [(SBCornerFingerPanGestureSettings *)self->_settings vectorCount:portraitCopy];
   if (v9)
   {
     if (v10)
@@ -68,13 +68,13 @@ LABEL_7:
   }
 
 LABEL_8:
-  if (*v9 >= a3 || v9[v11 - 1] <= a3)
+  if (*v9 >= angle || v9[v11 - 1] <= angle)
   {
     return 0;
   }
 
-  indexingAscendingLUT(v9, v11, a3);
-  return resampleLinearInterpolation(v10, v11, v12) > a4;
+  indexingAscendingLUT(v9, v11, angle);
+  return resampleLinearInterpolation(v10, v11, v12) > corner;
 }
 
 - (void)classifySwipeWithOffsettedAngle:distanceToCorner:portrait:.cold.1()

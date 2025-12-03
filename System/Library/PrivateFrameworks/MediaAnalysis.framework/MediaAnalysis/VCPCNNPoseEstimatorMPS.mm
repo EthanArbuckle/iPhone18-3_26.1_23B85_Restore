@@ -1,6 +1,6 @@
 @interface VCPCNNPoseEstimatorMPS
 - (VCPCNNPoseEstimatorMPS)init;
-- (int)computePoseScore:(float *)a3;
+- (int)computePoseScore:(float *)score;
 @end
 
 @implementation VCPCNNPoseEstimatorMPS
@@ -50,8 +50,8 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v10 = [(VCPCNNModel *)v9 getGPUContext];
-  v11 = [VCPCNNData cnnDataWithPlane:1 height:40 width:40 context:v10];
+  getGPUContext = [(VCPCNNModel *)v9 getGPUContext];
+  v11 = [VCPCNNData cnnDataWithPlane:1 height:40 width:40 context:getGPUContext];
   input = v6->_input;
   v6->_input = v11;
 
@@ -132,10 +132,10 @@ LABEL_16:
 
       else
       {
-        v24 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-        v30 = [v24 resourceURL];
+        vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+        resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-        v29 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_pose.dat" relativeToURL:v30];
+        v29 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_pose.dat" relativeToURL:resourceURL];
         v25 = v6->_model;
         v26 = [(VCPCNNData *)v6->_input size];
         LODWORD(v25) = [(VCPCNNModel *)v25 prepareNetworkFromURL:v29 withInputSize:v26];
@@ -164,53 +164,53 @@ LABEL_37:
   return v13;
 }
 
-- (int)computePoseScore:(float *)a3
+- (int)computePoseScore:(float *)score
 {
-  v5 = [(VCPCNNData *)self->_input normalization];
-  if (v5)
+  normalization = [(VCPCNNData *)self->_input normalization];
+  if (normalization)
   {
-    return v5;
+    return normalization;
   }
 
-  v5 = [(VCPCNNModel *)self->_model forward:self->_input];
-  if (v5)
+  normalization = [(VCPCNNModel *)self->_model forward:self->_input];
+  if (normalization)
   {
-    return v5;
+    return normalization;
   }
 
-  v8 = [(VCPCNNModel *)self->_model output];
-  v6 = [v8 softmax];
+  output = [(VCPCNNModel *)self->_model output];
+  softmax = [output softmax];
 
-  if (!v6)
+  if (!softmax)
   {
     v9 = 0;
     v10 = 1;
     while (1)
     {
-      v11 = [(VCPCNNModel *)self->_model output];
-      v12 = [v11 size];
+      output2 = [(VCPCNNModel *)self->_model output];
+      v12 = [output2 size];
       v13 = [v12 count];
 
-      v14 = [(VCPCNNModel *)self->_model output];
-      v15 = v14;
+      output3 = [(VCPCNNModel *)self->_model output];
+      v15 = output3;
       if (v13 <= v9)
       {
         break;
       }
 
-      v16 = [v14 size];
+      v16 = [output3 size];
       v17 = [v16 objectAtIndexedSubscript:v9];
       v10 *= [v17 intValue];
 
       ++v9;
     }
 
-    memcpy(a3, [v14 data], 4 * v10);
+    memcpy(score, [output3 data], 4 * v10);
 
     return 0;
   }
 
-  return v6;
+  return softmax;
 }
 
 @end

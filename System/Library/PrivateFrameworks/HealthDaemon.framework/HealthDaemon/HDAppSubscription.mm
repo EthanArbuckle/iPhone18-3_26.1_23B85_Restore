@@ -1,6 +1,6 @@
 @interface HDAppSubscription
 - (HDAppSubscription)init;
-- (HDAppSubscription)initWithBundleIdentifier:(id)a3 dataCode:(int64_t)a4;
+- (HDAppSubscription)initWithBundleIdentifier:(id)identifier dataCode:(int64_t)code;
 - (HKObjectType)objectType;
 @end
 
@@ -16,25 +16,25 @@
   return 0;
 }
 
-- (HDAppSubscription)initWithBundleIdentifier:(id)a3 dataCode:(int64_t)a4
+- (HDAppSubscription)initWithBundleIdentifier:(id)identifier dataCode:(int64_t)code
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = HDAppSubscription;
   v8 = [(HDAppSubscription *)&v13 init];
   if (v8)
   {
-    if (!v7)
+    if (!identifierCopy)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:v8 file:@"HDAppSubscription.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"bundleID != nil"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v8 file:@"HDAppSubscription.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"bundleID != nil"}];
     }
 
-    v9 = [v7 copy];
+    v9 = [identifierCopy copy];
     bundleIdentifier = v8->_bundleIdentifier;
     v8->_bundleIdentifier = v9;
 
-    v8->_dataCode = a4;
+    v8->_dataCode = code;
   }
 
   return v8;

@@ -1,16 +1,16 @@
 @interface FeedBannerAdView
-- (_TtC8NewsFeed16FeedBannerAdView)initWithCoder:(id)a3;
-- (_TtC8NewsFeed16FeedBannerAdView)initWithFrame:(CGRect)a3;
+- (_TtC8NewsFeed16FeedBannerAdView)initWithCoder:(id)coder;
+- (_TtC8NewsFeed16FeedBannerAdView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FeedBannerAdView
 
-- (_TtC8NewsFeed16FeedBannerAdView)initWithFrame:(CGRect)a3
+- (_TtC8NewsFeed16FeedBannerAdView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = (&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed16FeedBannerAdView_bannerView);
   *v9 = 0;
@@ -21,7 +21,7 @@
   return [(FeedBannerAdView *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC8NewsFeed16FeedBannerAdView)initWithCoder:(id)a3
+- (_TtC8NewsFeed16FeedBannerAdView)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = (&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed16FeedBannerAdView_bannerView);
@@ -30,8 +30,8 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed16FeedBannerAdView____lazy_storage___debugView) = 0;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v7 = a3;
-  v8 = [(FeedBannerAdView *)&v10 initWithCoder:v7];
+  coderCopy = coder;
+  v8 = [(FeedBannerAdView *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

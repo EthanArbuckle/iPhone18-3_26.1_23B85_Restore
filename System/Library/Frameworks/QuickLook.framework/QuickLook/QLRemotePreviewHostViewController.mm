@@ -1,15 +1,15 @@
 @interface QLRemotePreviewHostViewController
 - (QLRemoteItemViewController)remoteItemViewController;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation QLRemotePreviewHostViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(QLRemotePreviewHostViewController *)self remoteItemViewController];
-  [v5 viewServiceDidTerminateWithError:v4];
+  errorCopy = error;
+  remoteItemViewController = [(QLRemotePreviewHostViewController *)self remoteItemViewController];
+  [remoteItemViewController viewServiceDidTerminateWithError:errorCopy];
 
   extension = self->_extension;
   request = self->_request;

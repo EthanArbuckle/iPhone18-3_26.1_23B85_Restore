@@ -1,22 +1,22 @@
 @interface PKDiscoveryArticleLayoutResponse
-- (PKDiscoveryArticleLayoutResponse)initWithData:(id)a3;
+- (PKDiscoveryArticleLayoutResponse)initWithData:(id)data;
 @end
 
 @implementation PKDiscoveryArticleLayoutResponse
 
-- (PKDiscoveryArticleLayoutResponse)initWithData:(id)a3
+- (PKDiscoveryArticleLayoutResponse)initWithData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = PKDiscoveryArticleLayoutResponse;
-  v3 = [(PKWebServiceResponse *)&v16 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v16 initWithData:data];
   v4 = v3;
   if (!v3)
   {
     goto LABEL_4;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -37,7 +37,7 @@
     goto LABEL_8;
   }
 
-  v6 = [[PKDiscoveryArticleLayout alloc] initWithDictionary:v5];
+  v6 = [[PKDiscoveryArticleLayout alloc] initWithDictionary:jSONObject];
   discoveryArticleLayout = v4->_discoveryArticleLayout;
   v4->_discoveryArticleLayout = v6;
 

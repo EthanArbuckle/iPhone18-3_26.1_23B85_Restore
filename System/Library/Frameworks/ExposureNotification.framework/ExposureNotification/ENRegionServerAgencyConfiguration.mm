@@ -1,10 +1,10 @@
 @interface ENRegionServerAgencyConfiguration
-- (ENRegionServerAgencyConfiguration)initWithCoder:(id)a3;
-- (ENRegionServerAgencyConfiguration)initWithRegion:(id)a3;
-- (ENRegionServerAgencyConfiguration)initWithServerResponseDictionary:(id)a3 locale:(id)a4;
+- (ENRegionServerAgencyConfiguration)initWithCoder:(id)coder;
+- (ENRegionServerAgencyConfiguration)initWithRegion:(id)region;
+- (ENRegionServerAgencyConfiguration)initWithServerResponseDictionary:(id)dictionary locale:(id)locale;
 - (NSString)agencyDisplayName;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ENRegionServerAgencyConfiguration
@@ -12,58 +12,58 @@
 - (id)description
 {
   v15 = MEMORY[0x277CCACA8];
-  v14 = [(ENRegionServerAgencyConfiguration *)self region];
-  v3 = [(ENRegionServerAgencyConfiguration *)self agencyDisplayName];
-  v4 = [(ENRegionServerAgencyConfiguration *)self agencyColor];
-  v5 = [(ENRegionServerAgencyConfiguration *)self agencyImageURL];
+  region = [(ENRegionServerAgencyConfiguration *)self region];
+  agencyDisplayName = [(ENRegionServerAgencyConfiguration *)self agencyDisplayName];
+  agencyColor = [(ENRegionServerAgencyConfiguration *)self agencyColor];
+  agencyImageURL = [(ENRegionServerAgencyConfiguration *)self agencyImageURL];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ENRegionServerAgencyConfiguration agencyHeaderStyle](self, "agencyHeaderStyle")}];
-  v7 = [(ENRegionServerAgencyConfiguration *)self agencyHeaderTextColor];
-  v8 = [(ENRegionServerAgencyConfiguration *)self agencyWebsiteURL];
-  v9 = [(ENRegionServerAgencyConfiguration *)self verificationCodeLearnMoreURL];
-  v10 = [(ENRegionServerAgencyConfiguration *)self webReportURL];
-  v11 = [(ENRegionServerAgencyConfiguration *)self localizedConfiguration];
-  v12 = [v15 stringWithFormat:@"Agency - %@, [Display Name]: %@, [Color]: %@, [Image]: %@, [Style]: %@, [HeaderTextColor]: %@, [Website]: %@, [VerificationCodeLearnMoreURL]: %@, [WebReportURL]: %@, [Localized Configuration]: %@", v14, v3, v4, v5, v6, v7, v8, v9, v10, v11];
+  agencyHeaderTextColor = [(ENRegionServerAgencyConfiguration *)self agencyHeaderTextColor];
+  agencyWebsiteURL = [(ENRegionServerAgencyConfiguration *)self agencyWebsiteURL];
+  verificationCodeLearnMoreURL = [(ENRegionServerAgencyConfiguration *)self verificationCodeLearnMoreURL];
+  webReportURL = [(ENRegionServerAgencyConfiguration *)self webReportURL];
+  localizedConfiguration = [(ENRegionServerAgencyConfiguration *)self localizedConfiguration];
+  v12 = [v15 stringWithFormat:@"Agency - %@, [Display Name]: %@, [Color]: %@, [Image]: %@, [Style]: %@, [HeaderTextColor]: %@, [Website]: %@, [VerificationCodeLearnMoreURL]: %@, [WebReportURL]: %@, [Localized Configuration]: %@", region, agencyDisplayName, agencyColor, agencyImageURL, v6, agencyHeaderTextColor, agencyWebsiteURL, verificationCodeLearnMoreURL, webReportURL, localizedConfiguration];
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   region = self->_region;
-  v6 = a3;
-  [v6 encodeObject:region forKey:@"region"];
-  [v6 encodeObject:self->_agencyColor forKey:@"agencyColor"];
-  [v6 encodeObject:self->_agencyHeaderTextColor forKey:@"agencyHeaderTextColor"];
-  [v6 encodeObject:self->_agencyImageURL forKey:@"agencyImage"];
+  coderCopy = coder;
+  [coderCopy encodeObject:region forKey:@"region"];
+  [coderCopy encodeObject:self->_agencyColor forKey:@"agencyColor"];
+  [coderCopy encodeObject:self->_agencyHeaderTextColor forKey:@"agencyHeaderTextColor"];
+  [coderCopy encodeObject:self->_agencyImageURL forKey:@"agencyImage"];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_agencyHeaderStyle];
-  [v6 encodeObject:v5 forKey:@"agencyHeaderStyle"];
+  [coderCopy encodeObject:v5 forKey:@"agencyHeaderStyle"];
 
-  [v6 encodeObject:self->_agencyWebsiteURL forKey:@"agencyWebsiteURL"];
-  [v6 encodeObject:self->_agencyFAQWebsiteURL forKey:@"agencyFAQWebsiteURL"];
-  [v6 encodeObject:self->_localizedConfiguration forKey:@"agencyLocalizations"];
-  [v6 encodeObject:self->_revokedClassificationURL forKey:@"revokedURL"];
-  [v6 encodeObject:self->_verificationCodeLearnMoreURL forKey:@"verificationCodeLearnMoreURL"];
-  [v6 encodeObject:self->_webReportURL forKey:@"webReportURL"];
+  [coderCopy encodeObject:self->_agencyWebsiteURL forKey:@"agencyWebsiteURL"];
+  [coderCopy encodeObject:self->_agencyFAQWebsiteURL forKey:@"agencyFAQWebsiteURL"];
+  [coderCopy encodeObject:self->_localizedConfiguration forKey:@"agencyLocalizations"];
+  [coderCopy encodeObject:self->_revokedClassificationURL forKey:@"revokedURL"];
+  [coderCopy encodeObject:self->_verificationCodeLearnMoreURL forKey:@"verificationCodeLearnMoreURL"];
+  [coderCopy encodeObject:self->_webReportURL forKey:@"webReportURL"];
 }
 
 - (NSString)agencyDisplayName
 {
-  v2 = [(ENRegionServerAgencyConfiguration *)self localizedConfiguration];
-  v3 = [v2 displayName];
+  localizedConfiguration = [(ENRegionServerAgencyConfiguration *)self localizedConfiguration];
+  displayName = [localizedConfiguration displayName];
 
-  return v3;
+  return displayName;
 }
 
-- (ENRegionServerAgencyConfiguration)initWithRegion:(id)a3
+- (ENRegionServerAgencyConfiguration)initWithRegion:(id)region
 {
-  v5 = a3;
+  regionCopy = region;
   v17.receiver = self;
   v17.super_class = ENRegionServerAgencyConfiguration;
   v6 = [(ENRegionServerAgencyConfiguration *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_region, a3);
+    objc_storeStrong(&v6->_region, region);
     agencyColor = v7->_agencyColor;
     v7->_agencyColor = &unk_284B0F228;
 
@@ -77,7 +77,7 @@
     OUTLINED_FUNCTION_5(v11);
     v12 = objc_opt_new();
     OUTLINED_FUNCTION_4_0(v12);
-    v13 = [[ENRegionServerAgencyLocalizedConfiguration alloc] initWithRegion:v5];
+    v13 = [[ENRegionServerAgencyLocalizedConfiguration alloc] initWithRegion:regionCopy];
     localizedConfiguration = v7->_localizedConfiguration;
     v7->_localizedConfiguration = v13;
 
@@ -87,23 +87,23 @@
   return v7;
 }
 
-- (ENRegionServerAgencyConfiguration)initWithServerResponseDictionary:(id)a3 locale:(id)a4
+- (ENRegionServerAgencyConfiguration)initWithServerResponseDictionary:(id)dictionary locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  localeCopy = locale;
   objc_opt_class();
-  v38 = v7;
+  v38 = localeCopy;
   if ((objc_opt_isKindOfClass() & 1) == 0 || (v41.receiver = self, v41.super_class = ENRegionServerAgencyConfiguration, (self = [(ENRegionServerAgencyConfiguration *)&v41 init]) == 0))
   {
-    v35 = 0;
+    selfCopy = 0;
     goto LABEL_29;
   }
 
-  v8 = [ENRegion regionFromServerResponseDictionary:v6];
+  v8 = [ENRegion regionFromServerResponseDictionary:dictionaryCopy];
   v9 = v8;
   if (!v8)
   {
-    v35 = 0;
+    selfCopy = 0;
     goto LABEL_28;
   }
 
@@ -111,11 +111,11 @@
   region = self->_region;
   self->_region = v10;
 
-  v12 = [v6 objectForKeyedSubscript:@"config"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"config"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v35 = 0;
+    selfCopy = 0;
     goto LABEL_27;
   }
 
@@ -211,15 +211,15 @@
   if (!v20)
   {
 LABEL_23:
-    v37 = v6;
+    v37 = dictionaryCopy;
     v29 = v9;
     v30 = v14;
     v31 = v13;
 
     v32 = objc_autoreleasePoolPush();
     v39 = 0;
-    v33 = [(ENRegionServerAgencyConfiguration *)self region];
-    [ENRegionServerAgencyLocalizedConfiguration getLocalizedAgencyConfiguration:&v39 region:v33 fromDictionary:v12 locale:v7];
+    region = [(ENRegionServerAgencyConfiguration *)self region];
+    [ENRegionServerAgencyLocalizedConfiguration getLocalizedAgencyConfiguration:&v39 region:region fromDictionary:v12 locale:localeCopy];
     v34 = v39;
     v20 = v39;
 
@@ -227,18 +227,18 @@ LABEL_23:
     if (v20)
     {
       objc_storeStrong(&self->_localizedConfiguration, v34);
-      v35 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v35 = 0;
+      selfCopy = 0;
     }
 
     v13 = v31;
     v14 = v30;
     v9 = v29;
-    v6 = v37;
+    dictionaryCopy = v37;
     goto LABEL_26;
   }
 
@@ -252,25 +252,25 @@ LABEL_23:
   }
 
 LABEL_30:
-  v35 = 0;
+  selfCopy = 0;
 LABEL_26:
 
 LABEL_27:
 LABEL_28:
 
 LABEL_29:
-  return v35;
+  return selfCopy;
 }
 
-- (ENRegionServerAgencyConfiguration)initWithCoder:(id)a3
+- (ENRegionServerAgencyConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = ENRegionServerAgencyConfiguration;
   v5 = [(ENRegionServerAgencyConfiguration *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"region"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"region"];
     if (v6)
     {
       objc_storeStrong(&v5->_region, v6);

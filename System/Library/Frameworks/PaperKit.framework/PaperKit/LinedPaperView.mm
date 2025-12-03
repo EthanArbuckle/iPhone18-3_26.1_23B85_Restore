@@ -1,9 +1,9 @@
 @interface LinedPaperView
 - (CGAffineTransform)drawingTransform;
-- (_TtC8PaperKit14LinedPaperView)initWithFrame:(CGRect)a3;
-- (id)linedPaperLayerAttachmentContainerView:(id)a3;
-- (id)linedPaperLayerTraitCollection:(id)a3;
-- (void)setDrawingTransform:(CGAffineTransform *)a3;
+- (_TtC8PaperKit14LinedPaperView)initWithFrame:(CGRect)frame;
+- (id)linedPaperLayerAttachmentContainerView:(id)view;
+- (id)linedPaperLayerTraitCollection:(id)collection;
+- (void)setDrawingTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation LinedPaperView
@@ -18,36 +18,36 @@
   return self;
 }
 
-- (void)setDrawingTransform:(CGAffineTransform *)a3
+- (void)setDrawingTransform:(CGAffineTransform *)transform
 {
   v3 = (self + OBJC_IVAR____TtC8PaperKit14LinedPaperView_drawingTransform);
-  v4 = *&a3->c;
-  v5 = *&a3->tx;
-  *v3 = *&a3->a;
+  v4 = *&transform->c;
+  v5 = *&transform->tx;
+  *v3 = *&transform->a;
   v3[1] = v4;
   v3[2] = v5;
 }
 
-- (id)linedPaperLayerAttachmentContainerView:(id)a3
+- (id)linedPaperLayerAttachmentContainerView:(id)view
 {
-  v3 = [(LinedPaperView *)self superview];
+  superview = [(LinedPaperView *)self superview];
 
-  return v3;
+  return superview;
 }
 
-- (id)linedPaperLayerTraitCollection:(id)a3
+- (id)linedPaperLayerTraitCollection:(id)collection
 {
-  v3 = [(LinedPaperView *)self traitCollection];
+  traitCollection = [(LinedPaperView *)self traitCollection];
 
-  return v3;
+  return traitCollection;
 }
 
-- (_TtC8PaperKit14LinedPaperView)initWithFrame:(CGRect)a3
+- (_TtC8PaperKit14LinedPaperView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8PaperKit14LinedPaperView_linedPaperLayer) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8PaperKit14LinedPaperView_linedPaper) = 0;
   v8 = (&self->super.super.super.isa + OBJC_IVAR____TtC8PaperKit14LinedPaperView_drawingTransform);

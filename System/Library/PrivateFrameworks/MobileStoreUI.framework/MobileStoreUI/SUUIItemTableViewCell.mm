@@ -1,74 +1,74 @@
 @interface SUUIItemTableViewCell
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBackgroundColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setBackgroundColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation SUUIItemTableViewCell
 
 - (void)prepareForReuse
 {
-  v3 = [(SUUIItemTableViewCell *)self layout];
-  [v3 prepareForReuse];
+  layout = [(SUUIItemTableViewCell *)self layout];
+  [layout prepareForReuse];
 
   v4.receiver = self;
   v4.super_class = SUUIItemTableViewCell;
   [(SUUITableViewCell *)&v4 prepareForReuse];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(SUUIItemTableViewCell *)self layout];
-  [v7 setHighlighted:v5];
+  animatedCopy = animated;
+  highlightedCopy = highlighted;
+  layout = [(SUUIItemTableViewCell *)self layout];
+  [layout setHighlighted:highlightedCopy];
 
   v8.receiver = self;
   v8.super_class = SUUIItemTableViewCell;
-  [(SUUITableViewCell *)&v8 setHighlighted:v5 animated:v4];
+  [(SUUITableViewCell *)&v8 setHighlighted:highlightedCopy animated:animatedCopy];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(SUUIItemTableViewCell *)self layout];
-  [v7 setSelected:v5];
+  animatedCopy = animated;
+  selectedCopy = selected;
+  layout = [(SUUIItemTableViewCell *)self layout];
+  [layout setSelected:selectedCopy];
 
   v8.receiver = self;
   v8.super_class = SUUIItemTableViewCell;
-  [(SUUITableViewCell *)&v8 setSelected:v5 animated:v4];
+  [(SUUITableViewCell *)&v8 setSelected:selectedCopy animated:animatedCopy];
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(SUUIItemTableViewCell *)self contentView];
-  [v3 frame];
+  contentView = [(SUUIItemTableViewCell *)self contentView];
+  [contentView frame];
   v5 = v4;
   v7 = v6;
   v12.receiver = self;
   v12.super_class = SUUIItemTableViewCell;
   [(SUUITableViewCell *)&v12 layoutSubviews];
-  if (self->_layoutNeedsLayout || (([v3 frame], v9 == v5) ? (v10 = v8 == v7) : (v10 = 0), !v10))
+  if (self->_layoutNeedsLayout || (([contentView frame], v9 == v5) ? (v10 = v8 == v7) : (v10 = 0), !v10))
   {
-    v11 = [(SUUIItemTableViewCell *)self layout];
-    [v11 layoutSubviews];
+    layout = [(SUUIItemTableViewCell *)self layout];
+    [layout layoutSubviews];
   }
 
   self->_layoutNeedsLayout = 0;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(SUUIItemTableViewCell *)self layout];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  layout = [(SUUIItemTableViewCell *)self layout];
+  [layout setBackgroundColor:colorCopy];
 
   v6.receiver = self;
   v6.super_class = SUUIItemTableViewCell;
-  [(SUUIItemTableViewCell *)&v6 setBackgroundColor:v4];
+  [(SUUIItemTableViewCell *)&v6 setBackgroundColor:colorCopy];
 }
 
 @end

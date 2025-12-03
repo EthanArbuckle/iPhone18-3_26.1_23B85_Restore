@@ -1,14 +1,14 @@
 @interface EMTAlternativeDescription
-- (BOOL)isEqual:(id)a3;
-- (EMTAlternativeDescription)initWithGenderDescription:(id)a3;
-- (EMTAlternativeDescription)initWithMeaningDescription:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (EMTAlternativeDescription)initWithGenderDescription:(id)description;
+- (EMTAlternativeDescription)initWithMeaningDescription:(id)description;
 @end
 
 @implementation EMTAlternativeDescription
 
-- (EMTAlternativeDescription)initWithGenderDescription:(id)a3
+- (EMTAlternativeDescription)initWithGenderDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   v9.receiver = self;
   v9.super_class = EMTAlternativeDescription;
   v6 = [(EMTAlternativeDescription *)&v9 init];
@@ -16,15 +16,15 @@
   if (v6)
   {
     v6->_alternativeType = 0;
-    objc_storeStrong(&v6->_genderDescription, a3);
+    objc_storeStrong(&v6->_genderDescription, description);
   }
 
   return v7;
 }
 
-- (EMTAlternativeDescription)initWithMeaningDescription:(id)a3
+- (EMTAlternativeDescription)initWithMeaningDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   v9.receiver = self;
   v9.super_class = EMTAlternativeDescription;
   v6 = [(EMTAlternativeDescription *)&v9 init];
@@ -32,26 +32,26 @@
   if (v6)
   {
     v6->_alternativeType = 1;
-    objc_storeStrong(&v6->_meaningDescription, a3);
+    objc_storeStrong(&v6->_meaningDescription, description);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     alternativeType = self->_alternativeType;
     if (alternativeType == 1)
     {
       meaningDescription = self->_meaningDescription;
-      v9 = [v5 meaningDescription];
-      v10 = [(EMTMeaningDescription *)meaningDescription isEqual:v9];
+      meaningDescription = [v5 meaningDescription];
+      v10 = [(EMTMeaningDescription *)meaningDescription isEqual:meaningDescription];
     }
 
     else
@@ -63,8 +63,8 @@
       }
 
       genderDescription = self->_genderDescription;
-      v9 = [v5 genderDescription];
-      v10 = [(EMTGenderDescription *)genderDescription isEqual:v9];
+      meaningDescription = [v5 genderDescription];
+      v10 = [(EMTGenderDescription *)genderDescription isEqual:meaningDescription];
     }
 
     v11 = v10;

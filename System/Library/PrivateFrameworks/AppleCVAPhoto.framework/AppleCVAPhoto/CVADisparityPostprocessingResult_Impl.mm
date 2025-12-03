@@ -1,5 +1,5 @@
 @interface CVADisparityPostprocessingResult_Impl
-- (CVADisparityPostprocessingResult_Impl)initWithPostprocessedDisparityBuffer:(__CVBuffer *)a3 canonicalDisparityPixelBuffer:(__CVBuffer *)a4 focusCanonicalDisparity:(float)a5 backgroundDisparitySum:(float)a6 backgroundDisparitySumVariance:(float)a7 backgroundDisparityRatio:(float)a8 invalidDisparityRatio:(float)a9 invalidDisparityRatioVariance:(float)a10 deltaCanonicalDisparity:(float)a11 backgroundSeparationLikelihood:(float)a12 closeCanonicalDisparityAverage:(float)a13 faceCanonicalDisparityAverage:(id)a14 faceInvalidDisparityRatio:(id)a15 foregroundRatio:(float)a16 erodedForegroundRatio:(float)a17 personSegmentationRatio:(float)a18;
+- (CVADisparityPostprocessingResult_Impl)initWithPostprocessedDisparityBuffer:(__CVBuffer *)buffer canonicalDisparityPixelBuffer:(__CVBuffer *)pixelBuffer focusCanonicalDisparity:(float)disparity backgroundDisparitySum:(float)sum backgroundDisparitySumVariance:(float)variance backgroundDisparityRatio:(float)ratio invalidDisparityRatio:(float)disparityRatio invalidDisparityRatioVariance:(float)self0 deltaCanonicalDisparity:(float)self1 backgroundSeparationLikelihood:(float)self2 closeCanonicalDisparityAverage:(float)self3 faceCanonicalDisparityAverage:(id)self4 faceInvalidDisparityRatio:(id)self5 foregroundRatio:(float)self6 erodedForegroundRatio:(float)self7 personSegmentationRatio:(float)self8;
 - (void)dealloc;
 @end
 
@@ -14,36 +14,36 @@
   [(CVADisparityPostprocessingResult_Impl *)&v3 dealloc];
 }
 
-- (CVADisparityPostprocessingResult_Impl)initWithPostprocessedDisparityBuffer:(__CVBuffer *)a3 canonicalDisparityPixelBuffer:(__CVBuffer *)a4 focusCanonicalDisparity:(float)a5 backgroundDisparitySum:(float)a6 backgroundDisparitySumVariance:(float)a7 backgroundDisparityRatio:(float)a8 invalidDisparityRatio:(float)a9 invalidDisparityRatioVariance:(float)a10 deltaCanonicalDisparity:(float)a11 backgroundSeparationLikelihood:(float)a12 closeCanonicalDisparityAverage:(float)a13 faceCanonicalDisparityAverage:(id)a14 faceInvalidDisparityRatio:(id)a15 foregroundRatio:(float)a16 erodedForegroundRatio:(float)a17 personSegmentationRatio:(float)a18
+- (CVADisparityPostprocessingResult_Impl)initWithPostprocessedDisparityBuffer:(__CVBuffer *)buffer canonicalDisparityPixelBuffer:(__CVBuffer *)pixelBuffer focusCanonicalDisparity:(float)disparity backgroundDisparitySum:(float)sum backgroundDisparitySumVariance:(float)variance backgroundDisparityRatio:(float)ratio invalidDisparityRatio:(float)disparityRatio invalidDisparityRatioVariance:(float)self0 deltaCanonicalDisparity:(float)self1 backgroundSeparationLikelihood:(float)self2 closeCanonicalDisparityAverage:(float)self3 faceCanonicalDisparityAverage:(id)self4 faceInvalidDisparityRatio:(id)self5 foregroundRatio:(float)self6 erodedForegroundRatio:(float)self7 personSegmentationRatio:(float)self8
 {
-  v27 = a14;
-  v28 = a15;
+  disparityAverageCopy = disparityAverage;
+  invalidDisparityRatioCopy = invalidDisparityRatio;
   v37.receiver = self;
   v37.super_class = CVADisparityPostprocessingResult_Impl;
   v29 = [(CVADisparityPostprocessingResult_Impl *)&v37 init];
-  v29->_postprocessedDisparityPixelBuffer = a3;
-  CVPixelBufferRetain(a3);
-  v29->_canonicalDisparityPixelBuffer = a4;
-  CVPixelBufferRetain(a4);
-  v29->_backgroundDisparitySum = a6;
-  v29->_backgroundDisparitySumVariance = a7;
-  v29->_backgroundDisparityRatio = a8;
-  v29->_invalidDisparityRatio = a9;
-  v29->_invalidDisparityRatioVariance = a10;
-  v29->_backgroundSeparationLikelihood = a12;
-  v29->_focusDisparity = a5;
-  v29->_deltaCanonicalDisparity = a11;
-  v29->_closeCanonicalDisparityAverage = a13;
+  v29->_postprocessedDisparityPixelBuffer = buffer;
+  CVPixelBufferRetain(buffer);
+  v29->_canonicalDisparityPixelBuffer = pixelBuffer;
+  CVPixelBufferRetain(pixelBuffer);
+  v29->_backgroundDisparitySum = sum;
+  v29->_backgroundDisparitySumVariance = variance;
+  v29->_backgroundDisparityRatio = ratio;
+  v29->_invalidDisparityRatio = disparityRatio;
+  v29->_invalidDisparityRatioVariance = ratioVariance;
+  v29->_backgroundSeparationLikelihood = likelihood;
+  v29->_focusDisparity = disparity;
+  v29->_deltaCanonicalDisparity = canonicalDisparity;
+  v29->_closeCanonicalDisparityAverage = average;
   faceCanonicalDisparityAverage = v29->_faceCanonicalDisparityAverage;
-  v29->_faceCanonicalDisparityAverage = v27;
-  v31 = v27;
+  v29->_faceCanonicalDisparityAverage = disparityAverageCopy;
+  v31 = disparityAverageCopy;
 
   faceInvalidDisparityRatio = v29->_faceInvalidDisparityRatio;
-  v29->_faceInvalidDisparityRatio = v28;
+  v29->_faceInvalidDisparityRatio = invalidDisparityRatioCopy;
 
-  v29->_foregroundRatio = a16;
-  v29->_erodedForegroundRatio = a17;
-  v29->_personSegmentationRatio = a18;
+  v29->_foregroundRatio = foregroundRatio;
+  v29->_erodedForegroundRatio = erodedForegroundRatio;
+  v29->_personSegmentationRatio = segmentationRatio;
   return v29;
 }
 

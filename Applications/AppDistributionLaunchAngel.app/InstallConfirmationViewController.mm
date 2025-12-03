@@ -1,14 +1,14 @@
 @interface InstallConfirmationViewController
-- (_TtC26AppDistributionLaunchAngel33InstallConfirmationViewController)initWithCoder:(id)a3;
-- (_TtC26AppDistributionLaunchAngel33InstallConfirmationViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC26AppDistributionLaunchAngel33InstallConfirmationViewController)initWithCoder:(id)coder;
+- (_TtC26AppDistributionLaunchAngel33InstallConfirmationViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (int64_t)preferredStatusBarStyle;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation InstallConfirmationViewController
 
-- (_TtC26AppDistributionLaunchAngel33InstallConfirmationViewController)initWithCoder:(id)a3
+- (_TtC26AppDistributionLaunchAngel33InstallConfirmationViewController)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -18,11 +18,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_10005F84C();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -32,8 +32,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_10005AA10(a3);
+  selfCopy = self;
+  sub_10005AA10(appear);
 }
 
 - (int64_t)preferredStatusBarStyle
@@ -51,10 +51,10 @@
   return ~v3 & 1;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -66,9 +66,9 @@
   v10.receiver = self;
   v10.super_class = type metadata accessor for InstallConfirmationViewController();
   swift_unknownObjectRetain();
-  v8 = self;
-  [(InstallConfirmationViewController *)&v10 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
-  v9 = *(&v8->super.super.super.isa + OBJC_IVAR____TtC26AppDistributionLaunchAngel33InstallConfirmationViewController_installSheetConfirmationViewModel);
+  selfCopy = self;
+  [(InstallConfirmationViewController *)&v10 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
+  v9 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC26AppDistributionLaunchAngel33InstallConfirmationViewController_installSheetConfirmationViewModel);
   swift_getKeyPath();
   swift_getKeyPath();
 
@@ -77,7 +77,7 @@
   swift_unknownObjectRelease();
 }
 
-- (_TtC26AppDistributionLaunchAngel33InstallConfirmationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26AppDistributionLaunchAngel33InstallConfirmationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

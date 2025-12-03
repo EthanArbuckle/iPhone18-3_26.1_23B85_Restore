@@ -1,14 +1,14 @@
 @interface UIViewController
-- (void)scheduleModalPresentationWithPriority:(int64_t)a3 animated:(BOOL)a4 presentationCompletion:(id)a5;
-- (void)showOnTopWithAnimated:(BOOL)a3 completion:(id)a4;
+- (void)scheduleModalPresentationWithPriority:(int64_t)priority animated:(BOOL)animated presentationCompletion:(id)completion;
+- (void)showOnTopWithAnimated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation UIViewController
 
-- (void)showOnTopWithAnimated:(BOOL)a3 completion:(id)a4
+- (void)showOnTopWithAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = _Block_copy(a4);
+  animatedCopy = animated;
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -21,15 +21,15 @@
     v7 = 0;
   }
 
-  v8 = self;
-  sub_1000883C8(0, v4, v6, v7);
+  selfCopy = self;
+  sub_1000883C8(0, animatedCopy, v6, v7);
 
   sub_10003C52C(v6);
 }
 
-- (void)scheduleModalPresentationWithPriority:(int64_t)a3 animated:(BOOL)a4 presentationCompletion:(id)a5
+- (void)scheduleModalPresentationWithPriority:(int64_t)priority animated:(BOOL)animated presentationCompletion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -42,8 +42,8 @@
     v9 = 0;
   }
 
-  v10 = self;
-  sub_100126A54(a3, a4, v8, v9, 0);
+  selfCopy = self;
+  sub_100126A54(priority, animated, v8, v9, 0);
   sub_10003C52C(v8);
 }
 

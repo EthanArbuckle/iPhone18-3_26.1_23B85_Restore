@@ -14,10 +14,10 @@
 
 - (BOOL)isTrue
 {
-  v2 = [MEMORY[0x1E69A22B0] sharedNetworkObserver];
-  v3 = [v2 isCellConnection];
+  mEMORY[0x1E69A22B0] = [MEMORY[0x1E69A22B0] sharedNetworkObserver];
+  isCellConnection = [mEMORY[0x1E69A22B0] isCellConnection];
 
-  return v3 ^ 1;
+  return isCellConnection ^ 1;
 }
 
 @end

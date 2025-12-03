@@ -7,7 +7,7 @@
 
 - (id)fetch
 {
-  v2 = self;
+  selfCopy = self;
   sub_199A9F3A4();
 
   type metadata accessor for DeviceListServiceDeviceInfo();

@@ -1,6 +1,6 @@
 @interface SQLitePropertyPredicate
-- (BOOL)isEqual:(id)a3;
-- (id)SQLJoinClausesForEntityClass:(Class)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)SQLJoinClausesForEntityClass:(Class)class;
 - (unint64_t)hash;
 @end
 
@@ -11,31 +11,31 @@
   v7.receiver = self;
   v7.super_class = SQLitePropertyPredicate;
   v3 = [(SQLitePredicate *)&v7 hash];
-  v4 = [(SQLitePropertyPredicate *)self property];
-  v5 = [v4 hash];
+  property = [(SQLitePropertyPredicate *)self property];
+  v5 = [property hash];
 
   return v3 + v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = SQLitePropertyPredicate;
-  if ([(SQLitePredicate *)&v11 isEqual:v4])
+  if ([(SQLitePredicate *)&v11 isEqual:equalCopy])
   {
-    v5 = [(SQLitePropertyPredicate *)self property];
-    v6 = [v4 property];
-    if (v5 == v6)
+    property = [(SQLitePropertyPredicate *)self property];
+    property2 = [equalCopy property];
+    if (property == property2)
     {
       v9 = 1;
     }
 
     else
     {
-      v7 = [(SQLitePropertyPredicate *)self property];
-      v8 = [v4 property];
-      v9 = [v7 isEqual:v8];
+      property3 = [(SQLitePropertyPredicate *)self property];
+      property4 = [equalCopy property];
+      v9 = [property3 isEqual:property4];
     }
   }
 
@@ -47,9 +47,9 @@
   return v9;
 }
 
-- (id)SQLJoinClausesForEntityClass:(Class)a3
+- (id)SQLJoinClausesForEntityClass:(Class)class
 {
-  v3 = [(objc_class *)a3 joinClauseForProperty:self->_property];
+  v3 = [(objc_class *)class joinClauseForProperty:self->_property];
   if (v3)
   {
     v4 = [NSSet setWithObject:v3];

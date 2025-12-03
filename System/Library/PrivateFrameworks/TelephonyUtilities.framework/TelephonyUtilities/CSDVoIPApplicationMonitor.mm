@@ -1,12 +1,12 @@
 @interface CSDVoIPApplicationMonitor
-- (BOOL)isRunningForegroundForVoIPApplication:(id)a3;
+- (BOOL)isRunningForegroundForVoIPApplication:(id)application;
 - (CSDVoIPApplicationMonitor)init;
-- (id)applicationStateForBundleIdentifier:(id)a3;
-- (id)fetchApplicationStateForBundleIdentifier:(id)a3;
-- (void)addVoIPApplication:(id)a3;
+- (id)applicationStateForBundleIdentifier:(id)identifier;
+- (id)fetchApplicationStateForBundleIdentifier:(id)identifier;
+- (void)addVoIPApplication:(id)application;
 - (void)dealloc;
-- (void)removeVoIPApplication:(id)a3;
-- (void)setApplicationState:(id)a3 forBundleIdentifier:(id)a4;
+- (void)removeVoIPApplication:(id)application;
+- (void)setApplicationState:(id)state forBundleIdentifier:(id)identifier;
 @end
 
 @implementation CSDVoIPApplicationMonitor
@@ -50,16 +50,16 @@
   [(CSDVoIPApplicationMonitor *)&v3 dealloc];
 }
 
-- (BOOL)isRunningForegroundForVoIPApplication:(id)a3
+- (BOOL)isRunningForegroundForVoIPApplication:(id)application
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  if ([v5 length])
+  applicationCopy = application;
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  if ([bundleIdentifier length])
   {
-    v6 = [(CSDVoIPApplicationMonitor *)self applicationStateForBundleIdentifier:v5];
-    v7 = [v6 unsignedIntValue];
+    v6 = [(CSDVoIPApplicationMonitor *)self applicationStateForBundleIdentifier:bundleIdentifier];
+    unsignedIntValue = [v6 unsignedIntValue];
 
-    v8 = v7 == 8;
+    v8 = unsignedIntValue == 8;
   }
 
   else
@@ -68,7 +68,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = applicationCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[WARN] Could not obtain bundle identifier from VoIP application %@", &v11, 0xCu);
     }
 
@@ -78,28 +78,28 @@
   return v8;
 }
 
-- (void)addVoIPApplication:(id)a3
+- (void)addVoIPApplication:(id)application
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  if ([v5 length])
+  applicationCopy = application;
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  if ([bundleIdentifier length])
   {
     os_unfair_lock_lock(&self->_accessorLock);
-    v6 = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    bundleIdentifierToApplicationState = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
+    v7 = [bundleIdentifierToApplicationState objectForKeyedSubscript:bundleIdentifier];
 
     if (!v7)
     {
-      v8 = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
-      v9 = [v8 allKeys];
-      v10 = [v9 arrayByAddingObject:v5];
+      bundleIdentifierToApplicationState2 = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
+      allKeys = [bundleIdentifierToApplicationState2 allKeys];
+      v10 = [allKeys arrayByAddingObject:bundleIdentifier];
 
-      v11 = [(CSDVoIPApplicationMonitor *)self applicationStateMonitor];
-      [v11 updateInterestedBundleIDs:v10 states:BKSApplicationStateAll];
+      applicationStateMonitor = [(CSDVoIPApplicationMonitor *)self applicationStateMonitor];
+      [applicationStateMonitor updateInterestedBundleIDs:v10 states:BKSApplicationStateAll];
 
-      v12 = [(CSDVoIPApplicationMonitor *)self fetchApplicationStateForBundleIdentifier:v5];
-      v13 = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
-      [v13 setObject:v12 forKeyedSubscript:v5];
+      v12 = [(CSDVoIPApplicationMonitor *)self fetchApplicationStateForBundleIdentifier:bundleIdentifier];
+      bundleIdentifierToApplicationState3 = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
+      [bundleIdentifierToApplicationState3 setObject:v12 forKeyedSubscript:bundleIdentifier];
     }
 
     os_unfair_lock_unlock(&self->_accessorLock);
@@ -111,31 +111,31 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = applicationCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[WARN] Could not obtain bundle identifier from VoIP application %@", &v15, 0xCu);
     }
   }
 }
 
-- (void)removeVoIPApplication:(id)a3
+- (void)removeVoIPApplication:(id)application
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  if ([v5 length])
+  applicationCopy = application;
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  if ([bundleIdentifier length])
   {
     os_unfair_lock_lock(&self->_accessorLock);
-    v6 = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    bundleIdentifierToApplicationState = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
+    v7 = [bundleIdentifierToApplicationState objectForKeyedSubscript:bundleIdentifier];
 
     if (v7)
     {
-      v8 = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
-      [v8 setObject:0 forKeyedSubscript:v5];
+      bundleIdentifierToApplicationState2 = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
+      [bundleIdentifierToApplicationState2 setObject:0 forKeyedSubscript:bundleIdentifier];
 
-      v9 = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
-      v10 = [v9 allKeys];
+      bundleIdentifierToApplicationState3 = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
+      allKeys = [bundleIdentifierToApplicationState3 allKeys];
 
-      if ([v10 count])
+      if ([allKeys count])
       {
         v11 = BKSApplicationStateAll;
       }
@@ -145,8 +145,8 @@
         v11 = 0;
       }
 
-      v12 = [(CSDVoIPApplicationMonitor *)self applicationStateMonitor];
-      [v12 updateInterestedBundleIDs:v10 states:v11];
+      applicationStateMonitor = [(CSDVoIPApplicationMonitor *)self applicationStateMonitor];
+      [applicationStateMonitor updateInterestedBundleIDs:allKeys states:v11];
     }
 
     else
@@ -155,7 +155,7 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138412290;
-        v15 = v4;
+        v15 = applicationCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[WARN] Could not obtain bundle identifier from VoIP application %@", &v14, 0xCu);
       }
     }
@@ -164,12 +164,12 @@
   }
 }
 
-- (id)applicationStateForBundleIdentifier:(id)a3
+- (id)applicationStateForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
-  v5 = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  bundleIdentifierToApplicationState = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
+  v6 = [bundleIdentifierToApplicationState objectForKeyedSubscript:identifierCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -187,13 +187,13 @@
   return v7;
 }
 
-- (void)setApplicationState:(id)a3 forBundleIdentifier:(id)a4
+- (void)setApplicationState:(id)state forBundleIdentifier:(id)identifier
 {
-  v11 = a3;
-  v6 = a4;
+  stateCopy = state;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
-  v7 = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  bundleIdentifierToApplicationState = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
+  v8 = [bundleIdentifierToApplicationState objectForKeyedSubscript:identifierCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -208,25 +208,25 @@
 
   if ((TUNumbersAreEqualOrNil() & 1) == 0)
   {
-    v10 = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
-    [v10 setObject:v11 forKeyedSubscript:v6];
+    bundleIdentifierToApplicationState2 = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
+    [bundleIdentifierToApplicationState2 setObject:stateCopy forKeyedSubscript:identifierCopy];
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (id)fetchApplicationStateForBundleIdentifier:(id)a3
+- (id)fetchApplicationStateForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
-  v6 = [v5 allKeys];
-  v7 = [v6 arrayByAddingObject:v4];
+  identifierCopy = identifier;
+  bundleIdentifierToApplicationState = [(CSDVoIPApplicationMonitor *)self bundleIdentifierToApplicationState];
+  allKeys = [bundleIdentifierToApplicationState allKeys];
+  v7 = [allKeys arrayByAddingObject:identifierCopy];
 
-  v8 = [(CSDVoIPApplicationMonitor *)self applicationStateMonitor];
-  [v8 updateInterestedBundleIDs:v7 states:BKSApplicationStateAll];
+  applicationStateMonitor = [(CSDVoIPApplicationMonitor *)self applicationStateMonitor];
+  [applicationStateMonitor updateInterestedBundleIDs:v7 states:BKSApplicationStateAll];
 
-  v9 = [(CSDVoIPApplicationMonitor *)self applicationStateMonitor];
-  v10 = [v9 applicationStateForApplication:v4];
+  applicationStateMonitor2 = [(CSDVoIPApplicationMonitor *)self applicationStateMonitor];
+  v10 = [applicationStateMonitor2 applicationStateForApplication:identifierCopy];
 
   v11 = [NSNumber numberWithUnsignedInt:v10];
 

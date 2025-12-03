@@ -1,36 +1,36 @@
 @interface WFWorkflowOutputRunResult
 - (BOOL)hasOutput;
-- (WFWorkflowOutputRunResult)initWithCoder:(id)a3;
-- (WFWorkflowOutputRunResult)initWithOutput:(id)a3 runError:(id)a4;
+- (WFWorkflowOutputRunResult)initWithCoder:(id)coder;
+- (WFWorkflowOutputRunResult)initWithOutput:(id)output runError:(id)error;
 - (id)description;
-- (id)resultBySettingError:(id)a3;
+- (id)resultBySettingError:(id)error;
 - (id)unableToDecodeError;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateOutputFromRepresentation:(id)a3 withCompletion:(id)a4;
-- (void)getOutputWithCompletionHandler:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateOutputFromRepresentation:(id)representation withCompletion:(id)completion;
+- (void)getOutputWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFWorkflowOutputRunResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFWorkflowOutputRunResult;
-  v4 = a3;
-  [(WFWorkflowRunResult *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFWorkflowRunResult *)&v6 encodeWithCoder:coderCopy];
   v5 = [(WFWorkflowOutputRunResult *)self archivedOutput:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"archivedOutput"];
+  [coderCopy encodeObject:v5 forKey:@"archivedOutput"];
 }
 
-- (WFWorkflowOutputRunResult)initWithCoder:(id)a3
+- (WFWorkflowOutputRunResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFWorkflowOutputRunResult;
-  v5 = [(WFWorkflowRunResult *)&v10 initWithCoder:v4];
+  v5 = [(WFWorkflowRunResult *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"archivedOutput"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"archivedOutput"];
     archivedOutput = v5->_archivedOutput;
     v5->_archivedOutput = v6;
 
@@ -40,11 +40,11 @@
   return v5;
 }
 
-- (void)generateOutputFromRepresentation:(id)a3 withCompletion:(id)a4
+- (void)generateOutputFromRepresentation:(id)representation withCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  representationCopy = representation;
+  completionCopy = completion;
   v7 = NSClassFromString(@"WFContentCollection");
   if (v7)
   {
@@ -54,8 +54,8 @@
     v13[1] = 3221225472;
     v13[2] = __77__WFWorkflowOutputRunResult_generateOutputFromRepresentation_withCompletion___block_invoke;
     v13[3] = &unk_1E7B00E08;
-    v14 = v6;
-    v10 = [v8 wf_securelyUnarchiveObjectWithData:v5 allowedClasses:v9 completionHandler:v13];
+    v14 = completionCopy;
+    v10 = [v8 wf_securelyUnarchiveObjectWithData:representationCopy allowedClasses:v9 completionHandler:v13];
   }
 
   else
@@ -68,7 +68,7 @@
       _os_log_impl(&dword_1B1DE3000, v11, OS_LOG_TYPE_FAULT, "%s Unable to get output from WFWorkflowRunRequest, since ContentKit isn't linked.", buf, 0xCu);
     }
 
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -79,17 +79,17 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFWorkflowOutputRunResult *)self cachedOutput];
-  v7 = v6;
-  if (!v6)
+  cachedOutput = [(WFWorkflowOutputRunResult *)self cachedOutput];
+  archivedOutput = cachedOutput;
+  if (!cachedOutput)
   {
-    v7 = [(WFWorkflowOutputRunResult *)self archivedOutput];
+    archivedOutput = [(WFWorkflowOutputRunResult *)self archivedOutput];
   }
 
-  v8 = [(WFWorkflowRunResult *)self error];
-  v9 = [v3 stringWithFormat:@"<%@: %p Output: %@, Error: %@", v5, self, v7, v8];
+  error = [(WFWorkflowRunResult *)self error];
+  v9 = [v3 stringWithFormat:@"<%@: %p Output: %@, Error: %@", v5, self, archivedOutput, error];
 
-  if (!v6)
+  if (!cachedOutput)
   {
   }
 
@@ -115,37 +115,37 @@
   return v7;
 }
 
-- (void)getOutputWithCompletionHandler:(id)a3
+- (void)getOutputWithCompletionHandler:(id)handler
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFWorkflowOutputRunResult *)self cachedOutput];
+  handlerCopy = handler;
+  cachedOutput = [(WFWorkflowOutputRunResult *)self cachedOutput];
 
-  if (v5)
+  if (cachedOutput)
   {
-    v6 = [(WFWorkflowOutputRunResult *)self cachedOutput];
-    v4[2](v4, v6, 0);
+    cachedOutput2 = [(WFWorkflowOutputRunResult *)self cachedOutput];
+    handlerCopy[2](handlerCopy, cachedOutput2, 0);
   }
 
   else
   {
-    v7 = [(WFWorkflowOutputRunResult *)self archivedOutput];
+    archivedOutput = [(WFWorkflowOutputRunResult *)self archivedOutput];
 
-    if (v7)
+    if (archivedOutput)
     {
-      v8 = [(WFWorkflowOutputRunResult *)self archivedOutput];
+      archivedOutput2 = [(WFWorkflowOutputRunResult *)self archivedOutput];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __60__WFWorkflowOutputRunResult_getOutputWithCompletionHandler___block_invoke;
       v10[3] = &unk_1E7B01240;
       v10[4] = self;
-      v11 = v4;
-      [(WFWorkflowOutputRunResult *)self generateOutputFromRepresentation:v8 withCompletion:v10];
+      v11 = handlerCopy;
+      [(WFWorkflowOutputRunResult *)self generateOutputFromRepresentation:archivedOutput2 withCompletion:v10];
     }
 
     else
     {
-      v4[2](v4, 0, 0);
+      handlerCopy[2](handlerCopy, 0, 0);
     }
   }
 
@@ -162,41 +162,41 @@ void __60__WFWorkflowOutputRunResult_getOutputWithCompletionHandler___block_invo
 
 - (BOOL)hasOutput
 {
-  v2 = [(WFWorkflowOutputRunResult *)self archivedOutput];
-  v3 = v2 != 0;
+  archivedOutput = [(WFWorkflowOutputRunResult *)self archivedOutput];
+  v3 = archivedOutput != 0;
 
   return v3;
 }
 
-- (id)resultBySettingError:(id)a3
+- (id)resultBySettingError:(id)error
 {
   v11.receiver = self;
   v11.super_class = WFWorkflowOutputRunResult;
-  v4 = [(WFWorkflowRunResult *)&v11 resultBySettingError:a3];
-  v5 = [(WFWorkflowOutputRunResult *)self archivedOutput];
-  v6 = [v5 copyWithZone:0];
+  v4 = [(WFWorkflowRunResult *)&v11 resultBySettingError:error];
+  archivedOutput = [(WFWorkflowOutputRunResult *)self archivedOutput];
+  v6 = [archivedOutput copyWithZone:0];
   v7 = v4[2];
   v4[2] = v6;
 
-  v8 = [(WFWorkflowOutputRunResult *)self cachedOutput];
+  cachedOutput = [(WFWorkflowOutputRunResult *)self cachedOutput];
   v9 = v4[3];
-  v4[3] = v8;
+  v4[3] = cachedOutput;
 
   return self;
 }
 
-- (WFWorkflowOutputRunResult)initWithOutput:(id)a3 runError:(id)a4
+- (WFWorkflowOutputRunResult)initWithOutput:(id)output runError:(id)error
 {
-  v7 = a3;
+  outputCopy = output;
   v13.receiver = self;
   v13.super_class = WFWorkflowOutputRunResult;
-  v8 = [(WFWorkflowRunResult *)&v13 initWithError:a4];
+  v8 = [(WFWorkflowRunResult *)&v13 initWithError:error];
   v9 = v8;
   if (v8)
   {
-    if (v7)
+    if (outputCopy)
     {
-      v10 = [(WFWorkflowOutputRunResult *)v8 generateRepresentationFromOutput:v7];
+      v10 = [(WFWorkflowOutputRunResult *)v8 generateRepresentationFromOutput:outputCopy];
     }
 
     else
@@ -205,11 +205,11 @@ void __60__WFWorkflowOutputRunResult_getOutputWithCompletionHandler___block_invo
     }
 
     objc_storeStrong(&v9->_archivedOutput, v10);
-    if (v7)
+    if (outputCopy)
     {
     }
 
-    objc_storeStrong(&v9->_cachedOutput, a3);
+    objc_storeStrong(&v9->_cachedOutput, output);
     v11 = v9;
   }
 

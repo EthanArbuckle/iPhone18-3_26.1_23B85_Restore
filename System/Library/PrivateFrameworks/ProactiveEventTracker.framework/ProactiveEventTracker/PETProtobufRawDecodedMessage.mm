@@ -1,6 +1,6 @@
 @interface PETProtobufRawDecodedMessage
-- (BOOL)readFrom:(id)a3;
-- (PETProtobufRawDecodedMessage)initWithData:(id)a3 nestedFields:(id)a4;
+- (BOOL)readFrom:(id)from;
+- (PETProtobufRawDecodedMessage)initWithData:(id)data nestedFields:(id)fields;
 - (id)dictionaryRepresentation;
 @end
 
@@ -13,17 +13,17 @@
   return v2;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v4 = a3;
-  v5 = [v4 position];
-  if (v5 < [v4 length])
+  fromCopy = from;
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     v6 = 0x1E696A000uLL;
     v7 = 0x1ECE53000;
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -35,18 +35,18 @@
       while (1)
       {
         v73 = 0;
-        v12 = [v4 position] + 1;
-        if (v12 >= [v4 position] && (v13 = objc_msgSend(v4, "position") + 1, v13 <= objc_msgSend(v4, "length")))
+        v12 = [fromCopy position] + 1;
+        if (v12 >= [fromCopy position] && (v13 = objc_msgSend(fromCopy, "position") + 1, v13 <= objc_msgSend(fromCopy, "length")))
         {
-          v14 = [v4 data];
-          [v14 getBytes:&v73 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v73 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v11 |= (v73 & 0x7F) << v9;
@@ -64,13 +64,13 @@
         }
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v11 = 0;
       }
 
 LABEL_15:
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_67;
       }
@@ -89,18 +89,18 @@ LABEL_15:
 
           v22 = *(v6 + 3480);
           v70 = 0;
-          v23 = [v4 position] + 4;
-          if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 4, v24 <= objc_msgSend(v4, "length")))
+          v23 = [fromCopy position] + 4;
+          if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 4, v24 <= objc_msgSend(fromCopy, "length")))
           {
-            v47 = [v4 data];
-            [v47 getBytes:&v70 range:{objc_msgSend(v4, "position"), 4}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v70 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           LODWORD(v25) = v70;
@@ -175,18 +175,18 @@ LABEL_15:
 
           v19 = *(v6 + 3480);
           v71 = 0.0;
-          v20 = [v4 position] + 8;
-          if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 8, v21 <= objc_msgSend(v4, "length")))
+          v20 = [fromCopy position] + 8;
+          if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 8, v21 <= objc_msgSend(fromCopy, "length")))
           {
-            v45 = [v4 data];
-            [v45 getBytes:&v71 range:{objc_msgSend(v4, "position"), 8}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v71 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v46 = [v19 numberWithDouble:v71];
@@ -203,18 +203,18 @@ LABEL_49:
         while (1)
         {
           v72 = 0;
-          v31 = [v4 position] + 1;
-          if (v31 >= [v4 position] && (v32 = objc_msgSend(v4, "position") + 1, v32 <= objc_msgSend(v4, "length")))
+          v31 = [fromCopy position] + 1;
+          if (v31 >= [fromCopy position] && (v32 = objc_msgSend(fromCopy, "position") + 1, v32 <= objc_msgSend(fromCopy, "length")))
           {
-            v33 = [v4 data];
-            [v33 getBytes:&v72 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v72 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v29 |= (v72 & 0x7F) << v26;
@@ -232,7 +232,7 @@ LABEL_49:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v34 = 0;
         }
@@ -248,7 +248,7 @@ LABEL_42:
       }
 
 LABEL_53:
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
 LABEL_66:
 
@@ -300,22 +300,22 @@ LABEL_67:
       }
 
       objc_autoreleasePoolPop(v8);
-      v65 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v65 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  v68 = [v4 hasError] ^ 1;
+  v68 = [fromCopy hasError] ^ 1;
 LABEL_68:
 
   return v68;
 }
 
-- (PETProtobufRawDecodedMessage)initWithData:(id)a3 nestedFields:(id)a4
+- (PETProtobufRawDecodedMessage)initWithData:(id)data nestedFields:(id)fields
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  fieldsCopy = fields;
   v15.receiver = self;
   v15.super_class = PETProtobufRawDecodedMessage;
   v8 = [(PETProtobufRawDecodedMessage *)&v15 init];
@@ -328,17 +328,17 @@ LABEL_68:
   decodedDict = v8->_decodedDict;
   v8->_decodedDict = v9;
 
-  objc_storeStrong(&v8->_nestedFields, a4);
-  v11 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:v6];
+  objc_storeStrong(&v8->_nestedFields, fields);
+  v11 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:dataCopy];
   if (![(PETProtobufRawDecodedMessage *)v8 readFrom:v11])
   {
 
     goto LABEL_6;
   }
 
-  v12 = [v11 hasError];
+  hasError = [v11 hasError];
 
-  if (v12)
+  if (hasError)
   {
 LABEL_6:
     v13 = 0;

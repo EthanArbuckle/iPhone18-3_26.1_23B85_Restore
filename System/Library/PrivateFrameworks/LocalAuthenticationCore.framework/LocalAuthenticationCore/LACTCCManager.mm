@@ -1,9 +1,9 @@
 @interface LACTCCManager
 + (id)sharedInstance;
-- (int64_t)_authorizationStatusFromRight:(unint64_t)a3;
-- (int64_t)authorizationStatusForService:(id)a3 auditToken:(id *)a4 promptUser:(BOOL)a5;
-- (int64_t)authorizationStatusOfFaceIDServiceForAuditToken:(id *)a3;
-- (void)requestAuthorizationForService:(id)a3 completion:(id)a4;
+- (int64_t)_authorizationStatusFromRight:(unint64_t)right;
+- (int64_t)authorizationStatusForService:(id)service auditToken:(id *)token promptUser:(BOOL)user;
+- (int64_t)authorizationStatusOfFaceIDServiceForAuditToken:(id *)token;
+- (void)requestAuthorizationForService:(id)service completion:(id)completion;
 @end
 
 @implementation LACTCCManager
@@ -27,23 +27,23 @@ uint64_t __31__LACTCCManager_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (int64_t)authorizationStatusOfFaceIDServiceForAuditToken:(id *)a3
+- (int64_t)authorizationStatusOfFaceIDServiceForAuditToken:(id *)token
 {
-  v5 = [objc_opt_class() faceIDServiceName];
-  v6 = *&a3->var0[4];
-  v9[0] = *a3->var0;
+  faceIDServiceName = [objc_opt_class() faceIDServiceName];
+  v6 = *&token->var0[4];
+  v9[0] = *token->var0;
   v9[1] = v6;
-  v7 = [(LACTCCManager *)self authorizationStatusForService:v5 auditToken:v9 promptUser:0];
+  v7 = [(LACTCCManager *)self authorizationStatusForService:faceIDServiceName auditToken:v9 promptUser:0];
 
   return v7;
 }
 
-- (int64_t)authorizationStatusForService:(id)a3 auditToken:(id *)a4 promptUser:(BOOL)a5
+- (int64_t)authorizationStatusForService:(id)service auditToken:(id *)token promptUser:(BOOL)user
 {
-  v5 = a5;
+  userCopy = user;
   v14[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (v5)
+  serviceCopy = service;
+  if (userCopy)
   {
     v13 = *MEMORY[0x1E69D54D8];
     v14[0] = MEMORY[0x1E695E118];
@@ -55,24 +55,24 @@ uint64_t __31__LACTCCManager_sharedInstance__block_invoke()
     v9 = 0;
   }
 
-  v10 = [(LACTCCManager *)self _authorizationStatusFromRight:tcc_authorization_check_audit_token(), *a4->var0, *&a4->var0[2], *&a4->var0[4], *&a4->var0[6]];
+  v10 = [(LACTCCManager *)self _authorizationStatusFromRight:tcc_authorization_check_audit_token(), *token->var0, *&token->var0[2], *&token->var0[4], *&token->var0[6]];
 
   v11 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-- (void)requestAuthorizationForService:(id)a3 completion:(id)a4
+- (void)requestAuthorizationForService:(id)service completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  completionCopy = completion;
   v7 = tcc_server_create();
   v8 = tcc_message_options_create();
   tcc_message_options_set_reply_handler_policy();
   v9 = tcc_credential_singleton_for_self();
   v10 = tcc_service_singleton_for_CF_name();
-  v13 = v5;
-  v11 = v6;
-  v12 = v5;
+  v13 = serviceCopy;
+  v11 = completionCopy;
+  v12 = serviceCopy;
   tcc_server_message_request_authorization();
 }
 
@@ -109,11 +109,11 @@ uint64_t __59__LACTCCManager_requestAuthorizationForService_completion___block_i
   return result;
 }
 
-- (int64_t)_authorizationStatusFromRight:(unint64_t)a3
+- (int64_t)_authorizationStatusFromRight:(unint64_t)right
 {
-  if (a3)
+  if (right)
   {
-    return a3 == 2;
+    return right == 2;
   }
 
   else

@@ -6,7 +6,7 @@
 - (void)dealloc;
 - (void)decodeMetaData;
 - (void)loadNextFloorBlock;
-- (void)load__WithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (void)load__WithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (void)nextLeaf;
 @end
 
@@ -32,8 +32,8 @@ LABEL_11:
       break;
     }
 
-    v6 = [(OrgApacheLuceneStoreByteArrayDataInput *)self->floorDataReader_ readByte];
-    self->nextFloorLabel_ = v6;
+    readByte = [(OrgApacheLuceneStoreByteArrayDataInput *)self->floorDataReader_ readByte];
+    self->nextFloorLabel_ = readByte;
     if (!self->numFollowFloorBlocks_)
     {
       goto LABEL_8;
@@ -45,7 +45,7 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    if (transition->min_ < v6)
+    if (transition->min_ < readByte)
     {
       goto LABEL_8;
     }
@@ -57,9 +57,9 @@ LABEL_8:
   [(OrgApacheLuceneCodecsBlocktreeIntersectTermsEnumFrame *)self load__WithOrgApacheLuceneUtilBytesRef:0];
 }
 
-- (void)load__WithOrgApacheLuceneUtilBytesRef:(id)a3
+- (void)load__WithOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  if (a3)
+  if (ref)
   {
     floorDataReader = self->floorDataReader_;
     if (!floorDataReader)
@@ -67,7 +67,7 @@ LABEL_8:
       goto LABEL_33;
     }
 
-    [(OrgApacheLuceneStoreByteArrayDataInput *)floorDataReader resetWithByteArray:*(a3 + 1) withInt:*(a3 + 4) withInt:*(a3 + 5)];
+    [(OrgApacheLuceneStoreByteArrayDataInput *)floorDataReader resetWithByteArray:*(ref + 1) withInt:*(ref + 4) withInt:*(ref + 5)];
     if (([(OrgApacheLuceneStoreByteArrayDataInput *)self->floorDataReader_ readVLong]& 1) != 0)
     {
       self->numFollowFloorBlocks_ = [(OrgApacheLuceneStoreByteArrayDataInput *)self->floorDataReader_ readVInt];
@@ -108,9 +108,9 @@ LABEL_8:
             break;
           }
 
-          v10 = [(OrgApacheLuceneStoreByteArrayDataInput *)self->floorDataReader_ readByte];
+          readByte = [(OrgApacheLuceneStoreByteArrayDataInput *)self->floorDataReader_ readByte];
           numFollowFloorBlocks = self->numFollowFloorBlocks_;
-          self->nextFloorLabel_ = v10;
+          self->nextFloorLabel_ = readByte;
           if (!numFollowFloorBlocks)
           {
             goto LABEL_15;
@@ -136,21 +136,21 @@ LABEL_15:
   }
 
   [v13 seekWithLong:self->fp_];
-  v14 = [*(objc_loadWeak(&self->ite_) + 2) readVInt];
-  self->entCount_ = v14 >> 1;
-  self->isLastInFloor_ = v14 & 1;
-  v15 = [*(objc_loadWeak(&self->ite_) + 2) readVInt];
+  readVInt = [*(objc_loadWeak(&self->ite_) + 2) readVInt];
+  self->entCount_ = readVInt >> 1;
+  self->isLastInFloor_ = readVInt & 1;
+  readVInt2 = [*(objc_loadWeak(&self->ite_) + 2) readVInt];
   suffixBytes = self->suffixBytes_;
-  self->isLeafBlock_ = v15 & 1;
+  self->isLeafBlock_ = readVInt2 & 1;
   if (!suffixBytes)
   {
     goto LABEL_33;
   }
 
-  v23 = v15 >> 1;
+  v23 = readVInt2 >> 1;
   if (suffixBytes->super.size_ < v23)
   {
-    v24 = [IOSByteArray newArrayWithLength:OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(v15 >> 1, 1, v16, v17, v18, v19, v20, v21)];
+    v24 = [IOSByteArray newArrayWithLength:OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(readVInt2 >> 1, 1, v16, v17, v18, v19, v20, v21)];
     JreStrongAssignAndConsume(&self->suffixBytes_, v24);
   }
 
@@ -162,17 +162,17 @@ LABEL_15:
   }
 
   [(OrgApacheLuceneStoreByteArrayDataInput *)suffixesReader resetWithByteArray:self->suffixBytes_ withInt:0 withInt:v23];
-  v26 = [*(objc_loadWeak(&self->ite_) + 2) readVInt];
+  readVInt3 = [*(objc_loadWeak(&self->ite_) + 2) readVInt];
   statBytes = self->statBytes_;
   if (!statBytes)
   {
     goto LABEL_33;
   }
 
-  v34 = v26;
-  if (statBytes->super.size_ < v26)
+  v34 = readVInt3;
+  if (statBytes->super.size_ < readVInt3)
   {
-    v35 = [IOSByteArray newArrayWithLength:OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(v26, 1, v27, v28, v29, v30, v31, v32)];
+    v35 = [IOSByteArray newArrayWithLength:OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(readVInt3, 1, v27, v28, v29, v30, v31, v32)];
     JreStrongAssignAndConsume(&self->statBytes_, v35);
   }
 
@@ -193,17 +193,17 @@ LABEL_15:
 
   termState->termBlockOrd_ = 0;
   self->nextEnt_ = 0;
-  v38 = [*(objc_loadWeak(&self->ite_) + 2) readVInt];
+  readVInt4 = [*(objc_loadWeak(&self->ite_) + 2) readVInt];
   bytes = self->bytes_;
   if (!bytes)
   {
     goto LABEL_33;
   }
 
-  v46 = v38;
-  if (bytes->super.size_ < v38)
+  v46 = readVInt4;
+  if (bytes->super.size_ < readVInt4)
   {
-    v47 = [IOSByteArray newArrayWithLength:OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(v38, 1, v39, v40, v41, v42, v43, v44)];
+    v47 = [IOSByteArray newArrayWithLength:OrgApacheLuceneUtilArrayUtil_oversizeWithInt_withInt_(readVInt4, 1, v39, v40, v41, v42, v43, v44)];
     JreStrongAssignAndConsume(&self->bytes_, v47);
   }
 
@@ -265,11 +265,11 @@ LABEL_33:
     goto LABEL_31;
   }
 
-  v4 = [(OrgApacheLuceneStoreByteArrayDataInput *)suffixesReader readVInt];
-  v5 = v4;
+  readVInt = [(OrgApacheLuceneStoreByteArrayDataInput *)suffixesReader readVInt];
+  v5 = readVInt;
   if (!self->versionAutoPrefix_)
   {
-    self->suffix_ = v4 >> 1;
+    self->suffix_ = readVInt >> 1;
     self->startBytePos_ = [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ getPosition];
     [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ skipBytesWithLong:self->suffix_];
     if ((v5 & 1) == 0)
@@ -290,7 +290,7 @@ LABEL_31:
     goto LABEL_16;
   }
 
-  self->suffix_ = v4 >> 2;
+  self->suffix_ = readVInt >> 2;
   self->startBytePos_ = [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ getPosition];
   [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ skipBytesWithLong:self->suffix_];
   if ((v5 & 3u) <= 1)
@@ -318,19 +318,19 @@ LABEL_16:
     }
 
     ++v8->termBlockOrd_;
-    v9 = [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ readByte];
+    readByte = [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ readByte];
     result = 0;
-    if (v9 == -1)
+    if (readByte == -1)
     {
-      v9 = -1;
+      readByte = -1;
     }
 
     else
     {
-      v9 = v9;
+      readByte = readByte;
     }
 
-    self->floorSuffixLeadEnd_ = v9;
+    self->floorSuffixLeadEnd_ = readByte;
     self->isAutoPrefixTerm_ = 1;
     return result;
   }
@@ -410,9 +410,9 @@ LABEL_32:
 
   ++v22->termBlockOrd_;
   self->isAutoPrefixTerm_ = 1;
-  v23 = [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ readByte];
+  readByte2 = [(OrgApacheLuceneStoreByteArrayDataInput *)self->suffixesReader_ readByte];
   result = 0;
-  self->floorSuffixLeadEnd_ = v23;
+  self->floorSuffixLeadEnd_ = readByte2;
   return result;
 }
 
@@ -439,11 +439,11 @@ LABEL_32:
 
 - (void)decodeMetaData
 {
-  v3 = [(OrgApacheLuceneCodecsBlocktreeIntersectTermsEnumFrame *)self getTermBlockOrd];
+  getTermBlockOrd = [(OrgApacheLuceneCodecsBlocktreeIntersectTermsEnumFrame *)self getTermBlockOrd];
   metaDataUpto = self->metaDataUpto_;
-  if (metaDataUpto < v3)
+  if (metaDataUpto < getTermBlockOrd)
   {
-    v5 = v3;
+    v5 = getTermBlockOrd;
     v6 = metaDataUpto == 0;
     while (1)
     {
@@ -453,14 +453,14 @@ LABEL_32:
         goto LABEL_25;
       }
 
-      v8 = [(OrgApacheLuceneStoreByteArrayDataInput *)statsReader readVInt];
+      readVInt = [(OrgApacheLuceneStoreByteArrayDataInput *)statsReader readVInt];
       termState = self->termState_;
       if (!termState)
       {
         goto LABEL_25;
       }
 
-      termState->docFreq_ = v8;
+      termState->docFreq_ = readVInt;
       Weak = objc_loadWeak(&self->ite_);
       if (!Weak)
       {
@@ -479,13 +479,13 @@ LABEL_32:
         goto LABEL_25;
       }
 
-      v13 = [v12 getIndexOptions];
+      getIndexOptions = [v12 getIndexOptions];
       if ((atomic_load_explicit(OrgApacheLuceneIndexIndexOptionsEnum__initialized, memory_order_acquire) & 1) == 0)
       {
         sub_100015608();
       }
 
-      if (v13 != qword_100557378)
+      if (getIndexOptions != qword_100557378)
       {
         docFreq = self->termState_->docFreq_;
         self->termState_->totalTermFreq_ = [(OrgApacheLuceneStoreByteArrayDataInput *)self->statsReader_ readVLong]+ docFreq;
@@ -529,14 +529,14 @@ LABEL_20:
         break;
       }
 
-      v17 = [(OrgApacheLuceneStoreByteArrayDataInput *)bytesReader readVLong];
+      readVLong = [(OrgApacheLuceneStoreByteArrayDataInput *)bytesReader readVLong];
       longs = self->longs_;
       if (!longs)
       {
         break;
       }
 
-      v19 = v17;
+      v19 = readVLong;
       size = longs->super.size_;
       if (v15 >= size)
       {

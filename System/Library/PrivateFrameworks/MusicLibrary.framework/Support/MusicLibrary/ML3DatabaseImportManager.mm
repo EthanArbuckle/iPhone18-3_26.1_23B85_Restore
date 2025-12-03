@@ -1,20 +1,20 @@
 @interface ML3DatabaseImportManager
-- (void)collectDiagnostic:(id)a3;
+- (void)collectDiagnostic:(id)diagnostic;
 @end
 
 @implementation ML3DatabaseImportManager
 
-- (void)collectDiagnostic:(id)a3
+- (void)collectDiagnostic:(id)diagnostic
 {
-  v4 = a3;
-  v5 = [(ML3DatabaseImportManager *)self lastImportError];
-  [v4 setLastImportError:v5];
+  diagnosticCopy = diagnostic;
+  lastImportError = [(ML3DatabaseImportManager *)self lastImportError];
+  [diagnosticCopy setLastImportError:lastImportError];
 
-  v6 = [(ML3DatabaseImportManager *)self _importOperations];
-  [v4 setActiveImportOperations:v6];
+  _importOperations = [(ML3DatabaseImportManager *)self _importOperations];
+  [diagnosticCopy setActiveImportOperations:_importOperations];
 
-  v7 = [(ML3DatabaseImportManager *)self _suspendedImportOperations];
-  [v4 setSuspendedImportOperations:v7];
+  _suspendedImportOperations = [(ML3DatabaseImportManager *)self _suspendedImportOperations];
+  [diagnosticCopy setSuspendedImportOperations:_suspendedImportOperations];
 }
 
 @end

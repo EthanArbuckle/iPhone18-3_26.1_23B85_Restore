@@ -1,29 +1,29 @@
 @interface SGQuickResponsesToRobots
-+ (BOOL)insignificantSender:(id)a3;
-+ (BOOL)presentInContext:(id)a3 context:(id)a4 startIdx:(int64_t)a5 endIdx:(int64_t)a6;
-+ (float)allCapsRatio:(id)a3;
++ (BOOL)insignificantSender:(id)sender;
++ (BOOL)presentInContext:(id)context context:(id)a4 startIdx:(int64_t)idx endIdx:(int64_t)endIdx;
++ (float)allCapsRatio:(id)ratio;
 + (id)contactStore;
-+ (id)repliesToRobot:(id)a3 language:(id)a4 recipients:(id)a5;
-+ (id)repliesToRobot:(id)a3 language:(id)a4 recipients:(id)a5 config:(id)a6;
++ (id)repliesToRobot:(id)robot language:(id)language recipients:(id)recipients;
++ (id)repliesToRobot:(id)robot language:(id)language recipients:(id)recipients config:(id)config;
 + (void)warmup;
 @end
 
 @implementation SGQuickResponsesToRobots
 
-+ (id)repliesToRobot:(id)a3 language:(id)a4 recipients:(id)a5 config:(id)a6
++ (id)repliesToRobot:(id)robot language:(id)language recipients:(id)recipients config:(id)config
 {
   v62 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v14)
+  robotCopy = robot;
+  languageCopy = language;
+  recipientsCopy = recipients;
+  configCopy = config;
+  if (!configCopy)
   {
-    v51 = [MEMORY[0x277CCA890] currentHandler];
-    [v51 handleFailureInMethod:a2 object:a1 file:@"SGQuickResponsesToRobots.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"config"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesToRobots.m" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"config"}];
   }
 
-  if (([v14 enableFeature] & 1) == 0)
+  if (([configCopy enableFeature] & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -41,7 +41,7 @@ LABEL_50:
     goto LABEL_51;
   }
 
-  if (!v13)
+  if (!recipientsCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -54,7 +54,7 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  if (([v12 isEqualToString:@"en"] & 1) == 0)
+  if (([languageCopy isEqualToString:@"en"] & 1) == 0)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -62,15 +62,15 @@ LABEL_50:
     }
 
     *buf = 138412290;
-    v61 = v12;
+    v61 = languageCopy;
     v45 = MEMORY[0x277D86220];
     v46 = "SGQuickResponsesToRobots: Not running replies to robots for language %@";
     v47 = 12;
     goto LABEL_48;
   }
 
-  v15 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-  v16 = [SGStringSplitter splitString:v11 withCharacterSet:v15];
+  alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+  v16 = [SGStringSplitter splitString:robotCopy withCharacterSet:alphanumericCharacterSet];
 
   if (![v16 count])
   {
@@ -91,19 +91,19 @@ LABEL_50:
     goto LABEL_62;
   }
 
-  v59 = a1;
-  v53 = v13;
-  v54 = v11;
+  selfCopy = self;
+  v53 = recipientsCopy;
+  v54 = robotCopy;
   v17 = 0;
   v18 = 0;
   v19 = v58;
-  v56 = v12;
+  v56 = languageCopy;
   do
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = [v14 supportedKeysAndContext];
+    supportedKeysAndContext = [configCopy supportedKeysAndContext];
     v22 = [v16 objectAtIndexedSubscript:v17];
-    v23 = [v21 objectForKeyedSubscript:v22];
+    v23 = [supportedKeysAndContext objectForKeyedSubscript:v22];
 
     if (v23)
     {
@@ -119,17 +119,17 @@ LABEL_50:
 
         else
         {
-          v26 = [v14 triggerWords];
-          v18 = [v59 presentInContext:v16 context:v26 startIdx:v17 - objc_msgSend(v14 endIdx:{"triggerContext"), v17}];
+          triggerWords = [configCopy triggerWords];
+          v18 = [selfCopy presentInContext:v16 context:triggerWords startIdx:v17 - objc_msgSend(configCopy endIdx:{"triggerContext"), v17}];
         }
 
-        if ([v14 relaxContext])
+        if ([configCopy relaxContext])
         {
           v27 = 0;
           v28 = 0;
 LABEL_28:
-          v34 = [v14 relaxContext];
-          if ((v28 & 1) == 0 && (v34 & 1) == 0)
+          relaxContext = [configCopy relaxContext];
+          if ((v28 & 1) == 0 && (relaxContext & 1) == 0)
           {
             v19 = v58;
             if (!v27)
@@ -150,21 +150,21 @@ LABEL_33:
           v37 = [v16 objectAtIndexedSubscript:v17];
           BYTE2(v52) = 1;
           LOWORD(v52) = 256;
-          v38 = [SGQuickResponse initWithText:v36 lang:"initWithText:lang:replyTextId:styleGroupId:semanticClassId:modelId:categoryId:isCustomResponse:isRobotResponse:isConfident:" replyTextId:v37 styleGroupId:v12 semanticClassId:-1 modelId:-1 categoryId:-1 isCustomResponse:-1 isRobotResponse:-1 isConfident:v52];
+          v38 = [SGQuickResponse initWithText:v36 lang:"initWithText:lang:replyTextId:styleGroupId:semanticClassId:modelId:categoryId:isCustomResponse:isRobotResponse:isConfident:" replyTextId:v37 styleGroupId:languageCopy semanticClassId:-1 modelId:-1 categoryId:-1 isCustomResponse:-1 isRobotResponse:-1 isConfident:v52];
           [v57 addObject:v38];
 
           goto LABEL_34;
         }
 
-        if ([v14 useGeneralContext])
+        if ([configCopy useGeneralContext])
         {
-          v29 = [v14 generalContextWords];
+          generalContextWords = [configCopy generalContextWords];
           v30 = v17 + 1;
-          v31 = [v59 presentInContext:v16 context:v29 startIdx:v17 + 1 endIdx:{v17 + 1 + objc_msgSend(v14, "generalContextRight")}];
+          v31 = [selfCopy presentInContext:v16 context:generalContextWords startIdx:v17 + 1 endIdx:{v17 + 1 + objc_msgSend(configCopy, "generalContextRight")}];
 
           if (v31)
           {
-            [v14 relaxContext];
+            [configCopy relaxContext];
             goto LABEL_32;
           }
         }
@@ -175,26 +175,26 @@ LABEL_33:
         }
 
         v32 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v23];
-        v28 = [v59 presentInContext:v16 context:v32 startIdx:v30 endIdx:{v30 + objc_msgSend(v14, "rightContext")}];
+        v28 = [selfCopy presentInContext:v16 context:v32 startIdx:v30 endIdx:{v30 + objc_msgSend(configCopy, "rightContext")}];
         if (v28)
         {
           v27 = 0;
 LABEL_27:
 
-          v12 = v56;
+          languageCopy = v56;
           goto LABEL_28;
         }
 
-        v33 = [v14 useGeneralContext];
-        if (v33 && ([v14 generalContextWords], v55 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v59, "presentInContext:context:startIdx:endIdx:", v16, v55, v17 - objc_msgSend(v14, "generalContextLeft"), v17) & 1) != 0))
+        useGeneralContext = [configCopy useGeneralContext];
+        if (useGeneralContext && ([configCopy generalContextWords], v55 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(selfCopy, "presentInContext:context:startIdx:endIdx:", v16, v55, v17 - objc_msgSend(configCopy, "generalContextLeft"), v17) & 1) != 0))
         {
           v27 = 1;
         }
 
         else
         {
-          v27 = [v59 presentInContext:v16 context:v32 startIdx:v17 - objc_msgSend(v14 endIdx:{"leftContext"), v17}];
-          if (!v33)
+          v27 = [selfCopy presentInContext:v16 context:v32 startIdx:v17 - objc_msgSend(configCopy endIdx:{"leftContext"), v17}];
+          if (!useGeneralContext)
           {
             goto LABEL_27;
           }
@@ -213,12 +213,12 @@ LABEL_34:
   while ([v16 count] > v17);
   if (v18)
   {
-    v13 = v53;
+    recipientsCopy = v53;
     if ([v57 count])
     {
-      if ([v14 insignificantSender] && (objc_msgSend(v59, "insignificantSender:", v53) & 1) == 0)
+      if ([configCopy insignificantSender] && (objc_msgSend(selfCopy, "insignificantSender:", v53) & 1) == 0)
       {
-        v11 = v54;
+        robotCopy = v54;
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
         {
           *buf = 0;
@@ -234,13 +234,13 @@ LABEL_62:
 
       else
       {
-        [v14 capsWordsRatioMax];
-        v11 = v54;
+        [configCopy capsWordsRatioMax];
+        robotCopy = v54;
         if (v39 < 1.0)
         {
           [SGQuickResponsesToRobots allCapsRatio:v16];
           v41 = v40;
-          [v14 capsWordsRatioMax];
+          [configCopy capsWordsRatioMax];
           if (v41 > v42)
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -262,15 +262,15 @@ LABEL_62:
     else
     {
       v48 = 0;
-      v11 = v54;
+      robotCopy = v54;
     }
   }
 
   else
   {
     v48 = 0;
-    v13 = v53;
-    v11 = v54;
+    recipientsCopy = v53;
+    robotCopy = v54;
   }
 
 LABEL_64:
@@ -281,16 +281,16 @@ LABEL_51:
   return v48;
 }
 
-+ (id)repliesToRobot:(id)a3 language:(id)a4 recipients:(id)a5
++ (id)repliesToRobot:(id)robot language:(id)language recipients:(id)recipients
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  robotCopy = robot;
+  languageCopy = language;
+  recipientsCopy = recipients;
   v10 = objc_autoreleasePoolPush();
   v11 = +[SGQuickResponsesToRobotsConfig sharedInstance];
   if (v11)
   {
-    v12 = [SGQuickResponsesToRobots repliesToRobot:v7 language:v8 recipients:v9 config:v11];
+    v12 = [SGQuickResponsesToRobots repliesToRobot:robotCopy language:languageCopy recipients:recipientsCopy config:v11];
   }
 
   else
@@ -309,26 +309,26 @@ LABEL_51:
   return v12;
 }
 
-+ (BOOL)presentInContext:(id)a3 context:(id)a4 startIdx:(int64_t)a5 endIdx:(int64_t)a6
++ (BOOL)presentInContext:(id)context context:(id)a4 startIdx:(int64_t)idx endIdx:(int64_t)endIdx
 {
-  v9 = a3;
+  contextCopy = context;
   v10 = a4;
-  v11 = a5 & ~(a5 >> 63);
-  if ([v9 count] <= a6)
+  v11 = idx & ~(idx >> 63);
+  if ([contextCopy count] <= endIdx)
   {
-    a6 = [v9 count];
+    endIdx = [contextCopy count];
   }
 
-  if (v11 >= a6)
+  if (v11 >= endIdx)
   {
     v15 = 0;
   }
 
   else
   {
-    v12 = [v9 objectAtIndexedSubscript:v11];
-    v13 = [v12 lowercaseString];
-    v14 = [v10 containsObject:v13];
+    v12 = [contextCopy objectAtIndexedSubscript:v11];
+    lowercaseString = [v12 lowercaseString];
+    v14 = [v10 containsObject:lowercaseString];
 
     if (v14)
     {
@@ -338,42 +338,42 @@ LABEL_51:
     else
     {
       v16 = v11 + 1;
-      while (a6 != v16)
+      while (endIdx != v16)
       {
-        v17 = [v9 objectAtIndexedSubscript:v16];
-        v18 = [v17 lowercaseString];
-        v19 = [v10 containsObject:v18];
+        v17 = [contextCopy objectAtIndexedSubscript:v16];
+        lowercaseString2 = [v17 lowercaseString];
+        v19 = [v10 containsObject:lowercaseString2];
 
         ++v16;
         if (v19)
         {
-          v20 = v16 - 1;
+          endIdxCopy = v16 - 1;
           goto LABEL_12;
         }
       }
 
-      v20 = a6;
+      endIdxCopy = endIdx;
 LABEL_12:
-      v15 = v20 < a6;
+      v15 = endIdxCopy < endIdx;
     }
   }
 
   return v15;
 }
 
-+ (float)allCapsRatio:(id)a3
++ (float)allCapsRatio:(id)ratio
 {
-  v3 = a3;
-  if ([v3 count])
+  ratioCopy = ratio;
+  if ([ratioCopy count])
   {
     v4 = 0;
     v5 = 0.0;
     do
     {
-      v6 = [v3 objectAtIndexedSubscript:v4];
-      v7 = [v6 uppercaseString];
-      v8 = [v3 objectAtIndexedSubscript:v4];
-      v9 = [v7 isEqualToString:v8];
+      v6 = [ratioCopy objectAtIndexedSubscript:v4];
+      uppercaseString = [v6 uppercaseString];
+      v8 = [ratioCopy objectAtIndexedSubscript:v4];
+      v9 = [uppercaseString isEqualToString:v8];
 
       if (v9)
       {
@@ -383,7 +383,7 @@ LABEL_12:
       ++v4;
     }
 
-    while (v4 < [v3 count]);
+    while (v4 < [ratioCopy count]);
   }
 
   else
@@ -391,20 +391,20 @@ LABEL_12:
     v5 = 0.0;
   }
 
-  v10 = v5 / [v3 count];
+  v10 = v5 / [ratioCopy count];
 
   return v10;
 }
 
-+ (BOOL)insignificantSender:(id)a3
++ (BOOL)insignificantSender:(id)sender
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count] == 1)
+  senderCopy = sender;
+  v5 = senderCopy;
+  if (senderCopy && [senderCopy count] == 1)
   {
-    v6 = [v5 firstObject];
-    v7 = [v6 rangeOfString:@"@"];
+    firstObject = [v5 firstObject];
+    v7 = [firstObject rangeOfString:@"@"];
     v8 = *MEMORY[0x277CBD098];
     v9 = *MEMORY[0x277CBCFC0];
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -420,7 +420,7 @@ LABEL_12:
     v11 = v10;
     if ([v11 isEqualToString:v8])
     {
-      v12 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:v6];
+      v12 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:firstObject];
       if (v12)
       {
         v13 = v12;
@@ -429,18 +429,18 @@ LABEL_12:
 LABEL_14:
         v31[0] = *MEMORY[0x277CBD018];
         v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
-        v17 = [a1 contactStore];
+        contactStore = [self contactStore];
         v26 = 0;
-        v18 = [v17 unifiedContactsMatchingPredicate:v14 keysToFetch:v16 error:&v26];
+        v18 = [contactStore unifiedContactsMatchingPredicate:v14 keysToFetch:v16 error:&v26];
         v19 = v26;
-        v20 = [v18 firstObject];
+        firstObject2 = [v18 firstObject];
 
         if (v19)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v28 = v6;
+            v28 = firstObject;
             v29 = 2112;
             v30 = v19;
             _os_log_error_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "SGQuickResponsesToRobots: Error fetching contact with %@: %@", buf, 0x16u);
@@ -451,7 +451,7 @@ LABEL_14:
 
         else
         {
-          v15 = v20 == 0;
+          v15 = firstObject2 == 0;
         }
 
         goto LABEL_24;
@@ -472,7 +472,7 @@ LABEL_14:
     {
       if ([v11 isEqualToString:v9])
       {
-        v14 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:v6];
+        v14 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:firstObject];
         goto LABEL_14;
       }
 
@@ -533,8 +533,8 @@ uint64_t __40__SGQuickResponsesToRobots_contactStore__block_invoke()
   v4 = +[SGQuickResponsesToRobotsConfig sharedInstance];
   if (!v4)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:a2 object:a1 file:@"SGQuickResponsesToRobots.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"repliesToRobotsConfig"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesToRobots.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"repliesToRobotsConfig"}];
 
     v4 = 0;
   }

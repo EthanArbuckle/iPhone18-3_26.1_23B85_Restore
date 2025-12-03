@@ -1,39 +1,39 @@
 @interface MRTransition
-+ (id)retainedTransitionWithTransitionID:(id)a3 forTransitioner:(id)a4;
++ (id)retainedTransitionWithTransitionID:(id)d forTransitioner:(id)transitioner;
 - (BOOL)isAlphaFriendly;
 - (BOOL)isNative3D;
 - (BOOL)isOpaque;
 - (BOOL)needsSourceLayerImageForPrecomputing;
 - (BOOL)needsTargetLayerImageForPrecomputing;
 - (BOOL)noContentsMotion;
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments;
 - (CGSize)pixelSize;
-- (MRTransition)initWithTransitionID:(id)a3;
-- (id)patchworkAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
+- (MRTransition)initWithTransitionID:(id)d;
+- (id)patchworkAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
 - (void)cleanup;
 - (void)dealloc;
-- (void)releaseByTransitioner:(id)a3;
-- (void)setAttributes:(id)a3;
-- (void)setSourceLayerImage:(id)a3;
-- (void)setTargetLayerImage:(id)a3;
+- (void)releaseByTransitioner:(id)transitioner;
+- (void)setAttributes:(id)attributes;
+- (void)setSourceLayerImage:(id)image;
+- (void)setTargetLayerImage:(id)image;
 - (void)unload;
 @end
 
 @implementation MRTransition
 
-+ (id)retainedTransitionWithTransitionID:(id)a3 forTransitioner:(id)a4
++ (id)retainedTransitionWithTransitionID:(id)d forTransitioner:(id)transitioner
 {
   v5 = [+[MRTransitionManager sharedManager](MRTransitionManager "sharedManager")];
-  [v5 retainByTransitioner:a4];
+  [v5 retainByTransitioner:transitioner];
   return v5;
 }
 
-- (MRTransition)initWithTransitionID:(id)a3
+- (MRTransition)initWithTransitionID:(id)d
 {
   v4 = [(MRTransition *)self init];
   if (v4)
   {
-    v4->mTransitionID = [a3 copy];
+    v4->mTransitionID = [d copy];
     v4->mPresetID = 0;
     v4->mDescription = [+[MRTransitionManager sharedManager](MRTransitionManager "sharedManager")];
     *&v4->mTransitioner = 0u;
@@ -68,7 +68,7 @@
   }
 }
 
-- (void)releaseByTransitioner:(id)a3
+- (void)releaseByTransitioner:(id)transitioner
 {
   self->mTransitioner = 0;
 
@@ -104,18 +104,18 @@
   return [v2 BOOLValue];
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
-  if (a3)
+  if (attributes)
   {
-    if (self->mAttributes == a3)
+    if (self->mAttributes == attributes)
     {
       return;
     }
 
-    self->mAttributes = a3;
+    self->mAttributes = attributes;
 
-    self->mPresetID = [a3 objectForKey:@"PresetID"];
+    self->mPresetID = [attributes objectForKey:@"PresetID"];
     v5 = objc_alloc_init(NSMutableDictionary);
     v6 = [+[MPTransitionManager sharedManager](MPTransitionManager "sharedManager")];
     if (v6)
@@ -123,7 +123,7 @@
       [(NSDictionary *)v5 addEntriesFromDictionary:v6];
     }
 
-    [(NSDictionary *)v5 addEntriesFromDictionary:a3];
+    [(NSDictionary *)v5 addEntriesFromDictionary:attributes];
     self->mFlattenedAttributes = v5;
   }
 
@@ -136,7 +136,7 @@
   self->mNeedsToUpdateAttributes = 1;
 }
 
-- (void)setSourceLayerImage:(id)a3
+- (void)setSourceLayerImage:(id)image
 {
   mSourceLayerImage = self->mSourceLayerImage;
   if (mSourceLayerImage)
@@ -144,10 +144,10 @@
     [(MRImage *)mSourceLayerImage releaseByUser];
   }
 
-  self->mSourceLayerImage = [a3 retainByUser];
+  self->mSourceLayerImage = [image retainByUser];
 }
 
-- (void)setTargetLayerImage:(id)a3
+- (void)setTargetLayerImage:(id)image
 {
   mTargetLayerImage = self->mTargetLayerImage;
   if (mTargetLayerImage)
@@ -155,7 +155,7 @@
     [(MRImage *)mTargetLayerImage releaseByUser];
   }
 
-  self->mTargetLayerImage = [a3 retainByUser];
+  self->mTargetLayerImage = [image retainByUser];
 }
 
 - (void)unload
@@ -204,27 +204,27 @@
   return [v3 BOOLValue];
 }
 
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
-  self->_progress = a3;
+  self->_progress = time;
   mSourceLayer = self->mSourceLayer;
   [(MRLayerClock *)[(MRLayer *)mSourceLayer clock] externalTime];
-  [(MRLayer *)mSourceLayer prerenderForTime:a4 inContext:a5 withArguments:?];
+  [(MRLayer *)mSourceLayer prerenderForTime:context inContext:arguments withArguments:?];
   mTargetLayer = self->mTargetLayer;
   [(MRLayerClock *)[(MRLayer *)mTargetLayer clock] externalTime];
-  [(MRLayer *)mTargetLayer prerenderForTime:a4 inContext:a5 withArguments:?];
+  [(MRLayer *)mTargetLayer prerenderForTime:context inContext:arguments withArguments:?];
   return 1;
 }
 
-- (id)patchworkAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (id)patchworkAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   if (self->mPixelSize.width <= 0.0 || self->mPixelSize.height <= 0.0)
   {
     return 0;
   }
 
-  v6 = [(MRTransition *)self retainedByUserRenderedImageAtTime:a4 inContext:a5 withArguments:a3];
-  [a4 localAspectRatio];
+  v6 = [(MRTransition *)self retainedByUserRenderedImageAtTime:context inContext:arguments withArguments:time];
+  [context localAspectRatio];
   v8 = [[NSDictionary alloc] initWithObjectsAndKeys:{objc_msgSend(v6, "insertingInCollection"), @"image", +[NSValue valueWithCGRect:](NSValue, "valueWithCGRect:", -1.0, 2.0 / v7 * -0.5, 2.0, 2.0 / v7), @"rectangle", 0}];
   v9 = [NSArray arrayWithObject:v8];
 

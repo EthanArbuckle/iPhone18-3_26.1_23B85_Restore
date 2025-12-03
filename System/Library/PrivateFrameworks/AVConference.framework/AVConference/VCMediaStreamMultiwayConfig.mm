@@ -1,8 +1,8 @@
 @interface VCMediaStreamMultiwayConfig
 - (NSArray)streamIds;
 - (VCMediaStreamMultiwayConfig)init;
-- (void)addRxPayloadType:(int)a3 networkPayload:(unsigned int)a4;
-- (void)addTxPayloadType:(int)a3 networkPayload:(unsigned int)a4;
+- (void)addRxPayloadType:(int)type networkPayload:(unsigned int)payload;
+- (void)addTxPayloadType:(int)type networkPayload:(unsigned int)payload;
 - (void)dealloc;
 @end
 
@@ -50,20 +50,20 @@
   return v3;
 }
 
-- (void)addRxPayloadType:(int)a3 networkPayload:(unsigned int)a4
+- (void)addRxPayloadType:(int)type networkPayload:(unsigned int)payload
 {
-  v4 = *&a3;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a4];
+  v4 = *&type;
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&payload];
   rxPayloadMap = self->_rxPayloadMap;
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
 
   [(NSMutableDictionary *)rxPayloadMap setObject:v6 forKeyedSubscript:v8];
 }
 
-- (void)addTxPayloadType:(int)a3 networkPayload:(unsigned int)a4
+- (void)addTxPayloadType:(int)type networkPayload:(unsigned int)payload
 {
-  v4 = *&a3;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a4];
+  v4 = *&type;
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&payload];
   txPayloadMap = self->_txPayloadMap;
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
 

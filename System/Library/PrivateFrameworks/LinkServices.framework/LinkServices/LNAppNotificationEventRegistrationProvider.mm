@@ -1,29 +1,29 @@
 @interface LNAppNotificationEventRegistrationProvider
 - (LNAppNotificationEventRegistrationProvider)init;
 - (void)dealloc;
-- (void)registerForAppNotificationEventsOfBundleIdentifier:(id)a3 entityType:(id)a4 completion:(id)a5;
-- (void)unregisterForAppNotificationEventsOfBundleIdentifier:(id)a3 entityType:(id)a4 completion:(id)a5;
+- (void)registerForAppNotificationEventsOfBundleIdentifier:(id)identifier entityType:(id)type completion:(id)completion;
+- (void)unregisterForAppNotificationEventsOfBundleIdentifier:(id)identifier entityType:(id)type completion:(id)completion;
 @end
 
 @implementation LNAppNotificationEventRegistrationProvider
 
-- (void)unregisterForAppNotificationEventsOfBundleIdentifier:(id)a3 entityType:(id)a4 completion:(id)a5
+- (void)unregisterForAppNotificationEventsOfBundleIdentifier:(id)identifier entityType:(id)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  typeCopy = type;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_19763D000, "appintents:Stop observation", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __121__LNAppNotificationEventRegistrationProvider_unregisterForAppNotificationEventsOfBundleIdentifier_entityType_completion___block_invoke;
   v15[3] = &unk_1E74B12A0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = identifierCopy;
+  v17 = typeCopy;
+  v18 = completionCopy;
+  v12 = typeCopy;
+  v13 = identifierCopy;
+  v14 = completionCopy;
   os_activity_apply(v11, v15);
 }
 
@@ -39,23 +39,23 @@ void __121__LNAppNotificationEventRegistrationProvider_unregisterForAppNotificat
   [v3 unregisterForAppNotificationEventsOfBundleIdentifier:*(a1 + 40) entityType:*(a1 + 48) completionHandler:*(a1 + 56)];
 }
 
-- (void)registerForAppNotificationEventsOfBundleIdentifier:(id)a3 entityType:(id)a4 completion:(id)a5
+- (void)registerForAppNotificationEventsOfBundleIdentifier:(id)identifier entityType:(id)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  typeCopy = type;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_19763D000, "appintents:Start observation", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __119__LNAppNotificationEventRegistrationProvider_registerForAppNotificationEventsOfBundleIdentifier_entityType_completion___block_invoke;
   v15[3] = &unk_1E74B12A0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = identifierCopy;
+  v17 = typeCopy;
+  v18 = completionCopy;
+  v12 = typeCopy;
+  v13 = identifierCopy;
+  v14 = completionCopy;
   os_activity_apply(v11, v15);
 }
 

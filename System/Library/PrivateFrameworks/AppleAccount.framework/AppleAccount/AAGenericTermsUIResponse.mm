@@ -1,22 +1,22 @@
 @interface AAGenericTermsUIResponse
-- (AAGenericTermsUIResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (AAGenericTermsUIResponse)initWithHTTPResponse:(id)response data:(id)data;
 @end
 
 @implementation AAGenericTermsUIResponse
 
-- (AAGenericTermsUIResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (AAGenericTermsUIResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  dataCopy = data;
   v21.receiver = self;
   v21.super_class = AAGenericTermsUIResponse;
-  v8 = [(AAResponse *)&v21 initWithHTTPResponse:a3 data:v7 bodyIsPlist:1];
+  v8 = [(AAResponse *)&v21 initWithHTTPResponse:response data:dataCopy bodyIsPlist:1];
   v9 = v8;
   if (v8 && [(NSHTTPURLResponse *)v8->super._httpResponse statusCode]== 200)
   {
-    if (v7)
+    if (dataCopy)
     {
-      objc_storeStrong(&v9->_responseData, a4);
+      objc_storeStrong(&v9->_responseData, data);
       v10 = [(NSDictionary *)v9->super._responseDictionary objectForKey:@"terms"];
       responseTermsDictionary = v9->_responseTermsDictionary;
       v9->_responseTermsDictionary = v10;

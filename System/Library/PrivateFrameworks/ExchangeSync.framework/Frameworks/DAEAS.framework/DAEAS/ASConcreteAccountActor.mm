@@ -1,81 +1,81 @@
 @interface ASConcreteAccountActor
 + (void)_initializeActorRunLoop;
-+ (void)_runActorThreadWithStartupLock:(id)a3;
-- (ASConcreteAccountActor)initWithDAAccount:(id)a3;
++ (void)_runActorThreadWithStartupLock:(id)lock;
+- (ASConcreteAccountActor)initWithDAAccount:(id)account;
 - (BOOL)generatesBulletins;
-- (BOOL)reattemptInvitationLinkageForMetaData:(id)a3 inFolderWithId:(id)a4;
+- (BOOL)reattemptInvitationLinkageForMetaData:(id)data inFolderWithId:(id)id;
 - (BOOL)searchQueriesRunning;
-- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)a3 deleted:(id)a4 foldersTag:(id)a5;
+- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)added deleted:(id)deleted foldersTag:(id)tag;
 - (id)customSignature;
 - (id)deletedItemsFolder;
 - (id)draftsFolder;
 - (id)encryptionIdentityPersistentReference;
-- (id)folderIDsThatExternalClientsCareAboutForDataclasses:(int64_t)a3 withTag:(id *)a4;
-- (id)folderIDsThatExternalClientsCareAboutWithTag:(id *)a3;
+- (id)folderIDsThatExternalClientsCareAboutForDataclasses:(int64_t)dataclasses withTag:(id *)tag;
+- (id)folderIDsThatExternalClientsCareAboutWithTag:(id *)tag;
 - (id)inboxFolder;
 - (id)mailboxes;
 - (id)sentItemsFolder;
 - (id)signingIdentityPersistentReference;
-- (id)unactionableICSRepresentationForMetaData:(id)a3 inFolderWithId:(id)a4 outSummary:(id *)a5;
+- (id)unactionableICSRepresentationForMetaData:(id)data inFolderWithId:(id)id outSummary:(id *)summary;
 - (int)mailNumberOfPastDaysToSync;
-- (int)performFetchAttachmentRequest:(id)a3 consumer:(id)a4;
-- (int)performFetchMessageSearchResultRequests:(id)a3 consumer:(id)a4;
-- (int)performMailboxRequest:(id)a3 mailbox:(id)a4 previousTag:(id)a5 clientWinsOnSyncConflict:(BOOL)a6 isUserRequested:(BOOL)a7 consumer:(id)a8;
-- (int)performMailboxRequests:(id)a3 mailbox:(id)a4 previousTag:(id)a5 clientWinsOnSyncConflict:(BOOL)a6 isUserRequested:(BOOL)a7 consumer:(id)a8;
-- (int)performMoveRequests:(id)a3 consumer:(id)a4;
-- (int)performResolveRecipientsRequest:(id)a3 consumer:(id)a4;
-- (int)sendMessageWithRFC822Data:(id)a3 messageID:(id)a4 outgoingMessageType:(int)a5 originalMessageFolderID:(id)a6 originalMessageItemID:(id)a7 originalMessageLongID:(id)a8 originalAccountID:(id)a9 useSmartTasksIfPossible:(BOOL)a10 isUserRequested:(BOOL)a11 consumer:(id)a12 context:(id)a13;
-- (int)sendSmartMessageWithRFC822Data:(id)a3 messageID:(id)a4 outgoingMessageType:(int)a5 originalMessageFolderID:(id)a6 originalMessageItemID:(id)a7 originalMessageLongID:(id)a8 originalAccountID:(id)a9 replaceOriginalMime:(BOOL)a10 isUserRequested:(BOOL)a11 consumer:(id)a12 context:(id)a13;
+- (int)performFetchAttachmentRequest:(id)request consumer:(id)consumer;
+- (int)performFetchMessageSearchResultRequests:(id)requests consumer:(id)consumer;
+- (int)performMailboxRequest:(id)request mailbox:(id)mailbox previousTag:(id)tag clientWinsOnSyncConflict:(BOOL)conflict isUserRequested:(BOOL)requested consumer:(id)consumer;
+- (int)performMailboxRequests:(id)requests mailbox:(id)mailbox previousTag:(id)tag clientWinsOnSyncConflict:(BOOL)conflict isUserRequested:(BOOL)requested consumer:(id)consumer;
+- (int)performMoveRequests:(id)requests consumer:(id)consumer;
+- (int)performResolveRecipientsRequest:(id)request consumer:(id)consumer;
+- (int)sendMessageWithRFC822Data:(id)data messageID:(id)d outgoingMessageType:(int)type originalMessageFolderID:(id)iD originalMessageItemID:(id)itemID originalMessageLongID:(id)longID originalAccountID:(id)accountID useSmartTasksIfPossible:(BOOL)self0 isUserRequested:(BOOL)self1 consumer:(id)self2 context:(id)self3;
+- (int)sendSmartMessageWithRFC822Data:(id)data messageID:(id)d outgoingMessageType:(int)type originalMessageFolderID:(id)iD originalMessageItemID:(id)itemID originalMessageLongID:(id)longID originalAccountID:(id)accountID replaceOriginalMime:(BOOL)self0 isUserRequested:(BOOL)self1 consumer:(id)self2 context:(id)self3;
 - (int)supportsConversations;
 - (int)supportsDraftFolderSync;
 - (int)supportsEmailFlagging;
 - (int)supportsMailboxSearch;
 - (int)supportsSmartForwardReply;
 - (int)supportsUniqueServerId;
-- (void)_daemonDiedNotification:(id)a3;
+- (void)_daemonDiedNotification:(id)notification;
 - (void)_folderHierarchyChanged;
-- (void)_folderUpdatedNotification:(id)a3;
+- (void)_folderUpdatedNotification:(id)notification;
 - (void)_foldersThatExternalClientsCareAboutChanged;
-- (void)_newASPolicyKeyNotification:(id)a3;
-- (void)_performAsynchronousSerialOnActorQueue:(id)a3;
-- (void)_performSynchronousSerialOnActorQueue:(id)a3;
-- (void)_sendFailureToConsumer:(id)a3;
+- (void)_newASPolicyKeyNotification:(id)notification;
+- (void)_performAsynchronousSerialOnActorQueue:(id)queue;
+- (void)_performSynchronousSerialOnActorQueue:(id)queue;
+- (void)_sendFailureToConsumer:(id)consumer;
 - (void)cancelAllSearchQueries;
-- (void)cancelSearchQuery:(id)a3;
-- (void)cancelTaskWithID:(int)a3;
+- (void)cancelSearchQuery:(id)query;
+- (void)cancelTaskWithID:(int)d;
 - (void)disable;
-- (void)monitorFoldersForUpdates:(id)a3 persistent:(BOOL)a4;
-- (void)performFolderChange:(id)a3 isUserRequested:(BOOL)a4;
-- (void)performSearchQuery:(id)a3;
-- (void)setAccount:(id)a3;
-- (void)setCustomSignature:(id)a3;
-- (void)setEncryptionIdentityPersistentReference:(id)a3;
-- (void)setGeneratesBulletins:(BOOL)a3;
-- (void)setMailNumberOfPastDaysToSync:(int)a3;
-- (void)setSigningIdentityPersistentReference:(id)a3;
+- (void)monitorFoldersForUpdates:(id)updates persistent:(BOOL)persistent;
+- (void)performFolderChange:(id)change isUserRequested:(BOOL)requested;
+- (void)performSearchQuery:(id)query;
+- (void)setAccount:(id)account;
+- (void)setCustomSignature:(id)signature;
+- (void)setEncryptionIdentityPersistentReference:(id)reference;
+- (void)setGeneratesBulletins:(BOOL)bulletins;
+- (void)setMailNumberOfPastDaysToSync:(int)sync;
+- (void)setSigningIdentityPersistentReference:(id)reference;
 - (void)startup;
 - (void)stopMonitoringAllFolders;
-- (void)stopMonitoringFoldersForUpdates:(id)a3;
+- (void)stopMonitoringFoldersForUpdates:(id)updates;
 @end
 
 @implementation ASConcreteAccountActor
 
-+ (void)_runActorThreadWithStartupLock:(id)a3
++ (void)_runActorThreadWithStartupLock:(id)lock
 {
-  v8 = a3;
+  lockCopy = lock;
   v3 = objc_autoreleasePoolPush();
-  [v8 lockWhenCondition:0];
-  v4 = [MEMORY[0x277CBEB88] currentRunLoop];
-  __actorRunLoop = CFRetain([v4 getCFRunLoop]);
+  [lockCopy lockWhenCondition:0];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  __actorRunLoop = CFRetain([currentRunLoop getCFRunLoop]);
 
   __actorPThread = pthread_self();
-  v5 = [MEMORY[0x277CBEB80] port];
-  v6 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v5 scheduleInRunLoop:v6 forMode:*MEMORY[0x277CBE640]];
+  port = [MEMORY[0x277CBEB80] port];
+  currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+  [port scheduleInRunLoop:currentRunLoop2 forMode:*MEMORY[0x277CBE640]];
 
-  [v8 unlockWithCondition:1];
-  v7 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v7 run];
+  [lockCopy unlockWithCondition:1];
+  currentRunLoop3 = [MEMORY[0x277CBEB88] currentRunLoop];
+  [currentRunLoop3 run];
 
   objc_autoreleasePoolPop(v3);
 }
@@ -86,7 +86,7 @@
   block[1] = 3221225472;
   block[2] = __49__ASConcreteAccountActor__initializeActorRunLoop__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_initializeActorRunLoop_onceToken != -1)
   {
     dispatch_once(&_initializeActorRunLoop_onceToken, block);
@@ -105,30 +105,30 @@ void __49__ASConcreteAccountActor__initializeActorRunLoop__block_invoke(uint64_t
   [v4 unlockWithCondition:1];
 }
 
-- (void)_performAsynchronousSerialOnActorQueue:(id)a3
+- (void)_performAsynchronousSerialOnActorQueue:(id)queue
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _actorRunLoop];
-  CFRunLoopPerformBlock(v4, *MEMORY[0x277CBF048], v3);
+  queueCopy = queue;
+  _actorRunLoop = [objc_opt_class() _actorRunLoop];
+  CFRunLoopPerformBlock(_actorRunLoop, *MEMORY[0x277CBF048], queueCopy);
 
-  v5 = [objc_opt_class() _actorRunLoop];
+  _actorRunLoop2 = [objc_opt_class() _actorRunLoop];
 
-  CFRunLoopWakeUp(v5);
+  CFRunLoopWakeUp(_actorRunLoop2);
 }
 
-- (void)_performSynchronousSerialOnActorQueue:(id)a3
+- (void)_performSynchronousSerialOnActorQueue:(id)queue
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_opt_class() _actorRunLoop];
-  v5 = [objc_opt_class() _actorPThread];
+  queueCopy = queue;
+  _actorRunLoop = [objc_opt_class() _actorRunLoop];
+  _actorPThread = [objc_opt_class() _actorPThread];
   v6 = qos_class_self();
   __qos_class = QOS_CLASS_UNSPECIFIED;
-  pthread_get_qos_class_np(v5, &__qos_class, 0);
+  pthread_get_qos_class_np(_actorPThread, &__qos_class, 0);
   started = 0;
   if (__qos_class < v6)
   {
-    started = pthread_override_qos_class_start_np(v5, v6, 0);
+    started = pthread_override_qos_class_start_np(_actorPThread, v6, 0);
     v8 = DALoggingwithCategory();
     v9 = v8;
     if (started)
@@ -164,12 +164,12 @@ void __49__ASConcreteAccountActor__initializeActorRunLoop__block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __64__ASConcreteAccountActor__performSynchronousSerialOnActorQueue___block_invoke;
   block[3] = &unk_278FC7870;
-  v21 = v3;
+  v21 = queueCopy;
   v16 = v14;
   v20 = v16;
-  v17 = v3;
-  CFRunLoopPerformBlock(v4, v15, block);
-  CFRunLoopWakeUp(v4);
+  v17 = queueCopy;
+  CFRunLoopPerformBlock(_actorRunLoop, v15, block);
+  CFRunLoopWakeUp(_actorRunLoop);
   dispatch_semaphore_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
   if (started)
   {
@@ -469,14 +469,14 @@ void __44__ASConcreteAccountActor_generatesBulletins__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setGeneratesBulletins:(BOOL)a3
+- (void)setGeneratesBulletins:(BOOL)bulletins
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __48__ASConcreteAccountActor_setGeneratesBulletins___block_invoke;
   v3[3] = &unk_278FC78C0;
   v3[4] = self;
-  v4 = a3;
+  bulletinsCopy = bulletins;
   [(ASConcreteAccountActor *)self _performAsynchronousSerialOnActorQueue:v3];
 }
 
@@ -533,16 +533,16 @@ uint64_t __60__ASConcreteAccountActor_signingIdentityPersistentReference__block_
   return result;
 }
 
-- (void)setSigningIdentityPersistentReference:(id)a3
+- (void)setSigningIdentityPersistentReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__ASConcreteAccountActor_setSigningIdentityPersistentReference___block_invoke;
   v6[3] = &unk_278FC78E8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = referenceCopy;
+  v5 = referenceCopy;
   [(ASConcreteAccountActor *)self _performAsynchronousSerialOnActorQueue:v6];
 }
 
@@ -596,16 +596,16 @@ uint64_t __63__ASConcreteAccountActor_encryptionIdentityPersistentReference__blo
   return result;
 }
 
-- (void)setEncryptionIdentityPersistentReference:(id)a3
+- (void)setEncryptionIdentityPersistentReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__ASConcreteAccountActor_setEncryptionIdentityPersistentReference___block_invoke;
   v6[3] = &unk_278FC78E8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = referenceCopy;
+  v5 = referenceCopy;
   [(ASConcreteAccountActor *)self _performAsynchronousSerialOnActorQueue:v6];
 }
 
@@ -659,16 +659,16 @@ void __41__ASConcreteAccountActor_customSignature__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setCustomSignature:(id)a3
+- (void)setCustomSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__ASConcreteAccountActor_setCustomSignature___block_invoke;
   v6[3] = &unk_278FC78E8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = signatureCopy;
+  v5 = signatureCopy;
   [(ASConcreteAccountActor *)self _performAsynchronousSerialOnActorQueue:v6];
 }
 
@@ -692,14 +692,14 @@ void __45__ASConcreteAccountActor_setCustomSignature___block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMailNumberOfPastDaysToSync:(int)a3
+- (void)setMailNumberOfPastDaysToSync:(int)sync
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __56__ASConcreteAccountActor_setMailNumberOfPastDaysToSync___block_invoke;
   v3[3] = &unk_278FC7938;
   v3[4] = self;
-  v4 = a3;
+  syncCopy = sync;
   [(ASConcreteAccountActor *)self _performAsynchronousSerialOnActorQueue:v3];
 }
 
@@ -717,17 +717,17 @@ uint64_t __56__ASConcreteAccountActor_setMailNumberOfPastDaysToSync___block_invo
   return result;
 }
 
-- (void)monitorFoldersForUpdates:(id)a3 persistent:(BOOL)a4
+- (void)monitorFoldersForUpdates:(id)updates persistent:(BOOL)persistent
 {
-  v6 = a3;
+  updatesCopy = updates;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__ASConcreteAccountActor_monitorFoldersForUpdates_persistent___block_invoke;
   v8[3] = &unk_278FC7960;
   v8[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = updatesCopy;
+  persistentCopy = persistent;
+  v7 = updatesCopy;
   [(ASConcreteAccountActor *)self _performAsynchronousSerialOnActorQueue:v8];
 }
 
@@ -746,16 +746,16 @@ uint64_t __62__ASConcreteAccountActor_monitorFoldersForUpdates_persistent___bloc
   return result;
 }
 
-- (void)stopMonitoringFoldersForUpdates:(id)a3
+- (void)stopMonitoringFoldersForUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__ASConcreteAccountActor_stopMonitoringFoldersForUpdates___block_invoke;
   v6[3] = &unk_278FC78E8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updatesCopy;
+  v5 = updatesCopy;
   [(ASConcreteAccountActor *)self _performAsynchronousSerialOnActorQueue:v6];
 }
 
@@ -796,7 +796,7 @@ uint64_t __50__ASConcreteAccountActor_stopMonitoringAllFolders__block_invoke(uin
   return result;
 }
 
-- (id)folderIDsThatExternalClientsCareAboutWithTag:(id *)a3
+- (id)folderIDsThatExternalClientsCareAboutWithTag:(id *)tag
 {
   v13 = 0;
   v14 = &v13;
@@ -818,9 +818,9 @@ uint64_t __50__ASConcreteAccountActor_stopMonitoringAllFolders__block_invoke(uin
   v6[5] = &v13;
   v6[6] = &v7;
   [(ASConcreteAccountActor *)self _performSynchronousSerialOnActorQueue:v6];
-  if (a3)
+  if (tag)
   {
-    *a3 = v14[5];
+    *tag = v14[5];
   }
 
   v4 = v8[5];
@@ -852,7 +852,7 @@ uint64_t __71__ASConcreteAccountActor_folderIDsThatExternalClientsCareAboutWithT
   return result;
 }
 
-- (id)folderIDsThatExternalClientsCareAboutForDataclasses:(int64_t)a3 withTag:(id *)a4
+- (id)folderIDsThatExternalClientsCareAboutForDataclasses:(int64_t)dataclasses withTag:(id *)tag
 {
   v14 = 0;
   v15 = &v14;
@@ -873,11 +873,11 @@ uint64_t __71__ASConcreteAccountActor_folderIDsThatExternalClientsCareAboutWithT
   v7[4] = self;
   v7[5] = &v14;
   v7[6] = &v8;
-  v7[7] = a3;
+  v7[7] = dataclasses;
   [(ASConcreteAccountActor *)self _performSynchronousSerialOnActorQueue:v7];
-  if (a4)
+  if (tag)
   {
-    *a4 = v15[5];
+    *tag = v15[5];
   }
 
   v5 = v9[5];
@@ -909,11 +909,11 @@ uint64_t __86__ASConcreteAccountActor_folderIDsThatExternalClientsCareAboutForDa
   return result;
 }
 
-- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)a3 deleted:(id)a4 foldersTag:(id)a5
+- (BOOL)setFolderIdsThatExternalClientsCareAboutAdded:(id)added deleted:(id)deleted foldersTag:(id)tag
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  addedCopy = added;
+  deletedCopy = deleted;
+  tagCopy = tag;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -924,11 +924,11 @@ uint64_t __86__ASConcreteAccountActor_folderIDsThatExternalClientsCareAboutForDa
   v15[3] = &unk_278FC7A00;
   v15[4] = self;
   v19 = &v20;
-  v11 = v8;
+  v11 = addedCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = deletedCopy;
   v17 = v12;
-  v13 = v10;
+  v13 = tagCopy;
   v18 = v13;
   [(ASConcreteAccountActor *)self _performSynchronousSerialOnActorQueue:v15];
   LOBYTE(self) = *(v21 + 24);
@@ -949,10 +949,10 @@ uint64_t __91__ASConcreteAccountActor_setFolderIdsThatExternalClientsCareAboutAd
   return result;
 }
 
-- (BOOL)reattemptInvitationLinkageForMetaData:(id)a3 inFolderWithId:(id)a4
+- (BOOL)reattemptInvitationLinkageForMetaData:(id)data inFolderWithId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  idCopy = id;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -963,9 +963,9 @@ uint64_t __91__ASConcreteAccountActor_setFolderIdsThatExternalClientsCareAboutAd
   v11[3] = &unk_278FC7A28;
   v11[4] = self;
   v14 = &v15;
-  v8 = v6;
+  v8 = dataCopy;
   v12 = v8;
-  v9 = v7;
+  v9 = idCopy;
   v13 = v9;
   [(ASConcreteAccountActor *)self _performSynchronousSerialOnActorQueue:v11];
   LOBYTE(self) = *(v16 + 24);
@@ -986,10 +986,10 @@ uint64_t __79__ASConcreteAccountActor_reattemptInvitationLinkageForMetaData_inFo
   return result;
 }
 
-- (id)unactionableICSRepresentationForMetaData:(id)a3 inFolderWithId:(id)a4 outSummary:(id *)a5
+- (id)unactionableICSRepresentationForMetaData:(id)data inFolderWithId:(id)id outSummary:(id *)summary
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  idCopy = id;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -1008,15 +1008,15 @@ uint64_t __79__ASConcreteAccountActor_reattemptInvitationLinkageForMetaData_inFo
   v14[3] = &unk_278FC7A50;
   v14[4] = self;
   v17 = &v19;
-  v10 = v8;
+  v10 = dataCopy;
   v15 = v10;
-  v11 = v9;
+  v11 = idCopy;
   v16 = v11;
   v18 = &v25;
   [(ASConcreteAccountActor *)self _performSynchronousSerialOnActorQueue:v14];
-  if (a5)
+  if (summary)
   {
-    *a5 = v26[5];
+    *summary = v26[5];
   }
 
   v12 = v20[5];
@@ -1044,24 +1044,24 @@ void __93__ASConcreteAccountActor_unactionableICSRepresentationForMetaData_inFol
   }
 }
 
-- (void)_sendFailureToConsumer:(id)a3
+- (void)_sendFailureToConsumer:(id)consumer
 {
   v3 = MEMORY[0x277CCA9B8];
-  v4 = a3;
+  consumerCopy = consumer;
   v5 = [v3 errorWithDomain:@"ASAccountActor" code:55 userInfo:0];
-  [v4 actionFailed:55 forTask:0 error:v5];
+  [consumerCopy actionFailed:55 forTask:0 error:v5];
 }
 
-- (int)sendMessageWithRFC822Data:(id)a3 messageID:(id)a4 outgoingMessageType:(int)a5 originalMessageFolderID:(id)a6 originalMessageItemID:(id)a7 originalMessageLongID:(id)a8 originalAccountID:(id)a9 useSmartTasksIfPossible:(BOOL)a10 isUserRequested:(BOOL)a11 consumer:(id)a12 context:(id)a13
+- (int)sendMessageWithRFC822Data:(id)data messageID:(id)d outgoingMessageType:(int)type originalMessageFolderID:(id)iD originalMessageItemID:(id)itemID originalMessageLongID:(id)longID originalAccountID:(id)accountID useSmartTasksIfPossible:(BOOL)self0 isUserRequested:(BOOL)self1 consumer:(id)self2 context:(id)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a12;
-  v25 = a13;
+  dataCopy = data;
+  dCopy = d;
+  iDCopy = iD;
+  itemIDCopy = itemID;
+  longIDCopy = longID;
+  accountIDCopy = accountID;
+  consumerCopy = consumer;
+  contextCopy = context;
   v49 = 0;
   v50 = &v49;
   v51 = 0x2020000000;
@@ -1071,25 +1071,25 @@ void __93__ASConcreteAccountActor_unactionableICSRepresentationForMetaData_inFol
   v36[2] = __225__ASConcreteAccountActor_sendMessageWithRFC822Data_messageID_outgoingMessageType_originalMessageFolderID_originalMessageItemID_originalMessageLongID_originalAccountID_useSmartTasksIfPossible_isUserRequested_consumer_context___block_invoke;
   v36[3] = &unk_278FC7A78;
   v36[4] = self;
-  v26 = v24;
+  v26 = consumerCopy;
   v37 = v26;
-  v27 = v18;
-  v47 = a11;
+  v27 = dataCopy;
+  requestedCopy = requested;
   v38 = v27;
   v45 = &v49;
-  v28 = v19;
+  v28 = dCopy;
   v39 = v28;
-  v46 = a5;
-  v29 = v20;
+  typeCopy = type;
+  v29 = iDCopy;
   v40 = v29;
-  v30 = v21;
+  v30 = itemIDCopy;
   v41 = v30;
-  v31 = v22;
+  v31 = longIDCopy;
   v42 = v31;
-  v32 = v23;
+  v32 = accountIDCopy;
   v43 = v32;
-  v48 = a10;
-  v33 = v25;
+  possibleCopy = possible;
+  v33 = contextCopy;
   v44 = v33;
   [(ASConcreteAccountActor *)self _performSynchronousSerialOnActorQueue:v36];
   LODWORD(self) = *(v50 + 6);
@@ -1139,16 +1139,16 @@ uint64_t __225__ASConcreteAccountActor_sendMessageWithRFC822Data_messageID_outgo
   return result;
 }
 
-- (int)sendSmartMessageWithRFC822Data:(id)a3 messageID:(id)a4 outgoingMessageType:(int)a5 originalMessageFolderID:(id)a6 originalMessageItemID:(id)a7 originalMessageLongID:(id)a8 originalAccountID:(id)a9 replaceOriginalMime:(BOOL)a10 isUserRequested:(BOOL)a11 consumer:(id)a12 context:(id)a13
+- (int)sendSmartMessageWithRFC822Data:(id)data messageID:(id)d outgoingMessageType:(int)type originalMessageFolderID:(id)iD originalMessageItemID:(id)itemID originalMessageLongID:(id)longID originalAccountID:(id)accountID replaceOriginalMime:(BOOL)self0 isUserRequested:(BOOL)self1 consumer:(id)self2 context:(id)self3
 {
-  v35 = a3;
-  v19 = a4;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a12;
-  v25 = a13;
+  dataCopy = data;
+  dCopy = d;
+  iDCopy = iD;
+  itemIDCopy = itemID;
+  longIDCopy = longID;
+  accountIDCopy = accountID;
+  consumerCopy = consumer;
+  contextCopy = context;
   v49 = 0;
   v50 = &v49;
   v51 = 0x2020000000;
@@ -1158,25 +1158,25 @@ uint64_t __225__ASConcreteAccountActor_sendMessageWithRFC822Data_messageID_outgo
   v36[2] = __226__ASConcreteAccountActor_sendSmartMessageWithRFC822Data_messageID_outgoingMessageType_originalMessageFolderID_originalMessageItemID_originalMessageLongID_originalAccountID_replaceOriginalMime_isUserRequested_consumer_context___block_invoke;
   v36[3] = &unk_278FC7AA0;
   v36[4] = self;
-  v26 = v24;
+  v26 = consumerCopy;
   v37 = v26;
-  v46 = a5;
-  v27 = v21;
+  typeCopy = type;
+  v27 = itemIDCopy;
   v38 = v27;
-  v28 = v20;
+  v28 = iDCopy;
   v39 = v28;
-  v29 = v22;
-  v47 = a11;
+  v29 = longIDCopy;
+  requestedCopy = requested;
   v40 = v29;
   v45 = &v49;
-  v30 = v35;
+  v30 = dataCopy;
   v41 = v30;
-  v31 = v19;
+  v31 = dCopy;
   v42 = v31;
-  v32 = v23;
+  v32 = accountIDCopy;
   v43 = v32;
-  v48 = a10;
-  v33 = v25;
+  mimeCopy = mime;
+  v33 = contextCopy;
   v44 = v33;
   [(ASConcreteAccountActor *)self _performSynchronousSerialOnActorQueue:v36];
   LODWORD(self) = *(v50 + 6);
@@ -1249,12 +1249,12 @@ LABEL_16:
   return [v3 _sendFailureToConsumer:v4];
 }
 
-- (int)performMailboxRequest:(id)a3 mailbox:(id)a4 previousTag:(id)a5 clientWinsOnSyncConflict:(BOOL)a6 isUserRequested:(BOOL)a7 consumer:(id)a8
+- (int)performMailboxRequest:(id)request mailbox:(id)mailbox previousTag:(id)tag clientWinsOnSyncConflict:(BOOL)conflict isUserRequested:(BOOL)requested consumer:(id)consumer
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  requestCopy = request;
+  mailboxCopy = mailbox;
+  tagCopy = tag;
+  consumerCopy = consumer;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -1264,17 +1264,17 @@ LABEL_16:
   v23[2] = __118__ASConcreteAccountActor_performMailboxRequest_mailbox_previousTag_clientWinsOnSyncConflict_isUserRequested_consumer___block_invoke;
   v23[3] = &unk_278FC7AC8;
   v23[4] = self;
-  v18 = v17;
-  v29 = a7;
+  v18 = consumerCopy;
+  requestedCopy = requested;
   v24 = v18;
   v28 = &v31;
-  v19 = v14;
+  v19 = requestCopy;
   v25 = v19;
-  v20 = v15;
+  v20 = mailboxCopy;
   v26 = v20;
-  v21 = v16;
+  v21 = tagCopy;
   v27 = v21;
-  v30 = a6;
+  conflictCopy = conflict;
   [(ASConcreteAccountActor *)self _performSynchronousSerialOnActorQueue:v23];
   LODWORD(self) = *(v32 + 6);
 
@@ -1310,12 +1310,12 @@ uint64_t __118__ASConcreteAccountActor_performMailboxRequest_mailbox_previousTag
   return result;
 }
 
-- (int)performMailboxRequests:(id)a3 mailbox:(id)a4 previousTag:(id)a5 clientWinsOnSyncConflict:(BOOL)a6 isUserRequested:(BOOL)a7 consumer:(id)a8
+- (int)performMailboxRequests:(id)requests mailbox:(id)mailbox previousTag:(id)tag clientWinsOnSyncConflict:(BOOL)conflict isUserRequested:(BOOL)requested consumer:(id)consumer
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  requestsCopy = requests;
+  mailboxCopy = mailbox;
+  tagCopy = tag;
+  consumerCopy = consumer;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -1325,17 +1325,17 @@ uint64_t __118__ASConcreteAccountActor_performMailboxRequest_mailbox_previousTag
   v23[2] = __119__ASConcreteAccountActor_performMailboxRequests_mailbox_previousTag_clientWinsOnSyncConflict_isUserRequested_consumer___block_invoke;
   v23[3] = &unk_278FC7AF0;
   v23[4] = self;
-  v18 = v17;
+  v18 = consumerCopy;
   v24 = v18;
-  v19 = v16;
+  v19 = tagCopy;
   v25 = v19;
-  v20 = v14;
-  v29 = a7;
+  v20 = requestsCopy;
+  requestedCopy = requested;
   v26 = v20;
   v28 = &v31;
-  v21 = v15;
+  v21 = mailboxCopy;
   v27 = v21;
-  v30 = a6;
+  conflictCopy = conflict;
   [(ASConcreteAccountActor *)self _performSynchronousSerialOnActorQueue:v23];
   LODWORD(self) = *(v32 + 6);
 
@@ -1420,10 +1420,10 @@ LABEL_21:
   return result;
 }
 
-- (int)performMoveRequests:(id)a3 consumer:(id)a4
+- (int)performMoveRequests:(id)requests consumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  consumerCopy = consumer;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1433,10 +1433,10 @@ LABEL_21:
   v11[2] = __55__ASConcreteAccountActor_performMoveRequests_consumer___block_invoke;
   v11[3] = &unk_278FC7B18;
   v11[4] = self;
-  v8 = v7;
+  v8 = consumerCopy;
   v12 = v8;
   v14 = &v15;
-  v9 = v6;
+  v9 = requestsCopy;
   v13 = v9;
   [(ASConcreteAccountActor *)self _performSynchronousSerialOnActorQueue:v11];
   LODWORD(self) = *(v16 + 6);
@@ -1466,10 +1466,10 @@ uint64_t __55__ASConcreteAccountActor_performMoveRequests_consumer___block_invok
   return result;
 }
 
-- (int)performFetchAttachmentRequest:(id)a3 consumer:(id)a4
+- (int)performFetchAttachmentRequest:(id)request consumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  consumerCopy = consumer;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1479,9 +1479,9 @@ uint64_t __55__ASConcreteAccountActor_performMoveRequests_consumer___block_invok
   v11[2] = __65__ASConcreteAccountActor_performFetchAttachmentRequest_consumer___block_invoke;
   v11[3] = &unk_278FC7B40;
   v11[4] = self;
-  v8 = v7;
+  v8 = consumerCopy;
   v12 = v8;
-  v9 = v6;
+  v9 = requestCopy;
   v13 = v9;
   v14 = &v15;
   [(ASConcreteAccountActor *)self _performSynchronousSerialOnActorQueue:v11];
@@ -1508,10 +1508,10 @@ void __65__ASConcreteAccountActor_performFetchAttachmentRequest_consumer___block
   }
 }
 
-- (int)performFetchMessageSearchResultRequests:(id)a3 consumer:(id)a4
+- (int)performFetchMessageSearchResultRequests:(id)requests consumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  consumerCopy = consumer;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1521,10 +1521,10 @@ void __65__ASConcreteAccountActor_performFetchAttachmentRequest_consumer___block
   v11[2] = __75__ASConcreteAccountActor_performFetchMessageSearchResultRequests_consumer___block_invoke;
   v11[3] = &unk_278FC7B18;
   v11[4] = self;
-  v8 = v7;
+  v8 = consumerCopy;
   v12 = v8;
   v14 = &v15;
-  v9 = v6;
+  v9 = requestsCopy;
   v13 = v9;
   [(ASConcreteAccountActor *)self _performSynchronousSerialOnActorQueue:v11];
   LODWORD(self) = *(v16 + 6);
@@ -1554,10 +1554,10 @@ uint64_t __75__ASConcreteAccountActor_performFetchMessageSearchResultRequests_co
   return result;
 }
 
-- (int)performResolveRecipientsRequest:(id)a3 consumer:(id)a4
+- (int)performResolveRecipientsRequest:(id)request consumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  consumerCopy = consumer;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1567,10 +1567,10 @@ uint64_t __75__ASConcreteAccountActor_performFetchMessageSearchResultRequests_co
   v11[2] = __67__ASConcreteAccountActor_performResolveRecipientsRequest_consumer___block_invoke;
   v11[3] = &unk_278FC7B18;
   v11[4] = self;
-  v8 = v7;
+  v8 = consumerCopy;
   v12 = v8;
   v14 = &v15;
-  v9 = v6;
+  v9 = requestCopy;
   v13 = v9;
   [(ASConcreteAccountActor *)self _performSynchronousSerialOnActorQueue:v11];
   LODWORD(self) = *(v16 + 6);
@@ -1600,17 +1600,17 @@ uint64_t __67__ASConcreteAccountActor_performResolveRecipientsRequest_consumer__
   return result;
 }
 
-- (void)performFolderChange:(id)a3 isUserRequested:(BOOL)a4
+- (void)performFolderChange:(id)change isUserRequested:(BOOL)requested
 {
-  v6 = a3;
+  changeCopy = change;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__ASConcreteAccountActor_performFolderChange_isUserRequested___block_invoke;
   v8[3] = &unk_278FC7960;
   v8[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = changeCopy;
+  requestedCopy = requested;
+  v7 = changeCopy;
   [(ASConcreteAccountActor *)self _performSynchronousSerialOnActorQueue:v8];
 }
 
@@ -1642,14 +1642,14 @@ void __62__ASConcreteAccountActor_performFolderChange_isUserRequested___block_in
   }
 }
 
-- (void)cancelTaskWithID:(int)a3
+- (void)cancelTaskWithID:(int)d
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __43__ASConcreteAccountActor_cancelTaskWithID___block_invoke;
   v3[3] = &unk_278FC7938;
   v3[4] = self;
-  v4 = a3;
+  dCopy = d;
   [(ASConcreteAccountActor *)self _performAsynchronousSerialOnActorQueue:v3];
 }
 
@@ -1667,16 +1667,16 @@ uint64_t __43__ASConcreteAccountActor_cancelTaskWithID___block_invoke(uint64_t a
   return result;
 }
 
-- (void)performSearchQuery:(id)a3
+- (void)performSearchQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__ASConcreteAccountActor_performSearchQuery___block_invoke;
   v6[3] = &unk_278FC78E8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = queryCopy;
+  v5 = queryCopy;
   [(ASConcreteAccountActor *)self _performAsynchronousSerialOnActorQueue:v6];
 }
 
@@ -1700,16 +1700,16 @@ void __45__ASConcreteAccountActor_performSearchQuery___block_invoke(uint64_t a1)
   }
 }
 
-- (void)cancelSearchQuery:(id)a3
+- (void)cancelSearchQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__ASConcreteAccountActor_cancelSearchQuery___block_invoke;
   v6[3] = &unk_278FC78E8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = queryCopy;
+  v5 = queryCopy;
   [(ASConcreteAccountActor *)self _performAsynchronousSerialOnActorQueue:v6];
 }
 
@@ -1928,9 +1928,9 @@ uint64_t __38__ASConcreteAccountActor_draftsFolder__block_invoke(uint64_t a1)
   return result;
 }
 
-- (ASConcreteAccountActor)initWithDAAccount:(id)a3
+- (ASConcreteAccountActor)initWithDAAccount:(id)account
 {
-  v6 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = ASConcreteAccountActor;
   v7 = [(ASConcreteAccountActor *)&v9 init];
@@ -1939,10 +1939,10 @@ uint64_t __38__ASConcreteAccountActor_draftsFolder__block_invoke(uint64_t a1)
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [(ASConcreteAccountActor *)a2 initWithDAAccount:v7, v6];
+      [(ASConcreteAccountActor *)a2 initWithDAAccount:v7, accountCopy];
     }
 
-    objc_storeStrong(&v7->_account, a3);
+    objc_storeStrong(&v7->_account, account);
     [(ASConcreteAccountActor *)v7 startup];
   }
 
@@ -1981,17 +1981,17 @@ void __33__ASConcreteAccountActor_startup__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__ASConcreteAccountActor_setAccount___block_invoke;
   v7[3] = &unk_278FC7B68;
-  v8 = v5;
-  v9 = self;
+  v8 = accountCopy;
+  selfCopy = self;
   v10 = a2;
-  v6 = v5;
+  v6 = accountCopy;
   [(ASConcreteAccountActor *)self _performAsynchronousSerialOnActorQueue:v7];
 }
 
@@ -2080,7 +2080,7 @@ void __33__ASConcreteAccountActor_disable__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_daemonDiedNotification:(id)a3
+- (void)_daemonDiedNotification:(id)notification
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -2103,16 +2103,16 @@ uint64_t __50__ASConcreteAccountActor__daemonDiedNotification___block_invoke(uin
   return result;
 }
 
-- (void)_folderUpdatedNotification:(id)a3
+- (void)_folderUpdatedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__ASConcreteAccountActor__folderUpdatedNotification___block_invoke;
   v6[3] = &unk_278FC78E8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = notificationCopy;
+  v5 = notificationCopy;
   [(ASConcreteAccountActor *)self _performAsynchronousSerialOnActorQueue:v6];
 }
 
@@ -2136,16 +2136,16 @@ void __53__ASConcreteAccountActor__folderUpdatedNotification___block_invoke(uint
   }
 }
 
-- (void)_newASPolicyKeyNotification:(id)a3
+- (void)_newASPolicyKeyNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__ASConcreteAccountActor__newASPolicyKeyNotification___block_invoke;
   v6[3] = &unk_278FC78E8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = notificationCopy;
+  v5 = notificationCopy;
   [(ASConcreteAccountActor *)self _performAsynchronousSerialOnActorQueue:v6];
 }
 

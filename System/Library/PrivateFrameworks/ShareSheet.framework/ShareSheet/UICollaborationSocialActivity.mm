@@ -1,30 +1,30 @@
 @interface UICollaborationSocialActivity
-- (BOOL)canPerformWithCollaborationItem:(id)a3 activityItems:(id)a4;
-- (BOOL)canPerformWithCollaborationType:(int64_t)a3 isPostShare:(BOOL)a4;
+- (BOOL)canPerformWithCollaborationItem:(id)item activityItems:(id)items;
+- (BOOL)canPerformWithCollaborationType:(int64_t)type isPostShare:(BOOL)share;
 - (id)activityTitle;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation UICollaborationSocialActivity
 
 - (id)activityTitle
 {
-  v3 = [(UICollaborationSocialActivity *)self isPostShare];
+  isPostShare = [(UICollaborationSocialActivity *)self isPostShare];
   v4 = @"SFCollaborationActivityPreShareTitle";
-  if (v3)
+  if (isPostShare)
   {
     v4 = @"SFCollaborationActivityPostShareTitle";
   }
 
   v5 = v4;
-  v6 = [(UIApplicationExtensionActivity *)self applicationExtension];
-  v7 = [v6 objectForInfoDictionaryKey:v5];
+  applicationExtension = [(UIApplicationExtensionActivity *)self applicationExtension];
+  v7 = [applicationExtension objectForInfoDictionaryKey:v5];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
-    if ([v8 length])
+    activityTitle = v7;
+    if ([activityTitle length])
     {
       goto LABEL_7;
     }
@@ -32,28 +32,28 @@
 
   v10.receiver = self;
   v10.super_class = UICollaborationSocialActivity;
-  v8 = [(UIApplicationExtensionActivity *)&v10 activityTitle];
+  activityTitle = [(UIApplicationExtensionActivity *)&v10 activityTitle];
 LABEL_7:
 
-  return v8;
+  return activityTitle;
 }
 
-- (BOOL)canPerformWithCollaborationType:(int64_t)a3 isPostShare:(BOOL)a4
+- (BOOL)canPerformWithCollaborationType:(int64_t)type isPostShare:(BOOL)share
 {
-  v4 = a4;
+  shareCopy = share;
   v37 = *MEMORY[0x1E69E9840];
-  v7 = [(UISocialActivity *)self activityType];
-  v8 = [v7 isEqualToString:@"com.apple.CloudSharingUI.CreateiCloudLinkExtension"];
+  activityType = [(UISocialActivity *)self activityType];
+  v8 = [activityType isEqualToString:@"com.apple.CloudSharingUI.CreateiCloudLinkExtension"];
 
   if (v8 && !_os_feature_enabled_impl())
   {
     return 0;
   }
 
-  [(UICollaborationSocialActivity *)self setIsPostShare:v4];
-  v9 = [(UIApplicationExtensionActivity *)self applicationExtension];
-  v10 = [v9 attributes];
-  v11 = [v10 objectForKeyedSubscript:@"NSExtensionActivationRule"];
+  [(UICollaborationSocialActivity *)self setIsPostShare:shareCopy];
+  applicationExtension = [(UIApplicationExtensionActivity *)self applicationExtension];
+  attributes = [applicationExtension attributes];
+  v11 = [attributes objectForKeyedSubscript:@"NSExtensionActivationRule"];
   v12 = [v11 objectForKeyedSubscript:@"NSExtensionActivationSupportsCollaborationWithTypes"];
 
   objc_opt_class();
@@ -84,15 +84,15 @@ LABEL_7:
           {
             v19 = v18;
             v20 = [v19 isEqualToString:@"CKShare"];
-            if (a3 == 1 && (v20 & 1) != 0 || (v21 = [v19 isEqualToString:@"URL"], !a3) && (v21 & 1) != 0 || (v22 = objc_msgSend(v19, "isEqualToString:", @"SharedWithYou"), a3 == 2) && v22)
+            if (type == 1 && (v20 & 1) != 0 || (v21 = [v19 isEqualToString:@"URL"], !type) && (v21 & 1) != 0 || (v22 = objc_msgSend(v19, "isEqualToString:", @"SharedWithYou"), type == 2) && v22)
             {
               v24 = share_sheet_log();
               if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412802;
-                v31 = self;
+                selfCopy2 = self;
                 v32 = 2048;
-                v33 = a3;
+                typeCopy2 = type;
                 v34 = 2112;
                 v35 = v13;
                 _os_log_impl(&dword_18B359000, v24, OS_LOG_TYPE_DEFAULT, "%@: canPerform:YES collaborationType:%ld supportedCollaborationTypes:%@", buf, 0x20u);
@@ -119,9 +119,9 @@ LABEL_7:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v31 = self;
+    selfCopy2 = self;
     v32 = 2048;
-    v33 = a3;
+    typeCopy2 = type;
     v34 = 2112;
     v35 = v12;
     _os_log_impl(&dword_18B359000, v13, OS_LOG_TYPE_DEFAULT, "%@: canPerform:NO collaborationType:%ld supportedCollaborationTypes:%@", buf, 0x20u);
@@ -133,78 +133,78 @@ LABEL_27:
   return v23;
 }
 
-- (BOOL)canPerformWithCollaborationItem:(id)a3 activityItems:(id)a4
+- (BOOL)canPerformWithCollaborationItem:(id)item activityItems:(id)items
 {
-  v5 = a3;
-  v6 = [v5 type];
-  v7 = [v5 isPostShare];
+  itemCopy = item;
+  type = [itemCopy type];
+  isPostShare = [itemCopy isPostShare];
 
-  return [(UICollaborationSocialActivity *)self canPerformWithCollaborationType:v6 isPostShare:v7];
+  return [(UICollaborationSocialActivity *)self canPerformWithCollaborationType:type isPostShare:isPostShare];
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v53[1] = *MEMORY[0x1E69E9840];
-  v4 = [(UICollaborationSocialActivity *)self collaborationItem];
-  v5 = [v4 itemProvider];
-  v53[0] = v5;
+  collaborationItem = [(UICollaborationSocialActivity *)self collaborationItem];
+  itemProvider = [collaborationItem itemProvider];
+  v53[0] = itemProvider;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:1];
 
-  v7 = [(UICollaborationSocialActivity *)self collaborationItem];
-  v8 = [v7 type];
+  collaborationItem2 = [(UICollaborationSocialActivity *)self collaborationItem];
+  type = [collaborationItem2 type];
 
-  if (!v8)
+  if (!type)
   {
-    v9 = [(UICollaborationSocialActivity *)self collaborationItem];
-    v10 = [v9 fileURL];
+    collaborationItem3 = [(UICollaborationSocialActivity *)self collaborationItem];
+    fileURL = [collaborationItem3 fileURL];
 
-    if (v10)
+    if (fileURL)
     {
-      v11 = [v9 fileURL];
-      v52 = v11;
+      fileURL2 = [collaborationItem3 fileURL];
+      v52 = fileURL2;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v52 count:1];
 
       v6 = v12;
     }
   }
 
-  v13 = [(UIApplicationExtensionActivity *)self extensionItemDataRequest];
-  if (!v13)
+  extensionItemDataRequest = [(UIApplicationExtensionActivity *)self extensionItemDataRequest];
+  if (!extensionItemDataRequest)
   {
-    v14 = [(UISocialActivity *)self activityType];
-    v13 = [UISUIActivityExtensionItemDataRequest requestForActivity:self activityType:v14];
+    activityType = [(UISocialActivity *)self activityType];
+    extensionItemDataRequest = [UISUIActivityExtensionItemDataRequest requestForActivity:self activityType:activityType];
   }
 
-  v15 = [objc_opt_class() preparedActivityExtensionItemDataForActivityItemValues:v6 extensionItemDataRequest:v13];
-  v16 = [v15 extensionItems];
-  v17 = [v16 count];
+  v15 = [objc_opt_class() preparedActivityExtensionItemDataForActivityItemValues:v6 extensionItemDataRequest:extensionItemDataRequest];
+  extensionItems = [v15 extensionItems];
+  v17 = [extensionItems count];
 
   if (v17)
   {
-    v18 = [v15 extensionItems];
-    v19 = [v18 firstObject];
-    v20 = [v19 userInfo];
-    v21 = [v20 mutableCopy];
+    extensionItems2 = [v15 extensionItems];
+    firstObject = [extensionItems2 firstObject];
+    userInfo = [firstObject userInfo];
+    v21 = [userInfo mutableCopy];
     v22 = v21;
     if (v21)
     {
-      v23 = v21;
+      dictionary = v21;
     }
 
     else
     {
-      v23 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v24 = v23;
+    v24 = dictionary;
 
-    v25 = [(UICollaborationSocialActivity *)self collaborationItem];
-    v26 = [v25 shareOptions];
+    collaborationItem4 = [(UICollaborationSocialActivity *)self collaborationItem];
+    shareOptions = [collaborationItem4 shareOptions];
 
-    if (v26)
+    if (shareOptions)
     {
       v45 = 0;
-      v27 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v26 requiringSecureCoding:1 error:&v45];
+      v27 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:shareOptions requiringSecureCoding:1 error:&v45];
       v28 = v45;
       if (v27)
       {
@@ -226,17 +226,17 @@ LABEL_27:
       v28 = 0;
     }
 
-    v30 = [(UICollaborationSocialActivity *)self collaborationItem];
-    v31 = [v30 metadata];
+    collaborationItem5 = [(UICollaborationSocialActivity *)self collaborationItem];
+    metadata = [collaborationItem5 metadata];
 
-    if (v31)
+    if (metadata)
     {
-      v32 = [(UICollaborationSocialActivity *)self collaborationItem];
-      v33 = [v32 metadata];
+      collaborationItem6 = [(UICollaborationSocialActivity *)self collaborationItem];
+      metadata2 = [collaborationItem6 metadata];
 
-      [v33 setUserSelectedShareOptions:v26];
+      [metadata2 setUserSelectedShareOptions:shareOptions];
       v44 = v28;
-      v34 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v33 requiringSecureCoding:1 error:&v44];
+      v34 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:metadata2 requiringSecureCoding:1 error:&v44];
       v35 = v44;
 
       if (v34)
@@ -259,24 +259,24 @@ LABEL_27:
       v35 = v28;
     }
 
-    v37 = [v15 extensionItems];
-    v38 = [v37 objectAtIndexedSubscript:0];
+    extensionItems3 = [v15 extensionItems];
+    v38 = [extensionItems3 objectAtIndexedSubscript:0];
     [v38 setUserInfo:v24];
   }
 
   v39 = share_sheet_log();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
   {
-    v40 = [(UICollaborationSocialActivity *)self collaborationItem];
-    v41 = [v40 metadata];
-    v42 = [(UICollaborationSocialActivity *)self collaborationItem];
-    v43 = [v42 shareOptions];
+    collaborationItem7 = [(UICollaborationSocialActivity *)self collaborationItem];
+    metadata3 = [collaborationItem7 metadata];
+    collaborationItem8 = [(UICollaborationSocialActivity *)self collaborationItem];
+    shareOptions2 = [collaborationItem8 shareOptions];
     *buf = 138412802;
     v47 = v6;
     v48 = 2112;
-    v49 = v41;
+    v49 = metadata3;
     v50 = 2112;
-    v51 = v43;
+    v51 = shareOptions2;
     _os_log_impl(&dword_18B359000, v39, OS_LOG_TYPE_DEFAULT, "Preparing collaboration extension with resolved activity items:%@, metadata:%@, options:%@", buf, 0x20u);
   }
 

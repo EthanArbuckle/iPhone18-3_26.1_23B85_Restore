@@ -1,15 +1,15 @@
 @interface CarSmallWidgetRouteGeniusModeController
-- (BOOL)_isHomeOrWorkSuggestion:(id)a3;
-- (CarSmallWidgetRouteGeniusModeController)initWithSuggestion:(id)a3;
+- (BOOL)_isHomeOrWorkSuggestion:(id)suggestion;
+- (CarSmallWidgetRouteGeniusModeController)initWithSuggestion:(id)suggestion;
 - (ChromeViewController)chromeViewController;
 - (id)_car_smallWidgetName;
-- (id)_etaStringFromRoute:(id)a3;
+- (id)_etaStringFromRoute:(id)route;
 - (void)_setupRouteGeniusCardIfNeeded;
 - (void)_updateRouteGeniusCardContents;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
 - (void)dealloc;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)setCurrentSuggestion:(id)a3;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)setCurrentSuggestion:(id)suggestion;
 @end
 
 @implementation CarSmallWidgetRouteGeniusModeController
@@ -21,20 +21,20 @@
   return WeakRetained;
 }
 
-- (void)setCurrentSuggestion:(id)a3
+- (void)setCurrentSuggestion:(id)suggestion
 {
-  v5 = a3;
+  suggestionCopy = suggestion;
   v6 = sub_100C0B3F8();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 134349314;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v5;
+    v11 = suggestionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Got new RG suggestion: %@", &v8, 0x16u);
   }
 
-  objc_storeStrong(&self->_currentSuggestion, a3);
+  objc_storeStrong(&self->_currentSuggestion, suggestion);
   if (self->_currentSuggestion)
   {
     [(CarSmallWidgetRouteGeniusModeController *)self _updateRouteGeniusCardContents];
@@ -47,73 +47,73 @@
   }
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v5 = [CarRouteGeniusService sharedService:a3];
+  v5 = [CarRouteGeniusService sharedService:controller];
   [v5 unregisterObserver:self];
 
   v7 = +[CarDisplayController sharedInstance];
-  v6 = [v7 routeGeniusManager];
-  [v6 deactivateForAllChromes];
+  routeGeniusManager = [v7 routeGeniusManager];
+  [routeGeniusManager deactivateForAllChromes];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100C0B584;
   v4[3] = &unk_101661B18;
   v4[4] = self;
-  [a4 addPreparation:v4];
+  [animation addPreparation:v4];
 }
 
 - (id)_car_smallWidgetName
 {
-  v3 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
-  v4 = [v3 geoMapItem];
-  v5 = [v4 name];
+  entry = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
+  geoMapItem = [entry geoMapItem];
+  name = [geoMapItem name];
 
-  LOBYTE(v3) = [(CarSmallWidgetRouteGeniusModeController *)self _isHomeOrWorkSuggestion:self->_currentSuggestion];
-  v6 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
-  v7 = v6;
-  if ((v3 & 1) != 0 || !v5)
+  LOBYTE(entry) = [(CarSmallWidgetRouteGeniusModeController *)self _isHomeOrWorkSuggestion:self->_currentSuggestion];
+  entry2 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
+  v7 = entry2;
+  if ((entry & 1) != 0 || !name)
   {
-    v9 = [v6 title];
+    title = [entry2 title];
   }
 
   else
   {
-    v8 = [v6 geoMapItem];
-    v9 = [v8 name];
+    geoMapItem2 = [entry2 geoMapItem];
+    title = [geoMapItem2 name];
   }
 
-  return v9;
+  return title;
 }
 
-- (BOOL)_isHomeOrWorkSuggestion:(id)a3
+- (BOOL)_isHomeOrWorkSuggestion:(id)suggestion
 {
-  v3 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
-  v4 = [v3 type];
+  entry = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
+  type = [entry type];
 
-  return (v4 < 7) & (0x46u >> v4);
+  return (type < 7) & (0x46u >> type);
 }
 
-- (id)_etaStringFromRoute:(id)a3
+- (id)_etaStringFromRoute:(id)route
 {
-  v5 = a3;
-  v6 = [v5 route];
+  routeCopy = route;
+  route = [routeCopy route];
   v7 = [GuidanceETA alloc];
-  [v5 etaInSeconds];
+  [routeCopy etaInSeconds];
   v9 = v8;
 
-  [v6 distance];
+  [route distance];
   v11 = v10;
-  v12 = [v6 isEVRoute];
-  if (v12)
+  isEVRoute = [route isEVRoute];
+  if (isEVRoute)
   {
-    v3 = [v6 lastEVStep];
-    v4 = [v3 evInfo];
-    v13 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 remainingBatteryPercentage]);
+    lastEVStep = [route lastEVStep];
+    evInfo = [lastEVStep evInfo];
+    v13 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [evInfo remainingBatteryPercentage]);
   }
 
   else
@@ -121,30 +121,30 @@
     v13 = 0;
   }
 
-  v14 = [v6 destination];
-  v15 = [v14 timezone];
-  v16 = -[GuidanceETA initWithRemainingTime:remainingDistance:arrivalBatteryCharge:destinationTimeZone:transportType:](v7, "initWithRemainingTime:remainingDistance:arrivalBatteryCharge:destinationTimeZone:transportType:", v13, v15, [v6 transportType], v9, v11);
+  destination = [route destination];
+  timezone = [destination timezone];
+  v16 = -[GuidanceETA initWithRemainingTime:remainingDistance:arrivalBatteryCharge:destinationTimeZone:transportType:](v7, "initWithRemainingTime:remainingDistance:arrivalBatteryCharge:destinationTimeZone:transportType:", v13, timezone, [route transportType], v9, v11);
 
-  if (v12)
+  if (isEVRoute)
   {
   }
 
-  v17 = [(GuidanceETA *)v16 arrivalAMPMTimeString];
+  arrivalAMPMTimeString = [(GuidanceETA *)v16 arrivalAMPMTimeString];
 
-  return v17;
+  return arrivalAMPMTimeString;
 }
 
 - (void)_updateRouteGeniusCardContents
 {
   [(CarSmallWidgetRouteGeniusModeController *)self _setupRouteGeniusCardIfNeeded];
-  v5 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
+  entry = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
   v6 = +[MapsUIImageCache sharedCarCache];
   v61[0] = _NSConcreteStackBlock;
   v61[1] = 3221225472;
   v61[2] = sub_100C0BF30;
   v61[3] = &unk_1016519B0;
   v61[4] = self;
-  [v6 getImageForCarSmallWidget:v5 completion:v61];
+  [v6 getImageForCarSmallWidget:entry completion:v61];
 
   [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion etaInSeconds];
   LODWORD(v2) = vcvtpd_u64_f64(v7 * 0.0166666667);
@@ -156,19 +156,19 @@
   {
     if (MapsFeature_IsEnabled_LocationIntelligenceMaps() && self->_currentSuggestion)
     {
-      v11 = [(CarSmallWidgetRouteGeniusModeController *)self _car_smallWidgetName];
-      v12 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-      [v12 setText:v11];
+      _car_smallWidgetName = [(CarSmallWidgetRouteGeniusModeController *)self _car_smallWidgetName];
+      titleLabel = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+      [titleLabel setText:_car_smallWidgetName];
 
-      v13 = [(CarSmallWidgetRouteGeniusModeController *)self _etaStringFromRoute:self->_currentSuggestion];
+      _car_smallWidgetName2 = [(CarSmallWidgetRouteGeniusModeController *)self _etaStringFromRoute:self->_currentSuggestion];
       v58 = 0;
-      if (v13 && v10)
+      if (_car_smallWidgetName2 && v10)
       {
         v14 = +[NSBundle mainBundle];
         v15 = [v14 localizedStringForKey:@"[CarPlay Widget] Route Genius Description" value:@"localized string not found" table:0];
 
         v60 = 0;
-        v16 = [NSString localizedStringWithValidatedFormat:v15 validFormatSpecifiers:@"%@ %@ %@" error:&v60, v13, v9, v10];
+        v16 = [NSString localizedStringWithValidatedFormat:v15 validFormatSpecifiers:@"%@ %@ %@" error:&v60, _car_smallWidgetName2, v9, v10];
         v17 = v60;
         v58 = v16;
         if (![v16 length] || v17)
@@ -182,15 +182,15 @@
       }
 
       v57 = v9;
-      v20 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
+      subtitleLabel = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
       v21 = v58;
-      [v20 setText:v58];
+      [subtitleLabel setText:v58];
 
-      v22 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion route];
-      v23 = [v22 mutableData];
-      v24 = [v23 routeOverviewDescriptionStrings];
+      route = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion route];
+      mutableData = [route mutableData];
+      routeOverviewDescriptionStrings = [mutableData routeOverviewDescriptionStrings];
 
-      if ([v24 count] && MapsFeature_IsEnabled_LocationIntelligenceMaps())
+      if ([routeOverviewDescriptionStrings count] && MapsFeature_IsEnabled_LocationIntelligenceMaps())
       {
         if (qword_10195EB58 != -1)
         {
@@ -198,12 +198,12 @@
         }
 
         v55 = v10;
-        v56 = v5;
+        v56 = entry;
         v25 = qword_10195EB50;
-        v53 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
-        [v53 frame];
+        descriptionLabel = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
+        [descriptionLabel frame];
         v27 = v26;
-        v28 = v24;
+        v28 = routeOverviewDescriptionStrings;
         v29 = v25;
         v62 = 0u;
         v63 = 0u;
@@ -211,7 +211,7 @@
         v65 = 0u;
         obj = v28;
         v30 = [obj countByEnumeratingWithState:&v62 objects:buf count:16];
-        v54 = v24;
+        v54 = routeOverviewDescriptionStrings;
         if (v30)
         {
           v31 = v30;
@@ -229,8 +229,8 @@ LABEL_16:
 
             v36 = *(*(&v62 + 1) + 8 * v34);
             v37 = [NSAttributedString alloc];
-            v38 = [v36 stringWithDefaultOptions];
-            v32 = [v37 initWithString:v38 attributes:v29];
+            stringWithDefaultOptions = [v36 stringWithDefaultOptions];
+            v32 = [v37 initWithString:stringWithDefaultOptions attributes:v29];
 
             [v32 boundingRectWithSize:1 options:0 context:{1.79769313e308, 1.79769313e308}];
             if (v39 < v27)
@@ -258,13 +258,13 @@ LABEL_16:
           v32 = 0;
         }
 
-        v52 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
-        [v52 setAttributedText:v32];
+        descriptionLabel2 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
+        [descriptionLabel2 setAttributedText:v32];
 
         v10 = v55;
-        v5 = v56;
+        entry = v56;
         v21 = v58;
-        v24 = v54;
+        routeOverviewDescriptionStrings = v54;
       }
 
       v9 = v57;
@@ -272,56 +272,56 @@ LABEL_16:
 
     else
     {
-      v40 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-      [v40 setText:v10];
+      titleLabel2 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+      [titleLabel2 setText:v10];
 
-      v13 = [(CarSmallWidgetRouteGeniusModeController *)self _car_smallWidgetName];
-      v41 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
-      [v41 setText:v13];
+      _car_smallWidgetName2 = [(CarSmallWidgetRouteGeniusModeController *)self _car_smallWidgetName];
+      subtitleLabel2 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
+      [subtitleLabel2 setText:_car_smallWidgetName2];
     }
   }
 
   else
   {
     v42 = v9;
-    v43 = [(CarSmallWidgetRouteGeniusModeController *)self _car_smallWidgetName];
-    v44 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-    [v44 setText:v43];
+    _car_smallWidgetName3 = [(CarSmallWidgetRouteGeniusModeController *)self _car_smallWidgetName];
+    titleLabel3 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+    [titleLabel3 setText:_car_smallWidgetName3];
 
     v45 = [(CarSmallWidgetRouteGeniusModeController *)self _isHomeOrWorkSuggestion:self->_currentSuggestion];
     if (v45)
     {
-      v46 = &stru_1016631F0;
+      shortAddress = &stru_1016631F0;
     }
 
     else
     {
-      v44 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
-      v3 = [v44 geoMapItem];
-      v46 = [v3 shortAddress];
+      titleLabel3 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
+      geoMapItem = [titleLabel3 geoMapItem];
+      shortAddress = [geoMapItem shortAddress];
     }
 
-    v47 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
-    [v47 setText:v46];
+    subtitleLabel3 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
+    [subtitleLabel3 setText:shortAddress];
 
     if ((v45 & 1) == 0)
     {
     }
 
-    v13 = sub_100C0B3F8();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    _car_smallWidgetName2 = sub_100C0B3F8();
+    if (os_log_type_enabled(_car_smallWidgetName2, OS_LOG_TYPE_INFO))
     {
-      v48 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-      v49 = [v48 text];
-      v50 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
-      v51 = [v50 text];
+      titleLabel4 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+      text = [titleLabel4 text];
+      subtitleLabel4 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
+      text2 = [subtitleLabel4 text];
       *buf = 134349570;
-      v67 = self;
+      selfCopy = self;
       v68 = 2112;
-      v69 = v49;
+      v69 = text;
       v70 = 2112;
-      v71 = v51;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[%{public}p] Updated titlte: %@, subtitle: %@", buf, 0x20u);
+      v71 = text2;
+      _os_log_impl(&_mh_execute_header, _car_smallWidgetName2, OS_LOG_TYPE_INFO, "[%{public}p] Updated titlte: %@, subtitle: %@", buf, 0x20u);
     }
 
     v9 = v42;
@@ -330,17 +330,17 @@ LABEL_16:
 
 - (void)_setupRouteGeniusCardIfNeeded
 {
-  v3 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
-  if (v3)
+  imageView = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
+  if (imageView)
   {
-    v4 = v3;
-    v5 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-    if (v5)
+    v4 = imageView;
+    titleLabel = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+    if (titleLabel)
     {
-      v6 = v5;
-      v7 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
+      v6 = titleLabel;
+      subtitleLabel = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
 
-      if (v7)
+      if (subtitleLabel)
       {
         return;
       }
@@ -351,8 +351,8 @@ LABEL_16:
     }
   }
 
-  v8 = [(CarSmallWidgetRouteGeniusModeController *)self view];
-  [v8 setAccessibilityIdentifier:@"CarSmallWidgetRouteGeniusView"];
+  view = [(CarSmallWidgetRouteGeniusModeController *)self view];
+  [view setAccessibilityIdentifier:@"CarSmallWidgetRouteGeniusView"];
 
   v9 = [UIImageView alloc];
   y = CGRectZero.origin.y;
@@ -361,63 +361,63 @@ LABEL_16:
   v13 = [v9 initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(CarSmallWidgetRouteGeniusModeController *)self setImageView:v13];
 
-  v14 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  imageView2 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
+  [imageView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v15 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
-  [v15 setAccessibilityIdentifier:@"ImageView"];
+  imageView3 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
+  [imageView3 setAccessibilityIdentifier:@"ImageView"];
 
-  v16 = [(CarSmallWidgetRouteGeniusModeController *)self view];
-  v17 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
-  [v16 addSubview:v17];
+  view2 = [(CarSmallWidgetRouteGeniusModeController *)self view];
+  imageView4 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
+  [view2 addSubview:imageView4];
 
   v18 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(CarSmallWidgetRouteGeniusModeController *)self setTitleLabel:v18];
 
-  v19 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-  [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel2 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+  [titleLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v20 = +[UIColor labelColor];
-  v21 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-  [v21 setTextColor:v20];
+  titleLabel3 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+  [titleLabel3 setTextColor:v20];
 
   v22 = [UIFont _preferredFontForTextStyle:UIFontTextStyleCallout weight:UIFontWeightSemibold];
-  v23 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-  [v23 setFont:v22];
+  titleLabel4 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+  [titleLabel4 setFont:v22];
 
-  v24 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-  [v24 setAdjustsFontForContentSizeCategory:1];
+  titleLabel5 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+  [titleLabel5 setAdjustsFontForContentSizeCategory:1];
 
-  v25 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-  [v25 setAccessibilityIdentifier:@"TitleLabel"];
+  titleLabel6 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+  [titleLabel6 setAccessibilityIdentifier:@"TitleLabel"];
 
-  v26 = [(CarSmallWidgetRouteGeniusModeController *)self view];
-  v27 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-  [v26 addSubview:v27];
+  view3 = [(CarSmallWidgetRouteGeniusModeController *)self view];
+  titleLabel7 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+  [view3 addSubview:titleLabel7];
 
   v28 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(CarSmallWidgetRouteGeniusModeController *)self setSubtitleLabel:v28];
 
-  v29 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
-  [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
+  subtitleLabel2 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
+  [subtitleLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v30 = [UIFont _preferredFontForTextStyle:UIFontTextStyleCaption1 weight:UIFontWeightRegular];
-  v31 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
-  [v31 setFont:v30];
+  subtitleLabel3 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
+  [subtitleLabel3 setFont:v30];
 
   v32 = +[UIColor labelColor];
-  v33 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
-  [v33 setTextColor:v32];
+  subtitleLabel4 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
+  [subtitleLabel4 setTextColor:v32];
 
-  v34 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
-  [v34 setAdjustsFontForContentSizeCategory:1];
+  subtitleLabel5 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
+  [subtitleLabel5 setAdjustsFontForContentSizeCategory:1];
 
-  v35 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
-  [v35 setAccessibilityIdentifier:@"SubtitleLabel"];
+  subtitleLabel6 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
+  [subtitleLabel6 setAccessibilityIdentifier:@"SubtitleLabel"];
 
-  v36 = [(CarSmallWidgetRouteGeniusModeController *)self view];
-  v37 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
-  [v36 addSubview:v37];
+  view4 = [(CarSmallWidgetRouteGeniusModeController *)self view];
+  subtitleLabel7 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
+  [view4 addSubview:subtitleLabel7];
 
   IsEnabled_LocationIntelligenceMaps = MapsFeature_IsEnabled_LocationIntelligenceMaps();
   if (IsEnabled_LocationIntelligenceMaps)
@@ -425,153 +425,153 @@ LABEL_16:
     v38 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [(CarSmallWidgetRouteGeniusModeController *)self setDescriptionLabel:v38];
 
-    v39 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
-    [v39 setTranslatesAutoresizingMaskIntoConstraints:0];
+    descriptionLabel = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
+    [descriptionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v40 = [UIFont _preferredFontForTextStyle:UIFontTextStyleCaption1 variant:256];
-    v41 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
-    [v41 setFont:v40];
+    descriptionLabel2 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
+    [descriptionLabel2 setFont:v40];
 
-    v42 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
-    [v42 setAdjustsFontForContentSizeCategory:1];
+    descriptionLabel3 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
+    [descriptionLabel3 setAdjustsFontForContentSizeCategory:1];
 
-    v43 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
-    [v43 setAccessibilityIdentifier:@"DescriptionLabel"];
+    descriptionLabel4 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
+    [descriptionLabel4 setAccessibilityIdentifier:@"DescriptionLabel"];
 
-    v44 = [(CarSmallWidgetRouteGeniusModeController *)self view];
-    v45 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
-    [v44 addSubview:v45];
+    view5 = [(CarSmallWidgetRouteGeniusModeController *)self view];
+    descriptionLabel5 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
+    [view5 addSubview:descriptionLabel5];
 
     v46 = +[UIColor secondaryLabelColor];
-    v47 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
-    [v47 setTextColor:v46];
+    descriptionLabel6 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
+    [descriptionLabel6 setTextColor:v46];
   }
 
   v48 = objc_alloc_init(UILayoutGuide);
-  v49 = [(CarSmallWidgetRouteGeniusModeController *)self view];
-  [v49 addLayoutGuide:v48];
+  view6 = [(CarSmallWidgetRouteGeniusModeController *)self view];
+  [view6 addLayoutGuide:v48];
 
   v183 = +[NSMutableArray array];
-  v177 = [v48 leadingAnchor];
-  v181 = [(CarSmallWidgetRouteGeniusModeController *)self view];
-  v173 = [v181 safeAreaLayoutGuide];
-  v163 = [v173 leadingAnchor];
-  v158 = [v177 constraintEqualToAnchor:v163];
+  leadingAnchor = [v48 leadingAnchor];
+  view7 = [(CarSmallWidgetRouteGeniusModeController *)self view];
+  safeAreaLayoutGuide = [view7 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v158 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v189[0] = v158;
-  v151 = [v48 topAnchor];
-  v154 = [(CarSmallWidgetRouteGeniusModeController *)self view];
-  v149 = [v154 safeAreaLayoutGuide];
-  v147 = [v149 topAnchor];
-  v145 = [v151 constraintGreaterThanOrEqualToAnchor:v147];
+  topAnchor = [v48 topAnchor];
+  view8 = [(CarSmallWidgetRouteGeniusModeController *)self view];
+  safeAreaLayoutGuide2 = [view8 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide2 topAnchor];
+  v145 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v189[1] = v145;
-  v143 = [(CarSmallWidgetRouteGeniusModeController *)self view];
-  v141 = [v143 safeAreaLayoutGuide];
-  v139 = [v141 trailingAnchor];
-  v137 = [v48 trailingAnchor];
-  v135 = [v139 constraintEqualToAnchor:v137];
+  view9 = [(CarSmallWidgetRouteGeniusModeController *)self view];
+  safeAreaLayoutGuide3 = [view9 safeAreaLayoutGuide];
+  trailingAnchor = [safeAreaLayoutGuide3 trailingAnchor];
+  trailingAnchor2 = [v48 trailingAnchor];
+  v135 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v189[2] = v135;
-  v133 = [(CarSmallWidgetRouteGeniusModeController *)self view];
-  v131 = [v133 safeAreaLayoutGuide];
-  v129 = [v131 bottomAnchor];
-  v127 = [v48 bottomAnchor];
-  v125 = [v129 constraintGreaterThanOrEqualToAnchor:v127];
+  view10 = [(CarSmallWidgetRouteGeniusModeController *)self view];
+  safeAreaLayoutGuide4 = [view10 safeAreaLayoutGuide];
+  bottomAnchor = [safeAreaLayoutGuide4 bottomAnchor];
+  bottomAnchor2 = [v48 bottomAnchor];
+  v125 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
   v189[3] = v125;
-  v50 = [v48 heightAnchor];
-  v51 = [v50 constraintEqualToConstant:65.0];
+  heightAnchor = [v48 heightAnchor];
+  v51 = [heightAnchor constraintEqualToConstant:65.0];
   v189[4] = v51;
-  v52 = [v48 centerYAnchor];
-  v53 = [(CarSmallWidgetRouteGeniusModeController *)self view];
-  v54 = [v53 safeAreaLayoutGuide];
-  v55 = [v54 centerYAnchor];
-  v56 = [v52 constraintEqualToAnchor:v55];
+  centerYAnchor = [v48 centerYAnchor];
+  view11 = [(CarSmallWidgetRouteGeniusModeController *)self view];
+  safeAreaLayoutGuide5 = [view11 safeAreaLayoutGuide];
+  centerYAnchor2 = [safeAreaLayoutGuide5 centerYAnchor];
+  v56 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v189[5] = v56;
   v57 = [NSArray arrayWithObjects:v189 count:6];
   [v183 addObjectsFromArray:v57];
 
-  v174 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
-  v58 = [v174 leadingAnchor];
+  imageView5 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
+  leadingAnchor3 = [imageView5 leadingAnchor];
   v182 = v48;
-  v59 = [v48 leadingAnchor];
-  v178 = v59;
+  leadingAnchor4 = [v48 leadingAnchor];
+  v178 = leadingAnchor4;
   if (IsEnabled_LocationIntelligenceMaps)
   {
-    v169 = [v58 constraintEqualToAnchor:v59 constant:8.0];
+    v169 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:8.0];
     v188[0] = v169;
-    v164 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
-    v159 = [v164 widthAnchor];
-    v60 = [v159 constraintEqualToConstant:self->_imageWidth];
+    imageView6 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
+    widthAnchor = [imageView6 widthAnchor];
+    v60 = [widthAnchor constraintEqualToConstant:self->_imageWidth];
     v188[1] = v60;
-    v61 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
-    v62 = [v61 heightAnchor];
-    v63 = [v62 constraintEqualToConstant:self->_imageWidth];
+    imageView7 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
+    heightAnchor2 = [imageView7 heightAnchor];
+    v63 = [heightAnchor2 constraintEqualToConstant:self->_imageWidth];
     v188[2] = v63;
-    v64 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
-    v65 = [v64 centerYAnchor];
-    v66 = [v182 centerYAnchor];
-    [v65 constraintEqualToAnchor:v66];
-    v67 = v155 = v58;
+    imageView8 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
+    centerYAnchor3 = [imageView8 centerYAnchor];
+    centerYAnchor4 = [v182 centerYAnchor];
+    [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+    v67 = v155 = leadingAnchor3;
     v188[3] = v67;
     v68 = [NSArray arrayWithObjects:v188 count:4];
     [v183 addObjectsFromArray:v68];
 
-    v179 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-    v175 = [v179 topAnchor];
-    v170 = [v182 topAnchor];
-    v165 = [v175 constraintEqualToAnchor:v170 constant:6.0];
+    titleLabel8 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+    topAnchor3 = [titleLabel8 topAnchor];
+    topAnchor4 = [v182 topAnchor];
+    v165 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:6.0];
     v187[0] = v165;
-    v160 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-    v69 = [v160 leadingAnchor];
-    v70 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
-    v71 = [v70 trailingAnchor];
-    v72 = [v69 constraintEqualToAnchor:v71 constant:6.0];
+    titleLabel9 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+    leadingAnchor5 = [titleLabel9 leadingAnchor];
+    imageView9 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
+    trailingAnchor3 = [imageView9 trailingAnchor];
+    v72 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor3 constant:6.0];
     v187[1] = v72;
-    v73 = [v182 trailingAnchor];
-    v74 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-    v75 = [v74 trailingAnchor];
-    v76 = [v73 constraintEqualToAnchor:v75 constant:6.0];
+    trailingAnchor4 = [v182 trailingAnchor];
+    titleLabel10 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+    trailingAnchor5 = [titleLabel10 trailingAnchor];
+    v76 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:6.0];
     v187[2] = v76;
     v77 = [NSArray arrayWithObjects:v187 count:3];
     [v183 addObjectsFromArray:v77];
 
-    v180 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
-    v171 = [v180 leadingAnchor];
-    v176 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-    v166 = [v176 leadingAnchor];
-    v161 = [v171 constraintEqualToAnchor:v166];
+    subtitleLabel8 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
+    leadingAnchor6 = [subtitleLabel8 leadingAnchor];
+    titleLabel11 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+    leadingAnchor7 = [titleLabel11 leadingAnchor];
+    v161 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     v186[0] = v161;
-    v156 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
-    v152 = [v156 trailingAnchor];
-    v78 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-    v79 = [v78 trailingAnchor];
-    v80 = [v152 constraintEqualToAnchor:v79];
+    subtitleLabel9 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
+    trailingAnchor6 = [subtitleLabel9 trailingAnchor];
+    titleLabel12 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+    trailingAnchor7 = [titleLabel12 trailingAnchor];
+    v80 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
     v186[1] = v80;
-    v81 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
-    v82 = [v81 topAnchor];
-    v83 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-    v84 = [v83 bottomAnchor];
-    v85 = [v82 constraintEqualToAnchor:v84 constant:2.0];
+    subtitleLabel10 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
+    topAnchor5 = [subtitleLabel10 topAnchor];
+    titleLabel13 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+    bottomAnchor3 = [titleLabel13 bottomAnchor];
+    v85 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:2.0];
     v186[2] = v85;
     v86 = [NSArray arrayWithObjects:v186 count:3];
     [v183 addObjectsFromArray:v86];
 
-    v87 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
-    v88 = [v87 leadingAnchor];
-    v89 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-    v90 = [v89 leadingAnchor];
-    v91 = [v88 constraintEqualToAnchor:v90];
+    descriptionLabel7 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
+    leadingAnchor8 = [descriptionLabel7 leadingAnchor];
+    titleLabel14 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+    leadingAnchor9 = [titleLabel14 leadingAnchor];
+    v91 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
     v185[0] = v91;
-    v92 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
-    v93 = [v92 trailingAnchor];
-    v94 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-    v95 = [v94 trailingAnchor];
-    v172 = [v93 constraintEqualToAnchor:v95];
-    v185[1] = v172;
-    v167 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
-    v96 = [v167 topAnchor];
-    v97 = self;
-    v98 = v96;
-    v162 = [(CarSmallWidgetRouteGeniusModeController *)v97 subtitleLabel];
-    v157 = [v162 bottomAnchor];
+    descriptionLabel8 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
+    trailingAnchor8 = [descriptionLabel8 trailingAnchor];
+    titleLabel15 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+    trailingAnchor9 = [titleLabel15 trailingAnchor];
+    widthAnchor2 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
+    v185[1] = widthAnchor2;
+    descriptionLabel9 = [(CarSmallWidgetRouteGeniusModeController *)self descriptionLabel];
+    topAnchor6 = [descriptionLabel9 topAnchor];
+    selfCopy = self;
+    v98 = topAnchor6;
+    subtitleLabel11 = [(CarSmallWidgetRouteGeniusModeController *)selfCopy subtitleLabel];
+    bottomAnchor4 = [subtitleLabel11 bottomAnchor];
     v153 = [v98 constraintEqualToAnchor:2.0 constant:?];
     v185[2] = v153;
     v150 = [NSArray arrayWithObjects:v185 count:3];
@@ -580,76 +580,76 @@ LABEL_16:
 
   else
   {
-    v140 = [v58 constraintEqualToAnchor:v59 constant:13.0];
+    v140 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:13.0];
     v184[0] = v140;
-    v146 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
-    v144 = [v146 centerYAnchor];
-    v136 = [v48 centerYAnchor];
-    v128 = [v144 constraintEqualToAnchor:v136];
+    imageView10 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
+    centerYAnchor5 = [imageView10 centerYAnchor];
+    centerYAnchor6 = [v48 centerYAnchor];
+    v128 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v184[1] = v128;
-    v132 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
-    v172 = [v132 widthAnchor];
-    v167 = [v172 constraintEqualToConstant:40.0];
-    v184[2] = v167;
-    v123 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
-    v99 = [v123 heightAnchor];
-    v157 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
-    [v157 widthAnchor];
-    v153 = v162 = v99;
-    v150 = [v99 constraintEqualToAnchor:?];
+    imageView11 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
+    widthAnchor2 = [imageView11 widthAnchor];
+    descriptionLabel9 = [widthAnchor2 constraintEqualToConstant:40.0];
+    v184[2] = descriptionLabel9;
+    imageView12 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
+    heightAnchor3 = [imageView12 heightAnchor];
+    bottomAnchor4 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
+    [bottomAnchor4 widthAnchor];
+    v153 = subtitleLabel11 = heightAnchor3;
+    v150 = [heightAnchor3 constraintEqualToAnchor:?];
     v184[3] = v150;
-    v148 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-    v142 = [v148 firstBaselineAnchor];
-    v138 = [v182 topAnchor];
-    v134 = [v142 constraintEqualToAnchor:v138 constant:30.0];
+    titleLabel16 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+    firstBaselineAnchor = [titleLabel16 firstBaselineAnchor];
+    topAnchor7 = [v182 topAnchor];
+    v134 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor7 constant:30.0];
     v184[4] = v134;
-    v130 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-    v124 = [v130 leadingAnchor];
-    v126 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
-    v122 = [v126 trailingAnchor];
-    v121 = [v124 constraintEqualToAnchor:v122 constant:8.0];
+    titleLabel17 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+    leadingAnchor10 = [titleLabel17 leadingAnchor];
+    imageView13 = [(CarSmallWidgetRouteGeniusModeController *)self imageView];
+    trailingAnchor10 = [imageView13 trailingAnchor];
+    v121 = [leadingAnchor10 constraintEqualToAnchor:trailingAnchor10 constant:8.0];
     v184[5] = v121;
-    v119 = [v182 trailingAnchor];
-    v120 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-    v118 = [v120 trailingAnchor];
-    v117 = [v119 constraintEqualToAnchor:v118 constant:8.0];
+    trailingAnchor11 = [v182 trailingAnchor];
+    titleLabel18 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+    trailingAnchor12 = [titleLabel18 trailingAnchor];
+    v117 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12 constant:8.0];
     v184[6] = v117;
-    v116 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
-    v114 = [v116 firstBaselineAnchor];
-    v115 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-    v113 = [v115 lastBaselineAnchor];
-    v112 = [v114 constraintEqualToAnchor:v113 constant:17.0];
+    subtitleLabel12 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
+    firstBaselineAnchor2 = [subtitleLabel12 firstBaselineAnchor];
+    titleLabel19 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+    lastBaselineAnchor = [titleLabel19 lastBaselineAnchor];
+    v112 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:17.0];
     v184[7] = v112;
-    v111 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
-    v110 = [v111 leadingAnchor];
-    v100 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-    v101 = [v100 leadingAnchor];
-    v102 = [v110 constraintEqualToAnchor:v101];
+    subtitleLabel13 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
+    leadingAnchor11 = [subtitleLabel13 leadingAnchor];
+    titleLabel20 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+    leadingAnchor12 = [titleLabel20 leadingAnchor];
+    v102 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
     v184[8] = v102;
-    v103 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
-    v104 = [v103 trailingAnchor];
-    v105 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
-    v106 = [v105 trailingAnchor];
-    [v104 constraintEqualToAnchor:v106];
-    v108 = v107 = v58;
+    subtitleLabel14 = [(CarSmallWidgetRouteGeniusModeController *)self subtitleLabel];
+    trailingAnchor13 = [subtitleLabel14 trailingAnchor];
+    titleLabel21 = [(CarSmallWidgetRouteGeniusModeController *)self titleLabel];
+    trailingAnchor14 = [titleLabel21 trailingAnchor];
+    [trailingAnchor13 constraintEqualToAnchor:trailingAnchor14];
+    v108 = v107 = leadingAnchor3;
     v184[9] = v108;
     v109 = [NSArray arrayWithObjects:v184 count:10];
     [v183 addObjectsFromArray:v109];
 
-    v94 = v128;
-    v88 = v107;
-    v90 = v140;
+    titleLabel15 = v128;
+    leadingAnchor8 = v107;
+    leadingAnchor9 = v140;
 
-    v98 = v123;
-    v89 = v178;
+    v98 = imageView12;
+    titleLabel14 = v178;
 
-    v93 = v136;
-    v95 = v132;
+    trailingAnchor8 = centerYAnchor6;
+    trailingAnchor9 = imageView11;
 
-    v92 = v144;
-    v91 = v146;
+    descriptionLabel8 = centerYAnchor5;
+    v91 = imageView10;
 
-    v87 = v174;
+    descriptionLabel7 = imageView5;
   }
 
   [NSLayoutConstraint activateConstraints:v183];
@@ -661,7 +661,7 @@ LABEL_16:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -670,9 +670,9 @@ LABEL_16:
   [(CarSmallWidgetRouteGeniusModeController *)&v4 dealloc];
 }
 
-- (CarSmallWidgetRouteGeniusModeController)initWithSuggestion:(id)a3
+- (CarSmallWidgetRouteGeniusModeController)initWithSuggestion:(id)suggestion
 {
-  v5 = a3;
+  suggestionCopy = suggestion;
   v10.receiver = self;
   v10.super_class = CarSmallWidgetRouteGeniusModeController;
   v6 = [(CarSmallWidgetRouteGeniusModeController *)&v10 initWithNibName:0 bundle:0];
@@ -686,7 +686,7 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    objc_storeStrong(&v6->_currentSuggestion, a3);
+    objc_storeStrong(&v6->_currentSuggestion, suggestion);
     v8 = +[CarRouteGeniusService sharedService];
     [v8 registerObserver:v6];
 

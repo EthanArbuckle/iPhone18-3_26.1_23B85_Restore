@@ -1,26 +1,26 @@
 @interface PIReframeKeyframeSequence
-- (PIReframeKeyframeSequence)initWithKeyframeArray:(id)a3;
-- (uint64_t)homographyAtTime:(__int128 *)a3;
+- (PIReframeKeyframeSequence)initWithKeyframeArray:(id)array;
+- (uint64_t)homographyAtTime:(__int128 *)time;
 @end
 
 @implementation PIReframeKeyframeSequence
 
-- (uint64_t)homographyAtTime:(__int128 *)a3
+- (uint64_t)homographyAtTime:(__int128 *)time
 {
-  v3 = *(a1 + 8);
-  v5 = *a3;
-  v6 = *(a3 + 2);
+  v3 = *(self + 8);
+  v5 = *time;
+  v6 = *(time + 2);
   return [v3 sampleAtTime:&v5];
 }
 
-- (PIReframeKeyframeSequence)initWithKeyframeArray:(id)a3
+- (PIReframeKeyframeSequence)initWithKeyframeArray:(id)array
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   v35.receiver = self;
   v35.super_class = PIReframeKeyframeSequence;
   v27 = [(PIReframeKeyframeSequence *)&v35 init];
-  v5 = [v4 count];
+  v5 = [arrayCopy count];
   v6 = malloc_type_calloc(v5, 0x18uLL, 0x1000040504FFAC1uLL);
   v26 = v5;
   v28 = malloc_type_calloc(v5, 0x30uLL, 0x1000040EED21634uLL);
@@ -28,7 +28,7 @@
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = v4;
+  v7 = arrayCopy;
   v8 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v8)
   {

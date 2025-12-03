@@ -1,12 +1,12 @@
 @interface TSgPTPUnicastLinkLayerPtPPort
-- (TSgPTPUnicastLinkLayerPtPPort)initWithImplDC:(id)a3;
+- (TSgPTPUnicastLinkLayerPtPPort)initWithImplDC:(id)c;
 @end
 
 @implementation TSgPTPUnicastLinkLayerPtPPort
 
-- (TSgPTPUnicastLinkLayerPtPPort)initWithImplDC:(id)a3
+- (TSgPTPUnicastLinkLayerPtPPort)initWithImplDC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -18,10 +18,10 @@
 
   v9.receiver = self;
   v9.super_class = TSgPTPUnicastLinkLayerPtPPort;
-  v5 = [(TSgPTPFDPtPPort *)&v9 initWithImplDC:v4];
+  v5 = [(TSgPTPFDPtPPort *)&v9 initWithImplDC:cCopy];
   if (v5)
   {
-    v6 = v4;
+    v6 = cCopy;
     impl = v5->_impl;
     v5->_impl = v6;
 LABEL_4:

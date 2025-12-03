@@ -1,18 +1,18 @@
 @interface SKUIReportAConcernViewController
-- (SKUIReportAConcernViewController)initWithConfiguration:(id)a3;
+- (SKUIReportAConcernViewController)initWithConfiguration:(id)configuration;
 @end
 
 @implementation SKUIReportAConcernViewController
 
-- (SKUIReportAConcernViewController)initWithConfiguration:(id)a3
+- (SKUIReportAConcernViewController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIReportAConcernViewController initWithConfiguration:];
   }
 
-  v5 = [[SKUIReportAConcernReasonViewController alloc] initWithConfiguration:v4];
+  v5 = [[SKUIReportAConcernReasonViewController alloc] initWithConfiguration:configurationCopy];
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;

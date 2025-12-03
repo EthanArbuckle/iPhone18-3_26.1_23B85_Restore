@@ -1,26 +1,26 @@
 @interface SBDashBoardLockScreenEnvironment
-- (BOOL)biometricUnlockBehavior:(id)a3 requestsFeedback:(id)a4;
-- (BOOL)biometricUnlockBehavior:(id)a3 requestsUnlock:(id)a4 withFeedback:(id)a5;
+- (BOOL)biometricUnlockBehavior:(id)behavior requestsFeedback:(id)feedback;
+- (BOOL)biometricUnlockBehavior:(id)behavior requestsUnlock:(id)unlock withFeedback:(id)feedback;
 - (BOOL)handleLockButtonPress;
 - (SBBiometricUnlockBehaviorDelegate)biometricUnlockBehaviorDelegate;
 - (SBControlCenterPresenting)controlCenterPresenter;
 - (SBDashBoardLockScreenEnvironment)init;
-- (SBDashBoardLockScreenEnvironment)initWithCoverSheetViewController:(id)a3;
-- (id)defaultHostableEntityForActivationOfCamera:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBDashBoardLockScreenEnvironment)initWithCoverSheetViewController:(id)controller;
+- (id)defaultHostableEntityForActivationOfCamera:(id)camera;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)_handleCoverSheetTranslationForPasscodeLockVisible:(BOOL)a3 blockingForOtherReasons:(BOOL)a4 ignoringPreflightRequirementsForPresentation:(BOOL)a5;
-- (void)_setExpectsFaceContact:(BOOL)a3;
-- (void)coverSheetViewController:(id)a3 didChangeActiveBehavior:(id)a4;
-- (void)finishUIUnlockFromSource:(int)a3;
-- (void)handleBiometricEvent:(unint64_t)a3;
+- (void)_handleCoverSheetTranslationForPasscodeLockVisible:(BOOL)visible blockingForOtherReasons:(BOOL)reasons ignoringPreflightRequirementsForPresentation:(BOOL)presentation;
+- (void)_setExpectsFaceContact:(BOOL)contact;
+- (void)coverSheetViewController:(id)controller didChangeActiveBehavior:(id)behavior;
+- (void)finishUIUnlockFromSource:(int)source;
+- (void)handleBiometricEvent:(unint64_t)event;
 - (void)prepareForUILock;
 - (void)prepareForUIUnlock;
-- (void)setAuthenticated:(BOOL)a3;
-- (void)setInScreenOffMode:(BOOL)a3 forAutoUnlock:(BOOL)a4 fromUnlockSource:(int)a5 preservingCoverSheetPresentationState:(BOOL)a6;
-- (void)setPasscodeLockVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setPasscodeLockVisible:(BOOL)a3 intent:(int)a4 ignoringPreflightRequirementsForPresentation:(BOOL)a5 animated:(BOOL)a6 completion:(id)a7;
+- (void)setAuthenticated:(BOOL)authenticated;
+- (void)setInScreenOffMode:(BOOL)mode forAutoUnlock:(BOOL)unlock fromUnlockSource:(int)source preservingCoverSheetPresentationState:(BOOL)state;
+- (void)setPasscodeLockVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion;
+- (void)setPasscodeLockVisible:(BOOL)visible intent:(int)intent ignoringPreflightRequirementsForPresentation:(BOOL)presentation animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation SBDashBoardLockScreenEnvironment
@@ -31,13 +31,13 @@
   [v3 resetIdleTimerForReason:@"DB:PrepareForUIUnlock"];
 
   v4 = +[SBAlertItemsController sharedInstance];
-  v5 = [v4 lockScreenModalAlertItemPresenter];
-  v7 = [v5 lockScreenActionContext];
+  lockScreenModalAlertItemPresenter = [v4 lockScreenModalAlertItemPresenter];
+  lockScreenActionContext = [lockScreenModalAlertItemPresenter lockScreenActionContext];
 
-  if (v7)
+  if (lockScreenActionContext)
   {
     v6 = objc_alloc_init(MEMORY[0x277D02C88]);
-    [v6 setLockScreenActionContext:v7];
+    [v6 setLockScreenActionContext:lockScreenActionContext];
     [(SBLockScreenActionManager *)self->_lockScreenActionManager registerLockScreenActionProvider:v6 forSource:2];
   }
 
@@ -47,13 +47,13 @@
 - (SBDashBoardLockScreenEnvironment)init
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v3 = [SBApp windowSceneManager];
-  v4 = [v3 embeddedDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-  v5 = [[SBDefaultCoverSheetContext alloc] initWithWindowScene:v4];
+  v5 = [[SBDefaultCoverSheetContext alloc] initWithWindowScene:embeddedDisplayWindowScene];
   v6 = objc_alloc(MEMORY[0x277D02C30]);
-  v7 = [SBApp authenticationController];
-  v8 = [v6 initWithAuthenticationProvider:v7];
+  authenticationController = [SBApp authenticationController];
+  v8 = [v6 initWithAuthenticationProvider:authenticationController];
 
   v9 = objc_alloc_init(SBDashBoardCameraPageViewController);
   [(SBDashBoardCameraPageViewController *)v9 setCameraPageDelegate:self];
@@ -76,9 +76,9 @@
   return v18;
 }
 
-- (SBDashBoardLockScreenEnvironment)initWithCoverSheetViewController:(id)a3
+- (SBDashBoardLockScreenEnvironment)initWithCoverSheetViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v59.receiver = self;
   v59.super_class = SBDashBoardLockScreenEnvironment;
   v6 = [(SBDashBoardLockScreenEnvironment *)&v59 init];
@@ -88,7 +88,7 @@
     goto LABEL_20;
   }
 
-  objc_storeStrong(&v6->_coverSheetViewController, a3);
+  objc_storeStrong(&v6->_coverSheetViewController, controller);
   [(CSCoverSheetViewController *)v7->_coverSheetViewController addCoverSheetObserver:v7];
   v8 = [[SBDashBoardAnalyticsEmitter alloc] initWithCoverSheetViewController:v7->_coverSheetViewController];
   analyticsEmitter = v7->_analyticsEmitter;
@@ -107,8 +107,8 @@
   {
     if (_os_feature_enabled_impl())
     {
-      v12 = [SBApp authenticationController];
-      v13 = [SBDashBoardExtensionWhileLockedCapturePolicy policyWithAuthenticationStatusProvider:v12];
+      authenticationController = [SBApp authenticationController];
+      v13 = [SBDashBoardExtensionWhileLockedCapturePolicy policyWithAuthenticationStatusProvider:authenticationController];
       captureLaunchPolicy = v7->_captureLaunchPolicy;
       v7->_captureLaunchPolicy = v13;
 
@@ -132,7 +132,7 @@
   }
 
   v16 = objc_alloc_init(v15);
-  v12 = v7->_captureLaunchPolicy;
+  authenticationController = v7->_captureLaunchPolicy;
   v7->_captureLaunchPolicy = v16;
 LABEL_9:
 
@@ -169,13 +169,13 @@ LABEL_9:
   v7->_pluginController = v27;
 
   v29 = v7->_lockScreenActionManager;
-  v30 = [(SBDashBoardPluginController *)v7->_pluginController lockScreenActionProvider];
-  [(SBLockScreenActionManager *)v29 registerLockScreenActionProvider:v30 forSource:11];
+  lockScreenActionProvider = [(SBDashBoardPluginController *)v7->_pluginController lockScreenActionProvider];
+  [(SBLockScreenActionManager *)v29 registerLockScreenActionProvider:lockScreenActionProvider forSource:11];
 
   v31 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v32 = [v31 policyAggregator];
+  policyAggregator = [v31 policyAggregator];
 
-  v33 = [[SBDashBoardPolicyBasedBehaviorProvider alloc] initWithCoverSheetViewController:v7->_coverSheetViewController policyAggregator:v32];
+  v33 = [[SBDashBoardPolicyBasedBehaviorProvider alloc] initWithCoverSheetViewController:v7->_coverSheetViewController policyAggregator:policyAggregator];
   policyBasedBehaviorProvider = v7->_policyBasedBehaviorProvider;
   v7->_policyBasedBehaviorProvider = v33;
 
@@ -198,10 +198,10 @@ LABEL_9:
   [(CSCoverSheetViewController *)v7->_coverSheetViewController setIdleTimerController:v7->_idleTimerController];
   if (!__sb__runningInSpringBoard())
   {
-    v46 = [MEMORY[0x277D75418] currentDevice];
-    v47 = [v46 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v47 != 1)
+    if (userInterfaceIdiom != 1)
     {
       goto LABEL_11;
     }
@@ -228,14 +228,14 @@ LABEL_11:
 
   [(CSCoverSheetViewController *)v7->_coverSheetViewController setCoverSheetSpotlightPresenter:v7->_coverSheetSpotlightPresenter];
 LABEL_14:
-  v50 = [SBApp backlightEnvironmentSessionProvider];
-  [v50 registerBacklightSceneHostEnvironmentProvider:v7->_coverSheetViewController];
+  backlightEnvironmentSessionProvider = [SBApp backlightEnvironmentSessionProvider];
+  [backlightEnvironmentSessionProvider registerBacklightSceneHostEnvironmentProvider:v7->_coverSheetViewController];
   v51 = objc_alloc_init(SBBacklightSignificantUserInteractionMonitor);
   [(SBBacklightSignificantUserInteractionMonitor *)v51 setCoverSheetViewController:v7->_coverSheetViewController];
-  v52 = [SBApp blshService];
-  v53 = [v52 platformProvider];
+  blshService = [SBApp blshService];
+  platformProvider = [blshService platformProvider];
   v54 = objc_opt_class();
-  v55 = v53;
+  v55 = platformProvider;
   if (v54)
   {
     if (objc_opt_isKindOfClass())
@@ -264,18 +264,18 @@ LABEL_20:
 
 - (SBControlCenterPresenting)controlCenterPresenter
 {
-  v2 = [(CSCoverSheetViewController *)self->_coverSheetViewController _sbWindowScene];
-  v3 = [v2 controlCenterController];
+  _sbWindowScene = [(CSCoverSheetViewController *)self->_coverSheetViewController _sbWindowScene];
+  controlCenterController = [_sbWindowScene controlCenterController];
 
-  return v3;
+  return controlCenterController;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBDashBoardLockScreenEnvironment *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBDashBoardLockScreenEnvironment *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -287,20 +287,20 @@ LABEL_20:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBDashBoardLockScreenEnvironment *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBDashBoardLockScreenEnvironment *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)defaultHostableEntityForActivationOfCamera:(id)a3
+- (id)defaultHostableEntityForActivationOfCamera:(id)camera
 {
   v4 = [SBDeviceApplicationSceneEntity alloc];
   v5 = +[SBApplicationController sharedInstance];
-  v6 = [v5 cameraApplication];
-  v7 = [(SBDeviceApplicationSceneEntity *)v4 initWithApplicationForMainDisplay:v6];
+  cameraApplication = [v5 cameraApplication];
+  v7 = [(SBDeviceApplicationSceneEntity *)v4 initWithApplicationForMainDisplay:cameraApplication];
 
   v8 = [(SBDashBoardCaptureLaunchPolicy *)self->_captureLaunchPolicy resolveCameraDestinationLaunchOf:v7 fromSource:SBDashBoardCaptureLaunchSourceCameraPage];
   v9 = v8;
@@ -312,54 +312,54 @@ LABEL_20:
       [(SBDashBoardLockScreenEnvironment *)v9 defaultHostableEntityForActivationOfCamera:v13];
     }
 
-    v12 = 0;
+    entity = 0;
   }
 
   else
   {
-    v12 = [v9 entity];
+    entity = [v9 entity];
   }
 
-  return v12;
+  return entity;
 }
 
-- (void)handleBiometricEvent:(unint64_t)a3
+- (void)handleBiometricEvent:(unint64_t)event
 {
   [(CSCoverSheetViewController *)self->_coverSheetViewController handleBiometricEvent:?];
   biometricUnlockController = self->_biometricUnlockController;
 
-  [(SBDashBoardBiometricUnlockController *)biometricUnlockController handleBiometricEvent:a3];
+  [(SBDashBoardBiometricUnlockController *)biometricUnlockController handleBiometricEvent:event];
 }
 
-- (BOOL)biometricUnlockBehavior:(id)a3 requestsFeedback:(id)a4
+- (BOOL)biometricUnlockBehavior:(id)behavior requestsFeedback:(id)feedback
 {
-  v5 = a4;
-  v6 = [(SBDashBoardLockScreenEnvironment *)self biometricUnlockBehaviorDelegate];
-  LOBYTE(self) = [v6 biometricUnlockBehavior:self requestsFeedback:v5];
+  feedbackCopy = feedback;
+  biometricUnlockBehaviorDelegate = [(SBDashBoardLockScreenEnvironment *)self biometricUnlockBehaviorDelegate];
+  LOBYTE(self) = [biometricUnlockBehaviorDelegate biometricUnlockBehavior:self requestsFeedback:feedbackCopy];
 
   return self;
 }
 
-- (BOOL)biometricUnlockBehavior:(id)a3 requestsUnlock:(id)a4 withFeedback:(id)a5
+- (BOOL)biometricUnlockBehavior:(id)behavior requestsUnlock:(id)unlock withFeedback:(id)feedback
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x277D67C98] sharedInstance];
-  v10 = [v9 hasPoseidonSupport];
+  unlockCopy = unlock;
+  feedbackCopy = feedback;
+  mEMORY[0x277D67C98] = [MEMORY[0x277D67C98] sharedInstance];
+  hasPoseidonSupport = [mEMORY[0x277D67C98] hasPoseidonSupport];
 
   v11 = +[SBCoverSheetPresentationManager sharedInstance];
   v12 = v11;
-  if (v10)
+  if (hasPoseidonSupport)
   {
-    v13 = [v11 hasBeenDismissedSinceKeybagLockAndAuthenticated];
+    hasBeenDismissedSinceKeybagLockAndAuthenticated = [v11 hasBeenDismissedSinceKeybagLockAndAuthenticated];
   }
 
   else
   {
-    v13 = [v11 hasBeenDismissedSinceKeybagLock];
+    hasBeenDismissedSinceKeybagLockAndAuthenticated = [v11 hasBeenDismissedSinceKeybagLock];
   }
 
-  v14 = v13;
+  v14 = hasBeenDismissedSinceKeybagLockAndAuthenticated;
 
   if (v14)
   {
@@ -368,8 +368,8 @@ LABEL_20:
 
   else
   {
-    v16 = [(SBDashBoardLockScreenEnvironment *)self biometricUnlockBehaviorDelegate];
-    v15 = [v16 biometricUnlockBehavior:self requestsUnlock:v7 withFeedback:v8];
+    biometricUnlockBehaviorDelegate = [(SBDashBoardLockScreenEnvironment *)self biometricUnlockBehaviorDelegate];
+    v15 = [biometricUnlockBehaviorDelegate biometricUnlockBehavior:self requestsUnlock:unlockCopy withFeedback:feedbackCopy];
   }
 
   return v15;
@@ -383,29 +383,29 @@ LABEL_20:
   return [(CSCoverSheetViewController *)coverSheetViewController handleLockButtonPress];
 }
 
-- (void)coverSheetViewController:(id)a3 didChangeActiveBehavior:(id)a4
+- (void)coverSheetViewController:(id)controller didChangeActiveBehavior:(id)behavior
 {
-  v5 = [a4 proximityDetectionMode] == 2;
+  v5 = [behavior proximityDetectionMode] == 2;
 
   [(SBDashBoardLockScreenEnvironment *)self _setExpectsFaceContact:v5];
 }
 
-- (void)setInScreenOffMode:(BOOL)a3 forAutoUnlock:(BOOL)a4 fromUnlockSource:(int)a5 preservingCoverSheetPresentationState:(BOOL)a6
+- (void)setInScreenOffMode:(BOOL)mode forAutoUnlock:(BOOL)unlock fromUnlockSource:(int)source preservingCoverSheetPresentationState:(BOOL)state
 {
-  v6 = *&a5;
-  v7 = a4;
-  v8 = a3;
+  v6 = *&source;
+  unlockCopy = unlock;
+  modeCopy = mode;
   v27 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!mode)
   {
-    v15 = [SBEventObserverRegistry sharedInstance:a3];
+    v15 = [SBEventObserverRegistry sharedInstance:mode];
     [v15 setValue:0 forState:*MEMORY[0x277D66FA8]];
 
     v16 = +[SBEventObserverRegistry sharedInstance];
     [v16 postEventToInterestedObservers:*MEMORY[0x277D66F90]];
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 postNotificationName:@"SBLockScreenUndimmedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBLockScreenUndimmedNotification" object:0];
     goto LABEL_5;
   }
 
@@ -416,33 +416,33 @@ LABEL_20:
   v12 = +[SBEventObserverRegistry sharedInstance];
   [v12 postEventToInterestedObservers:*MEMORY[0x277D66F88]];
 
-  if (!a6)
+  if (!state)
   {
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 postNotificationName:@"SBLockScreenDimmedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 postNotificationName:@"SBLockScreenDimmedNotification" object:0];
 
-    v14 = +[SBCoverSheetPresentationManager sharedInstance];
-    [v14 setCoverSheetPresented:1 animated:0 withCompletion:0];
+    defaultCenter = +[SBCoverSheetPresentationManager sharedInstance];
+    [defaultCenter setCoverSheetPresented:1 animated:0 withCompletion:0];
 LABEL_5:
   }
 
-  [(CSCoverSheetViewController *)self->_coverSheetViewController setInScreenOffMode:v8 forAutoUnlock:v7 fromUnlockSource:v6];
+  [(CSCoverSheetViewController *)self->_coverSheetViewController setInScreenOffMode:modeCopy forAutoUnlock:unlockCopy fromUnlockSource:v6];
   v17 = +[SBBacklightController sharedInstance];
-  v18 = [v17 screenIsOn];
-  v19 = v18 ^ 1;
+  screenIsOn = [v17 screenIsOn];
+  v19 = screenIsOn ^ 1;
 
-  if ((v18 ^ 1) != v8 || v18 == [(CSCoverSheetViewController *)self->_coverSheetViewController isInScreenOffMode])
+  if ((screenIsOn ^ 1) != modeCopy || screenIsOn == [(CSCoverSheetViewController *)self->_coverSheetViewController isInScreenOffMode])
   {
     v20 = SBLogDashBoard();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
     {
-      v21 = [(CSCoverSheetViewController *)self->_coverSheetViewController isInScreenOffMode];
+      isInScreenOffMode = [(CSCoverSheetViewController *)self->_coverSheetViewController isInScreenOffMode];
       v22[0] = 67109632;
       v22[1] = v19;
       v23 = 1024;
-      v24 = v8;
+      v24 = modeCopy;
       v25 = 1024;
-      v26 = v21;
+      v26 = isInScreenOffMode;
       _os_log_fault_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_FAULT, "Discontinuity in screenOffMode. BacklightController screenOff: %{BOOL}u. LockScreenEnvironment screenOffMode: %{BOOL}u. CoverSheet screenOffMode: %{BOOL}u.", v22, 0x14u);
     }
   }
@@ -457,9 +457,9 @@ void __124__SBDashBoardLockScreenEnvironment_setInScreenOffMode_forAutoUnlock_fr
 - (void)prepareForUILock
 {
   v3 = +[SBBacklightController sharedInstance];
-  v4 = [v3 screenIsOn];
+  screenIsOn = [v3 screenIsOn];
 
-  if (v4)
+  if (screenIsOn)
   {
     v5 = +[SBIdleTimerGlobalCoordinator sharedInstance];
     [v5 resetIdleTimerForReason:@"DB:PrepareForUILock"];
@@ -475,75 +475,75 @@ void __124__SBDashBoardLockScreenEnvironment_setInScreenOffMode_forAutoUnlock_fr
   [(CSCoverSheetViewController *)coverSheetViewController prepareForUILock];
 }
 
-- (void)finishUIUnlockFromSource:(int)a3
+- (void)finishUIUnlockFromSource:(int)source
 {
-  [(CSCoverSheetViewController *)self->_coverSheetViewController finishUIUnlockFromSource:*&a3];
+  [(CSCoverSheetViewController *)self->_coverSheetViewController finishUIUnlockFromSource:*&source];
   [(SBLockScreenActionManager *)self->_lockScreenActionManager runUnlockAction];
   lockScreenActionManager = self->_lockScreenActionManager;
 
   [(SBLockScreenActionManager *)lockScreenActionManager registerLockScreenActionProvider:0 forSource:2];
 }
 
-- (void)setAuthenticated:(BOOL)a3
+- (void)setAuthenticated:(BOOL)authenticated
 {
-  v3 = a3;
+  authenticatedCopy = authenticated;
   [(SBDashBoardBiometricUnlockController *)self->_biometricUnlockController setAuthenticated:?];
   coverSheetViewController = self->_coverSheetViewController;
 
-  [(CSCoverSheetViewController *)coverSheetViewController setAuthenticated:v3];
+  [(CSCoverSheetViewController *)coverSheetViewController setAuthenticated:authenticatedCopy];
 }
 
-- (void)setPasscodeLockVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setPasscodeLockVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a3;
-  [(CSCoverSheetViewController *)self->_coverSheetViewController setPasscodeLockVisible:a3 animated:a4 completion:a5];
+  visibleCopy = visible;
+  [(CSCoverSheetViewController *)self->_coverSheetViewController setPasscodeLockVisible:visible animated:animated completion:completion];
 
-  [(SBDashBoardLockScreenEnvironment *)self _handleCoverSheetTranslationForPasscodeLockVisible:v5 blockingForOtherReasons:0 ignoringPreflightRequirementsForPresentation:1];
+  [(SBDashBoardLockScreenEnvironment *)self _handleCoverSheetTranslationForPasscodeLockVisible:visibleCopy blockingForOtherReasons:0 ignoringPreflightRequirementsForPresentation:1];
 }
 
-- (void)setPasscodeLockVisible:(BOOL)a3 intent:(int)a4 ignoringPreflightRequirementsForPresentation:(BOOL)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)setPasscodeLockVisible:(BOOL)visible intent:(int)intent ignoringPreflightRequirementsForPresentation:(BOOL)presentation animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a6;
-  v8 = a5;
-  v9 = a3;
-  v11 = a4 & 0xFFFFFFFD;
-  v12 = a7;
+  animatedCopy = animated;
+  presentationCopy = presentation;
+  visibleCopy = visible;
+  v11 = intent & 0xFFFFFFFD;
+  completionCopy = completion;
   v13 = CSFeatureEnabled();
   coverSheetViewController = self->_coverSheetViewController;
   if (v13)
   {
-    [(CSCoverSheetViewController *)coverSheetViewController setPasscodeLockVisible:v9 animated:v7 showBackground:v11 != 1 forceBiometricPresentation:1 completion:v12];
+    [(CSCoverSheetViewController *)coverSheetViewController setPasscodeLockVisible:visibleCopy animated:animatedCopy showBackground:v11 != 1 forceBiometricPresentation:1 completion:completionCopy];
   }
 
   else
   {
-    [(CSCoverSheetViewController *)coverSheetViewController setPasscodeLockVisible:v9 animated:v7 completion:v12];
+    [(CSCoverSheetViewController *)coverSheetViewController setPasscodeLockVisible:visibleCopy animated:animatedCopy completion:completionCopy];
   }
 
-  [(SBDashBoardLockScreenEnvironment *)self _handleCoverSheetTranslationForPasscodeLockVisible:v9 blockingForOtherReasons:v11 != 1 ignoringPreflightRequirementsForPresentation:v8];
+  [(SBDashBoardLockScreenEnvironment *)self _handleCoverSheetTranslationForPasscodeLockVisible:visibleCopy blockingForOtherReasons:v11 != 1 ignoringPreflightRequirementsForPresentation:presentationCopy];
 }
 
-- (void)_handleCoverSheetTranslationForPasscodeLockVisible:(BOOL)a3 blockingForOtherReasons:(BOOL)a4 ignoringPreflightRequirementsForPresentation:(BOOL)a5
+- (void)_handleCoverSheetTranslationForPasscodeLockVisible:(BOOL)visible blockingForOtherReasons:(BOOL)reasons ignoringPreflightRequirementsForPresentation:(BOOL)presentation
 {
-  if (a3 && !a4)
+  if (visible && !reasons)
   {
-    v5 = a5;
+    presentationCopy = presentation;
     if (CSFeatureEnabled())
     {
       self->_isHandlingUnlockAttempt = 1;
       v7 = +[SBCoverSheetPresentationManager sharedInstance];
-      [v7 setCoverSheetTranslationToPresented:0 forcingTransition:0 ignoringPreflightRequirements:v5 animated:1];
+      [v7 setCoverSheetTranslationToPresented:0 forcingTransition:0 ignoringPreflightRequirements:presentationCopy animated:1];
 
       self->_isHandlingUnlockAttempt = 0;
     }
   }
 }
 
-- (void)_setExpectsFaceContact:(BOOL)a3
+- (void)_setExpectsFaceContact:(BOOL)contact
 {
-  if (self->_expectsFaceContact != a3)
+  if (self->_expectsFaceContact != contact)
   {
-    self->_expectsFaceContact = a3;
+    self->_expectsFaceContact = contact;
     v4 = +[SBCoverSheetPresentationManager sharedInstance];
     [v4 _updateProximitySensorState];
   }

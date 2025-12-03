@@ -1,17 +1,17 @@
 @interface UNSSummaryServiceAdapter
 - (NSDictionary)queue_observers;
-- (id)groupSummariesForNotificationIdentifier:(id)a3 bundleIdentifier:(id)a4;
-- (void)setQueue_observers:(id)a3;
+- (id)groupSummariesForNotificationIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
+- (void)setQueue_observers:(id)queue_observers;
 @end
 
 @implementation UNSSummaryServiceAdapter
 
-- (id)groupSummariesForNotificationIdentifier:(id)a3 bundleIdentifier:(id)a4
+- (id)groupSummariesForNotificationIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
   sub_270AE3CDC();
   sub_270AE3CDC();
-  v5 = self;
-  v6 = [(UNSSummaryServiceAdapter *)v5 queue];
+  selfCopy = self;
+  queue = [(UNSSummaryServiceAdapter *)selfCopy queue];
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_280843AA8, &qword_270AE6EF0);
   sub_270AE3E2C();
 
@@ -28,7 +28,7 @@
   return v3;
 }
 
-- (void)setQueue_observers:(id)a3
+- (void)setQueue_observers:(id)queue_observers
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_280843AC0, &qword_270AE6F68);
   v4 = sub_270AE3CBC();

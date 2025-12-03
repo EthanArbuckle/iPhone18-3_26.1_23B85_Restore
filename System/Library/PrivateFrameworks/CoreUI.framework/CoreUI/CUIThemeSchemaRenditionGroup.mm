@@ -1,8 +1,8 @@
 @interface CUIThemeSchemaRenditionGroup
-+ (id)renditionGroupsForRenditions:(id)a3 part:(id *)a4;
-- (CUIThemeSchemaRenditionGroup)initWithRenditions:(id)a3 part:(id *)a4;
-- (id)_layerNameForDrawingLayer:(int64_t)a3;
-- (id)_layerNameForState:(int64_t)a3;
++ (id)renditionGroupsForRenditions:(id)renditions part:(id *)part;
+- (CUIThemeSchemaRenditionGroup)initWithRenditions:(id)renditions part:(id *)part;
+- (id)_layerNameForDrawingLayer:(int64_t)layer;
+- (id)_layerNameForState:(int64_t)state;
 - (id)_renditionsSortedIntoLayers;
 - (id)baseKey;
 - (id)description;
@@ -10,27 +10,27 @@
 - (id)mutablePSDImageRefColumnStyle;
 - (id)schemaLayersAndLayerGroups;
 - (id)themeSchemaLayers;
-- (void)addLayoutMetricsToPSDImageRef:(id)a3 withRendition:(id)a4;
-- (void)addStatesAndDrawingLayersToPSDLayers:(id)a3 forPresentationState:(unint64_t)a4;
-- (void)addValueOrDim1LayersToPSDLayers:(id)a3 forPresentationState:(unint64_t)a4 state:(unint64_t)a5 drawingLayer:(unint64_t)a6;
+- (void)addLayoutMetricsToPSDImageRef:(id)ref withRendition:(id)rendition;
+- (void)addStatesAndDrawingLayersToPSDLayers:(id)layers forPresentationState:(unint64_t)state;
+- (void)addValueOrDim1LayersToPSDLayers:(id)layers forPresentationState:(unint64_t)state state:(unint64_t)a5 drawingLayer:(unint64_t)layer;
 - (void)dealloc;
 @end
 
 @implementation CUIThemeSchemaRenditionGroup
 
-+ (id)renditionGroupsForRenditions:(id)a3 part:(id *)a4
++ (id)renditionGroupsForRenditions:(id)renditions part:(id *)part
 {
-  if (![a3 count])
+  if (![renditions count])
   {
     return 0;
   }
 
-  v5 = CUIRenditionKeyValueForAttribute([objc_msgSend(a3 objectAtIndex:{0), "key"}], 2);
+  v5 = CUIRenditionKeyValueForAttribute([objc_msgSend(renditions objectAtIndex:{0), "key"}], 2);
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v70 objects:v78 count:16];
+  v6 = [renditions countByEnumeratingWithState:&v70 objects:v78 count:16];
   if (v6)
   {
     v7 = v6;
@@ -41,7 +41,7 @@
       {
         if (*v71 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(renditions);
         }
 
         if (CUIRenditionKeyValueForAttribute([*(*(&v70 + 1) + 8 * i) key], 2) != v5)
@@ -51,7 +51,7 @@
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v70 objects:v78 count:16];
+      v7 = [renditions countByEnumeratingWithState:&v70 objects:v78 count:16];
       if (v7)
       {
         continue;
@@ -62,7 +62,7 @@
   }
 
   obj = +[NSMutableArray array];
-  v16 = [NSMutableArray arrayWithArray:a3];
+  v16 = [NSMutableArray arrayWithArray:renditions];
   for (j = 1; j != 3; ++j)
   {
     for (k = 0; k != 4; ++k)
@@ -104,7 +104,7 @@
 
         if ([v20 count])
         {
-          [obj addObject:{-[CUIThemeSchemaRenditionGroup initWithRenditions:part:]([CUIThemeSchemaRenditionGroup alloc], "initWithRenditions:part:", v20, a4)}];
+          [obj addObject:{-[CUIThemeSchemaRenditionGroup initWithRenditions:part:]([CUIThemeSchemaRenditionGroup alloc], "initWithRenditions:part:", v20, part)}];
           v64 = 0u;
           v65 = 0u;
           v62 = 0u;
@@ -136,7 +136,7 @@
     }
   }
 
-  var4 = a4->var4;
+  var4 = part->var4;
   if ([obj count] && (var4 & 0x10004) == 0x10004)
   {
     v32 = [NSMutableArray arrayWithArray:obj];
@@ -160,14 +160,14 @@
           }
 
           v36 = *(*(&v58 + 1) + 8 * jj);
-          v37 = [v36 renditions];
+          renditions = [v36 renditions];
           v38 = +[NSMutableArray array];
           v39 = +[NSMutableArray array];
           v54 = 0u;
           v55 = 0u;
           v56 = 0u;
           v57 = 0u;
-          v40 = [v37 countByEnumeratingWithState:&v54 objects:v74 count:16];
+          v40 = [renditions countByEnumeratingWithState:&v54 objects:v74 count:16];
           if (v40)
           {
             v41 = v40;
@@ -178,7 +178,7 @@
               {
                 if (*v55 != v42)
                 {
-                  objc_enumerationMutation(v37);
+                  objc_enumerationMutation(renditions);
                 }
 
                 v44 = *(*(&v54 + 1) + 8 * kk);
@@ -195,7 +195,7 @@
                 [v45 addObject:v44];
               }
 
-              v41 = [v37 countByEnumeratingWithState:&v54 objects:v74 count:16];
+              v41 = [renditions countByEnumeratingWithState:&v54 objects:v74 count:16];
             }
 
             while (v41);
@@ -203,8 +203,8 @@
 
           if ([v38 count] && objc_msgSend(v39, "count"))
           {
-            v46 = [[CUIThemeSchemaRenditionGroup alloc] initWithRenditions:v38 part:a4];
-            v47 = [[CUIThemeSchemaRenditionGroup alloc] initWithRenditions:v39 part:a4];
+            v46 = [[CUIThemeSchemaRenditionGroup alloc] initWithRenditions:v38 part:part];
+            v47 = [[CUIThemeSchemaRenditionGroup alloc] initWithRenditions:v39 part:part];
             [(NSMutableArray *)v50 removeObject:v36];
             [(NSMutableArray *)v50 addObject:v46];
             [(NSMutableArray *)v50 addObject:v47];
@@ -227,7 +227,7 @@
   return obj;
 }
 
-- (CUIThemeSchemaRenditionGroup)initWithRenditions:(id)a3 part:(id *)a4
+- (CUIThemeSchemaRenditionGroup)initWithRenditions:(id)renditions part:(id *)part
 {
   v9.receiver = self;
   v9.super_class = CUIThemeSchemaRenditionGroup;
@@ -235,8 +235,8 @@
   v7 = v6;
   if (v6)
   {
-    [(CUIThemeSchemaRenditionGroup *)v6 setRenditions:a3];
-    v7->_part = a4;
+    [(CUIThemeSchemaRenditionGroup *)v6 setRenditions:renditions];
+    v7->_part = part;
   }
 
   return v7;
@@ -266,9 +266,9 @@
   return result;
 }
 
-- (void)addLayoutMetricsToPSDImageRef:(id)a3 withRendition:(id)a4
+- (void)addLayoutMetricsToPSDImageRef:(id)ref withRendition:(id)rendition
 {
-  [a4 contentInsets];
+  [rendition contentInsets];
   v8 = CUIEdgeInsetsToCGRect(v6, v7);
   v10 = v9;
   v12 = v11;
@@ -276,20 +276,20 @@
   v15 = objc_alloc_init(CUIPSDLayoutMetricsChannel);
   [(CUIPSDLayoutMetricsChannel *)v15 setName:@"ContentBounds"];
   [(CUIPSDLayoutMetricsChannel *)v15 setEdgeInsets:v8, v10, v12, v14];
-  [a3 addLayoutMetricsChannel:v15];
+  [ref addLayoutMetricsChannel:v15];
   v16 = objc_alloc_init(CUIPSDLayoutMetricsChannel);
   [(CUIPSDLayoutMetricsChannel *)v16 setName:@"Edges"];
-  [a4 edgeInsets:1];
+  [rendition edgeInsets:1];
   [(CUIPSDLayoutMetricsChannel *)v16 setEdgeInsets:?];
 
-  [a3 addLayoutMetricsChannel:v16];
+  [ref addLayoutMetricsChannel:v16];
 }
 
 - (id)mutablePSDImageRef
 {
-  v3 = [(CUIThemeSchemaRenditionGroup *)self themeSchemaLayers];
-  v46 = self;
-  v49 = [(CUIThemeSchemaRenditionGroup *)self partFeatures];
+  themeSchemaLayers = [(CUIThemeSchemaRenditionGroup *)self themeSchemaLayers];
+  selfCopy = self;
+  partFeatures = [(CUIThemeSchemaRenditionGroup *)self partFeatures];
   v4 = [NSMutableArray arrayWithCapacity:0];
   v60 = 0;
   v61 = 0;
@@ -299,14 +299,14 @@
   v57 = 0u;
   v58 = 0u;
   v59 = v5;
-  obj = v3;
-  v43 = [v3 countByEnumeratingWithState:&v55 objects:v63 count:16];
+  obj = themeSchemaLayers;
+  v43 = [themeSchemaLayers countByEnumeratingWithState:&v55 objects:v63 count:16];
   if (!v43)
   {
     return 0;
   }
 
-  v50 = 0;
+  blendMode = 0;
   v6 = 0;
   v7 = 0;
   ARGBBitmapContext = 0;
@@ -334,7 +334,7 @@
 
       else
       {
-        [v11 calculateColumLefts:&v60 rowTops:&v61 totalSize:&v59 forPartFeatures:v49];
+        [v11 calculateColumLefts:&v60 rowTops:&v61 totalSize:&v59 forPartFeatures:partFeatures];
         ARGBBitmapContext = CreateARGBBitmapContext(v59.width, v59.height, 1.0);
       }
 
@@ -342,8 +342,8 @@
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v48 = [v11 renditions];
-      v13 = [v48 countByEnumeratingWithState:&v51 objects:v62 count:16];
+      renditions = [v11 renditions];
+      v13 = [renditions countByEnumeratingWithState:&v51 objects:v62 count:16];
       if (v13)
       {
         v14 = v13;
@@ -357,21 +357,21 @@
           {
             if (*v52 != v16)
             {
-              objc_enumerationMutation(v48);
+              objc_enumerationMutation(renditions);
             }
 
             v18 = *(*(&v51 + 1) + 8 * j);
-            v19 = [v18 gradient];
-            if (v19)
+            gradient = [v18 gradient];
+            if (gradient)
             {
-              v7 = v19;
+              v7 = gradient;
               goto LABEL_26;
             }
 
             [v18 opacity];
             v9 = v20;
-            v50 = [v18 blendMode];
-            [v18 renditionCoordinatesForPartFeatures:v49];
+            blendMode = [v18 blendMode];
+            [v18 renditionCoordinatesForPartFeatures:partFeatures];
             v22 = v21;
             v24 = v23;
             v25 = [objc_msgSend(v18 "referenceImage")];
@@ -388,11 +388,11 @@
             CGContextDrawImage(v15, v65, v25);
             if (!v6)
             {
-              v32 = [v18 numberOfSlices];
-              if (v32)
+              numberOfSlices = [v18 numberOfSlices];
+              if (numberOfSlices)
               {
                 v33 = 0;
-                v34 = 32 * v32;
+                v34 = 32 * numberOfSlices;
                 do
                 {
                   v66 = CGRectOffset(*([v18 sliceRects] + v33), v29, v31);
@@ -410,11 +410,11 @@
                 while (v34 != v33);
               }
 
-              [(CUIThemeSchemaRenditionGroup *)v46 addLayoutMetricsToPSDImageRef:v47 withRendition:v18];
+              [(CUIThemeSchemaRenditionGroup *)selfCopy addLayoutMetricsToPSDImageRef:v47 withRendition:v18];
             }
           }
 
-          v14 = [v48 countByEnumeratingWithState:&v51 objects:v62 count:16];
+          v14 = [renditions countByEnumeratingWithState:&v51 objects:v62 count:16];
           if (v14)
           {
             continue;
@@ -457,7 +457,7 @@ LABEL_29:
 LABEL_32:
       [(CUIPSDLayer *)v37 setName:v12];
       [(CUIPSDLayer *)v37 setOpacity:v9];
-      [(CUIPSDLayer *)v37 setBlendMode:v50];
+      [(CUIPSDLayer *)v37 setBlendMode:blendMode];
       [(CUIMutablePSDImageRef *)v47 addLayer:v37];
 
       ++v6;
@@ -479,7 +479,7 @@ LABEL_32:
 {
   v4 = +[NSAssertionHandler currentHandler];
 
-  return [(NSAssertionHandler *)v4 handleFailureInMethod:a1 object:a2 file:@"CUIThemeSchemaRenditionGroup.m" lineNumber:356 description:@"Couldn't find a rendition in the dictionary of groups and renditions. Something gang aft agley."];
+  return [(NSAssertionHandler *)v4 handleFailureInMethod:self object:a2 file:@"CUIThemeSchemaRenditionGroup.m" lineNumber:356 description:@"Couldn't find a rendition in the dictionary of groups and renditions. Something gang aft agley."];
 }
 
 - (id)description
@@ -491,9 +491,9 @@ LABEL_32:
 
 - (id)_renditionsSortedIntoLayers
 {
-  v2 = [(CUIThemeSchemaRenditionGroup *)self renditions];
+  renditions = [(CUIThemeSchemaRenditionGroup *)self renditions];
 
-  return [(NSArray *)v2 sortedArrayUsingComparator:&__block_literal_global_17];
+  return [(NSArray *)renditions sortedArrayUsingComparator:&__block_literal_global_17];
 }
 
 uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -520,42 +520,42 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
   return v9 > [a3 state];
 }
 
-- (id)_layerNameForState:(int64_t)a3
+- (id)_layerNameForState:(int64_t)state
 {
-  if (a3 > 5)
+  if (state > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7255510[a3];
+    return off_1E7255510[state];
   }
 }
 
-- (id)_layerNameForDrawingLayer:(int64_t)a3
+- (id)_layerNameForDrawingLayer:(int64_t)layer
 {
-  if (a3 > 7)
+  if (layer > 7)
   {
     return @"Unused Drawing Layer";
   }
 
   else
   {
-    return off_1E7255540[a3];
+    return off_1E7255540[layer];
   }
 }
 
 - (id)themeSchemaLayers
 {
-  v3 = [(CUIThemeSchemaRenditionGroup *)self _renditionsSortedIntoLayers];
+  _renditionsSortedIntoLayers = [(CUIThemeSchemaRenditionGroup *)self _renditionsSortedIntoLayers];
   v17 = +[NSMutableArray array];
   v4 = +[NSMutableArray array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v5 = [_renditionsSortedIntoLayers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -569,14 +569,14 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
         v11 = v8;
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_renditionsSortedIntoLayers);
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
         if (v11)
         {
-          v12 = [*(*(&v18 + 1) + 8 * i) state];
-          if (v12 != [v11 state] || (v13 = objc_msgSend(v8, "drawingLayer"), v13 != objc_msgSend(v11, "drawingLayer")))
+          state = [*(*(&v18 + 1) + 8 * i) state];
+          if (state != [v11 state] || (v13 = objc_msgSend(v8, "drawingLayer"), v13 != objc_msgSend(v11, "drawingLayer")))
           {
             if ([v11 drawingLayer])
             {
@@ -596,7 +596,7 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
         [v4 addObject:v8];
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [_renditionsSortedIntoLayers countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -625,15 +625,15 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
 - (id)schemaLayersAndLayerGroups
 {
   v28 = +[NSMutableArray array];
-  v3 = [(CUIThemeSchemaRenditionGroup *)self renditions];
-  v4 = [(CUIThemeSchemaRenditionGroup *)self partFeatures];
-  if ((v4 & 0x100000) != 0)
+  renditions = [(CUIThemeSchemaRenditionGroup *)self renditions];
+  partFeatures = [(CUIThemeSchemaRenditionGroup *)self partFeatures];
+  if ((partFeatures & 0x100000) != 0)
   {
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v13 = [(NSArray *)v3 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    v13 = [(NSArray *)renditions countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v13)
     {
       v14 = v13;
@@ -644,7 +644,7 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
         {
           if (*v30 != v15)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(renditions);
           }
 
           v17 = *(*(&v29 + 1) + 8 * i);
@@ -654,7 +654,7 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
           [v28 addObject:v18];
         }
 
-        v14 = [(NSArray *)v3 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v14 = [(NSArray *)renditions countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v14);
@@ -665,11 +665,11 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
   {
     v5 = [-[CUIThemeSchemaRenditionGroup themeSchemaLayers](self "themeSchemaLayers")];
     v6 = +[NSMutableArray array];
-    if ((*&v4 & 0x20004) == 0 || (v4 & 0x10000) != 0)
+    if ((*&partFeatures & 0x20004) == 0 || (partFeatures & 0x10000) != 0)
     {
       if (v5 < 2)
       {
-        if ((v4 & 0x4001) != 0)
+        if ((partFeatures & 0x4001) != 0)
         {
           [(CUIThemeSchemaRenditionGroup *)self addValueOrDim1LayersToPSDLayers:v28 forPresentationState:0 state:0 drawingLayer:0];
         }
@@ -678,19 +678,19 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
         {
           v23 = objc_alloc_init(CUIThemeSchemaPSDRenditionLayer);
           [(CUIThemeSchemaPSDLayer *)v23 setName:@"Normal"];
-          [(CUIThemeSchemaPSDRenditionLayer *)v23 setRendition:[(NSArray *)v3 objectAtIndex:0]];
+          [(CUIThemeSchemaPSDRenditionLayer *)v23 setRendition:[(NSArray *)renditions objectAtIndex:0]];
           [v28 addObject:v23];
         }
       }
 
       else
       {
-        if ((v4 & 0x10000) != 0 && ![[(NSArray *)v3 filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:?]
+        if ((partFeatures & 0x10000) != 0 && ![[(NSArray *)renditions filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:?]
         {
           v19 = 1;
-          if (![[(NSArray *)v3 filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:?]
+          if (![[(NSArray *)renditions filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:?]
           {
-            v19 = 2 * ([[(NSArray *)v3 filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:?];
+            v19 = 2 * ([[(NSArray *)renditions filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:?];
           }
         }
 
@@ -709,13 +709,13 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
       v8 = +[NSMutableArray array];
       [v7 addObject:&unk_1F00F7D78];
       [v8 addObject:@"Active"];
-      if ((v4 & 4) != 0)
+      if ((partFeatures & 4) != 0)
       {
         [v7 addObject:&unk_1F00F7D90];
         [v8 addObject:@"Inactive"];
       }
 
-      if ((v4 & 0x20000) != 0)
+      if ((partFeatures & 0x20000) != 0)
       {
         [v7 addObject:&unk_1F00F7DA8];
         [v8 addObject:@"Active Main"];
@@ -724,7 +724,7 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
       v9 = [v7 count];
       if (v5 < 2)
       {
-        if ((v4 & 0x4001) != 0)
+        if ((partFeatures & 0x4001) != 0)
         {
           if (v9)
           {
@@ -752,7 +752,7 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
           v24 = 0;
           do
           {
-            v25 = -[NSArray filteredArrayUsingPredicate:](v3, "filteredArrayUsingPredicate:", +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"presentationState == %lu", [objc_msgSend(v7 objectAtIndex:{v24), "unsignedIntegerValue"}]));
+            v25 = -[NSArray filteredArrayUsingPredicate:](renditions, "filteredArrayUsingPredicate:", +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"presentationState == %lu", [objc_msgSend(v7 objectAtIndex:{v24), "unsignedIntegerValue"}]));
             if ([(NSArray *)v25 count])
             {
               v26 = objc_alloc_init(CUIThemeSchemaPSDRenditionLayer);
@@ -793,18 +793,18 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
   return [NSArray arrayWithArray:v28];
 }
 
-- (void)addStatesAndDrawingLayersToPSDLayers:(id)a3 forPresentationState:(unint64_t)a4
+- (void)addStatesAndDrawingLayersToPSDLayers:(id)layers forPresentationState:(unint64_t)state
 {
-  v7 = [(CUIThemeSchemaRenditionGroup *)self themeSchemaLayers];
-  v37 = self;
-  v35 = [(CUIThemeSchemaRenditionGroup *)self partFeatures];
-  if ((v35 & 0x1000000) != 0)
+  themeSchemaLayers = [(CUIThemeSchemaRenditionGroup *)self themeSchemaLayers];
+  selfCopy = self;
+  partFeatures = [(CUIThemeSchemaRenditionGroup *)self partFeatures];
+  if ((partFeatures & 0x1000000) != 0)
   {
     v22 = 0;
-    v34 = a4;
+    stateCopy = state;
     do
     {
-      v23 = [(NSArray *)[(CUIThemeSchemaRenditionGroup *)self renditions] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"state == %lu AND presentationState == %lu", v22, a4]];
+      v23 = [(NSArray *)[(CUIThemeSchemaRenditionGroup *)self renditions] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"state == %lu AND presentationState == %lu", v22, state]];
       if ([(NSArray *)v23 count])
       {
         v24 = [-[NSArray objectAtIndex:](v23 objectAtIndex:{0), "stateLocalizedString"}];
@@ -812,7 +812,7 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
         [(CUIThemeSchemaPSDLayerGroup *)v25 setIsStart:1];
         v36 = v24;
         [(CUIThemeSchemaPSDLayer *)v25 setName:v24];
-        [a3 addObject:v25];
+        [layers addObject:v25];
         v40 = 0u;
         v41 = 0u;
         v38 = 0u;
@@ -832,11 +832,11 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
               }
 
               v30 = *(*(&v38 + 1) + 8 * i);
-              v31 = [v30 drawingLayerLocalizedString];
+              drawingLayerLocalizedString = [v30 drawingLayerLocalizedString];
               v32 = objc_alloc_init(CUIThemeSchemaPSDRenditionLayer);
-              [(CUIThemeSchemaPSDLayer *)v32 setName:v31];
+              [(CUIThemeSchemaPSDLayer *)v32 setName:drawingLayerLocalizedString];
               [(CUIThemeSchemaPSDRenditionLayer *)v32 setRendition:v30];
-              [a3 addObject:v32];
+              [layers addObject:v32];
             }
 
             v27 = [(NSArray *)v23 countByEnumeratingWithState:&v38 objects:v42 count:16];
@@ -848,8 +848,8 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
         v33 = objc_alloc_init(CUIThemeSchemaPSDLayerGroup);
         [(CUIThemeSchemaPSDLayerGroup *)v33 setIsStart:0];
         [(CUIThemeSchemaPSDLayer *)v33 setName:v36];
-        [a3 addObject:v33];
-        a4 = v34;
+        [layers addObject:v33];
+        state = stateCopy;
       }
 
       ++v22;
@@ -858,13 +858,13 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
     while (v22 != 6);
   }
 
-  else if ([v7 count])
+  else if ([themeSchemaLayers count])
   {
     v8 = 0;
     v9 = OBJC_CLASS___CUIPSDLayer_ptr;
     do
     {
-      v10 = [objc_msgSend(v7 objectAtIndex:{v8), "renditions"}];
+      v10 = [objc_msgSend(themeSchemaLayers objectAtIndex:{v8), "renditions"}];
       v11 = v10;
       if (v8)
       {
@@ -872,23 +872,23 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
         v13 = [v11 objectAtIndex:0];
         if (v12)
         {
-          v14 = [v13 drawingLayerLocalizedString];
+          drawingLayerLocalizedString2 = [v13 drawingLayerLocalizedString];
         }
 
         else
         {
-          v14 = [v13 stateLocalizedString];
+          drawingLayerLocalizedString2 = [v13 stateLocalizedString];
         }
 
-        v15 = v14;
+        v15 = drawingLayerLocalizedString2;
       }
 
-      else if ((v35 & 0x1000) == 0 || (v15 = @"Background", [v7 count] <= 1))
+      else if ((partFeatures & 0x1000) == 0 || (v15 = @"Background", [themeSchemaLayers count] <= 1))
       {
         v15 = @"Normal";
       }
 
-      v16 = [v11 filteredArrayUsingPredicate:{-[__objc2_class predicateWithFormat:](v9[221], "predicateWithFormat:", @"presentationState == %lu", a4)}];
+      v16 = [v11 filteredArrayUsingPredicate:{-[__objc2_class predicateWithFormat:](v9[221], "predicateWithFormat:", @"presentationState == %lu", state)}];
       if ([v16 count])
       {
         v17 = [v16 objectAtIndex:0];
@@ -904,8 +904,8 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
           v19 = v9;
           v20 = objc_alloc_init(CUIThemeSchemaPSDLayerGroup);
           [(CUIThemeSchemaPSDLayerGroup *)v20 setIsStart:1];
-          [a3 addObject:v20];
-          -[CUIThemeSchemaRenditionGroup addValueOrDim1LayersToPSDLayers:forPresentationState:state:drawingLayer:](v37, "addValueOrDim1LayersToPSDLayers:forPresentationState:state:drawingLayer:", a3, a4, [v17 state], objc_msgSend(v17, "drawingLayer"));
+          [layers addObject:v20];
+          -[CUIThemeSchemaRenditionGroup addValueOrDim1LayersToPSDLayers:forPresentationState:state:drawingLayer:](selfCopy, "addValueOrDim1LayersToPSDLayers:forPresentationState:state:drawingLayer:", layers, state, [v17 state], objc_msgSend(v17, "drawingLayer"));
           v18 = objc_alloc_init(CUIThemeSchemaPSDLayerGroup);
           [(CUIThemeSchemaPSDRenditionLayer *)v18 setIsStart:0];
           [(CUIThemeSchemaPSDLayer *)v18 setName:v15];
@@ -914,19 +914,19 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
           [(CUIThemeSchemaPSDLayer *)v21 setName:v15];
         }
 
-        [a3 addObject:v18];
+        [layers addObject:v18];
       }
 
       ++v8;
     }
 
-    while (v8 < [v7 count]);
+    while (v8 < [themeSchemaLayers count]);
   }
 }
 
-- (void)addValueOrDim1LayersToPSDLayers:(id)a3 forPresentationState:(unint64_t)a4 state:(unint64_t)a5 drawingLayer:(unint64_t)a6
+- (void)addValueOrDim1LayersToPSDLayers:(id)layers forPresentationState:(unint64_t)state state:(unint64_t)a5 drawingLayer:(unint64_t)layer
 {
-  v36 = [(NSArray *)[(CUIThemeSchemaRenditionGroup *)self renditions] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"presentationState == %lu AND state == %lu AND drawingLayer == %lu", a4, a5, a6]];
+  v36 = [(NSArray *)[(CUIThemeSchemaRenditionGroup *)self renditions] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"presentationState == %lu AND state == %lu AND drawingLayer == %lu", state, a5, layer]];
   if (([(CUIThemeSchemaRenditionGroup *)self partFeatures]& 1) != 0 && ([(CUIThemeSchemaRenditionGroup *)self partFeatures]& 0x4000) != 0)
   {
     for (i = 0; i != 3; ++i)
@@ -939,7 +939,7 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
         [(CUIThemeSchemaPSDLayerGroup *)v27 setIsStart:1];
         v37 = v26;
         [(CUIThemeSchemaPSDLayer *)v27 setName:v26];
-        [a3 addObject:v27];
+        [layers addObject:v27];
         v48 = 0u;
         v49 = 0u;
         v46 = 0u;
@@ -959,11 +959,11 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
               }
 
               v32 = *(*(&v46 + 1) + 8 * j);
-              v33 = [v32 dimension1LocalizedString];
+              dimension1LocalizedString = [v32 dimension1LocalizedString];
               v34 = objc_alloc_init(CUIThemeSchemaPSDRenditionLayer);
-              [(CUIThemeSchemaPSDLayer *)v34 setName:v33];
+              [(CUIThemeSchemaPSDLayer *)v34 setName:dimension1LocalizedString];
               [(CUIThemeSchemaPSDRenditionLayer *)v34 setRendition:v32];
-              [a3 addObject:v34];
+              [layers addObject:v34];
             }
 
             v29 = [(NSArray *)v25 countByEnumeratingWithState:&v46 objects:v52 count:16];
@@ -975,7 +975,7 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
         v35 = objc_alloc_init(CUIThemeSchemaPSDLayerGroup);
         [(CUIThemeSchemaPSDLayerGroup *)v35 setIsStart:0];
         [(CUIThemeSchemaPSDLayer *)v35 setName:v37];
-        [a3 addObject:v35];
+        [layers addObject:v35];
       }
     }
   }
@@ -1002,11 +1002,11 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
           }
 
           v21 = *(*(&v42 + 1) + 8 * k);
-          v22 = [v21 valueLocalizedString];
+          valueLocalizedString = [v21 valueLocalizedString];
           v23 = objc_alloc_init(CUIThemeSchemaPSDRenditionLayer);
           [(CUIThemeSchemaPSDRenditionLayer *)v23 setRendition:v21];
-          [(CUIThemeSchemaPSDLayer *)v23 setName:v22];
-          [a3 addObject:v23];
+          [(CUIThemeSchemaPSDLayer *)v23 setName:valueLocalizedString];
+          [layers addObject:v23];
         }
 
         v18 = [(NSArray *)v16 countByEnumeratingWithState:&v42 objects:v51 count:16];
@@ -1038,11 +1038,11 @@ uint64_t __59__CUIThemeSchemaRenditionGroup__renditionsSortedIntoLayers__block_i
           }
 
           v13 = *(*(&v38 + 1) + 8 * m);
-          v14 = [v13 dimension1LocalizedString];
+          dimension1LocalizedString2 = [v13 dimension1LocalizedString];
           v15 = objc_alloc_init(CUIThemeSchemaPSDRenditionLayer);
           [(CUIThemeSchemaPSDRenditionLayer *)v15 setRendition:v13];
-          [(CUIThemeSchemaPSDLayer *)v15 setName:v14];
-          [a3 addObject:v15];
+          [(CUIThemeSchemaPSDLayer *)v15 setName:dimension1LocalizedString2];
+          [layers addObject:v15];
         }
 
         v10 = [(NSArray *)v8 countByEnumeratingWithState:&v38 objects:v50 count:16];

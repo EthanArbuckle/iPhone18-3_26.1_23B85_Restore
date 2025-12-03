@@ -4,17 +4,17 @@
 - (CGSize)size;
 - (NSString)chatItemGuid;
 - (_TtC7ChatKit39CKTranscriptBackgroundBalloonAttributes)init;
-- (_TtC7ChatKit39CKTranscriptBackgroundBalloonAttributes)initWithChatItemGuid:(id)a3 center:(CGPoint)a4 size:(CGSize)a5 hasBalloonShape:(BOOL)a6 bubblePath:(id)a7;
+- (_TtC7ChatKit39CKTranscriptBackgroundBalloonAttributes)initWithChatItemGuid:(id)guid center:(CGPoint)center size:(CGSize)size hasBalloonShape:(BOOL)shape bubblePath:(id)path;
 @end
 
 @implementation CKTranscriptBackgroundBalloonAttributes
 
-- (_TtC7ChatKit39CKTranscriptBackgroundBalloonAttributes)initWithChatItemGuid:(id)a3 center:(CGPoint)a4 size:(CGSize)a5 hasBalloonShape:(BOOL)a6 bubblePath:(id)a7
+- (_TtC7ChatKit39CKTranscriptBackgroundBalloonAttributes)initWithChatItemGuid:(id)guid center:(CGPoint)center size:(CGSize)size hasBalloonShape:(BOOL)shape bubblePath:(id)path
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
+  height = size.height;
+  width = size.width;
+  y = center.y;
+  x = center.x;
   v14 = sub_190D56F10();
   v15 = (self + OBJC_IVAR____TtC7ChatKit39CKTranscriptBackgroundBalloonAttributes_chatItemGuid);
   *v15 = v14;
@@ -25,11 +25,11 @@
   v18 = (self + OBJC_IVAR____TtC7ChatKit39CKTranscriptBackgroundBalloonAttributes_size);
   *v18 = width;
   v18[1] = height;
-  *(self + OBJC_IVAR____TtC7ChatKit39CKTranscriptBackgroundBalloonAttributes_hasBalloonShape) = a6;
-  *(self + OBJC_IVAR____TtC7ChatKit39CKTranscriptBackgroundBalloonAttributes_bubblePath) = a7;
+  *(self + OBJC_IVAR____TtC7ChatKit39CKTranscriptBackgroundBalloonAttributes_hasBalloonShape) = shape;
+  *(self + OBJC_IVAR____TtC7ChatKit39CKTranscriptBackgroundBalloonAttributes_bubblePath) = path;
   v21.receiver = self;
   v21.super_class = type metadata accessor for CKTranscriptBackgroundBalloonAttributes();
-  v19 = a7;
+  pathCopy = path;
   return [(CKTranscriptBackgroundBalloonAttributes *)&v21 init];
 }
 

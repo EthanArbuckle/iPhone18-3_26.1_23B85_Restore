@@ -1,7 +1,7 @@
 @interface StewieStateMonitorDelegateAdaptor
 - (_TtC11SettingsApp33StewieStateMonitorDelegateAdaptor)init;
 - (void)dealloc;
-- (void)stateChanged:(id)a3;
+- (void)stateChanged:(id)changed;
 @end
 
 @implementation StewieStateMonitorDelegateAdaptor
@@ -44,19 +44,19 @@
   __chkstk_darwin(v4);
   v8 = &v10 - v7;
   (*(v5 + 16))(&v10 - v7, self + OBJC_IVAR____TtC11SettingsApp33StewieStateMonitorDelegateAdaptor_stewieStateStreamContinuation, v4);
-  v9 = self;
+  selfCopy = self;
   AsyncStream.Continuation.finish()();
   (*(v5 + 8))(v8, v4);
-  v10.receiver = v9;
+  v10.receiver = selfCopy;
   v10.super_class = ObjectType;
   [(StewieStateMonitorDelegateAdaptor *)&v10 dealloc];
 }
 
-- (void)stateChanged:(id)a3
+- (void)stateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000D8A24(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_1000D8A24(changedCopy);
 }
 
 @end

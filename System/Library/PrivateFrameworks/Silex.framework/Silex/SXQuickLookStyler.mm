@@ -1,13 +1,13 @@
 @interface SXQuickLookStyler
-- (void)styleViewController:(id)a3;
+- (void)styleViewController:(id)controller;
 @end
 
 @implementation SXQuickLookStyler
 
-- (void)styleViewController:(id)a3
+- (void)styleViewController:(id)controller
 {
-  v3 = [a3 errorLabel];
-  [v3 setTextAlignment:1];
+  errorLabel = [controller errorLabel];
+  [errorLabel setTextAlignment:1];
 }
 
 @end

@@ -8,8 +8,8 @@
 - (void)stk_performRippleAnimationAtIndexPath:()Utilities delay:
 {
   v6 = a4;
-  v7 = [a1 visibleCells];
-  v8 = [a1 cellForItemAtIndexPath:v6];
+  visibleCells = [self visibleCells];
+  v8 = [self cellForItemAtIndexPath:v6];
 
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
@@ -17,11 +17,11 @@
   v10[1] = 3221225472;
   v10[2] = __75__UICollectionView_Utilities__stk_performRippleAnimationAtIndexPath_delay___block_invoke;
   v10[3] = &unk_279D143D8;
-  v10[4] = a1;
+  v10[4] = self;
   v11 = v8;
   v12 = a2;
   v9 = v8;
-  [v7 enumerateObjectsUsingBlock:v10];
+  [visibleCells enumerateObjectsUsingBlock:v10];
   [MEMORY[0x277CD9FF0] commit];
 }
 
@@ -32,7 +32,7 @@
   v8 = a5;
   if (v7 == v8)
   {
-    v47 = [MEMORY[0x277CD9E00] animation];
+    animation = [MEMORY[0x277CD9E00] animation];
   }
 
   else
@@ -48,7 +48,7 @@
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v61 = a1;
+    selfCopy = self;
     v24 = v23;
     v25 = STKCenterOfRect(v10, v12, v14, v16);
     v27 = v26;
@@ -109,8 +109,8 @@
     v42 = [MEMORY[0x277CCAE60] valueWithBytes:v62 objCType:"{CATransform3D=dddddddddddddddd}"];
     [v41 setToValue:v42];
 
-    v43 = [v37 toValue];
-    [v41 setFromValue:v43];
+    toValue = [v37 toValue];
+    [v41 setFromValue:toValue];
 
     [v41 setMass:1.0];
     [v41 setDamping:24.87471];
@@ -121,20 +121,20 @@
     [v41 setBeginTime:v45 + v46];
     [v41 settlingDuration];
     [v41 setDuration:?];
-    v47 = [MEMORY[0x277CD9E00] animation];
+    animation = [MEMORY[0x277CD9E00] animation];
     v76[0] = v37;
     v76[1] = v41;
     v48 = [MEMORY[0x277CBEA60] arrayWithObjects:v76 count:2];
-    [v47 setAnimations:v48];
+    [animation setAnimations:v48];
 
     [v41 duration];
     v50 = v49;
     [v41 beginTime];
-    [v47 setDuration:v50 + v51];
-    [v47 setBeginTime:CACurrentMediaTime() + v61];
+    [animation setDuration:v50 + v51];
+    [animation setBeginTime:CACurrentMediaTime() + selfCopy];
   }
 
-  return v47;
+  return animation;
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface CSFixedFooterViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation CSFixedFooterViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CSFixedFooterView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"CSFixedFooterView" hasInstanceMethod:@"callToActionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSFixedFooterView" hasInstanceMethod:@"alternateCallToActionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSFixedFooterView" hasInstanceMethod:@"statusTextView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CSFixedFooterView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"CSFixedFooterView" hasInstanceMethod:@"callToActionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSFixedFooterView" hasInstanceMethod:@"alternateCallToActionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSFixedFooterView" hasInstanceMethod:@"statusTextView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

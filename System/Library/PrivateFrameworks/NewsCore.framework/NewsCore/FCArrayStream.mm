@@ -1,73 +1,73 @@
 @interface FCArrayStream
-- (FCArrayStream)initWithArray:(id)a3;
-- (id)fetchMoreResultsWithLimit:(unint64_t)a3 qualityOfService:(int64_t)a4 callbackQueue:(id)a5 completionHandler:(id)a6;
+- (FCArrayStream)initWithArray:(id)array;
+- (id)fetchMoreResultsWithLimit:(unint64_t)limit qualityOfService:(int64_t)service callbackQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation FCArrayStream
 
-- (FCArrayStream)initWithArray:(id)a3
+- (FCArrayStream)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = FCArrayStream;
   v5 = [(FCArrayStream *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (arrayCopy)
     {
-      v6 = [v4 copy];
+      array = [arrayCopy copy];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DEC8] array];
+      array = [MEMORY[0x1E695DEC8] array];
     }
 
     array = v5->_array;
-    v5->_array = v6;
+    v5->_array = array;
   }
 
   return v5;
 }
 
-- (id)fetchMoreResultsWithLimit:(unint64_t)a3 qualityOfService:(int64_t)a4 callbackQueue:(id)a5 completionHandler:(id)a6
+- (id)fetchMoreResultsWithLimit:(unint64_t)limit qualityOfService:(int64_t)service callbackQueue:(id)queue completionHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a6;
-  v11 = v10;
-  if (v9)
+  queueCopy = queue;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (queueCopy)
   {
-    if (v10)
+    if (handlerCopy)
     {
-      if (a3)
+      if (limit)
       {
-        v12 = a3;
+        limitCopy = limit;
       }
 
       else
       {
-        v12 = 0xFFFFFFFFLL;
+        limitCopy = 0xFFFFFFFFLL;
       }
 
       index = self->_index;
       v14 = [(NSArray *)self->_array count];
       array = self->_array;
-      if (v12 >= v14 - self->_index)
+      if (limitCopy >= v14 - self->_index)
       {
-        v12 = v14 - self->_index;
+        limitCopy = v14 - self->_index;
       }
 
-      v16 = [(NSArray *)self->_array subarrayWithRange:index, v12];
-      self->_index = v12 + index;
+      limitCopy = [(NSArray *)self->_array subarrayWithRange:index, limitCopy];
+      self->_index = limitCopy + index;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __92__FCArrayStream_fetchMoreResultsWithLimit_qualityOfService_callbackQueue_completionHandler___block_invoke;
       block[3] = &unk_1E7C37778;
-      v22 = v16;
+      v22 = limitCopy;
       v23 = v11;
-      v17 = v16;
-      dispatch_async(v9, block);
+      v17 = limitCopy;
+      dispatch_async(queueCopy, block);
 
 LABEL_9:
       goto LABEL_14;

@@ -1,55 +1,55 @@
 @interface DiskImageParamsXPC
-+ (BOOL)getAEAKeyFromSAKSWithMetadata:(id)a3 key:(char *)a4 error:(id *)a5;
-+ (BOOL)getAEAKeyWithHelper:(void *)a3 keyBuffer:(char *)a4 bufferSize:(unint64_t)a5 error:(id *)a6;
-+ (BOOL)validateSupportedFormatWithBackendXPC:(id)a3 error:(id *)a4;
-+ (id)newAEABackendThrowsWithBackendXPC:(id)a3 error:(id *)a4;
-+ (id)newWithUnlockedBackendXPC:(id)a3 blockSize:(unint64_t)a4 error:(id *)a5;
-+ (id)newWithUnlockedBackendXPC:(id)a3 error:(id *)a4;
-- (BOOL)allowOnDiskCacheWithSinkDiskImage:(const void *)a3;
-- (BOOL)lockBackendsWithWritableOnly:(BOOL)a3 error:(id *)a4;
++ (BOOL)getAEAKeyFromSAKSWithMetadata:(id)metadata key:(char *)key error:(id *)error;
++ (BOOL)getAEAKeyWithHelper:(void *)helper keyBuffer:(char *)buffer bufferSize:(unint64_t)size error:(id *)error;
++ (BOOL)validateSupportedFormatWithBackendXPC:(id)c error:(id *)error;
++ (id)newAEABackendThrowsWithBackendXPC:(id)c error:(id *)error;
++ (id)newWithUnlockedBackendXPC:(id)c blockSize:(unint64_t)size error:(id *)error;
++ (id)newWithUnlockedBackendXPC:(id)c error:(id *)error;
+- (BOOL)allowOnDiskCacheWithSinkDiskImage:(const void *)image;
+- (BOOL)lockBackendsWithWritableOnly:(BOOL)only error:(id *)error;
 - (BOOL)mountedOnAPFS;
-- (DiskImageParamsXPC)initWithBackendXPC:(id)a3;
-- (DiskImageParamsXPC)initWithBackendXPC:(id)a3 blockSize:(unint64_t)a4;
-- (DiskImageParamsXPC)initWithCoder:(id)a3;
+- (DiskImageParamsXPC)initWithBackendXPC:(id)c;
+- (DiskImageParamsXPC)initWithBackendXPC:(id)c blockSize:(unint64_t)size;
+- (DiskImageParamsXPC)initWithCoder:(id)coder;
 - (NSURL)cacheURL;
 - (NSUUID)instanceID;
 - (id)description;
-- (shared_ptr<DiskImage>)createShadowDiskImageWithBackend:(shared_ptr<Backend>)a3 numBlocks:(unint64_t)a4 sinkDiskImage:(const void *)a5 cache_only:(BOOL)a6 stack_size:(unint64_t)a7;
-- (unique_ptr<DiskImage,)createDiskImageWithCache:(BOOL)a3 shadowValidation:(BOOL)a4;
-- (unique_ptr<const)getImageInfoWithExtra:(BOOL)a3 error:(id *)a4;
+- (shared_ptr<DiskImage>)createShadowDiskImageWithBackend:(shared_ptr<Backend>)backend numBlocks:(unint64_t)blocks sinkDiskImage:(const void *)image cache_only:(BOOL)cache_only stack_size:(unint64_t)stack_size;
+- (unique_ptr<DiskImage,)createDiskImageWithCache:(BOOL)cache shadowValidation:(BOOL)validation;
+- (unique_ptr<const)getImageInfoWithExtra:(BOOL)extra error:(id *)error;
 - (vector<std::shared_ptr<LockableResource>,)lockableResources;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DiskImageParamsXPC
 
-+ (BOOL)validateSupportedFormatWithBackendXPC:(id)a3 error:(id *)a4
++ (BOOL)validateSupportedFormatWithBackendXPC:(id)c error:(id *)error
 {
-  v4 = a3;
-  if (v4)
+  cCopy = c;
+  if (cCopy)
   {
-    [v4 backend];
+    [cCopy backend];
   }
 
   operator new();
 }
 
-+ (BOOL)getAEAKeyFromSAKSWithMetadata:(id)a3 key:(char *)a4 error:(id *)a5
++ (BOOL)getAEAKeyFromSAKSWithMetadata:(id)metadata key:(char *)key error:(id *)error
 {
-  v7 = a3;
-  v8 = [DIKeyRetriever decryptKeyWithData:v7 destKey:v11 destKeySize:88 error:a5];
+  metadataCopy = metadata;
+  v8 = [DIKeyRetriever decryptKeyWithData:metadataCopy destKey:v11 destKeySize:88 error:error];
   if (v8)
   {
     v9 = strnlen(v11, 0x58uLL);
-    CC_SHA256(v11, v9, a4);
+    CC_SHA256(v11, v9, key);
   }
 
   return v8;
 }
 
-+ (BOOL)getAEAKeyWithHelper:(void *)a3 keyBuffer:(char *)a4 bufferSize:(unint64_t)a5 error:(id *)a6
++ (BOOL)getAEAKeyWithHelper:(void *)helper keyBuffer:(char *)buffer bufferSize:(unint64_t)size error:(id *)error
 {
-  if (*(a3 + 16) == 1)
+  if (*(helper + 16) == 1)
   {
     *&v25 = "AEAHelper::key_params_t::run(function &&) [function = di_utils::overloaded<(lambda at /Library/Caches/com.apple.xbs/Sources/DiskImages2/DiskImagesLib/DiskImageParamsXPC.mm:185:8), (lambda at /Library/Caches/com.apple.xbs/Sources/DiskImages2/DiskImagesLib/DiskImageParamsXPC.mm:189:8), (lambda at /Library/Caches/com.apple.xbs/Sources/DiskImages2/DiskImagesLib/DiskImageParamsXPC.mm:193:8), (lambda at /Library/Caches/com.apple.xbs/Sources/DiskImages2/DiskImagesLib/DiskImageParamsXPC.mm:197:8)> &]";
     *(&v25 + 1) = 390;
@@ -59,9 +59,9 @@
     std::ostream::~ostream();
     sub_1000B731C(__p);
     std::ios::~ios();
-    if (*(a3 + 16))
+    if (*(helper + 16))
     {
-      memcpy(a4, *(a3 + 1), a5);
+      memcpy(buffer, *(helper + 1), size);
       return 1;
     }
 
@@ -69,7 +69,7 @@ LABEL_29:
     sub_1000B7AC4();
   }
 
-  if (*(a3 + 48) == 1)
+  if (*(helper + 48) == 1)
   {
     *&v25 = "AEAHelper::key_params_t::run(function &&) [function = di_utils::overloaded<(lambda at /Library/Caches/com.apple.xbs/Sources/DiskImages2/DiskImagesLib/DiskImageParamsXPC.mm:185:8), (lambda at /Library/Caches/com.apple.xbs/Sources/DiskImages2/DiskImagesLib/DiskImageParamsXPC.mm:189:8), (lambda at /Library/Caches/com.apple.xbs/Sources/DiskImages2/DiskImagesLib/DiskImageParamsXPC.mm:193:8), (lambda at /Library/Caches/com.apple.xbs/Sources/DiskImages2/DiskImagesLib/DiskImageParamsXPC.mm:197:8)> &]";
     *(&v25 + 1) = 390;
@@ -79,32 +79,32 @@ LABEL_29:
     std::ostream::~ostream();
     sub_1000B7BD8(__p);
     std::ios::~ios();
-    if ((*(a3 + 48) & 1) == 0)
+    if ((*(helper + 48) & 1) == 0)
     {
       goto LABEL_29;
     }
 
-    if (*(a3 + 47) >= 0)
+    if (*(helper + 47) >= 0)
     {
-      v12 = a3 + 24;
+      v12 = helper + 24;
     }
 
     else
     {
-      v12 = *(a3 + 3);
+      v12 = *(helper + 3);
     }
 
     v13 = [NSString stringWithCString:v12 encoding:4];
     v14 = [NSURL URLWithString:v13];
 
-    LOBYTE(v13) = [DIKeyRetriever KKMSKeyWithURL:v14 destKey:a4 destKeySize:a5 error:a6];
+    LOBYTE(v13) = [DIKeyRetriever KKMSKeyWithURL:v14 destKey:buffer destKeySize:size error:error];
     if (v13)
     {
       return 1;
     }
   }
 
-  if (*(a3 + 120) == 1)
+  if (*(helper + 120) == 1)
   {
     *&v25 = "AEAHelper::key_params_t::run(function &&) [function = di_utils::overloaded<(lambda at /Library/Caches/com.apple.xbs/Sources/DiskImages2/DiskImagesLib/DiskImageParamsXPC.mm:185:8), (lambda at /Library/Caches/com.apple.xbs/Sources/DiskImages2/DiskImagesLib/DiskImageParamsXPC.mm:189:8), (lambda at /Library/Caches/com.apple.xbs/Sources/DiskImages2/DiskImagesLib/DiskImageParamsXPC.mm:193:8), (lambda at /Library/Caches/com.apple.xbs/Sources/DiskImages2/DiskImagesLib/DiskImageParamsXPC.mm:197:8)> &]";
     *(&v25 + 1) = 390;
@@ -114,32 +114,32 @@ LABEL_29:
     std::ostream::~ostream();
     sub_1000A8ECC(__p);
     std::ios::~ios();
-    if ((*(a3 + 120) & 1) == 0)
+    if ((*(helper + 120) & 1) == 0)
     {
       goto LABEL_29;
     }
 
-    if (*(a3 + 111) >= 0)
+    if (*(helper + 111) >= 0)
     {
-      v15 = a3 + 88;
+      v15 = helper + 88;
     }
 
     else
     {
-      v15 = *(a3 + 11);
+      v15 = *(helper + 11);
     }
 
     v16 = [NSString stringWithCString:v15 encoding:1];
     v17 = [NSURL URLWithString:v16];
 
-    v18 = [DIKeyRetriever WKMSKeyWithURL:v17 authData:*(a3 + 14) destKey:a4 destKeySize:a5 error:a6];
+    v18 = [DIKeyRetriever WKMSKeyWithURL:v17 authData:*(helper + 14) destKey:buffer destKeySize:size error:error];
     if (v18)
     {
       return 1;
     }
   }
 
-  if (*(a3 + 80) == 1)
+  if (*(helper + 80) == 1)
   {
     *&v25 = "AEAHelper::key_params_t::run(function &&) [function = di_utils::overloaded<(lambda at /Library/Caches/com.apple.xbs/Sources/DiskImages2/DiskImagesLib/DiskImageParamsXPC.mm:185:8), (lambda at /Library/Caches/com.apple.xbs/Sources/DiskImages2/DiskImagesLib/DiskImageParamsXPC.mm:189:8), (lambda at /Library/Caches/com.apple.xbs/Sources/DiskImages2/DiskImagesLib/DiskImageParamsXPC.mm:193:8), (lambda at /Library/Caches/com.apple.xbs/Sources/DiskImages2/DiskImagesLib/DiskImageParamsXPC.mm:197:8)> &]";
     *(&v25 + 1) = 390;
@@ -149,20 +149,20 @@ LABEL_29:
     std::ostream::~ostream();
     sub_1000B8448(__p);
     std::ios::~ios();
-    if ((*(a3 + 80) & 1) == 0)
+    if ((*(helper + 80) & 1) == 0)
     {
       goto LABEL_29;
     }
 
-    if (*(a3 + 79) < 0)
+    if (*(helper + 79) < 0)
     {
-      sub_100050108(__p, *(a3 + 7), *(a3 + 8));
+      sub_100050108(__p, *(helper + 7), *(helper + 8));
     }
 
     else
     {
-      *__p = *(a3 + 56);
-      v28 = *(a3 + 9);
+      *__p = *(helper + 56);
+      v28 = *(helper + 9);
     }
 
     v19 = SHIBYTE(v28);
@@ -184,7 +184,7 @@ LABEL_29:
       operator delete(__p[0]);
     }
 
-    v24 = [a1 getAEAKeyFromSAKSWithMetadata:v23 key:a4 error:a6];
+    v24 = [self getAEAKeyFromSAKSWithMetadata:v23 key:buffer error:error];
 
     if (v24)
     {
@@ -195,12 +195,12 @@ LABEL_29:
   return 0;
 }
 
-+ (id)newAEABackendThrowsWithBackendXPC:(id)a3 error:(id *)a4
++ (id)newAEABackendThrowsWithBackendXPC:(id)c error:(id *)error
 {
-  v4 = a3;
-  if (v4)
+  cCopy = c;
+  if (cCopy)
   {
-    [v4 backend];
+    [cCopy backend];
     v5 = v7;
   }
 
@@ -214,20 +214,20 @@ LABEL_29:
   operator new[]();
 }
 
-+ (id)newWithUnlockedBackendXPC:(id)a3 error:(id *)a4
++ (id)newWithUnlockedBackendXPC:(id)c error:(id *)error
 {
-  v6 = a3;
+  cCopy = c;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(DiskImageParamsXPC *)[DiskImageParamsSparseBundle_XPC alloc] initWithBackendXPC:v6];
+    v7 = [(DiskImageParamsXPC *)[DiskImageParamsSparseBundle_XPC alloc] initWithBackendXPC:cCopy];
   }
 
   else
   {
-    if (v6)
+    if (cCopy)
     {
-      [v6 backend];
+      [cCopy backend];
     }
 
     else
@@ -279,7 +279,7 @@ LABEL_29:
       exception[7] = "is_aea: Error reading magic.";
     }
 
-    if (v15 != 826361153 || (v11 = [a1 newAEABackendThrowsWithBackendXPC:v6 error:a4], v6, (v6 = v11) != 0))
+    if (v15 != 826361153 || (v11 = [self newAEABackendThrowsWithBackendXPC:cCopy error:error], cCopy, (cCopy = v11) != 0))
     {
 LABEL_17:
       LOBYTE(v11) = 1;
@@ -292,9 +292,9 @@ LABEL_17:
 
     if (v11)
     {
-      if (v6)
+      if (cCopy)
       {
-        [v6 backend];
+        [cCopy backend];
       }
 
       else
@@ -312,11 +312,11 @@ LABEL_17:
   return v7;
 }
 
-+ (id)newWithUnlockedBackendXPC:(id)a3 blockSize:(unint64_t)a4 error:(id *)a5
++ (id)newWithUnlockedBackendXPC:(id)c blockSize:(unint64_t)size error:(id *)error
 {
-  v7 = [DiskImageParamsXPC newWithUnlockedBackendXPC:a3 error:a5];
+  v7 = [DiskImageParamsXPC newWithUnlockedBackendXPC:c error:error];
   v8 = v7;
-  if (!v7 || ([v7 setBlockSize:a4 error:a5] & 1) == 0)
+  if (!v7 || ([v7 setBlockSize:size error:error] & 1) == 0)
   {
 
     return 0;
@@ -327,15 +327,15 @@ LABEL_17:
 
 - (NSURL)cacheURL
 {
-  v3 = [(DiskImageParamsXPC *)self shadowChain];
-  v4 = [v3 hasBaseImageCache];
+  shadowChain = [(DiskImageParamsXPC *)self shadowChain];
+  hasBaseImageCache = [shadowChain hasBaseImageCache];
 
-  if (v4)
+  if (hasBaseImageCache)
   {
-    v5 = [(DiskImageParamsXPC *)self shadowChain];
-    v6 = [v5 nodes];
-    v7 = [v6 firstObject];
-    v8 = [v7 URL];
+    shadowChain2 = [(DiskImageParamsXPC *)self shadowChain];
+    nodes = [shadowChain2 nodes];
+    firstObject = [nodes firstObject];
+    v8 = [firstObject URL];
     cacheURL = self->_cacheURL;
     self->_cacheURL = v8;
   }
@@ -345,29 +345,29 @@ LABEL_17:
   return v10;
 }
 
-- (DiskImageParamsXPC)initWithBackendXPC:(id)a3 blockSize:(unint64_t)a4
+- (DiskImageParamsXPC)initWithBackendXPC:(id)c blockSize:(unint64_t)size
 {
-  v7 = a3;
+  cCopy = c;
   v11.receiver = self;
   v11.super_class = DiskImageParamsXPC;
   v8 = [(DiskImageParamsXPC *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_backendXPC, a3);
-    v9->_blockSize = a4;
+    objc_storeStrong(&v8->_backendXPC, c);
+    v9->_blockSize = size;
   }
 
   return v9;
 }
 
-- (DiskImageParamsXPC)initWithBackendXPC:(id)a3
+- (DiskImageParamsXPC)initWithBackendXPC:(id)c
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  cCopy = c;
+  v5 = cCopy;
+  if (cCopy)
   {
-    [v4 backend];
+    [cCopy backend];
   }
 
   else
@@ -401,10 +401,10 @@ LABEL_17:
   return v8;
 }
 
-- (shared_ptr<DiskImage>)createShadowDiskImageWithBackend:(shared_ptr<Backend>)a3 numBlocks:(unint64_t)a4 sinkDiskImage:(const void *)a5 cache_only:(BOOL)a6 stack_size:(unint64_t)a7
+- (shared_ptr<DiskImage>)createShadowDiskImageWithBackend:(shared_ptr<Backend>)backend numBlocks:(unint64_t)blocks sinkDiskImage:(const void *)image cache_only:(BOOL)cache_only stack_size:(unint64_t)stack_size
 {
-  cntrl = a3.__cntrl_;
-  ptr = a3.__ptr_;
+  cntrl = backend.__cntrl_;
+  ptr = backend.__ptr_;
   v10 = *(sub_100043DBC() + 8);
   if ((*(**ptr + 40))())
   {
@@ -412,11 +412,11 @@ LABEL_17:
     sub_1000B97DC();
   }
 
-  v11 = 0x10000000000000uLL / (*(*a4 + 24))(a4);
+  v11 = 0x10000000000000uLL / (*(*blocks + 24))(blocks);
   v16 = v11;
   if (!cntrl)
   {
-    cntrl = (*(*a4 + 32))(a4);
+    cntrl = (*(*blocks + 32))(blocks);
     v11 = v16;
   }
 
@@ -424,9 +424,9 @@ LABEL_17:
   {
     v17[0] = sub_100195AE4();
     v17[1] = v12;
-    v17[34] = sub_100075664(a4);
+    v17[34] = sub_100075664(blocks);
     v17[35] = v13;
-    (*(*a4 + 24))(a4);
+    (*(*blocks + 24))(blocks);
     sub_1000B9990();
   }
 
@@ -440,12 +440,12 @@ LABEL_17:
   exception[7] = "Size cannot exceed max ASIF size";
 }
 
-- (BOOL)allowOnDiskCacheWithSinkDiskImage:(const void *)a3
+- (BOOL)allowOnDiskCacheWithSinkDiskImage:(const void *)image
 {
-  v3 = [(DiskImageParamsXPC *)self shadowChain];
-  v4 = [v3 hasBaseImageCache];
+  shadowChain = [(DiskImageParamsXPC *)self shadowChain];
+  hasBaseImageCache = [shadowChain hasBaseImageCache];
 
-  if ((v4 & 1) == 0)
+  if ((hasBaseImageCache & 1) == 0)
   {
     v5 = *__error();
     if (sub_1000E95F0())
@@ -484,14 +484,14 @@ LABEL_17:
   return 0;
 }
 
-- (unique_ptr<const)getImageInfoWithExtra:(BOOL)a3 error:(id *)a4
+- (unique_ptr<const)getImageInfoWithExtra:(BOOL)extra error:(id *)error
 {
-  v5 = a3;
+  extraCopy = extra;
   v6 = v4;
   [(DiskImageParamsXPC *)self createDiskImageWithCache:0 shadowValidation:0];
   v7 = v11;
   v8 = *v11 + 56;
-  if (v5)
+  if (extraCopy)
   {
     v9 = 7;
   }
@@ -506,12 +506,12 @@ LABEL_17:
   return (*(*v7 + 16))(v7);
 }
 
-- (unique_ptr<DiskImage,)createDiskImageWithCache:(BOOL)a3 shadowValidation:(BOOL)a4
+- (unique_ptr<DiskImage,)createDiskImageWithCache:(BOOL)cache shadowValidation:(BOOL)validation
 {
-  v5 = a3;
+  cacheCopy = cache;
   v56 = v4;
   [(DiskImageParamsXPC *)self createSinkDiskImage];
-  if (v5)
+  if (cacheCopy)
   {
     v57 = [(DiskImageParamsXPC *)self allowOnDiskCacheWithSinkDiskImage:&v67];
   }
@@ -521,14 +521,14 @@ LABEL_17:
     v57 = 0;
   }
 
-  v6 = [(DiskImageParamsXPC *)self shadowChain];
-  v7 = v6;
-  if (v6)
+  shadowChain = [(DiskImageParamsXPC *)self shadowChain];
+  v7 = shadowChain;
+  if (shadowChain)
   {
-    v8 = [(DiskImageParamsXPC *)self shadowChain];
-    v9 = [v8 isEmpty];
+    shadowChain2 = [(DiskImageParamsXPC *)self shadowChain];
+    isEmpty = [shadowChain2 isEmpty];
 
-    if (v57 & 1 | ((v9 & 1) == 0))
+    if (v57 & 1 | ((isEmpty & 1) == 0))
     {
       goto LABEL_6;
     }
@@ -549,8 +549,8 @@ LABEL_6:
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v10 = [(DiskImageParamsXPC *)self shadowChain];
-    obj = [v10 nodes];
+    shadowChain3 = [(DiskImageParamsXPC *)self shadowChain];
+    obj = [shadowChain3 nodes];
 
     v11 = [obj countByEnumeratingWithState:&v63 objects:v77 count:16];
     if (v11)
@@ -568,11 +568,11 @@ LABEL_6:
           }
 
           v15 = *(*(&v63 + 1) + 8 * i);
-          v16 = [v15 fileBackend];
-          v17 = v16;
-          if (v16)
+          fileBackend = [v15 fileBackend];
+          v17 = fileBackend;
+          if (fileBackend)
           {
-            [v16 backend];
+            [fileBackend backend];
           }
 
           else
@@ -581,20 +581,20 @@ LABEL_6:
             v62 = 0;
           }
 
-          v18 = [v15 numBlocks];
-          v19 = [v15 isCache];
-          v20 = [(DiskImageParamsXPC *)self shadowChain];
-          v21 = [v20 nodes];
-          -[DiskImageParamsXPC createShadowDiskImageWithBackend:numBlocks:sinkDiskImage:cache_only:stack_size:](self, "createShadowDiskImageWithBackend:numBlocks:sinkDiskImage:cache_only:stack_size:", &v61, v18, v13, v19, [v21 count] + 1);
+          numBlocks = [v15 numBlocks];
+          isCache = [v15 isCache];
+          shadowChain4 = [(DiskImageParamsXPC *)self shadowChain];
+          nodes = [shadowChain4 nodes];
+          -[DiskImageParamsXPC createShadowDiskImageWithBackend:numBlocks:sinkDiskImage:cache_only:stack_size:](self, "createShadowDiskImageWithBackend:numBlocks:sinkDiskImage:cache_only:stack_size:", &v61, numBlocks, v13, isCache, [nodes count] + 1);
 
           if (v62)
           {
             sub_10000E984(v62);
           }
 
-          v22 = [v15 isCache];
+          isCache2 = [v15 isCache];
           v23 = *buf;
-          if (v22)
+          if (isCache2)
           {
             v24 = 2;
           }
@@ -659,17 +659,17 @@ LABEL_6:
         *v79 = 0;
         if (v68 | v27)
         {
-          v28 = [[NSUUID alloc] initWithUUIDBytes:&v68];
+          instanceID = [[NSUUID alloc] initWithUUIDBytes:&v68];
         }
 
         else
         {
-          v28 = [(DiskImageParamsXPC *)self instanceID];
+          instanceID = [(DiskImageParamsXPC *)self instanceID];
         }
 
-        v29 = [v28 UUIDString];
+        uUIDString = [instanceID UUIDString];
 
-        v30 = [NSString stringWithFormat:@"%@%@.%@", @"diskimage_", v29, @"cache"];
+        v30 = [NSString stringWithFormat:@"%@%@.%@", @"diskimage_", uUIDString, @"cache"];
         [NSURL fileURLWithFileSystemRepresentation:&v73 isDirectory:1 relativeToURL:0];
         v31 = [objc_claimAutoreleasedReturnValue() URLByAppendingPathComponent:v30];
         [(DiskImageParamsXPC *)self setCacheURL:v31];
@@ -679,13 +679,13 @@ LABEL_6:
         {
           v33 = sub_1000E957C();
           os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT);
-          v34 = [(DiskImageParamsXPC *)self cacheURL];
-          v35 = [v34 path];
+          cacheURL = [(DiskImageParamsXPC *)self cacheURL];
+          path = [cacheURL path];
           *buf = 0x4004100302;
           *v79 = 2080;
           *&v79[2] = "[DiskImageParamsXPC createDiskImageWithCache:shadowValidation:]";
           v80 = 2114;
-          v81 = v35;
+          v81 = path;
           v36 = _os_log_send_and_compose_impl();
 
           if (v36)
@@ -700,21 +700,21 @@ LABEL_6:
           v37 = sub_1000E957C();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
           {
-            v38 = [(DiskImageParamsXPC *)self cacheURL];
-            v39 = [v38 path];
+            cacheURL2 = [(DiskImageParamsXPC *)self cacheURL];
+            path2 = [cacheURL2 path];
             *buf = 0x4004100302;
             *v79 = 2080;
             *&v79[2] = "[DiskImageParamsXPC createDiskImageWithCache:shadowValidation:]";
             v80 = 2114;
-            v81 = v39;
+            v81 = path2;
             _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "%.*s: On disk cache path: %{public}@", buf, 0x1Cu);
           }
         }
 
         *__error() = v32;
-        v40 = [(DiskImageParamsXPC *)self cacheURL];
-        v41 = v40;
-        *buf = [v40 fileSystemRepresentation];
+        cacheURL3 = [(DiskImageParamsXPC *)self cacheURL];
+        v41 = cacheURL3;
+        *buf = [cacheURL3 fileSystemRepresentation];
         sub_1000B9B10();
       }
 
@@ -791,32 +791,32 @@ LABEL_6:
   }
 
   *v56 = v67;
-  return v6;
+  return shadowChain;
 }
 
-- (BOOL)lockBackendsWithWritableOnly:(BOOL)a3 error:(id *)a4
+- (BOOL)lockBackendsWithWritableOnly:(BOOL)only error:(id *)error
 {
-  v5 = a3;
-  if ((-[DiskImageParamsXPC isWritableFormat](self, "isWritableFormat") || !v5) && (-[DiskImageParamsXPC backendXPC](self, "backendXPC"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 lock], v7, v8))
+  onlyCopy = only;
+  if ((-[DiskImageParamsXPC isWritableFormat](self, "isWritableFormat") || !onlyCopy) && (-[DiskImageParamsXPC backendXPC](self, "backendXPC"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 lock], v7, v8))
   {
 
-    return [DIError failWithPOSIXCode:v8 verboseInfo:@"Failed locking the image" error:a4];
+    return [DIError failWithPOSIXCode:v8 verboseInfo:@"Failed locking the image" error:error];
   }
 
   else
   {
-    v10 = [(DiskImageParamsXPC *)self shadowChain];
+    shadowChain = [(DiskImageParamsXPC *)self shadowChain];
 
-    if (v10)
+    if (shadowChain)
     {
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v11 = [(DiskImageParamsXPC *)self shadowChain];
-      v12 = [v11 nodes];
+      shadowChain2 = [(DiskImageParamsXPC *)self shadowChain];
+      nodes = [shadowChain2 nodes];
 
-      v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v13 = [nodes countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v13)
       {
         v14 = *v20;
@@ -826,21 +826,21 @@ LABEL_6:
           {
             if (*v20 != v14)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(nodes);
             }
 
-            v16 = [*(*(&v19 + 1) + 8 * i) fileBackend];
-            v17 = [v16 lock];
+            fileBackend = [*(*(&v19 + 1) + 8 * i) fileBackend];
+            lock = [fileBackend lock];
 
-            if (v17)
+            if (lock)
             {
-              v18 = [DIError failWithPOSIXCode:v17 verboseInfo:@"Failed locking the shadow file" error:a4];
+              v18 = [DIError failWithPOSIXCode:lock verboseInfo:@"Failed locking the shadow file" error:error];
 
               return v18;
             }
           }
 
-          v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v13 = [nodes countByEnumeratingWithState:&v19 objects:v23 count:16];
           if (v13)
           {
             continue;
@@ -859,44 +859,44 @@ LABEL_6:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(DiskImageParamsXPC *)self backendXPC];
-  v6 = [v5 description];
+  backendXPC = [(DiskImageParamsXPC *)self backendXPC];
+  v6 = [backendXPC description];
   v7 = [NSString stringWithFormat:@"%@[%@]", v4, v6];
 
   return v7;
 }
 
-- (DiskImageParamsXPC)initWithCoder:(id)a3
+- (DiskImageParamsXPC)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backend"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backend"];
   backendXPC = self->_backendXPC;
   self->_backendXPC = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shadowChain"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shadowChain"];
   shadowChain = self->_shadowChain;
   self->_shadowChain = v7;
 
-  self->_blockSize = [v4 decodeIntegerForKey:@"blockSize"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"instanceID"];
+  self->_blockSize = [coderCopy decodeIntegerForKey:@"blockSize"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"instanceID"];
   instanceID = self->_instanceID;
   self->_instanceID = v9;
 
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(DiskImageParamsXPC *)self backendXPC];
-  [v7 encodeObject:v4 forKey:@"backend"];
+  coderCopy = coder;
+  backendXPC = [(DiskImageParamsXPC *)self backendXPC];
+  [coderCopy encodeObject:backendXPC forKey:@"backend"];
 
-  v5 = [(DiskImageParamsXPC *)self shadowChain];
-  [v7 encodeObject:v5 forKey:@"shadowChain"];
+  shadowChain = [(DiskImageParamsXPC *)self shadowChain];
+  [coderCopy encodeObject:shadowChain forKey:@"shadowChain"];
 
-  [v7 encodeInteger:-[DiskImageParamsXPC blockSize](self forKey:{"blockSize"), @"blockSize"}];
-  v6 = [(DiskImageParamsXPC *)self instanceID];
-  [v7 encodeObject:v6 forKey:@"instanceID"];
+  [coderCopy encodeInteger:-[DiskImageParamsXPC blockSize](self forKey:{"blockSize"), @"blockSize"}];
+  instanceID = [(DiskImageParamsXPC *)self instanceID];
+  [coderCopy encodeObject:instanceID forKey:@"instanceID"];
 }
 
 - (NSUUID)instanceID
@@ -907,30 +907,30 @@ LABEL_6:
     goto LABEL_2;
   }
 
-  v5 = [(DiskImageParamsXPC *)self backendXPC];
-  v6 = [v5 instanceID];
+  backendXPC = [(DiskImageParamsXPC *)self backendXPC];
+  instanceID = [backendXPC instanceID];
 
-  v7 = [(DiskImageParamsXPC *)self shadowChain];
-  if (v7)
+  shadowChain = [(DiskImageParamsXPC *)self shadowChain];
+  if (shadowChain)
   {
-    v8 = [(DiskImageParamsXPC *)self shadowChain];
-    v9 = [v8 nonCacheNodes];
+    shadowChain2 = [(DiskImageParamsXPC *)self shadowChain];
+    nonCacheNodes = [shadowChain2 nonCacheNodes];
 
-    if (v9 && [v9 count])
+    if (nonCacheNodes && [nonCacheNodes count])
     {
       v25 = &v25;
-      v10 = 16 * [v9 count];
+      v10 = 16 * [nonCacheNodes count];
       v11 = &v26[-1] - ((v10 + 31) & 0xFFFFFFFFFFFFFFF0);
-      [(NSUUID *)v6 getUUIDBytes:v11];
+      [(NSUUID *)instanceID getUUIDBytes:v11];
       v12 = 0;
       v13 = v11 + 16;
-      while ([v9 count] > v12)
+      while ([nonCacheNodes count] > v12)
       {
-        v14 = [v9 objectAtIndexedSubscript:v12];
-        v15 = [v14 fileBackend];
-        v16 = [v15 instanceID];
+        v14 = [nonCacheNodes objectAtIndexedSubscript:v12];
+        fileBackend = [v14 fileBackend];
+        instanceID2 = [fileBackend instanceID];
 
-        [v16 getUUIDBytes:v13];
+        [instanceID2 getUUIDBytes:v13];
         v13 += 16;
         ++v12;
       }
@@ -952,12 +952,12 @@ LABEL_2:
 
   else
   {
-    v9 = 0;
+    nonCacheNodes = 0;
   }
 
   v17 = self->_instanceID;
-  self->_instanceID = v6;
-  v18 = v6;
+  self->_instanceID = instanceID;
+  v18 = instanceID;
 
   v3 = self->_instanceID;
 LABEL_11:
@@ -967,11 +967,11 @@ LABEL_11:
 
 - (BOOL)mountedOnAPFS
 {
-  v2 = [(DiskImageParamsXPC *)self backendXPC];
-  v3 = v2;
-  if (v2)
+  backendXPC = [(DiskImageParamsXPC *)self backendXPC];
+  v3 = backendXPC;
+  if (backendXPC)
   {
-    [v2 backend];
+    [backendXPC backend];
   }
 
   else
@@ -1015,11 +1015,11 @@ LABEL_11:
   retstr->__begin_ = 0;
   retstr->__end_ = 0;
   retstr->__cap_ = 0;
-  v5 = [(DiskImageParamsXPC *)self backendXPC];
-  v6 = v5;
-  if (v5)
+  backendXPC = [(DiskImageParamsXPC *)self backendXPC];
+  v6 = backendXPC;
+  if (backendXPC)
   {
-    [v5 backend];
+    [backendXPC backend];
   }
 
   else
@@ -1058,10 +1058,10 @@ LABEL_11:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [(DiskImageParamsXPC *)self shadowChain];
-  v10 = [v9 nodes];
+  shadowChain = [(DiskImageParamsXPC *)self shadowChain];
+  nodes = [shadowChain nodes];
 
-  v11 = [v10 countByEnumeratingWithState:&v20 objects:v27 count:16];
+  v11 = [nodes countByEnumeratingWithState:&v20 objects:v27 count:16];
   if (v11)
   {
     v12 = *v21;
@@ -1071,14 +1071,14 @@ LABEL_11:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(nodes);
         }
 
-        v14 = [*(*(&v20 + 1) + 8 * i) fileBackend];
-        v15 = v14;
-        if (v14)
+        fileBackend = [*(*(&v20 + 1) + 8 * i) fileBackend];
+        v15 = fileBackend;
+        if (fileBackend)
         {
-          [v14 backend];
+          [fileBackend backend];
         }
 
         else
@@ -1119,7 +1119,7 @@ LABEL_11:
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v20 objects:v27 count:16];
+      v11 = [nodes countByEnumeratingWithState:&v20 objects:v27 count:16];
     }
 
     while (v11);

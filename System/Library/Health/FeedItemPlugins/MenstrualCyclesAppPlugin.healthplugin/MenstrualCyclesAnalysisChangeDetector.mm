@@ -8,7 +8,7 @@
 - (NSString)description
 {
   swift_getObjectType();
-  v3 = self;
+  selfCopy = self;
   v4 = sub_29E2C4AE4();
   MEMORY[0x29ED7FCC0](v4);
 

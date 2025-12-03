@@ -12,8 +12,8 @@
   v17 = a7;
   v18 = a8;
   v19 = [CKAlertController alertControllerWithTitle:v15 message:0 preferredStyle:0];
-  v31 = a1;
-  objc_initWeak(location, a1);
+  selfCopy = self;
+  objc_initWeak(location, self);
   v20 = CKFrameworkBundle();
   if (a5)
   {
@@ -53,7 +53,7 @@
   v30 = [CKAlertAction actionWithTitle:v28 style:1 handler:v32];
   [v24 addAction:v30];
 
-  [v31 presentViewController:v24 animated:1 completion:0];
+  [selfCopy presentViewController:v24 animated:1 completion:0];
   objc_destroyWeak(&v39);
 
   objc_destroyWeak(location);

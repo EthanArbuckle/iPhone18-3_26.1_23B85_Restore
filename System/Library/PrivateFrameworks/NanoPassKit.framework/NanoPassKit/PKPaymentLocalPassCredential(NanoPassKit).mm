@@ -10,7 +10,7 @@
   v15 = a4;
   v16 = a6;
   v17 = a7;
-  v21.receiver = a1;
+  v21.receiver = self;
   v21.super_class = &off_286D38940;
   v18 = objc_msgSendSuper2(&v21, sel_init);
   v19 = v18;

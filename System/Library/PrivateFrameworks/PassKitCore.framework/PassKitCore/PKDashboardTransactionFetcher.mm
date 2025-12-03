@@ -1,177 +1,177 @@
 @interface PKDashboardTransactionFetcher
-- (BOOL)_containsFrequentTransactionType:(id)a3;
-- (PKDashboardTransactionFetcher)initWithCounterpartHandles:(id)a3 transactionSourceCollection:(id)a4 paymentDataProvider:(id)a5;
-- (PKDashboardTransactionFetcher)initWithInstallmentPlan:(id)a3 transactionSourceCollection:(id)a4 paymentDataProvider:(id)a5;
-- (PKDashboardTransactionFetcher)initWithMerchant:(id)a3 transactionSourceCollection:(id)a4 paymentDataProvider:(id)a5;
-- (PKDashboardTransactionFetcher)initWithMerchantCategory:(int64_t)a3 transactionSourceCollection:(id)a4 paymentDataProvider:(id)a5;
-- (PKDashboardTransactionFetcher)initWithRegions:(id)a3 transactionSourceCollection:(id)a4 paymentDataProvider:(id)a5;
-- (PKDashboardTransactionFetcher)initWithTransactionSourceCollection:(id)a3 paymentDataProvider:(id)a4;
-- (PKDashboardTransactionFetcher)initWithTransactionType:(int64_t)a3 transactionSourceCollection:(id)a4 paymentDataProvider:(id)a5;
+- (BOOL)_containsFrequentTransactionType:(id)type;
+- (PKDashboardTransactionFetcher)initWithCounterpartHandles:(id)handles transactionSourceCollection:(id)collection paymentDataProvider:(id)provider;
+- (PKDashboardTransactionFetcher)initWithInstallmentPlan:(id)plan transactionSourceCollection:(id)collection paymentDataProvider:(id)provider;
+- (PKDashboardTransactionFetcher)initWithMerchant:(id)merchant transactionSourceCollection:(id)collection paymentDataProvider:(id)provider;
+- (PKDashboardTransactionFetcher)initWithMerchantCategory:(int64_t)category transactionSourceCollection:(id)collection paymentDataProvider:(id)provider;
+- (PKDashboardTransactionFetcher)initWithRegions:(id)regions transactionSourceCollection:(id)collection paymentDataProvider:(id)provider;
+- (PKDashboardTransactionFetcher)initWithTransactionSourceCollection:(id)collection paymentDataProvider:(id)provider;
+- (PKDashboardTransactionFetcher)initWithTransactionType:(int64_t)type transactionSourceCollection:(id)collection paymentDataProvider:(id)provider;
 - (PKDashboardTransactionFetcherDelegate)delegate;
-- (id)_feeTotalForTransaction:(id)a3;
-- (id)_sortedTransactions:(id)a3 ascending:(BOOL)a4 limit:(unint64_t)a5;
+- (id)_feeTotalForTransaction:(id)transaction;
+- (id)_sortedTransactions:(id)transactions ascending:(BOOL)ascending limit:(unint64_t)limit;
 - (id)_transactionRequestForCurrentFilters;
 - (id)_transactionSourceIdentifiers;
-- (id)cashbackGroupForDateComponents:(id)a3 cashbackTransactionSourceCollection:(id *)a4;
-- (id)cashbackGroupForTransactionWithIdentifier:(id)a3 cashbackTransactionSourceCollection:(id *)a4;
-- (void)_addCashbackTransactions:(id)a3 synchronous:(BOOL)a4 currentMonthOnly:(BOOL)a5 completion:(id)a6;
-- (void)_addInstantWidthdrawalTransactionsWithCompletion:(id)a3;
+- (id)cashbackGroupForDateComponents:(id)components cashbackTransactionSourceCollection:(id *)collection;
+- (id)cashbackGroupForTransactionWithIdentifier:(id)identifier cashbackTransactionSourceCollection:(id *)collection;
+- (void)_addCashbackTransactions:(id)transactions synchronous:(BOOL)synchronous currentMonthOnly:(BOOL)only completion:(id)completion;
+- (void)_addInstantWidthdrawalTransactionsWithCompletion:(id)completion;
 - (void)_commonSetup;
-- (void)_processPaymentPassTransactionsWithTransactions:(id)a3 synchronous:(BOOL)a4 currentMonthOnly:(BOOL)a5 sendTransactionsBlock:(id)a6;
+- (void)_processPaymentPassTransactionsWithTransactions:(id)transactions synchronous:(BOOL)synchronous currentMonthOnly:(BOOL)only sendTransactionsBlock:(id)block;
 - (void)_sendUpdatedTransactions;
 - (void)dealloc;
-- (void)didRemoveTransactionsWithSourceIdentifierMapping:(id)a3;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didEnableTransactionService:(BOOL)a4;
-- (void)peerPaymentCounterpartHandlesForTransactionSourceIdentifier:(id)a3 startDate:(id)a4 endDate:(id)a5 completion:(id)a6;
-- (void)reloadTransactionsWithAllowSynchronous:(BOOL)a3 completion:(id)a4;
-- (void)setCashbackPass:(id)a3;
-- (void)setLimit:(unint64_t)a3 startDate:(id)a4 endDate:(id)a5;
-- (void)transactionCountByPeriod:(unint64_t)a3 withCompletion:(id)a4;
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4;
-- (void)transactionSourceIdentifier:(id)a3 didRemoveTransactionWithIdentifier:(id)a4;
+- (void)didRemoveTransactionsWithSourceIdentifierMapping:(id)mapping;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didEnableTransactionService:(BOOL)service;
+- (void)peerPaymentCounterpartHandlesForTransactionSourceIdentifier:(id)identifier startDate:(id)date endDate:(id)endDate completion:(id)completion;
+- (void)reloadTransactionsWithAllowSynchronous:(BOOL)synchronous completion:(id)completion;
+- (void)setCashbackPass:(id)pass;
+- (void)setLimit:(unint64_t)limit startDate:(id)date endDate:(id)endDate;
+- (void)transactionCountByPeriod:(unint64_t)period withCompletion:(id)completion;
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction;
+- (void)transactionSourceIdentifier:(id)identifier didRemoveTransactionWithIdentifier:(id)withIdentifier;
 @end
 
 @implementation PKDashboardTransactionFetcher
 
-- (PKDashboardTransactionFetcher)initWithTransactionSourceCollection:(id)a3 paymentDataProvider:(id)a4
+- (PKDashboardTransactionFetcher)initWithTransactionSourceCollection:(id)collection paymentDataProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = PKDashboardTransactionFetcher;
   v9 = [(PKDashboardTransactionFetcher *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_transactionSourceCollection, a3);
+    objc_storeStrong(&v9->_transactionSourceCollection, collection);
     v10->_type = 0;
-    objc_storeStrong(&v10->_paymentDataProvider, a4);
+    objc_storeStrong(&v10->_paymentDataProvider, provider);
     [(PKDashboardTransactionFetcher *)v10 _commonSetup];
   }
 
   return v10;
 }
 
-- (PKDashboardTransactionFetcher)initWithMerchant:(id)a3 transactionSourceCollection:(id)a4 paymentDataProvider:(id)a5
+- (PKDashboardTransactionFetcher)initWithMerchant:(id)merchant transactionSourceCollection:(id)collection paymentDataProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  merchantCopy = merchant;
+  collectionCopy = collection;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = PKDashboardTransactionFetcher;
   v12 = [(PKDashboardTransactionFetcher *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_merchant, a3);
-    objc_storeStrong(&v13->_transactionSourceCollection, a4);
+    objc_storeStrong(&v12->_merchant, merchant);
+    objc_storeStrong(&v13->_transactionSourceCollection, collection);
     v13->_type = 1;
-    objc_storeStrong(&v13->_paymentDataProvider, a5);
+    objc_storeStrong(&v13->_paymentDataProvider, provider);
     [(PKDashboardTransactionFetcher *)v13 _commonSetup];
   }
 
   return v13;
 }
 
-- (PKDashboardTransactionFetcher)initWithCounterpartHandles:(id)a3 transactionSourceCollection:(id)a4 paymentDataProvider:(id)a5
+- (PKDashboardTransactionFetcher)initWithCounterpartHandles:(id)handles transactionSourceCollection:(id)collection paymentDataProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handlesCopy = handles;
+  collectionCopy = collection;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = PKDashboardTransactionFetcher;
   v11 = [(PKDashboardTransactionFetcher *)&v15 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [handlesCopy copy];
     counterpartHandles = v11->_counterpartHandles;
     v11->_counterpartHandles = v12;
 
-    objc_storeStrong(&v11->_transactionSourceCollection, a4);
+    objc_storeStrong(&v11->_transactionSourceCollection, collection);
     v11->_type = 2;
-    objc_storeStrong(&v11->_paymentDataProvider, a5);
+    objc_storeStrong(&v11->_paymentDataProvider, provider);
     [(PKDashboardTransactionFetcher *)v11 _commonSetup];
   }
 
   return v11;
 }
 
-- (PKDashboardTransactionFetcher)initWithMerchantCategory:(int64_t)a3 transactionSourceCollection:(id)a4 paymentDataProvider:(id)a5
+- (PKDashboardTransactionFetcher)initWithMerchantCategory:(int64_t)category transactionSourceCollection:(id)collection paymentDataProvider:(id)provider
 {
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = PKDashboardTransactionFetcher;
   v11 = [(PKDashboardTransactionFetcher *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_merchantCategory = a3;
-    objc_storeStrong(&v11->_transactionSourceCollection, a4);
+    v11->_merchantCategory = category;
+    objc_storeStrong(&v11->_transactionSourceCollection, collection);
     v12->_type = 3;
-    objc_storeStrong(&v12->_paymentDataProvider, a5);
+    objc_storeStrong(&v12->_paymentDataProvider, provider);
     [(PKDashboardTransactionFetcher *)v12 _commonSetup];
   }
 
   return v12;
 }
 
-- (PKDashboardTransactionFetcher)initWithTransactionType:(int64_t)a3 transactionSourceCollection:(id)a4 paymentDataProvider:(id)a5
+- (PKDashboardTransactionFetcher)initWithTransactionType:(int64_t)type transactionSourceCollection:(id)collection paymentDataProvider:(id)provider
 {
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = PKDashboardTransactionFetcher;
   v11 = [(PKDashboardTransactionFetcher *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_transactionType = a3;
-    objc_storeStrong(&v11->_transactionSourceCollection, a4);
+    v11->_transactionType = type;
+    objc_storeStrong(&v11->_transactionSourceCollection, collection);
     v12->_type = 4;
-    objc_storeStrong(&v12->_paymentDataProvider, a5);
+    objc_storeStrong(&v12->_paymentDataProvider, provider);
     [(PKDashboardTransactionFetcher *)v12 _commonSetup];
   }
 
   return v12;
 }
 
-- (PKDashboardTransactionFetcher)initWithInstallmentPlan:(id)a3 transactionSourceCollection:(id)a4 paymentDataProvider:(id)a5
+- (PKDashboardTransactionFetcher)initWithInstallmentPlan:(id)plan transactionSourceCollection:(id)collection paymentDataProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  planCopy = plan;
+  collectionCopy = collection;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = PKDashboardTransactionFetcher;
   v12 = [(PKDashboardTransactionFetcher *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_installmentPlan, a3);
-    objc_storeStrong(&v13->_transactionSourceCollection, a4);
+    objc_storeStrong(&v12->_installmentPlan, plan);
+    objc_storeStrong(&v13->_transactionSourceCollection, collection);
     v13->_type = 5;
-    objc_storeStrong(&v13->_paymentDataProvider, a5);
+    objc_storeStrong(&v13->_paymentDataProvider, provider);
     [(PKDashboardTransactionFetcher *)v13 _commonSetup];
   }
 
   return v13;
 }
 
-- (PKDashboardTransactionFetcher)initWithRegions:(id)a3 transactionSourceCollection:(id)a4 paymentDataProvider:(id)a5
+- (PKDashboardTransactionFetcher)initWithRegions:(id)regions transactionSourceCollection:(id)collection paymentDataProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  regionsCopy = regions;
+  collectionCopy = collection;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = PKDashboardTransactionFetcher;
   v12 = [(PKDashboardTransactionFetcher *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_regions, a3);
-    objc_storeStrong(&v13->_transactionSourceCollection, a4);
+    objc_storeStrong(&v12->_regions, regions);
+    objc_storeStrong(&v13->_transactionSourceCollection, collection);
     v13->_type = 6;
-    objc_storeStrong(&v13->_paymentDataProvider, a5);
+    objc_storeStrong(&v13->_paymentDataProvider, provider);
     [(PKDashboardTransactionFetcher *)v13 _commonSetup];
   }
 
@@ -202,48 +202,48 @@
         }
 
         v7 = *(*(&v21 + 1) + 8 * i);
-        v8 = [v7 paymentPass];
-        v9 = [v7 account];
-        v10 = [v8 devicePrimaryPaymentApplication];
-        v11 = [v10 paymentNetworkIdentifier];
+        paymentPass = [v7 paymentPass];
+        account = [v7 account];
+        devicePrimaryPaymentApplication = [paymentPass devicePrimaryPaymentApplication];
+        paymentNetworkIdentifier = [devicePrimaryPaymentApplication paymentNetworkIdentifier];
 
-        v12 = [v7 type];
-        if ((v12 - 2) >= 2)
+        type = [v7 type];
+        if ((type - 2) >= 2)
         {
-          if (v12 == 1)
+          if (type == 1)
           {
             self->_needsInstantWithdrawalFees = 1;
 LABEL_17:
-            if ((v11 - 103) >= 0x26)
+            if ((paymentNetworkIdentifier - 103) >= 0x26)
             {
               v16 = 10;
             }
 
             else
             {
-              v16 = qword_1ADB9AB10[v11 - 103];
+              v16 = qword_1ADB9AB10[paymentNetworkIdentifier - 103];
             }
 
             goto LABEL_20;
           }
 
-          if (v12)
+          if (type)
           {
             goto LABEL_21;
           }
 
-          v13 = [v8 hasAssociatedPeerPaymentAccount];
-          v14 = [v8 associatedAccountServiceAccountIdentifier];
-          v15 = v14 != 0;
+          hasAssociatedPeerPaymentAccount = [paymentPass hasAssociatedPeerPaymentAccount];
+          associatedAccountServiceAccountIdentifier = [paymentPass associatedAccountServiceAccountIdentifier];
+          v15 = associatedAccountServiceAccountIdentifier != 0;
 
-          if (v13)
+          if (hasAssociatedPeerPaymentAccount)
           {
             self->_needsCashbackUniqueID = 1;
             self->_needsInstantWithdrawalFees = 1;
             self->_cashBackType = 1;
           }
 
-          if (((v15 | v13) & 1) == 0)
+          if (((v15 | hasAssociatedPeerPaymentAccount) & 1) == 0)
           {
             goto LABEL_17;
           }
@@ -253,7 +253,7 @@ LABEL_15:
           goto LABEL_20;
         }
 
-        if ([v9 type] != 4)
+        if ([account type] != 4)
         {
           goto LABEL_15;
         }
@@ -293,17 +293,17 @@ LABEL_21:
   [(PKDashboardTransactionFetcher *)&v3 dealloc];
 }
 
-- (void)setLimit:(unint64_t)a3 startDate:(id)a4 endDate:(id)a5
+- (void)setLimit:(unint64_t)limit startDate:(id)date endDate:(id)endDate
 {
-  v8 = a4;
-  v9 = a5;
-  self->_limit = a3;
+  dateCopy = date;
+  endDateCopy = endDate;
+  self->_limit = limit;
   startDate = self->_startDate;
-  self->_startDate = v8;
-  v12 = v8;
+  self->_startDate = dateCopy;
+  v12 = dateCopy;
 
   endDate = self->_endDate;
-  self->_endDate = v9;
+  self->_endDate = endDateCopy;
 }
 
 - (id)_transactionSourceIdentifiers
@@ -311,37 +311,37 @@ LABEL_21:
   filteredTransactionSourceIdentifiers = self->_filteredTransactionSourceIdentifiers;
   if (filteredTransactionSourceIdentifiers)
   {
-    v3 = filteredTransactionSourceIdentifiers;
+    transactionSourceIdentifiers = filteredTransactionSourceIdentifiers;
   }
 
   else
   {
-    v3 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
+    transactionSourceIdentifiers = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
   }
 
-  return v3;
+  return transactionSourceIdentifiers;
 }
 
-- (void)reloadTransactionsWithAllowSynchronous:(BOOL)a3 completion:(id)a4
+- (void)reloadTransactionsWithAllowSynchronous:(BOOL)synchronous completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  if (v6)
+  synchronousCopy = synchronous;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = [(PKDashboardTransactionFetcher *)self _transactionRequestForCurrentFilters];
-    v8 = [v7 limit];
-    v9 = v8;
-    v10 = (v8 - 1) < 0xA && v4;
+    _transactionRequestForCurrentFilters = [(PKDashboardTransactionFetcher *)self _transactionRequestForCurrentFilters];
+    limit = [_transactionRequestForCurrentFilters limit];
+    v9 = limit;
+    v10 = (limit - 1) < 0xA && synchronousCopy;
     v92[0] = 0;
     v92[1] = v92;
     v92[2] = 0x2020000000;
-    v92[3] = v8;
+    v92[3] = limit;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __83__PKDashboardTransactionFetcher_reloadTransactionsWithAllowSynchronous_completion___block_invoke;
     aBlock[3] = &unk_1E79DA7B0;
     v91 = v10;
-    v90 = v6;
+    v90 = completionCopy;
     v11 = _Block_copy(aBlock);
     v86[0] = MEMORY[0x1E69E9820];
     v86[1] = 3221225472;
@@ -352,7 +352,7 @@ LABEL_21:
     v87 = v12;
     v88 = v92;
     v13 = _Block_copy(v86);
-    v14 = [(PKDashboardTransactionFetcher *)self _transactionSourceIdentifiers];
+    _transactionSourceIdentifiers = [(PKDashboardTransactionFetcher *)self _transactionSourceIdentifiers];
     type = self->_type;
     if (type <= 2)
     {
@@ -362,16 +362,16 @@ LABEL_21:
         {
           if (![(PKMerchant *)self->_merchant hasMapsMatch]|| [(PKMerchant *)self->_merchant shouldIgnoreMapsMatches])
           {
-            v35 = [(PKMerchant *)self->_merchant name];
-            if (v35)
+            name = [(PKMerchant *)self->_merchant name];
+            if (name)
             {
             }
 
             else
             {
-              v40 = [(PKMerchant *)self->_merchant rawName];
+              rawName = [(PKMerchant *)self->_merchant rawName];
 
-              if (!v40)
+              if (!rawName)
               {
                 goto LABEL_46;
               }
@@ -382,13 +382,13 @@ LABEL_21:
           paymentDataProvider = self->_paymentDataProvider;
           if (v41)
           {
-            v43 = [(PKDashboardTransactionFetcher *)self _transactionRequestForCurrentFilters];
+            _transactionRequestForCurrentFilters2 = [(PKDashboardTransactionFetcher *)self _transactionRequestForCurrentFilters];
             v75[0] = MEMORY[0x1E69E9820];
             v75[1] = 3221225472;
             v75[2] = __83__PKDashboardTransactionFetcher_reloadTransactionsWithAllowSynchronous_completion___block_invoke_10;
             v75[3] = &unk_1E79C5468;
             v76 = v12;
-            [(PKPaymentDataProvider *)paymentDataProvider transactionsForRequest:v43 completion:v75];
+            [(PKPaymentDataProvider *)paymentDataProvider transactionsForRequest:_transactionRequestForCurrentFilters2 completion:v75];
 
             v20 = v76;
             goto LABEL_45;
@@ -404,7 +404,7 @@ LABEL_21:
             v73[2] = __83__PKDashboardTransactionFetcher_reloadTransactionsWithAllowSynchronous_completion___block_invoke_11;
             v73[3] = &unk_1E79D1300;
             v74 = v13;
-            [(PKPaymentDataProvider *)v44 transactionsForTransactionSourceIdentifiers:v14 matchingMerchant:merchant withTransactionSource:0 withBackingData:1 limit:limit completion:v73];
+            [(PKPaymentDataProvider *)v44 transactionsForTransactionSourceIdentifiers:_transactionSourceIdentifiers matchingMerchant:merchant withTransactionSource:0 withBackingData:1 limit:limit completion:v73];
             v20 = v74;
             goto LABEL_45;
           }
@@ -419,7 +419,7 @@ LABEL_21:
           v71[2] = __83__PKDashboardTransactionFetcher_reloadTransactionsWithAllowSynchronous_completion___block_invoke_12;
           v71[3] = &unk_1E79D1300;
           v72 = v13;
-          [(PKPaymentDataProvider *)v21 transactionsForTransactionSourceIdentifiers:v14 withPeerPaymentCounterpartHandles:counterpartHandles withTransactionSource:0 withBackingData:1 limit:v9 completion:v71];
+          [(PKPaymentDataProvider *)v21 transactionsForTransactionSourceIdentifiers:_transactionSourceIdentifiers withPeerPaymentCounterpartHandles:counterpartHandles withTransactionSource:0 withBackingData:1 limit:v9 completion:v71];
           v20 = v72;
           goto LABEL_45;
         }
@@ -429,22 +429,22 @@ LABEL_21:
       {
         if (objc_opt_respondsToSelector())
         {
-          v25 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-          v26 = [v25 associatedAccountFeatureIdentifier];
-          v27 = v26;
-          if (v26 <= 4 && ((1 << v26) & 0x16) != 0)
+          paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+          associatedAccountFeatureIdentifier = [paymentPass associatedAccountFeatureIdentifier];
+          v27 = associatedAccountFeatureIdentifier;
+          if (associatedAccountFeatureIdentifier <= 4 && ((1 << associatedAccountFeatureIdentifier) & 0x16) != 0)
           {
             v28 = 1;
           }
 
           else
           {
-            v57 = [v25 devicePrimaryContactlessPaymentApplication];
-            v55 = [v57 paymentNetworkIdentifier];
+            devicePrimaryContactlessPaymentApplication = [paymentPass devicePrimaryContactlessPaymentApplication];
+            paymentNetworkIdentifier = [devicePrimaryContactlessPaymentApplication paymentNetworkIdentifier];
             v28 = 0;
-            if ((v55 - 129) <= 0xB)
+            if ((paymentNetworkIdentifier - 129) <= 0xB)
             {
-              v28 = ((1 << (v55 + 127)) & 0xA01) != 0;
+              v28 = ((1 << (paymentNetworkIdentifier + 127)) & 0xA01) != 0;
             }
           }
 
@@ -470,12 +470,12 @@ LABEL_21:
 
           else
           {
-            v47 = [MEMORY[0x1E695DF00] date];
-            v48 = PKStartOfMonth(v47);
-            [v7 setStartDate:v48];
+            date = [MEMORY[0x1E695DF00] date];
+            v48 = PKStartOfMonth(date);
+            [_transactionRequestForCurrentFilters setStartDate:v48];
 
-            v49 = PKStartOfNextMonth(v47);
-            [v7 setEndDate:v49];
+            v49 = PKStartOfNextMonth(date);
+            [_transactionRequestForCurrentFilters setEndDate:v49];
 
             v50 = 1;
             v51 = 1;
@@ -484,7 +484,7 @@ LABEL_21:
           v52 = self->_paymentDataProvider;
           if (v10)
           {
-            v53 = [(PKPaymentDataProvider *)self->_paymentDataProvider transactionsForRequest:v7];
+            v53 = [(PKPaymentDataProvider *)self->_paymentDataProvider transactionsForRequest:_transactionRequestForCurrentFilters];
             v54 = [MEMORY[0x1E695DFD8] setWithArray:v53];
             [(PKDashboardTransactionFetcher *)self _processPaymentPassTransactionsWithTransactions:v54 synchronous:1 currentMonthOnly:v51 sendTransactionsBlock:v13];
           }
@@ -499,7 +499,7 @@ LABEL_21:
             v85 = v50;
             v80[4] = self;
             v83 = v92;
-            v81 = v7;
+            v81 = _transactionRequestForCurrentFilters;
             v82 = v13;
             [(PKPaymentDataProvider *)v52 transactionsForRequest:v81 completion:v80];
           }
@@ -519,7 +519,7 @@ LABEL_21:
           v77[4] = self;
           v79 = v10;
           v78 = v13;
-          [(PKPaymentDataProvider *)v36 transactionsForTransactionSourceIdentifiers:v14 withTransactionSource:0 withBackingData:1 startDate:startDate endDate:endDate limit:v9 completion:v77];
+          [(PKPaymentDataProvider *)v36 transactionsForTransactionSourceIdentifiers:_transactionSourceIdentifiers withTransactionSource:0 withBackingData:1 startDate:startDate endDate:endDate limit:v9 completion:v77];
           v20 = v78;
           goto LABEL_45;
         }
@@ -533,13 +533,13 @@ LABEL_21:
         if (objc_opt_respondsToSelector())
         {
           v33 = self->_paymentDataProvider;
-          v34 = [(PKCreditInstallmentPlan *)self->_installmentPlan identifier];
+          identifier = [(PKCreditInstallmentPlan *)self->_installmentPlan identifier];
           v63[0] = MEMORY[0x1E69E9820];
           v63[1] = 3221225472;
           v63[2] = __83__PKDashboardTransactionFetcher_reloadTransactionsWithAllowSynchronous_completion___block_invoke_16;
           v63[3] = &unk_1E79D1300;
           v64 = v13;
-          [(PKPaymentDataProvider *)v33 installmentTransactionsForInstallmentPlanIdentifier:v34 completion:v63];
+          [(PKPaymentDataProvider *)v33 installmentTransactionsForInstallmentPlanIdentifier:identifier completion:v63];
 
           v20 = v64;
           goto LABEL_45;
@@ -549,13 +549,13 @@ LABEL_21:
       else if (type == 6 && (objc_opt_respondsToSelector() & 1) != 0)
       {
         v23 = self->_paymentDataProvider;
-        v24 = [(PKDashboardTransactionFetcher *)self _transactionRequestForCurrentFilters];
+        _transactionRequestForCurrentFilters3 = [(PKDashboardTransactionFetcher *)self _transactionRequestForCurrentFilters];
         v61[0] = MEMORY[0x1E69E9820];
         v61[1] = 3221225472;
         v61[2] = __83__PKDashboardTransactionFetcher_reloadTransactionsWithAllowSynchronous_completion___block_invoke_17;
         v61[3] = &unk_1E79C5468;
         v62 = v12;
-        [(PKPaymentDataProvider *)v23 transactionsForRequest:v24 completion:v61];
+        [(PKPaymentDataProvider *)v23 transactionsForRequest:_transactionRequestForCurrentFilters3 completion:v61];
 
         v20 = v62;
         goto LABEL_45;
@@ -568,13 +568,13 @@ LABEL_21:
       v31 = self->_paymentDataProvider;
       if (v30)
       {
-        v32 = [(PKDashboardTransactionFetcher *)self _transactionRequestForCurrentFilters];
+        _transactionRequestForCurrentFilters4 = [(PKDashboardTransactionFetcher *)self _transactionRequestForCurrentFilters];
         v69[0] = MEMORY[0x1E69E9820];
         v69[1] = 3221225472;
         v69[2] = __83__PKDashboardTransactionFetcher_reloadTransactionsWithAllowSynchronous_completion___block_invoke_13;
         v69[3] = &unk_1E79C5468;
         v70 = v12;
-        [(PKPaymentDataProvider *)v31 transactionsForRequest:v32 completion:v69];
+        [(PKPaymentDataProvider *)v31 transactionsForRequest:_transactionRequestForCurrentFilters4 completion:v69];
 
         v20 = v70;
         goto LABEL_45;
@@ -591,7 +591,7 @@ LABEL_21:
         v67[2] = __83__PKDashboardTransactionFetcher_reloadTransactionsWithAllowSynchronous_completion___block_invoke_14;
         v67[3] = &unk_1E79D1300;
         v68 = v13;
-        [(PKPaymentDataProvider *)v37 transactionsForTransactionSourceIdentifiers:v14 withMerchantCategory:merchantCategory withTransactionSource:0 withBackingData:1 startDate:v39 endDate:v60 limit:v9 completion:v67];
+        [(PKPaymentDataProvider *)v37 transactionsForTransactionSourceIdentifiers:_transactionSourceIdentifiers withMerchantCategory:merchantCategory withTransactionSource:0 withBackingData:1 startDate:v39 endDate:v60 limit:v9 completion:v67];
         v20 = v68;
         goto LABEL_45;
       }
@@ -609,7 +609,7 @@ LABEL_21:
       v65[2] = __83__PKDashboardTransactionFetcher_reloadTransactionsWithAllowSynchronous_completion___block_invoke_15;
       v65[3] = &unk_1E79D1300;
       v66 = v13;
-      [(PKPaymentDataProvider *)v16 transactionsForTransactionSourceIdentifiers:v14 withTransactionType:transactionType withTransactionSource:0 withBackingData:1 startDate:v58 endDate:v18 limit:v19 completion:v65];
+      [(PKPaymentDataProvider *)v16 transactionsForTransactionSourceIdentifiers:_transactionSourceIdentifiers withTransactionType:transactionType withTransactionSource:0 withBackingData:1 startDate:v58 endDate:v18 limit:v19 completion:v65];
       v20 = v66;
 LABEL_45:
 
@@ -736,8 +736,8 @@ void __83__PKDashboardTransactionFetcher_reloadTransactionsWithAllowSynchronous_
 - (id)_transactionRequestForCurrentFilters
 {
   v3 = objc_alloc_init(PKPaymentTransactionRequest);
-  v4 = [(PKDashboardTransactionFetcher *)self _transactionSourceIdentifiers];
-  [(PKPaymentTransactionRequest *)v3 setTransactionSourceIdentifiers:v4];
+  _transactionSourceIdentifiers = [(PKDashboardTransactionFetcher *)self _transactionSourceIdentifiers];
+  [(PKPaymentTransactionRequest *)v3 setTransactionSourceIdentifiers:_transactionSourceIdentifiers];
 
   [(PKPaymentTransactionRequest *)v3 setTransactionTypes:self->_types];
   [(PKPaymentTransactionRequest *)v3 setTransactionSources:self->_sources];
@@ -763,25 +763,25 @@ void __83__PKDashboardTransactionFetcher_reloadTransactionsWithAllowSynchronous_
   return v3;
 }
 
-- (void)transactionCountByPeriod:(unint64_t)a3 withCompletion:(id)a4
+- (void)transactionCountByPeriod:(unint64_t)period withCompletion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-    v8 = [v7 associatedAccountFeatureIdentifier];
+    paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+    associatedAccountFeatureIdentifier = [paymentPass associatedAccountFeatureIdentifier];
 
-    v9 = (v8 - 1) < 2;
-    if ((v8 - 1) > 1)
+    v9 = (associatedAccountFeatureIdentifier - 1) < 2;
+    if ((associatedAccountFeatureIdentifier - 1) > 1)
     {
-      v10 = objc_alloc_init(PKPaymentTransactionRequest);
-      v11 = [(PKDashboardTransactionFetcher *)self _transactionSourceIdentifiers];
-      [(PKPaymentTransactionRequest *)v10 setTransactionSourceIdentifiers:v11];
+      _transactionRequestForCurrentFilters = objc_alloc_init(PKPaymentTransactionRequest);
+      _transactionSourceIdentifiers = [(PKDashboardTransactionFetcher *)self _transactionSourceIdentifiers];
+      [(PKPaymentTransactionRequest *)_transactionRequestForCurrentFilters setTransactionSourceIdentifiers:_transactionSourceIdentifiers];
     }
 
     else
     {
-      v10 = [(PKDashboardTransactionFetcher *)self _transactionRequestForCurrentFilters];
+      _transactionRequestForCurrentFilters = [(PKDashboardTransactionFetcher *)self _transactionRequestForCurrentFilters];
     }
 
     paymentDataProvider = self->_paymentDataProvider;
@@ -790,10 +790,10 @@ void __83__PKDashboardTransactionFetcher_reloadTransactionsWithAllowSynchronous_
     v14[2] = __73__PKDashboardTransactionFetcher_transactionCountByPeriod_withCompletion___block_invoke;
     v14[3] = &unk_1E79DA800;
     v17 = v9;
-    v15 = v10;
-    v16 = v6;
-    v13 = v10;
-    [(PKPaymentDataProvider *)paymentDataProvider transactionCountByPeriodForRequest:v13 gregorianCalendarUnit:a3 includePurchaseTotal:0 completion:v14];
+    v15 = _transactionRequestForCurrentFilters;
+    v16 = completionCopy;
+    v13 = _transactionRequestForCurrentFilters;
+    [(PKPaymentDataProvider *)paymentDataProvider transactionCountByPeriodForRequest:v13 gregorianCalendarUnit:period includePurchaseTotal:0 completion:v14];
   }
 }
 
@@ -849,21 +849,21 @@ void __73__PKDashboardTransactionFetcher_transactionCountByPeriod_withCompletion
   dispatch_async(MEMORY[0x1E69E96A0], v13);
 }
 
-- (void)peerPaymentCounterpartHandlesForTransactionSourceIdentifier:(id)a3 startDate:(id)a4 endDate:(id)a5 completion:(id)a6
+- (void)peerPaymentCounterpartHandlesForTransactionSourceIdentifier:(id)identifier startDate:(id)date endDate:(id)endDate completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13 && (objc_opt_respondsToSelector() & 1) != 0)
+  identifierCopy = identifier;
+  dateCopy = date;
+  endDateCopy = endDate;
+  completionCopy = completion;
+  if (completionCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
     paymentDataProvider = self->_paymentDataProvider;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __122__PKDashboardTransactionFetcher_peerPaymentCounterpartHandlesForTransactionSourceIdentifier_startDate_endDate_completion___block_invoke;
     v15[3] = &unk_1E79C5468;
-    v16 = v13;
-    [(PKPaymentDataProvider *)paymentDataProvider peerPaymentCounterpartHandlesForTransactionSourceIdentifier:v10 startDate:v11 endDate:v12 completion:v15];
+    v16 = completionCopy;
+    [(PKPaymentDataProvider *)paymentDataProvider peerPaymentCounterpartHandlesForTransactionSourceIdentifier:identifierCopy startDate:dateCopy endDate:endDateCopy completion:v15];
   }
 }
 
@@ -881,32 +881,32 @@ void __122__PKDashboardTransactionFetcher_peerPaymentCounterpartHandlesForTransa
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (id)cashbackGroupForTransactionWithIdentifier:(id)a3 cashbackTransactionSourceCollection:(id *)a4
+- (id)cashbackGroupForTransactionWithIdentifier:(id)identifier cashbackTransactionSourceCollection:(id *)collection
 {
-  if (a4)
+  if (collection)
   {
-    *a4 = self->_cashbackTransactionSourceCollection;
+    *collection = self->_cashbackTransactionSourceCollection;
   }
 
   cashbackGroups = self->_cashbackGroups;
 
-  return [(NSDictionary *)cashbackGroups objectForKey:a3];
+  return [(NSDictionary *)cashbackGroups objectForKey:identifier];
 }
 
-- (id)cashbackGroupForDateComponents:(id)a3 cashbackTransactionSourceCollection:(id *)a4
+- (id)cashbackGroupForDateComponents:(id)components cashbackTransactionSourceCollection:(id *)collection
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DEE8] currentCalendar];
+  componentsCopy = components;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(NSDictionary *)self->_cashbackGroups allValues];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allValues = [(NSDictionary *)self->_cashbackGroups allValues];
+  v9 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
-    v16 = a4;
+    collectionCopy = collection;
     v10 = *v18;
     while (2)
     {
@@ -914,12 +914,12 @@ void __122__PKDashboardTransactionFetcher_peerPaymentCounterpartHandlesForTransa
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 startDate];
-        v14 = [v7 date:v13 matchesComponents:v6];
+        startDate = [v12 startDate];
+        v14 = [currentCalendar date:startDate matchesComponents:componentsCopy];
 
         if (v14)
         {
@@ -928,7 +928,7 @@ void __122__PKDashboardTransactionFetcher_peerPaymentCounterpartHandlesForTransa
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v9)
       {
         continue;
@@ -938,26 +938,26 @@ void __122__PKDashboardTransactionFetcher_peerPaymentCounterpartHandlesForTransa
     }
 
 LABEL_11:
-    a4 = v16;
+    collection = collectionCopy;
   }
 
-  if (a4)
+  if (collection)
   {
-    *a4 = self->_cashbackTransactionSourceCollection;
+    *collection = self->_cashbackTransactionSourceCollection;
   }
 
   return v9;
 }
 
-- (void)setCashbackPass:(id)a3
+- (void)setCashbackPass:(id)pass
 {
-  v10 = a3;
-  objc_storeStrong(&self->_cashbackPass, a3);
-  v5 = [v10 uniqueID];
+  passCopy = pass;
+  objc_storeStrong(&self->_cashbackPass, pass);
+  uniqueID = [passCopy uniqueID];
   cashbackPassUniqueID = self->_cashbackPassUniqueID;
-  self->_cashbackPassUniqueID = v5;
+  self->_cashbackPassUniqueID = uniqueID;
 
-  if (v10)
+  if (passCopy)
   {
     self->_needsCashbackUniqueID = 0;
     v7 = [[PKTransactionSource alloc] initWithPaymentPass:self->_cashbackPass];
@@ -974,93 +974,93 @@ LABEL_11:
   }
 }
 
-- (void)_addCashbackTransactions:(id)a3 synchronous:(BOOL)a4 currentMonthOnly:(BOOL)a5 completion:(id)a6
+- (void)_addCashbackTransactions:(id)transactions synchronous:(BOOL)synchronous currentMonthOnly:(BOOL)only completion:(id)completion
 {
-  v8 = a4;
+  synchronousCopy = synchronous;
   v55 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  if (v8)
+  transactionsCopy = transactions;
+  completionCopy = completion;
+  if (synchronousCopy)
   {
     if (self->_startDate)
     {
-      v8 = self->_endDate == 0;
+      synchronousCopy = self->_endDate == 0;
     }
 
     else
     {
-      v8 = 1;
+      synchronousCopy = 1;
     }
   }
 
-  v12 = [MEMORY[0x1E695DF00] date];
-  v13 = v12;
+  date = [MEMORY[0x1E695DF00] date];
+  v13 = date;
   endDate = self->_endDate;
   if (!endDate)
   {
-    endDate = v12;
+    endDate = date;
   }
 
   v15 = endDate;
   v16 = self->_startDate;
   if (!v16)
   {
-    if (a5)
+    if (only)
     {
       v16 = PKStartOfMonth(v13);
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DF00] date];
-      v16 = [v17 dateByAddingTimeInterval:-2678400.0];
+      date2 = [MEMORY[0x1E695DF00] date];
+      v16 = [date2 dateByAddingTimeInterval:-2678400.0];
     }
   }
 
-  v18 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   if (self->_limit)
   {
-    if ((objc_opt_respondsToSelector() & 1) == 0 || (paymentDataProvider = self->_paymentDataProvider, [(PKTransactionSourceCollection *)self->_cashbackTransactionSourceCollection transactionSourceIdentifiers], v20 = v15, v21 = objc_claimAutoreleasedReturnValue(), [(PKPaymentDataProvider *)paymentDataProvider earliestDailyBucketForTransactionSourceIdentifiers:v21 calendar:v18 type:self->_cashBackType limit:self->_limit], v22 = objc_claimAutoreleasedReturnValue(), v21, v15 = v20, !v22))
+    if ((objc_opt_respondsToSelector() & 1) == 0 || (paymentDataProvider = self->_paymentDataProvider, [(PKTransactionSourceCollection *)self->_cashbackTransactionSourceCollection transactionSourceIdentifiers], v20 = v15, v21 = objc_claimAutoreleasedReturnValue(), [(PKPaymentDataProvider *)paymentDataProvider earliestDailyBucketForTransactionSourceIdentifiers:v21 calendar:currentCalendar type:self->_cashBackType limit:self->_limit], transactionDate = objc_claimAutoreleasedReturnValue(), v21, v15 = v20, !transactionDate))
     {
-      if ([v10 count] >= self->_limit)
+      if ([transactionsCopy count] >= self->_limit)
       {
-        [(PKDashboardTransactionFetcher *)self _sortedTransactions:v10 ascending:0 limit:?];
+        [(PKDashboardTransactionFetcher *)self _sortedTransactions:transactionsCopy ascending:0 limit:?];
         v23 = v45 = v15;
         [v23 lastObject];
-        v24 = v11;
-        v25 = v8;
-        v26 = v18;
+        v24 = completionCopy;
+        v25 = synchronousCopy;
+        v26 = currentCalendar;
         v28 = v27 = v13;
-        v22 = [v28 transactionDate];
+        transactionDate = [v28 transactionDate];
 
         v13 = v27;
-        v18 = v26;
-        v8 = v25;
-        v11 = v24;
+        currentCalendar = v26;
+        synchronousCopy = v25;
+        completionCopy = v24;
 
         v15 = v45;
       }
 
       else
       {
-        v22 = 0;
+        transactionDate = 0;
       }
     }
 
-    v16 = v22;
+    v16 = transactionDate;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __98__PKDashboardTransactionFetcher__addCashbackTransactions_synchronous_currentMonthOnly_completion___block_invoke;
   aBlock[3] = &unk_1E79CC750;
-  v29 = v10;
+  v29 = transactionsCopy;
   v50 = v29;
-  v51 = self;
-  v30 = v11;
+  selfCopy = self;
+  v30 = completionCopy;
   v52 = v30;
   v31 = _Block_copy(aBlock);
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (synchronousCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v32 = v13;
     v33 = v15;
@@ -1073,10 +1073,10 @@ LABEL_11:
     }
 
     v35 = self->_paymentDataProvider;
-    v36 = [(PKTransactionSourceCollection *)self->_cashbackTransactionSourceCollection transactionSourceIdentifiers];
+    transactionSourceIdentifiers = [(PKTransactionSourceCollection *)self->_cashbackTransactionSourceCollection transactionSourceIdentifiers];
     v37 = v35;
     v15 = v33;
-    v38 = [(PKPaymentDataProvider *)v37 cashbackByPeriodForTransactionSourceIdentifiers:v36 withStartDate:v16 endDate:v33 calendar:v18 calendarUnit:16 type:self->_cashBackType];
+    v38 = [(PKPaymentDataProvider *)v37 cashbackByPeriodForTransactionSourceIdentifiers:transactionSourceIdentifiers withStartDate:v16 endDate:v33 calendar:currentCalendar calendarUnit:16 type:self->_cashBackType];
 
     v31[2](v31, v38);
     v13 = v32;
@@ -1088,7 +1088,7 @@ LABEL_11:
     v39 = self->_paymentDataProvider;
     [(PKTransactionSourceCollection *)self->_cashbackTransactionSourceCollection transactionSourceIdentifiers];
     v40 = v44 = v13;
-    v41 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
     cashBackType = self->_cashBackType;
     v47[0] = MEMORY[0x1E69E9820];
     v47[1] = 3221225472;
@@ -1097,7 +1097,7 @@ LABEL_11:
     v48 = v31;
     v43 = v39;
     v15 = v46;
-    [(PKPaymentDataProvider *)v43 cashbackByPeriodForTransactionSourceIdentifiers:v40 withStartDate:v16 endDate:v46 calendar:v41 calendarUnit:16 type:cashBackType completion:v47];
+    [(PKPaymentDataProvider *)v43 cashbackByPeriodForTransactionSourceIdentifiers:v40 withStartDate:v16 endDate:v46 calendar:currentCalendar2 calendarUnit:16 type:cashBackType completion:v47];
 
     v13 = v44;
   }
@@ -1422,14 +1422,14 @@ void __98__PKDashboardTransactionFetcher__addCashbackTransactions_synchronous_cu
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)_addInstantWidthdrawalTransactionsWithCompletion:(id)a3
+- (void)_addInstantWidthdrawalTransactionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     paymentDataProvider = self->_paymentDataProvider;
-    v7 = [(PKDashboardTransactionFetcher *)self _transactionSourceIdentifiers];
+    _transactionSourceIdentifiers = [(PKDashboardTransactionFetcher *)self _transactionSourceIdentifiers];
     if (self->_startDate)
     {
       startDate = self->_startDate;
@@ -1437,7 +1437,7 @@ void __98__PKDashboardTransactionFetcher__addCashbackTransactions_synchronous_cu
 
     else
     {
-      startDate = v5;
+      startDate = date;
     }
 
     v9 = PKStartOfYear(startDate);
@@ -1446,8 +1446,8 @@ void __98__PKDashboardTransactionFetcher__addCashbackTransactions_synchronous_cu
     v11[2] = __82__PKDashboardTransactionFetcher__addInstantWidthdrawalTransactionsWithCompletion___block_invoke;
     v11[3] = &unk_1E79C4810;
     v11[4] = self;
-    v12 = v4;
-    [(PKPaymentDataProvider *)paymentDataProvider transactionsForTransactionSourceIdentifiers:v7 withTransactionType:5 withTransactionSource:0 withBackingData:1 startDate:v9 endDate:v5 limit:0 completion:v11];
+    v12 = completionCopy;
+    [(PKPaymentDataProvider *)paymentDataProvider transactionsForTransactionSourceIdentifiers:_transactionSourceIdentifiers withTransactionType:5 withTransactionSource:0 withBackingData:1 startDate:v9 endDate:date limit:0 completion:v11];
   }
 
   else
@@ -1455,9 +1455,9 @@ void __98__PKDashboardTransactionFetcher__addCashbackTransactions_synchronous_cu
     instantWithdrawalFeeGroups = self->_instantWithdrawalFeeGroups;
     self->_instantWithdrawalFeeGroups = 0;
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -1668,16 +1668,16 @@ LABEL_18:
   }
 }
 
-- (void)_processPaymentPassTransactionsWithTransactions:(id)a3 synchronous:(BOOL)a4 currentMonthOnly:(BOOL)a5 sendTransactionsBlock:(id)a6
+- (void)_processPaymentPassTransactionsWithTransactions:(id)transactions synchronous:(BOOL)synchronous currentMonthOnly:(BOOL)only sendTransactionsBlock:(id)block
 {
-  v10 = a3;
-  v11 = a6;
+  transactionsCopy = transactions;
+  blockCopy = block;
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x3032000000;
   v29[3] = __Block_byref_object_copy__51;
   v29[4] = __Block_byref_object_dispose__51;
-  v12 = v10;
+  v12 = transactionsCopy;
   v30 = v12;
   v13 = objc_alloc_init(PKAsyncUnaryOperationComposer);
   v28[0] = MEMORY[0x1E69E9820];
@@ -1707,18 +1707,18 @@ LABEL_18:
   v21[3] = &unk_1E79DA8A0;
   v21[4] = self;
   v21[5] = v29;
-  v22 = a4;
-  v23 = a5;
+  synchronousCopy = synchronous;
+  onlyCopy = only;
   [(PKAsyncUnaryOperationComposer *)v13 addOperation:v21];
-  v15 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __132__PKDashboardTransactionFetcher__processPaymentPassTransactionsWithTransactions_synchronous_currentMonthOnly_sendTransactionsBlock___block_invoke_2_88;
   v18[3] = &unk_1E79DA8C8;
-  v16 = v11;
+  v16 = blockCopy;
   v19 = v16;
   v20 = v29;
-  v17 = [(PKAsyncUnaryOperationComposer *)v13 evaluateWithInput:v15 completion:v18];
+  v17 = [(PKAsyncUnaryOperationComposer *)v13 evaluateWithInput:null completion:v18];
 
   _Block_object_dispose(v29, 8);
 }
@@ -1939,21 +1939,21 @@ uint64_t __132__PKDashboardTransactionFetcher__processPaymentPassTransactionsWit
   return result;
 }
 
-- (id)_feeTotalForTransaction:(id)a3
+- (id)_feeTotalForTransaction:(id)transaction
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 currencyCode];
-  v5 = [MEMORY[0x1E696AB90] zero];
+  transactionCopy = transaction;
+  currencyCode = [transactionCopy currencyCode];
+  zero = [MEMORY[0x1E696AB90] zero];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v22 = v3;
-  v6 = [v3 fees];
-  v7 = [v6 fees];
+  v22 = transactionCopy;
+  fees = [transactionCopy fees];
+  v6Fees = [fees fees];
 
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v8 = [v6Fees countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (!v8)
   {
     goto LABEL_17;
@@ -1967,27 +1967,27 @@ uint64_t __132__PKDashboardTransactionFetcher__processPaymentPassTransactionsWit
     {
       if (*v24 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(v6Fees);
       }
 
-      v12 = [*(*(&v23 + 1) + 8 * i) currencyAmount];
-      v13 = [v12 currency];
-      v14 = v4;
-      v15 = v13;
-      v16 = v15;
+      currencyAmount = [*(*(&v23 + 1) + 8 * i) currencyAmount];
+      currency = [currencyAmount currency];
+      v14 = currencyCode;
+      v15 = currency;
+      amount = v15;
       if (v14 == v15)
       {
 
 LABEL_12:
-        v16 = [v12 amount];
-        [v5 decimalNumberByAdding:v16];
-        v5 = v14 = v5;
+        amount = [currencyAmount amount];
+        [zero decimalNumberByAdding:amount];
+        zero = v14 = zero;
 LABEL_14:
 
         goto LABEL_15;
       }
 
-      if (!v4 || !v15)
+      if (!currencyCode || !v15)
       {
 
         goto LABEL_14;
@@ -2003,16 +2003,16 @@ LABEL_14:
 LABEL_15:
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v9 = [v6Fees countByEnumeratingWithState:&v23 objects:v27 count:16];
   }
 
   while (v9);
 LABEL_17:
 
-  v18 = [MEMORY[0x1E696AB90] zero];
-  if ([v5 compare:v18])
+  zero2 = [MEMORY[0x1E696AB90] zero];
+  if ([zero compare:zero2])
   {
-    v19 = v5;
+    v19 = zero;
   }
 
   else
@@ -2025,35 +2025,35 @@ LABEL_17:
   return v19;
 }
 
-- (id)_sortedTransactions:(id)a3 ascending:(BOOL)a4 limit:(unint64_t)a5
+- (id)_sortedTransactions:(id)transactions ascending:(BOOL)ascending limit:(unint64_t)limit
 {
-  v6 = a4;
+  ascendingCopy = ascending;
   v18[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  transactionsCopy = transactions;
   if (self->_startDate)
   {
     v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"transactionDate >= %@", self->_startDate];
-    v10 = [v8 filteredSetUsingPredicate:v9];
+    v10 = [transactionsCopy filteredSetUsingPredicate:v9];
 
-    v8 = v10;
+    transactionsCopy = v10;
   }
 
   if (self->_endDate)
   {
     v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"transactionDate <= %@", self->_endDate];
-    v12 = [v8 filteredSetUsingPredicate:v11];
+    v12 = [transactionsCopy filteredSetUsingPredicate:v11];
 
-    v8 = v12;
+    transactionsCopy = v12;
   }
 
-  v13 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"transactionDate" ascending:v6];
+  v13 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"transactionDate" ascending:ascendingCopy];
   v18[0] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-  v15 = [v8 sortedArrayUsingDescriptors:v14];
+  v15 = [transactionsCopy sortedArrayUsingDescriptors:v14];
 
-  if (a5 && [v15 count] > a5)
+  if (limit && [v15 count] > limit)
   {
-    v16 = [v15 subarrayWithRange:{0, a5}];
+    v16 = [v15 subarrayWithRange:{0, limit}];
 
     v15 = v16;
   }
@@ -2125,15 +2125,15 @@ void __57__PKDashboardTransactionFetcher__sendUpdatedTransactions__block_invoke_
   }
 }
 
-- (BOOL)_containsFrequentTransactionType:(id)a3
+- (BOOL)_containsFrequentTransactionType:(id)type
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  typeCopy = type;
+  v4 = [typeCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -2143,18 +2143,18 @@ void __57__PKDashboardTransactionFetcher__sendUpdatedTransactions__block_invoke_
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(typeCopy);
         }
 
-        v7 = [*(*(&v9 + 1) + 8 * i) integerValue];
-        if (v7 < 0xA && ((0x269u >> v7) & 1) != 0)
+        integerValue = [*(*(&v9 + 1) + 8 * i) integerValue];
+        if (integerValue < 0xA && ((0x269u >> integerValue) & 1) != 0)
         {
           LOBYTE(v4) = 1;
           goto LABEL_12;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [typeCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -2169,11 +2169,11 @@ LABEL_12:
   return v4;
 }
 
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction
 {
-  v5 = a3;
-  v6 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
-  if ([v6 containsObject:v5])
+  identifierCopy = identifier;
+  transactionSourceIdentifiers = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
+  if ([transactionSourceIdentifiers containsObject:identifierCopy])
   {
 
 LABEL_4:
@@ -2186,8 +2186,8 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v7 = [(PKTransactionSourceCollection *)self->_cashbackTransactionSourceCollection transactionSourceIdentifiers];
-  v8 = [v7 containsObject:v5];
+  transactionSourceIdentifiers2 = [(PKTransactionSourceCollection *)self->_cashbackTransactionSourceCollection transactionSourceIdentifiers];
+  v8 = [transactionSourceIdentifiers2 containsObject:identifierCopy];
 
   if (v8)
   {
@@ -2197,39 +2197,39 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)transactionSourceIdentifier:(id)a3 didRemoveTransactionWithIdentifier:(id)a4
+- (void)transactionSourceIdentifier:(id)identifier didRemoveTransactionWithIdentifier:(id)withIdentifier
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (identifier)
   {
-    if (a4)
+    if (withIdentifier)
     {
-      v14 = a3;
+      identifierCopy = identifier;
       v6 = MEMORY[0x1E695DFD8];
-      v7 = a4;
-      v8 = a3;
+      withIdentifierCopy = withIdentifier;
+      identifierCopy2 = identifier;
       v9 = [v6 alloc];
-      v13 = v7;
+      v13 = withIdentifierCopy;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
       v11 = [v9 initWithArray:v10];
       v15[0] = v11;
-      v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
+      v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&identifierCopy count:1];
 
       [(PKDashboardTransactionFetcher *)self didRemoveTransactionsWithSourceIdentifierMapping:v12];
     }
   }
 }
 
-- (void)didRemoveTransactionsWithSourceIdentifierMapping:(id)a3
+- (void)didRemoveTransactionsWithSourceIdentifierMapping:(id)mapping
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  mappingCopy = mapping;
   v6 = [v4 alloc];
-  v7 = [v5 allKeys];
+  allKeys = [mappingCopy allKeys];
 
-  v8 = [v6 initWithArray:v7];
-  v9 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
-  if ([v9 intersectsSet:v8])
+  v8 = [v6 initWithArray:allKeys];
+  transactionSourceIdentifiers = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
+  if ([transactionSourceIdentifiers intersectsSet:v8])
   {
 
 LABEL_4:
@@ -2242,8 +2242,8 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v10 = [(PKTransactionSourceCollection *)self->_cashbackTransactionSourceCollection transactionSourceIdentifiers];
-  v11 = [v10 intersectsSet:v8];
+  transactionSourceIdentifiers2 = [(PKTransactionSourceCollection *)self->_cashbackTransactionSourceCollection transactionSourceIdentifiers];
+  v11 = [transactionSourceIdentifiers2 intersectsSet:v8];
 
   if (v11)
   {
@@ -2253,13 +2253,13 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didEnableTransactionService:(BOOL)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didEnableTransactionService:(BOOL)service
 {
-  v5 = a3;
-  v6 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  v7 = [v6 uniqueID];
-  v8 = v5;
-  v9 = v7;
+  identifierCopy = identifier;
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  uniqueID = [paymentPass uniqueID];
+  v8 = identifierCopy;
+  v9 = uniqueID;
   v10 = v9;
   v11 = v9;
   if (v9 == v8)

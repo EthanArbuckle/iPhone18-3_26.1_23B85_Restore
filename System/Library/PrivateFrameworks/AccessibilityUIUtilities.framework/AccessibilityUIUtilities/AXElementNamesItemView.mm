@@ -1,11 +1,11 @@
 @interface AXElementNamesItemView
-- (AXElementNamesItemView)initWithName:(id)a3 elementFrame:(CGRect)a4 availableBounds:(CGRect)a5 styleProvider:(id)a6 isSpacer:(BOOL)a7;
+- (AXElementNamesItemView)initWithName:(id)name elementFrame:(CGRect)frame availableBounds:(CGRect)bounds styleProvider:(id)provider isSpacer:(BOOL)spacer;
 - (BOOL)_usesExtendedArrow;
-- (BOOL)collidesWithView:(id)a3;
+- (BOOL)collidesWithView:(id)view;
 - (CGPoint)arrowTipLocation;
 - (CGRect)_collisionFrameForArrow;
 - (CGRect)_elementFrameAdjustedForBounds;
-- (CGRect)_validateLabelContainerFrame:(CGRect)a3;
+- (CGRect)_validateLabelContainerFrame:(CGRect)frame;
 - (CGRect)availableBounds;
 - (CGRect)elementFrame;
 - (CGRect)labelContainerFrame;
@@ -18,44 +18,44 @@
 - (void)_updateFromMainProperties;
 - (void)_updateLabelContainerSize;
 - (void)layoutSubviews;
-- (void)setForcedLabelContainerSize:(CGSize)a3;
-- (void)setLabelContainerFrame:(CGRect)a3;
-- (void)setLabelPosition:(int64_t)a3;
+- (void)setForcedLabelContainerSize:(CGSize)size;
+- (void)setLabelContainerFrame:(CGRect)frame;
+- (void)setLabelPosition:(int64_t)position;
 @end
 
 @implementation AXElementNamesItemView
 
-- (AXElementNamesItemView)initWithName:(id)a3 elementFrame:(CGRect)a4 availableBounds:(CGRect)a5 styleProvider:(id)a6 isSpacer:(BOOL)a7
+- (AXElementNamesItemView)initWithName:(id)name elementFrame:(CGRect)frame availableBounds:(CGRect)bounds styleProvider:(id)provider isSpacer:(BOOL)spacer
 {
-  v7 = a7;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a4.size.height;
-  v14 = a4.size.width;
-  v15 = a4.origin.y;
-  v16 = a4.origin.x;
-  v18 = a3;
-  v19 = a6;
+  spacerCopy = spacer;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v13 = frame.size.height;
+  v14 = frame.size.width;
+  v15 = frame.origin.y;
+  v16 = frame.origin.x;
+  nameCopy = name;
+  providerCopy = provider;
   v34.receiver = self;
   v34.super_class = AXElementNamesItemView;
   v20 = [(AXElementNamesItemView *)&v34 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v20)
   {
-    v21 = [v19 itemBackgroundViewCreationHandler];
+    itemBackgroundViewCreationHandler = [providerCopy itemBackgroundViewCreationHandler];
 
-    if (v21)
+    if (itemBackgroundViewCreationHandler)
     {
-      v22 = [v19 itemBackgroundViewCreationHandler];
-      v23 = v22[2]();
+      itemBackgroundViewCreationHandler2 = [providerCopy itemBackgroundViewCreationHandler];
+      v23 = itemBackgroundViewCreationHandler2[2]();
     }
 
     else
     {
       v24 = objc_alloc(MEMORY[0x1E69DD298]);
-      v22 = [MEMORY[0x1E69DC730] effectWithStyle:2];
-      v23 = [v24 initWithEffect:v22];
+      itemBackgroundViewCreationHandler2 = [MEMORY[0x1E69DC730] effectWithStyle:2];
+      v23 = [v24 initWithEffect:itemBackgroundViewCreationHandler2];
     }
 
     backgroundView = v20->_backgroundView;
@@ -74,19 +74,19 @@
     [(UILabel *)v20->_label setFont:v30];
 
     [(UILabel *)v20->_label setAdjustsFontForContentSizeCategory:1];
-    v31 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v20->_label setTextColor:v31];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v20->_label setTextColor:whiteColor];
 
     [(UILabel *)v20->_label setTextAlignment:1];
     [(AXElementNamesItemView *)v20 addSubview:v20->_label];
     v32 = 4;
-    if (!v7)
+    if (!spacerCopy)
     {
       v32 = 0;
     }
 
     v20->_labelPosition = v32;
-    [(UILabel *)v20->_label setText:v18];
+    [(UILabel *)v20->_label setText:nameCopy];
     v20->_elementFrame.origin.x = v16;
     v20->_elementFrame.origin.y = v15;
     v20->_elementFrame.size.width = v14;
@@ -95,7 +95,7 @@
     v20->_availableBounds.origin.y = y;
     v20->_availableBounds.size.width = width;
     v20->_availableBounds.size.height = height;
-    v20->_isSpacer = v7;
+    v20->_isSpacer = spacerCopy;
     [(AXElementNamesItemView *)v20 _updateLabelContainerSize];
     [(AXElementNamesItemView *)v20 _updateFromMainProperties];
   }
@@ -103,34 +103,34 @@
   return v20;
 }
 
-- (void)setLabelPosition:(int64_t)a3
+- (void)setLabelPosition:(int64_t)position
 {
-  if (self->_labelPosition != a3)
+  if (self->_labelPosition != position)
   {
-    self->_labelPosition = a3;
+    self->_labelPosition = position;
     [(AXElementNamesItemView *)self _updateFromMainProperties];
   }
 }
 
-- (void)setForcedLabelContainerSize:(CGSize)a3
+- (void)setForcedLabelContainerSize:(CGSize)size
 {
-  if (self->_forcedLabelContainerSize.width != a3.width || self->_forcedLabelContainerSize.height != a3.height)
+  if (self->_forcedLabelContainerSize.width != size.width || self->_forcedLabelContainerSize.height != size.height)
   {
-    self->_forcedLabelContainerSize = a3;
+    self->_forcedLabelContainerSize = size;
     [(AXElementNamesItemView *)self _updateLabelContainerSize];
 
     [(AXElementNamesItemView *)self _updateFromMainProperties];
   }
 }
 
-- (void)setLabelContainerFrame:(CGRect)a3
+- (void)setLabelContainerFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_labelContainerFrame = &self->_labelContainerFrame;
-  if (!CGRectEqualToRect(self->_labelContainerFrame, a3))
+  if (!CGRectEqualToRect(self->_labelContainerFrame, frame))
   {
     p_labelContainerFrame->origin.x = x;
     p_labelContainerFrame->origin.y = y;
@@ -141,15 +141,15 @@
   }
 }
 
-- (BOOL)collidesWithView:(id)a3
+- (BOOL)collidesWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(AXElementNamesItemView *)self labelContainerFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 labelContainerFrame];
+  [viewCopy labelContainerFrame];
   v51.origin.x = v13;
   v51.origin.y = v14;
   v51.size.width = v15;
@@ -158,7 +158,7 @@
   v43.origin.y = v8;
   v43.size.width = v10;
   v43.size.height = v12;
-  if (CGRectIntersectsRect(v43, v51) || (-[AXElementNamesItemView _collisionFrameForArrow](self, "_collisionFrameForArrow"), v20 = v19, v22 = v21, v24 = v23, v26 = v25, [v4 _collisionFrameForArrow], v28 = v27, v30 = v29, v32 = v31, v34 = v33, v44.origin.x = v20, v44.origin.y = v22, v44.size.width = v24, v44.size.height = v26, !CGRectIsNull(v44)) && (v45.origin.x = v28, v45.origin.y = v30, v45.size.width = v32, v45.size.height = v34, !CGRectIsNull(v45)) && (v46.origin.x = v20, v46.origin.y = v22, v46.size.width = v24, v46.size.height = v26, v52.origin.x = v28, v52.origin.y = v30, v52.size.width = v32, v52.size.height = v34, CGRectIntersectsRect(v46, v52)) || (v47.origin.x = v20, v47.origin.y = v22, v47.size.width = v24, v47.size.height = v26, !CGRectIsNull(v47)) && (objc_msgSend(v4, "labelContainerFrame"), v53.origin.x = v35, v53.origin.y = v36, v53.size.width = v37, v53.size.height = v38, v48.origin.x = v20, v48.origin.y = v22, v48.size.width = v24, v48.size.height = v26, CGRectIntersectsRect(v48, v53)))
+  if (CGRectIntersectsRect(v43, v51) || (-[AXElementNamesItemView _collisionFrameForArrow](self, "_collisionFrameForArrow"), v20 = v19, v22 = v21, v24 = v23, v26 = v25, [viewCopy _collisionFrameForArrow], v28 = v27, v30 = v29, v32 = v31, v34 = v33, v44.origin.x = v20, v44.origin.y = v22, v44.size.width = v24, v44.size.height = v26, !CGRectIsNull(v44)) && (v45.origin.x = v28, v45.origin.y = v30, v45.size.width = v32, v45.size.height = v34, !CGRectIsNull(v45)) && (v46.origin.x = v20, v46.origin.y = v22, v46.size.width = v24, v46.size.height = v26, v52.origin.x = v28, v52.origin.y = v30, v52.size.width = v32, v52.size.height = v34, CGRectIntersectsRect(v46, v52)) || (v47.origin.x = v20, v47.origin.y = v22, v47.size.width = v24, v47.size.height = v26, !CGRectIsNull(v47)) && (objc_msgSend(viewCopy, "labelContainerFrame"), v53.origin.x = v35, v53.origin.y = v36, v53.size.width = v37, v53.size.height = v38, v48.origin.x = v20, v48.origin.y = v22, v48.size.width = v24, v48.size.height = v26, CGRectIntersectsRect(v48, v53)))
   {
     v17 = 1;
   }
@@ -291,12 +291,12 @@
   [(AXElementNamesItemView *)self setLabelContainerSize:v16, v14];
 }
 
-- (CGRect)_validateLabelContainerFrame:(CGRect)a3
+- (CGRect)_validateLabelContainerFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(AXElementNamesItemView *)self isSpacer])
   {
     goto LABEL_27;
@@ -506,10 +506,10 @@ LABEL_27:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(AXElementNamesItemView *)self labelPosition];
-  if (v11 <= 5)
+  labelPosition = [(AXElementNamesItemView *)self labelPosition];
+  if (labelPosition <= 5)
   {
-    if (((1 << v11) & 3) != 0)
+    if (((1 << labelPosition) & 3) != 0)
     {
       v41.origin.x = v4;
       v41.origin.y = v6;
@@ -535,7 +535,7 @@ LABEL_27:
       v13 = v6;
       v14 = v8;
       v15 = v10;
-      if (((1 << v11) & 0xC) == 0)
+      if (((1 << labelPosition) & 0xC) == 0)
       {
         v31 = CGRectGetMidX(*&v12);
         [(AXElementNamesItemView *)self labelContainerSize];
@@ -609,10 +609,10 @@ LABEL_9:
   {
     [(AXElementNamesItemView *)self _outlineWidth];
     v12 = v11 + v11;
-    v13 = [(AXElementNamesItemView *)self _arrowPointsDown];
+    _arrowPointsDown = [(AXElementNamesItemView *)self _arrowPointsDown];
     [(AXElementNamesItemView *)self arrowTipLocation];
     v15 = v14;
-    if (v13)
+    if (_arrowPointsDown)
     {
       [(AXElementNamesItemView *)self arrowTipLocation];
       v17 = v16;
@@ -644,20 +644,20 @@ LABEL_9:
 
 - (BOOL)_usesExtendedArrow
 {
-  v3 = [(AXElementNamesItemView *)self labelPosition];
-  if (v3 != 1)
+  labelPosition = [(AXElementNamesItemView *)self labelPosition];
+  if (labelPosition != 1)
   {
-    LOBYTE(v3) = [(AXElementNamesItemView *)self labelPosition]== 3;
+    LOBYTE(labelPosition) = [(AXElementNamesItemView *)self labelPosition]== 3;
   }
 
-  return v3;
+  return labelPosition;
 }
 
 - (double)_arrowHeight
 {
-  v3 = [(AXElementNamesItemView *)self _usesExtendedArrow];
+  _usesExtendedArrow = [(AXElementNamesItemView *)self _usesExtendedArrow];
   result = 9.0;
-  if (v3)
+  if (_usesExtendedArrow)
   {
     [(AXElementNamesItemView *)self labelContainerSize];
     return v5 + 5.0 + 9.0;
@@ -692,8 +692,8 @@ LABEL_9:
   [(UILabel *)self->_label setFrame:v8, y - v9, width, height];
   [(AXElementNamesItemView *)self bounds];
   [(UIView *)self->_backgroundView setFrame:?];
-  v10 = [(AXElementNamesItemView *)self _newBackgroundImage];
-  [(UIImageView *)self->_backgroundMaskView setImage:v10];
+  _newBackgroundImage = [(AXElementNamesItemView *)self _newBackgroundImage];
+  [(UIImageView *)self->_backgroundMaskView setImage:_newBackgroundImage];
 
   [(AXElementNamesItemView *)self bounds];
   [(UIImageView *)self->_backgroundMaskView setFrame:?];
@@ -705,8 +705,8 @@ LABEL_9:
   [(AXElementNamesItemView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v7 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v9 = v8;
   v73.width = v4;
   v73.height = v6;
@@ -747,20 +747,20 @@ LABEL_9:
   {
     v34 = v67 - v65;
     v35 = v69 - v26;
-    v36 = [(AXElementNamesItemView *)self _usesExtendedArrow];
+    _usesExtendedArrow = [(AXElementNamesItemView *)self _usesExtendedArrow];
     v37 = 15.0;
-    if (v36)
+    if (_usesExtendedArrow)
     {
       v37 = 6.0;
     }
 
     v68 = v37;
-    v38 = [MEMORY[0x1E69DC728] bezierPath];
-    [v38 setLineWidth:v31];
-    v39 = [(AXElementNamesItemView *)self _arrowPointsDown];
-    v40 = v39;
+    bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+    [bezierPath setLineWidth:v31];
+    _arrowPointsDown = [(AXElementNamesItemView *)self _arrowPointsDown];
+    v40 = _arrowPointsDown;
     v41 = 9.0;
-    if (v39)
+    if (_arrowPointsDown)
     {
       v41 = -9.0;
     }
@@ -768,15 +768,15 @@ LABEL_9:
     v70 = v35 + v41;
     v42 = 4.0 / fabs((v35 + v41 - v35) / (v34 + 7.5 - v34));
     v43 = -4.0;
-    if (!v39)
+    if (!_arrowPointsDown)
     {
       v43 = 4.0;
     }
 
     v44 = v35 + v43;
     v45 = v34 - v42;
-    [v38 moveToPoint:{v34 + v42, v35 + v43, v34 + 7.5}];
-    [v38 addQuadCurveToPoint:v45 controlPoint:{v44, v34, v35}];
+    [bezierPath moveToPoint:{v34 + v42, v35 + v43, v34 + 7.5}];
+    [bezierPath addQuadCurveToPoint:v45 controlPoint:{v44, v34, v35}];
     v46 = v72;
     v47 = v71;
     v48 = v15;
@@ -819,38 +819,38 @@ LABEL_9:
       v56 = v59;
     }
 
-    if (v36)
+    if (_usesExtendedArrow)
     {
-      [v38 addLineToPoint:{v34 + -7.5, v70}];
-      [v38 addLineToPoint:{v55, v70}];
+      [bezierPath addLineToPoint:{v34 + -7.5, v70}];
+      [bezierPath addLineToPoint:{v55, v70}];
     }
 
-    [v38 addLineToPoint:{v55, v66}];
-    [v38 addLineToPoint:{v56, v66}];
-    if (v36)
+    [bezierPath addLineToPoint:{v55, v66}];
+    [bezierPath addLineToPoint:{v56, v66}];
+    if (_usesExtendedArrow)
     {
-      [v38 addLineToPoint:{v56, v70}];
-      [v38 addLineToPoint:{v64, v70}];
+      [bezierPath addLineToPoint:{v56, v70}];
+      [bezierPath addLineToPoint:{v64, v70}];
     }
 
-    [v38 closePath];
+    [bezierPath closePath];
   }
 
   else
   {
-    v38 = 0;
+    bezierPath = 0;
   }
 
-  v60 = [MEMORY[0x1E69DC888] whiteColor];
-  [v60 set];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [whiteColor set];
 
   [v33 stroke];
-  [v38 stroke];
-  v61 = [MEMORY[0x1E69DC888] blackColor];
-  [v61 set];
+  [bezierPath stroke];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [blackColor set];
 
   [v33 fill];
-  [v38 fill];
+  [bezierPath fill];
   v62 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 

@@ -1,10 +1,10 @@
 @interface SSUIServer
-- (double)desiredWindowLevelForContentViewController:(id)a3 userInteractionEnabled:(BOOL)a4;
-- (id)processMessage:(id)a3 withIdentifier:(unint64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6;
-- (void)_handleSetCursorFrameMessage:(id)a3;
-- (void)_handleShowBrailleUIMessage:(id)a3;
+- (double)desiredWindowLevelForContentViewController:(id)controller userInteractionEnabled:(BOOL)enabled;
+- (id)processMessage:(id)message withIdentifier:(unint64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error;
+- (void)_handleSetCursorFrameMessage:(id)message;
+- (void)_handleShowBrailleUIMessage:(id)message;
 - (void)_removeCursorViewController;
-- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)a3;
+- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)identifier;
 - (void)dealloc;
 @end
 
@@ -18,31 +18,31 @@
   [(SSUIServer *)&v3 dealloc];
 }
 
-- (id)processMessage:(id)a3 withIdentifier:(unint64_t)a4 fromClientWithIdentifier:(id)a5 error:(id *)a6
+- (id)processMessage:(id)message withIdentifier:(unint64_t)identifier fromClientWithIdentifier:(id)withIdentifier error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
+  messageCopy = message;
+  withIdentifierCopy = withIdentifier;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 description];
+    v11 = [messageCopy description];
     *buf = 136315138;
-    v21 = [v11 UTF8String];
+    identifierCopy = [v11 UTF8String];
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "##process message %s", buf, 0xCu);
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v21 = a4;
+    identifierCopy = identifier;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "messageIdentifier %lu", buf, 0xCu);
   }
 
-  if (a4 == 9)
+  if (identifier == 9)
   {
-    v13 = [(SSUIServer *)self cursorViewController];
-    v14 = [v13 view];
-    v15 = [v14 window];
-    v16 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v15 _contextId]);
+    cursorViewController = [(SSUIServer *)self cursorViewController];
+    view = [cursorViewController view];
+    window = [view window];
+    v16 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [window _contextId]);
 
     v18 = @"contextId";
     v19 = v16;
@@ -51,19 +51,19 @@
 
   else
   {
-    if (a4 == 2)
+    if (identifier == 2)
     {
-      [(SSUIServer *)self _handleShowBrailleUIMessage:v9];
+      [(SSUIServer *)self _handleShowBrailleUIMessage:messageCopy];
     }
 
     else
     {
-      if (a4 != 1)
+      if (identifier != 1)
       {
         sub_7450();
       }
 
-      [(SSUIServer *)self _handleSetCursorFrameMessage:v9];
+      [(SSUIServer *)self _handleSetCursorFrameMessage:messageCopy];
     }
 
     v12 = 0;
@@ -72,45 +72,45 @@
   return v12;
 }
 
-- (void)_handleSetCursorFrameMessage:(id)a3
+- (void)_handleSetCursorFrameMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(SSUIServer *)self cursorViewController];
+  messageCopy = message;
+  cursorViewController = [(SSUIServer *)self cursorViewController];
 
-  if (!v5)
+  if (!cursorViewController)
   {
     v6 = objc_alloc_init(SSUICursorViewController);
     [(SSUIServer *)self setCursorViewController:v6];
 
     v7 = +[AXUIDisplayManager sharedDisplayManager];
-    v8 = [(SSUIServer *)self cursorViewController];
-    [v7 addContentViewController:v8 withUserInteractionEnabled:0 forService:self];
+    cursorViewController2 = [(SSUIServer *)self cursorViewController];
+    [v7 addContentViewController:cursorViewController2 withUserInteractionEnabled:0 forService:self];
   }
 
-  v9 = [(SSUIServer *)self cursorViewController];
-  [v9 handleSetCursorFrameMessage:v4];
+  cursorViewController3 = [(SSUIServer *)self cursorViewController];
+  [cursorViewController3 handleSetCursorFrameMessage:messageCopy];
 }
 
-- (void)_handleShowBrailleUIMessage:(id)a3
+- (void)_handleShowBrailleUIMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(SSUIServer *)self cursorViewController];
-  [v5 handleAlternateMessage:v4];
+  messageCopy = message;
+  cursorViewController = [(SSUIServer *)self cursorViewController];
+  [cursorViewController handleAlternateMessage:messageCopy];
 }
 
 - (void)_removeCursorViewController
 {
-  v3 = [(SSUIServer *)self cursorViewController];
-  [v3 setCursorHidden:1];
+  cursorViewController = [(SSUIServer *)self cursorViewController];
+  [cursorViewController setCursorHidden:1];
 
   v4 = +[AXUIDisplayManager sharedDisplayManager];
-  v5 = [(SSUIServer *)self cursorViewController];
-  [v4 removeContentViewController:v5 withUserInteractionEnabled:0 forService:self];
+  cursorViewController2 = [(SSUIServer *)self cursorViewController];
+  [v4 removeContentViewController:cursorViewController2 withUserInteractionEnabled:0 forService:self];
 
   [(SSUIServer *)self setCursorViewController:0];
 }
 
-- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)a3
+- (void)connectionWillBeInterruptedForClientWithIdentifier:(id)identifier
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -120,9 +120,9 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (double)desiredWindowLevelForContentViewController:(id)a3 userInteractionEnabled:(BOOL)a4
+- (double)desiredWindowLevelForContentViewController:(id)controller userInteractionEnabled:(BOOL)enabled
 {
-  [(SSUIServer *)self cursorViewController:a3];
+  [(SSUIServer *)self cursorViewController:controller];
 
   return 10000013.0;
 }

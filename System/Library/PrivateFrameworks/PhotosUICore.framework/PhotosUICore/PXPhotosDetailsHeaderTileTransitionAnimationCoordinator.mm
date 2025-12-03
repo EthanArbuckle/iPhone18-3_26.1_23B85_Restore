@@ -1,64 +1,64 @@
 @interface PXPhotosDetailsHeaderTileTransitionAnimationCoordinator
-- (BOOL)getFinalGeometry:(PXTileGeometry *)a3 finalUserData:(id *)a4 forDisappearingTileWithIdentifier:(PXTileIdentifier *)a5 fromGeometry:(PXTileGeometry *)a6 fromUserData:(id)a7;
-- (BOOL)getInitialGeometry:(PXTileGeometry *)a3 initialUserData:(id *)a4 forAppearingTileWithIdentifier:(PXTileIdentifier *)a5 toGeometry:(PXTileGeometry *)a6 toUserData:(id)a7;
+- (BOOL)getFinalGeometry:(PXTileGeometry *)geometry finalUserData:(id *)data forDisappearingTileWithIdentifier:(PXTileIdentifier *)identifier fromGeometry:(PXTileGeometry *)fromGeometry fromUserData:(id)userData;
+- (BOOL)getInitialGeometry:(PXTileGeometry *)geometry initialUserData:(id *)data forAppearingTileWithIdentifier:(PXTileIdentifier *)identifier toGeometry:(PXTileGeometry *)toGeometry toUserData:(id)userData;
 - (PXPhotosDetailsHeaderTileTransitionAnimationCoordinator)init;
 @end
 
 @implementation PXPhotosDetailsHeaderTileTransitionAnimationCoordinator
 
-- (BOOL)getFinalGeometry:(PXTileGeometry *)a3 finalUserData:(id *)a4 forDisappearingTileWithIdentifier:(PXTileIdentifier *)a5 fromGeometry:(PXTileGeometry *)a6 fromUserData:(id)a7
+- (BOOL)getFinalGeometry:(PXTileGeometry *)geometry finalUserData:(id *)data forDisappearingTileWithIdentifier:(PXTileIdentifier *)identifier fromGeometry:(PXTileGeometry *)fromGeometry fromUserData:(id)userData
 {
-  a6->alpha = 0.0;
-  origin = a6->frame.origin;
-  size = a6->frame.size;
-  v9 = a6->size;
-  a3->center = a6->center;
-  a3->size = v9;
-  a3->frame.origin = origin;
-  a3->frame.size = size;
-  v10 = *&a6->hidden;
-  v11 = *&a6->contentSize.height;
-  v12 = *&a6->contentsRect.size.height;
-  *&a3->contentsRect.origin.y = *&a6->contentsRect.origin.y;
-  *&a3->contentsRect.size.height = v12;
-  *&a3->hidden = v10;
-  *&a3->contentSize.height = v11;
-  v13 = *&a6->transform.a;
-  v14 = *&a6->transform.c;
-  v15 = *&a6->alpha;
-  *&a3->transform.tx = *&a6->transform.tx;
-  *&a3->alpha = v15;
-  *&a3->transform.a = v13;
-  *&a3->transform.c = v14;
-  *a4 = a7;
+  fromGeometry->alpha = 0.0;
+  origin = fromGeometry->frame.origin;
+  size = fromGeometry->frame.size;
+  v9 = fromGeometry->size;
+  geometry->center = fromGeometry->center;
+  geometry->size = v9;
+  geometry->frame.origin = origin;
+  geometry->frame.size = size;
+  v10 = *&fromGeometry->hidden;
+  v11 = *&fromGeometry->contentSize.height;
+  v12 = *&fromGeometry->contentsRect.size.height;
+  *&geometry->contentsRect.origin.y = *&fromGeometry->contentsRect.origin.y;
+  *&geometry->contentsRect.size.height = v12;
+  *&geometry->hidden = v10;
+  *&geometry->contentSize.height = v11;
+  v13 = *&fromGeometry->transform.a;
+  v14 = *&fromGeometry->transform.c;
+  v15 = *&fromGeometry->alpha;
+  *&geometry->transform.tx = *&fromGeometry->transform.tx;
+  *&geometry->alpha = v15;
+  *&geometry->transform.a = v13;
+  *&geometry->transform.c = v14;
+  *data = userData;
   return 1;
 }
 
-- (BOOL)getInitialGeometry:(PXTileGeometry *)a3 initialUserData:(id *)a4 forAppearingTileWithIdentifier:(PXTileIdentifier *)a5 toGeometry:(PXTileGeometry *)a6 toUserData:(id)a7
+- (BOOL)getInitialGeometry:(PXTileGeometry *)geometry initialUserData:(id *)data forAppearingTileWithIdentifier:(PXTileIdentifier *)identifier toGeometry:(PXTileGeometry *)toGeometry toUserData:(id)userData
 {
-  a6->alpha = 0.0;
-  origin = a6->frame.origin;
-  size = a6->frame.size;
-  v9 = a6->size;
-  a3->center = a6->center;
-  a3->size = v9;
-  a3->frame.origin = origin;
-  a3->frame.size = size;
-  v10 = *&a6->hidden;
-  v11 = *&a6->contentSize.height;
-  v12 = *&a6->contentsRect.size.height;
-  *&a3->contentsRect.origin.y = *&a6->contentsRect.origin.y;
-  *&a3->contentsRect.size.height = v12;
-  *&a3->hidden = v10;
-  *&a3->contentSize.height = v11;
-  v13 = *&a6->transform.a;
-  v14 = *&a6->transform.c;
-  v15 = *&a6->alpha;
-  *&a3->transform.tx = *&a6->transform.tx;
-  *&a3->alpha = v15;
-  *&a3->transform.a = v13;
-  *&a3->transform.c = v14;
-  *a4 = a7;
+  toGeometry->alpha = 0.0;
+  origin = toGeometry->frame.origin;
+  size = toGeometry->frame.size;
+  v9 = toGeometry->size;
+  geometry->center = toGeometry->center;
+  geometry->size = v9;
+  geometry->frame.origin = origin;
+  geometry->frame.size = size;
+  v10 = *&toGeometry->hidden;
+  v11 = *&toGeometry->contentSize.height;
+  v12 = *&toGeometry->contentsRect.size.height;
+  *&geometry->contentsRect.origin.y = *&toGeometry->contentsRect.origin.y;
+  *&geometry->contentsRect.size.height = v12;
+  *&geometry->hidden = v10;
+  *&geometry->contentSize.height = v11;
+  v13 = *&toGeometry->transform.a;
+  v14 = *&toGeometry->transform.c;
+  v15 = *&toGeometry->alpha;
+  *&geometry->transform.tx = *&toGeometry->transform.tx;
+  *&geometry->alpha = v15;
+  *&geometry->transform.a = v13;
+  *&geometry->transform.c = v14;
+  *data = userData;
   return 1;
 }
 

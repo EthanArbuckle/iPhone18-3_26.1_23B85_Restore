@@ -15,8 +15,8 @@
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v1 = [a1 candidates];
-  v2 = [v1 countByEnumeratingWithState:&v6 objects:v10 count:16];
+  candidates = [self candidates];
+  v2 = [candidates countByEnumeratingWithState:&v6 objects:v10 count:16];
   if (v2)
   {
     v3 = *v7;
@@ -26,7 +26,7 @@
       {
         if (*v7 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(candidates);
         }
 
         if ([*(*(&v6 + 1) + 8 * i) isAutofillCandidate])
@@ -36,7 +36,7 @@
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v6 objects:v10 count:16];
+      v2 = [candidates countByEnumeratingWithState:&v6 objects:v10 count:16];
       if (v2)
       {
         continue;
@@ -58,8 +58,8 @@ LABEL_11:
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v1 = [a1 candidates];
-  v2 = [v1 countByEnumeratingWithState:&v6 objects:v10 count:16];
+  candidates = [self candidates];
+  v2 = [candidates countByEnumeratingWithState:&v6 objects:v10 count:16];
   if (v2)
   {
     v3 = *v7;
@@ -69,7 +69,7 @@ LABEL_11:
       {
         if (*v7 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(candidates);
         }
 
         if ([*(*(&v6 + 1) + 8 * i) isSlottedCandidate])
@@ -79,7 +79,7 @@ LABEL_11:
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v6 objects:v10 count:16];
+      v2 = [candidates countByEnumeratingWithState:&v6 objects:v10 count:16];
       if (v2)
       {
         continue;
@@ -101,8 +101,8 @@ LABEL_11:
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v1 = [a1 candidates];
-  v2 = [v1 countByEnumeratingWithState:&v6 objects:v10 count:16];
+  candidates = [self candidates];
+  v2 = [candidates countByEnumeratingWithState:&v6 objects:v10 count:16];
   if (v2)
   {
     v3 = *v7;
@@ -112,7 +112,7 @@ LABEL_11:
       {
         if (*v7 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(candidates);
         }
 
         if ([*(*(&v6 + 1) + 8 * i) isContinuousPathConversion])
@@ -122,7 +122,7 @@ LABEL_11:
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v6 objects:v10 count:16];
+      v2 = [candidates countByEnumeratingWithState:&v6 objects:v10 count:16];
       if (v2)
       {
         continue;
@@ -139,32 +139,32 @@ LABEL_11:
 
 - (BOOL)notEmpty
 {
-  v2 = [a1 autocorrection];
-  if (v2)
+  autocorrection = [self autocorrection];
+  if (autocorrection)
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [a1 predictions];
-    if ([v4 count])
+    predictions = [self predictions];
+    if ([predictions count])
     {
       v3 = 1;
     }
 
     else
     {
-      v5 = [a1 emojiList];
-      if ([v5 count])
+      emojiList = [self emojiList];
+      if ([emojiList count])
       {
         v3 = 1;
       }
 
       else
       {
-        v6 = [a1 proactiveTriggers];
-        v3 = [v6 count] != 0;
+        proactiveTriggers = [self proactiveTriggers];
+        v3 = [proactiveTriggers count] != 0;
       }
     }
   }
@@ -179,10 +179,10 @@ LABEL_11:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v2 = [a1 corrections];
-  v3 = [v2 alternateCorrections];
+  corrections = [self corrections];
+  alternateCorrections = [corrections alternateCorrections];
 
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  v4 = [alternateCorrections countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -193,7 +193,7 @@ LABEL_3:
     {
       if (*v17 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(alternateCorrections);
       }
 
       if ([*(*(&v16 + 1) + 8 * v7) isAlternativeInput])
@@ -203,7 +203,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v5 = [alternateCorrections countByEnumeratingWithState:&v16 objects:v21 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -218,8 +218,8 @@ LABEL_3:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [a1 predictions];
-  v8 = [v3 countByEnumeratingWithState:&v12 objects:v20 count:16];
+  alternateCorrections = [self predictions];
+  v8 = [alternateCorrections countByEnumeratingWithState:&v12 objects:v20 count:16];
   if (v8)
   {
     v9 = *v13;
@@ -229,7 +229,7 @@ LABEL_11:
     {
       if (*v13 != v9)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(alternateCorrections);
       }
 
       if ([*(*(&v12 + 1) + 8 * v10) isAlternativeInput])
@@ -239,7 +239,7 @@ LABEL_11:
 
       if (v8 == ++v10)
       {
-        v8 = [v3 countByEnumeratingWithState:&v12 objects:v20 count:16];
+        v8 = [alternateCorrections countByEnumeratingWithState:&v12 objects:v20 count:16];
         if (v8)
         {
           goto LABEL_11;

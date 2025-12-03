@@ -2,7 +2,7 @@
 - (BOOL)isLinkActive;
 - (BOOL)isMonitoringEvents;
 - (CWFSCNetworkInterface)init;
-- (CWFSCNetworkInterface)initWithInterfaceName:(id)a3;
+- (CWFSCNetworkInterface)initWithInterfaceName:(id)name;
 - (id)IPv4Addresses;
 - (id)IPv4BroadcastAddresses;
 - (id)IPv4SubnetMasks;
@@ -24,25 +24,25 @@
 
 @implementation CWFSCNetworkInterface
 
-- (CWFSCNetworkInterface)initWithInterfaceName:(id)a3
+- (CWFSCNetworkInterface)initWithInterfaceName:(id)name
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v25.receiver = self;
   v25.super_class = CWFSCNetworkInterface;
   v5 = [(CWFSCNetworkInterface *)&v25 init];
   v6 = v5;
-  if (!v4 || !v5)
+  if (!nameCopy || !v5)
   {
     goto LABEL_8;
   }
 
-  v7 = [v4 copy];
+  v7 = [nameCopy copy];
   interfaceName = v6->_interfaceName;
   v6->_interfaceName = v7;
 
-  v9 = [(CWFSCNetworkInterface *)v6 __networkInterfaceHardwareAddress];
-  v10 = [v9 copy];
+  __networkInterfaceHardwareAddress = [(CWFSCNetworkInterface *)v6 __networkInterfaceHardwareAddress];
+  v10 = [__networkInterfaceHardwareAddress copy];
   hardwareAddress = v6->_hardwareAddress;
   v6->_hardwareAddress = v10;
 
@@ -69,7 +69,7 @@
       v30 = 1024;
       v31 = 80;
       v32 = 2114;
-      v33 = v4;
+      v33 = nameCopy;
       _os_log_send_and_compose_impl();
     }
   }
@@ -360,59 +360,59 @@ LABEL_6:
 
 - (id)IPv4Addresses
 {
-  v2 = [(CWFSCNetworkInterface *)self __IPv4StateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E6982478]];
+  __IPv4StateConfig = [(CWFSCNetworkInterface *)self __IPv4StateConfig];
+  v3 = [__IPv4StateConfig objectForKeyedSubscript:*MEMORY[0x1E6982478]];
 
   return v3;
 }
 
 - (id)IPv4BroadcastAddresses
 {
-  v2 = [(CWFSCNetworkInterface *)self __IPv4StateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E6982480]];
+  __IPv4StateConfig = [(CWFSCNetworkInterface *)self __IPv4StateConfig];
+  v3 = [__IPv4StateConfig objectForKeyedSubscript:*MEMORY[0x1E6982480]];
 
   return v3;
 }
 
 - (id)IPv4SubnetMasks
 {
-  v2 = [(CWFSCNetworkInterface *)self __IPv4StateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69824C8]];
+  __IPv4StateConfig = [(CWFSCNetworkInterface *)self __IPv4StateConfig];
+  v3 = [__IPv4StateConfig objectForKeyedSubscript:*MEMORY[0x1E69824C8]];
 
   return v3;
 }
 
 - (id)IPv6Addresses
 {
-  v2 = [(CWFSCNetworkInterface *)self __IPv6StateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69824D8]];
+  __IPv6StateConfig = [(CWFSCNetworkInterface *)self __IPv6StateConfig];
+  v3 = [__IPv6StateConfig objectForKeyedSubscript:*MEMORY[0x1E69824D8]];
 
   return v3;
 }
 
 - (id)IPv6Flags
 {
-  v2 = [(CWFSCNetworkInterface *)self __IPv6StateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69824F0]];
+  __IPv6StateConfig = [(CWFSCNetworkInterface *)self __IPv6StateConfig];
+  v3 = [__IPv6StateConfig objectForKeyedSubscript:*MEMORY[0x1E69824F0]];
 
   return v3;
 }
 
 - (id)IPv6PrefixLengths
 {
-  v2 = [(CWFSCNetworkInterface *)self __IPv6StateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E6982500]];
+  __IPv6StateConfig = [(CWFSCNetworkInterface *)self __IPv6StateConfig];
+  v3 = [__IPv6StateConfig objectForKeyedSubscript:*MEMORY[0x1E6982500]];
 
   return v3;
 }
 
 - (BOOL)isLinkActive
 {
-  v2 = [(CWFSCNetworkInterface *)self __linkStateConfig];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E6982548]];
-  v4 = [v3 BOOLValue];
+  __linkStateConfig = [(CWFSCNetworkInterface *)self __linkStateConfig];
+  v3 = [__linkStateConfig objectForKeyedSubscript:*MEMORY[0x1E6982548]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)__networkInterfaceHardwareAddress

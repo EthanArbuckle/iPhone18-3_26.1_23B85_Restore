@@ -1,16 +1,16 @@
 @interface ACCTransportServer
 + (id)sharedServer;
 - (ACCTransportServer)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)receivedSecureTunnelData:(id)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5;
-- (BOOL)receivedSecureTunnelData:(id)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5 toClient:(id)a6;
-- (BOOL)sendOutgoingData:(id)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5;
-- (BOOL)sendOutgoingData:(id)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5 toClient:(id)a6;
-- (id)clientInfoForConnectionWithUUID:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)receivedSecureTunnelData:(id)data forEndpointWithUUID:(id)d connectionUUID:(id)iD;
+- (BOOL)receivedSecureTunnelData:(id)data forEndpointWithUUID:(id)d connectionUUID:(id)iD toClient:(id)client;
+- (BOOL)sendOutgoingData:(id)data forEndpointWithUUID:(id)d connectionUUID:(id)iD;
+- (BOOL)sendOutgoingData:(id)data forEndpointWithUUID:(id)d connectionUUID:(id)iD toClient:(id)client;
+- (id)clientInfoForConnectionWithUUID:(id)d;
 - (void)dealloc;
-- (void)propertiesDidChange:(id)a3 forConnectionWithUUID:(id)a4 previousProperties:(id)a5;
-- (void)propertiesDidChange:(id)a3 forEndpointWithUUID:(id)a4 previousProperties:(id)a5 connectionUUID:(id)a6;
-- (void)receivedSecureTunnelDataHandler:(void *)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5;
+- (void)propertiesDidChange:(id)change forConnectionWithUUID:(id)d previousProperties:(id)properties;
+- (void)propertiesDidChange:(id)change forEndpointWithUUID:(id)d previousProperties:(id)properties connectionUUID:(id)iD;
+- (void)receivedSecureTunnelDataHandler:(void *)handler forEndpointWithUUID:(id)d connectionUUID:(id)iD;
 - (void)startServer;
 - (void)suspendServer;
 @end
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __34__ACCTransportServer_sharedServer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedServer_once_10 != -1)
   {
     dispatch_once(&sharedServer_once_10, block);
@@ -74,10 +74,10 @@
   [(ACCTransportServer *)&v4 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 3;
@@ -112,17 +112,17 @@
   }
 
   v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCTransportXPCServerProtocol];
-  [v7 setExportedInterface:v11];
+  [connectionCopy setExportedInterface:v11];
 
-  v12 = [[ACCTransportClientInfo alloc] initWithXPCConnection:v7];
+  v12 = [[ACCTransportClientInfo alloc] initWithXPCConnection:connectionCopy];
   v13 = [[ACCTransportServerRemote alloc] initWithClientInfo:v12];
-  [v7 setExportedObject:v13];
+  [connectionCopy setExportedObject:v13];
 
   v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCTransportXPCClientProtocol];
-  [v7 setRemoteObjectInterface:v14];
+  [connectionCopy setRemoteObjectInterface:v14];
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v7);
+  objc_initWeak(&from, connectionCopy);
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = __57__ACCTransportServer_listener_shouldAcceptNewConnection___block_invoke;
@@ -130,12 +130,12 @@
   objc_copyWeak(&v24, &from);
   objc_copyWeak(&v25, &location);
   v23[4] = self;
-  [v7 setInvalidationHandler:v23];
-  v15 = [(ACCTransportServer *)self clientConnectionsLock];
-  [v15 lock];
+  [connectionCopy setInvalidationHandler:v23];
+  clientConnectionsLock = [(ACCTransportServer *)self clientConnectionsLock];
+  [clientConnectionsLock lock];
 
-  v16 = [(ACCTransportServer *)self clientConnections];
-  [v16 addObject:v12];
+  clientConnections = [(ACCTransportServer *)self clientConnections];
+  [clientConnections addObject:v12];
 
   if (gLogObjects && gNumLogObjects >= 3)
   {
@@ -155,17 +155,17 @@
 
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [(ACCTransportServer *)self clientConnections];
-    v20 = [v19 count];
+    clientConnections2 = [(ACCTransportServer *)self clientConnections];
+    v20 = [clientConnections2 count];
     *buf = 134217984;
     v29 = v20;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "There are now %lu client(s).", buf, 0xCu);
   }
 
-  v21 = [(ACCTransportServer *)self clientConnectionsLock];
-  [v21 unlock];
+  clientConnectionsLock2 = [(ACCTransportServer *)self clientConnectionsLock];
+  [clientConnectionsLock2 unlock];
 
-  [v7 resume];
+  [connectionCopy resume];
   objc_destroyWeak(&v25);
   objc_destroyWeak(&v24);
   objc_destroyWeak(&from);
@@ -362,8 +362,8 @@ id __57__ACCTransportServer_listener_shouldAcceptNewConnection___block_invoke_11
 
 - (void)startServer
 {
-  v3 = [(ACCTransportServer *)self listener];
-  [v3 resume];
+  listener = [(ACCTransportServer *)self listener];
+  [listener resume];
 
   token = self->_token;
   if ((token & 0x80000000) == 0)
@@ -407,8 +407,8 @@ id __57__ACCTransportServer_listener_shouldAcceptNewConnection___block_invoke_11
 
 - (void)suspendServer
 {
-  v3 = [(ACCTransportServer *)self listener];
-  [v3 suspend];
+  listener = [(ACCTransportServer *)self listener];
+  [listener suspend];
 
   token = self->_token;
   if ((token & 0x80000000) == 0)
@@ -450,25 +450,25 @@ id __57__ACCTransportServer_listener_shouldAcceptNewConnection___block_invoke_11
   }
 }
 
-- (BOOL)sendOutgoingData:(id)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5
+- (BOOL)sendOutgoingData:(id)data forEndpointWithUUID:(id)d connectionUUID:(id)iD
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ACCTransportServer *)self clientInfoForConnectionWithUUID:v8];
-  LOBYTE(self) = [(ACCTransportServer *)self sendOutgoingData:v10 forEndpointWithUUID:v9 connectionUUID:v8 toClient:v11];
+  iDCopy = iD;
+  dCopy = d;
+  dataCopy = data;
+  v11 = [(ACCTransportServer *)self clientInfoForConnectionWithUUID:iDCopy];
+  LOBYTE(self) = [(ACCTransportServer *)self sendOutgoingData:dataCopy forEndpointWithUUID:dCopy connectionUUID:iDCopy toClient:v11];
 
   return self;
 }
 
-- (BOOL)sendOutgoingData:(id)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5 toClient:(id)a6
+- (BOOL)sendOutgoingData:(id)data forEndpointWithUUID:(id)d connectionUUID:(id)iD toClient:(id)client
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  dCopy = d;
+  iDCopy = iD;
+  v11 = iDCopy;
+  if (dCopy)
   {
-    v12 = v10 == 0;
+    v12 = iDCopy == 0;
   }
 
   else
@@ -476,20 +476,20 @@ id __57__ACCTransportServer_listener_shouldAcceptNewConnection___block_invoke_11
     v12 = 1;
   }
 
-  v13 = v12 || a6 == 0;
+  v13 = v12 || client == 0;
   v14 = !v13;
   if (!v13)
   {
-    v15 = a3;
-    v16 = [a6 XPCConnection];
-    v17 = [v16 remoteObjectProxyWithErrorHandler:&__block_literal_global_35];
+    dataCopy = data;
+    xPCConnection = [client XPCConnection];
+    v17 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_35];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = __83__ACCTransportServer_sendOutgoingData_forEndpointWithUUID_connectionUUID_toClient___block_invoke_123;
     v19[3] = &unk_100229ED8;
-    v20 = v9;
+    v20 = dCopy;
     v21 = v11;
-    [v17 sendOutgoingData:v15 forEndpointWithUUID:v20 connectionUUID:v21 withReply:v19];
+    [v17 sendOutgoingData:dataCopy forEndpointWithUUID:v20 connectionUUID:v21 withReply:v19];
   }
 
   return v14;
@@ -564,22 +564,22 @@ void __83__ACCTransportServer_sendOutgoingData_forEndpointWithUUID_connectionUUI
   }
 }
 
-- (BOOL)receivedSecureTunnelData:(id)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5
+- (BOOL)receivedSecureTunnelData:(id)data forEndpointWithUUID:(id)d connectionUUID:(id)iD
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ACCTransportServer *)self clientInfoForConnectionWithUUID:v8];
-  LOBYTE(self) = [(ACCTransportServer *)self receivedSecureTunnelData:v10 forEndpointWithUUID:v9 connectionUUID:v8 toClient:v11];
+  iDCopy = iD;
+  dCopy = d;
+  dataCopy = data;
+  v11 = [(ACCTransportServer *)self clientInfoForConnectionWithUUID:iDCopy];
+  LOBYTE(self) = [(ACCTransportServer *)self receivedSecureTunnelData:dataCopy forEndpointWithUUID:dCopy connectionUUID:iDCopy toClient:v11];
 
   return self;
 }
 
-- (BOOL)receivedSecureTunnelData:(id)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5 toClient:(id)a6
+- (BOOL)receivedSecureTunnelData:(id)data forEndpointWithUUID:(id)d connectionUUID:(id)iD toClient:(id)client
 {
-  if (a4)
+  if (d)
   {
-    v6 = a5 == 0;
+    v6 = iD == 0;
   }
 
   else
@@ -587,15 +587,15 @@ void __83__ACCTransportServer_sendOutgoingData_forEndpointWithUUID_connectionUUI
     v6 = 1;
   }
 
-  v7 = v6 || a6 == 0;
+  v7 = v6 || client == 0;
   v8 = !v7;
   if (!v7)
   {
-    v11 = a4;
-    v12 = a3;
-    v13 = [a6 XPCConnection];
-    v14 = [v13 remoteObjectProxyWithErrorHandler:&__block_literal_global_126];
-    [v14 receivedSecureTunnelData:v12 forEndpoint:v11];
+    dCopy = d;
+    dataCopy = data;
+    xPCConnection = [client XPCConnection];
+    v14 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_126];
+    [v14 receivedSecureTunnelData:dataCopy forEndpoint:dCopy];
   }
 
   return v8;
@@ -671,18 +671,18 @@ void __143__ACCTransportServer_authStateDidChange_forConnectionWithUUID_previous
   }
 }
 
-- (void)propertiesDidChange:(id)a3 forConnectionWithUUID:(id)a4 previousProperties:(id)a5
+- (void)propertiesDidChange:(id)change forConnectionWithUUID:(id)d previousProperties:(id)properties
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ACCTransportServer *)self clientInfoForConnectionWithUUID:v8];
+  changeCopy = change;
+  dCopy = d;
+  propertiesCopy = properties;
+  v10 = [(ACCTransportServer *)self clientInfoForConnectionWithUUID:dCopy];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 XPCConnection];
-    v13 = [v12 remoteObjectProxyWithErrorHandler:&__block_literal_global_130_0];
-    [v13 propertiesDidChange:v14 forConnectionWithUUID:v8 previousProperties:v9];
+    xPCConnection = [v10 XPCConnection];
+    v13 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_130_0];
+    [v13 propertiesDidChange:changeCopy forConnectionWithUUID:dCopy previousProperties:propertiesCopy];
   }
 }
 
@@ -721,19 +721,19 @@ void __83__ACCTransportServer_propertiesDidChange_forConnectionWithUUID_previous
   }
 }
 
-- (void)propertiesDidChange:(id)a3 forEndpointWithUUID:(id)a4 previousProperties:(id)a5 connectionUUID:(id)a6
+- (void)propertiesDidChange:(id)change forEndpointWithUUID:(id)d previousProperties:(id)properties connectionUUID:(id)iD
 {
-  v17 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(ACCTransportServer *)self clientInfoForConnectionWithUUID:v12];
+  changeCopy = change;
+  dCopy = d;
+  propertiesCopy = properties;
+  iDCopy = iD;
+  v13 = [(ACCTransportServer *)self clientInfoForConnectionWithUUID:iDCopy];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 XPCConnection];
-    v16 = [v15 remoteObjectProxyWithErrorHandler:&__block_literal_global_132_0];
-    [v16 propertiesDidChange:v17 forEndpointWithUUID:v10 previousProperties:v11 connectionUUID:v12];
+    xPCConnection = [v13 XPCConnection];
+    v16 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_132_0];
+    [v16 propertiesDidChange:changeCopy forEndpointWithUUID:dCopy previousProperties:propertiesCopy connectionUUID:iDCopy];
   }
 }
 
@@ -772,17 +772,17 @@ void __96__ACCTransportServer_propertiesDidChange_forEndpointWithUUID_previousPr
   }
 }
 
-- (void)receivedSecureTunnelDataHandler:(void *)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5
+- (void)receivedSecureTunnelDataHandler:(void *)handler forEndpointWithUUID:(id)d connectionUUID:(id)iD
 {
-  v13 = a4;
-  v8 = a5;
-  v9 = [(ACCTransportServer *)self clientInfoForConnectionWithUUID:v8];
+  dCopy = d;
+  iDCopy = iD;
+  v9 = [(ACCTransportServer *)self clientInfoForConnectionWithUUID:iDCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 XPCConnection];
-    v12 = [v11 remoteObjectProxyWithErrorHandler:&__block_literal_global_134];
-    [v12 receivedSecureTunnelDataHandler:a3 forEndpointWithUUID:v13 connectionUUID:v8];
+    xPCConnection = [v9 XPCConnection];
+    v12 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_134];
+    [v12 receivedSecureTunnelDataHandler:handler forEndpointWithUUID:dCopy connectionUUID:iDCopy];
   }
 }
 
@@ -821,34 +821,34 @@ void __89__ACCTransportServer_receivedSecureTunnelDataHandler_forEndpointWithUUI
   }
 }
 
-- (id)clientInfoForConnectionWithUUID:(id)a3
+- (id)clientInfoForConnectionWithUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(ACCTransportServer *)self clientConnectionsLock];
-    [v5 lock];
+    clientConnectionsLock = [(ACCTransportServer *)self clientConnectionsLock];
+    [clientConnectionsLock lock];
 
-    v6 = [(ACCTransportServer *)self clientConnections];
+    clientConnections = [(ACCTransportServer *)self clientConnections];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = __54__ACCTransportServer_clientInfoForConnectionWithUUID___block_invoke;
     v11[3] = &unk_100226CE0;
-    v12 = v4;
-    v7 = [v6 objectsPassingTest:v11];
+    v12 = dCopy;
+    v7 = [clientConnections objectsPassingTest:v11];
 
-    v8 = [(ACCTransportServer *)self clientConnectionsLock];
-    [v8 unlock];
+    clientConnectionsLock2 = [(ACCTransportServer *)self clientConnectionsLock];
+    [clientConnectionsLock2 unlock];
 
-    v9 = [v7 anyObject];
+    anyObject = [v7 anyObject];
   }
 
   else
   {
-    v9 = 0;
+    anyObject = 0;
   }
 
-  return v9;
+  return anyObject;
 }
 
 uint64_t __54__ACCTransportServer_clientInfoForConnectionWithUUID___block_invoke(uint64_t a1, void *a2, _BYTE *a3)

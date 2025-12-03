@@ -1,54 +1,54 @@
 @interface OAXTable
-+ (id)readCellBorderStyle:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readCellPropertiesFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readCellStyle:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readDefaultTableStyleWithDrawingState:(id)a3;
-+ (id)readFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readPartStyle:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readTableStyle:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readTextStyle:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readThemableEffectsFromParent:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readThemableFillFromParent:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readThemableStrokeFromParent:(_xmlNode *)a3 drawingState:(id)a4;
-+ (int)readOnOffFlag:(id)a3;
-+ (void)cacheTableStylesInPart:(id)a3 cache:(id)a4 drawingState:(id)a5;
-+ (void)readCellFromXmlNode:(_xmlNode *)a3 toCell:(id)a4 drawingState:(id)a5;
-+ (void)readGridFromXmlNode:(_xmlNode *)a3 toGrid:(id)a4 drawingState:(id)a5;
-+ (void)readPropertiesFromXmlNode:(_xmlNode *)a3 toProperties:(id)a4 drawingState:(id)a5;
-+ (void)readRowFromXmlNode:(_xmlNode *)a3 toRow:(id)a4 drawingState:(id)a5;
-+ (void)readRowsFromTableXmlNode:(_xmlNode *)a3 toTable:(id)a4 drawingState:(id)a5;
++ (id)readCellBorderStyle:(_xmlNode *)style drawingState:(id)state;
++ (id)readCellPropertiesFromXmlNode:(_xmlNode *)node drawingState:(id)state;
++ (id)readCellStyle:(_xmlNode *)style drawingState:(id)state;
++ (id)readDefaultTableStyleWithDrawingState:(id)state;
++ (id)readFromXmlNode:(_xmlNode *)node drawingState:(id)state;
++ (id)readPartStyle:(_xmlNode *)style drawingState:(id)state;
++ (id)readTableStyle:(_xmlNode *)style drawingState:(id)state;
++ (id)readTextStyle:(_xmlNode *)style drawingState:(id)state;
++ (id)readThemableEffectsFromParent:(_xmlNode *)parent drawingState:(id)state;
++ (id)readThemableFillFromParent:(_xmlNode *)parent drawingState:(id)state;
++ (id)readThemableStrokeFromParent:(_xmlNode *)parent drawingState:(id)state;
++ (int)readOnOffFlag:(id)flag;
++ (void)cacheTableStylesInPart:(id)part cache:(id)cache drawingState:(id)state;
++ (void)readCellFromXmlNode:(_xmlNode *)node toCell:(id)cell drawingState:(id)state;
++ (void)readGridFromXmlNode:(_xmlNode *)node toGrid:(id)grid drawingState:(id)state;
++ (void)readPropertiesFromXmlNode:(_xmlNode *)node toProperties:(id)properties drawingState:(id)state;
++ (void)readRowFromXmlNode:(_xmlNode *)node toRow:(id)row drawingState:(id)state;
++ (void)readRowsFromTableXmlNode:(_xmlNode *)node toTable:(id)table drawingState:(id)state;
 @end
 
 @implementation OAXTable
 
-+ (id)readTableStyle:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readTableStyle:(_xmlNode *)style drawingState:(id)state
 {
-  v6 = a4;
-  if (a3)
+  stateCopy = state;
+  if (style)
   {
-    v7 = CXRequiredStringAttribute(a3, CXNoNamespace, "styleId");
-    v8 = [v6 OAXMainNamespace];
-    v9 = [v8 containsNode:a3];
+    v7 = CXRequiredStringAttribute(style, CXNoNamespace, "styleId");
+    oAXMainNamespace = [stateCopy OAXMainNamespace];
+    v9 = [oAXMainNamespace containsNode:style];
 
     if (v9)
     {
       v10 = objc_alloc_init(OADTableStyle);
       [(OADTableStyle *)v10 setId:v7];
-      v11 = CXRequiredStringAttribute(a3, CXNoNamespace, "styleName");
+      v11 = CXRequiredStringAttribute(style, CXNoNamespace, "styleName");
       [(OADTableStyle *)v10 setName:v11];
-      v12 = [v6 OAXMainNamespace];
-      v13 = OCXFindChild(a3, v12, "tblBg");
+      oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+      v13 = OCXFindChild(style, oAXMainNamespace2, "tblBg");
 
       if (v13)
       {
         v14 = objc_alloc_init(OADTableBackground);
-        v15 = [a1 readThemableFillFromParent:v13 drawingState:v6];
+        v15 = [self readThemableFillFromParent:v13 drawingState:stateCopy];
         if (v15)
         {
           [(OADTableBackground *)v14 setFill:v15];
         }
 
-        v16 = [a1 readThemableEffectsFromParent:v13 drawingState:v6];
+        v16 = [self readThemableEffectsFromParent:v13 drawingState:stateCopy];
         if (v16)
         {
           [(OADTableBackground *)v14 setEffects:v16];
@@ -57,9 +57,9 @@
         [(OADTableStyle *)v10 setBackground:v14];
       }
 
-      for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+      for (i = OCXFirstChild(style); i; i = OCXNextSibling(i))
       {
-        v18 = [a1 readPartStyle:i drawingState:v6];
+        v18 = [self readPartStyle:i drawingState:stateCopy];
         if (xmlStrEqual(i->name, "wholeTbl"))
         {
           [(OADTableStyle *)v10 setWholeTableStyle:v18];
@@ -141,96 +141,96 @@
   return v10;
 }
 
-+ (id)readFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readFromXmlNode:(_xmlNode *)node drawingState:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = objc_alloc_init(OADTable);
-  v8 = [v6 OAXMainNamespace];
-  v9 = OCXFindChild(a3, v8, "tblPr");
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v9 = OCXFindChild(node, oAXMainNamespace, "tblPr");
 
   if (v9)
   {
-    v10 = [(OADTable *)v7 tableProperties];
-    [a1 readPropertiesFromXmlNode:v9 toProperties:v10 drawingState:v6];
+    tableProperties = [(OADTable *)v7 tableProperties];
+    [self readPropertiesFromXmlNode:v9 toProperties:tableProperties drawingState:stateCopy];
   }
 
-  v11 = [v6 OAXMainNamespace];
-  v12 = OCXFindChild(a3, v11, "tblGrid");
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v12 = OCXFindChild(node, oAXMainNamespace2, "tblGrid");
 
   if (!v12)
   {
     [TCMessageException raise:OABadFormat];
   }
 
-  v13 = [(OADTable *)v7 grid];
-  [a1 readGridFromXmlNode:v12 toGrid:v13 drawingState:v6];
+  grid = [(OADTable *)v7 grid];
+  [self readGridFromXmlNode:v12 toGrid:grid drawingState:stateCopy];
 
-  [a1 readRowsFromTableXmlNode:a3 toTable:v7 drawingState:v6];
+  [self readRowsFromTableXmlNode:node toTable:v7 drawingState:stateCopy];
 
   return v7;
 }
 
-+ (void)cacheTableStylesInPart:(id)a3 cache:(id)a4 drawingState:(id)a5
++ (void)cacheTableStylesInPart:(id)part cache:(id)cache drawingState:(id)state
 {
-  v16 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v16)
+  partCopy = part;
+  cacheCopy = cache;
+  stateCopy = state;
+  if (partCopy)
   {
-    v9 = OCXGetRootElement([v16 xmlDocument]);
+    v9 = OCXGetRootElement([partCopy xmlDocument]);
     v10 = v9;
     if (!v9 || !xmlStrEqual(v9->name, "tblStyleLst"))
     {
       [TCMessageException raise:OABadFormat];
     }
 
-    [v7 setStylesPart:v16];
+    [cacheCopy setStylesPart:partCopy];
     v11 = CXDefaultStringAttribute(v10, CXNoNamespace, "def", 0);
-    [v7 setDefaultStyleId:v11];
-    v12 = [v8 OAXMainNamespace];
-    Child = OCXFindChild(v10, v12, "tblStyle");
+    [cacheCopy setDefaultStyleId:v11];
+    oAXMainNamespace = [stateCopy OAXMainNamespace];
+    Child = OCXFindChild(v10, oAXMainNamespace, "tblStyle");
 
     while (Child)
     {
       v14 = CXDefaultStringAttribute(Child, CXNoNamespace, "styleId", 0);
-      [v7 setStyleNode:Child forId:v14];
-      v15 = [v8 OAXMainNamespace];
-      Child = OCXFindNextChild(Child, v15, "tblStyle");
+      [cacheCopy setStyleNode:Child forId:v14];
+      oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+      Child = OCXFindNextChild(Child, oAXMainNamespace2, "tblStyle");
     }
   }
 }
 
-+ (id)readDefaultTableStyleWithDrawingState:(id)a3
++ (id)readDefaultTableStyleWithDrawingState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 tableStyleCache];
-  v6 = [a1 readTableStyle:objc_msgSend(v5 drawingState:{"defaultStyleNode"), v4}];
+  stateCopy = state;
+  tableStyleCache = [stateCopy tableStyleCache];
+  v6 = [self readTableStyle:objc_msgSend(tableStyleCache drawingState:{"defaultStyleNode"), stateCopy}];
 
   return v6;
 }
 
-+ (id)readThemableStrokeFromParent:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readThemableStrokeFromParent:(_xmlNode *)parent drawingState:(id)state
 {
-  v5 = a4;
-  v6 = [v5 OAXMainNamespace];
-  v7 = OCXFindChild(a3, v6, "ln");
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v7 = OCXFindChild(parent, oAXMainNamespace, "ln");
 
   if (v7)
   {
-    v8 = [v5 packagePart];
-    v9 = [OAXStroke readStrokeFromXmlNode:v7 packagePart:v8 drawingState:v5];
+    packagePart = [stateCopy packagePart];
+    v9 = [OAXStroke readStrokeFromXmlNode:v7 packagePart:packagePart drawingState:stateCopy];
   }
 
   else
   {
-    v10 = [v5 styleMatrix];
+    styleMatrix = [stateCopy styleMatrix];
     v17 = 0;
-    v11 = [v5 OAXMainNamespace];
+    oAXMainNamespace2 = [stateCopy OAXMainNamespace];
     v16 = 0;
-    [OAXStyleMatrix readReferenceFromParentNode:a3 name:"lnRef" inNamespace:v11 color:&v16 index:&v17];
+    [OAXStyleMatrix readReferenceFromParentNode:parent name:"lnRef" inNamespace:oAXMainNamespace2 color:&v16 index:&v17];
     v12 = v16;
 
-    v13 = [v10 strokeAtIndex:v17];
+    v13 = [styleMatrix strokeAtIndex:v17];
     v14 = v13;
     if (v13)
     {
@@ -251,18 +251,18 @@
   return v9;
 }
 
-+ (id)readThemableFillFromParent:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readThemableFillFromParent:(_xmlNode *)parent drawingState:(id)state
 {
-  v5 = a4;
-  v6 = [v5 OAXMainNamespace];
-  v7 = OCXFindChild(a3, v6, "fill");
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v7 = OCXFindChild(parent, oAXMainNamespace, "fill");
 
   if (v7)
   {
     for (i = OCXFirstChild(v7); i; i = OCXNextSibling(i))
     {
-      v9 = [v5 packagePart];
-      v10 = [OAXFill readFillFromXmlNode:i packagePart:v9 drawingState:v5];
+      packagePart = [stateCopy packagePart];
+      v10 = [OAXFill readFillFromXmlNode:i packagePart:packagePart drawingState:stateCopy];
 
       if (v10)
       {
@@ -275,14 +275,14 @@
 
   else
   {
-    v11 = [v5 styleMatrix];
+    styleMatrix = [stateCopy styleMatrix];
     v18 = 0;
-    v12 = [v5 OAXMainNamespace];
+    oAXMainNamespace2 = [stateCopy OAXMainNamespace];
     v17 = 0;
-    [OAXStyleMatrix readReferenceFromParentNode:a3 name:"fillRef" inNamespace:v12 color:&v17 index:&v18];
+    [OAXStyleMatrix readReferenceFromParentNode:parent name:"fillRef" inNamespace:oAXMainNamespace2 color:&v17 index:&v18];
     v13 = v17;
 
-    v14 = [v11 fillAtIndex:v18];
+    v14 = [styleMatrix fillAtIndex:v18];
     v15 = v14;
     if (v14)
     {
@@ -305,28 +305,28 @@ LABEL_12:
   return v10;
 }
 
-+ (id)readThemableEffectsFromParent:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readThemableEffectsFromParent:(_xmlNode *)parent drawingState:(id)state
 {
-  v5 = a4;
-  v6 = [v5 OAXMainNamespace];
-  v7 = OCXFindChild(a3, v6, "effect");
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v7 = OCXFindChild(parent, oAXMainNamespace, "effect");
 
   if (v7)
   {
-    v8 = [v5 packagePart];
-    v9 = [OAXEffect readEffectsFromXmlNode:v7 packagePart:v8 drawingState:v5];
+    packagePart = [stateCopy packagePart];
+    v9 = [OAXEffect readEffectsFromXmlNode:v7 packagePart:packagePart drawingState:stateCopy];
   }
 
   else
   {
-    v10 = [v5 styleMatrix];
+    styleMatrix = [stateCopy styleMatrix];
     v16 = 0;
-    v11 = [v5 OAXMainNamespace];
+    oAXMainNamespace2 = [stateCopy OAXMainNamespace];
     v15 = 0;
-    [OAXStyleMatrix readReferenceFromParentNode:a3 name:"effectRef" inNamespace:v11 color:&v15 index:&v16];
+    [OAXStyleMatrix readReferenceFromParentNode:parent name:"effectRef" inNamespace:oAXMainNamespace2 color:&v15 index:&v16];
     v12 = v15;
 
-    v13 = [v10 effectsAtIndex:v16];
+    v13 = [styleMatrix effectsAtIndex:v16];
     if (v13)
     {
       v9 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v13 copyItems:1];
@@ -346,13 +346,13 @@ LABEL_12:
   return v9;
 }
 
-+ (id)readCellBorderStyle:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readCellBorderStyle:(_xmlNode *)style drawingState:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = objc_alloc_init(OADTableCellBorderStyle);
-  for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+  for (i = OCXFirstChild(style); i; i = OCXNextSibling(i))
   {
-    v9 = [a1 readThemableStrokeFromParent:i drawingState:v6];
+    v9 = [self readThemableStrokeFromParent:i drawingState:stateCopy];
     if (xmlStrEqual(i->name, "left"))
     {
       [(OADTableCellBorderStyle *)v7 setLeftStroke:v9];
@@ -397,20 +397,20 @@ LABEL_12:
   return v7;
 }
 
-+ (id)readCellStyle:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readCellStyle:(_xmlNode *)style drawingState:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = objc_alloc_init(OADTableCellStyle);
-  v8 = [v6 OAXMainNamespace];
-  v9 = OCXFindChild(a3, v8, "tcBdr");
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v9 = OCXFindChild(style, oAXMainNamespace, "tcBdr");
 
   if (v9)
   {
-    v10 = [a1 readCellBorderStyle:v9 drawingState:v6];
+    v10 = [self readCellBorderStyle:v9 drawingState:stateCopy];
     [(OADTableCellStyle *)v7 setBorderStyle:v10];
   }
 
-  v11 = [a1 readThemableFillFromParent:a3 drawingState:v6];
+  v11 = [self readThemableFillFromParent:style drawingState:stateCopy];
   if (v11)
   {
     [(OADTableCellStyle *)v7 setFill:v11];
@@ -419,34 +419,34 @@ LABEL_12:
   return v7;
 }
 
-+ (int)readOnOffFlag:(id)a3
++ (int)readOnOffFlag:(id)flag
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"on"])
+  flagCopy = flag;
+  if ([flagCopy isEqualToString:@"on"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"off"])
+  else if ([flagCopy isEqualToString:@"off"])
   {
     v4 = 1;
   }
 
   else
   {
-    [v3 isEqualToString:@"def"];
+    [flagCopy isEqualToString:@"def"];
     v4 = 2;
   }
 
   return v4;
 }
 
-+ (id)readTextStyle:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readTextStyle:(_xmlNode *)style drawingState:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = objc_alloc_init(OADTableTextStyle);
-  v8 = [v6 OAXMainNamespace];
-  v9 = OCXFindChild(a3, v8, "fontRef");
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v9 = OCXFindChild(style, oAXMainNamespace, "fontRef");
 
   if (v9)
   {
@@ -455,74 +455,74 @@ LABEL_12:
     [OAXFontReference readFromNode:v9 fontReference:v10];
   }
 
-  v11 = [OAXColor readColorFromParentXmlNode:a3];
+  v11 = [OAXColor readColorFromParentXmlNode:style];
   if (v11)
   {
     [(OADTableTextStyle *)v7 setColor:v11];
   }
 
   v18 = 0;
-  v12 = CXOptionalStringAttribute(a3, CXNoNamespace, "b", &v18);
+  v12 = CXOptionalStringAttribute(style, CXNoNamespace, "b", &v18);
   v13 = v18;
   if (v12)
   {
-    -[OADTableTextStyle setBold:](v7, "setBold:", [a1 readOnOffFlag:v13]);
+    -[OADTableTextStyle setBold:](v7, "setBold:", [self readOnOffFlag:v13]);
   }
 
   v17 = 0;
-  v14 = CXOptionalStringAttribute(a3, CXNoNamespace, "i", &v17);
+  v14 = CXOptionalStringAttribute(style, CXNoNamespace, "i", &v17);
   v15 = v17;
   if (v14)
   {
-    -[OADTableTextStyle setItalic:](v7, "setItalic:", [a1 readOnOffFlag:v15]);
+    -[OADTableTextStyle setItalic:](v7, "setItalic:", [self readOnOffFlag:v15]);
   }
 
   return v7;
 }
 
-+ (id)readPartStyle:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readPartStyle:(_xmlNode *)style drawingState:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = objc_alloc_init(OADTablePartStyle);
-  v8 = [v6 OAXMainNamespace];
-  v9 = OCXFindChild(a3, v8, "tcStyle");
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v9 = OCXFindChild(style, oAXMainNamespace, "tcStyle");
 
   if (v9)
   {
-    v10 = [a1 readCellStyle:v9 drawingState:v6];
+    v10 = [self readCellStyle:v9 drawingState:stateCopy];
     [(OADTablePartStyle *)v7 setCellStyle:v10];
   }
 
-  v11 = [v6 OAXMainNamespace];
-  v12 = OCXFindChild(a3, v11, "tcTxStyle");
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v12 = OCXFindChild(style, oAXMainNamespace2, "tcTxStyle");
 
   if (v12)
   {
-    v13 = [a1 readTextStyle:v12 drawingState:v6];
+    v13 = [self readTextStyle:v12 drawingState:stateCopy];
     [(OADTablePartStyle *)v7 setTextStyle:v13];
   }
 
   return v7;
 }
 
-+ (void)readPropertiesFromXmlNode:(_xmlNode *)a3 toProperties:(id)a4 drawingState:(id)a5
++ (void)readPropertiesFromXmlNode:(_xmlNode *)node toProperties:(id)properties drawingState:(id)state
 {
-  v20 = a4;
-  v8 = a5;
-  [v20 setFirstColumn:{CXDefaultBoolAttribute(a3, CXNoNamespace, "firstCol", 0)}];
-  [v20 setFirstRow:{CXDefaultBoolAttribute(a3, CXNoNamespace, "firstRow", 0)}];
-  [v20 setLastColumn:{CXDefaultBoolAttribute(a3, CXNoNamespace, "lastCol", 0)}];
-  [v20 setLastRow:{CXDefaultBoolAttribute(a3, CXNoNamespace, "lastRow", 0)}];
-  [v20 setBandColumn:{CXDefaultBoolAttribute(a3, CXNoNamespace, "bandCol", 0)}];
-  [v20 setBandRow:{CXDefaultBoolAttribute(a3, CXNoNamespace, "bandRow", 0)}];
-  [v20 setRightToLeft:{CXDefaultBoolAttribute(a3, CXNoNamespace, "rtl", 0)}];
-  v9 = [v8 OAXMainNamespace];
-  v10 = OCXFindChild(a3, v9, "effectLst");
+  propertiesCopy = properties;
+  stateCopy = state;
+  [propertiesCopy setFirstColumn:{CXDefaultBoolAttribute(node, CXNoNamespace, "firstCol", 0)}];
+  [propertiesCopy setFirstRow:{CXDefaultBoolAttribute(node, CXNoNamespace, "firstRow", 0)}];
+  [propertiesCopy setLastColumn:{CXDefaultBoolAttribute(node, CXNoNamespace, "lastCol", 0)}];
+  [propertiesCopy setLastRow:{CXDefaultBoolAttribute(node, CXNoNamespace, "lastRow", 0)}];
+  [propertiesCopy setBandColumn:{CXDefaultBoolAttribute(node, CXNoNamespace, "bandCol", 0)}];
+  [propertiesCopy setBandRow:{CXDefaultBoolAttribute(node, CXNoNamespace, "bandRow", 0)}];
+  [propertiesCopy setRightToLeft:{CXDefaultBoolAttribute(node, CXNoNamespace, "rtl", 0)}];
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v10 = OCXFindChild(node, oAXMainNamespace, "effectLst");
 
   if (v10)
   {
-    v11 = [v8 packagePart];
-    v12 = [OAXEffect readEffectsFromXmlNode:v10 packagePart:v11 drawingState:v8];
+    packagePart = [stateCopy packagePart];
+    v12 = [OAXEffect readEffectsFromXmlNode:v10 packagePart:packagePart drawingState:stateCopy];
   }
 
   else
@@ -530,17 +530,17 @@ LABEL_12:
     v12 = 0;
   }
 
-  [v20 setEffects:v12];
-  v13 = [v8 OAXMainNamespace];
-  v14 = OCXFindChild(a3, v13, "tableStyle");
+  [propertiesCopy setEffects:v12];
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v14 = OCXFindChild(node, oAXMainNamespace2, "tableStyle");
 
   if (v14)
   {
     goto LABEL_5;
   }
 
-  v16 = [v8 OAXMainNamespace];
-  v17 = OCXFindChild(a3, v16, "tableStyleId");
+  oAXMainNamespace3 = [stateCopy OAXMainNamespace];
+  v17 = OCXFindChild(node, oAXMainNamespace3, "tableStyleId");
 
   if (v17)
   {
@@ -562,8 +562,8 @@ LABEL_12:
     if (*(v17 + 80))
     {
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:?];
-      v19 = [v8 tableStyleCache];
-      v14 = [v19 styleNodeForId:v15];
+      tableStyleCache = [stateCopy tableStyleCache];
+      v14 = [tableStyleCache styleNodeForId:v15];
 
       if (!v14)
       {
@@ -572,36 +572,36 @@ LABEL_12:
       }
 
 LABEL_5:
-      v15 = [a1 readTableStyle:v14 drawingState:v8];
-      [v20 setStyle:v15];
+      v15 = [self readTableStyle:v14 drawingState:stateCopy];
+      [propertiesCopy setStyle:v15];
 LABEL_6:
     }
   }
 }
 
-+ (void)readGridFromXmlNode:(_xmlNode *)a3 toGrid:(id)a4 drawingState:(id)a5
++ (void)readGridFromXmlNode:(_xmlNode *)node toGrid:(id)grid drawingState:(id)state
 {
-  v12 = a4;
-  v7 = a5;
-  v8 = [v7 OAXMainNamespace];
-  Child = OCXFindChild(a3, v8, "gridCol");
+  gridCopy = grid;
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  Child = OCXFindChild(node, oAXMainNamespace, "gridCol");
 
   while (Child)
   {
-    v10 = [v12 addColumn];
+    addColumn = [gridCopy addColumn];
     [OAXBaseTypes readRequiredLengthFromXmlNode:Child name:"w"];
-    [v10 setWidth:?];
-    v11 = [v7 OAXMainNamespace];
-    Child = OCXFindNextChild(Child, v11, "gridCol");
+    [addColumn setWidth:?];
+    oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+    Child = OCXFindNextChild(Child, oAXMainNamespace2, "gridCol");
   }
 }
 
-+ (id)readCellPropertiesFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readCellPropertiesFromXmlNode:(_xmlNode *)node drawingState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v6 = objc_alloc_init(OADTableCellProperties);
-  v7 = [v5 packagePart];
-  for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+  packagePart = [stateCopy packagePart];
+  for (i = OCXFirstChild(node); i; i = OCXNextSibling(i))
   {
     if (i->type != XML_ELEMENT_NODE)
     {
@@ -610,7 +610,7 @@ LABEL_6:
 
     if (xmlStrEqual(i->name, "lnL"))
     {
-      v9 = [OAXStroke readStrokeFromXmlNode:i packagePart:v7 drawingState:v5];
+      v9 = [OAXStroke readStrokeFromXmlNode:i packagePart:packagePart drawingState:stateCopy];
       [(OADTableCellProperties *)v6 setLeftStroke:v9];
 LABEL_16:
 
@@ -619,42 +619,42 @@ LABEL_16:
 
     if (xmlStrEqual(i->name, "lnR"))
     {
-      v9 = [OAXStroke readStrokeFromXmlNode:i packagePart:v7 drawingState:v5];
+      v9 = [OAXStroke readStrokeFromXmlNode:i packagePart:packagePart drawingState:stateCopy];
       [(OADTableCellProperties *)v6 setRightStroke:v9];
       goto LABEL_16;
     }
 
     if (xmlStrEqual(i->name, "lnT"))
     {
-      v9 = [OAXStroke readStrokeFromXmlNode:i packagePart:v7 drawingState:v5];
+      v9 = [OAXStroke readStrokeFromXmlNode:i packagePart:packagePart drawingState:stateCopy];
       [(OADTableCellProperties *)v6 setTopStroke:v9];
       goto LABEL_16;
     }
 
     if (xmlStrEqual(i->name, "lnB"))
     {
-      v9 = [OAXStroke readStrokeFromXmlNode:i packagePart:v7 drawingState:v5];
+      v9 = [OAXStroke readStrokeFromXmlNode:i packagePart:packagePart drawingState:stateCopy];
       [(OADTableCellProperties *)v6 setBottomStroke:v9];
       goto LABEL_16;
     }
 
     if (xmlStrEqual(i->name, "lnTlToBr"))
     {
-      v9 = [OAXStroke readStrokeFromXmlNode:i packagePart:v7 drawingState:v5];
+      v9 = [OAXStroke readStrokeFromXmlNode:i packagePart:packagePart drawingState:stateCopy];
       [(OADTableCellProperties *)v6 setTopLeftToBottomRightStroke:v9];
       goto LABEL_16;
     }
 
     if (xmlStrEqual(i->name, "lnBlToTr"))
     {
-      v9 = [OAXStroke readStrokeFromXmlNode:i packagePart:v7 drawingState:v5];
+      v9 = [OAXStroke readStrokeFromXmlNode:i packagePart:packagePart drawingState:stateCopy];
       [(OADTableCellProperties *)v6 setBottomLeftToTopRightStroke:v9];
       goto LABEL_16;
     }
 
     if (!xmlStrEqual(i->name, "cell3D") && !xmlStrEqual(i->name, "ext") && !xmlStrEqual(i->name, "headers"))
     {
-      v9 = [OAXFill readFillFromXmlNode:i packagePart:v7 drawingState:v5];
+      v9 = [OAXFill readFillFromXmlNode:i packagePart:packagePart drawingState:stateCopy];
       if (v9)
       {
         [(OADTableCellProperties *)v6 setFill:v9];
@@ -665,7 +665,7 @@ LABEL_16:
   }
 
   v28 = 0;
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "marL", &v28, 12))
+  if (CXOptionalLongAttribute(node, CXNoNamespace, "marL", &v28, 12))
   {
     v10 = v28 / 12700.0;
     *&v10 = v10;
@@ -673,7 +673,7 @@ LABEL_16:
   }
 
   v27 = 0;
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "marR", &v27, 12))
+  if (CXOptionalLongAttribute(node, CXNoNamespace, "marR", &v27, 12))
   {
     v11 = v27 / 12700.0;
     *&v11 = v11;
@@ -681,7 +681,7 @@ LABEL_16:
   }
 
   v26 = 0;
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "marT", &v26, 12))
+  if (CXOptionalLongAttribute(node, CXNoNamespace, "marT", &v26, 12))
   {
     v12 = v26 / 12700.0;
     *&v12 = v12;
@@ -689,7 +689,7 @@ LABEL_16:
   }
 
   v25 = 0;
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "marB", &v25, 12))
+  if (CXOptionalLongAttribute(node, CXNoNamespace, "marB", &v25, 12))
   {
     v13 = v25 / 12700.0;
     *&v13 = v13;
@@ -697,7 +697,7 @@ LABEL_16:
   }
 
   v24 = 0;
-  v14 = CXOptionalStringAttribute(a3, CXNoNamespace, "vert", &v24);
+  v14 = CXOptionalStringAttribute(node, CXNoNamespace, "vert", &v24);
   v15 = v24;
   if (v14)
   {
@@ -705,7 +705,7 @@ LABEL_16:
   }
 
   v23 = 0;
-  v16 = CXOptionalStringAttribute(a3, CXNoNamespace, "anchor", &v23);
+  v16 = CXOptionalStringAttribute(node, CXNoNamespace, "anchor", &v23);
   v17 = v23;
   if (v16)
   {
@@ -713,13 +713,13 @@ LABEL_16:
   }
 
   v22 = 0;
-  if (CXOptionalBoolAttribute(a3, CXNoNamespace, "anchorCtr", &v22))
+  if (CXOptionalBoolAttribute(node, CXNoNamespace, "anchorCtr", &v22))
   {
     [(OADTableCellProperties *)v6 setTextAnchorCenter:v22];
   }
 
   v21 = 0;
-  v18 = CXOptionalStringAttribute(a3, CXNoNamespace, "horzOverflow", &v21);
+  v18 = CXOptionalStringAttribute(node, CXNoNamespace, "horzOverflow", &v21);
   v19 = v21;
   if (v18)
   {
@@ -729,67 +729,67 @@ LABEL_16:
   return v6;
 }
 
-+ (void)readCellFromXmlNode:(_xmlNode *)a3 toCell:(id)a4 drawingState:(id)a5
++ (void)readCellFromXmlNode:(_xmlNode *)node toCell:(id)cell drawingState:(id)state
 {
-  v15 = a4;
-  v8 = a5;
-  [v15 setRowSpan:{CXDefaultLongAttribute(a3, CXNoNamespace, "rowSpan", 1)}];
-  [v15 setGridSpan:{CXDefaultLongAttribute(a3, CXNoNamespace, "gridSpan", 1)}];
-  [v15 setHorzMerge:{CXDefaultBoolAttribute(a3, CXNoNamespace, "hMerge", 0)}];
-  [v15 setVertMerge:{CXDefaultBoolAttribute(a3, CXNoNamespace, "vMerge", 0)}];
-  v9 = [v8 OAXMainNamespace];
-  v10 = OCXFindChild(a3, v9, "txBody");
+  cellCopy = cell;
+  stateCopy = state;
+  [cellCopy setRowSpan:{CXDefaultLongAttribute(node, CXNoNamespace, "rowSpan", 1)}];
+  [cellCopy setGridSpan:{CXDefaultLongAttribute(node, CXNoNamespace, "gridSpan", 1)}];
+  [cellCopy setHorzMerge:{CXDefaultBoolAttribute(node, CXNoNamespace, "hMerge", 0)}];
+  [cellCopy setVertMerge:{CXDefaultBoolAttribute(node, CXNoNamespace, "vMerge", 0)}];
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v10 = OCXFindChild(node, oAXMainNamespace, "txBody");
 
   if (v10)
   {
     v11 = objc_alloc_init(OADTextBody);
-    [v15 setTextBody:v11];
-    [OAXTextBody readTextBodyFromXmlNode:v10 textBody:v11 drawingState:v8];
+    [cellCopy setTextBody:v11];
+    [OAXTextBody readTextBodyFromXmlNode:v10 textBody:v11 drawingState:stateCopy];
   }
 
-  v12 = [v8 OAXMainNamespace];
-  v13 = OCXFindChild(a3, v12, "tcPr");
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v13 = OCXFindChild(node, oAXMainNamespace2, "tcPr");
 
   if (v13)
   {
-    v14 = [a1 readCellPropertiesFromXmlNode:v13 drawingState:v8];
-    [v15 setProperties:v14];
+    v14 = [self readCellPropertiesFromXmlNode:v13 drawingState:stateCopy];
+    [cellCopy setProperties:v14];
   }
 }
 
-+ (void)readRowFromXmlNode:(_xmlNode *)a3 toRow:(id)a4 drawingState:(id)a5
++ (void)readRowFromXmlNode:(_xmlNode *)node toRow:(id)row drawingState:(id)state
 {
-  v13 = a4;
-  v8 = a5;
-  [OAXBaseTypes readRequiredLengthFromXmlNode:a3 name:"h"];
-  [v13 setHeight:?];
-  v9 = [v8 OAXMainNamespace];
-  Child = OCXFindChild(a3, v9, "tc");
+  rowCopy = row;
+  stateCopy = state;
+  [OAXBaseTypes readRequiredLengthFromXmlNode:node name:"h"];
+  [rowCopy setHeight:?];
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  Child = OCXFindChild(node, oAXMainNamespace, "tc");
 
   while (Child)
   {
-    v11 = [v13 addCell];
-    [a1 readCellFromXmlNode:Child toCell:v11 drawingState:v8];
+    addCell = [rowCopy addCell];
+    [self readCellFromXmlNode:Child toCell:addCell drawingState:stateCopy];
 
-    v12 = [v8 OAXMainNamespace];
-    Child = OCXFindNextChild(Child, v12, "tc");
+    oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+    Child = OCXFindNextChild(Child, oAXMainNamespace2, "tc");
   }
 }
 
-+ (void)readRowsFromTableXmlNode:(_xmlNode *)a3 toTable:(id)a4 drawingState:(id)a5
++ (void)readRowsFromTableXmlNode:(_xmlNode *)node toTable:(id)table drawingState:(id)state
 {
-  v13 = a4;
-  v8 = a5;
-  v9 = [v8 OAXMainNamespace];
-  Child = OCXFindChild(a3, v9, "tr");
+  tableCopy = table;
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  Child = OCXFindChild(node, oAXMainNamespace, "tr");
 
   while (Child)
   {
-    v11 = [v13 addRow];
-    [a1 readRowFromXmlNode:Child toRow:v11 drawingState:v8];
+    addRow = [tableCopy addRow];
+    [self readRowFromXmlNode:Child toRow:addRow drawingState:stateCopy];
 
-    v12 = [v8 OAXMainNamespace];
-    Child = OCXFindNextChild(Child, v12, "tr");
+    oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+    Child = OCXFindNextChild(Child, oAXMainNamespace2, "tr");
   }
 }
 

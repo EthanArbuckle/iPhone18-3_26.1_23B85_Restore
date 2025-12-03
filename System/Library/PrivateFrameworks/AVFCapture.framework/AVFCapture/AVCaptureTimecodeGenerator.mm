@@ -5,27 +5,27 @@
 - ($C5587664185624E7BFF05F93290A091A)_newestTimecodeRingBufferEntry;
 - (AVCaptureTimecodeGenerator)init;
 - (AVCaptureTimecodeGeneratorDelegate)delegate;
-- (BOOL)_timecodeIsCoherent:(id *)a3;
+- (BOOL)_timecodeIsCoherent:(id *)coherent;
 - (NSArray)availableSources;
 - (double)_timeOfDay;
 - (id)callbackQueue;
-- (void)_addTimecodeToRingBuffer:(id *)a3 timestamp:(unint64_t)a4;
-- (void)_notifyDelegateOfSourceListUpdate:(id)a3;
-- (void)_notifyDelegateOfSynchronizationStatusChange:(int64_t)a3 filterRedundancy:(BOOL)a4;
-- (void)_notifyDelegateOfTimecodeUpdate:(id *)a3;
-- (void)_openMidiTimecodeDataStreamWithUUID:(id)a3 success:(BOOL *)a4;
+- (void)_addTimecodeToRingBuffer:(id *)buffer timestamp:(unint64_t)timestamp;
+- (void)_notifyDelegateOfSourceListUpdate:(id)update;
+- (void)_notifyDelegateOfSynchronizationStatusChange:(int64_t)change filterRedundancy:(BOOL)redundancy;
+- (void)_notifyDelegateOfTimecodeUpdate:(id *)update;
+- (void)_openMidiTimecodeDataStreamWithUUID:(id)d success:(BOOL *)success;
 - (void)_pollRingBufferStatus;
-- (void)_registerMidiEndpointAsSynchronizationSource:(unsigned int)a3;
-- (void)_registerSynchronizationSource:(id)a3;
-- (void)_removeMidiEndpointAsSynchronizationSource:(unsigned int)a3;
-- (void)_removeSynchronizationSource:(id)a3;
+- (void)_registerMidiEndpointAsSynchronizationSource:(unsigned int)source;
+- (void)_registerSynchronizationSource:(id)source;
+- (void)_removeMidiEndpointAsSynchronizationSource:(unsigned int)source;
+- (void)_removeSynchronizationSource:(id)source;
 - (void)_resetTimecodeRingBuffer;
 - (void)_scheduleTimecodeRingBufferPolling;
 - (void)dealloc;
-- (void)setDelegate:(id)a3 queue:(id)a4;
-- (void)setTimecodeFrameDuration:(id *)a3;
+- (void)setDelegate:(id)delegate queue:(id)queue;
+- (void)setTimecodeFrameDuration:(id *)duration;
 - (void)startExternalSourceObserver;
-- (void)startSynchronizationWithTimecodeSource:(id)a3;
+- (void)startSynchronizationWithTimecodeSource:(id)source;
 @end
 
 @implementation AVCaptureTimecodeGenerator
@@ -141,14 +141,14 @@ uint64_t __57__AVCaptureTimecodeGenerator_startExternalSourceObserver__block_inv
   return result;
 }
 
-- (void)_registerSynchronizationSource:(id)a3
+- (void)_registerSynchronizationSource:(id)source
 {
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(AVCaptureTimecodeGenerator *)self availableSources];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  availableSources = [(AVCaptureTimecodeGenerator *)self availableSources];
+  v6 = [(NSArray *)availableSources countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v6)
   {
     v7 = v6;
@@ -159,17 +159,17 @@ LABEL_3:
     {
       if (*v12 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(availableSources);
       }
 
-      if ([*(*(&v11 + 1) + 8 * v9) isEqual:a3])
+      if ([*(*(&v11 + 1) + 8 * v9) isEqual:source])
       {
         break;
       }
 
       if (v7 == ++v9)
       {
-        v7 = [(NSArray *)v5 countByEnumeratingWithState:&v11 objects:v10 count:16];
+        v7 = [(NSArray *)availableSources countByEnumeratingWithState:&v11 objects:v10 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -185,18 +185,18 @@ LABEL_3:
 LABEL_9:
     [(AVCaptureTimecodeGenerator *)self willChangeValueForKey:@"availableSources"];
     os_unfair_lock_lock(&self->_resourceLock);
-    [(NSMutableArray *)self->_mutableSynchronizationSources addObject:a3];
+    [(NSMutableArray *)self->_mutableSynchronizationSources addObject:source];
     os_unfair_lock_unlock(&self->_resourceLock);
     [(AVCaptureTimecodeGenerator *)self didChangeValueForKey:@"availableSources"];
     [(AVCaptureTimecodeGenerator *)self _notifyDelegateOfSourceListUpdate:[(AVCaptureTimecodeGenerator *)self availableSources]];
   }
 }
 
-- (void)_removeSynchronizationSource:(id)a3
+- (void)_removeSynchronizationSource:(id)source
 {
   [(AVCaptureTimecodeGenerator *)self willChangeValueForKey:@"availableSources"];
   os_unfair_lock_lock(&self->_resourceLock);
-  [(NSMutableArray *)self->_mutableSynchronizationSources removeObject:a3];
+  [(NSMutableArray *)self->_mutableSynchronizationSources removeObject:source];
   v5 = [(NSMutableArray *)self->_mutableSynchronizationSources copy];
   os_unfair_lock_unlock(&self->_resourceLock);
   [(AVCaptureTimecodeGenerator *)self didChangeValueForKey:@"availableSources"];
@@ -204,11 +204,11 @@ LABEL_9:
   [(AVCaptureTimecodeGenerator *)self _notifyDelegateOfSourceListUpdate:v5];
 }
 
-- (void)_notifyDelegateOfSynchronizationStatusChange:(int64_t)a3 filterRedundancy:(BOOL)a4
+- (void)_notifyDelegateOfSynchronizationStatusChange:(int64_t)change filterRedundancy:(BOOL)redundancy
 {
-  v4 = a4;
+  redundancyCopy = redundancy;
   os_unfair_lock_lock(&self->_resourceLock);
-  if (v4 && self->_synchronizationStatus == a3)
+  if (redundancyCopy && self->_synchronizationStatus == change)
   {
 
     os_unfair_lock_unlock(&self->_resourceLock);
@@ -216,29 +216,29 @@ LABEL_9:
 
   else
   {
-    self->_synchronizationStatus = a3;
+    self->_synchronizationStatus = change;
     v7 = [(AVCaptureTimecodeSource *)self->_currentSource copy];
     v12 = self->_delegateStorage;
-    v8 = [(AVWeakReferencingDelegateStorage *)v12 delegate];
-    v9 = [(AVWeakReferencingDelegateStorage *)v12 delegateQueue];
+    delegate = [(AVWeakReferencingDelegateStorage *)v12 delegate];
+    delegateQueue = [(AVWeakReferencingDelegateStorage *)v12 delegateQueue];
     os_unfair_lock_unlock(&self->_resourceLock);
-    if (v8)
+    if (delegate)
     {
       statusNotificationSchedulingQueue = self->_statusNotificationSchedulingQueue;
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[8] = v12;
       v11 = MEMORY[0x1E69E96A0];
-      v13[9] = a3;
-      if (v9)
+      v13[9] = change;
+      if (delegateQueue)
       {
-        v11 = v9;
+        v11 = delegateQueue;
       }
 
       v13[2] = __92__AVCaptureTimecodeGenerator__notifyDelegateOfSynchronizationStatusChange_filterRedundancy___block_invoke;
       v13[3] = &unk_1E7876370;
       v13[4] = v11;
-      v13[5] = v8;
+      v13[5] = delegate;
       v13[6] = self;
       v13[7] = v7;
       [(NSOperationQueue *)statusNotificationSchedulingQueue addOperationWithBlock:v13];
@@ -264,15 +264,15 @@ void __92__AVCaptureTimecodeGenerator__notifyDelegateOfSynchronizationStatusChan
   dispatch_sync(v2, v4);
 }
 
-- (void)_notifyDelegateOfSourceListUpdate:(id)a3
+- (void)_notifyDelegateOfSourceListUpdate:(id)update
 {
   os_unfair_lock_lock(&self->_resourceLock);
   v10 = self->_delegateStorage;
   os_unfair_lock_unlock(&self->_resourceLock);
-  v5 = [a3 copy];
-  v6 = [(AVWeakReferencingDelegateStorage *)v10 delegate];
-  v7 = [(AVWeakReferencingDelegateStorage *)v10 delegateQueue];
-  if (v6)
+  v5 = [update copy];
+  delegate = [(AVWeakReferencingDelegateStorage *)v10 delegate];
+  delegateQueue = [(AVWeakReferencingDelegateStorage *)v10 delegateQueue];
+  if (delegate)
   {
     v8 = MEMORY[0x1E69E96A0];
     statusNotificationSchedulingQueue = self->_statusNotificationSchedulingQueue;
@@ -280,15 +280,15 @@ void __92__AVCaptureTimecodeGenerator__notifyDelegateOfSynchronizationStatusChan
     v11[1] = 3221225472;
     v11[7] = v5;
     v11[8] = v10;
-    if (v7)
+    if (delegateQueue)
     {
-      v8 = v7;
+      v8 = delegateQueue;
     }
 
     v11[2] = __64__AVCaptureTimecodeGenerator__notifyDelegateOfSourceListUpdate___block_invoke;
     v11[3] = &unk_1E7875980;
     v11[4] = v8;
-    v11[5] = v6;
+    v11[5] = delegate;
     v11[6] = self;
     [(NSOperationQueue *)statusNotificationSchedulingQueue addOperationWithBlock:v11, v10];
   }
@@ -310,34 +310,34 @@ void __64__AVCaptureTimecodeGenerator__notifyDelegateOfSourceListUpdate___block_
   dispatch_sync(v2, block);
 }
 
-- (void)_notifyDelegateOfTimecodeUpdate:(id *)a3
+- (void)_notifyDelegateOfTimecodeUpdate:(id *)update
 {
   os_unfair_lock_lock(&self->_resourceLock);
   v5 = [(AVCaptureTimecodeSource *)self->_currentSource copy];
   v11 = self->_delegateStorage;
   os_unfair_lock_unlock(&self->_resourceLock);
-  v6 = [(AVWeakReferencingDelegateStorage *)v11 delegate];
-  v7 = [(AVWeakReferencingDelegateStorage *)v11 delegateQueue];
-  if (v6)
+  delegate = [(AVWeakReferencingDelegateStorage *)v11 delegate];
+  delegateQueue = [(AVWeakReferencingDelegateStorage *)v11 delegateQueue];
+  if (delegate)
   {
     statusNotificationSchedulingQueue = self->_statusNotificationSchedulingQueue;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[8] = v11;
-    v9 = *&a3->var5.var1;
-    v13 = *&a3->var0;
+    v9 = *&update->var5.var1;
+    v13 = *&update->var0;
     v10 = MEMORY[0x1E69E96A0];
-    if (v7)
+    if (delegateQueue)
     {
-      v10 = v7;
+      v10 = delegateQueue;
     }
 
     v12[2] = __62__AVCaptureTimecodeGenerator__notifyDelegateOfTimecodeUpdate___block_invoke;
     v12[3] = &unk_1E78763C0;
     v12[4] = v10;
-    v12[5] = v6;
+    v12[5] = delegate;
     v14 = v9;
-    var6 = a3->var6;
+    var6 = update->var6;
     v12[6] = self;
     v12[7] = v5;
     [(NSOperationQueue *)statusNotificationSchedulingQueue addOperationWithBlock:v12];
@@ -406,24 +406,24 @@ uint64_t __62__AVCaptureTimecodeGenerator__notifyDelegateOfTimecodeUpdate___bloc
   return result;
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
   os_unfair_lock_lock(&self->_resourceLock);
-  if (a3)
+  if (delegate)
   {
     v7 = objc_opt_new();
     self->_delegateStorage = v7;
-    if (a4)
+    if (queue)
     {
-      v8 = a4;
+      queueCopy = queue;
     }
 
     else
     {
-      v8 = MEMORY[0x1E69E96A0];
+      queueCopy = MEMORY[0x1E69E96A0];
     }
 
-    [(AVWeakReferencingDelegateStorage *)v7 setDelegate:a3 queue:v8];
+    [(AVWeakReferencingDelegateStorage *)v7 setDelegate:delegate queue:queueCopy];
   }
 
   else
@@ -442,11 +442,11 @@ uint64_t __62__AVCaptureTimecodeGenerator__notifyDelegateOfTimecodeUpdate___bloc
   [(AVCaptureTimecodeGenerator *)self _notifyDelegateOfSourceListUpdate:v10];
 }
 
-- (void)startSynchronizationWithTimecodeSource:(id)a3
+- (void)startSynchronizationWithTimecodeSource:(id)source
 {
-  if (-[NSUUID isEqual:](-[AVCaptureTimecodeSource uuid](self->_currentSource, "uuid"), "isEqual:", [a3 uuid]) && self->_synchronizationStatus)
+  if (-[NSUUID isEqual:](-[AVCaptureTimecodeSource uuid](self->_currentSource, "uuid"), "isEqual:", [source uuid]) && self->_synchronizationStatus)
   {
-    v5 = self;
+    selfCopy3 = self;
   }
 
   else
@@ -468,14 +468,14 @@ uint64_t __62__AVCaptureTimecodeGenerator__notifyDelegateOfTimecodeUpdate___bloc
       self->_midiInputPort = 0;
     }
 
-    self->_currentSource = [a3 copy];
+    self->_currentSource = [source copy];
     os_unfair_lock_unlock(&self->_resourceLock);
     [(AVCaptureTimecodeGenerator *)self _notifyDelegateOfSynchronizationStatusChange:1 filterRedundancy:1];
-    v8 = [a3 type];
-    if (v8 == 2)
+    type = [source type];
+    if (type == 2)
     {
       v10 = 0;
-      -[AVCaptureTimecodeGenerator _openMidiTimecodeDataStreamWithUUID:success:](self, "_openMidiTimecodeDataStreamWithUUID:success:", [a3 uuid], &v10);
+      -[AVCaptureTimecodeGenerator _openMidiTimecodeDataStreamWithUUID:success:](self, "_openMidiTimecodeDataStreamWithUUID:success:", [source uuid], &v10);
       if (v10 == 1)
       {
         [(AVCaptureTimecodeGenerator *)self _notifyDelegateOfSynchronizationStatusChange:2 filterRedundancy:1];
@@ -490,26 +490,26 @@ uint64_t __62__AVCaptureTimecodeGenerator__notifyDelegateOfTimecodeUpdate___bloc
       return;
     }
 
-    if (v8 == 1)
+    if (type == 1)
     {
       [(AVCaptureTimecodeGenerator *)self _notifyDelegateOfSynchronizationStatusChange:2 filterRedundancy:1];
-      v9 = [MEMORY[0x1E695DFE8] systemTimeZone];
-      self->_localGMTOffset = [v9 secondsFromGMTForDate:{objc_msgSend(MEMORY[0x1E695DF00], "date")}];
-      v5 = self;
+      systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+      self->_localGMTOffset = [systemTimeZone secondsFromGMTForDate:{objc_msgSend(MEMORY[0x1E695DF00], "date")}];
+      selfCopy3 = self;
     }
 
     else
     {
-      if (v8)
+      if (type)
       {
         return;
       }
 
-      v5 = self;
+      selfCopy3 = self;
     }
   }
 
-  [AVCaptureTimecodeGenerator _notifyDelegateOfSynchronizationStatusChange:v5 filterRedundancy:"_notifyDelegateOfSynchronizationStatusChange:filterRedundancy:"];
+  [AVCaptureTimecodeGenerator _notifyDelegateOfSynchronizationStatusChange:selfCopy3 filterRedundancy:"_notifyDelegateOfSynchronizationStatusChange:filterRedundancy:"];
 }
 
 - ($2E8A01A2A08DED190407574E8D555C56)generateInitialTimecode
@@ -518,10 +518,10 @@ uint64_t __62__AVCaptureTimecodeGenerator__notifyDelegateOfTimecodeUpdate___bloc
   *&retstr->var5.var1 = 0u;
   retstr->var6 = [(AVCaptureTimecodeSource *)self->_currentSource type];
   os_unfair_lock_lock(&self->_resourceLock);
-  v5 = [(AVCaptureTimecodeGenerator *)self _isTimecodeRingBufferEmpty];
+  _isTimecodeRingBufferEmpty = [(AVCaptureTimecodeGenerator *)self _isTimecodeRingBufferEmpty];
   os_unfair_lock_unlock(&self->_resourceLock);
   result = [(AVCaptureTimecodeSource *)self->_currentSource utilizesRingBufferSyncDiscipline];
-  if (result && v5)
+  if (result && _isTimecodeRingBufferEmpty)
   {
     goto LABEL_3;
   }
@@ -636,12 +636,12 @@ LABEL_4:
   return v2;
 }
 
-- (BOOL)_timecodeIsCoherent:(id *)a3
+- (BOOL)_timecodeIsCoherent:(id *)coherent
 {
-  v4 = a3->var1 <= 0x3Bu && a3->var2 < 0x3Cu;
-  if (a3->var5.var2)
+  v4 = coherent->var1 <= 0x3Bu && coherent->var2 < 0x3Cu;
+  if (coherent->var5.var2)
   {
-    time1 = a3->var5;
+    time1 = coherent->var5;
     v9 = **&MEMORY[0x1E6960CC0];
     v5 = CMTimeCompare(&time1, &v9) > 0;
   }
@@ -651,7 +651,7 @@ LABEL_4:
     v5 = 0;
   }
 
-  time1 = a3->var5;
+  time1 = coherent->var5;
   Seconds = CMTimeGetSeconds(&time1);
   if (Seconds <= 0.0)
   {
@@ -671,26 +671,26 @@ LABEL_4:
     }
   }
 
-  return v7 > a3->var3 && v5;
+  return v7 > coherent->var3 && v5;
 }
 
-- (void)_addTimecodeToRingBuffer:(id *)a3 timestamp:(unint64_t)a4
+- (void)_addTimecodeToRingBuffer:(id *)buffer timestamp:(unint64_t)timestamp
 {
-  v7 = *&a3->var5.var1;
-  v15 = *&a3->var0;
+  v7 = *&buffer->var5.var1;
+  v15 = *&buffer->var0;
   v16 = v7;
-  var6 = a3->var6;
+  var6 = buffer->var6;
   if ([(AVCaptureTimecodeGenerator *)self _timecodeIsCoherent:&v15])
   {
     os_unfair_lock_lock(&self->_resourceLock);
-    v8 = [(AVCaptureTimecodeGenerator *)self _isTimecodeRingBufferStale];
+    _isTimecodeRingBufferStale = [(AVCaptureTimecodeGenerator *)self _isTimecodeRingBufferStale];
     v9 = &self->_timecodeRingBuffer[self->_timecodeRingBufferHead];
-    v10 = a3->var6;
-    v11 = *&a3->var5.var1;
-    *&v9->var0.var0 = *&a3->var0;
+    v10 = buffer->var6;
+    v11 = *&buffer->var5.var1;
+    *&v9->var0.var0 = *&buffer->var0;
     *&v9->var0.var5.var1 = v11;
     v9->var0.var6 = v10;
-    v9->var1 = a4;
+    v9->var1 = timestamp;
     v12 = (self->_timecodeRingBufferHead + 1) % self->_timecodeRingBufferCapacity;
     self->_timecodeRingBufferHead = v12;
     if (!v12)
@@ -701,24 +701,24 @@ LABEL_4:
     os_unfair_lock_unlock(&self->_resourceLock);
     if (self->_isTimecodeRingBufferFull)
     {
-      if (v8)
+      if (_isTimecodeRingBufferStale)
       {
         [(AVCaptureTimecodeGenerator *)self _resetTimecodeRingBuffer];
         [(AVCaptureTimecodeGenerator *)self _notifyDelegateOfSynchronizationStatusChange:2 filterRedundancy:1];
-        v13 = *&a3->var5.var1;
-        v15 = *&a3->var0;
+        v13 = *&buffer->var5.var1;
+        v15 = *&buffer->var0;
         v16 = v13;
-        var6 = a3->var6;
-        [(AVCaptureTimecodeGenerator *)self _addTimecodeToRingBuffer:&v15 timestamp:a4];
+        var6 = buffer->var6;
+        [(AVCaptureTimecodeGenerator *)self _addTimecodeToRingBuffer:&v15 timestamp:timestamp];
       }
 
       else
       {
         [(AVCaptureTimecodeGenerator *)self _notifyDelegateOfSynchronizationStatusChange:3 filterRedundancy:1];
-        v14 = *&a3->var5.var1;
-        v15 = *&a3->var0;
+        v14 = *&buffer->var5.var1;
+        v15 = *&buffer->var0;
         v16 = v14;
-        var6 = a3->var6;
+        var6 = buffer->var6;
         [(AVCaptureTimecodeGenerator *)self _notifyDelegateOfTimecodeUpdate:&v15];
       }
     }
@@ -807,9 +807,9 @@ void __64__AVCaptureTimecodeGenerator__scheduleTimecodeRingBufferPolling__block_
   os_unfair_lock_lock(&self->_resourceLock);
   if ([(AVCaptureTimecodeGenerator *)self _isTimecodeRingBufferStale])
   {
-    v3 = [(AVCaptureTimecodeSource *)self->_currentSource type];
+    type = [(AVCaptureTimecodeSource *)self->_currentSource type];
     os_unfair_lock_unlock(&self->_resourceLock);
-    if (v3 == 2)
+    if (type == 2)
     {
 
       [(AVCaptureTimecodeGenerator *)self _notifyDelegateOfSynchronizationStatusChange:4 filterRedundancy:1];
@@ -823,10 +823,10 @@ void __64__AVCaptureTimecodeGenerator__scheduleTimecodeRingBufferPolling__block_
   }
 }
 
-- (void)_registerMidiEndpointAsSynchronizationSource:(unsigned int)a3
+- (void)_registerMidiEndpointAsSynchronizationSource:(unsigned int)source
 {
   *outEntity = 0;
-  if (!MIDIEndpointGetEntity(a3, outEntity) && outEntity[0] && !MIDIEntityGetDevice(outEntity[0], &outEntity[1]) && outEntity[1] != 0)
+  if (!MIDIEndpointGetEntity(source, outEntity) && outEntity[0] && !MIDIEntityGetDevice(outEntity[0], &outEntity[1]) && outEntity[1] != 0)
   {
     str = 0;
     MIDIObjectGetStringProperty(outEntity[1], *MEMORY[0x1E695FCB0], &str);
@@ -852,10 +852,10 @@ void __64__AVCaptureTimecodeGenerator__scheduleTimecodeRingBufferPolling__block_
   }
 }
 
-- (void)_removeMidiEndpointAsSynchronizationSource:(unsigned int)a3
+- (void)_removeMidiEndpointAsSynchronizationSource:(unsigned int)source
 {
   *outEntity = 0;
-  if (!MIDIEndpointGetEntity(a3, outEntity) && outEntity[0] && !MIDIEntityGetDevice(outEntity[0], &outEntity[1]) && outEntity[1] != 0)
+  if (!MIDIEndpointGetEntity(source, outEntity) && outEntity[0] && !MIDIEntityGetDevice(outEntity[0], &outEntity[1]) && outEntity[1] != 0)
   {
     outValue = 0;
     MIDIObjectGetIntegerProperty(outEntity[1], *MEMORY[0x1E695FCE0], &outValue);
@@ -864,8 +864,8 @@ void __64__AVCaptureTimecodeGenerator__scheduleTimecodeRingBufferPolling__block_
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(AVCaptureTimecodeGenerator *)self availableSources];
-    v7 = [(NSArray *)v6 countByEnumeratingWithState:&v13 objects:v12 count:16];
+    availableSources = [(AVCaptureTimecodeGenerator *)self availableSources];
+    v7 = [(NSArray *)availableSources countByEnumeratingWithState:&v13 objects:v12 count:16];
     if (v7)
     {
       v8 = v7;
@@ -876,7 +876,7 @@ void __64__AVCaptureTimecodeGenerator__scheduleTimecodeRingBufferPolling__block_
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(availableSources);
           }
 
           v11 = *(*(&v13 + 1) + 8 * i);
@@ -887,7 +887,7 @@ void __64__AVCaptureTimecodeGenerator__scheduleTimecodeRingBufferPolling__block_
           }
         }
 
-        v8 = [(NSArray *)v6 countByEnumeratingWithState:&v13 objects:v12 count:16];
+        v8 = [(NSArray *)availableSources countByEnumeratingWithState:&v13 objects:v12 count:16];
         if (v8)
         {
           continue;
@@ -899,11 +899,11 @@ void __64__AVCaptureTimecodeGenerator__scheduleTimecodeRingBufferPolling__block_
   }
 }
 
-- (void)_openMidiTimecodeDataStreamWithUUID:(id)a3 success:(BOOL *)a4
+- (void)_openMidiTimecodeDataStreamWithUUID:(id)d success:(BOOL *)success
 {
-  if (a4)
+  if (success)
   {
-    *a4 = 0;
+    *success = 0;
   }
 
   if (!MIDIClientCreateWithBlock(@"MIDIClient", &self->_midiClient, &__block_literal_global_28))
@@ -959,7 +959,7 @@ void __64__AVCaptureTimecodeGenerator__scheduleTimecodeRingBufferPolling__block_
 
           dataIn[0] = 0;
           dataIn[1] = 0;
-          [a3 getUUIDBytes:dataIn];
+          [d getUUIDBytes:dataIn];
           dataOut[0] = 0;
           dataOut[1] = 0;
           v22 = 0;
@@ -985,9 +985,9 @@ void __64__AVCaptureTimecodeGenerator__scheduleTimecodeRingBufferPolling__block_
 
       if (!MIDIPortConnectSource(self->_midiInputPort, v13, 0))
       {
-        if (a4)
+        if (success)
         {
-          *a4 = 1;
+          *success = 1;
         }
       }
 
@@ -1184,10 +1184,10 @@ LABEL_12:
   [(AVCaptureTimecodeGenerator *)&v7 dealloc];
 }
 
-- (void)setTimecodeFrameDuration:(id *)a3
+- (void)setTimecodeFrameDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_timecodeFrameDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_timecodeFrameDuration.epoch = duration->var3;
   *&self->_timecodeFrameDuration.value = v3;
 }
 

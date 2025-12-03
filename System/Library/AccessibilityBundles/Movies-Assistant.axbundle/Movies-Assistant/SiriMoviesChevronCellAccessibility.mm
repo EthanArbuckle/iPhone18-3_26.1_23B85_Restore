@@ -12,9 +12,9 @@
 {
   v2 = [(SiriMoviesChevronCellAccessibility *)self safeValueForKey:@"chevronButton"];
   v3 = [v2 safeValueForKey:@"userInteractionEnabled"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isAccessibilityElement
@@ -35,16 +35,16 @@
   {
     v6.receiver = self;
     v6.super_class = SiriMoviesChevronCellAccessibility;
-    v3 = [(SiriMoviesChevronCellAccessibility *)&v6 accessibilityLabel];
+    accessibilityLabel = [(SiriMoviesChevronCellAccessibility *)&v6 accessibilityLabel];
   }
 
   else
   {
     v4 = [(SiriMoviesChevronCellAccessibility *)self safeValueForKey:@"chevronButton"];
-    v3 = [v4 accessibilityLabel];
+    accessibilityLabel = [v4 accessibilityLabel];
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
@@ -53,16 +53,16 @@
   {
     v6.receiver = self;
     v6.super_class = SiriMoviesChevronCellAccessibility;
-    v3 = [(SiriMoviesChevronCellAccessibility *)&v6 accessibilityValue];
+    accessibilityValue = [(SiriMoviesChevronCellAccessibility *)&v6 accessibilityValue];
   }
 
   else
   {
     v4 = [(SiriMoviesChevronCellAccessibility *)self safeValueForKey:@"chevronButton"];
-    v3 = [v4 accessibilityValue];
+    accessibilityValue = [v4 accessibilityValue];
   }
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)accessibilityHint
@@ -71,15 +71,15 @@
   {
     v5.receiver = self;
     v5.super_class = SiriMoviesChevronCellAccessibility;
-    v3 = [(SiriMoviesChevronCellAccessibility *)&v5 accessibilityHint];
+    accessibilityHint = [(SiriMoviesChevronCellAccessibility *)&v5 accessibilityHint];
   }
 
   else
   {
-    v3 = accessibilityLocalizedString(@"chevron.cell.hint");
+    accessibilityHint = accessibilityLocalizedString(@"chevron.cell.hint");
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 @end

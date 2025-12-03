@@ -1,23 +1,23 @@
 @interface THAnnotationTextLocator
-- (BOOL)locateAnnotationText:(id)a3 leftContext:(id)a4 rightContext:(id)a5 contentNodeID:(id *)a6 storageID:(id *)a7;
-- (THAnnotationTextLocator)initWithDocumentRoot:(id)a3;
+- (BOOL)locateAnnotationText:(id)text leftContext:(id)context rightContext:(id)rightContext contentNodeID:(id *)d storageID:(id *)iD;
+- (THAnnotationTextLocator)initWithDocumentRoot:(id)root;
 - (void)dealloc;
 @end
 
 @implementation THAnnotationTextLocator
 
-- (THAnnotationTextLocator)initWithDocumentRoot:(id)a3
+- (THAnnotationTextLocator)initWithDocumentRoot:(id)root
 {
   v10.receiver = self;
   v10.super_class = THAnnotationTextLocator;
   v4 = [(THAnnotationTextLocator *)&v10 init];
   if (v4)
   {
-    v5 = a3;
-    v4->_documentRoot = v5;
-    v6 = [(THDocumentRoot *)v5 searchIndex];
-    v4->_searchIndex = v6;
-    if (![(THSearchIndex *)v6 loaded])
+    rootCopy = root;
+    v4->_documentRoot = rootCopy;
+    searchIndex = [(THDocumentRoot *)rootCopy searchIndex];
+    v4->_searchIndex = searchIndex;
+    if (![(THSearchIndex *)searchIndex loaded])
     {
       v7 = [[THSearchIndexLoadOperation alloc] initWithDelegate:0 documentRoot:v4->_documentRoot];
       v8 = objc_alloc_init(NSOperationQueue);
@@ -48,29 +48,29 @@
   [(THAnnotationTextLocator *)&v3 dealloc];
 }
 
-- (BOOL)locateAnnotationText:(id)a3 leftContext:(id)a4 rightContext:(id)a5 contentNodeID:(id *)a6 storageID:(id *)a7
+- (BOOL)locateAnnotationText:(id)text leftContext:(id)context rightContext:(id)rightContext contentNodeID:(id *)d storageID:(id *)iD
 {
-  v7 = self;
+  selfCopy = self;
   LOBYTE(self) = 0;
-  if (a6 && a7 && (a4 && a5 && (self = [(THSearchIndex *)v7->_searchIndex unambiguousCFIForString:[NSString stringWithFormat:@"%@%@%@", a4, a3, a5]]) != 0 || (self = [(THSearchIndex *)v7->_searchIndex unambiguousCFIForString:a3]) != 0))
+  if (d && iD && (context && rightContext && (self = [(THSearchIndex *)selfCopy->_searchIndex unambiguousCFIForString:[NSString stringWithFormat:@"%@%@%@", context, text, rightContext]]) != 0 || (self = [(THSearchIndex *)selfCopy->_searchIndex unambiguousCFIForString:text]) != 0))
   {
-    v11 = self;
-    v12 = [(THDocumentRoot *)v7->_documentRoot contentNodeForCfi:self error:0];
+    selfCopy2 = self;
+    v12 = [(THDocumentRoot *)selfCopy->_documentRoot contentNodeForCfi:self error:0];
     if (v12)
     {
-      v13 = [v12 nodeGUID];
-      v14 = [+[THCFISplitter sharedInstance](THCFISplitter storageIDFromCFI:"storageIDFromCFI:", v11];
-      if (![v14 length])
+      nodeGUID = [v12 nodeGUID];
+      selfCopy2 = [+[THCFISplitter sharedInstance](THCFISplitter storageIDFromCFI:"storageIDFromCFI:", selfCopy2];
+      if (![selfCopy2 length])
       {
-        v14 = v13;
+        selfCopy2 = nodeGUID;
       }
 
-      if (v13)
+      if (nodeGUID)
       {
-        if (v14)
+        if (selfCopy2)
         {
-          *a6 = v13;
-          *a7 = v14;
+          *d = nodeGUID;
+          *iD = selfCopy2;
           LOBYTE(self) = 1;
           return self;
         }
@@ -79,7 +79,7 @@
       }
 
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-      if (!v14)
+      if (!selfCopy2)
       {
 LABEL_15:
         [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];

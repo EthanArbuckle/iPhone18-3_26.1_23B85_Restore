@@ -1,37 +1,37 @@
 @interface FBWorkspaceIncomingConnection
-- (id)initWithWorkspace:(id *)a1;
-- (void)workspaceLock_setConnection:(uint64_t)a1;
+- (id)initWithWorkspace:(id *)workspace;
+- (void)workspaceLock_setConnection:(uint64_t)connection;
 @end
 
 @implementation FBWorkspaceIncomingConnection
 
-- (void)workspaceLock_setConnection:(uint64_t)a1
+- (void)workspaceLock_setConnection:(uint64_t)connection
 {
   v35 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (connection)
   {
     if (!v3)
     {
       [FBWorkspaceIncomingConnection workspaceLock_setConnection:?];
     }
 
-    v5 = *(a1 + 8);
+    v5 = *(connection + 8);
     [(FBWorkspace *)v5 _assertLocked];
-    v6 = [(os_unfair_lock *)v5 process];
-    v7 = [(FBWorkspaceConnection *)a1 _workspaceLock_connection];
-    v8 = v7;
-    if (v7)
+    process = [(os_unfair_lock *)v5 process];
+    _workspaceLock_connection = [(FBWorkspaceConnection *)connection _workspaceLock_connection];
+    v8 = _workspaceLock_connection;
+    if (_workspaceLock_connection)
     {
-      v9 = [v7 isValid];
+      isValid = [_workspaceLock_connection isValid];
       v10 = FBLogProcessWorkspace();
       v11 = os_log_type_enabled(v10, OS_LOG_TYPE_ERROR);
-      if (v9)
+      if (isValid)
       {
         if (v11)
         {
-          [FBWorkspaceIncomingConnection workspaceLock_setConnection:v6];
+          [FBWorkspaceIncomingConnection workspaceLock_setConnection:process];
         }
 
         [v4 invalidate];
@@ -40,16 +40,16 @@
 
       if (v11)
       {
-        [FBWorkspaceIncomingConnection workspaceLock_setConnection:v6];
+        [FBWorkspaceIncomingConnection workspaceLock_setConnection:process];
       }
 
-      v24 = [(FBWorkspaceConnection *)a1 queue];
+      queue = [(FBWorkspaceConnection *)connection queue];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __61__FBWorkspaceIncomingConnection_workspaceLock_setConnection___block_invoke;
       v29[3] = &unk_1E783B580;
       v30 = v4;
-      [v24 performAfter:v29 withBlock:0.1];
+      [queue performAfter:v29 withBlock:0.1];
 
       v23 = v30;
     }
@@ -59,44 +59,44 @@
       v13 = FBLogProcessWorkspace();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(FBProcess *)v6 logProem];
+        logProem = [(FBProcess *)process logProem];
         *buf = 138543362;
-        v32 = v14;
+        v32 = logProem;
         _os_log_impl(&dword_1A89DD000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Connection established.", buf, 0xCu);
       }
 
-      v15 = [MEMORY[0x1E699FCF0] interface];
+      interface = [MEMORY[0x1E699FCF0] interface];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __61__FBWorkspaceIncomingConnection_workspaceLock_setConnection___block_invoke_52;
       v27[3] = &unk_1E783BBE0;
-      v16 = v6;
+      v16 = process;
       v28 = v16;
-      [(FBWorkspaceConnection *)a1 _workspaceLock_setConnection:v4 withInterface:v15 activationHandler:0 invalidationHandler:v27];
+      [(FBWorkspaceConnection *)connection _workspaceLock_setConnection:v4 withInterface:interface activationHandler:0 invalidationHandler:v27];
 
-      v17 = [(FBWorkspaceConnection *)a1 _workspaceLock_connection];
-      v18 = [v17 remoteTarget];
+      _workspaceLock_connection2 = [(FBWorkspaceConnection *)connection _workspaceLock_connection];
+      remoteTarget = [_workspaceLock_connection2 remoteTarget];
 
       v19 = FBLogProcessWorkspace();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(FBProcess *)v16 logProem];
+        logProem2 = [(FBProcess *)v16 logProem];
         *buf = 138543618;
-        v32 = v20;
+        v32 = logProem2;
         v33 = 2114;
-        v34 = v18;
+        v34 = remoteTarget;
         _os_log_impl(&dword_1A89DD000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ created proxy of %{public}@", buf, 0x16u);
       }
 
-      v21 = [(FBWorkspaceConnection *)a1 queue];
+      queue2 = [(FBWorkspaceConnection *)connection queue];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __61__FBWorkspaceIncomingConnection_workspaceLock_setConnection___block_invoke_57;
       v25[3] = &unk_1E783B240;
-      v25[4] = a1;
-      v26 = v18;
-      v22 = v18;
-      [v21 performAsync:v25];
+      v25[4] = connection;
+      v26 = remoteTarget;
+      v22 = remoteTarget;
+      [queue2 performAsync:v25];
 
       v23 = v28;
     }
@@ -124,14 +124,14 @@ uint64_t __61__FBWorkspaceIncomingConnection_workspaceLock_setConnection___block
   return result;
 }
 
-- (id)initWithWorkspace:(id *)a1
+- (id)initWithWorkspace:(id *)workspace
 {
-  if (a1)
+  if (workspace)
   {
-    return [(FBWorkspaceConnection *)a1 _initWithWorkspace:a2];
+    return [(FBWorkspaceConnection *)workspace _initWithWorkspace:a2];
   }
 
-  return a1;
+  return workspace;
 }
 
 - (void)workspaceLock_setConnection:(void *)a1 .cold.1(void *a1)

@@ -1,16 +1,16 @@
 @interface PRUISSwitcherSceneSettingsDiffInspector
 + (id)diffInspectorForObservingDiffContext;
-- (void)_observeOtherSetting:(unint64_t)a3 withBlock:(id)a4;
-- (void)observeLockPosterLiveContentLayerWithBlock:(id)a3;
-- (void)observeLockPosterLiveFloatingLayerWithBlock:(id)a3;
-- (void)observeLockPosterOverlayLayerWithBlock:(id)a3;
+- (void)_observeOtherSetting:(unint64_t)setting withBlock:(id)block;
+- (void)observeLockPosterLiveContentLayerWithBlock:(id)block;
+- (void)observeLockPosterLiveFloatingLayerWithBlock:(id)block;
+- (void)observeLockPosterOverlayLayerWithBlock:(id)block;
 @end
 
 @implementation PRUISSwitcherSceneSettingsDiffInspector
 
 + (id)diffInspectorForObservingDiffContext
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 observePreferredSwitcherLayoutModeWithBlock:&__block_literal_global_10];
   [v2 observeLockPosterOverlayLayerWithBlock:&__block_literal_global_2_0];
   [v2 observeLockPosterLiveContentLayerWithBlock:&__block_literal_global_4_0];
@@ -24,39 +24,39 @@
   return v2;
 }
 
-- (void)observeLockPosterOverlayLayerWithBlock:(id)a3
+- (void)observeLockPosterOverlayLayerWithBlock:(id)block
 {
-  v4 = a3;
-  [(PRUISSwitcherSceneSettingsDiffInspector *)self _observeOtherSetting:25563 withBlock:v4];
-  [(PRUISSwitcherSceneSettingsDiffInspector *)self _observeOtherSetting:25564 withBlock:v4];
+  blockCopy = block;
+  [(PRUISSwitcherSceneSettingsDiffInspector *)self _observeOtherSetting:25563 withBlock:blockCopy];
+  [(PRUISSwitcherSceneSettingsDiffInspector *)self _observeOtherSetting:25564 withBlock:blockCopy];
 }
 
-- (void)observeLockPosterLiveContentLayerWithBlock:(id)a3
+- (void)observeLockPosterLiveContentLayerWithBlock:(id)block
 {
-  v4 = a3;
-  [(PRUISSwitcherSceneSettingsDiffInspector *)self _observeOtherSetting:25565 withBlock:v4];
-  [(PRUISSwitcherSceneSettingsDiffInspector *)self _observeOtherSetting:25566 withBlock:v4];
+  blockCopy = block;
+  [(PRUISSwitcherSceneSettingsDiffInspector *)self _observeOtherSetting:25565 withBlock:blockCopy];
+  [(PRUISSwitcherSceneSettingsDiffInspector *)self _observeOtherSetting:25566 withBlock:blockCopy];
 }
 
-- (void)observeLockPosterLiveFloatingLayerWithBlock:(id)a3
+- (void)observeLockPosterLiveFloatingLayerWithBlock:(id)block
 {
-  v4 = a3;
-  [(PRUISSwitcherSceneSettingsDiffInspector *)self _observeOtherSetting:25567 withBlock:v4];
-  [(PRUISSwitcherSceneSettingsDiffInspector *)self _observeOtherSetting:25568 withBlock:v4];
+  blockCopy = block;
+  [(PRUISSwitcherSceneSettingsDiffInspector *)self _observeOtherSetting:25567 withBlock:blockCopy];
+  [(PRUISSwitcherSceneSettingsDiffInspector *)self _observeOtherSetting:25568 withBlock:blockCopy];
 }
 
-- (void)_observeOtherSetting:(unint64_t)a3 withBlock:(id)a4
+- (void)_observeOtherSetting:(unint64_t)setting withBlock:(id)block
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  blockCopy = block;
+  v7 = blockCopy;
+  if (blockCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __74__PRUISSwitcherSceneSettingsDiffInspector__observeOtherSetting_withBlock___block_invoke;
     v8[3] = &unk_1E83A7B80;
-    v9 = v6;
-    [(FBSSettingsDiffInspector *)self observeOtherSetting:a3 withBlock:v8];
+    v9 = blockCopy;
+    [(FBSSettingsDiffInspector *)self observeOtherSetting:setting withBlock:v8];
   }
 }
 

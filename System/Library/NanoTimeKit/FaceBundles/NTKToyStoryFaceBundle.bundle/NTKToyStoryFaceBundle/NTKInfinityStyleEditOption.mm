@@ -1,34 +1,34 @@
 @interface NTKInfinityStyleEditOption
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 @end
 
 @implementation NTKInfinityStyleEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 3)
+  if (value > 3)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_C610 + a3);
+    return *(&off_C610 + value);
   }
 }
 
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 3)
+  if (value > 3)
   {
     v6 = &stru_CC10;
   }
 
   else
   {
-    v6 = [NTKToyStoryFaceBundle localizedStringForKey:*(&off_C630 + a3) table:@"ToyBox" comment:@"Character", v4];
+    v6 = [NTKToyStoryFaceBundle localizedStringForKey:*(&off_C630 + value) table:@"ToyBox" comment:@"Character", v4];
   }
 
   return v6;

@@ -7,8 +7,8 @@
 - (id)action
 {
   v3 = [SXPhoneNumberAction alloc];
-  v4 = [(SXPhoneNumberAddition *)self phoneNumber];
-  v5 = [(SXPhoneNumberAction *)v3 initWithPhoneNumber:v4];
+  phoneNumber = [(SXPhoneNumberAddition *)self phoneNumber];
+  v5 = [(SXPhoneNumberAction *)v3 initWithPhoneNumber:phoneNumber];
 
   return v5;
 }

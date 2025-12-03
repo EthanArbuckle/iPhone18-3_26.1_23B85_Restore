@@ -1,13 +1,13 @@
 @interface CATParamsWrapper
-- (id)valueForKey:(id)a3;
+- (id)valueForKey:(id)key;
 @end
 
 @implementation CATParamsWrapper
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
   sub_222D5292C();
-  v4 = self;
+  selfCopy = self;
   sub_222D4F4CC(v13);
 
   v5 = v14;

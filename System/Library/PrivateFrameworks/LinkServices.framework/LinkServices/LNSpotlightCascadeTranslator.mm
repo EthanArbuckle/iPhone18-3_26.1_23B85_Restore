@@ -1,62 +1,62 @@
 @interface LNSpotlightCascadeTranslator
-- (BOOL)isAllowedClientBundleIdentifier:(id)a3;
+- (BOOL)isAllowedClientBundleIdentifier:(id)identifier;
 - (LNSpotlightCascadeTranslator)init;
-- (id)disabledAppEntityTypeIdentifiersForBundleIdentifier:(id)a3;
-- (id)lookupAssistantSchemasForTypeIdentifier:(id)a3 fromBundleId:(id)a4;
-- (id)translateItem:(id)a3 fromBundleId:(id)a4 error:(id *)a5;
-- (unsigned)assistantSchemaTypeFromIdentifier:(id)a3;
+- (id)disabledAppEntityTypeIdentifiersForBundleIdentifier:(id)identifier;
+- (id)lookupAssistantSchemasForTypeIdentifier:(id)identifier fromBundleId:(id)id;
+- (id)translateItem:(id)item fromBundleId:(id)id error:(id *)error;
+- (unsigned)assistantSchemaTypeFromIdentifier:(id)identifier;
 @end
 
 @implementation LNSpotlightCascadeTranslator
 
-- (id)translateItem:(id)a3 fromBundleId:(id)a4 error:(id *)a5
+- (id)translateItem:(id)item fromBundleId:(id)id error:(id *)error
 {
   v106 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 attributeSet];
-  v11 = [v10 attributeForKey:@"_kMDItemAppEntityInstanceIdentifier"];
+  itemCopy = item;
+  idCopy = id;
+  attributeSet = [itemCopy attributeSet];
+  v11 = [attributeSet attributeForKey:@"_kMDItemAppEntityInstanceIdentifier"];
 
   if (v11)
   {
-    v12 = [v8 attributeSet];
-    v13 = [v12 attributeForKey:@"_kMDItemAppEntityTypeIdentifier"];
+    attributeSet2 = [itemCopy attributeSet];
+    v13 = [attributeSet2 attributeForKey:@"_kMDItemAppEntityTypeIdentifier"];
 
     if (!v13)
     {
       v29 = [MEMORY[0x1E696ABC0] errorWithDomain:@"LNSpotlightCascadeTranslator" code:2 userInfo:0];
-      if (a5 && v29)
+      if (error && v29)
       {
         v29 = v29;
-        *a5 = v29;
+        *error = v29;
       }
 
       v28 = 0;
       goto LABEL_106;
     }
 
-    v82 = [(LNSpotlightCascadeTranslator *)self lookupAssistantSchemasForTypeIdentifier:v13 fromBundleId:v9];
-    v14 = [v8 attributeSet];
-    v15 = [v14 attributeForKey:@"kMDItemAppEntityTitle"];
+    v82 = [(LNSpotlightCascadeTranslator *)self lookupAssistantSchemasForTypeIdentifier:v13 fromBundleId:idCopy];
+    attributeSet3 = [itemCopy attributeSet];
+    v15 = [attributeSet3 attributeForKey:@"kMDItemAppEntityTitle"];
 
     if (!v15)
     {
       v30 = [MEMORY[0x1E696ABC0] errorWithDomain:@"LNSpotlightCascadeTranslator" code:3 userInfo:0];
-      if (a5 && v30)
+      if (error && v30)
       {
         v30 = v30;
-        *a5 = v30;
+        *error = v30;
       }
 
       v28 = 0;
       goto LABEL_105;
     }
 
-    v16 = [v8 attributeSet];
-    v81 = [v16 attributeForKey:@"kMDItemAppEntitySubtitle"];
+    attributeSet4 = [itemCopy attributeSet];
+    v81 = [attributeSet4 attributeForKey:@"kMDItemAppEntitySubtitle"];
 
-    v17 = [v8 attributeSet];
-    v80 = [v17 attributeForKey:@"kMDItemAppEntityDisplayRepresentationSynonyms"];
+    attributeSet5 = [itemCopy attributeSet];
+    v80 = [attributeSet5 attributeForKey:@"kMDItemAppEntityDisplayRepresentationSynonyms"];
 
     v88 = 0;
     v89 = &v88;
@@ -93,11 +93,11 @@
       }
 
       v28 = 0;
-      if (a5 && v26)
+      if (error && v26)
       {
         v34 = v26;
         v28 = 0;
-        *a5 = v26;
+        *error = v26;
       }
 
       goto LABEL_104;
@@ -117,11 +117,11 @@
       }
 
       v28 = 0;
-      if (a5 && v20)
+      if (error && v20)
       {
         v36 = v20;
         v28 = 0;
-        *a5 = v20;
+        *error = v20;
       }
 
       v26 = v20;
@@ -163,23 +163,23 @@
       }
 
       v28 = 0;
-      if (a5 && v26)
+      if (error && v26)
       {
         v40 = v26;
         v28 = 0;
-        *a5 = v26;
+        *error = v26;
       }
 
       goto LABEL_103;
     }
 
-    v23 = [v8 attributeSet];
-    v78 = [v23 attributeForKey:@"_kMDItemAppEntityTypeDisplayRepresentationName"];
+    attributeSet6 = [itemCopy attributeSet];
+    v78 = [attributeSet6 attributeForKey:@"_kMDItemAppEntityTypeDisplayRepresentationName"];
 
     if (v78)
     {
-      v24 = [v8 attributeSet];
-      v25 = [v24 attributeForKey:@"_kMDItemAppEntityTypeDisplayRepresentationSynonyms"];
+      attributeSet7 = [itemCopy attributeSet];
+      v25 = [attributeSet7 attributeForKey:@"_kMDItemAppEntityTypeDisplayRepresentationSynonyms"];
 
       v86 = v20;
       v77 = [[v21 alloc] initWithName:v78 synonyms:v25 error:&v86];
@@ -195,10 +195,10 @@
           _os_log_impl(&dword_19763D000, v50, OS_LOG_TYPE_ERROR, "Cannot create CCAppEntityTypeDisplayRepresentation. Error: %@", &buf, 0xCu);
         }
 
-        if (a5 && v26)
+        if (error && v26)
         {
           v51 = v26;
-          *a5 = v26;
+          *error = v26;
         }
 
         v28 = 0;
@@ -248,11 +248,11 @@
       }
 
       v28 = 0;
-      if (a5 && v26)
+      if (error && v26)
       {
         v49 = v26;
         v28 = 0;
-        *a5 = v26;
+        *error = v26;
       }
 
       goto LABEL_101;
@@ -284,8 +284,8 @@
       _Block_object_dispose(&v88, 8);
       if (v43)
       {
-        v45 = [v8 attributeSet];
-        v74 = [v45 attributeForKey:@"_kMDItemAppEntityPriority"];
+        attributeSet8 = [itemCopy attributeSet];
+        v74 = [attributeSet8 attributeForKey:@"_kMDItemAppEntityPriority"];
 
         if (v74)
         {
@@ -302,9 +302,9 @@
         }
 
         v58 = [v43 alloc];
-        v59 = [v8 uniqueIdentifier];
+        uniqueIdentifier = [itemCopy uniqueIdentifier];
         v84 = v75;
-        v60 = [v58 initWithSourceItemIdentifier:v59 saliency:v74 error:&v84];
+        v60 = [v58 initWithSourceItemIdentifier:uniqueIdentifier saliency:v74 error:&v84];
         v61 = v84;
 
         if (v60)
@@ -331,10 +331,10 @@
                 _os_log_impl(&dword_19763D000, v70, OS_LOG_TYPE_ERROR, "Cannot create CCItemInstance. Error: %@", &buf, 0xCu);
               }
 
-              if (a5 && v26)
+              if (error && v26)
               {
                 v71 = v26;
-                *a5 = v26;
+                *error = v26;
               }
             }
           }
@@ -356,11 +356,11 @@
             }
 
             v28 = 0;
-            if (a5 && v26)
+            if (error && v26)
             {
               v69 = v26;
               v28 = 0;
-              *a5 = v26;
+              *error = v26;
             }
           }
         }
@@ -376,11 +376,11 @@
           }
 
           v28 = 0;
-          if (a5 && v61)
+          if (error && v61)
           {
             v65 = v61;
             v28 = 0;
-            *a5 = v61;
+            *error = v61;
           }
 
           v26 = v61;
@@ -404,7 +404,7 @@
       }
 
       v28 = 0;
-      if (!a5 || !v26)
+      if (!error || !v26)
       {
         goto LABEL_100;
       }
@@ -424,7 +424,7 @@
       }
 
       v28 = 0;
-      if (!a5)
+      if (!error)
       {
         v26 = v75;
         goto LABEL_100;
@@ -441,7 +441,7 @@
       v26 = v75;
     }
 
-    *a5 = v26;
+    *error = v26;
 LABEL_100:
 
 LABEL_101:
@@ -457,10 +457,10 @@ LABEL_106:
   }
 
   v27 = [MEMORY[0x1E696ABC0] errorWithDomain:@"LNSpotlightCascadeTranslator" code:1 userInfo:0];
-  if (a5 && v27)
+  if (error && v27)
   {
     v27 = v27;
-    *a5 = v27;
+    *error = v27;
   }
 
   v28 = 0;
@@ -471,11 +471,11 @@ LABEL_107:
   return v28;
 }
 
-- (id)lookupAssistantSchemasForTypeIdentifier:(id)a3 fromBundleId:(id)a4
+- (id)lookupAssistantSchemasForTypeIdentifier:(id)identifier fromBundleId:(id)id
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  idCopy = id;
   os_unfair_lock_lock(&self->_lock);
   v30 = 0;
   v31 = &v30;
@@ -515,7 +515,7 @@ LABEL_107:
   _Block_object_dispose(&v30, 8);
   if (v8 && v10)
   {
-    v12 = [(NSMutableDictionary *)self->_typeIdentifierToAssistantSchemasCache objectForKeyedSubscript:v6];
+    v12 = [(NSMutableDictionary *)self->_typeIdentifierToAssistantSchemasCache objectForKeyedSubscript:identifierCopy];
     if (v12)
     {
       v13 = v12;
@@ -530,15 +530,15 @@ LABEL_107:
       v24[1] = 3221225472;
       v24[2] = __85__LNSpotlightCascadeTranslator_lookupAssistantSchemasForTypeIdentifier_fromBundleId___block_invoke;
       v24[3] = &unk_1E74B1638;
-      v17 = v6;
+      v17 = identifierCopy;
       v25 = v17;
-      v26 = self;
+      selfCopy = self;
       v28 = v10;
       v29 = v8;
       v18 = v15;
       v27 = v18;
       v23 = 0;
-      [(LNMetadataProvider *)metadataProvider enumerateEntitiesForBundleIdentifier:v7 usingBlock:v24 error:&v23];
+      [(LNMetadataProvider *)metadataProvider enumerateEntitiesForBundleIdentifier:idCopy usingBlock:v24 error:&v23];
       v19 = v23;
       if (v19)
       {
@@ -546,7 +546,7 @@ LABEL_107:
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          *&buf[4] = v7;
+          *&buf[4] = idCopy;
           *&buf[12] = 2112;
           *&buf[14] = v19;
           _os_log_impl(&dword_19763D000, v20, OS_LOG_TYPE_ERROR, "Failed to lookup entity metadata for bundle %@ with error %@", buf, 0x16u);
@@ -727,225 +727,225 @@ void __85__LNSpotlightCascadeTranslator_lookupAssistantSchemasForTypeIdentifier_
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (unsigned)assistantSchemaTypeFromIdentifier:(id)a3
+- (unsigned)assistantSchemaTypeFromIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqual:@"AudioBookEntity"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqual:@"AudioBookEntity"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqual:@"BookEntity"])
+  else if ([identifierCopy isEqual:@"BookEntity"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqual:@"BookSettingsEntity"])
+  else if ([identifierCopy isEqual:@"BookSettingsEntity"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqual:@"BookmarkEntity"])
+  else if ([identifierCopy isEqual:@"BookmarkEntity"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqual:@"HistoryEntity"])
+  else if ([identifierCopy isEqual:@"HistoryEntity"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqual:@"TabEntity"])
+  else if ([identifierCopy isEqual:@"TabEntity"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqual:@"WindowEntity"])
+  else if ([identifierCopy isEqual:@"WindowEntity"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqual:@"FileEntity"])
+  else if ([identifierCopy isEqual:@"FileEntity"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqual:@"JournalEntity"])
+  else if ([identifierCopy isEqual:@"JournalEntity"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqual:@"MailAccountEntity"])
+  else if ([identifierCopy isEqual:@"MailAccountEntity"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqual:@"MailDraftEntity"])
+  else if ([identifierCopy isEqual:@"MailDraftEntity"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqual:@"MailMessageEntity"])
+  else if ([identifierCopy isEqual:@"MailMessageEntity"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqual:@"MailboxEntity"])
+  else if ([identifierCopy isEqual:@"MailboxEntity"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqual:@"AccountEntity"])
+  else if ([identifierCopy isEqual:@"AccountEntity"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqual:@"AllowDarkBackgroundsEntity"])
+  else if ([identifierCopy isEqual:@"AllowDarkBackgroundsEntity"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqual:@"AttachmentEntity"])
+  else if ([identifierCopy isEqual:@"AttachmentEntity"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqual:@"AutoConvertToTagEntity"])
+  else if ([identifierCopy isEqual:@"AutoConvertToTagEntity"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqual:@"AutoSortCheckedItemsEntity"])
+  else if ([identifierCopy isEqual:@"AutoSortCheckedItemsEntity"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqual:@"ChecklistItemEntity"])
+  else if ([identifierCopy isEqual:@"ChecklistItemEntity"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqual:@"DateHeadersEntity"])
+  else if ([identifierCopy isEqual:@"DateHeadersEntity"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqual:@"DefaultParagraphStyleEntity"])
+  else if ([identifierCopy isEqual:@"DefaultParagraphStyleEntity"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqual:@"FolderEntity"])
+  else if ([identifierCopy isEqual:@"FolderEntity"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqual:@"LinesAndGridsEntity"])
+  else if ([identifierCopy isEqual:@"LinesAndGridsEntity"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqual:@"MentionNotificationsEntity"])
+  else if ([identifierCopy isEqual:@"MentionNotificationsEntity"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqual:@"NoteEntity"])
+  else if ([identifierCopy isEqual:@"NoteEntity"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqual:@"NoteListSortTypeEntity"])
+  else if ([identifierCopy isEqual:@"NoteListSortTypeEntity"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqual:@"NotesSettingsEntity"])
+  else if ([identifierCopy isEqual:@"NotesSettingsEntity"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqual:@"SavePhotosEntity"])
+  else if ([identifierCopy isEqual:@"SavePhotosEntity"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqual:@"TableEntity"])
+  else if ([identifierCopy isEqual:@"TableEntity"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqual:@"TagEntity"])
+  else if ([identifierCopy isEqual:@"TagEntity"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqual:@"PhotoAlbumEntity"])
+  else if ([identifierCopy isEqual:@"PhotoAlbumEntity"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqual:@"PhotoEntity"])
+  else if ([identifierCopy isEqual:@"PhotoEntity"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqual:@"PhotoPersonEntity"])
+  else if ([identifierCopy isEqual:@"PhotoPersonEntity"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqual:@"PresentationEntity"])
+  else if ([identifierCopy isEqual:@"PresentationEntity"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqual:@"PresentationSlideEntity"])
+  else if ([identifierCopy isEqual:@"PresentationSlideEntity"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqual:@"PresentationTemplateEntity"])
+  else if ([identifierCopy isEqual:@"PresentationTemplateEntity"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqual:@"ReaderDocumentEntity"])
+  else if ([identifierCopy isEqual:@"ReaderDocumentEntity"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqual:@"SheetEntity"])
+  else if ([identifierCopy isEqual:@"SheetEntity"])
   {
     v4 = 39;
   }
 
-  else if ([v3 isEqual:@"SpreadsheetEntity"])
+  else if ([identifierCopy isEqual:@"SpreadsheetEntity"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqual:@"SpreadsheetTemplateEntity"])
+  else if ([identifierCopy isEqual:@"SpreadsheetTemplateEntity"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqual:@"CanvasEntity"] & 1) != 0 || (objc_msgSend(v3, "isEqual:", @"CanvasItemEntity"))
+  else if ([identifierCopy isEqual:@"CanvasEntity"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqual:", @"CanvasItemEntity"))
   {
     v4 = 42;
   }
 
-  else if ([v3 isEqual:@"WordProcessorDocumentEntity"])
+  else if ([identifierCopy isEqual:@"WordProcessorDocumentEntity"])
   {
     v4 = 44;
   }
 
-  else if ([v3 isEqual:@"WordProcessorDocumentTemplateEntity"])
+  else if ([identifierCopy isEqual:@"WordProcessorDocumentTemplateEntity"])
   {
     v4 = 45;
   }
 
-  else if ([v3 isEqual:@"WordProcessPageEntity"])
+  else if ([identifierCopy isEqual:@"WordProcessPageEntity"])
   {
     v4 = 46;
   }
@@ -958,9 +958,9 @@ void __85__LNSpotlightCascadeTranslator_lookupAssistantSchemasForTypeIdentifier_
   return v4;
 }
 
-- (id)disabledAppEntityTypeIdentifiersForBundleIdentifier:(id)a3
+- (id)disabledAppEntityTypeIdentifiersForBundleIdentifier:(id)identifier
 {
-  if ([a3 isEqualToString:@"com.apple.mobileslideshow"])
+  if ([identifier isEqualToString:@"com.apple.mobileslideshow"])
   {
     return &unk_1F0BD7228;
   }
@@ -971,34 +971,34 @@ void __85__LNSpotlightCascadeTranslator_lookupAssistantSchemasForTypeIdentifier_
   }
 }
 
-- (BOOL)isAllowedClientBundleIdentifier:(id)a3
+- (BOOL)isAllowedClientBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  if ([(NSArray *)self->_disabledBundles containsObject:v4])
+  if ([(NSArray *)self->_disabledBundles containsObject:identifierCopy])
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  else if ([v4 hasPrefix:@"com.apple."])
+  else if ([identifierCopy hasPrefix:@"com.apple."])
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v6 = [(NSMutableDictionary *)self->_bundleIDsWithAssistantSchemaConformanceCache objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_bundleIDsWithAssistantSchemaConformanceCache objectForKeyedSubscript:identifierCopy];
     v7 = v6;
     if (v6)
     {
       if ([v6 BOOLValue])
       {
-        v5 = [v7 BOOLValue];
+        bOOLValue = [v7 BOOLValue];
       }
 
       else
       {
-        v5 = 0;
+        bOOLValue = 0;
       }
     }
 
@@ -1017,17 +1017,17 @@ void __85__LNSpotlightCascadeTranslator_lookupAssistantSchemasForTypeIdentifier_
       v12[2] = __64__LNSpotlightCascadeTranslator_isAllowedClientBundleIdentifier___block_invoke;
       v12[3] = &unk_1E74B1610;
       v12[4] = &v13;
-      [(LNMetadataProvider *)metadataProvider enumerateEntitiesForBundleIdentifier:v4 usingBlock:v12 error:&v11];
+      [(LNMetadataProvider *)metadataProvider enumerateEntitiesForBundleIdentifier:identifierCopy usingBlock:v12 error:&v11];
       v9 = v11;
-      [(NSMutableDictionary *)self->_bundleIDsWithAssistantSchemaConformanceCache setObject:v14[5] forKeyedSubscript:v4];
-      v5 = [v14[5] BOOLValue];
+      [(NSMutableDictionary *)self->_bundleIDsWithAssistantSchemaConformanceCache setObject:v14[5] forKeyedSubscript:identifierCopy];
+      bOOLValue = [v14[5] BOOLValue];
       _Block_object_dispose(&v13, 8);
     }
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v5;
+  return bOOLValue;
 }
 
 void __64__LNSpotlightCascadeTranslator_isAllowedClientBundleIdentifier___block_invoke(uint64_t a1, void *a2, _BYTE *a3)

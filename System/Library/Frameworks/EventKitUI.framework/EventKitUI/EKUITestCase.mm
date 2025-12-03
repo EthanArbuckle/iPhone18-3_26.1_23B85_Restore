@@ -6,8 +6,8 @@
 
 - (id)controller
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"EKUITestCase.m" lineNumber:18 description:@"Override in Subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"EKUITestCase.m" lineNumber:18 description:@"Override in Subclass"];
 
   return 0;
 }

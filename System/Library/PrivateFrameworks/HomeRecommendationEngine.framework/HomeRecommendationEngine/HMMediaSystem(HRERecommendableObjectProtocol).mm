@@ -11,8 +11,8 @@
 
 - (id)hre_actionTypes
 {
-  v1 = [a1 mediaProfiles];
-  v2 = [v1 na_flatMap:&__block_literal_global_111];
+  mediaProfiles = [self mediaProfiles];
+  v2 = [mediaProfiles na_flatMap:&__block_literal_global_111];
 
   return v2;
 }
@@ -35,7 +35,7 @@
   v3[1] = 3221225472;
   v3[2] = __66__HMMediaSystem_HRERecommendableObjectProtocol__hre_matchingTypes__block_invoke;
   v3[3] = &unk_279776290;
-  v3[4] = a1;
+  v3[4] = self;
   v1 = __66__HMMediaSystem_HRERecommendableObjectProtocol__hre_matchingTypes__block_invoke(v3);
 
   return v1;
@@ -56,16 +56,16 @@
 - (uint64_t)hre_isActionable
 {
   v2 = objc_alloc_init(MEMORY[0x277D148D0]);
-  v3 = [objc_alloc(MEMORY[0x277D147E8]) initWithValueSource:v2 mediaProfileContainer:a1];
-  v4 = [v3 containsActions];
+  v3 = [objc_alloc(MEMORY[0x277D147E8]) initWithValueSource:v2 mediaProfileContainer:self];
+  containsActions = [v3 containsActions];
 
-  return v4;
+  return containsActions;
 }
 
 - (uint64_t)hre_isVisible
 {
-  v1 = [a1 mediaProfiles];
-  v2 = [v1 na_any:&__block_literal_global_122];
+  mediaProfiles = [self mediaProfiles];
+  v2 = [mediaProfiles na_any:&__block_literal_global_122];
 
   return v2;
 }

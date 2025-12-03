@@ -1,21 +1,21 @@
 @interface CSDConversationProviderManager
 + (CSDConversationProviderManager)sharedInstance;
 + (id)errorForDisabledPseudonyms;
-+ (id)errorForUnregisteredProviderIdentifier:(id)a3;
++ (id)errorForUnregisteredProviderIdentifier:(id)identifier;
 - (CSDConversationProviderManager)init;
-- (id)conversationProviderForIdentifier:(id)a3;
-- (id)providerIdentifiersForClient:(id)a3;
-- (id)serviceForProvider:(id)a3;
-- (id)tuConversationProviderForIdentifier:(id)a3;
-- (void)createProcessMonitorIfNecessary:(id)a3 forClient:(id)a4;
-- (void)doesHandle:(id)a3 correspondToConversationProvider:(id)a4 completionHandler:(id)a5;
-- (void)generatePseudonymHandleForConversationProvider:(id)a3 expiryDuration:(double)a4 URI:(id)a5 completionHandler:(id)a6;
-- (void)registerConversationProvider:(id)a3 completionHandler:(id)a4;
-- (void)renewPseudonymHandle:(id)a3 forConversationProvider:(id)a4 expirationDate:(id)a5 completionHandler:(id)a6;
-- (void)revokePseudonymHandle:(id)a3 forConversationProvider:(id)a4 completionHandler:(id)a5;
-- (void)setBeginListeningBlock:(id)a3;
-- (void)startTrackingClient:(id)a3 forProviderIdentifier:(id)a4;
-- (void)stopTrackingClient:(id)a3;
+- (id)conversationProviderForIdentifier:(id)identifier;
+- (id)providerIdentifiersForClient:(id)client;
+- (id)serviceForProvider:(id)provider;
+- (id)tuConversationProviderForIdentifier:(id)identifier;
+- (void)createProcessMonitorIfNecessary:(id)necessary forClient:(id)client;
+- (void)doesHandle:(id)handle correspondToConversationProvider:(id)provider completionHandler:(id)handler;
+- (void)generatePseudonymHandleForConversationProvider:(id)provider expiryDuration:(double)duration URI:(id)i completionHandler:(id)handler;
+- (void)registerConversationProvider:(id)provider completionHandler:(id)handler;
+- (void)renewPseudonymHandle:(id)handle forConversationProvider:(id)provider expirationDate:(id)date completionHandler:(id)handler;
+- (void)revokePseudonymHandle:(id)handle forConversationProvider:(id)provider completionHandler:(id)handler;
+- (void)setBeginListeningBlock:(id)block;
+- (void)startTrackingClient:(id)client forProviderIdentifier:(id)identifier;
+- (void)stopTrackingClient:(id)client;
 @end
 
 @implementation CSDConversationProviderManager
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = sub_10021F9E8;
   block[3] = &unk_10061A860;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006ACEF0 != -1)
   {
     dispatch_once(&qword_1006ACEF0, block);
@@ -74,79 +74,79 @@
   return v3;
 }
 
-- (void)startTrackingClient:(id)a3 forProviderIdentifier:(id)a4
+- (void)startTrackingClient:(id)client forProviderIdentifier:(id)identifier
 {
-  v21 = a3;
-  v6 = a4;
+  clientCopy = client;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
-  v7 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v21 processIdentifier]);
-  v8 = [(CSDConversationProviderManager *)self providerIdentifierToProvider];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  v7 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [clientCopy processIdentifier]);
+  providerIdentifierToProvider = [(CSDConversationProviderManager *)self providerIdentifierToProvider];
+  v9 = [providerIdentifierToProvider objectForKeyedSubscript:identifierCopy];
 
   if (v9)
   {
-    v10 = [(CSDConversationProviderManager *)self pidToProviderIdentifiers];
-    v11 = [v10 objectForKeyedSubscript:v7];
+    pidToProviderIdentifiers = [(CSDConversationProviderManager *)self pidToProviderIdentifiers];
+    v11 = [pidToProviderIdentifiers objectForKeyedSubscript:v7];
 
     if (!v11)
     {
       v12 = objc_alloc_init(NSMutableSet);
-      v13 = [(CSDConversationProviderManager *)self pidToProviderIdentifiers];
-      [v13 setObject:v12 forKeyedSubscript:v7];
+      pidToProviderIdentifiers2 = [(CSDConversationProviderManager *)self pidToProviderIdentifiers];
+      [pidToProviderIdentifiers2 setObject:v12 forKeyedSubscript:v7];
     }
 
-    v14 = [(CSDConversationProviderManager *)self pidToProviderIdentifiers];
-    v15 = [v14 objectForKeyedSubscript:v7];
-    v16 = [v6 copy];
+    pidToProviderIdentifiers3 = [(CSDConversationProviderManager *)self pidToProviderIdentifiers];
+    v15 = [pidToProviderIdentifiers3 objectForKeyedSubscript:v7];
+    v16 = [identifierCopy copy];
     [v15 addObject:v16];
   }
 
   else
   {
-    v17 = [(CSDConversationProviderManager *)self pidToCachedProviderIdentifiers];
-    v18 = [v17 objectForKeyedSubscript:v7];
+    pidToCachedProviderIdentifiers = [(CSDConversationProviderManager *)self pidToCachedProviderIdentifiers];
+    v18 = [pidToCachedProviderIdentifiers objectForKeyedSubscript:v7];
 
     if (!v18)
     {
       v19 = objc_alloc_init(NSMutableSet);
-      v20 = [(CSDConversationProviderManager *)self pidToCachedProviderIdentifiers];
-      [v20 setObject:v19 forKeyedSubscript:v7];
+      pidToCachedProviderIdentifiers2 = [(CSDConversationProviderManager *)self pidToCachedProviderIdentifiers];
+      [pidToCachedProviderIdentifiers2 setObject:v19 forKeyedSubscript:v7];
     }
 
-    v14 = [(CSDConversationProviderManager *)self pidToCachedProviderIdentifiers];
-    v15 = [v14 objectForKeyedSubscript:v7];
-    v16 = [v6 copy];
+    pidToProviderIdentifiers3 = [(CSDConversationProviderManager *)self pidToCachedProviderIdentifiers];
+    v15 = [pidToProviderIdentifiers3 objectForKeyedSubscript:v7];
+    v16 = [identifierCopy copy];
     [v15 addObject:v16];
   }
 
-  [(CSDConversationProviderManager *)self createProcessMonitorIfNecessary:v7 forClient:v21];
+  [(CSDConversationProviderManager *)self createProcessMonitorIfNecessary:v7 forClient:clientCopy];
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)stopTrackingClient:(id)a3
+- (void)stopTrackingClient:(id)client
 {
-  v8 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_accessorLock);
-  v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v8 processIdentifier]);
-  v5 = [(CSDConversationProviderManager *)self pidToProcessHandle];
-  [v5 setObject:0 forKeyedSubscript:v4];
+  v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [clientCopy processIdentifier]);
+  pidToProcessHandle = [(CSDConversationProviderManager *)self pidToProcessHandle];
+  [pidToProcessHandle setObject:0 forKeyedSubscript:v4];
 
-  v6 = [(CSDConversationProviderManager *)self pidToProviderIdentifiers];
-  [v6 setObject:0 forKeyedSubscript:v4];
+  pidToProviderIdentifiers = [(CSDConversationProviderManager *)self pidToProviderIdentifiers];
+  [pidToProviderIdentifiers setObject:0 forKeyedSubscript:v4];
 
-  v7 = [(CSDConversationProviderManager *)self pidToCachedProviderIdentifiers];
-  [v7 setObject:0 forKeyedSubscript:v4];
+  pidToCachedProviderIdentifiers = [(CSDConversationProviderManager *)self pidToCachedProviderIdentifiers];
+  [pidToCachedProviderIdentifiers setObject:0 forKeyedSubscript:v4];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (id)providerIdentifiersForClient:(id)a3
+- (id)providerIdentifiersForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_accessorLock);
-  v5 = [(CSDConversationProviderManager *)self pidToProviderIdentifiers];
-  v6 = [[NSNumber alloc] initWithInt:{objc_msgSend(v4, "processIdentifier")}];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  pidToProviderIdentifiers = [(CSDConversationProviderManager *)self pidToProviderIdentifiers];
+  v6 = [[NSNumber alloc] initWithInt:{objc_msgSend(clientCopy, "processIdentifier")}];
+  v7 = [pidToProviderIdentifiers objectForKeyedSubscript:v6];
   v8 = [v7 copy];
   v9 = v8;
   if (v8)
@@ -166,24 +166,24 @@
   return v11;
 }
 
-- (void)registerConversationProvider:(id)a3 completionHandler:(id)a4
+- (void)registerConversationProvider:(id)provider completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [(CSDConversationProviderManager *)self conversationProviderForIdentifier:v8];
+  providerCopy = provider;
+  handlerCopy = handler;
+  identifier = [providerCopy identifier];
+  v9 = [(CSDConversationProviderManager *)self conversationProviderForIdentifier:identifier];
 
   if (v9)
   {
-    v10 = [v6 identifier];
-    v11 = [NSString stringWithFormat:@"Already registered provider for identifier: %@", v10];
+    identifier2 = [providerCopy identifier];
+    v11 = [NSString stringWithFormat:@"Already registered provider for identifier: %@", identifier2];
 
     v19 = NSLocalizedFailureReasonErrorKey;
     v20 = v11;
     v12 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     v13 = [NSError errorWithDomain:@"CSDConversationProviderManager" code:1 userInfo:v12];
 
-    v7[2](v7, v13);
+    handlerCopy[2](handlerCopy, v13);
   }
 
   else
@@ -193,31 +193,31 @@
     v15[2] = sub_100220128;
     v15[3] = &unk_10061DE70;
     v15[4] = self;
-    v16 = [[CSDConversationProvider alloc] initWithProvider:v6];
-    v17 = v6;
-    v18 = v7;
+    v16 = [[CSDConversationProvider alloc] initWithProvider:providerCopy];
+    v17 = providerCopy;
+    v18 = handlerCopy;
     v11 = v16;
     v14 = objc_retainBlock(v15);
     [(CSDConversationProvider *)v11 registerWithIDSWithCompletionHandler:v14];
   }
 }
 
-- (id)conversationProviderForIdentifier:(id)a3
+- (id)conversationProviderForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
-  v5 = [(CSDConversationProviderManager *)self providerIdentifierToProvider];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  providerIdentifierToProvider = [(CSDConversationProviderManager *)self providerIdentifierToProvider];
+  v6 = [providerIdentifierToProvider objectForKeyedSubscript:identifierCopy];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 
   return v6;
 }
 
-- (id)tuConversationProviderForIdentifier:(id)a3
+- (id)tuConversationProviderForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDConversationProviderManager *)self conversationProviderForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(CSDConversationProviderManager *)self conversationProviderForIdentifier:identifierCopy];
   v6 = v5;
   if (v5)
   {
@@ -226,113 +226,113 @@
 
   else
   {
-    [TUConversationProvider providerForIdentifier:v4];
+    [TUConversationProvider providerForIdentifier:identifierCopy];
   }
   v7 = ;
 
   return v7;
 }
 
-- (void)generatePseudonymHandleForConversationProvider:(id)a3 expiryDuration:(double)a4 URI:(id)a5 completionHandler:(id)a6
+- (void)generatePseudonymHandleForConversationProvider:(id)provider expiryDuration:(double)duration URI:(id)i completionHandler:(id)handler
 {
-  v22 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(CSDConversationProviderManager *)self serverBag];
-  v13 = [v22 identifier];
-  v14 = [v12 gftaasPseudonymsEnabled:v13];
+  providerCopy = provider;
+  iCopy = i;
+  handlerCopy = handler;
+  serverBag = [(CSDConversationProviderManager *)self serverBag];
+  identifier = [providerCopy identifier];
+  v14 = [serverBag gftaasPseudonymsEnabled:identifier];
 
   if ((v14 & 1) == 0)
   {
-    v15 = [objc_opt_class() errorForDisabledPseudonyms];
-    (*(v11 + 2))(v11, 0, 0, v15);
+    errorForDisabledPseudonyms = [objc_opt_class() errorForDisabledPseudonyms];
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, errorForDisabledPseudonyms);
   }
 
   os_unfair_lock_lock(&self->_accessorLock);
-  v16 = [(CSDConversationProviderManager *)self providerIdentifierToProvider];
-  v17 = [v22 identifier];
-  v18 = [v16 objectForKeyedSubscript:v17];
+  providerIdentifierToProvider = [(CSDConversationProviderManager *)self providerIdentifierToProvider];
+  identifier2 = [providerCopy identifier];
+  v18 = [providerIdentifierToProvider objectForKeyedSubscript:identifier2];
 
   if (v18)
   {
-    [v18 generatePseudonymHandleForConversationWithExpiryDuration:v10 URI:v11 completionHandler:a4];
+    [v18 generatePseudonymHandleForConversationWithExpiryDuration:iCopy URI:handlerCopy completionHandler:duration];
     os_unfair_lock_unlock(&self->_accessorLock);
   }
 
   else
   {
-    v19 = [v22 identifier];
-    v20 = [v19 copy];
+    identifier3 = [providerCopy identifier];
+    v20 = [identifier3 copy];
 
     os_unfair_lock_unlock(&self->_accessorLock);
     v21 = [objc_opt_class() errorForUnregisteredProviderIdentifier:v20];
-    (*(v11 + 2))(v11, 0, 0, v21);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v21);
   }
 }
 
-- (void)renewPseudonymHandle:(id)a3 forConversationProvider:(id)a4 expirationDate:(id)a5 completionHandler:(id)a6
+- (void)renewPseudonymHandle:(id)handle forConversationProvider:(id)provider expirationDate:(id)date completionHandler:(id)handler
 {
-  v20 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  handleCopy = handle;
+  providerCopy = provider;
+  dateCopy = date;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_accessorLock);
-  v13 = [(CSDConversationProviderManager *)self providerIdentifierToProvider];
-  v14 = [v10 identifier];
-  v15 = [v13 objectForKeyedSubscript:v14];
+  providerIdentifierToProvider = [(CSDConversationProviderManager *)self providerIdentifierToProvider];
+  identifier = [providerCopy identifier];
+  v15 = [providerIdentifierToProvider objectForKeyedSubscript:identifier];
 
   if (v15)
   {
-    [v15 renewPseudonymHandle:v20 expirationDate:v11 completionHandler:v12];
+    [v15 renewPseudonymHandle:handleCopy expirationDate:dateCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v16 = objc_opt_class();
-    v17 = [v10 identifier];
-    v18 = [v17 copy];
+    identifier2 = [providerCopy identifier];
+    v18 = [identifier2 copy];
     v19 = [v16 errorForUnregisteredProviderIdentifier:v18];
-    (*(v12 + 2))(v12, 0, 0, v19);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v19);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)revokePseudonymHandle:(id)a3 forConversationProvider:(id)a4 completionHandler:(id)a5
+- (void)revokePseudonymHandle:(id)handle forConversationProvider:(id)provider completionHandler:(id)handler
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
+  handleCopy = handle;
+  providerCopy = provider;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_accessorLock);
-  v10 = [(CSDConversationProviderManager *)self providerIdentifierToProvider];
-  v11 = [v8 identifier];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  providerIdentifierToProvider = [(CSDConversationProviderManager *)self providerIdentifierToProvider];
+  identifier = [providerCopy identifier];
+  v12 = [providerIdentifierToProvider objectForKeyedSubscript:identifier];
 
   if (v12)
   {
-    [v12 revokePseudonymHandle:v16 completionHandler:v9];
+    [v12 revokePseudonymHandle:handleCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v13 = objc_opt_class();
-    v14 = [v8 identifier];
-    v15 = [v13 errorForUnregisteredProviderIdentifier:v14];
-    v9[2](v9, 0, v15);
+    identifier2 = [providerCopy identifier];
+    v15 = [v13 errorForUnregisteredProviderIdentifier:identifier2];
+    handlerCopy[2](handlerCopy, 0, v15);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)doesHandle:(id)a3 correspondToConversationProvider:(id)a4 completionHandler:(id)a5
+- (void)doesHandle:(id)handle correspondToConversationProvider:(id)provider completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  providerCopy = provider;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_accessorLock);
-  v11 = [(CSDConversationProviderManager *)self providerIdentifierToProvider];
-  v12 = [v9 identifier];
-  v13 = [v11 objectForKeyedSubscript:v12];
+  providerIdentifierToProvider = [(CSDConversationProviderManager *)self providerIdentifierToProvider];
+  identifier = [providerCopy identifier];
+  v13 = [providerIdentifierToProvider objectForKeyedSubscript:identifier];
   v14 = [v13 copy];
 
   if (v14)
@@ -341,34 +341,34 @@
     v18[1] = 3221225472;
     v18[2] = sub_100220B88;
     v18[3] = &unk_10061EE38;
-    v19 = v10;
-    [v14 isPseudonymHandleForProvider:v8 completionHandler:v18];
+    v19 = handlerCopy;
+    [v14 isPseudonymHandleForProvider:handleCopy completionHandler:v18];
   }
 
   else
   {
     v15 = objc_opt_class();
-    v16 = [v9 identifier];
-    v17 = [v15 errorForUnregisteredProviderIdentifier:v16];
-    (*(v10 + 2))(v10, 0, v17);
+    identifier2 = [providerCopy identifier];
+    v17 = [v15 errorForUnregisteredProviderIdentifier:identifier2];
+    (*(handlerCopy + 2))(handlerCopy, 0, v17);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (id)serviceForProvider:(id)a3
+- (id)serviceForProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (([v4 isDefaultProvider] & 1) != 0 || (-[CSDConversationProviderManager featureFlags](self, "featureFlags"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "groupFacetimeAsAServiceEnabled"), v5, (v6 & 1) == 0))
+  if (([providerCopy isDefaultProvider] & 1) != 0 || (-[CSDConversationProviderManager featureFlags](self, "featureFlags"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "groupFacetimeAsAServiceEnabled"), v5, (v6 & 1) == 0))
   {
-    v10 = +[CSDFaceTimeMultiwayIDSService sharedInstance];
+    service = +[CSDFaceTimeMultiwayIDSService sharedInstance];
     v11 = sub_100004778();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v4 isDefaultProvider];
+      isDefaultProvider = [providerCopy isDefaultProvider];
       v14 = @"NO";
-      if (v13)
+      if (isDefaultProvider)
       {
         v14 = @"YES";
       }
@@ -376,28 +376,28 @@
       v17 = 138412546;
       v18 = v14;
       v19 = 2112;
-      v20 = v4;
+      v20 = providerCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "provider.isDefaultProvider: %@, provider: %@", &v17, 0x16u);
     }
   }
 
   else
   {
-    v7 = [(CSDConversationProviderManager *)self providerIdentifierToProvider];
-    v8 = [v4 identifier];
-    v9 = [v7 objectForKeyedSubscript:v8];
-    v10 = [v9 service];
+    providerIdentifierToProvider = [(CSDConversationProviderManager *)self providerIdentifierToProvider];
+    identifier = [providerCopy identifier];
+    v9 = [providerIdentifierToProvider objectForKeyedSubscript:identifier];
+    service = [v9 service];
 
     v11 = sub_100004778();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(CSDConversationProviderManager *)self providerIdentifierToProvider];
+      providerIdentifierToProvider2 = [(CSDConversationProviderManager *)self providerIdentifierToProvider];
       v17 = 138412802;
-      v18 = v10;
+      v18 = service;
       v19 = 2112;
-      v20 = v4;
+      v20 = providerCopy;
       v21 = 2112;
-      v22 = v12;
+      v22 = providerIdentifierToProvider2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "service: %@, provider: %@, providerIdentifierToProvider: %@", &v17, 0x20u);
     }
   }
@@ -406,30 +406,30 @@
   {
     v15 = +[CSDSimulatedIDSService sharedInstance];
 
-    v10 = v15;
+    service = v15;
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
 
-  return v10;
+  return service;
 }
 
-- (void)setBeginListeningBlock:(id)a3
+- (void)setBeginListeningBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_accessorLock);
-  v5 = objc_retainBlock(v4);
+  v5 = objc_retainBlock(blockCopy);
   beginListeningBlock = self->_beginListeningBlock;
   self->_beginListeningBlock = v5;
 
-  v7 = [(CSDConversationProviderManager *)self providerIdentifierToProvider];
-  v8 = [v7 allValues];
+  providerIdentifierToProvider = [(CSDConversationProviderManager *)self providerIdentifierToProvider];
+  allValues = [providerIdentifierToProvider allValues];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = v8;
+  v9 = allValues;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -445,9 +445,9 @@
         }
 
         v13 = *(*(&v16 + 1) + 8 * v12);
-        v14 = [(CSDConversationProviderManager *)self beginListeningBlock];
-        v15 = [v13 service];
-        (v14)[2](v14, v15);
+        beginListeningBlock = [(CSDConversationProviderManager *)self beginListeningBlock];
+        service = [v13 service];
+        (beginListeningBlock)[2](beginListeningBlock, service);
 
         v12 = v12 + 1;
       }
@@ -462,11 +462,11 @@
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-+ (id)errorForUnregisteredProviderIdentifier:(id)a3
++ (id)errorForUnregisteredProviderIdentifier:(id)identifier
 {
-  v3 = [NSString stringWithFormat:@"Did not register GFT Provider with identifier: %@", a3];
+  identifier = [NSString stringWithFormat:@"Did not register GFT Provider with identifier: %@", identifier];
   v7 = NSLocalizedFailureReasonErrorKey;
-  v8 = v3;
+  v8 = identifier;
   v4 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   v5 = [NSError errorWithDomain:@"CSDConversationProviderManager" code:0 userInfo:v4];
 
@@ -483,17 +483,17 @@
   return v3;
 }
 
-- (void)createProcessMonitorIfNecessary:(id)a3 forClient:(id)a4
+- (void)createProcessMonitorIfNecessary:(id)necessary forClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDConversationProviderManager *)self pidToProcessHandle];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  necessaryCopy = necessary;
+  clientCopy = client;
+  pidToProcessHandle = [(CSDConversationProviderManager *)self pidToProcessHandle];
+  v9 = [pidToProcessHandle objectForKeyedSubscript:necessaryCopy];
 
   if (!v9)
   {
     objc_initWeak(&location, self);
-    v10 = +[RBSProcessIdentifier identifierWithPid:](RBSProcessIdentifier, "identifierWithPid:", [v7 processIdentifier]);
+    v10 = +[RBSProcessIdentifier identifierWithPid:](RBSProcessIdentifier, "identifierWithPid:", [clientCopy processIdentifier]);
     v11 = [RBSProcessHandle handleForIdentifier:v10 error:0];
 
     v13 = _NSConcreteStackBlock;
@@ -503,7 +503,7 @@
     objc_copyWeak(&v17, &location);
     [v11 monitorForDeath:&v13];
     v12 = [(CSDConversationProviderManager *)self pidToProcessHandle:v13];
-    [v12 setObject:v11 forKeyedSubscript:v6];
+    [v12 setObject:v11 forKeyedSubscript:necessaryCopy];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);

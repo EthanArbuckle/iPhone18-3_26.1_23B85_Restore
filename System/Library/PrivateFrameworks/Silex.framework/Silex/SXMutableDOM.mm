@@ -1,16 +1,16 @@
 @interface SXMutableDOM
-- (SXMutableDOM)initWithComponents:(id)a3 componentLayouts:(id)a4 componentStyles:(id)a5 componentTextStyles:(id)a6 textStyles:(id)a7 resources:(id)a8 autoPlacement:(id)a9 documentStyle:(id)a10 analysis:(id)a11 metadata:(id)a12;
+- (SXMutableDOM)initWithComponents:(id)components componentLayouts:(id)layouts componentStyles:(id)styles componentTextStyles:(id)textStyles textStyles:(id)a7 resources:(id)resources autoPlacement:(id)placement documentStyle:(id)self0 analysis:(id)self1 metadata:(id)self2;
 @end
 
 @implementation SXMutableDOM
 
-- (SXMutableDOM)initWithComponents:(id)a3 componentLayouts:(id)a4 componentStyles:(id)a5 componentTextStyles:(id)a6 textStyles:(id)a7 resources:(id)a8 autoPlacement:(id)a9 documentStyle:(id)a10 analysis:(id)a11 metadata:(id)a12
+- (SXMutableDOM)initWithComponents:(id)components componentLayouts:(id)layouts componentStyles:(id)styles componentTextStyles:(id)textStyles textStyles:(id)a7 resources:(id)resources autoPlacement:(id)placement documentStyle:(id)self0 analysis:(id)self1 metadata:(id)self2
 {
-  v18 = a9;
+  placementCopy = placement;
   v40.receiver = self;
   v40.super_class = SXMutableDOM;
-  v19 = a10;
-  v20 = [(SXDOM *)&v40 initWithComponents:a3 componentLayouts:a4 componentStyles:a5 componentTextStyles:a6 textStyles:a7 resources:a8 autoPlacement:v18 documentStyle:v19 analysis:a11 metadata:a12];
+  styleCopy = style;
+  v20 = [(SXDOM *)&v40 initWithComponents:components componentLayouts:layouts componentStyles:styles componentTextStyles:textStyles textStyles:a7 resources:resources autoPlacement:placementCopy documentStyle:styleCopy analysis:analysis metadata:metadata];
   v21 = v20;
   if (v20)
   {
@@ -38,8 +38,8 @@
     resources = v21->super._resources;
     v21->super._resources = v32;
 
-    objc_storeStrong(&v21->super._autoPlacement, a9);
-    objc_storeStrong(&v21->super._documentStyle, a10);
+    objc_storeStrong(&v21->super._autoPlacement, placement);
+    objc_storeStrong(&v21->super._documentStyle, style);
     v34 = [(SXDOMAnalysis *)v21->super._analysis mutableCopy];
     analysis = v21->super._analysis;
     v21->super._analysis = v34;

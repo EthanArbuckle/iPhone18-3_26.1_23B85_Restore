@@ -1,15 +1,15 @@
 @interface LTMCurvesComputeV1
-- (LTMCurvesComputeV1)initWith:(sRefDriverInputs_SOFTISP *)a3 HITH:(sCLRProcHITHStat_SOFTISP *)a4 geometryData:(id)a5 statsObj:(id)a6 optimized:(BOOL)a7 digitalFlash:(BOOL)a8 computeHDRCurves:(BOOL)a9 computeCurvesWoFaceBoost:(BOOL)a10 computeHDRCurvesWoFaceBoost:(BOOL)a11;
+- (LTMCurvesComputeV1)initWith:(sRefDriverInputs_SOFTISP *)with HITH:(sCLRProcHITHStat_SOFTISP *)h geometryData:(id)data statsObj:(id)obj optimized:(BOOL)optimized digitalFlash:(BOOL)flash computeHDRCurves:(BOOL)curves computeCurvesWoFaceBoost:(BOOL)self0 computeHDRCurvesWoFaceBoost:(BOOL)self1;
 - (id)compute;
 - (void)compute;
 @end
 
 @implementation LTMCurvesComputeV1
 
-- (LTMCurvesComputeV1)initWith:(sRefDriverInputs_SOFTISP *)a3 HITH:(sCLRProcHITHStat_SOFTISP *)a4 geometryData:(id)a5 statsObj:(id)a6 optimized:(BOOL)a7 digitalFlash:(BOOL)a8 computeHDRCurves:(BOOL)a9 computeCurvesWoFaceBoost:(BOOL)a10 computeHDRCurvesWoFaceBoost:(BOOL)a11
+- (LTMCurvesComputeV1)initWith:(sRefDriverInputs_SOFTISP *)with HITH:(sCLRProcHITHStat_SOFTISP *)h geometryData:(id)data statsObj:(id)obj optimized:(BOOL)optimized digitalFlash:(BOOL)flash computeHDRCurves:(BOOL)curves computeCurvesWoFaceBoost:(BOOL)self0 computeHDRCurvesWoFaceBoost:(BOOL)self1
 {
-  v17 = a5;
-  v18 = a6;
+  dataCopy = data;
+  objCopy = obj;
   v35.receiver = self;
   v35.super_class = LTMCurvesComputeV1;
   v19 = [(LTMCurvesComputeV1 *)&v35 init];
@@ -41,26 +41,26 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  memcpy(&v19->_driverInputMetadata, a3, 0x8F0uLL);
-  v19->_isDigitalFlash = a8;
-  v19->_computeHDRCurves = a9;
-  v19->_computeCurvesWoFaceBoost = a10;
-  v19->_computeHDRCurvesWoFaceBoost = a11;
-  v24 = [v17 copy];
+  memcpy(&v19->_driverInputMetadata, with, 0x8F0uLL);
+  v19->_isDigitalFlash = flash;
+  v19->_computeHDRCurves = curves;
+  v19->_computeCurvesWoFaceBoost = boost;
+  v19->_computeHDRCurvesWoFaceBoost = faceBoost;
+  v24 = [dataCopy copy];
   geometryData = v19->_geometryData;
   v19->_geometryData = v24;
 
-  v26 = *&a4->localHistBlockSizeX;
-  v27 = *&a4->globalHistWindow;
-  v28 = *&a4->localHistStat;
-  *&v19->_procHITHStat.thumbnailStat = *&a4->thumbnailStat;
+  v26 = *&h->localHistBlockSizeX;
+  v27 = *&h->globalHistWindow;
+  v28 = *&h->localHistStat;
+  *&v19->_procHITHStat.thumbnailStat = *&h->thumbnailStat;
   *&v19->_procHITHStat.localHistStat = v28;
-  v30 = *&a4->globalFaceHistStat;
-  v29 = *&a4->calculatedOnPortraitOrientation;
-  v31 = *&a4->localHistLowThreshold;
-  *&v19->_procHITHStat.globalHistStat = *&a4->globalHistStat;
-  v32 = *&a4->thumbnailWindow;
-  *&v19->_procHITHStat.thumbnailDownsampleX = *&a4->thumbnailDownsampleX;
+  v30 = *&h->globalFaceHistStat;
+  v29 = *&h->calculatedOnPortraitOrientation;
+  v31 = *&h->localHistLowThreshold;
+  *&v19->_procHITHStat.globalHistStat = *&h->globalHistStat;
+  v32 = *&h->thumbnailWindow;
+  *&v19->_procHITHStat.thumbnailDownsampleX = *&h->thumbnailDownsampleX;
   *&v19->_procHITHStat.thumbnailWindow = v32;
   *&v19->_procHITHStat.globalHistWindow = v27;
   *&v19->_procHITHStat.localHistBlockSizeX = v26;
@@ -70,8 +70,8 @@ LABEL_9:
   v19->_procHITHStat.thumbnailStat = v19->_thumbnailStat;
   v19->_procHITHStat.localHistStat = v19->_localHistStat;
   v19->_procHITHStat.globalHistStat = v19->_globalHistStat;
-  objc_storeStrong(&v19->_ltmStats, a6);
-  LOBYTE(v19->_computeInputs.thumbnailHistEV0[150]) = a7;
+  objc_storeStrong(&v19->_ltmStats, obj);
+  LOBYTE(v19->_computeInputs.thumbnailHistEV0[150]) = optimized;
   v33 = v19;
 LABEL_5:
 

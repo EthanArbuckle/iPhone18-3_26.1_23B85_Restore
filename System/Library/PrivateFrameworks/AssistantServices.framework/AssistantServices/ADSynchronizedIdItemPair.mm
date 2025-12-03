@@ -1,24 +1,24 @@
 @interface ADSynchronizedIdItemPair
-- (ADSynchronizedIdItemPair)initWithCurrent:(id)a3 andNext:(id)a4;
-- (ADSynchronizedIdItemPair)initWithRemote:(id)a3;
-- (BOOL)setCurrentIfNil:(id)a3 andCreationTime:(id)a4 andValidityDays:(unsigned int)a5;
-- (id)adoptRemoteIfEarly:(id)a3;
-- (id)selectEarliest:(id)a3;
-- (unint64_t)_populateNullsWithCreationTime:(id)a3 today:(id)a4 minValidityDays:(unsigned int)a5 maxValidityDays:(unsigned int)a6 currentOption:(unint64_t)a7 nextOption:(unint64_t)a8;
+- (ADSynchronizedIdItemPair)initWithCurrent:(id)current andNext:(id)next;
+- (ADSynchronizedIdItemPair)initWithRemote:(id)remote;
+- (BOOL)setCurrentIfNil:(id)nil andCreationTime:(id)time andValidityDays:(unsigned int)days;
+- (id)adoptRemoteIfEarly:(id)early;
+- (id)selectEarliest:(id)earliest;
+- (unint64_t)_populateNullsWithCreationTime:(id)time today:(id)today minValidityDays:(unsigned int)days maxValidityDays:(unsigned int)validityDays currentOption:(unint64_t)option nextOption:(unint64_t)nextOption;
 @end
 
 @implementation ADSynchronizedIdItemPair
 
-- (BOOL)setCurrentIfNil:(id)a3 andCreationTime:(id)a4 andValidityDays:(unsigned int)a5
+- (BOOL)setCurrentIfNil:(id)nil andCreationTime:(id)time andValidityDays:(unsigned int)days
 {
   current = self->_current;
   if (!current)
   {
-    v6 = *&a5;
-    v9 = a4;
-    v10 = a3;
-    v11 = [ADSynchronizedIdItem alignToMidnight:v9];
-    v12 = [[ADSynchronizedIdItem alloc] initWithValue:v10 andEffectiveFrom:v11 andValidityDays:v6 andCreatedOn:v9 andAdoptedOn:0 andSwitchedCount:0];
+    v6 = *&days;
+    timeCopy = time;
+    nilCopy = nil;
+    v11 = [ADSynchronizedIdItem alignToMidnight:timeCopy];
+    v12 = [[ADSynchronizedIdItem alloc] initWithValue:nilCopy andEffectiveFrom:v11 andValidityDays:v6 andCreatedOn:timeCopy andAdoptedOn:0 andSwitchedCount:0];
 
     v13 = self->_current;
     self->_current = v12;
@@ -27,15 +27,15 @@
   return current == 0;
 }
 
-- (unint64_t)_populateNullsWithCreationTime:(id)a3 today:(id)a4 minValidityDays:(unsigned int)a5 maxValidityDays:(unsigned int)a6 currentOption:(unint64_t)a7 nextOption:(unint64_t)a8
+- (unint64_t)_populateNullsWithCreationTime:(id)time today:(id)today minValidityDays:(unsigned int)days maxValidityDays:(unsigned int)validityDays currentOption:(unint64_t)option nextOption:(unint64_t)nextOption
 {
-  v10 = *&a6;
-  v11 = *&a5;
-  v14 = a3;
-  v15 = a4;
+  v10 = *&validityDays;
+  v11 = *&days;
+  timeCopy = time;
+  todayCopy = today;
   if (self->_current)
   {
-    a7 = 0;
+    option = 0;
   }
 
   else
@@ -47,47 +47,47 @@
 
     v16 = [ADSynchronizedIdItem alloc];
     v17 = objc_alloc_init(NSUUID);
-    v18 = [(ADSynchronizedIdItem *)v16 initWithValue:v17 andEffectiveFrom:v15 andValidityDays:v11 andCreatedOn:v14 andAdoptedOn:0 andSwitchedCount:0];
+    v18 = [(ADSynchronizedIdItem *)v16 initWithValue:v17 andEffectiveFrom:todayCopy andValidityDays:v11 andCreatedOn:timeCopy andAdoptedOn:0 andSwitchedCount:0];
     current = self->_current;
     self->_current = v18;
   }
 
-  if (!self->_next && [(ADSynchronizedIdItem *)self->_current expirationDaysFrom:v15]<= 14)
+  if (!self->_next && [(ADSynchronizedIdItem *)self->_current expirationDaysFrom:todayCopy]<= 14)
   {
     v20 = [ADSynchronizedIdItem alloc];
     v21 = objc_alloc_init(NSUUID);
-    v22 = [(ADSynchronizedIdItem *)self->_current expirationDate];
-    v23 = [(ADSynchronizedIdItem *)v20 initWithValue:v21 andEffectiveFrom:v22 andValidityDays:v10 andCreatedOn:v14 andAdoptedOn:0 andSwitchedCount:0];
+    expirationDate = [(ADSynchronizedIdItem *)self->_current expirationDate];
+    v23 = [(ADSynchronizedIdItem *)v20 initWithValue:v21 andEffectiveFrom:expirationDate andValidityDays:v10 andCreatedOn:timeCopy andAdoptedOn:0 andSwitchedCount:0];
     next = self->_next;
     self->_next = v23;
 
-    a7 |= a8;
+    option |= nextOption;
   }
 
-  return a7;
+  return option;
 }
 
-- (id)adoptRemoteIfEarly:(id)a3
+- (id)adoptRemoteIfEarly:(id)early
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  earlyCopy = early;
+  v5 = earlyCopy;
+  if (!earlyCopy)
   {
-    v11 = self;
+    selfCopy = self;
     goto LABEL_18;
   }
 
   current = self->_current;
-  v7 = [v4 current];
-  v8 = v7;
+  current = [earlyCopy current];
+  v8 = current;
   if (current)
   {
 
     v9 = self->_current;
     if (v8)
     {
-      v10 = [v5 current];
-      v8 = [(ADSynchronizedIdItem *)v9 selectEarliest:v10];
+      current2 = [v5 current];
+      v8 = [(ADSynchronizedIdItem *)v9 selectEarliest:current2];
     }
 
     else
@@ -97,16 +97,16 @@
   }
 
   next = self->_next;
-  v13 = [v5 next];
-  v14 = v13;
+  next = [v5 next];
+  v14 = next;
   if (next)
   {
 
     v15 = self->_next;
     if (v14)
     {
-      v16 = [v5 next];
-      v14 = [(ADSynchronizedIdItem *)v15 selectEarliest:v16];
+      next2 = [v5 next];
+      v14 = [(ADSynchronizedIdItem *)v15 selectEarliest:next2];
     }
 
     else
@@ -129,7 +129,7 @@ LABEL_14:
       v14 = v19;
     }
 
-    v20 = [[ADSynchronizedIdItemPair alloc] initWithCurrent:v8 andNext:v14];
+    selfCopy2 = [[ADSynchronizedIdItemPair alloc] initWithCurrent:v8 andNext:v14];
     goto LABEL_17;
   }
 
@@ -139,36 +139,36 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v20 = self;
+  selfCopy2 = self;
 LABEL_17:
-  v11 = v20;
+  selfCopy = selfCopy2;
 
 LABEL_18:
 
-  return v11;
+  return selfCopy;
 }
 
-- (id)selectEarliest:(id)a3
+- (id)selectEarliest:(id)earliest
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  earliestCopy = earliest;
+  v5 = earliestCopy;
+  if (!earliestCopy)
   {
-    v11 = self;
+    selfCopy = self;
     goto LABEL_18;
   }
 
   current = self->_current;
-  v7 = [v4 current];
-  v8 = v7;
+  current = [earliestCopy current];
+  v8 = current;
   if (current)
   {
 
     v9 = self->_current;
     if (v8)
     {
-      v10 = [v5 current];
-      v8 = [(ADSynchronizedIdItem *)v9 selectEarliest:v10];
+      current2 = [v5 current];
+      v8 = [(ADSynchronizedIdItem *)v9 selectEarliest:current2];
     }
 
     else
@@ -178,16 +178,16 @@ LABEL_18:
   }
 
   next = self->_next;
-  v13 = [v5 next];
-  v14 = v13;
+  next = [v5 next];
+  v14 = next;
   if (next)
   {
 
     v15 = self->_next;
     if (v14)
     {
-      v16 = [v5 next];
-      v14 = [(ADSynchronizedIdItem *)v15 selectEarliest:v16];
+      next2 = [v5 next];
+      v14 = [(ADSynchronizedIdItem *)v15 selectEarliest:next2];
     }
 
     else
@@ -201,7 +201,7 @@ LABEL_18:
   {
     if (v14 == v17)
     {
-      v18 = self;
+      selfCopy2 = self;
       goto LABEL_17;
     }
 
@@ -211,45 +211,45 @@ LABEL_18:
   if (v14 == v17)
   {
 LABEL_15:
-    v18 = [[ADSynchronizedIdItemPair alloc] initWithCurrent:v8 andNext:v14];
+    selfCopy2 = [[ADSynchronizedIdItemPair alloc] initWithCurrent:v8 andNext:v14];
     goto LABEL_17;
   }
 
-  v18 = v5;
+  selfCopy2 = v5;
 LABEL_17:
-  v11 = v18;
+  selfCopy = selfCopy2;
 
 LABEL_18:
 
-  return v11;
+  return selfCopy;
 }
 
-- (ADSynchronizedIdItemPair)initWithRemote:(id)a3
+- (ADSynchronizedIdItemPair)initWithRemote:(id)remote
 {
-  v4 = a3;
+  remoteCopy = remote;
   v17.receiver = self;
   v17.super_class = ADSynchronizedIdItemPair;
   v5 = [(ADSynchronizedIdItemPair *)&v17 init];
   if (v5)
   {
-    v6 = [v4 current];
+    current = [remoteCopy current];
 
-    if (v6)
+    if (current)
     {
       v7 = [ADSynchronizedIdItem alloc];
-      v8 = [v4 current];
-      v9 = [(ADSynchronizedIdItem *)v7 initAndAdopt:v8];
+      current2 = [remoteCopy current];
+      v9 = [(ADSynchronizedIdItem *)v7 initAndAdopt:current2];
       current = v5->_current;
       v5->_current = v9;
     }
 
-    v11 = [v4 next];
+    next = [remoteCopy next];
 
-    if (v11)
+    if (next)
     {
       v12 = [ADSynchronizedIdItem alloc];
-      v13 = [v4 next];
-      v14 = [(ADSynchronizedIdItem *)v12 initAndAdopt:v13];
+      next2 = [remoteCopy next];
+      v14 = [(ADSynchronizedIdItem *)v12 initAndAdopt:next2];
       next = v5->_next;
       v5->_next = v14;
     }
@@ -258,18 +258,18 @@ LABEL_18:
   return v5;
 }
 
-- (ADSynchronizedIdItemPair)initWithCurrent:(id)a3 andNext:(id)a4
+- (ADSynchronizedIdItemPair)initWithCurrent:(id)current andNext:(id)next
 {
-  v7 = a3;
-  v8 = a4;
+  currentCopy = current;
+  nextCopy = next;
   v12.receiver = self;
   v12.super_class = ADSynchronizedIdItemPair;
   v9 = [(ADSynchronizedIdItemPair *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_current, a3);
-    objc_storeStrong(&v10->_next, a4);
+    objc_storeStrong(&v9->_current, current);
+    objc_storeStrong(&v10->_next, next);
   }
 
   return v10;

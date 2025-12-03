@@ -1,23 +1,23 @@
 @interface ATXMPBBlendingCaptureRateTracker
-- (BOOL)isEqual:(id)a3;
-- (id)captureTypeAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)captureTypeAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCaptureType:(id)a3;
+- (int)StringAsCaptureType:(id)type;
 - (int)captureType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCaptured:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCaptured:(BOOL)captured;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXMPBBlendingCaptureRateTracker
 
-- (void)setHasCaptured:(BOOL)a3
+- (void)setHasCaptured:(BOOL)captured
 {
-  if (a3)
+  if (captured)
   {
     v3 = 2;
   }
@@ -43,20 +43,20 @@
   }
 }
 
-- (id)captureTypeAsString:(int)a3
+- (id)captureTypeAsString:(int)string
 {
-  if (a3 > 4004)
+  if (string > 4004)
   {
-    if (a3 > 5002)
+    if (string > 5002)
     {
-      if (a3 <= 5005)
+      if (string <= 5005)
       {
-        if (a3 == 5003)
+        if (string == 5003)
         {
           v4 = @"HomeScreenDiverted_AppLaunchedFromSuggestionsWidget";
         }
 
-        else if (a3 == 5004)
+        else if (string == 5004)
         {
           v4 = @"HomeScreenDiverted_AppLaunchedFromHomeScreenDock";
         }
@@ -69,7 +69,7 @@
         return v4;
       }
 
-      switch(a3)
+      switch(string)
       {
         case 5006:
           v4 = @"HomeScreenDiverted_AppLaunchedFromHomeScreenSamePageFolder";
@@ -88,14 +88,14 @@
 
     else
     {
-      if (a3 > 4999)
+      if (string > 4999)
       {
-        if (a3 == 5000)
+        if (string == 5000)
         {
           v4 = @"HomeScreenDiverted_AppLaunchedFromHomeScreen";
         }
 
-        else if (a3 == 5001)
+        else if (string == 5001)
         {
           v4 = @"HomeScreenDiverted_AppLaunchedFromShortcutExecution";
         }
@@ -108,7 +108,7 @@
         return v4;
       }
 
-      switch(a3)
+      switch(string)
       {
         case 4005:
           v4 = @"AppLibraryDiverted_AppLaunchedFromCategoryPreview_Deduped";
@@ -126,21 +126,21 @@
     }
 
 LABEL_101:
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
 
     return v4;
   }
 
-  if (a3 > 3000)
+  if (string > 3000)
   {
-    if (a3 > 4001)
+    if (string > 4001)
     {
-      if (a3 == 4002)
+      if (string == 4002)
       {
         v4 = @"AppLibraryDiverted_AppLaunchedFromExpandedCategory";
       }
 
-      else if (a3 == 4003)
+      else if (string == 4003)
       {
         v4 = @"AppLibraryDiverted_AppLaunchedFromRecents";
       }
@@ -153,7 +153,7 @@ LABEL_101:
       return v4;
     }
 
-    switch(a3)
+    switch(string)
     {
       case 3001:
         v4 = @"SpotlightDiverted_ActionExecutedFromSearch";
@@ -172,9 +172,9 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  if (a3 > 2000)
+  if (string > 2000)
   {
-    switch(a3)
+    switch(string)
     {
       case 2001:
         v4 = @"SpotlightDiverted_AppLaunchedFromSearch";
@@ -193,7 +193,7 @@ LABEL_101:
     goto LABEL_101;
   }
 
-  switch(a3)
+  switch(string)
   {
     case 1:
       v4 = @"Captured";
@@ -214,125 +214,125 @@ LABEL_101:
   return v4;
 }
 
-- (int)StringAsCaptureType:(id)a3
+- (int)StringAsCaptureType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Captured"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Captured"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Diverted"])
+  else if ([typeCopy isEqualToString:@"Diverted"])
   {
     v4 = 1000;
   }
 
-  else if ([v3 isEqualToString:@"SpotlightDiverted_AppLaunchedFromShortcutExecution"])
+  else if ([typeCopy isEqualToString:@"SpotlightDiverted_AppLaunchedFromShortcutExecution"])
   {
     v4 = 2000;
   }
 
-  else if ([v3 isEqualToString:@"SpotlightDiverted_AppLaunchedFromSearch"])
+  else if ([typeCopy isEqualToString:@"SpotlightDiverted_AppLaunchedFromSearch"])
   {
     v4 = 2001;
   }
 
-  else if ([v3 isEqualToString:@"SpotlightDiverted_AppLaunchedFromSearchMatchingPredictedApp"])
+  else if ([typeCopy isEqualToString:@"SpotlightDiverted_AppLaunchedFromSearchMatchingPredictedApp"])
   {
     v4 = 2002;
   }
 
-  else if ([v3 isEqualToString:@"SpotlightDiverted_ActionDonatedAfterSpotlightAppLaunch"])
+  else if ([typeCopy isEqualToString:@"SpotlightDiverted_ActionDonatedAfterSpotlightAppLaunch"])
   {
     v4 = 3000;
   }
 
-  else if ([v3 isEqualToString:@"SpotlightDiverted_ActionExecutedFromSearch"])
+  else if ([typeCopy isEqualToString:@"SpotlightDiverted_ActionExecutedFromSearch"])
   {
     v4 = 3001;
   }
 
-  else if ([v3 isEqualToString:@"AppLibraryDiverted_AppLaunchedFromSearch"])
+  else if ([typeCopy isEqualToString:@"AppLibraryDiverted_AppLaunchedFromSearch"])
   {
     v4 = 4000;
   }
 
-  else if ([v3 isEqualToString:@"AppLibraryDiverted_AppLaunchedFromCategoryPreview"])
+  else if ([typeCopy isEqualToString:@"AppLibraryDiverted_AppLaunchedFromCategoryPreview"])
   {
     v4 = 4001;
   }
 
-  else if ([v3 isEqualToString:@"AppLibraryDiverted_AppLaunchedFromExpandedCategory"])
+  else if ([typeCopy isEqualToString:@"AppLibraryDiverted_AppLaunchedFromExpandedCategory"])
   {
     v4 = 4002;
   }
 
-  else if ([v3 isEqualToString:@"AppLibraryDiverted_AppLaunchedFromRecents"])
+  else if ([typeCopy isEqualToString:@"AppLibraryDiverted_AppLaunchedFromRecents"])
   {
     v4 = 4003;
   }
 
-  else if ([v3 isEqualToString:@"AppLibraryDiverted_AppLaunchedFromSearch_Deduped"])
+  else if ([typeCopy isEqualToString:@"AppLibraryDiverted_AppLaunchedFromSearch_Deduped"])
   {
     v4 = 4004;
   }
 
-  else if ([v3 isEqualToString:@"AppLibraryDiverted_AppLaunchedFromCategoryPreview_Deduped"])
+  else if ([typeCopy isEqualToString:@"AppLibraryDiverted_AppLaunchedFromCategoryPreview_Deduped"])
   {
     v4 = 4005;
   }
 
-  else if ([v3 isEqualToString:@"AppLibraryDiverted_AppLaunchedFromExpandedCategory_Deduped"])
+  else if ([typeCopy isEqualToString:@"AppLibraryDiverted_AppLaunchedFromExpandedCategory_Deduped"])
   {
     v4 = 4006;
   }
 
-  else if ([v3 isEqualToString:@"AppLibraryDiverted_AppLaunchedFromRecents_Deduped"])
+  else if ([typeCopy isEqualToString:@"AppLibraryDiverted_AppLaunchedFromRecents_Deduped"])
   {
     v4 = 4007;
   }
 
-  else if ([v3 isEqualToString:@"HomeScreenDiverted_AppLaunchedFromHomeScreen"])
+  else if ([typeCopy isEqualToString:@"HomeScreenDiverted_AppLaunchedFromHomeScreen"])
   {
     v4 = 5000;
   }
 
-  else if ([v3 isEqualToString:@"HomeScreenDiverted_AppLaunchedFromShortcutExecution"])
+  else if ([typeCopy isEqualToString:@"HomeScreenDiverted_AppLaunchedFromShortcutExecution"])
   {
     v4 = 5001;
   }
 
-  else if ([v3 isEqualToString:@"HomeScreenDiverted_AppLaunchedFromWidgetTap"])
+  else if ([typeCopy isEqualToString:@"HomeScreenDiverted_AppLaunchedFromWidgetTap"])
   {
     v4 = 5002;
   }
 
-  else if ([v3 isEqualToString:@"HomeScreenDiverted_AppLaunchedFromSuggestionsWidget"])
+  else if ([typeCopy isEqualToString:@"HomeScreenDiverted_AppLaunchedFromSuggestionsWidget"])
   {
     v4 = 5003;
   }
 
-  else if ([v3 isEqualToString:@"HomeScreenDiverted_AppLaunchedFromHomeScreenDock"])
+  else if ([typeCopy isEqualToString:@"HomeScreenDiverted_AppLaunchedFromHomeScreenDock"])
   {
     v4 = 5004;
   }
 
-  else if ([v3 isEqualToString:@"HomeScreenDiverted_AppLaunchedFromHomeScreenSamePage"])
+  else if ([typeCopy isEqualToString:@"HomeScreenDiverted_AppLaunchedFromHomeScreenSamePage"])
   {
     v4 = 5005;
   }
 
-  else if ([v3 isEqualToString:@"HomeScreenDiverted_AppLaunchedFromHomeScreenSamePageFolder"])
+  else if ([typeCopy isEqualToString:@"HomeScreenDiverted_AppLaunchedFromHomeScreenSamePageFolder"])
   {
     v4 = 5006;
   }
 
-  else if ([v3 isEqualToString:@"HomeScreenDiverted_AppLaunchedFromHomeScreenDiffPage"])
+  else if ([typeCopy isEqualToString:@"HomeScreenDiverted_AppLaunchedFromHomeScreenDiffPage"])
   {
     v4 = 5007;
   }
 
-  else if ([v3 isEqualToString:@"HomeScreenDiverted_AppLaunchedFromHomeScreenDiffPageFolder"])
+  else if ([typeCopy isEqualToString:@"HomeScreenDiverted_AppLaunchedFromHomeScreenDiffPageFolder"])
   {
     v4 = 5008;
   }
@@ -351,20 +351,20 @@ LABEL_101:
   v8.receiver = self;
   v8.super_class = ATXMPBBlendingCaptureRateTracker;
   v4 = [(ATXMPBBlendingCaptureRateTracker *)&v8 description];
-  v5 = [(ATXMPBBlendingCaptureRateTracker *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXMPBBlendingCaptureRateTracker *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   consumerSubType = self->_consumerSubType;
   if (consumerSubType)
   {
-    [v3 setObject:consumerSubType forKey:@"consumerSubType"];
+    [dictionary setObject:consumerSubType forKey:@"consumerSubType"];
   }
 
   has = self->_has;
@@ -545,84 +545,84 @@ LABEL_60:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_consumerSubType)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_executableType)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_abGroup)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_consumerSubType)
   {
-    [v4 setConsumerSubType:?];
-    v4 = v6;
+    [toCopy setConsumerSubType:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 40) = self->_captured;
-    *(v4 + 44) |= 2u;
+    *(toCopy + 40) = self->_captured;
+    *(toCopy + 44) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 4) = self->_captureType;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 4) = self->_captureType;
+    *(toCopy + 44) |= 1u;
   }
 
   if (self->_executableType)
   {
     [v6 setExecutableType:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_abGroup)
   {
     [v6 setAbGroup:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_consumerSubType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_consumerSubType copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -640,27 +640,27 @@ LABEL_60:
     *(v5 + 44) |= 1u;
   }
 
-  v9 = [(NSString *)self->_executableType copyWithZone:a3];
+  v9 = [(NSString *)self->_executableType copyWithZone:zone];
   v10 = *(v5 + 32);
   *(v5 + 32) = v9;
 
-  v11 = [(NSString *)self->_abGroup copyWithZone:a3];
+  v11 = [(NSString *)self->_abGroup copyWithZone:zone];
   v12 = *(v5 + 8);
   *(v5 + 8) = v11;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
   consumerSubType = self->_consumerSubType;
-  if (consumerSubType | *(v4 + 3))
+  if (consumerSubType | *(equalCopy + 3))
   {
     if (![(NSString *)consumerSubType isEqual:?])
     {
@@ -670,7 +670,7 @@ LABEL_60:
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 44) & 2) == 0)
+    if ((*(equalCopy + 44) & 2) == 0)
     {
       goto LABEL_6;
     }
@@ -680,20 +680,20 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ((*(v4 + 44) & 2) == 0)
+  if ((*(equalCopy + 44) & 2) == 0)
   {
     goto LABEL_20;
   }
 
   if (self->_captured)
   {
-    if ((*(v4 + 40) & 1) == 0)
+    if ((*(equalCopy + 40) & 1) == 0)
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_20;
   }
@@ -701,25 +701,25 @@ LABEL_20:
 LABEL_6:
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_captureType != *(v4 + 4))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_captureType != *(equalCopy + 4))
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_20;
   }
 
   executableType = self->_executableType;
-  if (executableType | *(v4 + 4) && ![(NSString *)executableType isEqual:?])
+  if (executableType | *(equalCopy + 4) && ![(NSString *)executableType isEqual:?])
   {
     goto LABEL_20;
   }
 
   abGroup = self->_abGroup;
-  if (abGroup | *(v4 + 1))
+  if (abGroup | *(equalCopy + 1))
   {
     v8 = [(NSString *)abGroup isEqual:?];
   }
@@ -763,40 +763,40 @@ LABEL_6:
   return v6 ^ [(NSString *)self->_abGroup hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(ATXMPBBlendingCaptureRateTracker *)self setConsumerSubType:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 2) != 0)
   {
-    self->_captured = *(v4 + 40);
+    self->_captured = *(fromCopy + 40);
     *&self->_has |= 2u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
   }
 
   if (v5)
   {
-    self->_captureType = *(v4 + 4);
+    self->_captureType = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ATXMPBBlendingCaptureRateTracker *)self setExecutableType:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ATXMPBBlendingCaptureRateTracker *)self setAbGroup:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

@@ -1,13 +1,13 @@
 @interface MISystemAppState
-+ (id)_systemAppStateFromURL:(id)a3;
++ (id)_systemAppStateFromURL:(id)l;
 + (id)sharedList;
 - (MISystemAppState)init;
-- (id)_onQueue_retrieveSystemAppStateRestoringBackedUpState:(BOOL)a3;
+- (id)_onQueue_retrieveSystemAppStateRestoringBackedUpState:(BOOL)state;
 - (id)_onQueue_systemAppStateList;
-- (id)systemAppStateDictionaryRestoringBackedUpState:(BOOL)a3;
-- (void)_onQueue_setSystemAppStateList:(id)a3;
-- (void)addIdentifier:(id)a3 withState:(int)a4;
-- (void)removeIdentifiers:(id)a3;
+- (id)systemAppStateDictionaryRestoringBackedUpState:(BOOL)state;
+- (void)_onQueue_setSystemAppStateList:(id)list;
+- (void)addIdentifier:(id)identifier withState:(int)state;
+- (void)removeIdentifiers:(id)identifiers;
 @end
 
 @implementation MISystemAppState
@@ -28,21 +28,21 @@
   return v2;
 }
 
-+ (id)_systemAppStateFromURL:(id)a3
++ (id)_systemAppStateFromURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v15 = 0;
-  v4 = [MEMORY[0x1E695DF90] MI_dictionaryWithContentsOfURL:v3 options:1 error:&v15];
+  v4 = [MEMORY[0x1E695DF90] MI_dictionaryWithContentsOfURL:lCopy options:1 error:&v15];
   v5 = v15;
   v6 = v5;
   if (!v4)
   {
-    v10 = [v5 domain];
-    if ([v10 isEqualToString:*MEMORY[0x1E696A250]])
+    domain = [v5 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A250]])
     {
-      v11 = [v6 code];
+      code = [v6 code];
 
-      if (v11 == 260)
+      if (code == 260)
       {
         goto LABEL_14;
       }
@@ -71,7 +71,7 @@
   if (!gLogHandle || *(gLogHandle + 44) >= 3)
   {
 LABEL_13:
-    v12 = [v3 path];
+    path = [lCopy path];
     MOLogWrite();
   }
 
@@ -89,7 +89,7 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = __30__MISystemAppState_sharedList__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedList_onceToken != -1)
   {
     dispatch_once(&sharedList_onceToken, block);
@@ -109,34 +109,34 @@ uint64_t __30__MISystemAppState_sharedList__block_invoke()
 
 - (id)_onQueue_systemAppStateList
 {
-  v3 = [(MISystemAppState *)self appStateQueue];
-  dispatch_assert_queue_V2(v3);
+  appStateQueue = [(MISystemAppState *)self appStateQueue];
+  dispatch_assert_queue_V2(appStateQueue);
 
-  v4 = [(MISystemAppState *)self systemAppStateList];
-  if (!v4)
+  systemAppStateList = [(MISystemAppState *)self systemAppStateList];
+  if (!systemAppStateList)
   {
     v5 = +[MIDaemonConfiguration sharedInstance];
-    v6 = [v5 systemAppInstallStateFilePath];
+    systemAppInstallStateFilePath = [v5 systemAppInstallStateFilePath];
 
-    v4 = [objc_opt_class() _systemAppStateFromURL:v6];
-    [(MISystemAppState *)self setSystemAppStateList:v4];
+    systemAppStateList = [objc_opt_class() _systemAppStateFromURL:systemAppInstallStateFilePath];
+    [(MISystemAppState *)self setSystemAppStateList:systemAppStateList];
   }
 
-  return v4;
+  return systemAppStateList;
 }
 
-- (id)_onQueue_retrieveSystemAppStateRestoringBackedUpState:(BOOL)a3
+- (id)_onQueue_retrieveSystemAppStateRestoringBackedUpState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(MISystemAppState *)self appStateQueue];
-  dispatch_assert_queue_V2(v5);
+  stateCopy = state;
+  appStateQueue = [(MISystemAppState *)self appStateQueue];
+  dispatch_assert_queue_V2(appStateQueue);
 
-  if (v3)
+  if (stateCopy)
   {
     v6 = +[MIDaemonConfiguration sharedInstance];
-    v7 = [v6 backupSystemAppInstallStateFilePath];
+    backupSystemAppInstallStateFilePath = [v6 backupSystemAppInstallStateFilePath];
 
-    v8 = [objc_opt_class() _systemAppStateFromURL:v7];
+    v8 = [objc_opt_class() _systemAppStateFromURL:backupSystemAppInstallStateFilePath];
     if (!gLogHandle || *(gLogHandle + 44) >= 5)
     {
       v11 = v8;
@@ -144,37 +144,37 @@ uint64_t __30__MISystemAppState_sharedList__block_invoke()
     }
 
     [(MISystemAppState *)self _onQueue_setSystemAppStateList:v8, v11];
-    v9 = [(MISystemAppState *)self systemAppStateList];
+    systemAppStateList = [(MISystemAppState *)self systemAppStateList];
   }
 
   else
   {
-    v9 = [(MISystemAppState *)self _onQueue_systemAppStateList];
+    systemAppStateList = [(MISystemAppState *)self _onQueue_systemAppStateList];
   }
 
-  return v9;
+  return systemAppStateList;
 }
 
-- (void)_onQueue_setSystemAppStateList:(id)a3
+- (void)_onQueue_setSystemAppStateList:(id)list
 {
-  v4 = a3;
-  v5 = [(MISystemAppState *)self appStateQueue];
-  dispatch_assert_queue_V2(v5);
+  listCopy = list;
+  appStateQueue = [(MISystemAppState *)self appStateQueue];
+  dispatch_assert_queue_V2(appStateQueue);
 
-  [(MISystemAppState *)self setSystemAppStateList:v4];
+  [(MISystemAppState *)self setSystemAppStateList:listCopy];
   v6 = +[MIDaemonConfiguration sharedInstance];
-  v7 = [v6 systemAppInstallStateFilePath];
+  systemAppInstallStateFilePath = [v6 systemAppInstallStateFilePath];
 
-  if (v4 && [v4 count])
+  if (listCopy && [listCopy count])
   {
-    v8 = [(MISystemAppState *)self systemAppStateList];
+    systemAppStateList = [(MISystemAppState *)self systemAppStateList];
     v14 = 0;
-    v9 = [v8 MI_writeToURL:v7 format:200 options:268435457 error:&v14];
+    v9 = [systemAppStateList MI_writeToURL:systemAppInstallStateFilePath format:200 options:268435457 error:&v14];
     v10 = v14;
 
     if ((v9 & 1) == 0 && (!gLogHandle || *(gLogHandle + 44) >= 3))
     {
-      v13 = [v7 path];
+      path = [systemAppInstallStateFilePath path];
       MOLogWrite();
     }
   }
@@ -183,7 +183,7 @@ uint64_t __30__MISystemAppState_sharedList__block_invoke()
   {
     v11 = +[MIFileManager defaultManager];
     v15 = 0;
-    v12 = [v11 removeItemAtURL:v7 error:&v15];
+    v12 = [v11 removeItemAtURL:systemAppInstallStateFilePath error:&v15];
     v10 = v15;
 
     if ((v12 & 1) == 0 && (!gLogHandle || *(gLogHandle + 44) >= 3))
@@ -193,7 +193,7 @@ uint64_t __30__MISystemAppState_sharedList__block_invoke()
   }
 }
 
-- (id)systemAppStateDictionaryRestoringBackedUpState:(BOOL)a3
+- (id)systemAppStateDictionaryRestoringBackedUpState:(BOOL)state
 {
   v10 = 0;
   v11 = &v10;
@@ -201,15 +201,15 @@ uint64_t __30__MISystemAppState_sharedList__block_invoke()
   v13 = __Block_byref_object_copy__2;
   v14 = __Block_byref_object_dispose__2;
   v15 = 0;
-  v5 = [(MISystemAppState *)self appStateQueue];
+  appStateQueue = [(MISystemAppState *)self appStateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__MISystemAppState_systemAppStateDictionaryRestoringBackedUpState___block_invoke;
   block[3] = &unk_1E7AE1A48;
-  v9 = a3;
+  stateCopy = state;
   block[4] = self;
   block[5] = &v10;
-  dispatch_sync(v5, block);
+  dispatch_sync(appStateQueue, block);
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -226,19 +226,19 @@ void __67__MISystemAppState_systemAppStateDictionaryRestoringBackedUpState___blo
   *(v3 + 40) = v2;
 }
 
-- (void)addIdentifier:(id)a3 withState:(int)a4
+- (void)addIdentifier:(id)identifier withState:(int)state
 {
-  v6 = a3;
-  v7 = [(MISystemAppState *)self appStateQueue];
+  identifierCopy = identifier;
+  appStateQueue = [(MISystemAppState *)self appStateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__MISystemAppState_addIdentifier_withState___block_invoke;
   block[3] = &unk_1E7AE1A70;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  v10 = identifierCopy;
+  stateCopy = state;
+  v8 = identifierCopy;
+  dispatch_sync(appStateQueue, block);
 }
 
 void __44__MISystemAppState_addIdentifier_withState___block_invoke(uint64_t a1)
@@ -257,18 +257,18 @@ void __44__MISystemAppState_addIdentifier_withState___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeIdentifiers:(id)a3
+- (void)removeIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(MISystemAppState *)self appStateQueue];
+  identifiersCopy = identifiers;
+  appStateQueue = [(MISystemAppState *)self appStateQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__MISystemAppState_removeIdentifiers___block_invoke;
   v7[3] = &unk_1E7AE1A98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
+  dispatch_sync(appStateQueue, v7);
 }
 
 void __38__MISystemAppState_removeIdentifiers___block_invoke(uint64_t a1)

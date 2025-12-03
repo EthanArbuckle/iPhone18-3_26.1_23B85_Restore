@@ -2,9 +2,9 @@
 - (CAShapeLayer)buttonLayer;
 - (CAShapeLayer)outlineLayer;
 - (CGSize)intrinsicContentSize;
-- (WFCameraShutterButton)initWithFrame:(CGRect)a3;
+- (WFCameraShutterButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation WFCameraShutterButton
@@ -23,13 +23,13 @@
   return WeakRetained;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v8.receiver = self;
   v8.super_class = WFCameraShutterButton;
   [(WFCameraShutterButton *)&v8 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
     [MEMORY[0x277D75348] colorWithWhite:0.600000024 alpha:1.0];
   }
@@ -39,9 +39,9 @@
     [MEMORY[0x277D75348] whiteColor];
   }
   v5 = ;
-  v6 = [v5 CGColor];
-  v7 = [(WFCameraShutterButton *)self buttonLayer];
-  [v7 setFillColor:v6];
+  cGColor = [v5 CGColor];
+  buttonLayer = [(WFCameraShutterButton *)self buttonLayer];
+  [buttonLayer setFillColor:cGColor];
 }
 
 - (CGSize)intrinsicContentSize
@@ -89,46 +89,46 @@
   v13 = [MEMORY[0x277D75208] bezierPathWithArcCenter:1 radius:MidX startAngle:MidY endAngle:v9 + -6.0 clockwise:{0.0, 6.28318531}];
   [v12 appendPath:v13];
 
-  v14 = [v12 CGPath];
-  v15 = [(WFCameraShutterButton *)self outlineLayer];
-  [v15 setPath:v14];
+  cGPath = [v12 CGPath];
+  outlineLayer = [(WFCameraShutterButton *)self outlineLayer];
+  [outlineLayer setPath:cGPath];
 
   v16 = [MEMORY[0x277D75208] bezierPathWithArcCenter:1 radius:MidX startAngle:MidY endAngle:v9 + -6.0 + -2.0 clockwise:{0.0, 6.28318531}];
-  v17 = [v16 CGPath];
-  v18 = [(WFCameraShutterButton *)self buttonLayer];
-  [v18 setPath:v17];
+  cGPath2 = [v16 CGPath];
+  buttonLayer = [(WFCameraShutterButton *)self buttonLayer];
+  [buttonLayer setPath:cGPath2];
 }
 
-- (WFCameraShutterButton)initWithFrame:(CGRect)a3
+- (WFCameraShutterButton)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = WFCameraShutterButton;
-  v3 = [(WFCameraShutterButton *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFCameraShutterButton *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277CD9F90] layer];
-    [v4 setFillRule:*MEMORY[0x277CDA248]];
-    v5 = [MEMORY[0x277D75348] whiteColor];
-    [v4 setFillColor:{objc_msgSend(v5, "CGColor")}];
+    layer = [MEMORY[0x277CD9F90] layer];
+    [layer setFillRule:*MEMORY[0x277CDA248]];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [layer setFillColor:{objc_msgSend(whiteColor, "CGColor")}];
 
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [v4 setStrokeColor:{objc_msgSend(v6, "CGColor")}];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [layer setStrokeColor:{objc_msgSend(clearColor, "CGColor")}];
 
-    v7 = [(WFCameraShutterButton *)v3 layer];
-    [v7 addSublayer:v4];
+    layer2 = [(WFCameraShutterButton *)v3 layer];
+    [layer2 addSublayer:layer];
 
-    [(WFCameraShutterButton *)v3 setOutlineLayer:v4];
-    v8 = [MEMORY[0x277CD9F90] layer];
-    v9 = [MEMORY[0x277D75348] whiteColor];
-    [v8 setFillColor:{objc_msgSend(v9, "CGColor")}];
+    [(WFCameraShutterButton *)v3 setOutlineLayer:layer];
+    layer3 = [MEMORY[0x277CD9F90] layer];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [layer3 setFillColor:{objc_msgSend(whiteColor2, "CGColor")}];
 
-    v10 = [MEMORY[0x277D75348] clearColor];
-    [v8 setStrokeColor:{objc_msgSend(v10, "CGColor")}];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [layer3 setStrokeColor:{objc_msgSend(clearColor2, "CGColor")}];
 
-    v11 = [(WFCameraShutterButton *)v3 layer];
-    [v11 addSublayer:v8];
+    layer4 = [(WFCameraShutterButton *)v3 layer];
+    [layer4 addSublayer:layer3];
 
-    [(WFCameraShutterButton *)v3 setButtonLayer:v8];
+    [(WFCameraShutterButton *)v3 setButtonLayer:layer3];
     LODWORD(v12) = 1144750080;
     [(WFCameraShutterButton *)v3 setContentCompressionResistancePriority:0 forAxis:v12];
     LODWORD(v13) = 1144750080;

@@ -1,49 +1,49 @@
 @interface MPChangeDetails
-+ (MPChangeDetails)changeDetailsWithPreviousCount:(int64_t)a3 finalCount:(int64_t)a4 isEqualBlock:(id)a5 isUpdatedBlock:(id)a6;
++ (MPChangeDetails)changeDetailsWithPreviousCount:(int64_t)count finalCount:(int64_t)finalCount isEqualBlock:(id)block isUpdatedBlock:(id)updatedBlock;
 + (MPChangeDetails)empty;
-- (BOOL)isValidForPreviousCount:(int64_t)a3 finalCount:(int64_t)a4 reason:(id *)a5;
-- (MPChangeDetails)initWithBlock:(id)a3;
+- (BOOL)isValidForPreviousCount:(int64_t)count finalCount:(int64_t)finalCount reason:(id *)reason;
+- (MPChangeDetails)initWithBlock:(id)block;
 - (NSArray)updatedItemIndexPaths;
 - (NSIndexSet)updatedSections;
 - (id)debugDescription;
 - (id)description;
-- (void)appendItemMoveFromIndexPath:(id)a3 toIndexPath:(id)a4 updated:(BOOL)a5;
-- (void)appendItemUpdateForPreviousIndexPath:(id)a3 finalIndexPath:(id)a4;
-- (void)appendSectionMoveFromIndex:(int64_t)a3 toIndex:(int64_t)a4 updated:(BOOL)a5;
-- (void)appendSectionUpdateForPreviousIndex:(int64_t)a3 finalIndex:(int64_t)a4;
+- (void)appendItemMoveFromIndexPath:(id)path toIndexPath:(id)indexPath updated:(BOOL)updated;
+- (void)appendItemUpdateForPreviousIndexPath:(id)path finalIndexPath:(id)indexPath;
+- (void)appendSectionMoveFromIndex:(int64_t)index toIndex:(int64_t)toIndex updated:(BOOL)updated;
+- (void)appendSectionUpdateForPreviousIndex:(int64_t)index finalIndex:(int64_t)finalIndex;
 - (void)applyUIKitWorkarounds;
-- (void)enumerateItemMovesUsingBlock:(id)a3;
-- (void)enumerateItemMovesWithBlock:(id)a3;
-- (void)enumerateItemUpdatesUsingBlock:(id)a3;
-- (void)enumerateMovesWithBlock:(id)a3;
-- (void)enumerateSectionMovesUsingBlock:(id)a3;
-- (void)enumerateSectionMovesWithBlock:(id)a3;
-- (void)enumerateSectionUpdatesUsingBlock:(id)a3;
-- (void)removeItemMoveFromIndexPath:(id)a3;
-- (void)removeItemUpdateForPreviousIndexPath:(id)a3;
-- (void)removeSectionMoveFromIndex:(int64_t)a3;
-- (void)removeSectionUpdateForPreviousIndex:(int64_t)a3;
-- (void)setUpdatedItemIndexPaths:(id)a3;
-- (void)setUpdatedSections:(id)a3;
+- (void)enumerateItemMovesUsingBlock:(id)block;
+- (void)enumerateItemMovesWithBlock:(id)block;
+- (void)enumerateItemUpdatesUsingBlock:(id)block;
+- (void)enumerateMovesWithBlock:(id)block;
+- (void)enumerateSectionMovesUsingBlock:(id)block;
+- (void)enumerateSectionMovesWithBlock:(id)block;
+- (void)enumerateSectionUpdatesUsingBlock:(id)block;
+- (void)removeItemMoveFromIndexPath:(id)path;
+- (void)removeItemUpdateForPreviousIndexPath:(id)path;
+- (void)removeSectionMoveFromIndex:(int64_t)index;
+- (void)removeSectionUpdateForPreviousIndex:(int64_t)index;
+- (void)setUpdatedItemIndexPaths:(id)paths;
+- (void)setUpdatedSections:(id)sections;
 @end
 
 @implementation MPChangeDetails
 
-- (BOOL)isValidForPreviousCount:(int64_t)a3 finalCount:(int64_t)a4 reason:(id *)a5
+- (BOOL)isValidForPreviousCount:(int64_t)count finalCount:(int64_t)finalCount reason:(id *)reason
 {
   if (!self->_isFlatCollection)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:518 description:@"-isValidForPreviousCount:finalCount:reason: can only be used with a flat collection change details"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:518 description:@"-isValidForPreviousCount:finalCount:reason: can only be used with a flat collection change details"];
   }
 
-  if ([(NSIndexSet *)self->_deletedSections count]&& [(NSIndexSet *)self->_deletedSections lastIndex]>= a3)
+  if ([(NSIndexSet *)self->_deletedSections count]&& [(NSIndexSet *)self->_deletedSections lastIndex]>= count)
   {
-    if (a5)
+    if (reason)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[INVALID CHANGE DETAILS] deletedSections.lastIndex out of bounds: %ld/%ld", -[NSIndexSet lastIndex](self->_deletedSections, "lastIndex"), a3];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[INVALID CHANGE DETAILS] deletedSections.lastIndex out of bounds: %ld/%ld", -[NSIndexSet lastIndex](self->_deletedSections, "lastIndex"), count];
 LABEL_15:
-      *a5 = v10 = 0;
+      *reason = v10 = 0;
       return v10 & 1;
     }
 
@@ -52,11 +52,11 @@ LABEL_16:
     return v10 & 1;
   }
 
-  if ([(NSIndexSet *)self->_insertedSections count]&& [(NSIndexSet *)self->_insertedSections lastIndex]>= a4)
+  if ([(NSIndexSet *)self->_insertedSections count]&& [(NSIndexSet *)self->_insertedSections lastIndex]>= finalCount)
   {
-    if (a5)
+    if (reason)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[INVALID CHANGE DETAILS] insertedSections.lastIndex out of bounds: %ld/%ld", -[NSIndexSet lastIndex](self->_insertedSections, "lastIndex"), a4];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[INVALID CHANGE DETAILS] insertedSections.lastIndex out of bounds: %ld/%ld", -[NSIndexSet lastIndex](self->_insertedSections, "lastIndex"), finalCount];
       goto LABEL_15;
     }
 
@@ -79,15 +79,15 @@ LABEL_16:
   v14[3] = &unk_1E767FA08;
   v14[4] = &v21;
   v14[5] = &v15;
-  v14[6] = a3;
-  v14[7] = a4;
+  v14[6] = count;
+  v14[7] = finalCount;
   [(MPChangeDetails *)self enumerateSectionMovesUsingBlock:v14];
-  if (a5)
+  if (reason)
   {
     v9 = v16[5];
     if (v9)
     {
-      *a5 = v9;
+      *reason = v9;
     }
   }
 
@@ -130,8 +130,8 @@ void __61__MPChangeDetails_isValidForPreviousCount_finalCount_reason___block_inv
 {
   if (self->_isFinalized)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:427 description:@"Attempt to mutate immutable change details"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:427 description:@"Attempt to mutate immutable change details"];
   }
 
   v3 = [(NSIndexSet *)self->_deletedSections mutableCopy];
@@ -183,7 +183,7 @@ void __61__MPChangeDetails_isValidForPreviousCount_finalCount_reason___block_inv
     v20 = 3221225472;
     v21 = __40__MPChangeDetails_applyUIKitWorkarounds__block_invoke_7;
     v22 = &unk_1E767F9E0;
-    v23 = self;
+    selfCopy = self;
     v24 = v11;
     v25 = v12;
     [(MPChangeDetails *)self enumerateItemUpdatesUsingBlock:&v19];
@@ -436,70 +436,70 @@ void __40__MPChangeDetails_applyUIKitWorkarounds__block_invoke_5(uint64_t a1, vo
   }
 }
 
-- (void)enumerateMovesWithBlock:(id)a3
+- (void)enumerateMovesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__MPChangeDetails_enumerateMovesWithBlock___block_invoke;
   v6[3] = &unk_1E767F800;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(MPChangeDetails *)self enumerateSectionMovesUsingBlock:v6];
 }
 
-- (void)enumerateItemUpdatesUsingBlock:(id)a3
+- (void)enumerateItemUpdatesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_itemUpdates copy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__MPChangeDetails_enumerateItemUpdatesUsingBlock___block_invoke;
   v7[3] = &unk_1E767F8C8;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [v5 enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)removeItemUpdateForPreviousIndexPath:(id)a3
+- (void)removeItemUpdateForPreviousIndexPath:(id)path
 {
-  v5 = a3;
-  v7 = v5;
+  pathCopy = path;
+  v7 = pathCopy;
   if (self->_isFinalized)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:385 description:@"Attempt to mutate immutable change details"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:385 description:@"Attempt to mutate immutable change details"];
 
-    v5 = v7;
+    pathCopy = v7;
   }
 
-  [(NSMutableDictionary *)self->_itemUpdates removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_itemUpdates removeObjectForKey:pathCopy];
 }
 
-- (void)appendItemUpdateForPreviousIndexPath:(id)a3 finalIndexPath:(id)a4
+- (void)appendItemUpdateForPreviousIndexPath:(id)path finalIndexPath:(id)indexPath
 {
-  v9 = a3;
-  v7 = a4;
+  pathCopy = path;
+  indexPathCopy = indexPath;
   if (self->_isFinalized)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:380 description:@"Attempt to mutate immutable change details"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:380 description:@"Attempt to mutate immutable change details"];
   }
 
-  [(NSMutableDictionary *)self->_itemUpdates setObject:v7 forKey:v9];
+  [(NSMutableDictionary *)self->_itemUpdates setObject:indexPathCopy forKey:pathCopy];
 }
 
-- (void)enumerateItemMovesUsingBlock:(id)a3
+- (void)enumerateItemMovesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_itemMoves copy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__MPChangeDetails_enumerateItemMovesUsingBlock___block_invoke;
   v7[3] = &unk_1E767F8A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [v5 enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -512,62 +512,62 @@ void __48__MPChangeDetails_enumerateItemMovesUsingBlock___block_invoke(uint64_t 
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)enumerateItemMovesWithBlock:(id)a3
+- (void)enumerateItemMovesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__MPChangeDetails_enumerateItemMovesWithBlock___block_invoke;
   v6[3] = &unk_1E767F878;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(MPChangeDetails *)self enumerateItemMovesUsingBlock:v6];
 }
 
-- (void)removeItemMoveFromIndexPath:(id)a3
+- (void)removeItemMoveFromIndexPath:(id)path
 {
-  v5 = a3;
-  v7 = v5;
+  pathCopy = path;
+  v7 = pathCopy;
   if (self->_isFinalized)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:360 description:@"Attempt to mutate immutable change details"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:360 description:@"Attempt to mutate immutable change details"];
 
-    v5 = v7;
+    pathCopy = v7;
   }
 
-  [(NSMutableDictionary *)self->_itemMoves removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_itemMoves removeObjectForKey:pathCopy];
   [(NSMutableSet *)self->_updatedItemMoveFromIndexPaths removeObject:v7];
 }
 
-- (void)appendItemMoveFromIndexPath:(id)a3 toIndexPath:(id)a4 updated:(BOOL)a5
+- (void)appendItemMoveFromIndexPath:(id)path toIndexPath:(id)indexPath updated:(BOOL)updated
 {
-  v5 = a5;
-  v11 = a3;
-  v9 = a4;
+  updatedCopy = updated;
+  pathCopy = path;
+  indexPathCopy = indexPath;
   if (self->_isFinalized)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:352 description:@"Attempt to mutate immutable change details"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:352 description:@"Attempt to mutate immutable change details"];
   }
 
-  [(NSMutableDictionary *)self->_itemMoves setObject:v9 forKey:v11];
-  if (v5)
+  [(NSMutableDictionary *)self->_itemMoves setObject:indexPathCopy forKey:pathCopy];
+  if (updatedCopy)
   {
-    [(NSMutableSet *)self->_updatedItemMoveFromIndexPaths addObject:v11];
+    [(NSMutableSet *)self->_updatedItemMoveFromIndexPaths addObject:pathCopy];
   }
 }
 
-- (void)enumerateSectionUpdatesUsingBlock:(id)a3
+- (void)enumerateSectionUpdatesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_sectionUpdates copy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__MPChangeDetails_enumerateSectionUpdatesUsingBlock___block_invoke;
   v7[3] = &unk_1E767F850;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [v5 enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -583,44 +583,44 @@ uint64_t __53__MPChangeDetails_enumerateSectionUpdatesUsingBlock___block_invoke(
   return v8(v4, v6, v7);
 }
 
-- (void)removeSectionUpdateForPreviousIndex:(int64_t)a3
+- (void)removeSectionUpdateForPreviousIndex:(int64_t)index
 {
   if (self->_isFinalized)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:340 description:@"Attempt to mutate immutable change details"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:340 description:@"Attempt to mutate immutable change details"];
   }
 
   sectionUpdates = self->_sectionUpdates;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:index];
   [(NSMutableDictionary *)sectionUpdates removeObjectForKey:v8];
 }
 
-- (void)appendSectionUpdateForPreviousIndex:(int64_t)a3 finalIndex:(int64_t)a4
+- (void)appendSectionUpdateForPreviousIndex:(int64_t)index finalIndex:(int64_t)finalIndex
 {
   if (self->_isFinalized)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:335 description:@"Attempt to mutate immutable change details"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:335 description:@"Attempt to mutate immutable change details"];
   }
 
   sectionUpdates = self->_sectionUpdates;
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:finalIndex];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:index];
   [(NSMutableDictionary *)sectionUpdates setObject:v11 forKey:v8];
 }
 
-- (void)enumerateSectionMovesUsingBlock:(id)a3
+- (void)enumerateSectionMovesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_sectionMoves copy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__MPChangeDetails_enumerateSectionMovesUsingBlock___block_invoke;
   v7[3] = &unk_1E767F828;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [v5 enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -637,54 +637,54 @@ uint64_t __51__MPChangeDetails_enumerateSectionMovesUsingBlock___block_invoke(ui
   return v10(v8, v6, v9, v7);
 }
 
-- (void)enumerateSectionMovesWithBlock:(id)a3
+- (void)enumerateSectionMovesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__MPChangeDetails_enumerateSectionMovesWithBlock___block_invoke;
   v6[3] = &unk_1E767F800;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(MPChangeDetails *)self enumerateSectionMovesUsingBlock:v6];
 }
 
-- (void)removeSectionMoveFromIndex:(int64_t)a3
+- (void)removeSectionMoveFromIndex:(int64_t)index
 {
   if (self->_isFinalized)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:314 description:@"Attempt to mutate immutable change details"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:314 description:@"Attempt to mutate immutable change details"];
   }
 
   sectionMoves = self->_sectionMoves;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:index];
   [(NSMutableDictionary *)sectionMoves removeObjectForKey:v6];
 
   updatedSectionMoveFromIndexes = self->_updatedSectionMoveFromIndexes;
 
-  [(NSMutableIndexSet *)updatedSectionMoveFromIndexes removeIndex:a3];
+  [(NSMutableIndexSet *)updatedSectionMoveFromIndexes removeIndex:index];
 }
 
-- (void)appendSectionMoveFromIndex:(int64_t)a3 toIndex:(int64_t)a4 updated:(BOOL)a5
+- (void)appendSectionMoveFromIndex:(int64_t)index toIndex:(int64_t)toIndex updated:(BOOL)updated
 {
-  v5 = a5;
+  updatedCopy = updated;
   if (self->_isFinalized)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:306 description:@"Attempt to mutate immutable change details"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:306 description:@"Attempt to mutate immutable change details"];
   }
 
   sectionMoves = self->_sectionMoves;
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:toIndex];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:index];
   [(NSMutableDictionary *)sectionMoves setObject:v10 forKey:v11];
 
-  if (v5)
+  if (updatedCopy)
   {
     updatedSectionMoveFromIndexes = self->_updatedSectionMoveFromIndexes;
 
-    [(NSMutableIndexSet *)updatedSectionMoveFromIndexes addIndex:a3];
+    [(NSMutableIndexSet *)updatedSectionMoveFromIndexes addIndex:index];
   }
 }
 
@@ -703,14 +703,14 @@ uint64_t __51__MPChangeDetails_enumerateSectionMovesUsingBlock___block_invoke(ui
   return v5;
 }
 
-- (void)setUpdatedItemIndexPaths:(id)a3
+- (void)setUpdatedItemIndexPaths:(id)paths
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  pathsCopy = paths;
   if (self->_isFinalized)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:287 description:@"Attempt to mutate immutable change details"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:287 description:@"Attempt to mutate immutable change details"];
   }
 
   [(NSMutableDictionary *)self->_itemUpdates removeAllObjects];
@@ -718,7 +718,7 @@ uint64_t __51__MPChangeDetails_enumerateSectionMovesUsingBlock___block_invoke(ui
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v5;
+  v6 = pathsCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -748,26 +748,26 @@ uint64_t __51__MPChangeDetails_enumerateSectionMovesUsingBlock___block_invoke(ui
 
 - (NSIndexSet)updatedSections
 {
-  v3 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__MPChangeDetails_updatedSections__block_invoke;
   v7[3] = &unk_1E767F7B0;
-  v8 = v3;
-  v4 = v3;
+  v8 = indexSet;
+  v4 = indexSet;
   [(MPChangeDetails *)self enumerateSectionUpdatesUsingBlock:v7];
   v5 = [v4 copy];
 
   return v5;
 }
 
-- (void)setUpdatedSections:(id)a3
+- (void)setUpdatedSections:(id)sections
 {
-  v5 = a3;
+  sectionsCopy = sections;
   if (self->_isFinalized)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:267 description:@"Attempt to mutate immutable change details"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPChangeDetails.m" lineNumber:267 description:@"Attempt to mutate immutable change details"];
   }
 
   [(NSMutableDictionary *)self->_sectionUpdates removeAllObjects];
@@ -776,7 +776,7 @@ uint64_t __51__MPChangeDetails_enumerateSectionMovesUsingBlock___block_invoke(ui
   v7[2] = __38__MPChangeDetails_setUpdatedSections___block_invoke;
   v7[3] = &unk_1E7680030;
   v7[4] = self;
-  [v5 enumerateIndexesUsingBlock:v7];
+  [sectionsCopy enumerateIndexesUsingBlock:v7];
 }
 
 void __38__MPChangeDetails_setUpdatedSections___block_invoke(uint64_t a1, uint64_t a2)
@@ -1073,9 +1073,9 @@ void __38__MPChangeDetails_setUpdatedSections___block_invoke(uint64_t a1, uint64
   return v6;
 }
 
-- (MPChangeDetails)initWithBlock:(id)a3
+- (MPChangeDetails)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v26.receiver = self;
   v26.super_class = MPChangeDetails;
   v5 = [(MPChangeDetails *)&v26 init];
@@ -1120,28 +1120,28 @@ void __38__MPChangeDetails_setUpdatedSections___block_invoke(uint64_t a1, uint64
     updatedItemMoveFromIndexPaths = v5->_updatedItemMoveFromIndexPaths;
     v5->_updatedItemMoveFromIndexPaths = v23;
 
-    v4[2](v4, v5);
+    blockCopy[2](blockCopy, v5);
     v5->_isFinalized = 1;
   }
 
   return v5;
 }
 
-+ (MPChangeDetails)changeDetailsWithPreviousCount:(int64_t)a3 finalCount:(int64_t)a4 isEqualBlock:(id)a5 isUpdatedBlock:(id)a6
++ (MPChangeDetails)changeDetailsWithPreviousCount:(int64_t)count finalCount:(int64_t)finalCount isEqualBlock:(id)block isUpdatedBlock:(id)updatedBlock
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [a1 alloc];
+  blockCopy = block;
+  updatedBlockCopy = updatedBlock;
+  v12 = [self alloc];
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __89__MPChangeDetails_changeDetailsWithPreviousCount_finalCount_isEqualBlock_isUpdatedBlock___block_invoke;
   v22 = &unk_1E767F788;
-  v25 = a3;
-  v26 = a4;
-  v23 = v10;
-  v24 = v11;
-  v13 = v11;
-  v14 = v10;
+  countCopy = count;
+  finalCountCopy = finalCount;
+  v23 = blockCopy;
+  v24 = updatedBlockCopy;
+  v13 = updatedBlockCopy;
+  v14 = blockCopy;
   v15 = [v12 initWithBlock:&v19];
   if ([(MPChangeDetails *)v15 hasChanges:v19])
   {
@@ -1318,7 +1318,7 @@ uint64_t __89__MPChangeDetails_changeDetailsWithPreviousCount_finalCount_isEqual
 
 + (MPChangeDetails)empty
 {
-  v2 = [[a1 alloc] initWithBlock:&__block_literal_global_45975];
+  v2 = [[self alloc] initWithBlock:&__block_literal_global_45975];
 
   return v2;
 }

@@ -1,11 +1,11 @@
 @interface FCExcerptURLProtocol
-+ (BOOL)canHandleURL:(id)a3;
-+ (BOOL)canHandleURLWithComponents:(id)a3;
-+ (BOOL)canInitWithRequest:(id)a3;
-+ (BOOL)requestIsCacheEquivalent:(id)a3 toRequest:(id)a4;
-+ (id)excerptURLForArticleID:(id)a3 changeTag:(id)a4;
++ (BOOL)canHandleURL:(id)l;
++ (BOOL)canHandleURLWithComponents:(id)components;
++ (BOOL)canInitWithRequest:(id)request;
++ (BOOL)requestIsCacheEquivalent:(id)equivalent toRequest:(id)request;
++ (id)excerptURLForArticleID:(id)d changeTag:(id)tag;
 + (void)initialize;
-+ (void)setupWithArticleDatabase:(id)a3;
++ (void)setupWithArticleDatabase:(id)database;
 + (void)unregister;
 - (void)startLoading;
 - (void)stopLoading;
@@ -15,19 +15,19 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = MEMORY[0x1E695AC60];
 
-    [v3 registerClass:a1];
+    [v3 registerClass:self];
   }
 }
 
-+ (void)setupWithArticleDatabase:(id)a3
++ (void)setupWithArticleDatabase:(id)database
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  databaseCopy = database;
+  if (!databaseCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"excerpt URL protocol requires a non-nil database"];
     v11 = 136315906;
@@ -62,8 +62,8 @@
     }
   }
 
-  objc_storeWeak(&s_database_0, v4);
-  [MEMORY[0x1E695AC60] registerClass:a1];
+  objc_storeWeak(&s_database_0, databaseCopy);
+  [MEMORY[0x1E695AC60] registerClass:self];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -77,15 +77,15 @@
     objc_storeWeak(&s_database_0, 0);
     v4 = MEMORY[0x1E695AC60];
 
-    [v4 unregisterClass:a1];
+    [v4 unregisterClass:self];
   }
 }
 
-+ (id)excerptURLForArticleID:(id)a3 changeTag:(id)a4
++ (id)excerptURLForArticleID:(id)d changeTag:(id)tag
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  tagCopy = tag;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&s_database_0);
 
   if (!WeakRetained && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -105,13 +105,13 @@
   v8 = objc_alloc_init(MEMORY[0x1E696AF20]);
   [v8 setScheme:@"news-excerpt"];
   v9 = objc_loadWeakRetained(&s_database_0);
-  v10 = [v9 containerIdentifier];
-  [v8 setHost:v10];
+  containerIdentifier = [v9 containerIdentifier];
+  [v8 setHost:containerIdentifier];
 
-  v11 = [@"/" stringByAppendingString:v6];
+  v11 = [@"/" stringByAppendingString:dCopy];
 
   [v8 setPath:v11];
-  v12 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"changetag" value:v5];
+  v12 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"changetag" value:tagCopy];
 
   v18 = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
@@ -124,46 +124,46 @@
   return v14;
 }
 
-+ (BOOL)canHandleURL:(id)a3
++ (BOOL)canHandleURL:(id)l
 {
-  v3 = [a3 scheme];
-  v4 = [v3 isEqualToString:@"news-excerpt"];
+  scheme = [l scheme];
+  v4 = [scheme isEqualToString:@"news-excerpt"];
 
   return v4;
 }
 
-+ (BOOL)canHandleURLWithComponents:(id)a3
++ (BOOL)canHandleURLWithComponents:(id)components
 {
-  v3 = [a3 scheme];
-  v4 = [v3 isEqualToString:@"news-excerpt"];
+  scheme = [components scheme];
+  v4 = [scheme isEqualToString:@"news-excerpt"];
 
   return v4;
 }
 
-+ (BOOL)canInitWithRequest:(id)a3
++ (BOOL)canInitWithRequest:(id)request
 {
-  v4 = [a3 URL];
-  LOBYTE(a1) = [a1 canHandleURL:v4];
+  v4 = [request URL];
+  LOBYTE(self) = [self canHandleURL:v4];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)requestIsCacheEquivalent:(id)a3 toRequest:(id)a4
++ (BOOL)requestIsCacheEquivalent:(id)equivalent toRequest:(id)request
 {
-  v5 = a4;
-  v6 = [a3 URL];
-  v7 = [v5 URL];
+  requestCopy = request;
+  v6 = [equivalent URL];
+  v7 = [requestCopy URL];
 
-  LOBYTE(v5) = [v6 isEqual:v7];
-  return v5;
+  LOBYTE(requestCopy) = [v6 isEqual:v7];
+  return requestCopy;
 }
 
 - (void)startLoading
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FCExcerptURLProtocol *)self fetchOperation];
+  fetchOperation = [(FCExcerptURLProtocol *)self fetchOperation];
 
-  if (v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (fetchOperation && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"shouldn't have a fetch operation yet"];
     *buf = 136315906;
@@ -177,11 +177,11 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v4 = [(NSURLProtocol *)self request];
-  v5 = [v4 URL];
+  request = [(NSURLProtocol *)self request];
+  v5 = [request URL];
 
-  v6 = [v5 lastPathComponent];
-  v7 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v6];
+  lastPathComponent = [v5 lastPathComponent];
+  v7 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:lastPathComponent];
   v8 = objc_alloc_init(FCCKContentFetchOperation);
   WeakRetained = objc_loadWeakRetained(&s_database_0);
   [(FCCKContentFetchOperation *)v8 setDatabase:?];
@@ -231,8 +231,8 @@
   }
 
   [(FCExcerptURLProtocol *)self setFetchOperation:v8];
-  v17 = [MEMORY[0x1E696ADC8] fc_sharedConcurrentQueue];
-  [v17 addOperation:v8];
+  fc_sharedConcurrentQueue = [MEMORY[0x1E696ADC8] fc_sharedConcurrentQueue];
+  [fc_sharedConcurrentQueue addOperation:v8];
 
   objc_destroyWeak(&v23);
   _Block_object_dispose(buf, 8);
@@ -294,8 +294,8 @@ void __36__FCExcerptURLProtocol_startLoading__block_invoke_3(void *a1, void *a2)
 
 - (void)stopLoading
 {
-  v2 = [(FCExcerptURLProtocol *)self fetchOperation];
-  [v2 cancel];
+  fetchOperation = [(FCExcerptURLProtocol *)self fetchOperation];
+  [fetchOperation cancel];
 }
 
 @end

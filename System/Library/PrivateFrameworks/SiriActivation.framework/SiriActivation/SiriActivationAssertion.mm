@@ -1,24 +1,24 @@
 @interface SiriActivationAssertion
-- (SiriActivationAssertion)initWithIdentifier:(id)a3 reason:(unint64_t)a4;
+- (SiriActivationAssertion)initWithIdentifier:(id)identifier reason:(unint64_t)reason;
 - (void)configureConnection;
 - (void)dealloc;
 - (void)invalidate;
-- (void)invalidatedAtTimestamp:(double)a3;
+- (void)invalidatedAtTimestamp:(double)timestamp;
 @end
 
 @implementation SiriActivationAssertion
 
-- (SiriActivationAssertion)initWithIdentifier:(id)a3 reason:(unint64_t)a4
+- (SiriActivationAssertion)initWithIdentifier:(id)identifier reason:(unint64_t)reason
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = SiriActivationAssertion;
   v7 = [(SiriActivationSource *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(SiriActivationSource *)v7 setIdentifier:v6];
-    [(SiriActivationAssertion *)v8 setReason:a4];
+    [(SiriActivationSource *)v7 setIdentifier:identifierCopy];
+    [(SiriActivationAssertion *)v8 setReason:reason];
     [(SiriActivationAssertion *)v8 configureConnection];
   }
 
@@ -29,10 +29,10 @@
 {
   v3 = MEMORY[0x1E698F498];
   v4 = +[SASBoardServicesConfiguration configuration];
-  v5 = [v4 machServiceIdentifier];
+  machServiceIdentifier = [v4 machServiceIdentifier];
   v6 = +[SASBoardServicesConfiguration configuration];
   v7 = [v6 identifierForService:1];
-  v8 = [v3 endpointForMachName:v5 service:v7 instance:0];
+  v8 = [v3 endpointForMachName:machServiceIdentifier service:v7 instance:0];
 
   v9 = [MEMORY[0x1E698F490] connectionWithEndpoint:v8];
   connection = self->super._connection;
@@ -209,7 +209,7 @@ void __46__SiriActivationAssertion_configureConnection__block_invoke_25(uint64_t
   [(SiriActivationAssertion *)self invalidatedAtTimestamp:Current];
 }
 
-- (void)invalidatedAtTimestamp:(double)a3
+- (void)invalidatedAtTimestamp:(double)timestamp
 {
   v24 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E698D0A0];
@@ -220,7 +220,7 @@ void __46__SiriActivationAssertion_configureConnection__block_invoke_25(uint64_t
     v18 = 136315650;
     v19 = "[SiriActivationAssertion invalidatedAtTimestamp:]";
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
     v23 = connection;
     _os_log_impl(&dword_1C8137000, v5, OS_LOG_TYPE_DEFAULT, "%s #activation BSServiceConnection Unregistering & invalidating assertion self=%@ connection=%@", &v18, 0x20u);
@@ -231,12 +231,12 @@ void __46__SiriActivationAssertion_configureConnection__block_invoke_25(uint64_t
   {
     v8 = MEMORY[0x1E696AF00];
     v9 = v7;
-    v10 = [v8 currentThread];
-    v11 = [v10 qualityOfService];
+    currentThread = [v8 currentThread];
+    qualityOfService = [currentThread qualityOfService];
     v18 = 136315394;
     v19 = "[SiriActivationAssertion invalidatedAtTimestamp:]";
     v20 = 2048;
-    v21 = v11;
+    selfCopy = qualityOfService;
     _os_log_impl(&dword_1C8137000, v9, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _lock about to lock with qos: %zd", &v18, 0x16u);
   }
 
@@ -249,9 +249,9 @@ void __46__SiriActivationAssertion_configureConnection__block_invoke_25(uint64_t
     _os_log_impl(&dword_1C8137000, v12, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _lock successfully locked", &v18, 0xCu);
   }
 
-  v13 = [(BSServiceConnection *)self->super._connection remoteTarget];
-  v14 = [(SiriActivationSource *)self identifier];
-  [v13 unregisterAssertionWithIdentifier:v14];
+  remoteTarget = [(BSServiceConnection *)self->super._connection remoteTarget];
+  identifier = [(SiriActivationSource *)self identifier];
+  [remoteTarget unregisterAssertionWithIdentifier:identifier];
 
   [(BSServiceConnection *)self->super._connection invalidate];
   v15 = self->super._connection;

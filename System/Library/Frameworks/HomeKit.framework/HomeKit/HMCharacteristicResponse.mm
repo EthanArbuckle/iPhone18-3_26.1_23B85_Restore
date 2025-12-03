@@ -1,14 +1,14 @@
 @interface HMCharacteristicResponse
-- (BOOL)isEqual:(id)a3;
-- (HMCharacteristicResponse)initWithRequest:(id)a3 value:(id)a4 error:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (HMCharacteristicResponse)initWithRequest:(id)request value:(id)value error:(id)error;
 @end
 
 @implementation HMCharacteristicResponse
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -18,7 +18,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -29,11 +29,11 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMResponseBase *)self request];
+      request = [(HMResponseBase *)self request];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = v7;
+        v8 = request;
       }
 
       else
@@ -43,11 +43,11 @@
 
       v9 = v8;
 
-      v10 = [(HMResponseBase *)v6 request];
+      request2 = [(HMResponseBase *)v6 request];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = v10;
+        v11 = request2;
       }
 
       else
@@ -57,11 +57,11 @@
 
       v12 = v11;
 
-      v13 = [v9 characteristic];
+      characteristic = [v9 characteristic];
 
-      v14 = [v12 characteristic];
+      characteristic2 = [v12 characteristic];
 
-      v15 = [v13 isEqual:v14];
+      v15 = [characteristic isEqual:characteristic2];
     }
 
     else
@@ -73,11 +73,11 @@
   return v15;
 }
 
-- (HMCharacteristicResponse)initWithRequest:(id)a3 value:(id)a4 error:(id)a5
+- (HMCharacteristicResponse)initWithRequest:(id)request value:(id)value error:(id)error
 {
   v6.receiver = self;
   v6.super_class = HMCharacteristicResponse;
-  return [(HMResponseBase *)&v6 initWithRequest:a3 value:a4 error:a5];
+  return [(HMResponseBase *)&v6 initWithRequest:request value:value error:error];
 }
 
 @end

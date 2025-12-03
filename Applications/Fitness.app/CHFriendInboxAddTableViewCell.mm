@@ -1,16 +1,16 @@
 @interface CHFriendInboxAddTableViewCell
-- (CHFriendInboxAddTableViewCell)initWithCoder:(id)a3;
-- (CHFriendInboxAddTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)preferredContentSizeDidChangeWithView:(id)a3 previousTraitCollection:(id)a4;
+- (CHFriendInboxAddTableViewCell)initWithCoder:(id)coder;
+- (CHFriendInboxAddTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)preferredContentSizeDidChangeWithView:(id)view previousTraitCollection:(id)collection;
 @end
 
 @implementation CHFriendInboxAddTableViewCell
 
-- (CHFriendInboxAddTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHFriendInboxAddTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -19,23 +19,23 @@
     v6 = 0;
   }
 
-  return sub_1004BD6F0(a3, a4, v6);
+  return sub_1004BD6F0(style, identifier, v6);
 }
 
-- (CHFriendInboxAddTableViewCell)initWithCoder:(id)a3
+- (CHFriendInboxAddTableViewCell)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (void)preferredContentSizeDidChangeWithView:(id)a3 previousTraitCollection:(id)a4
+- (void)preferredContentSizeDidChangeWithView:(id)view previousTraitCollection:(id)collection
 {
-  v9 = self;
-  v4 = [(CHFriendInboxAddTableViewCell *)v9 accessoryView];
-  if (v4)
+  selfCopy = self;
+  accessoryView = [(CHFriendInboxAddTableViewCell *)selfCopy accessoryView];
+  if (accessoryView)
   {
-    v5 = v4;
+    v5 = accessoryView;
     objc_opt_self();
     v6 = swift_dynamicCastObjCClass();
     if (v6)
@@ -47,8 +47,8 @@
 
     else
     {
-      v8 = v9;
-      v9 = v5;
+      v8 = selfCopy;
+      selfCopy = v5;
     }
   }
 }

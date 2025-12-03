@@ -1,17 +1,17 @@
 @interface DDURLifier
-+ (BOOL)urlIfyNode:(id)a3 phoneNumberTypes:(unint64_t)a4;
-+ (BOOL)urlIfyTextNode:(id)a3 inNode:(id)a4 forMatches:(id)a5;
-+ (id)urlIfyNode:(id)a3 usingScanner:(__DDScanner *)a4 phoneNumberTypes:(unint64_t)a5 withReferenceDate:(id)a6 andTimeZone:(id)a7;
-+ (id)urlMatchesForString:(id)a3 includingTel:(BOOL)a4;
-+ (id)urlMatchesForString:(id)a3 phoneNumberTypes:(unint64_t)a4;
-+ (id)urlMatchesForString:(id)a3 usingScanner:(__DDScanner *)a4 withPhoneNumberTypes:(unint64_t)a5 referenceDate:(id)a6 timeZone:(id)a7 storingResultsIn:(id)a8;
++ (BOOL)urlIfyNode:(id)node phoneNumberTypes:(unint64_t)types;
++ (BOOL)urlIfyTextNode:(id)node inNode:(id)inNode forMatches:(id)matches;
++ (id)urlIfyNode:(id)node usingScanner:(__DDScanner *)scanner phoneNumberTypes:(unint64_t)types withReferenceDate:(id)date andTimeZone:(id)zone;
++ (id)urlMatchesForString:(id)string includingTel:(BOOL)tel;
++ (id)urlMatchesForString:(id)string phoneNumberTypes:(unint64_t)types;
++ (id)urlMatchesForString:(id)string usingScanner:(__DDScanner *)scanner withPhoneNumberTypes:(unint64_t)types referenceDate:(id)date timeZone:(id)zone storingResultsIn:(id)in;
 @end
 
 @implementation DDURLifier
 
-+ (id)urlIfyNode:(id)a3 usingScanner:(__DDScanner *)a4 phoneNumberTypes:(unint64_t)a5 withReferenceDate:(id)a6 andTimeZone:(id)a7
++ (id)urlIfyNode:(id)node usingScanner:(__DDScanner *)scanner phoneNumberTypes:(unint64_t)types withReferenceDate:(id)date andTimeZone:(id)zone
 {
-  if (!a4)
+  if (!scanner)
   {
     if (urlIfyNode_usingScanner_phoneNumberTypes_withReferenceDate_andTimeZone__sOnce == -1)
     {
@@ -22,14 +22,14 @@
     return 0;
   }
 
-  if (!shouldURLifyNode(a3))
+  if (!shouldURLifyNode(node))
   {
     return 0;
   }
 
-  if (a6)
+  if (date)
   {
-    if (a7)
+    if (zone)
     {
       goto LABEL_5;
     }
@@ -37,57 +37,57 @@
 
   else
   {
-    a6 = [MEMORY[0x1E695DF00] date];
-    if (a7)
+    date = [MEMORY[0x1E695DF00] date];
+    if (zone)
     {
       goto LABEL_5;
     }
   }
 
-  a7 = [MEMORY[0x1E695DFE8] defaultTimeZone];
+  zone = [MEMORY[0x1E695DFE8] defaultTimeZone];
 LABEL_5:
-  v13 = [MEMORY[0x1E695DF70] array];
-  v14 = [a3 firstChild];
-  if (v14)
+  array = [MEMORY[0x1E695DF70] array];
+  firstChild = [node firstChild];
+  if (firstChild)
   {
-    v15 = v14;
+    v15 = firstChild;
     do
     {
-      v16 = [v15 nextSibling];
-      [v13 addObjectsFromArray:{objc_msgSend(a1, "urlIfyNode:usingScanner:phoneNumberTypes:withReferenceDate:andTimeZone:", v15, a4, a5, a6, a7)}];
+      nextSibling = [v15 nextSibling];
+      [array addObjectsFromArray:{objc_msgSend(self, "urlIfyNode:usingScanner:phoneNumberTypes:withReferenceDate:andTimeZone:", v15, scanner, types, date, zone)}];
       if ([v15 nodeType] == 3)
       {
-        [a1 urlIfyTextNode:v15 inNode:a3 forMatches:{objc_msgSend(a1, "urlMatchesForString:usingScanner:withPhoneNumberTypes:referenceDate:timeZone:storingResultsIn:", objc_msgSend(v15, "nodeValue"), a4, a5, a6, a7, v13)}];
+        [self urlIfyTextNode:v15 inNode:node forMatches:{objc_msgSend(self, "urlMatchesForString:usingScanner:withPhoneNumberTypes:referenceDate:timeZone:storingResultsIn:", objc_msgSend(v15, "nodeValue"), scanner, types, date, zone, array)}];
       }
 
-      v15 = v16;
+      v15 = nextSibling;
     }
 
-    while (v16);
+    while (nextSibling);
   }
 
-  return v13;
+  return array;
 }
 
-+ (BOOL)urlIfyNode:(id)a3 phoneNumberTypes:(unint64_t)a4
++ (BOOL)urlIfyNode:(id)node phoneNumberTypes:(unint64_t)types
 {
-  if (shouldURLifyNode(a3) && (v7 = [a3 firstChild]) != 0)
+  if (shouldURLifyNode(node) && (v7 = [node firstChild]) != 0)
   {
     v8 = v7;
     v9 = 0;
     do
     {
-      v10 = [v8 nextSibling];
-      v9 |= [a1 urlIfyNode:v8 phoneNumberTypes:a4];
+      nextSibling = [v8 nextSibling];
+      v9 |= [self urlIfyNode:v8 phoneNumberTypes:types];
       if ([v8 nodeType] == 3)
       {
-        v9 |= [a1 urlIfyTextNode:v8 inNode:a3 forMatches:{+[DDURLifier urlMatchesForString:phoneNumberTypes:](DDURLifier, "urlMatchesForString:phoneNumberTypes:", objc_msgSend(v8, "nodeValue"), a4)}];
+        v9 |= [self urlIfyTextNode:v8 inNode:node forMatches:{+[DDURLifier urlMatchesForString:phoneNumberTypes:](DDURLifier, "urlMatchesForString:phoneNumberTypes:", objc_msgSend(v8, "nodeValue"), types)}];
       }
 
-      v8 = v10;
+      v8 = nextSibling;
     }
 
-    while (v10);
+    while (nextSibling);
   }
 
   else
@@ -98,41 +98,41 @@ LABEL_5:
   return v9 & 1;
 }
 
-+ (BOOL)urlIfyTextNode:(id)a3 inNode:(id)a4 forMatches:(id)a5
++ (BOOL)urlIfyTextNode:(id)node inNode:(id)inNode forMatches:(id)matches
 {
-  v8 = [a5 count];
+  v8 = [matches count];
   if (v8)
   {
     v9 = 0;
     v10 = 0;
     v11 = 1;
-    v12 = a3;
+    nodeCopy = node;
     do
     {
-      v13 = [a5 objectAtIndex:v9];
-      v14 = [v13 range];
-      if (v14 >= v10)
+      v13 = [matches objectAtIndex:v9];
+      range = [v13 range];
+      if (range >= v10)
       {
-        v16 = v14;
+        v16 = range;
         v17 = v15;
-        if (v14 < [objc_msgSend(v12 "data")] + v10)
+        if (range < [objc_msgSend(nodeCopy "data")] + v10)
         {
           if (v16 != v10)
           {
-            a3 = [v12 splitText:(v16 - v10)];
+            node = [nodeCopy splitText:(v16 - v10)];
           }
 
-          if (v17 < [objc_msgSend(a3 "data")])
+          if (v17 < [objc_msgSend(node "data")])
           {
-            v12 = [a3 splitText:v17];
+            nodeCopy = [node splitText:v17];
           }
 
           v10 = v16 + v17;
-          v18 = [objc_msgSend(a3 "ownerDocument")];
+          v18 = [objc_msgSend(node "ownerDocument")];
           [v18 setAttribute:@"href" value:{objc_msgSend(v13, "url")}];
-          [a4 insertBefore:v18 refChild:a3];
-          [v18 appendChild:a3];
-          a3 = v12;
+          [inNode insertBefore:v18 refChild:node];
+          [v18 appendChild:node];
+          node = nodeCopy;
         }
       }
 
@@ -145,11 +145,11 @@ LABEL_5:
   return v8 != 0;
 }
 
-+ (id)urlMatchesForString:(id)a3 usingScanner:(__DDScanner *)a4 withPhoneNumberTypes:(unint64_t)a5 referenceDate:(id)a6 timeZone:(id)a7 storingResultsIn:(id)a8
++ (id)urlMatchesForString:(id)string usingScanner:(__DDScanner *)scanner withPhoneNumberTypes:(unint64_t)types referenceDate:(id)date timeZone:(id)zone storingResultsIn:(id)in
 {
-  v9 = a5;
-  DDScannerScanString(a4, a3);
-  v11 = DDScannerCopyResultsWithOptions(a4, 0x7C5u);
+  typesCopy = types;
+  DDScannerScanString(scanner, string);
+  v11 = DDScannerCopyResultsWithOptions(scanner, 0x7C5u);
   if (!v11)
   {
     return 0;
@@ -161,19 +161,19 @@ LABEL_5:
   {
     v14 = Count;
     v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:Count];
-    v16 = [a8 count];
+    v16 = [in count];
     if (v14 >= 1)
     {
       v17 = v16;
       for (i = 0; i != v14; ++i)
       {
         ValueAtIndex = CFArrayGetValueAtIndex(v12, i);
-        v20 = DDURLStringForResult(ValueAtIndex, [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", v17], v9, a6, a7);
+        v20 = DDURLStringForResult(ValueAtIndex, [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", v17], typesCopy, date, zone);
         if (v20)
         {
           v21 = v20;
           ++v17;
-          [a8 addObject:ValueAtIndex];
+          [in addObject:ValueAtIndex];
           v22 = [[DDURLMatch alloc] initWithRange:ValueAtIndex[4] url:ValueAtIndex[5], v21];
           [v15 addObject:v22];
         }
@@ -190,11 +190,11 @@ LABEL_5:
   return v15;
 }
 
-+ (id)urlMatchesForString:(id)a3 phoneNumberTypes:(unint64_t)a4
++ (id)urlMatchesForString:(id)string phoneNumberTypes:(unint64_t)types
 {
-  v4 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
-  if ([a3 length])
+  typesCopy = types;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([string length])
   {
     v20 = 0;
     v21 = &v20;
@@ -204,7 +204,7 @@ LABEL_5:
     v19[1] = 3221225472;
     v19[2] = __51__DDURLifier_urlMatchesForString_phoneNumberTypes___block_invoke;
     v19[3] = &unk_1E80026C0;
-    v19[4] = a1;
+    v19[4] = self;
     if (urlMatchesForString_phoneNumberTypes__sOnce != -1)
     {
       dispatch_once(&urlMatchesForString_phoneNumberTypes__sOnce, v19);
@@ -219,7 +219,7 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = __51__DDURLifier_urlMatchesForString_phoneNumberTypes___block_invoke_3;
     block[3] = &unk_1E8002338;
-    block[4] = a3;
+    block[4] = string;
     block[5] = &v20;
     dispatch_sync(urlMatchesForString_phoneNumberTypes__sQueue, block);
     v8 = v21[3];
@@ -234,12 +234,12 @@ LABEL_5:
           v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", i];
           if (DDResultGetCategory(ValueAtIndex) - 1 <= 1)
           {
-            v13 = DDURLStringForResult(ValueAtIndex, v12, v4, 0, 0);
+            v13 = DDURLStringForResult(ValueAtIndex, v12, typesCopy, 0, 0);
             if (v13)
             {
               RangeForURLification = DDResultGetRangeForURLification(ValueAtIndex);
               v16 = [[DDURLMatch alloc] initWithRange:RangeForURLification url:v15, v13];
-              [v7 addObject:v16];
+              [array addObject:v16];
             }
           }
         }
@@ -251,7 +251,7 @@ LABEL_5:
     _Block_object_dispose(&v20, 8);
   }
 
-  return v7;
+  return array;
 }
 
 uint64_t __51__DDURLifier_urlMatchesForString_phoneNumberTypes___block_invoke(uint64_t a1)
@@ -290,9 +290,9 @@ dispatch_queue_t __51__DDURLifier_urlMatchesForString_phoneNumberTypes___block_i
   return result;
 }
 
-+ (id)urlMatchesForString:(id)a3 includingTel:(BOOL)a4
++ (id)urlMatchesForString:(id)string includingTel:(BOOL)tel
 {
-  if (a4)
+  if (tel)
   {
     v4 = 2;
   }
@@ -302,7 +302,7 @@ dispatch_queue_t __51__DDURLifier_urlMatchesForString_phoneNumberTypes___block_i
     v4 = 0;
   }
 
-  return [a1 urlMatchesForString:a3 phoneNumberTypes:v4];
+  return [self urlMatchesForString:string phoneNumberTypes:v4];
 }
 
 @end

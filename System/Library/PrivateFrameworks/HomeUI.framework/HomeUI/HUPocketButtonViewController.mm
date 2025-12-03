@@ -1,24 +1,24 @@
 @interface HUPocketButtonViewController
-+ (CGSize)calculatePreferredContentSizeForDescriptors:(id)a3;
-- (HUPocketButtonViewController)initWithButtonDescriptors:(id)a3;
-- (HUPocketButtonViewController)initWithCoder:(id)a3;
-- (HUPocketButtonViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_buttonHit:(id)a3;
++ (CGSize)calculatePreferredContentSizeForDescriptors:(id)descriptors;
+- (HUPocketButtonViewController)initWithButtonDescriptors:(id)descriptors;
+- (HUPocketButtonViewController)initWithCoder:(id)coder;
+- (HUPocketButtonViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_buttonHit:(id)hit;
 - (void)viewDidLoad;
 @end
 
 @implementation HUPocketButtonViewController
 
-+ (CGSize)calculatePreferredContentSizeForDescriptors:(id)a3
++ (CGSize)calculatePreferredContentSizeForDescriptors:(id)descriptors
 {
-  v3 = a3;
-  if ([v3 count])
+  descriptorsCopy = descriptors;
+  if ([descriptorsCopy count])
   {
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v6 = v5;
 
-    v7 = [v3 count];
+    v7 = [descriptorsCopy count];
     if (v7)
     {
       v8 = 10.0;
@@ -50,13 +50,13 @@
   return result;
 }
 
-- (HUPocketButtonViewController)initWithButtonDescriptors:(id)a3
+- (HUPocketButtonViewController)initWithButtonDescriptors:(id)descriptors
 {
-  v5 = a3;
-  if (!v5)
+  descriptorsCopy = descriptors;
+  if (!descriptorsCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"HUPocketButtonViewController.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"descriptors"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUPocketButtonViewController.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"descriptors"}];
   }
 
   v11.receiver = self;
@@ -64,31 +64,31 @@
   v6 = [(HUPocketButtonViewController *)&v11 initWithNibName:0 bundle:0];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [descriptorsCopy copy];
     descriptors = v6->_descriptors;
     v6->_descriptors = v7;
 
-    [objc_opt_class() calculatePreferredContentSizeForDescriptors:v5];
+    [objc_opt_class() calculatePreferredContentSizeForDescriptors:descriptorsCopy];
     [(HUPocketButtonViewController *)v6 setPreferredContentSize:?];
   }
 
   return v6;
 }
 
-- (HUPocketButtonViewController)initWithCoder:(id)a3
+- (HUPocketButtonViewController)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithButtonDescriptors_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUPocketButtonViewController.m" lineNumber:154 description:{@"%s is unavailable; use %@ instead", "-[HUPocketButtonViewController initWithCoder:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUPocketButtonViewController.m" lineNumber:154 description:{@"%s is unavailable; use %@ instead", "-[HUPocketButtonViewController initWithCoder:]", v6}];
 
   return 0;
 }
 
-- (HUPocketButtonViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (HUPocketButtonViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithButtonDescriptors_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUPocketButtonViewController.m" lineNumber:159 description:{@"%s is unavailable; use %@ instead", "-[HUPocketButtonViewController initWithNibName:bundle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUPocketButtonViewController.m" lineNumber:159 description:{@"%s is unavailable; use %@ instead", "-[HUPocketButtonViewController initWithNibName:bundle:]", v7}];
 
   return 0;
 }
@@ -126,15 +126,15 @@
 
         v12 = *(*(&v29 + 1) + 8 * v11);
         v13 = [[_HUPocketButton alloc] initWithFrame:v7 highlightedAlpha:v8 highlightedTextAlpha:v9, v10, 0.75, 0.5];
-        v14 = [v12 title];
-        [(_HUPocketButton *)v13 setTitle:v14 forState:0];
+        title = [v12 title];
+        [(_HUPocketButton *)v13 setTitle:title forState:0];
 
-        v15 = [v12 backgroundColor];
+        backgroundColor = [v12 backgroundColor];
 
-        if (v15)
+        if (backgroundColor)
         {
-          v16 = [v12 backgroundColor];
-          [(HUColoredButton *)v13 setBackgroundColor:v16];
+          backgroundColor2 = [v12 backgroundColor];
+          [(HUColoredButton *)v13 setBackgroundColor:backgroundColor2];
         }
 
         else
@@ -142,16 +142,16 @@
           [(HUColoredButton *)v13 setBackgroundColorFollowsTintColor:1];
         }
 
-        v17 = [v12 textColor];
+        textColor = [v12 textColor];
 
-        if (v17)
+        if (textColor)
         {
-          v18 = [v12 textColor];
-          [(_HUPocketButton *)v13 setTitleColor:v18 forState:0];
+          textColor2 = [v12 textColor];
+          [(_HUPocketButton *)v13 setTitleColor:textColor2 forState:0];
         }
 
-        v19 = [(HUPocketButtonViewController *)self descriptors];
-        -[_HUPocketButton setTag:](v13, "setTag:", [v19 indexOfObject:v12]);
+        descriptors = [(HUPocketButtonViewController *)self descriptors];
+        -[_HUPocketButton setTag:](v13, "setTag:", [descriptors indexOfObject:v12]);
 
         [(_HUPocketButton *)v13 addTarget:self action:sel__buttonHit_ forControlEvents:64];
         [v3 addObject:v13];
@@ -174,8 +174,8 @@
   [v20 setSpacing:10.0];
   [v20 setLayoutMarginsRelativeArrangement:1];
   [v20 setInsetsLayoutMarginsFromSafeArea:0];
-  v21 = [(HUPocketButtonViewController *)self view];
-  [v21 naui_addAutoLayoutSubview:v20];
+  view = [(HUPocketButtonViewController *)self view];
+  [view naui_addAutoLayoutSubview:v20];
 
   v22 = MEMORY[0x277CCAAD0];
   v26[0] = MEMORY[0x277D85DD0];
@@ -183,7 +183,7 @@
   v26[2] = __43__HUPocketButtonViewController_viewDidLoad__block_invoke;
   v26[3] = &unk_277DC0BD8;
   v27 = v20;
-  v28 = self;
+  selfCopy = self;
   v23 = v20;
   v24 = __43__HUPocketButtonViewController_viewDidLoad__block_invoke(v26);
   [v22 activateConstraints:v24];
@@ -221,11 +221,11 @@ id __43__HUPocketButtonViewController_viewDidLoad__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)_buttonHit:(id)a3
+- (void)_buttonHit:(id)hit
 {
-  v4 = [a3 tag];
-  v5 = [(HUPocketButtonViewController *)self descriptors];
-  v6 = [v5 objectAtIndexedSubscript:v4];
+  v4 = [hit tag];
+  descriptors = [(HUPocketButtonViewController *)self descriptors];
+  v6 = [descriptors objectAtIndexedSubscript:v4];
 
   [v6 execute];
 }

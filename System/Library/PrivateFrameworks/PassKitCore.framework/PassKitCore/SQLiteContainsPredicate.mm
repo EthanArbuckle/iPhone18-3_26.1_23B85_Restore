@@ -1,27 +1,27 @@
 @interface SQLiteContainsPredicate
-+ (id)containsPredicateWithProperty:(id)a3 query:(id)a4 queryProperty:(id)a5;
-+ (id)containsPredicateWithProperty:(id)a3 values:(id)a4;
-+ (id)doesNotContainPredicateWithProperty:(id)a3 values:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)SQLForEntityClass:(Class)a3;
++ (id)containsPredicateWithProperty:(id)property query:(id)query queryProperty:(id)queryProperty;
++ (id)containsPredicateWithProperty:(id)property values:(id)values;
++ (id)doesNotContainPredicateWithProperty:(id)property values:(id)values;
+- (BOOL)isEqual:(id)equal;
+- (id)SQLForEntityClass:(Class)class;
 - (id)description;
-- (void)bindToStatement:(sqlite3_stmt *)a3 bindingIndex:(int *)a4;
+- (void)bindToStatement:(sqlite3_stmt *)statement bindingIndex:(int *)index;
 @end
 
 @implementation SQLiteContainsPredicate
 
-+ (id)containsPredicateWithProperty:(id)a3 values:(id)a4
++ (id)containsPredicateWithProperty:(id)property values:(id)values
 {
-  v5 = a4;
-  v6 = a3;
+  valuesCopy = values;
+  propertyCopy = property;
   v7 = objc_alloc_init(objc_opt_class());
-  v8 = [v6 copy];
+  v8 = [propertyCopy copy];
 
   v9 = v7[1];
   v7[1] = v8;
 
   *(v7 + 16) = 0;
-  v10 = [v5 copy];
+  v10 = [valuesCopy copy];
 
   v11 = v7[5];
   v7[5] = v10;
@@ -29,41 +29,41 @@
   return v7;
 }
 
-+ (id)containsPredicateWithProperty:(id)a3 query:(id)a4 queryProperty:(id)a5
++ (id)containsPredicateWithProperty:(id)property query:(id)query queryProperty:(id)queryProperty
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  queryCopy = query;
+  queryPropertyCopy = queryProperty;
+  propertyCopy = property;
   v10 = objc_alloc_init(objc_opt_class());
-  v11 = [v9 copy];
+  v11 = [propertyCopy copy];
 
   v12 = v10[1];
   v10[1] = v11;
 
   *(v10 + 16) = 0;
   v13 = v10[3];
-  v10[3] = v7;
-  v14 = v7;
+  v10[3] = queryCopy;
+  v14 = queryCopy;
 
-  v15 = [v8 copy];
+  v15 = [queryPropertyCopy copy];
   v16 = v10[4];
   v10[4] = v15;
 
   return v10;
 }
 
-+ (id)doesNotContainPredicateWithProperty:(id)a3 values:(id)a4
++ (id)doesNotContainPredicateWithProperty:(id)property values:(id)values
 {
-  v5 = a4;
-  v6 = a3;
+  valuesCopy = values;
+  propertyCopy = property;
   v7 = objc_alloc_init(objc_opt_class());
-  v8 = [v6 copy];
+  v8 = [propertyCopy copy];
 
   v9 = v7[1];
   v7[1] = v8;
 
   *(v7 + 16) = 1;
-  v10 = [v5 copy];
+  v10 = [valuesCopy copy];
 
   v11 = v7[5];
   v7[5] = v10;
@@ -102,7 +102,7 @@
   return v3;
 }
 
-- (void)bindToStatement:(sqlite3_stmt *)a3 bindingIndex:(int *)a4
+- (void)bindToStatement:(sqlite3_stmt *)statement bindingIndex:(int *)index
 {
   if (self->_query)
   {
@@ -133,8 +133,8 @@
             objc_enumerationMutation(v7);
           }
 
-          SQLiteBindFoundationValueToStatement(a3, *a4, *(*(&v12 + 1) + 8 * v11));
-          ++*a4;
+          SQLiteBindFoundationValueToStatement(statement, *index, *(*(&v12 + 1) + 8 * v11));
+          ++*index;
           v11 = v11 + 1;
         }
 
@@ -147,14 +147,14 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = SQLiteContainsPredicate;
-  if ([(SQLitePropertyPredicate *)&v10 isEqual:v4])
+  if ([(SQLitePropertyPredicate *)&v10 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self->_negative == *(v5 + 16) && ((values = self->_values, values == v5[5]) || [(SQLiteQuery *)values isEqual:?]))
     {
       query = self->_query;
@@ -183,10 +183,10 @@
   return v8;
 }
 
-- (id)SQLForEntityClass:(Class)a3
+- (id)SQLForEntityClass:(Class)class
 {
   v5 = +[NSMutableString stringWithString:](NSMutableString, "stringWithString:", @"(");
-  v6 = [(objc_class *)a3 disambiguatedSQLForProperty:self->super._property];
+  v6 = [(objc_class *)class disambiguatedSQLForProperty:self->super._property];
   [v5 appendString:v6];
 
   if (self->_negative)

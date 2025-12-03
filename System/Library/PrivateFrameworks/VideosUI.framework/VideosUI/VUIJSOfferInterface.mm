@@ -1,31 +1,31 @@
 @interface VUIJSOfferInterface
-- (void)clearOffers:(id)a3;
-- (void)fetchOffers:(BOOL)a3 :(id)a4;
+- (void)clearOffers:(id)offers;
+- (void)fetchOffers:(BOOL)offers :(id)a4;
 @end
 
 @implementation VUIJSOfferInterface
 
-- (void)fetchOffers:(BOOL)a3 :(id)a4
+- (void)fetchOffers:(BOOL)offers :(id)a4
 {
-  v4 = a3;
+  offersCopy = offers;
   v6 = a4;
-  v7 = [(VUIJSObject *)self appContext];
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  v9 = [v8 UUIDString];
+  appContext = [(VUIJSObject *)self appContext];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  [(VUIJSObject *)self setJSValue:v6 forProperty:v9];
+  [(VUIJSObject *)self setJSValue:v6 forProperty:uUIDString];
   objc_initWeak(&location, self);
-  v10 = [MEMORY[0x1E69E1568] defaultOfferManager];
+  defaultOfferManager = [MEMORY[0x1E69E1568] defaultOfferManager];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __36__VUIJSOfferInterface_fetchOffers::__block_invoke;
   v13[3] = &unk_1E8731780;
-  v11 = v7;
+  v11 = appContext;
   v14 = v11;
   objc_copyWeak(&v16, &location);
-  v12 = v9;
+  v12 = uUIDString;
   v15 = v12;
-  [v10 fetchOffers:v4 completion:v13];
+  [defaultOfferManager fetchOffers:offersCopy completion:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -70,26 +70,26 @@ void __36__VUIJSOfferInterface_fetchOffers::__block_invoke_2(uint64_t a1)
   [WeakRetained setJSValue:0 forProperty:*(a1 + 32)];
 }
 
-- (void)clearOffers:(id)a3
+- (void)clearOffers:(id)offers
 {
-  v4 = a3;
-  v5 = [(VUIJSObject *)self appContext];
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v6 UUIDString];
+  offersCopy = offers;
+  appContext = [(VUIJSObject *)self appContext];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  [(VUIJSObject *)self setJSValue:v4 forProperty:v7];
+  [(VUIJSObject *)self setJSValue:offersCopy forProperty:uUIDString];
   objc_initWeak(&location, self);
-  v8 = [MEMORY[0x1E69E1568] defaultOfferManager];
+  defaultOfferManager = [MEMORY[0x1E69E1568] defaultOfferManager];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __35__VUIJSOfferInterface_clearOffers___block_invoke;
   v11[3] = &unk_1E87317A8;
-  v9 = v5;
+  v9 = appContext;
   v12 = v9;
   objc_copyWeak(&v14, &location);
-  v10 = v7;
+  v10 = uUIDString;
   v13 = v10;
-  [v8 clearOffers:v11];
+  [defaultOfferManager clearOffers:v11];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);

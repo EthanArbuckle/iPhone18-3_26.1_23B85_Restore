@@ -1,22 +1,22 @@
 @interface EMFQueryLogger
-+ (id)documentWeightsStringFromQueryResult:(id)a3 usingLocaleData:(__EmojiLocaleDataWrapper *)a4;
-+ (id)overriddenResultsStringFromQueryResult:(id)a3 usingLocaleData:(__EmojiLocaleDataWrapper *)a4;
-- (EMFQueryLogger)initWithEmojiLocaleData:(__EmojiLocaleDataWrapper *)a3;
++ (id)documentWeightsStringFromQueryResult:(id)result usingLocaleData:(__EmojiLocaleDataWrapper *)data;
++ (id)overriddenResultsStringFromQueryResult:(id)result usingLocaleData:(__EmojiLocaleDataWrapper *)data;
+- (EMFQueryLogger)initWithEmojiLocaleData:(__EmojiLocaleDataWrapper *)data;
 - (void)dealloc;
-- (void)logQueryResult:(id)a3;
+- (void)logQueryResult:(id)result;
 @end
 
 @implementation EMFQueryLogger
 
-- (EMFQueryLogger)initWithEmojiLocaleData:(__EmojiLocaleDataWrapper *)a3
+- (EMFQueryLogger)initWithEmojiLocaleData:(__EmojiLocaleDataWrapper *)data
 {
   v6.receiver = self;
   v6.super_class = EMFQueryLogger;
   v4 = [(EMFQueryLogger *)&v6 init];
   if (v4)
   {
-    CFRetain(a3);
-    v4->_localeData = a3;
+    CFRetain(data);
+    v4->_localeData = data;
   }
 
   return v4;
@@ -35,25 +35,25 @@
   [(EMFQueryLogger *)&v4 dealloc];
 }
 
-- (void)logQueryResult:(id)a3
+- (void)logQueryResult:(id)result
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 query];
-  v6 = [v5 queryString];
+  resultCopy = result;
+  query = [resultCopy query];
+  queryString = [query queryString];
 
-  v7 = [v4 query];
-  v8 = [v7 tokens];
-  v9 = [v8 componentsJoinedByString:{@", "}];
+  query2 = [resultCopy query];
+  tokens = [query2 tokens];
+  v9 = [tokens componentsJoinedByString:{@", "}];
 
-  v10 = [objc_opt_class() documentWeightsStringFromQueryResult:v4 usingLocaleData:self->_localeData];
-  v11 = [objc_opt_class() overriddenResultsStringFromQueryResult:v4 usingLocaleData:self->_localeData];
+  v10 = [objc_opt_class() documentWeightsStringFromQueryResult:resultCopy usingLocaleData:self->_localeData];
+  v11 = [objc_opt_class() overriddenResultsStringFromQueryResult:resultCopy usingLocaleData:self->_localeData];
 
   v12 = emf_logging_get_query_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v13 = 138413058;
-    v14 = v6;
+    v14 = queryString;
     v15 = 2112;
     v16 = v9;
     v17 = 2080;
@@ -64,10 +64,10 @@
   }
 }
 
-+ (id)documentWeightsStringFromQueryResult:(id)a3 usingLocaleData:(__EmojiLocaleDataWrapper *)a4
++ (id)documentWeightsStringFromQueryResult:(id)result usingLocaleData:(__EmojiLocaleDataWrapper *)data
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = [a3 emojiMatchesAndDocumentWeightsUsingEmojiLocaleData:a4];
+  v4 = [result emojiMatchesAndDocumentWeightsUsingEmojiLocaleData:data];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v18 = 0u;
   v19 = 0u;
@@ -108,20 +108,20 @@
   return v16;
 }
 
-+ (id)overriddenResultsStringFromQueryResult:(id)a3 usingLocaleData:(__EmojiLocaleDataWrapper *)a4
++ (id)overriddenResultsStringFromQueryResult:(id)result usingLocaleData:(__EmojiLocaleDataWrapper *)data
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 resultOverride];
+  resultCopy = result;
+  resultOverride = [resultCopy resultOverride];
 
-  if (v6)
+  if (resultOverride)
   {
     v7 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"<["];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = [v5 emojiMatchesForOverriddenResultsUsingEmojiLocaleData:a4];
+    v8 = [resultCopy emojiMatchesForOverriddenResultsUsingEmojiLocaleData:data];
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -145,10 +145,10 @@
       while (v10);
     }
 
-    v13 = [v5 resultOverride];
-    v14 = [v13 overrideBehavior];
-    v15 = [v5 resultOverride];
-    [v7 appendFormat:@"] behavior=%lu; searchType=%lu>", v14, objc_msgSend(v15, "overrideSearchType")];
+    resultOverride2 = [resultCopy resultOverride];
+    overrideBehavior = [resultOverride2 overrideBehavior];
+    resultOverride3 = [resultCopy resultOverride];
+    [v7 appendFormat:@"] behavior=%lu; searchType=%lu>", overrideBehavior, objc_msgSend(resultOverride3, "overrideSearchType")];
 
     v16 = [v7 copy];
   }

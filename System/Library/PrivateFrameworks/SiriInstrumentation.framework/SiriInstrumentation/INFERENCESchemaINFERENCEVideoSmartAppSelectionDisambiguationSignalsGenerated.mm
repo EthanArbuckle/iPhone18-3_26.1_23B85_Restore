@@ -1,28 +1,28 @@
 @interface INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addDependentSignals:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDependentSignals:(id)signals;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated
 
-- (INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated;
   v5 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"playOnThirdPartyAppSignals"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"playOnThirdPartyAppSignals"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)v5 setPlayOnThirdPartyAppSignals:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"independentSignal"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"independentSignal"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)v5 setIndependentSignal:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"dependentSignals"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"dependentSignals"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,30 +86,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -123,10 +123,10 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_dependentSignals count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -146,16 +146,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -165,44 +165,44 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"dependentSignals"];
+    [dictionary setObject:array forKeyedSubscript:@"dependentSignals"];
   }
 
   if (self->_independentSignal)
   {
-    v12 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self independentSignal];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    independentSignal = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self independentSignal];
+    dictionaryRepresentation2 = [independentSignal dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"independentSignal"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"independentSignal"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"independentSignal"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"independentSignal"];
     }
   }
 
   if (self->_playOnThirdPartyAppSignals)
   {
-    v15 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self playOnThirdPartyAppSignals];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    playOnThirdPartyAppSignals = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self playOnThirdPartyAppSignals];
+    dictionaryRepresentation3 = [playOnThirdPartyAppSignals dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"playOnThirdPartyAppSignals"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"playOnThirdPartyAppSignals"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"playOnThirdPartyAppSignals"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"playOnThirdPartyAppSignals"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v19];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v19];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -212,28 +212,28 @@
   return v4 ^ [(NSArray *)self->_dependentSignals hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self playOnThirdPartyAppSignals];
-  v6 = [v4 playOnThirdPartyAppSignals];
-  if ((v5 != 0) == (v6 == 0))
+  playOnThirdPartyAppSignals = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self playOnThirdPartyAppSignals];
+  playOnThirdPartyAppSignals2 = [equalCopy playOnThirdPartyAppSignals];
+  if ((playOnThirdPartyAppSignals != 0) == (playOnThirdPartyAppSignals2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self playOnThirdPartyAppSignals];
-  if (v7)
+  playOnThirdPartyAppSignals3 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self playOnThirdPartyAppSignals];
+  if (playOnThirdPartyAppSignals3)
   {
-    v8 = v7;
-    v9 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self playOnThirdPartyAppSignals];
-    v10 = [v4 playOnThirdPartyAppSignals];
-    v11 = [v9 isEqual:v10];
+    v8 = playOnThirdPartyAppSignals3;
+    playOnThirdPartyAppSignals4 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self playOnThirdPartyAppSignals];
+    playOnThirdPartyAppSignals5 = [equalCopy playOnThirdPartyAppSignals];
+    v11 = [playOnThirdPartyAppSignals4 isEqual:playOnThirdPartyAppSignals5];
 
     if (!v11)
     {
@@ -245,20 +245,20 @@
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self independentSignal];
-  v6 = [v4 independentSignal];
-  if ((v5 != 0) == (v6 == 0))
+  playOnThirdPartyAppSignals = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self independentSignal];
+  playOnThirdPartyAppSignals2 = [equalCopy independentSignal];
+  if ((playOnThirdPartyAppSignals != 0) == (playOnThirdPartyAppSignals2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self independentSignal];
-  if (v12)
+  independentSignal = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self independentSignal];
+  if (independentSignal)
   {
-    v13 = v12;
-    v14 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self independentSignal];
-    v15 = [v4 independentSignal];
-    v16 = [v14 isEqual:v15];
+    v13 = independentSignal;
+    independentSignal2 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self independentSignal];
+    independentSignal3 = [equalCopy independentSignal];
+    v16 = [independentSignal2 isEqual:independentSignal3];
 
     if (!v16)
     {
@@ -270,12 +270,12 @@
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self dependentSignals];
-  v6 = [v4 dependentSignals];
-  if ((v5 != 0) != (v6 == 0))
+  playOnThirdPartyAppSignals = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self dependentSignals];
+  playOnThirdPartyAppSignals2 = [equalCopy dependentSignals];
+  if ((playOnThirdPartyAppSignals != 0) != (playOnThirdPartyAppSignals2 == 0))
   {
-    v17 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self dependentSignals];
-    if (!v17)
+    dependentSignals = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self dependentSignals];
+    if (!dependentSignals)
     {
 
 LABEL_20:
@@ -283,10 +283,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self dependentSignals];
-    v20 = [v4 dependentSignals];
-    v21 = [v19 isEqual:v20];
+    v18 = dependentSignals;
+    dependentSignals2 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self dependentSignals];
+    dependentSignals3 = [equalCopy dependentSignals];
+    v21 = [dependentSignals2 isEqual:dependentSignals3];
 
     if (v21)
     {
@@ -306,23 +306,23 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self playOnThirdPartyAppSignals];
+  toCopy = to;
+  playOnThirdPartyAppSignals = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self playOnThirdPartyAppSignals];
 
-  if (v5)
+  if (playOnThirdPartyAppSignals)
   {
-    v6 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self playOnThirdPartyAppSignals];
+    playOnThirdPartyAppSignals2 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self playOnThirdPartyAppSignals];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self independentSignal];
+  independentSignal = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self independentSignal];
 
-  if (v7)
+  if (independentSignal)
   {
-    v8 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self independentSignal];
+    independentSignal2 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self independentSignal];
     PBDataWriterWriteSubmessage();
   }
 
@@ -358,50 +358,50 @@ LABEL_18:
   }
 }
 
-- (void)addDependentSignals:(id)a3
+- (void)addDependentSignals:(id)signals
 {
-  v4 = a3;
+  signalsCopy = signals;
   dependentSignals = self->_dependentSignals;
-  v8 = v4;
+  v8 = signalsCopy;
   if (!dependentSignals)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_dependentSignals;
-    self->_dependentSignals = v6;
+    self->_dependentSignals = array;
 
-    v4 = v8;
+    signalsCopy = v8;
     dependentSignals = self->_dependentSignals;
   }
 
-  [(NSArray *)dependentSignals addObject:v4];
+  [(NSArray *)dependentSignals addObject:signalsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v15.receiver = self;
   v15.super_class = INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated;
-  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:v4];
-  v6 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self playOnThirdPartyAppSignals];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:policyCopy];
+  playOnThirdPartyAppSignals = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self playOnThirdPartyAppSignals];
+  v7 = [playOnThirdPartyAppSignals applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self deletePlayOnThirdPartyAppSignals];
   }
 
-  v9 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self independentSignal];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  independentSignal = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self independentSignal];
+  v10 = [independentSignal applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self deleteIndependentSignal];
   }
 
-  v12 = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self dependentSignals];
-  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v12 underConditions:v4];
+  dependentSignals = [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self dependentSignals];
+  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:dependentSignals underConditions:policyCopy];
   [(INFERENCESchemaINFERENCEVideoSmartAppSelectionDisambiguationSignalsGenerated *)self setDependentSignals:v13];
 
   return v5;

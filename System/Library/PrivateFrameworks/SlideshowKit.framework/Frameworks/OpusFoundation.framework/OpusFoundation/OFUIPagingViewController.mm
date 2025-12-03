@@ -1,22 +1,22 @@
 @interface OFUIPagingViewController
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
 - (OFUIPagingView)pagingView;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)didReceiveMemoryWarning;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
 - (void)loadView;
-- (void)setPagingView:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setPagingView:(id)view;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewDidUnload;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillUnload;
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)willMoveToParentViewController:(id)a3;
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)willMoveToParentViewController:(id)controller;
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation OFUIPagingViewController
@@ -42,8 +42,8 @@
     v10.receiver = self;
     v10.super_class = OFUIPagingViewController;
     [(OFUIViewController *)&v10 loadView];
-    v4 = [(OFUIPagingViewController *)self pagingView];
-    if (!v4)
+    pagingView = [(OFUIPagingViewController *)self pagingView];
+    if (!pagingView)
     {
       v5 = MEMORY[0x277CCACA8];
       v6 = objc_opt_class();
@@ -51,12 +51,12 @@
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"%@ loaded the %@ nib but didn't get a OFUIPagingView.", objc_msgSend(v5, "stringWithFormat:", @"-[%@ %@]", v7, NSStringFromSelector(a2)), -[OFUIPagingViewController nibName](self, "nibName")}];
     }
 
-    if (![(OFUIPagingView *)v4 delegate])
+    if (![(OFUIPagingView *)pagingView delegate])
     {
-      [(OFUIPagingView *)v4 setDelegate:self];
+      [(OFUIPagingView *)pagingView setDelegate:self];
     }
 
-    [(OFUIPagingView *)v4 setPagingViewController:self];
+    [(OFUIPagingView *)pagingView setPagingViewController:self];
   }
 
   else
@@ -100,87 +100,87 @@
   [(OFUIViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = OFUIPagingViewController;
-  [(OFUIViewController *)&v4 viewWillAppear:a3];
+  [(OFUIViewController *)&v4 viewWillAppear:appear];
   [[(OFUIPagingViewController *)self pagingView] reloadData];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = OFUIPagingViewController;
-  [(OFUIViewController *)&v3 viewDidAppear:a3];
+  [(OFUIViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = OFUIPagingViewController;
-  [(OFUIViewController *)&v3 viewWillDisappear:a3];
+  [(OFUIViewController *)&v3 viewWillDisappear:disappear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = OFUIPagingViewController;
-  [(OFUIViewController *)&v3 viewDidDisappear:a3];
+  [(OFUIViewController *)&v3 viewDidDisappear:disappear];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = OFUIPagingViewController;
-  [(OFUIPagingViewController *)&v3 willMoveToParentViewController:a3];
+  [(OFUIPagingViewController *)&v3 willMoveToParentViewController:controller];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = OFUIPagingViewController;
-  [(OFUIPagingViewController *)&v4 didMoveToParentViewController:a3];
+  [(OFUIPagingViewController *)&v4 didMoveToParentViewController:controller];
   [[(OFUIPagingViewController *)self pagingView] configurePages];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   v4.receiver = self;
   v4.super_class = OFUIPagingViewController;
-  return [(OFUIPagingViewController *)&v4 shouldAutorotateToInterfaceOrientation:a3];
+  return [(OFUIPagingViewController *)&v4 shouldAutorotateToInterfaceOrientation:orientation];
 }
 
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v4.receiver = self;
   v4.super_class = OFUIPagingViewController;
-  [(OFUIPagingViewController *)&v4 willRotateToInterfaceOrientation:a3 duration:a4];
+  [(OFUIPagingViewController *)&v4 willRotateToInterfaceOrientation:orientation duration:duration];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v5.receiver = self;
   v5.super_class = OFUIPagingViewController;
-  [(OFUIPagingViewController *)&v5 willAnimateRotationToInterfaceOrientation:a3 duration:a4];
+  [(OFUIPagingViewController *)&v5 willAnimateRotationToInterfaceOrientation:orientation duration:duration];
   [[(OFUIPagingViewController *)self pagingView] willAnimateRotation];
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   v4.receiver = self;
   v4.super_class = OFUIPagingViewController;
-  [(OFUIPagingViewController *)&v4 didRotateFromInterfaceOrientation:a3];
+  [(OFUIPagingViewController *)&v4 didRotateFromInterfaceOrientation:orientation];
   [[(OFUIPagingViewController *)self pagingView] didRotate];
 }
 
 - (OFUIPagingView)pagingView
 {
-  v2 = [(OFUIPagingViewController *)self view];
+  view = [(OFUIPagingViewController *)self view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v2;
+    return view;
   }
 
   else
@@ -189,22 +189,22 @@
   }
 }
 
-- (void)setPagingView:(id)a3
+- (void)setPagingView:(id)view
 {
-  v5 = [(OFUIPagingViewController *)self pagingView];
-  if (v5 != a3)
+  pagingView = [(OFUIPagingViewController *)self pagingView];
+  if (pagingView != view)
   {
-    v6 = v5;
-    if ([(OFUIPagingView *)v5 delegate]== self)
+    v6 = pagingView;
+    if ([(OFUIPagingView *)pagingView delegate]== self)
     {
       [(OFUIPagingView *)v6 setDelegate:0];
     }
 
-    [(OFUIPagingViewController *)self setView:a3];
-    if (![a3 delegate])
+    [(OFUIPagingViewController *)self setView:view];
+    if (![view delegate])
     {
 
-      [a3 setDelegate:self];
+      [view setDelegate:self];
     }
   }
 }

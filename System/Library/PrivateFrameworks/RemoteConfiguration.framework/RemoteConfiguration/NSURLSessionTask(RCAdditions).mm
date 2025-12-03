@@ -6,8 +6,8 @@
 
 - (__CFString)rc_logIdentifier
 {
-  v1 = [a1 originalRequest];
-  v2 = [v1 description];
+  originalRequest = [self originalRequest];
+  v2 = [originalRequest description];
   v3 = v2;
   if (v2)
   {

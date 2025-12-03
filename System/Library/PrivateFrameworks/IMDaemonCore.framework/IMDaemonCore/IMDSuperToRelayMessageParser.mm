@@ -1,18 +1,18 @@
 @interface IMDSuperToRelayMessageParser
-- (IMDSuperToRelayMessageParser)initWithAttributedString:(id)a3;
-- (id)parser:(id)a3 preprocessedAttributesForAttributes:(id)a4 range:(_NSRange)a5;
-- (void)parser:(id)a3 foundAttributes:(id)a4 inRange:(_NSRange)a5 characters:(id)a6;
-- (void)parser:(id)a3 foundAttributes:(id)a4 inRange:(_NSRange)a5 fileTransferGUID:(id)a6 filename:(id)a7 bookmark:(id)a8 width:(id)a9 height:(id)a10 isAnimoji:(id)a11;
-- (void)parserDidStart:(id)a3 bodyAttributes:(id)a4;
+- (IMDSuperToRelayMessageParser)initWithAttributedString:(id)string;
+- (id)parser:(id)parser preprocessedAttributesForAttributes:(id)attributes range:(_NSRange)range;
+- (void)parser:(id)parser foundAttributes:(id)attributes inRange:(_NSRange)range characters:(id)characters;
+- (void)parser:(id)parser foundAttributes:(id)attributes inRange:(_NSRange)range fileTransferGUID:(id)d filename:(id)filename bookmark:(id)bookmark width:(id)width height:(id)self0 isAnimoji:(id)self1;
+- (void)parserDidStart:(id)start bodyAttributes:(id)attributes;
 @end
 
 @implementation IMDSuperToRelayMessageParser
 
-- (IMDSuperToRelayMessageParser)initWithAttributedString:(id)a3
+- (IMDSuperToRelayMessageParser)initWithAttributedString:(id)string
 {
   v7.receiver = self;
   v7.super_class = IMDSuperToRelayMessageParser;
-  v3 = [(IMFromSuperParserContext *)&v7 initWithAttributedString:a3];
+  v3 = [(IMFromSuperParserContext *)&v7 initWithAttributedString:string];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
@@ -25,20 +25,20 @@
   return v3;
 }
 
-- (void)parserDidStart:(id)a3 bodyAttributes:(id)a4
+- (void)parserDidStart:(id)start bodyAttributes:(id)attributes
 {
-  v14 = a4;
+  attributesCopy = attributes;
   [(NSMutableString *)self->_outHTML appendString:@"<html>"];
   [(NSMutableString *)self->_outHTML appendString:@"<body"];
   v5 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v6 = [v14 objectForKey:*MEMORY[0x277D19150]];
+  v6 = [attributesCopy objectForKey:*MEMORY[0x277D19150]];
   v7 = v6;
   if (v6)
   {
     [v5 appendFormat:@"background-color:%@;", v6];
   }
 
-  v8 = [v14 objectForKey:*MEMORY[0x277D19158]];
+  v8 = [attributesCopy objectForKey:*MEMORY[0x277D19158]];
   v9 = v8;
   if (v8)
   {
@@ -50,19 +50,19 @@
     [(NSMutableString *)self->_outHTML appendFormat:@" style=%@", v5];
   }
 
-  v10 = [v14 objectForKey:*MEMORY[0x277D190B0]];
+  v10 = [attributesCopy objectForKey:*MEMORY[0x277D190B0]];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 integerValue];
-    if (v12 == 1)
+    integerValue = [v10 integerValue];
+    if (integerValue == 1)
     {
       v13 = @" dir=rtl";
     }
 
     else
     {
-      if (v12)
+      if (integerValue)
       {
         goto LABEL_13;
       }
@@ -77,37 +77,37 @@ LABEL_13:
   [(NSMutableString *)self->_outHTML appendString:@">"];
 }
 
-- (void)parser:(id)a3 foundAttributes:(id)a4 inRange:(_NSRange)a5 characters:(id)a6
+- (void)parser:(id)parser foundAttributes:(id)attributes inRange:(_NSRange)range characters:(id)characters
 {
-  v39 = a6;
+  charactersCopy = characters;
   v8 = *MEMORY[0x277D190A8];
-  v9 = a4;
-  v10 = [v9 _stringForKey:v8];
-  v11 = [v9 _stringForKey:*MEMORY[0x277D19120]];
-  v12 = [v9 _stringForKey:*MEMORY[0x277D19110]];
-  v13 = [v9 _numberForKey:*MEMORY[0x277D19118]];
-  v14 = [v13 integerValue];
+  attributesCopy = attributes;
+  v10 = [attributesCopy _stringForKey:v8];
+  v11 = [attributesCopy _stringForKey:*MEMORY[0x277D19120]];
+  v12 = [attributesCopy _stringForKey:*MEMORY[0x277D19110]];
+  v13 = [attributesCopy _numberForKey:*MEMORY[0x277D19118]];
+  integerValue = [v13 integerValue];
 
-  v15 = [v9 _numberForKey:*MEMORY[0x277D191E0]];
-  v38 = [v15 BOOLValue];
+  v15 = [attributesCopy _numberForKey:*MEMORY[0x277D191E0]];
+  bOOLValue = [v15 BOOLValue];
 
-  v16 = [v9 _numberForKey:*MEMORY[0x277D190B8]];
-  v37 = [v16 BOOLValue];
+  v16 = [attributesCopy _numberForKey:*MEMORY[0x277D190B8]];
+  bOOLValue2 = [v16 BOOLValue];
 
-  v17 = [v9 _numberForKey:*MEMORY[0x277D19138]];
-  v36 = [v17 BOOLValue];
+  v17 = [attributesCopy _numberForKey:*MEMORY[0x277D19138]];
+  bOOLValue3 = [v17 BOOLValue];
 
-  v18 = [v9 _numberForKey:*MEMORY[0x277D191D8]];
-  v19 = [v18 BOOLValue];
+  v18 = [attributesCopy _numberForKey:*MEMORY[0x277D191D8]];
+  bOOLValue4 = [v18 BOOLValue];
 
-  v20 = [v9 objectForKey:*MEMORY[0x277D19140]];
+  v20 = [attributesCopy objectForKey:*MEMORY[0x277D19140]];
 
   v21 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v22 = &OBJC_IVAR___IMDChat__isBlackholed;
   if (v20)
   {
     [v20 absoluteString];
-    v23 = v14;
+    v23 = integerValue;
     v25 = v24 = v20;
     v26 = v12;
     v27 = v11;
@@ -117,7 +117,7 @@ LABEL_13:
     [(NSMutableString *)self->_outHTML appendString:@"<a href="];
     [(NSMutableString *)self->_outHTML appendString:v29];
     v20 = v24;
-    v14 = v23;
+    integerValue = v23;
     [(NSMutableString *)self->_outHTML appendString:@">"];
 
     v10 = v28;
@@ -126,19 +126,19 @@ LABEL_13:
     v22 = &OBJC_IVAR___IMDChat__isBlackholed;
   }
 
-  if (v37)
+  if (bOOLValue2)
   {
     [v21 appendString:@"font-weight: bold;"];
   }
 
-  if (v36)
+  if (bOOLValue3)
   {
     [v21 appendString:@"font-style: italic;"];
   }
 
-  if ((v38 | v19))
+  if ((bOOLValue | bOOLValue4))
   {
-    if (v38)
+    if (bOOLValue)
     {
       v30 = @"text-decoration: underline;";
     }
@@ -161,9 +161,9 @@ LABEL_13:
     v20 = v32;
   }
 
-  if (v14)
+  if (integerValue)
   {
-    [v21 appendFormat:@"font-size: %dpx;", v14];
+    [v21 appendFormat:@"font-size: %dpx;", integerValue];
   }
 
   if ([v11 length])
@@ -201,20 +201,20 @@ LABEL_13:
   }
 }
 
-- (void)parser:(id)a3 foundAttributes:(id)a4 inRange:(_NSRange)a5 fileTransferGUID:(id)a6 filename:(id)a7 bookmark:(id)a8 width:(id)a9 height:(id)a10 isAnimoji:(id)a11
+- (void)parser:(id)parser foundAttributes:(id)attributes inRange:(_NSRange)range fileTransferGUID:(id)d filename:(id)filename bookmark:(id)bookmark width:(id)width height:(id)self0 isAnimoji:(id)self1
 {
   v66 = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  v58 = a4;
-  v15 = a6;
-  v16 = a7;
-  v59 = a8;
-  v17 = a9;
-  v18 = a10;
-  v19 = a11;
-  if (v17)
+  parserCopy = parser;
+  attributesCopy = attributes;
+  dCopy = d;
+  filenameCopy = filename;
+  bookmarkCopy = bookmark;
+  widthCopy = width;
+  heightCopy = height;
+  animojiCopy = animoji;
+  if (widthCopy)
   {
-    v20 = v17;
+    v20 = widthCopy;
   }
 
   else
@@ -222,9 +222,9 @@ LABEL_13:
     v20 = &unk_283F4EA80;
   }
 
-  if (v18)
+  if (heightCopy)
   {
-    v21 = v18;
+    v21 = heightCopy;
   }
 
   else
@@ -232,11 +232,11 @@ LABEL_13:
     v21 = &unk_283F4EA80;
   }
 
-  if (v15)
+  if (dCopy)
   {
     self->_isSimpleString = 0;
     v22 = +[IMDFileTransferCenter sharedInstance];
-    v23 = [v22 transferForGUID:v15];
+    v23 = [v22 transferForGUID:dCopy];
 
     if (!v23)
     {
@@ -245,13 +245,13 @@ LABEL_57:
       goto LABEL_58;
     }
 
-    v24 = [v23 transferredFilename];
-    v25 = [v24 length];
+    transferredFilename = [v23 transferredFilename];
+    v25 = [transferredFilename length];
 
     if (v25)
     {
-      v26 = [v23 transferredFilename];
-      v27 = [v26 lastPathComponent];
+      transferredFilename2 = [v23 transferredFilename];
+      lastPathComponent = [transferredFilename2 lastPathComponent];
 
       if (IMOSLoggingEnabled())
       {
@@ -259,7 +259,7 @@ LABEL_57:
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v63 = v27;
+          v63 = lastPathComponent;
           _os_log_impl(&dword_22B4CC000, v28, OS_LOG_TYPE_INFO, "Filename from transferred file name: %@", buf, 0xCu);
         }
       }
@@ -267,24 +267,24 @@ LABEL_57:
 
     else
     {
-      v27 = v16;
+      lastPathComponent = filenameCopy;
     }
 
-    if ([v27 length])
+    if ([lastPathComponent length])
     {
-      v29 = v27;
-      if (!v27)
+      lastPathComponent2 = lastPathComponent;
+      if (!lastPathComponent)
       {
 LABEL_56:
-        v16 = 0;
+        filenameCopy = 0;
         goto LABEL_57;
       }
     }
 
     else
     {
-      v30 = [v23 localPath];
-      v29 = [v30 lastPathComponent];
+      localPath = [v23 localPath];
+      lastPathComponent2 = [localPath lastPathComponent];
 
       if (IMOSLoggingEnabled())
       {
@@ -292,18 +292,18 @@ LABEL_56:
         if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v63 = v29;
+          v63 = lastPathComponent2;
           _os_log_impl(&dword_22B4CC000, v31, OS_LOG_TYPE_INFO, "Filename from local path: %@", buf, 0xCu);
         }
       }
 
-      if (!v29)
+      if (!lastPathComponent2)
       {
         goto LABEL_56;
       }
     }
 
-    v16 = [v29 lastPathComponent];
+    filenameCopy = [lastPathComponent2 lastPathComponent];
 
     if (IMOSLoggingEnabled())
     {
@@ -311,27 +311,27 @@ LABEL_56:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v63 = v16;
+        v63 = filenameCopy;
         _os_log_impl(&dword_22B4CC000, v32, OS_LOG_TYPE_INFO, "Filename from last path component: %@", buf, 0xCu);
       }
     }
 
-    if (v16)
+    if (filenameCopy)
     {
-      v56 = [MEMORY[0x277D19250] defaultHFSFileManager];
+      defaultHFSFileManager = [MEMORY[0x277D19250] defaultHFSFileManager];
       v52 = IMCreateEscapedAttributeValueFromString();
-      v53 = [v23 userInfo];
-      v33 = [MEMORY[0x277D19250] defaultHFSFileManager];
-      v34 = [v23 localPath];
+      userInfo = [v23 userInfo];
+      defaultHFSFileManager2 = [MEMORY[0x277D19250] defaultHFSFileManager];
+      localPath2 = [v23 localPath];
       v61 = 0;
-      v51 = [v33 attributesOfItemAtPath:v34 error:&v61];
+      v51 = [defaultHFSFileManager2 attributesOfItemAtPath:localPath2 error:&v61];
       v50 = v61;
 
       -[NSMutableString appendFormat:](self->_outHTML, "appendFormat:", @"<FILE name=%@ width=%ld height=%ld datasize=%llu", v52, [v20 integerValue], objc_msgSend(v21, "integerValue"), objc_msgSend(v51, "fileSize"));
-      if (v19)
+      if (animojiCopy)
       {
         v35 = IMCreateEscapedAttributeValueFromString();
-        v36 = [v19 stringValue];
+        stringValue = [animojiCopy stringValue];
         v37 = IMCreateEscapedAttributeValueFromString();
 
         if (v35 && v37)
@@ -340,7 +340,7 @@ LABEL_56:
         }
       }
 
-      v55 = [v56 MIMETypeOfPath:v16];
+      v55 = [defaultHFSFileManager MIMETypeOfPath:filenameCopy];
       if ([v55 length])
       {
         v38 = IMCreateEscapedAttributeValueFromString();
@@ -352,7 +352,7 @@ LABEL_56:
         }
       }
 
-      v54 = [v56 UTITypeOfPath:v16];
+      v54 = [defaultHFSFileManager UTITypeOfPath:filenameCopy];
       if ([v54 length])
       {
         v41 = IMCreateEscapedAttributeValueFromString();
@@ -366,15 +366,15 @@ LABEL_56:
 
       if ([v23 isAdaptiveImageGlyph])
       {
-        v44 = [v23 adaptiveImageGlyphContentIdentifier];
-        if ([v44 length])
+        adaptiveImageGlyphContentIdentifier = [v23 adaptiveImageGlyphContentIdentifier];
+        if ([adaptiveImageGlyphContentIdentifier length])
         {
           v45 = IMCreateEscapedAttributeValueFromString();
           [(NSMutableString *)self->_outHTML appendFormat:@" emoji-image-id=%@", v45];
         }
 
-        v46 = [v23 adaptiveImageGlyphContentDescription];
-        if ([v46 length])
+        adaptiveImageGlyphContentDescription = [v23 adaptiveImageGlyphContentDescription];
+        if ([adaptiveImageGlyphContentDescription length])
         {
           v47 = IMCreateEscapedAttributeValueFromString();
           [(NSMutableString *)self->_outHTML appendFormat:@" emoji-image-description=%@", v47];
@@ -391,7 +391,7 @@ LABEL_56:
       v60[2] = sub_22B6299C8;
       v60[3] = &unk_278706958;
       v60[4] = self;
-      [v53 enumerateKeysAndObjectsUsingBlock:v60];
+      [userInfo enumerateKeysAndObjectsUsingBlock:v60];
       [(NSMutableString *)self->_outHTML appendString:@"/>"];
       if (IMOSLoggingEnabled())
       {
@@ -401,7 +401,7 @@ LABEL_56:
           *buf = 138412546;
           v63 = v23;
           v64 = 2112;
-          v65 = v53;
+          v65 = userInfo;
           _os_log_impl(&dword_22B4CC000, v48, OS_LOG_TYPE_INFO, "Parsed file transfer: %@    user info: %@", buf, 0x16u);
         }
       }
@@ -415,27 +415,27 @@ LABEL_58:
   v49 = *MEMORY[0x277D85DE8];
 }
 
-- (id)parser:(id)a3 preprocessedAttributesForAttributes:(id)a4 range:(_NSRange)a5
+- (id)parser:(id)parser preprocessedAttributesForAttributes:(id)attributes range:(_NSRange)range
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  attributesCopy = attributes;
   v6 = *MEMORY[0x277D190E8];
-  v31 = [v5 objectForKey:*MEMORY[0x277D190E8]];
+  v31 = [attributesCopy objectForKey:*MEMORY[0x277D190E8]];
 
   v7 = *MEMORY[0x277D19170];
-  v30 = [v5 objectForKey:*MEMORY[0x277D19170]];
+  v30 = [attributesCopy objectForKey:*MEMORY[0x277D19170]];
 
   v8 = *MEMORY[0x277D191C0];
-  v29 = [v5 objectForKey:*MEMORY[0x277D191C0]];
+  v29 = [attributesCopy objectForKey:*MEMORY[0x277D191C0]];
 
   v9 = *MEMORY[0x277D191D0];
-  v28 = [v5 objectForKey:*MEMORY[0x277D191D0]];
+  v28 = [attributesCopy objectForKey:*MEMORY[0x277D191D0]];
 
   v10 = *MEMORY[0x277D191C8];
-  v27 = [v5 objectForKey:*MEMORY[0x277D191C8]];
+  v27 = [attributesCopy objectForKey:*MEMORY[0x277D191C8]];
 
   v11 = *MEMORY[0x277D191E8];
-  v26 = [v5 objectForKey:*MEMORY[0x277D191E8]];
+  v26 = [attributesCopy objectForKey:*MEMORY[0x277D191E8]];
 
   v12 = *MEMORY[0x277D19130];
   v22 = v9;
@@ -460,7 +460,7 @@ LABEL_58:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [v5 objectForKey:*(*(&v32 + 1) + 8 * i)];
+        v18 = [attributesCopy objectForKey:*(*(&v32 + 1) + 8 * i)];
 
         if (v18)
         {
@@ -481,9 +481,9 @@ LABEL_58:
 
 LABEL_11:
 
-  if (v31 || v30 || v29 || v28 || v27 || (v19 = v5, v26))
+  if (v31 || v30 || v29 || v28 || v27 || (v19 = attributesCopy, v26))
   {
-    v19 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v5];
+    v19 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:attributesCopy];
 
     [v19 removeObjectForKey:v24];
     [v19 removeObjectForKey:v7];

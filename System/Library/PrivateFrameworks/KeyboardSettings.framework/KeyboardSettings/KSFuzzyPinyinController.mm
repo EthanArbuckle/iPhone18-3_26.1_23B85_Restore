@@ -1,12 +1,12 @@
 @interface KSFuzzyPinyinController
 - (NSArray)fuzzyPinyinPairSpecifiers;
-- (id)keyboardPreferenceValue:(id)a3;
+- (id)keyboardPreferenceValue:(id)value;
 - (id)readFuzzyPinyinPairs;
 - (id)specifiers;
 - (void)dealloc;
 - (void)emitNavigationEventForFuzzyPinyinController;
-- (void)setKeyboardPreferenceValue:(id)a3 forSpecifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setKeyboardPreferenceValue:(id)value forSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -36,13 +36,13 @@
   if (!fuzzyPinyinPairSpecifiers)
   {
     [(KSFuzzyPinyinController *)self setFuzzyPinyinPairs:[(KSFuzzyPinyinController *)self readFuzzyPinyinPairs]];
-    v2 = [MEMORY[0x277D6F338] validFuzzyPinyinPairs];
+    validFuzzyPinyinPairs = [MEMORY[0x277D6F338] validFuzzyPinyinPairs];
     fuzzyPinyinPairSpecifiers = objc_alloc_init(MEMORY[0x277CBEB18]);
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v3 = [v2 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v3 = [validFuzzyPinyinPairs countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v3)
     {
       v4 = v3;
@@ -60,7 +60,7 @@
         {
           if (*v27 != v6)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(validFuzzyPinyinPairs);
           }
 
           v10 = *(*(&v26 + 1) + 8 * i);
@@ -89,7 +89,7 @@
           }
         }
 
-        v4 = [v2 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v4 = [validFuzzyPinyinPairs countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v4);
@@ -105,9 +105,9 @@
 - (id)readFuzzyPinyinPairs
 {
   v28 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v3 = [v2 valueForPreferenceKey:*MEMORY[0x277D6F628]];
-  v4 = [MEMORY[0x277D6F338] validFuzzyPinyinPairs];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v3 = [mEMORY[0x277D6F470] valueForPreferenceKey:*MEMORY[0x277D6F628]];
+  validFuzzyPinyinPairs = [MEMORY[0x277D6F338] validFuzzyPinyinPairs];
   v5 = [MEMORY[0x277CBEB58] set];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -131,7 +131,7 @@
           }
 
           v10 = *(*(&v22 + 1) + 8 * i);
-          if ([v4 containsObject:v10])
+          if ([validFuzzyPinyinPairs containsObject:v10])
           {
             [v5 addObject:v10];
           }
@@ -146,12 +146,12 @@
 
   else
   {
-    v11 = [MEMORY[0x277D6F338] defaultFuzzyPinyinPairs];
+    defaultFuzzyPinyinPairs = [MEMORY[0x277D6F338] defaultFuzzyPinyinPairs];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v12 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
+    v12 = [defaultFuzzyPinyinPairs countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v12)
     {
       v13 = v12;
@@ -162,13 +162,13 @@
         {
           if (*v19 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(defaultFuzzyPinyinPairs);
           }
 
           [v5 addObject:*(*(&v18 + 1) + 8 * j)];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v13 = [defaultFuzzyPinyinPairs countByEnumeratingWithState:&v18 objects:v26 count:16];
       }
 
       while (v13);
@@ -179,34 +179,34 @@
   return v5;
 }
 
-- (id)keyboardPreferenceValue:(id)a3
+- (id)keyboardPreferenceValue:(id)value
 {
-  v3 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
   v4 = *MEMORY[0x277D6F630];
 
-  return [v3 valueForPreferenceKey:v4];
+  return [mEMORY[0x277D6F470] valueForPreferenceKey:v4];
 }
 
-- (void)setKeyboardPreferenceValue:(id)a3 forSpecifier:(id)a4
+- (void)setKeyboardPreferenceValue:(id)value forSpecifier:(id)specifier
 {
-  v6 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) specifierForID:{@"FUZZY_PINYIN_PAIRS_GROUP", a4}];
-  v7 = [a3 BOOLValue];
-  v8 = [(KSFuzzyPinyinController *)self fuzzyPinyinPairSpecifiers];
-  if (v7)
+  v6 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) specifierForID:{@"FUZZY_PINYIN_PAIRS_GROUP", specifier}];
+  bOOLValue = [value BOOLValue];
+  fuzzyPinyinPairSpecifiers = [(KSFuzzyPinyinController *)self fuzzyPinyinPairSpecifiers];
+  if (bOOLValue)
   {
-    [(KSFuzzyPinyinController *)self insertContiguousSpecifiers:v8 afterSpecifier:v6 animated:1];
+    [(KSFuzzyPinyinController *)self insertContiguousSpecifiers:fuzzyPinyinPairSpecifiers afterSpecifier:v6 animated:1];
   }
 
   else
   {
-    [(KSFuzzyPinyinController *)self removeContiguousSpecifiers:v8 animated:1];
+    [(KSFuzzyPinyinController *)self removeContiguousSpecifiers:fuzzyPinyinPairSpecifiers animated:1];
     [(KSFuzzyPinyinController *)self setFuzzyPinyinPairSpecifiers:0];
   }
 
-  v9 = [MEMORY[0x277D6F470] sharedPreferencesController];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
   v10 = *MEMORY[0x277D6F630];
 
-  [v9 setValue:a3 forPreferenceKey:v10];
+  [mEMORY[0x277D6F470] setValue:value forPreferenceKey:v10];
 }
 
 - (id)specifiers
@@ -216,8 +216,8 @@
   result = *(&self->super.super.super.super.super.isa + v3);
   if (!result)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
-    [v5 addObject:{objc_msgSend(MEMORY[0x277D3FAD8], "groupSpecifierWithID:", @"FUZZY_PINYIN_GROUP"}];
+    array = [MEMORY[0x277CBEB18] array];
+    [array addObject:{objc_msgSend(MEMORY[0x277D3FAD8], "groupSpecifierWithID:", @"FUZZY_PINYIN_GROUP"}];
     v6 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] target:"bundleForClass:" set:objc_opt_class()) get:"localizedStringForKey:value:table:" detail:@"FUZZY_PINYIN_OPTION" cell:&stru_28679E3A8 edit:{@"Keyboard", self, sel_setKeyboardPreferenceValue_forSpecifier_, sel_keyboardPreferenceValue_, 0, 6, 0}];
     v7 = *MEMORY[0x277D3FEF0];
     v18[0] = *MEMORY[0x277D3FEF8];
@@ -230,15 +230,15 @@
     v19[2] = @"FuzzyPinyin";
     v19[3] = @"FuzzyPinyin";
     [v6 setProperties:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v19, v18, 4)}];
-    [v5 addObject:v6];
+    [array addObject:v6];
     v9 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"FUZZY_PINYIN_PAIRS_GROUP"];
-    [v5 addObject:v9];
-    v10 = [v5 indexOfObject:v9];
+    [array addObject:v9];
+    v10 = [array indexOfObject:v9];
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v11 = v10;
-      v12 = [MEMORY[0x277D6F470] sharedPreferencesController];
-      if ([v12 BOOLForPreferenceKey:*MEMORY[0x277D6F630]])
+      mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+      if ([mEMORY[0x277D6F470] BOOLForPreferenceKey:*MEMORY[0x277D6F630]])
       {
         v13 = v11 + 1;
         v14 = [MEMORY[0x277CCAB58] indexSetWithIndex:v11 + 1];
@@ -255,11 +255,11 @@
           while (v16);
         }
 
-        [v5 insertObjects:-[KSFuzzyPinyinController fuzzyPinyinPairSpecifiers](self atIndexes:{"fuzzyPinyinPairSpecifiers"), v14}];
+        [array insertObjects:-[KSFuzzyPinyinController fuzzyPinyinPairSpecifiers](self atIndexes:{"fuzzyPinyinPairSpecifiers"), v14}];
       }
     }
 
-    result = v5;
+    result = array;
     *(&self->super.super.super.super.super.isa + v3) = result;
   }
 
@@ -267,20 +267,20 @@
   return result;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v17.receiver = self;
   v17.super_class = KSFuzzyPinyinController;
   [KSFuzzyPinyinController tableView:sel_tableView_didSelectRowAtIndexPath_ didSelectRowAtIndexPath:?];
-  if ([a4 section] == 1)
+  if ([path section] == 1)
   {
-    v7 = [a4 row];
+    v7 = [path row];
     if (v7 < [(NSArray *)[(KSFuzzyPinyinController *)self fuzzyPinyinPairSpecifiers] count])
     {
       v8 = [(NSArray *)[(KSFuzzyPinyinController *)self fuzzyPinyinPairSpecifiers] objectAtIndex:v7];
-      v9 = [a3 cellForRowAtIndexPath:a4];
-      v10 = [v9 accessoryType];
-      if (v10 == 3)
+      v9 = [view cellForRowAtIndexPath:path];
+      accessoryType = [v9 accessoryType];
+      if (accessoryType == 3)
       {
         v11 = 0;
       }
@@ -292,22 +292,22 @@
 
       [v9 setAccessoryType:v11];
       v12 = [v8 propertyForKey:@"TISpecifierKeyFuzzyPinyinPair"];
-      v13 = [(KSFuzzyPinyinController *)self fuzzyPinyinPairs];
-      if (v10 == 3)
+      fuzzyPinyinPairs = [(KSFuzzyPinyinController *)self fuzzyPinyinPairs];
+      if (accessoryType == 3)
       {
-        [(NSMutableSet *)v13 removeObject:v12];
+        [(NSMutableSet *)fuzzyPinyinPairs removeObject:v12];
       }
 
       else
       {
-        [(NSMutableSet *)v13 addObject:v12];
+        [(NSMutableSet *)fuzzyPinyinPairs addObject:v12];
       }
 
-      v14 = [MEMORY[0x277CCABB0] numberWithInt:v10 != 3];
+      v14 = [MEMORY[0x277CCABB0] numberWithInt:accessoryType != 3];
       [v8 setProperty:v14 forKey:*MEMORY[0x277D401A8]];
-      v15 = [MEMORY[0x277D6F470] sharedPreferencesController];
-      v16 = [(NSMutableSet *)[(KSFuzzyPinyinController *)self fuzzyPinyinPairs] allObjects];
-      [v15 setValue:v16 forPreferenceKey:*MEMORY[0x277D6F628]];
+      mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+      allObjects = [(NSMutableSet *)[(KSFuzzyPinyinController *)self fuzzyPinyinPairs] allObjects];
+      [mEMORY[0x277D6F470] setValue:allObjects forPreferenceKey:*MEMORY[0x277D6F628]];
     }
   }
 }
@@ -318,9 +318,9 @@
   v3 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.General/Keyboard/FUZZY_PINYIN_OPTION"];
   v4 = +[KSKeyboardController localizedStringForGeneralKeyboardSpecifier];
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v8 = v4;
-  v9 = [v5 initWithKey:@"FUZZY_PINYIN_OPTION" table:@"Keyboard" locale:v6 bundleURL:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "bundleURL")}];
+  v9 = [v5 initWithKey:@"FUZZY_PINYIN_OPTION" table:@"Keyboard" locale:currentLocale bundleURL:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "bundleURL")}];
   -[KSFuzzyPinyinController pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:title:localizedNavigationComponents:deepLink:](self, "pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:title:localizedNavigationComponents:deepLink:", @"com.apple.graphic-icon.keyboard", v9, [MEMORY[0x277CBEA60] arrayWithObjects:&v8 count:2], v3);
   v7 = *MEMORY[0x277D85DE8];
 }

@@ -1,6 +1,6 @@
 @interface VCMockRouter
 + (id)sharedInstance;
-- (BOOL)routeDatagram:(const void *)a3 datagramSize:(unsigned int)a4 datagramOptions:(id *)a5 fromDatagramChannel:(id)a6 error:(id *)a7;
+- (BOOL)routeDatagram:(const void *)datagram datagramSize:(unsigned int)size datagramOptions:(id *)options fromDatagramChannel:(id)channel error:(id *)error;
 @end
 
 @implementation VCMockRouter
@@ -29,20 +29,20 @@ void __30__VCMockRouter_sharedInstance__block_invoke()
   }
 }
 
-- (BOOL)routeDatagram:(const void *)a3 datagramSize:(unsigned int)a4 datagramOptions:(id *)a5 fromDatagramChannel:(id)a6 error:(id *)a7
+- (BOOL)routeDatagram:(const void *)datagram datagramSize:(unsigned int)size datagramOptions:(id *)options fromDatagramChannel:(id)channel error:(id *)error
 {
-  v10 = *&a4;
+  v10 = *&size;
   v48 = *MEMORY[0x1E69E9840];
-  v12 = [+[VCDatagramChannelManager sharedInstance](VCDatagramChannelManager datagramChannels];
-  if (v12 && (v13 = v12, [v12 count] > 1))
+  datagramChannels = [+[VCDatagramChannelManager sharedInstance](VCDatagramChannelManager datagramChannels];
+  if (datagramChannels && (v13 = datagramChannels, [datagramChannels count] > 1))
   {
-    v30 = a7;
+    errorCopy = error;
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v15 = [v13 allKeys];
-    v16 = [v15 countByEnumeratingWithState:&v44 objects:v43 count:16];
+    allKeys = [v13 allKeys];
+    v16 = [allKeys countByEnumeratingWithState:&v44 objects:v43 count:16];
     if (v16)
     {
       v17 = v16;
@@ -53,13 +53,13 @@ void __30__VCMockRouter_sharedInstance__block_invoke()
         {
           if (*v45 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(allKeys);
           }
 
           v20 = [objc_msgSend(v13 objectForKeyedSubscript:{*(*(&v44 + 1) + 8 * i)), "idsDatagramChannel"}];
           if (v20)
           {
-            v21 = v20 == a6;
+            v21 = v20 == channel;
           }
 
           else
@@ -87,9 +87,9 @@ void __30__VCMockRouter_sharedInstance__block_invoke()
                   v35 = 1024;
                   v36 = 53;
                   v37 = 2048;
-                  v38 = a3;
+                  datagramCopy3 = datagram;
                   v39 = 2048;
-                  v40 = a6;
+                  channelCopy3 = channel;
                   v41 = 2048;
                   v42 = v25;
                   _os_log_impl(&dword_1DB56E000, v28, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Forward datagram[%p] from MockIDSDatagramChannel=%p to MockIDSDatagramChannel=%p", buf, 0x3Au);
@@ -105,20 +105,20 @@ void __30__VCMockRouter_sharedInstance__block_invoke()
                 v35 = 1024;
                 v36 = 53;
                 v37 = 2048;
-                v38 = a3;
+                datagramCopy3 = datagram;
                 v39 = 2048;
-                v40 = a6;
+                channelCopy3 = channel;
                 v41 = 2048;
                 v42 = v25;
                 _os_log_debug_impl(&dword_1DB56E000, v28, OS_LOG_TYPE_DEBUG, " [%s] %s:%d Forward datagram[%p] from MockIDSDatagramChannel=%p to MockIDSDatagramChannel=%p", buf, 0x3Au);
               }
             }
 
-            return [v25 processDirectIDSPathWithDatagram:a3 datagramSize:v10 datagramOptions:a5 error:v30];
+            return [v25 processDirectIDSPathWithDatagram:datagram datagramSize:v10 datagramOptions:options error:errorCopy];
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v44 objects:v43 count:16];
+        v17 = [allKeys countByEnumeratingWithState:&v44 objects:v43 count:16];
         if (v17)
         {
           continue;
@@ -141,18 +141,18 @@ void __30__VCMockRouter_sharedInstance__block_invoke()
         v35 = 1024;
         v36 = 57;
         v37 = 2048;
-        v38 = a3;
+        datagramCopy3 = datagram;
         v39 = 2048;
-        v40 = a6;
+        channelCopy3 = channel;
         _os_log_error_impl(&dword_1DB56E000, v23, OS_LOG_TYPE_ERROR, " [%s] %s:%d Failed to forward datagram=%p from MockIDSDatagramChannel=%p", buf, 0x30u);
       }
     }
 
-    if (v30)
+    if (errorCopy)
     {
       v24 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32000 detailCode:0 description:@"Failed to forward datagram"];
       result = 0;
-      *v30 = v24;
+      *errorCopy = v24;
     }
 
     else
@@ -164,7 +164,7 @@ void __30__VCMockRouter_sharedInstance__block_invoke()
   else
   {
 
-    return [a6 processDirectIDSPathWithDatagram:a3 datagramSize:v10 datagramOptions:a5 error:a7];
+    return [channel processDirectIDSPathWithDatagram:datagram datagramSize:v10 datagramOptions:options error:error];
   }
 
   return result;

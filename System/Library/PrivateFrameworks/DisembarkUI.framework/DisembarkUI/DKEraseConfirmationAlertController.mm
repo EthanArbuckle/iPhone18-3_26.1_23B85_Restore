@@ -1,36 +1,36 @@
 @interface DKEraseConfirmationAlertController
-+ (id)alertControllerWithCellularPlans:(id)a3 completion:(id)a4;
-+ (id)alertControllerWithCompletion:(id)a3;
++ (id)alertControllerWithCellularPlans:(id)plans completion:(id)completion;
++ (id)alertControllerWithCompletion:(id)completion;
 @end
 
 @implementation DKEraseConfirmationAlertController
 
-+ (id)alertControllerWithCompletion:(id)a3
++ (id)alertControllerWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(DKTelephonyProvider);
   v5 = objc_opt_class();
-  v6 = [(DKTelephonyProvider *)v4 cellularPlans];
-  v7 = [v5 alertControllerWithCellularPlans:v6 completion:v3];
+  cellularPlans = [(DKTelephonyProvider *)v4 cellularPlans];
+  v7 = [v5 alertControllerWithCellularPlans:cellularPlans completion:completionCopy];
 
   return v7;
 }
 
-+ (id)alertControllerWithCellularPlans:(id)a3 completion:(id)a4
++ (id)alertControllerWithCellularPlans:(id)plans completion:(id)completion
 {
   v80 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v64 = v5;
-  if ([v5 count])
+  plansCopy = plans;
+  completionCopy = completion;
+  v64 = plansCopy;
+  if ([plansCopy count])
   {
-    v63 = v6;
+    v63 = completionCopy;
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v8 = v5;
+    v8 = plansCopy;
     v9 = [v8 countByEnumeratingWithState:&v75 objects:v79 count:16];
     if (v9)
     {
@@ -45,8 +45,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v75 + 1) + 8 * i) carrierName];
-          [v7 addObject:v13];
+          carrierName = [*(*(&v75 + 1) + 8 * i) carrierName];
+          [v7 addObject:carrierName];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v75 objects:v79 count:16];
@@ -85,8 +85,8 @@
     v62 = v20;
     v21 = [v16 localizedStringForKey:v18 value:&stru_285BC2A70 table:@"Localizable"];
     v22 = MEMORY[0x277CCAAF0];
-    v23 = [v7 allObjects];
-    v24 = [v23 mutableCopy];
+    allObjects = [v7 allObjects];
+    v24 = [allObjects mutableCopy];
     v25 = [v22 localizedStringByJoiningStrings:v24];
     v61 = [v15 stringWithFormat:v21, v25];
 
@@ -135,8 +135,8 @@
 
   else
   {
-    v46 = [MEMORY[0x277D75418] currentDevice];
-    v47 = [v46 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v47 = [currentDevice userInterfaceIdiom] == 1;
 
     v48 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v49 = [v48 localizedStringForKey:@"ERASE_CONFIRMATION_ALERT_TITLE" value:&stru_285BC2A70 table:@"Localizable"];
@@ -150,7 +150,7 @@
     v67[1] = 3221225472;
     v67[2] = __82__DKEraseConfirmationAlertController_alertControllerWithCellularPlans_completion___block_invoke_4;
     v67[3] = &unk_278F7D9C0;
-    v52 = v6;
+    v52 = completionCopy;
     v68 = v52;
     v53 = [v51 actionWithTitle:v7 style:2 handler:v67];
     [v28 addAction:v53];

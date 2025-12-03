@@ -1,33 +1,33 @@
 @interface CUPowerSource
 - (BOOL)hasAllComponents;
 - (BOOL)isAggregateComponent;
-- (BOOL)isEqual:(id)a3;
-- (CUPowerSource)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CUPowerSource)initWithCoder:(id)coder;
 - (NSArray)LEDs;
 - (id)description;
 - (id)detailedDescription;
 - (int)publish;
 - (unint64_t)hash;
-- (unsigned)updateWithPowerAdapterDetails:(id)a3;
-- (unsigned)updateWithPowerSourceDescription:(id)a3;
-- (void)_updateWithCoder:(id)a3;
+- (unsigned)updateWithPowerAdapterDetails:(id)details;
+- (unsigned)updateWithPowerSourceDescription:(id)description;
+- (void)_updateWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleSubComponentsUpdatedWithBaseSource:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleSubComponentsUpdatedWithBaseSource:(id)source;
 - (void)invalidate;
-- (void)updateWithPowerSource:(id)a3;
+- (void)updateWithPowerSource:(id)source;
 @end
 
 @implementation CUPowerSource
 
-- (unsigned)updateWithPowerSourceDescription:(id)a3
+- (unsigned)updateWithPowerSourceDescription:(id)description
 {
   v131 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_ioKitDescription, a3);
+  descriptionCopy = description;
+  objc_storeStrong(&self->_ioKitDescription, description);
   self->_present = 1;
   TypeID = CFStringGetTypeID();
-  v7 = CFDictionaryGetTypedValue(v5, @"Accessory Category", TypeID, 0);
+  v7 = CFDictionaryGetTypedValue(descriptionCopy, @"Accessory Category", TypeID, 0);
   v8 = v7;
   if (!v7)
   {
@@ -63,7 +63,7 @@ LABEL_9:
   v14 = 1;
 LABEL_10:
   v15 = CFStringGetTypeID();
-  v16 = CFDictionaryGetTypedValue(v5, @"Accessory Identifier", v15, 0);
+  v16 = CFDictionaryGetTypedValue(descriptionCopy, @"Accessory Identifier", v15, 0);
 
   if (!v16)
   {
@@ -96,8 +96,8 @@ LABEL_17:
   }
 
 LABEL_18:
-  Int64 = CFDictionaryGetInt64(v5, @"Is Charging", 0);
-  v23 = CFDictionaryGetInt64(v5, @"Show Charging UI", 0);
+  Int64 = CFDictionaryGetInt64(descriptionCopy, @"Is Charging", 0);
+  v23 = CFDictionaryGetInt64(descriptionCopy, @"Show Charging UI", 0);
   v24 = v23 != 0;
   v25 = (Int64 | v23) != 0;
   if (self->_charging != v25)
@@ -112,8 +112,8 @@ LABEL_18:
     v14 |= 4u;
   }
 
-  Double = CFDictionaryGetDouble(v5, @"Current Capacity", 0);
-  v27 = CFDictionaryGetDouble(v5, @"Max Capacity", 0);
+  Double = CFDictionaryGetDouble(descriptionCopy, @"Current Capacity", 0);
+  v27 = CFDictionaryGetDouble(descriptionCopy, @"Max Capacity", 0);
   v28 = Double / v27;
   if (v27 <= 0.0)
   {
@@ -137,7 +137,7 @@ LABEL_18:
   }
 
   v29 = CFStringGetTypeID();
-  v30 = CFDictionaryGetTypedValue(v5, @"Group Identifier", v29, 0);
+  v30 = CFDictionaryGetTypedValue(descriptionCopy, @"Group Identifier", v29, 0);
 
   if (v30)
   {
@@ -174,11 +174,11 @@ LABEL_38:
   v36 = self->_groupID;
   if (v36)
   {
-    v37 = [(NSString *)v36 UTF8String];
-    if (v37)
+    uTF8String = [(NSString *)v36 UTF8String];
+    if (uTF8String)
     {
-      v38 = v37;
-      if (!strcasecmp(v37, "left"))
+      v38 = uTF8String;
+      if (!strcasecmp(uTF8String, "left"))
       {
         v39 = 1;
       }
@@ -228,7 +228,7 @@ LABEL_38:
   }
 
   v40 = CFArrayGetTypeID();
-  v41 = CFDictionaryGetTypedValue(v5, @"LEDs", v40, 0);
+  v41 = CFDictionaryGetTypedValue(descriptionCopy, @"LEDs", v40, 0);
   if ([v41 count])
   {
     LEDs = self->_LEDs;
@@ -257,8 +257,8 @@ LABEL_38:
 
     v122 = v30;
     v123 = v41;
-    v124 = self;
-    v125 = v5;
+    selfCopy = self;
+    v125 = descriptionCopy;
     v47 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v126 = 0u;
     v127 = 0u;
@@ -346,12 +346,12 @@ LABEL_38:
     }
 
     v63 = [v47 copy];
-    self = v124;
-    v64 = v124->_LEDs;
-    v124->_LEDs = v63;
+    self = selfCopy;
+    v64 = selfCopy->_LEDs;
+    selfCopy->_LEDs = v63;
 
     v14 |= 1u;
-    v5 = v125;
+    descriptionCopy = v125;
     v30 = v122;
     v41 = v123;
   }
@@ -364,7 +364,7 @@ LABEL_91:
   }
 
   v65 = CFStringGetTypeID();
-  v66 = CFDictionaryGetTypedValue(v5, @"Name", v65, 0);
+  v66 = CFDictionaryGetTypedValue(descriptionCopy, @"Name", v65, 0);
 
   if (v66)
   {
@@ -398,7 +398,7 @@ LABEL_91:
 
 LABEL_101:
   v72 = CFStringGetTypeID();
-  v73 = CFDictionaryGetTypedValue(v5, @"Part Identifier", v72, 0);
+  v73 = CFDictionaryGetTypedValue(descriptionCopy, @"Part Identifier", v72, 0);
 
   if (!v73)
   {
@@ -432,7 +432,7 @@ LABEL_108:
 
 LABEL_109:
   v79 = CFStringGetTypeID();
-  v80 = CFDictionaryGetTypedValue(v5, @"Part Name", v79, 0);
+  v80 = CFDictionaryGetTypedValue(descriptionCopy, @"Part Name", v79, 0);
 
   if (v80)
   {
@@ -467,16 +467,16 @@ LABEL_109:
 
 LABEL_117:
   v86 = CFStringGetTypeID();
-  v87 = CFDictionaryGetTypedValue(v5, @"Power Source State", v86, 0);
+  v87 = CFDictionaryGetTypedValue(descriptionCopy, @"Power Source State", v86, 0);
 
   if (([v87 isEqual:@"AC Power"] & 1) != 0 || objc_msgSend(v87, "isEqual:", @"UPS Power"))
   {
-    if (CFDictionaryGetInt64(v5, @"Is Charged", 0))
+    if (CFDictionaryGetInt64(descriptionCopy, @"Is Charged", 0))
     {
       v88 = 3;
     }
 
-    else if (CFDictionaryGetInt64(v5, @"Is Finishing Charge", 0))
+    else if (CFDictionaryGetInt64(descriptionCopy, @"Is Finishing Charge", 0))
     {
       v88 = 3;
     }
@@ -498,7 +498,7 @@ LABEL_117:
     v14 |= 4u;
   }
 
-  Int64Ranged = CFDictionaryGetInt64Ranged(v5, @"Product ID", 0xFFFFFFFF80000000, 0x7FFFFFFFLL, 0);
+  Int64Ranged = CFDictionaryGetInt64Ranged(descriptionCopy, @"Product ID", 0xFFFFFFFF80000000, 0x7FFFFFFFLL, 0);
   if (Int64Ranged != self->_productID)
   {
     self->_productID = Int64Ranged;
@@ -506,7 +506,7 @@ LABEL_117:
   }
 
   v90 = CFStringGetTypeID();
-  v91 = CFDictionaryGetTypedValue(v5, @"Power Source State", v90, 0);
+  v91 = CFDictionaryGetTypedValue(descriptionCopy, @"Power Source State", v90, 0);
 
   if (v91)
   {
@@ -539,7 +539,7 @@ LABEL_117:
   }
 
 LABEL_137:
-  v97 = CFDictionaryGetInt64Ranged(v5, @"Temperature", 0xFFFFFFFF80000000, 0x7FFFFFFFLL, 0);
+  v97 = CFDictionaryGetInt64Ranged(descriptionCopy, @"Temperature", 0xFFFFFFFF80000000, 0x7FFFFFFFLL, 0);
   if (v97 != self->_temperature)
   {
     self->_temperature = v97;
@@ -547,7 +547,7 @@ LABEL_137:
   }
 
   v98 = CFStringGetTypeID();
-  v99 = CFDictionaryGetTypedValue(v5, @"Transport Type", v98, 0);
+  v99 = CFDictionaryGetTypedValue(descriptionCopy, @"Transport Type", v98, 0);
 
   if (v99)
   {
@@ -581,7 +581,7 @@ LABEL_137:
 
 LABEL_147:
   v105 = CFStringGetTypeID();
-  v106 = CFDictionaryGetTypedValue(v5, @"Type", v105, 0);
+  v106 = CFDictionaryGetTypedValue(descriptionCopy, @"Type", v105, 0);
 
   if (!v106)
   {
@@ -614,7 +614,7 @@ LABEL_154:
   }
 
 LABEL_155:
-  v112 = CFDictionaryGetInt64Ranged(v5, @"Vendor ID", 0xFFFFFFFF80000000, 0x7FFFFFFFLL, 0);
+  v112 = CFDictionaryGetInt64Ranged(descriptionCopy, @"Vendor ID", 0xFFFFFFFF80000000, 0x7FFFFFFFLL, 0);
   if (v112 != self->_vendorID)
   {
     self->_vendorID = v112;
@@ -624,7 +624,7 @@ LABEL_155:
   if ([(NSString *)self->_type isEqual:@"Accessory Source"])
   {
     v113 = CFDictionaryGetTypeID();
-    v114 = CFDictionaryGetTypedValue(v5, @"AdapterDetails", v113, 0);
+    v114 = CFDictionaryGetTypedValue(descriptionCopy, @"AdapterDetails", v113, 0);
     v115 = v114;
     if (v114)
     {
@@ -662,26 +662,26 @@ LABEL_166:
   return v14;
 }
 
-- (void)updateWithPowerSource:(id)a3
+- (void)updateWithPowerSource:(id)source
 {
   v4 = MEMORY[0x1E696ACC8];
-  v5 = a3;
+  sourceCopy = source;
   v9 = [[v4 alloc] initRequiringSecureCoding:1];
-  [v5 encodeWithCoder:v9];
+  [sourceCopy encodeWithCoder:v9];
 
   v6 = objc_alloc(MEMORY[0x1E696ACD0]);
-  v7 = [v9 encodedData];
-  v8 = [v6 initForReadingFromData:v7 error:0];
+  encodedData = [v9 encodedData];
+  v8 = [v6 initForReadingFromData:encodedData error:0];
 
   [(CUPowerSource *)self _updateWithCoder:v8];
   [v8 finishDecoding];
 }
 
-- (unsigned)updateWithPowerAdapterDetails:(id)a3
+- (unsigned)updateWithPowerAdapterDetails:(id)details
 {
-  v5 = a3;
-  objc_storeStrong(&self->_ioKitAdapterDescription, a3);
-  Int64Ranged = CFDictionaryGetInt64Ranged(v5, @"FamilyCode", 0xFFFFFFFF80000000, 0x7FFFFFFFLL, 0);
+  detailsCopy = details;
+  objc_storeStrong(&self->_ioKitAdapterDescription, details);
+  Int64Ranged = CFDictionaryGetInt64Ranged(detailsCopy, @"FamilyCode", 0xFFFFFFFF80000000, 0x7FFFFFFFLL, 0);
   if (Int64Ranged == self->_adapterFamilyCode)
   {
     v7 = 0;
@@ -694,7 +694,7 @@ LABEL_166:
   }
 
   TypeID = CFStringGetTypeID();
-  v9 = CFDictionaryGetTypedValue(v5, @"Name", TypeID, 0);
+  v9 = CFDictionaryGetTypedValue(detailsCopy, @"Name", TypeID, 0);
   adapterName = self->_adapterName;
   v11 = v9;
   v12 = adapterName;
@@ -727,21 +727,21 @@ LABEL_10:
   }
 
 LABEL_12:
-  v17 = CFDictionaryGetInt64(v5, @"SharedSource", 0) != 0;
+  v17 = CFDictionaryGetInt64(detailsCopy, @"SharedSource", 0) != 0;
   if (self->_adapterSharedSource != v17)
   {
     self->_adapterSharedSource = v17;
     v7 = 256;
   }
 
-  v18 = CFDictionaryGetInt64Ranged(v5, @"Source", 0xFFFFFFFF80000000, 0x7FFFFFFFLL, 0);
+  v18 = CFDictionaryGetInt64Ranged(detailsCopy, @"Source", 0xFFFFFFFF80000000, 0x7FFFFFFFLL, 0);
   if (v18 != self->_adapterSourceID)
   {
     self->_adapterSourceID = v18;
     v7 = 256;
   }
 
-  v19 = CFDictionaryGetInt64Ranged(v5, @"ErrorFlags", 0xFFFFFFFF80000000, 0x7FFFFFFFLL, 0);
+  v19 = CFDictionaryGetInt64Ranged(detailsCopy, @"ErrorFlags", 0xFFFFFFFF80000000, 0x7FFFFFFFLL, 0);
   if (v19 != self->_adapterErrorFlags)
   {
     self->_adapterErrorFlags = v19;
@@ -763,11 +763,11 @@ LABEL_12:
   return [(NSString *)accessoryCategory isEqualToString:@"Headphone"];
 }
 
-- (void)handleSubComponentsUpdatedWithBaseSource:(id)a3
+- (void)handleSubComponentsUpdatedWithBaseSource:(id)source
 {
-  v4 = a3;
-  subLeft = v4;
-  if (v4 || (subLeft = self->_subLeft) != 0 || (subLeft = self->_subRight) != 0)
+  sourceCopy = source;
+  subLeft = sourceCopy;
+  if (sourceCopy || (subLeft = self->_subLeft) != 0 || (subLeft = self->_subRight) != 0)
   {
     v69 = subLeft;
 
@@ -780,15 +780,15 @@ LABEL_12:
   {
 LABEL_5:
     v70 = v6;
-    v7 = [(CUPowerSource *)v6 accessoryID];
-    v8 = v7;
-    if (!v7)
+    accessoryID = [(CUPowerSource *)v6 accessoryID];
+    v8 = accessoryID;
+    if (!accessoryID)
     {
       goto LABEL_13;
     }
 
     accessoryID = self->_accessoryID;
-    v10 = v7;
+    v10 = accessoryID;
     v11 = accessoryID;
     v12 = v11;
     if (v10 == v11)
@@ -804,24 +804,24 @@ LABEL_5:
       if (v13)
       {
 LABEL_13:
-        v14 = [(CUPowerSource *)v70 adapterErrorFlags];
-        if (v14 != self->_adapterErrorFlags)
+        adapterErrorFlags = [(CUPowerSource *)v70 adapterErrorFlags];
+        if (adapterErrorFlags != self->_adapterErrorFlags)
         {
-          self->_adapterErrorFlags = v14;
+          self->_adapterErrorFlags = adapterErrorFlags;
         }
 
-        v15 = [(CUPowerSource *)v70 adapterFamilyCode];
-        if (v15 != self->_adapterFamilyCode)
+        adapterFamilyCode = [(CUPowerSource *)v70 adapterFamilyCode];
+        if (adapterFamilyCode != self->_adapterFamilyCode)
         {
-          self->_adapterFamilyCode = v15;
+          self->_adapterFamilyCode = adapterFamilyCode;
         }
 
-        v16 = [(CUPowerSource *)v70 adapterName];
+        adapterName = [(CUPowerSource *)v70 adapterName];
 
-        if (v16)
+        if (adapterName)
         {
           adapterName = self->_adapterName;
-          v18 = v16;
+          v18 = adapterName;
           v19 = adapterName;
           v20 = v19;
           if (v18 == v19)
@@ -844,20 +844,20 @@ LABEL_13:
           {
           }
 
-          objc_storeStrong(&self->_adapterName, v16);
+          objc_storeStrong(&self->_adapterName, adapterName);
         }
 
 LABEL_25:
-        v22 = [(CUPowerSource *)v70 adapterSharedSource];
-        if (self->_adapterSharedSource != v22)
+        adapterSharedSource = [(CUPowerSource *)v70 adapterSharedSource];
+        if (self->_adapterSharedSource != adapterSharedSource)
         {
-          self->_adapterSharedSource = v22;
+          self->_adapterSharedSource = adapterSharedSource;
         }
 
-        v23 = [(CUPowerSource *)v70 adapterSourceID];
-        if (v23 != self->_adapterSourceID)
+        adapterSourceID = [(CUPowerSource *)v70 adapterSourceID];
+        if (adapterSourceID != self->_adapterSourceID)
         {
-          self->_adapterSourceID = v23;
+          self->_adapterSourceID = adapterSourceID;
         }
 
         v24 = 1;
@@ -918,18 +918,18 @@ LABEL_25:
           self->_chargeLevel = v25;
         }
 
-        v37 = [(CUPowerSource *)v70 expectedComponents];
-        if (v37 != self->_expectedComponents)
+        expectedComponents = [(CUPowerSource *)v70 expectedComponents];
+        if (expectedComponents != self->_expectedComponents)
         {
-          self->_expectedComponents = v37;
+          self->_expectedComponents = expectedComponents;
         }
 
-        v38 = [(CUPowerSource *)v70 groupID];
+        groupID = [(CUPowerSource *)v70 groupID];
 
-        if (v38)
+        if (groupID)
         {
           groupID = self->_groupID;
-          v40 = v38;
+          v40 = groupID;
           v41 = groupID;
           v42 = v41;
           if (v40 == v41)
@@ -952,7 +952,7 @@ LABEL_25:
           {
           }
 
-          objc_storeStrong(&self->_groupID, v38);
+          objc_storeStrong(&self->_groupID, groupID);
         }
 
 LABEL_59:
@@ -1002,15 +1002,15 @@ LABEL_59:
           self->_maxCapacity = v44;
         }
 
-        v56 = [(CUPowerSource *)v70 name];
+        name = [(CUPowerSource *)v70 name];
 
-        if (!v56)
+        if (!name)
         {
           goto LABEL_81;
         }
 
         name = self->_name;
-        v58 = v56;
+        v58 = name;
         v59 = name;
         v60 = v59;
         if (v58 == v59)
@@ -1033,20 +1033,20 @@ LABEL_59:
           {
           }
 
-          objc_storeStrong(&self->_name, v56);
+          objc_storeStrong(&self->_name, name);
         }
 
 LABEL_81:
-        v62 = [(CUPowerSource *)v70 productID];
-        if (v62 != self->_productID)
+        productID = [(CUPowerSource *)v70 productID];
+        if (productID != self->_productID)
         {
-          self->_productID = v62;
+          self->_productID = productID;
         }
 
-        v63 = [(CUPowerSource *)v70 vendorID];
-        if (v63 != self->_vendorID)
+        vendorID = [(CUPowerSource *)v70 vendorID];
+        if (vendorID != self->_vendorID)
         {
-          self->_vendorID = v63;
+          self->_vendorID = vendorID;
         }
 
         goto LABEL_85;
@@ -1067,7 +1067,7 @@ LABEL_81:
   }
 
   v70 = 0;
-  v56 = 0;
+  name = 0;
 LABEL_85:
 }
 
@@ -1116,47 +1116,47 @@ LABEL_85:
 - (int)publish
 {
   v58 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v49 = v2;
-  if (v2->_psID || (v46 = IOPSCreatePowerSource()) == 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v49 = selfCopy;
+  if (selfCopy->_psID || (v46 = IOPSCreatePowerSource()) == 0)
   {
     v48 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    accessoryCategory = v2->_accessoryCategory;
+    accessoryCategory = selfCopy->_accessoryCategory;
     if (accessoryCategory)
     {
       [(NSDictionary *)v48 setObject:accessoryCategory forKeyedSubscript:@"Accessory Category"];
     }
 
-    accessoryID = v2->_accessoryID;
+    accessoryID = selfCopy->_accessoryID;
     if (accessoryID)
     {
       [(NSDictionary *)v48 setObject:accessoryID forKeyedSubscript:@"Accessory Identifier"];
     }
 
-    v5 = [MEMORY[0x1E696AD98] numberWithBool:{v2->_charging, &v2->_psID}];
+    v5 = [MEMORY[0x1E696AD98] numberWithBool:{selfCopy->_charging, &selfCopy->_psID}];
     [(NSDictionary *)v48 setObject:v5 forKeyedSubscript:@"Is Charging"];
 
-    v6 = [MEMORY[0x1E696AD98] numberWithInt:fabs(v2->_chargeLevel + -1.0) < 0.00000011920929];
+    v6 = [MEMORY[0x1E696AD98] numberWithInt:fabs(selfCopy->_chargeLevel + -1.0) < 0.00000011920929];
     [(NSDictionary *)v48 setObject:v6 forKeyedSubscript:@"Is Charged"];
 
-    v7 = [MEMORY[0x1E696AD98] numberWithInt:(v2->_chargeLevel * 100.0)];
+    v7 = [MEMORY[0x1E696AD98] numberWithInt:(selfCopy->_chargeLevel * 100.0)];
     [(NSDictionary *)v48 setObject:v7 forKeyedSubscript:@"Current Capacity"];
 
-    groupID = v2->_groupID;
+    groupID = selfCopy->_groupID;
     if (groupID)
     {
       [(NSDictionary *)v48 setObject:groupID forKeyedSubscript:@"Group Identifier"];
     }
 
-    if ([(NSArray *)v2->_LEDs count])
+    if ([(NSArray *)selfCopy->_LEDs count])
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v53 = 0u;
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      obj = v2->_LEDs;
+      obj = selfCopy->_LEDs;
       v10 = [(NSArray *)obj countByEnumeratingWithState:&v51 objects:v57 count:16];
       if (v10)
       {
@@ -1172,20 +1172,20 @@ LABEL_85:
 
             v13 = *(*(&v51 + 1) + 8 * i);
             v14 = MEMORY[0x1E696AEC0];
-            v15 = [v13 LEDState];
+            lEDState = [v13 LEDState];
             v16 = "?";
-            if (v15 <= 2)
+            if (lEDState <= 2)
             {
-              v16 = off_1E73A3B20[v15];
+              v16 = off_1E73A3B20[lEDState];
             }
 
             v17 = [v14 stringWithUTF8String:v16];
             v18 = MEMORY[0x1E696AEC0];
-            v19 = [v13 LEDColor];
+            lEDColor = [v13 LEDColor];
             v20 = "?";
-            if (v19 <= 3)
+            if (lEDColor <= 3)
             {
-              v20 = off_1E73A3B38[v19];
+              v20 = off_1E73A3B38[lEDColor];
             }
 
             v21 = [v18 stringWithUTF8String:v20];
@@ -1206,85 +1206,85 @@ LABEL_85:
       [(NSDictionary *)v48 setObject:v9 forKeyedSubscript:@"LEDs"];
     }
 
-    v23 = [MEMORY[0x1E696AD98] numberWithDouble:v2->_maxCapacity];
+    v23 = [MEMORY[0x1E696AD98] numberWithDouble:selfCopy->_maxCapacity];
     [(NSDictionary *)v48 setObject:v23 forKeyedSubscript:@"Max Capacity"];
 
-    name = v2->_name;
+    name = selfCopy->_name;
     if (name)
     {
       [(NSDictionary *)v48 setObject:name forKeyedSubscript:@"Name"];
     }
 
-    partID = v2->_partID;
+    partID = selfCopy->_partID;
     if (partID)
     {
       [(NSDictionary *)v48 setObject:partID forKeyedSubscript:@"Part Identifier"];
     }
 
-    partName = v2->_partName;
+    partName = selfCopy->_partName;
     if (partName)
     {
       [(NSDictionary *)v48 setObject:partName forKeyedSubscript:@"Part Name"];
     }
 
-    if (v2->_productID)
+    if (selfCopy->_productID)
     {
       v27 = [MEMORY[0x1E696AD98] numberWithInteger:?];
       [(NSDictionary *)v48 setObject:v27 forKeyedSubscript:@"Product ID"];
     }
 
-    state = v2->_state;
+    state = selfCopy->_state;
     if (state)
     {
       [(NSDictionary *)v48 setObject:state forKeyedSubscript:@"Power Source State"];
     }
 
-    v29 = [MEMORY[0x1E696AD98] numberWithInteger:v2->_temperature];
+    v29 = [MEMORY[0x1E696AD98] numberWithInteger:selfCopy->_temperature];
     [(NSDictionary *)v48 setObject:v29 forKeyedSubscript:@"Temperature"];
 
-    transportType = v2->_transportType;
+    transportType = selfCopy->_transportType;
     if (transportType)
     {
       [(NSDictionary *)v48 setObject:transportType forKeyedSubscript:@"Transport Type"];
     }
 
-    type = v2->_type;
+    type = selfCopy->_type;
     if (type)
     {
       [(NSDictionary *)v48 setObject:type forKeyedSubscript:@"Type"];
     }
 
-    if (v2->_vendorID)
+    if (selfCopy->_vendorID)
     {
       v32 = [MEMORY[0x1E696AD98] numberWithInteger:?];
       [(NSDictionary *)v48 setObject:v32 forKeyedSubscript:@"Vendor ID"];
     }
 
-    if ([(NSString *)v2->_type isEqual:@"Accessory Source"])
+    if ([(NSString *)selfCopy->_type isEqual:@"Accessory Source"])
     {
       v33 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      if (v2->_adapterErrorFlags)
+      if (selfCopy->_adapterErrorFlags)
       {
         v34 = [MEMORY[0x1E696AD98] numberWithInteger:?];
         [v33 setObject:v34 forKeyedSubscript:@"ErrorFlags"];
       }
 
-      if (v2->_adapterFamilyCode)
+      if (selfCopy->_adapterFamilyCode)
       {
         v35 = [MEMORY[0x1E696AD98] numberWithInteger:?];
         [v33 setObject:v35 forKeyedSubscript:@"FamilyCode"];
       }
 
-      adapterName = v2->_adapterName;
+      adapterName = selfCopy->_adapterName;
       if (adapterName)
       {
         [v33 setObject:adapterName forKeyedSubscript:@"Name"];
       }
 
-      v37 = [MEMORY[0x1E696AD98] numberWithBool:v2->_adapterSharedSource];
+      v37 = [MEMORY[0x1E696AD98] numberWithBool:selfCopy->_adapterSharedSource];
       [v33 setObject:v37 forKeyedSubscript:@"SharedSource"];
 
-      if (v2->_adapterSourceID)
+      if (selfCopy->_adapterSourceID)
       {
         v38 = [MEMORY[0x1E696AD98] numberWithInteger:?];
         [v33 setObject:v38 forKeyedSubscript:@"Source"];
@@ -1299,8 +1299,8 @@ LABEL_85:
       goto LABEL_57;
     }
 
-    p_ioKitDescription = &v2->_ioKitDescription;
-    ioKitDescription = v2->_ioKitDescription;
+    p_ioKitDescription = &selfCopy->_ioKitDescription;
+    ioKitDescription = selfCopy->_ioKitDescription;
     v42 = v48;
     v43 = ioKitDescription;
     v44 = v43;
@@ -1674,22 +1674,22 @@ LABEL_58:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     sourceID = self->_sourceID;
-    if (sourceID == [v4 sourceID])
+    if (sourceID == [equalCopy sourceID])
     {
       adapterSourceID = self->_adapterSourceID;
-      if (adapterSourceID == [v4 adapterSourceID])
+      if (adapterSourceID == [equalCopy adapterSourceID])
       {
         accessoryID = self->_accessoryID;
-        v8 = [v4 accessoryID];
+        accessoryID = [equalCopy accessoryID];
         v9 = accessoryID;
-        v10 = v8;
+        v10 = accessoryID;
         v11 = v10;
         if (v9 == v10)
         {
@@ -1718,9 +1718,9 @@ LABEL_34:
         }
 
         groupID = self->_groupID;
-        v16 = [v4 groupID];
+        groupID = [equalCopy groupID];
         v17 = groupID;
-        v18 = v16;
+        v18 = groupID;
         v9 = v18;
         if (v17 == v18)
         {
@@ -1749,9 +1749,9 @@ LABEL_33:
         }
 
         accessoryCategory = self->_accessoryCategory;
-        v21 = [v4 accessoryCategory];
+        accessoryCategory = [equalCopy accessoryCategory];
         v22 = accessoryCategory;
-        v23 = v21;
+        v23 = accessoryCategory;
         v17 = v23;
         if (v22 == v23)
         {
@@ -1778,9 +1778,9 @@ LABEL_30:
         }
 
         partID = self->_partID;
-        v26 = [v4 partID];
+        partID = [equalCopy partID];
         v27 = partID;
-        v28 = v26;
+        v28 = partID;
         v22 = v28;
         if (v27 == v28)
         {
@@ -1816,221 +1816,221 @@ LABEL_9:
   [(CUPowerSource *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v30 = a3;
+  coderCopy = coder;
   accessoryCategory = self->_accessoryCategory;
   if (accessoryCategory)
   {
-    [v30 encodeObject:accessoryCategory forKey:@"accessoryCategory"];
+    [coderCopy encodeObject:accessoryCategory forKey:@"accessoryCategory"];
   }
 
   accessoryID = self->_accessoryID;
   if (accessoryID)
   {
-    [v30 encodeObject:accessoryID forKey:@"accessoryID"];
+    [coderCopy encodeObject:accessoryID forKey:@"accessoryID"];
   }
 
   adapterErrorFlags = self->_adapterErrorFlags;
   if (adapterErrorFlags)
   {
-    [v30 encodeInteger:adapterErrorFlags forKey:@"adapterErrorFlag"];
+    [coderCopy encodeInteger:adapterErrorFlags forKey:@"adapterErrorFlag"];
   }
 
   adapterFamilyCode = self->_adapterFamilyCode;
   if (adapterFamilyCode)
   {
-    [v30 encodeInteger:adapterFamilyCode forKey:@"adapterFamilyCode"];
+    [coderCopy encodeInteger:adapterFamilyCode forKey:@"adapterFamilyCode"];
   }
 
   adapterName = self->_adapterName;
   if (adapterName)
   {
-    [v30 encodeObject:adapterName forKey:@"adapterName"];
+    [coderCopy encodeObject:adapterName forKey:@"adapterName"];
   }
 
   if (self->_adapterSharedSource)
   {
-    [v30 encodeBool:1 forKey:@"adapterSharedSource"];
+    [coderCopy encodeBool:1 forKey:@"adapterSharedSource"];
   }
 
   adapterSourceID = self->_adapterSourceID;
   if (adapterSourceID)
   {
-    [v30 encodeInteger:adapterSourceID forKey:@"adapterSourceID"];
+    [coderCopy encodeInteger:adapterSourceID forKey:@"adapterSourceID"];
   }
 
   if (self->_aggregate)
   {
-    [v30 encodeBool:1 forKey:@"aggregate"];
+    [coderCopy encodeBool:1 forKey:@"aggregate"];
   }
 
   if (self->_charging)
   {
-    [v30 encodeBool:1 forKey:@"charging"];
+    [coderCopy encodeBool:1 forKey:@"charging"];
   }
 
   if (self->_chargeLevel > 0.0)
   {
-    [v30 encodeDouble:@"chargeLevel" forKey:?];
+    [coderCopy encodeDouble:@"chargeLevel" forKey:?];
   }
 
   familyCode = self->_familyCode;
   if (familyCode)
   {
-    [v30 encodeInteger:familyCode forKey:@"familyCode"];
+    [coderCopy encodeInteger:familyCode forKey:@"familyCode"];
   }
 
   groupID = self->_groupID;
   if (groupID)
   {
-    [v30 encodeObject:groupID forKey:@"groupID"];
+    [coderCopy encodeObject:groupID forKey:@"groupID"];
   }
 
   if ([(NSArray *)self->_LEDs count])
   {
-    [v30 encodeObject:self->_LEDs forKey:@"LEDs"];
+    [coderCopy encodeObject:self->_LEDs forKey:@"LEDs"];
   }
 
   if (self->_maxCapacity > 0.0)
   {
-    [v30 encodeDouble:@"maxCapacity" forKey:?];
+    [coderCopy encodeDouble:@"maxCapacity" forKey:?];
   }
 
   name = self->_name;
-  v13 = v30;
+  v13 = coderCopy;
   if (name)
   {
-    [v30 encodeObject:name forKey:@"name"];
-    v13 = v30;
+    [coderCopy encodeObject:name forKey:@"name"];
+    v13 = coderCopy;
   }
 
   partID = self->_partID;
   if (partID)
   {
-    [v30 encodeObject:partID forKey:@"partID"];
-    v13 = v30;
+    [coderCopy encodeObject:partID forKey:@"partID"];
+    v13 = coderCopy;
   }
 
   partName = self->_partName;
   if (partName)
   {
-    [v30 encodeObject:partName forKey:@"partName"];
-    v13 = v30;
+    [coderCopy encodeObject:partName forKey:@"partName"];
+    v13 = coderCopy;
   }
 
   powerState = self->_powerState;
   if (powerState)
   {
-    [v30 encodeInteger:powerState forKey:@"powerState"];
-    v13 = v30;
+    [coderCopy encodeInteger:powerState forKey:@"powerState"];
+    v13 = coderCopy;
   }
 
   productID = self->_productID;
   if (productID)
   {
-    [v30 encodeInteger:productID forKey:@"productID"];
-    v13 = v30;
+    [coderCopy encodeInteger:productID forKey:@"productID"];
+    v13 = coderCopy;
   }
 
   role = self->_role;
   if (role)
   {
-    [v30 encodeInteger:role forKey:@"role"];
-    v13 = v30;
+    [coderCopy encodeInteger:role forKey:@"role"];
+    v13 = coderCopy;
   }
 
   sourceID = self->_sourceID;
   if (sourceID)
   {
-    [v30 encodeInteger:sourceID forKey:@"sourceID"];
-    v13 = v30;
+    [coderCopy encodeInteger:sourceID forKey:@"sourceID"];
+    v13 = coderCopy;
   }
 
   state = self->_state;
   if (state)
   {
-    [v30 encodeObject:state forKey:@"state"];
-    v13 = v30;
+    [coderCopy encodeObject:state forKey:@"state"];
+    v13 = coderCopy;
   }
 
   subLeft = self->_subLeft;
   if (subLeft)
   {
-    [v30 encodeObject:subLeft forKey:@"subLeft"];
-    v13 = v30;
+    [coderCopy encodeObject:subLeft forKey:@"subLeft"];
+    v13 = coderCopy;
   }
 
   subRight = self->_subRight;
   if (subRight)
   {
-    [v30 encodeObject:subRight forKey:@"subRight"];
-    v13 = v30;
+    [coderCopy encodeObject:subRight forKey:@"subRight"];
+    v13 = coderCopy;
   }
 
   subCase = self->_subCase;
   if (subCase)
   {
-    [v30 encodeObject:subCase forKey:@"subCase"];
-    v13 = v30;
+    [coderCopy encodeObject:subCase forKey:@"subCase"];
+    v13 = coderCopy;
   }
 
   subMain = self->_subMain;
   if (subMain)
   {
-    [v30 encodeObject:subMain forKey:@"subMain"];
-    v13 = v30;
+    [coderCopy encodeObject:subMain forKey:@"subMain"];
+    v13 = coderCopy;
   }
 
   temperature = self->_temperature;
   if (temperature)
   {
-    [v30 encodeInteger:temperature forKey:@"temperature"];
-    v13 = v30;
+    [coderCopy encodeInteger:temperature forKey:@"temperature"];
+    v13 = coderCopy;
   }
 
   transportType = self->_transportType;
   if (transportType)
   {
-    [v30 encodeObject:transportType forKey:@"transportType"];
-    v13 = v30;
+    [coderCopy encodeObject:transportType forKey:@"transportType"];
+    v13 = coderCopy;
   }
 
   type = self->_type;
   if (type)
   {
-    [v30 encodeObject:type forKey:@"type"];
-    v13 = v30;
+    [coderCopy encodeObject:type forKey:@"type"];
+    v13 = coderCopy;
   }
 
   vendorID = self->_vendorID;
   if (vendorID)
   {
-    [v30 encodeInteger:vendorID forKey:@"vendorID"];
-    v13 = v30;
+    [coderCopy encodeInteger:vendorID forKey:@"vendorID"];
+    v13 = coderCopy;
   }
 
   ioKitDescription = self->_ioKitDescription;
   if (ioKitDescription)
   {
-    [v30 encodeObject:ioKitDescription forKey:@"ioKitDictionary"];
-    v13 = v30;
+    [coderCopy encodeObject:ioKitDescription forKey:@"ioKitDictionary"];
+    v13 = coderCopy;
   }
 
   if (self->_present)
   {
-    [v30 encodeBool:1 forKey:@"present"];
-    v13 = v30;
+    [coderCopy encodeBool:1 forKey:@"present"];
+    v13 = coderCopy;
   }
 }
 
-- (void)_updateWithCoder:(id)a3
+- (void)_updateWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   accessoryCategory = self->_accessoryCategory;
   self->_accessoryCategory = 0;
 
-  v6 = v4;
+  v6 = coderCopy;
   v7 = objc_opt_class();
   NSDecodeObjectIfPresent(v6, @"accessoryCategory", v7, &self->_accessoryCategory);
 
@@ -2244,16 +2244,16 @@ LABEL_9:
   }
 }
 
-- (CUPowerSource)initWithCoder:(id)a3
+- (CUPowerSource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CUPowerSource;
   v5 = [(CUPowerSource *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(CUPowerSource *)v5 _updateWithCoder:v4];
+    [(CUPowerSource *)v5 _updateWithCoder:coderCopy];
     v7 = v6;
   }
 

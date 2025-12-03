@@ -1,116 +1,116 @@
 @interface THTOCTileModel
 - (THModelLink)firstModelLink;
-- (THTOCTileModel)initWithTOCModel:(id)a3;
-- (id)displayPageNumberForPageIndex:(unint64_t)a3;
-- (id)p_displayPageNumberForPageIndex:(unint64_t)a3 entries:(id)a4;
+- (THTOCTileModel)initWithTOCModel:(id)model;
+- (id)displayPageNumberForPageIndex:(unint64_t)index;
+- (id)p_displayPageNumberForPageIndex:(unint64_t)index entries:(id)entries;
 - (unint64_t)pageIndex;
-- (void)addLargerThumb:(id)a3;
-- (void)addTinyThumb:(id)a3;
+- (void)addLargerThumb:(id)thumb;
+- (void)addTinyThumb:(id)thumb;
 - (void)dealloc;
-- (void)setBackImage:(id)a3;
-- (void)setBackOrdinalText:(id)a3;
-- (void)setBackTitleText:(id)a3;
-- (void)setBrowserPageNode:(id)a3;
-- (void)setFrontImage:(id)a3;
-- (void)setFrontOrdinalText:(id)a3;
-- (void)setFrontTitleText:(id)a3;
-- (void)setLandscapeEntries:(id)a3;
-- (void)setNotesThumb:(id)a3;
-- (void)setPortraitEntries:(id)a3;
-- (void)setTocThumb:(id)a3;
+- (void)setBackImage:(id)image;
+- (void)setBackOrdinalText:(id)text;
+- (void)setBackTitleText:(id)text;
+- (void)setBrowserPageNode:(id)node;
+- (void)setFrontImage:(id)image;
+- (void)setFrontOrdinalText:(id)text;
+- (void)setFrontTitleText:(id)text;
+- (void)setLandscapeEntries:(id)entries;
+- (void)setNotesThumb:(id)thumb;
+- (void)setPortraitEntries:(id)entries;
+- (void)setTocThumb:(id)thumb;
 @end
 
 @implementation THTOCTileModel
 
-- (void)setLandscapeEntries:(id)a3
+- (void)setLandscapeEntries:(id)entries
 {
   [(THTOCTileModel *)self willModify];
-  v5 = a3;
+  entriesCopy = entries;
 
-  self->mLandscapeEntries = a3;
+  self->mLandscapeEntries = entries;
 }
 
-- (void)setPortraitEntries:(id)a3
+- (void)setPortraitEntries:(id)entries
 {
   [(THTOCTileModel *)self willModify];
-  v5 = a3;
+  entriesCopy = entries;
 
-  self->mPortraitEntries = a3;
+  self->mPortraitEntries = entries;
 }
 
-- (void)setFrontOrdinalText:(id)a3
+- (void)setFrontOrdinalText:(id)text
 {
   [(THTOCTileModel *)self willModify];
-  v5 = [a3 copy];
+  v5 = [text copy];
 
   self->mFrontOrdinalText = v5;
 }
 
-- (void)setFrontTitleText:(id)a3
+- (void)setFrontTitleText:(id)text
 {
   [(THTOCTileModel *)self willModify];
-  v5 = [a3 copy];
+  v5 = [text copy];
 
   self->mFrontTitleText = v5;
 }
 
-- (void)setFrontImage:(id)a3
+- (void)setFrontImage:(id)image
 {
   [(THTOCTileModel *)self willModify];
-  v5 = a3;
+  imageCopy = image;
 
-  self->mFrontImage = a3;
+  self->mFrontImage = image;
 }
 
-- (void)setBackOrdinalText:(id)a3
+- (void)setBackOrdinalText:(id)text
 {
   [(THTOCTileModel *)self willModify];
-  v5 = [a3 copy];
+  v5 = [text copy];
 
   self->mBackOrdinalText = v5;
 }
 
-- (void)setBackTitleText:(id)a3
+- (void)setBackTitleText:(id)text
 {
   [(THTOCTileModel *)self willModify];
-  v5 = [a3 copy];
+  v5 = [text copy];
 
   self->mBackTitleText = v5;
 }
 
-- (void)setBackImage:(id)a3
+- (void)setBackImage:(id)image
 {
   [(THTOCTileModel *)self willModify];
-  v5 = a3;
+  imageCopy = image;
 
-  self->mBackImage = a3;
+  self->mBackImage = image;
 }
 
-- (void)setTocThumb:(id)a3
+- (void)setTocThumb:(id)thumb
 {
   [(THTOCTileModel *)self willModify];
-  v5 = a3;
+  thumbCopy = thumb;
 
-  self->mTOCThumb = a3;
+  self->mTOCThumb = thumb;
 }
 
-- (void)setNotesThumb:(id)a3
+- (void)setNotesThumb:(id)thumb
 {
   [(THTOCTileModel *)self willModify];
-  v5 = a3;
+  thumbCopy = thumb;
 
-  self->mNotesThumb = a3;
+  self->mNotesThumb = thumb;
 }
 
-- (void)setBrowserPageNode:(id)a3
+- (void)setBrowserPageNode:(id)node
 {
   [(THTOCTileModel *)self willModify];
-  v5 = a3;
+  nodeCopy = node;
 
-  self->mBrowserPageNode = a3;
+  self->mBrowserPageNode = node;
 }
 
-- (void)addTinyThumb:(id)a3
+- (void)addTinyThumb:(id)thumb
 {
   mTinyThumbs = self->mTinyThumbs;
   if (!mTinyThumbs)
@@ -119,10 +119,10 @@
     self->mTinyThumbs = mTinyThumbs;
   }
 
-  [(NSMutableArray *)mTinyThumbs addObject:a3];
+  [(NSMutableArray *)mTinyThumbs addObject:thumb];
 }
 
-- (void)addLargerThumb:(id)a3
+- (void)addLargerThumb:(id)thumb
 {
   mLargerThumbs = self->mLargerThumbs;
   if (!mLargerThumbs)
@@ -131,17 +131,17 @@
     self->mLargerThumbs = mLargerThumbs;
   }
 
-  [(NSMutableArray *)mLargerThumbs addObject:a3];
+  [(NSMutableArray *)mLargerThumbs addObject:thumb];
 }
 
-- (THTOCTileModel)initWithTOCModel:(id)a3
+- (THTOCTileModel)initWithTOCModel:(id)model
 {
   v5.receiver = self;
   v5.super_class = THTOCTileModel;
-  result = -[THTOCTileModel initWithContext:](&v5, "initWithContext:", [a3 context]);
+  result = -[THTOCTileModel initWithContext:](&v5, "initWithContext:", [model context]);
   if (result)
   {
-    result->mTOCModel = a3;
+    result->mTOCModel = model;
   }
 
   return result;
@@ -173,13 +173,13 @@
   return result;
 }
 
-- (id)p_displayPageNumberForPageIndex:(unint64_t)a3 entries:(id)a4
+- (id)p_displayPageNumberForPageIndex:(unint64_t)index entries:(id)entries
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [entries countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -191,29 +191,29 @@ LABEL_3:
     {
       if (*v14 != v9)
       {
-        objc_enumerationMutation(a4);
+        objc_enumerationMutation(entries);
       }
 
       v11 = *(*(&v13 + 1) + 8 * v10);
-      if ([v11 pageIndex] > a3)
+      if ([v11 pageIndex] > index)
       {
         break;
       }
 
-      if ([v11 displayPageNumberForPageIndex:a3])
+      if ([v11 displayPageNumberForPageIndex:index])
       {
         v8 = v11;
       }
 
       if (v7 == ++v10)
       {
-        v7 = [a4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [entries countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;
         }
 
-        return [v8 displayPageNumberForPageIndex:a3];
+        return [v8 displayPageNumberForPageIndex:index];
       }
     }
   }
@@ -223,14 +223,14 @@ LABEL_3:
     v8 = 0;
   }
 
-  return [v8 displayPageNumberForPageIndex:a3];
+  return [v8 displayPageNumberForPageIndex:index];
 }
 
-- (id)displayPageNumberForPageIndex:(unint64_t)a3
+- (id)displayPageNumberForPageIndex:(unint64_t)index
 {
-  v5 = [(THTOCTileModel *)self portraitEntries];
+  portraitEntries = [(THTOCTileModel *)self portraitEntries];
 
-  return [(THTOCTileModel *)self p_displayPageNumberForPageIndex:a3 entries:v5];
+  return [(THTOCTileModel *)self p_displayPageNumberForPageIndex:index entries:portraitEntries];
 }
 
 - (void)dealloc

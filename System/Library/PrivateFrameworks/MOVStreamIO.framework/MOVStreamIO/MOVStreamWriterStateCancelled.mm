@@ -1,12 +1,12 @@
 @interface MOVStreamWriterStateCancelled
-- (id)criticalErrorOccurred:(id)a3 context:(id)a4;
+- (id)criticalErrorOccurred:(id)occurred context:(id)context;
 @end
 
 @implementation MOVStreamWriterStateCancelled
 
-- (id)criticalErrorOccurred:(id)a3 context:(id)a4
+- (id)criticalErrorOccurred:(id)occurred context:(id)context
 {
-  [a4 setCriticalError:a3];
+  [context setCriticalError:occurred];
   v4 = objc_opt_new();
 
   return v4;

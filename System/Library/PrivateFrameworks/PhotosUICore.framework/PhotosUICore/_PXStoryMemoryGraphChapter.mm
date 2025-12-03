@@ -1,21 +1,21 @@
 @interface _PXStoryMemoryGraphChapter
 - (NSDictionary)graphChapterDictionary;
 - (_PXStoryMemoryGraphChapter)init;
-- (void)setLocalizedSubtitle:(id)a3;
-- (void)setLocalizedTitle:(id)a3;
+- (void)setLocalizedSubtitle:(id)subtitle;
+- (void)setLocalizedTitle:(id)title;
 @end
 
 @implementation _PXStoryMemoryGraphChapter
 
-- (void)setLocalizedSubtitle:(id)a3
+- (void)setLocalizedSubtitle:(id)subtitle
 {
-  v4 = [a3 copy];
+  v4 = [subtitle copy];
   [(NSMutableDictionary *)self->_graphChapterDictionary setObject:v4 forKeyedSubscript:@"subtitle"];
 }
 
-- (void)setLocalizedTitle:(id)a3
+- (void)setLocalizedTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   [(NSMutableDictionary *)self->_graphChapterDictionary setObject:v4 forKeyedSubscript:@"title"];
 }
 

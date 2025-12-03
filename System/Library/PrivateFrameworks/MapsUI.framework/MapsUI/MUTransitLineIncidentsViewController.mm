@@ -1,17 +1,17 @@
 @interface MUTransitLineIncidentsViewController
-- (MUTransitLineIncidentsViewController)initWithLineItem:(id)a3;
+- (MUTransitLineIncidentsViewController)initWithLineItem:(id)item;
 - (MUTransitLineIncidentsViewControllerDelegate)incidentsDelegate;
 - (NSDate)referenceDate;
-- (id)_incidentCellForRow:(int64_t)a3;
+- (id)_incidentCellForRow:(int64_t)row;
 - (id)_incidents;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_showIncidentDetails;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)transitItemReferenceDateUpdater:(id)a3 didUpdateToReferenceDate:(id)a4;
-- (void)transitUIReferenceTimeUpdated:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)transitItemReferenceDateUpdater:(id)updater didUpdateToReferenceDate:(id)date;
+- (void)transitUIReferenceTimeUpdated:(id)updated;
 - (void)updateTransitLineItemIfNeeded;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -26,86 +26,86 @@
   return WeakRetained;
 }
 
-- (void)transitItemReferenceDateUpdater:(id)a3 didUpdateToReferenceDate:(id)a4
+- (void)transitItemReferenceDateUpdater:(id)updater didUpdateToReferenceDate:(id)date
 {
-  v7 = a4;
-  objc_storeStrong(&self->_referenceDate, a4);
-  [(MKTransitItemIncidentsController *)self->_incidentsController setReferenceDate:v7];
+  dateCopy = date;
+  objc_storeStrong(&self->_referenceDate, date);
+  [(MKTransitItemIncidentsController *)self->_incidentsController setReferenceDate:dateCopy];
   if ([(MUTransitLineIncidentsViewController *)self isViewLoaded])
   {
-    v6 = [(MUTransitLineIncidentsViewController *)self tableView];
-    [v6 reloadData];
+    tableView = [(MUTransitLineIncidentsViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   [(MUTransitLineIncidentsViewController *)self _showIncidentDetails];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v5 = MEMORY[0x1E69DC888];
-  v6 = a4;
-  v7 = [v5 clearColor];
-  [v6 setBackgroundColor:v7];
+  cellCopy = cell;
+  clearColor = [v5 clearColor];
+  [cellCopy setBackgroundColor:clearColor];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = [a4 row];
+  v5 = [path row];
 
   return [(MUTransitLineIncidentsViewController *)self _incidentCellForRow:v5];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(MUTransitLineIncidentsViewController *)self _incidents:a3];
+  v4 = [(MUTransitLineIncidentsViewController *)self _incidents:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(MUTransitLineIncidentsViewController *)self _incidents];
-  v4 = [v3 count] != 0;
+  _incidents = [(MUTransitLineIncidentsViewController *)self _incidents];
+  v4 = [_incidents count] != 0;
 
   return v4;
 }
 
 - (void)_showIncidentDetails
 {
-  v4 = [(MUTransitLineIncidentsViewController *)self incidentsDelegate];
-  v3 = [(MUTransitLineIncidentsViewController *)self _incidents];
-  [v4 transitLineIncidentsViewController:self didSelectDetailsForIncidents:v3];
+  incidentsDelegate = [(MUTransitLineIncidentsViewController *)self incidentsDelegate];
+  _incidents = [(MUTransitLineIncidentsViewController *)self _incidents];
+  [incidentsDelegate transitLineIncidentsViewController:self didSelectDetailsForIncidents:_incidents];
 }
 
-- (id)_incidentCellForRow:(int64_t)a3
+- (id)_incidentCellForRow:(int64_t)row
 {
-  v5 = [(MUTransitLineIncidentsViewController *)self tableView];
-  v6 = [v5 _mapkit_dequeueReusableCellWithIdentifier:@"kIncidentCellIdentifier"];
+  tableView = [(MUTransitLineIncidentsViewController *)self tableView];
+  v6 = [tableView _mapkit_dequeueReusableCellWithIdentifier:@"kIncidentCellIdentifier"];
 
   if (!v6)
   {
     v6 = [objc_alloc(MEMORY[0x1E696F3E8]) initWithStyle:0 reuseIdentifier:@"kIncidentCellIdentifier"];
   }
 
-  v7 = [(MUTransitLineIncidentsViewController *)self _incidents];
-  v8 = v7;
-  if (a3 < 0)
+  _incidents = [(MUTransitLineIncidentsViewController *)self _incidents];
+  v8 = _incidents;
+  if (row < 0)
   {
     v9 = 0;
     goto LABEL_10;
   }
 
-  if ([v7 count] <= a3)
+  if ([_incidents count] <= row)
   {
     v9 = 0;
-    if (a3)
+    if (row)
     {
       goto LABEL_9;
     }
@@ -115,21 +115,21 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v9 = [v8 objectAtIndexedSubscript:a3];
-  if (!a3)
+  v9 = [v8 objectAtIndexedSubscript:row];
+  if (!row)
   {
     goto LABEL_10;
   }
 
 LABEL_9:
-  v10 = [v8 objectAtIndexedSubscript:a3 - 1];
+  v10 = [v8 objectAtIndexedSubscript:row - 1];
 LABEL_11:
-  v11 = [v10 isBlockingIncident];
-  v12 = v11 ^ [v9 isBlockingIncident];
-  v13 = [(MUTransitLineIncidentsViewController *)self referenceDate];
-  [v6 configureWithIncident:v9 referenceDate:v13 shouldShowImage:(v10 == 0) | (v12 & 1) inSiri:0];
+  isBlockingIncident = [v10 isBlockingIncident];
+  v12 = isBlockingIncident ^ [v9 isBlockingIncident];
+  referenceDate = [(MUTransitLineIncidentsViewController *)self referenceDate];
+  [v6 configureWithIncident:v9 referenceDate:referenceDate shouldShowImage:(v10 == 0) | (v12 & 1) inSiri:0];
 
-  if (a3 < -1 || (v14 = a3 + 1, v14 >= [v8 count]))
+  if (row < -1 || (v14 = row + 1, v14 >= [v8 count]))
   {
     v15 = 0;
   }
@@ -139,8 +139,8 @@ LABEL_11:
     v15 = [v8 objectAtIndexedSubscript:v14];
   }
 
-  v16 = [v15 isBlockingIncident];
-  v17 = v16 ^ [v9 isBlockingIncident];
+  isBlockingIncident2 = [v15 isBlockingIncident];
+  v17 = isBlockingIncident2 ^ [v9 isBlockingIncident];
   if (!v15 || v17)
   {
     [v6 setSeparatorHidden:1];
@@ -195,8 +195,8 @@ LABEL_11:
 - (id)_incidents
 {
   incidentsController = self->_incidentsController;
-  v3 = [(MUTransitLineIncidentsViewController *)self lineItem];
-  v4 = [(MKTransitItemIncidentsController *)incidentsController incidentsForLine:v3];
+  lineItem = [(MUTransitLineIncidentsViewController *)self lineItem];
+  v4 = [(MKTransitItemIncidentsController *)incidentsController incidentsForLine:lineItem];
 
   return v4;
 }
@@ -206,9 +206,9 @@ LABEL_11:
   referenceDate = self->_referenceDate;
   if (!referenceDate)
   {
-    v4 = [MEMORY[0x1E696F408] referenceDate];
+    referenceDate = [MEMORY[0x1E696F408] referenceDate];
     v5 = self->_referenceDate;
-    self->_referenceDate = v4;
+    self->_referenceDate = referenceDate;
 
     referenceDate = self->_referenceDate;
   }
@@ -221,18 +221,18 @@ LABEL_11:
   v4.receiver = self;
   v4.super_class = MUTransitLineIncidentsViewController;
   [(MUTransitLineIncidentsViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(MUTransitLineIncidentsViewController *)self tableView];
-  [v3 contentSize];
+  tableView = [(MUTransitLineIncidentsViewController *)self tableView];
+  [tableView contentSize];
   [(MUTransitLineIncidentsViewController *)self setPreferredContentSize:?];
 }
 
-- (void)transitUIReferenceTimeUpdated:(id)a3
+- (void)transitUIReferenceTimeUpdated:(id)updated
 {
-  objc_storeStrong(&self->_referenceDate, a3);
+  objc_storeStrong(&self->_referenceDate, updated);
   if ([(MUTransitLineIncidentsViewController *)self isViewLoaded])
   {
-    v4 = [(MUTransitLineIncidentsViewController *)self tableView];
-    [v4 reloadData];
+    tableView = [(MUTransitLineIncidentsViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
@@ -242,16 +242,16 @@ LABEL_11:
   if (([(GEOTransitLineItem *)self->_lineItem isIncidentsTTLExpired]& 1) != 0 || ([(GEOTransitLineItem *)self->_lineItem hasIncidentComponent]& 1) == 0)
   {
     v3 = objc_alloc(MEMORY[0x1E696F280]);
-    v4 = [(GEOTransitLineItem *)self->_lineItem identifier];
-    v5 = [v3 initWithGEOMapItemIdentifier:v4];
+    identifier = [(GEOTransitLineItem *)self->_lineItem identifier];
+    v5 = [v3 initWithGEOMapItemIdentifier:identifier];
 
     if (v5)
     {
       objc_initWeak(&location, self);
-      v6 = [MEMORY[0x1E696F298] sharedService];
+      mEMORY[0x1E696F298] = [MEMORY[0x1E696F298] sharedService];
       v14[0] = v5;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-      v8 = [v6 ticketForTransitLines:v7 traits:0];
+      v8 = [mEMORY[0x1E696F298] ticketForTransitLines:v7 traits:0];
 
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
@@ -345,42 +345,42 @@ LABEL_12:
   v7.receiver = self;
   v7.super_class = MUTransitLineIncidentsViewController;
   [(MUTransitLineIncidentsViewController *)&v7 viewDidLoad];
-  v3 = [(MUTransitLineIncidentsViewController *)self tableView];
-  [v3 _setTopPadding:0.0];
-  [v3 setRowHeight:*MEMORY[0x1E69DE3D0]];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  v5 = [(MUTransitLineIncidentsViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  tableView = [(MUTransitLineIncidentsViewController *)self tableView];
+  [tableView _setTopPadding:0.0];
+  [tableView setRowHeight:*MEMORY[0x1E69DE3D0]];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view = [(MUTransitLineIncidentsViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
-  v6 = [(MUTransitLineIncidentsViewController *)self view];
-  [v6 setPreservesSuperviewLayoutMargins:1];
+  view2 = [(MUTransitLineIncidentsViewController *)self view];
+  [view2 setPreservesSuperviewLayoutMargins:1];
 }
 
-- (MUTransitLineIncidentsViewController)initWithLineItem:(id)a3
+- (MUTransitLineIncidentsViewController)initWithLineItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v17.receiver = self;
   v17.super_class = MUTransitLineIncidentsViewController;
   v6 = [(MUTransitLineIncidentsViewController *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lineItem, a3);
+    objc_storeStrong(&v6->_lineItem, item);
     v8 = [objc_alloc(MEMORY[0x1E696F408]) initWithDelegate:v7];
     itemUpdater = v7->_itemUpdater;
     v7->_itemUpdater = v8;
 
-    v10 = [objc_alloc(MEMORY[0x1E696F400]) initWithLineItem:v5];
+    v10 = [objc_alloc(MEMORY[0x1E696F400]) initWithLineItem:itemCopy];
     incidentsController = v7->_incidentsController;
     v7->_incidentsController = v10;
 
-    v12 = [(MUTransitLineIncidentsViewController *)v7 referenceDate];
-    [(MKTransitItemIncidentsController *)v7->_incidentsController setReferenceDate:v12];
+    referenceDate = [(MUTransitLineIncidentsViewController *)v7 referenceDate];
+    [(MKTransitItemIncidentsController *)v7->_incidentsController setReferenceDate:referenceDate];
 
-    v13 = [(MUTransitLineIncidentsViewController *)v7 _incidents];
-    v14 = [v13 count] != 0;
-    v15 = [MEMORY[0x1E69A15A0] sharedData];
-    [v15 setPlaceCardTransitAdvisoryBanner:v14];
+    _incidents = [(MUTransitLineIncidentsViewController *)v7 _incidents];
+    v14 = [_incidents count] != 0;
+    mEMORY[0x1E69A15A0] = [MEMORY[0x1E69A15A0] sharedData];
+    [mEMORY[0x1E69A15A0] setPlaceCardTransitAdvisoryBanner:v14];
 
     [(MUTransitLineIncidentsViewController *)v7 updateTransitLineItemIfNeeded];
   }

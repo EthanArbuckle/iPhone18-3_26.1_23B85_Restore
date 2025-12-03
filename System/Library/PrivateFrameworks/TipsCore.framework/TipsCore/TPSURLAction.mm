@@ -1,29 +1,29 @@
 @interface TPSURLAction
-- (TPSURLAction)initWithCoder:(id)a3;
-- (TPSURLAction)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TPSURLAction)initWithCoder:(id)coder;
+- (TPSURLAction)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)setURL:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setURL:(id)l;
 @end
 
 @implementation TPSURLAction
 
-- (TPSURLAction)initWithDictionary:(id)a3
+- (TPSURLAction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = TPSURLAction;
-  v5 = [(TPSSerializableObject *)&v15 initWithDictionary:v4];
+  v5 = [(TPSSerializableObject *)&v15 initWithDictionary:dictionaryCopy];
   if (!v5)
   {
     goto LABEL_6;
   }
 
-  v6 = [v4 TPSSafeStringForKey:@"text"];
+  v6 = [dictionaryCopy TPSSafeStringForKey:@"text"];
   [(TPSURLAction *)v5 setText:v6];
 
-  v7 = [v4 TPSSafeDictionaryForKey:@"attrs"];
+  v7 = [dictionaryCopy TPSSafeDictionaryForKey:@"attrs"];
   v8 = [v7 TPSSafeStringForKey:@"href"];
   if ([v8 length])
   {
@@ -31,14 +31,14 @@
     [(TPSURLAction *)v5 setURL:v9];
   }
 
-  v10 = [(TPSURLAction *)v5 text];
-  if (!v10)
+  text = [(TPSURLAction *)v5 text];
+  if (!text)
   {
 
     goto LABEL_8;
   }
 
-  v11 = v10;
+  v11 = text;
   v12 = [(TPSURLAction *)v5 URL];
 
   if (!v12)
@@ -55,32 +55,32 @@ LABEL_9:
   return v13;
 }
 
-- (TPSURLAction)initWithCoder:(id)a3
+- (TPSURLAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TPSURLAction;
-  v5 = [(TPSSerializableObject *)&v9 initWithCoder:v4];
+  v5 = [(TPSSerializableObject *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     [(TPSURLAction *)v5 setText:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"href"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"href"];
     [(TPSURLAction *)v5 setURL:v7];
   }
 
   return v5;
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   URL = self->_URL;
-  v8 = v5;
-  if (URL != v5)
+  v8 = lCopy;
+  if (URL != lCopy)
   {
-    objc_storeStrong(&self->_URL, a3);
+    objc_storeStrong(&self->_URL, l);
     URL = self->_URL;
   }
 
@@ -91,26 +91,26 @@ LABEL_9:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = TPSURLAction;
-  v4 = a3;
-  [(TPSSerializableObject *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TPSSerializableObject *)&v7 encodeWithCoder:coderCopy];
   v5 = [(TPSURLAction *)self text:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"text"];
+  [coderCopy encodeObject:v5 forKey:@"text"];
 
   v6 = [(TPSURLAction *)self URL];
-  [v4 encodeObject:v6 forKey:@"href"];
+  [coderCopy encodeObject:v6 forKey:@"href"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = TPSURLAction;
-  v4 = [(TPSSerializableObject *)&v8 copyWithZone:a3];
-  v5 = [(TPSURLAction *)self text];
-  [v4 setText:v5];
+  v4 = [(TPSSerializableObject *)&v8 copyWithZone:zone];
+  text = [(TPSURLAction *)self text];
+  [v4 setText:text];
 
   v6 = [(TPSURLAction *)self URL];
   [v4 setURL:v6];
@@ -126,8 +126,8 @@ LABEL_9:
   v4 = [(TPSSerializableObject *)&v9 debugDescription];
   v5 = [v3 initWithFormat:@"%@", v4];
 
-  v6 = [(TPSURLAction *)self text];
-  [v5 appendFormat:@"\n %@ = %@\n", @"text", v6];
+  text = [(TPSURLAction *)self text];
+  [v5 appendFormat:@"\n %@ = %@\n", @"text", text];
 
   v7 = [(TPSURLAction *)self URL];
   [v5 appendFormat:@" %@ = %@\n", @"href", v7];

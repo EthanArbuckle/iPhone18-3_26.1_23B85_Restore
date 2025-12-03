@@ -1,28 +1,28 @@
 @interface BRCUpload
-- (BRCUpload)initWithDocument:(id)a3 stageID:(id)a4 transferSize:(unint64_t)a5;
+- (BRCUpload)initWithDocument:(id)document stageID:(id)d transferSize:(unint64_t)size;
 - (void)dealloc;
 - (void)recreateProgress;
 @end
 
 @implementation BRCUpload
 
-- (BRCUpload)initWithDocument:(id)a3 stageID:(id)a4 transferSize:(unint64_t)a5
+- (BRCUpload)initWithDocument:(id)document stageID:(id)d transferSize:(unint64_t)size
 {
-  v8 = a3;
-  v9 = a4;
+  documentCopy = document;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = BRCUpload;
   v10 = [(BRCUpload *)&v16 init];
   if (v10)
   {
-    v11 = [v8 itemID];
+    itemID = [documentCopy itemID];
     itemID = v10->_itemID;
-    v10->_itemID = v11;
+    v10->_itemID = itemID;
 
-    v10->_throttleID = [v8 dbRowID];
-    v10->_totalSize = a5;
-    objc_storeStrong(&v10->_stageID, a4);
-    v13 = [BRCProgress uploadProgressForDocument:v8 totalUnitCount:a5 completedUnitCount:0];
+    v10->_throttleID = [documentCopy dbRowID];
+    v10->_totalSize = size;
+    objc_storeStrong(&v10->_stageID, d);
+    v13 = [BRCProgress uploadProgressForDocument:documentCopy totalUnitCount:size completedUnitCount:0];
     progress = v10->_progress;
     v10->_progress = v13;
   }

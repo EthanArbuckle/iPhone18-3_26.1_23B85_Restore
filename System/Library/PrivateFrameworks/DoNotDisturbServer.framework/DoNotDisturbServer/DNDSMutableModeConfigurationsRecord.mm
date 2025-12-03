@@ -1,27 +1,27 @@
 @interface DNDSMutableModeConfigurationsRecord
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setConfiguration:(id)a3 forModeIdentifier:(id)a4;
-- (void)setMode:(id)a3 forModeIdentifier:(id)a4;
-- (void)setModeConfiguration:(id)a3 forModeIdentifier:(id)a4;
-- (void)setTriggers:(id)a3 forModeIdentifier:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setConfiguration:(id)configuration forModeIdentifier:(id)identifier;
+- (void)setMode:(id)mode forModeIdentifier:(id)identifier;
+- (void)setModeConfiguration:(id)configuration forModeIdentifier:(id)identifier;
+- (void)setTriggers:(id)triggers forModeIdentifier:(id)identifier;
 @end
 
 @implementation DNDSMutableModeConfigurationsRecord
 
-- (void)setModeConfiguration:(id)a3 forModeIdentifier:(id)a4
+- (void)setModeConfiguration:(id)configuration forModeIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    [(NSMutableDictionary *)self->super._modeConfigurationsByModeIdentifier setObject:a3 forKeyedSubscript:?];
+    [(NSMutableDictionary *)self->super._modeConfigurationsByModeIdentifier setObject:configuration forKeyedSubscript:?];
   }
 }
 
-- (void)setMode:(id)a3 forModeIdentifier:(id)a4
+- (void)setMode:(id)mode forModeIdentifier:(id)identifier
 {
-  v10 = a3;
+  modeCopy = mode;
   modeConfigurationsByModeIdentifier = self->super._modeConfigurationsByModeIdentifier;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)modeConfigurationsByModeIdentifier objectForKeyedSubscript:v7];
+  identifierCopy = identifier;
+  v8 = [(NSMutableDictionary *)modeConfigurationsByModeIdentifier objectForKeyedSubscript:identifierCopy];
   v9 = [v8 mutableCopy];
 
   if (!v9)
@@ -29,39 +29,39 @@
     v9 = objc_alloc_init(DNDSMutableModeConfigurationRecord);
   }
 
-  [(DNDSMutableModeConfigurationRecord *)v9 setMode:v10];
-  [(NSMutableDictionary *)self->super._modeConfigurationsByModeIdentifier setObject:v9 forKeyedSubscript:v7];
+  [(DNDSMutableModeConfigurationRecord *)v9 setMode:modeCopy];
+  [(NSMutableDictionary *)self->super._modeConfigurationsByModeIdentifier setObject:v9 forKeyedSubscript:identifierCopy];
 }
 
-- (void)setConfiguration:(id)a3 forModeIdentifier:(id)a4
+- (void)setConfiguration:(id)configuration forModeIdentifier:(id)identifier
 {
   modeConfigurationsByModeIdentifier = self->super._modeConfigurationsByModeIdentifier;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(NSMutableDictionary *)modeConfigurationsByModeIdentifier objectForKeyedSubscript:v7];
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  v9 = [(NSMutableDictionary *)modeConfigurationsByModeIdentifier objectForKeyedSubscript:identifierCopy];
   v10 = [v9 mutableCopy];
 
-  [v10 setConfiguration:v8];
-  [(NSMutableDictionary *)self->super._modeConfigurationsByModeIdentifier setObject:v10 forKeyedSubscript:v7];
+  [v10 setConfiguration:configurationCopy];
+  [(NSMutableDictionary *)self->super._modeConfigurationsByModeIdentifier setObject:v10 forKeyedSubscript:identifierCopy];
 }
 
-- (void)setTriggers:(id)a3 forModeIdentifier:(id)a4
+- (void)setTriggers:(id)triggers forModeIdentifier:(id)identifier
 {
   modeConfigurationsByModeIdentifier = self->super._modeConfigurationsByModeIdentifier;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(NSMutableDictionary *)modeConfigurationsByModeIdentifier objectForKeyedSubscript:v7];
+  identifierCopy = identifier;
+  triggersCopy = triggers;
+  v9 = [(NSMutableDictionary *)modeConfigurationsByModeIdentifier objectForKeyedSubscript:identifierCopy];
   v10 = [v9 mutableCopy];
 
-  [v10 setTriggers:v8];
-  [(NSMutableDictionary *)self->super._modeConfigurationsByModeIdentifier setObject:v10 forKeyedSubscript:v7];
+  [v10 setTriggers:triggersCopy];
+  [(NSMutableDictionary *)self->super._modeConfigurationsByModeIdentifier setObject:v10 forKeyedSubscript:identifierCopy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [DNDSModeConfigurationsRecord allocWithZone:a3];
-  v5 = [(NSMutableDictionary *)self->super._modeConfigurationsByModeIdentifier allValues];
-  v6 = [(DNDSModeConfigurationsRecord *)v4 _initWithModeConfigurations:v5];
+  v4 = [DNDSModeConfigurationsRecord allocWithZone:zone];
+  allValues = [(NSMutableDictionary *)self->super._modeConfigurationsByModeIdentifier allValues];
+  v6 = [(DNDSModeConfigurationsRecord *)v4 _initWithModeConfigurations:allValues];
 
   return v6;
 }

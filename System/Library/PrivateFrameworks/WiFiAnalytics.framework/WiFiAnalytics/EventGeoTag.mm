@@ -1,34 +1,34 @@
 @interface EventGeoTag
-+ (BOOL)processGeoTagEventAt:(id)a3 bssid:(id)a4 ssid:(id)a5 lat:(double)a6 lon:(double)a7 withPersistentContainer:(id)a8 andRunPostprocessing:(id)a9;
++ (BOOL)processGeoTagEventAt:(id)at bssid:(id)bssid ssid:(id)ssid lat:(double)lat lon:(double)lon withPersistentContainer:(id)container andRunPostprocessing:(id)postprocessing;
 @end
 
 @implementation EventGeoTag
 
-+ (BOOL)processGeoTagEventAt:(id)a3 bssid:(id)a4 ssid:(id)a5 lat:(double)a6 lon:(double)a7 withPersistentContainer:(id)a8 andRunPostprocessing:(id)a9
++ (BOOL)processGeoTagEventAt:(id)at bssid:(id)bssid ssid:(id)ssid lat:(double)lat lon:(double)lon withPersistentContainer:(id)container andRunPostprocessing:(id)postprocessing
 {
   v84 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = a9;
+  atCopy = at;
+  bssidCopy = bssid;
+  ssidCopy = ssid;
+  containerCopy = container;
+  postprocessingCopy = postprocessing;
   v70 = [MEMORY[0x1E695DFA8] set];
-  v20 = [UniqueMO getOrCreateBSS:v16 andNetwork:v17 withHasUpdatedNetwork:0 on:v18];
+  v20 = [UniqueMO getOrCreateBSS:bssidCopy andNetwork:ssidCopy withHasUpdatedNetwork:0 on:containerCopy];
   v21 = v20;
   if (!v20)
   {
-    v60 = WALogCategoryDeviceStoreHandle();
-    if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
+    network2 = WALogCategoryDeviceStoreHandle();
+    if (os_log_type_enabled(network2, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446978;
       v77 = "+[EventGeoTag processGeoTagEventAt:bssid:ssid:lat:lon:withPersistentContainer:andRunPostprocessing:]";
       v78 = 1024;
       v79 = 44;
       v80 = 2112;
-      v81 = v17;
+      v81 = ssidCopy;
       v82 = 2112;
-      v83 = v16;
-      _os_log_impl(&dword_1C8460000, v60, OS_LOG_TYPE_ERROR, "%{public}s::%d:bssMO nil for %@[%@]", buf, 0x26u);
+      v83 = bssidCopy;
+      _os_log_impl(&dword_1C8460000, network2, OS_LOG_TYPE_ERROR, "%{public}s::%d:bssMO nil for %@[%@]", buf, 0x26u);
     }
 
     v68 = 0;
@@ -37,19 +37,19 @@
     goto LABEL_50;
   }
 
-  v22 = [v20 geoTags];
-  v68 = v22;
-  if (v22)
+  geoTags = [v20 geoTags];
+  v68 = geoTags;
+  if (geoTags)
   {
-    v23 = v22;
+    v23 = geoTags;
     v63 = v21;
-    v64 = v19;
-    v65 = v18;
-    v66 = v17;
+    v64 = postprocessingCopy;
+    v65 = containerCopy;
+    v66 = ssidCopy;
     v24 = objc_alloc(MEMORY[0x1E6985C38]);
-    v25 = CLLocationCoordinate2DMake(a6, a7);
-    v67 = v15;
-    v26 = [v24 initWithCoordinate:v15 altitude:v25.latitude horizontalAccuracy:v25.longitude verticalAccuracy:-1.0 timestamp:{-1.0, -1.0}];
+    v25 = CLLocationCoordinate2DMake(lat, lon);
+    v67 = atCopy;
+    v26 = [v24 initWithCoordinate:atCopy altitude:v25.latitude horizontalAccuracy:v25.longitude verticalAccuracy:-1.0 timestamp:{-1.0, -1.0}];
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
@@ -73,8 +73,8 @@
           }
 
           v34 = *(*(&v71 + 1) + 8 * i);
-          v35 = [v34 date];
-          [v35 timeIntervalSinceNow];
+          date = [v34 date];
+          [date timeIntervalSinceNow];
           v37 = v36;
 
           if (v37 >= -31104000.0)
@@ -91,8 +91,8 @@
             v42 = v41;
             [v34 longitude];
             v44 = CLLocationCoordinate2DMake(v42, v43);
-            v45 = [v34 date];
-            v46 = [v40 initWithCoordinate:v45 altitude:v44.latitude horizontalAccuracy:v44.longitude verticalAccuracy:-1.0 timestamp:{-1.0, -1.0}];
+            date2 = [v34 date];
+            v46 = [v40 initWithCoordinate:date2 altitude:v44.latitude horizontalAccuracy:v44.longitude verticalAccuracy:-1.0 timestamp:{-1.0, -1.0}];
 
             [v46 distanceFromLocation:v26];
             if (v47 <= 300.0)
@@ -141,29 +141,29 @@
     if ([v27 count] >= 5 && v69 && (objc_msgSend(v70, "addObject:", v69), v30 == v69))
     {
 
-      v15 = v67;
-      v18 = v65;
-      v17 = v66;
+      atCopy = v67;
+      containerCopy = v65;
+      ssidCopy = v66;
       v21 = v63;
-      v19 = v64;
+      postprocessingCopy = v64;
     }
 
     else
     {
 
-      v17 = v66;
-      v19 = v64;
-      v18 = v65;
+      ssidCopy = v66;
+      postprocessingCopy = v64;
+      containerCopy = v65;
       v21 = v63;
       if (v30)
       {
         v50 = v30;
         v51 = v50;
-        v15 = v67;
+        atCopy = v67;
         goto LABEL_33;
       }
 
-      v15 = v67;
+      atCopy = v67;
     }
   }
 
@@ -173,18 +173,18 @@
   }
 
   v52 = +[GeoTagMO entity];
-  v51 = [v18 newDatedEventObjectFor:v52 withDate:v15];
+  v51 = [containerCopy newDatedEventObjectFor:v52 withDate:atCopy];
 
   if (!v51)
   {
-    v60 = WALogCategoryDeviceStoreHandle();
-    if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
+    network2 = WALogCategoryDeviceStoreHandle();
+    if (os_log_type_enabled(network2, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446466;
       v77 = "+[EventGeoTag processGeoTagEventAt:bssid:ssid:lat:lon:withPersistentContainer:andRunPostprocessing:]";
       v78 = 1024;
       v79 = 93;
-      _os_log_impl(&dword_1C8460000, v60, OS_LOG_TYPE_ERROR, "%{public}s::%d:geotagMO nil", buf, 0x12u);
+      _os_log_impl(&dword_1C8460000, network2, OS_LOG_TYPE_ERROR, "%{public}s::%d:geotagMO nil", buf, 0x12u);
     }
 
     v50 = 0;
@@ -201,52 +201,52 @@ LABEL_33:
   if ([v51 taggedCount])
   {
     [v51 latitude];
-    [v51 setLatitude:{(a6 + v53 * objc_msgSend(v51, "taggedCount")) / (objc_msgSend(v51, "taggedCount") + 1)}];
+    [v51 setLatitude:{(lat + v53 * objc_msgSend(v51, "taggedCount")) / (objc_msgSend(v51, "taggedCount") + 1)}];
     [v51 longitude];
-    v55 = a7 + v54 * [v51 taggedCount];
-    a7 = v55 / ([v51 taggedCount] + 1);
+    v55 = lon + v54 * [v51 taggedCount];
+    lon = v55 / ([v51 taggedCount] + 1);
   }
 
   else
   {
-    [v51 setLatitude:a6];
+    [v51 setLatitude:lat];
   }
 
-  [v51 setLongitude:a7];
+  [v51 setLongitude:lon];
   [v51 setTaggedCount:{objc_msgSend(v51, "taggedCount") + 1}];
-  [v51 setDate:v15];
+  [v51 setDate:atCopy];
   [v21 removeGeoTags:v70];
   [v21 addGeoTagsObject:v51];
   v56 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
   {
-    v57 = [v21 bssid];
+    bssid = [v21 bssid];
     *buf = 136446722;
     v77 = "+[EventGeoTag processGeoTagEventAt:bssid:ssid:lat:lon:withPersistentContainer:andRunPostprocessing:]";
     v78 = 1024;
     v79 = 109;
     v80 = 2112;
-    v81 = v57;
+    v81 = bssid;
     _os_log_impl(&dword_1C8460000, v56, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Added Geotag to BSS[%@]", buf, 0x1Cu);
   }
 
-  if (v19)
+  if (postprocessingCopy)
   {
     v58 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
     {
-      v59 = [v21 network];
+      network = [v21 network];
       *buf = 136446722;
       v77 = "+[EventGeoTag processGeoTagEventAt:bssid:ssid:lat:lon:withPersistentContainer:andRunPostprocessing:]";
       v78 = 1024;
       v79 = 113;
       v80 = 2112;
-      v81 = v59;
+      v81 = network;
       _os_log_impl(&dword_1C8460000, v58, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Immediate Postprocessing of classifyTraitsForNetwork:%@", buf, 0x1Cu);
     }
 
-    v60 = [v21 network];
-    [v19 classifyTraitsForNetwork:v60 withReason:@"immediate processing of GeoTag Record"];
+    network2 = [v21 network];
+    [postprocessingCopy classifyTraitsForNetwork:network2 withReason:@"immediate processing of GeoTag Record"];
     goto LABEL_42;
   }
 

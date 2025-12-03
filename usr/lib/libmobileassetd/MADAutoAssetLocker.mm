@@ -1,63 +1,63 @@
 @interface MADAutoAssetLocker
-+ (BOOL)continuedLockByClient:(id)a3 forAssetSelector:(id)a4 forLockReason:(id)a5 withUsagePolicy:(id)a6 continueError:(id *)a7;
-+ (BOOL)continuedSetLockByClient:(id)a3 forSetDescriptor:(id)a4 forLockReason:(id)a5 withSetUsagePolicy:(id)a6 continueError:(id *)a7;
-+ (BOOL)endedAllPreviousLocksByClient:(id)a3 forAssetSelector:(id)a4 forLockReason:(id)a5 endError:(id *)a6;
-+ (BOOL)endedLockByClient:(id)a3 forAssetSelector:(id)a4 forLockReason:(id)a5 endError:(id *)a6;
-+ (BOOL)endedPreviousLocksByClient:(id)a3 forAssetSelector:(id)a4 forLockReason:(id)a5 removingLockCount:(int64_t)a6 endError:(id *)a7;
-+ (BOOL)endedPreviousSetLocksByClient:(id)a3 forSetDescriptor:(id)a4 forLockReason:(id)a5 removingLockCount:(int64_t)a6 endError:(id *)a7;
-+ (BOOL)lockedByClient:(id)a3 forClientProcessName:(id)a4 withClientProcessID:(int64_t)a5 forAssetSelector:(id)a6 forLockReason:(id)a7 withUsagePolicy:(id)a8 withLocalContentURL:(id)a9 withAssetAttributes:(id)a10 lockError:(id *)a11;
-+ (BOOL)lockedSetByClient:(id)a3 forClientProcessName:(id)a4 withClientProcessID:(int64_t)a5 lockingSetDescriptor:(id)a6 forLockReason:(id)a7 withSetUsagePolicy:(id)a8 lockError:(id *)a9;
++ (BOOL)continuedLockByClient:(id)client forAssetSelector:(id)selector forLockReason:(id)reason withUsagePolicy:(id)policy continueError:(id *)error;
++ (BOOL)continuedSetLockByClient:(id)client forSetDescriptor:(id)descriptor forLockReason:(id)reason withSetUsagePolicy:(id)policy continueError:(id *)error;
++ (BOOL)endedAllPreviousLocksByClient:(id)client forAssetSelector:(id)selector forLockReason:(id)reason endError:(id *)error;
++ (BOOL)endedLockByClient:(id)client forAssetSelector:(id)selector forLockReason:(id)reason endError:(id *)error;
++ (BOOL)endedPreviousLocksByClient:(id)client forAssetSelector:(id)selector forLockReason:(id)reason removingLockCount:(int64_t)count endError:(id *)error;
++ (BOOL)endedPreviousSetLocksByClient:(id)client forSetDescriptor:(id)descriptor forLockReason:(id)reason removingLockCount:(int64_t)count endError:(id *)error;
++ (BOOL)lockedByClient:(id)client forClientProcessName:(id)name withClientProcessID:(int64_t)d forAssetSelector:(id)selector forLockReason:(id)reason withUsagePolicy:(id)policy withLocalContentURL:(id)l withAssetAttributes:(id)self0 lockError:(id *)self1;
++ (BOOL)lockedSetByClient:(id)client forClientProcessName:(id)name withClientProcessID:(int64_t)d lockingSetDescriptor:(id)descriptor forLockReason:(id)reason withSetUsagePolicy:(id)policy lockError:(id *)error;
 + (id)autoAssetLocker;
 + (id)copyOfLockCountsBySelector;
 + (id)copyOfLocksBySelector;
-+ (id)currentSetLockUsageEliminatingOtherThanSetAtomicInstances:(id)a3;
-+ (id)eliminateAllPreviousSetLocksNoLongerTracked:(id)a3;
-+ (id)lockedSelectorsForEliminate:(id)a3;
-+ (id)newCurrentLockUsageForSelector:(id)a3;
-+ (id)newCurrentSetLockUsageForDescriptor:(id)a3;
-+ (id)newSetClientNameForDomain:(id)a3 withAutoAssetClientName:(id)a4 forSetAtomicInstance:(id)a5;
++ (id)currentSetLockUsageEliminatingOtherThanSetAtomicInstances:(id)instances;
++ (id)eliminateAllPreviousSetLocksNoLongerTracked:(id)tracked;
++ (id)lockedSelectorsForEliminate:(id)eliminate;
++ (id)newCurrentLockUsageForSelector:(id)selector;
++ (id)newCurrentSetLockUsageForDescriptor:(id)descriptor;
++ (id)newSetClientNameForDomain:(id)domain withAutoAssetClientName:(id)name forSetAtomicInstance:(id)instance;
 + (int64_t)persistedLocksCount;
-+ (void)addClientLockReasons:(id)a3 basedOnControl:(id)a4;
-+ (void)eliminateAllPreviousSetLocksByClient:(id)a3 forSetDescriptor:(id)a4;
-+ (void)forceGlobalUnlock:(id)a3 atomicInstancesHandle:(id *)a4;
-+ (void)resumeFromPersistedWithDownloadedSelectors:(id)a3;
-+ (void)setPersistedStateCaching:(BOOL)a3;
-- (BOOL)_anyCurrentLocksForEliminate:(id)a3;
-- (BOOL)_endLockDecideUnlocked:(id)a3;
-- (BOOL)_endLocksByClient:(id)a3 forAssetClientName:(id)a4 forAllClientNames:(BOOL)a5 forClientProcessName:(id)a6 withClientProcessID:(int64_t)a7 forClientDomainName:(id)a8 forAssetSelector:(id)a9 forSetAtomicInstance:(id)a10 forLockReason:(id)a11 removingLockCount:(int64_t)a12 endError:(id *)a13;
-- (BOOL)_isSetAssetLock:(id)a3 forClientDomainName:(id)a4 forAssetSetIdentifier:(id)a5;
-- (BOOL)_isUntrackedSetAssetLock:(id)a3 forTrackedSetDescriptors:(id)a4;
-- (BOOL)_persistAssetLock:(id)a3 operation:(id)a4 forAssetLock:(id)a5 withDeltaLockCount:(int64_t)a6 message:(id)a7;
-- (BOOL)isAssetLockSetAtomicInstanceLock:(id)a3;
++ (void)addClientLockReasons:(id)reasons basedOnControl:(id)control;
++ (void)eliminateAllPreviousSetLocksByClient:(id)client forSetDescriptor:(id)descriptor;
++ (void)forceGlobalUnlock:(id)unlock atomicInstancesHandle:(id *)handle;
++ (void)resumeFromPersistedWithDownloadedSelectors:(id)selectors;
++ (void)setPersistedStateCaching:(BOOL)caching;
+- (BOOL)_anyCurrentLocksForEliminate:(id)eliminate;
+- (BOOL)_endLockDecideUnlocked:(id)unlocked;
+- (BOOL)_endLocksByClient:(id)client forAssetClientName:(id)name forAllClientNames:(BOOL)names forClientProcessName:(id)processName withClientProcessID:(int64_t)d forClientDomainName:(id)domainName forAssetSelector:(id)selector forSetAtomicInstance:(id)self0 forLockReason:(id)self1 removingLockCount:(int64_t)self2 endError:(id *)self3;
+- (BOOL)_isSetAssetLock:(id)lock forClientDomainName:(id)name forAssetSetIdentifier:(id)identifier;
+- (BOOL)_isUntrackedSetAssetLock:(id)lock forTrackedSetDescriptors:(id)descriptors;
+- (BOOL)_persistAssetLock:(id)lock operation:(id)operation forAssetLock:(id)assetLock withDeltaLockCount:(int64_t)count message:(id)message;
+- (BOOL)isAssetLockSetAtomicInstanceLock:(id)lock;
 - (MADAutoAssetLocker)init;
-- (id)_assetIDOfLock:(id)a3;
-- (id)_autoAssetLockPolicyFromSetPolicy:(id)a3;
-- (id)_continuedLockByClient:(id)a3 forClientDomainName:(id)a4 forAssetSetIdentifier:(id)a5 forAssetSelector:(id)a6 forSetAtomicInstance:(id)a7 forLockReason:(id)a8 withUsagePolicy:(id)a9;
-- (id)_endAllSetLocks:(id)a3 forClientDomainName:(id)a4 forAssetSetIdentifier:(id)a5;
-- (id)_endAllSetLocksNoLongerTracked:(id)a3;
-- (id)_endedLockByClient:(id)a3 forClientDomainName:(id)a4 forAssetSetIdentifier:(id)a5 forAssetSelector:(id)a6 forSetAtomicInstance:(id)a7 forLockReason:(id)a8;
-- (id)_locateLockByPersistentEntryID:(id)a3;
-- (id)_lockAutoAssetByClient:(id)a3 forClientProcessName:(id)a4 withClientProcessID:(int64_t)a5 forClientDomainName:(id)a6 forAssetSelector:(id)a7 forSetAtomicInstance:(id)a8 forLockReason:(id)a9 withDeltaLockCount:(int64_t)a10 withUsagePolicy:(id)a11 withLocalContentURL:(id)a12 withAssetAttributes:(id)a13;
-- (id)_newAssetLockSummaryWithoutSelectorOrAttributes:(id)a3;
-- (id)_refreshFilesystemMetadataLastInterest:(id)a3;
-- (id)_setClientDomainNameForAssetLock:(id)a3;
-- (id)atomicInstanceUUIDForLockTracker:(id)a3;
-- (id)locateLockByFullAssetSelector:(id)a3;
-- (id)locateLocksBySelector:(id)a3;
+- (id)_assetIDOfLock:(id)lock;
+- (id)_autoAssetLockPolicyFromSetPolicy:(id)policy;
+- (id)_continuedLockByClient:(id)client forClientDomainName:(id)name forAssetSetIdentifier:(id)identifier forAssetSelector:(id)selector forSetAtomicInstance:(id)instance forLockReason:(id)reason withUsagePolicy:(id)policy;
+- (id)_endAllSetLocks:(id)locks forClientDomainName:(id)name forAssetSetIdentifier:(id)identifier;
+- (id)_endAllSetLocksNoLongerTracked:(id)tracked;
+- (id)_endedLockByClient:(id)client forClientDomainName:(id)name forAssetSetIdentifier:(id)identifier forAssetSelector:(id)selector forSetAtomicInstance:(id)instance forLockReason:(id)reason;
+- (id)_locateLockByPersistentEntryID:(id)d;
+- (id)_lockAutoAssetByClient:(id)client forClientProcessName:(id)name withClientProcessID:(int64_t)d forClientDomainName:(id)domainName forAssetSelector:(id)selector forSetAtomicInstance:(id)instance forLockReason:(id)reason withDeltaLockCount:(int64_t)self0 withUsagePolicy:(id)self1 withLocalContentURL:(id)self2 withAssetAttributes:(id)self3;
+- (id)_newAssetLockSummaryWithoutSelectorOrAttributes:(id)attributes;
+- (id)_refreshFilesystemMetadataLastInterest:(id)interest;
+- (id)_setClientDomainNameForAssetLock:(id)lock;
+- (id)atomicInstanceUUIDForLockTracker:(id)tracker;
+- (id)locateLockByFullAssetSelector:(id)selector;
+- (id)locateLocksBySelector:(id)selector;
 - (id)locateLocksNewAllBySelector;
 - (id)summary;
-- (int64_t)_currentLockCountOfLock:(id)a3;
-- (void)_endAllSetLocksByClient:(id)a3 forSetDescriptor:(id)a4;
-- (void)_logPersistedEntry:(id)a3 operation:(id)a4 persistingAssetLock:(id)a5 forSelector:(id)a6 message:(id)a7;
-- (void)_logPersistedRemovedEntry:(id)a3 removedAssetLock:(id)a4 forSelector:(id)a5 message:(id)a6;
-- (void)_logPersistedTableOfContents:(id)a3;
-- (void)_mergeAddedLock:(id)a3 intoExistingLock:(id)a4;
-- (void)_mergeContinuedLock:(id)a3 intoExistingLock:(id)a4;
-- (void)_persistRemoveAssetLock:(id)a3 removedAssetLock:(id)a4 message:(id)a5;
-- (void)_removeAssetLock:(id)a3 removingAssetLock:(id)a4 lastClient:(id)a5 forSelector:(id)a6 message:(id)a7;
-- (void)addToLockCountsBySelector:(id)a3 addingAssetLock:(id)a4;
-- (void)trackPerformanceIteration:(id)a3 ofContainer:(id)a4;
-- (void)trackPerformanceIteration:(id)a3 ofContainer:(id)a4 forSelector:(id)a5;
+- (int64_t)_currentLockCountOfLock:(id)lock;
+- (void)_endAllSetLocksByClient:(id)client forSetDescriptor:(id)descriptor;
+- (void)_logPersistedEntry:(id)entry operation:(id)operation persistingAssetLock:(id)lock forSelector:(id)selector message:(id)message;
+- (void)_logPersistedRemovedEntry:(id)entry removedAssetLock:(id)lock forSelector:(id)selector message:(id)message;
+- (void)_logPersistedTableOfContents:(id)contents;
+- (void)_mergeAddedLock:(id)lock intoExistingLock:(id)existingLock;
+- (void)_mergeContinuedLock:(id)lock intoExistingLock:(id)existingLock;
+- (void)_persistRemoveAssetLock:(id)lock removedAssetLock:(id)assetLock message:(id)message;
+- (void)_removeAssetLock:(id)lock removingAssetLock:(id)assetLock lastClient:(id)client forSelector:(id)selector message:(id)message;
+- (void)addToLockCountsBySelector:(id)selector addingAssetLock:(id)lock;
+- (void)trackPerformanceIteration:(id)iteration ofContainer:(id)container;
+- (void)trackPerformanceIteration:(id)iteration ofContainer:(id)container forSelector:(id)selector;
 @end
 
 @implementation MADAutoAssetLocker
@@ -69,9 +69,9 @@
   v2 = [(MADAutoAssetLocker *)&v16 init];
   if (v2)
   {
-    v3 = [@"com.apple.MobileAsset.daemon.autoassetlocker" UTF8String];
+    uTF8String = [@"com.apple.MobileAsset.daemon.autoassetlocker" UTF8String];
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v5 = dispatch_queue_create(v3, v4);
+    v5 = dispatch_queue_create(uTF8String, v4);
     lockerQueue = v2->_lockerQueue;
     v2->_lockerQueue = v5;
 
@@ -117,59 +117,59 @@ void __37__MADAutoAssetLocker_autoAssetLocker__block_invoke(id a1)
   _objc_release_x1();
 }
 
-+ (BOOL)lockedByClient:(id)a3 forClientProcessName:(id)a4 withClientProcessID:(int64_t)a5 forAssetSelector:(id)a6 forLockReason:(id)a7 withUsagePolicy:(id)a8 withLocalContentURL:(id)a9 withAssetAttributes:(id)a10 lockError:(id *)a11
++ (BOOL)lockedByClient:(id)client forClientProcessName:(id)name withClientProcessID:(int64_t)d forAssetSelector:(id)selector forLockReason:(id)reason withUsagePolicy:(id)policy withLocalContentURL:(id)l withAssetAttributes:(id)self0 lockError:(id *)self1
 {
-  v16 = a3;
-  v45 = a4;
-  v17 = a6;
-  v18 = a7;
-  v46 = a8;
-  v19 = a9;
-  v20 = a10;
+  clientCopy = client;
+  nameCopy = name;
+  selectorCopy = selector;
+  reasonCopy = reason;
+  policyCopy = policy;
+  lCopy = l;
+  attributesCopy = attributes;
   v59 = 0;
   v60 = &v59;
   v61 = 0x3032000000;
   v62 = __Block_byref_object_copy__17;
   v63 = __Block_byref_object_dispose__17;
   v64 = 0;
-  v47 = v20;
-  if (v16 && v17 && v18 && v19 && v20)
+  v47 = attributesCopy;
+  if (clientCopy && selectorCopy && reasonCopy && lCopy && attributesCopy)
   {
-    v21 = [v17 assetVersion];
-    v22 = v21 == 0;
+    assetVersion = [selectorCopy assetVersion];
+    v22 = assetVersion == 0;
 
     if (v22)
     {
       v34 = [NSString alloc];
-      v35 = [v17 summary];
-      v24 = [v34 initWithFormat:@"lock not tracked (selector missing asset-version) | client:%@, selector:%@, reason:%@", v16, v35, v18];
+      summary = [selectorCopy summary];
+      reasonCopy = [v34 initWithFormat:@"lock not tracked (selector missing asset-version) | client:%@, selector:%@, reason:%@", clientCopy, summary, reasonCopy];
 
-      v33 = [MAAutoAssetError buildError:6102 fromOperation:@"AUTO-LOCKER:lockedByClient" underlyingError:0 withDescription:v24];
+      v33 = [MAAutoAssetError buildError:6102 fromOperation:@"AUTO-LOCKER:lockedByClient" underlyingError:0 withDescription:reasonCopy];
     }
 
     else
     {
       v23 = +[MADAutoAssetLocker autoAssetLocker];
-      v24 = v23;
+      reasonCopy = v23;
       if (v23)
       {
-        v25 = [v23 lockerQueue];
+        lockerQueue = [v23 lockerQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = __175__MADAutoAssetLocker_lockedByClient_forClientProcessName_withClientProcessID_forAssetSelector_forLockReason_withUsagePolicy_withLocalContentURL_withAssetAttributes_lockError___block_invoke;
         block[3] = &unk_4B6238;
         v57 = &v59;
-        v24 = v24;
-        v49 = v24;
-        v50 = v16;
-        v51 = v45;
-        v58 = a5;
-        v52 = v17;
-        v53 = v18;
-        v54 = v46;
-        v55 = v19;
+        reasonCopy = reasonCopy;
+        v49 = reasonCopy;
+        v50 = clientCopy;
+        v51 = nameCopy;
+        dCopy = d;
+        v52 = selectorCopy;
+        v53 = reasonCopy;
+        v54 = policyCopy;
+        v55 = lCopy;
         v56 = v47;
-        dispatch_sync(v25, block);
+        dispatch_sync(lockerQueue, block);
 
         v26 = v49;
         goto LABEL_31;
@@ -182,9 +182,9 @@ void __37__MADAutoAssetLocker_autoAssetLocker__block_invoke(id a1)
   else
   {
     v27 = [NSString alloc];
-    if (v16)
+    if (clientCopy)
     {
-      v28 = v16;
+      v28 = clientCopy;
     }
 
     else
@@ -192,19 +192,19 @@ void __37__MADAutoAssetLocker_autoAssetLocker__block_invoke(id a1)
       v28 = @"MISSING";
     }
 
-    if (v17)
+    if (selectorCopy)
     {
-      v29 = [v17 summary];
+      summary2 = [selectorCopy summary];
     }
 
     else
     {
-      v29 = @"MISSING";
+      summary2 = @"MISSING";
     }
 
-    if (v18)
+    if (reasonCopy)
     {
-      v30 = v18;
+      v30 = reasonCopy;
     }
 
     else
@@ -212,14 +212,14 @@ void __37__MADAutoAssetLocker_autoAssetLocker__block_invoke(id a1)
       v30 = @"MISSING";
     }
 
-    if (v19)
+    if (lCopy)
     {
-      v31 = [v19 path];
+      path = [lCopy path];
     }
 
     else
     {
-      v31 = @"MISSING";
+      path = @"MISSING";
     }
 
     v32 = @"provided";
@@ -228,16 +228,16 @@ void __37__MADAutoAssetLocker_autoAssetLocker__block_invoke(id a1)
       v32 = @"MISSING";
     }
 
-    v24 = [v27 initWithFormat:@"lock not tracked (missing required) | client:%@, selector:%@, reason:%@, localURL:%@, attributes:%@", v28, v29, v30, v31, v32, v45];
-    if (v19)
+    reasonCopy = [v27 initWithFormat:@"lock not tracked (missing required) | client:%@, selector:%@, reason:%@, localURL:%@, attributes:%@", v28, summary2, v30, path, v32, nameCopy];
+    if (lCopy)
     {
     }
 
-    if (v17)
+    if (selectorCopy)
     {
     }
 
-    v33 = [MAAutoAssetError buildError:6102 fromOperation:@"AUTO-LOCKER:lockedByClient" underlyingError:0 withDescription:v24];
+    v33 = [MAAutoAssetError buildError:6102 fromOperation:@"AUTO-LOCKER:lockedByClient" underlyingError:0 withDescription:reasonCopy];
   }
 
   v26 = v60[5];
@@ -250,26 +250,26 @@ LABEL_31:
     v37 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
-      v38 = [v17 summary];
-      v39 = [v46 summary];
+      summary3 = [selectorCopy summary];
+      summary4 = [policyCopy summary];
       v40 = v60[5];
       *buf = 138544386;
-      v66 = v16;
+      v66 = clientCopy;
       v67 = 2114;
-      v68 = v38;
+      v68 = summary3;
       v69 = 2114;
-      v70 = v18;
+      v70 = reasonCopy;
       v71 = 2114;
-      v72 = v39;
+      v72 = summary4;
       v73 = 2114;
       v74 = v40;
       _os_log_impl(&dword_0, v37, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:lockedByClient} failed lock | client:%{public}@, selector:%{public}@, reason:%{public}@, policy:%{public}@ | error:%{public}@", buf, 0x34u);
     }
 
-    [MADAutoAssetHistory recordFailedOperation:101 fromClient:v16 forAssetID:@"UNKNOWN" withSelector:v17 failingWithError:v60[5]];
-    if (a11)
+    [MADAutoAssetHistory recordFailedOperation:101 fromClient:clientCopy forAssetID:@"UNKNOWN" withSelector:selectorCopy failingWithError:v60[5]];
+    if (error)
     {
-      *a11 = v60[5];
+      *error = v60[5];
     }
   }
 
@@ -278,16 +278,16 @@ LABEL_31:
     v41 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
-      v42 = [v17 summary];
-      v43 = [v46 summary];
+      summary5 = [selectorCopy summary];
+      summary6 = [policyCopy summary];
       *buf = 138544130;
-      v66 = v16;
+      v66 = clientCopy;
       v67 = 2114;
-      v68 = v42;
+      v68 = summary5;
       v69 = 2114;
-      v70 = v18;
+      v70 = reasonCopy;
       v71 = 2114;
-      v72 = v43;
+      v72 = summary6;
       _os_log_impl(&dword_0, v41, OS_LOG_TYPE_DEFAULT, "{AUTO-LOCKER:lockedByClient} successful lock | client:%{public}@, selector:%{public}@, reason:%{public}@, policy:%{public}@", buf, 0x2Au);
     }
   }
@@ -304,51 +304,51 @@ uint64_t __175__MADAutoAssetLocker_lockedByClient_forClientProcessName_withClien
   return _objc_release_x1();
 }
 
-+ (BOOL)continuedLockByClient:(id)a3 forAssetSelector:(id)a4 forLockReason:(id)a5 withUsagePolicy:(id)a6 continueError:(id *)a7
++ (BOOL)continuedLockByClient:(id)client forAssetSelector:(id)selector forLockReason:(id)reason withUsagePolicy:(id)policy continueError:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  clientCopy = client;
+  selectorCopy = selector;
+  reasonCopy = reason;
+  policyCopy = policy;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
   v47 = __Block_byref_object_copy__17;
   v48 = __Block_byref_object_dispose__17;
   v49 = 0;
-  if (v11 && v12 && v13)
+  if (clientCopy && selectorCopy && reasonCopy)
   {
-    v15 = [v12 assetVersion];
-    v16 = v15 == 0;
+    assetVersion = [selectorCopy assetVersion];
+    v16 = assetVersion == 0;
 
     if (v16)
     {
       v26 = [NSString alloc];
-      v27 = [v12 summary];
-      v18 = [v26 initWithFormat:@"lock not tracked (selector missing asset-version) | client:%@, selector:%@, reason:%@", v11, v27, v13];
+      summary = [selectorCopy summary];
+      reasonCopy = [v26 initWithFormat:@"lock not tracked (selector missing asset-version) | client:%@, selector:%@, reason:%@", clientCopy, summary, reasonCopy];
 
-      v25 = [MAAutoAssetError buildError:6102 fromOperation:@"AUTO-LOCKER:continuedLockByClient" underlyingError:0 withDescription:v18];
+      v25 = [MAAutoAssetError buildError:6102 fromOperation:@"AUTO-LOCKER:continuedLockByClient" underlyingError:0 withDescription:reasonCopy];
     }
 
     else
     {
       v17 = +[MADAutoAssetLocker autoAssetLocker];
-      v18 = v17;
+      reasonCopy = v17;
       if (v17)
       {
-        v19 = [v17 lockerQueue];
+        lockerQueue = [v17 lockerQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = __105__MADAutoAssetLocker_continuedLockByClient_forAssetSelector_forLockReason_withUsagePolicy_continueError___block_invoke;
         block[3] = &unk_4B6260;
         v43 = &v44;
-        v18 = v18;
-        v38 = v18;
-        v39 = v11;
-        v40 = v12;
-        v41 = v13;
-        v42 = v14;
-        dispatch_sync(v19, block);
+        reasonCopy = reasonCopy;
+        v38 = reasonCopy;
+        v39 = clientCopy;
+        v40 = selectorCopy;
+        v41 = reasonCopy;
+        v42 = policyCopy;
+        dispatch_sync(lockerQueue, block);
 
         v20 = v38;
         goto LABEL_22;
@@ -361,9 +361,9 @@ uint64_t __175__MADAutoAssetLocker_lockedByClient_forClientProcessName_withClien
   else
   {
     v21 = [NSString alloc];
-    if (v11)
+    if (clientCopy)
     {
-      v22 = v11;
+      v22 = clientCopy;
     }
 
     else
@@ -371,19 +371,19 @@ uint64_t __175__MADAutoAssetLocker_lockedByClient_forClientProcessName_withClien
       v22 = @"MISSING";
     }
 
-    if (v12)
+    if (selectorCopy)
     {
-      v23 = [v12 summary];
+      summary2 = [selectorCopy summary];
     }
 
     else
     {
-      v23 = @"MISSING";
+      summary2 = @"MISSING";
     }
 
-    if (v13)
+    if (reasonCopy)
     {
-      v24 = v13;
+      v24 = reasonCopy;
     }
 
     else
@@ -391,12 +391,12 @@ uint64_t __175__MADAutoAssetLocker_lockedByClient_forClientProcessName_withClien
       v24 = @"MISSING";
     }
 
-    v18 = [v21 initWithFormat:@"lock not tracked (missing required) | client:%@, selector:%@, reason:%@", v22, v23, v24];
-    if (v12)
+    reasonCopy = [v21 initWithFormat:@"lock not tracked (missing required) | client:%@, selector:%@, reason:%@", v22, summary2, v24];
+    if (selectorCopy)
     {
     }
 
-    v25 = [MAAutoAssetError buildError:6102 fromOperation:@"AUTO-LOCKER:continuedLockByClient" underlyingError:0 withDescription:v18];
+    v25 = [MAAutoAssetError buildError:6102 fromOperation:@"AUTO-LOCKER:continuedLockByClient" underlyingError:0 withDescription:reasonCopy];
   }
 
   v20 = v45[5];
@@ -409,26 +409,26 @@ LABEL_22:
     v29 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
-      v30 = [v12 summary];
-      v31 = [v14 summary];
+      summary3 = [selectorCopy summary];
+      summary4 = [policyCopy summary];
       v32 = v45[5];
       *buf = 138544386;
-      v51 = v11;
+      v51 = clientCopy;
       v52 = 2114;
-      v53 = v30;
+      v53 = summary3;
       v54 = 2114;
-      v55 = v13;
+      v55 = reasonCopy;
       v56 = 2114;
-      v57 = v31;
+      v57 = summary4;
       v58 = 2114;
       v59 = v32;
       _os_log_impl(&dword_0, v29, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:continuedLockByClient} failed continue-lock | client:%{public}@, selector:%{public}@, reason:%{public}@, policy:%{public}@ | error:%{public}@", buf, 0x34u);
     }
 
-    [MADAutoAssetHistory recordFailedOperation:501 fromClient:v11 forAssetID:@"UNKNOWN" withSelector:v12 failingWithError:v45[5]];
-    if (a7)
+    [MADAutoAssetHistory recordFailedOperation:501 fromClient:clientCopy forAssetID:@"UNKNOWN" withSelector:selectorCopy failingWithError:v45[5]];
+    if (error)
     {
-      *a7 = v45[5];
+      *error = v45[5];
     }
   }
 
@@ -437,16 +437,16 @@ LABEL_22:
     v33 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [v12 summary];
-      v35 = [v14 summary];
+      summary5 = [selectorCopy summary];
+      summary6 = [policyCopy summary];
       *buf = 138544130;
-      v51 = v11;
+      v51 = clientCopy;
       v52 = 2114;
-      v53 = v34;
+      v53 = summary5;
       v54 = 2114;
-      v55 = v13;
+      v55 = reasonCopy;
       v56 = 2114;
-      v57 = v35;
+      v57 = summary6;
       _os_log_impl(&dword_0, v33, OS_LOG_TYPE_DEFAULT, "{AUTO-LOCKER:continuedLockByClient} successful continue-lock | client:%{public}@, selector:%{public}@, reason:%{public}@, policy:%{public}@", buf, 0x2Au);
     }
   }
@@ -463,28 +463,28 @@ uint64_t __105__MADAutoAssetLocker_continuedLockByClient_forAssetSelector_forLoc
   return _objc_release_x1();
 }
 
-+ (BOOL)endedLockByClient:(id)a3 forAssetSelector:(id)a4 forLockReason:(id)a5 endError:(id *)a6
++ (BOOL)endedLockByClient:(id)client forAssetSelector:(id)selector forLockReason:(id)reason endError:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
+  clientCopy = client;
+  selectorCopy = selector;
+  reasonCopy = reason;
+  v12 = reasonCopy;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
   v42 = __Block_byref_object_copy__17;
   v43 = __Block_byref_object_dispose__17;
   v44 = 0;
-  if (v9 && v10 && v11)
+  if (clientCopy && selectorCopy && reasonCopy)
   {
-    v13 = [v10 assetVersion];
-    v14 = v13 == 0;
+    assetVersion = [selectorCopy assetVersion];
+    v14 = assetVersion == 0;
 
     if (v14)
     {
       v24 = [NSString alloc];
-      v25 = [v10 summary];
-      v16 = [v24 initWithFormat:@"lock not ended (selector missing asset-version) | client:%@, selector:%@, reason:%@", v9, v25, v12];
+      summary = [selectorCopy summary];
+      v16 = [v24 initWithFormat:@"lock not ended (selector missing asset-version) | client:%@, selector:%@, reason:%@", clientCopy, summary, v12];
 
       v23 = [MAAutoAssetError buildError:6102 fromOperation:@"AUTO-LOCKER:endedLockByClient" underlyingError:0 withDescription:v16];
     }
@@ -495,7 +495,7 @@ uint64_t __105__MADAutoAssetLocker_continuedLockByClient_forAssetSelector_forLoc
       v16 = v15;
       if (v15)
       {
-        v17 = [v15 lockerQueue];
+        lockerQueue = [v15 lockerQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = __80__MADAutoAssetLocker_endedLockByClient_forAssetSelector_forLockReason_endError___block_invoke;
@@ -503,10 +503,10 @@ uint64_t __105__MADAutoAssetLocker_continuedLockByClient_forAssetSelector_forLoc
         v38 = &v39;
         v16 = v16;
         v34 = v16;
-        v35 = v9;
-        v36 = v10;
+        v35 = clientCopy;
+        v36 = selectorCopy;
         v37 = v12;
-        dispatch_sync(v17, block);
+        dispatch_sync(lockerQueue, block);
 
         v18 = v34;
         goto LABEL_22;
@@ -519,9 +519,9 @@ uint64_t __105__MADAutoAssetLocker_continuedLockByClient_forAssetSelector_forLoc
   else
   {
     v19 = [NSString alloc];
-    if (v9)
+    if (clientCopy)
     {
-      v20 = v9;
+      v20 = clientCopy;
     }
 
     else
@@ -529,14 +529,14 @@ uint64_t __105__MADAutoAssetLocker_continuedLockByClient_forAssetSelector_forLoc
       v20 = @"MISSING";
     }
 
-    if (v10)
+    if (selectorCopy)
     {
-      v21 = [v10 summary];
+      summary2 = [selectorCopy summary];
     }
 
     else
     {
-      v21 = @"MISSING";
+      summary2 = @"MISSING";
     }
 
     if (v12)
@@ -549,8 +549,8 @@ uint64_t __105__MADAutoAssetLocker_continuedLockByClient_forAssetSelector_forLoc
       v22 = @"MISSING";
     }
 
-    v16 = [v19 initWithFormat:@"lock not ended (missing required) | client:%@, selector:%@, reason:%@", v20, v21, v22];
-    if (v10)
+    v16 = [v19 initWithFormat:@"lock not ended (missing required) | client:%@, selector:%@, reason:%@", v20, summary2, v22];
+    if (selectorCopy)
     {
     }
 
@@ -567,12 +567,12 @@ LABEL_22:
     v27 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      v28 = [v10 summary];
+      summary3 = [selectorCopy summary];
       v29 = v40[5];
       *buf = 138544130;
-      v46 = v9;
+      v46 = clientCopy;
       v47 = 2114;
-      v48 = v28;
+      v48 = summary3;
       v49 = 2114;
       v50 = v12;
       v51 = 2114;
@@ -580,10 +580,10 @@ LABEL_22:
       _os_log_impl(&dword_0, v27, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:endedLockByClient} failed end-lock | client:%{public}@, selector:%{public}@, reason:%{public}@ | error:%{public}@", buf, 0x2Au);
     }
 
-    [MADAutoAssetHistory recordFailedOperation:502 fromClient:v9 forAssetID:@"UNKNOWN" withSelector:v10 failingWithError:v40[5]];
-    if (a6)
+    [MADAutoAssetHistory recordFailedOperation:502 fromClient:clientCopy forAssetID:@"UNKNOWN" withSelector:selectorCopy failingWithError:v40[5]];
+    if (error)
     {
-      *a6 = v40[5];
+      *error = v40[5];
     }
   }
 
@@ -592,11 +592,11 @@ LABEL_22:
     v30 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [v10 summary];
+      summary4 = [selectorCopy summary];
       *buf = 138543874;
-      v46 = v9;
+      v46 = clientCopy;
       v47 = 2114;
-      v48 = v31;
+      v48 = summary4;
       v49 = 2114;
       v50 = v12;
       _os_log_impl(&dword_0, v30, OS_LOG_TYPE_DEFAULT, "{AUTO-LOCKER:endedLockByClient} successful end-lock | client:%{public}@, selector:%{public}@, reason:%{public}@", buf, 0x20u);
@@ -615,12 +615,12 @@ uint64_t __80__MADAutoAssetLocker_endedLockByClient_forAssetSelector_forLockReas
   return _objc_release_x1();
 }
 
-+ (BOOL)endedPreviousLocksByClient:(id)a3 forAssetSelector:(id)a4 forLockReason:(id)a5 removingLockCount:(int64_t)a6 endError:(id *)a7
++ (BOOL)endedPreviousLocksByClient:(id)client forAssetSelector:(id)selector forLockReason:(id)reason removingLockCount:(int64_t)count endError:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = v13;
+  clientCopy = client;
+  selectorCopy = selector;
+  reasonCopy = reason;
+  v14 = reasonCopy;
   v49 = 0;
   v50 = &v49;
   v51 = 0x3032000000;
@@ -631,25 +631,25 @@ uint64_t __80__MADAutoAssetLocker_endedLockByClient_forAssetSelector_forLockReas
   v46 = &v45;
   v47 = 0x2020000000;
   v48 = 0;
-  if (v11 && v12 && v13)
+  if (clientCopy && selectorCopy && reasonCopy)
   {
-    v15 = [v12 assetVersion];
-    v16 = v15 == 0;
+    assetVersion = [selectorCopy assetVersion];
+    v16 = assetVersion == 0;
 
     if (v16)
     {
       v26 = [NSString alloc];
-      v27 = [v12 summary];
-      v18 = [v26 initWithFormat:@"locks not ended (selector missing asset-version) | client:%@, selector:%@, reason:%@", v11, v27, v14];
+      summary = [selectorCopy summary];
+      v18 = [v26 initWithFormat:@"locks not ended (selector missing asset-version) | client:%@, selector:%@, reason:%@", clientCopy, summary, v14];
 
       v25 = [MAAutoAssetError buildError:6102 fromOperation:@"AUTO-LOCKER:endedPreviousLocksByClient" underlyingError:0 withDescription:v18];
     }
 
-    else if (a6 <= 0)
+    else if (count <= 0)
     {
       v28 = [NSString alloc];
-      v29 = [v12 summary];
-      v18 = [v28 initWithFormat:@"locks not ended (invalid endLockCount:%ld) | client:%@, selector:%@, reason:%@", a6, v11, v29, v14];
+      summary2 = [selectorCopy summary];
+      v18 = [v28 initWithFormat:@"locks not ended (invalid endLockCount:%ld) | client:%@, selector:%@, reason:%@", count, clientCopy, summary2, v14];
 
       v25 = [MAAutoAssetError buildError:6102 fromOperation:@"AUTO-LOCKER:endedPreviousLocksByClient" underlyingError:0 withDescription:v18];
     }
@@ -660,7 +660,7 @@ uint64_t __80__MADAutoAssetLocker_endedLockByClient_forAssetSelector_forLockReas
       v18 = v17;
       if (v17)
       {
-        v19 = [v17 lockerQueue];
+        lockerQueue = [v17 lockerQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = __107__MADAutoAssetLocker_endedPreviousLocksByClient_forAssetSelector_forLockReason_removingLockCount_endError___block_invoke;
@@ -668,12 +668,12 @@ uint64_t __80__MADAutoAssetLocker_endedLockByClient_forAssetSelector_forLockReas
         v42 = &v45;
         v18 = v18;
         v38 = v18;
-        v39 = v11;
-        v40 = v12;
+        v39 = clientCopy;
+        v40 = selectorCopy;
         v41 = v14;
         v43 = &v49;
-        v44 = a6;
-        dispatch_sync(v19, block);
+        countCopy = count;
+        dispatch_sync(lockerQueue, block);
 
         v20 = v38;
         goto LABEL_24;
@@ -686,9 +686,9 @@ uint64_t __80__MADAutoAssetLocker_endedLockByClient_forAssetSelector_forLockReas
   else
   {
     v21 = [NSString alloc];
-    if (v11)
+    if (clientCopy)
     {
-      v22 = v11;
+      v22 = clientCopy;
     }
 
     else
@@ -696,14 +696,14 @@ uint64_t __80__MADAutoAssetLocker_endedLockByClient_forAssetSelector_forLockReas
       v22 = @"MISSING";
     }
 
-    if (v12)
+    if (selectorCopy)
     {
-      v23 = [v12 summary];
+      summary3 = [selectorCopy summary];
     }
 
     else
     {
-      v23 = @"MISSING";
+      summary3 = @"MISSING";
     }
 
     if (v14)
@@ -716,8 +716,8 @@ uint64_t __80__MADAutoAssetLocker_endedLockByClient_forAssetSelector_forLockReas
       v24 = @"MISSING";
     }
 
-    v18 = [v21 initWithFormat:@"locks not ended (missing required) | client:%@, selector:%@, reason:%@", v22, v23, v24];
-    if (v12)
+    v18 = [v21 initWithFormat:@"locks not ended (missing required) | client:%@, selector:%@, reason:%@", v22, summary3, v24];
+    if (selectorCopy)
     {
     }
 
@@ -733,23 +733,23 @@ LABEL_24:
     v30 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      v31 = [v12 summary];
-      v32 = [v50[5] checkedSummary];
+      summary4 = [selectorCopy summary];
+      checkedSummary = [v50[5] checkedSummary];
       *buf = 138544130;
-      v56 = v11;
+      v56 = clientCopy;
       v57 = 2114;
-      v58 = v31;
+      v58 = summary4;
       v59 = 2114;
       v60 = v14;
       v61 = 2114;
-      v62 = v32;
+      countCopy2 = checkedSummary;
       _os_log_impl(&dword_0, v30, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:endedPreviousLocksByClient} failed end-lock(s) | client:%{public}@, selector:%{public}@, reason:%{public}@ | error:%{public}@", buf, 0x2Au);
     }
 
-    [MADAutoAssetHistory recordFailedOperation:502 fromClient:v11 forAssetID:@"UNKNOWN" withSelector:v12 failingWithError:v50[5]];
-    if (a7)
+    [MADAutoAssetHistory recordFailedOperation:502 fromClient:clientCopy forAssetID:@"UNKNOWN" withSelector:selectorCopy failingWithError:v50[5]];
+    if (error)
     {
-      *a7 = v50[5];
+      *error = v50[5];
     }
   }
 
@@ -758,15 +758,15 @@ LABEL_24:
     v33 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [v12 summary];
+      summary5 = [selectorCopy summary];
       *buf = 138544130;
-      v56 = v11;
+      v56 = clientCopy;
       v57 = 2114;
-      v58 = v34;
+      v58 = summary5;
       v59 = 2114;
       v60 = v14;
       v61 = 2048;
-      v62 = a6;
+      countCopy2 = count;
       _os_log_impl(&dword_0, v33, OS_LOG_TYPE_DEFAULT, "{AUTO-LOCKER:endedPreviousLocksByClient} successful end-lock(s) | client:%{public}@, selector:%{public}@, reason:%{public}@, ended locks:%ld", buf, 0x2Au);
     }
 
@@ -794,11 +794,11 @@ void __107__MADAutoAssetLocker_endedPreviousLocksByClient_forAssetSelector_forLo
   *(*(a1[8] + 8) + 24) = v8;
 }
 
-+ (BOOL)endedAllPreviousLocksByClient:(id)a3 forAssetSelector:(id)a4 forLockReason:(id)a5 endError:(id *)a6
++ (BOOL)endedAllPreviousLocksByClient:(id)client forAssetSelector:(id)selector forLockReason:(id)reason endError:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  clientCopy = client;
+  selectorCopy = selector;
+  reasonCopy = reason;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -809,23 +809,23 @@ void __107__MADAutoAssetLocker_endedPreviousLocksByClient_forAssetSelector_forLo
   v41 = &v40;
   v42 = 0x2020000000;
   v43 = 0;
-  if (v9 && v10)
+  if (clientCopy && selectorCopy)
   {
-    v12 = [v10 assetVersion];
-    v13 = v12 == 0;
+    assetVersion = [selectorCopy assetVersion];
+    v13 = assetVersion == 0;
 
     if (v13)
     {
       v22 = [NSString alloc];
-      v23 = [v10 summary];
-      v24 = v23;
+      summary = [selectorCopy summary];
+      v24 = summary;
       v25 = @"ALL-REASONS";
-      if (v11)
+      if (reasonCopy)
       {
-        v25 = v11;
+        v25 = reasonCopy;
       }
 
-      v15 = [v22 initWithFormat:@"locks not ended (selector missing asset-version) | client:%@, selector:%@, reason:%@", v9, v23, v25];
+      v15 = [v22 initWithFormat:@"locks not ended (selector missing asset-version) | client:%@, selector:%@, reason:%@", clientCopy, summary, v25];
 
       v21 = [MAAutoAssetError buildError:6102 fromOperation:@"AUTO-LOCKER:endedAllPreviousLocksByClient" underlyingError:0 withDescription:v15];
     }
@@ -836,7 +836,7 @@ void __107__MADAutoAssetLocker_endedPreviousLocksByClient_forAssetSelector_forLo
       v15 = v14;
       if (v14)
       {
-        v16 = [v14 lockerQueue];
+        lockerQueue = [v14 lockerQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = __92__MADAutoAssetLocker_endedAllPreviousLocksByClient_forAssetSelector_forLockReason_endError___block_invoke;
@@ -844,11 +844,11 @@ void __107__MADAutoAssetLocker_endedPreviousLocksByClient_forAssetSelector_forLo
         v38 = &v40;
         v15 = v15;
         v34 = v15;
-        v35 = v9;
-        v36 = v10;
-        v37 = v11;
+        v35 = clientCopy;
+        v36 = selectorCopy;
+        v37 = reasonCopy;
         v39 = &v44;
-        dispatch_sync(v16, block);
+        dispatch_sync(lockerQueue, block);
 
         v17 = v34;
         goto LABEL_19;
@@ -861,10 +861,10 @@ void __107__MADAutoAssetLocker_endedPreviousLocksByClient_forAssetSelector_forLo
   else
   {
     v18 = [NSString alloc];
-    v19 = @"MISSING";
-    if (v9)
+    summary2 = @"MISSING";
+    if (clientCopy)
     {
-      v20 = v9;
+      v20 = clientCopy;
     }
 
     else
@@ -872,13 +872,13 @@ void __107__MADAutoAssetLocker_endedPreviousLocksByClient_forAssetSelector_forLo
       v20 = @"MISSING";
     }
 
-    if (v10)
+    if (selectorCopy)
     {
-      v19 = [v10 summary];
+      summary2 = [selectorCopy summary];
     }
 
-    v15 = [v18 initWithFormat:@"locks not ended (missing required) | client:%@, selector:%@", v20, v19];
-    if (v10)
+    v15 = [v18 initWithFormat:@"locks not ended (missing required) | client:%@, selector:%@", v20, summary2];
+    if (selectorCopy)
     {
     }
 
@@ -894,23 +894,23 @@ LABEL_19:
     v26 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v27 = [v10 summary];
+      summary3 = [selectorCopy summary];
       v28 = v45[5];
       *buf = 138544130;
-      v51 = v9;
+      v51 = clientCopy;
       v52 = 2114;
-      v53 = v27;
+      v53 = summary3;
       v54 = 2114;
-      v55 = v11;
+      v55 = reasonCopy;
       v56 = 2114;
       v57 = v28;
       _os_log_impl(&dword_0, v26, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:endedAllPreviousLocksByClient} failed end-all-locks | client:%{public}@, selector:%{public}@, reason:%{public}@ | error:%{public}@", buf, 0x2Au);
     }
 
-    [MADAutoAssetHistory recordFailedOperation:502 fromClient:v9 forAssetID:@"UNKNOWN" withSelector:v10 failingWithError:v45[5]];
-    if (a6)
+    [MADAutoAssetHistory recordFailedOperation:502 fromClient:clientCopy forAssetID:@"UNKNOWN" withSelector:selectorCopy failingWithError:v45[5]];
+    if (error)
     {
-      *a6 = v45[5];
+      *error = v45[5];
     }
   }
 
@@ -919,13 +919,13 @@ LABEL_19:
     v29 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [v10 summary];
+      summary4 = [selectorCopy summary];
       *buf = 138543874;
-      v51 = v9;
+      v51 = clientCopy;
       v52 = 2114;
-      v53 = v30;
+      v53 = summary4;
       v54 = 2114;
-      v55 = v11;
+      v55 = reasonCopy;
       _os_log_impl(&dword_0, v29, OS_LOG_TYPE_DEFAULT, "{AUTO-LOCKER:endedAllPreviousLocksByClient} successful end-all-locks | client:%{public}@, selector:%{public}@, reason:%{public}@", buf, 0x20u);
     }
 
@@ -952,25 +952,25 @@ void __92__MADAutoAssetLocker_endedAllPreviousLocksByClient_forAssetSelector_for
   *(*(a1[8] + 8) + 24) = v7;
 }
 
-- (BOOL)_endLocksByClient:(id)a3 forAssetClientName:(id)a4 forAllClientNames:(BOOL)a5 forClientProcessName:(id)a6 withClientProcessID:(int64_t)a7 forClientDomainName:(id)a8 forAssetSelector:(id)a9 forSetAtomicInstance:(id)a10 forLockReason:(id)a11 removingLockCount:(int64_t)a12 endError:(id *)a13
+- (BOOL)_endLocksByClient:(id)client forAssetClientName:(id)name forAllClientNames:(BOOL)names forClientProcessName:(id)processName withClientProcessID:(int64_t)d forClientDomainName:(id)domainName forAssetSelector:(id)selector forSetAtomicInstance:(id)self0 forLockReason:(id)self1 removingLockCount:(int64_t)self2 endError:(id *)self3
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = v17;
-  v20 = v18;
-  v21 = a6;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v169 = a11;
-  v25 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v25);
+  clientCopy = client;
+  nameCopy = name;
+  v19 = clientCopy;
+  v20 = nameCopy;
+  processNameCopy = processName;
+  domainNameCopy = domainName;
+  selectorCopy = selector;
+  instanceCopy = instance;
+  reasonCopy = reason;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
   v168 = [[NSString alloc] initWithFormat:@"%@:_endLocksByClient", v19];
-  v165 = self;
-  if (v24)
+  selfCopy = self;
+  if (instanceCopy)
   {
-    v26 = [(MADAutoAssetLocker *)self newSetClientNameForDomain:v22 withAutoAssetClientName:v20 forSetAtomicInstance:v24];
+    v26 = [(MADAutoAssetLocker *)self newSetClientNameForDomain:domainNameCopy withAutoAssetClientName:v20 forSetAtomicInstance:instanceCopy];
   }
 
   else
@@ -979,40 +979,40 @@ void __92__MADAutoAssetLocker_endedAllPreviousLocksByClient_forAssetSelector_for
   }
 
   v171 = v26;
-  v27 = a12;
-  v28 = v169;
+  countCopy8 = count;
+  v28 = reasonCopy;
   if (__isPlatformVersionAtLeast(2, 18, 4, 0))
   {
     v29 = objc_opt_respondsToSelector();
-    if (!v24 && (v29 & 1) != 0)
+    if (!instanceCopy && (v29 & 1) != 0)
     {
-      v30 = [v23 setAtomicInstanceUUID];
+      setAtomicInstanceUUID = [selectorCopy setAtomicInstanceUUID];
 
-      if (v30)
+      if (setAtomicInstanceUUID)
       {
-        v24 = [v23 setAtomicInstanceUUID];
+        instanceCopy = [selectorCopy setAtomicInstanceUUID];
       }
 
       else
       {
-        v24 = 0;
+        instanceCopy = 0;
       }
 
-      v28 = v169;
+      v28 = reasonCopy;
     }
   }
 
-  v166 = v23;
-  v172 = v24;
-  v164 = v22;
-  if (v21)
+  v166 = selectorCopy;
+  v172 = instanceCopy;
+  v164 = domainNameCopy;
+  if (processNameCopy)
   {
-    v31 = [(MADAutoAssetLocker *)v165 locateLockByFullAssetSelector:v23];
+    v31 = [(MADAutoAssetLocker *)selfCopy locateLockByFullAssetSelector:selectorCopy];
     if (v31)
     {
-      if (a12 == -1)
+      if (count == -1)
       {
-        v160 = v21;
+        v160 = processNameCopy;
         v150 = v20;
         v153 = v19;
         v155 = objc_alloc_init(NSMutableDictionary);
@@ -1038,10 +1038,10 @@ void __92__MADAutoAssetLocker_endedAllPreviousLocksByClient_forAssetSelector_for
 
               v51 = *(*(&v189 + 1) + 8 * i);
               v52 = objc_autoreleasePoolPush();
-              if (!v24 || [v51 containsString:v24])
+              if (!instanceCopy || [v51 containsString:instanceCopy])
               {
-                v53 = [v31 lockReasons];
-                v54 = [v53 safeObjectForKey:v51 ofClass:objc_opt_class()];
+                lockReasons = [v31 lockReasons];
+                v54 = [lockReasons safeObjectForKey:v51 ofClass:objc_opt_class()];
 
                 v48 += [v54 activeLockCount];
                 if ((objc_opt_respondsToSelector() & 1) == 0 || (objc_opt_respondsToSelector() & 1) == 0)
@@ -1052,12 +1052,12 @@ void __92__MADAutoAssetLocker_endedAllPreviousLocksByClient_forAssetSelector_for
                   goto LABEL_59;
                 }
 
-                v55 = [v54 clientProcessName];
-                if ([SUCore stringIsEqual:v55 to:v160])
+                clientProcessName = [v54 clientProcessName];
+                if ([SUCore stringIsEqual:clientProcessName to:v160])
                 {
-                  v56 = [v54 clientProcessID];
+                  clientProcessID = [v54 clientProcessID];
 
-                  if (v56 == a7)
+                  if (clientProcessID == d)
                   {
                     [v155 setSafeObject:v54 forKey:v51];
                   }
@@ -1067,7 +1067,7 @@ void __92__MADAutoAssetLocker_endedAllPreviousLocksByClient_forAssetSelector_for
                 {
                 }
 
-                v24 = v172;
+                instanceCopy = v172;
               }
 
               objc_autoreleasePoolPop(v52);
@@ -1084,7 +1084,7 @@ void __92__MADAutoAssetLocker_endedAllPreviousLocksByClient_forAssetSelector_for
 
           v39 = 0;
 LABEL_59:
-          v27 = a12;
+          countCopy8 = count;
         }
 
         else
@@ -1123,8 +1123,8 @@ LABEL_59:
                 }
 
                 v86 = *(*(&v185 + 1) + 8 * j);
-                v87 = [v31 lockReasons];
-                [v87 removeObjectForKey:v86];
+                lockReasons2 = [v31 lockReasons];
+                [lockReasons2 removeObjectForKey:v86];
               }
 
               v83 = [v81 countByEnumeratingWithState:&v185 objects:v208 count:16];
@@ -1133,15 +1133,15 @@ LABEL_59:
             while (v83);
           }
 
-          v88 = [v31 lockReasons];
-          v89 = [v88 count];
+          lockReasons3 = [v31 lockReasons];
+          v89 = [lockReasons3 count];
 
           if (v89)
           {
             v90 = [NSString alloc];
-            v91 = [v31 lockReasons];
-            v92 = [v90 initWithFormat:@"client ended specified number of locks (or all locks) for all lock-reasons | assetLock.lockReasons:%ld", objc_msgSend(v91, "count")];
-            [(MADAutoAssetLocker *)v165 _persistAssetLock:v168 operation:@"ENTRY_DECREASED" forAssetLock:v31 withDeltaLockCount:v48 message:v92];
+            lockReasons4 = [v31 lockReasons];
+            v92 = [v90 initWithFormat:@"client ended specified number of locks (or all locks) for all lock-reasons | assetLock.lockReasons:%ld", objc_msgSend(lockReasons4, "count")];
+            [(MADAutoAssetLocker *)selfCopy _persistAssetLock:v168 operation:@"ENTRY_DECREASED" forAssetLock:v31 withDeltaLockCount:v48 message:v92];
 
             if ([v31 inhibitedFromEmergencyRemoval])
             {
@@ -1153,23 +1153,23 @@ LABEL_59:
               v93 = 250;
             }
 
-            v94 = [(MADAutoAssetLocker *)v165 lockCountsTotal];
-            v95 = [(MADAutoAssetLocker *)v165 _assetIDOfLock:v31];
-            [MADAutoAssetHistory recordOperation:v93 toHistoryType:1 fromClient:v171 usageCount:v94 forAssetID:v95 withSelector:v166];
+            lockCountsTotal = [(MADAutoAssetLocker *)selfCopy lockCountsTotal];
+            v95 = [(MADAutoAssetLocker *)selfCopy _assetIDOfLock:v31];
+            [MADAutoAssetHistory recordOperation:v93 toHistoryType:1 fromClient:v171 usageCount:lockCountsTotal forAssetID:v95 withSelector:v166];
           }
 
           else
           {
-            [(MADAutoAssetLocker *)v165 _removeAssetLock:v168 removingAssetLock:v31 lastClient:v171 forSelector:v166 message:@"endedLock for all reasons [specific count] (all locks have ended)"];
+            [(MADAutoAssetLocker *)selfCopy _removeAssetLock:v168 removingAssetLock:v31 lastClient:v171 forSelector:v166 message:@"endedLock for all reasons [specific count] (all locks have ended)"];
           }
 
           v20 = v150;
           v19 = v153;
-          v24 = v172;
-          v27 = a12;
+          instanceCopy = v172;
+          countCopy8 = count;
         }
 
-        v21 = v160;
+        processNameCopy = v160;
         goto LABEL_63;
       }
 
@@ -1179,9 +1179,9 @@ LABEL_59:
     }
 
     v41 = [NSString alloc];
-    [v23 summary];
+    [selectorCopy summary];
     v43 = v42 = v19;
-    v44 = [v41 initWithFormat:@"cannot accept ended locks when no existing lock for auto-specific-asset | clientProcessName:%@ | fullAssetSelector:%@", v21, v43];
+    v149 = [v41 initWithFormat:@"cannot accept ended locks when no existing lock for auto-specific-asset | clientProcessName:%@ | fullAssetSelector:%@", processNameCopy, v43];
     goto LABEL_23;
   }
 
@@ -1197,20 +1197,20 @@ LABEL_61:
       goto LABEL_62;
     }
 
-    v34 = [(MADAutoAssetLocker *)v165 locateLockByFullAssetSelector:v23];
+    v34 = [(MADAutoAssetLocker *)selfCopy locateLockByFullAssetSelector:selectorCopy];
     v35 = v34;
     if (v34)
     {
-      v36 = [v34 lockReasons];
-      v37 = [v31 summary];
-      v38 = [v36 safeObjectForKey:v37 ofClass:objc_opt_class()];
+      lockReasons5 = [v34 lockReasons];
+      summary = [v31 summary];
+      summary3 = [lockReasons5 safeObjectForKey:summary ofClass:objc_opt_class()];
 
-      if (v38)
+      if (summary3)
       {
         v152 = v19;
-        if (a12 != -1)
+        if (count != -1)
         {
-          if ([v38 activeLockCount] < a12)
+          if ([summary3 activeLockCount] < count)
           {
             v39 = [MAAutoAssetError buildError:6109 fromOperation:v168 underlyingError:0 withDescription:@"cannot accept ended locks (for specific lock-reason) when fewer locks exist than requested unlock count"];
             v40 = 0;
@@ -1219,13 +1219,13 @@ LABEL_154:
             goto LABEL_155;
           }
 
-          if ([v38 activeLockCount] > a12)
+          if ([summary3 activeLockCount] > count)
           {
-            [v38 setActiveLockCount:{objc_msgSend(v38, "activeLockCount") - a12}];
+            [summary3 setActiveLockCount:{objc_msgSend(summary3, "activeLockCount") - count}];
             v128 = [NSString alloc];
-            v129 = [v35 lockReasons];
-            v130 = [v128 initWithFormat:@"client ended specified number of locks (other locks by client remain for client-lock-reason) | assetLock.lockReasons:%ld", objc_msgSend(v129, "count")];
-            [(MADAutoAssetLocker *)v165 _persistAssetLock:v168 operation:@"ENTRY_DECREASED" forAssetLock:v35 withDeltaLockCount:a12 message:v130];
+            lockReasons6 = [v35 lockReasons];
+            v130 = [v128 initWithFormat:@"client ended specified number of locks (other locks by client remain for client-lock-reason) | assetLock.lockReasons:%ld", objc_msgSend(lockReasons6, "count")];
+            [(MADAutoAssetLocker *)selfCopy _persistAssetLock:v168 operation:@"ENTRY_DECREASED" forAssetLock:v35 withDeltaLockCount:count message:v130];
 
             if ([v35 inhibitedFromEmergencyRemoval])
             {
@@ -1237,15 +1237,15 @@ LABEL_154:
               v131 = 250;
             }
 
-            v132 = v38;
-            v133 = [(MADAutoAssetLocker *)v165 lockCountsTotal];
-            v27 = a12;
-            v134 = [(MADAutoAssetLocker *)v165 _assetIDOfLock:v35];
-            v135 = v23;
+            v132 = summary3;
+            lockCountsTotal2 = [(MADAutoAssetLocker *)selfCopy lockCountsTotal];
+            countCopy8 = count;
+            v134 = [(MADAutoAssetLocker *)selfCopy _assetIDOfLock:v35];
+            v135 = selectorCopy;
             v136 = v134;
             v40 = 1;
-            v137 = v133;
-            v38 = v132;
+            v137 = lockCountsTotal2;
+            summary3 = v132;
             [MADAutoAssetHistory recordOperation:v131 toHistoryType:1 fromClient:v171 usageCount:v137 forAssetID:v134 withSelector:v135];
 
             v39 = 0;
@@ -1253,30 +1253,30 @@ LABEL_154:
           }
         }
 
-        v138 = [v35 lockReasons];
-        v139 = [v31 summary];
-        [v138 removeObjectForKey:v139];
+        lockReasons7 = [v35 lockReasons];
+        summary2 = [v31 summary];
+        [lockReasons7 removeObjectForKey:summary2];
 
-        v140 = [v35 lockReasons];
-        v141 = [v140 count];
+        lockReasons8 = [v35 lockReasons];
+        v141 = [lockReasons8 count];
 
         if (v141)
         {
-          if (a12 == -1)
+          if (count == -1)
           {
-            v142 = 0;
+            countCopy5 = 0;
           }
 
           else
           {
-            v142 = a12;
+            countCopy5 = count;
           }
 
           v143 = [NSString alloc];
-          v144 = [v35 lockReasons];
-          v145 = [v143 initWithFormat:@"client ended all locks for specified reason (other locks remain) | assetLock.lockReasons:%ld", objc_msgSend(v144, "count")];
-          v170 = v38;
-          [(MADAutoAssetLocker *)v165 _persistAssetLock:v168 operation:@"ENTRY_DECREASED" forAssetLock:v35 withDeltaLockCount:v142 message:v145];
+          lockReasons9 = [v35 lockReasons];
+          v145 = [v143 initWithFormat:@"client ended all locks for specified reason (other locks remain) | assetLock.lockReasons:%ld", objc_msgSend(lockReasons9, "count")];
+          v170 = summary3;
+          [(MADAutoAssetLocker *)selfCopy _persistAssetLock:v168 operation:@"ENTRY_DECREASED" forAssetLock:v35 withDeltaLockCount:countCopy5 message:v145];
 
           if ([v35 inhibitedFromEmergencyRemoval])
           {
@@ -1288,18 +1288,18 @@ LABEL_154:
             v146 = 250;
           }
 
-          v147 = [(MADAutoAssetLocker *)v165 lockCountsTotal];
-          v148 = [(MADAutoAssetLocker *)v165 _assetIDOfLock:v35];
-          [MADAutoAssetHistory recordOperation:v146 toHistoryType:1 fromClient:v171 usageCount:v147 forAssetID:v148 withSelector:v23];
+          lockCountsTotal3 = [(MADAutoAssetLocker *)selfCopy lockCountsTotal];
+          v148 = [(MADAutoAssetLocker *)selfCopy _assetIDOfLock:v35];
+          [MADAutoAssetHistory recordOperation:v146 toHistoryType:1 fromClient:v171 usageCount:lockCountsTotal3 forAssetID:v148 withSelector:selectorCopy];
 
-          v38 = v170;
+          summary3 = v170;
           v39 = 0;
           v40 = 1;
         }
 
         else
         {
-          [(MADAutoAssetLocker *)v165 _removeAssetLock:v168 removingAssetLock:v35 lastClient:v171 forSelector:v23 message:@"endedLock for specific lock-reason (all locks have ended)"];
+          [(MADAutoAssetLocker *)selfCopy _removeAssetLock:v168 removingAssetLock:v35 lastClient:v171 forSelector:selectorCopy message:@"endedLock for specific lock-reason (all locks have ended)"];
           v39 = 0;
           v40 = 1;
         }
@@ -1313,29 +1313,29 @@ LABEL_154:
     else
     {
       v79 = [NSString alloc];
-      v38 = [v23 summary];
-      v80 = [v79 initWithFormat:@"cannot accept ended locks when no existing lock for auto-specific-asset | endLockReason:%@ | fullAssetSelector:%@", v169, v38];
+      summary3 = [selectorCopy summary];
+      v80 = [v79 initWithFormat:@"cannot accept ended locks when no existing lock for auto-specific-asset | endLockReason:%@ | fullAssetSelector:%@", reasonCopy, summary3];
       v39 = [MAAutoAssetError buildError:6501 fromOperation:v168 underlyingError:0 withDescription:v80];
     }
 
     v40 = 0;
 LABEL_155:
 
-    v21 = 0;
+    processNameCopy = 0;
     goto LABEL_63;
   }
 
-  v57 = [(MADAutoAssetLocker *)v165 locateLockByFullAssetSelector:v23];
+  v57 = [(MADAutoAssetLocker *)selfCopy locateLockByFullAssetSelector:selectorCopy];
   v31 = v57;
   if (!v57)
   {
     v96 = [NSString alloc];
-    [v23 summary];
+    [selectorCopy summary];
     v43 = v42 = v19;
-    v44 = [v96 initWithFormat:@"cannot accept ended locks when no existing lock for auto-specific-asset (ending for all reasons) | fullAssetSelector:%@", v43, v149];
+    v149 = [v96 initWithFormat:@"cannot accept ended locks when no existing lock for auto-specific-asset (ending for all reasons) | fullAssetSelector:%@", v43, v149];
 LABEL_23:
-    v45 = v44;
-    v39 = [MAAutoAssetError buildError:6501 fromOperation:v168 underlyingError:0 withDescription:v44];
+    v45 = v149;
+    v39 = [MAAutoAssetError buildError:6501 fromOperation:v168 underlyingError:0 withDescription:v149];
 
     v19 = v42;
     goto LABEL_62;
@@ -1343,7 +1343,7 @@ LABEL_23:
 
   v151 = v20;
   v154 = v19;
-  if (a12 == -1)
+  if (count == -1)
   {
     v97 = 0;
   }
@@ -1354,8 +1354,8 @@ LABEL_23:
     v184 = 0u;
     v181 = 0u;
     v182 = 0u;
-    v162 = [v57 lockReasons];
-    v39 = [v162 countByEnumeratingWithState:&v181 objects:v207 count:16];
+    lockReasons10 = [v57 lockReasons];
+    v39 = [lockReasons10 countByEnumeratingWithState:&v181 objects:v207 count:16];
     v58 = 0;
     if (v39)
     {
@@ -1366,15 +1366,15 @@ LABEL_23:
         {
           if (*v182 != v59)
           {
-            objc_enumerationMutation(v162);
+            objc_enumerationMutation(lockReasons10);
           }
 
           v61 = *(*(&v181 + 1) + 8 * k);
           v62 = objc_autoreleasePoolPush();
-          if (!v24 || [v61 containsString:v24])
+          if (!instanceCopy || [v61 containsString:instanceCopy])
           {
-            v63 = [v31 lockReasons];
-            v64 = [v63 safeObjectForKey:v61 ofClass:objc_opt_class()];
+            lockReasons11 = [v31 lockReasons];
+            v64 = [lockReasons11 safeObjectForKey:v61 ofClass:objc_opt_class()];
 
             if (!v64)
             {
@@ -1383,20 +1383,20 @@ LABEL_23:
               goto LABEL_96;
             }
 
-            v65 = [v64 clientLockReason];
-            v66 = v65;
-            if (a5 || ([v65 autoAssetClientName], v67 = objc_claimAutoreleasedReturnValue(), v68 = +[SUCore stringIsEqual:to:](SUCore, "stringIsEqual:to:", v171, v67), v67, v27 = a12, v68))
+            clientLockReason = [v64 clientLockReason];
+            v66 = clientLockReason;
+            if (names || ([clientLockReason autoAssetClientName], v67 = objc_claimAutoreleasedReturnValue(), v68 = +[SUCore stringIsEqual:to:](SUCore, "stringIsEqual:to:", v171, v67), v67, countCopy8 = count, v68))
             {
               v58 += [v64 activeLockCount];
             }
 
-            v24 = v172;
+            instanceCopy = v172;
           }
 
           objc_autoreleasePoolPop(v62);
         }
 
-        v39 = [v162 countByEnumeratingWithState:&v181 objects:v207 count:16];
+        v39 = [lockReasons10 countByEnumeratingWithState:&v181 objects:v207 count:16];
         if (v39)
         {
           continue;
@@ -1408,17 +1408,17 @@ LABEL_23:
 LABEL_96:
       v20 = v151;
       v19 = v154;
-      v21 = 0;
+      processNameCopy = 0;
     }
 
-    if (v58 < v27)
+    if (v58 < countCopy8)
     {
       v98 = [MAAutoAssetError buildError:6109 fromOperation:v168 underlyingError:0 withDescription:@"cannot accept ended locks when fewer locks exist than requested unlock count"];
 
       v39 = v98;
     }
 
-    v97 = v27;
+    v97 = countCopy8;
     if (v39)
     {
 LABEL_62:
@@ -1433,8 +1433,8 @@ LABEL_62:
   v178 = 0u;
   v179 = 0u;
   v180 = 0u;
-  v159 = [v31 lockReasons];
-  v99 = [v159 countByEnumeratingWithState:&v177 objects:v206 count:16];
+  lockReasons12 = [v31 lockReasons];
+  v99 = [lockReasons12 countByEnumeratingWithState:&v177 objects:v206 count:16];
   if (!v99)
   {
     goto LABEL_123;
@@ -1449,47 +1449,47 @@ LABEL_62:
     {
       if (*v178 != v163)
       {
-        objc_enumerationMutation(v159);
+        objc_enumerationMutation(lockReasons12);
       }
 
       v103 = *(*(&v177 + 1) + 8 * m);
       v104 = objc_autoreleasePoolPush();
-      if (!v24 || [v103 containsString:v24])
+      if (!instanceCopy || [v103 containsString:instanceCopy])
       {
-        v105 = [v31 lockReasons];
-        v106 = [v105 safeObjectForKey:v103 ofClass:objc_opt_class()];
+        lockReasons13 = [v31 lockReasons];
+        v106 = [lockReasons13 safeObjectForKey:v103 ofClass:objc_opt_class()];
 
-        v107 = [v106 clientLockReason];
-        v108 = v107;
-        if (!a5)
+        clientLockReason2 = [v106 clientLockReason];
+        v108 = clientLockReason2;
+        if (!names)
         {
-          v109 = [v107 autoAssetClientName];
-          v110 = [SUCore stringIsEqual:v171 to:v109];
+          autoAssetClientName = [clientLockReason2 autoAssetClientName];
+          v110 = [SUCore stringIsEqual:v171 to:autoAssetClientName];
 
           if (!v110)
           {
-            v24 = v172;
-            v27 = a12;
+            instanceCopy = v172;
+            countCopy8 = count;
 LABEL_118:
 
             goto LABEL_119;
           }
         }
 
-        v111 = [v106 activeLockCount];
-        if (a12 != -1)
+        countCopy7 = [v106 activeLockCount];
+        if (count != -1)
         {
-          v112 = [v106 activeLockCount];
-          if (v111 > a12)
+          activeLockCount = [v106 activeLockCount];
+          if (countCopy7 > count)
           {
-            v111 = a12;
-            [v106 setActiveLockCount:&v112[-a12]];
+            countCopy7 = count;
+            [v106 setActiveLockCount:&activeLockCount[-count]];
 
             v106 = 0;
             goto LABEL_116;
           }
 
-          v111 = v112;
+          countCopy7 = activeLockCount;
         }
 
         if (v106)
@@ -1498,10 +1498,10 @@ LABEL_118:
         }
 
 LABEL_116:
-        v24 = v172;
-        v101 += v111;
-        v27 = a12;
-        if (a12 != -1 && v101 >= a12)
+        instanceCopy = v172;
+        v101 += countCopy7;
+        countCopy8 = count;
+        if (count != -1 && v101 >= count)
         {
 
           objc_autoreleasePoolPop(v104);
@@ -1515,7 +1515,7 @@ LABEL_119:
       objc_autoreleasePoolPop(v104);
     }
 
-    v100 = [v159 countByEnumeratingWithState:&v177 objects:v206 count:16];
+    v100 = [lockReasons12 countByEnumeratingWithState:&v177 objects:v206 count:16];
     if (v100)
     {
       continue;
@@ -1547,8 +1547,8 @@ LABEL_123:
         }
 
         v118 = *(*(&v173 + 1) + 8 * n);
-        v119 = [v31 lockReasons];
-        [v119 removeObjectForKey:v118];
+        lockReasons14 = [v31 lockReasons];
+        [lockReasons14 removeObjectForKey:v118];
       }
 
       v115 = [v113 countByEnumeratingWithState:&v173 objects:v205 count:16];
@@ -1557,16 +1557,16 @@ LABEL_123:
     while (v115);
   }
 
-  v120 = [v31 lockReasons];
-  v121 = [v120 count];
+  lockReasons15 = [v31 lockReasons];
+  v121 = [lockReasons15 count];
 
-  v21 = 0;
+  processNameCopy = 0;
   if (v121)
   {
     v122 = [NSString alloc];
-    v123 = [v31 lockReasons];
-    v124 = [v122 initWithFormat:@"client ended specified number of locks (or all locks) for all lock-reasons | assetLock.lockReasons:%ld", objc_msgSend(v123, "count")];
-    [(MADAutoAssetLocker *)v165 _persistAssetLock:v168 operation:@"ENTRY_DECREASED" forAssetLock:v31 withDeltaLockCount:v156 message:v124];
+    lockReasons16 = [v31 lockReasons];
+    v124 = [v122 initWithFormat:@"client ended specified number of locks (or all locks) for all lock-reasons | assetLock.lockReasons:%ld", objc_msgSend(lockReasons16, "count")];
+    [(MADAutoAssetLocker *)selfCopy _persistAssetLock:v168 operation:@"ENTRY_DECREASED" forAssetLock:v31 withDeltaLockCount:v156 message:v124];
 
     if ([v31 inhibitedFromEmergencyRemoval])
     {
@@ -1578,19 +1578,19 @@ LABEL_123:
       v125 = 250;
     }
 
-    v126 = [(MADAutoAssetLocker *)v165 lockCountsTotal];
-    v127 = [(MADAutoAssetLocker *)v165 _assetIDOfLock:v31];
-    [MADAutoAssetHistory recordOperation:v125 toHistoryType:1 fromClient:v171 usageCount:v126 forAssetID:v127 withSelector:v166];
+    lockCountsTotal4 = [(MADAutoAssetLocker *)selfCopy lockCountsTotal];
+    v127 = [(MADAutoAssetLocker *)selfCopy _assetIDOfLock:v31];
+    [MADAutoAssetHistory recordOperation:v125 toHistoryType:1 fromClient:v171 usageCount:lockCountsTotal4 forAssetID:v127 withSelector:v166];
   }
 
   else
   {
-    [(MADAutoAssetLocker *)v165 _removeAssetLock:v168 removingAssetLock:v31 lastClient:v171 forSelector:v166 message:@"endedLock for all reasons [specific count] (all locks have ended)"];
+    [(MADAutoAssetLocker *)selfCopy _removeAssetLock:v168 removingAssetLock:v31 lastClient:v171 forSelector:v166 message:@"endedLock for all reasons [specific count] (all locks have ended)"];
   }
 
   v39 = 0;
   v40 = 1;
-  v24 = v172;
+  instanceCopy = v172;
   v19 = v154;
 LABEL_63:
 
@@ -1600,7 +1600,7 @@ LABEL_63:
   {
     if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
     {
-      v71 = [v166 summary];
+      summary4 = [v166 summary];
       [v39 checkedDescription];
       v73 = v72 = v19;
       *buf = 138544386;
@@ -1608,9 +1608,9 @@ LABEL_63:
       v195 = 2114;
       v196 = v171;
       v197 = 2114;
-      v198 = v71;
+      v198 = summary4;
       v199 = 2114;
-      v200 = v169;
+      v200 = reasonCopy;
       v201 = 2114;
       v202 = v73;
       _os_log_impl(&dword_0, v70, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:%{public}@} failed end-lock(s) | client:%{public}@, selector:%{public}@, reason:%{public}@ | error:%{public}@", buf, 0x34u);
@@ -1619,34 +1619,34 @@ LABEL_63:
     }
 
     [MADAutoAssetHistory recordFailedOperation:502 fromClient:v171 forAssetID:@"UNKNOWN" withSelector:v166 failingWithError:v39];
-    if (a13)
+    if (error)
     {
       v74 = v39;
-      *a13 = v39;
+      *error = v39;
     }
 
     v75 = v164;
-    v24 = v172;
+    instanceCopy = v172;
   }
 
   else
   {
     if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
     {
-      v76 = [(MADAutoAssetLocker *)v165 lockCountsTotal];
-      v77 = [v166 summary];
+      lockCountsTotal5 = [(MADAutoAssetLocker *)selfCopy lockCountsTotal];
+      summary5 = [v166 summary];
       *buf = 134219266;
-      v194 = v76;
+      v194 = lockCountsTotal5;
       v195 = 2114;
       v196 = v168;
       v197 = 2114;
       v198 = v171;
       v199 = 2114;
-      v200 = v77;
+      v200 = summary5;
       v201 = 2114;
-      v202 = v169;
+      v202 = reasonCopy;
       v203 = 2048;
-      v204 = v27;
+      v204 = countCopy8;
       _os_log_impl(&dword_0, v70, OS_LOG_TYPE_DEFAULT, "{AUTO-LOCKER[totalLocks:%ld]:%{public}@} successful end-lock(s) | client:%{public}@, selector:%{public}@, reason:%{public}@, ended locks:%ld", buf, 0x3Eu);
     }
 
@@ -1657,18 +1657,18 @@ LABEL_63:
   return v40;
 }
 
-- (int64_t)_currentLockCountOfLock:(id)a3
+- (int64_t)_currentLockCountOfLock:(id)lock
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v5);
+  lockCopy = lock;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v4 lockReasons];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  lockReasons = [lockCopy lockReasons];
+  v7 = [lockReasons countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1680,13 +1680,13 @@ LABEL_63:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(lockReasons);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
         v13 = objc_autoreleasePoolPush();
-        v14 = [v4 lockReasons];
-        v15 = [v14 safeObjectForKey:v12 ofClass:objc_opt_class()];
+        lockReasons2 = [lockCopy lockReasons];
+        v15 = [lockReasons2 safeObjectForKey:v12 ofClass:objc_opt_class()];
 
         if (v15)
         {
@@ -1696,7 +1696,7 @@ LABEL_63:
         objc_autoreleasePoolPop(v13);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [lockReasons countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -1710,21 +1710,21 @@ LABEL_63:
   return v9;
 }
 
-- (id)_assetIDOfLock:(id)a3
+- (id)_assetIDOfLock:(id)lock
 {
-  v3 = a3;
-  v4 = [v3 fullAssetSelector];
-  v5 = [v4 assetType];
-  v6 = [v3 assetAttributes];
+  lockCopy = lock;
+  fullAssetSelector = [lockCopy fullAssetSelector];
+  assetType = [fullAssetSelector assetType];
+  assetAttributes = [lockCopy assetAttributes];
 
-  v7 = getAssetIdFromDict(v5, v6);
+  v7 = getAssetIdFromDict(assetType, assetAttributes);
 
   return v7;
 }
 
-+ (id)newCurrentLockUsageForSelector:(id)a3
++ (id)newCurrentLockUsageForSelector:(id)selector
 {
-  v3 = a3;
+  selectorCopy = selector;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1735,16 +1735,16 @@ LABEL_63:
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 lockerQueue];
+    lockerQueue = [v4 lockerQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __53__MADAutoAssetLocker_newCurrentLockUsageForSelector___block_invoke;
     block[3] = &unk_4B4478;
     v21 = v5;
-    v7 = v3;
+    v7 = selectorCopy;
     v22 = v7;
     v23 = &v24;
-    dispatch_sync(v6, block);
+    dispatch_sync(lockerQueue, block);
 
     if (![v25[5] count])
     {
@@ -1759,13 +1759,13 @@ LABEL_63:
       v11 = _MADLog(@"AutoLocker");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v7 summary];
-        v13 = [v25[5] safeSummary];
-        v14 = v13;
+        summary = [v7 summary];
+        safeSummary = [v25[5] safeSummary];
+        v14 = safeSummary;
         v15 = @"s";
         *buf = 138544130;
         v32 = 2048;
-        v31 = v12;
+        v31 = summary;
         if (v10 == &dword_0 + 1)
         {
           v15 = &stru_4BD3F0;
@@ -1775,7 +1775,7 @@ LABEL_63:
         v34 = 2114;
         v35 = v15;
         v36 = 2114;
-        v37 = v13;
+        v37 = safeSummary;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "{AUTO-LOCKER:newCurrentLockUsageForSelector} | assetSelector:%{public}@ | %ld current lock-reason%{public}@:%{public}@", buf, 0x2Au);
       }
     }
@@ -1785,9 +1785,9 @@ LABEL_63:
       v11 = _MADLog(@"AutoLocker");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v7 summary];
+        summary2 = [v7 summary];
         *buf = 138543362;
-        v31 = v18;
+        v31 = summary2;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "{AUTO-LOCKER:newCurrentLockUsageForSelector} | assetSelector:%{public}@ | no current lock-reasons", buf, 0xCu);
       }
     }
@@ -1934,14 +1934,14 @@ void __53__MADAutoAssetLocker_newCurrentLockUsageForSelector___block_invoke(uint
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 lockerQueue];
+    lockerQueue = [v2 lockerQueue];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = __43__MADAutoAssetLocker_copyOfLocksBySelector__block_invoke;
     v9[3] = &unk_4B2AC8;
     v11 = &v13;
     v10 = v3;
-    dispatch_sync(v4, v9);
+    dispatch_sync(lockerQueue, v9);
 
     v5 = v10;
   }
@@ -1987,14 +1987,14 @@ uint64_t __43__MADAutoAssetLocker_copyOfLocksBySelector__block_invoke(uint64_t a
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 lockerQueue];
+    lockerQueue = [v2 lockerQueue];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = __48__MADAutoAssetLocker_copyOfLockCountsBySelector__block_invoke;
     v9[3] = &unk_4B2AC8;
     v11 = &v13;
     v10 = v3;
-    dispatch_sync(v4, v9);
+    dispatch_sync(lockerQueue, v9);
 
     v5 = v10;
   }
@@ -2030,9 +2030,9 @@ void __48__MADAutoAssetLocker_copyOfLockCountsBySelector__block_invoke(uint64_t 
   *(v3 + 40) = v2;
 }
 
-+ (id)lockedSelectorsForEliminate:(id)a3
++ (id)lockedSelectorsForEliminate:(id)eliminate
 {
-  v3 = a3;
+  eliminateCopy = eliminate;
   v4 = +[MADAutoAssetLocker autoAssetLocker];
   if (v4)
   {
@@ -2044,15 +2044,15 @@ void __48__MADAutoAssetLocker_copyOfLockCountsBySelector__block_invoke(uint64_t 
     v21 = objc_alloc_init(NSMutableArray);
     if (*(v17 + 5))
     {
-      v5 = [v4 lockerQueue];
+      lockerQueue = [v4 lockerQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = __50__MADAutoAssetLocker_lockedSelectorsForEliminate___block_invoke;
       block[3] = &unk_4B4478;
       v12 = v4;
-      v13 = v3;
+      v13 = eliminateCopy;
       v14 = buf;
-      dispatch_sync(v5, block);
+      dispatch_sync(lockerQueue, block);
 
       if (![*(v17 + 5) count])
       {
@@ -2144,22 +2144,22 @@ void __50__MADAutoAssetLocker_lockedSelectorsForEliminate___block_invoke(uint64_
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_removeAssetLock:(id)a3 removingAssetLock:(id)a4 lastClient:(id)a5 forSelector:(id)a6 message:(id)a7
+- (void)_removeAssetLock:(id)lock removingAssetLock:(id)assetLock lastClient:(id)client forSelector:(id)selector message:(id)message
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a3;
-  v17 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v17);
+  assetLockCopy = assetLock;
+  clientCopy = client;
+  selectorCopy = selector;
+  messageCopy = message;
+  lockCopy = lock;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
-  v18 = [[NSString alloc] initWithFormat:@"%@:_removeAssetLock", v16];
-  v19 = [v14 persistedEntryID];
-  if (v19)
+  lockCopy = [[NSString alloc] initWithFormat:@"%@:_removeAssetLock", lockCopy];
+  persistedEntryID = [selectorCopy persistedEntryID];
+  if (persistedEntryID)
   {
-    [(MADAutoAssetLocker *)self _persistRemoveAssetLock:v18 removedAssetLock:v12 message:v15];
-    if ([v12 inhibitedFromEmergencyRemoval])
+    [(MADAutoAssetLocker *)self _persistRemoveAssetLock:lockCopy removedAssetLock:assetLockCopy message:messageCopy];
+    if ([assetLockCopy inhibitedFromEmergencyRemoval])
     {
       v20 = 303;
     }
@@ -2169,16 +2169,16 @@ void __50__MADAutoAssetLocker_lockedSelectorsForEliminate___block_invoke(uint64_
       v20 = 302;
     }
 
-    v21 = [(MADAutoAssetLocker *)self lockCountsTotal];
-    v22 = [(MADAutoAssetLocker *)self _assetIDOfLock:v12];
-    if (v13)
+    lockCountsTotal = [(MADAutoAssetLocker *)self lockCountsTotal];
+    v22 = [(MADAutoAssetLocker *)self _assetIDOfLock:assetLockCopy];
+    if (clientCopy)
     {
-      [MADAutoAssetHistory recordOperation:v20 toHistoryType:1 fromClient:v13 usageCount:v21 forAssetID:v22 withSelector:v14];
+      [MADAutoAssetHistory recordOperation:v20 toHistoryType:1 fromClient:clientCopy usageCount:lockCountsTotal forAssetID:v22 withSelector:selectorCopy];
     }
 
     else
     {
-      [MADAutoAssetHistory recordOperation:v20 toHistoryType:1 fromLayer:3 usageCount:v21 forAssetID:v22 withSelector:v14];
+      [MADAutoAssetHistory recordOperation:v20 toHistoryType:1 fromLayer:3 usageCount:lockCountsTotal forAssetID:v22 withSelector:selectorCopy];
     }
   }
 
@@ -2187,39 +2187,39 @@ void __50__MADAutoAssetLocker_lockedSelectorsForEliminate___block_invoke(uint64_
     v23 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [(MADAutoAssetLocker *)self summary];
-      v25 = [v14 summary];
-      v26 = [v12 summary];
+      summary = [(MADAutoAssetLocker *)self summary];
+      summary2 = [selectorCopy summary];
+      summary3 = [assetLockCopy summary];
       *buf = 138544386;
-      v28 = v24;
+      v28 = summary;
       v29 = 2114;
-      v30 = v18;
+      v30 = lockCopy;
       v31 = 2114;
-      v32 = v15;
+      v32 = messageCopy;
       v33 = 2114;
-      v34 = v25;
+      v34 = summary2;
       v35 = 2114;
-      v36 = v26;
+      v36 = summary3;
       _os_log_impl(&dword_0, v23, OS_LOG_TYPE_ERROR, "%{public}@ | {%{public}@} | %{public}@: | no entry ID for fullAssetSelector:%{public}@ | assetLock:%{public}@", buf, 0x34u);
     }
   }
 }
 
-+ (void)resumeFromPersistedWithDownloadedSelectors:(id)a3
++ (void)resumeFromPersistedWithDownloadedSelectors:(id)selectors
 {
-  v3 = a3;
+  selectorsCopy = selectors;
   v4 = +[MADAutoAssetLocker autoAssetLocker];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 lockerQueue];
+    lockerQueue = [v4 lockerQueue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = __65__MADAutoAssetLocker_resumeFromPersistedWithDownloadedSelectors___block_invoke_1272;
     v8[3] = &unk_4B2B18;
     v9 = v5;
-    v10 = v3;
-    dispatch_async(v6, v8);
+    v10 = selectorsCopy;
+    dispatch_async(lockerQueue, v8);
   }
 
   else
@@ -2455,14 +2455,14 @@ LABEL_39:
   v15 = -1;
   if (v2)
   {
-    v4 = [v2 lockerQueue];
+    lockerQueue = [v2 lockerQueue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = __41__MADAutoAssetLocker_persistedLocksCount__block_invoke;
     v8[3] = &unk_4B2AC8;
     v10 = &v12;
     v9 = v3;
-    dispatch_sync(v4, v8);
+    dispatch_sync(lockerQueue, v8);
 
     v5 = v9;
   }
@@ -2490,62 +2490,62 @@ id __41__MADAutoAssetLocker_persistedLocksCount__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)_persistAssetLock:(id)a3 operation:(id)a4 forAssetLock:(id)a5 withDeltaLockCount:(int64_t)a6 message:(id)a7
+- (BOOL)_persistAssetLock:(id)lock operation:(id)operation forAssetLock:(id)assetLock withDeltaLockCount:(int64_t)count message:(id)message
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v16);
+  lockCopy = lock;
+  operationCopy = operation;
+  assetLockCopy = assetLock;
+  messageCopy = message;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
-  v17 = [v14 fullAssetSelector];
-  v18 = [v17 persistedEntryID];
+  fullAssetSelector = [assetLockCopy fullAssetSelector];
+  persistedEntryID = [fullAssetSelector persistedEntryID];
 
-  v19 = [(MADAutoAssetLocker *)self persistedState];
-  v20 = [v19 persistedEntry:v18 fromLocation:v12];
+  persistedState = [(MADAutoAssetLocker *)self persistedState];
+  v20 = [persistedState persistedEntry:persistedEntryID fromLocation:lockCopy];
 
   if (v20)
   {
-    v52 = v15;
-    v21 = [(MADAutoAssetLocker *)self lockCountsBySelector];
-    v22 = [v21 safeObjectForKey:v18 ofClass:objc_opt_class()];
+    v52 = messageCopy;
+    lockCountsBySelector = [(MADAutoAssetLocker *)self lockCountsBySelector];
+    v22 = [lockCountsBySelector safeObjectForKey:persistedEntryID ofClass:objc_opt_class()];
 
-    if ([SUCore stringIsEqual:v13 to:@"ENTRY_ADD"])
+    if ([SUCore stringIsEqual:operationCopy to:@"ENTRY_ADD"])
     {
       if (!v22)
       {
-        v22 = [[NSNumber alloc] initWithInteger:a6];
-        v23 = [(MADAutoAssetLocker *)self lockCountsBySelector];
-        [v23 setSafeObject:v22 forKey:v18];
+        v22 = [[NSNumber alloc] initWithInteger:count];
+        lockCountsBySelector2 = [(MADAutoAssetLocker *)self lockCountsBySelector];
+        [lockCountsBySelector2 setSafeObject:v22 forKey:persistedEntryID];
 
-        [(MADAutoAssetLocker *)self setLockCountsTotal:[(MADAutoAssetLocker *)self lockCountsTotal]+ a6];
+        [(MADAutoAssetLocker *)self setLockCountsTotal:[(MADAutoAssetLocker *)self lockCountsTotal]+ count];
 LABEL_39:
-        v15 = v52;
+        messageCopy = v52;
 LABEL_40:
-        [v20 persistSecureCodedObject:v14 forKey:{@"assetLock", v48}];
-        v44 = [(MADAutoAssetLocker *)self persistedState];
-        v45 = [v14 summary];
-        [v44 storePersistedEntry:v18 withEntrySummary:v45 fromLocation:v12];
+        [v20 persistSecureCodedObject:assetLockCopy forKey:{@"assetLock", summary5}];
+        persistedState2 = [(MADAutoAssetLocker *)self persistedState];
+        summary = [assetLockCopy summary];
+        [persistedState2 storePersistedEntry:persistedEntryID withEntrySummary:summary fromLocation:lockCopy];
 
-        v46 = [v14 fullAssetSelector];
-        [(MADAutoAssetLocker *)self _logPersistedEntry:v12 operation:v13 persistingAssetLock:v14 forSelector:v46 message:v15];
+        fullAssetSelector2 = [assetLockCopy fullAssetSelector];
+        [(MADAutoAssetLocker *)self _logPersistedEntry:lockCopy operation:operationCopy persistingAssetLock:assetLockCopy forSelector:fullAssetSelector2 message:messageCopy];
 
         goto LABEL_41;
       }
 
 LABEL_9:
-      v27 = [[NSNumber alloc] initWithInteger:{-[NSObject integerValue](v22, "integerValue") + a6}];
+      v27 = [[NSNumber alloc] initWithInteger:{-[NSObject integerValue](v22, "integerValue") + count}];
 
-      v28 = [(MADAutoAssetLocker *)self lockCountsBySelector];
-      [v28 setSafeObject:v27 forKey:v18];
+      lockCountsBySelector3 = [(MADAutoAssetLocker *)self lockCountsBySelector];
+      [lockCountsBySelector3 setSafeObject:v27 forKey:persistedEntryID];
 
-      [(MADAutoAssetLocker *)self setLockCountsTotal:[(MADAutoAssetLocker *)self lockCountsTotal]+ a6];
+      [(MADAutoAssetLocker *)self setLockCountsTotal:[(MADAutoAssetLocker *)self lockCountsTotal]+ count];
       v22 = v27;
       goto LABEL_39;
     }
 
-    if ([SUCore stringIsEqual:v13 to:@"ENTRY_INCREASED"])
+    if ([SUCore stringIsEqual:operationCopy to:@"ENTRY_INCREASED"])
     {
       if (v22)
       {
@@ -2555,12 +2555,12 @@ LABEL_9:
       v35 = _MADLog(@"AutoLocker");
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
-        v36 = [v14 fullAssetSelector];
-        v37 = [v36 summary];
+        fullAssetSelector3 = [assetLockCopy fullAssetSelector];
+        summary2 = [fullAssetSelector3 summary];
         *buf = 138543618;
-        v54 = v12;
+        v54 = lockCopy;
         v55 = 2114;
-        v56 = v37;
+        countCopy = summary2;
         v38 = "{AUTO-LOCKER:%{public}@:_persistAssetLock} | increasing lock count for selector not represented in lockCountsBySelector | selector:%{public}@";
 LABEL_28:
         _os_log_impl(&dword_0, v35, OS_LOG_TYPE_ERROR, v38, buf, 0x16u);
@@ -2571,21 +2571,21 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    if (![SUCore stringIsEqual:v13 to:@"ENTRY_DECREASED"])
+    if (![SUCore stringIsEqual:operationCopy to:@"ENTRY_DECREASED"])
     {
-      if ([SUCore stringIsEqual:v13 to:@"ENTRY_MODIFY"])
+      if ([SUCore stringIsEqual:operationCopy to:@"ENTRY_MODIFY"])
       {
         if (!v22)
         {
           v32 = _MADLog(@"AutoLocker");
           if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
           {
-            v33 = [v14 fullAssetSelector];
-            v34 = [v33 summary];
+            fullAssetSelector4 = [assetLockCopy fullAssetSelector];
+            summary3 = [fullAssetSelector4 summary];
             *buf = 138543618;
-            v54 = v12;
+            v54 = lockCopy;
             v55 = 2114;
-            v56 = v34;
+            countCopy = summary3;
             _os_log_impl(&dword_0, v32, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:%{public}@:_persistAssetLock} | continued lock count for selector not represented in lockCountsBySelector | selector:%{public}@", buf, 0x16u);
           }
 
@@ -2598,14 +2598,14 @@ LABEL_28:
         v39 = _MADLog(@"AutoLocker");
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
-          loga = [v14 fullAssetSelector];
-          v40 = [loga summary];
+          loga = [assetLockCopy fullAssetSelector];
+          summary4 = [loga summary];
           *buf = 138543874;
-          v54 = v12;
+          v54 = lockCopy;
           v55 = 2114;
-          v56 = v40;
+          countCopy = summary4;
           v57 = 2114;
-          v58 = v13;
+          countCopy3 = operationCopy;
           _os_log_impl(&dword_0, v39, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:%{public}@:_persistAssetLock} | unknown persistedStateOperation type | selector:%{public}@ persistedStateOperation:%{public}@", buf, 0x20u);
         }
       }
@@ -2618,12 +2618,12 @@ LABEL_28:
       v35 = _MADLog(@"AutoLocker");
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
-        v36 = [v14 fullAssetSelector];
-        v37 = [v36 summary];
+        fullAssetSelector3 = [assetLockCopy fullAssetSelector];
+        summary2 = [fullAssetSelector3 summary];
         *buf = 138543618;
-        v54 = v12;
+        v54 = lockCopy;
         v55 = 2114;
-        v56 = v37;
+        countCopy = summary2;
         v38 = "{AUTO-LOCKER:%{public}@:_persistAssetLock} | decreasing lock count for selector not represented in lockCountsBySelector | selector:%{public}@";
         goto LABEL_28;
       }
@@ -2634,11 +2634,11 @@ LABEL_29:
       goto LABEL_39;
     }
 
-    v29 = [v22 integerValue];
-    v30 = v29;
-    if (a6 == -1 || v29 >= a6)
+    integerValue = [v22 integerValue];
+    v30 = integerValue;
+    if (count == -1 || integerValue >= count)
     {
-      if (a6 == -1 || v29 != a6)
+      if (count == -1 || integerValue != count)
       {
         goto LABEL_36;
       }
@@ -2646,16 +2646,16 @@ LABEL_29:
       log = _MADLog(@"AutoLocker");
       if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
       {
-        v49 = [v14 fullAssetSelector];
-        v48 = [v49 summary];
+        fullAssetSelector5 = [assetLockCopy fullAssetSelector];
+        summary5 = [fullAssetSelector5 summary];
         *buf = 138544130;
-        v54 = v12;
+        v54 = lockCopy;
         v55 = 2048;
-        v56 = a6;
+        countCopy = count;
         v57 = 2048;
-        v58 = a6;
+        countCopy3 = count;
         v59 = 2114;
-        v60 = v48;
+        v60 = summary5;
         v31 = "{AUTO-LOCKER:%{public}@:_persistAssetLock} | decreasing lock count to 0 - should be a remove operation (ignored) | lockCountToDecrease:%ld | deltaLockCount:%ld | selector:%{public}@";
         goto LABEL_34;
       }
@@ -2666,16 +2666,16 @@ LABEL_29:
       log = _MADLog(@"AutoLocker");
       if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
       {
-        v49 = [v14 fullAssetSelector];
-        v48 = [v49 summary];
+        fullAssetSelector5 = [assetLockCopy fullAssetSelector];
+        summary5 = [fullAssetSelector5 summary];
         *buf = 138544130;
-        v54 = v12;
+        v54 = lockCopy;
         v55 = 2048;
-        v56 = v30;
+        countCopy = v30;
         v57 = 2048;
-        v58 = a6;
+        countCopy3 = count;
         v59 = 2114;
-        v60 = v48;
+        v60 = summary5;
         v31 = "{AUTO-LOCKER:%{public}@:_persistAssetLock} | decreasing lock count for selector with fewer locks tracked (ignored) | lockCountToDecrease:%ld | deltaLockCount:%ld | selector:%{public}@";
 LABEL_34:
         _os_log_impl(&dword_0, log, OS_LOG_TYPE_ERROR, v31, buf, 0x2Au);
@@ -2683,18 +2683,18 @@ LABEL_34:
     }
 
 LABEL_36:
-    if (a6 == -1)
+    if (count == -1)
     {
-      a6 = v30;
+      count = v30;
     }
 
-    v41 = a6;
-    v42 = [[NSNumber alloc] initWithInteger:v30 - a6];
+    countCopy4 = count;
+    v42 = [[NSNumber alloc] initWithInteger:v30 - count];
 
-    v43 = [(MADAutoAssetLocker *)self lockCountsBySelector];
-    [v43 setSafeObject:v42 forKey:v18];
+    lockCountsBySelector4 = [(MADAutoAssetLocker *)self lockCountsBySelector];
+    [lockCountsBySelector4 setSafeObject:v42 forKey:persistedEntryID];
 
-    [(MADAutoAssetLocker *)self setLockCountsTotal:[(MADAutoAssetLocker *)self lockCountsTotal]- v41];
+    [(MADAutoAssetLocker *)self setLockCountsTotal:[(MADAutoAssetLocker *)self lockCountsTotal]- countCopy4];
     v22 = v42;
     goto LABEL_39;
   }
@@ -2702,15 +2702,15 @@ LABEL_36:
   v22 = _MADLog(@"AutoLocker");
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
-    v24 = [(MADAutoAssetLocker *)self lockCountsTotal];
-    v25 = [v14 fullAssetSelector];
-    v26 = [v25 summary];
+    lockCountsTotal = [(MADAutoAssetLocker *)self lockCountsTotal];
+    fullAssetSelector6 = [assetLockCopy fullAssetSelector];
+    summary6 = [fullAssetSelector6 summary];
     *buf = 134218498;
-    v54 = v24;
+    v54 = lockCountsTotal;
     v55 = 2114;
-    v56 = v12;
+    countCopy = lockCopy;
     v57 = 2114;
-    v58 = v26;
+    countCopy3 = summary6;
     _os_log_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER[totalLocks:%ld]:%{public}@:_persistAssetLock} | unable to record delta-to-locks (no persisted-state) for selector:%{public}@", buf, 0x20u);
   }
 
@@ -2719,39 +2719,39 @@ LABEL_41:
   return v20 != 0;
 }
 
-- (void)_persistRemoveAssetLock:(id)a3 removedAssetLock:(id)a4 message:(id)a5
+- (void)_persistRemoveAssetLock:(id)lock removedAssetLock:(id)assetLock message:(id)message
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v11);
+  lockCopy = lock;
+  assetLockCopy = assetLock;
+  messageCopy = message;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
-  v12 = [v9 fullAssetSelector];
-  v13 = [v12 persistedEntryID];
+  fullAssetSelector = [assetLockCopy fullAssetSelector];
+  persistedEntryID = [fullAssetSelector persistedEntryID];
 
-  if (v13)
+  if (persistedEntryID)
   {
-    v14 = [(MADAutoAssetLocker *)self persistedState];
-    v15 = [v14 persistedEntry:v13 fromLocation:v8];
+    persistedState = [(MADAutoAssetLocker *)self persistedState];
+    v15 = [persistedState persistedEntry:persistedEntryID fromLocation:lockCopy];
 
-    v16 = [(MADAutoAssetLocker *)self lockCountsBySelector];
-    v17 = [v16 safeObjectForKey:v13 ofClass:objc_opt_class()];
+    lockCountsBySelector = [(MADAutoAssetLocker *)self lockCountsBySelector];
+    v17 = [lockCountsBySelector safeObjectForKey:persistedEntryID ofClass:objc_opt_class()];
 
     if (v17)
     {
-      v18 = [(MADAutoAssetLocker *)self lockCountsBySelector];
-      [v18 removeObjectForKey:v13];
+      lockCountsBySelector2 = [(MADAutoAssetLocker *)self lockCountsBySelector];
+      [lockCountsBySelector2 removeObjectForKey:persistedEntryID];
 
       -[MADAutoAssetLocker setLockCountsTotal:](self, "setLockCountsTotal:", -[MADAutoAssetLocker lockCountsTotal](self, "lockCountsTotal") - [v17 integerValue]);
       if (v15)
       {
 LABEL_4:
-        v19 = [(MADAutoAssetLocker *)self persistedState];
-        [v19 removePersistedEntry:v13 fromLocation:v8];
+        persistedState2 = [(MADAutoAssetLocker *)self persistedState];
+        [persistedState2 removePersistedEntry:persistedEntryID fromLocation:lockCopy];
 
-        v20 = [v9 fullAssetSelector];
-        [(MADAutoAssetLocker *)self _logPersistedRemovedEntry:v8 removedAssetLock:v9 forSelector:v20 message:v10];
+        fullAssetSelector2 = [assetLockCopy fullAssetSelector];
+        [(MADAutoAssetLocker *)self _logPersistedRemovedEntry:lockCopy removedAssetLock:assetLockCopy forSelector:fullAssetSelector2 message:messageCopy];
 LABEL_12:
 
         goto LABEL_13;
@@ -2763,15 +2763,15 @@ LABEL_12:
       v24 = _MADLog(@"AutoLocker");
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        v30 = [(MADAutoAssetLocker *)self lockCountsTotal];
-        v25 = [v9 fullAssetSelector];
-        v26 = [v25 summary];
+        lockCountsTotal = [(MADAutoAssetLocker *)self lockCountsTotal];
+        fullAssetSelector3 = [assetLockCopy fullAssetSelector];
+        summary = [fullAssetSelector3 summary];
         *buf = 134218498;
-        v32 = v30;
+        v32 = lockCountsTotal;
         v33 = 2114;
-        v34 = v8;
+        v34 = lockCopy;
         v35 = 2114;
-        v36 = v26;
+        v36 = summary;
         _os_log_impl(&dword_0, v24, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER[totalLocks:%ld]:%{public}@:_persistRemoveAssetLock} | removing asset-lock that is not represented in lockCountsBySelector | selector:%{public}@", buf, 0x20u);
       }
 
@@ -2781,19 +2781,19 @@ LABEL_12:
       }
     }
 
-    v20 = _MADLog(@"AutoLocker");
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    fullAssetSelector2 = _MADLog(@"AutoLocker");
+    if (os_log_type_enabled(fullAssetSelector2, OS_LOG_TYPE_ERROR))
     {
-      v27 = [(MADAutoAssetLocker *)self lockCountsTotal];
-      v28 = [v9 fullAssetSelector];
-      v29 = [v28 summary];
+      lockCountsTotal2 = [(MADAutoAssetLocker *)self lockCountsTotal];
+      fullAssetSelector4 = [assetLockCopy fullAssetSelector];
+      summary2 = [fullAssetSelector4 summary];
       *buf = 134218498;
-      v32 = v27;
+      v32 = lockCountsTotal2;
       v33 = 2114;
-      v34 = v8;
+      v34 = lockCopy;
       v35 = 2114;
-      v36 = v29;
-      _os_log_impl(&dword_0, v20, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER[totalLocks:%ld]:%{public}@:_persistRemoveAssetLock} | unable to remove lock tracker (no persisted-state) for selector:%{public}@", buf, 0x20u);
+      v36 = summary2;
+      _os_log_impl(&dword_0, fullAssetSelector2, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER[totalLocks:%ld]:%{public}@:_persistRemoveAssetLock} | unable to remove lock tracker (no persisted-state) for selector:%{public}@", buf, 0x20u);
     }
 
     goto LABEL_12;
@@ -2802,127 +2802,127 @@ LABEL_12:
   v15 = _MADLog(@"AutoLocker");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    v21 = [(MADAutoAssetLocker *)self lockCountsTotal];
-    v22 = [v9 fullAssetSelector];
-    v23 = [v22 summary];
+    lockCountsTotal3 = [(MADAutoAssetLocker *)self lockCountsTotal];
+    fullAssetSelector5 = [assetLockCopy fullAssetSelector];
+    summary3 = [fullAssetSelector5 summary];
     *buf = 134218498;
-    v32 = v21;
+    v32 = lockCountsTotal3;
     v33 = 2114;
-    v34 = v8;
+    v34 = lockCopy;
     v35 = 2114;
-    v36 = v23;
+    v36 = summary3;
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER[totalLocks:%ld]:%{public}@:_persistRemoveAssetLock} | no entry ID for selector (ignored) | selector:%{public}@", buf, 0x20u);
   }
 
 LABEL_13:
 }
 
-- (void)_mergeAddedLock:(id)a3 intoExistingLock:(id)a4
+- (void)_mergeAddedLock:(id)lock intoExistingLock:(id)existingLock
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v7);
+  lockCopy = lock;
+  existingLockCopy = existingLock;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
-  v8 = [v12 lockUsagePolicy];
+  lockUsagePolicy = [lockCopy lockUsagePolicy];
 
-  if (v8)
+  if (lockUsagePolicy)
   {
-    v9 = [v12 lockUsagePolicy];
-    [v6 setLockUsagePolicy:v9];
+    lockUsagePolicy2 = [lockCopy lockUsagePolicy];
+    [existingLockCopy setLockUsagePolicy:lockUsagePolicy2];
   }
 
-  [v6 setActiveLockCount:{objc_msgSend(v6, "activeLockCount") + 1}];
-  v10 = [v6 activeLockCount];
-  if (v10 > [v6 maximumLockCount])
+  [existingLockCopy setActiveLockCount:{objc_msgSend(existingLockCopy, "activeLockCount") + 1}];
+  activeLockCount = [existingLockCopy activeLockCount];
+  if (activeLockCount > [existingLockCopy maximumLockCount])
   {
-    [v6 setMaximumLockCount:{objc_msgSend(v6, "activeLockCount")}];
+    [existingLockCopy setMaximumLockCount:{objc_msgSend(existingLockCopy, "activeLockCount")}];
   }
 
-  [v6 setTotalLockCount:{objc_msgSend(v6, "totalLockCount") + 1}];
+  [existingLockCopy setTotalLockCount:{objc_msgSend(existingLockCopy, "totalLockCount") + 1}];
   v11 = +[NSDate date];
-  [v6 setLastRefreshTimestamp:v11];
+  [existingLockCopy setLastRefreshTimestamp:v11];
 }
 
-- (void)_mergeContinuedLock:(id)a3 intoExistingLock:(id)a4
+- (void)_mergeContinuedLock:(id)lock intoExistingLock:(id)existingLock
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v7);
+  lockCopy = lock;
+  existingLockCopy = existingLock;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
-  v8 = [v11 lockUsagePolicy];
+  lockUsagePolicy = [lockCopy lockUsagePolicy];
 
-  if (v8)
+  if (lockUsagePolicy)
   {
-    v9 = [v11 lockUsagePolicy];
-    [v6 setLockUsagePolicy:v9];
+    lockUsagePolicy2 = [lockCopy lockUsagePolicy];
+    [existingLockCopy setLockUsagePolicy:lockUsagePolicy2];
   }
 
-  [v6 setContinueCount:{objc_msgSend(v6, "continueCount") + 1}];
+  [existingLockCopy setContinueCount:{objc_msgSend(existingLockCopy, "continueCount") + 1}];
   v10 = +[NSDate date];
-  [v6 setLastRefreshTimestamp:v10];
+  [existingLockCopy setLastRefreshTimestamp:v10];
 }
 
-- (BOOL)_endLockDecideUnlocked:(id)a3
+- (BOOL)_endLockDecideUnlocked:(id)unlocked
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v5);
+  unlockedCopy = unlocked;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
-  if ([v4 activeLockCount] >= 1)
+  if ([unlockedCopy activeLockCount] >= 1)
   {
-    [v4 setActiveLockCount:{objc_msgSend(v4, "activeLockCount") - 1}];
+    [unlockedCopy setActiveLockCount:{objc_msgSend(unlockedCopy, "activeLockCount") - 1}];
   }
 
-  v6 = [v4 activeLockCount] < 1;
+  v6 = [unlockedCopy activeLockCount] < 1;
 
   return v6;
 }
 
-- (void)_logPersistedEntry:(id)a3 operation:(id)a4 persistingAssetLock:(id)a5 forSelector:(id)a6 message:(id)a7
+- (void)_logPersistedEntry:(id)entry operation:(id)operation persistingAssetLock:(id)lock forSelector:(id)selector message:(id)message
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v17);
+  entryCopy = entry;
+  operationCopy = operation;
+  lockCopy = lock;
+  selectorCopy = selector;
+  messageCopy = message;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
-  v18 = [MADAutoAssetPersisted persistedOperationSymbol:v13];
-  v19 = [v15 persistedEntryID];
+  v18 = [MADAutoAssetPersisted persistedOperationSymbol:operationCopy];
+  persistedEntryID = [selectorCopy persistedEntryID];
   v20 = _MADLog(@"AutoLocker");
   v21 = v20;
-  if (v19)
+  if (persistedEntryID)
   {
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(MADAutoAssetLocker *)self lockCountsTotal];
-      v27 = [v15 summary];
-      v23 = [(MADAutoAssetLocker *)self _newAssetLockSummaryWithoutSelectorOrAttributes:v14];
+      lockCountsTotal = [(MADAutoAssetLocker *)self lockCountsTotal];
+      summary = [selectorCopy summary];
+      v23 = [(MADAutoAssetLocker *)self _newAssetLockSummaryWithoutSelectorOrAttributes:lockCopy];
       *buf = 138546690;
       v30 = @"PERSISTED";
       v31 = 2114;
       v32 = @"AUTO-LOCKER";
       v33 = 2114;
-      v34 = v13;
+      v34 = operationCopy;
       v35 = 2114;
       v36 = @"LOCKR";
       v37 = 2114;
       v38 = @">----->";
       v39 = 2114;
-      v40 = v12;
+      v40 = entryCopy;
       v41 = 2114;
-      v42 = v16;
+      v42 = messageCopy;
       v43 = 2048;
-      v44 = v22;
+      v44 = lockCountsTotal;
       v45 = 2114;
       v46 = @"LOCKR";
       v47 = 2114;
       v48 = v18;
       v49 = 2114;
-      v50 = v27;
+      v50 = summary;
       v51 = 2114;
       v52 = v23;
       v53 = 2114;
@@ -2935,45 +2935,45 @@ LABEL_13:
 
   else if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
-    v28 = [(MADAutoAssetLocker *)self summary];
-    v24 = [v15 summary];
-    [v14 summary];
+    summary2 = [(MADAutoAssetLocker *)self summary];
+    summary3 = [selectorCopy summary];
+    [lockCopy summary];
     *buf = 138544642;
-    v30 = v28;
+    v30 = summary2;
     v31 = 2114;
-    v32 = v12;
+    v32 = entryCopy;
     v33 = 2114;
-    v34 = v13;
+    v34 = operationCopy;
     v35 = 2114;
-    v36 = v16;
+    v36 = messageCopy;
     v37 = 2114;
-    v25 = v24;
-    v38 = v24;
+    v25 = summary3;
+    v38 = summary3;
     v40 = v39 = 2114;
     v26 = v40;
     _os_log_impl(&dword_0, v21, OS_LOG_TYPE_ERROR, "%{public}@ | {%{public}@:_logPersistedEntry} %{public}@ | no fullAssetSelectorKey | %{public}@ | fullAssetSelector:%{public}@ | assetLock:%{public}@", buf, 0x3Eu);
   }
 }
 
-- (void)_logPersistedRemovedEntry:(id)a3 removedAssetLock:(id)a4 forSelector:(id)a5 message:(id)a6
+- (void)_logPersistedRemovedEntry:(id)entry removedAssetLock:(id)lock forSelector:(id)selector message:(id)message
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v14);
+  entryCopy = entry;
+  lockCopy = lock;
+  selectorCopy = selector;
+  messageCopy = message;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
   v15 = [MADAutoAssetPersisted persistedOperationSymbol:@"ENTRY_REMOVE"];
-  v16 = [v12 persistedEntryID];
+  persistedEntryID = [selectorCopy persistedEntryID];
   v17 = _MADLog(@"AutoLocker");
   v18 = v17;
-  if (v16)
+  if (persistedEntryID)
   {
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(MADAutoAssetLocker *)self lockCountsTotal];
-      v20 = [(MADAutoAssetLocker *)self _newAssetLockSummaryWithoutSelectorOrAttributes:v11];
+      lockCountsTotal = [(MADAutoAssetLocker *)self lockCountsTotal];
+      summary = [(MADAutoAssetLocker *)self _newAssetLockSummaryWithoutSelectorOrAttributes:lockCopy];
       v23 = 138546690;
       v24 = @"PERSISTED";
       v25 = 2114;
@@ -2985,19 +2985,19 @@ LABEL_13:
       v31 = 2114;
       v32 = @">----->";
       v33 = 2114;
-      v34 = v10;
+      v34 = entryCopy;
       v35 = 2114;
-      v36 = v13;
+      v36 = messageCopy;
       v37 = 2048;
-      v38 = v19;
+      v38 = lockCountsTotal;
       v39 = 2114;
       v40 = @"LOCKR";
       v41 = 2114;
       v42 = v15;
       v43 = 2114;
-      v44 = v16;
+      v44 = persistedEntryID;
       v45 = 2114;
-      v46 = v20;
+      v46 = summary;
       v47 = 2114;
       v48 = @"LOCKR";
       v49 = 2114;
@@ -3009,35 +3009,35 @@ LABEL_6:
 
   else if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
-    v20 = [(MADAutoAssetLocker *)self summary];
-    v21 = [v12 summary];
-    v22 = [v11 summary];
+    summary = [(MADAutoAssetLocker *)self summary];
+    summary2 = [selectorCopy summary];
+    summary3 = [lockCopy summary];
     v23 = 138544386;
-    v24 = v20;
+    v24 = summary;
     v25 = 2114;
-    v26 = v10;
+    v26 = entryCopy;
     v27 = 2114;
-    v28 = v13;
+    v28 = messageCopy;
     v29 = 2114;
-    v30 = v21;
+    v30 = summary2;
     v31 = 2114;
-    v32 = v22;
+    v32 = summary3;
     _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "%{public}@ | {%{public}@:_logPersistedRemovedEntry} | no fullAssetSelectorKey to remove | %{public}@ | fullAssetSelector:%{public}@ | assetLock:%{public}@", &v23, 0x34u);
 
     goto LABEL_6;
   }
 }
 
-- (void)_logPersistedTableOfContents:(id)a3
+- (void)_logPersistedTableOfContents:(id)contents
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v5);
+  contentsCopy = contents;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
   if (+[MADAutoAssetControlManager preferencePersistedTableLoggingEnabled])
   {
-    v6 = [(MADAutoAssetLocker *)self persistedState];
-    v7 = [v6 persistedEntryIDs:v4];
+    persistedState = [(MADAutoAssetLocker *)self persistedState];
+    v7 = [persistedState persistedEntryIDs:contentsCopy];
 
     if ([v7 count])
     {
@@ -3056,7 +3056,7 @@ LABEL_6:
         v46 = 2114;
         v47 = @">----->";
         v48 = 2114;
-        v49 = v4;
+        v49 = contentsCopy;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@][%{public}@]\n#_%{public}@:%{public}@ {%{public}@} table-of-contents...", buf, 0x3Eu);
       }
 
@@ -3067,8 +3067,8 @@ LABEL_6:
         do
         {
           v11 = [v7 objectAtIndexedSubscript:v10];
-          v12 = [(MADAutoAssetLocker *)self persistedState];
-          v13 = [v12 persistedEntry:v11 fromLocation:v4];
+          persistedState2 = [(MADAutoAssetLocker *)self persistedState];
+          v13 = [persistedState2 persistedEntry:v11 fromLocation:contentsCopy];
 
           if (v13)
           {
@@ -3087,9 +3087,9 @@ LABEL_6:
             v29 = v14;
             v13 = v37;
             v18 = [v36 initWithObjects:{v35, v34, v29, v30, v17, v31, v32, objc_opt_class(), 0}];
-            v19 = [(MADAutoAssetLocker *)self persistedState];
+            persistedState3 = [(MADAutoAssetLocker *)self persistedState];
             LOBYTE(v28) = 0;
-            v20 = [v19 decodeFromLocation:v4 ofEntryName:v11 fromPersistedEntry:v37 decodingObjectForKey:@"assetLock" ofClass:objc_opt_class() withEncodeClasses:v18 allowingNilObject:v28];
+            v20 = [persistedState3 decodeFromLocation:contentsCopy ofEntryName:v11 fromPersistedEntry:v37 decodingObjectForKey:@"assetLock" ofClass:objc_opt_class() withEncodeClasses:v18 allowingNilObject:v28];
 
             if (v20)
             {
@@ -3122,11 +3122,11 @@ LABEL_6:
             v18 = _MADLog(@"AutoLocker");
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
             {
-              v23 = [(MADAutoAssetLocker *)self summary];
+              summary = [(MADAutoAssetLocker *)self summary];
               *buf = 138543874;
-              v39 = v4;
+              v39 = contentsCopy;
               v40 = 2114;
-              v41 = v23;
+              v41 = summary;
               v42 = 2114;
               v43 = v11;
               _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "{%{public}@:_logPersistedTableOfContents} | %{public}@ | unable to load entry:%{public}@", buf, 0x20u);
@@ -3156,7 +3156,7 @@ LABEL_6:
       v46 = 2114;
       v47 = @"<-----<";
       v48 = 2114;
-      v49 = v4;
+      v49 = contentsCopy;
       v25 = "[%{public}@][%{public}@][%{public}@]\n#_%{public}@:%{public}@ {%{public}@} ...table-of-contents";
       v26 = v24;
       v27 = 62;
@@ -3183,7 +3183,7 @@ LABEL_21:
       v46 = 2114;
       v47 = @">----->";
       v48 = 2114;
-      v49 = v4;
+      v49 = contentsCopy;
       v50 = 2114;
       v51 = @"empty table-of-contents";
       v52 = 2114;
@@ -3202,14 +3202,14 @@ LABEL_21:
 LABEL_22:
 }
 
-- (id)_locateLockByPersistentEntryID:(id)a3
+- (id)_locateLockByPersistentEntryID:(id)d
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
-  v6 = [(MADAutoAssetLocker *)self persistedState];
-  v7 = [v6 persistedEntryAlreadyExists:v4 fromLocation:@"locateLockBySelector"];
+  persistedState = [(MADAutoAssetLocker *)self persistedState];
+  v7 = [persistedState persistedEntryAlreadyExists:dCopy fromLocation:@"locateLockBySelector"];
 
   if (!v7)
   {
@@ -3217,8 +3217,8 @@ LABEL_22:
     goto LABEL_16;
   }
 
-  v8 = [(MADAutoAssetLocker *)self persistedState];
-  v9 = [v8 persistedEntry:v4 fromLocation:@"locateLockBySelector"];
+  persistedState2 = [(MADAutoAssetLocker *)self persistedState];
+  v9 = [persistedState2 persistedEntry:dCopy fromLocation:@"locateLockBySelector"];
 
   if (v9)
   {
@@ -3234,15 +3234,15 @@ LABEL_22:
     v26 = v12;
     v9 = v11;
     v18 = [v28 initWithObjects:{v10, v26, v13, v14, v15, v16, v17, objc_opt_class(), 0}];
-    v19 = [(MADAutoAssetLocker *)self persistedState];
+    persistedState3 = [(MADAutoAssetLocker *)self persistedState];
     LOBYTE(v27) = 0;
-    v20 = [v19 decodeFromLocation:@"locateLockBySelector" ofEntryName:v4 fromPersistedEntry:v9 decodingObjectForKey:@"assetLock" ofClass:objc_opt_class() withEncodeClasses:v18 allowingNilObject:v27];
+    v20 = [persistedState3 decodeFromLocation:@"locateLockBySelector" ofEntryName:dCopy fromPersistedEntry:v9 decodingObjectForKey:@"assetLock" ofClass:objc_opt_class() withEncodeClasses:v18 allowingNilObject:v27];
 
     if (v20)
     {
-      v21 = [v20 fullAssetSelector];
+      fullAssetSelector = [v20 fullAssetSelector];
 
-      if (v21)
+      if (fullAssetSelector)
       {
         v22 = v20;
 LABEL_14:
@@ -3254,7 +3254,7 @@ LABEL_14:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v30 = v4;
+        v30 = dCopy;
         v24 = "{locateLockBySelector} | missing asset selector for entry:%{public}@";
         goto LABEL_12;
       }
@@ -3266,7 +3266,7 @@ LABEL_14:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v30 = v4;
+        v30 = dCopy;
         v24 = "{locateLockBySelector} | no asset-lock entry found for entry:%{public}@";
 LABEL_12:
         _os_log_impl(&dword_0, v23, OS_LOG_TYPE_ERROR, v24, buf, 0xCu);
@@ -3285,13 +3285,13 @@ LABEL_16:
   return v22;
 }
 
-- (id)locateLockByFullAssetSelector:(id)a3
+- (id)locateLockByFullAssetSelector:(id)selector
 {
-  v4 = a3;
-  if ([v4 isFullAssetSelector])
+  selectorCopy = selector;
+  if ([selectorCopy isFullAssetSelector])
   {
-    v5 = [v4 persistedEntryID];
-    v6 = [(MADAutoAssetLocker *)self _locateLockByPersistentEntryID:v5];
+    persistedEntryID = [selectorCopy persistedEntryID];
+    v6 = [(MADAutoAssetLocker *)self _locateLockByPersistentEntryID:persistedEntryID];
   }
 
   else
@@ -3299,9 +3299,9 @@ LABEL_16:
     v7 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v4 summary];
+      summary = [selectorCopy summary];
       v10 = 138543362;
-      v11 = v8;
+      v11 = summary;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:locateLockByFullAssetSelector} fullAssetSelector's isFullAssetSelector check failed | fullAssetSelector:%{public}@", &v10, 0xCu);
     }
 
@@ -3311,12 +3311,12 @@ LABEL_16:
   return v6;
 }
 
-- (id)locateLocksBySelector:(id)a3
+- (id)locateLocksBySelector:(id)selector
 {
-  v4 = a3;
-  v62 = self;
-  v5 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v5);
+  selectorCopy = selector;
+  selfCopy = self;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
   v6 = objc_opt_new();
   if (!v6)
@@ -3336,18 +3336,18 @@ LABEL_58:
     goto LABEL_71;
   }
 
-  if (![v4 isFullAssetSelector])
+  if (![selectorCopy isFullAssetSelector])
   {
-    v11 = [v4 assetType];
+    assetType = [selectorCopy assetType];
 
-    if (v11)
+    if (assetType)
     {
-      v12 = [v4 assetSpecifier];
+      assetSpecifier = [selectorCopy assetSpecifier];
 
-      if (v12)
+      if (assetSpecifier)
       {
-        v13 = [v4 persistedEntryID];
-        if (v13)
+        persistedEntryID = [selectorCopy persistedEntryID];
+        if (persistedEntryID)
         {
           goto LABEL_11;
         }
@@ -3355,17 +3355,17 @@ LABEL_58:
 
       else
       {
-        v55 = [v4 assetType];
-        v13 = [NSString stringWithFormat:@"%@_", v55];
+        assetType2 = [selectorCopy assetType];
+        persistedEntryID = [NSString stringWithFormat:@"%@_", assetType2];
 
-        if (v13)
+        if (persistedEntryID)
         {
 LABEL_11:
           v14 = objc_opt_new();
           if (v14)
           {
-            v15 = [(MADAutoAssetLocker *)self persistedState];
-            v16 = [v15 persistedEntryIDs:@"locateLocksBySelectorPrefix"];
+            persistedState = [(MADAutoAssetLocker *)self persistedState];
+            v16 = [persistedState persistedEntryIDs:@"locateLocksBySelectorPrefix"];
 
             if (v16)
             {
@@ -3376,7 +3376,7 @@ LABEL_11:
               v70 = 0u;
               v17 = v16;
               v18 = [v17 countByEnumeratingWithState:&v69 objects:v80 count:16];
-              v19 = v62;
+              v19 = selfCopy;
               if (v18)
               {
                 v20 = v18;
@@ -3391,7 +3391,7 @@ LABEL_11:
                     }
 
                     v23 = *(*(&v69 + 1) + 8 * i);
-                    if ([v23 hasPrefix:v13])
+                    if ([v23 hasPrefix:persistedEntryID])
                     {
                       [v14 addObject:v23];
                     }
@@ -3403,7 +3403,7 @@ LABEL_11:
                 while (v20);
               }
 
-              v61 = v13;
+              v61 = persistedEntryID;
               v58 = v17;
 
               v67 = 0u;
@@ -3417,7 +3417,7 @@ LABEL_11:
               {
                 v25 = v24;
                 v26 = *v66;
-                v63 = v4;
+                v63 = selectorCopy;
                 do
                 {
                   for (j = 0; j != v25; j = j + 1)
@@ -3433,12 +3433,12 @@ LABEL_11:
                     v31 = v30;
                     if (v30)
                     {
-                      v32 = [v30 fullAssetSelector];
-                      if (v32)
+                      fullAssetSelector = [v30 fullAssetSelector];
+                      if (fullAssetSelector)
                       {
-                        v33 = [v4 assetType];
+                        assetType3 = [selectorCopy assetType];
 
-                        if (!v33)
+                        if (!assetType3)
                         {
                           v47 = _MADLog(@"AutoLocker");
                           if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
@@ -3450,28 +3450,28 @@ LABEL_11:
                           goto LABEL_51;
                         }
 
-                        v34 = [v4 assetType];
-                        [v32 assetType];
-                        v36 = v35 = v4;
-                        v37 = [SUCore stringIsEqual:v34 to:v36];
+                        assetType4 = [selectorCopy assetType];
+                        [fullAssetSelector assetType];
+                        v36 = v35 = selectorCopy;
+                        v37 = [SUCore stringIsEqual:assetType4 to:v36];
 
                         if (v37)
                         {
-                          v38 = [v35 assetSpecifier];
+                          assetSpecifier2 = [v35 assetSpecifier];
 
-                          v4 = v35;
-                          if (v38 && ([v35 assetSpecifier], v39 = objc_claimAutoreleasedReturnValue(), -[NSObject assetSpecifier](v32, "assetSpecifier"), v40 = objc_claimAutoreleasedReturnValue(), v41 = +[SUCore stringIsEqual:to:](SUCore, "stringIsEqual:to:", v39, v40), v40, v39, v4 = v63, (v41 & 1) == 0))
+                          selectorCopy = v35;
+                          if (assetSpecifier2 && ([v35 assetSpecifier], v39 = objc_claimAutoreleasedReturnValue(), -[NSObject assetSpecifier](fullAssetSelector, "assetSpecifier"), v40 = objc_claimAutoreleasedReturnValue(), v41 = +[SUCore stringIsEqual:to:](SUCore, "stringIsEqual:to:", v39, v40), v40, v39, selectorCopy = v63, (v41 & 1) == 0))
                           {
                             v47 = _MADLog(@"AutoLocker");
-                            v19 = v62;
+                            v19 = selfCopy;
                             if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
                             {
-                              v51 = [v63 summary];
-                              v52 = [v32 summary];
+                              summary = [v63 summary];
+                              summary2 = [fullAssetSelector summary];
                               *buf = 138543874;
-                              v74 = v51;
+                              v74 = summary;
                               v75 = 2114;
-                              v76 = v52;
+                              v76 = summary2;
                               v77 = 2114;
                               v78 = v61;
                               v53 = v47;
@@ -3482,10 +3482,10 @@ LABEL_11:
 
                           else
                           {
-                            v42 = [v4 assetVersion];
+                            assetVersion = [selectorCopy assetVersion];
 
-                            v19 = v62;
-                            if (!v42 || ([v4 assetVersion], v43 = objc_claimAutoreleasedReturnValue(), -[NSObject assetVersion](v32, "assetVersion"), v44 = objc_claimAutoreleasedReturnValue(), v45 = +[SUCore stringIsEqual:to:](SUCore, "stringIsEqual:to:", v43, v44), v44, v43, v4 = v63, (v45 & 1) != 0))
+                            v19 = selfCopy;
+                            if (!assetVersion || ([selectorCopy assetVersion], v43 = objc_claimAutoreleasedReturnValue(), -[NSObject assetVersion](fullAssetSelector, "assetVersion"), v44 = objc_claimAutoreleasedReturnValue(), v45 = +[SUCore stringIsEqual:to:](SUCore, "stringIsEqual:to:", v43, v44), v44, v43, selectorCopy = v63, (v45 & 1) != 0))
                             {
                               [v60 addObject:v31];
                               goto LABEL_52;
@@ -3494,12 +3494,12 @@ LABEL_11:
                             v47 = _MADLog(@"AutoLocker");
                             if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
                             {
-                              v51 = [v63 summary];
-                              v52 = [v32 summary];
+                              summary = [v63 summary];
+                              summary2 = [fullAssetSelector summary];
                               *buf = 138543874;
-                              v74 = v51;
+                              v74 = summary;
                               v75 = 2114;
-                              v76 = v52;
+                              v76 = summary2;
                               v77 = 2114;
                               v78 = v61;
                               v53 = v47;
@@ -3507,7 +3507,7 @@ LABEL_11:
 LABEL_50:
                               _os_log_impl(&dword_0, v53, OS_LOG_TYPE_DEBUG, v54, buf, 0x20u);
 
-                              v4 = v63;
+                              selectorCopy = v63;
                             }
                           }
 
@@ -3519,19 +3519,19 @@ LABEL_51:
                         v48 = _MADLog(@"AutoLocker");
                         if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
                         {
-                          v49 = [v63 summary];
-                          v50 = [v32 summary];
+                          summary3 = [v63 summary];
+                          summary4 = [fullAssetSelector summary];
                           *buf = 138543874;
-                          v74 = v49;
+                          v74 = summary3;
                           v75 = 2114;
-                          v76 = v50;
+                          v76 = summary4;
                           v77 = 2114;
                           v78 = v61;
                           _os_log_impl(&dword_0, v48, OS_LOG_TYPE_DEBUG, "{AUTO-LOCKER:newCurrentLockUsageForSelector} allowed but unexpected naming collision on assetType | assetSelector:%{public}@ foundFullAssetSelector:%{public}@ prefix:%{public}@", buf, 0x20u);
                         }
 
-                        v4 = v63;
-                        v19 = v62;
+                        selectorCopy = v63;
+                        v19 = selfCopy;
                       }
 
                       else
@@ -3548,12 +3548,12 @@ LABEL_51:
 
                     else
                     {
-                      v32 = _MADLog(@"AutoLocker");
-                      if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+                      fullAssetSelector = _MADLog(@"AutoLocker");
+                      if (os_log_type_enabled(fullAssetSelector, OS_LOG_TYPE_ERROR))
                       {
                         *buf = 138543362;
                         v74 = v28;
-                        _os_log_impl(&dword_0, v32, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:newCurrentLockUsageForSelector} unable to find lock for known persistedEntryID | persistedEntryID:%{public}@", buf, 0xCu);
+                        _os_log_impl(&dword_0, fullAssetSelector, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:newCurrentLockUsageForSelector} unable to find lock for known persistedEntryID | persistedEntryID:%{public}@", buf, 0xCu);
                       }
                     }
 
@@ -3570,7 +3570,7 @@ LABEL_52:
 
               v6 = v60;
               v8 = v60;
-              v13 = v61;
+              persistedEntryID = v61;
               v16 = v58;
               v14 = v59;
               goto LABEL_69;
@@ -3624,7 +3624,7 @@ LABEL_70:
     goto LABEL_58;
   }
 
-  v7 = [(MADAutoAssetLocker *)self locateLockByFullAssetSelector:v4];
+  v7 = [(MADAutoAssetLocker *)self locateLockByFullAssetSelector:selectorCopy];
   if (v7)
   {
     [v6 addObject:v7];
@@ -3639,11 +3639,11 @@ LABEL_71:
 
 - (id)locateLocksNewAllBySelector
 {
-  v3 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v3);
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
-  v4 = [(MADAutoAssetLocker *)self persistedState];
-  v5 = [v4 persistedEntryIDs:@"locateLocksNewAllBySelector"];
+  persistedState = [(MADAutoAssetLocker *)self persistedState];
+  v5 = [persistedState persistedEntryIDs:@"locateLocksNewAllBySelector"];
 
   v30 = objc_alloc_init(NSMutableDictionary);
   if ([v5 count])
@@ -3673,8 +3673,8 @@ LABEL_71:
 
         v7 = *(*(&v38 + 1) + 8 * i);
         v8 = objc_autoreleasePoolPush();
-        v9 = [(MADAutoAssetLocker *)self persistedState];
-        v10 = [v9 persistedEntry:v7 fromLocation:@"locateLocksNewAllBySelector"];
+        persistedState2 = [(MADAutoAssetLocker *)self persistedState];
+        v10 = [persistedState2 persistedEntry:v7 fromLocation:@"locateLocksNewAllBySelector"];
 
         if (v10)
         {
@@ -3693,15 +3693,15 @@ LABEL_71:
           v16 = v7;
           v10 = v12;
           v17 = [v36 initWithObjects:{v35, v34, v11, v26, v27, v15, v28, objc_opt_class(), 0}];
-          v18 = [(MADAutoAssetLocker *)self persistedState];
+          persistedState3 = [(MADAutoAssetLocker *)self persistedState];
           LOBYTE(v25) = 0;
-          v19 = [v18 decodeFromLocation:@"locateLocksNewAllBySelector" ofEntryName:v7 fromPersistedEntry:v12 decodingObjectForKey:@"assetLock" ofClass:objc_opt_class() withEncodeClasses:v17 allowingNilObject:v25];
+          v19 = [persistedState3 decodeFromLocation:@"locateLocksNewAllBySelector" ofEntryName:v7 fromPersistedEntry:v12 decodingObjectForKey:@"assetLock" ofClass:objc_opt_class() withEncodeClasses:v17 allowingNilObject:v25];
 
           if (v19)
           {
-            v20 = [v19 fullAssetSelector];
+            fullAssetSelector = [v19 fullAssetSelector];
 
-            if (v20)
+            if (fullAssetSelector)
             {
               [v30 setSafeObject:v19 forKey:v16];
 LABEL_19:
@@ -3765,19 +3765,19 @@ LABEL_22:
   return v30;
 }
 
-- (void)addToLockCountsBySelector:(id)a3 addingAssetLock:(id)a4
+- (void)addToLockCountsBySelector:(id)selector addingAssetLock:(id)lock
 {
-  v5 = a4;
-  v6 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v6);
+  lockCopy = lock;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
-  v7 = [v5 fullAssetSelector];
-  v14 = [v7 persistedEntryID];
+  fullAssetSelector = [lockCopy fullAssetSelector];
+  persistedEntryID = [fullAssetSelector persistedEntryID];
 
-  v8 = [(MADAutoAssetLocker *)self lockCountsBySelector];
-  v9 = [v8 safeObjectForKey:v14 ofClass:objc_opt_class()];
+  lockCountsBySelector = [(MADAutoAssetLocker *)self lockCountsBySelector];
+  v9 = [lockCountsBySelector safeObjectForKey:persistedEntryID ofClass:objc_opt_class()];
 
-  v10 = [(MADAutoAssetLocker *)self _currentLockCountOfLock:v5];
+  v10 = [(MADAutoAssetLocker *)self _currentLockCountOfLock:lockCopy];
   v11 = [NSNumber alloc];
   if (v9)
   {
@@ -3789,33 +3789,33 @@ LABEL_22:
     v12 = [v11 initWithInteger:v10];
   }
 
-  v13 = [(MADAutoAssetLocker *)self lockCountsBySelector];
-  [v13 setSafeObject:v12 forKey:v14];
+  lockCountsBySelector2 = [(MADAutoAssetLocker *)self lockCountsBySelector];
+  [lockCountsBySelector2 setSafeObject:v12 forKey:persistedEntryID];
 
   [(MADAutoAssetLocker *)self setLockCountsTotal:[(MADAutoAssetLocker *)self lockCountsTotal]+ v10];
 }
 
-- (id)_refreshFilesystemMetadataLastInterest:(id)a3
+- (id)_refreshFilesystemMetadataLastInterest:(id)interest
 {
-  v3 = a3;
+  interestCopy = interest;
   if (__isPlatformVersionAtLeast(2, 18, 4, 0))
   {
-    v4 = [v3 fullAssetSelector];
+    fullAssetSelector = [interestCopy fullAssetSelector];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [v3 fullAssetSelector];
-      v7 = [v6 setAtomicInstanceUUID];
+      fullAssetSelector2 = [interestCopy fullAssetSelector];
+      setAtomicInstanceUUID = [fullAssetSelector2 setAtomicInstanceUUID];
 
-      if (v7)
+      if (setAtomicInstanceUUID)
       {
         v8 = _MADLog(@"Auto");
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [v3 summary];
+          summary = [interestCopy summary];
           v29 = 138543362;
-          v30 = v9;
+          v30 = summary;
           v10 = "{AUTO-LOCKER:_refreshFilesystemMetadataLastInterest} asset-lock refresh skipped for set | asset-lock:%{public}@";
 LABEL_11:
           _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, v10, &v29, 0xCu);
@@ -3828,20 +3828,20 @@ LABEL_11:
     }
   }
 
-  v11 = [v3 localContentURL];
+  localContentURL = [interestCopy localContentURL];
 
-  if (v11)
+  if (localContentURL)
   {
     v12 = +[NSFileManager defaultManager];
-    v13 = [v3 localContentURL];
-    v14 = [v13 path];
-    v15 = [v12 fileExistsAtPath:v14];
+    localContentURL2 = [interestCopy localContentURL];
+    path = [localContentURL2 path];
+    v15 = [v12 fileExistsAtPath:path];
 
     if (v15)
     {
-      v16 = [v3 localContentURL];
-      v17 = [v16 URLByDeletingLastPathComponent];
-      updated = updateClientUsageDate(v17);
+      localContentURL3 = [interestCopy localContentURL];
+      uRLByDeletingLastPathComponent = [localContentURL3 URLByDeletingLastPathComponent];
+      updated = updateClientUsageDate(uRLByDeletingLastPathComponent);
 
       v19 = _MADLog(@"AutoLocker");
       v8 = v19;
@@ -3849,9 +3849,9 @@ LABEL_11:
       {
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [v3 summary];
+          summary = [interestCopy summary];
           v29 = 138543362;
-          v30 = v9;
+          v30 = summary;
           v10 = "{AUTO-LOCKER:_refreshFilesystemMetadataLastInterest} asset-lock refreshed | asset-lock:%{public}@";
           goto LABEL_11;
         }
@@ -3864,9 +3864,9 @@ LABEL_12:
 
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v27 = [v3 summary];
+        summary2 = [interestCopy summary];
         v29 = 138543362;
-        v30 = v27;
+        v30 = summary2;
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:_refreshFilesystemMetadataLastInterest} asset-lock refresh failed to update usage date | asset-lock:%{public}@", &v29, 0xCu);
       }
 
@@ -3878,9 +3878,9 @@ LABEL_12:
       v25 = _MADLog(@"AutoLocker");
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v26 = [v3 summary];
+        summary3 = [interestCopy summary];
         v29 = 138543362;
-        v30 = v26;
+        v30 = summary3;
         _os_log_impl(&dword_0, v25, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:_refreshFilesystemMetadataLastInterest} asset-lock refresh attempted with no content at URL | asset-lock:%{public}@", &v29, 0xCu);
       }
 
@@ -3895,9 +3895,9 @@ LABEL_12:
     v21 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v3 summary];
+      summary4 = [interestCopy summary];
       v29 = 138543362;
-      v30 = v22;
+      v30 = summary4;
       _os_log_impl(&dword_0, v21, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:_refreshFilesystemMetadataLastInterest} asset-lock refresh without local content URL | asset-lock:%{public}@", &v29, 0xCu);
     }
 
@@ -3911,12 +3911,12 @@ LABEL_24:
   return v20;
 }
 
-- (BOOL)_anyCurrentLocksForEliminate:(id)a3
+- (BOOL)_anyCurrentLocksForEliminate:(id)eliminate
 {
-  v4 = a3;
+  eliminateCopy = eliminate;
   v5 = objc_autoreleasePoolPush();
-  [(MADAutoAssetLocker *)self trackPerformanceIteration:@"_anyCurrentLocksForEliminate" ofContainer:@"locateLocksBySelector" forSelector:v4];
-  v6 = [(MADAutoAssetLocker *)self locateLocksBySelector:v4];
+  [(MADAutoAssetLocker *)self trackPerformanceIteration:@"_anyCurrentLocksForEliminate" ofContainer:@"locateLocksBySelector" forSelector:eliminateCopy];
+  v6 = [(MADAutoAssetLocker *)self locateLocksBySelector:eliminateCopy];
   v7 = [v6 count] != 0;
 
   objc_autoreleasePoolPop(v5);
@@ -3925,24 +3925,24 @@ LABEL_24:
 
 - (id)summary
 {
-  v3 = [(MADAutoAssetLocker *)self lockCountsBySelector];
-  v4 = [v3 count];
-  v5 = [(MADAutoAssetLocker *)self eliminateSelectors];
-  v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"locksBySelector:%ld|eliminateSelectors:%ld", v4, [v5 count]);
+  lockCountsBySelector = [(MADAutoAssetLocker *)self lockCountsBySelector];
+  v4 = [lockCountsBySelector count];
+  eliminateSelectors = [(MADAutoAssetLocker *)self eliminateSelectors];
+  v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"locksBySelector:%ld|eliminateSelectors:%ld", v4, [eliminateSelectors count]);
 
   return v6;
 }
 
-- (id)_newAssetLockSummaryWithoutSelectorOrAttributes:(id)a3
+- (id)_newAssetLockSummaryWithoutSelectorOrAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v5);
+  attributesCopy = attributes;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
   v6 = [NSString alloc];
-  v7 = [v4 localContentURL];
-  v8 = [v7 path];
-  if ([v4 inhibitedFromEmergencyRemoval])
+  localContentURL = [attributesCopy localContentURL];
+  path = [localContentURL path];
+  if ([attributesCopy inhibitedFromEmergencyRemoval])
   {
     v9 = @"Y";
   }
@@ -3952,31 +3952,31 @@ LABEL_24:
     v9 = @"N";
   }
 
-  v10 = [v4 lockReasons];
+  lockReasons = [attributesCopy lockReasons];
 
-  v11 = [v10 safeSummary];
-  v12 = [v6 initWithFormat:@"localURL:%@|inhibitedRemoval:%@|reasons:%@", v8, v9, v11];
+  safeSummary = [lockReasons safeSummary];
+  v12 = [v6 initWithFormat:@"localURL:%@|inhibitedRemoval:%@|reasons:%@", path, v9, safeSummary];
 
   return v12;
 }
 
-+ (void)addClientLockReasons:(id)a3 basedOnControl:(id)a4
++ (void)addClientLockReasons:(id)reasons basedOnControl:(id)control
 {
-  v5 = a3;
-  v6 = a4;
+  reasonsCopy = reasons;
+  controlCopy = control;
   v7 = +[MADAutoAssetLocker autoAssetLocker];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 lockerQueue];
+    lockerQueue = [v7 lockerQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __58__MADAutoAssetLocker_addClientLockReasons_basedOnControl___block_invoke;
     block[3] = &unk_4B2AF0;
     v12 = v8;
-    v13 = v6;
-    v14 = v5;
-    dispatch_sync(v9, block);
+    v13 = controlCopy;
+    v14 = reasonsCopy;
+    dispatch_sync(lockerQueue, block);
 
     v10 = v12;
   }
@@ -4134,68 +4134,68 @@ void __58__MADAutoAssetLocker_addClientLockReasons_basedOnControl___block_invoke
   }
 }
 
-- (void)trackPerformanceIteration:(id)a3 ofContainer:(id)a4
+- (void)trackPerformanceIteration:(id)iteration ofContainer:(id)container
 {
-  v5 = a3;
-  v6 = a4;
+  iterationCopy = iteration;
+  containerCopy = container;
   if (+[MADAutoAssetControlManager preferencePerformanceLoggingEnabled])
   {
     v7 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543618;
-      v9 = v5;
+      v9 = iterationCopy;
       v10 = 2114;
-      v11 = v6;
+      v11 = containerCopy;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "[AUTO-PERFORMANCE] {AUTO-LOCKER:%{public}@:trackPerformanceIteration} | containerName:%{public}@", &v8, 0x16u);
     }
   }
 }
 
-- (void)trackPerformanceIteration:(id)a3 ofContainer:(id)a4 forSelector:(id)a5
+- (void)trackPerformanceIteration:(id)iteration ofContainer:(id)container forSelector:(id)selector
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  iterationCopy = iteration;
+  containerCopy = container;
+  selectorCopy = selector;
   if (+[MADAutoAssetControlManager preferencePerformanceLoggingEnabled])
   {
     v10 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v9 summary];
+      summary = [selectorCopy summary];
       v12 = 138543874;
-      v13 = v7;
+      v13 = iterationCopy;
       v14 = 2114;
-      v15 = v8;
+      v15 = containerCopy;
       v16 = 2114;
-      v17 = v11;
+      v17 = summary;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "[AUTO-PERFORMANCE] {AUTO-LOCKER:%{public}@:trackPerformanceIteration} | containerName:%{public}@ | assetSelector:%{public}@", &v12, 0x20u);
     }
   }
 }
 
-+ (void)forceGlobalUnlock:(id)a3 atomicInstancesHandle:(id *)a4
++ (void)forceGlobalUnlock:(id)unlock atomicInstancesHandle:(id *)handle
 {
-  v5 = a3;
+  unlockCopy = unlock;
   v6 = +[MADAutoAssetLocker autoAssetLocker];
   if (v6)
   {
     v7 = objc_alloc_init(NSMutableSet);
-    v8 = [v6 lockerQueue];
+    lockerQueue = [v6 lockerQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __62__MADAutoAssetLocker_forceGlobalUnlock_atomicInstancesHandle___block_invoke;
     block[3] = &unk_4B2AF0;
     v12 = v6;
-    v13 = v5;
+    v13 = unlockCopy;
     v9 = v7;
     v14 = v9;
-    dispatch_sync(v8, block);
+    dispatch_sync(lockerQueue, block);
 
-    if (a4)
+    if (handle)
     {
       v10 = v9;
-      *a4 = v9;
+      *handle = v9;
     }
   }
 
@@ -4419,9 +4419,9 @@ LABEL_40:
   }
 }
 
-+ (id)currentSetLockUsageEliminatingOtherThanSetAtomicInstances:(id)a3
++ (id)currentSetLockUsageEliminatingOtherThanSetAtomicInstances:(id)instances
 {
-  v3 = a3;
+  instancesCopy = instances;
   v4 = +[MADAutoAssetLocker autoAssetLocker];
   v5 = v4;
   v15 = 0;
@@ -4432,15 +4432,15 @@ LABEL_40:
   v20 = 0;
   if (v4)
   {
-    v6 = [v4 lockerQueue];
+    lockerQueue = [v4 lockerQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __80__MADAutoAssetLocker_currentSetLockUsageEliminatingOtherThanSetAtomicInstances___block_invoke;
     block[3] = &unk_4B4478;
     v11 = v5;
-    v12 = v3;
+    v12 = instancesCopy;
     v13 = &v15;
-    dispatch_sync(v6, block);
+    dispatch_sync(lockerQueue, block);
 
     v7 = v16[5];
     v8 = v11;
@@ -5038,40 +5038,40 @@ LABEL_100:
   }
 }
 
-+ (BOOL)lockedSetByClient:(id)a3 forClientProcessName:(id)a4 withClientProcessID:(int64_t)a5 lockingSetDescriptor:(id)a6 forLockReason:(id)a7 withSetUsagePolicy:(id)a8 lockError:(id *)a9
++ (BOOL)lockedSetByClient:(id)client forClientProcessName:(id)name withClientProcessID:(int64_t)d lockingSetDescriptor:(id)descriptor forLockReason:(id)reason withSetUsagePolicy:(id)policy lockError:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  clientCopy = client;
+  nameCopy = name;
+  descriptorCopy = descriptor;
+  reasonCopy = reason;
+  policyCopy = policy;
   v49 = 0;
   v50 = &v49;
   v51 = 0x3032000000;
   v52 = __Block_byref_object_copy__17;
   v53 = __Block_byref_object_dispose__17;
   v54 = 0;
-  if (v14 && v16 && v17)
+  if (clientCopy && descriptorCopy && reasonCopy)
   {
     v19 = +[MADAutoAssetLocker autoAssetLocker];
     v20 = v19;
     if (v19)
     {
-      v21 = [v19 lockerQueue];
+      lockerQueue = [v19 lockerQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = __145__MADAutoAssetLocker_lockedSetByClient_forClientProcessName_withClientProcessID_lockingSetDescriptor_forLockReason_withSetUsagePolicy_lockError___block_invoke;
       block[3] = &unk_4B6318;
       v20 = v20;
       v41 = v20;
-      v42 = v18;
-      v43 = v16;
+      v42 = policyCopy;
+      v43 = descriptorCopy;
       v47 = &v49;
-      v44 = v14;
-      v45 = v15;
-      v48 = a5;
-      v46 = v17;
-      dispatch_sync(v21, block);
+      v44 = clientCopy;
+      v45 = nameCopy;
+      dCopy = d;
+      v46 = reasonCopy;
+      dispatch_sync(lockerQueue, block);
 
       v22 = v41;
       goto LABEL_20;
@@ -5083,9 +5083,9 @@ LABEL_100:
   else
   {
     v23 = [NSString alloc];
-    if (v14)
+    if (clientCopy)
     {
-      v24 = v14;
+      v24 = clientCopy;
     }
 
     else
@@ -5093,19 +5093,19 @@ LABEL_100:
       v24 = @"MISSING";
     }
 
-    if (v16)
+    if (descriptorCopy)
     {
-      v25 = [v16 summary];
+      summary = [descriptorCopy summary];
     }
 
     else
     {
-      v25 = @"MISSING";
+      summary = @"MISSING";
     }
 
-    if (v17)
+    if (reasonCopy)
     {
-      v26 = v17;
+      v26 = reasonCopy;
     }
 
     else
@@ -5113,8 +5113,8 @@ LABEL_100:
       v26 = @"MISSING";
     }
 
-    v20 = [v23 initWithFormat:@"set-lock not tracked (missing required) | autoAssetClientName:%@, lockedSetDescriptor:%@, lockReason:%@", v24, v25, v26];
-    if (v16)
+    v20 = [v23 initWithFormat:@"set-lock not tracked (missing required) | autoAssetClientName:%@, lockedSetDescriptor:%@, lockReason:%@", v24, summary, v26];
+    if (descriptorCopy)
     {
     }
 
@@ -5131,30 +5131,30 @@ LABEL_20:
     v29 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
-      v30 = [v16 summary];
-      v31 = [v18 summary];
+      summary2 = [descriptorCopy summary];
+      summary3 = [policyCopy summary];
       v32 = v50[5];
       *buf = 138544386;
-      v56 = v14;
+      v56 = clientCopy;
       v57 = 2112;
-      v58 = v30;
+      v58 = summary2;
       v59 = 2114;
-      v60 = v17;
+      v60 = reasonCopy;
       v61 = 2114;
-      v62 = v31;
+      v62 = summary3;
       v63 = 2114;
       v64 = v32;
       _os_log_impl(&dword_0, v29, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:lockedSetByClient} failed set-lock | client:%{public}@, lockedSetDescriptor:%@, reason:%{public}@, policy:%{public}@ | error:%{public}@", buf, 0x34u);
     }
 
-    v33 = [v16 clientDomainName];
-    v34 = [v16 assetSetIdentifier];
-    v35 = [v16 latestDownloadedAtomicInstance];
-    [MADAutoAssetHistory recordFailedOperation:101 fromClient:v14 forClientDomainName:v33 forAssetSetIdentifier:v34 forAtomicInstance:v35 failingWithError:v50[5]];
+    clientDomainName = [descriptorCopy clientDomainName];
+    assetSetIdentifier = [descriptorCopy assetSetIdentifier];
+    latestDownloadedAtomicInstance = [descriptorCopy latestDownloadedAtomicInstance];
+    [MADAutoAssetHistory recordFailedOperation:101 fromClient:clientCopy forClientDomainName:clientDomainName forAssetSetIdentifier:assetSetIdentifier forAtomicInstance:latestDownloadedAtomicInstance failingWithError:v50[5]];
 
-    if (a9)
+    if (error)
     {
-      *a9 = v50[5];
+      *error = v50[5];
     }
   }
 
@@ -5163,16 +5163,16 @@ LABEL_20:
     v36 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = [v16 summary];
-      v38 = [v18 summary];
+      summary4 = [descriptorCopy summary];
+      summary5 = [policyCopy summary];
       *buf = 138544130;
-      v56 = v14;
+      v56 = clientCopy;
       v57 = 2112;
-      v58 = v37;
+      v58 = summary4;
       v59 = 2114;
-      v60 = v17;
+      v60 = reasonCopy;
       v61 = 2114;
-      v62 = v38;
+      v62 = summary5;
       _os_log_impl(&dword_0, v36, OS_LOG_TYPE_DEFAULT, "{AUTO-LOCKER:lockedSetByClient} successful set-lock | client:%{public}@, lockedSetDescriptor:%@, reason:%{public}@, policy:%{public}@", buf, 0x2Au);
     }
   }
@@ -5330,36 +5330,36 @@ LABEL_3:
   }
 }
 
-+ (BOOL)continuedSetLockByClient:(id)a3 forSetDescriptor:(id)a4 forLockReason:(id)a5 withSetUsagePolicy:(id)a6 continueError:(id *)a7
++ (BOOL)continuedSetLockByClient:(id)client forSetDescriptor:(id)descriptor forLockReason:(id)reason withSetUsagePolicy:(id)policy continueError:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  clientCopy = client;
+  descriptorCopy = descriptor;
+  reasonCopy = reason;
+  policyCopy = policy;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
   v45 = __Block_byref_object_copy__17;
   v46 = __Block_byref_object_dispose__17;
   v47 = 0;
-  if (v11 && v12 && v13)
+  if (clientCopy && descriptorCopy && reasonCopy)
   {
     v15 = +[MADAutoAssetLocker autoAssetLocker];
     v16 = v15;
     if (v15)
     {
-      v17 = [v15 lockerQueue];
+      lockerQueue = [v15 lockerQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = __111__MADAutoAssetLocker_continuedSetLockByClient_forSetDescriptor_forLockReason_withSetUsagePolicy_continueError___block_invoke;
       block[3] = &unk_4B2ED0;
-      v37 = v12;
+      v37 = descriptorCopy;
       v16 = v16;
       v38 = v16;
-      v39 = v11;
-      v40 = v13;
+      v39 = clientCopy;
+      v40 = reasonCopy;
       v41 = &v42;
-      dispatch_sync(v17, block);
+      dispatch_sync(lockerQueue, block);
 
       v18 = v37;
       goto LABEL_20;
@@ -5371,9 +5371,9 @@ LABEL_3:
   else
   {
     v19 = [NSString alloc];
-    if (v11)
+    if (clientCopy)
     {
-      v20 = v11;
+      v20 = clientCopy;
     }
 
     else
@@ -5381,19 +5381,19 @@ LABEL_3:
       v20 = @"MISSING";
     }
 
-    if (v12)
+    if (descriptorCopy)
     {
-      v21 = [v12 summary];
+      summary = [descriptorCopy summary];
     }
 
     else
     {
-      v21 = @"MISSING";
+      summary = @"MISSING";
     }
 
-    if (v13)
+    if (reasonCopy)
     {
-      v22 = v13;
+      v22 = reasonCopy;
     }
 
     else
@@ -5401,8 +5401,8 @@ LABEL_3:
       v22 = @"MISSING";
     }
 
-    v16 = [v19 initWithFormat:@"set-lock not tracked (missing required) | client:%@, lockedSetDescriptor:%@, continueReason:%@", v20, v21, v22];
-    if (v12)
+    v16 = [v19 initWithFormat:@"set-lock not tracked (missing required) | client:%@, lockedSetDescriptor:%@, continueReason:%@", v20, summary, v22];
+    if (descriptorCopy)
     {
     }
 
@@ -5419,30 +5419,30 @@ LABEL_20:
     v25 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v26 = [v12 summary];
-      v27 = [v14 summary];
+      summary2 = [descriptorCopy summary];
+      summary3 = [policyCopy summary];
       v28 = v43[5];
       *buf = 138544386;
-      v49 = v11;
+      v49 = clientCopy;
       v50 = 2114;
-      v51 = v26;
+      v51 = summary2;
       v52 = 2114;
-      v53 = v13;
+      v53 = reasonCopy;
       v54 = 2114;
-      v55 = v27;
+      v55 = summary3;
       v56 = 2114;
       v57 = v28;
       _os_log_impl(&dword_0, v25, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:continuedSetLockByClient} failed continue-set-lock | client:%{public}@, lockedSetDescriptor:%{public}@, reason:%{public}@, policy:%{public}@ | error:%{public}@", buf, 0x34u);
     }
 
-    v29 = [v12 clientDomainName];
-    v30 = [v12 assetSetIdentifier];
-    v31 = [v12 latestDownloadedAtomicInstance];
-    [MADAutoAssetHistory recordFailedOperation:501 fromClient:v11 forClientDomainName:v29 forAssetSetIdentifier:v30 forAtomicInstance:v31 failingWithError:v43[5]];
+    clientDomainName = [descriptorCopy clientDomainName];
+    assetSetIdentifier = [descriptorCopy assetSetIdentifier];
+    latestDownloadedAtomicInstance = [descriptorCopy latestDownloadedAtomicInstance];
+    [MADAutoAssetHistory recordFailedOperation:501 fromClient:clientCopy forClientDomainName:clientDomainName forAssetSetIdentifier:assetSetIdentifier forAtomicInstance:latestDownloadedAtomicInstance failingWithError:v43[5]];
 
-    if (a7)
+    if (error)
     {
-      *a7 = v43[5];
+      *error = v43[5];
     }
   }
 
@@ -5451,16 +5451,16 @@ LABEL_20:
     v32 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [v12 summary];
-      v34 = [v14 summary];
+      summary4 = [descriptorCopy summary];
+      summary5 = [policyCopy summary];
       *buf = 138544130;
-      v49 = v11;
+      v49 = clientCopy;
       v50 = 2114;
-      v51 = v33;
+      v51 = summary4;
       v52 = 2114;
-      v53 = v13;
+      v53 = reasonCopy;
       v54 = 2114;
-      v55 = v34;
+      v55 = summary5;
       _os_log_impl(&dword_0, v32, OS_LOG_TYPE_DEFAULT, "{AUTO-LOCKER:continuedSetLockByClient} successful continue-set-lock | client:%{public}@, lockedSetDescriptor:%{public}@, reason:%{public}@, policy:%{public}@", buf, 0x2Au);
     }
   }
@@ -5598,11 +5598,11 @@ LABEL_23:
   }
 }
 
-+ (BOOL)endedPreviousSetLocksByClient:(id)a3 forSetDescriptor:(id)a4 forLockReason:(id)a5 removingLockCount:(int64_t)a6 endError:(id *)a7
++ (BOOL)endedPreviousSetLocksByClient:(id)client forSetDescriptor:(id)descriptor forLockReason:(id)reason removingLockCount:(int64_t)count endError:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  clientCopy = client;
+  descriptorCopy = descriptor;
+  reasonCopy = reason;
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
@@ -5613,28 +5613,28 @@ LABEL_23:
   v44 = &v43;
   v45 = 0x2020000000;
   v46 = 0;
-  if (v11 && v12)
+  if (clientCopy && descriptorCopy)
   {
-    if (a6 == -1 || a6 > 0)
+    if (count == -1 || count > 0)
     {
       v21 = +[MADAutoAssetLocker autoAssetLocker];
-      v16 = v21;
+      reasonCopy = v21;
       if (v21)
       {
-        v22 = [v21 lockerQueue];
+        lockerQueue = [v21 lockerQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = __110__MADAutoAssetLocker_endedPreviousSetLocksByClient_forSetDescriptor_forLockReason_removingLockCount_endError___block_invoke;
         block[3] = &unk_4B6340;
-        v36 = v12;
-        v16 = v16;
-        v37 = v16;
-        v38 = v11;
-        v39 = v13;
+        v36 = descriptorCopy;
+        reasonCopy = reasonCopy;
+        v37 = reasonCopy;
+        v38 = clientCopy;
+        v39 = reasonCopy;
         v40 = &v47;
         v41 = &v43;
-        v42 = a6;
-        dispatch_sync(v22, block);
+        countCopy = count;
+        dispatch_sync(lockerQueue, block);
 
         v23 = v36;
         goto LABEL_21;
@@ -5646,19 +5646,19 @@ LABEL_23:
     else
     {
       v14 = [NSString alloc];
-      v15 = [v12 summary];
-      v16 = [v14 initWithFormat:@"set-locks not ended (invalid endLockCount:%ld) | client:%@, lockedSetDescriptor:%@, endReason:%@", a6, v11, v15, v13];
+      summary = [descriptorCopy summary];
+      reasonCopy = [v14 initWithFormat:@"set-locks not ended (invalid endLockCount:%ld) | client:%@, lockedSetDescriptor:%@, endReason:%@", count, clientCopy, summary, reasonCopy];
 
-      v17 = [MAAutoAssetError buildError:6102 fromOperation:@"AUTO-LOCKER:endedPreviousSetLocksByClient" underlyingError:0 withDescription:v16];
+      v17 = [MAAutoAssetError buildError:6102 fromOperation:@"AUTO-LOCKER:endedPreviousSetLocksByClient" underlyingError:0 withDescription:reasonCopy];
     }
   }
 
   else
   {
     v18 = [NSString alloc];
-    if (v11)
+    if (clientCopy)
     {
-      v19 = v11;
+      v19 = clientCopy;
     }
 
     else
@@ -5666,19 +5666,19 @@ LABEL_23:
       v19 = @"MISSING";
     }
 
-    if (v12)
+    if (descriptorCopy)
     {
-      v20 = [v12 summary];
+      summary2 = [descriptorCopy summary];
     }
 
     else
     {
-      v20 = @"MISSING";
+      summary2 = @"MISSING";
     }
 
-    if (v13)
+    if (reasonCopy)
     {
-      v24 = v13;
+      v24 = reasonCopy;
     }
 
     else
@@ -5686,12 +5686,12 @@ LABEL_23:
       v24 = @"MISSING";
     }
 
-    v16 = [v18 initWithFormat:@"set-locks not ended (missing required) | client:%@, lockedSetDescriptor:%@, endReason:%@", v19, v20, v24];
-    if (v12)
+    reasonCopy = [v18 initWithFormat:@"set-locks not ended (missing required) | client:%@, lockedSetDescriptor:%@, endReason:%@", v19, summary2, v24];
+    if (descriptorCopy)
     {
     }
 
-    v17 = [MAAutoAssetError buildError:6102 fromOperation:@"AUTO-LOCKER:endedPreviousSetLocksByClient" underlyingError:0 withDescription:v16];
+    v17 = [MAAutoAssetError buildError:6102 fromOperation:@"AUTO-LOCKER:endedPreviousSetLocksByClient" underlyingError:0 withDescription:reasonCopy];
   }
 
   v23 = v48[5];
@@ -5703,27 +5703,27 @@ LABEL_21:
     v25 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v26 = [v12 summary];
+      summary3 = [descriptorCopy summary];
       v27 = v48[5];
       *buf = 138544130;
-      v54 = v11;
+      v54 = clientCopy;
       v55 = 2114;
-      v56 = v26;
+      v56 = summary3;
       v57 = 2114;
-      v58 = v13;
+      v58 = reasonCopy;
       v59 = 2114;
-      v60 = v27;
+      countCopy2 = v27;
       _os_log_impl(&dword_0, v25, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:endedPreviousSetLocksByClient} failed end-set-lock(s) | client:%{public}@, lockedSetDescriptor:%{public}@, reason:%{public}@ | error:%{public}@", buf, 0x2Au);
     }
 
-    v28 = [v12 clientDomainName];
-    v29 = [v12 assetSetIdentifier];
-    v30 = [v12 latestDownloadedAtomicInstance];
-    [MADAutoAssetHistory recordFailedOperation:502 fromClient:v11 forClientDomainName:v28 forAssetSetIdentifier:v29 forAtomicInstance:v30 failingWithError:v48[5]];
+    clientDomainName = [descriptorCopy clientDomainName];
+    assetSetIdentifier = [descriptorCopy assetSetIdentifier];
+    latestDownloadedAtomicInstance = [descriptorCopy latestDownloadedAtomicInstance];
+    [MADAutoAssetHistory recordFailedOperation:502 fromClient:clientCopy forClientDomainName:clientDomainName forAssetSetIdentifier:assetSetIdentifier forAtomicInstance:latestDownloadedAtomicInstance failingWithError:v48[5]];
 
-    if (a7)
+    if (error)
     {
-      *a7 = v48[5];
+      *error = v48[5];
     }
   }
 
@@ -5732,15 +5732,15 @@ LABEL_21:
     v31 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v12 summary];
+      summary4 = [descriptorCopy summary];
       *buf = 138544130;
-      v54 = v11;
+      v54 = clientCopy;
       v55 = 2114;
-      v56 = v32;
+      v56 = summary4;
       v57 = 2114;
-      v58 = v13;
+      v58 = reasonCopy;
       v59 = 2048;
-      v60 = a6;
+      countCopy2 = count;
       _os_log_impl(&dword_0, v31, OS_LOG_TYPE_DEFAULT, "{AUTO-LOCKER:endedPreviousSetLocksByClient} successful end-set-lock(s) | client:%{public}@, lockedSetDescriptor:%{public}@, reason:%{public}@, ended locks:%ld", buf, 0x2Au);
     }
 
@@ -5895,41 +5895,41 @@ LABEL_24:
   }
 }
 
-+ (void)eliminateAllPreviousSetLocksByClient:(id)a3 forSetDescriptor:(id)a4
++ (void)eliminateAllPreviousSetLocksByClient:(id)client forSetDescriptor:(id)descriptor
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  clientCopy = client;
+  descriptorCopy = descriptor;
+  v7 = descriptorCopy;
+  if (clientCopy && descriptorCopy)
   {
     v8 = +[MADAutoAssetLocker autoAssetLocker];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 lockerQueue];
+      lockerQueue = [v8 lockerQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = __76__MADAutoAssetLocker_eliminateAllPreviousSetLocksByClient_forSetDescriptor___block_invoke;
       block[3] = &unk_4B2AF0;
       v15 = v9;
-      v16 = v5;
+      v16 = clientCopy;
       v17 = v7;
-      dispatch_sync(v10, block);
+      dispatch_sync(lockerQueue, block);
 
-      v11 = v15;
+      summary2 = v15;
     }
 
     else
     {
-      v11 = _MADLog(@"AutoLocker");
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      summary2 = _MADLog(@"AutoLocker");
+      if (os_log_type_enabled(summary2, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v7 summary];
+        summary = [v7 summary];
         *buf = 138543618;
-        v19 = v5;
+        v19 = clientCopy;
         v20 = 2114;
-        v21 = v13;
-        _os_log_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:eliminateAllPreviousSetLocksByClient} no auto-asset-locker | client:%{public}@, lockedSetDescriptor:%{public}@", buf, 0x16u);
+        v21 = summary;
+        _os_log_impl(&dword_0, summary2, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:eliminateAllPreviousSetLocksByClient} no auto-asset-locker | client:%{public}@, lockedSetDescriptor:%{public}@", buf, 0x16u);
       }
     }
 
@@ -5941,10 +5941,10 @@ LABEL_15:
   v9 = _MADLog(@"AutoLocker");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v11 = @"MISSING";
-    if (v5)
+    summary2 = @"MISSING";
+    if (clientCopy)
     {
-      v12 = v5;
+      v12 = clientCopy;
     }
 
     else
@@ -5954,13 +5954,13 @@ LABEL_15:
 
     if (v7)
     {
-      v11 = [v7 summary];
+      summary2 = [v7 summary];
     }
 
     *buf = 138543618;
     v19 = v12;
     v20 = 2114;
-    v21 = v11;
+    v21 = summary2;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:eliminateAllPreviousSetLocksByClient} set-locks not eliminated (missing required) | client:%{public}@, lockedSetDescriptor:%{public}@", buf, 0x16u);
     if (v7)
     {
@@ -5971,30 +5971,30 @@ LABEL_15:
 LABEL_16:
 }
 
-+ (id)eliminateAllPreviousSetLocksNoLongerTracked:(id)a3
++ (id)eliminateAllPreviousSetLocksNoLongerTracked:(id)tracked
 {
-  v3 = a3;
+  trackedCopy = tracked;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__17;
   v19 = __Block_byref_object_dispose__17;
   v20 = 0;
-  if (v3)
+  if (trackedCopy)
   {
     v4 = +[MADAutoAssetLocker autoAssetLocker];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 lockerQueue];
+      lockerQueue = [v4 lockerQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = __66__MADAutoAssetLocker_eliminateAllPreviousSetLocksNoLongerTracked___block_invoke;
       block[3] = &unk_4B2E80;
       v13 = &v15;
       v11 = v5;
-      v12 = v3;
-      dispatch_sync(v6, block);
+      v12 = trackedCopy;
+      dispatch_sync(lockerQueue, block);
 
       v7 = v11;
     }
@@ -6033,9 +6033,9 @@ uint64_t __66__MADAutoAssetLocker_eliminateAllPreviousSetLocksNoLongerTracked___
   return _objc_release_x1();
 }
 
-+ (id)newCurrentSetLockUsageForDescriptor:(id)a3
++ (id)newCurrentSetLockUsageForDescriptor:(id)descriptor
 {
-  v3 = a3;
+  descriptorCopy = descriptor;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -6046,15 +6046,15 @@ uint64_t __66__MADAutoAssetLocker_eliminateAllPreviousSetLocksNoLongerTracked___
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 lockerQueue];
+    lockerQueue = [v4 lockerQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __58__MADAutoAssetLocker_newCurrentSetLockUsageForDescriptor___block_invoke;
     block[3] = &unk_4B4478;
-    v20 = v3;
+    v20 = descriptorCopy;
     v21 = v5;
     v22 = &v23;
-    dispatch_sync(v6, block);
+    dispatch_sync(lockerQueue, block);
 
     v7 = v20;
   }
@@ -6082,13 +6082,13 @@ uint64_t __66__MADAutoAssetLocker_eliminateAllPreviousSetLocksNoLongerTracked___
     v11 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v3 summary];
-      v13 = [v24[5] safeSummary];
-      v14 = v13;
+      summary = [descriptorCopy summary];
+      safeSummary = [v24[5] safeSummary];
+      v14 = safeSummary;
       v15 = @"s";
       *buf = 138544130;
       v31 = 2048;
-      v30 = v12;
+      v30 = summary;
       if (v10 == &dword_0 + 1)
       {
         v15 = &stru_4BD3F0;
@@ -6098,7 +6098,7 @@ uint64_t __66__MADAutoAssetLocker_eliminateAllPreviousSetLocksNoLongerTracked___
       v33 = 2114;
       v34 = v15;
       v35 = 2114;
-      v36 = v13;
+      v36 = safeSummary;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "{AUTO-LOCKER:newCurrentSetLockUsageForDescriptor} | lockedSetDescriptor:%{public}@ | %ld current lock-reason%{public}@:%{public}@", buf, 0x2Au);
     }
   }
@@ -6108,9 +6108,9 @@ uint64_t __66__MADAutoAssetLocker_eliminateAllPreviousSetLocksNoLongerTracked___
     v11 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v3 summary];
+      summary2 = [descriptorCopy summary];
       *buf = 138543362;
-      v30 = v16;
+      v30 = summary2;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "{AUTO-LOCKER:newCurrentSetLockUsageForDescriptor} | lockedSetDescriptor:%{public}@ | no current lock-reasons", buf, 0xCu);
     }
   }
@@ -6262,15 +6262,15 @@ void __58__MADAutoAssetLocker_newCurrentSetLockUsageForDescriptor___block_invoke
   }
 }
 
-- (BOOL)isAssetLockSetAtomicInstanceLock:(id)a3
+- (BOOL)isAssetLockSetAtomicInstanceLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 lockReasons];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  lockReasons = [lockCopy lockReasons];
+  v6 = [lockReasons countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -6282,18 +6282,18 @@ void __58__MADAutoAssetLocker_newCurrentSetLockUsageForDescriptor___block_invoke
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(lockReasons);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v4 lockReasons];
-        v13 = [v12 safeObjectForKey:v11 ofClass:objc_opt_class()];
+        lockReasons2 = [lockCopy lockReasons];
+        v13 = [lockReasons2 safeObjectForKey:v11 ofClass:objc_opt_class()];
 
         v14 = [(MADAutoAssetLocker *)self atomicInstanceUUIDForLockTracker:v13];
         v8 |= v14 != 0;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [lockReasons countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -6307,22 +6307,22 @@ void __58__MADAutoAssetLocker_newCurrentSetLockUsageForDescriptor___block_invoke
   return v8 & 1;
 }
 
-- (id)atomicInstanceUUIDForLockTracker:(id)a3
+- (id)atomicInstanceUUIDForLockTracker:(id)tracker
 {
-  v3 = a3;
-  v4 = [v3 clientLockReason];
-  v5 = [v4 autoAssetClientName];
+  trackerCopy = tracker;
+  clientLockReason = [trackerCopy clientLockReason];
+  autoAssetClientName = [clientLockReason autoAssetClientName];
 
-  if (v5)
+  if (autoAssetClientName)
   {
-    v6 = [v3 clientLockReason];
-    v7 = [v6 autoAssetClientName];
-    v8 = [v7 componentsSeparatedByString:@"_"];
+    clientLockReason2 = [trackerCopy clientLockReason];
+    autoAssetClientName2 = [clientLockReason2 autoAssetClientName];
+    v8 = [autoAssetClientName2 componentsSeparatedByString:@"_"];
 
     v9 = [v8 count];
     if (v9 < 3)
     {
-      v5 = 0;
+      autoAssetClientName = 0;
     }
 
     else
@@ -6330,64 +6330,64 @@ void __58__MADAutoAssetLocker_newCurrentSetLockUsageForDescriptor___block_invoke
       v10 = [v8 objectAtIndex:v9 - 1];
       if ([v10 length] == &stru_20.cmdsize)
       {
-        v5 = v10;
+        autoAssetClientName = v10;
       }
 
       else
       {
-        v5 = 0;
+        autoAssetClientName = 0;
       }
     }
   }
 
-  return v5;
+  return autoAssetClientName;
 }
 
-- (id)_lockAutoAssetByClient:(id)a3 forClientProcessName:(id)a4 withClientProcessID:(int64_t)a5 forClientDomainName:(id)a6 forAssetSelector:(id)a7 forSetAtomicInstance:(id)a8 forLockReason:(id)a9 withDeltaLockCount:(int64_t)a10 withUsagePolicy:(id)a11 withLocalContentURL:(id)a12 withAssetAttributes:(id)a13
+- (id)_lockAutoAssetByClient:(id)client forClientProcessName:(id)name withClientProcessID:(int64_t)d forClientDomainName:(id)domainName forAssetSelector:(id)selector forSetAtomicInstance:(id)instance forLockReason:(id)reason withDeltaLockCount:(int64_t)self0 withUsagePolicy:(id)self1 withLocalContentURL:(id)self2 withAssetAttributes:(id)self3
 {
-  v18 = a3;
-  v63 = a4;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a11;
-  v23 = v21;
-  v62 = a12;
-  v61 = a13;
-  v24 = a9;
-  v25 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v25);
+  clientCopy = client;
+  nameCopy = name;
+  domainNameCopy = domainName;
+  selectorCopy = selector;
+  instanceCopy = instance;
+  policyCopy = policy;
+  v23 = instanceCopy;
+  lCopy = l;
+  attributesCopy = attributes;
+  reasonCopy = reason;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
   if (v23)
   {
-    v26 = [(MADAutoAssetLocker *)self newSetClientNameForDomain:v19 withAutoAssetClientName:v18 forSetAtomicInstance:v23];
+    v26 = [(MADAutoAssetLocker *)self newSetClientNameForDomain:domainNameCopy withAutoAssetClientName:clientCopy forSetAtomicInstance:v23];
   }
 
   else
   {
-    v26 = v18;
+    v26 = clientCopy;
   }
 
   v60 = v26;
-  v27 = [[MAAutoAssetLockReason alloc] initForClientName:v26 forLockReason:v24];
+  v27 = [[MAAutoAssetLockReason alloc] initForClientName:v26 forLockReason:reasonCopy];
 
   if (objc_opt_respondsToSelector())
   {
-    v28 = v20;
+    v28 = selectorCopy;
     isPlatformVersionAtLeast = __isPlatformVersionAtLeast(2, 18, 0, 0);
     v30 = [MAAutoAssetLockTracker alloc];
     if (isPlatformVersionAtLeast)
     {
-      v31 = [v30 initForClientLockReason:v27 forClientProcessName:v63 withClientProcessID:a5 lockingWithUsagePolicy:v22];
+      v31 = [v30 initForClientLockReason:v27 forClientProcessName:nameCopy withClientProcessID:d lockingWithUsagePolicy:policyCopy];
     }
 
     else
     {
-      v31 = [v30 initForClientLockReason:v27 lockingWithUsagePolicy:v22];
+      v31 = [v30 initForClientLockReason:v27 lockingWithUsagePolicy:policyCopy];
     }
 
     v32 = v31;
-    v20 = v28;
+    selectorCopy = v28;
     if (!v27)
     {
       goto LABEL_15;
@@ -6396,7 +6396,7 @@ void __58__MADAutoAssetLocker_newCurrentSetLockUsageForDescriptor___block_invoke
 
   else
   {
-    v32 = [[MAAutoAssetLockTracker alloc] initForClientLockReason:v27 lockingWithUsagePolicy:v22];
+    v32 = [[MAAutoAssetLockTracker alloc] initForClientLockReason:v27 lockingWithUsagePolicy:policyCopy];
     if (!v27)
     {
       goto LABEL_15;
@@ -6411,15 +6411,15 @@ LABEL_15:
   }
 
   v59 = v23;
-  v33 = [(MADAutoAssetLocker *)self locateLockByFullAssetSelector:v20];
-  v55 = v18;
-  v56 = v20;
+  v33 = [(MADAutoAssetLocker *)self locateLockByFullAssetSelector:selectorCopy];
+  v55 = clientCopy;
+  v56 = selectorCopy;
   if (v33)
   {
     v34 = v33;
-    v35 = [v33 lockReasons];
-    v36 = [v27 summary];
-    v37 = [v35 safeObjectForKey:v36 ofClass:objc_opt_class()];
+    lockReasons = [v33 lockReasons];
+    summary = [v27 summary];
+    v37 = [lockReasons safeObjectForKey:summary ofClass:objc_opt_class()];
 
     if (v37)
     {
@@ -6429,20 +6429,20 @@ LABEL_15:
 
     else
     {
-      v44 = [v34 lockReasons];
-      v45 = [v27 summary];
-      [v44 setSafeObject:v32 forKey:v45];
+      lockReasons2 = [v34 lockReasons];
+      summary2 = [v27 summary];
+      [lockReasons2 setSafeObject:v32 forKey:summary2];
 
       v38 = @"existing lock of auto-specific-asset locked for new reason";
     }
 
     v39 = 0;
     v43 = 0;
-    v18 = v55;
-    if (v22)
+    clientCopy = v55;
+    if (policyCopy)
     {
 LABEL_21:
-      if ([v22 lockInhibitsEmergencyRemoval])
+      if ([policyCopy lockInhibitsEmergencyRemoval])
       {
         [v34 setInhibitedFromEmergencyRemoval:1];
       }
@@ -6451,18 +6451,18 @@ LABEL_21:
 
   else
   {
-    v40 = [[MAAutoAssetLock alloc] initForSelector:v20 withLocalContentURL:v62 withAssetAttributes:v61];
+    v40 = [[MAAutoAssetLock alloc] initForSelector:selectorCopy withLocalContentURL:lCopy withAssetAttributes:attributesCopy];
     v34 = v40;
     if (v40)
     {
-      v41 = [v40 lockReasons];
-      v42 = [v27 summary];
-      [v41 setSafeObject:v32 forKey:v42];
+      lockReasons3 = [v40 lockReasons];
+      summary3 = [v27 summary];
+      [lockReasons3 setSafeObject:v32 forKey:summary3];
 
       v39 = 0;
       v38 = @"first lock of auto-specific-asset";
       v43 = 1;
-      if (v22)
+      if (policyCopy)
       {
         goto LABEL_21;
       }
@@ -6473,7 +6473,7 @@ LABEL_21:
       v39 = [MAAutoAssetError buildError:6101 fromOperation:@"AUTO-LOCKER:_lockAutoAssetByClient" underlyingError:0 withDescription:@"unable to allocate auto-asset-lock"];
       v43 = 0;
       v38 = @"locked by client for specified reason";
-      if (v22)
+      if (policyCopy)
       {
         goto LABEL_21;
       }
@@ -6483,8 +6483,8 @@ LABEL_21:
   if (!v39)
   {
     v46 = [NSString alloc];
-    v47 = [v34 lockReasons];
-    v48 = [v46 initWithFormat:@"%@ | assetLock.lockReasons:%ld", v38, objc_msgSend(v47, "count")];
+    lockReasons4 = [v34 lockReasons];
+    v48 = [v46 initWithFormat:@"%@ | assetLock.lockReasons:%ld", v38, objc_msgSend(lockReasons4, "count")];
 
     if (v43)
     {
@@ -6496,26 +6496,26 @@ LABEL_21:
       v49 = @"ENTRY_INCREASED";
     }
 
-    [(MADAutoAssetLocker *)self _persistAssetLock:@"_lockAutoAssetByClient" operation:v49 forAssetLock:v34 withDeltaLockCount:a10 message:v48];
+    [(MADAutoAssetLocker *)self _persistAssetLock:@"_lockAutoAssetByClient" operation:v49 forAssetLock:v34 withDeltaLockCount:count message:v48];
     v39 = [(MADAutoAssetLocker *)self _refreshFilesystemMetadataLastInterest:v34];
     if (v39)
     {
-      v50 = [v34 fullAssetSelector];
-      v18 = v55;
-      [(MADAutoAssetLocker *)self _removeAssetLock:@"_lockAutoAssetByClient" removingAssetLock:v34 lastClient:v55 forSelector:v50 message:@"unable to refresh filesystem metadata on initial lock (lock considered invalid)"];
+      fullAssetSelector = [v34 fullAssetSelector];
+      clientCopy = v55;
+      [(MADAutoAssetLocker *)self _removeAssetLock:@"_lockAutoAssetByClient" removingAssetLock:v34 lastClient:v55 forSelector:fullAssetSelector message:@"unable to refresh filesystem metadata on initial lock (lock considered invalid)"];
     }
 
     else
     {
-      v51 = [v34 inhibitedFromEmergencyRemoval];
+      inhibitedFromEmergencyRemoval = [v34 inhibitedFromEmergencyRemoval];
       v52 = 101;
-      if (v51)
+      if (inhibitedFromEmergencyRemoval)
       {
         v52 = 102;
       }
 
       v53 = 250;
-      if (v51)
+      if (inhibitedFromEmergencyRemoval)
       {
         v53 = 251;
       }
@@ -6527,47 +6527,47 @@ LABEL_21:
 
       v57 = v52;
       [(MADAutoAssetLocker *)self lockCountsTotal];
-      v50 = [(MADAutoAssetLocker *)self _assetIDOfLock:v34];
-      v18 = v55;
+      fullAssetSelector = [(MADAutoAssetLocker *)self _assetIDOfLock:v34];
+      clientCopy = v55;
       [MADAutoAssetHistory recordOperation:"recordOperation:toHistoryType:fromClient:usageCount:forAssetID:withSelector:" toHistoryType:v57 fromClient:1 usageCount:? forAssetID:? withSelector:?];
     }
   }
 
-  v20 = v56;
+  selectorCopy = v56;
   v23 = v59;
 LABEL_40:
 
   return v39;
 }
 
-- (id)_continuedLockByClient:(id)a3 forClientDomainName:(id)a4 forAssetSetIdentifier:(id)a5 forAssetSelector:(id)a6 forSetAtomicInstance:(id)a7 forLockReason:(id)a8 withUsagePolicy:(id)a9
+- (id)_continuedLockByClient:(id)client forClientDomainName:(id)name forAssetSetIdentifier:(id)identifier forAssetSelector:(id)selector forSetAtomicInstance:(id)instance forLockReason:(id)reason withUsagePolicy:(id)policy
 {
-  v14 = a3;
-  v15 = a4;
-  v54 = a6;
-  v16 = a7;
-  v17 = a9;
-  v18 = a8;
-  v19 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v19);
+  clientCopy = client;
+  nameCopy = name;
+  selectorCopy = selector;
+  instanceCopy = instance;
+  policyCopy = policy;
+  reasonCopy = reason;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
-  if (v16)
+  if (instanceCopy)
   {
-    v20 = [(MADAutoAssetLocker *)self newSetClientNameForDomain:v15 withAutoAssetClientName:v14 forSetAtomicInstance:v16];
+    v20 = [(MADAutoAssetLocker *)self newSetClientNameForDomain:nameCopy withAutoAssetClientName:clientCopy forSetAtomicInstance:instanceCopy];
   }
 
   else
   {
-    v20 = v14;
+    v20 = clientCopy;
   }
 
   v52 = v20;
-  v21 = [[MAAutoAssetLockReason alloc] initForClientName:v20 forLockReason:v18];
+  v21 = [[MAAutoAssetLockReason alloc] initForClientName:v20 forLockReason:reasonCopy];
 
-  v22 = [[MAAutoAssetLockTracker alloc] initForClientLockReason:v21 lockingWithUsagePolicy:v17];
+  v22 = [[MAAutoAssetLockTracker alloc] initForClientLockReason:v21 lockingWithUsagePolicy:policyCopy];
   v23 = v22;
-  v24 = v54;
-  v53 = v17;
+  v24 = selectorCopy;
+  v53 = policyCopy;
   if (!v21 || !v22)
   {
     v34 = [MAAutoAssetError buildError:6101 fromOperation:@"AUTO-LOCKER:continuedLockByClient" underlyingError:0 withDescription:@"unable to allocate auto-asset-lock-tracker"];
@@ -6579,48 +6579,48 @@ LABEL_40:
     goto LABEL_24;
   }
 
-  v51 = v15;
-  v25 = [(MADAutoAssetLocker *)self locateLockByFullAssetSelector:v54];
+  v51 = nameCopy;
+  v25 = [(MADAutoAssetLocker *)self locateLockByFullAssetSelector:selectorCopy];
   v26 = v25;
   if (!v25)
   {
     v36 = [NSString alloc];
-    v29 = [v54 summary];
-    v35 = [v36 initWithFormat:@"cannot accept continue lock when no existing lock for auto-specific-asset:%@", v29];
-    v34 = [MAAutoAssetError buildError:6501 fromOperation:@"AUTO-LOCKER:continuedLockByClient" underlyingError:0 withDescription:v35];
+    summary = [selectorCopy summary];
+    fullAssetSelector = [v36 initWithFormat:@"cannot accept continue lock when no existing lock for auto-specific-asset:%@", summary];
+    v34 = [MAAutoAssetError buildError:6501 fromOperation:@"AUTO-LOCKER:continuedLockByClient" underlyingError:0 withDescription:fullAssetSelector];
     goto LABEL_22;
   }
 
-  v50 = v14;
-  v27 = [v25 lockReasons];
-  v28 = [v21 summary];
-  v29 = [v27 safeObjectForKey:v28 ofClass:objc_opt_class()];
+  v50 = clientCopy;
+  lockReasons = [v25 lockReasons];
+  summary2 = [v21 summary];
+  summary = [lockReasons safeObjectForKey:summary2 ofClass:objc_opt_class()];
 
-  if (!v29)
+  if (!summary)
   {
     v37 = [NSString alloc];
-    v38 = [v21 summary];
-    v39 = [v37 initWithFormat:@"cannot accept continue lock when no existing lock for client-lock-reason:%@", v38];
+    summary3 = [v21 summary];
+    v39 = [v37 initWithFormat:@"cannot accept continue lock when no existing lock for client-lock-reason:%@", summary3];
     v34 = [MAAutoAssetError buildError:6501 fromOperation:@"AUTO-LOCKER:continuedLockByClient" underlyingError:0 withDescription:v39];
 
     if (v34)
     {
-      v14 = v50;
+      clientCopy = v50;
       goto LABEL_23;
     }
 
     goto LABEL_18;
   }
 
-  [(MADAutoAssetLocker *)self _mergeContinuedLock:v23 intoExistingLock:v29];
+  [(MADAutoAssetLocker *)self _mergeContinuedLock:v23 intoExistingLock:summary];
   if (v53 && [v53 lockInhibitsEmergencyRemoval])
   {
     [v26 setInhibitedFromEmergencyRemoval:1];
   }
 
   v30 = [NSString alloc];
-  v31 = [v26 lockReasons];
-  v32 = [v30 initWithFormat:@"client continued lock of auto-specific-asset | assetLock.lockReasons:%ld", objc_msgSend(v31, "count")];
+  lockReasons2 = [v26 lockReasons];
+  v32 = [v30 initWithFormat:@"client continued lock of auto-specific-asset | assetLock.lockReasons:%ld", objc_msgSend(lockReasons2, "count")];
   [(MADAutoAssetLocker *)self _persistAssetLock:@"continuedLockByClient" operation:@"ENTRY_MODIFY" forAssetLock:v26 withDeltaLockCount:0 message:v32];
 
   v33 = [(MADAutoAssetLocker *)self _refreshFilesystemMetadataLastInterest:v26];
@@ -6637,22 +6637,22 @@ LABEL_18:
       v40 = 250;
     }
 
-    v41 = [(MADAutoAssetLocker *)self lockCountsTotal];
-    v35 = [(MADAutoAssetLocker *)self _assetIDOfLock:v26];
+    lockCountsTotal = [(MADAutoAssetLocker *)self lockCountsTotal];
+    fullAssetSelector = [(MADAutoAssetLocker *)self _assetIDOfLock:v26];
     v42 = v40;
-    v14 = v50;
-    [MADAutoAssetHistory recordOperation:v42 toHistoryType:1 fromClient:v50 usageCount:v41 forAssetID:v35 withSelector:v54];
+    clientCopy = v50;
+    [MADAutoAssetHistory recordOperation:v42 toHistoryType:1 fromClient:v50 usageCount:lockCountsTotal forAssetID:fullAssetSelector withSelector:selectorCopy];
     v34 = 0;
     goto LABEL_22;
   }
 
   v34 = v33;
-  v35 = [v26 fullAssetSelector];
-  [(MADAutoAssetLocker *)self _removeAssetLock:@"continuedLockByClient" removingAssetLock:v26 lastClient:v14 forSelector:v35 message:@"unable to refresh filesystem metadata on continue lock (lock considered invalid)"];
+  fullAssetSelector = [v26 fullAssetSelector];
+  [(MADAutoAssetLocker *)self _removeAssetLock:@"continuedLockByClient" removingAssetLock:v26 lastClient:clientCopy forSelector:fullAssetSelector message:@"unable to refresh filesystem metadata on continue lock (lock considered invalid)"];
 LABEL_22:
 
 LABEL_23:
-  v15 = v51;
+  nameCopy = v51;
   if (!v34)
   {
     goto LABEL_27;
@@ -6662,22 +6662,22 @@ LABEL_24:
   v43 = _MADLog(@"AutoLocker");
   if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
   {
-    v44 = [(MADAutoAssetLocker *)self summary];
-    [v54 summary];
-    v45 = v15;
-    v47 = v46 = v14;
-    v48 = [v34 checkedSummary];
+    summary4 = [(MADAutoAssetLocker *)self summary];
+    [selectorCopy summary];
+    v45 = nameCopy;
+    v47 = v46 = clientCopy;
+    checkedSummary = [v34 checkedSummary];
     *buf = 138543874;
-    v56 = v44;
+    v56 = summary4;
     v57 = 2114;
     v58 = v47;
     v59 = 2114;
-    v60 = v48;
+    v60 = checkedSummary;
     _os_log_impl(&dword_0, v43, OS_LOG_TYPE_ERROR, "%{public}@ | {_continuedLockByClient} unable to continue lock | fullAssetSelector:%{public}@ | continueError:%{public}@", buf, 0x20u);
 
-    v14 = v46;
-    v15 = v45;
-    v24 = v54;
+    clientCopy = v46;
+    nameCopy = v45;
+    v24 = selectorCopy;
   }
 
 LABEL_27:
@@ -6685,21 +6685,21 @@ LABEL_27:
   return v34;
 }
 
-- (void)_endAllSetLocksByClient:(id)a3 forSetDescriptor:(id)a4
+- (void)_endAllSetLocksByClient:(id)client forSetDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
-  v40 = self;
-  v8 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v8);
+  clientCopy = client;
+  descriptorCopy = descriptor;
+  selfCopy = self;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = [v7 latestDowloadedAtomicInstanceEntries];
+  obj = [descriptorCopy latestDowloadedAtomicInstanceEntries];
   v9 = [obj countByEnumeratingWithState:&v43 objects:v55 count:16];
-  v37 = v6;
+  v37 = clientCopy;
   if (v9)
   {
     v10 = v9;
@@ -6715,11 +6715,11 @@ LABEL_27:
 
         v12 = *(*(&v43 + 1) + 8 * i);
         v13 = objc_autoreleasePoolPush();
-        v14 = [v7 clientDomainName];
-        v15 = [v12 fullAssetSelector];
-        v16 = [v7 latestDownloadedAtomicInstance];
+        clientDomainName = [descriptorCopy clientDomainName];
+        fullAssetSelector = [v12 fullAssetSelector];
+        latestDownloadedAtomicInstance = [descriptorCopy latestDownloadedAtomicInstance];
         v42 = 0;
-        [(MADAutoAssetLocker *)v40 _endLocksByClient:@"_endAllSetLocksByClient" forAssetClientName:v6 forAllClientNames:1 forClientProcessName:0 withClientProcessID:0 forClientDomainName:v14 forAssetSelector:v15 forSetAtomicInstance:v16 forLockReason:0 removingLockCount:-1 endError:&v42];
+        [(MADAutoAssetLocker *)selfCopy _endLocksByClient:@"_endAllSetLocksByClient" forAssetClientName:clientCopy forAllClientNames:1 forClientProcessName:0 withClientProcessID:0 forClientDomainName:clientDomainName forAssetSelector:fullAssetSelector forSetAtomicInstance:latestDownloadedAtomicInstance forLockReason:0 removingLockCount:-1 endError:&v42];
         v17 = v42;
 
         if (v17)
@@ -6727,21 +6727,21 @@ LABEL_27:
           v18 = _MADLog(@"AutoLocker");
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
-            v19 = [(MADAutoAssetLocker *)v40 lockCountsTotal];
-            v20 = [v7 summary];
-            v21 = [v12 summary];
-            v22 = [v17 checkedSummary];
+            lockCountsTotal = [(MADAutoAssetLocker *)selfCopy lockCountsTotal];
+            summary = [descriptorCopy summary];
+            summary2 = [v12 summary];
+            checkedSummary = [v17 checkedSummary];
             *buf = 134218754;
-            v48 = v19;
+            v48 = lockCountsTotal;
             v49 = 2114;
-            v50 = v20;
+            v50 = summary;
             v51 = 2114;
-            v52 = v21;
+            v52 = summary2;
             v53 = 2114;
-            v54 = v22;
+            v54 = checkedSummary;
             _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER[totalLocks:%ld]:eliminateAllPreviousSetLocksByClient} | unable to end auto-asset all-lock for the set | lockedSetDescriptor:%{public}@ | nextEntry:%{public}@ | endedLocksAutoAssetError:%{public}@", buf, 0x2Au);
 
-            v6 = v37;
+            clientCopy = v37;
           }
         }
 
@@ -6763,15 +6763,15 @@ LABEL_27:
     if (v25)
     {
       v26 = [MAAutoAssetSelector alloc];
-      v27 = [v7 latestDownloadedAtomicInstance];
-      v28 = [v26 initForSetAtomicInstanceUUID:v27];
+      latestDownloadedAtomicInstance2 = [descriptorCopy latestDownloadedAtomicInstance];
+      v28 = [v26 initForSetAtomicInstanceUUID:latestDownloadedAtomicInstance2];
 
       if (v28)
       {
-        v29 = [v7 clientDomainName];
-        v30 = [v7 latestDownloadedAtomicInstance];
+        clientDomainName2 = [descriptorCopy clientDomainName];
+        latestDownloadedAtomicInstance3 = [descriptorCopy latestDownloadedAtomicInstance];
         v41 = 0;
-        [(MADAutoAssetLocker *)v40 _endLocksByClient:@"_endAllSetLocksByClient" forAssetClientName:v37 forAllClientNames:1 forClientProcessName:0 withClientProcessID:0 forClientDomainName:v29 forAssetSelector:v28 forSetAtomicInstance:v30 forLockReason:0 removingLockCount:-1 endError:&v41];
+        [(MADAutoAssetLocker *)selfCopy _endLocksByClient:@"_endAllSetLocksByClient" forAssetClientName:v37 forAllClientNames:1 forClientProcessName:0 withClientProcessID:0 forClientDomainName:clientDomainName2 forAssetSelector:v28 forSetAtomicInstance:latestDownloadedAtomicInstance3 forLockReason:0 removingLockCount:-1 endError:&v41];
         v31 = v41;
 
         if (v31)
@@ -6779,37 +6779,37 @@ LABEL_27:
           v32 = _MADLog(@"AutoLocker");
           if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
           {
-            v33 = [(MADAutoAssetLocker *)v40 lockCountsTotal];
-            v34 = [v7 summary];
-            v35 = [v28 summary];
-            v36 = [v31 checkedSummary];
+            lockCountsTotal2 = [(MADAutoAssetLocker *)selfCopy lockCountsTotal];
+            summary3 = [descriptorCopy summary];
+            summary4 = [v28 summary];
+            checkedSummary2 = [v31 checkedSummary];
             *buf = 134218754;
-            v48 = v33;
+            v48 = lockCountsTotal2;
             v49 = 2114;
-            v50 = v34;
+            v50 = summary3;
             v51 = 2114;
-            v52 = v35;
+            v52 = summary4;
             v53 = 2114;
-            v54 = v36;
+            v54 = checkedSummary2;
             _os_log_impl(&dword_0, v32, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER[totalLocks:%ld]:eliminateAllPreviousSetLocksByClient} | unable to end auto-asset all-lock for the set | lockedSetDescriptor:%{public}@ | setSelector:%{public}@ | endedLocksAutoAssetError:%{public}@", buf, 0x2Au);
           }
         }
       }
 
-      v6 = v37;
+      clientCopy = v37;
     }
 
     objc_autoreleasePoolPop(v23);
   }
 }
 
-- (id)_endAllSetLocksNoLongerTracked:(id)a3
+- (id)_endAllSetLocksNoLongerTracked:(id)tracked
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v5);
+  trackedCopy = tracked;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
-  v6 = [(MADAutoAssetLocker *)self locateLocksNewAllBySelector];
+  locateLocksNewAllBySelector = [(MADAutoAssetLocker *)self locateLocksNewAllBySelector];
   v7 = objc_alloc_init(NSMutableArray);
   v33 = objc_alloc_init(NSMutableArray);
   [(MADAutoAssetLocker *)self trackPerformanceIteration:@"_endAllSetLocksNoLongerTracked" ofContainer:@"locksBySelector"];
@@ -6817,7 +6817,7 @@ LABEL_27:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v8 = v6;
+  v8 = locateLocksNewAllBySelector;
   v9 = [v8 countByEnumeratingWithState:&v41 objects:v52 count:16];
   if (v9)
   {
@@ -6835,7 +6835,7 @@ LABEL_27:
         v13 = *(*(&v41 + 1) + 8 * i);
         v14 = objc_autoreleasePoolPush();
         v15 = [v8 safeObjectForKey:v13 ofClass:objc_opt_class()];
-        if ([(MADAutoAssetLocker *)self _isUntrackedSetAssetLock:v15 forTrackedSetDescriptors:v4])
+        if ([(MADAutoAssetLocker *)self _isUntrackedSetAssetLock:v15 forTrackedSetDescriptors:trackedCopy])
         {
           [v7 addObject:v15];
         }
@@ -6850,7 +6850,7 @@ LABEL_27:
   }
 
   v31 = v8;
-  v32 = v4;
+  v32 = trackedCopy;
 
   v39 = 0u;
   v40 = 0u;
@@ -6872,9 +6872,9 @@ LABEL_27:
 
         v18 = *(*(&v37 + 1) + 8 * j);
         v19 = objc_autoreleasePoolPush();
-        v20 = [v18 fullAssetSelector];
+        fullAssetSelector = [v18 fullAssetSelector];
         v36 = 0;
-        [(MADAutoAssetLocker *)self _endLocksByClient:@"_endAllSetLocksNoLongerTracked" forAssetClientName:@"_endAllSetLocksNoLongerTracked" forAllClientNames:1 forClientProcessName:0 withClientProcessID:0 forClientDomainName:@"_endAllSetLocksNoLongerTracked" forAssetSelector:v20 forSetAtomicInstance:0 forLockReason:0 removingLockCount:-1 endError:&v36];
+        [(MADAutoAssetLocker *)self _endLocksByClient:@"_endAllSetLocksNoLongerTracked" forAssetClientName:@"_endAllSetLocksNoLongerTracked" forAllClientNames:1 forClientProcessName:0 withClientProcessID:0 forClientDomainName:@"_endAllSetLocksNoLongerTracked" forAssetSelector:fullAssetSelector forSetAtomicInstance:0 forLockReason:0 removingLockCount:-1 endError:&v36];
         v21 = v36;
 
         if (v21)
@@ -6882,14 +6882,14 @@ LABEL_27:
           v22 = _MADLog(@"AutoLocker");
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
-            v23 = [(MADAutoAssetLocker *)self lockCountsTotal];
-            v24 = [v18 summary];
+            lockCountsTotal = [(MADAutoAssetLocker *)self lockCountsTotal];
+            summary = [v18 summary];
             [v21 checkedSummary];
             v26 = v25 = v16;
             *buf = 134218498;
-            v46 = v23;
+            v46 = lockCountsTotal;
             v47 = 2114;
-            v48 = v24;
+            v48 = summary;
             v49 = 2114;
             v50 = v26;
             _os_log_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER[totalLocks:%ld]:_endAllSetLocksNoLongerTracked} | unable to end auto-asset all-locks not tracked in sets | untrackedLock:%{public}@ |  endedLocksAutoAssetError:%{public}@", buf, 0x20u);
@@ -6900,13 +6900,13 @@ LABEL_27:
 
         else
         {
-          v27 = [v18 fullAssetSelector];
-          v22 = [(MADAutoAssetLocker *)self locateLockByFullAssetSelector:v27];
+          fullAssetSelector2 = [v18 fullAssetSelector];
+          v22 = [(MADAutoAssetLocker *)self locateLockByFullAssetSelector:fullAssetSelector2];
 
           if (!v22)
           {
-            v28 = [v18 fullAssetSelector];
-            [v33 addObject:v28];
+            fullAssetSelector3 = [v18 fullAssetSelector];
+            [v33 addObject:fullAssetSelector3];
           }
         }
 
@@ -6932,25 +6932,25 @@ LABEL_27:
   return v29;
 }
 
-- (id)_endAllSetLocks:(id)a3 forClientDomainName:(id)a4 forAssetSetIdentifier:(id)a5
+- (id)_endAllSetLocks:(id)locks forClientDomainName:(id)name forAssetSetIdentifier:(id)identifier
 {
-  v8 = a3;
-  v42 = a4;
-  v9 = a5;
-  v10 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v10);
+  locksCopy = locks;
+  nameCopy = name;
+  identifierCopy = identifier;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
-  v37 = v8;
-  v11 = [[NSString alloc] initWithFormat:@"%@:_endAllSetLocks", v8];
-  v12 = [(MADAutoAssetLocker *)self locateLocksNewAllBySelector];
+  v37 = locksCopy;
+  locksCopy = [[NSString alloc] initWithFormat:@"%@:_endAllSetLocks", locksCopy];
+  locateLocksNewAllBySelector = [(MADAutoAssetLocker *)self locateLocksNewAllBySelector];
   v13 = objc_alloc_init(NSMutableArray);
   v38 = objc_alloc_init(NSMutableArray);
-  [(MADAutoAssetLocker *)self trackPerformanceIteration:v11 ofContainer:@"locksBySelector"];
+  [(MADAutoAssetLocker *)self trackPerformanceIteration:locksCopy ofContainer:@"locksBySelector"];
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v12;
+  obj = locateLocksNewAllBySelector;
   v14 = [obj countByEnumeratingWithState:&v48 objects:v61 count:16];
   if (v14)
   {
@@ -6968,7 +6968,7 @@ LABEL_27:
         v18 = *(*(&v48 + 1) + 8 * i);
         v19 = objc_autoreleasePoolPush();
         v20 = [obj safeObjectForKey:v18 ofClass:objc_opt_class()];
-        if ([(MADAutoAssetLocker *)self _isSetAssetLock:v20 forClientDomainName:v42 forAssetSetIdentifier:v9])
+        if ([(MADAutoAssetLocker *)self _isSetAssetLock:v20 forClientDomainName:nameCopy forAssetSetIdentifier:identifierCopy])
         {
           [v13 addObject:v20];
         }
@@ -6982,7 +6982,7 @@ LABEL_27:
     while (v15);
   }
 
-  v36 = v9;
+  v36 = identifierCopy;
 
   v46 = 0u;
   v47 = 0u;
@@ -7005,41 +7005,41 @@ LABEL_27:
 
         v24 = *(*(&v44 + 1) + 8 * j);
         v25 = objc_autoreleasePoolPush();
-        v26 = [v24 fullAssetSelector];
+        fullAssetSelector = [v24 fullAssetSelector];
         v43 = 0;
-        [(MADAutoAssetLocker *)self _endLocksByClient:v11 forAssetClientName:v11 forAllClientNames:1 forClientProcessName:0 withClientProcessID:0 forClientDomainName:v42 forAssetSelector:v26 forSetAtomicInstance:0 forLockReason:0 removingLockCount:-1 endError:&v43];
+        [(MADAutoAssetLocker *)self _endLocksByClient:locksCopy forAssetClientName:locksCopy forAllClientNames:1 forClientProcessName:0 withClientProcessID:0 forClientDomainName:nameCopy forAssetSelector:fullAssetSelector forSetAtomicInstance:0 forLockReason:0 removingLockCount:-1 endError:&v43];
         v27 = v43;
 
         if (v27)
         {
-          v28 = _MADLog(@"AutoLocker");
-          if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+          fullAssetSelector2 = _MADLog(@"AutoLocker");
+          if (os_log_type_enabled(fullAssetSelector2, OS_LOG_TYPE_ERROR))
           {
-            v29 = [(MADAutoAssetLocker *)self lockCountsTotal];
-            v30 = [v24 summary];
+            lockCountsTotal = [(MADAutoAssetLocker *)self lockCountsTotal];
+            summary = [v24 summary];
             [v27 checkedSummary];
-            v31 = self;
+            selfCopy = self;
             v33 = v32 = v22;
             *buf = 134218754;
-            v53 = v29;
+            v53 = lockCountsTotal;
             v21 = v38;
             v54 = 2114;
-            v55 = v11;
+            v55 = locksCopy;
             v56 = 2114;
-            v57 = v30;
+            v57 = summary;
             v58 = 2114;
             v59 = v33;
-            _os_log_impl(&dword_0, v28, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER[totalLocks:%ld]:{%{public}@} | unable to end auto-asset all-locks for set-identifier | orphanedLock:%{public}@ |  endedLocksAutoAssetError:%{public}@", buf, 0x2Au);
+            _os_log_impl(&dword_0, fullAssetSelector2, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER[totalLocks:%ld]:{%{public}@} | unable to end auto-asset all-locks for set-identifier | orphanedLock:%{public}@ |  endedLocksAutoAssetError:%{public}@", buf, 0x2Au);
 
             v22 = v32;
-            self = v31;
+            self = selfCopy;
           }
         }
 
         else
         {
-          v28 = [v24 fullAssetSelector];
-          [v21 addObject:v28];
+          fullAssetSelector2 = [v24 fullAssetSelector];
+          [v21 addObject:fullAssetSelector2];
         }
 
         objc_autoreleasePoolPop(v25);
@@ -7064,70 +7064,70 @@ LABEL_27:
   return v34;
 }
 
-- (id)_endedLockByClient:(id)a3 forClientDomainName:(id)a4 forAssetSetIdentifier:(id)a5 forAssetSelector:(id)a6 forSetAtomicInstance:(id)a7 forLockReason:(id)a8
+- (id)_endedLockByClient:(id)client forClientDomainName:(id)name forAssetSetIdentifier:(id)identifier forAssetSelector:(id)selector forSetAtomicInstance:(id)instance forLockReason:(id)reason
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v18);
+  clientCopy = client;
+  nameCopy = name;
+  selectorCopy = selector;
+  instanceCopy = instance;
+  reasonCopy = reason;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
-  if (v16)
+  if (instanceCopy)
   {
-    v19 = [(MADAutoAssetLocker *)self newSetClientNameForDomain:v14 withAutoAssetClientName:v13 forSetAtomicInstance:v16];
+    v19 = [(MADAutoAssetLocker *)self newSetClientNameForDomain:nameCopy withAutoAssetClientName:clientCopy forSetAtomicInstance:instanceCopy];
   }
 
   else
   {
-    v19 = v13;
+    v19 = clientCopy;
   }
 
   v20 = v19;
-  v21 = [[MAAutoAssetLockReason alloc] initForClientName:v19 forLockReason:v17];
+  v21 = [[MAAutoAssetLockReason alloc] initForClientName:v19 forLockReason:reasonCopy];
   if (!v21)
   {
     v34 = [NSString alloc];
-    v35 = [v15 summary];
-    v36 = [v34 initWithFormat:@"unable to allocate client-lock-reason | client:%@, selector:%@, reason:%@", v13, v35, v17];
+    summary = [selectorCopy summary];
+    reasonCopy = [v34 initWithFormat:@"unable to allocate client-lock-reason | client:%@, selector:%@, reason:%@", clientCopy, summary, reasonCopy];
 
-    v30 = [MAAutoAssetError buildError:6101 fromOperation:@"AUTO-LOCKER:endedLockByClient" underlyingError:0 withDescription:v36];
+    v30 = [MAAutoAssetError buildError:6101 fromOperation:@"AUTO-LOCKER:endedLockByClient" underlyingError:0 withDescription:reasonCopy];
     goto LABEL_20;
   }
 
-  v22 = [(MADAutoAssetLocker *)self locateLockByFullAssetSelector:v15];
+  v22 = [(MADAutoAssetLocker *)self locateLockByFullAssetSelector:selectorCopy];
   v23 = v22;
   if (v22)
   {
     v47 = v20;
-    v48 = v14;
-    v24 = [v22 lockReasons];
-    v25 = [v21 summary];
-    v26 = [v24 safeObjectForKey:v25 ofClass:objc_opt_class()];
+    v48 = nameCopy;
+    lockReasons = [v22 lockReasons];
+    summary2 = [v21 summary];
+    v26 = [lockReasons safeObjectForKey:summary2 ofClass:objc_opt_class()];
 
     if (v26)
     {
       if (![(MADAutoAssetLocker *)self _endLockDecideUnlocked:?])
       {
         v41 = [NSString alloc];
-        v32 = [v23 lockReasons];
-        v33 = [v41 initWithFormat:@"ended lock when other locks for client-lock-reason remain | assetLock.lockReasons:%ld", objc_msgSend(v32, "count")];
+        lockReasons2 = [v23 lockReasons];
+        v33 = [v41 initWithFormat:@"ended lock when other locks for client-lock-reason remain | assetLock.lockReasons:%ld", objc_msgSend(lockReasons2, "count")];
         goto LABEL_14;
       }
 
-      v27 = [v23 lockReasons];
-      v28 = [v21 summary];
-      [v27 removeObjectForKey:v28];
+      lockReasons3 = [v23 lockReasons];
+      summary3 = [v21 summary];
+      [lockReasons3 removeObjectForKey:summary3];
 
-      v29 = [v23 lockReasons];
-      v30 = [v29 count];
+      lockReasons4 = [v23 lockReasons];
+      v30 = [lockReasons4 count];
 
       if (v30)
       {
         v31 = [NSString alloc];
-        v32 = [v23 lockReasons];
-        v33 = [v31 initWithFormat:@"all locks have ended for specific client-lock-reason | assetLock.lockReasons:%ld", objc_msgSend(v32, "count")];
+        lockReasons2 = [v23 lockReasons];
+        v33 = [v31 initWithFormat:@"all locks have ended for specific client-lock-reason | assetLock.lockReasons:%ld", objc_msgSend(lockReasons2, "count")];
 LABEL_14:
         v42 = v33;
         [(MADAutoAssetLocker *)self _persistAssetLock:@"endedLockByClient" operation:@"ENTRY_DECREASED" forAssetLock:v23 withDeltaLockCount:1 message:v33];
@@ -7142,41 +7142,41 @@ LABEL_14:
           v43 = 250;
         }
 
-        v44 = [(MADAutoAssetLocker *)self lockCountsTotal];
+        lockCountsTotal = [(MADAutoAssetLocker *)self lockCountsTotal];
         v45 = [(MADAutoAssetLocker *)self _assetIDOfLock:v23];
-        [MADAutoAssetHistory recordOperation:v43 toHistoryType:1 fromClient:v13 usageCount:v44 forAssetID:v45 withSelector:v15];
+        [MADAutoAssetHistory recordOperation:v43 toHistoryType:1 fromClient:clientCopy usageCount:lockCountsTotal forAssetID:v45 withSelector:selectorCopy];
 
-        v36 = 0;
+        reasonCopy = 0;
         v30 = 0;
         goto LABEL_18;
       }
 
-      [(MADAutoAssetLocker *)self _removeAssetLock:@"endedLockByClient" removingAssetLock:v23 lastClient:v13 forSelector:v15 message:@"endedLock (all locks have ended)"];
-      v36 = 0;
+      [(MADAutoAssetLocker *)self _removeAssetLock:@"endedLockByClient" removingAssetLock:v23 lastClient:clientCopy forSelector:selectorCopy message:@"endedLock (all locks have ended)"];
+      reasonCopy = 0;
     }
 
     else
     {
       v26 = 0;
       v39 = [NSString alloc];
-      v40 = [v15 summary];
-      v36 = [v39 initWithFormat:@"cannot accept ended lock when no existing lock for client-lock-reason | client:%@, selector:%@, reason:%@", v13, v40, v17];
+      summary4 = [selectorCopy summary];
+      reasonCopy = [v39 initWithFormat:@"cannot accept ended lock when no existing lock for client-lock-reason | client:%@, selector:%@, reason:%@", clientCopy, summary4, reasonCopy];
 
-      v30 = [MAAutoAssetError buildError:6501 fromOperation:@"AUTO-LOCKER:endedLockByClient" underlyingError:0 withDescription:v36];
+      v30 = [MAAutoAssetError buildError:6501 fromOperation:@"AUTO-LOCKER:endedLockByClient" underlyingError:0 withDescription:reasonCopy];
     }
 
 LABEL_18:
 
     v20 = v47;
-    v14 = v48;
+    nameCopy = v48;
     goto LABEL_19;
   }
 
   v37 = [NSString alloc];
-  v38 = [v15 summary];
-  v36 = [v37 initWithFormat:@"cannot accept ended lock when no existing lock for auto-specific-asset | client:%@, selector:%@, reason:%@", v13, v38, v17];
+  summary5 = [selectorCopy summary];
+  reasonCopy = [v37 initWithFormat:@"cannot accept ended lock when no existing lock for auto-specific-asset | client:%@, selector:%@, reason:%@", clientCopy, summary5, reasonCopy];
 
-  v30 = [MAAutoAssetError buildError:6501 fromOperation:@"AUTO-LOCKER:endedLockByClient" underlyingError:0 withDescription:v36];
+  v30 = [MAAutoAssetError buildError:6501 fromOperation:@"AUTO-LOCKER:endedLockByClient" underlyingError:0 withDescription:reasonCopy];
 LABEL_19:
 
 LABEL_20:
@@ -7184,27 +7184,27 @@ LABEL_20:
   return v30;
 }
 
-- (BOOL)_isUntrackedSetAssetLock:(id)a3 forTrackedSetDescriptors:(id)a4
+- (BOOL)_isUntrackedSetAssetLock:(id)lock forTrackedSetDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v8);
+  lockCopy = lock;
+  descriptorsCopy = descriptors;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
-  v9 = [(MADAutoAssetLocker *)self _setClientDomainNameForAssetLock:v6];
+  v9 = [(MADAutoAssetLocker *)self _setClientDomainNameForAssetLock:lockCopy];
   if (v9)
   {
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v10 = v7;
+    v10 = descriptorsCopy;
     v30 = [v10 countByEnumeratingWithState:&v38 objects:v47 count:16];
     if (v30)
     {
       v11 = *v39;
       v31 = v10;
-      v32 = v7;
+      v32 = descriptorsCopy;
       v28 = *v39;
       v29 = v9;
       do
@@ -7223,8 +7223,8 @@ LABEL_20:
           v35 = 0u;
           v36 = 0u;
           v37 = 0u;
-          v14 = [v13 latestDowloadedAtomicInstanceEntries];
-          v15 = [v14 countByEnumeratingWithState:&v34 objects:v46 count:16];
+          latestDowloadedAtomicInstanceEntries = [v13 latestDowloadedAtomicInstanceEntries];
+          v15 = [latestDowloadedAtomicInstanceEntries countByEnumeratingWithState:&v34 objects:v46 count:16];
           if (v15)
           {
             v16 = v15;
@@ -7235,12 +7235,12 @@ LABEL_20:
               {
                 if (*v35 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(latestDowloadedAtomicInstanceEntries);
                 }
 
-                v19 = [*(*(&v34 + 1) + 8 * i) fullAssetSelector];
-                v20 = [v6 fullAssetSelector];
-                v21 = [v19 isEqual:v20];
+                fullAssetSelector = [*(*(&v34 + 1) + 8 * i) fullAssetSelector];
+                fullAssetSelector2 = [lockCopy fullAssetSelector];
+                v21 = [fullAssetSelector isEqual:fullAssetSelector2];
 
                 if (v21)
                 {
@@ -7248,13 +7248,13 @@ LABEL_20:
                   objc_autoreleasePoolPop(context);
                   v26 = 0;
                   v22 = v31;
-                  v7 = v32;
+                  descriptorsCopy = v32;
                   v9 = v29;
                   goto LABEL_21;
                 }
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v34 objects:v46 count:16];
+              v16 = [latestDowloadedAtomicInstanceEntries countByEnumeratingWithState:&v34 objects:v46 count:16];
               if (v16)
               {
                 continue;
@@ -7267,7 +7267,7 @@ LABEL_20:
           objc_autoreleasePoolPop(context);
           v12 = v12 + 1;
           v10 = v31;
-          v7 = v32;
+          descriptorsCopy = v32;
           v11 = v28;
         }
 
@@ -7283,12 +7283,12 @@ LABEL_20:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v23 = v9;
-      v24 = [(MADAutoAssetLocker *)self lockCountsTotal];
-      v25 = [v6 summary];
+      lockCountsTotal = [(MADAutoAssetLocker *)self lockCountsTotal];
+      summary = [lockCopy summary];
       *buf = 134218242;
-      v43 = v24;
+      v43 = lockCountsTotal;
       v44 = 2114;
-      v45 = v25;
+      v45 = summary;
       v9 = v23;
       _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "{AUTO-LOCKER[totalLocks:%ld]:_isUntrackedSetAssetLock} | untracked set-asset-lock | assetLock:%{public}@", buf, 0x16u);
     }
@@ -7305,77 +7305,77 @@ LABEL_21:
   return v26;
 }
 
-- (BOOL)_isSetAssetLock:(id)a3 forClientDomainName:(id)a4 forAssetSetIdentifier:(id)a5
+- (BOOL)_isSetAssetLock:(id)lock forClientDomainName:(id)name forAssetSetIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v32 = a5;
-  v10 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v10);
+  lockCopy = lock;
+  nameCopy = name;
+  identifierCopy = identifier;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v11 = [v8 lockReasons];
-  v34 = [v11 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  lockReasons = [lockCopy lockReasons];
+  v34 = [lockReasons countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v34)
   {
     v12 = *v36;
-    v33 = v8;
+    v33 = lockCopy;
     while (2)
     {
       for (i = 0; i != v34; i = i + 1)
       {
         if (*v36 != v12)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(lockReasons);
         }
 
         v14 = *(*(&v35 + 1) + 8 * i);
-        v15 = [v8 lockReasons];
-        v16 = [v15 safeObjectForKey:v14 ofClass:objc_opt_class()];
+        lockReasons2 = [lockCopy lockReasons];
+        v16 = [lockReasons2 safeObjectForKey:v14 ofClass:objc_opt_class()];
 
-        v17 = [v16 clientLockReason];
-        v18 = [v17 lockReason];
-        v19 = [v18 containsString:v9];
+        clientLockReason = [v16 clientLockReason];
+        lockReason = [clientLockReason lockReason];
+        v19 = [lockReason containsString:nameCopy];
 
         if (v19)
         {
-          v20 = [v16 clientLockReason];
-          v21 = [v20 lockReason];
-          v22 = [v21 rangeOfString:@"_"];
+          clientLockReason2 = [v16 clientLockReason];
+          lockReason2 = [clientLockReason2 lockReason];
+          v22 = [lockReason2 rangeOfString:@"_"];
 
           if (v22 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v23 = v11;
-            v24 = [v16 clientLockReason];
-            v25 = [v24 lockReason];
-            v26 = [v25 substringWithRange:{0, v22}];
+            v23 = lockReasons;
+            clientLockReason3 = [v16 clientLockReason];
+            lockReason3 = [clientLockReason3 lockReason];
+            v26 = [lockReason3 substringWithRange:{0, v22}];
 
-            if ([SUCore stringIsEqual:v26 to:v9])
+            if ([SUCore stringIsEqual:v26 to:nameCopy])
             {
-              v27 = [v16 clientLockReason];
-              v28 = [v27 lockReason];
-              v29 = [v28 containsString:v32];
+              clientLockReason4 = [v16 clientLockReason];
+              lockReason4 = [clientLockReason4 lockReason];
+              v29 = [lockReason4 containsString:identifierCopy];
 
               if (v29)
               {
 
                 v30 = 1;
-                v11 = v23;
-                v8 = v33;
+                lockReasons = v23;
+                lockCopy = v33;
                 goto LABEL_15;
               }
             }
 
-            v11 = v23;
-            v8 = v33;
+            lockReasons = v23;
+            lockCopy = v33;
           }
         }
       }
 
-      v34 = [v11 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v34 = [lockReasons countByEnumeratingWithState:&v35 objects:v39 count:16];
       if (v34)
       {
         continue;
@@ -7391,17 +7391,17 @@ LABEL_15:
   return v30;
 }
 
-- (id)_setClientDomainNameForAssetLock:(id)a3
+- (id)_setClientDomainNameForAssetLock:(id)lock
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetLocker *)self lockerQueue];
-  dispatch_assert_queue_V2(v5);
+  lockCopy = lock;
+  lockerQueue = [(MADAutoAssetLocker *)self lockerQueue];
+  dispatch_assert_queue_V2(lockerQueue);
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = [v4 lockReasons];
+  obj = [lockCopy lockReasons];
   v6 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v6)
   {
@@ -7417,26 +7417,26 @@ LABEL_15:
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
-        v11 = [v4 lockReasons];
-        v12 = [v11 safeObjectForKey:v10 ofClass:objc_opt_class()];
+        lockReasons = [lockCopy lockReasons];
+        v12 = [lockReasons safeObjectForKey:v10 ofClass:objc_opt_class()];
 
-        v13 = [v12 clientLockReason];
-        v14 = [v13 lockReason];
-        v15 = [v12 clientLockReason];
-        v16 = [v15 autoAssetClientName];
-        v17 = [v14 containsString:v16];
+        clientLockReason = [v12 clientLockReason];
+        lockReason = [clientLockReason lockReason];
+        clientLockReason2 = [v12 clientLockReason];
+        autoAssetClientName = [clientLockReason2 autoAssetClientName];
+        v17 = [lockReason containsString:autoAssetClientName];
 
         if (v17)
         {
-          v18 = [v12 clientLockReason];
-          v19 = [v18 lockReason];
-          v20 = [v19 rangeOfString:@"_"];
+          clientLockReason3 = [v12 clientLockReason];
+          lockReason2 = [clientLockReason3 lockReason];
+          v20 = [lockReason2 rangeOfString:@"_"];
 
           if (v20 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v21 = [v12 clientLockReason];
-            v22 = [v21 lockReason];
-            v23 = [v22 substringWithRange:{0, v20}];
+            clientLockReason4 = [v12 clientLockReason];
+            lockReason3 = [clientLockReason4 lockReason];
+            v23 = [lockReason3 substringWithRange:{0, v20}];
 
             if (v23)
             {
@@ -7463,36 +7463,36 @@ LABEL_13:
   return v23;
 }
 
-+ (id)newSetClientNameForDomain:(id)a3 withAutoAssetClientName:(id)a4 forSetAtomicInstance:(id)a5
++ (id)newSetClientNameForDomain:(id)domain withAutoAssetClientName:(id)name forSetAtomicInstance:(id)instance
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[NSString alloc] initWithFormat:@"%@_%@_%@", v9, v8, v7];
+  instanceCopy = instance;
+  nameCopy = name;
+  domainCopy = domain;
+  instanceCopy = [[NSString alloc] initWithFormat:@"%@_%@_%@", domainCopy, nameCopy, instanceCopy];
 
-  return v10;
+  return instanceCopy;
 }
 
-- (id)_autoAssetLockPolicyFromSetPolicy:(id)a3
+- (id)_autoAssetLockPolicyFromSetPolicy:(id)policy
 {
-  v3 = a3;
-  if (v3)
+  policyCopy = policy;
+  if (policyCopy)
   {
     v4 = objc_alloc_init(MAAutoAssetPolicy);
     if (v4)
     {
       v5 = v4;
-      [v4 setUserInitiated:{objc_msgSend(v3, "userInitiated")}];
-      [v5 setLockInhibitsEmergencyRemoval:{objc_msgSend(v3, "lockInhibitsEmergencyRemoval")}];
+      [v4 setUserInitiated:{objc_msgSend(policyCopy, "userInitiated")}];
+      [v5 setLockInhibitsEmergencyRemoval:{objc_msgSend(policyCopy, "lockInhibitsEmergencyRemoval")}];
       goto LABEL_8;
     }
 
     v6 = _MADLog(@"AutoLocker");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v3 summary];
+      summary = [policyCopy summary];
       v9 = 138543362;
-      v10 = v7;
+      v10 = summary;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_ERROR, "{AUTO-LOCKER:_autoAssetLockPolicyFromSetPolicy} | unable to allocate lockUsagePolicy | lockSetUsagePolicy:%{public}@", &v9, 0xCu);
     }
   }
@@ -7503,18 +7503,18 @@ LABEL_8:
   return v5;
 }
 
-+ (void)setPersistedStateCaching:(BOOL)a3
++ (void)setPersistedStateCaching:(BOOL)caching
 {
   v4 = +[MADAutoAssetLocker autoAssetLocker];
-  v5 = [v4 lockerQueue];
+  lockerQueue = [v4 lockerQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __47__MADAutoAssetLocker_setPersistedStateCaching___block_invoke;
   v7[3] = &unk_4B3488;
   v8 = v4;
-  v9 = a3;
+  cachingCopy = caching;
   v6 = v4;
-  dispatch_sync(v5, v7);
+  dispatch_sync(lockerQueue, v7);
 }
 
 void __47__MADAutoAssetLocker_setPersistedStateCaching___block_invoke(uint64_t a1)

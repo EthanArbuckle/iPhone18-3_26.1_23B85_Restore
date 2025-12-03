@@ -7,8 +7,8 @@
 
 - (__n128)_avt_rawTransform
 {
-  v1 = [a1 trackingData];
-  v2 = [v1 objectForKeyedSubscript:*MEMORY[0x1E698C098]];
+  trackingData = [self trackingData];
+  v2 = [trackingData objectForKeyedSubscript:*MEMORY[0x1E698C098]];
   v3 = v2;
   if (v2)
   {
@@ -17,13 +17,13 @@
 
   else
   {
-    v4 = v1;
+    v4 = trackingData;
   }
 
   v5 = v4;
 
   v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698C090]];
-  v7 = [v1 objectForKeyedSubscript:*MEMORY[0x1E698BFD0]];
+  v7 = [trackingData objectForKeyedSubscript:*MEMORY[0x1E698BFD0]];
   v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E698C030]];
 
   v9 = *MEMORY[0x1E698C0A0];
@@ -88,8 +88,8 @@
 - (float)_avt_rawBlendShapeAtLocation:()AVTExtensions
 {
   v4 = a3;
-  v5 = [a1 trackingData];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698C098]];
+  trackingData = [self trackingData];
+  v6 = [trackingData objectForKeyedSubscript:*MEMORY[0x1E698C098]];
   v7 = v6;
   if (v6)
   {
@@ -98,7 +98,7 @@
 
   else
   {
-    v8 = v5;
+    v8 = trackingData;
   }
 
   v9 = v8;

@@ -1,16 +1,16 @@
 @interface APPBAdSpecification
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)typeAsString:(int)a3;
-- (int)StringAsType:(id)a3;
+- (id)typeAsString:(int)string;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBAdSpecification
@@ -40,60 +40,60 @@
   }
 }
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
-  if (a3 < 0xC && ((0xF35u >> a3) & 1) != 0)
+  if (string < 0xC && ((0xF35u >> string) & 1) != 0)
   {
-    v4 = off_10047CBA8[a3];
+    v4 = off_10047CBA8[string];
   }
 
   else
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   return v4;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Banner"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Banner"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Interstitial"])
+  else if ([typeCopy isEqualToString:@"Interstitial"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"IABMediumRectangle"])
+  else if ([typeCopy isEqualToString:@"IABMediumRectangle"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Audio"])
+  else if ([typeCopy isEqualToString:@"Audio"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Video"])
+  else if ([typeCopy isEqualToString:@"Video"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Flexible"])
+  else if ([typeCopy isEqualToString:@"Flexible"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Native"])
+  else if ([typeCopy isEqualToString:@"Native"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"Sponsorship"])
+  else if ([typeCopy isEqualToString:@"Sponsorship"])
   {
     v4 = 11;
   }
@@ -111,8 +111,8 @@
   v7.receiver = self;
   v7.super_class = APPBAdSpecification;
   v3 = [(APPBAdSpecification *)&v7 description];
-  v4 = [(APPBAdSpecification *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBAdSpecification *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -146,44 +146,44 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_section)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_section)
   {
-    v5 = v4;
-    [v4 setSection:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setSection:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_type;
-    *(v4 + 20) |= 1u;
+    *(toCopy + 4) = self->_type;
+    *(toCopy + 20) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_section copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_section copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -196,16 +196,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   section = self->_section;
-  if (section | *(v4 + 1))
+  if (section | *(equalCopy + 1))
   {
     if (![(NSString *)section isEqual:?])
     {
@@ -213,10 +213,10 @@
     }
   }
 
-  v6 = (*(v4 + 20) & 1) == 0;
+  v6 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) != 0 && self->_type == *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) != 0 && self->_type == *(equalCopy + 4))
     {
       v6 = 1;
       goto LABEL_9;
@@ -247,19 +247,19 @@ LABEL_9:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(APPBAdSpecification *)self setSection:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
-    self->_type = v4[4];
+    self->_type = fromCopy[4];
     *&self->_has |= 1u;
   }
 }

@@ -1,15 +1,15 @@
 @interface PSISuggestionQuery
-+ (void)_pairLocationCompletionSuggestionsIfPossible:(id)a3 completion:(id)a4;
++ (void)_pairLocationCompletionSuggestionsIfPossible:(id)possible completion:(id)completion;
 - (BOOL)cancelled;
-- (PSISuggestionQuery)initWithFormattedSearchText:(id)a3 originalSearchText:(id)a4 completionSuggestionTexts:(id)a5 suggestionOptions:(id)a6 suggestionComponents:(id)a7 photosEntityStore:(id)a8;
+- (PSISuggestionQuery)initWithFormattedSearchText:(id)text originalSearchText:(id)searchText completionSuggestionTexts:(id)texts suggestionOptions:(id)options suggestionComponents:(id)components photosEntityStore:(id)store;
 - (_NSRange)rangeOfCompletionSuggestionDates;
-- (id)_bestNextTokenSuggestionFromNextTokenSuggestionCandidatesByIndexCategory:(id)a3 forLocationCompletion:(id)a4;
-- (id)_generateCompletionSuggestionsForAssetUUIDs:(id)a3 collectionUUIDs:(id)a4 restrictedIndexCategories:(id)a5 shouldFoldSuggestions:(BOOL)a6 suggestionLimit:(unint64_t)a7 completionSuggestionDateComponents:(id)a8 completionTextForDateComponents:(id)a9;
-- (id)_generateLocationNextTokenSuggestionsByIndexCategoryForLocationCompletion:(id)a3;
-- (id)_generateNextTokenSuggestionsForAssetUUIDs:(id)a3 collectionUUIDs:(id)a4 suggestionLimit:(unint64_t)a5;
-- (id)_performQueryForPairedLocationSuggestions:(id)a3;
-- (id)performQueryWithSearchResultAssetUUIDs:(id)a3 collectionUUIDs:(id)a4 completionSuggestionDateComponents:(id)a5 completionTextForDateComponents:(id)a6;
-- (void)setCancelled:(BOOL)a3;
+- (id)_bestNextTokenSuggestionFromNextTokenSuggestionCandidatesByIndexCategory:(id)category forLocationCompletion:(id)completion;
+- (id)_generateCompletionSuggestionsForAssetUUIDs:(id)ds collectionUUIDs:(id)iDs restrictedIndexCategories:(id)categories shouldFoldSuggestions:(BOOL)suggestions suggestionLimit:(unint64_t)limit completionSuggestionDateComponents:(id)components completionTextForDateComponents:(id)dateComponents;
+- (id)_generateLocationNextTokenSuggestionsByIndexCategoryForLocationCompletion:(id)completion;
+- (id)_generateNextTokenSuggestionsForAssetUUIDs:(id)ds collectionUUIDs:(id)iDs suggestionLimit:(unint64_t)limit;
+- (id)_performQueryForPairedLocationSuggestions:(id)suggestions;
+- (id)performQueryWithSearchResultAssetUUIDs:(id)ds collectionUUIDs:(id)iDs completionSuggestionDateComponents:(id)components completionTextForDateComponents:(id)dateComponents;
+- (void)setCancelled:(BOOL)cancelled;
 @end
 
 @implementation PSISuggestionQuery
@@ -23,39 +23,39 @@
   return result;
 }
 
-- (id)_bestNextTokenSuggestionFromNextTokenSuggestionCandidatesByIndexCategory:(id)a3 forLocationCompletion:(id)a4
+- (id)_bestNextTokenSuggestionFromNextTokenSuggestionCandidatesByIndexCategory:(id)category forLocationCompletion:(id)completion
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  categoryCopy = category;
+  completionCopy = completion;
+  if ([categoryCopy count])
   {
-    v8 = [v7 suggestionComponents];
-    v9 = [v8 count];
+    suggestionComponents = [completionCopy suggestionComponents];
+    v9 = [suggestionComponents count];
 
     if (v9 >= 2)
     {
       v10 = PLSearchBackendQueryGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v11 = [(PSISuggestionQuery *)self formattedSearchText];
+        formattedSearchText = [(PSISuggestionQuery *)self formattedSearchText];
         *buf = 138412546;
-        v46 = v7;
+        v46 = completionCopy;
         v47 = 2112;
-        v48 = v11;
+        v48 = formattedSearchText;
         _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Unexpectedly found a location completion with multiple components: %@ for query: %@", buf, 0x16u);
       }
     }
 
-    v37 = v7;
-    v12 = [v7 suggestionComponents];
-    v13 = [v12 firstObject];
-    v14 = [v13 indexCategory];
+    v37 = completionCopy;
+    suggestionComponents2 = [completionCopy suggestionComponents];
+    firstObject = [suggestionComponents2 firstObject];
+    indexCategory = [firstObject indexCategory];
 
     v15 = off_1E7561000;
     v16 = +[PSISuggestionQueryUtilities allowedIndexCategoriesForPairedLocationSecondarySuggestions];
-    v17 = [v6 allKeys];
-    v18 = [v17 sortedArrayUsingSelector:sel_compare_];
+    allKeys = [categoryCopy allKeys];
+    v18 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
     v42 = 0u;
     v43 = 0u;
@@ -66,7 +66,7 @@
     if (v39)
     {
       v20 = *v41;
-      v38 = v14;
+      v38 = indexCategory;
 LABEL_8:
       v21 = 0;
       while (1)
@@ -82,10 +82,10 @@ LABEL_8:
           break;
         }
 
-        v23 = [v22 unsignedIntegerValue];
-        if ([(__objc2_class *)v15[72] suggestionCategoriesPairingIsValid:v14 otherCategory:v23])
+        unsignedIntegerValue = [v22 unsignedIntegerValue];
+        if ([(__objc2_class *)v15[72] suggestionCategoriesPairingIsValid:indexCategory otherCategory:unsignedIntegerValue])
         {
-          v24 = v23 > v14;
+          v24 = unsignedIntegerValue > indexCategory;
         }
 
         else
@@ -95,27 +95,27 @@ LABEL_8:
 
         if (v24)
         {
-          if ([v16 containsIndex:v23])
+          if ([v16 containsIndex:unsignedIntegerValue])
           {
-            v25 = [v6 objectForKeyedSubscript:v22];
+            v25 = [categoryCopy objectForKeyedSubscript:v22];
             [(__objc2_class *)v15[72] sortLocationSuggestions:v25];
             v26 = v20;
             v27 = v15;
             v28 = v19;
-            v29 = self;
+            selfCopy = self;
             v30 = v16;
-            v32 = v31 = v6;
-            v33 = [v32 firstObject];
+            v32 = v31 = categoryCopy;
+            firstObject2 = [v32 firstObject];
 
-            v6 = v31;
+            categoryCopy = v31;
             v16 = v30;
-            self = v29;
+            self = selfCopy;
             v19 = v28;
             v15 = v27;
             v20 = v26;
-            v14 = v38;
+            indexCategory = v38;
 
-            if (v33)
+            if (firstObject2)
             {
               goto LABEL_22;
             }
@@ -135,7 +135,7 @@ LABEL_8:
       }
     }
 
-    v33 = 0;
+    firstObject2 = 0;
 LABEL_22:
 
     if ([(PSISuggestionQuery *)self cancelled])
@@ -145,12 +145,12 @@ LABEL_22:
 
     else
     {
-      v34 = v33;
+      v34 = firstObject2;
     }
 
     v35 = v34;
 
-    v7 = v37;
+    completionCopy = v37;
   }
 
   else
@@ -161,37 +161,37 @@ LABEL_22:
   return v35;
 }
 
-- (id)_generateLocationNextTokenSuggestionsByIndexCategoryForLocationCompletion:(id)a3
+- (id)_generateLocationNextTokenSuggestionsByIndexCategoryForLocationCompletion:(id)completion
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (!completionCopy)
   {
     v17 = MEMORY[0x1E695E0F8];
     goto LABEL_32;
   }
 
-  v6 = [v4 suggestionComponents];
-  v7 = [v6 count];
+  suggestionComponents = [completionCopy suggestionComponents];
+  v7 = [suggestionComponents count];
 
   if (v7 >= 2)
   {
     v8 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(PSISuggestionQuery *)self formattedSearchText];
+      formattedSearchText = [(PSISuggestionQuery *)self formattedSearchText];
       *buf = 138412546;
       v50 = v5;
       v51 = 2112;
-      v52 = v9;
+      v52 = formattedSearchText;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "Found unexpected folded suggestion when generation location pairs: %@, for query: %@", buf, 0x16u);
     }
   }
 
-  v10 = [v5 suggestionComponents];
-  v11 = [v10 firstObject];
-  v12 = [v11 group];
+  suggestionComponents2 = [v5 suggestionComponents];
+  firstObject = [suggestionComponents2 firstObject];
+  group = [firstObject group];
 
   v13 = off_1E7561000;
   v14 = +[PSISuggestionQueryUtilities allowedIndexCategoriesForPairedLocationSecondarySuggestions];
@@ -200,9 +200,9 @@ LABEL_22:
     v15 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [(PSISuggestionQuery *)self formattedSearchText];
+      formattedSearchText2 = [(PSISuggestionQuery *)self formattedSearchText];
       *buf = 138412290;
-      v50 = v16;
+      v50 = formattedSearchText2;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_INFO, "Paired location suggestions query for %@ aborted because query was cancelled", buf, 0xCu);
     }
 
@@ -211,9 +211,9 @@ LABEL_22:
   }
 
   v41 = v5;
-  v18 = [(PSISuggestionQuery *)self photosEntityStore];
-  v40 = v12;
-  v19 = [v18 groupsForAssetIds:objc_msgSend(v12 indexCategories:"assetIds") includeObjects:{v14, 0}];
+  photosEntityStore = [(PSISuggestionQuery *)self photosEntityStore];
+  v40 = group;
+  v19 = [photosEntityStore groupsForAssetIds:objc_msgSend(group indexCategories:"assetIds") includeObjects:{v14, 0}];
 
   v44 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v43 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -247,19 +247,19 @@ LABEL_13:
       {
         v25 = [[PLSearchSuggestionComponent alloc] initWithGroup:v24 matchedAssetsCount:0 matchedCollectionsCount:0 suggestionType:2 completionSuggestionDateComponents:0 matchedText:0 matchRangeOfSearchText:0x7FFFFFFFFFFFFFFFLL matchType:0, 0];
         [v44 addObject:v25];
-        v26 = self;
+        selfCopy = self;
         v27 = v14;
         v28 = v15;
         v29 = v13;
         v30 = MEMORY[0x1E696AEC0];
-        v31 = [v24 contentString];
-        v32 = [v30 stringWithFormat:@"%@-%hd", v31, objc_msgSend(v24, "category")];
+        contentString = [v24 contentString];
+        v32 = [v30 stringWithFormat:@"%@-%hd", contentString, objc_msgSend(v24, "category")];
 
         [v43 addObject:v32];
         v13 = v29;
         v15 = v28;
         v14 = v27;
-        self = v26;
+        self = selfCopy;
 
         v21 = v42;
       }
@@ -277,16 +277,16 @@ LABEL_13:
     }
   }
 
-  v33 = [(PSISuggestionQuery *)self cancelled];
+  cancelled = [(PSISuggestionQuery *)self cancelled];
   v34 = PLSearchBackendQueryGetLog();
   v35 = os_log_type_enabled(v34, OS_LOG_TYPE_INFO);
-  if (v33)
+  if (cancelled)
   {
     if (v35)
     {
-      v36 = [(PSISuggestionQuery *)self formattedSearchText];
+      formattedSearchText3 = [(PSISuggestionQuery *)self formattedSearchText];
       *buf = 138412290;
-      v50 = v36;
+      v50 = formattedSearchText3;
       _os_log_impl(&dword_19BF1F000, v34, OS_LOG_TYPE_INFO, "Paired location next token suggestions aborted for query %@ due to cancellation", buf, 0xCu);
     }
   }
@@ -296,11 +296,11 @@ LABEL_13:
     if (v35)
     {
       v37 = [v43 count];
-      v38 = [(PSISuggestionQuery *)self formattedSearchText];
+      formattedSearchText4 = [(PSISuggestionQuery *)self formattedSearchText];
       *buf = 134218498;
       v50 = v37;
       v51 = 2112;
-      v52 = v38;
+      v52 = formattedSearchText4;
       v53 = 2112;
       v54 = v43;
       _os_log_impl(&dword_19BF1F000, v34, OS_LOG_TYPE_INFO, "Generated %tu pair location next token candidates for query: %@: %@", buf, 0x20u);
@@ -316,7 +316,7 @@ LABEL_13:
 
   v17 = MEMORY[0x1E695E0F8];
 LABEL_30:
-  v12 = v40;
+  group = v40;
   v5 = v41;
 
 LABEL_31:
@@ -325,23 +325,23 @@ LABEL_32:
   return v17;
 }
 
-- (id)_performQueryForPairedLocationSuggestions:(id)a3
+- (id)_performQueryForPairedLocationSuggestions:(id)suggestions
 {
-  v5 = a3;
-  v6 = [(PSISuggestionQuery *)self suggestionOptions];
-  if ([PSISuggestionQueryUtilities suggestionPairingTypeForSuggestionOptions:v6]!= 1)
+  suggestionsCopy = suggestions;
+  suggestionOptions = [(PSISuggestionQuery *)self suggestionOptions];
+  if ([PSISuggestionQueryUtilities suggestionPairingTypeForSuggestionOptions:suggestionOptions]!= 1)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PSISuggestionQuery.m" lineNumber:613 description:{@"Invalid parameter not satisfying: %@", @"pairingType == PSISuggestionPairingTypeLocation"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PSISuggestionQuery.m" lineNumber:613 description:{@"Invalid parameter not satisfying: %@", @"pairingType == PSISuggestionPairingTypeLocation"}];
   }
 
-  if ([v6 searchSuggestionType] != 1)
+  if ([suggestionOptions searchSuggestionType] != 1)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PSISuggestionQuery.m" lineNumber:614 description:{@"Invalid parameter not satisfying: %@", @"options.searchSuggestionType == PLSearchSuggestionTypeCompletion"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PSISuggestionQuery.m" lineNumber:614 description:{@"Invalid parameter not satisfying: %@", @"options.searchSuggestionType == PLSearchSuggestionTypeCompletion"}];
   }
 
-  if ([v6 optionsWantSuggestionsForCollections])
+  if ([suggestionOptions optionsWantSuggestionsForCollections])
   {
     v7 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -363,16 +363,16 @@ LABEL_32:
   v30 = __Block_byref_object_copy__24343;
   v31 = __Block_byref_object_dispose__24344;
   v32 = 0;
-  if (v5)
+  if (suggestionsCopy)
   {
     v8 = 0;
-    v32 = v5;
+    v32 = suggestionsCopy;
   }
 
   else
   {
     v8 = +[PSISuggestionQueryUtilities allowedIndexCategoriesForPairedLocationPrimarySuggestions];
-    v9 = -[PSISuggestionQuery _generateCompletionSuggestionsForAssetUUIDs:collectionUUIDs:restrictedIndexCategories:shouldFoldSuggestions:suggestionLimit:completionSuggestionDateComponents:completionTextForDateComponents:](self, "_generateCompletionSuggestionsForAssetUUIDs:collectionUUIDs:restrictedIndexCategories:shouldFoldSuggestions:suggestionLimit:completionSuggestionDateComponents:completionTextForDateComponents:", 0, 0, v8, 0, 2 * [v6 searchSuggestionLimit], 0, 0);
+    v9 = -[PSISuggestionQuery _generateCompletionSuggestionsForAssetUUIDs:collectionUUIDs:restrictedIndexCategories:shouldFoldSuggestions:suggestionLimit:completionSuggestionDateComponents:completionTextForDateComponents:](self, "_generateCompletionSuggestionsForAssetUUIDs:collectionUUIDs:restrictedIndexCategories:shouldFoldSuggestions:suggestionLimit:completionSuggestionDateComponents:completionTextForDateComponents:", 0, 0, v8, 0, 2 * [suggestionOptions searchSuggestionLimit], 0, 0);
     v10 = v28[5];
     v28[5] = v9;
   }
@@ -393,10 +393,10 @@ LABEL_32:
   v26[6] = &v27;
   [v11 _pairLocationCompletionSuggestionsIfPossible:v12 completion:v26];
   v13 = [*(v34 + 5) count];
-  if (v13 != [v6 searchSuggestionLimit])
+  if (v13 != [suggestionOptions searchSuggestionLimit])
   {
-    v15 = [v6 searchSuggestionLimit];
-    v16 = v15 - [*(v34 + 5) count];
+    searchSuggestionLimit = [suggestionOptions searchSuggestionLimit];
+    v16 = searchSuggestionLimit - [*(v34 + 5) count];
     if (v16 < [v28[5] count])
     {
       v17 = [PSISuggestionQueryUtilities sortLocationSuggestions:v28[5]];
@@ -498,17 +498,17 @@ void __64__PSISuggestionQuery__performQueryForPairedLocationSuggestions___block_
   }
 }
 
-- (id)_generateNextTokenSuggestionsForAssetUUIDs:(id)a3 collectionUUIDs:(id)a4 suggestionLimit:(unint64_t)a5
+- (id)_generateNextTokenSuggestionsForAssetUUIDs:(id)ds collectionUUIDs:(id)iDs suggestionLimit:(unint64_t)limit
 {
   v113 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  iDsCopy = iDs;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v74 = v7;
-  [v9 addObjectsFromArray:v7];
+  v74 = dsCopy;
+  [v9 addObjectsFromArray:dsCopy];
   v72 = v9;
-  v70 = v8;
-  [v9 addObjectsFromArray:v8];
+  v70 = iDsCopy;
+  [v9 addObjectsFromArray:iDsCopy];
   v97 = 0;
   v98 = &v97;
   v99 = 0x2020000000;
@@ -517,27 +517,27 @@ void __64__PSISuggestionQuery__performQueryForPairedLocationSuggestions___block_
   v94 = &v93;
   v95 = 0x2020000000;
   v96 = 0;
-  v10 = [(PSISuggestionQuery *)self suggestionOptions];
+  suggestionOptions = [(PSISuggestionQuery *)self suggestionOptions];
   v11 = [MEMORY[0x1E695DFD8] setWithArray:v9];
-  v12 = [v10 suggestionResultTypes];
-  v13 = [(PSISuggestionQuery *)self photosEntityStore];
+  suggestionResultTypes = [suggestionOptions suggestionResultTypes];
+  photosEntityStore = [(PSISuggestionQuery *)self photosEntityStore];
   v92[0] = MEMORY[0x1E69E9820];
   v92[1] = 3221225472;
   v92[2] = __97__PSISuggestionQuery__generateNextTokenSuggestionsForAssetUUIDs_collectionUUIDs_suggestionLimit___block_invoke;
   v92[3] = &unk_1E7569CF8;
   v92[4] = &v97;
   v92[5] = &v93;
-  [PLScopedSearchUtilities searchIndexIdsFromUUIDs:v11 searchResultTypes:v12 psiDatabase:v13 completion:v92];
-  v71 = v10;
+  [PLScopedSearchUtilities searchIndexIdsFromUUIDs:v11 searchResultTypes:suggestionResultTypes psiDatabase:photosEntityStore completion:v92];
+  v71 = suggestionOptions;
 
   if ([(PSISuggestionQuery *)self cancelled])
   {
     v14 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [(PSISuggestionQuery *)self formattedSearchText];
+      formattedSearchText = [(PSISuggestionQuery *)self formattedSearchText];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v15;
+      *(&buf + 4) = formattedSearchText;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_INFO, "Next Token suggestions query for %@ aborted because query was cancelled", &buf, 0xCu);
     }
 
@@ -559,7 +559,7 @@ void __64__PSISuggestionQuery__performQueryForPairedLocationSuggestions___block_
     v89 = __Block_byref_object_copy__24343;
     v90 = __Block_byref_object_dispose__24344;
     v91 = 0;
-    v67 = [(PSISuggestionQuery *)self photosEntityStore];
+    photosEntityStore2 = [(PSISuggestionQuery *)self photosEntityStore];
     v17 = v98[3];
     if (v17)
     {
@@ -569,7 +569,7 @@ void __64__PSISuggestionQuery__performQueryForPairedLocationSuggestions___block_
       v83[3] = &unk_1E7569D20;
       v84 = v69;
       p_buf = &buf;
-      [v67 groupsForAssetIds:v17 completion:v83];
+      [photosEntityStore2 groupsForAssetIds:v17 completion:v83];
     }
 
     v18 = v94[3];
@@ -581,7 +581,7 @@ void __64__PSISuggestionQuery__performQueryForPairedLocationSuggestions___block_
       v80[3] = &unk_1E7569D20;
       v81 = v69;
       v82 = &v86;
-      v19 = [v67 groupsForCollectionIds:v18 completion:v80];
+      v19 = [photosEntityStore2 groupsForCollectionIds:v18 completion:v80];
     }
 
     if ([(PSISuggestionQuery *)self cancelled])
@@ -589,9 +589,9 @@ void __64__PSISuggestionQuery__performQueryForPairedLocationSuggestions___block_
       log = PLSearchBackendQueryGetLog();
       if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
       {
-        v20 = [(PSISuggestionQuery *)self formattedSearchText];
+        formattedSearchText2 = [(PSISuggestionQuery *)self formattedSearchText];
         *v101 = 138412290;
-        v102 = v20;
+        v102 = formattedSearchText2;
         _os_log_impl(&dword_19BF1F000, log, OS_LOG_TYPE_INFO, "Next Token suggestions query for %@ aborted because query was cancelled", v101, 0xCu);
       }
 
@@ -602,8 +602,8 @@ void __64__PSISuggestionQuery__performQueryForPairedLocationSuggestions___block_
     {
       log = objc_alloc_init(MEMORY[0x1E695DF70]);
       v66 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v64 = [v10 optionsWantSuggestionsForAssets];
-      v63 = [v10 optionsWantSuggestionsForCollections];
+      optionsWantSuggestionsForAssets = [suggestionOptions optionsWantSuggestionsForAssets];
+      optionsWantSuggestionsForCollections = [suggestionOptions optionsWantSuggestionsForCollections];
       v78 = 0u;
       v79 = 0u;
       v76 = 0u;
@@ -647,15 +647,15 @@ LABEL_16:
             v36 = v30 && v30 != v26;
             v37 = v35 == v32 || v35 == 0;
             v38 = !v37;
-            if ((v64 & v63) != 0)
+            if ((optionsWantSuggestionsForAssets & optionsWantSuggestionsForCollections) != 0)
             {
               v39 = v36 || v38;
             }
 
             else
             {
-              v40 = v63 & v38;
-              v39 = v64 ? v36 : v40;
+              v40 = optionsWantSuggestionsForCollections & v38;
+              v39 = optionsWantSuggestionsForAssets ? v36 : v40;
             }
 
             v41 = v39 & +[PSISuggestionQueryUtilities groupWithAssetCountMeetsAssetMatchThreshold:assetSearchResultsCount:](PSISuggestionQueryUtilities, "groupWithAssetCountMeetsAssetMatchThreshold:assetSearchResultsCount:", v30, [v74 count]);
@@ -687,8 +687,8 @@ LABEL_16:
               v45 = [(PLSearchSuggestionComponent *)v42 initWithGroup:v24 matchedAssetsCount:v43 matchedCollectionsCount:v44 suggestionType:2 completionSuggestionDateComponents:0 matchedText:0 matchRangeOfSearchText:0x7FFFFFFFFFFFFFFFLL matchType:0, 0];
               [log addObject:v45];
               v46 = MEMORY[0x1E696AEC0];
-              v47 = [v24 contentString];
-              v48 = [v46 stringWithFormat:@"%@-%hd", v47, objc_msgSend(v24, "category")];
+              contentString = [v24 contentString];
+              v48 = [v46 stringWithFormat:@"%@-%hd", contentString, objc_msgSend(v24, "category")];
 
               [v66 addObject:v48];
               v22 = v27;
@@ -713,9 +713,9 @@ LABEL_16:
         v49 = PLSearchBackendQueryGetLog();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
         {
-          v50 = [(PSISuggestionQuery *)self formattedSearchText];
+          formattedSearchText3 = [(PSISuggestionQuery *)self formattedSearchText];
           *v101 = 138412290;
-          v102 = v50;
+          v102 = formattedSearchText3;
           _os_log_impl(&dword_19BF1F000, v49, OS_LOG_TYPE_INFO, "Next Token suggestions query for %@ aborted because query was cancelled", v101, 0xCu);
         }
 
@@ -728,18 +728,18 @@ LABEL_16:
         if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
         {
           v52 = [v66 count];
-          v53 = [(PSISuggestionQuery *)self formattedSearchText];
+          formattedSearchText4 = [(PSISuggestionQuery *)self formattedSearchText];
           *v101 = 134218498;
           v102 = v52;
           v103 = 2112;
-          v104 = v53;
+          v104 = formattedSearchText4;
           v105 = 2112;
           v106 = v66;
           _os_log_impl(&dword_19BF1F000, v51, OS_LOG_TYPE_INFO, "Generated %tu next token candidates for query: %@: %@", v101, 0x20u);
         }
 
         v49 = [PSISuggestionQueryUtilities suggestionCandidatesBySuggestionCategoriesTypeFromSuggestionComponents:log assetIds:v98[3] collectionIds:v94[3] wantsSuggestionCounts:1];
-        v54 = +[PSISuggestionRanker rankedSearchSuggestionsFromSuggestionCandidates:suggestionType:queryAssetCount:queryCollectionCount:suggestionLimit:suggestionQuery:](PSISuggestionRanker, "rankedSearchSuggestionsFromSuggestionCandidates:suggestionType:queryAssetCount:queryCollectionCount:suggestionLimit:suggestionQuery:", v49, 2, [v74 count], objc_msgSend(v70, "count"), a5, self);
+        v54 = +[PSISuggestionRanker rankedSearchSuggestionsFromSuggestionCandidates:suggestionType:queryAssetCount:queryCollectionCount:suggestionLimit:suggestionQuery:](PSISuggestionRanker, "rankedSearchSuggestionsFromSuggestionCandidates:suggestionType:queryAssetCount:queryCollectionCount:suggestionLimit:suggestionQuery:", v49, 2, [v74 count], objc_msgSend(v70, "count"), limit, self);
         v55 = v98[3];
         if (v55)
         {
@@ -759,9 +759,9 @@ LABEL_16:
           v57 = PLSearchBackendQueryGetLog();
           if (os_log_type_enabled(v57, OS_LOG_TYPE_INFO))
           {
-            v58 = [(PSISuggestionQuery *)self formattedSearchText];
+            formattedSearchText5 = [(PSISuggestionQuery *)self formattedSearchText];
             *v101 = 138412290;
-            v102 = v58;
+            v102 = formattedSearchText5;
             _os_log_impl(&dword_19BF1F000, v57, OS_LOG_TYPE_INFO, "Next Token suggestions query for %@ aborted because query was cancelled", v101, 0xCu);
           }
 
@@ -774,11 +774,11 @@ LABEL_16:
           if (os_log_type_enabled(v59, OS_LOG_TYPE_INFO))
           {
             v60 = [v54 count];
-            v61 = [(PSISuggestionQuery *)self formattedSearchText];
+            formattedSearchText6 = [(PSISuggestionQuery *)self formattedSearchText];
             *v101 = 134218242;
             v102 = v60;
             v103 = 2112;
-            v104 = v61;
+            v104 = formattedSearchText6;
             _os_log_impl(&dword_19BF1F000, v59, OS_LOG_TYPE_INFO, "Generated %tu next token suggestions for query: %@", v101, 0x16u);
           }
 
@@ -824,27 +824,27 @@ void __97__PSISuggestionQuery__generateNextTokenSuggestionsForAssetUUIDs_collect
   *(v6 + 40) = v5;
 }
 
-- (id)_generateCompletionSuggestionsForAssetUUIDs:(id)a3 collectionUUIDs:(id)a4 restrictedIndexCategories:(id)a5 shouldFoldSuggestions:(BOOL)a6 suggestionLimit:(unint64_t)a7 completionSuggestionDateComponents:(id)a8 completionTextForDateComponents:(id)a9
+- (id)_generateCompletionSuggestionsForAssetUUIDs:(id)ds collectionUUIDs:(id)iDs restrictedIndexCategories:(id)categories shouldFoldSuggestions:(BOOL)suggestions suggestionLimit:(unint64_t)limit completionSuggestionDateComponents:(id)components completionTextForDateComponents:(id)dateComponents
 {
-  v156 = a6;
+  suggestionsCopy = suggestions;
   v237 = *MEMORY[0x1E69E9840];
-  v168 = a3;
-  v169 = a4;
-  v174 = a5;
-  v166 = a8;
-  v167 = a9;
-  v177 = self;
-  v172 = [(PSISuggestionQuery *)self formattedSearchText];
-  v175 = [(PSISuggestionQuery *)self completionSuggestionTexts];
-  LODWORD(a8) = [v175 count] == 0;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  categoriesCopy = categories;
+  componentsCopy = components;
+  dateComponentsCopy = dateComponents;
+  selfCopy = self;
+  formattedSearchText = [(PSISuggestionQuery *)self formattedSearchText];
+  completionSuggestionTexts = [(PSISuggestionQuery *)self completionSuggestionTexts];
+  LODWORD(components) = [completionSuggestionTexts count] == 0;
   v13 = PLSearchBackendQueryGetLog();
-  if (a8)
+  if (components)
   {
     v18 = v13;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *&buf[4] = v172;
+      *&buf[4] = formattedSearchText;
       v19 = "Completion suggestions aborted because completion text could not be identified. Query string: %@";
 LABEL_12:
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_INFO, v19, buf, 0xCu);
@@ -859,17 +859,17 @@ LABEL_13:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v175;
+    *&buf[4] = completionSuggestionTexts;
     _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Begin completion generation for suggestion texts: %@", buf, 0xCu);
   }
 
-  if (!a7)
+  if (!limit)
   {
     v18 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *&buf[4] = v172;
+      *&buf[4] = formattedSearchText;
       v19 = "Completion suggestions aborted because the completion suggestion limit provided was zero. Query string: %@";
       goto LABEL_12;
     }
@@ -877,29 +877,29 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v171 = [(PSISuggestionQuery *)self suggestionOptions];
-  v154 = [PSISuggestionQueryUtilities suggestionPairingTypeForSuggestionOptions:v171];
+  suggestionOptions = [(PSISuggestionQuery *)self suggestionOptions];
+  v154 = [PSISuggestionQueryUtilities suggestionPairingTypeForSuggestionOptions:suggestionOptions];
   if (v154 == 1)
   {
     v159 = +[PSISuggestionQueryUtilities excludedLocationCategoriesForPairedLocationPrimarySuggestions];
-    if (![v174 count])
+    if (![categoriesCopy count])
     {
       goto LABEL_18;
     }
 
     v15 = +[PSISuggestionQueryUtilities allowedIndexCategoriesForPairedLocationPrimarySuggestions];
-    v16 = [v174 mutableCopy];
+    v16 = [categoriesCopy mutableCopy];
     [v16 addIndexes:v15];
     [v16 removeIndexes:v159];
     v17 = [v16 copy];
 
-    v174 = v17;
+    categoriesCopy = v17;
   }
 
   else
   {
     v159 = 0;
-    if (![v174 count])
+    if (![categoriesCopy count])
     {
       goto LABEL_18;
     }
@@ -912,14 +912,14 @@ LABEL_13:
   v219[3] = &unk_1E7576338;
   v22 = v21;
   v220 = v22;
-  [v174 enumerateIndexesUsingBlock:v219];
+  [categoriesCopy enumerateIndexesUsingBlock:v219];
   v23 = PLSearchBackendQueryGetLog();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
     *&buf[4] = v22;
     *&buf[12] = 2112;
-    *&buf[14] = v172;
+    *&buf[14] = formattedSearchText;
     _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_INFO, "Scoping suggestions query to categories: %@, for query string: %@", buf, 0x16u);
   }
 
@@ -930,7 +930,7 @@ LABEL_18:
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *&buf[4] = v172;
+      *&buf[4] = formattedSearchText;
       _os_log_impl(&dword_19BF1F000, oslog, OS_LOG_TYPE_INFO, "Completion suggestions aborted because query was cancelled. Query string: %@", buf, 0xCu);
     }
 
@@ -939,11 +939,11 @@ LABEL_18:
   }
 
   oslog = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [oslog addObjectsFromArray:v168];
-  [oslog addObjectsFromArray:v169];
-  v24 = [v171 wantsUnscopedSuggestions];
-  v158 = [v171 optionsWantSuggestionsForAssets];
-  v157 = [v171 optionsWantSuggestionsForCollections];
+  [oslog addObjectsFromArray:dsCopy];
+  [oslog addObjectsFromArray:iDsCopy];
+  wantsUnscopedSuggestions = [suggestionOptions wantsUnscopedSuggestions];
+  optionsWantSuggestionsForAssets = [suggestionOptions optionsWantSuggestionsForAssets];
+  optionsWantSuggestionsForCollections = [suggestionOptions optionsWantSuggestionsForCollections];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
@@ -952,48 +952,48 @@ LABEL_18:
   v216 = &v215;
   v217 = 0x2020000000;
   v218 = 0;
-  if ((v24 & 1) == 0)
+  if ((wantsUnscopedSuggestions & 1) == 0)
   {
-    if (v158)
+    if (optionsWantSuggestionsForAssets)
     {
-      LOBYTE(v158) = [v168 count] != 0;
+      LOBYTE(optionsWantSuggestionsForAssets) = [dsCopy count] != 0;
     }
 
     else
     {
-      LOBYTE(v158) = 0;
+      LOBYTE(optionsWantSuggestionsForAssets) = 0;
     }
 
-    if (v157)
+    if (optionsWantSuggestionsForCollections)
     {
-      LOBYTE(v157) = [v169 count] != 0;
+      LOBYTE(optionsWantSuggestionsForCollections) = [iDsCopy count] != 0;
     }
 
     else
     {
-      LOBYTE(v157) = 0;
+      LOBYTE(optionsWantSuggestionsForCollections) = 0;
     }
 
     v25 = [MEMORY[0x1E695DFD8] setWithArray:oslog];
-    v26 = [v171 suggestionResultTypes];
-    v27 = [(PSISuggestionQuery *)v177 photosEntityStore];
+    suggestionResultTypes = [suggestionOptions suggestionResultTypes];
+    photosEntityStore = [(PSISuggestionQuery *)selfCopy photosEntityStore];
     v214[0] = MEMORY[0x1E69E9820];
     v214[1] = 3221225472;
     v214[2] = __213__PSISuggestionQuery__generateCompletionSuggestionsForAssetUUIDs_collectionUUIDs_restrictedIndexCategories_shouldFoldSuggestions_suggestionLimit_completionSuggestionDateComponents_completionTextForDateComponents___block_invoke_18;
     v214[3] = &unk_1E7569CF8;
     v214[4] = buf;
     v214[5] = &v215;
-    [PLScopedSearchUtilities searchIndexIdsFromUUIDs:v25 searchResultTypes:v26 psiDatabase:v27 completion:v214];
+    [PLScopedSearchUtilities searchIndexIdsFromUUIDs:v25 searchResultTypes:suggestionResultTypes psiDatabase:photosEntityStore completion:v214];
   }
 
-  if ([(PSISuggestionQuery *)v177 cancelled])
+  if ([(PSISuggestionQuery *)selfCopy cancelled])
   {
     v28 = PLSearchBackendQueryGetLog();
     v155 = v28;
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
       *v224 = 138412290;
-      v225 = v172;
+      v225 = formattedSearchText;
       _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_INFO, "Completion suggestions aborted because query was cancelled. Query string: %@", v224, 0xCu);
     }
 
@@ -1006,19 +1006,19 @@ LABEL_18:
   v146 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v142 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v152 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v29 = [(PSISuggestionQuery *)v177 suggestionOptions];
-  v144 = [v29 limitSuggestionsToExactTextMatches];
+  suggestionOptions2 = [(PSISuggestionQuery *)selfCopy suggestionOptions];
+  limitSuggestionsToExactTextMatches = [suggestionOptions2 limitSuggestionsToExactTextMatches];
 
-  v147 = [(PSISuggestionQuery *)v177 photosEntityStore];
+  photosEntityStore2 = [(PSISuggestionQuery *)selfCopy photosEntityStore];
   v212 = 0u;
   v213 = 0u;
   v210 = 0u;
   v211 = 0u;
-  obj = v175;
+  obj = completionSuggestionTexts;
   v141 = [obj countByEnumeratingWithState:&v210 objects:v234 count:16];
   if (v141)
   {
-    v153 = v24 ^ 1;
+    v153 = wantsUnscopedSuggestions ^ 1;
     v143 = *v211;
     do
     {
@@ -1032,8 +1032,8 @@ LABEL_18:
         v170 = *(*(&v210 + 1) + 8 * i);
         if (_os_feature_enabled_impl())
         {
-          v30 = [v171 substringMatchedCategories];
-          v31 = [PSISuggestionQueryUtilities searchIndexCategoriesIndexSetFromPLSearchSuggestionCategoriesTypeIndexSet:v30];
+          substringMatchedCategories = [suggestionOptions substringMatchedCategories];
+          v31 = [PSISuggestionQueryUtilities searchIndexCategoriesIndexSetFromPLSearchSuggestionCategoriesTypeIndexSet:substringMatchedCategories];
 
           v32 = [v159 mutableCopy];
           v33 = v32;
@@ -1048,8 +1048,8 @@ LABEL_18:
           }
 
           [v34 addIndexes:v31];
-          v36 = [PSISuggestionQueryUtilities suggestionGroupsForSearchText:v170 requireExactMatches:v144 leadingAnchored:1 restrictedIndexCategories:v174 excludedIndexCategories:v34 suggestionResultTypes:[v171 suggestionResultTypes] psiQueryDelegate:v147];
-          v37 = [v174 mutableCopy];
+          v36 = [PSISuggestionQueryUtilities suggestionGroupsForSearchText:v170 requireExactMatches:limitSuggestionsToExactTextMatches leadingAnchored:1 restrictedIndexCategories:categoriesCopy excludedIndexCategories:v34 suggestionResultTypes:[suggestionOptions suggestionResultTypes] psiQueryDelegate:photosEntityStore2];
+          v37 = [categoriesCopy mutableCopy];
           v38 = v37;
           if (v37)
           {
@@ -1062,7 +1062,7 @@ LABEL_18:
           }
 
           [v39 addIndexes:v31];
-          v40 = [PSISuggestionQueryUtilities suggestionGroupsForSearchText:v170 requireExactMatches:v144 leadingAnchored:0 restrictedIndexCategories:v39 excludedIndexCategories:v159 suggestionResultTypes:[v171 suggestionResultTypes] psiQueryDelegate:v147];
+          v40 = [PSISuggestionQueryUtilities suggestionGroupsForSearchText:v170 requireExactMatches:limitSuggestionsToExactTextMatches leadingAnchored:0 restrictedIndexCategories:v39 excludedIndexCategories:v159 suggestionResultTypes:[suggestionOptions suggestionResultTypes] psiQueryDelegate:photosEntityStore2];
           v41 = objc_alloc_init(MEMORY[0x1E695DF70]);
           [v41 addObjectsFromArray:v36];
           [v41 addObjectsFromArray:v40];
@@ -1073,7 +1073,7 @@ LABEL_18:
 
         else
         {
-          v149 = [PSISuggestionQueryUtilities suggestionGroupsForSearchText:v170 requireExactMatches:v144 leadingAnchored:1 restrictedIndexCategories:v174 excludedIndexCategories:v159 suggestionResultTypes:[v171 suggestionResultTypes] psiQueryDelegate:v147];
+          v149 = [PSISuggestionQueryUtilities suggestionGroupsForSearchText:v170 requireExactMatches:limitSuggestionsToExactTextMatches leadingAnchored:1 restrictedIndexCategories:categoriesCopy excludedIndexCategories:v159 suggestionResultTypes:[suggestionOptions suggestionResultTypes] psiQueryDelegate:photosEntityStore2];
           v35 = [v149 count];
         }
 
@@ -1098,23 +1098,23 @@ LABEL_18:
                 }
 
                 v173 = *(*(&v206 + 1) + 8 * j);
-                if ([(PSISuggestionQuery *)v177 cancelled])
+                if ([(PSISuggestionQuery *)selfCopy cancelled])
                 {
                   v83 = PLSearchBackendQueryGetLog();
                   if (os_log_type_enabled(v83, OS_LOG_TYPE_INFO))
                   {
-                    v84 = [(PSISuggestionQuery *)v177 formattedSearchText];
+                    formattedSearchText2 = [(PSISuggestionQuery *)selfCopy formattedSearchText];
                     *v224 = 138412290;
-                    v225 = v84;
+                    v225 = formattedSearchText2;
                     _os_log_impl(&dword_19BF1F000, v83, OS_LOG_TYPE_INFO, "Completion suggestions aborted because query was cancelled. Query: %@.", v224, 0xCu);
                   }
 
                   goto LABEL_110;
                 }
 
-                v42 = [(PSISuggestionQuery *)v177 originalSearchText];
-                v43 = [v42 string];
-                v44 = [v43 rangeOfString:v170 options:133];
+                originalSearchText = [(PSISuggestionQuery *)selfCopy originalSearchText];
+                string = [originalSearchText string];
+                v44 = [string rangeOfString:v170 options:133];
                 v46 = v45;
 
                 if (v44 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1125,17 +1125,17 @@ LABEL_18:
                     *v224 = 138412546;
                     v225 = v170;
                     v226 = 2112;
-                    v227 = v172;
+                    v227 = formattedSearchText;
                     _os_log_impl(&dword_19BF1F000, v47, OS_LOG_TYPE_ERROR, "Suggestion text (%@) not found in completion text (%@). Skipping suggestion text.", v224, 0x16u);
                   }
                 }
 
                 else
                 {
-                  BYTE2(v140) = v157;
-                  BYTE1(v140) = v158;
+                  BYTE2(v140) = optionsWantSuggestionsForCollections;
+                  BYTE1(v140) = optionsWantSuggestionsForAssets;
                   LOBYTE(v140) = v153;
-                  v47 = [PSISuggestionQueryUtilities suggestionComponentFromGroup:v173 completionText:v170 suggestionQuery:v177 suggestionOptions:v171 matchRange:v44 requiresScopedUUIDs:v46 generateAssetSuggestions:v140 generateCollectionSuggestions:*(*&buf[8] + 24) searchQueryAssetIds:v216[3] searchQueryCollectionIds:?];
+                  v47 = [PSISuggestionQueryUtilities suggestionComponentFromGroup:v173 completionText:v170 suggestionQuery:selfCopy suggestionOptions:suggestionOptions matchRange:v44 requiresScopedUUIDs:v46 generateAssetSuggestions:v140 generateCollectionSuggestions:*(*&buf[8] + 24) searchQueryAssetIds:v216[3] searchQueryCollectionIds:?];
                   if (v47)
                   {
                     v165 = v47;
@@ -1253,8 +1253,8 @@ LABEL_18:
                                   }
 
                                   v73 = *(*(&v194 + 1) + 8 * n);
-                                  v74 = [v73 psiGroupId];
-                                  if (v74 == [v68 psiGroupId])
+                                  psiGroupId = [v73 psiGroupId];
+                                  if (psiGroupId == [v68 psiGroupId])
                                   {
                                     [v73 matchRangeOfSearchText];
                                     v76 = v75;
@@ -1297,8 +1297,8 @@ LABEL_93:
                     }
 
                     v78 = MEMORY[0x1E696AEC0];
-                    v79 = [v173 contentString];
-                    v80 = [v78 stringWithFormat:@"%@-%hd", v79, objc_msgSend(v173, "category")];
+                    contentString = [v173 contentString];
+                    v80 = [v78 stringWithFormat:@"%@-%hd", contentString, objc_msgSend(v173, "category")];
 
                     [v152 addObject:v80];
                     v47 = v165;
@@ -1322,9 +1322,9 @@ LABEL_93:
           v160 = PLSearchBackendQueryGetLog();
           if (os_log_type_enabled(v160, OS_LOG_TYPE_DEFAULT))
           {
-            v81 = [(PSISuggestionQuery *)v177 formattedSearchText];
+            formattedSearchText3 = [(PSISuggestionQuery *)selfCopy formattedSearchText];
             *v224 = 138412290;
-            v225 = v81;
+            v225 = formattedSearchText3;
             _os_log_impl(&dword_19BF1F000, v160, OS_LOG_TYPE_DEFAULT, "Found no filtered groups for query: %@.", v224, 0xCu);
           }
         }
@@ -1336,14 +1336,14 @@ LABEL_93:
     while (v141);
   }
 
-  if ([(PSISuggestionQuery *)v177 cancelled])
+  if ([(PSISuggestionQuery *)selfCopy cancelled])
   {
     obj = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(obj, OS_LOG_TYPE_INFO))
     {
-      v82 = [(PSISuggestionQuery *)v177 formattedSearchText];
+      formattedSearchText4 = [(PSISuggestionQuery *)selfCopy formattedSearchText];
       *v224 = 138412290;
-      v225 = v82;
+      v225 = formattedSearchText4;
       _os_log_impl(&dword_19BF1F000, obj, OS_LOG_TYPE_INFO, "Completion suggestions aborted because query was cancelled. Query: %@.", v224, 0xCu);
     }
 
@@ -1352,12 +1352,12 @@ LABEL_110:
     goto LABEL_173;
   }
 
-  v85 = [v166 count];
-  if ([v167 length])
+  v85 = [componentsCopy count];
+  if ([dateComponentsCopy length])
   {
-    v86 = [(PSISuggestionQuery *)v177 originalSearchText];
-    v87 = [v86 string];
-    v88 = [v87 rangeOfString:v167 options:4];
+    originalSearchText2 = [(PSISuggestionQuery *)selfCopy originalSearchText];
+    string2 = [originalSearchText2 string];
+    v88 = [string2 rangeOfString:dateComponentsCopy options:4];
     v90 = v89;
   }
 
@@ -1367,24 +1367,24 @@ LABEL_110:
     v88 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v91 = [(PSISuggestionQuery *)v177 originalSearchText];
-  v92 = [v91 string];
-  v93 = [PSISuggestionQueryUtilities rangeExists:v88 forString:v90, v92];
+  originalSearchText3 = [(PSISuggestionQuery *)selfCopy originalSearchText];
+  string3 = [originalSearchText3 string];
+  v93 = [PSISuggestionQueryUtilities rangeExists:v88 forString:v90, string3];
 
   if (v85 != 0 && v93)
   {
     v94 = *(*&buf[8] + 24);
-    v95 = [(PSISuggestionQuery *)v177 photosEntityStore];
-    v96 = [PSISuggestionQueryUtilities suggestionComponentForCompletionSuggestionDateComponents:v166 rangeOfCompletionSuggestionDateComponentsInSearchText:v88 searchQueryAssetIds:v90 suggestionQuery:v94 photosEntityStore:v177, v95];
+    photosEntityStore3 = [(PSISuggestionQuery *)selfCopy photosEntityStore];
+    v96 = [PSISuggestionQueryUtilities suggestionComponentForCompletionSuggestionDateComponents:componentsCopy rangeOfCompletionSuggestionDateComponentsInSearchText:v88 searchQueryAssetIds:v90 suggestionQuery:v94 photosEntityStore:selfCopy, photosEntityStore3];
 
     if (v96)
     {
       [v142 addObject:v96];
       v97 = MEMORY[0x1E696AEC0];
-      v98 = [v96 contentString];
-      v99 = [v97 stringWithFormat:@"%@-%lu", v98, 1102];
+      contentString2 = [v96 contentString];
+      1102 = [v97 stringWithFormat:@"%@-%lu", contentString2, 1102];
 
-      [v152 addObject:v99];
+      [v152 addObject:1102];
     }
   }
 
@@ -1407,7 +1407,7 @@ LABEL_110:
     [obj addObjectsFromArray:v142];
   }
 
-  if (![(PSISuggestionQuery *)v177 cancelled])
+  if (![(PSISuggestionQuery *)selfCopy cancelled])
   {
     v105 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v105, OS_LOG_TYPE_DEFAULT))
@@ -1416,13 +1416,13 @@ LABEL_110:
       *v224 = 134218498;
       v225 = v106;
       v226 = 2112;
-      v227 = v172;
+      v227 = formattedSearchText;
       v228 = 2112;
       v229 = v100;
       _os_log_impl(&dword_19BF1F000, v105, OS_LOG_TYPE_DEFAULT, "Generated %tu completion candidates for query %@: %@", v224, 0x20u);
     }
 
-    if (v156)
+    if (suggestionsCopy)
     {
       [PSISuggestionQueryUtilities suggestionCandidatesBySuggestionCategoriesTypeFromSuggestionComponents:obj assetIds:*(*&buf[8] + 24) collectionIds:v216[3] wantsSuggestionCounts:1];
     }
@@ -1433,7 +1433,7 @@ LABEL_110:
     }
     v181 = ;
 
-    if (v144)
+    if (limitSuggestionsToExactTextMatches)
     {
       v107 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v108 = v193;
@@ -1446,24 +1446,24 @@ LABEL_110:
       [v181 enumerateKeysAndObjectsUsingBlock:v193];
       v110 = [PSISuggestionRanker sortedSuggestionsFromSuggestions:v109];
       v111 = [v109 count];
-      if (v111 >= a7)
+      if (v111 >= limit)
       {
-        v112 = a7;
+        limitCopy = limit;
       }
 
       else
       {
-        v112 = v111;
+        limitCopy = v111;
       }
 
-      v113 = [v110 subarrayWithRange:{0, v112}];
+      v113 = [v110 subarrayWithRange:{0, limitCopy}];
     }
 
     else
     {
-      if ([v174 count] != 1)
+      if ([categoriesCopy count] != 1)
       {
-        v118 = +[PSISuggestionRanker rankedSearchSuggestionsFromSuggestionCandidates:suggestionType:queryAssetCount:queryCollectionCount:suggestionLimit:suggestionQuery:](PSISuggestionRanker, "rankedSearchSuggestionsFromSuggestionCandidates:suggestionType:queryAssetCount:queryCollectionCount:suggestionLimit:suggestionQuery:", v181, 1, [v168 count], objc_msgSend(v169, "count"), a7, v177);
+        v118 = +[PSISuggestionRanker rankedSearchSuggestionsFromSuggestionCandidates:suggestionType:queryAssetCount:queryCollectionCount:suggestionLimit:suggestionQuery:](PSISuggestionRanker, "rankedSearchSuggestionsFromSuggestionCandidates:suggestionType:queryAssetCount:queryCollectionCount:suggestionLimit:suggestionQuery:", v181, 1, [dsCopy count], objc_msgSend(iDsCopy, "count"), limit, selfCopy);
         goto LABEL_142;
       }
 
@@ -1482,17 +1482,17 @@ LABEL_110:
       [v109 sortUsingDescriptors:v115];
 
       v116 = [v109 count];
-      if (v116 >= a7)
+      if (v116 >= limit)
       {
-        v117 = a7;
+        limitCopy2 = limit;
       }
 
       else
       {
-        v117 = v116;
+        limitCopy2 = v116;
       }
 
-      v113 = [v109 subarrayWithRange:{0, v117}];
+      v113 = [v109 subarrayWithRange:{0, limitCopy2}];
     }
 
     v118 = v113;
@@ -1522,11 +1522,11 @@ LABEL_142:
             }
 
             v125 = *(*(&v188 + 1) + 8 * ii);
-            v126 = [v125 suggestionComponents];
-            v127 = [v126 firstObject];
-            v128 = [v127 indexCategory];
+            suggestionComponents = [v125 suggestionComponents];
+            firstObject = [suggestionComponents firstObject];
+            indexCategory = [firstObject indexCategory];
 
-            if ([v119 containsIndex:v128])
+            if ([v119 containsIndex:indexCategory])
             {
               [v183 addObject:v125];
               [v120 removeObject:v125];
@@ -1539,7 +1539,7 @@ LABEL_142:
         while (v122);
       }
 
-      [(PSISuggestionQuery *)v177 _performQueryForPairedLocationSuggestions:v183];
+      [(PSISuggestionQuery *)selfCopy _performQueryForPairedLocationSuggestions:v183];
       v186 = 0u;
       v187 = 0u;
       v184 = 0u;
@@ -1583,14 +1583,14 @@ LABEL_142:
       v216[3] = 0;
     }
 
-    if ([(PSISuggestionQuery *)v177 cancelled])
+    if ([(PSISuggestionQuery *)selfCopy cancelled])
     {
       v135 = PLSearchBackendQueryGetLog();
       if (os_log_type_enabled(v135, OS_LOG_TYPE_INFO))
       {
-        v136 = [(PSISuggestionQuery *)v177 formattedSearchText];
+        formattedSearchText5 = [(PSISuggestionQuery *)selfCopy formattedSearchText];
         *v224 = 138412290;
-        v225 = v136;
+        v225 = formattedSearchText5;
         _os_log_impl(&dword_19BF1F000, v135, OS_LOG_TYPE_INFO, "Completion suggestions aborted because query was cancelled. Query: %@.", v224, 0xCu);
       }
 
@@ -1606,7 +1606,7 @@ LABEL_142:
         *v224 = 134218242;
         v225 = v138;
         v226 = 2112;
-        v227 = v172;
+        v227 = formattedSearchText;
         _os_log_impl(&dword_19BF1F000, v137, OS_LOG_TYPE_INFO, "Generated %tu completion suggestions for query: %@", v224, 0x16u);
       }
 
@@ -1619,9 +1619,9 @@ LABEL_142:
   v181 = PLSearchBackendQueryGetLog();
   if (os_log_type_enabled(v181, OS_LOG_TYPE_INFO))
   {
-    v104 = [(PSISuggestionQuery *)v177 formattedSearchText];
+    formattedSearchText6 = [(PSISuggestionQuery *)selfCopy formattedSearchText];
     *v224 = 138412290;
-    v225 = v104;
+    v225 = formattedSearchText6;
     _os_log_impl(&dword_19BF1F000, v181, OS_LOG_TYPE_INFO, "Completion suggestions aborted because query was cancelled. Query: %@.", v224, 0xCu);
   }
 
@@ -1635,7 +1635,7 @@ LABEL_174:
   _Block_object_dispose(buf, 8);
 LABEL_175:
 
-  v18 = v171;
+  v18 = suggestionOptions;
 LABEL_176:
 
   return v20;
@@ -1656,44 +1656,44 @@ uint64_t __213__PSISuggestionQuery__generateCompletionSuggestionsForAssetUUIDs_c
 
 - (BOOL)cancelled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cancelled = v2->_cancelled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cancelled = selfCopy->_cancelled;
+  objc_sync_exit(selfCopy);
 
   return cancelled;
 }
 
-- (void)setCancelled:(BOOL)a3
+- (void)setCancelled:(BOOL)cancelled
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_cancelled = a3;
+  obj->_cancelled = cancelled;
   objc_sync_exit(obj);
 }
 
-- (id)performQueryWithSearchResultAssetUUIDs:(id)a3 collectionUUIDs:(id)a4 completionSuggestionDateComponents:(id)a5 completionTextForDateComponents:(id)a6
+- (id)performQueryWithSearchResultAssetUUIDs:(id)ds collectionUUIDs:(id)iDs completionSuggestionDateComponents:(id)components completionTextForDateComponents:(id)dateComponents
 {
   v50 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PSISuggestionQuery *)self formattedSearchText];
-  if (![v14 length])
+  dsCopy = ds;
+  iDsCopy = iDs;
+  componentsCopy = components;
+  dateComponentsCopy = dateComponents;
+  formattedSearchText = [(PSISuggestionQuery *)self formattedSearchText];
+  if (![formattedSearchText length])
   {
     v18 = MEMORY[0x1E695E0F0];
     goto LABEL_42;
   }
 
-  v15 = [(PSISuggestionQuery *)self suggestionOptions];
-  if (![v15 searchSuggestionLimit])
+  suggestionOptions = [(PSISuggestionQuery *)self suggestionOptions];
+  if (![suggestionOptions searchSuggestionLimit])
   {
     v28 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v49 = v14;
+      v49 = formattedSearchText;
       v29 = "Suggestions query for %@ aborted because the suggestion limit provided was zero";
 LABEL_22:
       _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_INFO, v29, buf, 0xCu);
@@ -1706,20 +1706,20 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  if ([v10 count])
+  if ([dsCopy count])
   {
-    [v15 wantsUnscopedSuggestions];
+    [suggestionOptions wantsUnscopedSuggestions];
     goto LABEL_5;
   }
 
-  v30 = [v11 count];
-  if (([v15 wantsUnscopedSuggestions] & 1) == 0 && !v30)
+  v30 = [iDsCopy count];
+  if (([suggestionOptions wantsUnscopedSuggestions] & 1) == 0 && !v30)
   {
     v28 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v49 = v14;
+      v49 = formattedSearchText;
       v29 = "Suggestions query for %@ aborted because no scoping search results were provided";
       goto LABEL_22;
     }
@@ -1728,13 +1728,13 @@ LABEL_40:
   }
 
 LABEL_5:
-  v16 = [(PSISuggestionQuery *)self suggestionOptions];
-  v17 = [v16 searchSuggestionType];
+  suggestionOptions2 = [(PSISuggestionQuery *)self suggestionOptions];
+  searchSuggestionType = [suggestionOptions2 searchSuggestionType];
 
   v18 = MEMORY[0x1E695E0F0];
-  if (v17 > 2)
+  if (searchSuggestionType > 2)
   {
-    if ((v17 - 3) > 1)
+    if ((searchSuggestionType - 3) > 1)
     {
       goto LABEL_41;
     }
@@ -1744,14 +1744,14 @@ LABEL_25:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v49 = v14;
+      v49 = formattedSearchText;
       _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_ERROR, "Suggestions query for %@ aborted because the required suggestion type was unexpected", buf, 0xCu);
     }
 
     goto LABEL_40;
   }
 
-  switch(v17)
+  switch(searchSuggestionType)
   {
     case 0:
       goto LABEL_25;
@@ -1771,12 +1771,12 @@ LABEL_25:
       v42 = v32;
       v47 = v34;
 
-      v35 = [v15 suggestionCategories];
-      spida = [PSISuggestionQueryUtilities searchIndexCategoriesIndexSetFromPLSearchSuggestionCategoriesTypeIndexSet:v35];
+      suggestionCategories = [suggestionOptions suggestionCategories];
+      spida = [PSISuggestionQueryUtilities searchIndexCategoriesIndexSetFromPLSearchSuggestionCategoriesTypeIndexSet:suggestionCategories];
 
       v36 = [spida copy];
-      v37 = [(PSISuggestionQuery *)self suggestionOptions];
-      v18 = -[PSISuggestionQuery _generateCompletionSuggestionsForAssetUUIDs:collectionUUIDs:restrictedIndexCategories:shouldFoldSuggestions:suggestionLimit:completionSuggestionDateComponents:completionTextForDateComponents:](self, "_generateCompletionSuggestionsForAssetUUIDs:collectionUUIDs:restrictedIndexCategories:shouldFoldSuggestions:suggestionLimit:completionSuggestionDateComponents:completionTextForDateComponents:", v10, v11, v36, 1, [v37 searchSuggestionLimit], v12, v13);
+      suggestionOptions3 = [(PSISuggestionQuery *)self suggestionOptions];
+      v18 = -[PSISuggestionQuery _generateCompletionSuggestionsForAssetUUIDs:collectionUUIDs:restrictedIndexCategories:shouldFoldSuggestions:suggestionLimit:completionSuggestionDateComponents:completionTextForDateComponents:](self, "_generateCompletionSuggestionsForAssetUUIDs:collectionUUIDs:restrictedIndexCategories:shouldFoldSuggestions:suggestionLimit:completionSuggestionDateComponents:completionTextForDateComponents:", dsCopy, iDsCopy, v36, 1, [suggestionOptions3 searchSuggestionLimit], componentsCopy, dateComponentsCopy);
 
       v38 = v47;
       v28 = v38;
@@ -1788,13 +1788,13 @@ LABEL_25:
 
       goto LABEL_40;
     case 2:
-      v19 = [(PSISuggestionQuery *)self suggestionOptions];
-      v20 = [v19 enableNextTokenSuggestions];
+      suggestionOptions4 = [(PSISuggestionQuery *)self suggestionOptions];
+      enableNextTokenSuggestions = [suggestionOptions4 enableNextTokenSuggestions];
 
-      if (v20)
+      if (enableNextTokenSuggestions)
       {
-        v21 = [(PSISuggestionQuery *)self suggestionOptions];
-        v22 = [v21 minNumberOfResultsForNextTokenGeneration];
+        suggestionOptions5 = [(PSISuggestionQuery *)self suggestionOptions];
+        minNumberOfResultsForNextTokenGeneration = [suggestionOptions5 minNumberOfResultsForNextTokenGeneration];
 
         v23 = PLPhotosSearchGetLog();
         v24 = os_signpost_id_generate(v23);
@@ -1811,10 +1811,10 @@ LABEL_25:
 
         v46 = v26;
 
-        if ([v10 count] >= v22)
+        if ([dsCopy count] >= minNumberOfResultsForNextTokenGeneration)
         {
-          v39 = [(PSISuggestionQuery *)self suggestionOptions];
-          v18 = -[PSISuggestionQuery _generateNextTokenSuggestionsForAssetUUIDs:collectionUUIDs:suggestionLimit:](self, "_generateNextTokenSuggestionsForAssetUUIDs:collectionUUIDs:suggestionLimit:", v10, v11, [v39 searchSuggestionLimit]);
+          suggestionOptions6 = [(PSISuggestionQuery *)self suggestionOptions];
+          v18 = -[PSISuggestionQuery _generateNextTokenSuggestionsForAssetUUIDs:collectionUUIDs:suggestionLimit:](self, "_generateNextTokenSuggestionsForAssetUUIDs:collectionUUIDs:suggestionLimit:", dsCopy, iDsCopy, [suggestionOptions6 searchSuggestionLimit]);
         }
 
         else
@@ -1844,18 +1844,18 @@ LABEL_42:
   return v18;
 }
 
-- (PSISuggestionQuery)initWithFormattedSearchText:(id)a3 originalSearchText:(id)a4 completionSuggestionTexts:(id)a5 suggestionOptions:(id)a6 suggestionComponents:(id)a7 photosEntityStore:(id)a8
+- (PSISuggestionQuery)initWithFormattedSearchText:(id)text originalSearchText:(id)searchText completionSuggestionTexts:(id)texts suggestionOptions:(id)options suggestionComponents:(id)components photosEntityStore:(id)store
 {
   v41 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if (v15)
+  textCopy = text;
+  searchTextCopy = searchText;
+  textsCopy = texts;
+  optionsCopy = options;
+  componentsCopy = components;
+  storeCopy = store;
+  if (textCopy)
   {
-    if (v16)
+    if (searchTextCopy)
     {
       goto LABEL_3;
     }
@@ -1863,22 +1863,22 @@ LABEL_42:
 
   else
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PSISuggestionQuery.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"formattedSearchText"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PSISuggestionQuery.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"formattedSearchText"}];
 
-    if (v16)
+    if (searchTextCopy)
     {
 LABEL_3:
-      if (v18)
+      if (optionsCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_13:
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v35 handleFailureInMethod:a2 object:self file:@"PSISuggestionQuery.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"suggestionOptions"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PSISuggestionQuery.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"suggestionOptions"}];
 
-      if (v20)
+      if (storeCopy)
       {
         goto LABEL_5;
       }
@@ -1887,16 +1887,16 @@ LABEL_13:
     }
   }
 
-  v34 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v34 handleFailureInMethod:a2 object:self file:@"PSISuggestionQuery.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"originalSearchText"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PSISuggestionQuery.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"originalSearchText"}];
 
-  if (!v18)
+  if (!optionsCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_4:
-  if (v20)
+  if (storeCopy)
   {
 LABEL_5:
     v38.receiver = self;
@@ -1904,26 +1904,26 @@ LABEL_5:
     v21 = [(PSISuggestionQuery *)&v38 init];
     if (v21)
     {
-      v22 = [v15 copy];
+      v22 = [textCopy copy];
       formattedSearchText = v21->_formattedSearchText;
       v21->_formattedSearchText = v22;
 
-      v24 = [v16 copy];
+      v24 = [searchTextCopy copy];
       originalSearchText = v21->_originalSearchText;
       v21->_originalSearchText = v24;
 
-      v26 = [v18 copy];
+      v26 = [optionsCopy copy];
       suggestionOptions = v21->_suggestionOptions;
       v21->_suggestionOptions = v26;
 
-      objc_storeStrong(&v21->_photosEntityStore, a8);
-      v28 = [v17 copy];
+      objc_storeStrong(&v21->_photosEntityStore, store);
+      v28 = [textsCopy copy];
       completionSuggestionTexts = v21->_completionSuggestionTexts;
       v21->_completionSuggestionTexts = v28;
 
-      if (v19)
+      if (componentsCopy)
       {
-        v30 = [v19 copy];
+        v30 = [componentsCopy copy];
       }
 
       else
@@ -1936,7 +1936,7 @@ LABEL_5:
     }
 
     self = v21;
-    v32 = self;
+    selfCopy = self;
     goto LABEL_17;
   }
 
@@ -1945,36 +1945,36 @@ LABEL_14:
   if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v40 = v15;
+    v40 = textCopy;
     _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_INFO, "Unexpected nil photos entity store, aborting initialization of query: %@", buf, 0xCu);
   }
 
-  v32 = 0;
+  selfCopy = 0;
 LABEL_17:
 
-  return v32;
+  return selfCopy;
 }
 
-+ (void)_pairLocationCompletionSuggestionsIfPossible:(id)a3 completion:(id)a4
++ (void)_pairLocationCompletionSuggestionsIfPossible:(id)possible completion:(id)completion
 {
   v54 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v37 = a4;
+  possibleCopy = possible;
+  completionCopy = completion;
   v42 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v5 count])
+  if ([possibleCopy count])
   {
     v6 = 0;
     do
     {
-      v7 = [v5 objectAtIndexedSubscript:v6];
-      if (++v6 < [v5 count])
+      v7 = [possibleCopy objectAtIndexedSubscript:v6];
+      if (++v6 < [possibleCopy count])
       {
         v8 = 0;
         v9 = -1;
         v10 = v6;
         do
         {
-          v11 = [v5 objectAtIndexedSubscript:v10];
+          v11 = [possibleCopy objectAtIndexedSubscript:v10];
           if (([v11 isEqual:v7] & 1) == 0)
           {
             v12 = [PSISuggestionQueryUtilities locationPairingScore:v7 otherLocationSuggestion:v11];
@@ -2014,17 +2014,17 @@ LABEL_17:
           ++v10;
         }
 
-        while (v10 < [v5 count]);
+        while (v10 < [possibleCopy count]);
         if (v9 != -1)
         {
-          v15 = [v5 objectAtIndexedSubscript:v9];
+          v15 = [possibleCopy objectAtIndexedSubscript:v9];
           v16 = [[PSILocationSuggestionPair alloc] initWithSuggestion:v7 otherSuggestion:v15 score:v8];
           [v42 addObject:v16];
         }
       }
     }
 
-    while (v6 < [v5 count]);
+    while (v6 < [possibleCopy count]);
   }
 
   v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -2034,7 +2034,7 @@ LABEL_17:
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v5;
+  obj = possibleCopy;
   v18 = [obj countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v18)
   {
@@ -2065,7 +2065,7 @@ LABEL_17:
           {
             v25 = v24;
             v26 = 0;
-            v27 = 0;
+            score = 0;
             v28 = *v45;
             do
             {
@@ -2077,9 +2077,9 @@ LABEL_17:
                 }
 
                 v30 = *(*(&v44 + 1) + 8 * i);
-                if ([v30 containsSuggestion:v22] && objc_msgSend(v30, "score") && objc_msgSend(v30, "score") > v27)
+                if ([v30 containsSuggestion:v22] && objc_msgSend(v30, "score") && objc_msgSend(v30, "score") > score)
                 {
-                  v27 = [v30 score];
+                  score = [v30 score];
                   v31 = v30;
 
                   v26 = v31;
@@ -2093,31 +2093,31 @@ LABEL_17:
 
             if (v26)
             {
-              v32 = [v26 suggestion];
+              suggestion = [v26 suggestion];
               v20 = v40;
               v19 = v41;
-              if ([v17 containsObject:v32])
+              if ([v17 containsObject:suggestion])
               {
                 goto LABEL_44;
               }
 
-              v33 = [v26 otherSuggestion];
-              v34 = [v17 containsObject:v33];
+              otherSuggestion = [v26 otherSuggestion];
+              v34 = [v17 containsObject:otherSuggestion];
 
               if ((v34 & 1) == 0)
               {
-                v32 = [v26 searchSuggestionWithNextTokenPairing];
-                if (v32)
+                suggestion = [v26 searchSuggestionWithNextTokenPairing];
+                if (suggestion)
                 {
-                  [v38 addObject:v32];
+                  [v38 addObject:suggestion];
                 }
 
                 [v23 removeObject:v26];
-                v35 = [v26 suggestion];
-                [v17 addObject:v35];
+                suggestion2 = [v26 suggestion];
+                [v17 addObject:suggestion2];
 
-                v36 = [v26 otherSuggestion];
-                [v17 addObject:v36];
+                otherSuggestion2 = [v26 otherSuggestion];
+                [v17 addObject:otherSuggestion2];
 
 LABEL_44:
               }
@@ -2138,7 +2138,7 @@ LABEL_44:
           }
 
           v26 = 0;
-          v32 = v23;
+          suggestion = v23;
           goto LABEL_44;
         }
 
@@ -2153,7 +2153,7 @@ LABEL_49:
     while (v19);
   }
 
-  v37[2](v37, v38, v39);
+  completionCopy[2](completionCopy, v38, v39);
 }
 
 @end

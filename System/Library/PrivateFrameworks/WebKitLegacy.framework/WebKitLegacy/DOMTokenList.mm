@@ -1,11 +1,11 @@
 @interface DOMTokenList
-- (BOOL)contains:(id)a3;
-- (BOOL)toggle:(id)a3 force:(BOOL)a4;
+- (BOOL)contains:(id)contains;
+- (BOOL)toggle:(id)toggle force:(BOOL)force;
 - (NSString)value;
-- (id)item:(unsigned int)a3;
+- (id)item:(unsigned int)item;
 - (unsigned)length;
 - (void)dealloc;
-- (void)setValue:(id)a3;
+- (void)setValue:(id)value;
 @end
 
 @implementation DOMTokenList
@@ -86,10 +86,10 @@
   return v5;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, value, v4);
   v6 = v8;
   WebCore::DOMTokenList::setValue();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -100,18 +100,18 @@
   WebCore::JSMainThreadNullState::~JSMainThreadNullState(v7, v5);
 }
 
-- (id)item:(unsigned int)a3
+- (id)item:(unsigned int)item
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v15);
   v5 = WebCore::DOMTokenList::tokens(self->super._internal);
-  if (*(v5 + 12) <= a3)
+  if (*(v5 + 12) <= item)
   {
     v6 = MEMORY[0x1E696EB90];
   }
 
   else
   {
-    v6 = (*v5 + 8 * a3);
+    v6 = (*v5 + 8 * item);
   }
 
   v7 = *v6;
@@ -147,10 +147,10 @@
   return v9;
 }
 
-- (BOOL)contains:(id)a3
+- (BOOL)contains:(id)contains
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v9);
-  WTF::AtomStringImpl::add(&v10, a3, v4);
+  WTF::AtomStringImpl::add(&v10, contains, v4);
   v8 = v10;
   v6 = WebCore::DOMTokenList::contains();
   if (v8 && atomic_fetch_add_explicit(v8, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -162,10 +162,10 @@
   return v6;
 }
 
-- (BOOL)toggle:(id)a3 force:(BOOL)a4
+- (BOOL)toggle:(id)toggle force:(BOOL)force
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v13);
-  WTF::AtomStringImpl::add(v14, a3, v5);
+  WTF::AtomStringImpl::add(v14, toggle, v5);
   v9 = v14[0];
   v6 = WebCore::DOMTokenList::toggle();
   if (v12)

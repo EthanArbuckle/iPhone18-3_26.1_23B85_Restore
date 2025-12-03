@@ -1,26 +1,26 @@
 @interface HUPrimaryUserSettingsItemModuleController
-- (Class)cellClassForItem:(id)a3;
-- (id)updatePrimaryUserSelectionType:(unint64_t)a3 user:(id)a4;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (Class)cellClassForItem:(id)item;
+- (id)updatePrimaryUserSelectionType:(unint64_t)type user:(id)user;
+- (unint64_t)didSelectItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUPrimaryUserSettingsItemModuleController
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_opt_class();
-  v6 = [(HUItemModuleController *)self module];
-  if (!v6)
+  module = [(HUItemModuleController *)self module];
+  if (!module)
   {
     goto LABEL_7;
   }
 
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = module;
   }
 
   else
@@ -28,12 +28,12 @@
     v7 = 0;
   }
 
-  v8 = v6;
+  v8 = module;
   if (!v7)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v9 handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
 
 LABEL_7:
     v8 = 0;
@@ -42,8 +42,8 @@ LABEL_7:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [v8 primaryUserSettingsHeaderItem];
-    v12 = [v4 isEqual:v11];
+    primaryUserSettingsHeaderItem = [v8 primaryUserSettingsHeaderItem];
+    v12 = [itemCopy isEqual:primaryUserSettingsHeaderItem];
 
     if ((v12 & 1) == 0)
     {
@@ -57,15 +57,15 @@ LABEL_7:
   return v13;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v18.receiver = self;
   v18.super_class = HUPrimaryUserSettingsItemModuleController;
-  [(HUItemModuleController *)&v18 setupCell:v6 forItem:v7];
+  [(HUItemModuleController *)&v18 setupCell:cellCopy forItem:itemCopy];
   objc_opt_class();
-  v8 = v7;
+  v8 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -81,7 +81,7 @@ LABEL_7:
   if (v10)
   {
     v11 = objc_opt_class();
-    v12 = v6;
+    v12 = cellCopy;
     if (v12)
     {
       if (objc_opt_isKindOfClass())
@@ -100,9 +100,9 @@ LABEL_7:
         goto LABEL_12;
       }
 
-      v15 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v15 handleFailureInFunction:v16 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v11, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v16 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v11, objc_opt_class()}];
     }
 
     v14 = 0;
@@ -116,16 +116,16 @@ LABEL_12:
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v35.receiver = self;
   v35.super_class = HUPrimaryUserSettingsItemModuleController;
-  [(HUItemModuleController *)&v35 updateCell:v8 forItem:v9 animated:v5];
+  [(HUItemModuleController *)&v35 updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
   objc_opt_class();
-  v10 = v9;
+  v10 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -160,7 +160,7 @@ LABEL_12:
     }
 
     v26 = objc_opt_class();
-    v27 = v8;
+    v27 = cellCopy;
     if (v27)
     {
       if (objc_opt_isKindOfClass())
@@ -179,9 +179,9 @@ LABEL_12:
         goto LABEL_24;
       }
 
-      v29 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v29 handleFailureInFunction:v30 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v26, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v30 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v26, objc_opt_class()}];
     }
 
     v19 = 0;
@@ -192,7 +192,7 @@ LABEL_24:
   }
 
   v16 = objc_opt_class();
-  v17 = v8;
+  v17 = cellCopy;
   if (v17)
   {
     if (objc_opt_isKindOfClass())
@@ -211,26 +211,26 @@ LABEL_24:
       goto LABEL_15;
     }
 
-    v20 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v20 handleFailureInFunction:v21 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v16, objc_opt_class()}];
+    [currentHandler2 handleFailureInFunction:v21 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v16, objc_opt_class()}];
   }
 
   v19 = 0;
 LABEL_15:
 
-  v22 = [v12 home];
-  v23 = [v12 user];
-  v24 = [v22 hf_handleForUser:v23];
+  home = [v12 home];
+  user = [v12 user];
+  v24 = [home hf_handleForUser:user];
   [v19 setUserHandle:v24];
 
   v25 = v13;
 LABEL_25:
-  v31 = [v25 latestResults];
-  v32 = [v31 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
-  v33 = [v32 BOOLValue];
+  latestResults = [v25 latestResults];
+  v32 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+  bOOLValue = [v32 BOOLValue];
 
-  if (v33)
+  if (bOOLValue)
   {
     v34 = 3;
   }
@@ -245,20 +245,20 @@ LABEL_25:
 LABEL_29:
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v4;
+    v16 = itemCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "Did select item: %@", &v15, 0xCu);
   }
 
   objc_opt_class();
-  v6 = v4;
+  v6 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -273,12 +273,12 @@ LABEL_29:
 
   if (v8)
   {
-    v9 = [v8 user];
+    user = [v8 user];
   }
 
   else
   {
-    v9 = 0;
+    user = 0;
   }
 
   objc_opt_class();
@@ -295,18 +295,18 @@ LABEL_29:
 
   v12 = v11;
 
-  v13 = [(HUPrimaryUserSettingsItemModuleController *)self updatePrimaryUserSelectionType:v12 == 0 user:v9];
+  v13 = [(HUPrimaryUserSettingsItemModuleController *)self updatePrimaryUserSelectionType:v12 == 0 user:user];
   return 0;
 }
 
-- (id)updatePrimaryUserSelectionType:(unint64_t)a3 user:(id)a4
+- (id)updatePrimaryUserSelectionType:(unint64_t)type user:(id)user
 {
-  v6 = a4;
+  userCopy = user;
   objc_opt_class();
-  v7 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = module;
   }
 
   else
@@ -316,14 +316,14 @@ LABEL_29:
 
   v9 = v8;
 
-  v10 = [v9 updatePrimaryUserSelectionType:a3 user:v6];
+  v10 = [v9 updatePrimaryUserSelectionType:type user:userCopy];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __81__HUPrimaryUserSettingsItemModuleController_updatePrimaryUserSelectionType_user___block_invoke;
   v14[3] = &unk_277DB7530;
-  v15 = v6;
-  v11 = v6;
+  v15 = userCopy;
+  v11 = userCopy;
   v12 = [v10 addCompletionBlock:v14];
 
   return v10;

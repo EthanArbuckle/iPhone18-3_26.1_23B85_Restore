@@ -1,19 +1,19 @@
 @interface TDColorDefinition
 - (id)copyDataFromAttributes;
 - (id)dataFromAttributes;
-- (void)copyAttributesInto:(id)a3;
-- (void)setAttributesFromCopyData:(id)a3;
-- (void)setAttributesFromData:(id)a3;
+- (void)copyAttributesInto:(id)into;
+- (void)setAttributesFromCopyData:(id)data;
+- (void)setAttributesFromData:(id)data;
 @end
 
 @implementation TDColorDefinition
 
-- (void)copyAttributesInto:(id)a3
+- (void)copyAttributesInto:(id)into
 {
-  [a3 setValue:-[TDColorDefinition valueForKey:](self forKey:{"valueForKey:", @"physicalColor", @"physicalColor"}];
+  [into setValue:-[TDColorDefinition valueForKey:](self forKey:{"valueForKey:", @"physicalColor", @"physicalColor"}];
   v5 = [(TDColorDefinition *)self valueForKey:@"name"];
 
-  [a3 setValue:v5 forKey:@"name"];
+  [into setValue:v5 forKey:@"name"];
 }
 
 - (id)dataFromAttributes
@@ -31,14 +31,14 @@
   return [v5 dataWithPropertyList:v3 format:200 options:0 error:0];
 }
 
-- (void)setAttributesFromData:(id)a3
+- (void)setAttributesFromData:(id)data
 {
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:0];
-  v5 = [(TDColorDefinition *)self managedObjectContext];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:0];
+  managedObjectContext = [(TDColorDefinition *)self managedObjectContext];
   v6 = [v4 objectForKey:@"name"];
   if (v6)
   {
-    -[TDColorDefinition setValue:forKey:](self, "setValue:forKey:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v6))}], @"name");
+    -[TDColorDefinition setValue:forKey:](self, "setValue:forKey:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v6))}], @"name");
   }
 
   v7 = [v4 objectForKey:@"physicalColor"];
@@ -75,9 +75,9 @@
   return [v7 copy];
 }
 
-- (void)setAttributesFromCopyData:(id)a3
+- (void)setAttributesFromCopyData:(id)data
 {
-  v4 = [objc_msgSend(MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:{0), "objectForKey:", @"physicalColor"}];
+  v4 = [objc_msgSend(MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:{0), "objectForKey:", @"physicalColor"}];
   if (v4)
   {
 

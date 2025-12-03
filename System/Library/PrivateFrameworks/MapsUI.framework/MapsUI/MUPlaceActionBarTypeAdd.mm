@@ -1,7 +1,7 @@
 @interface MUPlaceActionBarTypeAdd
 - (BOOL)added;
 - (MUPlaceActionBarTypeAdd)init;
-- (void)setAdded:(BOOL)a3;
+- (void)setAdded:(BOOL)added;
 @end
 
 @implementation MUPlaceActionBarTypeAdd
@@ -13,11 +13,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setAdded:(BOOL)a3
+- (void)setAdded:(BOOL)added
 {
   v5 = OBJC_IVAR___MUPlaceActionBarTypeAdd_added;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = added;
 }
 
 - (MUPlaceActionBarTypeAdd)init

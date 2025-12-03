@@ -1,38 +1,38 @@
 @interface HKAttachmentReference
-- (HKAttachmentReference)initWithCoder:(id)a3;
-- (id)_initWithIdentifier:(id)a3 objectIdentifier:(id)a4 attachment:(id)a5 creationDate:(id)a6 metadata:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HKAttachmentReference)initWithCoder:(id)coder;
+- (id)_initWithIdentifier:(id)identifier objectIdentifier:(id)objectIdentifier attachment:(id)attachment creationDate:(id)date metadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKAttachmentReference
 
-- (id)_initWithIdentifier:(id)a3 objectIdentifier:(id)a4 attachment:(id)a5 creationDate:(id)a6 metadata:(id)a7
+- (id)_initWithIdentifier:(id)identifier objectIdentifier:(id)objectIdentifier attachment:(id)attachment creationDate:(id)date metadata:(id)metadata
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  objectIdentifierCopy = objectIdentifier;
+  attachmentCopy = attachment;
+  dateCopy = date;
+  metadataCopy = metadata;
   v21.receiver = self;
   v21.super_class = HKAttachmentReference;
   v17 = [(HKAttachmentReference *)&v21 init];
   p_isa = &v17->super.isa;
   if (v17)
   {
-    objc_storeStrong(&v17->_identifier, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
-    objc_storeStrong(p_isa + 5, a7);
+    objc_storeStrong(&v17->_identifier, identifier);
+    objc_storeStrong(p_isa + 2, objectIdentifier);
+    objc_storeStrong(p_isa + 3, attachment);
+    objc_storeStrong(p_isa + 4, date);
+    objc_storeStrong(p_isa + 5, metadata);
   }
 
   return p_isa;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HKAttachmentReference allocWithZone:a3];
+  v4 = [HKAttachmentReference allocWithZone:zone];
   identifier = self->_identifier;
   objectIdentifier = self->_objectIdentifier;
   attachment = self->_attachment;
@@ -42,26 +42,26 @@
   return [(HKAttachmentReference *)v4 _initWithIdentifier:identifier objectIdentifier:objectIdentifier attachment:attachment creationDate:creationDate metadata:metadata];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"Identifier"];
-  [v5 encodeObject:self->_objectIdentifier forKey:@"ObjectIdentifier"];
-  [v5 encodeObject:self->_attachment forKey:@"Attachment"];
-  [v5 encodeObject:self->_creationDate forKey:@"CreationDate"];
-  [v5 encodeObject:self->_metadata forKey:@"Metadata"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"Identifier"];
+  [coderCopy encodeObject:self->_objectIdentifier forKey:@"ObjectIdentifier"];
+  [coderCopy encodeObject:self->_attachment forKey:@"Attachment"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"CreationDate"];
+  [coderCopy encodeObject:self->_metadata forKey:@"Metadata"];
 }
 
-- (HKAttachmentReference)initWithCoder:(id)a3
+- (HKAttachmentReference)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ObjectIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Attachment"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CreationDate"];
-  v9 = [MEMORY[0x1E695DF20] hk_secureCodingClasses];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"Metadata"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ObjectIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Attachment"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CreationDate"];
+  hk_secureCodingClasses = [MEMORY[0x1E695DF20] hk_secureCodingClasses];
+  v10 = [coderCopy decodeObjectOfClasses:hk_secureCodingClasses forKey:@"Metadata"];
 
   v11 = [(HKAttachmentReference *)self _initWithIdentifier:v5 objectIdentifier:v6 attachment:v7 creationDate:v8 metadata:v10];
   return v11;

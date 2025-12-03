@@ -1,12 +1,12 @@
 @interface VUIAppInstallerHelper
-- (VUIAppInstallerHelper)initWithPunchoutAction:(id)a3;
+- (VUIAppInstallerHelper)initWithPunchoutAction:(id)action;
 @end
 
 @implementation VUIAppInstallerHelper
 
-- (VUIAppInstallerHelper)initWithPunchoutAction:(id)a3
+- (VUIAppInstallerHelper)initWithPunchoutAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   AppInstallerHelper.init(punchoutAction:)();
   return result;
 }

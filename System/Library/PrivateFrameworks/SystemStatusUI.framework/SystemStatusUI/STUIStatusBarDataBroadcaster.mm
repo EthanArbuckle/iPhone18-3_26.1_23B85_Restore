@@ -3,7 +3,7 @@
 - (STStatusBarData)currentData;
 - (id)_init;
 - (void)dealloc;
-- (void)updateWithData:(id)a3;
+- (void)updateWithData:(id)data;
 @end
 
 @implementation STUIStatusBarDataBroadcaster
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __46__STUIStatusBarDataBroadcaster_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_52 != -1)
   {
     dispatch_once(&_MergedGlobals_52, block);
@@ -28,16 +28,16 @@
 - (STStatusBarData)currentData
 {
   v3 = self->_broadcastData;
-  v4 = [(STStatusBarOverridesStatusDomain *)self->_overridesDomain data];
-  v5 = [v4 customOverrides];
+  data = [(STStatusBarOverridesStatusDomain *)self->_overridesDomain data];
+  customOverrides = [data customOverrides];
 
-  if (v5 && ([v5 isEmpty] & 1) == 0)
+  if (customOverrides && ([customOverrides isEmpty] & 1) == 0)
   {
     v6 = [(STStatusBarData *)v3 mutableCopy];
-    [v6 applyUpdate:v5];
-    v7 = [v6 immutableCopy];
+    [v6 applyUpdate:customOverrides];
+    immutableCopy = [v6 immutableCopy];
 
-    v3 = v7;
+    v3 = immutableCopy;
   }
 
   return v3;
@@ -57,16 +57,16 @@ uint64_t __46__STUIStatusBarDataBroadcaster_sharedInstance__block_invoke(uint64_
   v2 = [(STUIStatusBarDataBroadcaster *)&v22 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     dataListeners = v2->_dataListeners;
-    v2->_dataListeners = v3;
+    v2->_dataListeners = weakObjectsHashTable;
 
     v5 = MEMORY[0x277D76620];
     if ([*MEMORY[0x277D76620] _isSpringBoard] && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v6 = objc_alloc(MEMORY[0x277D6BB28]);
-      v7 = [*v5 systemStatusServer];
-      v8 = [v6 initWithServerHandle:v7];
+      systemStatusServer = [*v5 systemStatusServer];
+      v8 = [v6 initWithServerHandle:systemStatusServer];
       overridesDomain = v2->_overridesDomain;
       v2->_overridesDomain = v8;
     }
@@ -74,7 +74,7 @@ uint64_t __46__STUIStatusBarDataBroadcaster_sharedInstance__block_invoke(uint64_
     else
     {
       v10 = objc_alloc_init(MEMORY[0x277D6BB28]);
-      v7 = v2->_overridesDomain;
+      systemStatusServer = v2->_overridesDomain;
       v2->_overridesDomain = v10;
     }
 
@@ -143,22 +143,22 @@ void __37__STUIStatusBarDataBroadcaster__init__block_invoke(uint64_t a1)
   [(STUIStatusBarDataBroadcaster *)&v3 dealloc];
 }
 
-- (void)updateWithData:(id)a3
+- (void)updateWithData:(id)data
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = (*(a3 + 2))(a3, self->_broadcastData);
+  v4 = (*(data + 2))(data, self->_broadcastData);
   if (([v4 isEqual:self->_broadcastData] & 1) == 0)
   {
-    v5 = [v4 immutableCopy];
+    immutableCopy = [v4 immutableCopy];
     broadcastData = self->_broadcastData;
-    self->_broadcastData = v5;
+    self->_broadcastData = immutableCopy;
 
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [(NSHashTable *)self->_dataListeners allObjects];
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allObjects = [(NSHashTable *)self->_dataListeners allObjects];
+    v8 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -170,14 +170,14 @@ void __37__STUIStatusBarDataBroadcaster__init__block_invoke(uint64_t a1)
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allObjects);
           }
 
           [*(*(&v12 + 1) + 8 * v11++) updateForDataChange:self];
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);

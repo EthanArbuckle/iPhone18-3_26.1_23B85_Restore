@@ -1,9 +1,9 @@
 @interface WFMeasureResult
 + (void)initialize;
-- (WFMeasureResult)initWithType:(unint64_t)a3;
+- (WFMeasureResult)initWithType:(unint64_t)type;
 - (id)allPrimitiveProperties;
-- (id)binnedProperty:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)binnedProperty:(id)property;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)statusForAcFailure;
 - (id)statusForDNS;
@@ -18,12 +18,12 @@
 
 @implementation WFMeasureResult
 
-- (WFMeasureResult)initWithType:(unint64_t)a3
+- (WFMeasureResult)initWithType:(unint64_t)type
 {
   v6.receiver = self;
   v6.super_class = WFMeasureResult;
   v4 = [(WFMeasureResult *)&v6 init];
-  [(WFMeasureResult *)v4 setType:a3];
+  [(WFMeasureResult *)v4 setType:type];
   [(WFMeasureResult *)v4 setBackhaulResultsValid:0];
   [(WFMeasureResult *)v4 setGatewayResultsValid:0];
   [(WFMeasureResult *)v4 setLocalResultsValid:0];
@@ -288,16 +288,16 @@
 
 - (id)statusForAcFailure
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = self->_trafficClassBEAttemptedSmall > 0 || self->_trafficClassBEAttemptedLarge > 0;
   v5 = self->_trafficClassBKAttemptedSmall > 0 || self->_trafficClassBKAttemptedLarge > 0;
   v6 = self->_trafficClassVOAttemptedSmall > 0 || self->_trafficClassVOAttemptedLarge > 0;
   v7 = self->_trafficClassVIAttemptedSmall > 0 || self->_trafficClassVIAttemptedLarge > 0;
-  v8 = [(WFMeasureResult *)self numAcAttempted];
-  v9 = [(WFMeasureResult *)self numAcFailed];
+  numAcAttempted = [(WFMeasureResult *)self numAcAttempted];
+  numAcFailed = [(WFMeasureResult *)self numAcFailed];
   if (self->_seenSpecificAcFailure)
   {
-    if (v8 < 2)
+    if (numAcAttempted < 2)
     {
       if (!v4)
       {
@@ -307,15 +307,15 @@
       goto LABEL_28;
     }
 
-    if (v8 == v9)
+    if (numAcAttempted == numAcFailed)
     {
       v13 = @"_All";
     }
 
     else
     {
-      v20 = v9;
-      v21 = v8 - v9;
+      v20 = numAcFailed;
+      v21 = numAcAttempted - numAcFailed;
       v13 = @"_%luACF_%luP";
     }
   }
@@ -325,7 +325,7 @@
     v13 = @"_OK";
   }
 
-  [v3 appendFormat:v13, v20, v21];
+  [string appendFormat:v13, v20, v21];
   if (!v4)
   {
 LABEL_16:
@@ -340,7 +340,7 @@ LABEL_16:
 LABEL_28:
   trafficClassBESucceededLarge = self->_trafficClassBESucceededLarge;
   trafficClassBESucceededSmall = self->_trafficClassBESucceededSmall;
-  [v3 appendFormat:@"_BEL%d:%d_S%d:%d", trafficClassBESucceededLarge, self->_trafficClassBEAttemptedLarge, trafficClassBESucceededSmall, self->_trafficClassBEAttemptedSmall];
+  [string appendFormat:@"_BEL%d:%d_S%d:%d", trafficClassBESucceededLarge, self->_trafficClassBEAttemptedLarge, trafficClassBESucceededSmall, self->_trafficClassBEAttemptedSmall];
   if (!v5)
   {
 LABEL_17:
@@ -355,7 +355,7 @@ LABEL_17:
 LABEL_29:
   trafficClassBKSucceededLarge = self->_trafficClassBKSucceededLarge;
   trafficClassBKSucceededSmall = self->_trafficClassBKSucceededSmall;
-  [v3 appendFormat:@"_BKL%d:%d_S%d:%d", trafficClassBKSucceededLarge, self->_trafficClassBKAttemptedLarge, trafficClassBKSucceededSmall, self->_trafficClassBKAttemptedSmall];
+  [string appendFormat:@"_BKL%d:%d_S%d:%d", trafficClassBKSucceededLarge, self->_trafficClassBKAttemptedLarge, trafficClassBKSucceededSmall, self->_trafficClassBKAttemptedSmall];
   if (!v6)
   {
 LABEL_18:
@@ -370,27 +370,27 @@ LABEL_18:
 LABEL_30:
   trafficClassVOSucceededLarge = self->_trafficClassVOSucceededLarge;
   trafficClassVOSucceededSmall = self->_trafficClassVOSucceededSmall;
-  [v3 appendFormat:@"_VOL%d:%d_S%d:%d", trafficClassVOSucceededLarge, self->_trafficClassVOAttemptedLarge, trafficClassVOSucceededSmall, self->_trafficClassVOAttemptedSmall];
+  [string appendFormat:@"_VOL%d:%d_S%d:%d", trafficClassVOSucceededLarge, self->_trafficClassVOAttemptedLarge, trafficClassVOSucceededSmall, self->_trafficClassVOAttemptedSmall];
   if (v7)
   {
 LABEL_19:
     trafficClassVISucceededLarge = self->_trafficClassVISucceededLarge;
     trafficClassVISucceededSmall = self->_trafficClassVISucceededSmall;
-    [v3 appendFormat:@"_VIL%d:%d_S%d:%d", trafficClassVISucceededLarge, self->_trafficClassVIAttemptedLarge, trafficClassVISucceededSmall, self->_trafficClassVIAttemptedSmall];
+    [string appendFormat:@"_VIL%d:%d_S%d:%d", trafficClassVISucceededLarge, self->_trafficClassVIAttemptedLarge, trafficClassVISucceededSmall, self->_trafficClassVIAttemptedSmall];
   }
 
 LABEL_20:
 
-  return v3;
+  return string;
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = v3;
+  string = [MEMORY[0x277CCAB68] string];
+  v4 = string;
   if (self->_backhaulResultsValid)
   {
-    [v3 appendFormat:@"Backhaul:DL-Tput:(%d)mbps Error:(%@) ", self->_backhaulThroughput, self->_downloadError];
+    [string appendFormat:@"Backhaul:DL-Tput:(%d)mbps Error:(%@) ", self->_backhaulThroughput, self->_downloadError];
     [v4 appendFormat:@"Backhaul:UL-Tput:(%d)mbps Error:(%@) ", self->_backhaulULThroughput, self->_uploadError];
   }
 
@@ -416,21 +416,21 @@ LABEL_20:
 
   if (self->_siriTCPResultsValid)
   {
-    v5 = [(WFMeasureResult *)self statusForSiriTCP];
-    [v4 appendFormat:@"SiriTCP: %@ (TrafficClass %ld) ", v5, self->_siriTrafficClass];
+    statusForSiriTCP = [(WFMeasureResult *)self statusForSiriTCP];
+    [v4 appendFormat:@"SiriTCP: %@ (TrafficClass %ld) ", statusForSiriTCP, self->_siriTrafficClass];
   }
 
   if (self->_siriTLSResultsValid)
   {
-    v6 = [(WFMeasureResult *)self statusForSiriTLS];
-    [v4 appendFormat:@"SiriTLS: %@ (TrafficClass %ld) ", v6, self->_siriTrafficClass];
+    statusForSiriTLS = [(WFMeasureResult *)self statusForSiriTLS];
+    [v4 appendFormat:@"SiriTLS: %@ (TrafficClass %ld) ", statusForSiriTLS, self->_siriTrafficClass];
   }
 
-  v7 = [(WFMeasureResult *)self statusForLocal];
-  v8 = [(WFMeasureResult *)self statusForInternet];
-  v9 = [(WFMeasureResult *)self statusForDNS];
-  v10 = [(WFMeasureResult *)self statusForAcFailure];
-  [v4 appendFormat:@"Status:Local:%@ Internet:%@ DNS:%@ PerAC:%@ ", v7, v8, v9, v10];
+  statusForLocal = [(WFMeasureResult *)self statusForLocal];
+  statusForInternet = [(WFMeasureResult *)self statusForInternet];
+  statusForDNS = [(WFMeasureResult *)self statusForDNS];
+  statusForAcFailure = [(WFMeasureResult *)self statusForAcFailure];
+  [v4 appendFormat:@"Status:Local:%@ Internet:%@ DNS:%@ PerAC:%@ ", statusForLocal, statusForInternet, statusForDNS, statusForAcFailure];
 
   return v4;
 }
@@ -470,8 +470,8 @@ LABEL_20:
           {
 LABEL_7:
             v15 = [MEMORY[0x277CCACA8] stringWithCString:property_getName(v5[i]) encoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}];
-            v16 = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
-            v17 = [v15 rangeOfCharacterFromSet:v16];
+            uppercaseLetterCharacterSet = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
+            v17 = [v15 rangeOfCharacterFromSet:uppercaseLetterCharacterSet];
             v19 = v18;
 
             if (([v15 hasSuffix:@"ResultsValid"] & 1) == 0 && (v17 != 0x7FFFFFFFFFFFFFFFLL || v19 != 0))
@@ -518,25 +518,25 @@ LABEL_24:
   return v25;
 }
 
-- (id)binnedProperty:(id)a3
+- (id)binnedProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(WFMeasureResult *)self valueForKey:v4];
+  propertyCopy = property;
+  v5 = [(WFMeasureResult *)self valueForKey:propertyCopy];
   if (!v5)
   {
     v8 = 0;
     goto LABEL_15;
   }
 
-  v6 = [WFMeasureResult_PropertyToBinMethod objectForKeyedSubscript:v4];
-  v7 = [v6 integerValue];
+  v6 = [WFMeasureResult_PropertyToBinMethod objectForKeyedSubscript:propertyCopy];
+  integerValue = [v6 integerValue];
 
   v8 = 0;
-  if (v7 <= 1)
+  if (integerValue <= 1)
   {
-    if (v7)
+    if (integerValue)
     {
-      if (v7 != 1)
+      if (integerValue != 1)
       {
         goto LABEL_15;
       }
@@ -552,7 +552,7 @@ LABEL_24:
 
   else
   {
-    switch(v7)
+    switch(integerValue)
     {
       case 2:
         v9 = [v5 description];
@@ -615,7 +615,7 @@ LABEL_15:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v4[4] = self->_type;

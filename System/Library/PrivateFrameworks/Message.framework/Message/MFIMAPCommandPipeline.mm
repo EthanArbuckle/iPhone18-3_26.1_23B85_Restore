@@ -1,30 +1,30 @@
 @interface MFIMAPCommandPipeline
-- (id)failureResponsesFromSendingCommandsWithConnection:(id)a3;
-- (void)_removeFetchUnitMatchingResponse:(id)a3;
+- (id)failureResponsesFromSendingCommandsWithConnection:(id)connection;
+- (void)_removeFetchUnitMatchingResponse:(id)response;
 @end
 
 @implementation MFIMAPCommandPipeline
 
-- (void)_removeFetchUnitMatchingResponse:(id)a3
+- (void)_removeFetchUnitMatchingResponse:(id)response
 {
-  v7 = a3;
-  v4 = [v7 fetchResultWithType:8];
+  responseCopy = response;
+  v4 = [responseCopy fetchResultWithType:8];
   v5 = [v4 uid];
 
   if (v5 && [(NSMutableArray *)self->_fetchUnits count])
   {
     v6 = [(NSMutableArray *)self->_fetchUnits objectAtIndex:0];
-    if ([v6 uid] == v5 && objc_msgSend(v6, "matchesFetchResponse:", v7))
+    if ([v6 uid] == v5 && objc_msgSend(v6, "matchesFetchResponse:", responseCopy))
     {
       [(NSMutableArray *)self->_fetchUnits removeObjectAtIndex:0];
     }
   }
 }
 
-- (id)failureResponsesFromSendingCommandsWithConnection:(id)a3
+- (id)failureResponsesFromSendingCommandsWithConnection:(id)connection
 {
   v67[2] = *MEMORY[0x1E69E9840];
-  v52 = a3;
+  connectionCopy = connection;
   v54 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [(MFIMAPCommandPipeline *)self mf_lock];
   v4 = [(NSMutableArray *)self->_fetchUnits count];
@@ -32,11 +32,11 @@
   {
     for (i = 0; i < v4; ++i)
     {
-      v55 = [(NSMutableArray *)self->_fetchUnits objectAtIndex:i, v52];
-      v6 = [v55 uid];
-      v56 = [v55 fetchItem];
-      v7 = [v55 bodyDataConsumer];
-      if (!v7 || ([v55 consumerSection], v8 = objc_claimAutoreleasedReturnValue(), v9 = v8 == 0, v8, v7, v9))
+      connectionCopy = [(NSMutableArray *)self->_fetchUnits objectAtIndex:i, connectionCopy];
+      v6 = [connectionCopy uid];
+      fetchItem = [connectionCopy fetchItem];
+      bodyDataConsumer = [connectionCopy bodyDataConsumer];
+      if (!bodyDataConsumer || ([connectionCopy consumerSection], v8 = objc_claimAutoreleasedReturnValue(), v9 = v8 == 0, v8, bodyDataConsumer, v9))
       {
         v10 = 0;
       }
@@ -44,9 +44,9 @@
       else
       {
         v10 = objc_alloc_init(MFIMAPResponseConsumer);
-        v11 = [v55 bodyDataConsumer];
-        v12 = [v55 consumerSection];
-        [(MFIMAPResponseConsumer *)v10 addConsumer:v11 forSection:v12];
+        bodyDataConsumer2 = [connectionCopy bodyDataConsumer];
+        consumerSection = [connectionCopy consumerSection];
+        [(MFIMAPResponseConsumer *)v10 addConsumer:bodyDataConsumer2 forSection:consumerSection];
       }
 
       v13 = i + 1;
@@ -67,26 +67,26 @@
           {
             [(NSMutableArray *)self->_fetchUnits removeObjectAtIndex:v13];
             [(NSMutableArray *)self->_fetchUnits insertObject:v16 atIndex:++i];
-            v17 = [v16 fetchItem];
-            v18 = [v17 isEqual:v56];
+            fetchItem2 = [v16 fetchItem];
+            v18 = [fetchItem2 isEqual:fetchItem];
 
             if ((v18 & 1) == 0)
             {
               if (!v14)
               {
                 v14 = objc_msgSend(@"("), "mutableCopyWithZone:", 0;
-                [v14 appendString:v56];
+                [v14 appendString:fetchItem];
               }
 
               [v14 appendString:@" "];
-              v19 = [v16 fetchItem];
-              [v14 appendString:v19];
+              fetchItem3 = [v16 fetchItem];
+              [v14 appendString:fetchItem3];
 
-              v20 = [v16 bodyDataConsumer];
-              if (v20)
+              bodyDataConsumer3 = [v16 bodyDataConsumer];
+              if (bodyDataConsumer3)
               {
-                v21 = [v16 consumerSection];
-                v22 = v21 == 0;
+                consumerSection2 = [v16 consumerSection];
+                v22 = consumerSection2 == 0;
 
                 if (!v22)
                 {
@@ -95,9 +95,9 @@
                     v15 = objc_alloc_init(MFIMAPResponseConsumer);
                   }
 
-                  v23 = [v16 bodyDataConsumer];
-                  v24 = [v16 consumerSection];
-                  [(MFIMAPResponseConsumer *)v15 addConsumer:v23 forSection:v24];
+                  bodyDataConsumer4 = [v16 bodyDataConsumer];
+                  consumerSection3 = [v16 consumerSection];
+                  [(MFIMAPResponseConsumer *)v15 addConsumer:bodyDataConsumer4 forSection:consumerSection3];
                 }
               }
             }
@@ -124,7 +124,7 @@
       v26 = [_MFIMAPCommandParameters alloc];
       v27 = EFStringWithInt();
       v28 = v27;
-      v29 = v56;
+      v29 = fetchItem;
       if (!v25)
       {
         v29 = v14;
@@ -166,12 +166,12 @@
             objc_enumerationMutation(v34);
           }
 
-          v38 = [*(*(&v61 + 1) + 8 * j) untaggedResponses];
+          untaggedResponses = [*(*(&v61 + 1) + 8 * j) untaggedResponses];
           v59 = 0u;
           v60 = 0u;
           v57 = 0u;
           v58 = 0u;
-          v39 = v38;
+          v39 = untaggedResponses;
           v40 = [v39 countByEnumeratingWithState:&v57 objects:v65 count:16];
           if (v40)
           {
@@ -231,10 +231,10 @@
     do
     {
       v48 = [(NSMutableArray *)v44 objectAtIndex:v47];
-      v49 = [v48 copyFailedFetchResponse];
-      if (v49)
+      copyFailedFetchResponse = [v48 copyFailedFetchResponse];
+      if (copyFailedFetchResponse)
       {
-        [(NSMutableArray *)v44 replaceObjectAtIndex:v47++ withObject:v49];
+        [(NSMutableArray *)v44 replaceObjectAtIndex:v47++ withObject:copyFailedFetchResponse];
       }
 
       else

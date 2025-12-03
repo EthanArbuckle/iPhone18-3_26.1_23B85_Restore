@@ -10,15 +10,15 @@
   v7.receiver = self;
   v7.super_class = BKUICalloutBarAccessibility;
   [(BKUICalloutBarAccessibility *)&v7 appear];
-  v3 = [(BKUICalloutBarAccessibility *)self subviews];
-  if ([v3 count])
+  subviews = [(BKUICalloutBarAccessibility *)self subviews];
+  if ([subviews count])
   {
     v4 = dispatch_time(0, 750000000);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100133FA0;
     block[3] = &unk_100A033C8;
-    v6 = v3;
+    v6 = subviews;
     dispatch_after(v4, &_dispatch_main_q, block);
   }
 }

@@ -1,5 +1,5 @@
 @interface MPCStoreLibraryPersonalizationMiddlewareOperation
-- (MPCStoreLibraryPersonalizationMiddlewareOperation)initWithMiddleware:(id)a3 playerRequest:(id)a4;
+- (MPCStoreLibraryPersonalizationMiddlewareOperation)initWithMiddleware:(id)middleware playerRequest:(id)request;
 - (NSArray)inputProtocols;
 - (void)execute;
 @end
@@ -24,8 +24,8 @@
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v3 = [(MPCStoreLibraryPersonalizationMiddlewareOperation *)self inputOperations];
-  v4 = [v3 objectForKey:&unk_1F45D1498];
+  inputOperations = [(MPCStoreLibraryPersonalizationMiddlewareOperation *)self inputOperations];
+  v4 = [inputOperations objectForKey:&unk_1F45D1498];
 
   v5 = [v4 countByEnumeratingWithState:&v61 objects:v67 count:16];
   if (v5)
@@ -41,10 +41,10 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v61 + 1) + 8 * i) controller];
-        if (v9)
+        controller = [*(*(&v61 + 1) + 8 * i) controller];
+        if (controller)
         {
-          v10 = v9;
+          v10 = controller;
           goto LABEL_11;
         }
       }
@@ -62,15 +62,15 @@
   v10 = 0;
 LABEL_11:
 
-  v11 = [v10 resolvedPlayerPath];
-  if (([v11 isSystemMusicPath] & 1) != 0 && !objc_msgSend(v11, "isLocalDevice"))
+  resolvedPlayerPath = [v10 resolvedPlayerPath];
+  if (([resolvedPlayerPath isSystemMusicPath] & 1) != 0 && !objc_msgSend(resolvedPlayerPath, "isLocalDevice"))
   {
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v12 = [(MPCStoreLibraryPersonalizationMiddlewareOperation *)self inputOperations];
-    v13 = [v12 objectForKey:&unk_1F45D15C8];
+    inputOperations2 = [(MPCStoreLibraryPersonalizationMiddlewareOperation *)self inputOperations];
+    v13 = [inputOperations2 objectForKey:&unk_1F45D15C8];
 
     v14 = [v13 countByEnumeratingWithState:&v57 objects:v66 count:16];
     if (v14)
@@ -87,11 +87,11 @@ LABEL_11:
           }
 
           v18 = *(*(&v57 + 1) + 8 * j);
-          v19 = [v18 modelObjects];
-          if (v19)
+          modelObjects = [v18 modelObjects];
+          if (modelObjects)
           {
-            v20 = v19;
-            v21 = [v18 playingIndexPath];
+            v20 = modelObjects;
+            playingIndexPath = [v18 playingIndexPath];
             goto LABEL_24;
           }
         }
@@ -107,15 +107,15 @@ LABEL_11:
     }
 
     v20 = 0;
-    v21 = 0;
+    playingIndexPath = 0;
 LABEL_24:
 
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v22 = [(MPCStoreLibraryPersonalizationMiddlewareOperation *)self inputOperations];
-    v23 = [v22 objectForKey:&unk_1F45D1E50];
+    inputOperations3 = [(MPCStoreLibraryPersonalizationMiddlewareOperation *)self inputOperations];
+    v23 = [inputOperations3 objectForKey:&unk_1F45D1E50];
 
     v24 = [v23 countByEnumeratingWithState:&v53 objects:v65 count:16];
     if (v24)
@@ -131,10 +131,10 @@ LABEL_24:
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v53 + 1) + 8 * k) overridePlayingItem];
-          if (v28)
+          overridePlayingItem = [*(*(&v53 + 1) + 8 * k) overridePlayingItem];
+          if (overridePlayingItem)
           {
-            v29 = v28;
+            v29 = overridePlayingItem;
             goto LABEL_34;
           }
         }
@@ -162,28 +162,28 @@ LABEL_34:
       v31 = v30;
       v49 = v31;
       v50 = v20;
-      v45 = v21;
-      v43 = v21;
+      v45 = playingIndexPath;
+      v43 = playingIndexPath;
       v51 = v43;
       v52 = v29;
       [v50 enumerateSectionsUsingBlock:v48];
       v44 = v31;
       v32 = [objc_alloc(MEMORY[0x1E69709E0]) initWithUnpersonalizedContentDescriptors:v31];
-      v33 = [(MPCPlayerRequest *)self->_playerRequest userIdentity];
-      [v32 setUserIdentity:v33];
+      userIdentity = [(MPCPlayerRequest *)self->_playerRequest userIdentity];
+      [v32 setUserIdentity:userIdentity];
 
       v34 = [MEMORY[0x1E69709D8] lightweightPersonalizationPropertiesForModelClass:objc_opt_class()];
-      v35 = [(MPCPlayerRequest *)self->_playerRequest queueSectionProperties];
-      v36 = [v35 propertySetByCombiningWithPropertySet:v34];
+      queueSectionProperties = [(MPCPlayerRequest *)self->_playerRequest queueSectionProperties];
+      v36 = [queueSectionProperties propertySetByCombiningWithPropertySet:v34];
       [v32 setSectionProperties:v36];
 
-      v37 = [(MPCPlayerRequest *)self->_playerRequest queueItemProperties];
-      v38 = [v37 propertySetByCombiningWithPropertySet:v34];
+      queueItemProperties = [(MPCPlayerRequest *)self->_playerRequest queueItemProperties];
+      v38 = [queueItemProperties propertySetByCombiningWithPropertySet:v34];
       [v32 setItemProperties:v38];
 
       [v32 setMatchAlbumArtistsOnNameAndStoreID:0];
-      v39 = [(MPCPlayerRequest *)self->_playerRequest playingItemProperties];
-      v40 = [v39 propertySetByCombiningWithPropertySet:v34];
+      playingItemProperties = [(MPCPlayerRequest *)self->_playerRequest playingItemProperties];
+      v40 = [playingItemProperties propertySetByCombiningWithPropertySet:v34];
 
       if (v43 && v40)
       {
@@ -200,7 +200,7 @@ LABEL_34:
       v42 = v41;
       [v32 performWithResponseHandler:v46];
 
-      v21 = v45;
+      playingIndexPath = v45;
     }
 
     else
@@ -309,18 +309,18 @@ uint64_t __60__MPCStoreLibraryPersonalizationMiddlewareOperation_execute__block_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (MPCStoreLibraryPersonalizationMiddlewareOperation)initWithMiddleware:(id)a3 playerRequest:(id)a4
+- (MPCStoreLibraryPersonalizationMiddlewareOperation)initWithMiddleware:(id)middleware playerRequest:(id)request
 {
-  v7 = a3;
-  v8 = a4;
+  middlewareCopy = middleware;
+  requestCopy = request;
   v12.receiver = self;
   v12.super_class = MPCStoreLibraryPersonalizationMiddlewareOperation;
   v9 = [(MPAsyncOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_middleware, a3);
-    objc_storeStrong(&v10->_playerRequest, a4);
+    objc_storeStrong(&v9->_middleware, middleware);
+    objc_storeStrong(&v10->_playerRequest, request);
   }
 
   return v10;

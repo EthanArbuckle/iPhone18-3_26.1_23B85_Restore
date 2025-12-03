@@ -1,24 +1,24 @@
 @interface HKSPSyncAnchorContainer
 + (id)allKeys;
-+ (id)descriptionForKey:(id)a3;
-- (HKSPSyncAnchorContainer)initWithCoder:(id)a3;
-- (HKSPSyncAnchorContainer)initWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)incrementSyncAnchorForKey:(id)a3;
-- (id)lock_incrementSyncAnchorForKey:(id)a3;
++ (id)descriptionForKey:(id)key;
+- (HKSPSyncAnchorContainer)initWithCoder:(id)coder;
+- (HKSPSyncAnchorContainer)initWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)incrementSyncAnchorForKey:(id)key;
+- (id)lock_incrementSyncAnchorForKey:(id)key;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (id)syncAnchorForKey:(id)a3;
-- (void)_withLock:(id)a3;
-- (void)compareWithContainer:(id)a3 sleepScheduleSyncAnchorOutOfDate:(id)a4 sleepSettingsSyncAnchorOutOfDate:(id)a5 sleepEventRecordSyncAnchorOutOfDate:(id)a6 sleepScheduleStateSyncAnchorOutOfDate:(id)a7 sleepModeSyncAnchorOutOfDate:(id)a8 sleepEventSyncAnchorOutOfDate:(id)a9;
-- (void)encodeWithCoder:(id)a3;
-- (void)forceSetSleepScheduleSyncAnchor:(id)a3;
-- (void)lock_setSyncAnchor:(id)a3 forKey:(id)a4;
-- (void)lock_updateSyncAnchor:(id)a3 forKey:(id)a4;
-- (void)updateSyncAnchor:(id)a3 forKey:(id)a4;
-- (void)updateWithContainer:(id)a3;
+- (id)syncAnchorForKey:(id)key;
+- (void)_withLock:(id)lock;
+- (void)compareWithContainer:(id)container sleepScheduleSyncAnchorOutOfDate:(id)date sleepSettingsSyncAnchorOutOfDate:(id)ofDate sleepEventRecordSyncAnchorOutOfDate:(id)outOfDate sleepScheduleStateSyncAnchorOutOfDate:(id)anchorOutOfDate sleepModeSyncAnchorOutOfDate:(id)syncAnchorOutOfDate sleepEventSyncAnchorOutOfDate:(id)eventSyncAnchorOutOfDate;
+- (void)encodeWithCoder:(id)coder;
+- (void)forceSetSleepScheduleSyncAnchor:(id)anchor;
+- (void)lock_setSyncAnchor:(id)anchor forKey:(id)key;
+- (void)lock_updateSyncAnchor:(id)anchor forKey:(id)key;
+- (void)updateSyncAnchor:(id)anchor forKey:(id)key;
+- (void)updateWithContainer:(id)container;
 @end
 
 @implementation HKSPSyncAnchorContainer
@@ -38,9 +38,9 @@
   return v2;
 }
 
-- (HKSPSyncAnchorContainer)initWithIdentifier:(id)a3
+- (HKSPSyncAnchorContainer)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = HKSPSyncAnchorContainer;
   v6 = [(HKSPSyncAnchorContainer *)&v12 init];
@@ -48,7 +48,7 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     backingDictionary = v7->_backingDictionary;
     v7->_backingDictionary = v8;
@@ -59,18 +59,18 @@
   return v7;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)syncAnchorForKey:(id)a3
+- (id)syncAnchorForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -83,7 +83,7 @@
   v8[3] = &unk_279C74230;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = keyCopy;
   v9 = v5;
   [(HKSPSyncAnchorContainer *)self _withLock:v8];
   v6 = v12[5];
@@ -103,47 +103,47 @@ uint64_t __44__HKSPSyncAnchorContainer_syncAnchorForKey___block_invoke(uint64_t 
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)updateSyncAnchor:(id)a3 forKey:(id)a4
+- (void)updateSyncAnchor:(id)anchor forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  anchorCopy = anchor;
+  keyCopy = key;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __51__HKSPSyncAnchorContainer_updateSyncAnchor_forKey___block_invoke;
   v10[3] = &unk_279C75CC0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = anchorCopy;
+  v12 = keyCopy;
+  v8 = keyCopy;
+  v9 = anchorCopy;
   [(HKSPSyncAnchorContainer *)self _withLock:v10];
 }
 
-- (void)lock_updateSyncAnchor:(id)a3 forKey:(id)a4
+- (void)lock_updateSyncAnchor:(id)anchor forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9)
+  anchorCopy = anchor;
+  keyCopy = key;
+  if (anchorCopy)
   {
-    v7 = [(HKSPSyncAnchorContainer *)self lock_syncAnchorForKey:v6];
+    v7 = [(HKSPSyncAnchorContainer *)self lock_syncAnchorForKey:keyCopy];
     v8 = v7;
-    if (!v7 || [v7 compare:v9] == -1)
+    if (!v7 || [v7 compare:anchorCopy] == -1)
     {
-      [(HKSPSyncAnchorContainer *)self lock_setSyncAnchor:v9 forKey:v6];
+      [(HKSPSyncAnchorContainer *)self lock_setSyncAnchor:anchorCopy forKey:keyCopy];
     }
   }
 }
 
-- (void)lock_setSyncAnchor:(id)a3 forKey:(id)a4
+- (void)lock_setSyncAnchor:(id)anchor forKey:(id)key
 {
-  v6 = a4;
-  v7 = [a3 copyWithZone:0];
-  [(NSMutableDictionary *)self->_backingDictionary setObject:v7 forKeyedSubscript:v6];
+  keyCopy = key;
+  v7 = [anchor copyWithZone:0];
+  [(NSMutableDictionary *)self->_backingDictionary setObject:v7 forKeyedSubscript:keyCopy];
 }
 
-- (id)incrementSyncAnchorForKey:(id)a3
+- (id)incrementSyncAnchorForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -156,7 +156,7 @@ uint64_t __44__HKSPSyncAnchorContainer_syncAnchorForKey___block_invoke(uint64_t 
   v8[3] = &unk_279C74230;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = keyCopy;
   v9 = v5;
   [(HKSPSyncAnchorContainer *)self _withLock:v8];
   v6 = v12[5];
@@ -176,45 +176,45 @@ uint64_t __53__HKSPSyncAnchorContainer_incrementSyncAnchorForKey___block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)lock_incrementSyncAnchorForKey:(id)a3
+- (id)lock_incrementSyncAnchorForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HKSPSyncAnchorContainer *)self lock_getSyncAnchorForKey:v4];
-  v6 = [v5 hksp_increment];
-  [(HKSPSyncAnchorContainer *)self lock_setSyncAnchor:v6 forKey:v4];
+  keyCopy = key;
+  v5 = [(HKSPSyncAnchorContainer *)self lock_getSyncAnchorForKey:keyCopy];
+  hksp_increment = [v5 hksp_increment];
+  [(HKSPSyncAnchorContainer *)self lock_setSyncAnchor:hksp_increment forKey:keyCopy];
 
-  return v6;
+  return hksp_increment;
 }
 
-+ (id)descriptionForKey:(id)a3
++ (id)descriptionForKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SleepScheduleSyncAnchor"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"SleepScheduleSyncAnchor"])
   {
     v4 = @"schedule";
   }
 
-  else if ([v3 isEqualToString:@"SleepSettingsSyncAnchor"])
+  else if ([keyCopy isEqualToString:@"SleepSettingsSyncAnchor"])
   {
     v4 = @"settings";
   }
 
-  else if ([v3 isEqualToString:@"SleepRecordSyncAnchor"])
+  else if ([keyCopy isEqualToString:@"SleepRecordSyncAnchor"])
   {
     v4 = @"record";
   }
 
-  else if ([v3 isEqualToString:@"SleepStateSyncAnchor"])
+  else if ([keyCopy isEqualToString:@"SleepStateSyncAnchor"])
   {
     v4 = @"state";
   }
 
-  else if ([v3 isEqualToString:@"SleepModeSyncAnchor"])
+  else if ([keyCopy isEqualToString:@"SleepModeSyncAnchor"])
   {
     v4 = @"mode";
   }
 
-  else if ([v3 isEqualToString:@"SleepEventSyncAnchor"])
+  else if ([keyCopy isEqualToString:@"SleepEventSyncAnchor"])
   {
     v4 = @"event";
   }
@@ -227,9 +227,9 @@ uint64_t __53__HKSPSyncAnchorContainer_incrementSyncAnchorForKey___block_invoke(
   return v4;
 }
 
-- (void)updateWithContainer:(id)a3
+- (void)updateWithContainer:(id)container
 {
-  v4 = [a3 copy];
+  v4 = [container copy];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__HKSPSyncAnchorContainer_updateWithContainer___block_invoke;
@@ -278,39 +278,39 @@ void __47__HKSPSyncAnchorContainer_updateWithContainer___block_invoke(uint64_t a
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)compareWithContainer:(id)a3 sleepScheduleSyncAnchorOutOfDate:(id)a4 sleepSettingsSyncAnchorOutOfDate:(id)a5 sleepEventRecordSyncAnchorOutOfDate:(id)a6 sleepScheduleStateSyncAnchorOutOfDate:(id)a7 sleepModeSyncAnchorOutOfDate:(id)a8 sleepEventSyncAnchorOutOfDate:(id)a9
+- (void)compareWithContainer:(id)container sleepScheduleSyncAnchorOutOfDate:(id)date sleepSettingsSyncAnchorOutOfDate:(id)ofDate sleepEventRecordSyncAnchorOutOfDate:(id)outOfDate sleepScheduleStateSyncAnchorOutOfDate:(id)anchorOutOfDate sleepModeSyncAnchorOutOfDate:(id)syncAnchorOutOfDate sleepEventSyncAnchorOutOfDate:(id)eventSyncAnchorOutOfDate
 {
   v39[6] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = [v14 copy];
+  containerCopy = container;
+  eventSyncAnchorOutOfDateCopy = eventSyncAnchorOutOfDate;
+  syncAnchorOutOfDateCopy = syncAnchorOutOfDate;
+  anchorOutOfDateCopy = anchorOutOfDate;
+  outOfDateCopy = outOfDate;
+  ofDateCopy = ofDate;
+  dateCopy = date;
+  v21 = [containerCopy copy];
   v38[0] = @"SleepScheduleSyncAnchor";
-  v22 = MEMORY[0x26D64AA30](v20);
+  v22 = MEMORY[0x26D64AA30](dateCopy);
 
   v39[0] = v22;
   v38[1] = @"SleepSettingsSyncAnchor";
-  v23 = MEMORY[0x26D64AA30](v19);
+  v23 = MEMORY[0x26D64AA30](ofDateCopy);
 
   v39[1] = v23;
   v38[2] = @"SleepRecordSyncAnchor";
-  v24 = MEMORY[0x26D64AA30](v18);
+  v24 = MEMORY[0x26D64AA30](outOfDateCopy);
 
   v39[2] = v24;
   v38[3] = @"SleepModeSyncAnchor";
-  v25 = MEMORY[0x26D64AA30](v16);
+  v25 = MEMORY[0x26D64AA30](syncAnchorOutOfDateCopy);
 
   v39[3] = v25;
   v38[4] = @"SleepStateSyncAnchor";
-  v26 = MEMORY[0x26D64AA30](v17);
+  v26 = MEMORY[0x26D64AA30](anchorOutOfDateCopy);
 
   v39[4] = v26;
   v38[5] = @"SleepEventSyncAnchor";
-  v27 = MEMORY[0x26D64AA30](v15);
+  v27 = MEMORY[0x26D64AA30](eventSyncAnchorOutOfDateCopy);
 
   v39[5] = v27;
   v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:6];
@@ -321,10 +321,10 @@ void __47__HKSPSyncAnchorContainer_updateWithContainer___block_invoke(uint64_t a
   v34[3] = &unk_279C75CE8;
   v34[4] = self;
   v35 = v21;
-  v36 = v14;
+  v36 = containerCopy;
   v37 = v28;
   v29 = v28;
-  v30 = v14;
+  v30 = containerCopy;
   v31 = v21;
   [(HKSPSyncAnchorContainer *)self _withLock:v34];
 
@@ -404,16 +404,16 @@ void __247__HKSPSyncAnchorContainer_compareWithContainer_sleepScheduleSyncAnchor
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forceSetSleepScheduleSyncAnchor:(id)a3
+- (void)forceSetSleepScheduleSyncAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__HKSPSyncAnchorContainer_forceSetSleepScheduleSyncAnchor___block_invoke;
   v6[3] = &unk_279C73B58;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = anchorCopy;
+  selfCopy = self;
+  v5 = anchorCopy;
   [(HKSPSyncAnchorContainer *)self _withLock:v6];
 }
 
@@ -432,16 +432,16 @@ uint64_t __59__HKSPSyncAnchorContainer_forceSetSleepScheduleSyncAnchor___block_i
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__HKSPSyncAnchorContainer_encodeWithCoder___block_invoke;
   v6[3] = &unk_279C73B58;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = coderCopy;
+  selfCopy = self;
+  v5 = coderCopy;
   [(HKSPSyncAnchorContainer *)self _withLock:v6];
 }
 
@@ -453,16 +453,16 @@ void __43__HKSPSyncAnchorContainer_encodeWithCoder___block_invoke(uint64_t a1)
   [v2 encodeObject:v3 forKey:@"dictionary"];
 }
 
-- (HKSPSyncAnchorContainer)initWithCoder:(id)a3
+- (HKSPSyncAnchorContainer)initWithCoder:(id)coder
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = HKSPSyncAnchorContainer;
   v5 = [(HKSPSyncAnchorContainer *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
@@ -472,7 +472,7 @@ void __43__HKSPSyncAnchorContainer_encodeWithCoder___block_invoke(uint64_t a1)
     v18[2] = HKSPSyncAnchorClass();
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:3];
     v10 = [v8 setWithArray:v9];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"dictionary"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"dictionary"];
     v12 = [v11 mutableCopy];
     backingDictionary = v5->_backingDictionary;
     v5->_backingDictionary = v12;
@@ -484,7 +484,7 @@ void __43__HKSPSyncAnchorContainer_encodeWithCoder___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v8[0] = MEMORY[0x277D85DD0];
@@ -493,7 +493,7 @@ void __43__HKSPSyncAnchorContainer_encodeWithCoder___block_invoke(uint64_t a1)
   v8[3] = &unk_279C73B58;
   v5 = v4;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   [(HKSPSyncAnchorContainer *)self _withLock:v8];
   v6 = v5;
 
@@ -515,19 +515,19 @@ uint64_t __40__HKSPSyncAnchorContainer_copyWithZone___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(HKSPSyncAnchorContainer *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(HKSPSyncAnchorContainer *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v5 = [(HKSPSyncAnchorContainer *)self identifier];
-  v6 = [v4 appendObject:v5 withName:@"id" skipIfNil:1];
+  identifier = [(HKSPSyncAnchorContainer *)self identifier];
+  v6 = [v4 appendObject:identifier withName:@"id" skipIfNil:1];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -585,17 +585,17 @@ void __65__HKSPSyncAnchorContainer_descriptionBuilderWithMultilinePrefix___block
 
 - (id)succinctDescription
 {
-  v2 = [(HKSPSyncAnchorContainer *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(HKSPSyncAnchorContainer *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(HKSPSyncAnchorContainer *)self identifier];
-  v5 = [v3 appendObject:v4 withName:@"id"];
+  identifier = [(HKSPSyncAnchorContainer *)self identifier];
+  v5 = [v3 appendObject:identifier withName:@"id"];
 
   return v3;
 }

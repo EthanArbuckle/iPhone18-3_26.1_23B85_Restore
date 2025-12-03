@@ -15,7 +15,7 @@
   }
 
   v4 = +[NSDate date];
-  v5 = [(PPSFeatureFlagReaderHelper *)self createXPCConnection];
+  createXPCConnection = [(PPSFeatureFlagReaderHelper *)self createXPCConnection];
   v14 = 0;
   v15[0] = &v14;
   v15[1] = 0x3032000000;
@@ -27,7 +27,7 @@
   v13[2] = sub_100001B54;
   v13[3] = &unk_100004300;
   v13[4] = &v14;
-  [v5 getFeatureFlags:v13];
+  [createXPCConnection getFeatureFlags:v13];
   v6 = logPPSFeatureFlagReaderHelper();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {

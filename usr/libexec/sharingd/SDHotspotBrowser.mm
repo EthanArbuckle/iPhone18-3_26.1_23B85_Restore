@@ -2,53 +2,53 @@
 + (id)sharedBrowser;
 - (BOOL)accountHasPairedPeers;
 - (BOOL)accountHasTetheringSources;
-- (BOOL)outstandingRequestsHasHotspotDeviceForID:(id)a3;
-- (BOOL)pairedPeerIsValid:(id)a3;
-- (BOOL)sendMessage:(id)a3 toDeviceWithID:(id)a4 isRequest:(BOOL)a5 messageID:(id)a6 error:(id *)a7 identifier:(id *)a8;
-- (BOOL)sendMessage:(id)a3 toPeer:(id)a4 isRequest:(BOOL)a5 messageID:(id)a6 error:(id *)a7 identifier:(id *)a8;
-- (BOOL)serviceHasDuplicateForBTUUID:(id)a3;
+- (BOOL)outstandingRequestsHasHotspotDeviceForID:(id)d;
+- (BOOL)pairedPeerIsValid:(id)valid;
+- (BOOL)sendMessage:(id)message toDeviceWithID:(id)d isRequest:(BOOL)request messageID:(id)iD error:(id *)error identifier:(id *)identifier;
+- (BOOL)sendMessage:(id)message toPeer:(id)peer isRequest:(BOOL)request messageID:(id)d error:(id *)error identifier:(id *)identifier;
+- (BOOL)serviceHasDuplicateForBTUUID:(id)d;
 - (BOOL)updateIDHash;
 - (BOOL)updateTimeString;
 - (SDHotspotBrowser)init;
-- (id)HMACWithDSID:(id)a3 timeString:(id)a4;
+- (id)HMACWithDSID:(id)d timeString:(id)string;
 - (id)accountAltDSID;
-- (id)appendHashToData:(id)a3 withType:(unsigned __int8)a4;
-- (id)deviceForIdentifier:(id)a3;
-- (id)formattedDate:(id)a3;
-- (id)modelCodeForIdentifier:(id)a3;
-- (id)nextDateForDayInterval:(int)a3;
+- (id)appendHashToData:(id)data withType:(unsigned __int8)type;
+- (id)deviceForIdentifier:(id)identifier;
+- (id)formattedDate:(id)date;
+- (id)modelCodeForIdentifier:(id)identifier;
+- (id)nextDateForDayInterval:(int)interval;
 - (id)pairedPeers;
 - (id)tetheringPeers;
 - (void)activate;
 - (void)addObservers;
-- (void)addRetrieveTimer:(id)a3;
-- (void)altDSIDUpdated:(id)a3;
-- (void)appleIDChanged:(id)a3;
-- (void)appleIDSignedIn:(id)a3;
-- (void)appleIDSignedOut:(id)a3;
+- (void)addRetrieveTimer:(id)timer;
+- (void)altDSIDUpdated:(id)updated;
+- (void)appleIDChanged:(id)changed;
+- (void)appleIDSignedIn:(id)in;
+- (void)appleIDSignedOut:(id)out;
 - (void)clearAccountAltDSID;
 - (void)clearNextDayTimer;
-- (void)continuity:(id)a3 didDiscoverType:(int64_t)a4 withData:(id)a5 fromPeer:(id)a6;
-- (void)continuity:(id)a3 didFailToStartAdvertisingOfType:(int64_t)a4 withError:(id)a5;
-- (void)continuity:(id)a3 didFailToStartScanningForType:(int64_t)a4 withError:(id)a5;
-- (void)continuity:(id)a3 didStartAdvertisingOfType:(int64_t)a4;
-- (void)continuity:(id)a3 didStartScanningForType:(int64_t)a4;
-- (void)continuity:(id)a3 didStopAdvertisingOfType:(int64_t)a4 withError:(id)a5;
-- (void)continuity:(id)a3 didStopScanningForType:(int64_t)a4;
-- (void)continuityDidUpdateState:(id)a3;
-- (void)credentialLog:(id)a3;
-- (void)debugInfoRequested:(id)a3;
-- (void)enableHotspotForDevice:(id)a3 withCompletionHandler:(id)a4;
+- (void)continuity:(id)continuity didDiscoverType:(int64_t)type withData:(id)data fromPeer:(id)peer;
+- (void)continuity:(id)continuity didFailToStartAdvertisingOfType:(int64_t)type withError:(id)error;
+- (void)continuity:(id)continuity didFailToStartScanningForType:(int64_t)type withError:(id)error;
+- (void)continuity:(id)continuity didStartAdvertisingOfType:(int64_t)type;
+- (void)continuity:(id)continuity didStartScanningForType:(int64_t)type;
+- (void)continuity:(id)continuity didStopAdvertisingOfType:(int64_t)type withError:(id)error;
+- (void)continuity:(id)continuity didStopScanningForType:(int64_t)type;
+- (void)continuityDidUpdateState:(id)state;
+- (void)credentialLog:(id)log;
+- (void)debugInfoRequested:(id)requested;
+- (void)enableHotspotForDevice:(id)device withCompletionHandler:(id)handler;
 - (void)generateNextDayTimeOffset;
-- (void)handleIncomingResponse:(id)a3 identifier:(id)a4;
+- (void)handleIncomingResponse:(id)response identifier:(id)identifier;
 - (void)handleScanAssertionTimerFired;
 - (void)handleScanResetTimerFired;
-- (void)hotspotConnectionStateChanged:(id)a3;
+- (void)hotspotConnectionStateChanged:(id)changed;
 - (void)invalidate;
 - (void)invalidateScanAssertionTimer;
 - (void)invalidateScanResetTimer;
-- (void)invalidateTimerWithIdentifier:(id)a3;
-- (void)nextDayTimerFired:(id)a3;
+- (void)invalidateTimerWithIdentifier:(id)identifier;
+- (void)nextDayTimerFired:(id)fired;
 - (void)preventIdleSleepAssertion;
 - (void)releaseIdleSleepAssertion;
 - (void)removeObservers;
@@ -58,28 +58,28 @@
 - (void)restartProducerScanning;
 - (void)restartScanAssertionTimer;
 - (void)restartScanResetTimer;
-- (void)retrieveTimerFired:(id)a3;
-- (void)screenStateChanged:(id)a3;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)setHotspotManager:(id)a3;
-- (void)setIdsService:(id)a3;
-- (void)setProducerScanEnabled:(BOOL)a3;
-- (void)setd2dEncryptionAvailable:(BOOL)a3;
+- (void)retrieveTimerFired:(id)fired;
+- (void)screenStateChanged:(id)changed;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)setHotspotManager:(id)manager;
+- (void)setIdsService:(id)service;
+- (void)setProducerScanEnabled:(BOOL)enabled;
+- (void)setd2dEncryptionAvailable:(BOOL)available;
 - (void)startBrowsing;
 - (void)stopAdvertisingResponse;
 - (void)stopAdvertisingTetheringRequest;
 - (void)stopBrowsing;
 - (void)stopConsumerScanning;
 - (void)stopProducerScanning;
-- (void)tetheringDidRetrieveCredentials:(id)a3 credentials:(id)a4 requestRecord:(id)a5 error:(id)a6;
+- (void)tetheringDidRetrieveCredentials:(id)credentials credentials:(id)a4 requestRecord:(id)record error:(id)error;
 - (void)tetheringSupportChanged;
 - (void)updateAccountState;
 - (void)updateCrossoverTimer;
 - (void)updateHasAppleID;
 - (void)updateIDHashAndRestart;
-- (void)wifiPasswordSharingChanged:(id)a3;
+- (void)wifiPasswordSharingChanged:(id)changed;
 @end
 
 @implementation SDHotspotBrowser
@@ -151,9 +151,9 @@
     v3->_outstandingRequests = v20;
 
     v22 = +[SDStatusMonitor sharedMonitor];
-    v23 = [v22 modelCode];
+    modelCode = [v22 modelCode];
     modelCode = v3->_modelCode;
-    v3->_modelCode = v23;
+    v3->_modelCode = modelCode;
   }
 
   return v3;
@@ -181,35 +181,35 @@
   dispatch_async(workQueue, block);
 }
 
-- (void)setHotspotManager:(id)a3
+- (void)setHotspotManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000BD7DC;
   v7[3] = &unk_1008CE028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = managerCopy;
+  v6 = managerCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)setIdsService:(id)a3
+- (void)setIdsService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000BD880;
   v7[3] = &unk_1008CE028;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = serviceCopy;
+  selfCopy = self;
+  v6 = serviceCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)setProducerScanEnabled:(BOOL)a3
+- (void)setProducerScanEnabled:(BOOL)enabled
 {
   workQueue = self->_workQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -217,11 +217,11 @@
   v4[2] = sub_1000BD98C;
   v4[3] = &unk_1008CF798;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(workQueue, v4);
 }
 
-- (void)setd2dEncryptionAvailable:(BOOL)a3
+- (void)setd2dEncryptionAvailable:(BOOL)available
 {
   workQueue = self->_workQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -229,7 +229,7 @@
   v4[2] = sub_1000BDAFC;
   v4[3] = &unk_1008CF798;
   v4[4] = self;
-  v5 = a3;
+  availableCopy = available;
   dispatch_async(workQueue, v4);
 }
 
@@ -238,9 +238,9 @@
   if (self->_hasAppleID && !self->_altDSID)
   {
     v3 = +[SDStatusMonitor sharedMonitor];
-    v4 = [v3 myAltDSID];
+    myAltDSID = [v3 myAltDSID];
     altDSID = self->_altDSID;
-    self->_altDSID = v4;
+    self->_altDSID = myAltDSID;
   }
 
   v6 = self->_altDSID;
@@ -308,18 +308,18 @@
 {
   p_IDHash = &self->_IDHash;
   IDHash = self->_IDHash;
-  v5 = [(SDHotspotBrowser *)self updateTimeString];
+  updateTimeString = [(SDHotspotBrowser *)self updateTimeString];
   v6 = self->_altDSID;
-  v7 = [(SDHotspotBrowser *)self accountAltDSID];
+  accountAltDSID = [(SDHotspotBrowser *)self accountAltDSID];
   if (self->_hasAppleID)
   {
     v8 = v6;
-    v9 = v7;
+    v9 = accountAltDSID;
     v10 = v9;
     if (v8 == v9)
     {
 
-      if (!v5)
+      if (!updateTimeString)
       {
         goto LABEL_11;
       }
@@ -333,7 +333,7 @@
 
         if (v11)
         {
-          if (v5)
+          if (updateTimeString)
           {
             goto LABEL_18;
           }
@@ -426,9 +426,9 @@ LABEL_18:
   [(SDHotspotBrowser *)self clearNextDayTimer];
   self->_IDHash = 0;
 LABEL_24:
-  v22 = [(SDHotspotBrowser *)self nextCrossoverPersistentTimer];
+  nextCrossoverPersistentTimer = [(SDHotspotBrowser *)self nextCrossoverPersistentTimer];
 
-  if (!v22)
+  if (!nextCrossoverPersistentTimer)
   {
     [(SDHotspotBrowser *)self updateCrossoverTimer];
   }
@@ -485,26 +485,26 @@ LABEL_6:
   return v9 ^ 1;
 }
 
-- (id)HMACWithDSID:(id)a3 timeString:(id)a4
+- (id)HMACWithDSID:(id)d timeString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 UTF8String];
-  v10 = [v8 length];
+  dCopy = d;
+  stringCopy = string;
+  dCopy2 = d;
+  uTF8String = [dCopy2 UTF8String];
+  v10 = [dCopy2 length];
 
-  v11 = [v7 UTF8String];
-  v12 = [v7 length];
+  uTF8String2 = [stringCopy UTF8String];
+  v12 = [stringCopy length];
 
-  CCHmac(2u, v9, v10, v11, v12, &v15);
+  CCHmac(2u, uTF8String, v10, uTF8String2, v12, &v15);
   v13 = [NSData dataWithBytes:&v15 length:32];
 
   return v13;
 }
 
-- (id)appendHashToData:(id)a3 withType:(unsigned __int8)a4
+- (id)appendHashToData:(id)data withType:(unsigned __int8)type
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = tethering_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -525,7 +525,7 @@ LABEL_6:
   [(SDHotspotBrowser *)self updateIDHash];
   if (self->_hasAppleID && self->_IDHash)
   {
-    v9 = [[NSMutableData alloc] initWithData:v5];
+    v9 = [[NSMutableData alloc] initWithData:dataCopy];
     v13 = bswap32(self->_IDHash);
     [v9 appendBytes:&v13 length:4];
     v10 = tethering_log();
@@ -551,23 +551,23 @@ LABEL_6:
   return v9;
 }
 
-- (id)modelCodeForIdentifier:(id)a3
+- (id)modelCodeForIdentifier:(id)identifier
 {
-  v3 = [(SDHotspotBrowser *)self deviceForIdentifier:a3];
+  v3 = [(SDHotspotBrowser *)self deviceForIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 modelIdentifier];
+    modelIdentifier = [v3 modelIdentifier];
   }
 
   else
   {
-    v5 = 0;
+    modelIdentifier = 0;
   }
 
-  if (v5)
+  if (modelIdentifier)
   {
-    v6 = v5;
+    v6 = modelIdentifier;
   }
 
   else
@@ -580,17 +580,17 @@ LABEL_6:
   return v6;
 }
 
-- (id)deviceForIdentifier:(id)a3
+- (id)deviceForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(IDSService *)self->_tetheringService devices];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    devices = [(IDSService *)self->_tetheringService devices];
+    v6 = [devices countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = *v15;
@@ -600,13 +600,13 @@ LABEL_6:
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(devices);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 nsuuid];
-          v11 = [v10 UUIDString];
-          v12 = [v11 isEqualToString:v4];
+          nsuuid = [v9 nsuuid];
+          uUIDString = [nsuuid UUIDString];
+          v12 = [uUIDString isEqualToString:identifierCopy];
 
           if (v12)
           {
@@ -615,7 +615,7 @@ LABEL_6:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [devices countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v6)
         {
           continue;
@@ -643,8 +643,8 @@ LABEL_12:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(IDSService *)self->_tetheringService devices];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  devices = [(IDSService *)self->_tetheringService devices];
+  v5 = [devices countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -655,21 +655,21 @@ LABEL_12:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devices);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if (([v9 isDefaultPairedDevice] & 1) == 0 && -[SDHotspotBrowser pairedPeerIsValid:](self, "pairedPeerIsValid:", v9))
         {
-          v10 = [v9 nsuuid];
-          if (v10)
+          nsuuid = [v9 nsuuid];
+          if (nsuuid)
           {
-            [v3 addObject:v10];
+            [v3 addObject:nsuuid];
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [devices countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -684,8 +684,8 @@ LABEL_12:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(IDSService *)self->_tetheringService devices];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  devices = [(IDSService *)self->_tetheringService devices];
+  v4 = [devices countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -696,7 +696,7 @@ LABEL_12:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devices);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -704,9 +704,9 @@ LABEL_12:
         {
           if ([(SDHotspotBrowser *)self pairedPeerIsValid:v8])
           {
-            v9 = [v8 nsuuid];
+            nsuuid = [v8 nsuuid];
 
-            if (v9)
+            if (nsuuid)
             {
               v10 = 1;
               goto LABEL_13;
@@ -715,7 +715,7 @@ LABEL_12:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [devices countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -731,49 +731,49 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)pairedPeerIsValid:(id)a3
+- (BOOL)pairedPeerIsValid:(id)valid
 {
-  v4 = a3;
-  v5 = [v4 modelIdentifier];
-  v6 = [v5 lowercaseString];
+  validCopy = valid;
+  modelIdentifier = [validCopy modelIdentifier];
+  lowercaseString = [modelIdentifier lowercaseString];
 
-  v7 = [(SDHotspotBrowser *)self d2dEncryptionAvailable];
-  if ([v6 containsString:@"appletv"] & 1) != 0 || (objc_msgSend(v6, "containsString:", @"audio"))
+  d2dEncryptionAvailable = [(SDHotspotBrowser *)self d2dEncryptionAvailable];
+  if ([lowercaseString containsString:@"appletv"] & 1) != 0 || (objc_msgSend(lowercaseString, "containsString:", @"audio"))
   {
     v8 = 0;
     goto LABEL_4;
   }
 
-  v10 = v7 ^ 1;
-  if ([v6 containsString:@"watch"])
+  v10 = d2dEncryptionAvailable ^ 1;
+  if ([lowercaseString containsString:@"watch"])
   {
-    if (v4)
+    if (validCopy)
     {
-      [v4 operatingSystemVersion];
-      if (!((v19 < 6) | v7 & 1))
+      [validCopy operatingSystemVersion];
+      if (!((v19 < 6) | d2dEncryptionAvailable & 1))
       {
 LABEL_17:
         v8 = 1;
         goto LABEL_4;
       }
 
-      v11 = [v6 containsString:@"mac"];
+      v11 = [lowercaseString containsString:@"mac"];
       goto LABEL_10;
     }
 
-    v11 = [v6 containsString:@"mac"];
+    v11 = [lowercaseString containsString:@"mac"];
   }
 
   else
   {
-    v11 = [v6 containsString:@"mac"];
-    if (v4)
+    v11 = [lowercaseString containsString:@"mac"];
+    if (validCopy)
     {
 LABEL_10:
-      [v4 operatingSystemVersion];
+      [validCopy operatingSystemVersion];
       if (v18 == 10)
       {
-        [v4 operatingSystemVersion];
+        [validCopy operatingSystemVersion];
         v12 = 0;
         v13 = (v17 < 15) | v10;
       }
@@ -781,7 +781,7 @@ LABEL_10:
       else
       {
         v12 = 0;
-        v13 = v7 ^ 1;
+        v13 = d2dEncryptionAvailable ^ 1;
       }
 
       goto LABEL_15;
@@ -789,14 +789,14 @@ LABEL_10:
   }
 
   v12 = 1;
-  v13 = v7 ^ 1;
+  v13 = d2dEncryptionAvailable ^ 1;
 LABEL_15:
   if (v11 && (v13 & 1) != 0)
   {
     goto LABEL_17;
   }
 
-  if (([v6 containsString:@"iphone"] & 1) != 0 || objc_msgSend(v6, "containsString:", @"ipad"))
+  if (([lowercaseString containsString:@"iphone"] & 1) != 0 || objc_msgSend(lowercaseString, "containsString:", @"ipad"))
   {
     if (v12)
     {
@@ -804,14 +804,14 @@ LABEL_15:
       goto LABEL_4;
     }
 
-    [v4 operatingSystemVersion];
-    if (((v16 > 12) & v7) != 1)
+    [validCopy operatingSystemVersion];
+    if (((v16 > 12) & d2dEncryptionAvailable) != 1)
     {
       goto LABEL_17;
     }
   }
 
-  v14 = [v6 containsString:@"realitydevice"];
+  v14 = [lowercaseString containsString:@"realitydevice"];
   v15 = tethering_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
@@ -830,8 +830,8 @@ LABEL_4:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(IDSService *)self->_tetheringService devices];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  devices = [(IDSService *)self->_tetheringService devices];
+  v4 = [devices countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -842,16 +842,16 @@ LABEL_4:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devices);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
         if (([v8 isDefaultPairedDevice] & 1) == 0)
         {
-          v9 = [v8 nsuuid];
+          nsuuid = [v8 nsuuid];
           if ([v8 supportsTethering])
           {
-            v10 = v9 == 0;
+            v10 = nsuuid == 0;
           }
 
           else
@@ -868,7 +868,7 @@ LABEL_4:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [devices countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -891,8 +891,8 @@ LABEL_17:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(IDSService *)self->_tetheringService devices];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  devices = [(IDSService *)self->_tetheringService devices];
+  v5 = [devices countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -903,16 +903,16 @@ LABEL_17:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devices);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
         if (([v9 isDefaultPairedDevice] & 1) == 0)
         {
-          v10 = [v9 nsuuid];
+          nsuuid = [v9 nsuuid];
           if ([v9 supportsTethering])
           {
-            v11 = v10 == 0;
+            v11 = nsuuid == 0;
           }
 
           else
@@ -922,12 +922,12 @@ LABEL_17:
 
           if (!v11 && [(SDHotspotBrowser *)self tetheringSourceIsValid:v9])
           {
-            [v3 addObject:v10];
+            [v3 addObject:nsuuid];
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [devices countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -936,22 +936,22 @@ LABEL_17:
   return v3;
 }
 
-- (BOOL)outstandingRequestsHasHotspotDeviceForID:(id)a3
+- (BOOL)outstandingRequestsHasHotspotDeviceForID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
+  dCopy = d;
+  v5 = dCopy;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  if (v4)
+  if (dCopy)
   {
     outstandingRequests = self->_outstandingRequests;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000BF008;
     v9[3] = &unk_1008CF7C0;
-    v10 = v4;
+    v10 = dCopy;
     v11 = &v12;
     [(NSMutableDictionary *)outstandingRequests enumerateKeysAndObjectsUsingBlock:v9];
 
@@ -968,16 +968,16 @@ LABEL_17:
   return v7 & 1;
 }
 
-- (BOOL)serviceHasDuplicateForBTUUID:(id)a3
+- (BOOL)serviceHasDuplicateForBTUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc_init(NSMutableSet);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(IDSService *)self->_tetheringService devices];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  devices = [(IDSService *)self->_tetheringService devices];
+  v7 = [devices countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v7)
   {
     v9 = v7;
@@ -991,36 +991,36 @@ LABEL_17:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(devices);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
         if (([v13 isDefaultPairedDevice] & 1) == 0)
         {
-          v14 = [v13 nsuuid];
-          v15 = [v14 UUIDString];
+          nsuuid = [v13 nsuuid];
+          uUIDString = [nsuuid UUIDString];
 
-          if (v15)
+          if (uUIDString)
           {
-            if ([v5 containsObject:v15])
+            if ([v5 containsObject:uUIDString])
             {
               v16 = tethering_log();
               if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
               {
                 *buf = v18;
-                v24 = v15;
+                v24 = uUIDString;
                 _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Found duplicate entry for BTUUID = %@", buf, 0xCu);
               }
 
-              v10 |= [v4 isEqualToString:v15];
+              v10 |= [dCopy isEqualToString:uUIDString];
             }
 
-            [v5 addObject:v15];
+            [v5 addObject:uUIDString];
           }
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v9 = [devices countByEnumeratingWithState:&v19 objects:v25 count:16];
     }
 
     while (v9);
@@ -1034,12 +1034,12 @@ LABEL_17:
   return v10 & 1;
 }
 
-- (void)credentialLog:(id)a3
+- (void)credentialLog:(id)log
 {
-  v3 = a3;
+  logCopy = log;
   if (IsAppleInternalBuild() && sub_10000C1F8(@"TetheringCredentialLog", 0))
   {
-    v4 = sub_1001F0DEC(v3);
+    v4 = sub_1001F0DEC(logCopy);
     v5 = tethering_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -1071,7 +1071,7 @@ LABEL_17:
   [v3 removeObserver:self];
 }
 
-- (void)altDSIDUpdated:(id)a3
+- (void)altDSIDUpdated:(id)updated
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1082,7 +1082,7 @@ LABEL_17:
   dispatch_async(workQueue, block);
 }
 
-- (void)debugInfoRequested:(id)a3
+- (void)debugInfoRequested:(id)requested
 {
   v32 = objc_opt_new();
   v4 = [NSString stringWithFormat:@"IDHash:%u", self->_IDHash];
@@ -1177,16 +1177,16 @@ LABEL_17:
   v21 = [NSString stringWithFormat:@"Target scanning for responses:%@", v20];
   [v32 addObject:v21];
 
-  v22 = [(SDHotspotBrowser *)self pairedPeers];
-  v23 = [v22 valueForKeyPath:@"@unionOfObjects.UUIDString"];
+  pairedPeers = [(SDHotspotBrowser *)self pairedPeers];
+  v23 = [pairedPeers valueForKeyPath:@"@unionOfObjects.UUIDString"];
   v24 = [v23 componentsJoinedByString:{@", "}];
 
   v25 = [NSString stringWithFormat:@"Current cloud paired peers:%@", v24];
   [v32 addObject:v25];
 
-  v26 = [(SDHotspotBrowser *)self tetheringPeers];
+  tetheringPeers = [(SDHotspotBrowser *)self tetheringPeers];
 
-  v27 = [v26 valueForKeyPath:@"@unionOfObjects.UUIDString"];
+  v27 = [tetheringPeers valueForKeyPath:@"@unionOfObjects.UUIDString"];
   v28 = [v27 componentsJoinedByString:{@", "}];
 
   v29 = [NSString stringWithFormat:@"Current tethering source peers:%@", v28];
@@ -1197,7 +1197,7 @@ LABEL_17:
   sub_100086F68(v31, v32);
 }
 
-- (void)appleIDChanged:(id)a3
+- (void)appleIDChanged:(id)changed
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1208,7 +1208,7 @@ LABEL_17:
   dispatch_async(workQueue, block);
 }
 
-- (void)appleIDSignedIn:(id)a3
+- (void)appleIDSignedIn:(id)in
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1219,7 +1219,7 @@ LABEL_17:
   dispatch_async(workQueue, block);
 }
 
-- (void)appleIDSignedOut:(id)a3
+- (void)appleIDSignedOut:(id)out
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1238,7 +1238,7 @@ LABEL_17:
   [(SDHotspotBrowser *)self updateIDHashAndRestart];
 }
 
-- (void)screenStateChanged:(id)a3
+- (void)screenStateChanged:(id)changed
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1249,7 +1249,7 @@ LABEL_17:
   dispatch_async(workQueue, block);
 }
 
-- (void)hotspotConnectionStateChanged:(id)a3
+- (void)hotspotConnectionStateChanged:(id)changed
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1260,27 +1260,27 @@ LABEL_17:
   dispatch_async(workQueue, block);
 }
 
-- (void)wifiPasswordSharingChanged:(id)a3
+- (void)wifiPasswordSharingChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C0010;
   v7[3] = &unk_1008CE028;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   dispatch_async(workQueue, v7);
 }
 
 - (void)generateNextDayTimeOffset
 {
-  v3 = [(SDHotspotBrowser *)self accountAltDSID];
-  v4 = v3;
-  if (v3)
+  accountAltDSID = [(SDHotspotBrowser *)self accountAltDSID];
+  v4 = accountAltDSID;
+  if (accountAltDSID)
   {
-    v5 = sub_1001F0DEC(v3);
+    v5 = sub_1001F0DEC(accountAltDSID);
     v6 = [v5 subdataWithRange:{0, 8}];
     v12 = 0;
     [v6 getBytes:&v12 length:8];
@@ -1313,9 +1313,9 @@ LABEL_17:
 - (void)updateCrossoverTimer
 {
   [(SDHotspotBrowser *)self clearNextDayTimer];
-  v3 = [(SDHotspotManager *)self->_hotspotManager isTetheringSupported];
-  v4 = [(SDHotspotBrowser *)self nextCrossoverPersistentTimer];
-  if (v4 || (self->_hasAppleID & v3 & 1) == 0)
+  isTetheringSupported = [(SDHotspotManager *)self->_hotspotManager isTetheringSupported];
+  nextCrossoverPersistentTimer = [(SDHotspotBrowser *)self nextCrossoverPersistentTimer];
+  if (nextCrossoverPersistentTimer || (self->_hasAppleID & isTetheringSupported & 1) == 0)
   {
   }
 
@@ -1340,22 +1340,22 @@ LABEL_17:
       v9 = [[PCPersistentTimer alloc] initWithFireDate:v5 serviceIdentifier:@"com.apple.sharingd" target:self selector:"nextDayTimerFired:" userInfo:0];
       [(SDHotspotBrowser *)self setNextCrossoverPersistentTimer:v9];
 
-      v10 = [(SDHotspotBrowser *)self nextCrossoverPersistentTimer];
-      [v10 setMinimumEarlyFireProportion:1.0];
+      nextCrossoverPersistentTimer2 = [(SDHotspotBrowser *)self nextCrossoverPersistentTimer];
+      [nextCrossoverPersistentTimer2 setMinimumEarlyFireProportion:1.0];
 
-      v11 = [(SDHotspotBrowser *)self nextCrossoverPersistentTimer];
-      [v11 scheduleInQueue:self->_workQueue];
+      nextCrossoverPersistentTimer3 = [(SDHotspotBrowser *)self nextCrossoverPersistentTimer];
+      [nextCrossoverPersistentTimer3 scheduleInQueue:self->_workQueue];
 
       v12 = tethering_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(SDHotspotBrowser *)self nextCrossoverPersistentTimer];
+        nextCrossoverPersistentTimer4 = [(SDHotspotBrowser *)self nextCrossoverPersistentTimer];
         v14 = +[NSDate date];
         [v5 timeIntervalSinceDate:v14];
         v16 = v15;
         v17 = [(SDHotspotBrowser *)self formattedDate:v5];
         v22 = 138412802;
-        v23 = v13;
+        v23 = nextCrossoverPersistentTimer4;
         v24 = 2048;
         v25 = v16;
         v26 = 2112;
@@ -1370,7 +1370,7 @@ LABEL_17:
   v5 = tethering_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(SDHotspotBrowser *)self nextCrossoverPersistentTimer];
+    nextCrossoverPersistentTimer5 = [(SDHotspotBrowser *)self nextCrossoverPersistentTimer];
     if (self->_hasAppleID)
     {
       v19 = @"YES";
@@ -1381,7 +1381,7 @@ LABEL_17:
       v19 = @"NO";
     }
 
-    if (v3)
+    if (isTetheringSupported)
     {
       v20 = @"YES";
     }
@@ -1402,7 +1402,7 @@ LABEL_17:
       v21 = @"NO";
     }
 
-    v23 = v18;
+    v23 = nextCrossoverPersistentTimer5;
     v24 = 2112;
     v25 = v19;
     v26 = 2112;
@@ -1417,32 +1417,32 @@ LABEL_19:
 
 - (void)clearNextDayTimer
 {
-  v3 = [(SDHotspotBrowser *)self nextCrossoverPersistentTimer];
+  nextCrossoverPersistentTimer = [(SDHotspotBrowser *)self nextCrossoverPersistentTimer];
 
-  if (v3)
+  if (nextCrossoverPersistentTimer)
   {
-    v4 = [(SDHotspotBrowser *)self nextCrossoverPersistentTimer];
-    [v4 invalidate];
+    nextCrossoverPersistentTimer2 = [(SDHotspotBrowser *)self nextCrossoverPersistentTimer];
+    [nextCrossoverPersistentTimer2 invalidate];
 
     [(SDHotspotBrowser *)self setNextCrossoverPersistentTimer:0];
   }
 }
 
-- (void)nextDayTimerFired:(id)a3
+- (void)nextDayTimerFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   v5 = tethering_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = firedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Persistent timer fired = %@", &v10, 0xCu);
   }
 
   v6 = +[SDStatusMonitor sharedMonitor];
-  v7 = [v6 altDSIDNeedsFixing];
+  altDSIDNeedsFixing = [v6 altDSIDNeedsFixing];
 
-  if (v7)
+  if (altDSIDNeedsFixing)
   {
     v8 = tethering_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1459,10 +1459,10 @@ LABEL_19:
   [(SDHotspotBrowser *)self updateAccountState];
 }
 
-- (id)nextDateForDayInterval:(int)a3
+- (id)nextDateForDayInterval:(int)interval
 {
   v5 = +[NSDate date];
-  v6 = 86400 * a3;
+  v6 = 86400 * interval;
   [v5 timeIntervalSinceReferenceDate];
   v8 = self->_nextDayTimeOffset + v7 / v6 * v6;
   [v5 timeIntervalSinceReferenceDate];
@@ -1494,20 +1494,20 @@ LABEL_19:
   return v13;
 }
 
-- (id)formattedDate:(id)a3
+- (id)formattedDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = objc_alloc_init(NSDateFormatter);
   [v4 setDateStyle:1];
   [v4 setTimeStyle:4];
   v5 = [NSTimeZone timeZoneWithName:@"GMT"];
   [v4 setTimeZone:v5];
 
-  v6 = [v4 stringFromDate:v3];
+  v6 = [v4 stringFromDate:dateCopy];
   v7 = +[NSTimeZone localTimeZone];
   [v4 setTimeZone:v7];
 
-  v8 = [v4 stringFromDate:v3];
+  v8 = [v4 stringFromDate:dateCopy];
 
   v9 = [NSString stringWithFormat:@"GMT Date = %@, Local Time Zone Date = %@", v6, v8];
 
@@ -1525,13 +1525,13 @@ LABEL_19:
   dispatch_async(workQueue, block);
 }
 
-- (BOOL)sendMessage:(id)a3 toPeer:(id)a4 isRequest:(BOOL)a5 messageID:(id)a6 error:(id *)a7 identifier:(id *)a8
+- (BOOL)sendMessage:(id)message toPeer:(id)peer isRequest:(BOOL)request messageID:(id)d error:(id *)error identifier:(id *)identifier
 {
-  v11 = a5;
-  v14 = a3;
-  v15 = a4;
-  v40 = a6;
-  if (!v15)
+  requestCopy = request;
+  messageCopy = message;
+  peerCopy = peer;
+  dCopy = d;
+  if (!peerCopy)
   {
     v34 = tethering_log();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -1546,30 +1546,30 @@ LABEL_19:
     v25 = 0;
     v31 = 0;
 LABEL_22:
-    v27 = v40;
+    v27 = dCopy;
     goto LABEL_23;
   }
 
-  v37 = v11;
-  v38 = a8;
-  v39 = a7;
-  v16 = v14;
+  v37 = requestCopy;
+  identifierCopy = identifier;
+  errorCopy = error;
+  v16 = messageCopy;
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v17 = [(IDSService *)self->_tetheringService devices];
-  v18 = [v17 countByEnumeratingWithState:&v43 objects:v51 count:16];
+  devices = [(IDSService *)self->_tetheringService devices];
+  v18 = [devices countByEnumeratingWithState:&v43 objects:v51 count:16];
   if (!v18)
   {
 LABEL_10:
 
 LABEL_16:
     v33 = tethering_log();
-    v14 = v16;
+    messageCopy = v16;
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
-      sub_1000C5FA0(v15);
+      sub_1000C5FA0(peerCopy);
     }
 
     v49 = NSLocalizedDescriptionKey;
@@ -1578,7 +1578,7 @@ LABEL_16:
     v29 = [NSError errorWithDomain:NSPOSIXErrorDomain code:51 userInfo:v26];
     v25 = 0;
     v31 = 0;
-    a7 = v39;
+    error = errorCopy;
     goto LABEL_22;
   }
 
@@ -1590,12 +1590,12 @@ LABEL_4:
   {
     if (*v44 != v20)
     {
-      objc_enumerationMutation(v17);
+      objc_enumerationMutation(devices);
     }
 
     v22 = *(*(&v43 + 1) + 8 * v21);
-    v23 = [v22 nsuuid];
-    v24 = [v23 isEqual:v15];
+    nsuuid = [v22 nsuuid];
+    v24 = [nsuuid isEqual:peerCopy];
 
     if (v24)
     {
@@ -1604,7 +1604,7 @@ LABEL_4:
 
     if (v19 == ++v21)
     {
-      v19 = [v17 countByEnumeratingWithState:&v43 objects:v51 count:16];
+      v19 = [devices countByEnumeratingWithState:&v43 objects:v51 count:16];
       if (v19)
       {
         goto LABEL_4;
@@ -1624,56 +1624,56 @@ LABEL_4:
   v26 = IDSCopyForDevice();
   v41 = 0;
   v42 = 0;
-  v27 = v40;
-  v28 = [(SDHotspotBrowser *)self sendMessage:v16 toDeviceWithID:v26 isRequest:v37 messageID:v40 error:&v42 identifier:&v41];
+  v27 = dCopy;
+  v28 = [(SDHotspotBrowser *)self sendMessage:v16 toDeviceWithID:v26 isRequest:v37 messageID:dCopy error:&v42 identifier:&v41];
   v29 = v42;
   v30 = v41;
   v31 = v30;
-  if (v38 && v28)
+  if (identifierCopy && v28)
   {
     v32 = v30;
-    *v38 = v31;
+    *identifierCopy = v31;
   }
 
-  v14 = v16;
-  a7 = v39;
+  messageCopy = v16;
+  error = errorCopy;
 LABEL_23:
 
-  if (a7)
+  if (error)
   {
     v35 = v29;
-    *a7 = v29;
+    *error = v29;
   }
 
   return v29 == 0;
 }
 
-- (BOOL)sendMessage:(id)a3 toDeviceWithID:(id)a4 isRequest:(BOOL)a5 messageID:(id)a6 error:(id *)a7 identifier:(id *)a8
+- (BOOL)sendMessage:(id)message toDeviceWithID:(id)d isRequest:(BOOL)request messageID:(id)iD error:(id *)error identifier:(id *)identifier
 {
-  v11 = a5;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  if (v15)
+  requestCopy = request;
+  messageCopy = message;
+  dCopy = d;
+  iDCopy = iD;
+  if (dCopy)
   {
-    v33 = v14;
-    v17 = [NSSet setWithObject:v15];
+    v33 = messageCopy;
+    v17 = [NSSet setWithObject:dCopy];
     v18 = +[NSMutableDictionary dictionary];
     [v18 setObject:&off_10090B8F8 forKeyedSubscript:IDSSendMessageOptionTimeoutKey];
     [v18 setObject:&__kCFBooleanFalse forKeyedSubscript:IDSSendMessageOptionEnforceRemoteTimeoutsKey];
     v19 = +[SDStatusMonitor sharedMonitor];
-    v20 = [v19 enableHotspotFallback];
+    enableHotspotFallback = [v19 enableHotspotFallback];
 
-    if ((v20 & 1) == 0)
+    if ((enableHotspotFallback & 1) == 0)
     {
       [v18 setObject:&__kCFBooleanTrue forKeyedSubscript:IDSSendMessageOptionLocalDeliveryKey];
     }
 
-    if (v16 || v11)
+    if (iDCopy || requestCopy)
     {
-      if (v16)
+      if (iDCopy)
       {
-        v21 = v11;
+        v21 = requestCopy;
       }
 
       else
@@ -1688,7 +1688,7 @@ LABEL_23:
 
       else
       {
-        v22 = v16;
+        v22 = iDCopy;
       }
 
       v23 = &IDSSendMessageOptionExpectsPeerResponseKey;
@@ -1710,7 +1710,7 @@ LABEL_23:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v37 = v15;
+      v37 = dCopy;
       v38 = 2112;
       v39 = v26;
       v40 = 2112;
@@ -1718,10 +1718,10 @@ LABEL_23:
       _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Sending from device ID to destination = %@, with identifier = %@, message = %@, ", buf, 0x20u);
     }
 
-    if (a8)
+    if (identifier)
     {
       v29 = v26;
-      *a8 = v26;
+      *identifier = v26;
     }
 
     if (v25)
@@ -1734,7 +1734,7 @@ LABEL_23:
       v30 = v27;
     }
 
-    v14 = v33;
+    messageCopy = v33;
   }
 
   else
@@ -1749,10 +1749,10 @@ LABEL_23:
     v30 = 0;
   }
 
-  if (a7)
+  if (error)
   {
     v31 = v30;
-    *a7 = v30;
+    *error = v30;
   }
 
   return v30 == 0;
@@ -1786,61 +1786,61 @@ LABEL_23:
   }
 }
 
-- (void)enableHotspotForDevice:(id)a3 withCompletionHandler:(id)a4
+- (void)enableHotspotForDevice:(id)device withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  handlerCopy = handler;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C14E0;
   block[3] = &unk_1008CE730;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = deviceCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = deviceCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)addRetrieveTimer:(id)a3
+- (void)addRetrieveTimer:(id)timer
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000C1A6C;
   v4[3] = &unk_1008CE028;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  timerCopy = timer;
+  v3 = timerCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)retrieveTimerFired:(id)a3
+- (void)retrieveTimerFired:(id)fired
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  firedCopy = fired;
+  userInfo = [firedCopy userInfo];
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C1BA8;
   block[3] = &unk_1008CE900;
-  v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = userInfo;
+  selfCopy = self;
+  v12 = firedCopy;
+  v7 = firedCopy;
+  v8 = userInfo;
   dispatch_async(workQueue, block);
 }
 
-- (void)invalidateTimerWithIdentifier:(id)a3
+- (void)invalidateTimerWithIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v4 = [(NSMutableDictionary *)self->_retrieveTimers objectForKeyedSubscript:?];
   v5 = v4;
   if (v4)
   {
     [v4 invalidate];
-    [(NSMutableDictionary *)self->_retrieveTimers removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_retrieveTimers removeObjectForKey:identifierCopy];
   }
 }
 
@@ -1854,7 +1854,7 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v6 = [(IDSContinuity *)self->_tetheringManager state];
+    state = [(IDSContinuity *)self->_tetheringManager state];
     if (self->_shouldBeAdvertisingRequest)
     {
       v7 = @"YES";
@@ -1885,9 +1885,9 @@ LABEL_23:
       v9 = @"NO";
     }
 
-    v10 = [(SDStatusMonitor *)self->_monitor autoHotspotState];
+    autoHotspotState = [(SDStatusMonitor *)self->_monitor autoHotspotState];
     v15[0] = 67110146;
-    if (v10)
+    if (autoHotspotState)
     {
       v11 = @"YES";
     }
@@ -1897,7 +1897,7 @@ LABEL_23:
       v11 = @"NO";
     }
 
-    v15[1] = v6;
+    v15[1] = state;
     v16 = 2112;
     v17 = v7;
     v18 = 2112;
@@ -1973,8 +1973,8 @@ LABEL_24:
     LOWORD(v20) = 1;
     HIBYTE(v20) = 0;
     v3 = +[SDStatusMonitor sharedMonitor];
-    v4 = [v3 localPowerSource];
-    [v4 chargeLevel];
+    localPowerSource = [v3 localPowerSource];
+    [localPowerSource chargeLevel];
     v6 = (v5 * 100.0);
 
     if (v6 < 0)
@@ -2032,8 +2032,8 @@ LABEL_24:
     v10 = tethering_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(SDHotspotManager *)self->_hotspotManager isTetheringSupported];
-      v13 = [(IDSContinuity *)self->_tetheringManager state];
+      isTetheringSupported = [(SDHotspotManager *)self->_hotspotManager isTetheringSupported];
+      state = [(IDSContinuity *)self->_tetheringManager state];
       if (self->_shouldBeAdvertisingRequest)
       {
         v14 = @"YES";
@@ -2054,9 +2054,9 @@ LABEL_24:
         v15 = @"NO";
       }
 
-      v16 = [(SDHotspotManager *)self->_hotspotManager maxConnectionsReached];
+      maxConnectionsReached = [(SDHotspotManager *)self->_hotspotManager maxConnectionsReached];
       sourceAdvertising = self->_sourceAdvertising;
-      if (v16)
+      if (maxConnectionsReached)
       {
         v18 = @"YES";
       }
@@ -2077,9 +2077,9 @@ LABEL_24:
         v19 = @"NO";
       }
 
-      *v23 = v12;
+      *v23 = isTetheringSupported;
       *&v23[4] = 1024;
-      *&v23[6] = v13;
+      *&v23[6] = state;
       v24 = 2112;
       v25 = v14;
       v26 = 2112;
@@ -2117,8 +2117,8 @@ LABEL_24:
 
     if (v4)
     {
-      v5 = [(SDHotspotBrowser *)self pairedPeers];
-      v6 = [v5 valueForKeyPath:@"@unionOfObjects.UUIDString"];
+      pairedPeers = [(SDHotspotBrowser *)self pairedPeers];
+      v6 = [pairedPeers valueForKeyPath:@"@unionOfObjects.UUIDString"];
       v7 = [v6 componentsJoinedByString:{@", "}];
 
       v8 = tethering_log();
@@ -2129,13 +2129,13 @@ LABEL_24:
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Restarted scanning for device requesting tethering [%@]", &v9, 0xCu);
       }
 
-      [(IDSContinuity *)self->_tetheringManager startScanningForType:1 withData:v4 peers:v5 withOptions:0];
+      [(IDSContinuity *)self->_tetheringManager startScanningForType:1 withData:v4 peers:pairedPeers withOptions:0];
     }
 
     else
     {
-      v5 = tethering_log();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      pairedPeers = tethering_log();
+      if (os_log_type_enabled(pairedPeers, OS_LOG_TYPE_ERROR))
       {
         sub_1000C634C();
       }
@@ -2159,8 +2159,8 @@ LABEL_24:
 {
   if (self->_shouldBeConsumerScanning && [(SDHotspotBrowser *)self accountHasTetheringSources]&& [(IDSContinuity *)self->_tetheringManager state]== 3 && [(SDHotspotBrowser *)self bluetoothAllowedForScreenState])
   {
-    v3 = [(SDHotspotBrowser *)self tetheringPeers];
-    v4 = [v3 valueForKeyPath:@"@unionOfObjects.UUIDString"];
+    tetheringPeers = [(SDHotspotBrowser *)self tetheringPeers];
+    v4 = [tetheringPeers valueForKeyPath:@"@unionOfObjects.UUIDString"];
     v5 = [v4 componentsJoinedByString:{@", "}];
 
     v6 = tethering_log();
@@ -2171,15 +2171,15 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Restarted scanning for available tethering devices [%@]", &v13, 0xCu);
     }
 
-    [(IDSContinuity *)self->_tetheringManager startScanningForType:2 withData:0 peers:v3 withOptions:0];
+    [(IDSContinuity *)self->_tetheringManager startScanningForType:2 withData:0 peers:tetheringPeers withOptions:0];
   }
 
   else
   {
-    v3 = tethering_log();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    tetheringPeers = tethering_log();
+    if (os_log_type_enabled(tetheringPeers, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(IDSContinuity *)self->_tetheringManager state];
+      state = [(IDSContinuity *)self->_tetheringManager state];
       if (self->_shouldBeConsumerScanning)
       {
         v8 = @"YES";
@@ -2210,9 +2210,9 @@ LABEL_24:
         v10 = @"NO";
       }
 
-      v11 = [(SDStatusMonitor *)self->_monitor autoHotspotState];
+      autoHotspotState = [(SDStatusMonitor *)self->_monitor autoHotspotState];
       v13 = 67110146;
-      if (v11)
+      if (autoHotspotState)
       {
         v12 = @"YES";
       }
@@ -2222,7 +2222,7 @@ LABEL_24:
         v12 = @"NO";
       }
 
-      *v14 = v7;
+      *v14 = state;
       *&v14[4] = 2112;
       *&v14[6] = v8;
       v15 = 2112;
@@ -2231,7 +2231,7 @@ LABEL_24:
       v18 = v10;
       v19 = 2112;
       v20 = v12;
-      _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Skipping scanning: state=%d, request=%@, peers=%@, screen=%@, auto hotspot=%@", &v13, 0x30u);
+      _os_log_impl(&_mh_execute_header, tetheringPeers, OS_LOG_TYPE_DEFAULT, "Skipping scanning: state=%d, request=%@, peers=%@, screen=%@, auto hotspot=%@", &v13, 0x30u);
     }
   }
 }
@@ -2248,14 +2248,14 @@ LABEL_24:
   [(IDSContinuity *)self->_tetheringManager stopScanningForType:2];
 }
 
-- (void)handleIncomingResponse:(id)a3 identifier:(id)a4
+- (void)handleIncomingResponse:(id)response identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] >= 6)
+  responseCopy = response;
+  identifierCopy = identifier;
+  if ([responseCopy length] >= 6)
   {
-    v8 = [v6 bytes];
-    v9 = *v8 | (*(v8 + 2) << 32);
+    bytes = [responseCopy bytes];
+    v9 = *bytes | (*(bytes + 2) << 32);
     v10 = tethering_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -2263,23 +2263,23 @@ LABEL_24:
       *buf = 138412546;
       v37 = *&v11;
       v38 = 2112;
-      v39 = v7;
+      v39 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Source advertisement %@ device ID: %@)", buf, 0x16u);
     }
 
-    v12 = [(NSMutableDictionary *)self->_discoveredDevices objectForKeyedSubscript:v7];
+    v12 = [(NSMutableDictionary *)self->_discoveredDevices objectForKeyedSubscript:identifierCopy];
     if (!v12)
     {
-      v13 = [(SDHotspotBrowser *)self browseStartTime];
+      browseStartTime = [(SDHotspotBrowser *)self browseStartTime];
 
-      if (v13)
+      if (browseStartTime)
       {
         v14 = +[NSDate date];
-        v15 = [(SDHotspotBrowser *)self browseStartTime];
-        [v14 timeIntervalSinceDate:v15];
+        browseStartTime2 = [(SDHotspotBrowser *)self browseStartTime];
+        [v14 timeIntervalSinceDate:browseStartTime2];
         v17 = v16;
 
-        v18 = [(SDHotspotBrowser *)self modelCodeForIdentifier:v7];
+        v18 = [(SDHotspotBrowser *)self modelCodeForIdentifier:identifierCopy];
         sub_1000870CC(self->_modelCode, v18, &off_10090B940, 1, v17);
         v19 = tethering_log();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -2301,45 +2301,45 @@ LABEL_24:
       }
     }
 
-    v20 = [(SDHotspotBrowser *)self deviceForIdentifier:v7];
+    v20 = [(SDHotspotBrowser *)self deviceForIdentifier:identifierCopy];
     if (v20)
     {
-      v21 = [v12 advertisementData];
-      v22 = v21;
-      if (!v12 || !-[NSObject isEqualToData:](v21, "isEqualToData:", v6) || ([v12 deviceName], v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "name"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v23, "isEqualToString:", v24), v24, v23, (v25 & 1) == 0))
+      advertisementData = [v12 advertisementData];
+      v22 = advertisementData;
+      if (!v12 || !-[NSObject isEqualToData:](advertisementData, "isEqualToData:", responseCopy) || ([v12 deviceName], v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "name"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v23, "isEqualToString:", v24), v24, v23, (v25 & 1) == 0))
       {
         v26 = [SFRemoteHotspotDevice alloc];
-        v27 = [v20 name];
-        v28 = [v26 initWithName:v27 identifier:v7 advertisement:v9 & 0xFFFFFFFFFFFFLL];
+        name = [v20 name];
+        0xFFFFFFFFFFFFLL = [v26 initWithName:name identifier:identifierCopy advertisement:v9 & 0xFFFFFFFFFFFFLL];
 
-        [v28 setGroup:1];
-        v29 = [v20 modelIdentifier];
-        [v28 setModel:v29];
+        [0xFFFFFFFFFFFFLL setGroup:1];
+        modelIdentifier = [v20 modelIdentifier];
+        [0xFFFFFFFFFFFFLL setModel:modelIdentifier];
 
         [v20 operatingSystemVersion];
-        [v28 setOsSupportsAutoHotspot:v35 > 12];
-        if (v28)
+        [0xFFFFFFFFFFFFLL setOsSupportsAutoHotspot:v35 > 12];
+        if (0xFFFFFFFFFFFFLL)
         {
-          [(NSMutableDictionary *)self->_discoveredDevices setObject:v28 forKeyedSubscript:v7];
+          [(NSMutableDictionary *)self->_discoveredDevices setObject:0xFFFFFFFFFFFFLL forKeyedSubscript:identifierCopy];
         }
 
-        v30 = [(SDHotspotBrowser *)self clientProxy];
+        clientProxy = [(SDHotspotBrowser *)self clientProxy];
 
         v31 = tethering_log();
-        v32 = v31;
-        if (v30)
+        clientProxy2 = v31;
+        if (clientProxy)
         {
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
-            v33 = [(NSMutableDictionary *)self->_discoveredDevices allValues];
+            allValues = [(NSMutableDictionary *)self->_discoveredDevices allValues];
             *buf = 138412290;
-            v37 = *&v33;
-            _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Updating client with devices list %@", buf, 0xCu);
+            v37 = *&allValues;
+            _os_log_impl(&_mh_execute_header, clientProxy2, OS_LOG_TYPE_DEFAULT, "Updating client with devices list %@", buf, 0xCu);
           }
 
-          v32 = [(SDHotspotBrowser *)self clientProxy];
-          v34 = [(NSMutableDictionary *)self->_discoveredDevices allValues];
-          [v32 updatedFoundDeviceList:v34];
+          clientProxy2 = [(SDHotspotBrowser *)self clientProxy];
+          allValues2 = [(NSMutableDictionary *)self->_discoveredDevices allValues];
+          [clientProxy2 updatedFoundDeviceList:allValues2];
         }
 
         else if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -2360,38 +2360,38 @@ LABEL_24:
       }
     }
 
-    v28 = v12;
+    0xFFFFFFFFFFFFLL = v12;
 LABEL_28:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
   v17 = tethering_log();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v54 = v12;
+    v54 = serviceCopy;
     v55 = 2112;
-    v56 = v13;
+    v56 = accountCopy;
     v57 = 2112;
-    v58 = v15;
+    v58 = dCopy;
     v59 = 2112;
-    v60 = v14;
+    v60 = messageCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "service = %@, account = %@, fromID = %@, message = %@", buf, 0x2Au);
   }
 
-  v18 = [v14 objectForKeyedSubscript:@"HotspotBrowserMessageType"];
+  v18 = [messageCopy objectForKeyedSubscript:@"HotspotBrowserMessageType"];
   v19 = v18;
   if (!v18)
   {
-    v23 = tethering_log();
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    uUIDString = tethering_log();
+    if (os_log_type_enabled(uUIDString, OS_LOG_TYPE_ERROR))
     {
       sub_1000C64F0();
     }
@@ -2399,23 +2399,23 @@ LABEL_28:
     goto LABEL_38;
   }
 
-  v20 = [v18 integerValue];
-  if (v20 == 1)
+  integerValue = [v18 integerValue];
+  if (integerValue == 1)
   {
     v28 = tethering_log();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [v16 incomingResponseIdentifier];
+      incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
       *buf = 138412290;
-      v54 = v29;
+      v54 = incomingResponseIdentifier;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Received response for ID = %@", buf, 0xCu);
     }
 
-    v30 = [(IDSService *)self->_tetheringService deviceForFromID:v15];
-    v31 = [v30 nsuuid];
-    v23 = [v31 UUIDString];
+    v30 = [(IDSService *)self->_tetheringService deviceForFromID:dCopy];
+    nsuuid = [v30 nsuuid];
+    uUIDString = [nsuuid UUIDString];
 
-    if (!v23)
+    if (!uUIDString)
     {
       v25 = tethering_log();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -2426,7 +2426,7 @@ LABEL_28:
       goto LABEL_37;
     }
 
-    v32 = [[NSUUID alloc] initWithUUIDString:v23];
+    v32 = [[NSUUID alloc] initWithUUIDString:uUIDString];
     v25 = v32;
     if (!v32)
     {
@@ -2440,19 +2440,19 @@ LABEL_28:
     }
 
     v45 = v32;
-    v33 = [v14 objectForKeyedSubscript:@"HotspotBroswerCredentialData"];
+    v33 = [messageCopy objectForKeyedSubscript:@"HotspotBroswerCredentialData"];
     v44 = v33;
     if (v33)
     {
       v34 = v33;
       outstandingRequests = self->_outstandingRequests;
-      v43 = [v16 incomingResponseIdentifier];
-      v36 = [(NSMutableDictionary *)outstandingRequests objectForKeyedSubscript:v43];
+      incomingResponseIdentifier2 = [contextCopy incomingResponseIdentifier];
+      v36 = [(NSMutableDictionary *)outstandingRequests objectForKeyedSubscript:incomingResponseIdentifier2];
       [(SDHotspotBrowser *)self tetheringDidRetrieveCredentials:v45 credentials:v34 requestRecord:v36 error:0];
 
-      v37 = [v16 incomingResponseIdentifier];
+      incomingResponseIdentifier3 = [contextCopy incomingResponseIdentifier];
 
-      if (!v37)
+      if (!incomingResponseIdentifier3)
       {
         v40 = v44;
         v25 = v45;
@@ -2460,8 +2460,8 @@ LABEL_28:
       }
 
       v38 = self->_outstandingRequests;
-      v39 = [v16 incomingResponseIdentifier];
-      [(NSMutableDictionary *)v38 removeObjectForKey:v39];
+      incomingResponseIdentifier4 = [contextCopy incomingResponseIdentifier];
+      [(NSMutableDictionary *)v38 removeObjectForKey:incomingResponseIdentifier4];
       v25 = v45;
     }
 
@@ -2470,7 +2470,7 @@ LABEL_28:
       v51 = NSLocalizedDescriptionKey;
       v52 = @"Could not retrieve credentials";
       v41 = [NSDictionary dictionaryWithObjects:&v52 forKeys:&v51 count:1];
-      v39 = [NSError errorWithDomain:NSPOSIXErrorDomain code:94 userInfo:v41];
+      incomingResponseIdentifier4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:94 userInfo:v41];
 
       v42 = tethering_log();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -2479,7 +2479,7 @@ LABEL_28:
       }
 
       v25 = v45;
-      [(SDHotspotBrowser *)self tetheringDidRetrieveCredentials:v45 credentials:0 requestRecord:0 error:v39];
+      [(SDHotspotBrowser *)self tetheringDidRetrieveCredentials:v45 credentials:0 requestRecord:0 error:incomingResponseIdentifier4];
     }
 
     v40 = v44;
@@ -2491,30 +2491,30 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if (!v20)
+  if (!integerValue)
   {
-    v21 = [(IDSService *)self->_tetheringService deviceForFromID:v15];
-    v22 = [v21 nsuuid];
-    v23 = [v22 UUIDString];
+    v21 = [(IDSService *)self->_tetheringService deviceForFromID:dCopy];
+    nsuuid2 = [v21 nsuuid];
+    uUIDString = [nsuuid2 UUIDString];
 
     v24 = tethering_log();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v54 = v23;
+      v54 = uUIDString;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Received request for credentials from peer with bluetooth ID = %@", buf, 0xCu);
     }
 
-    if (v15 && v23)
+    if (dCopy && uUIDString)
     {
-      v25 = [(SDHotspotBrowser *)self modelCodeForIdentifier:v23];
+      v25 = [(SDHotspotBrowser *)self modelCodeForIdentifier:uUIDString];
       if ([v25 isEqualToString:@"Unknown"])
       {
         v26 = tethering_log();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v54 = v23;
+          v54 = uUIDString;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Can not retrieve modelID for peer with bluetooth ID = %@", buf, 0xCu);
         }
 
@@ -2530,10 +2530,10 @@ LABEL_38:
       v46[1] = 3221225472;
       v46[2] = sub_1000C33C0;
       v46[3] = &unk_1008CF7E8;
-      v47 = v23;
-      v48 = self;
-      v49 = v15;
-      v50 = v16;
+      v47 = uUIDString;
+      selfCopy = self;
+      v49 = dCopy;
+      v50 = contextCopy;
       [(SDHotspotBrowser *)self credentialsWithCompletionHandler:v46 canConnectOn5GHz:CanConnectOn5GHz];
     }
 
@@ -2552,40 +2552,40 @@ LABEL_38:
 LABEL_39:
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
-  v10 = a5;
-  v11 = a7;
+  successCopy = success;
+  identifierCopy = identifier;
+  errorCopy = error;
   v12 = tethering_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = @"NO";
     v23 = 138412802;
-    v24 = v10;
+    v24 = identifierCopy;
     v25 = 2112;
-    if (v8)
+    if (successCopy)
     {
       v13 = @"YES";
     }
 
     v26 = v13;
     v27 = 2112;
-    v28 = v11;
+    v28 = errorCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Message with identifier = %@ did send with success = %@, error = %@", &v23, 0x20u);
   }
 
-  if (!v8)
+  if (!successCopy)
   {
-    v14 = [(NSMutableDictionary *)self->_outstandingRequests objectForKeyedSubscript:v10];
-    v15 = [v14 remoteHotspotDevice];
-    v16 = [v15 deviceIdentifier];
-    v17 = [(SDHotspotBrowser *)self modelCodeForIdentifier:v16];
+    v14 = [(NSMutableDictionary *)self->_outstandingRequests objectForKeyedSubscript:identifierCopy];
+    remoteHotspotDevice = [v14 remoteHotspotDevice];
+    deviceIdentifier = [remoteHotspotDevice deviceIdentifier];
+    v17 = [(SDHotspotBrowser *)self modelCodeForIdentifier:deviceIdentifier];
 
-    v18 = [v14 remoteHotspotDevice];
-    v19 = [v18 hasDuplicates];
+    remoteHotspotDevice2 = [v14 remoteHotspotDevice];
+    hasDuplicates = [remoteHotspotDevice2 hasDuplicates];
 
-    if (v19)
+    if (hasDuplicates)
     {
       v20 = 7;
     }
@@ -2595,36 +2595,36 @@ LABEL_39:
       v20 = 4;
     }
 
-    sub_100087278(self->_modelCode, v17, v11, v20, 0);
-    [(NSMutableDictionary *)self->_outstandingRequests removeObjectForKey:v10];
+    sub_100087278(self->_modelCode, v17, errorCopy, v20, 0);
+    [(NSMutableDictionary *)self->_outstandingRequests removeObjectForKey:identifierCopy];
     v21 = tethering_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v22 = @"NO";
       v23 = 138412802;
-      v24 = v10;
+      v24 = identifierCopy;
       v25 = 2112;
-      if (v19)
+      if (hasDuplicates)
       {
         v22 = @"YES";
       }
 
       v26 = v22;
       v27 = 2112;
-      v28 = v11;
+      v28 = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Request failed (id = %@, duplicates = %@, error = %@)", &v23, 0x20u);
     }
   }
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
   v5 = tethering_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(IDSService *)self->_tetheringService devices];
+    devices = [(IDSService *)self->_tetheringService devices];
     v7 = 138412290;
-    v8 = v6;
+    v8 = devices;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "devicesChanged %@", &v7, 0xCu);
   }
 
@@ -2641,9 +2641,9 @@ LABEL_39:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Restarting scan reset timer", buf, 2u);
   }
 
-  v4 = [(SDHotspotBrowser *)self scanResetTimer];
+  scanResetTimer = [(SDHotspotBrowser *)self scanResetTimer];
 
-  if (!v4)
+  if (!scanResetTimer)
   {
     objc_initWeak(buf, self);
     workQueue = self->_workQueue;
@@ -2655,16 +2655,16 @@ LABEL_39:
     v6 = sub_1001F0548(0, workQueue, v10);
     [(SDHotspotBrowser *)self setScanResetTimer:v6];
 
-    v7 = [(SDHotspotBrowser *)self scanResetTimer];
-    dispatch_resume(v7);
+    scanResetTimer2 = [(SDHotspotBrowser *)self scanResetTimer];
+    dispatch_resume(scanResetTimer2);
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(buf);
   }
 
-  v8 = [(SDHotspotBrowser *)self scanResetTimer];
+  scanResetTimer3 = [(SDHotspotBrowser *)self scanResetTimer];
   v9 = sub_1001F0530(15.0);
-  sub_1001F05F0(v8, v9);
+  sub_1001F05F0(scanResetTimer3, v9);
 }
 
 - (void)invalidateScanResetTimer
@@ -2676,12 +2676,12 @@ LABEL_39:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Invalidating scan reset timer", v6, 2u);
   }
 
-  v4 = [(SDHotspotBrowser *)self scanResetTimer];
+  scanResetTimer = [(SDHotspotBrowser *)self scanResetTimer];
 
-  if (v4)
+  if (scanResetTimer)
   {
-    v5 = [(SDHotspotBrowser *)self scanResetTimer];
-    dispatch_source_cancel(v5);
+    scanResetTimer2 = [(SDHotspotBrowser *)self scanResetTimer];
+    dispatch_source_cancel(scanResetTimer2);
 
     [(SDHotspotBrowser *)self setScanResetTimer:0];
   }
@@ -2710,9 +2710,9 @@ LABEL_39:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Restarting scan assertion timer", buf, 2u);
   }
 
-  v4 = [(SDHotspotBrowser *)self scanAssertionTimer];
+  scanAssertionTimer = [(SDHotspotBrowser *)self scanAssertionTimer];
 
-  if (!v4)
+  if (!scanAssertionTimer)
   {
     objc_initWeak(buf, self);
     workQueue = self->_workQueue;
@@ -2724,17 +2724,17 @@ LABEL_39:
     v6 = sub_1001F0548(0, workQueue, v10);
     [(SDHotspotBrowser *)self setScanAssertionTimer:v6];
 
-    v7 = [(SDHotspotBrowser *)self scanAssertionTimer];
-    dispatch_resume(v7);
+    scanAssertionTimer2 = [(SDHotspotBrowser *)self scanAssertionTimer];
+    dispatch_resume(scanAssertionTimer2);
 
     [(SDHotspotBrowser *)self preventIdleSleepAssertion];
     objc_destroyWeak(&v11);
     objc_destroyWeak(buf);
   }
 
-  v8 = [(SDHotspotBrowser *)self scanAssertionTimer];
+  scanAssertionTimer3 = [(SDHotspotBrowser *)self scanAssertionTimer];
   v9 = sub_1001F0530(30.0);
-  sub_1001F05F0(v8, v9);
+  sub_1001F05F0(scanAssertionTimer3, v9);
 }
 
 - (void)invalidateScanAssertionTimer
@@ -2746,12 +2746,12 @@ LABEL_39:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Invalidating scan assertion timer", v6, 2u);
   }
 
-  v4 = [(SDHotspotBrowser *)self scanAssertionTimer];
+  scanAssertionTimer = [(SDHotspotBrowser *)self scanAssertionTimer];
 
-  if (v4)
+  if (scanAssertionTimer)
   {
-    v5 = [(SDHotspotBrowser *)self scanAssertionTimer];
-    dispatch_source_cancel(v5);
+    scanAssertionTimer2 = [(SDHotspotBrowser *)self scanAssertionTimer];
+    dispatch_source_cancel(scanAssertionTimer2);
 
     [(SDHotspotBrowser *)self setScanAssertionTimer:0];
   }
@@ -2828,45 +2828,45 @@ LABEL_39:
   self->_transaction = 0;
 }
 
-- (void)continuity:(id)a3 didDiscoverType:(int64_t)a4 withData:(id)a5 fromPeer:(id)a6
+- (void)continuity:(id)continuity didDiscoverType:(int64_t)type withData:(id)data fromPeer:(id)peer
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  continuityCopy = continuity;
+  dataCopy = data;
+  peerCopy = peer;
   v13 = _os_activity_create(&_mh_execute_header, "Sharing/SDHotspotBrowser/didDiscoverType", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v21.opaque[0] = 0;
   v21.opaque[1] = 0;
   os_activity_scope_enter(v13, &v21);
-  if (a4 == 2)
+  if (type == 2)
   {
-    v20 = [v12 UUIDString];
-    [(SDHotspotBrowser *)self handleIncomingResponse:v11 identifier:v20];
+    uUIDString = [peerCopy UUIDString];
+    [(SDHotspotBrowser *)self handleIncomingResponse:dataCopy identifier:uUIDString];
   }
 
-  else if (a4 == 1)
+  else if (type == 1)
   {
     v14 = tethering_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v12 UUIDString];
+      uUIDString2 = [peerCopy UUIDString];
       *buf = 138412546;
-      v23 = v15;
+      v23 = uUIDString2;
       v24 = 2112;
-      v25 = v11;
+      v25 = dataCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Received target advertisement (peer: %@, data: %@)", buf, 0x16u);
     }
 
     [(SDHotspotBrowser *)self restartScanResetTimer];
     [(SDHotspotBrowser *)self restartScanAssertionTimer];
     v16 = +[SDStatusMonitor sharedMonitor];
-    v17 = [v16 controlCenterVisible];
+    controlCenterVisible = [v16 controlCenterVisible];
 
-    if ((v17 & 1) == 0)
+    if ((controlCenterVisible & 1) == 0)
     {
       self->_shouldBeAdvertisingResponse = 1;
-      v18 = [v12 UUIDString];
+      uUIDString3 = [peerCopy UUIDString];
       targetIdentifier = self->_targetIdentifier;
-      self->_targetIdentifier = v18;
+      self->_targetIdentifier = uUIDString3;
 
       [(SDHotspotBrowser *)self restartAdvertisingTetheringResponse];
     }
@@ -2875,18 +2875,18 @@ LABEL_39:
   os_activity_scope_leave(&v21);
 }
 
-- (void)tetheringDidRetrieveCredentials:(id)a3 credentials:(id)a4 requestRecord:(id)a5 error:(id)a6
+- (void)tetheringDidRetrieveCredentials:(id)credentials credentials:(id)a4 requestRecord:(id)record error:(id)error
 {
-  v10 = a3;
+  credentialsCopy = credentials;
   v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  recordCopy = record;
+  errorCopy = error;
   v14 = tethering_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = @"YES";
     *buf = 138412802;
-    v62 = v10;
+    v62 = credentialsCopy;
     v63 = 2112;
     if (!v11)
     {
@@ -2895,22 +2895,22 @@ LABEL_39:
 
     v64 = v15;
     v65 = 2112;
-    v66 = v13;
+    v66 = errorCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Tethering did retrieve credentials for identifier = %@, credentials = %@, with error = %@", buf, 0x20u);
   }
 
-  v16 = [(__CFString *)v10 UUIDString];
-  [(SDHotspotBrowser *)self invalidateTimerWithIdentifier:v16];
+  uUIDString = [(__CFString *)credentialsCopy UUIDString];
+  [(SDHotspotBrowser *)self invalidateTimerWithIdentifier:uUIDString];
 
   p_handlers = &self->_handlers;
   handlers = self->_handlers;
-  v19 = [(__CFString *)v10 UUIDString];
-  v20 = [(NSMutableDictionary *)handlers objectForKeyedSubscript:v19];
+  uUIDString2 = [(__CFString *)credentialsCopy UUIDString];
+  v20 = [(NSMutableDictionary *)handlers objectForKeyedSubscript:uUIDString2];
   v21 = [v20 copy];
 
   if (v21)
   {
-    if (v13)
+    if (errorCopy)
     {
       v22 = tethering_log();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -2918,7 +2918,7 @@ LABEL_39:
         sub_1000C6668();
       }
 
-      v21[2](v21, 0, v13);
+      v21[2](v21, 0, errorCopy);
     }
 
     else
@@ -2932,8 +2932,8 @@ LABEL_39:
 
       v56 = 0;
       v26 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v25 fromData:v11 error:&v56];
-      v13 = v56;
-      v55 = v12;
+      errorCopy = v56;
+      v55 = recordCopy;
       if (v26)
       {
         v53 = v25;
@@ -2968,23 +2968,23 @@ LABEL_39:
           v31 = tethering_log();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
-            v32 = [v54 integerValue];
+            integerValue = [v54 integerValue];
             *buf = 138412546;
             v62 = v27;
             v63 = 1024;
-            LODWORD(v64) = v32;
+            LODWORD(v64) = integerValue;
             _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Received credentials for network = %@, channel = %d", buf, 0x12u);
           }
 
           v33 = [[SFRemoteHotspotInfo alloc] initWithName:v27 password:v28 channel:v54];
           (v21)[2](v21, v33, 0);
-          v34 = [v55 remoteHotspotDevice];
-          v35 = [v34 deviceIdentifier];
-          v50 = [(SDHotspotBrowser *)self modelCodeForIdentifier:v35];
+          remoteHotspotDevice = [v55 remoteHotspotDevice];
+          deviceIdentifier = [remoteHotspotDevice deviceIdentifier];
+          v50 = [(SDHotspotBrowser *)self modelCodeForIdentifier:deviceIdentifier];
 
           v36 = +[NSDate date];
-          v37 = [v55 startTime];
-          [v36 timeIntervalSinceDate:v37];
+          startTime = [v55 startTime];
+          [v36 timeIntervalSinceDate:startTime];
           v39 = v38;
 
           sub_1000870CC(self->_modelCode, v50, &off_10090B958, 0, v39);
@@ -3016,8 +3016,8 @@ LABEL_39:
           }
 
           modelCode = self->_modelCode;
-          v44 = [(__CFString *)v10 UUIDString];
-          v45 = [(SDHotspotBrowser *)self modelCodeForIdentifier:v44];
+          uUIDString3 = [(__CFString *)credentialsCopy UUIDString];
+          v45 = [(SDHotspotBrowser *)self modelCodeForIdentifier:uUIDString3];
           sub_100087278(modelCode, v45, v33, 6, 0);
 
           v21[2](v21, 0, v33);
@@ -3045,35 +3045,35 @@ LABEL_39:
         v21[2](v21, 0, v47);
       }
 
-      v12 = v55;
+      recordCopy = v55;
     }
 
     v49 = *p_handlers;
-    v23 = [(__CFString *)v10 UUIDString];
-    [(NSMutableDictionary *)v49 removeObjectForKey:v23];
+    uUIDString4 = [(__CFString *)credentialsCopy UUIDString];
+    [(NSMutableDictionary *)v49 removeObjectForKey:uUIDString4];
   }
 
   else
   {
-    v23 = tethering_log();
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    uUIDString4 = tethering_log();
+    if (os_log_type_enabled(uUIDString4, OS_LOG_TYPE_ERROR))
     {
-      sub_1000C67B8(v10, &self->_handlers);
+      sub_1000C67B8(credentialsCopy, &self->_handlers);
     }
   }
 }
 
-- (void)continuityDidUpdateState:(id)a3
+- (void)continuityDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = _os_activity_create(&_mh_execute_header, "Sharing/SDHotspotBrowser/continuityDidUpdateState", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v5, &state);
-  v6 = [(IDSContinuity *)self->_tetheringManager state];
-  if (v6 <= 1)
+  state = [(IDSContinuity *)self->_tetheringManager state];
+  if (state <= 1)
   {
-    if (!v6)
+    if (!state)
     {
       v7 = tethering_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -3088,7 +3088,7 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    if (v6 == 1)
+    if (state == 1)
     {
       v7 = tethering_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -3110,7 +3110,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v6 == 2)
+  if (state == 2)
   {
     v7 = tethering_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -3123,7 +3123,7 @@ LABEL_17:
     goto LABEL_16;
   }
 
-  if (v6 != 3)
+  if (state != 3)
   {
     goto LABEL_17;
   }
@@ -3143,14 +3143,14 @@ LABEL_18:
   os_activity_scope_leave(&state);
 }
 
-- (void)continuity:(id)a3 didStartAdvertisingOfType:(int64_t)a4
+- (void)continuity:(id)continuity didStartAdvertisingOfType:(int64_t)type
 {
-  v6 = a3;
+  continuityCopy = continuity;
   v7 = _os_activity_create(&_mh_execute_header, "Sharing/SDHotspotBrowser/continuityDidStartAdvertisingOfType", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v7, &state);
-  if (a4 == 1)
+  if (type == 1)
   {
     if (self->_targetAdvertising)
     {
@@ -3181,7 +3181,7 @@ LABEL_12:
     sub_1000870CC(self->_modelCode, @"Unknown", &off_10090B910, 1, -1.0);
   }
 
-  else if (a4 == 2)
+  else if (type == 2)
   {
     if (self->_sourceAdvertising)
     {
@@ -3215,17 +3215,17 @@ LABEL_16:
   os_activity_scope_leave(&state);
 }
 
-- (void)continuity:(id)a3 didStopAdvertisingOfType:(int64_t)a4 withError:(id)a5
+- (void)continuity:(id)continuity didStopAdvertisingOfType:(int64_t)type withError:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  continuityCopy = continuity;
+  errorCopy = error;
   v10 = _os_activity_create(&_mh_execute_header, "Sharing/SDHotspotBrowser/continuityDidStopAdvertisingOfType", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v10, &state);
-  if (a4 != 1)
+  if (type != 1)
   {
-    if (a4 != 2)
+    if (type != 2)
     {
       goto LABEL_24;
     }
@@ -3238,12 +3238,12 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Source stopped advertising response", v20, 2u);
     }
 
-    v12 = [v9 domain];
-    if ([v12 isEqualToString:WPErrorDomain])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:WPErrorDomain])
     {
-      v13 = [v9 code];
+      code = [errorCopy code];
 
-      if (v13 == 28)
+      if (code == 28)
       {
         v14 = tethering_log();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -3282,15 +3282,15 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Target stopped advertising request", v20, 2u);
   }
 
-  v12 = [v9 domain];
-  if (![v12 isEqualToString:WPErrorDomain])
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:WPErrorDomain])
   {
     goto LABEL_23;
   }
 
-  v17 = [v9 code];
+  code2 = [errorCopy code];
 
-  if (v17 == 28)
+  if (code2 == 28)
   {
     v18 = tethering_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -3316,15 +3316,15 @@ LABEL_24:
   os_activity_scope_leave(&state);
 }
 
-- (void)continuity:(id)a3 didFailToStartAdvertisingOfType:(int64_t)a4 withError:(id)a5
+- (void)continuity:(id)continuity didFailToStartAdvertisingOfType:(int64_t)type withError:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  continuityCopy = continuity;
+  errorCopy = error;
   v10 = _os_activity_create(&_mh_execute_header, "Sharing/SDHotspotBrowser/continuityDidFailToStartAdvertisingOfType", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v14.opaque[0] = 0;
   v14.opaque[1] = 0;
   os_activity_scope_enter(v10, &v14);
-  if (a4 == 1)
+  if (type == 1)
   {
     self->_targetAdvertising = 0;
     v13 = tethering_log();
@@ -3333,10 +3333,10 @@ LABEL_24:
       sub_1000C6860();
     }
 
-    sub_100087278(self->_modelCode, @"Unknown", v9, 1, 1);
+    sub_100087278(self->_modelCode, @"Unknown", errorCopy, 1, 1);
   }
 
-  else if (a4 == 2)
+  else if (type == 2)
   {
     self->_sourceAdvertising = 0;
     targetIdentifier = self->_targetIdentifier;
@@ -3353,14 +3353,14 @@ LABEL_24:
   os_activity_scope_leave(&v14);
 }
 
-- (void)continuity:(id)a3 didStartScanningForType:(int64_t)a4
+- (void)continuity:(id)continuity didStartScanningForType:(int64_t)type
 {
-  v6 = a3;
+  continuityCopy = continuity;
   v7 = _os_activity_create(&_mh_execute_header, "Sharing/SDHotspotBrowser/continuityDidStartScanningForType", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v7, &state);
-  if (a4 == 1)
+  if (type == 1)
   {
     if (self->_sourceScanning)
     {
@@ -3390,7 +3390,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     if (self->_targetScanning)
     {
@@ -3422,14 +3422,14 @@ LABEL_16:
   os_activity_scope_leave(&state);
 }
 
-- (void)continuity:(id)a3 didStopScanningForType:(int64_t)a4
+- (void)continuity:(id)continuity didStopScanningForType:(int64_t)type
 {
-  v6 = a3;
+  continuityCopy = continuity;
   v7 = _os_activity_create(&_mh_execute_header, "Sharing/SDHotspotBrowser/continuityDidStopScanningForType", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v7, &state);
-  if (a4 == 1)
+  if (type == 1)
   {
     self->_sourceScanning = 0;
     v8 = tethering_log();
@@ -3445,7 +3445,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     self->_targetScanning = 0;
     v8 = tethering_log();
@@ -3465,15 +3465,15 @@ LABEL_9:
   os_activity_scope_leave(&state);
 }
 
-- (void)continuity:(id)a3 didFailToStartScanningForType:(int64_t)a4 withError:(id)a5
+- (void)continuity:(id)continuity didFailToStartScanningForType:(int64_t)type withError:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  continuityCopy = continuity;
+  errorCopy = error;
   v10 = _os_activity_create(&_mh_execute_header, "Sharing/SDHotspotBrowser/continuityDidFailToStartScanningForType", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v13.opaque[0] = 0;
   v13.opaque[1] = 0;
   os_activity_scope_enter(v10, &v13);
-  if (a4 == 1)
+  if (type == 1)
   {
     self->_sourceScanning = 0;
     v12 = tethering_log();
@@ -3483,7 +3483,7 @@ LABEL_9:
     }
   }
 
-  else if (a4 == 2)
+  else if (type == 2)
   {
     self->_targetScanning = 0;
     v11 = tethering_log();
@@ -3492,7 +3492,7 @@ LABEL_9:
       sub_1000C69B0();
     }
 
-    sub_100087278(self->_modelCode, @"Unknown", v9, 2, 1);
+    sub_100087278(self->_modelCode, @"Unknown", errorCopy, 2, 1);
   }
 
   os_activity_scope_leave(&v13);

@@ -1,16 +1,16 @@
 @interface PHASEPlaneWaveMetadata
 - (BOOL)invertPolarity;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)subbandGains;
 - (PHASEAngularPositionMetadata)direction;
 - (PHASEPlaneWaveMetadata)init;
-- (PHASEPlaneWaveMetadata)initWithSubbandCount:(unint64_t)a3;
+- (PHASEPlaneWaveMetadata)initWithSubbandCount:(unint64_t)count;
 - (float)delayTime;
 - (unint64_t)hash;
-- (void)setDelayTime:(float)a3;
-- (void)setDirection:(id)a3;
-- (void)setInvertPolarity:(BOOL)a3;
-- (void)setSubbandGains:(id)a3;
+- (void)setDelayTime:(float)time;
+- (void)setDirection:(id)direction;
+- (void)setInvertPolarity:(BOOL)polarity;
+- (void)setSubbandGains:(id)gains;
 @end
 
 @implementation PHASEPlaneWaveMetadata
@@ -22,10 +22,10 @@
   return 0;
 }
 
-- (PHASEPlaneWaveMetadata)initWithSubbandCount:(unint64_t)a3
+- (PHASEPlaneWaveMetadata)initWithSubbandCount:(unint64_t)count
 {
-  v3 = a3;
-  if (!a3)
+  countCopy = count;
+  if (!count)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"subbandCount is 0."];
   }
@@ -51,8 +51,8 @@
     internalSubbandGainsLock = v5->_internalSubbandGainsLock;
     v5->_internalSubbandGainsLock = v12;
 
-    v5->_subbandCount = v3;
-    for (i = [MEMORY[0x277CBEB18] arrayWithCapacity:v3];
+    v5->_subbandCount = countCopy;
+    for (i = [MEMORY[0x277CBEB18] arrayWithCapacity:countCopy];
     {
       [i addObject:&unk_284D4DA08];
     }
@@ -69,22 +69,22 @@
   return v5;
 }
 
-- (void)setDelayTime:(float)a3
+- (void)setDelayTime:(float)time
 {
   +[PHASEPlaneWaveMetadata minimumDelayTime];
-  if (v5 > a3 || (+[PHASEPlaneWaveMetadata maximumDelayTime], v6 < a3))
+  if (v5 > time || (+[PHASEPlaneWaveMetadata maximumDelayTime], v6 < time))
   {
     v7 = MEMORY[0x277CBEAD8];
     v8 = *MEMORY[0x277CBE660];
     +[PHASEPlaneWaveMetadata minimumDelayTime];
     v10 = v9;
     +[PHASEPlaneWaveMetadata maximumDelayTime];
-    [v7 raise:v8 format:{@"delayTime: %f is out of range [%f, %f].", a3, *&v10, v11}];
+    [v7 raise:v8 format:{@"delayTime: %f is out of range [%f, %f].", time, *&v10, v11}];
   }
 
   obj = self->_internalDelayTimeLock;
   objc_sync_enter(obj);
-  self->_internalDelayTime = a3;
+  self->_internalDelayTime = time;
   objc_sync_exit(obj);
 }
 
@@ -98,10 +98,10 @@
   return internalDelayTime;
 }
 
-- (void)setDirection:(id)a3
+- (void)setDirection:(id)direction
 {
-  v4 = a3;
-  if (!v4)
+  directionCopy = direction;
+  if (!directionCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"direction is nil."];
   }
@@ -109,8 +109,8 @@
   v5 = self->_internalDirectionLock;
   objc_sync_enter(v5);
   internalDirection = self->_internalDirection;
-  self->_internalDirection = v4;
-  v7 = v4;
+  self->_internalDirection = directionCopy;
+  v7 = directionCopy;
 
   objc_sync_exit(v5);
 }
@@ -125,40 +125,40 @@
   return v4;
 }
 
-- (void)setInvertPolarity:(BOOL)a3
+- (void)setInvertPolarity:(BOOL)polarity
 {
   obj = self->_internalInvertPolarityLock;
   objc_sync_enter(obj);
-  self->_internalInvertPolarity = a3;
+  self->_internalInvertPolarity = polarity;
   objc_sync_exit(obj);
 }
 
 - (BOOL)invertPolarity
 {
-  v2 = self;
+  selfCopy = self;
   v3 = self->_internalInvertPolarityLock;
   objc_sync_enter(v3);
-  LOBYTE(v2) = v2->_internalInvertPolarity;
+  LOBYTE(selfCopy) = selfCopy->_internalInvertPolarity;
   objc_sync_exit(v3);
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)setSubbandGains:(id)a3
+- (void)setSubbandGains:(id)gains
 {
-  v17 = a3;
-  if (!v17)
+  gainsCopy = gains;
+  if (!gainsCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"subbandGains is nil."];
   }
 
-  if ([v17 count] == self->_subbandCount)
+  if ([gainsCopy count] == self->_subbandCount)
   {
     v5 = 0;
     v6 = *MEMORY[0x277CBE660];
-    while (v5 < [v17 count])
+    while (v5 < [gainsCopy count])
     {
-      v7 = [v17 objectAtIndexedSubscript:v5];
+      v7 = [gainsCopy objectAtIndexedSubscript:v5];
       if (!v7)
       {
         [MEMORY[0x277CBEAD8] raise:v6 format:{@"subbandGain[%lu] is nil.", v5}];
@@ -181,7 +181,7 @@
 
     v16 = self->_internalSubbandGainsLock;
     objc_sync_enter(v16);
-    objc_storeStrong(&self->_internalSubbandGains, a3);
+    objc_storeStrong(&self->_internalSubbandGains, gains);
     objc_sync_exit(v16);
   }
 
@@ -201,10 +201,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
   }
@@ -214,7 +214,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       [(PHASEPlaneWaveMetadata *)self delayTime];
       v8 = v7;
       [(PHASEPlaneWaveMetadata *)v6 delayTime];
@@ -225,21 +225,21 @@
       LODWORD(v14) = v10;
       if ([(PHASEPlaneWaveMetadata *)self floatsAreEqual:v13 b:v14 eps:v12])
       {
-        v15 = [(PHASEPlaneWaveMetadata *)self direction];
-        if (!v15)
+        direction = [(PHASEPlaneWaveMetadata *)self direction];
+        if (!direction)
         {
-          v3 = [(PHASEPlaneWaveMetadata *)v6 direction];
-          if (!v3)
+          direction2 = [(PHASEPlaneWaveMetadata *)v6 direction];
+          if (!direction2)
           {
             goto LABEL_12;
           }
         }
 
-        v16 = [(PHASEPlaneWaveMetadata *)self direction];
-        v17 = [(PHASEPlaneWaveMetadata *)v6 direction];
-        v18 = [v16 isEqual:v17];
+        direction3 = [(PHASEPlaneWaveMetadata *)self direction];
+        direction4 = [(PHASEPlaneWaveMetadata *)v6 direction];
+        v18 = [direction3 isEqual:direction4];
 
-        if (v15)
+        if (direction)
         {
 
           if ((v18 & 1) == 0)
@@ -248,20 +248,20 @@
           }
 
 LABEL_12:
-          v20 = [(PHASEPlaneWaveMetadata *)self invertPolarity];
-          if (v20 != [(PHASEPlaneWaveMetadata *)v6 invertPolarity])
+          invertPolarity = [(PHASEPlaneWaveMetadata *)self invertPolarity];
+          if (invertPolarity != [(PHASEPlaneWaveMetadata *)v6 invertPolarity])
           {
             goto LABEL_13;
           }
 
-          v22 = [(PHASEPlaneWaveMetadata *)self subbandGains];
-          if (v22 || ([(PHASEPlaneWaveMetadata *)v6 subbandGains], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+          subbandGains = [(PHASEPlaneWaveMetadata *)self subbandGains];
+          if (subbandGains || ([(PHASEPlaneWaveMetadata *)v6 subbandGains], (direction2 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v23 = [(PHASEPlaneWaveMetadata *)self subbandGains];
-            v24 = [(PHASEPlaneWaveMetadata *)v6 subbandGains];
-            v19 = [v23 isEqualToArray:v24];
+            subbandGains2 = [(PHASEPlaneWaveMetadata *)self subbandGains];
+            subbandGains3 = [(PHASEPlaneWaveMetadata *)v6 subbandGains];
+            v19 = [subbandGains2 isEqualToArray:subbandGains3];
 
-            if (v22)
+            if (subbandGains)
             {
 LABEL_22:
 
@@ -305,14 +305,14 @@ LABEL_15:
   v4 = [v3 numberWithFloat:?];
   v5 = [v4 hash];
 
-  v6 = [(PHASEPlaneWaveMetadata *)self direction];
-  v7 = [v6 hash];
+  direction = [(PHASEPlaneWaveMetadata *)self direction];
+  v7 = [direction hash];
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[PHASEPlaneWaveMetadata invertPolarity](self, "invertPolarity")}];
   v9 = [v8 hash];
 
-  v10 = [(PHASEPlaneWaveMetadata *)self subbandGains];
-  v11 = [v10 hash];
+  subbandGains = [(PHASEPlaneWaveMetadata *)self subbandGains];
+  v11 = [subbandGains hash];
 
   return v7 ^ v5 ^ v9 ^ v11;
 }

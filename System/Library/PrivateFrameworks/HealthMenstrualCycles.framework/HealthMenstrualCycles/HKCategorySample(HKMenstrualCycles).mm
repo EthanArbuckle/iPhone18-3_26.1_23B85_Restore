@@ -33,15 +33,15 @@
   if (v9)
   {
     v11 = v9;
-    v12 = [a1 hkmc_defaultMetadata];
+    hkmc_defaultMetadata = [self hkmc_defaultMetadata];
     v19 = *MEMORY[0x277CCC4F0];
     v13 = [MEMORY[0x277CCABB0] numberWithBool:a5];
     v20[0] = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-    v15 = [v12 hk_dictionaryByAddingEntriesFromDictionary:v14];
+    v15 = [hkmc_defaultMetadata hk_dictionaryByAddingEntriesFromDictionary:v14];
 
-    v16 = [MEMORY[0x277CCD0C0] menstrualFlowType];
-    v10 = [a1 categorySampleWithType:v16 value:v11 startDate:v8 endDate:v8 metadata:v15];
+    menstrualFlowType = [MEMORY[0x277CCD0C0] menstrualFlowType];
+    v10 = [self categorySampleWithType:menstrualFlowType value:v11 startDate:v8 endDate:v8 metadata:v15];
   }
 
   else
@@ -68,12 +68,12 @@
       v12 = MEMORY[0x277CCD0C0];
       v13 = MEMORY[0x277CCB900];
 LABEL_7:
-      v11 = [v12 categoryTypeForIdentifier:*v13];
+      menstrualFlowType = [v12 categoryTypeForIdentifier:*v13];
       goto LABEL_8;
     case 0:
-      v11 = [MEMORY[0x277CCD0C0] menstrualFlowType];
+      menstrualFlowType = [MEMORY[0x277CCD0C0] menstrualFlowType];
 LABEL_8:
-      v14 = v11;
+      v14 = menstrualFlowType;
       goto LABEL_10;
   }
 
@@ -83,14 +83,14 @@ LABEL_10:
   if (v15)
   {
     v17 = v15;
-    v18 = [a1 hkmc_defaultMetadata];
+    hkmc_defaultMetadata = [self hkmc_defaultMetadata];
     v24 = *MEMORY[0x277CCC4F0];
     v19 = [MEMORY[0x277CCABB0] numberWithBool:a6];
     v25[0] = v19;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
-    v21 = [v18 hk_dictionaryByAddingEntriesFromDictionary:v20];
+    v21 = [hkmc_defaultMetadata hk_dictionaryByAddingEntriesFromDictionary:v20];
 
-    v16 = [a1 categorySampleWithType:v14 value:v17 startDate:v10 endDate:v10 metadata:v21];
+    v16 = [self categorySampleWithType:v14 value:v17 startDate:v10 endDate:v10 metadata:v21];
   }
 
   else
@@ -111,8 +111,8 @@ LABEL_10:
   {
     v9 = v7;
     v10 = [MEMORY[0x277CCD0C0] _categoryTypeWithCode:91];
-    v11 = [a1 hkmc_defaultMetadata];
-    v8 = [a1 categorySampleWithType:v10 value:v9 startDate:v6 endDate:v6 metadata:v11];
+    hkmc_defaultMetadata = [self hkmc_defaultMetadata];
+    v8 = [self categorySampleWithType:v10 value:v9 startDate:v6 endDate:v6 metadata:hkmc_defaultMetadata];
   }
 
   else
@@ -131,8 +131,8 @@ LABEL_10:
   {
     v9 = v7;
     v10 = [MEMORY[0x277CCD0C0] _categoryTypeWithCode:92];
-    v11 = [a1 hkmc_defaultMetadata];
-    v8 = [a1 categorySampleWithType:v10 value:v9 startDate:v6 endDate:v6 metadata:v11];
+    hkmc_defaultMetadata = [self hkmc_defaultMetadata];
+    v8 = [self categorySampleWithType:v10 value:v9 startDate:v6 endDate:v6 metadata:hkmc_defaultMetadata];
   }
 
   else
@@ -151,8 +151,8 @@ LABEL_10:
   {
     v9 = v7;
     v10 = [MEMORY[0x277CCD0C0] _categoryTypeWithCode:243];
-    v11 = [a1 hkmc_defaultMetadata];
-    v8 = [a1 categorySampleWithType:v10 value:v9 startDate:v6 endDate:v6 metadata:v11];
+    hkmc_defaultMetadata = [self hkmc_defaultMetadata];
+    v8 = [self categorySampleWithType:v10 value:v9 startDate:v6 endDate:v6 metadata:hkmc_defaultMetadata];
   }
 
   else
@@ -171,8 +171,8 @@ LABEL_10:
   {
     v9 = v7;
     v10 = [MEMORY[0x277CCD0C0] _categoryTypeWithCode:244];
-    v11 = [a1 hkmc_defaultMetadata];
-    v8 = [a1 categorySampleWithType:v10 value:v9 startDate:v6 endDate:v6 metadata:v11];
+    hkmc_defaultMetadata = [self hkmc_defaultMetadata];
+    v8 = [self categorySampleWithType:v10 value:v9 startDate:v6 endDate:v6 metadata:hkmc_defaultMetadata];
   }
 
   else
@@ -193,7 +193,7 @@ LABEL_10:
   }
 
   v6 = a4;
-  v7 = [a1 hkmc_defaultMetadata];
+  hkmc_defaultMetadata = [self hkmc_defaultMetadata];
   if (a3 == 3)
   {
     v17 = *MEMORY[0x277CCC508];
@@ -213,13 +213,13 @@ LABEL_10:
     v10 = &v19;
 LABEL_7:
     v12 = [v8 dictionaryWithObjects:v9 forKeys:v10 count:1];
-    v13 = [v7 hk_dictionaryByAddingEntriesFromDictionary:v12];
+    v13 = [hkmc_defaultMetadata hk_dictionaryByAddingEntriesFromDictionary:v12];
 
-    v7 = v13;
+    hkmc_defaultMetadata = v13;
   }
 
   v14 = [MEMORY[0x277CCD0C0] _categoryTypeWithCode:97];
-  v11 = [a1 categorySampleWithType:v14 value:0 startDate:v6 endDate:v6 metadata:v7];
+  v11 = [self categorySampleWithType:v14 value:0 startDate:v6 endDate:v6 metadata:hkmc_defaultMetadata];
 
 LABEL_9:
   v15 = *MEMORY[0x277D85DE8];
@@ -234,8 +234,8 @@ LABEL_9:
   if (v7)
   {
     v9 = [MEMORY[0x277CCD0C0] _categoryTypeWithCode:v7];
-    v10 = [a1 hkmc_defaultMetadata];
-    v8 = [a1 categorySampleWithType:v9 value:0 startDate:v6 endDate:v6 metadata:v10];
+    hkmc_defaultMetadata = [self hkmc_defaultMetadata];
+    v8 = [self categorySampleWithType:v9 value:0 startDate:v6 endDate:v6 metadata:hkmc_defaultMetadata];
   }
 
   else
@@ -251,8 +251,8 @@ LABEL_9:
   v4 = MEMORY[0x277CCD0C0];
   v5 = a3;
   v6 = [v4 _categoryTypeWithCode:96];
-  v7 = [a1 hkmc_defaultMetadata];
-  v8 = [a1 categorySampleWithType:v6 value:0 startDate:v5 endDate:v5 metadata:v7];
+  hkmc_defaultMetadata = [self hkmc_defaultMetadata];
+  v8 = [self categorySampleWithType:v6 value:0 startDate:v5 endDate:v5 metadata:hkmc_defaultMetadata];
 
   return v8;
 }
@@ -273,8 +273,8 @@ LABEL_9:
   }
 
   v12 = [MEMORY[0x277CCD0C0] dataTypeWithCode:v10];
-  v13 = [a1 hkmc_defaultMetadata];
-  v14 = [a1 categorySampleWithType:v12 value:v11 startDate:v9 endDate:v8 metadata:v13];
+  hkmc_defaultMetadata = [self hkmc_defaultMetadata];
+  v14 = [self categorySampleWithType:v12 value:v11 startDate:v9 endDate:v8 metadata:hkmc_defaultMetadata];
 
   return v14;
 }
@@ -286,8 +286,8 @@ LABEL_9:
   v16 = a5;
   v17 = a4;
   v18 = a3;
-  v19 = [a1 hkmc_defaultMetadata];
-  v20 = [v19 mutableCopy];
+  hkmc_defaultMetadata = [self hkmc_defaultMetadata];
+  v20 = [hkmc_defaultMetadata mutableCopy];
 
   v21 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
   [v20 setObject:v21 forKey:*MEMORY[0x277CCE090]];
@@ -304,128 +304,128 @@ LABEL_9:
   }
 
   v22 = [MEMORY[0x277CCD0C0] dataTypeWithCode:191];
-  v23 = [a1 categorySampleWithType:v22 value:0 startDate:v18 endDate:v16 metadata:v20];
+  v23 = [self categorySampleWithType:v22 value:0 startDate:v18 endDate:v16 metadata:v20];
 
   return v23;
 }
 
 - (uint64_t)hkmc_daySummaryMenstrualFlow
 {
-  v4 = [a1 categoryType];
-  v5 = [v4 code];
+  categoryType = [self categoryType];
+  code = [categoryType code];
 
-  if (v5 != 95)
+  if (code != 95)
   {
-    [(HKCategorySample(HKMenstrualCycles) *)a1 hkmc_daySummaryMenstrualFlow];
+    [(HKCategorySample(HKMenstrualCycles) *)self hkmc_daySummaryMenstrualFlow];
   }
 
-  v6 = [a1 value];
+  value = [self value];
 
-  return HKMCBleedingFlowFromCategoryValueVaginalBleeding(v6);
+  return HKMCBleedingFlowFromCategoryValueVaginalBleeding(value);
 }
 
 - (uint64_t)hkmc_daySummaryBleedingInPregnancyFlow
 {
-  v4 = [a1 categoryType];
-  v5 = [v4 code];
+  categoryType = [self categoryType];
+  code = [categoryType code];
 
-  if (v5 != 313)
+  if (code != 313)
   {
-    [(HKCategorySample(HKMenstrualCycles) *)a1 hkmc_daySummaryBleedingInPregnancyFlow];
+    [(HKCategorySample(HKMenstrualCycles) *)self hkmc_daySummaryBleedingInPregnancyFlow];
   }
 
-  v6 = [a1 value];
+  value = [self value];
 
-  return HKMCBleedingFlowFromCategoryValueVaginalBleeding(v6);
+  return HKMCBleedingFlowFromCategoryValueVaginalBleeding(value);
 }
 
 - (uint64_t)hkmc_daySummaryBleedingAfterPregnancyFlow
 {
-  v4 = [a1 categoryType];
-  v5 = [v4 code];
+  categoryType = [self categoryType];
+  code = [categoryType code];
 
-  if (v5 != 314)
+  if (code != 314)
   {
-    [(HKCategorySample(HKMenstrualCycles) *)a1 hkmc_daySummaryBleedingAfterPregnancyFlow];
+    [(HKCategorySample(HKMenstrualCycles) *)self hkmc_daySummaryBleedingAfterPregnancyFlow];
   }
 
-  v6 = [a1 value];
+  value = [self value];
 
-  return HKMCBleedingFlowFromCategoryValueVaginalBleeding(v6);
+  return HKMCBleedingFlowFromCategoryValueVaginalBleeding(value);
 }
 
 - (uint64_t)hkmc_daySummaryCervicalMucusQuality
 {
-  v4 = [a1 categoryType];
-  v5 = [v4 code];
+  categoryType = [self categoryType];
+  code = [categoryType code];
 
-  if (v5 != 91)
+  if (code != 91)
   {
-    [(HKCategorySample(HKMenstrualCycles) *)a1 hkmc_daySummaryCervicalMucusQuality];
+    [(HKCategorySample(HKMenstrualCycles) *)self hkmc_daySummaryCervicalMucusQuality];
   }
 
-  v6 = [a1 value];
+  value = [self value];
 
-  return HKMCCervicalMucusQualityFromCategoryValueCervicalMucusQuality(v6);
+  return HKMCCervicalMucusQualityFromCategoryValueCervicalMucusQuality(value);
 }
 
 - (uint64_t)hkmc_daySummaryOvulationTestResult
 {
-  v4 = [a1 categoryType];
-  v5 = [v4 code];
+  categoryType = [self categoryType];
+  code = [categoryType code];
 
-  if (v5 != 92)
+  if (code != 92)
   {
-    [(HKCategorySample(HKMenstrualCycles) *)a1 hkmc_daySummaryOvulationTestResult];
+    [(HKCategorySample(HKMenstrualCycles) *)self hkmc_daySummaryOvulationTestResult];
   }
 
-  v6 = [a1 value];
+  value = [self value];
 
-  return HKMCOvulationTestResultFromCategoryValueOvulationTestResult(v6);
+  return HKMCOvulationTestResultFromCategoryValueOvulationTestResult(value);
 }
 
 - (uint64_t)hkmc_daySummaryPregnancyTestResult
 {
-  v4 = [a1 categoryType];
-  v5 = [v4 code];
+  categoryType = [self categoryType];
+  code = [categoryType code];
 
-  if (v5 != 243)
+  if (code != 243)
   {
-    [(HKCategorySample(HKMenstrualCycles) *)a1 hkmc_daySummaryPregnancyTestResult];
+    [(HKCategorySample(HKMenstrualCycles) *)self hkmc_daySummaryPregnancyTestResult];
   }
 
-  v6 = [a1 value];
+  value = [self value];
 
-  return HKMCPregnancyTestResultFromCategoryValuePregnancyTestResult(v6);
+  return HKMCPregnancyTestResultFromCategoryValuePregnancyTestResult(value);
 }
 
 - (uint64_t)hkmc_daySummaryProgesteroneTestResult
 {
-  v4 = [a1 categoryType];
-  v5 = [v4 code];
+  categoryType = [self categoryType];
+  code = [categoryType code];
 
-  if (v5 != 244)
+  if (code != 244)
   {
-    [(HKCategorySample(HKMenstrualCycles) *)a1 hkmc_daySummaryProgesteroneTestResult];
+    [(HKCategorySample(HKMenstrualCycles) *)self hkmc_daySummaryProgesteroneTestResult];
   }
 
-  v6 = [a1 value];
+  value = [self value];
 
-  return HKMCProgesteroneTestResultFromCategoryValueProgesteroneTestResult(v6);
+  return HKMCProgesteroneTestResultFromCategoryValueProgesteroneTestResult(value);
 }
 
 - (uint64_t)hkmc_daySummarySexualActivity
 {
-  v4 = [a1 categoryType];
-  v5 = [v4 code];
+  categoryType = [self categoryType];
+  code = [categoryType code];
 
-  if (v5 != 97)
+  if (code != 97)
   {
-    [(HKCategorySample(HKMenstrualCycles) *)a1 hkmc_daySummarySexualActivity];
+    [(HKCategorySample(HKMenstrualCycles) *)self hkmc_daySummarySexualActivity];
   }
 
-  v6 = [a1 metadata];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CCC508]];
+  metadata = [self metadata];
+  v7 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCC508]];
 
   if (v7)
   {
@@ -450,29 +450,29 @@ LABEL_9:
 
 - (uint64_t)hkmc_daySummarySymptom
 {
-  if ([a1 hkmc_isNotPresentSymptom])
+  if ([self hkmc_isNotPresentSymptom])
   {
     return 0;
   }
 
-  v3 = [a1 categoryType];
-  v4 = HKMCMenstrualSymptomFromDataTypeCode([v3 code]);
+  categoryType = [self categoryType];
+  v4 = HKMCMenstrualSymptomFromDataTypeCode([categoryType code]);
 
   return v4;
 }
 
 - (uint64_t)hkmc_cycleFactor
 {
-  v4 = [a1 categoryType];
-  v5 = [v4 code];
+  categoryType = [self categoryType];
+  code = [categoryType code];
 
-  switch(v5)
+  switch(code)
   {
     case 193:
-      v7 = [a1 value];
-      if ((v7 - 1) < 7)
+      value = [self value];
+      if ((value - 1) < 7)
       {
-        return v7 + 2;
+        return value + 2;
       }
 
       break;
@@ -482,30 +482,30 @@ LABEL_9:
       return 2;
   }
 
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v9 = objc_opt_class();
-  v10 = [a1 categoryType];
-  v11 = [v10 identifier];
-  [v8 handleFailureInMethod:a2 object:a1 file:@"HKCategorySample+HKMenstrualCycles.m" lineNumber:276 description:{@"%@: Invalid data type: %@", v9, v11}];
+  categoryType2 = [self categoryType];
+  identifier = [categoryType2 identifier];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HKCategorySample+HKMenstrualCycles.m" lineNumber:276 description:{@"%@: Invalid data type: %@", v9, identifier}];
 
   return 0;
 }
 
 - (uint64_t)hkmc_deviationType
 {
-  v4 = [a1 categoryType];
-  v5 = [v4 code];
+  categoryType = [self categoryType];
+  code = [categoryType code];
 
-  if ((v5 - 262) < 4)
+  if ((code - 262) < 4)
   {
-    return qword_25192B3E0[v5 - 262];
+    return qword_25192B3E0[code - 262];
   }
 
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v8 = objc_opt_class();
-  v9 = [a1 categoryType];
-  v10 = [v9 identifier];
-  [v7 handleFailureInMethod:a2 object:a1 file:@"HKCategorySample+HKMenstrualCycles.m" lineNumber:292 description:{@"%@: Invalid data type: %@", v8, v10}];
+  categoryType2 = [self categoryType];
+  identifier = [categoryType2 identifier];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HKCategorySample+HKMenstrualCycles.m" lineNumber:292 description:{@"%@: Invalid data type: %@", v8, identifier}];
 
   return 0;
 }

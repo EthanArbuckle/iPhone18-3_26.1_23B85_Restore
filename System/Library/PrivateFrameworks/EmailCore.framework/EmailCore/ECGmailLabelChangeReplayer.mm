@@ -7,22 +7,22 @@
 - (id)replayAction
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = [(ECLocalActionReplayer *)self action];
+  action = [(ECLocalActionReplayer *)self action];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v32 = [MEMORY[0x277CCA890] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"ECGmailLabelChangeReplayer.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"[labelChangeAction isKindOfClass:[ECLabelChangeMessageAction class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ECGmailLabelChangeReplayer.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"[labelChangeAction isKindOfClass:[ECLabelChangeMessageAction class]]"}];
   }
 
-  v35 = [v4 remoteIDs];
-  v34 = [v4 messages];
+  remoteIDs = [action remoteIDs];
+  messages = [action messages];
   v5 = objc_opt_new();
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v6 = v35;
+  v6 = remoteIDs;
   v7 = [v6 countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v7)
   {
@@ -49,7 +49,7 @@
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v10 = v34;
+  v10 = messages;
   v11 = [v10 countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v11)
   {
@@ -63,10 +63,10 @@
           objc_enumerationMutation(v10);
         }
 
-        v14 = [*(*(&v36 + 1) + 8 * j) remoteID];
-        v15 = [v14 integerValue];
+        remoteID = [*(*(&v36 + 1) + 8 * j) remoteID];
+        integerValue = [remoteID integerValue];
 
-        if (v15)
+        if (integerValue)
         {
           [v5 addIndex:?];
         }
@@ -78,18 +78,18 @@
     while (v11);
   }
 
-  v33 = [v4 labelsToAdd];
-  v16 = [v33 valueForKey:@"labelName"];
-  v17 = [v16 allObjects];
+  labelsToAdd = [action labelsToAdd];
+  v16 = [labelsToAdd valueForKey:@"labelName"];
+  allObjects = [v16 allObjects];
 
-  v18 = [v4 labelsToRemove];
-  v19 = [v18 valueForKey:@"labelName"];
-  v20 = [v19 allObjects];
+  labelsToRemove = [action labelsToRemove];
+  v19 = [labelsToRemove valueForKey:@"labelName"];
+  allObjects2 = [v19 allObjects];
 
-  if ([v17 count])
+  if ([allObjects count])
   {
-    v21 = [(ECGmailLabelChangeReplayer *)self serverInterface];
-    v22 = [v21 storeGmailLabels:v17 state:1 forUIDs:v5];
+    serverInterface = [(ECGmailLabelChangeReplayer *)self serverInterface];
+    v22 = [serverInterface storeGmailLabels:allObjects state:1 forUIDs:v5];
 
     if (!v22)
     {
@@ -97,13 +97,13 @@
     }
   }
 
-  if ([v20 count] && (-[ECGmailLabelChangeReplayer serverInterface](self, "serverInterface"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "storeGmailLabels:state:forUIDs:", v20, 0, v5), v23, !v24))
+  if ([allObjects2 count] && (-[ECGmailLabelChangeReplayer serverInterface](self, "serverInterface"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "storeGmailLabels:state:forUIDs:", allObjects2, 0, v5), v23, !v24))
   {
 LABEL_24:
-    v26 = [(ECGmailLabelChangeReplayer *)self serverInterface];
-    v27 = [v26 hasValidConnection];
+    serverInterface2 = [(ECGmailLabelChangeReplayer *)self serverInterface];
+    hasValidConnection = [serverInterface2 hasValidConnection];
 
-    if (v27)
+    if (hasValidConnection)
     {
       v28 = [ECLocalMessageActionResults alloc];
       v29 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ECLocalActionReplayErrorDomain" code:1 userInfo:0];

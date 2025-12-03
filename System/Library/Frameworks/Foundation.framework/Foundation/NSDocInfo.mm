@@ -1,19 +1,19 @@
 @interface NSDocInfo
-- (NSDocInfo)initWithFileAttributes:(id)a3;
-- (id)initFromInfo:(stat *)a3;
-- (void)setFileAttributes:(id)a3;
+- (NSDocInfo)initWithFileAttributes:(id)attributes;
+- (id)initFromInfo:(stat *)info;
+- (void)setFileAttributes:(id)attributes;
 @end
 
 @implementation NSDocInfo
 
-- (id)initFromInfo:(stat *)a3
+- (id)initFromInfo:(stat *)info
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = NSDocInfo;
   result = [(NSDocInfo *)&v8 init];
-  *(result + 1) = a3->st_mtimespec.tv_sec;
-  st_mode = a3->st_mode;
+  *(result + 1) = info->st_mtimespec.tv_sec;
+  st_mode = info->st_mode;
   *(result + 8) = st_mode;
   v6 = st_mode & 0xF000;
   v7 = *(result + 9) & 0xFFFA;
@@ -26,9 +26,9 @@
   return result;
 }
 
-- (void)setFileAttributes:(id)a3
+- (void)setFileAttributes:(id)attributes
 {
-  if (!a3)
+  if (!attributes)
   {
     self->time = 0;
     self->mode = 0;
@@ -38,10 +38,10 @@ LABEL_11:
     return;
   }
 
-  v5 = [a3 fileModificationDate];
-  if (v5)
+  fileModificationDate = [attributes fileModificationDate];
+  if (fileModificationDate)
   {
-    [v5 timeIntervalSince1970];
+    [fileModificationDate timeIntervalSince1970];
     v7 = v6;
   }
 
@@ -51,12 +51,12 @@ LABEL_11:
   }
 
   self->time = v7;
-  self->mode = [a3 filePosixPermissions];
-  v9 = [a3 fileType];
-  if (v9)
+  self->mode = [attributes filePosixPermissions];
+  fileType = [attributes fileType];
+  if (fileType)
   {
-    v10 = v9;
-    *(&self->mode + 1) = *(&self->mode + 1) & 0xFFFE | [v9 isEqualToString:@"NSFileTypeDirectory"];
+    v10 = fileType;
+    *(&self->mode + 1) = *(&self->mode + 1) & 0xFFFE | [fileType isEqualToString:@"NSFileTypeDirectory"];
     if ([v10 isEqualToString:@"NSFileTypeSymbolicLink"])
     {
       v11 = 4;
@@ -72,13 +72,13 @@ LABEL_11:
   }
 }
 
-- (NSDocInfo)initWithFileAttributes:(id)a3
+- (NSDocInfo)initWithFileAttributes:(id)attributes
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = NSDocInfo;
   v4 = [(NSDocInfo *)&v6 init];
-  [(NSDocInfo *)v4 setFileAttributes:a3];
+  [(NSDocInfo *)v4 setFileAttributes:attributes];
   return v4;
 }
 

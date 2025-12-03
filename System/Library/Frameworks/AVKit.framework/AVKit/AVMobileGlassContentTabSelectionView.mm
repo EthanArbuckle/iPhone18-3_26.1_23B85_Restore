@@ -1,20 +1,20 @@
 @interface AVMobileGlassContentTabSelectionView
-- (AVMobileGlassContentTabSelectionView)initWithStyleSheet:(id)a3;
+- (AVMobileGlassContentTabSelectionView)initWithStyleSheet:(id)sheet;
 - (AVMobileGlassContentTabSelectionViewDelegate)delegate;
 - (CGSize)intrinsicContentSize;
-- (uint64_t)_scrollToRect:(double)a3 animated:(double)a4;
-- (void)_contentTabPressed:(id)a3;
-- (void)_scrollToFirstButtonIfPossibleAnimated:(uint64_t)a1;
+- (uint64_t)_scrollToRect:(double)rect animated:(double)animated;
+- (void)_contentTabPressed:(id)pressed;
+- (void)_scrollToFirstButtonIfPossibleAnimated:(uint64_t)animated;
 - (void)_updateGradientFadeoutLocations;
 - (void)_updateTabButtons;
 - (void)didMoveToSuperview;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
 - (void)resetSelection;
-- (void)selectTab:(id)a3 withReason:(unint64_t)a4;
-- (void)setContentTabs:(id)a3;
-- (void)setStyleSheet:(id)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)selectTab:(id)tab withReason:(unint64_t)reason;
+- (void)setContentTabs:(id)tabs;
+- (void)setStyleSheet:(id)sheet;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 - (void)updateBackgroundMaterial;
 @end
 
@@ -27,18 +27,18 @@
   return WeakRetained;
 }
 
-- (void)_contentTabPressed:(id)a3
+- (void)_contentTabPressed:(id)pressed
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_tabButtons indexOfObject:v4];
+  pressedCopy = pressed;
+  v5 = [(NSMutableArray *)self->_tabButtons indexOfObject:pressedCopy];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = _AVLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = pressedCopy;
 LABEL_12:
       _os_log_error_impl(&dword_18B49C000, v6, OS_LOG_TYPE_ERROR, "Error: Could not find button %@ in tap button list.", &v10, 0xCu);
       goto LABEL_9;
@@ -54,7 +54,7 @@ LABEL_12:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = pressedCopy;
       goto LABEL_12;
     }
 
@@ -64,9 +64,9 @@ LABEL_9:
   }
 
   v8 = [(NSArray *)self->_contentTabs objectAtIndex:v7];
-  v9 = [(AVMobileGlassContentTabSelectionView *)self selectedTab];
+  selectedTab = [(AVMobileGlassContentTabSelectionView *)self selectedTab];
 
-  if (v8 == v9)
+  if (v8 == selectedTab)
   {
 
     v8 = 0;
@@ -79,15 +79,15 @@ LABEL_10:
 
 - (void)updateBackgroundMaterial
 {
-  v3 = [(AVGlassBackedView *)self backgroundMaterialStyle];
-  v4 = [(AVGlassBackedView *)self backgroundMaterialized];
+  backgroundMaterialStyle = [(AVGlassBackedView *)self backgroundMaterialStyle];
+  backgroundMaterialized = [(AVGlassBackedView *)self backgroundMaterialized];
   tabButtons = self->_tabButtons;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__AVMobileGlassContentTabSelectionView_updateBackgroundMaterial__block_invoke;
   v6[3] = &__block_descriptor_41_e36_v32__0__AVGlassBackedButton_8Q16_B24l;
-  v6[4] = v3;
-  v7 = v4;
+  v6[4] = backgroundMaterialStyle;
+  v7 = backgroundMaterialized;
   [(NSMutableArray *)tabButtons enumerateObjectsUsingBlock:v6];
 }
 
@@ -99,16 +99,16 @@ void __64__AVMobileGlassContentTabSelectionView_updateBackgroundMaterial__block_
   [v4 setBackgroundMaterialized:*(a1 + 40)];
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = AVMobileGlassContentTabSelectionView;
-  if ([(AVMobileGlassContentTabSelectionView *)&v6 isUserInteractionEnabled]!= a3)
+  if ([(AVMobileGlassContentTabSelectionView *)&v6 isUserInteractionEnabled]!= enabled)
   {
     v5.receiver = self;
     v5.super_class = AVMobileGlassContentTabSelectionView;
-    [(AVMobileGlassContentTabSelectionView *)&v5 setUserInteractionEnabled:v3];
+    [(AVMobileGlassContentTabSelectionView *)&v5 setUserInteractionEnabled:enabledCopy];
     [(AVMobileGlassContentTabSelectionView *)&self->super.super.super.super.super.isa _updateTabButtons];
   }
 }
@@ -116,18 +116,18 @@ void __64__AVMobileGlassContentTabSelectionView_updateBackgroundMaterial__block_
 - (void)_updateTabButtons
 {
   v61[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 window];
+    window = [self window];
 
-    if (v2)
+    if (window)
     {
-      v45 = [a1 backgroundMaterialStyle];
-      v44 = [a1 backgroundMaterialized];
+      backgroundMaterialStyle = [self backgroundMaterialStyle];
+      backgroundMaterialized = [self backgroundMaterialized];
       v3 = &OBJC_IVAR_____AVPlayerLayerView__pictureInPicturePlayerLayerView;
-      v4 = [a1[63] count];
+      v4 = [self[63] count];
       v5 = &OBJC_IVAR_____AVPlayerLayerView__pictureInPicturePlayerLayerView;
-      v6 = [a1[67] count];
+      v6 = [self[67] count];
       if (v4 <= v6)
       {
         v7 = v6;
@@ -148,122 +148,122 @@ void __64__AVMobileGlassContentTabSelectionView_updateBackgroundMaterial__block_
         v55 = *MEMORY[0x1E69DB650];
         do
         {
-          if ([*(a1 + v5[325]) count] <= v8)
+          if ([*(self + v5[325]) count] <= v8)
           {
-            v9 = [*(a1 + v3[324]) lastObject];
-            [v9 removeFromSuperview];
-            [*(a1 + v3[324]) removeLastObject];
+            lastObject = [*(self + v3[324]) lastObject];
+            [lastObject removeFromSuperview];
+            [*(self + v3[324]) removeLastObject];
           }
 
-          if ([*(a1 + v5[325]) count] > v8)
+          if ([*(self + v5[325]) count] > v8)
           {
-            if ([*(a1 + v3[324]) count] <= v8)
+            if ([*(self + v3[324]) count] <= v8)
             {
               v10 = [(AVButton *)AVGlassBackedButton buttonWithAccessibilityIdentifier:&stru_1EFED57D8 accessibilityLabel:0 isFirstGeneration:0];
               [v10 setPointerStyleProvider:&__block_literal_global_6967];
               [v10 setContentEdgeInsets:{5.0, 14.0, 5.0, 14.0}];
-              [v10 addTarget:a1 action:v43 forControlEvents:64];
+              [v10 addTarget:self action:v43 forControlEvents:64];
               [v10 setWantsCapsuleShape:1];
-              [v10 setBackgroundMaterialStyle:v45];
-              [v10 setBackgroundMaterialized:v44];
-              [a1[64] addSubview:v10];
-              [*(a1 + v3[324]) addObject:v10];
+              [v10 setBackgroundMaterialStyle:backgroundMaterialStyle];
+              [v10 setBackgroundMaterialized:backgroundMaterialized];
+              [self[64] addSubview:v10];
+              [*(self + v3[324]) addObject:v10];
             }
 
-            v11 = [*(a1 + v5[325]) objectAtIndex:v8];
-            v12 = [*(a1 + v3[324]) objectAtIndex:v8];
+            v11 = [*(self + v5[325]) objectAtIndex:v8];
+            v12 = [*(self + v3[324]) objectAtIndex:v8];
             v13 = v11;
-            v14 = [a1 styleSheet];
-            v15 = [MEMORY[0x1E69DC888] blackColor];
-            v49 = [MEMORY[0x1E69DC888] whiteColor];
+            styleSheet = [self styleSheet];
+            blackColor = [MEMORY[0x1E69DC888] blackColor];
+            whiteColor = [MEMORY[0x1E69DC888] whiteColor];
             v16 = objc_alloc(MEMORY[0x1E696AD40]);
-            v17 = [v13 displayName];
+            displayName = [v13 displayName];
             v60[0] = v54;
-            v50 = v14;
-            v18 = [v14 contentTabLabelFont];
+            v50 = styleSheet;
+            contentTabLabelFont = [styleSheet contentTabLabelFont];
             v60[1] = v55;
-            v61[0] = v18;
-            v48 = v15;
-            v61[1] = v15;
+            v61[0] = contentTabLabelFont;
+            v48 = blackColor;
+            v61[1] = blackColor;
             v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v61 forKeys:v60 count:2];
-            v20 = [v16 initWithString:v17 attributes:v19];
+            v20 = [v16 initWithString:displayName attributes:v19];
 
-            v21 = [MEMORY[0x1E69DC888] whiteColor];
-            v22 = [v21 CGColor];
+            whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+            cGColor = [whiteColor2 CGColor];
 
-            v23 = [v13 displayName];
-            v53 = [v23 length];
+            displayName2 = [v13 displayName];
+            v53 = [displayName2 length];
 
             v52 = v13;
-            if (a1[68] == v13)
+            if (self[68] == v13)
             {
-              v25 = v49;
+              clearColor = whiteColor;
               v26 = v50;
-              v24 = v48;
+              whiteColor3 = v48;
             }
 
             else
             {
-              v24 = [MEMORY[0x1E69DC888] whiteColor];
+              whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
 
-              v25 = [MEMORY[0x1E69DC888] clearColor];
+              clearColor = [MEMORY[0x1E69DC888] clearColor];
 
               v58[0] = v54;
               v26 = v50;
-              v27 = [v50 contentTabLabelFont];
+              contentTabLabelFont2 = [v50 contentTabLabelFont];
               v58[1] = v55;
-              v59[0] = v27;
-              v59[1] = v24;
+              v59[0] = contentTabLabelFont2;
+              v59[1] = whiteColor3;
               v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v59 forKeys:v58 count:2];
               [v20 setAttributes:v28 range:{0, v53}];
             }
 
             [v12 setAttributedTitle:v20 forState:0];
-            v29 = [a1 isUserInteractionEnabled];
-            if (v29)
+            isUserInteractionEnabled = [self isUserInteractionEnabled];
+            if (isUserInteractionEnabled)
             {
-              v30 = v22;
+              v30 = cGColor;
             }
 
             else
             {
-              v31 = [MEMORY[0x1E69DC888] systemGrayColor];
-              v32 = v24;
-              v24 = v31;
+              systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+              v32 = whiteColor3;
+              whiteColor3 = systemGrayColor;
 
-              v51 = [MEMORY[0x1E69DC888] clearColor];
+              clearColor2 = [MEMORY[0x1E69DC888] clearColor];
 
               v56[0] = v54;
-              v33 = [v26 contentTabLabelFont];
+              contentTabLabelFont3 = [v26 contentTabLabelFont];
               v56[1] = v55;
-              v57[0] = v33;
-              v57[1] = v24;
+              v57[0] = contentTabLabelFont3;
+              v57[1] = whiteColor3;
               v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:2];
               [v20 setAttributes:v34 range:{0, v53}];
 
-              v35 = [MEMORY[0x1E69DC888] systemGrayColor];
-              v36 = [v35 CGColor];
+              systemGrayColor2 = [MEMORY[0x1E69DC888] systemGrayColor];
+              cGColor2 = [systemGrayColor2 CGColor];
 
-              v30 = v36;
+              v30 = cGColor2;
               [v12 setAttributedTitle:v20 forState:2];
-              v25 = v51;
+              clearColor = clearColor2;
             }
 
-            v37 = v24;
-            v38 = [v12 layer];
-            [v38 setBorderColor:v30];
+            v37 = whiteColor3;
+            layer = [v12 layer];
+            [layer setBorderColor:v30];
 
-            v39 = a1[68] == v52;
+            v39 = self[68] == v52;
             [v12 setMaximumContentSizeCategory:v46];
             [v12 setSelected:v39];
-            [v12 setBackgroundColor:v25];
-            [v12 setTintColor:v25];
-            [v12 setEnabled:v29];
-            v40 = [v52 displayName];
-            [v12 setAccessibilityLabel:v40];
+            [v12 setBackgroundColor:clearColor];
+            [v12 setTintColor:clearColor];
+            [v12 setEnabled:isUserInteractionEnabled];
+            displayName3 = [v52 displayName];
+            [v12 setAccessibilityLabel:displayName3];
 
-            v41 = [v52 accessibilityIdentifier];
-            [v12 setAccessibilityIdentifier:v41];
+            accessibilityIdentifier = [v52 accessibilityIdentifier];
+            [v12 setAccessibilityIdentifier:accessibilityIdentifier];
 
             [v12 setHighlighted:0];
             v3 = &OBJC_IVAR_____AVPlayerLayerView__pictureInPicturePlayerLayerView;
@@ -277,11 +277,11 @@ void __64__AVMobileGlassContentTabSelectionView_updateBackgroundMaterial__block_
         while (v7 != v8);
       }
 
-      [a1 invalidateIntrinsicContentSize];
-      v42 = [a1 superview];
-      [v42 avkit_intrinsicContentSizeOfSubviewWasInvalidated:a1];
+      [self invalidateIntrinsicContentSize];
+      superview = [self superview];
+      [superview avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
 
-      [a1 setNeedsLayout];
+      [self setNeedsLayout];
     }
   }
 }
@@ -303,7 +303,7 @@ id __74__AVMobileGlassContentTabSelectionView__setupPointerInteractionForButton_
   v32.receiver = self;
   v32.super_class = AVMobileGlassContentTabSelectionView;
   [(AVView *)&v32 layoutSubviews];
-  v3 = [(AVMobileGlassContentTabSelectionView *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(AVMobileGlassContentTabSelectionView *)self effectiveUserInterfaceLayoutDirection];
   [(AVMobileGlassContentTabSelectionView *)self bounds];
   v5 = v4;
   v7 = v6;
@@ -353,10 +353,10 @@ id __74__AVMobileGlassContentTabSelectionView__setupPointerInteractionForButton_
     do
     {
       v24 = [(NSMutableArray *)self->_tabButtons objectAtIndex:v22];
-      v25 = [v24 backgroundMaterialStyle];
+      backgroundMaterialStyle = [v24 backgroundMaterialStyle];
       [v24 intrinsicContentSize];
       v28 = v27;
-      if (v25)
+      if (backgroundMaterialStyle)
       {
         v29 = 14.0;
       }
@@ -382,7 +382,7 @@ id __74__AVMobileGlassContentTabSelectionView__setupPointerInteractionForButton_
         v31 = v11;
       }
 
-      [v24 avkit_setFrame:v3 inLayoutDirection:{v23, (v11 - v31) * 0.5, v28}];
+      [v24 avkit_setFrame:effectiveUserInterfaceLayoutDirection inLayoutDirection:{v23, (v11 - v31) * 0.5, v28}];
       v23 = v23 + v28;
 
       ++v22;
@@ -397,9 +397,9 @@ id __74__AVMobileGlassContentTabSelectionView__setupPointerInteractionForButton_
 - (void)_updateGradientFadeoutLocations
 {
   v7[4] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [a1 bounds];
+    [self bounds];
     v7[0] = &unk_1EFF13200;
     v3 = (v2 + -30.0) / v2;
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:30.0 / v2];
@@ -409,7 +409,7 @@ id __74__AVMobileGlassContentTabSelectionView__setupPointerInteractionForButton_
     v7[3] = &unk_1EFF13210;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:4];
 
-    [a1[65] setLocations:v6];
+    [self[65] setLocations:v6];
   }
 }
 
@@ -492,21 +492,21 @@ id __74__AVMobileGlassContentTabSelectionView__setupPointerInteractionForButton_
   {
     if (!self->_gradientFadeoutLayer)
     {
-      v3 = [MEMORY[0x1E69DC888] blackColor];
-      v4 = [v3 CGColor];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      cGColor = [blackColor CGColor];
 
-      v5 = [MEMORY[0x1E69DC888] clearColor];
-      v6 = [v5 CGColor];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      cGColor2 = [clearColor CGColor];
 
       v7 = objc_alloc_init(MEMORY[0x1E6979380]);
       gradientFadeoutLayer = self->_gradientFadeoutLayer;
       self->_gradientFadeoutLayer = v7;
 
       v9 = self->_gradientFadeoutLayer;
-      v16[0] = v6;
-      v16[1] = v4;
-      v16[2] = v4;
-      v16[3] = v6;
+      v16[0] = cGColor2;
+      v16[1] = cGColor;
+      v16[2] = cGColor;
+      v16[3] = cGColor2;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:4];
       [(CAGradientLayer *)v9 setColors:v10];
 
@@ -525,8 +525,8 @@ id __74__AVMobileGlassContentTabSelectionView__setupPointerInteractionForButton_
       [(UIScrollView *)self->_scrollingContentView setShowsVerticalScrollIndicator:0];
       [(UIScrollView *)self->_scrollingContentView setShowsHorizontalScrollIndicator:0];
       [(UIScrollView *)self->_scrollingContentView setContentOffset:-30.0, 0.0];
-      v14 = [(AVMobileGlassContentTabSelectionView *)self layer];
-      [v14 setMask:self->_gradientFadeoutLayer];
+      layer = [(AVMobileGlassContentTabSelectionView *)self layer];
+      [layer setMask:self->_gradientFadeoutLayer];
 
       [(AVMobileGlassContentTabSelectionView *)self addSubview:self->_scrollingContentView];
     }
@@ -536,17 +536,17 @@ id __74__AVMobileGlassContentTabSelectionView__setupPointerInteractionForButton_
   [AVMobileGlassContentTabSelectionView _scrollToFirstButtonIfPossibleAnimated:?];
 }
 
-- (void)_scrollToFirstButtonIfPossibleAnimated:(uint64_t)a1
+- (void)_scrollToFirstButtonIfPossibleAnimated:(uint64_t)animated
 {
-  if (a1 && [*(a1 + 504) count])
+  if (animated && [*(animated + 504) count])
   {
-    v6 = [*(a1 + 504) objectAtIndex:0];
+    v6 = [*(animated + 504) objectAtIndex:0];
     [v6 frame];
-    [(AVMobileGlassContentTabSelectionView *)a1 _scrollToRect:v2 animated:v3, v4, v5];
+    [(AVMobileGlassContentTabSelectionView *)animated _scrollToRect:v2 animated:v3, v4, v5];
   }
 }
 
-- (uint64_t)_scrollToRect:(double)a3 animated:(double)a4
+- (uint64_t)_scrollToRect:(double)rect animated:(double)animated
 {
   if (*(result + 512))
   {
@@ -556,7 +556,7 @@ id __74__AVMobileGlassContentTabSelectionView__setupPointerInteractionForButton_
     {
       v10 = *(v9 + 512);
 
-      return [v10 scrollRectToVisible:0 animated:{a2, a3, a4, a5}];
+      return [v10 scrollRectToVisible:0 animated:{a2, rect, animated, a5}];
     }
   }
 
@@ -603,24 +603,24 @@ id __74__AVMobileGlassContentTabSelectionView__setupPointerInteractionForButton_
   }
 }
 
-- (void)selectTab:(id)a3 withReason:(unint64_t)a4
+- (void)selectTab:(id)tab withReason:(unint64_t)reason
 {
-  v7 = a3;
-  v8 = v7;
-  if (self->_selectedTab != v7)
+  tabCopy = tab;
+  v8 = tabCopy;
+  if (self->_selectedTab != tabCopy)
   {
-    v19 = v7;
-    objc_storeStrong(&self->_selectedTab, a3);
-    v9 = [(AVMobileGlassContentTabSelectionView *)self delegate];
+    v19 = tabCopy;
+    objc_storeStrong(&self->_selectedTab, tab);
+    delegate = [(AVMobileGlassContentTabSelectionView *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v9 contentTabSelectionView:self didChangeSelectedTabTo:self->_selectedTab withReason:a4];
+      [delegate contentTabSelectionView:self didChangeSelectedTabTo:self->_selectedTab withReason:reason];
     }
 
     [(AVMobileGlassContentTabSelectionView *)&self->super.super.super.super.super.isa _updateTabButtons];
-    v7 = [(NSMutableArray *)self->_tabButtons count];
+    tabCopy = [(NSMutableArray *)self->_tabButtons count];
     v8 = v19;
-    if (v7 && self->_selectedTab)
+    if (tabCopy && self->_selectedTab)
     {
       v10 = [(NSMutableArray *)self->_tabButtons objectAtIndex:[(NSArray *)self->_contentTabs indexOfObject:?]];
       [v10 frame];
@@ -629,17 +629,17 @@ id __74__AVMobileGlassContentTabSelectionView__setupPointerInteractionForButton_
       v16 = v15;
       v18 = v17;
 
-      v7 = [(AVMobileGlassContentTabSelectionView *)self _scrollToRect:v12 animated:v14, v16, v18];
+      tabCopy = [(AVMobileGlassContentTabSelectionView *)self _scrollToRect:v12 animated:v14, v16, v18];
       v8 = v19;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v7, v8);
+  MEMORY[0x1EEE66BB8](tabCopy, v8);
 }
 
-- (void)setContentTabs:(id)a3
+- (void)setContentTabs:(id)tabs
 {
-  if (self->_contentTabs != a3)
+  if (self->_contentTabs != tabs)
   {
     v4 = [MEMORY[0x1E695DEC8] arrayWithArray:?];
     contentTabs = self->_contentTabs;
@@ -653,40 +653,40 @@ id __74__AVMobileGlassContentTabSelectionView__setupPointerInteractionForButton_
     [(AVMobileGlassContentTabSelectionView *)&self->super.super.super.super.super.isa _updateTabButtons];
     [AVMobileGlassContentTabSelectionView _scrollToFirstButtonIfPossibleAnimated:?];
     [(AVMobileGlassContentTabSelectionView *)self invalidateIntrinsicContentSize];
-    v6 = [(AVMobileGlassContentTabSelectionView *)self superview];
-    [v6 avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
+    superview = [(AVMobileGlassContentTabSelectionView *)self superview];
+    [superview avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
   }
 }
 
-- (void)setStyleSheet:(id)a3
+- (void)setStyleSheet:(id)sheet
 {
-  v5 = a3;
-  if (self->_styleSheet != v5)
+  sheetCopy = sheet;
+  if (self->_styleSheet != sheetCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_styleSheet, a3);
+    v7 = sheetCopy;
+    objc_storeStrong(&self->_styleSheet, sheet);
     [(AVMobileGlassContentTabSelectionView *)&self->super.super.super.super.super.isa _updateTabButtons];
     [(AVMobileGlassContentTabSelectionView *)self invalidateIntrinsicContentSize];
-    v6 = [(AVMobileGlassContentTabSelectionView *)self superview];
-    [v6 avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
+    superview = [(AVMobileGlassContentTabSelectionView *)self superview];
+    [superview avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
 
-    v5 = v7;
+    sheetCopy = v7;
   }
 }
 
-- (AVMobileGlassContentTabSelectionView)initWithStyleSheet:(id)a3
+- (AVMobileGlassContentTabSelectionView)initWithStyleSheet:(id)sheet
 {
-  v5 = a3;
+  sheetCopy = sheet;
   v11.receiver = self;
   v11.super_class = AVMobileGlassContentTabSelectionView;
   v6 = [(AVMobileGlassContentTabSelectionView *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_styleSheet, a3);
-    v8 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v6->_styleSheet, sheet);
+    array = [MEMORY[0x1E695DF70] array];
     tabButtons = v7->_tabButtons;
-    v7->_tabButtons = v8;
+    v7->_tabButtons = array;
 
     [(AVMobileGlassContentTabSelectionView *)v7 setInsetsLayoutMarginsFromSafeArea:0];
   }

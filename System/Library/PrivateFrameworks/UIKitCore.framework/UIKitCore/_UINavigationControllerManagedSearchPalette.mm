@@ -2,25 +2,25 @@
 - (UISearchBar)_searchBar;
 - (UIView)viewForAsymmetricFade;
 - (double)_shadowAlpha;
-- (id)_initWithNavigationController:(id)a3 forEdge:(unint64_t)a4;
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4;
+- (id)_initWithNavigationController:(id)controller forEdge:(unint64_t)edge;
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow;
 - (void)_popDisableLayoutFlushingForTransition;
 - (void)_propagateBackgroundToContents;
 - (void)_pushDisableLayoutFlushingForTransition;
-- (void)_setShadowAlpha:(double)a3;
+- (void)_setShadowAlpha:(double)alpha;
 - (void)_updateLayoutForCurrentConfiguration;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenter:(CGPoint)center;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation _UINavigationControllerManagedSearchPalette
 
-- (id)_initWithNavigationController:(id)a3 forEdge:(unint64_t)a4
+- (id)_initWithNavigationController:(id)controller forEdge:(unint64_t)edge
 {
   v7.receiver = self;
   v7.super_class = _UINavigationControllerManagedSearchPalette;
-  v4 = [(_UINavigationControllerPalette *)&v7 _initWithNavigationController:a3 forEdge:a4];
+  v4 = [(_UINavigationControllerPalette *)&v7 _initWithNavigationController:controller forEdge:edge];
   v5 = v4;
   if (v4)
   {
@@ -32,27 +32,27 @@
 
 - (UIView)viewForAsymmetricFade
 {
-  v2 = [(_UINavigationControllerManagedSearchPalette *)self _searchBar];
-  v3 = [v2 _searchController];
-  if (v3)
+  _searchBar = [(_UINavigationControllerManagedSearchPalette *)self _searchBar];
+  _searchController = [_searchBar _searchController];
+  if (_searchController)
   {
-    v4 = [v2 _searchController];
-    v5 = [v4 isActive];
+    _searchController2 = [_searchBar _searchController];
+    isActive = [_searchController2 isActive];
 
-    if (v5)
+    if (isActive)
     {
-      v3 = 0;
+      _searchController = 0;
     }
 
     else
     {
-      v3 = [v2 searchField];
-      v6 = [v3 layer];
-      [v6 setAllowsGroupOpacity:0];
+      _searchController = [_searchBar searchField];
+      layer = [_searchController layer];
+      [layer setAllowsGroupOpacity:0];
     }
   }
 
-  return v3;
+  return _searchController;
 }
 
 - (void)_updateLayoutForCurrentConfiguration
@@ -60,18 +60,18 @@
   v4.receiver = self;
   v4.super_class = _UINavigationControllerManagedSearchPalette;
   [(_UINavigationControllerPalette *)&v4 _updateLayoutForCurrentConfiguration];
-  v3 = [(_UINavigationControllerManagedSearchPalette *)self _searchBar];
-  [v3 _updateInsetsForCurrentContainerViewAndBarPosition];
+  _searchBar = [(_UINavigationControllerManagedSearchPalette *)self _searchBar];
+  [_searchBar _updateInsetsForCurrentContainerViewAndBarPosition];
 }
 
 - (void)_pushDisableLayoutFlushingForTransition
 {
   if (self)
   {
-    v3 = [(UIView *)self _disableLayoutFlushingCount];
-    if (v3 >= 1)
+    _disableLayoutFlushingCount = [(UIView *)self _disableLayoutFlushingCount];
+    if (_disableLayoutFlushingCount >= 1)
     {
-      v4 = v3 + 1;
+      v4 = _disableLayoutFlushingCount + 1;
     }
 
     else
@@ -83,14 +83,14 @@
     [(UIView *)self _disableLayoutFlushing];
   }
 
-  v5 = [(_UINavigationControllerManagedSearchPalette *)self _searchBar];
-  if (v5)
+  _searchBar = [(_UINavigationControllerManagedSearchPalette *)self _searchBar];
+  if (_searchBar)
   {
-    v8 = v5;
-    v6 = [v5 _disableLayoutFlushingCount];
-    if (v6 >= 1)
+    v8 = _searchBar;
+    _disableLayoutFlushingCount2 = [_searchBar _disableLayoutFlushingCount];
+    if (_disableLayoutFlushingCount2 >= 1)
     {
-      v7 = v6 + 1;
+      v7 = _disableLayoutFlushingCount2 + 1;
     }
 
     else
@@ -100,76 +100,76 @@
 
     [v8 _setDisableLayoutFlushingCount:v7];
     [v8 _disableLayoutFlushing];
-    v5 = v8;
+    _searchBar = v8;
   }
 }
 
 - (void)_popDisableLayoutFlushingForTransition
 {
-  v3 = [(_UINavigationControllerManagedSearchPalette *)self _searchBar];
-  [(UIView *)v3 _popDisableLayoutFlushing];
+  _searchBar = [(_UINavigationControllerManagedSearchPalette *)self _searchBar];
+  [(UIView *)_searchBar _popDisableLayoutFlushing];
 
   [(UIView *)self _popDisableLayoutFlushing];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   if (!self->_ignoreGeometryChanges)
   {
     v3.receiver = self;
     v3.super_class = _UINavigationControllerManagedSearchPalette;
-    [(_UINavigationControllerPalette *)&v3 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    [(_UINavigationControllerPalette *)&v3 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   if (!self->_ignoreGeometryChanges)
   {
     v3.receiver = self;
     v3.super_class = _UINavigationControllerManagedSearchPalette;
-    [(UIView *)&v3 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    [(UIView *)&v3 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   }
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
   if (!self->_ignoreGeometryChanges)
   {
     v3.receiver = self;
     v3.super_class = _UINavigationControllerManagedSearchPalette;
-    [(UIView *)&v3 setCenter:a3.x, a3.y];
+    [(UIView *)&v3 setCenter:center.x, center.y];
   }
 }
 
-- (void)_setShadowAlpha:(double)a3
+- (void)_setShadowAlpha:(double)alpha
 {
-  v4 = [(_UINavigationControllerPalette *)self _backgroundViewLayout];
-  [v4 setShadowAlpha:a3];
+  _backgroundViewLayout = [(_UINavigationControllerPalette *)self _backgroundViewLayout];
+  [_backgroundViewLayout setShadowAlpha:alpha];
 }
 
 - (double)_shadowAlpha
 {
-  v2 = [(_UINavigationControllerPalette *)self _backgroundViewLayout];
-  [v2 shadowAlpha];
+  _backgroundViewLayout = [(_UINavigationControllerPalette *)self _backgroundViewLayout];
+  [_backgroundViewLayout shadowAlpha];
   v4 = v3;
 
   return v4;
 }
 
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow
 {
   v8.receiver = self;
   v8.super_class = _UINavigationControllerManagedSearchPalette;
-  [(UIView *)&v8 _didMoveFromWindow:a3 toWindow:?];
-  if (!a4)
+  [(UIView *)&v8 _didMoveFromWindow:window toWindow:?];
+  if (!toWindow)
   {
-    v6 = [(_UINavigationControllerManagedSearchPalette *)self resetAfterSearchFieldFade];
+    resetAfterSearchFieldFade = [(_UINavigationControllerManagedSearchPalette *)self resetAfterSearchFieldFade];
 
-    if (v6)
+    if (resetAfterSearchFieldFade)
     {
-      v7 = [(_UINavigationControllerManagedSearchPalette *)self resetAfterSearchFieldFade];
-      v7[2]();
+      resetAfterSearchFieldFade2 = [(_UINavigationControllerManagedSearchPalette *)self resetAfterSearchFieldFade];
+      resetAfterSearchFieldFade2[2]();
 
       [(_UINavigationControllerManagedSearchPalette *)self setResetAfterSearchFieldFade:0];
     }
@@ -181,11 +181,11 @@
   v5.receiver = self;
   v5.super_class = _UINavigationControllerManagedSearchPalette;
   [(_UINavigationControllerPalette *)&v5 _propagateBackgroundToContents];
-  v3 = [(_UINavigationControllerPalette *)self navController];
-  if (v3)
+  navController = [(_UINavigationControllerPalette *)self navController];
+  if (navController)
   {
-    v4 = [(_UINavigationControllerManagedSearchPalette *)self _searchBar];
-    [v4 _setBackdropStyle:2005];
+    _searchBar = [(_UINavigationControllerManagedSearchPalette *)self _searchBar];
+    [_searchBar _setBackdropStyle:2005];
   }
 }
 

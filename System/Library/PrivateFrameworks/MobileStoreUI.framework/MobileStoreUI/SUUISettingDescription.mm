@@ -1,52 +1,52 @@
 @interface SUUISettingDescription
-+ (Class)viewClassForSettingDescription:(id)a3;
++ (Class)viewClassForSettingDescription:(id)description;
 - (BOOL)_isHidden;
-- (SUUISettingDescription)initWithViewElement:(id)a3 parent:(id)a4;
+- (SUUISettingDescription)initWithViewElement:(id)element parent:(id)parent;
 - (SUUISettingsGroupDescription)parent;
 - (id)indexPath;
 - (void)_deleteSetting;
-- (void)_dismissViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_dispatchUpdate:(id)a3;
+- (void)_dismissViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)_dispatchUpdate:(id)update;
 - (void)_hideSetting;
-- (void)_presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)_reloadSetting;
 - (void)_revealSetting;
-- (void)_setEditsValid:(BOOL)a3;
-- (void)handleSelectionOnCompletion:(id)a3;
-- (void)reloadWithViewElement:(id)a3 parent:(id)a4;
+- (void)_setEditsValid:(BOOL)valid;
+- (void)handleSelectionOnCompletion:(id)completion;
+- (void)reloadWithViewElement:(id)element parent:(id)parent;
 @end
 
 @implementation SUUISettingDescription
 
-- (SUUISettingDescription)initWithViewElement:(id)a3 parent:(id)a4
+- (SUUISettingDescription)initWithViewElement:(id)element parent:(id)parent
 {
-  v7 = a3;
-  v8 = a4;
+  elementCopy = element;
+  parentCopy = parent;
   v12.receiver = self;
   v12.super_class = SUUISettingDescription;
   v9 = [(SUUISettingDescription *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_parent, v8);
-    objc_storeStrong(&v10->_viewElement, a3);
+    objc_storeWeak(&v9->_parent, parentCopy);
+    objc_storeStrong(&v10->_viewElement, element);
   }
 
   return v10;
 }
 
-+ (Class)viewClassForSettingDescription:(id)a3
++ (Class)viewClassForSettingDescription:(id)description
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _viewClassForSettingDescription:v3];
+  descriptionCopy = description;
+  v4 = [objc_opt_class() _viewClassForSettingDescription:descriptionCopy];
 
   return v4;
 }
 
-- (void)handleSelectionOnCompletion:(id)a3
+- (void)handleSelectionOnCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   viewElement = self->_viewElement;
   if (viewElement)
   {
@@ -54,13 +54,13 @@
     v7[1] = 3221225472;
     v7[2] = __54__SUUISettingDescription_handleSelectionOnCompletion___block_invoke;
     v7[3] = &unk_2798F7288;
-    v8 = v4;
+    v8 = completionCopy;
     [(SUUIViewElement *)viewElement dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:v7];
   }
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -72,12 +72,12 @@
   return v4;
 }
 
-- (void)reloadWithViewElement:(id)a3 parent:(id)a4
+- (void)reloadWithViewElement:(id)element parent:(id)parent
 {
-  v6 = a3;
-  objc_storeWeak(&self->_parent, a4);
+  elementCopy = element;
+  objc_storeWeak(&self->_parent, parent);
   viewElement = self->_viewElement;
-  self->_viewElement = v6;
+  self->_viewElement = elementCopy;
 }
 
 - (void)_deleteSetting
@@ -86,20 +86,20 @@
   [WeakRetained deleteSettingDescription:self];
 }
 
-- (void)_dismissViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_dismissViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained _dismissViewController:v9 animated:v5 completion:v8];
+  [WeakRetained _dismissViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)_dispatchUpdate:(id)a3
+- (void)_dispatchUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained dispatchUpdate:v4];
+  [WeakRetained dispatchUpdate:updateCopy];
 }
 
 - (void)_hideSetting
@@ -110,20 +110,20 @@
 
 - (BOOL)_isHidden
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  LOBYTE(v2) = [WeakRetained isSettingDescriptionHidden:v2];
+  LOBYTE(selfCopy) = [WeakRetained isSettingDescriptionHidden:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)_presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained _presentViewController:v9 animated:v5 completion:v8];
+  [WeakRetained _presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
 - (void)_reloadSetting
@@ -138,11 +138,11 @@
   [WeakRetained revealSettingDescription:self];
 }
 
-- (void)_setEditsValid:(BOOL)a3
+- (void)_setEditsValid:(BOOL)valid
 {
-  if (self->_editsValid != a3)
+  if (self->_editsValid != valid)
   {
-    self->_editsValid = a3;
+    self->_editsValid = valid;
     WeakRetained = objc_loadWeakRetained(&self->_parent);
     [WeakRetained _updatedEditsValid];
   }

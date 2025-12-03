@@ -18,14 +18,14 @@
   {
     [v5 lineHeight];
     [v6 leading];
-    v7 = [MEMORY[0x1E69DC938] currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v8 == 5)
+    if (userInterfaceIdiom == 5)
     {
-      v9 = [v6 fontDescriptor];
-      v10 = [v9 fontAttributes];
-      v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69DB8E8]];
+      fontDescriptor = [v6 fontDescriptor];
+      fontAttributes = [fontDescriptor fontAttributes];
+      v11 = [fontAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB8E8]];
 
       if (v11)
       {

@@ -1,18 +1,18 @@
 @interface SUScriptNotificationObserver
 - (SUScriptNotificationObserver)init;
-- (id)_copySafariQueryDictionaryFromURL:(id)a3;
+- (id)_copySafariQueryDictionaryFromURL:(id)l;
 - (void)_beginObservingNotifications;
-- (void)_dispatchEvent:(id)a3 forName:(id)a4;
-- (void)_dispatchEventWithDictionary:(id)a3 forName:(id)a4;
-- (void)_dispatchSafariEventWithDictionary:(id)a3 andIdentifier:(id)a4;
+- (void)_dispatchEvent:(id)event forName:(id)name;
+- (void)_dispatchEventWithDictionary:(id)dictionary forName:(id)name;
+- (void)_dispatchSafariEventWithDictionary:(id)dictionary andIdentifier:(id)identifier;
 - (void)_endObservingNotifications;
-- (void)_enumerateReceiversUsingBlock:(id)a3;
-- (void)_purchaseRequestDidSucceedNotification:(id)a3;
-- (void)_safariViewControllerDataUpdate:(id)a3;
-- (void)_subscriptionStatusDidChangeNotification:(id)a3;
-- (void)addEventReceiver:(id)a3;
+- (void)_enumerateReceiversUsingBlock:(id)block;
+- (void)_purchaseRequestDidSucceedNotification:(id)notification;
+- (void)_safariViewControllerDataUpdate:(id)update;
+- (void)_subscriptionStatusDidChangeNotification:(id)notification;
+- (void)addEventReceiver:(id)receiver;
 - (void)dealloc;
-- (void)removeEventReceiver:(id)a3;
+- (void)removeEventReceiver:(id)receiver;
 @end
 
 @implementation SUScriptNotificationObserver
@@ -47,7 +47,7 @@
   [(SUScriptNotificationObserver *)&v4 dealloc];
 }
 
-- (void)addEventReceiver:(id)a3
+- (void)addEventReceiver:(id)receiver
 {
   [(NSLock *)self->_lock lock];
   receivers = self->_receivers;
@@ -57,7 +57,7 @@
     self->_receivers = receivers;
   }
 
-  CFSetAddValue(receivers, a3);
+  CFSetAddValue(receivers, receiver);
   if (CFSetGetCount(self->_receivers) == 1)
   {
     [(SUScriptNotificationObserver *)self _beginObservingNotifications];
@@ -68,13 +68,13 @@
   [(NSLock *)lock unlock];
 }
 
-- (void)removeEventReceiver:(id)a3
+- (void)removeEventReceiver:(id)receiver
 {
   [(NSLock *)self->_lock lock];
   receivers = self->_receivers;
   if (receivers)
   {
-    CFSetRemoveValue(receivers, a3);
+    CFSetRemoveValue(receivers, receiver);
     if (!CFSetGetCount(self->_receivers))
     {
       [(SUScriptNotificationObserver *)self _endObservingNotifications];
@@ -86,10 +86,10 @@
   [(NSLock *)lock unlock];
 }
 
-- (void)_purchaseRequestDidSucceedNotification:(id)a3
+- (void)_purchaseRequestDidSucceedNotification:(id)notification
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = [objc_msgSend(a3 "userInfo")];
+  v4 = [objc_msgSend(notification "userInfo")];
   if (v4)
   {
     v5 = v4;
@@ -104,19 +104,19 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = [MEMORY[0x1E69D4938] sharedConfig];
-          v10 = [v9 shouldLog];
-          if ([v9 shouldLogToDisk])
+          mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+          shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+          if ([mEMORY[0x1E69D4938] shouldLogToDisk])
           {
-            v11 = v10 | 2;
+            v11 = shouldLog | 2;
           }
 
           else
           {
-            v11 = v10;
+            v11 = shouldLog;
           }
 
-          if (os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
           {
             v12 = v11;
           }
@@ -149,19 +149,19 @@
         return;
       }
 
-      v24 = [MEMORY[0x1E69D4938] sharedConfig];
-      v25 = [v24 shouldLog];
-      if ([v24 shouldLogToDisk])
+      mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+      if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
       {
-        v26 = v25 | 2;
+        v26 = shouldLog2 | 2;
       }
 
       else
       {
-        v26 = v25;
+        v26 = shouldLog2;
       }
 
-      if (!os_log_type_enabled([v24 OSLogObject], OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938]2 OSLogObject], OS_LOG_TYPE_ERROR))
       {
         v26 &= 2u;
       }
@@ -174,19 +174,19 @@
 
     else
     {
-      v21 = [MEMORY[0x1E69D4938] sharedConfig];
-      v22 = [v21 shouldLog];
-      if ([v21 shouldLogToDisk])
+      mEMORY[0x1E69D4938]3 = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog3 = [mEMORY[0x1E69D4938]3 shouldLog];
+      if ([mEMORY[0x1E69D4938]3 shouldLogToDisk])
       {
-        v23 = v22 | 2;
+        v23 = shouldLog3 | 2;
       }
 
       else
       {
-        v23 = v22;
+        v23 = shouldLog3;
       }
 
-      if (!os_log_type_enabled([v21 OSLogObject], OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938]3 OSLogObject], OS_LOG_TYPE_ERROR))
       {
         v23 &= 2u;
       }
@@ -215,19 +215,19 @@ LABEL_36:
 
   else
   {
-    v16 = [MEMORY[0x1E69D4938] sharedConfig];
-    v17 = [v16 shouldLog];
-    if ([v16 shouldLogToDisk])
+    mEMORY[0x1E69D4938]4 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog4 = [mEMORY[0x1E69D4938]4 shouldLog];
+    if ([mEMORY[0x1E69D4938]4 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog4 | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog4;
     }
 
-    if (!os_log_type_enabled([v16 OSLogObject], OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938]4 OSLogObject], OS_LOG_TYPE_ERROR))
     {
       v18 &= 2u;
     }
@@ -252,12 +252,12 @@ LABEL_38:
   }
 }
 
-- (void)_subscriptionStatusDidChangeNotification:(id)a3
+- (void)_subscriptionStatusDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  if (v4)
+  userInfo = [notification userInfo];
+  if (userInfo)
   {
-    v5 = [[SUScriptDictionary alloc] initWithDictionary:v4];
+    v5 = [[SUScriptDictionary alloc] initWithDictionary:userInfo];
   }
 
   else
@@ -269,13 +269,13 @@ LABEL_38:
   [(SUScriptNotificationObserver *)self _dispatchEvent:v5 forName:@"subscriptionstatuschange"];
 }
 
-- (void)_safariViewControllerDataUpdate:(id)a3
+- (void)_safariViewControllerDataUpdate:(id)update
 {
-  v4 = [a3 object];
+  object = [update object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(SUScriptNotificationObserver *)self _copySafariQueryDictionaryFromURL:v4];
+    v6 = [(SUScriptNotificationObserver *)self _copySafariQueryDictionaryFromURL:object];
     v5 = [v6 objectForKey:@"safariid"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -285,10 +285,10 @@ LABEL_38:
   }
 }
 
-- (id)_copySafariQueryDictionaryFromURL:(id)a3
+- (id)_copySafariQueryDictionaryFromURL:(id)l
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AF20] componentsWithURL:a3 resolvingAgainstBaseURL:0];
+  v3 = [MEMORY[0x1E696AF20] componentsWithURL:l resolvingAgainstBaseURL:0];
   v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"name=%@", @"action"];
   v5 = [objc_msgSend(v3 "queryItems")];
   v6 = [objc_msgSend(v5 filteredArrayUsingPredicate:{v4), "firstObject"}];
@@ -328,14 +328,14 @@ LABEL_38:
   return v12;
 }
 
-- (void)_dispatchSafariEventWithDictionary:(id)a3 andIdentifier:(id)a4
+- (void)_dispatchSafariEventWithDictionary:(id)dictionary andIdentifier:(id)identifier
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __81__SUScriptNotificationObserver__dispatchSafariEventWithDictionary_andIdentifier___block_invoke;
   v4[3] = &unk_1E8165460;
-  v4[4] = a4;
-  v4[5] = a3;
+  v4[4] = identifier;
+  v4[5] = dictionary;
   v4[6] = self;
   [(SUScriptNotificationObserver *)self _enumerateReceiversUsingBlock:v4];
 }
@@ -399,66 +399,66 @@ void __81__SUScriptNotificationObserver__dispatchSafariEventWithDictionary_andId
 
 - (void)_beginObservingNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__restrictionsChangedNotification_ name:*MEMORY[0x1E69ADD68] object:0];
-  [v3 addObserver:self selector:sel__networkTypeChangedNotification_ name:*MEMORY[0x1E69E46E0] object:0];
-  [v3 addObserver:self selector:sel__audioSessionsChangedNotification_ name:@"SUAudioPlayerSessionsChangedNotification" object:0];
-  [v3 addObserver:self selector:sel__purchaseRequestDidSucceedNotification_ name:@"SUPurchaseRequestDidSucceedNotification" object:0];
-  [v3 addObserver:self selector:sel__memoryWarningNotification_ name:*MEMORY[0x1E69DDAD8] object:0];
-  [v3 addObserver:self selector:sel__storeBagDidChangeNotification_ name:@"SUScriptStoreBagDidChangeNotification" object:0];
-  [v3 addObserver:self selector:sel__subscriptionStatusDidChangeNotification_ name:@"SUScriptSubscriptionStatusDidChangeNotification" object:{+[SUScriptSubscriptionStatusObserver sharedObserver](SUScriptSubscriptionStatusObserver, "sharedObserver")}];
-  [v3 addObserver:self selector:sel__safariViewControllerDataUpdate_ name:@"SSScriptSafariViewControllerDataUpdateNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__restrictionsChangedNotification_ name:*MEMORY[0x1E69ADD68] object:0];
+  [defaultCenter addObserver:self selector:sel__networkTypeChangedNotification_ name:*MEMORY[0x1E69E46E0] object:0];
+  [defaultCenter addObserver:self selector:sel__audioSessionsChangedNotification_ name:@"SUAudioPlayerSessionsChangedNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__purchaseRequestDidSucceedNotification_ name:@"SUPurchaseRequestDidSucceedNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__memoryWarningNotification_ name:*MEMORY[0x1E69DDAD8] object:0];
+  [defaultCenter addObserver:self selector:sel__storeBagDidChangeNotification_ name:@"SUScriptStoreBagDidChangeNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__subscriptionStatusDidChangeNotification_ name:@"SUScriptSubscriptionStatusDidChangeNotification" object:{+[SUScriptSubscriptionStatusObserver sharedObserver](SUScriptSubscriptionStatusObserver, "sharedObserver")}];
+  [defaultCenter addObserver:self selector:sel__safariViewControllerDataUpdate_ name:@"SSScriptSafariViewControllerDataUpdateNotification" object:0];
   [MEMORY[0x1E69E47D0] startObservingNotifications];
   v4 = *MEMORY[0x1E69E4700];
 
-  [v3 addObserver:self selector:sel__softwareMapChangedNotification_ name:v4 object:0];
+  [defaultCenter addObserver:self selector:sel__softwareMapChangedNotification_ name:v4 object:0];
 }
 
-- (void)_dispatchEvent:(id)a3 forName:(id)a4
+- (void)_dispatchEvent:(id)event forName:(id)name
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __55__SUScriptNotificationObserver__dispatchEvent_forName___block_invoke;
   v4[3] = &unk_1E8165488;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = event;
+  v4[5] = name;
   [(SUScriptNotificationObserver *)self _enumerateReceiversUsingBlock:v4];
 }
 
-- (void)_dispatchEventWithDictionary:(id)a3 forName:(id)a4
+- (void)_dispatchEventWithDictionary:(id)dictionary forName:(id)name
 {
   if ([MEMORY[0x1E696ACB0] isValidJSONObject:?])
   {
-    v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a3 options:0 error:0];
+    v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:0 error:0];
     if (v7)
     {
       v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v7 encoding:4];
-      [(SUScriptNotificationObserver *)self _dispatchEvent:v8 forName:a4];
+      [(SUScriptNotificationObserver *)self _dispatchEvent:v8 forName:name];
     }
   }
 
   else
   {
-    NSLog(&cfstr_UnableToSerial_0.isa, a4, a3);
+    NSLog(&cfstr_UnableToSerial_0.isa, name, dictionary);
   }
 }
 
 - (void)_endObservingNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69ADD68] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69E46E0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69E4700] object:0];
-  [v3 removeObserver:self name:@"SUAudioPlayerSessionsChangedNotification" object:0];
-  [v3 removeObserver:self name:@"SUPurchaseRequestDidSucceedNotification" object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAD8] object:0];
-  [v3 removeObserver:self name:@"SUScriptStoreBagDidChangeNotification" object:0];
-  [v3 removeObserver:self name:@"SUScriptSubscriptionStatusDidChangeNotification" object:{+[SUScriptSubscriptionStatusObserver sharedObserver](SUScriptSubscriptionStatusObserver, "sharedObserver")}];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69ADD68] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69E46E0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69E4700] object:0];
+  [defaultCenter removeObserver:self name:@"SUAudioPlayerSessionsChangedNotification" object:0];
+  [defaultCenter removeObserver:self name:@"SUPurchaseRequestDidSucceedNotification" object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAD8] object:0];
+  [defaultCenter removeObserver:self name:@"SUScriptStoreBagDidChangeNotification" object:0];
+  [defaultCenter removeObserver:self name:@"SUScriptSubscriptionStatusDidChangeNotification" object:{+[SUScriptSubscriptionStatusObserver sharedObserver](SUScriptSubscriptionStatusObserver, "sharedObserver")}];
 
-  [v3 removeObserver:self name:@"SSScriptSafariViewControllerDataUpdateNotification" object:0];
+  [defaultCenter removeObserver:self name:@"SSScriptSafariViewControllerDataUpdateNotification" object:0];
 }
 
-- (void)_enumerateReceiversUsingBlock:(id)a3
+- (void)_enumerateReceiversUsingBlock:(id)block
 {
   [(NSLock *)self->_lock lock];
   if (self->_receivers)
@@ -468,8 +468,8 @@ void __81__SUScriptNotificationObserver__dispatchSafariEventWithDictionary_andId
     [(NSLock *)self->_lock unlock];
     if (v7)
     {
-      v5 = self;
-      [v7 enumerateObjectsUsingBlock:a3];
+      selfCopy = self;
+      [v7 enumerateObjectsUsingBlock:block];
     }
   }
 

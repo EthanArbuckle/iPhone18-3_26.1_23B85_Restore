@@ -1,7 +1,7 @@
 @interface BWVisionRequestInferenceDescriptor
-- (BOOL)isEqual:(id)a3;
-- (BWVisionRequestInferenceDescriptor)initWithRequestClass:(Class)a3 processingDevice:(id)a4 ioSurfaceMemoryPoolId:(int64_t)a5 revision:(unint64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BWVisionRequestInferenceDescriptor)initWithRequestClass:(Class)class processingDevice:(id)device ioSurfaceMemoryPoolId:(int64_t)id revision:(unint64_t)revision;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -9,7 +9,7 @@
 
 @implementation BWVisionRequestInferenceDescriptor
 
-- (BWVisionRequestInferenceDescriptor)initWithRequestClass:(Class)a3 processingDevice:(id)a4 ioSurfaceMemoryPoolId:(int64_t)a5 revision:(unint64_t)a6
+- (BWVisionRequestInferenceDescriptor)initWithRequestClass:(Class)class processingDevice:(id)device ioSurfaceMemoryPoolId:(int64_t)id revision:(unint64_t)revision
 {
   v13.receiver = self;
   v13.super_class = BWVisionRequestInferenceDescriptor;
@@ -17,10 +17,10 @@
   v11 = v10;
   if (v10)
   {
-    v10->_requestClass = a3;
-    v10->_processingDevice = a4;
-    v11->_ioSurfaceMemoryPoolId = a5;
-    v11->_revision = a6;
+    v10->_requestClass = class;
+    v10->_processingDevice = device;
+    v11->_ioSurfaceMemoryPoolId = id;
+    v11->_revision = revision;
   }
 
   return v11;
@@ -35,12 +35,12 @@
 
 - (unint64_t)hash
 {
-  v2 = [(BWVisionRequestInferenceDescriptor *)self requestCacheKey];
+  requestCacheKey = [(BWVisionRequestInferenceDescriptor *)self requestCacheKey];
 
-  return [(NSString *)v2 hash];
+  return [(NSString *)requestCacheKey hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -48,15 +48,15 @@
     return 0;
   }
 
-  v5 = [(BWVisionRequestInferenceDescriptor *)self requestCacheKey];
-  v6 = [a3 requestCacheKey];
+  requestCacheKey = [(BWVisionRequestInferenceDescriptor *)self requestCacheKey];
+  requestCacheKey2 = [equal requestCacheKey];
 
-  return [(NSString *)v5 isEqualToString:v6];
+  return [(NSString *)requestCacheKey isEqualToString:requestCacheKey2];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [BWVisionRequestInferenceDescriptor allocWithZone:a3];
+  v4 = [BWVisionRequestInferenceDescriptor allocWithZone:zone];
   requestClass = self->_requestClass;
   processingDevice = self->_processingDevice;
   ioSurfaceMemoryPoolId = self->_ioSurfaceMemoryPoolId;

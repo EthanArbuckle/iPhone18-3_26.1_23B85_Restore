@@ -1,21 +1,21 @@
 @interface GTFileWriterService
-- (BOOL)_finishSession:(unint64_t)a3 error:(id *)a4;
-- (GTFileWriterService)initWithConnectionProvider:(id)a3 deviceUDID:(id)a4 urlAccessProvider:(id)a5;
-- (void)beginTransferSessionWithFileEntries:(id)a3 basePath:(id)a4 toDevice:(id)a5 options:(id)a6 sessionID:(unint64_t)a7 completionHandler:(id)a8;
-- (void)initiateTransfer:(id)a3 basePath:(id)a4 fromDevice:(id)a5 options:(id)a6 completionHandler:(id)a7;
-- (void)initiateTransfer:(id)a3 basePath:(id)a4 fromDevice:(id)a5 toURL:(id)a6 options:(id)a7 completionHandler:(id)a8;
-- (void)startTransfer:(id)a3 basePath:(id)a4 fromDevice:(id)a5 options:(id)a6 completionHandler:(id)a7;
-- (void)startTransfer:(id)a3 basePath:(id)a4 fromDevice:(id)a5 toDirectory:(id)a6 options:(id)a7 completionHandler:(id)a8;
-- (void)writeFileData:(id)a3 sessionID:(unint64_t)a4 completionHandler:(id)a5;
+- (BOOL)_finishSession:(unint64_t)session error:(id *)error;
+- (GTFileWriterService)initWithConnectionProvider:(id)provider deviceUDID:(id)d urlAccessProvider:(id)accessProvider;
+- (void)beginTransferSessionWithFileEntries:(id)entries basePath:(id)path toDevice:(id)device options:(id)options sessionID:(unint64_t)d completionHandler:(id)handler;
+- (void)initiateTransfer:(id)transfer basePath:(id)path fromDevice:(id)device options:(id)options completionHandler:(id)handler;
+- (void)initiateTransfer:(id)transfer basePath:(id)path fromDevice:(id)device toURL:(id)l options:(id)options completionHandler:(id)handler;
+- (void)startTransfer:(id)transfer basePath:(id)path fromDevice:(id)device options:(id)options completionHandler:(id)handler;
+- (void)startTransfer:(id)transfer basePath:(id)path fromDevice:(id)device toDirectory:(id)directory options:(id)options completionHandler:(id)handler;
+- (void)writeFileData:(id)data sessionID:(unint64_t)d completionHandler:(id)handler;
 @end
 
 @implementation GTFileWriterService
 
-- (GTFileWriterService)initWithConnectionProvider:(id)a3 deviceUDID:(id)a4 urlAccessProvider:(id)a5
+- (GTFileWriterService)initWithConnectionProvider:(id)provider deviceUDID:(id)d urlAccessProvider:(id)accessProvider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  dCopy = d;
+  accessProviderCopy = accessProvider;
   v22.receiver = self;
   v22.super_class = GTFileWriterService;
   v12 = [(GTFileWriterService *)&v22 init];
@@ -31,9 +31,9 @@
     sessions = v12->_sessions;
     v12->_sessions = v15;
 
-    objc_storeStrong(&v12->_connectionProvider, a3);
-    objc_storeStrong(&v12->_deviceUDID, a4);
-    objc_storeStrong(&v12->_urlAccessProvider, a5);
+    objc_storeStrong(&v12->_connectionProvider, provider);
+    objc_storeStrong(&v12->_deviceUDID, d);
+    objc_storeStrong(&v12->_urlAccessProvider, accessProvider);
     v17 = dispatch_queue_create("com.apple.gputools.filetransfer", 0);
     fileTransferQueue = v12->_fileTransferQueue;
     v12->_fileTransferQueue = v17;
@@ -46,41 +46,41 @@
   return v12;
 }
 
-- (void)initiateTransfer:(id)a3 basePath:(id)a4 fromDevice:(id)a5 options:(id)a6 completionHandler:(id)a7
+- (void)initiateTransfer:(id)transfer basePath:(id)path fromDevice:(id)device options:(id)options completionHandler:(id)handler
 {
   v12 = MEMORY[0x277CBEBC0];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  handlerCopy = handler;
+  optionsCopy = options;
+  deviceCopy = device;
+  pathCopy = path;
+  transferCopy = transfer;
   v18 = GTTransportArchiveDirectory();
-  v19 = [v18 stringByAppendingPathComponent:v16];
+  v19 = [v18 stringByAppendingPathComponent:pathCopy];
   v20 = [v12 fileURLWithPath:v19 isDirectory:1];
 
-  [(GTFileWriterService *)self initiateTransfer:v17 basePath:v16 fromDevice:v15 toURL:v20 options:v14 completionHandler:v13];
+  [(GTFileWriterService *)self initiateTransfer:transferCopy basePath:pathCopy fromDevice:deviceCopy toURL:v20 options:optionsCopy completionHandler:handlerCopy];
 }
 
-- (void)startTransfer:(id)a3 basePath:(id)a4 fromDevice:(id)a5 options:(id)a6 completionHandler:(id)a7
+- (void)startTransfer:(id)transfer basePath:(id)path fromDevice:(id)device options:(id)options completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  handlerCopy = handler;
+  optionsCopy = options;
+  deviceCopy = device;
+  pathCopy = path;
+  transferCopy = transfer;
   v17 = NSTemporaryDirectory();
-  v18 = LocalArchiveURL(v15, v17);
+  v18 = LocalArchiveURL(pathCopy, v17);
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __83__GTFileWriterService_startTransfer_basePath_fromDevice_options_completionHandler___block_invoke;
   v21[3] = &unk_2796614D8;
   v22 = v18;
-  v23 = v12;
+  v23 = handlerCopy;
   v21[4] = self;
   v19 = v18;
-  v20 = v12;
-  [(GTFileWriterService *)self initiateTransfer:v16 basePath:v15 fromDevice:v14 toURL:v19 options:v13 completionHandler:v21];
+  v20 = handlerCopy;
+  [(GTFileWriterService *)self initiateTransfer:transferCopy basePath:pathCopy fromDevice:deviceCopy toURL:v19 options:optionsCopy completionHandler:v21];
 }
 
 void __83__GTFileWriterService_startTransfer_basePath_fromDevice_options_completionHandler___block_invoke(void *a1, uint64_t a2)
@@ -100,14 +100,14 @@ void __83__GTFileWriterService_startTransfer_basePath_fromDevice_options_complet
   }
 }
 
-- (void)startTransfer:(id)a3 basePath:(id)a4 fromDevice:(id)a5 toDirectory:(id)a6 options:(id)a7 completionHandler:(id)a8
+- (void)startTransfer:(id)transfer basePath:(id)path fromDevice:(id)device toDirectory:(id)directory options:(id)options completionHandler:(id)handler
 {
-  v14 = a4;
-  v15 = a6;
-  v16 = a8;
-  v17 = a7;
-  v18 = a5;
-  v19 = a3;
+  pathCopy = path;
+  directoryCopy = directory;
+  handlerCopy = handler;
+  optionsCopy = options;
+  deviceCopy = device;
+  transferCopy = transfer;
   if (GTCoreLogUseOsLog())
   {
     v20 = gt_tagged_log(0x10u);
@@ -120,16 +120,16 @@ void __83__GTFileWriterService_startTransfer_basePath_fromDevice_options_complet
   else
   {
     v21 = *MEMORY[0x277D85E08];
-    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Start transfer of %@ to %@", v14, v15];
-    fprintf(v21, "%s\n", [v22 UTF8String]);
+    directoryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Start transfer of %@ to %@", pathCopy, directoryCopy];
+    fprintf(v21, "%s\n", [directoryCopy UTF8String]);
   }
 
-  if (([v15 startAccessingSecurityScopedResource] & 1) == 0)
+  if (([directoryCopy startAccessingSecurityScopedResource] & 1) == 0)
   {
     if (GTCoreLogUseOsLog())
     {
-      v23 = gt_tagged_log(0x10u);
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
+      directoryCopy2 = gt_tagged_log(0x10u);
+      if (os_log_type_enabled(directoryCopy2, OS_LOG_TYPE_DEBUG))
       {
         [GTFileWriterService startTransfer:basePath:fromDevice:toDirectory:options:completionHandler:];
       }
@@ -138,26 +138,26 @@ void __83__GTFileWriterService_startTransfer_basePath_fromDevice_options_complet
     else
     {
       v24 = *MEMORY[0x277D85E08];
-      v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to consume sandbox extension for URL %@", v15];
-      fprintf(v24, "%s\n", [v23 UTF8String]);
+      directoryCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to consume sandbox extension for URL %@", directoryCopy];
+      fprintf(v24, "%s\n", [directoryCopy2 UTF8String]);
     }
   }
 
-  v25 = [v15 path];
-  v26 = LocalArchiveURL(v14, v25);
+  path = [directoryCopy path];
+  v26 = LocalArchiveURL(pathCopy, path);
 
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __95__GTFileWriterService_startTransfer_basePath_fromDevice_toDirectory_options_completionHandler___block_invoke;
   v30[3] = &unk_279661500;
-  v31 = v15;
+  v31 = directoryCopy;
   v32 = v26;
-  v33 = self;
-  v34 = v16;
+  selfCopy = self;
+  v34 = handlerCopy;
   v27 = v26;
-  v28 = v15;
-  v29 = v16;
-  [(GTFileWriterService *)self initiateTransfer:v19 basePath:v14 fromDevice:v18 toURL:v27 options:v17 completionHandler:v30];
+  v28 = directoryCopy;
+  v29 = handlerCopy;
+  [(GTFileWriterService *)self initiateTransfer:transferCopy basePath:pathCopy fromDevice:deviceCopy toURL:v27 options:optionsCopy completionHandler:v30];
 }
 
 void __95__GTFileWriterService_startTransfer_basePath_fromDevice_toDirectory_options_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -337,31 +337,31 @@ LABEL_40:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)initiateTransfer:(id)a3 basePath:(id)a4 fromDevice:(id)a5 toURL:(id)a6 options:(id)a7 completionHandler:(id)a8
+- (void)initiateTransfer:(id)transfer basePath:(id)path fromDevice:(id)device toURL:(id)l options:(id)options completionHandler:(id)handler
 {
   v79 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v58 = v17;
+  transferCopy = transfer;
+  pathCopy = path;
+  deviceCopy = device;
+  lCopy = l;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v58 = lCopy;
   if (GTCoreLogUseOsLog())
   {
     v20 = gt_tagged_log(0x10u);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138413314;
-      v70 = v15;
+      v70 = pathCopy;
       v71 = 2112;
-      v72 = v16;
+      v72 = deviceCopy;
       v73 = 2112;
-      v74 = v17;
+      v74 = lCopy;
       v75 = 2048;
-      v76 = [v18 chunkSize];
+      chunkSize = [optionsCopy chunkSize];
       v77 = 2080;
-      v78 = GTFileTransferCompressionAlgorithmToString([v18 compressionAlgorithm]);
+      v78 = GTFileTransferCompressionAlgorithmToString([optionsCopy compressionAlgorithm]);
       _os_log_debug_impl(&dword_24DBC9000, v20, OS_LOG_TYPE_DEBUG, "Initiate transfer basePath:%@ device:%@ toURL:%@ chunkSize:%lu compression:%s", buf, 0x34u);
     }
   }
@@ -369,38 +369,38 @@ LABEL_40:
   else
   {
     v21 = *MEMORY[0x277D85E08];
-    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Initiate transfer basePath:%@ device:%@ toURL:%@ chunkSize:%lu compression:%s", v15, v16, v17, objc_msgSend(v18, "chunkSize"), GTFileTransferCompressionAlgorithmToString(objc_msgSend(v18, "compressionAlgorithm"))];
+    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Initiate transfer basePath:%@ device:%@ toURL:%@ chunkSize:%lu compression:%s", pathCopy, deviceCopy, lCopy, objc_msgSend(optionsCopy, "chunkSize"), GTFileTransferCompressionAlgorithmToString(objc_msgSend(optionsCopy, "compressionAlgorithm"))];
     fprintf(v21, "%s\n", [v22 UTF8String]);
   }
 
-  v57 = v15;
-  if (GTFileTransferOptionsValidate(v18))
+  v57 = pathCopy;
+  if (GTFileTransferOptionsValidate(optionsCopy))
   {
     v62 = 0;
-    v23 = [GTFileWriterSession sessionWithFileEntries:v14 relativeToURL:v17 options:v18 error:&v62];
+    v23 = [GTFileWriterSession sessionWithFileEntries:transferCopy relativeToURL:lCopy options:optionsCopy error:&v62];
     v24 = v62;
     if (v23)
     {
-      v56 = v14;
+      v56 = transferCopy;
       v25 = self->_sessionCounts + 1;
       self->_sessionCounts = v25;
       sessions = self->_sessions;
       v27 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v25];
       [(NSMutableDictionary *)sessions setObject:v23 forKeyedSubscript:v27];
 
-      v28 = [(GTConnectionProvider *)self->_connectionProvider connectionForDeviceUDID:v16];
+      v28 = [(GTConnectionProvider *)self->_connectionProvider connectionForDeviceUDID:deviceCopy];
       v55 = v28;
       if (v28)
       {
         v29 = v28;
-        v30 = FindRemoteGTFileWriterService(v28, v16, self->_connectionProvider);
+        v30 = FindRemoteGTFileWriterService(v28, deviceCopy, self->_connectionProvider);
         v54 = v30;
         if (v30)
         {
           v31 = v30;
           v32 = [GTFileWriterServiceXPCProxy alloc];
-          v33 = [v31 serviceProperties];
-          v34 = [(GTFileWriterServiceXPCProxy *)v32 initWithConnection:v29 remoteProperties:v33];
+          serviceProperties = [v31 serviceProperties];
+          v34 = [(GTFileWriterServiceXPCProxy *)v32 initWithConnection:v29 remoteProperties:serviceProperties];
 
           deviceUDID = self->_deviceUDID;
           v59[0] = MEMORY[0x277D85DD0];
@@ -409,16 +409,16 @@ LABEL_40:
           v59[3] = &unk_279661528;
           v59[4] = self;
           v61 = v25;
-          v60 = v19;
-          [(GTFileWriterServiceXPCProxy *)v34 beginTransferSessionWithFileEntries:v56 basePath:v57 toDevice:deviceUDID options:v18 sessionID:v25 completionHandler:v59];
+          v60 = handlerCopy;
+          [(GTFileWriterServiceXPCProxy *)v34 beginTransferSessionWithFileEntries:v56 basePath:v57 toDevice:deviceUDID options:optionsCopy sessionID:v25 completionHandler:v59];
         }
 
         else
         {
           if (GTCoreLogUseOsLog())
           {
-            v43 = gt_tagged_log(0x10u);
-            if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
+            deviceCopy = gt_tagged_log(0x10u);
+            if (os_log_type_enabled(deviceCopy, OS_LOG_TYPE_ERROR))
             {
               [GTFileWriterService initiateTransfer:basePath:fromDevice:toURL:options:completionHandler:];
             }
@@ -427,8 +427,8 @@ LABEL_40:
           else
           {
             v49 = *MEMORY[0x277D85DF8];
-            v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"File writer service for %@ is unavailable", v16];
-            fprintf(v49, "%s\n", [v43 UTF8String]);
+            deviceCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"File writer service for %@ is unavailable", deviceCopy];
+            fprintf(v49, "%s\n", [deviceCopy UTF8String]);
           }
 
           v50 = MEMORY[0x277CCA9B8];
@@ -438,7 +438,7 @@ LABEL_40:
           v52 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v64 forKeys:&v63 count:1];
           v34 = [v50 errorWithDomain:@"com.apple.gputools.transport" code:1 userInfo:v52];
 
-          (*(v19 + 2))(v19, v34);
+          (*(handlerCopy + 2))(handlerCopy, v34);
         }
 
         v48 = v54;
@@ -448,8 +448,8 @@ LABEL_40:
       {
         if (GTCoreLogUseOsLog())
         {
-          v42 = gt_tagged_log(0x10u);
-          if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
+          deviceCopy2 = gt_tagged_log(0x10u);
+          if (os_log_type_enabled(deviceCopy2, OS_LOG_TYPE_ERROR))
           {
             [GTFileWriterService initiateTransfer:basePath:fromDevice:toURL:options:completionHandler:];
           }
@@ -458,8 +458,8 @@ LABEL_40:
         else
         {
           v44 = *MEMORY[0x277D85DF8];
-          v42 = [MEMORY[0x277CCACA8] stringWithFormat:@"Remote connection for %@ is unavailable", v16];
-          fprintf(v44, "%s\n", [v42 UTF8String]);
+          deviceCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Remote connection for %@ is unavailable", deviceCopy];
+          fprintf(v44, "%s\n", [deviceCopy2 UTF8String]);
         }
 
         v45 = MEMORY[0x277CCA9B8];
@@ -469,15 +469,15 @@ LABEL_40:
         v47 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v66 forKeys:&v65 count:1];
         v48 = [v45 errorWithDomain:@"com.apple.gputools.transport" code:5 userInfo:v47];
 
-        (*(v19 + 2))(v19, v48);
+        (*(handlerCopy + 2))(handlerCopy, v48);
       }
 
-      v14 = v56;
+      transferCopy = v56;
     }
 
     else
     {
-      (*(v19 + 2))(v19, v24);
+      (*(handlerCopy + 2))(handlerCopy, v24);
     }
   }
 
@@ -486,7 +486,7 @@ LABEL_40:
     if (GTCoreLogUseOsLog())
     {
       v36 = gt_tagged_log(0x10u);
-      v37 = v14;
+      v37 = transferCopy;
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
         [GTFileWriterService initiateTransfer:basePath:fromDevice:toURL:options:completionHandler:];
@@ -495,7 +495,7 @@ LABEL_40:
 
     else
     {
-      v37 = v14;
+      v37 = transferCopy;
       v38 = *MEMORY[0x277D85DF8];
       v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid options sent to initiateTransfer"];
       fprintf(v38, "%s\n", [v36 UTF8String]);
@@ -508,8 +508,8 @@ LABEL_40:
     v41 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v68 forKeys:&v67 count:1];
     v24 = [v39 errorWithDomain:@"com.apple.gputools.transport" code:4 userInfo:v41];
 
-    (*(v19 + 2))(v19, v24);
-    v14 = v37;
+    (*(handlerCopy + 2))(handlerCopy, v24);
+    transferCopy = v37;
   }
 
   v53 = *MEMORY[0x277D85DE8];
@@ -588,16 +588,16 @@ void __92__GTFileWriterService_initiateTransfer_basePath_fromDevice_toURL_option
   (*(a1[5] + 16))();
 }
 
-- (void)beginTransferSessionWithFileEntries:(id)a3 basePath:(id)a4 toDevice:(id)a5 options:(id)a6 sessionID:(unint64_t)a7 completionHandler:(id)a8
+- (void)beginTransferSessionWithFileEntries:(id)entries basePath:(id)path toDevice:(id)device options:(id)options sessionID:(unint64_t)d completionHandler:(id)handler
 {
   v73[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v56 = [(GTURLAccessProvider *)self->_urlAccessProvider urlForPath:v15];
-  if (![v14 count])
+  entriesCopy = entries;
+  pathCopy = path;
+  deviceCopy = device;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v56 = [(GTURLAccessProvider *)self->_urlAccessProvider urlForPath:pathCopy];
+  if (![entriesCopy count])
   {
     if (GTCoreLogUseOsLog())
     {
@@ -624,36 +624,36 @@ void __92__GTFileWriterService_initiateTransfer_basePath_fromDevice_toURL_option
     goto LABEL_28;
   }
 
-  if (GTFileTransferOptionsValidate(v17))
+  if (GTFileTransferOptionsValidate(optionsCopy))
   {
-    v19 = [(GTConnectionProvider *)self->_connectionProvider connectionForDeviceUDID:v16];
+    v19 = [(GTConnectionProvider *)self->_connectionProvider connectionForDeviceUDID:deviceCopy];
     v20 = v19;
     if (v19)
     {
-      v21 = FindRemoteGTFileWriterService(v19, v16, self->_connectionProvider);
+      v21 = FindRemoteGTFileWriterService(v19, deviceCopy, self->_connectionProvider);
       v55 = v21;
       if (v21)
       {
         v22 = v21;
         v23 = [GTFileWriterServiceXPCProxy alloc];
-        v24 = [v22 serviceProperties];
-        v25 = [(GTFileWriterServiceXPCProxy *)v23 initWithConnection:v20 remoteProperties:v24];
+        serviceProperties = [v22 serviceProperties];
+        v25 = [(GTFileWriterServiceXPCProxy *)v23 initWithConnection:v20 remoteProperties:serviceProperties];
 
         [v56 startAccessingSecurityScopedResource];
-        v26 = [MEMORY[0x277CBEBC0] fileURLWithPath:v15 isDirectory:1];
+        v26 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy isDirectory:1];
         queue = self->_fileTransferQueue;
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __113__GTFileWriterService_beginTransferSessionWithFileEntries_basePath_toDevice_options_sessionID_completionHandler___block_invoke;
         block[3] = &unk_279661578;
-        v58 = v14;
+        v58 = entriesCopy;
         v59 = v26;
-        v60 = v17;
-        v61 = self;
+        v60 = optionsCopy;
+        selfCopy = self;
         v62 = v25;
-        v65 = a7;
+        dCopy = d;
         v63 = v56;
-        v64 = v18;
+        v64 = handlerCopy;
         v27 = v25;
         v28 = v26;
         dispatch_async(queue, block);
@@ -673,8 +673,8 @@ void __92__GTFileWriterService_initiateTransfer_basePath_fromDevice_toURL_option
         else
         {
           v48 = *MEMORY[0x277D85DF8];
-          v49 = [MEMORY[0x277CCACA8] stringWithFormat:@"File writer service for %@ is unavailable", v16];
-          fprintf(v48, "%s\n", [v49 UTF8String]);
+          deviceCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"File writer service for %@ is unavailable", deviceCopy];
+          fprintf(v48, "%s\n", [deviceCopy UTF8String]);
         }
 
         v50 = MEMORY[0x277CCA9B8];
@@ -684,7 +684,7 @@ void __92__GTFileWriterService_initiateTransfer_basePath_fromDevice_toURL_option
         v52 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
         v28 = [v50 errorWithDomain:@"com.apple.gputools.transport" code:1 userInfo:v52];
 
-        (*(v18 + 2))(v18, v28);
+        (*(handlerCopy + 2))(handlerCopy, v28);
       }
 
       v35 = v55;
@@ -703,8 +703,8 @@ void __92__GTFileWriterService_initiateTransfer_basePath_fromDevice_toURL_option
     else
     {
       v43 = *MEMORY[0x277D85DF8];
-      v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"Remote connection for %@ is unavailable", v16];
-      fprintf(v43, "%s\n", [v44 UTF8String]);
+      deviceCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Remote connection for %@ is unavailable", deviceCopy];
+      fprintf(v43, "%s\n", [deviceCopy2 UTF8String]);
     }
 
     v45 = MEMORY[0x277CCA9B8];
@@ -715,7 +715,7 @@ void __92__GTFileWriterService_initiateTransfer_basePath_fromDevice_toURL_option
     v35 = [v45 errorWithDomain:@"com.apple.gputools.transport" code:5 userInfo:v47];
 
 LABEL_28:
-    (*(v18 + 2))(v18, v35);
+    (*(handlerCopy + 2))(handlerCopy, v35);
 LABEL_32:
 
     goto LABEL_33;
@@ -744,7 +744,7 @@ LABEL_32:
   v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v71 forKeys:&v70 count:1];
   v20 = [v38 errorWithDomain:@"com.apple.gputools.transport" code:4 userInfo:v40];
 
-  (*(v18 + 2))(v18, v20);
+  (*(handlerCopy + 2))(handlerCopy, v20);
 LABEL_33:
 
   v53 = *MEMORY[0x277D85DE8];
@@ -912,29 +912,29 @@ void __113__GTFileWriterService_beginTransferSessionWithFileEntries_basePath_toD
   dispatch_semaphore_signal(*(*(a1 + 32) + 56));
 }
 
-- (void)writeFileData:(id)a3 sessionID:(unint64_t)a4 completionHandler:(id)a5
+- (void)writeFileData:(id)data sessionID:(unint64_t)d completionHandler:(id)handler
 {
   sessions = self->_sessions;
   v8 = MEMORY[0x277CCABB0];
-  v9 = a5;
-  v10 = a3;
-  v12 = [v8 numberWithUnsignedLongLong:a4];
+  handlerCopy = handler;
+  dataCopy = data;
+  v12 = [v8 numberWithUnsignedLongLong:d];
   v11 = [(NSMutableDictionary *)sessions objectForKeyedSubscript:v12];
-  [v11 writeFileData:v10 completionHandler:v9];
+  [v11 writeFileData:dataCopy completionHandler:handlerCopy];
 }
 
-- (BOOL)_finishSession:(unint64_t)a3 error:(id *)a4
+- (BOOL)_finishSession:(unint64_t)session error:(id *)error
 {
   sessions = self->_sessions;
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:?];
   v9 = [(NSMutableDictionary *)sessions objectForKeyedSubscript:v8];
 
   v10 = self->_sessions;
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:session];
   [(NSMutableDictionary *)v10 removeObjectForKey:v11];
 
-  LOBYTE(a4) = [v9 finish:a4];
-  return a4;
+  LOBYTE(error) = [v9 finish:error];
+  return error;
 }
 
 - (void)startTransfer:basePath:fromDevice:toDirectory:options:completionHandler:.cold.1()

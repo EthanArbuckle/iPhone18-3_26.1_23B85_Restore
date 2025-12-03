@@ -1,14 +1,14 @@
 @interface CPLCloudKitFakeDynamicDerivatives
-+ (BOOL)_transferImageFromSource:(CGImageSource *)a3 toDestination:(CGImageDestination *)a4 matchingResource:(id)a5;
-+ (BOOL)isFakeDerivative:(id)a3;
-+ (BOOL)transformFromURL:(id)a3 fileType:(id)a4 toTargetURL:(id)a5 matchingResource:(id)a6 error:(id *)a7;
++ (BOOL)_transferImageFromSource:(CGImageSource *)source toDestination:(CGImageDestination *)destination matchingResource:(id)resource;
++ (BOOL)isFakeDerivative:(id)derivative;
++ (BOOL)transformFromURL:(id)l fileType:(id)type toTargetURL:(id)rL matchingResource:(id)resource error:(id *)error;
 + (NSString)fakeDerivativesDescription;
-+ (id)_metadataWithoutOrientation:(id)a3;
-+ (id)_outputOptionsFromSource:(CGImageSource *)a3 matchingResource:(id)a4;
-+ (id)overriddenResourcesFromResources:(id)a3;
-+ (id)transformData:(id)a3 fileType:(id)a4 matchingResource:(id)a5 error:(id *)a6;
-+ (unint64_t)realResourceTypeForResource:(id)a3;
-+ (void)setAllowsFakeDerivatives:(BOOL)a3;
++ (id)_metadataWithoutOrientation:(id)orientation;
++ (id)_outputOptionsFromSource:(CGImageSource *)source matchingResource:(id)resource;
++ (id)overriddenResourcesFromResources:(id)resources;
++ (id)transformData:(id)data fileType:(id)type matchingResource:(id)resource error:(id *)error;
++ (unint64_t)realResourceTypeForResource:(id)resource;
++ (void)setAllowsFakeDerivatives:(BOOL)derivatives;
 @end
 
 @implementation CPLCloudKitFakeDynamicDerivatives
@@ -59,16 +59,16 @@
   return v10;
 }
 
-+ (void)setAllowsFakeDerivatives:(BOOL)a3
++ (void)setAllowsFakeDerivatives:(BOOL)derivatives
 {
-  if (a3)
+  if (derivatives)
   {
     v5 = +[NSUserDefaults standardUserDefaults];
     v6 = [v5 stringForKey:@"CPLFakeDynamicDerivatives"];
 
     if (v6)
     {
-      v22 = a1;
+      selfCopy = self;
       v7 = [v6 componentsSeparatedByString:{@", "}];
       v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
       v23 = 0u;
@@ -147,9 +147,9 @@
         v17 = __CPLGenericOSLogDomain();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v22 fakeDerivativesDescription];
+          fakeDerivativesDescription = [selfCopy fakeDerivativesDescription];
           *buf = 138412290;
-          v28 = v18;
+          v28 = fakeDerivativesDescription;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Will produce fake derivatives: %@", buf, 0xCu);
         }
 
@@ -165,14 +165,14 @@ LABEL_24:
     qword_1002C5120 = 0;
   }
 
-  byte_1002C5128 = a3;
+  byte_1002C5128 = derivatives;
 }
 
-+ (id)overriddenResourcesFromResources:(id)a3
++ (id)overriddenResourcesFromResources:(id)resources
 {
-  v3 = a3;
-  v4 = v3;
-  if (byte_1002C5129 == 1 && [v3 count])
+  resourcesCopy = resources;
+  v4 = resourcesCopy;
+  if (byte_1002C5129 == 1 && [resourcesCopy count])
   {
     v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
     v24 = 0u;
@@ -233,59 +233,59 @@ LABEL_24:
       while (v15);
     }
 
-    v18 = [v5 allValues];
+    allValues = [v5 allValues];
   }
 
   else
   {
-    v18 = v4;
+    allValues = v4;
   }
 
-  return v18;
+  return allValues;
 }
 
-+ (BOOL)isFakeDerivative:(id)a3
++ (BOOL)isFakeDerivative:(id)derivative
 {
   if (byte_1002C5129 != 1)
   {
     return 0;
   }
 
-  v3 = [a3 identity];
-  v4 = [v3 fingerPrint];
-  v5 = [v4 hasPrefix:@"^"];
+  identity = [derivative identity];
+  fingerPrint = [identity fingerPrint];
+  v5 = [fingerPrint hasPrefix:@"^"];
 
   return v5;
 }
 
-+ (unint64_t)realResourceTypeForResource:(id)a3
++ (unint64_t)realResourceTypeForResource:(id)resource
 {
-  v3 = a3;
+  resourceCopy = resource;
   v4 = [_CPLCloudKitFakeFingerPrint alloc];
-  v5 = [v3 identity];
-  v6 = [(_CPLCloudKitFakeFingerPrint *)v4 initWithFakeIdentity:v5];
+  identity = [resourceCopy identity];
+  v6 = [(_CPLCloudKitFakeFingerPrint *)v4 initWithFakeIdentity:identity];
 
   if (v6)
   {
-    v7 = [(_CPLCloudKitFakeFingerPrint *)v6 realResourceType];
+    realResourceType = [(_CPLCloudKitFakeFingerPrint *)v6 realResourceType];
   }
 
   else
   {
-    v7 = [v3 resourceType];
+    realResourceType = [resourceCopy resourceType];
   }
 
-  v8 = v7;
+  v8 = realResourceType;
 
   return v8;
 }
 
-+ (id)_metadataWithoutOrientation:(id)a3
++ (id)_metadataWithoutOrientation:(id)orientation
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
+  orientationCopy = orientation;
+  v4 = [orientationCopy mutableCopy];
   [v4 removeObjectForKey:kCGImagePropertyOrientation];
-  v5 = [v3 objectForKey:kCGImagePropertyTIFFDictionary];
+  v5 = [orientationCopy objectForKey:kCGImagePropertyTIFFDictionary];
 
   v6 = [v5 mutableCopy];
   if (v6)
@@ -297,18 +297,18 @@ LABEL_24:
   return v4;
 }
 
-+ (id)_outputOptionsFromSource:(CGImageSource *)a3 matchingResource:(id)a4
++ (id)_outputOptionsFromSource:(CGImageSource *)source matchingResource:(id)resource
 {
   v18 = @"kCGImageSourceKeepOriginalProfile";
   v19 = kCFBooleanTrue;
-  v6 = a4;
+  resourceCopy = resource;
   v7 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-  v8 = CGImageSourceCopyPropertiesAtIndex(a3, 0, v7);
-  v9 = [a1 _metadataWithoutOrientation:v8];
+  v8 = CGImageSourceCopyPropertiesAtIndex(source, 0, v7);
+  v9 = [self _metadataWithoutOrientation:v8];
   [v9 setObject:&off_1002914E8 forKey:kCGImageDestinationLossyCompressionQuality];
-  v10 = [v6 identity];
+  identity = [resourceCopy identity];
 
-  [v10 imageDimensions];
+  [identity imageDimensions];
   v12 = v11;
   v14 = v13;
 
@@ -330,31 +330,31 @@ LABEL_24:
   return v9;
 }
 
-+ (BOOL)_transferImageFromSource:(CGImageSource *)a3 toDestination:(CGImageDestination *)a4 matchingResource:(id)a5
++ (BOOL)_transferImageFromSource:(CGImageSource *)source toDestination:(CGImageDestination *)destination matchingResource:(id)resource
 {
-  v7 = [a1 _outputOptionsFromSource:a3 matchingResource:a5];
-  CGImageDestinationAddImageFromSource(a4, a3, 0, v7);
-  LOBYTE(a4) = CGImageDestinationFinalize(a4);
+  v7 = [self _outputOptionsFromSource:source matchingResource:resource];
+  CGImageDestinationAddImageFromSource(destination, source, 0, v7);
+  LOBYTE(destination) = CGImageDestinationFinalize(destination);
 
-  return a4;
+  return destination;
 }
 
-+ (BOOL)transformFromURL:(id)a3 fileType:(id)a4 toTargetURL:(id)a5 matchingResource:(id)a6 error:(id *)a7
++ (BOOL)transformFromURL:(id)l fileType:(id)type toTargetURL:(id)rL matchingResource:(id)resource error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  lCopy = l;
+  typeCopy = type;
+  rLCopy = rL;
+  resourceCopy = resource;
   v16 = [_CPLCloudKitFakeFingerPrint alloc];
-  v17 = [v15 identity];
-  v18 = [(_CPLCloudKitFakeFingerPrint *)v16 initWithFakeIdentity:v17];
+  identity = [resourceCopy identity];
+  v18 = [(_CPLCloudKitFakeFingerPrint *)v16 initWithFakeIdentity:identity];
 
   if (v18)
   {
-    if (v13)
+    if (typeCopy)
     {
       v32 = kCGImageSourceTypeIdentifierHint;
-      v33 = v13;
+      v33 = typeCopy;
       v19 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
     }
 
@@ -363,11 +363,11 @@ LABEL_24:
       v19 = 0;
     }
 
-    v22 = CGImageSourceCreateWithURL(v12, v19);
+    v22 = CGImageSourceCreateWithURL(lCopy, v19);
     if (!v22)
     {
       v20 = 0;
-      if (!a7)
+      if (!error)
       {
         goto LABEL_18;
       }
@@ -376,16 +376,16 @@ LABEL_24:
     }
 
     v23 = v22;
-    v30 = v12;
-    v24 = a7;
-    v25 = a1;
-    v26 = [(_CPLCloudKitFakeFingerPrint *)v18 outputType];
-    v27 = v14;
-    v28 = CGImageDestinationCreateWithURL(v14, v26, 1uLL, 0);
+    v30 = lCopy;
+    errorCopy = error;
+    selfCopy = self;
+    outputType = [(_CPLCloudKitFakeFingerPrint *)v18 outputType];
+    v27 = rLCopy;
+    v28 = CGImageDestinationCreateWithURL(rLCopy, outputType, 1uLL, 0);
 
     if (v28)
     {
-      v20 = [v25 _transferImageFromSource:v23 toDestination:v28 matchingResource:v15];
+      v20 = [selfCopy _transferImageFromSource:v23 toDestination:v28 matchingResource:resourceCopy];
       CFRelease(v28);
     }
 
@@ -394,16 +394,16 @@ LABEL_24:
       v20 = 0;
     }
 
-    a7 = v24;
+    error = errorCopy;
     CFRelease(v23);
-    v14 = v27;
-    v12 = v30;
-    if (v24)
+    rLCopy = v27;
+    lCopy = v30;
+    if (errorCopy)
     {
 LABEL_16:
       if ((v20 & 1) == 0)
       {
-        *a7 = +[CPLErrors unknownError];
+        *error = +[CPLErrors unknownError];
       }
     }
   }
@@ -412,12 +412,12 @@ LABEL_16:
   {
     v19 = +[NSFileManager defaultManager];
     v31 = 0;
-    v20 = [(__CFDictionary *)v19 cplCopyItemAtURL:v12 toURL:v14 error:&v31];
+    v20 = [(__CFDictionary *)v19 cplCopyItemAtURL:lCopy toURL:rLCopy error:&v31];
     v21 = v31;
-    if (a7 && (v20 & 1) == 0)
+    if (error && (v20 & 1) == 0)
     {
       v21 = v21;
-      *a7 = v21;
+      *error = v21;
     }
   }
 
@@ -426,21 +426,21 @@ LABEL_18:
   return v20;
 }
 
-+ (id)transformData:(id)a3 fileType:(id)a4 matchingResource:(id)a5 error:(id *)a6
++ (id)transformData:(id)data fileType:(id)type matchingResource:(id)resource error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  typeCopy = type;
+  resourceCopy = resource;
   v12 = [_CPLCloudKitFakeFingerPrint alloc];
-  v13 = [v11 identity];
-  v14 = [(_CPLCloudKitFakeFingerPrint *)v12 initWithFakeIdentity:v13];
+  identity = [resourceCopy identity];
+  v14 = [(_CPLCloudKitFakeFingerPrint *)v12 initWithFakeIdentity:identity];
 
   if (v14)
   {
-    if (v10)
+    if (typeCopy)
     {
       v22 = kCGImageSourceTypeIdentifierHint;
-      v23 = v10;
+      v23 = typeCopy;
       v15 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     }
 
@@ -449,17 +449,17 @@ LABEL_18:
       v15 = 0;
     }
 
-    v17 = CGImageSourceCreateWithData(v9, v15);
+    v17 = CGImageSourceCreateWithData(dataCopy, v15);
     if (v17)
     {
       v18 = v17;
       v16 = objc_alloc_init(NSMutableData);
-      v19 = [(_CPLCloudKitFakeFingerPrint *)v14 outputType];
-      v20 = CGImageDestinationCreateWithData(v16, v19, 1uLL, 0);
+      outputType = [(_CPLCloudKitFakeFingerPrint *)v14 outputType];
+      v20 = CGImageDestinationCreateWithData(v16, outputType, 1uLL, 0);
 
       if (v20)
       {
-        if (([a1 _transferImageFromSource:v18 toDestination:v20 matchingResource:v11] & 1) == 0)
+        if (([self _transferImageFromSource:v18 toDestination:v20 matchingResource:resourceCopy] & 1) == 0)
         {
 
           v16 = 0;
@@ -479,7 +479,7 @@ LABEL_18:
 
   else
   {
-    v16 = v9;
+    v16 = dataCopy;
   }
 
   return v16;

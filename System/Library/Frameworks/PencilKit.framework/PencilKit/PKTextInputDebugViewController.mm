@@ -1,26 +1,26 @@
 @interface PKTextInputDebugViewController
 - (PKTextInputDebugViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_configureCell:(id)a3 forItemAtIndex:(int64_t)a4;
-- (void)_handleCloseButton:(id)a3;
-- (void)_handleLogButton:(id)a3;
-- (void)_handleRadarButton:(id)a3;
-- (void)_handleTargetsButton:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_configureCell:(id)cell forItemAtIndex:(int64_t)index;
+- (void)_handleCloseButton:(id)button;
+- (void)_handleLogButton:(id)button;
+- (void)_handleRadarButton:(id)button;
+- (void)_handleTargetsButton:(id)button;
 - (void)_reloadDebugStateData;
 - (void)_reloadTargetsVisualization;
-- (void)_setVisualizeTargets:(BOOL)a3;
+- (void)_setVisualizeTargets:(BOOL)targets;
 - (void)_setupStatusView;
 - (void)_updateStatusView;
 - (void)_updateTargetsVisualizationView;
-- (void)debugViewTableCellDidTapDetailsButton:(id)a3;
+- (void)debugViewTableCellDidTapDetailsButton:(id)button;
 - (void)loadView;
-- (void)setElementsController:(id)a3;
+- (void)setElementsController:(id)controller;
 - (void)setNeedsReloadDebugStateData;
 - (void)setNeedsReloadTargetsVisualization;
-- (void)setStatusViewAnchorCorner:(unint64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setStatusViewAnchorCorner:(unint64_t)corner;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -42,22 +42,22 @@
   [(PKTextInputDebugViewController *)self setStatusViewAnchorCorner:8];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKTextInputDebugViewController;
-  [(PKTextInputDebugViewController *)&v5 viewDidAppear:a3];
+  [(PKTextInputDebugViewController *)&v5 viewDidAppear:appear];
   v4 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__handleAutoreloadTimerFired selector:0 userInfo:1 repeats:1.0];
   [(PKTextInputDebugViewController *)self set_autoreloadTimer:v4];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PKTextInputDebugViewController;
-  [(PKTextInputDebugViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(PKTextInputDebugViewController *)self _autoreloadTimer];
-  [v4 invalidate];
+  [(PKTextInputDebugViewController *)&v5 viewDidDisappear:disappear];
+  _autoreloadTimer = [(PKTextInputDebugViewController *)self _autoreloadTimer];
+  [_autoreloadTimer invalidate];
 
   [(PKTextInputDebugViewController *)self set_autoreloadTimer:0];
 }
@@ -74,15 +74,15 @@
   [(PKTextInputDebugViewController *)self set_statusContainerView:v8];
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v8 setOpaque:0];
-  v9 = [MEMORY[0x1E69DC888] whiteColor];
-  [v8 setTintColor:v9];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v8 setTintColor:whiteColor];
 
   [v8 setClipsToBounds:1];
-  v10 = [v8 layer];
-  [v10 setCornerRadius:12.0];
+  layer = [v8 layer];
+  [layer setCornerRadius:12.0];
 
-  v11 = [(PKTextInputDebugViewController *)self view];
-  [v11 addSubview:v8];
+  view = [(PKTextInputDebugViewController *)self view];
+  [view addSubview:v8];
 
   v12 = [objc_alloc(MEMORY[0x1E69DD180]) initWithFrame:{v4, v5, v6, v7}];
   [(PKTextInputDebugViewController *)self set_statusViewToolbar:v12];
@@ -137,77 +137,77 @@
   v25 = objc_alloc_init(MEMORY[0x1E69DCAB8]);
   [v12 setShadowImage:v25 forToolbarPosition:0];
 
-  v26 = [MEMORY[0x1E69DC888] clearColor];
-  [v18 setBackgroundColor:v26];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v18 setBackgroundColor:clearColor];
 
-  v63 = [MEMORY[0x1E695DF70] array];
-  v27 = [v8 heightAnchor];
-  v28 = [v27 constraintEqualToConstant:500.0];
+  array = [MEMORY[0x1E695DF70] array];
+  heightAnchor = [v8 heightAnchor];
+  v28 = [heightAnchor constraintEqualToConstant:500.0];
   v66[0] = v28;
-  v29 = [v8 widthAnchor];
-  v30 = [v29 constraintEqualToConstant:320.0];
+  widthAnchor = [v8 widthAnchor];
+  v30 = [widthAnchor constraintEqualToConstant:320.0];
   v66[1] = v30;
   v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:2];
-  [v63 addObjectsFromArray:v31];
+  [array addObjectsFromArray:v31];
 
   v32 = v23;
-  v54 = [v23 topAnchor];
-  v52 = [v8 topAnchor];
-  v33 = [v54 constraintEqualToAnchor:v52];
+  topAnchor = [v23 topAnchor];
+  topAnchor2 = [v8 topAnchor];
+  v33 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v65[0] = v33;
-  v34 = [v23 leadingAnchor];
+  leadingAnchor = [v23 leadingAnchor];
   v62 = v8;
-  v35 = [v8 leadingAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35];
+  leadingAnchor2 = [v8 leadingAnchor];
+  v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v65[1] = v36;
   v56 = v32;
-  v37 = [v32 trailingAnchor];
-  v38 = [v8 trailingAnchor];
-  v39 = [v37 constraintEqualToAnchor:v38];
+  trailingAnchor = [v32 trailingAnchor];
+  trailingAnchor2 = [v8 trailingAnchor];
+  v39 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v65[2] = v39;
   v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v65 count:3];
-  [v63 addObjectsFromArray:v40];
+  [array addObjectsFromArray:v40];
 
-  v55 = [v18 topAnchor];
-  v53 = [v32 bottomAnchor];
-  v51 = [v55 constraintEqualToAnchor:v53];
+  topAnchor3 = [v18 topAnchor];
+  bottomAnchor = [v32 bottomAnchor];
+  v51 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v64[0] = v51;
-  v50 = [v18 bottomAnchor];
-  v49 = [v62 bottomAnchor];
-  v41 = [v50 constraintEqualToAnchor:v49];
+  bottomAnchor2 = [v18 bottomAnchor];
+  bottomAnchor3 = [v62 bottomAnchor];
+  v41 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v64[1] = v41;
-  v42 = [v18 leadingAnchor];
-  v43 = [v62 leadingAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
+  leadingAnchor3 = [v18 leadingAnchor];
+  leadingAnchor4 = [v62 leadingAnchor];
+  v44 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v64[2] = v44;
-  v45 = [v18 trailingAnchor];
-  v46 = [v62 trailingAnchor];
-  v47 = [v45 constraintEqualToAnchor:v46];
+  trailingAnchor3 = [v18 trailingAnchor];
+  trailingAnchor4 = [v62 trailingAnchor];
+  v47 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v64[3] = v47;
   v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:4];
-  [v63 addObjectsFromArray:v48];
+  [array addObjectsFromArray:v48];
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v63];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
 }
 
-- (void)setStatusViewAnchorCorner:(unint64_t)a3
+- (void)setStatusViewAnchorCorner:(unint64_t)corner
 {
-  if (self->_statusViewAnchorCorner != a3)
+  if (self->_statusViewAnchorCorner != corner)
   {
-    self->_statusViewAnchorCorner = a3;
+    self->_statusViewAnchorCorner = corner;
     [(PKTextInputDebugViewController *)self _updateStatusView];
   }
 }
 
-- (void)setElementsController:(id)a3
+- (void)setElementsController:(id)controller
 {
-  v5 = a3;
-  if (self->_elementsController != v5)
+  controllerCopy = controller;
+  if (self->_elementsController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_elementsController, a3);
+    v6 = controllerCopy;
+    objc_storeStrong(&self->_elementsController, controller);
     [(PKTextInputDebugViewController *)self setNeedsReloadTargetsVisualization];
-    v5 = v6;
+    controllerCopy = v6;
   }
 }
 
@@ -234,74 +234,74 @@
 - (void)_updateStatusView
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PKTextInputDebugViewController *)self _statusViewPositionConstraints];
+  _statusViewPositionConstraints = [(PKTextInputDebugViewController *)self _statusViewPositionConstraints];
 
-  if (v3)
+  if (_statusViewPositionConstraints)
   {
     v4 = MEMORY[0x1E696ACD8];
-    v5 = [(PKTextInputDebugViewController *)self _statusViewPositionConstraints];
-    [v4 deactivateConstraints:v5];
+    _statusViewPositionConstraints2 = [(PKTextInputDebugViewController *)self _statusViewPositionConstraints];
+    [v4 deactivateConstraints:_statusViewPositionConstraints2];
 
     [(PKTextInputDebugViewController *)self set_statusViewPositionConstraints:0];
   }
 
-  v6 = [(PKTextInputDebugViewController *)self _statusContainerView];
-  v7 = [(PKTextInputDebugViewController *)self statusViewAnchorCorner];
-  switch(v7)
+  _statusContainerView = [(PKTextInputDebugViewController *)self _statusContainerView];
+  statusViewAnchorCorner = [(PKTextInputDebugViewController *)self statusViewAnchorCorner];
+  switch(statusViewAnchorCorner)
   {
     case 4uLL:
-      v18 = [v6 bottomAnchor];
-      v9 = [(PKTextInputDebugViewController *)self view];
-      v10 = [v9 bottomAnchor];
-      v21 = v18;
-      v11 = [v18 constraintEqualToAnchor:v10 constant:-60.0];
+      bottomAnchor = [_statusContainerView bottomAnchor];
+      view = [(PKTextInputDebugViewController *)self view];
+      bottomAnchor2 = [view bottomAnchor];
+      v21 = bottomAnchor;
+      v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-60.0];
       v23[0] = v11;
-      v12 = [v6 leadingAnchor];
-      v13 = [(PKTextInputDebugViewController *)self view];
-      v14 = [v13 leadingAnchor];
-      v15 = [v12 constraintEqualToAnchor:v14 constant:22.0];
+      leadingAnchor = [_statusContainerView leadingAnchor];
+      view2 = [(PKTextInputDebugViewController *)self view];
+      leadingAnchor2 = [view2 leadingAnchor];
+      v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:22.0];
       v23[1] = v15;
       v16 = v23;
       break;
     case 2uLL:
-      v17 = [v6 topAnchor];
-      v9 = [(PKTextInputDebugViewController *)self view];
-      v10 = [v9 topAnchor];
-      v21 = v17;
-      v11 = [v17 constraintEqualToAnchor:v10 constant:60.0];
+      topAnchor = [_statusContainerView topAnchor];
+      view = [(PKTextInputDebugViewController *)self view];
+      bottomAnchor2 = [view topAnchor];
+      v21 = topAnchor;
+      v11 = [topAnchor constraintEqualToAnchor:bottomAnchor2 constant:60.0];
       v24[0] = v11;
-      v12 = [v6 trailingAnchor];
-      v13 = [(PKTextInputDebugViewController *)self view];
-      v14 = [v13 trailingAnchor];
-      v15 = [v12 constraintEqualToAnchor:v14 constant:-22.0];
+      leadingAnchor = [_statusContainerView trailingAnchor];
+      view2 = [(PKTextInputDebugViewController *)self view];
+      leadingAnchor2 = [view2 trailingAnchor];
+      v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-22.0];
       v24[1] = v15;
       v16 = v24;
       break;
     case 1uLL:
-      v8 = [v6 topAnchor];
-      v9 = [(PKTextInputDebugViewController *)self view];
-      v10 = [v9 topAnchor];
-      v21 = v8;
-      v11 = [v8 constraintEqualToAnchor:v10 constant:60.0];
+      topAnchor2 = [_statusContainerView topAnchor];
+      view = [(PKTextInputDebugViewController *)self view];
+      bottomAnchor2 = [view topAnchor];
+      v21 = topAnchor2;
+      v11 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2 constant:60.0];
       v25[0] = v11;
-      v12 = [v6 leadingAnchor];
-      v13 = [(PKTextInputDebugViewController *)self view];
-      v14 = [v13 leadingAnchor];
-      v15 = [v12 constraintEqualToAnchor:v14 constant:22.0];
+      leadingAnchor = [_statusContainerView leadingAnchor];
+      view2 = [(PKTextInputDebugViewController *)self view];
+      leadingAnchor2 = [view2 leadingAnchor];
+      v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:22.0];
       v25[1] = v15;
       v16 = v25;
       break;
     default:
-      v19 = [v6 bottomAnchor];
-      v9 = [(PKTextInputDebugViewController *)self view];
-      v10 = [v9 bottomAnchor];
-      v21 = v19;
-      v11 = [v19 constraintEqualToAnchor:v10 constant:-60.0];
+      bottomAnchor3 = [_statusContainerView bottomAnchor];
+      view = [(PKTextInputDebugViewController *)self view];
+      bottomAnchor2 = [view bottomAnchor];
+      v21 = bottomAnchor3;
+      v11 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor2 constant:-60.0];
       v22[0] = v11;
-      v12 = [v6 trailingAnchor];
-      v13 = [(PKTextInputDebugViewController *)self view];
-      v14 = [v13 trailingAnchor];
-      v15 = [v12 constraintEqualToAnchor:v14 constant:-22.0];
+      leadingAnchor = [_statusContainerView trailingAnchor];
+      view2 = [(PKTextInputDebugViewController *)self view];
+      leadingAnchor2 = [view2 trailingAnchor];
+      v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-22.0];
       v22[1] = v15;
       v16 = v22;
       break;
@@ -315,17 +315,17 @@
 
 - (void)_reloadDebugStateData
 {
-  v3 = [(PKTextInputDebugViewController *)self _statusTableView];
-  [v3 reloadData];
+  _statusTableView = [(PKTextInputDebugViewController *)self _statusTableView];
+  [_statusTableView reloadData];
 
   [(PKTextInputDebugViewController *)self set_needsReloadData:0];
 }
 
-- (void)_setVisualizeTargets:(BOOL)a3
+- (void)_setVisualizeTargets:(BOOL)targets
 {
-  if (self->__visualizeTargets != a3)
+  if (self->__visualizeTargets != targets)
   {
-    self->__visualizeTargets = a3;
+    self->__visualizeTargets = targets;
     [(PKTextInputDebugViewController *)self _updateTargetsVisualizationView];
     if (self->__visualizeTargets)
     {
@@ -337,14 +337,14 @@
 
 - (void)_updateTargetsVisualizationView
 {
-  v3 = [(PKTextInputDebugViewController *)self _visualizeTargets];
-  v4 = [(PKTextInputDebugViewController *)self _targetsContainerView];
+  _visualizeTargets = [(PKTextInputDebugViewController *)self _visualizeTargets];
+  _targetsContainerView = [(PKTextInputDebugViewController *)self _targetsContainerView];
 
-  if (!v3 || v4)
+  if (!_visualizeTargets || _targetsContainerView)
   {
-    if (v4)
+    if (_targetsContainerView)
     {
-      v11 = v3;
+      v11 = _visualizeTargets;
     }
 
     else
@@ -354,8 +354,8 @@
 
     if ((v11 & 1) == 0)
     {
-      v12 = [(PKTextInputDebugViewController *)self _targetsContainerView];
-      [v12 removeFromSuperview];
+      _targetsContainerView2 = [(PKTextInputDebugViewController *)self _targetsContainerView];
+      [_targetsContainerView2 removeFromSuperview];
 
       [(PKTextInputDebugViewController *)self set_targetsContainerView:0];
     }
@@ -364,18 +364,18 @@
   else
   {
     v5 = [PKTextInputDebugTargetsView alloc];
-    v6 = [(PKTextInputDebugViewController *)self view];
-    [v6 bounds];
+    view = [(PKTextInputDebugViewController *)self view];
+    [view bounds];
     v7 = [(PKTextInputDebugTargetsView *)v5 initWithFrame:?];
     [(PKTextInputDebugViewController *)self set_targetsContainerView:v7];
 
-    v8 = [(PKTextInputDebugViewController *)self _targetsContainerView];
-    [v8 setAutoresizingMask:18];
+    _targetsContainerView3 = [(PKTextInputDebugViewController *)self _targetsContainerView];
+    [_targetsContainerView3 setAutoresizingMask:18];
 
-    v13 = [(PKTextInputDebugViewController *)self view];
-    v9 = [(PKTextInputDebugViewController *)self _targetsContainerView];
-    v10 = [(PKTextInputDebugViewController *)self _statusContainerView];
-    [v13 insertSubview:v9 belowSubview:v10];
+    view2 = [(PKTextInputDebugViewController *)self view];
+    _targetsContainerView4 = [(PKTextInputDebugViewController *)self _targetsContainerView];
+    _statusContainerView = [(PKTextInputDebugViewController *)self _statusContainerView];
+    [view2 insertSubview:_targetsContainerView4 belowSubview:_statusContainerView];
   }
 }
 
@@ -383,11 +383,11 @@
 {
   if ([(PKTextInputDebugViewController *)self _visualizeTargets])
   {
-    v3 = [(PKTextInputDebugViewController *)self elementsController];
-    v4 = v3;
-    if (v3)
+    elementsController = [(PKTextInputDebugViewController *)self elementsController];
+    v4 = elementsController;
+    if (elementsController)
     {
-      v5 = *(v3 + 40);
+      v5 = *(elementsController + 40);
     }
 
     else
@@ -396,115 +396,115 @@
     }
 
     v6 = v5;
-    v7 = [v6 allValues];
+    allValues = [v6 allValues];
 
     v8 = MEMORY[0x1E695E0F0];
-    if (v7)
+    if (allValues)
     {
-      v8 = v7;
+      v8 = allValues;
     }
 
     v9 = v8;
 
-    v10 = [(PKTextInputDebugViewController *)self _targetsContainerView];
-    [v10 setVisualizationElements:v9];
+    _targetsContainerView = [(PKTextInputDebugViewController *)self _targetsContainerView];
+    [_targetsContainerView setVisualizationElements:v9];
   }
 
   [(PKTextInputDebugViewController *)self set_needsReloadTargetsVisualization:0];
 }
 
-- (void)_handleCloseButton:(id)a3
+- (void)_handleCloseButton:(id)button
 {
-  v4 = [(PKTextInputDebugViewController *)self delegate];
-  [v4 debugViewControllerNeedsDismiss:self];
+  delegate = [(PKTextInputDebugViewController *)self delegate];
+  [delegate debugViewControllerNeedsDismiss:self];
 }
 
-- (void)_handleTargetsButton:(id)a3
+- (void)_handleTargetsButton:(id)button
 {
   v4 = [(PKTextInputDebugViewController *)self _visualizeTargets]^ 1;
 
   [(PKTextInputDebugViewController *)self _setVisualizeTargets:v4];
 }
 
-- (void)_handleLogButton:(id)a3
+- (void)_handleLogButton:(id)button
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [(PKTextInputDebugViewController *)self introspectorDataSource];
-  v4 = [v3 fullDebugStateDescription];
+  introspectorDataSource = [(PKTextInputDebugViewController *)self introspectorDataSource];
+  fullDebugStateDescription = [introspectorDataSource fullDebugStateDescription];
 
   v5 = os_log_create("com.apple.pencilkit", "PencilTextInput");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = fullDebugStateDescription;
     _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "Pencil Text Input State:\n%@", &v6, 0xCu);
   }
 }
 
-- (void)_handleRadarButton:(id)a3
+- (void)_handleRadarButton:(id)button
 {
-  v4 = [(PKTextInputDebugViewController *)self debugLogController];
-  v7 = [(PKTextInputDebugLogController *)v4 sharpenerLogWithCurrentContent];
+  debugLogController = [(PKTextInputDebugViewController *)self debugLogController];
+  sharpenerLogWithCurrentContent = [(PKTextInputDebugLogController *)debugLogController sharpenerLogWithCurrentContent];
 
-  v5 = [[PKTextInputDebugRadarViewController alloc] initWithSharpenerLog:v7];
+  v5 = [[PKTextInputDebugRadarViewController alloc] initWithSharpenerLog:sharpenerLogWithCurrentContent];
   v6 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v5];
   [v6 setModalPresentationStyle:2];
   [(PKTextInputDebugViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(PKTextInputDebugViewController *)self introspectorDataSource:a3];
-  v5 = [v4 debugStateKeys];
-  v6 = [v5 count];
+  v4 = [(PKTextInputDebugViewController *)self introspectorDataSource:view];
+  debugStateKeys = [v4 debugStateKeys];
+  v6 = [debugStateKeys count];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
-  if (![v6 section])
+  if (![pathCopy section])
   {
-    -[PKTextInputDebugViewController _configureCell:forItemAtIndex:](self, "_configureCell:forItemAtIndex:", v10, [v6 item]);
+    -[PKTextInputDebugViewController _configureCell:forItemAtIndex:](self, "_configureCell:forItemAtIndex:", v10, [pathCopy item]);
   }
 
   return v10;
 }
 
-- (void)_configureCell:(id)a3 forItemAtIndex:(int64_t)a4
+- (void)_configureCell:(id)cell forItemAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(PKTextInputDebugViewController *)self introspectorDataSource];
-  v8 = [v7 debugStateKeys];
-  v15 = [v8 objectAtIndex:a4];
+  cellCopy = cell;
+  introspectorDataSource = [(PKTextInputDebugViewController *)self introspectorDataSource];
+  debugStateKeys = [introspectorDataSource debugStateKeys];
+  v15 = [debugStateKeys objectAtIndex:index];
 
-  v9 = [(PKTextInputDebugViewController *)self introspectorDataSource];
-  v10 = [v9 debugStateTitleForStateKey:v15];
+  introspectorDataSource2 = [(PKTextInputDebugViewController *)self introspectorDataSource];
+  v10 = [introspectorDataSource2 debugStateTitleForStateKey:v15];
 
-  v11 = [(PKTextInputDebugViewController *)self introspectorDataSource];
-  v12 = [v11 debugStateDescriptionForStateKey:v15];
+  introspectorDataSource3 = [(PKTextInputDebugViewController *)self introspectorDataSource];
+  v12 = [introspectorDataSource3 debugStateDescriptionForStateKey:v15];
 
-  v13 = [(PKTextInputDebugViewController *)self introspectorDataSource];
-  v14 = [v13 debugStateCanShowDetailsForStateKey:v15];
+  introspectorDataSource4 = [(PKTextInputDebugViewController *)self introspectorDataSource];
+  v14 = [introspectorDataSource4 debugStateCanShowDetailsForStateKey:v15];
 
-  [v6 setTitleText:v10];
-  [v6 setValueAttributedText:v12];
-  [v6 setShowDetailsButton:v14];
-  [v6 setStatusKey:v15];
-  [v6 setDelegate:self];
+  [cellCopy setTitleText:v10];
+  [cellCopy setValueAttributedText:v12];
+  [cellCopy setShowDetailsButton:v14];
+  [cellCopy setStatusKey:v15];
+  [cellCopy setDelegate:self];
 }
 
-- (void)debugViewTableCellDidTapDetailsButton:(id)a3
+- (void)debugViewTableCellDidTapDetailsButton:(id)button
 {
-  v7 = [a3 statusKey];
-  v4 = [(PKTextInputDebugViewController *)self introspectorDataSource];
-  v5 = [v4 debugStateDetailViewControllerForStateKey:v7];
+  statusKey = [button statusKey];
+  introspectorDataSource = [(PKTextInputDebugViewController *)self introspectorDataSource];
+  v5 = [introspectorDataSource debugStateDetailViewControllerForStateKey:statusKey];
 
   if (v5)
   {

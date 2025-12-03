@@ -1,23 +1,23 @@
 @interface DMCUnenrollmentFlowUIPresenter
-- (void)dismissUnenrollmentSceneWithError:(id)a3;
-- (void)presentUnenrollmentActivityPageIsAppleMAID:(BOOL)a3;
-- (void)requestDevicePasscodeDataWithCompletionHandler:(id)a3;
-- (void)requestUserConfirmationIsAppleMAID:(BOOL)a3 completionHandler:(id)a4;
+- (void)dismissUnenrollmentSceneWithError:(id)error;
+- (void)presentUnenrollmentActivityPageIsAppleMAID:(BOOL)d;
+- (void)requestDevicePasscodeDataWithCompletionHandler:(id)handler;
+- (void)requestUserConfirmationIsAppleMAID:(BOOL)d completionHandler:(id)handler;
 @end
 
 @implementation DMCUnenrollmentFlowUIPresenter
 
-- (void)requestUserConfirmationIsAppleMAID:(BOOL)a3 completionHandler:(id)a4
+- (void)requestUserConfirmationIsAppleMAID:(BOOL)d completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__DMCUnenrollmentFlowUIPresenter_requestUserConfirmationIsAppleMAID_completionHandler___block_invoke;
   block[3] = &unk_278EE8228;
-  v10 = a3;
+  dCopy = d;
   block[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -74,26 +74,26 @@ uint64_t __87__DMCUnenrollmentFlowUIPresenter_requestUserConfirmationIsAppleMAID
   return result;
 }
 
-- (void)requestDevicePasscodeDataWithCompletionHandler:(id)a3
+- (void)requestDevicePasscodeDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = DMCLocalizedStringByDevice();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__DMCUnenrollmentFlowUIPresenter_requestDevicePasscodeDataWithCompletionHandler___block_invoke;
   v7[3] = &unk_278EE7448;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(DMCEnrollmentFlowUIPresenterBase *)self requestDevicePasscodeWithDescriptionText:v5 completionHandler:v7];
 }
 
-- (void)presentUnenrollmentActivityPageIsAppleMAID:(BOOL)a3
+- (void)presentUnenrollmentActivityPageIsAppleMAID:(BOOL)d
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __77__DMCUnenrollmentFlowUIPresenter_presentUnenrollmentActivityPageIsAppleMAID___block_invoke;
   v3[3] = &unk_278EE7A58;
-  v4 = a3;
+  dCopy = d;
   v3[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
@@ -106,16 +106,16 @@ void __77__DMCUnenrollmentFlowUIPresenter_presentUnenrollmentActivityPageIsApple
   [v2 presentActivityPageWithTitle:v3 text:v4 showButtomView:0];
 }
 
-- (void)dismissUnenrollmentSceneWithError:(id)a3
+- (void)dismissUnenrollmentSceneWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __68__DMCUnenrollmentFlowUIPresenter_dismissUnenrollmentSceneWithError___block_invoke;
   v6[3] = &unk_278EE77B8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = errorCopy;
+  selfCopy = self;
+  v5 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

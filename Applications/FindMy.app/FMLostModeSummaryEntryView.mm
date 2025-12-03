@@ -1,7 +1,7 @@
 @interface FMLostModeSummaryEntryView
 - (_TtC6FindMy26FMLostModeSummaryEntryView)init;
-- (_TtC6FindMy26FMLostModeSummaryEntryView)initWithCoder:(id)a3;
-- (_TtC6FindMy26FMLostModeSummaryEntryView)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy26FMLostModeSummaryEntryView)initWithCoder:(id)coder;
+- (_TtC6FindMy26FMLostModeSummaryEntryView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FMLostModeSummaryEntryView
@@ -20,7 +20,7 @@
   return v5;
 }
 
-- (_TtC6FindMy26FMLostModeSummaryEntryView)initWithCoder:(id)a3
+- (_TtC6FindMy26FMLostModeSummaryEntryView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC6FindMy26FMLostModeSummaryEntryView_platter;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(UIView) init];
@@ -31,7 +31,7 @@
   return result;
 }
 
-- (_TtC6FindMy26FMLostModeSummaryEntryView)initWithFrame:(CGRect)a3
+- (_TtC6FindMy26FMLostModeSummaryEntryView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

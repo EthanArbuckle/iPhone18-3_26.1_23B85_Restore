@@ -16,8 +16,8 @@
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = a1;
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    selfCopy = self;
+    v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -28,7 +28,7 @@
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(selfCopy);
           }
 
           v12 = v5[2](v5, *(*(&v15 + 1) + 8 * i));
@@ -38,7 +38,7 @@
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v9 = [selfCopy countByEnumeratingWithState:&v15 objects:v20 count:16];
       }
 
       while (v9);
@@ -47,7 +47,7 @@
 
   else
   {
-    [(NSArray(ExposureNotificationUI) *)a2 enui_map:a1, &v19];
+    [(NSArray(ExposureNotificationUI) *)a2 enui_map:self, &v19];
     v6 = v19;
   }
 
@@ -67,7 +67,7 @@
   v11 = v4;
   v6 = v4;
   v7 = [v5 predicateWithBlock:v10];
-  v8 = [a1 filteredArrayUsingPredicate:v7];
+  v8 = [self filteredArrayUsingPredicate:v7];
 
   return v8;
 }

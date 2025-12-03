@@ -5,11 +5,11 @@
 - (CKDatabaseScope)databaseScope;
 - (NSOperationQueue)operationQueue;
 - (id)CKPropertiesDescription;
-- (id)_initWithContainer:(id)a3 scope:(int64_t)a4;
-- (id)initInternalWithImplementation:(id)a3 container:(id)a4;
+- (id)_initWithContainer:(id)container scope:(int64_t)scope;
+- (id)initInternalWithImplementation:(id)implementation container:(id)container;
 - (int64_t)scope;
 - (void)addOperation:(CKDatabaseOperation *)operation;
-- (void)checkSupportedDeviceCapabilities:(id)a3 inZone:(id)a4 options:(id)a5 completionHandler:(id)a6;
+- (void)checkSupportedDeviceCapabilities:(id)capabilities inZone:(id)zone options:(id)options completionHandler:(id)handler;
 - (void)clearRecordCache;
 - (void)deleteRecordWithID:(CKRecordID *)recordID completionHandler:(void *)completionHandler;
 - (void)deleteRecordZoneWithID:(CKRecordZoneID *)zoneID completionHandler:(void *)completionHandler;
@@ -82,38 +82,38 @@
   return 0;
 }
 
-- (id)_initWithContainer:(id)a3 scope:(int64_t)a4
+- (id)_initWithContainer:(id)container scope:(int64_t)scope
 {
-  v6 = a3;
+  containerCopy = container;
   v16.receiver = self;
   v16.super_class = CKDatabase;
   v7 = [(CKDatabase *)&v16 init];
   if (v7)
   {
     v8 = [CKDatabaseImplementation alloc];
-    v11 = objc_msgSend_implementation(v6, v9, v10);
-    inited = objc_msgSend_initInternalWithContainerImplementation_scope_(v8, v12, v11, a4);
+    v11 = objc_msgSend_implementation(containerCopy, v9, v10);
+    inited = objc_msgSend_initInternalWithContainerImplementation_scope_(v8, v12, v11, scope);
     implementation = v7->_implementation;
     v7->_implementation = inited;
 
-    objc_storeWeak(&v7->_container, v6);
+    objc_storeWeak(&v7->_container, containerCopy);
   }
 
   return v7;
 }
 
-- (id)initInternalWithImplementation:(id)a3 container:(id)a4
+- (id)initInternalWithImplementation:(id)implementation container:(id)container
 {
-  v7 = a3;
-  v8 = a4;
+  implementationCopy = implementation;
+  containerCopy = container;
   v12.receiver = self;
   v12.super_class = CKDatabase;
   v9 = [(CKDatabase *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_implementation, a3);
-    objc_storeWeak(p_isa + 1, v8);
+    objc_storeStrong(&v9->_implementation, implementation);
+    objc_storeWeak(p_isa + 1, containerCopy);
   }
 
   return p_isa;
@@ -208,16 +208,16 @@
   objc_msgSend_deleteRecordZoneWithID_wrappingDatabase_convenienceConfiguration_completionHandler_(v17, v16, v7, self, v15, v6);
 }
 
-- (void)checkSupportedDeviceCapabilities:(id)a3 inZone:(id)a4 options:(id)a5 completionHandler:(id)a6
+- (void)checkSupportedDeviceCapabilities:(id)capabilities inZone:(id)zone options:(id)options completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  optionsCopy = options;
+  zoneCopy = zone;
+  capabilitiesCopy = capabilities;
   v23 = objc_msgSend_implementation(self, v14, v15);
   v18 = objc_msgSend_container(self, v16, v17);
   v21 = objc_msgSend_convenienceConfiguration(v18, v19, v20);
-  objc_msgSend_checkSupportedDeviceCapabilitiesInZone_desiredCapabilities_options_wrappingDatabase_convenienceConfiguration_completionHandler_(v23, v22, v12, v13, v11, self, v21, v10);
+  objc_msgSend_checkSupportedDeviceCapabilitiesInZone_desiredCapabilities_options_wrappingDatabase_convenienceConfiguration_completionHandler_(v23, v22, zoneCopy, capabilitiesCopy, optionsCopy, self, v21, handlerCopy);
 }
 
 - (void)saveSubscription:(CKSubscription *)subscription completionHandler:(void *)completionHandler

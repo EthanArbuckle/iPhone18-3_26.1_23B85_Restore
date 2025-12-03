@@ -1,18 +1,18 @@
 @interface VolumeLevel
-- (VolumeLevel)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (VolumeLevel)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 @end
 
 @implementation VolumeLevel
 
-- (VolumeLevel)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (VolumeLevel)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     sub_268B37BF4();
   }
 
   sub_268B37BF4();
-  if (a5)
+  if (hint)
   {
     sub_268B37BF4();
   }

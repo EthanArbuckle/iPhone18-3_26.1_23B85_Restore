@@ -1,6 +1,6 @@
 @interface DOCPromptHeaderView
 - (NSString)promptText;
-- (_TtC26DocumentManagerExecutables19DOCPromptHeaderView)initWithFrame:(CGRect)a3;
+- (_TtC26DocumentManagerExecutables19DOCPromptHeaderView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation DOCPromptHeaderView
@@ -15,7 +15,7 @@
   return v4;
 }
 
-- (_TtC26DocumentManagerExecutables19DOCPromptHeaderView)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables19DOCPromptHeaderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

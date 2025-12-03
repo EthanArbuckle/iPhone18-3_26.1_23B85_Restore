@@ -1,69 +1,69 @@
 @interface _SFBarHoverAssistant
-+ (void)attachToBar:(id)a3 withAnimator:(id)a4 inContainerView:(id)a5;
++ (void)attachToBar:(id)bar withAnimator:(id)animator inContainerView:(id)view;
 - (BOOL)_gestureIsOverBar;
 - (UIView)containerView;
 - (_SFBarCommon)bar;
-- (_SFBarHoverAssistant)initWithBar:(id)a3 withAnimator:(id)a4 inContainerView:(id)a5;
+- (_SFBarHoverAssistant)initWithBar:(id)bar withAnimator:(id)animator inContainerView:(id)view;
 - (_SFDynamicBarAnimator)dynamicBarAnimator;
-- (void)_hover:(id)a3;
+- (void)_hover:(id)_hover;
 - (void)dealloc;
-- (void)dynamicBarAnimatorStateDidChange:(id)a3;
-- (void)dynamicBarAnimatorWillLeaveSteadyState:(id)a3;
+- (void)dynamicBarAnimatorStateDidChange:(id)change;
+- (void)dynamicBarAnimatorWillLeaveSteadyState:(id)state;
 @end
 
 @implementation _SFBarHoverAssistant
 
-- (_SFBarHoverAssistant)initWithBar:(id)a3 withAnimator:(id)a4 inContainerView:(id)a5
+- (_SFBarHoverAssistant)initWithBar:(id)bar withAnimator:(id)animator inContainerView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  barCopy = bar;
+  animatorCopy = animator;
+  viewCopy = view;
   v17.receiver = self;
   v17.super_class = _SFBarHoverAssistant;
   v11 = [(_SFBarHoverAssistant *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_bar, v8);
-    objc_storeWeak(&v12->_dynamicBarAnimator, v9);
-    [v9 addObserver:v12];
+    objc_storeWeak(&v11->_bar, barCopy);
+    objc_storeWeak(&v12->_dynamicBarAnimator, animatorCopy);
+    [animatorCopy addObserver:v12];
     v13 = [objc_alloc(MEMORY[0x1E69DCAA0]) initWithTarget:v12 action:sel__hover_];
     hoverRecognizer = v12->_hoverRecognizer;
     v12->_hoverRecognizer = v13;
 
-    objc_storeWeak(&v12->_containerView, v10);
-    [v10 addGestureRecognizer:v12->_hoverRecognizer];
+    objc_storeWeak(&v12->_containerView, viewCopy);
+    [viewCopy addGestureRecognizer:v12->_hoverRecognizer];
     v15 = v12;
   }
 
   return v12;
 }
 
-+ (void)attachToBar:(id)a3 withAnimator:(id)a4 inContainerView:(id)a5
++ (void)attachToBar:(id)bar withAnimator:(id)animator inContainerView:(id)view
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  value = [[_SFBarHoverAssistant alloc] initWithBar:v9 withAnimator:v8 inContainerView:v7];
+  viewCopy = view;
+  animatorCopy = animator;
+  barCopy = bar;
+  value = [[_SFBarHoverAssistant alloc] initWithBar:barCopy withAnimator:animatorCopy inContainerView:viewCopy];
 
-  objc_setAssociatedObject(v9, "hoverAssistant", value, 1);
+  objc_setAssociatedObject(barCopy, "hoverAssistant", value, 1);
 }
 
-- (void)_hover:(id)a3
+- (void)_hover:(id)_hover
 {
-  if (([a3 state] - 1) <= 1)
+  if (([_hover state] - 1) <= 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dynamicBarAnimator);
-    v4 = [WeakRetained targetState];
-    v5 = [(_SFBarHoverAssistant *)self _gestureIsOverBar];
+    targetState = [WeakRetained targetState];
+    _gestureIsOverBar = [(_SFBarHoverAssistant *)self _gestureIsOverBar];
     v6 = objc_loadWeakRetained(&self->_containerView);
-    v7 = [v6 window];
-    v8 = [v7 rootViewController];
-    v9 = [v8 presentedViewController];
+    window = [v6 window];
+    rootViewController = [window rootViewController];
+    presentedViewController = [rootViewController presentedViewController];
 
-    if (v4 || !v5)
+    if (targetState || !_gestureIsOverBar)
     {
-      if (v4 == 1 && !v5 && self->_didShowBarFromHover && !v9)
+      if (targetState == 1 && !_gestureIsOverBar && self->_didShowBarFromHover && !presentedViewController)
       {
         [WeakRetained attemptTransitionToState:0 animated:1];
       }
@@ -127,23 +127,23 @@
   [(_SFBarHoverAssistant *)&v4 dealloc];
 }
 
-- (void)dynamicBarAnimatorStateDidChange:(id)a3
+- (void)dynamicBarAnimatorStateDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_dynamicBarAnimator);
-  v5 = [WeakRetained targetState];
+  targetState = [WeakRetained targetState];
 
-  if (!v5)
+  if (!targetState)
   {
     self->_didShowBarFromHover = 0;
   }
 }
 
-- (void)dynamicBarAnimatorWillLeaveSteadyState:(id)a3
+- (void)dynamicBarAnimatorWillLeaveSteadyState:(id)state
 {
   WeakRetained = objc_loadWeakRetained(&self->_dynamicBarAnimator);
-  v5 = [WeakRetained targetState];
+  targetState = [WeakRetained targetState];
 
-  if (!v5)
+  if (!targetState)
   {
     self->_didShowBarFromHover = 0;
   }

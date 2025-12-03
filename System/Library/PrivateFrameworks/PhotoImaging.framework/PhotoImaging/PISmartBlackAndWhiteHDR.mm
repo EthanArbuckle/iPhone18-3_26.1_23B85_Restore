@@ -1,10 +1,10 @@
 @interface PISmartBlackAndWhiteHDR
 + (id)customAttributes;
 - (float)createHueArray;
-- (id)hueArrayImage:(float *)a3;
+- (id)hueArrayImage:(float *)image;
 - (id)outputImage;
 - (id)smartBlackWhiteKernel;
-- (void)getNonNormalizedSettings:(id *)a3;
+- (void)getNonNormalizedSettings:(id *)settings;
 @end
 
 @implementation PISmartBlackAndWhiteHDR
@@ -149,22 +149,22 @@
       *v31 = 0u;
       [(PISmartBlackAndWhiteHDR *)self getNonNormalizedSettings:&v30];
       v4 = [MEMORY[0x1E695F688] vectorWithX:v31[1] Y:v31[2] Z:v31[3] W:v32];
-      v5 = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
+      imageByUnpremultiplyingAlpha = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
       v6 = [MEMORY[0x1E695F688] vectorWithX:0.997222245 Y:0.00138888892 Z:*(&v30 + 3) W:v31[0]];
-      v7 = [(PISmartBlackAndWhiteHDR *)self smartBlackWhiteKernel];
+      smartBlackWhiteKernel = [(PISmartBlackAndWhiteHDR *)self smartBlackWhiteKernel];
       [(CIImage *)self->inputImage extent];
       v9 = v8;
       v11 = v10;
       v13 = v12;
       v15 = v14;
-      v35[0] = v5;
+      v35[0] = imageByUnpremultiplyingAlpha;
       v35[1] = v3;
       v35[2] = v4;
       v35[3] = v6;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:4];
-      v17 = [v7 applyWithExtent:v16 arguments:{v9, v11, v13, v15}];
+      v17 = [smartBlackWhiteKernel applyWithExtent:v16 arguments:{v9, v11, v13, v15}];
 
-      v18 = [v17 imageByPremultiplyingAlpha];
+      imageByPremultiplyingAlpha = [v17 imageByPremultiplyingAlpha];
 
       [(NSNumber *)self->inputGrain floatValue];
       if (v19 > 0.0)
@@ -183,24 +183,24 @@
         v34[1] = v25;
         v34[2] = inputSeed;
         v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:3];
-        v28 = [v18 imageByApplyingFilter:@"PIPhotoGrainHDR" withInputParameters:v27];
+        v28 = [imageByPremultiplyingAlpha imageByApplyingFilter:@"PIPhotoGrainHDR" withInputParameters:v27];
 
-        v18 = v28;
+        imageByPremultiplyingAlpha = v28;
       }
     }
 
     else
     {
-      v18 = 0;
+      imageByPremultiplyingAlpha = 0;
     }
   }
 
   else
   {
-    v18 = 0;
+    imageByPremultiplyingAlpha = 0;
   }
 
-  return v18;
+  return imageByPremultiplyingAlpha;
 }
 
 - (id)smartBlackWhiteKernel
@@ -224,35 +224,35 @@ uint64_t __48__PISmartBlackAndWhiteHDR_smartBlackWhiteKernel__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)hueArrayImage:(float *)a3
+- (id)hueArrayImage:(float *)image
 {
   v19[5] = *MEMORY[0x1E69E9840];
-  v4 = [(PISmartBlackAndWhiteHDR *)self createHueArray];
+  createHueArray = [(PISmartBlackAndWhiteHDR *)self createHueArray];
   v5 = [MEMORY[0x1E695DF88] dataWithLength:368];
   v6 = v5;
-  v7 = *v4;
+  v7 = *createHueArray;
   for (i = 1; i != 360; ++i)
   {
-    if (v7 < v4[i])
+    if (v7 < createHueArray[i])
     {
-      v7 = v4[i];
+      v7 = createHueArray[i];
     }
   }
 
-  v9 = [v5 mutableBytes];
+  mutableBytes = [v5 mutableBytes];
   for (j = 0; j != 360; ++j)
   {
-    *(v9 + j) = fmaxf(fminf((v4[j] * 255.0) / v7, 255.0), 0.0);
+    *(mutableBytes + j) = fmaxf(fminf((createHueArray[j] * 255.0) / v7, 255.0), 0.0);
   }
 
-  *a3 = v7;
-  free(v4);
+  *image = v7;
+  free(createHueArray);
   v18[0] = *MEMORY[0x1E695F9A8];
-  v11 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v12 = *MEMORY[0x1E695F9A0];
   v18[1] = *MEMORY[0x1E695F9B8];
   v18[2] = v12;
-  v19[0] = v11;
+  v19[0] = null;
   v19[1] = MEMORY[0x1E695E110];
   v13 = *MEMORY[0x1E695F9C0];
   v19[2] = MEMORY[0x1E695E118];
@@ -312,20 +312,20 @@ uint64_t __48__PISmartBlackAndWhiteHDR_smartBlackWhiteKernel__block_invoke()
   return v2;
 }
 
-- (void)getNonNormalizedSettings:(id *)a3
+- (void)getNonNormalizedSettings:(id *)settings
 {
-  a3->var0 = 1;
+  settings->var0 = 1;
   [(NSNumber *)self->inputHue floatValue];
-  a3->var1 = v5;
+  settings->var1 = v5;
   [(NSNumber *)self->inputStrength floatValue];
-  a3->var2 = v6;
+  settings->var2 = v6;
   [(NSNumber *)self->inputNeutralGamma floatValue];
-  a3->var3 = v7;
+  settings->var3 = v7;
   [(NSNumber *)self->inputTone floatValue];
   v28 = v8;
-  a3->var4 = v8;
-  var1 = a3->var1;
-  var2 = a3->var2;
+  settings->var4 = v8;
+  var1 = settings->var1;
+  var2 = settings->var2;
   v10 = var2;
   v11 = var2 * cos((0.60167 - var1) * 6.28318531) + 1.0;
   if (v11 <= 1.0)
@@ -367,12 +367,12 @@ uint64_t __48__PISmartBlackAndWhiteHDR_smartBlackWhiteKernel__block_invoke()
   v21 = v20;
   v22 = powf(0.1, v21);
   v23 = v22 + (v14 + v18);
-  a3->var5[0] = v14 / v23;
-  a3->var5[1] = v18 / v23;
-  a3->var5[2] = v22 / v23;
-  if (a3->var0)
+  settings->var5[0] = v14 / v23;
+  settings->var5[1] = v18 / v23;
+  settings->var5[2] = v22 / v23;
+  if (settings->var0)
   {
-    a3->var0 = 0;
+    settings->var0 = 0;
     v24 = (var1 * 0.5) + 0.35;
     if (v24 < 0.0)
     {
@@ -389,16 +389,16 @@ uint64_t __48__PISmartBlackAndWhiteHDR_smartBlackWhiteKernel__block_invoke()
       v25 = ((var2 + -0.5) * 1.2) + 0.4;
     }
 
-    a3->var1 = v24;
-    a3->var2 = v25;
+    settings->var1 = v24;
+    settings->var2 = v25;
     v26 = v28 + v28;
     if (v28 <= 0.0)
     {
       v26 = v28;
     }
 
-    a3->var3 = a3->var3 + 1.0;
-    a3->var4 = v26;
+    settings->var3 = settings->var3 + 1.0;
+    settings->var4 = v26;
   }
 }
 

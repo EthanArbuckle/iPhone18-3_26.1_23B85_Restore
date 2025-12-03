@@ -1,46 +1,46 @@
 @interface _SFPBContactButtonItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBContactButtonItem)initWithDictionary:(id)a3;
-- (_SFPBContactButtonItem)initWithFacade:(id)a3;
-- (_SFPBContactButtonItem)initWithJSON:(id)a3;
+- (_SFPBContactButtonItem)initWithDictionary:(id)dictionary;
+- (_SFPBContactButtonItem)initWithFacade:(id)facade;
+- (_SFPBContactButtonItem)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (int)actionTypesToShowAtIndex:(unint64_t)a3;
+- (int)actionTypesToShowAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)setActionTypesToShow:(id)a3;
-- (void)setContactIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setActionTypesToShow:(id)show;
+- (void)setContactIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBContactButtonItem
 
-- (_SFPBContactButtonItem)initWithFacade:(id)a3
+- (_SFPBContactButtonItem)initWithFacade:(id)facade
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBContactButtonItem *)self init];
   if (v5)
   {
-    v6 = [v4 contactIdentifier];
+    contactIdentifier = [facadeCopy contactIdentifier];
 
-    if (v6)
+    if (contactIdentifier)
     {
-      v7 = [v4 contactIdentifier];
-      [(_SFPBContactButtonItem *)v5 setContactIdentifier:v7];
+      contactIdentifier2 = [facadeCopy contactIdentifier];
+      [(_SFPBContactButtonItem *)v5 setContactIdentifier:contactIdentifier2];
     }
 
-    v8 = [v4 person];
+    person = [facadeCopy person];
 
-    if (v8)
+    if (person)
     {
       v9 = [_SFPBPerson alloc];
-      v10 = [v4 person];
-      v11 = [(_SFPBPerson *)v9 initWithFacade:v10];
+      person2 = [facadeCopy person];
+      v11 = [(_SFPBPerson *)v9 initWithFacade:person2];
       [(_SFPBContactButtonItem *)v5 setPerson:v11];
     }
 
-    v12 = [v4 actionTypesToShow];
-    if (v12)
+    actionTypesToShow = [facadeCopy actionTypesToShow];
+    if (actionTypesToShow)
     {
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -54,8 +54,8 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v14 = [v4 actionTypesToShow];
-    v15 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    actionTypesToShow2 = [facadeCopy actionTypesToShow];
+    v15 = [actionTypesToShow2 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v15)
     {
       v16 = v15;
@@ -66,7 +66,7 @@
         {
           if (*v23 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(actionTypesToShow2);
           }
 
           if (*(*(&v22 + 1) + 8 * i))
@@ -75,16 +75,16 @@
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v16 = [actionTypesToShow2 countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v16);
     }
 
     [(_SFPBContactButtonItem *)v5 setActionTypesToShows:v13];
-    if ([v4 hasUniqueId])
+    if ([facadeCopy hasUniqueId])
     {
-      -[_SFPBContactButtonItem setUniqueId:](v5, "setUniqueId:", [v4 uniqueId]);
+      -[_SFPBContactButtonItem setUniqueId:](v5, "setUniqueId:", [facadeCopy uniqueId]);
     }
 
     v19 = v5;
@@ -94,16 +94,16 @@
   return v5;
 }
 
-- (_SFPBContactButtonItem)initWithDictionary:(id)a3
+- (_SFPBContactButtonItem)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = _SFPBContactButtonItem;
   v5 = [(_SFPBContactButtonItem *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"contactIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"contactIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -111,7 +111,7 @@
       [(_SFPBContactButtonItem *)v5 setContactIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"person"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"person"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -119,7 +119,7 @@
       [(_SFPBContactButtonItem *)v5 setPerson:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"actionTypesToShow"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"actionTypesToShow"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -164,7 +164,7 @@
       v6 = v21;
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"uniqueId"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"uniqueId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -178,30 +178,30 @@
   return v5;
 }
 
-- (_SFPBContactButtonItem)initWithJSON:(id)a3
+- (_SFPBContactButtonItem)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBContactButtonItem *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBContactButtonItem *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBContactButtonItem *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -214,44 +214,44 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_actionTypesToShows count])
   {
-    v4 = [(_SFPBContactButtonItem *)self actionTypesToShows];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"actionTypesToShow"];
+    actionTypesToShows = [(_SFPBContactButtonItem *)self actionTypesToShows];
+    v5 = [actionTypesToShows copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"actionTypesToShow"];
   }
 
   if (self->_contactIdentifier)
   {
-    v6 = [(_SFPBContactButtonItem *)self contactIdentifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"contactIdentifier"];
+    contactIdentifier = [(_SFPBContactButtonItem *)self contactIdentifier];
+    v7 = [contactIdentifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"contactIdentifier"];
   }
 
   if (self->_person)
   {
-    v8 = [(_SFPBContactButtonItem *)self person];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    person = [(_SFPBContactButtonItem *)self person];
+    dictionaryRepresentation = [person dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"person"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"person"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"person"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"person"];
     }
   }
 
   if (self->_uniqueId)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[_SFPBContactButtonItem uniqueId](self, "uniqueId")}];
-    [v3 setObject:v11 forKeyedSubscript:@"uniqueId"];
+    [dictionary setObject:v11 forKeyedSubscript:@"uniqueId"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -261,28 +261,28 @@
   return v4 ^ v3 ^ [(NSArray *)self->_actionTypesToShows hash]^ (2654435761u * self->_uniqueId);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBContactButtonItem *)self contactIdentifier];
-  v6 = [v4 contactIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  contactIdentifier = [(_SFPBContactButtonItem *)self contactIdentifier];
+  contactIdentifier2 = [equalCopy contactIdentifier];
+  if ((contactIdentifier != 0) == (contactIdentifier2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBContactButtonItem *)self contactIdentifier];
-  if (v7)
+  contactIdentifier3 = [(_SFPBContactButtonItem *)self contactIdentifier];
+  if (contactIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_SFPBContactButtonItem *)self contactIdentifier];
-    v10 = [v4 contactIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = contactIdentifier3;
+    contactIdentifier4 = [(_SFPBContactButtonItem *)self contactIdentifier];
+    contactIdentifier5 = [equalCopy contactIdentifier];
+    v11 = [contactIdentifier4 isEqual:contactIdentifier5];
 
     if (!v11)
     {
@@ -294,20 +294,20 @@
   {
   }
 
-  v5 = [(_SFPBContactButtonItem *)self person];
-  v6 = [v4 person];
-  if ((v5 != 0) == (v6 == 0))
+  contactIdentifier = [(_SFPBContactButtonItem *)self person];
+  contactIdentifier2 = [equalCopy person];
+  if ((contactIdentifier != 0) == (contactIdentifier2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_SFPBContactButtonItem *)self person];
-  if (v12)
+  person = [(_SFPBContactButtonItem *)self person];
+  if (person)
   {
-    v13 = v12;
-    v14 = [(_SFPBContactButtonItem *)self person];
-    v15 = [v4 person];
-    v16 = [v14 isEqual:v15];
+    v13 = person;
+    person2 = [(_SFPBContactButtonItem *)self person];
+    person3 = [equalCopy person];
+    v16 = [person2 isEqual:person3];
 
     if (!v16)
     {
@@ -319,24 +319,24 @@
   {
   }
 
-  v5 = [(_SFPBContactButtonItem *)self actionTypesToShows];
-  v6 = [v4 actionTypesToShows];
-  if ((v5 != 0) != (v6 == 0))
+  contactIdentifier = [(_SFPBContactButtonItem *)self actionTypesToShows];
+  contactIdentifier2 = [equalCopy actionTypesToShows];
+  if ((contactIdentifier != 0) != (contactIdentifier2 == 0))
   {
-    v17 = [(_SFPBContactButtonItem *)self actionTypesToShows];
-    if (!v17)
+    actionTypesToShows = [(_SFPBContactButtonItem *)self actionTypesToShows];
+    if (!actionTypesToShows)
     {
 
 LABEL_20:
       uniqueId = self->_uniqueId;
-      v22 = uniqueId == [v4 uniqueId];
+      v22 = uniqueId == [equalCopy uniqueId];
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_SFPBContactButtonItem *)self actionTypesToShows];
-    v20 = [v4 actionTypesToShows];
-    v21 = [v19 isEqual:v20];
+    v18 = actionTypesToShows;
+    actionTypesToShows2 = [(_SFPBContactButtonItem *)self actionTypesToShows];
+    actionTypesToShows3 = [equalCopy actionTypesToShows];
+    v21 = [actionTypesToShows2 isEqual:actionTypesToShows3];
 
     if (v21)
     {
@@ -356,28 +356,28 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBContactButtonItem *)self contactIdentifier];
-  if (v5)
+  toCopy = to;
+  contactIdentifier = [(_SFPBContactButtonItem *)self contactIdentifier];
+  if (contactIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBContactButtonItem *)self person];
-  if (v6)
+  person = [(_SFPBContactButtonItem *)self person];
+  if (person)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBContactButtonItem *)self actionTypesToShows];
+  actionTypesToShows = [(_SFPBContactButtonItem *)self actionTypesToShows];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [actionTypesToShows countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -389,7 +389,7 @@ LABEL_18:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(actionTypesToShows);
         }
 
         [*(*(&v13 + 1) + 8 * v11) intValue];
@@ -398,7 +398,7 @@ LABEL_18:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [actionTypesToShows countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -412,26 +412,26 @@ LABEL_18:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (int)actionTypesToShowAtIndex:(unint64_t)a3
+- (int)actionTypesToShowAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_actionTypesToShows objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_actionTypesToShows objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)setActionTypesToShow:(id)a3
+- (void)setActionTypesToShow:(id)show
 {
-  v4 = [a3 copy];
+  v4 = [show copy];
   actionTypesToShows = self->_actionTypesToShows;
   self->_actionTypesToShows = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setContactIdentifier:(id)a3
+- (void)setContactIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   contactIdentifier = self->_contactIdentifier;
   self->_contactIdentifier = v4;
 

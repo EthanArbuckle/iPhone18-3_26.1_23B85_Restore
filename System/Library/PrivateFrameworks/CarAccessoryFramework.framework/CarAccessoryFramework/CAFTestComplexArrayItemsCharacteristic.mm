@@ -2,38 +2,38 @@
 + (void)load;
 - (CAFTestComplexArrayItems)testComplexArrayItemsValue;
 - (id)formattedValue;
-- (void)setTestComplexArrayItemsValue:(id)a3;
+- (void)setTestComplexArrayItemsValue:(id)value;
 @end
 
 @implementation CAFTestComplexArrayItemsCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFTestComplexArrayItemsCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (CAFTestComplexArrayItems)testComplexArrayItemsValue
 {
-  v2 = [(CAFArrayCharacteristic *)self arrayValue];
-  v3 = [CAFTestComplexArrayItems testComplexArrayItemsWithArray:v2];
+  arrayValue = [(CAFArrayCharacteristic *)self arrayValue];
+  v3 = [CAFTestComplexArrayItems testComplexArrayItemsWithArray:arrayValue];
 
   return v3;
 }
 
-- (void)setTestComplexArrayItemsValue:(id)a3
+- (void)setTestComplexArrayItemsValue:(id)value
 {
-  v4 = [a3 arrayRepresentation];
-  [(CAFArrayCharacteristic *)self setArrayValue:v4];
+  arrayRepresentation = [value arrayRepresentation];
+  [(CAFArrayCharacteristic *)self setArrayValue:arrayRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFTestComplexArrayItemsCharacteristic *)self testComplexArrayItemsValue];
-  v3 = [v2 formattedValue];
+  testComplexArrayItemsValue = [(CAFTestComplexArrayItemsCharacteristic *)self testComplexArrayItemsValue];
+  formattedValue = [testComplexArrayItemsValue formattedValue];
 
-  return v3;
+  return formattedValue;
 }
 
 @end

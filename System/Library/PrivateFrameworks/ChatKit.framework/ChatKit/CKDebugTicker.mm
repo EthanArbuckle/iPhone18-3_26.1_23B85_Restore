@@ -1,7 +1,7 @@
 @interface CKDebugTicker
 + (_TtC7ChatKit13CKDebugTicker)sharedTicker;
-- (void)showAndLogValueWhileRecordingWithWindowScene:(id)a3 parentWindow:(id)a4;
-- (void)showWithWindowScene:(id)a3 parentWindow:(id)a4;
+- (void)showAndLogValueWhileRecordingWithWindowScene:(id)scene parentWindow:(id)window;
+- (void)showWithWindowScene:(id)scene parentWindow:(id)window;
 - (void)tick;
 @end
 
@@ -21,31 +21,31 @@
 
 - (void)tick
 {
-  v2 = self;
+  selfCopy = self;
   sub_190D295B4();
 }
 
-- (void)showAndLogValueWhileRecordingWithWindowScene:(id)a3 parentWindow:(id)a4
+- (void)showAndLogValueWhileRecordingWithWindowScene:(id)scene parentWindow:(id)window
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_190D29950(v6, v7);
+  sceneCopy = scene;
+  windowCopy = window;
+  selfCopy = self;
+  sub_190D29950(sceneCopy, windowCopy);
 }
 
-- (void)showWithWindowScene:(id)a3 parentWindow:(id)a4
+- (void)showWithWindowScene:(id)scene parentWindow:(id)window
 {
   *(&self->super.isa + OBJC_IVAR____TtC7ChatKit13CKDebugTicker_logFrequency) = 0;
   v6 = *(&self->super.isa + OBJC_IVAR____TtC7ChatKit13CKDebugTicker_displayLink);
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  sceneCopy = scene;
+  windowCopy = window;
+  selfCopy = self;
   if (v6)
   {
     [v6 setPaused_];
   }
 
-  sub_190D29CA8(a3, a4);
+  sub_190D29CA8(scene, window);
 }
 
 @end

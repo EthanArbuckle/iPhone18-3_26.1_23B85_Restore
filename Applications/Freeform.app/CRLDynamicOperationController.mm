@@ -1,32 +1,32 @@
 @interface CRLDynamicOperationController
 - (BOOL)isInOperation;
-- (CRLDynamicOperationController)initWithInteractiveCanvasController:(id)a3;
+- (CRLDynamicOperationController)initWithInteractiveCanvasController:(id)controller;
 - (void)beginOperation;
 - (void)beginPossibleDynamicOperation;
 - (void)cancelOperation;
 - (void)endOperation;
-- (void)handleGestureRecognizer:(id)a3;
-- (void)handleTrackerManipulator:(id)a3;
-- (void)p_beginDynamicOperationForReps:(id)a3;
+- (void)handleGestureRecognizer:(id)recognizer;
+- (void)handleTrackerManipulator:(id)manipulator;
+- (void)p_beginDynamicOperationForReps:(id)reps;
 - (void)p_cleanupOperation;
-- (void)p_controllingTMDidResetInOperation:(id)a3;
-- (void)p_resetGuidesForCleanup:(BOOL)a3;
-- (void)startTransformingReps:(id)a3;
-- (void)stopTransformingReps:(id)a3;
+- (void)p_controllingTMDidResetInOperation:(id)operation;
+- (void)p_resetGuidesForCleanup:(BOOL)cleanup;
+- (void)startTransformingReps:(id)reps;
+- (void)stopTransformingReps:(id)reps;
 @end
 
 @implementation CRLDynamicOperationController
 
-- (CRLDynamicOperationController)initWithInteractiveCanvasController:(id)a3
+- (CRLDynamicOperationController)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = CRLDynamicOperationController;
   v5 = [(CRLDynamicOperationController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_icc, v4);
+    objc_storeWeak(&v5->_icc, controllerCopy);
     v6->_resetGuides = 1;
   }
 
@@ -36,9 +36,9 @@
 - (void)beginPossibleDynamicOperation
 {
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v4 = [WeakRetained isInDynamicOperation];
+  isInDynamicOperation = [WeakRetained isInDynamicOperation];
 
-  if (v4)
+  if (isInDynamicOperation)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -107,9 +107,9 @@
 - (void)beginOperation
 {
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v4 = [WeakRetained isInDynamicOperation];
+  isInDynamicOperation = [WeakRetained isInDynamicOperation];
 
-  if (v4)
+  if (isInDynamicOperation)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -168,10 +168,10 @@
   }
 
   v11 = objc_loadWeakRetained(&self->_icc);
-  v12 = [v11 tmCoordinator];
-  v13 = [v12 controllingTM];
+  tmCoordinator = [v11 tmCoordinator];
+  controllingTM = [tmCoordinator controllingTM];
 
-  if (!v13)
+  if (!controllingTM)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -201,17 +201,17 @@
   }
 
   v17 = objc_loadWeakRetained(&self->_icc);
-  v18 = [v17 tmCoordinator];
-  v19 = [v18 controllingTM];
-  v20 = [v19 tracker];
+  tmCoordinator2 = [v17 tmCoordinator];
+  controllingTM2 = [tmCoordinator2 controllingTM];
+  tracker = [controllingTM2 tracker];
 
   if (objc_opt_respondsToSelector())
   {
-    [v20 traceIfDesiredForBeginOperation];
+    [tracker traceIfDesiredForBeginOperation];
   }
 
-  self->_supportsAlignmentGuides = [v20 supportsAlignmentGuides];
-  self->_operationIsDynamic = [v20 operationShouldBeDynamic];
+  self->_supportsAlignmentGuides = [tracker supportsAlignmentGuides];
+  self->_operationIsDynamic = [tracker operationShouldBeDynamic];
   if (self->_possibleDynamicOperation)
   {
     self->_possibleDynamicOperation = 0;
@@ -249,42 +249,42 @@
   [v29 addObserver:self selector:"p_controllingTMDidResetInOperation:" name:@"CRLCanvasControllingGRDidResetNotification" object:0];
 }
 
-- (void)p_beginDynamicOperationForReps:(id)a3
+- (void)p_beginDynamicOperationForReps:(id)reps
 {
-  v4 = a3;
+  repsCopy = reps;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v6 = [WeakRetained tmCoordinator];
-  v7 = [v6 controllingTM];
-  v8 = [v7 tracker];
+  tmCoordinator = [WeakRetained tmCoordinator];
+  controllingTM = [tmCoordinator controllingTM];
+  tracker = [controllingTM tracker];
 
   v22[0] = @"CRLDynamicOperationControllerDynamicOperationTrackerKey";
   v22[1] = @"CRLDynamicOperationControllerDynamicOperationRepsKey";
-  v23[0] = v8;
-  v23[1] = v4;
+  v23[0] = tracker;
+  v23[1] = repsCopy;
   v9 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:2];
   v10 = +[NSNotificationCenter defaultCenter];
   [v10 postNotificationName:@"CRLDynamicOperationControllerWillStartDynamicOperationNotification" object:self userInfo:v9];
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 willBeginDynamicOperationForReps:v4];
+    [tracker willBeginDynamicOperationForReps:repsCopy];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v8 isEnqueueingCommandsInRealTime];
+    isEnqueueingCommandsInRealTime = [tracker isEnqueueingCommandsInRealTime];
   }
 
   else
   {
-    v11 = 0;
+    isEnqueueingCommandsInRealTime = 0;
   }
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v12 = v4;
+  v12 = repsCopy;
   v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v13)
   {
@@ -300,7 +300,7 @@
           objc_enumerationMutation(v12);
         }
 
-        [*(*(&v17 + 1) + 8 * v16) dynamicOperationDidBeginWithRealTimeCommands:{v11, v17}];
+        [*(*(&v17 + 1) + 8 * v16) dynamicOperationDidBeginWithRealTimeCommands:{isEnqueueingCommandsInRealTime, v17}];
         v16 = v16 + 1;
       }
 
@@ -314,41 +314,41 @@
 
 - (void)endOperation
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v4 = [WeakRetained tmCoordinator];
-  v5 = [v4 controllingTM];
-  v6 = [v5 tracker];
+  tmCoordinator = [WeakRetained tmCoordinator];
+  controllingTM = [tmCoordinator controllingTM];
+  tracker = [controllingTM tracker];
 
-  if (v2->_operationIsDynamic)
+  if (selfCopy->_operationIsDynamic)
   {
-    v7 = objc_loadWeakRetained(&v2->_icc);
+    v7 = objc_loadWeakRetained(&selfCopy->_icc);
     [v7 willEndDynamicOperation];
 
     v71 = @"CRLDynamicOperationControllerDynamicOperationTrackerKey";
-    v72 = v6;
+    v72 = tracker;
     v8 = [NSDictionary dictionaryWithObjects:&v72 forKeys:&v71 count:1];
     v9 = +[NSNotificationCenter defaultCenter];
-    [v9 postNotificationName:@"CRLDynamicOperationControllerDidEndDynamicOperationNotification" object:v2 userInfo:v8];
+    [v9 postNotificationName:@"CRLDynamicOperationControllerDidEndDynamicOperationNotification" object:selfCopy userInfo:v8];
   }
 
-  v10 = objc_loadWeakRetained(&v2->_icc);
-  v11 = [v10 tmCoordinator];
-  [v11 operationWillEnd];
+  v10 = objc_loadWeakRetained(&selfCopy->_icc);
+  tmCoordinator2 = [v10 tmCoordinator];
+  [tmCoordinator2 operationWillEnd];
 
-  if ([(CRLDynamicOperationController *)v2 isInOperation])
+  if ([(CRLDynamicOperationController *)selfCopy isInOperation])
   {
     v12 = +[NSNotificationCenter defaultCenter];
-    [v12 removeObserver:v2 name:@"CRLCanvasControllingGRDidResetNotification" object:0];
+    [v12 removeObserver:selfCopy name:@"CRLCanvasControllingGRDidResetNotification" object:0];
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 traceIfDesiredForEndOperation];
+      [tracker traceIfDesiredForEndOperation];
     }
 
-    if ([(CRLDynamicOperationController *)v2 isOperationDynamic])
+    if ([(CRLDynamicOperationController *)selfCopy isOperationDynamic])
     {
-      v13 = [v6 shouldOpenCommandGroupToCommitChangesForReps:v2->_allTransformedReps];
+      v13 = [tracker shouldOpenCommandGroupToCommitChangesForReps:selfCopy->_allTransformedReps];
     }
 
     else
@@ -356,28 +356,28 @@
       v13 = 0;
     }
 
-    v14 = objc_loadWeakRetained(&v2->_icc);
-    v57 = [v14 commandController];
+    v14 = objc_loadWeakRetained(&selfCopy->_icc);
+    commandController = [v14 commandController];
 
     if (v13)
     {
-      if ((objc_opt_respondsToSelector() & 1) == 0 || ([v6 selectionBehaviorForReps:v2->_allTransformedReps], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
+      if ((objc_opt_respondsToSelector() & 1) == 0 || ([tracker selectionBehaviorForReps:selfCopy->_allTransformedReps], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
       {
         v16 = [CRLCanvasCommandSelectionBehavior alloc];
-        v17 = objc_loadWeakRetained(&v2->_icc);
-        v18 = [v17 canvasEditor];
-        v19 = objc_loadWeakRetained(&v2->_icc);
-        v20 = [v19 editorController];
-        v21 = [v20 selectionPath];
-        v15 = [(CRLCanvasCommandSelectionBehavior *)v16 initWithCanvasEditor:v18 type:2 selectionPath:v21 selectionFlags:0 commitSelectionFlags:0 forwardSelectionFlags:4 reverseSelectionFlags:4];
+        v17 = objc_loadWeakRetained(&selfCopy->_icc);
+        canvasEditor = [v17 canvasEditor];
+        v19 = objc_loadWeakRetained(&selfCopy->_icc);
+        editorController = [v19 editorController];
+        selectionPath = [editorController selectionPath];
+        v15 = [(CRLCanvasCommandSelectionBehavior *)v16 initWithCanvasEditor:canvasEditor type:2 selectionPath:selectionPath selectionFlags:0 commitSelectionFlags:0 forwardSelectionFlags:4 reverseSelectionFlags:4];
       }
 
-      [v57 openGroupWithSelectionBehavior:v15];
+      [commandController openGroupWithSelectionBehavior:v15];
     }
 
-    if (v6)
+    if (tracker)
     {
-      [v6 commitChangesForReps:v2->_allTransformedReps];
+      [tracker commitChangesForReps:selfCopy->_allTransformedReps];
       if (!v13)
       {
 LABEL_17:
@@ -420,8 +420,8 @@ LABEL_17:
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v54 = v2;
-      obj = v2->_allTransformedReps;
+      v54 = selfCopy;
+      obj = selfCopy->_allTransformedReps;
       v33 = [(NSMutableSet *)obj countByEnumeratingWithState:&v58 objects:v70 count:16];
       if (v33)
       {
@@ -439,19 +439,19 @@ LABEL_17:
             }
 
             v37 = *(*(&v58 + 1) + 8 * v36);
-            v38 = [v37 layout];
-            v39 = [v38 pureGeometry];
+            layout = [v37 layout];
+            pureGeometry = [layout pureGeometry];
 
-            v40 = [v37 layout];
-            v41 = [v40 computeInfoGeometryFromPureLayoutGeometry:v39];
+            layout2 = [v37 layout];
+            v41 = [layout2 computeInfoGeometryFromPureLayoutGeometry:pureGeometry];
 
-            v42 = [v37 infoForTransforming];
+            infoForTransforming = [v37 infoForTransforming];
             v43 = objc_opt_class();
-            v44 = sub_100014370(v43, v42);
+            v44 = sub_100014370(v43, infoForTransforming);
             if (v44)
             {
               v45 = [[_TtC8Freeform25CRLCommandSetInfoGeometry alloc] initWithBoardItem:v44 geometry:v41];
-              [v57 enqueueCommand:v45];
+              [commandController enqueueCommand:v45];
             }
 
             else
@@ -512,27 +512,27 @@ LABEL_17:
         while (v34);
       }
 
-      v2 = v54;
-      v6 = 0;
+      selfCopy = v54;
+      tracker = 0;
       if (!v53)
       {
         goto LABEL_17;
       }
     }
 
-    v22 = objc_loadWeakRetained(&v2->_icc);
-    v23 = [v22 commandController];
-    [v23 closeGroup];
+    v22 = objc_loadWeakRetained(&selfCopy->_icc);
+    commandController2 = [v22 commandController];
+    [commandController2 closeGroup];
 
     goto LABEL_17;
   }
 
 LABEL_18:
-  [(CRLDynamicOperationController *)v2 p_cleanupOperation];
-  v24 = objc_loadWeakRetained(&v2->_icc);
-  v25 = [v24 isInDynamicOperation];
+  [(CRLDynamicOperationController *)selfCopy p_cleanupOperation];
+  v24 = objc_loadWeakRetained(&selfCopy->_icc);
+  isInDynamicOperation = [v24 isInDynamicOperation];
 
-  if (v25)
+  if (isInDynamicOperation)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -652,8 +652,8 @@ LABEL_18:
 
   [(CRLDynamicOperationController *)self p_resetGuidesForCleanup:1, v13];
   v9 = objc_loadWeakRetained(&self->_icc);
-  v10 = [v9 tmCoordinator];
-  [v10 operationDidEnd];
+  tmCoordinator = [v9 tmCoordinator];
+  [tmCoordinator operationDidEnd];
 
   self->_possibleDynamicOperation = 0;
   reps = self->_reps;
@@ -665,9 +665,9 @@ LABEL_18:
   self->_operationIsDynamic = 0;
 }
 
-- (void)startTransformingReps:(id)a3
+- (void)startTransformingReps:(id)reps
 {
-  v4 = a3;
+  repsCopy = reps;
   if (![(CRLDynamicOperationController *)self isInOperation]&& !self->_possibleDynamicOperation)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -702,7 +702,7 @@ LABEL_18:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v4;
+  v9 = repsCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -747,27 +747,27 @@ LABEL_18:
 
   [(CRLDynamicOperationController *)self p_resetGuidesForCleanup:0, v19];
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v16 = [WeakRetained tmCoordinator];
-  v17 = [v16 controllingTM];
-  v18 = [v17 tracker];
+  tmCoordinator = [WeakRetained tmCoordinator];
+  controllingTM = [tmCoordinator controllingTM];
+  tracker = [controllingTM tracker];
 
   if (objc_opt_respondsToSelector())
   {
-    [v18 didChangeCurrentlyTransformingReps];
+    [tracker didChangeCurrentlyTransformingReps];
   }
 }
 
-- (void)stopTransformingReps:(id)a3
+- (void)stopTransformingReps:(id)reps
 {
-  v4 = a3;
-  if ([v4 count])
+  repsCopy = reps;
+  if ([repsCopy count])
   {
-    [(NSMutableSet *)self->_reps minusSet:v4];
+    [(NSMutableSet *)self->_reps minusSet:repsCopy];
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v4;
+    v5 = repsCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -783,8 +783,8 @@ LABEL_18:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * v9) layout];
-          [v10 pauseDynamicTransformation];
+          layout = [*(*(&v15 + 1) + 8 * v9) layout];
+          [layout pauseDynamicTransformation];
 
           v9 = v9 + 1;
         }
@@ -798,25 +798,25 @@ LABEL_18:
 
     [(CRLDynamicOperationController *)self p_resetGuidesForCleanup:0];
     WeakRetained = objc_loadWeakRetained(&self->_icc);
-    v12 = [WeakRetained tmCoordinator];
-    v13 = [v12 controllingTM];
-    v14 = [v13 tracker];
+    tmCoordinator = [WeakRetained tmCoordinator];
+    controllingTM = [tmCoordinator controllingTM];
+    tracker = [controllingTM tracker];
 
     if (objc_opt_respondsToSelector())
     {
-      [v14 didChangeCurrentlyTransformingReps];
+      [tracker didChangeCurrentlyTransformingReps];
     }
   }
 }
 
-- (void)handleGestureRecognizer:(id)a3
+- (void)handleGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v6 = [WeakRetained tmCoordinator];
-  v7 = [v6 controllingTM];
+  tmCoordinator = [WeakRetained tmCoordinator];
+  controllingTM = [tmCoordinator controllingTM];
 
-  if (v7 == v4)
+  if (controllingTM == recognizerCopy)
   {
     if (![(CRLDynamicOperationController *)self isInOperation])
     {
@@ -850,11 +850,11 @@ LABEL_18:
       [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:340 isFatal:0 description:"tracker is handling GR %@ when not in a transform", v13];
     }
 
-    v14 = [v4 tracker];
-    v15 = [v14 operationShouldBeDynamic];
+    tracker = [recognizerCopy tracker];
+    operationShouldBeDynamic = [tracker operationShouldBeDynamic];
     operationIsDynamic = self->_operationIsDynamic;
 
-    if (operationIsDynamic != v15)
+    if (operationIsDynamic != operationShouldBeDynamic)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -881,8 +881,8 @@ LABEL_18:
 
       v19 = [NSString stringWithUTF8String:"[CRLDynamicOperationController handleGestureRecognizer:]"];
       v20 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLDynamicOperationController.m"];
-      v21 = [v4 tracker];
-      [CRLAssertionHandler handleFailureInFunction:v19 file:v20 lineNumber:346 isFatal:0 description:"Controlling TM has different dynamic operation expectations than current operation (%@)", v21];
+      tracker2 = [recognizerCopy tracker];
+      [CRLAssertionHandler handleFailureInFunction:v19 file:v20 lineNumber:346 isFatal:0 description:"Controlling TM has different dynamic operation expectations than current operation (%@)", tracker2];
     }
 
     if (self->_resetGuides)
@@ -890,13 +890,13 @@ LABEL_18:
       [(CRLDynamicOperationController *)self p_resetGuidesForCleanup:0];
     }
 
-    v22 = [v4 state];
-    if ((v22 - 1) >= 2)
+    state = [recognizerCopy state];
+    if ((state - 1) >= 2)
     {
-      if (v22 == 3)
+      if (state == 3)
       {
-        v24 = [v4 tracker];
-        [v24 changeDynamicLayoutsForReps:self->_reps];
+        tracker3 = [recognizerCopy tracker];
+        [tracker3 changeDynamicLayoutsForReps:self->_reps];
 
         [(CRLDynamicOperationController *)self endOperation];
       }
@@ -904,15 +904,15 @@ LABEL_18:
 
     else
     {
-      v23 = [v4 tracker];
-      [v23 changeDynamicLayoutsForReps:self->_reps];
+      tracker4 = [recognizerCopy tracker];
+      [tracker4 changeDynamicLayoutsForReps:self->_reps];
     }
   }
 }
 
-- (void)p_controllingTMDidResetInOperation:(id)a3
+- (void)p_controllingTMDidResetInOperation:(id)operation
 {
-  v4 = [a3 object];
+  object = [operation object];
   if (![(CRLDynamicOperationController *)self isInOperation])
   {
     v5 = +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -923,7 +923,7 @@ LABEL_18:
 
     if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
     {
-      sub_10137D158(v4, v5);
+      sub_10137D158(object, v5);
     }
 
     if (qword_101AD5A10 != -1)
@@ -939,27 +939,27 @@ LABEL_18:
 
     v7 = [NSString stringWithUTF8String:"[CRLDynamicOperationController p_controllingTMDidResetInOperation:]"];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLDynamicOperationController.m"];
-    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:377 isFatal:0 description:"controlling GR reset in an operation, but we aren't in an operation! %@", v4];
+    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:377 isFatal:0 description:"controlling GR reset in an operation, but we aren't in an operation! %@", object];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v10 = [WeakRetained tmCoordinator];
-  v11 = [v10 controllingTM];
+  tmCoordinator = [WeakRetained tmCoordinator];
+  controllingTM = [tmCoordinator controllingTM];
 
-  if (v4 == v11)
+  if (object == controllingTM)
   {
     [(CRLDynamicOperationController *)self endOperation];
   }
 }
 
-- (void)handleTrackerManipulator:(id)a3
+- (void)handleTrackerManipulator:(id)manipulator
 {
-  v4 = a3;
+  manipulatorCopy = manipulator;
   WeakRetained = objc_loadWeakRetained(&self->_icc);
-  v6 = [WeakRetained tmCoordinator];
-  v7 = [v6 controllingTM];
+  tmCoordinator = [WeakRetained tmCoordinator];
+  controllingTM = [tmCoordinator controllingTM];
 
-  if (v7 == v4)
+  if (controllingTM == manipulatorCopy)
   {
     if (![(CRLDynamicOperationController *)self isInOperation])
     {
@@ -993,11 +993,11 @@ LABEL_18:
       [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:393 isFatal:0 description:"tracker is handling TM %@ when not in a transform", v13];
     }
 
-    v14 = [v4 tracker];
-    v15 = [v14 operationShouldBeDynamic];
+    tracker = [manipulatorCopy tracker];
+    operationShouldBeDynamic = [tracker operationShouldBeDynamic];
     operationIsDynamic = self->_operationIsDynamic;
 
-    if (operationIsDynamic != v15)
+    if (operationIsDynamic != operationShouldBeDynamic)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -1034,50 +1034,50 @@ LABEL_18:
       [(CRLDynamicOperationController *)self p_resetGuidesForCleanup:0];
     }
 
-    v23 = [v4 tracker];
-    [v23 changeDynamicLayoutsForReps:self->_reps];
+    tracker2 = [manipulatorCopy tracker];
+    [tracker2 changeDynamicLayoutsForReps:self->_reps];
 
-    if ([v4 readyToEndOperation])
+    if ([manipulatorCopy readyToEndOperation])
     {
       [(CRLDynamicOperationController *)self endOperation];
     }
   }
 }
 
-- (void)p_resetGuidesForCleanup:(BOOL)a3
+- (void)p_resetGuidesForCleanup:(BOOL)cleanup
 {
   if (self->_supportsAlignmentGuides)
   {
     WeakRetained = objc_loadWeakRetained(&self->_icc);
-    v6 = [WeakRetained guideController];
-    [v6 endAlignmentOperation];
+    guideController = [WeakRetained guideController];
+    [guideController endAlignmentOperation];
   }
 
   v7 = objc_loadWeakRetained(&self->_icc);
-  v8 = [v7 tmCoordinator];
-  v9 = [v8 controllingTM];
-  v39 = [v9 tracker];
+  tmCoordinator = [v7 tmCoordinator];
+  controllingTM = [tmCoordinator controllingTM];
+  tracker = [controllingTM tracker];
 
-  if ([v39 supportsAlignmentGuides])
+  if ([tracker supportsAlignmentGuides])
   {
     v10 = [(NSMutableSet *)self->_reps count];
     self->_supportsAlignmentGuides = v10 != 0;
-    if (v10 && !a3)
+    if (v10 && !cleanup)
     {
       v11 = self->_reps;
       v12 = objc_loadWeakRetained(&self->_icc);
-      v13 = [v12 tmCoordinator];
-      v14 = [v13 controllingTM];
-      v15 = [v14 tracker];
+      tmCoordinator2 = [v12 tmCoordinator];
+      controllingTM2 = [tmCoordinator2 controllingTM];
+      tracker2 = [controllingTM2 tracker];
       v16 = objc_opt_respondsToSelector();
 
       if (v16)
       {
         v17 = objc_loadWeakRetained(&self->_icc);
-        v18 = [v17 tmCoordinator];
-        v19 = [v18 controllingTM];
-        v20 = [v19 tracker];
-        v21 = [v20 repsForGuidesWhenManipulatingReps:self->_reps];
+        tmCoordinator3 = [v17 tmCoordinator];
+        controllingTM3 = [tmCoordinator3 controllingTM];
+        tracker3 = [controllingTM3 tracker];
+        v21 = [tracker3 repsForGuidesWhenManipulatingReps:self->_reps];
 
         v11 = v21;
       }
@@ -1085,48 +1085,48 @@ LABEL_18:
       if (objc_opt_respondsToSelector())
       {
         v22 = objc_loadWeakRetained(&self->_icc);
-        v23 = [v22 tmCoordinator];
-        v24 = [v23 controllingTM];
-        v25 = [v24 tracker];
-        v26 = [v25 suppressesCenterGuides];
+        tmCoordinator4 = [v22 tmCoordinator];
+        controllingTM4 = [tmCoordinator4 controllingTM];
+        tracker4 = [controllingTM4 tracker];
+        suppressesCenterGuides = [tracker4 suppressesCenterGuides];
       }
 
       else
       {
-        v26 = 0;
+        suppressesCenterGuides = 0;
       }
 
       if (objc_opt_respondsToSelector())
       {
         v27 = objc_loadWeakRetained(&self->_icc);
-        v28 = [v27 tmCoordinator];
-        v29 = [v28 controllingTM];
-        v30 = [v29 tracker];
-        v31 = [v30 suppressesSpacingGuides];
+        tmCoordinator5 = [v27 tmCoordinator];
+        controllingTM5 = [tmCoordinator5 controllingTM];
+        tracker5 = [controllingTM5 tracker];
+        suppressesSpacingGuides = [tracker5 suppressesSpacingGuides];
       }
 
       else
       {
-        v31 = 0;
+        suppressesSpacingGuides = 0;
       }
 
       if (objc_opt_respondsToSelector())
       {
         v32 = objc_loadWeakRetained(&self->_icc);
-        v33 = [v32 tmCoordinator];
-        v34 = [v33 controllingTM];
-        v35 = [v34 tracker];
-        v36 = [v35 suppressesSizingGuides];
+        tmCoordinator6 = [v32 tmCoordinator];
+        controllingTM6 = [tmCoordinator6 controllingTM];
+        tracker6 = [controllingTM6 tracker];
+        suppressesSizingGuides = [tracker6 suppressesSizingGuides];
       }
 
       else
       {
-        v36 = 0;
+        suppressesSizingGuides = 0;
       }
 
       v37 = objc_loadWeakRetained(&self->_icc);
-      v38 = [v37 guideController];
-      [v38 beginAlignmentOperationForReps:v11 preventCenterGuides:v26 preventSpacingGuides:v31 preventSizingGuides:v36];
+      guideController2 = [v37 guideController];
+      [guideController2 beginAlignmentOperationForReps:v11 preventCenterGuides:suppressesCenterGuides preventSpacingGuides:suppressesSpacingGuides preventSizingGuides:suppressesSizingGuides];
     }
   }
 

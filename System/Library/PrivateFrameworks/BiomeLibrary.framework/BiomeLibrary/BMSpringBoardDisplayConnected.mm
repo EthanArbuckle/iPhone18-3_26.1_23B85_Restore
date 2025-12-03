@@ -1,15 +1,15 @@
 @interface BMSpringBoardDisplayConnected
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSpringBoardDisplayConnected)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSpringBoardDisplayConnected)initWithStarting:(id)a3 deviceName:(id)a4 uniqueId:(id)a5 productName:(id)a6 mirroringMode:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMSpringBoardDisplayConnected)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSpringBoardDisplayConnected)initWithStarting:(id)starting deviceName:(id)name uniqueId:(id)id productName:(id)productName mirroringMode:(id)mode;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSpringBoardDisplayConnected
@@ -34,13 +34,13 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMSpringBoardDisplayConnected hasStarting](self, "hasStarting") || [v5 hasStarting])
     {
       if (![(BMSpringBoardDisplayConnected *)self hasStarting])
@@ -53,25 +53,25 @@
         goto LABEL_25;
       }
 
-      v6 = [(BMSpringBoardDisplayConnected *)self starting];
-      if (v6 != [v5 starting])
+      starting = [(BMSpringBoardDisplayConnected *)self starting];
+      if (starting != [v5 starting])
       {
         goto LABEL_25;
       }
     }
 
-    v7 = [(BMSpringBoardDisplayConnected *)self deviceName];
-    v8 = [v5 deviceName];
-    v9 = v8;
-    if (v7 == v8)
+    deviceName = [(BMSpringBoardDisplayConnected *)self deviceName];
+    deviceName2 = [v5 deviceName];
+    v9 = deviceName2;
+    if (deviceName == deviceName2)
     {
     }
 
     else
     {
-      v10 = [(BMSpringBoardDisplayConnected *)self deviceName];
-      v11 = [v5 deviceName];
-      v12 = [v10 isEqual:v11];
+      deviceName3 = [(BMSpringBoardDisplayConnected *)self deviceName];
+      deviceName4 = [v5 deviceName];
+      v12 = [deviceName3 isEqual:deviceName4];
 
       if (!v12)
       {
@@ -79,18 +79,18 @@
       }
     }
 
-    v14 = [(BMSpringBoardDisplayConnected *)self uniqueId];
-    v15 = [v5 uniqueId];
-    v16 = v15;
-    if (v14 == v15)
+    uniqueId = [(BMSpringBoardDisplayConnected *)self uniqueId];
+    uniqueId2 = [v5 uniqueId];
+    v16 = uniqueId2;
+    if (uniqueId == uniqueId2)
     {
     }
 
     else
     {
-      v17 = [(BMSpringBoardDisplayConnected *)self uniqueId];
-      v18 = [v5 uniqueId];
-      v19 = [v17 isEqual:v18];
+      uniqueId3 = [(BMSpringBoardDisplayConnected *)self uniqueId];
+      uniqueId4 = [v5 uniqueId];
+      v19 = [uniqueId3 isEqual:uniqueId4];
 
       if (!v19)
       {
@@ -98,18 +98,18 @@
       }
     }
 
-    v20 = [(BMSpringBoardDisplayConnected *)self productName];
-    v21 = [v5 productName];
-    v22 = v21;
-    if (v20 == v21)
+    productName = [(BMSpringBoardDisplayConnected *)self productName];
+    productName2 = [v5 productName];
+    v22 = productName2;
+    if (productName == productName2)
     {
     }
 
     else
     {
-      v23 = [(BMSpringBoardDisplayConnected *)self productName];
-      v24 = [v5 productName];
-      v25 = [v23 isEqual:v24];
+      productName3 = [(BMSpringBoardDisplayConnected *)self productName];
+      productName4 = [v5 productName];
+      v25 = [productName3 isEqual:productName4];
 
       if (!v25)
       {
@@ -125,8 +125,8 @@
 
     if (-[BMSpringBoardDisplayConnected hasMirroringMode](self, "hasMirroringMode") && [v5 hasMirroringMode])
     {
-      v26 = [(BMSpringBoardDisplayConnected *)self mirroringMode];
-      v13 = v26 ^ [v5 mirroringMode] ^ 1;
+      mirroringMode = [(BMSpringBoardDisplayConnected *)self mirroringMode];
+      v13 = mirroringMode ^ [v5 mirroringMode] ^ 1;
 LABEL_26:
 
       goto LABEL_27;
@@ -156,9 +156,9 @@ LABEL_27:
     v3 = 0;
   }
 
-  v4 = [(BMSpringBoardDisplayConnected *)self deviceName];
-  v5 = [(BMSpringBoardDisplayConnected *)self uniqueId];
-  v6 = [(BMSpringBoardDisplayConnected *)self productName];
+  deviceName = [(BMSpringBoardDisplayConnected *)self deviceName];
+  uniqueId = [(BMSpringBoardDisplayConnected *)self uniqueId];
+  productName = [(BMSpringBoardDisplayConnected *)self productName];
   if ([(BMSpringBoardDisplayConnected *)self hasMirroringMode])
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSpringBoardDisplayConnected mirroringMode](self, "mirroringMode")}];
@@ -170,50 +170,50 @@ LABEL_27:
   }
 
   v18 = @"starting";
-  v8 = v3;
+  null = v3;
   if (!v3)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v8;
-  v23[0] = v8;
+  v16 = null;
+  v23[0] = null;
   v19 = @"deviceName";
-  v9 = v4;
-  if (!v4)
+  null2 = deviceName;
+  if (!deviceName)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v9;
+  v23[1] = null2;
   v20 = @"uniqueId";
-  v10 = v5;
-  if (!v5)
+  null3 = uniqueId;
+  if (!uniqueId)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v10;
+  v23[2] = null3;
   v21 = @"productName";
-  v11 = v6;
-  if (!v6)
+  null4 = productName;
+  if (!productName)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v11;
+  v23[3] = null4;
   v22 = @"mirroringMode";
-  v12 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
   if (v7)
   {
-    if (v6)
+    if (productName)
     {
       goto LABEL_19;
     }
@@ -222,10 +222,10 @@ LABEL_27:
   else
   {
 
-    if (v6)
+    if (productName)
     {
 LABEL_19:
-      if (v5)
+      if (uniqueId)
       {
         goto LABEL_20;
       }
@@ -234,10 +234,10 @@ LABEL_19:
     }
   }
 
-  if (v5)
+  if (uniqueId)
   {
 LABEL_20:
-    if (v4)
+    if (deviceName)
     {
       goto LABEL_21;
     }
@@ -254,7 +254,7 @@ LABEL_28:
 
 LABEL_27:
 
-  if (!v4)
+  if (!deviceName)
   {
     goto LABEL_28;
   }
@@ -273,29 +273,29 @@ LABEL_22:
   return v13;
 }
 
-- (BMSpringBoardDisplayConnected)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSpringBoardDisplayConnected)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"starting"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"starting"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"deviceName"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"deviceName"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v38 = 0;
           v16 = 0;
           goto LABEL_20;
         }
 
-        v32 = a4;
+        errorCopy = error;
         v22 = objc_alloc(MEMORY[0x1E696ABC0]);
         v23 = *MEMORY[0x1E698F240];
         v45 = *MEMORY[0x1E696A578];
@@ -304,7 +304,7 @@ LABEL_4:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
         v38 = 0;
         v16 = 0;
-        *v32 = [v22 initWithDomain:v23 code:2 userInfo:v10];
+        *errorCopy = [v22 initWithDomain:v23 code:2 userInfo:v10];
         goto LABEL_19;
       }
 
@@ -316,22 +316,22 @@ LABEL_4:
       v38 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"uniqueId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"uniqueId"];
     v35 = v8;
-    v37 = self;
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v36 = 0;
           v16 = 0;
           goto LABEL_19;
         }
 
-        v24 = a4;
+        errorCopy2 = error;
         v25 = objc_alloc(MEMORY[0x1E696ABC0]);
         v26 = *MEMORY[0x1E698F240];
         v43 = *MEMORY[0x1E696A578];
@@ -340,10 +340,10 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
         v36 = 0;
         v16 = 0;
-        *v24 = [v25 initWithDomain:v26 code:2 userInfo:v11];
+        *errorCopy2 = [v25 initWithDomain:v26 code:2 userInfo:v11];
 LABEL_18:
 
-        self = v37;
+        self = selfCopy;
         v8 = v35;
 LABEL_19:
 
@@ -358,14 +358,14 @@ LABEL_19:
       v36 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"productName"];
-    v12 = a4;
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"productName"];
+    errorCopy3 = error;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v13 = 0;
           v16 = 0;
@@ -381,7 +381,7 @@ LABEL_19:
         v28 = [v33 initWithDomain:v27 code:2 userInfo:v14];
         v13 = 0;
         v16 = 0;
-        *v12 = v28;
+        *errorCopy3 = v28;
         goto LABEL_17;
       }
 
@@ -393,13 +393,13 @@ LABEL_19:
       v13 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"mirroringMode"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"mirroringMode"];
     if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v12)
+        if (errorCopy3)
         {
           v34 = objc_alloc(MEMORY[0x1E696ABC0]);
           v31 = *MEMORY[0x1E698F240];
@@ -407,7 +407,7 @@ LABEL_19:
           v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"mirroringMode"];
           v40 = v29;
           v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-          *v12 = [v34 initWithDomain:v31 code:2 userInfo:v30];
+          *errorCopy3 = [v34 initWithDomain:v31 code:2 userInfo:v30];
         }
 
         v15 = 0;
@@ -423,8 +423,8 @@ LABEL_19:
       v15 = 0;
     }
 
-    v16 = [(BMSpringBoardDisplayConnected *)v37 initWithStarting:v35 deviceName:v38 uniqueId:v36 productName:v13 mirroringMode:v15];
-    v37 = v16;
+    v16 = [(BMSpringBoardDisplayConnected *)selfCopy initWithStarting:v35 deviceName:v38 uniqueId:v36 productName:v13 mirroringMode:v15];
+    selfCopy = v16;
 LABEL_17:
 
     goto LABEL_18;
@@ -437,14 +437,14 @@ LABEL_17:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v16 = 0;
     goto LABEL_21;
   }
 
-  v19 = a4;
+  errorCopy4 = error;
   v20 = objc_alloc(MEMORY[0x1E696ABC0]);
   v21 = *MEMORY[0x1E698F240];
   v47 = *MEMORY[0x1E696A578];
@@ -453,7 +453,7 @@ LABEL_17:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:&v47 count:1];
   v8 = 0;
   v16 = 0;
-  *v19 = [v20 initWithDomain:v21 code:2 userInfo:v9];
+  *errorCopy4 = [v20 initWithDomain:v21 code:2 userInfo:v9];
 LABEL_20:
 
 LABEL_21:
@@ -465,14 +465,14 @@ LABEL_21:
 {
   v3 = objc_opt_new();
   [(BMSpringBoardDisplayConnected *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (self->_hasStarting)
   {
     starting = self->_starting;
@@ -501,9 +501,9 @@ LABEL_21:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v36.receiver = self;
   v36.super_class = BMSpringBoardDisplayConnected;
   v5 = [(BMEventBase *)&v36 init];
@@ -512,12 +512,12 @@ LABEL_21:
     goto LABEL_56;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -528,18 +528,18 @@ LABEL_21:
       while (1)
       {
         v37 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v37 & 0x7F) << v7;
@@ -557,9 +557,9 @@ LABEL_21:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -576,18 +576,18 @@ LABEL_16:
           while (1)
           {
             v37 = 0;
-            v29 = [v4 position] + 1;
-            if (v29 >= [v4 position] && (v30 = objc_msgSend(v4, "position") + 1, v30 <= objc_msgSend(v4, "length")))
+            v29 = [fromCopy position] + 1;
+            if (v29 >= [fromCopy position] && (v30 = objc_msgSend(fromCopy, "position") + 1, v30 <= objc_msgSend(fromCopy, "length")))
             {
-              v31 = [v4 data];
-              [v31 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v28 |= (v37 & 0x7F) << v26;
@@ -605,7 +605,7 @@ LABEL_16:
             }
           }
 
-          v22 = (v28 != 0) & ~[v4 hasError];
+          v22 = (v28 != 0) & ~[fromCopy hasError];
 LABEL_49:
           v32 = 16;
 LABEL_52:
@@ -648,18 +648,18 @@ LABEL_46:
             while (1)
             {
               v37 = 0;
-              v19 = [v4 position] + 1;
-              if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+              v19 = [fromCopy position] + 1;
+              if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
               {
-                v21 = [v4 data];
-                [v21 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v37 & 0x7F) << v16;
@@ -677,7 +677,7 @@ LABEL_46:
               }
             }
 
-            v22 = (v18 != 0) & ~[v4 hasError];
+            v22 = (v18 != 0) & ~[fromCopy hasError];
 LABEL_51:
             v32 = 18;
             goto LABEL_52;
@@ -690,13 +690,13 @@ LABEL_51:
       *(&v5->super.super.isa + v24) = v23;
 
 LABEL_53:
-      v33 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v33 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_55:
     v34 = 0;
@@ -715,32 +715,32 @@ LABEL_56:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSpringBoardDisplayConnected starting](self, "starting")}];
-  v5 = [(BMSpringBoardDisplayConnected *)self deviceName];
-  v6 = [(BMSpringBoardDisplayConnected *)self uniqueId];
-  v7 = [(BMSpringBoardDisplayConnected *)self productName];
+  deviceName = [(BMSpringBoardDisplayConnected *)self deviceName];
+  uniqueId = [(BMSpringBoardDisplayConnected *)self uniqueId];
+  productName = [(BMSpringBoardDisplayConnected *)self productName];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSpringBoardDisplayConnected mirroringMode](self, "mirroringMode")}];
-  v9 = [v3 initWithFormat:@"BMSpringBoardDisplayConnected with starting: %@, deviceName: %@, uniqueId: %@, productName: %@, mirroringMode: %@", v4, v5, v6, v7, v8];
+  v9 = [v3 initWithFormat:@"BMSpringBoardDisplayConnected with starting: %@, deviceName: %@, uniqueId: %@, productName: %@, mirroringMode: %@", v4, deviceName, uniqueId, productName, v8];
 
   return v9;
 }
 
-- (BMSpringBoardDisplayConnected)initWithStarting:(id)a3 deviceName:(id)a4 uniqueId:(id)a5 productName:(id)a6 mirroringMode:(id)a7
+- (BMSpringBoardDisplayConnected)initWithStarting:(id)starting deviceName:(id)name uniqueId:(id)id productName:(id)productName mirroringMode:(id)mode
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  startingCopy = starting;
+  nameCopy = name;
+  idCopy = id;
+  productNameCopy = productName;
+  modeCopy = mode;
   v19.receiver = self;
   v19.super_class = BMSpringBoardDisplayConnected;
   v17 = [(BMEventBase *)&v19 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v12)
+    if (startingCopy)
     {
       v17->_hasStarting = 1;
-      v17->_starting = [v12 BOOLValue];
+      v17->_starting = [startingCopy BOOLValue];
     }
 
     else
@@ -749,13 +749,13 @@ LABEL_56:
       v17->_starting = 0;
     }
 
-    objc_storeStrong(&v17->_deviceName, a4);
-    objc_storeStrong(&v17->_uniqueId, a5);
-    objc_storeStrong(&v17->_productName, a6);
-    if (v16)
+    objc_storeStrong(&v17->_deviceName, name);
+    objc_storeStrong(&v17->_uniqueId, id);
+    objc_storeStrong(&v17->_productName, productName);
+    if (modeCopy)
     {
       v17->_hasMirroringMode = 1;
-      v17->_mirroringMode = [v16 BOOLValue];
+      v17->_mirroringMode = [modeCopy BOOLValue];
     }
 
     else
@@ -787,9 +787,9 @@ LABEL_56:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -797,8 +797,8 @@ LABEL_56:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSpringBoardDisplayConnected alloc] initByReadFrom:v7];
     v4 = v8;

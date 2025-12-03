@@ -1,15 +1,15 @@
 @interface SKUIArtworkItemProvider
-- (SKUIArtworkItemProvider)initWithURL:(id)a3 usingResourceLoader:(id)a4;
-- (id)loadDataRepresentationForTypeIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
+- (SKUIArtworkItemProvider)initWithURL:(id)l usingResourceLoader:(id)loader;
+- (id)loadDataRepresentationForTypeIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
 @end
 
 @implementation SKUIArtworkItemProvider
 
-- (SKUIArtworkItemProvider)initWithURL:(id)a3 usingResourceLoader:(id)a4
+- (SKUIArtworkItemProvider)initWithURL:(id)l usingResourceLoader:(id)loader
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  loaderCopy = loader;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIArtworkItemProvider initWithURL:usingResourceLoader:];
@@ -21,15 +21,15 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_url, a3);
-    objc_storeStrong(&v10->_resourceLoader, a4);
+    objc_storeStrong(&v9->_url, l);
+    objc_storeStrong(&v10->_resourceLoader, loader);
     v11 = [MEMORY[0x277CCAC48] progressWithTotalUnitCount:1];
     progress = v10->_progress;
     v10->_progress = v11;
 
-    v13 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     completionHandlers = v10->_completionHandlers;
-    v10->_completionHandlers = v13;
+    v10->_completionHandlers = array;
 
     [(SKUIArtworkItemProvider *)v10 registerDataRepresentationForTypeIdentifier:*MEMORY[0x277CC20C8] visibility:3 loadHandler:&__block_literal_global_4];
     v15 = objc_alloc_init(SKUIArtworkRequest);
@@ -44,21 +44,21 @@
   return v10;
 }
 
-- (id)loadDataRepresentationForTypeIdentifier:(id)a3 completionHandler:(id)a4
+- (id)loadDataRepresentationForTypeIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:*MEMORY[0x277CC20C8]])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if ([identifierCopy isEqualToString:*MEMORY[0x277CC20C8]])
   {
     if ([(NSProgress *)self->_progress isFinished])
     {
-      v7[2](v7, self->_imageData, 0);
+      handlerCopy[2](handlerCopy, self->_imageData, 0);
     }
 
     else
     {
       completionHandlers = self->_completionHandlers;
-      v10 = _Block_copy(v7);
+      v10 = _Block_copy(handlerCopy);
       [(NSMutableArray *)completionHandlers addObject:v10];
     }
 
@@ -69,7 +69,7 @@
   {
     v13.receiver = self;
     v13.super_class = SKUIArtworkItemProvider;
-    v8 = [(SKUIArtworkItemProvider *)&v13 loadDataRepresentationForTypeIdentifier:v6 completionHandler:v7];
+    v8 = [(SKUIArtworkItemProvider *)&v13 loadDataRepresentationForTypeIdentifier:identifierCopy completionHandler:handlerCopy];
   }
 
   v11 = v8;
@@ -77,13 +77,13 @@
   return v11;
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  imageCopy = image;
   [(NSProgress *)self->_progress setCompletedUnitCount:1];
-  v8 = UIImageJPEGRepresentation(v7, 1.0);
+  v8 = UIImageJPEGRepresentation(imageCopy, 1.0);
   imageData = self->_imageData;
   self->_imageData = v8;
 
@@ -119,7 +119,7 @@
   }
 
   [(NSMutableArray *)self->_completionHandlers removeAllObjects];
-  [v6 setDelegate:0];
+  [requestCopy setDelegate:0];
 }
 
 - (void)initWithURL:usingResourceLoader:.cold.1()

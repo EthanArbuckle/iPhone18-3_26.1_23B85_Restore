@@ -7,23 +7,23 @@
 + (id)ik_pageFrameFromDOMDocument:()IKJSInspector
 {
   v3 = a3;
-  v4 = [v3 documentElement];
-  v5 = [v4 ik_templateName];
-  v6 = v5;
+  documentElement = [v3 documentElement];
+  ik_templateName = [documentElement ik_templateName];
+  v6 = ik_templateName;
   v7 = &stru_2866C1E60;
-  if (v5)
+  if (ik_templateName)
   {
-    v7 = v5;
+    v7 = ik_templateName;
   }
 
   v8 = v7;
 
-  v9 = [v3 _requestLoader];
-  v10 = [v9 identifier];
-  v11 = v10;
-  if (v10)
+  _requestLoader = [v3 _requestLoader];
+  identifier = [_requestLoader identifier];
+  v11 = identifier;
+  if (identifier)
   {
-    v12 = v10;
+    v12 = identifier;
   }
 
   else
@@ -34,11 +34,11 @@
   v13 = v12;
 
   v14 = MEMORY[0x277D7B798];
-  v15 = [v3 documentURI];
+  documentURI = [v3 documentURI];
 
-  if (v15)
+  if (documentURI)
   {
-    v16 = v15;
+    v16 = documentURI;
   }
 
   else

@@ -1,6 +1,6 @@
 @interface ASDUpdateMetricsStore
 - (ASDUpdateMetricsStore)init;
-- (void)addPoll:(id)a3;
+- (void)addPoll:(id)poll;
 - (void)synchronize;
 @end
 
@@ -59,15 +59,15 @@
 
       v15 = [objc_alloc(*(v12 + 944)) initWithDictionary:*(*(&v36 + 1) + 8 * v14)];
       [v6 addObject:v15];
-      v16 = [v15 reason];
-      if (([v16 isEqualToString:v13] & 1) == 0)
+      reason = [v15 reason];
+      if (([reason isEqualToString:v13] & 1) == 0)
       {
         v17 = v10;
         v18 = v6;
         v19 = v13;
         v20 = v12;
-        v21 = [v15 reason];
-        v22 = [v21 isEqualToString:@"Migration"];
+        reason2 = [v15 reason];
+        v22 = [reason2 isEqualToString:@"Migration"];
 
         if (v22)
         {
@@ -82,14 +82,14 @@
         if (v9)
         {
           ++v32;
-          v23 = [v15 pollTime];
-          [v23 timeIntervalSinceDate:v9];
+          pollTime = [v15 pollTime];
+          [pollTime timeIntervalSinceDate:v9];
           v11 = v11 + v24;
         }
 
         v12 = v20;
         [v15 pollTime];
-        v9 = v16 = v9;
+        v9 = reason = v9;
         v13 = v19;
         v6 = v18;
         v10 = v17;
@@ -131,13 +131,13 @@ LABEL_23:
   return v2;
 }
 
-- (void)addPoll:(id)a3
+- (void)addPoll:(id)poll
 {
   lock = self->_lock;
-  v5 = a3;
+  pollCopy = poll;
   [(NSLock *)lock lock];
   v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:self->_metrics];
-  [v8 addObject:v5];
+  [v8 addObject:pollCopy];
 
   if ([v8 count] >= 0x11)
   {
@@ -180,8 +180,8 @@ LABEL_23:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) dictionary];
-          [v4 addObject:v10];
+          dictionary = [*(*(&v14 + 1) + 8 * i) dictionary];
+          [v4 addObject:dictionary];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];

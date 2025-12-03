@@ -1,16 +1,16 @@
 @interface CHExceptionHandler
-+ (BOOL)tryClosure:(id)a3 error:(id *)a4;
++ (BOOL)tryClosure:(id)closure error:(id *)error;
 @end
 
 @implementation CHExceptionHandler
 
-+ (BOOL)tryClosure:(id)a3 error:(id *)a4
++ (BOOL)tryClosure:(id)closure error:(id *)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  closureCopy = closure;
+  v5 = closureCopy;
+  if (closureCopy)
   {
-    (*(v4 + 2))(v4);
+    (*(closureCopy + 2))(closureCopy);
   }
 
   return 1;

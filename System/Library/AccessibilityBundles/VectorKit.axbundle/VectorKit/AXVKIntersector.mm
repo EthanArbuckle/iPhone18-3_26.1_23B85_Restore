@@ -1,60 +1,60 @@
 @interface AXVKIntersector
 - ($F24F406B2B787EFB06265DBA3D28CBD5)coordinates;
-- (AXVKIntersector)initWithFeature:(id)a3 coordinates:(id)a4 isDeadEnd:(BOOL)a5;
-- (AXVKIntersector)initWithFeatureWrapper:(id)a3 coordinates:(id)a4 isDeadEnd:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
+- (AXVKIntersector)initWithFeature:(id)feature coordinates:(id)coordinates isDeadEnd:(BOOL)end;
+- (AXVKIntersector)initWithFeatureWrapper:(id)wrapper coordinates:(id)coordinates isDeadEnd:(BOOL)end;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation AXVKIntersector
 
-- (AXVKIntersector)initWithFeatureWrapper:(id)a3 coordinates:(id)a4 isDeadEnd:(BOOL)a5
+- (AXVKIntersector)initWithFeatureWrapper:(id)wrapper coordinates:(id)coordinates isDeadEnd:(BOOL)end
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v10 = a3;
+  var1 = coordinates.var1;
+  var0 = coordinates.var0;
+  wrapperCopy = wrapper;
   v14.receiver = self;
   v14.super_class = AXVKIntersector;
   v11 = [(AXVKIntersector *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_featureWrapper, a3);
+    objc_storeStrong(&v11->_featureWrapper, wrapper);
     v12->_coordinates.latitude = var0;
     v12->_coordinates.longitude = var1;
-    v12->_isDeadEnd = a5;
+    v12->_isDeadEnd = end;
   }
 
   return v12;
 }
 
-- (AXVKIntersector)initWithFeature:(id)a3 coordinates:(id)a4 isDeadEnd:(BOOL)a5
+- (AXVKIntersector)initWithFeature:(id)feature coordinates:(id)coordinates isDeadEnd:(BOOL)end
 {
-  v5 = a5;
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v9 = a3;
-  v10 = [[AXVKMultiSectionFeatureWrapper alloc] initWithFeature:v9];
-  v11 = [(AXVKIntersector *)self initWithFeatureWrapper:v10 coordinates:v5 isDeadEnd:var0, var1];
+  endCopy = end;
+  var1 = coordinates.var1;
+  var0 = coordinates.var0;
+  featureCopy = feature;
+  v10 = [[AXVKMultiSectionFeatureWrapper alloc] initWithFeature:featureCopy];
+  var1 = [(AXVKIntersector *)self initWithFeatureWrapper:v10 coordinates:endCopy isDeadEnd:var0, var1];
 
-  return v11;
+  return var1;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x29EDBA0F8];
   v4 = objc_opt_class();
-  v5 = [(AXVKMultiSectionFeatureWrapper *)self->_featureWrapper featureName];
-  v6 = [v3 stringWithFormat:@"%@:%p: %@ - (%f, %f)", v4, self, v5, *&self->_coordinates.latitude, *&self->_coordinates.longitude];
+  featureName = [(AXVKMultiSectionFeatureWrapper *)self->_featureWrapper featureName];
+  v6 = [v3 stringWithFormat:@"%@:%p: %@ - (%f, %f)", v4, self, featureName, *&self->_coordinates.latitude, *&self->_coordinates.longitude];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -64,8 +64,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AXVKIntersector *)v5 featureWrapper];
+      v5 = equalCopy;
+      featureWrapper = [(AXVKIntersector *)v5 featureWrapper];
       IsSameRoad = GEOMultiSectionFeatureIsSameRoad();
 
       latitude = self->_coordinates.latitude;
@@ -98,8 +98,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(GEOMultiSectionFeature *)self->_featureWrapper->_feature feature];
-  v4 = AXVKFeatureLabelsAndShieldsHash(v3);
+  feature = [(GEOMultiSectionFeature *)self->_featureWrapper->_feature feature];
+  v4 = AXVKFeatureLabelsAndShieldsHash(feature);
 
   return (self->_coordinates.longitude + (53 * (self->_coordinates.latitude + (53 * v4 + 2809))));
 }

@@ -1,32 +1,32 @@
 @interface AVTSimpleAvatarPickerHeaderView
-- (AVTSimpleAvatarPickerHeaderView)initWithFrame:(CGRect)a3;
+- (AVTSimpleAvatarPickerHeaderView)initWithFrame:(CGRect)frame;
 - (UIImageSymbolConfiguration)ellipsisSymbolConfiguration;
 - (UIImageSymbolConfiguration)plusSymbolConfiguration;
-- (void)buttonPressed:(id)a3;
+- (void)buttonPressed:(id)pressed;
 - (void)setupLayout;
-- (void)updateForEditMode:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateWithSymbolNamed:(id)a3 configuration:(id)a4 animated:(BOOL)a5;
+- (void)updateForEditMode:(BOOL)mode animated:(BOOL)animated;
+- (void)updateWithSymbolNamed:(id)named configuration:(id)configuration animated:(BOOL)animated;
 @end
 
 @implementation AVTSimpleAvatarPickerHeaderView
 
-- (AVTSimpleAvatarPickerHeaderView)initWithFrame:(CGRect)a3
+- (AVTSimpleAvatarPickerHeaderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12.receiver = self;
   v12.super_class = AVTSimpleAvatarPickerHeaderView;
   v7 = [(AVTSimpleAvatarPickerHeaderView *)&v12 initWithFrame:?];
   if (v7)
   {
-    v8 = [[AVTCircularButton alloc] initWithFrame:x, y, width, height];
-    [(AVTCircularButton *)v8 addTarget:v7 action:sel_buttonPressed_ forControlEvents:64];
-    [(AVTCircularButton *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+    height = [[AVTCircularButton alloc] initWithFrame:x, y, width, height];
+    [(AVTCircularButton *)height addTarget:v7 action:sel_buttonPressed_ forControlEvents:64];
+    [(AVTCircularButton *)height setTranslatesAutoresizingMaskIntoConstraints:0];
     button = v7->_button;
-    v7->_button = v8;
-    v10 = v8;
+    v7->_button = height;
+    v10 = height;
 
     [(AVTSimpleAvatarPickerHeaderView *)v7 addSubview:v10];
     [(AVTSimpleAvatarPickerHeaderView *)v7 setupLayout];
@@ -40,26 +40,26 @@
 {
   v22[4] = *MEMORY[0x1E69E9840];
   v14 = MEMORY[0x1E696ACD8];
-  v21 = [(AVTSimpleAvatarPickerHeaderView *)self button];
-  v20 = [v21 heightAnchor];
-  v19 = [(AVTSimpleAvatarPickerHeaderView *)self heightAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19 multiplier:0.64 constant:0.0];
+  button = [(AVTSimpleAvatarPickerHeaderView *)self button];
+  heightAnchor = [button heightAnchor];
+  heightAnchor2 = [(AVTSimpleAvatarPickerHeaderView *)self heightAnchor];
+  v18 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.64 constant:0.0];
   v22[0] = v18;
-  v17 = [(AVTSimpleAvatarPickerHeaderView *)self button];
-  v15 = [v17 widthAnchor];
-  v16 = [(AVTSimpleAvatarPickerHeaderView *)self button];
-  v13 = [v16 heightAnchor];
-  v3 = [v15 constraintEqualToAnchor:v13];
+  button2 = [(AVTSimpleAvatarPickerHeaderView *)self button];
+  widthAnchor = [button2 widthAnchor];
+  button3 = [(AVTSimpleAvatarPickerHeaderView *)self button];
+  heightAnchor3 = [button3 heightAnchor];
+  v3 = [widthAnchor constraintEqualToAnchor:heightAnchor3];
   v22[1] = v3;
-  v4 = [(AVTSimpleAvatarPickerHeaderView *)self button];
-  v5 = [v4 centerXAnchor];
-  v6 = [(AVTSimpleAvatarPickerHeaderView *)self centerXAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  button4 = [(AVTSimpleAvatarPickerHeaderView *)self button];
+  centerXAnchor = [button4 centerXAnchor];
+  centerXAnchor2 = [(AVTSimpleAvatarPickerHeaderView *)self centerXAnchor];
+  v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v22[2] = v7;
-  v8 = [(AVTSimpleAvatarPickerHeaderView *)self button];
-  v9 = [v8 centerYAnchor];
-  v10 = [(AVTSimpleAvatarPickerHeaderView *)self centerYAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  button5 = [(AVTSimpleAvatarPickerHeaderView *)self button];
+  centerYAnchor = [button5 centerYAnchor];
+  centerYAnchor2 = [(AVTSimpleAvatarPickerHeaderView *)self centerYAnchor];
+  v11 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v22[3] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:4];
   [v14 activateConstraints:v12];
@@ -95,17 +95,17 @@
   return plusSymbolConfiguration;
 }
 
-- (void)updateForEditMode:(BOOL)a3 animated:(BOOL)a4
+- (void)updateForEditMode:(BOOL)mode animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7 = kAVTCircularButtonEllipsisImageName;
-  if (!a3)
+  if (!mode)
   {
     v7 = kAVTCircularButtonPlusImageName;
   }
 
   v8 = *v7;
-  if (a3)
+  if (mode)
   {
     [(AVTSimpleAvatarPickerHeaderView *)self ellipsisSymbolConfiguration];
   }
@@ -115,24 +115,24 @@
     [(AVTSimpleAvatarPickerHeaderView *)self plusSymbolConfiguration];
   }
   v9 = ;
-  [(AVTSimpleAvatarPickerHeaderView *)self updateWithSymbolNamed:v8 configuration:v9 animated:v4];
+  [(AVTSimpleAvatarPickerHeaderView *)self updateWithSymbolNamed:v8 configuration:v9 animated:animatedCopy];
 }
 
-- (void)updateWithSymbolNamed:(id)a3 configuration:(id)a4 animated:(BOOL)a5
+- (void)updateWithSymbolNamed:(id)named configuration:(id)configuration animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(AVTSimpleAvatarPickerHeaderView *)self currentSymbolName];
-  v11 = [v10 isEqualToString:v8];
+  animatedCopy = animated;
+  namedCopy = named;
+  configurationCopy = configuration;
+  currentSymbolName = [(AVTSimpleAvatarPickerHeaderView *)self currentSymbolName];
+  v11 = [currentSymbolName isEqualToString:namedCopy];
 
   if ((v11 & 1) == 0)
   {
-    [(AVTSimpleAvatarPickerHeaderView *)self setCurrentSymbolName:v8];
-    v12 = [(AVTSimpleAvatarPickerHeaderView *)self button];
-    [v12 setSymbolImageWithName:v8 configuration:v9];
+    [(AVTSimpleAvatarPickerHeaderView *)self setCurrentSymbolName:namedCopy];
+    button = [(AVTSimpleAvatarPickerHeaderView *)self button];
+    [button setSymbolImageWithName:namedCopy configuration:configurationCopy];
 
-    if (v5)
+    if (animatedCopy)
     {
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
@@ -176,14 +176,14 @@ void __80__AVTSimpleAvatarPickerHeaderView_updateWithSymbolNamed_configuration_a
   [v1 setTransform:v3];
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
-  v4 = [(AVTSimpleAvatarPickerHeaderView *)self buttonPressedBlock];
+  buttonPressedBlock = [(AVTSimpleAvatarPickerHeaderView *)self buttonPressedBlock];
 
-  if (v4)
+  if (buttonPressedBlock)
   {
-    v5 = [(AVTSimpleAvatarPickerHeaderView *)self buttonPressedBlock];
-    v5[2]();
+    buttonPressedBlock2 = [(AVTSimpleAvatarPickerHeaderView *)self buttonPressedBlock];
+    buttonPressedBlock2[2]();
   }
 }
 

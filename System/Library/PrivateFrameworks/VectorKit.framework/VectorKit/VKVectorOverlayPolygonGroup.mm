@@ -1,7 +1,7 @@
 @interface VKVectorOverlayPolygonGroup
 - (CGColor)fillColor;
 - (CGColor)strokeColor;
-- (VKVectorOverlayPolygonGroup)initWithPolygons:(id)a3;
+- (VKVectorOverlayPolygonGroup)initWithPolygons:(id)polygons;
 - (double)alpha;
 - (double)lineWidth;
 - (double)miterLimit;
@@ -12,15 +12,15 @@
 - (shared_ptr<md::PolygonOverlayRenderable::Style>)_style;
 - (void)_updateStyleColor;
 - (void)dealloc;
-- (void)setAlpha:(double)a3;
-- (void)setBlendMode:(int64_t)a3;
-- (void)setFillColor:(CGColor *)a3;
-- (void)setLineJoin:(int64_t)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setMiterLimit:(double)a3;
-- (void)setStrokeColor:(CGColor *)a3;
-- (void)setStrokeEnd:(double)a3;
-- (void)setStrokeStart:(double)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setBlendMode:(int64_t)mode;
+- (void)setFillColor:(CGColor *)color;
+- (void)setLineJoin:(int64_t)join;
+- (void)setLineWidth:(double)width;
+- (void)setMiterLimit:(double)limit;
+- (void)setStrokeColor:(CGColor *)color;
+- (void)setStrokeEnd:(double)end;
+- (void)setStrokeStart:(double)start;
 @end
 
 @implementation VKVectorOverlayPolygonGroup
@@ -48,16 +48,16 @@
   return result;
 }
 
-- (void)setStrokeEnd:(double)a3
+- (void)setStrokeEnd:(double)end
 {
   os_unfair_lock_lock(&self->_propertiesLock._lock);
-  self->_strokeEnd = a3;
+  self->_strokeEnd = end;
   strokeStart = self->_strokeStart;
   v6 = *(self->_style.__ptr_ + 4);
   os_unfair_lock_lock((v6 + 196));
   *(v6 + 152) = strokeStart;
-  *&a3 = a3;
-  *(v6 + 156) = LODWORD(a3);
+  *&end = end;
+  *(v6 + 156) = LODWORD(end);
   os_unfair_lock_unlock((v6 + 196));
   WeakRetained = objc_loadWeakRetained(&self->super._delegate);
   [WeakRetained vectorOverlayNeedsDisplay:self needsFullInvalidate:0];
@@ -73,15 +73,15 @@
   return strokeEnd;
 }
 
-- (void)setStrokeStart:(double)a3
+- (void)setStrokeStart:(double)start
 {
   os_unfair_lock_lock(&self->_propertiesLock._lock);
-  self->_strokeStart = a3;
+  self->_strokeStart = start;
   strokeEnd = self->_strokeEnd;
   v6 = *(self->_style.__ptr_ + 4);
   os_unfair_lock_lock((v6 + 196));
-  *&a3 = a3;
-  *(v6 + 152) = LODWORD(a3);
+  *&start = start;
+  *(v6 + 152) = LODWORD(start);
   *(v6 + 156) = strokeEnd;
   os_unfair_lock_unlock((v6 + 196));
   WeakRetained = objc_loadWeakRetained(&self->super._delegate);
@@ -98,15 +98,15 @@
   return strokeStart;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   os_unfair_lock_lock(&self->_propertiesLock._lock);
   alpha = self->_alpha;
-  self->_alpha = a3;
-  v6 = a3;
-  md::PolygonOverlayRenderable::Style::setAlpha(self->_style.__ptr_, v6);
-  v7 = vabdd_f64(a3, alpha);
-  if (v7 > fabs(alpha + a3) * 2.22044605e-14 && v7 >= 2.22507386e-308)
+  self->_alpha = alpha;
+  alphaCopy = alpha;
+  md::PolygonOverlayRenderable::Style::setAlpha(self->_style.__ptr_, alphaCopy);
+  v7 = vabdd_f64(alpha, alpha);
+  if (v7 > fabs(alpha + alpha) * 2.22044605e-14 && v7 >= 2.22507386e-308)
   {
     WeakRetained = objc_loadWeakRetained(&self->super._delegate);
     [WeakRetained vectorOverlayNeedsDisplay:self needsFullInvalidate:0];
@@ -123,12 +123,12 @@
   return alpha;
 }
 
-- (void)setStrokeColor:(CGColor *)a3
+- (void)setStrokeColor:(CGColor *)color
 {
   os_unfair_lock_lock(&self->_propertiesLock._lock);
-  v5 = CGColorEqualToColor(a3, self->_strokeColor);
+  v5 = CGColorEqualToColor(color, self->_strokeColor);
   CGColorRelease(self->_strokeColor);
-  self->_strokeColor = CGColorRetain(a3);
+  self->_strokeColor = CGColorRetain(color);
   [(VKVectorOverlayPolygonGroup *)self _updateStyleColor];
   if (!v5)
   {
@@ -147,12 +147,12 @@
   return strokeColor;
 }
 
-- (void)setFillColor:(CGColor *)a3
+- (void)setFillColor:(CGColor *)color
 {
   os_unfair_lock_lock(&self->_propertiesLock._lock);
-  v5 = CGColorEqualToColor(a3, self->_fillColor);
+  v5 = CGColorEqualToColor(color, self->_fillColor);
   CGColorRelease(self->_fillColor);
-  self->_fillColor = CGColorRetain(a3);
+  self->_fillColor = CGColorRetain(color);
   [(VKVectorOverlayPolygonGroup *)self _updateStyleColor];
   if (!v5)
   {
@@ -171,13 +171,13 @@
   return fillColor;
 }
 
-- (void)setMiterLimit:(double)a3
+- (void)setMiterLimit:(double)limit
 {
   os_unfair_lock_lock(&self->_propertiesLock._lock);
   miterLimit = self->_miterLimit;
-  v6 = vabdd_f64(a3, miterLimit);
-  self->_miterLimit = a3;
-  v7 = v6 <= fabs(miterLimit + a3) * 2.22044605e-14 || v6 < 2.22507386e-308;
+  v6 = vabdd_f64(limit, miterLimit);
+  self->_miterLimit = limit;
+  v7 = v6 <= fabs(miterLimit + limit) * 2.22044605e-14 || v6 < 2.22507386e-308;
   if (!v7 && self->_lineJoin == 2)
   {
     WeakRetained = objc_loadWeakRetained(&self->super._delegate);
@@ -195,12 +195,12 @@
   return miterLimit;
 }
 
-- (void)setLineJoin:(int64_t)a3
+- (void)setLineJoin:(int64_t)join
 {
   os_unfair_lock_lock(&self->_propertiesLock._lock);
-  if (self->_lineJoin != a3)
+  if (self->_lineJoin != join)
   {
-    self->_lineJoin = a3;
+    self->_lineJoin = join;
     WeakRetained = objc_loadWeakRetained(&self->super._delegate);
     [WeakRetained vectorOverlayNeedsDisplay:self needsFullInvalidate:1];
   }
@@ -216,18 +216,18 @@
   return lineJoin;
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
   os_unfair_lock_lock(&self->_propertiesLock._lock);
   lineWidth = self->_lineWidth;
-  self->_lineWidth = a3;
+  self->_lineWidth = width;
   v7 = *(self->_style.__ptr_ + 4);
   os_unfair_lock_lock((v7 + 196));
-  v6 = a3;
-  *(v7 + 132) = v6;
+  widthCopy = width;
+  *(v7 + 132) = widthCopy;
   os_unfair_lock_unlock((v7 + 196));
-  v8 = vabdd_f64(a3, lineWidth);
-  if (v8 > fabs(lineWidth + a3) * 2.22044605e-14 && v8 >= 2.22507386e-308)
+  v8 = vabdd_f64(width, lineWidth);
+  if (v8 > fabs(lineWidth + width) * 2.22044605e-14 && v8 >= 2.22507386e-308)
   {
     WeakRetained = objc_loadWeakRetained(&self->super._delegate);
     [WeakRetained vectorOverlayNeedsDisplay:self needsFullInvalidate:0];
@@ -254,19 +254,19 @@
   md::PolylineOverlayStyle::setFillColor(*(v5 + 4), v7);
 }
 
-- (void)setBlendMode:(int64_t)a3
+- (void)setBlendMode:(int64_t)mode
 {
   v6.receiver = self;
   v6.super_class = VKVectorOverlayPolygonGroup;
   [(VKVectorOverlayData *)&v6 setBlendMode:?];
   ptr = self->_style.__ptr_;
-  if ((a3 - 1) >= 0x11)
+  if ((mode - 1) >= 0x11)
   {
-    LODWORD(a3) = 0;
+    LODWORD(mode) = 0;
   }
 
   os_unfair_lock_lock(ptr + 6);
-  ptr[5]._os_unfair_lock_opaque = a3;
+  ptr[5]._os_unfair_lock_opaque = mode;
   os_unfair_lock_unlock(ptr + 6);
 }
 
@@ -279,15 +279,15 @@
   [(VKVectorOverlayPolygonGroup *)&v3 dealloc];
 }
 
-- (VKVectorOverlayPolygonGroup)initWithPolygons:(id)a3
+- (VKVectorOverlayPolygonGroup)initWithPolygons:(id)polygons
 {
-  v4 = a3;
+  polygonsCopy = polygons;
   v9.receiver = self;
   v9.super_class = VKVectorOverlayPolygonGroup;
   v5 = [(VKVectorOverlayData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [polygonsCopy copy];
     polygons = v5->_polygons;
     v5->_polygons = v6;
 

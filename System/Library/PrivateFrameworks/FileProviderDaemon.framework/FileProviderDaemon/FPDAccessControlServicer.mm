@@ -1,37 +1,37 @@
 @interface FPDAccessControlServicer
-- (FPDAccessControlServicer)initWithAccessStore:(id)a3;
+- (FPDAccessControlServicer)initWithAccessStore:(id)store;
 - (FPDAccessControlStore)accessStore;
-- (void)bundleIdentifiersWithAccessToAnyItemCompletionHandler:(id)a3;
-- (void)revokeAccessToAllItemsForBundle:(id)a3 completionHandler:(id)a4;
+- (void)bundleIdentifiersWithAccessToAnyItemCompletionHandler:(id)handler;
+- (void)revokeAccessToAllItemsForBundle:(id)bundle completionHandler:(id)handler;
 @end
 
 @implementation FPDAccessControlServicer
 
-- (FPDAccessControlServicer)initWithAccessStore:(id)a3
+- (FPDAccessControlServicer)initWithAccessStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v8.receiver = self;
   v8.super_class = FPDAccessControlServicer;
   v5 = [(FPDAccessControlServicer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_accessStore, v4);
+    objc_storeWeak(&v5->_accessStore, storeCopy);
   }
 
   return v6;
 }
 
-- (void)bundleIdentifiersWithAccessToAnyItemCompletionHandler:(id)a3
+- (void)bundleIdentifiersWithAccessToAnyItemCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_accessStore);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __82__FPDAccessControlServicer_bundleIdentifiersWithAccessToAnyItemCompletionHandler___block_invoke;
   v7[3] = &unk_1E83C0048;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [WeakRetained performWithDBConnection:v7];
 }
 
@@ -76,19 +76,19 @@ uint64_t __82__FPDAccessControlServicer_bundleIdentifiersWithAccessToAnyItemComp
   return 1;
 }
 
-- (void)revokeAccessToAllItemsForBundle:(id)a3 completionHandler:(id)a4
+- (void)revokeAccessToAllItemsForBundle:(id)bundle completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  bundleCopy = bundle;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_accessStore);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __78__FPDAccessControlServicer_revokeAccessToAllItemsForBundle_completionHandler___block_invoke;
   v11[3] = &unk_1E83C0070;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = bundleCopy;
+  v13 = handlerCopy;
+  v9 = bundleCopy;
+  v10 = handlerCopy;
   [WeakRetained performWithDBConnection:v11];
 }
 

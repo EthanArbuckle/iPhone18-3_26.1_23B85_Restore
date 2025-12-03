@@ -24,11 +24,11 @@
   v11.receiver = self;
   v11.super_class = EKConferenceRoom;
   v4 = [(EKConferenceRoom *)&v11 description];
-  v5 = [(EKConferenceRoom *)self location];
-  v6 = [v5 displayName];
-  v7 = [(EKConferenceRoom *)self location];
-  v8 = [v7 preferredAddress];
-  v9 = [v3 stringWithFormat:@"%@ { displayName = %@, address = %@ }", v4, v6, v8];
+  location = [(EKConferenceRoom *)self location];
+  displayName = [location displayName];
+  location2 = [(EKConferenceRoom *)self location];
+  preferredAddress = [location2 preferredAddress];
+  v9 = [v3 stringWithFormat:@"%@ { displayName = %@, address = %@ }", v4, displayName, preferredAddress];
 
   return v9;
 }

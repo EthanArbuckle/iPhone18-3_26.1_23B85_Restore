@@ -1,9 +1,9 @@
 @interface LinkView
 - (_TtC8PaperKit8LinkView)init;
-- (_TtC8PaperKit8LinkView)initWithCoder:(id)a3;
-- (_TtC8PaperKit8LinkView)initWithFrame:(CGRect)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
+- (_TtC8PaperKit8LinkView)initWithCoder:(id)coder;
+- (_TtC8PaperKit8LinkView)initWithFrame:(CGRect)frame;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
 @end
 
 @implementation LinkView
@@ -18,7 +18,7 @@
   return [(LinkView *)&v4 initWithFrame:0.0, 0.0, 0.0, 0.0];
 }
 
-- (_TtC8PaperKit8LinkView)initWithCoder:(id)a3
+- (_TtC8PaperKit8LinkView)initWithCoder:(id)coder
 {
   *(&self->super.super._responderFlags + OBJC_IVAR____TtC8PaperKit8LinkView_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -28,38 +28,38 @@
   return result;
 }
 
-- (_TtC8PaperKit8LinkView)initWithFrame:(CGRect)a3
+- (_TtC8PaperKit8LinkView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
+  interactionCopy = interaction;
+  selfCopy = self;
   v7 = specialized LinkView.contextMenuInteraction(_:configurationForMenuAtLocation:)();
 
   return v7;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
-  v4 = self;
-  v5 = [(LinkView *)v4 window];
-  if (v5)
+  selfCopy = self;
+  window = [(LinkView *)selfCopy window];
+  if (window)
   {
 
-    v6 = [objc_allocWithZone(MEMORY[0x1E69DD070]) initWithView_];
+    initWithView_ = [objc_allocWithZone(MEMORY[0x1E69DD070]) initWithView_];
   }
 
   else
   {
-    v6 = 0;
+    initWithView_ = 0;
   }
 
-  return v6;
+  return initWithView_;
 }
 
 @end

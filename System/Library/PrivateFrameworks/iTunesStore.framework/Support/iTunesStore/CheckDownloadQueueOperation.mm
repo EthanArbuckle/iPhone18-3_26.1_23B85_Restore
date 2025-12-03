@@ -1,5 +1,5 @@
 @interface CheckDownloadQueueOperation
-- (CheckDownloadQueueOperation)initWithDownloadQueueRequest:(id)a3;
+- (CheckDownloadQueueOperation)initWithDownloadQueueRequest:(id)request;
 - (StoreDownloadQueueRequest)downloadQueueRequest;
 - (id)_account;
 - (id)_newURLOperation;
@@ -11,9 +11,9 @@
 
 @implementation CheckDownloadQueueOperation
 
-- (CheckDownloadQueueOperation)initWithDownloadQueueRequest:(id)a3
+- (CheckDownloadQueueOperation)initWithDownloadQueueRequest:(id)request
 {
-  if (!a3)
+  if (!request)
   {
     sub_100272190(a2, self);
   }
@@ -23,7 +23,7 @@
   v5 = [(CheckDownloadQueueOperation *)&v7 init];
   if (v5)
   {
-    v5->_request = [a3 copy];
+    v5->_request = [request copy];
   }
 
   return v5;
@@ -59,15 +59,15 @@
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
   if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_INFO))
@@ -98,18 +98,18 @@
 
   [(CheckDownloadQueueOperation *)self _runPendingCancelDownloadOperations];
   v32 = 0;
-  v11 = [(CheckDownloadQueueOperation *)self _newURLOperation];
-  if (([(CheckDownloadQueueOperation *)self runSubOperation:v11 returningError:&v32]& 1) != 0)
+  _newURLOperation = [(CheckDownloadQueueOperation *)self _newURLOperation];
+  if (([(CheckDownloadQueueOperation *)self runSubOperation:_newURLOperation returningError:&v32]& 1) != 0)
   {
-    v12 = [objc_msgSend(objc_msgSend(v11 "dataProvider")];
+    v12 = [objc_msgSend(objc_msgSend(_newURLOperation "dataProvider")];
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v12 intValue];
+      intValue = [v12 intValue];
     }
 
     else
     {
-      v13 = 0;
+      intValue = 0;
     }
 
     v21 = +[SSLogConfig sharedDaemonConfig];
@@ -118,15 +118,15 @@
       v21 = +[SSLogConfig sharedConfig];
     }
 
-    v22 = [v21 shouldLog];
+    shouldLog2 = [v21 shouldLog];
     if ([v21 shouldLogToDisk])
     {
-      v23 = v22 | 2;
+      v23 = shouldLog2 | 2;
     }
 
     else
     {
-      v23 = v22;
+      v23 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v21 OSLogObject], OS_LOG_TYPE_INFO))
@@ -141,7 +141,7 @@
       v33 = 138412802;
       v34 = v24;
       v35 = 2048;
-      v36 = v13;
+      v36 = intValue;
       v37 = 2112;
       v38 = v25;
       LODWORD(v31) = 32;
@@ -158,7 +158,7 @@
     }
 
     [(CheckDownloadQueueOperation *)self lock];
-    self->_numberOfAvailableDownloads = v13;
+    self->_numberOfAvailableDownloads = intValue;
     [(CheckDownloadQueueOperation *)self unlock];
     [(CheckDownloadQueueOperation *)self setSuccess:1];
   }
@@ -171,15 +171,15 @@
       v14 = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
+    shouldLog3 = [v14 shouldLog];
     if ([v14 shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog3 | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog3;
     }
 
     if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -212,8 +212,8 @@
 
 - (id)_account
 {
-  v2 = [(StoreDownloadQueueRequest *)self->_request accountIdentifier];
-  if (!v2 || (result = [+[SSAccountStore defaultStore](SSAccountStore "defaultStore")]) == 0)
+  accountIdentifier = [(StoreDownloadQueueRequest *)self->_request accountIdentifier];
+  if (!accountIdentifier || (result = [+[SSAccountStore defaultStore](SSAccountStore "defaultStore")]) == 0)
   {
     v4 = +[SSAccountStore defaultStore];
 
@@ -227,15 +227,15 @@
 {
   v3 = objc_alloc_init(ISStoreURLOperation);
   [v3 setUseUserSpecificURLBag:1];
-  v4 = [(CheckDownloadQueueOperation *)self _account];
-  v5 = [[SSAuthenticationContext alloc] initWithAccount:v4];
+  _account = [(CheckDownloadQueueOperation *)self _account];
+  v5 = [[SSAuthenticationContext alloc] initWithAccount:_account];
   [v3 setAuthenticationContext:v5];
 
   v6 = objc_alloc_init(SSMutableURLRequestProperties);
   [v6 setAllowedRetryCount:0];
   [v6 setCachePolicy:1];
   [v6 setURLBagKey:{-[StoreDownloadQueueRequest queueCountURLBagKey](self->_request, "queueCountURLBagKey")}];
-  [v4 accountScope];
+  [_account accountScope];
   [v6 setURLBagType:SSURLBagTypeForAccountScope()];
   [v3 setRequestProperties:v6];
 

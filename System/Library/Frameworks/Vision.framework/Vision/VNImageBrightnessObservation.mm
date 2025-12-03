@@ -6,8 +6,8 @@
 
 - (float)brightness
 {
-  v2 = [(VNImageScoreObservation *)self exposureScore];
-  [v2 floatValue];
+  exposureScore = [(VNImageScoreObservation *)self exposureScore];
+  [exposureScore floatValue];
   v4 = v3;
 
   return v4;

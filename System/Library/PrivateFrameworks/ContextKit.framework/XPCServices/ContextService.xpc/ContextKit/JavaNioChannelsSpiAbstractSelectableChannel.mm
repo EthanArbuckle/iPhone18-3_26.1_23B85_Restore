@@ -3,7 +3,7 @@
 - (BOOL)isRegistered;
 - (uint64_t)containsValidKeys;
 - (void)dealloc;
-- (void)deregisterWithJavaNioChannelsSelectionKey:(id)a3;
+- (void)deregisterWithJavaNioChannelsSelectionKey:(id)key;
 - (void)implCloseChannel;
 @end
 
@@ -18,9 +18,9 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [v3 isEmpty];
+  isEmpty = [v3 isEmpty];
   objc_sync_exit(self);
-  return v4 ^ 1;
+  return isEmpty ^ 1;
 }
 
 - (void)implCloseChannel
@@ -68,28 +68,28 @@
 
 - (BOOL)isBlocking
 {
-  v2 = self;
+  selfCopy = self;
   v3 = *(&self->keyList_ + 7);
   objc_sync_enter(v3);
-  LOBYTE(v2) = v2->isBlocking_;
+  LOBYTE(selfCopy) = selfCopy->isBlocking_;
   objc_sync_exit(v3);
-  return v2;
+  return selfCopy;
 }
 
 - (uint64_t)containsValidKeys
 {
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = *(a1 + 39);
+  v2 = *(self + 39);
   if (!v2)
   {
     JreThrowNullPointerException();
   }
 
-  v3 = [*(a1 + 39) countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v3 = [*(self + 39) countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -122,17 +122,17 @@
 
   v7 = 0;
 LABEL_13:
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   return v7;
 }
 
-- (void)deregisterWithJavaNioChannelsSelectionKey:(id)a3
+- (void)deregisterWithJavaNioChannelsSelectionKey:(id)key
 {
   objc_sync_enter(self);
   v5 = *(&self->provider_ + 7);
   if (v5)
   {
-    [v5 removeWithId:a3];
+    [v5 removeWithId:key];
   }
 
   objc_sync_exit(self);

@@ -1,8 +1,8 @@
 @interface W5LogItemRequestInternal
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLogItemRequestInternal:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLogItemRequestInternal:(id)internal;
 - (W5LogItemRequestInternal)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
@@ -90,22 +90,22 @@
   return [(NSMutableString *)v3 copy];
 }
 
-- (BOOL)isEqualToLogItemRequestInternal:(id)a3
+- (BOOL)isEqualToLogItemRequestInternal:(id)internal
 {
   uuid = self->_uuid;
-  v4 = [a3 uuid];
+  uuid = [internal uuid];
 
-  return [(NSUUID *)uuid isEqual:v4];
+  return [(NSUUID *)uuid isEqual:uuid];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -116,10 +116,10 @@
     return 0;
   }
 
-  return [(W5LogItemRequestInternal *)self isEqualToLogItemRequestInternal:a3];
+  return [(W5LogItemRequestInternal *)self isEqualToLogItemRequestInternal:equal];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5LogItemRequestInternal allocWithZone:?]];
   [(W5LogItemRequestInternal *)v4 setUuid:self->_uuid];

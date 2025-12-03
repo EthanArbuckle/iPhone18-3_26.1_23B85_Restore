@@ -1,18 +1,18 @@
 @interface EFMutableOrderedDictionary
 - (EFMutableOrderedDictionary)init;
-- (EFMutableOrderedDictionary)initWithCapacity:(unint64_t)a3;
-- (id)_initWithOrderedKeys:(id)a3 objectsByKey:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)moveObjectForKey:(id)a3 toIndex:(unint64_t)a4;
+- (EFMutableOrderedDictionary)initWithCapacity:(unint64_t)capacity;
+- (id)_initWithOrderedKeys:(id)keys objectsByKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)moveObjectForKey:(id)key toIndex:(unint64_t)index;
 - (void)removeAllObjects;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)removeObjectsAtIndexes:(id)a3;
-- (void)removeObjectsForKeys:(id)a3;
-- (void)replaceObject:(id)a3 atIndex:(unint64_t)a4;
-- (void)replaceObject:(id)a3 forKey:(id)a4;
-- (void)setOrAddObject:(id)a3 forKey:(id)a4;
-- (void)setOrInsertObject:(id)a3 forKey:(id)a4 atIndex:(unint64_t)a5;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)removeObjectForKey:(id)key;
+- (void)removeObjectsAtIndexes:(id)indexes;
+- (void)removeObjectsForKeys:(id)keys;
+- (void)replaceObject:(id)object atIndex:(unint64_t)index;
+- (void)replaceObject:(id)object forKey:(id)key;
+- (void)setOrAddObject:(id)object forKey:(id)key;
+- (void)setOrInsertObject:(id)object forKey:(id)key atIndex:(unint64_t)index;
 @end
 
 @implementation EFMutableOrderedDictionary
@@ -28,10 +28,10 @@
   return v5;
 }
 
-- (EFMutableOrderedDictionary)initWithCapacity:(unint64_t)a3
+- (EFMutableOrderedDictionary)initWithCapacity:(unint64_t)capacity
 {
-  v5 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:a3];
-  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:a3];
+  v5 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:capacity];
+  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:capacity];
   v9.receiver = self;
   v9.super_class = EFMutableOrderedDictionary;
   v7 = [(EFOrderedDictionary *)&v9 _initWithOrderedKeys:v5 objectsByKey:v6];
@@ -39,11 +39,11 @@
   return v7;
 }
 
-- (id)_initWithOrderedKeys:(id)a3 objectsByKey:(id)a4
+- (id)_initWithOrderedKeys:(id)keys objectsByKey:(id)key
 {
-  v6 = a4;
-  v7 = [a3 mutableCopy];
-  v8 = [v6 mutableCopy];
+  keyCopy = key;
+  v7 = [keys mutableCopy];
+  v8 = [keyCopy mutableCopy];
   v11.receiver = self;
   v11.super_class = EFMutableOrderedDictionary;
   v9 = [(EFOrderedDictionary *)&v11 _initWithOrderedKeys:v7 objectsByKey:v8];
@@ -51,7 +51,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [EFOrderedDictionary alloc];
   v5 = [(NSOrderedSet *)self->super._orderedKeys copy];
@@ -61,25 +61,25 @@
   return v7;
 }
 
-- (void)setOrAddObject:(id)a3 forKey:(id)a4
+- (void)setOrAddObject:(id)object forKey:(id)key
 {
-  v7 = a3;
-  v6 = a4;
-  [(NSOrderedSet *)self->super._orderedKeys addObject:v6];
-  [(NSDictionary *)self->super._objectsByKey setObject:v7 forKeyedSubscript:v6];
+  objectCopy = object;
+  keyCopy = key;
+  [(NSOrderedSet *)self->super._orderedKeys addObject:keyCopy];
+  [(NSDictionary *)self->super._objectsByKey setObject:objectCopy forKeyedSubscript:keyCopy];
 }
 
-- (void)setOrInsertObject:(id)a3 forKey:(id)a4 atIndex:(unint64_t)a5
+- (void)setOrInsertObject:(id)object forKey:(id)key atIndex:(unint64_t)index
 {
-  v9 = a3;
-  v8 = a4;
-  [(NSOrderedSet *)self->super._orderedKeys insertObject:v8 atIndex:a5];
-  [(NSDictionary *)self->super._objectsByKey setObject:v9 forKeyedSubscript:v8];
+  objectCopy = object;
+  keyCopy = key;
+  [(NSOrderedSet *)self->super._orderedKeys insertObject:keyCopy atIndex:index];
+  [(NSDictionary *)self->super._objectsByKey setObject:objectCopy forKeyedSubscript:keyCopy];
 }
 
-- (void)moveObjectForKey:(id)a3 toIndex:(unint64_t)a4
+- (void)moveObjectForKey:(id)key toIndex:(unint64_t)index
 {
-  v5 = [(NSOrderedSet *)self->super._orderedKeys indexOfObject:a3];
+  v5 = [(NSOrderedSet *)self->super._orderedKeys indexOfObject:key];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndex:v5];
@@ -87,59 +87,59 @@
   }
 }
 
-- (void)replaceObject:(id)a3 atIndex:(unint64_t)a4
+- (void)replaceObject:(id)object atIndex:(unint64_t)index
 {
-  v8 = a3;
-  if ([(NSOrderedSet *)self->super._orderedKeys count]> a4)
+  objectCopy = object;
+  if ([(NSOrderedSet *)self->super._orderedKeys count]> index)
   {
     objectsByKey = self->super._objectsByKey;
-    v7 = [(NSOrderedSet *)self->super._orderedKeys objectAtIndexedSubscript:a4];
-    [(NSDictionary *)objectsByKey setObject:v8 forKeyedSubscript:v7];
+    v7 = [(NSOrderedSet *)self->super._orderedKeys objectAtIndexedSubscript:index];
+    [(NSDictionary *)objectsByKey setObject:objectCopy forKeyedSubscript:v7];
   }
 }
 
-- (void)replaceObject:(id)a3 forKey:(id)a4
+- (void)replaceObject:(id)object forKey:(id)key
 {
-  v7 = a3;
-  v6 = a4;
-  if ([(NSOrderedSet *)self->super._orderedKeys containsObject:v6])
+  objectCopy = object;
+  keyCopy = key;
+  if ([(NSOrderedSet *)self->super._orderedKeys containsObject:keyCopy])
   {
-    [(NSDictionary *)self->super._objectsByKey setObject:v7 forKeyedSubscript:v6];
+    [(NSDictionary *)self->super._objectsByKey setObject:objectCopy forKeyedSubscript:keyCopy];
   }
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
-  if ([(NSOrderedSet *)self->super._orderedKeys count]> a3)
+  if ([(NSOrderedSet *)self->super._orderedKeys count]> index)
   {
     objectsByKey = self->super._objectsByKey;
-    v6 = [(NSOrderedSet *)self->super._orderedKeys objectAtIndexedSubscript:a3];
+    v6 = [(NSOrderedSet *)self->super._orderedKeys objectAtIndexedSubscript:index];
     [(NSDictionary *)objectsByKey setObject:0 forKeyedSubscript:v6];
 
     orderedKeys = self->super._orderedKeys;
 
-    [(NSOrderedSet *)orderedKeys removeObjectAtIndex:a3];
+    [(NSOrderedSet *)orderedKeys removeObjectAtIndex:index];
   }
 }
 
-- (void)removeObjectsAtIndexes:(id)a3
+- (void)removeObjectsAtIndexes:(id)indexes
 {
-  v4 = [(NSOrderedSet *)self->super._orderedKeys objectsAtIndexes:a3];
+  v4 = [(NSOrderedSet *)self->super._orderedKeys objectsAtIndexes:indexes];
   [(EFMutableOrderedDictionary *)self removeObjectsForKeys:?];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(NSOrderedSet *)self->super._orderedKeys removeObject:?];
-  [(NSDictionary *)self->super._objectsByKey setObject:0 forKeyedSubscript:v4];
+  [(NSDictionary *)self->super._objectsByKey setObject:0 forKeyedSubscript:keyCopy];
 }
 
-- (void)removeObjectsForKeys:(id)a3
+- (void)removeObjectsForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   [(NSOrderedSet *)self->super._orderedKeys removeObjectsInArray:?];
-  [(NSDictionary *)self->super._objectsByKey removeObjectsForKeys:v4];
+  [(NSDictionary *)self->super._objectsByKey removeObjectsForKeys:keysCopy];
 }
 
 - (void)removeAllObjects

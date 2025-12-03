@@ -1,16 +1,16 @@
 @interface VUIModalPresentationNavigationController
 - (NSHashTable)presentedViewControllers;
 - (UIAlertController)containingAlertController;
-- (VUIModalPresentationNavigationController)initWithConfiguration:(id)a3;
-- (id)popViewControllerAnimated:(BOOL)a3;
-- (id)popViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_dismissForLastViewController:(BOOL)a3;
+- (VUIModalPresentationNavigationController)initWithConfiguration:(id)configuration;
+- (id)popViewControllerAnimated:(BOOL)animated;
+- (id)popViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)_dismissForLastViewController:(BOOL)controller;
 - (void)_updateConfiguration;
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setConfiguration:(id)a3;
-- (void)updatePreferredFocusedViewStateForFocus:(BOOL)a3;
+- (void)didShowViewController:(id)controller animated:(BOOL)animated;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)pushViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)setConfiguration:(id)configuration;
+- (void)updatePreferredFocusedViewStateForFocus:(BOOL)focus;
 @end
 
 @implementation VUIModalPresentationNavigationController
@@ -20,9 +20,9 @@
   presentedViewControllers = self->_presentedViewControllers;
   if (!presentedViewControllers)
   {
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v5 = self->_presentedViewControllers;
-    self->_presentedViewControllers = v4;
+    self->_presentedViewControllers = weakObjectsHashTable;
 
     presentedViewControllers = self->_presentedViewControllers;
   }
@@ -30,13 +30,13 @@
   return presentedViewControllers;
 }
 
-- (VUIModalPresentationNavigationController)initWithConfiguration:(id)a3
+- (VUIModalPresentationNavigationController)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = [objc_alloc(MEMORY[0x277D75D28]) initWithNibName:0 bundle:0];
-  v7 = [v6 view];
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [v7 setBackgroundColor:v8];
+  view = [v6 view];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [view setBackgroundColor:clearColor];
 
   v18.receiver = self;
   v18.super_class = VUIModalPresentationNavigationController;
@@ -53,86 +53,86 @@
     popCompletionBlocks = v10->_popCompletionBlocks;
     v10->_popCompletionBlocks = v13;
 
-    objc_storeStrong(&v10->_configuration, a3);
+    objc_storeStrong(&v10->_configuration, configuration);
     [(VUIModalPresentationNavigationController *)v10 _updateConfiguration];
-    v15 = [(VUIModalPresentationNavigationController *)v10 navigationBar];
-    [v15 setPrefersLargeTitles:1];
+    navigationBar = [(VUIModalPresentationNavigationController *)v10 navigationBar];
+    [navigationBar setPrefersLargeTitles:1];
 
-    v16 = [(VUIModalPresentationNavigationController *)v10 navigationBar];
-    [v16 _setHidesShadow:1];
+    navigationBar2 = [(VUIModalPresentationNavigationController *)v10 navigationBar];
+    [navigationBar2 _setHidesShadow:1];
   }
 
   return v10;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (self->_configuration != v5)
+  configurationCopy = configuration;
+  if (self->_configuration != configurationCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_configuration, a3);
+    v6 = configurationCopy;
+    objc_storeStrong(&self->_configuration, configuration);
     [(VUIModalPresentationNavigationController *)self _updateConfiguration];
-    v5 = v6;
+    configurationCopy = v6;
   }
 }
 
 - (void)_updateConfiguration
 {
-  v3 = [(VUIModalPresentationNavigationController *)self configuration];
-  if ([v3 type] == 1000)
+  configuration = [(VUIModalPresentationNavigationController *)self configuration];
+  if ([configuration type] == 1000)
   {
     goto LABEL_4;
   }
 
-  v4 = [(VUIModalPresentationNavigationController *)self configuration];
-  if ([v4 type] == 1001)
+  configuration2 = [(VUIModalPresentationNavigationController *)self configuration];
+  if ([configuration2 type] == 1001)
   {
 
 LABEL_4:
-    v5 = 0;
+    type2 = 0;
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v6 = [(VUIModalPresentationNavigationController *)self configuration];
-  v7 = [v6 type];
+  configuration3 = [(VUIModalPresentationNavigationController *)self configuration];
+  type = [configuration3 type];
 
-  if (v7 != 1002)
+  if (type != 1002)
   {
-    v3 = [(VUIModalPresentationNavigationController *)self configuration];
-    v5 = [v3 type];
+    configuration = [(VUIModalPresentationNavigationController *)self configuration];
+    type2 = [configuration type];
     goto LABEL_5;
   }
 
-  v5 = 0;
+  type2 = 0;
 LABEL_6:
-  [(VUIModalPresentationNavigationController *)self setModalPresentationStyle:v5];
-  v8 = [(VUIModalPresentationNavigationController *)self configuration];
-  -[VUIModalPresentationNavigationController setNavigationBarHidden:animated:](self, "setNavigationBarHidden:animated:", [v8 isNavigationBarHidden], 0);
+  [(VUIModalPresentationNavigationController *)self setModalPresentationStyle:type2];
+  configuration4 = [(VUIModalPresentationNavigationController *)self configuration];
+  -[VUIModalPresentationNavigationController setNavigationBarHidden:animated:](self, "setNavigationBarHidden:animated:", [configuration4 isNavigationBarHidden], 0);
 }
 
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4
+- (void)didShowViewController:(id)controller animated:(BOOL)animated
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = [(NSArray *)self->_previousViewControllers copy];
-  v7 = [(VUIModalPresentationNavigationController *)self viewControllers];
-  if (([v6 containsObject:v5] & 1) == 0 && (objc_msgSend(v7, "lastObject"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == v5))
+  viewControllers = [(VUIModalPresentationNavigationController *)self viewControllers];
+  if (([v6 containsObject:controllerCopy] & 1) == 0 && (objc_msgSend(viewControllers, "lastObject"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == controllerCopy))
   {
-    v11 = [(NSMapTable *)self->_pushCompletionBlocks objectForKey:v5];
-    [(NSMapTable *)self->_pushCompletionBlocks removeObjectForKey:v5];
+    v11 = [(NSMapTable *)self->_pushCompletionBlocks objectForKey:controllerCopy];
+    [(NSMapTable *)self->_pushCompletionBlocks removeObjectForKey:controllerCopy];
   }
 
   else
   {
     popCompletionBlocks = self->_popCompletionBlocks;
-    v10 = [v6 lastObject];
-    v11 = [(NSMapTable *)popCompletionBlocks objectForKey:v10];
+    lastObject = [v6 lastObject];
+    v11 = [(NSMapTable *)popCompletionBlocks objectForKey:lastObject];
 
     v12 = self->_popCompletionBlocks;
-    v13 = [v6 lastObject];
-    [(NSMapTable *)v12 removeObjectForKey:v13];
+    lastObject2 = [v6 lastObject];
+    [(NSMapTable *)v12 removeObjectForKey:lastObject2];
   }
 
   previousViewControllers = self->_previousViewControllers;
@@ -148,76 +148,76 @@ LABEL_6:
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v15 postNotificationName:@"VUIModalPresentationNavigationControllerDidShowNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"VUIModalPresentationNavigationControllerDidShowNotification" object:self];
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)pushViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v10 = a3;
-  if (a5)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  if (completion)
   {
     pushCompletionBlocks = self->_pushCompletionBlocks;
-    v9 = MEMORY[0x2743B7C30](a5);
-    [(NSMapTable *)pushCompletionBlocks setObject:v9 forKey:v10];
+    v9 = MEMORY[0x2743B7C30](completion);
+    [(NSMapTable *)pushCompletionBlocks setObject:v9 forKey:controllerCopy];
   }
 
-  [(VUIModalPresentationNavigationController *)self pushViewController:v10 animated:v6];
+  [(VUIModalPresentationNavigationController *)self pushViewController:controllerCopy animated:animatedCopy];
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (id)popViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  if (a4)
+  animatedCopy = animated;
+  if (completion)
   {
     popCompletionBlocks = self->_popCompletionBlocks;
-    v7 = MEMORY[0x2743B7C30](a4, a2);
-    v8 = [(VUIModalPresentationNavigationController *)self viewControllers];
-    v9 = [v8 lastObject];
-    [(NSMapTable *)popCompletionBlocks setObject:v7 forKey:v9];
+    v7 = MEMORY[0x2743B7C30](completion, a2);
+    viewControllers = [(VUIModalPresentationNavigationController *)self viewControllers];
+    lastObject = [viewControllers lastObject];
+    [(NSMapTable *)popCompletionBlocks setObject:v7 forKey:lastObject];
   }
 
-  return [(VUIModalPresentationNavigationController *)self popViewControllerAnimated:v4];
+  return [(VUIModalPresentationNavigationController *)self popViewControllerAnimated:animatedCopy];
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(VUIModalPresentationNavigationController *)self viewControllers];
-  v8 = [v7 count];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllers = [(VUIModalPresentationNavigationController *)self viewControllers];
+  v8 = [viewControllers count];
 
   if (v8 == 1)
   {
-    v9 = [v6 navigationItem];
-    [v9 setHidesBackButton:1];
+    navigationItem = [controllerCopy navigationItem];
+    [navigationItem setHidesBackButton:1];
   }
 
-  v10 = [(VUIModalPresentationNavigationController *)self viewControllers];
-  v11 = [v10 copy];
+  viewControllers2 = [(VUIModalPresentationNavigationController *)self viewControllers];
+  v11 = [viewControllers2 copy];
   previousViewControllers = self->_previousViewControllers;
   self->_previousViewControllers = v11;
 
   v13.receiver = self;
   v13.super_class = VUIModalPresentationNavigationController;
-  [(VUIModalPresentationNavigationController *)&v13 pushViewController:v6 animated:v4];
+  [(VUIModalPresentationNavigationController *)&v13 pushViewController:controllerCopy animated:animatedCopy];
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3
+- (id)popViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(VUIModalPresentationNavigationController *)self viewControllers];
-  v6 = [v5 copy];
+  animatedCopy = animated;
+  viewControllers = [(VUIModalPresentationNavigationController *)self viewControllers];
+  v6 = [viewControllers copy];
   previousViewControllers = self->_previousViewControllers;
   self->_previousViewControllers = v6;
 
-  v8 = [(VUIModalPresentationNavigationController *)self viewControllers];
-  v9 = [v8 count];
+  viewControllers2 = [(VUIModalPresentationNavigationController *)self viewControllers];
+  v9 = [viewControllers2 count];
 
   if (v9 == 2)
   {
-    [(VUIModalPresentationNavigationController *)self _dismissForLastViewController:v3];
+    [(VUIModalPresentationNavigationController *)self _dismissForLastViewController:animatedCopy];
     v10 = 0;
   }
 
@@ -225,19 +225,19 @@ LABEL_6:
   {
     v12.receiver = self;
     v12.super_class = VUIModalPresentationNavigationController;
-    v10 = [(VUIModalPresentationNavigationController *)&v12 popViewControllerAnimated:v3];
+    v10 = [(VUIModalPresentationNavigationController *)&v12 popViewControllerAnimated:animatedCopy];
   }
 
   return v10;
 }
 
-- (void)_dismissForLastViewController:(BOOL)a3
+- (void)_dismissForLastViewController:(BOOL)controller
 {
-  v3 = a3;
-  v5 = [(NSArray *)self->_previousViewControllers lastObject];
-  v6 = [(NSMapTable *)self->_popCompletionBlocks objectForKey:v5];
+  controllerCopy = controller;
+  lastObject = [(NSArray *)self->_previousViewControllers lastObject];
+  v6 = [(NSMapTable *)self->_popCompletionBlocks objectForKey:lastObject];
   objc_initWeak(&location, self);
-  v7 = [(VUIModalPresentationNavigationController *)self presentingViewController];
+  presentingViewController = [(VUIModalPresentationNavigationController *)self presentingViewController];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __74__VUIModalPresentationNavigationController__dismissForLastViewController___block_invoke;
@@ -245,7 +245,7 @@ LABEL_6:
   v8 = v6;
   v10 = v8;
   objc_copyWeak(&v11, &location);
-  [v7 dismissViewControllerAnimated:v3 completion:v9];
+  [presentingViewController dismissViewControllerAnimated:controllerCopy completion:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -264,15 +264,15 @@ void __74__VUIModalPresentationNavigationController__dismissForLastViewControlle
   [v3 postNotificationName:@"VUIModalPresentationNavigationControllerDismissedNotification" object:WeakRetained];
 }
 
-- (void)updatePreferredFocusedViewStateForFocus:(BOOL)a3
+- (void)updatePreferredFocusedViewStateForFocus:(BOOL)focus
 {
-  v3 = a3;
-  v4 = [(VUIModalPresentationNavigationController *)self childViewControllers];
-  v5 = [v4 lastObject];
+  focusCopy = focus;
+  childViewControllers = [(VUIModalPresentationNavigationController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  if ([v5 conformsToProtocol:&unk_288115768])
+  if ([lastObject conformsToProtocol:&unk_288115768])
   {
-    [v5 updatePreferredFocusedViewStateForFocus:v3];
+    [lastObject updatePreferredFocusedViewStateForFocus:focusCopy];
   }
 }
 

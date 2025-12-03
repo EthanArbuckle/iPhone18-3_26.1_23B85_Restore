@@ -3,25 +3,25 @@
 - (SBDeviceApplicationSceneStatusBarStateObserver)statusBarDelegate;
 - (double)statusBarAlpha;
 - (id)_aggregateStatusBarOverrideSettings;
-- (id)_newDisplayLayoutElementForEntity:(id)a3;
-- (id)statusBarAssertionWithStatusBarHidden:(BOOL)a3 atLevel:(unint64_t)a4;
+- (id)_newDisplayLayoutElementForEntity:(id)entity;
+- (id)statusBarAssertionWithStatusBarHidden:(BOOL)hidden atLevel:(unint64_t)level;
 - (void)_beginObservingApplicationInstalls;
 - (void)_beginPollingUpdateStillAvailable;
 - (void)_cleanup;
-- (void)_installedApplicationsDidChange:(id)a3;
-- (void)_launchApplication:(id)a3;
+- (void)_installedApplicationsDidChange:(id)change;
+- (void)_launchApplication:(id)application;
 - (void)_statusBarAssertionDidUpdate;
 - (void)_stopObservingApplicationInstalls;
-- (void)configureWithWorkspaceEntity:(id)a3 forLayoutElement:(id)a4 layoutState:(id)a5 referenceFrame:(CGRect)a6;
+- (void)configureWithWorkspaceEntity:(id)entity forLayoutElement:(id)element layoutState:(id)state referenceFrame:(CGRect)frame;
 - (void)invalidate;
 - (void)prepareForReuse;
-- (void)setCornerRadiusConfiguration:(id)a3;
-- (void)setMaskDisplayCorners:(BOOL)a3 forReason:(id)a4;
-- (void)statusBarAssertionDidInvalidate:(id)a3;
+- (void)setCornerRadiusConfiguration:(id)configuration;
+- (void)setMaskDisplayCorners:(BOOL)corners forReason:(id)reason;
+- (void)statusBarAssertionDidInvalidate:(id)invalidate;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SBAppClipPlaceholderLayoutElementViewController
@@ -67,27 +67,27 @@
   maskDisplayCornersReasons = self->_maskDisplayCornersReasons;
   self->_maskDisplayCornersReasons = 0;
 
-  v9 = [(SBAppClipPlaceholderLayoutElementViewController *)self view];
-  v10 = [v9 layer];
-  [v10 setMaskedCorners:0];
+  view = [(SBAppClipPlaceholderLayoutElementViewController *)self view];
+  layer = [view layer];
+  [layer setMaskedCorners:0];
 
-  v11 = [(SBAppClipPlaceholderLayoutElementViewController *)self view];
-  [v11 setClipsToBounds:0];
+  view2 = [(SBAppClipPlaceholderLayoutElementViewController *)self view];
+  [view2 setClipsToBounds:0];
 }
 
-- (void)configureWithWorkspaceEntity:(id)a3 forLayoutElement:(id)a4 layoutState:(id)a5 referenceFrame:(CGRect)a6
+- (void)configureWithWorkspaceEntity:(id)entity forLayoutElement:(id)element layoutState:(id)state referenceFrame:(CGRect)frame
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v28.receiver = self;
   v28.super_class = SBAppClipPlaceholderLayoutElementViewController;
-  v14 = a3;
-  [(SBLayoutElementViewController *)&v28 configureWithWorkspaceEntity:v14 forLayoutElement:a4 layoutState:a5 referenceFrame:x, y, width, height];
-  v15 = [v14 appClipPlaceholderEntity];
+  entityCopy = entity;
+  [(SBLayoutElementViewController *)&v28 configureWithWorkspaceEntity:entityCopy forLayoutElement:element layoutState:state referenceFrame:x, y, width, height];
+  appClipPlaceholderEntity = [entityCopy appClipPlaceholderEntity];
 
-  if (!v15)
+  if (!appClipPlaceholderEntity)
   {
     [SBAppClipPlaceholderLayoutElementViewController configureWithWorkspaceEntity:a2 forLayoutElement:self layoutState:? referenceFrame:?];
   }
@@ -111,24 +111,24 @@
     }
   }
 
-  v17 = [v15 bundleIdentifier];
+  bundleIdentifier = [appClipPlaceholderEntity bundleIdentifier];
   bundleIdentifier = self->_bundleIdentifier;
-  self->_bundleIdentifier = v17;
+  self->_bundleIdentifier = bundleIdentifier;
 
-  v19 = [v15 futureSceneIdentifier];
+  futureSceneIdentifier = [appClipPlaceholderEntity futureSceneIdentifier];
   sceneIdentifier = self->_sceneIdentifier;
-  self->_sceneIdentifier = v19;
+  self->_sceneIdentifier = futureSceneIdentifier;
 
-  self->_isPendingUpdate = [v15 needsUpdate];
+  self->_isPendingUpdate = [appClipPlaceholderEntity needsUpdate];
   v21 = [SBAppClipOverlayViewController alloc];
-  v22 = [SBApp appClipOverlayCoordinator];
-  v23 = [(SBAppClipOverlayViewController *)v21 initWithCoordinator:v22 bundleIdentifier:self->_bundleIdentifier sceneIdentifier:self->_sceneIdentifier];
+  appClipOverlayCoordinator = [SBApp appClipOverlayCoordinator];
+  v23 = [(SBAppClipOverlayViewController *)v21 initWithCoordinator:appClipOverlayCoordinator bundleIdentifier:self->_bundleIdentifier sceneIdentifier:self->_sceneIdentifier];
   v24 = self->_placeholderViewController;
   self->_placeholderViewController = v23;
 
   v25 = self->_placeholderViewController;
-  v26 = [(SBLayoutElementViewController *)self _contentContainerView];
-  [(SBAppClipPlaceholderLayoutElementViewController *)self bs_addChildViewController:v25 withSuperview:v26];
+  _contentContainerView = [(SBLayoutElementViewController *)self _contentContainerView];
+  [(SBAppClipPlaceholderLayoutElementViewController *)self bs_addChildViewController:v25 withSuperview:_contentContainerView];
 
   [(SBAppClipOverlayViewController *)self->_placeholderViewController setDisplayedOverPlaceholder:1 animated:0];
   [(SBAppClipOverlayViewController *)self->_placeholderViewController setSceneActivationState:-1 animated:0];
@@ -137,37 +137,37 @@
     [(SBAppClipOverlayViewController *)self->_placeholderViewController setNeedsUpdate];
   }
 
-  v27 = [(SBAppClipPlaceholderLayoutElementViewController *)self view];
-  [v27 setNeedsLayout];
+  view = [(SBAppClipPlaceholderLayoutElementViewController *)self view];
+  [view setNeedsLayout];
 
 LABEL_8:
 }
 
-- (id)_newDisplayLayoutElementForEntity:(id)a3
+- (id)_newDisplayLayoutElementForEntity:(id)entity
 {
-  v3 = [a3 appClipPlaceholderEntity];
+  appClipPlaceholderEntity = [entity appClipPlaceholderEntity];
   v4 = objc_alloc(MEMORY[0x277D66A50]);
-  v5 = [v3 futureSceneIdentifier];
-  v6 = [v4 initWithIdentifier:v5];
+  futureSceneIdentifier = [appClipPlaceholderEntity futureSceneIdentifier];
+  v6 = [v4 initWithIdentifier:futureSceneIdentifier];
 
-  v7 = [v3 bundleIdentifier];
-  [v6 setBundleIdentifier:v7];
+  bundleIdentifier = [appClipPlaceholderEntity bundleIdentifier];
+  [v6 setBundleIdentifier:bundleIdentifier];
 
   [v6 setUIApplicationElement:1];
   return v6;
 }
 
-- (void)setCornerRadiusConfiguration:(id)a3
+- (void)setCornerRadiusConfiguration:(id)configuration
 {
   v16 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  [v11 topLeft];
+  configurationCopy = configuration;
+  [configurationCopy topLeft];
   v5 = v4;
-  [v11 bottomLeft];
+  [configurationCopy bottomLeft];
   v13 = v6;
-  [v11 bottomRight];
+  [configurationCopy bottomRight];
   v14 = v7;
-  [v11 topRight];
+  [configurationCopy topRight];
   v15 = v8;
   for (i = 8; i != 32; i += 8)
   {
@@ -177,17 +177,17 @@ LABEL_8:
     }
   }
 
-  v10 = [(SBAppClipPlaceholderLayoutElementViewController *)self view];
-  [v10 _setContinuousCornerRadius:v5];
+  view = [(SBAppClipPlaceholderLayoutElementViewController *)self view];
+  [view _setContinuousCornerRadius:v5];
 }
 
-- (void)setMaskDisplayCorners:(BOOL)a3 forReason:(id)a4
+- (void)setMaskDisplayCorners:(BOOL)corners forReason:(id)reason
 {
-  v4 = a3;
-  v6 = a4;
+  cornersCopy = corners;
+  reasonCopy = reason;
   maskDisplayCornersReasons = self->_maskDisplayCornersReasons;
-  v16 = v6;
-  if (v4)
+  v16 = reasonCopy;
+  if (cornersCopy)
   {
     if (!maskDisplayCornersReasons)
     {
@@ -195,28 +195,28 @@ LABEL_8:
       v9 = self->_maskDisplayCornersReasons;
       self->_maskDisplayCornersReasons = v8;
 
-      v6 = v16;
+      reasonCopy = v16;
       maskDisplayCornersReasons = self->_maskDisplayCornersReasons;
     }
 
-    [(NSMutableSet *)maskDisplayCornersReasons addObject:v6];
+    [(NSMutableSet *)maskDisplayCornersReasons addObject:reasonCopy];
   }
 
   else
   {
-    [(NSMutableSet *)maskDisplayCornersReasons removeObject:v6];
+    [(NSMutableSet *)maskDisplayCornersReasons removeObject:reasonCopy];
   }
 
-  v10 = [(SBLayoutElementViewController *)self layoutElement];
-  v11 = [(SBLayoutElementViewController *)self layoutState];
-  v12 = SBCornerMaskForElementInLayoutState(v10, v11, [(NSMutableSet *)self->_maskDisplayCornersReasons count]!= 0);
+  layoutElement = [(SBLayoutElementViewController *)self layoutElement];
+  layoutState = [(SBLayoutElementViewController *)self layoutState];
+  v12 = SBCornerMaskForElementInLayoutState(layoutElement, layoutState, [(NSMutableSet *)self->_maskDisplayCornersReasons count]!= 0);
 
-  v13 = [(SBAppClipPlaceholderLayoutElementViewController *)self view];
-  v14 = [v13 layer];
-  [v14 setMaskedCorners:v12];
+  view = [(SBAppClipPlaceholderLayoutElementViewController *)self view];
+  layer = [view layer];
+  [layer setMaskedCorners:v12];
 
-  v15 = [(SBAppClipPlaceholderLayoutElementViewController *)self view];
-  [v15 setClipsToBounds:v12 != 0];
+  view2 = [(SBAppClipPlaceholderLayoutElementViewController *)self view];
+  [view2 setClipsToBounds:v12 != 0];
 }
 
 - (void)viewDidLayoutSubviews
@@ -224,15 +224,15 @@ LABEL_8:
   v13.receiver = self;
   v13.super_class = SBAppClipPlaceholderLayoutElementViewController;
   [(SBAppClipPlaceholderLayoutElementViewController *)&v13 viewDidLayoutSubviews];
-  v3 = [(SBLayoutElementViewController *)self _contentContainerView];
-  [v3 bounds];
+  _contentContainerView = [(SBLayoutElementViewController *)self _contentContainerView];
+  [_contentContainerView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(SBAppClipOverlayViewController *)self->_placeholderViewController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view = [(SBAppClipOverlayViewController *)self->_placeholderViewController view];
+  [view setFrame:{v5, v7, v9, v11}];
 }
 
 - (void)viewDidLoad
@@ -240,17 +240,17 @@ LABEL_8:
   v5.receiver = self;
   v5.super_class = SBAppClipPlaceholderLayoutElementViewController;
   [(SBAppClipPlaceholderLayoutElementViewController *)&v5 viewDidLoad];
-  v3 = [(SBAppClipPlaceholderLayoutElementViewController *)self view];
-  v4 = [MEMORY[0x277D75348] whiteColor];
-  [v3 setBackgroundColor:v4];
+  view = [(SBAppClipPlaceholderLayoutElementViewController *)self view];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [view setBackgroundColor:whiteColor];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v26 = *MEMORY[0x277D85DE8];
   v19.receiver = self;
   v19.super_class = SBAppClipPlaceholderLayoutElementViewController;
-  [(SBAppClipPlaceholderLayoutElementViewController *)&v19 viewWillAppear:a3];
+  [(SBAppClipPlaceholderLayoutElementViewController *)&v19 viewWillAppear:appear];
   v5 = +[SBApplicationPlaceholderController sharedInstance];
   v6 = [v5 placeholderForDisplayID:self->_bundleIdentifier];
 
@@ -309,27 +309,27 @@ LABEL_8:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBAppClipPlaceholderLayoutElementViewController;
-  [(SBAppClipPlaceholderLayoutElementViewController *)&v4 viewWillDisappear:a3];
+  [(SBAppClipPlaceholderLayoutElementViewController *)&v4 viewWillDisappear:disappear];
   [(SBAppClipPlaceholderLayoutElementViewController *)self _stopObservingApplicationInstalls];
 }
 
-- (void)statusBarAssertionDidInvalidate:(id)a3
+- (void)statusBarAssertionDidInvalidate:(id)invalidate
 {
-  [(NSMutableArray *)self->_statusBarAssertions removeObject:a3];
+  [(NSMutableArray *)self->_statusBarAssertions removeObject:invalidate];
 
   [(SBAppClipPlaceholderLayoutElementViewController *)self _statusBarAssertionDidUpdate];
 }
 
-- (id)statusBarAssertionWithStatusBarHidden:(BOOL)a3 atLevel:(unint64_t)a4
+- (id)statusBarAssertionWithStatusBarHidden:(BOOL)hidden atLevel:(unint64_t)level
 {
-  v5 = a3;
+  hiddenCopy = hidden;
   v7 = objc_alloc_init(SBMutableStatusBarSettings);
   v8 = 1.0;
-  if (v5)
+  if (hiddenCopy)
   {
     v8 = 0.0;
   }
@@ -337,7 +337,7 @@ LABEL_8:
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:v8];
   [(SBMutableStatusBarSettings *)v7 setAlpha:v9];
 
-  v10 = [[SBSceneViewStatusBarAssertion alloc] initWithStatusBarSettings:v7 nubViewHidden:0x7FFFFFFFFFFFFFFFLL atLevel:a4];
+  v10 = [[SBSceneViewStatusBarAssertion alloc] initWithStatusBarSettings:v7 nubViewHidden:0x7FFFFFFFFFFFFFFFLL atLevel:level];
   [(SBSceneViewStatusBarAssertion *)v10 addObserver:self];
   statusBarAssertions = self->_statusBarAssertions;
   if (!statusBarAssertions)
@@ -370,9 +370,9 @@ LABEL_8:
     return 1.0;
   }
 
-  v3 = [(SBAppClipPlaceholderLayoutElementViewController *)self _aggregateStatusBarOverrideSettings];
-  v4 = [v3 alpha];
-  [v4 floatValue];
+  _aggregateStatusBarOverrideSettings = [(SBAppClipPlaceholderLayoutElementViewController *)self _aggregateStatusBarOverrideSettings];
+  alpha = [_aggregateStatusBarOverrideSettings alpha];
+  [alpha floatValue];
   v6 = v5;
 
   return v6;
@@ -415,20 +415,20 @@ LABEL_8:
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 settings];
+        settings = [v8 settings];
 
-        if (v9)
+        if (settings)
         {
-          v10 = [v8 settings];
-          v11 = v10;
+          settings2 = [v8 settings];
+          v11 = settings2;
           if (v5)
           {
-            [v5 applySettings:v10];
+            [v5 applySettings:settings2];
           }
 
           else
           {
-            v5 = [v10 mutableCopy];
+            v5 = [settings2 mutableCopy];
           }
         }
       }
@@ -466,9 +466,9 @@ uint64_t __86__SBAppClipPlaceholderLayoutElementViewController__aggregateStatusB
   if (!self->_isObservingApplicationInstalls)
   {
     self->_isObservingApplicationInstalls = 1;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v4 = +[SBApplicationController sharedInstance];
-    [v5 addObserver:self selector:sel__installedApplicationsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:v4];
+    [defaultCenter addObserver:self selector:sel__installedApplicationsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:v4];
   }
 }
 
@@ -477,9 +477,9 @@ uint64_t __86__SBAppClipPlaceholderLayoutElementViewController__aggregateStatusB
   if (self->_isObservingApplicationInstalls)
   {
     self->_isObservingApplicationInstalls = 0;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v4 = +[SBApplicationController sharedInstance];
-    [v5 removeObserver:self name:@"SBInstalledApplicationsDidChangeNotification" object:v4];
+    [defaultCenter removeObserver:self name:@"SBInstalledApplicationsDidChangeNotification" object:v4];
   }
 }
 
@@ -561,7 +561,7 @@ void __84__SBAppClipPlaceholderLayoutElementViewController__beginPollingUpdateSt
   }
 }
 
-- (void)_installedApplicationsDidChange:(id)a3
+- (void)_installedApplicationsDidChange:(id)change
 {
   v27 = *MEMORY[0x277D85DE8];
   v4 = +[SBApplicationController sharedInstance];
@@ -588,11 +588,11 @@ void __84__SBAppClipPlaceholderLayoutElementViewController__beginPollingUpdateSt
     v18 = 3221225472;
     v19 = __83__SBAppClipPlaceholderLayoutElementViewController__installedApplicationsDidChange___block_invoke;
     v20 = &unk_2783A92D8;
-    v21 = self;
+    selfCopy = self;
     v22 = v5;
     v12 = [v11 eventWithName:@"LaunchAppClipApplication" handler:&v17];
-    v13 = [MEMORY[0x277D0AB20] sharedInstance];
-    [v13 executeOrAppendEvent:v12];
+    mEMORY[0x277D0AB20] = [MEMORY[0x277D0AB20] sharedInstance];
+    [mEMORY[0x277D0AB20] executeOrAppendEvent:v12];
   }
 
   else
@@ -611,16 +611,16 @@ void __84__SBAppClipPlaceholderLayoutElementViewController__beginPollingUpdateSt
   }
 }
 
-- (void)_launchApplication:(id)a3
+- (void)_launchApplication:(id)application
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  applicationCopy = application;
+  if (!applicationCopy)
   {
     [(SBAppClipPlaceholderLayoutElementViewController *)self _launchApplication:a2];
   }
 
-  v6 = [[SBDeviceApplicationSceneEntity alloc] initWithApplicationForMainDisplay:v5 uniqueIdentifier:self->_sceneIdentifier];
+  v6 = [[SBDeviceApplicationSceneEntity alloc] initWithApplicationForMainDisplay:applicationCopy uniqueIdentifier:self->_sceneIdentifier];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v9 = SBLogCommon();
@@ -634,25 +634,25 @@ void __84__SBAppClipPlaceholderLayoutElementViewController__beginPollingUpdateSt
   }
 
   v10 = MEMORY[0x277D0AC98];
-  v11 = [v5 bundleIdentifier];
-  v12 = [v10 storeForApplication:v11];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  v12 = [v10 storeForApplication:bundleIdentifier];
 
-  v13 = [(SBApplicationSceneEntity *)v6 sceneHandle];
-  v14 = [v13 sceneIdentifier];
-  v15 = [v12 sceneStoreForIdentifier:v14 creatingIfNecessary:0];
+  sceneHandle = [(SBApplicationSceneEntity *)v6 sceneHandle];
+  sceneIdentifier = [sceneHandle sceneIdentifier];
+  v15 = [v12 sceneStoreForIdentifier:sceneIdentifier creatingIfNecessary:0];
 
   v16 = [v15 objectForKey:@"appClipIdentifier"];
-  v17 = [SBApp webClipService];
+  webClipService = [SBApp webClipService];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __70__SBAppClipPlaceholderLayoutElementViewController__launchApplication___block_invoke;
   v20[3] = &unk_2783B9248;
   v21 = v6;
   v22 = v8;
-  v23 = self;
+  selfCopy = self;
   v18 = v8;
   v19 = v6;
-  [v17 buildLaunchActionsForAppClipWithWebClipIdentifier:v16 completion:v20];
+  [webClipService buildLaunchActionsForAppClipWithWebClipIdentifier:v16 completion:v20];
 }
 
 void __70__SBAppClipPlaceholderLayoutElementViewController__launchApplication___block_invoke(uint64_t a1, uint64_t a2)

@@ -1,27 +1,27 @@
 @interface BMSyncDevicePeerMetadata
 + (id)devicePeerMetadata;
-- (BMSyncDevicePeerMetadata)initWithName:(id)a3 model:(id)a4 platform:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMSyncDevicePeerMetadata)initWithName:(id)name model:(id)model platform:(int64_t)platform;
+- (BOOL)isEqual:(id)equal;
 - (id)dictionaryRepresentation;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 - (unint64_t)hash;
 @end
 
 @implementation BMSyncDevicePeerMetadata
 
-- (BMSyncDevicePeerMetadata)initWithName:(id)a3 model:(id)a4 platform:(int64_t)a5
+- (BMSyncDevicePeerMetadata)initWithName:(id)name model:(id)model platform:(int64_t)platform
 {
-  v9 = a3;
-  v10 = a4;
+  nameCopy = name;
+  modelCopy = model;
   v14.receiver = self;
   v14.super_class = BMSyncDevicePeerMetadata;
   v11 = [(BMSyncDevicePeerMetadata *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_name, a3);
-    objc_storeStrong(&v12->_model, a4);
-    v12->_platform = a5;
+    objc_storeStrong(&v11->_name, name);
+    objc_storeStrong(&v12->_model, model);
+    v12->_platform = platform;
   }
 
   return v12;
@@ -36,9 +36,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -46,14 +46,14 @@
     goto LABEL_18;
   }
 
-  v7 = v6;
+  v7 = equalCopy;
   v8 = v7;
   name = self->_name;
   v10 = name;
   if (!name)
   {
-    v3 = [v7 name];
-    if (!v3)
+    name = [v7 name];
+    if (!name)
     {
       v11 = 0;
       goto LABEL_10;
@@ -62,8 +62,8 @@
     v10 = self->_name;
   }
 
-  v4 = [v8 name];
-  if (![(NSString *)v10 isEqualToString:v4])
+  name2 = [v8 name];
+  if (![(NSString *)v10 isEqualToString:name2])
   {
     v12 = 0;
 LABEL_14:
@@ -74,8 +74,8 @@ LABEL_14:
   v11 = 1;
 LABEL_10:
   model = self->_model;
-  v14 = [v8 model];
-  if ([(NSString *)model isEqual:v14])
+  model = [v8 model];
+  if ([(NSString *)model isEqual:model])
   {
     platform = self->_platform;
     v12 = platform == [v8 platform];
@@ -110,10 +110,10 @@ LABEL_18:
   return v4 ^ v6;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"name"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"name"];
   v6 = +[NSNull null];
   if ([v5 isEqual:v6])
   {
@@ -122,14 +122,14 @@ LABEL_18:
 
   else
   {
-    v7 = [v4 objectForKeyedSubscript:@"name"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"name"];
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"model"];
-  v9 = [v4 objectForKeyedSubscript:@"platform"];
-  v10 = [v9 unsignedIntegerValue];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"model"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"platform"];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  v11 = [(BMSyncDevicePeerMetadata *)self initWithName:v7 model:v8 platform:v10];
+  v11 = [(BMSyncDevicePeerMetadata *)self initWithName:v7 model:v8 platform:unsignedIntegerValue];
   return v11;
 }
 

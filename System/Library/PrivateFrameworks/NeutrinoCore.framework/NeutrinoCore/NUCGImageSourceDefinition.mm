@@ -1,19 +1,19 @@
 @interface NUCGImageSourceDefinition
 - (NUCGImageSourceDefinition)init;
-- (NUCGImageSourceDefinition)initWithCGImageSource:(CGImageSource *)a3;
-- (id)generateSourceNodeWithIdentifier:(id)a3 error:(id *)a4;
+- (NUCGImageSourceDefinition)initWithCGImageSource:(CGImageSource *)source;
+- (id)generateSourceNodeWithIdentifier:(id)identifier error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation NUCGImageSourceDefinition
 
-- (id)generateSourceNodeWithIdentifier:(id)a3 error:(id *)a4
+- (id)generateSourceNodeWithIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
-  v6 = [[NUCGImageSourceNode alloc] initWithImageSource:[(NUCGImageSourceDefinition *)self imageSource] identifier:v5];
+  identifierCopy = identifier;
+  v6 = [[NUCGImageSourceNode alloc] initWithImageSource:[(NUCGImageSourceDefinition *)self imageSource] identifier:identifierCopy];
 
-  v7 = [(NUSingleSourceDefinition *)self sourceDerivation];
-  [(NUSourceNode *)v6 setSourceDerivation:v7];
+  sourceDerivation = [(NUSingleSourceDefinition *)self sourceDerivation];
+  [(NUSourceNode *)v6 setSourceDerivation:sourceDerivation];
 
   return v6;
 }
@@ -26,10 +26,10 @@
   [(NUCGImageSourceDefinition *)&v3 dealloc];
 }
 
-- (NUCGImageSourceDefinition)initWithCGImageSource:(CGImageSource *)a3
+- (NUCGImageSourceDefinition)initWithCGImageSource:(CGImageSource *)source
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!source)
   {
     v6 = NUAssertLogger_9314();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -50,8 +50,8 @@
         v13 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v14 = MEMORY[0x1E696AF00];
         v15 = v13;
-        v16 = [v14 callStackSymbols];
-        v17 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v14 callStackSymbols];
+        v17 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v24 = v13;
         v25 = 2114;
@@ -62,8 +62,8 @@
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -75,7 +75,7 @@
   v22.receiver = self;
   v22.super_class = NUCGImageSourceDefinition;
   v4 = [(NUSingleSourceDefinition *)&v22 init];
-  v4->_imageSource = CFRetain(a3);
+  v4->_imageSource = CFRetain(source);
   return v4;
 }
 
@@ -125,8 +125,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -142,8 +142,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

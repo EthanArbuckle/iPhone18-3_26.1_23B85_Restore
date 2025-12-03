@@ -2,8 +2,8 @@
 - (id)get;
 - (void)dealloc;
 - (void)flushMemory;
-- (void)setChildRegenerated:(BOOL)a3;
-- (void)setVertex:(id)a3 normal:(id)a4 generator:(id)a5;
+- (void)setChildRegenerated:(BOOL)regenerated;
+- (void)setVertex:(id)vertex normal:(id)normal generator:(id)generator;
 @end
 
 @implementation TSCH3DChartTexcoordSharedResource
@@ -16,23 +16,23 @@
   [(TSCH3DChartMeshSharedChildResource *)&v6 dealloc];
 }
 
-- (void)setVertex:(id)a3 normal:(id)a4 generator:(id)a5
+- (void)setVertex:(id)vertex normal:(id)normal generator:(id)generator
 {
-  v22 = a3;
-  v8 = a4;
-  v9 = a5;
-  objc_msgSend_setVertex_(self, v10, v11, v12, v13, v22);
-  objc_msgSend_setNormal_(self, v14, v15, v16, v17, v8);
-  objc_msgSend_setGenerator_(self, v18, v19, v20, v21, v9);
+  vertexCopy = vertex;
+  normalCopy = normal;
+  generatorCopy = generator;
+  objc_msgSend_setVertex_(self, v10, v11, v12, v13, vertexCopy);
+  objc_msgSend_setNormal_(self, v14, v15, v16, v17, normalCopy);
+  objc_msgSend_setGenerator_(self, v18, v19, v20, v21, generatorCopy);
 }
 
-- (void)setChildRegenerated:(BOOL)a3
+- (void)setChildRegenerated:(BOOL)regenerated
 {
-  v3 = a3;
+  regeneratedCopy = regenerated;
   v9.receiver = self;
   v9.super_class = TSCH3DChartTexcoordSharedResource;
   [(TSCH3DChartMeshSharedResource *)&v9 setChildRegenerated:?];
-  if (v3)
+  if (regeneratedCopy)
   {
     objc_msgSend_setVertex_normal_generator_(self, v5, v6, v7, v8, 0, 0, 0);
   }

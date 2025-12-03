@@ -1,12 +1,12 @@
 @interface _CNEmptyObservable
-- (id)subscribe:(id)a3;
+- (id)subscribe:(id)subscribe;
 @end
 
 @implementation _CNEmptyObservable
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
-  [a3 observerDidComplete];
+  [subscribe observerDidComplete];
   v3 = objc_alloc_init(_CNEmptyObservableCancelationToken);
 
   return v3;

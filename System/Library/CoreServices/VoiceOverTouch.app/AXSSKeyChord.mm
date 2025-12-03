@@ -1,31 +1,31 @@
 @interface AXSSKeyChord
-+ (id)quickNavKeyChordWithInfo:(id)a3 arrowMask:(int64_t)a4;
++ (id)quickNavKeyChordWithInfo:(id)info arrowMask:(int64_t)mask;
 @end
 
 @implementation AXSSKeyChord
 
-+ (id)quickNavKeyChordWithInfo:(id)a3 arrowMask:(int64_t)a4
++ (id)quickNavKeyChordWithInfo:(id)info arrowMask:(int64_t)mask
 {
-  v4 = a4;
-  v5 = a3;
+  maskCopy = mask;
+  infoCopy = info;
   v6 = +[NSMutableArray array];
-  if ([v5 isControlKeyPressed])
+  if ([infoCopy isControlKeyPressed])
   {
     [v6 addObject:@"⌃"];
   }
 
-  if ([v5 isOptionKeyPressed])
+  if ([infoCopy isOptionKeyPressed])
   {
     [v6 addObject:@"⌥"];
   }
 
-  if ([v5 isCommandKeyPressed])
+  if ([infoCopy isCommandKeyPressed])
   {
     [v6 addObject:@"⌘"];
-    if ((v4 & 1) == 0)
+    if ((maskCopy & 1) == 0)
     {
 LABEL_7:
-      if ((v4 & 2) == 0)
+      if ((maskCopy & 2) == 0)
       {
         goto LABEL_8;
       }
@@ -34,16 +34,16 @@ LABEL_7:
     }
   }
 
-  else if ((v4 & 1) == 0)
+  else if ((maskCopy & 1) == 0)
   {
     goto LABEL_7;
   }
 
   [v6 addObject:@"←"];
-  if ((v4 & 2) == 0)
+  if ((maskCopy & 2) == 0)
   {
 LABEL_8:
-    if ((v4 & 4) == 0)
+    if ((maskCopy & 4) == 0)
     {
       goto LABEL_9;
     }
@@ -53,10 +53,10 @@ LABEL_8:
 
 LABEL_16:
   [v6 addObject:@"→"];
-  if ((v4 & 4) == 0)
+  if ((maskCopy & 4) == 0)
   {
 LABEL_9:
-    if ((v4 & 8) == 0)
+    if ((maskCopy & 8) == 0)
     {
       goto LABEL_11;
     }
@@ -66,7 +66,7 @@ LABEL_9:
 
 LABEL_17:
   [v6 addObject:@"↑"];
-  if ((v4 & 8) != 0)
+  if ((maskCopy & 8) != 0)
   {
 LABEL_10:
     [v6 addObject:@"↓"];

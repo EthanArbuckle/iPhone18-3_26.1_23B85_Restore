@@ -1,32 +1,32 @@
 @interface SUUIRowComponent
-- (BOOL)_isChildMissingItemData:(id)a3;
-- (SUUIRowComponent)initWithCustomPageContext:(id)a3;
-- (SUUIRowComponent)initWithViewElement:(id)a3;
-- (id)_childComponentWithContext:(id)a3;
-- (id)_updateWithMissingItems:(id)a3;
+- (BOOL)_isChildMissingItemData:(id)data;
+- (SUUIRowComponent)initWithCustomPageContext:(id)context;
+- (SUUIRowComponent)initWithViewElement:(id)element;
+- (id)_childComponentWithContext:(id)context;
+- (id)_updateWithMissingItems:(id)items;
 - (id)description;
-- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)a3 usingBlock:(id)a4;
+- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)index usingBlock:(id)block;
 @end
 
 @implementation SUUIRowComponent
 
-- (SUUIRowComponent)initWithCustomPageContext:(id)a3
+- (SUUIRowComponent)initWithCustomPageContext:(id)context
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v38.receiver = self;
   v38.super_class = SUUIRowComponent;
-  v5 = [(SUUIPageComponent *)&v38 initWithCustomPageContext:v4];
+  v5 = [(SUUIPageComponent *)&v38 initWithCustomPageContext:contextCopy];
   if (v5)
   {
-    v6 = [v4 componentDictionary];
-    v7 = [v6 objectForKey:@"columns"];
+    componentDictionary = [contextCopy componentDictionary];
+    v7 = [componentDictionary objectForKey:@"columns"];
     if (objc_opt_respondsToSelector())
     {
       v5->_numberOfColumns = [v7 integerValue];
     }
 
-    v8 = [v6 objectForKey:@"backgroundColor"];
+    v8 = [componentDictionary objectForKey:@"backgroundColor"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -36,7 +36,7 @@
       v5->_backgroundColor = v9;
     }
 
-    v11 = [v6 objectForKey:@"shouldAutoFlow"];
+    v11 = [componentDictionary objectForKey:@"shouldAutoFlow"];
 
     if (objc_opt_respondsToSelector())
     {
@@ -48,13 +48,13 @@
       v5->_shouldAutoFlow = 1;
     }
 
-    v12 = [v6 objectForKey:@"children"];
+    v12 = [componentDictionary objectForKey:@"children"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v31 = v11;
-      v32 = v4;
-      v13 = [v4 copy];
+      v32 = contextCopy;
+      v13 = [contextCopy copy];
       v33 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v34 = 0u;
@@ -123,7 +123,7 @@
       columnWidths = v5->_columnWidths;
       v5->_columnWidths = v27;
 
-      v4 = v32;
+      contextCopy = v32;
       v12 = v30;
       v11 = v31;
     }
@@ -132,37 +132,37 @@
   return v5;
 }
 
-- (SUUIRowComponent)initWithViewElement:(id)a3
+- (SUUIRowComponent)initWithViewElement:(id)element
 {
   v4.receiver = self;
   v4.super_class = SUUIRowComponent;
-  return [(SUUIPageComponent *)&v4 initWithViewElement:a3];
+  return [(SUUIPageComponent *)&v4 initWithViewElement:element];
 }
 
-- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)index usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = [(NSArray *)self->_childComponents count];
-  if (v7 > a3)
+  if (v7 > index)
   {
     v8 = v7 - 1;
     do
     {
       v9 = objc_autoreleasePoolPush();
       v17 = 0;
-      v10 = [(NSArray *)self->_childComponents objectAtIndex:a3];
+      v10 = [(NSArray *)self->_childComponents objectAtIndex:index];
       if ([v10 componentType] == 9)
       {
-        v11 = [v10 itemIdentifier];
-        if (v11)
+        itemIdentifier = [v10 itemIdentifier];
+        if (itemIdentifier)
         {
-          v12 = v11;
-          v13 = [v10 item];
+          v12 = itemIdentifier;
+          item = [v10 item];
 
-          if (!v13)
+          if (!item)
           {
             v14 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:v12];
-            v6[2](v6, v14, a3, &v17);
+            blockCopy[2](blockCopy, v14, index, &v17);
           }
         }
       }
@@ -176,21 +176,21 @@
       }
     }
 
-    while (v8 != a3++);
+    while (v8 != index++);
   }
 }
 
-- (id)_updateWithMissingItems:(id)a3
+- (id)_updateWithMissingItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__SUUIRowComponent__updateWithMissingItems___block_invoke;
   v8[3] = &unk_2798FBF80;
-  v9 = v4;
-  v10 = self;
-  v6 = v4;
+  v9 = itemsCopy;
+  selfCopy = self;
+  v6 = itemsCopy;
   [(SUUIRowComponent *)self enumerateMissingItemIdentifiersFromIndex:0 usingBlock:v8];
 
   return v5;
@@ -210,11 +210,11 @@ void __44__SUUIRowComponent__updateWithMissingItems___block_invoke(uint64_t a1, 
   }
 }
 
-- (id)_childComponentWithContext:(id)a3
+- (id)_childComponentWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 componentDictionary];
-  v5 = [v4 objectForKey:@"type"];
+  contextCopy = context;
+  componentDictionary = [contextCopy componentDictionary];
+  v5 = [componentDictionary objectForKey:@"type"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || ((v6 = SUUIPageComponentTypeForBlockType(v5), v6 <= 0xE) ? (v7 = ((1 << v6) & 0x46A4) == 0) : (v7 = 1), v7))
   {
@@ -223,20 +223,20 @@ void __44__SUUIRowComponent__updateWithMissingItems___block_invoke(uint64_t a1, 
 
   else
   {
-    v8 = [objc_alloc(SUUIPageComponentClassForComponentType(v6)) initWithCustomPageContext:v3];
+    v8 = [objc_alloc(SUUIPageComponentClassForComponentType(v6)) initWithCustomPageContext:contextCopy];
   }
 
   return v8;
 }
 
-- (BOOL)_isChildMissingItemData:(id)a3
+- (BOOL)_isChildMissingItemData:(id)data
 {
-  v3 = a3;
-  if ([v3 componentType] == 9)
+  dataCopy = data;
+  if ([dataCopy componentType] == 9)
   {
-    v4 = v3;
-    v5 = [v4 item];
-    if (v5)
+    v4 = dataCopy;
+    item = [v4 item];
+    if (item)
     {
       v6 = 0;
     }

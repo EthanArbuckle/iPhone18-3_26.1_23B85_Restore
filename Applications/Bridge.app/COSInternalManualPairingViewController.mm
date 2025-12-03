@@ -1,6 +1,6 @@
 @interface COSInternalManualPairingViewController
 - (COSInternalManualPairingViewController)init;
-- (void)pressedDone:(id)a3;
+- (void)pressedDone:(id)done;
 - (void)viewDidLoad;
 @end
 
@@ -28,24 +28,24 @@
   v13.receiver = self;
   v13.super_class = COSInternalManualPairingViewController;
   [(COSInternalManualPairingViewController *)&v13 viewDidLoad];
-  v3 = [(COSInternalManualPairingViewController *)self view];
-  [v3 bounds];
+  view = [(COSInternalManualPairingViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
   [(COSManualFlowView *)self->_manualView setFrame:v5, v7, v9, v11];
-  v12 = [(COSInternalManualPairingViewController *)self view];
-  [v12 addSubview:self->_manualView];
+  view2 = [(COSInternalManualPairingViewController *)self view];
+  [view2 addSubview:self->_manualView];
 }
 
-- (void)pressedDone:(id)a3
+- (void)pressedDone:(id)done
 {
-  v4 = [(COSManualFlowView *)self->_manualView btDataTextField];
-  v5 = [v4 text];
-  v6 = [(COSManualFlowView *)self->_manualView deviceNameTextField];
-  v7 = [v6 text];
+  btDataTextField = [(COSManualFlowView *)self->_manualView btDataTextField];
+  text = [btDataTextField text];
+  deviceNameTextField = [(COSManualFlowView *)self->_manualView deviceNameTextField];
+  text2 = [deviceNameTextField text];
   v8 = _PBBridgeMagicCodeString();
 
   v9 = pbb_bridge_log();

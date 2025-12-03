@@ -1,7 +1,7 @@
 @interface CBStatusBarStateAggregator
 + (id)sharedInstance;
 - (BOOL)_isLowPowerModeActive;
-- (BOOL)_setItem:(int)a3 enabled:(BOOL)a4;
+- (BOOL)_setItem:(int)item enabled:(BOOL)enabled;
 - (CBStatusBarStateAggregator)init;
 - (id)_batteryItemPercentFormatter;
 - (id)_timeItemDateFormatter;
@@ -20,12 +20,12 @@
 - (void)_updateDataNetworkItem;
 - (void)_updateLockItem;
 - (void)_updateSensorActivityItem;
-- (void)_updateStatusBarVisibility:(id)a3;
+- (void)_updateStatusBarVisibility:(id)visibility;
 - (void)_updateTimeItems;
-- (void)connectedDevicesDidChange:(id)a3;
+- (void)connectedDevicesDidChange:(id)change;
 - (void)dealloc;
 - (void)forceUpdateStatusBarData;
-- (void)updateStatusBarItem:(int)a3;
+- (void)updateStatusBarItem:(int)item;
 @end
 
 @implementation CBStatusBarStateAggregator
@@ -97,11 +97,11 @@
   [v5 removeObserver:self];
 
   [(CBStatusBarStateAggregator *)self _stopTimeItemTimer];
-  v6 = [(CBStatusBarStateAggregator *)self device];
-  [v6 setBatteryMonitoringEnabled:0];
+  device = [(CBStatusBarStateAggregator *)self device];
+  [device setBatteryMonitoringEnabled:0];
 
-  v7 = [(CBStatusBarStateAggregator *)self batteryDeviceController];
-  [v7 removeBatteryDeviceObserver:self];
+  batteryDeviceController = [(CBStatusBarStateAggregator *)self batteryDeviceController];
+  [batteryDeviceController removeBatteryDeviceObserver:self];
 
   v8.receiver = self;
   v8.super_class = CBStatusBarStateAggregator;
@@ -124,25 +124,25 @@
   [(CBStatusBarStateAggregator *)self _setupVisibility];
 }
 
-- (void)updateStatusBarItem:(int)a3
+- (void)updateStatusBarItem:(int)item
 {
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 67109120;
-    v8 = a3;
+    itemCopy2 = item;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating status bar item (%d)…", &v7, 8u);
   }
 
-  if (a3 <= 11)
+  if (item <= 11)
   {
-    if (!a3)
+    if (!item)
     {
       [(CBStatusBarStateAggregator *)self _updateTimeItems];
       return;
     }
 
-    if (a3 == 9)
+    if (item == 9)
     {
       [(CBStatusBarStateAggregator *)self _updateDataNetworkItem];
       return;
@@ -151,19 +151,19 @@
 
   else
   {
-    if ((a3 - 12) < 3)
+    if ((item - 12) < 3)
     {
       [(CBStatusBarStateAggregator *)self _updateBatteryItems];
       return;
     }
 
-    if (a3 == 28)
+    if (item == 28)
     {
       [(CBStatusBarStateAggregator *)self _updateSensorActivityItem];
       return;
     }
 
-    if (a3 == 39)
+    if (item == 39)
     {
       [(CBStatusBarStateAggregator *)self _updateLockItem];
       return;
@@ -174,7 +174,7 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 67109120;
-    v8 = a3;
+    itemCopy2 = item;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[CBStatusBarStateAggregator] cannot update unknown status bar item (%i)", &v7, 8u);
   }
 }
@@ -191,27 +191,27 @@
   [(CBStatusBarStateAggregator *)self _postStatusBarUpdates];
 }
 
-- (BOOL)_setItem:(int)a3 enabled:(BOOL)a4
+- (BOOL)_setItem:(int)item enabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v7 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 67109120;
-    LODWORD(v14) = a3;
+    LODWORD(v14) = item;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Setting status bar item (%d)…", &v13, 8u);
   }
 
-  if (a3 > 0x2D)
+  if (item > 0x2D)
   {
     return 0;
   }
 
-  v8 = self + a3;
+  v8 = self + item;
   v9 = v8[8];
-  v8[8] = v4;
+  v8[8] = enabledCopy;
   [(CBStatusBarStateAggregator *)self _postStatusBarUpdates];
-  if (v9 == v4)
+  if (v9 == enabledCopy)
   {
     return 0;
   }
@@ -220,7 +220,7 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = @"dis";
-    if (v4)
+    if (enabledCopy)
     {
       v12 = @"en";
     }
@@ -228,7 +228,7 @@
     v13 = 138412546;
     v14 = v12;
     v15 = 1024;
-    v16 = a3;
+    itemCopy = item;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@abling %d", &v13, 0x12u);
   }
 
@@ -346,8 +346,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Invalidating time item timer…", v5, 2u);
   }
 
-  v4 = [(CBStatusBarStateAggregator *)self timeItemTimer];
-  [v4 invalidate];
+  timeItemTimer = [(CBStatusBarStateAggregator *)self timeItemTimer];
+  [timeItemTimer invalidate];
 
   [(CBStatusBarStateAggregator *)self setTimeItemTimer:0];
 }
@@ -368,30 +368,30 @@
   [(CBStatusBarStateAggregator *)self setTimeItemTimer:v5];
 
   v6 = +[NSRunLoop currentRunLoop];
-  v7 = [(CBStatusBarStateAggregator *)self timeItemTimer];
-  [v6 addTimer:v7 forMode:NSRunLoopCommonModes];
+  timeItemTimer = [(CBStatusBarStateAggregator *)self timeItemTimer];
+  [v6 addTimer:timeItemTimer forMode:NSRunLoopCommonModes];
 }
 
 - (void)_updateTimeItems
 {
   v3 = +[NSDate date];
-  v4 = [(CBStatusBarStateAggregator *)self _timeItemDateFormatter];
-  v5 = [v4 stringFromDate:v3];
+  _timeItemDateFormatter = [(CBStatusBarStateAggregator *)self _timeItemDateFormatter];
+  v5 = [_timeItemDateFormatter stringFromDate:v3];
 
-  v6 = [(CBStatusBarStateAggregator *)self _timeItemShortDateFormatter];
-  v7 = [v6 stringFromDate:v3];
+  _timeItemShortDateFormatter = [(CBStatusBarStateAggregator *)self _timeItemShortDateFormatter];
+  v7 = [_timeItemShortDateFormatter stringFromDate:v3];
 
-  v8 = [(CBStatusBarStateAggregator *)self timeItemTimeString];
-  v9 = [v5 isEqualToString:v8];
+  timeItemTimeString = [(CBStatusBarStateAggregator *)self timeItemTimeString];
+  v9 = [v5 isEqualToString:timeItemTimeString];
 
   if ((v9 & 1) == 0)
   {
     v10 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(CBStatusBarStateAggregator *)self timeItemTimeString];
+      timeItemTimeString2 = [(CBStatusBarStateAggregator *)self timeItemTimeString];
       v19 = 138412546;
-      v20 = v11;
+      v20 = timeItemTimeString2;
       v21 = 2112;
       v22 = v5;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Updating the standard time string from %@ to %@", &v19, 0x16u);
@@ -400,9 +400,9 @@
     v12 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(CBStatusBarStateAggregator *)self timeItemShortTimeString];
+      timeItemShortTimeString = [(CBStatusBarStateAggregator *)self timeItemShortTimeString];
       v19 = 138412546;
-      v20 = v13;
+      v20 = timeItemShortTimeString;
       v21 = 2112;
       v22 = v7;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Updating the short time string from %@ to %@", &v19, 0x16u);
@@ -410,11 +410,11 @@
 
     [(CBStatusBarStateAggregator *)self setTimeItemTimeString:v5];
     [(CBStatusBarStateAggregator *)self setTimeItemShortTimeString:v7];
-    v14 = [(CBStatusBarStateAggregator *)self timeItemTimeString];
-    v15 = [v14 getCString:self->_data.timeString maxLength:64 encoding:4];
+    timeItemTimeString3 = [(CBStatusBarStateAggregator *)self timeItemTimeString];
+    v15 = [timeItemTimeString3 getCString:self->_data.timeString maxLength:64 encoding:4];
 
-    v16 = [(CBStatusBarStateAggregator *)self timeItemShortTimeString];
-    v17 = [v16 getCString:self->_data.shortTimeString maxLength:64 encoding:4];
+    timeItemShortTimeString2 = [(CBStatusBarStateAggregator *)self timeItemShortTimeString];
+    v17 = [timeItemShortTimeString2 getCString:self->_data.shortTimeString maxLength:64 encoding:4];
 
     if ((v15 & 1) != 0 || v17)
     {
@@ -462,8 +462,8 @@
   v4 = +[UIDevice currentDevice];
   [(CBStatusBarStateAggregator *)self setDevice:v4];
 
-  v5 = [(CBStatusBarStateAggregator *)self device];
-  [v5 setBatteryMonitoringEnabled:1];
+  device = [(CBStatusBarStateAggregator *)self device];
+  [device setBatteryMonitoringEnabled:1];
 
   v6 = +[NSNotificationCenter defaultCenter];
   [v6 addObserver:self selector:"_updateBatteryItems" name:UIDeviceBatteryLevelDidChangeNotification object:0];
@@ -471,8 +471,8 @@
   v7 = objc_alloc_init(BCBatteryDeviceController);
   [(CBStatusBarStateAggregator *)self setBatteryDeviceController:v7];
 
-  v8 = [(CBStatusBarStateAggregator *)self batteryDeviceController];
-  [v8 addBatteryDeviceObserver:self queue:&_dispatch_main_q];
+  batteryDeviceController = [(CBStatusBarStateAggregator *)self batteryDeviceController];
+  [batteryDeviceController addBatteryDeviceObserver:self queue:&_dispatch_main_q];
 
   [(CBStatusBarStateAggregator *)self updateStatusBarItem:12];
 }
@@ -518,25 +518,25 @@
   }
 
   batteryState = self->_data.batteryState;
-  v5 = [(CBStatusBarStateAggregator *)self device];
-  [v5 batteryLevel];
+  device = [(CBStatusBarStateAggregator *)self device];
+  [device batteryLevel];
   v7 = v6;
 
-  v8 = [(CBStatusBarStateAggregator *)self _isLowPowerModeActive];
-  v9 = [(CBStatusBarStateAggregator *)self currentBatteryDevice];
+  _isLowPowerModeActive = [(CBStatusBarStateAggregator *)self _isLowPowerModeActive];
+  currentBatteryDevice = [(CBStatusBarStateAggregator *)self currentBatteryDevice];
 
-  if (v9)
+  if (currentBatteryDevice)
   {
-    v10 = [(CBStatusBarStateAggregator *)self currentBatteryDevice];
-    v11 = [v10 percentCharge];
+    currentBatteryDevice2 = [(CBStatusBarStateAggregator *)self currentBatteryDevice];
+    percentCharge = [currentBatteryDevice2 percentCharge];
 
-    v12 = [(CBStatusBarStateAggregator *)self currentBatteryDevice];
-    if ([v12 powerSourceState] == 2)
+    currentBatteryDevice3 = [(CBStatusBarStateAggregator *)self currentBatteryDevice];
+    if ([currentBatteryDevice3 powerSourceState] == 2)
     {
-      v13 = [(CBStatusBarStateAggregator *)self currentBatteryDevice];
-      v14 = [v13 percentCharge];
+      currentBatteryDevice4 = [(CBStatusBarStateAggregator *)self currentBatteryDevice];
+      percentCharge2 = [currentBatteryDevice4 percentCharge];
 
-      if (v14 == 100)
+      if (percentCharge2 == 100)
       {
         v15 = CheckerBoardLogHandleForCategory();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -556,12 +556,12 @@ LABEL_21:
     {
     }
 
-    v20 = [(CBStatusBarStateAggregator *)self currentBatteryDevice];
-    v21 = [v20 isCharging];
+    currentBatteryDevice5 = [(CBStatusBarStateAggregator *)self currentBatteryDevice];
+    isCharging = [currentBatteryDevice5 isCharging];
 
     v15 = CheckerBoardLogHandleForCategory();
     v22 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-    if (v21)
+    if (isCharging)
     {
       if (v22)
       {
@@ -582,13 +582,13 @@ LABEL_21:
     goto LABEL_25;
   }
 
-  v11 = (v7 * 100.0);
-  v17 = [(CBStatusBarStateAggregator *)self device];
-  v18 = [v17 batteryState];
+  percentCharge = (v7 * 100.0);
+  device2 = [(CBStatusBarStateAggregator *)self device];
+  batteryState = [device2 batteryState];
 
   v15 = CheckerBoardLogHandleForCategory();
   v19 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-  if (v18 == 1)
+  if (batteryState == 1)
   {
     if (!v19)
     {
@@ -603,7 +603,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (v18 == 2)
+  if (batteryState == 2)
   {
     if (v19)
     {
@@ -615,7 +615,7 @@ LABEL_25:
     goto LABEL_22;
   }
 
-  if (v18 == 3)
+  if (batteryState == 3)
   {
     if (v19)
     {
@@ -637,7 +637,7 @@ LABEL_22:
 
 LABEL_27:
 
-  if (v11 <= 0)
+  if (percentCharge <= 0)
   {
     v23 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -646,17 +646,17 @@ LABEL_27:
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Battery percentage is less than 0", v33, 2u);
     }
 
-    v11 = 1;
+    percentCharge = 1;
   }
 
-  v24 = [(CBStatusBarStateAggregator *)self _batteryItemPercentFormatter];
-  v25 = v11 / 100.0;
+  _batteryItemPercentFormatter = [(CBStatusBarStateAggregator *)self _batteryItemPercentFormatter];
+  v25 = percentCharge / 100.0;
   *&v25 = v25;
   v26 = [NSNumber numberWithFloat:v25];
-  v27 = [v24 stringFromNumber:v26];
+  v27 = [_batteryItemPercentFormatter stringFromNumber:v26];
 
-  v28 = [(CBStatusBarStateAggregator *)self batteryDetailString];
-  v29 = [v27 isEqualToString:v28];
+  batteryDetailString = [(CBStatusBarStateAggregator *)self batteryDetailString];
+  v29 = [v27 isEqualToString:batteryDetailString];
 
   if ((v29 & 1) == 0)
   {
@@ -668,11 +668,11 @@ LABEL_27:
     }
 
     [(CBStatusBarStateAggregator *)self setBatteryDetailString:v27];
-    v31 = [(CBStatusBarStateAggregator *)self batteryDetailString];
-    [v31 getCString:self->_data.batteryDetailString maxLength:150 encoding:4];
+    batteryDetailString2 = [(CBStatusBarStateAggregator *)self batteryDetailString];
+    [batteryDetailString2 getCString:self->_data.batteryDetailString maxLength:150 encoding:4];
   }
 
-  if (v11 == self->_data.batteryCapacity && batteryState == self->_data.batteryState && v8 == (*(&self->_data + 2536) & 1))
+  if (percentCharge == self->_data.batteryCapacity && batteryState == self->_data.batteryState && _isLowPowerModeActive == (*(&self->_data + 2536) & 1))
   {
     if (v29)
     {
@@ -689,9 +689,9 @@ LABEL_27:
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Updating battery info…", v33, 2u);
     }
 
-    self->_data.batteryCapacity = v11;
+    self->_data.batteryCapacity = percentCharge;
     self->_data.batteryState = batteryState;
-    *(&self->_data + 2536) = *(&self->_data + 2536) & 0xFE | v8;
+    *(&self->_data + 2536) = *(&self->_data + 2536) & 0xFE | _isLowPowerModeActive;
   }
 
   [(CBStatusBarStateAggregator *)self _setItem:12 enabled:1];
@@ -724,24 +724,24 @@ LABEL_42:
   }
 
   dataNetworkType = self->_data.dataNetworkType;
-  v5 = [(CBStatusBarStateAggregator *)self wifiManager];
-  v6 = [v5 isAssociatedToNetwork];
+  wifiManager = [(CBStatusBarStateAggregator *)self wifiManager];
+  isAssociatedToNetwork = [wifiManager isAssociatedToNetwork];
 
-  if (v6)
+  if (isAssociatedToNetwork)
   {
-    v7 = [(CBStatusBarStateAggregator *)self wifiManager];
-    v8 = [v7 signalStrengthBars];
+    wifiManager2 = [(CBStatusBarStateAggregator *)self wifiManager];
+    signalStrengthBars = [wifiManager2 signalStrengthBars];
 
-    v9 = [(CBStatusBarStateAggregator *)self wifiManager];
-    v10 = [v9 signalStrengthRSSI];
+    wifiManager3 = [(CBStatusBarStateAggregator *)self wifiManager];
+    signalStrengthRSSI = [wifiManager3 signalStrengthRSSI];
 
     dataNetworkType = 5;
   }
 
   else
   {
-    v8 = 0;
-    v10 = 0;
+    signalStrengthBars = 0;
+    signalStrengthRSSI = 0;
   }
 
   v11 = self->_data.dataNetworkType;
@@ -750,9 +750,9 @@ LABEL_42:
     self->_data.dataNetworkType = dataNetworkType;
   }
 
-  if (v8 == self->_data.wifiSignalStrengthBars)
+  if (signalStrengthBars == self->_data.wifiSignalStrengthBars)
   {
-    if (v10 == self->_data.wifiSignalStrengthRaw)
+    if (signalStrengthRSSI == self->_data.wifiSignalStrengthRaw)
     {
       if (dataNetworkType == v11)
       {
@@ -765,11 +765,11 @@ LABEL_42:
     goto LABEL_13;
   }
 
-  self->_data.wifiSignalStrengthBars = v8;
-  if (v10 != self->_data.wifiSignalStrengthRaw)
+  self->_data.wifiSignalStrengthBars = signalStrengthBars;
+  if (signalStrengthRSSI != self->_data.wifiSignalStrengthRaw)
   {
 LABEL_13:
-    self->_data.wifiSignalStrengthRaw = v10;
+    self->_data.wifiSignalStrengthRaw = signalStrengthRSSI;
   }
 
 LABEL_14:
@@ -780,7 +780,7 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Updating data network info…", v13, 2u);
   }
 
-  [(CBStatusBarStateAggregator *)self _setItem:9 enabled:v6];
+  [(CBStatusBarStateAggregator *)self _setItem:9 enabled:isAssociatedToNetwork];
 }
 
 - (void)_updateSensorActivityItem
@@ -797,10 +797,10 @@ LABEL_14:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [v3 windowDict];
-  v5 = [v4 allValues];
+  windowDict = [v3 windowDict];
+  allValues = [windowDict allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -812,7 +812,7 @@ LABEL_14:
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
@@ -824,16 +824,16 @@ LABEL_14:
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Status bar is checking recording indicator for window %@", buf, 0xCu);
         }
 
-        v13 = [v11 recordingIndicatorManager];
-        v14 = v13;
-        if (v13)
+        recordingIndicatorManager = [v11 recordingIndicatorManager];
+        v14 = recordingIndicatorManager;
+        if (recordingIndicatorManager)
         {
-          [v13 updateRecordingIndicatorForStatusBarChanges];
+          [recordingIndicatorManager updateRecordingIndicatorForStatusBarChanges];
           v8 |= [v14 isIndicatorVisibleAtStatusBarLocation];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v7);
@@ -845,11 +845,11 @@ LABEL_14:
   }
 
   v15 = +[CBWindowManager sharedInstance];
-  v16 = [v15 rootWindowRecordingIndicatorManager];
-  v17 = v16;
-  if (v16)
+  rootWindowRecordingIndicatorManager = [v15 rootWindowRecordingIndicatorManager];
+  v17 = rootWindowRecordingIndicatorManager;
+  if (rootWindowRecordingIndicatorManager)
   {
-    [v16 updateRecordingIndicatorForStatusBarChanges];
+    [rootWindowRecordingIndicatorManager updateRecordingIndicatorForStatusBarChanges];
     LOBYTE(v8) = v8 | [v17 isIndicatorVisibleAtStatusBarLocation];
   }
 
@@ -864,15 +864,15 @@ LABEL_14:
   [(CBStatusBarStateAggregator *)self _setItem:28 enabled:v8 & 1];
 }
 
-- (void)connectedDevicesDidChange:(id)a3
+- (void)connectedDevicesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   [(CBStatusBarStateAggregator *)self setCurrentBatteryDevice:0];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4;
+  v5 = changeCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -907,9 +907,9 @@ LABEL_14:
 
 LABEL_11:
 
-  v11 = [(CBStatusBarStateAggregator *)self currentBatteryDevice];
+  currentBatteryDevice = [(CBStatusBarStateAggregator *)self currentBatteryDevice];
 
-  if (!v11)
+  if (!currentBatteryDevice)
   {
     v12 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -934,12 +934,12 @@ LABEL_11:
   [v4 addObserver:self selector:"_updateStatusBarVisibility:" name:@"CBStatusBarVisibilityChangedNotification" object:0];
 }
 
-- (void)_updateStatusBarVisibility:(id)a3
+- (void)_updateStatusBarVisibility:(id)visibility
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  visibilityCopy = visibility;
+  userInfo = [visibilityCopy userInfo];
 
-  if (v5)
+  if (userInfo)
   {
     v6 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -948,16 +948,16 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Requesting privacy indicator location update for status bar visibility", v12, 2u);
     }
 
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"isHidden"];
+    userInfo2 = [visibilityCopy userInfo];
+    v8 = [userInfo2 objectForKeyedSubscript:@"isHidden"];
     -[CBStatusBarStateAggregator setIsHidden:](self, "setIsHidden:", [v8 BOOLValue]);
 
     v9 = +[CBWindowManager sharedInstance];
-    v10 = [v9 rootWindowRecordingIndicatorManager];
-    v11 = v10;
-    if (v10)
+    rootWindowRecordingIndicatorManager = [v9 rootWindowRecordingIndicatorManager];
+    v11 = rootWindowRecordingIndicatorManager;
+    if (rootWindowRecordingIndicatorManager)
     {
-      [v10 updateRecordingIndicatorForStatusBarChanges];
+      [rootWindowRecordingIndicatorManager updateRecordingIndicatorForStatusBarChanges];
     }
   }
 }

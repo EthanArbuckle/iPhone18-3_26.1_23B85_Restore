@@ -1,17 +1,17 @@
 @interface CSGraphicComplicationLayoutProvider
-+ (BOOL)canAddElement:(id)a3 toElements:(id)a4 layoutStyle:(int64_t)a5;
++ (BOOL)canAddElement:(id)element toElements:(id)elements layoutStyle:(int64_t)style;
 + (double)complicationContainerHeight;
 + (double)complicationEdgeInset;
 + (double)gridUnitSize;
 + (double)interComplicationSpacing;
 + (double)interComplicationSpacingExcludingInnerInset;
-+ (id)_framesForLayoutElements:(id)a3 layoutStyle:(int64_t)a4 containerSize:(CGSize)a5;
-+ (id)_rowFramesForLayoutElements:(id)a3 containerSize:(CGSize)a4;
-+ (id)_sidebarFramesForLayoutElements:(id)a3 containerSize:(CGSize)a4;
-+ (id)complicationLayoutForElements:(id)a3 layoutStyle:(int64_t)a4 containerSize:(CGSize)a5;
-+ (id)complicationLayoutForElements:(id)a3 layoutStyle:(int64_t)a4 containerSize:(CGSize)a5 draggedElement:(id)a6 draggedElementPosition:(CGPoint)a7;
-+ (int64_t)_insertionIndexForElement:(id)a3 withExistingElements:(id)a4 proposedInsertionIndex:(int64_t)a5;
-+ (int64_t)insertionIndexForElement:(id)a3 withExistingElements:(id)a4;
++ (id)_framesForLayoutElements:(id)elements layoutStyle:(int64_t)style containerSize:(CGSize)size;
++ (id)_rowFramesForLayoutElements:(id)elements containerSize:(CGSize)size;
++ (id)_sidebarFramesForLayoutElements:(id)elements containerSize:(CGSize)size;
++ (id)complicationLayoutForElements:(id)elements layoutStyle:(int64_t)style containerSize:(CGSize)size;
++ (id)complicationLayoutForElements:(id)elements layoutStyle:(int64_t)style containerSize:(CGSize)size draggedElement:(id)element draggedElementPosition:(CGPoint)position;
++ (int64_t)_insertionIndexForElement:(id)element withExistingElements:(id)elements proposedInsertionIndex:(int64_t)index;
++ (int64_t)insertionIndexForElement:(id)element withExistingElements:(id)elements;
 + (int64_t)sidebarGridHeight;
 @end
 
@@ -26,10 +26,10 @@
   v9 = v8;
   v11 = v10;
 
-  v12 = [MEMORY[0x1E698E730] sharedInstance];
-  v13 = [v12 deviceClass];
+  mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+  deviceClass = [mEMORY[0x1E698E730] deviceClass];
 
-  if (v13 == 2)
+  if (deviceClass == 2)
   {
     CGAffineTransformMakeRotation(&v27, 1.57079633);
     v28.origin.x = v5;
@@ -40,20 +40,20 @@
     height = v29.size.height;
     [CSProminentLayoutController landscapePadSubtitleElementBoundingTopY:v29.origin.x];
     v16 = height + v15 * -2.0;
-    v17 = ([a1 sidebarGridHeight] - 1);
-    [a1 interComplicationSpacing];
+    v17 = ([self sidebarGridHeight] - 1);
+    [self interComplicationSpacing];
     v19 = v18 * v17;
-    [a1 complicationEdgeInset];
-    return (v16 - v19 - (v20 + v20)) / [a1 sidebarGridHeight];
+    [self complicationEdgeInset];
+    return (v16 - v19 - (v20 + v20)) / [self sidebarGridHeight];
   }
 
   else
   {
-    [a1 containerEdgeInset];
+    [self containerEdgeInset];
     v23 = v22;
-    [a1 complicationEdgeInset];
+    [self complicationEdgeInset];
     v25 = v23 + v24;
-    [a1 interComplicationSpacing];
+    [self interComplicationSpacing];
     return (v9 - (v26 * 3.0 + v25 * 2.0)) * 0.25;
   }
 }
@@ -84,9 +84,9 @@
 
 + (double)interComplicationSpacing
 {
-  [a1 interComplicationSpacingExcludingInnerInset];
+  [self interComplicationSpacingExcludingInnerInset];
   v4 = v3;
-  [a1 complicationEdgeInset];
+  [self complicationEdgeInset];
   return v4 + v5 * 2.0;
 }
 
@@ -106,36 +106,36 @@
 
 + (double)complicationContainerHeight
 {
-  [a1 gridUnitSize];
+  [self gridUnitSize];
   v4 = v3;
-  [a1 complicationEdgeInset];
+  [self complicationEdgeInset];
   return v4 + v5 * 2.0;
 }
 
-+ (id)complicationLayoutForElements:(id)a3 layoutStyle:(int64_t)a4 containerSize:(CGSize)a5
++ (id)complicationLayoutForElements:(id)elements layoutStyle:(int64_t)style containerSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
+  height = size.height;
+  width = size.width;
+  elementsCopy = elements;
   v10 = [CSComplicationLayout alloc];
-  v11 = [a1 _framesForLayoutElements:v9 layoutStyle:a4 containerSize:{width, height}];
+  v11 = [self _framesForLayoutElements:elementsCopy layoutStyle:style containerSize:{width, height}];
 
   v12 = [(CSComplicationLayout *)v10 _initWithFramesByElement:v11 draggedItemInsertionIndex:0x7FFFFFFFFFFFFFFFLL];
 
   return v12;
 }
 
-+ (id)complicationLayoutForElements:(id)a3 layoutStyle:(int64_t)a4 containerSize:(CGSize)a5 draggedElement:(id)a6 draggedElementPosition:(CGPoint)a7
++ (id)complicationLayoutForElements:(id)elements layoutStyle:(int64_t)style containerSize:(CGSize)size draggedElement:(id)element draggedElementPosition:(CGPoint)position
 {
-  y = a7.y;
-  x = a7.x;
-  height = a5.height;
-  width = a5.width;
-  v14 = a3;
-  v15 = a6;
-  if (v15 && ([a1 canAddElement:v15 toElements:v14 layoutStyle:a4] & 1) != 0)
+  y = position.y;
+  x = position.x;
+  height = size.height;
+  width = size.width;
+  elementsCopy = elements;
+  elementCopy = element;
+  if (elementCopy && ([self canAddElement:elementCopy toElements:elementsCopy layoutStyle:style] & 1) != 0)
   {
-    v16 = [a1 _framesForLayoutElements:v14 layoutStyle:a4 containerSize:{width, height}];
+    v16 = [self _framesForLayoutElements:elementsCopy layoutStyle:style containerSize:{width, height}];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __133__CSGraphicComplicationLayoutProvider_complicationLayoutForElements_layoutStyle_containerSize_draggedElement_draggedElementPosition___block_invoke;
@@ -143,12 +143,12 @@
     *&v35[4] = x;
     *&v35[5] = y;
     v17 = [v16 keysSortedByValueUsingComparator:v35];
-    v18 = [v17 firstObject];
+    firstObject = [v17 firstObject];
 
-    if (v18)
+    if (firstObject)
     {
-      v19 = [v14 indexOfObject:v18];
-      v20 = [v16 objectForKeyedSubscript:v18];
+      v19 = [elementsCopy indexOfObject:firstObject];
+      v20 = [v16 objectForKeyedSubscript:firstObject];
       [v20 CGRectValue];
       v22 = v21;
       v24 = v23;
@@ -161,10 +161,10 @@
       v37.size.height = v28;
       LODWORD(v20) = x < CGRectGetMidX(v37);
       v29 = v20 ^ ([*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] != 1);
-      v30 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v14];
-      v31 = [a1 _insertionIndexForElement:v15 withExistingElements:v14 proposedInsertionIndex:v19 + v29];
-      [v30 insertObject:v15 atIndex:v31];
-      v32 = [a1 _framesForLayoutElements:v30 layoutStyle:a4 containerSize:{width, height}];
+      v30 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:elementsCopy];
+      v31 = [self _insertionIndexForElement:elementCopy withExistingElements:elementsCopy proposedInsertionIndex:v19 + v29];
+      [v30 insertObject:elementCopy atIndex:v31];
+      v32 = [self _framesForLayoutElements:v30 layoutStyle:style containerSize:{width, height}];
 
       v16 = v32;
     }
@@ -179,7 +179,7 @@
 
   else
   {
-    v33 = [a1 complicationLayoutForElements:v14 layoutStyle:a4 containerSize:{width, height}];
+    v33 = [self complicationLayoutForElements:elementsCopy layoutStyle:style containerSize:{width, height}];
   }
 
   return v33;
@@ -208,23 +208,23 @@ uint64_t __133__CSGraphicComplicationLayoutProvider_complicationLayoutForElement
   return v18;
 }
 
-+ (BOOL)canAddElement:(id)a3 toElements:(id)a4 layoutStyle:(int64_t)a5
++ (BOOL)canAddElement:(id)element toElements:(id)elements layoutStyle:(int64_t)style
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a5)
+  elementCopy = element;
+  elementsCopy = elements;
+  v10 = elementsCopy;
+  if (style)
   {
-    if (a5 == 1)
+    if (style == 1)
     {
-      v5 = [v9 count] < 0x14;
+      v5 = [elementsCopy count] < 0x14;
     }
   }
 
   else
   {
-    v11 = [v9 arrayByAddingObject:v8];
+    v11 = [elementsCopy arrayByAddingObject:elementCopy];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -265,53 +265,53 @@ uint64_t __133__CSGraphicComplicationLayoutProvider_complicationLayoutForElement
   return v5;
 }
 
-+ (int64_t)insertionIndexForElement:(id)a3 withExistingElements:(id)a4
++ (int64_t)insertionIndexForElement:(id)element withExistingElements:(id)elements
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _insertionIndexForElement:v7 withExistingElements:v6 proposedInsertionIndex:{objc_msgSend(v6, "count")}];
+  elementsCopy = elements;
+  elementCopy = element;
+  v8 = [self _insertionIndexForElement:elementCopy withExistingElements:elementsCopy proposedInsertionIndex:{objc_msgSend(elementsCopy, "count")}];
 
   return v8;
 }
 
-+ (int64_t)_insertionIndexForElement:(id)a3 withExistingElements:(id)a4 proposedInsertionIndex:(int64_t)a5
++ (int64_t)_insertionIndexForElement:(id)element withExistingElements:(id)elements proposedInsertionIndex:(int64_t)index
 {
-  v7 = a3;
+  elementCopy = element;
   v8 = MEMORY[0x1E695DF70];
-  v9 = a4;
-  v10 = [[v8 alloc] initWithArray:v9];
+  elementsCopy = elements;
+  v10 = [[v8 alloc] initWithArray:elementsCopy];
 
-  [v10 insertObject:v7 atIndex:a5];
+  [v10 insertObject:elementCopy atIndex:index];
   v11 = [v10 bs_filter:&__block_literal_global];
   if ([v11 count] == 1)
   {
-    v12 = [v11 firstObject];
-    [v10 removeObject:v12];
-    [v10 insertObject:v12 atIndex:0];
-    a5 = [v10 indexOfObject:v7];
+    firstObject = [v11 firstObject];
+    [v10 removeObject:firstObject];
+    [v10 insertObject:firstObject atIndex:0];
+    index = [v10 indexOfObject:elementCopy];
   }
 
-  return a5;
+  return index;
 }
 
-+ (id)_framesForLayoutElements:(id)a3 layoutStyle:(int64_t)a4 containerSize:(CGSize)a5
++ (id)_framesForLayoutElements:(id)elements layoutStyle:(int64_t)style containerSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a3;
-  if (a4 == 1)
+  height = size.height;
+  width = size.width;
+  elementsCopy = elements;
+  if (style == 1)
   {
-    v11 = [a1 _sidebarFramesForLayoutElements:v10 containerSize:{width, height}];
+    v11 = [self _sidebarFramesForLayoutElements:elementsCopy containerSize:{width, height}];
   }
 
   else
   {
-    if (a4)
+    if (style)
     {
       goto LABEL_6;
     }
 
-    v11 = [a1 _rowFramesForLayoutElements:v10 containerSize:{width, height}];
+    v11 = [self _rowFramesForLayoutElements:elementsCopy containerSize:{width, height}];
   }
 
   v5 = v11;
@@ -320,20 +320,20 @@ LABEL_6:
   return v5;
 }
 
-+ (id)_rowFramesForLayoutElements:(id)a3 containerSize:(CGSize)a4
++ (id)_rowFramesForLayoutElements:(id)elements containerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v81 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  [a1 interComplicationSpacingExcludingInnerInset];
+  elementsCopy = elements;
+  [self interComplicationSpacingExcludingInnerInset];
   v9 = v8;
-  v10 = [v7 count];
+  v10 = [elementsCopy count];
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v11 = v7;
+  v11 = elementsCopy;
   v12 = [v11 countByEnumeratingWithState:&v75 objects:v80 count:16];
   if (v12)
   {
@@ -366,8 +366,8 @@ LABEL_6:
 
   if ([v11 count] == 1)
   {
-    v18 = [v11 firstObject];
-    v19 = [v18 complicationFamily] == 1;
+    firstObject = [v11 firstObject];
+    v19 = [firstObject complicationFamily] == 1;
   }
 
   else
@@ -377,11 +377,11 @@ LABEL_6:
 
   if ([v11 count] == 2)
   {
-    v20 = [v11 firstObject];
-    if ([v20 complicationFamily] == 1)
+    firstObject2 = [v11 firstObject];
+    if ([firstObject2 complicationFamily] == 1)
     {
-      v21 = [v11 lastObject];
-      v22 = [v21 complicationFamily] == 0;
+      lastObject = [v11 lastObject];
+      v22 = [lastObject complicationFamily] == 0;
     }
 
     else
@@ -398,48 +398,48 @@ LABEL_6:
   v23 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if (v19 || v22)
   {
-    [a1 interComplicationSpacingExcludingInnerInset];
+    [self interComplicationSpacingExcludingInnerInset];
     v25 = v24 * 3.0;
-    [a1 gridUnitSize];
+    [self gridUnitSize];
     v27 = v26;
-    [a1 complicationEdgeInset];
+    [self complicationEdgeInset];
     v29 = fmax((width - (v25 + (v27 + v28 * 2.0) * 4.0)) * 0.5, 0.0);
-    v30 = [v11 firstObject];
-    [v30 size];
+    firstObject3 = [v11 firstObject];
+    [firstObject3 size];
     v32 = v31;
 
     v33 = height * 0.5 - v32 * 0.5;
-    v34 = [v11 firstObject];
-    [v34 size];
+    firstObject4 = [v11 firstObject];
+    [firstObject4 size];
     v36 = v35;
     v38 = v37;
     v39 = MEMORY[0x1E69DDA98];
-    v40 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
     v41 = width - v29;
     v42 = width - v29 - v36;
-    if (v40 != 1)
+    if (userInterfaceLayoutDirection != 1)
     {
       v42 = v29;
     }
 
     v43 = [MEMORY[0x1E696B098] valueWithCGRect:{v42, v33, v36, v38}];
-    [v23 setObject:v43 forKeyedSubscript:v34];
+    [v23 setObject:v43 forKeyedSubscript:firstObject4];
 
     if (v22)
     {
-      v44 = [v11 lastObject];
-      [v44 size];
+      lastObject2 = [v11 lastObject];
+      [lastObject2 size];
       v46 = v45;
       v48 = v47;
-      v49 = [*v39 userInterfaceLayoutDirection];
+      userInterfaceLayoutDirection2 = [*v39 userInterfaceLayoutDirection];
       v50 = v41 - v46;
-      if (v49 == 1)
+      if (userInterfaceLayoutDirection2 == 1)
       {
         v50 = v29;
       }
 
       v51 = [MEMORY[0x1E696B098] valueWithCGRect:{v50, v33, v46, v48}];
-      [v23 setObject:v51 forKeyedSubscript:v44];
+      [v23 setObject:v51 forKeyedSubscript:lastObject2];
     }
   }
 
@@ -449,8 +449,8 @@ LABEL_6:
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v34 = v11;
-    v52 = [v34 countByEnumeratingWithState:&v71 objects:v79 count:16];
+    firstObject4 = v11;
+    v52 = [firstObject4 countByEnumeratingWithState:&v71 objects:v79 count:16];
     if (v52)
     {
       v53 = v52;
@@ -465,7 +465,7 @@ LABEL_6:
         {
           if (*v72 != v55)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(firstObject4);
           }
 
           v59 = *(*(&v71 + 1) + 8 * j);
@@ -473,9 +473,9 @@ LABEL_6:
           v61 = v60;
           v63 = v62;
           v64 = v56 + v62 * -0.5;
-          v65 = [*v57 userInterfaceLayoutDirection];
+          userInterfaceLayoutDirection3 = [*v57 userInterfaceLayoutDirection];
           v66 = width - v54 - v61;
-          if (v65 != 1)
+          if (userInterfaceLayoutDirection3 != 1)
           {
             v66 = v54;
           }
@@ -483,11 +483,11 @@ LABEL_6:
           v67 = [MEMORY[0x1E696B098] valueWithCGRect:{v66, v64, v61, v63}];
           [v23 setObject:v67 forKeyedSubscript:v59];
 
-          [a1 interComplicationSpacingExcludingInnerInset];
+          [self interComplicationSpacingExcludingInnerInset];
           v54 = v54 + v61 + v68;
         }
 
-        v53 = [v34 countByEnumeratingWithState:&v71 objects:v79 count:16];
+        v53 = [firstObject4 countByEnumeratingWithState:&v71 objects:v79 count:16];
       }
 
       while (v53);
@@ -498,22 +498,22 @@ LABEL_6:
   return v23;
 }
 
-+ (id)_sidebarFramesForLayoutElements:(id)a3 containerSize:(CGSize)a4
++ (id)_sidebarFramesForLayoutElements:(id)elements containerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v40 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  [a1 complicationEdgeInset];
+  elementsCopy = elements;
+  [self complicationEdgeInset];
   v9 = v8;
-  [a1 complicationEdgeInset];
+  [self complicationEdgeInset];
   v11 = v10;
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v13 = v7;
+  v13 = elementsCopy;
   v14 = [v13 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v14)
   {
@@ -559,15 +559,15 @@ LABEL_6:
 
         else
         {
-          [a1 complicationEdgeInset];
+          [self complicationEdgeInset];
           v9 = v27;
-          [a1 gridUnitSize];
+          [self gridUnitSize];
           v29 = v28;
-          [a1 interComplicationSpacing];
+          [self interComplicationSpacing];
           v11 = v11 + v29 + v30;
-          v31 = [*v17 userInterfaceLayoutDirection];
+          userInterfaceLayoutDirection = [*v17 userInterfaceLayoutDirection];
           v26 = width - v9 - v21;
-          if (v31 != 1)
+          if (userInterfaceLayoutDirection != 1)
           {
             v26 = v9;
           }
@@ -578,7 +578,7 @@ LABEL_6:
         v32 = [v25 valueWithCGRect:{v26, v11, v21, v23}];
         [v12 setObject:v32 forKeyedSubscript:v19];
 
-        [a1 interComplicationSpacing];
+        [self interComplicationSpacing];
         v9 = v9 + v21 + v33;
       }
 

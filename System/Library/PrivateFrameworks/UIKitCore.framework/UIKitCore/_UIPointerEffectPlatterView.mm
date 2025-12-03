@@ -1,36 +1,36 @@
 @interface _UIPointerEffectPlatterView
-- (_UIPointerEffectPlatterView)initWithTargetedPreview:(id)a3;
-- (id)_newLumaTrackingViewForTintView:(id)a3;
+- (_UIPointerEffectPlatterView)initWithTargetedPreview:(id)preview;
+- (id)_newLumaTrackingViewForTintView:(id)view;
 - (id)_newShadowView;
 - (id)_newTintView;
-- (id)_specularOverlayView:(id)a3 withOptions:(unint64_t)a4;
-- (void)_installAccessoryView:(id)a3;
+- (id)_specularOverlayView:(id)view withOptions:(unint64_t)options;
+- (void)_installAccessoryView:(id)view;
 - (void)_layoutTintView;
 - (void)_updateContentMask;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setPressed:(BOOL)a3;
-- (void)setShadowAlpha:(double)a3;
-- (void)setSpecularHighlight:(id)a3;
-- (void)setTargetedPreview:(id)a3;
-- (void)setTintDisabled:(BOOL)a3;
-- (void)setTintMode:(int64_t)a3;
-- (void)setTintViewScale:(double)a3;
-- (void)setTintViewShape:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenter:(CGPoint)center;
+- (void)setFrame:(CGRect)frame;
+- (void)setHidden:(BOOL)hidden;
+- (void)setPressed:(BOOL)pressed;
+- (void)setShadowAlpha:(double)alpha;
+- (void)setSpecularHighlight:(id)highlight;
+- (void)setTargetedPreview:(id)preview;
+- (void)setTintDisabled:(BOOL)disabled;
+- (void)setTintMode:(int64_t)mode;
+- (void)setTintViewScale:(double)scale;
+- (void)setTintViewShape:(id)shape;
 @end
 
 @implementation _UIPointerEffectPlatterView
 
-- (_UIPointerEffectPlatterView)initWithTargetedPreview:(id)a3
+- (_UIPointerEffectPlatterView)initWithTargetedPreview:(id)preview
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  previewCopy = preview;
   v5 = *MEMORY[0x1E695EFF8];
   v6 = *(MEMORY[0x1E695EFF8] + 8);
-  [v4 size];
+  [previewCopy size];
   v50.receiver = self;
   v50.super_class = _UIPointerEffectPlatterView;
   v9 = [(UIView *)&v50 initWithFrame:v5, v6, v7, v8];
@@ -38,60 +38,60 @@
   if (v9)
   {
     [(UIView *)v9 setUserInteractionEnabled:0];
-    v11 = [(UIView *)v10 layer];
-    [v11 setAllowsGroupBlending:0];
+    layer = [(UIView *)v10 layer];
+    [layer setAllowsGroupBlending:0];
 
-    [(_UIPointerEffectPlatterView *)v10 setTargetedPreview:v4];
+    [(_UIPointerEffectPlatterView *)v10 setTargetedPreview:previewCopy];
     v10->_tintDisabled = 1;
-    v12 = [v4 view];
-    [v12 bounds];
-    if ([v4 _sourceViewIsInViewHierarchy])
+    view = [previewCopy view];
+    [view bounds];
+    if ([previewCopy _sourceViewIsInViewHierarchy])
     {
-      v13 = [[_UIPortalView alloc] initWithSourceView:v12];
+      v13 = [[_UIPortalView alloc] initWithSourceView:view];
       [(_UIPortalView *)v13 setName:@"_UIPointerEffectPlatterView.contentPortal"];
       [(_UIPortalView *)v13 setHidesSourceView:1];
       [(_UIPortalView *)v13 setMatchesAlpha:1];
       [(_UIPortalView *)v13 setAllowsBackdropGroups:1];
       [(_UIPortalView *)v13 setAllowsHitTesting:1];
-      v14 = [(_UIPortalView *)v13 portalLayer];
-      [v14 setOverrides:&unk_1EFE34B30];
+      portalLayer = [(_UIPortalView *)v13 portalLayer];
+      [portalLayer setOverrides:&unk_1EFE34B30];
 
       [(_UIPortalView *)v13 setHidesSourceLayerInOtherPortals:1];
-      v15 = [(UIView *)v13 layer];
-      [v15 setAllowsGroupBlending:0];
+      layer2 = [(UIView *)v13 layer];
+      [layer2 setAllowsGroupBlending:0];
     }
 
     else
     {
-      v13 = v12;
+      v13 = view;
     }
 
     [(_UIPointerEffectPlatterView *)v10 setContentView:v13];
-    v16 = [(_UIPointerEffectPlatterView *)v10 contentView];
-    [v16 frame];
+    contentView = [(_UIPointerEffectPlatterView *)v10 contentView];
+    [contentView frame];
     v18 = v17;
     v20 = v19;
-    v21 = [(_UIPointerEffectPlatterView *)v10 contentView];
-    [v21 setFrame:{0.0, 0.0, v18, v20}];
+    contentView2 = [(_UIPointerEffectPlatterView *)v10 contentView];
+    [contentView2 setFrame:{0.0, 0.0, v18, v20}];
 
     [(UIView *)v10 addSubview:v13];
     [(_UIPointerEffectPlatterView *)v10 _updateContentMask];
-    v22 = [v4 _accessoryViews];
-    v23 = [v22 count];
+    _accessoryViews = [previewCopy _accessoryViews];
+    v23 = [_accessoryViews count];
 
     if (v23)
     {
       v43 = v13;
-      v44 = v12;
-      v24 = [MEMORY[0x1E695DF70] array];
-      [(_UIPointerEffectPlatterView *)v10 setAccessoryPortals:v24];
+      v44 = view;
+      array = [MEMORY[0x1E695DF70] array];
+      [(_UIPointerEffectPlatterView *)v10 setAccessoryPortals:array];
 
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v25 = [v4 _accessoryViews];
-      v26 = [v25 countByEnumeratingWithState:&v46 objects:v51 count:16];
+      _accessoryViews2 = [previewCopy _accessoryViews];
+      v26 = [_accessoryViews2 countByEnumeratingWithState:&v46 objects:v51 count:16];
       if (v26)
       {
         v27 = v26;
@@ -103,13 +103,13 @@
           {
             if (*v47 != v28)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(_accessoryViews2);
             }
 
             v30 = *(*(&v46 + 1) + 8 * v29);
-            v31 = [v30 window];
+            window = [v30 window];
 
-            if (v31)
+            if (window)
             {
               [(_UIPointerEffectPlatterView *)v10 _installAccessoryView:v30];
             }
@@ -138,69 +138,69 @@
           }
 
           while (v27 != v29);
-          v34 = [v25 countByEnumeratingWithState:&v46 objects:v51 count:16];
+          v34 = [_accessoryViews2 countByEnumeratingWithState:&v46 objects:v51 count:16];
           v27 = v34;
         }
 
         while (v34);
       }
 
-      v12 = v44;
+      view = v44;
       v13 = v43;
     }
 
     v35 = +[_UIPointerSettingsDomain rootSettings];
-    v36 = [v35 showEffectPlatter];
+    showEffectPlatter = [v35 showEffectPlatter];
 
-    if (v36)
+    if (showEffectPlatter)
     {
       v37 = +[UIColor greenColor];
       v38 = [v37 colorWithAlphaComponent:0.75];
-      v39 = [v38 CGColor];
-      v40 = [(UIView *)v10 layer];
-      [v40 setBorderColor:v39];
+      cGColor = [v38 CGColor];
+      layer3 = [(UIView *)v10 layer];
+      [layer3 setBorderColor:cGColor];
 
-      v41 = [(UIView *)v10 layer];
-      [v41 setBorderWidth:1.0];
+      layer4 = [(UIView *)v10 layer];
+      [layer4 setBorderWidth:1.0];
     }
   }
 
   return v10;
 }
 
-- (void)_installAccessoryView:(id)a3
+- (void)_installAccessoryView:(id)view
 {
-  v4 = a3;
-  v13 = [[_UIPortalView alloc] initWithSourceView:v4];
+  viewCopy = view;
+  v13 = [[_UIPortalView alloc] initWithSourceView:viewCopy];
   [(_UIPortalView *)v13 setName:@"_UIPointerEffectPlatterView.accessory"];
   [(_UIPortalView *)v13 setHidesSourceView:1];
   [(_UIPortalView *)v13 setMatchesAlpha:1];
   [(_UIPortalView *)v13 setAllowsBackdropGroups:1];
-  v5 = [v4 superview];
-  [v4 center];
+  superview = [viewCopy superview];
+  [viewCopy center];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(_UIPointerEffectPlatterView *)self targetedPreview];
-  v11 = [v10 view];
-  [v5 convertPoint:v11 toView:{v7, v9}];
+  targetedPreview = [(_UIPointerEffectPlatterView *)self targetedPreview];
+  view = [targetedPreview view];
+  [superview convertPoint:view toView:{v7, v9}];
   [(_UIPortalView *)v13 setCenter:?];
 
-  v12 = [(_UIPointerEffectPlatterView *)self accessoryPortals];
-  [v12 addObject:v13];
+  accessoryPortals = [(_UIPointerEffectPlatterView *)self accessoryPortals];
+  [accessoryPortals addObject:v13];
 
   [(UIView *)self addSubview:v13];
 }
 
-- (void)setTargetedPreview:(id)a3
+- (void)setTargetedPreview:(id)preview
 {
-  v9 = a3;
-  if (([v9 isEqual:self->_targetedPreview] & 1) == 0)
+  previewCopy = preview;
+  if (([previewCopy isEqual:self->_targetedPreview] & 1) == 0)
   {
     targetedPreview = self->_targetedPreview;
-    if (!targetedPreview || (-[UITargetedPreview view](targetedPreview, "view"), v5 = objc_claimAutoreleasedReturnValue(), [v9 view], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v5 == v6))
+    if (!targetedPreview || (-[UITargetedPreview view](targetedPreview, "view"), v5 = objc_claimAutoreleasedReturnValue(), [previewCopy view], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v5 == v6))
     {
-      v7 = [v9 copy];
+      v7 = [previewCopy copy];
       v8 = self->_targetedPreview;
       self->_targetedPreview = v7;
 
@@ -211,48 +211,48 @@
 
 - (void)_updateContentMask
 {
-  v13 = [(_UIPointerEffectPlatterView *)self targetedPreview];
-  v3 = [(_UIPointerEffectPlatterView *)self contentView];
-  v4 = [v13 parameters];
-  v5 = [v4 visiblePath];
+  targetedPreview = [(_UIPointerEffectPlatterView *)self targetedPreview];
+  contentView = [(_UIPointerEffectPlatterView *)self contentView];
+  parameters = [targetedPreview parameters];
+  visiblePath = [parameters visiblePath];
 
-  if (!v5 || [v13 _previewMode] == 4 || objc_msgSend(v13, "_previewMode") == 5)
+  if (!visiblePath || [targetedPreview _previewMode] == 4 || objc_msgSend(targetedPreview, "_previewMode") == 5)
   {
-    [v3 setMaskView:0];
+    [contentView setMaskView:0];
   }
 
   else
   {
-    [v5 bounds];
+    [visiblePath bounds];
     v6 = -CGRectGetMinX(v15);
-    [v5 bounds];
+    [visiblePath bounds];
     v7 = -CGRectGetMinY(v16);
-    [v3 bounds];
+    [contentView bounds];
     v18 = CGRectOffset(v17, v6, v7);
-    [v3 setFrame:{v18.origin.x, v18.origin.y, v18.size.width, v18.size.height}];
+    [contentView setFrame:{v18.origin.x, v18.origin.y, v18.size.width, v18.size.height}];
     v8 = [_UIShapeView alloc];
-    v9 = [v13 view];
-    [v9 bounds];
+    view = [targetedPreview view];
+    [view bounds];
     v10 = [(UIView *)v8 initWithFrame:?];
 
-    v11 = [v5 CGPath];
-    v12 = [(_UIShapeView *)v10 shapeLayer];
-    [v12 setPath:v11];
+    cGPath = [visiblePath CGPath];
+    shapeLayer = [(_UIShapeView *)v10 shapeLayer];
+    [shapeLayer setPath:cGPath];
 
-    [v3 setMaskView:v10];
+    [contentView setMaskView:v10];
   }
 }
 
-- (void)setShadowAlpha:(double)a3
+- (void)setShadowAlpha:(double)alpha
 {
-  if (self->_shadowAlpha != a3)
+  if (self->_shadowAlpha != alpha)
   {
-    self->_shadowAlpha = a3;
-    if (a3 > 0.0)
+    self->_shadowAlpha = alpha;
+    if (alpha > 0.0)
     {
-      v4 = [(_UIPointerEffectPlatterView *)self shadowView];
+      shadowView = [(_UIPointerEffectPlatterView *)self shadowView];
 
-      if (!v4)
+      if (!shadowView)
       {
         v7[0] = MEMORY[0x1E69E9820];
         v7[1] = 3221225472;
@@ -264,29 +264,29 @@
     }
 
     shadowAlpha = self->_shadowAlpha;
-    v6 = [(_UIPointerEffectPlatterView *)self shadowView];
-    [v6 setAlpha:shadowAlpha];
+    shadowView2 = [(_UIPointerEffectPlatterView *)self shadowView];
+    [shadowView2 setAlpha:shadowAlpha];
   }
 }
 
-- (void)setTintDisabled:(BOOL)a3
+- (void)setTintDisabled:(BOOL)disabled
 {
-  if (self->_tintDisabled != a3)
+  if (self->_tintDisabled != disabled)
   {
-    v4 = a3;
-    self->_tintDisabled = a3;
-    v5 = [(_UIPointerEffectPlatterView *)self tintView];
-    [v5 setDisabled:v4];
+    disabledCopy = disabled;
+    self->_tintDisabled = disabled;
+    tintView = [(_UIPointerEffectPlatterView *)self tintView];
+    [tintView setDisabled:disabledCopy];
   }
 }
 
-- (void)setTintMode:(int64_t)a3
+- (void)setTintMode:(int64_t)mode
 {
-  if (self->_tintMode != a3)
+  if (self->_tintMode != mode)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_tintMode = a3;
+    self->_tintMode = mode;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __43___UIPointerEffectPlatterView_setTintMode___block_invoke;
@@ -296,36 +296,36 @@
   }
 }
 
-- (void)setTintViewScale:(double)a3
+- (void)setTintViewScale:(double)scale
 {
-  if (vabdd_f64(a3, self->_tintViewScale) >= 2.22044605e-16)
+  if (vabdd_f64(scale, self->_tintViewScale) >= 2.22044605e-16)
   {
     v9 = v3;
     v10 = v4;
-    self->_tintViewScale = a3;
-    CGAffineTransformMakeScale(&v8, a3, a3);
-    v6 = [(_UIPointerEffectPlatterView *)self tintView];
+    self->_tintViewScale = scale;
+    CGAffineTransformMakeScale(&v8, scale, scale);
+    tintView = [(_UIPointerEffectPlatterView *)self tintView];
     v7 = v8;
-    [v6 setTransform:&v7];
+    [tintView setTransform:&v7];
   }
 }
 
-- (void)setTintViewShape:(id)a3
+- (void)setTintViewShape:(id)shape
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_tintViewShape] & 1) == 0)
+  shapeCopy = shape;
+  if (([shapeCopy isEqual:self->_tintViewShape] & 1) == 0)
   {
-    objc_storeStrong(&self->_tintViewShape, a3);
+    objc_storeStrong(&self->_tintViewShape, shape);
     [(_UIPointerEffectPlatterView *)self _layoutTintView];
   }
 }
 
-- (void)setSpecularHighlight:(id)a3
+- (void)setSpecularHighlight:(id)highlight
 {
-  v5 = a3;
-  if (self->_specularHighlight != v5)
+  highlightCopy = highlight;
+  if (self->_specularHighlight != highlightCopy)
   {
-    objc_storeStrong(&self->_specularHighlight, a3);
+    objc_storeStrong(&self->_specularHighlight, highlight);
   }
 
   v6[0] = MEMORY[0x1E69E9820];
@@ -336,14 +336,14 @@
   [UIView performWithoutAnimation:v6];
 }
 
-- (void)setPressed:(BOOL)a3
+- (void)setPressed:(BOOL)pressed
 {
-  if (self->_pressed != a3)
+  if (self->_pressed != pressed)
   {
-    v4 = a3;
-    self->_pressed = a3;
-    v5 = [(_UIPointerEffectPlatterView *)self tintView];
-    [v5 setPressed:v4];
+    pressedCopy = pressed;
+    self->_pressed = pressed;
+    tintView = [(_UIPointerEffectPlatterView *)self tintView];
+    [tintView setPressed:pressedCopy];
   }
 }
 
@@ -353,55 +353,55 @@
   v58.receiver = self;
   v58.super_class = _UIPointerEffectPlatterView;
   [(UIView *)&v58 layoutSubviews];
-  v3 = [(_UIPointerEffectPlatterView *)self tintMode];
-  if (v3 == 2)
+  tintMode = [(_UIPointerEffectPlatterView *)self tintMode];
+  if (tintMode == 2)
   {
-    v7 = [(_UIPointerEffectPlatterView *)self tintView];
-    v8 = [(_UIPointerEffectPlatterView *)self contentView];
-    [(UIView *)self insertSubview:v7 belowSubview:v8];
+    tintView = [(_UIPointerEffectPlatterView *)self tintView];
+    contentView = [(_UIPointerEffectPlatterView *)self contentView];
+    [(UIView *)self insertSubview:tintView belowSubview:contentView];
 
-    v5 = [(_UIPointerEffectPlatterView *)self lumaTrackingView];
-    [(UIView *)self sendSubviewToBack:v5];
+    lumaTrackingView = [(_UIPointerEffectPlatterView *)self lumaTrackingView];
+    [(UIView *)self sendSubviewToBack:lumaTrackingView];
   }
 
   else
   {
-    if (v3 != 1)
+    if (tintMode != 1)
     {
       goto LABEL_6;
     }
 
-    v4 = [(_UIPointerEffectPlatterView *)self tintView];
-    [(UIView *)self bringSubviewToFront:v4];
+    tintView2 = [(_UIPointerEffectPlatterView *)self tintView];
+    [(UIView *)self bringSubviewToFront:tintView2];
 
-    v5 = [(_UIPointerEffectPlatterView *)self lumaTrackingView];
-    v6 = [(_UIPointerEffectPlatterView *)self tintView];
-    [(UIView *)self insertSubview:v5 belowSubview:v6];
+    lumaTrackingView = [(_UIPointerEffectPlatterView *)self lumaTrackingView];
+    tintView3 = [(_UIPointerEffectPlatterView *)self tintView];
+    [(UIView *)self insertSubview:lumaTrackingView belowSubview:tintView3];
   }
 
 LABEL_6:
-  v9 = [(_UIPointerEffectPlatterView *)self lumaTrackingView];
+  lumaTrackingView2 = [(_UIPointerEffectPlatterView *)self lumaTrackingView];
 
-  if (v9)
+  if (lumaTrackingView2)
   {
-    v10 = [(_UIPointerEffectPlatterView *)self lumaTrackingView];
-    [v10 setPaused:0];
+    lumaTrackingView3 = [(_UIPointerEffectPlatterView *)self lumaTrackingView];
+    [lumaTrackingView3 setPaused:0];
   }
 
-  v11 = [(_UIPointerEffectPlatterView *)self specularHighlight];
+  specularHighlight = [(_UIPointerEffectPlatterView *)self specularHighlight];
 
-  if (v11)
+  if (specularHighlight)
   {
-    v12 = [(_UIPointerEffectPlatterView *)self specularOverlayView];
-    [(UIView *)self bringSubviewToFront:v12];
+    specularOverlayView = [(_UIPointerEffectPlatterView *)self specularOverlayView];
+    [(UIView *)self bringSubviewToFront:specularOverlayView];
   }
 
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v13 = [(_UIPointerEffectPlatterView *)self accessoryPortals];
-  v14 = [v13 countByEnumeratingWithState:&v54 objects:v59 count:16];
+  accessoryPortals = [(_UIPointerEffectPlatterView *)self accessoryPortals];
+  v14 = [accessoryPortals countByEnumeratingWithState:&v54 objects:v59 count:16];
   if (v14)
   {
     v15 = v14;
@@ -413,14 +413,14 @@ LABEL_6:
       {
         if (*v55 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(accessoryPortals);
         }
 
         [(UIView *)self bringSubviewToFront:*(*(&v54 + 1) + 8 * v17++)];
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v54 objects:v59 count:16];
+      v15 = [accessoryPortals countByEnumeratingWithState:&v54 objects:v59 count:16];
     }
 
     while (v15);
@@ -429,98 +429,98 @@ LABEL_6:
   [(UIView *)self bounds];
   v20 = v19 + v18 * 0.5;
   v23 = v22 + v21 * 0.5;
-  v24 = [(_UIPointerEffectPlatterView *)self targetedPreview];
-  v25 = [v24 parameters];
+  targetedPreview = [(_UIPointerEffectPlatterView *)self targetedPreview];
+  parameters = [targetedPreview parameters];
 
-  v26 = [v25 effectiveShadowPath];
-  v27 = [v25 visiblePath];
+  effectiveShadowPath = [parameters effectiveShadowPath];
+  visiblePath = [parameters visiblePath];
 
   v28 = v23;
   v29 = v20;
-  if (v26 != v27)
+  if (effectiveShadowPath != visiblePath)
   {
-    v30 = [v25 effectiveShadowPath];
-    [v30 bounds];
+    effectiveShadowPath2 = [parameters effectiveShadowPath];
+    [effectiveShadowPath2 bounds];
     v29 = v32 + v31 * 0.5;
     v28 = v34 + v33 * 0.5;
   }
 
-  v35 = [v25 visiblePath];
+  visiblePath2 = [parameters visiblePath];
 
-  if (v35)
+  if (visiblePath2)
   {
-    v36 = [v25 visiblePath];
-    [v36 bounds];
+    visiblePath3 = [parameters visiblePath];
+    [visiblePath3 bounds];
     v37 = -CGRectGetMinX(v61);
 
-    v38 = [v25 visiblePath];
-    [v38 bounds];
+    visiblePath4 = [parameters visiblePath];
+    [visiblePath4 bounds];
     v39 = -CGRectGetMinY(v62);
 
-    v40 = [(_UIPointerEffectPlatterView *)self contentView];
-    [v40 bounds];
+    contentView2 = [(_UIPointerEffectPlatterView *)self contentView];
+    [contentView2 bounds];
     v64 = CGRectOffset(v63, v37, v39);
     x = v64.origin.x;
     y = v64.origin.y;
     width = v64.size.width;
     height = v64.size.height;
-    v45 = [(_UIPointerEffectPlatterView *)self contentView];
-    [v45 setFrame:{x, y, width, height}];
+    contentView3 = [(_UIPointerEffectPlatterView *)self contentView];
+    [contentView3 setFrame:{x, y, width, height}];
   }
 
   else
   {
-    v40 = [(_UIPointerEffectPlatterView *)self contentView];
-    [v40 setCenter:{v20, v23}];
+    contentView2 = [(_UIPointerEffectPlatterView *)self contentView];
+    [contentView2 setCenter:{v20, v23}];
   }
 
-  v46 = [(_UIPointerEffectPlatterView *)self shadowView];
-  [v46 setCenter:{v29, v28}];
+  shadowView = [(_UIPointerEffectPlatterView *)self shadowView];
+  [shadowView setCenter:{v29, v28}];
 
-  v47 = [(_UIPointerEffectPlatterView *)self specularOverlayView];
+  specularOverlayView2 = [(_UIPointerEffectPlatterView *)self specularOverlayView];
   if (([(_UIPointerEffectPlatterView *)self specularOptions]& 2) != 0)
   {
-    v48 = [(_UIPointerEffectPlatterView *)self tintViewShape];
-    [v48 rect];
-    [v47 setFrame:?];
-    [v48 effectiveCornerRadius];
+    tintViewShape = [(_UIPointerEffectPlatterView *)self tintViewShape];
+    [tintViewShape rect];
+    [specularOverlayView2 setFrame:?];
+    [tintViewShape effectiveCornerRadius];
     v50 = v49;
-    v51 = [v47 layer];
-    [v51 setCornerRadius:v50];
+    layer = [specularOverlayView2 layer];
+    [layer setCornerRadius:v50];
 
-    v52 = [v48 cornerCurve];
-    v53 = [v47 layer];
-    [v53 setCornerCurve:v52];
+    cornerCurve = [tintViewShape cornerCurve];
+    layer2 = [specularOverlayView2 layer];
+    [layer2 setCornerCurve:cornerCurve];
 
-    [v47 setClipsToBounds:1];
+    [specularOverlayView2 setClipsToBounds:1];
   }
 
   else
   {
     [(UIView *)self bounds];
-    [v47 setFrame:?];
+    [specularOverlayView2 setFrame:?];
   }
 
   [(_UIPointerEffectPlatterView *)self _layoutTintView];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   if (![(_UIPointerEffectPlatterView *)self geometryFrozen])
   {
     v5.receiver = self;
     v5.super_class = _UIPointerEffectPlatterView;
-    [(UIView *)&v5 setHidden:v3];
+    [(UIView *)&v5 setHidden:hiddenCopy];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (![(_UIPointerEffectPlatterView *)self geometryFrozen])
   {
     v8.receiver = self;
@@ -529,12 +529,12 @@ LABEL_6:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (![(_UIPointerEffectPlatterView *)self geometryFrozen])
   {
     v8.receiver = self;
@@ -543,10 +543,10 @@ LABEL_6:
   }
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   if (![(_UIPointerEffectPlatterView *)self geometryFrozen])
   {
     v6.receiver = self;
@@ -557,11 +557,11 @@ LABEL_6:
 
 - (id)_newShadowView
 {
-  v3 = [(_UIPointerEffectPlatterView *)self targetedPreview];
-  v4 = [v3 parameters];
+  targetedPreview = [(_UIPointerEffectPlatterView *)self targetedPreview];
+  parameters = [targetedPreview parameters];
 
-  v5 = [v4 effectiveShadowPath];
-  v6 = [v5 copy];
+  effectiveShadowPath = [parameters effectiveShadowPath];
+  v6 = [effectiveShadowPath copy];
 
   if (v6)
   {
@@ -576,20 +576,20 @@ LABEL_6:
 
   else
   {
-    v10 = [(_UIPointerEffectPlatterView *)self targetedPreview];
-    v11 = [v10 view];
-    [v11 _cornerRadius];
+    targetedPreview2 = [(_UIPointerEffectPlatterView *)self targetedPreview];
+    view = [targetedPreview2 view];
+    [view _cornerRadius];
 
     [(UIView *)self bounds];
     v9 = [UIBezierPath bezierPathWithRoundedRect:"bezierPathWithRoundedRect:cornerRadius:" cornerRadius:?];
   }
 
   v12 = [_UIRadiosityShadowView alloc];
-  v13 = [(_UIPointerEffectPlatterView *)self contentView];
-  v14 = [(_UIRadiosityShadowView *)v12 initWithSourceView:v13 shadowPath:v9 isSoft:[(_UIPointerEffectPlatterView *)self useSoftShadow]];
+  contentView = [(_UIPointerEffectPlatterView *)self contentView];
+  v14 = [(_UIRadiosityShadowView *)v12 initWithSourceView:contentView shadowPath:v9 isSoft:[(_UIPointerEffectPlatterView *)self useSoftShadow]];
 
-  v15 = [(UIView *)v14 layer];
-  [v15 setName:@"_UIPointerContentEffectPlatterView.shadowView"];
+  layer = [(UIView *)v14 layer];
+  [layer setName:@"_UIPointerContentEffectPlatterView.shadowView"];
 
   if (v6)
   {
@@ -598,8 +598,8 @@ LABEL_6:
 
   else
   {
-    v17 = [v4 backgroundColor];
-    [v17 alphaComponent];
+    backgroundColor = [parameters backgroundColor];
+    [backgroundColor alphaComponent];
     if (fabs(v18) < 2.22044605e-16)
     {
       v16 = 0;
@@ -607,15 +607,15 @@ LABEL_6:
 
     else
     {
-      v19 = [v4 backgroundColor];
-      v16 = [v19 _isOpaque] ^ 1;
+      backgroundColor2 = [parameters backgroundColor];
+      v16 = [backgroundColor2 _isOpaque] ^ 1;
     }
   }
 
   [(_UIRadiosityShadowView *)v14 setNeedsPunchout:v16];
   [(UIView *)v14 setAlpha:0.0];
-  v20 = [(UIView *)v14 layer];
-  [v20 setZPosition:-1.0];
+  layer2 = [(UIView *)v14 layer];
+  [layer2 setZPosition:-1.0];
 
   return v14;
 }
@@ -623,31 +623,31 @@ LABEL_6:
 - (id)_newTintView
 {
   v3 = [_UIPointerEffectTintView alloc];
-  v4 = [(_UIPointerEffectPlatterView *)self tintColorMatrixProvider];
-  v5 = [(_UIPointerEffectTintView *)v3 initWithTintColorMatrixProvider:v4];
+  tintColorMatrixProvider = [(_UIPointerEffectPlatterView *)self tintColorMatrixProvider];
+  v5 = [(_UIPointerEffectTintView *)v3 initWithTintColorMatrixProvider:tintColorMatrixProvider];
 
   [(UIView *)v5 setClipsToBounds:1];
   [(_UIPointerEffectTintView *)v5 setDisabled:[(_UIPointerEffectPlatterView *)self isTintDisabled]];
-  v6 = [(UIView *)v5 layer];
-  [v6 setName:@"_UIPointerContentEffectPlatterView.tintView"];
+  layer = [(UIView *)v5 layer];
+  [layer setName:@"_UIPointerContentEffectPlatterView.tintView"];
 
   return v5;
 }
 
 - (void)_layoutTintView
 {
-  v3 = [(_UIPointerEffectPlatterView *)self tintView];
-  if (v3)
+  tintView = [(_UIPointerEffectPlatterView *)self tintView];
+  if (tintView)
   {
-    v4 = [(_UIPointerEffectPlatterView *)self targetedPreview];
-    v5 = [v4 view];
-    v6 = [v4 target];
-    v7 = [(_UIPointerEffectPlatterView *)self tintViewShape];
-    v8 = v7;
-    if (v7)
+    targetedPreview = [(_UIPointerEffectPlatterView *)self targetedPreview];
+    view = [targetedPreview view];
+    target = [targetedPreview target];
+    tintViewShape = [(_UIPointerEffectPlatterView *)self tintViewShape];
+    v8 = tintViewShape;
+    if (tintViewShape)
     {
-      v9 = [v7 path];
-      v10 = [v9 copy];
+      path = [tintViewShape path];
+      v10 = [path copy];
 
       if (v10)
       {
@@ -665,34 +665,34 @@ LABEL_6:
       v20 = v14;
       [v8 effectiveCornerRadius];
       v22 = v30;
-      v26 = [v8 cornerCurve];
-      v25 = v26 == *MEMORY[0x1E69796E8];
-      v27 = 15;
+      cornerCurve = [v8 cornerCurve];
+      v25 = cornerCurve == *MEMORY[0x1E69796E8];
+      maskedCorners = 15;
     }
 
     else
     {
-      v15 = [v4 parameters];
-      v16 = [v15 visiblePath];
-      v10 = [v16 copy];
+      parameters = [targetedPreview parameters];
+      visiblePath = [parameters visiblePath];
+      v10 = [visiblePath copy];
 
-      [v4 size];
+      [targetedPreview size];
       v18 = v17;
       v20 = v19;
-      [v5 _cornerRadius];
+      [view _cornerRadius];
       v22 = v21;
-      v23 = [v5 layer];
-      v24 = [v23 cornerCurve];
-      v25 = v24 == *MEMORY[0x1E69796E8];
+      layer = [view layer];
+      cornerCurve2 = [layer cornerCurve];
+      v25 = cornerCurve2 == *MEMORY[0x1E69796E8];
 
-      v26 = [v5 layer];
-      v27 = [v26 maskedCorners];
+      cornerCurve = [view layer];
+      maskedCorners = [cornerCurve maskedCorners];
       v28 = 0.0;
       v29 = 0.0;
     }
 
-    [v3 setCenter:{v29 + v18 * 0.5, v28 + v20 * 0.5}];
-    [v3 setBounds:{0.0, 0.0, v18, v20}];
+    [tintView setCenter:{v29 + v18 * 0.5, v28 + v20 * 0.5}];
+    [tintView setBounds:{0.0, 0.0, v18, v20}];
     if (v10)
     {
       [v10 bounds];
@@ -704,59 +704,59 @@ LABEL_6:
       v33 = [_UIShapeView alloc];
       [v10 bounds];
       v34 = [(UIView *)v33 initWithFrame:?];
-      v35 = [v10 CGPath];
-      v36 = [(_UIShapeView *)v34 shapeLayer];
-      [v36 setPath:v35];
+      cGPath = [v10 CGPath];
+      shapeLayer = [(_UIShapeView *)v34 shapeLayer];
+      [shapeLayer setPath:cGPath];
 
-      [v3 setMaskView:v34];
+      [tintView setMaskView:v34];
     }
 
     else
     {
-      [v3 _setCornerRadius:v25 continuous:v27 maskedCorners:v22];
+      [tintView _setCornerRadius:v25 continuous:maskedCorners maskedCorners:v22];
     }
   }
 }
 
-- (id)_newLumaTrackingViewForTintView:(id)a3
+- (id)_newLumaTrackingViewForTintView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = [_UILumaTrackingBackdropView alloc];
-  [v3 frame];
-  v9 = [(_UILumaTrackingBackdropView *)v4 initWithTransitionBoundaries:v3 delegate:0.4 frame:0.6, v5, v6, v7, v8];
+  [viewCopy frame];
+  v9 = [(_UILumaTrackingBackdropView *)v4 initWithTransitionBoundaries:viewCopy delegate:0.4 frame:0.6, v5, v6, v7, v8];
 
   return v9;
 }
 
-- (id)_specularOverlayView:(id)a3 withOptions:(unint64_t)a4
+- (id)_specularOverlayView:(id)view withOptions:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if ((v4 & 2) != 0)
+  optionsCopy = options;
+  viewCopy = view;
+  v7 = viewCopy;
+  if ((optionsCopy & 2) != 0)
   {
-    v10 = v6;
+    v10 = viewCopy;
   }
 
   else
   {
-    v8 = [(_UIPointerEffectPlatterView *)self contentView];
+    contentView = [(_UIPointerEffectPlatterView *)self contentView];
     v9 = [UIView alloc];
-    [v8 bounds];
+    [contentView bounds];
     v10 = [(UIView *)v9 initWithFrame:?];
-    v11 = [(UIView *)v10 layer];
-    [v11 setAllowsGroupBlending:0];
+    layer = [(UIView *)v10 layer];
+    [layer setAllowsGroupBlending:0];
 
     v12 = [UIView alloc];
     [(UIView *)v10 bounds];
     v13 = [(UIView *)v12 initWithFrame:?];
-    if (v4)
+    if (optionsCopy)
     {
       v14 = [_UIPortalView alloc];
       [(UIView *)v13 bounds];
       v15 = [(_UIPortalView *)v14 initWithFrame:?];
       [(_UIPortalView *)v15 setName:@"_UIPointerEffectPlatterView.specularOverlayMask"];
-      [(_UIPortalView *)v15 setSourceView:v8];
+      [(_UIPortalView *)v15 setSourceView:contentView];
       [(_UIPortalView *)v15 setMatchesAlpha:1];
       [(_UIPortalView *)v15 setMatchesPosition:1];
       [(_UIPortalView *)v15 setMatchesTransform:1];
@@ -764,17 +764,17 @@ LABEL_6:
       [(UIView *)v13 setMaskView:v15];
     }
 
-    if ((v4 & 4) == 0)
+    if ((optionsCopy & 4) == 0)
     {
       v16 = *MEMORY[0x1E6979CF8];
-      v17 = [(UIView *)v13 layer];
-      [v17 setCompositingFilter:v16];
+      layer2 = [(UIView *)v13 layer];
+      [layer2 setCompositingFilter:v16];
     }
 
     [(UIView *)v13 addSubview:v7];
     [(UIView *)v10 addSubview:v13];
-    v18 = [(UIView *)v10 layer];
-    [v18 setName:@"_UIPointerContentEffectPlatterView.specularOverlayView"];
+    layer3 = [(UIView *)v10 layer];
+    [layer3 setName:@"_UIPointerContentEffectPlatterView.specularOverlayView"];
   }
 
   return v10;

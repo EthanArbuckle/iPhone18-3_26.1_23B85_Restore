@@ -1,15 +1,15 @@
 @interface BMDiscoverabilitySignals
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDiscoverabilitySignals)initWithContentIdentifier:(id)a3 context:(id)a4 osBuild:(id)a5 userInfo:(id)a6;
-- (BMDiscoverabilitySignals)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMDiscoverabilitySignals)initWithContentIdentifier:(id)identifier context:(id)context osBuild:(id)build userInfo:(id)info;
+- (BMDiscoverabilitySignals)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDiscoverabilitySignals
@@ -36,30 +36,30 @@
 {
   v3 = objc_opt_new();
   [(BMDiscoverabilitySignals *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMDiscoverabilitySignals *)self contentIdentifier];
-    v7 = [v5 contentIdentifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    contentIdentifier = [(BMDiscoverabilitySignals *)self contentIdentifier];
+    contentIdentifier2 = [v5 contentIdentifier];
+    v8 = contentIdentifier2;
+    if (contentIdentifier == contentIdentifier2)
     {
     }
 
     else
     {
-      v9 = [(BMDiscoverabilitySignals *)self contentIdentifier];
-      v10 = [v5 contentIdentifier];
-      v11 = [v9 isEqual:v10];
+      contentIdentifier3 = [(BMDiscoverabilitySignals *)self contentIdentifier];
+      contentIdentifier4 = [v5 contentIdentifier];
+      v11 = [contentIdentifier3 isEqual:contentIdentifier4];
 
       if (!v11)
       {
@@ -67,18 +67,18 @@
       }
     }
 
-    v13 = [(BMDiscoverabilitySignals *)self context];
-    v14 = [v5 context];
-    v15 = v14;
-    if (v13 == v14)
+    context = [(BMDiscoverabilitySignals *)self context];
+    context2 = [v5 context];
+    v15 = context2;
+    if (context == context2)
     {
     }
 
     else
     {
-      v16 = [(BMDiscoverabilitySignals *)self context];
-      v17 = [v5 context];
-      v18 = [v16 isEqual:v17];
+      context3 = [(BMDiscoverabilitySignals *)self context];
+      context4 = [v5 context];
+      v18 = [context3 isEqual:context4];
 
       if (!v18)
       {
@@ -86,18 +86,18 @@
       }
     }
 
-    v19 = [(BMDiscoverabilitySignals *)self osBuild];
-    v20 = [v5 osBuild];
-    v21 = v20;
-    if (v19 == v20)
+    osBuild = [(BMDiscoverabilitySignals *)self osBuild];
+    osBuild2 = [v5 osBuild];
+    v21 = osBuild2;
+    if (osBuild == osBuild2)
     {
     }
 
     else
     {
-      v22 = [(BMDiscoverabilitySignals *)self osBuild];
-      v23 = [v5 osBuild];
-      v24 = [v22 isEqual:v23];
+      osBuild3 = [(BMDiscoverabilitySignals *)self osBuild];
+      osBuild4 = [v5 osBuild];
+      v24 = [osBuild3 isEqual:osBuild4];
 
       if (!v24)
       {
@@ -109,18 +109,18 @@ LABEL_19:
       }
     }
 
-    v25 = [(BMDiscoverabilitySignals *)self userInfo];
-    v26 = [v5 userInfo];
-    if (v25 == v26)
+    userInfo = [(BMDiscoverabilitySignals *)self userInfo];
+    userInfo2 = [v5 userInfo];
+    if (userInfo == userInfo2)
     {
       v12 = 1;
     }
 
     else
     {
-      v27 = [(BMDiscoverabilitySignals *)self userInfo];
-      v28 = [v5 userInfo];
-      v12 = [v27 isEqual:v28];
+      userInfo3 = [(BMDiscoverabilitySignals *)self userInfo];
+      userInfo4 = [v5 userInfo];
+      v12 = [userInfo3 isEqual:userInfo4];
     }
 
     goto LABEL_19;
@@ -135,48 +135,48 @@ LABEL_20:
 - (id)jsonDictionary
 {
   v16[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMDiscoverabilitySignals *)self contentIdentifier];
-  v4 = [(BMDiscoverabilitySignals *)self context];
-  v5 = [(BMDiscoverabilitySignals *)self osBuild];
-  v6 = [(BMDiscoverabilitySignals *)self userInfo];
-  v7 = [v6 base64EncodedStringWithOptions:0];
+  contentIdentifier = [(BMDiscoverabilitySignals *)self contentIdentifier];
+  context = [(BMDiscoverabilitySignals *)self context];
+  osBuild = [(BMDiscoverabilitySignals *)self osBuild];
+  userInfo = [(BMDiscoverabilitySignals *)self userInfo];
+  v7 = [userInfo base64EncodedStringWithOptions:0];
 
   v15[0] = @"contentIdentifier";
-  v8 = v3;
-  if (!v3)
+  null = contentIdentifier;
+  if (!contentIdentifier)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[0] = v8;
+  v16[0] = null;
   v15[1] = @"context";
-  v9 = v4;
-  if (!v4)
+  null2 = context;
+  if (!context)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[1] = v9;
+  v16[1] = null2;
   v15[2] = @"osBuild";
-  v10 = v5;
-  if (!v5)
+  null3 = osBuild;
+  if (!osBuild)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[2] = v10;
+  v16[2] = null3;
   v15[3] = @"userInfo";
-  v11 = v7;
+  null4 = v7;
   if (!v7)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[3] = v11;
+  v16[3] = null4;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:4];
   if (v7)
   {
-    if (v5)
+    if (osBuild)
     {
       goto LABEL_11;
     }
@@ -185,17 +185,17 @@ LABEL_20:
   else
   {
 
-    if (v5)
+    if (osBuild)
     {
 LABEL_11:
-      if (v4)
+      if (context)
       {
         goto LABEL_12;
       }
 
 LABEL_18:
 
-      if (v3)
+      if (contentIdentifier)
       {
         goto LABEL_13;
       }
@@ -204,13 +204,13 @@ LABEL_18:
     }
   }
 
-  if (!v4)
+  if (!context)
   {
     goto LABEL_18;
   }
 
 LABEL_12:
-  if (v3)
+  if (contentIdentifier)
   {
     goto LABEL_13;
   }
@@ -223,11 +223,11 @@ LABEL_13:
   return v12;
 }
 
-- (BMDiscoverabilitySignals)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMDiscoverabilitySignals)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"contentIdentifier"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"contentIdentifier"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
@@ -239,28 +239,28 @@ LABEL_13:
   {
     v8 = v7;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"context"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"context"];
     if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v32 = 0;
 LABEL_7:
-      v10 = [v6 objectForKeyedSubscript:@"osBuild"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"osBuild"];
       v34 = v8;
       if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v11 = 0;
-            v14 = 0;
-            a4 = v32;
+            selfCopy = 0;
+            error = v32;
             goto LABEL_40;
           }
 
           v19 = objc_alloc(MEMORY[0x1E696ABC0]);
-          v30 = a4;
+          errorCopy = error;
           v20 = *MEMORY[0x1E698F240];
           v39 = *MEMORY[0x1E696A578];
           v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"osBuild"];
@@ -268,8 +268,8 @@ LABEL_7:
           v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
           v21 = [v19 initWithDomain:v20 code:2 userInfo:v12];
           v11 = 0;
-          v14 = 0;
-          *v30 = v21;
+          selfCopy = 0;
+          *errorCopy = v21;
           goto LABEL_38;
         }
 
@@ -281,14 +281,14 @@ LABEL_7:
         v11 = 0;
       }
 
-      v12 = [v6 objectForKeyedSubscript:@"userInfo"];
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"userInfo"];
       if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v13 = 0;
 LABEL_13:
-        a4 = v32;
+        error = v32;
         self = [(BMDiscoverabilitySignals *)self initWithContentIdentifier:v34 context:v32 osBuild:v11 userInfo:v13];
-        v14 = self;
+        selfCopy = self;
 LABEL_39:
 
         v8 = v34;
@@ -311,7 +311,7 @@ LABEL_39:
           goto LABEL_13;
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_37;
         }
@@ -328,13 +328,13 @@ LABEL_39:
 
       else
       {
-        if (!a4)
+        if (!error)
         {
 LABEL_37:
           v13 = 0;
-          v14 = 0;
+          selfCopy = 0;
 LABEL_38:
-          a4 = v32;
+          error = v32;
           goto LABEL_39;
         }
 
@@ -349,7 +349,7 @@ LABEL_38:
       }
 
       v26 = [v23 dictionaryWithObjects:v24 forKeys:v25 count:1];
-      *a4 = [v31 initWithDomain:v29 code:2 userInfo:v26];
+      *error = [v31 initWithDomain:v29 code:2 userInfo:v26];
 
       goto LABEL_37;
     }
@@ -361,7 +361,7 @@ LABEL_38:
       goto LABEL_7;
     }
 
-    if (a4)
+    if (error)
     {
       v33 = objc_alloc(MEMORY[0x1E696ABC0]);
       v18 = *MEMORY[0x1E698F240];
@@ -369,21 +369,21 @@ LABEL_38:
       v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"context"];
       v42 = v11;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
-      v14 = 0;
-      *a4 = [v33 initWithDomain:v18 code:2 userInfo:v10];
-      a4 = 0;
+      selfCopy = 0;
+      *error = [v33 initWithDomain:v18 code:2 userInfo:v10];
+      error = 0;
 LABEL_40:
 
       goto LABEL_41;
     }
 
-    v14 = 0;
+    selfCopy = 0;
 LABEL_41:
 
     goto LABEL_42;
   }
 
-  if (a4)
+  if (error)
   {
     v15 = objc_alloc(MEMORY[0x1E696ABC0]);
     v16 = *MEMORY[0x1E698F240];
@@ -392,52 +392,52 @@ LABEL_41:
     v44[0] = v17;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:&v43 count:1];
     v8 = 0;
-    v14 = 0;
-    *a4 = [v15 initWithDomain:v16 code:2 userInfo:v9];
-    a4 = v17;
+    selfCopy = 0;
+    *error = [v15 initWithDomain:v16 code:2 userInfo:v9];
+    error = v17;
     goto LABEL_41;
   }
 
   v8 = 0;
-  v14 = 0;
+  selfCopy = 0;
 LABEL_42:
 
   v27 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_contentIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_context)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_osBuild)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userInfo)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v23.receiver = self;
   v23.super_class = BMDiscoverabilitySignals;
   v5 = [(BMEventBase *)&v23 init];
@@ -446,12 +446,12 @@ LABEL_42:
     goto LABEL_33;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -462,18 +462,18 @@ LABEL_42:
       while (1)
       {
         v24 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v24 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v24 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v24 & 0x7F) << v7;
@@ -490,9 +490,9 @@ LABEL_42:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -546,13 +546,13 @@ LABEL_25:
       *(&v5->super.super.isa + v18) = v16;
 
 LABEL_30:
-      v20 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v20 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_32:
     v21 = 0;
@@ -570,31 +570,31 @@ LABEL_33:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMDiscoverabilitySignals *)self contentIdentifier];
-  v5 = [(BMDiscoverabilitySignals *)self context];
-  v6 = [(BMDiscoverabilitySignals *)self osBuild];
-  v7 = [(BMDiscoverabilitySignals *)self userInfo];
-  v8 = [v3 initWithFormat:@"BMDiscoverabilitySignals with contentIdentifier: %@, context: %@, osBuild: %@, userInfo: %@", v4, v5, v6, v7];
+  contentIdentifier = [(BMDiscoverabilitySignals *)self contentIdentifier];
+  context = [(BMDiscoverabilitySignals *)self context];
+  osBuild = [(BMDiscoverabilitySignals *)self osBuild];
+  userInfo = [(BMDiscoverabilitySignals *)self userInfo];
+  v8 = [v3 initWithFormat:@"BMDiscoverabilitySignals with contentIdentifier: %@, context: %@, osBuild: %@, userInfo: %@", contentIdentifier, context, osBuild, userInfo];
 
   return v8;
 }
 
-- (BMDiscoverabilitySignals)initWithContentIdentifier:(id)a3 context:(id)a4 osBuild:(id)a5 userInfo:(id)a6
+- (BMDiscoverabilitySignals)initWithContentIdentifier:(id)identifier context:(id)context osBuild:(id)build userInfo:(id)info
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  contextCopy = context;
+  buildCopy = build;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = BMDiscoverabilitySignals;
   v15 = [(BMEventBase *)&v17 init];
   if (v15)
   {
     v15->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v15->_contentIdentifier, a3);
-    objc_storeStrong(&v15->_context, a4);
-    objc_storeStrong(&v15->_osBuild, a5);
-    objc_storeStrong(&v15->_userInfo, a6);
+    objc_storeStrong(&v15->_contentIdentifier, identifier);
+    objc_storeStrong(&v15->_context, context);
+    objc_storeStrong(&v15->_osBuild, build);
+    objc_storeStrong(&v15->_userInfo, info);
   }
 
   return v15;
@@ -618,9 +618,9 @@ LABEL_33:
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -628,8 +628,8 @@ LABEL_33:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDiscoverabilitySignals alloc] initByReadFrom:v7];
     v4 = v8;

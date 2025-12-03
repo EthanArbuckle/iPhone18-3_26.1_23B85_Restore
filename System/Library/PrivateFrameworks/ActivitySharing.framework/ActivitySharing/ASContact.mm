@@ -1,16 +1,16 @@
 @interface ASContact
-+ (id)contactWithCodableContact:(id)a3;
-- (ASContact)contactWithKeys:(id)a3;
++ (id)contactWithCodableContact:(id)contact;
+- (ASContact)contactWithKeys:(id)keys;
 - (ASContact)init;
-- (ASContact)initWithRelationship:(id)a3 remoteRelationship:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToContact:(id)a3;
+- (ASContact)initWithRelationship:(id)relationship remoteRelationship:(id)remoteRelationship;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToContact:(id)contact;
 - (NSString)displayName;
 - (NSString)primaryDestinationForMessaging;
 - (NSUUID)UUID;
-- (id)_bestDestinationForContact:(id)a3;
+- (id)_bestDestinationForContact:(id)contact;
 - (id)_bestDestinationFromKnownDestinations;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)fullDescription;
 - (unint64_t)cloudType;
@@ -36,22 +36,22 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v6 = [(ASRelationshipStorage *)self->_relationshipStorage primaryRelationship];
-  v7 = [v6 preferredReachableAddress];
+  primaryRelationship = [(ASRelationshipStorage *)self->_relationshipStorage primaryRelationship];
+  preferredReachableAddress = [primaryRelationship preferredReachableAddress];
 
-  v8 = [(ASRelationshipStorage *)self->_relationshipStorage primaryRelationship];
-  v9 = [v8 cloudKitAddress];
+  primaryRelationship2 = [(ASRelationshipStorage *)self->_relationshipStorage primaryRelationship];
+  cloudKitAddress = [primaryRelationship2 cloudKitAddress];
 
-  if (!v9)
+  if (!cloudKitAddress)
   {
-    if (!v7)
+    if (!preferredReachableAddress)
     {
-      v12 = [(NSSet *)self->_destinations anyObject];
-      v13 = v12;
+      anyObject = [(NSSet *)self->_destinations anyObject];
+      v13 = anyObject;
       v14 = &stru_2850D2AA8;
-      if (v12)
+      if (anyObject)
       {
-        v14 = v12;
+        v14 = anyObject;
       }
 
       v4 = v14;
@@ -62,14 +62,14 @@ LABEL_5:
     goto LABEL_14;
   }
 
-  if (ASDestinationIsMako(v9, v10) && v7)
+  if (ASDestinationIsMako(cloudKitAddress, v10) && preferredReachableAddress)
   {
 LABEL_14:
-    v11 = v7;
+    v11 = preferredReachableAddress;
     goto LABEL_15;
   }
 
-  v11 = v9;
+  v11 = cloudKitAddress;
 LABEL_15:
   v4 = v11;
 LABEL_16:
@@ -83,11 +83,11 @@ LABEL_6:
 {
   if (ASSecureCloudEnabled())
   {
-    v3 = [(ASRelationshipStorage *)self->_relationshipStorage legacyRelationship];
-    v4 = [v3 UUID];
-    v5 = [(ASRelationshipStorage *)self->_relationshipStorage secureCloudRelationship];
-    v6 = [v5 UUID];
-    v7 = [v4 isEqual:v6];
+    legacyRelationship = [(ASRelationshipStorage *)self->_relationshipStorage legacyRelationship];
+    uUID = [legacyRelationship UUID];
+    secureCloudRelationship = [(ASRelationshipStorage *)self->_relationshipStorage secureCloudRelationship];
+    uUID2 = [secureCloudRelationship UUID];
+    v7 = [uUID isEqual:uUID2];
 
     if ((v7 & 1) == 0)
     {
@@ -100,10 +100,10 @@ LABEL_6:
     }
   }
 
-  v9 = [(ASRelationshipStorage *)self->_relationshipStorage primaryRelationship];
-  v10 = [v9 UUID];
+  primaryRelationship = [(ASRelationshipStorage *)self->_relationshipStorage primaryRelationship];
+  uUID3 = [primaryRelationship UUID];
 
-  return v10;
+  return uUID3;
 }
 
 - (ASContact)init
@@ -115,37 +115,37 @@ LABEL_6:
   return v5;
 }
 
-+ (id)contactWithCodableContact:(id)a3
++ (id)contactWithCodableContact:(id)contact
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contactCopy = contact;
   v4 = objc_alloc_init(ASContact);
-  v5 = [v3 linkedContactStoreIdentifier];
-  [(ASContact *)v4 setLinkedContactStoreIdentifier:v5];
+  linkedContactStoreIdentifier = [contactCopy linkedContactStoreIdentifier];
+  [(ASContact *)v4 setLinkedContactStoreIdentifier:linkedContactStoreIdentifier];
 
-  v6 = [v3 fullName];
-  [(ASContact *)v4 setFullName:v6];
+  fullName = [contactCopy fullName];
+  [(ASContact *)v4 setFullName:fullName];
 
-  v7 = [v3 shortName];
-  [(ASContact *)v4 setShortName:v7];
+  shortName = [contactCopy shortName];
+  [(ASContact *)v4 setShortName:shortName];
 
-  v8 = [v3 destinations];
-  v9 = ASConsolidateAddresses(v8);
+  destinations = [contactCopy destinations];
+  v9 = ASConsolidateAddresses(destinations);
   [(ASContact *)v4 setDestinations:v9];
 
-  -[ASContact setShouldRemove:](v4, "setShouldRemove:", [v3 shouldRemove]);
+  -[ASContact setShouldRemove:](v4, "setShouldRemove:", [contactCopy shouldRemove]);
   if (ASSecureCloudEnabled())
   {
     v10 = objc_opt_class();
-    v11 = [v3 pendingRelationshipShareItem];
-    v12 = ASSecureUnarchiveClassWithDataAndStrictness(v10, v11, 1);
+    pendingRelationshipShareItem = [contactCopy pendingRelationshipShareItem];
+    v12 = ASSecureUnarchiveClassWithDataAndStrictness(v10, pendingRelationshipShareItem, 1);
     [(ASContact *)v4 setPendingRelationshipShareItem:v12];
 
-    if ([v3 hasPendingLegacyShareLocations])
+    if ([contactCopy hasPendingLegacyShareLocations])
     {
       v13 = [ASCodableShareLocations alloc];
-      v14 = [v3 pendingLegacyShareLocations];
-      v15 = [(ASCodableShareLocations *)v13 initWithData:v14];
+      pendingLegacyShareLocations = [contactCopy pendingLegacyShareLocations];
+      v15 = [(ASCodableShareLocations *)v13 initWithData:pendingLegacyShareLocations];
       [(ASContact *)v4 setPendingLegacyShareLocations:v15];
     }
 
@@ -155,43 +155,43 @@ LABEL_6:
     }
   }
 
-  if ([v3 hasRelationshipStorage])
+  if ([contactCopy hasRelationshipStorage])
   {
-    v16 = [v3 relationshipStorage];
-    v17 = [ASRelationshipStorage relationshipStorageWithCodableRelationshipStorage:v16];
+    relationshipStorage = [contactCopy relationshipStorage];
+    v17 = [ASRelationshipStorage relationshipStorageWithCodableRelationshipStorage:relationshipStorage];
     [(ASContact *)v4 setRelationshipStorage:v17];
   }
 
   else
   {
     v18 = objc_alloc_init(ASRelationshipStorage);
-    v19 = [v3 relationshipContainer];
+    relationshipContainer = [contactCopy relationshipContainer];
 
-    if (v19)
+    if (relationshipContainer)
     {
-      v20 = [v3 relationshipContainer];
-      v21 = [ASRelationship relationshipWithCodableRelationshipContainer:v20];
+      relationshipContainer2 = [contactCopy relationshipContainer];
+      v21 = [ASRelationship relationshipWithCodableRelationshipContainer:relationshipContainer2];
       [(ASRelationshipStorage *)v18 setLegacyRelationship:v21];
     }
 
-    v22 = [v3 remoteRelationshipContainer];
+    remoteRelationshipContainer = [contactCopy remoteRelationshipContainer];
 
-    if (v22)
+    if (remoteRelationshipContainer)
     {
-      v23 = [v3 remoteRelationshipContainer];
-      v24 = [ASRelationship relationshipWithCodableRelationshipContainer:v23];
+      remoteRelationshipContainer2 = [contactCopy remoteRelationshipContainer];
+      v24 = [ASRelationship relationshipWithCodableRelationshipContainer:remoteRelationshipContainer2];
       [(ASRelationshipStorage *)v18 setLegacyRemoteRelationship:v24];
     }
 
-    v16 = [(ASRelationshipStorage *)v18 storageWithSynchronizedRelationshipIdentifiers];
+    relationshipStorage = [(ASRelationshipStorage *)v18 storageWithSynchronizedRelationshipIdentifiers];
 
-    [(ASContact *)v4 setRelationshipStorage:v16];
+    [(ASContact *)v4 setRelationshipStorage:relationshipStorage];
     ASLoggingInitialize();
     v25 = ASLogRelationships;
     if (os_log_type_enabled(ASLogRelationships, OS_LOG_TYPE_DEFAULT))
     {
       v28 = 138412290;
-      v29 = v16;
+      v29 = relationshipStorage;
       _os_log_impl(&dword_23E4FA000, v25, OS_LOG_TYPE_DEFAULT, "Migrated relationships to storage %@", &v28, 0xCu);
     }
   }
@@ -201,10 +201,10 @@ LABEL_6:
   return v4;
 }
 
-- (ASContact)initWithRelationship:(id)a3 remoteRelationship:(id)a4
+- (ASContact)initWithRelationship:(id)relationship remoteRelationship:(id)remoteRelationship
 {
-  v6 = a3;
-  v7 = a4;
+  relationshipCopy = relationship;
+  remoteRelationshipCopy = remoteRelationship;
   v14.receiver = self;
   v14.super_class = ASContact;
   v8 = [(ASContact *)&v14 init];
@@ -214,7 +214,7 @@ LABEL_6:
     destinations = v8->_destinations;
     v8->_destinations = v9;
 
-    v11 = [[ASRelationshipStorage alloc] initWithRelationship:v6 remoteRelationship:v7];
+    v11 = [[ASRelationshipStorage alloc] initWithRelationship:relationshipCopy remoteRelationship:remoteRelationshipCopy];
     relationshipStorage = v8->_relationshipStorage;
     v8->_relationshipStorage = v11;
   }
@@ -225,11 +225,11 @@ LABEL_6:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ASContact *)self UUID];
+  uUID = [(ASContact *)self UUID];
   v9 = *&self->_linkedContactStoreIdentifier;
   shortName = self->_shortName;
-  v6 = [(ASContact *)self displayName];
-  v7 = [v3 stringWithFormat:@"Contact uuid=%@ contactStoreId=%@ fullName=%@ shortName=%@ displayName=%@ destinations=%@", v4, v9, shortName, v6, self->_destinations];
+  displayName = [(ASContact *)self displayName];
+  v7 = [v3 stringWithFormat:@"Contact uuid=%@ contactStoreId=%@ fullName=%@ shortName=%@ displayName=%@ destinations=%@", uUID, v9, shortName, displayName, self->_destinations];
 
   return v7;
 }
@@ -238,36 +238,36 @@ LABEL_6:
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
   fullName = self->_fullName;
-  v5 = [(ASContact *)self UUID];
-  [v3 appendFormat:@"-------- Contact - %@ (%@) --------\n", fullName, v5];
+  uUID = [(ASContact *)self UUID];
+  [v3 appendFormat:@"-------- Contact - %@ (%@) --------\n", fullName, uUID];
 
   [v3 appendFormat:@"Full Name: %@\n", self->_fullName];
   [v3 appendFormat:@"Short Name: %@\n", self->_shortName];
-  v6 = [(ASContact *)self displayName];
-  [v3 appendFormat:@"Display Name: %@\n", v6];
+  displayName = [(ASContact *)self displayName];
+  [v3 appendFormat:@"Display Name: %@\n", displayName];
 
   [v3 appendFormat:@"Destinations: %@\n", self->_destinations];
-  v7 = [(ASContact *)self primaryDestinationForMessaging];
-  [v3 appendFormat:@"Primary Destination For Messaging: %@\n", v7];
+  primaryDestinationForMessaging = [(ASContact *)self primaryDestinationForMessaging];
+  [v3 appendFormat:@"Primary Destination For Messaging: %@\n", primaryDestinationForMessaging];
 
   v8 = NSStringFromASCloudType([(ASContact *)self cloudType]);
   [v3 appendFormat:@"Cloud Type: %@\n", v8];
 
-  v9 = [(ASContact *)self pendingRelationshipShareItem];
-  [v3 appendFormat:@"Pending Secure Cloud Share Item: %@\n", v9];
+  pendingRelationshipShareItem = [(ASContact *)self pendingRelationshipShareItem];
+  [v3 appendFormat:@"Pending Secure Cloud Share Item: %@\n", pendingRelationshipShareItem];
 
-  v10 = [(ASContact *)self pendingLegacyShareLocations];
-  [v3 appendFormat:@"Pending Legacy Share Locations: %@\n", v10];
+  pendingLegacyShareLocations = [(ASContact *)self pendingLegacyShareLocations];
+  [v3 appendFormat:@"Pending Legacy Share Locations: %@\n", pendingLegacyShareLocations];
 
   v11 = [v3 copy];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -275,42 +275,42 @@ LABEL_6:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ASContact *)self isEqualToContact:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ASContact *)self isEqualToContact:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToContact:(id)a3
+- (BOOL)isEqualToContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   linkedContactStoreIdentifier = self->_linkedContactStoreIdentifier;
-  v6 = [v4 linkedContactStoreIdentifier];
-  if (ASStringsAreEqual(linkedContactStoreIdentifier, v6))
+  linkedContactStoreIdentifier = [contactCopy linkedContactStoreIdentifier];
+  if (ASStringsAreEqual(linkedContactStoreIdentifier, linkedContactStoreIdentifier))
   {
     fullName = self->_fullName;
-    v8 = [v4 fullName];
-    if (ASStringsAreEqual(fullName, v8))
+    fullName = [contactCopy fullName];
+    if (ASStringsAreEqual(fullName, fullName))
     {
       shortName = self->_shortName;
-      v10 = [v4 shortName];
-      if (ASStringsAreEqual(shortName, v10))
+      shortName = [contactCopy shortName];
+      if (ASStringsAreEqual(shortName, shortName))
       {
         destinations = self->_destinations;
-        v12 = [v4 destinations];
-        if ([(NSSet *)destinations isEqualToSet:v12])
+        destinations = [contactCopy destinations];
+        if ([(NSSet *)destinations isEqualToSet:destinations])
         {
           relationshipStorage = self->_relationshipStorage;
-          v14 = [v4 relationshipStorage];
-          if ([(ASRelationshipStorage *)relationshipStorage isEqualToRelationshipStorage:v14])
+          relationshipStorage = [contactCopy relationshipStorage];
+          if ([(ASRelationshipStorage *)relationshipStorage isEqualToRelationshipStorage:relationshipStorage])
           {
             pendingRelationshipShareItem = self->_pendingRelationshipShareItem;
-            v16 = [v4 pendingRelationshipShareItem];
-            if (ASObjectsAreEqualOrNil(pendingRelationshipShareItem, v16))
+            pendingRelationshipShareItem = [contactCopy pendingRelationshipShareItem];
+            if (ASObjectsAreEqualOrNil(pendingRelationshipShareItem, pendingRelationshipShareItem))
             {
               pendingLegacyShareLocations = self->_pendingLegacyShareLocations;
-              v18 = [v4 pendingLegacyShareLocations];
-              v19 = ASObjectsAreEqualOrNil(pendingLegacyShareLocations, v18);
+              pendingLegacyShareLocations = [contactCopy pendingLegacyShareLocations];
+              v19 = ASObjectsAreEqualOrNil(pendingLegacyShareLocations, pendingLegacyShareLocations);
             }
 
             else
@@ -351,18 +351,18 @@ LABEL_6:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong((v5 + 24), self->_linkedContactStoreIdentifier);
   objc_storeStrong((v5 + 32), self->_fullName);
   objc_storeStrong((v5 + 40), self->_shortName);
-  v6 = [(NSSet *)self->_destinations copyWithZone:a3];
+  v6 = [(NSSet *)self->_destinations copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
   *(v5 + 16) = self->_shouldRemove;
-  v8 = [(ASRelationshipStorage *)self->_relationshipStorage copyWithZone:a3];
+  v8 = [(ASRelationshipStorage *)self->_relationshipStorage copyWithZone:zone];
   v9 = *(v5 + 72);
   *(v5 + 72) = v8;
 
@@ -379,11 +379,11 @@ LABEL_6:
   if (os_log_type_enabled(ASLogDefault, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(ASContact *)self UUID];
+    uUID = [(ASContact *)self UUID];
     *buf = 138543618;
-    v18 = v5;
+    v18 = uUID;
     v19 = 2112;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23E4FA000, v4, OS_LOG_TYPE_DEFAULT, "Looking for primary destination for messaging for contact %{public}@ - %@", buf, 0x16u);
   }
 
@@ -417,8 +417,8 @@ LABEL_6:
     }
 
 LABEL_12:
-    v12 = [(ASContact *)self _bestDestinationFromKnownDestinations];
-    v10 = v12;
+    _bestDestinationFromKnownDestinations = [(ASContact *)self _bestDestinationFromKnownDestinations];
+    v10 = _bestDestinationFromKnownDestinations;
     goto LABEL_13;
   }
 
@@ -428,31 +428,31 @@ LABEL_12:
     _os_log_impl(&dword_23E4FA000, v11, OS_LOG_TYPE_DEFAULT, "Found a destination on linked contact, sanitizing", buf, 2u);
   }
 
-  v12 = v10;
+  _bestDestinationFromKnownDestinations = v10;
 LABEL_13:
-  v13 = ASContactSanitizedDestination(v12);
+  v13 = ASContactSanitizedDestination(_bestDestinationFromKnownDestinations);
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-- (ASContact)contactWithKeys:(id)a3
+- (ASContact)contactWithKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(ASContact *)self linkedContactStoreIdentifier];
+  keysCopy = keys;
+  linkedContactStoreIdentifier = [(ASContact *)self linkedContactStoreIdentifier];
 
-  if (v5)
+  if (linkedContactStoreIdentifier)
   {
-    v6 = [(ASContact *)self contactStore];
-    if (!v6)
+    contactStore = [(ASContact *)self contactStore];
+    if (!contactStore)
     {
-      v6 = objc_alloc_init(MEMORY[0x277CBDAB8]);
+      contactStore = objc_alloc_init(MEMORY[0x277CBDAB8]);
     }
 
-    v7 = [(ASContact *)self linkedContactStoreIdentifier];
+    linkedContactStoreIdentifier2 = [(ASContact *)self linkedContactStoreIdentifier];
     v13 = 0;
-    v8 = [v6 unifiedContactWithIdentifier:v7 keysToFetch:v4 error:&v13];
+    v8 = [contactStore unifiedContactWithIdentifier:linkedContactStoreIdentifier2 keysToFetch:keysCopy error:&v13];
     v9 = v13;
 
     if (!v8 || v9)
@@ -491,9 +491,9 @@ LABEL_13:
     _os_log_impl(&dword_23E4FA000, v3, OS_LOG_TYPE_DEFAULT, "Choosing the best destination from known relationship destinations", buf, 2u);
   }
 
-  v4 = [(ASRelationshipStorage *)self->_relationshipStorage primaryRelationship];
-  v5 = [v4 preferredReachableAddress];
-  if (v5)
+  primaryRelationship = [(ASRelationshipStorage *)self->_relationshipStorage primaryRelationship];
+  preferredReachableAddress = [primaryRelationship preferredReachableAddress];
+  if (preferredReachableAddress)
   {
     goto LABEL_7;
   }
@@ -506,11 +506,11 @@ LABEL_13:
     _os_log_impl(&dword_23E4FA000, v6, OS_LOG_TYPE_DEFAULT, "No preferred reachable address, falling back to CloudKit address", v11, 2u);
   }
 
-  v5 = [v4 cloudKitAddress];
-  if (v5)
+  preferredReachableAddress = [primaryRelationship cloudKitAddress];
+  if (preferredReachableAddress)
   {
 LABEL_7:
-    v7 = v5;
+    anyObject = preferredReachableAddress;
   }
 
   else
@@ -522,47 +522,47 @@ LABEL_7:
       [(ASContact *)v9 _bestDestinationFromKnownDestinations];
     }
 
-    v10 = [(ASContact *)self destinations];
-    v7 = [v10 anyObject];
+    destinations = [(ASContact *)self destinations];
+    anyObject = [destinations anyObject];
   }
 
-  return v7;
+  return anyObject;
 }
 
-- (id)_bestDestinationForContact:(id)a3
+- (id)_bestDestinationForContact:(id)contact
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contactCopy = contact;
   ASLoggingInitialize();
   v6 = ASLogDefault;
   if (os_log_type_enabled(ASLogDefault, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [(ASContact *)self displayName];
+    displayName = [(ASContact *)self displayName];
     *buf = 138412290;
-    v36 = v8;
+    v36 = displayName;
     _os_log_impl(&dword_23E4FA000, v7, OS_LOG_TYPE_DEFAULT, "Looking for best destination for CNContact: %@", buf, 0xCu);
   }
 
-  v9 = [v5 phoneNumbers];
-  v10 = [v9 hk_map:&__block_literal_global_4];
+  phoneNumbers = [contactCopy phoneNumbers];
+  v10 = [phoneNumbers hk_map:&__block_literal_global_4];
 
-  v11 = [(ASRelationshipStorage *)self->_relationshipStorage primaryRelationship];
-  v12 = [v11 preferredReachableAddress];
-  if (v12)
+  primaryRelationship = [(ASRelationshipStorage *)self->_relationshipStorage primaryRelationship];
+  preferredReachableAddress = [primaryRelationship preferredReachableAddress];
+  if (preferredReachableAddress)
   {
-    v13 = [v11 preferredReachableAddress];
-    v34 = v13;
-    v3 = [MEMORY[0x277CBEA60] arrayWithObjects:&v34 count:1];
-    v14 = _FindIntersectingDestination(v10, v3);
+    preferredReachableAddress2 = [primaryRelationship preferredReachableAddress];
+    v34 = preferredReachableAddress2;
+    preferredReachableAddress4 = [MEMORY[0x277CBEA60] arrayWithObjects:&v34 count:1];
+    firstObject = _FindIntersectingDestination(v10, preferredReachableAddress4);
   }
 
   else
   {
-    v14 = _FindIntersectingDestination(v10, MEMORY[0x277CBEBF8]);
+    firstObject = _FindIntersectingDestination(v10, MEMORY[0x277CBEBF8]);
   }
 
-  if (v14)
+  if (firstObject)
   {
     ASLoggingInitialize();
     v15 = ASLogDefault;
@@ -572,18 +572,18 @@ LABEL_7:
     }
 
     *buf = 138412290;
-    v36 = v14;
+    v36 = firstObject;
     v16 = "Found a phone number that matches preferredReachableAddress, selecting: %@";
 LABEL_15:
     _os_log_impl(&dword_23E4FA000, v15, OS_LOG_TYPE_DEFAULT, v16, buf, 0xCu);
     goto LABEL_16;
   }
 
-  v17 = [v11 addresses];
-  v18 = [v17 allObjects];
-  v14 = _FindIntersectingDestination(v10, v18);
+  addresses = [primaryRelationship addresses];
+  allObjects = [addresses allObjects];
+  firstObject = _FindIntersectingDestination(v10, allObjects);
 
-  if (v14)
+  if (firstObject)
   {
     ASLoggingInitialize();
     v15 = ASLogDefault;
@@ -593,14 +593,14 @@ LABEL_15:
     }
 
     *buf = 138412290;
-    v36 = v14;
+    v36 = firstObject;
     v16 = "Found a phone number that matches the address set, selecting: %@";
     goto LABEL_15;
   }
 
   if ([v10 count])
   {
-    v14 = [v10 firstObject];
+    firstObject = [v10 firstObject];
     ASLoggingInitialize();
     v15 = ASLogDefault;
     if (!os_log_type_enabled(ASLogDefault, OS_LOG_TYPE_DEFAULT))
@@ -609,7 +609,7 @@ LABEL_15:
     }
 
     *buf = 138412290;
-    v36 = v14;
+    v36 = firstObject;
     v16 = "Has a non-matching phone number, selecting: %@";
     goto LABEL_15;
   }
@@ -622,31 +622,31 @@ LABEL_15:
     _os_log_impl(&dword_23E4FA000, v21, OS_LOG_TYPE_DEFAULT, "Contact has no phone numbers, looking for email addresses", buf, 2u);
   }
 
-  v22 = [v5 emailAddresses];
-  v23 = [v22 hk_map:&__block_literal_global_337];
+  emailAddresses = [contactCopy emailAddresses];
+  v23 = [emailAddresses hk_map:&__block_literal_global_337];
 
-  v24 = [v11 preferredReachableAddress];
-  if (v24)
+  preferredReachableAddress3 = [primaryRelationship preferredReachableAddress];
+  if (preferredReachableAddress3)
   {
-    v3 = [v11 preferredReachableAddress];
-    v33 = v3;
+    preferredReachableAddress4 = [primaryRelationship preferredReachableAddress];
+    v33 = preferredReachableAddress4;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v33 count:1];
-    v14 = _FindIntersectingDestination(v23, v25);
+    firstObject = _FindIntersectingDestination(v23, v25);
   }
 
   else
   {
-    v14 = _FindIntersectingDestination(v23, MEMORY[0x277CBEBF8]);
+    firstObject = _FindIntersectingDestination(v23, MEMORY[0x277CBEBF8]);
   }
 
-  if (v14)
+  if (firstObject)
   {
     ASLoggingInitialize();
     v26 = ASLogDefault;
     if (os_log_type_enabled(ASLogDefault, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v36 = v14;
+      v36 = firstObject;
       v27 = "Found email that matches preferredReachableAddress, selecting: %@";
 LABEL_41:
       _os_log_impl(&dword_23E4FA000, v26, OS_LOG_TYPE_DEFAULT, v27, buf, 0xCu);
@@ -655,11 +655,11 @@ LABEL_41:
 
   else
   {
-    v28 = [v11 cloudKitAddress];
-    if (v28)
+    cloudKitAddress = [primaryRelationship cloudKitAddress];
+    if (cloudKitAddress)
     {
-      v3 = [v11 cloudKitAddress];
-      v32 = v3;
+      preferredReachableAddress4 = [primaryRelationship cloudKitAddress];
+      v32 = preferredReachableAddress4;
       v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v32 count:1];
     }
 
@@ -668,19 +668,19 @@ LABEL_41:
       v29 = MEMORY[0x277CBEBF8];
     }
 
-    v14 = _FindIntersectingDestination(v23, v29);
-    if (v28)
+    firstObject = _FindIntersectingDestination(v23, v29);
+    if (cloudKitAddress)
     {
     }
 
-    if (v14)
+    if (firstObject)
     {
       ASLoggingInitialize();
       v26 = ASLogDefault;
       if (os_log_type_enabled(ASLogDefault, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v36 = v14;
+        v36 = firstObject;
         v27 = "Found email that matches the CloudKitAddress, selecting: %@";
         goto LABEL_41;
       }
@@ -688,18 +688,18 @@ LABEL_41:
 
     else
     {
-      v30 = [v11 addresses];
-      v31 = [v30 allObjects];
-      v14 = _FindIntersectingDestination(v23, v31);
+      addresses2 = [primaryRelationship addresses];
+      allObjects2 = [addresses2 allObjects];
+      firstObject = _FindIntersectingDestination(v23, allObjects2);
 
-      if (v14)
+      if (firstObject)
       {
         ASLoggingInitialize();
         v26 = ASLogDefault;
         if (os_log_type_enabled(ASLogDefault, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v36 = v14;
+          v36 = firstObject;
           v27 = "Found email that matches the address set, selecting: %@";
           goto LABEL_41;
         }
@@ -709,17 +709,17 @@ LABEL_41:
       {
         if (![v23 count])
         {
-          v14 = 0;
+          firstObject = 0;
           goto LABEL_42;
         }
 
-        v14 = [v23 firstObject];
+        firstObject = [v23 firstObject];
         ASLoggingInitialize();
         v26 = ASLogDefault;
         if (os_log_type_enabled(ASLogDefault, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v36 = v14;
+          v36 = firstObject;
           v27 = "Has a non-matching email, selecting: %@";
           goto LABEL_41;
         }
@@ -732,7 +732,7 @@ LABEL_42:
 LABEL_16:
   v19 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return firstObject;
 }
 
 id __40__ASContact__bestDestinationForContact___block_invoke(uint64_t a1, void *a2)
@@ -745,16 +745,16 @@ id __40__ASContact__bestDestinationForContact___block_invoke(uint64_t a1, void *
 
 - (unint64_t)cloudType
 {
-  v2 = [(ASRelationshipStorage *)self->_relationshipStorage primaryRelationship];
-  v3 = [v2 cloudType];
+  primaryRelationship = [(ASRelationshipStorage *)self->_relationshipStorage primaryRelationship];
+  cloudType = [primaryRelationship cloudType];
 
-  return v3;
+  return cloudType;
 }
 
 - (void)UUID
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v4 = 138412290;
   v5 = v2;
   _os_log_error_impl(&dword_23E4FA000, a2, OS_LOG_TYPE_ERROR, "Relationship storage has mismatched UUIDs: %@", &v4, 0xCu);
@@ -764,8 +764,8 @@ id __40__ASContact__bestDestinationForContact___block_invoke(uint64_t a1, void *
 - (void)primaryDestinationForMessaging
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 linkedContactStoreIdentifier];
+  selfCopy = self;
+  linkedContactStoreIdentifier = [a2 linkedContactStoreIdentifier];
   OUTLINED_FUNCTION_4(&dword_23E4FA000, v5, v6, "Found a CNContactStore entry with no known destinations for ID: %@", v7, v8, v9, v10, 2u);
 
   v11 = *MEMORY[0x277D85DE8];

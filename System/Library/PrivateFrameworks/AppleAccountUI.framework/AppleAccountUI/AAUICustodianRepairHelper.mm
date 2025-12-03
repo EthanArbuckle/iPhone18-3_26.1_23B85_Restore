@@ -1,29 +1,29 @@
 @interface AAUICustodianRepairHelper
 - (AAUICustodianDataDelegate)dataDelegate;
 - (AAUIRepairDelegate)repairDelegate;
-- (void)setDataDelegate:(id)a3;
-- (void)setLocalContacts:(id)a3;
+- (void)setDataDelegate:(id)delegate;
+- (void)setLocalContacts:(id)contacts;
 @end
 
 @implementation AAUICustodianRepairHelper
 
-- (void)setLocalContacts:(id)a3
+- (void)setLocalContacts:(id)contacts
 {
-  v5 = a3;
-  objc_storeStrong(&self->_localContacts, a3);
+  contactsCopy = contacts;
+  objc_storeStrong(&self->_localContacts, contacts);
   v6 = _AAUILogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(AAUICustodianRepairHelper *)v5 setLocalContacts:v6];
+    [(AAUICustodianRepairHelper *)contactsCopy setLocalContacts:v6];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_dataDelegate);
   [WeakRetained didFinishFetchingCustodians];
 }
 
-- (void)setDataDelegate:(id)a3
+- (void)setDataDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_dataDelegate, a3);
+  objc_storeWeak(&self->_dataDelegate, delegate);
   if ([(NSArray *)self->_localContacts count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataDelegate);

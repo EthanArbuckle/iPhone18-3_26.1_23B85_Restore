@@ -1,20 +1,20 @@
 @interface KNRecordingMovieTrack
-- (KNRecordingMovieTrack)initWithContext:(id)a3 movieSegments:(id)a4;
-- (id)movieSegmentToTrimWhenReplacingAfterTime:(double)a3 trimDuration:(double *)a4;
-- (id)movieTrackByReplacingAfterTime:(double)a3 withMovieTrack:(id)a4 trimmedMovieSegment:(id)a5;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
+- (KNRecordingMovieTrack)initWithContext:(id)context movieSegments:(id)segments;
+- (id)movieSegmentToTrimWhenReplacingAfterTime:(double)time trimDuration:(double *)duration;
+- (id)movieTrackByReplacingAfterTime:(double)time withMovieTrack:(id)track trimmedMovieSegment:(id)segment;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation KNRecordingMovieTrack
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v9 = objc_msgSend_context(self, v7, v8);
-  v10 = *(a3 + 8);
+  v10 = *(archive + 8);
   v11 = objc_alloc(MEMORY[0x277CBEB18]);
   v13 = objc_msgSend_initWithCapacity_(v11, v12, v10);
   if (v10 >= 1)
@@ -22,9 +22,9 @@
     v14 = 8;
     do
     {
-      v15 = *(*(a3 + 5) + v14);
+      v15 = *(*(archive + 5) + v14);
       v16 = [KNMovieSegment alloc];
-      v18 = objc_msgSend_initWithContext_message_unarchiver_(v16, v17, v9, v15, v6);
+      v18 = objc_msgSend_initWithContext_message_unarchiver_(v16, v17, v9, v15, unarchiverCopy);
       objc_msgSend_addObject_(v13, v19, v18);
 
       v14 += 8;
@@ -34,7 +34,7 @@
     while (v10);
   }
 
-  v20 = (*(a3 + 4) & 1) == 0 || (*(a3 + 48) & 1) == 0;
+  v20 = (*(archive + 4) & 1) == 0 || (*(archive + 48) & 1) == 0;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = sub_275DE1D48;
@@ -44,14 +44,14 @@
   v28 = v20;
   v22 = v9;
   v26 = v22;
-  v27 = self;
-  objc_msgSend_addFinalizeHandler_(v6, v23, v24);
+  selfCopy = self;
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v23, v24);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  archiverCopy = archiver;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -72,36 +72,36 @@
         }
 
         v15 = *(*(&v24 + 1) + 8 * v14);
-        v16 = *(a3 + 5);
+        v16 = *(archive + 5);
         if (!v16)
         {
           goto LABEL_11;
         }
 
-        v17 = *(a3 + 8);
+        v17 = *(archive + 8);
         v18 = *v16;
         if (v17 < *v16)
         {
-          *(a3 + 8) = v17 + 1;
-          objc_msgSend_saveToMessage_archiver_(v15, v11, *&v16[2 * v17 + 2], v6);
+          *(archive + 8) = v17 + 1;
+          objc_msgSend_saveToMessage_archiver_(v15, v11, *&v16[2 * v17 + 2], archiverCopy);
           goto LABEL_13;
         }
 
-        if (v18 == *(a3 + 9))
+        if (v18 == *(archive + 9))
         {
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 24));
-          v16 = *(a3 + 5);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 24));
+          v16 = *(archive + 5);
           v18 = *v16;
         }
 
         *v16 = v18 + 1;
-        v19 = sub_275E21188(*(a3 + 3));
-        v20 = *(a3 + 8);
-        v21 = *(a3 + 5) + 8 * v20;
-        *(a3 + 8) = v20 + 1;
+        v19 = sub_275E21188(*(archive + 3));
+        v20 = *(archive + 8);
+        v21 = *(archive + 5) + 8 * v20;
+        *(archive + 8) = v20 + 1;
         *(v21 + 8) = v19;
-        objc_msgSend_saveToMessage_archiver_(v15, v22, v19, v6);
+        objc_msgSend_saveToMessage_archiver_(v15, v22, v19, archiverCopy);
 LABEL_13:
         ++v14;
       }
@@ -114,51 +114,51 @@ LABEL_13:
   }
 
   isMovieSegmentDataTrimmedToDuration = self->_isMovieSegmentDataTrimmedToDuration;
-  *(a3 + 4) |= 1u;
-  *(a3 + 48) = isMovieSegmentDataTrimmedToDuration;
+  *(archive + 4) |= 1u;
+  *(archive + 48) = isMovieSegmentDataTrimmedToDuration;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812EA908[88]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812EA908[88]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_275DE23E0, off_2812EA908[88]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_275DE23E0, off_2812EA908[88]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
-- (KNRecordingMovieTrack)initWithContext:(id)a3 movieSegments:(id)a4
+- (KNRecordingMovieTrack)initWithContext:(id)context movieSegments:(id)segments
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  segmentsCopy = segments;
   v15.receiver = self;
   v15.super_class = KNRecordingMovieTrack;
-  v10 = [(KNRecordingMovieTrack *)&v15 initWithContext:v6];
+  v10 = [(KNRecordingMovieTrack *)&v15 initWithContext:contextCopy];
   if (v10)
   {
-    v11 = objc_msgSend_copy(v7, v8, v9);
+    v11 = objc_msgSend_copy(segmentsCopy, v8, v9);
     movieSegments = v10->_movieSegments;
     v10->_movieSegments = v11;
 
-    v10->_isMovieSegmentDataTrimmedToDuration = objc_msgSend_canTrimMovieSegmentsInContext_(KNRecordingMovieSegmentTrimmer, v13, v6);
+    v10->_isMovieSegmentDataTrimmedToDuration = objc_msgSend_canTrimMovieSegmentsInContext_(KNRecordingMovieSegmentTrimmer, v13, contextCopy);
   }
 
   return v10;
 }
 
-- (id)movieSegmentToTrimWhenReplacingAfterTime:(double)a3 trimDuration:(double *)a4
+- (id)movieSegmentToTrimWhenReplacingAfterTime:(double)time trimDuration:(double *)duration
 {
   v28 = *MEMORY[0x277D85DE8];
-  objc_msgSend_movieSegments(self, a2, a4);
+  objc_msgSend_movieSegments(self, a2, duration);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -182,7 +182,7 @@ LABEL_13:
 
         v16 = *(*(&v23 + 1) + 8 * v14);
         objc_msgSend_startTime(v16, v9, v10, v23);
-        if (v17 >= a3)
+        if (v17 >= time)
         {
           v12 = v15;
           goto LABEL_12;
@@ -213,28 +213,28 @@ LABEL_13:
 LABEL_12:
 
   objc_msgSend_startTime(v12, v18, v19);
-  v21 = a3 - v20;
+  v21 = time - v20;
   if (v21 == 0.0)
   {
 
     v12 = 0;
   }
 
-  *a4 = v21;
+  *duration = v21;
 
   return v12;
 }
 
-- (id)movieTrackByReplacingAfterTime:(double)a3 withMovieTrack:(id)a4 trimmedMovieSegment:(id)a5
+- (id)movieTrackByReplacingAfterTime:(double)time withMovieTrack:(id)track trimmedMovieSegment:(id)segment
 {
   v81 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v12 = v9;
-  if (v9)
+  trackCopy = track;
+  segmentCopy = segment;
+  v12 = segmentCopy;
+  if (segmentCopy)
   {
-    objc_msgSend_startTime(v9, v10, v11);
-    if (v13 > a3)
+    objc_msgSend_startTime(segmentCopy, v10, v11);
+    if (v13 > time)
     {
       v14 = MEMORY[0x277D81150];
       v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[KNRecordingMovieTrack movieTrackByReplacingAfterTime:withMovieTrack:trimmedMovieSegment:]");
@@ -246,16 +246,16 @@ LABEL_12:
   }
 
   v21 = objc_msgSend_movieSegments(self, v10, v11);
-  v24 = objc_msgSend_movieSegments(v8, v22, v23);
+  v24 = objc_msgSend_movieSegments(trackCopy, v22, v23);
   v25 = objc_alloc(MEMORY[0x277CBEB18]);
   v28 = objc_msgSend_count(v21, v26, v27);
   v31 = objc_msgSend_count(v24, v29, v30);
   v35 = objc_msgSend_initWithCapacity_(v25, v32, v31 + v28);
-  v36 = a3;
+  timeCopy = time;
   if (v12)
   {
     objc_msgSend_startTime(v12, v33, v34);
-    v36 = v37;
+    timeCopy = v37;
   }
 
   v77 = 0u;
@@ -279,7 +279,7 @@ LABEL_8:
 
       v46 = *(*(&v75 + 1) + 8 * v45);
       objc_msgSend_startTime(v46, v41, v42);
-      if (v48 >= v36)
+      if (v48 >= timeCopy)
       {
         break;
       }
@@ -322,7 +322,7 @@ LABEL_8:
           objc_enumerationMutation(v50);
         }
 
-        v58 = objc_msgSend_movieSegmentByAddingTimeOffset_(*(*(&v71 + 1) + 8 * i), v53, v54, a3, v71);
+        v58 = objc_msgSend_movieSegmentByAddingTimeOffset_(*(*(&v71 + 1) + 8 * i), v53, v54, time, v71);
         objc_msgSend_addObject_(v35, v59, v58);
       }
 
@@ -336,7 +336,7 @@ LABEL_8:
   v63 = objc_msgSend_context(self, v61, v62);
   v65 = objc_msgSend_initWithContext_movieSegments_(v60, v64, v63, v35);
 
-  if (self->_isMovieSegmentDataTrimmedToDuration && (v8[72] & 1) != 0)
+  if (self->_isMovieSegmentDataTrimmedToDuration && (trackCopy[72] & 1) != 0)
   {
     v68 = objc_msgSend_context(v65, v66, v67);
     v65[72] = objc_msgSend_canTrimMovieSegmentsInContext_(KNRecordingMovieSegmentTrimmer, v69, v68);

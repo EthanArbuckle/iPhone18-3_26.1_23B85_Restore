@@ -8,81 +8,81 @@
 - (BOOL)isRegistrationSupported;
 - (BOOL)isSettingsControllerReloadNecessary;
 - (BOOL)secureElementIsProductionSigned;
-- (BOOL)supportsAddingPaymentPass:(id)a3;
-- (BOOL)supportsInAppPaymentsForPass:(id)a3;
-- (BOOL)supportsTransactionsForPass:(id)a3;
-- (NPKStockholmProvisioningController)initWithPaymentSetupDelegate:(id)a3;
+- (BOOL)supportsAddingPaymentPass:(id)pass;
+- (BOOL)supportsInAppPaymentsForPass:(id)pass;
+- (BOOL)supportsTransactionsForPass:(id)pass;
+- (NPKStockholmProvisioningController)initWithPaymentSetupDelegate:(id)delegate;
 - (NSString)defaultPaymentPassIdentifier;
 - (NSString)deviceClass;
 - (NSString)deviceName;
 - (PKOSVersionRequirement)deviceVersion;
 - (PKPaymentDataProviderDelegate)delegate;
 - (PKPaymentWebService)paymentWebService;
-- (id)_changeExpressStateInstructionViewControllerForEnablingExpressMode:(BOOL)a3 paymentCardType:(int64_t)a4 passLocalizedDescription:(id)a5 cancellationHandler:(id)a6;
-- (id)_currentExpressPassConfigurationForUniqueID:(id)a3;
+- (id)_changeExpressStateInstructionViewControllerForEnablingExpressMode:(BOOL)mode paymentCardType:(int64_t)type passLocalizedDescription:(id)description cancellationHandler:(id)handler;
+- (id)_currentExpressPassConfigurationForUniqueID:(id)d;
 - (id)_errorAcknowledgeButtonTitle;
-- (id)_errorSetExpressModeMessageWithPass:(id)a3;
+- (id)_errorSetExpressModeMessageWithPass:(id)pass;
 - (id)_errorSetExpressModeTitle;
-- (id)_unlockRequiredMessageWithPaymentPass:(id)a3;
+- (id)_unlockRequiredMessageWithPaymentPass:(id)pass;
 - (id)_unlockRequiredTitle;
-- (id)defaultPaymentApplicationForPassUniqueIdentifier:(id)a3;
+- (id)defaultPaymentApplicationForPassUniqueIdentifier:(id)identifier;
 - (id)expressPassConfigurations;
 - (id)setupBrowsableProductTypesForDevice;
 - (id)setupFeaturedNetworksForDevice;
 - (id)webService;
 - (int64_t)apiVersion;
-- (void)_accessDelegatesWithHandler:(id)a3;
-- (void)_dismissInstructionViewController:(id)a3;
-- (void)_handleExpressPassesConfigurationChangedNotification:(id)a3;
-- (void)_handleSetExpressPassResult:(unint64_t)a3 forInstructionViewController:(id)a4;
-- (void)_presentErrorWithTitle:(id)a3 message:(id)a4 acknowledgeButtonTitle:(id)a5 visibleViewController:(id)a6 dismissBlock:(id)a7;
-- (void)_presentInstructionViewController:(id)a3 inVisibleViewController:(id)a4;
-- (void)balanceReminderThresholdForBalance:(id)a3 pass:(id)a4 withCompletion:(id)a5;
-- (void)balancesForPaymentPassWithUniqueIdentifier:(id)a3 completion:(id)a4;
-- (void)cancelAutoTopUpForPassWithUniqueIdentifier:(id)a3 balanceIdentifiers:(id)a4 completion:(id)a5;
-- (void)commutePlanReminderForCommutePlan:(id)a3 pass:(id)a4 withCompletion:(id)a5;
-- (void)conflictingExpressPassIdentifiersForPassConfiguration:(id)a3 withCompletion:(id)a4;
-- (void)deletePaymentTransactionWithIdentifier:(id)a3;
-- (void)familyMembersWithCompletion:(id)a3;
-- (void)featureApplicationsForAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)passUpgradeWithRequest:(id)a3 pass:(id)a4 visibleViewController:(id)a5 completion:(id)a6;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didEnableMessageService:(BOOL)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didEnableTransactionService:(BOOL)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateBalanceReminder:(id)a4 forBalance:(id)a5;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithBalances:(id)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithCredentials:(id)a4 forPaymentApplicationIdentifier:(id)a5;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithTransitPassProperties:(id)a4;
-- (void)photosForFamilyMembersWithDSIDs:(id)a3 completion:(id)a4;
-- (void)plansForPaymentPassWithUniqueIdentifier:(id)a3 completion:(id)a4;
-- (void)preflightForLocalPassWithCompletion:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
-- (void)removeExpressPassesWithUniqueIdentifiers:(id)a3 visibleViewController:(id)a4 completion:(id)a5;
-- (void)setBalanceReminder:(id)a3 forBalance:(id)a4 pass:(id)a5 completion:(id)a6;
-- (void)setCommutePlanReminder:(id)a3 forCommutePlan:(id)a4 pass:(id)a5 completion:(id)a6;
-- (void)setDefaultPaymentApplication:(id)a3 forPassUniqueIdentifier:(id)a4 completion:(id)a5;
-- (void)setDefaultPaymentPassIdentifier:(id)a3;
-- (void)setExpressWithPassConfiguration:(id)a3 visibleViewController:(id)a4 requiresAuth:(BOOL)a5 completion:(id)a6;
-- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)a3;
-- (void)startServiceModeForPassWithUniqueIdentifier:(id)a3 visibleViewController:(id)a4;
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4;
-- (void)transactionSourceIdentifier:(id)a3 didRemoveTransactionWithIdentifier:(id)a4;
-- (void)transactionsForTransactionSourceIdentifiers:(id)a3 withTransactionSource:(unint64_t)a4 withBackingData:(unint64_t)a5 startDate:(id)a6 endDate:(id)a7 orderedByDate:(int64_t)a8 limit:(int64_t)a9 completion:(id)a10;
-- (void)transitStateWithPassUniqueIdentifier:(id)a3 paymentApplication:(id)a4 completion:(id)a5;
+- (void)_accessDelegatesWithHandler:(id)handler;
+- (void)_dismissInstructionViewController:(id)controller;
+- (void)_handleExpressPassesConfigurationChangedNotification:(id)notification;
+- (void)_handleSetExpressPassResult:(unint64_t)result forInstructionViewController:(id)controller;
+- (void)_presentErrorWithTitle:(id)title message:(id)message acknowledgeButtonTitle:(id)buttonTitle visibleViewController:(id)controller dismissBlock:(id)block;
+- (void)_presentInstructionViewController:(id)controller inVisibleViewController:(id)viewController;
+- (void)balanceReminderThresholdForBalance:(id)balance pass:(id)pass withCompletion:(id)completion;
+- (void)balancesForPaymentPassWithUniqueIdentifier:(id)identifier completion:(id)completion;
+- (void)cancelAutoTopUpForPassWithUniqueIdentifier:(id)identifier balanceIdentifiers:(id)identifiers completion:(id)completion;
+- (void)commutePlanReminderForCommutePlan:(id)plan pass:(id)pass withCompletion:(id)completion;
+- (void)conflictingExpressPassIdentifiersForPassConfiguration:(id)configuration withCompletion:(id)completion;
+- (void)deletePaymentTransactionWithIdentifier:(id)identifier;
+- (void)familyMembersWithCompletion:(id)completion;
+- (void)featureApplicationsForAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)passUpgradeWithRequest:(id)request pass:(id)pass visibleViewController:(id)controller completion:(id)completion;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didEnableMessageService:(BOOL)service;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didEnableTransactionService:(BOOL)service;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateBalanceReminder:(id)reminder forBalance:(id)balance;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithBalances:(id)balances;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithCredentials:(id)credentials forPaymentApplicationIdentifier:(id)applicationIdentifier;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithTransitPassProperties:(id)properties;
+- (void)photosForFamilyMembersWithDSIDs:(id)ds completion:(id)completion;
+- (void)plansForPaymentPassWithUniqueIdentifier:(id)identifier completion:(id)completion;
+- (void)preflightForLocalPassWithCompletion:(id)completion;
+- (void)preflightWithCompletion:(id)completion;
+- (void)removeExpressPassesWithUniqueIdentifiers:(id)identifiers visibleViewController:(id)controller completion:(id)completion;
+- (void)setBalanceReminder:(id)reminder forBalance:(id)balance pass:(id)pass completion:(id)completion;
+- (void)setCommutePlanReminder:(id)reminder forCommutePlan:(id)plan pass:(id)pass completion:(id)completion;
+- (void)setDefaultPaymentApplication:(id)application forPassUniqueIdentifier:(id)identifier completion:(id)completion;
+- (void)setDefaultPaymentPassIdentifier:(id)identifier;
+- (void)setExpressWithPassConfiguration:(id)configuration visibleViewController:(id)controller requiresAuth:(BOOL)auth completion:(id)completion;
+- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)identifier;
+- (void)startServiceModeForPassWithUniqueIdentifier:(id)identifier visibleViewController:(id)controller;
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction;
+- (void)transactionSourceIdentifier:(id)identifier didRemoveTransactionWithIdentifier:(id)withIdentifier;
+- (void)transactionsForTransactionSourceIdentifiers:(id)identifiers withTransactionSource:(unint64_t)source withBackingData:(unint64_t)data startDate:(id)date endDate:(id)endDate orderedByDate:(int64_t)byDate limit:(int64_t)limit completion:(id)self0;
+- (void)transitStateWithPassUniqueIdentifier:(id)identifier paymentApplication:(id)application completion:(id)completion;
 - (void)updateRegionSupportIfNecessary;
 @end
 
 @implementation NPKStockholmProvisioningController
 
-- (NPKStockholmProvisioningController)initWithPaymentSetupDelegate:(id)a3
+- (NPKStockholmProvisioningController)initWithPaymentSetupDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = NPKStockholmProvisioningController;
   v6 = [(NPKStockholmProvisioningController *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_paymentSetupDelegate, a3);
+    objc_storeStrong(&v6->_paymentSetupDelegate, delegate);
     v8 = +[NSHashTable pk_weakObjectsHashTableUsingPointerPersonality];
     dataProviderDelegates = v7->_dataProviderDelegates;
     v7->_dataProviderDelegates = v8;
@@ -108,69 +108,69 @@
   return v7;
 }
 
-- (void)_handleExpressPassesConfigurationChangedNotification:(id)a3
+- (void)_handleExpressPassesConfigurationChangedNotification:(id)notification
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_8390;
   v4[3] = &unk_2C750;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  notificationCopy = notification;
+  v3 = notificationCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (id)defaultPaymentApplicationForPassUniqueIdentifier:(id)a3
+- (id)defaultPaymentApplicationForPassUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  v6 = [v5 defaultPaymentApplicationForPassWithUniqueID:v4];
+  identifierCopy = identifier;
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  v6 = [paymentSetupDelegate defaultPaymentApplicationForPassWithUniqueID:identifierCopy];
 
   return v6;
 }
 
-- (void)setDefaultPaymentApplication:(id)a3 forPassUniqueIdentifier:(id)a4 completion:(id)a5
+- (void)setDefaultPaymentApplication:(id)application forPassUniqueIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_85DC;
   v13[3] = &unk_2C9F8;
-  v14 = v8;
-  v12 = v8;
-  [v11 setDefaultPaymentApplication:v10 forPassWithUniqueID:v9 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [paymentSetupDelegate setDefaultPaymentApplication:applicationCopy forPassWithUniqueID:identifierCopy completion:v13];
 }
 
-- (void)setDefaultPaymentPassIdentifier:(id)a3
+- (void)setDefaultPaymentPassIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  [v5 setDefaultPaymentPassIdentifier:v4];
+  identifierCopy = identifier;
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  [paymentSetupDelegate setDefaultPaymentPassIdentifier:identifierCopy];
 }
 
 - (NSString)defaultPaymentPassIdentifier
 {
-  v2 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  v3 = [v2 defaultPaymentPassIdentifier];
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  defaultPaymentPassIdentifier = [paymentSetupDelegate defaultPaymentPassIdentifier];
 
-  return v3;
+  return defaultPaymentPassIdentifier;
 }
 
-- (id)_currentExpressPassConfigurationForUniqueID:(id)a3
+- (id)_currentExpressPassConfigurationForUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = [(NPKStockholmProvisioningController *)self expressPassConfigurations];
-  v6 = v5;
-  if (v5)
+  dCopy = d;
+  expressPassConfigurations = [(NPKStockholmProvisioningController *)self expressPassConfigurations];
+  v6 = expressPassConfigurations;
+  if (expressPassConfigurations)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = v5;
+    v7 = expressPassConfigurations;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
@@ -185,8 +185,8 @@
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
-          v12 = [v11 passUniqueIdentifier];
-          v13 = [v12 isEqualToString:v4];
+          passUniqueIdentifier = [v11 passUniqueIdentifier];
+          v13 = [passUniqueIdentifier isEqualToString:dCopy];
 
           if (v13)
           {
@@ -218,11 +218,11 @@ LABEL_12:
 
 - (id)expressPassConfigurations
 {
-  v3 = [(NPKStockholmProvisioningController *)self pendingExpressPassesConfigurations];
+  pendingExpressPassesConfigurations = [(NPKStockholmProvisioningController *)self pendingExpressPassesConfigurations];
 
-  if (v3)
+  if (pendingExpressPassesConfigurations)
   {
-    v4 = [(NPKStockholmProvisioningController *)self pendingExpressPassesConfigurations];
+    pendingExpressPassesConfigurations2 = [(NPKStockholmProvisioningController *)self pendingExpressPassesConfigurations];
     v5 = pk_Payment_log();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -232,7 +232,7 @@ LABEL_12:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 138412290;
-        v10 = v4;
+        v10 = pendingExpressPassesConfigurations2;
         _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Notice: Have pending expressPassesConfigurations, returning: %@", &v9, 0xCu);
       }
     }
@@ -240,15 +240,15 @@ LABEL_12:
 
   else
   {
-    v4 = NPKPairedDeviceCurrentExpressPassConfiguration();
+    pendingExpressPassesConfigurations2 = NPKPairedDeviceCurrentExpressPassConfiguration();
   }
 
-  return v4;
+  return pendingExpressPassesConfigurations2;
 }
 
-- (void)deletePaymentTransactionWithIdentifier:(id)a3
+- (void)deletePaymentTransactionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -258,77 +258,77 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = identifierCopy;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Notice: Requested to delete transaction with identifier:%@", buf, 0xCu);
     }
   }
 
-  v8 = [(NPKStockholmProvisioningController *)self connection];
+  connection = [(NPKStockholmProvisioningController *)self connection];
   v9 = NPKPairedOrPairingDevice();
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_8B40;
   v11[3] = &unk_2CA20;
-  v12 = v4;
-  v10 = v4;
-  [v8 deletePaymentTransactionWithIdentifier:v10 fromDevice:v9 completion:v11];
+  v12 = identifierCopy;
+  v10 = identifierCopy;
+  [connection deletePaymentTransactionWithIdentifier:v10 fromDevice:v9 completion:v11];
 }
 
-- (void)transitStateWithPassUniqueIdentifier:(id)a3 paymentApplication:(id)a4 completion:(id)a5
+- (void)transitStateWithPassUniqueIdentifier:(id)identifier paymentApplication:(id)application completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(NPKStockholmProvisioningController *)self connection];
-  [v11 transitStateWithPassUniqueIdentifier:v10 paymentApplication:v9 completion:v8];
+  completionCopy = completion;
+  applicationCopy = application;
+  identifierCopy = identifier;
+  connection = [(NPKStockholmProvisioningController *)self connection];
+  [connection transitStateWithPassUniqueIdentifier:identifierCopy paymentApplication:applicationCopy completion:completionCopy];
 }
 
-- (void)transactionsForTransactionSourceIdentifiers:(id)a3 withTransactionSource:(unint64_t)a4 withBackingData:(unint64_t)a5 startDate:(id)a6 endDate:(id)a7 orderedByDate:(int64_t)a8 limit:(int64_t)a9 completion:(id)a10
+- (void)transactionsForTransactionSourceIdentifiers:(id)identifiers withTransactionSource:(unint64_t)source withBackingData:(unint64_t)data startDate:(id)date endDate:(id)endDate orderedByDate:(int64_t)byDate limit:(int64_t)limit completion:(id)self0
 {
-  v17 = a10;
-  v18 = a7;
-  v19 = a6;
-  v20 = a3;
-  v21 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  [v21 transactionsForTransactionSourceIdentifiers:v20 withTransactionSource:a4 withBackingData:a5 startDate:v19 endDate:v18 orderedByDate:a8 limit:a9 completion:v17];
+  completionCopy = completion;
+  endDateCopy = endDate;
+  dateCopy = date;
+  identifiersCopy = identifiers;
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  [paymentSetupDelegate transactionsForTransactionSourceIdentifiers:identifiersCopy withTransactionSource:source withBackingData:data startDate:dateCopy endDate:endDateCopy orderedByDate:byDate limit:limit completion:completionCopy];
 }
 
-- (void)balancesForPaymentPassWithUniqueIdentifier:(id)a3 completion:(id)a4
+- (void)balancesForPaymentPassWithUniqueIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NPKStockholmProvisioningController *)self connection];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  connection = [(NPKStockholmProvisioningController *)self connection];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_8EBC;
   v10[3] = &unk_2CA48;
-  v11 = v6;
-  v9 = v6;
-  [v8 balancesForPaymentPassWithUniqueIdentifier:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [connection balancesForPaymentPassWithUniqueIdentifier:identifierCopy completion:v10];
 }
 
-- (void)balanceReminderThresholdForBalance:(id)a3 pass:(id)a4 withCompletion:(id)a5
+- (void)balanceReminderThresholdForBalance:(id)balance pass:(id)pass withCompletion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(NPKStockholmProvisioningController *)self connection];
-  [v11 balanceReminderForBalance:v10 pass:v9 withCompletion:v8];
+  completionCopy = completion;
+  passCopy = pass;
+  balanceCopy = balance;
+  connection = [(NPKStockholmProvisioningController *)self connection];
+  [connection balanceReminderForBalance:balanceCopy pass:passCopy withCompletion:completionCopy];
 }
 
-- (void)setBalanceReminder:(id)a3 forBalance:(id)a4 pass:(id)a5 completion:(id)a6
+- (void)setBalanceReminder:(id)reminder forBalance:(id)balance pass:(id)pass completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(NPKStockholmProvisioningController *)self connection];
-  [v14 setBalanceReminder:v13 forBalance:v12 pass:v11 completion:v10];
+  completionCopy = completion;
+  passCopy = pass;
+  balanceCopy = balance;
+  reminderCopy = reminder;
+  connection = [(NPKStockholmProvisioningController *)self connection];
+  [connection setBalanceReminder:reminderCopy forBalance:balanceCopy pass:passCopy completion:completionCopy];
 }
 
-- (void)plansForPaymentPassWithUniqueIdentifier:(id)a3 completion:(id)a4
+- (void)plansForPaymentPassWithUniqueIdentifier:(id)identifier completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -343,71 +343,71 @@ LABEL_12:
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v8 = objc_alloc_init(NSArray);
-    v4[2](v4, v8);
+    completionCopy[2](completionCopy, v8);
   }
 }
 
-- (void)commutePlanReminderForCommutePlan:(id)a3 pass:(id)a4 withCompletion:(id)a5
+- (void)commutePlanReminderForCommutePlan:(id)plan pass:(id)pass withCompletion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(NPKStockholmProvisioningController *)self connection];
+  completionCopy = completion;
+  passCopy = pass;
+  planCopy = plan;
+  connection = [(NPKStockholmProvisioningController *)self connection];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_91F4;
   v13[3] = &unk_2CA70;
-  v14 = v8;
-  v12 = v8;
-  [v11 commutePlanReminderForCommutePlan:v10 pass:v9 withCompletion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [connection commutePlanReminderForCommutePlan:planCopy pass:passCopy withCompletion:v13];
 }
 
-- (void)setCommutePlanReminder:(id)a3 forCommutePlan:(id)a4 pass:(id)a5 completion:(id)a6
+- (void)setCommutePlanReminder:(id)reminder forCommutePlan:(id)plan pass:(id)pass completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(NPKStockholmProvisioningController *)self connection];
+  completionCopy = completion;
+  passCopy = pass;
+  planCopy = plan;
+  reminderCopy = reminder;
+  connection = [(NPKStockholmProvisioningController *)self connection];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_9304;
   v16[3] = &unk_2CA98;
-  v17 = v10;
-  v15 = v10;
-  [v14 setCommutePlanReminder:v13 forCommutePlan:v12 pass:v11 completion:v16];
+  v17 = completionCopy;
+  v15 = completionCopy;
+  [connection setCommutePlanReminder:reminderCopy forCommutePlan:planCopy pass:passCopy completion:v16];
 }
 
-- (BOOL)supportsTransactionsForPass:(id)a3
+- (BOOL)supportsTransactionsForPass:(id)pass
 {
-  v3 = a3;
+  passCopy = pass;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
   if (!NPKIsPairedDeviceStandalone())
   {
-    v4 = [v3 paymentPass];
-    v5 = [v4 devicePaymentApplications];
+    paymentPass = [passCopy paymentPass];
+    devicePaymentApplications = [paymentPass devicePaymentApplications];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_946C;
     v9[3] = &unk_2CAC0;
     v9[4] = &v10;
-    [v5 enumerateObjectsUsingBlock:v9];
+    [devicePaymentApplications enumerateObjectsUsingBlock:v9];
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v4 = [v3 secureElementPass];
-  if (![v4 isAccessPass])
+  paymentPass = [passCopy secureElementPass];
+  if (![paymentPass isAccessPass])
   {
-    v5 = NPKPairedDeviceSecureElementIdentifiers();
-    v6 = [v4 isPrecursorPass:v5];
+    devicePaymentApplications = NPKPairedDeviceSecureElementIdentifiers();
+    v6 = [paymentPass isPrecursorPass:devicePaymentApplications];
     *(v11 + 24) = v6 ^ 1;
     goto LABEL_6;
   }
@@ -421,14 +421,14 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)supportsInAppPaymentsForPass:(id)a3
+- (BOOL)supportsInAppPaymentsForPass:(id)pass
 {
-  v4 = a3;
+  passCopy = pass;
   if ([(NPKStockholmProvisioningController *)self deviceSupportsInAppPayments])
   {
-    v5 = [v4 paymentPass];
-    v6 = [v5 deviceInAppPaymentApplications];
-    v7 = [v6 count] != 0;
+    paymentPass = [passCopy paymentPass];
+    deviceInAppPaymentApplications = [paymentPass deviceInAppPaymentApplications];
+    v7 = [deviceInAppPaymentApplications count] != 0;
   }
 
   else
@@ -465,89 +465,89 @@ LABEL_7:
 
 - (int64_t)apiVersion
 {
-  v2 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  v3 = [v2 targetDevice];
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  targetDevice = [paymentSetupDelegate targetDevice];
 
-  if ([v3 deviceSupportTransitReminderSetting])
+  if ([targetDevice deviceSupportTransitReminderSetting])
   {
-    v4 = 2;
+    deviceSupportMultipleExpressPasses = 2;
   }
 
   else
   {
-    v4 = [v3 deviceSupportMultipleExpressPasses];
+    deviceSupportMultipleExpressPasses = [targetDevice deviceSupportMultipleExpressPasses];
   }
 
-  return v4;
+  return deviceSupportMultipleExpressPasses;
 }
 
-- (void)conflictingExpressPassIdentifiersForPassConfiguration:(id)a3 withCompletion:(id)a4
+- (void)conflictingExpressPassIdentifiersForPassConfiguration:(id)configuration withCompletion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = a3;
-    v8 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-    v9 = [v8 targetDevice];
+    configurationCopy = configuration;
+    paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+    targetDevice = [paymentSetupDelegate targetDevice];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_9868;
     v10[3] = &unk_2CA48;
-    v11 = v6;
-    [v9 conflictingExpressPassIdentifiersForPassConfiguration:v7 completion:v10];
+    v11 = completionCopy;
+    [targetDevice conflictingExpressPassIdentifiersForPassConfiguration:configurationCopy completion:v10];
   }
 }
 
-- (void)familyMembersWithCompletion:(id)a3
+- (void)familyMembersWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  v5 = [v6 targetDevice];
-  [v5 familyMembersWithCompletion:v4];
+  completionCopy = completion;
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  targetDevice = [paymentSetupDelegate targetDevice];
+  [targetDevice familyMembersWithCompletion:completionCopy];
 }
 
-- (void)photosForFamilyMembersWithDSIDs:(id)a3 completion:(id)a4
+- (void)photosForFamilyMembersWithDSIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  v8 = [v9 targetDevice];
-  [v8 photosForFamilyMembersWithDSIDs:v7 completion:v6];
+  completionCopy = completion;
+  dsCopy = ds;
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  targetDevice = [paymentSetupDelegate targetDevice];
+  [targetDevice photosForFamilyMembersWithDSIDs:dsCopy completion:completionCopy];
 }
 
-- (void)featureApplicationsForAccountIdentifier:(id)a3 completion:(id)a4
+- (void)featureApplicationsForAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  v8 = [v9 targetDevice];
-  [v8 featureApplicationsForAccountIdentifier:v7 completion:v6];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  targetDevice = [paymentSetupDelegate targetDevice];
+  [targetDevice featureApplicationsForAccountIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)cancelAutoTopUpForPassWithUniqueIdentifier:(id)a3 balanceIdentifiers:(id)a4 completion:(id)a5
+- (void)cancelAutoTopUpForPassWithUniqueIdentifier:(id)identifier balanceIdentifiers:(id)identifiers completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  v11 = [v12 targetDevice];
-  [v11 cancelAutoTopUpForPassWithUniqueIdentifier:v10 balanceIdentifiers:v9 completion:v8];
+  completionCopy = completion;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  targetDevice = [paymentSetupDelegate targetDevice];
+  [targetDevice cancelAutoTopUpForPassWithUniqueIdentifier:identifierCopy balanceIdentifiers:identifiersCopy completion:completionCopy];
 }
 
 - (id)webService
 {
-  v2 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  v3 = [v2 webService];
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  webService = [paymentSetupDelegate webService];
 
-  return v3;
+  return webService;
 }
 
 - (PKPaymentWebService)paymentWebService
 {
-  v2 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  v3 = [v2 webService];
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  webService = [paymentSetupDelegate webService];
 
-  return v3;
+  return webService;
 }
 
 - (BOOL)deviceSupportsInAppPayments
@@ -562,11 +562,11 @@ LABEL_7:
 {
   if ((PKUseMockSURFServer() & 1) == 0)
   {
-    v4 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-    v5 = [v4 webService];
+    paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+    webService = [paymentSetupDelegate webService];
 
-    v6 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-    v7 = [v6 peerPaymentWebService];
+    paymentSetupDelegate2 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+    peerPaymentWebService = [paymentSetupDelegate2 peerPaymentWebService];
 
     v8 = NPKPairedOrPairingDevice();
     v9 = [[NSUUID alloc] initWithUUIDString:@"4CAAF5A2-6DD3-43EE-B2D8-C3D8C4997856"];
@@ -588,24 +588,24 @@ LABEL_5:
       goto LABEL_12;
     }
 
-    if ([v5 needsRegistration])
+    if ([webService needsRegistration])
     {
-      v11 = [v5 context];
-      v12 = [v11 configuration];
-      v13 = [v5 targetDevice];
-      v14 = [v13 deviceRegion];
-      LOBYTE(v3) = [v12 peerPaymentEnabledForRegion:v14];
+      context = [webService context];
+      configuration = [context configuration];
+      targetDevice = [webService targetDevice];
+      deviceRegion = [targetDevice deviceRegion];
+      LOBYTE(v3) = [configuration peerPaymentEnabledForRegion:deviceRegion];
     }
 
     else
     {
-      if (v7 && ![v7 needsRegistration])
+      if (peerPaymentWebService && ![peerPaymentWebService needsRegistration])
       {
         goto LABEL_5;
       }
 
-      v11 = [v5 targetDevice];
-      v12 = [v11 deviceRegion];
+      context = [webService targetDevice];
+      configuration = [context deviceRegion];
       LOBYTE(v3) = NPKShouldAllowPeerPaymentRegistrationForWebService();
     }
 
@@ -618,31 +618,31 @@ LABEL_5:
 
 - (BOOL)deviceInRestrictedMode
 {
-  v3 = [(NPKStockholmProvisioningController *)self _deviceInRestrictedMode];
-  v4 = v3;
-  [(NPKStockholmProvisioningController *)self setLastProvidedIsRestricted:v3];
+  _deviceInRestrictedMode = [(NPKStockholmProvisioningController *)self _deviceInRestrictedMode];
+  v4 = _deviceInRestrictedMode;
+  [(NPKStockholmProvisioningController *)self setLastProvidedIsRestricted:_deviceInRestrictedMode];
   return v4;
 }
 
 - (BOOL)secureElementIsProductionSigned
 {
-  v2 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  v3 = [v2 webService];
-  v4 = [v3 context];
-  v5 = [v4 devSigned];
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  webService = [paymentSetupDelegate webService];
+  context = [webService context];
+  devSigned = [context devSigned];
 
-  return v5 ^ 1;
+  return devSigned ^ 1;
 }
 
-- (id)_changeExpressStateInstructionViewControllerForEnablingExpressMode:(BOOL)a3 paymentCardType:(int64_t)a4 passLocalizedDescription:(id)a5 cancellationHandler:(id)a6
+- (id)_changeExpressStateInstructionViewControllerForEnablingExpressMode:(BOOL)mode paymentCardType:(int64_t)type passLocalizedDescription:(id)description cancellationHandler:(id)handler
 {
-  v8 = a3;
-  v10 = a5;
-  v11 = a6;
+  modeCopy = mode;
+  descriptionCopy = description;
+  handlerCopy = handler;
   v12 = objc_alloc_init(NPKSetExpressPassCompanionInstructionViewController);
-  [(NPKSetExpressPassCompanionInstructionViewController *)v12 setPaymentCardType:a4];
-  [(NPKSetExpressPassCompanionInstructionViewController *)v12 setMessageType:!v8];
-  [(NPKSetExpressPassCompanionInstructionViewController *)v12 setCardName:v10];
+  [(NPKSetExpressPassCompanionInstructionViewController *)v12 setPaymentCardType:type];
+  [(NPKSetExpressPassCompanionInstructionViewController *)v12 setMessageType:!modeCopy];
+  [(NPKSetExpressPassCompanionInstructionViewController *)v12 setCardName:descriptionCopy];
   objc_initWeak(&location, v12);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
@@ -650,7 +650,7 @@ LABEL_5:
   v15[3] = &unk_2CAE8;
   objc_copyWeak(&v17, &location);
   v15[4] = self;
-  v13 = v11;
+  v13 = handlerCopy;
   v16 = v13;
   [(NPKBridgeInstructionViewController *)v12 setCancellationHandler:v15];
 
@@ -660,44 +660,44 @@ LABEL_5:
   return v12;
 }
 
-- (void)_presentInstructionViewController:(id)a3 inVisibleViewController:(id)a4
+- (void)_presentInstructionViewController:(id)controller inVisibleViewController:(id)viewController
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_A030;
   v7[3] = &unk_2C750;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  v5 = viewControllerCopy;
+  v6 = controllerCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-- (void)_dismissInstructionViewController:(id)a3
+- (void)_dismissInstructionViewController:(id)controller
 {
-  v4 = [a3 navigationController];
-  v3 = [v4 presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [controller navigationController];
+  presentingViewController = [navigationController presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_handleSetExpressPassResult:(unint64_t)a3 forInstructionViewController:(id)a4
+- (void)_handleSetExpressPassResult:(unint64_t)result forInstructionViewController:(id)controller
 {
-  v5 = a4;
-  v6 = [v5 cancellationHandler];
-  v7 = v6;
-  if (!v6)
+  controllerCopy = controller;
+  cancellationHandler = [controllerCopy cancellationHandler];
+  v7 = cancellationHandler;
+  if (!cancellationHandler)
   {
-    v6 = &stru_2CB08;
+    cancellationHandler = &stru_2CB08;
   }
 
-  v8 = objc_retainBlock(v6);
+  v8 = objc_retainBlock(cancellationHandler);
 
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
-  if (a3 != 1)
+  if (result != 1)
   {
-    if (a3 == 3)
+    if (result == 3)
     {
       if (v10)
       {
@@ -713,14 +713,14 @@ LABEL_5:
       block[1] = 3221225472;
       block[2] = sub_A3A0;
       block[3] = &unk_2C6C0;
-      v19 = v5;
+      v19 = controllerCopy;
       dispatch_async(&_dispatch_main_q, block);
       v14 = v19;
     }
 
     else
     {
-      if (a3 == 2)
+      if (result == 2)
       {
         if (v10)
         {
@@ -754,7 +754,7 @@ LABEL_17:
       v16[1] = 3221225472;
       v16[2] = sub_A3A8;
       v16[3] = &unk_2C6C0;
-      v17 = v5;
+      v17 = controllerCopy;
       dispatch_async(&_dispatch_main_q, v16);
       v14 = v17;
     }
@@ -780,15 +780,15 @@ LABEL_19:
 LABEL_26:
 }
 
-- (void)setExpressWithPassConfiguration:(id)a3 visibleViewController:(id)a4 requiresAuth:(BOOL)a5 completion:(id)a6
+- (void)setExpressWithPassConfiguration:(id)configuration visibleViewController:(id)controller requiresAuth:(BOOL)auth completion:(id)completion
 {
-  v35 = a5;
-  v9 = a3;
-  v36 = a4;
-  v10 = a6;
-  v11 = [v9 passInformation];
-  v12 = [v11 passUniqueIdentifier];
-  v13 = [v11 expressMode];
+  authCopy = auth;
+  configurationCopy = configuration;
+  controllerCopy = controller;
+  completionCopy = completion;
+  passInformation = [configurationCopy passInformation];
+  passUniqueIdentifier = [passInformation passUniqueIdentifier];
+  expressMode = [passInformation expressMode];
   v14 = pk_Payment_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
@@ -798,18 +798,18 @@ LABEL_26:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *&buf[4] = v12;
+      *&buf[4] = passUniqueIdentifier;
       *&buf[12] = 2112;
-      *&buf[14] = v13;
+      *&buf[14] = expressMode;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "Notice: Request to set express pass with Unique Identifier: %@ expressMode: %@", buf, 0x16u);
     }
   }
 
-  v17 = v12 != 0;
-  if (v12)
+  v17 = passUniqueIdentifier != 0;
+  if (passUniqueIdentifier)
   {
-    v18 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-    v19 = [v18 passWithUniqueID:v12];
+    paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+    v19 = [paymentSetupDelegate passWithUniqueID:passUniqueIdentifier];
   }
 
   else
@@ -831,7 +831,7 @@ LABEL_26:
   v52 = sub_A894;
   v53 = sub_A8A4;
   v54 = 0;
-  if ([v11 cardType] == &dword_0 + 2)
+  if ([passInformation cardType] == &dword_0 + 2)
   {
     v20 = NPKPairedDeviceExpressPassConfigurationWithCardType();
     v21 = *(*&buf[8] + 40);
@@ -840,7 +840,7 @@ LABEL_26:
 
   else
   {
-    v21 = [(NPKStockholmProvisioningController *)self _currentExpressPassConfigurationForUniqueID:v12];
+    v21 = [(NPKStockholmProvisioningController *)self _currentExpressPassConfigurationForUniqueID:passUniqueIdentifier];
     if (v21)
     {
       [NSSet setWithObject:v21];
@@ -855,53 +855,53 @@ LABEL_26:
     *(*&buf[8] + 40) = v22;
   }
 
-  v24 = [*(*&buf[8] + 40) anyObject];
+  anyObject = [*(*&buf[8] + 40) anyObject];
 
-  if (v24)
+  if (anyObject)
   {
-    v25 = [*(*&buf[8] + 40) anyObject];
-    if (![v25 isNFCExpressEnabled] || objc_msgSend(v9, "isNFCExpressEnabled"))
+    anyObject2 = [*(*&buf[8] + 40) anyObject];
+    if (![anyObject2 isNFCExpressEnabled] || objc_msgSend(configurationCopy, "isNFCExpressEnabled"))
     {
-      if (![v25 isUWBExpressEnabled])
+      if (![anyObject2 isUWBExpressEnabled])
       {
 LABEL_21:
 
         goto LABEL_22;
       }
 
-      v26 = [v9 isUWBExpressEnabled];
-      if (v26)
+      isUWBExpressEnabled = [configurationCopy isUWBExpressEnabled];
+      if (isUWBExpressEnabled)
       {
-        v17 = v26 & (v12 != 0);
+        v17 = isUWBExpressEnabled & (passUniqueIdentifier != 0);
         goto LABEL_21;
       }
     }
 
     v17 = 0;
-    v35 = 0;
+    authCopy = 0;
     goto LABEL_21;
   }
 
 LABEL_22:
-  v27 = [v11 cardType];
-  v28 = [v19 localizedDescription];
+  cardType = [passInformation cardType];
+  localizedDescription = [v19 localizedDescription];
   v41[0] = _NSConcreteStackBlock;
   v41[1] = 3221225472;
   v41[2] = sub_A8AC;
   v41[3] = &unk_2CB30;
   v44 = v49;
-  v29 = v10;
+  v29 = completionCopy;
   v45 = v47;
   v46 = buf;
   v43 = v29;
   v41[4] = self;
-  v30 = v13;
+  v30 = expressMode;
   v42 = v30;
-  v31 = [(NPKStockholmProvisioningController *)self _changeExpressStateInstructionViewControllerForEnablingExpressMode:v17 paymentCardType:v27 passLocalizedDescription:v28 cancellationHandler:v41];
+  v31 = [(NPKStockholmProvisioningController *)self _changeExpressStateInstructionViewControllerForEnablingExpressMode:v17 paymentCardType:cardType passLocalizedDescription:localizedDescription cancellationHandler:v41];
 
-  [(NPKStockholmProvisioningController *)self _presentInstructionViewController:v31 inVisibleViewController:v36];
-  v32 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  v33 = [v32 targetDevice];
+  [(NPKStockholmProvisioningController *)self _presentInstructionViewController:v31 inVisibleViewController:controllerCopy];
+  paymentSetupDelegate2 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  targetDevice = [paymentSetupDelegate2 targetDevice];
 
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
@@ -912,28 +912,28 @@ LABEL_22:
   v40 = v47;
   v34 = v31;
   v38 = v34;
-  [v33 setExpressWithPassConfiguration:v9 requestAuthorization:v35 completion:v37];
+  [targetDevice setExpressWithPassConfiguration:configurationCopy requestAuthorization:authCopy completion:v37];
 
   _Block_object_dispose(buf, 8);
   _Block_object_dispose(v47, 8);
   _Block_object_dispose(v49, 8);
 }
 
-- (void)removeExpressPassesWithUniqueIdentifiers:(id)a3 visibleViewController:(id)a4 completion:(id)a5
+- (void)removeExpressPassesWithUniqueIdentifiers:(id)identifiers visibleViewController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v41 = a4;
-  v43 = a5;
+  identifiersCopy = identifiers;
+  controllerCopy = controller;
+  completionCopy = completion;
   v9 = pk_Payment_log();
-  LODWORD(a4) = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
+  LODWORD(controller) = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
-  if (a4)
+  if (controller)
   {
     v10 = pk_Payment_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = identifiersCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Notice: Request to remove express passes with unique identifiers: %@ using ExpressPassConfiguration", &buf, 0xCu);
     }
   }
@@ -942,7 +942,7 @@ LABEL_22:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v8;
+  obj = identifiersCopy;
   v44 = [obj countByEnumeratingWithState:&v57 objects:v66 count:16];
   if (v44)
   {
@@ -962,15 +962,15 @@ LABEL_22:
         v14 = [(NPKStockholmProvisioningController *)self _currentExpressPassConfigurationForUniqueID:v13, v39];
         if (v14)
         {
-          v15 = [(NPKStockholmProvisioningController *)self expressPassConfigurations];
+          expressPassConfigurations = [(NPKStockholmProvisioningController *)self expressPassConfigurations];
           *&buf = 0;
           *(&buf + 1) = &buf;
           v64 = 0x2020000000;
           v65 = 0;
           if (v13)
           {
-            v16 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-            v45 = [v16 passWithUniqueID:v13];
+            paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+            v45 = [paymentSetupDelegate passWithUniqueID:v13];
           }
 
           else
@@ -978,18 +978,18 @@ LABEL_22:
             v45 = 0;
           }
 
-          v20 = [v14 passInformation];
-          v21 = [v20 cardType];
+          passInformation = [v14 passInformation];
+          cardType = [passInformation cardType];
 
-          v22 = [v45 localizedDescription];
-          if (v21 == &dword_0 + 1)
+          localizedDescription = [v45 localizedDescription];
+          if (cardType == &dword_0 + 1)
           {
             v23 = 3;
           }
 
           else
           {
-            v23 = v21;
+            v23 = cardType;
           }
 
           v53[0] = _NSConcreteStackBlock;
@@ -997,13 +997,13 @@ LABEL_22:
           v53[2] = sub_B230;
           v53[3] = &unk_2CBA8;
           p_buf = &buf;
-          v24 = v43;
+          v24 = completionCopy;
           v55 = v24;
-          v25 = v15;
+          v25 = expressPassConfigurations;
           v54 = v25;
-          v26 = [(NPKStockholmProvisioningController *)self _changeExpressStateInstructionViewControllerForEnablingExpressMode:0 paymentCardType:v23 passLocalizedDescription:v22 cancellationHandler:v53];
+          v26 = [(NPKStockholmProvisioningController *)self _changeExpressStateInstructionViewControllerForEnablingExpressMode:0 paymentCardType:v23 passLocalizedDescription:localizedDescription cancellationHandler:v53];
 
-          [(NPKStockholmProvisioningController *)self _presentInstructionViewController:v26 inVisibleViewController:v41];
+          [(NPKStockholmProvisioningController *)self _presentInstructionViewController:v26 inVisibleViewController:controllerCopy];
           v48[0] = _NSConcreteStackBlock;
           v48[1] = 3221225472;
           v48[2] = sub_B2FC;
@@ -1016,18 +1016,18 @@ LABEL_22:
           v28 = v26;
           v50 = v28;
           v29 = objc_retainBlock(v48);
-          v30 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-          v31 = [v30 targetDevice];
+          paymentSetupDelegate2 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+          targetDevice = [paymentSetupDelegate2 targetDevice];
 
           if (NPKIsPairedDeviceStandalone())
           {
-            [v31 removeExpressPassWithUniqueIdentifier:v13 completion:v29];
+            [targetDevice removeExpressPassWithUniqueIdentifier:v13 completion:v29];
           }
 
           else
           {
-            v32 = [v14 passInformation];
-            v33 = [v32 expressMode];
+            passInformation2 = [v14 passInformation];
+            expressMode = [passInformation2 expressMode];
 
             v34 = pk_Payment_log();
             v35 = os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT);
@@ -1038,12 +1038,12 @@ LABEL_22:
               if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
               {
                 *v61 = v39;
-                v62 = v33;
+                v62 = expressMode;
                 _os_log_impl(&dword_0, v36, OS_LOG_TYPE_DEFAULT, "Notice: Matched unique ID to express mode %@", v61, 0xCu);
               }
             }
 
-            v37 = [[PKExpressPassInformation alloc] initForExpressMode:v33 withPassUniqueIdentifier:0 paymentApplicationIdentifier:0];
+            v37 = [[PKExpressPassInformation alloc] initForExpressMode:expressMode withPassUniqueIdentifier:0 paymentApplicationIdentifier:0];
             if (v37)
             {
               v38 = [[PKExpressPassConfiguration alloc] initWithPassInformation:v37 isNFCExpressEnabled:1 isUWBExpressEnabled:0];
@@ -1052,7 +1052,7 @@ LABEL_22:
               v46[2] = sub_B4B4;
               v46[3] = &unk_2CBF8;
               v47 = v29;
-              [v31 setExpressWithPassConfiguration:v38 requestAuthorization:0 completion:v46];
+              [targetDevice setExpressWithPassConfiguration:v38 requestAuthorization:0 completion:v46];
             }
 
             else
@@ -1081,7 +1081,7 @@ LABEL_22:
             }
           }
 
-          (*(v43 + 2))(v43, 1, 0);
+          (*(completionCopy + 2))(completionCopy, 1, 0);
         }
       }
 
@@ -1092,10 +1092,10 @@ LABEL_22:
   }
 }
 
-- (void)startServiceModeForPassWithUniqueIdentifier:(id)a3 visibleViewController:(id)a4
+- (void)startServiceModeForPassWithUniqueIdentifier:(id)identifier visibleViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  controllerCopy = controller;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -1105,9 +1105,9 @@ LABEL_22:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v25 = v6;
+      v25 = identifierCopy;
       v26 = 2112;
-      v27 = v7;
+      v27 = controllerCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Notice: Bridge got request to turn on service mode for pass %@; visible view controller %@", buf, 0x16u);
     }
   }
@@ -1117,10 +1117,10 @@ LABEL_22:
   {
     v11 = objc_alloc_init(NPKEnableTransitServiceModeInstructionViewController);
     v12 = [[UINavigationController alloc] initWithRootViewController:v11];
-    v13 = [v12 navigationBar];
+    navigationBar = [v12 navigationBar];
     BPSApplyStyleToNavBar();
 
-    v14 = v7;
+    v14 = controllerCopy;
     [v14 presentViewController:v12 animated:1 completion:0];
     objc_initWeak(buf, v11);
     v22[0] = _NSConcreteStackBlock;
@@ -1130,8 +1130,8 @@ LABEL_22:
     objc_copyWeak(&v23, buf);
     v22[4] = self;
     [(NPKBridgeInstructionViewController *)v11 setCancellationHandler:v22];
-    v15 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-    v16 = [v15 targetDevice];
+    paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+    targetDevice = [paymentSetupDelegate targetDevice];
 
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
@@ -1141,19 +1141,19 @@ LABEL_22:
     v20 = v17;
     v18 = v14;
     v21 = v18;
-    [v16 enableServiceModeForPassWithUniqueIdentifier:v6 completion:v19];
+    [targetDevice enableServiceModeForPassWithUniqueIdentifier:identifierCopy completion:v19];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)passUpgradeWithRequest:(id)a3 pass:(id)a4 visibleViewController:(id)a5 completion:(id)a6
+- (void)passUpgradeWithRequest:(id)request pass:(id)pass visibleViewController:(id)controller completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  passCopy = pass;
+  controllerCopy = controller;
+  completionCopy = completion;
   v14 = pk_General_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
@@ -1162,11 +1162,11 @@ LABEL_22:
     v16 = pk_General_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v11 uniqueID];
+      uniqueID = [passCopy uniqueID];
       *buf = 138412546;
-      *&buf[4] = v17;
+      *&buf[4] = uniqueID;
       *&buf[12] = 2112;
-      *&buf[14] = v12;
+      *&buf[14] = controllerCopy;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "Notice: Bridge got request to upgrade pass with uniqueID:%@ visisble view controller:%@", buf, 0x16u);
     }
   }
@@ -1179,34 +1179,34 @@ LABEL_22:
   v46[1] = 3221225472;
   v46[2] = sub_BD54;
   v46[3] = &unk_2CC98;
-  v18 = v13;
+  v18 = completionCopy;
   v47 = v18;
   v48 = buf;
   v19 = objc_retainBlock(v46);
   v20 = objc_alloc_init(NPKSetExpressPassCompanionInstructionViewController);
   objc_initWeak(&location, v20);
-  -[NPKSetExpressPassCompanionInstructionViewController setPaymentCardType:](v20, "setPaymentCardType:", [v11 cardType]);
+  -[NPKSetExpressPassCompanionInstructionViewController setPaymentCardType:](v20, "setPaymentCardType:", [passCopy cardType]);
   [(NPKSetExpressPassCompanionInstructionViewController *)v20 setMessageType:0];
-  v21 = [v11 localizedDescription];
-  [(NPKSetExpressPassCompanionInstructionViewController *)v20 setCardName:v21];
+  localizedDescription = [passCopy localizedDescription];
+  [(NPKSetExpressPassCompanionInstructionViewController *)v20 setCardName:localizedDescription];
 
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_BE40;
   v39[3] = &unk_2CCC0;
-  v22 = v11;
+  v22 = passCopy;
   v40 = v22;
   v23 = v19;
   v43 = v23;
   objc_copyWeak(&v44, &location);
-  v41 = self;
-  v31 = v10;
+  selfCopy = self;
+  v31 = requestCopy;
   v42 = v31;
   [(NPKBridgeInstructionViewController *)v20 setCancellationHandler:v39];
-  [(NPKStockholmProvisioningController *)self _presentInstructionViewController:v20 inVisibleViewController:v12];
-  v24 = v12;
-  v25 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  v26 = [v25 targetDevice];
+  [(NPKStockholmProvisioningController *)self _presentInstructionViewController:v20 inVisibleViewController:controllerCopy];
+  v24 = controllerCopy;
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  targetDevice = [paymentSetupDelegate targetDevice];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_BFE4;
@@ -1216,12 +1216,12 @@ LABEL_22:
   objc_copyWeak(&v38, &location);
   v28 = v24;
   v34 = v28;
-  v35 = self;
+  selfCopy2 = self;
   v29 = v18;
   v36 = v29;
   v30 = v23;
   v37 = v30;
-  [v26 remotePassUpgradeWithRequest:v31 pass:v27 requireAuthorization:1 notifyUserOnPairedDevice:0 updateBlock:v32];
+  [targetDevice remotePassUpgradeWithRequest:v31 pass:v27 requireAuthorization:1 notifyUserOnPairedDevice:0 updateBlock:v32];
 
   objc_destroyWeak(&v38);
   objc_destroyWeak(&v44);
@@ -1247,11 +1247,11 @@ LABEL_22:
   return v4;
 }
 
-- (BOOL)supportsAddingPaymentPass:(id)a3
+- (BOOL)supportsAddingPaymentPass:(id)pass
 {
-  v3 = a3;
-  v4 = [v3 devicePrimaryPaymentApplication];
-  [v4 paymentNetworkIdentifier];
+  passCopy = pass;
+  devicePrimaryPaymentApplication = [passCopy devicePrimaryPaymentApplication];
+  [devicePrimaryPaymentApplication paymentNetworkIdentifier];
 
   if (!NPKPairedOrPairingDeviceSupportsCredentialType())
   {
@@ -1260,21 +1260,21 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ([v3 isStoredValuePass])
+  if ([passCopy isStoredValuePass])
   {
     v5 = NPKPairedDeviceSecureElementIdentifiers();
     v6 = [v5 count];
 
     if (v6 == &dword_0 + 2)
     {
-      if ([v3 isSuicaPass])
+      if ([passCopy isSuicaPass])
       {
         v24 = 0u;
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v7 = [v3 paymentApplications];
-        v8 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
+        paymentApplications = [passCopy paymentApplications];
+        v8 = [paymentApplications countByEnumeratingWithState:&v22 objects:v28 count:16];
         if (!v8)
         {
           v14 = 1;
@@ -1289,11 +1289,11 @@ LABEL_7:
         {
           if (*v23 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(paymentApplications);
           }
 
-          v12 = [*(*(&v22 + 1) + 8 * v11) supportedTransitNetworkIdentifiers];
-          v13 = [v12 containsObject:@"transit.felica.suica"];
+          supportedTransitNetworkIdentifiers = [*(*(&v22 + 1) + 8 * v11) supportedTransitNetworkIdentifiers];
+          v13 = [supportedTransitNetworkIdentifiers containsObject:@"transit.felica.suica"];
 
           if ((v13 & 1) == 0)
           {
@@ -1302,7 +1302,7 @@ LABEL_7:
 
           if (v9 == ++v11)
           {
-            v9 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
+            v9 = [paymentApplications countByEnumeratingWithState:&v22 objects:v28 count:16];
             v14 = 1;
             if (v9)
             {
@@ -1321,13 +1321,13 @@ LABEL_7:
           goto LABEL_24;
         }
 
-        v17 = pk_Payment_log();
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+        uniqueID2 = pk_Payment_log();
+        if (os_log_type_enabled(uniqueID2, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [v3 uniqueID];
+          uniqueID = [passCopy uniqueID];
           *buf = 138412290;
-          v27 = v21;
-          _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "Notice: Adding non-Suica payment pass to dualSE Apple Watch not supported for pass with uniqueID: %@", buf, 0xCu);
+          v27 = uniqueID;
+          _os_log_impl(&dword_0, uniqueID2, OS_LOG_TYPE_DEFAULT, "Notice: Adding non-Suica payment pass to dualSE Apple Watch not supported for pass with uniqueID: %@", buf, 0xCu);
         }
 
         goto LABEL_23;
@@ -1338,8 +1338,8 @@ LABEL_7:
 
       if (v16)
       {
-        v7 = pk_Payment_log();
-        if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+        paymentApplications = pk_Payment_log();
+        if (!os_log_type_enabled(paymentApplications, OS_LOG_TYPE_DEFAULT))
         {
 LABEL_24:
           v14 = 0;
@@ -1348,10 +1348,10 @@ LABEL_26:
           goto LABEL_19;
         }
 
-        v17 = [v3 uniqueID];
+        uniqueID2 = [passCopy uniqueID];
         *buf = 138412290;
-        v27 = v17;
-        _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Notice: Adding non-Suica payment pass to dualSE Apple Watch not supported for pass with uniqueID: %@", buf, 0xCu);
+        v27 = uniqueID2;
+        _os_log_impl(&dword_0, paymentApplications, OS_LOG_TYPE_DEFAULT, "Notice: Adding non-Suica payment pass to dualSE Apple Watch not supported for pass with uniqueID: %@", buf, 0xCu);
 LABEL_23:
 
         goto LABEL_24;
@@ -1369,25 +1369,25 @@ LABEL_19:
 
 - (id)setupBrowsableProductTypesForDevice
 {
-  v2 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  v3 = [v2 webService];
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  webService = [paymentSetupDelegate webService];
 
-  v4 = [v3 targetDevice];
-  v5 = [v4 deviceRegion];
+  targetDevice = [webService targetDevice];
+  deviceRegion = [targetDevice deviceRegion];
 
-  v6 = [v3 context];
-  v7 = [v6 configuration];
-  v8 = [v7 paymentSetupBrowsableProductTypesForRegion:v5];
+  context = [webService context];
+  configuration = [context configuration];
+  v8 = [configuration paymentSetupBrowsableProductTypesForRegion:deviceRegion];
 
   return v8;
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didEnableTransactionService:(BOOL)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didEnableTransactionService:(BOOL)service
 {
-  v4 = a4;
-  v6 = a3;
+  serviceCopy = service;
+  identifierCopy = identifier;
   v7 = @"disabled";
-  if (v4)
+  if (serviceCopy)
   {
     v7 = @"enabled";
   }
@@ -1402,7 +1402,7 @@ LABEL_19:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v19 = v6;
+      v19 = identifierCopy;
       v20 = 2112;
       v21 = v8;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Notice: Provisioning controller: pass with unique ID %@ %@ transaction service", buf, 0x16u);
@@ -1414,17 +1414,17 @@ LABEL_19:
   v14[2] = sub_CDB8;
   v14[3] = &unk_2CD60;
   v15 = v8;
-  v16 = v6;
-  v17 = v4;
-  v12 = v6;
+  v16 = identifierCopy;
+  v17 = serviceCopy;
+  v12 = identifierCopy;
   v13 = v8;
   [(NPKStockholmProvisioningController *)self _accessDelegatesWithHandler:v14];
 }
 
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  transactionCopy = transaction;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -1434,9 +1434,9 @@ LABEL_19:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v17 = v6;
+      v17 = identifierCopy;
       v18 = 2112;
-      v19 = v7;
+      v19 = transactionCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Notice: Provisioning controller: transaction source identifier %@ received transaction %@", buf, 0x16u);
     }
   }
@@ -1445,17 +1445,17 @@ LABEL_19:
   v13[1] = 3221225472;
   v13[2] = sub_D034;
   v13[3] = &unk_2CD88;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = identifierCopy;
+  v15 = transactionCopy;
+  v11 = transactionCopy;
+  v12 = identifierCopy;
   [(NPKStockholmProvisioningController *)self _accessDelegatesWithHandler:v13];
 }
 
-- (void)transactionSourceIdentifier:(id)a3 didRemoveTransactionWithIdentifier:(id)a4
+- (void)transactionSourceIdentifier:(id)identifier didRemoveTransactionWithIdentifier:(id)withIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -1465,9 +1465,9 @@ LABEL_19:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v17 = v6;
+      v17 = identifierCopy;
       v18 = 2112;
-      v19 = v7;
+      v19 = withIdentifierCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Notice: Provisioning controller: transaction source identifier %@ removed transaction with identifier %@", buf, 0x16u);
     }
   }
@@ -1476,17 +1476,17 @@ LABEL_19:
   v13[1] = 3221225472;
   v13[2] = sub_D29C;
   v13[3] = &unk_2CD88;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = identifierCopy;
+  v15 = withIdentifierCopy;
+  v11 = withIdentifierCopy;
+  v12 = identifierCopy;
   [(NPKStockholmProvisioningController *)self _accessDelegatesWithHandler:v13];
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithTransitPassProperties:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithTransitPassProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  propertiesCopy = properties;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -1496,9 +1496,9 @@ LABEL_19:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v17 = v6;
+      v17 = identifierCopy;
       v18 = 2112;
-      v19 = v7;
+      v19 = propertiesCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Notice: Provisioning controller: pass with unique ID %@ updated with transit pass properties %@", buf, 0x16u);
     }
   }
@@ -1507,17 +1507,17 @@ LABEL_19:
   v13[1] = 3221225472;
   v13[2] = sub_D504;
   v13[3] = &unk_2CD88;
-  v14 = v7;
-  v15 = v6;
-  v11 = v6;
-  v12 = v7;
+  v14 = propertiesCopy;
+  v15 = identifierCopy;
+  v11 = identifierCopy;
+  v12 = propertiesCopy;
   [(NPKStockholmProvisioningController *)self _accessDelegatesWithHandler:v13];
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithBalances:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithBalances:(id)balances
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  balancesCopy = balances;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -1527,9 +1527,9 @@ LABEL_19:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v17 = v6;
+      v17 = identifierCopy;
       v18 = 2112;
-      v19 = v7;
+      v19 = balancesCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Notice: Provisioning controller: pass with unique ID %@ updated with balances %@", buf, 0x16u);
     }
   }
@@ -1538,18 +1538,18 @@ LABEL_19:
   v13[1] = 3221225472;
   v13[2] = sub_D78C;
   v13[3] = &unk_2CD88;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = identifierCopy;
+  v15 = balancesCopy;
+  v11 = balancesCopy;
+  v12 = identifierCopy;
   [(NPKStockholmProvisioningController *)self _accessDelegatesWithHandler:v13];
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateBalanceReminder:(id)a4 forBalance:(id)a5
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateBalanceReminder:(id)reminder forBalance:(id)balance
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  reminderCopy = reminder;
+  balanceCopy = balance;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -1559,11 +1559,11 @@ LABEL_19:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v22 = v8;
+      v22 = identifierCopy;
       v23 = 2112;
-      v24 = v9;
+      v24 = reminderCopy;
       v25 = 2112;
-      v26 = v10;
+      v26 = balanceCopy;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Notice: Provisioning controller: pass with unique ID %@ updated with balance reminder %@ balance %@", buf, 0x20u);
     }
   }
@@ -1572,20 +1572,20 @@ LABEL_19:
   v17[1] = 3221225472;
   v17[2] = sub_DA20;
   v17[3] = &unk_2CDB0;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v18 = identifierCopy;
+  v19 = reminderCopy;
+  v20 = balanceCopy;
+  v14 = balanceCopy;
+  v15 = reminderCopy;
+  v16 = identifierCopy;
   [(NPKStockholmProvisioningController *)self _accessDelegatesWithHandler:v17];
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithCredentials:(id)a4 forPaymentApplicationIdentifier:(id)a5
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithCredentials:(id)credentials forPaymentApplicationIdentifier:(id)applicationIdentifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  credentialsCopy = credentials;
+  applicationIdentifierCopy = applicationIdentifier;
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -1595,19 +1595,19 @@ LABEL_19:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412802;
-      v14 = v8;
+      v14 = credentialsCopy;
       v15 = 2112;
-      v16 = v7;
+      v16 = identifierCopy;
       v17 = 2112;
-      v18 = v9;
+      v18 = applicationIdentifierCopy;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Notice: Provisioning controller: did update with credentials %@ for pass with unique ID %@ paymentApplicationIdentifier %@", &v13, 0x20u);
     }
   }
 }
 
-- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)a3
+- (void)sharesDidUpdateWithPaymentPassWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1617,7 +1617,7 @@ LABEL_19:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = v4;
+      v12 = identifierCopy;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Notice: Provisioning controller: shares did update for pass with unique ID %@", buf, 0xCu);
     }
   }
@@ -1626,15 +1626,15 @@ LABEL_19:
   v9[1] = 3221225472;
   v9[2] = sub_DD9C;
   v9[3] = &unk_2CDD8;
-  v10 = v4;
-  v8 = v4;
+  v10 = identifierCopy;
+  v8 = identifierCopy;
   [(NPKStockholmProvisioningController *)self _accessDelegatesWithHandler:v9];
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didEnableMessageService:(BOOL)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didEnableMessageService:(BOOL)service
 {
-  v4 = a4;
-  v6 = a3;
+  serviceCopy = service;
+  identifierCopy = identifier;
   v7 = pk_Payment_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -1644,9 +1644,9 @@ LABEL_19:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v15 = v6;
+      v15 = identifierCopy;
       v16 = 1024;
-      v17 = v4;
+      v17 = serviceCopy;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Notice: Provisioning controller: pass with unique ID %@ did enable message service %d", buf, 0x12u);
     }
   }
@@ -1655,19 +1655,19 @@ LABEL_19:
   v11[1] = 3221225472;
   v11[2] = sub_DFEC;
   v11[3] = &unk_2CE00;
-  v12 = v6;
-  v13 = v4;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = serviceCopy;
+  v10 = identifierCopy;
   [(NPKStockholmProvisioningController *)self _accessDelegatesWithHandler:v11];
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [PKPaymentProvisioningController alloc];
-  v6 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  v7 = [v6 webService];
-  v8 = [v5 initWithWebService:v7];
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  webService = [paymentSetupDelegate webService];
+  v8 = [v5 initWithWebService:webService];
 
   [v8 setIsProvisioningForAltAccount:NPKPairedOrPairingDeviceIsTinker()];
   v11[0] = _NSConcreteStackBlock;
@@ -1675,34 +1675,34 @@ LABEL_19:
   v11[2] = sub_E158;
   v11[3] = &unk_2CE28;
   v12 = v8;
-  v13 = v4;
+  v13 = completionCopy;
   v9 = v8;
-  v10 = v4;
+  v10 = completionCopy;
   [v9 preflightWithCompletion:v11];
 }
 
 - (id)setupFeaturedNetworksForDevice
 {
-  v2 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  v3 = [v2 webService];
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  webService = [paymentSetupDelegate webService];
 
-  v4 = [v3 targetDevice];
-  v5 = [v4 deviceRegion];
+  targetDevice = [webService targetDevice];
+  deviceRegion = [targetDevice deviceRegion];
 
-  v6 = [v3 context];
-  v7 = [v6 configuration];
-  v8 = [v7 paymentSetupFeaturedNetworksForRegion:v5];
+  context = [webService context];
+  configuration = [context configuration];
+  v8 = [configuration paymentSetupFeaturedNetworksForRegion:deviceRegion];
 
   return v8;
 }
 
-- (void)preflightForLocalPassWithCompletion:(id)a3
+- (void)preflightForLocalPassWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [PKPaymentProvisioningController alloc];
-  v6 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  v7 = [v6 webService];
-  v8 = [v5 initWithWebService:v7];
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  webService = [paymentSetupDelegate webService];
+  v8 = [v5 initWithWebService:webService];
 
   [v8 setIsProvisioningForAltAccount:NPKPairedOrPairingDeviceIsTinker()];
   v11[0] = _NSConcreteStackBlock;
@@ -1710,20 +1710,20 @@ LABEL_19:
   v11[2] = sub_E3E4;
   v11[3] = &unk_2CE28;
   v12 = v8;
-  v13 = v4;
+  v13 = completionCopy;
   v9 = v8;
-  v10 = v4;
+  v10 = completionCopy;
   [v9 validatePreconditionsAndRegister:v11];
 }
 
 - (BOOL)isRegistrationSupported
 {
-  v2 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  v3 = [v2 webService];
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  webService = [paymentSetupDelegate webService];
 
-  if (v3)
+  if (webService)
   {
-    v4 = [v3 paymentSetupSupportedInRegion] != &dword_0 + 2;
+    v4 = [webService paymentSetupSupportedInRegion] != &dword_0 + 2;
   }
 
   else
@@ -1740,15 +1740,15 @@ LABEL_19:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = +[NSLocale currentLocale];
-      v9 = [v8 localeIdentifier];
+      localeIdentifier = [v8 localeIdentifier];
       v10 = +[NSLocale currentLocale];
-      v11 = [v10 regionCode];
+      regionCode = [v10 regionCode];
       v13[0] = 67109634;
       v13[1] = v4;
       v14 = 2112;
-      v15 = v9;
+      v15 = localeIdentifier;
       v16 = 2112;
-      v17 = v11;
+      v17 = regionCode;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Notice: Registration supported result %d locale %@ country code %@", v13, 0x1Cu);
     }
   }
@@ -1771,28 +1771,28 @@ LABEL_19:
     }
   }
 
-  v6 = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
-  v7 = [v6 webService];
+  paymentSetupDelegate = [(NPKStockholmProvisioningController *)self paymentSetupDelegate];
+  webService = [paymentSetupDelegate webService];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_E750;
   v9[3] = &unk_2CA20;
-  v10 = v7;
-  v8 = v7;
+  v10 = webService;
+  v8 = webService;
   [PKPaymentRegistrationUtilities configureWebServiceIfNecessary:v8 completion:v9];
 }
 
 - (BOOL)isSettingsControllerReloadNecessary
 {
-  v3 = [(NPKStockholmProvisioningController *)self _deviceInRestrictedMode];
-  if (v3 != [(NPKStockholmProvisioningController *)self lastProvidedIsRestricted])
+  _deviceInRestrictedMode = [(NPKStockholmProvisioningController *)self _deviceInRestrictedMode];
+  if (_deviceInRestrictedMode != [(NPKStockholmProvisioningController *)self lastProvidedIsRestricted])
   {
     return 1;
   }
 
-  v5 = [(NPKStockholmProvisioningController *)self pendingExpressPassesConfigurations];
-  v4 = v5 == 0;
+  pendingExpressPassesConfigurations = [(NPKStockholmProvisioningController *)self pendingExpressPassesConfigurations];
+  v4 = pendingExpressPassesConfigurations == 0;
 
   return v4;
 }
@@ -1819,19 +1819,19 @@ LABEL_19:
   return v6;
 }
 
-- (void)_accessDelegatesWithHandler:(id)a3
+- (void)_accessDelegatesWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NPKStockholmProvisioningController *)self dataProviderDelegates];
-  v6 = [v5 allObjects];
+  handlerCopy = handler;
+  dataProviderDelegates = [(NPKStockholmProvisioningController *)self dataProviderDelegates];
+  allObjects = [dataProviderDelegates allObjects];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_E98C;
   v8[3] = &unk_2CE50;
-  v9 = v4;
-  v7 = v4;
-  [v6 enumerateObjectsUsingBlock:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [allObjects enumerateObjectsUsingBlock:v8];
 }
 
 - (id)_unlockRequiredTitle
@@ -1842,14 +1842,14 @@ LABEL_19:
   return v3;
 }
 
-- (id)_unlockRequiredMessageWithPaymentPass:(id)a3
+- (id)_unlockRequiredMessageWithPaymentPass:(id)pass
 {
-  v3 = [a3 localizedDescription];
+  localizedDescription = [pass localizedDescription];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
-  if (v3)
+  if (localizedDescription)
   {
     v5 = [v4 localizedStringForKey:@"EXPRESS_TRANSIT_SET_CARD_UNLOCK_REQUIRED_MESSAGE" value:&stru_2D300 table:@"NanoPassbookBridgeSettings-Companion_ICE"];
-    v6 = [NSString stringWithFormat:v5, v3];
+    v6 = [NSString stringWithFormat:v5, localizedDescription];
   }
 
   else
@@ -1876,14 +1876,14 @@ LABEL_19:
   return v3;
 }
 
-- (id)_errorSetExpressModeMessageWithPass:(id)a3
+- (id)_errorSetExpressModeMessageWithPass:(id)pass
 {
-  v3 = [a3 localizedDescription];
+  localizedDescription = [pass localizedDescription];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
-  if (v3)
+  if (localizedDescription)
   {
     v5 = [v4 localizedStringForKey:@"EXPRESS_ACCESS_SET_CARD_ERROR_MESSAGE" value:&stru_2D300 table:@"NanoPassbookBridgeSettings-Companion_ICE"];
-    v6 = [NSString stringWithFormat:v5, v3];
+    v6 = [NSString stringWithFormat:v5, localizedDescription];
   }
 
   else
@@ -1894,13 +1894,13 @@ LABEL_19:
   return v6;
 }
 
-- (void)_presentErrorWithTitle:(id)a3 message:(id)a4 acknowledgeButtonTitle:(id)a5 visibleViewController:(id)a6 dismissBlock:(id)a7
+- (void)_presentErrorWithTitle:(id)title message:(id)message acknowledgeButtonTitle:(id)buttonTitle visibleViewController:(id)controller dismissBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  controllerCopy = controller;
+  blockCopy = block;
+  buttonTitleCopy = buttonTitle;
   v16 = pk_General_log();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
 
@@ -1910,30 +1910,30 @@ LABEL_19:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v29 = v11;
+      v29 = titleCopy;
       v30 = 2112;
-      v31 = v12;
+      v31 = messageCopy;
       v32 = 2112;
-      v33 = v13;
+      v33 = controllerCopy;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "Notice: presenting error with Title:%@ message:%@ visibleViewController:%@", buf, 0x20u);
     }
   }
 
-  v19 = [UIAlertController alertControllerWithTitle:v11 message:v12 preferredStyle:1];
+  v19 = [UIAlertController alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_EF54;
   v24[3] = &unk_2CE78;
-  v25 = v11;
-  v26 = v12;
-  v27 = v14;
-  v20 = v14;
-  v21 = v12;
-  v22 = v11;
-  v23 = [UIAlertAction actionWithTitle:v15 style:1 handler:v24];
+  v25 = titleCopy;
+  v26 = messageCopy;
+  v27 = blockCopy;
+  v20 = blockCopy;
+  v21 = messageCopy;
+  v22 = titleCopy;
+  v23 = [UIAlertAction actionWithTitle:buttonTitleCopy style:1 handler:v24];
 
   [v19 addAction:v23];
-  [v13 presentViewController:v19 animated:1 completion:0];
+  [controllerCopy presentViewController:v19 animated:1 completion:0];
 }
 
 - (PKPaymentDataProviderDelegate)delegate

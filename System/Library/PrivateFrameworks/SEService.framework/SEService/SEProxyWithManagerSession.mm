@@ -1,32 +1,32 @@
 @interface SEProxyWithManagerSession
-- (void)setSession:(void *)a3 seid:;
-- (void)transceive:(id)a3 callback:(id)a4;
+- (void)setSession:(void *)session seid:;
+- (void)transceive:(id)transceive callback:(id)callback;
 @end
 
 @implementation SEProxyWithManagerSession
 
-- (void)transceive:(id)a3 callback:(id)a4
+- (void)transceive:(id)transceive callback:(id)callback
 {
   session = self->_session;
   seid = self->_seid;
   v11 = 0;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(NFSecureElementManagerSession *)session transceive:v8 forSEID:seid error:&v11];
+  callbackCopy = callback;
+  transceiveCopy = transceive;
+  v9 = [(NFSecureElementManagerSession *)session transceive:transceiveCopy forSEID:seid error:&v11];
   v10 = v11;
-  NSLog(&cfstr_SeservClientRe.isa, v8, v9, v10);
+  NSLog(&cfstr_SeservClientRe.isa, transceiveCopy, v9, v10);
 
-  v7[2](v7, v9, v10);
+  callbackCopy[2](callbackCopy, v9, v10);
 }
 
-- (void)setSession:(void *)a3 seid:
+- (void)setSession:(void *)session seid:
 {
   v7 = a2;
-  v6 = a3;
-  if (a1)
+  sessionCopy = session;
+  if (self)
   {
-    objc_storeStrong((a1 + 8), a2);
-    objc_storeStrong((a1 + 16), a3);
+    objc_storeStrong((self + 8), a2);
+    objc_storeStrong((self + 16), session);
   }
 }
 

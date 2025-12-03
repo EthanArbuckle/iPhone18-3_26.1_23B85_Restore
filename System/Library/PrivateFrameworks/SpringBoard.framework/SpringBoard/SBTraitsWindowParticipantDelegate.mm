@@ -1,22 +1,22 @@
 @interface SBTraitsWindowParticipantDelegate
 + (id)_activeOrientationDeterminingParticipantRoles;
-- (BOOL)_isWindowContentVisible:(id)a3;
+- (BOOL)_isWindowContentVisible:(id)visible;
 - (SBTraitsWindowParticipantDelegate)init;
-- (id)_autorotationPreventionReasons:(id)a3;
-- (id)_validationFailureReasonForWindow:(id)a3;
-- (id)participantAssociatedSceneIdentityTokens:(id)a3;
-- (id)participantAssociatedWindows:(id)a3;
-- (unint64_t)_validatedSupportedInterfaceOrientations:(unint64_t)a3 forWindow:(id)a4;
-- (void)appendDescriptionForParticipant:(id)a3 withBuilder:(id)a4 multilinePrefix:(id)a5;
-- (void)didChangeSettingsForParticipant:(id)a3 context:(id)a4;
-- (void)participantWillInvalidate:(id)a3;
-- (void)setParticipant:(id)a3 ownedByWindow:(id)a4;
-- (void)updatePreferencesForParticipant:(id)a3 updater:(id)a4;
-- (void)validateSettingsForParticipant:(id)a3 validator:(id)a4;
-- (void)windowDidUpdatePreferredWindowLevel:(double)a3 ownedParticipant:(id)a4;
-- (void)windowDidUpdateSupportedOrientations:(unint64_t)a3 ownedParticipant:(id)a4;
-- (void)windowWillBecomeHidden:(id)a3 ownedParticipant:(id)a4;
-- (void)windowWillBecomeVisible:(id)a3 ownedParticipant:(id)a4;
+- (id)_autorotationPreventionReasons:(id)reasons;
+- (id)_validationFailureReasonForWindow:(id)window;
+- (id)participantAssociatedSceneIdentityTokens:(id)tokens;
+- (id)participantAssociatedWindows:(id)windows;
+- (unint64_t)_validatedSupportedInterfaceOrientations:(unint64_t)orientations forWindow:(id)window;
+- (void)appendDescriptionForParticipant:(id)participant withBuilder:(id)builder multilinePrefix:(id)prefix;
+- (void)didChangeSettingsForParticipant:(id)participant context:(id)context;
+- (void)participantWillInvalidate:(id)invalidate;
+- (void)setParticipant:(id)participant ownedByWindow:(id)window;
+- (void)updatePreferencesForParticipant:(id)participant updater:(id)updater;
+- (void)validateSettingsForParticipant:(id)participant validator:(id)validator;
+- (void)windowDidUpdatePreferredWindowLevel:(double)level ownedParticipant:(id)participant;
+- (void)windowDidUpdateSupportedOrientations:(unint64_t)orientations ownedParticipant:(id)participant;
+- (void)windowWillBecomeHidden:(id)hidden ownedParticipant:(id)participant;
+- (void)windowWillBecomeVisible:(id)visible ownedParticipant:(id)participant;
 @end
 
 @implementation SBTraitsWindowParticipantDelegate
@@ -40,13 +40,13 @@
   v2 = [(SBTraitsWindowParticipantDelegate *)&v16 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     tempOwningWindowHidden = v2->_tempOwningWindowHidden;
-    v2->_tempOwningWindowHidden = v3;
+    v2->_tempOwningWindowHidden = array;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     tempOwningWindowVisible = v2->_tempOwningWindowVisible;
-    v2->_tempOwningWindowVisible = v5;
+    v2->_tempOwningWindowVisible = array2;
 
     v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:15];
     tempLastPreferredZOrder = v2->_tempLastPreferredZOrder;
@@ -80,17 +80,17 @@ void __82__SBTraitsWindowParticipantDelegate__activeOrientationDeterminingPartic
   _activeOrientationDeterminingParticipantRoles__activeOrientationDeterminingParticipantRoles = v0;
 }
 
-- (void)setParticipant:(id)a3 ownedByWindow:(id)a4
+- (void)setParticipant:(id)participant ownedByWindow:(id)window
 {
-  v19 = a3;
-  v7 = a4;
-  if (!v7)
+  participantCopy = participant;
+  windowCopy = window;
+  if (!windowCopy)
   {
     [SBTraitsWindowParticipantDelegate setParticipant:ownedByWindow:];
   }
 
-  v8 = v19;
-  if (!v19)
+  v8 = participantCopy;
+  if (!participantCopy)
   {
     [SBTraitsWindowParticipantDelegate setParticipant:ownedByWindow:];
     v8 = 0;
@@ -99,39 +99,39 @@ void __82__SBTraitsWindowParticipantDelegate__activeOrientationDeterminingPartic
   v9 = [(NSMapTable *)self->_participantOwningWindowMapTable objectForKey:v8];
   if (v9)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"SBTraitsWindowParticipantDelegate.m" lineNumber:70 description:{@"Participant(%@) cannot be owned by window(%@), since it's already owned by other window(%@)", v19, v9, v7}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBTraitsWindowParticipantDelegate.m" lineNumber:70 description:{@"Participant(%@) cannot be owned by window(%@), since it's already owned by other window(%@)", participantCopy, v9, windowCopy}];
   }
 
-  [(NSMapTable *)self->_participantOwningWindowMapTable setObject:v7 forKey:v19];
-  v11 = -[SBTraitsWindowParticipantDelegate _validatedSupportedInterfaceOrientations:forWindow:](self, "_validatedSupportedInterfaceOrientations:forWindow:", [v7 _supportedInterfaceOrientationsForRootViewController], v7);
+  [(NSMapTable *)self->_participantOwningWindowMapTable setObject:windowCopy forKey:participantCopy];
+  v11 = -[SBTraitsWindowParticipantDelegate _validatedSupportedInterfaceOrientations:forWindow:](self, "_validatedSupportedInterfaceOrientations:forWindow:", [windowCopy _supportedInterfaceOrientationsForRootViewController], windowCopy);
   tempLastPreferredZOrder = self->_tempLastPreferredZOrder;
   v13 = MEMORY[0x277CCABB0];
-  [v7 windowLevel];
+  [windowCopy windowLevel];
   v14 = [v13 numberWithDouble:?];
-  [(NSMutableDictionary *)tempLastPreferredZOrder setObject:v14 forKey:v19];
+  [(NSMutableDictionary *)tempLastPreferredZOrder setObject:v14 forKey:participantCopy];
 
   tempLastSupportedOrientations = self->_tempLastSupportedOrientations;
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
-  [(NSMutableDictionary *)tempLastSupportedOrientations setObject:v16 forKey:v19];
+  [(NSMutableDictionary *)tempLastSupportedOrientations setObject:v16 forKey:participantCopy];
 
-  v17 = [v7 isHidden];
+  isHidden = [windowCopy isHidden];
   v18 = 32;
-  if (v17)
+  if (isHidden)
   {
     v18 = 24;
   }
 
-  [*(&self->super.isa + v18) addObject:v19];
+  [*(&self->super.isa + v18) addObject:participantCopy];
 }
 
-- (void)windowWillBecomeVisible:(id)a3 ownedParticipant:(id)a4
+- (void)windowWillBecomeVisible:(id)visible ownedParticipant:(id)participant
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7)
+  visibleCopy = visible;
+  participantCopy = participant;
+  if (visibleCopy)
   {
-    if (v6)
+    if (participantCopy)
     {
       goto LABEL_3;
     }
@@ -140,7 +140,7 @@ void __82__SBTraitsWindowParticipantDelegate__activeOrientationDeterminingPartic
   else
   {
     [SBTraitsWindowParticipantDelegate windowWillBecomeVisible:ownedParticipant:];
-    if (v6)
+    if (participantCopy)
     {
       goto LABEL_3;
     }
@@ -148,18 +148,18 @@ void __82__SBTraitsWindowParticipantDelegate__activeOrientationDeterminingPartic
 
   [SBTraitsWindowParticipantDelegate windowWillBecomeVisible:ownedParticipant:];
 LABEL_3:
-  [(NSHashTable *)self->_visibleWindows addObject:v7];
-  [(NSMutableArray *)self->_tempOwningWindowHidden removeObject:v6];
-  [(NSMutableArray *)self->_tempOwningWindowVisible addObject:v6];
+  [(NSHashTable *)self->_visibleWindows addObject:visibleCopy];
+  [(NSMutableArray *)self->_tempOwningWindowHidden removeObject:participantCopy];
+  [(NSMutableArray *)self->_tempOwningWindowVisible addObject:participantCopy];
 }
 
-- (void)windowWillBecomeHidden:(id)a3 ownedParticipant:(id)a4
+- (void)windowWillBecomeHidden:(id)hidden ownedParticipant:(id)participant
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7)
+  hiddenCopy = hidden;
+  participantCopy = participant;
+  if (hiddenCopy)
   {
-    if (v6)
+    if (participantCopy)
     {
       goto LABEL_3;
     }
@@ -168,7 +168,7 @@ LABEL_3:
   else
   {
     [SBTraitsWindowParticipantDelegate windowWillBecomeHidden:ownedParticipant:];
-    if (v6)
+    if (participantCopy)
     {
       goto LABEL_3;
     }
@@ -176,45 +176,45 @@ LABEL_3:
 
   [SBTraitsWindowParticipantDelegate windowWillBecomeHidden:ownedParticipant:];
 LABEL_3:
-  [(NSHashTable *)self->_visibleWindows removeObject:v7];
-  [(NSMutableArray *)self->_tempOwningWindowHidden addObject:v6];
-  [(NSMutableArray *)self->_tempOwningWindowVisible removeObject:v6];
+  [(NSHashTable *)self->_visibleWindows removeObject:hiddenCopy];
+  [(NSMutableArray *)self->_tempOwningWindowHidden addObject:participantCopy];
+  [(NSMutableArray *)self->_tempOwningWindowVisible removeObject:participantCopy];
 }
 
-- (void)windowDidUpdatePreferredWindowLevel:(double)a3 ownedParticipant:(id)a4
+- (void)windowDidUpdatePreferredWindowLevel:(double)level ownedParticipant:(id)participant
 {
-  v8 = a4;
-  if (!v8)
+  participantCopy = participant;
+  if (!participantCopy)
   {
     [SBTraitsWindowParticipantDelegate windowDidUpdatePreferredWindowLevel:ownedParticipant:];
   }
 
   tempLastPreferredZOrder = self->_tempLastPreferredZOrder;
-  v7 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  [(NSMutableDictionary *)tempLastPreferredZOrder setObject:v7 forKey:v8];
+  v7 = [MEMORY[0x277CCABB0] numberWithDouble:level];
+  [(NSMutableDictionary *)tempLastPreferredZOrder setObject:v7 forKey:participantCopy];
 }
 
-- (void)windowDidUpdateSupportedOrientations:(unint64_t)a3 ownedParticipant:(id)a4
+- (void)windowDidUpdateSupportedOrientations:(unint64_t)orientations ownedParticipant:(id)participant
 {
-  v8 = a4;
-  if (!v8)
+  participantCopy = participant;
+  if (!participantCopy)
   {
     [SBTraitsWindowParticipantDelegate windowDidUpdateSupportedOrientations:ownedParticipant:];
   }
 
   tempLastSupportedOrientations = self->_tempLastSupportedOrientations;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [(NSMutableDictionary *)tempLastSupportedOrientations setObject:v7 forKey:v8];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:orientations];
+  [(NSMutableDictionary *)tempLastSupportedOrientations setObject:v7 forKey:participantCopy];
 }
 
-- (void)updatePreferencesForParticipant:(id)a3 updater:(id)a4
+- (void)updatePreferencesForParticipant:(id)participant updater:(id)updater
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  participantCopy = participant;
+  updaterCopy = updater;
+  v8 = updaterCopy;
+  if (participantCopy)
   {
-    if (v7)
+    if (updaterCopy)
     {
       goto LABEL_3;
     }
@@ -231,10 +231,10 @@ LABEL_3:
 
   [SBTraitsWindowParticipantDelegate updatePreferencesForParticipant:updater:];
 LABEL_3:
-  v9 = [(NSMutableDictionary *)self->_tempLastPreferredZOrder objectForKey:v6];
-  v10 = [(NSMutableDictionary *)self->_tempLastSupportedOrientations objectForKey:v6];
-  v11 = [(NSMutableArray *)self->_tempOwningWindowVisible containsObject:v6];
-  v12 = [(NSMutableArray *)self->_tempOwningWindowHidden containsObject:v6];
+  v9 = [(NSMutableDictionary *)self->_tempLastPreferredZOrder objectForKey:participantCopy];
+  v10 = [(NSMutableDictionary *)self->_tempLastSupportedOrientations objectForKey:participantCopy];
+  v11 = [(NSMutableArray *)self->_tempOwningWindowVisible containsObject:participantCopy];
+  v12 = [(NSMutableArray *)self->_tempOwningWindowHidden containsObject:participantCopy];
   v13 = v12;
   v14 = (v11 | v12) & 1;
   if (v9)
@@ -255,17 +255,17 @@ LABEL_3:
     v15[3] = &unk_2783BF450;
     v19 = v14;
     v16 = v10;
-    v17 = self;
-    v18 = v6;
+    selfCopy = self;
+    v18 = participantCopy;
     v20 = v11;
     v21 = v13;
     [v8 updateOrientationPreferencesWithBlock:v15];
   }
 
-  [(NSMutableDictionary *)self->_tempLastPreferredZOrder removeObjectForKey:v6];
-  [(NSMutableDictionary *)self->_tempLastSupportedOrientations removeObjectForKey:v6];
-  [(NSMutableArray *)self->_tempOwningWindowVisible removeObject:v6];
-  [(NSMutableArray *)self->_tempOwningWindowHidden removeObject:v6];
+  [(NSMutableDictionary *)self->_tempLastPreferredZOrder removeObjectForKey:participantCopy];
+  [(NSMutableDictionary *)self->_tempLastSupportedOrientations removeObjectForKey:participantCopy];
+  [(NSMutableArray *)self->_tempOwningWindowVisible removeObject:participantCopy];
+  [(NSMutableArray *)self->_tempOwningWindowHidden removeObject:participantCopy];
 }
 
 void __77__SBTraitsWindowParticipantDelegate_updatePreferencesForParticipant_updater___block_invoke(uint64_t a1, void *a2)
@@ -306,14 +306,14 @@ void __77__SBTraitsWindowParticipantDelegate_updatePreferencesForParticipant_upd
   }
 }
 
-- (void)validateSettingsForParticipant:(id)a3 validator:(id)a4
+- (void)validateSettingsForParticipant:(id)participant validator:(id)validator
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  participantCopy = participant;
+  validatorCopy = validator;
+  if (!validatorCopy)
   {
     [SBTraitsWindowParticipantDelegate validateSettingsForParticipant:validator:];
-    if (v6)
+    if (participantCopy)
     {
       goto LABEL_3;
     }
@@ -323,7 +323,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v6)
+  if (!participantCopy)
   {
     goto LABEL_5;
   }
@@ -334,9 +334,9 @@ LABEL_3:
   v9[2] = __78__SBTraitsWindowParticipantDelegate_validateSettingsForParticipant_validator___block_invoke;
   v9[3] = &unk_2783BF478;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [v7 validateOrientationSettingsWithBlock:v9];
+  v10 = participantCopy;
+  v8 = participantCopy;
+  [validatorCopy validateOrientationSettingsWithBlock:v9];
 }
 
 uint64_t __78__SBTraitsWindowParticipantDelegate_validateSettingsForParticipant_validator___block_invoke(uint64_t a1, uint64_t a2, uint64_t *a3)
@@ -376,15 +376,15 @@ uint64_t __78__SBTraitsWindowParticipantDelegate_validateSettingsForParticipant_
   return v8;
 }
 
-- (void)didChangeSettingsForParticipant:(id)a3 context:(id)a4
+- (void)didChangeSettingsForParticipant:(id)participant context:(id)context
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  participantCopy = participant;
+  contextCopy = context;
+  if (!contextCopy)
   {
     [SBTraitsWindowParticipantDelegate didChangeSettingsForParticipant:context:];
-    if (v6)
+    if (participantCopy)
     {
       goto LABEL_3;
     }
@@ -394,29 +394,29 @@ LABEL_22:
     goto LABEL_3;
   }
 
-  if (!v6)
+  if (!participantCopy)
   {
     goto LABEL_22;
   }
 
 LABEL_3:
-  v8 = [v6 currentSettings];
-  v9 = [v8 orientationSettings];
+  currentSettings = [participantCopy currentSettings];
+  orientationSettings = [currentSettings orientationSettings];
 
-  if (v9)
+  if (orientationSettings)
   {
-    v10 = [v6 role];
-    v11 = SBTraitsArbiterOrientationActuationEnabledForRole(v10);
+    role = [participantCopy role];
+    v11 = SBTraitsArbiterOrientationActuationEnabledForRole(role);
 
     if (v11)
     {
-      v12 = [(NSMapTable *)self->_participantOwningWindowMapTable objectForKey:v6];
-      v13 = [v9 orientation];
-      if ([v12 interfaceOrientation] != v13)
+      v12 = [(NSMapTable *)self->_participantOwningWindowMapTable objectForKey:participantCopy];
+      orientation = [orientationSettings orientation];
+      if ([v12 interfaceOrientation] != orientation)
       {
-        v14 = [v7 orientationActuationContext];
-        v15 = [v14 animationSettings];
-        [v15 duration];
+        orientationActuationContext = [contextCopy orientationActuationContext];
+        animationSettings = [orientationActuationContext animationSettings];
+        [animationSettings duration];
         v17 = v16;
 
         if ([(SBTraitsWindowParticipantDelegate *)self _isWindowContentVisible:v12])
@@ -432,12 +432,12 @@ LABEL_3:
         v19 = SBLogTraitsArbiter();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v6 uniqueIdentifier];
+          uniqueIdentifier = [participantCopy uniqueIdentifier];
           v21 = SBFStringForBSInterfaceOrientation();
           v34 = 134219010;
           v35 = v12;
           v36 = 2114;
-          v37 = v20;
+          v37 = uniqueIdentifier;
           v38 = 2112;
           v39 = v21;
           v40 = 2048;
@@ -448,23 +448,23 @@ LABEL_3:
         }
 
         [MEMORY[0x277D75DA0] _synchronizeDrawing];
-        v22 = [v9 orientationMapResolver];
-        [v12 _setInterfaceOrientationMapResolver:v22];
+        orientationMapResolver = [orientationSettings orientationMapResolver];
+        [v12 _setInterfaceOrientationMapResolver:orientationMapResolver];
 
-        [v12 _legacySetRotatableViewOrientation:v13 updateStatusBar:1 duration:0 force:v18];
+        [v12 _legacySetRotatableViewOrientation:orientation updateStatusBar:1 duration:0 force:v18];
       }
     }
   }
 
-  [v6 currentAmbientPresentedFlag];
+  [participantCopy currentAmbientPresentedFlag];
   IsYes = BSSettingFlagIsYes();
-  [v6 previousAmbientPresentedFlag];
+  [participantCopy previousAmbientPresentedFlag];
   if (IsYes != BSSettingFlagIsYes())
   {
-    [v6 currentAmbientPresentedFlag];
+    [participantCopy currentAmbientPresentedFlag];
     v24 = BSSettingFlagIsYes();
-    v25 = [(NSMapTable *)self->_participantOwningWindowMapTable objectForKey:v6];
-    v26 = [v25 traitOverrides];
+    v25 = [(NSMapTable *)self->_participantOwningWindowMapTable objectForKey:participantCopy];
+    traitOverrides = [v25 traitOverrides];
     if (v24)
     {
       v27 = 2;
@@ -476,51 +476,51 @@ LABEL_3:
     }
 
     v28 = objc_opt_self();
-    [v26 setNSIntegerValue:v27 forTrait:v28];
+    [traitOverrides setNSIntegerValue:v27 forTrait:v28];
   }
 
-  v29 = [v6 currentAmbientDisplayStyle];
-  if (v29 != [v6 previousAmbientDisplayStyle])
+  currentAmbientDisplayStyle = [participantCopy currentAmbientDisplayStyle];
+  if (currentAmbientDisplayStyle != [participantCopy previousAmbientDisplayStyle])
   {
-    v30 = [(NSMapTable *)self->_participantOwningWindowMapTable objectForKey:v6];
-    v31 = SBAmbientDisplayStyleForTraitsDisplayStyle([v6 currentAmbientDisplayStyle]);
-    v32 = [v30 traitOverrides];
+    v30 = [(NSMapTable *)self->_participantOwningWindowMapTable objectForKey:participantCopy];
+    v31 = SBAmbientDisplayStyleForTraitsDisplayStyle([participantCopy currentAmbientDisplayStyle]);
+    traitOverrides2 = [v30 traitOverrides];
     v33 = objc_opt_self();
-    [v32 setNSIntegerValue:v31 forTrait:v33];
+    [traitOverrides2 setNSIntegerValue:v31 forTrait:v33];
   }
 }
 
-- (void)participantWillInvalidate:(id)a3
+- (void)participantWillInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  invalidateCopy = invalidate;
+  v5 = invalidateCopy;
+  if (!invalidateCopy)
   {
     [SBTraitsWindowParticipantDelegate participantWillInvalidate:];
-    v4 = 0;
+    invalidateCopy = 0;
   }
 
-  [(NSMapTable *)self->_participantOwningWindowMapTable removeObjectForKey:v4];
+  [(NSMapTable *)self->_participantOwningWindowMapTable removeObjectForKey:invalidateCopy];
   [(NSMutableDictionary *)self->_tempLastPreferredZOrder removeObjectForKey:v5];
   [(NSMutableDictionary *)self->_tempLastSupportedOrientations removeObjectForKey:v5];
   [(NSMutableArray *)self->_tempOwningWindowVisible removeObject:v5];
   [(NSMutableArray *)self->_tempOwningWindowHidden removeObject:v5];
 }
 
-- (void)appendDescriptionForParticipant:(id)a3 withBuilder:(id)a4 multilinePrefix:(id)a5
+- (void)appendDescriptionForParticipant:(id)participant withBuilder:(id)builder multilinePrefix:(id)prefix
 {
-  v8 = a3;
-  v9 = a4;
+  participantCopy = participant;
+  builderCopy = builder;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __97__SBTraitsWindowParticipantDelegate_appendDescriptionForParticipant_withBuilder_multilinePrefix___block_invoke;
   v12[3] = &unk_2783A8ED8;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [v10 appendBodySectionWithName:@"Associated Windows" multilinePrefix:a5 block:v12];
+  v13 = participantCopy;
+  v14 = builderCopy;
+  v10 = builderCopy;
+  v11 = participantCopy;
+  [v10 appendBodySectionWithName:@"Associated Windows" multilinePrefix:prefix block:v12];
 }
 
 void __97__SBTraitsWindowParticipantDelegate_appendDescriptionForParticipant_withBuilder_multilinePrefix___block_invoke(uint64_t a1)
@@ -579,16 +579,16 @@ void __97__SBTraitsWindowParticipantDelegate_appendDescriptionForParticipant_wit
   }
 }
 
-- (id)participantAssociatedWindows:(id)a3
+- (id)participantAssociatedWindows:(id)windows
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  windowsCopy = windows;
+  if (!windowsCopy)
   {
     [SBTraitsWindowParticipantDelegate participantAssociatedWindows:];
   }
 
-  v5 = [(NSMapTable *)self->_participantOwningWindowMapTable objectForKey:v4];
+  v5 = [(NSMapTable *)self->_participantOwningWindowMapTable objectForKey:windowsCopy];
   v6 = v5;
   if (v5)
   {
@@ -604,23 +604,23 @@ void __97__SBTraitsWindowParticipantDelegate_appendDescriptionForParticipant_wit
   return v7;
 }
 
-- (id)participantAssociatedSceneIdentityTokens:(id)a3
+- (id)participantAssociatedSceneIdentityTokens:(id)tokens
 {
-  v4 = a3;
-  if (!v4)
+  tokensCopy = tokens;
+  if (!tokensCopy)
   {
     [SBTraitsWindowParticipantDelegate participantAssociatedSceneIdentityTokens:];
   }
 
   v5 = [MEMORY[0x277CBEB58] set];
-  v6 = [(NSMapTable *)self->_participantOwningWindowMapTable objectForKey:v4];
+  v6 = [(NSMapTable *)self->_participantOwningWindowMapTable objectForKey:tokensCopy];
   v7 = objc_opt_class();
   v8 = SBSafeCast(v7, v6);
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 hostedSceneIdentityTokens];
-    [v5 addObjectsFromArray:v10];
+    hostedSceneIdentityTokens = [v8 hostedSceneIdentityTokens];
+    [v5 addObjectsFromArray:hostedSceneIdentityTokens];
   }
 
   if ([SBSpotlightMultiplexingViewController isShownWithinWindow:v6])
@@ -634,34 +634,34 @@ void __97__SBTraitsWindowParticipantDelegate_appendDescriptionForParticipant_wit
 
   if ([v5 count])
   {
-    v12 = [v5 allObjects];
+    allObjects = [v5 allObjects];
   }
 
   else
   {
-    v12 = 0;
+    allObjects = 0;
   }
 
-  return v12;
+  return allObjects;
 }
 
-- (unint64_t)_validatedSupportedInterfaceOrientations:(unint64_t)a3 forWindow:(id)a4
+- (unint64_t)_validatedSupportedInterfaceOrientations:(unint64_t)orientations forWindow:(id)window
 {
-  if (a3)
+  if (orientations)
   {
-    return a3;
+    return orientations;
   }
 
-  [a4 interfaceOrientation];
+  [window interfaceOrientation];
 
   return XBInterfaceOrientationMaskForInterfaceOrientation();
 }
 
-- (BOOL)_isWindowContentVisible:(id)a3
+- (BOOL)_isWindowContentVisible:(id)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v4 = objc_opt_self();
-  v5 = SBSafeCast(v4, v3);
+  v5 = SBSafeCast(v4, visibleCopy);
 
   if (v5)
   {
@@ -676,28 +676,28 @@ void __97__SBTraitsWindowParticipantDelegate_appendDescriptionForParticipant_wit
   return v6;
 }
 
-- (id)_autorotationPreventionReasons:(id)a3
+- (id)_autorotationPreventionReasons:(id)reasons
 {
-  v3 = a3;
+  reasonsCopy = reasons;
   v4 = objc_opt_self();
-  v5 = SBSafeCast(v4, v3);
+  v5 = SBSafeCast(v4, reasonsCopy);
 
   if (v5)
   {
-    v6 = [v5 autorotationPreventionReasons];
+    autorotationPreventionReasons = [v5 autorotationPreventionReasons];
   }
 
   else
   {
-    v6 = 0;
+    autorotationPreventionReasons = 0;
   }
 
-  return v6;
+  return autorotationPreventionReasons;
 }
 
-- (id)_validationFailureReasonForWindow:(id)a3
+- (id)_validationFailureReasonForWindow:(id)window
 {
-  if ([(NSHashTable *)self->_visibleWindows containsObject:a3])
+  if ([(NSHashTable *)self->_visibleWindows containsObject:window])
   {
     return 0;
   }

@@ -1,36 +1,36 @@
 @interface ISMutableIconCache
-- (ISMutableIconCache)initWithURL:(id)a3 needsGarbageCollection:(BOOL *)a4;
+- (ISMutableIconCache)initWithURL:(id)l needsGarbageCollection:(BOOL *)collection;
 - (id)mutableStoreIndex;
 - (void)clear;
 - (void)collectGarbage;
-- (void)registerRecordIdentifiers:(id)a3 asSourceForUnit:(id)a4;
-- (void)registerTintColor:(id)a3 forUnit:(id)a4;
+- (void)registerRecordIdentifiers:(id)identifiers asSourceForUnit:(id)unit;
+- (void)registerTintColor:(id)color forUnit:(id)unit;
 @end
 
 @implementation ISMutableIconCache
 
-- (ISMutableIconCache)initWithURL:(id)a3 needsGarbageCollection:(BOOL *)a4
+- (ISMutableIconCache)initWithURL:(id)l needsGarbageCollection:(BOOL *)collection
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  lCopy = l;
+  v7 = lCopy;
+  if (lCopy)
   {
-    v57 = a4;
-    v8 = [v6 URLByAppendingPathComponent:@"__cache_info__" isDirectory:0];
+    collectionCopy = collection;
+    v8 = [lCopy URLByAppendingPathComponent:@"__cache_info__" isDirectory:0];
     v9 = [NSDictionary dictionaryWithContentsOfURL:v8 error:0];
     v10 = [NSDictionary dictionaryWithContentsOfFile:@"/System/Library/CoreServices/SystemVersion.plist"];
     v11 = [v10 objectForKey:@"ProductBuildVersion"];
     v12 = [v9 objectForKey:@"ProductBuildVersion"];
     v66 = [v9 objectForKey:@"SystemTintColor"];
     v13 = +[NSFileManager defaultManager];
-    v14 = [v7 path];
-    v65 = [v13 attributesOfItemAtPath:v14 error:0];
+    path = [v7 path];
+    v65 = [v13 attributesOfItemAtPath:path error:0];
 
     v68 = +[NSLocale _deviceLanguage];
     if (v9 && v12 && v11 && [v12 isEqualToString:v11])
     {
-      v15 = [v65 fileOwnerAccountName];
-      if ([v15 isEqualToString:@"_iconservices"])
+      fileOwnerAccountName = [v65 fileOwnerAccountName];
+      if ([fileOwnerAccountName isEqualToString:@"_iconservices"])
       {
         v16 = sub_1000012CC(v7);
 
@@ -49,10 +49,10 @@
     v60 = v10;
     v67 = v11;
     v61 = v9;
-    v62 = self;
+    selfCopy = self;
     v63 = v7;
     v64 = v8;
-    v17 = [v7 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [v7 URLByDeletingLastPathComponent];
     v18 = _ISDefaultLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -61,8 +61,8 @@
     }
 
     v19 = +[NSFileManager defaultManager];
-    v58 = v17;
-    v20 = [v19 enumeratorAtURL:v17 includingPropertiesForKeys:0 options:1 errorHandler:0];
+    v58 = uRLByDeletingLastPathComponent;
+    v20 = [v19 enumeratorAtURL:uRLByDeletingLastPathComponent includingPropertiesForKeys:0 options:1 errorHandler:0];
 
     v78 = 0u;
     v79 = 0u;
@@ -121,9 +121,9 @@
     v32 = [NSDictionary dictionaryWithObjects:&v76 forKeys:v72 count:1];
     v33 = +[NSFileManager defaultManager];
     v7 = v63;
-    v34 = [v63 path];
+    path2 = [v63 path];
     v71 = 0;
-    v35 = [v33 createDirectoryAtPath:v34 withIntermediateDirectories:1 attributes:v32 error:&v71];
+    v35 = [v33 createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:v32 error:&v71];
     v36 = v71;
 
     v8 = v64;
@@ -174,9 +174,9 @@ LABEL_40:
           }
         }
 
-        if (v57 && [v66 length] && objc_msgSend(0, "length") && (objc_msgSend(v66, "isEqual:", 0) & 1) == 0)
+        if (collectionCopy && [v66 length] && objc_msgSend(0, "length") && (objc_msgSend(v66, "isEqual:", 0) & 1) == 0)
         {
-          *v57 = 1;
+          *collectionCopy = 1;
         }
 
         v32 = v46;
@@ -196,7 +196,7 @@ LABEL_40:
 LABEL_58:
 
       v9 = v61;
-      self = v62;
+      self = selfCopy;
       v12 = v59;
       v10 = v60;
       v11 = v67;
@@ -272,20 +272,20 @@ LABEL_60:
 {
   v4.receiver = self;
   v4.super_class = ISMutableIconCache;
-  v2 = [(ISMutableIconCache *)&v4 storeIndex];
+  storeIndex = [(ISMutableIconCache *)&v4 storeIndex];
 
-  return v2;
+  return storeIndex;
 }
 
-- (void)registerRecordIdentifiers:(id)a3 asSourceForUnit:(id)a4
+- (void)registerRecordIdentifiers:(id)identifiers asSourceForUnit:(id)unit
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  unitCopy = unit;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [identifiersCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -297,42 +297,42 @@ LABEL_60:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
-        v13 = [(ISMutableIconCache *)self unitSourceRegistry];
-        v14 = [v7 UUID];
-        [v13 addData:v12 forUUID:v14];
+        unitSourceRegistry = [(ISMutableIconCache *)self unitSourceRegistry];
+        uUID = [unitCopy UUID];
+        [unitSourceRegistry addData:v12 forUUID:uUID];
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [identifiersCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)registerTintColor:(id)a3 forUnit:(id)a4
+- (void)registerTintColor:(id)color forUnit:(id)unit
 {
-  v6 = a4;
-  if (a3)
+  unitCopy = unit;
+  if (color)
   {
-    v12 = v6;
-    v7 = sub_100001AF8(a3);
+    v12 = unitCopy;
+    v7 = sub_100001AF8(color);
     v8 = v7;
     if (v7)
     {
       v9 = [v7 dataUsingEncoding:4];
-      v10 = [(ISMutableIconCache *)self tintColorRegistry];
-      v11 = [v12 UUID];
-      [v10 addData:v9 forUUID:v11];
+      tintColorRegistry = [(ISMutableIconCache *)self tintColorRegistry];
+      uUID = [v12 UUID];
+      [tintColorRegistry addData:v9 forUUID:uUID];
     }
 
-    v6 = v12;
+    unitCopy = v12;
   }
 }
 
@@ -351,8 +351,8 @@ LABEL_60:
   }
 
   v5 = +[NSFileManager defaultManager];
-  v6 = [(ISMutableIconCache *)self cacheURL];
-  v7 = [v5 enumeratorAtURL:v6 includingPropertiesForKeys:0 options:7 errorHandler:0];
+  cacheURL = [(ISMutableIconCache *)self cacheURL];
+  v7 = [v5 enumeratorAtURL:cacheURL includingPropertiesForKeys:0 options:7 errorHandler:0];
 
   v22 = 0u;
   v23 = 0u;
@@ -388,14 +388,14 @@ LABEL_60:
     while (v10);
   }
 
-  v15 = [(ISMutableIconCache *)self unitSourceRegistry];
-  [v15 removeAll];
+  unitSourceRegistry = [(ISMutableIconCache *)self unitSourceRegistry];
+  [unitSourceRegistry removeAll];
 
-  v16 = [(ISMutableIconCache *)self mutableStoreIndex];
-  [v16 removeAll];
+  mutableStoreIndex = [(ISMutableIconCache *)self mutableStoreIndex];
+  [mutableStoreIndex removeAll];
 
-  v17 = [(ISMutableIconCache *)self tintColorRegistry];
-  [v17 removeAll];
+  tintColorRegistry = [(ISMutableIconCache *)self tintColorRegistry];
+  [tintColorRegistry removeAll];
 
   v18 = _ISDefaultLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -427,13 +427,13 @@ LABEL_60:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Clearing stale icon cache entries...", buf, 2u);
   }
 
-  v5 = [(ISMutableIconCache *)self unitSourceRegistry];
+  unitSourceRegistry = [(ISMutableIconCache *)self unitSourceRegistry];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100002BF0;
   v8[3] = &unk_10000C4B0;
   v8[4] = self;
-  [v5 enumerateWithBlock:v8];
+  [unitSourceRegistry enumerateWithBlock:v8];
 
   v6 = _ISDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))

@@ -1,6 +1,6 @@
 @interface MPSCNNNeuronGradientNode
 + (MPSCNNNeuronGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState descriptor:(MPSNNNeuronDescriptor *)descriptor;
-- (MPSCNNNeuronGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4;
+- (MPSCNNNeuronGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter;
 - (MPSCNNNeuronGradientNode)initWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState descriptor:(MPSNNNeuronDescriptor *)descriptor;
 - (void)dealloc;
 @end
@@ -9,7 +9,7 @@
 
 + (MPSCNNNeuronGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState descriptor:(MPSNNNeuronDescriptor *)descriptor
 {
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   v14 = objc_msgSend_initWithSourceGradient_sourceImage_gradientState_descriptor_(v10, v11, sourceGradient, sourceImage, gradientState, descriptor, v12, v13);
 
   return v14;
@@ -36,15 +36,15 @@
   return result;
 }
 
-- (MPSCNNNeuronGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4
+- (MPSCNNNeuronGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter
 {
   v15.receiver = self;
   v15.super_class = MPSCNNNeuronGradientNode;
-  result = [(MPSNNGradientFilterNode *)&v15 initWithGradientImages:a3 forwardFilter:?];
+  result = [(MPSNNGradientFilterNode *)&v15 initWithGradientImages:images forwardFilter:?];
   if (result)
   {
     v13 = result;
-    v14 = objc_msgSend_descriptor(a4, v6, v7, v8, v9, v10, v11, v12);
+    v14 = objc_msgSend_descriptor(filter, v6, v7, v8, v9, v10, v11, v12);
     result = v13;
     v13->_descriptor = v14;
   }

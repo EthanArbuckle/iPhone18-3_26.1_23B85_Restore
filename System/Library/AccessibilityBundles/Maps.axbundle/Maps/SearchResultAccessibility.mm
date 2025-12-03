@@ -22,9 +22,9 @@
 
   v6 = v5;
   v7 = [(SearchResultAccessibility *)self safeValueForKey:@"appearance", v12, v13];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
 
-  if (v8 == 2)
+  if (integerValue == 2)
   {
     v9 = AXMapsLocString(@"ROUTE_ORIGIN");
     v10 = __UIAXStringForVariables();

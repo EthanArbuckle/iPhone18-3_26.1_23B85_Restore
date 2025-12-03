@@ -1,13 +1,13 @@
 @interface MADPhotosXPCStoreContainer
-+ (id)sharedContainerWithPhotoLibrary:(id)a3;
-- (MADPhotosXPCStoreContainer)initWithPhotoLibrary:(id)a3;
++ (id)sharedContainerWithPhotoLibrary:(id)library;
+- (MADPhotosXPCStoreContainer)initWithPhotoLibrary:(id)library;
 @end
 
 @implementation MADPhotosXPCStoreContainer
 
-- (MADPhotosXPCStoreContainer)initWithPhotoLibrary:(id)a3
+- (MADPhotosXPCStoreContainer)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v29.receiver = self;
   v29.super_class = MADPhotosXPCStoreContainer;
   v5 = [(MADPhotosXPCStoreContainer *)&v29 init];
@@ -111,7 +111,7 @@ LABEL_28:
   v35[6] = &__kCFBooleanTrue;
   v12 = [NSDictionary dictionaryWithObjects:v35 forKeys:v34 count:7];
   v13 = objc_alloc_init(NSXPCStoreServerRequestHandlingPolicy);
-  v14 = [MADPhotosDataStoreClient defaultDatabasePathForPhotoLibrary:v4];
+  v14 = [MADPhotosDataStoreClient defaultDatabasePathForPhotoLibrary:libraryCopy];
   if (!v14)
   {
     if (MediaAnalysisLogLevel() >= 3)
@@ -188,19 +188,19 @@ LABEL_40:
   return v27;
 }
 
-+ (id)sharedContainerWithPhotoLibrary:(id)a3
++ (id)sharedContainerWithPhotoLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [v4 photoLibraryURL];
-  v6 = [NSString stringWithFormat:@"MADPhotosXPCStoreContainer-%@", v5];
+  libraryCopy = library;
+  photoLibraryURL = [libraryCopy photoLibraryURL];
+  v6 = [NSString stringWithFormat:@"MADPhotosXPCStoreContainer-%@", photoLibraryURL];
 
   v7 = +[VCPSharedInstanceManager sharedManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000E51A8;
   v11[3] = &unk_100286030;
-  v13 = a1;
-  v8 = v4;
+  selfCopy = self;
+  v8 = libraryCopy;
   v12 = v8;
   v9 = [v7 sharedInstanceWithIdentifier:v6 andCreationBlock:v11];
 

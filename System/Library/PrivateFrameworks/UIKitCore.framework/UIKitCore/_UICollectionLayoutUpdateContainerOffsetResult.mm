@@ -1,8 +1,8 @@
 @interface _UICollectionLayoutUpdateContainerOffsetResult
 - (NSSet)invalidatedAuxillaryKinds;
 - (_UICollectionLayoutUpdateContainerOffsetResult)init;
-- (id)indexPathsForInvalidatedSupplementariesOfKind:(id)a3;
-- (void)addInvalidatedSupplementaryForKind:(id)a3 indexPath:(id)a4;
+- (id)indexPathsForInvalidatedSupplementariesOfKind:(id)kind;
+- (void)addInvalidatedSupplementaryForKind:(id)kind indexPath:(id)path;
 @end
 
 @implementation _UICollectionLayoutUpdateContainerOffsetResult
@@ -25,21 +25,21 @@
 - (NSSet)invalidatedAuxillaryKinds
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(NSMutableDictionary *)self->_invalidatedSupplementaryIndexesDict allKeys];
-  v4 = [v2 setWithArray:v3];
+  allKeys = [(NSMutableDictionary *)self->_invalidatedSupplementaryIndexesDict allKeys];
+  v4 = [v2 setWithArray:allKeys];
 
   return v4;
 }
 
-- (id)indexPathsForInvalidatedSupplementariesOfKind:(id)a3
+- (id)indexPathsForInvalidatedSupplementariesOfKind:(id)kind
 {
-  if (!a3)
+  if (!kind)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UICollectionCompositionalLayoutSolver.m" lineNumber:3656 description:{@"Invalid parameter not satisfying: %@", @"kind"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionCompositionalLayoutSolver.m" lineNumber:3656 description:{@"Invalid parameter not satisfying: %@", @"kind"}];
   }
 
-  v5 = [(NSMutableDictionary *)self->_invalidatedSupplementaryIndexesDict objectForKeyedSubscript:a3];
+  v5 = [(NSMutableDictionary *)self->_invalidatedSupplementaryIndexesDict objectForKeyedSubscript:kind];
   v6 = v5;
   if (v5)
   {
@@ -56,11 +56,11 @@
   return v7;
 }
 
-- (void)addInvalidatedSupplementaryForKind:(id)a3 indexPath:(id)a4
+- (void)addInvalidatedSupplementaryForKind:(id)kind indexPath:(id)path
 {
-  if (a3)
+  if (kind)
   {
-    if (a4)
+    if (path)
     {
       goto LABEL_3;
     }
@@ -68,29 +68,29 @@
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UICollectionCompositionalLayoutSolver.m" lineNumber:3662 description:{@"Invalid parameter not satisfying: %@", @"kind"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionCompositionalLayoutSolver.m" lineNumber:3662 description:{@"Invalid parameter not satisfying: %@", @"kind"}];
 
-    if (a4)
+    if (path)
     {
       goto LABEL_3;
     }
   }
 
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v10 handleFailureInMethod:a2 object:self file:@"_UICollectionCompositionalLayoutSolver.m" lineNumber:3663 description:{@"Invalid parameter not satisfying: %@", @"indexPath"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UICollectionCompositionalLayoutSolver.m" lineNumber:3663 description:{@"Invalid parameter not satisfying: %@", @"indexPath"}];
 
 LABEL_3:
-  v8 = [(NSMutableDictionary *)self->_invalidatedSupplementaryIndexesDict objectForKeyedSubscript:a3];
+  v8 = [(NSMutableDictionary *)self->_invalidatedSupplementaryIndexesDict objectForKeyedSubscript:kind];
   if (!v8)
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [(NSMutableDictionary *)self->_invalidatedSupplementaryIndexesDict setObject:v11 forKeyedSubscript:a3];
+    [(NSMutableDictionary *)self->_invalidatedSupplementaryIndexesDict setObject:v11 forKeyedSubscript:kind];
     v8 = v11;
   }
 
   v12 = v8;
-  [v8 addObject:a4];
+  [v8 addObject:path];
 }
 
 @end

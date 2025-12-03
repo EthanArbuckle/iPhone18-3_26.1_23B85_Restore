@@ -1,26 +1,26 @@
 @interface TPSContextualContentStatusEvent
-- (TPSContextualContentStatusEvent)initWithCoder:(id)a3;
-- (TPSContextualContentStatusEvent)initWithDictionary:(id)a3;
-- (TPSContextualContentStatusEvent)initWithEventIdentifier:(id)a3 contentIdentifier:(id)a4 statusType:(int64_t)a5 status:(int64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TPSContextualContentStatusEvent)initWithCoder:(id)coder;
+- (TPSContextualContentStatusEvent)initWithDictionary:(id)dictionary;
+- (TPSContextualContentStatusEvent)initWithEventIdentifier:(id)identifier contentIdentifier:(id)contentIdentifier statusType:(int64_t)type status:(int64_t)status;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)updateStatusTypeIfOutOfBound;
 @end
 
 @implementation TPSContextualContentStatusEvent
 
-- (TPSContextualContentStatusEvent)initWithDictionary:(id)a3
+- (TPSContextualContentStatusEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = TPSContextualContentStatusEvent;
-  v5 = [(TPSContextualEvent *)&v9 initWithDictionary:v4];
+  v5 = [(TPSContextualEvent *)&v9 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v5->_statusType = [v4 TPSSafeUIntegerForKey:@"statusType"];
+    v5->_statusType = [dictionaryCopy TPSSafeUIntegerForKey:@"statusType"];
     [(TPSContextualContentStatusEvent *)v5 updateStatusTypeIfOutOfBound];
-    v6 = [v4 TPSSafeStringForKey:@"contentID"];
+    v6 = [dictionaryCopy TPSSafeStringForKey:@"contentID"];
     contentID = v5->_contentID;
     v5->_contentID = v6;
   }
@@ -28,31 +28,31 @@
   return v5;
 }
 
-- (TPSContextualContentStatusEvent)initWithEventIdentifier:(id)a3 contentIdentifier:(id)a4 statusType:(int64_t)a5 status:(int64_t)a6
+- (TPSContextualContentStatusEvent)initWithEventIdentifier:(id)identifier contentIdentifier:(id)contentIdentifier statusType:(int64_t)type status:(int64_t)status
 {
-  v10 = a4;
-  v11 = [TPSContextualEvent eventDictionaryForIdentifier:a3 type:2 status:a6];
+  contentIdentifierCopy = contentIdentifier;
+  v11 = [TPSContextualEvent eventDictionaryForIdentifier:identifier type:2 status:status];
   v12 = [v11 mutableCopy];
 
-  [v12 setObject:v10 forKeyedSubscript:@"contentID"];
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+  [v12 setObject:contentIdentifierCopy forKeyedSubscript:@"contentID"];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   [v12 setObject:v13 forKeyedSubscript:@"statusType"];
 
   v14 = [(TPSContextualContentStatusEvent *)self initWithDictionary:v12];
   return v14;
 }
 
-- (TPSContextualContentStatusEvent)initWithCoder:(id)a3
+- (TPSContextualContentStatusEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TPSContextualContentStatusEvent;
-  v5 = [(TPSContextualEvent *)&v9 initWithCoder:v4];
+  v5 = [(TPSContextualEvent *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_statusType = [v4 decodeIntegerForKey:@"statusType"];
+    v5->_statusType = [coderCopy decodeIntegerForKey:@"statusType"];
     [(TPSContextualContentStatusEvent *)v5 updateStatusTypeIfOutOfBound];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentID"];
     contentID = v5->_contentID;
     v5->_contentID = v6;
   }
@@ -60,21 +60,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TPSContextualContentStatusEvent;
-  v4 = a3;
-  [(TPSContextualEvent *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_statusType forKey:{@"statusType", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_contentID forKey:@"contentID"];
+  coderCopy = coder;
+  [(TPSContextualEvent *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_statusType forKey:{@"statusType", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_contentID forKey:@"contentID"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = TPSContextualContentStatusEvent;
-  v4 = [(TPSContextualEvent *)&v6 copyWithZone:a3];
+  v4 = [(TPSContextualEvent *)&v6 copyWithZone:zone];
   [v4 setStatusType:self->_statusType];
   [v4 setContentID:self->_contentID];
   return v4;

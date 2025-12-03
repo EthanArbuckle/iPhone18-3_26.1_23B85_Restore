@@ -1,7 +1,7 @@
 @interface UARPMetaDataComposeSimpleBVERStringFile
 - (UARPMetaDataComposeSimpleBVERStringFile)init;
-- (UARPMetaDataComposeSimpleBVERStringFile)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataComposeSimpleBVERStringFile)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataComposeSimpleBVERStringFile)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataComposeSimpleBVERStringFile)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -25,21 +25,21 @@
   return v3;
 }
 
-- (UARPMetaDataComposeSimpleBVERStringFile)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataComposeSimpleBVERStringFile)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  lCopy = l;
   v8 = [(UARPMetaDataComposeSimpleBVERStringFile *)self init];
   v9 = v8;
   if (v8)
   {
     v20.receiver = v8;
     v20.super_class = UARPMetaDataComposeSimpleBVERStringFile;
-    v10 = [(UARPMetaData *)&v20 stringFromPlistValue:v6];
+    v10 = [(UARPMetaData *)&v20 stringFromPlistValue:valueCopy];
     if (v10)
     {
-      v11 = [v7 path];
-      v21[0] = v11;
+      path = [lCopy path];
+      v21[0] = path;
       v21[1] = v10;
       v12 = [NSArray arrayWithObjects:v21 count:2];
       v13 = [NSString pathWithComponents:v12];
@@ -67,11 +67,11 @@
   return v18;
 }
 
-- (UARPMetaDataComposeSimpleBVERStringFile)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataComposeSimpleBVERStringFile)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataComposeSimpleBVERStringFile *)self init];
   v7 = v6;
-  if (v6 && (v12.receiver = v6, v12.super_class = UARPMetaDataComposeSimpleBVERStringFile, [(UARPMetaData *)&v12 componentVersionWithLength:a3 value:a4], v8 = objc_claimAutoreleasedReturnValue(), version = v7->_version, v7->_version = v8, version, v7->_version))
+  if (v6 && (v12.receiver = v6, v12.super_class = UARPMetaDataComposeSimpleBVERStringFile, [(UARPMetaData *)&v12 componentVersionWithLength:length value:value], v8 = objc_claimAutoreleasedReturnValue(), version = v7->_version, v7->_version = v8, version, v7->_version))
   {
     v10 = v7;
   }
@@ -86,19 +86,19 @@
 
 - (id)tlvValue
 {
-  v3 = [(UARPMetaDataComposeSimpleBVERStringFile *)self version];
+  version = [(UARPMetaDataComposeSimpleBVERStringFile *)self version];
   v6.receiver = self;
   v6.super_class = UARPMetaDataComposeSimpleBVERStringFile;
-  v4 = [(UARPMetaData *)&v6 tlvValueWithComponentVersion:v3];
+  v4 = [(UARPMetaData *)&v6 tlvValueWithComponentVersion:version];
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataComposeSimpleBVERStringFile *)self version];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  version = [(UARPMetaDataComposeSimpleBVERStringFile *)self version];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, version];
 
   return v5;
 }

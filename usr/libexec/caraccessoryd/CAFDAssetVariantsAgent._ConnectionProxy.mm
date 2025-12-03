@@ -1,7 +1,7 @@
 @interface CAFDAssetVariantsAgent._ConnectionProxy
 - (NSString)description;
 - (_TtCC13caraccessoryd22CAFDAssetVariantsAgentP33_AD8EB03328B3296C924C05733247A05A16_ConnectionProxy)init;
-- (void)fetchResourcesWithReply:(id)a3;
+- (void)fetchResourcesWithReply:(id)reply;
 - (void)invalidate;
 - (void)refreshVariants;
 @end
@@ -12,7 +12,7 @@
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtCC13caraccessoryd22CAFDAssetVariantsAgentP33_AD8EB03328B3296C924C05733247A05A16_ConnectionProxy_connection);
   swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   BSServiceConnectionHost.CAFDDescription.getter();
 
   v5 = String._bridgeToObjectiveC()();
@@ -29,23 +29,23 @@
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   CAFDAssetVariantsAgent._ConnectionProxy.activate()("invalidate proxy %@", &selRef_invalidate);
 }
 
-- (void)fetchResourcesWithReply:(id)a3
+- (void)fetchResourcesWithReply:(id)reply
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(reply);
   _Block_copy(v4);
-  v5 = self;
-  specialized CAFDAssetVariantsAgent._ConnectionProxy.fetchResources(reply:)(v5, v4);
+  selfCopy = self;
+  specialized CAFDAssetVariantsAgent._ConnectionProxy.fetchResources(reply:)(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
 - (void)refreshVariants
 {
-  v2 = self;
+  selfCopy = self;
   CAFDAssetVariantsAgent._ConnectionProxy.refreshVariants()();
 }
 

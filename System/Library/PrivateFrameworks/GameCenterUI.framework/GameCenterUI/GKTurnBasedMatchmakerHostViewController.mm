@@ -3,12 +3,12 @@
 - (GKTurnBasedMatchmakerViewController)delegate;
 - (id)extensionObjectProxy;
 - (void)extensionIsCanceling;
-- (void)messageFromExtension:(id)a3;
+- (void)messageFromExtension:(id)extension;
 - (void)refreshMatches;
-- (void)setMatchRequestInternal:(id)a3;
-- (void)setShowExistingMatches:(BOOL)a3;
-- (void)setShowPlay:(BOOL)a3;
-- (void)setShowQuit:(BOOL)a3;
+- (void)setMatchRequestInternal:(id)internal;
+- (void)setShowExistingMatches:(BOOL)matches;
+- (void)setShowPlay:(BOOL)play;
+- (void)setShowQuit:(BOOL)quit;
 @end
 
 @implementation GKTurnBasedMatchmakerHostViewController
@@ -50,12 +50,12 @@ void __71__GKTurnBasedMatchmakerHostViewController_turnBasedMatchmakerExtension_
 
 - (id)extensionObjectProxy
 {
-  v3 = [(GKExtensionRemoteViewController *)self extension];
-  v4 = [(GKExtensionRemoteViewController *)self requestIdentifier];
-  v5 = [v3 _extensionContextForUUID:v4];
+  extension = [(GKExtensionRemoteViewController *)self extension];
+  requestIdentifier = [(GKExtensionRemoteViewController *)self requestIdentifier];
+  v5 = [extension _extensionContextForUUID:requestIdentifier];
 
-  v6 = [v5 _auxiliaryConnection];
-  v7 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_3];
+  _auxiliaryConnection = [v5 _auxiliaryConnection];
+  v7 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_3];
 
   return v7;
 }
@@ -75,54 +75,54 @@ void __63__GKTurnBasedMatchmakerHostViewController_extensionObjectProxy__block_i
   }
 }
 
-- (void)setMatchRequestInternal:(id)a3
+- (void)setMatchRequestInternal:(id)internal
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (internal)
   {
     v7[0] = @"MessageCommandKey";
     v7[1] = @"MessageParamKey";
     v8[0] = &unk_2861891B0;
-    v8[1] = a3;
+    v8[1] = internal;
     v4 = MEMORY[0x277CBEAC0];
-    v5 = a3;
+    internalCopy = internal;
     v6 = [v4 dictionaryWithObjects:v8 forKeys:v7 count:2];
 
     [(GKExtensionRemoteViewController *)self sendMessageToExtension:v6];
   }
 }
 
-- (void)setShowExistingMatches:(BOOL)a3
+- (void)setShowExistingMatches:(BOOL)matches
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"MessageCommandKey";
   v6[1] = @"MessageParamKey";
   v7[0] = &unk_2861891C8;
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:matches];
   v7[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v5];
 }
 
-- (void)setShowPlay:(BOOL)a3
+- (void)setShowPlay:(BOOL)play
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"MessageCommandKey";
   v6[1] = @"MessageParamKey";
   v7[0] = &unk_2861891E0;
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:play];
   v7[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v5];
 }
 
-- (void)setShowQuit:(BOOL)a3
+- (void)setShowQuit:(BOOL)quit
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = @"MessageCommandKey";
   v6[1] = @"MessageParamKey";
   v7[0] = &unk_2861891F8;
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:quit];
   v7[1] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v5];
@@ -137,13 +137,13 @@ void __63__GKTurnBasedMatchmakerHostViewController_extensionObjectProxy__block_i
   [(GKExtensionRemoteViewController *)self sendMessageToExtension:v3];
 }
 
-- (void)messageFromExtension:(id)a3
+- (void)messageFromExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v5 = MEMORY[0x277CCAAC8];
   v6 = GKExtensionProtocolSecureCodedClasses();
   v18 = 0;
-  v7 = [v5 unarchivedObjectOfClasses:v6 fromData:v4 error:&v18];
+  v7 = [v5 unarchivedObjectOfClasses:v6 fromData:extensionCopy error:&v18];
   v8 = v18;
 
   if (v8)
@@ -161,37 +161,37 @@ void __63__GKTurnBasedMatchmakerHostViewController_extensionObjectProxy__block_i
   }
 
   v11 = [v7 objectForKeyedSubscript:@"MessageCommandKey"];
-  v12 = [v11 integerValue];
+  integerValue = [v11 integerValue];
 
   v13 = [v7 objectForKeyedSubscript:@"MessageParamKey"];
-  if (v12 == 19)
+  if (integerValue == 19)
   {
-    v16 = [(GKTurnBasedMatchmakerHostViewController *)self delegate];
-    [v16 finishWithError:v13];
+    delegate = [(GKTurnBasedMatchmakerHostViewController *)self delegate];
+    [delegate finishWithError:v13];
   }
 
   else
   {
-    if (v12 == 11)
+    if (integerValue == 11)
     {
       v14 = [objc_alloc(MEMORY[0x277D0C238]) initWithInternalRepresentation:v13];
-      v15 = [(GKTurnBasedMatchmakerHostViewController *)self delegate];
-      [v15 playerQuitMatch:v14];
+      delegate2 = [(GKTurnBasedMatchmakerHostViewController *)self delegate];
+      [delegate2 playerQuitMatch:v14];
     }
 
     else
     {
-      if (v12 != 10)
+      if (integerValue != 10)
       {
         v17.receiver = self;
         v17.super_class = GKTurnBasedMatchmakerHostViewController;
-        [(GKExtensionRemoteViewController *)&v17 messageFromExtension:v4];
+        [(GKExtensionRemoteViewController *)&v17 messageFromExtension:extensionCopy];
         goto LABEL_14;
       }
 
       v14 = [objc_alloc(MEMORY[0x277D0C238]) initWithInternalRepresentation:v13];
-      v15 = [(GKTurnBasedMatchmakerHostViewController *)self delegate];
-      [v15 finishWithMatch:v14];
+      delegate2 = [(GKTurnBasedMatchmakerHostViewController *)self delegate];
+      [delegate2 finishWithMatch:v14];
     }
   }
 
@@ -200,8 +200,8 @@ LABEL_14:
 
 - (void)extensionIsCanceling
 {
-  v2 = [(GKTurnBasedMatchmakerHostViewController *)self delegate];
-  [v2 cancel];
+  delegate = [(GKTurnBasedMatchmakerHostViewController *)self delegate];
+  [delegate cancel];
 }
 
 - (GKTurnBasedMatchmakerViewController)delegate

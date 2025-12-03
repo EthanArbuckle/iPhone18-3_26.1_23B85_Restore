@@ -1,21 +1,21 @@
 @interface MASAutoAssetControlStatisticsByCommand
-+ (id)newServerMessageClasses:(id)a3;
-+ (id)newShimmedFromFramework:(id)a3;
-+ (id)newShimmedFromFrameworkMessage:(id)a3 forKey:(id)a4;
-+ (id)newShimmedToFramework:(id)a3;
++ (id)newServerMessageClasses:(id)classes;
++ (id)newShimmedFromFramework:(id)framework;
++ (id)newShimmedFromFrameworkMessage:(id)message forKey:(id)key;
++ (id)newShimmedToFramework:(id)framework;
 @end
 
 @implementation MASAutoAssetControlStatisticsByCommand
 
-+ (id)newServerMessageClasses:(id)a3
++ (id)newServerMessageClasses:(id)classes
 {
-  v3 = a3;
-  if (v3)
+  classesCopy = classes;
+  if (classesCopy)
   {
-    v4 = v3;
+    v4 = classesCopy;
     if (objc_opt_class())
     {
-      v4 = [v3 setByAddingObject:objc_opt_class()];
+      v4 = [classesCopy setByAddingObject:objc_opt_class()];
     }
   }
 
@@ -27,112 +27,112 @@
   return v4;
 }
 
-+ (id)newShimmedToFramework:(id)a3
++ (id)newShimmedToFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && objc_opt_class() && (v4 = [MAAutoAssetControlStatisticsByCommand alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && objc_opt_class() && (v4 = [MAAutoAssetControlStatisticsByCommand alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
     v6 = objc_alloc_init(MAAutoAssetControlStatisticsByCommand);
     if (objc_opt_respondsToSelector())
     {
-      [v6 setInterestInContent:{objc_msgSend(v3, "interestInContent")}];
+      [v6 setInterestInContent:{objc_msgSend(frameworkCopy, "interestInContent")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setCheckForNewer:{objc_msgSend(v3, "checkForNewer")}];
+      [v6 setCheckForNewer:{objc_msgSend(frameworkCopy, "checkForNewer")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setDetermineIfAvailable:{objc_msgSend(v3, "determineIfAvailable")}];
+      [v6 setDetermineIfAvailable:{objc_msgSend(frameworkCopy, "determineIfAvailable")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setCurrentStatus:{objc_msgSend(v3, "currentStatus")}];
+      [v6 setCurrentStatus:{objc_msgSend(frameworkCopy, "currentStatus")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setLockContent:{objc_msgSend(v3, "lockContent")}];
+      [v6 setLockContent:{objc_msgSend(frameworkCopy, "lockContent")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setContinueLockUsage:{objc_msgSend(v3, "continueLockUsage")}];
+      [v6 setContinueLockUsage:{objc_msgSend(frameworkCopy, "continueLockUsage")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setEndLockUsage:{objc_msgSend(v3, "endLockUsage")}];
+      [v6 setEndLockUsage:{objc_msgSend(frameworkCopy, "endLockUsage")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setEndPreviousLocks:{objc_msgSend(v3, "endPreviousLocks")}];
+      [v6 setEndPreviousLocks:{objc_msgSend(frameworkCopy, "endPreviousLocks")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setEndAllPreviousLocks:{objc_msgSend(v3, "endAllPreviousLocks")}];
+      [v6 setEndAllPreviousLocks:{objc_msgSend(frameworkCopy, "endAllPreviousLocks")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setEliminateAllForSelector:{objc_msgSend(v3, "eliminateAllForSelector")}];
+      [v6 setEliminateAllForSelector:{objc_msgSend(frameworkCopy, "eliminateAllForSelector")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setEliminateAllForAssetType:{objc_msgSend(v3, "eliminateAllForAssetType")}];
+      [v6 setEliminateAllForAssetType:{objc_msgSend(frameworkCopy, "eliminateAllForAssetType")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setEliminatePromotedNeverLockedForSelector:{objc_msgSend(v3, "eliminatePromotedNeverLockedForSelector")}];
+      [v6 setEliminatePromotedNeverLockedForSelector:{objc_msgSend(frameworkCopy, "eliminatePromotedNeverLockedForSelector")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setStageDetermineAllAvailable:{objc_msgSend(v3, "stageDetermineAllAvailable")}];
+      [v6 setStageDetermineAllAvailable:{objc_msgSend(frameworkCopy, "stageDetermineAllAvailable")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setStageDownloadAll:{objc_msgSend(v3, "stageDownloadAll")}];
+      [v6 setStageDownloadAll:{objc_msgSend(frameworkCopy, "stageDownloadAll")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setStagePurgeAll:{objc_msgSend(v3, "stagePurgeAll")}];
+      [v6 setStagePurgeAll:{objc_msgSend(frameworkCopy, "stagePurgeAll")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 setStageEraseAll:{objc_msgSend(v3, "stageEraseAll")}];
+      [v6 setStageEraseAll:{objc_msgSend(frameworkCopy, "stageEraseAll")}];
     }
 
     if (__isPlatformVersionAtLeast(2, 18, 4, 0))
     {
       if (objc_opt_respondsToSelector())
       {
-        [v6 setEstimateEvictableBytesForSoftwareUpdate:{objc_msgSend(v3, "estimateEvictableBytesForSoftwareUpdate")}];
+        [v6 setEstimateEvictableBytesForSoftwareUpdate:{objc_msgSend(frameworkCopy, "estimateEvictableBytesForSoftwareUpdate")}];
       }
 
       if (objc_opt_respondsToSelector())
       {
-        [v6 setSuspendForSoftwareUpdate:{objc_msgSend(v3, "suspendForSoftwareUpdate")}];
+        [v6 setSuspendForSoftwareUpdate:{objc_msgSend(frameworkCopy, "suspendForSoftwareUpdate")}];
       }
 
       if (objc_opt_respondsToSelector())
       {
-        [v6 setResumeFromSoftwareUpdate:{objc_msgSend(v3, "resumeFromSoftwareUpdate")}];
+        [v6 setResumeFromSoftwareUpdate:{objc_msgSend(frameworkCopy, "resumeFromSoftwareUpdate")}];
       }
 
       if (objc_opt_respondsToSelector())
       {
-        [v6 setSuspendResumeStatusForSoftwareUpdate:{objc_msgSend(v3, "suspendResumeStatusForSoftwareUpdate")}];
+        [v6 setSuspendResumeStatusForSoftwareUpdate:{objc_msgSend(frameworkCopy, "suspendResumeStatusForSoftwareUpdate")}];
       }
     }
   }
@@ -145,12 +145,12 @@
   return v6;
 }
 
-+ (id)newShimmedFromFramework:(id)a3
++ (id)newShimmedFromFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && objc_opt_class() && (v4 = [MAAutoAssetControlStatisticsByCommand alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && objc_opt_class() && (v4 = [MAAutoAssetControlStatisticsByCommand alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
-    v6 = v3;
+    v6 = frameworkCopy;
     v7 = objc_alloc_init(MANAutoAssetControlStatisticsByCommand);
     if (objc_opt_respondsToSelector())
     {
@@ -264,17 +264,17 @@
   return v7;
 }
 
-+ (id)newShimmedFromFrameworkMessage:(id)a3 forKey:(id)a4
++ (id)newShimmedFromFrameworkMessage:(id)message forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  messageCopy = message;
+  keyCopy = key;
+  v7 = keyCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (messageCopy && keyCopy)
   {
     if (objc_opt_class() && (v9 = [MAAutoAssetControlStatisticsByCommand alloc], v10 = objc_opt_respondsToSelector(), v9, (v10 & 1) != 0))
     {
-      v11 = [v5 safeObjectForKey:v7 ofClass:objc_opt_class()];
+      v11 = [messageCopy safeObjectForKey:v7 ofClass:objc_opt_class()];
       v8 = [MASAutoAssetControlStatisticsByCommand newShimmedFromFramework:v11];
     }
 

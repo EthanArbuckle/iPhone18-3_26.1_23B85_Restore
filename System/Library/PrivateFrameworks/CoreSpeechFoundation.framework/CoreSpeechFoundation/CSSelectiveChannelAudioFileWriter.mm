@@ -1,19 +1,19 @@
 @interface CSSelectiveChannelAudioFileWriter
-- (BOOL)addSamples:(const void *)a3 numSamples:(int64_t)a4;
+- (BOOL)addSamples:(const void *)samples numSamples:(int64_t)numSamples;
 - (BOOL)endAudio;
-- (CSSelectiveChannelAudioFileWriter)initWithURL:(id)a3 inputFormat:(AudioStreamBasicDescription *)a4 outputFormat:(AudioStreamBasicDescription *)a5 channelBitset:(unint64_t)a6;
+- (CSSelectiveChannelAudioFileWriter)initWithURL:(id)l inputFormat:(AudioStreamBasicDescription *)format outputFormat:(AudioStreamBasicDescription *)outputFormat channelBitset:(unint64_t)bitset;
 - (void)dealloc;
 @end
 
 @implementation CSSelectiveChannelAudioFileWriter
 
-- (BOOL)addSamples:(const void *)a3 numSamples:(int64_t)a4
+- (BOOL)addSamples:(const void *)samples numSamples:(int64_t)numSamples
 {
   v35 = *MEMORY[0x1E69E9840];
   v4 = 1;
-  if (a4 >= 1 && self->isWriting)
+  if (numSamples >= 1 && self->isWriting)
   {
-    v25 = a4;
+    numSamplesCopy = numSamples;
     v23[1] = v23;
     mBytesPerFrame = self->inASBD.mBytesPerFrame;
     mChannelsPerFrame = self->inASBD.mChannelsPerFrame;
@@ -30,7 +30,7 @@
     {
       v10 = v9;
       v11 = 0;
-      v12 = mBytesPerFrame * v25;
+      v12 = mBytesPerFrame * numSamplesCopy;
       v13 = *v27;
       mBuffers = v24->mBuffers;
       do
@@ -46,7 +46,7 @@
           v17 = &mBuffers[v11];
           v17->mNumberChannels = 1;
           v17->mDataByteSize = v12;
-          v17->mData = a3 + [v16 unsignedIntegerValue] * v12;
+          v17->mData = samples + [v16 unsignedIntegerValue] * v12;
           ++v11;
         }
 
@@ -56,7 +56,7 @@
       while (v10);
     }
 
-    v18 = ExtAudioFileWrite(*(v23[0] + 16), v25, v24);
+    v18 = ExtAudioFileWrite(*(v23[0] + 16), numSamplesCopy, v24);
     v4 = v18 == 0;
     if (v18)
     {
@@ -97,19 +97,19 @@
   [(CSSelectiveChannelAudioFileWriter *)&v3 dealloc];
 }
 
-- (CSSelectiveChannelAudioFileWriter)initWithURL:(id)a3 inputFormat:(AudioStreamBasicDescription *)a4 outputFormat:(AudioStreamBasicDescription *)a5 channelBitset:(unint64_t)a6
+- (CSSelectiveChannelAudioFileWriter)initWithURL:(id)l inputFormat:(AudioStreamBasicDescription *)format outputFormat:(AudioStreamBasicDescription *)outputFormat channelBitset:(unint64_t)bitset
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  lCopy = l;
   v27.receiver = self;
   v27.super_class = CSSelectiveChannelAudioFileWriter;
   v11 = [(CSSelectiveChannelAudioFileWriter *)&v27 init];
   v12 = v11;
   if (v11)
   {
-    v11->_numberOfChannels = a4->mChannelsPerFrame;
-    a5->mSampleRate = a4->mSampleRate;
-    v13 = ExtAudioFileCreateWithURL(v10, 0x57415645u, a5, 0, 1u, &v11->fFile);
+    v11->_numberOfChannels = format->mChannelsPerFrame;
+    outputFormat->mSampleRate = format->mSampleRate;
+    v13 = ExtAudioFileCreateWithURL(lCopy, 0x57415645u, outputFormat, 0, 1u, &v11->fFile);
     if (v13)
     {
       v14 = CSLogCategoryAudio;
@@ -118,7 +118,7 @@
         *buf = 136315650;
         *&buf[4] = "[CSSelectiveChannelAudioFileWriter initWithURL:inputFormat:outputFormat:channelBitset:]";
         *&buf[12] = 2114;
-        *&buf[14] = v10;
+        *&buf[14] = lCopy;
         *&buf[22] = 1026;
         LODWORD(v29) = v13;
         _os_log_error_impl(&dword_1DDA4B000, v14, OS_LOG_TYPE_ERROR, "%s ::: Error creating output file %{public}@, err: %{public}d", buf, 0x1Cu);
@@ -127,7 +127,7 @@
 
     if (v12->fFile)
     {
-      v15 = v10;
+      v15 = lCopy;
     }
 
     else
@@ -141,18 +141,18 @@
     fFile = v12->fFile;
     if (fFile)
     {
-      ExtAudioFileSetProperty(fFile, 0x63666D74u, 0x28u, a4);
+      ExtAudioFileSetProperty(fFile, 0x63666D74u, 0x28u, format);
     }
 
     v12->isWriting = 1;
-    v18 = *&a4->mSampleRate;
-    v19 = *&a4->mBytesPerPacket;
-    *&v12->inASBD.mBitsPerChannel = *&a4->mBitsPerChannel;
+    v18 = *&format->mSampleRate;
+    v19 = *&format->mBytesPerPacket;
+    *&v12->inASBD.mBitsPerChannel = *&format->mBitsPerChannel;
     *&v12->inASBD.mBytesPerPacket = v19;
     *&v12->inASBD.mSampleRate = v18;
-    v20 = *&a5->mSampleRate;
-    v21 = *&a5->mBytesPerPacket;
-    *&v12->outASBD.mBitsPerChannel = *&a5->mBitsPerChannel;
+    v20 = *&outputFormat->mSampleRate;
+    v21 = *&outputFormat->mBytesPerPacket;
+    *&v12->outASBD.mBitsPerChannel = *&outputFormat->mBitsPerChannel;
     *&v12->outASBD.mSampleRate = v20;
     *&v12->outASBD.mBytesPerPacket = v21;
     *buf = 0;
@@ -166,7 +166,7 @@
     v26[2] = __88__CSSelectiveChannelAudioFileWriter_initWithURL_inputFormat_outputFormat_channelBitset___block_invoke;
     v26[3] = &unk_1E865C998;
     v26[4] = buf;
-    [CSUtils iterateBitset:a6 block:v26];
+    [CSUtils iterateBitset:bitset block:v26];
     v22 = [*(*&buf[8] + 40) mutableCopy];
     selectedChannelList = v12->selectedChannelList;
     v12->selectedChannelList = v22;

@@ -1,24 +1,24 @@
 @interface SBDestroyDisplayItemSwitcherEventResponse
-- (SBDestroyDisplayItemSwitcherEventResponse)initWithDisplayItem:(id)a3 destroyAllScenesMatchingBundleIdentifier:(BOOL)a4;
+- (SBDestroyDisplayItemSwitcherEventResponse)initWithDisplayItem:(id)item destroyAllScenesMatchingBundleIdentifier:(BOOL)identifier;
 @end
 
 @implementation SBDestroyDisplayItemSwitcherEventResponse
 
-- (SBDestroyDisplayItemSwitcherEventResponse)initWithDisplayItem:(id)a3 destroyAllScenesMatchingBundleIdentifier:(BOOL)a4
+- (SBDestroyDisplayItemSwitcherEventResponse)initWithDisplayItem:(id)item destroyAllScenesMatchingBundleIdentifier:(BOOL)identifier
 {
-  v8 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = SBDestroyDisplayItemSwitcherEventResponse;
   v9 = [(SBChainableModifierEventResponse *)&v11 init];
   if (v9)
   {
-    if (!v8)
+    if (!itemCopy)
     {
       [SBDestroyDisplayItemSwitcherEventResponse initWithDisplayItem:a2 destroyAllScenesMatchingBundleIdentifier:v9];
     }
 
-    objc_storeStrong(&v9->_displayItem, a3);
-    v9->_destroyAllScenesMatchingBundleIdentifier = a4;
+    objc_storeStrong(&v9->_displayItem, item);
+    v9->_destroyAllScenesMatchingBundleIdentifier = identifier;
   }
 
   return v9;

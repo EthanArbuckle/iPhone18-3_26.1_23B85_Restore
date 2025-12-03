@@ -1,6 +1,6 @@
 @interface BTPBrowser
 - (BOOL)start;
-- (BTPBrowser)initWithSrcIfIndex:(unsigned int)a3 dstIfIndex:(unsigned int)a4 bonjourType:(id)a5;
+- (BTPBrowser)initWithSrcIfIndex:(unsigned int)index dstIfIndex:(unsigned int)ifIndex bonjourType:(id)type;
 - (void)dealloc;
 - (void)stop;
 @end
@@ -181,9 +181,9 @@
   return result;
 }
 
-- (BTPBrowser)initWithSrcIfIndex:(unsigned int)a3 dstIfIndex:(unsigned int)a4 bonjourType:(id)a5
+- (BTPBrowser)initWithSrcIfIndex:(unsigned int)index dstIfIndex:(unsigned int)ifIndex bonjourType:(id)type
 {
-  v9 = a5;
+  typeCopy = type;
   v16.receiver = self;
   v16.super_class = BTPBrowser;
   v10 = [(BTPBrowser *)&v16 init];
@@ -191,9 +191,9 @@
   if (v10)
   {
     v10->_sdRefBrowse = 0;
-    v10->_srcIfIndex = a3;
-    v10->_dstIfIndex = a4;
-    objc_storeStrong(&v10->_bonjourType, a5);
+    v10->_srcIfIndex = index;
+    v10->_dstIfIndex = ifIndex;
+    objc_storeStrong(&v10->_bonjourType, type);
     v12 = +[NSMutableDictionary dictionary];
     resolvers = v11->_resolvers;
     v11->_resolvers = v12;

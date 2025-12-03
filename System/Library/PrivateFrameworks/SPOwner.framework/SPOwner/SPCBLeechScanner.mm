@@ -1,15 +1,15 @@
 @interface SPCBLeechScanner
 + (id)remoteInterface;
-- (BOOL)containsOnlyNSSecureCodable:(id)a3;
+- (BOOL)containsOnlyNSSecureCodable:(id)codable;
 - (SPCBLeechScanner)init;
 - (SPCBPeripheralManagementXPCProtocol)proxy;
-- (id)fixupDictionary:(id)a3;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)handleStateChange:(unint64_t)a3;
+- (id)fixupDictionary:(id)dictionary;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)handleStateChange:(unint64_t)change;
 - (void)init;
-- (void)interruptionHandler:(id)a3;
-- (void)invalidationHandler:(id)a3;
+- (void)interruptionHandler:(id)handler;
+- (void)invalidationHandler:(id)handler;
 - (void)startScanning;
 - (void)stopScanning;
 @end
@@ -88,38 +88,34 @@ uint64_t __24__SPCBLeechScanner_init__block_invoke_2(uint64_t a1, uint64_t a2)
   return [*(a1 + 32) interruptionHandler:a2];
 }
 
-{
-  return [*(a1 + 32) invalidationHandler:a2];
-}
-
-- (void)handleStateChange:(unint64_t)a3
+- (void)handleStateChange:(unint64_t)change
 {
   *&v16[5] = *MEMORY[0x277D85DE8];
   v5 = LogCategory_CBPeripheralManagement();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 134217984;
-    *v16 = a3;
+    *v16 = change;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPCBLeechScanner: handleStateChange: %llu", &v15, 0xCu);
   }
 
-  v6 = [(SPCBLeechScanner *)self centralManager];
-  v7 = [v6 state];
+  centralManager = [(SPCBLeechScanner *)self centralManager];
+  state = [centralManager state];
 
-  [(SPCBLeechScanner *)self setEnabled:a3 != 0];
+  [(SPCBLeechScanner *)self setEnabled:change != 0];
   v8 = LogCategory_CBPeripheralManagement();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(SPCBLeechScanner *)self enabled];
-    v10 = [(SPCBLeechScanner *)self isScanning];
+    enabled = [(SPCBLeechScanner *)self enabled];
+    isScanning = [(SPCBLeechScanner *)self isScanning];
     v15 = 67109376;
-    v16[0] = v9;
+    v16[0] = enabled;
     LOWORD(v16[1]) = 1024;
-    *(&v16[1] + 2) = v10;
+    *(&v16[1] + 2) = isScanning;
     _os_log_impl(&dword_2643D0000, v8, OS_LOG_TYPE_DEFAULT, "SPCBLeechScanner: enabled: %u isScanning: %u", &v15, 0xEu);
   }
 
-  if (![(SPCBLeechScanner *)self enabled]&& ![(SPCBLeechScanner *)self isScanning]&& v7 != 5)
+  if (![(SPCBLeechScanner *)self enabled]&& ![(SPCBLeechScanner *)self isScanning]&& state != 5)
   {
     v11 = LogCategory_CBPeripheralManagement();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -132,7 +128,7 @@ uint64_t __24__SPCBLeechScanner_init__block_invoke_2(uint64_t a1, uint64_t a2)
     goto LABEL_23;
   }
 
-  if (![(SPCBLeechScanner *)self enabled]&& ![(SPCBLeechScanner *)self isScanning]&& v7 == 5)
+  if (![(SPCBLeechScanner *)self enabled]&& ![(SPCBLeechScanner *)self isScanning]&& state == 5)
   {
     v11 = LogCategory_CBPeripheralManagement();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -145,12 +141,12 @@ uint64_t __24__SPCBLeechScanner_init__block_invoke_2(uint64_t a1, uint64_t a2)
     goto LABEL_23;
   }
 
-  if (![(SPCBLeechScanner *)self enabled]&& [(SPCBLeechScanner *)self isScanning]&& v7 != 5 || ![(SPCBLeechScanner *)self enabled]&& [(SPCBLeechScanner *)self isScanning]&& v7 == 5)
+  if (![(SPCBLeechScanner *)self enabled]&& [(SPCBLeechScanner *)self isScanning]&& state != 5 || ![(SPCBLeechScanner *)self enabled]&& [(SPCBLeechScanner *)self isScanning]&& state == 5)
   {
     goto LABEL_37;
   }
 
-  if ([(SPCBLeechScanner *)self enabled]&& ![(SPCBLeechScanner *)self isScanning]&& v7 != 5)
+  if ([(SPCBLeechScanner *)self enabled]&& ![(SPCBLeechScanner *)self isScanning]&& state != 5)
   {
     v11 = LogCategory_CBPeripheralManagement();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -166,20 +162,20 @@ LABEL_23:
     goto LABEL_46;
   }
 
-  if ([(SPCBLeechScanner *)self enabled]&& ![(SPCBLeechScanner *)self isScanning]&& v7 == 5)
+  if ([(SPCBLeechScanner *)self enabled]&& ![(SPCBLeechScanner *)self isScanning]&& state == 5)
   {
     [(SPCBLeechScanner *)self startScanning];
     goto LABEL_46;
   }
 
-  if ([(SPCBLeechScanner *)self enabled]&& [(SPCBLeechScanner *)self isScanning]&& v7 != 5)
+  if ([(SPCBLeechScanner *)self enabled]&& [(SPCBLeechScanner *)self isScanning]&& state != 5)
   {
 LABEL_37:
     [(SPCBLeechScanner *)self stopScanning];
     goto LABEL_46;
   }
 
-  if ([(SPCBLeechScanner *)self enabled]&& [(SPCBLeechScanner *)self isScanning]&& v7 == 5)
+  if ([(SPCBLeechScanner *)self enabled]&& [(SPCBLeechScanner *)self isScanning]&& state == 5)
   {
     v11 = LogCategory_CBPeripheralManagement();
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -205,8 +201,8 @@ LABEL_46:
 - (void)startScanning
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SPCBLeechScanner *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(SPCBLeechScanner *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v4 = LogCategory_CBPeripheralManagement();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -218,8 +214,8 @@ LABEL_46:
   v9 = *MEMORY[0x277CBDE68];
   v10[0] = &unk_2875F2B38;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  v6 = [(SPCBLeechScanner *)self centralManager];
-  [v6 scanForPeripheralsWithServices:0 options:v5 completion:&__block_literal_global_9];
+  centralManager = [(SPCBLeechScanner *)self centralManager];
+  [centralManager scanForPeripheralsWithServices:0 options:v5 completion:&__block_literal_global_9];
 
   [(SPCBLeechScanner *)self setIsScanning:1];
   v7 = *MEMORY[0x277D85DE8];
@@ -240,8 +236,8 @@ void __33__SPCBLeechScanner_startScanning__block_invoke(uint64_t a1, void *a2)
 
 - (void)stopScanning
 {
-  v3 = [(SPCBLeechScanner *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(SPCBLeechScanner *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v4 = LogCategory_CBPeripheralManagement();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -250,36 +246,36 @@ void __33__SPCBLeechScanner_startScanning__block_invoke(uint64_t a1, void *a2)
     _os_log_impl(&dword_2643D0000, v4, OS_LOG_TYPE_DEFAULT, "SPCBLeechScanner: stopScanning", v6, 2u);
   }
 
-  v5 = [(SPCBLeechScanner *)self centralManager];
-  [v5 stopScan];
+  centralManager = [(SPCBLeechScanner *)self centralManager];
+  [centralManager stopScan];
 
   [(SPCBLeechScanner *)self setIsScanning:0];
 }
 
-- (void)interruptionHandler:(id)a3
+- (void)interruptionHandler:(id)handler
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  handlerCopy = handler;
   v4 = LogCategory_CBPeripheralManagement();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v3;
+    v7 = handlerCopy;
     _os_log_impl(&dword_2643D0000, v4, OS_LOG_TYPE_DEFAULT, "SPCBLeechScanner: interruptionHandler %{public}@", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidationHandler:(id)a3
+- (void)invalidationHandler:(id)handler
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = LogCategory_CBPeripheralManagement();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = handlerCopy;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPCBLeechScanner: invalidationHandler %{public}@", &v7, 0xCu);
   }
 
@@ -295,14 +291,14 @@ void __33__SPCBLeechScanner_startScanning__block_invoke(uint64_t a1, void *a2)
   v10 = __Block_byref_object_copy__2;
   v11 = __Block_byref_object_dispose__2;
   v12 = 0;
-  v3 = [(SPCBLeechScanner *)self queueSynchronizer];
+  queueSynchronizer = [(SPCBLeechScanner *)self queueSynchronizer];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __25__SPCBLeechScanner_proxy__block_invoke;
   v6[3] = &unk_279B594E0;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 conditionalSync:v6];
+  [queueSynchronizer conditionalSync:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -364,43 +360,43 @@ uint64_t __35__SPCBLeechScanner_remoteInterface__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  [a3 state];
-  v4 = [(SPCBLeechScanner *)self enabled];
+  [state state];
+  enabled = [(SPCBLeechScanner *)self enabled];
 
-  [(SPCBLeechScanner *)self handleStateChange:v4];
+  [(SPCBLeechScanner *)self handleStateChange:enabled];
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a6;
-  v10 = [(SPCBLeechScanner *)self serialQueue];
-  dispatch_assert_queue_V2(v10);
+  dataCopy = data;
+  iCopy = i;
+  serialQueue = [(SPCBLeechScanner *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v11 = LogCategory_CBPeripheralManagement();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543618;
-    v16 = v8;
+    v16 = dataCopy;
     v17 = 2114;
-    v18 = v9;
+    v18 = iCopy;
     _os_log_impl(&dword_2643D0000, v11, OS_LOG_TYPE_DEFAULT, "SPCBLeechScanner: didDiscoverPeripheral: %{public}@  RSSI: %{public}@", &v15, 0x16u);
   }
 
-  v12 = [(SPCBLeechScanner *)self fixupDictionary:v8];
+  v12 = [(SPCBLeechScanner *)self fixupDictionary:dataCopy];
   if ([(SPCBLeechScanner *)self containsOnlyNSSecureCodable:v12])
   {
-    v13 = [(SPCBLeechScanner *)self proxy];
-    -[NSObject leechScannerDiscoveredAdvertisementData:rssi:completion:](v13, "leechScannerDiscoveredAdvertisementData:rssi:completion:", v12, [v9 intValue], &__block_literal_global_71_0);
+    proxy = [(SPCBLeechScanner *)self proxy];
+    -[NSObject leechScannerDiscoveredAdvertisementData:rssi:completion:](proxy, "leechScannerDiscoveredAdvertisementData:rssi:completion:", v12, [iCopy intValue], &__block_literal_global_71_0);
   }
 
   else
   {
-    v13 = LogCategory_CBPeripheralManagement();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    proxy = LogCategory_CBPeripheralManagement();
+    if (os_log_type_enabled(proxy, OS_LOG_TYPE_ERROR))
     {
       [SPCBLeechScanner centralManager:didDiscoverPeripheral:advertisementData:RSSI:];
     }
@@ -422,13 +418,13 @@ void __80__SPCBLeechScanner_centralManager_didDiscoverPeripheral_advertisementDa
   }
 }
 
-- (id)fixupDictionary:(id)a3
+- (id)fixupDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 mutableCopy];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy mutableCopy];
   v5 = *MEMORY[0x277CBDD28];
-  v6 = [v3 objectForKeyedSubscript:*MEMORY[0x277CBDD28]];
+  v6 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CBDD28]];
   if (v6)
   {
     v18 = v4;
@@ -437,8 +433,8 @@ void __80__SPCBLeechScanner_centralManager_didDiscoverPeripheral_advertisementDa
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = [v6 allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    allKeys = [v6 allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
       v10 = v9;
@@ -449,16 +445,16 @@ void __80__SPCBLeechScanner_centralManager_didDiscoverPeripheral_advertisementDa
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
           v13 = *(*(&v19 + 1) + 8 * i);
           v14 = [v6 objectForKeyedSubscript:v13];
-          v15 = [v13 data];
-          [v7 setObject:v14 forKeyedSubscript:v15];
+          data = [v13 data];
+          [v7 setObject:v14 forKeyedSubscript:data];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v10);
@@ -473,20 +469,20 @@ void __80__SPCBLeechScanner_centralManager_didDiscoverPeripheral_advertisementDa
   return v4;
 }
 
-- (BOOL)containsOnlyNSSecureCodable:(id)a3
+- (BOOL)containsOnlyNSSecureCodable:(id)codable
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  codableCopy = codable;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = codableCopy;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v6 = [v5 allKeys];
-    v7 = [v6 countByEnumeratingWithState:&v34 objects:v40 count:16];
+    allKeys = [v5 allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v7)
     {
       v8 = v7;
@@ -497,7 +493,7 @@ void __80__SPCBLeechScanner_centralManager_didDiscoverPeripheral_advertisementDa
         {
           if (*v35 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v11 = *(*(&v34 + 1) + 8 * i);
@@ -523,7 +519,7 @@ LABEL_38:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v34 objects:v40 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v34 objects:v40 count:16];
         v14 = 1;
         if (v8)
         {
@@ -551,7 +547,7 @@ LABEL_39:
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v5 = v4;
+    v5 = codableCopy;
     v15 = [v5 countByEnumeratingWithState:&v30 objects:v39 count:16];
     if (v15)
     {
@@ -598,7 +594,7 @@ LABEL_32:
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v5 = v4;
+    v5 = codableCopy;
     v19 = [v5 countByEnumeratingWithState:&v26 objects:v38 count:16];
     if (v19)
     {
@@ -638,7 +634,7 @@ LABEL_33:
     goto LABEL_40;
   }
 
-  if ([v4 conformsToProtocol:&unk_2875F3818])
+  if ([codableCopy conformsToProtocol:&unk_2875F3818])
   {
     v14 = 1;
     goto LABEL_41;

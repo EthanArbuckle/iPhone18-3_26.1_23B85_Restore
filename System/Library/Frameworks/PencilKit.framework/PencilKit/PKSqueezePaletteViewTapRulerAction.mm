@@ -1,34 +1,34 @@
 @interface PKSqueezePaletteViewTapRulerAction
-- (id)initWithRulerTool:(id *)a1;
+- (id)initWithRulerTool:(id *)tool;
 - (void)performAction;
 @end
 
 @implementation PKSqueezePaletteViewTapRulerAction
 
-- (id)initWithRulerTool:(id *)a1
+- (id)initWithRulerTool:(id *)tool
 {
   v4 = a2;
-  if (a1)
+  if (tool)
   {
-    v7.receiver = a1;
+    v7.receiver = tool;
     v7.super_class = PKSqueezePaletteViewTapRulerAction;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    tool = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return tool;
 }
 
 - (void)performAction
 {
-  if (a1)
+  if (self)
   {
-    objc_initWeak(&location, *(a1 + 8));
-    v2 = *(a1 + 8);
+    objc_initWeak(&location, *(self + 8));
+    v2 = *(self + 8);
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __51__PKSqueezePaletteViewTapRulerAction_performAction__block_invoke;

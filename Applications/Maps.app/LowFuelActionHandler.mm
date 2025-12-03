@@ -1,16 +1,16 @@
 @interface LowFuelActionHandler
-+ (void)performAction:(id)a3 inContext:(id)a4;
++ (void)performAction:(id)action inContext:(id)context;
 @end
 
 @implementation LowFuelActionHandler
 
-+ (void)performAction:(id)a3 inContext:(id)a4
++ (void)performAction:(id)action inContext:(id)context
 {
-  v4 = a3;
+  actionCopy = action;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    +[SearchSession performLowFuelSearchForEngineType:withObserver:](SearchSession, "performLowFuelSearchForEngineType:withObserver:", [v4 engineType], 0);
+    +[SearchSession performLowFuelSearchForEngineType:withObserver:](SearchSession, "performLowFuelSearchForEngineType:withObserver:", [actionCopy engineType], 0);
   }
 }
 

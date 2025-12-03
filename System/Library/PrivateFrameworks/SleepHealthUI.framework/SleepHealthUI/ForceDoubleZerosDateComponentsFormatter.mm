@@ -1,6 +1,6 @@
 @interface ForceDoubleZerosDateComponentsFormatter
 - (_TtC13SleepHealthUI39ForceDoubleZerosDateComponentsFormatter)init;
-- (_TtC13SleepHealthUI39ForceDoubleZerosDateComponentsFormatter)initWithCoder:(id)a3;
+- (_TtC13SleepHealthUI39ForceDoubleZerosDateComponentsFormatter)initWithCoder:(id)coder;
 @end
 
 @implementation ForceDoubleZerosDateComponentsFormatter
@@ -12,12 +12,12 @@
   return [(NSDateComponentsFormatter *)&v3 init];
 }
 
-- (_TtC13SleepHealthUI39ForceDoubleZerosDateComponentsFormatter)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI39ForceDoubleZerosDateComponentsFormatter)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ForceDoubleZerosDateComponentsFormatter();
-  v4 = a3;
-  v5 = [(NSDateComponentsFormatter *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(NSDateComponentsFormatter *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,7 +1,7 @@
 @interface MTLCaptureDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLCaptureDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -28,7 +28,7 @@
   [(MTLCaptureDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTLCaptureDescriptor);
   [(MTLCaptureDescriptor *)v4 setCaptureObject:self->_captureObject];
@@ -37,9 +37,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -49,10 +49,10 @@
   if (v5 == objc_opt_class())
   {
     captureObject = self->_captureObject;
-    if ((captureObject == *(a3 + 1) || [captureObject isEqual:?]) && self->_destination == *(a3 + 2))
+    if ((captureObject == *(equal + 1) || [captureObject isEqual:?]) && self->_destination == *(equal + 2))
     {
       outputURL = self->_outputURL;
-      if (outputURL == *(a3 + 3) || ([(NSURL *)outputURL isEqual:?]& 1) != 0)
+      if (outputURL == *(equal + 3) || ([(NSURL *)outputURL isEqual:?]& 1) != 0)
       {
         return 1;
       }

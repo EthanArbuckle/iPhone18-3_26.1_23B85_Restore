@@ -1,11 +1,11 @@
 @interface SharedTripNavBannerView
 - (BOOL)bannerShouldShow;
-- (SharedTripNavBannerView)initWithFrame:(CGRect)a3;
+- (SharedTripNavBannerView)initWithFrame:(CGRect)frame;
 - (double)buttonHeightConstant;
 - (void)_updateButtonHeightConstraint;
 - (void)_updateFonts;
 - (void)dealloc;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateButtonTitle;
 - (void)updateTheme;
 @end
@@ -15,16 +15,16 @@
 - (void)updateTheme
 {
   shareETAButton = self->_shareETAButton;
-  v4 = [(SharedTripNavBannerView *)self theme];
-  v3 = [v4 keyColor];
-  [(UIButton *)shareETAButton setTitleColor:v3 forState:0];
+  theme = [(SharedTripNavBannerView *)self theme];
+  keyColor = [theme keyColor];
+  [(UIButton *)shareETAButton setTitleColor:keyColor forState:0];
 }
 
 - (double)buttonHeightConstant
 {
-  v2 = [(UIButton *)self->_shareETAButton titleLabel];
-  v3 = [v2 font];
-  [v3 _mapkit_scaledValueForValue:46.0];
+  titleLabel = [(UIButton *)self->_shareETAButton titleLabel];
+  font = [titleLabel font];
+  [font _mapkit_scaledValueForValue:46.0];
   v5 = v4;
 
   return v5;
@@ -32,11 +32,11 @@
 
 - (void)_updateFonts
 {
-  v6 = [(SharedTripNavBannerView *)self traitCollection];
-  v3 = [v6 _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:0 maximumContentSizeCategory:UIContentSizeCategoryExtraExtraExtraLarge];
+  traitCollection = [(SharedTripNavBannerView *)self traitCollection];
+  v3 = [traitCollection _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:0 maximumContentSizeCategory:UIContentSizeCategoryExtraExtraExtraLarge];
   v4 = [UIFont system20CompatibleWithTraitCollection:v3];
-  v5 = [(UIButton *)self->_shareETAButton titleLabel];
-  [v5 setFont:v4];
+  titleLabel = [(UIButton *)self->_shareETAButton titleLabel];
+  [titleLabel setFont:v4];
 }
 
 - (void)_updateButtonHeightConstraint
@@ -50,36 +50,36 @@
 - (void)updateButtonTitle
 {
   v3 = +[MSPSharedTripService sharedInstance];
-  v8 = [v3 receivers];
+  receivers = [v3 receivers];
 
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"[Share ETA] nav banner button" value:@"localized string not found" table:0];
 
   shareETAButton = self->_shareETAButton;
-  v7 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v5, [v8 count]);
+  v7 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v5, [receivers count]);
   [(UIButton *)shareETAButton setTitle:v7 forState:0];
 }
 
 - (BOOL)bannerShouldShow
 {
   v2 = +[MSPSharedTripService sharedInstance];
-  v3 = [v2 receivers];
-  v4 = [v3 count] != 0;
+  receivers = [v2 receivers];
+  v4 = [receivers count] != 0;
 
   return v4;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = SharedTripNavBannerView;
-  v4 = a3;
-  [(MapsThemeView *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(MapsThemeView *)&v9 traitCollectionDidChange:changeCopy];
   v5 = [(SharedTripNavBannerView *)self traitCollection:v9.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  v8 = sub_10008FB5C(v6, v7);
+  v8 = sub_10008FB5C(preferredContentSizeCategory, preferredContentSizeCategory2);
   if (v8)
   {
     [(SharedTripNavBannerView *)self _updateFonts];
@@ -97,11 +97,11 @@
   [(SharedTripNavBannerView *)&v4 dealloc];
 }
 
-- (SharedTripNavBannerView)initWithFrame:(CGRect)a3
+- (SharedTripNavBannerView)initWithFrame:(CGRect)frame
 {
   v41.receiver = self;
   v41.super_class = SharedTripNavBannerView;
-  v3 = [(SharedTripNavBannerView *)&v41 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SharedTripNavBannerView *)&v41 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MapsTheme visualEffectViewAllowingBlur:1];
@@ -115,24 +115,24 @@
     v3->_shareETAButton = v6;
 
     [(UIButton *)v3->_shareETAButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(UIVisualEffectView *)v3->_backgroundView contentView];
-    [v8 addSubview:v3->_shareETAButton];
+    contentView = [(UIVisualEffectView *)v3->_backgroundView contentView];
+    [contentView addSubview:v3->_shareETAButton];
 
     v9 = v3->_backgroundView;
-    v10 = [(UIVisualEffectView *)v9 window];
-    v11 = [v10 screen];
-    if (v11)
+    window = [(UIVisualEffectView *)v9 window];
+    screen = [window screen];
+    if (screen)
     {
-      v12 = [(UIVisualEffectView *)v9 window];
-      v13 = [v12 screen];
-      [v13 nativeScale];
+      window2 = [(UIVisualEffectView *)v9 window];
+      screen2 = [window2 screen];
+      [screen2 nativeScale];
       v15 = v14;
     }
 
     else
     {
-      v12 = +[UIScreen mainScreen];
-      [v12 nativeScale];
+      window2 = +[UIScreen mainScreen];
+      [window2 nativeScale];
       v15 = v16;
     }
 
@@ -146,35 +146,35 @@
       v17 = 1.0 / v15;
     }
 
-    v18 = [(UIButton *)v3->_shareETAButton heightAnchor];
-    v19 = [v18 constraintEqualToConstant:0.0];
+    heightAnchor = [(UIButton *)v3->_shareETAButton heightAnchor];
+    v19 = [heightAnchor constraintEqualToConstant:0.0];
     buttonHeightConstraint = v3->_buttonHeightConstraint;
     v3->_buttonHeightConstraint = v19;
 
-    v40 = [(UIVisualEffectView *)v3->_backgroundView heightAnchor];
-    v39 = [(SharedTripNavBannerView *)v3 heightAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39 constant:-v17];
+    heightAnchor2 = [(UIVisualEffectView *)v3->_backgroundView heightAnchor];
+    heightAnchor3 = [(SharedTripNavBannerView *)v3 heightAnchor];
+    v38 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3 constant:-v17];
     v42[0] = v38;
-    v37 = [(UIVisualEffectView *)v3->_backgroundView widthAnchor];
-    v36 = [(SharedTripNavBannerView *)v3 widthAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    widthAnchor = [(UIVisualEffectView *)v3->_backgroundView widthAnchor];
+    widthAnchor2 = [(SharedTripNavBannerView *)v3 widthAnchor];
+    v35 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v42[1] = v35;
-    v34 = [(UIVisualEffectView *)v3->_backgroundView topAnchor];
-    v33 = [(SharedTripNavBannerView *)v3 topAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33 constant:v17];
+    topAnchor = [(UIVisualEffectView *)v3->_backgroundView topAnchor];
+    topAnchor2 = [(SharedTripNavBannerView *)v3 topAnchor];
+    v32 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v17];
     v42[2] = v32;
-    v31 = [(UIButton *)v3->_shareETAButton widthAnchor];
-    v21 = [(SharedTripNavBannerView *)v3 widthAnchor];
-    v22 = [v31 constraintEqualToAnchor:v21];
+    widthAnchor3 = [(UIButton *)v3->_shareETAButton widthAnchor];
+    widthAnchor4 = [(SharedTripNavBannerView *)v3 widthAnchor];
+    v22 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     v42[3] = v22;
     v42[4] = v3->_buttonHeightConstraint;
-    v23 = [(UIButton *)v3->_shareETAButton centerXAnchor];
-    v24 = [(SharedTripNavBannerView *)v3 centerXAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    centerXAnchor = [(UIButton *)v3->_shareETAButton centerXAnchor];
+    centerXAnchor2 = [(SharedTripNavBannerView *)v3 centerXAnchor];
+    v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v42[5] = v25;
-    v26 = [(UIButton *)v3->_shareETAButton topAnchor];
-    v27 = [(SharedTripNavBannerView *)v3 topAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    topAnchor3 = [(UIButton *)v3->_shareETAButton topAnchor];
+    topAnchor4 = [(SharedTripNavBannerView *)v3 topAnchor];
+    v28 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v42[6] = v28;
     v29 = [NSArray arrayWithObjects:v42 count:7];
     [NSLayoutConstraint activateConstraints:v29];

@@ -6,7 +6,7 @@
 
 - (id)_lp_userVisibleHost
 {
-  v1 = encodeHostName(a1);
+  v1 = encodeHostName(self);
   v2 = decodeHostName(v1);
 
   return v2;

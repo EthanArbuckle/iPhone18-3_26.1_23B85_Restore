@@ -2,17 +2,17 @@
 - (ChromeOverlayHosting)host;
 - (LookAroundChromeOverlay)init;
 - (LookAroundChromeOverlayDelegate)delegate;
-- (void)_installInContentView:(id)a3;
+- (void)_installInContentView:(id)view;
 - (void)_invalidateConstraints;
 - (void)_updateAlpha;
 - (void)_updateConstraintsIfNeeded;
 - (void)_updateLayout;
-- (void)enterLookAroundForMapItem:(id)a3 isMarkedLocation:(BOOL)a4 lookAroundView:(id)a5;
-- (void)enterLookAroundPIP:(id)a3;
-- (void)setAlpha:(double)a3;
-- (void)setContainerStyle:(unint64_t)a3;
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHost:(id)a3;
+- (void)enterLookAroundForMapItem:(id)item isMarkedLocation:(BOOL)location lookAroundView:(id)view;
+- (void)enterLookAroundPIP:(id)p;
+- (void)setAlpha:(double)alpha;
+- (void)setContainerStyle:(unint64_t)style;
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setHost:(id)host;
 @end
 
 @implementation LookAroundChromeOverlay
@@ -41,11 +41,11 @@
   else
   {
     v5 = +[UIDevice currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    userInterfaceIdiom = [v5 userInterfaceIdiom];
 
     if (_UISolariumEnabled())
     {
-      v7 = (v6 & 0xFFFFFFFFFFFFFFFBLL) == 1 || containerStyle >= 8;
+      v7 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 || containerStyle >= 8;
       v4 = 0x5Cu >> containerStyle;
       if (v7)
       {
@@ -55,7 +55,7 @@
 
     else
     {
-      LOBYTE(v4) = v6 != 5;
+      LOBYTE(v4) = userInterfaceIdiom != 5;
     }
   }
 
@@ -90,28 +90,28 @@
     {
       if (self->_hasLeadingEdgeLayout || sub_10000FA08(self->_lookAroundController) == 5 && _UISolariumEnabled())
       {
-        v15 = [(LookAroundChromeOverlay *)self view];
-        v5 = [v15 leadingAnchor];
-        v6 = [v4 leadingAnchor];
-        v7 = [v5 constraintEqualToAnchor:v6];
+        view = [(LookAroundChromeOverlay *)self view];
+        leadingAnchor = [view leadingAnchor];
+        leadingAnchor2 = [v4 leadingAnchor];
+        v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v17 = v7;
         v8 = &v17;
       }
 
       else
       {
-        v15 = [(LookAroundChromeOverlay *)self view];
-        v5 = [v15 trailingAnchor];
-        v6 = [v4 trailingAnchor];
-        v7 = [v5 constraintEqualToAnchor:v6];
+        view = [(LookAroundChromeOverlay *)self view];
+        leadingAnchor = [view trailingAnchor];
+        leadingAnchor2 = [v4 trailingAnchor];
+        v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v16 = v7;
         v8 = &v16;
       }
 
-      v9 = [(LookAroundChromeOverlay *)self view];
-      v10 = [v9 bottomAnchor];
-      v11 = [v4 bottomAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11];
+      view2 = [(LookAroundChromeOverlay *)self view];
+      bottomAnchor = [view2 bottomAnchor];
+      bottomAnchor2 = [v4 bottomAnchor];
+      v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v8[1] = v12;
       v13 = [NSArray arrayWithObjects:v8 count:2];
       constraints = self->_constraints;
@@ -130,8 +130,8 @@
     overlayAlpha = self->_overlayAlpha;
   }
 
-  v3 = [(LookAroundChromeOverlay *)self view];
-  [v3 setAlpha:overlayAlpha];
+  view = [(LookAroundChromeOverlay *)self view];
+  [view setAlpha:overlayAlpha];
 }
 
 - (LookAroundChromeOverlayDelegate)delegate
@@ -148,41 +148,41 @@
   return WeakRetained;
 }
 
-- (void)enterLookAroundPIP:(id)a3
+- (void)enterLookAroundPIP:(id)p
 {
-  v4 = a3;
+  pCopy = p;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained enterLookAroundPIP:v4];
+  [WeakRetained enterLookAroundPIP:pCopy];
 }
 
-- (void)enterLookAroundForMapItem:(id)a3 isMarkedLocation:(BOOL)a4 lookAroundView:(id)a5
+- (void)enterLookAroundForMapItem:(id)item isMarkedLocation:(BOOL)location lookAroundView:(id)view
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  locationCopy = location;
+  viewCopy = view;
+  itemCopy = item;
   [GEOAPPortal captureLookAroundUserAction:6060 onTarget:201 eventValue:0];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained enterLookAroundForMapItem:v9 isMarkedLocation:v5 lookAroundView:v8];
+  [WeakRetained enterLookAroundForMapItem:itemCopy isMarkedLocation:locationCopy lookAroundView:viewCopy];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  if (self->_overlayAlpha != a3)
+  if (self->_overlayAlpha != alpha)
   {
-    self->_overlayAlpha = a3;
+    self->_overlayAlpha = alpha;
     [(LookAroundChromeOverlay *)self _updateAlpha];
   }
 }
 
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  if (self->_overlayHidden != a3)
+  if (self->_overlayHidden != hidden)
   {
-    v4 = a4;
-    self->_overlayHidden = a3;
-    v7 = [(LookAroundChromeOverlay *)self view];
+    animatedCopy = animated;
+    self->_overlayHidden = hidden;
+    view = [(LookAroundChromeOverlay *)self view];
     v8 = objc_alloc_init(GroupAnimation);
-    [(GroupAnimation *)v8 setAnimated:v4];
+    [(GroupAnimation *)v8 setAnimated:animatedCopy];
     [(GroupAnimation *)v8 setDuration:0.3];
     [(GroupAnimation *)v8 setOptions:4];
     v16[0] = _NSConcreteStackBlock;
@@ -190,8 +190,8 @@
     v16[2] = sub_10056F15C;
     v16[3] = &unk_101660CE8;
     v16[4] = self;
-    v18 = a3;
-    v9 = v7;
+    hiddenCopy = hidden;
+    v9 = view;
     v17 = v9;
     [(GroupAnimation *)v8 addPreparation:v16];
     v15[0] = _NSConcreteStackBlock;
@@ -216,38 +216,38 @@
   }
 }
 
-- (void)setContainerStyle:(unint64_t)a3
+- (void)setContainerStyle:(unint64_t)style
 {
-  if (self->_containerStyle != a3)
+  if (self->_containerStyle != style)
   {
-    self->_containerStyle = a3;
+    self->_containerStyle = style;
     [(LookAroundButtonContainerViewController *)self->_lookAroundController setContainerStyle:?];
 
     [(LookAroundChromeOverlay *)self _updateLayout];
   }
 }
 
-- (void)_installInContentView:(id)a3
+- (void)_installInContentView:(id)view
 {
-  v8 = a3;
-  v4 = [(LookAroundChromeOverlay *)self view];
-  v5 = [v4 superview];
+  viewCopy = view;
+  view = [(LookAroundChromeOverlay *)self view];
+  superview = [view superview];
 
-  if (v5 != v8)
+  if (superview != viewCopy)
   {
-    v6 = [(LookAroundChromeOverlay *)self view];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view2 = [(LookAroundChromeOverlay *)self view];
+    [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v7 = [(LookAroundChromeOverlay *)self view];
-    [v8 addSubview:v7];
+    view3 = [(LookAroundChromeOverlay *)self view];
+    [viewCopy addSubview:view3];
 
     [(LookAroundChromeOverlay *)self _updateLayout];
   }
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
-  obj = a3;
+  obj = host;
   WeakRetained = objc_loadWeakRetained(&self->_host);
 
   v5 = obj;
@@ -256,15 +256,15 @@
     lookAroundController = self->_lookAroundController;
     if (lookAroundController)
     {
-      v7 = [(LookAroundButtonContainerViewController *)lookAroundController parentViewController];
+      parentViewController = [(LookAroundButtonContainerViewController *)lookAroundController parentViewController];
 
-      if (v7)
+      if (parentViewController)
       {
         [(LookAroundButtonContainerViewController *)self->_lookAroundController willMoveToParentViewController:0];
         if ([(LookAroundButtonContainerViewController *)self->_lookAroundController isViewLoaded])
         {
-          v8 = [(LookAroundButtonContainerViewController *)self->_lookAroundController view];
-          [v8 removeFromSuperview];
+          view = [(LookAroundButtonContainerViewController *)self->_lookAroundController view];
+          [view removeFromSuperview];
         }
 
         [(LookAroundButtonContainerViewController *)self->_lookAroundController removeFromParentViewController];
@@ -285,12 +285,12 @@
         [(LookAroundButtonContainerViewController *)self->_lookAroundController setDelegate:self];
       }
 
-      v11 = [obj containingViewController];
-      [(LookAroundButtonContainerViewController *)self->_lookAroundController willMoveToParentViewController:v11];
-      v12 = [obj overlayContentView];
-      [(LookAroundChromeOverlay *)self _installInContentView:v12];
+      containingViewController = [obj containingViewController];
+      [(LookAroundButtonContainerViewController *)self->_lookAroundController willMoveToParentViewController:containingViewController];
+      overlayContentView = [obj overlayContentView];
+      [(LookAroundChromeOverlay *)self _installInContentView:overlayContentView];
 
-      [(LookAroundButtonContainerViewController *)self->_lookAroundController didMoveToParentViewController:v11];
+      [(LookAroundButtonContainerViewController *)self->_lookAroundController didMoveToParentViewController:containingViewController];
       v5 = obj;
     }
   }

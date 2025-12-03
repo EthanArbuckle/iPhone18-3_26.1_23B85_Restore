@@ -1,15 +1,15 @@
 @interface NSSQLSubqueryExpressionIntermediate
 - (BOOL)_isKeypathScopedToSubquery:(_BOOL8)result;
-- (BOOL)keypathExpressionIsSafeLHSForIn:(id)a3;
-- (NSSQLSubqueryExpressionIntermediate)initWithExpression:(id)a3 trailingKeypath:(id)a4 inScope:(id)a5;
-- (id)fetchIntermediateForKeypathExpression:(id)a3;
-- (id)generateSQLStringInContext:(id)a3;
-- (id)governingAliasForKeypathExpression:(id)a3;
-- (id)governingEntityForKeypathExpression:(id)a3;
-- (uint64_t)canDoDirectJoinGivenPredicate:(void *)a1;
-- (void)_promoteJoinsForSubqueryScopedKeypath:(id)a3;
+- (BOOL)keypathExpressionIsSafeLHSForIn:(id)in;
+- (NSSQLSubqueryExpressionIntermediate)initWithExpression:(id)expression trailingKeypath:(id)keypath inScope:(id)scope;
+- (id)fetchIntermediateForKeypathExpression:(id)expression;
+- (id)generateSQLStringInContext:(id)context;
+- (id)governingAliasForKeypathExpression:(id)expression;
+- (id)governingEntityForKeypathExpression:(id)expression;
+- (uint64_t)canDoDirectJoinGivenPredicate:(void *)predicate;
+- (void)_promoteJoinsForSubqueryScopedKeypath:(id)keypath;
 - (void)_promoteJoinsForSubqueryScopedKeypaths;
-- (void)_setVariableColumn:(uint64_t)a1;
+- (void)_setVariableColumn:(uint64_t)column;
 - (void)dealloc;
 @end
 
@@ -70,32 +70,32 @@
   [(NSSQLSubqueryExpressionIntermediate *)&v3 dealloc];
 }
 
-- (NSSQLSubqueryExpressionIntermediate)initWithExpression:(id)a3 trailingKeypath:(id)a4 inScope:(id)a5
+- (NSSQLSubqueryExpressionIntermediate)initWithExpression:(id)expression trailingKeypath:(id)keypath inScope:(id)scope
 {
   v11.receiver = self;
   v11.super_class = NSSQLSubqueryExpressionIntermediate;
-  v7 = [(NSSQLExpressionIntermediate *)&v11 initWithExpression:a3 allowToMany:0 inScope:a5];
+  v7 = [(NSSQLExpressionIntermediate *)&v11 initWithExpression:expression allowToMany:0 inScope:scope];
   if (v7)
   {
-    v7->_trailingKeypath = a4;
-    if (a4)
+    v7->_trailingKeypath = keypath;
+    if (keypath)
     {
-      if ([objc_msgSend(a4 "constantValue")] != 0x7FFFFFFFFFFFFFFFLL)
+      if ([objc_msgSend(keypath "constantValue")] != 0x7FFFFFFFFFFFFFFFLL)
       {
         v7->_hasTrailingFunction = 1;
       }
 
-      v8 = [objc_msgSend(a4 "constantValue")];
+      v8 = [objc_msgSend(keypath "constantValue")];
       v7->_isCount = v8;
       if (v8)
       {
-        v7->_onlyTrailIsCount = [objc_msgSend(a4 "constantValue")];
-        v9 = [MEMORY[0x1E696AF08] defaultInstance];
-        v7->_subqueryHasTruePredicate = v9 == [a3 predicate];
+        v7->_onlyTrailIsCount = [objc_msgSend(keypath "constantValue")];
+        defaultInstance = [MEMORY[0x1E696AF08] defaultInstance];
+        v7->_subqueryHasTruePredicate = defaultInstance == [expression predicate];
       }
     }
 
-    v7->_variableExpression = [a3 variableExpression];
+    v7->_variableExpression = [expression variableExpression];
     v7->_useDistinct = 0;
   }
 
@@ -113,57 +113,57 @@
   return result;
 }
 
-- (id)fetchIntermediateForKeypathExpression:(id)a3
+- (id)fetchIntermediateForKeypathExpression:(id)expression
 {
-  if ([(NSSQLSubqueryExpressionIntermediate *)self _isKeypathScopedToSubquery:a3])
+  if ([(NSSQLSubqueryExpressionIntermediate *)self _isKeypathScopedToSubquery:expression])
   {
     return self->_fetchIntermediate;
   }
 
   scope = self->super.super._scope;
 
-  return [(NSSQLIntermediate *)scope fetchIntermediateForKeypathExpression:a3];
+  return [(NSSQLIntermediate *)scope fetchIntermediateForKeypathExpression:expression];
 }
 
-- (id)governingEntityForKeypathExpression:(id)a3
+- (id)governingEntityForKeypathExpression:(id)expression
 {
-  if ([(NSSQLSubqueryExpressionIntermediate *)self _isKeypathScopedToSubquery:a3])
+  if ([(NSSQLSubqueryExpressionIntermediate *)self _isKeypathScopedToSubquery:expression])
   {
     return self->_governingEntityForVariable;
   }
 
   v6.receiver = self;
   v6.super_class = NSSQLSubqueryExpressionIntermediate;
-  return [(NSSQLIntermediate *)&v6 governingEntityForKeypathExpression:a3];
+  return [(NSSQLIntermediate *)&v6 governingEntityForKeypathExpression:expression];
 }
 
-- (id)governingAliasForKeypathExpression:(id)a3
+- (id)governingAliasForKeypathExpression:(id)expression
 {
-  if ([(NSSQLSubqueryExpressionIntermediate *)self _isKeypathScopedToSubquery:a3])
+  if ([(NSSQLSubqueryExpressionIntermediate *)self _isKeypathScopedToSubquery:expression])
   {
     return self->_variableAlias;
   }
 
   v6.receiver = self;
   v6.super_class = NSSQLSubqueryExpressionIntermediate;
-  return [(NSSQLIntermediate *)&v6 governingAliasForKeypathExpression:a3];
+  return [(NSSQLIntermediate *)&v6 governingAliasForKeypathExpression:expression];
 }
 
-- (void)_promoteJoinsForSubqueryScopedKeypath:(id)a3
+- (void)_promoteJoinsForSubqueryScopedKeypath:(id)keypath
 {
-  if ([objc_msgSend(a3 "operand")])
+  if ([objc_msgSend(keypath "operand")])
   {
-    if ([a3 expressionType] == 3)
+    if ([keypath expressionType] == 3)
     {
-      v5 = [a3 keyPath];
+      keyPath = [keypath keyPath];
     }
 
     else
     {
-      v5 = [objc_msgSend(objc_msgSend(a3 "arguments")];
+      keyPath = [objc_msgSend(objc_msgSend(keypath "arguments")];
     }
 
-    v6 = [v5 componentsSeparatedByString:@"."];
+    v6 = [keyPath componentsSeparatedByString:@"."];
     keypathsToPromote = self->_keypathsToPromote;
     if (!keypathsToPromote)
     {
@@ -176,26 +176,26 @@
 
   scope = self->super.super._scope;
 
-  [(NSSQLIntermediate *)scope _promoteJoinsForSubqueryScopedKeypath:a3];
+  [(NSSQLIntermediate *)scope _promoteJoinsForSubqueryScopedKeypath:keypath];
 }
 
-- (BOOL)keypathExpressionIsSafeLHSForIn:(id)a3
+- (BOOL)keypathExpressionIsSafeLHSForIn:(id)in
 {
   v25 = *MEMORY[0x1E69E9840];
-  if ([(NSSQLSubqueryExpressionIntermediate *)self _isKeypathScopedToSubquery:a3])
+  if ([(NSSQLSubqueryExpressionIntermediate *)self _isKeypathScopedToSubquery:in])
   {
-    v5 = [(NSSQLSubqueryExpressionIntermediate *)self governingEntityForKeypathExpression:a3];
-    if ([a3 expressionType] == 3)
+    destinationEntity = [(NSSQLSubqueryExpressionIntermediate *)self governingEntityForKeypathExpression:in];
+    if ([in expressionType] == 3)
     {
-      v6 = [a3 keyPath];
+      keyPath = [in keyPath];
     }
 
     else
     {
-      v6 = [objc_msgSend(objc_msgSend(a3 "arguments")];
+      keyPath = [objc_msgSend(objc_msgSend(in "arguments")];
     }
 
-    v8 = [v6 componentsSeparatedByString:@"."];
+    v8 = [keyPath componentsSeparatedByString:@"."];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -215,12 +215,12 @@ LABEL_8:
           objc_enumerationMutation(v8);
         }
 
-        if (!v5)
+        if (!destinationEntity)
         {
           goto LABEL_23;
         }
 
-        v14 = [v5[5] objectForKey:*(*(&v20 + 1) + 8 * v13)];
+        v14 = [destinationEntity[5] objectForKey:*(*(&v20 + 1) + 8 * v13)];
         if (!v14)
         {
           goto LABEL_23;
@@ -235,7 +235,7 @@ LABEL_8:
         v16 = v15[24];
         if (v16 == 7)
         {
-          v5 = [v15 destinationEntity];
+          destinationEntity = [v15 destinationEntity];
         }
 
         else
@@ -245,7 +245,7 @@ LABEL_8:
             break;
           }
 
-          v5 = 0;
+          destinationEntity = 0;
         }
 
 LABEL_20:
@@ -262,14 +262,14 @@ LABEL_20:
         }
       }
 
-      v17 = [v15 destinationEntity];
+      destinationEntity2 = [v15 destinationEntity];
       if (v11)
       {
         result = 0;
         goto LABEL_25;
       }
 
-      v5 = v17;
+      destinationEntity = destinationEntity2;
       v11 = 1;
       goto LABEL_20;
     }
@@ -282,7 +282,7 @@ LABEL_23:
   {
     v19.receiver = self;
     v19.super_class = NSSQLSubqueryExpressionIntermediate;
-    result = [(NSSQLIntermediate *)&v19 keypathExpressionIsSafeLHSForIn:a3];
+    result = [(NSSQLIntermediate *)&v19 keypathExpressionIsSafeLHSForIn:in];
   }
 
 LABEL_25:
@@ -290,17 +290,17 @@ LABEL_25:
   return result;
 }
 
-- (void)_setVariableColumn:(uint64_t)a1
+- (void)_setVariableColumn:(uint64_t)column
 {
-  if (*(a1 + 88) != a2)
+  if (*(column + 88) != a2)
   {
     v4 = a2;
 
-    *(a1 + 88) = a2;
+    *(column + 88) = a2;
   }
 }
 
-- (uint64_t)canDoDirectJoinGivenPredicate:(void *)a1
+- (uint64_t)canDoDirectJoinGivenPredicate:(void *)predicate
 {
   v4 = [NSSQLSubqueryExpressionIntermediatePredicateVisitor alloc];
   if (v4)
@@ -310,7 +310,7 @@ LABEL_25:
     v5 = objc_msgSendSuper2(&v8, sel_init);
     if (v5)
     {
-      v5[1] = a1;
+      v5[1] = predicate;
       *(v5 + 16) = 0;
     }
   }
@@ -325,11 +325,11 @@ LABEL_25:
   return v6;
 }
 
-- (id)generateSQLStringInContext:(id)a3
+- (id)generateSQLStringInContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v158 = *MEMORY[0x1E69E9840];
-  if ([a3 objectForKey:@"NSUnderlyingException"])
+  if ([context objectForKey:@"NSUnderlyingException"])
   {
     goto LABEL_9;
   }
@@ -339,9 +339,9 @@ LABEL_25:
     trailingKeypath = self->_trailingKeypath;
     if (trailingKeypath)
     {
-      v12 = [(NSExpression *)trailingKeypath predicateFormat];
-      v13 = [v12 rangeOfString:@".@"];
-      if (v13 != [v12 rangeOfString:@".@" options:4])
+      predicateFormat = [(NSExpression *)trailingKeypath predicateFormat];
+      v13 = [predicateFormat rangeOfString:@".@"];
+      if (v13 != [predicateFormat rangeOfString:@".@" options:4])
       {
         v14 = MEMORY[0x1E695DF30];
         v15 = *MEMORY[0x1E695D940];
@@ -357,10 +357,10 @@ LABEL_7:
 
     else
     {
-      v12 = 0;
+      predicateFormat = 0;
     }
 
-    if ((-[NSSQLIntermediate isTargetColumnsScoped](self, "isTargetColumnsScoped") || -[NSSQLIntermediate isUpdateScoped](self, "isUpdateScoped")) && !self->_trailingKeypath && ([v12 hasSuffix:@".@count"] & 1) == 0 && (objc_msgSend(v12, "hasSuffix:", @".@min") & 1) == 0 && (objc_msgSend(v12, "hasSuffix:", @".@max") & 1) == 0 && (objc_msgSend(v12, "hasSuffix:", @".@sum") & 1) == 0 && (objc_msgSend(v12, "hasSuffix:", @".@avg") & 1) == 0)
+    if ((-[NSSQLIntermediate isTargetColumnsScoped](self, "isTargetColumnsScoped") || -[NSSQLIntermediate isUpdateScoped](self, "isUpdateScoped")) && !self->_trailingKeypath && ([predicateFormat hasSuffix:@".@count"] & 1) == 0 && (objc_msgSend(predicateFormat, "hasSuffix:", @".@min") & 1) == 0 && (objc_msgSend(predicateFormat, "hasSuffix:", @".@max") & 1) == 0 && (objc_msgSend(predicateFormat, "hasSuffix:", @".@sum") & 1) == 0 && (objc_msgSend(predicateFormat, "hasSuffix:", @".@avg") & 1) == 0)
     {
       v14 = MEMORY[0x1E695DF30];
       v15 = *MEMORY[0x1E695D940];
@@ -369,53 +369,53 @@ LABEL_7:
     }
 
     self->_fetchIntermediate = [[NSSQLFetchIntermediate alloc] initWithScope:self];
-    v20 = [(NSExpression *)self->super._expression collection];
-    if (([objc_opt_class() isSimpleKeypath:v20] & 1) == 0 && !-[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](self, v20))
+    collection = [(NSExpression *)self->super._expression collection];
+    if (([objc_opt_class() isSimpleKeypath:collection] & 1) == 0 && !-[NSSQLIntermediate isVariableBasedKeypathScopedBySubquery:](self, collection))
     {
-      [v3 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unsupported subquery collection type (%@)", v20), 0), @"NSUnderlyingException"}];
+      [contextCopy setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unsupported subquery collection type (%@)", collection), 0), @"NSUnderlyingException"}];
       goto LABEL_140;
     }
 
-    v21 = [objc_msgSend(objc_msgSend(objc_msgSend(v20 "arguments")];
+    v21 = [objc_msgSend(objc_msgSend(objc_msgSend(collection "arguments")];
     if ([v21 count] < 2)
     {
-      v22 = [MEMORY[0x1E695DEC8] array];
+      array = [MEMORY[0x1E695DEC8] array];
     }
 
     else
     {
-      v22 = [v21 subarrayWithRange:{1, objc_msgSend(v21, "count") - 1}];
+      array = [v21 subarrayWithRange:{1, objc_msgSend(v21, "count") - 1}];
     }
 
-    v151 = v22;
-    v23 = [(NSSQLIntermediate *)self->super.super._scope governingEntityForKeypathExpression:v20];
+    v151 = array;
+    v23 = [(NSSQLIntermediate *)self->super.super._scope governingEntityForKeypathExpression:collection];
     self->_selectFromEntity = v23;
-    v24 = [(NSSQLIntermediate *)self isUpdateColumnsScoped];
+    isUpdateColumnsScoped = [(NSSQLIntermediate *)self isUpdateColumnsScoped];
     scope = self->super.super._scope;
-    if (v24)
+    if (isUpdateColumnsScoped)
     {
-      v26 = [(NSSQLIntermediate *)scope governingAlias];
-      if (v26)
+      governingAlias = [(NSSQLIntermediate *)scope governingAlias];
+      if (governingAlias)
       {
         goto LABEL_30;
       }
 
-      v27 = [(NSSQLEntity *)v23 tableName];
+      tableName = [(NSSQLEntity *)v23 tableName];
     }
 
     else
     {
-      v27 = [(NSSQLIntermediate *)scope governingAliasForKeypathExpression:v20];
+      tableName = [(NSSQLIntermediate *)scope governingAliasForKeypathExpression:collection];
     }
 
-    v26 = v27;
+    governingAlias = tableName;
 LABEL_30:
-    v148 = v20;
+    v148 = collection;
     v28 = [v21 objectAtIndex:0];
     if (v23)
     {
       v29 = [(NSMutableDictionary *)v23->_properties objectForKey:v28];
-      v30 = [v3 valueForKey:@"explicitRestrictingEntityQualifier"];
+      v30 = [contextCopy valueForKey:@"explicitRestrictingEntityQualifier"];
       if (v29)
       {
         goto LABEL_38;
@@ -424,17 +424,17 @@ LABEL_30:
 
     else
     {
-      v30 = [v3 valueForKey:@"explicitRestrictingEntityQualifier"];
+      v30 = [contextCopy valueForKey:@"explicitRestrictingEntityQualifier"];
     }
 
     v31 = v30;
     if ([v30 count])
     {
-      v32 = [v31 lastObject];
+      lastObject = [v31 lastObject];
       v33 = [v21 objectAtIndex:0];
-      if (v32)
+      if (lastObject)
       {
-        v29 = [*(v32 + 40) objectForKey:v33];
+        v29 = [*(lastObject + 40) objectForKey:v33];
       }
 
       else
@@ -451,18 +451,18 @@ LABEL_30:
     }
 
 LABEL_38:
-    v34 = [objc_msgSend(v3 objectForKey:{@"aliasGenerator", "generateTableAlias"}];
+    v34 = [objc_msgSend(contextCopy objectForKey:{@"aliasGenerator", "generateTableAlias"}];
     self->_selectEntityAlias = v34;
     self->_variableAlias = v34;
     self->_governingEntityForVariable = self->_selectFromEntity;
-    v35 = [v29 propertyType];
+    propertyType = [v29 propertyType];
     [(NSSQLStatementIntermediate *)self->_fetchIntermediate setGoverningAlias:self->_selectEntityAlias];
-    switch(v35)
+    switch(propertyType)
     {
       case 9:
-        v47 = [v29 destinationEntity];
-        self->_selectFromEntity = v47;
-        self->_governingEntityForVariable = v47;
+        destinationEntity = [v29 destinationEntity];
+        self->_selectFromEntity = destinationEntity;
+        self->_governingEntityForVariable = destinationEntity;
         if (v29)
         {
           v41 = v29[7];
@@ -473,7 +473,7 @@ LABEL_38:
           v41 = 0;
         }
 
-        v48 = [v26 mutableCopy];
+        v48 = [governingAlias mutableCopy];
         [v48 appendString:@"."];
         if (v23)
         {
@@ -509,7 +509,7 @@ LABEL_38:
         [(NSMutableString *)self->_selectFromCorrelationTarget appendString:@" JOIN "];
         -[NSMutableString appendString:](self->_selectFromCorrelationTarget, "appendString:", [objc_msgSend(v29 "destinationEntity")]);
         [(NSMutableString *)self->_selectFromCorrelationTarget appendString:@" "];
-        v52 = [objc_msgSend(v3 objectForKey:{@"aliasGenerator", "generateTableAlias"}];
+        v52 = [objc_msgSend(contextCopy objectForKey:{@"aliasGenerator", "generateTableAlias"}];
         [(NSMutableString *)self->_selectFromCorrelationTarget appendString:v52];
         [(NSMutableString *)self->_selectFromCorrelationTarget appendString:@" ON "];
         [(NSMutableString *)self->_selectFromCorrelationTarget appendString:self->_selectEntityAlias];
@@ -519,21 +519,21 @@ LABEL_38:
         [(NSMutableString *)self->_selectFromCorrelationTarget appendString:v52];
         [(NSMutableString *)self->_selectFromCorrelationTarget appendString:@"."];
         selectFromCorrelationTarget = self->_selectFromCorrelationTarget;
-        v54 = [v29 destinationEntity];
-        if (v54)
+        destinationEntity2 = [v29 destinationEntity];
+        if (destinationEntity2)
         {
-          v54 = v54[16];
+          destinationEntity2 = destinationEntity2[16];
         }
 
-        -[NSMutableString appendString:](selectFromCorrelationTarget, "appendString:", [v54 columnName]);
+        -[NSMutableString appendString:](selectFromCorrelationTarget, "appendString:", [destinationEntity2 columnName]);
 
         self->_selectEntityAlias = v52;
         self->_variableAlias = self->_selectEntityAlias;
         break;
       case 8:
-        v43 = [v29 destinationEntity];
-        self->_selectFromEntity = v43;
-        self->_governingEntityForVariable = v43;
+        destinationEntity3 = [v29 destinationEntity];
+        self->_selectFromEntity = destinationEntity3;
+        self->_governingEntityForVariable = destinationEntity3;
         if (v29)
         {
           v44 = v29[7];
@@ -544,7 +544,7 @@ LABEL_38:
           v44 = 0;
         }
 
-        v45 = [v26 mutableCopy];
+        v45 = [governingAlias mutableCopy];
         [v45 appendString:@"."];
         if (v23)
         {
@@ -565,10 +565,10 @@ LABEL_38:
 
         break;
       case 7:
-        v36 = [v29 destinationEntity];
-        self->_selectFromEntity = v36;
-        self->_governingEntityForVariable = v36;
-        v37 = [v26 mutableCopy];
+        destinationEntity4 = [v29 destinationEntity];
+        self->_selectFromEntity = destinationEntity4;
+        self->_governingEntityForVariable = destinationEntity4;
+        v37 = [governingAlias mutableCopy];
         [v37 appendString:@"."];
         [v37 appendString:{objc_msgSend(objc_msgSend(v29, "foreignKey"), "columnName")}];
         [v37 appendString:@" = "];
@@ -588,10 +588,10 @@ LABEL_38:
         [v37 appendString:{-[NSSQLColumn columnName](v39, "columnName")}];
         [(NSSQLStatementIntermediate *)self->_fetchIntermediate setCorrelationToken:v37];
 
-        v40 = [v29 destinationEntity];
-        if (v40)
+        destinationEntity5 = [v29 destinationEntity];
+        if (destinationEntity5)
         {
-          v41 = *(v40 + 128);
+          v41 = *(destinationEntity5 + 128);
         }
 
         else
@@ -602,15 +602,15 @@ LABEL_38:
         v42 = 1;
         goto LABEL_64;
       default:
-        [v3 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Can't have a non-relationship collection element in a subquery%@", self->super._expression), 0), @"NSUnderlyingException"}];
+        [contextCopy setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Can't have a non-relationship collection element in a subquery%@", self->super._expression), 0), @"NSUnderlyingException"}];
         goto LABEL_140;
     }
 
-    v55 = [v29 destinationEntity];
-    if (v55)
+    destinationEntity6 = [v29 destinationEntity];
+    if (destinationEntity6)
     {
       v42 = 0;
-      v41 = *(v55 + 128);
+      v41 = *(destinationEntity6 + 128);
     }
 
     else
@@ -692,35 +692,35 @@ LABEL_78:
         goto LABEL_115;
       }
 
-      v147 = v3;
+      v147 = contextCopy;
       v68 = 0;
       v69 = 0;
       v70 = 0;
-      v71 = self->_selectFromEntity;
+      destinationEntity7 = self->_selectFromEntity;
       v146 = v66 == v65;
       while (1)
       {
         v72 = [v59 objectAtIndex:v70];
-        if (!v71)
+        if (!destinationEntity7)
         {
           break;
         }
 
-        v73 = [(NSMutableDictionary *)v71->_properties objectForKey:v72];
+        v73 = [(NSMutableDictionary *)destinationEntity7->_properties objectForKey:v72];
         if (!v73)
         {
           break;
         }
 
         v74 = v73;
-        v75 = [(NSSQLProperty *)v73 propertyType];
-        if ((v75 - 7) > 2)
+        propertyType2 = [(NSSQLProperty *)v73 propertyType];
+        if ((propertyType2 - 7) > 2)
         {
           if (v149 != v70)
           {
             v79 = MEMORY[0x1E695DF30];
             v80 = *MEMORY[0x1E695D940];
-            v81 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Bad collection keypath in subquery %@ (attribute in non-terminal position)", self->super._expression, v145];
+            v145 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Bad collection keypath in subquery %@ (attribute in non-terminal position)", self->super._expression, v145];
             goto LABEL_113;
           }
 
@@ -730,34 +730,34 @@ LABEL_78:
 
         else
         {
-          if (!(((v75 & 0xE) != 8) | v42 & 1))
+          if (!(((propertyType2 & 0xE) != 8) | v42 & 1))
           {
             v79 = MEMORY[0x1E695DF30];
             v80 = *MEMORY[0x1E695D940];
-            v81 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Only allowed one toMany/manyToMany relationship in subquery expression collection (%@)", self->super._expression, v145];
+            v145 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Only allowed one toMany/manyToMany relationship in subquery expression collection (%@)", self->super._expression, v145];
             goto LABEL_113;
           }
 
-          v42 &= (v75 & 0xE) != 8;
-          v71 = [(NSSQLColumn *)v74 destinationEntity];
+          v42 &= (propertyType2 & 0xE) != 8;
+          destinationEntity7 = [(NSSQLColumn *)v74 destinationEntity];
         }
 
         if (v152 == v70)
         {
           if (v69)
           {
-            self->_governingEntityForVariable = v71;
-            v76 = self;
+            self->_governingEntityForVariable = destinationEntity7;
+            selfCopy2 = self;
             v77 = v74;
           }
 
           else
           {
-            v78 = [(NSSQLColumn *)v74 destinationEntity];
-            self->_governingEntityForVariable = v78;
-            if (v78)
+            destinationEntity8 = [(NSSQLColumn *)v74 destinationEntity];
+            self->_governingEntityForVariable = destinationEntity8;
+            if (destinationEntity8)
             {
-              v77 = v78->_primaryKey;
+              v77 = destinationEntity8->_primaryKey;
             }
 
             else
@@ -765,10 +765,10 @@ LABEL_78:
               v77 = 0;
             }
 
-            v76 = self;
+            selfCopy2 = self;
           }
 
-          [(NSSQLSubqueryExpressionIntermediate *)v76 _setVariableColumn:v77];
+          [(NSSQLSubqueryExpressionIntermediate *)selfCopy2 _setVariableColumn:v77];
         }
 
         if (v67 == ++v70)
@@ -776,7 +776,7 @@ LABEL_78:
           if (v68)
           {
             self->_targetColumn = v74;
-            v3 = v147;
+            contextCopy = v147;
             if (v67 == 1)
             {
               v82 = 1;
@@ -790,24 +790,24 @@ LABEL_78:
 LABEL_121:
             if ([(NSSQLIntermediate *)self isUpdateColumnsScoped])
             {
-              [v3 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unsupported subquery with multiple joins in update columns %@", v148), 0), @"NSUnderlyingException"}];
+              [contextCopy setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unsupported subquery with multiple joins in update columns %@", v148), 0), @"NSUnderlyingException"}];
               goto LABEL_140;
             }
 
-            v87 = [v3 objectForKey:@"subqueryCollectionContext"];
-            [v3 setObject:self forKey:@"subqueryCollectionContext"];
-            v88 = [NSSQLJoinIntermediate createJoinIntermediatesForKeypath:v59 startEntity:self->_selectFromEntity startAlias:self->_selectEntityAlias forScope:self inStatementIntermediate:self->_fetchIntermediate inContext:v3];
+            v87 = [contextCopy objectForKey:@"subqueryCollectionContext"];
+            [contextCopy setObject:self forKey:@"subqueryCollectionContext"];
+            v88 = [NSSQLJoinIntermediate createJoinIntermediatesForKeypath:v59 startEntity:self->_selectFromEntity startAlias:self->_selectEntityAlias forScope:self inStatementIntermediate:self->_fetchIntermediate inContext:contextCopy];
             if (v87)
             {
-              [v3 setObject:v87 forKey:@"subqueryCollectionContext"];
+              [contextCopy setObject:v87 forKey:@"subqueryCollectionContext"];
             }
 
             else
             {
-              [v3 removeObjectForKey:@"subqueryCollectionContext"];
+              [contextCopy removeObjectForKey:@"subqueryCollectionContext"];
             }
 
-            if ([v3 objectForKey:@"NSUnderlyingException"])
+            if ([contextCopy objectForKey:@"NSUnderlyingException"])
             {
 
               goto LABEL_140;
@@ -843,8 +843,8 @@ LABEL_121:
                       self->_variableAlias = v133;
                       self->_targetAlias = v133;
                       v134 = objc_alloc_init(NSSQLColumn);
-                      v135 = [(NSSQLManyToMany *)v132 inverseColumnName];
-                      [(NSSQLColumn *)v134 _setColumnName:v135];
+                      inverseColumnName = [(NSSQLManyToMany *)v132 inverseColumnName];
+                      [(NSSQLColumn *)v134 _setColumnName:inverseColumnName];
                       if (v134)
                       {
                         *&v134->super._flags |= 1u;
@@ -862,10 +862,10 @@ LABEL_223:
                       v142 = *(v91 + 32);
                       self->_variableAlias = v142;
                       self->_targetAlias = v142;
-                      v143 = [*(v91 + 16) destinationEntity];
-                      if (v143)
+                      destinationEntity9 = [*(v91 + 16) destinationEntity];
+                      if (destinationEntity9)
                       {
-                        v144 = *(v143 + 128);
+                        v144 = *(destinationEntity9 + 128);
                       }
 
                       else
@@ -882,7 +882,7 @@ LABEL_139:
                     *(&self->super.super.super.isa + *v98) = variableColumn;
 
 LABEL_140:
-                    if ([v3 objectForKey:@"NSUnderlyingException"])
+                    if ([contextCopy objectForKey:@"NSUnderlyingException"])
                     {
 LABEL_141:
 
@@ -891,10 +891,10 @@ LABEL_141:
                       goto LABEL_10;
                     }
 
-                    v99 = [(NSExpression *)self->super._expression predicate];
-                    if (v99)
+                    predicate = [(NSExpression *)self->super._expression predicate];
+                    if (predicate)
                     {
-                      v100 = v99;
+                      v100 = predicate;
                       objc_opt_class();
                       if (objc_opt_isKindOfClass())
                       {
@@ -906,7 +906,7 @@ LABEL_141:
                         objc_opt_class();
                         if (objc_opt_isKindOfClass())
                         {
-                          v101 = [[NSSQLCompoundWhereIntermediate alloc] initWithPredicate:[(NSExpression *)self->super._expression predicate] inScope:self inContext:v3];
+                          v101 = [[NSSQLCompoundWhereIntermediate alloc] initWithPredicate:[(NSExpression *)self->super._expression predicate] inScope:self inContext:contextCopy];
                           if (!v101)
                           {
                             goto LABEL_141;
@@ -919,14 +919,14 @@ LABEL_141:
                           {
 
                             self->_fetchIntermediate = 0;
-                            [v3 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], @"Unknown predicate type", objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", self->super._expression, @"subquery", @"NSUnderlyingException"}];
+                            [contextCopy setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], @"Unknown predicate type", objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", self->super._expression, @"subquery", @"NSUnderlyingException"}];
                           }
 
                           v101 = 0;
                         }
                       }
 
-                      if ([v3 objectForKey:@"NSUnderlyingException"])
+                      if ([contextCopy objectForKey:@"NSUnderlyingException"])
                       {
 
                         goto LABEL_9;
@@ -958,15 +958,15 @@ LABEL_141:
                         v106 = objc_alloc_init(NSSQLColumn);
                         if ([(NSSQLIntermediate *)self isUpdateColumnsScoped])
                         {
-                          v107 = [MEMORY[0x1E696AEC0] stringWithFormat:@"COUNT(%@)", -[NSSQLColumn columnName](self->_targetColumn, "columnName"), v145];
+                          v1452 = [MEMORY[0x1E696AEC0] stringWithFormat:@"COUNT(%@)", -[NSSQLColumn columnName](self->_targetColumn, "columnName"), v145];
                         }
 
                         else
                         {
-                          v107 = [MEMORY[0x1E696AEC0] stringWithFormat:@"COUNT(%@.%@)", self->_targetAlias, -[NSSQLColumn columnName](self->_targetColumn, "columnName")];
+                          v1452 = [MEMORY[0x1E696AEC0] stringWithFormat:@"COUNT(%@.%@)", self->_targetAlias, -[NSSQLColumn columnName](self->_targetColumn, "columnName")];
                         }
 
-                        [(NSSQLColumn *)v106 _setColumnName:v107];
+                        [(NSSQLColumn *)v106 _setColumnName:v1452];
                         if (!v106)
                         {
 LABEL_167:
@@ -993,7 +993,7 @@ LABEL_167:
                           [(NSSQLFetchIntermediate *)self->_fetchIntermediate setSelectIntermediate:v114];
 
 LABEL_173:
-                          v115 = [(NSSQLFetchIntermediate *)self->_fetchIntermediate generateSQLStringInContext:v3];
+                          v115 = [(NSSQLFetchIntermediate *)self->_fetchIntermediate generateSQLStringInContext:contextCopy];
                           if (v115)
                           {
                             v116 = v115;
@@ -1012,7 +1012,7 @@ LABEL_166:
                         goto LABEL_167;
                       }
 
-                      if (([objc_msgSend(v3 objectForKey:{@"supportedKVCAggregates", "containsObject:", v105}] & 1) != 0 || objc_msgSend(v105, "isEqual:", @"@total"))
+                      if (([objc_msgSend(contextCopy objectForKey:{@"supportedKVCAggregates", "containsObject:", v105}] & 1) != 0 || objc_msgSend(v105, "isEqual:", @"@total"))
                       {
                         if ([(NSSQLProperty *)self->_targetColumn propertyType]== 1)
                         {
@@ -1037,13 +1037,13 @@ LABEL_166:
                           }
 
                           [v108 appendString:{-[NSSQLColumn columnName](self->_targetColumn, "columnName")}];
-                          v109 = @" ");
+                          columnName = @" ");
                           goto LABEL_165;
                         }
 
                         v118 = MEMORY[0x1E695DF30];
                         v119 = *MEMORY[0x1E695D940];
-                        v120 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Aggregate functions need to work on attributes: %@", self->super._expression, v145];
+                        v1453 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Aggregate functions need to work on attributes: %@", self->super._expression, v145];
                       }
 
                       else
@@ -1051,10 +1051,10 @@ LABEL_166:
                         v118 = MEMORY[0x1E695DF30];
                         v119 = *MEMORY[0x1E695D940];
                         expression = self->super._expression;
-                        v120 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported KVC function in trailing keypath %@, %@", expression, self->_trailingKeypath];
+                        v1453 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported KVC function in trailing keypath %@, %@", expression, self->_trailingKeypath];
                       }
 
-                      [v3 setObject:objc_msgSend(v118 forKey:{"exceptionWithName:reason:userInfo:", v119, v120, 0), @"NSUnderlyingException"}];
+                      [contextCopy setObject:objc_msgSend(v118 forKey:{"exceptionWithName:reason:userInfo:", v119, v1453, 0), @"NSUnderlyingException"}];
                       goto LABEL_173;
                     }
 
@@ -1066,9 +1066,9 @@ LABEL_166:
                       [v108 appendString:@"."];
                     }
 
-                    v109 = [(NSSQLColumn *)self->_targetColumn columnName];
+                    columnName = [(NSSQLColumn *)self->_targetColumn columnName];
 LABEL_165:
-                    [v108 appendString:v109];
+                    [v108 appendString:columnName];
                     [(NSSQLColumn *)v106 _setColumnName:v108];
 
                     if (!v106)
@@ -1086,10 +1086,10 @@ LABEL_219:
                   self->_targetAlias = v140;
                   if (v91)
                   {
-                    v141 = [*(v91 + 16) destinationEntity];
-                    if (v141)
+                    destinationEntity10 = [*(v91 + 16) destinationEntity];
+                    if (destinationEntity10)
                     {
-                      v96 = *(v141 + 128);
+                      v96 = *(destinationEntity10 + 128);
                       goto LABEL_222;
                     }
 
@@ -1112,11 +1112,11 @@ LABEL_135:
                   self->_targetAlias = v93;
                   if (v91)
                   {
-                    v94 = [*(v91 + 16) destinationEntity];
-                    v95 = [v151 lastObject];
-                    if (v94)
+                    destinationEntity11 = [*(v91 + 16) destinationEntity];
+                    lastObject2 = [v151 lastObject];
+                    if (destinationEntity11)
                     {
-                      v96 = [*(v94 + 40) objectForKey:v95];
+                      v96 = [*(destinationEntity11 + 40) objectForKey:lastObject2];
 LABEL_222:
                       [(NSSQLSubqueryExpressionIntermediate *)self _setVariableColumn:v96];
                       goto LABEL_223;
@@ -1140,10 +1140,10 @@ LABEL_248:
                 if (v122)
                 {
                   v123 = v122;
-                  v124 = [*(v122 + 16) destinationEntity];
-                  if (v124)
+                  destinationEntity12 = [*(v122 + 16) destinationEntity];
+                  if (destinationEntity12)
                   {
-                    v125 = *(v124 + 128);
+                    v125 = *(destinationEntity12 + 128);
                   }
 
                   else
@@ -1172,11 +1172,11 @@ LABEL_248:
                 if (v128)
                 {
                   self->_targetAlias = *(v128 + 32);
-                  v129 = [*(v128 + 16) destinationEntity];
-                  v130 = v129;
+                  destinationEntity13 = [*(v128 + 16) destinationEntity];
+                  v130 = destinationEntity13;
                   if (v86)
                   {
-                    v131 = [v59 lastObject];
+                    lastObject3 = [v59 lastObject];
                     if (!v130)
                     {
 LABEL_225:
@@ -1185,13 +1185,13 @@ LABEL_225:
                     }
 
 LABEL_214:
-                    variableColumn = [*(v130 + 40) objectForKey:v131];
+                    variableColumn = [*(v130 + 40) objectForKey:lastObject3];
 LABEL_217:
                     v98 = &OBJC_IVAR___NSSQLSubqueryExpressionIntermediate__targetColumn;
                     goto LABEL_139;
                   }
 
-                  if (!v129)
+                  if (!destinationEntity13)
                   {
                     goto LABEL_225;
                   }
@@ -1215,11 +1215,11 @@ LABEL_216:
                 if (v137)
                 {
                   self->_targetAlias = *(v137 + 32);
-                  v138 = [*(v137 + 16) destinationEntity];
-                  v130 = v138;
+                  destinationEntity14 = [*(v137 + 16) destinationEntity];
+                  v130 = destinationEntity14;
                   if (v86)
                   {
-                    v131 = [v59 lastObject];
+                    lastObject3 = [v59 lastObject];
                     if (!v130)
                     {
                       goto LABEL_225;
@@ -1228,7 +1228,7 @@ LABEL_216:
                     goto LABEL_214;
                   }
 
-                  if (!v138)
+                  if (!destinationEntity14)
                   {
                     goto LABEL_225;
                   }
@@ -1262,12 +1262,12 @@ LABEL_138:
             goto LABEL_139;
           }
 
-          v3 = v147;
+          contextCopy = v147;
 LABEL_115:
-          v84 = [(NSSQLColumn *)v74 destinationEntity];
-          if (v84)
+          destinationEntity15 = [(NSSQLColumn *)v74 destinationEntity];
+          if (destinationEntity15)
           {
-            v85 = *(v84 + 128);
+            v85 = *(destinationEntity15 + 128);
           }
 
           else
@@ -1293,10 +1293,10 @@ LABEL_118:
 
       v79 = MEMORY[0x1E695DF30];
       v80 = *MEMORY[0x1E695D940];
-      v81 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Bad collection keypath (%@) can't find property named (%@) ", self->super._expression, v72];
+      v145 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Bad collection keypath (%@) can't find property named (%@) ", self->super._expression, v72];
 LABEL_113:
-      v3 = v147;
-      [v147 setObject:objc_msgSend(v79 forKey:{"exceptionWithName:reason:userInfo:", v80, v81, 0), @"NSUnderlyingException"}];
+      contextCopy = v147;
+      [v147 setObject:objc_msgSend(v79 forKey:{"exceptionWithName:reason:userInfo:", v80, v145, 0), @"NSUnderlyingException"}];
       goto LABEL_140;
     }
 
@@ -1328,7 +1328,7 @@ LABEL_74:
   v9 = v5;
   v10 = v6;
 LABEL_8:
-  [v3 setObject:objc_msgSend(v9 forKey:{"exceptionWithName:reason:userInfo:", v10, v8, v7), @"NSUnderlyingException"}];
+  [contextCopy setObject:objc_msgSend(v9 forKey:{"exceptionWithName:reason:userInfo:", v10, v8, v7), @"NSUnderlyingException"}];
 LABEL_9:
   v17 = 0;
 LABEL_10:

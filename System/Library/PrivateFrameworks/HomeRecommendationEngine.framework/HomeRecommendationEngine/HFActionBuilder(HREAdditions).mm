@@ -7,8 +7,8 @@
 - (id)recommendableObjectsInvolved
 {
   v1 = MEMORY[0x277CBEB98];
-  v2 = [a1 containedAccessoryRepresentables];
-  v3 = [v1 setWithArray:v2];
+  containedAccessoryRepresentables = [self containedAccessoryRepresentables];
+  v3 = [v1 setWithArray:containedAccessoryRepresentables];
   v4 = [v3 na_map:&__block_literal_global_12];
 
   return v4;

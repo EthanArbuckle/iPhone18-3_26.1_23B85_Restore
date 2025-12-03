@@ -32,71 +32,71 @@
   _Block_object_dispose(&v7, 8);
   if (objc_opt_isKindOfClass())
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)musicKit_playerResponse_tracklist
 {
-  v1 = [a1 _musicKit_self_playerResponse];
-  v2 = [v1 tracklist];
+  _musicKit_self_playerResponse = [self _musicKit_self_playerResponse];
+  tracklist = [_musicKit_self_playerResponse tracklist];
 
-  return v2;
+  return tracklist;
 }
 
 - (id)musicKit_playerPath
 {
-  v1 = [a1 _musicKit_self_playerResponse];
-  v2 = [v1 playerPath];
+  _musicKit_self_playerResponse = [self _musicKit_self_playerResponse];
+  playerPath = [_musicKit_self_playerResponse playerPath];
 
-  return v2;
+  return playerPath;
 }
 
 - (uint64_t)musicKit_playerResponse_state
 {
-  v1 = [a1 _musicKit_self_playerResponse];
-  v2 = [v1 state];
+  _musicKit_self_playerResponse = [self _musicKit_self_playerResponse];
+  state = [_musicKit_self_playerResponse state];
 
-  if ((v2 - 1) > 5)
+  if ((state - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_1D5619C90[v2 - 1];
+    return qword_1D5619C90[state - 1];
   }
 }
 
 - (id)musicKit_playerResponse_playCommandRequest
 {
-  v1 = [a1 _musicKit_self_playerResponse];
-  v2 = [v1 play];
+  _musicKit_self_playerResponse = [self _musicKit_self_playerResponse];
+  play = [_musicKit_self_playerResponse play];
 
-  return v2;
+  return play;
 }
 
 - (id)musicKit_playerResponse_pauseCommandRequest
 {
-  v1 = [a1 _musicKit_self_playerResponse];
-  v2 = [v1 pause];
+  _musicKit_self_playerResponse = [self _musicKit_self_playerResponse];
+  pause = [_musicKit_self_playerResponse pause];
 
-  return v2;
+  return pause;
 }
 
 - (id)musicKit_playerResponse_stopCommandRequest
 {
-  v1 = [a1 _musicKit_self_playerResponse];
-  v2 = [v1 stop];
+  _musicKit_self_playerResponse = [self _musicKit_self_playerResponse];
+  stop = [_musicKit_self_playerResponse stop];
 
-  return v2;
+  return stop;
 }
 
 @end

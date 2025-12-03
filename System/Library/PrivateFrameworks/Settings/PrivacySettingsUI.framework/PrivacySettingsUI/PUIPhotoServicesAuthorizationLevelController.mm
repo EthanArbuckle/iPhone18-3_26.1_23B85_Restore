@@ -1,19 +1,19 @@
 @interface PUIPhotoServicesAuthorizationLevelController
 - (id)_limitedLibrarySectionSpecifiers;
-- (id)_locationSetting:(id)a3;
+- (id)_locationSetting:(id)setting;
 - (id)_parentTCCSpecifiers;
 - (id)_pickerUsageSectionSpecifiers;
-- (id)footerStringForSpecifiers:(id)a3;
+- (id)footerStringForSpecifiers:(id)specifiers;
 - (id)specifiers;
 - (unint64_t)_currentTCCAuthorizationRight;
 - (void)_addLimitedLibrarySection;
 - (void)_addPickerUsageSectionIfNeeded;
-- (void)_handleUpgradePromptNotification:(id)a3;
+- (void)_handleUpgradePromptNotification:(id)notification;
 - (void)_presentImagePickerForModifyingSelection;
 - (void)_removeLimitedLibrarySectionIfPresent;
 - (void)_removePickerUsageSectionIfPresent;
-- (void)setSpecifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -24,16 +24,16 @@
   v4.receiver = self;
   v4.super_class = PUIPhotoServicesAuthorizationLevelController;
   [(PSListItemsController *)&v4 viewDidLoad];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__handleUpgradePromptNotification_ name:@"PUIPhotosPrivacyUpgradePromptCompletedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleUpgradePromptNotification_ name:@"PUIPhotosPrivacyUpgradePromptCompletedNotification" object:0];
 }
 
-- (void)_handleUpgradePromptNotification:(id)a3
+- (void)_handleUpgradePromptNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"PUIPhotosPrivacyUpgradePromptAppIdentifierKey"];
-  v6 = [(PUIPhotoServicesAuthorizationLevelController *)self serviceKey];
-  v7 = [v5 isEqualToString:v6];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"PUIPhotosPrivacyUpgradePromptAppIdentifierKey"];
+  serviceKey = [(PUIPhotoServicesAuthorizationLevelController *)self serviceKey];
+  v7 = [v5 isEqualToString:serviceKey];
 
   if (v7)
   {
@@ -52,13 +52,13 @@
   v49 = *MEMORY[0x277D85DE8];
   v46.receiver = self;
   v46.super_class = PUIPhotoServicesAuthorizationLevelController;
-  v2 = [(PSListItemsController *)&v46 specifiers];
-  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  specifiers = [(PSListItemsController *)&v46 specifiers];
+  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(specifiers, "count")}];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v4 = v2;
+  v4 = specifiers;
   v5 = [v4 countByEnumeratingWithState:&v42 objects:v48 count:16];
   v6 = MEMORY[0x277D3FC90];
   if (v5)
@@ -76,10 +76,10 @@
         v9 = *(*(&v42 + 1) + 8 * i);
         if (*&v9[*v6] == 3)
         {
-          v10 = [v9 identifier];
-          v11 = [v10 intValue];
+          identifier = [v9 identifier];
+          intValue = [identifier intValue];
 
-          if (v11 == 5)
+          if (intValue == 5)
           {
             LOBYTE(v5) = 1;
             goto LABEL_12;
@@ -127,11 +127,11 @@ LABEL_12:
       }
 
       v18 = *(*(&v38 + 1) + 8 * v17);
-      v19 = [v18 identifier];
-      v20 = [v19 intValue];
+      identifier2 = [v18 identifier];
+      intValue2 = [identifier2 intValue];
 
       v21 = *&v18[*v6];
-      if (v21 != 3 || v20 != 5)
+      if (v21 != 3 || intValue2 != 5)
       {
         if (v21 == 3)
         {
@@ -143,18 +143,18 @@ LABEL_12:
           v23 = 1;
         }
 
-        if ((v23 & 1) == 0 && !v20)
+        if ((v23 & 1) == 0 && !intValue2)
         {
           limitedLibraryRowSpecifier = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", 5];
           [v18 setIdentifier:limitedLibraryRowSpecifier];
           goto LABEL_27;
         }
 
-        if (v21 == 3 && (v20 & 0xFFFFFFFE) == 2)
+        if (v21 == 3 && (intValue2 & 0xFFFFFFFE) == 2)
         {
           [v18 setProperty:objc_opt_class() forKey:v37];
           v26 = PhotosUICoreLibraryCore();
-          if (v20 == 2)
+          if (intValue2 == 2)
           {
             if (!v26 || !getPXTCCSettingsFullAccessSubtitleSymbolLoc())
             {
@@ -211,93 +211,93 @@ LABEL_44:
   return v31;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = PUIPhotoServicesAuthorizationLevelController;
-  v4 = a3;
-  [(PUIPhotoServicesAuthorizationLevelController *)&v7 setSpecifier:v4];
-  v5 = [v4 identifier];
+  specifierCopy = specifier;
+  [(PUIPhotoServicesAuthorizationLevelController *)&v7 setSpecifier:specifierCopy];
+  identifier = [specifierCopy identifier];
 
   serviceKey = self->_serviceKey;
-  self->_serviceKey = v5;
+  self->_serviceKey = identifier;
 }
 
 - (id)specifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = *MEMORY[0x277D3FC48];
-  if (!*(&v2->super.super.super.super.super.super.isa + v3))
+  if (!*(&selfCopy->super.super.super.super.super.super.isa + v3))
   {
-    v4 = [(PUIPhotoServicesAuthorizationLevelController *)v2 _currentTCCAuthorizationRight];
-    v5 = [(PUIPhotoServicesAuthorizationLevelController *)v2 specifier];
-    v6 = [v5 propertyForKey:@"hasPickerInfo"];
-    v7 = [v6 BOOLValue];
-    if (v4 == 2)
+    _currentTCCAuthorizationRight = [(PUIPhotoServicesAuthorizationLevelController *)selfCopy _currentTCCAuthorizationRight];
+    specifier = [(PUIPhotoServicesAuthorizationLevelController *)selfCopy specifier];
+    v6 = [specifier propertyForKey:@"hasPickerInfo"];
+    bOOLValue = [v6 BOOLValue];
+    if (_currentTCCAuthorizationRight == 2)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = v7;
+      v8 = bOOLValue;
     }
 
-    v9 = [(PUIPhotoServicesAuthorizationLevelController *)v2 specifier];
-    v10 = [v9 propertyForKey:@"hasTCCOptions"];
-    v11 = [v10 BOOLValue];
+    specifier2 = [(PUIPhotoServicesAuthorizationLevelController *)selfCopy specifier];
+    v10 = [specifier2 propertyForKey:@"hasTCCOptions"];
+    bOOLValue2 = [v10 BOOLValue];
 
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if (v11)
+    if (bOOLValue2)
     {
-      v13 = [(PUIPhotoServicesAuthorizationLevelController *)v2 _parentTCCSpecifiers];
-      [v12 addObjectsFromArray:v13];
-      v14 = [v13 firstObject];
-      v15 = [(PUIPhotoServicesAuthorizationLevelController *)v2 footerStringForSpecifiers:v12];
+      _parentTCCSpecifiers = [(PUIPhotoServicesAuthorizationLevelController *)selfCopy _parentTCCSpecifiers];
+      [v12 addObjectsFromArray:_parentTCCSpecifiers];
+      firstObject = [_parentTCCSpecifiers firstObject];
+      v15 = [(PUIPhotoServicesAuthorizationLevelController *)selfCopy footerStringForSpecifiers:v12];
       if (v15)
       {
-        [v14 setProperty:v15 forKey:*MEMORY[0x277D3FF88]];
+        [firstObject setProperty:v15 forKey:*MEMORY[0x277D3FF88]];
       }
 
-      v16 = [(PUIPhotoServicesAuthorizationLevelController *)v2 _limitedLibrarySectionSpecifiers];
-      [v12 addObjectsFromArray:v16];
+      _limitedLibrarySectionSpecifiers = [(PUIPhotoServicesAuthorizationLevelController *)selfCopy _limitedLibrarySectionSpecifiers];
+      [v12 addObjectsFromArray:_limitedLibrarySectionSpecifiers];
     }
 
-    v17 = [(PUIPhotoServicesAuthorizationLevelController *)v2 _pickerUsageSectionSpecifiers];
-    v18 = v17;
+    _pickerUsageSectionSpecifiers = [(PUIPhotoServicesAuthorizationLevelController *)selfCopy _pickerUsageSectionSpecifiers];
+    v18 = _pickerUsageSectionSpecifiers;
     if (v8)
     {
-      if ((v11 & 1) == 0)
+      if ((bOOLValue2 & 1) == 0)
       {
-        v19 = [v17 firstObject];
+        firstObject2 = [_pickerUsageSectionSpecifiers firstObject];
         v20 = PUI_LocalizedStringForPrivacy(@"PHOTOS_AUTH_ONGOING_HEADER");
-        [v19 setName:v20];
+        [firstObject2 setName:v20];
       }
 
       [v12 addObjectsFromArray:v18];
     }
 
-    v21 = *(&v2->super.super.super.super.super.super.isa + v3);
-    *(&v2->super.super.super.super.super.super.isa + v3) = v12;
+    v21 = *(&selfCopy->super.super.super.super.super.super.isa + v3);
+    *(&selfCopy->super.super.super.super.super.super.isa + v3) = v12;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v22 = *(&v2->super.super.super.super.super.super.isa + v3);
+  v22 = *(&selfCopy->super.super.super.super.super.super.isa + v3);
 
   return v22;
 }
 
-- (id)footerStringForSpecifiers:(id)a3
+- (id)footerStringForSpecifiers:(id)specifiers
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  specifiersCopy = specifiers;
+  v4 = [specifiersCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -308,17 +308,17 @@ LABEL_44:
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(specifiersCopy);
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
-        v9 = [v8 values];
-        v10 = [v9 firstObject];
-        v11 = [v10 isEqual:&unk_28772B330];
+        values = [v8 values];
+        firstObject = [values firstObject];
+        v11 = [firstObject isEqual:&unk_28772B330];
 
-        v12 = [v8 values];
-        v13 = [v12 firstObject];
-        v14 = [v13 isEqual:&unk_28772B348];
+        values2 = [v8 values];
+        firstObject2 = [values2 firstObject];
+        v14 = [firstObject2 isEqual:&unk_28772B348];
 
         if ((v11 & 1) != 0 || v14)
         {
@@ -328,7 +328,7 @@ LABEL_44:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [specifiersCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v5)
       {
         continue;
@@ -350,8 +350,8 @@ LABEL_12:
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v18 = *MEMORY[0x277CD9D88];
-  v3 = [(PUIPhotoServicesAuthorizationLevelController *)self serviceKey];
-  v19[0] = v3;
+  serviceKey = [(PUIPhotoServicesAuthorizationLevelController *)self serviceKey];
+  v19[0] = serviceKey;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
 
   if (objc_opt_respondsToSelector())
@@ -364,7 +364,7 @@ LABEL_12:
     v14 = &unk_279BA1F10;
     v15 = v5;
     v16 = v6;
-    v17 = self;
+    selfCopy = self;
     v7 = v6;
     v8 = v5;
     v9 = _Block_copy(&v11);
@@ -408,7 +408,7 @@ uint64_t __88__PUIPhotoServicesAuthorizationLevelController__presentImagePickerF
 
 - (id)_pickerUsageSectionSpecifiers
 {
-  v2 = self;
+  selfCopy = self;
   v53 = *MEMORY[0x277D85DE8];
   v3 = 0x280027000;
   if (!self->_pickerUsageSectionSpecifiers)
@@ -420,7 +420,7 @@ uint64_t __88__PUIPhotoServicesAuthorizationLevelController__presentImagePickerF
       v6 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:0];
       v7 = *MEMORY[0x277D3FFB8];
       [v6 setProperty:@"PHOTOS_PICKER_INFO_GROUP" forKey:*MEMORY[0x277D3FFB8]];
-      v8 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:v2 set:0 get:0 detail:0 cell:-1 edit:0];
+      v8 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:selfCopy set:0 get:0 detail:0 cell:-1 edit:0];
       [v8 setProperty:@"PHOTOS_PICKER_INFO_CELL" forKey:v7];
       v9 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D76F30]];
       [v8 setProperty:v9 forKey:*MEMORY[0x277D40140]];
@@ -429,24 +429,24 @@ uint64_t __88__PUIPhotoServicesAuthorizationLevelController__presentImagePickerF
       v51[0] = v6;
       v51[1] = v8;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:2];
-      pickerUsageSectionSpecifiers = v2->_pickerUsageSectionSpecifiers;
-      v2->_pickerUsageSectionSpecifiers = v10;
+      pickerUsageSectionSpecifiers = selfCopy->_pickerUsageSectionSpecifiers;
+      selfCopy->_pickerUsageSectionSpecifiers = v10;
 
       v12 = NSClassFromString(&cfstr_Psphotospicker_0.isa);
       if (v12)
       {
         v42 = v12;
         v43 = v6;
-        v44 = v2;
+        v44 = selfCopy;
         v45 = [MEMORY[0x277CBEB58] set];
-        v13 = [MEMORY[0x277D3B240] sharedInstance];
-        v14 = [v13 photosPickerPresentedLibraryLogsByClient];
+        mEMORY[0x277D3B240] = [MEMORY[0x277D3B240] sharedInstance];
+        photosPickerPresentedLibraryLogsByClient = [mEMORY[0x277D3B240] photosPickerPresentedLibraryLogsByClient];
 
         v48 = 0u;
         v49 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v15 = v14;
+        v15 = photosPickerPresentedLibraryLogsByClient;
         v16 = [v15 countByEnumeratingWithState:&v46 objects:v52 count:16];
         if (v16)
         {
@@ -482,7 +482,7 @@ uint64_t __88__PUIPhotoServicesAuthorizationLevelController__presentImagePickerF
 
         v27 = [v45 copy];
         v3 = 0x280027000uLL;
-        v2 = v44;
+        selfCopy = v44;
         v28 = [v27 containsObject:v44->_serviceKey];
 
         v6 = v43;
@@ -510,11 +510,11 @@ uint64_t __88__PUIPhotoServicesAuthorizationLevelController__presentImagePickerF
   }
 
   v37 = PUIPhotosPolicyBundleIdentifiersWithRecentPickerUsage();
-  v38 = [v37 containsObject:*(&v2->super.super.super.super.super.super.isa + *(v3 + 1104))];
+  v38 = [v37 containsObject:*(&selfCopy->super.super.super.super.super.super.isa + *(v3 + 1104))];
 
   if (v38)
   {
-    v39 = v2->_pickerUsageSectionSpecifiers;
+    v39 = selfCopy->_pickerUsageSectionSpecifiers;
   }
 
   else
@@ -532,9 +532,9 @@ uint64_t __88__PUIPhotoServicesAuthorizationLevelController__presentImagePickerF
   v14[2] = *MEMORY[0x277D85DE8];
   if (!self->_limitedLibrarySectionSpecifiers)
   {
-    v3 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
     v4 = *MEMORY[0x277D3FFB8];
-    [v3 setProperty:@"PHOTOS_MANUAL_SELECTION_GROUP" forKey:*MEMORY[0x277D3FFB8]];
+    [emptyGroupSpecifier setProperty:@"PHOTOS_MANUAL_SELECTION_GROUP" forKey:*MEMORY[0x277D3FFB8]];
     v5 = MEMORY[0x277D3FAD8];
     v6 = PUI_LocalizedStringForPrivacy(@"PHOTOS_MANUAL_SELECTION_BUTTON");
     v7 = [v5 preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:0 cell:13 edit:0];
@@ -544,7 +544,7 @@ uint64_t __88__PUIPhotoServicesAuthorizationLevelController__presentImagePickerF
 
     [v7 setProperty:@"PHOTOS_MANUAL_SELECTION_BUTTON" forKey:v4];
     [v7 setButtonAction:sel__presentImagePickerForModifyingSelection];
-    v14[0] = v3;
+    v14[0] = emptyGroupSpecifier;
     v14[1] = v7;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
     limitedLibrarySectionSpecifiers = self->_limitedLibrarySectionSpecifiers;
@@ -566,15 +566,15 @@ uint64_t __88__PUIPhotoServicesAuthorizationLevelController__presentImagePickerF
   return v11;
 }
 
-- (id)_locationSetting:(id)a3
+- (id)_locationSetting:(id)setting
 {
   v4 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.photos.picker"];
   v5 = [v4 dictionaryForKey:@"metadata"];
   v6 = [v5 objectForKeyedSubscript:self->_serviceKey];
   v7 = [v6 objectForKeyedSubscript:@"pickerShouldStripLocation"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithInt:v8 ^ 1u];
+  v9 = [MEMORY[0x277CCABB0] numberWithInt:bOOLValue ^ 1u];
 
   return v9;
 }
@@ -644,11 +644,11 @@ void __77__PUIPhotoServicesAuthorizationLevelController__currentTCCAuthorization
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUIPhotoServicesAuthorizationLevelController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(PUIPhotoServicesAuthorizationLevelController *)self indexForIndexPath:pathCopy];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = [(PUIPhotoServicesAuthorizationLevelController *)self specifierAtIndex:v8];
@@ -661,23 +661,23 @@ void __77__PUIPhotoServicesAuthorizationLevelController__currentTCCAuthorization
       if (v12)
       {
         [v10 performButtonAction];
-        [v6 deselectRowAtIndexPath:v7 animated:1];
+        [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
       }
 
       else
       {
-        v13 = [v10 identifier];
-        v14 = [v13 isEqualToString:@"PHOTOS_PICKER_OPTIONS_CELL"];
+        identifier = [v10 identifier];
+        v14 = [identifier isEqualToString:@"PHOTOS_PICKER_OPTIONS_CELL"];
 
         if (v14)
         {
-          [v6 deselectRowAtIndexPath:v7 animated:1];
+          [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
           v15 = [(PUIPhotoServicesAuthorizationLevelController *)self selectSpecifier:v10];
           if (v15)
           {
-            v16 = [MEMORY[0x277CBEB68] null];
+            null = [MEMORY[0x277CBEB68] null];
 
-            if (v15 != v16)
+            if (v15 != null)
             {
               [(PUIPhotoServicesAuthorizationLevelController *)self showController:v15];
             }
@@ -688,21 +688,21 @@ void __77__PUIPhotoServicesAuthorizationLevelController__currentTCCAuthorization
         {
           v22.receiver = self;
           v22.super_class = PUIPhotoServicesAuthorizationLevelController;
-          [(PSListItemsController *)&v22 tableView:v6 didSelectRowAtIndexPath:v7];
-          v17 = [v10 values];
-          v18 = [v17 firstObject];
-          v19 = [v18 intValue];
+          [(PSListItemsController *)&v22 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+          values = [v10 values];
+          firstObject = [values firstObject];
+          intValue = [firstObject intValue];
 
-          if (v19 == 2)
+          if (intValue == 2)
           {
             [(PUIPhotoServicesAuthorizationLevelController *)self _removeLimitedLibrarySectionIfPresent];
             [(PUIPhotoServicesAuthorizationLevelController *)self _removePickerUsageSectionIfPresent];
           }
 
-          else if (v19 == 3)
+          else if (intValue == 3)
           {
-            v20 = [(NSArray *)self->_limitedLibrarySectionSpecifiers firstObject];
-            v21 = [(PUIPhotoServicesAuthorizationLevelController *)self containsSpecifier:v20];
+            firstObject2 = [(NSArray *)self->_limitedLibrarySectionSpecifiers firstObject];
+            v21 = [(PUIPhotoServicesAuthorizationLevelController *)self containsSpecifier:firstObject2];
 
             if ((v21 & 1) == 0)
             {
@@ -727,8 +727,8 @@ void __77__PUIPhotoServicesAuthorizationLevelController__currentTCCAuthorization
 {
   if ([(NSArray *)self->_pickerUsageSectionSpecifiers count]&& ([(NSArray *)self->_pickerUsageSectionSpecifiers firstObject], v3 = objc_claimAutoreleasedReturnValue(), v4 = [(PUIPhotoServicesAuthorizationLevelController *)self containsSpecifier:v3], v3, v4))
   {
-    v5 = [(NSArray *)self->_pickerUsageSectionSpecifiers firstObject];
-    v6 = [(PUIPhotoServicesAuthorizationLevelController *)self indexOfSpecifier:v5];
+    firstObject = [(NSArray *)self->_pickerUsageSectionSpecifiers firstObject];
+    v6 = [(PUIPhotoServicesAuthorizationLevelController *)self indexOfSpecifier:firstObject];
 
     limitedLibrarySectionSpecifiers = self->_limitedLibrarySectionSpecifiers;
 
@@ -745,8 +745,8 @@ void __77__PUIPhotoServicesAuthorizationLevelController__currentTCCAuthorization
 
 - (void)_removeLimitedLibrarySectionIfPresent
 {
-  v3 = [(NSArray *)self->_limitedLibrarySectionSpecifiers firstObject];
-  v4 = [(PUIPhotoServicesAuthorizationLevelController *)self containsSpecifier:v3];
+  firstObject = [(NSArray *)self->_limitedLibrarySectionSpecifiers firstObject];
+  v4 = [(PUIPhotoServicesAuthorizationLevelController *)self containsSpecifier:firstObject];
 
   if (v4)
   {
@@ -758,7 +758,7 @@ void __77__PUIPhotoServicesAuthorizationLevelController__currentTCCAuthorization
 
 - (void)_addPickerUsageSectionIfNeeded
 {
-  v6 = [(NSArray *)self->_pickerUsageSectionSpecifiers firstObject];
+  firstObject = [(NSArray *)self->_pickerUsageSectionSpecifiers firstObject];
   if ([(PUIPhotoServicesAuthorizationLevelController *)self containsSpecifier:?])
   {
   }
@@ -779,8 +779,8 @@ void __77__PUIPhotoServicesAuthorizationLevelController__currentTCCAuthorization
 
 - (void)_removePickerUsageSectionIfPresent
 {
-  v3 = [(NSArray *)self->_pickerUsageSectionSpecifiers firstObject];
-  v4 = [(PUIPhotoServicesAuthorizationLevelController *)self containsSpecifier:v3];
+  firstObject = [(NSArray *)self->_pickerUsageSectionSpecifiers firstObject];
+  v4 = [(PUIPhotoServicesAuthorizationLevelController *)self containsSpecifier:firstObject];
 
   if (v4)
   {

@@ -1,12 +1,12 @@
 @interface HAPWiFiConfigurationControl
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPWiFiConfigurationControl)init;
-- (HAPWiFiConfigurationControl)initWithOperationType:(id)a3 cookie:(id)a4 updateStatus:(id)a5 operationTimeout:(id)a6 countryCodeConfiguration:(id)a7 stationConfiguration:(id)a8;
+- (HAPWiFiConfigurationControl)initWithOperationType:(id)type cookie:(id)cookie updateStatus:(id)status operationTimeout:(id)timeout countryCodeConfiguration:(id)configuration stationConfiguration:(id)stationConfiguration;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPWiFiConfigurationControl
@@ -14,21 +14,21 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPWiFiConfigurationControl *)self operationType];
-  v5 = [(HAPWiFiConfigurationControl *)self cookie];
-  v6 = [(HAPWiFiConfigurationControl *)self updateStatus];
-  v7 = [(HAPWiFiConfigurationControl *)self operationTimeout];
-  v8 = [(HAPWiFiConfigurationControl *)self countryCodeConfiguration];
-  v9 = [(HAPWiFiConfigurationControl *)self stationConfiguration];
-  v10 = [v3 stringWithFormat:@"<HAPWiFiConfigurationControl operationType=%@, cookie=%@, updateStatus=%@, operationTimeout=%@, countryCodeConfiguration=%@, stationConfiguration=%@>", v4, v5, v6, v7, v8, v9];
+  operationType = [(HAPWiFiConfigurationControl *)self operationType];
+  cookie = [(HAPWiFiConfigurationControl *)self cookie];
+  updateStatus = [(HAPWiFiConfigurationControl *)self updateStatus];
+  operationTimeout = [(HAPWiFiConfigurationControl *)self operationTimeout];
+  countryCodeConfiguration = [(HAPWiFiConfigurationControl *)self countryCodeConfiguration];
+  stationConfiguration = [(HAPWiFiConfigurationControl *)self stationConfiguration];
+  v10 = [v3 stringWithFormat:@"<HAPWiFiConfigurationControl operationType=%@, cookie=%@, updateStatus=%@, operationTimeout=%@, countryCodeConfiguration=%@, stationConfiguration=%@>", operationType, cookie, updateStatus, operationTimeout, countryCodeConfiguration, stationConfiguration];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -38,34 +38,34 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPWiFiConfigurationControl *)self operationType];
-      v8 = [(HAPWiFiConfigurationControl *)v6 operationType];
-      if (v7 != v8)
+      v6 = equalCopy;
+      operationType = [(HAPWiFiConfigurationControl *)self operationType];
+      operationType2 = [(HAPWiFiConfigurationControl *)v6 operationType];
+      if (operationType != operationType2)
       {
-        v9 = [(HAPWiFiConfigurationControl *)self operationType];
-        v55 = [(HAPWiFiConfigurationControl *)v6 operationType];
-        v56 = v9;
-        if (![v9 isEqual:?])
+        operationType3 = [(HAPWiFiConfigurationControl *)self operationType];
+        operationType4 = [(HAPWiFiConfigurationControl *)v6 operationType];
+        v56 = operationType3;
+        if (![operationType3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_37;
         }
       }
 
-      v11 = [(HAPWiFiConfigurationControl *)self cookie];
-      v12 = [(HAPWiFiConfigurationControl *)v6 cookie];
-      if (v11 != v12)
+      cookie = [(HAPWiFiConfigurationControl *)self cookie];
+      cookie2 = [(HAPWiFiConfigurationControl *)v6 cookie];
+      if (cookie != cookie2)
       {
-        v3 = [(HAPWiFiConfigurationControl *)self cookie];
-        v53 = [(HAPWiFiConfigurationControl *)v6 cookie];
-        if (![v3 isEqual:?])
+        cookie3 = [(HAPWiFiConfigurationControl *)self cookie];
+        cookie4 = [(HAPWiFiConfigurationControl *)v6 cookie];
+        if (![cookie3 isEqual:?])
         {
           v10 = 0;
 LABEL_35:
 
 LABEL_36:
-          if (v7 == v8)
+          if (operationType == operationType2)
           {
 LABEL_38:
 
@@ -78,22 +78,22 @@ LABEL_37:
         }
       }
 
-      v13 = [(HAPWiFiConfigurationControl *)self updateStatus];
-      v14 = [(HAPWiFiConfigurationControl *)v6 updateStatus];
-      v54 = v13;
-      v15 = v13 == v14;
-      v16 = v14;
+      updateStatus = [(HAPWiFiConfigurationControl *)self updateStatus];
+      updateStatus2 = [(HAPWiFiConfigurationControl *)v6 updateStatus];
+      v54 = updateStatus;
+      v15 = updateStatus == updateStatus2;
+      v16 = updateStatus2;
       if (v15)
       {
-        v51 = v14;
+        v51 = updateStatus2;
       }
 
       else
       {
-        v17 = [(HAPWiFiConfigurationControl *)self updateStatus];
-        v47 = [(HAPWiFiConfigurationControl *)v6 updateStatus];
-        v48 = v17;
-        if (![v17 isEqual:?])
+        updateStatus3 = [(HAPWiFiConfigurationControl *)self updateStatus];
+        updateStatus4 = [(HAPWiFiConfigurationControl *)v6 updateStatus];
+        v48 = updateStatus3;
+        if (![updateStatus3 isEqual:?])
         {
           v10 = 0;
           v24 = v16;
@@ -101,7 +101,7 @@ LABEL_37:
 LABEL_33:
 
 LABEL_34:
-          if (v11 == v12)
+          if (cookie == cookie2)
           {
             goto LABEL_36;
           }
@@ -112,18 +112,18 @@ LABEL_34:
         v51 = v16;
       }
 
-      v18 = [(HAPWiFiConfigurationControl *)self operationTimeout];
-      v19 = [(HAPWiFiConfigurationControl *)v6 operationTimeout];
-      v49 = v18;
-      v50 = v3;
-      v15 = v18 == v19;
-      v20 = v19;
+      operationTimeout = [(HAPWiFiConfigurationControl *)self operationTimeout];
+      operationTimeout2 = [(HAPWiFiConfigurationControl *)v6 operationTimeout];
+      v49 = operationTimeout;
+      v50 = cookie3;
+      v15 = operationTimeout == operationTimeout2;
+      v20 = operationTimeout2;
       if (!v15)
       {
-        v21 = [(HAPWiFiConfigurationControl *)self operationTimeout];
-        v41 = [(HAPWiFiConfigurationControl *)v6 operationTimeout];
-        v42 = v21;
-        if (![v21 isEqual:?])
+        operationTimeout3 = [(HAPWiFiConfigurationControl *)self operationTimeout];
+        operationTimeout4 = [(HAPWiFiConfigurationControl *)v6 operationTimeout];
+        v42 = operationTimeout3;
+        if (![operationTimeout3 isEqual:?])
         {
           v22 = v51;
           v10 = 0;
@@ -134,7 +134,7 @@ LABEL_32:
           v25 = v54;
           v24 = v22;
           v15 = v54 == v22;
-          v3 = v50;
+          cookie3 = v50;
           if (v15)
           {
             goto LABEL_34;
@@ -144,39 +144,39 @@ LABEL_32:
         }
       }
 
-      v26 = [(HAPWiFiConfigurationControl *)self countryCodeConfiguration];
-      v44 = [(HAPWiFiConfigurationControl *)v6 countryCodeConfiguration];
-      v45 = v26;
+      countryCodeConfiguration = [(HAPWiFiConfigurationControl *)self countryCodeConfiguration];
+      countryCodeConfiguration2 = [(HAPWiFiConfigurationControl *)v6 countryCodeConfiguration];
+      v45 = countryCodeConfiguration;
       v46 = v20;
-      v43 = v12;
-      if (v26 == v44)
+      v43 = cookie2;
+      if (countryCodeConfiguration == countryCodeConfiguration2)
       {
-        v40 = v11;
+        v40 = cookie;
         v29 = v51;
       }
 
       else
       {
-        v27 = [(HAPWiFiConfigurationControl *)self countryCodeConfiguration];
-        v38 = [(HAPWiFiConfigurationControl *)v6 countryCodeConfiguration];
-        v39 = v27;
-        v28 = [v27 isEqual:?];
+        countryCodeConfiguration3 = [(HAPWiFiConfigurationControl *)self countryCodeConfiguration];
+        countryCodeConfiguration4 = [(HAPWiFiConfigurationControl *)v6 countryCodeConfiguration];
+        v39 = countryCodeConfiguration3;
+        v28 = [countryCodeConfiguration3 isEqual:?];
         v29 = v51;
         if (!v28)
         {
           v10 = 0;
-          v36 = v44;
+          v36 = countryCodeConfiguration2;
           v35 = v45;
           goto LABEL_28;
         }
 
-        v40 = v11;
+        v40 = cookie;
       }
 
-      v30 = [(HAPWiFiConfigurationControl *)self stationConfiguration];
-      v31 = [(HAPWiFiConfigurationControl *)v6 stationConfiguration];
-      v32 = v31;
-      if (v30 == v31)
+      stationConfiguration = [(HAPWiFiConfigurationControl *)self stationConfiguration];
+      stationConfiguration2 = [(HAPWiFiConfigurationControl *)v6 stationConfiguration];
+      v32 = stationConfiguration2;
+      if (stationConfiguration == stationConfiguration2)
       {
 
         v10 = 1;
@@ -186,23 +186,23 @@ LABEL_32:
       {
         [(HAPWiFiConfigurationControl *)self stationConfiguration];
         v33 = v52 = v29;
-        v34 = [(HAPWiFiConfigurationControl *)v6 stationConfiguration];
-        v10 = [v33 isEqual:v34];
+        stationConfiguration3 = [(HAPWiFiConfigurationControl *)v6 stationConfiguration];
+        v10 = [v33 isEqual:stationConfiguration3];
 
         v29 = v52;
       }
 
-      v36 = v44;
+      v36 = countryCodeConfiguration2;
       v35 = v45;
-      v11 = v40;
-      if (v45 == v44)
+      cookie = v40;
+      if (v45 == countryCodeConfiguration2)
       {
         v22 = v29;
 LABEL_30:
 
         v23 = v49;
         v20 = v46;
-        v12 = v43;
+        cookie2 = v43;
         if (v49 == v46)
         {
           goto LABEL_32;
@@ -225,21 +225,21 @@ LABEL_39:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPWiFiConfigurationControl allocWithZone:a3];
-  v5 = [(HAPWiFiConfigurationControl *)self operationType];
-  v6 = [(HAPWiFiConfigurationControl *)self cookie];
-  v7 = [(HAPWiFiConfigurationControl *)self updateStatus];
-  v8 = [(HAPWiFiConfigurationControl *)self operationTimeout];
-  v9 = [(HAPWiFiConfigurationControl *)self countryCodeConfiguration];
-  v10 = [(HAPWiFiConfigurationControl *)self stationConfiguration];
-  v11 = [(HAPWiFiConfigurationControl *)v4 initWithOperationType:v5 cookie:v6 updateStatus:v7 operationTimeout:v8 countryCodeConfiguration:v9 stationConfiguration:v10];
+  v4 = [HAPWiFiConfigurationControl allocWithZone:zone];
+  operationType = [(HAPWiFiConfigurationControl *)self operationType];
+  cookie = [(HAPWiFiConfigurationControl *)self cookie];
+  updateStatus = [(HAPWiFiConfigurationControl *)self updateStatus];
+  operationTimeout = [(HAPWiFiConfigurationControl *)self operationTimeout];
+  countryCodeConfiguration = [(HAPWiFiConfigurationControl *)self countryCodeConfiguration];
+  stationConfiguration = [(HAPWiFiConfigurationControl *)self stationConfiguration];
+  v11 = [(HAPWiFiConfigurationControl *)v4 initWithOperationType:operationType cookie:cookie updateStatus:updateStatus operationTimeout:operationTimeout countryCodeConfiguration:countryCodeConfiguration stationConfiguration:stationConfiguration];
 
   return v11;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v61 = *MEMORY[0x277D85DE8];
   v59 = 0u;
@@ -264,13 +264,13 @@ LABEL_39:
   v42 = 0u;
   v40 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPWiFiConfigurationControl *)self operationType];
+  operationType = [(HAPWiFiConfigurationControl *)self operationType];
 
-  if (v5)
+  if (operationType)
   {
-    v6 = [(HAPWiFiConfigurationControl *)self operationType];
+    operationType2 = [(HAPWiFiConfigurationControl *)self operationType];
     v39 = 0;
-    v7 = [v6 serializeWithError:&v39];
+    v7 = [operationType2 serializeWithError:&v39];
     v8 = v39;
 
     if (v8)
@@ -287,13 +287,13 @@ LABEL_39:
     }
   }
 
-  v10 = [(HAPWiFiConfigurationControl *)self cookie];
+  cookie = [(HAPWiFiConfigurationControl *)self cookie];
 
-  if (v10)
+  if (cookie)
   {
-    v11 = [(HAPWiFiConfigurationControl *)self cookie];
+    cookie2 = [(HAPWiFiConfigurationControl *)self cookie];
     v38 = 0;
-    v7 = [v11 serializeWithError:&v38];
+    v7 = [cookie2 serializeWithError:&v38];
     v8 = v38;
 
     if (v8)
@@ -310,16 +310,16 @@ LABEL_39:
     }
   }
 
-  v12 = [(HAPWiFiConfigurationControl *)self updateStatus];
+  updateStatus = [(HAPWiFiConfigurationControl *)self updateStatus];
 
-  if (!v12)
+  if (!updateStatus)
   {
     goto LABEL_13;
   }
 
-  v13 = [(HAPWiFiConfigurationControl *)self updateStatus];
+  updateStatus2 = [(HAPWiFiConfigurationControl *)self updateStatus];
   v37 = 0;
-  v7 = [v13 serializeWithError:&v37];
+  v7 = [updateStatus2 serializeWithError:&v37];
   v8 = v37;
 
   if (v8)
@@ -336,11 +336,11 @@ LABEL_16:
     v16 = v9;
 
 LABEL_17:
-    if (a3)
+    if (error)
     {
       HMErrorFromOSStatus(v16);
       v8 = 0;
-      *a3 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_35;
     }
 
@@ -351,13 +351,13 @@ LABEL_34:
   }
 
 LABEL_13:
-  v14 = [(HAPWiFiConfigurationControl *)self operationTimeout];
+  operationTimeout = [(HAPWiFiConfigurationControl *)self operationTimeout];
 
-  if (v14)
+  if (operationTimeout)
   {
-    v15 = [(HAPWiFiConfigurationControl *)self operationTimeout];
+    operationTimeout2 = [(HAPWiFiConfigurationControl *)self operationTimeout];
     v36 = 0;
-    v7 = [v15 serializeWithError:&v36];
+    v7 = [operationTimeout2 serializeWithError:&v36];
     v8 = v36;
 
     if (v8)
@@ -374,30 +374,30 @@ LABEL_13:
     }
   }
 
-  v18 = [(HAPWiFiConfigurationControl *)self countryCodeConfiguration];
+  countryCodeConfiguration = [(HAPWiFiConfigurationControl *)self countryCodeConfiguration];
 
-  if (v18)
+  if (countryCodeConfiguration)
   {
-    v19 = [(HAPWiFiConfigurationControl *)self countryCodeConfiguration];
+    countryCodeConfiguration2 = [(HAPWiFiConfigurationControl *)self countryCodeConfiguration];
     v35 = 0;
-    v7 = [v19 serializeWithError:&v35];
+    v7 = [countryCodeConfiguration2 serializeWithError:&v35];
     v8 = v35;
 
     if (!v8)
     {
-      v20 = [v7 bytes];
-      v21 = v20 + [v7 length];
+      bytes = [v7 bytes];
+      v21 = bytes + [v7 length];
       while (1)
       {
-        v22 = (v21 - v20) >= 255 ? 255 : v21 - v20;
+        v22 = (v21 - bytes) >= 255 ? 255 : v21 - bytes;
         v9 = TLV8BufferAppend();
         if (v9)
         {
           goto LABEL_16;
         }
 
-        v20 += v22;
-        if (v20 >= v21)
+        bytes += v22;
+        if (bytes >= v21)
         {
 
           goto LABEL_30;
@@ -407,11 +407,11 @@ LABEL_13:
 
 LABEL_32:
 
-    if (a3)
+    if (error)
     {
       v25 = v8;
       v17 = 0;
-      *a3 = v8;
+      *error = v8;
       goto LABEL_35;
     }
 
@@ -419,13 +419,13 @@ LABEL_32:
   }
 
 LABEL_30:
-  v23 = [(HAPWiFiConfigurationControl *)self stationConfiguration];
+  stationConfiguration = [(HAPWiFiConfigurationControl *)self stationConfiguration];
 
-  if (v23)
+  if (stationConfiguration)
   {
-    v24 = [(HAPWiFiConfigurationControl *)self stationConfiguration];
+    stationConfiguration2 = [(HAPWiFiConfigurationControl *)self stationConfiguration];
     v34 = 0;
-    v7 = [v24 serializeWithError:&v34];
+    v7 = [stationConfiguration2 serializeWithError:&v34];
     v8 = v34;
 
     if (v8)
@@ -433,18 +433,18 @@ LABEL_30:
       goto LABEL_32;
     }
 
-    v28 = [v7 bytes];
-    v29 = v28 + [v7 length];
+    bytes2 = [v7 bytes];
+    v29 = bytes2 + [v7 length];
     do
     {
-      if ((v29 - v28) >= 255)
+      if ((v29 - bytes2) >= 255)
       {
         v30 = 255;
       }
 
       else
       {
-        v30 = v29 - v28;
+        v30 = v29 - bytes2;
       }
 
       v31 = TLV8BufferAppend();
@@ -458,7 +458,7 @@ LABEL_30:
         v32 = v30;
       }
 
-      v28 += v32;
+      bytes2 += v32;
       if (v31)
       {
         v33 = 1;
@@ -466,7 +466,7 @@ LABEL_30:
 
       else
       {
-        v33 = v28 >= v29;
+        v33 = bytes2 >= v29;
       }
     }
 
@@ -489,11 +489,11 @@ LABEL_35:
   return v17;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 bytes];
-  v7 = [v5 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v7 = [dataCopy length];
   if (v7 < 1)
   {
     v25 = 0;
@@ -503,7 +503,7 @@ LABEL_35:
     v10 = 0;
     v11 = 0;
 LABEL_34:
-    [(HAPWiFiConfigurationControl *)self setOperationType:v25, a4];
+    [(HAPWiFiConfigurationControl *)self setOperationType:v25, error];
     [(HAPWiFiConfigurationControl *)self setCookie:v9];
     [(HAPWiFiConfigurationControl *)self setUpdateStatus:v11];
     [(HAPWiFiConfigurationControl *)self setOperationTimeout:v10];
@@ -521,7 +521,7 @@ LABEL_34:
   v33 = 0;
   v10 = 0;
   v11 = 0;
-  v12 = v6 + v7;
+  v12 = bytes + v7;
   while (1)
   {
     v46 = 0;
@@ -562,7 +562,7 @@ LABEL_34:
           goto LABEL_18;
         case 0xAu:
           v39 = v8;
-          v14 = HAPTLVParseContiguousTlvs(10, v6, v12, v44, &v39);
+          v14 = HAPTLVParseContiguousTlvs(10, bytes, v12, v44, &v39);
           v18 = v39;
 
           if (v18)
@@ -578,7 +578,7 @@ LABEL_34:
           goto LABEL_19;
         case 0xBu:
           v37 = v8;
-          v14 = HAPTLVParseContiguousTlvs(11, v6, v12, v44, &v37);
+          v14 = HAPTLVParseContiguousTlvs(11, bytes, v12, v44, &v37);
           v18 = v37;
 
           if (!v18)
@@ -638,7 +638,7 @@ LABEL_19:
       }
     }
 
-    v6 = v44[0];
+    bytes = v44[0];
     if (v44[0] >= v12)
     {
       if (v8)
@@ -646,11 +646,11 @@ LABEL_19:
 LABEL_27:
         v26 = v34;
         v25 = v35;
-        if (a4)
+        if (error)
         {
           v27 = v8;
           v28 = 0;
-          *a4 = v8;
+          *error = v8;
         }
 
         else
@@ -669,10 +669,10 @@ LABEL_33:
     }
   }
 
-  if (a4)
+  if (error)
   {
     HMErrorFromOSStatus(Next);
-    *a4 = v28 = 0;
+    *error = v28 = 0;
   }
 
   else
@@ -689,26 +689,26 @@ LABEL_39:
   return v28;
 }
 
-- (HAPWiFiConfigurationControl)initWithOperationType:(id)a3 cookie:(id)a4 updateStatus:(id)a5 operationTimeout:(id)a6 countryCodeConfiguration:(id)a7 stationConfiguration:(id)a8
+- (HAPWiFiConfigurationControl)initWithOperationType:(id)type cookie:(id)cookie updateStatus:(id)status operationTimeout:(id)timeout countryCodeConfiguration:(id)configuration stationConfiguration:(id)stationConfiguration
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  typeCopy = type;
+  cookieCopy = cookie;
+  statusCopy = status;
+  timeoutCopy = timeout;
+  configurationCopy = configuration;
+  stationConfigurationCopy = stationConfiguration;
   v24.receiver = self;
   v24.super_class = HAPWiFiConfigurationControl;
   v18 = [(HAPWiFiConfigurationControl *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_operationType, a3);
-    objc_storeStrong(&v19->_cookie, a4);
-    objc_storeStrong(&v19->_updateStatus, a5);
-    objc_storeStrong(&v19->_operationTimeout, a6);
-    objc_storeStrong(&v19->_countryCodeConfiguration, a7);
-    objc_storeStrong(&v19->_stationConfiguration, a8);
+    objc_storeStrong(&v18->_operationType, type);
+    objc_storeStrong(&v19->_cookie, cookie);
+    objc_storeStrong(&v19->_updateStatus, status);
+    objc_storeStrong(&v19->_operationTimeout, timeout);
+    objc_storeStrong(&v19->_countryCodeConfiguration, configuration);
+    objc_storeStrong(&v19->_stationConfiguration, stationConfiguration);
   }
 
   return v19;
@@ -721,24 +721,24 @@ LABEL_39:
   return [(HAPWiFiConfigurationControl *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPWiFiConfigurationControl);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPWiFiConfigurationControl *)v6 parseFromData:v5 error:&v11];
+    [(HAPWiFiConfigurationControl *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

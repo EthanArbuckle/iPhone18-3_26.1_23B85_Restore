@@ -1,14 +1,14 @@
 @interface CPLSyncSessionPredictor
 - (CPLSyncSessionPrediction)currentPrediction;
-- (CPLSyncSessionPredictor)initWithIdentifier:(id)a3;
+- (CPLSyncSessionPredictor)initWithIdentifier:(id)identifier;
 - (id)description;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)removePredictedValueForType:(id)a3;
-- (void)updatePredictedDate:(id)a3 forType:(id)a4;
-- (void)updatePredictedValue:(id)a3 forType:(id)a4;
-- (void)updatePredictionWithValuesAndTypes:(id)a3;
-- (void)updatePredictionsWithDerivativesStatistics:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)removePredictedValueForType:(id)type;
+- (void)updatePredictedDate:(id)date forType:(id)type;
+- (void)updatePredictedValue:(id)value forType:(id)type;
+- (void)updatePredictionWithValuesAndTypes:(id)types;
+- (void)updatePredictionsWithDerivativesStatistics:(id)statistics;
 @end
 
 @implementation CPLSyncSessionPredictor
@@ -17,24 +17,24 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(CPLSyncSessionPredictor *)self currentPrediction];
-  v6 = [v3 initWithFormat:@"<%@ current: %@>", v4, v5];
+  currentPrediction = [(CPLSyncSessionPredictor *)self currentPrediction];
+  v6 = [v3 initWithFormat:@"<%@ current: %@>", v4, currentPrediction];
 
   return v6;
 }
 
-- (void)updatePredictedDate:(id)a3 forType:(id)a4
+- (void)updatePredictedDate:(id)date forType:(id)type
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  [a3 timeIntervalSinceReferenceDate];
+  typeCopy = type;
+  [date timeIntervalSinceReferenceDate];
   v8 = [v6 numberWithDouble:?];
-  [(CPLSyncSessionPredictor *)self updatePredictedValue:v8 forType:v7];
+  [(CPLSyncSessionPredictor *)self updatePredictedValue:v8 forType:typeCopy];
 }
 
-- (void)removePredictedValueForType:(id)a3
+- (void)removePredictedValueForType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -52,8 +52,8 @@
   v10 = __55__CPLSyncSessionPredictor_removePredictedValueForType___block_invoke;
   v11 = &unk_1E86209B8;
   v14 = v16;
-  v12 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = typeCopy;
   v13 = v5;
   v15 = &v18;
   v6 = v9;
@@ -113,23 +113,23 @@ void __55__CPLSyncSessionPredictor_removePredictedValueForType___block_invoke(vo
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updatePredictedValue:(id)a3 forType:(id)a4
+- (void)updatePredictedValue:(id)value forType:(id)type
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12[0] = a3;
+  typeCopy = type;
+  v12[0] = value;
   v6 = MEMORY[0x1E695DF20];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 dictionaryWithObjects:v12 forKeys:&v11 count:1];
+  typeCopy2 = type;
+  valueCopy = value;
+  v9 = [v6 dictionaryWithObjects:v12 forKeys:&typeCopy count:1];
 
   [(CPLSyncSessionPredictor *)self updatePredictionWithValuesAndTypes:v9];
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updatePredictionWithValuesAndTypes:(id)a3
+- (void)updatePredictionWithValuesAndTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -147,8 +147,8 @@ void __55__CPLSyncSessionPredictor_removePredictedValueForType___block_invoke(vo
   v10 = __62__CPLSyncSessionPredictor_updatePredictionWithValuesAndTypes___block_invoke;
   v11 = &unk_1E86209B8;
   v14 = v16;
-  v12 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = typesCopy;
   v13 = v5;
   v15 = &v18;
   v6 = v9;
@@ -208,15 +208,15 @@ void __62__CPLSyncSessionPredictor_updatePredictionWithValuesAndTypes___block_in
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __42__CPLSyncSessionPredictor_removeObserver___block_invoke;
   v9 = &unk_1E861B290;
-  v10 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = observerCopy;
   v11 = v5;
   v6 = v7;
   os_unfair_lock_lock(&self->_lock);
@@ -224,15 +224,15 @@ void __62__CPLSyncSessionPredictor_updatePredictionWithValuesAndTypes___block_in
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __39__CPLSyncSessionPredictor_addObserver___block_invoke;
   v9 = &unk_1E861B290;
-  v10 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = observerCopy;
   v11 = v5;
   v6 = v7;
   os_unfair_lock_lock(&self->_lock);
@@ -252,7 +252,7 @@ void __62__CPLSyncSessionPredictor_updatePredictionWithValuesAndTypes___block_in
   v6[1] = 3221225472;
   v7 = __44__CPLSyncSessionPredictor_currentPrediction__block_invoke;
   v8 = &unk_1E861A850;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_lock);
@@ -265,9 +265,9 @@ void __62__CPLSyncSessionPredictor_updatePredictionWithValuesAndTypes___block_in
   return v4;
 }
 
-- (CPLSyncSessionPredictor)initWithIdentifier:(id)a3
+- (CPLSyncSessionPredictor)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = CPLSyncSessionPredictor;
   v5 = [(CPLSyncSessionPredictor *)&v14 init];
@@ -279,32 +279,32 @@ void __62__CPLSyncSessionPredictor_updatePredictionWithValuesAndTypes___block_in
     currentPrediction = v6->_currentPrediction;
     v6->_currentPrediction = v7;
 
-    v9 = [v4 copy];
+    v9 = [identifierCopy copy];
     identifier = v6->_identifier;
     v6->_identifier = v9;
 
-    v11 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v6->_observers;
-    v6->_observers = v11;
+    v6->_observers = weakObjectsHashTable;
   }
 
   return v6;
 }
 
-- (void)updatePredictionsWithDerivativesStatistics:(id)a3
+- (void)updatePredictionsWithDerivativesStatistics:(id)statistics
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  statisticsCopy = statistics;
+  if ([statisticsCopy count])
   {
-    v25 = self;
+    selfCopy = self;
     v5 = +[CPLResource largeResourceSizeThreshold];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v26 = v4;
-    v6 = v4;
+    v26 = statisticsCopy;
+    v6 = statisticsCopy;
     v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v7)
     {
@@ -328,22 +328,22 @@ void __62__CPLSyncSessionPredictor_updatePredictionWithValuesAndTypes___block_in
           if (v16 > 0.00999999978)
           {
             v17 = v16;
-            v18 = [v15 sourceResource];
-            v19 = [v18 identity];
-            v20 = [v19 fileSize];
+            sourceResource = [v15 sourceResource];
+            identity = [sourceResource identity];
+            fileSize = [identity fileSize];
 
-            if (v20 <= v5)
+            if (fileSize <= v5)
             {
-              if (v20 > 0x19000 && v17 > v13)
+              if (fileSize > 0x19000 && v17 > v13)
               {
-                v10 = v20;
+                v10 = fileSize;
                 v13 = v17;
               }
             }
 
             else if (v17 > v12)
             {
-              v9 = v20;
+              v9 = fileSize;
               v12 = v17;
             }
           }
@@ -378,10 +378,10 @@ void __62__CPLSyncSessionPredictor_updatePredictionWithValuesAndTypes___block_in
 
     if ([v21 count])
     {
-      [(CPLSyncSessionPredictor *)v25 updatePredictionWithValuesAndTypes:v21];
+      [(CPLSyncSessionPredictor *)selfCopy updatePredictionWithValuesAndTypes:v21];
     }
 
-    v4 = v26;
+    statisticsCopy = v26;
   }
 
   v24 = *MEMORY[0x1E69E9840];

@@ -1,49 +1,49 @@
 @interface PUParallaxLayerStackRadarController
-+ (id)visualDiagnosticsActionForAsset:(id)a3 compoundLayerStack:(id)a4 segmentationItem:(id)a5 fromViewController:(id)a6 actionBeingHandler:(id)a7 actionEndHandler:(id)a8;
-+ (id)visualDiagnosticsConfigurationForAsset:(id)a3 compoundLayerStack:(id)a4 segmentationItem:(id)a5;
-+ (void)loadLayerStackForAsset:(id)a3 completion:(id)a4;
-- (PUParallaxLayerStackRadarController)initWithAsset:(id)a3 compoundLayerStack:(id)a4 segmentationItem:(id)a5 posterDescriptor:(id)a6 posterConfiguration:(id)a7;
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
-- (void)saveDebugLayerStack:(id)a3 toFileName:(id)a4 item:(id)a5 completion:(id)a6;
++ (id)visualDiagnosticsActionForAsset:(id)asset compoundLayerStack:(id)stack segmentationItem:(id)item fromViewController:(id)controller actionBeingHandler:(id)handler actionEndHandler:(id)endHandler;
++ (id)visualDiagnosticsConfigurationForAsset:(id)asset compoundLayerStack:(id)stack segmentationItem:(id)item;
++ (void)loadLayerStackForAsset:(id)asset completion:(id)completion;
+- (PUParallaxLayerStackRadarController)initWithAsset:(id)asset compoundLayerStack:(id)stack segmentationItem:(id)item posterDescriptor:(id)descriptor posterConfiguration:(id)configuration;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
+- (void)saveDebugLayerStack:(id)stack toFileName:(id)name item:(id)item completion:(id)completion;
 @end
 
 @implementation PUParallaxLayerStackRadarController
 
-- (void)saveDebugLayerStack:(id)a3 toFileName:(id)a4 item:(id)a5 completion:(id)a6
+- (void)saveDebugLayerStack:(id)stack toFileName:(id)name item:(id)item completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  stackCopy = stack;
+  nameCopy = name;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __86__PUParallaxLayerStackRadarController_saveDebugLayerStack_toFileName_item_completion___block_invoke;
   aBlock[3] = &unk_1E7B79188;
   aBlock[4] = self;
-  v29 = v12;
-  v14 = v12;
-  v15 = a5;
+  v29 = nameCopy;
+  v14 = nameCopy;
+  itemCopy = item;
   v16 = _Block_copy(aBlock);
-  v17 = [objc_alloc(MEMORY[0x1E69BDEA0]) initWithSegmentationItem:v15];
+  v17 = [objc_alloc(MEMORY[0x1E69BDEA0]) initWithSegmentationItem:itemCopy];
   v18 = [objc_alloc(MEMORY[0x1E69B3C00]) initWithLevel:0];
   [v17 setPriority:v18];
 
   [v17 setLayerStackOptions:20];
-  [v17 setSettlingEffectEnabled:{objc_msgSend(v15, "isSettlingEffectAvailable")}];
-  v19 = [v15 isSpatialPhotoAvailable];
+  [v17 setSettlingEffectEnabled:{objc_msgSend(itemCopy, "isSettlingEffectAvailable")}];
+  isSpatialPhotoAvailable = [itemCopy isSpatialPhotoAvailable];
 
-  [v17 setSpatialPhotoEnabled:v19];
+  [v17 setSpatialPhotoEnabled:isSpatialPhotoAvailable];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __86__PUParallaxLayerStackRadarController_saveDebugLayerStack_toFileName_item_completion___block_invoke_2;
   v23[3] = &unk_1E7B791B0;
-  v26 = v13;
+  v26 = completionCopy;
   v27 = a2;
   v23[4] = self;
-  v24 = v11;
+  v24 = stackCopy;
   v25 = v16;
-  v20 = v13;
+  v20 = completionCopy;
   v21 = v16;
-  v22 = v11;
+  v22 = stackCopy;
   [v17 submit:v23];
 }
 
@@ -131,17 +131,17 @@ void __86__PUParallaxLayerStackRadarController_saveDebugLayerStack_toFileName_it
   }
 }
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  containerCopy = container;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __81__PUParallaxLayerStackRadarController_collectTapToRadarDiagnosticsIntoContainer___block_invoke;
   aBlock[3] = &unk_1E7B79070;
-  v5 = v4;
+  v5 = containerCopy;
   v46 = v5;
-  v47 = self;
+  selfCopy = self;
   v6 = _Block_copy(aBlock);
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
@@ -149,7 +149,7 @@ void __86__PUParallaxLayerStackRadarController_saveDebugLayerStack_toFileName_it
   v42[3] = &unk_1E7B79098;
   v7 = v5;
   v43 = v7;
-  v44 = self;
+  selfCopy2 = self;
   v8 = _Block_copy(v42);
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
@@ -173,18 +173,18 @@ void __86__PUParallaxLayerStackRadarController_saveDebugLayerStack_toFileName_it
   v13 = v9;
   v36 = v13;
   v14 = _Block_copy(v35);
-  v15 = [(PUParallaxLayerStackRadarController *)self compoundLayerStack];
-  if (v15)
+  compoundLayerStack = [(PUParallaxLayerStackRadarController *)self compoundLayerStack];
+  if (compoundLayerStack)
   {
-    v16 = [(PUParallaxLayerStackRadarController *)self segmentationItem];
-    v14[2](v14, v15, v16);
+    segmentationItem = [(PUParallaxLayerStackRadarController *)self segmentationItem];
+    v14[2](v14, compoundLayerStack, segmentationItem);
   }
 
   else
   {
     v17 = [v13 beginCollectionOperationWithName:@"Load Layer Stack" timeout:{1.84467441e19, v27}];
     v18 = objc_opt_class();
-    v19 = [(PUParallaxLayerStackRadarController *)self asset];
+    asset = [(PUParallaxLayerStackRadarController *)self asset];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __81__PUParallaxLayerStackRadarController_collectTapToRadarDiagnosticsIntoContainer___block_invoke_2_236;
@@ -192,14 +192,14 @@ void __86__PUParallaxLayerStackRadarController_saveDebugLayerStack_toFileName_it
     v32[4] = self;
     v33 = v17;
     v34 = v14;
-    v16 = v17;
-    [v18 loadLayerStackForAsset:v19 completion:v32];
+    segmentationItem = v17;
+    [v18 loadLayerStackForAsset:asset completion:v32];
   }
 
   v20 = [v13 beginCollectionOperationWithName:@"Asset Resource" timeout:10.0];
   v21 = MEMORY[0x1E6978630];
-  v22 = [(PUParallaxLayerStackRadarController *)self asset];
-  v48[0] = v22;
+  asset2 = [(PUParallaxLayerStackRadarController *)self asset];
+  v48[0] = asset2;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:1];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
@@ -211,8 +211,8 @@ void __86__PUParallaxLayerStackRadarController_saveDebugLayerStack_toFileName_it
   v25 = v13;
   [v21 px_generateResourceFilesForAssets:v23 completionHandler:v29];
 
-  v26 = [(PUParallaxLayerStackRadarController *)self screenshotURL];
-  [v25 addAttachment:v26];
+  screenshotURL = [(PUParallaxLayerStackRadarController *)self screenshotURL];
+  [v25 addAttachment:screenshotURL];
 }
 
 void __81__PUParallaxLayerStackRadarController_collectTapToRadarDiagnosticsIntoContainer___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -502,24 +502,24 @@ void __81__PUParallaxLayerStackRadarController_collectTapToRadarDiagnosticsIntoC
   [*(a1 + 40) endWithSuccess:a2 != 0 error:v6];
 }
 
-- (PUParallaxLayerStackRadarController)initWithAsset:(id)a3 compoundLayerStack:(id)a4 segmentationItem:(id)a5 posterDescriptor:(id)a6 posterConfiguration:(id)a7
+- (PUParallaxLayerStackRadarController)initWithAsset:(id)asset compoundLayerStack:(id)stack segmentationItem:(id)item posterDescriptor:(id)descriptor posterConfiguration:(id)configuration
 {
-  v27 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  assetCopy = asset;
+  stackCopy = stack;
+  itemCopy = item;
+  descriptorCopy = descriptor;
+  configurationCopy = configuration;
   v28.receiver = self;
   v28.super_class = PUParallaxLayerStackRadarController;
   v17 = [(PUParallaxLayerStackRadarController *)&v28 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_asset, a3);
-    objc_storeStrong(&v18->_compoundLayerStack, a4);
-    objc_storeStrong(&v18->_segmentationItem, a5);
-    objc_storeStrong(&v18->_posterDescriptor, a6);
-    objc_storeStrong(&v18->_posterConfiguration, a7);
+    objc_storeStrong(&v17->_asset, asset);
+    objc_storeStrong(&v18->_compoundLayerStack, stack);
+    objc_storeStrong(&v18->_segmentationItem, item);
+    objc_storeStrong(&v18->_posterDescriptor, descriptor);
+    objc_storeStrong(&v18->_posterConfiguration, configuration);
     v19 = MEMORY[0x1E695DFF8];
     v20 = NSTemporaryDirectory();
     v21 = [v20 stringByAppendingPathComponent:@"photosradarfeedback"];
@@ -527,41 +527,41 @@ void __81__PUParallaxLayerStackRadarController_collectTapToRadarDiagnosticsIntoC
     baseTemporaryURL = v18->_baseTemporaryURL;
     v18->_baseTemporaryURL = v22;
 
-    v24 = [MEMORY[0x1E69C3578] captureScreenshot];
+    captureScreenshot = [MEMORY[0x1E69C3578] captureScreenshot];
     screenshotURL = v18->_screenshotURL;
-    v18->_screenshotURL = v24;
+    v18->_screenshotURL = captureScreenshot;
   }
 
   return v18;
 }
 
-+ (id)visualDiagnosticsActionForAsset:(id)a3 compoundLayerStack:(id)a4 segmentationItem:(id)a5 fromViewController:(id)a6 actionBeingHandler:(id)a7 actionEndHandler:(id)a8
++ (id)visualDiagnosticsActionForAsset:(id)asset compoundLayerStack:(id)stack segmentationItem:(id)item fromViewController:(id)controller actionBeingHandler:(id)handler actionEndHandler:(id)endHandler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  assetCopy = asset;
+  stackCopy = stack;
+  itemCopy = item;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  endHandlerCopy = endHandler;
   v20 = MEMORY[0x1E69DC628];
   v21 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"eye"];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __162__PUParallaxLayerStackRadarController_visualDiagnosticsActionForAsset_compoundLayerStack_segmentationItem_fromViewController_actionBeingHandler_actionEndHandler___block_invoke;
   v30[3] = &unk_1E7B79200;
-  v36 = v19;
-  v37 = a1;
-  v31 = v15;
-  v32 = v14;
-  v33 = v16;
-  v34 = v17;
-  v35 = v18;
-  v22 = v19;
-  v23 = v17;
-  v24 = v16;
-  v25 = v14;
-  v26 = v15;
-  v27 = v18;
+  v36 = endHandlerCopy;
+  selfCopy = self;
+  v31 = stackCopy;
+  v32 = assetCopy;
+  v33 = itemCopy;
+  v34 = controllerCopy;
+  v35 = handlerCopy;
+  v22 = endHandlerCopy;
+  v23 = controllerCopy;
+  v24 = itemCopy;
+  v25 = assetCopy;
+  v26 = stackCopy;
+  v27 = handlerCopy;
   v28 = [v20 actionWithTitle:@"Parallax Diagnostics" image:v21 identifier:0 handler:v30];
 
   return v28;
@@ -630,16 +630,16 @@ void __162__PUParallaxLayerStackRadarController_visualDiagnosticsActionForAsset_
   }
 }
 
-+ (id)visualDiagnosticsConfigurationForAsset:(id)a3 compoundLayerStack:(id)a4 segmentationItem:(id)a5
++ (id)visualDiagnosticsConfigurationForAsset:(id)asset compoundLayerStack:(id)stack segmentationItem:(id)item
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  itemCopy = item;
+  stackCopy = stack;
+  assetCopy = asset;
   v10 = objc_alloc_init(PUParallaxVisualDiagnosticsProvider);
-  [(PUParallaxVisualDiagnosticsProvider *)v10 setAsset:v9];
+  [(PUParallaxVisualDiagnosticsProvider *)v10 setAsset:assetCopy];
 
-  [(PUParallaxVisualDiagnosticsProvider *)v10 setCompoundLayerStack:v8];
-  [(PUParallaxVisualDiagnosticsProvider *)v10 setSegmentationItem:v7];
+  [(PUParallaxVisualDiagnosticsProvider *)v10 setCompoundLayerStack:stackCopy];
+  [(PUParallaxVisualDiagnosticsProvider *)v10 setSegmentationItem:itemCopy];
 
   v11 = [objc_alloc(MEMORY[0x1E69C4618]) initWithRootProvider:v10];
   [v11 setName:@"ParallaxDiagnostics"];
@@ -648,20 +648,20 @@ void __162__PUParallaxLayerStackRadarController_visualDiagnosticsActionForAsset_
   return v11;
 }
 
-+ (void)loadLayerStackForAsset:(id)a3 completion:(id)a4
++ (void)loadLayerStackForAsset:(id)asset completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x1E6978B20];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithPhotoAsset:v7];
+  assetCopy = asset;
+  v8 = [[v6 alloc] initWithPhotoAsset:assetCopy];
 
   v9 = [objc_alloc(MEMORY[0x1E69BDF40]) initWithParallaxAsset:v8];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__PUParallaxLayerStackRadarController_loadLayerStackForAsset_completion___block_invoke;
   v11[3] = &unk_1E7B79160;
-  v12 = v5;
-  v10 = v5;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [v9 loadSegmentationItemWithCompletion:v11];
 }
 

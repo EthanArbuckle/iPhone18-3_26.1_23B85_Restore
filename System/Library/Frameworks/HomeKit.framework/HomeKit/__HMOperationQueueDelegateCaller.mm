@@ -1,41 +1,41 @@
 @interface __HMOperationQueueDelegateCaller
 - (__HMOperationQueueDelegateCaller)init;
-- (__HMOperationQueueDelegateCaller)initWithOperationQueue:(id)a3;
-- (__HMOperationQueueDelegateCaller)initWithQueue:(id)a3;
-- (void)invokeBlock:(id)a3;
+- (__HMOperationQueueDelegateCaller)initWithOperationQueue:(id)queue;
+- (__HMOperationQueueDelegateCaller)initWithQueue:(id)queue;
+- (void)invokeBlock:(id)block;
 @end
 
 @implementation __HMOperationQueueDelegateCaller
 
-- (void)invokeBlock:(id)a3
+- (void)invokeBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     [(NSOperationQueue *)self->_queue addOperationWithBlock:?];
   }
 }
 
-- (__HMOperationQueueDelegateCaller)initWithOperationQueue:(id)a3
+- (__HMOperationQueueDelegateCaller)initWithOperationQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = __HMOperationQueueDelegateCaller;
   v6 = [(HMDelegateCaller *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
 }
 
-- (__HMOperationQueueDelegateCaller)initWithQueue:(id)a3
+- (__HMOperationQueueDelegateCaller)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = __HMOperationQueueDelegateCaller;
-  v5 = [(HMDelegateCaller *)&v9 initWithQueue:v4];
+  v5 = [(HMDelegateCaller *)&v9 initWithQueue:queueCopy];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E696ADC8]);
@@ -44,7 +44,7 @@
 
     [(NSOperationQueue *)v5->_queue setName:@"HomeKit Delegate Caller"];
     [(NSOperationQueue *)v5->_queue setMaxConcurrentOperationCount:1];
-    [(NSOperationQueue *)v5->_queue setUnderlyingQueue:v4];
+    [(NSOperationQueue *)v5->_queue setUnderlyingQueue:queueCopy];
   }
 
   return v5;
@@ -57,9 +57,9 @@
   v2 = [(HMDelegateCaller *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696ADC8] mainQueue];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     queue = v2->_queue;
-    v2->_queue = v3;
+    v2->_queue = mainQueue;
   }
 
   return v2;

@@ -1,20 +1,20 @@
 @interface TIPreferencesAnalyzerRegistry
 - (TIPreferencesAnalyzerRegistry)init;
-- (void)enumerateRegisteredPreferencesUsingBlock:(id)a3;
+- (void)enumerateRegisteredPreferencesUsingBlock:(id)block;
 @end
 
 @implementation TIPreferencesAnalyzerRegistry
 
-- (void)enumerateRegisteredPreferencesUsingBlock:(id)a3
+- (void)enumerateRegisteredPreferencesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   registry = self->_registry;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__TIPreferencesAnalyzerRegistry_enumerateRegisteredPreferencesUsingBlock___block_invoke;
   v7[3] = &unk_278732C78;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableArray *)registry enumerateObjectsUsingBlock:v7];
 }
 

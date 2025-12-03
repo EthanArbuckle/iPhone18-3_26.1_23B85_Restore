@@ -2,15 +2,15 @@
 - (UIEdgeInsets)_layoutMargins;
 - (UIEdgeInsets)layoutMargins;
 - (_TtC17NanoControlCenter21SensorStatusViewModel)init;
-- (_TtC17NanoControlCenter21SensorStatusViewModel)initWithFocusModel:(id)a3;
+- (_TtC17NanoControlCenter21SensorStatusViewModel)initWithFocusModel:(id)model;
 - (double)_batteryLevel;
 - (double)batteryLevel;
-- (void)setBatteryLevel:(double)a3;
-- (void)setConnectionStatus:(unint64_t)a3 connectionType:(unint64_t)a4;
-- (void)setLayoutMargins:(UIEdgeInsets)a3;
-- (void)set_batteryLevel:(double)a3;
-- (void)set_layoutMargins:(UIEdgeInsets)a3;
-- (void)statusChangedForButton:(int64_t)a3 isOn:(BOOL)a4;
+- (void)setBatteryLevel:(double)level;
+- (void)setConnectionStatus:(unint64_t)status connectionType:(unint64_t)type;
+- (void)setLayoutMargins:(UIEdgeInsets)margins;
+- (void)set_batteryLevel:(double)level;
+- (void)set_layoutMargins:(UIEdgeInsets)margins;
+- (void)statusChangedForButton:(int64_t)button isOn:(BOOL)on;
 @end
 
 @implementation SensorStatusViewModel
@@ -43,12 +43,12 @@
   return result;
 }
 
-- (void)set_layoutMargins:(UIEdgeInsets)a3
+- (void)set_layoutMargins:(UIEdgeInsets)margins
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
   sub_25B005B34();
   sub_25B005B24();
   sub_25B005AE4();
@@ -77,10 +77,10 @@
 
   swift_getKeyPath();
   sub_25AF5D370();
-  v3 = self;
+  selfCopy = self;
   sub_25B004234();
 
-  v4 = (v3 + OBJC_IVAR____TtC17NanoControlCenter21SensorStatusViewModel__layoutMargins);
+  v4 = (selfCopy + OBJC_IVAR____TtC17NanoControlCenter21SensorStatusViewModel__layoutMargins);
   swift_beginAccess();
   v5 = *v4;
   v6 = v4[1];
@@ -98,12 +98,12 @@
   return result;
 }
 
-- (void)setLayoutMargins:(UIEdgeInsets)a3
+- (void)setLayoutMargins:(UIEdgeInsets)margins
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
   sub_25B005B34();
   sub_25B005B24();
   sub_25B005AE4();
@@ -112,7 +112,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v8 = self;
+  selfCopy = self;
   SensorStatusViewModel.layoutMargins.setter(top, left, bottom, right);
 }
 
@@ -133,7 +133,7 @@
   return v4;
 }
 
-- (void)set_batteryLevel:(double)a3
+- (void)set_batteryLevel:(double)level
 {
   sub_25B005B34();
   sub_25B005B24();
@@ -145,7 +145,7 @@
 
   v5 = OBJC_IVAR____TtC17NanoControlCenter21SensorStatusViewModel__batteryLevel;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = level;
 }
 
 - (double)batteryLevel
@@ -160,17 +160,17 @@
 
   swift_getKeyPath();
   sub_25AF5D370();
-  v3 = self;
+  selfCopy = self;
   sub_25B004234();
 
   v4 = OBJC_IVAR____TtC17NanoControlCenter21SensorStatusViewModel__batteryLevel;
   swift_beginAccess();
-  v5 = *(v3 + v4);
+  v5 = *(selfCopy + v4);
 
   return v5;
 }
 
-- (void)setBatteryLevel:(double)a3
+- (void)setBatteryLevel:(double)level
 {
   sub_25B005B34();
   sub_25B005B24();
@@ -180,11 +180,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  SensorStatusViewModel.batteryLevel.setter(a3);
+  selfCopy = self;
+  SensorStatusViewModel.batteryLevel.setter(level);
 }
 
-- (_TtC17NanoControlCenter21SensorStatusViewModel)initWithFocusModel:(id)a3
+- (_TtC17NanoControlCenter21SensorStatusViewModel)initWithFocusModel:(id)model
 {
   sub_25B005B34();
   sub_25B005B24();
@@ -194,12 +194,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = SensorStatusViewModel.init(focusModel:)(a3);
+  v4 = SensorStatusViewModel.init(focusModel:)(model);
 
   return v4;
 }
 
-- (void)setConnectionStatus:(unint64_t)a3 connectionType:(unint64_t)a4
+- (void)setConnectionStatus:(unint64_t)status connectionType:(unint64_t)type
 {
   sub_25B005B34();
   sub_25B005B24();
@@ -209,11 +209,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = self;
-  SensorStatusViewModel.setConnectionStatus(_:connectionType:)(a3, a4);
+  selfCopy = self;
+  SensorStatusViewModel.setConnectionStatus(_:connectionType:)(status, type);
 }
 
-- (void)statusChangedForButton:(int64_t)a3 isOn:(BOOL)a4
+- (void)statusChangedForButton:(int64_t)button isOn:(BOOL)on
 {
   sub_25B005B34();
   sub_25B005B24();
@@ -223,8 +223,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = self;
-  SensorStatusViewModel.statusChanged(for:isOn:)(a3, a4);
+  selfCopy = self;
+  SensorStatusViewModel.statusChanged(for:isOn:)(button, on);
 }
 
 - (_TtC17NanoControlCenter21SensorStatusViewModel)init

@@ -6,17 +6,17 @@
 
 - (id)tvun_defaultActionURL
 {
-  v3 = [(WLKDeltaContinuationMetadata *)self contentTVAppDeeplinkURL];
-  v4 = [(WLKDeltaContinuationMetadata *)self playbackURL];
-  v5 = v4;
-  if (v4)
+  contentTVAppDeeplinkURL = [(WLKDeltaContinuationMetadata *)self contentTVAppDeeplinkURL];
+  playbackURL = [(WLKDeltaContinuationMetadata *)self playbackURL];
+  v5 = playbackURL;
+  if (playbackURL)
   {
-    v6 = v4;
+    v6 = playbackURL;
 
-    v3 = v6;
+    contentTVAppDeeplinkURL = v6;
   }
 
-  return v3;
+  return contentTVAppDeeplinkURL;
 }
 
 @end

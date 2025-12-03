@@ -1,35 +1,35 @@
 @interface FigCaptureSemanticStyleSet
-+ (FigCaptureSemanticStyleSet)semanticStyleSetWithSemanticStyles:(id)a3 regions:(id)a4;
-- (CGRect)regionAtIndex:(unint64_t)a3;
-- (FigCaptureSemanticStyleSet)initWithXPCEncoding:(id)a3;
++ (FigCaptureSemanticStyleSet)semanticStyleSetWithSemanticStyles:(id)styles regions:(id)regions;
+- (CGRect)regionAtIndex:(unint64_t)index;
+- (FigCaptureSemanticStyleSet)initWithXPCEncoding:(id)encoding;
 - (NSString)description;
-- (double)_edgeOffsetForRegionAtIndex:(void *)a1;
+- (double)_edgeOffsetForRegionAtIndex:(void *)index;
 - (float)largestEdgeOffset;
 - (float)leftmostRegionStartXOffset;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (id)largestRegionSemanticStyle;
 - (void)dealloc;
-- (void)initWithSemanticStyles:(void *)a3 regions:;
+- (void)initWithSemanticStyles:(void *)styles regions:;
 @end
 
 @implementation FigCaptureSemanticStyleSet
 
-+ (FigCaptureSemanticStyleSet)semanticStyleSetWithSemanticStyles:(id)a3 regions:(id)a4
++ (FigCaptureSemanticStyleSet)semanticStyleSetWithSemanticStyles:(id)styles regions:(id)regions
 {
-  v4 = [[FigCaptureSemanticStyleSet alloc] initWithSemanticStyles:a3 regions:a4];
+  v4 = [[FigCaptureSemanticStyleSet alloc] initWithSemanticStyles:styles regions:regions];
 
   return v4;
 }
 
-- (FigCaptureSemanticStyleSet)initWithXPCEncoding:(id)a3
+- (FigCaptureSemanticStyleSet)initWithXPCEncoding:(id)encoding
 {
   v19.receiver = self;
   v19.super_class = FigCaptureSemanticStyleSet;
   v4 = [(FigCaptureSemanticStyleSet *)&v19 init];
   if (v4)
   {
-    value = xpc_dictionary_get_value(a3, "semanticStylesArray");
+    value = xpc_dictionary_get_value(encoding, "semanticStylesArray");
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (xpc_array_get_count(value))
     {
@@ -43,7 +43,7 @@
     }
 
     v4->_semanticStyles = v6;
-    v8 = xpc_dictionary_get_value(a3, "regionsArray");
+    v8 = xpc_dictionary_get_value(encoding, "regionsArray");
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (xpc_array_get_count(v8))
     {
@@ -238,9 +238,9 @@
   return v9;
 }
 
-- (CGRect)regionAtIndex:(unint64_t)a3
+- (CGRect)regionAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_regions objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_regions objectAtIndexedSubscript:index];
   v8 = 0u;
   v9 = 0u;
   [v3 getValue:&v8];
@@ -279,14 +279,14 @@
   return v4;
 }
 
-- (void)initWithSemanticStyles:(void *)a3 regions:
+- (void)initWithSemanticStyles:(void *)styles regions:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = FigCaptureSemanticStyleSet;
   v5 = objc_msgSendSuper2(&v13, sel_init);
   if (v5)
@@ -298,9 +298,9 @@
       for (i = 0; [a2 count] > i; ++i)
       {
         [a2 objectAtIndexedSubscript:i];
-        if (a3)
+        if (styles)
         {
-          if ([a3 count] <= i)
+          if ([styles count] <= i)
           {
             continue;
           }
@@ -337,23 +337,23 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [FigCaptureSemanticStyleSet allocWithZone:a3];
+  v4 = [FigCaptureSemanticStyleSet allocWithZone:zone];
   semanticStyles = self->_semanticStyles;
   regions = self->_regions;
 
   return [(FigCaptureSemanticStyleSet *)v4 initWithSemanticStyles:regions regions:?];
 }
 
-- (double)_edgeOffsetForRegionAtIndex:(void *)a1
+- (double)_edgeOffsetForRegionAtIndex:(void *)index
 {
-  if (!a1)
+  if (!index)
   {
     return 0.0;
   }
 
-  [a1 regionAtIndex:a2];
+  [index regionAtIndex:a2];
   OUTLINED_FUNCTION_7_54(v4);
   v2 = OUTLINED_FUNCTION_0_88();
   *&result = OUTLINED_FUNCTION_1_102(v2);

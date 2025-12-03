@@ -1,8 +1,8 @@
 @interface RTFusedInferredMapItem
-+ (id)sortFusedInferredMapItems:(id)a3 confidenceEqualityEpsilon:(double)a4 referenceLocation:(id)a5 distanceCalculator:(id)a6 ascending:(BOOL)a7;
-- (BOOL)isEqual:(id)a3;
-- (RTFusedInferredMapItem)initWithInferredMapItem:(id)a3;
-- (RTFusedInferredMapItem)initWithMapItem:(id)a3 confidence:(double)a4 source:(unint64_t)a5;
++ (id)sortFusedInferredMapItems:(id)items confidenceEqualityEpsilon:(double)epsilon referenceLocation:(id)location distanceCalculator:(id)calculator ascending:(BOOL)ascending;
+- (BOOL)isEqual:(id)equal;
+- (RTFusedInferredMapItem)initWithInferredMapItem:(id)item;
+- (RTFusedInferredMapItem)initWithMapItem:(id)item confidence:(double)confidence source:(unint64_t)source;
 - (id)convertToInferredMapItem;
 - (id)description;
 - (unint64_t)hash;
@@ -25,10 +25,10 @@
   return v3;
 }
 
-- (RTFusedInferredMapItem)initWithMapItem:(id)a3 confidence:(double)a4 source:(unint64_t)a5
+- (RTFusedInferredMapItem)initWithMapItem:(id)item confidence:(double)confidence source:(unint64_t)source
 {
-  v9 = a3;
-  if (a4 < 0.0 || a4 > 1.0)
+  itemCopy = item;
+  if (confidence < 0.0 || confidence > 1.0)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -40,10 +40,10 @@
     goto LABEL_10;
   }
 
-  if ((a5 & 0xFFFFFFFFFFC00020) != 0)
+  if ((source & 0xFFFFFFFFFFC00020) != 0)
   {
 LABEL_10:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -53,29 +53,29 @@ LABEL_10:
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_mapItem, a3);
-    v15->_confidence = a4;
-    v15->_source = a5;
+    objc_storeStrong(&v14->_mapItem, item);
+    v15->_confidence = confidence;
+    v15->_source = source;
   }
 
   self = v15;
-  v12 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v12;
+  return selfCopy;
 }
 
-- (RTFusedInferredMapItem)initWithInferredMapItem:(id)a3
+- (RTFusedInferredMapItem)initWithInferredMapItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy)
   {
-    v6 = [v4 mapItem];
+    mapItem = [itemCopy mapItem];
     [v5 confidence];
-    self = -[RTFusedInferredMapItem initWithMapItem:confidence:source:](self, "initWithMapItem:confidence:source:", v6, [v5 source], v7);
+    self = -[RTFusedInferredMapItem initWithMapItem:confidence:source:](self, "initWithMapItem:confidence:source:", mapItem, [v5 source], v7);
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -87,17 +87,17 @@ LABEL_11:
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inferredMapItem", v11, 2u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(RTFusedInferredMapItem *)self mapItem];
+  mapItem = [(RTFusedInferredMapItem *)self mapItem];
 
-  if (v3)
+  if (mapItem)
   {
     v4 = [(RTMapItem *)self->_mapItem hash];
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_confidence];
@@ -116,10 +116,10 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
   }
@@ -129,16 +129,16 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTFusedInferredMapItem *)self mapItem];
-      v7 = [(RTFusedInferredMapItem *)v5 mapItem];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      mapItem = [(RTFusedInferredMapItem *)self mapItem];
+      mapItem2 = [(RTFusedInferredMapItem *)v5 mapItem];
+      v8 = [mapItem isEqual:mapItem2];
 
-      v9 = [(RTFusedInferredMapItem *)self mapItem];
-      if (!v9)
+      mapItem3 = [(RTFusedInferredMapItem *)self mapItem];
+      if (!mapItem3)
       {
-        v10 = [(RTFusedInferredMapItem *)v5 mapItem];
-        v11 = v10 == 0;
+        mapItem4 = [(RTFusedInferredMapItem *)v5 mapItem];
+        v11 = mapItem4 == 0;
 
         v8 |= v11;
       }
@@ -147,8 +147,8 @@ LABEL_11:
       v13 = v12;
       [(RTFusedInferredMapItem *)v5 confidence];
       v15 = v14;
-      v16 = [(RTFusedInferredMapItem *)self source];
-      if (v16 == [(RTFusedInferredMapItem *)v5 source])
+      source = [(RTFusedInferredMapItem *)self source];
+      if (source == [(RTFusedInferredMapItem *)v5 source])
       {
         v17 = v8 & (v13 == v15);
       }
@@ -171,23 +171,23 @@ LABEL_11:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTFusedInferredMapItem *)self mapItem];
+  mapItem = [(RTFusedInferredMapItem *)self mapItem];
   [(RTFusedInferredMapItem *)self confidence];
   v6 = v5;
   v7 = [MEMORY[0x277D011A0] sourceToString:{-[RTFusedInferredMapItem source](self, "source")}];
-  v8 = [v3 stringWithFormat:@"mapItem, %@, confidence, %.3f, source, %@", v4, v6, v7];
+  v8 = [v3 stringWithFormat:@"mapItem, %@, confidence, %.3f, source, %@", mapItem, v6, v7];
 
   return v8;
 }
 
-+ (id)sortFusedInferredMapItems:(id)a3 confidenceEqualityEpsilon:(double)a4 referenceLocation:(id)a5 distanceCalculator:(id)a6 ascending:(BOOL)a7
++ (id)sortFusedInferredMapItems:(id)items confidenceEqualityEpsilon:(double)epsilon referenceLocation:(id)location distanceCalculator:(id)calculator ascending:(BOOL)ascending
 {
-  v7 = a7;
+  ascendingCopy = ascending;
   v28[4] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  itemsCopy = items;
+  locationCopy = location;
+  calculatorCopy = calculator;
+  if (!itemsCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -215,7 +215,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (!v12)
+  if (!locationCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -228,30 +228,30 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (v13)
+  if (calculatorCopy)
   {
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __125__RTFusedInferredMapItem_sortFusedInferredMapItems_confidenceEqualityEpsilon_referenceLocation_distanceCalculator_ascending___block_invoke;
     v26[3] = &__block_descriptor_40_e31_q24__0__NSNumber_8__NSNumber_16l;
-    *&v26[4] = a4;
-    v14 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"confidence" ascending:v7 comparator:v26];
-    v15 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"mapItem" ascending:v7 comparator:&__block_literal_global_45];
-    v16 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"mapItem" ascending:v7 comparator:&__block_literal_global_32];
+    *&v26[4] = epsilon;
+    v14 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"confidence" ascending:ascendingCopy comparator:v26];
+    v15 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"mapItem" ascending:ascendingCopy comparator:&__block_literal_global_45];
+    v16 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"mapItem" ascending:ascendingCopy comparator:&__block_literal_global_32];
     v17 = MEMORY[0x277CCAC98];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __125__RTFusedInferredMapItem_sortFusedInferredMapItems_confidenceEqualityEpsilon_referenceLocation_distanceCalculator_ascending___block_invoke_4;
     v23[3] = &unk_2788C9B48;
-    v24 = v13;
-    v25 = v12;
-    v18 = [v17 sortDescriptorWithKey:@"mapItem" ascending:v7 comparator:v23];
+    v24 = calculatorCopy;
+    v25 = locationCopy;
+    v18 = [v17 sortDescriptorWithKey:@"mapItem" ascending:ascendingCopy comparator:v23];
     v28[0] = v14;
     v28[1] = v15;
     v28[2] = v16;
     v28[3] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:4];
-    v20 = [v11 sortedArrayUsingDescriptors:v19];
+    v20 = [itemsCopy sortedArrayUsingDescriptors:v19];
 
     goto LABEL_16;
   }

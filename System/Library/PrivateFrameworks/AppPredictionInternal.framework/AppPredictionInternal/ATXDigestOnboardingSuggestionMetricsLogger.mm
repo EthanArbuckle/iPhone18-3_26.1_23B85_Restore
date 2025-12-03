@@ -1,9 +1,9 @@
 @interface ATXDigestOnboardingSuggestionMetricsLogger
 - (ATXDigestOnboardingSuggestionMetricsLogger)init;
-- (ATXDigestOnboardingSuggestionMetricsLogger)initWithDigestOnboardingSuggestionLoggingBiomeStream:(id)a3;
+- (ATXDigestOnboardingSuggestionMetricsLogger)initWithDigestOnboardingSuggestionLoggingBiomeStream:(id)stream;
 - (id)digestOnboardingSuggestionBookmark;
-- (void)logDigestOnboardingSuggestionMetricsWithXPCActivity:(id)a3;
-- (void)writeBookmarkToFile:(id)a3;
+- (void)logDigestOnboardingSuggestionMetricsWithXPCActivity:(id)activity;
+- (void)writeBookmarkToFile:(id)file;
 @end
 
 @implementation ATXDigestOnboardingSuggestionMetricsLogger
@@ -16,16 +16,16 @@
   return v4;
 }
 
-- (ATXDigestOnboardingSuggestionMetricsLogger)initWithDigestOnboardingSuggestionLoggingBiomeStream:(id)a3
+- (ATXDigestOnboardingSuggestionMetricsLogger)initWithDigestOnboardingSuggestionLoggingBiomeStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v9.receiver = self;
   v9.super_class = ATXDigestOnboardingSuggestionMetricsLogger;
   v6 = [(ATXDigestOnboardingSuggestionMetricsLogger *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_digestOnboardingSuggestionLoggingBiomeStream, a3);
+    objc_storeStrong(&v6->_digestOnboardingSuggestionLoggingBiomeStream, stream);
   }
 
   return v7;
@@ -48,10 +48,10 @@
   return v5;
 }
 
-- (void)logDigestOnboardingSuggestionMetricsWithXPCActivity:(id)a3
+- (void)logDigestOnboardingSuggestionMetricsWithXPCActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(ATXDigestOnboardingSuggestionMetricsLogger *)self digestOnboardingSuggestionBookmark];
+  activityCopy = activity;
+  digestOnboardingSuggestionBookmark = [(ATXDigestOnboardingSuggestionMetricsLogger *)self digestOnboardingSuggestionBookmark];
   digestOnboardingSuggestionLoggingBiomeStream = self->_digestOnboardingSuggestionLoggingBiomeStream;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v8 = [(ATXDigestOnboardingSuggestionLoggingBiomeStream *)digestOnboardingSuggestionLoggingBiomeStream publisherFromStartTime:v7 + -1209600.0];
@@ -59,23 +59,23 @@
   v19[1] = v19;
   v19[2] = 0x2020000000;
   v20 = 0;
-  v9 = [v5 bookmark];
+  bookmark = [digestOnboardingSuggestionBookmark bookmark];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __98__ATXDigestOnboardingSuggestionMetricsLogger_logDigestOnboardingSuggestionMetricsWithXPCActivity___block_invoke;
   v16[3] = &unk_278598378;
   v18 = v19;
   v16[4] = self;
-  v10 = v5;
+  v10 = digestOnboardingSuggestionBookmark;
   v17 = v10;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __98__ATXDigestOnboardingSuggestionMetricsLogger_logDigestOnboardingSuggestionMetricsWithXPCActivity___block_invoke_26;
   v13[3] = &unk_2785983A0;
-  v11 = v4;
+  v11 = activityCopy;
   v14 = v11;
   v15 = v19;
-  v12 = [v8 drivableSinkWithBookmark:v9 completion:v16 shouldContinue:v13];
+  v12 = [v8 drivableSinkWithBookmark:bookmark completion:v16 shouldContinue:v13];
 
   _Block_object_dispose(v19, 8);
 }
@@ -128,10 +128,10 @@ uint64_t __98__ATXDigestOnboardingSuggestionMetricsLogger_logDigestOnboardingSug
   return v8 ^ 1u;
 }
 
-- (void)writeBookmarkToFile:(id)a3
+- (void)writeBookmarkToFile:(id)file
 {
   v6 = 0;
-  [a3 saveBookmarkWithError:&v6];
+  [file saveBookmarkWithError:&v6];
   v4 = v6;
   if (v4)
   {

@@ -1,16 +1,16 @@
 @interface SBCursiveTextPath
-- (CGAffineTransform)transformForRect:(SEL)a3 pointSize:(CGRect)a4 flipped:(double)a5;
-- (CGPath)pathForFraction:(double)a3 calculateLength:(BOOL)a4;
-- (SBCursiveTextPath)initWithURL:(id)a3 resolution:(int64_t)a4;
+- (CGAffineTransform)transformForRect:(SEL)rect pointSize:(CGRect)size flipped:(double)flipped;
+- (CGPath)pathForFraction:(double)fraction calculateLength:(BOOL)length;
+- (SBCursiveTextPath)initWithURL:(id)l resolution:(int64_t)resolution;
 - (id).cxx_construct;
 @end
 
 @implementation SBCursiveTextPath
 
-- (SBCursiveTextPath)initWithURL:(id)a3 resolution:(int64_t)a4
+- (SBCursiveTextPath)initWithURL:(id)l resolution:(int64_t)resolution
 {
   v84 = *MEMORY[0x277D85DE8];
-  v58 = a3;
+  lCopy = l;
   v78.receiver = self;
   v78.super_class = SBCursiveTextPath;
   v5 = [(SBCursiveTextPath *)&v78 init];
@@ -20,7 +20,7 @@
   {
     *(v5 + 8) = xmmword_21F8A5880;
     *(v5 + 3) = 0x3FD0000000000000;
-    v7 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v58];
+    v7 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy];
     v55 = v7;
     if (v7)
     {
@@ -209,7 +209,7 @@
           while (v26);
         }
 
-        *(v66 + 16) = a4;
+        *(v66 + 16) = resolution;
         v44 = [v66 pathForFraction:1 calculateLength:0.0];
         *(v66 + 48) = CGPathGetPathBoundingBox(v44);
         CGPathRelease(v44);
@@ -223,9 +223,9 @@
       v49 = SBLogDashBoard();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
       {
-        v50 = [v58 absoluteString];
+        absoluteString = [lCopy absoluteString];
         v51 = [v54 description];
-        [(SBCursiveTextPath *)v50 initWithURL:v51 resolution:buf, v49];
+        [(SBCursiveTextPath *)absoluteString initWithURL:v51 resolution:buf, v49];
       }
     }
 
@@ -234,8 +234,8 @@
       v47 = SBLogDashBoard();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
       {
-        v48 = [v58 absoluteString];
-        [(SBCursiveTextPath *)v48 initWithURL:buf resolution:v47];
+        absoluteString2 = [lCopy absoluteString];
+        [(SBCursiveTextPath *)absoluteString2 initWithURL:buf resolution:v47];
       }
     }
 
@@ -250,14 +250,14 @@ LABEL_49:
   return v46;
 }
 
-- (CGAffineTransform)transformForRect:(SEL)a3 pointSize:(CGRect)a4 flipped:(double)a5
+- (CGAffineTransform)transformForRect:(SEL)rect pointSize:(CGRect)size flipped:(double)flipped
 {
   v6 = a6;
   descender = self->_descender;
   v10 = self->_ascender - descender;
   v11 = -descender / v10;
-  v12 = v10 / self->_unitsPerM * a5;
-  v32 = (CGRectGetHeight(a4) - v12) * 0.5;
+  v12 = v10 / self->_unitsPerM * flipped;
+  v32 = (CGRectGetHeight(size) - v12) * 0.5;
   x = self->_boundingBoxOfPath.origin.x;
   y = self->_boundingBoxOfPath.origin.y;
   width = self->_boundingBoxOfPath.size.width;
@@ -287,7 +287,7 @@ LABEL_49:
   }
 
   v20 = v32 + v19 * v12;
-  v21 = a5 / self->_unitsPerM;
+  v21 = flipped / self->_unitsPerM;
   v22 = *&retstr->c;
   *&t1.a = *&retstr->a;
   *&t1.c = v22;
@@ -308,10 +308,10 @@ LABEL_49:
   *&t1.a = *&retstr->a;
   *&t1.c = v25;
   *&t1.tx = *&retstr->tx;
-  v26 = a4.origin.x;
-  *&v25 = a4.origin.y;
-  v27 = a4.size.width;
-  v28 = a4.size.height;
+  v26 = size.origin.x;
+  *&v25 = size.origin.y;
+  v27 = size.size.width;
+  v28 = size.size.height;
   v29 = CGRectGetWidth(*(&v25 - 8));
   CGAffineTransformMakeTranslation(&t2, v29 * 0.5, v20);
   result = CGAffineTransformConcat(&v37, &t1, &t2);
@@ -322,9 +322,9 @@ LABEL_49:
   return result;
 }
 
-- (CGPath)pathForFraction:(double)a3 calculateLength:(BOOL)a4
+- (CGPath)pathForFraction:(double)fraction calculateLength:(BOOL)length
 {
-  v4 = a4;
+  lengthCopy = length;
   rampTime = self->_rampTime;
   duration = self->_duration;
   v108 = 0;
@@ -343,7 +343,7 @@ LABEL_49:
     v10 = 0;
     v11 = rampTime / duration;
     v12 = 1.0;
-    v13 = -(v11 - (v11 + 1.0) * a3);
+    v13 = -(v11 - (v11 + 1.0) * fraction);
     v14 = v13;
     v15 = v11;
     v101 = v11 + v13;
@@ -504,7 +504,7 @@ LABEL_9:
           initialWeight = self->_initialWeight;
           finalWeight = self->_finalWeight;
           v49 = powf((1.0 - fminf(fmaxf((v46 - v14) / v15, 0.0), 1.0)) + -1.0, 3.0);
-          if (!v4 && v45 > v101)
+          if (!lengthCopy && v45 > v101)
           {
             break;
           }
@@ -664,7 +664,7 @@ LABEL_9:
     while (v100 + 3 != end);
   }
 
-  if (v4)
+  if (lengthCopy)
   {
     self->_length = v16;
   }

@@ -2,9 +2,9 @@
 - (AXMActiveSound)activeSound;
 - (AXMActiveSoundOutputActionHandleImpl)init;
 - (AXMSoundComponent)soundComponent;
-- (void)setPitch:(float)a3;
-- (void)setQuantizedRate:(int64_t)a3;
-- (void)setRate:(float)a3;
+- (void)setPitch:(float)pitch;
+- (void)setQuantizedRate:(int64_t)rate;
+- (void)setRate:(float)rate;
 - (void)stop;
 @end
 
@@ -27,68 +27,68 @@
   return v4;
 }
 
-- (void)setRate:(float)a3
+- (void)setRate:(float)rate
 {
-  if (a3 <= 0.03125)
+  if (rate <= 0.03125)
   {
-    a3 = 0.03125;
+    rate = 0.03125;
   }
 
-  if (a3 >= 32.0)
+  if (rate >= 32.0)
   {
-    v3 = 32.0;
+    rateCopy = 32.0;
   }
 
   else
   {
-    v3 = a3;
+    rateCopy = rate;
   }
 
-  self->_rate = v3;
-  v6 = [(AXMActiveSoundOutputActionHandleImpl *)self activeSound];
-  v4 = [v6 timePitch];
-  *&v5 = v3;
-  [v4 setRate:v5];
+  self->_rate = rateCopy;
+  activeSound = [(AXMActiveSoundOutputActionHandleImpl *)self activeSound];
+  timePitch = [activeSound timePitch];
+  *&v5 = rateCopy;
+  [timePitch setRate:v5];
 }
 
-- (void)setPitch:(float)a3
+- (void)setPitch:(float)pitch
 {
-  if (a3 <= -2400.0)
+  if (pitch <= -2400.0)
   {
-    a3 = -2400.0;
+    pitch = -2400.0;
   }
 
-  if (a3 >= 2400.0)
+  if (pitch >= 2400.0)
   {
-    v3 = 2400.0;
+    pitchCopy = 2400.0;
   }
 
   else
   {
-    v3 = a3;
+    pitchCopy = pitch;
   }
 
-  self->_pitch = v3;
-  v6 = [(AXMActiveSoundOutputActionHandleImpl *)self activeSound];
-  v4 = [v6 timePitch];
-  *&v5 = v3;
-  [v4 setPitch:v5];
+  self->_pitch = pitchCopy;
+  activeSound = [(AXMActiveSoundOutputActionHandleImpl *)self activeSound];
+  timePitch = [activeSound timePitch];
+  *&v5 = pitchCopy;
+  [timePitch setPitch:v5];
 }
 
-- (void)setQuantizedRate:(int64_t)a3
+- (void)setQuantizedRate:(int64_t)rate
 {
-  if (a3 <= 0xA)
+  if (rate <= 0xA)
   {
-    LODWORD(v3) = dword_1AE4522C0[a3];
+    LODWORD(v3) = dword_1AE4522C0[rate];
     [(AXMActiveSoundOutputActionHandleImpl *)self setRate:v3];
   }
 }
 
 - (void)stop
 {
-  v4 = [(AXMActiveSoundOutputActionHandleImpl *)self soundComponent];
-  v3 = [(AXMActiveSoundOutputActionHandleImpl *)self activeSound];
-  [v4 _stopActiveSound:v3];
+  soundComponent = [(AXMActiveSoundOutputActionHandleImpl *)self soundComponent];
+  activeSound = [(AXMActiveSoundOutputActionHandleImpl *)self activeSound];
+  [soundComponent _stopActiveSound:activeSound];
 }
 
 - (AXMActiveSound)activeSound

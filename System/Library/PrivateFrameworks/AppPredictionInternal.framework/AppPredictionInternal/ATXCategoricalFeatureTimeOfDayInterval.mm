@@ -1,32 +1,32 @@
 @interface ATXCategoricalFeatureTimeOfDayInterval
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4;
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate;
 @end
 
 @implementation ATXCategoricalFeatureTimeOfDayInterval
 
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [v4 timeContext];
+  contextCopy = context;
+  timeContext = [contextCopy timeContext];
 
-  if (v5)
+  if (timeContext)
   {
-    v6 = [v4 timeContext];
-    v7 = [v6 timeOfDay];
+    timeContext2 = [contextCopy timeContext];
+    timeOfDay = [timeContext2 timeOfDay];
 
     v8 = @"6_to_12";
     v9 = @"18_to_24";
-    if (v7 < 0x12)
+    if (timeOfDay < 0x12)
     {
       v9 = @"12_to_18";
     }
 
-    if (v7 >= 0xC)
+    if (timeOfDay >= 0xC)
     {
       v8 = v9;
     }
 
-    if (v7 >= 6)
+    if (timeOfDay >= 6)
     {
       v10 = v8;
     }

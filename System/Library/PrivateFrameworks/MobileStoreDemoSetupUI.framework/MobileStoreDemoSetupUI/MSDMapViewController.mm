@@ -1,27 +1,27 @@
 @interface MSDMapViewController
-- (MSDMapViewController)initWithDelegate:(id)a3;
-- (id)_getAnnotationWithStoreInfo:(id)a3;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (void)_recenter:(id)a3;
-- (void)_recenterToCoordinate:(CLLocationCoordinate2D)a3;
+- (MSDMapViewController)initWithDelegate:(id)delegate;
+- (id)_getAnnotationWithStoreInfo:(id)info;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (void)_recenter:(id)_recenter;
+- (void)_recenterToCoordinate:(CLLocationCoordinate2D)coordinate;
 - (void)_removeAllStoreAnnotations;
 - (void)_zoomToAnnotation;
-- (void)annotateStores:(id)a3;
+- (void)annotateStores:(id)stores;
 - (void)deselectAnnotation;
-- (void)mapView:(id)a3 didDeselectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 didUpdateUserLocation:(id)a4;
+- (void)mapView:(id)view didDeselectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view didUpdateUserLocation:(id)location;
 - (void)stopUpdatingUserLocation;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)zoomToStore:(id)a3;
+- (void)zoomToStore:(id)store;
 @end
 
 @implementation MSDMapViewController
 
-- (MSDMapViewController)initWithDelegate:(id)a3
+- (MSDMapViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = MSDMapViewController;
   v5 = [(MSDMapViewController *)&v15 init];
@@ -30,28 +30,28 @@
     v6 = [MEMORY[0x277D75220] buttonWithType:1];
     [(MSDMapViewController *)v5 setRecenterButton:v6];
 
-    v7 = [(MSDMapViewController *)v5 recenterButton];
-    [v7 setHidden:1];
+    recenterButton = [(MSDMapViewController *)v5 recenterButton];
+    [recenterButton setHidden:1];
 
     [(MSDMapViewController *)v5 setUserLocation:0];
-    [(MSDMapViewController *)v5 setDelegate:v4];
+    [(MSDMapViewController *)v5 setDelegate:delegateCopy];
     v8 = objc_opt_new();
     [(MSDMapViewController *)v5 setMapView:v8];
 
-    v9 = [(MSDMapViewController *)v5 mapView];
-    [v9 setDelegate:v5];
+    mapView = [(MSDMapViewController *)v5 mapView];
+    [mapView setDelegate:v5];
 
-    v10 = [(MSDMapViewController *)v5 mapView];
-    [v10 setShowsUserLocation:1];
+    mapView2 = [(MSDMapViewController *)v5 mapView];
+    [mapView2 setShowsUserLocation:1];
 
-    v11 = [(MSDMapViewController *)v5 mapView];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    mapView3 = [(MSDMapViewController *)v5 mapView];
+    [mapView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v12 = [(MSDMapViewController *)v5 mapView];
-    [v12 registerClass:objc_opt_class() forAnnotationViewWithReuseIdentifier:@"StoreAnnotation"];
+    mapView4 = [(MSDMapViewController *)v5 mapView];
+    [mapView4 registerClass:objc_opt_class() forAnnotationViewWithReuseIdentifier:@"StoreAnnotation"];
 
-    v13 = [(MSDMapViewController *)v5 mapView];
-    [v13 registerClass:objc_opt_class() forAnnotationViewWithReuseIdentifier:@"StoreClusterAnnotation"];
+    mapView5 = [(MSDMapViewController *)v5 mapView];
+    [mapView5 registerClass:objc_opt_class() forAnnotationViewWithReuseIdentifier:@"StoreClusterAnnotation"];
   }
 
   return v5;
@@ -63,62 +63,62 @@
   v38.receiver = self;
   v38.super_class = MSDMapViewController;
   [(MSDMapViewController *)&v38 viewDidLoad];
-  v3 = [(MSDMapViewController *)self view];
-  v4 = [(MSDMapViewController *)self mapView];
-  [v3 addSubview:v4];
+  view = [(MSDMapViewController *)self view];
+  mapView = [(MSDMapViewController *)self mapView];
+  [view addSubview:mapView];
 
   v37 = [MEMORY[0x277D755B8] systemImageNamed:@"location"];
-  v5 = [(MSDMapViewController *)self recenterButton];
-  [v5 setImage:v37 forState:0];
+  recenterButton = [(MSDMapViewController *)self recenterButton];
+  [recenterButton setImage:v37 forState:0];
 
-  v6 = [MEMORY[0x277D75348] systemBlueColor];
-  v7 = [(MSDMapViewController *)self recenterButton];
-  [v7 setTintColor:v6];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  recenterButton2 = [(MSDMapViewController *)self recenterButton];
+  [recenterButton2 setTintColor:systemBlueColor];
 
-  v8 = [MEMORY[0x277D75348] whiteColor];
-  v9 = [(MSDMapViewController *)self recenterButton];
-  [v9 setBackgroundColor:v8];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  recenterButton3 = [(MSDMapViewController *)self recenterButton];
+  [recenterButton3 setBackgroundColor:whiteColor];
 
-  v10 = [(MSDMapViewController *)self recenterButton];
-  v11 = [v10 layer];
-  [v11 setCornerRadius:10.0];
+  recenterButton4 = [(MSDMapViewController *)self recenterButton];
+  layer = [recenterButton4 layer];
+  [layer setCornerRadius:10.0];
 
-  v12 = [(MSDMapViewController *)self recenterButton];
-  v13 = [v12 layer];
-  [v13 setBorderWidth:1.0];
+  recenterButton5 = [(MSDMapViewController *)self recenterButton];
+  layer2 = [recenterButton5 layer];
+  [layer2 setBorderWidth:1.0];
 
-  v14 = [MEMORY[0x277D75348] systemBlueColor];
-  v15 = [v14 CGColor];
-  v16 = [(MSDMapViewController *)self recenterButton];
-  v17 = [v16 layer];
-  [v17 setBorderColor:v15];
+  systemBlueColor2 = [MEMORY[0x277D75348] systemBlueColor];
+  cGColor = [systemBlueColor2 CGColor];
+  recenterButton6 = [(MSDMapViewController *)self recenterButton];
+  layer3 = [recenterButton6 layer];
+  [layer3 setBorderColor:cGColor];
 
-  v18 = [(MSDMapViewController *)self recenterButton];
-  [v18 setContentEdgeInsets:{5.0, 5.0, 5.0, 5.0}];
+  recenterButton7 = [(MSDMapViewController *)self recenterButton];
+  [recenterButton7 setContentEdgeInsets:{5.0, 5.0, 5.0, 5.0}];
 
-  v19 = [(MSDMapViewController *)self recenterButton];
-  [v19 addTarget:self action:sel__recenter_ forControlEvents:64];
+  recenterButton8 = [(MSDMapViewController *)self recenterButton];
+  [recenterButton8 addTarget:self action:sel__recenter_ forControlEvents:64];
 
-  v20 = [(MSDMapViewController *)self recenterButton];
-  [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+  recenterButton9 = [(MSDMapViewController *)self recenterButton];
+  [recenterButton9 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v21 = [(MSDMapViewController *)self view];
-  v22 = [(MSDMapViewController *)self recenterButton];
-  [v21 addSubview:v22];
+  view2 = [(MSDMapViewController *)self view];
+  recenterButton10 = [(MSDMapViewController *)self recenterButton];
+  [view2 addSubview:recenterButton10];
 
-  v36 = [(MSDMapViewController *)self recenterButton];
-  v34 = [v36 trailingAnchor];
-  v35 = [(MSDMapViewController *)self view];
-  v23 = [v35 safeAreaLayoutGuide];
-  v24 = [v23 trailingAnchor];
-  v25 = [v34 constraintEqualToAnchor:v24 constant:-15.0];
+  recenterButton11 = [(MSDMapViewController *)self recenterButton];
+  trailingAnchor = [recenterButton11 trailingAnchor];
+  view3 = [(MSDMapViewController *)self view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-15.0];
   v39[0] = v25;
-  v26 = [(MSDMapViewController *)self recenterButton];
-  v27 = [v26 topAnchor];
-  v28 = [(MSDMapViewController *)self view];
-  v29 = [v28 safeAreaLayoutGuide];
-  v30 = [v29 topAnchor];
-  v31 = [v27 constraintEqualToAnchor:v30 constant:15.0];
+  recenterButton12 = [(MSDMapViewController *)self recenterButton];
+  topAnchor = [recenterButton12 topAnchor];
+  view4 = [(MSDMapViewController *)self view];
+  safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide2 topAnchor];
+  v31 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:15.0];
   v39[1] = v31;
   v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:2];
 
@@ -132,29 +132,29 @@
   v25.receiver = self;
   v25.super_class = MSDMapViewController;
   [(MSDMapViewController *)&v25 viewDidLayoutSubviews];
-  v24 = [(MSDMapViewController *)self mapView];
-  v22 = [v24 topAnchor];
-  v23 = [(MSDMapViewController *)self view];
-  v21 = [v23 topAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  mapView = [(MSDMapViewController *)self mapView];
+  topAnchor = [mapView topAnchor];
+  view = [(MSDMapViewController *)self view];
+  topAnchor2 = [view topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v26[0] = v20;
-  v19 = [(MSDMapViewController *)self mapView];
-  v17 = [v19 bottomAnchor];
-  v18 = [(MSDMapViewController *)self view];
-  v16 = [v18 bottomAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16];
+  mapView2 = [(MSDMapViewController *)self mapView];
+  bottomAnchor = [mapView2 bottomAnchor];
+  view2 = [(MSDMapViewController *)self view];
+  bottomAnchor2 = [view2 bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[1] = v15;
-  v14 = [(MSDMapViewController *)self mapView];
-  v3 = [v14 leftAnchor];
-  v4 = [(MSDMapViewController *)self view];
-  v5 = [v4 leftAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  mapView3 = [(MSDMapViewController *)self mapView];
+  leftAnchor = [mapView3 leftAnchor];
+  view3 = [(MSDMapViewController *)self view];
+  leftAnchor2 = [view3 leftAnchor];
+  v6 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v26[2] = v6;
-  v7 = [(MSDMapViewController *)self mapView];
-  v8 = [v7 rightAnchor];
-  v9 = [(MSDMapViewController *)self view];
-  v10 = [v9 rightAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  mapView4 = [(MSDMapViewController *)self mapView];
+  rightAnchor = [mapView4 rightAnchor];
+  view4 = [(MSDMapViewController *)self view];
+  rightAnchor2 = [view4 rightAnchor];
+  v11 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v26[3] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:4];
 
@@ -162,39 +162,39 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)zoomToStore:(id)a3
+- (void)zoomToStore:(id)store
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  storeCopy = store;
   v5 = defaultLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543362;
-    v18 = v4;
+    v18 = storeCopy;
     _os_log_impl(&dword_259BCA000, v5, OS_LOG_TYPE_DEFAULT, "Zooming to store %{public}@...", &v17, 0xCu);
   }
 
-  v6 = [(MSDMapViewController *)self _getAnnotationWithStoreInfo:v4];
-  v7 = [(MSDMapViewController *)self mapView];
-  v8 = [v7 selectedAnnotations];
-  v9 = [v8 count];
+  v6 = [(MSDMapViewController *)self _getAnnotationWithStoreInfo:storeCopy];
+  mapView = [(MSDMapViewController *)self mapView];
+  selectedAnnotations = [mapView selectedAnnotations];
+  v9 = [selectedAnnotations count];
 
   if (v9 == 1)
   {
-    v10 = [(MSDMapViewController *)self mapView];
-    v11 = [v10 selectedAnnotations];
-    v12 = [v11 firstObject];
+    mapView2 = [(MSDMapViewController *)self mapView];
+    selectedAnnotations2 = [mapView2 selectedAnnotations];
+    firstObject = [selectedAnnotations2 firstObject];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v12 memberAnnotations];
-      v14 = [v13 firstObject];
+      memberAnnotations = [firstObject memberAnnotations];
+      firstObject2 = [memberAnnotations firstObject];
 
-      v12 = v14;
+      firstObject = firstObject2;
     }
 
-    if ([v6 isSameLocation:v12])
+    if ([v6 isSameLocation:firstObject])
     {
       [MSDMapViewController zoomToStore:v6];
       goto LABEL_13;
@@ -203,8 +203,8 @@
 
   if (v6)
   {
-    v12 = [(MSDMapViewController *)self mapView];
-    [v12 selectAnnotation:v6 animated:1];
+    firstObject = [(MSDMapViewController *)self mapView];
+    [firstObject selectAnnotation:v6 animated:1];
   }
 
   else
@@ -212,11 +212,11 @@
     v15 = defaultLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [(MSDMapViewController *)v4 zoomToStore:v15];
+      [(MSDMapViewController *)storeCopy zoomToStore:v15];
     }
 
-    v12 = [v4 storeLocation];
-    [v12 coordinate];
+    firstObject = [storeCopy storeLocation];
+    [firstObject coordinate];
     [MSDMapViewController _zoomToCoordinate:"_zoomToCoordinate:withRadius:allowZoomOut:" withRadius:0 allowZoomOut:?];
   }
 
@@ -228,9 +228,9 @@ LABEL_13:
 - (void)deselectAnnotation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(MSDMapViewController *)self mapView];
-  v4 = [v3 selectedAnnotations];
-  v5 = [v4 count];
+  mapView = [(MSDMapViewController *)self mapView];
+  selectedAnnotations = [mapView selectedAnnotations];
+  v5 = [selectedAnnotations count];
 
   if (v5)
   {
@@ -238,10 +238,10 @@ LABEL_13:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(MSDMapViewController *)self mapView];
-    v7 = [v6 selectedAnnotations];
+    mapView2 = [(MSDMapViewController *)self mapView];
+    selectedAnnotations2 = [mapView2 selectedAnnotations];
 
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v8 = [selectedAnnotations2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -253,18 +253,18 @@ LABEL_13:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(selectedAnnotations2);
           }
 
           v12 = *(*(&v15 + 1) + 8 * v11);
-          v13 = [(MSDMapViewController *)self mapView];
-          [v13 deselectAnnotation:v12 animated:1];
+          mapView3 = [(MSDMapViewController *)self mapView];
+          [mapView3 deselectAnnotation:v12 animated:1];
 
           ++v11;
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [selectedAnnotations2 countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
@@ -274,12 +274,12 @@ LABEL_13:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)annotateStores:(id)a3
+- (void)annotateStores:(id)stores
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  storesCopy = stores;
+  v5 = storesCopy;
+  if (storesCopy && [storesCopy count])
   {
     [(MSDMapViewController *)self _removeAllStoreAnnotations];
     v17 = 0u;
@@ -303,9 +303,9 @@ LABEL_13:
           }
 
           v11 = *(*(&v15 + 1) + 8 * v10);
-          v12 = [(MSDMapViewController *)self mapView];
+          mapView = [(MSDMapViewController *)self mapView];
           v13 = [[MSDMapAnnotation alloc] initWithStoreInfo:v11];
-          [v12 addAnnotation:v13];
+          [mapView addAnnotation:v13];
 
           ++v10;
         }
@@ -332,54 +332,54 @@ LABEL_13:
     _os_log_impl(&dword_259BCA000, v3, OS_LOG_TYPE_DEFAULT, "Stopping User Location Update...", v5, 2u);
   }
 
-  v4 = [(MSDMapViewController *)self mapView];
-  [v4 setShowsUserLocation:0];
+  mapView = [(MSDMapViewController *)self mapView];
+  [mapView setShowsUserLocation:0];
 }
 
-- (void)mapView:(id)a3 didUpdateUserLocation:(id)a4
+- (void)mapView:(id)view didUpdateUserLocation:(id)location
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(MSDMapViewController *)v7 userLocation];
+  viewCopy = view;
+  locationCopy = location;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  userLocation = [(MSDMapViewController *)selfCopy userLocation];
 
-  if (!v8)
+  if (!userLocation)
   {
-    v9 = [(MSDMapViewController *)v7 recenterButton];
-    [v9 setHidden:0];
+    recenterButton = [(MSDMapViewController *)selfCopy recenterButton];
+    [recenterButton setHidden:0];
 
-    v10 = [v6 location];
-    [v10 coordinate];
-    [MSDMapViewController _zoomToCoordinate:v7 withRadius:"_zoomToCoordinate:withRadius:allowZoomOut:" allowZoomOut:0];
+    location = [locationCopy location];
+    [location coordinate];
+    [MSDMapViewController _zoomToCoordinate:selfCopy withRadius:"_zoomToCoordinate:withRadius:allowZoomOut:" allowZoomOut:0];
   }
 
-  v11 = [v6 location];
-  [(MSDMapViewController *)v7 setUserLocation:v11];
+  location2 = [locationCopy location];
+  [(MSDMapViewController *)selfCopy setUserLocation:location2];
 
-  v12 = [(MSDMapViewController *)v7 delegate];
-  v13 = [(MSDMapViewController *)v7 userLocation];
-  [v12 userLocationDidChange:v13];
+  delegate = [(MSDMapViewController *)selfCopy delegate];
+  userLocation2 = [(MSDMapViewController *)selfCopy userLocation];
+  [delegate userLocationDidChange:userLocation2];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  annotationCopy = annotation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [(MSDMapViewController *)self mapView];
-    v8 = [v7 dequeueReusableAnnotationViewWithIdentifier:@"StoreClusterAnnotation" forAnnotation:v6];
+    v6 = annotationCopy;
+    mapView = [(MSDMapViewController *)self mapView];
+    v8 = [mapView dequeueReusableAnnotationViewWithIdentifier:@"StoreClusterAnnotation" forAnnotation:v6];
 
-    v9 = [MEMORY[0x277D75348] whiteColor];
-    [v8 setGlyphTintColor:v9];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v8 setGlyphTintColor:whiteColor];
 
-    v10 = [MEMORY[0x277D75348] systemRedColor];
-    [v8 setMarkerTintColor:v10];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+    [v8 setMarkerTintColor:systemRedColor];
 LABEL_8:
 
     goto LABEL_12;
@@ -388,15 +388,15 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v5;
-    v11 = [(MSDMapViewController *)self mapView];
-    v8 = [v11 dequeueReusableAnnotationViewWithIdentifier:@"StoreAnnotation"];
+    systemRedColor = annotationCopy;
+    mapView2 = [(MSDMapViewController *)self mapView];
+    v8 = [mapView2 dequeueReusableAnnotationViewWithIdentifier:@"StoreAnnotation"];
 
     [v8 setClusteringIdentifier:*MEMORY[0x277CD4BC8]];
-    v12 = [v10 storeInfo];
-    v13 = [v12 isHQ];
+    storeInfo = [systemRedColor storeInfo];
+    isHQ = [storeInfo isHQ];
 
-    if (v13)
+    if (isHQ)
     {
       v14 = @"building.2.fill";
     }
@@ -409,11 +409,11 @@ LABEL_8:
     v15 = [MEMORY[0x277D755B8] systemImageNamed:v14];
     [v8 setGlyphImage:v15];
 
-    v16 = [MEMORY[0x277D75348] whiteColor];
-    [v8 setGlyphTintColor:v16];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [v8 setGlyphTintColor:whiteColor2];
 
-    v17 = [MEMORY[0x277D75348] systemRedColor];
-    [v8 setMarkerTintColor:v17];
+    systemRedColor2 = [MEMORY[0x277D75348] systemRedColor];
+    [v8 setMarkerTintColor:systemRedColor2];
 
     goto LABEL_8;
   }
@@ -435,23 +435,23 @@ LABEL_12:
   return v8;
 }
 
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 annotation];
+  annotationViewCopy = annotationView;
+  annotation = [annotationViewCopy annotation];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v8 = [v5 annotation];
+  annotation2 = [annotationViewCopy annotation];
   if (isKindOfClass)
   {
     v9 = objc_alloc(MEMORY[0x277CD4DB0]);
-    v40[0] = v8;
+    v40[0] = annotation2;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
-    v11 = [v9 initWithMemberAnnotations:v10];
+    annotation3 = [v9 initWithMemberAnnotations:v10];
 
-    if (!v11)
+    if (!annotation3)
     {
       goto LABEL_23;
     }
@@ -467,22 +467,22 @@ LABEL_12:
       goto LABEL_23;
     }
 
-    v11 = [v5 annotation];
-    if (!v11)
+    annotation3 = [annotationViewCopy annotation];
+    if (!annotation3)
     {
       goto LABEL_23;
     }
   }
 
-  if (([v11 isSameCoordinate] & 1) != 0 || objc_msgSend(v11, "isInCloseProximity"))
+  if (([annotation3 isSameCoordinate] & 1) != 0 || objc_msgSend(annotation3, "isInCloseProximity"))
   {
-    v13 = objc_opt_new();
-    v14 = [v11 memberAnnotations];
-    v15 = [v14 firstObject];
+    mapView = objc_opt_new();
+    memberAnnotations = [annotation3 memberAnnotations];
+    firstObject = [memberAnnotations firstObject];
 
-    v16 = [v15 storeInfo];
-    v17 = [v16 storeLocation];
-    [v17 coordinate];
+    storeInfo = [firstObject storeInfo];
+    storeLocation = [storeInfo storeLocation];
+    [storeLocation coordinate];
     v19 = v18;
     v21 = v20;
 
@@ -490,8 +490,8 @@ LABEL_12:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v22 = [v11 memberAnnotations];
-    v23 = [v22 countByEnumeratingWithState:&v31 objects:v39 count:16];
+    memberAnnotations2 = [annotation3 memberAnnotations];
+    v23 = [memberAnnotations2 countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v23)
     {
       v24 = v23;
@@ -503,17 +503,17 @@ LABEL_12:
         {
           if (*v32 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(memberAnnotations2);
           }
 
-          v27 = [*(*(&v31 + 1) + 8 * v26) storeInfo];
-          [v13 addObject:v27];
+          storeInfo2 = [*(*(&v31 + 1) + 8 * v26) storeInfo];
+          [mapView addObject:storeInfo2];
 
           ++v26;
         }
 
         while (v24 != v26);
-        v24 = [v22 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        v24 = [memberAnnotations2 countByEnumeratingWithState:&v31 objects:v39 count:16];
       }
 
       while (v24);
@@ -525,11 +525,11 @@ LABEL_12:
       *buf = 136315394;
       v36 = "[MSDMapViewController mapView:didSelectAnnotationView:]";
       v37 = 2112;
-      v38 = v13;
+      v38 = mapView;
       _os_log_impl(&dword_259BCA000, v28, OS_LOG_TYPE_DEFAULT, "%s - stores %@ selected", buf, 0x16u);
     }
 
-    if ([v11 isSameCoordinate])
+    if ([annotation3 isSameCoordinate])
     {
       [(MSDMapViewController *)self _zoomToCoordinate:0 withRadius:v19 allowZoomOut:v21, 300.0];
     }
@@ -539,37 +539,37 @@ LABEL_12:
       [(MSDMapViewController *)self _recenterToCoordinate:v19, v21];
     }
 
-    v29 = [(MSDMapViewController *)self delegate];
-    [v29 didSelectStores:v13 forViewController:self];
+    delegate = [(MSDMapViewController *)self delegate];
+    [delegate didSelectStores:mapView forViewController:self];
   }
 
   else
   {
-    v13 = [(MSDMapViewController *)self mapView];
-    v15 = [v11 memberAnnotations];
-    [v13 showAnnotations:v15 animated:1];
+    mapView = [(MSDMapViewController *)self mapView];
+    firstObject = [annotation3 memberAnnotations];
+    [mapView showAnnotations:firstObject animated:1];
   }
 
 LABEL_23:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mapView:(id)a3 didDeselectAnnotationView:(id)a4
+- (void)mapView:(id)view didDeselectAnnotationView:(id)annotationView
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 annotation];
+  annotationViewCopy = annotationView;
+  annotation = [annotationViewCopy annotation];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v8 = [v5 annotation];
+  annotation2 = [annotationViewCopy annotation];
   if (isKindOfClass)
   {
     v9 = defaultLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v8 storeInfo];
-      v30 = v10;
+      storeInfo = [annotation2 storeInfo];
+      v30 = storeInfo;
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
       *buf = 136315394;
       v32 = "[MSDMapViewController mapView:didDeselectAnnotationView:]";
@@ -578,11 +578,11 @@ LABEL_23:
       _os_log_impl(&dword_259BCA000, v9, OS_LOG_TYPE_DEFAULT, "%s - stores %{public}@ de-selected", buf, 0x16u);
     }
 
-    v12 = [(MSDMapViewController *)self delegate];
-    v13 = [v8 storeInfo];
-    v29 = v13;
+    delegate = [(MSDMapViewController *)self delegate];
+    storeInfo2 = [annotation2 storeInfo];
+    v29 = storeInfo2;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
-    [v12 didDeselectStores:v14 forViewController:self];
+    [delegate didDeselectStores:v14 forViewController:self];
 
     goto LABEL_18;
   }
@@ -592,9 +592,9 @@ LABEL_23:
 
   if (v15)
   {
-    v8 = objc_opt_new();
-    v12 = [v5 annotation];
-    if (([v12 isSameCoordinate] & 1) == 0 && !objc_msgSend(v12, "isInCloseProximity"))
+    annotation2 = objc_opt_new();
+    delegate = [annotationViewCopy annotation];
+    if (([delegate isSameCoordinate] & 1) == 0 && !objc_msgSend(delegate, "isInCloseProximity"))
     {
       goto LABEL_19;
     }
@@ -603,8 +603,8 @@ LABEL_23:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v16 = [v12 memberAnnotations];
-    v17 = [v16 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    memberAnnotations = [delegate memberAnnotations];
+    v17 = [memberAnnotations countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v17)
     {
       v18 = v17;
@@ -616,17 +616,17 @@ LABEL_23:
         {
           if (*v25 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(memberAnnotations);
           }
 
-          v21 = [*(*(&v24 + 1) + 8 * v20) storeInfo];
-          [v8 addObject:v21];
+          storeInfo3 = [*(*(&v24 + 1) + 8 * v20) storeInfo];
+          [annotation2 addObject:storeInfo3];
 
           ++v20;
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v18 = [memberAnnotations countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v18);
@@ -638,12 +638,12 @@ LABEL_23:
       *buf = 136315394;
       v32 = "[MSDMapViewController mapView:didDeselectAnnotationView:]";
       v33 = 2112;
-      v34 = v8;
+      v34 = annotation2;
       _os_log_impl(&dword_259BCA000, v22, OS_LOG_TYPE_DEFAULT, "%s - stores %@ de-selected", buf, 0x16u);
     }
 
-    v13 = [(MSDMapViewController *)self delegate];
-    [v13 didDeselectStores:v8 forViewController:self];
+    storeInfo2 = [(MSDMapViewController *)self delegate];
+    [storeInfo2 didDeselectStores:annotation2 forViewController:self];
 LABEL_18:
 
 LABEL_19:
@@ -661,10 +661,10 @@ LABEL_19:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(MSDMapViewController *)self mapView];
-  v5 = [v4 annotations];
+  mapView = [(MSDMapViewController *)self mapView];
+  annotations = [mapView annotations];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [annotations countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -676,15 +676,15 @@ LABEL_19:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(annotations);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 storeInfo];
-          if ([v11 isNearby])
+          storeInfo = [v10 storeInfo];
+          if ([storeInfo isNearby])
           {
             [v3 addObject:v10];
           }
@@ -694,23 +694,23 @@ LABEL_19:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [annotations countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [(MSDMapViewController *)self mapView];
-  [v12 showAnnotations:v3 animated:1];
+  mapView2 = [(MSDMapViewController *)self mapView];
+  [mapView2 showAnnotations:v3 animated:1];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_recenter:(id)a3
+- (void)_recenter:(id)_recenter
 {
-  v4 = [(MSDMapViewController *)self userLocation];
+  userLocation = [(MSDMapViewController *)self userLocation];
 
-  if (v4)
+  if (userLocation)
   {
     v5 = defaultLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -719,39 +719,39 @@ LABEL_19:
       _os_log_impl(&dword_259BCA000, v5, OS_LOG_TYPE_DEFAULT, "Recentering to current user location...", v7, 2u);
     }
 
-    v6 = [(MSDMapViewController *)self userLocation];
-    [v6 coordinate];
+    userLocation2 = [(MSDMapViewController *)self userLocation];
+    [userLocation2 coordinate];
     [MSDMapViewController _zoomToCoordinate:"_zoomToCoordinate:withRadius:allowZoomOut:" withRadius:1 allowZoomOut:?];
 
     [(MSDMapViewController *)self deselectAnnotation];
   }
 }
 
-- (void)_recenterToCoordinate:(CLLocationCoordinate2D)a3
+- (void)_recenterToCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v6 = [(MSDMapViewController *)self mapView];
-  [v6 region];
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  mapView = [(MSDMapViewController *)self mapView];
+  [mapView region];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(MSDMapViewController *)self mapView];
-  [v11 setRegion:1 animated:{latitude, longitude, v8, v10}];
+  mapView2 = [(MSDMapViewController *)self mapView];
+  [mapView2 setRegion:1 animated:{latitude, longitude, v8, v10}];
 }
 
-- (id)_getAnnotationWithStoreInfo:(id)a3
+- (id)_getAnnotationWithStoreInfo:(id)info
 {
   v24 = *MEMORY[0x277D85DE8];
-  v18 = a3;
+  infoCopy = info;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(MSDMapViewController *)self mapView];
-  v5 = [v4 annotations];
+  mapView = [(MSDMapViewController *)self mapView];
+  annotations = [mapView annotations];
 
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v6 = [annotations countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -762,7 +762,7 @@ LABEL_19:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(annotations);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
@@ -770,10 +770,10 @@ LABEL_19:
         if (objc_opt_isKindOfClass())
         {
           v11 = v10;
-          v12 = [v11 storeInfo];
-          v13 = [v12 appleID];
-          v14 = [v18 appleID];
-          v15 = [v13 isEqual:v14];
+          storeInfo = [v11 storeInfo];
+          appleID = [storeInfo appleID];
+          appleID2 = [infoCopy appleID];
+          v15 = [appleID isEqual:appleID2];
 
           if (v15)
           {
@@ -782,7 +782,7 @@ LABEL_19:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [annotations countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);
@@ -798,10 +798,10 @@ LABEL_12:
 
 - (void)_removeAllStoreAnnotations
 {
-  v5 = [(MSDMapViewController *)self mapView];
-  v3 = [(MSDMapViewController *)self mapView];
-  v4 = [v3 annotations];
-  [v5 removeAnnotations:v4];
+  mapView = [(MSDMapViewController *)self mapView];
+  mapView2 = [(MSDMapViewController *)self mapView];
+  annotations = [mapView2 annotations];
+  [mapView removeAnnotations:annotations];
 }
 
 - (void)zoomToStore:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

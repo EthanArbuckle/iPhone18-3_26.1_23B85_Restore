@@ -1,11 +1,11 @@
 @interface SUCreditCardReaderOutput
-+ (id)webScriptNameForKeyName:(id)a3;
++ (id)webScriptNameForKeyName:(id)name;
 + (void)initialize;
-- (SUCreditCardReaderOutput)initWithCoder:(id)a3;
-- (SUCreditCardReaderOutput)initWithXPCEncoding:(id)a3;
+- (SUCreditCardReaderOutput)initWithCoder:(id)coder;
+- (SUCreditCardReaderOutput)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 - (id)scriptAttributeKeys;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUCreditCardReaderOutput
@@ -14,22 +14,22 @@
 {
   v5.receiver = self;
   v5.super_class = SUCreditCardReaderOutput;
-  v2 = [(SUScriptObject *)&v5 scriptAttributeKeys];
-  v3 = [__KeyMapping_75 allKeys];
-  [v2 addObjectsFromArray:v3];
+  scriptAttributeKeys = [(SUScriptObject *)&v5 scriptAttributeKeys];
+  allKeys = [__KeyMapping_75 allKeys];
+  [scriptAttributeKeys addObjectsFromArray:allKeys];
 
-  return v2;
+  return scriptAttributeKeys;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
-  v4 = a3;
-  v5 = [__KeyMapping_75 objectForKey:v4];
+  nameCopy = name;
+  v5 = [__KeyMapping_75 objectForKey:nameCopy];
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUCreditCardReaderOutput;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, nameCopy);
   }
 
   return v5;
@@ -49,11 +49,11 @@
   return v3;
 }
 
-- (SUCreditCardReaderOutput)initWithXPCEncoding:(id)a3
+- (SUCreditCardReaderOutput)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1C6917030](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1C6917030](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v27.receiver = self;
     v27.super_class = SUCreditCardReaderOutput;
@@ -105,54 +105,54 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   cancelled = self->_cancelled;
-  v5 = a3;
-  [v5 encodeBool:cancelled forKey:@"1"];
-  [v5 encodeObject:self->_cardCardholderName forKey:@"2"];
-  [v5 encodeObject:self->_cardExpirationDay forKey:@"3"];
-  [v5 encodeObject:self->_cardExpirationMonth forKey:@"4"];
-  [v5 encodeObject:self->_cardExpirationYear forKey:@"5"];
-  [v5 encodeObject:self->_cardNumber forKey:@"7"];
-  [v5 encodeObject:self->_error forKey:@"8"];
-  [v5 encodeBool:self->_manualEntrySelected forKey:@"9"];
+  coderCopy = coder;
+  [coderCopy encodeBool:cancelled forKey:@"1"];
+  [coderCopy encodeObject:self->_cardCardholderName forKey:@"2"];
+  [coderCopy encodeObject:self->_cardExpirationDay forKey:@"3"];
+  [coderCopy encodeObject:self->_cardExpirationMonth forKey:@"4"];
+  [coderCopy encodeObject:self->_cardExpirationYear forKey:@"5"];
+  [coderCopy encodeObject:self->_cardNumber forKey:@"7"];
+  [coderCopy encodeObject:self->_error forKey:@"8"];
+  [coderCopy encodeBool:self->_manualEntrySelected forKey:@"9"];
 }
 
-- (SUCreditCardReaderOutput)initWithCoder:(id)a3
+- (SUCreditCardReaderOutput)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = SUCreditCardReaderOutput;
   v5 = [(SUScriptObject *)&v19 init];
   if (v5)
   {
-    v5->_cancelled = [v4 decodeBoolForKey:@"1"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"2"];
+    v5->_cancelled = [coderCopy decodeBoolForKey:@"1"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"2"];
     cardCardholderName = v5->_cardCardholderName;
     v5->_cardCardholderName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"3"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"3"];
     cardExpirationDay = v5->_cardExpirationDay;
     v5->_cardExpirationDay = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"4"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"4"];
     cardExpirationMonth = v5->_cardExpirationMonth;
     v5->_cardExpirationMonth = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"5"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"5"];
     cardExpirationYear = v5->_cardExpirationYear;
     v5->_cardExpirationYear = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"7"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"7"];
     cardNumber = v5->_cardNumber;
     v5->_cardNumber = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"8"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"8"];
     error = v5->_error;
     v5->_error = v16;
 
-    v5->_manualEntrySelected = [v4 decodeBoolForKey:@"9"];
+    v5->_manualEntrySelected = [coderCopy decodeBoolForKey:@"9"];
   }
 
   return v5;
@@ -160,7 +160,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __KeyMapping_75 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{@"cardNumber", @"cardCardholderName", @"cardCardholderName", @"cardExpirationDay", @"cardExpirationDay", @"cardExpirationMonth", @"cardExpirationMonth", @"cardExpirationYear", @"cardExpirationYear", @"cardExpirationStringValue", @"cardExpirationStringValue", @"cancelled", @"cancelled", @"manualEntrySelected", @"manualEntrySelected", 0}];
 

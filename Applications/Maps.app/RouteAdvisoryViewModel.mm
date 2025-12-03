@@ -1,45 +1,45 @@
 @interface RouteAdvisoryViewModel
-+ (id)advisoryTextForAutomaticSharingContacts:(id)a3 buttonRange:(_NSRange *)a4;
-+ (id)viewModelForAdvisory:(id)a3;
-+ (id)viewModelWithText:(id)a3 artwork:(id)a4 handler:(id)a5;
-+ (id)viewModelWithText:(id)a3 buttonRange:(_NSRange)a4 image:(id)a5 handler:(id)a6;
-+ (id)viewModelsForAdvisories:(id)a3;
++ (id)advisoryTextForAutomaticSharingContacts:(id)contacts buttonRange:(_NSRange *)range;
++ (id)viewModelForAdvisory:(id)advisory;
++ (id)viewModelWithText:(id)text artwork:(id)artwork handler:(id)handler;
++ (id)viewModelWithText:(id)text buttonRange:(_NSRange)range image:(id)image handler:(id)handler;
++ (id)viewModelsForAdvisories:(id)advisories;
 - (BOOL)isClickable;
 - (BOOL)showMoreButton;
-- (RouteAdvisoryViewModel)initWithAdvisory:(id)a3;
-- (RouteAdvisoryViewModel)initWithText:(id)a3 artwork:(id)a4 handler:(id)a5;
-- (RouteAdvisoryViewModel)initWithText:(id)a3 buttonRange:(_NSRange)a4 image:(id)a5 handler:(id)a6;
+- (RouteAdvisoryViewModel)initWithAdvisory:(id)advisory;
+- (RouteAdvisoryViewModel)initWithText:(id)text artwork:(id)artwork handler:(id)handler;
+- (RouteAdvisoryViewModel)initWithText:(id)text buttonRange:(_NSRange)range image:(id)image handler:(id)handler;
 - (_NSRange)buttonRange;
-- (void)fetchImageForArtworkIfNeededWithTraitCollection:(id)a3;
+- (void)fetchImageForArtworkIfNeededWithTraitCollection:(id)collection;
 @end
 
 @implementation RouteAdvisoryViewModel
 
-+ (id)advisoryTextForAutomaticSharingContacts:(id)a3 buttonRange:(_NSRange *)a4
++ (id)advisoryTextForAutomaticSharingContacts:(id)contacts buttonRange:(_NSRange *)range
 {
-  v5 = a3;
-  v6 = [v5 count];
+  contactsCopy = contacts;
+  v6 = [contactsCopy count];
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"[Share ETA] Automatic Sharing Plural Indication value:Tappable Portion" table:{@"localized string not found", 0}];
   v9 = [NSString localizedStringWithFormat:v8, v6];
 
   if (v6 == 1)
   {
-    v10 = [v5 firstObject];
-    v11 = [v10 contact];
+    firstObject = [contactsCopy firstObject];
+    contact = [firstObject contact];
 
-    v12 = [CNContactFormatter stringFromContact:v11 style:1000];
-    if (v12)
+    string5 = [CNContactFormatter stringFromContact:contact style:1000];
+    if (string5)
     {
       v13 = +[NSBundle mainBundle];
-      v14 = [v13 localizedStringForKey:@"[Share ETA] Automatic Sharing Singular Indication" value:@"localized string not found" table:0];
+      string3 = [v13 localizedStringForKey:@"[Share ETA] Automatic Sharing Singular Indication" value:@"localized string not found" table:0];
 
       v15 = [NSAttributedString alloc];
-      v16 = [NSString stringWithFormat:v14, v12];
+      v16 = [NSString stringWithFormat:string3, string5];
       v17 = [v15 initWithString:v16];
 
-      v18 = [v17 string];
-      v19 = [v18 rangeOfString:v12];
+      string = [v17 string];
+      v19 = [string rangeOfString:string5];
       v21 = v20;
     }
 
@@ -50,18 +50,18 @@
       v28 = [v27 localizedStringForKey:@"[Share ETA] Automatic Sharing Unknown Indication" value:@"localized string not found" table:0];
       v17 = [v26 initWithString:v28];
 
-      v29 = [v17 string];
-      v19 = [v29 rangeOfString:v9];
+      string2 = [v17 string];
+      v19 = [string2 rangeOfString:v9];
       v21 = v30;
 
       if (v19 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v12 = 0;
+        string5 = 0;
         goto LABEL_9;
       }
 
-      v14 = [v17 string];
-      v21 = [v14 length];
+      string3 = [v17 string];
+      v21 = [string3 length];
       v19 = 0;
     }
   }
@@ -70,11 +70,11 @@
   {
     v22 = +[NSBundle mainBundle];
     v23 = [v22 localizedStringForKey:@"[Share ETA] Automatic Sharing Plural Indication" value:@"localized string not found" table:0];
-    v11 = [NSString localizedStringWithFormat:v23, v6];
+    contact = [NSString localizedStringWithFormat:v23, v6];
 
-    v17 = [[NSAttributedString alloc] initWithString:v11];
-    v24 = [v17 string];
-    v19 = [v24 rangeOfString:v9];
+    v17 = [[NSAttributedString alloc] initWithString:contact];
+    string4 = [v17 string];
+    v19 = [string4 rangeOfString:v9];
     v21 = v25;
 
     if (v19 != 0x7FFFFFFFFFFFFFFFLL)
@@ -82,18 +82,18 @@
       goto LABEL_10;
     }
 
-    v12 = [v17 string];
-    v21 = [v12 length];
+    string5 = [v17 string];
+    v21 = [string5 length];
     v19 = 0;
   }
 
 LABEL_9:
 
 LABEL_10:
-  if (a4)
+  if (range)
   {
-    a4->location = v19;
-    a4->length = v21;
+    range->location = v19;
+    range->length = v21;
   }
 
   return v17;
@@ -110,50 +110,50 @@ LABEL_10:
 
 - (BOOL)showMoreButton
 {
-  v3 = [(RouteAdvisoryViewModel *)self advisory];
-  if (v3)
+  advisory = [(RouteAdvisoryViewModel *)self advisory];
+  if (advisory)
   {
-    v4 = [(RouteAdvisoryViewModel *)self advisory];
-    v5 = [v4 isClickable];
+    advisory2 = [(RouteAdvisoryViewModel *)self advisory];
+    isClickable = [advisory2 isClickable];
   }
 
   else
   {
-    v5 = 0;
+    isClickable = 0;
   }
 
-  return v5;
+  return isClickable;
 }
 
 - (BOOL)isClickable
 {
-  v3 = [(RouteAdvisoryViewModel *)self advisory];
-  if (v3)
+  advisory = [(RouteAdvisoryViewModel *)self advisory];
+  if (advisory)
   {
-    v4 = [(RouteAdvisoryViewModel *)self advisory];
-    v5 = [v4 isClickable];
+    advisory2 = [(RouteAdvisoryViewModel *)self advisory];
+    isClickable = [advisory2 isClickable];
   }
 
   else
   {
-    v5 = 1;
+    isClickable = 1;
   }
 
-  return v5;
+  return isClickable;
 }
 
-- (void)fetchImageForArtworkIfNeededWithTraitCollection:(id)a3
+- (void)fetchImageForArtworkIfNeededWithTraitCollection:(id)collection
 {
-  v12 = a3;
-  v4 = [(RouteAdvisoryViewModel *)self artwork];
+  collectionCopy = collection;
+  artwork = [(RouteAdvisoryViewModel *)self artwork];
 
-  if (v4)
+  if (artwork)
   {
-    v5 = [(RouteAdvisoryViewModel *)self image];
+    image = [(RouteAdvisoryViewModel *)self image];
 
-    if (!v5)
+    if (!image)
     {
-      v6 = [(RouteAdvisoryViewModel *)self artwork];
+      artwork2 = [(RouteAdvisoryViewModel *)self artwork];
       v7 = ImageForArtworkDataSource();
 
       if (v7)
@@ -181,26 +181,26 @@ LABEL_10:
   }
 }
 
-- (RouteAdvisoryViewModel)initWithText:(id)a3 buttonRange:(_NSRange)a4 image:(id)a5 handler:(id)a6
+- (RouteAdvisoryViewModel)initWithText:(id)text buttonRange:(_NSRange)range image:(id)image handler:(id)handler
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  imageCopy = image;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = RouteAdvisoryViewModel;
   v14 = [(RouteAdvisoryViewModel *)&v20 init];
   if (v14)
   {
-    v15 = [v11 copy];
+    v15 = [textCopy copy];
     text = v14->_text;
     v14->_text = v15;
 
-    objc_storeStrong(&v14->_image, a5);
+    objc_storeStrong(&v14->_image, image);
     v14->_buttonRange.location = location;
     v14->_buttonRange.length = length;
-    v17 = [v13 copy];
+    v17 = [handlerCopy copy];
     handler = v14->_handler;
     v14->_handler = v17;
   }
@@ -208,22 +208,22 @@ LABEL_10:
   return v14;
 }
 
-- (RouteAdvisoryViewModel)initWithText:(id)a3 artwork:(id)a4 handler:(id)a5
+- (RouteAdvisoryViewModel)initWithText:(id)text artwork:(id)artwork handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  artworkCopy = artwork;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = RouteAdvisoryViewModel;
   v11 = [(RouteAdvisoryViewModel *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [textCopy copy];
     text = v11->_text;
     v11->_text = v12;
 
-    objc_storeStrong(&v11->_artwork, a4);
-    v14 = [v10 copy];
+    objc_storeStrong(&v11->_artwork, artwork);
+    v14 = [handlerCopy copy];
     handler = v11->_handler;
     v11->_handler = v14;
   }
@@ -231,69 +231,69 @@ LABEL_10:
   return v11;
 }
 
-- (RouteAdvisoryViewModel)initWithAdvisory:(id)a3
+- (RouteAdvisoryViewModel)initWithAdvisory:(id)advisory
 {
-  v5 = a3;
-  v6 = [v5 titleString];
-  v7 = [v6 defaultOptions];
+  advisoryCopy = advisory;
+  titleString = [advisoryCopy titleString];
+  defaultOptions = [titleString defaultOptions];
 
-  [v7 setCreateAttributedString:1];
+  [defaultOptions setCreateAttributedString:1];
   v8 = +[RouteAdvisoryView _stringAttributes];
-  [v7 setStringAttributes:v8];
+  [defaultOptions setStringAttributes:v8];
 
-  v9 = [v5 titleString];
-  v10 = [v9 stringResultWithOptions:v7];
-  v11 = [v10 attributedString];
+  titleString2 = [advisoryCopy titleString];
+  v10 = [titleString2 stringResultWithOptions:defaultOptions];
+  attributedString = [v10 attributedString];
 
-  v12 = [v5 artwork];
-  v13 = [(RouteAdvisoryViewModel *)self initWithText:v11 artwork:v12 handler:0];
+  artwork = [advisoryCopy artwork];
+  v13 = [(RouteAdvisoryViewModel *)self initWithText:attributedString artwork:artwork handler:0];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_advisory, a3);
+    objc_storeStrong(&v13->_advisory, advisory);
   }
 
   return v13;
 }
 
-+ (id)viewModelWithText:(id)a3 buttonRange:(_NSRange)a4 image:(id)a5 handler:(id)a6
++ (id)viewModelWithText:(id)text buttonRange:(_NSRange)range image:(id)image handler:(id)handler
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithText:v13 buttonRange:location image:length handler:{v12, v11}];
+  length = range.length;
+  location = range.location;
+  handlerCopy = handler;
+  imageCopy = image;
+  textCopy = text;
+  v14 = [[self alloc] initWithText:textCopy buttonRange:location image:length handler:{imageCopy, handlerCopy}];
 
   return v14;
 }
 
-+ (id)viewModelWithText:(id)a3 artwork:(id)a4 handler:(id)a5
++ (id)viewModelWithText:(id)text artwork:(id)artwork handler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithText:v10 artwork:v9 handler:v8];
+  handlerCopy = handler;
+  artworkCopy = artwork;
+  textCopy = text;
+  v11 = [[self alloc] initWithText:textCopy artwork:artworkCopy handler:handlerCopy];
 
   return v11;
 }
 
-+ (id)viewModelsForAdvisories:(id)a3
++ (id)viewModelsForAdvisories:(id)advisories
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100E19F78;
   v5[3] = &unk_1016559F0;
-  v5[4] = a1;
-  v3 = sub_100021DB0(a3, v5);
+  v5[4] = self;
+  v3 = sub_100021DB0(advisories, v5);
 
   return v3;
 }
 
-+ (id)viewModelForAdvisory:(id)a3
++ (id)viewModelForAdvisory:(id)advisory
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithAdvisory:v4];
+  advisoryCopy = advisory;
+  v5 = [[self alloc] initWithAdvisory:advisoryCopy];
 
   return v5;
 }

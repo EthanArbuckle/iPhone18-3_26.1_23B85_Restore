@@ -1,51 +1,51 @@
 @interface DiagnosticsServiceImpl
-- (BOOL)_checkRateLimitForAllowance:(id)a3 time:(id)a4;
-- (BOOL)assertEntitlement:(void *)a3 entitlement:(int)a4 private:;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)validateSignature:(_BOOL8)a1;
-- (DiagnosticsServiceImpl)initWithQueue:(id)a3;
-- (id)responseDictWithSuccess:(uint64_t)a1 reasonCode:(uint64_t)a2 expiresIn:(uint64_t)a3;
-- (id)responseDictWithSuccess:(uint64_t)a3 reasonCode:;
-- (id)responseDictWithSuccess:(void *)a3 sessionId:;
-- (id)responseDictWithSuccess:(void *)a3 sessionId:(void *)a4 groupId:(void *)a5 additionalDict:(uint64_t)a6 reasonCode:;
-- (id)responseDictWithSuccess:(void *)a3 sessionId:(void *)a4 groupId:(void *)a5 additionalDict:(uint64_t)a6 reasonCode:(void *)a7 expiresIn:;
-- (void)_checkRateLimitForConnection:(void *)a3 signature:(void *)a4 reply:;
-- (void)abcEnabledAndReadyWithReply:(uint64_t)a1;
-- (void)addSignatureContentForSession:(id)a3 key:(id)a4 content:(id)a5 reply:(id)a6;
-- (void)addToSession:(id)a3 event:(id)a4 payload:(id)a5 reply:(id)a6;
-- (void)addToSession:(id)a3 events:(id)a4 payload:(id)a5 reply:(id)a6;
-- (void)cancelSession:(id)a3;
-- (void)cloudKitUploadDecisionForCaseIdentifiers:(id)a3 reply:(id)a4;
-- (void)endSession:(id)a3;
-- (void)getAutoBugCaptureConfiguration:(id)a3;
-- (void)getCasesListFromIdentifier:(id)a3 count:(unint64_t)a4 reply:(id)a5;
-- (void)getDiagnosticPayloadsForSignatures:(id)a3 reply:(id)a4;
-- (void)getExpertSystemsStatus:(id)a3;
-- (void)getSessionStatisticsWithReply:(id)a3;
-- (void)homeKitResidentDevicesIDSIdentifiersWithReply:(id)a3;
-- (void)listCaseSummariesOfType:(id)a3 fromIdentifier:(id)a4 count:(unint64_t)a5 reply:(id)a6;
-- (void)listCaseSummariesWithIdentifiers:(id)a3 reply:(id)a4;
-- (void)purgeAutoBugCaptureFilesWithSubPaths:(id)a3 reply:(id)a4;
-- (void)requestGroupCaseIdentifierForSignature:(id)a3 reply:(id)a4;
-- (void)resetAllWithReply:(id)a3;
-- (void)resetDiagnosticCaseStorageWithReply:(id)a3;
-- (void)resetDiagnosticCaseUsageWithReply:(id)a3;
-- (void)snapshotWithSignature:(id)a3 delay:(unint64_t)a4 events:(id)a5 payload:(id)a6 actions:(id)a7 wantsRemoteCase:(BOOL)a8 reply:(id)a9;
-- (void)startSessionWithSignature:(id)a3 duration:(unint64_t)a4 events:(id)a5 payload:(id)a6 actions:(id)a7 wantsRemoteCase:(BOOL)a8 reply:(id)a9;
-- (void)submitRecentCaseSummariesWithCount:(unint64_t)a3 reply:(id)a4;
-- (void)submitRecentCaseSummariesWithIdentifiers:(id)a3 reply:(id)a4;
-- (void)triggerRemoteSessionForSignature:(id)a3 groupIdentifier:(id)a4 reply:(id)a5;
-- (void)uploadCasesWithIdentifiersToCloudKit:(id)a3;
-- (void)uploadRecentCases:(unint64_t)a3;
+- (BOOL)_checkRateLimitForAllowance:(id)allowance time:(id)time;
+- (BOOL)assertEntitlement:(void *)entitlement entitlement:(int)a4 private:;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)validateSignature:(_BOOL8)signature;
+- (DiagnosticsServiceImpl)initWithQueue:(id)queue;
+- (id)responseDictWithSuccess:(uint64_t)success reasonCode:;
+- (id)responseDictWithSuccess:(uint64_t)success reasonCode:(uint64_t)code expiresIn:(uint64_t)in;
+- (id)responseDictWithSuccess:(void *)success sessionId:;
+- (id)responseDictWithSuccess:(void *)success sessionId:(void *)id groupId:(void *)groupId additionalDict:(uint64_t)dict reasonCode:;
+- (id)responseDictWithSuccess:(void *)success sessionId:(void *)id groupId:(void *)groupId additionalDict:(uint64_t)dict reasonCode:(void *)code expiresIn:;
+- (void)_checkRateLimitForConnection:(void *)connection signature:(void *)signature reply:;
+- (void)abcEnabledAndReadyWithReply:(uint64_t)reply;
+- (void)addSignatureContentForSession:(id)session key:(id)key content:(id)content reply:(id)reply;
+- (void)addToSession:(id)session event:(id)event payload:(id)payload reply:(id)reply;
+- (void)addToSession:(id)session events:(id)events payload:(id)payload reply:(id)reply;
+- (void)cancelSession:(id)session;
+- (void)cloudKitUploadDecisionForCaseIdentifiers:(id)identifiers reply:(id)reply;
+- (void)endSession:(id)session;
+- (void)getAutoBugCaptureConfiguration:(id)configuration;
+- (void)getCasesListFromIdentifier:(id)identifier count:(unint64_t)count reply:(id)reply;
+- (void)getDiagnosticPayloadsForSignatures:(id)signatures reply:(id)reply;
+- (void)getExpertSystemsStatus:(id)status;
+- (void)getSessionStatisticsWithReply:(id)reply;
+- (void)homeKitResidentDevicesIDSIdentifiersWithReply:(id)reply;
+- (void)listCaseSummariesOfType:(id)type fromIdentifier:(id)identifier count:(unint64_t)count reply:(id)reply;
+- (void)listCaseSummariesWithIdentifiers:(id)identifiers reply:(id)reply;
+- (void)purgeAutoBugCaptureFilesWithSubPaths:(id)paths reply:(id)reply;
+- (void)requestGroupCaseIdentifierForSignature:(id)signature reply:(id)reply;
+- (void)resetAllWithReply:(id)reply;
+- (void)resetDiagnosticCaseStorageWithReply:(id)reply;
+- (void)resetDiagnosticCaseUsageWithReply:(id)reply;
+- (void)snapshotWithSignature:(id)signature delay:(unint64_t)delay events:(id)events payload:(id)payload actions:(id)actions wantsRemoteCase:(BOOL)case reply:(id)reply;
+- (void)startSessionWithSignature:(id)signature duration:(unint64_t)duration events:(id)events payload:(id)payload actions:(id)actions wantsRemoteCase:(BOOL)case reply:(id)reply;
+- (void)submitRecentCaseSummariesWithCount:(unint64_t)count reply:(id)reply;
+- (void)submitRecentCaseSummariesWithIdentifiers:(id)identifiers reply:(id)reply;
+- (void)triggerRemoteSessionForSignature:(id)signature groupIdentifier:(id)identifier reply:(id)reply;
+- (void)uploadCasesWithIdentifiersToCloudKit:(id)kit;
+- (void)uploadRecentCases:(unint64_t)cases;
 @end
 
 @implementation DiagnosticsServiceImpl
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(DiagnosticsServiceImpl *)self assertEntitlement:v5 entitlement:@"com.apple.symptom_diagnostics.report" private:0];
+  connectionCopy = connection;
+  v6 = [(DiagnosticsServiceImpl *)self assertEntitlement:connectionCopy entitlement:@"com.apple.symptom_diagnostics.report" private:0];
   if (v6)
   {
     if (listener_shouldAcceptNewConnection__onceToken != -1)
@@ -53,9 +53,9 @@
       [DiagnosticsServiceImpl listener:shouldAcceptNewConnection:];
     }
 
-    [v5 setExportedInterface:listener_shouldAcceptNewConnection__diagnosticsServiceInterface];
-    [v5 setExportedObject:self];
-    [v5 resume];
+    [connectionCopy setExportedInterface:listener_shouldAcceptNewConnection__diagnosticsServiceInterface];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy resume];
   }
 
   else
@@ -64,7 +64,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v5;
+      v11 = connectionCopy;
       _os_log_impl(&dword_241804000, v7, OS_LOG_TYPE_ERROR, "DiagnosticsService: connection (%@) lacks proper entitlements", &v10, 0xCu);
     }
   }
@@ -73,15 +73,15 @@
   return v6;
 }
 
-- (BOOL)assertEntitlement:(void *)a3 entitlement:(int)a4 private:
+- (BOOL)assertEntitlement:(void *)entitlement entitlement:(int)a4 private:
 {
   v19 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a1 != 0;
-  if (a1 && a4)
+  entitlementCopy = entitlement;
+  v9 = self != 0;
+  if (self && a4)
   {
-    v10 = [v7 valueForEntitlement:v8];
+    v10 = [v7 valueForEntitlement:entitlementCopy];
     v11 = v10;
     if (v10 && ([v10 BOOLValue] & 1) != 0)
     {
@@ -94,9 +94,9 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138412546;
-        v16 = v8;
+        v16 = entitlementCopy;
         v17 = 1024;
-        v18 = [v7 processIdentifier];
+        processIdentifier = [v7 processIdentifier];
         _os_log_impl(&dword_241804000, v12, OS_LOG_TYPE_DEFAULT, "SymptomAnalytics DiagnosticsService: entitlement %@ is missing (%d)", &v15, 0x12u);
       }
 
@@ -115,72 +115,72 @@ uint64_t __61__DiagnosticsServiceImpl_listener_shouldAcceptNewConnection___block
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_checkRateLimitForConnection:(void *)a3 signature:(void *)a4 reply:
+- (void)_checkRateLimitForConnection:(void *)connection signature:(void *)signature reply:
 {
   v63 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!a1 || !v9)
+  connectionCopy = connection;
+  signatureCopy = signature;
+  v10 = signatureCopy;
+  if (!self || !signatureCopy)
   {
     goto LABEL_28;
   }
 
   v11 = +[ABCAdministrator sharedInstance];
-  v12 = [v11 configurationManager];
-  v13 = [v12 disableAPIRateLimit];
+  configurationManager = [v11 configurationManager];
+  disableAPIRateLimit = [configurationManager disableAPIRateLimit];
 
-  if (v13)
+  if (disableAPIRateLimit)
   {
     v10[2](v10, 0, 0.0);
     goto LABEL_28;
   }
 
-  v14 = [v7 processIdentifier];
-  v15 = a1[2];
+  processIdentifier = [v7 processIdentifier];
+  v15 = self[2];
   objc_sync_enter(v15);
-  v16 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v17 = +[ABCAdministrator sharedInstance];
-  v18 = [v17 configurationManager];
-  [v18 apiRateLimit];
+  configurationManager2 = [v17 configurationManager];
+  [configurationManager2 apiRateLimit];
   v20 = v19;
 
   v21 = +[ABCAdministrator sharedInstance];
-  v22 = [v21 configurationManager];
-  [v22 apiLimitWindow];
+  configurationManager3 = [v21 configurationManager];
+  [configurationManager3 apiLimitWindow];
   v24 = v23;
 
   v25 = xpcLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    v60 = v14;
+    v60 = processIdentifier;
     v61 = 2112;
-    v62 = v8;
+    v62 = connectionCopy;
     _os_log_impl(&dword_241804000, v25, OS_LOG_TYPE_DEFAULT, "DiagnosticsService: API rate limit check for client: %d signature:%@", buf, 0x12u);
   }
 
-  v26 = a1[2];
-  v27 = [MEMORY[0x277CCABB0] numberWithInt:v14];
+  v26 = self[2];
+  v27 = [MEMORY[0x277CCABB0] numberWithInt:processIdentifier];
   v28 = [v26 objectForKeyedSubscript:v27];
 
   if (!v28)
   {
     v28 = objc_alloc_init(RateLimitAllowance);
     [(RateLimitAllowance *)v28 setAllowance:v20];
-    v29 = a1[2];
-    v30 = [MEMORY[0x277CCABB0] numberWithInt:v14];
+    v29 = self[2];
+    v30 = [MEMORY[0x277CCABB0] numberWithInt:processIdentifier];
     [v29 setObject:v28 forKeyedSubscript:v30];
   }
 
-  v31 = [a1 _checkRateLimitForAllowance:v28 time:v16];
+  v31 = [self _checkRateLimitForAllowance:v28 time:date];
   if (!_checkRateLimitForConnection_signature_reply__lastCleanedAt)
   {
     goto LABEL_17;
   }
 
-  [v16 timeIntervalSinceDate:?];
+  [date timeIntervalSinceDate:?];
   if (v32 > 3600.0)
   {
     v33 = xpcLogHandle();
@@ -191,12 +191,12 @@ uint64_t __61__DiagnosticsServiceImpl_listener_shouldAcceptNewConnection___block
     }
 
     v34 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v35 = a1[2];
+    v35 = self[2];
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __71__DiagnosticsServiceImpl__checkRateLimitForConnection_signature_reply___block_invoke;
     v54[3] = &unk_278CF0248;
-    v55 = v16;
+    v55 = date;
     v57 = v24;
     v58 = v20;
     v36 = v34;
@@ -204,10 +204,10 @@ uint64_t __61__DiagnosticsServiceImpl_listener_shouldAcceptNewConnection___block
     [v35 enumerateKeysAndObjectsUsingBlock:v54];
     if ([v36 count])
     {
-      [a1[2] removeObjectsForKeys:v36];
+      [self[2] removeObjectsForKeys:v36];
     }
 
-    objc_storeStrong(&_checkRateLimitForConnection_signature_reply__lastCleanedAt, v16);
+    objc_storeStrong(&_checkRateLimitForConnection_signature_reply__lastCleanedAt, date);
 
     goto LABEL_18;
   }
@@ -215,7 +215,7 @@ uint64_t __61__DiagnosticsServiceImpl_listener_shouldAcceptNewConnection___block
   if (!_checkRateLimitForConnection_signature_reply__lastCleanedAt)
   {
 LABEL_17:
-    v37 = v16;
+    v37 = date;
     v36 = _checkRateLimitForConnection_signature_reply__lastCleanedAt;
     _checkRateLimitForConnection_signature_reply__lastCleanedAt = v37;
 LABEL_18:
@@ -244,23 +244,23 @@ LABEL_18:
 
   else
   {
-    v43 = [v8 objectForKeyedSubscript:@"groupID"];
+    v43 = [connectionCopy objectForKeyedSubscript:@"groupID"];
 
     if (v43)
     {
       v44 = +[ABCAdministrator sharedInstance];
-      v45 = [v44 caseManager];
-      v46 = [v8 objectForKeyedSubscript:@"domain"];
-      v47 = [v8 objectForKeyedSubscript:@"type"];
-      v48 = [v8 objectForKeyedSubscript:@"subtype"];
-      v49 = [v8 objectForKeyedSubscript:@"detected"];
+      caseManager = [v44 caseManager];
+      v46 = [connectionCopy objectForKeyedSubscript:@"domain"];
+      v47 = [connectionCopy objectForKeyedSubscript:@"type"];
+      v48 = [connectionCopy objectForKeyedSubscript:@"subtype"];
+      v49 = [connectionCopy objectForKeyedSubscript:@"detected"];
       v51[0] = MEMORY[0x277D85DD0];
       v51[1] = 3221225472;
       v51[2] = __71__DiagnosticsServiceImpl__checkRateLimitForConnection_signature_reply___block_invoke_127;
       v51[3] = &unk_278CF0270;
       v52 = v10;
       v53 = v38;
-      [v45 countOfCasesMatchingDomain:v46 type:v47 subtype:v48 process:v49 groupCaseIDIsPresent:1 withinLast:v51 reply:3600.0];
+      [caseManager countOfCasesMatchingDomain:v46 type:v47 subtype:v48 process:v49 groupCaseIDIsPresent:1 withinLast:v51 reply:3600.0];
     }
 
     else
@@ -340,28 +340,28 @@ uint64_t __71__DiagnosticsServiceImpl__checkRateLimitForConnection_signature_rep
   return result;
 }
 
-- (BOOL)_checkRateLimitForAllowance:(id)a3 time:(id)a4
+- (BOOL)_checkRateLimitForAllowance:(id)allowance time:(id)time
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  allowanceCopy = allowance;
+  timeCopy = time;
   v7 = +[ABCAdministrator sharedInstance];
-  v8 = [v7 configurationManager];
-  [v8 apiRateLimit];
+  configurationManager = [v7 configurationManager];
+  [configurationManager apiRateLimit];
   v10 = v9;
 
   v11 = +[ABCAdministrator sharedInstance];
-  v12 = [v11 configurationManager];
-  [v12 apiLimitWindow];
+  configurationManager2 = [v11 configurationManager];
+  [configurationManager2 apiLimitWindow];
   v14 = v13;
 
   v15 = xpcLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    [v5 allowance];
+    [allowanceCopy allowance];
     v17 = v16;
-    v18 = [v5 lastCheckedAt];
-    if (v18)
+    lastCheckedAt = [allowanceCopy lastCheckedAt];
+    if (lastCheckedAt)
     {
       v19 = "last checked at: ";
     }
@@ -371,14 +371,14 @@ uint64_t __71__DiagnosticsServiceImpl__checkRateLimitForConnection_signature_rep
       v19 = "(no previous checks)";
     }
 
-    v20 = [v5 lastCheckedAt];
-    v21 = v20;
+    lastCheckedAt2 = [allowanceCopy lastCheckedAt];
+    v21 = lastCheckedAt2;
     *v40 = 134219010;
     v22 = &stru_285368168;
     *&v40[4] = v17;
-    if (v20)
+    if (lastCheckedAt2)
     {
-      v22 = v20;
+      v22 = lastCheckedAt2;
     }
 
     *&v40[12] = 2048;
@@ -392,40 +392,40 @@ uint64_t __71__DiagnosticsServiceImpl__checkRateLimitForConnection_signature_rep
     _os_log_impl(&dword_241804000, v15, OS_LOG_TYPE_DEBUG, "DiagnosticsService: API rate limit check - allowance: %.1f  current rate: %.0f calls per %.0f seconds. %s%@", v40, 0x34u);
   }
 
-  v23 = [v5 lastCheckedAt];
+  lastCheckedAt3 = [allowanceCopy lastCheckedAt];
 
-  if (v23)
+  if (lastCheckedAt3)
   {
-    v24 = [v5 lastCheckedAt];
-    [v6 timeIntervalSinceDate:v24];
+    lastCheckedAt4 = [allowanceCopy lastCheckedAt];
+    [timeCopy timeIntervalSinceDate:lastCheckedAt4];
     v26 = v25;
 
-    [v5 allowance];
-    [v5 setAllowance:v27 + v26 * (v10 / v14)];
-    [v5 allowance];
+    [allowanceCopy allowance];
+    [allowanceCopy setAllowance:v27 + v26 * (v10 / v14)];
+    [allowanceCopy allowance];
     if (v28 > v10)
     {
-      [v5 setAllowance:v10];
+      [allowanceCopy setAllowance:v10];
     }
 
     v29 = xpcLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
-      [v5 allowance];
+      [allowanceCopy allowance];
       *v40 = 134217984;
       *&v40[4] = v30;
       _os_log_impl(&dword_241804000, v29, OS_LOG_TYPE_DEBUG, "DiagnosticsService: API rate limit allowance recovered to %.1f", v40, 0xCu);
     }
   }
 
-  [v5 allowance];
+  [allowanceCopy allowance];
   v32 = v31;
   if (v31 < 1.0)
   {
     v34 = xpcLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
-      [v5 allowance];
+      [allowanceCopy allowance];
       *v40 = 134217984;
       *&v40[4] = v37;
       v36 = "DiagnosticsService: API rate limit allowance is insufficient (%.1f), disallowed";
@@ -435,12 +435,12 @@ uint64_t __71__DiagnosticsServiceImpl__checkRateLimitForConnection_signature_rep
 
   else
   {
-    [v5 allowance];
-    [v5 setAllowance:v33 + -1.0];
+    [allowanceCopy allowance];
+    [allowanceCopy setAllowance:v33 + -1.0];
     v34 = xpcLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
-      [v5 allowance];
+      [allowanceCopy allowance];
       *v40 = 134217984;
       *&v40[4] = v35;
       v36 = "DiagnosticsService: API rate limit allowance reduced to %.1f, allowing";
@@ -449,21 +449,21 @@ LABEL_19:
     }
   }
 
-  [v5 setLastCheckedAt:v6];
+  [allowanceCopy setLastCheckedAt:timeCopy];
   v38 = *MEMORY[0x277D85DE8];
   return v32 >= 1.0;
 }
 
-- (DiagnosticsServiceImpl)initWithQueue:(id)a3
+- (DiagnosticsServiceImpl)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = DiagnosticsServiceImpl;
   v6 = [(DiagnosticsServiceImpl *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->queue, a3);
+    objc_storeStrong(&v6->queue, queue);
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     allowanceCache = v7->allowanceCache;
     v7->allowanceCache = v8;
@@ -884,21 +884,21 @@ void __106__DiagnosticsServiceImpl_startSessionWithSignature_duration_events_pay
   }
 }
 
-- (void)addToSession:(id)a3 event:(id)a4 payload:(id)a5 reply:(id)a6
+- (void)addToSession:(id)session event:(id)event payload:(id)payload reply:(id)reply
 {
   v17 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (a4)
+  sessionCopy = session;
+  payloadCopy = payload;
+  replyCopy = reply;
+  if (event)
   {
-    v16 = a4;
+    eventCopy = event;
     v13 = MEMORY[0x277CBEA60];
-    v14 = a4;
-    a4 = [v13 arrayWithObjects:&v16 count:1];
+    eventCopy2 = event;
+    event = [v13 arrayWithObjects:&eventCopy count:1];
   }
 
-  [(DiagnosticsServiceImpl *)self addToSession:v10 events:a4 payload:v11 reply:v12, v16, v17];
+  [(DiagnosticsServiceImpl *)self addToSession:sessionCopy events:event payload:payloadCopy reply:replyCopy, eventCopy, v17];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -1456,9 +1456,9 @@ void __65__DiagnosticsServiceImpl_getCasesListFromIdentifier_count_reply___block
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetDiagnosticCaseStorageWithReply:(id)a3
+- (void)resetDiagnosticCaseStorageWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = xpcLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1467,8 +1467,8 @@ void __65__DiagnosticsServiceImpl_getCasesListFromIdentifier_count_reply___block
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [MEMORY[0x277CCAE80] currentConnection];
-  v8 = [(DiagnosticsServiceImpl *)self assertEntitlement:v7 entitlement:@"com.apple.symptom_diagnostics.reset" private:1];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  v8 = [(DiagnosticsServiceImpl *)self assertEntitlement:currentConnection entitlement:@"com.apple.symptom_diagnostics.reset" private:1];
   v9 = xpcLogHandle();
   v10 = v9;
   if (v8)
@@ -1481,16 +1481,16 @@ void __65__DiagnosticsServiceImpl_getCasesListFromIdentifier_count_reply___block
 
     [v6 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"success"];
     v11 = +[ABCAdministrator sharedInstance];
-    v12 = [v11 caseManager];
-    [v12 resetDiagnosticCaseStorage];
+    caseManager = [v11 caseManager];
+    [caseManager resetDiagnosticCaseStorage];
 
-    if (!v4)
+    if (!replyCopy)
     {
       goto LABEL_12;
     }
 
 LABEL_11:
-    v4[2](v4, v6);
+    replyCopy[2](replyCopy, v6);
     goto LABEL_12;
   }
 
@@ -1501,7 +1501,7 @@ LABEL_11:
   }
 
   [v6 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"success"];
-  if (v4)
+  if (replyCopy)
   {
     goto LABEL_11;
   }
@@ -1509,9 +1509,9 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)resetDiagnosticCaseUsageWithReply:(id)a3
+- (void)resetDiagnosticCaseUsageWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = xpcLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1520,8 +1520,8 @@ LABEL_12:
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [MEMORY[0x277CCAE80] currentConnection];
-  v8 = [(DiagnosticsServiceImpl *)self assertEntitlement:v7 entitlement:@"com.apple.symptom_diagnostics.reset" private:1];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  v8 = [(DiagnosticsServiceImpl *)self assertEntitlement:currentConnection entitlement:@"com.apple.symptom_diagnostics.reset" private:1];
   v9 = xpcLogHandle();
   v10 = v9;
   if (v8)
@@ -1534,17 +1534,17 @@ LABEL_12:
 
     [v6 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"success"];
     v11 = +[ABCAdministrator sharedInstance];
-    v12 = [v11 caseManager];
-    v13 = [v12 statsManager];
-    [v13 resetDiagnosticCaseUsage];
+    caseManager = [v11 caseManager];
+    statsManager = [caseManager statsManager];
+    [statsManager resetDiagnosticCaseUsage];
 
-    if (!v4)
+    if (!replyCopy)
     {
       goto LABEL_12;
     }
 
 LABEL_11:
-    v4[2](v4, v6);
+    replyCopy[2](replyCopy, v6);
     goto LABEL_12;
   }
 
@@ -1555,7 +1555,7 @@ LABEL_11:
   }
 
   [v6 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"success"];
-  if (v4)
+  if (replyCopy)
   {
     goto LABEL_11;
   }
@@ -1563,9 +1563,9 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)resetAllWithReply:(id)a3
+- (void)resetAllWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = xpcLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1574,8 +1574,8 @@ LABEL_12:
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [MEMORY[0x277CCAE80] currentConnection];
-  v8 = [(DiagnosticsServiceImpl *)self assertEntitlement:v7 entitlement:@"com.apple.symptom_diagnostics.reset" private:1];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  v8 = [(DiagnosticsServiceImpl *)self assertEntitlement:currentConnection entitlement:@"com.apple.symptom_diagnostics.reset" private:1];
   v9 = xpcLogHandle();
   v10 = v9;
   if (v8)
@@ -1588,16 +1588,16 @@ LABEL_12:
 
     [v6 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"success"];
     v11 = +[ABCAdministrator sharedInstance];
-    v12 = [v11 caseManager];
-    [v12 resetAll];
+    caseManager = [v11 caseManager];
+    [caseManager resetAll];
 
-    if (!v4)
+    if (!replyCopy)
     {
       goto LABEL_12;
     }
 
 LABEL_11:
-    v4[2](v4, v6);
+    replyCopy[2](replyCopy, v6);
     goto LABEL_12;
   }
 
@@ -1608,7 +1608,7 @@ LABEL_11:
   }
 
   [v6 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"success"];
-  if (v4)
+  if (replyCopy)
   {
     goto LABEL_11;
   }
@@ -1677,29 +1677,29 @@ LABEL_15:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getDiagnosticPayloadsForSignatures:(id)a3 reply:(id)a4
+- (void)getDiagnosticPayloadsForSignatures:(id)signatures reply:(id)reply
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  signaturesCopy = signatures;
+  replyCopy = reply;
   v8 = xpcLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = signaturesCopy;
     _os_log_impl(&dword_241804000, v8, OS_LOG_TYPE_DEFAULT, "DiagnosticsService: request collected payloads for the given signatures: %@", buf, 0xCu);
   }
 
   v9 = +[ABCAdministrator sharedInstance];
-  v10 = [v9 caseManager];
+  caseManager = [v9 caseManager];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __67__DiagnosticsServiceImpl_getDiagnosticPayloadsForSignatures_reply___block_invoke;
   v13[3] = &unk_278CF04A0;
   v13[4] = self;
-  v14 = v7;
-  v11 = v7;
-  [v10 payloadsForSignatures:v6 reply:v13];
+  v14 = replyCopy;
+  v11 = replyCopy;
+  [caseManager payloadsForSignatures:signaturesCopy reply:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -1723,9 +1723,9 @@ void __67__DiagnosticsServiceImpl_getDiagnosticPayloadsForSignatures_reply___blo
   }
 }
 
-- (void)homeKitResidentDevicesIDSIdentifiersWithReply:(id)a3
+- (void)homeKitResidentDevicesIDSIdentifiersWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = xpcLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1733,8 +1733,8 @@ void __67__DiagnosticsServiceImpl_getDiagnosticPayloadsForSignatures_reply___blo
     _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_DEFAULT, "DiagnosticsService: request IDS identifiers of HomeKit resident devices", buf, 2u);
   }
 
-  v6 = [MEMORY[0x277CCAE80] currentConnection];
-  v7 = [(DiagnosticsServiceImpl *)self assertEntitlement:v6 entitlement:@"com.apple.symptom_diagnostics.private" private:1];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  v7 = [(DiagnosticsServiceImpl *)self assertEntitlement:currentConnection entitlement:@"com.apple.symptom_diagnostics.private" private:1];
   v8 = xpcLogHandle();
   v9 = v8;
   if (v7)
@@ -1746,13 +1746,13 @@ void __67__DiagnosticsServiceImpl_getDiagnosticPayloadsForSignatures_reply___blo
     }
 
     v10 = +[ABCAdministrator sharedInstance];
-    v11 = [v10 diagnosticLiaison];
+    diagnosticLiaison = [v10 diagnosticLiaison];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __72__DiagnosticsServiceImpl_homeKitResidentDevicesIDSIdentifiersWithReply___block_invoke;
     v12[3] = &unk_278CF00B8;
-    v13 = v4;
-    [v11 residentDevicesIDSIdentifiersWithReply:v12];
+    v13 = replyCopy;
+    [diagnosticLiaison residentDevicesIDSIdentifiersWithReply:v12];
   }
 
   else
@@ -1763,9 +1763,9 @@ void __67__DiagnosticsServiceImpl_getDiagnosticPayloadsForSignatures_reply___blo
       _os_log_impl(&dword_241804000, v9, OS_LOG_TYPE_ERROR, "DiagnosticsService: not entitled to request IDS identifiers of HomeKit resident devices", buf, 2u);
     }
 
-    if (v4)
+    if (replyCopy)
     {
-      (*(v4 + 2))(v4, 0);
+      (*(replyCopy + 2))(replyCopy, 0);
     }
   }
 }
@@ -1781,9 +1781,9 @@ uint64_t __72__DiagnosticsServiceImpl_homeKitResidentDevicesIDSIdentifiersWithRe
   return result;
 }
 
-- (void)getAutoBugCaptureConfiguration:(id)a3
+- (void)getAutoBugCaptureConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = xpcLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1791,22 +1791,22 @@ uint64_t __72__DiagnosticsServiceImpl_homeKitResidentDevicesIDSIdentifiersWithRe
     _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_DEFAULT, "DiagnosticsService: request current AutoBugCapture configuration", buf, 2u);
   }
 
-  v6 = [MEMORY[0x277CCAE80] currentConnection];
-  v7 = [(DiagnosticsServiceImpl *)self assertEntitlement:v6 entitlement:@"com.apple.symptom_diagnostics.private" private:1];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  v7 = [(DiagnosticsServiceImpl *)self assertEntitlement:currentConnection entitlement:@"com.apple.symptom_diagnostics.private" private:1];
   v8 = xpcLogHandle();
-  v9 = v8;
+  configurationManager = v8;
   if (v7)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *v13 = 0;
-      _os_log_impl(&dword_241804000, v9, OS_LOG_TYPE_DEFAULT, "DiagnosticsService: authorized request for current AutoBugCapture configuration", v13, 2u);
+      _os_log_impl(&dword_241804000, configurationManager, OS_LOG_TYPE_DEFAULT, "DiagnosticsService: authorized request for current AutoBugCapture configuration", v13, 2u);
     }
 
     v10 = +[ABCAdministrator sharedInstance];
-    v9 = [v10 configurationManager];
+    configurationManager = [v10 configurationManager];
 
-    v11 = [v9 getAutoBugCaptureConfiguration];
+    getAutoBugCaptureConfiguration = [configurationManager getAutoBugCaptureConfiguration];
   }
 
   else
@@ -1814,39 +1814,39 @@ uint64_t __72__DiagnosticsServiceImpl_homeKitResidentDevicesIDSIdentifiersWithRe
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *v12 = 0;
-      _os_log_impl(&dword_241804000, v9, OS_LOG_TYPE_ERROR, "DiagnosticsService: not entitled to retrive current AutoBugCapture configuration", v12, 2u);
+      _os_log_impl(&dword_241804000, configurationManager, OS_LOG_TYPE_ERROR, "DiagnosticsService: not entitled to retrive current AutoBugCapture configuration", v12, 2u);
     }
 
-    v11 = 0;
+    getAutoBugCaptureConfiguration = 0;
   }
 
-  if (v4)
+  if (configurationCopy)
   {
-    v4[2](v4, v11);
+    configurationCopy[2](configurationCopy, getAutoBugCaptureConfiguration);
   }
 }
 
-- (void)purgeAutoBugCaptureFilesWithSubPaths:(id)a3 reply:(id)a4
+- (void)purgeAutoBugCaptureFilesWithSubPaths:(id)paths reply:(id)reply
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathsCopy = paths;
+  replyCopy = reply;
   v8 = xpcLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v43 = v6;
+    v43 = pathsCopy;
     _os_log_impl(&dword_241804000, v8, OS_LOG_TYPE_DEFAULT, "DiagnosticsService: request purge AutoBugCapture files with subpaths: %@", buf, 0xCu);
   }
 
-  v9 = [MEMORY[0x277CCAE80] currentConnection];
-  v10 = [(DiagnosticsServiceImpl *)self assertEntitlement:v9 entitlement:@"com.apple.symptom_diagnostics.private" private:1];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  v10 = [(DiagnosticsServiceImpl *)self assertEntitlement:currentConnection entitlement:@"com.apple.symptom_diagnostics.private" private:1];
   v11 = xpcLogHandle();
   v12 = v11;
   if (v10)
   {
-    v33 = v9;
-    v34 = v7;
+    v33 = currentConnection;
+    v34 = replyCopy;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -1854,18 +1854,18 @@ uint64_t __72__DiagnosticsServiceImpl_homeKitResidentDevicesIDSIdentifiersWithRe
     }
 
     v13 = +[ABCAdministrator sharedInstance];
-    v14 = [v13 configurationManager];
+    configurationManager = [v13 configurationManager];
 
-    v32 = v14;
-    v15 = [v14 logArchivePath];
-    v16 = [MEMORY[0x277CCAA00] defaultManager];
+    v32 = configurationManager;
+    logArchivePath = [configurationManager logArchivePath];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     context = objc_autoreleasePoolPush();
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v35 = v6;
-    v17 = v6;
+    v35 = pathsCopy;
+    v17 = pathsCopy;
     v18 = [v17 countByEnumeratingWithState:&v38 objects:v46 count:16];
     if (v18)
     {
@@ -1884,14 +1884,14 @@ uint64_t __72__DiagnosticsServiceImpl_homeKitResidentDevicesIDSIdentifiersWithRe
           }
 
           v24 = *(*(&v38 + 1) + 8 * i);
-          v25 = [v15 copy];
+          v25 = [logArchivePath copy];
 
           v21 = [v25 stringByAppendingPathComponent:v24];
 
-          if ([v16 fileExistsAtPath:v21])
+          if ([defaultManager fileExistsAtPath:v21])
           {
             v37 = v20;
-            v26 = [v16 removeItemAtPath:v21 error:&v37];
+            v26 = [defaultManager removeItemAtPath:v21 error:&v37];
             v27 = v37;
 
             if ((v26 & 1) == 0)
@@ -1927,10 +1927,10 @@ uint64_t __72__DiagnosticsServiceImpl_homeKitResidentDevicesIDSIdentifiersWithRe
     }
 
     objc_autoreleasePoolPop(context);
-    v7 = v34;
-    v6 = v35;
+    replyCopy = v34;
+    pathsCopy = v35;
     v12 = v32;
-    v9 = v33;
+    currentConnection = v33;
     v29 = v36;
   }
 
@@ -1945,28 +1945,28 @@ uint64_t __72__DiagnosticsServiceImpl_homeKitResidentDevicesIDSIdentifiersWithRe
     v29 = 0;
   }
 
-  if (v7)
+  if (replyCopy)
   {
-    v7[2](v7, v29 & 1);
+    replyCopy[2](replyCopy, v29 & 1);
   }
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)uploadCasesWithIdentifiersToCloudKit:(id)a3
+- (void)uploadCasesWithIdentifiersToCloudKit:(id)kit
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  kitCopy = kit;
   v5 = xpcLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412290;
-    v20 = v4;
+    v20 = kitCopy;
     _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_DEFAULT, "DiagnosticsService: request CloudKit upload for case identifiers %@", &v19, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCAE80] currentConnection];
-  if ([(DiagnosticsServiceImpl *)self assertEntitlement:v6 entitlement:@"com.apple.symptom_diagnostics.private" private:1])
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if ([(DiagnosticsServiceImpl *)self assertEntitlement:currentConnection entitlement:@"com.apple.symptom_diagnostics.private" private:1])
   {
     v7 = xpcLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1976,19 +1976,19 @@ uint64_t __72__DiagnosticsServiceImpl_homeKitResidentDevicesIDSIdentifiersWithRe
     }
 
     v8 = +[ABCAdministrator sharedInstance];
-    v9 = [v8 configurationManager];
-    v10 = [v9 cloudKitEnabled];
+    configurationManager = [v8 configurationManager];
+    cloudKitEnabled = [configurationManager cloudKitEnabled];
 
-    if (v10)
+    if (cloudKitEnabled)
     {
       v11 = +[ABCAdministrator sharedInstance];
-      v12 = [v11 ckUploadController];
+      ckUploadController = [v11 ckUploadController];
 
-      if (v12)
+      if (ckUploadController)
       {
         v13 = +[ABCAdministrator sharedInstance];
-        v14 = [v13 ckUploadController];
-        [v14 uploadCasesWithIdentifiers:v4];
+        ckUploadController2 = [v13 ckUploadController];
+        [ckUploadController2 uploadCasesWithIdentifiers:kitCopy];
 
 LABEL_14:
         goto LABEL_15;
@@ -2029,19 +2029,19 @@ LABEL_15:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)uploadRecentCases:(unint64_t)a3
+- (void)uploadRecentCases:(unint64_t)cases
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = xpcLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 134217984;
-    v20 = a3;
+    casesCopy = cases;
     _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_DEFAULT, "DiagnosticsService: request CloudKit upload for recent %ld cases", &v19, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCAE80] currentConnection];
-  if ([(DiagnosticsServiceImpl *)self assertEntitlement:v6 entitlement:@"com.apple.symptom_diagnostics.private" private:1])
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if ([(DiagnosticsServiceImpl *)self assertEntitlement:currentConnection entitlement:@"com.apple.symptom_diagnostics.private" private:1])
   {
     v7 = xpcLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -2051,19 +2051,19 @@ LABEL_15:
     }
 
     v8 = +[ABCAdministrator sharedInstance];
-    v9 = [v8 configurationManager];
-    v10 = [v9 cloudKitEnabled];
+    configurationManager = [v8 configurationManager];
+    cloudKitEnabled = [configurationManager cloudKitEnabled];
 
-    if (v10)
+    if (cloudKitEnabled)
     {
       v11 = +[ABCAdministrator sharedInstance];
-      v12 = [v11 ckUploadController];
+      ckUploadController = [v11 ckUploadController];
 
-      if (v12)
+      if (ckUploadController)
       {
         v13 = +[ABCAdministrator sharedInstance];
-        v14 = [v13 ckUploadController];
-        [v14 uploadMostRecentCases:a3];
+        ckUploadController2 = [v13 ckUploadController];
+        [ckUploadController2 uploadMostRecentCases:cases];
 
 LABEL_14:
         goto LABEL_15;
@@ -2104,21 +2104,21 @@ LABEL_15:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cloudKitUploadDecisionForCaseIdentifiers:(id)a3 reply:(id)a4
+- (void)cloudKitUploadDecisionForCaseIdentifiers:(id)identifiers reply:(id)reply
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  replyCopy = reply;
   v8 = xpcLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412290;
-    v22 = v6;
+    v22 = identifiersCopy;
     _os_log_impl(&dword_241804000, v8, OS_LOG_TYPE_DEFAULT, "DiagnosticsService: request CloudKit upload decision for case identifiers %@", &v21, 0xCu);
   }
 
-  v9 = [MEMORY[0x277CCAE80] currentConnection];
-  if ([(DiagnosticsServiceImpl *)self assertEntitlement:v9 entitlement:@"com.apple.symptom_diagnostics.private" private:1])
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if ([(DiagnosticsServiceImpl *)self assertEntitlement:currentConnection entitlement:@"com.apple.symptom_diagnostics.private" private:1])
   {
     v10 = xpcLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2128,19 +2128,19 @@ LABEL_15:
     }
 
     v11 = +[ABCAdministrator sharedInstance];
-    v12 = [v11 configurationManager];
-    v13 = [v12 cloudKitEnabled];
+    configurationManager = [v11 configurationManager];
+    cloudKitEnabled = [configurationManager cloudKitEnabled];
 
-    if (v13)
+    if (cloudKitEnabled)
     {
       v14 = +[ABCAdministrator sharedInstance];
-      v15 = [v14 ckUploadController];
+      ckUploadController = [v14 ckUploadController];
 
-      if (v15)
+      if (ckUploadController)
       {
         v16 = +[ABCAdministrator sharedInstance];
-        v17 = [v16 ckUploadController];
-        [v17 uploadDecisionWithIdentifiers:v6 reply:v7];
+        ckUploadController2 = [v16 ckUploadController];
+        [ckUploadController2 uploadDecisionWithIdentifiers:identifiersCopy reply:replyCopy];
 
 LABEL_17:
         goto LABEL_18;
@@ -2153,10 +2153,10 @@ LABEL_17:
         _os_log_impl(&dword_241804000, v19, OS_LOG_TYPE_INFO, "CloudKit upload controller is not instantiated!", &v21, 2u);
       }
 
-      if (v7)
+      if (replyCopy)
       {
         v16 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:2 userInfo:0];
-        v7[2](v7, &unk_285379F68, v16);
+        replyCopy[2](replyCopy, &unk_285379F68, v16);
         goto LABEL_17;
       }
     }
@@ -2170,10 +2170,10 @@ LABEL_17:
         _os_log_impl(&dword_241804000, v18, OS_LOG_TYPE_DEFAULT, "CloudKit upload is disabled", &v21, 2u);
       }
 
-      if (v7)
+      if (replyCopy)
       {
         v16 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:45 userInfo:0];
-        v7[2](v7, &unk_285379F90, v16);
+        replyCopy[2](replyCopy, &unk_285379F90, v16);
         goto LABEL_17;
       }
     }
@@ -2370,21 +2370,21 @@ void __77__DiagnosticsServiceImpl_listCaseSummariesOfType_fromIdentifier_count_r
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitRecentCaseSummariesWithIdentifiers:(id)a3 reply:(id)a4
+- (void)submitRecentCaseSummariesWithIdentifiers:(id)identifiers reply:(id)reply
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  replyCopy = reply;
   v8 = xpcLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 138412290;
-    v27 = v6;
+    v27 = identifiersCopy;
     _os_log_impl(&dword_241804000, v8, OS_LOG_TYPE_DEFAULT, "DiagnosticCaseSummaryLog: DiagnosticsService: request CloudKit submission for identifiers %@", &v26, 0xCu);
   }
 
-  v9 = [MEMORY[0x277CCAE80] currentConnection];
-  if ([(DiagnosticsServiceImpl *)self assertEntitlement:v9 entitlement:@"com.apple.symptom_diagnostics.private" private:1])
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if ([(DiagnosticsServiceImpl *)self assertEntitlement:currentConnection entitlement:@"com.apple.symptom_diagnostics.private" private:1])
   {
     v10 = xpcLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2394,23 +2394,23 @@ void __77__DiagnosticsServiceImpl_listCaseSummariesOfType_fromIdentifier_count_r
     }
 
     v11 = +[ABCAdministrator sharedInstance];
-    v12 = [v11 configurationManager];
-    v13 = [v12 cloudKitEnabled];
+    configurationManager = [v11 configurationManager];
+    cloudKitEnabled = [configurationManager cloudKitEnabled];
 
     v14 = +[ABCAdministrator sharedInstance];
-    v15 = [v14 configurationManager];
-    v16 = [v15 caseSummaryEnabled];
+    configurationManager2 = [v14 configurationManager];
+    caseSummaryEnabled = [configurationManager2 caseSummaryEnabled];
 
-    if (v13 && v16)
+    if (cloudKitEnabled && caseSummaryEnabled)
     {
       v17 = +[ABCAdministrator sharedInstance];
-      v18 = [v17 ckUploadController];
+      ckUploadController = [v17 ckUploadController];
 
-      if (v18)
+      if (ckUploadController)
       {
         v19 = +[ABCAdministrator sharedInstance];
-        v20 = [v19 ckUploadController];
-        [v20 submitCaseSummariesWithIdentifiers:v6 reply:v7];
+        ckUploadController2 = [v19 ckUploadController];
+        [ckUploadController2 submitCaseSummariesWithIdentifiers:identifiersCopy reply:replyCopy];
       }
 
       else
@@ -2430,7 +2430,7 @@ void __77__DiagnosticsServiceImpl_listCaseSummariesOfType_fromIdentifier_count_r
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         v23 = @"disabled";
-        if (v13)
+        if (cloudKitEnabled)
         {
           v24 = @"enabled";
         }
@@ -2440,7 +2440,7 @@ void __77__DiagnosticsServiceImpl_listCaseSummariesOfType_fromIdentifier_count_r
           v24 = @"disabled";
         }
 
-        if (v16)
+        if (caseSummaryEnabled)
         {
           v23 = @"enabled";
         }
@@ -2454,7 +2454,7 @@ void __77__DiagnosticsServiceImpl_listCaseSummariesOfType_fromIdentifier_count_r
     }
   }
 
-  else if (v7)
+  else if (replyCopy)
   {
     v21 = xpcLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -2463,26 +2463,26 @@ void __77__DiagnosticsServiceImpl_listCaseSummariesOfType_fromIdentifier_count_r
       _os_log_impl(&dword_241804000, v21, OS_LOG_TYPE_ERROR, "DiagnosticCaseSummaryLog: DiagnosticsService: not entitled to access private API", &v26, 2u);
     }
 
-    v7[2](v7, @"No access to private API");
+    replyCopy[2](replyCopy, @"No access to private API");
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitRecentCaseSummariesWithCount:(unint64_t)a3 reply:(id)a4
+- (void)submitRecentCaseSummariesWithCount:(unint64_t)count reply:(id)reply
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  replyCopy = reply;
   v7 = xpcLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v29 = 134217984;
-    v30 = a3;
+    countCopy = count;
     _os_log_impl(&dword_241804000, v7, OS_LOG_TYPE_DEFAULT, "DiagnosticCaseSummaryLog: DiagnosticsService: request CloudKit submission for recent %ld case summaries", &v29, 0xCu);
   }
 
-  v8 = [MEMORY[0x277CCAE80] currentConnection];
-  if ([(DiagnosticsServiceImpl *)self assertEntitlement:v8 entitlement:@"com.apple.symptom_diagnostics.private" private:1])
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if ([(DiagnosticsServiceImpl *)self assertEntitlement:currentConnection entitlement:@"com.apple.symptom_diagnostics.private" private:1])
   {
     v9 = xpcLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2492,23 +2492,23 @@ void __77__DiagnosticsServiceImpl_listCaseSummariesOfType_fromIdentifier_count_r
     }
 
     v10 = +[ABCAdministrator sharedInstance];
-    v11 = [v10 configurationManager];
-    v12 = [v11 cloudKitEnabled];
+    configurationManager = [v10 configurationManager];
+    cloudKitEnabled = [configurationManager cloudKitEnabled];
 
     v13 = +[ABCAdministrator sharedInstance];
-    v14 = [v13 configurationManager];
-    v15 = [v14 caseSummaryEnabled];
+    configurationManager2 = [v13 configurationManager];
+    caseSummaryEnabled = [configurationManager2 caseSummaryEnabled];
 
-    if (v12 && v15)
+    if (cloudKitEnabled && caseSummaryEnabled)
     {
       v16 = +[ABCAdministrator sharedInstance];
-      v17 = [v16 ckUploadController];
+      ckUploadController = [v16 ckUploadController];
 
-      if (v17)
+      if (ckUploadController)
       {
         v18 = +[ABCAdministrator sharedInstance];
-        v19 = [v18 ckUploadController];
-        [v19 submitRecentCaseSummaries:a3 reply:v6];
+        ckUploadController2 = [v18 ckUploadController];
+        [ckUploadController2 submitRecentCaseSummaries:count reply:replyCopy];
 
         goto LABEL_25;
       }
@@ -2532,7 +2532,7 @@ LABEL_23:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         v22 = @"disabled";
-        if (v12)
+        if (cloudKitEnabled)
         {
           v23 = @"enabled";
         }
@@ -2542,13 +2542,13 @@ LABEL_23:
           v23 = @"disabled";
         }
 
-        if (v15)
+        if (caseSummaryEnabled)
         {
           v22 = @"enabled";
         }
 
         v29 = 138412546;
-        v30 = v23;
+        countCopy = v23;
         v31 = 2112;
         v32 = v22;
         v24 = "DiagnosticCaseSummaryLog: cannot submit! CloudKitUpload is %@, CaseSummary is %@";
@@ -2562,7 +2562,7 @@ LABEL_23:
     goto LABEL_25;
   }
 
-  if (v6)
+  if (replyCopy)
   {
     v20 = xpcLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -2571,7 +2571,7 @@ LABEL_23:
       _os_log_impl(&dword_241804000, v20, OS_LOG_TYPE_ERROR, "DiagnosticCaseSummaryLog: DiagnosticsService: not entitled to access private API", &v29, 2u);
     }
 
-    v6[2](v6, @"No access to private API");
+    replyCopy[2](replyCopy, @"No access to private API");
   }
 
 LABEL_25:
@@ -2579,45 +2579,45 @@ LABEL_25:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)responseDictWithSuccess:(void *)a3 sessionId:(void *)a4 groupId:(void *)a5 additionalDict:(uint64_t)a6 reasonCode:(void *)a7 expiresIn:
+- (id)responseDictWithSuccess:(void *)success sessionId:(void *)id groupId:(void *)groupId additionalDict:(uint64_t)dict reasonCode:(void *)code expiresIn:
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  if (a1)
+  successCopy = success;
+  idCopy = id;
+  groupIdCopy = groupId;
+  codeCopy = code;
+  if (self)
   {
     v17 = MEMORY[0x277CBEB38];
     v18 = [MEMORY[0x277CCABB0] numberWithBool:a2];
     v19 = [v17 dictionaryWithObjectsAndKeys:{v18, @"success", 0}];
 
-    if (v15)
+    if (groupIdCopy)
     {
-      [v19 addEntriesFromDictionary:v15];
+      [v19 addEntriesFromDictionary:groupIdCopy];
     }
 
-    if ([v13 length])
+    if ([successCopy length])
     {
-      [v19 setObject:v13 forKey:@"session"];
+      [v19 setObject:successCopy forKey:@"session"];
     }
 
-    if ([v14 length])
+    if ([idCopy length])
     {
-      [v19 setObject:v14 forKey:@"groupID"];
+      [v19 setObject:idCopy forKey:@"groupID"];
     }
 
-    if (a6)
+    if (dict)
     {
-      v20 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
+      v20 = [MEMORY[0x277CCABB0] numberWithInteger:dict];
       [v19 setObject:v20 forKey:@"reason"];
 
-      v21 = diagnosticErrorStringForCode(a6);
+      v21 = diagnosticErrorStringForCode(dict);
       [v19 setObject:v21 forKey:@"reasonStr"];
     }
 
-    if (v16)
+    if (codeCopy)
     {
-      [v19 setObject:v16 forKey:@"expiresIn"];
+      [v19 setObject:codeCopy forKey:@"expiresIn"];
     }
   }
 
@@ -2629,23 +2629,23 @@ LABEL_25:
   return v19;
 }
 
-- (id)responseDictWithSuccess:(uint64_t)a3 reasonCode:
+- (id)responseDictWithSuccess:(uint64_t)success reasonCode:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(DiagnosticsServiceImpl *)a1 responseDictWithSuccess:a2 sessionId:0 groupId:0 additionalDict:0 reasonCode:a3 expiresIn:0];
+    self = [(DiagnosticsServiceImpl *)self responseDictWithSuccess:a2 sessionId:0 groupId:0 additionalDict:0 reasonCode:success expiresIn:0];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)responseDictWithSuccess:(uint64_t)a1 reasonCode:(uint64_t)a2 expiresIn:(uint64_t)a3
+- (id)responseDictWithSuccess:(uint64_t)success reasonCode:(uint64_t)code expiresIn:(uint64_t)in
 {
-  if (a1)
+  if (success)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-    v7 = [(DiagnosticsServiceImpl *)a1 responseDictWithSuccess:a2 sessionId:0 groupId:0 additionalDict:0 reasonCode:a3 expiresIn:v6];
+    v7 = [(DiagnosticsServiceImpl *)success responseDictWithSuccess:code sessionId:0 groupId:0 additionalDict:0 reasonCode:in expiresIn:v6];
   }
 
   else
@@ -2656,36 +2656,36 @@ LABEL_25:
   return v7;
 }
 
-- (id)responseDictWithSuccess:(void *)a3 sessionId:
+- (id)responseDictWithSuccess:(void *)success sessionId:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(DiagnosticsServiceImpl *)a1 responseDictWithSuccess:a2 sessionId:a3 groupId:0 additionalDict:0 reasonCode:0 expiresIn:0];
+    self = [(DiagnosticsServiceImpl *)self responseDictWithSuccess:a2 sessionId:success groupId:0 additionalDict:0 reasonCode:0 expiresIn:0];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)responseDictWithSuccess:(void *)a3 sessionId:(void *)a4 groupId:(void *)a5 additionalDict:(uint64_t)a6 reasonCode:
+- (id)responseDictWithSuccess:(void *)success sessionId:(void *)id groupId:(void *)groupId additionalDict:(uint64_t)dict reasonCode:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(DiagnosticsServiceImpl *)a1 responseDictWithSuccess:a2 sessionId:a3 groupId:a4 additionalDict:a5 reasonCode:a6 expiresIn:0];
+    self = [(DiagnosticsServiceImpl *)self responseDictWithSuccess:a2 sessionId:success groupId:id additionalDict:groupId reasonCode:dict expiresIn:0];
     v6 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)validateSignature:(_BOOL8)a1
+- (BOOL)validateSignature:(_BOOL8)signature
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (signature)
   {
-    a1 = v3 != 0;
+    signature = v3 != 0;
     v5 = [OUTLINED_FUNCTION_14() objectForKeyedSubscript:?];
 
     if (!v5)
@@ -2698,7 +2698,7 @@ LABEL_25:
         OUTLINED_FUNCTION_13(&dword_241804000, v6, v8, "DiagnosticsService: signature validation failed! '%@' must be specified: %@", v15);
       }
 
-      a1 = 0;
+      signature = 0;
     }
 
     v9 = [OUTLINED_FUNCTION_14() objectForKeyedSubscript:?];
@@ -2713,24 +2713,24 @@ LABEL_25:
         OUTLINED_FUNCTION_13(&dword_241804000, v10, v12, "DiagnosticsService: signature validation failed! '%@' must be specified: %@", v15);
       }
 
-      a1 = 0;
+      signature = 0;
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return a1;
+  return signature;
 }
 
-- (void)abcEnabledAndReadyWithReply:(uint64_t)a1
+- (void)abcEnabledAndReadyWithReply:(uint64_t)reply
 {
   v3 = a2;
-  if (a1)
+  if (reply)
   {
     v4 = +[ABCAdministrator sharedInstance];
-    v5 = [v4 configurationManager];
-    v6 = [v5 autoBugCaptureEnabled];
+    configurationManager = [v4 configurationManager];
+    autoBugCaptureEnabled = [configurationManager autoBugCaptureEnabled];
 
-    if ((v6 & 1) == 0)
+    if ((autoBugCaptureEnabled & 1) == 0)
     {
       v7 = xpcLogHandle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -2740,9 +2740,9 @@ LABEL_25:
       }
     }
 
-    v8 = [v4 caseManager];
+    caseManager = [v4 caseManager];
 
-    if (!v8)
+    if (!caseManager)
     {
       v9 = xpcLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -2755,14 +2755,14 @@ LABEL_25:
     if (v3)
     {
       v10 = OUTLINED_FUNCTION_4();
-      v11(v10, v6);
+      v11(v10, autoBugCaptureEnabled);
     }
   }
 }
 
-- (void)snapshotWithSignature:(id)a3 delay:(unint64_t)a4 events:(id)a5 payload:(id)a6 actions:(id)a7 wantsRemoteCase:(BOOL)a8 reply:(id)a9
+- (void)snapshotWithSignature:(id)signature delay:(unint64_t)delay events:(id)events payload:(id)payload actions:(id)actions wantsRemoteCase:(BOOL)case reply:(id)reply
 {
-  v13 = OUTLINED_FUNCTION_7(self, a2, a3);
+  v13 = OUTLINED_FUNCTION_7(self, a2, signature);
   v14 = v11;
   v15 = v10;
   v16 = v9;
@@ -2777,9 +2777,9 @@ LABEL_25:
   OUTLINED_FUNCTION_12(v22, v23, v24, v25, v26, v27, v28, v29, v30);
 }
 
-- (void)startSessionWithSignature:(id)a3 duration:(unint64_t)a4 events:(id)a5 payload:(id)a6 actions:(id)a7 wantsRemoteCase:(BOOL)a8 reply:(id)a9
+- (void)startSessionWithSignature:(id)signature duration:(unint64_t)duration events:(id)events payload:(id)payload actions:(id)actions wantsRemoteCase:(BOOL)case reply:(id)reply
 {
-  v13 = OUTLINED_FUNCTION_7(self, a2, a3);
+  v13 = OUTLINED_FUNCTION_7(self, a2, signature);
   v14 = v11;
   v15 = v10;
   v16 = v9;
@@ -2794,13 +2794,13 @@ LABEL_25:
   OUTLINED_FUNCTION_12(v22, v23, v24, v25, v26, v27, v28, v29, v30);
 }
 
-- (void)addToSession:(id)a3 events:(id)a4 payload:(id)a5 reply:(id)a6
+- (void)addToSession:(id)session events:(id)events payload:(id)payload reply:(id)reply
 {
   OUTLINED_FUNCTION_9();
   v10 = v9;
   v11 = v7;
   v12 = v6;
-  v13 = a6;
+  replyCopy = reply;
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_5();
   v20 = v12;
@@ -2810,16 +2810,16 @@ LABEL_25:
   v15 = v12;
   v16 = v11;
   v17 = v10;
-  OUTLINED_FUNCTION_8(v13);
+  OUTLINED_FUNCTION_8(replyCopy);
 }
 
-- (void)addSignatureContentForSession:(id)a3 key:(id)a4 content:(id)a5 reply:(id)a6
+- (void)addSignatureContentForSession:(id)session key:(id)key content:(id)content reply:(id)reply
 {
   OUTLINED_FUNCTION_9();
   v10 = v9;
   v11 = v7;
   v12 = v6;
-  v13 = a6;
+  replyCopy = reply;
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_5();
   v20 = v12;
@@ -2829,28 +2829,28 @@ LABEL_25:
   v15 = v12;
   v16 = v11;
   v17 = v10;
-  OUTLINED_FUNCTION_8(v13);
+  OUTLINED_FUNCTION_8(replyCopy);
 }
 
-- (void)endSession:(id)a3
+- (void)endSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_5();
   v6 = v5;
   OUTLINED_FUNCTION_8(v5);
 }
 
-- (void)cancelSession:(id)a3
+- (void)cancelSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_5();
   v6 = v5;
   OUTLINED_FUNCTION_8(v5);
 }
 
-- (void)requestGroupCaseIdentifierForSignature:(id)a3 reply:(id)a4
+- (void)requestGroupCaseIdentifierForSignature:(id)signature reply:(id)reply
 {
   OUTLINED_FUNCTION_15();
   v7 = v6;
@@ -2878,7 +2878,7 @@ void __71__DiagnosticsServiceImpl_requestGroupCaseIdentifierForSignature_reply__
   v11(v10, v12);
 }
 
-- (void)triggerRemoteSessionForSignature:(id)a3 groupIdentifier:(id)a4 reply:(id)a5
+- (void)triggerRemoteSessionForSignature:(id)signature groupIdentifier:(id)identifier reply:(id)reply
 {
   OUTLINED_FUNCTION_9();
   v32 = *MEMORY[0x277D85DE8];
@@ -2908,9 +2908,9 @@ void __71__DiagnosticsServiceImpl_requestGroupCaseIdentifierForSignature_reply__
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getSessionStatisticsWithReply:(id)a3
+- (void)getSessionStatisticsWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = xpcLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -2919,39 +2919,39 @@ void __71__DiagnosticsServiceImpl_requestGroupCaseIdentifierForSignature_reply__
 
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_6();
-  v25 = v3;
-  v11 = v3;
+  v25 = replyCopy;
+  v11 = replyCopy;
   OUTLINED_FUNCTION_12(v11, v12, v13, v14, v15, v16, v17, v18, v19);
 }
 
-- (void)getCasesListFromIdentifier:(id)a3 count:(unint64_t)a4 reply:(id)a5
+- (void)getCasesListFromIdentifier:(id)identifier count:(unint64_t)count reply:(id)reply
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v9 = xpcLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 134218242;
-    v24 = a4;
+    countCopy = count;
     v25 = 2112;
-    v26 = v7;
+    v26 = identifierCopy;
     OUTLINED_FUNCTION_13(&dword_241804000, v9, v10, "DiagnosticsService(PRIVATE): request to get list of %ld cases from identifier %@", &v23);
   }
 
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_6();
-  v22 = v7;
-  v11 = v7;
-  v12 = v8;
+  v22 = identifierCopy;
+  v11 = identifierCopy;
+  v12 = replyCopy;
   OUTLINED_FUNCTION_12(v12, v13, v14, v15, v16, v17, v18, v19, v21);
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getExpertSystemsStatus:(id)a3
+- (void)getExpertSystemsStatus:(id)status
 {
-  v3 = a3;
+  statusCopy = status;
   v4 = xpcLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -2960,21 +2960,21 @@ void __71__DiagnosticsServiceImpl_requestGroupCaseIdentifierForSignature_reply__
 
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_6();
-  v25 = v3;
-  v11 = v3;
+  v25 = statusCopy;
+  v11 = statusCopy;
   OUTLINED_FUNCTION_12(v11, v12, v13, v14, v15, v16, v17, v18, v19);
 }
 
-- (void)listCaseSummariesWithIdentifiers:(id)a3 reply:(id)a4
+- (void)listCaseSummariesWithIdentifiers:(id)identifiers reply:(id)reply
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  replyCopy = reply;
   v8 = xpcLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = identifiersCopy;
     _os_log_impl(&dword_241804000, v8, OS_LOG_TYPE_DEFAULT, "DiagnosticCaseSummaryLog: DiagnosticsService: list case summaries with identifiers %@", buf, 0xCu);
   }
 
@@ -2982,27 +2982,27 @@ void __71__DiagnosticsServiceImpl_requestGroupCaseIdentifierForSignature_reply__
   OUTLINED_FUNCTION_5();
   v13 = __65__DiagnosticsServiceImpl_listCaseSummariesWithIdentifiers_reply___block_invoke;
   v14 = &unk_278CF03D8;
-  v16 = v6;
-  v17 = v7;
-  v15 = self;
-  v9 = v6;
-  v10 = v7;
+  v16 = identifiersCopy;
+  v17 = replyCopy;
+  selfCopy = self;
+  v9 = identifiersCopy;
+  v10 = replyCopy;
   [(DiagnosticsServiceImpl *)self abcEnabledAndReadyWithReply:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)listCaseSummariesOfType:(id)a3 fromIdentifier:(id)a4 count:(unint64_t)a5 reply:(id)a6
+- (void)listCaseSummariesOfType:(id)type fromIdentifier:(id)identifier count:(unint64_t)count reply:(id)reply
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  typeCopy = type;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v13 = xpcLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v10;
+    v27 = typeCopy;
     _os_log_impl(&dword_241804000, v13, OS_LOG_TYPE_DEFAULT, "DiagnosticCaseSummaryLog: DiagnosticsService: list '%@' case summaries", buf, 0xCu);
   }
 
@@ -3010,14 +3010,14 @@ void __71__DiagnosticsServiceImpl_requestGroupCaseIdentifierForSignature_reply__
   OUTLINED_FUNCTION_5();
   v19 = __77__DiagnosticsServiceImpl_listCaseSummariesOfType_fromIdentifier_count_reply___block_invoke;
   v20 = &unk_278CF04C8;
-  v21 = self;
-  v22 = v10;
-  v23 = v11;
-  v24 = v12;
-  v25 = a5;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
+  selfCopy = self;
+  v22 = typeCopy;
+  v23 = identifierCopy;
+  v24 = replyCopy;
+  countCopy = count;
+  v14 = identifierCopy;
+  v15 = typeCopy;
+  v16 = replyCopy;
   [(DiagnosticsServiceImpl *)self abcEnabledAndReadyWithReply:v18];
 
   v17 = *MEMORY[0x277D85DE8];

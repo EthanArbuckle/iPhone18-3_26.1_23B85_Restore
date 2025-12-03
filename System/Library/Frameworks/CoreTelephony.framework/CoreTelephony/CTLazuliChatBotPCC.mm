@@ -1,11 +1,11 @@
 @interface CTLazuliChatBotPCC
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTLazuliChatBotPCC:(id)a3;
-- (CTLazuliChatBotPCC)initWithCoder:(id)a3;
-- (CTLazuliChatBotPCC)initWithReflection:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTLazuliChatBotPCC:(id)c;
+- (CTLazuliChatBotPCC)initWithCoder:(id)coder;
+- (CTLazuliChatBotPCC)initWithReflection:(const void *)reflection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTLazuliChatBotPCC
@@ -13,27 +13,27 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(CTLazuliChatBotPCC *)self orgDetails];
-  [v3 appendFormat:@", orgDetails = %@", v4];
+  orgDetails = [(CTLazuliChatBotPCC *)self orgDetails];
+  [v3 appendFormat:@", orgDetails = %@", orgDetails];
 
-  v5 = [(CTLazuliChatBotPCC *)self pccType];
-  [v3 appendFormat:@", pccType = %@", v5];
+  pccType = [(CTLazuliChatBotPCC *)self pccType];
+  [v3 appendFormat:@", pccType = %@", pccType];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqualToCTLazuliChatBotPCC:(id)a3
+- (BOOL)isEqualToCTLazuliChatBotPCC:(id)c
 {
-  v6 = a3;
-  v7 = [(CTLazuliChatBotPCC *)self orgDetails];
-  v8 = [v6 orgDetails];
-  if (v7 != v8)
+  cCopy = c;
+  orgDetails = [(CTLazuliChatBotPCC *)self orgDetails];
+  orgDetails2 = [cCopy orgDetails];
+  if (orgDetails != orgDetails2)
   {
-    v3 = [(CTLazuliChatBotPCC *)self orgDetails];
-    v4 = [v6 orgDetails];
-    if (![v3 isEqualToCTLazuliChatBotOrgDetails:v4])
+    orgDetails3 = [(CTLazuliChatBotPCC *)self orgDetails];
+    orgDetails4 = [cCopy orgDetails];
+    if (![orgDetails3 isEqualToCTLazuliChatBotOrgDetails:orgDetails4])
     {
       v9 = 0;
 LABEL_8:
@@ -42,10 +42,10 @@ LABEL_8:
     }
   }
 
-  v10 = [(CTLazuliChatBotPCC *)self pccType];
-  v11 = [v6 pccType];
-  v12 = v11;
-  if (v10 == v11)
+  pccType = [(CTLazuliChatBotPCC *)self pccType];
+  pccType2 = [cCopy pccType];
+  v12 = pccType2;
+  if (pccType == pccType2)
   {
 
     v9 = 1;
@@ -53,12 +53,12 @@ LABEL_8:
 
   else
   {
-    v13 = [(CTLazuliChatBotPCC *)self pccType];
-    v14 = [v6 pccType];
-    v9 = [v13 isEqualToString:v14];
+    pccType3 = [(CTLazuliChatBotPCC *)self pccType];
+    pccType4 = [cCopy pccType];
+    v9 = [pccType3 isEqualToString:pccType4];
   }
 
-  if (v7 != v8)
+  if (orgDetails != orgDetails2)
   {
     goto LABEL_8;
   }
@@ -68,55 +68,55 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotPCC *)self isEqualToCTLazuliChatBotPCC:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotPCC *)self isEqualToCTLazuliChatBotPCC:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CTLazuliChatBotPCC allocWithZone:?];
-  v6 = [(CTLazuliChatBotOrgDetails *)self->_orgDetails copyWithZone:a3];
+  v6 = [(CTLazuliChatBotOrgDetails *)self->_orgDetails copyWithZone:zone];
   [(CTLazuliChatBotPCC *)v5 setOrgDetails:v6];
 
-  v7 = [(NSString *)self->_pccType copyWithZone:a3];
+  v7 = [(NSString *)self->_pccType copyWithZone:zone];
   [(CTLazuliChatBotPCC *)v5 setPccType:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_orgDetails forKey:@"kOrgDetailsKey"];
-  [v4 encodeObject:self->_pccType forKey:@"kPccTypeKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_orgDetails forKey:@"kOrgDetailsKey"];
+  [coderCopy encodeObject:self->_pccType forKey:@"kPccTypeKey"];
 }
 
-- (CTLazuliChatBotPCC)initWithCoder:(id)a3
+- (CTLazuliChatBotPCC)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CTLazuliChatBotPCC;
   v5 = [(CTLazuliChatBotPCC *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kOrgDetailsKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kOrgDetailsKey"];
     orgDetails = v5->_orgDetails;
     v5->_orgDetails = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kPccTypeKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kPccTypeKey"];
     pccType = v5->_pccType;
     v5->_pccType = v8;
   }
@@ -124,7 +124,7 @@ LABEL_9:
   return v5;
 }
 
-- (CTLazuliChatBotPCC)initWithReflection:(const void *)a3
+- (CTLazuliChatBotPCC)initWithReflection:(const void *)reflection
 {
   v15.receiver = self;
   v15.super_class = CTLazuliChatBotPCC;
@@ -132,18 +132,18 @@ LABEL_9:
   v5 = v4;
   if (v4)
   {
-    if (*(a3 + 272) == 1)
+    if (*(reflection + 272) == 1)
     {
       v6 = v4;
       v7 = [CTLazuliChatBotOrgDetails alloc];
-      if ((*(a3 + 272) & 1) == 0)
+      if ((*(reflection + 272) & 1) == 0)
       {
         v14 = std::__throw_bad_optional_access[abi:nn200100]();
 
         _Unwind_Resume(v14);
       }
 
-      v8 = [(CTLazuliChatBotOrgDetails *)v7 initWithReflection:a3];
+      v8 = [(CTLazuliChatBotOrgDetails *)v7 initWithReflection:reflection];
     }
 
     else
@@ -154,16 +154,16 @@ LABEL_9:
     orgDetails = v5->_orgDetails;
     v5->_orgDetails = v8;
 
-    if (*(a3 + 304) == 1)
+    if (*(reflection + 304) == 1)
     {
-      if (*(a3 + 303) >= 0)
+      if (*(reflection + 303) >= 0)
       {
-        v10 = a3 + 280;
+        v10 = reflection + 280;
       }
 
       else
       {
-        v10 = *(a3 + 35);
+        v10 = *(reflection + 35);
       }
 
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v10];

@@ -8,26 +8,26 @@
 - (NSDictionary)userInfo;
 - (NSSet)preferredBackgroundActivitiesToSuppress;
 - (UIEdgeInsets)bannerContentOutsets;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
-- (void)setBannerContentOutsets:(UIEdgeInsets)a3;
-- (void)setClippingEnabled:(BOOL)a3;
-- (void)setDraggingDismissalEnabled:(BOOL)a3;
-- (void)setDraggingInteractionEnabled:(BOOL)a3;
-- (void)setPanGestureProxySupported:(BOOL)a3;
-- (void)setPreferredBackgroundActivitiesToSuppress:(id)a3;
-- (void)setPreferredContentSize:(CGSize)a3;
-- (void)setTouchOutsideDismissalEnabled:(BOOL)a3;
-- (void)setUserInfo:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
+- (void)setBannerContentOutsets:(UIEdgeInsets)outsets;
+- (void)setClippingEnabled:(BOOL)enabled;
+- (void)setDraggingDismissalEnabled:(BOOL)enabled;
+- (void)setDraggingInteractionEnabled:(BOOL)enabled;
+- (void)setPanGestureProxySupported:(BOOL)supported;
+- (void)setPreferredBackgroundActivitiesToSuppress:(id)suppress;
+- (void)setPreferredContentSize:(CGSize)size;
+- (void)setTouchOutsideDismissalEnabled:(BOOL)enabled;
+- (void)setUserInfo:(id)info;
 @end
 
 @implementation BNMutableSceneClientSettings
 
 - (CGSize)preferredContentSize
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:501];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:501];
   [v3 CGSizeValue];
   v5 = v4;
   v7 = v6;
@@ -39,36 +39,36 @@
   return result;
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(FBSSettings *)self otherSettings];
+  height = size.height;
+  width = size.width;
+  otherSettings = [(FBSSettings *)self otherSettings];
   *v7 = width;
   *&v7[1] = height;
   v6 = [MEMORY[0x1E696B098] valueWithBytes:v7 objCType:"{CGSize=dd}"];
-  [v5 setObject:v6 forSetting:501];
+  [otherSettings setObject:v6 forSetting:501];
 }
 
 - (NSSet)preferredBackgroundActivitiesToSuppress
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:502];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:502];
 
   return v3;
 }
 
-- (void)setPreferredBackgroundActivitiesToSuppress:(id)a3
+- (void)setPreferredBackgroundActivitiesToSuppress:(id)suppress
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:502];
+  suppressCopy = suppress;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:suppressCopy forSetting:502];
 }
 
 - (UIEdgeInsets)bannerContentOutsets
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:503];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:503];
   [v3 UIEdgeInsetsValue];
   v5 = v4;
   v7 = v6;
@@ -86,116 +86,116 @@
   return result;
 }
 
-- (void)setBannerContentOutsets:(UIEdgeInsets)a3
+- (void)setBannerContentOutsets:(UIEdgeInsets)outsets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(FBSSettings *)self otherSettings];
+  right = outsets.right;
+  bottom = outsets.bottom;
+  left = outsets.left;
+  top = outsets.top;
+  otherSettings = [(FBSSettings *)self otherSettings];
   *v9 = top;
   *&v9[1] = left;
   *&v9[2] = bottom;
   *&v9[3] = right;
   v8 = [MEMORY[0x1E696B098] valueWithBytes:v9 objCType:"{UIEdgeInsets=dddd}"];
-  [v7 setObject:v8 forSetting:503];
+  [otherSettings setObject:v8 forSetting:503];
 }
 
 - (BOOL)isDraggingDismissalEnabled
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:504];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:504];
 
   return v3;
 }
 
-- (void)setDraggingDismissalEnabled:(BOOL)a3
+- (void)setDraggingDismissalEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(FBSSettings *)self otherSettings];
-  [v4 setFlag:v3 forSetting:504];
+  enabledCopy = enabled;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:enabledCopy forSetting:504];
 }
 
 - (BOOL)isDraggingInteractionEnabled
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:505];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:505];
 
   return v3;
 }
 
-- (void)setDraggingInteractionEnabled:(BOOL)a3
+- (void)setDraggingInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(FBSSettings *)self otherSettings];
-  [v4 setFlag:v3 forSetting:505];
+  enabledCopy = enabled;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:enabledCopy forSetting:505];
 }
 
 - (BOOL)isTouchOutsideDismissalEnabled
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:506];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:506];
 
   return v3;
 }
 
-- (void)setTouchOutsideDismissalEnabled:(BOOL)a3
+- (void)setTouchOutsideDismissalEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(FBSSettings *)self otherSettings];
-  [v4 setFlag:v3 forSetting:506];
+  enabledCopy = enabled;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:enabledCopy forSetting:506];
 }
 
 - (BOOL)isPanGestureProxySupported
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:507];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:507];
 
   return v3;
 }
 
-- (void)setPanGestureProxySupported:(BOOL)a3
+- (void)setPanGestureProxySupported:(BOOL)supported
 {
-  v3 = a3;
-  v4 = [(FBSSettings *)self otherSettings];
-  [v4 setFlag:v3 forSetting:507];
+  supportedCopy = supported;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:supportedCopy forSetting:507];
 }
 
 - (BOOL)isClippingEnabled
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:508];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:508];
 
   return v3;
 }
 
-- (void)setClippingEnabled:(BOOL)a3
+- (void)setClippingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(FBSSettings *)self otherSettings];
-  [v4 setFlag:v3 forSetting:508];
+  enabledCopy = enabled;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:enabledCopy forSetting:508];
 }
 
 - (NSDictionary)userInfo
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:509];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:509];
 
   return v3;
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
   v6 = MEMORY[0x1E69E9820];
   v7 = 3221225472;
   v8 = __44__BNMutableSceneClientSettings_setUserInfo___block_invoke;
   v9 = &unk_1E81E4540;
-  v10 = self;
+  selfCopy = self;
   v11 = a2;
-  v4 = a3;
-  [v4 enumerateKeysAndObjectsUsingBlock:&v6];
+  infoCopy = info;
+  [infoCopy enumerateKeysAndObjectsUsingBlock:&v6];
   v5 = [(FBSSettings *)self otherSettings:v6];
-  [v5 setObject:v4 forSetting:509];
+  [v5 setObject:infoCopy forSetting:509];
 }
 
 void __44__BNMutableSceneClientSettings_setUserInfo___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -230,45 +230,45 @@ void __44__BNMutableSceneClientSettings_setUserInfo___block_invoke(uint64_t a1, 
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BNSceneClientSettings alloc];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 - 500 > 9)
+  if (setting - 500 > 9)
   {
     return 0;
   }
 
   else
   {
-    return off_1E81E45B0[a3 - 500];
+    return off_1E81E45B0[setting - 500];
   }
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v6 = a4;
-  v7 = v6;
-  if (a5 - 500 > 9)
+  objectCopy = object;
+  v7 = objectCopy;
+  if (setting - 500 > 9)
   {
     v8 = 0;
   }
 
   else
   {
-    if (((1 << (a5 + 12)) & 0x1F0) != 0)
+    if (((1 << (setting + 12)) & 0x1F0) != 0)
     {
       BSSettingFlagDescription();
     }
 
     else
     {
-      [v6 description];
+      [objectCopy description];
     }
     v8 = ;
   }

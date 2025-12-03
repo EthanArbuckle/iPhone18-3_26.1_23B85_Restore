@@ -1,29 +1,29 @@
 @interface TUCollaborationManager
-- (BOOL)isCollaborationLocallyInitiatedForConversation:(id)a3;
-- (TUCollaborationManager)initWithCollaborationProvider:(id)a3;
-- (TUCollaborationManager)initWithCollaborationProvider:(id)a3 featureFlags:(id)a4 deviceSupport:(id)a5;
+- (BOOL)isCollaborationLocallyInitiatedForConversation:(id)conversation;
+- (TUCollaborationManager)initWithCollaborationProvider:(id)provider;
+- (TUCollaborationManager)initWithCollaborationProvider:(id)provider featureFlags:(id)flags deviceSupport:(id)support;
 - (TUCollaborationManagerDelegate)delegate;
-- (id)collaborationForConversation:(id)a3;
-- (int64_t)collaborationStateForConversation:(id)a3;
-- (void)associateCollaborationWithNewConversation:(id)a3;
-- (void)collaborationsDidChange:(id)a3;
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4;
-- (void)notifyDelegateOfHighlightChanged:(id)a3 onConversation:(id)a4;
-- (void)participant:(id)a3 addedHighlightToConversation:(id)a4 highlightIdentifier:(id)a5 oldHighlightIdentifier:(id)a6 isFirstAdd:(BOOL)a7;
-- (void)participant:(id)a3 reAddedHighlightToConversation:(id)a4 highlightIdentifier:(id)a5;
-- (void)participant:(id)a3 removedHighlightFromConversation:(id)a4 highlightIdentifier:(id)a5;
-- (void)queueCollaborationIdentifierForCollaboration:(id)a3 toConversation:(id)a4;
-- (void)setCollaborationState:(int64_t)a3 forCollaborationIdentifier:(id)a4;
-- (void)startTrackingCollaborationIfNecessaryAndNotifyDelegate:(id)a3 forConversation:(id)a4;
-- (void)stopTrackingHighlightForConversation:(id)a3;
-- (void)vendNoticeForCollaboration:(id)a3 participant:(id)a4 forConversation:(id)a5 type:(int64_t)a6;
+- (id)collaborationForConversation:(id)conversation;
+- (int64_t)collaborationStateForConversation:(id)conversation;
+- (void)associateCollaborationWithNewConversation:(id)conversation;
+- (void)collaborationsDidChange:(id)change;
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation;
+- (void)notifyDelegateOfHighlightChanged:(id)changed onConversation:(id)conversation;
+- (void)participant:(id)participant addedHighlightToConversation:(id)conversation highlightIdentifier:(id)identifier oldHighlightIdentifier:(id)highlightIdentifier isFirstAdd:(BOOL)add;
+- (void)participant:(id)participant reAddedHighlightToConversation:(id)conversation highlightIdentifier:(id)identifier;
+- (void)participant:(id)participant removedHighlightFromConversation:(id)conversation highlightIdentifier:(id)identifier;
+- (void)queueCollaborationIdentifierForCollaboration:(id)collaboration toConversation:(id)conversation;
+- (void)setCollaborationState:(int64_t)state forCollaborationIdentifier:(id)identifier;
+- (void)startTrackingCollaborationIfNecessaryAndNotifyDelegate:(id)delegate forConversation:(id)conversation;
+- (void)stopTrackingHighlightForConversation:(id)conversation;
+- (void)vendNoticeForCollaboration:(id)collaboration participant:(id)participant forConversation:(id)conversation type:(int64_t)type;
 @end
 
 @implementation TUCollaborationManager
 
-- (TUCollaborationManager)initWithCollaborationProvider:(id)a3
+- (TUCollaborationManager)initWithCollaborationProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2050000000;
@@ -42,18 +42,18 @@
 
   v6 = v5;
   _Block_object_dispose(&v12, 8);
-  v7 = [v5 sharedInstance];
+  sharedInstance = [v5 sharedInstance];
   v8 = objc_alloc_init(TUFeatureFlags);
-  v9 = [(TUCollaborationManager *)self initWithCollaborationProvider:v4 featureFlags:v8 deviceSupport:v7];
+  v9 = [(TUCollaborationManager *)self initWithCollaborationProvider:providerCopy featureFlags:v8 deviceSupport:sharedInstance];
 
   return v9;
 }
 
-- (TUCollaborationManager)initWithCollaborationProvider:(id)a3 featureFlags:(id)a4 deviceSupport:(id)a5
+- (TUCollaborationManager)initWithCollaborationProvider:(id)provider featureFlags:(id)flags deviceSupport:(id)support
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  flagsCopy = flags;
+  supportCopy = support;
   v26.receiver = self;
   v26.super_class = TUCollaborationManager;
   v12 = [(TUCollaborationManager *)&v26 init];
@@ -63,50 +63,50 @@
     queue = v12->_queue;
     v12->_queue = v13;
 
-    objc_storeStrong(&v12->_featureFlags, a4);
+    objc_storeStrong(&v12->_featureFlags, flags);
     v15 = [MEMORY[0x1E695DFA8] set];
     pendingHighlightIdentifiers = v12->_pendingHighlightIdentifiers;
     v12->_pendingHighlightIdentifiers = v15;
 
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     originatingParticipantByHighlightIdentifier = v12->_originatingParticipantByHighlightIdentifier;
-    v12->_originatingParticipantByHighlightIdentifier = v17;
+    v12->_originatingParticipantByHighlightIdentifier = dictionary;
 
-    v19 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     highlightsByIdentifier = v12->_highlightsByIdentifier;
-    v12->_highlightsByIdentifier = v19;
+    v12->_highlightsByIdentifier = dictionary2;
 
-    v21 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     conversationsByHighlightIdentifier = v12->_conversationsByHighlightIdentifier;
-    v12->_conversationsByHighlightIdentifier = v21;
+    v12->_conversationsByHighlightIdentifier = dictionary3;
 
-    v23 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
     collaborationStateByIdentifier = v12->_collaborationStateByIdentifier;
-    v12->_collaborationStateByIdentifier = v23;
+    v12->_collaborationStateByIdentifier = dictionary4;
 
-    objc_storeStrong(&v12->_collaborationProvider, a3);
-    v12->_isIpad = [v11 deviceType] == 4;
-    [v9 setDelegate:v12];
+    objc_storeStrong(&v12->_collaborationProvider, provider);
+    v12->_isIpad = [supportCopy deviceType] == 4;
+    [providerCopy setDelegate:v12];
   }
 
   return v12;
 }
 
-- (void)queueCollaborationIdentifierForCollaboration:(id)a3 toConversation:(id)a4
+- (void)queueCollaborationIdentifierForCollaboration:(id)collaboration toConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUCollaborationManager *)self queue];
+  collaborationCopy = collaboration;
+  conversationCopy = conversation;
+  queue = [(TUCollaborationManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86__TUCollaborationManager_queueCollaborationIdentifierForCollaboration_toConversation___block_invoke;
   block[3] = &unk_1E7424FD8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = collaborationCopy;
+  v13 = conversationCopy;
+  v9 = conversationCopy;
+  v10 = collaborationCopy;
+  dispatch_async(queue, block);
 }
 
 void __86__TUCollaborationManager_queueCollaborationIdentifierForCollaboration_toConversation___block_invoke(uint64_t a1)
@@ -124,27 +124,27 @@ void __86__TUCollaborationManager_queueCollaborationIdentifierForCollaboration_t
   }
 }
 
-- (BOOL)isCollaborationLocallyInitiatedForConversation:(id)a3
+- (BOOL)isCollaborationLocallyInitiatedForConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(TUCollaborationManager *)self queue];
+  queue = [(TUCollaborationManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__TUCollaborationManager_isCollaborationLocallyInitiatedForConversation___block_invoke;
   block[3] = &unk_1E7425390;
-  v9 = v4;
+  v9 = conversationCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = conversationCopy;
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(conversationCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return conversationCopy;
 }
 
 void __73__TUCollaborationManager_isCollaborationLocallyInitiatedForConversation___block_invoke(uint64_t a1)
@@ -159,18 +159,18 @@ void __73__TUCollaborationManager_isCollaborationLocallyInitiatedForConversation
   *(*(*(a1 + 48) + 8) + 24) = [v5 isEquivalentToHandle:v7];
 }
 
-- (void)collaborationsDidChange:(id)a3
+- (void)collaborationsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(TUCollaborationManager *)self queue];
+  changeCopy = change;
+  queue = [(TUCollaborationManager *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__TUCollaborationManager_collaborationsDidChange___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changeCopy;
+  v6 = changeCopy;
+  dispatch_async(queue, v7);
 }
 
 void __50__TUCollaborationManager_collaborationsDidChange___block_invoke(uint64_t a1)
@@ -407,21 +407,21 @@ LABEL_28:
   v58 = *MEMORY[0x1E69E9840];
 }
 
-- (void)vendNoticeForCollaboration:(id)a3 participant:(id)a4 forConversation:(id)a5 type:(int64_t)a6
+- (void)vendNoticeForCollaboration:(id)collaboration participant:(id)participant forConversation:(id)conversation type:(int64_t)type
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(TUCollaborationManager *)self queue];
-  dispatch_assert_queue_V2(v13);
+  collaborationCopy = collaboration;
+  participantCopy = participant;
+  conversationCopy = conversation;
+  queue = [(TUCollaborationManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v14 = [(TUCollaborationManager *)self featureFlags];
-  v15 = [v14 gelatoEnabled];
+  featureFlags = [(TUCollaborationManager *)self featureFlags];
+  gelatoEnabled = [featureFlags gelatoEnabled];
 
-  if (v15)
+  if (gelatoEnabled)
   {
-    if ([v12 avMode] == 1)
+    if ([conversationCopy avMode] == 1)
     {
       v16 = TUDefaultLog();
       if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -431,35 +431,35 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v17 = [v10 identifier];
+      identifier = [collaborationCopy identifier];
       v23 = 138412290;
-      v24 = v17;
+      v24 = identifier;
       _os_log_impl(&dword_1956FD000, v16, OS_LOG_TYPE_DEFAULT, "Not posting a notice for collaboration: %@ since the conversation is avModeAudio", &v23, 0xCu);
     }
 
     else
     {
       v18 = [TUCollaborationNotice alloc];
-      v19 = [MEMORY[0x1E696AFB0] UUID];
-      v16 = [(TUCollaborationNotice *)v18 initWithUUID:v19];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      v16 = [(TUCollaborationNotice *)v18 initWithUUID:uUID];
 
-      [v16 setSessionEventType:a6];
-      [v16 setCollaboration:v10];
+      [v16 setSessionEventType:type];
+      [v16 setCollaboration:collaborationCopy];
       v20 = TUDefaultLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v10 collaborationIdentifier];
+        collaborationIdentifier = [collaborationCopy collaborationIdentifier];
         v23 = 138412802;
         v24 = v16;
         v25 = 2112;
-        v26 = v21;
+        v26 = collaborationIdentifier;
         v27 = 2112;
-        v28 = v11;
+        v28 = participantCopy;
         _os_log_impl(&dword_1956FD000, v20, OS_LOG_TYPE_DEFAULT, "Vending notice: %@ for collaboration: %@, for participant: %@", &v23, 0x20u);
       }
 
-      v17 = [(TUCollaborationManager *)self delegate];
-      [v17 conversation:v12 participant:v11 addedCollaborationNotice:v16];
+      identifier = [(TUCollaborationManager *)self delegate];
+      [identifier conversation:conversationCopy participant:participantCopy addedCollaborationNotice:v16];
     }
 
     goto LABEL_9;
@@ -470,70 +470,70 @@ LABEL_10:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyDelegateOfHighlightChanged:(id)a3 onConversation:(id)a4
+- (void)notifyDelegateOfHighlightChanged:(id)changed onConversation:(id)conversation
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(TUCollaborationManager *)self queue];
-  dispatch_assert_queue_V2(v7);
+  changedCopy = changed;
+  conversationCopy = conversation;
+  queue = [(TUCollaborationManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [(TUCollaborationManager *)self featureFlags];
-  v9 = [v8 gelatoEnabled];
+  featureFlags = [(TUCollaborationManager *)self featureFlags];
+  gelatoEnabled = [featureFlags gelatoEnabled];
 
-  if (v9)
+  if (gelatoEnabled)
   {
-    v10 = [(TUCollaborationManager *)self delegate];
-    [v10 collaborationChanged:v11 forConversation:v6 collaborationState:-1];
+    delegate = [(TUCollaborationManager *)self delegate];
+    [delegate collaborationChanged:changedCopy forConversation:conversationCopy collaborationState:-1];
   }
 }
 
-- (void)stopTrackingHighlightForConversation:(id)a3
+- (void)stopTrackingHighlightForConversation:(id)conversation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUCollaborationManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  conversationCopy = conversation;
+  queue = [(TUCollaborationManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 highlightIdentifiers];
+  highlightIdentifiers = [conversationCopy highlightIdentifiers];
 
-  v7 = [v6 anyObject];
+  anyObject = [highlightIdentifiers anyObject];
 
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v7;
+    v16 = anyObject;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Asked to stop tracking highlight for conversation with collaboration Identifier: %@", &v15, 0xCu);
   }
 
-  if (v7)
+  if (anyObject)
   {
-    v9 = [(TUCollaborationManager *)self pendingHighlightIdentifiers];
-    [v9 removeObject:v7];
+    pendingHighlightIdentifiers = [(TUCollaborationManager *)self pendingHighlightIdentifiers];
+    [pendingHighlightIdentifiers removeObject:anyObject];
 
-    v10 = [(TUCollaborationManager *)self originatingParticipantByHighlightIdentifier];
-    [v10 removeObjectForKey:v7];
+    originatingParticipantByHighlightIdentifier = [(TUCollaborationManager *)self originatingParticipantByHighlightIdentifier];
+    [originatingParticipantByHighlightIdentifier removeObjectForKey:anyObject];
 
-    v11 = [(TUCollaborationManager *)self highlightsByIdentifier];
-    [v11 removeObjectForKey:v7];
+    highlightsByIdentifier = [(TUCollaborationManager *)self highlightsByIdentifier];
+    [highlightsByIdentifier removeObjectForKey:anyObject];
 
-    v12 = [(TUCollaborationManager *)self conversationsByHighlightIdentifier];
-    [v12 removeObjectForKey:v7];
+    conversationsByHighlightIdentifier = [(TUCollaborationManager *)self conversationsByHighlightIdentifier];
+    [conversationsByHighlightIdentifier removeObjectForKey:anyObject];
 
-    v13 = [(TUCollaborationManager *)self collaborationStateByIdentifier];
-    [v13 removeObjectForKey:v7];
+    collaborationStateByIdentifier = [(TUCollaborationManager *)self collaborationStateByIdentifier];
+    [collaborationStateByIdentifier removeObjectForKey:anyObject];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)collaborationForConversation:(id)a3
+- (id)collaborationForConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = [(TUCollaborationManager *)self featureFlags];
-  v6 = [v5 gelatoEnabled];
+  conversationCopy = conversation;
+  featureFlags = [(TUCollaborationManager *)self featureFlags];
+  gelatoEnabled = [featureFlags gelatoEnabled];
 
-  if (v6)
+  if (gelatoEnabled)
   {
     v14 = 0;
     v15 = &v14;
@@ -541,15 +541,15 @@ LABEL_10:
     v17 = __Block_byref_object_copy__8;
     v18 = __Block_byref_object_dispose__8;
     v19 = 0;
-    v7 = [(TUCollaborationManager *)self queue];
+    queue = [(TUCollaborationManager *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __55__TUCollaborationManager_collaborationForConversation___block_invoke;
     block[3] = &unk_1E7426328;
-    v12 = self;
+    selfCopy = self;
     v13 = &v14;
-    v11 = v4;
-    dispatch_sync(v7, block);
+    v11 = conversationCopy;
+    dispatch_sync(queue, block);
 
     v8 = v15[5];
     _Block_object_dispose(&v14, 8);
@@ -616,23 +616,23 @@ void __55__TUCollaborationManager_collaborationForConversation___block_invoke(ui
   }
 }
 
-- (int64_t)collaborationStateForConversation:(id)a3
+- (int64_t)collaborationStateForConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = -1;
-  v5 = [(TUCollaborationManager *)self queue];
+  queue = [(TUCollaborationManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__TUCollaborationManager_collaborationStateForConversation___block_invoke;
   block[3] = &unk_1E7426350;
   block[4] = self;
-  v10 = v4;
+  v10 = conversationCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = conversationCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);
@@ -676,18 +676,18 @@ void __60__TUCollaborationManager_collaborationStateForConversation___block_invo
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)associateCollaborationWithNewConversation:(id)a3
+- (void)associateCollaborationWithNewConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = [(TUCollaborationManager *)self queue];
+  conversationCopy = conversation;
+  queue = [(TUCollaborationManager *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__TUCollaborationManager_associateCollaborationWithNewConversation___block_invoke;
   v7[3] = &unk_1E7424898;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = conversationCopy;
+  selfCopy = self;
+  v6 = conversationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __68__TUCollaborationManager_associateCollaborationWithNewConversation___block_invoke(uint64_t a1)
@@ -811,28 +811,28 @@ LABEL_17:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)participant:(id)a3 addedHighlightToConversation:(id)a4 highlightIdentifier:(id)a5 oldHighlightIdentifier:(id)a6 isFirstAdd:(BOOL)a7
+- (void)participant:(id)participant addedHighlightToConversation:(id)conversation highlightIdentifier:(id)identifier oldHighlightIdentifier:(id)highlightIdentifier isFirstAdd:(BOOL)add
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(TUCollaborationManager *)self queue];
+  participantCopy = participant;
+  conversationCopy = conversation;
+  identifierCopy = identifier;
+  highlightIdentifierCopy = highlightIdentifier;
+  queue = [(TUCollaborationManager *)self queue];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __121__TUCollaborationManager_participant_addedHighlightToConversation_highlightIdentifier_oldHighlightIdentifier_isFirstAdd___block_invoke;
   v21[3] = &unk_1E7426378;
-  v22 = v12;
-  v23 = v14;
-  v24 = v13;
-  v25 = self;
-  v27 = a7;
-  v26 = v15;
-  v17 = v15;
-  v18 = v13;
-  v19 = v14;
-  v20 = v12;
-  dispatch_async(v16, v21);
+  v22 = participantCopy;
+  v23 = identifierCopy;
+  v24 = conversationCopy;
+  selfCopy = self;
+  addCopy = add;
+  v26 = highlightIdentifierCopy;
+  v17 = highlightIdentifierCopy;
+  v18 = conversationCopy;
+  v19 = identifierCopy;
+  v20 = participantCopy;
+  dispatch_async(queue, v21);
 }
 
 void __121__TUCollaborationManager_participant_addedHighlightToConversation_highlightIdentifier_oldHighlightIdentifier_isFirstAdd___block_invoke(uint64_t a1)
@@ -985,24 +985,24 @@ LABEL_21:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (void)participant:(id)a3 reAddedHighlightToConversation:(id)a4 highlightIdentifier:(id)a5
+- (void)participant:(id)participant reAddedHighlightToConversation:(id)conversation highlightIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TUCollaborationManager *)self queue];
+  participantCopy = participant;
+  conversationCopy = conversation;
+  identifierCopy = identifier;
+  queue = [(TUCollaborationManager *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __89__TUCollaborationManager_participant_reAddedHighlightToConversation_highlightIdentifier___block_invoke;
   v15[3] = &unk_1E7425188;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v19 = self;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = participantCopy;
+  v17 = identifierCopy;
+  v18 = conversationCopy;
+  selfCopy = self;
+  v12 = conversationCopy;
+  v13 = identifierCopy;
+  v14 = participantCopy;
+  dispatch_async(queue, v15);
 }
 
 void __89__TUCollaborationManager_participant_reAddedHighlightToConversation_highlightIdentifier___block_invoke(uint64_t a1)
@@ -1044,24 +1044,24 @@ void __89__TUCollaborationManager_participant_reAddedHighlightToConversation_hig
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)participant:(id)a3 removedHighlightFromConversation:(id)a4 highlightIdentifier:(id)a5
+- (void)participant:(id)participant removedHighlightFromConversation:(id)conversation highlightIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TUCollaborationManager *)self queue];
+  participantCopy = participant;
+  conversationCopy = conversation;
+  identifierCopy = identifier;
+  queue = [(TUCollaborationManager *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __91__TUCollaborationManager_participant_removedHighlightFromConversation_highlightIdentifier___block_invoke;
   v15[3] = &unk_1E7425188;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v19 = self;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = participantCopy;
+  v17 = identifierCopy;
+  v18 = conversationCopy;
+  selfCopy = self;
+  v12 = conversationCopy;
+  v13 = identifierCopy;
+  v14 = participantCopy;
+  dispatch_async(queue, v15);
 }
 
 void __91__TUCollaborationManager_participant_removedHighlightFromConversation_highlightIdentifier___block_invoke(uint64_t a1)
@@ -1117,19 +1117,19 @@ void __91__TUCollaborationManager_participant_removedHighlightFromConversation_h
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCollaborationState:(int64_t)a3 forCollaborationIdentifier:(id)a4
+- (void)setCollaborationState:(int64_t)state forCollaborationIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(TUCollaborationManager *)self queue];
+  identifierCopy = identifier;
+  queue = [(TUCollaborationManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__TUCollaborationManager_setCollaborationState_forCollaborationIdentifier___block_invoke;
   block[3] = &unk_1E7425028;
-  v10 = v6;
-  v11 = a3;
+  v10 = identifierCopy;
+  stateCopy = state;
   block[4] = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
 void __75__TUCollaborationManager_setCollaborationState_forCollaborationIdentifier___block_invoke(uint64_t a1)
@@ -1183,18 +1183,18 @@ void __75__TUCollaborationManager_setCollaborationState_forCollaborationIdentifi
 LABEL_11:
 }
 
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation
 {
-  v5 = a4;
-  v6 = [(TUCollaborationManager *)self queue];
+  conversationCopy = conversation;
+  queue = [(TUCollaborationManager *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __74__TUCollaborationManager_conversationManager_stateChangedForConversation___block_invoke;
   v8[3] = &unk_1E7424898;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = conversationCopy;
+  v7 = conversationCopy;
+  dispatch_async(queue, v8);
 }
 
 void __74__TUCollaborationManager_conversationManager_stateChangedForConversation___block_invoke(uint64_t a1)
@@ -1258,21 +1258,21 @@ LABEL_14:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startTrackingCollaborationIfNecessaryAndNotifyDelegate:(id)a3 forConversation:(id)a4
+- (void)startTrackingCollaborationIfNecessaryAndNotifyDelegate:(id)delegate forConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TUCollaborationManager *)self queue];
-  dispatch_assert_queue_V2(v8);
+  delegateCopy = delegate;
+  conversationCopy = conversation;
+  queue = [(TUCollaborationManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(TUCollaborationManager *)self featureFlags];
-  v10 = [v9 gelatoEnabled];
+  featureFlags = [(TUCollaborationManager *)self featureFlags];
+  gelatoEnabled = [featureFlags gelatoEnabled];
 
-  if (v10)
+  if (gelatoEnabled)
   {
-    v11 = [(TUCollaborationManager *)self delegate];
-    v12 = v11;
-    if (v6)
+    delegate = [(TUCollaborationManager *)self delegate];
+    v12 = delegate;
+    if (delegateCopy)
     {
       objc_initWeak(&location, self);
       v17 = MEMORY[0x1E69E9820];
@@ -1280,15 +1280,15 @@ LABEL_14:
       v19 = __97__TUCollaborationManager_startTrackingCollaborationIfNecessaryAndNotifyDelegate_forConversation___block_invoke;
       v20 = &unk_1E74263A0;
       objc_copyWeak(&v25, &location);
-      v21 = self;
-      v13 = v6;
+      selfCopy = self;
+      v13 = delegateCopy;
       v22 = v13;
       v14 = v12;
       v23 = v14;
-      v15 = v7;
+      v15 = conversationCopy;
       v24 = v15;
       v16 = _Block_copy(&v17);
-      [v14 startTrackingCollaboration:v13 forConversation:v15 completionHandler:{v16, v17, v18, v19, v20, v21}];
+      [v14 startTrackingCollaboration:v13 forConversation:v15 completionHandler:{v16, v17, v18, v19, v20, selfCopy}];
 
       objc_destroyWeak(&v25);
       objc_destroyWeak(&location);
@@ -1296,7 +1296,7 @@ LABEL_14:
 
     else
     {
-      [v11 collaborationChanged:0 forConversation:v7 collaborationState:-1];
+      [delegate collaborationChanged:0 forConversation:conversationCopy collaborationState:-1];
     }
   }
 }

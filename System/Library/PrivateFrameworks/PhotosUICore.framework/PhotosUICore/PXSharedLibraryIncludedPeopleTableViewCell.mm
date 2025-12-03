@@ -1,5 +1,5 @@
 @interface PXSharedLibraryIncludedPeopleTableViewCell
-- (PXSharedLibraryIncludedPeopleTableViewCell)initWithDataSourceManager:(id)a3;
+- (PXSharedLibraryIncludedPeopleTableViewCell)initWithDataSourceManager:(id)manager;
 - (void)layoutSubviews;
 @end
 
@@ -11,42 +11,42 @@
   v18.receiver = self;
   v18.super_class = PXSharedLibraryIncludedPeopleTableViewCell;
   [(PXSharedLibraryIncludedPeopleTableViewCell *)&v18 layoutSubviews];
-  v3 = [(PXSharedLibraryIncludedPeopleViewController *)self->_includedPeopleViewController view];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(PXSharedLibraryIncludedPeopleTableViewCell *)self addSubview:v3];
+  view = [(PXSharedLibraryIncludedPeopleViewController *)self->_includedPeopleViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(PXSharedLibraryIncludedPeopleTableViewCell *)self addSubview:view];
   v13 = MEMORY[0x1E696ACD8];
-  v17 = [v3 topAnchor];
-  v16 = [(PXSharedLibraryIncludedPeopleTableViewCell *)self topAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16];
+  topAnchor = [view topAnchor];
+  topAnchor2 = [(PXSharedLibraryIncludedPeopleTableViewCell *)self topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v19[0] = v15;
-  v14 = [v3 trailingAnchor];
-  v4 = [(PXSharedLibraryIncludedPeopleTableViewCell *)self trailingAnchor];
-  v5 = [v14 constraintEqualToAnchor:v4];
+  trailingAnchor = [view trailingAnchor];
+  trailingAnchor2 = [(PXSharedLibraryIncludedPeopleTableViewCell *)self trailingAnchor];
+  v5 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v19[1] = v5;
-  v6 = [v3 bottomAnchor];
-  v7 = [(PXSharedLibraryIncludedPeopleTableViewCell *)self bottomAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  bottomAnchor = [view bottomAnchor];
+  bottomAnchor2 = [(PXSharedLibraryIncludedPeopleTableViewCell *)self bottomAnchor];
+  v8 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v19[2] = v8;
-  v9 = [v3 leadingAnchor];
-  v10 = [(PXSharedLibraryIncludedPeopleTableViewCell *)self leadingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  leadingAnchor = [view leadingAnchor];
+  leadingAnchor2 = [(PXSharedLibraryIncludedPeopleTableViewCell *)self leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v19[3] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
   [v13 activateConstraints:v12];
 }
 
-- (PXSharedLibraryIncludedPeopleTableViewCell)initWithDataSourceManager:(id)a3
+- (PXSharedLibraryIncludedPeopleTableViewCell)initWithDataSourceManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = PXSharedLibraryIncludedPeopleTableViewCell;
   v5 = [(PXSharedLibraryIncludedPeopleTableViewCell *)&v10 initWithStyle:0 reuseIdentifier:0];
   if (v5)
   {
-    v6 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [(PXSharedLibraryIncludedPeopleTableViewCell *)v5 setBackgroundColor:v6];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [(PXSharedLibraryIncludedPeopleTableViewCell *)v5 setBackgroundColor:secondarySystemBackgroundColor];
 
-    v7 = [[PXSharedLibraryIncludedPeopleViewController alloc] initWithDataSourceManager:v4];
+    v7 = [[PXSharedLibraryIncludedPeopleViewController alloc] initWithDataSourceManager:managerCopy];
     includedPeopleViewController = v5->_includedPeopleViewController;
     v5->_includedPeopleViewController = v7;
   }

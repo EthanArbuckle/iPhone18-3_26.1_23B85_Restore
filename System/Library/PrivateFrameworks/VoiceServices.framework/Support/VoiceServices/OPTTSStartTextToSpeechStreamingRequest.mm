@@ -8,12 +8,12 @@
 - (NSString)stream_id;
 - (NSString)text;
 - (NSString)voice_name;
-- (OPTTSStartTextToSpeechStreamingRequest)initWithFlatbuffData:(id)a3 root:(const StartTextToSpeechStreamingRequest *)a4 verify:(BOOL)a5;
+- (OPTTSStartTextToSpeechStreamingRequest)initWithFlatbuffData:(id)data root:(const StartTextToSpeechStreamingRequest *)root verify:(BOOL)verify;
 - (OPTTSTTSRequestFeatureFlags)feature_flags;
 - (OPTTSTextToSpeechRequestContext)context;
 - (OPTTSTextToSpeechRequestExperiment)experiment;
 - (OPTTSTextToSpeechRequestMeta)meta_info;
-- (Offset<siri::speech::schema_fb::StartTextToSpeechStreamingRequest>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::StartTextToSpeechStreamingRequest>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int64_t)audio_type;
 - (int64_t)preferred_voice_type;
@@ -50,90 +50,90 @@ flatbuffers::DetachedBuffer *__54__OPTTSStartTextToSpeechStreamingRequest_flatbu
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::StartTextToSpeechStreamingRequest>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::StartTextToSpeechStreamingRequest>)addObjectToBuffer:(void *)buffer
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = [(OPTTSStartTextToSpeechStreamingRequest *)self speech_id];
-  v5 = v4;
-  if (!v4)
+  speech_id = [(OPTTSStartTextToSpeechStreamingRequest *)self speech_id];
+  v5 = speech_id;
+  if (!speech_id)
   {
-    v4 = &stru_2881CBD18;
+    speech_id = &stru_2881CBD18;
   }
 
-  v6 = [(__CFString *)v4 UTF8String];
-  v7 = strlen(v6);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v6, v7);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v7 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v7);
 
-  v8 = [(OPTTSStartTextToSpeechStreamingRequest *)self session_id];
-  v9 = v8;
-  if (!v8)
+  session_id = [(OPTTSStartTextToSpeechStreamingRequest *)self session_id];
+  v9 = session_id;
+  if (!session_id)
   {
-    v8 = &stru_2881CBD18;
+    session_id = &stru_2881CBD18;
   }
 
-  v10 = [(__CFString *)v8 UTF8String];
-  v11 = strlen(v10);
-  v58 = flatbuffers::FlatBufferBuilder::CreateString(a3, v10, v11);
+  uTF8String2 = [(__CFString *)session_id UTF8String];
+  v11 = strlen(uTF8String2);
+  v58 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v11);
 
-  v12 = [(OPTTSStartTextToSpeechStreamingRequest *)self stream_id];
-  v13 = v12;
-  if (!v12)
+  stream_id = [(OPTTSStartTextToSpeechStreamingRequest *)self stream_id];
+  v13 = stream_id;
+  if (!stream_id)
   {
-    v12 = &stru_2881CBD18;
+    stream_id = &stru_2881CBD18;
   }
 
-  v14 = [(__CFString *)v12 UTF8String];
-  v15 = strlen(v14);
-  v57 = flatbuffers::FlatBufferBuilder::CreateString(a3, v14, v15);
+  uTF8String3 = [(__CFString *)stream_id UTF8String];
+  v15 = strlen(uTF8String3);
+  v57 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v15);
 
-  v16 = [(OPTTSStartTextToSpeechStreamingRequest *)self language];
-  v17 = v16;
-  if (!v16)
+  language = [(OPTTSStartTextToSpeechStreamingRequest *)self language];
+  v17 = language;
+  if (!language)
   {
-    v16 = &stru_2881CBD18;
+    language = &stru_2881CBD18;
   }
 
-  v18 = [(__CFString *)v16 UTF8String];
-  v19 = strlen(v18);
-  v55 = flatbuffers::FlatBufferBuilder::CreateString(a3, v18, v19);
+  uTF8String4 = [(__CFString *)language UTF8String];
+  v19 = strlen(uTF8String4);
+  v55 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String4, v19);
 
-  v20 = [(OPTTSStartTextToSpeechStreamingRequest *)self gender];
-  v21 = v20;
-  if (!v20)
+  gender = [(OPTTSStartTextToSpeechStreamingRequest *)self gender];
+  v21 = gender;
+  if (!gender)
   {
-    v20 = &stru_2881CBD18;
+    gender = &stru_2881CBD18;
   }
 
-  v22 = [(__CFString *)v20 UTF8String];
-  v23 = strlen(v22);
-  v54 = flatbuffers::FlatBufferBuilder::CreateString(a3, v22, v23);
+  uTF8String5 = [(__CFString *)gender UTF8String];
+  v23 = strlen(uTF8String5);
+  v54 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String5, v23);
 
-  v24 = [(OPTTSStartTextToSpeechStreamingRequest *)self text];
-  v25 = v24;
-  if (!v24)
+  text = [(OPTTSStartTextToSpeechStreamingRequest *)self text];
+  v25 = text;
+  if (!text)
   {
-    v24 = &stru_2881CBD18;
+    text = &stru_2881CBD18;
   }
 
-  v26 = [(__CFString *)v24 UTF8String];
-  v27 = strlen(v26);
-  v53 = flatbuffers::FlatBufferBuilder::CreateString(a3, v26, v27);
+  uTF8String6 = [(__CFString *)text UTF8String];
+  v27 = strlen(uTF8String6);
+  v53 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String6, v27);
 
-  v52 = [(OPTTSStartTextToSpeechStreamingRequest *)self audio_type];
+  audio_type = [(OPTTSStartTextToSpeechStreamingRequest *)self audio_type];
   HIDWORD(v51) = [(OPTTSStartTextToSpeechStreamingRequest *)self enable_word_timing_info];
-  v28 = [(OPTTSStartTextToSpeechStreamingRequest *)self voice_name];
-  v29 = v28;
-  if (!v28)
+  voice_name = [(OPTTSStartTextToSpeechStreamingRequest *)self voice_name];
+  v29 = voice_name;
+  if (!voice_name)
   {
-    v28 = &stru_2881CBD18;
+    voice_name = &stru_2881CBD18;
   }
 
-  v30 = [(__CFString *)v28 UTF8String];
-  v31 = strlen(v30);
-  LODWORD(v51) = flatbuffers::FlatBufferBuilder::CreateString(a3, v30, v31);
+  uTF8String7 = [(__CFString *)voice_name UTF8String];
+  v31 = strlen(uTF8String7);
+  LODWORD(v51) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String7, v31);
 
-  v32 = [(OPTTSStartTextToSpeechStreamingRequest *)self context_info];
-  v33 = [v32 count];
+  context_info = [(OPTTSStartTextToSpeechStreamingRequest *)self context_info];
+  v33 = [context_info count];
   if (v33)
   {
     if (!(v33 >> 62))
@@ -148,56 +148,56 @@ flatbuffers::DetachedBuffer *__54__OPTTSStartTextToSpeechStreamingRequest_flatbu
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v34 = [(OPTTSStartTextToSpeechStreamingRequest *)self context_info];
-  if ([v34 countByEnumeratingWithState:&v61 objects:v65 count:16])
+  context_info2 = [(OPTTSStartTextToSpeechStreamingRequest *)self context_info];
+  if ([context_info2 countByEnumeratingWithState:&v61 objects:v65 count:16])
   {
     *v62;
     *v62;
-    [**(&v61 + 1) addObjectToBuffer:{a3, v51}];
+    [**(&v61 + 1) addObjectToBuffer:{buffer, v51}];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v35 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  v36 = [(OPTTSStartTextToSpeechStreamingRequest *)self preferred_voice_type];
-  v37 = [(OPTTSStartTextToSpeechStreamingRequest *)self meta_info];
-  v38 = [v37 addObjectToBuffer:a3];
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v35 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  preferred_voice_type = [(OPTTSStartTextToSpeechStreamingRequest *)self preferred_voice_type];
+  meta_info = [(OPTTSStartTextToSpeechStreamingRequest *)self meta_info];
+  v38 = [meta_info addObjectToBuffer:buffer];
 
-  v39 = [(OPTTSStartTextToSpeechStreamingRequest *)self context];
-  v40 = [v39 addObjectToBuffer:a3];
+  context = [(OPTTSStartTextToSpeechStreamingRequest *)self context];
+  v40 = [context addObjectToBuffer:buffer];
 
-  v41 = [(OPTTSStartTextToSpeechStreamingRequest *)self experiment];
-  v42 = [v41 addObjectToBuffer:a3];
+  experiment = [(OPTTSStartTextToSpeechStreamingRequest *)self experiment];
+  v42 = [experiment addObjectToBuffer:buffer];
 
-  v43 = [(OPTTSStartTextToSpeechStreamingRequest *)self feature_flags];
-  v56 = [v43 addObjectToBuffer:a3];
+  feature_flags = [(OPTTSStartTextToSpeechStreamingRequest *)self feature_flags];
+  v56 = [feature_flags addObjectToBuffer:buffer];
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v44 = *(a3 + 8);
-  v45 = *(a3 + 12);
-  v46 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 6, v58);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 8, v57);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 10, v55);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 12, v54);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 14, v53);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 16, v52);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 18, SHIDWORD(v51));
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 20, v51);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v44 = *(buffer + 8);
+  v45 = *(buffer + 12);
+  v46 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 6, v58);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 8, v57);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 10, v55);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 12, v54);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 14, v53);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 16, audio_type);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 18, SHIDWORD(v51));
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 20, v51);
   if (v35)
   {
-    v47 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v35);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 22, v47);
+    v47 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v35);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 22, v47);
   }
 
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 24, v36);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 26, v38);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 28, v40);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 30, v42);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 32, v56);
-  v48.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v44 - v45 + v46);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 24, preferred_voice_type);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 26, v38);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 28, v40);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 30, v42);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 32, v56);
+  v48.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v44 - v45 + v46);
   v49 = *MEMORY[0x277D85DE8];
   return v48;
 }
@@ -319,10 +319,10 @@ flatbuffers::DetachedBuffer *__54__OPTTSStartTextToSpeechStreamingRequest_flatbu
 
 - (NSArray)context_info
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"context_info"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"context_info"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 0x17u)
@@ -339,7 +339,7 @@ flatbuffers::DetachedBuffer *__54__OPTTSStartTextToSpeechStreamingRequest_flatbu
           do
           {
             v11 = [[OPTTSStartTextToSpeechStreamingRequest_ContextInfoEntry alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -350,10 +350,10 @@ flatbuffers::DetachedBuffer *__54__OPTTSStartTextToSpeechStreamingRequest_flatbu
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"context_info"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"context_info"];
   }
 
-  return v3;
+  return array;
 }
 
 flatbuffers::DetachedBuffer *__71__OPTTSStartTextToSpeechStreamingRequest_ContextInfoEntry_flatbuffData__block_invoke(uint64_t a1)
@@ -552,42 +552,42 @@ flatbuffers::DetachedBuffer *__71__OPTTSStartTextToSpeechStreamingRequest_Contex
   return v6;
 }
 
-- (OPTTSStartTextToSpeechStreamingRequest)initWithFlatbuffData:(id)a3 root:(const StartTextToSpeechStreamingRequest *)a4 verify:(BOOL)a5
+- (OPTTSStartTextToSpeechStreamingRequest)initWithFlatbuffData:(id)data root:(const StartTextToSpeechStreamingRequest *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = OPTTSStartTextToSpeechStreamingRequest;
   v10 = [(OPTTSStartTextToSpeechStreamingRequest *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_2728326B0;
       v27 = 0;
@@ -609,9 +609,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

@@ -1,7 +1,7 @@
 @interface PODeviceRegistrationStatus
-- (PODeviceRegistrationStatus)initWithCoder:(id)a3;
+- (PODeviceRegistrationStatus)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PODeviceRegistrationStatus
@@ -60,9 +60,9 @@
   return v11;
 }
 
-- (PODeviceRegistrationStatus)initWithCoder:(id)a3
+- (PODeviceRegistrationStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = PODeviceRegistrationStatus;
   v5 = [(PODeviceRegistrationStatus *)&v31 init];
@@ -70,78 +70,78 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_isPlatformSSOEnabled);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     v5->_platformSSOEnabled = [v8 BOOLValue];
 
     v9 = objc_opt_class();
     v10 = NSStringFromSelector(sel_accountName);
-    v11 = [v4 decodeObjectOfClass:v9 forKey:v10];
+    v11 = [coderCopy decodeObjectOfClass:v9 forKey:v10];
     accountName = v5->_accountName;
     v5->_accountName = v11;
 
     v13 = objc_opt_class();
     v14 = NSStringFromSelector(sel_registeredExtensionName);
-    v15 = [v4 decodeObjectOfClass:v13 forKey:v14];
+    v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
     registeredExtensionName = v5->_registeredExtensionName;
     v5->_registeredExtensionName = v15;
 
     v17 = objc_opt_class();
     v18 = NSStringFromSelector(sel_registeredBundleIdentifier);
-    v19 = [v4 decodeObjectOfClass:v17 forKey:v18];
+    v19 = [coderCopy decodeObjectOfClass:v17 forKey:v18];
     registeredBundleIdentifier = v5->_registeredBundleIdentifier;
     v5->_registeredBundleIdentifier = v19;
 
     v21 = objc_opt_class();
     v22 = NSStringFromSelector(sel_deviceRegistrationStatus);
-    v23 = [v4 decodeObjectOfClass:v21 forKey:v22];
+    v23 = [coderCopy decodeObjectOfClass:v21 forKey:v22];
     v5->_deviceRegistrationStatus = [v23 intValue];
 
     v24 = objc_opt_class();
     v25 = NSStringFromSelector(sel_isActionButtonEnabled);
-    v26 = [v4 decodeObjectOfClass:v24 forKey:v25];
+    v26 = [coderCopy decodeObjectOfClass:v24 forKey:v25];
     v5->_actionButtonEnabled = [v26 BOOLValue];
 
     v27 = objc_opt_class();
     v28 = NSStringFromSelector(sel_actionButtonAction);
-    v29 = [v4 decodeObjectOfClass:v27 forKey:v28];
+    v29 = [coderCopy decodeObjectOfClass:v27 forKey:v28];
     v5->_actionButtonAction = [v29 intValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   platformSSOEnabled = self->_platformSSOEnabled;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithBool:platformSSOEnabled];
   v8 = NSStringFromSelector(sel_isPlatformSSOEnabled);
-  [v6 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:v7 forKey:v8];
 
   registeredExtensionName = self->_registeredExtensionName;
   v10 = NSStringFromSelector(sel_registeredExtensionName);
-  [v6 encodeObject:registeredExtensionName forKey:v10];
+  [coderCopy encodeObject:registeredExtensionName forKey:v10];
 
   accountName = self->_accountName;
   v12 = NSStringFromSelector(sel_accountName);
-  [v6 encodeObject:accountName forKey:v12];
+  [coderCopy encodeObject:accountName forKey:v12];
 
   registeredBundleIdentifier = self->_registeredBundleIdentifier;
   v14 = NSStringFromSelector(sel_registeredBundleIdentifier);
-  [v6 encodeObject:registeredBundleIdentifier forKey:v14];
+  [coderCopy encodeObject:registeredBundleIdentifier forKey:v14];
 
   v15 = [MEMORY[0x277CCABB0] numberWithInteger:self->_deviceRegistrationStatus];
   v16 = NSStringFromSelector(sel_deviceRegistrationStatus);
-  [v6 encodeObject:v15 forKey:v16];
+  [coderCopy encodeObject:v15 forKey:v16];
 
   v17 = [MEMORY[0x277CCABB0] numberWithBool:self->_actionButtonEnabled];
   v18 = NSStringFromSelector(sel_isActionButtonEnabled);
-  [v6 encodeObject:v17 forKey:v18];
+  [coderCopy encodeObject:v17 forKey:v18];
 
   v20 = [MEMORY[0x277CCABB0] numberWithInteger:self->_actionButtonAction];
   v19 = NSStringFromSelector(sel_actionButtonAction);
-  [v6 encodeObject:v20 forKey:v19];
+  [coderCopy encodeObject:v20 forKey:v19];
 }
 
 @end

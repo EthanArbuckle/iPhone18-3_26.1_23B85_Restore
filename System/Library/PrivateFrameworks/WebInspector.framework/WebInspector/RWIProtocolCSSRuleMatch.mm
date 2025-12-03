@@ -1,45 +1,45 @@
 @interface RWIProtocolCSSRuleMatch
 - (NSArray)matchingSelectors;
 - (RWIProtocolCSSRule)rule;
-- (RWIProtocolCSSRuleMatch)initWithRule:(id)a3 matchingSelectors:(id)a4;
-- (void)setMatchingSelectors:(id)a3;
-- (void)setRule:(id)a3;
+- (RWIProtocolCSSRuleMatch)initWithRule:(id)rule matchingSelectors:(id)selectors;
+- (void)setMatchingSelectors:(id)selectors;
+- (void)setRule:(id)rule;
 @end
 
 @implementation RWIProtocolCSSRuleMatch
 
-- (RWIProtocolCSSRuleMatch)initWithRule:(id)a3 matchingSelectors:(id)a4
+- (RWIProtocolCSSRuleMatch)initWithRule:(id)rule matchingSelectors:(id)selectors
 {
-  v6 = a3;
-  v7 = a4;
+  ruleCopy = rule;
+  selectorsCopy = selectors;
   v11.receiver = self;
   v11.super_class = RWIProtocolCSSRuleMatch;
   v8 = [(RWIProtocolJSONObject *)&v11 init];
   if (v8)
   {
-    if (!v6)
+    if (!ruleCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"rule"}];
     }
 
-    if (!v7)
+    if (!selectorsCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"matchingSelectors"}];
     }
 
-    [(RWIProtocolCSSRuleMatch *)v8 setRule:v6];
-    [(RWIProtocolCSSRuleMatch *)v8 setMatchingSelectors:v7];
+    [(RWIProtocolCSSRuleMatch *)v8 setRule:ruleCopy];
+    [(RWIProtocolCSSRuleMatch *)v8 setMatchingSelectors:selectorsCopy];
     v9 = v8;
   }
 
   return v8;
 }
 
-- (void)setRule:(id)a3
+- (void)setRule:(id)rule
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSRuleMatch;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"rule"];
+  [(RWIProtocolJSONObject *)&v3 setObject:rule forKey:@"rule"];
 }
 
 - (RWIProtocolCSSRule)rule
@@ -97,9 +97,9 @@
   return v7;
 }
 
-- (void)setMatchingSelectors:(id)a3
+- (void)setMatchingSelectors:(id)selectors
 {
-  Inspector::toJSONIntegerArray(a3, &v6);
+  Inspector::toJSONIntegerArray(selectors, &v6);
   v5.receiver = self;
   v5.super_class = RWIProtocolCSSRuleMatch;
   [(RWIProtocolJSONObject *)&v5 setJSONArray:&v6 forKey:@"matchingSelectors"];

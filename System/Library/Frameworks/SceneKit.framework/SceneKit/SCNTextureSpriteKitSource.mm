@@ -1,11 +1,11 @@
 @interface SCNTextureSpriteKitSource
-- (__C3DTexture)textureWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5;
-- (double)__updateTextureWithSKScene:(id)a3 engineContext:(__C3DEngineContext *)a4 sampler:(__C3DTextureSampler *)a5;
-- (id)metalTextureWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5 status:(id *)a6;
-- (void)__renderSKScene:(id)a3 withSKSCNRenderer:(id)a4 engineContext:(__C3DEngineContext *)a5 viewport:(double)a6 atTime:;
-- (void)cleanup:(__C3DRendererContext *)a3;
+- (__C3DTexture)textureWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time;
+- (double)__updateTextureWithSKScene:(id)scene engineContext:(__C3DEngineContext *)context sampler:(__C3DTextureSampler *)sampler;
+- (id)metalTextureWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time status:(id *)status;
+- (void)__renderSKScene:(id)scene withSKSCNRenderer:(id)renderer engineContext:(__C3DEngineContext *)context viewport:(double)viewport atTime:;
+- (void)cleanup:(__C3DRendererContext *)cleanup;
 - (void)dealloc;
-- (void)renderWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5;
+- (void)renderWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time;
 @end
 
 @implementation SCNTextureSpriteKitSource
@@ -17,9 +17,9 @@
   [(SCNTextureSource *)&v3 dealloc];
 }
 
-- (void)renderWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5
+- (void)renderWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time
 {
-  Scene = C3DEngineContextGetScene(a3);
+  Scene = C3DEngineContextGetScene(context);
   AnimationManager = C3DSceneGetAnimationManager(Scene);
   if (!AnimationManager)
   {
@@ -32,12 +32,12 @@
 
   SystemTime = C3DAnimationManagerGetSystemTime(AnimationManager);
   v11 = [+[SCNSourceRendererRegistry sharedRegistry](SCNSourceRendererRegistry "sharedRegistry")];
-  Viewport = C3DEngineContextGetViewport(a3);
+  Viewport = C3DEngineContextGetViewport(context);
   if (objc_opt_respondsToSelector())
   {
     if (([(SKScene *)self->_scene _isDirty]& 1) != 0)
     {
-      C3DEngineContextSetNextFrameTimeToAsap(a3);
+      C3DEngineContextSetNextFrameTimeToAsap(context);
     }
 
     else
@@ -46,7 +46,7 @@
     }
   }
 
-  if (C3DEngineContextGetRenderContext(a3))
+  if (C3DEngineContextGetRenderContext(context))
   {
     [v11 setBounds:{Viewport.n128_f32[0], Viewport.n128_f32[1], Viewport.n128_f32[2], Viewport.n128_f32[3]}];
     if ([v11 scene] != self->_scene)
@@ -59,24 +59,24 @@
 
   else
   {
-    [(SCNTextureSpriteKitSource *)self __renderSKScene:self->_scene withSKSCNRenderer:v11 engineContext:a3 viewport:Viewport.n128_f64[0] atTime:SystemTime];
+    [(SCNTextureSpriteKitSource *)self __renderSKScene:self->_scene withSKSCNRenderer:v11 engineContext:context viewport:Viewport.n128_f64[0] atTime:SystemTime];
   }
 }
 
-- (void)__renderSKScene:(id)a3 withSKSCNRenderer:(id)a4 engineContext:(__C3DEngineContext *)a5 viewport:(double)a6 atTime:
+- (void)__renderSKScene:(id)scene withSKSCNRenderer:(id)renderer engineContext:(__C3DEngineContext *)context viewport:(double)viewport atTime:
 {
   v7 = v6;
-  v18 = *&a6;
-  v11 = [(SCNTextureSource *)self rendererContextForTextureSourceWithEngineContext:a5];
-  Viewport = C3DEngineContextGetViewport(a5);
+  v18 = *&viewport;
+  v11 = [(SCNTextureSource *)self rendererContextForTextureSourceWithEngineContext:context];
+  Viewport = C3DEngineContextGetViewport(context);
   C3DRendererContextSetViewport(v18);
-  [a4 setBounds:{v18.n128_f32[0], v18.n128_f32[1], v18.n128_f32[2], v18.n128_f32[3]}];
-  if ([a4 scene] != a3)
+  [renderer setBounds:{v18.n128_f32[0], v18.n128_f32[1], v18.n128_f32[2], v18.n128_f32[3]}];
+  if ([renderer scene] != scene)
   {
-    [a4 setScene:{a3, *&Viewport}];
+    [renderer setScene:{scene, *&Viewport}];
   }
 
-  [a4 updateAtTime:{v7, *&Viewport}];
+  [renderer updateAtTime:{v7, *&Viewport}];
   IsEnabled = glIsEnabled(0xB44u);
   v13 = glIsEnabled(0xBE2u);
   glDisable(0xBE2u);
@@ -101,7 +101,7 @@
     FBO = 0;
   }
 
-  [a4 renderToFramebuffer:FBO shouldClear:1];
+  [renderer renderToFramebuffer:FBO shouldClear:1];
   if (IsEnabled)
   {
     glEnable(0xB44u);
@@ -116,9 +116,9 @@
   C3DRendererContextSetViewport(v17);
 }
 
-- (double)__updateTextureWithSKScene:(id)a3 engineContext:(__C3DEngineContext *)a4 sampler:(__C3DTextureSampler *)a5
+- (double)__updateTextureWithSKScene:(id)scene engineContext:(__C3DEngineContext *)context sampler:(__C3DTextureSampler *)sampler
 {
-  Scene = C3DEngineContextGetScene(a4);
+  Scene = C3DEngineContextGetScene(context);
   AnimationManager = C3DSceneGetAnimationManager(Scene);
   if (!AnimationManager)
   {
@@ -136,12 +136,12 @@
     {
       self->_lastUpdate = SystemTime;
       v13 = [+[SCNSourceRendererRegistry sharedRegistry](SCNSourceRendererRegistry "sharedRegistry")];
-      [(SCNTextureOffscreenRenderingSource *)self _bindFramebuffer:a4];
-      [(SCNTextureSpriteKitSource *)self __renderSKScene:a3 withSKSCNRenderer:v13 engineContext:a4 viewport:*vcvt_hight_f32_f64(0 atTime:self->super._framebufferSize).i64, SystemTime];
-      [(SCNTextureOffscreenRenderingSource *)self _unbindFramebuffer:a4];
-      if (C3DTextureSamplerGetMipFilter(a5))
+      [(SCNTextureOffscreenRenderingSource *)self _bindFramebuffer:context];
+      [(SCNTextureSpriteKitSource *)self __renderSKScene:scene withSKSCNRenderer:v13 engineContext:context viewport:*vcvt_hight_f32_f64(0 atTime:self->super._framebufferSize).i64, SystemTime];
+      [(SCNTextureOffscreenRenderingSource *)self _unbindFramebuffer:context];
+      if (C3DTextureSamplerGetMipFilter(sampler))
       {
-        [(SCNTextureOffscreenRenderingSource *)self _buildMipmaps:a4];
+        [(SCNTextureOffscreenRenderingSource *)self _buildMipmaps:context];
       }
     }
   }
@@ -149,28 +149,28 @@
   return SystemTime;
 }
 
-- (void)cleanup:(__C3DRendererContext *)a3
+- (void)cleanup:(__C3DRendererContext *)cleanup
 {
   v3.receiver = self;
   v3.super_class = SCNTextureSpriteKitSource;
-  [(SCNTextureOffscreenRenderingSource *)&v3 cleanup:a3];
+  [(SCNTextureOffscreenRenderingSource *)&v3 cleanup:cleanup];
 }
 
-- (__C3DTexture)textureWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5
+- (__C3DTexture)textureWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time
 {
-  Stats = C3DEngineContextGetStats(a3);
+  Stats = C3DEngineContextGetStats(context);
   v10 = CACurrentMediaTime();
-  v11 = [(SCNTextureSpriteKitSource *)self scene];
-  if (v11)
+  scene = [(SCNTextureSpriteKitSource *)self scene];
+  if (scene)
   {
-    v12 = v11;
-    [(SKScene *)v11 size];
+    v12 = scene;
+    [(SKScene *)scene size];
     v14 = 0;
     if (v15 > 0.0 && v13 > 0.0)
     {
-      v14 = [(SCNTextureOffscreenRenderingSource *)self __prepareFramebufferWithSize:a3 withEngineContext:a4 textureSampler:1 needsStencil:?];
-      [(SCNTextureSpriteKitSource *)self __updateTextureWithSKScene:v12 engineContext:a3 sampler:a4];
-      *a5 = v16;
+      v14 = [(SCNTextureOffscreenRenderingSource *)self __prepareFramebufferWithSize:context withEngineContext:sampler textureSampler:1 needsStencil:?];
+      [(SCNTextureSpriteKitSource *)self __updateTextureWithSKScene:v12 engineContext:context sampler:sampler];
+      *time = v16;
     }
 
     v17 = CACurrentMediaTime();
@@ -192,40 +192,40 @@
   return v14;
 }
 
-- (id)metalTextureWithEngineContext:(__C3DEngineContext *)a3 textureSampler:(__C3DTextureSampler *)a4 nextFrameTime:(double *)a5 status:(id *)a6
+- (id)metalTextureWithEngineContext:(__C3DEngineContext *)context textureSampler:(__C3DTextureSampler *)sampler nextFrameTime:(double *)time status:(id *)status
 {
-  RenderContext = C3DEngineContextGetRenderContext(a3);
-  v11 = [(SCNMTLRenderContext *)RenderContext device];
-  Stats = C3DEngineContextGetStats(a3);
-  v13 = [(SCNTextureSpriteKitSource *)self scene];
-  if (v13)
+  RenderContext = C3DEngineContextGetRenderContext(context);
+  device = [(SCNMTLRenderContext *)RenderContext device];
+  Stats = C3DEngineContextGetStats(context);
+  scene = [(SCNTextureSpriteKitSource *)self scene];
+  if (scene)
   {
-    v14 = v13;
+    v14 = scene;
     v15 = CACurrentMediaTime();
     [(SKScene *)v14 size];
     v17 = v16;
     v19 = v18;
-    v20 = [(SCNTextureSource *)self MTLTextureCache];
-    if (!v20)
+    mTLTextureCache = [(SCNTextureSource *)self MTLTextureCache];
+    if (!mTLTextureCache)
     {
       v21 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:C3DMetalFramebufferPixelFormat(0) width:v17 height:v19 mipmapped:0];
       [v21 setStorageMode:2];
       [v21 setUsage:21];
-      v20 = [v11 newTextureWithDescriptor:v21];
-      [(SCNTextureSource *)self setMTLTextureCache:v20];
+      mTLTextureCache = [device newTextureWithDescriptor:v21];
+      [(SCNTextureSource *)self setMTLTextureCache:mTLTextureCache];
     }
 
-    Scene = C3DEngineContextGetScene(a3);
+    Scene = C3DEngineContextGetScene(context);
     AnimationManager = C3DSceneGetAnimationManager(Scene);
     SystemTime = C3DAnimationManagerGetSystemTime(AnimationManager);
-    if (!v20 || (v25 = SystemTime, self->_lastUpdate == SystemTime))
+    if (!mTLTextureCache || (v25 = SystemTime, self->_lastUpdate == SystemTime))
     {
       v28 = 0;
 LABEL_22:
-      a6->var0 = v28;
-      a6->var1 = 1;
+      status->var0 = v28;
+      status->var1 = 1;
       *(Stats + 160) = *(Stats + 160) + CACurrentMediaTime() - v15;
-      return v20;
+      return mTLTextureCache;
     }
 
     self->_lastUpdate = SystemTime;
@@ -254,13 +254,13 @@ LABEL_22:
     [v26 updateAtTime:v25];
     if (C3DLinearRenderingIsEnabled())
     {
-      v31 = [v20 newTextureViewWithPixelFormat:SCNMTLPixelFormatNonSRGBVariant(objc_msgSend(v20, "pixelFormat"))];
+      v31 = [mTLTextureCache newTextureViewWithPixelFormat:SCNMTLPixelFormatNonSRGBVariant(objc_msgSend(mTLTextureCache, "pixelFormat"))];
       [v26 renderToTexture:v31 commandQueue:-[SCNMTLRenderContext commandQueue](RenderContext)];
 
       if (!v27)
       {
 LABEL_18:
-        *a5 = v25;
+        *time = v25;
 LABEL_21:
         v28 = 1;
         goto LABEL_22;
@@ -269,7 +269,7 @@ LABEL_21:
 
     else
     {
-      [v26 renderToTexture:v20 commandQueue:-[SCNMTLRenderContext commandQueue](RenderContext)];
+      [v26 renderToTexture:mTLTextureCache commandQueue:-[SCNMTLRenderContext commandQueue](RenderContext)];
       if (!v27)
       {
         goto LABEL_18;

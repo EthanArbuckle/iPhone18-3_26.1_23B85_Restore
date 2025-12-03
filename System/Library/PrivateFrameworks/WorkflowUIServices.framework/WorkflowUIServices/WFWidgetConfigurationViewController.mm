@@ -1,23 +1,23 @@
 @interface WFWidgetConfigurationViewController
 - (WFWidgetConfigurationView)configurationView;
-- (WFWidgetConfigurationViewController)initWithCoder:(id)a3;
-- (WFWidgetConfigurationViewController)initWithOptions:(id)a3;
-- (WFWidgetConfigurationViewController)initWithRequest:(id)a3;
+- (WFWidgetConfigurationViewController)initWithCoder:(id)coder;
+- (WFWidgetConfigurationViewController)initWithOptions:(id)options;
+- (WFWidgetConfigurationViewController)initWithRequest:(id)request;
 - (WFWidgetConfigurationViewControllerDelegate)delegate;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)finishWithCurrentConfiguration;
-- (void)installRemoteViewController:(id)a3;
+- (void)installRemoteViewController:(id)controller;
 - (void)loadView;
 - (void)loadWidgetConfigurationRemoteViewController;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setRemoteViewController:(id)a3 extension:(id)a4 extensionRequest:(id)a5;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setRemoteViewController:(id)controller extension:(id)extension extensionRequest:(id)request;
 - (void)showErrorMessage;
 - (void)viewDidLoad;
-- (void)widgetConfigurationContainerViewControllerDidRequestToCancel:(id)a3;
-- (void)widgetConfigurationRemoteViewController:(id)a3 didReceiveConfiguredIntent:(id)a4;
-- (void)widgetConfigurationRemoteViewController:(id)a3 preferredContentSizeDidChange:(CGSize)a4;
-- (void)widgetConfigurationRemoteViewControllerCancelled:(id)a3;
+- (void)widgetConfigurationContainerViewControllerDidRequestToCancel:(id)cancel;
+- (void)widgetConfigurationRemoteViewController:(id)controller didReceiveConfiguredIntent:(id)intent;
+- (void)widgetConfigurationRemoteViewController:(id)controller preferredContentSizeDidChange:(CGSize)change;
+- (void)widgetConfigurationRemoteViewControllerCancelled:(id)cancelled;
 @end
 
 @implementation WFWidgetConfigurationViewController
@@ -29,16 +29,16 @@
   return WeakRetained;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v16 = a3;
-  v4 = [(WFWidgetConfigurationViewController *)self remoteViewController];
-  if (v4 == v16)
+  containerCopy = container;
+  remoteViewController = [(WFWidgetConfigurationViewController *)self remoteViewController];
+  if (remoteViewController == containerCopy)
   {
     [(WFWidgetConfigurationViewController *)self preferredContentSize];
     v6 = v5;
     v8 = v7;
-    [v16 preferredContentSize];
+    [containerCopy preferredContentSize];
     v10 = v9;
     v12 = v11;
 
@@ -47,9 +47,9 @@
       goto LABEL_9;
     }
 
-    [v16 preferredContentSize];
+    [containerCopy preferredContentSize];
     [(WFWidgetConfigurationViewController *)self setPreferredContentSize:?];
-    v14 = [(WFWidgetConfigurationViewController *)self delegate];
+    delegate = [(WFWidgetConfigurationViewController *)self delegate];
     v15 = objc_opt_respondsToSelector();
 
     if ((v15 & 1) == 0)
@@ -57,123 +57,123 @@
       goto LABEL_9;
     }
 
-    v4 = [(WFWidgetConfigurationViewController *)self delegate];
-    [v16 preferredContentSize];
-    [v4 widgetConfigurationViewController:self preferredContentSizeDidChange:?];
+    remoteViewController = [(WFWidgetConfigurationViewController *)self delegate];
+    [containerCopy preferredContentSize];
+    [remoteViewController widgetConfigurationViewController:self preferredContentSizeDidChange:?];
   }
 
 LABEL_9:
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFWidgetConfigurationViewController *)self request];
-  [v4 encodeObject:v5 forKey:@"request"];
+  coderCopy = coder;
+  request = [(WFWidgetConfigurationViewController *)self request];
+  [coderCopy encodeObject:request forKey:@"request"];
 }
 
-- (WFWidgetConfigurationViewController)initWithCoder:(id)a3
+- (WFWidgetConfigurationViewController)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"request"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"request"];
 
   if (v5)
   {
     self = [(WFWidgetConfigurationViewController *)self initWithRequest:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)widgetConfigurationRemoteViewControllerCancelled:(id)a3
+- (void)widgetConfigurationRemoteViewControllerCancelled:(id)cancelled
 {
-  v4 = [(WFWidgetConfigurationViewController *)self delegate];
+  delegate = [(WFWidgetConfigurationViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     [(WFWidgetConfigurationViewController *)self setCancelled:1];
-    v6 = [(WFWidgetConfigurationViewController *)self delegate];
-    [v6 widgetConfigurationViewControllerDidCancel:self];
+    delegate2 = [(WFWidgetConfigurationViewController *)self delegate];
+    [delegate2 widgetConfigurationViewControllerDidCancel:self];
   }
 }
 
-- (void)widgetConfigurationRemoteViewController:(id)a3 preferredContentSizeDidChange:(CGSize)a4
+- (void)widgetConfigurationRemoteViewController:(id)controller preferredContentSizeDidChange:(CGSize)change
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = [(WFWidgetConfigurationViewController *)self delegate];
+  height = change.height;
+  width = change.width;
+  delegate = [(WFWidgetConfigurationViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(WFWidgetConfigurationViewController *)self delegate];
-    [v9 widgetConfigurationViewController:self preferredContentSizeDidChange:{width, height}];
+    delegate2 = [(WFWidgetConfigurationViewController *)self delegate];
+    [delegate2 widgetConfigurationViewController:self preferredContentSizeDidChange:{width, height}];
   }
 }
 
-- (void)widgetConfigurationRemoteViewController:(id)a3 didReceiveConfiguredIntent:(id)a4
+- (void)widgetConfigurationRemoteViewController:(id)controller didReceiveConfiguredIntent:(id)intent
 {
-  v8 = a4;
-  v5 = [(WFWidgetConfigurationViewController *)self delegate];
+  intentCopy = intent;
+  delegate = [(WFWidgetConfigurationViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WFWidgetConfigurationViewController *)self delegate];
-    [v7 widgetConfigurationViewController:self didFinishWithIntent:v8];
+    delegate2 = [(WFWidgetConfigurationViewController *)self delegate];
+    [delegate2 widgetConfigurationViewController:self didFinishWithIntent:intentCopy];
   }
 }
 
-- (void)widgetConfigurationContainerViewControllerDidRequestToCancel:(id)a3
+- (void)widgetConfigurationContainerViewControllerDidRequestToCancel:(id)cancel
 {
-  v7 = [(WFWidgetConfigurationViewController *)self remoteViewController];
-  if (v7)
+  remoteViewController = [(WFWidgetConfigurationViewController *)self remoteViewController];
+  if (remoteViewController)
   {
-    [v7 requestViewControllerCancel];
+    [remoteViewController requestViewControllerCancel];
   }
 
-  v4 = [(WFWidgetConfigurationViewController *)self delegate];
+  delegate = [(WFWidgetConfigurationViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WFWidgetConfigurationViewController *)self delegate];
-    [v6 widgetConfigurationViewControllerDidCancel:self];
+    delegate2 = [(WFWidgetConfigurationViewController *)self delegate];
+    [delegate2 widgetConfigurationViewControllerDidCancel:self];
   }
 }
 
 - (void)finishWithCurrentConfiguration
 {
-  v3 = [(WFWidgetConfigurationViewController *)self remoteViewController];
-  v7 = v3;
-  if (v3)
+  remoteViewController = [(WFWidgetConfigurationViewController *)self remoteViewController];
+  v7 = remoteViewController;
+  if (remoteViewController)
   {
-    [v3 requestViewControllerDismissal];
+    [remoteViewController requestViewControllerDismissal];
   }
 
   else
   {
-    v4 = [(WFWidgetConfigurationViewController *)self delegate];
-    v5 = [(WFWidgetConfigurationViewController *)self request];
-    v6 = [v5 intent];
-    [v4 widgetConfigurationViewController:self didFinishWithIntent:v6];
+    delegate = [(WFWidgetConfigurationViewController *)self delegate];
+    request = [(WFWidgetConfigurationViewController *)self request];
+    intent = [request intent];
+    [delegate widgetConfigurationViewController:self didFinishWithIntent:intent];
   }
 }
 
-- (void)installRemoteViewController:(id)a3
+- (void)installRemoteViewController:(id)controller
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    [(WFWidgetConfigurationViewController *)self addChildViewController:v4];
+    [(WFWidgetConfigurationViewController *)self addChildViewController:controllerCopy];
   }
 
   v5 = getWFWidgetConfigurationLogObject();
@@ -182,83 +182,83 @@ LABEL_9:
     v12 = 136315394;
     v13 = "[WFWidgetConfigurationViewController installRemoteViewController:]";
     v14 = 2112;
-    v15 = v4;
+    v15 = controllerCopy;
     _os_log_impl(&dword_1C830A000, v5, OS_LOG_TYPE_DEBUG, "%s Installing Widget Configuration Remote View Controller: %@", &v12, 0x16u);
   }
 
-  v6 = [v4 view];
-  v7 = [(WFWidgetConfigurationViewController *)self view];
-  [v7 bounds];
-  [v6 setFrame:?];
+  view = [controllerCopy view];
+  view2 = [(WFWidgetConfigurationViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 
-  [v6 setAutoresizingMask:18];
-  v8 = [(WFWidgetConfigurationViewController *)self configurationView];
-  [v8 overridingCardViewFrame];
-  [v4 setConfigurationCardViewFrame:?];
+  [view setAutoresizingMask:18];
+  configurationView = [(WFWidgetConfigurationViewController *)self configurationView];
+  [configurationView overridingCardViewFrame];
+  [controllerCopy setConfigurationCardViewFrame:?];
 
-  v9 = [(WFWidgetConfigurationViewController *)self view];
-  [v9 insertSubview:v6 atIndex:0];
+  view3 = [(WFWidgetConfigurationViewController *)self view];
+  [view3 insertSubview:view atIndex:0];
 
-  v10 = [(WFWidgetConfigurationViewController *)self containerViewController];
-  v11 = [v10 view];
-  [v11 setHidden:1];
+  containerViewController = [(WFWidgetConfigurationViewController *)self containerViewController];
+  view4 = [containerViewController view];
+  [view4 setHidden:1];
 
-  [v4 didMoveToParentViewController:self];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
-- (void)setRemoteViewController:(id)a3 extension:(id)a4 extensionRequest:(id)a5
+- (void)setRemoteViewController:(id)controller extension:(id)extension extensionRequest:(id)request
 {
-  v16 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->_remoteViewController != v16)
+  controllerCopy = controller;
+  extensionCopy = extension;
+  requestCopy = request;
+  if (self->_remoteViewController != controllerCopy)
   {
-    v11 = [(WFWidgetConfigurationViewController *)self remoteViewController];
-    [v11 willMoveToParentViewController:0];
+    remoteViewController = [(WFWidgetConfigurationViewController *)self remoteViewController];
+    [remoteViewController willMoveToParentViewController:0];
     extension = self->_extension;
-    if (extension != v9 || self->_extensionRequest != v10)
+    if (extension != extensionCopy || self->_extensionRequest != requestCopy)
     {
       [(NSExtension *)extension cancelExtensionRequestWithIdentifier:?];
     }
 
     [(WFWidgetConfigurationRemoteViewController *)self->_remoteViewController setDelegate:0];
-    objc_storeStrong(&self->_extension, a4);
-    objc_storeStrong(&self->_extensionRequest, a5);
-    objc_storeStrong(&self->_remoteViewController, a3);
+    objc_storeStrong(&self->_extension, extension);
+    objc_storeStrong(&self->_extensionRequest, request);
+    objc_storeStrong(&self->_remoteViewController, controller);
     [(WFWidgetConfigurationRemoteViewController *)self->_remoteViewController setDelegate:self];
-    if (!v16)
+    if (!controllerCopy)
     {
-      v14 = [(WFWidgetConfigurationViewController *)self request];
-      [v14 defaultCardSize];
+      request = [(WFWidgetConfigurationViewController *)self request];
+      [request defaultCardSize];
       [(WFWidgetConfigurationViewController *)self setPreferredContentSize:?];
     }
 
     if ([(WFWidgetConfigurationViewController *)self isViewLoaded])
     {
-      v15 = [v11 view];
-      [v15 removeFromSuperview];
+      view = [remoteViewController view];
+      [view removeFromSuperview];
 
-      [(WFWidgetConfigurationViewController *)self installRemoteViewController:v16];
+      [(WFWidgetConfigurationViewController *)self installRemoteViewController:controllerCopy];
     }
 
-    [v11 removeFromParentViewController];
+    [remoteViewController removeFromParentViewController];
   }
 }
 
 - (void)loadWidgetConfigurationRemoteViewController
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(WFWidgetConfigurationViewController *)self request];
+  request = [(WFWidgetConfigurationViewController *)self request];
 
-  if (v3)
+  if (request)
   {
-    v4 = [(WFWidgetConfigurationViewController *)self request];
+    request2 = [(WFWidgetConfigurationViewController *)self request];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __82__WFWidgetConfigurationViewController_loadWidgetConfigurationRemoteViewController__block_invoke;
     v6[3] = &unk_1E8308470;
     v6[4] = self;
-    [v4 loadWidgetExtensionInformationWithCompletion:v6];
+    [request2 loadWidgetExtensionInformationWithCompletion:v6];
   }
 
   else
@@ -522,20 +522,20 @@ uint64_t __82__WFWidgetConfigurationViewController_loadWidgetConfigurationRemote
 - (void)showErrorMessage
 {
   [(WFWidgetConfigurationViewController *)self setRemoteViewController:0 extension:0 extensionRequest:0];
-  v3 = [(WFWidgetConfigurationViewController *)self containerViewController];
-  v4 = [v3 view];
-  [v4 setHidden:0];
+  containerViewController = [(WFWidgetConfigurationViewController *)self containerViewController];
+  view = [containerViewController view];
+  [view setHidden:0];
 
-  v6 = [(WFWidgetConfigurationViewController *)self loadingContentViewController];
+  loadingContentViewController = [(WFWidgetConfigurationViewController *)self loadingContentViewController];
   v5 = WFLocalizedStringFromTable(@"Unable to Load", @"WidgetConfiguration");
-  [v6 showMessage:v5];
+  [loadingContentViewController showMessage:v5];
 }
 
 - (void)dealloc
 {
-  v3 = [(WFWidgetConfigurationViewController *)self extension];
-  v4 = [(WFWidgetConfigurationViewController *)self extensionRequest];
-  [v3 cancelExtensionRequestWithIdentifier:v4];
+  extension = [(WFWidgetConfigurationViewController *)self extension];
+  extensionRequest = [(WFWidgetConfigurationViewController *)self extensionRequest];
+  [extension cancelExtensionRequestWithIdentifier:extensionRequest];
 
   v5.receiver = self;
   v5.super_class = WFWidgetConfigurationViewController;
@@ -547,9 +547,9 @@ uint64_t __82__WFWidgetConfigurationViewController_loadWidgetConfigurationRemote
   v4.receiver = self;
   v4.super_class = WFWidgetConfigurationViewController;
   [(WFWidgetConfigurationViewController *)&v4 viewDidLoad];
-  v3 = [(WFWidgetConfigurationViewController *)self request];
+  request = [(WFWidgetConfigurationViewController *)self request];
 
-  if (!v3)
+  if (!request)
   {
     [(WFWidgetConfigurationViewController *)self showErrorMessage];
   }
@@ -565,60 +565,60 @@ uint64_t __82__WFWidgetConfigurationViewController_loadWidgetConfigurationRemote
   self->_loadingContentViewController = v3;
 
   v5 = [WFWidgetConfigurationCardContainerViewController alloc];
-  v6 = [(WFWidgetConfigurationViewController *)self request];
-  v7 = [(WFWidgetConfigurationViewController *)self loadingContentViewController];
-  v8 = [(WFWidgetConfigurationCardContainerViewController *)v5 initWithRequest:v6 contentViewController:v7];
+  request = [(WFWidgetConfigurationViewController *)self request];
+  loadingContentViewController = [(WFWidgetConfigurationViewController *)self loadingContentViewController];
+  v8 = [(WFWidgetConfigurationCardContainerViewController *)v5 initWithRequest:request contentViewController:loadingContentViewController];
   containerViewController = self->_containerViewController;
   self->_containerViewController = v8;
 
-  v10 = [(WFWidgetConfigurationViewController *)self containerViewController];
-  [(WFWidgetConfigurationViewController *)self addChildViewController:v10];
+  containerViewController = [(WFWidgetConfigurationViewController *)self containerViewController];
+  [(WFWidgetConfigurationViewController *)self addChildViewController:containerViewController];
 
-  v11 = [(WFWidgetConfigurationViewController *)self containerViewController];
-  v12 = [v11 view];
+  containerViewController2 = [(WFWidgetConfigurationViewController *)self containerViewController];
+  view = [containerViewController2 view];
 
-  v13 = [(WFWidgetConfigurationViewController *)self view];
-  [v13 bounds];
-  [v12 setFrame:?];
+  view2 = [(WFWidgetConfigurationViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 
-  v14 = [(WFWidgetConfigurationViewController *)self view];
-  [v14 addSubview:v12];
+  view3 = [(WFWidgetConfigurationViewController *)self view];
+  [view3 addSubview:view];
 
-  v15 = [(WFWidgetConfigurationViewController *)self containerViewController];
-  [v15 didMoveToParentViewController:self];
+  containerViewController3 = [(WFWidgetConfigurationViewController *)self containerViewController];
+  [containerViewController3 didMoveToParentViewController:self];
 
-  v16 = [(WFWidgetConfigurationViewController *)self containerViewController];
-  [v16 setContainerDelegate:self];
+  containerViewController4 = [(WFWidgetConfigurationViewController *)self containerViewController];
+  [containerViewController4 setContainerDelegate:self];
 
-  v17 = [(WFWidgetConfigurationViewController *)self containerViewController];
-  [v17 preferredContentSize];
+  containerViewController5 = [(WFWidgetConfigurationViewController *)self containerViewController];
+  [containerViewController5 preferredContentSize];
   [(WFWidgetConfigurationViewController *)self setPreferredContentSize:?];
 
-  v18 = [(WFWidgetConfigurationViewController *)self request];
-  v19 = [v18 widgetTintColor];
-  v20 = [(WFWidgetConfigurationViewController *)self view];
-  [v20 setTintColor:v19];
+  request2 = [(WFWidgetConfigurationViewController *)self request];
+  widgetTintColor = [request2 widgetTintColor];
+  view4 = [(WFWidgetConfigurationViewController *)self view];
+  [view4 setTintColor:widgetTintColor];
 
-  v21 = [(WFWidgetConfigurationViewController *)self remoteViewController];
+  remoteViewController = [(WFWidgetConfigurationViewController *)self remoteViewController];
 
-  if (v21)
+  if (remoteViewController)
   {
-    v22 = [(WFWidgetConfigurationViewController *)self remoteViewController];
-    [(WFWidgetConfigurationViewController *)self installRemoteViewController:v22];
+    remoteViewController2 = [(WFWidgetConfigurationViewController *)self remoteViewController];
+    [(WFWidgetConfigurationViewController *)self installRemoteViewController:remoteViewController2];
   }
 }
 
 - (WFWidgetConfigurationView)configurationView
 {
-  v2 = [(WFWidgetConfigurationViewController *)self containerViewController];
-  v3 = [v2 view];
+  containerViewController = [(WFWidgetConfigurationViewController *)self containerViewController];
+  view = [containerViewController view];
 
-  if (v3)
+  if (view)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = view;
     }
 
     else
@@ -637,17 +637,17 @@ uint64_t __82__WFWidgetConfigurationViewController_loadWidgetConfigurationRemote
   return v4;
 }
 
-- (WFWidgetConfigurationViewController)initWithRequest:(id)a3
+- (WFWidgetConfigurationViewController)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v10.receiver = self;
   v10.super_class = WFWidgetConfigurationViewController;
   v6 = [(WFWidgetConfigurationViewController *)&v10 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
-    if (([v5 resolvedWidgetConfigurationStyle] & 0xFFFFFFFFFFFFFFFDLL) == 1)
+    objc_storeStrong(&v6->_request, request);
+    if (([requestCopy resolvedWidgetConfigurationStyle] & 0xFFFFFFFFFFFFFFFDLL) == 1)
     {
       [(WFWidgetConfigurationViewController *)v7 setModalPresentationStyle:6];
     }
@@ -659,10 +659,10 @@ uint64_t __82__WFWidgetConfigurationViewController_loadWidgetConfigurationRemote
   return v7;
 }
 
-- (WFWidgetConfigurationViewController)initWithOptions:(id)a3
+- (WFWidgetConfigurationViewController)initWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [[WFWidgetConfigurationRequest alloc] initWithOptions:v4];
+  optionsCopy = options;
+  v5 = [[WFWidgetConfigurationRequest alloc] initWithOptions:optionsCopy];
 
   v6 = [(WFWidgetConfigurationViewController *)self initWithRequest:v5];
   return v6;

@@ -1,37 +1,37 @@
 @interface MBDeviceManager
-- (MBDeviceManager)initWithCheckinMethod:(int)a3;
-- (id)_acceptConnectionWithInfo:(id)a3;
-- (id)_checkinWithConnectionInfo:(id)a3;
-- (id)_settingsContextWithSourceIdentifier:(id)a3 targetIdentifier:(id)a4 applicationIDs:(id)a5 options:(id)a6;
+- (MBDeviceManager)initWithCheckinMethod:(int)method;
+- (id)_acceptConnectionWithInfo:(id)info;
+- (id)_checkinWithConnectionInfo:(id)info;
+- (id)_settingsContextWithSourceIdentifier:(id)identifier targetIdentifier:(id)targetIdentifier applicationIDs:(id)ds options:(id)options;
 - (id)close;
 - (id)open;
 - (id)run;
-- (void)_acceptFailedCallback:(id)a3;
-- (void)_disconnectCallback:(id)a3;
-- (void)_enableCloudBackupMessage:(id)a3;
-- (void)_eraseDeviceMessage:(id)a3;
-- (void)_handleBackupMessage:(id)a3;
-- (void)_handleChangePasswordMessage:(id)a3;
-- (void)_handleExtractMessage:(id)a3;
-- (void)_handleHelloMessage:(id)a3;
-- (void)_handleInfoMessage:(id)a3;
-- (void)_handleListMessage:(id)a3;
-- (void)_handleRemoveMessage:(id)a3;
-- (void)_handleRestoreMessage:(id)a3;
-- (void)_handleUnbackMessage:(id)a3;
-- (void)_processMessageCallback:(id)a3;
-- (void)_sendResponseMessage:(id)a3;
-- (void)_sendResponseMessageWithCode:(int64_t)a3 description:(id)a4;
-- (void)_sendResponseMessageWithError:(id)a3;
-- (void)_sendSuccessResponseMessageWithProperties:(id)a3;
+- (void)_acceptFailedCallback:(id)callback;
+- (void)_disconnectCallback:(id)callback;
+- (void)_enableCloudBackupMessage:(id)message;
+- (void)_eraseDeviceMessage:(id)message;
+- (void)_handleBackupMessage:(id)message;
+- (void)_handleChangePasswordMessage:(id)message;
+- (void)_handleExtractMessage:(id)message;
+- (void)_handleHelloMessage:(id)message;
+- (void)_handleInfoMessage:(id)message;
+- (void)_handleListMessage:(id)message;
+- (void)_handleRemoveMessage:(id)message;
+- (void)_handleRestoreMessage:(id)message;
+- (void)_handleUnbackMessage:(id)message;
+- (void)_processMessageCallback:(id)callback;
+- (void)_sendResponseMessage:(id)message;
+- (void)_sendResponseMessageWithCode:(int64_t)code description:(id)description;
+- (void)_sendResponseMessageWithError:(id)error;
+- (void)_sendSuccessResponseMessageWithProperties:(id)properties;
 - (void)_stop;
-- (void)_stopWithError:(id)a3;
+- (void)_stopWithError:(id)error;
 - (void)dealloc;
 @end
 
 @implementation MBDeviceManager
 
-- (MBDeviceManager)initWithCheckinMethod:(int)a3
+- (MBDeviceManager)initWithCheckinMethod:(int)method
 {
   v7.receiver = self;
   v7.super_class = MBDeviceManager;
@@ -39,7 +39,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_checkinMethod = a3;
+    v4->_checkinMethod = method;
     [+[MBPersona personalPersonaWithError:](MBPersona personalPersonaWithError:{0), "setPreferencesValue:forKey:", 0, @"DriveRestoreInProgress"}];
   }
 
@@ -66,9 +66,9 @@
   return result;
 }
 
-- (id)_checkinWithConnectionInfo:(id)a3
+- (id)_checkinWithConnectionInfo:(id)info
 {
-  [a3 setValue:@"DLInfoStreamTypeTCP" forKey:@"DLInfoStreamTypeKey"];
+  [info setValue:@"DLInfoStreamTypeTCP" forKey:@"DLInfoStreamTypeKey"];
   checkinMethod = self->_checkinMethod;
   if (checkinMethod == 2)
   {
@@ -85,7 +85,7 @@
     v12 = [NSNumber numberWithInt:6599, v16];
     v13 = @"DLInfoPortKey";
 LABEL_17:
-    [a3 setValue:v12 forKey:v13];
+    [info setValue:v12 forKey:v13];
     return 0;
   }
 
@@ -144,7 +144,7 @@ LABEL_17:
   return [MBError errorWithCode:100 format:v7, v16];
 }
 
-- (id)_acceptConnectionWithInfo:(id)a3
+- (id)_acceptConnectionWithInfo:(id)info
 {
   v12 = 0;
   v4 = MBGetDefaultLog();
@@ -263,15 +263,15 @@ LABEL_17:
   }
 }
 
-- (id)_settingsContextWithSourceIdentifier:(id)a3 targetIdentifier:(id)a4 applicationIDs:(id)a5 options:(id)a6
+- (id)_settingsContextWithSourceIdentifier:(id)identifier targetIdentifier:(id)targetIdentifier applicationIDs:(id)ds options:(id)options
 {
   v11 = +[MBDriveSettingsContext defaultSettingsContext];
   [v11 setProtocolVersion:self->_protocolVersion];
-  [v11 setSourceIdentifier:a3];
-  [v11 setTargetIdentifier:a4];
-  if (a5)
+  [v11 setSourceIdentifier:identifier];
+  [v11 setTargetIdentifier:targetIdentifier];
+  if (ds)
   {
-    v12 = [NSSet setWithArray:a5];
+    v12 = [NSSet setWithArray:ds];
   }
 
   else
@@ -292,38 +292,38 @@ LABEL_17:
   CFRunLoopStop(Current);
 }
 
-- (void)_stopWithError:(id)a3
+- (void)_stopWithError:(id)error
 {
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v8 = a3;
+    errorCopy = error;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "_stopWithError: %@", buf, 0xCu);
-    v6 = a3;
+    errorCopy2 = error;
     _MBLog();
   }
 
   if (!self->_error)
   {
-    self->_error = a3;
+    self->_error = error;
   }
 
   [(MBDeviceManager *)self _stop];
 }
 
-- (void)_sendResponseMessage:(id)a3
+- (void)_sendResponseMessage:(id)message
 {
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = [a3 objectForKeyedSubscript:@"ErrorCode"];
+    *&buf[4] = [message objectForKeyedSubscript:@"ErrorCode"];
     v8 = 2112;
-    v9 = [a3 objectForKeyedSubscript:@"ErrorDescription"];
+    v9 = [message objectForKeyedSubscript:@"ErrorDescription"];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Sending response message: %@ %@", buf, 0x16u);
-    [a3 objectForKeyedSubscript:@"ErrorCode"];
-    [a3 objectForKeyedSubscript:@"ErrorDescription"];
+    [message objectForKeyedSubscript:@"ErrorCode"];
+    [message objectForKeyedSubscript:@"ErrorDescription"];
     _MBLog();
   }
 
@@ -335,62 +335,62 @@ LABEL_17:
   }
 }
 
-- (void)_sendSuccessResponseMessageWithProperties:(id)a3
+- (void)_sendSuccessResponseMessageWithProperties:(id)properties
 {
   v6[0] = @"MessageName";
   v6[1] = @"ErrorCode";
   v7[0] = @"Response";
   v7[1] = [NSNumber numberWithInt:0];
   v5 = [+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary mutableCopy:v7];
-  [v5 addEntriesFromDictionary:a3];
+  [v5 addEntriesFromDictionary:properties];
   [(MBDeviceManager *)self _sendResponseMessage:v5];
 }
 
-- (void)_sendResponseMessageWithCode:(int64_t)a3 description:(id)a4
+- (void)_sendResponseMessageWithCode:(int64_t)code description:(id)description
 {
   v7[0] = @"Response";
   v6[0] = @"MessageName";
   v6[1] = @"ErrorCode";
   v6[2] = @"ErrorDescription";
-  v7[1] = [NSNumber numberWithInteger:a3];
-  v7[2] = a4;
+  v7[1] = [NSNumber numberWithInteger:code];
+  v7[2] = description;
   [(MBDeviceManager *)self _sendResponseMessage:[NSDictionary dictionaryWithObjects:v7 forKeys:v6 count:3]];
 }
 
-- (void)_sendResponseMessageWithError:(id)a3
+- (void)_sendResponseMessageWithError:(id)error
 {
-  if ([objc_msgSend(a3 "domain")])
+  if ([objc_msgSend(error "domain")])
   {
-    v5 = [a3 code];
+    code = [error code];
   }
 
   else
   {
-    v5 = 1;
+    code = 1;
   }
 
-  v6 = [MBError descriptionForError:a3];
+  v6 = [MBError descriptionForError:error];
 
-  [(MBDeviceManager *)self _sendResponseMessageWithCode:v5 description:v6];
+  [(MBDeviceManager *)self _sendResponseMessageWithCode:code description:v6];
 }
 
-- (void)_acceptFailedCallback:(id)a3
+- (void)_acceptFailedCallback:(id)callback
 {
-  v4 = [MBError errorWithCode:100 format:@"Accepting connection failed: %@", a3];
+  callback = [MBError errorWithCode:100 format:@"Accepting connection failed: %@", callback];
 
-  [(MBDeviceManager *)self _stopWithError:v4];
+  [(MBDeviceManager *)self _stopWithError:callback];
 }
 
-- (void)_disconnectCallback:(id)a3
+- (void)_disconnectCallback:(id)callback
 {
   v4 = MBGetDefaultLog();
   v5 = v4;
-  if (a3)
+  if (callback)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v8 = a3;
+      callbackCopy = callback;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Computer disconnected: %@", buf, 0xCu);
       _MBLog();
     }
@@ -413,9 +413,9 @@ LABEL_17:
   sub_100001BA0(v6);
 }
 
-- (void)_processMessageCallback:(id)a3
+- (void)_processMessageCallback:(id)callback
 {
-  v5 = [a3 objectForKeyedSubscript:@"MessageName"];
+  v5 = [callback objectForKeyedSubscript:@"MessageName"];
   v6 = MBGetDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -428,57 +428,57 @@ LABEL_17:
 
   if ([v5 isEqualToString:{@"Hello", v7}])
   {
-    [(MBDeviceManager *)self _handleHelloMessage:a3];
+    [(MBDeviceManager *)self _handleHelloMessage:callback];
   }
 
   else if ([v5 isEqualToString:@"Backup"])
   {
-    [(MBDeviceManager *)self _handleBackupMessage:a3];
+    [(MBDeviceManager *)self _handleBackupMessage:callback];
   }
 
   else if ([v5 isEqualToString:@"Restore"])
   {
-    [(MBDeviceManager *)self _handleRestoreMessage:a3];
+    [(MBDeviceManager *)self _handleRestoreMessage:callback];
   }
 
   else if ([v5 isEqualToString:@"ChangePassword"])
   {
-    [(MBDeviceManager *)self _handleChangePasswordMessage:a3];
+    [(MBDeviceManager *)self _handleChangePasswordMessage:callback];
   }
 
   else if ([v5 isEqualToString:@"Extract"])
   {
-    [(MBDeviceManager *)self _handleExtractMessage:a3];
+    [(MBDeviceManager *)self _handleExtractMessage:callback];
   }
 
   else if ([v5 isEqualToString:@"Remove"])
   {
-    [(MBDeviceManager *)self _handleRemoveMessage:a3];
+    [(MBDeviceManager *)self _handleRemoveMessage:callback];
   }
 
   else if ([v5 isEqualToString:@"Info"])
   {
-    [(MBDeviceManager *)self _handleInfoMessage:a3];
+    [(MBDeviceManager *)self _handleInfoMessage:callback];
   }
 
   else if ([v5 isEqualToString:@"List"])
   {
-    [(MBDeviceManager *)self _handleListMessage:a3];
+    [(MBDeviceManager *)self _handleListMessage:callback];
   }
 
   else if ([v5 isEqualToString:@"Unback"])
   {
-    [(MBDeviceManager *)self _handleUnbackMessage:a3];
+    [(MBDeviceManager *)self _handleUnbackMessage:callback];
   }
 
   else if ([v5 isEqualToString:@"EnableCloudBackup"])
   {
-    [(MBDeviceManager *)self _enableCloudBackupMessage:a3];
+    [(MBDeviceManager *)self _enableCloudBackupMessage:callback];
   }
 
   else if ([v5 isEqualToString:@"EraseDevice"])
   {
-    [(MBDeviceManager *)self _eraseDeviceMessage:a3];
+    [(MBDeviceManager *)self _eraseDeviceMessage:callback];
   }
 
   else
@@ -487,9 +487,9 @@ LABEL_17:
   }
 }
 
-- (void)_handleHelloMessage:(id)a3
+- (void)_handleHelloMessage:(id)message
 {
-  v4 = [a3 objectForKeyedSubscript:@"SupportedProtocolVersions"];
+  v4 = [message objectForKeyedSubscript:@"SupportedProtocolVersions"];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -560,9 +560,9 @@ LABEL_17:
   }
 }
 
-- (void)_handleBackupMessage:(id)a3
+- (void)_handleBackupMessage:(id)message
 {
-  v4 = -[MBDeviceManager _settingsContextWithSourceIdentifier:targetIdentifier:applicationIDs:options:](self, "_settingsContextWithSourceIdentifier:targetIdentifier:applicationIDs:options:", 0, [a3 objectForKeyedSubscript:@"TargetIdentifier"], 0, objc_msgSend(a3, "objectForKeyedSubscript:", @"Options"));
+  v4 = -[MBDeviceManager _settingsContextWithSourceIdentifier:targetIdentifier:applicationIDs:options:](self, "_settingsContextWithSourceIdentifier:targetIdentifier:applicationIDs:options:", 0, [message objectForKeyedSubscript:@"TargetIdentifier"], 0, objc_msgSend(message, "objectForKeyedSubscript:", @"Options"));
   v5 = +[MBDriveBackupEngine backupEngineWithSettingsContext:debugContext:](MBDriveBackupEngine, "backupEngineWithSettingsContext:debugContext:", v4, +[MBDebugContext defaultDebugContext]);
   [v4 setPlugins:sub_100098474()];
   -[MBProgress setDelegate:](-[MBDriveBackupEngine progress](v5, "progress"), "setDelegate:", [v4 drive]);
@@ -574,10 +574,10 @@ LABEL_17:
     _MBLog();
   }
 
-  v7 = [(MBDriveBackupEngine *)v5 backup];
-  if (v7)
+  backup = [(MBDriveBackupEngine *)v5 backup];
+  if (backup)
   {
-    [(MBDeviceManager *)self _sendResponseMessageWithError:v7];
+    [(MBDeviceManager *)self _sendResponseMessageWithError:backup];
   }
 
   else
@@ -585,12 +585,12 @@ LABEL_17:
     [(MBDeviceManager *)self _sendSuccessResponseMessage];
   }
 
-  [(MBDriveBackupEngine *)v5 endWithError:v7];
+  [(MBDriveBackupEngine *)v5 endWithError:backup];
 }
 
-- (void)_handleRestoreMessage:(id)a3
+- (void)_handleRestoreMessage:(id)message
 {
-  v4 = -[MBDeviceManager _settingsContextWithSourceIdentifier:targetIdentifier:applicationIDs:options:](self, "_settingsContextWithSourceIdentifier:targetIdentifier:applicationIDs:options:", [a3 objectForKeyedSubscript:@"SourceIdentifier"], objc_msgSend(a3, "objectForKeyedSubscript:", @"TargetIdentifier"), objc_msgSend(a3, "objectForKeyedSubscript:", @"ApplicationIDs"), objc_msgSend(a3, "objectForKeyedSubscript:", @"Options"));
+  v4 = -[MBDeviceManager _settingsContextWithSourceIdentifier:targetIdentifier:applicationIDs:options:](self, "_settingsContextWithSourceIdentifier:targetIdentifier:applicationIDs:options:", [message objectForKeyedSubscript:@"SourceIdentifier"], objc_msgSend(message, "objectForKeyedSubscript:", @"TargetIdentifier"), objc_msgSend(message, "objectForKeyedSubscript:", @"ApplicationIDs"), objc_msgSend(message, "objectForKeyedSubscript:", @"Options"));
   v5 = +[MBDriveRestoreEngine restoreEngineWithSettingsContext:debugContext:](MBDriveRestoreEngine, "restoreEngineWithSettingsContext:debugContext:", v4, +[MBDebugContext defaultDebugContext]);
   [v4 setPlugins:sub_100098474()];
   -[MBProgress setDelegate:](-[MBDriveRestoreEngine progress](v5, "progress"), "setDelegate:", [v4 drive]);
@@ -602,10 +602,10 @@ LABEL_17:
     _MBLog();
   }
 
-  v7 = [(MBDriveRestoreEngine *)v5 restore];
-  if (v7)
+  restore = [(MBDriveRestoreEngine *)v5 restore];
+  if (restore)
   {
-    [(MBDeviceManager *)self _sendResponseMessageWithError:v7];
+    [(MBDeviceManager *)self _sendResponseMessageWithError:restore];
   }
 
   else
@@ -613,13 +613,13 @@ LABEL_17:
     [(MBDeviceManager *)self _sendSuccessResponseMessage];
   }
 
-  [(MBDriveRestoreEngine *)v5 endWithError:v7];
+  [(MBDriveRestoreEngine *)v5 endWithError:restore];
 }
 
-- (void)_handleChangePasswordMessage:(id)a3
+- (void)_handleChangePasswordMessage:(id)message
 {
   v4 = 0;
-  if ([objc_msgSend(-[MBDeviceManager _settingsContextWithSourceIdentifier:targetIdentifier:applicationIDs:options:](self _settingsContextWithSourceIdentifier:0 targetIdentifier:objc_msgSend(a3 applicationIDs:"objectForKeyedSubscript:" options:{@"TargetIdentifier", 0, 0), "encryptionManager"), "changePasswordFrom:toPassword:error:", objc_msgSend(a3, "objectForKeyedSubscript:", @"OldPassword", objc_msgSend(a3, "objectForKeyedSubscript:", @"NewPassword", &v4}])
+  if ([objc_msgSend(-[MBDeviceManager _settingsContextWithSourceIdentifier:targetIdentifier:applicationIDs:options:](self _settingsContextWithSourceIdentifier:0 targetIdentifier:objc_msgSend(message applicationIDs:"objectForKeyedSubscript:" options:{@"TargetIdentifier", 0, 0), "encryptionManager"), "changePasswordFrom:toPassword:error:", objc_msgSend(message, "objectForKeyedSubscript:", @"OldPassword", objc_msgSend(message, "objectForKeyedSubscript:", @"NewPassword", &v4}])
   {
     [(MBDeviceManager *)self _sendSuccessResponseMessage];
   }
@@ -630,14 +630,14 @@ LABEL_17:
   }
 }
 
-- (void)_handleExtractMessage:(id)a3
+- (void)_handleExtractMessage:(id)message
 {
   v14 = 0;
-  v5 = [a3 objectForKeyedSubscript:@"SourceIdentifier"];
-  v6 = [a3 objectForKeyedSubscript:@"TargetIdentifier"];
-  v7 = [a3 objectForKeyedSubscript:@"DomainName"];
-  v8 = [a3 objectForKeyedSubscript:@"RelativePath"];
-  v9 = [a3 objectForKeyedSubscript:@"Password"];
+  v5 = [message objectForKeyedSubscript:@"SourceIdentifier"];
+  v6 = [message objectForKeyedSubscript:@"TargetIdentifier"];
+  v7 = [message objectForKeyedSubscript:@"DomainName"];
+  v8 = [message objectForKeyedSubscript:@"RelativePath"];
+  v9 = [message objectForKeyedSubscript:@"Password"];
   if (v9)
   {
     v15 = @"Password";
@@ -670,17 +670,17 @@ LABEL_17:
   }
 }
 
-- (void)_handleRemoveMessage:(id)a3
+- (void)_handleRemoveMessage:(id)message
 {
   v4 = [MBError errorWithCode:1 format:@"Remove action is no longer supported"];
 
   [(MBDeviceManager *)self _sendResponseMessageWithError:v4];
 }
 
-- (void)_handleInfoMessage:(id)a3
+- (void)_handleInfoMessage:(id)message
 {
   v8 = 0;
-  v4 = +[MBDeviceTools toolsWithSettingsContext:error:](MBDeviceTools, "toolsWithSettingsContext:error:", -[MBDeviceManager _settingsContextWithSourceIdentifier:targetIdentifier:applicationIDs:options:](self, "_settingsContextWithSourceIdentifier:targetIdentifier:applicationIDs:options:", [a3 objectForKeyedSubscript:@"SourceIdentifier"], objc_msgSend(a3, "objectForKeyedSubscript:", @"TargetIdentifier"), 0, 0), &v8);
+  v4 = +[MBDeviceTools toolsWithSettingsContext:error:](MBDeviceTools, "toolsWithSettingsContext:error:", -[MBDeviceManager _settingsContextWithSourceIdentifier:targetIdentifier:applicationIDs:options:](self, "_settingsContextWithSourceIdentifier:targetIdentifier:applicationIDs:options:", [message objectForKeyedSubscript:@"SourceIdentifier"], objc_msgSend(message, "objectForKeyedSubscript:", @"TargetIdentifier"), 0, 0), &v8);
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -703,10 +703,10 @@ LABEL_17:
   }
 }
 
-- (void)_handleListMessage:(id)a3
+- (void)_handleListMessage:(id)message
 {
   v8 = 0;
-  v4 = +[MBDeviceTools toolsWithSettingsContext:error:](MBDeviceTools, "toolsWithSettingsContext:error:", -[MBDeviceManager _settingsContextWithSourceIdentifier:targetIdentifier:applicationIDs:options:](self, "_settingsContextWithSourceIdentifier:targetIdentifier:applicationIDs:options:", [a3 objectForKeyedSubscript:@"SourceIdentifier"], objc_msgSend(a3, "objectForKeyedSubscript:", @"TargetIdentifier"), 0, 0), &v8);
+  v4 = +[MBDeviceTools toolsWithSettingsContext:error:](MBDeviceTools, "toolsWithSettingsContext:error:", -[MBDeviceManager _settingsContextWithSourceIdentifier:targetIdentifier:applicationIDs:options:](self, "_settingsContextWithSourceIdentifier:targetIdentifier:applicationIDs:options:", [message objectForKeyedSubscript:@"SourceIdentifier"], objc_msgSend(message, "objectForKeyedSubscript:", @"TargetIdentifier"), 0, 0), &v8);
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -729,12 +729,12 @@ LABEL_17:
   }
 }
 
-- (void)_handleUnbackMessage:(id)a3
+- (void)_handleUnbackMessage:(id)message
 {
   v12 = 0;
-  v5 = [a3 objectForKeyedSubscript:@"SourceIdentifier"];
-  v6 = [a3 objectForKeyedSubscript:@"TargetIdentifier"];
-  v7 = [a3 objectForKeyedSubscript:@"Password"];
+  v5 = [message objectForKeyedSubscript:@"SourceIdentifier"];
+  v6 = [message objectForKeyedSubscript:@"TargetIdentifier"];
+  v7 = [message objectForKeyedSubscript:@"Password"];
   if (v7)
   {
     v13 = @"Password";
@@ -767,10 +767,10 @@ LABEL_17:
   }
 }
 
-- (void)_enableCloudBackupMessage:(id)a3
+- (void)_enableCloudBackupMessage:(id)message
 {
   v19 = 0;
-  v4 = [objc_msgSend(a3 objectForKeyedSubscript:{@"CloudBackupState", "BOOLValue"}];
+  v4 = [objc_msgSend(message objectForKeyedSubscript:{@"CloudBackupState", "BOOLValue"}];
   if (v4 && ([+[MBManagedPolicy sharedPolicy](MBManagedPolicy "sharedPolicy")] & 1) == 0)
   {
 LABEL_17:
@@ -781,8 +781,8 @@ LABEL_18:
   }
 
   v5 = +[ACAccountStore defaultStore];
-  v6 = [v5 aa_primaryAppleAccount];
-  if (!v6)
+  aa_primaryAppleAccount = [v5 aa_primaryAppleAccount];
+  if (!aa_primaryAppleAccount)
   {
     v12 = MBGetDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -797,26 +797,26 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v7 = v6;
+  v7 = aa_primaryAppleAccount;
   v8 = kAccountDataclassBackup;
-  if (![v6 isProvisionedForDataclass:kAccountDataclassBackup])
+  if (![aa_primaryAppleAccount isProvisionedForDataclass:kAccountDataclassBackup])
   {
     v14 = MBGetDefaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v7 accountDescription];
-      v16 = [v7 provisionedDataclasses];
+      accountDescription = [v7 accountDescription];
+      provisionedDataclasses = [v7 provisionedDataclasses];
       *buf = 138412546;
-      v21 = v15;
+      v21 = accountDescription;
       v22 = 2112;
-      v23 = v16;
+      v23 = provisionedDataclasses;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "The account %@ is not provisioned for cloud backup. %@", buf, 0x16u);
-      v17 = [v7 accountDescription];
-      v18 = [v7 provisionedDataclasses];
+      accountDescription2 = [v7 accountDescription];
+      provisionedDataclasses2 = [v7 provisionedDataclasses];
       _MBLog();
     }
 
-    v19 = [MBError errorWithCode:1 format:@"The primary account is not provisioned for cloud backup", v17, v18];
+    v19 = [MBError errorWithCode:1 format:@"The primary account is not provisioned for cloud backup", accountDescription2, provisionedDataclasses2];
     [v5 saveAccount:v7 withCompletionHandler:&stru_1000FD7F8];
     goto LABEL_17;
   }
@@ -835,22 +835,22 @@ LABEL_18:
       v10 = @"Dis";
     }
 
-    v11 = [v7 accountDescription];
+    accountDescription3 = [v7 accountDescription];
     *buf = 138412546;
     v21 = v10;
     v22 = 2112;
-    v23 = v11;
+    v23 = accountDescription3;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@abled account %@ for cloud backup", buf, 0x16u);
-    v17 = v10;
-    v18 = [v7 accountDescription];
+    accountDescription2 = v10;
+    provisionedDataclasses2 = [v7 accountDescription];
     _MBLog();
   }
 
-  [v5 saveAccount:v7 withCompletionHandler:{&stru_1000FD7F8, v17, v18}];
+  [v5 saveAccount:v7 withCompletionHandler:{&stru_1000FD7F8, accountDescription2, provisionedDataclasses2}];
   [(MBDeviceManager *)self _sendSuccessResponseMessage];
 }
 
-- (void)_eraseDeviceMessage:(id)a3
+- (void)_eraseDeviceMessage:(id)message
 {
   v4 = MBGetDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

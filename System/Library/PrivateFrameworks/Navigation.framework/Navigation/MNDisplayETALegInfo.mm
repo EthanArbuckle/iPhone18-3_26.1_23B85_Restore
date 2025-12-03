@@ -1,8 +1,8 @@
 @interface MNDisplayETALegInfo
-- (BOOL)isEqual:(id)a3;
-- (MNDisplayETALegInfo)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MNDisplayETALegInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MNDisplayETALegInfo
@@ -19,13 +19,13 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(NSUUID *)self->_waypointID isEqual:v5[1]]&& self->_legIndex == v5[2] && self->_remainingMinutes == v5[3] && [MNDisplayETAInfo isDisplayDate:self->_eta equalTo:v5[4]];
   }
 
@@ -37,36 +37,36 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   waypointID = self->_waypointID;
-  v5 = a3;
-  [v5 encodeObject:waypointID forKey:@"_waypointID"];
-  [v5 encodeInteger:self->_legIndex forKey:@"_legIndex"];
-  [v5 encodeInteger:self->_remainingMinutes forKey:@"_remainingMinutes"];
-  [v5 encodeObject:self->_eta forKey:@"_eta"];
-  [v5 encodeObject:self->_timeZone forKey:@"_timeZone"];
+  coderCopy = coder;
+  [coderCopy encodeObject:waypointID forKey:@"_waypointID"];
+  [coderCopy encodeInteger:self->_legIndex forKey:@"_legIndex"];
+  [coderCopy encodeInteger:self->_remainingMinutes forKey:@"_remainingMinutes"];
+  [coderCopy encodeObject:self->_eta forKey:@"_eta"];
+  [coderCopy encodeObject:self->_timeZone forKey:@"_timeZone"];
 }
 
-- (MNDisplayETALegInfo)initWithCoder:(id)a3
+- (MNDisplayETALegInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MNDisplayETALegInfo;
   v5 = [(MNDisplayETALegInfo *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_waypointID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_waypointID"];
     waypointID = v5->_waypointID;
     v5->_waypointID = v6;
 
-    v5->_legIndex = [v4 decodeIntegerForKey:@"_legIndex"];
-    v5->_remainingMinutes = [v4 decodeIntegerForKey:@"_remainingMinutes"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_eta"];
+    v5->_legIndex = [coderCopy decodeIntegerForKey:@"_legIndex"];
+    v5->_remainingMinutes = [coderCopy decodeIntegerForKey:@"_remainingMinutes"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_eta"];
     eta = v5->_eta;
     v5->_eta = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_timeZone"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_timeZone"];
     timeZone = v5->_timeZone;
     v5->_timeZone = v10;
 

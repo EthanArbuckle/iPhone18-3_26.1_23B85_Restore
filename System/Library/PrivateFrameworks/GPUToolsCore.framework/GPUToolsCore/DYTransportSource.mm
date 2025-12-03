@@ -1,17 +1,17 @@
 @interface DYTransportSource
 - (BOOL)cancelled;
 - (DYTransportSource)init;
-- (id)_initWithQueue:(id)a3 transport:(id)a4;
+- (id)_initWithQueue:(id)queue transport:(id)transport;
 - (void)_callCancellationHandler;
 - (void)_callRegistrationHandler;
 - (void)_cancel;
-- (void)_dispatch:(id)a3;
+- (void)_dispatch:(id)_dispatch;
 - (void)_register;
 - (void)cancel;
 - (void)dealloc;
-- (void)setCancellationHandler:(id)a3;
-- (void)setMessageHandler:(id)a3;
-- (void)setRegistrationHandler:(id)a3;
+- (void)setCancellationHandler:(id)handler;
+- (void)setMessageHandler:(id)handler;
+- (void)setRegistrationHandler:(id)handler;
 @end
 
 @implementation DYTransportSource
@@ -23,14 +23,14 @@
   return 0;
 }
 
-- (id)_initWithQueue:(id)a3 transport:(id)a4
+- (id)_initWithQueue:(id)queue transport:(id)transport
 {
-  if (!a3)
+  if (!queue)
   {
     [DYContinuation initWithQueue:block:];
   }
 
-  if (!a4)
+  if (!transport)
   {
     [DYTransportSource _initWithQueue:transport:];
   }
@@ -40,13 +40,13 @@
   v6 = [(DYTransportSource *)&v14 init];
   if (v6)
   {
-    v6->_transport = a4;
+    v6->_transport = transport;
     v7 = [objc_msgSend(MEMORY[0x277CCACA8] stringWithFormat:@"gputools.%@.%p.%@", objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", object_getClassName(v6)), v6, @"manager", "UTF8String"];
-    v8 = dispatch_queue_create_with_target_V2(v7, 0, a3);
+    v8 = dispatch_queue_create_with_target_V2(v7, 0, queue);
     v6->_queue = v8;
     dispatch_suspend(v8);
     v9 = [objc_msgSend(MEMORY[0x277CCACA8] stringWithFormat:@"gputools.%@.%p.%@", objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", object_getClassName(v6)), v6, @"message", "UTF8String"];
-    v10 = dispatch_queue_create_with_target_V2(v9, 0, a3);
+    v10 = dispatch_queue_create_with_target_V2(v9, 0, queue);
     v6->_mqueue = v10;
     dispatch_suspend(v10);
     queue = v6->_queue;
@@ -105,9 +105,9 @@ void __27__DYTransportSource_cancel__block_invoke(uint64_t a1)
   return v2 & 1;
 }
 
-- (void)setMessageHandler:(id)a3
+- (void)setMessageHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   dispatch_suspend(self->_mqueue);
   queue = self->_queue;
   v6[0] = MEMORY[0x277D85DD0];
@@ -119,9 +119,9 @@ void __27__DYTransportSource_cancel__block_invoke(uint64_t a1)
   dispatch_async(queue, v6);
 }
 
-- (void)setCancellationHandler:(id)a3
+- (void)setCancellationHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   dispatch_suspend(self->_mqueue);
   queue = self->_queue;
   v6[0] = MEMORY[0x277D85DD0];
@@ -133,9 +133,9 @@ void __27__DYTransportSource_cancel__block_invoke(uint64_t a1)
   dispatch_async(queue, v6);
 }
 
-- (void)setRegistrationHandler:(id)a3
+- (void)setRegistrationHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   dispatch_suspend(self->_mqueue);
   queue = self->_queue;
   v6[0] = MEMORY[0x277D85DD0];
@@ -190,7 +190,7 @@ void __27__DYTransportSource_cancel__block_invoke(uint64_t a1)
   dispatch_async(mqueue, block);
 }
 
-- (void)_dispatch:(id)a3
+- (void)_dispatch:(id)_dispatch
 {
   mqueue = self->_mqueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -198,7 +198,7 @@ void __27__DYTransportSource_cancel__block_invoke(uint64_t a1)
   v4[2] = __31__DYTransportSource__dispatch___block_invoke;
   v4[3] = &unk_27930C170;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = _dispatch;
   dispatch_async(mqueue, v4);
 }
 
@@ -212,7 +212,7 @@ void __27__DYTransportSource_cancel__block_invoke(uint64_t a1)
     v6 = 3221225472;
     v7 = __27__DYTransportSource_cancel__block_invoke;
     v8 = &unk_27930C1E8;
-    v9 = self;
+    selfCopy = self;
     dispatch_async(v4, block);
   }
 }
@@ -284,7 +284,7 @@ void __44__DYTransportSource_setRegistrationHandler___block_invoke(uint64_t a1)
       v7 = 3221225472;
       v8 = __30__DYTransportSource__register__block_invoke;
       v9 = &unk_27930C1E8;
-      v10 = self;
+      selfCopy = self;
       dispatch_async(v5, block);
     }
 

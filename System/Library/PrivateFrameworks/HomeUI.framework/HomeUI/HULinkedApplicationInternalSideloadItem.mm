@@ -1,57 +1,57 @@
 @interface HULinkedApplicationInternalSideloadItem
-- (HULinkedApplicationInternalSideloadItem)initWithBundleIdentifier:(id)a3;
-- (HULinkedApplicationInternalSideloadItem)initWithBundleIdentifier:(id)a3 associatedAccessories:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HULinkedApplicationInternalSideloadItem)initWithBundleIdentifier:(id)identifier;
+- (HULinkedApplicationInternalSideloadItem)initWithBundleIdentifier:(id)identifier associatedAccessories:(id)accessories;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HULinkedApplicationInternalSideloadItem
 
-- (HULinkedApplicationInternalSideloadItem)initWithBundleIdentifier:(id)a3
+- (HULinkedApplicationInternalSideloadItem)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HULinkedApplicationInternalSideloadItem;
   v6 = [(HULinkedApplicationItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleIdentifier, a3);
+    objc_storeStrong(&v6->_bundleIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (HULinkedApplicationInternalSideloadItem)initWithBundleIdentifier:(id)a3 associatedAccessories:(id)a4
+- (HULinkedApplicationInternalSideloadItem)initWithBundleIdentifier:(id)identifier associatedAccessories:(id)accessories
 {
-  v6 = a4;
-  v7 = [(HULinkedApplicationInternalSideloadItem *)self initWithBundleIdentifier:a3];
+  accessoriesCopy = accessories;
+  v7 = [(HULinkedApplicationInternalSideloadItem *)self initWithBundleIdentifier:identifier];
   v8 = v7;
   if (v7)
   {
-    [(HULinkedApplicationItem *)v7 setAssociatedAccessories:v6];
+    [(HULinkedApplicationItem *)v7 setAssociatedAccessories:accessoriesCopy];
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HULinkedApplicationInternalSideloadItem *)self bundleIdentifier];
-  v6 = [v5 copy];
-  v7 = [(HULinkedApplicationItem *)self associatedAccessories];
-  v8 = [v4 initWithBundleIdentifier:v6 associatedAccessories:v7];
+  bundleIdentifier = [(HULinkedApplicationInternalSideloadItem *)self bundleIdentifier];
+  v6 = [bundleIdentifier copy];
+  associatedAccessories = [(HULinkedApplicationItem *)self associatedAccessories];
+  v8 = [v4 initWithBundleIdentifier:v6 associatedAccessories:associatedAccessories];
 
   [v8 copyLatestResultsFromItem:self];
   return v8;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v8.receiver = self;
   v8.super_class = HULinkedApplicationInternalSideloadItem;
-  v4 = [(HULinkedApplicationItem *)&v8 _subclass_updateWithOptions:a3];
+  v4 = [(HULinkedApplicationItem *)&v8 _subclass_updateWithOptions:options];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__HULinkedApplicationInternalSideloadItem__subclass_updateWithOptions___block_invoke;

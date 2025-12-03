@@ -1,53 +1,53 @@
 @interface SMTTRPDetected
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SMTTRPDetected)initWithBuilder:(id)a3;
-- (SMTTRPDetected)initWithCoder:(id)a3;
-- (SMTTRPDetected)initWithGeneratedHostTime:(unint64_t)a3 lastTRPCandidateId:(id)a4 trpDetectedAudioTimeStamp:(double)a5;
-- (SMTTRPDetected)initWithGeneratedHostTime:(unint64_t)a3 lastTRPCandidateId:(id)a4 trpDetectedAudioTimeStamp:(double)a5 requestId:(id)a6;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SMTTRPDetected)initWithBuilder:(id)builder;
+- (SMTTRPDetected)initWithCoder:(id)coder;
+- (SMTTRPDetected)initWithGeneratedHostTime:(unint64_t)time lastTRPCandidateId:(id)id trpDetectedAudioTimeStamp:(double)stamp;
+- (SMTTRPDetected)initWithGeneratedHostTime:(unint64_t)time lastTRPCandidateId:(id)id trpDetectedAudioTimeStamp:(double)stamp requestId:(id)requestId;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMTTRPDetected
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   generatedHostTime = self->_generatedHostTime;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedLongLong:generatedHostTime];
-  [v6 encodeObject:v7 forKey:@"SMTTRPDetected::generatedHostTime"];
+  [coderCopy encodeObject:v7 forKey:@"SMTTRPDetected::generatedHostTime"];
 
-  [v6 encodeObject:self->_lastTRPCandidateId forKey:@"SMTTRPDetected::lastTRPCandidateId"];
-  [v6 encodeObject:self->_requestId forKey:@"SMTTRPDetected::requestId"];
+  [coderCopy encodeObject:self->_lastTRPCandidateId forKey:@"SMTTRPDetected::lastTRPCandidateId"];
+  [coderCopy encodeObject:self->_requestId forKey:@"SMTTRPDetected::requestId"];
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_trpDetectedAudioTimeStamp];
-  [v6 encodeObject:v8 forKey:@"SMTTRPDetected::trpDetectedAudioTimeStamp"];
+  [coderCopy encodeObject:v8 forKey:@"SMTTRPDetected::trpDetectedAudioTimeStamp"];
 }
 
-- (SMTTRPDetected)initWithCoder:(id)a3
+- (SMTTRPDetected)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMTTRPDetected::generatedHostTime"];
-  v6 = [v5 unsignedLongLongValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTTRPDetected::generatedHostTime"];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMTTRPDetected::lastTRPCandidateId"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMTTRPDetected::requestId"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SMTTRPDetected::trpDetectedAudioTimeStamp"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTTRPDetected::lastTRPCandidateId"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTTRPDetected::requestId"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SMTTRPDetected::trpDetectedAudioTimeStamp"];
 
   [v9 doubleValue];
   v11 = v10;
 
-  v12 = [(SMTTRPDetected *)self initWithGeneratedHostTime:v6 lastTRPCandidateId:v7 trpDetectedAudioTimeStamp:v8 requestId:v11];
+  v12 = [(SMTTRPDetected *)self initWithGeneratedHostTime:unsignedLongLongValue lastTRPCandidateId:v7 trpDetectedAudioTimeStamp:v8 requestId:v11];
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -57,17 +57,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       generatedHostTime = self->_generatedHostTime;
       if (generatedHostTime == [(SMTTRPDetected *)v5 generatedHostTime]&& (trpDetectedAudioTimeStamp = self->_trpDetectedAudioTimeStamp, [(SMTTRPDetected *)v5 trpDetectedAudioTimeStamp], trpDetectedAudioTimeStamp == v8))
       {
-        v11 = [(SMTTRPDetected *)v5 lastTRPCandidateId];
+        lastTRPCandidateId = [(SMTTRPDetected *)v5 lastTRPCandidateId];
         lastTRPCandidateId = self->_lastTRPCandidateId;
-        if (lastTRPCandidateId == v11 || [(NSString *)lastTRPCandidateId isEqual:v11])
+        if (lastTRPCandidateId == lastTRPCandidateId || [(NSString *)lastTRPCandidateId isEqual:lastTRPCandidateId])
         {
-          v13 = [(SMTTRPDetected *)v5 requestId];
+          requestId = [(SMTTRPDetected *)v5 requestId];
           requestId = self->_requestId;
-          v9 = requestId == v13 || [(NSString *)requestId isEqual:v13];
+          v9 = requestId == requestId || [(NSString *)requestId isEqual:requestId];
         }
 
         else
@@ -102,7 +102,7 @@
   return v5 ^ v7;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v8.receiver = self;
@@ -113,17 +113,17 @@
   return v6;
 }
 
-- (SMTTRPDetected)initWithGeneratedHostTime:(unint64_t)a3 lastTRPCandidateId:(id)a4 trpDetectedAudioTimeStamp:(double)a5
+- (SMTTRPDetected)initWithGeneratedHostTime:(unint64_t)time lastTRPCandidateId:(id)id trpDetectedAudioTimeStamp:(double)stamp
 {
-  v8 = a4;
+  idCopy = id;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __89__SMTTRPDetected_initWithGeneratedHostTime_lastTRPCandidateId_trpDetectedAudioTimeStamp___block_invoke;
   v12[3] = &unk_2784D5F50;
-  v13 = v8;
-  v14 = a3;
-  v15 = a5;
-  v9 = v8;
+  v13 = idCopy;
+  timeCopy = time;
+  stampCopy = stamp;
+  v9 = idCopy;
   v10 = [(SMTTRPDetected *)self initWithBuilder:v12];
 
   return v10;
@@ -139,20 +139,20 @@ void __89__SMTTRPDetected_initWithGeneratedHostTime_lastTRPCandidateId_trpDetect
   [v4 setTrpDetectedAudioTimeStamp:*(a1 + 48)];
 }
 
-- (SMTTRPDetected)initWithGeneratedHostTime:(unint64_t)a3 lastTRPCandidateId:(id)a4 trpDetectedAudioTimeStamp:(double)a5 requestId:(id)a6
+- (SMTTRPDetected)initWithGeneratedHostTime:(unint64_t)time lastTRPCandidateId:(id)id trpDetectedAudioTimeStamp:(double)stamp requestId:(id)requestId
 {
-  v10 = a4;
-  v11 = a6;
+  idCopy = id;
+  requestIdCopy = requestId;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __99__SMTTRPDetected_initWithGeneratedHostTime_lastTRPCandidateId_trpDetectedAudioTimeStamp_requestId___block_invoke;
   v16[3] = &unk_2784D5F28;
-  v18 = v11;
-  v19 = a3;
-  v17 = v10;
-  v20 = a5;
-  v12 = v11;
-  v13 = v10;
+  v18 = requestIdCopy;
+  timeCopy = time;
+  v17 = idCopy;
+  stampCopy = stamp;
+  v12 = requestIdCopy;
+  v13 = idCopy;
   v14 = [(SMTTRPDetected *)self initWithBuilder:v16];
 
   return v14;
@@ -168,27 +168,27 @@ void __99__SMTTRPDetected_initWithGeneratedHostTime_lastTRPCandidateId_trpDetect
   [v4 setTrpDetectedAudioTimeStamp:*(a1 + 56)];
 }
 
-- (SMTTRPDetected)initWithBuilder:(id)a3
+- (SMTTRPDetected)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v16.receiver = self;
   v16.super_class = SMTTRPDetected;
   v5 = [(SMTTRPDetected *)&v16 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_SMTTRPDetectedMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_SMTTRPDetectedMutation *)v7 isDirty])
     {
       v6->_generatedHostTime = [(_SMTTRPDetectedMutation *)v7 getGeneratedHostTime];
-      v8 = [(_SMTTRPDetectedMutation *)v7 getLastTRPCandidateId];
-      v9 = [v8 copy];
+      getLastTRPCandidateId = [(_SMTTRPDetectedMutation *)v7 getLastTRPCandidateId];
+      v9 = [getLastTRPCandidateId copy];
       lastTRPCandidateId = v6->_lastTRPCandidateId;
       v6->_lastTRPCandidateId = v9;
 
-      v11 = [(_SMTTRPDetectedMutation *)v7 getRequestId];
-      v12 = [v11 copy];
+      getRequestId = [(_SMTTRPDetectedMutation *)v7 getRequestId];
+      v12 = [getRequestId copy];
       requestId = v6->_requestId;
       v6->_requestId = v12;
 
@@ -200,32 +200,32 @@ void __99__SMTTRPDetected_initWithGeneratedHostTime_lastTRPCandidateId_trpDetect
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SMTTRPDetectedMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_SMTTRPDetectedMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(SMTTRPDetected);
       v6->_generatedHostTime = [(_SMTTRPDetectedMutation *)v5 getGeneratedHostTime];
-      v7 = [(_SMTTRPDetectedMutation *)v5 getLastTRPCandidateId];
-      v8 = [v7 copy];
+      getLastTRPCandidateId = [(_SMTTRPDetectedMutation *)v5 getLastTRPCandidateId];
+      v8 = [getLastTRPCandidateId copy];
       lastTRPCandidateId = v6->_lastTRPCandidateId;
       v6->_lastTRPCandidateId = v8;
 
-      v10 = [(_SMTTRPDetectedMutation *)v5 getRequestId];
-      v11 = [v10 copy];
+      getRequestId = [(_SMTTRPDetectedMutation *)v5 getRequestId];
+      v11 = [getRequestId copy];
       requestId = v6->_requestId;
       v6->_requestId = v11;
 

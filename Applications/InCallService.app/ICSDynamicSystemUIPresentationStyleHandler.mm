@@ -1,14 +1,14 @@
 @interface ICSDynamicSystemUIPresentationStyleHandler
-- (void)handlePresentationModeChanged:(int64_t)a3 scene:(id)a4;
+- (void)handlePresentationModeChanged:(int64_t)changed scene:(id)scene;
 @end
 
 @implementation ICSDynamicSystemUIPresentationStyleHandler
 
-- (void)handlePresentationModeChanged:(int64_t)a3 scene:(id)a4
+- (void)handlePresentationModeChanged:(int64_t)changed scene:(id)scene
 {
-  v6 = a4;
-  v7 = self;
-  sub_1001F2AC0(a3, v6);
+  sceneCopy = scene;
+  selfCopy = self;
+  sub_1001F2AC0(changed, sceneCopy);
 }
 
 @end

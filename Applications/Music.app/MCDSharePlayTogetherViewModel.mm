@@ -19,7 +19,7 @@
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC5Music29MCDSharePlayTogetherViewModel_session);
   v3 = *((swift_isaMask & *v2) + 0x1B0);
-  v4 = self;
+  selfCopy = self;
   v5 = v2;
   v6 = v3();
 
@@ -30,7 +30,7 @@
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC5Music29MCDSharePlayTogetherViewModel_session);
   v3 = *((swift_isaMask & *v2) + 0x1E0);
-  v4 = self;
+  selfCopy = self;
   v5 = v2;
   v6 = v3();
 
@@ -41,7 +41,7 @@
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC5Music29MCDSharePlayTogetherViewModel_session);
   v3 = *((swift_isaMask & *v2) + 0x268);
-  v4 = self;
+  selfCopy = self;
   v5 = v2;
   LOBYTE(v3) = v3();
 

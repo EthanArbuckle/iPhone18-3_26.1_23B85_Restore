@@ -1,52 +1,52 @@
 @interface PRRendererPrepareScriptExecutionAction
-+ (id)actionWithScript:(id)a3 responder:(id)a4;
++ (id)actionWithScript:(id)script responder:(id)responder;
 - (PRPosterScript)posterScript;
 - (PRRendererPrepareScriptExecutionAction)init;
-- (PRRendererPrepareScriptExecutionAction)initWithInfo:(id)a3 responder:(id)a4;
-- (PRRendererPrepareScriptExecutionAction)initWithScript:(id)a3 responder:(id)a4;
+- (PRRendererPrepareScriptExecutionAction)initWithInfo:(id)info responder:(id)responder;
+- (PRRendererPrepareScriptExecutionAction)initWithScript:(id)script responder:(id)responder;
 @end
 
 @implementation PRRendererPrepareScriptExecutionAction
 
-+ (id)actionWithScript:(id)a3 responder:(id)a4
++ (id)actionWithScript:(id)script responder:(id)responder
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithScript:v7 responder:v6];
+  responderCopy = responder;
+  scriptCopy = script;
+  v8 = [[self alloc] initWithScript:scriptCopy responder:responderCopy];
 
   return v8;
 }
 
-- (PRRendererPrepareScriptExecutionAction)initWithScript:(id)a3 responder:(id)a4
+- (PRRendererPrepareScriptExecutionAction)initWithScript:(id)script responder:(id)responder
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  scriptCopy = script;
+  responderCopy = responder;
+  if (!scriptCopy)
   {
     [PRRendererPrepareScriptExecutionAction initWithScript:a2 responder:self];
   }
 
   v9 = objc_opt_new();
-  [v9 setObject:v7 forSetting:0];
+  [v9 setObject:scriptCopy forSetting:0];
   v10 = [v9 copy];
   v13.receiver = self;
   v13.super_class = PRRendererPrepareScriptExecutionAction;
-  v11 = [(PRRendererPrepareScriptExecutionAction *)&v13 initWithInfo:v10 responder:v8];
+  v11 = [(PRRendererPrepareScriptExecutionAction *)&v13 initWithInfo:v10 responder:responderCopy];
 
   return v11;
 }
 
 - (PRPosterScript)posterScript
 {
-  v2 = [(PRRendererPrepareScriptExecutionAction *)self info];
-  v3 = [v2 objectForSetting:0];
+  info = [(PRRendererPrepareScriptExecutionAction *)self info];
+  v3 = [info objectForSetting:0];
 
   return v3;
 }
 
-- (PRRendererPrepareScriptExecutionAction)initWithInfo:(id)a3 responder:(id)a4
+- (PRRendererPrepareScriptExecutionAction)initWithInfo:(id)info responder:(id)responder
 {
-  [(PRRendererPrepareScriptExecutionAction *)self doesNotRecognizeSelector:a2, a4];
+  [(PRRendererPrepareScriptExecutionAction *)self doesNotRecognizeSelector:a2, responder];
 
   return 0;
 }

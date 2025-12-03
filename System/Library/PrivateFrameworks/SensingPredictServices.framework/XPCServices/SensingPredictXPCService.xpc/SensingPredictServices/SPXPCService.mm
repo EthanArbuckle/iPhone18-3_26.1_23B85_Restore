@@ -1,7 +1,7 @@
 @interface SPXPCService
 + (id)sharedInstance;
 - (BOOL)_contextEngineShouldRun;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SPXPCService)init;
 - (void)_contextEngineEnsureStarted;
 - (void)_contextEngineEnsureStopped;
@@ -9,9 +9,9 @@
 - (void)_update;
 - (void)_updateContextEventSignal;
 - (void)_updateLocationCategory;
-- (void)_xpcConnectionInvalidated:(id)a3;
-- (void)contextEventUpdated:(unsigned __int8)a3 fusedState:(unsigned int)a4;
-- (void)locationCategoryChanged:(unsigned __int8)a3;
+- (void)_xpcConnectionInvalidated:(id)invalidated;
+- (void)contextEventUpdated:(unsigned __int8)updated fusedState:(unsigned int)state;
+- (void)locationCategoryChanged:(unsigned __int8)changed;
 - (void)scheduleLocationCategoryUpdate;
 @end
 
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = sub_100003D58;
   block[3] = &unk_100010630;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000161F0 != -1)
   {
     dispatch_once(&qword_1000161F0, block);
@@ -61,12 +61,12 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = objc_alloc_init(SPServicesXPCConnection);
   [(SPServicesXPCConnection *)v6 setDispatchQueue:self->_dispatchQueue];
-  [(SPServicesXPCConnection *)v6 setXpcCnx:v5];
+  [(SPServicesXPCConnection *)v6 setXpcCnx:connectionCopy];
   [(SPServicesXPCConnection *)v6 setXpcService:self];
   xpcConnections = self->_xpcConnections;
   if (!xpcConnections)
@@ -80,23 +80,23 @@
 
   [(NSMutableSet *)xpcConnections addObject:v6];
   v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___SPXPCClientInterface];
-  [v5 _setQueue:self->_dispatchQueue];
+  [connectionCopy _setQueue:self->_dispatchQueue];
   v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___SPXPCServiceInterface];
-  [v5 setExportedInterface:v11];
+  [connectionCopy setExportedInterface:v11];
 
-  [v5 setExportedObject:v6];
+  [connectionCopy setExportedObject:v6];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000040B0;
   v13[3] = &unk_1000106E8;
   v13[4] = self;
   v13[5] = v6;
-  [v5 setInvalidationHandler:v13];
-  [v5 setRemoteObjectInterface:v10];
-  [v5 resume];
+  [connectionCopy setInvalidationHandler:v13];
+  [connectionCopy setRemoteObjectInterface:v10];
+  [connectionCopy resume];
   if (dword_100015F40 <= 30 && (dword_100015F40 != -1 || _LogCategory_Initialize()))
   {
-    sub_100009DF8(v5);
+    sub_100009DF8(connectionCopy);
   }
 
   return 1;
@@ -218,20 +218,20 @@ LABEL_25:
   }
 }
 
-- (void)_xpcConnectionInvalidated:(id)a3
+- (void)_xpcConnectionInvalidated:(id)invalidated
 {
-  v4 = a3;
-  v6 = v4;
+  invalidatedCopy = invalidated;
+  v6 = invalidatedCopy;
   if (dword_100015F40 <= 20)
   {
-    if (dword_100015F40 != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
+    if (dword_100015F40 != -1 || (v5 = _LogCategory_Initialize(), invalidatedCopy = v6, v5))
     {
-      sub_100009E3C(v4);
-      v4 = v6;
+      sub_100009E3C(invalidatedCopy);
+      invalidatedCopy = v6;
     }
   }
 
-  [v4 xpcConnectionInvalidated];
+  [invalidatedCopy xpcConnectionInvalidated];
   [(NSMutableSet *)self->_xpcConnections removeObject:v6];
   [(SPXPCService *)self _update];
 }
@@ -277,9 +277,9 @@ LABEL_8:
     contextEngine = self->_contextEngine;
   }
 
-  v6 = [(SPContextMonitor *)self->_contextMonitor contextChangeFlags];
+  contextChangeFlags = [(SPContextMonitor *)self->_contextMonitor contextChangeFlags];
 
-  [(SPContextEngine *)contextEngine processContextChangeFlags:v6];
+  [(SPContextEngine *)contextEngine processContextChangeFlags:contextChangeFlags];
 }
 
 - (void)_contextEngineEnsureStopped
@@ -289,10 +289,10 @@ LABEL_8:
   self->_contextEngine = 0;
 }
 
-- (void)locationCategoryChanged:(unsigned __int8)a3
+- (void)locationCategoryChanged:(unsigned __int8)changed
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  self->_locationCategory = a3;
+  self->_locationCategory = changed;
 
   [(SPXPCService *)self scheduleLocationCategoryUpdate];
 }
@@ -359,14 +359,14 @@ LABEL_8:
   }
 }
 
-- (void)contextEventUpdated:(unsigned __int8)a3 fusedState:(unsigned int)a4
+- (void)contextEventUpdated:(unsigned __int8)updated fusedState:(unsigned int)state
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (!self->_conextEventSignalPending)
   {
     self->_conextEventSignalPending = 1;
-    self->_locationCategory = a3;
-    self->_spFusedState = a4;
+    self->_locationCategory = updated;
+    self->_spFusedState = state;
     dispatchQueue = self->_dispatchQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;

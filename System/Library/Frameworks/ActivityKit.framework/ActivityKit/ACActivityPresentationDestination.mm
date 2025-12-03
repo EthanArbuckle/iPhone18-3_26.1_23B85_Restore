@@ -1,27 +1,27 @@
 @interface ACActivityPresentationDestination
-- (ACActivityPresentationDestination)initWithDestination:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
+- (ACActivityPresentationDestination)initWithDestination:(int64_t)destination;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation ACActivityPresentationDestination
 
-- (ACActivityPresentationDestination)initWithDestination:(int64_t)a3
+- (ACActivityPresentationDestination)initWithDestination:(int64_t)destination
 {
   v5.receiver = self;
   v5.super_class = ACActivityPresentationDestination;
   result = [(ACActivityPresentationDestination *)&v5 init];
   if (result)
   {
-    result->_destination = a3;
+    result->_destination = destination;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -32,7 +32,7 @@
     if (objc_opt_isKindOfClass())
     {
       destination = self->_destination;
-      v6 = destination == [(ACActivityPresentationDestination *)v4 destination];
+      v6 = destination == [(ACActivityPresentationDestination *)equalCopy destination];
     }
 
     else

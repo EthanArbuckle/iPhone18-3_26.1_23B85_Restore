@@ -1,18 +1,18 @@
 @interface CKConversationListTipManager
-- (CKConversationListTipManager)initWithConversationListController:(id)a3;
+- (CKConversationListTipManager)initWithConversationListController:(id)controller;
 @end
 
 @implementation CKConversationListTipManager
 
-- (CKConversationListTipManager)initWithConversationListController:(id)a3
+- (CKConversationListTipManager)initWithConversationListController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = CKConversationListTipManager;
   v5 = [(CKConversationListTipManager *)&v9 init];
   if (v5)
   {
-    v6 = [[CKConversationListTipManagerSwift alloc] initWithConversationListController:v4];
+    v6 = [[CKConversationListTipManagerSwift alloc] initWithConversationListController:controllerCopy];
     swiftManager = v5->_swiftManager;
     v5->_swiftManager = v6;
   }

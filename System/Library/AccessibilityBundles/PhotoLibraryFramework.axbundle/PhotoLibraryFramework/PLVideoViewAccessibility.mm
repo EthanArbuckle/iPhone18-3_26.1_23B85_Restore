@@ -1,5 +1,5 @@
 @interface PLVideoViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)_accessibilityElementStoredUserLabel;
 - (id)accessibilityElements;
@@ -8,21 +8,21 @@
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_createScrubberIfNeeded;
 - (void)_showVideoOverlay;
-- (void)_updateScrubberVisibilityWithDuration:(double)a3;
+- (void)_updateScrubberVisibilityWithDuration:(double)duration;
 - (void)_videoOverlayFadeOutDidFinish;
 - (void)viewDidDisappear;
 @end
 
 @implementation PLVideoViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PLVideoView" hasInstanceVariable:@"_scrubberBackgroundView" withType:"UIView"];
-  [v3 validateClass:@"PLVideoView" hasInstanceVariable:@"_videoCameraImage" withType:"PLManagedAsset"];
-  [v3 validateClass:@"PLVideoView" hasInstanceMethod:@"_updateScrubberVisibilityWithDuration:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"PLVideoView" hasInstanceMethod:@"pathForVideoFile" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PLVideoView" hasInstanceVariable:@"_trimMessageView" withType:"PLVideoEditingOverlayView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PLVideoView" hasInstanceVariable:@"_scrubberBackgroundView" withType:"UIView"];
+  [validationsCopy validateClass:@"PLVideoView" hasInstanceVariable:@"_videoCameraImage" withType:"PLManagedAsset"];
+  [validationsCopy validateClass:@"PLVideoView" hasInstanceMethod:@"_updateScrubberVisibilityWithDuration:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"PLVideoView" hasInstanceMethod:@"pathForVideoFile" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PLVideoView" hasInstanceVariable:@"_trimMessageView" withType:"PLVideoEditingOverlayView"];
 }
 
 - (void)_showVideoOverlay
@@ -89,14 +89,14 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(PLVideoViewAccessibility *)self accessibilityElements];
+  accessibilityElements = [(PLVideoViewAccessibility *)self accessibilityElements];
   if ([(PLVideoViewAccessibility *)self accessibilityElementCount])
   {
-    if ([v3 count] == 1)
+    if ([accessibilityElements count] == 1)
     {
-      v4 = [v3 firstObject];
+      firstObject = [accessibilityElements firstObject];
       v5 = [(PLVideoViewAccessibility *)self safeValueForKey:@"_videoOverlayPlayButton"];
-      v6 = v4 == v5;
+      v6 = firstObject == v5;
     }
 
     else
@@ -116,9 +116,9 @@
 - (id)accessibilityLabel
 {
   v2 = [(PLVideoViewAccessibility *)self safeValueForKey:@"_videoCameraImage"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityElements
@@ -178,11 +178,11 @@
   [v3 setAccessibilityLabel:v4];
 }
 
-- (void)_updateScrubberVisibilityWithDuration:(double)a3
+- (void)_updateScrubberVisibilityWithDuration:(double)duration
 {
   v4.receiver = self;
   v4.super_class = PLVideoViewAccessibility;
-  [(PLVideoViewAccessibility *)&v4 _updateScrubberVisibilityWithDuration:a3];
+  [(PLVideoViewAccessibility *)&v4 _updateScrubberVisibilityWithDuration:duration];
   [(PLVideoViewAccessibility *)self _accessibilityClearChildren];
 }
 
@@ -199,7 +199,7 @@
 
 - (id)_accessibilityElementStoredUserLabel
 {
-  v2 = [(PLVideoViewAccessibility *)self accessibilityURL];
+  accessibilityURL = [(PLVideoViewAccessibility *)self accessibilityURL];
   v3 = UIAccessibilityMetadataDescriptionForVideo();
 
   return v3;

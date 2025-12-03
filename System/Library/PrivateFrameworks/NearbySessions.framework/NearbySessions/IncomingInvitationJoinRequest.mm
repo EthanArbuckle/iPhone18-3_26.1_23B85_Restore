@@ -1,15 +1,15 @@
 @interface IncomingInvitationJoinRequest
 - (_TtC14NearbySessions29IncomingInvitationJoinRequest)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IncomingInvitationJoinRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  IncomingInvitationJoinRequest.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  IncomingInvitationJoinRequest.encode(with:)(coderCopy);
 }
 
 - (_TtC14NearbySessions29IncomingInvitationJoinRequest)init

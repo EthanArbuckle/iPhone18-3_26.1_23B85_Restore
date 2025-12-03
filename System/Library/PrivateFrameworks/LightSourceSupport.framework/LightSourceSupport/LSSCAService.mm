@@ -1,21 +1,21 @@
 @interface LSSCAService
-- (LSSCAService)initWithTargetQueue:(id)a3 subscriber:(id)a4;
+- (LSSCAService)initWithTargetQueue:(id)queue subscriber:(id)subscriber;
 - (LSSSubscriptionProvider)subscriber;
-- (void)_requestGlobalFrom:(int)a3 enabled:;
+- (void)_requestGlobalFrom:(int)from enabled:;
 - (void)_setExtendedDisplayLighting;
 - (void)_updateDisplays;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setLightForDynamicDisplays:(id)a3;
-- (void)setLightForExtendedDisplays:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setLightForDynamicDisplays:(id)displays;
+- (void)setLightForExtendedDisplays:(id)displays;
 @end
 
 @implementation LSSCAService
 
-- (LSSCAService)initWithTargetQueue:(id)a3 subscriber:(id)a4
+- (LSSCAService)initWithTargetQueue:(id)queue subscriber:(id)subscriber
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  subscriberCopy = subscriber;
   v29.receiver = self;
   v29.super_class = LSSCAService;
   v9 = [(LSSCAService *)&v29 init];
@@ -37,19 +37,19 @@
       if (!os_log_type_enabled(_MergedGlobals_9, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_5:
-        v11 = [MEMORY[0x277CDA018] serverIfRunning];
-        if (v11)
+        serverIfRunning = [MEMORY[0x277CDA018] serverIfRunning];
+        if (serverIfRunning)
         {
-          v12 = v11;
-          objc_storeWeak(v9 + 11, v8);
-          objc_storeStrong(v9 + 10, a3);
-          v13 = [MEMORY[0x277CBEB18] array];
+          v12 = serverIfRunning;
+          objc_storeWeak(v9 + 11, subscriberCopy);
+          objc_storeStrong(v9 + 10, queue);
+          array = [MEMORY[0x277CBEB18] array];
           v14 = *(v9 + 1);
-          *(v9 + 1) = v13;
+          *(v9 + 1) = array;
 
-          v15 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
           v16 = *(v9 + 2);
-          *(v9 + 2) = v15;
+          *(v9 + 2) = dictionary;
 
           objc_initWeak(buf, v9);
           v26[0] = MEMORY[0x277D85DD0];
@@ -67,15 +67,15 @@ LABEL_5:
 
           if ([(LSSSettings *)*(v9 + 7) dynamic])
           {
-            v21 = [(LSSSettings *)*(v9 + 7) defaults];
-            [v21 addObserver:v9 forKeyPath:@"lightDefaultAltitude" options:1 context:0];
+            defaults = [(LSSSettings *)*(v9 + 7) defaults];
+            [defaults addObserver:v9 forKeyPath:@"lightDefaultAltitude" options:1 context:0];
           }
 
           *(v9 + 5) = 0x7FF8000000000000;
           [v12 addObserver:v9 forKeyPath:@"displays" options:1 context:0];
           [(LSSCAService *)v9 _updateDisplays];
-          v22 = [MEMORY[0x277CD9E40] TVOutDisplay];
-          [v22 addObserver:v9 forKeyPath:@"availableModes" options:5 context:0];
+          tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+          [tVOutDisplay addObserver:v9 forKeyPath:@"availableModes" options:5 context:0];
 
           objc_destroyWeak(&v27);
           objc_destroyWeak(buf);
@@ -142,11 +142,11 @@ void __47__LSSCAService_initWithTargetQueue_subscriber___block_invoke(uint64_t a
 - (void)dealloc
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CDA018] serverIfRunning];
-  [v3 removeObserver:self forKeyPath:@"displays"];
+  serverIfRunning = [MEMORY[0x277CDA018] serverIfRunning];
+  [serverIfRunning removeObserver:self forKeyPath:@"displays"];
 
-  v4 = [MEMORY[0x277CD9E40] TVOutDisplay];
-  [v4 removeObserver:self forKeyPath:@"availableModes"];
+  tVOutDisplay = [MEMORY[0x277CD9E40] TVOutDisplay];
+  [tVOutDisplay removeObserver:self forKeyPath:@"availableModes"];
 
   globalLightRequests = self->_globalLightRequests;
   if (globalLightRequests)
@@ -191,9 +191,9 @@ void __47__LSSCAService_initWithTargetQueue_subscriber___block_invoke(uint64_t a
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLightForDynamicDisplays:(id)a3
+- (void)setLightForDynamicDisplays:(id)displays
 {
-  var0 = a3.var0;
+  var0 = displays.var0;
   v62 = *MEMORY[0x277D85DE8];
   v5 = self->_requestedUpdateCount + 1;
   self->_requestedUpdateCount = v5;
@@ -298,9 +298,9 @@ LABEL_5:
     *&v40 = v21;
     [(LSSCAParamsDictionary *)self->_params setParams:v37, v38, v39, v40];
     ++self->_actualUpdateCount;
-    v41 = [MEMORY[0x277CDA018] serverIfRunning];
-    v42 = v41;
-    if (!v41)
+    serverIfRunning = [MEMORY[0x277CDA018] serverIfRunning];
+    v42 = serverIfRunning;
+    if (!serverIfRunning)
     {
       goto LABEL_33;
     }
@@ -310,7 +310,7 @@ LABEL_5:
     v55[2] = __43__LSSCAService_setLightForDynamicDisplays___block_invoke;
     v55[3] = &unk_2798128E8;
     v55[4] = self;
-    [v41 lss_filterDisplays:v55 into:self->_displaysToUpdate];
+    [serverIfRunning lss_filterDisplays:v55 into:self->_displaysToUpdate];
     if (![(NSMutableArray *)self->_displaysToUpdate count])
     {
       goto LABEL_33;
@@ -407,13 +407,13 @@ BOOL __43__LSSCAService_setLightForDynamicDisplays___block_invoke(uint64_t a1, v
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 isEqualToString:@"availableModes"])
+  pathCopy = path;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"availableModes"])
   {
-    v10 = [v9 valueForKeyPath:*MEMORY[0x277CCA2F0]];
+    v10 = [changeCopy valueForKeyPath:*MEMORY[0x277CCA2F0]];
     if ([v10 count])
     {
       queue = self->_queue;
@@ -452,7 +452,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if ([v8 isEqualToString:@"displays"])
+  if ([pathCopy isEqualToString:@"displays"])
   {
     v12 = self->_queue;
     v14[0] = MEMORY[0x277D85DD0];
@@ -473,10 +473,10 @@ LABEL_10:
   return WeakRetained;
 }
 
-- (void)_requestGlobalFrom:(int)a3 enabled:
+- (void)_requestGlobalFrom:(int)from enabled:
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     if (qword_280D2F570 != -1)
     {
@@ -489,15 +489,15 @@ LABEL_10:
       v14[0] = 67109376;
       v14[1] = a2;
       v15 = 1024;
-      v16 = a3;
+      fromCopy = from;
       _os_log_impl(&dword_255E8B000, v6, OS_LOG_TYPE_DEFAULT, "changing global light: %u, %d", v14, 0xEu);
     }
 
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a2];
-    v8 = [*(a1 + 16) objectForKey:v7];
+    v8 = [*(self + 16) objectForKey:v7];
     v9 = v8;
-    v10 = a3 ^ 1;
-    if (((a3 ^ 1) & 1) != 0 || v8)
+    v10 = from ^ 1;
+    if (((from ^ 1) & 1) != 0 || v8)
     {
       if (!v8)
       {
@@ -506,17 +506,17 @@ LABEL_10:
 
       if (v10 == 1)
       {
-        [*(a1 + 16) removeObjectForKey:v7];
+        [*(self + 16) removeObjectForKey:v7];
         [v9 invalidate];
       }
     }
 
     else
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 88));
+      WeakRetained = objc_loadWeakRetained((self + 88));
       v12 = [WeakRetained addAssertion:100 reason:@"CoreAnimation"];
 
-      [*(a1 + 16) setObject:v12 forKey:v7];
+      [*(self + 16) setObject:v12 forKey:v7];
     }
   }
 
@@ -526,7 +526,7 @@ LABEL_10:
 - (void)_updateDisplays
 {
   v35 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     if (qword_280D2F570 != -1)
     {
@@ -540,14 +540,14 @@ LABEL_10:
       _os_log_impl(&dword_255E8B000, v2, OS_LOG_TYPE_DEFAULT, "displays changed", buf, 2u);
     }
 
-    v3 = [MEMORY[0x277CDA018] serverIfRunning];
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    v5 = [v3 displays];
+    serverIfRunning = [MEMORY[0x277CDA018] serverIfRunning];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    displays = [serverIfRunning displays];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v28 objects:v34 count:16];
+    v6 = [displays countByEnumeratingWithState:&v28 objects:v34 count:16];
     if (v6)
     {
       v7 = v6;
@@ -558,23 +558,23 @@ LABEL_10:
         {
           if (*v29 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(displays);
           }
 
           v10 = *(*(&v28 + 1) + 8 * i);
           if (([v10 displayType] | 2) == 2)
           {
-            [v10 setNeedsGlobalLightCallback:*(a1 + 48)];
+            [v10 setNeedsGlobalLightCallback:*(self + 48)];
             v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v10, "displayId")}];
-            v12 = [*(a1 + 16) objectForKey:v11];
+            v12 = [*(self + 16) objectForKey:v11];
             if (v12)
             {
-              [v4 setObject:v12 forKey:v11];
+              [dictionary setObject:v12 forKey:v11];
             }
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v28 objects:v34 count:16];
+        v7 = [displays countByEnumeratingWithState:&v28 objects:v34 count:16];
       }
 
       while (v7);
@@ -584,7 +584,7 @@ LABEL_10:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v13 = *(a1 + 16);
+    v13 = *(self + 16);
     v14 = [v13 countByEnumeratingWithState:&v24 objects:v33 count:16];
     if (v14)
     {
@@ -600,11 +600,11 @@ LABEL_10:
           }
 
           v18 = *(*(&v24 + 1) + 8 * j);
-          v19 = [v4 objectForKey:{v18, v24}];
+          v19 = [dictionary objectForKey:{v18, v24}];
 
           if (!v19)
           {
-            v20 = [*(a1 + 16) objectForKey:v18];
+            v20 = [*(self + 16) objectForKey:v18];
             [v20 invalidate];
           }
         }
@@ -615,11 +615,11 @@ LABEL_10:
       while (v15);
     }
 
-    v21 = *(a1 + 16);
-    *(a1 + 16) = v4;
-    v22 = v4;
+    v21 = *(self + 16);
+    *(self + 16) = dictionary;
+    v22 = dictionary;
 
-    [*(a1 + 24) setParams:{0.0, 0.0, 0.0, 0.0}];
+    [*(self + 24) setParams:{0.0, 0.0, 0.0, 0.0}];
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -628,14 +628,14 @@ LABEL_10:
 - (void)_setExtendedDisplayLighting
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x277CDA018] serverIfRunning];
-    v3 = v2;
-    if (v2 && *(a1 + 32))
+    serverIfRunning = [MEMORY[0x277CDA018] serverIfRunning];
+    v3 = serverIfRunning;
+    if (serverIfRunning && *(self + 32))
     {
-      v4 = [v2 lss_extendedDisplays];
-      if ([v4 count])
+      lss_extendedDisplays = [serverIfRunning lss_extendedDisplays];
+      if ([lss_extendedDisplays count])
       {
         if (qword_280D2F570 != -1)
         {
@@ -666,7 +666,7 @@ LABEL_10:
         v27 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v12 = v4;
+        v12 = lss_extendedDisplays;
         v13 = [v12 countByEnumeratingWithState:&v24 objects:v29 count:16];
         if (v13)
         {
@@ -681,7 +681,7 @@ LABEL_10:
                 objc_enumerationMutation(v12);
               }
 
-              [*(*(&v24 + 1) + 8 * i) setGlobalLightParameters:{*(a1 + 32), v24}];
+              [*(*(&v24 + 1) + 8 * i) setGlobalLightParameters:{*(self + 32), v24}];
             }
 
             v14 = [v12 countByEnumeratingWithState:&v24 objects:v29 count:16];
@@ -709,9 +709,9 @@ LABEL_10:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLightForExtendedDisplays:(id)a3
+- (void)setLightForExtendedDisplays:(id)displays
 {
-  var0 = a3.var0;
+  var0 = displays.var0;
   v15 = *MEMORY[0x277D85DE8];
   if (!self->_extendedParams)
   {

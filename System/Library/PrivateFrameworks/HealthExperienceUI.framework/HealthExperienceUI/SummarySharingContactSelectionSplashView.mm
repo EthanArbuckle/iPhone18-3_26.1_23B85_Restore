@@ -1,11 +1,11 @@
 @interface SummarySharingContactSelectionSplashView
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (_TtC18HealthExperienceUI40SummarySharingContactSelectionSplashView)initWithCoder:(id)a3;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (_TtC18HealthExperienceUI40SummarySharingContactSelectionSplashView)initWithCoder:(id)coder;
 @end
 
 @implementation SummarySharingContactSelectionSplashView
 
-- (_TtC18HealthExperienceUI40SummarySharingContactSelectionSplashView)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI40SummarySharingContactSelectionSplashView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI40SummarySharingContactSelectionSplashView_openContactsHandler);
   *v3 = 0;
@@ -15,7 +15,7 @@
   return result;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v7 = sub_1BA4A15D8();
   v8 = *(v7 - 8);
@@ -26,7 +26,7 @@
   if (v11)
   {
     v12 = *(&self->super.super._responderFlags + OBJC_IVAR____TtC18HealthExperienceUI40SummarySharingContactSelectionSplashView_openContactsHandler);
-    v13 = self;
+    selfCopy = self;
     v14 = sub_1B9F0F1B4(v11, v12);
     v11(v14);
     sub_1B9F0E310(v11);

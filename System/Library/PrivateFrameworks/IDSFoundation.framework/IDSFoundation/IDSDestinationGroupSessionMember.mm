@@ -1,37 +1,37 @@
 @interface IDSDestinationGroupSessionMember
-- (IDSDestinationGroupSessionMember)initWithCoder:(id)a3;
-- (IDSDestinationGroupSessionMember)initWithURI:(id)a3 isLightWeight:(BOOL)a4;
-- (IDSDestinationGroupSessionMember)initWithURIObject:(id)a3 isLightWeight:(BOOL)a4;
+- (IDSDestinationGroupSessionMember)initWithCoder:(id)coder;
+- (IDSDestinationGroupSessionMember)initWithURI:(id)i isLightWeight:(BOOL)weight;
+- (IDSDestinationGroupSessionMember)initWithURIObject:(id)object isLightWeight:(BOOL)weight;
 - (NSString)uri;
 - (id)description;
 - (id)destinationLightweightStatus;
 - (id)destinationURIs;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSDestinationGroupSessionMember
 
-- (IDSDestinationGroupSessionMember)initWithURI:(id)a3 isLightWeight:(BOOL)a4
+- (IDSDestinationGroupSessionMember)initWithURI:(id)i isLightWeight:(BOOL)weight
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[IDSURI alloc] initWithPrefixedURI:v6];
+  weightCopy = weight;
+  iCopy = i;
+  v7 = [[IDSURI alloc] initWithPrefixedURI:iCopy];
 
-  v8 = [(IDSDestinationGroupSessionMember *)self initWithURIObject:v7 isLightWeight:v4];
+  v8 = [(IDSDestinationGroupSessionMember *)self initWithURIObject:v7 isLightWeight:weightCopy];
   return v8;
 }
 
-- (IDSDestinationGroupSessionMember)initWithURIObject:(id)a3 isLightWeight:(BOOL)a4
+- (IDSDestinationGroupSessionMember)initWithURIObject:(id)object isLightWeight:(BOOL)weight
 {
-  v7 = a3;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = IDSDestinationGroupSessionMember;
   v8 = [(IDSDestinationGroupSessionMember *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_URIObject, a3);
-    v9->_isLightWeight = a4;
+    objc_storeStrong(&v8->_URIObject, object);
+    v9->_isLightWeight = weight;
   }
 
   return v9;
@@ -39,38 +39,38 @@
 
 - (NSString)uri
 {
-  v2 = [(IDSDestinationGroupSessionMember *)self URIObject];
-  v3 = [v2 prefixedURI];
+  uRIObject = [(IDSDestinationGroupSessionMember *)self URIObject];
+  prefixedURI = [uRIObject prefixedURI];
 
-  return v3;
+  return prefixedURI;
 }
 
-- (IDSDestinationGroupSessionMember)initWithCoder:(id)a3
+- (IDSDestinationGroupSessionMember)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kURIKey"];
-  v6 = [v4 decodeBoolForKey:@"kIsLightWeight"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kURIKey"];
+  v6 = [coderCopy decodeBoolForKey:@"kIsLightWeight"];
 
   v7 = [(IDSDestinationGroupSessionMember *)self initWithURIObject:v5 isLightWeight:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(IDSDestinationGroupSessionMember *)self URIObject];
-  [v5 encodeObject:v4 forKey:@"kURIKey"];
+  coderCopy = coder;
+  uRIObject = [(IDSDestinationGroupSessionMember *)self URIObject];
+  [coderCopy encodeObject:uRIObject forKey:@"kURIKey"];
 
-  [v5 encodeBool:-[IDSDestinationGroupSessionMember isLightWeight](self forKey:{"isLightWeight"), @"kIsLightWeight"}];
+  [coderCopy encodeBool:-[IDSDestinationGroupSessionMember isLightWeight](self forKey:{"isLightWeight"), @"kIsLightWeight"}];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [(IDSDestinationGroupSessionMember *)self uri];
-  v5 = [(IDSDestinationGroupSessionMember *)self isLightWeight];
+  isLightWeight = [(IDSDestinationGroupSessionMember *)self isLightWeight];
   v6 = @"NO";
-  if (v5)
+  if (isLightWeight)
   {
     v6 = @"YES";
   }

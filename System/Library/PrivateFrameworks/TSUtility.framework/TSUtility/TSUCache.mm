@@ -1,27 +1,27 @@
 @interface TSUCache
-- (TSUCache)initWithName:(id)a3;
+- (TSUCache)initWithName:(id)name;
 - (id)description;
-- (id)objectForKey:(id)a3;
-- (id)p_objectForKey:(id)a3;
-- (id)p_objectsForKeys:(id)a3 notFoundMarker:(id)a4;
+- (id)objectForKey:(id)key;
+- (id)p_objectForKey:(id)key;
+- (id)p_objectsForKeys:(id)keys notFoundMarker:(id)marker;
 - (unint64_t)count;
 - (void)dealloc;
-- (void)p_addEntriesFromDictionary:(id)a3;
+- (void)p_addEntriesFromDictionary:(id)dictionary;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation TSUCache
 
-- (TSUCache)initWithName:(id)a3
+- (TSUCache)initWithName:(id)name
 {
   v6.receiver = self;
   v6.super_class = TSUCache;
   v4 = [(TSUFlushableObject *)&v6 init];
   if (v4)
   {
-    v4->mCacheName = a3;
+    v4->mCacheName = name;
   }
 
   return v4;
@@ -38,7 +38,7 @@
   [(TSUFlushableObject *)&v3 dealloc];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   [(TSUFlushableObject *)self ownerWillAccess];
   objc_sync_enter(self);
@@ -49,30 +49,30 @@
     self->mCache = mCache;
   }
 
-  [(NSMutableDictionary *)mCache setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)mCache setObject:object forKey:key];
   objc_sync_exit(self);
 
   [(TSUFlushableObject *)self ownerDidAccess];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   [(TSUFlushableObject *)self ownerWillAccess];
   objc_sync_enter(self);
-  v5 = [(NSMutableDictionary *)self->mCache objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->mCache objectForKey:key];
   objc_sync_exit(self);
   [(TSUFlushableObject *)self ownerDidAccess];
   return v5;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   [(TSUFlushableObject *)self ownerWillAccess];
   objc_sync_enter(self);
   mCache = self->mCache;
   if (mCache)
   {
-    [(NSMutableDictionary *)mCache removeObjectForKey:a3];
+    [(NSMutableDictionary *)mCache removeObjectForKey:key];
   }
 
   objc_sync_exit(self);
@@ -126,15 +126,15 @@
   return [v3 stringWithFormat:@"<%@ %p %@ cache=%p with %lu key/values >", v5, self, mCacheName, mCache, v8];
 }
 
-- (id)p_objectForKey:(id)a3
+- (id)p_objectForKey:(id)key
 {
   [(TSUFlushableObject *)self ownerWillAccess];
-  v5 = [(NSMutableDictionary *)self->mCache objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->mCache objectForKey:key];
   [(TSUFlushableObject *)self ownerDidAccess];
   return v5;
 }
 
-- (void)p_addEntriesFromDictionary:(id)a3
+- (void)p_addEntriesFromDictionary:(id)dictionary
 {
   [(TSUFlushableObject *)self ownerWillAccess];
   mCache = self->mCache;
@@ -144,15 +144,15 @@
     self->mCache = mCache;
   }
 
-  [(NSMutableDictionary *)mCache addEntriesFromDictionary:a3];
+  [(NSMutableDictionary *)mCache addEntriesFromDictionary:dictionary];
 
   [(TSUFlushableObject *)self ownerDidAccess];
 }
 
-- (id)p_objectsForKeys:(id)a3 notFoundMarker:(id)a4
+- (id)p_objectsForKeys:(id)keys notFoundMarker:(id)marker
 {
   [(TSUFlushableObject *)self ownerWillAccess];
-  v7 = [(NSMutableDictionary *)self->mCache objectsForKeys:a3 notFoundMarker:a4];
+  v7 = [(NSMutableDictionary *)self->mCache objectsForKeys:keys notFoundMarker:marker];
   [(TSUFlushableObject *)self ownerDidAccess];
   return v7;
 }

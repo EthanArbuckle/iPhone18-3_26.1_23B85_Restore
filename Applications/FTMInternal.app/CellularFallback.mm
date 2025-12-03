@@ -1,22 +1,22 @@
 @interface CellularFallback
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFbAccepted:(BOOL)a3;
-- (void)setHasServiceType:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFbAccepted:(BOOL)accepted;
+- (void)setHasServiceType:(BOOL)type;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularFallback
 
-- (void)setHasServiceType:(BOOL)a3
+- (void)setHasServiceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasFbAccepted:(BOOL)a3
+- (void)setHasFbAccepted:(BOOL)accepted
 {
-  if (a3)
+  if (accepted)
   {
     v3 = 8;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -64,8 +64,8 @@
   v7.receiver = self;
   v7.super_class = CellularFallback;
   v3 = [(CellularFallback *)&v7 description];
-  v4 = [(CellularFallback *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularFallback *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -128,9 +128,9 @@ LABEL_6:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -181,14 +181,14 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 28) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -207,8 +207,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 4) = self->_serviceType;
-  *(v4 + 28) |= 2u;
+  *(toCopy + 4) = self->_serviceType;
+  *(toCopy + 28) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -222,21 +222,21 @@ LABEL_4:
   }
 
 LABEL_11:
-  *(v4 + 24) = self->_fbAccepted;
-  *(v4 + 28) |= 8u;
+  *(toCopy + 24) = self->_fbAccepted;
+  *(toCopy + 28) |= 8u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_5:
-    *(v4 + 5) = self->_subsId;
-    *(v4 + 28) |= 4u;
+    *(toCopy + 5) = self->_subsId;
+    *(toCopy + 28) |= 4u;
   }
 
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -288,43 +288,43 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_serviceType != *(v4 + 4))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_serviceType != *(equalCopy + 4))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 8) == 0)
   {
-    if ((*(v4 + 28) & 8) == 0)
+    if ((*(equalCopy + 28) & 8) == 0)
     {
       goto LABEL_14;
     }
@@ -334,30 +334,30 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if ((*(v4 + 28) & 8) == 0)
+  if ((*(equalCopy + 28) & 8) == 0)
   {
     goto LABEL_19;
   }
 
-  v7 = *(v4 + 24);
+  v7 = *(equalCopy + 24);
   if (self->_fbAccepted)
   {
-    if ((*(v4 + 24) & 1) == 0)
+    if ((*(equalCopy + 24) & 1) == 0)
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_19;
   }
 
 LABEL_14:
-  v5 = (*(v4 + 28) & 4) == 0;
+  v5 = (*(equalCopy + 28) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_subsId != *(v4 + 5))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_subsId != *(equalCopy + 5))
     {
       goto LABEL_19;
     }
@@ -424,15 +424,15 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -445,14 +445,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 2) == 0)
+  else if ((*(fromCopy + 28) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_serviceType = *(v4 + 4);
+  self->_serviceType = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -465,12 +465,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_fbAccepted = *(v4 + 24);
+  self->_fbAccepted = *(fromCopy + 24);
   *&self->_has |= 8u;
-  if ((*(v4 + 28) & 4) != 0)
+  if ((*(fromCopy + 28) & 4) != 0)
   {
 LABEL_5:
-    self->_subsId = *(v4 + 5);
+    self->_subsId = *(fromCopy + 5);
     *&self->_has |= 4u;
   }
 

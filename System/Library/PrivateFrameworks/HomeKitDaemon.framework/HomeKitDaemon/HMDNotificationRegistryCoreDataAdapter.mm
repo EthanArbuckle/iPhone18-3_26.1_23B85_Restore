@@ -1,74 +1,74 @@
 @interface HMDNotificationRegistryCoreDataAdapter
 + (id)logCategory;
-- (BOOL)_deleteAllCharacteristicRegistrationsWithContext:(id)a3;
-- (BOOL)_deleteAllMKFRegistrationsForActionSetUUID:(id)a3 hmcContext:(id)a4;
-- (BOOL)_deleteAllMKFRegistrationsForMediaProfileUUID:(id)a3 withMediaProperty:(id)a4 hmcContext:(id)a5;
-- (BOOL)_deleteAllRegistrationsForCharacteristicIIDs:(id)a3 withAccessoryUUID:(id)a4 hmcContext:(id)a5;
-- (BOOL)_deleteAllRegistrationsWithEntityName:(id)a3 withHomeKeypath:(id)a4 hmcContext:(id)a5;
-- (BOOL)_disableRegistration:(id)a3;
-- (BOOL)_enableRegistration:(id)a3;
-- (BOOL)_insertNotificationRegistrationForCharacteristic:(id)a3 notificationThreshold:(id)a4 deviceIdsDestination:(id)a5 homeMember:(id)a6 mkfCharacteristic:(id)a7 context:(id)a8;
-- (BOOL)_insertNotificationRegistrationForMKFActionSet:(id)a3 deviceIdsDestination:(id)a4 homeMember:(id)a5 context:(id)a6;
-- (BOOL)_insertNotificationRegistrationForMediaProperty:(id)a3 mediaProfile:(id)a4 deviceIdsDestination:(id)a5 homeMember:(id)a6 accessory:(id)a7 context:(id)a8;
-- (BOOL)_updateThresholdRegistration:(id)a3 threshold:(id)a4;
-- (BOOL)disableNotificationForActionSetUUID:(id)a3 user:(id)a4 deviceIdsDestination:(id)a5;
-- (BOOL)disableNotificationForMediaProfile:(id)a3 mediaProperties:(id)a4 user:(id)a5 deviceIdsDestination:(id)a6;
-- (BOOL)enableNotificationForActionSetUUID:(id)a3 user:(id)a4 deviceIdsDestination:(id)a5;
-- (BOOL)enableNotificationForMediaProfile:(id)a3 mediaProperties:(id)a4 user:(id)a5 deviceIdsDestination:(id)a6;
-- (BOOL)enableNotificationsForCharacteristics:(id)a3 user:(id)a4 deviceIdsDestination:(id)a5;
-- (BOOL)hasEnabledRegistrationForActionSetUUID:(id)a3;
-- (BOOL)removeRegistrationsForActionSetUUID:(id)a3;
-- (BOOL)removeRegistrationsForMediaProfile:(id)a3;
+- (BOOL)_deleteAllCharacteristicRegistrationsWithContext:(id)context;
+- (BOOL)_deleteAllMKFRegistrationsForActionSetUUID:(id)d hmcContext:(id)context;
+- (BOOL)_deleteAllMKFRegistrationsForMediaProfileUUID:(id)d withMediaProperty:(id)property hmcContext:(id)context;
+- (BOOL)_deleteAllRegistrationsForCharacteristicIIDs:(id)ds withAccessoryUUID:(id)d hmcContext:(id)context;
+- (BOOL)_deleteAllRegistrationsWithEntityName:(id)name withHomeKeypath:(id)keypath hmcContext:(id)context;
+- (BOOL)_disableRegistration:(id)registration;
+- (BOOL)_enableRegistration:(id)registration;
+- (BOOL)_insertNotificationRegistrationForCharacteristic:(id)characteristic notificationThreshold:(id)threshold deviceIdsDestination:(id)destination homeMember:(id)member mkfCharacteristic:(id)mkfCharacteristic context:(id)context;
+- (BOOL)_insertNotificationRegistrationForMKFActionSet:(id)set deviceIdsDestination:(id)destination homeMember:(id)member context:(id)context;
+- (BOOL)_insertNotificationRegistrationForMediaProperty:(id)property mediaProfile:(id)profile deviceIdsDestination:(id)destination homeMember:(id)member accessory:(id)accessory context:(id)context;
+- (BOOL)_updateThresholdRegistration:(id)registration threshold:(id)threshold;
+- (BOOL)disableNotificationForActionSetUUID:(id)d user:(id)user deviceIdsDestination:(id)destination;
+- (BOOL)disableNotificationForMediaProfile:(id)profile mediaProperties:(id)properties user:(id)user deviceIdsDestination:(id)destination;
+- (BOOL)enableNotificationForActionSetUUID:(id)d user:(id)user deviceIdsDestination:(id)destination;
+- (BOOL)enableNotificationForMediaProfile:(id)profile mediaProperties:(id)properties user:(id)user deviceIdsDestination:(id)destination;
+- (BOOL)enableNotificationsForCharacteristics:(id)characteristics user:(id)user deviceIdsDestination:(id)destination;
+- (BOOL)hasEnabledRegistrationForActionSetUUID:(id)d;
+- (BOOL)removeRegistrationsForActionSetUUID:(id)d;
+- (BOOL)removeRegistrationsForMediaProfile:(id)profile;
 - (HMDHome)home;
-- (HMDNotificationRegistryCoreDataAdapter)initWithHome:(id)a3;
+- (HMDNotificationRegistryCoreDataAdapter)initWithHome:(id)home;
 - (NSSet)actionSetRegistrations;
 - (NSSet)mediaRegistrations;
-- (id)_characteristicRegistrationsIncludeEnabled:(BOOL)a3 includeDisabled:(BOOL)a4;
-- (id)_fetchEnabledMKFRegistrationsForActionSetUUID:(id)a3 context:(id)a4;
-- (id)_fetchEnabledMKFRegistrationsForHMDCharacteristic:(id)a3 exceedingChangeThresholdForCurrentValue:(id)a4 context:(id)a5;
-- (id)_fetchEnabledMKFRegistrationsForHMDCharacteristics:(id)a3 context:(id)a4;
-- (id)_fetchEnabledMKFRegistrationsForMediaProfileUUID:(id)a3 withMediaProperty:(id)a4 context:(id)a5;
-- (id)_fetchMKFActionSetWithUUID:(id)a3 context:(id)a4;
-- (id)_fetchMKFCharacteristicsFromHMDCharacteristics:(id)a3 context:(id)a4;
-- (id)_fetchMKFHAPAccessoryWithUUID:(id)a3 context:(id)a4;
-- (id)_fetchMKFRegistrationsWithUserUUID:(id)a3 actionSetUUID:(id)a4 deviceIdsDestination:(id)a5 prefetchPaths:(id)a6 isRestrictedGuest:(BOOL)a7 context:(id)a8;
-- (id)_fetchMKFRegistrationsWithUserUUID:(id)a3 withCharacteristicIIDs:(id)a4 withAccessoryUUID:(id)a5 withDeviceIdsDestination:(id)a6 withPrefetchPaths:(id)a7 isRestrictedGuest:(BOOL)a8 context:(id)a9;
-- (id)_fetchMKFRegistrationsWithUserUUID:(id)a3 withCharacteristicIIDs:(id)a4 withAccessoryUUIDs:(id)a5 withDeviceIdsDestination:(id)a6 withPrefetchPaths:(id)a7 isRestrictedGuest:(BOOL)a8 context:(id)a9;
-- (id)_fetchMKFRegistrationsWithUserUUID:(id)a3 withMediaProfileUUID:(id)a4 withMediaPropertyIn:(id)a5 withDeviceIdsDestination:(id)a6 withAccessoryUUID:(id)a7 withPrefetchPaths:(id)a8 isRestrictedGuest:(BOOL)a9 context:(id)a10;
-- (id)_fetchMKFUserAndRegistrationsWithUserUUID:(id)a3 withMediaProfileUUID:(id)a4 withMediaPropertyIn:(id)a5 withDeviceIdsDestination:(id)a6 withAccessoryUUID:(id)a7 withPrefetchPaths:(id)a8 isRestrictedGuest:(BOOL)a9 outHomeMember:(id *)a10 context:(id)a11;
-- (id)_fetchRequestForActionSetRegistrationsWithoutAllowedDestinations:(id)a3;
+- (id)_characteristicRegistrationsIncludeEnabled:(BOOL)enabled includeDisabled:(BOOL)disabled;
+- (id)_fetchEnabledMKFRegistrationsForActionSetUUID:(id)d context:(id)context;
+- (id)_fetchEnabledMKFRegistrationsForHMDCharacteristic:(id)characteristic exceedingChangeThresholdForCurrentValue:(id)value context:(id)context;
+- (id)_fetchEnabledMKFRegistrationsForHMDCharacteristics:(id)characteristics context:(id)context;
+- (id)_fetchEnabledMKFRegistrationsForMediaProfileUUID:(id)d withMediaProperty:(id)property context:(id)context;
+- (id)_fetchMKFActionSetWithUUID:(id)d context:(id)context;
+- (id)_fetchMKFCharacteristicsFromHMDCharacteristics:(id)characteristics context:(id)context;
+- (id)_fetchMKFHAPAccessoryWithUUID:(id)d context:(id)context;
+- (id)_fetchMKFRegistrationsWithUserUUID:(id)d actionSetUUID:(id)iD deviceIdsDestination:(id)destination prefetchPaths:(id)paths isRestrictedGuest:(BOOL)guest context:(id)context;
+- (id)_fetchMKFRegistrationsWithUserUUID:(id)d withCharacteristicIIDs:(id)ds withAccessoryUUID:(id)iD withDeviceIdsDestination:(id)destination withPrefetchPaths:(id)paths isRestrictedGuest:(BOOL)guest context:(id)context;
+- (id)_fetchMKFRegistrationsWithUserUUID:(id)d withCharacteristicIIDs:(id)ds withAccessoryUUIDs:(id)iDs withDeviceIdsDestination:(id)destination withPrefetchPaths:(id)paths isRestrictedGuest:(BOOL)guest context:(id)context;
+- (id)_fetchMKFRegistrationsWithUserUUID:(id)d withMediaProfileUUID:(id)iD withMediaPropertyIn:(id)in withDeviceIdsDestination:(id)destination withAccessoryUUID:(id)uID withPrefetchPaths:(id)paths isRestrictedGuest:(BOOL)guest context:(id)self0;
+- (id)_fetchMKFUserAndRegistrationsWithUserUUID:(id)d withMediaProfileUUID:(id)iD withMediaPropertyIn:(id)in withDeviceIdsDestination:(id)destination withAccessoryUUID:(id)uID withPrefetchPaths:(id)paths isRestrictedGuest:(BOOL)guest outHomeMember:(id *)self0 context:(id)self1;
+- (id)_fetchRequestForActionSetRegistrationsWithoutAllowedDestinations:(id)destinations;
 - (id)_fetchRequestForAllActionSetRegistrations;
 - (id)_fetchRequestForAllMediaProfileRegistrations;
-- (id)_fetchRequestForCharacteristicRegistrationsWithoutAllowedDestinations:(id)a3;
-- (id)_fetchRequestForMediaProfileRegistrationsWithoutAllowedDestinations:(id)a3;
-- (id)_filterCharacteristicRegistrations:(id)a3 home:(id)a4;
-- (id)_processDisableCharacteristicsRequest:(id)a3 registrationsForAccessory:(id)a4 context:(id)a5;
-- (id)_processEnableCharacteristicsRequest:(id)a3 homeMember:(id)a4 registrationsForAccessory:(id)a5 context:(id)a6;
-- (id)_processGroupedCharacteristicsRequests:(id)a3 user:(id)a4 destination:(id)a5 context:(id)a6;
-- (id)_registrationsForCharacteristicIID:(id)a3 exceedingChangeThresholdForCurrentValue:(id)a4 accessoryUUID:(id)a5 moc:(id)a6 error:(id *)a7;
-- (id)_registrationsForCharacteristicIIDs:(id)a3 accessoryUUID:(id)a4 moc:(id)a5 error:(id *)a6;
-- (id)_requestToFetchMKFRegistrationsWithActionSetUUID:(id)a3 context:(id)a4;
-- (id)_requestToFetchMKFRegistrationsWithMediaProfileUUID:(id)a3 withMediaProperty:(id)a4 context:(id)a5;
-- (id)characteristicIIDsByAccessoryUUIDForEnabledRegistrationsForDestination:(id)a3;
-- (id)destinationsToNotifyForActionSetUUID:(id)a3;
-- (id)destinationsToNotifyForCharacteristic:(id)a3 applyChangeThresholding:(BOOL)a4;
-- (id)destinationsToNotifyForMediaPropertyResponse:(id)a3;
+- (id)_fetchRequestForCharacteristicRegistrationsWithoutAllowedDestinations:(id)destinations;
+- (id)_fetchRequestForMediaProfileRegistrationsWithoutAllowedDestinations:(id)destinations;
+- (id)_filterCharacteristicRegistrations:(id)registrations home:(id)home;
+- (id)_processDisableCharacteristicsRequest:(id)request registrationsForAccessory:(id)accessory context:(id)context;
+- (id)_processEnableCharacteristicsRequest:(id)request homeMember:(id)member registrationsForAccessory:(id)accessory context:(id)context;
+- (id)_processGroupedCharacteristicsRequests:(id)requests user:(id)user destination:(id)destination context:(id)context;
+- (id)_registrationsForCharacteristicIID:(id)d exceedingChangeThresholdForCurrentValue:(id)value accessoryUUID:(id)iD moc:(id)moc error:(id *)error;
+- (id)_registrationsForCharacteristicIIDs:(id)ds accessoryUUID:(id)d moc:(id)moc error:(id *)error;
+- (id)_requestToFetchMKFRegistrationsWithActionSetUUID:(id)d context:(id)context;
+- (id)_requestToFetchMKFRegistrationsWithMediaProfileUUID:(id)d withMediaProperty:(id)property context:(id)context;
+- (id)characteristicIIDsByAccessoryUUIDForEnabledRegistrationsForDestination:(id)destination;
+- (id)destinationsToNotifyForActionSetUUID:(id)d;
+- (id)destinationsToNotifyForCharacteristic:(id)characteristic applyChangeThresholding:(BOOL)thresholding;
+- (id)destinationsToNotifyForMediaPropertyResponse:(id)response;
 - (id)destinationsWithEnabledCharacteristicRegistrations;
 - (id)disableAllActionSetRegistrations;
 - (id)disableAllMediaProfileRegistrations;
-- (id)disableNotificationForCharacteristics:(id)a3 user:(id)a4 deviceIdsDestination:(id)a5;
-- (id)homeMemberForRegistrations:(id)a3 userUUID:(id)a4 isRestrictedGuest:(BOOL)a5 context:(id)a6;
-- (id)mediaPropertiesRegisteredForMediaProfileUniqueIdentifier:(id)a3;
-- (id)processCharacteristicsRequests:(id)a3;
-- (id)removeActionSetRegistrationsWithoutAllowedDestinations:(id)a3;
+- (id)disableNotificationForCharacteristics:(id)characteristics user:(id)user deviceIdsDestination:(id)destination;
+- (id)homeMemberForRegistrations:(id)registrations userUUID:(id)d isRestrictedGuest:(BOOL)guest context:(id)context;
+- (id)mediaPropertiesRegisteredForMediaProfileUniqueIdentifier:(id)identifier;
+- (id)processCharacteristicsRequests:(id)requests;
+- (id)removeActionSetRegistrationsWithoutAllowedDestinations:(id)destinations;
 - (id)removeAllActionSetRegistrations;
 - (id)removeAllMediaProfileRegistrations;
-- (id)removeCharacteristicRegistrationsWithoutAllowedDestinations:(id)a3;
-- (id)removeMediaRegistrationsWithoutAllowedDestinations:(id)a3;
+- (id)removeCharacteristicRegistrationsWithoutAllowedDestinations:(id)destinations;
+- (id)removeMediaRegistrationsWithoutAllowedDestinations:(id)destinations;
 - (id)shortDescription;
 - (void)disableAllCharacteristicRegistrations;
 - (void)removeAllCharacteristicRegistrations;
-- (void)removeRegistrationsForCharacteristics:(id)a3;
+- (void)removeRegistrationsForCharacteristics:(id)characteristics;
 @end
 
 @implementation HMDNotificationRegistryCoreDataAdapter
@@ -82,23 +82,23 @@
 
 - (id)shortDescription
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v5 = [v4 backingStore];
-  v6 = [v5 context];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __58__HMDNotificationRegistryCoreDataAdapter_shortDescription__block_invoke;
   v14 = &unk_27868A750;
-  v15 = v4;
-  v16 = v3;
-  v7 = v3;
-  v8 = v4;
-  [v6 unsafeSynchronousBlock:&v11];
-  v9 = [v7 shortDescription];
+  v15 = home;
+  v16 = dictionary;
+  v7 = dictionary;
+  v8 = home;
+  [context unsafeSynchronousBlock:&v11];
+  shortDescription = [v7 shortDescription];
 
-  return v9;
+  return shortDescription;
 }
 
 void __58__HMDNotificationRegistryCoreDataAdapter_shortDescription__block_invoke(uint64_t a1)
@@ -203,41 +203,41 @@ LABEL_11:
 LABEL_13:
 }
 
-- (BOOL)_insertNotificationRegistrationForMKFActionSet:(id)a3 deviceIdsDestination:(id)a4 homeMember:(id)a5 context:(id)a6
+- (BOOL)_insertNotificationRegistrationForMKFActionSet:(id)set deviceIdsDestination:(id)destination homeMember:(id)member context:(id)context
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v13 managedObjectContext];
-  [v14 hmd_assertIsExecuting];
+  setCopy = set;
+  destinationCopy = destination;
+  memberCopy = member;
+  contextCopy = context;
+  managedObjectContext = [contextCopy managedObjectContext];
+  [managedObjectContext hmd_assertIsExecuting];
 
-  v15 = [v12 castIfMemberIsUser];
-  if (v15)
+  castIfMemberIsUser = [memberCopy castIfMemberIsUser];
+  if (castIfMemberIsUser)
   {
-    v16 = [MEMORY[0x277CCAD78] UUID];
-    v17 = [v15 createNotificationRegistrationsRelationOfTypeNotificationRegistrationActionSetWithModelID:v16];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v17 = [castIfMemberIsUser createNotificationRegistrationsRelationOfTypeNotificationRegistrationActionSetWithModelID:uUID];
   }
 
   else
   {
-    v18 = [v12 castIfMemberIsGuest];
-    v16 = [v18 castIfGuest];
+    castIfMemberIsGuest = [memberCopy castIfMemberIsGuest];
+    uUID = [castIfMemberIsGuest castIfGuest];
 
-    if (!v16)
+    if (!uUID)
     {
       goto LABEL_7;
     }
 
-    v19 = [MEMORY[0x277CCAD78] UUID];
-    v17 = [v16 createNotificationRegistrationsRelationOfTypeNotificationRegistrationActionSetWithModelID:v19];
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    v17 = [uUID createNotificationRegistrationsRelationOfTypeNotificationRegistrationActionSetWithModelID:uUID2];
   }
 
   if (v17)
   {
-    [v17 setActionSet:v10];
-    [v17 setDeviceIdsDestination:v11];
+    [v17 setActionSet:setCopy];
+    [v17 setDeviceIdsDestination:destinationCopy];
     v20 = [MEMORY[0x277CBEAA8] now];
     [v17 setLastModified:v20];
 
@@ -247,7 +247,7 @@ LABEL_13:
 
 LABEL_7:
   v22 = objc_autoreleasePoolPush();
-  v23 = self;
+  selfCopy = self;
   v24 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
@@ -255,11 +255,11 @@ LABEL_7:
     v28 = 138544130;
     v29 = v25;
     v30 = 2112;
-    v31 = v11;
+    v31 = destinationCopy;
     v32 = 2112;
-    v33 = v12;
+    v33 = memberCopy;
     v34 = 2112;
-    v35 = v10;
+    v35 = setCopy;
     _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_ERROR, "%{public}@Failed to create notification registration for deviceIdsDestination %@ homeMember %@ mkfActionSet %@", &v28, 0x2Au);
   }
 
@@ -272,55 +272,55 @@ LABEL_10:
   return v21;
 }
 
-- (BOOL)_insertNotificationRegistrationForMediaProperty:(id)a3 mediaProfile:(id)a4 deviceIdsDestination:(id)a5 homeMember:(id)a6 accessory:(id)a7 context:(id)a8
+- (BOOL)_insertNotificationRegistrationForMediaProperty:(id)property mediaProfile:(id)profile deviceIdsDestination:(id)destination homeMember:(id)member accessory:(id)accessory context:(id)context
 {
   v52 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v39 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [v18 managedObjectContext];
-  [v19 hmd_assertIsExecuting];
+  propertyCopy = property;
+  profileCopy = profile;
+  destinationCopy = destination;
+  memberCopy = member;
+  accessoryCopy = accessory;
+  contextCopy = context;
+  managedObjectContext = [contextCopy managedObjectContext];
+  [managedObjectContext hmd_assertIsExecuting];
 
-  v20 = [v16 castIfMemberIsUser];
-  v21 = [v20 castIfUser];
+  castIfMemberIsUser = [memberCopy castIfMemberIsUser];
+  castIfUser = [castIfMemberIsUser castIfUser];
 
-  if (v21)
+  if (castIfUser)
   {
-    v22 = [MEMORY[0x277CCAD78] UUID];
-    v23 = [v21 createNotificationRegistrationsRelationOfTypeNotificationRegistrationMediaPropertyWithModelID:v22];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v23 = [castIfUser createNotificationRegistrationsRelationOfTypeNotificationRegistrationMediaPropertyWithModelID:uUID];
   }
 
   else
   {
-    v24 = [v16 castIfMemberIsGuest];
-    v22 = [v24 castIfGuest];
+    castIfMemberIsGuest = [memberCopy castIfMemberIsGuest];
+    uUID = [castIfMemberIsGuest castIfGuest];
 
-    if (!v22)
+    if (!uUID)
     {
       goto LABEL_7;
     }
 
     [MEMORY[0x277CCAD78] UUID];
     v26 = v25 = self;
-    v23 = [v22 createNotificationRegistrationsRelationOfTypeNotificationRegistrationMediaPropertyWithModelID:v26];
+    v23 = [uUID createNotificationRegistrationsRelationOfTypeNotificationRegistrationMediaPropertyWithModelID:v26];
 
     self = v25;
   }
 
   if (v23)
   {
-    [v23 setMediaProperty:v14];
-    [v15 uniqueIdentifier];
-    v27 = v15;
-    v29 = v28 = v14;
+    [v23 setMediaProperty:propertyCopy];
+    [profileCopy uniqueIdentifier];
+    v27 = profileCopy;
+    v29 = v28 = propertyCopy;
     [v23 setMediaProfileIdentifier:v29];
 
-    [v23 setAccessory:v17];
-    v30 = v39;
-    [v23 setDeviceIdsDestination:v39];
+    [v23 setAccessory:accessoryCopy];
+    v30 = destinationCopy;
+    [v23 setDeviceIdsDestination:destinationCopy];
     v31 = [MEMORY[0x277CBEAA8] now];
     [v23 setLastModified:v31];
 
@@ -329,10 +329,10 @@ LABEL_10:
   }
 
 LABEL_7:
-  v27 = v15;
-  v28 = v14;
+  v27 = profileCopy;
+  v28 = propertyCopy;
   v33 = objc_autoreleasePoolPush();
-  v34 = self;
+  selfCopy = self;
   v35 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
   {
@@ -344,56 +344,56 @@ LABEL_7:
     v44 = 2112;
     v45 = v27;
     v46 = 2112;
-    v47 = v39;
+    v47 = destinationCopy;
     v48 = 2112;
-    v49 = v16;
+    v49 = memberCopy;
     v50 = 2112;
-    v51 = v17;
+    v51 = accessoryCopy;
     _os_log_impl(&dword_229538000, v35, OS_LOG_TYPE_ERROR, "%{public}@Failed to create notification registration for media property %@ media profile %@ deviceIdsDestination %@ homeMember %@ mkfAccessory %@", buf, 0x3Eu);
   }
 
   objc_autoreleasePoolPop(v33);
   v32 = 0;
   v23 = 0;
-  v30 = v39;
+  v30 = destinationCopy;
 LABEL_10:
 
   v37 = *MEMORY[0x277D85DE8];
   return v32;
 }
 
-- (BOOL)_insertNotificationRegistrationForCharacteristic:(id)a3 notificationThreshold:(id)a4 deviceIdsDestination:(id)a5 homeMember:(id)a6 mkfCharacteristic:(id)a7 context:(id)a8
+- (BOOL)_insertNotificationRegistrationForCharacteristic:(id)characteristic notificationThreshold:(id)threshold deviceIdsDestination:(id)destination homeMember:(id)member mkfCharacteristic:(id)mkfCharacteristic context:(id)context
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [a8 managedObjectContext];
-  [v16 hmd_assertIsExecuting];
+  thresholdCopy = threshold;
+  destinationCopy = destination;
+  memberCopy = member;
+  mkfCharacteristicCopy = mkfCharacteristic;
+  managedObjectContext = [context managedObjectContext];
+  [managedObjectContext hmd_assertIsExecuting];
 
-  v17 = [v14 castIfMemberIsUser];
-  v18 = [v17 castIfUser];
+  castIfMemberIsUser = [memberCopy castIfMemberIsUser];
+  castIfUser = [castIfMemberIsUser castIfUser];
 
-  if (v18)
+  if (castIfUser)
   {
-    v19 = [MEMORY[0x277CCAD78] UUID];
-    v20 = [v18 createNotificationRegistrationsRelationOfTypeNotificationRegistrationCharacteristicWithModelID:v19];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v20 = [castIfUser createNotificationRegistrationsRelationOfTypeNotificationRegistrationCharacteristicWithModelID:uUID];
   }
 
   else
   {
-    v21 = [v14 castIfMemberIsGuest];
-    v19 = [v21 castIfGuest];
+    castIfMemberIsGuest = [memberCopy castIfMemberIsGuest];
+    uUID = [castIfMemberIsGuest castIfGuest];
 
-    v22 = [MEMORY[0x277CCAD78] UUID];
-    v20 = [v19 createNotificationRegistrationsRelationOfTypeNotificationRegistrationCharacteristicWithModelID:v22];
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    v20 = [uUID createNotificationRegistrationsRelationOfTypeNotificationRegistrationCharacteristicWithModelID:uUID2];
   }
 
   if (v20)
   {
-    [v20 setCharacteristic:v15];
-    [v20 setNotificationThreshold:v12];
-    [v20 setDeviceIdsDestination:v13];
+    [v20 setCharacteristic:mkfCharacteristicCopy];
+    [v20 setNotificationThreshold:thresholdCopy];
+    [v20 setDeviceIdsDestination:destinationCopy];
     v23 = [MEMORY[0x277CBEAA8] now];
     [v20 setLastModified:v23];
 
@@ -403,70 +403,70 @@ LABEL_10:
   return v20 != 0;
 }
 
-- (BOOL)_updateThresholdRegistration:(id)a3 threshold:(id)a4
+- (BOOL)_updateThresholdRegistration:(id)registration threshold:(id)threshold
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 notificationThreshold];
+  registrationCopy = registration;
+  thresholdCopy = threshold;
+  notificationThreshold = [registrationCopy notificationThreshold];
   v8 = HMFEqualObjects();
 
   if ((v8 & 1) == 0)
   {
-    [v5 setNotificationThreshold:v6];
-    [v5 setLastNotifiedValue:0];
+    [registrationCopy setNotificationThreshold:thresholdCopy];
+    [registrationCopy setLastNotifiedValue:0];
   }
 
   return v8 ^ 1;
 }
 
-- (BOOL)_disableRegistration:(id)a3
+- (BOOL)_disableRegistration:(id)registration
 {
-  v3 = a3;
-  v4 = [v3 enabled];
-  v5 = [v4 BOOLValue];
+  registrationCopy = registration;
+  enabled = [registrationCopy enabled];
+  bOOLValue = [enabled BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
-    [v3 setEnabled:MEMORY[0x277CBEC28]];
+    [registrationCopy setEnabled:MEMORY[0x277CBEC28]];
     v6 = [MEMORY[0x277CBEAA8] now];
-    [v3 setLastModified:v6];
+    [registrationCopy setLastModified:v6];
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)_enableRegistration:(id)a3
+- (BOOL)_enableRegistration:(id)registration
 {
-  v3 = a3;
-  v4 = [v3 enabled];
-  v5 = [v4 BOOLValue];
+  registrationCopy = registration;
+  enabled = [registrationCopy enabled];
+  bOOLValue = [enabled BOOLValue];
 
-  if ((v5 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    [v3 setEnabled:MEMORY[0x277CBEC38]];
+    [registrationCopy setEnabled:MEMORY[0x277CBEC38]];
     v6 = [MEMORY[0x277CBEAA8] now];
-    [v3 setLastModified:v6];
+    [registrationCopy setLastModified:v6];
   }
 
-  return v5 ^ 1;
+  return bOOLValue ^ 1;
 }
 
 - (NSSet)actionSetRegistrations
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v5 = [v4 backingStore];
-  v6 = [v5 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__HMDNotificationRegistryCoreDataAdapter_actionSetRegistrations__block_invoke;
   v11[3] = &unk_27868A010;
   v11[4] = self;
-  v12 = v6;
+  v12 = context;
   v13 = v3;
   v7 = v3;
-  v8 = v6;
+  v8 = context;
   [v8 unsafeSynchronousBlock:v11];
   v9 = [v7 copy];
 
@@ -534,32 +534,32 @@ void __64__HMDNotificationRegistryCoreDataAdapter_actionSetRegistrations__block_
   [v6 addObject:v13];
 }
 
-- (BOOL)hasEnabledRegistrationForActionSetUUID:(id)a3
+- (BOOL)hasEnabledRegistrationForActionSetUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v5 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v6 = [v5 backingStore];
-  v7 = [v6 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __81__HMDNotificationRegistryCoreDataAdapter_hasEnabledRegistrationForActionSetUUID___block_invoke;
   v11[3] = &unk_278689D20;
-  v8 = v7;
+  v8 = context;
   v12 = v8;
-  v13 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = dCopy;
   v14 = v9;
   v15 = &v16;
   [v8 unsafeSynchronousBlock:v11];
-  LOBYTE(v4) = *(v17 + 24);
+  LOBYTE(dCopy) = *(v17 + 24);
 
   _Block_object_dispose(&v16, 8);
-  return v4;
+  return dCopy;
 }
 
 void __81__HMDNotificationRegistryCoreDataAdapter_hasEnabledRegistrationForActionSetUUID___block_invoke(uint64_t a1)
@@ -599,9 +599,9 @@ void __81__HMDNotificationRegistryCoreDataAdapter_hasEnabledRegistrationForActio
 
 - (id)disableAllActionSetRegistrations
 {
-  v3 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v4 = [v3 backingStore];
-  v5 = [v4 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v23 = 0;
   v24 = &v23;
@@ -617,9 +617,9 @@ void __81__HMDNotificationRegistryCoreDataAdapter_hasEnabledRegistrationForActio
   v10 = 3221225472;
   v11 = __74__HMDNotificationRegistryCoreDataAdapter_disableAllActionSetRegistrations__block_invoke;
   v12 = &unk_2786869D8;
-  v6 = v5;
+  v6 = context;
   v13 = v6;
-  v14 = self;
+  selfCopy = self;
   v15 = &v17;
   v16 = &v23;
   [v6 unsafeSynchronousBlock:&v9];
@@ -744,18 +744,18 @@ id __74__HMDNotificationRegistryCoreDataAdapter_disableAllActionSetRegistrations
   return v3;
 }
 
-- (id)removeActionSetRegistrationsWithoutAllowedDestinations:(id)a3
+- (id)removeActionSetRegistrationsWithoutAllowedDestinations:(id)destinations
 {
-  v4 = a3;
+  destinationsCopy = destinations;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__246802;
   v26 = __Block_byref_object_dispose__246803;
   v27 = MEMORY[0x277CBEBF8];
-  v5 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v6 = [v5 backingStore];
-  v7 = [v6 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v18 = 0;
   v19 = &v18;
@@ -765,10 +765,10 @@ id __74__HMDNotificationRegistryCoreDataAdapter_disableAllActionSetRegistrations
   v12[1] = 3221225472;
   v12[2] = __97__HMDNotificationRegistryCoreDataAdapter_removeActionSetRegistrationsWithoutAllowedDestinations___block_invoke;
   v12[3] = &unk_278687D38;
-  v8 = v7;
+  v8 = context;
   v13 = v8;
-  v14 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = destinationsCopy;
   v15 = v9;
   v16 = &v22;
   v17 = &v18;
@@ -905,9 +905,9 @@ HMDActionSetNotificationRegistration *__97__HMDNotificationRegistryCoreDataAdapt
 
 - (id)removeAllActionSetRegistrations
 {
-  v3 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v4 = [v3 backingStore];
-  v5 = [v4 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v23 = 0;
   v24 = &v23;
@@ -923,9 +923,9 @@ HMDActionSetNotificationRegistration *__97__HMDNotificationRegistryCoreDataAdapt
   v10 = 3221225472;
   v11 = __73__HMDNotificationRegistryCoreDataAdapter_removeAllActionSetRegistrations__block_invoke;
   v12 = &unk_2786869D8;
-  v6 = v5;
+  v6 = context;
   v13 = v6;
-  v14 = self;
+  selfCopy = self;
   v15 = &v17;
   v16 = &v23;
   [v6 unsafeSynchronousBlock:&v9];
@@ -1044,27 +1044,27 @@ id __73__HMDNotificationRegistryCoreDataAdapter_removeAllActionSetRegistrations_
   return v3;
 }
 
-- (id)destinationsToNotifyForActionSetUUID:(id)a3
+- (id)destinationsToNotifyForActionSetUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__246802;
   v24 = __Block_byref_object_dispose__246803;
   v25 = MEMORY[0x277CBEBF8];
-  v5 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v6 = [v5 backingStore];
-  v7 = [v6 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __79__HMDNotificationRegistryCoreDataAdapter_destinationsToNotifyForActionSetUUID___block_invoke;
   v15 = &unk_278689D20;
-  v8 = v7;
+  v8 = context;
   v16 = v8;
-  v17 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = dCopy;
   v18 = v9;
   v19 = &v20;
   [v8 unsafeSynchronousBlock:&v12];
@@ -1113,32 +1113,32 @@ void __79__HMDNotificationRegistryCoreDataAdapter_destinationsToNotifyForActionS
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeRegistrationsForActionSetUUID:(id)a3
+- (BOOL)removeRegistrationsForActionSetUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v5 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v6 = [v5 backingStore];
-  v7 = [v6 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__HMDNotificationRegistryCoreDataAdapter_removeRegistrationsForActionSetUUID___block_invoke;
   v11[3] = &unk_278689D20;
-  v8 = v7;
+  v8 = context;
   v12 = v8;
-  v13 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = dCopy;
   v14 = v9;
   v15 = &v16;
   [v8 unsafeSynchronousBlock:v11];
-  LOBYTE(v4) = *(v17 + 24);
+  LOBYTE(dCopy) = *(v17 + 24);
 
   _Block_object_dispose(&v16, 8);
-  return v4;
+  return dCopy;
 }
 
 void __78__HMDNotificationRegistryCoreDataAdapter_removeRegistrationsForActionSetUUID___block_invoke(uint64_t a1)
@@ -1181,38 +1181,38 @@ void __78__HMDNotificationRegistryCoreDataAdapter_removeRegistrationsForActionSe
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)disableNotificationForActionSetUUID:(id)a3 user:(id)a4 deviceIdsDestination:(id)a5
+- (BOOL)disableNotificationForActionSetUUID:(id)d user:(id)user deviceIdsDestination:(id)destination
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  userCopy = user;
+  destinationCopy = destination;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 0;
-  v11 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v12 = [v11 backingStore];
-  v13 = [v12 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __104__HMDNotificationRegistryCoreDataAdapter_disableNotificationForActionSetUUID_user_deviceIdsDestination___block_invoke;
   v19[3] = &unk_278689D48;
-  v14 = v13;
+  v14 = context;
   v20 = v14;
-  v21 = self;
-  v15 = v9;
+  selfCopy = self;
+  v15 = userCopy;
   v22 = v15;
-  v16 = v8;
+  v16 = dCopy;
   v23 = v16;
-  v17 = v10;
+  v17 = destinationCopy;
   v24 = v17;
   v25 = &v26;
   [v14 unsafeSynchronousBlock:v19];
-  LOBYTE(v9) = *(v27 + 24);
+  LOBYTE(userCopy) = *(v27 + 24);
 
   _Block_object_dispose(&v26, 8);
-  return v9;
+  return userCopy;
 }
 
 void __104__HMDNotificationRegistryCoreDataAdapter_disableNotificationForActionSetUUID_user_deviceIdsDestination___block_invoke(uint64_t a1)
@@ -1307,38 +1307,38 @@ uint64_t __104__HMDNotificationRegistryCoreDataAdapter_disableNotificationForAct
   return result;
 }
 
-- (BOOL)enableNotificationForActionSetUUID:(id)a3 user:(id)a4 deviceIdsDestination:(id)a5
+- (BOOL)enableNotificationForActionSetUUID:(id)d user:(id)user deviceIdsDestination:(id)destination
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  userCopy = user;
+  destinationCopy = destination;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 0;
-  v11 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v12 = [v11 backingStore];
-  v13 = [v12 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __103__HMDNotificationRegistryCoreDataAdapter_enableNotificationForActionSetUUID_user_deviceIdsDestination___block_invoke;
   v19[3] = &unk_278689D48;
-  v14 = v13;
+  v14 = context;
   v20 = v14;
-  v21 = self;
-  v15 = v9;
+  selfCopy = self;
+  v15 = userCopy;
   v22 = v15;
-  v16 = v8;
+  v16 = dCopy;
   v23 = v16;
-  v17 = v10;
+  v17 = destinationCopy;
   v24 = v17;
   v25 = &v26;
   [v14 unsafeSynchronousBlock:v19];
-  LOBYTE(v9) = *(v27 + 24);
+  LOBYTE(userCopy) = *(v27 + 24);
 
   _Block_object_dispose(&v26, 8);
-  return v9;
+  return userCopy;
 }
 
 void __103__HMDNotificationRegistryCoreDataAdapter_enableNotificationForActionSetUUID_user_deviceIdsDestination___block_invoke(uint64_t a1)
@@ -1494,19 +1494,19 @@ LABEL_27:
 - (NSSet)mediaRegistrations
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v5 = [v4 backingStore];
-  v6 = [v5 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__HMDNotificationRegistryCoreDataAdapter_mediaRegistrations__block_invoke;
   v11[3] = &unk_27868A010;
   v11[4] = self;
-  v12 = v6;
+  v12 = context;
   v13 = v3;
   v7 = v3;
-  v8 = v6;
+  v8 = context;
   [v8 unsafeSynchronousBlock:v11];
   v9 = [v7 copy];
 
@@ -1574,18 +1574,18 @@ void __60__HMDNotificationRegistryCoreDataAdapter_mediaRegistrations__block_invo
   [*(a1 + 32) addObject:v12];
 }
 
-- (id)removeMediaRegistrationsWithoutAllowedDestinations:(id)a3
+- (id)removeMediaRegistrationsWithoutAllowedDestinations:(id)destinations
 {
-  v4 = a3;
+  destinationsCopy = destinations;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__246802;
   v28 = __Block_byref_object_dispose__246803;
   v29 = MEMORY[0x277CBEBF8];
-  v5 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v6 = [v5 backingStore];
-  v7 = [v6 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v20 = 0;
   v21 = &v20;
@@ -1595,10 +1595,10 @@ void __60__HMDNotificationRegistryCoreDataAdapter_mediaRegistrations__block_invo
   v14[1] = 3221225472;
   v14[2] = __93__HMDNotificationRegistryCoreDataAdapter_removeMediaRegistrationsWithoutAllowedDestinations___block_invoke;
   v14[3] = &unk_278687D38;
-  v8 = v7;
+  v8 = context;
   v15 = v8;
-  v16 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = destinationsCopy;
   v17 = v9;
   v18 = &v24;
   v19 = &v20;
@@ -1736,10 +1736,10 @@ HMDMediaPropertyNotificationRegistration *__93__HMDNotificationRegistryCoreDataA
 
 - (id)disableAllMediaProfileRegistrations
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v5 = [v4 backingStore];
-  v6 = [v5 context];
+  array = [MEMORY[0x277CBEB18] array];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v21 = 0;
   v22 = &v21;
@@ -1749,10 +1749,10 @@ HMDMediaPropertyNotificationRegistration *__93__HMDNotificationRegistryCoreDataA
   v14 = 3221225472;
   v15 = __77__HMDNotificationRegistryCoreDataAdapter_disableAllMediaProfileRegistrations__block_invoke;
   v16 = &unk_278689D20;
-  v7 = v6;
+  v7 = context;
   v17 = v7;
-  v18 = self;
-  v8 = v3;
+  selfCopy = self;
+  v8 = array;
   v19 = v8;
   v20 = &v21;
   [v7 unsafeSynchronousBlock:&v13];
@@ -1876,9 +1876,9 @@ void __77__HMDNotificationRegistryCoreDataAdapter_disableAllMediaProfileRegistra
   v26 = __Block_byref_object_copy__246802;
   v27 = __Block_byref_object_dispose__246803;
   v28 = MEMORY[0x277CBEBF8];
-  v3 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v4 = [v3 backingStore];
-  v5 = [v4 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v19 = 0;
   v20 = &v19;
@@ -1888,9 +1888,9 @@ void __77__HMDNotificationRegistryCoreDataAdapter_disableAllMediaProfileRegistra
   v12 = 3221225472;
   v13 = __76__HMDNotificationRegistryCoreDataAdapter_removeAllMediaProfileRegistrations__block_invoke;
   v14 = &unk_2786869D8;
-  v6 = v5;
+  v6 = context;
   v15 = v6;
-  v16 = self;
+  selfCopy = self;
   v17 = &v23;
   v18 = &v19;
   [v6 unsafeSynchronousBlock:&v11];
@@ -2002,27 +2002,27 @@ uint64_t __76__HMDNotificationRegistryCoreDataAdapter_removeAllMediaProfileRegis
   return result;
 }
 
-- (id)mediaPropertiesRegisteredForMediaProfileUniqueIdentifier:(id)a3
+- (id)mediaPropertiesRegisteredForMediaProfileUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__246802;
   v24 = __Block_byref_object_dispose__246803;
   v25 = MEMORY[0x277CBEBF8];
-  v5 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v6 = [v5 backingStore];
-  v7 = [v6 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __99__HMDNotificationRegistryCoreDataAdapter_mediaPropertiesRegisteredForMediaProfileUniqueIdentifier___block_invoke;
   v15 = &unk_278689D20;
-  v8 = v7;
+  v8 = context;
   v16 = v8;
-  v17 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = identifierCopy;
   v18 = v9;
   v19 = &v20;
   [v8 unsafeSynchronousBlock:&v12];
@@ -2071,28 +2071,28 @@ void __99__HMDNotificationRegistryCoreDataAdapter_mediaPropertiesRegisteredForMe
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)destinationsToNotifyForMediaPropertyResponse:(id)a3
+- (id)destinationsToNotifyForMediaPropertyResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__246802;
   v24 = __Block_byref_object_dispose__246803;
   v25 = MEMORY[0x277CBEBF8];
-  v5 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v6 = [v5 backingStore];
-  v7 = [v6 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __87__HMDNotificationRegistryCoreDataAdapter_destinationsToNotifyForMediaPropertyResponse___block_invoke;
   v15 = &unk_278689D20;
-  v8 = v7;
+  v8 = context;
   v16 = v8;
-  v9 = v4;
+  v9 = responseCopy;
   v17 = v9;
-  v18 = self;
+  selfCopy = self;
   v19 = &v20;
   [v8 unsafeSynchronousBlock:&v12];
   v10 = [v21[5] copy];
@@ -2145,32 +2145,32 @@ void __87__HMDNotificationRegistryCoreDataAdapter_destinationsToNotifyForMediaPr
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeRegistrationsForMediaProfile:(id)a3
+- (BOOL)removeRegistrationsForMediaProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v5 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v6 = [v5 backingStore];
-  v7 = [v6 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __77__HMDNotificationRegistryCoreDataAdapter_removeRegistrationsForMediaProfile___block_invoke;
   v11[3] = &unk_278689D20;
-  v8 = v7;
+  v8 = context;
   v12 = v8;
-  v13 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = profileCopy;
   v14 = v9;
   v15 = &v16;
   [v8 unsafeSynchronousBlock:v11];
-  LOBYTE(v4) = *(v17 + 24);
+  LOBYTE(profileCopy) = *(v17 + 24);
 
   _Block_object_dispose(&v16, 8);
-  return v4;
+  return profileCopy;
 }
 
 void __77__HMDNotificationRegistryCoreDataAdapter_removeRegistrationsForMediaProfile___block_invoke(uint64_t a1)
@@ -2217,41 +2217,41 @@ void __77__HMDNotificationRegistryCoreDataAdapter_removeRegistrationsForMediaPro
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)disableNotificationForMediaProfile:(id)a3 mediaProperties:(id)a4 user:(id)a5 deviceIdsDestination:(id)a6
+- (BOOL)disableNotificationForMediaProfile:(id)profile mediaProperties:(id)properties user:(id)user deviceIdsDestination:(id)destination
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  profileCopy = profile;
+  propertiesCopy = properties;
+  userCopy = user;
+  destinationCopy = destination;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 0;
-  v14 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v15 = [v14 backingStore];
-  v16 = [v15 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __119__HMDNotificationRegistryCoreDataAdapter_disableNotificationForMediaProfile_mediaProperties_user_deviceIdsDestination___block_invoke;
   v23[3] = &unk_278684B90;
-  v17 = v16;
+  v17 = context;
   v24 = v17;
-  v18 = v10;
+  v18 = profileCopy;
   v25 = v18;
-  v26 = self;
-  v19 = v12;
+  selfCopy = self;
+  v19 = userCopy;
   v27 = v19;
-  v20 = v11;
+  v20 = propertiesCopy;
   v28 = v20;
-  v21 = v13;
+  v21 = destinationCopy;
   v29 = v21;
   v30 = &v31;
   [v17 unsafeSynchronousBlock:v23];
-  LOBYTE(v12) = *(v32 + 24);
+  LOBYTE(userCopy) = *(v32 + 24);
 
   _Block_object_dispose(&v31, 8);
-  return v12;
+  return userCopy;
 }
 
 void __119__HMDNotificationRegistryCoreDataAdapter_disableNotificationForMediaProfile_mediaProperties_user_deviceIdsDestination___block_invoke(uint64_t a1)
@@ -2341,41 +2341,41 @@ uint64_t __119__HMDNotificationRegistryCoreDataAdapter_disableNotificationForMed
   return result;
 }
 
-- (BOOL)enableNotificationForMediaProfile:(id)a3 mediaProperties:(id)a4 user:(id)a5 deviceIdsDestination:(id)a6
+- (BOOL)enableNotificationForMediaProfile:(id)profile mediaProperties:(id)properties user:(id)user deviceIdsDestination:(id)destination
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  profileCopy = profile;
+  propertiesCopy = properties;
+  userCopy = user;
+  destinationCopy = destination;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 0;
-  v14 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v15 = [v14 backingStore];
-  v16 = [v15 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __118__HMDNotificationRegistryCoreDataAdapter_enableNotificationForMediaProfile_mediaProperties_user_deviceIdsDestination___block_invoke;
   v23[3] = &unk_278684B90;
-  v17 = v16;
+  v17 = context;
   v24 = v17;
-  v18 = v10;
+  v18 = profileCopy;
   v25 = v18;
-  v26 = self;
-  v19 = v12;
+  selfCopy = self;
+  v19 = userCopy;
   v27 = v19;
-  v20 = v11;
+  v20 = propertiesCopy;
   v28 = v20;
-  v21 = v13;
+  v21 = destinationCopy;
   v29 = v21;
   v30 = &v31;
   [v17 unsafeSynchronousBlock:v23];
-  LOBYTE(v12) = *(v32 + 24);
+  LOBYTE(userCopy) = *(v32 + 24);
 
   _Block_object_dispose(&v31, 8);
-  return v12;
+  return userCopy;
 }
 
 void __118__HMDNotificationRegistryCoreDataAdapter_enableNotificationForMediaProfile_mediaProperties_user_deviceIdsDestination___block_invoke(uint64_t a1)
@@ -2569,24 +2569,24 @@ void __118__HMDNotificationRegistryCoreDataAdapter_enableNotificationForMediaPro
   }
 }
 
-- (id)_characteristicRegistrationsIncludeEnabled:(BOOL)a3 includeDisabled:(BOOL)a4
+- (id)_characteristicRegistrationsIncludeEnabled:(BOOL)enabled includeDisabled:(BOOL)disabled
 {
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v9 = [v8 backingStore];
-  v10 = [v9 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __101__HMDNotificationRegistryCoreDataAdapter__characteristicRegistrationsIncludeEnabled_includeDisabled___block_invoke;
   v18 = &unk_278684B18;
-  v22 = a3;
-  v23 = a4;
-  v19 = self;
-  v20 = v10;
+  enabledCopy = enabled;
+  disabledCopy = disabled;
+  selfCopy = self;
+  v20 = context;
   v21 = v7;
   v11 = v7;
-  v12 = v10;
+  v12 = context;
   [v12 unsafeSynchronousBlock:&v15];
   v13 = [v11 copy];
 
@@ -2714,25 +2714,25 @@ void __101__HMDNotificationRegistryCoreDataAdapter__characteristicRegistrationsI
   [*(a1 + 32) addObject:v14];
 }
 
-- (id)characteristicIIDsByAccessoryUUIDForEnabledRegistrationsForDestination:(id)a3
+- (id)characteristicIIDsByAccessoryUUIDForEnabledRegistrationsForDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v7 = [v6 backingStore];
-  v8 = [v7 context];
+  destinationCopy = destination;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __113__HMDNotificationRegistryCoreDataAdapter_characteristicIIDsByAccessoryUUIDForEnabledRegistrationsForDestination___block_invoke;
   v15[3] = &unk_2786891E0;
   v15[4] = self;
-  v16 = v4;
-  v17 = v8;
-  v9 = v5;
+  v16 = destinationCopy;
+  v17 = context;
+  v9 = dictionary;
   v18 = v9;
-  v10 = v8;
-  v11 = v4;
+  v10 = context;
+  v11 = destinationCopy;
   [v10 unsafeSynchronousBlock:v15];
   v12 = v18;
   v13 = v9;
@@ -2858,9 +2858,9 @@ void __113__HMDNotificationRegistryCoreDataAdapter_characteristicIIDsByAccessory
 
 - (id)destinationsWithEnabledCharacteristicRegistrations
 {
-  v3 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v4 = [v3 backingStore];
-  v5 = [v4 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v6 = [MEMORY[0x277CBEB58] set];
   v11[0] = MEMORY[0x277D85DD0];
@@ -2868,10 +2868,10 @@ void __113__HMDNotificationRegistryCoreDataAdapter_characteristicIIDsByAccessory
   v11[2] = __92__HMDNotificationRegistryCoreDataAdapter_destinationsWithEnabledCharacteristicRegistrations__block_invoke;
   v11[3] = &unk_27868A010;
   v11[4] = self;
-  v12 = v5;
+  v12 = context;
   v13 = v6;
   v7 = v6;
-  v8 = v5;
+  v8 = context;
   [v8 unsafeSynchronousBlock:v11];
   v9 = [v7 copy];
 
@@ -2953,13 +2953,13 @@ void __92__HMDNotificationRegistryCoreDataAdapter_destinationsWithEnabledCharact
   [v2 addObject:v3];
 }
 
-- (id)removeCharacteristicRegistrationsWithoutAllowedDestinations:(id)a3
+- (id)removeCharacteristicRegistrationsWithoutAllowedDestinations:(id)destinations
 {
-  v4 = a3;
+  destinationsCopy = destinations;
   v5 = [MEMORY[0x277CBEB58] set];
-  v6 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v7 = [v6 backingStore];
-  v8 = [v7 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v21 = 0;
   v22 = &v21;
@@ -2969,10 +2969,10 @@ void __92__HMDNotificationRegistryCoreDataAdapter_destinationsWithEnabledCharact
   v15[1] = 3221225472;
   v15[2] = __102__HMDNotificationRegistryCoreDataAdapter_removeCharacteristicRegistrationsWithoutAllowedDestinations___block_invoke;
   v15[3] = &unk_278689D98;
-  v9 = v8;
+  v9 = context;
   v16 = v9;
-  v17 = self;
-  v10 = v4;
+  selfCopy = self;
+  v10 = destinationsCopy;
   v18 = v10;
   v20 = &v21;
   v11 = v5;
@@ -3170,17 +3170,17 @@ uint64_t __102__HMDNotificationRegistryCoreDataAdapter_removeCharacteristicRegis
 
 - (void)disableAllCharacteristicRegistrations
 {
-  v3 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v4 = [v3 backingStore];
-  v5 = [v4 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__HMDNotificationRegistryCoreDataAdapter_disableAllCharacteristicRegistrations__block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = context;
+  v6 = context;
   [v6 unsafeSynchronousBlock:v7];
 }
 
@@ -3279,17 +3279,17 @@ LABEL_16:
 
 - (void)removeAllCharacteristicRegistrations
 {
-  v3 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v4 = [v3 backingStore];
-  v5 = [v4 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__HMDNotificationRegistryCoreDataAdapter_removeAllCharacteristicRegistrations__block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = context;
+  selfCopy = self;
+  v6 = context;
   [v6 unsafeSynchronousBlock:v7];
 }
 
@@ -3327,16 +3327,16 @@ void __78__HMDNotificationRegistryCoreDataAdapter_removeAllCharacteristicRegistr
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_filterCharacteristicRegistrations:(id)a3 home:(id)a4
+- (id)_filterCharacteristicRegistrations:(id)registrations home:(id)home
 {
-  v5 = a4;
+  homeCopy = home;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __82__HMDNotificationRegistryCoreDataAdapter__filterCharacteristicRegistrations_home___block_invoke;
   v9[3] = &unk_278684AA0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a3 na_map:v9];
+  v10 = homeCopy;
+  v6 = homeCopy;
+  v7 = [registrations na_map:v9];
 
   return v7;
 }
@@ -3378,31 +3378,31 @@ id __82__HMDNotificationRegistryCoreDataAdapter__filterCharacteristicRegistratio
   return v5;
 }
 
-- (id)destinationsToNotifyForCharacteristic:(id)a3 applyChangeThresholding:(BOOL)a4
+- (id)destinationsToNotifyForCharacteristic:(id)characteristic applyChangeThresholding:(BOOL)thresholding
 {
-  v6 = a3;
+  characteristicCopy = characteristic;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__246802;
   v26 = __Block_byref_object_dispose__246803;
   v27 = MEMORY[0x277CBEBF8];
-  v7 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v8 = [v7 backingStore];
-  v9 = [v8 context];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  backingStore = [home backingStore];
+  context = [backingStore context];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __104__HMDNotificationRegistryCoreDataAdapter_destinationsToNotifyForCharacteristic_applyChangeThresholding___block_invoke;
   v15[3] = &unk_278684A78;
-  v10 = v9;
+  v10 = context;
   v16 = v10;
-  v11 = v6;
-  v21 = a4;
+  v11 = characteristicCopy;
+  thresholdingCopy = thresholding;
   v17 = v11;
-  v18 = self;
+  selfCopy = self;
   v20 = &v22;
-  v12 = v7;
+  v12 = home;
   v19 = v12;
   [v10 unsafeSynchronousBlock:v15];
   v13 = v23[5];
@@ -3533,23 +3533,23 @@ void __104__HMDNotificationRegistryCoreDataAdapter_destinationsToNotifyForCharac
   }
 }
 
-- (void)removeRegistrationsForCharacteristics:(id)a3
+- (void)removeRegistrationsForCharacteristics:(id)characteristics
 {
-  v4 = a3;
-  if ([v4 count])
+  characteristicsCopy = characteristics;
+  if ([characteristicsCopy count])
   {
-    v5 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-    v6 = [v5 backingStore];
-    v7 = [v6 context];
+    home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+    backingStore = [home backingStore];
+    context = [backingStore context];
 
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __80__HMDNotificationRegistryCoreDataAdapter_removeRegistrationsForCharacteristics___block_invoke;
     v9[3] = &unk_27868A010;
-    v10 = v7;
-    v11 = v4;
-    v12 = self;
-    v8 = v7;
+    v10 = context;
+    v11 = characteristicsCopy;
+    selfCopy = self;
+    v8 = context;
     [v8 unsafeSynchronousBlock:v9];
   }
 }
@@ -3598,16 +3598,16 @@ void __80__HMDNotificationRegistryCoreDataAdapter_removeRegistrationsForCharacte
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_processDisableCharacteristicsRequest:(id)a3 registrationsForAccessory:(id)a4 context:(id)a5
+- (id)_processDisableCharacteristicsRequest:(id)request registrationsForAccessory:(id)accessory context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 managedObjectContext];
-  [v11 hmd_assertIsExecuting];
+  requestCopy = request;
+  accessoryCopy = accessory;
+  contextCopy = context;
+  managedObjectContext = [contextCopy managedObjectContext];
+  [managedObjectContext hmd_assertIsExecuting];
 
-  v12 = [v8 characteristicThresholds];
-  v13 = [MEMORY[0x277CBEB18] array];
+  characteristicThresholds = [requestCopy characteristicThresholds];
+  array = [MEMORY[0x277CBEB18] array];
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -3620,18 +3620,18 @@ void __80__HMDNotificationRegistryCoreDataAdapter_removeRegistrationsForCharacte
   v21[1] = 3221225472;
   v21[2] = __114__HMDNotificationRegistryCoreDataAdapter__processDisableCharacteristicsRequest_registrationsForAccessory_context___block_invoke;
   v21[3] = &unk_278684838;
-  v14 = v12;
+  v14 = characteristicThresholds;
   v22 = v14;
-  v23 = self;
+  selfCopy = self;
   v25 = v27;
   v26 = &v29;
-  v15 = v13;
+  v15 = array;
   v24 = v15;
-  [v9 hmf_enumerateWithAutoreleasePoolUsingBlock:v21];
+  [accessoryCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v21];
   v16 = [HMDNotificationRegistryCoreDataCharacteristicsRequestResult alloc];
   v17 = *(v30 + 24);
   v18 = [v15 copy];
-  v19 = [(HMDNotificationRegistryCoreDataCharacteristicsRequestResult *)v16 initWithCoreDataRequest:v8 didSucceed:1 didModify:v17 didModifyThresholdOnly:0 modifiedCharacteristics:v18];
+  v19 = [(HMDNotificationRegistryCoreDataCharacteristicsRequestResult *)v16 initWithCoreDataRequest:requestCopy didSucceed:1 didModify:v17 didModifyThresholdOnly:0 modifiedCharacteristics:v18];
 
   _Block_object_dispose(v27, 8);
   _Block_object_dispose(&v29, 8);
@@ -3686,17 +3686,17 @@ void __114__HMDNotificationRegistryCoreDataAdapter__processDisableCharacteristic
   }
 }
 
-- (id)_processEnableCharacteristicsRequest:(id)a3 homeMember:(id)a4 registrationsForAccessory:(id)a5 context:(id)a6
+- (id)_processEnableCharacteristicsRequest:(id)request homeMember:(id)member registrationsForAccessory:(id)accessory context:(id)context
 {
-  v10 = a3;
-  v29 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v12 managedObjectContext];
-  [v13 hmd_assertIsExecuting];
+  requestCopy = request;
+  memberCopy = member;
+  accessoryCopy = accessory;
+  contextCopy = context;
+  managedObjectContext = [contextCopy managedObjectContext];
+  [managedObjectContext hmd_assertIsExecuting];
 
-  v14 = [v10 characteristicThresholds];
-  v15 = [MEMORY[0x277CBEB18] array];
+  characteristicThresholds = [requestCopy characteristicThresholds];
+  array = [MEMORY[0x277CBEB18] array];
   v52 = 0;
   v53 = &v52;
   v54 = 0x2020000000;
@@ -3719,22 +3719,22 @@ void __114__HMDNotificationRegistryCoreDataAdapter__processDisableCharacteristic
   v30[1] = 3221225472;
   v30[2] = __124__HMDNotificationRegistryCoreDataAdapter__processEnableCharacteristicsRequest_homeMember_registrationsForAccessory_context___block_invoke;
   v30[3] = &unk_278684A00;
-  v28 = v11;
+  v28 = accessoryCopy;
   v31 = v28;
-  v32 = self;
+  selfCopy = self;
   v38 = &v52;
-  v16 = v15;
+  v16 = array;
   v33 = v16;
   v39 = &v48;
   v40 = v42;
-  v17 = v14;
+  v17 = characteristicThresholds;
   v34 = v17;
-  v18 = v12;
+  v18 = contextCopy;
   v35 = v18;
   v41 = &v44;
-  v19 = v10;
+  v19 = requestCopy;
   v36 = v19;
-  v20 = v29;
+  v20 = memberCopy;
   v37 = v20;
   [v17 hmf_enumerateWithAutoreleasePoolUsingBlock:v30];
   v21 = [HMDNotificationRegistryCoreDataCharacteristicsRequestResult alloc];
@@ -3893,19 +3893,19 @@ void __124__HMDNotificationRegistryCoreDataAdapter__processEnableCharacteristics
   }
 }
 
-- (id)_processGroupedCharacteristicsRequests:(id)a3 user:(id)a4 destination:(id)a5 context:(id)a6
+- (id)_processGroupedCharacteristicsRequests:(id)requests user:(id)user destination:(id)destination context:(id)context
 {
   v68[3] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v13 managedObjectContext];
-  [v14 hmd_assertIsExecuting];
+  requestsCopy = requests;
+  userCopy = user;
+  destinationCopy = destination;
+  contextCopy = context;
+  managedObjectContext = [contextCopy managedObjectContext];
+  [managedObjectContext hmd_assertIsExecuting];
 
   v15 = [MEMORY[0x277CBEB58] set];
   v16 = [MEMORY[0x277CBEB58] set];
-  v17 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v62[0] = MEMORY[0x277D85DD0];
   v62[1] = 3221225472;
   v62[2] = __106__HMDNotificationRegistryCoreDataAdapter__processGroupedCharacteristicsRequests_user_destination_context___block_invoke;
@@ -3914,25 +3914,25 @@ void __124__HMDNotificationRegistryCoreDataAdapter__processEnableCharacteristics
   v63 = v18;
   v19 = v16;
   v64 = v19;
-  v47 = v17;
+  v47 = dictionary;
   v65 = v47;
-  v50 = v10;
-  [v10 hmf_enumerateWithAutoreleasePoolUsingBlock:v62];
-  v48 = v13;
-  v20 = [v13 managedObjectContext];
+  v50 = requestsCopy;
+  [requestsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v62];
+  v48 = contextCopy;
+  managedObjectContext2 = [contextCopy managedObjectContext];
   v68[0] = @"characteristic.service.accessory.modelID";
   v68[1] = @"characteristic.instanceID";
   v68[2] = @"lastModified";
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v68 count:3];
-  v22 = [v11 uuid];
-  v23 = [v19 allObjects];
+  uuid = [userCopy uuid];
+  allObjects = [v19 allObjects];
   v46 = v18;
-  v24 = [v18 allObjects];
+  allObjects2 = [v18 allObjects];
   v61 = 0;
   v44 = v21;
-  v45 = v20;
-  v49 = v12;
-  v25 = -[HMDNotificationRegistryCoreDataAdapter _fetchMKFUserAndRegistrationsWithUserUUID:withCharacteristicIIDs:withAccessoryUUIDs:withDeviceIdsDestination:withPrefetchPaths:isRestrictedGuest:outHomeMember:context:](self, "_fetchMKFUserAndRegistrationsWithUserUUID:withCharacteristicIIDs:withAccessoryUUIDs:withDeviceIdsDestination:withPrefetchPaths:isRestrictedGuest:outHomeMember:context:", v22, v23, v24, v12, v21, [v11 isRestrictedGuest], &v61, v20);
+  v45 = managedObjectContext2;
+  v49 = destinationCopy;
+  v25 = -[HMDNotificationRegistryCoreDataAdapter _fetchMKFUserAndRegistrationsWithUserUUID:withCharacteristicIIDs:withAccessoryUUIDs:withDeviceIdsDestination:withPrefetchPaths:isRestrictedGuest:outHomeMember:context:](self, "_fetchMKFUserAndRegistrationsWithUserUUID:withCharacteristicIIDs:withAccessoryUUIDs:withDeviceIdsDestination:withPrefetchPaths:isRestrictedGuest:outHomeMember:context:", uuid, allObjects, allObjects2, destinationCopy, v21, [userCopy isRestrictedGuest], &v61, managedObjectContext2);
   v26 = v61;
 
   if (v25 && v26)
@@ -3944,13 +3944,13 @@ void __124__HMDNotificationRegistryCoreDataAdapter__processEnableCharacteristics
     v27 = v47;
     v60 = v47;
     [v25 na_filter:v59];
-    v28 = v43 = v11;
-    v29 = [MEMORY[0x277CBEB38] dictionary];
+    v28 = v43 = userCopy;
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v57[0] = MEMORY[0x277D85DD0];
     v57[1] = 3221225472;
     v57[2] = __106__HMDNotificationRegistryCoreDataAdapter__processGroupedCharacteristicsRequests_user_destination_context___block_invoke_4;
     v57[3] = &unk_2786846A8;
-    v30 = v29;
+    v30 = dictionary2;
     v58 = v30;
     [v28 hmf_enumerateWithAutoreleasePoolUsingBlock:v57];
     v31 = [MEMORY[0x277CBEB58] set];
@@ -3959,7 +3959,7 @@ void __124__HMDNotificationRegistryCoreDataAdapter__processEnableCharacteristics
     v51[2] = __106__HMDNotificationRegistryCoreDataAdapter__processGroupedCharacteristicsRequests_user_destination_context___block_invoke_5;
     v51[3] = &unk_278684990;
     v52 = v30;
-    v53 = self;
+    selfCopy = self;
     v54 = v26;
     v32 = v48;
     v55 = v48;
@@ -3970,13 +3970,13 @@ void __124__HMDNotificationRegistryCoreDataAdapter__processEnableCharacteristics
     [v50 hmf_enumerateWithAutoreleasePoolUsingBlock:v51];
     v36 = [v33 copy];
 
-    v11 = v43;
+    userCopy = v43;
   }
 
   else
   {
     v37 = objc_autoreleasePoolPush();
-    v38 = self;
+    selfCopy2 = self;
     v39 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
     {
@@ -4133,35 +4133,35 @@ void __106__HMDNotificationRegistryCoreDataAdapter__processGroupedCharacteristic
   [v12 addObject:v16];
 }
 
-- (id)processCharacteristicsRequests:(id)a3
+- (id)processCharacteristicsRequests:(id)requests
 {
-  v4 = a3;
-  if ([v4 count])
+  requestsCopy = requests;
+  if ([requestsCopy count])
   {
     v5 = [MEMORY[0x277CBEB58] set];
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __73__HMDNotificationRegistryCoreDataAdapter_processCharacteristicsRequests___block_invoke;
     v25[3] = &unk_278684860;
-    v7 = v6;
+    v7 = dictionary;
     v26 = v7;
-    [v4 hmf_enumerateWithAutoreleasePoolUsingBlock:v25];
-    v8 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-    v9 = [v8 backingStore];
-    v10 = [v9 context];
+    [requestsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v25];
+    home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+    backingStore = [home backingStore];
+    context = [backingStore context];
 
     v16 = MEMORY[0x277D85DD0];
     v17 = 3221225472;
     v18 = __73__HMDNotificationRegistryCoreDataAdapter_processCharacteristicsRequests___block_invoke_2;
     v19 = &unk_278689550;
     v20 = v7;
-    v21 = self;
-    v22 = v10;
+    selfCopy = self;
+    v22 = context;
     v23 = v5;
-    v24 = v4;
+    v24 = requestsCopy;
     v11 = v5;
-    v12 = v10;
+    v12 = context;
     v13 = v7;
     [v12 unsafeSynchronousBlock:&v16];
     v14 = [v11 copy];
@@ -4293,32 +4293,32 @@ uint64_t __73__HMDNotificationRegistryCoreDataAdapter_processCharacteristicsRequ
   return v3;
 }
 
-- (id)disableNotificationForCharacteristics:(id)a3 user:(id)a4 deviceIdsDestination:(id)a5
+- (id)disableNotificationForCharacteristics:(id)characteristics user:(id)user deviceIdsDestination:(id)destination
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  characteristicsCopy = characteristics;
+  userCopy = user;
+  destinationCopy = destination;
+  if ([characteristicsCopy count])
   {
     v27 = 0;
     v28 = &v27;
     v29 = 0x2020000000;
     v30 = 0;
-    v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
-    v12 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-    v13 = [v12 backingStore];
-    v14 = [v13 context];
+    v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(characteristicsCopy, "count")}];
+    home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+    backingStore = [home backingStore];
+    context = [backingStore context];
 
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __106__HMDNotificationRegistryCoreDataAdapter_disableNotificationForCharacteristics_user_deviceIdsDestination___block_invoke;
     v19[3] = &unk_278684B90;
-    v15 = v14;
+    v15 = context;
     v20 = v15;
-    v21 = v8;
-    v22 = self;
-    v23 = v9;
-    v24 = v10;
+    v21 = characteristicsCopy;
+    selfCopy = self;
+    v23 = userCopy;
+    v24 = destinationCopy;
     v26 = &v27;
     v16 = v11;
     v25 = v16;
@@ -4483,16 +4483,16 @@ void __106__HMDNotificationRegistryCoreDataAdapter_disableNotificationForCharact
   }
 }
 
-- (BOOL)enableNotificationsForCharacteristics:(id)a3 user:(id)a4 deviceIdsDestination:(id)a5
+- (BOOL)enableNotificationsForCharacteristics:(id)characteristics user:(id)user deviceIdsDestination:(id)destination
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  characteristicsCopy = characteristics;
+  userCopy = user;
+  destinationCopy = destination;
+  if ([characteristicsCopy count])
   {
-    v11 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-    v12 = v11;
-    if (v11)
+    home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+    v12 = home;
+    if (home)
     {
       v28 = 0;
       v29 = &v28;
@@ -4502,19 +4502,19 @@ void __106__HMDNotificationRegistryCoreDataAdapter_disableNotificationForCharact
       v26[1] = v26;
       v26[2] = 0x2020000000;
       v27 = 1;
-      v13 = [v11 backingStore];
-      v14 = [v13 context];
+      backingStore = [home backingStore];
+      context = [backingStore context];
 
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharacteristics_user_deviceIdsDestination___block_invoke;
       v18[3] = &unk_2786847E8;
-      v15 = v14;
+      v15 = context;
       v19 = v15;
-      v20 = v8;
-      v21 = self;
-      v22 = v9;
-      v23 = v10;
+      v20 = characteristicsCopy;
+      selfCopy = self;
+      v22 = userCopy;
+      v23 = destinationCopy;
       v24 = v26;
       v25 = &v28;
       [v15 unsafeSynchronousBlock:v18];
@@ -4736,13 +4736,13 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
 {
   v3 = objc_alloc(MEMORY[0x277CBE428]);
   v4 = +[_MKFNotificationRegistrationActionSet entity];
-  v5 = [v4 name];
-  v6 = [v3 initWithEntityName:v5];
+  name = [v4 name];
+  v6 = [v3 initWithEntityName:name];
 
   v7 = MEMORY[0x277CCAC30];
-  v8 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v9 = [v8 uuid];
-  v10 = [v7 predicateWithFormat:@"%K == %@", @"actionSet.home.modelID", v9];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  uuid = [home uuid];
+  v10 = [v7 predicateWithFormat:@"%K == %@", @"actionSet.home.modelID", uuid];
   [v6 setPredicate:v10];
 
   return v6;
@@ -4752,40 +4752,40 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
 {
   v3 = objc_alloc(MEMORY[0x277CBE428]);
   v4 = +[_MKFNotificationRegistrationMediaProperty entity];
-  v5 = [v4 name];
-  v6 = [v3 initWithEntityName:v5];
+  name = [v4 name];
+  v6 = [v3 initWithEntityName:name];
 
   v7 = MEMORY[0x277CCAC30];
-  v8 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v9 = [v8 uuid];
-  v10 = [v7 predicateWithFormat:@"%K == %@", @"accessory.home.modelID", v9];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  uuid = [home uuid];
+  v10 = [v7 predicateWithFormat:@"%K == %@", @"accessory.home.modelID", uuid];
   [v6 setPredicate:v10];
 
   return v6;
 }
 
-- (id)_fetchRequestForActionSetRegistrationsWithoutAllowedDestinations:(id)a3
+- (id)_fetchRequestForActionSetRegistrationsWithoutAllowedDestinations:(id)destinations
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  destinationsCopy = destinations;
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
   v6 = objc_alloc(MEMORY[0x277CBE428]);
   v7 = +[_MKFNotificationRegistrationActionSet entity];
-  v8 = [v7 name];
-  v9 = [v6 initWithEntityName:v8];
+  name = [v7 name];
+  v9 = [v6 initWithEntityName:name];
 
   v10 = MEMORY[0x277CCAC30];
-  v11 = [v5 uuid];
-  v12 = [v10 predicateWithFormat:@"(%K == %@) AND NOT (%K IN %@)", @"user.home.modelID", v11, @"deviceIdsDestination", v4];
+  uuid = [home uuid];
+  destinationsCopy = [v10 predicateWithFormat:@"(%K == %@) AND NOT (%K IN %@)", @"user.home.modelID", uuid, @"deviceIdsDestination", destinationsCopy];
 
-  [v9 setPredicate:v12];
+  [v9 setPredicate:destinationsCopy];
   v13 = MEMORY[0x277CCAC30];
-  v14 = [v5 uuid];
-  v15 = [v13 predicateWithFormat:@"(%K == %@) AND NOT (%K IN %@)", @"guest.home.modelID", v14, @"deviceIdsDestination", v4];
+  uuid2 = [home uuid];
+  destinationsCopy2 = [v13 predicateWithFormat:@"(%K == %@) AND NOT (%K IN %@)", @"guest.home.modelID", uuid2, @"deviceIdsDestination", destinationsCopy];
 
   v16 = MEMORY[0x277CCA920];
-  v21[0] = v12;
-  v21[1] = v15;
+  v21[0] = destinationsCopy;
+  v21[1] = destinationsCopy2;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
   v18 = [v16 orPredicateWithSubpredicates:v17];
   [v9 setPredicate:v18];
@@ -4795,28 +4795,28 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
   return v9;
 }
 
-- (id)_fetchRequestForMediaProfileRegistrationsWithoutAllowedDestinations:(id)a3
+- (id)_fetchRequestForMediaProfileRegistrationsWithoutAllowedDestinations:(id)destinations
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  destinationsCopy = destinations;
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
   v6 = objc_alloc(MEMORY[0x277CBE428]);
   v7 = +[_MKFNotificationRegistrationMediaProperty entity];
-  v8 = [v7 name];
-  v9 = [v6 initWithEntityName:v8];
+  name = [v7 name];
+  v9 = [v6 initWithEntityName:name];
 
   v10 = MEMORY[0x277CCAC30];
-  v11 = [v5 uuid];
-  v12 = [v10 predicateWithFormat:@"(%K == %@) AND NOT (%K IN %@)", @"user.home.modelID", v11, @"deviceIdsDestination", v4];
+  uuid = [home uuid];
+  destinationsCopy = [v10 predicateWithFormat:@"(%K == %@) AND NOT (%K IN %@)", @"user.home.modelID", uuid, @"deviceIdsDestination", destinationsCopy];
 
-  [v9 setPredicate:v12];
+  [v9 setPredicate:destinationsCopy];
   v13 = MEMORY[0x277CCAC30];
-  v14 = [v5 uuid];
-  v15 = [v13 predicateWithFormat:@"(%K == %@) AND NOT (%K IN %@)", @"guest.home.modelID", v14, @"deviceIdsDestination", v4];
+  uuid2 = [home uuid];
+  destinationsCopy2 = [v13 predicateWithFormat:@"(%K == %@) AND NOT (%K IN %@)", @"guest.home.modelID", uuid2, @"deviceIdsDestination", destinationsCopy];
 
   v16 = MEMORY[0x277CCA920];
-  v21[0] = v12;
-  v21[1] = v15;
+  v21[0] = destinationsCopy;
+  v21[1] = destinationsCopy2;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
   v18 = [v16 orPredicateWithSubpredicates:v17];
   [v9 setPredicate:v18];
@@ -4826,28 +4826,28 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
   return v9;
 }
 
-- (id)_fetchRequestForCharacteristicRegistrationsWithoutAllowedDestinations:(id)a3
+- (id)_fetchRequestForCharacteristicRegistrationsWithoutAllowedDestinations:(id)destinations
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  destinationsCopy = destinations;
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
   v6 = objc_alloc(MEMORY[0x277CBE428]);
   v7 = +[_MKFNotificationRegistrationCharacteristic entity];
-  v8 = [v7 name];
-  v9 = [v6 initWithEntityName:v8];
+  name = [v7 name];
+  v9 = [v6 initWithEntityName:name];
 
   v10 = MEMORY[0x277CCAC30];
-  v11 = [v5 uuid];
-  v12 = [v10 predicateWithFormat:@"(%K == %@) AND NOT (%K IN %@)", @"user.home.modelID", v11, @"deviceIdsDestination", v4];
+  uuid = [home uuid];
+  destinationsCopy = [v10 predicateWithFormat:@"(%K == %@) AND NOT (%K IN %@)", @"user.home.modelID", uuid, @"deviceIdsDestination", destinationsCopy];
 
-  [v9 setPredicate:v12];
+  [v9 setPredicate:destinationsCopy];
   v13 = MEMORY[0x277CCAC30];
-  v14 = [v5 uuid];
-  v15 = [v13 predicateWithFormat:@"(%K == %@) AND NOT (%K IN %@)", @"guest.home.modelID", v14, @"deviceIdsDestination", v4];
+  uuid2 = [home uuid];
+  destinationsCopy2 = [v13 predicateWithFormat:@"(%K == %@) AND NOT (%K IN %@)", @"guest.home.modelID", uuid2, @"deviceIdsDestination", destinationsCopy];
 
   v16 = MEMORY[0x277CCA920];
-  v21[0] = v12;
-  v21[1] = v15;
+  v21[0] = destinationsCopy;
+  v21[1] = destinationsCopy2;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
   v18 = [v16 orPredicateWithSubpredicates:v17];
   [v9 setPredicate:v18];
@@ -4857,33 +4857,33 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
   return v9;
 }
 
-- (id)_fetchMKFRegistrationsWithUserUUID:(id)a3 actionSetUUID:(id)a4 deviceIdsDestination:(id)a5 prefetchPaths:(id)a6 isRestrictedGuest:(BOOL)a7 context:(id)a8
+- (id)_fetchMKFRegistrationsWithUserUUID:(id)d actionSetUUID:(id)iD deviceIdsDestination:(id)destination prefetchPaths:(id)paths isRestrictedGuest:(BOOL)guest context:(id)context
 {
-  v9 = a7;
+  guestCopy = guest;
   v47 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  [v18 hmd_assertIsExecuting];
+  dCopy = d;
+  iDCopy = iD;
+  destinationCopy = destination;
+  pathsCopy = paths;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
   v19 = objc_alloc(MEMORY[0x277CBE428]);
   v20 = +[_MKFNotificationRegistrationActionSet entity];
-  v21 = [v20 name];
-  v22 = [v19 initWithEntityName:v21];
+  name = [v20 name];
+  v22 = [v19 initWithEntityName:name];
 
-  [v22 setRelationshipKeyPathsForPrefetching:v17];
+  [v22 setRelationshipKeyPathsForPrefetching:pathsCopy];
   v23 = @"user.modelID";
-  if (v9)
+  if (guestCopy)
   {
     v23 = @"guest.modelID";
   }
 
-  v24 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@) AND (%K == %@)", v23, v14, @"actionSet.modelID", v15, @"deviceIdsDestination", v16];
-  [v22 setPredicate:v24];
+  destinationCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@) AND (%K == %@)", v23, dCopy, @"actionSet.modelID", iDCopy, @"deviceIdsDestination", destinationCopy];
+  [v22 setPredicate:destinationCopy];
 
   v34 = 0;
-  v25 = [v18 executeFetchRequest:v22 error:&v34];
+  v25 = [contextCopy executeFetchRequest:v22 error:&v34];
   v26 = v34;
   if (v25)
   {
@@ -4893,7 +4893,7 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
   else
   {
     context = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -4901,13 +4901,13 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
       *buf = 138544642;
       v36 = v32;
       v37 = 2112;
-      v38 = v14;
+      v38 = dCopy;
       v39 = 2112;
-      v40 = v15;
+      v40 = iDCopy;
       v41 = 2112;
-      v42 = v16;
+      v42 = destinationCopy;
       v43 = 2112;
-      v44 = v17;
+      v44 = pathsCopy;
       v45 = 2112;
       v46 = v26;
       _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch action set registrations for userUUID %@ actionSetUUID %@ deviceIdsDestination %@ prefetchPaths %@, error: %@", buf, 0x3Eu);
@@ -4921,61 +4921,61 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
   return v25;
 }
 
-- (id)_fetchMKFUserAndRegistrationsWithUserUUID:(id)a3 withMediaProfileUUID:(id)a4 withMediaPropertyIn:(id)a5 withDeviceIdsDestination:(id)a6 withAccessoryUUID:(id)a7 withPrefetchPaths:(id)a8 isRestrictedGuest:(BOOL)a9 outHomeMember:(id *)a10 context:(id)a11
+- (id)_fetchMKFUserAndRegistrationsWithUserUUID:(id)d withMediaProfileUUID:(id)iD withMediaPropertyIn:(id)in withDeviceIdsDestination:(id)destination withAccessoryUUID:(id)uID withPrefetchPaths:(id)paths isRestrictedGuest:(BOOL)guest outHomeMember:(id *)self0 context:(id)self1
 {
-  v16 = a3;
-  v17 = a11;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  [v17 hmd_assertIsExecuting];
-  v23 = [MEMORY[0x277CBEB18] arrayWithArray:v18];
+  dCopy = d;
+  contextCopy = context;
+  pathsCopy = paths;
+  uIDCopy = uID;
+  destinationCopy = destination;
+  inCopy = in;
+  iDCopy = iD;
+  [contextCopy hmd_assertIsExecuting];
+  v23 = [MEMORY[0x277CBEB18] arrayWithArray:pathsCopy];
 
   [v23 addObject:@"user"];
-  LOBYTE(v27) = a9;
-  v24 = [(HMDNotificationRegistryCoreDataAdapter *)self _fetchMKFRegistrationsWithUserUUID:v16 withMediaProfileUUID:v22 withMediaPropertyIn:v21 withDeviceIdsDestination:v20 withAccessoryUUID:v19 withPrefetchPaths:v23 isRestrictedGuest:v27 context:v17];
+  LOBYTE(v27) = guest;
+  v24 = [(HMDNotificationRegistryCoreDataAdapter *)self _fetchMKFRegistrationsWithUserUUID:dCopy withMediaProfileUUID:iDCopy withMediaPropertyIn:inCopy withDeviceIdsDestination:destinationCopy withAccessoryUUID:uIDCopy withPrefetchPaths:v23 isRestrictedGuest:v27 context:contextCopy];
 
   if (v24)
   {
-    *a10 = [(HMDNotificationRegistryCoreDataAdapter *)self homeMemberForRegistrations:v24 userUUID:v16 isRestrictedGuest:a9 context:v17];
+    *member = [(HMDNotificationRegistryCoreDataAdapter *)self homeMemberForRegistrations:v24 userUUID:dCopy isRestrictedGuest:guest context:contextCopy];
     v25 = v24;
   }
 
   return v24;
 }
 
-- (id)_fetchMKFRegistrationsWithUserUUID:(id)a3 withMediaProfileUUID:(id)a4 withMediaPropertyIn:(id)a5 withDeviceIdsDestination:(id)a6 withAccessoryUUID:(id)a7 withPrefetchPaths:(id)a8 isRestrictedGuest:(BOOL)a9 context:(id)a10
+- (id)_fetchMKFRegistrationsWithUserUUID:(id)d withMediaProfileUUID:(id)iD withMediaPropertyIn:(id)in withDeviceIdsDestination:(id)destination withAccessoryUUID:(id)uID withPrefetchPaths:(id)paths isRestrictedGuest:(BOOL)guest context:(id)self0
 {
   v57 = *MEMORY[0x277D85DE8];
-  v38 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a10;
-  [v20 hmd_assertIsExecuting];
+  dCopy = d;
+  iDCopy = iD;
+  inCopy = in;
+  destinationCopy = destination;
+  uIDCopy = uID;
+  pathsCopy = paths;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
   v21 = objc_alloc(MEMORY[0x277CBE428]);
   v22 = +[_MKFNotificationRegistrationMediaProperty entity];
-  v23 = [v22 name];
-  v24 = [v21 initWithEntityName:v23];
+  name = [v22 name];
+  v24 = [v21 initWithEntityName:name];
 
-  v25 = v18;
-  v39 = v19;
-  [v24 setRelationshipKeyPathsForPrefetching:v19];
+  v25 = uIDCopy;
+  v39 = pathsCopy;
+  [v24 setRelationshipKeyPathsForPrefetching:pathsCopy];
   v26 = @"user.modelID";
-  if (a9)
+  if (guest)
   {
     v26 = @"guest.modelID";
   }
 
-  v27 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@) AND (%K IN %@) AND (%K == %@) AND (%K == %@)", v26, v38, @"mediaProfileIdentifier", v15, @"mediaProperty", v16, @"deviceIdsDestination", v17, @"accessory.modelID", v18];
-  [v24 setPredicate:v27];
+  uIDCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@) AND (%K IN %@) AND (%K == %@) AND (%K == %@)", v26, dCopy, @"mediaProfileIdentifier", iDCopy, @"mediaProperty", inCopy, @"deviceIdsDestination", destinationCopy, @"accessory.modelID", uIDCopy];
+  [v24 setPredicate:uIDCopy];
 
   v40 = 0;
-  v28 = [v20 executeFetchRequest:v24 error:&v40];
+  v28 = [contextCopy executeFetchRequest:v24 error:&v40];
   v29 = v40;
   if (v28)
   {
@@ -4985,7 +4985,7 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
   else
   {
     context = objc_autoreleasePoolPush();
-    v31 = self;
+    selfCopy = self;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
@@ -4993,15 +4993,15 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
       *buf = 138545154;
       v42 = v37;
       v43 = 2112;
-      v44 = v38;
+      v44 = dCopy;
       v45 = 2112;
-      v46 = v15;
+      v46 = iDCopy;
       v47 = 2112;
-      v48 = v16;
+      v48 = inCopy;
       v49 = 2112;
-      v50 = v17;
+      v50 = destinationCopy;
       v51 = 2112;
-      v52 = v18;
+      v52 = uIDCopy;
       v53 = 2112;
       v54 = v39;
       v55 = 2112;
@@ -5010,7 +5010,7 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
     }
 
     objc_autoreleasePoolPop(context);
-    v25 = v18;
+    v25 = uIDCopy;
   }
 
   v33 = *MEMORY[0x277D85DE8];
@@ -5018,36 +5018,36 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
   return v28;
 }
 
-- (id)homeMemberForRegistrations:(id)a3 userUUID:(id)a4 isRestrictedGuest:(BOOL)a5 context:(id)a6
+- (id)homeMemberForRegistrations:(id)registrations userUUID:(id)d isRestrictedGuest:(BOOL)guest context:(id)context
 {
-  v7 = a5;
+  guestCopy = guest;
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v10 count])
+  registrationsCopy = registrations;
+  dCopy = d;
+  contextCopy = context;
+  if ([registrationsCopy count])
   {
-    v13 = [v10 firstObject];
-    v14 = v13;
-    if (v7)
+    firstObject = [registrationsCopy firstObject];
+    v14 = firstObject;
+    if (guestCopy)
     {
-      [v13 guest];
+      [firstObject guest];
     }
 
     else
     {
-      [v13 user];
+      [firstObject user];
     }
     v15 = ;
   }
 
   else
   {
-    v15 = [(HMDNotificationRegistryCoreDataAdapter *)self _fetchHomeMemberWithUUID:v11 context:v12];
+    v15 = [(HMDNotificationRegistryCoreDataAdapter *)self _fetchHomeMemberWithUUID:dCopy context:contextCopy];
     if (!v15)
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -5055,7 +5055,7 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
         v22 = 138543618;
         v23 = v19;
         v24 = 2112;
-        v25 = v11;
+        v25 = dCopy;
         _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_ERROR, "%{public}@Unable to find the home member with UUID: %@", &v22, 0x16u);
       }
 
@@ -5069,49 +5069,49 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
   return v15;
 }
 
-- (id)_fetchMKFRegistrationsWithUserUUID:(id)a3 withCharacteristicIIDs:(id)a4 withAccessoryUUIDs:(id)a5 withDeviceIdsDestination:(id)a6 withPrefetchPaths:(id)a7 isRestrictedGuest:(BOOL)a8 context:(id)a9
+- (id)_fetchMKFRegistrationsWithUserUUID:(id)d withCharacteristicIIDs:(id)ds withAccessoryUUIDs:(id)iDs withDeviceIdsDestination:(id)destination withPrefetchPaths:(id)paths isRestrictedGuest:(BOOL)guest context:(id)context
 {
-  v9 = a8;
+  guestCopy = guest;
   v53 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
-  [v20 hmd_assertIsExecuting];
-  if ([v16 hmf_isEmpty])
+  dCopy = d;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  destinationCopy = destination;
+  pathsCopy = paths;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
+  if ([dsCopy hmf_isEmpty])
   {
     v21 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v38 = self;
+    selfCopy = self;
     v22 = objc_alloc(MEMORY[0x277CBE428]);
     v23 = +[_MKFNotificationRegistrationCharacteristic entity];
-    v24 = [v23 name];
-    v25 = [v22 initWithEntityName:v24];
+    name = [v23 name];
+    v25 = [v22 initWithEntityName:name];
 
     v26 = MEMORY[0x277CCAC30];
-    v27 = updatedCharacteristicIIDs(v16);
+    v27 = updatedCharacteristicIIDs(dsCopy);
     v28 = v27;
     v29 = @"user.modelID";
-    if (v9)
+    if (guestCopy)
     {
       v29 = @"guest.modelID";
     }
 
-    v30 = [v26 predicateWithFormat:@"(%K == %@) AND (%K IN %@) AND (%K IN %@) AND (%K == %@)", v29, v15, @"characteristic.instanceID", v27, @"characteristic.service.accessory.modelID", v17, @"deviceIdsDestination", v18];
-    [v25 setPredicate:v30];
+    destinationCopy = [v26 predicateWithFormat:@"(%K == %@) AND (%K IN %@) AND (%K IN %@) AND (%K == %@)", v29, dCopy, @"characteristic.instanceID", v27, @"characteristic.service.accessory.modelID", iDsCopy, @"deviceIdsDestination", destinationCopy];
+    [v25 setPredicate:destinationCopy];
 
-    if (v19)
+    if (pathsCopy)
     {
-      [v25 setRelationshipKeyPathsForPrefetching:v19];
+      [v25 setRelationshipKeyPathsForPrefetching:pathsCopy];
     }
 
     v40 = 0;
-    v21 = [v20 executeFetchRequest:v25 error:&v40];
+    v21 = [contextCopy executeFetchRequest:v25 error:&v40];
     v31 = v40;
     if (v21)
     {
@@ -5121,7 +5121,7 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
     else
     {
       context = objc_autoreleasePoolPush();
-      v39 = v38;
+      v39 = selfCopy;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
@@ -5129,13 +5129,13 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
         *buf = 138544642;
         v42 = v36;
         v43 = 2112;
-        v44 = v15;
+        v44 = dCopy;
         v45 = 2112;
-        v46 = v16;
+        v46 = dsCopy;
         v47 = 2112;
-        v48 = v17;
+        v48 = iDsCopy;
         v49 = 2112;
-        v50 = v18;
+        v50 = destinationCopy;
         v51 = 2112;
         v52 = v31;
         _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch notification registrations for userOrGuest uuid %@ characteristic IIDs %@ accessory UUIDs %@ deviceIdsDestination %@, error: %@", buf, 0x3Eu);
@@ -5150,49 +5150,49 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
   return v21;
 }
 
-- (id)_fetchMKFRegistrationsWithUserUUID:(id)a3 withCharacteristicIIDs:(id)a4 withAccessoryUUID:(id)a5 withDeviceIdsDestination:(id)a6 withPrefetchPaths:(id)a7 isRestrictedGuest:(BOOL)a8 context:(id)a9
+- (id)_fetchMKFRegistrationsWithUserUUID:(id)d withCharacteristicIIDs:(id)ds withAccessoryUUID:(id)iD withDeviceIdsDestination:(id)destination withPrefetchPaths:(id)paths isRestrictedGuest:(BOOL)guest context:(id)context
 {
-  v9 = a8;
+  guestCopy = guest;
   v53 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
-  [v20 hmd_assertIsExecuting];
-  if ([v16 hmf_isEmpty])
+  dCopy = d;
+  dsCopy = ds;
+  iDCopy = iD;
+  destinationCopy = destination;
+  pathsCopy = paths;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
+  if ([dsCopy hmf_isEmpty])
   {
     v21 = 0;
   }
 
   else
   {
-    v38 = self;
+    selfCopy = self;
     v22 = objc_alloc(MEMORY[0x277CBE428]);
     v23 = +[_MKFNotificationRegistrationCharacteristic entity];
-    v24 = [v23 name];
-    v25 = [v22 initWithEntityName:v24];
+    name = [v23 name];
+    v25 = [v22 initWithEntityName:name];
 
     v26 = MEMORY[0x277CCAC30];
-    v27 = updatedCharacteristicIIDs(v16);
+    v27 = updatedCharacteristicIIDs(dsCopy);
     v28 = v27;
     v29 = @"user.modelID";
-    if (v9)
+    if (guestCopy)
     {
       v29 = @"guest.modelID";
     }
 
-    v30 = [v26 predicateWithFormat:@"(%K == %@) AND (%K IN %@) AND (%K == %@) AND (%K == %@)", v29, v15, @"characteristic.instanceID", v27, @"characteristic.service.accessory.modelID", v17, @"deviceIdsDestination", v18];
-    [v25 setPredicate:v30];
+    destinationCopy = [v26 predicateWithFormat:@"(%K == %@) AND (%K IN %@) AND (%K == %@) AND (%K == %@)", v29, dCopy, @"characteristic.instanceID", v27, @"characteristic.service.accessory.modelID", iDCopy, @"deviceIdsDestination", destinationCopy];
+    [v25 setPredicate:destinationCopy];
 
-    if (v19)
+    if (pathsCopy)
     {
-      [v25 setRelationshipKeyPathsForPrefetching:v19];
+      [v25 setRelationshipKeyPathsForPrefetching:pathsCopy];
     }
 
     v40 = 0;
-    v21 = [v20 executeFetchRequest:v25 error:&v40];
+    v21 = [contextCopy executeFetchRequest:v25 error:&v40];
     v31 = v40;
     if (v21)
     {
@@ -5202,7 +5202,7 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
     else
     {
       context = objc_autoreleasePoolPush();
-      v39 = v38;
+      v39 = selfCopy;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
@@ -5210,13 +5210,13 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
         *buf = 138544642;
         v42 = v36;
         v43 = 2112;
-        v44 = v15;
+        v44 = dCopy;
         v45 = 2112;
-        v46 = v16;
+        v46 = dsCopy;
         v47 = 2112;
-        v48 = v17;
+        v48 = iDCopy;
         v49 = 2112;
-        v50 = v18;
+        v50 = destinationCopy;
         v51 = 2112;
         v52 = v31;
         _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch notification registrations for userOrGuest uuid %@ characteristic IIDs %@ accessory UUID %@ deviceIdsDestination %@, error: %@", buf, 0x3Eu);
@@ -5231,41 +5231,41 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
   return v21;
 }
 
-- (id)_fetchMKFCharacteristicsFromHMDCharacteristics:(id)a3 context:(id)a4
+- (id)_fetchMKFCharacteristicsFromHMDCharacteristics:(id)characteristics context:(id)context
 {
   v72 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [v7 hmd_assertIsExecuting];
-  if (v6 && [v6 count])
+  characteristicsCopy = characteristics;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
+  if (characteristicsCopy && [characteristicsCopy count])
   {
-    v56 = self;
-    v8 = [v6 objectAtIndexedSubscript:0];
-    v9 = [v8 service];
+    selfCopy = self;
+    v8 = [characteristicsCopy objectAtIndexedSubscript:0];
+    service = [v8 service];
 
-    v10 = [v9 accessory];
-    v11 = [v10 uuid];
+    accessory = [service accessory];
+    uuid = [accessory uuid];
 
-    v59 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v59 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(characteristicsCopy, "count")}];
     v12 = objc_alloc(MEMORY[0x277CBE428]);
     v13 = +[_MKFCharacteristic entity];
-    v14 = [v13 name];
-    v15 = [v12 initWithEntityName:v14];
+    name = [v13 name];
+    v15 = [v12 initWithEntityName:name];
 
-    v58 = v11;
-    v60 = v7;
-    if ([v6 count] == 1)
+    v58 = uuid;
+    v60 = contextCopy;
+    if ([characteristicsCopy count] == 1)
     {
-      v54 = v9;
+      v54 = service;
       v16 = MEMORY[0x277CCAC30];
-      v17 = [v6 objectAtIndexedSubscript:0];
-      v18 = [v17 instanceID];
+      v17 = [characteristicsCopy objectAtIndexedSubscript:0];
+      instanceID = [v17 instanceID];
       v19 = HAPInstanceIDFromValue();
       v20 = MEMORY[0x277CCABB0];
-      v21 = [v6 objectAtIndexedSubscript:0];
-      v22 = [v21 instanceID];
-      v23 = [v20 numberWithLongLong:{objc_msgSend(v22, "longLongValue")}];
-      v24 = [v16 predicateWithFormat:@"(%K == %@ OR %K == %@) AND (%K == %@)", @"instanceID", v19, @"instanceID", v23, @"service.accessory.modelID", v11];
+      v21 = [characteristicsCopy objectAtIndexedSubscript:0];
+      instanceID2 = [v21 instanceID];
+      v23 = [v20 numberWithLongLong:{objc_msgSend(instanceID2, "longLongValue")}];
+      v24 = [v16 predicateWithFormat:@"(%K == %@ OR %K == %@) AND (%K == %@)", @"instanceID", v19, @"instanceID", v23, @"service.accessory.modelID", uuid];
       [v15 setPredicate:v24];
 
       v65 = 0;
@@ -5279,23 +5279,23 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
         [v59 setObject:v28 atIndexedSubscript:0];
 
         v30 = v59;
-        v9 = v54;
+        service = v54;
       }
 
       else
       {
         v37 = objc_autoreleasePoolPush();
-        v38 = v56;
+        v38 = selfCopy;
         v39 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
           v40 = HMFGetLogIdentifier();
-          v41 = [v6 objectAtIndexedSubscript:0];
-          v42 = [v41 instanceID];
+          v41 = [characteristicsCopy objectAtIndexedSubscript:0];
+          instanceID3 = [v41 instanceID];
           *buf = 138543874;
           v67 = v40;
           v68 = 2112;
-          v69 = v42;
+          v69 = instanceID3;
           v70 = 2112;
           v71 = v27;
           _os_log_impl(&dword_229538000, v39, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch MKF Characteristic for characteristic instance id: %@, error: %@", buf, 0x20u);
@@ -5303,21 +5303,21 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
 
         objc_autoreleasePoolPop(v37);
         v30 = 0;
-        v9 = v54;
+        service = v54;
         v29 = v59;
       }
     }
 
     else
     {
-      v31 = [v6 na_map:&__block_literal_global_241_246992];
+      v31 = [characteristicsCopy na_map:&__block_literal_global_241_246992];
       v32 = MEMORY[0x277CCAC30];
       v33 = updatedCharacteristicIIDs(v31);
-      v34 = [v32 predicateWithFormat:@"(%K IN %@) AND (%K == %@)", @"instanceID", v33, @"service.accessory.modelID", v11];
+      v34 = [v32 predicateWithFormat:@"(%K IN %@) AND (%K == %@)", @"instanceID", v33, @"service.accessory.modelID", uuid];
       [v15 setPredicate:v34];
 
       v64 = 0;
-      v26 = [v7 executeFetchRequest:v15 error:&v64];
+      v26 = [contextCopy executeFetchRequest:v15 error:&v64];
       v27 = v64;
       if (v26 && [v26 count])
       {
@@ -5330,9 +5330,9 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
         v29 = v59;
         v35 = v59;
         v63 = v35;
-        [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:v61];
+        [characteristicsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v61];
         v36 = [v35 count];
-        if (v36 == [v6 count])
+        if (v36 == [characteristicsCopy count])
         {
           v30 = v35;
         }
@@ -5340,14 +5340,14 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
         else
         {
           v47 = objc_autoreleasePoolPush();
-          v57 = v56;
+          v57 = selfCopy;
           v48 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
           {
             HMFGetLogIdentifier();
             v49 = v55 = v47;
             v50 = [v35 count];
-            v51 = [v6 count];
+            v51 = [characteristicsCopy count];
             *buf = 138543874;
             v67 = v49;
             v68 = 2048;
@@ -5369,7 +5369,7 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
       {
         v25 = v15;
         v43 = objc_autoreleasePoolPush();
-        v44 = v56;
+        v44 = selfCopy;
         v45 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
         {
@@ -5387,7 +5387,7 @@ void __106__HMDNotificationRegistryCoreDataAdapter_enableNotificationsForCharact
       }
     }
 
-    v7 = v60;
+    contextCopy = v60;
   }
 
   else
@@ -5436,54 +5436,54 @@ void __97__HMDNotificationRegistryCoreDataAdapter__fetchMKFCharacteristicsFromHM
   }
 }
 
-- (id)_fetchEnabledMKFRegistrationsForHMDCharacteristics:(id)a3 context:(id)a4
+- (id)_fetchEnabledMKFRegistrationsForHMDCharacteristics:(id)characteristics context:(id)context
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [v7 hmd_assertIsExecuting];
-  if (!v6 || ![v6 count])
+  characteristicsCopy = characteristics;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
+  if (!characteristicsCopy || ![characteristicsCopy count])
   {
     v18 = 0;
     goto LABEL_15;
   }
 
-  v8 = [v6 objectAtIndexedSubscript:0];
-  v9 = [v8 service];
-  v10 = [v9 accessory];
-  v11 = [v10 uuid];
+  v8 = [characteristicsCopy objectAtIndexedSubscript:0];
+  service = [v8 service];
+  accessory = [service accessory];
+  uuid = [accessory uuid];
 
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
   v39 = __Block_byref_object_copy__246802;
   v40 = __Block_byref_object_dispose__246803;
-  v41 = [MEMORY[0x277CBEB18] array];
-  if ([v6 count] == 1)
+  array = [MEMORY[0x277CBEB18] array];
+  if ([characteristicsCopy count] == 1)
   {
-    v12 = [v6 objectAtIndexedSubscript:0];
-    v13 = [v12 instanceID];
-    v48[0] = v13;
+    v12 = [characteristicsCopy objectAtIndexedSubscript:0];
+    instanceID = [v12 instanceID];
+    v48[0] = instanceID;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:1];
     v35 = 0;
-    v15 = [(HMDNotificationRegistryCoreDataAdapter *)self _registrationsForCharacteristicIIDs:v14 accessoryUUID:v11 moc:v7 error:&v35];
+    v15 = [(HMDNotificationRegistryCoreDataAdapter *)self _registrationsForCharacteristicIIDs:v14 accessoryUUID:uuid moc:contextCopy error:&v35];
     v16 = v35;
     v17 = [v15 na_filter:&__block_literal_global_221_247006];
 
     if (!v17)
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = self;
+      selfCopy = self;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         v30 = HMFGetLogIdentifier();
-        v31 = [v6 objectAtIndexedSubscript:0];
-        v32 = [v31 instanceID];
+        v31 = [characteristicsCopy objectAtIndexedSubscript:0];
+        instanceID2 = [v31 instanceID];
         *buf = 138543874;
         v43 = v30;
         v44 = 2112;
-        v45 = v32;
+        v45 = instanceID2;
         v46 = 2112;
         v47 = v16;
         _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch MKFNotificationRegistrationCharacteristic for characteristic instance id: %@, error: %@", buf, 0x20u);
@@ -5500,9 +5500,9 @@ void __97__HMDNotificationRegistryCoreDataAdapter__fetchMKFCharacteristicsFromHM
 
   else
   {
-    v19 = [v6 na_map:&__block_literal_global_225_247008];
+    v19 = [characteristicsCopy na_map:&__block_literal_global_225_247008];
     v34 = 0;
-    v20 = [(HMDNotificationRegistryCoreDataAdapter *)self _registrationsForCharacteristicIIDs:v19 accessoryUUID:v11 moc:v7 error:&v34];
+    v20 = [(HMDNotificationRegistryCoreDataAdapter *)self _registrationsForCharacteristicIIDs:v19 accessoryUUID:uuid moc:contextCopy error:&v34];
     v16 = v34;
     v17 = [v20 na_filter:&__block_literal_global_227_247009];
 
@@ -5520,7 +5520,7 @@ void __97__HMDNotificationRegistryCoreDataAdapter__fetchMKFCharacteristicsFromHM
     else
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = self;
+      selfCopy2 = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
@@ -5528,7 +5528,7 @@ void __97__HMDNotificationRegistryCoreDataAdapter__fetchMKFCharacteristicsFromHM
         *buf = 138543874;
         v43 = v24;
         v44 = 2112;
-        v45 = v6;
+        v45 = characteristicsCopy;
         v46 = 2112;
         v47 = v16;
         _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch MKFNotificationRegistrationCharacteristic for characteristics %@, error: %@", buf, 0x20u);
@@ -5564,21 +5564,21 @@ uint64_t __101__HMDNotificationRegistryCoreDataAdapter__fetchEnabledMKFRegistrat
   return v3;
 }
 
-- (BOOL)_deleteAllMKFRegistrationsForActionSetUUID:(id)a3 hmcContext:(id)a4
+- (BOOL)_deleteAllMKFRegistrationsForActionSetUUID:(id)d hmcContext:(id)context
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 managedObjectContext];
-  [v8 hmd_assertIsExecuting];
-  v9 = [(HMDNotificationRegistryCoreDataAdapter *)self _requestToFetchMKFRegistrationsWithActionSetUUID:v6 context:v8];
+  dCopy = d;
+  contextCopy = context;
+  managedObjectContext = [contextCopy managedObjectContext];
+  [managedObjectContext hmd_assertIsExecuting];
+  v9 = [(HMDNotificationRegistryCoreDataAdapter *)self _requestToFetchMKFRegistrationsWithActionSetUUID:dCopy context:managedObjectContext];
   v21 = 0;
-  v10 = [v8 executeFetchRequest:v9 error:&v21];
+  v10 = [managedObjectContext executeFetchRequest:v9 error:&v21];
   v11 = v21;
   if (!v10)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -5586,7 +5586,7 @@ uint64_t __101__HMDNotificationRegistryCoreDataAdapter__fetchEnabledMKFRegistrat
       *buf = 138543874;
       v23 = v16;
       v24 = 2112;
-      v25 = v6;
+      v25 = dCopy;
       v26 = 2112;
       v27 = v11;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_ERROR, "%{public}@Failed to batch delete action set registrations for action set uuid: %@ error: %@", buf, 0x20u);
@@ -5607,7 +5607,7 @@ LABEL_7:
   v19[1] = 3221225472;
   v19[2] = __96__HMDNotificationRegistryCoreDataAdapter__deleteAllMKFRegistrationsForActionSetUUID_hmcContext___block_invoke;
   v19[3] = &unk_2786846F8;
-  v20 = v7;
+  v20 = contextCopy;
   [v10 hmf_enumerateWithAutoreleasePoolUsingBlock:v19];
 
   v12 = 1;
@@ -5617,22 +5617,22 @@ LABEL_8:
   return v12;
 }
 
-- (id)_fetchEnabledMKFRegistrationsForActionSetUUID:(id)a3 context:(id)a4
+- (id)_fetchEnabledMKFRegistrationsForActionSetUUID:(id)d context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [v7 hmd_assertIsExecuting];
+  dCopy = d;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
   v8 = objc_alloc(MEMORY[0x277CBE428]);
   v9 = +[_MKFNotificationRegistrationActionSet entity];
-  v10 = [v9 name];
-  v11 = [v8 initWithEntityName:v10];
+  name = [v9 name];
+  v11 = [v8 initWithEntityName:name];
 
-  v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == YES)", @"actionSet.modelID", v6, @"enabled"];
+  v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == YES)", @"actionSet.modelID", dCopy, @"enabled"];
   [v11 setPredicate:v12];
 
   v22 = 0;
-  v13 = [v7 executeFetchRequest:v11 error:&v22];
+  v13 = [contextCopy executeFetchRequest:v11 error:&v22];
   v14 = v22;
   if (v13)
   {
@@ -5642,7 +5642,7 @@ LABEL_8:
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -5650,7 +5650,7 @@ LABEL_8:
       *buf = 138543874;
       v24 = v19;
       v25 = 2112;
-      v26 = v6;
+      v26 = dCopy;
       v27 = 2112;
       v28 = v14;
       _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch action set registrations for action set uuid: %@ error: %@", buf, 0x20u);
@@ -5664,38 +5664,38 @@ LABEL_8:
   return v13;
 }
 
-- (id)_requestToFetchMKFRegistrationsWithActionSetUUID:(id)a3 context:(id)a4
+- (id)_requestToFetchMKFRegistrationsWithActionSetUUID:(id)d context:(id)context
 {
-  v5 = a3;
-  [a4 hmd_assertIsExecuting];
+  dCopy = d;
+  [context hmd_assertIsExecuting];
   v6 = objc_alloc(MEMORY[0x277CBE428]);
   v7 = +[_MKFNotificationRegistrationActionSet entity];
-  v8 = [v7 name];
-  v9 = [v6 initWithEntityName:v8];
+  name = [v7 name];
+  v9 = [v6 initWithEntityName:name];
 
-  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"actionSet.modelID", v5];
+  dCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"actionSet.modelID", dCopy];
 
-  [v9 setPredicate:v10];
+  [v9 setPredicate:dCopy];
 
   return v9;
 }
 
-- (BOOL)_deleteAllMKFRegistrationsForMediaProfileUUID:(id)a3 withMediaProperty:(id)a4 hmcContext:(id)a5
+- (BOOL)_deleteAllMKFRegistrationsForMediaProfileUUID:(id)d withMediaProperty:(id)property hmcContext:(id)context
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 managedObjectContext];
-  [v11 hmd_assertIsExecuting];
-  v12 = [(HMDNotificationRegistryCoreDataAdapter *)self _requestToFetchMKFRegistrationsWithMediaProfileUUID:v8 withMediaProperty:v9 context:v11];
+  dCopy = d;
+  propertyCopy = property;
+  contextCopy = context;
+  managedObjectContext = [contextCopy managedObjectContext];
+  [managedObjectContext hmd_assertIsExecuting];
+  v12 = [(HMDNotificationRegistryCoreDataAdapter *)self _requestToFetchMKFRegistrationsWithMediaProfileUUID:dCopy withMediaProperty:propertyCopy context:managedObjectContext];
   v25 = 0;
-  v13 = [v11 executeFetchRequest:v12 error:&v25];
+  v13 = [managedObjectContext executeFetchRequest:v12 error:&v25];
   v14 = v25;
   if (!v13)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -5704,7 +5704,7 @@ LABEL_8:
       *buf = 138543874;
       v27 = v19;
       v28 = 2112;
-      v29 = v8;
+      v29 = dCopy;
       v30 = 2112;
       v31 = v14;
       _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_ERROR, "%{public}@Failed to batch delete media profile registrations for media profile uuid: %@ error: %@", buf, 0x20u);
@@ -5727,7 +5727,7 @@ LABEL_7:
   v23[1] = 3221225472;
   v23[2] = __117__HMDNotificationRegistryCoreDataAdapter__deleteAllMKFRegistrationsForMediaProfileUUID_withMediaProperty_hmcContext___block_invoke;
   v23[3] = &unk_2786846D0;
-  v24 = v10;
+  v24 = contextCopy;
   [v13 hmf_enumerateWithAutoreleasePoolUsingBlock:v23];
 
   v15 = 1;
@@ -5737,32 +5737,32 @@ LABEL_8:
   return v15;
 }
 
-- (id)_fetchEnabledMKFRegistrationsForMediaProfileUUID:(id)a3 withMediaProperty:(id)a4 context:(id)a5
+- (id)_fetchEnabledMKFRegistrationsForMediaProfileUUID:(id)d withMediaProperty:(id)property context:(id)context
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v10 hmd_assertIsExecuting];
+  dCopy = d;
+  propertyCopy = property;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
   v11 = objc_alloc(MEMORY[0x277CBE428]);
   v12 = +[_MKFNotificationRegistrationMediaProperty entity];
-  v13 = [v12 name];
-  v14 = [v11 initWithEntityName:v13];
+  name = [v12 name];
+  v14 = [v11 initWithEntityName:name];
 
-  if (v9)
+  if (propertyCopy)
   {
-    [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@) AND (%K == YES)", @"mediaProfileIdentifier", v8, @"mediaProperty", v9, @"enabled"];
+    [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@) AND (%K == YES)", @"mediaProfileIdentifier", dCopy, @"mediaProperty", propertyCopy, @"enabled"];
   }
 
   else
   {
-    [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == YES)", @"mediaProfileIdentifier", v8, @"enabled", v25, v26];
+    [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == YES)", @"mediaProfileIdentifier", dCopy, @"enabled", v25, v26];
   }
   v15 = ;
   [v14 setPredicate:v15];
 
   v27 = 0;
-  v16 = [v10 executeFetchRequest:v14 error:&v27];
+  v16 = [contextCopy executeFetchRequest:v14 error:&v27];
   v17 = v27;
   if (v16)
   {
@@ -5772,7 +5772,7 @@ LABEL_8:
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -5780,7 +5780,7 @@ LABEL_8:
       *buf = 138543874;
       v29 = v22;
       v30 = 2112;
-      v31 = v8;
+      v31 = dCopy;
       v32 = 2112;
       v33 = v17;
       _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch media profile registrations for media profile uuid: %@ error: %@", buf, 0x20u);
@@ -5794,24 +5794,24 @@ LABEL_8:
   return v16;
 }
 
-- (id)_requestToFetchMKFRegistrationsWithMediaProfileUUID:(id)a3 withMediaProperty:(id)a4 context:(id)a5
+- (id)_requestToFetchMKFRegistrationsWithMediaProfileUUID:(id)d withMediaProperty:(id)property context:(id)context
 {
-  v7 = a4;
-  v8 = a3;
-  [a5 hmd_assertIsExecuting];
+  propertyCopy = property;
+  dCopy = d;
+  [context hmd_assertIsExecuting];
   v9 = objc_alloc(MEMORY[0x277CBE428]);
   v10 = +[_MKFNotificationRegistrationMediaProperty entity];
-  v11 = [v10 name];
-  v12 = [v9 initWithEntityName:v11];
+  name = [v10 name];
+  v12 = [v9 initWithEntityName:name];
 
-  if (v7)
+  if (propertyCopy)
   {
-    [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@)", @"mediaProfileIdentifier", v8, @"mediaProperty", v7];
+    [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@)", @"mediaProfileIdentifier", dCopy, @"mediaProperty", propertyCopy];
   }
 
   else
   {
-    [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"mediaProfileIdentifier", v8, v15, v16];
+    [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"mediaProfileIdentifier", dCopy, v15, v16];
   }
   v13 = ;
 
@@ -5820,21 +5820,21 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)_deleteAllRegistrationsForCharacteristicIIDs:(id)a3 withAccessoryUUID:(id)a4 hmcContext:(id)a5
+- (BOOL)_deleteAllRegistrationsForCharacteristicIIDs:(id)ds withAccessoryUUID:(id)d hmcContext:(id)context
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 managedObjectContext];
-  [v11 hmd_assertIsExecuting];
+  dsCopy = ds;
+  dCopy = d;
+  contextCopy = context;
+  managedObjectContext = [contextCopy managedObjectContext];
+  [managedObjectContext hmd_assertIsExecuting];
   v23 = 0;
-  v12 = [(HMDNotificationRegistryCoreDataAdapter *)self _registrationsForCharacteristicIIDs:v8 accessoryUUID:v9 moc:v11 error:&v23];
+  v12 = [(HMDNotificationRegistryCoreDataAdapter *)self _registrationsForCharacteristicIIDs:dsCopy accessoryUUID:dCopy moc:managedObjectContext error:&v23];
   v13 = v23;
   if (!v12)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -5842,9 +5842,9 @@ LABEL_8:
       *buf = 138544130;
       v25 = v18;
       v26 = 2112;
-      v27 = v8;
+      v27 = dsCopy;
       v28 = 2112;
-      v29 = v9;
+      v29 = dCopy;
       v30 = 2112;
       v31 = v13;
       _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_ERROR, "%{public}@Failed to batch delete registrations for characteristic IIDs %@ accessory UUID %@, error: %@", buf, 0x2Au);
@@ -5865,7 +5865,7 @@ LABEL_7:
   v21[1] = 3221225472;
   v21[2] = __116__HMDNotificationRegistryCoreDataAdapter__deleteAllRegistrationsForCharacteristicIIDs_withAccessoryUUID_hmcContext___block_invoke;
   v21[3] = &unk_2786846A8;
-  v22 = v10;
+  v22 = contextCopy;
   [v12 hmf_enumerateWithAutoreleasePoolUsingBlock:v21];
 
   v14 = 1;
@@ -5875,49 +5875,49 @@ LABEL_8:
   return v14;
 }
 
-- (id)_registrationsForCharacteristicIID:(id)a3 exceedingChangeThresholdForCurrentValue:(id)a4 accessoryUUID:(id)a5 moc:(id)a6 error:(id *)a7
+- (id)_registrationsForCharacteristicIID:(id)d exceedingChangeThresholdForCurrentValue:(id)value accessoryUUID:(id)iD moc:(id)moc error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  [v11 hmd_assertIsExecuting];
+  mocCopy = moc;
+  iDCopy = iD;
+  valueCopy = value;
+  dCopy = d;
+  [mocCopy hmd_assertIsExecuting];
   v15 = objc_alloc(MEMORY[0x277CBE428]);
   v16 = +[_MKFNotificationRegistrationCharacteristic entity];
-  v17 = [v16 name];
-  v18 = [v15 initWithEntityName:v17];
+  name = [v16 name];
+  v18 = [v15 initWithEntityName:name];
 
   v19 = MEMORY[0x277CCAC30];
-  v26[0] = v14;
+  v26[0] = dCopy;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
   v21 = updatedCharacteristicIIDs(v20);
-  v22 = [v19 predicateWithFormat:@"(%K IN %@)                               AND (%K == %@)                               AND                                (                                    (%K == nil)                                     OR (%K == nil)                                     OR (%@ < %K - %K)                                     OR (%@ > %K + %K)                                )", @"characteristic.instanceID", v21, @"characteristic.service.accessory.modelID", v12, @"notificationThreshold", @"lastNotifiedValue", v13, @"lastNotifiedValue", @"notificationThreshold", v13, @"lastNotifiedValue", @"notificationThreshold"];
+  v22 = [v19 predicateWithFormat:@"(%K IN %@)                               AND (%K == %@)                               AND                                (                                    (%K == nil)                                     OR (%K == nil)                                     OR (%@ < %K - %K)                                     OR (%@ > %K + %K)                                )", @"characteristic.instanceID", v21, @"characteristic.service.accessory.modelID", iDCopy, @"notificationThreshold", @"lastNotifiedValue", valueCopy, @"lastNotifiedValue", @"notificationThreshold", valueCopy, @"lastNotifiedValue", @"notificationThreshold"];
 
   [v18 setPredicate:v22];
-  v23 = [v11 executeFetchRequest:v18 error:a7];
+  v23 = [mocCopy executeFetchRequest:v18 error:error];
 
   v24 = *MEMORY[0x277D85DE8];
 
   return v23;
 }
 
-- (id)_fetchEnabledMKFRegistrationsForHMDCharacteristic:(id)a3 exceedingChangeThresholdForCurrentValue:(id)a4 context:(id)a5
+- (id)_fetchEnabledMKFRegistrationsForHMDCharacteristic:(id)characteristic exceedingChangeThresholdForCurrentValue:(id)value context:(id)context
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v10 hmd_assertIsExecuting];
-  if (v8)
+  characteristicCopy = characteristic;
+  valueCopy = value;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
+  if (characteristicCopy)
   {
-    v11 = [v8 service];
-    v12 = [v11 accessory];
-    v13 = [v12 uuid];
+    service = [characteristicCopy service];
+    accessory = [service accessory];
+    uuid = [accessory uuid];
 
-    v14 = [v8 instanceID];
+    instanceID = [characteristicCopy instanceID];
     v27 = 0;
-    v15 = [(HMDNotificationRegistryCoreDataAdapter *)self _registrationsForCharacteristicIID:v14 exceedingChangeThresholdForCurrentValue:v9 accessoryUUID:v13 moc:v10 error:&v27];
+    v15 = [(HMDNotificationRegistryCoreDataAdapter *)self _registrationsForCharacteristicIID:instanceID exceedingChangeThresholdForCurrentValue:valueCopy accessoryUUID:uuid moc:contextCopy error:&v27];
     v16 = v27;
     v17 = [v15 na_filter:&__block_literal_global_247037];
 
@@ -5929,12 +5929,12 @@ LABEL_8:
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = self;
+      selfCopy = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         v22 = HMFGetLogIdentifier();
-        [v8 instanceID];
+        [characteristicCopy instanceID];
         v23 = v26 = v19;
         *buf = 138543874;
         v29 = v22;
@@ -5969,64 +5969,64 @@ uint64_t __140__HMDNotificationRegistryCoreDataAdapter__fetchEnabledMKFRegistrat
   return v3;
 }
 
-- (id)_registrationsForCharacteristicIIDs:(id)a3 accessoryUUID:(id)a4 moc:(id)a5 error:(id *)a6
+- (id)_registrationsForCharacteristicIIDs:(id)ds accessoryUUID:(id)d moc:(id)moc error:(id *)error
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  [v9 hmd_assertIsExecuting];
+  mocCopy = moc;
+  dCopy = d;
+  dsCopy = ds;
+  [mocCopy hmd_assertIsExecuting];
   v12 = objc_alloc(MEMORY[0x277CBE428]);
   v13 = +[_MKFNotificationRegistrationCharacteristic entity];
-  v14 = [v13 name];
-  v15 = [v12 initWithEntityName:v14];
+  name = [v13 name];
+  v15 = [v12 initWithEntityName:name];
 
   v16 = MEMORY[0x277CCAC30];
-  v17 = updatedCharacteristicIIDs(v11);
+  v17 = updatedCharacteristicIIDs(dsCopy);
 
-  v18 = [v16 predicateWithFormat:@"(%K IN %@) AND (%K == %@)", @"characteristic.instanceID", v17, @"characteristic.service.accessory.modelID", v10];
+  dCopy = [v16 predicateWithFormat:@"(%K IN %@) AND (%K == %@)", @"characteristic.instanceID", v17, @"characteristic.service.accessory.modelID", dCopy];
 
-  [v15 setPredicate:v18];
-  v19 = [v9 executeFetchRequest:v15 error:a6];
+  [v15 setPredicate:dCopy];
+  v19 = [mocCopy executeFetchRequest:v15 error:error];
 
   return v19;
 }
 
-- (BOOL)_deleteAllCharacteristicRegistrationsWithContext:(id)a3
+- (BOOL)_deleteAllCharacteristicRegistrationsWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[_MKFNotificationRegistrationCharacteristic entity];
-  v6 = [v5 name];
-  v7 = [(HMDNotificationRegistryCoreDataAdapter *)self _deleteAllRegistrationsWithEntityName:v6 withHomeKeypath:@"user.home.modelID" hmcContext:v4];
+  name = [v5 name];
+  v7 = [(HMDNotificationRegistryCoreDataAdapter *)self _deleteAllRegistrationsWithEntityName:name withHomeKeypath:@"user.home.modelID" hmcContext:contextCopy];
 
   v8 = +[_MKFNotificationRegistrationCharacteristic entity];
-  v9 = [v8 name];
-  LOBYTE(self) = [(HMDNotificationRegistryCoreDataAdapter *)self _deleteAllRegistrationsWithEntityName:v9 withHomeKeypath:@"guest.home.modelID" hmcContext:v4];
+  name2 = [v8 name];
+  LOBYTE(self) = [(HMDNotificationRegistryCoreDataAdapter *)self _deleteAllRegistrationsWithEntityName:name2 withHomeKeypath:@"guest.home.modelID" hmcContext:contextCopy];
 
   return (v7 | self) & 1;
 }
 
-- (BOOL)_deleteAllRegistrationsWithEntityName:(id)a3 withHomeKeypath:(id)a4 hmcContext:(id)a5
+- (BOOL)_deleteAllRegistrationsWithEntityName:(id)name withHomeKeypath:(id)keypath hmcContext:(id)context
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 managedObjectContext];
-  [v11 hmd_assertIsExecuting];
-  v12 = [objc_alloc(MEMORY[0x277CBE428]) initWithEntityName:v8];
+  nameCopy = name;
+  keypathCopy = keypath;
+  contextCopy = context;
+  managedObjectContext = [contextCopy managedObjectContext];
+  [managedObjectContext hmd_assertIsExecuting];
+  v12 = [objc_alloc(MEMORY[0x277CBE428]) initWithEntityName:nameCopy];
   v13 = MEMORY[0x277CCAC30];
-  v14 = [(HMDNotificationRegistryCoreDataAdapter *)self home];
-  v15 = [v14 uuid];
-  v16 = [v13 predicateWithFormat:@"(%K == %@)", v9, v15];
+  home = [(HMDNotificationRegistryCoreDataAdapter *)self home];
+  uuid = [home uuid];
+  v16 = [v13 predicateWithFormat:@"(%K == %@)", keypathCopy, uuid];
   [v12 setPredicate:v16];
 
   v29 = 0;
-  v17 = [v11 executeFetchRequest:v12 error:&v29];
+  v17 = [managedObjectContext executeFetchRequest:v12 error:&v29];
   v18 = v29;
   if (!v17)
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -6056,7 +6056,7 @@ LABEL_7:
   v27[1] = 3221225472;
   v27[2] = __107__HMDNotificationRegistryCoreDataAdapter__deleteAllRegistrationsWithEntityName_withHomeKeypath_hmcContext___block_invoke;
   v27[3] = &unk_278684660;
-  v28 = v10;
+  v28 = contextCopy;
   [v17 hmf_enumerateWithAutoreleasePoolUsingBlock:v27];
 
   v19 = 1;
@@ -6066,22 +6066,22 @@ LABEL_8:
   return v19;
 }
 
-- (id)_fetchMKFActionSetWithUUID:(id)a3 context:(id)a4
+- (id)_fetchMKFActionSetWithUUID:(id)d context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [v7 hmd_assertIsExecuting];
+  dCopy = d;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
   v8 = objc_alloc(MEMORY[0x277CBE428]);
   v9 = +[_MKFActionSet entity];
-  v10 = [v9 name];
-  v11 = [v8 initWithEntityName:v10];
+  name = [v9 name];
+  v11 = [v8 initWithEntityName:name];
 
-  v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@)", @"modelID", v6];
-  [v11 setPredicate:v12];
+  dCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@)", @"modelID", dCopy];
+  [v11 setPredicate:dCopy];
 
   v22 = 0;
-  v13 = [v7 executeFetchRequest:v11 error:&v22];
+  v13 = [contextCopy executeFetchRequest:v11 error:&v22];
   v14 = v22;
   if (v13 && [v13 count])
   {
@@ -6091,7 +6091,7 @@ LABEL_8:
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -6099,7 +6099,7 @@ LABEL_8:
       *buf = 138543874;
       v24 = v19;
       v25 = 2112;
-      v26 = v6;
+      v26 = dCopy;
       v27 = 2112;
       v28 = v14;
       _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch action set for uuid %@, error: %@", buf, 0x20u);
@@ -6114,22 +6114,22 @@ LABEL_8:
   return v15;
 }
 
-- (id)_fetchMKFHAPAccessoryWithUUID:(id)a3 context:(id)a4
+- (id)_fetchMKFHAPAccessoryWithUUID:(id)d context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [v7 hmd_assertIsExecuting];
+  dCopy = d;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
   v8 = objc_alloc(MEMORY[0x277CBE428]);
   v9 = +[_MKFAccessory entity];
-  v10 = [v9 name];
-  v11 = [v8 initWithEntityName:v10];
+  name = [v9 name];
+  v11 = [v8 initWithEntityName:name];
 
-  v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@)", @"modelID", v6];
-  [v11 setPredicate:v12];
+  dCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@)", @"modelID", dCopy];
+  [v11 setPredicate:dCopy];
 
   v22 = 0;
-  v13 = [v7 executeFetchRequest:v11 error:&v22];
+  v13 = [contextCopy executeFetchRequest:v11 error:&v22];
   v14 = v22;
   if (v13 && [v13 count])
   {
@@ -6139,7 +6139,7 @@ LABEL_8:
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -6147,7 +6147,7 @@ LABEL_8:
       *buf = 138543874;
       v24 = v19;
       v25 = 2112;
-      v26 = v6;
+      v26 = dCopy;
       v27 = 2112;
       v28 = v14;
       _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch accessory for uuid %@, error: %@", buf, 0x20u);
@@ -6162,16 +6162,16 @@ LABEL_8:
   return v15;
 }
 
-- (HMDNotificationRegistryCoreDataAdapter)initWithHome:(id)a3
+- (HMDNotificationRegistryCoreDataAdapter)initWithHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v8.receiver = self;
   v8.super_class = HMDNotificationRegistryCoreDataAdapter;
   v5 = [(HMDNotificationRegistryCoreDataAdapter *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_home, v4);
+    objc_storeWeak(&v5->_home, homeCopy);
   }
 
   return v6;

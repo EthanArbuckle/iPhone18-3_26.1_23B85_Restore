@@ -1,20 +1,20 @@
 @interface MPCPlayerSuggestLessCommandRequest
-- (MPCPlayerSuggestLessCommandRequest)initWithModelObject:(id)a3 value:(BOOL)a4 controller:(id)a5 label:(id)a6;
+- (MPCPlayerSuggestLessCommandRequest)initWithModelObject:(id)object value:(BOOL)value controller:(id)controller label:(id)label;
 @end
 
 @implementation MPCPlayerSuggestLessCommandRequest
 
-- (MPCPlayerSuggestLessCommandRequest)initWithModelObject:(id)a3 value:(BOOL)a4 controller:(id)a5 label:(id)a6
+- (MPCPlayerSuggestLessCommandRequest)initWithModelObject:(id)object value:(BOOL)value controller:(id)controller label:(id)label
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = [a5 resolvedPlayerPath];
-  v14 = [(MPCPlayerCommandRequest *)self initWithMediaRemoteCommand:0xFFFFFFFFLL options:0 playerPath:v13 label:v12];
+  objectCopy = object;
+  labelCopy = label;
+  resolvedPlayerPath = [controller resolvedPlayerPath];
+  v14 = [(MPCPlayerCommandRequest *)self initWithMediaRemoteCommand:0xFFFFFFFFLL options:0 playerPath:resolvedPlayerPath label:labelCopy];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_modelObject, a3);
-    v14->_value = a4;
+    objc_storeStrong(&v14->_modelObject, object);
+    v14->_value = value;
   }
 
   return v14;

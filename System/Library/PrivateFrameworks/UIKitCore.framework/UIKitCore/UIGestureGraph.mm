@@ -4,35 +4,35 @@
 - (UIGestureGraph)init;
 - (id)_allEdges;
 - (id)_allNodes;
-- (id)_edgesForLabel:(id)a3;
-- (id)_nodesForLabel:(id)a3;
-- (id)addEdgeWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 directed:(BOOL)a6;
-- (id)addNodeWithLabel:(id)a3;
-- (id)addNodeWithLabel:(id)a3 properties:(id)a4;
-- (id)addUniqueEdgeWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 directed:(BOOL)a6 properties:(id)a7;
-- (id)addUniqueNodeWithLabel:(id)a3 properties:(id)a4;
+- (id)_edgesForLabel:(id)label;
+- (id)_nodesForLabel:(id)label;
+- (id)addEdgeWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode directed:(BOOL)directed;
+- (id)addNodeWithLabel:(id)label;
+- (id)addNodeWithLabel:(id)label properties:(id)properties;
+- (id)addUniqueEdgeWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode directed:(BOOL)directed properties:(id)properties;
+- (id)addUniqueNodeWithLabel:(id)label properties:(id)properties;
 - (id)description;
-- (id)edgesForLabel:(id)a3;
-- (id)edgesForLabel:(id)a3 properties:(id)a4;
-- (id)nodesForLabel:(id)a3 properties:(id)a4;
+- (id)edgesForLabel:(id)label;
+- (id)edgesForLabel:(id)label properties:(id)properties;
+- (id)nodesForLabel:(id)label properties:(id)properties;
 - (unint64_t)edgeCount;
-- (unint64_t)edgeCountForLabel:(id)a3;
+- (unint64_t)edgeCountForLabel:(id)label;
 - (unint64_t)nodeCount;
-- (unint64_t)nodeCountForLabel:(id)a3;
-- (void)_addEdge:(id)a3;
-- (void)_addNode:(id)a3;
-- (void)enumerateEdgesWithBlock:(id)a3;
-- (void)enumerateEdgesWithLabel:(id)a3 usingBlock:(id)a4;
-- (void)enumerateNodesWithBlock:(id)a3;
-- (void)enumerateNodesWithLabel:(id)a3 usingBlock:(id)a4;
+- (unint64_t)nodeCountForLabel:(id)label;
+- (void)_addEdge:(id)edge;
+- (void)_addNode:(id)node;
+- (void)enumerateEdgesWithBlock:(id)block;
+- (void)enumerateEdgesWithLabel:(id)label usingBlock:(id)block;
+- (void)enumerateNodesWithBlock:(id)block;
+- (void)enumerateNodesWithLabel:(id)label usingBlock:(id)block;
 - (void)removeAllObjects;
-- (void)removeEdge:(id)a3;
-- (void)removeEdges:(id)a3;
-- (void)removeNode:(id)a3;
-- (void)removeNodeEdges:(id)a3;
-- (void)removeNodes:(id)a3;
-- (void)traverseGraphBreadthFirstFromNode:(id)a3 directed:(BOOL)a4 usingBlock:(id)a5;
-- (void)traverseGraphDepthFirstFromNode:(id)a3 directed:(BOOL)a4 usingBlock:(id)a5;
+- (void)removeEdge:(id)edge;
+- (void)removeEdges:(id)edges;
+- (void)removeNode:(id)node;
+- (void)removeNodeEdges:(id)edges;
+- (void)removeNodes:(id)nodes;
+- (void)traverseGraphBreadthFirstFromNode:(id)node directed:(BOOL)directed usingBlock:(id)block;
+- (void)traverseGraphDepthFirstFromNode:(id)node directed:(BOOL)directed usingBlock:(id)block;
 @end
 
 @implementation UIGestureGraph
@@ -44,13 +44,13 @@
   v2 = [(UIGestureGraph *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     nodesByLabel = v2->_nodesByLabel;
-    v2->_nodesByLabel = v3;
+    v2->_nodesByLabel = strongToStrongObjectsMapTable;
 
-    v5 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     edgesByLabel = v2->_edgesByLabel;
-    v2->_edgesByLabel = v5;
+    v2->_edgesByLabel = strongToStrongObjectsMapTable2;
   }
 
   return v2;
@@ -64,8 +64,8 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = [(UIGestureGraph *)self nodeLabels];
-  v5 = [v4 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  nodeLabels = [(UIGestureGraph *)self nodeLabels];
+  v5 = [nodeLabels countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v5)
   {
     v6 = v5;
@@ -76,20 +76,20 @@
       {
         if (*v29 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nodeLabels);
         }
 
         [v3 appendFormat:@"[%@](%ld), ", *(*(&v28 + 1) + 8 * i), -[UIGestureGraph nodeCountForLabel:](self, "nodeCountForLabel:", *(*(&v28 + 1) + 8 * i))];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v6 = [nodeLabels countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(UIGestureGraph *)self nodeLabels];
-  v10 = [v9 count];
+  nodeLabels2 = [(UIGestureGraph *)self nodeLabels];
+  v10 = [nodeLabels2 count];
 
   if (v10)
   {
@@ -101,8 +101,8 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = [(UIGestureGraph *)self edgeLabels];
-  v13 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  edgeLabels = [(UIGestureGraph *)self edgeLabels];
+  v13 = [edgeLabels countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v13)
   {
     v14 = v13;
@@ -113,20 +113,20 @@
       {
         if (*v25 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(edgeLabels);
         }
 
         [v11 appendFormat:@"[%@](%ld), ", *(*(&v24 + 1) + 8 * j), -[UIGestureGraph edgeCountForLabel:](self, "edgeCountForLabel:", *(*(&v24 + 1) + 8 * j))];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v14 = [edgeLabels countByEnumeratingWithState:&v24 objects:v32 count:16];
     }
 
     while (v14);
   }
 
-  v17 = [(UIGestureGraph *)self edgeLabels];
-  v18 = [v17 count];
+  edgeLabels2 = [(UIGestureGraph *)self edgeLabels];
+  v18 = [edgeLabels2 count];
 
   if (v18)
   {
@@ -141,49 +141,49 @@
   return v22;
 }
 
-- (void)_addNode:(id)a3
+- (void)_addNode:(id)node
 {
   nodesByLabel = self->_nodesByLabel;
-  v6 = [a3 label];
-  v9 = [(NSMapTable *)nodesByLabel objectForKey:v6];
+  label = [node label];
+  v9 = [(NSMapTable *)nodesByLabel objectForKey:label];
 
   if (!v9)
   {
     v9 = [MEMORY[0x1E695DFA8] set];
     v7 = self->_nodesByLabel;
-    v8 = [a3 label];
-    [(NSMapTable *)v7 setObject:v9 forKey:v8];
+    label2 = [node label];
+    [(NSMapTable *)v7 setObject:v9 forKey:label2];
   }
 
-  [v9 addObject:a3];
+  [v9 addObject:node];
 }
 
-- (id)addNodeWithLabel:(id)a3
+- (id)addNodeWithLabel:(id)label
 {
-  v4 = [(UIGestureGraphElement *)[UIGestureGraphNode alloc] initWithLabel:a3];
+  v4 = [(UIGestureGraphElement *)[UIGestureGraphNode alloc] initWithLabel:label];
   [(UIGestureGraph *)self _addNode:v4];
 
   return v4;
 }
 
-- (id)addNodeWithLabel:(id)a3 properties:(id)a4
+- (id)addNodeWithLabel:(id)label properties:(id)properties
 {
-  v6 = [(UIGestureGraphElement *)[UIGestureGraphNode alloc] initWithLabel:a3];
-  [(UIGestureGraphElement *)v6 setProperties:a4];
+  v6 = [(UIGestureGraphElement *)[UIGestureGraphNode alloc] initWithLabel:label];
+  [(UIGestureGraphElement *)v6 setProperties:properties];
   [(UIGestureGraph *)self _addNode:v6];
 
   return v6;
 }
 
-- (void)removeNodeEdges:(id)a3
+- (void)removeNodeEdges:(id)edges
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [a3 allEdges];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allEdges = [edges allEdges];
+  v5 = [allEdges countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -195,44 +195,44 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allEdges);
         }
 
         [(UIGestureGraph *)self removeEdge:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allEdges countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)removeNode:(id)a3
+- (void)removeNode:(id)node
 {
   [(UIGestureGraph *)self removeNodeEdges:?];
   nodesByLabel = self->_nodesByLabel;
-  v6 = [a3 label];
-  v8 = [(NSMapTable *)nodesByLabel objectForKey:v6];
+  label = [node label];
+  v8 = [(NSMapTable *)nodesByLabel objectForKey:label];
 
   v7 = v8;
   if (v8)
   {
-    [v8 removeObject:a3];
+    [v8 removeObject:node];
     v7 = v8;
   }
 }
 
-- (void)removeNodes:(id)a3
+- (void)removeNodes:(id)nodes
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  nodesCopy = nodes;
+  v5 = [nodesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -244,32 +244,32 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nodesCopy);
         }
 
         [(UIGestureGraph *)self removeNode:*(*(&v9 + 1) + 8 * v8++), v9];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [nodesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (unint64_t)nodeCountForLabel:(id)a3
+- (unint64_t)nodeCountForLabel:(id)label
 {
-  v3 = [(UIGestureGraph *)self _nodesForLabel:a3];
+  v3 = [(UIGestureGraph *)self _nodesForLabel:label];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)nodesForLabel:(id)a3 properties:(id)a4
+- (id)nodesForLabel:(id)label properties:(id)properties
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [(UIGestureGraph *)self _nodesForLabel:a3];
+  v5 = [(UIGestureGraph *)self _nodesForLabel:label];
   v6 = [MEMORY[0x1E695DFA8] set];
   v15 = 0u;
   v16 = 0u;
@@ -291,7 +291,7 @@
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if ([v12 hasProperties:{a4, v15}])
+        if ([v12 hasProperties:{properties, v15}])
         {
           [v6 addObject:v12];
         }
@@ -308,27 +308,27 @@
   return v13;
 }
 
-- (id)addUniqueNodeWithLabel:(id)a3 properties:(id)a4
+- (id)addUniqueNodeWithLabel:(id)label properties:(id)properties
 {
   v7 = [UIGestureGraph nodesForLabel:"nodesForLabel:properties:" properties:?];
   if ([v7 count] == 1)
   {
-    v8 = [v7 anyObject];
+    anyObject = [v7 anyObject];
   }
 
   else if ([v7 count])
   {
-    v8 = 0;
+    anyObject = 0;
   }
 
   else
   {
-    v8 = [(UIGestureGraphElement *)[UIGestureGraphNode alloc] initWithLabel:a3];
-    [(UIGestureGraphElement *)v8 setProperties:a4];
-    [(UIGestureGraph *)self _addNode:v8];
+    anyObject = [(UIGestureGraphElement *)[UIGestureGraphNode alloc] initWithLabel:label];
+    [(UIGestureGraphElement *)anyObject setProperties:properties];
+    [(UIGestureGraph *)self _addNode:anyObject];
   }
 
-  return v8;
+  return anyObject;
 }
 
 - (unint64_t)nodeCount
@@ -338,8 +338,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NSMapTable *)self->_nodesByLabel objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  objectEnumerator = [(NSMapTable *)self->_nodesByLabel objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -351,13 +351,13 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v5 += [*(*(&v9 + 1) + 8 * i) count];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -380,12 +380,12 @@
   return v4;
 }
 
-- (void)enumerateNodesWithLabel:(id)a3 usingBlock:(id)a4
+- (void)enumerateNodesWithLabel:(id)label usingBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
   v17 = 0;
   v5 = MEMORY[0x1E695DFD8];
-  v6 = [(UIGestureGraph *)self _nodesForLabel:a3];
+  v6 = [(UIGestureGraph *)self _nodesForLabel:label];
   v7 = [v5 setWithSet:v6];
 
   v15 = 0u;
@@ -407,7 +407,7 @@ LABEL_3:
         objc_enumerationMutation(v8);
       }
 
-      (*(a4 + 2))(a4, *(*(&v13 + 1) + 8 * v12), &v17);
+      (*(block + 2))(block, *(*(&v13 + 1) + 8 * v12), &v17);
       if (v17)
       {
         break;
@@ -427,7 +427,7 @@ LABEL_3:
   }
 }
 
-- (void)enumerateNodesWithBlock:(id)a3
+- (void)enumerateNodesWithBlock:(id)block
 {
   v29 = *MEMORY[0x1E69E9840];
   v26 = 0;
@@ -473,7 +473,7 @@ LABEL_3:
                 objc_enumerationMutation(v12);
               }
 
-              (*(a3 + 2))(a3, *(*(&v18 + 1) + 8 * j), &v26);
+              (*(block + 2))(block, *(*(&v18 + 1) + 8 * j), &v26);
               if (v26)
               {
 
@@ -539,9 +539,9 @@ LABEL_18:
   return v3;
 }
 
-- (id)_nodesForLabel:(id)a3
+- (id)_nodesForLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     [(NSMapTable *)self->_nodesByLabel objectForKey:?];
   }
@@ -555,31 +555,31 @@ LABEL_18:
   return v3;
 }
 
-- (void)_addEdge:(id)a3
+- (void)_addEdge:(id)edge
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [a3 sourceNode];
-  [v5 _addEdge:a3];
+  sourceNode = [edge sourceNode];
+  [sourceNode _addEdge:edge];
 
-  if (([a3 isLoop] & 1) == 0)
+  if (([edge isLoop] & 1) == 0)
   {
-    v6 = [a3 targetNode];
-    [v6 _addEdge:a3];
+    targetNode = [edge targetNode];
+    [targetNode _addEdge:edge];
   }
 
   edgesByLabel = self->_edgesByLabel;
-  v8 = [a3 label];
-  v9 = [(NSMapTable *)edgesByLabel objectForKey:v8];
+  label = [edge label];
+  v9 = [(NSMapTable *)edgesByLabel objectForKey:label];
 
   if (!v9)
   {
     v9 = [MEMORY[0x1E695DFA8] set];
     v10 = self->_edgesByLabel;
-    v11 = [a3 label];
-    [(NSMapTable *)v10 setObject:v9 forKey:v11];
+    label2 = [edge label];
+    [(NSMapTable *)v10 setObject:v9 forKey:label2];
   }
 
-  [v9 addObject:a3];
+  [v9 addObject:edge];
   v12 = [v9 count];
   if (v12 >= UIGestureGraphEdgeLimit)
   {
@@ -596,44 +596,44 @@ LABEL_18:
   }
 }
 
-- (id)addEdgeWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 directed:(BOOL)a6
+- (id)addEdgeWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode directed:(BOOL)directed
 {
-  v7 = [[UIGestureGraphEdge alloc] initWithLabel:a3 sourceNode:a4 targetNode:a5 directed:a6];
+  v7 = [[UIGestureGraphEdge alloc] initWithLabel:label sourceNode:node targetNode:targetNode directed:directed];
   [(UIGestureGraph *)self _addEdge:v7];
 
   return v7;
 }
 
-- (void)removeEdge:(id)a3
+- (void)removeEdge:(id)edge
 {
   edgesByLabel = self->_edgesByLabel;
-  v5 = [a3 label];
-  v8 = [(NSMapTable *)edgesByLabel objectForKey:v5];
+  label = [edge label];
+  v8 = [(NSMapTable *)edgesByLabel objectForKey:label];
 
   if (v8)
   {
-    [v8 removeObject:a3];
+    [v8 removeObject:edge];
   }
 
-  v6 = [a3 sourceNode];
-  [v6 _removeEdge:a3];
+  sourceNode = [edge sourceNode];
+  [sourceNode _removeEdge:edge];
 
-  if (([a3 isLoop] & 1) == 0)
+  if (([edge isLoop] & 1) == 0)
   {
-    v7 = [a3 targetNode];
-    [v7 _removeEdge:a3];
+    targetNode = [edge targetNode];
+    [targetNode _removeEdge:edge];
   }
 }
 
-- (void)removeEdges:(id)a3
+- (void)removeEdges:(id)edges
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  edgesCopy = edges;
+  v5 = [edgesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -645,32 +645,32 @@ LABEL_18:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(edgesCopy);
         }
 
         [(UIGestureGraph *)self removeEdge:*(*(&v9 + 1) + 8 * v8++), v9];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [edgesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)edgesForLabel:(id)a3
+- (id)edgesForLabel:(id)label
 {
-  v3 = [(UIGestureGraph *)self _edgesForLabel:a3];
+  v3 = [(UIGestureGraph *)self _edgesForLabel:label];
   v4 = [MEMORY[0x1E695DFD8] setWithSet:v3];
 
   return v4;
 }
 
-- (id)edgesForLabel:(id)a3 properties:(id)a4
+- (id)edgesForLabel:(id)label properties:(id)properties
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [(UIGestureGraph *)self _edgesForLabel:a3];
+  v5 = [(UIGestureGraph *)self _edgesForLabel:label];
   v6 = [MEMORY[0x1E695DFA8] set];
   v15 = 0u;
   v16 = 0u;
@@ -692,7 +692,7 @@ LABEL_18:
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if ([v12 hasProperties:{a4, v15}])
+        if ([v12 hasProperties:{properties, v15}])
         {
           [v6 addObject:v12];
         }
@@ -709,9 +709,9 @@ LABEL_18:
   return v13;
 }
 
-- (id)addUniqueEdgeWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 directed:(BOOL)a6 properties:(id)a7
+- (id)addUniqueEdgeWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode directed:(BOOL)directed properties:(id)properties
 {
-  v24 = a6;
+  directedCopy = directed;
   v31 = *MEMORY[0x1E69E9840];
   v26 = 0u;
   v27 = 0u;
@@ -733,18 +733,18 @@ LABEL_3:
       }
 
       v14 = *(*(&v26 + 1) + 8 * v13);
-      v15 = [v14 sourceNode];
-      if (v15 == a4)
+      sourceNode = [v14 sourceNode];
+      if (sourceNode == node)
       {
-        v16 = [v14 targetNode];
-        v17 = v16;
-        if (v16 == a5)
+        targetNode = [v14 targetNode];
+        v17 = targetNode;
+        if (targetNode == targetNode)
         {
-          v18 = [v14 hasProperties:a7];
+          v18 = [v14 hasProperties:properties];
 
           if (v18)
           {
-            if ([v14 isDirected] == v24)
+            if ([v14 isDirected] == directedCopy)
             {
               v20 = v14;
             }
@@ -776,8 +776,8 @@ LABEL_10:
     }
   }
 
-  v20 = [[UIGestureGraphEdge alloc] initWithLabel:a3 sourceNode:a4 targetNode:a5 directed:v24];
-  [(UIGestureGraphElement *)v20 setProperties:a7];
+  v20 = [[UIGestureGraphEdge alloc] initWithLabel:label sourceNode:node targetNode:targetNode directed:directedCopy];
+  [(UIGestureGraphElement *)v20 setProperties:properties];
   [(UIGestureGraph *)self _addEdge:v20];
 LABEL_20:
 
@@ -791,8 +791,8 @@ LABEL_20:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NSMapTable *)self->_edgesByLabel objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  objectEnumerator = [(NSMapTable *)self->_edgesByLabel objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -804,13 +804,13 @@ LABEL_20:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v5 += [*(*(&v9 + 1) + 8 * i) count];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -824,9 +824,9 @@ LABEL_20:
   return v5;
 }
 
-- (unint64_t)edgeCountForLabel:(id)a3
+- (unint64_t)edgeCountForLabel:(id)label
 {
-  v3 = [(UIGestureGraph *)self _edgesForLabel:a3];
+  v3 = [(UIGestureGraph *)self _edgesForLabel:label];
   v4 = [v3 count];
 
   return v4;
@@ -841,12 +841,12 @@ LABEL_20:
   return v4;
 }
 
-- (void)enumerateEdgesWithLabel:(id)a3 usingBlock:(id)a4
+- (void)enumerateEdgesWithLabel:(id)label usingBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
   v17 = 0;
   v5 = MEMORY[0x1E695DFD8];
-  v6 = [(UIGestureGraph *)self _edgesForLabel:a3];
+  v6 = [(UIGestureGraph *)self _edgesForLabel:label];
   v7 = [v5 setWithSet:v6];
 
   v15 = 0u;
@@ -868,7 +868,7 @@ LABEL_3:
         objc_enumerationMutation(v8);
       }
 
-      (*(a4 + 2))(a4, *(*(&v13 + 1) + 8 * v12), &v17);
+      (*(block + 2))(block, *(*(&v13 + 1) + 8 * v12), &v17);
       if (v17)
       {
         break;
@@ -888,7 +888,7 @@ LABEL_3:
   }
 }
 
-- (void)enumerateEdgesWithBlock:(id)a3
+- (void)enumerateEdgesWithBlock:(id)block
 {
   v29 = *MEMORY[0x1E69E9840];
   v26 = 0;
@@ -934,7 +934,7 @@ LABEL_3:
                 objc_enumerationMutation(v12);
               }
 
-              (*(a3 + 2))(a3, *(*(&v18 + 1) + 8 * j), &v26);
+              (*(block + 2))(block, *(*(&v18 + 1) + 8 * j), &v26);
               if (v26)
               {
 
@@ -1000,9 +1000,9 @@ LABEL_18:
   return v3;
 }
 
-- (id)_edgesForLabel:(id)a3
+- (id)_edgesForLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     [(NSMapTable *)self->_edgesByLabel objectForKey:?];
   }
@@ -1024,27 +1024,27 @@ LABEL_18:
   [(NSMapTable *)edgesByLabel removeAllObjects];
 }
 
-- (void)traverseGraphDepthFirstFromNode:(id)a3 directed:(BOOL)a4 usingBlock:(id)a5
+- (void)traverseGraphDepthFirstFromNode:(id)node directed:(BOOL)directed usingBlock:(id)block
 {
   v53 = *MEMORY[0x1E69E9840];
   v7 = objc_opt_new();
   v8 = objc_opt_new();
   v49 = 0;
-  [v7 addObject:a3];
+  [v7 addObject:node];
   if ([v7 count])
   {
     v36 = v8;
-    v34 = a5;
+    blockCopy = block;
     while (1)
     {
-      v9 = [v7 lastObject];
+      lastObject = [v7 lastObject];
       v10 = [v7 count];
-      if ([v8 containsObject:v9])
+      if ([v8 containsObject:lastObject])
       {
         goto LABEL_4;
       }
 
-      v11 = (*(a5 + 2))(a5, v9, &v49);
+      v11 = (*(block + 2))(block, lastObject, &v49);
       if (v49 == 1)
       {
 
@@ -1052,7 +1052,7 @@ LABEL_18:
       }
 
       v12 = v11;
-      [v8 addObject:v9];
+      [v8 addObject:lastObject];
       if (v12)
       {
         break;
@@ -1070,8 +1070,8 @@ LABEL_33:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v13 = [v9 outEdges];
-    v14 = [v13 countByEnumeratingWithState:&v45 objects:v52 count:16];
+    outEdges = [lastObject outEdges];
+    v14 = [outEdges countByEnumeratingWithState:&v45 objects:v52 count:16];
     if (v14)
     {
       v15 = v14;
@@ -1082,14 +1082,14 @@ LABEL_33:
         {
           if (*v46 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(outEdges);
           }
 
-          v18 = [*(*(&v45 + 1) + 8 * i) targetNode];
-          [v7 addObject:v18];
+          targetNode = [*(*(&v45 + 1) + 8 * i) targetNode];
+          [v7 addObject:targetNode];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v45 objects:v52 count:16];
+        v15 = [outEdges countByEnumeratingWithState:&v45 objects:v52 count:16];
       }
 
       while (v15);
@@ -1099,8 +1099,8 @@ LABEL_33:
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v19 = [v9 inOutEdges];
-    v20 = [v19 countByEnumeratingWithState:&v41 objects:v51 count:16];
+    inOutEdges = [lastObject inOutEdges];
+    v20 = [inOutEdges countByEnumeratingWithState:&v41 objects:v51 count:16];
     if (v20)
     {
       v21 = v20;
@@ -1111,12 +1111,12 @@ LABEL_33:
         {
           if (*v42 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(inOutEdges);
           }
 
           v24 = *(*(&v41 + 1) + 8 * j);
-          v25 = [v24 targetNode];
-          v26 = [v9 isEqual:v25];
+          targetNode2 = [v24 targetNode];
+          v26 = [lastObject isEqual:targetNode2];
 
           if (v26)
           {
@@ -1131,22 +1131,22 @@ LABEL_33:
           [v7 addObject:v27];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v41 objects:v51 count:16];
+        v21 = [inOutEdges countByEnumeratingWithState:&v41 objects:v51 count:16];
       }
 
       while (v21);
     }
 
-    a5 = v34;
+    block = blockCopy;
     v8 = v36;
-    if (!a4)
+    if (!directed)
     {
       v39 = 0u;
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v28 = [v9 inEdges];
-      v29 = [v28 countByEnumeratingWithState:&v37 objects:v50 count:16];
+      inEdges = [lastObject inEdges];
+      v29 = [inEdges countByEnumeratingWithState:&v37 objects:v50 count:16];
       if (v29)
       {
         v30 = v29;
@@ -1157,14 +1157,14 @@ LABEL_33:
           {
             if (*v38 != v31)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(inEdges);
             }
 
-            v33 = [*(*(&v37 + 1) + 8 * k) sourceNode];
-            [v7 addObject:v33];
+            sourceNode = [*(*(&v37 + 1) + 8 * k) sourceNode];
+            [v7 addObject:sourceNode];
           }
 
-          v30 = [v28 countByEnumeratingWithState:&v37 objects:v50 count:16];
+          v30 = [inEdges countByEnumeratingWithState:&v37 objects:v50 count:16];
         }
 
         while (v30);
@@ -1181,24 +1181,24 @@ LABEL_4:
 LABEL_36:
 }
 
-- (void)traverseGraphBreadthFirstFromNode:(id)a3 directed:(BOOL)a4 usingBlock:(id)a5
+- (void)traverseGraphBreadthFirstFromNode:(id)node directed:(BOOL)directed usingBlock:(id)block
 {
   v50 = *MEMORY[0x1E69E9840];
   v6 = objc_opt_new();
   v7 = objc_opt_new();
   v46 = 0;
-  [v6 addObject:a3];
+  [v6 addObject:node];
   if ([v6 count])
   {
     while (1)
     {
-      v8 = [v6 firstObject];
-      if ([v7 containsObject:v8])
+      firstObject = [v6 firstObject];
+      if ([v7 containsObject:firstObject])
       {
         goto LABEL_3;
       }
 
-      v9 = (*(a5 + 2))(a5, v8, &v46);
+      v9 = (*(block + 2))(block, firstObject, &v46);
       if (v46 == 1)
       {
 
@@ -1206,7 +1206,7 @@ LABEL_36:
       }
 
       v10 = v9;
-      [v7 addObject:v8];
+      [v7 addObject:firstObject];
       if (v10)
       {
         break;
@@ -1224,8 +1224,8 @@ LABEL_32:
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v11 = [v8 outEdges];
-    v12 = [v11 countByEnumeratingWithState:&v42 objects:v49 count:16];
+    outEdges = [firstObject outEdges];
+    v12 = [outEdges countByEnumeratingWithState:&v42 objects:v49 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1236,14 +1236,14 @@ LABEL_32:
         {
           if (*v43 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(outEdges);
           }
 
-          v16 = [*(*(&v42 + 1) + 8 * i) targetNode];
-          [v6 addObject:v16];
+          targetNode = [*(*(&v42 + 1) + 8 * i) targetNode];
+          [v6 addObject:targetNode];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v42 objects:v49 count:16];
+        v13 = [outEdges countByEnumeratingWithState:&v42 objects:v49 count:16];
       }
 
       while (v13);
@@ -1253,8 +1253,8 @@ LABEL_32:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v17 = [v8 inOutEdges];
-    v18 = [v17 countByEnumeratingWithState:&v38 objects:v48 count:16];
+    inOutEdges = [firstObject inOutEdges];
+    v18 = [inOutEdges countByEnumeratingWithState:&v38 objects:v48 count:16];
     if (v18)
     {
       v19 = v18;
@@ -1265,12 +1265,12 @@ LABEL_32:
         {
           if (*v39 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(inOutEdges);
           }
 
           v22 = *(*(&v38 + 1) + 8 * j);
-          v23 = [v22 targetNode];
-          v24 = [v8 isEqual:v23];
+          targetNode2 = [v22 targetNode];
+          v24 = [firstObject isEqual:targetNode2];
 
           if (v24)
           {
@@ -1285,20 +1285,20 @@ LABEL_32:
           [v6 addObject:v25];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v38 objects:v48 count:16];
+        v19 = [inOutEdges countByEnumeratingWithState:&v38 objects:v48 count:16];
       }
 
       while (v19);
     }
 
-    if (!a4)
+    if (!directed)
     {
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v26 = [v8 inEdges];
-      v27 = [v26 countByEnumeratingWithState:&v34 objects:v47 count:16];
+      inEdges = [firstObject inEdges];
+      v27 = [inEdges countByEnumeratingWithState:&v34 objects:v47 count:16];
       if (v27)
       {
         v28 = v27;
@@ -1309,14 +1309,14 @@ LABEL_32:
           {
             if (*v35 != v29)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(inEdges);
             }
 
-            v31 = [*(*(&v34 + 1) + 8 * k) sourceNode];
-            [v6 addObject:v31];
+            sourceNode = [*(*(&v34 + 1) + 8 * k) sourceNode];
+            [v6 addObject:sourceNode];
           }
 
-          v28 = [v26 countByEnumeratingWithState:&v34 objects:v47 count:16];
+          v28 = [inEdges countByEnumeratingWithState:&v34 objects:v47 count:16];
         }
 
         while (v28);
@@ -1324,7 +1324,7 @@ LABEL_32:
     }
 
 LABEL_3:
-    [v6 removeObject:v8];
+    [v6 removeObject:firstObject];
     goto LABEL_32;
   }
 

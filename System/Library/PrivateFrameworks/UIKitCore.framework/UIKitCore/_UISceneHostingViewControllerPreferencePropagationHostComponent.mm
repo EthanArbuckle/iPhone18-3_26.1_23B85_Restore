@@ -8,132 +8,132 @@
 - (int64_t)statusBarStyle;
 - (int64_t)whitePointAdaptivityStyle;
 - (unint64_t)screenEdgesDeferringSystemGestures;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)setScene:(id)a3;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)setScene:(id)scene;
 @end
 
 @implementation _UISceneHostingViewControllerPreferencePropagationHostComponent
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   v6.receiver = self;
   v6.super_class = _UISceneHostingViewControllerPreferencePropagationHostComponent;
-  [(FBSSceneComponent *)&v6 setScene:a3];
-  v4 = [(FBSSceneComponent *)self scene];
-  v5 = [v4 clientSettings];
-  self->_settingsAreUISubclass = [v5 isUISubclass];
+  [(FBSSceneComponent *)&v6 setScene:scene];
+  scene = [(FBSSceneComponent *)self scene];
+  clientSettings = [scene clientSettings];
+  self->_settingsAreUISubclass = [clientSettings isUISubclass];
 }
 
 - (id)uiClientSettings
 {
-  if (a1 && a1[24] == 1)
+  if (self && self[24] == 1)
   {
-    v1 = [a1 scene];
-    v2 = [v1 clientSettings];
+    scene = [self scene];
+    clientSettings = [scene clientSettings];
   }
 
   else
   {
-    v2 = 0;
+    clientSettings = 0;
   }
 
-  return v2;
+  return clientSettings;
 }
 
 - (int64_t)statusBarStyle
 {
-  v2 = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self uiClientSettings];
-  v3 = [v2 statusBarStyle];
+  uiClientSettings = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self uiClientSettings];
+  statusBarStyle = [uiClientSettings statusBarStyle];
 
-  return v3;
+  return statusBarStyle;
 }
 
 - (int)statusBarVisibility
 {
-  v2 = [(FBSSceneComponent *)self scene];
-  v3 = [v2 clientSettings];
-  v4 = [v3 preferredStatusBarVisibility];
+  scene = [(FBSSceneComponent *)self scene];
+  clientSettings = [scene clientSettings];
+  preferredStatusBarVisibility = [clientSettings preferredStatusBarVisibility];
 
-  return v4;
+  return preferredStatusBarVisibility;
 }
 
 - (int64_t)whitePointAdaptivityStyle
 {
-  v2 = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self uiClientSettings];
-  v3 = [v2 whitePointAdaptivityStyle];
+  uiClientSettings = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self uiClientSettings];
+  whitePointAdaptivityStyle = [uiClientSettings whitePointAdaptivityStyle];
 
-  return v3;
+  return whitePointAdaptivityStyle;
 }
 
 - (NSArray)multitaskingDragExclusionRects
 {
-  v2 = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self uiClientSettings];
-  v3 = [v2 multitaskingDragExclusionRects];
+  uiClientSettings = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self uiClientSettings];
+  multitaskingDragExclusionRects = [uiClientSettings multitaskingDragExclusionRects];
 
-  return v3;
+  return multitaskingDragExclusionRects;
 }
 
 - (unint64_t)screenEdgesDeferringSystemGestures
 {
-  v2 = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self uiClientSettings];
-  v3 = [v2 screenEdgesDeferringSystemGestures];
+  uiClientSettings = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self uiClientSettings];
+  screenEdgesDeferringSystemGestures = [uiClientSettings screenEdgesDeferringSystemGestures];
 
-  return v3;
+  return screenEdgesDeferringSystemGestures;
 }
 
 - (BOOL)homeIndicatorAutoHidden
 {
-  v2 = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self uiClientSettings];
-  v3 = [v2 homeIndicatorAutoHidden];
+  uiClientSettings = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self uiClientSettings];
+  homeIndicatorAutoHidden = [uiClientSettings homeIndicatorAutoHidden];
 
-  return v3;
+  return homeIndicatorAutoHidden;
 }
 
 - (int64_t)preferredPointerLockStatus
 {
-  v2 = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self uiClientSettings];
-  v3 = [v2 preferredPointerLockStatus];
+  uiClientSettings = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self uiClientSettings];
+  preferredPointerLockStatus = [uiClientSettings preferredPointerLockStatus];
 
-  return v3;
+  return preferredPointerLockStatus;
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v11 = [a4 settingsDiff];
-  if (([v11 containsProperty:sel_statusBarStyle] & 1) != 0 || objc_msgSend(v11, "containsProperty:", sel_preferredStatusBarVisibility))
+  settingsDiff = [settings settingsDiff];
+  if (([settingsDiff containsProperty:sel_statusBarStyle] & 1) != 0 || objc_msgSend(settingsDiff, "containsProperty:", sel_preferredStatusBarVisibility))
   {
-    v5 = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self delegate];
-    [v5 sceneDidUpdateStatusBarAppearance];
+    delegate = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self delegate];
+    [delegate sceneDidUpdateStatusBarAppearance];
   }
 
-  if ([v11 containsProperty:sel_whitePointAdaptivityStyle])
+  if ([settingsDiff containsProperty:sel_whitePointAdaptivityStyle])
   {
-    v6 = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self delegate];
-    [v6 sceneDidUpdateWhitePointAdaptivityStyle];
+    delegate2 = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self delegate];
+    [delegate2 sceneDidUpdateWhitePointAdaptivityStyle];
   }
 
-  if ([v11 containsProperty:sel_multitaskingDragExclusionRects])
+  if ([settingsDiff containsProperty:sel_multitaskingDragExclusionRects])
   {
-    v7 = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self delegate];
-    [v7 sceneDidUpdateMultitaskingDragExclusionRects];
+    delegate3 = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self delegate];
+    [delegate3 sceneDidUpdateMultitaskingDragExclusionRects];
   }
 
-  if ([v11 containsProperty:sel_screenEdgesDeferringSystemGestures])
+  if ([settingsDiff containsProperty:sel_screenEdgesDeferringSystemGestures])
   {
-    v8 = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self delegate];
-    [v8 sceneDidUpdateScreenEdgesDeferringSystemGestures];
+    delegate4 = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self delegate];
+    [delegate4 sceneDidUpdateScreenEdgesDeferringSystemGestures];
   }
 
-  if ([v11 containsProperty:sel_homeIndicatorAutoHidden])
+  if ([settingsDiff containsProperty:sel_homeIndicatorAutoHidden])
   {
-    v9 = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self delegate];
-    [v9 sceneDidUpdateHomeIndicatorAutoHidden];
+    delegate5 = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self delegate];
+    [delegate5 sceneDidUpdateHomeIndicatorAutoHidden];
   }
 
-  if ([v11 containsProperty:sel_preferredPointerLockStatus])
+  if ([settingsDiff containsProperty:sel_preferredPointerLockStatus])
   {
-    v10 = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self delegate];
-    [v10 sceneDidUpdatePreferredPointerLockStatus];
+    delegate6 = [(_UISceneHostingViewControllerPreferencePropagationHostComponent *)self delegate];
+    [delegate6 sceneDidUpdatePreferredPointerLockStatus];
   }
 }
 

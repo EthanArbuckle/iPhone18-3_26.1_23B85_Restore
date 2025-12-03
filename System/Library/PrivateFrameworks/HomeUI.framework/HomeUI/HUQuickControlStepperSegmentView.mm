@@ -1,21 +1,21 @@
 @interface HUQuickControlStepperSegmentView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (HUQuickControlStepperSegmentView)initWithStyle:(unint64_t)a3 orientation:(unint64_t)a4 controlSize:(unint64_t)a5;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (HUQuickControlStepperSegmentView)initWithStyle:(unint64_t)style orientation:(unint64_t)orientation controlSize:(unint64_t)size;
 - (void)_contentSizeCategoryDidChange;
 - (void)_createTitleLabelIfNecessary;
 - (void)_updateTitleLabel;
 - (void)_updateUIHighlightedOverlayView;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setIsSegmentViewHighlighted:(BOOL)a3;
-- (void)setTintColor:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setIsSegmentViewHighlighted:(BOOL)highlighted;
+- (void)setTintColor:(id)color;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HUQuickControlStepperSegmentView
 
-- (HUQuickControlStepperSegmentView)initWithStyle:(unint64_t)a3 orientation:(unint64_t)a4 controlSize:(unint64_t)a5
+- (HUQuickControlStepperSegmentView)initWithStyle:(unint64_t)style orientation:(unint64_t)orientation controlSize:(unint64_t)size
 {
   v22.receiver = self;
   v22.super_class = HUQuickControlStepperSegmentView;
@@ -23,12 +23,12 @@
   v9 = v8;
   if (v8)
   {
-    v8->_style = a3;
-    v8->_orientation = a4;
-    v8->_controlSize = a5;
+    v8->_style = style;
+    v8->_orientation = orientation;
+    v8->_controlSize = size;
     [(HUQuickControlStepperSegmentView *)v8 bounds];
     v11 = v10;
-    if (a4)
+    if (orientation)
     {
       v11 = v10 * 1.25;
       [(HUQuickControlStepperSegmentView *)v9 bounds];
@@ -50,21 +50,21 @@
 
     [(HUQuickControlStepperSegmentView *)v9 insertSubview:v9->_highlightedOverlayView atIndex:0];
     [(UIView *)v9->_highlightedOverlayView setUserInteractionEnabled:0];
-    v20 = [(HUQuickControlStepperSegmentView *)v9 tintColor];
-    [(UIView *)v9->_highlightedOverlayView setBackgroundColor:v20];
+    tintColor = [(HUQuickControlStepperSegmentView *)v9 tintColor];
+    [(UIView *)v9->_highlightedOverlayView setBackgroundColor:tintColor];
   }
 
   return v9;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  titleCopy = title;
+  v5 = [titleCopy copy];
   title = self->_title;
   self->_title = v5;
 
-  v7 = [v4 length];
+  v7 = [titleCopy length];
   if (v7)
   {
     [(HUQuickControlStepperSegmentView *)self _createTitleLabelIfNecessary];
@@ -73,17 +73,17 @@
   }
 }
 
-- (void)setIsSegmentViewHighlighted:(BOOL)a3
+- (void)setIsSegmentViewHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__HUQuickControlStepperSegmentView_setIsSegmentViewHighlighted___block_invoke;
   v7[3] = &unk_277DB8488;
   v7[4] = self;
   [MEMORY[0x277D75D18] performWithoutAnimation:v7];
-  self->_isSegmentViewHighlighted = v3;
-  if (v3)
+  self->_isSegmentViewHighlighted = highlightedCopy;
+  if (highlightedCopy)
   {
     v5 = 1.0;
   }
@@ -93,8 +93,8 @@
     v5 = 0.0;
   }
 
-  v6 = [(HUQuickControlStepperSegmentView *)self highlightedOverlayView];
-  [v6 setAlpha:v5];
+  highlightedOverlayView = [(HUQuickControlStepperSegmentView *)self highlightedOverlayView];
+  [highlightedOverlayView setAlpha:v5];
 
   [(HUQuickControlStepperSegmentView *)self _updateTitleLabel];
 }
@@ -112,17 +112,17 @@ uint64_t __64__HUQuickControlStepperSegmentView_setIsSegmentViewHighlighted___bl
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = HUQuickControlStepperSegmentView;
-  v4 = a3;
-  [(HUQuickControlStepperSegmentView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(HUQuickControlStepperSegmentView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(HUQuickControlStepperSegmentView *)self traitCollection:v8.receiver];
-  v6 = [v5 verticalSizeClass];
-  v7 = [v4 verticalSizeClass];
+  verticalSizeClass = [v5 verticalSizeClass];
+  verticalSizeClass2 = [changeCopy verticalSizeClass];
 
-  if (v6 != v7)
+  if (verticalSizeClass != verticalSizeClass2)
   {
     [(HUQuickControlStepperSegmentView *)self _updateTitleLabel];
   }
@@ -130,38 +130,38 @@ uint64_t __64__HUQuickControlStepperSegmentView_setIsSegmentViewHighlighted___bl
 
 - (void)_createTitleLabelIfNecessary
 {
-  v3 = [(HUQuickControlStepperSegmentView *)self titleLabelEffectView];
+  titleLabelEffectView = [(HUQuickControlStepperSegmentView *)self titleLabelEffectView];
 
-  if (!v3)
+  if (!titleLabelEffectView)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
     [(HUQuickControlStepperSegmentView *)self setTitleLabel:v4];
 
-    v5 = [(HUQuickControlStepperSegmentView *)self titleLabel];
-    [v5 setUserInteractionEnabled:0];
+    titleLabel = [(HUQuickControlStepperSegmentView *)self titleLabel];
+    [titleLabel setUserInteractionEnabled:0];
 
-    v6 = [(HUQuickControlStepperSegmentView *)self titleLabel];
-    [v6 setNumberOfLines:0];
+    titleLabel2 = [(HUQuickControlStepperSegmentView *)self titleLabel];
+    [titleLabel2 setNumberOfLines:0];
 
-    v7 = [(HUQuickControlStepperSegmentView *)self titleLabel];
-    [v7 setTextAlignment:1];
+    titleLabel3 = [(HUQuickControlStepperSegmentView *)self titleLabel];
+    [titleLabel3 setTextAlignment:1];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:self selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x277D76810] object:0];
 
     v9 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:0];
     [(HUQuickControlStepperSegmentView *)self setTitleLabelEffectView:v9];
 
-    v10 = [(HUQuickControlStepperSegmentView *)self titleLabelEffectView];
-    [v10 setUserInteractionEnabled:0];
+    titleLabelEffectView2 = [(HUQuickControlStepperSegmentView *)self titleLabelEffectView];
+    [titleLabelEffectView2 setUserInteractionEnabled:0];
 
-    v11 = [(HUQuickControlStepperSegmentView *)self titleLabelEffectView];
-    v12 = [v11 contentView];
-    v13 = [(HUQuickControlStepperSegmentView *)self titleLabel];
-    [v12 addSubview:v13];
+    titleLabelEffectView3 = [(HUQuickControlStepperSegmentView *)self titleLabelEffectView];
+    contentView = [titleLabelEffectView3 contentView];
+    titleLabel4 = [(HUQuickControlStepperSegmentView *)self titleLabel];
+    [contentView addSubview:titleLabel4];
 
-    v14 = [(HUQuickControlStepperSegmentView *)self titleLabelEffectView];
-    [(HUQuickControlStepperSegmentView *)self addSubview:v14];
+    titleLabelEffectView4 = [(HUQuickControlStepperSegmentView *)self titleLabelEffectView];
+    [(HUQuickControlStepperSegmentView *)self addSubview:titleLabelEffectView4];
 
     [(HUQuickControlStepperSegmentView *)self _updateTitleLabel];
   }
@@ -175,49 +175,49 @@ uint64_t __64__HUQuickControlStepperSegmentView_setIsSegmentViewHighlighted___bl
   LODWORD(v4) = 1.0;
   [v3 setHyphenationFactor:v4];
   [v3 setLineBreakMode:0];
-  v5 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v6 = [v5 firstObject];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  firstObject = [preferredLanguages firstObject];
 
   v7 = [MEMORY[0x277D74300] boldSystemFontOfSize:14.0];
   if ([(HUQuickControlStepperSegmentView *)self isSegmentViewHighlighted]&& [(HUQuickControlStepperSegmentView *)self reachabilityState]== 2)
   {
-    v8 = [MEMORY[0x277D75348] systemWhiteColor];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75348] systemDarkGrayColor];
+    systemWhiteColor = [MEMORY[0x277D75348] systemDarkGrayColor];
   }
 
-  v9 = v8;
+  v9 = systemWhiteColor;
   v10 = *MEMORY[0x277D740A8];
   v19[0] = *MEMORY[0x277D740C0];
   v19[1] = v10;
-  v20[0] = v8;
+  v20[0] = systemWhiteColor;
   v20[1] = v7;
   v11 = *MEMORY[0x277CC49E8];
   v19[2] = *MEMORY[0x277D74118];
   v19[3] = v11;
   v20[2] = v3;
-  v20[3] = v6;
+  v20[3] = firstObject;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:4];
   v13 = objc_alloc(MEMORY[0x277CCA898]);
-  v14 = [(HUQuickControlStepperSegmentView *)self title];
-  v15 = [v13 initWithString:v14 attributes:v12];
-  v16 = [(HUQuickControlStepperSegmentView *)self titleLabel];
-  [v16 setAttributedText:v15];
+  title = [(HUQuickControlStepperSegmentView *)self title];
+  v15 = [v13 initWithString:title attributes:v12];
+  titleLabel = [(HUQuickControlStepperSegmentView *)self titleLabel];
+  [titleLabel setAttributedText:v15];
 
   if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials] && !-[HUQuickControlStepperSegmentView isSegmentViewHighlighted](self, "isSegmentViewHighlighted"))
   {
-    v17 = [MEMORY[0x277D75D00] controlCenterSecondaryVibrancyEffect];
-    v18 = [(HUQuickControlStepperSegmentView *)self titleLabelEffectView];
-    [v18 setEffect:v17];
+    controlCenterSecondaryVibrancyEffect = [MEMORY[0x277D75D00] controlCenterSecondaryVibrancyEffect];
+    titleLabelEffectView = [(HUQuickControlStepperSegmentView *)self titleLabelEffectView];
+    [titleLabelEffectView setEffect:controlCenterSecondaryVibrancyEffect];
   }
 
   else
   {
-    v17 = [(HUQuickControlStepperSegmentView *)self titleLabelEffectView];
-    [v17 setEffect:0];
+    controlCenterSecondaryVibrancyEffect = [(HUQuickControlStepperSegmentView *)self titleLabelEffectView];
+    [controlCenterSecondaryVibrancyEffect setEffect:0];
   }
 }
 
@@ -228,18 +228,18 @@ uint64_t __64__HUQuickControlStepperSegmentView_setIsSegmentViewHighlighted___bl
     v3 = 0.0;
   }
 
-  v4 = [(HUQuickControlStepperSegmentView *)self highlightedOverlayView];
-  [v4 setAlpha:v3];
+  highlightedOverlayView = [(HUQuickControlStepperSegmentView *)self highlightedOverlayView];
+  [highlightedOverlayView setAlpha:v3];
 
-  v5 = [(HUQuickControlStepperSegmentView *)self highlightedOverlayView];
+  highlightedOverlayView2 = [(HUQuickControlStepperSegmentView *)self highlightedOverlayView];
 
-  if (v5)
+  if (highlightedOverlayView2)
   {
-    v6 = [(HUQuickControlStepperSegmentView *)self style];
-    if (v6)
+    style = [(HUQuickControlStepperSegmentView *)self style];
+    if (style)
     {
       v7 = 0.0;
-      if (v6 == 1)
+      if (style == 1)
       {
         if ([(HUQuickControlStepperSegmentView *)self segmentLocation]!= 1)
         {
@@ -247,24 +247,24 @@ uint64_t __64__HUQuickControlStepperSegmentView_setIsSegmentViewHighlighted___bl
           v7 = v8;
         }
 
-        v9 = [(HUQuickControlStepperSegmentView *)self segmentLocation];
-        if (v9 > 2)
+        segmentLocation = [(HUQuickControlStepperSegmentView *)self segmentLocation];
+        if (segmentLocation > 2)
         {
           v10 = 0;
         }
 
         else
         {
-          v10 = qword_20D5CB1B0[v9];
+          v10 = qword_20D5CB1B0[segmentLocation];
         }
 
-        v12 = [(HUQuickControlStepperSegmentView *)self highlightedOverlayView];
-        v13 = [v12 layer];
-        [v13 setMaskedCorners:v10];
+        highlightedOverlayView3 = [(HUQuickControlStepperSegmentView *)self highlightedOverlayView];
+        layer = [highlightedOverlayView3 layer];
+        [layer setMaskedCorners:v10];
 
-        v14 = [(HUQuickControlStepperSegmentView *)self highlightedOverlayView];
-        v15 = [v14 layer];
-        [v15 setShadowOpacity:0.0];
+        highlightedOverlayView4 = [(HUQuickControlStepperSegmentView *)self highlightedOverlayView];
+        layer2 = [highlightedOverlayView4 layer];
+        [layer2 setShadowOpacity:0.0];
       }
     }
 
@@ -274,8 +274,8 @@ uint64_t __64__HUQuickControlStepperSegmentView_setIsSegmentViewHighlighted___bl
       v7 = v11;
     }
 
-    v16 = [(HUQuickControlStepperSegmentView *)self highlightedOverlayView];
-    [v16 _setContinuousCornerRadius:v7];
+    highlightedOverlayView5 = [(HUQuickControlStepperSegmentView *)self highlightedOverlayView];
+    [highlightedOverlayView5 _setContinuousCornerRadius:v7];
   }
 }
 
@@ -302,26 +302,26 @@ uint64_t __67__HUQuickControlStepperSegmentView__updateUIHighlightedOverlayView_
   v4 = v3 + -16.0;
   [(HUQuickControlStepperSegmentView *)self frame];
   v6 = v5 + -16.0;
-  v7 = [(HUQuickControlStepperSegmentView *)self highlightedOverlayView];
-  [v7 setFrame:{8.0, 8.0, v4, v6}];
+  highlightedOverlayView = [(HUQuickControlStepperSegmentView *)self highlightedOverlayView];
+  [highlightedOverlayView setFrame:{8.0, 8.0, v4, v6}];
 
-  v8 = [(HUQuickControlStepperSegmentView *)self titleLabelEffectView];
-  [v8 setFrame:{10.0, 10.0, v4 + -4.0, v6 + -4.0}];
+  titleLabelEffectView = [(HUQuickControlStepperSegmentView *)self titleLabelEffectView];
+  [titleLabelEffectView setFrame:{10.0, 10.0, v4 + -4.0, v6 + -4.0}];
 
-  v9 = [(HUQuickControlStepperSegmentView *)self titleLabelEffectView];
-  [v9 frame];
+  titleLabelEffectView2 = [(HUQuickControlStepperSegmentView *)self titleLabelEffectView];
+  [titleLabelEffectView2 frame];
   v11 = v10;
-  v12 = [(HUQuickControlStepperSegmentView *)self titleLabelEffectView];
-  [v12 frame];
+  titleLabelEffectView3 = [(HUQuickControlStepperSegmentView *)self titleLabelEffectView];
+  [titleLabelEffectView3 frame];
   v14 = v13;
-  v15 = [(HUQuickControlStepperSegmentView *)self titleLabel];
-  [v15 setFrame:{0.0, 0.0, v11, v14}];
+  titleLabel = [(HUQuickControlStepperSegmentView *)self titleLabel];
+  [titleLabel setFrame:{0.0, 0.0, v11, v14}];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(HUQuickControlStepperSegmentView *)self bounds];
   v11 = CGRectInset(v10, -10.0, -5.0);
   v6 = x;
@@ -330,13 +330,13 @@ uint64_t __67__HUQuickControlStepperSegmentView__updateUIHighlightedOverlayView_
   return CGRectContainsPoint(v11, *&v6);
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = HUQuickControlStepperSegmentView;
-  [(HUQuickControlStepperSegmentView *)&v5 setTintColor:a3];
-  v4 = [(HUQuickControlStepperSegmentView *)self tintColor];
-  [(UIView *)self->_highlightedOverlayView setBackgroundColor:v4];
+  [(HUQuickControlStepperSegmentView *)&v5 setTintColor:color];
+  tintColor = [(HUQuickControlStepperSegmentView *)self tintColor];
+  [(UIView *)self->_highlightedOverlayView setBackgroundColor:tintColor];
 }
 
 - (void)_contentSizeCategoryDidChange
@@ -348,8 +348,8 @@ uint64_t __67__HUQuickControlStepperSegmentView__updateUIHighlightedOverlayView_
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HUQuickControlStepperSegmentView;

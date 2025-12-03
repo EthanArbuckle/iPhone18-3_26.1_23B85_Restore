@@ -1,7 +1,7 @@
 @interface SessionBurnBarView
 - (CGSize)intrinsicContentSize;
-- (_TtC9SeymourUI18SessionBurnBarView)initWithCoder:(id)a3;
-- (_TtC9SeymourUI18SessionBurnBarView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI18SessionBurnBarView)initWithCoder:(id)coder;
+- (_TtC9SeymourUI18SessionBurnBarView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SessionBurnBarView
@@ -29,7 +29,7 @@
   return result;
 }
 
-- (_TtC9SeymourUI18SessionBurnBarView)initWithCoder:(id)a3
+- (_TtC9SeymourUI18SessionBurnBarView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9SeymourUI18SessionBurnBarView_burnBar;
   type metadata accessor for BurnBar();
@@ -41,7 +41,7 @@
   return result;
 }
 
-- (_TtC9SeymourUI18SessionBurnBarView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI18SessionBurnBarView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

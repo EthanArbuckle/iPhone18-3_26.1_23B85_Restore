@@ -1,21 +1,21 @@
 @interface CRCTCCVNLPOrientationDecoder
-- (BOOL)_decodeFeaturesWithInfo:(id)a3 decoderCallback:(id)a4 shouldDecodeScriptResult:(BOOL)a5 shouldDecodeOrientationResult:(BOOL)a6 shouldDecodeLayoutDirectionResult:(BOOL)a7;
-- (BOOL)decodeOutput:(id)a3 imageSize:(CGSize)a4 shouldDecodeScriptResult:(BOOL)a5 shouldDecodeOrientationResult:(BOOL)a6 shouldDecodeLayoutDirectionResult:(BOOL)a7 error:(id *)a8;
+- (BOOL)_decodeFeaturesWithInfo:(id)info decoderCallback:(id)callback shouldDecodeScriptResult:(BOOL)result shouldDecodeOrientationResult:(BOOL)orientationResult shouldDecodeLayoutDirectionResult:(BOOL)directionResult;
+- (BOOL)decodeOutput:(id)output imageSize:(CGSize)size shouldDecodeScriptResult:(BOOL)result shouldDecodeOrientationResult:(BOOL)orientationResult shouldDecodeLayoutDirectionResult:(BOOL)directionResult error:(id *)error;
 - (BOOL)shouldUseModernizedDecoder;
-- (CRCTCCVNLPOrientationDecoder)initWithConfiguration:(id)a3 model:(id)a4 error:(id *)a5;
+- (CRCTCCVNLPOrientationDecoder)initWithConfiguration:(id)configuration model:(id)model error:(id *)error;
 - (id).cxx_construct;
-- (id)_buildActivationMatrices:(id)a3;
+- (id)_buildActivationMatrices:(id)matrices;
 - (vector<CoreRecognition::decoder::ActivationMatrix,)_buildModernizedActivationMatrices:(CRCTCCVNLPOrientationDecoder *)self;
-- (void)_create2DArraysFromInputArray:(id)a3 classSize:(unint64_t *)a4 outputArrays:(void *)a5;
+- (void)_create2DArraysFromInputArray:(id)array classSize:(unint64_t *)size outputArrays:(void *)arrays;
 @end
 
 @implementation CRCTCCVNLPOrientationDecoder
 
-- (CRCTCCVNLPOrientationDecoder)initWithConfiguration:(id)a3 model:(id)a4 error:(id *)a5
+- (CRCTCCVNLPOrientationDecoder)initWithConfiguration:(id)configuration model:(id)model error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v34 = a3;
-  v35 = a4;
+  configurationCopy = configuration;
+  modelCopy = model;
   v41.receiver = self;
   v41.super_class = CRCTCCVNLPOrientationDecoder;
   v8 = [(CRCTCCVNLPOrientationDecoder *)&v41 init];
@@ -27,11 +27,11 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  objc_storeStrong(&v8->_model, a4);
-  v10 = [(CRTextSequenceRecognizerModel *)v9->_model codemapArray];
-  if (v10)
+  objc_storeStrong(&v8->_model, model);
+  codemapArray = [(CRTextSequenceRecognizerModel *)v9->_model codemapArray];
+  if (codemapArray)
   {
-    v11 = unicodeArrayToNSStringArray(v10, [(CRTextSequenceRecognizerModel *)v9->_model codemapSize]);
+    v11 = unicodeArrayToNSStringArray(codemapArray, [(CRTextSequenceRecognizerModel *)v9->_model codemapSize]);
     v12 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v11];
     characterObservations = v9->_characterObservations;
     v9->_characterObservations = v12;
@@ -59,8 +59,8 @@ LABEL_26:
             }
 
             v18 = *(*(&v37 + 1) + 8 * i);
-            v19 = [(CRCTCCVNLPOrientationDecoder *)v9 characterObservations];
-            v20 = [v19 indexOfObject:v18];
+            characterObservations = [(CRCTCCVNLPOrientationDecoder *)v9 characterObservations];
+            v20 = [characterObservations indexOfObject:v18];
 
             if (v20 != 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -130,10 +130,10 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (a5)
+  if (error)
   {
     [CRImageReader errorWithErrorCode:-8];
-    *a5 = v32 = 0;
+    *error = v32 = 0;
   }
 
   else
@@ -148,23 +148,23 @@ LABEL_27:
 
 - (BOOL)shouldUseModernizedDecoder
 {
-  v2 = [(CRCTCCVNLPOrientationDecoder *)self model];
-  v3 = [v2 outputFormatVersion];
-  v4 = [v3 intValue] == 2;
+  model = [(CRCTCCVNLPOrientationDecoder *)self model];
+  outputFormatVersion = [model outputFormatVersion];
+  v4 = [outputFormatVersion intValue] == 2;
 
   return v4;
 }
 
-- (BOOL)decodeOutput:(id)a3 imageSize:(CGSize)a4 shouldDecodeScriptResult:(BOOL)a5 shouldDecodeOrientationResult:(BOOL)a6 shouldDecodeLayoutDirectionResult:(BOOL)a7 error:(id *)a8
+- (BOOL)decodeOutput:(id)output imageSize:(CGSize)size shouldDecodeScriptResult:(BOOL)result shouldDecodeOrientationResult:(BOOL)orientationResult shouldDecodeLayoutDirectionResult:(BOOL)directionResult error:(id *)error
 {
-  v8 = a7;
-  v9 = a6;
-  v10 = a5;
-  v12 = a3;
+  directionResultCopy = directionResult;
+  orientationResultCopy = orientationResult;
+  resultCopy = result;
+  outputCopy = output;
   if ([(CRCTCCVNLPOrientationDecoder *)self shouldUseModernizedDecoder])
   {
-    v13 = [(CRCTCCVNLPOrientationDecoder *)self model];
-    v14 = [v13 ctcBlankLabelIndex];
+    model = [(CRCTCCVNLPOrientationDecoder *)self model];
+    ctcBlankLabelIndex = [model ctcBlankLabelIndex];
 
     LOBYTE(v46) = 0;
     v45 = &unk_1F2BAF938;
@@ -174,7 +174,7 @@ LABEL_27:
     std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long *,unsigned long *>(&v47, self->_spaceLabels.__begin_, self->_spaceLabels.__end_, self->_spaceLabels.__end_ - self->_spaceLabels.__begin_);
     v50 = 0;
     v51 = &unk_1F2BAFBC0;
-    v52 = v14;
+    v52 = ctcBlankLabelIndex;
     v54 = 0;
     v53 = &unk_1F2BAF938;
     v55 = 0;
@@ -189,7 +189,7 @@ LABEL_27:
       operator delete(v47);
     }
 
-    [(CRCTCCVNLPOrientationDecoder *)self _buildModernizedActivationMatrices:v12];
+    [(CRCTCCVNLPOrientationDecoder *)self _buildModernizedActivationMatrices:outputCopy];
     v43 = 0;
     v44 = 0uLL;
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -230,8 +230,8 @@ LABEL_27:
     std::vector<CoreRecognition::decoder::ActivationMatrix>::__destroy_vector::operator()[abi:ne200100](&v43);
     v51 = &unk_1F2BAFBC0;
     v53 = &unk_1F2BAF938;
-    v16 = v9;
-    v10 = v10;
+    v16 = orientationResultCopy;
+    resultCopy = resultCopy;
     if (v55)
     {
       v56 = v55;
@@ -241,10 +241,10 @@ LABEL_27:
 
   else
   {
-    v17 = [MEMORY[0x1E6992000] defaultWhitespaceCommitActionBehavior];
-    v18 = [objc_alloc(MEMORY[0x1E6992000]) initWithCommitActionBehavior:v17];
+    defaultWhitespaceCommitActionBehavior = [MEMORY[0x1E6992000] defaultWhitespaceCommitActionBehavior];
+    v18 = [objc_alloc(MEMORY[0x1E6992000]) initWithCommitActionBehavior:defaultWhitespaceCommitActionBehavior];
     v19 = [objc_alloc(MEMORY[0x1E6991FD0]) initWithLanguageResourceBundle:0];
-    v20 = [(CRCTCCVNLPOrientationDecoder *)self _buildActivationMatrices:v12];
+    v20 = [(CRCTCCVNLPOrientationDecoder *)self _buildActivationMatrices:outputCopy];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __150__CRCTCCVNLPOrientationDecoder_decodeOutput_imageSize_shouldDecodeScriptResult_shouldDecodeOrientationResult_shouldDecodeLayoutDirectionResult_error___block_invoke_9;
@@ -257,11 +257,11 @@ LABEL_27:
     v23 = v19;
     v15 = _Block_copy(v27);
 
-    v16 = v9;
+    v16 = orientationResultCopy;
   }
 
-  v24 = [v12 textFeatureInfo];
-  v25 = [(CRCTCCVNLPOrientationDecoder *)self _decodeFeaturesWithInfo:v24 decoderCallback:v15 shouldDecodeScriptResult:v10 shouldDecodeOrientationResult:v16 shouldDecodeLayoutDirectionResult:v8];
+  textFeatureInfo = [outputCopy textFeatureInfo];
+  v25 = [(CRCTCCVNLPOrientationDecoder *)self _decodeFeaturesWithInfo:textFeatureInfo decoderCallback:v15 shouldDecodeScriptResult:resultCopy shouldDecodeOrientationResult:v16 shouldDecodeLayoutDirectionResult:directionResultCopy];
 
   return v25;
 }
@@ -295,23 +295,23 @@ uint64_t __150__CRCTCCVNLPOrientationDecoder_decodeOutput_imageSize_shouldDecode
   return [v4 greedyDecodingResultWithConfiguration:v5];
 }
 
-- (id)_buildActivationMatrices:(id)a3
+- (id)_buildActivationMatrices:(id)matrices
 {
-  v4 = a3;
+  matricesCopy = matrices;
   v5 = MEMORY[0x1E695DF70];
-  v6 = [v4 textFeatureInfo];
-  v27 = [v5 arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  textFeatureInfo = [matricesCopy textFeatureInfo];
+  v27 = [v5 arrayWithCapacity:{objc_msgSend(textFeatureInfo, "count")}];
 
-  v7 = [(CRCTCCVNLPOrientationDecoder *)self model];
-  v8 = [v7 codemapSize];
+  model = [(CRCTCCVNLPOrientationDecoder *)self model];
+  codemapSize = [model codemapSize];
 
   v34 = 0;
-  v35 = v8;
+  v35 = codemapSize;
   v32 = 0;
   v33 = 0;
-  [(CRCTCCVNLPOrientationDecoder *)self _create2DArraysFromInputArray:v4 classSize:&v35 outputArrays:&v32];
-  v9 = [(CRCTCCVNLPOrientationDecoder *)self model];
-  v10 = [v9 ctcBlankLabelIndex];
+  [(CRCTCCVNLPOrientationDecoder *)self _create2DArraysFromInputArray:matricesCopy classSize:&v35 outputArrays:&v32];
+  model2 = [(CRCTCCVNLPOrientationDecoder *)self model];
+  ctcBlankLabelIndex = [model2 ctcBlankLabelIndex];
 
   v11 = v32;
   if (v33 != v32)
@@ -340,10 +340,10 @@ uint64_t __150__CRCTCCVNLPOrientationDecoder_decodeOutput_imageSize_shouldDecode
       v30[8] = v21;
       v30[9] = v22;
       v30[7] = v20;
-      v23 = [(CRCTCCVNLPOrientationDecoder *)self characterObservations];
+      characterObservations = [(CRCTCCVNLPOrientationDecoder *)self characterObservations];
       v28 = xmmword_1B42AFDE8;
       v29 = 10;
-      v24 = [v14 initWithBuffer:v30 domainType:0 characterObservations:v23 blankIndex:v10 pruningPolicy:&v28];
+      v24 = [v14 initWithBuffer:v30 domainType:0 characterObservations:characterObservations blankIndex:ctcBlankLabelIndex pruningPolicy:&v28];
 
       [v27 addObject:v24];
       ++v13;
@@ -370,8 +370,8 @@ uint64_t __150__CRCTCCVNLPOrientationDecoder_decodeOutput_imageSize_shouldDecode
   retstr->var1 = 0;
   retstr->var2 = 0;
   retstr->var0 = 0;
-  v7 = [v6 textFeatureInfo];
-  v8 = [v7 count];
+  textFeatureInfo = [v6 textFeatureInfo];
+  v8 = [textFeatureInfo count];
   if (0xCCCCCCCCCCCCCCCDLL * ((retstr->var2 - retstr->var0) >> 4) < v8)
   {
     if (v8 <= 0x333333333333333)
@@ -383,11 +383,11 @@ uint64_t __150__CRCTCCVNLPOrientationDecoder_decodeOutput_imageSize_shouldDecode
     std::vector<unsigned long>::__throw_length_error[abi:ne200100]();
   }
 
-  v9 = [(CRCTCCVNLPOrientationDecoder *)self model];
-  v10 = [v9 codemapSize];
+  model = [(CRCTCCVNLPOrientationDecoder *)self model];
+  codemapSize = [model codemapSize];
 
   v32 = 0;
-  v33 = v10;
+  v33 = codemapSize;
   v30 = 0;
   v31 = 0;
   [(CRCTCCVNLPOrientationDecoder *)self _create2DArraysFromInputArray:v6 classSize:&v33 outputArrays:&v30];
@@ -486,13 +486,13 @@ uint64_t __150__CRCTCCVNLPOrientationDecoder_decodeOutput_imageSize_shouldDecode
   return result;
 }
 
-- (void)_create2DArraysFromInputArray:(id)a3 classSize:(unint64_t *)a4 outputArrays:(void *)a5
+- (void)_create2DArraysFromInputArray:(id)array classSize:(unint64_t *)size outputArrays:(void *)arrays
 {
-  v7 = a3;
-  v51 = v7;
-  if (v7)
+  arrayCopy = array;
+  v51 = arrayCopy;
+  if (arrayCopy)
   {
-    [v7 output_label_prob_map];
+    [arrayCopy output_label_prob_map];
     v52 = v78;
     v8 = v83;
     v64 = v82;
@@ -525,17 +525,17 @@ uint64_t __150__CRCTCCVNLPOrientationDecoder_decodeOutput_imageSize_shouldDecode
     v52 = 0;
   }
 
-  v71 = [v51 textFeatureInfo];
-  v9 = [(CRCTCCVNLPOrientationDecoder *)self model];
-  v10 = [v9 outputFormatVersion];
-  v11 = [v10 intValue] == 1;
+  textFeatureInfo = [v51 textFeatureInfo];
+  model = [(CRCTCCVNLPOrientationDecoder *)self model];
+  outputFormatVersion = [model outputFormatVersion];
+  v11 = [outputFormatVersion intValue] == 1;
 
   v62 = v61;
   if ((v11 & 1) == 0)
   {
-    v12 = [(CRCTCCVNLPOrientationDecoder *)self model];
-    v10 = [v12 outputFormatVersion];
-    v11 = [v10 intValue] == 2;
+    model2 = [(CRCTCCVNLPOrientationDecoder *)self model];
+    outputFormatVersion = [model2 outputFormatVersion];
+    v11 = [outputFormatVersion intValue] == 2;
 
     if (v11)
     {
@@ -557,7 +557,7 @@ uint64_t __150__CRCTCCVNLPOrientationDecoder_decodeOutput_imageSize_shouldDecode
     v63 = v13;
   }
 
-  std::vector<espresso_buffer_t>::resize(a5, [v71 count]);
+  std::vector<espresso_buffer_t>::resize(arrays, [textFeatureInfo count]);
   if ([(CRCTCCVNLPOrientationDecoder *)self shouldUseModernizedDecoder])
   {
     v15 = v64 * v8 * v60 * v65;
@@ -586,10 +586,10 @@ uint64_t __150__CRCTCCVNLPOrientationDecoder_decodeOutput_imageSize_shouldDecode
   v73 = 0;
   v74 = 0;
   v72 = 160;
-  while (v74 < [v71 count])
+  while (v74 < [textFeatureInfo count])
   {
-    v18 = [v71 objectAtIndexedSubscript:?];
-    v19 = [(CRFeatureSequenceRecognitionInfo *)v18 featureImageSize];
+    v18 = [textFeatureInfo objectAtIndexedSubscript:?];
+    featureImageSize = [(CRFeatureSequenceRecognitionInfo *)v18 featureImageSize];
     if (v18)
     {
       v20 = v18[2];
@@ -600,16 +600,16 @@ uint64_t __150__CRCTCCVNLPOrientationDecoder_decodeOutput_imageSize_shouldDecode
       v20 = 0.0;
     }
 
-    v21 = [(CRCTCCVNLPOrientationDecoder *)self model];
-    v22 = [v21 outputWidthDownscale];
-    [v22 floatValue];
+    model3 = [(CRCTCCVNLPOrientationDecoder *)self model];
+    outputWidthDownscale = [model3 outputWidthDownscale];
+    [outputWidthDownscale floatValue];
     v24 = v23;
-    v25 = [(CRCTCCVNLPOrientationDecoder *)self model];
-    v26 = [v25 outputWidthOffset];
-    [v26 floatValue];
+    model4 = [(CRCTCCVNLPOrientationDecoder *)self model];
+    outputWidthOffset = [model4 outputWidthOffset];
+    [outputWidthOffset floatValue];
     v28 = v27;
 
-    v29 = ceil(v19 * v20 / v24) + v28 + 2.0;
+    v29 = ceil(featureImageSize * v20 / v24) + v28 + 2.0;
     if (v63 >= v29)
     {
       v30 = v29;
@@ -620,9 +620,9 @@ uint64_t __150__CRCTCCVNLPOrientationDecoder_decodeOutput_imageSize_shouldDecode
       v30 = v63;
     }
 
-    v31 = [(CRCTCCVNLPOrientationDecoder *)self model];
-    v32 = [v31 outputFormatVersion];
-    v33 = [v32 intValue] == 1;
+    model5 = [(CRCTCCVNLPOrientationDecoder *)self model];
+    outputFormatVersion2 = [model5 outputFormatVersion];
+    v33 = [outputFormatVersion2 intValue] == 1;
 
     v34 = v73;
     v36 = v64;
@@ -636,14 +636,14 @@ uint64_t __150__CRCTCCVNLPOrientationDecoder_decodeOutput_imageSize_shouldDecode
     if (!v33)
     {
       v43 = [(CRCTCCVNLPOrientationDecoder *)self model:v61];
-      v44 = [v43 outputFormatVersion];
-      v45 = [v44 intValue] == 2;
+      outputFormatVersion3 = [v43 outputFormatVersion];
+      v45 = [outputFormatVersion3 intValue] == 2;
 
       v37 = v68;
       v35 = v69;
       v46 = v66;
       v36 = v67;
-      v47 = v10;
+      v47 = outputFormatVersion;
       v48 = v70;
       v49 = v8;
       v42 = v6;
@@ -674,7 +674,7 @@ uint64_t __150__CRCTCCVNLPOrientationDecoder_decodeOutput_imageSize_shouldDecode
     v77 = 0u;
     v48 = &v52[v34];
 LABEL_28:
-    v50 = (*a5 + v72);
+    v50 = (*arrays + v72);
     v69 = v35;
     v70 = v48;
     *(v50 - 20) = v48;
@@ -692,7 +692,7 @@ LABEL_28:
     v66 = v46;
     *(v50 - 6) = v46;
     *(v50 - 5) = v47;
-    v10 = v47;
+    outputFormatVersion = v47;
     v8 = v49;
     *(v50 - 4) = v49;
     *(v50 - 3) = v42;
@@ -709,19 +709,19 @@ LABEL_28:
   }
 }
 
-- (BOOL)_decodeFeaturesWithInfo:(id)a3 decoderCallback:(id)a4 shouldDecodeScriptResult:(BOOL)a5 shouldDecodeOrientationResult:(BOOL)a6 shouldDecodeLayoutDirectionResult:(BOOL)a7
+- (BOOL)_decodeFeaturesWithInfo:(id)info decoderCallback:(id)callback shouldDecodeScriptResult:(BOOL)result shouldDecodeOrientationResult:(BOOL)orientationResult shouldDecodeLayoutDirectionResult:(BOOL)directionResult
 {
-  v106 = a5;
-  v107 = a7;
-  v109 = a6;
+  resultCopy = result;
+  directionResultCopy = directionResult;
+  orientationResultCopy = orientationResult;
   v154 = *MEMORY[0x1E69E9840];
-  v112 = a3;
-  v111 = a4;
+  infoCopy = info;
+  callbackCopy = callback;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __161__CRCTCCVNLPOrientationDecoder__decodeFeaturesWithInfo_decoderCallback_shouldDecodeScriptResult_shouldDecodeOrientationResult_shouldDecodeLayoutDirectionResult___block_invoke;
   block[3] = &unk_1E7BC25C0;
-  v108 = self;
+  selfCopy = self;
   block[4] = self;
   if (qword_1ED9602B8 != -1)
   {
@@ -731,11 +731,11 @@ LABEL_28:
   v118 = 0;
   v110 = 0;
 LABEL_4:
-  v115 = [v112 count];
+  v115 = [infoCopy count];
   if (v118 < v115)
   {
     context = objc_autoreleasePoolPush();
-    v9 = v111[2](v111, v118);
+    v9 = callbackCopy[2](callbackCopy, v118);
     v114 = v9;
     if (!v9)
     {
@@ -743,17 +743,17 @@ LABEL_4:
       goto LABEL_108;
     }
 
-    selfa = [v112 objectAtIndexedSubscript:v118];
-    v10 = [v9 candidates];
-    v116 = [v10 firstObject];
+    selfa = [infoCopy objectAtIndexedSubscript:v118];
+    candidates = [v9 candidates];
+    firstObject = [candidates firstObject];
 
-    v11 = [v116 fullString];
+    fullString = [firstObject fullString];
     v12 = selfa;
-    newValue = v11;
-    if (!v109)
+    newValue = fullString;
+    if (!orientationResultCopy)
     {
 LABEL_26:
-      if (v107)
+      if (directionResultCopy)
       {
         v146 = 0;
         v147 = &v146;
@@ -763,14 +763,14 @@ LABEL_26:
         v143 = &v142;
         v144 = 0x2020000000;
         v145 = 0;
-        v29 = [v11 length];
+        v29 = [fullString length];
         v140[0] = MEMORY[0x1E69E9820];
         v140[1] = 3221225472;
         v140[2] = __161__CRCTCCVNLPOrientationDecoder__decodeFeaturesWithInfo_decoderCallback_shouldDecodeScriptResult_shouldDecodeOrientationResult_shouldDecodeLayoutDirectionResult___block_invoke_3;
         v140[3] = &unk_1E7BC2E58;
         v140[4] = &v146;
         v140[5] = &v142;
-        [v11 enumerateSubstringsInRange:0 options:v29 usingBlock:{2, v140}];
+        [fullString enumerateSubstringsInRange:0 options:v29 usingBlock:{2, v140}];
         if (v12)
         {
           v30 = v143[3];
@@ -788,7 +788,7 @@ LABEL_26:
         _Block_object_dispose(&v146, 8);
       }
 
-      if (!v106 || (-[CRTextSequenceRecognizerModel configuration](v108->_model, "configuration"), v33 = objc_claimAutoreleasedReturnValue(), v34 = [v33 scriptDetectionDisabled], v33, (v34 & 1) != 0))
+      if (!resultCopy || (-[CRTextSequenceRecognizerModel configuration](selfCopy->_model, "configuration"), v33 = objc_claimAutoreleasedReturnValue(), v34 = [v33 scriptDetectionDisabled], v33, (v34 & 1) != 0))
       {
         v14 = 0;
         goto LABEL_107;
@@ -796,27 +796,27 @@ LABEL_26:
 
       if (qword_1ED9602C8)
       {
-        v35 = [qword_1ED9602C8 stringByReplacingMatchesInString:newValue options:0 range:0 withTemplate:{objc_msgSend(newValue, "length"), &stru_1F2BB4348}];
-        if (![v35 length])
+        uppercaseString2 = [qword_1ED9602C8 stringByReplacingMatchesInString:newValue options:0 range:0 withTemplate:{objc_msgSend(newValue, "length"), &stru_1F2BB4348}];
+        if (![uppercaseString2 length])
         {
-          v36 = [newValue uppercaseString];
+          uppercaseString = [newValue uppercaseString];
 
-          v35 = v36;
+          uppercaseString2 = uppercaseString;
         }
       }
 
       else
       {
-        v35 = [newValue uppercaseString];
+        uppercaseString2 = [newValue uppercaseString];
       }
 
       for (i = 0; i != 7; ++i)
       {
         v38 = [qword_1ED9602B0 objectAtIndexedSubscript:i];
         v39 = [qword_1ED9602A8 objectAtIndexedSubscript:i];
-        v40 = [v35 stringByReplacingOccurrencesOfString:v38 withString:v39];
+        v40 = [uppercaseString2 stringByReplacingOccurrencesOfString:v38 withString:v39];
 
-        v35 = v40;
+        uppercaseString2 = v40;
       }
 
       if (v40)
@@ -859,14 +859,14 @@ LABEL_26:
           v46 = v104;
           v139 = v46;
           [v44 enumerateSubstringsInRange:0 options:v45 usingBlock:{2, v138}];
-          v47 = [v46 allObjects];
+          allObjects = [v46 allObjects];
           v136[0] = MEMORY[0x1E69E9820];
           v136[1] = 3221225472;
           v136[2] = __161__CRCTCCVNLPOrientationDecoder__decodeFeaturesWithInfo_decoderCallback_shouldDecodeScriptResult_shouldDecodeOrientationResult_shouldDecodeLayoutDirectionResult___block_invoke_5;
           v136[3] = &unk_1E7BC3628;
           v120 = v46;
           v137 = v120;
-          v105 = [v47 sortedArrayUsingComparator:v136];
+          v105 = [allObjects sortedArrayUsingComparator:v136];
 
           v123 = objc_opt_new();
           v134 = 0u;
@@ -1084,16 +1084,16 @@ LABEL_108:
       goto LABEL_106;
     }
 
-    if ([(CRCTCCVNLPOrientationDecoder *)v108 shouldUseModernizedDecoder])
+    if ([(CRCTCCVNLPOrientationDecoder *)selfCopy shouldUseModernizedDecoder])
     {
-      [v116 score];
+      [firstObject score];
     }
 
     else
     {
-      [v116 score];
+      [firstObject score];
       v16 = v15;
-      v17 = [v11 length];
+      v17 = [fullString length];
       if (!v17)
       {
         goto LABEL_13;
@@ -1112,15 +1112,15 @@ LABEL_13:
     v143 = &v142;
     v144 = 0x2020000000;
     v145 = 0;
-    v18 = [v11 length];
+    v18 = [fullString length];
     v141[0] = MEMORY[0x1E69E9820];
     v141[1] = 3221225472;
     v141[2] = __161__CRCTCCVNLPOrientationDecoder__decodeFeaturesWithInfo_decoderCallback_shouldDecodeScriptResult_shouldDecodeOrientationResult_shouldDecodeLayoutDirectionResult___block_invoke_2;
     v141[3] = &unk_1E7BC2E58;
     v141[4] = &v146;
     v141[5] = &v142;
-    [v11 enumerateSubstringsInRange:0 options:v18 usingBlock:{2, v141}];
-    v19 = [v11 stringByReplacingOccurrencesOfString:@"S" withString:&stru_1F2BB4348];
+    [fullString enumerateSubstringsInRange:0 options:v18 usingBlock:{2, v141}];
+    v19 = [fullString stringByReplacingOccurrencesOfString:@"S" withString:&stru_1F2BB4348];
     v21 = v19;
     if (selfa)
     {
@@ -1178,18 +1178,18 @@ LABEL_25:
     v110 += v25;
     _Block_object_dispose(&v142, 8);
     _Block_object_dispose(&v146, 8);
-    v11 = newValue;
+    fullString = newValue;
     goto LABEL_26;
   }
 
 LABEL_112:
-  if (v118 >= v115 && v109 && v110 >= 1)
+  if (v118 >= v115 && orientationResultCopy && v110 >= 1)
   {
     v126 = 0u;
     v127 = 0u;
     v124 = 0u;
     v125 = 0u;
-    v89 = v112;
+    v89 = infoCopy;
     v91 = [v89 countByEnumeratingWithState:&v124 objects:v151 count:16];
     if (v91)
     {

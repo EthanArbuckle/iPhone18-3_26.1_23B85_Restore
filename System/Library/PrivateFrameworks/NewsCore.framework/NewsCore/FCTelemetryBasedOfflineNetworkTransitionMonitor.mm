@@ -1,7 +1,7 @@
 @interface FCTelemetryBasedOfflineNetworkTransitionMonitor
 - (FCTelemetryBasedOfflineNetworkTransitionMonitor)init;
-- (FCTelemetryBasedOfflineNetworkTransitionMonitor)initWithAppActivationMonitor:(id)a3 configurationManager:(id)a4 networkBehaviorMonitor:(id)a5 onlineTransitionMonitor:(id)a6;
-- (id)notifyWhenTransitionOccursOnQueue:(id)a3 withBlock:(id)a4;
+- (FCTelemetryBasedOfflineNetworkTransitionMonitor)initWithAppActivationMonitor:(id)monitor configurationManager:(id)manager networkBehaviorMonitor:(id)behaviorMonitor onlineTransitionMonitor:(id)transitionMonitor;
+- (id)notifyWhenTransitionOccursOnQueue:(id)queue withBlock:(id)block;
 @end
 
 @implementation FCTelemetryBasedOfflineNetworkTransitionMonitor
@@ -32,14 +32,14 @@
   objc_exception_throw(v6);
 }
 
-- (FCTelemetryBasedOfflineNetworkTransitionMonitor)initWithAppActivationMonitor:(id)a3 configurationManager:(id)a4 networkBehaviorMonitor:(id)a5 onlineTransitionMonitor:(id)a6
+- (FCTelemetryBasedOfflineNetworkTransitionMonitor)initWithAppActivationMonitor:(id)monitor configurationManager:(id)manager networkBehaviorMonitor:(id)behaviorMonitor onlineTransitionMonitor:(id)transitionMonitor
 {
   v34 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  monitorCopy = monitor;
+  managerCopy = manager;
+  behaviorMonitorCopy = behaviorMonitor;
+  transitionMonitorCopy = transitionMonitor;
+  if (!monitorCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "appActivationMonitor"];
     *buf = 136315906;
@@ -52,13 +52,13 @@
     v33 = v21;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v12)
+    if (managerCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v12)
+  else if (managerCopy)
   {
     goto LABEL_6;
   }
@@ -78,7 +78,7 @@
   }
 
 LABEL_6:
-  if (!v13 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!behaviorMonitorCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "networkBehaviorMonitor"];
     *buf = 136315906;
@@ -91,13 +91,13 @@ LABEL_6:
     v33 = v23;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v14)
+    if (transitionMonitorCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v14)
+  else if (transitionMonitorCopy)
   {
     goto LABEL_11;
   }
@@ -123,10 +123,10 @@ LABEL_11:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_appActivationMonitor, a3);
-    objc_storeStrong(&v16->_configurationManager, a4);
-    objc_storeStrong(&v16->_networkBehaviorMonitor, a5);
-    objc_storeStrong(&v16->_onlineTransitionMonitor, a6);
+    objc_storeStrong(&v15->_appActivationMonitor, monitor);
+    objc_storeStrong(&v16->_configurationManager, manager);
+    objc_storeStrong(&v16->_networkBehaviorMonitor, behaviorMonitor);
+    objc_storeStrong(&v16->_onlineTransitionMonitor, transitionMonitor);
     v17 = [objc_alloc(MEMORY[0x1E69B6920]) initWithOptions:1];
     dateOfLastTransitionLock = v16->_dateOfLastTransitionLock;
     v16->_dateOfLastTransitionLock = v17;
@@ -136,19 +136,19 @@ LABEL_11:
   return v16;
 }
 
-- (id)notifyWhenTransitionOccursOnQueue:(id)a3 withBlock:(id)a4
+- (id)notifyWhenTransitionOccursOnQueue:(id)queue withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FCTelemetryBasedOfflineNetworkTransitionMonitor *)self configurationManager];
-  v9 = [v8 possiblyUnfetchedAppConfiguration];
+  queueCopy = queue;
+  blockCopy = block;
+  configurationManager = [(FCTelemetryBasedOfflineNetworkTransitionMonitor *)self configurationManager];
+  possiblyUnfetchedAppConfiguration = [configurationManager possiblyUnfetchedAppConfiguration];
 
   v10 = MEMORY[0x1E695DFD8];
-  v11 = [v9 offlineModeDetectionIgnoredHosts];
-  v12 = v11;
-  if (v11)
+  offlineModeDetectionIgnoredHosts = [possiblyUnfetchedAppConfiguration offlineModeDetectionIgnoredHosts];
+  v12 = offlineModeDetectionIgnoredHosts;
+  if (offlineModeDetectionIgnoredHosts)
   {
-    v13 = v11;
+    v13 = offlineModeDetectionIgnoredHosts;
   }
 
   else
@@ -159,27 +159,27 @@ LABEL_11:
   v14 = [v10 setWithArray:v13];
 
   v15 = [FCTelemetryBasedOfflineNetworkTransitionOperation alloc];
-  v16 = [(FCTelemetryBasedOfflineNetworkTransitionMonitor *)self appActivationMonitor];
-  v17 = [(FCTelemetryBasedOfflineNetworkTransitionMonitor *)self networkBehaviorMonitor];
-  v18 = [(FCTelemetryBasedOfflineNetworkTransitionOperation *)v15 initWithAppActivationMonitor:v16 ignoredHosts:v14 networkBehaviorMonitor:v17];
+  appActivationMonitor = [(FCTelemetryBasedOfflineNetworkTransitionMonitor *)self appActivationMonitor];
+  networkBehaviorMonitor = [(FCTelemetryBasedOfflineNetworkTransitionMonitor *)self networkBehaviorMonitor];
+  v18 = [(FCTelemetryBasedOfflineNetworkTransitionOperation *)v15 initWithAppActivationMonitor:appActivationMonitor ignoredHosts:v14 networkBehaviorMonitor:networkBehaviorMonitor];
 
-  v19 = [(FCTelemetryBasedOfflineNetworkTransitionMonitor *)self onlineTransitionMonitor];
-  v20 = [v19 dateOfLastTransition];
-  [(FCTelemetryBasedOfflineNetworkTransitionOperation *)v18 setDateOfLastSuccess:v20];
+  onlineTransitionMonitor = [(FCTelemetryBasedOfflineNetworkTransitionMonitor *)self onlineTransitionMonitor];
+  dateOfLastTransition = [onlineTransitionMonitor dateOfLastTransition];
+  [(FCTelemetryBasedOfflineNetworkTransitionOperation *)v18 setDateOfLastSuccess:dateOfLastTransition];
 
-  [v9 offlineModeMinimumSecondsSinceSuccessToOffline];
+  [possiblyUnfetchedAppConfiguration offlineModeMinimumSecondsSinceSuccessToOffline];
   [(FCTelemetryBasedOfflineNetworkTransitionOperation *)v18 setMinimumSecondsSinceSuccessToOffline:?];
-  [v9 offlineModeMaximumDurationToCountAsSuccess];
+  [possiblyUnfetchedAppConfiguration offlineModeMaximumDurationToCountAsSuccess];
   [(FCTelemetryBasedOfflineNetworkTransitionOperation *)v18 setMaximumDurationToCountAsSuccess:?];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __95__FCTelemetryBasedOfflineNetworkTransitionMonitor_notifyWhenTransitionOccursOnQueue_withBlock___block_invoke;
   v24[3] = &unk_1E7C39F98;
-  v26 = self;
-  v27 = v7;
-  v25 = v6;
-  v21 = v7;
-  v22 = v6;
+  selfCopy = self;
+  v27 = blockCopy;
+  v25 = queueCopy;
+  v21 = blockCopy;
+  v22 = queueCopy;
   [(FCTelemetryBasedOfflineNetworkTransitionOperation *)v18 setTransitionBlock:v24];
   [(FCOperation *)v18 start];
 

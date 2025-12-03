@@ -1,28 +1,28 @@
 @interface RTAddressSubPremise
-+ (id)stringForSubPremiseType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAddressSubPremise:(id)a3;
-- (RTAddressSubPremise)initWithCoder:(id)a3;
-- (RTAddressSubPremise)initWithSubPremise:(id)a3 subPremiseType:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)stringForSubPremiseType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAddressSubPremise:(id)premise;
+- (RTAddressSubPremise)initWithCoder:(id)coder;
+- (RTAddressSubPremise)initWithSubPremise:(id)premise subPremiseType:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTAddressSubPremise
 
-- (RTAddressSubPremise)initWithSubPremise:(id)a3 subPremiseType:(int64_t)a4
+- (RTAddressSubPremise)initWithSubPremise:(id)premise subPremiseType:(int64_t)type
 {
-  v6 = a3;
-  if (!v6)
+  premiseCopy = premise;
+  if (!premiseCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v10 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -33,7 +33,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (a4 >= 5)
+  if (type >= 5)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -51,41 +51,41 @@ LABEL_12:
   v7 = [(RTAddressSubPremise *)&v14 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [premiseCopy copy];
     subPremise = v7->_subPremise;
     v7->_subPremise = v8;
 
-    v7->_subPremiseType = a4;
+    v7->_subPremiseType = type;
   }
 
   self = v7;
-  v10 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v10;
+  return selfCopy;
 }
 
-- (RTAddressSubPremise)initWithCoder:(id)a3
+- (RTAddressSubPremise)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subPremise"];
-  v6 = [v4 decodeIntegerForKey:@"subPremiseType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subPremise"];
+  v6 = [coderCopy decodeIntegerForKey:@"subPremiseType"];
 
   v7 = [(RTAddressSubPremise *)self initWithSubPremise:v5 subPremiseType:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   subPremise = self->_subPremise;
-  v5 = a3;
-  [v5 encodeObject:subPremise forKey:@"subPremise"];
-  [v5 encodeInt64:self->_subPremiseType forKey:@"subPremiseType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:subPremise forKey:@"subPremise"];
+  [coderCopy encodeInt64:self->_subPremiseType forKey:@"subPremiseType"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   subPremiseType = self->_subPremiseType;
   subPremise = self->_subPremise;
 
@@ -101,17 +101,17 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)isEqualToAddressSubPremise:(id)a3
+- (BOOL)isEqualToAddressSubPremise:(id)premise
 {
-  v5 = a3;
-  v6 = v5;
+  premiseCopy = premise;
+  v6 = premiseCopy;
   subPremise = self->_subPremise;
   v8 = subPremise;
   if (subPremise)
   {
 LABEL_4:
-    v9 = [v6 subPremise];
-    v10 = [(NSString *)v8 isEqual:v9];
+    subPremise = [v6 subPremise];
+    v10 = [(NSString *)v8 isEqual:subPremise];
 
     if (subPremise)
     {
@@ -121,8 +121,8 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  v3 = [v5 subPremise];
-  if (v3)
+  subPremise2 = [premiseCopy subPremise];
+  if (subPremise2)
   {
     v8 = self->_subPremise;
     goto LABEL_4;
@@ -146,18 +146,18 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTAddressSubPremise *)self isEqualToAddressSubPremise:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTAddressSubPremise *)self isEqualToAddressSubPremise:v5];
   }
 
   return v6;
@@ -172,11 +172,11 @@ LABEL_8:
   return v5 ^ v3;
 }
 
-+ (id)stringForSubPremiseType:(int64_t)a3
++ (id)stringForSubPremiseType:(int64_t)type
 {
-  if (a3 < 5)
+  if (type < 5)
   {
-    return off_1E80B4E90[a3];
+    return off_1E80B4E90[type];
   }
 
   v8 = v3;

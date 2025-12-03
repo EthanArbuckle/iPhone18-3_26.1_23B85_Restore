@@ -1,9 +1,9 @@
 @interface MDMAttestation
 + (id)sharedInstance;
-- (BOOL)_retrieveCerts:(id *)a3 nonce:(id *)a4 issued:(id *)a5;
-- (BOOL)_storeCerts:(id)a3 nonce:(id)a4 issued:(id)a5 outError:(id *)a6;
-- (__SecKey)attestationKey:(BOOL)a3 outError:(id *)a4;
-- (id)_expirationForIssued:(id)a3;
+- (BOOL)_retrieveCerts:(id *)certs nonce:(id *)nonce issued:(id *)issued;
+- (BOOL)_storeCerts:(id)certs nonce:(id)nonce issued:(id)issued outError:(id *)error;
+- (__SecKey)attestationKey:(BOOL)key outError:(id *)error;
+- (id)_expirationForIssued:(id)issued;
 - (id)initPrivate;
 - (void)reset;
 @end
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __32__MDMAttestation_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -53,19 +53,19 @@ uint64_t __32__MDMAttestation_sharedInstance__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (__SecKey)attestationKey:(BOOL)a3 outError:(id *)a4
+- (__SecKey)attestationKey:(BOOL)key outError:(id *)error
 {
-  v5 = a3;
+  keyCopy = key;
   v22[3] = *MEMORY[0x277D85DE8];
   if (MEMORY[0x259C5ED90](self, a2))
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    key = v7->_key;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    key = selfCopy->_key;
     if (key)
     {
 LABEL_20:
-      objc_sync_exit(v7);
+      objc_sync_exit(selfCopy);
 
       goto LABEL_21;
     }
@@ -74,17 +74,17 @@ LABEL_20:
     if (key)
     {
 LABEL_4:
-      v7->_key = key;
+      selfCopy->_key = key;
       goto LABEL_20;
     }
 
-    [(MDMAttestation *)v7 reset];
+    [(MDMAttestation *)selfCopy reset];
     v11 = *MEMORY[0x277CDC170];
     v12 = *MEMORY[0x277CDC028];
     v21[0] = *MEMORY[0x277CDC158];
     v21[1] = v12;
     v13 = MEMORY[0x277CDC068];
-    if (!v5)
+    if (!keyCopy)
     {
       v13 = MEMORY[0x277CDC070];
     }
@@ -105,11 +105,11 @@ LABEL_4:
         goto LABEL_4;
       }
 
-      if (a4)
+      if (error)
       {
         v16 = MEMORY[0x277CCA9B8];
         v17 = DMCErrorArray();
-        *a4 = [v16 DMCErrorWithDomain:*MEMORY[0x277D03480] code:12109 descriptionArray:v17 errorType:{*MEMORY[0x277D032F8], 0}];
+        *error = [v16 DMCErrorWithDomain:*MEMORY[0x277D03480] code:12109 descriptionArray:v17 errorType:{*MEMORY[0x277D032F8], 0}];
       }
 
       CFRelease(key);
@@ -117,9 +117,9 @@ LABEL_4:
 
     else
     {
-      if (a4)
+      if (error)
       {
-        *a4 = error;
+        *error = error;
       }
     }
 
@@ -127,11 +127,11 @@ LABEL_4:
     goto LABEL_20;
   }
 
-  if (a4)
+  if (error)
   {
     v9 = MEMORY[0x277CCA9B8];
     v10 = DMCErrorArray();
-    *a4 = [v9 DMCErrorWithDomain:*MEMORY[0x277D03480] code:12106 descriptionArray:v10 errorType:{*MEMORY[0x277D032F8], 0}];
+    *error = [v9 DMCErrorWithDomain:*MEMORY[0x277D03480] code:12106 descriptionArray:v10 errorType:{*MEMORY[0x277D032F8], 0}];
   }
 
   key = 0;
@@ -203,35 +203,35 @@ LABEL_8:
   objc_sync_exit(obj);
 }
 
-- (BOOL)_storeCerts:(id)a3 nonce:(id)a4 issued:(id)a5 outError:(id *)a6
+- (BOOL)_storeCerts:(id)certs nonce:(id)nonce issued:(id)issued outError:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  certsCopy = certs;
+  nonceCopy = nonce;
+  issuedCopy = issued;
   [MEMORY[0x277D03520] deleteAttestationCertWithGroup:@"com.apple.mdm.attestation" label:@"MDMAttestationCert"];
   [MEMORY[0x277D03520] deleteAttestationCertWithGroup:@"com.apple.mdm.attestation" label:@"MDMAttestationIntermediate"];
   [MEMORY[0x277D03520] deleteAttestationMetadataWithGroup:@"com.apple.mdm.attestation" service:@"MDMAttestationMetadata"];
   v12 = MEMORY[0x277D03520];
-  v13 = [v9 objectAtIndexedSubscript:0];
+  v13 = [certsCopy objectAtIndexedSubscript:0];
   v14 = [v12 storeAttestationCert:v13 withGroup:@"com.apple.mdm.attestation" label:@"MDMAttestationCert"];
 
   if (v14)
   {
     v15 = MEMORY[0x277D03520];
-    v16 = [v9 objectAtIndexedSubscript:1];
+    v16 = [certsCopy objectAtIndexedSubscript:1];
     v17 = [v15 storeAttestationCert:v16 withGroup:@"com.apple.mdm.attestation" label:@"MDMAttestationIntermediate"];
 
-    if (a6 && !v17)
+    if (error && !v17)
     {
       v18 = 12111;
 LABEL_7:
       v19 = MEMORY[0x277CCA9B8];
       v20 = *MEMORY[0x277D03480];
       v21 = DMCErrorArray();
-      *a6 = [v19 DMCErrorWithDomain:v20 code:v18 descriptionArray:v21 errorType:{*MEMORY[0x277D032F8], 0}];
+      *error = [v19 DMCErrorWithDomain:v20 code:v18 descriptionArray:v21 errorType:{*MEMORY[0x277D032F8], 0}];
 
 LABEL_8:
-      a6 = 0;
+      error = 0;
       goto LABEL_9;
     }
 
@@ -241,18 +241,18 @@ LABEL_8:
     }
 
     v24 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
-    [v24 setObject:v11 forKeyedSubscript:@"issued"];
-    [v24 setObject:v10 forKeyedSubscript:@"nonce"];
-    a6 = [MEMORY[0x277CCAC58] dataWithPropertyList:v24 format:200 options:0 error:a6];
+    [v24 setObject:issuedCopy forKeyedSubscript:@"issued"];
+    [v24 setObject:nonceCopy forKeyedSubscript:@"nonce"];
+    error = [MEMORY[0x277CCAC58] dataWithPropertyList:v24 format:200 options:0 error:error];
 
-    if (!a6 || ([MEMORY[0x277D03520] storeAttestationMetadata:a6 withGroup:@"com.apple.mdm.attestation" service:@"MDMAttestationMetadata"] & 1) != 0)
+    if (!error || ([MEMORY[0x277D03520] storeAttestationMetadata:error withGroup:@"com.apple.mdm.attestation" service:@"MDMAttestationMetadata"] & 1) != 0)
     {
       v22 = 1;
       goto LABEL_10;
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     v18 = 12110;
     goto LABEL_7;
@@ -268,7 +268,7 @@ LABEL_10:
   return v22;
 }
 
-- (BOOL)_retrieveCerts:(id *)a3 nonce:(id *)a4 issued:(id *)a5
+- (BOOL)_retrieveCerts:(id *)certs nonce:(id *)nonce issued:(id *)issued
 {
   v17[2] = *MEMORY[0x277D85DE8];
   v8 = [MEMORY[0x277D03520] retrieveAttestationCertWithGroup:@"com.apple.mdm.attestation" label:@"MDMAttestationCert"];
@@ -288,10 +288,10 @@ LABEL_10:
           v14 = v13;
           v17[0] = v9;
           v17[1] = v11;
-          *a3 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
+          *certs = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
 
-          *a4 = [v14 objectForKeyedSubscript:@"nonce"];
-          *a5 = [v14 objectForKeyedSubscript:@"issued"];
+          *nonce = [v14 objectForKeyedSubscript:@"nonce"];
+          *issued = [v14 objectForKeyedSubscript:@"issued"];
 
           LOBYTE(v8) = 1;
           goto LABEL_9;
@@ -315,16 +315,16 @@ LABEL_9:
   return v8;
 }
 
-- (id)_expirationForIssued:(id)a3
+- (id)_expirationForIssued:(id)issued
 {
   v3 = MEMORY[0x277CBEAB8];
-  v4 = a3;
+  issuedCopy = issued;
   v5 = objc_alloc_init(v3);
-  v6 = [MEMORY[0x277D03500] attestationRateLimitOverrideMinutes];
-  v7 = v6;
-  if (v6)
+  attestationRateLimitOverrideMinutes = [MEMORY[0x277D03500] attestationRateLimitOverrideMinutes];
+  v7 = attestationRateLimitOverrideMinutes;
+  if (attestationRateLimitOverrideMinutes)
   {
-    [v5 setMinute:{objc_msgSend(v6, "integerValue")}];
+    [v5 setMinute:{objc_msgSend(attestationRateLimitOverrideMinutes, "integerValue")}];
   }
 
   else
@@ -332,8 +332,8 @@ LABEL_9:
     [v5 setDay:7];
   }
 
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [v8 dateByAddingComponents:v5 toDate:v4 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v9 = [currentCalendar dateByAddingComponents:v5 toDate:issuedCopy options:0];
 
   return v9;
 }

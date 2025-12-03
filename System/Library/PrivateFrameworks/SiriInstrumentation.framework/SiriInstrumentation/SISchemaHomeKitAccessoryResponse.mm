@@ -1,41 +1,41 @@
 @interface SISchemaHomeKitAccessoryResponse
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaHomeKitAccessoryResponse)initWithDictionary:(id)a3;
-- (SISchemaHomeKitAccessoryResponse)initWithJSON:(id)a3;
+- (SISchemaHomeKitAccessoryResponse)initWithDictionary:(id)dictionary;
+- (SISchemaHomeKitAccessoryResponse)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasNumAccessoriesCompleted:(BOOL)a3;
-- (void)setHasNumAccessoriesNotCompleted:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasNumAccessoriesCompleted:(BOOL)completed;
+- (void)setHasNumAccessoriesNotCompleted:(BOOL)completed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaHomeKitAccessoryResponse
 
-- (SISchemaHomeKitAccessoryResponse)initWithDictionary:(id)a3
+- (SISchemaHomeKitAccessoryResponse)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = SISchemaHomeKitAccessoryResponse;
   v5 = [(SISchemaHomeKitAccessoryResponse *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"homeKitAccessoryType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"homeKitAccessoryType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaHomeKitAccessoryResponse setHomeKitAccessoryType:](v5, "setHomeKitAccessoryType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"numAccessoriesCompleted"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"numAccessoriesCompleted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaHomeKitAccessoryResponse setNumAccessoriesCompleted:](v5, "setNumAccessoriesCompleted:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"numAccessoriesNotCompleted"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"numAccessoriesNotCompleted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (SISchemaHomeKitAccessoryResponse)initWithJSON:(id)a3
+- (SISchemaHomeKitAccessoryResponse)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaHomeKitAccessoryResponse *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaHomeKitAccessoryResponse *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaHomeKitAccessoryResponse *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,7 +84,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -99,14 +99,14 @@
       v6 = off_1E78E4C70[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"homeKitAccessoryType"];
+    [dictionary setObject:v6 forKeyedSubscript:@"homeKitAccessoryType"];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaHomeKitAccessoryResponse numAccessoriesCompleted](self, "numAccessoriesCompleted")}];
-    [v3 setObject:v7 forKeyedSubscript:@"numAccessoriesCompleted"];
+    [dictionary setObject:v7 forKeyedSubscript:@"numAccessoriesCompleted"];
 
     has = self->_has;
   }
@@ -114,12 +114,12 @@
   if ((has & 4) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaHomeKitAccessoryResponse numAccessoriesNotCompleted](self, "numAccessoriesNotCompleted")}];
-    [v3 setObject:v8 forKeyedSubscript:@"numAccessoriesNotCompleted"];
+    [dictionary setObject:v8 forKeyedSubscript:@"numAccessoriesNotCompleted"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -162,16 +162,16 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[20];
+  v6 = equalCopy[20];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -180,13 +180,13 @@ LABEL_4:
   if (*&has)
   {
     homeKitAccessoryType = self->_homeKitAccessoryType;
-    if (homeKitAccessoryType != [v4 homeKitAccessoryType])
+    if (homeKitAccessoryType != [equalCopy homeKitAccessoryType])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -198,10 +198,10 @@ LABEL_4:
   if (v8)
   {
     numAccessoriesCompleted = self->_numAccessoriesCompleted;
-    if (numAccessoriesCompleted == [v4 numAccessoriesCompleted])
+    if (numAccessoriesCompleted == [equalCopy numAccessoriesCompleted])
     {
       has = self->_has;
-      v6 = v4[20];
+      v6 = equalCopy[20];
       goto LABEL_10;
     }
 
@@ -220,7 +220,7 @@ LABEL_10:
   if (v10)
   {
     numAccessoriesNotCompleted = self->_numAccessoriesNotCompleted;
-    if (numAccessoriesNotCompleted != [v4 numAccessoriesNotCompleted])
+    if (numAccessoriesNotCompleted != [equalCopy numAccessoriesNotCompleted])
     {
       goto LABEL_14;
     }
@@ -232,15 +232,15 @@ LABEL_15:
   return v12;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -260,20 +260,20 @@ LABEL_3:
   }
 
   PBDataWriterWriteInt32Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)setHasNumAccessoriesNotCompleted:(BOOL)a3
+- (void)setHasNumAccessoriesNotCompleted:(BOOL)completed
 {
-  if (a3)
+  if (completed)
   {
     v3 = 4;
   }
@@ -286,9 +286,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumAccessoriesCompleted:(BOOL)a3
+- (void)setHasNumAccessoriesCompleted:(BOOL)completed
 {
-  if (a3)
+  if (completed)
   {
     v3 = 2;
   }

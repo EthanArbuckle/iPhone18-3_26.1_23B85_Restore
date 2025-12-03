@@ -1,6 +1,6 @@
 @interface TSCH3DVectorN3DDataBuffer
-+ (id)bufferWithCapacity3DDimension:(const void *)a3;
-- (TSCH3DVectorN3DDataBuffer)initWithCapacity3DDimension:(const void *)a3;
++ (id)bufferWithCapacity3DDimension:(const void *)dimension;
+- (TSCH3DVectorN3DDataBuffer)initWithCapacity3DDimension:(const void *)dimension;
 - (id).cxx_construct;
 - (tvec3<int>)size;
 - (unint64_t)componentByteSize;
@@ -9,15 +9,15 @@
 
 @implementation TSCH3DVectorN3DDataBuffer
 
-+ (id)bufferWithCapacity3DDimension:(const void *)a3
++ (id)bufferWithCapacity3DDimension:(const void *)dimension
 {
-  v4 = [a1 alloc];
-  v9 = objc_msgSend_initWithCapacity3DDimension_(v4, v5, v6, v7, v8, a3);
+  v4 = [self alloc];
+  v9 = objc_msgSend_initWithCapacity3DDimension_(v4, v5, v6, v7, v8, dimension);
 
   return v9;
 }
 
-- (TSCH3DVectorN3DDataBuffer)initWithCapacity3DDimension:(const void *)a3
+- (TSCH3DVectorN3DDataBuffer)initWithCapacity3DDimension:(const void *)dimension
 {
   v11.receiver = self;
   v11.super_class = TSCH3DVectorN3DDataBuffer;
@@ -25,13 +25,13 @@
   v5 = v4;
   if (v4)
   {
-    v6 = *a3;
-    v4->_dimension._size.var0.var0 = *a3;
-    v7 = *(a3 + 1);
+    v6 = *dimension;
+    v4->_dimension._size.var0.var0 = *dimension;
+    v7 = *(dimension + 1);
     v4->_dimension._size.var1.var0 = v7;
-    v8 = *(a3 + 2);
+    v8 = *(dimension + 2);
     v4->_dimension._size.var2.var0 = v8;
-    v9 = *(a3 + 2);
+    v9 = *(dimension + 2);
     v4->_dimension._components = v9;
     sub_2761FB370(&v4->_container.__begin_, v9 * v7 * v6 * v8);
   }
@@ -60,8 +60,8 @@
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v10, v11, v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DVectorDataBuffer.mm");
     v25.receiver = self;
     v25.super_class = TSCH3DVectorN3DDataBuffer;
-    v14 = [(TSCH3DDataBuffer *)&v25 componentByteSize];
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v15, v16, v17, v18, v8, v13, 444, 0, "componentByteSize mismatch %lu %lu", v14, 1);
+    componentByteSize = [(TSCH3DDataBuffer *)&v25 componentByteSize];
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v15, v16, v17, v18, v8, v13, 444, 0, "componentByteSize mismatch %lu %lu", componentByteSize, 1);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }

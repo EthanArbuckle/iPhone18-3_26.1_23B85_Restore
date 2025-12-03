@@ -1,35 +1,35 @@
 @interface CPSImageStore
-+ (id)_storeDirectoryURL:(id *)a3;
-+ (id)keyForGEOStyleAttributes:(id)a3 error:(id *)a4;
-+ (id)keyForImageURL:(id)a3 error:(id *)a4;
-+ (id)keyForMapsCategoryID:(id)a3 error:(id *)a4;
-+ (id)keyForPOIMuid:(unint64_t)a3 error:(id *)a4;
-- (id)storeImageData:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (id)storedImageForKey:(id)a3;
-- (void)_purgeOldFilesInDirectory:(id)a3 timeToLive:(double)a4;
-- (void)purgeOldImagesWithCompletionHandler:(id)a3;
++ (id)_storeDirectoryURL:(id *)l;
++ (id)keyForGEOStyleAttributes:(id)attributes error:(id *)error;
++ (id)keyForImageURL:(id)l error:(id *)error;
++ (id)keyForMapsCategoryID:(id)d error:(id *)error;
++ (id)keyForPOIMuid:(unint64_t)muid error:(id *)error;
+- (id)storeImageData:(id)data forKey:(id)key error:(id *)error;
+- (id)storedImageForKey:(id)key;
+- (void)_purgeOldFilesInDirectory:(id)directory timeToLive:(double)live;
+- (void)purgeOldImagesWithCompletionHandler:(id)handler;
 @end
 
 @implementation CPSImageStore
 
-+ (id)keyForMapsCategoryID:(id)a3 error:(id *)a4
++ (id)keyForMapsCategoryID:(id)d error:(id *)error
 {
-  v5 = a3;
+  dCopy = d;
   v13 = 0;
   v6 = [CPSImageStore _storeDirectoryURL:&v13];
   v7 = v13;
   v8 = v7;
   if (v6)
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v5, @"png"];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", dCopy, @"png"];
     v10 = [v6 URLByAppendingPathComponent:v9 isDirectory:0];
   }
 
-  else if (a4)
+  else if (error)
   {
     v11 = v7;
     v10 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else
@@ -40,38 +40,38 @@
   return v10;
 }
 
-+ (id)keyForImageURL:(id)a3 error:(id *)a4
++ (id)keyForImageURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v20 = 0;
   v6 = [CPSImageStore _storeDirectoryURL:&v20];
   v7 = v20;
   v8 = v7;
   if (v6)
   {
-    v9 = [v5 pathExtension];
-    v10 = [(__CFString *)v9 length];
+    pathExtension = [lCopy pathExtension];
+    v10 = [(__CFString *)pathExtension length];
     v11 = @"png";
     if (v10)
     {
-      v11 = v9;
+      v11 = pathExtension;
     }
 
     v12 = v11;
 
     v13 = MEMORY[0x277CCACA8];
-    v14 = [v5 absoluteString];
-    v15 = [v14 cps_sha256String];
-    v16 = [v13 stringWithFormat:@"%@.%@", v15, v12];
+    absoluteString = [lCopy absoluteString];
+    cps_sha256String = [absoluteString cps_sha256String];
+    v16 = [v13 stringWithFormat:@"%@.%@", cps_sha256String, v12];
 
     v17 = [v6 URLByAppendingPathComponent:v16 isDirectory:0];
   }
 
-  else if (a4)
+  else if (error)
   {
     v18 = v7;
     v17 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else
@@ -82,17 +82,17 @@
   return v17;
 }
 
-+ (id)keyForGEOStyleAttributes:(id)a3 error:(id *)a4
++ (id)keyForGEOStyleAttributes:(id)attributes error:(id *)error
 {
-  v5 = a3;
+  attributesCopy = attributes;
   v22 = 0;
   v6 = [CPSImageStore _storeDirectoryURL:&v22];
   v7 = v22;
   v8 = v7;
   if (v6)
   {
-    v9 = [v5 attributes];
-    v10 = [v9 sortedArrayUsingComparator:&__block_literal_global_8];
+    attributes = [attributesCopy attributes];
+    v10 = [attributes sortedArrayUsingComparator:&__block_literal_global_8];
 
     v16 = 0;
     v17 = &v16;
@@ -112,11 +112,11 @@
     _Block_object_dispose(&v16, 8);
   }
 
-  else if (a4)
+  else if (error)
   {
     v13 = v7;
     v12 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else
@@ -171,7 +171,7 @@ uint64_t __48__CPSImageStore_keyForGEOStyleAttributes_error___block_invoke_15(ui
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)keyForPOIMuid:(unint64_t)a3 error:(id *)a4
++ (id)keyForPOIMuid:(unint64_t)muid error:(id *)error
 {
   v15 = 0;
   v6 = [CPSImageStore _storeDirectoryURL:&v15];
@@ -180,17 +180,17 @@ uint64_t __48__CPSImageStore_keyForGEOStyleAttributes_error___block_invoke_15(ui
   if (v6)
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:muid];
     v11 = [v9 stringWithFormat:@"muid_%@.%@", v10, @"png"];
 
     v12 = [v6 URLByAppendingPathComponent:v11 isDirectory:0];
   }
 
-  else if (a4)
+  else if (error)
   {
     v13 = v7;
     v12 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else
@@ -201,10 +201,10 @@ uint64_t __48__CPSImageStore_keyForGEOStyleAttributes_error___block_invoke_15(ui
   return v12;
 }
 
-- (id)storeImageData:(id)a3 forKey:(id)a4 error:(id *)a5
+- (id)storeImageData:(id)data forKey:(id)key error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  keyCopy = key;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -212,17 +212,17 @@ uint64_t __48__CPSImageStore_keyForGEOStyleAttributes_error___block_invoke_15(ui
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       [CPSImageStore storeImageData:v11 forKey:? error:?];
-      if (a5)
+      if (error)
       {
         goto LABEL_8;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
 LABEL_8:
       [MEMORY[0x277CCA9B8] cps_errorWithCode:1];
-      *a5 = v9 = 0;
+      *error = v9 = 0;
       goto LABEL_11;
     }
 
@@ -230,14 +230,14 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  v9 = v8;
+  v9 = keyCopy;
   v13 = 0;
-  [v7 writeToURL:v9 options:1 error:&v13];
+  [dataCopy writeToURL:v9 options:1 error:&v13];
   v10 = v13;
-  if (a5 && v10)
+  if (error && v10)
   {
     v10 = v10;
-    *a5 = v10;
+    *error = v10;
   }
 
 LABEL_11:
@@ -245,16 +245,16 @@ LABEL_11:
   return v9;
 }
 
-- (id)storedImageForKey:(id)a3
+- (id)storedImageForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [v4 path];
-    v7 = [v5 fileExistsAtPath:v6];
+    v4 = keyCopy;
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v4 path];
+    v7 = [defaultManager fileExistsAtPath:path];
 
     if (v7)
     {
@@ -281,17 +281,17 @@ LABEL_11:
   return v8;
 }
 
-- (void)purgeOldImagesWithCompletionHandler:(id)a3
+- (void)purgeOldImagesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(17, 0);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__CPSImageStore_purgeOldImagesWithCompletionHandler___block_invoke;
   v7[3] = &unk_278DCDD70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
@@ -306,15 +306,15 @@ uint64_t __53__CPSImageStore_purgeOldImagesWithCompletionHandler___block_invoke(
   return v4();
 }
 
-+ (id)_storeDirectoryURL:(id *)a3
++ (id)_storeDirectoryURL:(id *)l
 {
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:a3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:l];
 
   v6 = [v5 URLByAppendingPathComponent:@"com.apple.ClipServices/Images" isDirectory:1];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v14 = 0;
-  v8 = [v7 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v14];
+  v8 = [defaultManager2 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v14];
   v9 = v14;
 
   if (v8)
@@ -327,18 +327,18 @@ uint64_t __53__CPSImageStore_purgeOldImagesWithCompletionHandler___block_invoke(
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     [(CPSImageStore *)v11 _storeDirectoryURL:v9];
-    if (a3)
+    if (l)
     {
       goto LABEL_5;
     }
   }
 
-  else if (a3)
+  else if (l)
   {
 LABEL_5:
     v12 = v9;
     v10 = 0;
-    *a3 = v9;
+    *l = v9;
     goto LABEL_8;
   }
 
@@ -348,29 +348,29 @@ LABEL_8:
   return v10;
 }
 
-- (void)_purgeOldFilesInDirectory:(id)a3 timeToLive:(double)a4
+- (void)_purgeOldFilesInDirectory:(id)directory timeToLive:(double)live
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  directoryCopy = directory;
+  if (directoryCopy)
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v7 = *MEMORY[0x277CBE7C0];
     v8 = *MEMORY[0x277CBE7B0];
     v38[0] = *MEMORY[0x277CBE7C0];
     v38[1] = v8;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
-    v10 = [v6 enumeratorAtURL:v5 includingPropertiesForKeys:v9 options:0 errorHandler:0];
+    v10 = [defaultManager enumeratorAtURL:directoryCopy includingPropertiesForKeys:v9 options:0 errorHandler:0];
 
-    v11 = [MEMORY[0x277CBEAA8] date];
-    [v11 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceReferenceDate];
     v13 = v12;
 
-    v14 = [MEMORY[0x277CBEB18] array];
-    v15 = [v10 nextObject];
-    if (v15)
+    array = [MEMORY[0x277CBEB18] array];
+    nextObject = [v10 nextObject];
+    if (nextObject)
     {
-      v16 = v15;
+      v16 = nextObject;
       do
       {
         v36 = 0;
@@ -394,24 +394,24 @@ LABEL_8:
           v23 = v22;
         }
 
-        if (v13 - v23 >= a4)
+        if (v13 - v23 >= live)
         {
-          [v14 addObject:v16];
+          [array addObject:v16];
         }
 
-        v24 = [v10 nextObject];
+        nextObject2 = [v10 nextObject];
 
-        v16 = v24;
+        v16 = nextObject2;
       }
 
-      while (v24);
+      while (nextObject2);
     }
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v25 = v14;
+    v25 = array;
     v26 = [v25 countByEnumeratingWithState:&v31 objects:v37 count:16];
     if (v26)
     {
@@ -427,7 +427,7 @@ LABEL_8:
             objc_enumerationMutation(v25);
           }
 
-          [v6 removeItemAtURL:*(*(&v31 + 1) + 8 * v29++) error:{0, v31}];
+          [defaultManager removeItemAtURL:*(*(&v31 + 1) + 8 * v29++) error:{0, v31}];
         }
 
         while (v27 != v29);

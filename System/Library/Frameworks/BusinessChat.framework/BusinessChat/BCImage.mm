@@ -1,25 +1,25 @@
 @interface BCImage
-- (BCImage)initWithImageData:(id)a3 identifier:(id)a4 description:(id)a5;
+- (BCImage)initWithImageData:(id)data identifier:(id)identifier description:(id)description;
 - (NSDictionary)dictionaryValue;
 - (UIImage)image;
 @end
 
 @implementation BCImage
 
-- (BCImage)initWithImageData:(id)a3 identifier:(id)a4 description:(id)a5
+- (BCImage)initWithImageData:(id)data identifier:(id)identifier description:(id)description
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  identifierCopy = identifier;
+  descriptionCopy = description;
   v15.receiver = self;
   v15.super_class = BCImage;
   v12 = [(BCImage *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_imageData, a3);
-    objc_storeStrong(&v13->_imageDescription, a5);
-    objc_storeStrong(&v13->_identifier, a4);
+    objc_storeStrong(&v12->_imageData, data);
+    objc_storeStrong(&v13->_imageDescription, description);
+    objc_storeStrong(&v13->_identifier, identifier);
   }
 
   return v13;

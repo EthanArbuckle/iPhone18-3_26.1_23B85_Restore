@@ -6,22 +6,22 @@
 - (int64_t)_axContainingSelectedItem;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)setSelectedDescription:(id)a3;
+- (void)setSelectedDescription:(id)description;
 @end
 
 @implementation AXMemoriesSlider
 
-- (void)setSelectedDescription:(id)a3
+- (void)setSelectedDescription:(id)description
 {
-  v6 = a3;
-  if ([v6 isEqualToString:@"●"])
+  descriptionCopy = description;
+  if ([descriptionCopy isEqualToString:@"●"])
   {
     v4 = accessibilityMemoriesLocalizedString(@"slider.value.neutral");
   }
 
   else
   {
-    v4 = v6;
+    v4 = descriptionCopy;
   }
 
   selectedDescription = self->_selectedDescription;
@@ -30,14 +30,14 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(AXMemoriesSlider *)self sliderType];
-  if (!v2)
+  sliderType = [(AXMemoriesSlider *)self sliderType];
+  if (!sliderType)
   {
     v3 = @"slider.description.mood";
     goto LABEL_5;
   }
 
-  if (v2 == 1)
+  if (sliderType == 1)
   {
     v3 = @"slider.description.duration";
 LABEL_5:
@@ -54,8 +54,8 @@ LABEL_7:
 - (id)_axContainingCollectionView
 {
   v2 = MEMORY[0x29EDC7DA8];
-  v3 = [(AXMemoriesSlider *)self accessibilityContainer];
-  v4 = [v2 viewControllerForView:v3];
+  accessibilityContainer = [(AXMemoriesSlider *)self accessibilityContainer];
+  v4 = [v2 viewControllerForView:accessibilityContainer];
 
   objc_opt_class();
   v5 = [v4 safeValueForKey:@"collectionView"];
@@ -67,8 +67,8 @@ LABEL_7:
 - (int64_t)_axContainingSelectedItem
 {
   v2 = MEMORY[0x29EDC7DA8];
-  v3 = [(AXMemoriesSlider *)self accessibilityContainer];
-  v4 = [v2 viewControllerForView:v3];
+  accessibilityContainer = [(AXMemoriesSlider *)self accessibilityContainer];
+  v4 = [v2 viewControllerForView:accessibilityContainer];
 
   v5 = [v4 safeIntegerForKey:@"selectedItem"];
   return v5;
@@ -76,31 +76,31 @@ LABEL_7:
 
 - (void)accessibilityIncrement
 {
-  v5 = [(AXMemoriesSlider *)self _axContainingCollectionView];
-  v3 = [(AXMemoriesSlider *)self _axContainingSelectedItem];
-  if (v3 < [v5 numberOfItemsInSection:0] - 1)
+  _axContainingCollectionView = [(AXMemoriesSlider *)self _axContainingCollectionView];
+  _axContainingSelectedItem = [(AXMemoriesSlider *)self _axContainingSelectedItem];
+  if (_axContainingSelectedItem < [_axContainingCollectionView numberOfItemsInSection:0] - 1)
   {
-    v4 = [MEMORY[0x29EDB9FE0] indexPathForItem:v3 + 1 inSection:0];
-    [v5 scrollToItemAtIndexPath:v4 atScrollPosition:16 animated:1];
+    v4 = [MEMORY[0x29EDB9FE0] indexPathForItem:_axContainingSelectedItem + 1 inSection:0];
+    [_axContainingCollectionView scrollToItemAtIndexPath:v4 atScrollPosition:16 animated:1];
   }
 }
 
 - (void)accessibilityDecrement
 {
-  v5 = [(AXMemoriesSlider *)self _axContainingCollectionView];
-  v3 = [(AXMemoriesSlider *)self _axContainingSelectedItem];
-  if (v3 >= 1)
+  _axContainingCollectionView = [(AXMemoriesSlider *)self _axContainingCollectionView];
+  _axContainingSelectedItem = [(AXMemoriesSlider *)self _axContainingSelectedItem];
+  if (_axContainingSelectedItem >= 1)
   {
-    v4 = [MEMORY[0x29EDB9FE0] indexPathForItem:v3 - 1 inSection:0];
-    [v5 scrollToItemAtIndexPath:v4 atScrollPosition:16 animated:1];
+    v4 = [MEMORY[0x29EDB9FE0] indexPathForItem:_axContainingSelectedItem - 1 inSection:0];
+    [_axContainingCollectionView scrollToItemAtIndexPath:v4 atScrollPosition:16 animated:1];
   }
 }
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(AXMemoriesSlider *)self _axContainingCollectionView];
-  v4 = [(AXMemoriesSlider *)self accessibilityContainer];
-  [v3 frame];
+  _axContainingCollectionView = [(AXMemoriesSlider *)self _axContainingCollectionView];
+  accessibilityContainer = [(AXMemoriesSlider *)self accessibilityContainer];
+  [_axContainingCollectionView frame];
   UIAccessibilityFrameForBounds();
   v6 = v5;
   v8 = v7;

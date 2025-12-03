@@ -7,7 +7,7 @@
 - (id)tsu_sha256HexHashString
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = [OISFUCryptoUtils sha256HashFromString:a1];
+  v1 = [OISFUCryptoUtils sha256HashFromString:self];
   v2 = v9;
   [v1 getBytes:v9 length:32];
   v3 = 65;

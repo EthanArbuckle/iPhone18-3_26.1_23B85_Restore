@@ -7,12 +7,12 @@
 
 - (uint64_t)msv_item
 {
-  if ([a1 length] < 2)
+  if ([self length] < 2)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return [a1 indexAtPosition:1];
+  return [self indexAtPosition:1];
 }
 
 + (id)msv_indexPathForItem:()MSVAdditions inSection:

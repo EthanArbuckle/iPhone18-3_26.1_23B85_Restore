@@ -1,18 +1,18 @@
 @interface SBPPTRecapPerformanceTestingOperation
-+ (id)scrollViewRecapPerformanceTestOperationWithBlock:(id)a3;
++ (id)scrollViewRecapPerformanceTestOperationWithBlock:(id)block;
 @end
 
 @implementation SBPPTRecapPerformanceTestingOperation
 
-+ (id)scrollViewRecapPerformanceTestOperationWithBlock:(id)a3
++ (id)scrollViewRecapPerformanceTestOperationWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __90__SBPPTRecapPerformanceTestingOperation_scrollViewRecapPerformanceTestOperationWithBlock___block_invoke;
   v7[3] = &unk_2783B2FF8;
-  v8 = v3;
-  v4 = v3;
+  v8 = blockCopy;
+  v4 = blockCopy;
   v5 = [(SBPPTBlockOperation *)SBPPTRecapPerformanceTestingOperation operationWithBlock:v7];
   [v5 setTimeoutInterval:60.0];
 

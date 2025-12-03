@@ -2,9 +2,9 @@
 - (BOOL)validateOperation;
 - (FCCKContentBatchedRefreshRecordsOperation)init;
 - (void)_continueRefreshing;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)prepareOperation;
-- (void)setDatabase:(uint64_t)a1;
+- (void)setDatabase:(uint64_t)database;
 @end
 
 @implementation FCCKContentBatchedRefreshRecordsOperation
@@ -46,7 +46,7 @@
 
 - (BOOL)validateOperation
 {
-  v2 = self;
+  selfCopy = self;
   v18 = *MEMORY[0x1E69E9840];
   if (self && self->_database)
   {
@@ -66,7 +66,7 @@
     v17 = v8;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v10, 0x26u);
 
-    if (v2)
+    if (selfCopy)
     {
       goto LABEL_5;
     }
@@ -76,13 +76,13 @@ LABEL_14:
     goto LABEL_6;
   }
 
-  if (!v2)
+  if (!selfCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_5:
-  recordIDs = v2->_recordIDs;
+  recordIDs = selfCopy->_recordIDs;
 LABEL_6:
   if (![(NSArray *)recordIDs count]&& os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -97,32 +97,32 @@ LABEL_6:
     v17 = v9;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v10, 0x26u);
 
-    if (!v2)
+    if (!selfCopy)
     {
       goto LABEL_12;
     }
   }
 
-  else if (!v2)
+  else if (!selfCopy)
   {
     goto LABEL_12;
   }
 
-  v4 = v2->_database;
+  v4 = selfCopy->_database;
   if (v4)
   {
     v5 = v4;
-    LOBYTE(v2) = [(NSArray *)v2->_recordIDs count]!= 0;
+    LOBYTE(selfCopy) = [(NSArray *)selfCopy->_recordIDs count]!= 0;
   }
 
   else
   {
-    LOBYTE(v2) = 0;
+    LOBYTE(selfCopy) = 0;
   }
 
 LABEL_12:
   v6 = *MEMORY[0x1E69E9840];
-  return v2;
+  return selfCopy;
 }
 
 - (void)prepareOperation
@@ -173,7 +173,7 @@ uint64_t __61__FCCKContentBatchedRefreshRecordsOperation_prepareOperation__block
 
 - (void)_continueRefreshing
 {
-  if (a1)
+  if (self)
   {
     v12 = 0;
     v13 = &v12;
@@ -181,7 +181,7 @@ uint64_t __61__FCCKContentBatchedRefreshRecordsOperation_prepareOperation__block
     v15 = __Block_byref_object_copy__65;
     v16 = __Block_byref_object_dispose__65;
     v17 = 0;
-    v2 = a1[53];
+    v2 = self[53];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __64__FCCKContentBatchedRefreshRecordsOperation__continueRefreshing__block_invoke;
@@ -197,16 +197,16 @@ uint64_t __61__FCCKContentBatchedRefreshRecordsOperation_prepareOperation__block
       v8[1] = 3221225472;
       v8[2] = __64__FCCKContentBatchedRefreshRecordsOperation__continueRefreshing__block_invoke_3;
       v8[3] = &unk_1E7C3C5F0;
-      v8[4] = a1;
+      v8[4] = self;
       v5 = v3;
       v9 = v5;
       [v4 enumerateObjectsUsingBlock:v8];
-      v6 = FCDispatchQueueForQualityOfService([a1 qualityOfService]);
+      v6 = FCDispatchQueueForQualityOfService([self qualityOfService]);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __64__FCCKContentBatchedRefreshRecordsOperation__continueRefreshing__block_invoke_6;
       block[3] = &unk_1E7C36EA0;
-      block[4] = a1;
+      block[4] = self;
       dispatch_group_notify(v5, v6, block);
     }
 
@@ -216,7 +216,7 @@ uint64_t __61__FCCKContentBatchedRefreshRecordsOperation_prepareOperation__block
       v10[1] = 3221225472;
       v10[2] = __64__FCCKContentBatchedRefreshRecordsOperation__continueRefreshing__block_invoke_2;
       v10[3] = &unk_1E7C36EA0;
-      v10[4] = a1;
+      v10[4] = self;
       __64__FCCKContentBatchedRefreshRecordsOperation__continueRefreshing__block_invoke_2(v10);
     }
 
@@ -353,25 +353,25 @@ LABEL_13:
   [(FCOperation *)v10 start];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     refreshRecordsCompletionBlock = self->_refreshRecordsCompletionBlock;
     if (refreshRecordsCompletionBlock)
     {
-      v13 = v4;
+      v13 = errorCopy;
       v6 = refreshRecordsCompletionBlock;
       v7 = self->_refreshedRecordIDs;
-      v8 = [(FCThreadSafeMutableSet *)v7 allObjects];
+      allObjects = [(FCThreadSafeMutableSet *)v7 allObjects];
       v9 = self->_updatedRecordsByRecordID;
-      v10 = [(FCThreadSafeMutableDictionary *)v9 readOnlyDictionary];
+      readOnlyDictionary = [(FCThreadSafeMutableDictionary *)v9 readOnlyDictionary];
       v11 = self->_deletedRecordIDs;
-      v12 = [(FCThreadSafeMutableSet *)v11 allObjects];
-      v6[2](v6, v8, v10, v12, v13);
+      allObjects2 = [(FCThreadSafeMutableSet *)v11 allObjects];
+      v6[2](v6, allObjects, readOnlyDictionary, allObjects2, v13);
 
-      v4 = v13;
+      errorCopy = v13;
     }
   }
 }
@@ -574,11 +574,11 @@ LABEL_41:
   dispatch_group_leave(*(a1 + 80));
 }
 
-- (void)setDatabase:(uint64_t)a1
+- (void)setDatabase:(uint64_t)database
 {
-  if (a1)
+  if (database)
   {
-    objc_storeStrong((a1 + 376), a2);
+    objc_storeStrong((database + 376), a2);
   }
 }
 

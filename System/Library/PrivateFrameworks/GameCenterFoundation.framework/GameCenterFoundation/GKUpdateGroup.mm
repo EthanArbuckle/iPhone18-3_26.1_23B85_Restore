@@ -1,16 +1,16 @@
 @interface GKUpdateGroup
-+ (GKUpdateGroup)updateGroupWithName:(id)a3;
-+ (GKUpdateGroup)updateGroupWithName:(id)a3 taregetQueue:(id)a4;
++ (GKUpdateGroup)updateGroupWithName:(id)name;
++ (GKUpdateGroup)updateGroupWithName:(id)name taregetQueue:(id)queue;
 + (id)updateGroup;
-+ (id)updateGroupForTargetQueue:(id)a3;
-- (GKUpdateGroup)initWithName:(id)a3 targetQueue:(id)a4;
++ (id)updateGroupForTargetQueue:(id)queue;
+- (GKUpdateGroup)initWithName:(id)name targetQueue:(id)queue;
 - (int64_t)updateCount;
 - (void)applyUpdates;
 - (void)cancelUpdates;
 - (void)dealloc;
-- (void)join:(id)a3;
-- (void)joinApplyUpdatesAndDo:(id)a3;
-- (void)performOnQueue:(id)a3 block:(id)a4;
+- (void)join:(id)join;
+- (void)joinApplyUpdatesAndDo:(id)do;
+- (void)performOnQueue:(id)queue block:(id)block;
 @end
 
 @implementation GKUpdateGroup
@@ -22,28 +22,28 @@
   return v2;
 }
 
-+ (GKUpdateGroup)updateGroupWithName:(id)a3
++ (GKUpdateGroup)updateGroupWithName:(id)name
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithName:a3 targetQueue:MEMORY[0x277D85CD0]];
+  v3 = [objc_alloc(objc_opt_class()) initWithName:name targetQueue:MEMORY[0x277D85CD0]];
 
   return v3;
 }
 
-+ (id)updateGroupForTargetQueue:(id)a3
++ (id)updateGroupForTargetQueue:(id)queue
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithName:0 targetQueue:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithName:0 targetQueue:queue];
 
   return v3;
 }
 
-+ (GKUpdateGroup)updateGroupWithName:(id)a3 taregetQueue:(id)a4
++ (GKUpdateGroup)updateGroupWithName:(id)name taregetQueue:(id)queue
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithName:a3 targetQueue:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithName:name targetQueue:queue];
 
   return v4;
 }
 
-- (GKUpdateGroup)initWithName:(id)a3 targetQueue:(id)a4
+- (GKUpdateGroup)initWithName:(id)name targetQueue:(id)queue
 {
   v8.receiver = self;
   v8.super_class = GKUpdateGroup;
@@ -51,16 +51,16 @@
   if (v6)
   {
     v6->_lock = objc_alloc_init(MEMORY[0x277CCAAF8]);
-    v6->_targetQueue = a4;
-    dispatch_retain(a4);
+    v6->_targetQueue = queue;
+    dispatch_retain(queue);
     v6->_dispatchGroup = dispatch_group_create();
     v6->_notifiers = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if (!a3)
+    if (!name)
     {
-      a3 = [(GKUpdateGroup *)v6 description];
+      name = [(GKUpdateGroup *)v6 description];
     }
 
-    [(GKUpdateGroup *)v6 setName:a3];
+    [(GKUpdateGroup *)v6 setName:name];
   }
 
   return v6;
@@ -76,20 +76,20 @@
   [(GKUpdateGroup *)&v3 dealloc];
 }
 
-- (void)performOnQueue:(id)a3 block:(id)a4
+- (void)performOnQueue:(id)queue block:(id)block
 {
   v7 = objc_alloc_init(GKUpdateGroupNotifier);
   [(NSMutableArray *)[(GKUpdateGroup *)self notifiers] addObject:v7];
 
   [(GKUpdateGroupNotifier *)v7 setGroup:self];
-  v8 = _Block_copy(a4);
+  v8 = _Block_copy(block);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __38__GKUpdateGroup_performOnQueue_block___block_invoke;
   v9[3] = &unk_2785DE160;
   v9[4] = v7;
   v9[5] = v8;
-  dispatch_async(a3, v9);
+  dispatch_async(queue, v9);
 }
 
 void __38__GKUpdateGroup_performOnQueue_block___block_invoke(uint64_t a1)
@@ -101,9 +101,9 @@ void __38__GKUpdateGroup_performOnQueue_block___block_invoke(uint64_t a1)
   _Block_release(v3);
 }
 
-- (void)join:(id)a3
+- (void)join:(id)join
 {
-  v5 = self;
+  selfCopy = self;
   dispatchGroup = self->_dispatchGroup;
   targetQueue = self->_targetQueue;
   v8[0] = MEMORY[0x277D85DD0];
@@ -111,7 +111,7 @@ void __38__GKUpdateGroup_performOnQueue_block___block_invoke(uint64_t a1)
   v8[2] = __22__GKUpdateGroup_join___block_invoke;
   v8[3] = &unk_2785DE160;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = join;
   dispatch_group_notify(dispatchGroup, targetQueue, v8);
 }
 
@@ -126,14 +126,14 @@ void __22__GKUpdateGroup_join___block_invoke(uint64_t a1)
   v3 = *(a1 + 32);
 }
 
-- (void)joinApplyUpdatesAndDo:(id)a3
+- (void)joinApplyUpdatesAndDo:(id)do
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __39__GKUpdateGroup_joinApplyUpdatesAndDo___block_invoke;
   v3[3] = &unk_2785DE188;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = do;
   [(GKUpdateGroup *)self join:v3];
 }
 
@@ -178,8 +178,8 @@ uint64_t __39__GKUpdateGroup_joinApplyUpdatesAndDo___block_invoke(uint64_t a1)
           v18 = 0u;
           v15 = 0u;
           v16 = 0u;
-          v9 = [v8 updateQueue];
-          v10 = [v9 countByEnumeratingWithState:&v15 objects:v23 count:16];
+          updateQueue = [v8 updateQueue];
+          v10 = [updateQueue countByEnumeratingWithState:&v15 objects:v23 count:16];
           if (v10)
           {
             v11 = v10;
@@ -190,13 +190,13 @@ uint64_t __39__GKUpdateGroup_joinApplyUpdatesAndDo___block_invoke(uint64_t a1)
               {
                 if (*v16 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(updateQueue);
                 }
 
                 (*(*(*(&v15 + 1) + 8 * j) + 16))();
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v15 objects:v23 count:16];
+              v11 = [updateQueue countByEnumeratingWithState:&v15 objects:v23 count:16];
             }
 
             while (v11);

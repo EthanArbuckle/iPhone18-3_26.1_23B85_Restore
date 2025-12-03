@@ -1,36 +1,36 @@
 @interface ADUnavailableTimerStore
-- (void)dismissTimersWithURLs:(id)a3 completionHandler:(id)a4;
-- (void)getTimerWithCompletionHandler:(id)a3;
-- (void)setTimer:(id)a3 completionHandler:(id)a4;
+- (void)dismissTimersWithURLs:(id)ls completionHandler:(id)handler;
+- (void)getTimerWithCompletionHandler:(id)handler;
+- (void)setTimer:(id)timer completionHandler:(id)handler;
 @end
 
 @implementation ADUnavailableTimerStore
 
-- (void)dismissTimersWithURLs:(id)a3 completionHandler:(id)a4
+- (void)dismissTimersWithURLs:(id)ls completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    v6 = a4;
-    v7 = [(ADUnavailableTimerStore *)self _createUnavailableError];
-    (*(a4 + 2))(v6, v7);
+    handlerCopy = handler;
+    _createUnavailableError = [(ADUnavailableTimerStore *)self _createUnavailableError];
+    (*(handler + 2))(handlerCopy, _createUnavailableError);
   }
 }
 
-- (void)setTimer:(id)a3 completionHandler:(id)a4
+- (void)setTimer:(id)timer completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    v6 = a4;
-    v7 = [(ADUnavailableTimerStore *)self _createUnavailableError];
-    (*(a4 + 2))(v6, v7);
+    handlerCopy = handler;
+    _createUnavailableError = [(ADUnavailableTimerStore *)self _createUnavailableError];
+    (*(handler + 2))(handlerCopy, _createUnavailableError);
   }
 }
 
-- (void)getTimerWithCompletionHandler:(id)a3
+- (void)getTimerWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(ADUnavailableTimerStore *)self _createUnavailableError];
-  (*(a3 + 2))(v5, 0, v6);
+  handlerCopy = handler;
+  _createUnavailableError = [(ADUnavailableTimerStore *)self _createUnavailableError];
+  (*(handler + 2))(handlerCopy, 0, _createUnavailableError);
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface CMLPIRClient
-- (CMLPIRClient)initWithClientConfig:(id)a3;
-- (CMLPIRClient)initWithClientConfig:(id)a3 dispatchQueue:(id)a4;
-- (CMLPIRClient)initWithClientConfig:(id)a3 dispatchQueue:(id)a4 connection:(id)a5;
+- (CMLPIRClient)initWithClientConfig:(id)config;
+- (CMLPIRClient)initWithClientConfig:(id)config dispatchQueue:(id)queue;
+- (CMLPIRClient)initWithClientConfig:(id)config dispatchQueue:(id)queue connection:(id)connection;
 - (NSString)useCase;
-- (id)generateEvaluationKey:(id *)a3;
-- (id)setPIRConfig:(id)a3 error:(id *)a4;
+- (id)generateEvaluationKey:(id *)key;
+- (id)setPIRConfig:(id)config error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -12,25 +12,25 @@
 
 - (NSString)useCase
 {
-  v2 = [(CMLPIRClient *)self clientConfig];
-  v3 = [v2 useCase];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  useCase = [clientConfig useCase];
 
-  return v3;
+  return useCase;
 }
 
-- (CMLPIRClient)initWithClientConfig:(id)a3
+- (CMLPIRClient)initWithClientConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5 = dispatch_queue_create("com.apple.CipherML.CMLPIRClient", 0);
-  v6 = [(CMLPIRClient *)self initWithClientConfig:v4 dispatchQueue:v5];
+  v6 = [(CMLPIRClient *)self initWithClientConfig:configCopy dispatchQueue:v5];
 
   return v6;
 }
 
-- (CMLPIRClient)initWithClientConfig:(id)a3 dispatchQueue:(id)a4
+- (CMLPIRClient)initWithClientConfig:(id)config dispatchQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  queueCopy = queue;
   if ([(CMLPIRClient *)self isMemberOfClass:objc_opt_class()])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"CMLPIRClient should not be instantiated, only its subclasses"}];
@@ -39,8 +39,8 @@
   v8 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.ciphermld" options:0];
   if (v8)
   {
-    self = [(CMLPIRClient *)self initWithClientConfig:v6 dispatchQueue:v7 connection:v8];
-    v9 = self;
+    self = [(CMLPIRClient *)self initWithClientConfig:configCopy dispatchQueue:queueCopy connection:v8];
+    selfCopy = self;
   }
 
   else
@@ -51,29 +51,29 @@
       [CMLSimilarityClient initWithClientConfig:v10 dispatchQueue:?];
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (CMLPIRClient)initWithClientConfig:(id)a3 dispatchQueue:(id)a4 connection:(id)a5
+- (CMLPIRClient)initWithClientConfig:(id)config dispatchQueue:(id)queue connection:(id)connection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configCopy = config;
+  queueCopy = queue;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = CMLPIRClient;
   v12 = [(CMLPIRClient *)&v15 init];
   if (v12)
   {
     v13 = +[CMLXPC interfaceDescription];
-    [v11 setRemoteObjectInterface:v13];
+    [connectionCopy setRemoteObjectInterface:v13];
 
-    [v11 activate];
-    objc_storeStrong(&v12->_clientConfig, a3);
-    objc_storeStrong(&v12->_dispatchQueue, a4);
-    objc_storeStrong(&v12->_connection, a5);
+    [connectionCopy activate];
+    objc_storeStrong(&v12->_clientConfig, config);
+    objc_storeStrong(&v12->_dispatchQueue, queue);
+    objc_storeStrong(&v12->_connection, connection);
   }
 
   return v12;
@@ -87,15 +87,15 @@
   [(CMLPIRClient *)&v3 dealloc];
 }
 
-- (id)setPIRConfig:(id)a3 error:(id *)a4
+- (id)setPIRConfig:(id)config error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  configCopy = config;
   v31 = 0;
-  v9 = [(CMLPIRClient *)self connection];
-  v10 = [CMLXPC syncProxyToConnection:v9 error:&v31];
+  connection = [(CMLPIRClient *)self connection];
+  v10 = [CMLXPC syncProxyToConnection:connection error:&v31];
 
-  objc_storeStrong(&self->_pirConfig, a3);
+  objc_storeStrong(&self->_pirConfig, config);
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -117,7 +117,7 @@
     _os_log_impl(&dword_224E26000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v13 = [(CMLPIRClient *)self clientConfig];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __35__CMLPIRClient_setPIRConfig_error___block_invoke;
@@ -125,9 +125,9 @@
   v18[4] = &v19;
   v18[5] = &v25;
   v18[6] = a2;
-  [v10 setPIRConfig:v8 clientConfig:v13 reply:v18];
+  [v10 setPIRConfig:configCopy clientConfig:clientConfig reply:v18];
 
-  if (a4)
+  if (error)
   {
     v14 = v31;
     if (!v31)
@@ -135,7 +135,7 @@
       v14 = v26[5];
     }
 
-    *a4 = v14;
+    *error = v14;
   }
 
   v15 = v20[5];
@@ -177,12 +177,12 @@ void __35__CMLPIRClient_setPIRConfig_error___block_invoke(uint64_t a1, void *a2,
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)generateEvaluationKey:(id *)a3
+- (id)generateEvaluationKey:(id *)key
 {
   v32 = *MEMORY[0x277D85DE8];
   v29 = 0;
-  v6 = [(CMLPIRClient *)self connection];
-  v7 = [CMLXPC syncProxyToConnection:v6 error:&v29];
+  connection = [(CMLPIRClient *)self connection];
+  v7 = [CMLXPC syncProxyToConnection:connection error:&v29];
 
   v23 = 0;
   v24 = &v23;
@@ -205,8 +205,8 @@ void __35__CMLPIRClient_setPIRConfig_error___block_invoke(uint64_t a1, void *a2,
     _os_log_impl(&dword_224E26000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v10 = [(CMLPIRClient *)self pirConfig];
-  v11 = [(CMLPIRClient *)self clientConfig];
+  pirConfig = [(CMLPIRClient *)self pirConfig];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __38__CMLPIRClient_generateEvaluationKey___block_invoke;
@@ -214,9 +214,9 @@ void __35__CMLPIRClient_setPIRConfig_error___block_invoke(uint64_t a1, void *a2,
   v16[4] = &v17;
   v16[5] = &v23;
   v16[6] = a2;
-  [v7 generateEvaluationKey:v10 clientConfig:v11 reply:v16];
+  [v7 generateEvaluationKey:pirConfig clientConfig:clientConfig reply:v16];
 
-  if (a3)
+  if (key)
   {
     v12 = v29;
     if (!v29)
@@ -224,7 +224,7 @@ void __35__CMLPIRClient_setPIRConfig_error___block_invoke(uint64_t a1, void *a2,
       v12 = v24[5];
     }
 
-    *a3 = v12;
+    *key = v12;
   }
 
   v13 = v18[5];

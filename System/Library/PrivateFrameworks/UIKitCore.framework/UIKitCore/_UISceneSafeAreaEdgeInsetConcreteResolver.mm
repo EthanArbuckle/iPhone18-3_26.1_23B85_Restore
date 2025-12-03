@@ -1,9 +1,9 @@
 @interface _UISceneSafeAreaEdgeInsetConcreteResolver
 - (NSString)description;
-- (UIEdgeInsets)safeAreaEdgeInsetsForOrientation:(int64_t)a3;
+- (UIEdgeInsets)safeAreaEdgeInsetsForOrientation:(int64_t)orientation;
 - (_UISceneSafeAreaEdgeInsetConcreteResolver)init;
-- (id)initWithSafeAreaEdgeInsetsForPortrait:(double)a3 landscapeLeft:(double)a4 portaitUpsideDown:(double)a5 landscapeRight:(double)a6;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (id)initWithSafeAreaEdgeInsetsForPortrait:(double)portrait landscapeLeft:(double)left portaitUpsideDown:(double)down landscapeRight:(double)right;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation _UISceneSafeAreaEdgeInsetConcreteResolver
@@ -30,13 +30,13 @@
   return [(_UISceneSafeAreaEdgeInsetResolver *)&v9 init];
 }
 
-- (id)initWithSafeAreaEdgeInsetsForPortrait:(double)a3 landscapeLeft:(double)a4 portaitUpsideDown:(double)a5 landscapeRight:(double)a6
+- (id)initWithSafeAreaEdgeInsetsForPortrait:(double)portrait landscapeLeft:(double)left portaitUpsideDown:(double)down landscapeRight:(double)right
 {
   *&v28 = a2;
-  *(&v28 + 1) = a3;
-  *&v29 = a4;
-  *(&v29 + 1) = a5;
-  *&v30 = a6;
+  *(&v28 + 1) = portrait;
+  *&v29 = left;
+  *(&v29 + 1) = down;
+  *&v30 = right;
   *(&v30 + 1) = a7;
   *&v31 = a8;
   *(&v31 + 1) = a9;
@@ -45,7 +45,7 @@
   v34 = a19;
   v35 = a20;
   sub_189114ECC(&v28);
-  v21 = &a1[OBJC_IVAR____UISceneSafeAreaEdgeInsetConcreteResolver_safeAreaInsets];
+  v21 = &self[OBJC_IVAR____UISceneSafeAreaEdgeInsetConcreteResolver_safeAreaInsets];
   v22 = v35;
   *(v21 + 6) = v34;
   *(v21 + 7) = v22;
@@ -59,14 +59,14 @@
   v25 = v29;
   *v21 = v28;
   *(v21 + 1) = v25;
-  v27.receiver = a1;
+  v27.receiver = self;
   v27.super_class = _UISceneSafeAreaEdgeInsetConcreteResolver;
   return objc_msgSendSuper2(&v27, sel_init);
 }
 
-- (UIEdgeInsets)safeAreaEdgeInsetsForOrientation:(int64_t)a3
+- (UIEdgeInsets)safeAreaEdgeInsetsForOrientation:(int64_t)orientation
 {
-  *&v3 = _UISceneSafeAreaEdgeInsetConcreteResolver.safeAreaEdgeInsets(for:)(a3).u64[0];
+  *&v3 = _UISceneSafeAreaEdgeInsetConcreteResolver.safeAreaEdgeInsets(for:)(orientation).u64[0];
   result.right = v6;
   result.bottom = v5;
   result.left = v4;
@@ -76,7 +76,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   _UISceneSafeAreaEdgeInsetConcreteResolver.description.getter();
 
   v3 = sub_18A4A7258();
@@ -84,11 +84,11 @@
   return v3;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  _UISceneSafeAreaEdgeInsetConcreteResolver.encode(withBSXPCCoder:)(a3);
+  selfCopy = self;
+  _UISceneSafeAreaEdgeInsetConcreteResolver.encode(withBSXPCCoder:)(coder);
   swift_unknownObjectRelease();
 }
 

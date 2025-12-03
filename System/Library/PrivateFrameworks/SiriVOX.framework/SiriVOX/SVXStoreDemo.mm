@@ -1,58 +1,58 @@
 @interface SVXStoreDemo
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SVXStoreDemo)initWithCoder:(id)a3;
-- (SVXStoreDemo)initWithTranscriptID:(int64_t)a3 languageCode:(id)a4 gender:(int64_t)a5 outputVolume:(float)a6;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SVXStoreDemo)initWithCoder:(id)coder;
+- (SVXStoreDemo)initWithTranscriptID:(int64_t)d languageCode:(id)code gender:(int64_t)gender outputVolume:(float)volume;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVXStoreDemo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   transcriptID = self->_transcriptID;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithInteger:transcriptID];
-  [v6 encodeObject:v7 forKey:@"SVXStoreDemo::transcriptID"];
+  [coderCopy encodeObject:v7 forKey:@"SVXStoreDemo::transcriptID"];
 
-  [v6 encodeObject:self->_languageCode forKey:@"SVXStoreDemo::languageCode"];
+  [coderCopy encodeObject:self->_languageCode forKey:@"SVXStoreDemo::languageCode"];
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:self->_gender];
-  [v6 encodeObject:v8 forKey:@"SVXStoreDemo::gender"];
+  [coderCopy encodeObject:v8 forKey:@"SVXStoreDemo::gender"];
 
   *&v9 = self->_outputVolume;
   v10 = [MEMORY[0x277CCABB0] numberWithFloat:v9];
-  [v6 encodeObject:v10 forKey:@"SVXStoreDemo::outputVolume"];
+  [coderCopy encodeObject:v10 forKey:@"SVXStoreDemo::outputVolume"];
 }
 
-- (SVXStoreDemo)initWithCoder:(id)a3
+- (SVXStoreDemo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXStoreDemo::transcriptID"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXStoreDemo::transcriptID"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXStoreDemo::languageCode"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXStoreDemo::gender"];
-  v9 = [v8 integerValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXStoreDemo::languageCode"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXStoreDemo::gender"];
+  integerValue2 = [v8 integerValue];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXStoreDemo::outputVolume"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXStoreDemo::outputVolume"];
 
   [v10 floatValue];
   v12 = v11;
 
   LODWORD(v13) = v12;
-  v14 = [(SVXStoreDemo *)self initWithTranscriptID:v6 languageCode:v7 gender:v9 outputVolume:v13];
+  v14 = [(SVXStoreDemo *)self initWithTranscriptID:integerValue languageCode:v7 gender:integerValue2 outputVolume:v13];
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -62,13 +62,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       transcriptID = self->_transcriptID;
       if (transcriptID == [(SVXStoreDemo *)v5 transcriptID]&& (gender = self->_gender, gender == [(SVXStoreDemo *)v5 gender]) && (outputVolume = self->_outputVolume, [(SVXStoreDemo *)v5 outputVolume], outputVolume == v9))
       {
-        v12 = [(SVXStoreDemo *)v5 languageCode];
+        languageCode = [(SVXStoreDemo *)v5 languageCode];
         languageCode = self->_languageCode;
-        v10 = languageCode == v12 || [(NSString *)languageCode isEqual:v12];
+        v10 = languageCode == languageCode || [(NSString *)languageCode isEqual:languageCode];
       }
 
       else
@@ -100,7 +100,7 @@
   return v5 ^ v10;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v15.receiver = self;
@@ -136,57 +136,57 @@
   return v13;
 }
 
-- (SVXStoreDemo)initWithTranscriptID:(int64_t)a3 languageCode:(id)a4 gender:(int64_t)a5 outputVolume:(float)a6
+- (SVXStoreDemo)initWithTranscriptID:(int64_t)d languageCode:(id)code gender:(int64_t)gender outputVolume:(float)volume
 {
-  v10 = a4;
+  codeCopy = code;
   v16.receiver = self;
   v16.super_class = SVXStoreDemo;
   v11 = [(SVXStoreDemo *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_transcriptID = a3;
-    v13 = [v10 copy];
+    v11->_transcriptID = d;
+    v13 = [codeCopy copy];
     languageCode = v12->_languageCode;
     v12->_languageCode = v13;
 
-    v12->_gender = a5;
-    v12->_outputVolume = a6;
+    v12->_gender = gender;
+    v12->_outputVolume = volume;
   }
 
   return v12;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SVXStoreDemoMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SVXStoreDemoMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SVXStoreDemoMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SVXStoreDemo *)self copy];
+    generate = [(SVXStoreDemo *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SVXStoreDemoMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SVXStoreDemoMutation *)v4 generate];
+  generate = [(_SVXStoreDemoMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

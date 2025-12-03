@@ -1,14 +1,14 @@
 @interface _BKHIDDeliveryManagerDeprecatedIncomingConnectionHandler
-- (void)handleIncomingDeliveryManagerConnection:(id)a3;
-- (void)initWithDeliveryManagerProvider:(void *)a1;
+- (void)handleIncomingDeliveryManagerConnection:(id)connection;
+- (void)initWithDeliveryManagerProvider:(void *)provider;
 @end
 
 @implementation _BKHIDDeliveryManagerDeprecatedIncomingConnectionHandler
 
-- (void)handleIncomingDeliveryManagerConnection:(id)a3
+- (void)handleIncomingDeliveryManagerConnection:(id)connection
 {
   v33 = *MEMORY[0x277D85DE8];
-  v20 = a3;
+  connectionCopy = connection;
   v5 = self->_deliveryManagerProvider;
   if (!v5)
   {
@@ -23,7 +23,7 @@
       v23 = 2114;
       v24 = v13;
       v25 = 2048;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2114;
       v28 = @"BKHIDEventDeliveryManagerServer.m";
       v29 = 1024;
@@ -40,14 +40,14 @@
   }
 
   v6 = v5;
-  v7 = [v20 auditToken];
-  v8 = [(BKHIDEventDeliveryManagerProvider *)v6 deliveryManagerForAuditToken:v7];
+  auditToken = [connectionCopy auditToken];
+  v8 = [(BKHIDEventDeliveryManagerProvider *)v6 deliveryManagerForAuditToken:auditToken];
 
   if (!v8)
   {
     v14 = MEMORY[0x277CCACA8];
-    v15 = [v20 auditToken];
-    v16 = [v14 stringWithFormat:@"failed to provide delivery manager for auditToken: %@", v15];
+    auditToken2 = [connectionCopy auditToken];
+    v16 = [v14 stringWithFormat:@"failed to provide delivery manager for auditToken: %@", auditToken2];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -59,7 +59,7 @@
       v23 = 2114;
       v24 = v19;
       v25 = 2048;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2114;
       v28 = @"BKHIDEventDeliveryManagerServer.m";
       v29 = 1024;
@@ -75,34 +75,34 @@
     JUMPOUT(0x223CDD790);
   }
 
-  [v20 acceptConnectionWithMappedObject:v8];
+  [connectionCopy acceptConnectionWithMappedObject:v8];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)initWithDeliveryManagerProvider:(void *)a1
+- (void)initWithDeliveryManagerProvider:(void *)provider
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (provider)
   {
     if (!v3)
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
-      [v7 handleFailureInMethod:sel_initWithDeliveryManagerProvider_ object:a1 file:@"BKHIDEventDeliveryManagerServer.m" lineNumber:302 description:{@"Invalid parameter not satisfying: %@", @"deliveryManagerProvider"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel_initWithDeliveryManagerProvider_ object:provider file:@"BKHIDEventDeliveryManagerServer.m" lineNumber:302 description:{@"Invalid parameter not satisfying: %@", @"deliveryManagerProvider"}];
     }
 
-    v8.receiver = a1;
+    v8.receiver = provider;
     v8.super_class = _BKHIDDeliveryManagerDeprecatedIncomingConnectionHandler;
     v5 = objc_msgSendSuper2(&v8, sel_init);
-    a1 = v5;
+    provider = v5;
     if (v5)
     {
       *(v5 + 1) = v4;
     }
   }
 
-  return a1;
+  return provider;
 }
 
 @end

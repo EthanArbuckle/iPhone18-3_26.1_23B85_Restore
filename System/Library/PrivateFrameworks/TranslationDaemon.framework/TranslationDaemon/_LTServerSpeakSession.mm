@@ -1,25 +1,25 @@
 @interface _LTServerSpeakSession
 - (BOOL)_hasCachedCompletion;
-- (_LTServerSpeakSession)initWithEngine:(id)a3;
-- (id)_createTemporaryOutputFileWithURL:(id)a3;
-- (void)_callCompletionAndClearIfNeeded:(id)a3 error:(id)a4;
-- (void)_playback:(id)a3 context:(id)a4 completion:(id)a5 audioStartHandler:(id)a6;
+- (_LTServerSpeakSession)initWithEngine:(id)engine;
+- (id)_createTemporaryOutputFileWithURL:(id)l;
+- (void)_callCompletionAndClearIfNeeded:(id)needed error:(id)error;
+- (void)_playback:(id)_playback context:(id)context completion:(id)completion audioStartHandler:(id)handler;
 - (void)cancel;
-- (void)speak:(id)a3 context:(id)a4 completion:(id)a5 audioStartHandler:(id)a6;
+- (void)speak:(id)speak context:(id)context completion:(id)completion audioStartHandler:(id)handler;
 @end
 
 @implementation _LTServerSpeakSession
 
-- (_LTServerSpeakSession)initWithEngine:(id)a3
+- (_LTServerSpeakSession)initWithEngine:(id)engine
 {
-  v5 = a3;
+  engineCopy = engine;
   v12.receiver = self;
   v12.super_class = _LTServerSpeakSession;
   v6 = [(_LTServerSpeakSession *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_engine, a3);
+    objc_storeStrong(&v6->_engine, engine);
     v8 = dispatch_queue_create("com.apple.translationd.playback", 0);
     queue = v7->_queue;
     v7->_queue = v8;
@@ -31,21 +31,21 @@
   return v7;
 }
 
-- (id)_createTemporaryOutputFileWithURL:(id)a3
+- (id)_createTemporaryOutputFileWithURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v3 = a3;
+    lCopy = l;
     v4 = NSTemporaryDirectory();
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v5 UUIDString];
-    v7 = [v4 stringByAppendingPathComponent:v6];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v7 = [v4 stringByAppendingPathComponent:uUIDString];
 
     v8 = [MEMORY[0x277CBEBC0] fileURLWithPath:v7 isDirectory:1];
     v9 = MEMORY[0x277CBEBC0];
-    v10 = [v3 lastPathComponent];
+    lastPathComponent = [lCopy lastPathComponent];
 
-    v11 = [v9 fileURLWithPath:v10 relativeToURL:v8];
+    v11 = [v9 fileURLWithPath:lastPathComponent relativeToURL:v8];
   }
 
   else
@@ -56,18 +56,18 @@
   return v11;
 }
 
-- (void)_playback:(id)a3 context:(id)a4 completion:(id)a5 audioStartHandler:(id)a6
+- (void)_playback:(id)_playback context:(id)context completion:(id)completion audioStartHandler:(id)handler
 {
   v76 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  _playbackCopy = _playback;
+  contextCopy = context;
+  completionCopy = completion;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
-  v14 = [(_LTServerSpeakSession *)self _hasCachedCompletion];
+  _hasCachedCompletion = [(_LTServerSpeakSession *)self _hasCachedCompletion];
   v15 = _LTOSLogTTS();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_INFO);
-  if (v14)
+  if (_hasCachedCompletion)
   {
     if (v16)
     {
@@ -75,21 +75,21 @@
       _os_log_impl(&dword_232E53000, v15, OS_LOG_TYPE_INFO, "Prepping playback for audio data of request", &buf, 2u);
     }
 
-    v17 = [v11 outputFileURL];
-    v18 = [(_LTServerSpeakSession *)self _createTemporaryOutputFileWithURL:v17];
+    outputFileURL = [contextCopy outputFileURL];
+    v18 = [(_LTServerSpeakSession *)self _createTemporaryOutputFileWithURL:outputFileURL];
 
-    [v10 writeToURL:v18];
+    [_playbackCopy writeToURL:v18];
     v73 = 0;
     buf = 0u;
     v72 = 0u;
-    if (v10)
+    if (_playbackCopy)
     {
-      [v10 asbd];
-      [v10 asbd];
+      [_playbackCopy asbd];
+      [_playbackCopy asbd];
       if (DWORD2(v68) == 1819304813)
       {
-        v56 = [v10 packetDescriptions];
-        v19 = [v10 rawData];
+        packetDescriptions = [_playbackCopy packetDescriptions];
+        rawData = [_playbackCopy rawData];
         goto LABEL_29;
       }
     }
@@ -101,14 +101,14 @@
       v68 = 0uLL;
     }
 
-    v57 = v11;
+    v57 = contextCopy;
     v58 = v18;
-    v55 = v13;
-    v20 = [v10 rawData];
+    v55 = handlerCopy;
+    rawData2 = [_playbackCopy rawData];
     v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v66 = 0;
     v67 = 0;
-    if ([v10 packetCount] < 1)
+    if ([_playbackCopy packetCount] < 1)
     {
       v24 = 0;
     }
@@ -120,12 +120,12 @@
       v24 = 0;
       do
       {
-        v25 = [v10 packetDescriptions];
-        [v25 getBytes:&v66 range:{v22, 16}];
+        packetDescriptions2 = [_playbackCopy packetDescriptions];
+        [packetDescriptions2 getBytes:&v66 range:{v22, 16}];
 
         v26 = MEMORY[0x277CBEA90];
-        v27 = [v20 bytes];
-        v28 = [v26 dataWithBytes:v27 + v66 length:HIDWORD(v67)];
+        bytes = [rawData2 bytes];
+        v28 = [v26 dataWithBytes:bytes + v66 length:HIDWORD(v67)];
         [v21 addObject:v28];
         v24 += [v28 length];
 
@@ -133,13 +133,13 @@
         v22 += 16;
       }
 
-      while ([v10 packetCount] > v23);
+      while ([_playbackCopy packetCount] > v23);
     }
 
     v29 = objc_alloc_init(MEMORY[0x277CE1AC8]);
-    if (v10)
+    if (_playbackCopy)
     {
-      [v10 asbd];
+      [_playbackCopy asbd];
     }
 
     else
@@ -158,13 +158,13 @@
     v33 = v32;
     if (v31)
     {
-      v11 = v57;
+      contextCopy = v57;
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
         [_LTServerSpeakSession _playback:context:completion:audioStartHandler:];
       }
 
-      (v12)[2](v12, v58, v31);
+      (completionCopy)[2](completionCopy, v58, v31);
     }
 
     else
@@ -183,25 +183,25 @@
       buf = v54;
       v72 = v53;
       v73 = 16;
-      v11 = v57;
+      contextCopy = v57;
     }
 
     if (v31)
     {
       v18 = v58;
-      v19 = v30;
-      v13 = v55;
+      rawData = v30;
+      handlerCopy = v55;
 LABEL_40:
 
       goto LABEL_41;
     }
 
-    v56 = 0;
+    packetDescriptions = 0;
     v18 = v58;
-    v19 = v30;
-    v13 = v55;
+    rawData = v30;
+    handlerCopy = v55;
 LABEL_29:
-    v36 = [v19 length];
+    v36 = [rawData length];
     v37 = v36 / DWORD2(v72);
     v38 = v37 / *&buf;
     v39 = _LTOSLogTTS();
@@ -214,33 +214,33 @@ LABEL_29:
     *v74 = buf;
     *&v74[16] = v72;
     v75 = v73;
-    v41 = [(_LTPlaybackService *)v40 initWithContext:v11 ASBD:v74];
+    v41 = [(_LTPlaybackService *)v40 initWithContext:contextCopy ASBD:v74];
     player = self->_player;
     self->_player = v41;
 
     v43 = self->_player;
     if (v43)
     {
-      v44 = [(_LTPlaybackService *)v43 start];
-      if (!v44)
+      start = [(_LTPlaybackService *)v43 start];
+      if (!start)
       {
-        v48 = [(_LTServerSpeakSession *)self _hasCachedCompletion];
+        _hasCachedCompletion2 = [(_LTServerSpeakSession *)self _hasCachedCompletion];
         v49 = _LTOSLogTTS();
         v50 = v49;
-        if (v48)
+        if (_hasCachedCompletion2)
         {
           if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
           {
             [_LTServerSpeakSession _playback:context:completion:audioStartHandler:];
           }
 
-          v51 = [(_LTPlaybackService *)self->_player enqueue:v19 packetCount:0 packetDescriptions:0];
+          v51 = [(_LTPlaybackService *)self->_player enqueue:rawData packetCount:0 packetDescriptions:0];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __72___LTServerSpeakSession__playback_context_completion_audioStartHandler___block_invoke;
           block[3] = &unk_2789B79B0;
-          v61 = v13;
-          v60 = v10;
+          v61 = handlerCopy;
+          v60 = _playbackCopy;
           v62 = v38;
           dispatch_async(MEMORY[0x277D85CD0], block);
           [(_LTPlaybackService *)self->_player flushAndStop];
@@ -252,7 +252,7 @@ LABEL_29:
             _os_log_impl(&dword_232E53000, v52, OS_LOG_TYPE_INFO, "Finished TTS playback", v74, 2u);
           }
 
-          (v12)[2](v12, v18, 0);
+          (completionCopy)[2](completionCopy, v18, 0);
         }
 
         else
@@ -263,7 +263,7 @@ LABEL_29:
             _os_log_impl(&dword_232E53000, v50, OS_LOG_TYPE_INFO, "Not playing back audio for server speak session because it was previously cancelled since this request started", v74, 2u);
           }
 
-          v12[2](v12, 0, 0);
+          completionCopy[2](completionCopy, 0, 0);
         }
 
         goto LABEL_39;
@@ -284,10 +284,10 @@ LABEL_29:
         [_LTServerSpeakSession _playback:context:completion:audioStartHandler:];
       }
 
-      v44 = [MEMORY[0x277CCA9B8] lt_internalTTSCreationError];
+      start = [MEMORY[0x277CCA9B8] lt_internalTTSCreationError];
     }
 
-    (v12)[2](v12, v18, v44);
+    (completionCopy)[2](completionCopy, v18, start);
 LABEL_39:
 
     goto LABEL_40;
@@ -299,18 +299,18 @@ LABEL_39:
     _os_log_impl(&dword_232E53000, v15, OS_LOG_TYPE_INFO, "Not playing back audio for server speak session because it was previously cancelled", &buf, 2u);
   }
 
-  v12[2](v12, 0, 0);
+  completionCopy[2](completionCopy, 0, 0);
 LABEL_41:
 
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (void)speak:(id)a3 context:(id)a4 completion:(id)a5 audioStartHandler:(id)a6
+- (void)speak:(id)speak context:(id)context completion:(id)completion audioStartHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  speakCopy = speak;
+  contextCopy = context;
+  completionCopy = completion;
+  handlerCopy = handler;
   v14 = self->_queue;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
@@ -318,16 +318,16 @@ LABEL_41:
   block[2] = __68___LTServerSpeakSession_speak_context_completion_audioStartHandler___block_invoke;
   block[3] = &unk_2789B7A50;
   objc_copyWeak(&v26, &location);
-  v21 = v10;
-  v22 = v11;
+  v21 = speakCopy;
+  v22 = contextCopy;
   v23 = v14;
-  v24 = v12;
-  v25 = v13;
-  v15 = v13;
+  v24 = completionCopy;
+  v25 = handlerCopy;
+  v15 = handlerCopy;
   v16 = v14;
-  v17 = v11;
-  v18 = v10;
-  v19 = v12;
+  v17 = contextCopy;
+  v18 = speakCopy;
+  v19 = completionCopy;
   dispatch_async(v16, block);
 
   objc_destroyWeak(&v26);
@@ -350,7 +350,7 @@ LABEL_41:
 
 - (BOOL)_hasCachedCompletion
 {
-  v2 = self;
+  selfCopy = self;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -359,23 +359,23 @@ LABEL_41:
   v5[1] = 3221225472;
   v6 = __45___LTServerSpeakSession__hasCachedCompletion__block_invoke;
   v7 = &unk_2789B66E0;
-  v8 = self;
+  selfCopy2 = self;
   v9 = &v10;
   v3 = v5;
-  os_unfair_lock_assert_not_owner(&v2->_lock);
-  os_unfair_lock_lock(&v2->_lock);
+  os_unfair_lock_assert_not_owner(&selfCopy->_lock);
+  os_unfair_lock_lock(&selfCopy->_lock);
   v6(v3);
 
-  os_unfair_lock_unlock(&v2->_lock);
-  LOBYTE(v2) = *(v11 + 24);
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  LOBYTE(selfCopy) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)_callCompletionAndClearIfNeeded:(id)a3 error:(id)a4
+- (void)_callCompletionAndClearIfNeeded:(id)needed error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  errorCopy = error;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -386,7 +386,7 @@ LABEL_41:
   v10[1] = 3221225472;
   v11 = __63___LTServerSpeakSession__callCompletionAndClearIfNeeded_error___block_invoke;
   v12 = &unk_2789B7A78;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   v8 = v10;
   os_unfair_lock_assert_not_owner(&self->_lock);
@@ -397,7 +397,7 @@ LABEL_41:
   v9 = v16[5];
   if (v9)
   {
-    (*(v9 + 16))(v9, v6, v7);
+    (*(v9 + 16))(v9, neededCopy, errorCopy);
   }
 
   _Block_object_dispose(&v15, 8);

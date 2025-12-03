@@ -1,72 +1,72 @@
 @interface _PXPhotosDetailsAssetsWidgetEventTracker
 - (_PXPhotosDetailsAssetsWidgetEventTracker)init;
 - (void)_invalidateVisibleState;
-- (void)_logDidEndViewingState:(id)a3;
-- (void)_logDidStartViewingState:(id)a3;
+- (void)_logDidEndViewingState:(id)state;
+- (void)_logDidStartViewingState:(id)state;
 - (void)_updateVisibleState;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setIsDisplayingCuratedContent:(BOOL)a3;
-- (void)setVisibleState:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setIsDisplayingCuratedContent:(BOOL)content;
+- (void)setVisibleState:(id)state;
 @end
 
 @implementation _PXPhotosDetailsAssetsWidgetEventTracker
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (EventTrackerObservationContext_174934 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (EventTrackerObservationContext_174934 != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsAssetsWidgetEventTracker.m" lineNumber:105 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsAssetsWidgetEventTracker.m" lineNumber:105 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v6)
+  if (changeCopy)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(_PXPhotosDetailsAssetsWidgetEventTracker *)self _invalidateVisibleState];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
-- (void)_logDidEndViewingState:(id)a3
+- (void)_logDidEndViewingState:(id)state
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E6991F28];
-  v5 = a3;
-  v6 = [(_PXPhotosDetailsAssetsWidgetEventTracker *)self visibleStateSignpost];
+  stateCopy = state;
+  visibleStateSignpost = [(_PXPhotosDetailsAssetsWidgetEventTracker *)self visibleStateSignpost];
   v7 = *MEMORY[0x1E6991C98];
   v9 = *MEMORY[0x1E6991E40];
-  v10[0] = v5;
+  v10[0] = stateCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  [v4 endSignpost:v6 forEventName:v7 withPayload:v8];
+  [v4 endSignpost:visibleStateSignpost forEventName:v7 withPayload:v8];
 
   [(_PXPhotosDetailsAssetsWidgetEventTracker *)self setVisibleStateSignpost:0];
 }
 
-- (void)_logDidStartViewingState:(id)a3
+- (void)_logDidStartViewingState:(id)state
 {
   if ([(_PXPhotosDetailsAssetsWidgetEventTracker *)self visibleStateSignpost])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsAssetsWidgetEventTracker.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"self.visibleStateSignpost == CPAnalyticsSignpostIDNull"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsAssetsWidgetEventTracker.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"self.visibleStateSignpost == CPAnalyticsSignpostIDNull"}];
   }
 
-  v5 = [MEMORY[0x1E6991F28] startSignpost];
+  startSignpost = [MEMORY[0x1E6991F28] startSignpost];
 
-  [(_PXPhotosDetailsAssetsWidgetEventTracker *)self setVisibleStateSignpost:v5];
+  [(_PXPhotosDetailsAssetsWidgetEventTracker *)self setVisibleStateSignpost:startSignpost];
 }
 
-- (void)setVisibleState:(id)a3
+- (void)setVisibleState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_visibleState != v4)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (self->_visibleState != stateCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = stateCopy;
+    v6 = [(NSString *)stateCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -94,9 +94,9 @@
 {
   if ([(PXUserInterfaceElementEventTracker *)self isVisible])
   {
-    v3 = [(_PXPhotosDetailsAssetsWidgetEventTracker *)self isDisplayingCuratedContent];
+    isDisplayingCuratedContent = [(_PXPhotosDetailsAssetsWidgetEventTracker *)self isDisplayingCuratedContent];
     v4 = @"com.apple.photos.CPAnalytics.photosDetailsAssetsAllDisplayed";
-    if (v3)
+    if (isDisplayingCuratedContent)
     {
       v4 = @"com.apple.photos.CPAnalytics.photosDetailsAssetsSummaryDisplayed";
     }
@@ -123,11 +123,11 @@
   [(_PXPhotosDetailsAssetsWidgetEventTracker *)self performChanges:v2];
 }
 
-- (void)setIsDisplayingCuratedContent:(BOOL)a3
+- (void)setIsDisplayingCuratedContent:(BOOL)content
 {
-  if (self->_isDisplayingCuratedContent != a3)
+  if (self->_isDisplayingCuratedContent != content)
   {
-    self->_isDisplayingCuratedContent = a3;
+    self->_isDisplayingCuratedContent = content;
     [(_PXPhotosDetailsAssetsWidgetEventTracker *)self _invalidateVisibleState];
   }
 }
@@ -141,8 +141,8 @@
   if (v2)
   {
     [(_PXPhotosDetailsAssetsWidgetEventTracker *)v2 registerChangeObserver:v2 context:EventTrackerObservationContext_174934];
-    v4 = [(PXUserInterfaceElementEventTracker *)v3 updater];
-    [v4 addUpdateSelector:sel__updateVisibleState];
+    updater = [(PXUserInterfaceElementEventTracker *)v3 updater];
+    [updater addUpdateSelector:sel__updateVisibleState];
   }
 
   return v3;

@@ -1,25 +1,25 @@
 @interface TSDDefaultPartitioner
-- (BOOL)didHint:(id)a3 syncWithNextHint:(id)a4 horizontally:(BOOL)a5 delta:(int)a6;
-- (TSDDefaultPartitioner)initWithInfo:(id)a3;
-- (id)hintForLayout:(id)a3;
+- (BOOL)didHint:(id)hint syncWithNextHint:(id)nextHint horizontally:(BOOL)horizontally delta:(int)delta;
+- (TSDDefaultPartitioner)initWithInfo:(id)info;
+- (id)hintForLayout:(id)layout;
 - (id)i_layout;
-- (id)i_repForCanvas:(id)a3;
-- (id)layoutForHint:(id)a3 parentLayout:(id)a4;
-- (id)nextHintForSize:(CGSize)a3 parentLayout:(id)a4 previousHint:(id)a5 horizontally:(BOOL)a6 outFinished:(BOOL *)a7;
-- (id)nextLayoutForSize:(CGSize)a3 parentLayout:(id)a4 previousHint:(id)a5 horizontally:(BOOL)a6 outFinished:(BOOL *)a7;
-- (id)p_firstHintForSize:(CGSize)a3;
-- (id)p_nextHintForSize:(CGSize)a3 previousHint:(id)a4 horizontally:(BOOL)a5;
-- (unint64_t)p_edgesForHintBounds:(CGRect)a3;
+- (id)i_repForCanvas:(id)canvas;
+- (id)layoutForHint:(id)hint parentLayout:(id)layout;
+- (id)nextHintForSize:(CGSize)size parentLayout:(id)layout previousHint:(id)hint horizontally:(BOOL)horizontally outFinished:(BOOL *)finished;
+- (id)nextLayoutForSize:(CGSize)size parentLayout:(id)layout previousHint:(id)hint horizontally:(BOOL)horizontally outFinished:(BOOL *)finished;
+- (id)p_firstHintForSize:(CGSize)size;
+- (id)p_nextHintForSize:(CGSize)size previousHint:(id)hint horizontally:(BOOL)horizontally;
+- (unint64_t)p_edgesForHintBounds:(CGRect)bounds;
 - (void)dealloc;
-- (void)i_registerPartialRep:(id)a3;
-- (void)i_unregisterPartialRep:(id)a3;
+- (void)i_registerPartialRep:(id)rep;
+- (void)i_unregisterPartialRep:(id)rep;
 - (void)p_generateLayouts;
 - (void)p_teardownLayouts;
 @end
 
 @implementation TSDDefaultPartitioner
 
-- (TSDDefaultPartitioner)initWithInfo:(id)a3
+- (TSDDefaultPartitioner)initWithInfo:(id)info
 {
   v7.receiver = self;
   v7.super_class = TSDDefaultPartitioner;
@@ -27,7 +27,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->mInfo = a3;
+    v4->mInfo = info;
     [(TSDDefaultPartitioner *)v4 p_generateLayouts];
     v5->mMainRepsByCanvas = objc_alloc_init(MEMORY[0x277D6C348]);
     v5->mCachedImagesByCanvas = objc_alloc_init(MEMORY[0x277D6C348]);
@@ -46,7 +46,7 @@
   [(TSDDefaultPartitioner *)&v3 dealloc];
 }
 
-- (id)hintForLayout:(id)a3
+- (id)hintForLayout:(id)layout
 {
   objc_opt_class();
   result = TSUDynamicCast();
@@ -61,14 +61,14 @@
   return result;
 }
 
-- (BOOL)didHint:(id)a3 syncWithNextHint:(id)a4 horizontally:(BOOL)a5 delta:(int)a6
+- (BOOL)didHint:(id)hint syncWithNextHint:(id)nextHint horizontally:(BOOL)horizontally delta:(int)delta
 {
-  if (a6)
+  if (delta)
   {
     return 0;
   }
 
-  v7 = a5;
+  horizontallyCopy = horizontally;
   objc_opt_class();
   v8 = TSUDynamicCast();
   objc_opt_class();
@@ -103,7 +103,7 @@
   v29 = v15;
   v30 = v17;
   v31 = v19;
-  if (v7)
+  if (horizontallyCopy)
   {
     MaxX = CGRectGetMaxX(*&v28);
     v34.origin.x = v21;
@@ -126,7 +126,7 @@
   return vabdd_f64(MaxX, MinX) < 0.00999999978;
 }
 
-- (id)layoutForHint:(id)a3 parentLayout:(id)a4
+- (id)layoutForHint:(id)hint parentLayout:(id)layout
 {
   objc_opt_class();
   v5 = TSUDynamicCast();
@@ -148,25 +148,25 @@
   return v9;
 }
 
-- (id)nextHintForSize:(CGSize)a3 parentLayout:(id)a4 previousHint:(id)a5 horizontally:(BOOL)a6 outFinished:(BOOL *)a7
+- (id)nextHintForSize:(CGSize)size parentLayout:(id)layout previousHint:(id)hint horizontally:(BOOL)horizontally outFinished:(BOOL *)finished
 {
-  v8 = a6;
-  if (a5)
+  horizontallyCopy = horizontally;
+  if (hint)
   {
-    v9 = [(TSDDefaultPartitioner *)self p_nextHintForSize:a5 previousHint:a6 horizontally:a3.width, a3.height];
+    v9 = [(TSDDefaultPartitioner *)self p_nextHintForSize:hint previousHint:horizontally horizontally:size.width, size.height];
   }
 
   else
   {
-    v9 = [(TSDDefaultPartitioner *)self p_firstHintForSize:a4, a3.width, a3.height];
+    v9 = [(TSDDefaultPartitioner *)self p_firstHintForSize:layout, size.width, size.height];
   }
 
   v10 = v9;
-  if (a7)
+  if (finished)
   {
     if (v9)
     {
-      v11 = [v9 isLastPartitionHorizontally:v8];
+      v11 = [v9 isLastPartitionHorizontally:horizontallyCopy];
     }
 
     else
@@ -174,17 +174,17 @@
       v11 = 1;
     }
 
-    *a7 = v11;
+    *finished = v11;
   }
 
   return v10;
 }
 
-- (id)nextLayoutForSize:(CGSize)a3 parentLayout:(id)a4 previousHint:(id)a5 horizontally:(BOOL)a6 outFinished:(BOOL *)a7
+- (id)nextLayoutForSize:(CGSize)size parentLayout:(id)layout previousHint:(id)hint horizontally:(BOOL)horizontally outFinished:(BOOL *)finished
 {
-  v9 = [(TSDDefaultPartitioner *)self nextHintForSize:a4 parentLayout:a5 previousHint:a6 horizontally:a7 outFinished:a3.width, a3.height];
+  v9 = [(TSDDefaultPartitioner *)self nextHintForSize:layout parentLayout:hint previousHint:horizontally horizontally:finished outFinished:size.width, size.height];
 
-  return [(TSDDefaultPartitioner *)self layoutForHint:v9 parentLayout:a4];
+  return [(TSDDefaultPartitioner *)self layoutForHint:v9 parentLayout:layout];
 }
 
 - (id)i_layout
@@ -199,52 +199,52 @@
   return result;
 }
 
-- (id)i_repForCanvas:(id)a3
+- (id)i_repForCanvas:(id)canvas
 {
   v5 = [(TSUPointerKeyDictionary *)self->mMainRepsByCanvas objectForKey:?];
   if (!v5)
   {
-    v6 = [(TSDDefaultPartitioner *)self i_layout];
-    v5 = [objc_alloc(objc_msgSend(v6 "repClassOverride"))];
+    i_layout = [(TSDDefaultPartitioner *)self i_layout];
+    v5 = [objc_alloc(objc_msgSend(i_layout "repClassOverride"))];
     [v5 updateChildrenFromLayout];
     [v5 recursivelyPerformSelector:sel_updateFromLayout];
-    [(TSUPointerKeyDictionary *)self->mMainRepsByCanvas setObject:v5 forUncopiedKey:a3];
+    [(TSUPointerKeyDictionary *)self->mMainRepsByCanvas setObject:v5 forUncopiedKey:canvas];
   }
 
   return v5;
 }
 
-- (void)i_registerPartialRep:(id)a3
+- (void)i_registerPartialRep:(id)rep
 {
-  v5 = [a3 canvas];
-  v6 = [(TSUPointerKeyDictionary *)self->mPartialRepsByCanvas objectForKey:v5];
+  canvas = [rep canvas];
+  v6 = [(TSUPointerKeyDictionary *)self->mPartialRepsByCanvas objectForKey:canvas];
   if (!v6)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    [(TSUPointerKeyDictionary *)self->mPartialRepsByCanvas setObject:v6 forUncopiedKey:v5];
+    [(TSUPointerKeyDictionary *)self->mPartialRepsByCanvas setObject:v6 forUncopiedKey:canvas];
   }
 
-  [v6 addObject:a3];
+  [v6 addObject:rep];
 }
 
-- (void)i_unregisterPartialRep:(id)a3
+- (void)i_unregisterPartialRep:(id)rep
 {
-  v5 = [a3 canvas];
-  v6 = [(TSUPointerKeyDictionary *)self->mPartialRepsByCanvas objectForKey:v5];
-  if (([v6 containsObject:a3] & 1) == 0)
+  canvas = [rep canvas];
+  v6 = [(TSUPointerKeyDictionary *)self->mPartialRepsByCanvas objectForKey:canvas];
+  if (([v6 containsObject:rep] & 1) == 0)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDefaultPartitioner i_unregisterPartialRep:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDefaultPartitioner.m"), 223, @"Unregistering unregistered rep %@", a3}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDefaultPartitioner.m"), 223, @"Unregistering unregistered rep %@", rep}];
   }
 
-  [v6 removeObject:a3];
+  [v6 removeObject:rep];
   if (![v6 count])
   {
-    [(TSUPointerKeyDictionary *)self->mPartialRepsByCanvas removeObjectForKey:v5];
-    [-[TSUPointerKeyDictionary objectForKey:](self->mMainRepsByCanvas objectForKey:{v5), "recursivelyPerformSelector:", sel_i_willBeRemoved}];
-    [(TSUPointerKeyDictionary *)self->mMainRepsByCanvas removeObjectForKey:v5];
-    [(TSUPointerKeyDictionary *)self->mCachedImagesByCanvas removeObjectForKey:v5];
+    [(TSUPointerKeyDictionary *)self->mPartialRepsByCanvas removeObjectForKey:canvas];
+    [-[TSUPointerKeyDictionary objectForKey:](self->mMainRepsByCanvas objectForKey:{canvas), "recursivelyPerformSelector:", sel_i_willBeRemoved}];
+    [(TSUPointerKeyDictionary *)self->mMainRepsByCanvas removeObjectForKey:canvas];
+    [(TSUPointerKeyDictionary *)self->mCachedImagesByCanvas removeObjectForKey:canvas];
     if (![(TSUPointerKeyDictionary *)self->mMainRepsByCanvas count])
     {
 
@@ -258,9 +258,9 @@
   v8[1] = *MEMORY[0x277D85DE8];
   if (self->mLayout)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDefaultPartitioner p_generateLayouts]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDefaultPartitioner.m"), 244, @"Can not generate layouts when they’re already present."}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDefaultPartitioner.m"), 244, @"Can not generate layouts when they’re already present."}];
   }
 
   self->mCanvas = objc_alloc_init(TSDCanvas);
@@ -300,7 +300,7 @@
   self->mCanvas = 0;
 }
 
-- (id)p_firstHintForSize:(CGSize)a3
+- (id)p_firstHintForSize:(CGSize)size
 {
   [objc_msgSend(-[TSDDefaultPartitioner i_layout](self "i_layout")];
   v4 = TSDRectWithSize();
@@ -309,18 +309,18 @@
   return v8;
 }
 
-- (id)p_nextHintForSize:(CGSize)a3 previousHint:(id)a4 horizontally:(BOOL)a5
+- (id)p_nextHintForSize:(CGSize)size previousHint:(id)hint horizontally:(BOOL)horizontally
 {
-  v5 = a5;
-  height = a3.height;
-  width = a3.width;
+  horizontallyCopy = horizontally;
+  height = size.height;
+  width = size.width;
   objc_opt_class();
   v9 = TSUDynamicCast();
   if (!v9)
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDefaultPartitioner p_nextHintForSize:previousHint:horizontally:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDefaultPartitioner.m"), 296, @"invalid nil value for '%s'", "previousDefaultHint"}];
+    [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDefaultPartitioner.m"), 296, @"invalid nil value for '%s'", "previousDefaultHint"}];
   }
 
   [objc_msgSend(-[TSDDefaultPartitioner i_layout](self "i_layout")];
@@ -328,7 +328,7 @@
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  if ([v9 isLastPartitionHorizontally:v5])
+  if ([v9 isLastPartitionHorizontally:horizontallyCopy])
   {
     v20 = 0;
   }
@@ -346,7 +346,7 @@
     v30 = v15;
     v31 = v17;
     v32 = v19;
-    if (v5)
+    if (horizontallyCopy)
     {
       v33 = CGRectGetWidth(*&v29);
       v43.origin.x = v22;
@@ -402,12 +402,12 @@
   return v20;
 }
 
-- (unint64_t)p_edgesForHintBounds:(CGRect)a3
+- (unint64_t)p_edgesForHintBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [objc_msgSend(-[TSDDefaultPartitioner i_layout](self "i_layout")];
   v8 = v7;
   v20 = v9;

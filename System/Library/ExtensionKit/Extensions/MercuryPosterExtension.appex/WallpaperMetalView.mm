@@ -1,16 +1,16 @@
 @interface WallpaperMetalView
 + (Class)layerClass;
-- (_TtC22MercuryPosterExtension18WallpaperMetalView)initWithFrame:(CGRect)a3;
+- (_TtC22MercuryPosterExtension18WallpaperMetalView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)displayLayer:(id)a3;
+- (void)displayLayer:(id)layer;
 @end
 
 @implementation WallpaperMetalView
 
-- (void)displayLayer:(id)a3
+- (void)displayLayer:(id)layer
 {
-  v4 = a3;
-  v5 = self;
+  layerCopy = layer;
+  selfCopy = self;
   sub_100004EF4();
 }
 
@@ -19,9 +19,9 @@
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC22MercuryPosterExtension18WallpaperMetalView_displayLink);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     [v2 invalidate];
-    v4.receiver = v3;
+    v4.receiver = selfCopy;
     v4.super_class = type metadata accessor for WallpaperMetalView(0);
     [(WallpaperMetalView *)&v4 dealloc];
   }
@@ -39,7 +39,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC22MercuryPosterExtension18WallpaperMetalView)initWithFrame:(CGRect)a3
+- (_TtC22MercuryPosterExtension18WallpaperMetalView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

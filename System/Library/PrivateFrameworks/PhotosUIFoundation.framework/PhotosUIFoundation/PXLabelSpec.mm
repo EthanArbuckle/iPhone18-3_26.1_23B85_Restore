@@ -1,8 +1,8 @@
 @interface PXLabelSpec
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXLabelSpec)init;
 - (UIEdgeInsets)contentInsets;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -35,11 +35,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = PXLabelSpec;
-  v4 = [(PXViewSpec *)&v7 copyWithZone:a3];
+  v4 = [(PXViewSpec *)&v7 copyWithZone:zone];
   objc_storeStrong(v4 + 14, self->_font);
   objc_storeStrong(v4 + 13, self->_textColor);
   objc_storeStrong(v4 + 15, self->_textAttributes);
@@ -59,26 +59,26 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v46.receiver = self;
   v46.super_class = PXLabelSpec;
-  v5 = [(PXViewSpec *)&v46 isEqual:v4];
-  v6 = v4;
+  v5 = [(PXViewSpec *)&v46 isEqual:equalCopy];
+  v6 = equalCopy;
   v7 = v6;
   if (v5)
   {
-    v8 = [v6 font];
-    v9 = [(PXLabelSpec *)self font];
-    v10 = v9;
-    if (v8 == v9)
+    font = [v6 font];
+    font2 = [(PXLabelSpec *)self font];
+    v10 = font2;
+    if (font == font2)
     {
     }
 
     else
     {
-      v11 = [v8 isEqual:v9];
+      v11 = [font isEqual:font2];
 
       if ((v11 & 1) == 0)
       {
@@ -88,16 +88,16 @@ LABEL_26:
       }
     }
 
-    v12 = [v7 textColor];
-    v13 = [(PXLabelSpec *)self textColor];
-    v14 = v13;
-    if (v12 == v13)
+    textColor = [v7 textColor];
+    textColor2 = [(PXLabelSpec *)self textColor];
+    v14 = textColor2;
+    if (textColor == textColor2)
     {
     }
 
     else
     {
-      v15 = [v12 isEqual:v13];
+      v15 = [textColor isEqual:textColor2];
 
       if ((v15 & 1) == 0)
       {
@@ -105,16 +105,16 @@ LABEL_26:
       }
     }
 
-    v16 = [v7 textAttributes];
-    v17 = [(PXLabelSpec *)self textAttributes];
-    v18 = v17;
-    if (v16 == v17)
+    textAttributes = [v7 textAttributes];
+    textAttributes2 = [(PXLabelSpec *)self textAttributes];
+    v18 = textAttributes2;
+    if (textAttributes == textAttributes2)
     {
     }
 
     else
     {
-      v19 = [v16 isEqual:v17];
+      v19 = [textAttributes isEqual:textAttributes2];
 
       if ((v19 & 1) == 0)
       {
@@ -122,32 +122,32 @@ LABEL_26:
       }
     }
 
-    v20 = [v7 textAlignment];
-    if (v20 != [(PXLabelSpec *)self textAlignment])
+    textAlignment = [v7 textAlignment];
+    if (textAlignment != [(PXLabelSpec *)self textAlignment])
     {
       goto LABEL_26;
     }
 
-    v21 = [v7 verticalAlignment];
-    if (v21 != [(PXLabelSpec *)self verticalAlignment])
+    verticalAlignment = [v7 verticalAlignment];
+    if (verticalAlignment != [(PXLabelSpec *)self verticalAlignment])
     {
       goto LABEL_26;
     }
 
-    v22 = [v7 capitalization];
-    if (v22 != [(PXLabelSpec *)self capitalization])
+    capitalization = [v7 capitalization];
+    if (capitalization != [(PXLabelSpec *)self capitalization])
     {
       goto LABEL_26;
     }
 
-    v23 = [v7 fallbackCapitalization];
-    if (v23 != [(PXLabelSpec *)self fallbackCapitalization])
+    fallbackCapitalization = [v7 fallbackCapitalization];
+    if (fallbackCapitalization != [(PXLabelSpec *)self fallbackCapitalization])
     {
       goto LABEL_26;
     }
 
-    v24 = [v7 numberOfLines];
-    if (v24 != [(PXLabelSpec *)self numberOfLines])
+    numberOfLines = [v7 numberOfLines];
+    if (numberOfLines != [(PXLabelSpec *)self numberOfLines])
     {
       goto LABEL_26;
     }
@@ -161,16 +161,16 @@ LABEL_26:
     LOBYTE(v5) = 0;
     if (v28 == v36 && v26 == v33 && v32 == v35 && v30 == v34)
     {
-      v37 = [v7 adjustsFontSizeToFitWidth];
-      if (v37 == [(PXLabelSpec *)self adjustsFontSizeToFitWidth])
+      adjustsFontSizeToFitWidth = [v7 adjustsFontSizeToFitWidth];
+      if (adjustsFontSizeToFitWidth == [(PXLabelSpec *)self adjustsFontSizeToFitWidth])
       {
         [v7 minimumScaleFactor];
         v39 = v38;
         [(PXLabelSpec *)self minimumScaleFactor];
         if (v39 == v40)
         {
-          v41 = [v7 allowTruncation];
-          if (v41 == [(PXLabelSpec *)self allowTruncation])
+          allowTruncation = [v7 allowTruncation];
+          if (allowTruncation == [(PXLabelSpec *)self allowTruncation])
           {
             [v7 minimumTruncatedScaleFactor];
             v44 = v43;
@@ -195,14 +195,14 @@ LABEL_27:
   v17.receiver = self;
   v17.super_class = PXLabelSpec;
   v3 = [(PXViewSpec *)&v17 hash];
-  v4 = [(PXLabelSpec *)self font];
-  v5 = [v4 hash];
+  font = [(PXLabelSpec *)self font];
+  v5 = [font hash];
 
-  v6 = [(PXLabelSpec *)self textColor];
-  v7 = v5 ^ [v6 hash];
+  textColor = [(PXLabelSpec *)self textColor];
+  v7 = v5 ^ [textColor hash];
 
-  v8 = [(PXLabelSpec *)self textAttributes];
-  v9 = v7 ^ [v8 hash] ^ v3;
+  textAttributes = [(PXLabelSpec *)self textAttributes];
+  v9 = v7 ^ [textAttributes hash] ^ v3;
 
   v10 = v9 ^ (2 * [(PXLabelSpec *)self textAlignment]);
   v11 = v10 ^ (4 * [(PXLabelSpec *)self capitalization]);
@@ -217,9 +217,9 @@ LABEL_27:
     v13 = 0;
   }
 
-  v14 = [(PXLabelSpec *)self allowTruncation];
+  allowTruncation = [(PXLabelSpec *)self allowTruncation];
   v15 = 32;
-  if (!v14)
+  if (!allowTruncation)
   {
     v15 = 0;
   }

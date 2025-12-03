@@ -1,22 +1,22 @@
 @interface UIContentUnavailableConfigurationState
 - (BOOL)showNoMessageSelectedView;
-- (void)setShowNoMessageSelectedView:(BOOL)a3;
+- (void)setShowNoMessageSelectedView:(BOOL)view;
 @end
 
 @implementation UIContentUnavailableConfigurationState
 
-- (void)setShowNoMessageSelectedView:(BOOL)a3
+- (void)setShowNoMessageSelectedView:(BOOL)view
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:view];
   [UIContentUnavailableConfigurationState setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
 - (BOOL)showNoMessageSelectedView
 {
   v2 = [(UIContentUnavailableConfigurationState *)self objectForKeyedSubscript:@"com.apple.mobilemail.showNoMessageSelectedView"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

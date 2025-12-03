@@ -1,7 +1,7 @@
 @interface THNoteCardAnnotationLayer
 - (void)dealloc;
 - (void)layoutSublayers;
-- (void)p_setupContentLayerForHighlightLine:(id)a3;
+- (void)p_setupContentLayerForHighlightLine:(id)line;
 @end
 
 @implementation THNoteCardAnnotationLayer
@@ -60,18 +60,18 @@
   }
 }
 
-- (void)p_setupContentLayerForHighlightLine:(id)a3
+- (void)p_setupContentLayerForHighlightLine:(id)line
 {
-  v4 = [(THAnnotation *)self->_annotation annotationStyle];
-  v5 = [objc_msgSend(+[AEAnnotationTheme themeForAnnotationStyle:pageTheme:isUnderline:](AEAnnotationTheme themeForAnnotationStyle:v4 pageTheme:4 isUnderline:{v4 == 6), "highlightColor"), "CGColor"}];
-  [a3 currentLineRect];
+  annotationStyle = [(THAnnotation *)self->_annotation annotationStyle];
+  v5 = [objc_msgSend(+[AEAnnotationTheme themeForAnnotationStyle:pageTheme:isUnderline:](AEAnnotationTheme themeForAnnotationStyle:annotationStyle pageTheme:4 isUnderline:{annotationStyle == 6), "highlightColor"), "CGColor"}];
+  [line currentLineRect];
   v9 = v8;
   v11 = v10;
-  if (v4 == 6)
+  if (annotationStyle == 6)
   {
-    [a3 baseline];
+    [line baseline];
     v13 = v12;
-    [a3 underlineOffset];
+    [line underlineOffset];
     v15 = v13 + v14;
     v16 = 2.0;
   }
@@ -90,7 +90,7 @@
   [(CALayer *)v17 setOpacity:v18];
   [(CALayer *)v17 setBackgroundColor:v5];
 
-  [a3 setContentLayer:v17];
+  [line setContentLayer:v17];
 }
 
 @end

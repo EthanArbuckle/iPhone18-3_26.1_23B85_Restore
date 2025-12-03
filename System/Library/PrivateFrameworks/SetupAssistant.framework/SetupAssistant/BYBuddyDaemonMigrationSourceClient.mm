@@ -3,12 +3,12 @@
 - (BYDeviceMigrationDelegate)delegate;
 - (void)_connectToDaemon;
 - (void)cancel;
-- (void)didChangeConnectionInformation:(id)a3;
-- (void)didFinishWithError:(id)a3;
-- (void)didUpdateProgress:(id)a3;
+- (void)didChangeConnectionInformation:(id)information;
+- (void)didFinishWithError:(id)error;
+- (void)didUpdateProgress:(id)progress;
 - (void)launchSetupForMigration;
-- (void)registerAsUserInterfaceHost:(id)a3;
-- (void)setFileTransferTemplate:(id)a3;
+- (void)registerAsUserInterfaceHost:(id)host;
+- (void)setFileTransferTemplate:(id)template;
 @end
 
 @implementation BYBuddyDaemonMigrationSourceClient
@@ -29,32 +29,32 @@
 
 - (void)cancel
 {
-  v3 = [(BYBuddyDaemonMigrationSourceClient *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 cancel];
+  connection = [(BYBuddyDaemonMigrationSourceClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy cancel];
 }
 
-- (void)registerAsUserInterfaceHost:(id)a3
+- (void)registerAsUserInterfaceHost:(id)host
 {
-  v4 = a3;
-  v6 = [(BYBuddyDaemonMigrationSourceClient *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 registerAsUserInterfaceHost:v4];
+  hostCopy = host;
+  connection = [(BYBuddyDaemonMigrationSourceClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy registerAsUserInterfaceHost:hostCopy];
 }
 
 - (void)launchSetupForMigration
 {
-  v3 = [(BYBuddyDaemonMigrationSourceClient *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 launchSetupForMigration];
+  connection = [(BYBuddyDaemonMigrationSourceClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy launchSetupForMigration];
 }
 
-- (void)setFileTransferTemplate:(id)a3
+- (void)setFileTransferTemplate:(id)template
 {
-  v4 = a3;
-  v6 = [(BYBuddyDaemonMigrationSourceClient *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 setFileTransferTemplate:v4];
+  templateCopy = template;
+  connection = [(BYBuddyDaemonMigrationSourceClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy setFileTransferTemplate:templateCopy];
 }
 
 - (void)_connectToDaemon
@@ -63,24 +63,24 @@
   [(BYBuddyDaemonMigrationSourceClient *)self setConnection:v3];
 
   v4 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F30B4DB8];
-  v5 = [(BYBuddyDaemonMigrationSourceClient *)self connection];
-  [v5 setRemoteObjectInterface:v4];
+  connection = [(BYBuddyDaemonMigrationSourceClient *)self connection];
+  [connection setRemoteObjectInterface:v4];
 
-  v6 = [objc_opt_class() clientInterface];
-  v7 = [(BYBuddyDaemonMigrationSourceClient *)self connection];
-  [v7 setExportedInterface:v6];
+  clientInterface = [objc_opt_class() clientInterface];
+  connection2 = [(BYBuddyDaemonMigrationSourceClient *)self connection];
+  [connection2 setExportedInterface:clientInterface];
 
-  v8 = [(BYBuddyDaemonMigrationSourceClient *)self connection];
-  [v8 setExportedObject:self];
+  connection3 = [(BYBuddyDaemonMigrationSourceClient *)self connection];
+  [connection3 setExportedObject:self];
 
-  v9 = [(BYBuddyDaemonMigrationSourceClient *)self connection];
-  [v9 setInvalidationHandler:&__block_literal_global_25];
+  connection4 = [(BYBuddyDaemonMigrationSourceClient *)self connection];
+  [connection4 setInvalidationHandler:&__block_literal_global_25];
 
-  v10 = [(BYBuddyDaemonMigrationSourceClient *)self connection];
-  [v10 setInterruptionHandler:&__block_literal_global_74_0];
+  connection5 = [(BYBuddyDaemonMigrationSourceClient *)self connection];
+  [connection5 setInterruptionHandler:&__block_literal_global_74_0];
 
-  v11 = [(BYBuddyDaemonMigrationSourceClient *)self connection];
-  [v11 resume];
+  connection6 = [(BYBuddyDaemonMigrationSourceClient *)self connection];
+  [connection6 resume];
 }
 
 void __54__BYBuddyDaemonMigrationSourceClient__connectToDaemon__block_invoke()
@@ -101,25 +101,25 @@ void __54__BYBuddyDaemonMigrationSourceClient__connectToDaemon__block_invoke_72(
   }
 }
 
-- (void)didUpdateProgress:(id)a3
+- (void)didUpdateProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [(BYBuddyDaemonMigrationSourceClient *)self delegate];
-  [v5 deviceMigrationManager:0 didUpdateProgress:v4];
+  progressCopy = progress;
+  delegate = [(BYBuddyDaemonMigrationSourceClient *)self delegate];
+  [delegate deviceMigrationManager:0 didUpdateProgress:progressCopy];
 }
 
-- (void)didFinishWithError:(id)a3
+- (void)didFinishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(BYBuddyDaemonMigrationSourceClient *)self delegate];
-  [v5 deviceMigrationManager:0 didCompleteWithError:v4];
+  errorCopy = error;
+  delegate = [(BYBuddyDaemonMigrationSourceClient *)self delegate];
+  [delegate deviceMigrationManager:0 didCompleteWithError:errorCopy];
 }
 
-- (void)didChangeConnectionInformation:(id)a3
+- (void)didChangeConnectionInformation:(id)information
 {
-  v4 = a3;
-  v5 = [(BYBuddyDaemonMigrationSourceClient *)self delegate];
-  [v5 deviceMigrationManager:0 didChangeConnectionInformation:v4];
+  informationCopy = information;
+  delegate = [(BYBuddyDaemonMigrationSourceClient *)self delegate];
+  [delegate deviceMigrationManager:0 didChangeConnectionInformation:informationCopy];
 }
 
 - (BYDeviceMigrationDelegate)delegate

@@ -2,28 +2,28 @@
 - (APSServerTimeTracker)init;
 - (NSString)aps_prettyDescription;
 - (unint64_t)serverTimeInNanoSeconds;
-- (void)updateServerTimeWithTimeInMilliseconds:(unint64_t)a3;
+- (void)updateServerTimeWithTimeInMilliseconds:(unint64_t)milliseconds;
 @end
 
 @implementation APSServerTimeTracker
 
 - (unint64_t)serverTimeInNanoSeconds
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000C666C();
 
   return v3;
 }
 
-- (void)updateServerTimeWithTimeInMilliseconds:(unint64_t)a3
+- (void)updateServerTimeWithTimeInMilliseconds:(unint64_t)milliseconds
 {
-  v4 = self;
-  sub_1000C6B1C(a3);
+  selfCopy = self;
+  sub_1000C6B1C(milliseconds);
 }
 
 - (NSString)aps_prettyDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000C6DA8();
 
   v3 = String._bridgeToObjectiveC()();

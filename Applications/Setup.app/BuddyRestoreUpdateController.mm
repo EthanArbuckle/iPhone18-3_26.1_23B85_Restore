@@ -1,11 +1,11 @@
 @interface BuddyRestoreUpdateController
 - (BuddyRestoreUpdateController)init;
-- (void)_prepareForSoftwareUpdateToBuild:(id)a3 completion:(id)a4;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)softwareUpdateController:(id)a3 didFailToInstallUpdateWithError:(id)a4;
-- (void)softwareUpdateController:(id)a3 didStartInstallForUpdate:(id)a4;
-- (void)softwareUpdateController:(id)a3 prepareToInstallUpdate:(id)a4 completion:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_prepareForSoftwareUpdateToBuild:(id)build completion:(id)completion;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)softwareUpdateController:(id)controller didFailToInstallUpdateWithError:(id)error;
+- (void)softwareUpdateController:(id)controller didStartInstallForUpdate:(id)update;
+- (void)softwareUpdateController:(id)controller prepareToInstallUpdate:(id)update completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation BuddyRestoreUpdateController
@@ -29,39 +29,39 @@
   return v3;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  appearCopy = appear;
   v11.receiver = self;
   v11.super_class = BuddyRestoreUpdateController;
-  [(BuddySoftwareUpdateController *)&v11 viewDidAppear:a3];
-  if (![(BuddyRestoreUpdateController *)v14 ableToRestoreWithUpdate])
+  [(BuddySoftwareUpdateController *)&v11 viewDidAppear:appear];
+  if (![(BuddyRestoreUpdateController *)selfCopy ableToRestoreWithUpdate])
   {
     v4 = _NSConcreteStackBlock;
     v5 = -1073741824;
     v6 = 0;
     v7 = sub_100101424;
     v8 = &unk_10032B0D0;
-    v9 = v14;
+    v9 = selfCopy;
     location = [BuddyRestoreHelpers alertForBackupError:0 okButtonAction:&v4];
-    v3 = [(BuddyRestoreUpdateController *)v14 navigationController];
-    [v3 presentViewController:location animated:1 completion:0];
+    navigationController = [(BuddyRestoreUpdateController *)selfCopy navigationController];
+    [navigationController presentViewController:location animated:1 completion:0];
 
     objc_storeStrong(&location, 0);
     objc_storeStrong(&v9, 0);
   }
 }
 
-- (void)_prepareForSoftwareUpdateToBuild:(id)a3 completion:(id)a4
+- (void)_prepareForSoftwareUpdateToBuild:(id)build completion:(id)completion
 {
-  v60 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, build);
   v58 = 0;
-  objc_storeStrong(&v58, a4);
+  objc_storeStrong(&v58, completion);
   v57 = _BYLoggingFacility();
   v56 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
@@ -71,28 +71,28 @@
   }
 
   objc_storeStrong(&v57, 0);
-  v5 = [(BuddyRestoreUpdateController *)v60 willPerformSoftwareUpdateBlock];
+  willPerformSoftwareUpdateBlock = [(BuddyRestoreUpdateController *)selfCopy willPerformSoftwareUpdateBlock];
 
-  if (v5)
+  if (willPerformSoftwareUpdateBlock)
   {
-    v6 = [(BuddyRestoreUpdateController *)v60 willPerformSoftwareUpdateBlock];
-    v6[2](v6);
+    willPerformSoftwareUpdateBlock2 = [(BuddyRestoreUpdateController *)selfCopy willPerformSoftwareUpdateBlock];
+    willPerformSoftwareUpdateBlock2[2](willPerformSoftwareUpdateBlock2);
   }
 
-  v7 = [(BuddyRestoreUpdateController *)v60 backupDeviceController];
+  backupDeviceController = [(BuddyRestoreUpdateController *)selfCopy backupDeviceController];
   v53 = 0;
   v51 = 0;
-  v8 = 1;
-  if (![(BFFBackupDeviceController *)v7 isBackingUp])
+  backupFinished = 1;
+  if (![(BFFBackupDeviceController *)backupDeviceController isBackingUp])
   {
-    v54 = [(BuddyRestoreUpdateController *)v60 backupDeviceController];
+    backupDeviceController2 = [(BuddyRestoreUpdateController *)selfCopy backupDeviceController];
     v53 = 1;
-    v8 = 1;
-    if (![(BFFBackupDeviceController *)v54 backupStateUnknown])
+    backupFinished = 1;
+    if (![(BFFBackupDeviceController *)backupDeviceController2 backupStateUnknown])
     {
-      v52 = [(BuddyRestoreUpdateController *)v60 backupDeviceController];
+      backupDeviceController3 = [(BuddyRestoreUpdateController *)selfCopy backupDeviceController];
       v51 = 1;
-      v8 = [(BFFBackupDeviceController *)v52 backupFinished];
+      backupFinished = [(BFFBackupDeviceController *)backupDeviceController3 backupFinished];
     }
   }
 
@@ -104,15 +104,15 @@
   {
   }
 
-  v55 = v8 & 1;
+  v55 = backupFinished & 1;
   v9 = [BuddyRestoreState alloc];
   v10 = location[0];
-  v11 = [(BuddyRestoreUpdateController *)v60 backupItem];
-  v12 = [(RestorableBackupItem *)v11 backup];
-  v13 = [(BuddyRestoreUpdateController *)v60 backupItem];
-  v14 = [(RestorableBackupItem *)v13 snapshot];
-  v15 = [(BuddyRestoreUpdateController *)v60 pendingRestoreState];
-  v50 = [(BuddyRestoreState *)v9 initWithProductBuild:v10 backup:v12 snapshot:v14 useLatestSnapshot:v55 & 1 allowCellularNetwork:[(BuddyPendingRestoreState *)v15 allowCellularNetwork]];
+  backupItem = [(BuddyRestoreUpdateController *)selfCopy backupItem];
+  backup = [(RestorableBackupItem *)backupItem backup];
+  backupItem2 = [(BuddyRestoreUpdateController *)selfCopy backupItem];
+  snapshot = [(RestorableBackupItem *)backupItem2 snapshot];
+  pendingRestoreState = [(BuddyRestoreUpdateController *)selfCopy pendingRestoreState];
+  v50 = [(BuddyRestoreState *)v9 initWithProductBuild:v10 backup:backup snapshot:snapshot useLatestSnapshot:v55 & 1 allowCellularNetwork:[(BuddyPendingRestoreState *)pendingRestoreState allowCellularNetwork]];
 
   v49 = _BYLoggingFacility();
   v48 = OS_LOG_TYPE_DEFAULT;
@@ -135,20 +135,20 @@
 
   objc_storeStrong(&oslog, 0);
   v18 = v50;
-  v19 = [(BuddyRestoreUpdateController *)v60 buddyPreferences];
-  [v18 persistUsingPreferences:v19];
+  buddyPreferences = [(BuddyRestoreUpdateController *)selfCopy buddyPreferences];
+  [v18 persistUsingPreferences:buddyPreferences];
 
-  v20 = [(BuddyRestoreUpdateController *)v60 chronicle];
-  v21 = [(BuddyRestoreUpdateController *)v60 buddyPreferences];
-  v22 = [(BuddyRestoreUpdateController *)v60 buddyPreferencesExcludedFromBackup];
-  [(BYChronicle *)v20 persistBackedUpFeaturesInPreferences:v21 andNotBackedFeaturesInPreferences:v22 persistImmediately:0];
+  chronicle = [(BuddyRestoreUpdateController *)selfCopy chronicle];
+  buddyPreferences2 = [(BuddyRestoreUpdateController *)selfCopy buddyPreferences];
+  buddyPreferencesExcludedFromBackup = [(BuddyRestoreUpdateController *)selfCopy buddyPreferencesExcludedFromBackup];
+  [(BYChronicle *)chronicle persistBackedUpFeaturesInPreferences:buddyPreferences2 andNotBackedFeaturesInPreferences:buddyPreferencesExcludedFromBackup persistImmediately:0];
 
   +[BYPreferencesController persistEverything];
-  v44 = [(BuddyRestoreUpdateController *)v60 buddyPreferences];
-  v43 = [v44 preferences];
+  buddyPreferences3 = [(BuddyRestoreUpdateController *)selfCopy buddyPreferences];
+  preferences = [buddyPreferences3 preferences];
   memset(__b, 0, sizeof(__b));
-  v23 = [v43 allKeys];
-  v24 = [v23 countByEnumeratingWithState:__b objects:v61 count:16];
+  allKeys = [preferences allKeys];
+  v24 = [allKeys countByEnumeratingWithState:__b objects:v61 count:16];
   if (v24)
   {
     v25 = *__b[2];
@@ -158,41 +158,41 @@
       {
         if (*__b[2] != v25)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(allKeys);
         }
 
         v42 = *(__b[1] + 8 * i);
-        v27 = [(BuddyRestoreUpdateController *)v60 settingsManager];
-        v28 = [v43 objectForKeyedSubscript:v42];
-        v29 = [v44 domain];
-        [(BFFSettingsManager *)v27 setObject:v28 forDomain:v29 key:v42];
+        settingsManager = [(BuddyRestoreUpdateController *)selfCopy settingsManager];
+        v28 = [preferences objectForKeyedSubscript:v42];
+        domain = [buddyPreferences3 domain];
+        [(BFFSettingsManager *)settingsManager setObject:v28 forDomain:domain key:v42];
       }
 
-      v24 = [v23 countByEnumeratingWithState:__b objects:v61 count:16];
+      v24 = [allKeys countByEnumeratingWithState:__b objects:v61 count:16];
     }
 
     while (v24);
   }
 
-  v30 = [(BuddyRestoreUpdateController *)v60 settingsManager];
-  [(BFFSettingsManager *)v30 hideStashInSafeHavenAsProvisional:1];
+  settingsManager2 = [(BuddyRestoreUpdateController *)selfCopy settingsManager];
+  [(BFFSettingsManager *)settingsManager2 hideStashInSafeHavenAsProvisional:1];
 
   if ((os_variant_has_internal_ui() & 1) == 0)
   {
     goto LABEL_30;
   }
 
-  v31 = [(BuddyRestoreUpdateController *)v60 buddyPreferences];
-  v40 = [BuddyRestoreState loadFromPreferences:v31];
+  buddyPreferences4 = [(BuddyRestoreUpdateController *)selfCopy buddyPreferences];
+  v40 = [BuddyRestoreState loadFromPreferences:buddyPreferences4];
 
-  v32 = [v40 backupUDID];
+  backupUDID = [v40 backupUDID];
   v33 = 1;
-  if (v32)
+  if (backupUDID)
   {
-    v34 = v32;
-    v35 = [v40 snapshotID];
-    v32 = v34;
-    v33 = v35 == 0;
+    v34 = backupUDID;
+    snapshotID = [v40 snapshotID];
+    backupUDID = v34;
+    v33 = snapshotID == 0;
   }
 
   if (v33)
@@ -201,8 +201,8 @@
     v36 = [UIAlertAction actionWithTitle:@"OK" style:0 handler:0];
     [v39 addAction:v36];
 
-    v37 = [(BuddyRestoreUpdateController *)v60 navigationController];
-    [v37 presentViewController:v39 animated:1 completion:v58];
+    navigationController = [(BuddyRestoreUpdateController *)selfCopy navigationController];
+    [navigationController presentViewController:v39 animated:1 completion:v58];
 
     v38 = 1;
     objc_storeStrong(&v39, 0);
@@ -223,24 +223,24 @@ LABEL_30:
     }
   }
 
-  objc_storeStrong(&v43, 0);
-  objc_storeStrong(&v44, 0);
+  objc_storeStrong(&preferences, 0);
+  objc_storeStrong(&buddyPreferences3, 0);
   objc_storeStrong(&v50, 0);
   objc_storeStrong(&v58, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyRestoreUpdateController *)v30 pendingRestoreState];
-  v4 = [(BuddyPendingRestoreState *)v3 forceSoftwareUpdateRestore];
+  objc_storeStrong(location, completion);
+  pendingRestoreState = [(BuddyRestoreUpdateController *)selfCopy pendingRestoreState];
+  forceSoftwareUpdateRestore = [(BuddyPendingRestoreState *)pendingRestoreState forceSoftwareUpdateRestore];
 
-  v28 = v4 & 1;
-  if (v4)
+  v28 = forceSoftwareUpdateRestore & 1;
+  if (forceSoftwareUpdateRestore)
   {
     oslog = _BYLoggingFacility();
     v26 = OS_LOG_TYPE_DEFAULT;
@@ -255,9 +255,9 @@ LABEL_30:
     objc_storeStrong(&oslog, 0);
   }
 
-  v7 = [(BuddyRestoreUpdateController *)v30 backupItem];
+  backupItem = [(BuddyRestoreUpdateController *)selfCopy backupItem];
   v8 = 0;
-  if ([(RestorableBackupItem *)v7 isCompatible])
+  if ([(RestorableBackupItem *)backupItem isCompatible])
   {
     v8 = v28 ^ 1;
   }
@@ -274,16 +274,16 @@ LABEL_30:
 
   else
   {
-    v9 = [(BuddyRestoreUpdateController *)v30 backupItem];
-    v10 = [(BuddySoftwareUpdateController *)v30 update];
-    v11 = [(SUDescriptor *)v10 productVersion];
-    v12 = [(RestorableBackupItem *)v9 isCompatibleWithUpdateToSystemVersion:v11];
-    [(BuddyRestoreUpdateController *)v30 setAbleToRestoreWithUpdate:v12 & 1];
+    backupItem2 = [(BuddyRestoreUpdateController *)selfCopy backupItem];
+    update = [(BuddySoftwareUpdateController *)selfCopy update];
+    productVersion = [(SUDescriptor *)update productVersion];
+    v12 = [(RestorableBackupItem *)backupItem2 isCompatibleWithUpdateToSystemVersion:productVersion];
+    [(BuddyRestoreUpdateController *)selfCopy setAbleToRestoreWithUpdate:v12 & 1];
 
     if (v28)
     {
-      v13 = [(BuddySoftwareUpdateController *)v30 update];
-      [(BuddyRestoreUpdateController *)v30 setAbleToRestoreWithUpdate:v13 != 0];
+      update2 = [(BuddySoftwareUpdateController *)selfCopy update];
+      [(BuddyRestoreUpdateController *)selfCopy setAbleToRestoreWithUpdate:update2 != 0];
     }
 
     v14 = +[BYPreferencesController buddyPreferencesInternal];
@@ -291,11 +291,11 @@ LABEL_30:
 
     if (v15)
     {
-      [(BuddyRestoreUpdateController *)v30 _prepareForSoftwareUpdateToBuild:@"1A1" completion:&stru_10032CDE8];
+      [(BuddyRestoreUpdateController *)selfCopy _prepareForSoftwareUpdateToBuild:@"1A1" completion:&stru_10032CDE8];
       v24 = 1;
     }
 
-    else if ([(BuddySoftwareUpdateController *)v30 scannedForUpdate]&& [(BuddyRestoreUpdateController *)v30 ableToRestoreWithUpdate])
+    else if ([(BuddySoftwareUpdateController *)selfCopy scannedForUpdate]&& [(BuddyRestoreUpdateController *)selfCopy ableToRestoreWithUpdate])
     {
       if (location[0])
       {
@@ -307,13 +307,13 @@ LABEL_30:
 
     else
     {
-      v16 = v30;
+      v16 = selfCopy;
       v17 = _NSConcreteStackBlock;
       v18 = -1073741824;
       v19 = 0;
       v20 = sub_1001020EC;
       v21 = &unk_10032CE10;
-      v22 = v30;
+      v22 = selfCopy;
       v23 = location[0];
       [(BuddySoftwareUpdateController *)v16 scanForUpdateCompletion:&v17];
       objc_storeStrong(&v23, 0);
@@ -325,37 +325,37 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)softwareUpdateController:(id)a3 prepareToInstallUpdate:(id)a4 completion:(id)a5
+- (void)softwareUpdateController:(id)controller prepareToInstallUpdate:(id)update completion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, update);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
-  v7 = v12;
-  v8 = [v10 productBuildVersion];
-  [(BuddyRestoreUpdateController *)v7 _prepareForSoftwareUpdateToBuild:v8 completion:v9];
+  objc_storeStrong(&v9, completion);
+  v7 = selfCopy;
+  productBuildVersion = [v10 productBuildVersion];
+  [(BuddyRestoreUpdateController *)v7 _prepareForSoftwareUpdateToBuild:productBuildVersion completion:v9];
 
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)softwareUpdateController:(id)a3 didStartInstallForUpdate:(id)a4
+- (void)softwareUpdateController:(id)controller didStartInstallForUpdate:(id)update
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
-  v5 = [(BuddyRestoreUpdateController *)v20 buddyPreferences];
-  LOBYTE(a4) = ![BuddyRestoreState hasStateFromPreferences:v5];
+  objc_storeStrong(&v18, update);
+  buddyPreferences = [(BuddyRestoreUpdateController *)selfCopy buddyPreferences];
+  LOBYTE(update) = ![BuddyRestoreState hasStateFromPreferences:buddyPreferences];
 
-  if (a4)
+  if (update)
   {
     oslog = _BYLoggingFacility();
     v16 = OS_LOG_TYPE_DEFAULT;
@@ -368,9 +368,9 @@ LABEL_30:
     }
 
     objc_storeStrong(&oslog, 0);
-    v8 = v20;
-    v9 = [v18 productBuildVersion];
-    [(BuddyRestoreUpdateController *)v8 _prepareForSoftwareUpdateToBuild:v9 completion:0];
+    v8 = selfCopy;
+    productBuildVersion = [v18 productBuildVersion];
+    [(BuddyRestoreUpdateController *)v8 _prepareForSoftwareUpdateToBuild:productBuildVersion completion:0];
   }
 
   else
@@ -392,14 +392,14 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)softwareUpdateController:(id)a3 didFailToInstallUpdateWithError:(id)a4
+- (void)softwareUpdateController:(id)controller didFailToInstallUpdateWithError:(id)error
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, error);
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
   {
@@ -412,9 +412,9 @@ LABEL_30:
 
     else if (v12)
     {
-      v10 = [v12 domain];
+      domain = [v12 domain];
       v9 = 1;
-      v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v10, [v12 code]);
+      v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v12 code]);
       v8 = v5;
       v7 = 1;
     }
@@ -436,8 +436,8 @@ LABEL_30:
   }
 
   objc_storeStrong(&oslog, 0);
-  v6 = [(BuddyRestoreUpdateController *)v14 buddyPreferences];
-  [BuddyRestoreState removeFromPreferences:v6];
+  buddyPreferences = [(BuddyRestoreUpdateController *)selfCopy buddyPreferences];
+  [BuddyRestoreState removeFromPreferences:buddyPreferences];
 
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);

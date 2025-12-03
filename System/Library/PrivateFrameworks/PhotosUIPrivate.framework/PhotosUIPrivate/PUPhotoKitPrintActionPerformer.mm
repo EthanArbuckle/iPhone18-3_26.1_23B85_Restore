@@ -1,5 +1,5 @@
 @interface PUPhotoKitPrintActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection;
 - (void)performUserInteractionTask;
 @end
 
@@ -8,14 +8,14 @@
 - (void)performUserInteractionTask
 {
   v3 = PXDefaultAssetSharingHelperClass();
-  v4 = [(PUAssetActionPerformer *)self assets];
+  assets = [(PUAssetActionPerformer *)self assets];
   v5 = *MEMORY[0x1E69CDAF0];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__PUPhotoKitPrintActionPerformer_performUserInteractionTask__block_invoke;
   v6[3] = &unk_1E7B7BB90;
   v6[4] = self;
-  [v3 prepareAssets:v4 forActivityType:v5 completion:v6];
+  [v3 prepareAssets:assets forActivityType:v5 completion:v6];
 }
 
 void __60__PUPhotoKitPrintActionPerformer_performUserInteractionTask__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -42,12 +42,12 @@ void __60__PUPhotoKitPrintActionPerformer_performUserInteractionTask__block_invo
   }
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection
 {
-  v4 = a4;
+  collectionCopy = collection;
   if ([MEMORY[0x1E69C5A18] isPrintingAvailable])
   {
-    v5 = [v4 isTrashBin] ^ 1;
+    v5 = [collectionCopy isTrashBin] ^ 1;
   }
 
   else

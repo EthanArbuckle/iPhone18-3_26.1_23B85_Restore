@@ -1,35 +1,35 @@
 @interface SGMIMetricsTrialMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGMIMetricsTrialMetadata
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(SGMIMetricsTrialMetadata *)self setExperimentId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(SGMIMetricsTrialMetadata *)self setTreatmentId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
-    self->_deploymentId = v4[2];
+    self->_deploymentId = fromCopy[2];
     *&self->_has |= 1u;
   }
 }
@@ -51,16 +51,16 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   experimentId = self->_experimentId;
-  if (experimentId | *(v4 + 2))
+  if (experimentId | *(equalCopy + 2))
   {
     if (![(NSString *)experimentId isEqual:?])
     {
@@ -69,7 +69,7 @@
   }
 
   treatmentId = self->_treatmentId;
-  if (treatmentId | *(v4 + 3))
+  if (treatmentId | *(equalCopy + 3))
   {
     if (![(NSString *)treatmentId isEqual:?])
     {
@@ -77,10 +77,10 @@
     }
   }
 
-  v7 = (*(v4 + 32) & 1) == 0;
+  v7 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) != 0 && self->_deploymentId == *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) != 0 && self->_deploymentId == *(equalCopy + 2))
     {
       v7 = 1;
       goto LABEL_11;
@@ -95,14 +95,14 @@ LABEL_11:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_experimentId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_experimentId copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_treatmentId copyWithZone:a3];
+  v8 = [(NSString *)self->_treatmentId copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -115,61 +115,61 @@ LABEL_11:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_experimentId)
   {
-    [v4 setExperimentId:?];
-    v4 = v5;
+    [toCopy setExperimentId:?];
+    toCopy = v5;
   }
 
   if (self->_treatmentId)
   {
     [v5 setTreatmentId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = self->_deploymentId;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 2) = self->_deploymentId;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_experimentId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_treatmentId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     deploymentId = self->_deploymentId;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   experimentId = self->_experimentId;
   if (experimentId)
   {
-    [v3 setObject:experimentId forKey:@"experimentId"];
+    [dictionary setObject:experimentId forKey:@"experimentId"];
   }
 
   treatmentId = self->_treatmentId;
@@ -193,8 +193,8 @@ LABEL_11:
   v8.receiver = self;
   v8.super_class = SGMIMetricsTrialMetadata;
   v4 = [(SGMIMetricsTrialMetadata *)&v8 description];
-  v5 = [(SGMIMetricsTrialMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGMIMetricsTrialMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

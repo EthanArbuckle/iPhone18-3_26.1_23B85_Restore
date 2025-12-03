@@ -3,25 +3,25 @@
 - (NSSet)identifiersForMomentRelatedToDeletedPersons;
 - (NSSet)identifiersForMomentRelatedToUpdatedPersons;
 - (PGGraphUpdateRelatedDetails)init;
-- (id)_momentNodesFromPersonNodes:(id)a3;
-- (void)_accumulateMomentIdentifiersInto:(id)a3 forPersonNodes:(id)a4;
-- (void)accumulateDetailsForDeletedMomentNodes:(id)a3;
-- (void)accumulateDetailsForDeletedPersonNodes:(id)a3;
-- (void)accumulateDetailsForUpdatedPersonNode:(id)a3 personChange:(id)a4;
+- (id)_momentNodesFromPersonNodes:(id)nodes;
+- (void)_accumulateMomentIdentifiersInto:(id)into forPersonNodes:(id)nodes;
+- (void)accumulateDetailsForDeletedMomentNodes:(id)nodes;
+- (void)accumulateDetailsForDeletedPersonNodes:(id)nodes;
+- (void)accumulateDetailsForUpdatedPersonNode:(id)node personChange:(id)change;
 @end
 
 @implementation PGGraphUpdateRelatedDetails
 
-- (id)_momentNodesFromPersonNodes:(id)a3
+- (id)_momentNodesFromPersonNodes:(id)nodes
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nodesCopy = nodes;
   v4 = [MEMORY[0x277CBEB58] set];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = nodesCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -36,14 +36,14 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * i) collection];
-        v11 = [v10 momentNodes];
+        collection = [*(*(&v16 + 1) + 8 * i) collection];
+        momentNodes = [collection momentNodes];
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __59__PGGraphUpdateRelatedDetails__momentNodesFromPersonNodes___block_invoke;
         v14[3] = &unk_278889290;
         v15 = v4;
-        [v11 enumerateNodesUsingBlock:v14];
+        [momentNodes enumerateNodesUsingBlock:v14];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -57,60 +57,60 @@
   return v4;
 }
 
-- (void)_accumulateMomentIdentifiersInto:(id)a3 forPersonNodes:(id)a4
+- (void)_accumulateMomentIdentifiersInto:(id)into forPersonNodes:(id)nodes
 {
-  v5 = a3;
-  v7 = [a4 momentNodes];
-  v6 = [v7 uuids];
-  [v5 unionSet:v6];
+  intoCopy = into;
+  momentNodes = [nodes momentNodes];
+  uuids = [momentNodes uuids];
+  [intoCopy unionSet:uuids];
 }
 
-- (void)accumulateDetailsForDeletedMomentNodes:(id)a3
+- (void)accumulateDetailsForDeletedMomentNodes:(id)nodes
 {
-  v4 = a3;
-  v7 = [(PGGraphUpdateRelatedDetails *)self accumulatedIdentifiersForMemoryNodesRelatedToDeletedMoments];
-  v5 = [v4 memoryNodes];
+  nodesCopy = nodes;
+  accumulatedIdentifiersForMemoryNodesRelatedToDeletedMoments = [(PGGraphUpdateRelatedDetails *)self accumulatedIdentifiersForMemoryNodesRelatedToDeletedMoments];
+  memoryNodes = [nodesCopy memoryNodes];
 
-  v6 = [v5 uniqueMemoryIdentifiers];
-  [v7 unionSet:v6];
+  uniqueMemoryIdentifiers = [memoryNodes uniqueMemoryIdentifiers];
+  [accumulatedIdentifiersForMemoryNodesRelatedToDeletedMoments unionSet:uniqueMemoryIdentifiers];
 }
 
-- (void)accumulateDetailsForDeletedPersonNodes:(id)a3
+- (void)accumulateDetailsForDeletedPersonNodes:(id)nodes
 {
-  v4 = a3;
-  v7 = [(PGGraphUpdateRelatedDetails *)self accumulatedIdentifiersForMomentNodesRelatedToDeletedPersons];
-  v5 = [v4 momentNodes];
+  nodesCopy = nodes;
+  accumulatedIdentifiersForMomentNodesRelatedToDeletedPersons = [(PGGraphUpdateRelatedDetails *)self accumulatedIdentifiersForMomentNodesRelatedToDeletedPersons];
+  momentNodes = [nodesCopy momentNodes];
 
-  v6 = [v5 uuids];
-  [v7 unionSet:v6];
+  uuids = [momentNodes uuids];
+  [accumulatedIdentifiersForMomentNodesRelatedToDeletedPersons unionSet:uuids];
 }
 
-- (void)accumulateDetailsForUpdatedPersonNode:(id)a3 personChange:(id)a4
+- (void)accumulateDetailsForUpdatedPersonNode:(id)node personChange:(id)change
 {
-  v12 = a3;
-  v6 = [a4 propertyNames];
+  nodeCopy = node;
+  propertyNames = [change propertyNames];
   if (searchIndexProcessorIsInterestedInChangedPersonProperties_onceToken != -1)
   {
     dispatch_once(&searchIndexProcessorIsInterestedInChangedPersonProperties_onceToken, &__block_literal_global_26873);
   }
 
-  v7 = [v6 intersectsSet:searchIndexProcessorIsInterestedInChangedPersonProperties_personPropertiesOfInterest];
+  v7 = [propertyNames intersectsSet:searchIndexProcessorIsInterestedInChangedPersonProperties_personPropertiesOfInterest];
 
   if (v7)
   {
-    v8 = [(PGGraphUpdateRelatedDetails *)self accumulatedIdentifiersForMomentNodesRelatedToUpdatedPersons];
-    v9 = [v12 collection];
-    v10 = [v9 momentNodes];
-    v11 = [v10 uuids];
-    [v8 unionSet:v11];
+    accumulatedIdentifiersForMomentNodesRelatedToUpdatedPersons = [(PGGraphUpdateRelatedDetails *)self accumulatedIdentifiersForMomentNodesRelatedToUpdatedPersons];
+    collection = [nodeCopy collection];
+    momentNodes = [collection momentNodes];
+    uuids = [momentNodes uuids];
+    [accumulatedIdentifiersForMomentNodesRelatedToUpdatedPersons unionSet:uuids];
   }
 }
 
 - (NSSet)identifiersForMemoriesRelatedToDeletedMoments
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(PGGraphUpdateRelatedDetails *)self accumulatedIdentifiersForMemoryNodesRelatedToDeletedMoments];
-  v4 = [v2 setWithSet:v3];
+  accumulatedIdentifiersForMemoryNodesRelatedToDeletedMoments = [(PGGraphUpdateRelatedDetails *)self accumulatedIdentifiersForMemoryNodesRelatedToDeletedMoments];
+  v4 = [v2 setWithSet:accumulatedIdentifiersForMemoryNodesRelatedToDeletedMoments];
 
   return v4;
 }
@@ -118,8 +118,8 @@
 - (NSSet)identifiersForMomentRelatedToDeletedPersons
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(PGGraphUpdateRelatedDetails *)self accumulatedIdentifiersForMomentNodesRelatedToDeletedPersons];
-  v4 = [v2 setWithSet:v3];
+  accumulatedIdentifiersForMomentNodesRelatedToDeletedPersons = [(PGGraphUpdateRelatedDetails *)self accumulatedIdentifiersForMomentNodesRelatedToDeletedPersons];
+  v4 = [v2 setWithSet:accumulatedIdentifiersForMomentNodesRelatedToDeletedPersons];
 
   return v4;
 }
@@ -127,8 +127,8 @@
 - (NSSet)identifiersForMomentRelatedToUpdatedPersons
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(PGGraphUpdateRelatedDetails *)self accumulatedIdentifiersForMomentNodesRelatedToUpdatedPersons];
-  v4 = [v2 setWithSet:v3];
+  accumulatedIdentifiersForMomentNodesRelatedToUpdatedPersons = [(PGGraphUpdateRelatedDetails *)self accumulatedIdentifiersForMomentNodesRelatedToUpdatedPersons];
+  v4 = [v2 setWithSet:accumulatedIdentifiersForMomentNodesRelatedToUpdatedPersons];
 
   return v4;
 }

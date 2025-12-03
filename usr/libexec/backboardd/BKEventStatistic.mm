@@ -1,7 +1,7 @@
 @interface BKEventStatistic
-+ (BKEventStatistic)statisticWithLabel:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendDescriptionToFormatter:(id)a3;
++ (BKEventStatistic)statisticWithLabel:(id)label;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)reset;
 @end
 
@@ -43,7 +43,7 @@
   self->_needsLogging = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_opt_class() statisticWithLabel:self->_label];
   objc_storeStrong((v4 + 24), self->_associatedStatistics);
@@ -51,14 +51,14 @@
   return v4;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v5 = [(NSArray *)self->_associatedStatistics bs_filter:&stru_1000FC220];
   if ([v5 count])
   {
     v6 = objc_opt_class();
-    v7 = v4;
+    v7 = formatterCopy;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -88,11 +88,11 @@
   }
 }
 
-+ (BKEventStatistic)statisticWithLabel:(id)a3
++ (BKEventStatistic)statisticWithLabel:(id)label
 {
-  v3 = a3;
+  labelCopy = label;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setLabel:v3];
+  [v4 setLabel:labelCopy];
 
   return v4;
 }

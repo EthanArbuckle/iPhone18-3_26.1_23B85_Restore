@@ -2,22 +2,22 @@
 - (BOOL)isScheduled;
 - (NSString)_identifier;
 - (NSString)identifier;
-- (SFUDisplayLinkDrivenTimer)initWithIdentifier:(id)a3 forUseInWindow:(id)a4;
+- (SFUDisplayLinkDrivenTimer)initWithIdentifier:(id)identifier forUseInWindow:(id)window;
 - (double)timeRemaining;
 - (id)_clientHandler;
 - (void)cancel;
-- (void)displayLinkCallbackWithSender:(id)a3;
+- (void)displayLinkCallbackWithSender:(id)sender;
 - (void)invalidate;
-- (void)scheduleWithFireInterval:(double)a3 queue:(id)a4 handler:(id)a5;
-- (void)set_clientHandler:(id)a3;
-- (void)set_clientHandlerQueue:(id)a3;
-- (void)set_displayLink:(id)a3;
-- (void)set_identifier:(id)a3;
+- (void)scheduleWithFireInterval:(double)interval queue:(id)queue handler:(id)handler;
+- (void)set_clientHandler:(id)handler;
+- (void)set_clientHandlerQueue:(id)queue;
+- (void)set_displayLink:(id)link;
+- (void)set_identifier:(id)set_identifier;
 @end
 
 @implementation SFUDisplayLinkDrivenTimer
 
-- (SFUDisplayLinkDrivenTimer)initWithIdentifier:(id)a3 forUseInWindow:(id)a4
+- (SFUDisplayLinkDrivenTimer)initWithIdentifier:(id)identifier forUseInWindow:(id)window
 {
   sub_26C64DA88();
   sub_26C64DA78();
@@ -28,7 +28,7 @@
   }
 
   v5 = sub_26C64D9F8();
-  v7 = SFUDisplayLinkDrivenTimer.init(identifier:forUseIn:)(v5, v6, a4);
+  v7 = SFUDisplayLinkDrivenTimer.init(identifier:forUseIn:)(v5, v6, window);
 
   return v7;
 }
@@ -49,9 +49,9 @@
   return v2;
 }
 
-- (void)set_identifier:(id)a3
+- (void)set_identifier:(id)set_identifier
 {
-  if (a3)
+  if (set_identifier)
   {
     v4 = sub_26C64D9F8();
   }
@@ -67,18 +67,18 @@
   v6[1] = v5;
 }
 
-- (void)set_displayLink:(id)a3
+- (void)set_displayLink:(id)link
 {
   v4 = *(self + OBJC_IVAR___SFUDisplayLinkDrivenTimer__displayLink);
-  *(self + OBJC_IVAR___SFUDisplayLinkDrivenTimer__displayLink) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SFUDisplayLinkDrivenTimer__displayLink) = link;
+  linkCopy = link;
 }
 
-- (void)set_clientHandlerQueue:(id)a3
+- (void)set_clientHandlerQueue:(id)queue
 {
   v4 = *(self + OBJC_IVAR___SFUDisplayLinkDrivenTimer__clientHandlerQueue);
-  *(self + OBJC_IVAR___SFUDisplayLinkDrivenTimer__clientHandlerQueue) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SFUDisplayLinkDrivenTimer__clientHandlerQueue) = queue;
+  queueCopy = queue;
 }
 
 - (id)_clientHandler
@@ -103,9 +103,9 @@
   return v3;
 }
 
-- (void)set_clientHandler:(id)a3
+- (void)set_clientHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -123,31 +123,31 @@
   v8 = *(self + OBJC_IVAR___SFUDisplayLinkDrivenTimer__clientHandler);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_26C643400(v8);
 }
 
-- (void)displayLinkCallbackWithSender:(id)a3
+- (void)displayLinkCallbackWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_26C64264C(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_26C64264C(senderCopy);
 }
 
-- (void)scheduleWithFireInterval:(double)a3 queue:(id)a4 handler:(id)a5
+- (void)scheduleWithFireInterval:(double)interval queue:(id)queue handler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = a4;
-  v11 = self;
-  SFUDisplayLinkDrivenTimer.schedule(withFireInterval:queue:handler:)(v10, sub_26C643260, v9, a3);
+  queueCopy = queue;
+  selfCopy = self;
+  SFUDisplayLinkDrivenTimer.schedule(withFireInterval:queue:handler:)(queueCopy, sub_26C643260, v9, interval);
 }
 
 - (NSString)identifier
 {
-  v2 = self;
-  result = [(SFUDisplayLinkDrivenTimer *)v2 _identifier];
+  selfCopy = self;
+  result = [(SFUDisplayLinkDrivenTimer *)selfCopy _identifier];
   if (result)
   {
     v4 = result;
@@ -165,22 +165,22 @@
 
 - (BOOL)isScheduled
 {
-  v2 = self;
-  v3 = [(SFUDisplayLinkDrivenTimer *)v2 _displayLink];
-  v4 = [(CADisplayLink *)v3 isPaused];
+  selfCopy = self;
+  _displayLink = [(SFUDisplayLinkDrivenTimer *)selfCopy _displayLink];
+  isPaused = [(CADisplayLink *)_displayLink isPaused];
 
-  return v4 ^ 1;
+  return isPaused ^ 1;
 }
 
 - (double)timeRemaining
 {
-  v2 = self;
-  if ([(SFUDisplayLinkDrivenTimer *)v2 isScheduled])
+  selfCopy = self;
+  if ([(SFUDisplayLinkDrivenTimer *)selfCopy isScheduled])
   {
-    [(SFUDisplayLinkDrivenTimer *)v2 _fireDate];
+    [(SFUDisplayLinkDrivenTimer *)selfCopy _fireDate];
     v4 = v3;
-    v5 = [(SFUDisplayLinkDrivenTimer *)v2 _displayLink];
-    [(CADisplayLink *)v5 timestamp];
+    _displayLink = [(SFUDisplayLinkDrivenTimer *)selfCopy _displayLink];
+    [(CADisplayLink *)_displayLink timestamp];
     v7 = v6;
 
     result = v4 - v7;
@@ -201,21 +201,21 @@
 
 - (void)cancel
 {
-  v3 = self;
-  v2 = [(SFUDisplayLinkDrivenTimer *)v3 _displayLink];
-  [(CADisplayLink *)v2 setPaused:1];
+  selfCopy = self;
+  _displayLink = [(SFUDisplayLinkDrivenTimer *)selfCopy _displayLink];
+  [(CADisplayLink *)_displayLink setPaused:1];
 }
 
 - (void)invalidate
 {
-  v4 = self;
-  v2 = [(SFUDisplayLinkDrivenTimer *)v4 _displayLink];
-  [(CADisplayLink *)v2 setPaused:1];
+  selfCopy = self;
+  _displayLink = [(SFUDisplayLinkDrivenTimer *)selfCopy _displayLink];
+  [(CADisplayLink *)_displayLink setPaused:1];
 
-  v3 = [(SFUDisplayLinkDrivenTimer *)v4 _displayLink];
-  [(CADisplayLink *)v3 invalidate];
+  _displayLink2 = [(SFUDisplayLinkDrivenTimer *)selfCopy _displayLink];
+  [(CADisplayLink *)_displayLink2 invalidate];
 
-  [(SFUDisplayLinkDrivenTimer *)v4 set_valid:0];
+  [(SFUDisplayLinkDrivenTimer *)selfCopy set_valid:0];
 }
 
 @end

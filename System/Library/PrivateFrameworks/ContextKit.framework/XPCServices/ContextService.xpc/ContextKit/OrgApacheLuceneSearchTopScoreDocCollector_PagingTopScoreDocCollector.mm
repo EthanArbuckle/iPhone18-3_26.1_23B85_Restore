@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneSearchTopScoreDocCollector_PagingTopScoreDocCollector
-- (id)getLeafCollectorWithOrgApacheLuceneIndexLeafReaderContext:(id)a3;
-- (id)newTopDocsWithOrgApacheLuceneSearchScoreDocArray:(id)a3 withInt:(int)a4;
+- (id)getLeafCollectorWithOrgApacheLuceneIndexLeafReaderContext:(id)context;
+- (id)newTopDocsWithOrgApacheLuceneSearchScoreDocArray:(id)array withInt:(int)int;
 - (int)topDocsSize;
 - (void)dealloc;
 @end
@@ -26,12 +26,12 @@
   return [(OrgApacheLuceneUtilPriorityQueue *)v6 size];
 }
 
-- (id)newTopDocsWithOrgApacheLuceneSearchScoreDocArray:(id)a3 withInt:(int)a4
+- (id)newTopDocsWithOrgApacheLuceneSearchScoreDocArray:(id)array withInt:(int)int
 {
   totalHits = self->super.super.totalHits_;
-  if (a3)
+  if (array)
   {
-    v5 = new_OrgApacheLuceneSearchTopDocs_initWithInt_withOrgApacheLuceneSearchScoreDocArray_(self->super.super.totalHits_, a3);
+    v5 = new_OrgApacheLuceneSearchTopDocs_initWithInt_withOrgApacheLuceneSearchScoreDocArray_(self->super.super.totalHits_, array);
   }
 
   else
@@ -43,14 +43,14 @@
   return v5;
 }
 
-- (id)getLeafCollectorWithOrgApacheLuceneIndexLeafReaderContext:(id)a3
+- (id)getLeafCollectorWithOrgApacheLuceneIndexLeafReaderContext:(id)context
 {
-  if (!a3 || (after = self->after_) == 0)
+  if (!context || (after = self->after_) == 0)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = *(a3 + 8);
+  v5 = *(context + 8);
   v6 = after->doc_ - v5;
   v7 = [OrgApacheLuceneSearchTopScoreDocCollector_PagingTopScoreDocCollector__1 alloc];
   JreStrongAssign(&v7->this$0_, self);

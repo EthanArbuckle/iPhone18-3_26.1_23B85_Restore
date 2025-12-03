@@ -1,24 +1,24 @@
 @interface THWInteractiveImageSidebarLayout
-- (CGPoint)stackedControlContainerOrigin:(id)a3;
-- (THWInteractiveImageSidebarLayout)initWithDelegate:(id)a3;
-- (UIEdgeInsets)stackedControlContainerInsets:(id)a3;
+- (CGPoint)stackedControlContainerOrigin:(id)origin;
+- (THWInteractiveImageSidebarLayout)initWithDelegate:(id)delegate;
+- (UIEdgeInsets)stackedControlContainerInsets:(id)insets;
 - (id)childInfosForLayout;
 - (id)computeLayoutGeometry;
-- (id)controlContainerChildInfosForLayout:(id)a3;
-- (id)layoutForCallout:(id)a3;
-- (id)p_stackForCallout:(id)a3;
+- (id)controlContainerChildInfosForLayout:(id)layout;
+- (id)layoutForCallout:(id)callout;
+- (id)p_stackForCallout:(id)callout;
 - (void)dealloc;
-- (void)p_updateContainerMap:(id)a3 forCallout:(id)a4;
+- (void)p_updateContainerMap:(id)map forCallout:(id)callout;
 - (void)p_updateContainers;
-- (void)setCurrentCallout:(id)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setPreviousCallout:(id)a3;
-- (void)updateCallout:(id)a3;
+- (void)setCurrentCallout:(id)callout;
+- (void)setHidden:(BOOL)hidden;
+- (void)setPreviousCallout:(id)callout;
+- (void)updateCallout:(id)callout;
 @end
 
 @implementation THWInteractiveImageSidebarLayout
 
-- (THWInteractiveImageSidebarLayout)initWithDelegate:(id)a3
+- (THWInteractiveImageSidebarLayout)initWithDelegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = THWInteractiveImageSidebarLayout;
@@ -26,7 +26,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_delegate = a3;
+    v4->_delegate = delegate;
     v4->_calloutToStackedControlContainerMap = objc_alloc_init(TSURetainedPointerKeyDictionary);
   }
 
@@ -111,44 +111,44 @@ LABEL_15:
   return v16;
 }
 
-- (void)setCurrentCallout:(id)a3
+- (void)setCurrentCallout:(id)callout
 {
   currentCallout = self->_currentCallout;
-  if (currentCallout != a3)
+  if (currentCallout != callout)
   {
 
-    self->_currentCallout = a3;
+    self->_currentCallout = callout;
 
     [(THWInteractiveImageSidebarLayout *)self invalidateChildren];
   }
 }
 
-- (void)setPreviousCallout:(id)a3
+- (void)setPreviousCallout:(id)callout
 {
   previousCallout = self->_previousCallout;
-  if (previousCallout != a3)
+  if (previousCallout != callout)
   {
 
-    self->_previousCallout = a3;
+    self->_previousCallout = callout;
 
     [(THWInteractiveImageSidebarLayout *)self invalidateChildren];
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  if (self->_hidden != a3)
+  if (self->_hidden != hidden)
   {
-    self->_hidden = a3;
+    self->_hidden = hidden;
     [(THWInteractiveImageSidebarLayout *)self invalidateFrame];
   }
 }
 
-- (void)p_updateContainerMap:(id)a3 forCallout:(id)a4
+- (void)p_updateContainerMap:(id)map forCallout:(id)callout
 {
-  if (a4)
+  if (callout)
   {
-    v7 = [(TSURetainedPointerKeyDictionary *)self->_calloutToStackedControlContainerMap objectForKeyedSubscript:a4];
+    v7 = [(TSURetainedPointerKeyDictionary *)self->_calloutToStackedControlContainerMap objectForKeyedSubscript:callout];
     if (v7)
     {
       v8 = v7;
@@ -157,14 +157,14 @@ LABEL_15:
     else
     {
       v8 = [[THWStackedControlContainer alloc] initWithDelegate:self];
-      [(THWControlContainer *)v8 setInstanceData:a4];
+      [(THWControlContainer *)v8 setInstanceData:callout];
       if (!v8)
       {
         return;
       }
     }
 
-    [a3 setObject:v8 forUncopiedKey:a4];
+    [map setObject:v8 forUncopiedKey:callout];
   }
 }
 
@@ -245,20 +245,20 @@ LABEL_14:
   return result;
 }
 
-- (void)updateCallout:(id)a3
+- (void)updateCallout:(id)callout
 {
-  if (self->_currentCallout != a3)
+  if (self->_currentCallout != callout)
   {
     [(THWInteractiveImageSidebarLayout *)self invalidateFrame];
     [(THWInteractiveImageSidebarLayout *)self setPreviousCallout:self->_currentCallout];
 
-    [(THWInteractiveImageSidebarLayout *)self setCurrentCallout:a3];
+    [(THWInteractiveImageSidebarLayout *)self setCurrentCallout:callout];
   }
 }
 
-- (id)p_stackForCallout:(id)a3
+- (id)p_stackForCallout:(id)callout
 {
-  if (a3)
+  if (callout)
   {
     return [(TSURetainedPointerKeyDictionary *)self->_calloutToStackedControlContainerMap objectForKeyedSubscript:?];
   }
@@ -269,31 +269,31 @@ LABEL_14:
   }
 }
 
-- (id)layoutForCallout:(id)a3
+- (id)layoutForCallout:(id)callout
 {
-  result = [(THWInteractiveImageSidebarLayout *)self p_stackForCallout:a3];
+  result = [(THWInteractiveImageSidebarLayout *)self p_stackForCallout:callout];
   if (result)
   {
     v5 = result;
-    v6 = [(THWInteractiveImageSidebarLayout *)self layoutController];
+    layoutController = [(THWInteractiveImageSidebarLayout *)self layoutController];
 
-    return [v6 layoutForInfo:v5 childOfLayout:self];
+    return [layoutController layoutForInfo:v5 childOfLayout:self];
   }
 
   return result;
 }
 
-- (id)controlContainerChildInfosForLayout:(id)a3
+- (id)controlContainerChildInfosForLayout:(id)layout
 {
-  v3 = [objc_msgSend(a3 "info")];
-  v4 = [v3 titleStorage];
-  v5 = [v3 descriptionStorage];
-  v6 = [v4 length];
-  result = [v5 length];
+  v3 = [objc_msgSend(layout "info")];
+  titleStorage = [v3 titleStorage];
+  descriptionStorage = [v3 descriptionStorage];
+  v6 = [titleStorage length];
+  result = [descriptionStorage length];
   if (v6 && result)
   {
-    v12[0] = v4;
-    v12[1] = v5;
+    v12[0] = titleStorage;
+    v12[1] = descriptionStorage;
     v8 = v12;
     v9 = 2;
   }
@@ -302,7 +302,7 @@ LABEL_14:
   {
     if (v6)
     {
-      v11 = v4;
+      v11 = titleStorage;
       v8 = &v11;
     }
 
@@ -313,7 +313,7 @@ LABEL_14:
         return result;
       }
 
-      v10 = v5;
+      v10 = descriptionStorage;
       v8 = &v10;
     }
 
@@ -323,7 +323,7 @@ LABEL_14:
   return [NSArray arrayWithObjects:v8 count:v9];
 }
 
-- (CGPoint)stackedControlContainerOrigin:(id)a3
+- (CGPoint)stackedControlContainerOrigin:(id)origin
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -332,9 +332,9 @@ LABEL_14:
   return result;
 }
 
-- (UIEdgeInsets)stackedControlContainerInsets:(id)a3
+- (UIEdgeInsets)stackedControlContainerInsets:(id)insets
 {
-  [objc_msgSend(objc_msgSend(a3 "info")];
+  [objc_msgSend(objc_msgSend(insets "info")];
   v4 = v3 + -1.0;
   v6 = v5 + -1.0;
   v7 = 8.0;

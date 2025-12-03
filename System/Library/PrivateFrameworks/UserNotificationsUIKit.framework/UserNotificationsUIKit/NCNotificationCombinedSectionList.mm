@@ -1,52 +1,52 @@
 @interface NCNotificationCombinedSectionList
 - (BOOL)adjustForContentSizeCategoryChange;
-- (BOOL)containsNotificationRequest:(id)a3;
-- (BOOL)containsSectionList:(id)a3;
+- (BOOL)containsNotificationRequest:(id)request;
+- (BOOL)containsSectionList:(id)list;
 - (BOOL)hasVisibleContentToReveal;
 - (BOOL)regroupNotificationGroups;
-- (NCNotificationCombinedSectionList)initWithTitle:(id)a3 sectionType:(unint64_t)a4;
-- (double)footerViewHeightForNotificationList:(id)a3 withWidth:(double)a4;
-- (double)notificationListView:(id)a3 heightForItemAtIndex:(unint64_t)a4 withWidth:(double)a5 inDisplayListAsStackMode:(BOOL)a6 ignoreExpandedGroupStack:(BOOL)a7;
+- (NCNotificationCombinedSectionList)initWithTitle:(id)title sectionType:(unint64_t)type;
+- (double)footerViewHeightForNotificationList:(id)list withWidth:(double)width;
+- (double)notificationListView:(id)view heightForItemAtIndex:(unint64_t)index withWidth:(double)width inDisplayListAsStackMode:(BOOL)mode ignoreExpandedGroupStack:(BOOL)stack;
 - (id)_allSectionLists;
 - (id)allNotificationRequests;
-- (id)footerViewForNotificationList:(id)a3;
-- (id)notificationListView:(id)a3 viewForItemAtIndex:(unint64_t)a4;
+- (id)footerViewForNotificationList:(id)list;
+- (id)notificationListView:(id)view viewForItemAtIndex:(unint64_t)index;
 - (id)orderedNotificationListComponents;
-- (id)sectionListAtIndex:(unint64_t)a3;
+- (id)sectionListAtIndex:(unint64_t)index;
 - (unint64_t)count;
 - (unint64_t)itemCountWithExpandedGroup;
 - (unint64_t)notificationCount;
 - (void)_invalidateSectionListViewForChronologicalSectionsIfNecessary;
-- (void)_performOperationOnAllSectionLists:(id)a3;
-- (void)adjustForLegibilitySettingsChange:(id)a3;
+- (void)_performOperationOnAllSectionLists:(id)lists;
+- (void)adjustForLegibilitySettingsChange:(id)change;
 - (void)clearAll;
-- (void)collapseGroupForNotificationRequest:(id)a3 withCompletion:(id)a4;
-- (void)expandGroupForNotificationRequest:(id)a3 withCompletion:(id)a4;
-- (void)insertNotificationSectionList:(id)a3 atIndex:(unint64_t)a4 animated:(BOOL)a5;
-- (void)insertNotificationSectionListChronologically:(id)a3 animated:(BOOL)a4;
-- (void)mergeNotificationGroups:(id)a3 reorderGroupNotifications:(BOOL)a4;
-- (void)notificationListBaseComponentDidRemoveAll:(id)a3;
-- (void)notificationListComponent:(id)a3 didRemoveNotificationRequest:(id)a4;
-- (void)notificationsLoadedForSectionIdentifier:(id)a3;
-- (void)reloadNotificationRequest:(id)a3;
-- (void)removeNotificationSectionList:(id)a3 animated:(BOOL)a4;
-- (void)setDeviceAuthenticated:(BOOL)a3;
+- (void)collapseGroupForNotificationRequest:(id)request withCompletion:(id)completion;
+- (void)expandGroupForNotificationRequest:(id)request withCompletion:(id)completion;
+- (void)insertNotificationSectionList:(id)list atIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)insertNotificationSectionListChronologically:(id)chronologically animated:(BOOL)animated;
+- (void)mergeNotificationGroups:(id)groups reorderGroupNotifications:(BOOL)notifications;
+- (void)notificationListBaseComponentDidRemoveAll:(id)all;
+- (void)notificationListComponent:(id)component didRemoveNotificationRequest:(id)request;
+- (void)notificationsLoadedForSectionIdentifier:(id)identifier;
+- (void)reloadNotificationRequest:(id)request;
+- (void)removeNotificationSectionList:(id)list animated:(BOOL)animated;
+- (void)setDeviceAuthenticated:(BOOL)authenticated;
 - (void)sortNotificationGroupListsIfNecessary;
-- (void)toggleFilteringForSectionIdentifier:(id)a3 shouldFilter:(BOOL)a4;
-- (void)updateNotificationSectionSettings:(id)a3 previousSectionSettings:(id)a4;
+- (void)toggleFilteringForSectionIdentifier:(id)identifier shouldFilter:(BOOL)filter;
+- (void)updateNotificationSectionSettings:(id)settings previousSectionSettings:(id)sectionSettings;
 @end
 
 @implementation NCNotificationCombinedSectionList
 
 - (void)sortNotificationGroupListsIfNecessary
 {
-  v3 = [(NCNotificationStructuredSectionList *)self groupListsToSort];
-  v4 = [v3 count];
+  groupListsToSort = [(NCNotificationStructuredSectionList *)self groupListsToSort];
+  v4 = [groupListsToSort count];
 
   if (v4)
   {
-    v5 = [(NCNotificationStructuredSectionList *)self groupListsToSort];
-    [v5 enumerateObjectsUsingBlock:&__block_literal_global_11];
+    groupListsToSort2 = [(NCNotificationStructuredSectionList *)self groupListsToSort];
+    [groupListsToSort2 enumerateObjectsUsingBlock:&__block_literal_global_11];
 
     v6.receiver = self;
     v6.super_class = NCNotificationCombinedSectionList;
@@ -58,16 +58,16 @@
 - (id)_allSectionLists
 {
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
-  v4 = [(NCNotificationCombinedSectionList *)self sectionLists];
-  v5 = [v3 initWithArray:v4];
+  sectionLists = [(NCNotificationCombinedSectionList *)self sectionLists];
+  v5 = [v3 initWithArray:sectionLists];
 
-  v6 = [(NCNotificationCombinedSectionList *)self chronologicalSectionLists];
-  v7 = [v6 count];
+  chronologicalSectionLists = [(NCNotificationCombinedSectionList *)self chronologicalSectionLists];
+  v7 = [chronologicalSectionLists count];
 
   if (v7)
   {
-    v8 = [(NCNotificationCombinedSectionList *)self chronologicalSectionLists];
-    [v5 addObjectsFromArray:v8];
+    chronologicalSectionLists2 = [(NCNotificationCombinedSectionList *)self chronologicalSectionLists];
+    [v5 addObjectsFromArray:chronologicalSectionLists2];
   }
 
   return v5;
@@ -78,13 +78,13 @@
   v16 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = NCNotificationCombinedSectionList;
-  v3 = [(NCNotificationStructuredSectionList *)&v14 notificationCount];
-  v4 = [(NCNotificationCombinedSectionList *)self _allSectionLists];
+  notificationCount = [(NCNotificationStructuredSectionList *)&v14 notificationCount];
+  _allSectionLists = [(NCNotificationCombinedSectionList *)self _allSectionLists];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  v5 = [_allSectionLists countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -96,20 +96,20 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_allSectionLists);
         }
 
-        v3 += [*(*(&v10 + 1) + 8 * v8++) notificationCount];
+        notificationCount += [*(*(&v10 + 1) + 8 * v8++) notificationCount];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v6 = [_allSectionLists countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return notificationCount;
 }
 
 - (id)allNotificationRequests
@@ -117,13 +117,13 @@
   v18 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = NCNotificationCombinedSectionList;
-  v3 = [(NCNotificationStructuredSectionList *)&v16 allNotificationRequests];
-  v4 = [(NCNotificationCombinedSectionList *)self _allSectionLists];
+  allNotificationRequests = [(NCNotificationStructuredSectionList *)&v16 allNotificationRequests];
+  _allSectionLists = [(NCNotificationCombinedSectionList *)self _allSectionLists];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  v5 = [_allSectionLists countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -131,49 +131,49 @@
     do
     {
       v8 = 0;
-      v9 = v3;
+      v9 = allNotificationRequests;
       do
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_allSectionLists);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v8) allNotificationRequests];
-        v3 = [v9 arrayByAddingObjectsFromArray:v10];
+        allNotificationRequests2 = [*(*(&v12 + 1) + 8 * v8) allNotificationRequests];
+        allNotificationRequests = [v9 arrayByAddingObjectsFromArray:allNotificationRequests2];
 
         ++v8;
-        v9 = v3;
+        v9 = allNotificationRequests;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v6 = [_allSectionLists countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return allNotificationRequests;
 }
 
 - (id)orderedNotificationListComponents
 {
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
-  v4 = [(NCNotificationStructuredSectionList *)self notificationGroups];
-  v5 = [v3 initWithArray:v4];
+  notificationGroups = [(NCNotificationStructuredSectionList *)self notificationGroups];
+  v5 = [v3 initWithArray:notificationGroups];
 
-  v6 = [(NCNotificationCombinedSectionList *)self chronologicalSectionLists];
+  chronologicalSectionLists = [(NCNotificationCombinedSectionList *)self chronologicalSectionLists];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __70__NCNotificationCombinedSectionList_orderedNotificationListComponents__block_invoke;
   v12[3] = &unk_27836F768;
   v13 = v5;
   v7 = v5;
-  [v6 enumerateObjectsUsingBlock:v12];
+  [chronologicalSectionLists enumerateObjectsUsingBlock:v12];
 
   v8 = objc_alloc(MEMORY[0x277CBEB18]);
-  v9 = [(NCNotificationCombinedSectionList *)self sectionLists];
-  v10 = [v8 initWithArray:v9];
+  sectionLists = [(NCNotificationCombinedSectionList *)self sectionLists];
+  v10 = [v8 initWithArray:sectionLists];
 
   [v10 addObjectsFromArray:v7];
 
@@ -182,10 +182,10 @@
 
 - (unint64_t)count
 {
-  v3 = [(NCNotificationCombinedSectionList *)self sectionLists];
-  v4 = [v3 count];
-  v5 = [(NCNotificationCombinedSectionList *)self chronologicalSectionLists];
-  v6 = [v5 count] + v4;
+  sectionLists = [(NCNotificationCombinedSectionList *)self sectionLists];
+  v4 = [sectionLists count];
+  chronologicalSectionLists = [(NCNotificationCombinedSectionList *)self chronologicalSectionLists];
+  v6 = [chronologicalSectionLists count] + v4;
   v9.receiver = self;
   v9.super_class = NCNotificationCombinedSectionList;
   v7 = [(NCNotificationStructuredSectionList *)&v9 count];
@@ -193,11 +193,11 @@
   return v7 + v6;
 }
 
-- (NCNotificationCombinedSectionList)initWithTitle:(id)a3 sectionType:(unint64_t)a4
+- (NCNotificationCombinedSectionList)initWithTitle:(id)title sectionType:(unint64_t)type
 {
   v9.receiver = self;
   v9.super_class = NCNotificationCombinedSectionList;
-  v4 = [(NCNotificationStructuredSectionList *)&v9 initWithTitle:a3 sectionType:a4];
+  v4 = [(NCNotificationStructuredSectionList *)&v9 initWithTitle:title sectionType:type];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -211,42 +211,42 @@
   return v4;
 }
 
-- (void)insertNotificationSectionList:(id)a3 atIndex:(unint64_t)a4 animated:(BOOL)a5
+- (void)insertNotificationSectionList:(id)list atIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v5 = a5;
-  v16 = a3;
-  v8 = [(NCNotificationCombinedSectionList *)self sectionLists];
-  v9 = [v8 count];
+  animatedCopy = animated;
+  listCopy = list;
+  sectionLists = [(NCNotificationCombinedSectionList *)self sectionLists];
+  v9 = [sectionLists count];
 
-  if (v9 >= a4)
+  if (v9 >= index)
   {
     v10 = [(NCNotificationCombinedSectionList *)self count];
-    v11 = [(NCNotificationCombinedSectionList *)self sectionLists];
-    [v11 insertObject:v16 atIndex:a4];
+    sectionLists2 = [(NCNotificationCombinedSectionList *)self sectionLists];
+    [sectionLists2 insertObject:listCopy atIndex:index];
 
-    [(NCNotificationStructuredSectionList *)self _insertViewToListAtIndex:a4 animated:v5];
-    v12 = [v16 listView];
-    [v12 setRevealPercentage:1.0];
+    [(NCNotificationStructuredSectionList *)self _insertViewToListAtIndex:index animated:animatedCopy];
+    listView = [listCopy listView];
+    [listView setRevealPercentage:1.0];
 
-    v13 = [v16 listView];
-    [v13 setRevealed:1];
+    listView2 = [listCopy listView];
+    [listView2 setRevealed:1];
 
     v14 = [(NCNotificationCombinedSectionList *)self count];
     if (!v10)
     {
       if (v14)
       {
-        v15 = [(NCNotificationStructuredSectionList *)self listView];
-        [v15 reloadHeaderView];
+        listView3 = [(NCNotificationStructuredSectionList *)self listView];
+        [listView3 reloadHeaderView];
       }
     }
   }
 }
 
-- (void)insertNotificationSectionListChronologically:(id)a3 animated:(BOOL)a4
+- (void)insertNotificationSectionListChronologically:(id)chronologically animated:(BOOL)animated
 {
-  v4 = a4;
-  v12 = a3;
+  animatedCopy = animated;
+  chronologicallyCopy = chronologically;
   if (![(NCNotificationCombinedSectionList *)self containsSectionList:?])
   {
     v6 = [(NCNotificationCombinedSectionList *)self count];
@@ -260,48 +260,48 @@
       chronologicalSectionLists = self->_chronologicalSectionLists;
     }
 
-    [(NSMutableArray *)chronologicalSectionLists addObject:v12];
-    [(NCNotificationStructuredSectionList *)self _insertViewToListAtIndex:[(NCNotificationStructuredSectionList *)self _indexOfOrderedNotificationListComponent:v12] animated:v4];
+    [(NSMutableArray *)chronologicalSectionLists addObject:chronologicallyCopy];
+    [(NCNotificationStructuredSectionList *)self _insertViewToListAtIndex:[(NCNotificationStructuredSectionList *)self _indexOfOrderedNotificationListComponent:chronologicallyCopy] animated:animatedCopy];
     v10 = [(NCNotificationCombinedSectionList *)self count];
     if (!v6 && v10)
     {
-      v11 = [(NCNotificationStructuredSectionList *)self listView];
-      [v11 reloadHeaderView];
+      listView = [(NCNotificationStructuredSectionList *)self listView];
+      [listView reloadHeaderView];
     }
   }
 }
 
-- (void)removeNotificationSectionList:(id)a3 animated:(BOOL)a4
+- (void)removeNotificationSectionList:(id)list animated:(BOOL)animated
 {
-  v4 = a4;
-  v18 = a3;
+  animatedCopy = animated;
+  listCopy = list;
   v6 = [(NCNotificationCombinedSectionList *)self count];
-  v7 = [(NCNotificationCombinedSectionList *)self sectionLists];
-  v8 = [v7 containsObject:v18];
+  sectionLists = [(NCNotificationCombinedSectionList *)self sectionLists];
+  v8 = [sectionLists containsObject:listCopy];
 
   if (v8)
   {
-    v9 = [(NCNotificationCombinedSectionList *)self sectionLists];
-    v10 = [v9 indexOfObject:v18];
+    sectionLists2 = [(NCNotificationCombinedSectionList *)self sectionLists];
+    v10 = [sectionLists2 indexOfObject:listCopy];
 
-    v11 = [(NCNotificationCombinedSectionList *)self sectionLists];
-    [v11 removeObject:v18];
+    sectionLists3 = [(NCNotificationCombinedSectionList *)self sectionLists];
+    [sectionLists3 removeObject:listCopy];
 
-    -[NCNotificationStructuredSectionList _removeViewFromListAtIndex:animated:isHorizontallyDisplaced:](self, "_removeViewFromListAtIndex:animated:isHorizontallyDisplaced:", v10, v4, [v18 isHorizontallyDisplaced]);
+    -[NCNotificationStructuredSectionList _removeViewFromListAtIndex:animated:isHorizontallyDisplaced:](self, "_removeViewFromListAtIndex:animated:isHorizontallyDisplaced:", v10, animatedCopy, [listCopy isHorizontallyDisplaced]);
   }
 
   else
   {
-    v12 = [(NCNotificationCombinedSectionList *)self chronologicalSectionLists];
-    v13 = [v12 containsObject:v18];
+    chronologicalSectionLists = [(NCNotificationCombinedSectionList *)self chronologicalSectionLists];
+    v13 = [chronologicalSectionLists containsObject:listCopy];
 
     if (v13)
     {
-      v14 = [(NCNotificationStructuredSectionList *)self _indexOfOrderedNotificationListComponent:v18];
-      v15 = [(NCNotificationCombinedSectionList *)self chronologicalSectionLists];
-      [v15 removeObject:v18];
+      v14 = [(NCNotificationStructuredSectionList *)self _indexOfOrderedNotificationListComponent:listCopy];
+      chronologicalSectionLists2 = [(NCNotificationCombinedSectionList *)self chronologicalSectionLists];
+      [chronologicalSectionLists2 removeObject:listCopy];
 
-      -[NCNotificationStructuredSectionList _removeViewFromListAtIndex:animated:isHorizontallyDisplaced:](self, "_removeViewFromListAtIndex:animated:isHorizontallyDisplaced:", v14, v4, [v18 isHorizontallyDisplaced]);
+      -[NCNotificationStructuredSectionList _removeViewFromListAtIndex:animated:isHorizontallyDisplaced:](self, "_removeViewFromListAtIndex:animated:isHorizontallyDisplaced:", v14, animatedCopy, [listCopy isHorizontallyDisplaced]);
       if (![(NSMutableArray *)self->_chronologicalSectionLists count])
       {
         chronologicalSectionLists = self->_chronologicalSectionLists;
@@ -312,22 +312,22 @@
 
   if (v6 && ![(NCNotificationCombinedSectionList *)self count])
   {
-    v17 = [(NCNotificationStructuredSectionList *)self listView];
-    [v17 reloadHeaderView];
+    listView = [(NCNotificationStructuredSectionList *)self listView];
+    [listView reloadHeaderView];
   }
 }
 
-- (id)sectionListAtIndex:(unint64_t)a3
+- (id)sectionListAtIndex:(unint64_t)index
 {
-  v4 = [(NCNotificationCombinedSectionList *)self orderedNotificationListComponents];
-  if ([v4 count] <= a3)
+  orderedNotificationListComponents = [(NCNotificationCombinedSectionList *)self orderedNotificationListComponents];
+  if ([orderedNotificationListComponents count] <= index)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndex:a3];
+    v5 = [orderedNotificationListComponents objectAtIndex:index];
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v6 = v5;
@@ -342,19 +342,19 @@
   return v6;
 }
 
-- (BOOL)containsSectionList:(id)a3
+- (BOOL)containsSectionList:(id)list
 {
-  v4 = a3;
-  v5 = [(NCNotificationCombinedSectionList *)self sectionLists];
-  if ([v5 containsObject:v4])
+  listCopy = list;
+  sectionLists = [(NCNotificationCombinedSectionList *)self sectionLists];
+  if ([sectionLists containsObject:listCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(NCNotificationCombinedSectionList *)self chronologicalSectionLists];
-    v6 = [v7 containsObject:v4];
+    chronologicalSectionLists = [(NCNotificationCombinedSectionList *)self chronologicalSectionLists];
+    v6 = [chronologicalSectionLists containsObject:listCopy];
   }
 
   return v6;
@@ -375,7 +375,7 @@
   v10 = 0x2020000000;
   v7.receiver = self;
   v7.super_class = NCNotificationCombinedSectionList;
-  v11 = [(NCNotificationStructuredSectionList *)&v7 hasVisibleContentToReveal];
+  hasVisibleContentToReveal = [(NCNotificationStructuredSectionList *)&v7 hasVisibleContentToReveal];
   if (v9[3])
   {
     v3 = 1;
@@ -383,13 +383,13 @@
 
   else
   {
-    v4 = [(NCNotificationCombinedSectionList *)self _allSectionLists];
+    _allSectionLists = [(NCNotificationCombinedSectionList *)self _allSectionLists];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __62__NCNotificationCombinedSectionList_hasVisibleContentToReveal__block_invoke;
     v6[3] = &unk_278370158;
     v6[4] = &v8;
-    [v4 enumerateObjectsUsingBlock:v6];
+    [_allSectionLists enumerateObjectsUsingBlock:v6];
 
     v3 = *(v9 + 24);
   }
@@ -406,18 +406,18 @@ uint64_t __62__NCNotificationCombinedSectionList_hasVisibleContentToReveal__bloc
   return result;
 }
 
-- (void)mergeNotificationGroups:(id)a3 reorderGroupNotifications:(BOOL)a4
+- (void)mergeNotificationGroups:(id)groups reorderGroupNotifications:(BOOL)notifications
 {
-  v4 = a4;
+  notificationsCopy = notifications;
   v8.receiver = self;
   v8.super_class = NCNotificationCombinedSectionList;
-  v6 = a3;
-  [(NCNotificationStructuredSectionList *)&v8 mergeNotificationGroups:v6 reorderGroupNotifications:v4];
-  v7 = [v6 count];
+  groupsCopy = groups;
+  [(NCNotificationStructuredSectionList *)&v8 mergeNotificationGroups:groupsCopy reorderGroupNotifications:notificationsCopy];
+  v7 = [groupsCopy count];
 
   if (v7)
   {
-    if (v4)
+    if (notificationsCopy)
     {
       [(NCNotificationCombinedSectionList *)self _invalidateSectionListViewForChronologicalSectionsIfNecessary];
     }
@@ -430,20 +430,20 @@ uint64_t __62__NCNotificationCombinedSectionList_hasVisibleContentToReveal__bloc
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(NCNotificationCombinedSectionList *)self _allSectionLists];
+  _allSectionLists = [(NCNotificationCombinedSectionList *)self _allSectionLists];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__NCNotificationCombinedSectionList_itemCountWithExpandedGroup__block_invoke;
   v8[3] = &unk_278370158;
   v8[4] = &v9;
-  [v3 enumerateObjectsUsingBlock:v8];
+  [_allSectionLists enumerateObjectsUsingBlock:v8];
 
   v4 = v10[3];
   v7.receiver = self;
   v7.super_class = NCNotificationCombinedSectionList;
-  v5 = [(NCNotificationStructuredSectionList *)&v7 itemCountWithExpandedGroup];
+  itemCountWithExpandedGroup = [(NCNotificationStructuredSectionList *)&v7 itemCountWithExpandedGroup];
   _Block_object_dispose(&v9, 8);
-  return v5 + v4;
+  return itemCountWithExpandedGroup + v4;
 }
 
 void __63__NCNotificationCombinedSectionList_itemCountWithExpandedGroup__block_invoke(uint64_t a1, void *a2)
@@ -465,7 +465,7 @@ void __63__NCNotificationCombinedSectionList_itemCountWithExpandedGroup__block_i
   *(*(*(a1 + 32) + 8) + 24) += v5;
 }
 
-- (void)setDeviceAuthenticated:(BOOL)a3
+- (void)setDeviceAuthenticated:(BOOL)authenticated
 {
   v7.receiver = self;
   v7.super_class = NCNotificationCombinedSectionList;
@@ -474,120 +474,120 @@ void __63__NCNotificationCombinedSectionList_itemCountWithExpandedGroup__block_i
   v5[1] = 3221225472;
   v5[2] = __60__NCNotificationCombinedSectionList_setDeviceAuthenticated___block_invoke;
   v5[3] = &__block_descriptor_33_e45_v16__0__NCNotificationStructuredSectionList_8l;
-  v6 = a3;
+  authenticatedCopy = authenticated;
   [(NCNotificationCombinedSectionList *)self _performOperationOnAllSectionLists:v5];
 }
 
-- (void)reloadNotificationRequest:(id)a3
+- (void)reloadNotificationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v8.receiver = self;
   v8.super_class = NCNotificationCombinedSectionList;
-  [(NCNotificationStructuredSectionList *)&v8 reloadNotificationRequest:v4];
+  [(NCNotificationStructuredSectionList *)&v8 reloadNotificationRequest:requestCopy];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__NCNotificationCombinedSectionList_reloadNotificationRequest___block_invoke;
   v6[3] = &unk_2783721F0;
-  v7 = v4;
-  v5 = v4;
+  v7 = requestCopy;
+  v5 = requestCopy;
   [(NCNotificationCombinedSectionList *)self _performOperationOnAllSectionLists:v6];
 }
 
-- (void)updateNotificationSectionSettings:(id)a3 previousSectionSettings:(id)a4
+- (void)updateNotificationSectionSettings:(id)settings previousSectionSettings:(id)sectionSettings
 {
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  sectionSettingsCopy = sectionSettings;
   v13.receiver = self;
   v13.super_class = NCNotificationCombinedSectionList;
-  [(NCNotificationStructuredSectionList *)&v13 updateNotificationSectionSettings:v6 previousSectionSettings:v7];
+  [(NCNotificationStructuredSectionList *)&v13 updateNotificationSectionSettings:settingsCopy previousSectionSettings:sectionSettingsCopy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __95__NCNotificationCombinedSectionList_updateNotificationSectionSettings_previousSectionSettings___block_invoke;
   v10[3] = &unk_278372218;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = settingsCopy;
+  v12 = sectionSettingsCopy;
+  v8 = sectionSettingsCopy;
+  v9 = settingsCopy;
   [(NCNotificationCombinedSectionList *)self _performOperationOnAllSectionLists:v10];
 }
 
-- (void)notificationsLoadedForSectionIdentifier:(id)a3
+- (void)notificationsLoadedForSectionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8.receiver = self;
   v8.super_class = NCNotificationCombinedSectionList;
-  [(NCNotificationStructuredSectionList *)&v8 notificationsLoadedForSectionIdentifier:v4];
+  [(NCNotificationStructuredSectionList *)&v8 notificationsLoadedForSectionIdentifier:identifierCopy];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __77__NCNotificationCombinedSectionList_notificationsLoadedForSectionIdentifier___block_invoke;
   v6[3] = &unk_2783721F0;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(NCNotificationCombinedSectionList *)self _performOperationOnAllSectionLists:v6];
 }
 
-- (void)toggleFilteringForSectionIdentifier:(id)a3 shouldFilter:(BOOL)a4
+- (void)toggleFilteringForSectionIdentifier:(id)identifier shouldFilter:(BOOL)filter
 {
-  v4 = a4;
-  v6 = a3;
+  filterCopy = filter;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = NCNotificationCombinedSectionList;
-  [(NCNotificationStructuredSectionList *)&v11 toggleFilteringForSectionIdentifier:v6 shouldFilter:v4];
+  [(NCNotificationStructuredSectionList *)&v11 toggleFilteringForSectionIdentifier:identifierCopy shouldFilter:filterCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __86__NCNotificationCombinedSectionList_toggleFilteringForSectionIdentifier_shouldFilter___block_invoke;
   v8[3] = &unk_278372240;
-  v9 = v6;
-  v10 = v4;
-  v7 = v6;
+  v9 = identifierCopy;
+  v10 = filterCopy;
+  v7 = identifierCopy;
   [(NCNotificationCombinedSectionList *)self _performOperationOnAllSectionLists:v8];
 }
 
-- (void)expandGroupForNotificationRequest:(id)a3 withCompletion:(id)a4
+- (void)expandGroupForNotificationRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v13.receiver = self;
   v13.super_class = NCNotificationCombinedSectionList;
-  [(NCNotificationStructuredSectionList *)&v13 expandGroupForNotificationRequest:v6 withCompletion:v7];
+  [(NCNotificationStructuredSectionList *)&v13 expandGroupForNotificationRequest:requestCopy withCompletion:completionCopy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __86__NCNotificationCombinedSectionList_expandGroupForNotificationRequest_withCompletion___block_invoke;
   v10[3] = &unk_278372268;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = requestCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = requestCopy;
   [(NCNotificationCombinedSectionList *)self _performOperationOnAllSectionLists:v10];
 }
 
-- (void)collapseGroupForNotificationRequest:(id)a3 withCompletion:(id)a4
+- (void)collapseGroupForNotificationRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v13.receiver = self;
   v13.super_class = NCNotificationCombinedSectionList;
-  [(NCNotificationStructuredSectionList *)&v13 collapseGroupForNotificationRequest:v6 withCompletion:v7];
+  [(NCNotificationStructuredSectionList *)&v13 collapseGroupForNotificationRequest:requestCopy withCompletion:completionCopy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __88__NCNotificationCombinedSectionList_collapseGroupForNotificationRequest_withCompletion___block_invoke;
   v10[3] = &unk_278372268;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = requestCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = requestCopy;
   [(NCNotificationCombinedSectionList *)self _performOperationOnAllSectionLists:v10];
 }
 
-- (BOOL)containsNotificationRequest:(id)a3
+- (BOOL)containsNotificationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v11.receiver = self;
   v11.super_class = NCNotificationCombinedSectionList;
-  v15 = [(NCNotificationStructuredSectionList *)&v11 containsNotificationRequest:v4];
+  v15 = [(NCNotificationStructuredSectionList *)&v11 containsNotificationRequest:requestCopy];
   if (v13[3])
   {
     v5 = 1;
@@ -595,14 +595,14 @@ void __63__NCNotificationCombinedSectionList_itemCountWithExpandedGroup__block_i
 
   else
   {
-    v6 = [(NCNotificationCombinedSectionList *)self _allSectionLists];
+    _allSectionLists = [(NCNotificationCombinedSectionList *)self _allSectionLists];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __65__NCNotificationCombinedSectionList_containsNotificationRequest___block_invoke;
     v8[3] = &unk_278370240;
-    v9 = v4;
+    v9 = requestCopy;
     v10 = &v12;
-    [v6 enumerateObjectsUsingBlock:v8];
+    [_allSectionLists enumerateObjectsUsingBlock:v8];
 
     v5 = *(v13 + 24);
   }
@@ -629,13 +629,13 @@ uint64_t __65__NCNotificationCombinedSectionList_containsNotificationRequest___b
   v17 = *MEMORY[0x277D85DE8];
   v15.receiver = self;
   v15.super_class = NCNotificationCombinedSectionList;
-  v3 = [(NCNotificationStructuredSectionList *)&v15 regroupNotificationGroups];
+  regroupNotificationGroups = [(NCNotificationStructuredSectionList *)&v15 regroupNotificationGroups];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NCNotificationCombinedSectionList *)self _allSectionLists];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  _allSectionLists = [(NCNotificationCombinedSectionList *)self _allSectionLists];
+  v5 = [_allSectionLists countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -647,73 +647,73 @@ uint64_t __65__NCNotificationCombinedSectionList_containsNotificationRequest___b
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_allSectionLists);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v3 |= [v9 collapseSummarizedSectionList];
+          regroupNotificationGroups |= [v9 collapseSummarizedSectionList];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v6 = [_allSectionLists countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  return v3 & 1;
+  return regroupNotificationGroups & 1;
 }
 
-- (id)notificationListView:(id)a3 viewForItemAtIndex:(unint64_t)a4
+- (id)notificationListView:(id)view viewForItemAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(NCNotificationCombinedSectionList *)self orderedNotificationListComponents];
-  if ([v7 count] <= a4)
+  viewCopy = view;
+  orderedNotificationListComponents = [(NCNotificationCombinedSectionList *)self orderedNotificationListComponents];
+  if ([orderedNotificationListComponents count] <= index)
   {
     v10 = 0;
   }
 
   else
   {
-    v8 = [v7 objectAtIndex:a4];
+    v8 = [orderedNotificationListComponents objectAtIndex:index];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v9 = [v8 listView];
+      listView = [v8 listView];
     }
 
     else
     {
       v12.receiver = self;
       v12.super_class = NCNotificationCombinedSectionList;
-      v9 = [(NCNotificationStructuredSectionList *)&v12 notificationListView:v6 viewForItemAtIndex:a4];
+      listView = [(NCNotificationStructuredSectionList *)&v12 notificationListView:viewCopy viewForItemAtIndex:index];
     }
 
-    v10 = v9;
+    v10 = listView;
   }
 
   return v10;
 }
 
-- (double)notificationListView:(id)a3 heightForItemAtIndex:(unint64_t)a4 withWidth:(double)a5 inDisplayListAsStackMode:(BOOL)a6 ignoreExpandedGroupStack:(BOOL)a7
+- (double)notificationListView:(id)view heightForItemAtIndex:(unint64_t)index withWidth:(double)width inDisplayListAsStackMode:(BOOL)mode ignoreExpandedGroupStack:(BOOL)stack
 {
-  v7 = a7;
-  v8 = a6;
-  v12 = a3;
-  v13 = [(NCNotificationCombinedSectionList *)self orderedNotificationListComponents];
+  stackCopy = stack;
+  modeCopy = mode;
+  viewCopy = view;
+  orderedNotificationListComponents = [(NCNotificationCombinedSectionList *)self orderedNotificationListComponents];
   v14 = 0.0;
-  if ([v13 count] > a4)
+  if ([orderedNotificationListComponents count] > index)
   {
-    v15 = [v13 objectAtIndex:a4];
+    v15 = [orderedNotificationListComponents objectAtIndex:index];
     if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v16 = [v15 listView];
-      [v16 calculateSizeForGrouped:objc_msgSend(v16 ignoreFeaturedLeadingView:"isGrouped") ignoreExpandedGroupStack:0 inDisplayListAsStackMode:v7 dynamicGroupedOverlapHeightMultiple:{v8, 0}];
+      listView = [v15 listView];
+      [listView calculateSizeForGrouped:objc_msgSend(listView ignoreFeaturedLeadingView:"isGrouped") ignoreExpandedGroupStack:0 inDisplayListAsStackMode:stackCopy dynamicGroupedOverlapHeightMultiple:{modeCopy, 0}];
       v14 = v17;
     }
 
@@ -721,7 +721,7 @@ uint64_t __65__NCNotificationCombinedSectionList_containsNotificationRequest___b
     {
       v20.receiver = self;
       v20.super_class = NCNotificationCombinedSectionList;
-      [(NCNotificationStructuredSectionList *)&v20 notificationListView:v12 heightForItemAtIndex:a4 withWidth:v8 inDisplayListAsStackMode:v7 ignoreExpandedGroupStack:a5];
+      [(NCNotificationStructuredSectionList *)&v20 notificationListView:viewCopy heightForItemAtIndex:index withWidth:modeCopy inDisplayListAsStackMode:stackCopy ignoreExpandedGroupStack:width];
       v14 = v18;
     }
   }
@@ -729,7 +729,7 @@ uint64_t __65__NCNotificationCombinedSectionList_containsNotificationRequest___b
   return v14;
 }
 
-- (id)footerViewForNotificationList:(id)a3
+- (id)footerViewForNotificationList:(id)list
 {
   if ([(NCNotificationStructuredSectionList *)self sectionType])
   {
@@ -754,7 +754,7 @@ uint64_t __65__NCNotificationCombinedSectionList_containsNotificationRequest___b
   return v4;
 }
 
-- (double)footerViewHeightForNotificationList:(id)a3 withWidth:(double)a4
+- (double)footerViewHeightForNotificationList:(id)list withWidth:(double)width
 {
   result = 1.0;
   if (!self->_footerView)
@@ -765,27 +765,27 @@ uint64_t __65__NCNotificationCombinedSectionList_containsNotificationRequest___b
   return result;
 }
 
-- (void)notificationListComponent:(id)a3 didRemoveNotificationRequest:(id)a4
+- (void)notificationListComponent:(id)component didRemoveNotificationRequest:(id)request
 {
   v6.receiver = self;
   v6.super_class = NCNotificationCombinedSectionList;
-  [(NCNotificationStructuredSectionList *)&v6 notificationListComponent:a3 didRemoveNotificationRequest:a4];
+  [(NCNotificationStructuredSectionList *)&v6 notificationListComponent:component didRemoveNotificationRequest:request];
   if (![(NCNotificationCombinedSectionList *)self count])
   {
-    v5 = [(NCNotificationStructuredSectionList *)self listView];
-    [v5 reloadHeaderView];
+    listView = [(NCNotificationStructuredSectionList *)self listView];
+    [listView reloadHeaderView];
   }
 }
 
-- (void)notificationListBaseComponentDidRemoveAll:(id)a3
+- (void)notificationListBaseComponentDidRemoveAll:(id)all
 {
   v5.receiver = self;
   v5.super_class = NCNotificationCombinedSectionList;
-  [(NCNotificationStructuredSectionList *)&v5 notificationListBaseComponentDidRemoveAll:a3];
+  [(NCNotificationStructuredSectionList *)&v5 notificationListBaseComponentDidRemoveAll:all];
   if (![(NCNotificationCombinedSectionList *)self count])
   {
-    v4 = [(NCNotificationStructuredSectionList *)self listView];
-    [v4 reloadHeaderView];
+    listView = [(NCNotificationStructuredSectionList *)self listView];
+    [listView reloadHeaderView];
   }
 }
 
@@ -798,18 +798,18 @@ uint64_t __65__NCNotificationCombinedSectionList_containsNotificationRequest___b
   return 1;
 }
 
-- (void)adjustForLegibilitySettingsChange:(id)a3
+- (void)adjustForLegibilitySettingsChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v8.receiver = self;
   v8.super_class = NCNotificationCombinedSectionList;
-  [(NCNotificationStructuredSectionList *)&v8 adjustForLegibilitySettingsChange:v4];
+  [(NCNotificationStructuredSectionList *)&v8 adjustForLegibilitySettingsChange:changeCopy];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__NCNotificationCombinedSectionList_adjustForLegibilitySettingsChange___block_invoke;
   v6[3] = &unk_2783721F0;
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   [(NCNotificationCombinedSectionList *)self _performOperationOnAllSectionLists:v6];
 }
 
@@ -845,18 +845,18 @@ BOOL __70__NCNotificationCombinedSectionList_orderedNotificationListComponents__
   return v5;
 }
 
-- (void)_performOperationOnAllSectionLists:(id)a3
+- (void)_performOperationOnAllSectionLists:(id)lists
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  listsCopy = lists;
+  if (listsCopy)
   {
-    v5 = [(NCNotificationCombinedSectionList *)self _allSectionLists];
+    _allSectionLists = [(NCNotificationCombinedSectionList *)self _allSectionLists];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v6 = [_allSectionLists countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -868,14 +868,14 @@ BOOL __70__NCNotificationCombinedSectionList_orderedNotificationListComponents__
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_allSectionLists);
           }
 
-          v4[2](v4, *(*(&v10 + 1) + 8 * v9++));
+          listsCopy[2](listsCopy, *(*(&v10 + 1) + 8 * v9++));
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [_allSectionLists countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -885,13 +885,13 @@ BOOL __70__NCNotificationCombinedSectionList_orderedNotificationListComponents__
 
 - (void)_invalidateSectionListViewForChronologicalSectionsIfNecessary
 {
-  v3 = [(NCNotificationCombinedSectionList *)self chronologicalSectionLists];
-  v4 = [v3 count];
+  chronologicalSectionLists = [(NCNotificationCombinedSectionList *)self chronologicalSectionLists];
+  v4 = [chronologicalSectionLists count];
 
   if (v4)
   {
-    v5 = [(NCNotificationStructuredSectionList *)self listView];
-    [v5 invalidateData];
+    listView = [(NCNotificationStructuredSectionList *)self listView];
+    [listView invalidateData];
   }
 }
 

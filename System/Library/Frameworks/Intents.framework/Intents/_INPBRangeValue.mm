@@ -1,36 +1,36 @@
 @interface _INPBRangeValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBRangeValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBRangeValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasLocation:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasLocation:(BOOL)location;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBRangeValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBRangeValue *)self hasLength])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[_INPBRangeValue length](self, "length")}];
-    [v3 setObject:v4 forKeyedSubscript:@"length"];
+    [dictionary setObject:v4 forKeyedSubscript:@"length"];
   }
 
   if ([(_INPBRangeValue *)self hasLocation])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[_INPBRangeValue location](self, "location")}];
-    [v3 setObject:v5 forKeyedSubscript:@"location"];
+    [dictionary setObject:v5 forKeyedSubscript:@"location"];
   }
 
-  v6 = [(_INPBRangeValue *)self valueMetadata];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"valueMetadata"];
+  valueMetadata = [(_INPBRangeValue *)self valueMetadata];
+  dictionaryRepresentation = [valueMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"valueMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -58,28 +58,28 @@
   return v4 ^ v3 ^ [(_INPBValueMetadata *)self->_valueMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBRangeValue *)self hasLength];
-    if (v5 == [v4 hasLength])
+    hasLength = [(_INPBRangeValue *)self hasLength];
+    if (hasLength == [equalCopy hasLength])
     {
-      if (!-[_INPBRangeValue hasLength](self, "hasLength") || ![v4 hasLength] || (length = self->_length, length == objc_msgSend(v4, "length")))
+      if (!-[_INPBRangeValue hasLength](self, "hasLength") || ![equalCopy hasLength] || (length = self->_length, length == objc_msgSend(equalCopy, "length")))
       {
-        v7 = [(_INPBRangeValue *)self hasLocation];
-        if (v7 == [v4 hasLocation])
+        hasLocation = [(_INPBRangeValue *)self hasLocation];
+        if (hasLocation == [equalCopy hasLocation])
         {
-          if (!-[_INPBRangeValue hasLocation](self, "hasLocation") || ![v4 hasLocation] || (location = self->_location, location == objc_msgSend(v4, "location")))
+          if (!-[_INPBRangeValue hasLocation](self, "hasLocation") || ![equalCopy hasLocation] || (location = self->_location, location == objc_msgSend(equalCopy, "location")))
           {
-            v9 = [(_INPBRangeValue *)self valueMetadata];
-            v10 = [v4 valueMetadata];
-            v11 = v10;
-            if ((v9 != 0) != (v10 == 0))
+            valueMetadata = [(_INPBRangeValue *)self valueMetadata];
+            valueMetadata2 = [equalCopy valueMetadata];
+            v11 = valueMetadata2;
+            if ((valueMetadata != 0) != (valueMetadata2 == 0))
             {
-              v12 = [(_INPBRangeValue *)self valueMetadata];
-              if (!v12)
+              valueMetadata3 = [(_INPBRangeValue *)self valueMetadata];
+              if (!valueMetadata3)
               {
 
 LABEL_18:
@@ -87,10 +87,10 @@ LABEL_18:
                 goto LABEL_16;
               }
 
-              v13 = v12;
-              v14 = [(_INPBRangeValue *)self valueMetadata];
-              v15 = [v4 valueMetadata];
-              v16 = [v14 isEqual:v15];
+              v13 = valueMetadata3;
+              valueMetadata4 = [(_INPBRangeValue *)self valueMetadata];
+              valueMetadata5 = [equalCopy valueMetadata];
+              v16 = [valueMetadata4 isEqual:valueMetadata5];
 
               if (v16)
               {
@@ -113,7 +113,7 @@ LABEL_16:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBRangeValue allocWithZone:](_INPBRangeValue init];
   if ([(_INPBRangeValue *)self hasLength])
@@ -126,39 +126,39 @@ LABEL_16:
     [(_INPBRangeValue *)v5 setLocation:[(_INPBRangeValue *)self location]];
   }
 
-  v6 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:a3];
+  v6 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:zone];
   [(_INPBRangeValue *)v5 setValueMetadata:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBRangeValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBRangeValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBRangeValue)initWithCoder:(id)a3
+- (_INPBRangeValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBRangeValue *)self initWithData:v6];
+    self = [(_INPBRangeValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(_INPBRangeValue *)self hasLength])
   {
     length = self->_length;
@@ -171,21 +171,21 @@ LABEL_16:
     PBDataWriterWriteUint64Field();
   }
 
-  v6 = [(_INPBRangeValue *)self valueMetadata];
+  valueMetadata = [(_INPBRangeValue *)self valueMetadata];
 
-  v7 = v9;
-  if (v6)
+  v7 = toCopy;
+  if (valueMetadata)
   {
-    v8 = [(_INPBRangeValue *)self valueMetadata];
+    valueMetadata2 = [(_INPBRangeValue *)self valueMetadata];
     PBDataWriterWriteSubmessage();
 
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasLocation:(BOOL)a3
+- (void)setHasLocation:(BOOL)location
 {
-  if (a3)
+  if (location)
   {
     v3 = 2;
   }

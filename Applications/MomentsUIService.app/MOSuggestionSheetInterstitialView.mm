@@ -1,25 +1,25 @@
 @interface MOSuggestionSheetInterstitialView
-- (_TtC16MomentsUIService33MOSuggestionSheetInterstitialView)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16MomentsUIService33MOSuggestionSheetInterstitialView)initWithNibName:(id)name bundle:(id)bundle;
 - (void)addButtonTapped;
 - (void)cancelSheet;
-- (void)didToggleListCarouselViewButtonWithCarouselIndex:(int64_t)a3;
+- (void)didToggleListCarouselViewButtonWithCarouselIndex:(int64_t)index;
 - (void)handleContentSizeChanged;
-- (void)handleLabelEditTap:(id)a3;
-- (void)journalButtonTapped:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)handleLabelEditTap:(id)tap;
+- (void)journalButtonTapped:(id)tapped;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MOSuggestionSheetInterstitialView
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  MOSuggestionSheetInterstitialView.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  MOSuggestionSheetInterstitialView.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
@@ -29,12 +29,12 @@
   v6.super_class = type metadata accessor for MOSuggestionSheetInterstitialView();
   v2 = v6.receiver;
   [(MOSuggestionSheetInterstitialView *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() systemBackgroundColor];
-    [v4 setBackgroundColor:v5];
+    v4 = view;
+    systemBackgroundColor = [objc_opt_self() systemBackgroundColor];
+    [v4 setBackgroundColor:systemBackgroundColor];
   }
 
   else
@@ -43,58 +43,58 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  MOSuggestionSheetInterstitialView.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  MOSuggestionSheetInterstitialView.viewDidDisappear(_:)(disappear);
 }
 
 - (void)cancelSheet
 {
   v2 = one-time initialization token for shared;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
   }
 
   (*(*static MOSuggestionAssetCacheManager.shared + 288))();
-  [(MOSuggestionSheetInterstitialView *)v3 dismissViewControllerAnimated:1 completion:0];
+  [(MOSuggestionSheetInterstitialView *)selfCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)journalButtonTapped:(id)a3
+- (void)journalButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   specialized MOSuggestionSheetInterstitialView.journalButtonTapped(_:)();
 }
 
 - (void)addButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionSheetInterstitialView.addButtonTapped()();
 }
 
 - (void)handleContentSizeChanged
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionSheetInterstitialView.updateTitleLabelString()();
 }
 
-- (void)handleLabelEditTap:(id)a3
+- (void)handleLabelEditTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
+  tapCopy = tap;
+  selfCopy = self;
   specialized MOSuggestionSheetInterstitialView.handleLabelEditTap(_:)();
 }
 
-- (void)didToggleListCarouselViewButtonWithCarouselIndex:(int64_t)a3
+- (void)didToggleListCarouselViewButtonWithCarouselIndex:(int64_t)index
 {
-  v3 = self;
+  selfCopy = self;
   specialized MOSuggestionSheetInterstitialView.didToggleListCarouselViewButton(carouselIndex:)();
 }
 
-- (_TtC16MomentsUIService33MOSuggestionSheetInterstitialView)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MomentsUIService33MOSuggestionSheetInterstitialView)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

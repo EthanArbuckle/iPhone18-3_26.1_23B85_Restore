@@ -1,19 +1,19 @@
 @interface FCMutableTodayPrivateData
 - (FCMutableTodayPrivateData)init;
-- (FCMutableTodayPrivateData)initWithDictionary:(id)a3;
+- (FCMutableTodayPrivateData)initWithDictionary:(id)dictionary;
 - (void)_deleteObjectsForOldKeys;
-- (void)setAutoFavoriteTagIDs:(id)a3;
-- (void)setBundleSubscription:(id)a3;
-- (void)setDerivedPersonalizationData:(id)a3;
-- (void)setGroupableTagIDs:(id)a3;
-- (void)setLocalNewsTagID:(id)a3;
-- (void)setMutedTagIDs:(id)a3;
-- (void)setPurchasedTagIDs:(id)a3;
-- (void)setRankedAllSubscribedTagIDs:(id)a3;
-- (void)setRankedAllSubscriptionDates:(id)a3;
-- (void)setRecentlyReadHistoryItems:(id)a3;
-- (void)setRecentlySeenHistoryItems:(id)a3;
-- (void)setUserEmbeddingData:(id)a3;
+- (void)setAutoFavoriteTagIDs:(id)ds;
+- (void)setBundleSubscription:(id)subscription;
+- (void)setDerivedPersonalizationData:(id)data;
+- (void)setGroupableTagIDs:(id)ds;
+- (void)setLocalNewsTagID:(id)d;
+- (void)setMutedTagIDs:(id)ds;
+- (void)setPurchasedTagIDs:(id)ds;
+- (void)setRankedAllSubscribedTagIDs:(id)ds;
+- (void)setRankedAllSubscriptionDates:(id)dates;
+- (void)setRecentlyReadHistoryItems:(id)items;
+- (void)setRecentlySeenHistoryItems:(id)items;
+- (void)setUserEmbeddingData:(id)data;
 @end
 
 @implementation FCMutableTodayPrivateData
@@ -21,7 +21,7 @@
 - (void)_deleteObjectsForOldKeys
 {
   v5[7] = *MEMORY[0x1E69E9840];
-  v2 = [(FCTodayPrivateData *)self dictionary];
+  dictionary = [(FCTodayPrivateData *)self dictionary];
   v5[0] = @"FCTodayWidgetDropboxDataRecentlyReadArticlesDataDictionaryKey";
   v5[1] = @"FCTodayWidgetPrivateDataRecentlySeenArticlesDataDictionaryKey2";
   v5[2] = @"FCTodayWidgetPrivateDataRecentlyReadHistoryItemsDataDictionaryKey";
@@ -30,7 +30,7 @@
   v5[5] = @"FCTodayPrivateDataBundleIAPDictionaryKey";
   v5[6] = @"FCTodayPrivateDataAutoFavoriteTagIDsDataDictionaryKey";
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:7];
-  [v2 removeObjectsForKeys:v3];
+  [dictionary removeObjectsForKeys:v3];
 
   v4 = *MEMORY[0x1E69E9840];
 }
@@ -61,11 +61,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCMutableTodayPrivateData)initWithDictionary:(id)a3
+- (FCMutableTodayPrivateData)initWithDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "dictionary"];
     *buf = 136315906;
@@ -81,7 +81,7 @@
 
   v10.receiver = self;
   v10.super_class = FCMutableTodayPrivateData;
-  v5 = [(FCTodayPrivateData *)&v10 initWithDictionary:v4];
+  v5 = [(FCTodayPrivateData *)&v10 initWithDictionary:dictionaryCopy];
   v6 = v5;
   if (v5)
   {
@@ -92,110 +92,110 @@
   return v6;
 }
 
-- (void)setDerivedPersonalizationData:(id)a3
+- (void)setDerivedPersonalizationData:(id)data
 {
-  v4 = a3;
-  v6 = [(FCTodayPrivateData *)self dictionary];
-  v5 = [v4 copy];
+  dataCopy = data;
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v5 = [dataCopy copy];
 
-  [v6 fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayWidgetDropboxDataDerivedPersonalizationDataDictionaryKey"];
+  [dictionary fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayWidgetDropboxDataDerivedPersonalizationDataDictionaryKey"];
 }
 
-- (void)setLocalNewsTagID:(id)a3
+- (void)setLocalNewsTagID:(id)d
 {
-  v4 = a3;
-  v5 = [(FCTodayPrivateData *)self dictionary];
-  [v5 fc_safelySetObjectAllowingNil:v4 forKey:@"FCTodayPrivateDataLocalNewsTagIDDataDictionaryKey"];
+  dCopy = d;
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  [dictionary fc_safelySetObjectAllowingNil:dCopy forKey:@"FCTodayPrivateDataLocalNewsTagIDDataDictionaryKey"];
 }
 
-- (void)setMutedTagIDs:(id)a3
+- (void)setMutedTagIDs:(id)ds
 {
-  v4 = a3;
-  v6 = [(FCTodayPrivateData *)self dictionary];
-  v5 = [v4 copy];
+  dsCopy = ds;
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v5 = [dsCopy copy];
 
-  [v6 fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayWidgetDropboxDataMutedTagIDsDataDictionaryKey"];
+  [dictionary fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayWidgetDropboxDataMutedTagIDsDataDictionaryKey"];
 }
 
-- (void)setAutoFavoriteTagIDs:(id)a3
+- (void)setAutoFavoriteTagIDs:(id)ds
 {
-  v4 = a3;
-  v6 = [(FCTodayPrivateData *)self dictionary];
-  v5 = [v4 copy];
+  dsCopy = ds;
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v5 = [dsCopy copy];
 
-  [v6 fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayPrivateDataAutoFavoriteTagIDsDataDictionaryKey2"];
+  [dictionary fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayPrivateDataAutoFavoriteTagIDsDataDictionaryKey2"];
 }
 
-- (void)setGroupableTagIDs:(id)a3
+- (void)setGroupableTagIDs:(id)ds
 {
-  v4 = a3;
-  v6 = [(FCTodayPrivateData *)self dictionary];
-  v5 = [v4 copy];
+  dsCopy = ds;
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v5 = [dsCopy copy];
 
-  [v6 fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayPrivateDataGroupableTagIDsDataDictionaryKey"];
+  [dictionary fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayPrivateDataGroupableTagIDsDataDictionaryKey"];
 }
 
-- (void)setPurchasedTagIDs:(id)a3
+- (void)setPurchasedTagIDs:(id)ds
 {
-  v4 = a3;
-  v6 = [(FCTodayPrivateData *)self dictionary];
-  v5 = [v4 copy];
+  dsCopy = ds;
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v5 = [dsCopy copy];
 
-  [v6 fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayWidgetDropboxDataPurchasedTagIDsDataDictionaryKey"];
+  [dictionary fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayWidgetDropboxDataPurchasedTagIDsDataDictionaryKey"];
 }
 
-- (void)setRankedAllSubscribedTagIDs:(id)a3
+- (void)setRankedAllSubscribedTagIDs:(id)ds
 {
-  v4 = a3;
-  v6 = [(FCTodayPrivateData *)self dictionary];
-  v5 = [v4 copy];
+  dsCopy = ds;
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v5 = [dsCopy copy];
 
-  [v6 fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayWidgetDropboxDataRankedSubscribedTagIDsDataDictionaryKey"];
+  [dictionary fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayWidgetDropboxDataRankedSubscribedTagIDsDataDictionaryKey"];
 }
 
-- (void)setRankedAllSubscriptionDates:(id)a3
+- (void)setRankedAllSubscriptionDates:(id)dates
 {
-  v4 = a3;
-  v6 = [(FCTodayPrivateData *)self dictionary];
-  v5 = [v4 copy];
+  datesCopy = dates;
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v5 = [datesCopy copy];
 
-  [v6 fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayPrivateDataRankedAllSubscriptionDatesDataDictionaryKey"];
+  [dictionary fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayPrivateDataRankedAllSubscriptionDatesDataDictionaryKey"];
 }
 
-- (void)setRecentlyReadHistoryItems:(id)a3
+- (void)setRecentlyReadHistoryItems:(id)items
 {
-  v4 = a3;
-  v6 = [(FCTodayPrivateData *)self dictionary];
-  v5 = [v4 copy];
+  itemsCopy = items;
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v5 = [itemsCopy copy];
 
-  [v6 fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayWidgetPrivateDataRecentlyReadHistoryItemsDataDictionaryKey2"];
+  [dictionary fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayWidgetPrivateDataRecentlyReadHistoryItemsDataDictionaryKey2"];
 }
 
-- (void)setRecentlySeenHistoryItems:(id)a3
+- (void)setRecentlySeenHistoryItems:(id)items
 {
-  v4 = a3;
-  v6 = [(FCTodayPrivateData *)self dictionary];
-  v5 = [v4 copy];
+  itemsCopy = items;
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v5 = [itemsCopy copy];
 
-  [v6 fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayWidgetPrivateDataRecentlySeenHistoryItemsDataDictionaryKey"];
+  [dictionary fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayWidgetPrivateDataRecentlySeenHistoryItemsDataDictionaryKey"];
 }
 
-- (void)setBundleSubscription:(id)a3
+- (void)setBundleSubscription:(id)subscription
 {
-  v4 = a3;
-  v6 = [(FCTodayPrivateData *)self dictionary];
-  v5 = [v4 copy];
+  subscriptionCopy = subscription;
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v5 = [subscriptionCopy copy];
 
-  [v6 setObject:v5 forKey:@"FCTodayPrivateDataBundleSubscriptionDataDictionaryKey"];
+  [dictionary setObject:v5 forKey:@"FCTodayPrivateDataBundleSubscriptionDataDictionaryKey"];
 }
 
-- (void)setUserEmbeddingData:(id)a3
+- (void)setUserEmbeddingData:(id)data
 {
-  v4 = a3;
-  v6 = [(FCTodayPrivateData *)self dictionary];
-  v5 = [v4 copy];
+  dataCopy = data;
+  dictionary = [(FCTodayPrivateData *)self dictionary];
+  v5 = [dataCopy copy];
 
-  [v6 fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayPrivateDataUserEmbeddingDataDictionaryKey"];
+  [dictionary fc_safelySetObjectAllowingNil:v5 forKey:@"FCTodayPrivateDataUserEmbeddingDataDictionaryKey"];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface TerminationService
 + (_TtC28LocalAuthenticationUIService18TerminationService)shared;
-+ (void)setShared:(id)a3;
++ (void)setShared:(id)shared;
 - (_TtC28LocalAuthenticationUIService18TerminationService)init;
 - (void)scheduleTermination;
 @end
@@ -29,10 +29,10 @@
   return static TerminationService.shared;
 }
 
-+ (void)setShared:(id)a3
++ (void)setShared:(id)shared
 {
   v3 = one-time initialization token for shared;
-  v4 = a3;
+  sharedCopy = shared;
   if (v3 != -1)
   {
     swift_once();
@@ -40,13 +40,13 @@
 
   swift_beginAccess();
   v5 = static TerminationService.shared;
-  static TerminationService.shared = v4;
+  static TerminationService.shared = sharedCopy;
 }
 
 - (void)scheduleTermination
 {
   *(&self->super.isa + OBJC_IVAR____TtC28LocalAuthenticationUIService18TerminationService_terminationScheduled) = 1;
-  v2 = self;
+  selfCopy = self;
   TerminationService.terminate(force:)();
 }
 

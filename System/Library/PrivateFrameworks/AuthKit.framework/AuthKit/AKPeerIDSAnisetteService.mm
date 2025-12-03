@@ -2,20 +2,20 @@
 + (id)sharedService;
 - (AKPeerIDSAnisetteService)init;
 - (id)_activePairedTinkerDevice;
-- (void)_handleIncomingCommandMessage:(id)a3 completion:(id)a4;
-- (void)_mhq_handleIncomingReplyMessage:(id)a3;
-- (void)_performRemoteCommand:(unint64_t)a3 argument:(id)a4 completion:(id)a5;
-- (void)_replyToCommandMessageWithInternalID:(id)a3 didSucceed:(BOOL)a4 returnData:(id)a5 error:(id)a6 completion:(id)a7;
-- (void)eraseAnisetteWithCompletion:(id)a3;
-- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 withCompletion:(id)a4;
-- (void)fetchPeerAttestationDataForRequest:(id)a3 completion:(id)a4;
-- (void)legacyAnisetteDataForDSID:(id)a3 withCompletion:(id)a4;
-- (void)provisionAnisetteWithCompletion:(id)a3;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5;
+- (void)_handleIncomingCommandMessage:(id)message completion:(id)completion;
+- (void)_mhq_handleIncomingReplyMessage:(id)message;
+- (void)_performRemoteCommand:(unint64_t)command argument:(id)argument completion:(id)completion;
+- (void)_replyToCommandMessageWithInternalID:(id)d didSucceed:(BOOL)succeed returnData:(id)data error:(id)error completion:(id)completion;
+- (void)eraseAnisetteWithCompletion:(id)completion;
+- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary withCompletion:(id)completion;
+- (void)fetchPeerAttestationDataForRequest:(id)request completion:(id)completion;
+- (void)legacyAnisetteDataForDSID:(id)d withCompletion:(id)completion;
+- (void)provisionAnisetteWithCompletion:(id)completion;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block;
 - (void)startListeningForMessagesFromPairedDevice;
-- (void)syncAnisetteWithSIMData:(id)a3 completion:(id)a4;
+- (void)syncAnisetteWithSIMData:(id)data completion:(id)completion;
 @end
 
 @implementation AKPeerIDSAnisetteService
@@ -89,13 +89,13 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 withCompletion:(id)a4
+- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary withCompletion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
+  necessaryCopy = necessary;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, completion);
   v16 = _AKTrafficLogSubsystem();
   v15 = 2;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -107,8 +107,8 @@
   }
 
   objc_storeStrong(&v16, 0);
-  v4 = v20;
-  v5 = [NSNumber numberWithBool:v18];
+  v4 = selfCopy;
+  v5 = [NSNumber numberWithBool:necessaryCopy];
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
@@ -121,14 +121,14 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)fetchPeerAttestationDataForRequest:(id)a3 completion:(id)a4
+- (void)fetchPeerAttestationDataForRequest:(id)request completion:(id)completion
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, completion);
   v18 = 0;
   v16 = 0;
   v7 = [NSKeyedArchiver archivedDataWithRootObject:location[0] requiringSecureCoding:1 error:&v16];
@@ -147,7 +147,7 @@
     objc_storeStrong(&v15, 0);
   }
 
-  v5 = v21;
+  v5 = selfCopy;
   v4 = v17;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
@@ -163,14 +163,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)syncAnisetteWithSIMData:(id)a3 completion:(id)a4
+- (void)syncAnisetteWithSIMData:(id)data completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, completion);
   v14 = _AKLogSystem();
   v13 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -180,7 +180,7 @@
   }
 
   objc_storeStrong(&v14, 0);
-  v5 = v17;
+  v5 = selfCopy;
   v4 = location[0];
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
@@ -194,12 +194,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)eraseAnisetteWithCompletion:(id)a3
+- (void)eraseAnisetteWithCompletion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v11 = _AKLogSystem();
   v10 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -209,7 +209,7 @@
   }
 
   objc_storeStrong(&v11, 0);
-  v3 = v13;
+  v3 = selfCopy;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
@@ -221,12 +221,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)provisionAnisetteWithCompletion:(id)a3
+- (void)provisionAnisetteWithCompletion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v11 = _AKLogSystem();
   v10 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -236,7 +236,7 @@
   }
 
   objc_storeStrong(&v11, 0);
-  v3 = v13;
+  v3 = selfCopy;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
@@ -248,14 +248,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)legacyAnisetteDataForDSID:(id)a3 withCompletion:(id)a4
+- (void)legacyAnisetteDataForDSID:(id)d withCompletion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, completion);
   v14 = _AKLogSystem();
   v13 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -265,7 +265,7 @@
   }
 
   objc_storeStrong(&v14, 0);
-  v5 = v17;
+  v5 = selfCopy;
   v4 = location[0];
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
@@ -279,20 +279,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_performRemoteCommand:(unint64_t)a3 argument:(id)a4 completion:(id)a5
+- (void)_performRemoteCommand:(unint64_t)command argument:(id)argument completion:(id)completion
 {
-  v28 = self;
+  selfCopy = self;
   v27 = a2;
-  v26 = a3;
+  commandCopy = command;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, argument);
   v24 = 0;
-  objc_storeStrong(&v24, a5);
+  objc_storeStrong(&v24, completion);
   v23 = _AKLogSystem();
   v22 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [NSNumber numberWithUnsignedInteger:v26];
+    v9 = [NSNumber numberWithUnsignedInteger:commandCopy];
     sub_1000194D4(v31, v9);
     _os_log_debug_impl(&_mh_execute_header, v23, v22, "Preparing message with command %@...", v31, 0xCu);
     _objc_release(v9);
@@ -300,7 +300,7 @@
 
   objc_storeStrong(&v23, 0);
   v21 = objc_alloc_init(AKCommandMessage);
-  [(AKCommandMessage *)v21 setCommand:v26];
+  [(AKCommandMessage *)v21 setCommand:commandCopy];
   [(AKCommandMessage *)v21 setArgument:location];
   v7 = sub_100079D7C();
   v29[0] = v7;
@@ -315,14 +315,14 @@
   _objc_release(v5);
   _objc_release(v6);
   _objc_release(v7);
-  queue = v28->_messageHandlingQueue;
+  queue = selfCopy->_messageHandlingQueue;
   v11 = _NSConcreteStackBlock;
   v12 = -1073741824;
   v13 = 0;
   v14 = sub_10007CC78;
   v15 = &unk_1003200A8;
   v16 = _objc_retain(v21);
-  v17 = _objc_retain(v28);
+  v17 = _objc_retain(selfCopy);
   v18 = _objc_retain(v20);
   v19 = _objc_retain(v24);
   dispatch_async(queue, &v11);
@@ -357,19 +357,19 @@
   return v3;
 }
 
-- (void)_replyToCommandMessageWithInternalID:(id)a3 didSucceed:(BOOL)a4 returnData:(id)a5 error:(id)a6 completion:(id)a7
+- (void)_replyToCommandMessageWithInternalID:(id)d didSucceed:(BOOL)succeed returnData:(id)data error:(id)error completion:(id)completion
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v31 = a4;
+  objc_storeStrong(location, d);
+  succeedCopy = succeed;
   v30 = 0;
-  objc_storeStrong(&v30, a5);
+  objc_storeStrong(&v30, data);
   v29 = 0;
-  objc_storeStrong(&v29, a6);
+  objc_storeStrong(&v29, error);
   v28 = 0;
-  objc_storeStrong(&v28, a7);
+  objc_storeStrong(&v28, completion);
   v27 = _AKLogSystem();
   v26 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -381,7 +381,7 @@
   objc_storeStrong(&v27, 0);
   v25 = objc_alloc_init(AKReplyMessage);
   [(AKReplyMessage *)v25 setReplyToID:location[0]];
-  [(AKReplyMessage *)v25 setDidSucceed:v31];
+  [(AKReplyMessage *)v25 setDidSucceed:succeedCopy];
   [(AKReplyMessage *)v25 setReturnData:v30];
   [(AKReplyMessage *)v25 setError:v29];
   v9 = sub_100079D7C();
@@ -397,14 +397,14 @@
   _objc_release(v7);
   _objc_release(v8);
   _objc_release(v9);
-  queue = v33->_messageHandlingQueue;
+  queue = selfCopy->_messageHandlingQueue;
   v15 = _NSConcreteStackBlock;
   v16 = -1073741824;
   v17 = 0;
   v18 = sub_10007D9DC;
   v19 = &unk_1003200A8;
   v20 = _objc_retain(v25);
-  v21 = _objc_retain(v33);
+  v21 = _objc_retain(selfCopy);
   v22 = _objc_retain(v24);
   v23 = _objc_retain(v28);
   dispatch_async(queue, &v15);
@@ -420,22 +420,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, service);
   v35 = 0;
-  objc_storeStrong(&v35, a4);
+  objc_storeStrong(&v35, account);
   v34 = 0;
-  objc_storeStrong(&v34, a5);
-  v33 = a6;
+  objc_storeStrong(&v34, identifier);
+  successCopy = success;
   v32 = 0;
-  objc_storeStrong(&v32, a7);
+  objc_storeStrong(&v32, error);
   if (v34)
   {
-    if (v33)
+    if (successCopy)
     {
       oslog = _AKLogSystem();
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -458,12 +458,12 @@
       }
 
       objc_storeStrong(&v27, 0);
-      v25 = [(NSMutableDictionary *)v37->_internalMessageIDsByTransportID objectForKeyedSubscript:v34];
+      v25 = [(NSMutableDictionary *)selfCopy->_internalMessageIDsByTransportID objectForKeyedSubscript:v34];
       if (v25)
       {
-        v22 = [(NSMutableDictionary *)v37->_completionsByInternalMessageID objectForKeyedSubscript:v25];
-        [(NSMutableDictionary *)v37->_completionsByInternalMessageID removeObjectForKey:v25];
-        [(NSMutableDictionary *)v37->_internalMessageIDsByTransportID removeObjectForKey:v34];
+        v22 = [(NSMutableDictionary *)selfCopy->_completionsByInternalMessageID objectForKeyedSubscript:v25];
+        [(NSMutableDictionary *)selfCopy->_completionsByInternalMessageID removeObjectForKey:v25];
+        [(NSMutableDictionary *)selfCopy->_internalMessageIDsByTransportID removeObjectForKey:v34];
         if (v22)
         {
           queue = dispatch_get_global_queue(21, 0);
@@ -524,20 +524,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, service);
   v41 = 0;
-  objc_storeStrong(&v41, a4);
+  objc_storeStrong(&v41, account);
   v40 = 0;
-  objc_storeStrong(&v40, a5);
+  objc_storeStrong(&v40, message);
   v39 = 0;
-  objc_storeStrong(&v39, a6);
+  objc_storeStrong(&v39, d);
   v38 = 0;
-  objc_storeStrong(&v38, a7);
+  objc_storeStrong(&v38, context);
   v37 = 0;
   if ([_AKMessage typeForMessageWithTransportRepresentation:v40]== 1)
   {
@@ -573,26 +573,26 @@
     objc_storeStrong(&v34, 0);
   }
 
-  v32 = [v37 identifier];
-  if (v32)
+  identifier = [v37 identifier];
+  if (identifier)
   {
     v27 = os_transaction_create();
     if ([v37 type] == 1)
     {
-      [(AKPeerIDSAnisetteService *)v43 _mhq_handleIncomingReplyMessage:v37];
+      [(AKPeerIDSAnisetteService *)selfCopy _mhq_handleIncomingReplyMessage:v37];
     }
 
     else
     {
-      v12 = v43;
+      v12 = selfCopy;
       v11 = v37;
       v19 = _NSConcreteStackBlock;
       v20 = -1073741824;
       v21 = 0;
       v22 = sub_10007E67C;
       v23 = &unk_1003211E0;
-      v24 = _objc_retain(v43);
-      v25 = _objc_retain(v32);
+      v24 = _objc_retain(selfCopy);
+      v25 = _objc_retain(identifier);
       v26 = _objc_retain(v27);
       [(AKPeerIDSAnisetteService *)v12 _handleIncomingCommandMessage:v11 completion:&v19];
       objc_storeStrong(&v26, 0);
@@ -620,7 +620,7 @@
     v28 = 1;
   }
 
-  objc_storeStrong(&v32, 0);
+  objc_storeStrong(&identifier, 0);
   objc_storeStrong(&v37, 0);
   objc_storeStrong(&v38, 0);
   objc_storeStrong(&v39, 0);
@@ -629,38 +629,38 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleIncomingCommandMessage:(id)a3 completion:(id)a4
+- (void)_handleIncomingCommandMessage:(id)message completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v82 = 0;
-  objc_storeStrong(&v82, a4);
-  v81 = [location[0] command];
+  objc_storeStrong(&v82, completion);
+  command = [location[0] command];
   v80 = _AKLogSystem();
   v79 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [NSNumber numberWithUnsignedInteger:v81];
+    v20 = [NSNumber numberWithUnsignedInteger:command];
     sub_1000194D4(v86, v20);
     _os_log_impl(&_mh_execute_header, v80, v79, "Handling command from paired device: %@", v86, 0xCu);
     _objc_release(v20);
   }
 
   objc_storeStrong(&v80, 0);
-  if (v81)
+  if (command)
   {
-    v73 = [location[0] argument];
+    argument = [location[0] argument];
     v72 = objc_alloc_init(AKNativeAnisetteService);
-    if (v81 == 1)
+    if (command == 1)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v70 = [v73 BOOLValue];
+        bOOLValue = [argument BOOLValue];
         v17 = v72;
-        v16 = v70;
+        v16 = bOOLValue;
         v64 = _NSConcreteStackBlock;
         v65 = -1073741824;
         v66 = 0;
@@ -679,13 +679,13 @@
       }
     }
 
-    else if (v81 == 2)
+    else if (command == 2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v11 = v72;
-        v10 = v73;
+        v10 = argument;
         v38 = _NSConcreteStackBlock;
         v39 = -1073741824;
         v40 = 0;
@@ -704,7 +704,7 @@
       }
     }
 
-    else if (v81 == 3)
+    else if (command == 3)
     {
       v15 = v72;
       v58 = _NSConcreteStackBlock;
@@ -718,13 +718,13 @@
       objc_storeStrong(&v63, 0);
     }
 
-    else if (v81 == 4)
+    else if (command == 4)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v14 = v72;
-        v13 = v73;
+        v13 = argument;
         v51 = _NSConcreteStackBlock;
         v52 = -1073741824;
         v53 = 0;
@@ -743,7 +743,7 @@
       }
     }
 
-    else if (v81 == 5)
+    else if (command == 5)
     {
       v12 = v72;
       v45 = _NSConcreteStackBlock;
@@ -757,9 +757,9 @@
       objc_storeStrong(&v50, 0);
     }
 
-    else if (v81 == 6)
+    else if (command == 6)
     {
-      v37 = _objc_retain(v73);
+      v37 = _objc_retain(argument);
       v36 = 0;
       v7 = objc_opt_class();
       v9 = [NSSet setWithObjects:v7, objc_opt_class(), 0];
@@ -806,7 +806,7 @@
       v23 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        v4 = [NSNumber numberWithUnsignedInteger:v81];
+        v4 = [NSNumber numberWithUnsignedInteger:command];
         sub_1000194D4(v84, v4);
         _os_log_error_impl(&_mh_execute_header, v24, v23, "Unknown command received %@!", v84, 0xCu);
         _objc_release(v4);
@@ -820,7 +820,7 @@
     }
 
     objc_storeStrong(&v72, 0);
-    objc_storeStrong(&v73, 0);
+    objc_storeStrong(&argument, 0);
     v74 = 0;
   }
 
@@ -847,12 +847,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_mhq_handleIncomingReplyMessage:(id)a3
+- (void)_mhq_handleIncomingReplyMessage:(id)message
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v34 = _AKLogSystem();
   v33 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
@@ -862,14 +862,14 @@
   }
 
   objc_storeStrong(&v34, 0);
-  v32 = [location[0] replyToID];
-  if (v32)
+  replyToID = [location[0] replyToID];
+  if (replyToID)
   {
-    v27 = [(NSMutableDictionary *)v36->_completionsByInternalMessageID objectForKeyedSubscript:v32];
+    v27 = [(NSMutableDictionary *)selfCopy->_completionsByInternalMessageID objectForKeyedSubscript:replyToID];
     if (v27)
     {
-      [(NSMutableDictionary *)v36->_completionsByInternalMessageID removeObjectForKey:v32];
-      v24 = [(NSMutableDictionary *)v36->_internalMessageIDsByTransportID copy];
+      [(NSMutableDictionary *)selfCopy->_completionsByInternalMessageID removeObjectForKey:replyToID];
+      v24 = [(NSMutableDictionary *)selfCopy->_internalMessageIDsByTransportID copy];
       memset(__b, 0, sizeof(__b));
       obj = _objc_retain(v24);
       v11 = [obj countByEnumeratingWithState:__b objects:v37 count:16];
@@ -888,7 +888,7 @@
 
           v23 = *(__b[1] + 8 * v8);
           v4 = [v24 objectForKeyedSubscript:v23];
-          v5 = [v4 isEqual:v32];
+          v5 = [v4 isEqual:replyToID];
           _objc_release(v4);
           if (v5)
           {
@@ -907,7 +907,7 @@
           }
         }
 
-        [(NSMutableDictionary *)v36->_internalMessageIDsByTransportID removeObjectForKey:v23];
+        [(NSMutableDictionary *)selfCopy->_internalMessageIDsByTransportID removeObjectForKey:v23];
         v28 = 2;
       }
 
@@ -924,7 +924,7 @@ LABEL_19:
       v16 = 0;
       v17 = sub_10007FF00;
       v18 = &unk_100321280;
-      v19 = _objc_retain(v32);
+      v19 = _objc_retain(replyToID);
       v21 = _objc_retain(v27);
       v20 = _objc_retain(location[0]);
       dispatch_async(queue, &v14);
@@ -942,7 +942,7 @@ LABEL_19:
       v25 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        sub_1000194D4(v38, v32);
+        sub_1000194D4(v38, replyToID);
         _os_log_error_impl(&_mh_execute_header, oslog, v25, "Unable to find pending completion block under ID: %@", v38, 0xCu);
       }
 
@@ -969,20 +969,20 @@ LABEL_19:
     v28 = 1;
   }
 
-  objc_storeStrong(&v32, 0);
+  objc_storeStrong(&replyToID, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block
 {
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, service);
   v36 = 0;
-  objc_storeStrong(&v36, a4);
+  objc_storeStrong(&v36, device);
   v35 = 0;
-  objc_storeStrong(&v35, a5);
+  objc_storeStrong(&v35, block);
   v34 = _AKLogSystem();
   v33 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
@@ -992,14 +992,14 @@ LABEL_19:
   }
 
   objc_storeStrong(&v34, 0);
-  if (v38->_completionsByInternalMessageID)
+  if (selfCopy->_completionsByInternalMessageID)
   {
-    v32 = [(NSMutableDictionary *)v38->_completionsByInternalMessageID allValues];
+    allValues = [(NSMutableDictionary *)selfCopy->_completionsByInternalMessageID allValues];
     oslog = _AKLogSystem();
     v30 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v32 count]);
+      v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [allValues count]);
       sub_1000194D4(v40, v14);
       _os_log_impl(&_mh_execute_header, oslog, v30, "Paired device changed while %@ remote commands were pending.", v40, 0xCu);
       _objc_release(v14);
@@ -1008,7 +1008,7 @@ LABEL_19:
     objc_storeStrong(&oslog, 0);
     v29 = [NSError errorWithDomain:AKAnisetteErrorDomain code:-8018 userInfo:0];
     memset(__b, 0, sizeof(__b));
-    v12 = _objc_retain(v32);
+    v12 = _objc_retain(allValues);
     v13 = [v12 countByEnumeratingWithState:__b objects:v39 count:16];
     if (v13)
     {
@@ -1050,10 +1050,10 @@ LABEL_19:
     }
 
     _objc_release(v12);
-    [(NSMutableDictionary *)v38->_completionsByInternalMessageID removeAllObjects];
-    [(NSMutableDictionary *)v38->_internalMessageIDsByTransportID removeAllObjects];
+    [(NSMutableDictionary *)selfCopy->_completionsByInternalMessageID removeAllObjects];
+    [(NSMutableDictionary *)selfCopy->_internalMessageIDsByTransportID removeAllObjects];
     objc_storeStrong(&v29, 0);
-    objc_storeStrong(&v32, 0);
+    objc_storeStrong(&allValues, 0);
   }
 
   v19 = _AKLogSystem();

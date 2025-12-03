@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_DeleteDanglingPLGraphEdges
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_DeleteDanglingPLGraphEdges
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v104[2] = *MEMORY[0x1E69E9840];
-  v50 = a3;
+  contextCopy = context;
   v4 = MEMORY[0x1E696AB28];
   v54 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == nil", @"sourceNode"];
   v103[0] = v54;
@@ -53,7 +53,7 @@
   v59[1] = 3221225472;
   v59[2] = __97__PLModelMigrationAction_DeleteDanglingPLGraphEdges_performActionWithManagedObjectContext_error___block_invoke;
   v59[3] = &unk_1E7575B30;
-  v22 = v50;
+  v22 = contextCopy;
   v60 = v22;
   v58[0] = MEMORY[0x1E69E9820];
   v58[1] = 3221225472;
@@ -78,17 +78,17 @@
 
     if (v26)
     {
-      v27 = [(PLModelMigrationActionCore *)self logger];
-      v28 = v27 == 0;
+      logger = [(PLModelMigrationActionCore *)self logger];
+      v28 = logger == 0;
 
       if (v28)
       {
         v42 = PLMigrationGetLog();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
         {
-          v43 = [v62[5] completedUnitCount];
+          completedUnitCount = [v62[5] completedUnitCount];
           *buf = 134217984;
-          *&buf[4] = v43;
+          *&buf[4] = completedUnitCount;
           _os_log_impl(&dword_19BF1F000, v42, OS_LOG_TYPE_INFO, "Completed playback bit update on %lu assets", buf, 0xCu);
         }
       }
@@ -128,9 +128,9 @@
         memset(buf, 0, sizeof(buf));
         v29 = PLMigrationGetLog();
         os_log_type_enabled(v29, OS_LOG_TYPE_INFO);
-        v30 = [v62[5] completedUnitCount];
+        completedUnitCount2 = [v62[5] completedUnitCount];
         v67 = 134217984;
-        v68 = v30;
+        v68 = completedUnitCount2;
         LODWORD(v49) = 12;
         v31 = _os_log_send_and_compose_impl();
 
@@ -154,8 +154,8 @@
 
     if (v34)
     {
-      v35 = [(PLModelMigrationActionCore *)self logger];
-      v36 = v35 == 0;
+      logger2 = [(PLModelMigrationActionCore *)self logger];
+      v36 = logger2 == 0;
 
       if (v36)
       {

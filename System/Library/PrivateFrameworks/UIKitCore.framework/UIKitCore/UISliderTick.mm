@@ -1,13 +1,13 @@
 @interface UISliderTick
-+ (id)tickWithPosition:(float)a3 title:(id)a4 image:(id)a5;
++ (id)tickWithPosition:(float)position title:(id)title image:(id)image;
 - (NSString)title;
 - (UISliderTick)init;
-- (UISliderTick)initWithCoder:(id)a3;
-- (UISliderTick)initWithPosition:(float)a3 title:(id)a4 image:(id)a5;
+- (UISliderTick)initWithCoder:(id)coder;
+- (UISliderTick)initWithPosition:(float)position title:(id)title image:(id)image;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setImage:(id)image;
+- (void)setTitle:(id)title;
 @end
 
 @implementation UISliderTick
@@ -28,9 +28,9 @@
   return v2;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_18A4A7288();
   }
@@ -46,16 +46,16 @@
   *(v6 + 2) = v5;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v4 = *&self->_tick[OBJC_IVAR___UISliderTick__tick + 16];
-  *&self->_tick[OBJC_IVAR___UISliderTick__tick + 16] = a3;
-  v3 = a3;
+  *&self->_tick[OBJC_IVAR___UISliderTick__tick + 16] = image;
+  imageCopy = image;
 }
 
-- (UISliderTick)initWithPosition:(float)a3 title:(id)a4 image:(id)a5
+- (UISliderTick)initWithPosition:(float)position title:(id)title image:(id)image
 {
-  if (a4)
+  if (title)
   {
     v7 = sub_18A4A7288();
     v9 = v8;
@@ -67,15 +67,15 @@
     v9 = 0;
   }
 
-  v10 = a5;
-  v11 = sub_1891CC648(v7, v9, a5, a3);
+  imageCopy = image;
+  v11 = sub_1891CC648(v7, v9, image, position);
 
   return v11;
 }
 
-+ (id)tickWithPosition:(float)a3 title:(id)a4 image:(id)a5
++ (id)tickWithPosition:(float)position title:(id)title image:(id)image
 {
-  if (a4)
+  if (title)
   {
     v7 = sub_18A4A7288();
     v9 = v8;
@@ -88,8 +88,8 @@
   }
 
   swift_getObjCClassMetadata();
-  v10 = a5;
-  v11 = sub_1891CA104(a3, v7, v9, a5);
+  imageCopy = image;
+  v11 = sub_1891CA104(position, v7, v9, image);
 
   return v11;
 }
@@ -99,7 +99,7 @@
   v3 = *&self->_tick[OBJC_IVAR___UISliderTick__tick + 16];
   sub_18A4A8888();
   v4 = v3;
-  v5 = self;
+  selfCopy = self;
 
   UISlider.TrackConfiguration.Tick.hash(into:)();
   v6 = sub_18A4A88E8();
@@ -107,19 +107,19 @@
   return v6;
 }
 
-- (UISliderTick)initWithCoder:(id)a3
+- (UISliderTick)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_1891CC7B0(v3);
+  coderCopy = coder;
+  v4 = sub_1891CC7B0(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1891CA744(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1891CA744(coderCopy);
 }
 
 - (UISliderTick)init

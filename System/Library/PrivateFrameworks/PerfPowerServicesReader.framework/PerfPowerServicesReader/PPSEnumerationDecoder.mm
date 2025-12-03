@@ -1,20 +1,20 @@
 @interface PPSEnumerationDecoder
-+ (BOOL)isDecodableMetric:(id)a3;
-+ (id)decodeValue:(id)a3 withMetric:(id)a4;
++ (BOOL)isDecodableMetric:(id)metric;
++ (id)decodeValue:(id)value withMetric:(id)metric;
 @end
 
 @implementation PPSEnumerationDecoder
 
-+ (id)decodeValue:(id)a3 withMetric:(id)a4
++ (id)decodeValue:(id)value withMetric:(id)metric
 {
-  v5 = a3;
-  if (v5)
+  valueCopy = value;
+  if (valueCopy)
   {
-    v6 = [a4 enumMapping];
+    enumMapping = [metric enumMapping];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 valueForKey:v5];
+      v7 = [enumMapping valueForKey:valueCopy];
     }
 
     else
@@ -22,8 +22,8 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v5 stringValue];
-        v7 = [v6 valueForKey:v8];
+        stringValue = [valueCopy stringValue];
+        v7 = [enumMapping valueForKey:stringValue];
       }
 
       else
@@ -41,15 +41,15 @@
   return v7;
 }
 
-+ (BOOL)isDecodableMetric:(id)a3
++ (BOOL)isDecodableMetric:(id)metric
 {
-  if (!a3)
+  if (!metric)
   {
     return 0;
   }
 
-  v3 = [a3 enumMapping];
-  v4 = v3 != 0;
+  enumMapping = [metric enumMapping];
+  v4 = enumMapping != 0;
 
   return v4;
 }

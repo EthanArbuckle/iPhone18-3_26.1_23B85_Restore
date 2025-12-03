@@ -9,12 +9,12 @@
   if (![(WFCloudKitTask *)self isCancelled])
   {
     [(WFCloudKitTask *)self setCancelled:1];
-    v3 = [(WFCloudKitTask *)self cancellationHandler];
+    cancellationHandler = [(WFCloudKitTask *)self cancellationHandler];
 
-    if (v3)
+    if (cancellationHandler)
     {
-      v4 = [(WFCloudKitTask *)self cancellationHandler];
-      v4[2]();
+      cancellationHandler2 = [(WFCloudKitTask *)self cancellationHandler];
+      cancellationHandler2[2]();
     }
   }
 }

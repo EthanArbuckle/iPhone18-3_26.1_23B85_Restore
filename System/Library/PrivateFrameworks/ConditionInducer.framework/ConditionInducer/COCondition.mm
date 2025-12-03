@@ -1,10 +1,10 @@
 @interface COCondition
 + (id)info;
 + (void)info;
-- (BOOL)getBoolProperty:(id)a3 fromDict:(id)a4 withDefault:(BOOL)a5;
+- (BOOL)getBoolProperty:(id)property fromDict:(id)dict withDefault:(BOOL)default;
 - (COCondition)init;
-- (id)getStringProperty:(id)a3 fromDict:(id)a4 withDefault:(id)a5;
-- (id)getStringProperty:(id)a3 withDefault:(id)a4;
+- (id)getStringProperty:(id)property fromDict:(id)dict withDefault:(id)default;
+- (id)getStringProperty:(id)property withDefault:(id)default;
 @end
 
 @implementation COCondition
@@ -21,7 +21,7 @@
   v11[3] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [a1 description];
+  v5 = [self description];
   if (!v5)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
@@ -35,9 +35,9 @@
   v11[0] = v4;
   v10[0] = @"ConditionIdentifierName";
   v10[1] = @"ConditionUserFriendlyName";
-  v6 = [a1 profileFriendlyName];
+  profileFriendlyName = [self profileFriendlyName];
   v10[2] = @"ConditionDescription";
-  v11[1] = v6;
+  v11[1] = profileFriendlyName;
   v11[2] = v5;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:3];
 
@@ -46,19 +46,19 @@
   return v7;
 }
 
-- (BOOL)getBoolProperty:(id)a3 fromDict:(id)a4 withDefault:(BOOL)a5
+- (BOOL)getBoolProperty:(id)property fromDict:(id)dict withDefault:(BOOL)default
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  propertyCopy = property;
+  dictCopy = dict;
+  v9 = dictCopy;
+  if (dictCopy)
   {
-    v10 = [v8 objectForKey:v7];
+    v10 = [dictCopy objectForKey:propertyCopy];
     v11 = isNSNumber(v10);
 
     if (v11)
     {
-      a5 = [v10 BOOLValue];
+      default = [v10 BOOLValue];
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -72,28 +72,28 @@
     [COCondition getBoolProperty:fromDict:withDefault:];
   }
 
-  return a5;
+  return default;
 }
 
-- (id)getStringProperty:(id)a3 fromDict:(id)a4 withDefault:(id)a5
+- (id)getStringProperty:(id)property fromDict:(id)dict withDefault:(id)default
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  propertyCopy = property;
+  dictCopy = dict;
+  defaultCopy = default;
+  if (dictCopy)
   {
-    v10 = [v8 objectForKey:v7];
+    v10 = [dictCopy objectForKey:propertyCopy];
     v11 = isNSString(v10);
 
     v12 = v10;
     if (!v11)
     {
       v13 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
-      v12 = v9;
+      v12 = defaultCopy;
       if (v13)
       {
-        [COCondition getStringProperty:v7 fromDict:? withDefault:?];
-        v12 = v9;
+        [COCondition getStringProperty:propertyCopy fromDict:? withDefault:?];
+        v12 = defaultCopy;
       }
     }
 
@@ -107,22 +107,22 @@
       [COCondition getBoolProperty:fromDict:withDefault:];
     }
 
-    v14 = v9;
+    v14 = defaultCopy;
   }
 
   return v14;
 }
 
-- (id)getStringProperty:(id)a3 withDefault:(id)a4
+- (id)getStringProperty:(id)property withDefault:(id)default
 {
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  defaultCopy = default;
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 infoDictionary];
-    v11 = [(COCondition *)self getStringProperty:v6 fromDict:v10 withDefault:v7];
+    infoDictionary = [v8 infoDictionary];
+    v11 = [(COCondition *)self getStringProperty:propertyCopy fromDict:infoDictionary withDefault:defaultCopy];
   }
 
   else
@@ -132,7 +132,7 @@
       [COCondition getBoolProperty:withDefault:];
     }
 
-    v11 = v7;
+    v11 = defaultCopy;
   }
 
   return v11;

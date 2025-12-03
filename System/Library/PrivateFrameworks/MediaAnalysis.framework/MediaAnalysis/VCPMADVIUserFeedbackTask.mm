@@ -1,26 +1,26 @@
 @interface VCPMADVIUserFeedbackTask
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
-- (VCPMADVIUserFeedbackTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
+- (VCPMADVIUserFeedbackTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
 - (int)run;
 - (void)cancel;
 @end
 
 @implementation VCPMADVIUserFeedbackTask
 
-- (VCPMADVIUserFeedbackTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
+- (VCPMADVIUserFeedbackTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
   v17.receiver = self;
   v17.super_class = VCPMADVIUserFeedbackTask;
   v12 = [(VCPMADVIUserFeedbackTask *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_imageAsset, a4);
-    objc_storeStrong(&v13->_signpostPayload, a5);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_imageAsset, asset);
+    objc_storeStrong(&v13->_signpostPayload, payload);
     v14 = dispatch_queue_create("VCPMADVIUserFeedbackTask", 0);
     cancelQueue = v13->_cancelQueue;
     v13->_cancelQueue = v14;
@@ -29,15 +29,15 @@
   return v13;
 }
 
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v11 = [[a1 alloc] initWithRequest:v8 imageAsset:v9 andSignpostPayload:v10];
+    v11 = [[self alloc] initWithRequest:requestCopy imageAsset:assetCopy andSignpostPayload:payloadCopy];
   }
 
   else
@@ -102,7 +102,7 @@ uint64_t __34__VCPMADVIUserFeedbackTask_cancel__block_invoke(uint64_t a1)
   v15 = 3221225472;
   v16 = __31__VCPMADVIUserFeedbackTask_run__block_invoke;
   v17 = &unk_1E834DF40;
-  v18 = self;
+  selfCopy = self;
   v21 = buf;
   v8 = v6;
   v19 = v8;
@@ -110,8 +110,8 @@ uint64_t __34__VCPMADVIUserFeedbackTask_cancel__block_invoke(uint64_t a1)
   v20 = v9;
   dispatch_sync(cancelQueue, &v14);
   dispatch_group_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
-  v10 = [v9 service];
-  [v10 clearCacheWithOption:56];
+  service = [v9 service];
+  [service clearCacheWithOption:56];
 
   [v5 reset];
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))

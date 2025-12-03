@@ -1,23 +1,23 @@
 @interface AppleAccountSignInView.Coordinator
-- (void)signInController:(id)a3 didCompleteWithOperationsResults:(id)a4;
-- (void)signInControllerDidCancel:(id)a3;
+- (void)signInController:(id)controller didCompleteWithOperationsResults:(id)results;
+- (void)signInControllerDidCancel:(id)cancel;
 @end
 
 @implementation AppleAccountSignInView.Coordinator
 
-- (void)signInController:(id)a3 didCompleteWithOperationsResults:(id)a4
+- (void)signInController:(id)controller didCompleteWithOperationsResults:(id)results
 {
   sub_1000E9E10();
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a3;
-  v7 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1000E9C60();
 }
 
-- (void)signInControllerDidCancel:(id)a3
+- (void)signInControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
+  cancelCopy = cancel;
+  selfCopy = self;
   sub_1000E9D84();
 }
 

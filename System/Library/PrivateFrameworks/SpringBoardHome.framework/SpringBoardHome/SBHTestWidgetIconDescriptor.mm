@@ -1,19 +1,19 @@
 @interface SBHTestWidgetIconDescriptor
-+ (id)widgetIconDescriptorFromDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SBHTestWidgetIconDescriptor)initWithBundleIdentifier:(id)a3 containerBundleIdentifier:(id)a4 widgetIdentifier:(id)a5 sizeClass:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)widgetIconDescriptorFromDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (SBHTestWidgetIconDescriptor)initWithBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier widgetIdentifier:(id)widgetIdentifier sizeClass:(id)class;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBHTestWidgetIconDescriptor
 
-+ (id)widgetIconDescriptorFromDictionary:(id)a3
++ (id)widgetIconDescriptorFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"containerBundleIdentifier"];
-  v5 = [v3 objectForKeyedSubscript:@"bundleIdentifier"];
-  v6 = [v3 objectForKeyedSubscript:@"widgetIdentifier"];
-  v7 = [v3 objectForKeyedSubscript:@"gridSize"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"containerBundleIdentifier"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"bundleIdentifier"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"widgetIdentifier"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"gridSize"];
 
   v8 = [SBHTestWidgetIconDescriptor alloc];
   v9 = SBHIconGridSizeClassForString(v7);
@@ -22,38 +22,38 @@
   return v10;
 }
 
-- (SBHTestWidgetIconDescriptor)initWithBundleIdentifier:(id)a3 containerBundleIdentifier:(id)a4 widgetIdentifier:(id)a5 sizeClass:(id)a6
+- (SBHTestWidgetIconDescriptor)initWithBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier widgetIdentifier:(id)widgetIdentifier sizeClass:(id)class
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  widgetIdentifierCopy = widgetIdentifier;
+  classCopy = class;
   v22.receiver = self;
   v22.super_class = SBHTestWidgetIconDescriptor;
   v14 = [(SBHTestWidgetIconDescriptor *)&v22 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     bundleIdentifier = v14->_bundleIdentifier;
     v14->_bundleIdentifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [bundleIdentifierCopy copy];
     containerBundleIdentifier = v14->_containerBundleIdentifier;
     v14->_containerBundleIdentifier = v17;
 
-    v19 = [v12 copy];
+    v19 = [widgetIdentifierCopy copy];
     widgetIdentifier = v14->_widgetIdentifier;
     v14->_widgetIdentifier = v19;
 
-    objc_storeStrong(&v14->_sizeClass, a6);
+    objc_storeStrong(&v14->_sizeClass, class);
   }
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   bundleIdentifier = self->_bundleIdentifier;
   containerBundleIdentifier = self->_containerBundleIdentifier;
   widgetIdentifier = self->_widgetIdentifier;
@@ -62,37 +62,37 @@
   return [v4 initWithBundleIdentifier:bundleIdentifier containerBundleIdentifier:containerBundleIdentifier widgetIdentifier:widgetIdentifier sizeClass:sizeClass];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(SBHTestWidgetIconDescriptor *)v6 bundleIdentifier];
-    if ([v7 isEqualToString:self->_bundleIdentifier])
+    bundleIdentifier = [(SBHTestWidgetIconDescriptor *)v6 bundleIdentifier];
+    if ([bundleIdentifier isEqualToString:self->_bundleIdentifier])
     {
-      v8 = [(SBHTestWidgetIconDescriptor *)v6 containerBundleIdentifier];
-      if ([v8 isEqualToString:self->_containerBundleIdentifier])
+      containerBundleIdentifier = [(SBHTestWidgetIconDescriptor *)v6 containerBundleIdentifier];
+      if ([containerBundleIdentifier isEqualToString:self->_containerBundleIdentifier])
       {
-        v9 = [(SBHTestWidgetIconDescriptor *)v6 widgetIdentifier];
-        if ([v9 isEqualToString:self->_widgetIdentifier])
+        widgetIdentifier = [(SBHTestWidgetIconDescriptor *)v6 widgetIdentifier];
+        if ([widgetIdentifier isEqualToString:self->_widgetIdentifier])
         {
-          v10 = [(SBHTestWidgetIconDescriptor *)v6 sizeClass];
-          if (v10 == self->_sizeClass)
+          sizeClass = [(SBHTestWidgetIconDescriptor *)v6 sizeClass];
+          if (sizeClass == self->_sizeClass)
           {
             v12 = 1;
           }
 
           else
           {
-            v11 = [(SBHTestWidgetIconDescriptor *)v6 sizeClass];
-            v12 = [v11 isEqualToString:self->_sizeClass];
+            sizeClass2 = [(SBHTestWidgetIconDescriptor *)v6 sizeClass];
+            v12 = [sizeClass2 isEqualToString:self->_sizeClass];
           }
         }
 

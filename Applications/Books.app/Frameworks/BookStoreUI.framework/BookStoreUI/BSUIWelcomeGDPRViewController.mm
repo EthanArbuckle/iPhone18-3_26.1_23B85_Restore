@@ -1,18 +1,18 @@
 @interface BSUIWelcomeGDPRViewController
-- (BSUIWelcomeGDPRViewController)initWithCompletion:(id)a3;
-- (void)_analyticsSubmitGetStartedActionEventForGDPRLink:(BOOL)a3;
-- (void)_getStartedPressed:(id)a3;
-- (void)_privacyLinkPressed:(id)a3;
+- (BSUIWelcomeGDPRViewController)initWithCompletion:(id)completion;
+- (void)_analyticsSubmitGetStartedActionEventForGDPRLink:(BOOL)link;
+- (void)_getStartedPressed:(id)pressed;
+- (void)_privacyLinkPressed:(id)pressed;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation BSUIWelcomeGDPRViewController
 
-- (BSUIWelcomeGDPRViewController)initWithCompletion:(id)a3
+- (BSUIWelcomeGDPRViewController)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = BSUIBundle();
   v6 = [v5 localizedStringForKey:@"Welcome to Apple Books" value:&stru_3960F8 table:@"BookStoreUILocalizable"];
 
@@ -20,15 +20,15 @@
   v8 = [v7 localizedStringForKey:@"Find great books and audiobooks you can read or listen to anywhere value:on all your Apple devices." table:{&stru_3960F8, @"BookStoreUILocalizable"}];
 
   v9 = +[NSBundle mainBundle];
-  v10 = [v9 bundleIdentifier];
-  v11 = [UIImage _applicationIconImageForBundleIdentifier:v10 format:2];
+  bundleIdentifier = [v9 bundleIdentifier];
+  v11 = [UIImage _applicationIconImageForBundleIdentifier:bundleIdentifier format:2];
 
   v16.receiver = self;
   v16.super_class = BSUIWelcomeGDPRViewController;
   v12 = [(BSUIWelcomeGDPRViewController *)&v16 initWithTitle:v6 detailText:v8 icon:v11 contentLayout:2];
   if (v12)
   {
-    v13 = [v4 copy];
+    v13 = [completionCopy copy];
     completion = v12->_completion;
     v12->_completion = v13;
   }
@@ -55,24 +55,24 @@
   v7 = [v6 localizedStringForKey:@"Features vary by region." value:&stru_3960F8 table:@"BookStoreUILocalizable"];
   [v3 setText:v7];
 
-  v8 = [(BSUIWelcomeGDPRViewController *)self contentView];
-  [v8 addSubview:v3];
+  contentView = [(BSUIWelcomeGDPRViewController *)self contentView];
+  [contentView addSubview:v3];
 
-  v32 = [v3 topAnchor];
-  v33 = [(BSUIWelcomeGDPRViewController *)self contentView];
-  v31 = [v33 topAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  topAnchor = [v3 topAnchor];
+  contentView2 = [(BSUIWelcomeGDPRViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v38[0] = v30;
-  v9 = [(BSUIWelcomeGDPRViewController *)self contentView];
-  v10 = [v9 heightAnchor];
-  v11 = [v3 heightAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  contentView3 = [(BSUIWelcomeGDPRViewController *)self contentView];
+  heightAnchor = [contentView3 heightAnchor];
+  heightAnchor2 = [v3 heightAnchor];
+  v12 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v38[1] = v12;
-  v13 = [v3 widthAnchor];
-  v34 = self;
-  v14 = [(BSUIWelcomeGDPRViewController *)self contentView];
-  v15 = [v14 widthAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  widthAnchor = [v3 widthAnchor];
+  selfCopy = self;
+  contentView4 = [(BSUIWelcomeGDPRViewController *)self contentView];
+  widthAnchor2 = [contentView4 widthAnchor];
+  v16 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v38[2] = v16;
   v17 = [NSArray arrayWithObjects:v38 count:3];
   [NSLayoutConstraint activateConstraints:v17];
@@ -90,30 +90,30 @@
   [v20 setUnderlineLinks:1];
   v21 = [UIColor colorNamed:@"BrandColor"];
   [v20 setCustomTintColor:v21];
-  v22 = [(BSUIWelcomeGDPRViewController *)v34 buttonTray];
-  [v22 setPrivacyLinkController:v20];
+  buttonTray = [(BSUIWelcomeGDPRViewController *)selfCopy buttonTray];
+  [buttonTray setPrivacyLinkController:v20];
 
   objc_opt_class();
-  v23 = [v20 view];
+  view = [v20 view];
   v24 = BUDynamicCast();
 
-  [v24 addTarget:v34 action:"_privacyLinkPressed:" forControlEvents:0x2000];
+  [v24 addTarget:selfCopy action:"_privacyLinkPressed:" forControlEvents:0x2000];
   v25 = +[OBBoldTrayButton boldButton];
   v26 = BSUIBundle();
   v27 = [v26 localizedStringForKey:@"Get Started" value:&stru_3960F8 table:@"BookStoreUILocalizable"];
 
   [v25 setTitle:v27 forState:0];
-  [v25 addTarget:v34 action:"_getStartedPressed:" forControlEvents:64];
+  [v25 addTarget:selfCopy action:"_getStartedPressed:" forControlEvents:64];
   v28 = +[UIColor bc_welcomeButtonColor];
   [v25 setTintColor:v28];
 
-  v29 = [(BSUIWelcomeGDPRViewController *)v34 buttonTray];
-  [v29 addButton:v25];
+  buttonTray2 = [(BSUIWelcomeGDPRViewController *)selfCopy buttonTray];
+  [buttonTray2 addButton:v25];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = BSUIWelcomeScreenLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -123,10 +123,10 @@
 
   v10.receiver = self;
   v10.super_class = BSUIWelcomeGDPRViewController;
-  [(BSUIWelcomeGDPRViewController *)&v10 viewWillAppear:v3];
-  v6 = [(BSUIWelcomeGDPRViewController *)self ba_analyticsTracker];
+  [(BSUIWelcomeGDPRViewController *)&v10 viewWillAppear:appearCopy];
+  ba_analyticsTracker = [(BSUIWelcomeGDPRViewController *)self ba_analyticsTracker];
 
-  if (!v6)
+  if (!ba_analyticsTracker)
   {
     v7 = [(BSUIWelcomeGDPRViewController *)self ba_setupNewAnalyticsTrackerWithName:@"GetStarted"];
   }
@@ -136,9 +136,9 @@
   self->_appearDate = v8;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = BSUIWelcomeScreenLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -148,16 +148,16 @@
 
   v8.receiver = self;
   v8.super_class = BSUIWelcomeGDPRViewController;
-  [(BSUIWelcomeGDPRViewController *)&v8 viewWillDisappear:v3];
+  [(BSUIWelcomeGDPRViewController *)&v8 viewWillDisappear:disappearCopy];
   if (self->_appearDate)
   {
-    v6 = [(BSUIWelcomeGDPRViewController *)self ba_effectiveAnalyticsTracker];
+    ba_effectiveAnalyticsTracker = [(BSUIWelcomeGDPRViewController *)self ba_effectiveAnalyticsTracker];
     v7 = +[BAEventReporter sharedReporter];
-    [v7 emitGetStartedViewEventWithTracker:v6 startDate:self->_appearDate];
+    [v7 emitGetStartedViewEventWithTracker:ba_effectiveAnalyticsTracker startDate:self->_appearDate];
   }
 }
 
-- (void)_getStartedPressed:(id)a3
+- (void)_getStartedPressed:(id)pressed
 {
   v4 = BSUIWelcomeScreenLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -167,15 +167,15 @@
   }
 
   [(BSUIWelcomeGDPRViewController *)self _analyticsSubmitGetStartedActionEventForGDPRLink:0];
-  v5 = [(BSUIWelcomeGDPRViewController *)self completion];
-  v6 = v5;
-  if (v5)
+  completion = [(BSUIWelcomeGDPRViewController *)self completion];
+  v6 = completion;
+  if (completion)
   {
-    (*(v5 + 16))(v5);
+    (*(completion + 16))(completion);
   }
 }
 
-- (void)_privacyLinkPressed:(id)a3
+- (void)_privacyLinkPressed:(id)pressed
 {
   v4 = BSUIWelcomeScreenLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -187,13 +187,13 @@
   [(BSUIWelcomeGDPRViewController *)self _analyticsSubmitGetStartedActionEventForGDPRLink:1];
 }
 
-- (void)_analyticsSubmitGetStartedActionEventForGDPRLink:(BOOL)a3
+- (void)_analyticsSubmitGetStartedActionEventForGDPRLink:(BOOL)link
 {
-  v3 = a3;
-  v7 = [(BSUIWelcomeGDPRViewController *)self ba_effectiveAnalyticsTracker];
+  linkCopy = link;
+  ba_effectiveAnalyticsTracker = [(BSUIWelcomeGDPRViewController *)self ba_effectiveAnalyticsTracker];
   v4 = +[BAEventReporter sharedReporter];
   v5 = v4;
-  if (v3)
+  if (linkCopy)
   {
     v6 = 2;
   }
@@ -203,7 +203,7 @@
     v6 = 1;
   }
 
-  [v4 emitGetStartedActionEventWithTracker:v7 type:v6];
+  [v4 emitGetStartedActionEventWithTracker:ba_effectiveAnalyticsTracker type:v6];
 }
 
 @end

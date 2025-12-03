@@ -1,6 +1,6 @@
 @interface DKPasscodeProvider
 - (BOOL)isDevicePasscodeSet;
-- (BOOL)verifyPasscode:(id)a3;
+- (BOOL)verifyPasscode:(id)passcode;
 - (int)simplePasscodeType;
 - (int)unlockType;
 @end
@@ -9,37 +9,37 @@
 
 - (BOOL)isDevicePasscodeSet
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isPasscodeSet];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isPasscodeSet = [mEMORY[0x277D262A0] isPasscodeSet];
 
-  return v3;
+  return isPasscodeSet;
 }
 
 - (int)unlockType
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 unlockScreenType];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  unlockScreenType = [mEMORY[0x277D262A0] unlockScreenType];
 
-  return v3;
+  return unlockScreenType;
 }
 
 - (int)simplePasscodeType
 {
   v4 = 0;
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  [v2 unlockScreenTypeWithOutSimplePasscodeType:&v4];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unlockScreenTypeWithOutSimplePasscodeType:&v4];
 
   return v4;
 }
 
-- (BOOL)verifyPasscode:(id)a3
+- (BOOL)verifyPasscode:(id)passcode
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D262A0];
-  v5 = a3;
-  v6 = [v4 sharedConnection];
+  passcodeCopy = passcode;
+  sharedConnection = [v4 sharedConnection];
   v15 = 0;
-  v7 = [v6 unlockDeviceWithPasscode:v5 outError:&v15];
+  v7 = [sharedConnection unlockDeviceWithPasscode:passcodeCopy outError:&v15];
 
   v8 = v15;
   if ((v7 & 1) == 0)
@@ -56,8 +56,8 @@
       else if (v8)
       {
         v14 = MEMORY[0x277CCACA8];
-        v3 = [v8 domain];
-        v13 = [v14 stringWithFormat:@"<Error domain: %@, code %ld>", v3, objc_msgSend(v8, "code")];
+        domain = [v8 domain];
+        v13 = [v14 stringWithFormat:@"<Error domain: %@, code %ld>", domain, objc_msgSend(v8, "code")];
         v12 = 1;
       }
 

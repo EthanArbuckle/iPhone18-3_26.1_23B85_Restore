@@ -1,40 +1,40 @@
 @interface CLSQuestionStep
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-+ (id)payloadsForObject:(id)a3 withSyncItem:(id)a4 database:(id)a5;
-- (BOOL)canCopyToDatabase:(id)a3;
-- (CLSQuestionStep)initWithCKRecord:(id)a3;
-- (CLSQuestionStep)initWithDatabaseRow:(id)a3;
-- (id)payloadsWithClassIDs:(id)a3 dependencies:(id)a4;
-- (int64_t)syncBackend:(id)a3;
-- (void)bindTo:(id)a3;
-- (void)populate:(id)a3;
-- (void)willBeDeletedFromDatabase:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
++ (id)payloadsForObject:(id)object withSyncItem:(id)item database:(id)database;
+- (BOOL)canCopyToDatabase:(id)database;
+- (CLSQuestionStep)initWithCKRecord:(id)record;
+- (CLSQuestionStep)initWithDatabaseRow:(id)row;
+- (id)payloadsWithClassIDs:(id)ds dependencies:(id)dependencies;
+- (int64_t)syncBackend:(id)backend;
+- (void)bindTo:(id)to;
+- (void)populate:(id)populate;
+- (void)willBeDeletedFromDatabase:(id)database;
 @end
 
 @implementation CLSQuestionStep
 
-- (CLSQuestionStep)initWithCKRecord:(id)a3
+- (CLSQuestionStep)initWithCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"type"];
+  recordCopy = record;
+  v5 = [recordCopy objectForKeyedSubscript:@"type"];
   if (v5)
   {
     v6 = CLSSurveyStepTypeFromString();
-    v7 = [v4 objectForKeyedSubscript:@"questionType"];
+    v7 = [recordCopy objectForKeyedSubscript:@"questionType"];
     v8 = SurveyQuestionTypeFromString();
 
     v9 = [(CLSQuestionStep *)self init];
     v10 = v9;
     if (v9)
     {
-      [(CLSQuestionStep *)v9 _initCommonPropsWithRecord:v4];
-      v11 = [v4 objectForKeyedSubscript:@"questionText"];
+      [(CLSQuestionStep *)v9 _initCommonPropsWithRecord:recordCopy];
+      v11 = [recordCopy objectForKeyedSubscript:@"questionText"];
       [(CLSQuestionStep *)v10 setQuestionText:v11];
 
-      v12 = [v4 objectForKeyedSubscript:@"displayOrder"];
+      v12 = [recordCopy objectForKeyedSubscript:@"displayOrder"];
       -[CLSQuestionStep setDisplayOrder:](v10, "setDisplayOrder:", [v12 integerValue]);
 
-      v13 = [v4 objectForKeyedSubscript:@"version"];
+      v13 = [recordCopy objectForKeyedSubscript:@"version"];
       -[CLSQuestionStep setVersion:](v10, "setVersion:", [v13 integerValue]);
 
       [(CLSQuestionStep *)v10 setType:v6];
@@ -42,52 +42,52 @@
     }
 
     self = v10;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)populate:(id)a3
+- (void)populate:(id)populate
 {
   v10.receiver = self;
   v10.super_class = CLSQuestionStep;
-  v4 = a3;
-  [(CLSQuestionStep *)&v10 populate:v4];
+  populateCopy = populate;
+  [(CLSQuestionStep *)&v10 populate:populateCopy];
   [(CLSQuestionStep *)self type:v10.receiver];
   v5 = NSStringFromCLSSurveyStepType();
   [(CLSQuestionStep *)self questionType];
   v6 = NSStringFromSurveyQuestionType();
-  [v4 setObject:v5 forKeyedSubscript:@"type"];
-  v7 = [(CLSQuestionStep *)self questionText];
-  [v4 setObject:v7 forKeyedSubscript:@"questionText"];
+  [populateCopy setObject:v5 forKeyedSubscript:@"type"];
+  questionText = [(CLSQuestionStep *)self questionText];
+  [populateCopy setObject:questionText forKeyedSubscript:@"questionText"];
 
   v8 = [NSNumber numberWithInteger:[(CLSQuestionStep *)self displayOrder]];
-  [v4 setObject:v8 forKeyedSubscript:@"displayOrder"];
+  [populateCopy setObject:v8 forKeyedSubscript:@"displayOrder"];
 
   v9 = [NSNumber numberWithInteger:[(CLSQuestionStep *)self version]];
-  [v4 setObject:v9 forKeyedSubscript:@"version"];
+  [populateCopy setObject:v9 forKeyedSubscript:@"version"];
 
-  [v4 setObject:v6 forKeyedSubscript:@"questionType"];
-  [(CLSQuestionStep *)self updateParentReferencesForRecord:v4];
+  [populateCopy setObject:v6 forKeyedSubscript:@"questionType"];
+  [(CLSQuestionStep *)self updateParentReferencesForRecord:populateCopy];
 }
 
-- (int64_t)syncBackend:(id)a3
+- (int64_t)syncBackend:(id)backend
 {
-  v4 = a3;
-  v5 = [(CLSQuestionStep *)self parentObjectID];
-  if (v5)
+  backendCopy = backend;
+  parentObjectID = [(CLSQuestionStep *)self parentObjectID];
+  if (parentObjectID)
   {
-    v6 = [v4 select:objc_opt_class() identity:v5];
+    v6 = [backendCopy select:objc_opt_class() identity:parentObjectID];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 syncBackend:v4];
+      v8 = [v6 syncBackend:backendCopy];
     }
 
     else
@@ -104,16 +104,16 @@
   return v8;
 }
 
-+ (id)payloadsForObject:(id)a3 withSyncItem:(id)a4 database:(id)a5
++ (id)payloadsForObject:(id)object withSyncItem:(id)item database:(id)database
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  objectCopy = object;
+  itemCopy = item;
+  databaseCopy = database;
   v10 = objc_opt_new();
   v11 = objc_autoreleasePoolPush();
   v12 = objc_alloc_init(PDDPPayload);
   [(PDDPPayload *)v12 setType:26];
-  v13 = [v8 state] - 1;
+  v13 = [itemCopy state] - 1;
   if (v13 < 3)
   {
     v14 = (v13 + 1);
@@ -125,16 +125,16 @@
   }
 
   [(PDDPPayload *)v12 setAction:v14];
-  if ([v8 state] == 3)
+  if ([itemCopy state] == 3)
   {
     v15 = objc_opt_new();
     [(PDDPPayload *)v12 setSurveyStep:v15];
 
-    v16 = [v8 entityIdentity];
-    v17 = [(PDDPPayload *)v12 surveyStep];
-    [v17 setObjectId:v16];
+    entityIdentity = [itemCopy entityIdentity];
+    surveyStep = [(PDDPPayload *)v12 surveyStep];
+    [surveyStep setObjectId:entityIdentity];
 
-    v18 = [v9 select:objc_opt_class() identity:v16];
+    v18 = [databaseCopy select:objc_opt_class() identity:entityIdentity];
     v19 = v18;
     v51 = v11;
     if (v18)
@@ -149,10 +149,10 @@
 
     v21 = v20;
     v22 = [v21 mutableCopy];
-    v23 = [(PDDPPayload *)v12 surveyStep];
-    [v23 setClassIds:v22];
+    surveyStep2 = [(PDDPPayload *)v12 surveyStep];
+    [surveyStep2 setClassIds:v22];
 
-    v24 = [v9 select:objc_opt_class() identity:v16];
+    v24 = [databaseCopy select:objc_opt_class() identity:entityIdentity];
     v25 = v24;
     if (v24)
     {
@@ -164,17 +164,17 @@
       v26 = 0;
     }
 
-    v27 = v26;
+    parentObjectID = v26;
 LABEL_17:
-    v40 = v27;
+    v40 = parentObjectID;
 
     if (v40)
     {
-      v41 = sub_1000C8BEC(v9, v40);
-      v42 = [CLSSurvey payloadForObject:v41 action:2 database:v9];
+      v41 = sub_1000C8BEC(databaseCopy, v40);
+      v42 = [CLSSurvey payloadForObject:v41 action:2 database:databaseCopy];
       v53 = v40;
       v43 = [NSArray arrayWithObjects:&v53 count:1];
-      sub_1000C8DF8(v9, v43, 1);
+      sub_1000C8DF8(databaseCopy, v43, 1);
 
       v52[0] = v12;
       v52[1] = v42;
@@ -191,11 +191,11 @@ LABEL_17:
         v47 = v45;
         v48 = objc_opt_class();
         v49 = v48;
-        v50 = [v8 entityIdentity];
+        entityIdentity2 = [itemCopy entityIdentity];
         *buf = 138543618;
         v55 = v48;
         v56 = 2114;
-        v57 = v50;
+        v57 = entityIdentity2;
         _os_log_error_impl(&_mh_execute_header, v47, OS_LOG_TYPE_ERROR, "%{public}@: did not find surveyID for question step %{public}@", buf, 0x16u);
       }
 
@@ -206,18 +206,18 @@ LABEL_17:
     goto LABEL_23;
   }
 
-  v28 = [v7 questionType];
-  v29 = [v7 objectID];
-  v16 = sub_100070148(v9, v28, v29);
+  questionType = [objectCopy questionType];
+  objectID = [objectCopy objectID];
+  entityIdentity = sub_100070148(databaseCopy, questionType, objectID);
 
-  if (v16)
+  if (entityIdentity)
   {
     objc_opt_class();
     v51 = v11;
     if (objc_opt_isKindOfClass())
     {
-      v30 = [v16 objectID];
-      v19 = sub_100120F3C(v9, v30);
+      objectID2 = [entityIdentity objectID];
+      v19 = sub_100120F3C(databaseCopy, objectID2);
     }
 
     else
@@ -225,17 +225,17 @@ LABEL_17:
       v19 = 0;
     }
 
-    v36 = sub_10001AD90(v7, v16, v19);
+    v36 = sub_10001AD90(objectCopy, entityIdentity, v19);
     [(PDDPPayload *)v12 setSurveyStep:v36];
 
-    v37 = [v7 objectID];
-    v25 = sub_10006FEFC(v9, v37);
+    objectID3 = [objectCopy objectID];
+    v25 = sub_10006FEFC(databaseCopy, objectID3);
 
     v38 = [v25 mutableCopy];
-    v39 = [(PDDPPayload *)v12 surveyStep];
-    [v39 setClassIds:v38];
+    surveyStep3 = [(PDDPPayload *)v12 surveyStep];
+    [surveyStep3 setClassIds:v38];
 
-    v27 = [v7 parentObjectID];
+    parentObjectID = [objectCopy parentObjectID];
     goto LABEL_17;
   }
 
@@ -246,11 +246,11 @@ LABEL_17:
     v32 = v31;
     v33 = objc_opt_class();
     v34 = v33;
-    v35 = [v7 objectID];
+    objectID4 = [objectCopy objectID];
     *buf = 138543618;
     v55 = v33;
     v56 = 2114;
-    v57 = v35;
+    v57 = objectID4;
     _os_log_error_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "%{public}@: did not find answer format for question step %{public}@", buf, 0x16u);
   }
 
@@ -261,17 +261,17 @@ LABEL_23:
   return v10;
 }
 
-- (id)payloadsWithClassIDs:(id)a3 dependencies:(id)a4
+- (id)payloadsWithClassIDs:(id)ds dependencies:(id)dependencies
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  dependenciesCopy = dependencies;
   v8 = objc_opt_new();
-  v9 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
+  v9 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(dependenciesCopy, "count")}];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v10 = v7;
+  v10 = dependenciesCopy;
   v11 = [v10 countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v11)
   {
@@ -323,9 +323,9 @@ LABEL_23:
       v23 = sub_10001AD90(self, v20, v21);
       [(PDDPPayload *)v17 setSurveyStep:v23];
 
-      v24 = [v6 mutableCopy];
-      v25 = [(PDDPPayload *)v17 surveyStep];
-      [v25 setClassIds:v24];
+      v24 = [dsCopy mutableCopy];
+      surveyStep = [(PDDPPayload *)v17 surveyStep];
+      [surveyStep setClassIds:v24];
 
       [v8 addObject:v17];
     }
@@ -373,92 +373,92 @@ LABEL_20:
   return v8;
 }
 
-- (CLSQuestionStep)initWithDatabaseRow:(id)a3
+- (CLSQuestionStep)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = [(CLSQuestionStep *)self _init];
-  v6 = v5;
-  if (v5)
+  rowCopy = row;
+  _init = [(CLSQuestionStep *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithDatabaseRow:v4];
-    v7 = sub_10016D778(v4, @"parentObjectID");
+    [_init _initCommonPropsWithDatabaseRow:rowCopy];
+    v7 = sub_10016D778(rowCopy, @"parentObjectID");
     [v6 setParentObjectID:v7];
 
-    v8 = sub_10016D778(v4, @"questionText");
+    v8 = sub_10016D778(rowCopy, @"questionText");
     [v6 setQuestionText:v8];
 
-    v9 = sub_10016D778(v4, @"displayOrder");
+    v9 = sub_10016D778(rowCopy, @"displayOrder");
     [v6 setDisplayOrder:{objc_msgSend(v9, "integerValue")}];
 
-    v10 = sub_10016D778(v4, @"version");
+    v10 = sub_10016D778(rowCopy, @"version");
     [v6 setVersion:{objc_msgSend(v10, "integerValue")}];
 
-    v11 = sub_10016D778(v4, @"type");
+    v11 = sub_10016D778(rowCopy, @"type");
     [v6 setType:{objc_msgSend(v11, "integerValue")}];
 
-    v12 = sub_10016D778(v4, @"questionType");
+    v12 = sub_10016D778(rowCopy, @"questionType");
     [v6 setQuestionType:{objc_msgSend(v12, "integerValue")}];
   }
 
   return v6;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   v12.receiver = self;
   v12.super_class = CLSQuestionStep;
-  v4 = a3;
-  [(CLSQuestionStep *)&v12 bindTo:v4];
+  toCopy = to;
+  [(CLSQuestionStep *)&v12 bindTo:toCopy];
   v13 = @"appIdentifier";
   v5 = [NSArray arrayWithObjects:&v13 count:1, v12.receiver, v12.super_class];
-  sub_1000983A8(v4, v5);
+  sub_1000983A8(toCopy, v5);
 
-  v6 = [(CLSQuestionStep *)self parentObjectID];
-  sub_1000982FC(v4, v6, @"parentObjectID");
+  parentObjectID = [(CLSQuestionStep *)self parentObjectID];
+  sub_1000982FC(toCopy, parentObjectID, @"parentObjectID");
 
-  v7 = [(CLSQuestionStep *)self questionText];
-  sub_1000982FC(v4, v7, @"questionText");
+  questionText = [(CLSQuestionStep *)self questionText];
+  sub_1000982FC(toCopy, questionText, @"questionText");
 
   v8 = [NSNumber numberWithInteger:[(CLSQuestionStep *)self displayOrder]];
-  sub_1000982FC(v4, v8, @"displayOrder");
+  sub_1000982FC(toCopy, v8, @"displayOrder");
 
   v9 = [NSNumber numberWithInteger:[(CLSQuestionStep *)self version]];
-  sub_1000982FC(v4, v9, @"version");
+  sub_1000982FC(toCopy, v9, @"version");
 
   v10 = [NSNumber numberWithInteger:[(CLSQuestionStep *)self type]];
-  sub_1000982FC(v4, v10, @"type");
+  sub_1000982FC(toCopy, v10, @"type");
 
   v11 = [NSNumber numberWithInteger:[(CLSQuestionStep *)self questionType]];
-  sub_1000982FC(v4, v11, @"questionType");
+  sub_1000982FC(toCopy, v11, @"questionType");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (!a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table CLSQuestionStep(   objectID          text not null,\n    parentObjectID    text not null,\n    dateCreated       real not null,\n    dateLastModified  real not null,\n    questionText      text,\n    version           integer,\n    displayOrder      integer,\n    type              integer,\n    questionType      integer,\n    foreign key (parentObjectID) references CLSSurvey(objectID) on delete cascade on update cascade\n)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index CLSQuestionStep_objectID on CLSQuestionStep (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index CLSQuestionStep_parentObjectID on CLSQuestionStep (parentObjectID)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table CLSQuestionStep(   objectID          text not null,\n    parentObjectID    text not null,\n    dateCreated       real not null,\n    dateLastModified  real not null,\n    questionText      text,\n    version           integer,\n    displayOrder      integer,\n    type              integer,\n    questionType      integer,\n    foreign key (parentObjectID) references CLSSurvey(objectID) on delete cascade on update cascade\n)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index CLSQuestionStep_objectID on CLSQuestionStep (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index CLSQuestionStep_parentObjectID on CLSQuestionStep (parentObjectID)", 0, 0, 0))
     {
       v9 = 0;
       goto LABEL_8;
     }
 
-    a3 = 1;
+    version = 1;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_8:
 
   return v9;
 }
 
-- (void)willBeDeletedFromDatabase:(id)a3
+- (void)willBeDeletedFromDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [(CLSQuestionStep *)self objectID];
-  v6 = [v4 select:objc_opt_class() identity:v5];
+  databaseCopy = database;
+  objectID = [(CLSQuestionStep *)self objectID];
+  v6 = [databaseCopy select:objc_opt_class() identity:objectID];
   v7 = objc_opt_new();
   if (v6)
   {
@@ -472,40 +472,40 @@ LABEL_8:
     v6 = v9;
     if (v9)
     {
-      objc_setProperty_nonatomic_copy(v9, v10, v5, 8);
+      objc_setProperty_nonatomic_copy(v9, v10, objectID, 8);
     }
   }
 
-  v11 = sub_10006FEFC(v4, v5);
+  v11 = sub_10006FEFC(databaseCopy, objectID);
   [v7 addObjectsFromArray:v11];
 
-  v12 = [v7 allObjects];
-  sub_10008121C(v6, v12);
+  allObjects = [v7 allObjects];
+  sub_10008121C(v6, allObjects);
 
-  if ([v4 insertOrUpdateObject:v6])
+  if ([databaseCopy insertOrUpdateObject:v6])
   {
     v13 = objc_opt_new();
     v15 = v13;
     if (v13)
     {
-      objc_setProperty_nonatomic_copy(v13, v14, v5, 8);
-      v16 = [(CLSQuestionStep *)self parentObjectID];
-      objc_setProperty_nonatomic_copy(v15, v17, v16, 16);
+      objc_setProperty_nonatomic_copy(v13, v14, objectID, 8);
+      parentObjectID = [(CLSQuestionStep *)self parentObjectID];
+      objc_setProperty_nonatomic_copy(v15, v17, parentObjectID, 16);
     }
 
     else
     {
-      v16 = [(CLSQuestionStep *)self parentObjectID];
+      parentObjectID = [(CLSQuestionStep *)self parentObjectID];
     }
 
-    if ([v4 insertOrUpdateObject:v15])
+    if ([databaseCopy insertOrUpdateObject:v15])
     {
-      v20 = v5;
+      v20 = objectID;
       v18 = [NSArray arrayWithObjects:&v20 count:1];
-      [v4 deleteAllWithoutTracking:objc_opt_class() where:@"parentObjectID = ?" bindings:v18];
-      [v4 deleteAllWithoutTracking:objc_opt_class() where:@"parentObjectID = ?" bindings:v18];
-      [v4 deleteAllWithoutTracking:objc_opt_class() where:@"parentObjectID = ?" bindings:v18];
-      [v4 deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v18];
+      [databaseCopy deleteAllWithoutTracking:objc_opt_class() where:@"parentObjectID = ?" bindings:v18];
+      [databaseCopy deleteAllWithoutTracking:objc_opt_class() where:@"parentObjectID = ?" bindings:v18];
+      [databaseCopy deleteAllWithoutTracking:objc_opt_class() where:@"parentObjectID = ?" bindings:v18];
+      [databaseCopy deleteAll:objc_opt_class() where:@"parentObjectID = ?" bindings:v18];
     }
 
     else
@@ -515,22 +515,22 @@ LABEL_8:
       if (os_log_type_enabled(CLSLogDatabase, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v22 = v5;
+        v22 = objectID;
         _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Can't save reference to surveyID for objectID: %{public}@.", buf, 0xCu);
       }
     }
   }
 }
 
-- (BOOL)canCopyToDatabase:(id)a3
+- (BOOL)canCopyToDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = objc_opt_class();
-  v6 = [(CLSQuestionStep *)self parentObjectID];
-  v7 = [v4 select:v5 identity:v6];
+  parentObjectID = [(CLSQuestionStep *)self parentObjectID];
+  v7 = [databaseCopy select:v5 identity:parentObjectID];
 
-  LOBYTE(v6) = [v7 canCopyToDatabase:v4];
-  return v6;
+  LOBYTE(parentObjectID) = [v7 canCopyToDatabase:databaseCopy];
+  return parentObjectID;
 }
 
 @end

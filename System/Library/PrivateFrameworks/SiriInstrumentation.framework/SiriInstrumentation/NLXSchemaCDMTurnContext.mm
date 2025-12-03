@@ -1,31 +1,31 @@
 @interface NLXSchemaCDMTurnContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NLXSchemaCDMNLContext)nlContext;
-- (NLXSchemaCDMTurnContext)initWithDictionary:(id)a3;
-- (NLXSchemaCDMTurnContext)initWithJSON:(id)a3;
+- (NLXSchemaCDMTurnContext)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMTurnContext)initWithJSON:(id)n;
 - (NLXSchemaNLXLegacyNLContext)legacyNlContext;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (void)deleteLegacyNlContext;
 - (void)deleteNlContext;
-- (void)setLegacyNlContext:(id)a3;
-- (void)setNlContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setLegacyNlContext:(id)context;
+- (void)setNlContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMTurnContext
 
-- (NLXSchemaCDMTurnContext)initWithDictionary:(id)a3
+- (NLXSchemaCDMTurnContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = NLXSchemaCDMTurnContext;
   v5 = [(NLXSchemaCDMTurnContext *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"nlContext"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"nlContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       [(NLXSchemaCDMTurnContext *)v5 setNlContext:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"legacyNlContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"legacyNlContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,30 +47,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMTurnContext)initWithJSON:(id)a3
+- (NLXSchemaCDMTurnContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMTurnContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMTurnContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMTurnContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -83,72 +83,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_legacyNlContext)
   {
-    v4 = [(NLXSchemaCDMTurnContext *)self legacyNlContext];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    legacyNlContext = [(NLXSchemaCDMTurnContext *)self legacyNlContext];
+    dictionaryRepresentation = [legacyNlContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"legacyNlContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"legacyNlContext"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"legacyNlContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"legacyNlContext"];
     }
   }
 
   if (self->_nlContext)
   {
-    v7 = [(NLXSchemaCDMTurnContext *)self nlContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    nlContext = [(NLXSchemaCDMTurnContext *)self nlContext];
+    dictionaryRepresentation2 = [nlContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"nlContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"nlContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"nlContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"nlContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   whichTurncontexttype = self->_whichTurncontexttype;
-  if (whichTurncontexttype != [v4 whichTurncontexttype])
+  if (whichTurncontexttype != [equalCopy whichTurncontexttype])
   {
     goto LABEL_13;
   }
 
-  v6 = [(NLXSchemaCDMTurnContext *)self nlContext];
-  v7 = [v4 nlContext];
-  if ((v6 != 0) == (v7 == 0))
+  nlContext = [(NLXSchemaCDMTurnContext *)self nlContext];
+  nlContext2 = [equalCopy nlContext];
+  if ((nlContext != 0) == (nlContext2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(NLXSchemaCDMTurnContext *)self nlContext];
-  if (v8)
+  nlContext3 = [(NLXSchemaCDMTurnContext *)self nlContext];
+  if (nlContext3)
   {
-    v9 = v8;
-    v10 = [(NLXSchemaCDMTurnContext *)self nlContext];
-    v11 = [v4 nlContext];
-    v12 = [v10 isEqual:v11];
+    v9 = nlContext3;
+    nlContext4 = [(NLXSchemaCDMTurnContext *)self nlContext];
+    nlContext5 = [equalCopy nlContext];
+    v12 = [nlContext4 isEqual:nlContext5];
 
     if (!v12)
     {
@@ -160,12 +160,12 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMTurnContext *)self legacyNlContext];
-  v7 = [v4 legacyNlContext];
-  if ((v6 != 0) != (v7 == 0))
+  nlContext = [(NLXSchemaCDMTurnContext *)self legacyNlContext];
+  nlContext2 = [equalCopy legacyNlContext];
+  if ((nlContext != 0) != (nlContext2 == 0))
   {
-    v13 = [(NLXSchemaCDMTurnContext *)self legacyNlContext];
-    if (!v13)
+    legacyNlContext = [(NLXSchemaCDMTurnContext *)self legacyNlContext];
+    if (!legacyNlContext)
     {
 
 LABEL_16:
@@ -173,10 +173,10 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = v13;
-    v15 = [(NLXSchemaCDMTurnContext *)self legacyNlContext];
-    v16 = [v4 legacyNlContext];
-    v17 = [v15 isEqual:v16];
+    v14 = legacyNlContext;
+    legacyNlContext2 = [(NLXSchemaCDMTurnContext *)self legacyNlContext];
+    legacyNlContext3 = [equalCopy legacyNlContext];
+    v17 = [legacyNlContext2 isEqual:legacyNlContext3];
 
     if (v17)
     {
@@ -196,22 +196,22 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(NLXSchemaCDMTurnContext *)self nlContext];
+  toCopy = to;
+  nlContext = [(NLXSchemaCDMTurnContext *)self nlContext];
 
-  if (v4)
+  if (nlContext)
   {
-    v5 = [(NLXSchemaCDMTurnContext *)self nlContext];
+    nlContext2 = [(NLXSchemaCDMTurnContext *)self nlContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(NLXSchemaCDMTurnContext *)self legacyNlContext];
+  legacyNlContext = [(NLXSchemaCDMTurnContext *)self legacyNlContext];
 
-  if (v6)
+  if (legacyNlContext)
   {
-    v7 = [(NLXSchemaCDMTurnContext *)self legacyNlContext];
+    legacyNlContext2 = [(NLXSchemaCDMTurnContext *)self legacyNlContext];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -241,15 +241,15 @@ LABEL_14:
   return v3;
 }
 
-- (void)setLegacyNlContext:(id)a3
+- (void)setLegacyNlContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   nlContext = self->_nlContext;
   self->_nlContext = 0;
 
-  self->_whichTurncontexttype = 2 * (v4 != 0);
+  self->_whichTurncontexttype = 2 * (contextCopy != 0);
   legacyNlContext = self->_legacyNlContext;
-  self->_legacyNlContext = v4;
+  self->_legacyNlContext = contextCopy;
 }
 
 - (void)deleteNlContext
@@ -277,37 +277,37 @@ LABEL_14:
   return v3;
 }
 
-- (void)setNlContext:(id)a3
+- (void)setNlContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   legacyNlContext = self->_legacyNlContext;
   self->_legacyNlContext = 0;
 
-  self->_whichTurncontexttype = v4 != 0;
+  self->_whichTurncontexttype = contextCopy != 0;
   nlContext = self->_nlContext;
-  self->_nlContext = v4;
+  self->_nlContext = contextCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = NLXSchemaCDMTurnContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(NLXSchemaCDMTurnContext *)self nlContext];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  nlContext = [(NLXSchemaCDMTurnContext *)self nlContext];
+  v7 = [nlContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(NLXSchemaCDMTurnContext *)self deleteNlContext];
   }
 
-  v9 = [(NLXSchemaCDMTurnContext *)self legacyNlContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  legacyNlContext = [(NLXSchemaCDMTurnContext *)self legacyNlContext];
+  v10 = [legacyNlContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(NLXSchemaCDMTurnContext *)self deleteLegacyNlContext];
   }

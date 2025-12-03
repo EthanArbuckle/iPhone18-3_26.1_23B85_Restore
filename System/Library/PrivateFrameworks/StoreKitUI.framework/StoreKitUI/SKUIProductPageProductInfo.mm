@@ -1,14 +1,14 @@
 @interface SKUIProductPageProductInfo
-- (SKUIProductPageProductInfo)initWithInfoSectionDictionaries:(id)a3;
-- (void)enumerateEntriesWithBlock:(id)a3;
+- (SKUIProductPageProductInfo)initWithInfoSectionDictionaries:(id)dictionaries;
+- (void)enumerateEntriesWithBlock:(id)block;
 @end
 
 @implementation SKUIProductPageProductInfo
 
-- (SKUIProductPageProductInfo)initWithInfoSectionDictionaries:(id)a3
+- (SKUIProductPageProductInfo)initWithInfoSectionDictionaries:(id)dictionaries
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionariesCopy = dictionaries;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIProductPageProductInfo initWithInfoSectionDictionaries:];
@@ -31,8 +31,8 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v19 = v4;
-    v9 = v4;
+    v19 = dictionariesCopy;
+    v9 = dictionariesCopy;
     v10 = [v9 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v10)
     {
@@ -80,23 +80,23 @@
       while (v11);
     }
 
-    v4 = v19;
+    dictionariesCopy = v19;
   }
 
   return v20;
 }
 
-- (void)enumerateEntriesWithBlock:(id)a3
+- (void)enumerateEntriesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   labels = self->_labels;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__SKUIProductPageProductInfo_enumerateEntriesWithBlock___block_invoke;
   v7[3] = &unk_278200D00;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableArray *)labels enumerateObjectsUsingBlock:v7];
 }
 

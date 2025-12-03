@@ -1,13 +1,13 @@
 @interface JSSubscriptionStatus
-- (id)lookup:(id)a3;
+- (id)lookup:(id)lookup;
 @end
 
 @implementation JSSubscriptionStatus
 
-- (id)lookup:(id)a3
+- (id)lookup:(id)lookup
 {
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_10013C2CC(v4);
 
   return v6;

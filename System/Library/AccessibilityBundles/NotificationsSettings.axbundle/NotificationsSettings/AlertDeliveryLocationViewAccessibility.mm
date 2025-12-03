@@ -1,5 +1,5 @@
 @interface AlertDeliveryLocationViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityIdentifier;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,12 +7,12 @@
 
 @implementation AlertDeliveryLocationViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AlertDeliveryLocationView" hasInstanceVariable:@"_typeLabel" withType:"UILabel"];
-  [v3 validateClass:@"AlertDeliveryLocationView" hasInstanceMethod:@"selected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"AlertDeliveryLocationView" hasInstanceMethod:@"type" withFullSignature:{"Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AlertDeliveryLocationView" hasInstanceVariable:@"_typeLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"AlertDeliveryLocationView" hasInstanceMethod:@"selected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"AlertDeliveryLocationView" hasInstanceMethod:@"type" withFullSignature:{"Q", 0}];
 }
 
 - (id)accessibilityLabel
@@ -47,9 +47,9 @@
 - (id)accessibilityIdentifier
 {
   v2 = [(AlertDeliveryLocationViewAccessibility *)self safeValueForKey:@"_typeLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

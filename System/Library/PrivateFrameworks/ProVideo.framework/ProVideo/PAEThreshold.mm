@@ -1,18 +1,18 @@
 @interface PAEThreshold
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEThreshold)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEThreshold)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAEThreshold
 
-- (PAEThreshold)initWithAPIManager:(id)a3
+- (PAEThreshold)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEThreshold;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -46,38 +46,38 @@
   return 1;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (v9)
   {
     v10 = v9;
     v35 = 0.0;
-    [v9 getFloatValue:&v35 fromParm:1 atFxTime:a5->var0.var1];
+    [v9 getFloatValue:&v35 fromParm:1 atFxTime:info->var0.var1];
     v34 = 0.0;
-    [v10 getFloatValue:&v34 fromParm:2 atFxTime:a5->var0.var1];
+    [v10 getFloatValue:&v34 fromParm:2 atFxTime:info->var0.var1];
     v32 = 0.0;
     v33 = 0.0;
     v31 = 0.0;
-    [v10 getRedValue:&v33 greenValue:&v32 blueValue:&v31 fromParm:3 atFxTime:a5->var0.var1];
+    [v10 getRedValue:&v33 greenValue:&v32 blueValue:&v31 fromParm:3 atFxTime:info->var0.var1];
     v29 = 0.0;
     v30 = 0.0;
     v28 = 0.0;
-    [v10 getRedValue:&v30 greenValue:&v29 blueValue:&v28 fromParm:4 atFxTime:a5->var0.var1];
+    [v10 getRedValue:&v30 greenValue:&v29 blueValue:&v28 fromParm:4 atFxTime:info->var0.var1];
     v27 = 0;
-    v11 = [v10 getIntValue:&v27 fromParm:5 atFxTime:a5->var0.var1];
-    LODWORD(v9) = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
+    v11 = [v10 getIntValue:&v27 fromParm:5 atFxTime:info->var0.var1];
+    LODWORD(v9) = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
     if (v9)
     {
-      if ([a4 imageType] == 3)
+      if ([input imageType] == 3)
       {
         v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735F2C8];
         if (v9)
         {
           v12 = v9;
-          if (a4)
+          if (input)
           {
-            [a4 heliumRef];
+            [input heliumRef];
           }
 
           else
@@ -134,7 +134,7 @@
           v22 = v29;
           v23 = v28;
           (*(*v14 + 96))(v14, 3, v21, v22, v23, 1.0);
-          [a3 setHeliumRef:&v25];
+          [output setHeliumRef:&v25];
           if (v25)
           {
             (*(*v25 + 24))(v25);
@@ -159,15 +159,15 @@
   return v9;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

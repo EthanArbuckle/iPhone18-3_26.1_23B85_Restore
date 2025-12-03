@@ -1,5 +1,5 @@
 @interface MCMXPCMessageDeleteUserManagedAsset
-- (MCMXPCMessageDeleteUserManagedAsset)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5;
+- (MCMXPCMessageDeleteUserManagedAsset)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error;
 - (NSString)sourceRelativePath;
 @end
 
@@ -13,27 +13,27 @@
   return result;
 }
 
-- (MCMXPCMessageDeleteUserManagedAsset)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5
+- (MCMXPCMessageDeleteUserManagedAsset)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  xpc_dictionary_set_uint64(v8, "ContainerClass", 2uLL);
+  objectCopy = object;
+  contextCopy = context;
+  xpc_dictionary_set_uint64(objectCopy, "ContainerClass", 2uLL);
   v15.receiver = self;
   v15.super_class = MCMXPCMessageDeleteUserManagedAsset;
-  v10 = [(MCMXPCMessageWithContainerBase *)&v15 initWithXPCObject:v8 context:v9 error:a5];
+  v10 = [(MCMXPCMessageWithContainerBase *)&v15 initWithXPCObject:objectCopy context:contextCopy error:error];
 
   if (v10)
   {
-    v11 = [(MCMXPCMessageBase *)v10 nsStringValueFromXPCObject:v8 key:"SourcePath"];
+    v11 = [(MCMXPCMessageBase *)v10 nsStringValueFromXPCObject:objectCopy key:"SourcePath"];
     sourceRelativePath = v10->_sourceRelativePath;
     v10->_sourceRelativePath = v11;
 
     if (!v10->_sourceRelativePath)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = 11;
+        *error = 11;
       }
 
       v10 = 0;

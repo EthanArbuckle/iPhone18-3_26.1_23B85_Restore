@@ -17,33 +17,33 @@
 {
   if (a3)
   {
-    return [a1 addObject:?];
+    return [self addObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)safari_addObjectsFromArrayUnlessNil:()SafariCoreExtras
 {
   if (a3)
   {
-    return [a1 addObjectsFromArray:?];
+    return [self addObjectsFromArray:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)safari_setObject:()SafariCoreExtras atIndex:withPaddingObject:
 {
   v12 = a3;
   v8 = a5;
-  v9 = [a1 count];
+  v9 = [self count];
   if (v9 < a4)
   {
     v10 = v9;
     do
     {
-      [a1 setObject:v8 atIndexedSubscript:v10++];
+      [self setObject:v8 atIndexedSubscript:v10++];
     }
 
     while (a4 != v10);
@@ -59,13 +59,13 @@
     v11 = v8;
   }
 
-  [a1 setObject:v11 atIndexedSubscript:a4];
+  [self setObject:v11 atIndexedSubscript:a4];
 }
 
 - (void)safari_removeObjectsPassingTest:()SafariCoreExtras
 {
-  v2 = [a1 indexesOfObjectsPassingTest:?];
-  [a1 removeObjectsAtIndexes:v2];
+  v2 = [self indexesOfObjectsPassingTest:?];
+  [self removeObjectsAtIndexes:v2];
 }
 
 - (void)safari_removeObjectsAtIndexes:()SafariCoreExtras withOffset:startingAtIndex:
@@ -74,13 +74,13 @@
   if (v8)
   {
     v11 = v8;
-    v9 = [a1 count] > a5;
+    v9 = [self count] > a5;
     v8 = v11;
     if (v9)
     {
       v10 = [v11 mutableCopy];
       [v10 shiftIndexesStartingAtIndex:a5 by:a4];
-      [a1 removeObjectsAtIndexes:v10];
+      [self removeObjectsAtIndexes:v10];
 
       v8 = v11;
     }
@@ -96,7 +96,7 @@
   v8 = a3;
   v9 = [v6 arrayWithObjects:&v11 count:1];
 
-  [a1 safari_insertObjects:v9 afterObject:{v7, v11, v12}];
+  [self safari_insertObjects:v9 afterObject:{v7, v11, v12}];
   v10 = *MEMORY[0x1E69E9840];
 }
 
@@ -106,7 +106,7 @@
   v6 = a4;
   if (v6)
   {
-    v7 = [a1 indexOfObject:v6];
+    v7 = [self indexOfObject:v6];
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_6;
@@ -121,7 +121,7 @@
   }
 
   v9 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{v8, objc_msgSend(v10, "count")}];
-  [a1 insertObjects:v10 atIndexes:v9];
+  [self insertObjects:v10 atIndexes:v9];
 
 LABEL_6:
 }
@@ -130,31 +130,31 @@ LABEL_6:
 {
   v6 = a4;
   v8 = a3;
-  v7 = [a1 indexOfObject:v8 inSortedRange:0 options:objc_msgSend(a1 usingComparator:{"count"), 1024, v6}];
+  v7 = [self indexOfObject:v8 inSortedRange:0 options:objc_msgSend(self usingComparator:{"count"), 1024, v6}];
 
-  [a1 insertObject:v8 atIndex:v7];
+  [self insertObject:v8 atIndex:v7];
 }
 
 - (id)safari_takeFirstObject
 {
-  v2 = [a1 firstObject];
-  if ([a1 count])
+  firstObject = [self firstObject];
+  if ([self count])
   {
-    [a1 removeObjectAtIndex:0];
+    [self removeObjectAtIndex:0];
   }
 
-  return v2;
+  return firstObject;
 }
 
 - (id)safari_popLastObject
 {
-  v2 = [a1 lastObject];
-  if (v2)
+  lastObject = [self lastObject];
+  if (lastObject)
   {
-    [a1 removeLastObject];
+    [self removeLastObject];
   }
 
-  return v2;
+  return lastObject;
 }
 
 @end

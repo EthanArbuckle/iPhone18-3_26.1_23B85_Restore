@@ -1,26 +1,26 @@
 @interface PHShare
-+ (id)PHShareErrorFromError:(id)a3;
-+ (void)acceptShareWithUUID:(id)a3 photoLibrary:(id)a4 completion:(id)a5;
-+ (void)fetchShareFromShareURL:(id)a3 ignoreExistingShare:(BOOL)a4 photoLibrary:(id)a5 completionHandler:(id)a6;
-+ (void)publishShareWithUUID:(id)a3 photoLibrary:(id)a4 completion:(id)a5;
++ (id)PHShareErrorFromError:(id)error;
++ (void)acceptShareWithUUID:(id)d photoLibrary:(id)library completion:(id)completion;
++ (void)fetchShareFromShareURL:(id)l ignoreExistingShare:(BOOL)share photoLibrary:(id)library completionHandler:(id)handler;
++ (void)publishShareWithUUID:(id)d photoLibrary:(id)library completion:(id)completion;
 - (PHShare)init;
 @end
 
 @implementation PHShare
 
-+ (id)PHShareErrorFromError:(id)a3
++ (id)PHShareErrorFromError:(id)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (!errorCopy)
   {
     v7 = 0;
     goto LABEL_66;
   }
 
-  v5 = [v3 domain];
-  v6 = [v5 isEqualToString:@"PHPhotosErrorDomain"];
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:@"PHPhotosErrorDomain"];
 
   if (v6)
   {
@@ -34,32 +34,32 @@
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
   v10 = [v8 initWithDictionary:v9];
 
-  v11 = [v4 domain];
-  v12 = [v11 isEqualToString:*MEMORY[0x1E6994990]];
+  domain2 = [v4 domain];
+  v12 = [domain2 isEqualToString:*MEMORY[0x1E6994990]];
 
   if (!v12)
   {
-    v20 = [v4 domain];
-    v21 = [v20 isEqualToString:*MEMORY[0x1E69BE900]];
+    domain3 = [v4 domain];
+    v21 = [domain3 isEqualToString:*MEMORY[0x1E69BE900]];
 
     if (v21)
     {
-      v22 = [v4 code];
-      if ((v22 - 100) >= 3)
+      code = [v4 code];
+      if ((code - 100) >= 3)
       {
         v19 = -1;
       }
 
       else
       {
-        v19 = v22 + 5903;
+        v19 = code + 5903;
       }
     }
 
     else
     {
-      v23 = [v4 domain];
-      v24 = [v23 isEqualToString:*MEMORY[0x1E69BFF48]];
+      domain4 = [v4 domain];
+      v24 = [domain4 isEqualToString:*MEMORY[0x1E69BFF48]];
 
       if (v24)
       {
@@ -76,19 +76,19 @@
 
       else
       {
-        v25 = [v4 domain];
-        v26 = [v25 isEqualToString:*MEMORY[0x1E6998040]];
+        domain5 = [v4 domain];
+        v26 = [domain5 isEqualToString:*MEMORY[0x1E6998040]];
 
         if (v26)
         {
-          v27 = [v4 code];
+          code2 = [v4 code];
           v28 = 11002;
-          if (v27 != 20)
+          if (code2 != 20)
           {
             v28 = -1;
           }
 
-          if (v27 == 19)
+          if (code2 == 19)
           {
             v19 = 11001;
           }
@@ -109,12 +109,12 @@
     goto LABEL_65;
   }
 
-  v13 = [v4 userInfo];
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69949A0]];
+  userInfo = [v4 userInfo];
+  v14 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69949A0]];
   [v10 setObject:v14 forKeyedSubscript:@"PHServerGeneratedLocalizedDescriptionErrorKey"];
 
-  v15 = [v4 userInfo];
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x1E6994998]];
+  userInfo2 = [v4 userInfo];
+  v16 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E6994998]];
 
   if (v16)
   {
@@ -122,15 +122,15 @@
     [v10 setObject:v17 forKeyedSubscript:@"PHLearnMoreLinkErrorKey"];
   }
 
-  v18 = [v4 code];
+  code3 = [v4 code];
   v19 = -1;
-  if (v18 > 999)
+  if (code3 > 999)
   {
-    if (v18 <= 1007)
+    if (code3 <= 1007)
     {
-      if (v18 > 1005)
+      if (code3 > 1005)
       {
-        if (v18 == 1006)
+        if (code3 == 1006)
         {
           v19 = 6012;
         }
@@ -141,25 +141,25 @@
         }
       }
 
-      else if (v18 == 1000)
+      else if (code3 == 1000)
       {
         v19 = 6010;
       }
 
-      else if (v18 == 1002)
+      else if (code3 == 1002)
       {
         v19 = 9999;
       }
     }
 
-    else if (v18 <= 2008)
+    else if (code3 <= 2008)
     {
-      if (v18 == 1008)
+      if (code3 == 1008)
       {
         v19 = 8501;
       }
 
-      else if (v18 == 2008)
+      else if (code3 == 2008)
       {
         v19 = 8502;
       }
@@ -167,7 +167,7 @@
 
     else
     {
-      switch(v18)
+      switch(code3)
       {
         case 2009:
           v19 = 8503;
@@ -184,11 +184,11 @@
     goto LABEL_64;
   }
 
-  if (v18 > 34)
+  if (code3 > 34)
   {
-    if (v18 > 79)
+    if (code3 > 79)
     {
-      if ((v18 - 80) < 3)
+      if ((code3 - 80) < 3)
       {
         v19 = 6001;
       }
@@ -196,7 +196,7 @@
 
     else
     {
-      switch(v18)
+      switch(code3)
       {
         case '#':
           v19 = 6009;
@@ -213,16 +213,16 @@
     goto LABEL_64;
   }
 
-  if (v18 > 24)
+  if (code3 > 24)
   {
-    if (v18 != 25)
+    if (code3 != 25)
     {
-      if (v18 == 30)
+      if (code3 == 30)
       {
         v19 = 6008;
       }
 
-      else if (v18 == 34)
+      else if (code3 == 34)
       {
         v19 = 6002;
       }
@@ -235,13 +235,13 @@ LABEL_51:
     goto LABEL_64;
   }
 
-  if (v18 == 2)
+  if (code3 == 2)
   {
     v19 = 6006;
     goto LABEL_64;
   }
 
-  if (v18 == 23)
+  if (code3 == 23)
   {
     goto LABEL_51;
   }
@@ -256,38 +256,38 @@ LABEL_66:
   return v7;
 }
 
-+ (void)publishShareWithUUID:(id)a3 photoLibrary:(id)a4 completion:(id)a5
++ (void)publishShareWithUUID:(id)d photoLibrary:(id)library completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  dCopy = d;
+  libraryCopy = library;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"PHShare.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHShare.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v12 = [v10 cplStatus];
-  v13 = [v12 exitDeleteTime];
+  cplStatus = [libraryCopy cplStatus];
+  exitDeleteTime = [cplStatus exitDeleteTime];
 
-  if (v13)
+  if (exitDeleteTime)
   {
-    v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PHPhotosErrorDomain" code:6007 userInfo:0];
-    v15 = [a1 PHShareErrorFromError:v14];
-    v11[2](v11, 0, v15);
+    assetsdClient = [MEMORY[0x1E696ABC0] errorWithDomain:@"PHPhotosErrorDomain" code:6007 userInfo:0];
+    v15 = [self PHShareErrorFromError:assetsdClient];
+    completionCopy[2](completionCopy, 0, v15);
   }
 
   else
   {
-    v14 = [v10 assetsdClient];
-    v16 = [v14 cloudInternalClient];
+    assetsdClient = [libraryCopy assetsdClient];
+    cloudInternalClient = [assetsdClient cloudInternalClient];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __56__PHShare_publishShareWithUUID_photoLibrary_completion___block_invoke;
     v18[3] = &unk_1E75A9968;
-    v19 = v11;
-    v20 = a1;
-    [v16 publishShare:v9 completionHandler:v18];
+    v19 = completionCopy;
+    selfCopy = self;
+    [cloudInternalClient publishShare:dCopy completionHandler:v18];
   }
 }
 
@@ -300,27 +300,27 @@ void __56__PHShare_publishShareWithUUID_photoLibrary_completion___block_invoke(u
   (*(v4 + 16))(v4, v6, v7);
 }
 
-+ (void)acceptShareWithUUID:(id)a3 photoLibrary:(id)a4 completion:(id)a5
++ (void)acceptShareWithUUID:(id)d photoLibrary:(id)library completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  dCopy = d;
+  libraryCopy = library;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PHShare.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHShare.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v12 = [v10 assetsdClient];
-  v13 = [v12 cloudInternalClient];
+  assetsdClient = [libraryCopy assetsdClient];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __55__PHShare_acceptShareWithUUID_photoLibrary_completion___block_invoke;
   v16[3] = &unk_1E75A9940;
-  v17 = v11;
-  v18 = a1;
-  v14 = v11;
-  [v13 acceptShare:v9 completionHandler:v16];
+  v17 = completionCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  [cloudInternalClient acceptShare:dCopy completionHandler:v16];
 }
 
 void __55__PHShare_acceptShareWithUUID_photoLibrary_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -331,32 +331,32 @@ void __55__PHShare_acceptShareWithUUID_photoLibrary_completion___block_invoke(ui
   (*(v3 + 16))(v3, v2, v4);
 }
 
-+ (void)fetchShareFromShareURL:(id)a3 ignoreExistingShare:(BOOL)a4 photoLibrary:(id)a5 completionHandler:(id)a6
++ (void)fetchShareFromShareURL:(id)l ignoreExistingShare:(BOOL)share photoLibrary:(id)library completionHandler:(id)handler
 {
-  v8 = a4;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (!v13)
+  shareCopy = share;
+  lCopy = l;
+  libraryCopy = library;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PHShare.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHShare.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v14 = [v12 assetsdClient];
-  v15 = [v14 cloudInternalClient];
+  assetsdClient = [libraryCopy assetsdClient];
+  cloudInternalClient = [assetsdClient cloudInternalClient];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __85__PHShare_fetchShareFromShareURL_ignoreExistingShare_photoLibrary_completionHandler___block_invoke;
   v20[3] = &unk_1E75A9918;
-  v21 = v12;
-  v22 = v11;
-  v24 = v8;
-  v23 = v13;
-  v16 = v13;
-  v17 = v11;
-  v18 = v12;
-  [v15 fetchShareFromShareURL:v17 ignoreExistingShare:v8 completionHandler:v20];
+  v21 = libraryCopy;
+  v22 = lCopy;
+  v24 = shareCopy;
+  v23 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = lCopy;
+  v18 = libraryCopy;
+  [cloudInternalClient fetchShareFromShareURL:v17 ignoreExistingShare:shareCopy completionHandler:v20];
 }
 
 void __85__PHShare_fetchShareFromShareURL_ignoreExistingShare_photoLibrary_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -456,7 +456,7 @@ LABEL_9:
 
 - (PHShare)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }

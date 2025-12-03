@@ -1,14 +1,14 @@
 @interface AKShapeAnnotation
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3;
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key;
 + (id)keyPathsForValuesAffectingDrawingBounds;
 + (id)keyPathsForValuesAffectingHitTestBounds;
-- (AKShapeAnnotation)initWithCoder:(id)a3;
+- (AKShapeAnnotation)initWithCoder:(id)coder;
 - (id)displayName;
-- (id)fillColorForOptions:(id)a3;
+- (id)fillColorForOptions:(id)options;
 - (id)keysForValuesToObserveForRedrawing;
 - (id)keysForValuesToObserveForUndo;
-- (void)encodeWithCoder:(id)a3;
-- (void)setFillColor:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setFillColor:(id)color;
 @end
 
 @implementation AKShapeAnnotation
@@ -16,7 +16,7 @@
 + (id)keyPathsForValuesAffectingHitTestBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKShapeAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingHitTestBounds);
   v4 = [v2 setWithSet:v3];
@@ -27,7 +27,7 @@
 + (id)keyPathsForValuesAffectingDrawingBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKShapeAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingDrawingBounds);
   v4 = [v2 setWithSet:v3];
@@ -35,81 +35,81 @@
   return v4;
 }
 
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key
 {
-  v4 = a3;
-  if (![v4 containsString:@"fillColor"] || (+[AKController akBundle](AKController, "akBundle"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "localizedStringForKey:value:table:", @"Fill Color", &stru_28519E870, @"AnnotationStrings"), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+  keyCopy = key;
+  if (![keyCopy containsString:@"fillColor"] || (+[AKController akBundle](AKController, "akBundle"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "localizedStringForKey:value:table:", @"Fill Color", &stru_28519E870, @"AnnotationStrings"), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___AKShapeAnnotation;
-    v6 = objc_msgSendSuper2(&v8, sel_displayNameForUndoablePropertyChangeWithKey_, v4);
+    v6 = objc_msgSendSuper2(&v8, sel_displayNameForUndoablePropertyChangeWithKey_, keyCopy);
   }
 
   return v6;
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v5 = a3;
-  if (v5 && [v5 akIsEDR])
+  colorCopy = color;
+  if (colorCopy && [colorCopy akIsEDR])
   {
-    [(AKShapeAnnotation *)self setFillColorHDR:v5];
-    v4 = [v5 akToSDR];
-    [(AKShapeAnnotation *)self setFillColorSDR:v4];
+    [(AKShapeAnnotation *)self setFillColorHDR:colorCopy];
+    akToSDR = [colorCopy akToSDR];
+    [(AKShapeAnnotation *)self setFillColorSDR:akToSDR];
   }
 
   else
   {
     [(AKShapeAnnotation *)self setFillColorHDR:0];
-    [(AKShapeAnnotation *)self setFillColorSDR:v5];
+    [(AKShapeAnnotation *)self setFillColorSDR:colorCopy];
   }
 }
 
-- (id)fillColorForOptions:(id)a3
+- (id)fillColorForOptions:(id)options
 {
-  v4 = a3;
-  if (!v4)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v4 = +[AKAnnotationRendererOptions defaultOptions];
+    optionsCopy = +[AKAnnotationRendererOptions defaultOptions];
   }
 
-  [v4 scaleFactor];
+  [optionsCopy scaleFactor];
   v6 = v5;
-  v7 = [(AKShapeAnnotation *)self fillColorHDR];
-  v8 = v7;
+  fillColorHDR = [(AKShapeAnnotation *)self fillColorHDR];
+  v8 = fillColorHDR;
   if (v6 == 0.0)
   {
-    if (v7 && ([v4 allowHDR] & 1) != 0)
+    if (fillColorHDR && ([optionsCopy allowHDR] & 1) != 0)
     {
-      v13 = [(AKShapeAnnotation *)self fillColorHDR];
+      fillColorHDR2 = [(AKShapeAnnotation *)self fillColorHDR];
     }
 
     else
     {
-      v13 = [(AKShapeAnnotation *)self fillColorSDR];
+      fillColorHDR2 = [(AKShapeAnnotation *)self fillColorSDR];
     }
 
-    v12 = v13;
+    v12 = fillColorHDR2;
   }
 
   else
   {
-    if (v7 && [v4 allowHDR])
+    if (fillColorHDR && [optionsCopy allowHDR])
     {
-      v9 = [(AKShapeAnnotation *)self fillColorHDR];
+      fillColorHDR3 = [(AKShapeAnnotation *)self fillColorHDR];
       v10 = 0;
       v11 = 1;
     }
 
     else
     {
-      v9 = [(AKShapeAnnotation *)self fillColorSDR];
+      fillColorHDR3 = [(AKShapeAnnotation *)self fillColorSDR];
       v11 = 0;
       v10 = 1;
     }
 
-    [v4 scaleFactor];
-    v12 = [v9 akScale:?];
+    [optionsCopy scaleFactor];
+    v12 = [fillColorHDR3 akScale:?];
     if (v10)
     {
     }
@@ -126,9 +126,9 @@
 {
   v4.receiver = self;
   v4.super_class = AKShapeAnnotation;
-  v2 = [(AKStrokedAnnotation *)&v4 displayName];
+  displayName = [(AKStrokedAnnotation *)&v4 displayName];
 
-  return v2;
+  return displayName;
 }
 
 - (id)keysForValuesToObserveForUndo
@@ -136,8 +136,8 @@
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKShapeAnnotation;
-  v3 = [(AKStrokedAnnotation *)&v6 keysForValuesToObserveForUndo];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForUndo = [(AKStrokedAnnotation *)&v6 keysForValuesToObserveForUndo];
+  v4 = [v2 setWithSet:keysForValuesToObserveForUndo];
 
   [v4 addObjectsFromArray:&unk_2851BB028];
 
@@ -149,58 +149,58 @@
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKShapeAnnotation;
-  v3 = [(AKStrokedAnnotation *)&v6 keysForValuesToObserveForRedrawing];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForRedrawing = [(AKStrokedAnnotation *)&v6 keysForValuesToObserveForRedrawing];
+  v4 = [v2 setWithSet:keysForValuesToObserveForRedrawing];
 
   [v4 addObjectsFromArray:&unk_2851BB040];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = AKShapeAnnotation;
-  [(AKStrokedAnnotation *)&v8 encodeWithCoder:v4];
-  v5 = [(AKShapeAnnotation *)self fillColorSDR];
-  [v4 akEncodeColor:v5 forKey:@"fillColorString"];
+  [(AKStrokedAnnotation *)&v8 encodeWithCoder:coderCopy];
+  fillColorSDR = [(AKShapeAnnotation *)self fillColorSDR];
+  [coderCopy akEncodeColor:fillColorSDR forKey:@"fillColorString"];
 
-  v6 = [(AKShapeAnnotation *)self fillColorHDR];
+  fillColorHDR = [(AKShapeAnnotation *)self fillColorHDR];
 
-  if (v6)
+  if (fillColorHDR)
   {
-    v7 = [(AKShapeAnnotation *)self fillColorHDR];
-    [v4 akEncodeColor:v7 forKey:@"fillColorHDRString"];
+    fillColorHDR2 = [(AKShapeAnnotation *)self fillColorHDR];
+    [coderCopy akEncodeColor:fillColorHDR2 forKey:@"fillColorHDRString"];
   }
 }
 
-- (AKShapeAnnotation)initWithCoder:(id)a3
+- (AKShapeAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = AKShapeAnnotation;
-  v5 = [(AKStrokedAnnotation *)&v10 initWithCoder:v4];
+  v5 = [(AKStrokedAnnotation *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"fillColorHDRString"])
+    if ([coderCopy containsValueForKey:@"fillColorHDRString"])
     {
-      v6 = [v4 akDecodeColorForKey:@"fillColorHDRString"];
+      v6 = [coderCopy akDecodeColorForKey:@"fillColorHDRString"];
       [(AKShapeAnnotation *)v5 setFillColorHDR:v6];
     }
 
-    if ([v4 containsValueForKey:@"fillColorString"])
+    if ([coderCopy containsValueForKey:@"fillColorString"])
     {
-      v7 = [v4 akDecodeColorForKey:@"fillColorString"];
+      v7 = [coderCopy akDecodeColorForKey:@"fillColorString"];
       [(AKShapeAnnotation *)v5 setFillColorSDR:v7];
 LABEL_9:
 
       goto LABEL_10;
     }
 
-    if ([v4 containsValueForKey:@"fillColor"])
+    if ([coderCopy containsValueForKey:@"fillColor"])
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fillColor"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fillColor"];
       if (v7)
       {
         v8 = [MEMORY[0x277D75348] akColorWithCIColor:v7];

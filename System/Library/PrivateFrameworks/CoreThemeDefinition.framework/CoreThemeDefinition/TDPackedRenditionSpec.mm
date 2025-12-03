@@ -15,13 +15,13 @@ uint64_t __86__TDPackedRenditionSpec_createCSIRepresentationWithCompression_colo
 
 - (id)renditionPackName
 {
-  v3 = [(TDPackedRenditionSpec *)self alphaCrop];
+  alphaCrop = [(TDPackedRenditionSpec *)self alphaCrop];
   v4 = MEMORY[0x277CCACA8];
   v5 = [-[TDPackedRenditionSpec keySpec](self "keySpec")];
-  v6 = [(TDPackedRenditionSpec *)self opaque];
-  v7 = [(TDPackedRenditionSpec *)self monochrome];
+  opaque = [(TDPackedRenditionSpec *)self opaque];
+  monochrome = [(TDPackedRenditionSpec *)self monochrome];
   v8 = [objc_msgSend(-[TDPackedRenditionSpec keySpec](self "keySpec")];
-  if (v3)
+  if (alphaCrop)
   {
     v9 = @"ZZZZExplicitlyPackedAsset-%d.%d.%d-gamut%d";
   }
@@ -31,7 +31,7 @@ uint64_t __86__TDPackedRenditionSpec_createCSIRepresentationWithCompression_colo
     v9 = @"ZZZZPackedAsset-%d.%d.%d-gamut%d";
   }
 
-  return [v4 stringWithFormat:v9, v5, v6, v7, v8];
+  return [v4 stringWithFormat:v9, v5, opaque, monochrome, v8];
 }
 
 @end

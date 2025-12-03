@@ -1,23 +1,23 @@
 @interface TSUZipWriter
 - (TSURandomWriteChannel)writeChannel;
 - (TSUZipWriter)init;
-- (id)centralFileHeaderDataForEntry:(id)a3;
-- (id)endOfCentralDirectoryDataWithOffset:(int64_t)a3 size:(int64_t)a4;
-- (id)localFileHeaderDataForEntry:(id)a3;
-- (void)addData:(id)a3;
-- (void)addDataImpl:(id)a3;
-- (void)beginEntryWithName:(id)a3 size:(unint64_t)a4 CRC:(unsigned int)a5;
-- (void)beginEntryWithNameImpl:(id)a3 size:(unint64_t)a4 CRC:(unsigned int)a5;
-- (void)closeWithQueue:(id)a3 completion:(id)a4;
-- (void)enumerateEntriesUsingBlock:(id)a3;
+- (id)centralFileHeaderDataForEntry:(id)entry;
+- (id)endOfCentralDirectoryDataWithOffset:(int64_t)offset size:(int64_t)size;
+- (id)localFileHeaderDataForEntry:(id)entry;
+- (void)addData:(id)data;
+- (void)addDataImpl:(id)impl;
+- (void)beginEntryWithName:(id)name size:(unint64_t)size CRC:(unsigned int)c;
+- (void)beginEntryWithNameImpl:(id)impl size:(unint64_t)size CRC:(unsigned int)c;
+- (void)closeWithQueue:(id)queue completion:(id)completion;
+- (void)enumerateEntriesUsingBlock:(id)block;
 - (void)finishEntry;
 - (void)flushEntryData;
-- (void)handleWriteError:(id)a3;
+- (void)handleWriteError:(id)error;
 - (void)initEntryTime;
 - (void)writeCentralDirectory;
-- (void)writeData:(id)a3;
-- (void)writeData:(id)a3 offset:(int64_t)a4;
-- (void)writeEntryWithName:(id)a3 size:(unint64_t)a4 CRC:(unsigned int)a5 fromReadChannel:(id)a6 completion:(id)a7;
+- (void)writeData:(id)data;
+- (void)writeData:(id)data offset:(int64_t)offset;
+- (void)writeEntryWithName:(id)name size:(unint64_t)size CRC:(unsigned int)c fromReadChannel:(id)channel completion:(id)completion;
 @end
 
 @implementation TSUZipWriter
@@ -29,9 +29,9 @@
   v2 = [(TSUZipWriter *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     entries = v2->_entries;
-    v2->_entries = v3;
+    v2->_entries = array;
 
     v5 = [MEMORY[0x277CBEB58] set];
     entryNames = v2->_entryNames;
@@ -48,29 +48,29 @@
   return v2;
 }
 
-- (void)beginEntryWithName:(id)a3 size:(unint64_t)a4 CRC:(unsigned int)a5
+- (void)beginEntryWithName:(id)name size:(unint64_t)size CRC:(unsigned int)c
 {
-  v8 = a3;
+  nameCopy = name;
   writeQueue = self->_writeQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __44__TSUZipWriter_beginEntryWithName_size_CRC___block_invoke;
   v11[3] = &unk_279D66760;
   v11[4] = self;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v10 = v8;
+  v12 = nameCopy;
+  sizeCopy = size;
+  cCopy = c;
+  v10 = nameCopy;
   dispatch_async(writeQueue, v11);
 }
 
-- (void)beginEntryWithNameImpl:(id)a3 size:(unint64_t)a4 CRC:(unsigned int)a5
+- (void)beginEntryWithNameImpl:(id)impl size:(unint64_t)size CRC:(unsigned int)c
 {
-  v5 = *&a5;
-  v8 = a3;
+  v5 = *&c;
+  implCopy = impl;
   if (!self->_error)
   {
-    v17 = v8;
+    v17 = implCopy;
     [(TSUZipWriter *)self finishEntry];
     if ([(NSMutableSet *)self->_entryNames containsObject:v17])
     {
@@ -87,9 +87,9 @@
       self->_currentEntry = v12;
 
       [(TSUZipWriterEntry *)self->_currentEntry setName:v17];
-      [(TSUZipWriterEntry *)self->_currentEntry setSize:a4];
+      [(TSUZipWriterEntry *)self->_currentEntry setSize:size];
       [(TSUZipWriterEntry *)self->_currentEntry setOffset:self->_currentOffset];
-      self->_calculateSize = a4 == 0;
+      self->_calculateSize = size == 0;
       self->_calculateCRC = v5 == 0;
       if (!v5)
       {
@@ -119,34 +119,34 @@
       self->_entryDataSize = 0;
     }
 
-    v8 = v17;
+    implCopy = v17;
   }
 }
 
-- (void)addData:(id)a3
+- (void)addData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   writeQueue = self->_writeQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __24__TSUZipWriter_addData___block_invoke;
   v7[3] = &unk_279D665D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(writeQueue, v7);
 }
 
-- (void)addDataImpl:(id)a3
+- (void)addDataImpl:(id)impl
 {
-  v4 = a3;
-  v5 = v4;
+  implCopy = impl;
+  v5 = implCopy;
   if (self->_error)
   {
     goto LABEL_11;
   }
 
-  size = dispatch_data_get_size(v4);
+  size = dispatch_data_get_size(implCopy);
   entryDatas = self->_entryDatas;
   if (entryDatas)
   {
@@ -251,20 +251,20 @@ LABEL_11:
 
     [(NSMutableArray *)self->_entries addObject:currentEntry];
     entryNames = self->_entryNames;
-    v7 = [(TSUZipWriterEntry *)self->_currentEntry name];
-    [(NSMutableSet *)entryNames addObject:v7];
+    name = [(TSUZipWriterEntry *)self->_currentEntry name];
+    [(NSMutableSet *)entryNames addObject:name];
 
     v8 = self->_currentEntry;
     self->_currentEntry = 0;
   }
 }
 
-- (void)writeEntryWithName:(id)a3 size:(unint64_t)a4 CRC:(unsigned int)a5 fromReadChannel:(id)a6 completion:(id)a7
+- (void)writeEntryWithName:(id)name size:(unint64_t)size CRC:(unsigned int)c fromReadChannel:(id)channel completion:(id)completion
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  if (!v13)
+  nameCopy = name;
+  channelCopy = channel;
+  completionCopy = completion;
+  if (!channelCopy)
   {
     v15 = +[TSUAssertionHandler currentHandler];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUZipWriter writeEntryWithName:size:CRC:fromReadChannel:completion:]"];
@@ -278,14 +278,14 @@ LABEL_11:
   block[2] = __71__TSUZipWriter_writeEntryWithName_size_CRC_fromReadChannel_completion___block_invoke;
   block[3] = &unk_279D667D8;
   block[4] = self;
-  v23 = v12;
-  v25 = v14;
-  v26 = a4;
-  v27 = a5;
-  v24 = v13;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
+  v23 = nameCopy;
+  v25 = completionCopy;
+  sizeCopy = size;
+  cCopy = c;
+  v24 = channelCopy;
+  v19 = completionCopy;
+  v20 = channelCopy;
+  v21 = nameCopy;
   dispatch_async(writeQueue, block);
 }
 
@@ -334,20 +334,20 @@ void __71__TSUZipWriter_writeEntryWithName_size_CRC_fromReadChannel_completion__
 LABEL_7:
 }
 
-- (void)closeWithQueue:(id)a3 completion:(id)a4
+- (void)closeWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   writeQueue = self->_writeQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__TSUZipWriter_closeWithQueue_completion___block_invoke;
   block[3] = &unk_279D66518;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = queueCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = queueCopy;
   dispatch_async(writeQueue, block);
 }
 
@@ -444,17 +444,17 @@ void __42__TSUZipWriter_closeWithQueue_completion___block_invoke_3(uint64_t a1)
     while (v6);
   }
 
-  v10 = [(TSUZipWriter *)self endOfCentralDirectoryDataWithOffset:currentOffset size:self->_currentOffset - currentOffset];
-  [(TSUZipWriter *)self writeData:v10];
+  currentOffset = [(TSUZipWriter *)self endOfCentralDirectoryDataWithOffset:currentOffset size:self->_currentOffset - currentOffset];
+  [(TSUZipWriter *)self writeData:currentOffset];
 }
 
-- (id)localFileHeaderDataForEntry:(id)a3
+- (id)localFileHeaderDataForEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 UTF8String];
+  entryCopy = entry;
+  name = [entryCopy name];
+  uTF8String = [name UTF8String];
 
-  v7 = strlen(v6);
+  v7 = strlen(uTF8String);
   if (v7 >= 0x10000)
   {
     v8 = +[TSUAssertionHandler currentHandler];
@@ -469,26 +469,26 @@ void __42__TSUZipWriter_closeWithQueue_completion___block_invoke_3(uint64_t a1)
   *(v11 + 4) = 0;
   *(v11 + 5) = self->_entryTime;
   *(v11 + 6) = self->_entryDate;
-  *(v11 + 14) = [v4 CRC];
-  *(v11 + 18) = [v4 size];
-  v12 = [v4 size];
+  *(v11 + 14) = [entryCopy CRC];
+  *(v11 + 18) = [entryCopy size];
+  v12 = [entryCopy size];
 
   *(v11 + 22) = v12;
   *(v11 + 13) = v7;
   *(v11 + 14) = 0;
-  memcpy(v11 + 30, v6, v7);
+  memcpy(v11 + 30, uTF8String, v7);
   v13 = dispatch_data_create(v11, v7 + 30, 0, *MEMORY[0x277D85CB0]);
 
   return v13;
 }
 
-- (id)centralFileHeaderDataForEntry:(id)a3
+- (id)centralFileHeaderDataForEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 UTF8String];
+  entryCopy = entry;
+  name = [entryCopy name];
+  uTF8String = [name UTF8String];
 
-  v7 = strlen(v6);
+  v7 = strlen(uTF8String);
   if (v7 >= 0x10000)
   {
     v8 = +[TSUAssertionHandler currentHandler];
@@ -502,25 +502,25 @@ void __42__TSUZipWriter_closeWithQueue_completion___block_invoke_3(uint64_t a1)
   *(v11 + 4) = 1310782;
   *(v11 + 6) = self->_entryTime;
   *(v11 + 7) = self->_entryDate;
-  *(v11 + 4) = [v4 CRC];
-  *(v11 + 5) = [v4 size];
-  *(v11 + 6) = [v4 size];
+  *(v11 + 4) = [entryCopy CRC];
+  *(v11 + 5) = [entryCopy size];
+  *(v11 + 6) = [entryCopy size];
   *(v11 + 14) = v7;
   *(v11 + 30) = 0;
   *(v11 + 38) = 0;
-  v12 = [v4 offset];
+  offset = [entryCopy offset];
 
-  *(v11 + 42) = v12;
-  memcpy(v11 + 46, v6, v7);
+  *(v11 + 42) = offset;
+  memcpy(v11 + 46, uTF8String, v7);
   v13 = dispatch_data_create(v11, v7 + 46, 0, *MEMORY[0x277D85CB0]);
 
   return v13;
 }
 
-- (id)endOfCentralDirectoryDataWithOffset:(int64_t)a3 size:(int64_t)a4
+- (id)endOfCentralDirectoryDataWithOffset:(int64_t)offset size:(int64_t)size
 {
-  v5 = a3;
-  if (a3 >= 0x100000000)
+  offsetCopy = offset;
+  if (offset >= 0x100000000)
   {
     v7 = +[TSUAssertionHandler currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUZipWriter endOfCentralDirectoryDataWithOffset:size:]"];
@@ -528,7 +528,7 @@ void __42__TSUZipWriter_closeWithQueue_completion___block_invoke_3(uint64_t a1)
     [v7 handleFailureInFunction:v8 file:v9 lineNumber:374 description:@"Offset is too large"];
   }
 
-  if (a4 >= 0x100000000)
+  if (size >= 0x100000000)
   {
     v10 = +[TSUAssertionHandler currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUZipWriter endOfCentralDirectoryDataWithOffset:size:]"];
@@ -551,20 +551,20 @@ void __42__TSUZipWriter_closeWithQueue_completion___block_invoke_3(uint64_t a1)
   v13[1] = 0;
   *(v13 + 4) = v15;
   *(v13 + 5) = v15;
-  v13[3] = a4;
-  v13[4] = v5;
+  v13[3] = size;
+  v13[4] = offsetCopy;
   *(v13 + 10) = 0;
   v19 = dispatch_data_create(v13, 0x16uLL, 0, *MEMORY[0x277D85CB0]);
 
   return v19;
 }
 
-- (void)writeData:(id)a3
+- (void)writeData:(id)data
 {
-  size = dispatch_data_get_size(a3);
+  size = dispatch_data_get_size(data);
   self->_currentOffset += size;
-  v6 = a3;
-  v7 = [(TSUZipWriter *)self writeChannel];
+  dataCopy = data;
+  writeChannel = [(TSUZipWriter *)self writeChannel];
   writeQueue = self->_writeQueue;
   writtenOffset = self->_writtenOffset;
   v10[0] = MEMORY[0x277D85DD0];
@@ -572,25 +572,25 @@ void __42__TSUZipWriter_closeWithQueue_completion___block_invoke_3(uint64_t a1)
   v10[2] = __26__TSUZipWriter_writeData___block_invoke;
   v10[3] = &unk_279D66828;
   v10[4] = self;
-  [v7 writeData:v6 offset:writtenOffset queue:writeQueue handler:v10];
+  [writeChannel writeData:dataCopy offset:writtenOffset queue:writeQueue handler:v10];
 
   self->_writtenOffset += size;
 }
 
-- (void)writeData:(id)a3 offset:(int64_t)a4
+- (void)writeData:(id)data offset:(int64_t)offset
 {
-  v6 = a3;
+  dataCopy = data;
   dispatch_suspend(self->_writeQueue);
-  v7 = [(TSUZipWriter *)self writeChannel];
+  writeChannel = [(TSUZipWriter *)self writeChannel];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __33__TSUZipWriter_writeData_offset___block_invoke;
   v9[3] = &unk_279D66850;
   v9[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  [v7 addBarrier:v9];
+  v10 = dataCopy;
+  offsetCopy = offset;
+  v8 = dataCopy;
+  [writeChannel addBarrier:v9];
 }
 
 void __33__TSUZipWriter_writeData_offset___block_invoke(uint64_t a1)
@@ -626,22 +626,22 @@ void __33__TSUZipWriter_writeData_offset___block_invoke(uint64_t a1)
   objc_exception_throw(v8);
 }
 
-- (void)handleWriteError:(id)a3
+- (void)handleWriteError:(id)error
 {
-  v5 = a3;
-  if (v5)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v12 = v5;
-    TSULogErrorInFunction("[TSUZipWriter handleWriteError:]", "/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipWriter.m", 446, @"Couldn't write Zip: %@", v6, v7, v8, v9, v5);
-    v5 = v12;
+    v12 = errorCopy;
+    TSULogErrorInFunction("[TSUZipWriter handleWriteError:]", "/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipWriter.m", 446, @"Couldn't write Zip: %@", v6, v7, v8, v9, errorCopy);
+    errorCopy = v12;
     p_error = &self->_error;
     if (!self->_error)
     {
-      v11 = [(TSUZipWriter *)self writeChannel];
-      [v11 close];
+      writeChannel = [(TSUZipWriter *)self writeChannel];
+      [writeChannel close];
 
-      objc_storeStrong(p_error, a3);
-      v5 = v12;
+      objc_storeStrong(p_error, error);
+      errorCopy = v12;
     }
   }
 }
@@ -666,17 +666,17 @@ void __33__TSUZipWriter_writeData_offset___block_invoke(uint64_t a1)
   self->_entryTime = (32 * LOWORD(v3->tm_min)) | (tm_hour << 11) | (v3->tm_sec >> 1);
 }
 
-- (void)enumerateEntriesUsingBlock:(id)a3
+- (void)enumerateEntriesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   writeQueue = self->_writeQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__TSUZipWriter_enumerateEntriesUsingBlock___block_invoke;
   v7[3] = &unk_279D66540;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(writeQueue, v7);
 }
 

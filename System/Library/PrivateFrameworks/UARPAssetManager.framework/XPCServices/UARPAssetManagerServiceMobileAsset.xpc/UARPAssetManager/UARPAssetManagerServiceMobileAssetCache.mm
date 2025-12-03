@@ -1,8 +1,8 @@
 @interface UARPAssetManagerServiceMobileAssetCache
 - (double)assetExpirationTime;
-- (id)assetCacheFileURLForAsset:(id)a3 withSubscription:(id)a4;
+- (id)assetCacheFileURLForAsset:(id)asset withSubscription:(id)subscription;
 - (id)assetCacheRootDirectory;
-- (id)createCacheRecordForAsset:(id)a3 withSubscription:(id)a4 withPath:(id)a5;
+- (id)createCacheRecordForAsset:(id)asset withSubscription:(id)subscription withPath:(id)path;
 @end
 
 @implementation UARPAssetManagerServiceMobileAssetCache
@@ -19,10 +19,10 @@
   return v4;
 }
 
-- (id)assetCacheFileURLForAsset:(id)a3 withSubscription:(id)a4
+- (id)assetCacheFileURLForAsset:(id)asset withSubscription:(id)subscription
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  subscriptionCopy = subscription;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -35,7 +35,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v7;
+      v11 = subscriptionCopy;
       v10 = @"legacy";
       v8 = 0;
       goto LABEL_8;
@@ -46,8 +46,8 @@ LABEL_9:
     goto LABEL_19;
   }
 
-  v8 = v6;
-  v9 = v7;
+  v8 = assetCopy;
+  v9 = subscriptionCopy;
   v10 = @"legacy";
   if (v8)
   {
@@ -67,13 +67,13 @@ LABEL_9:
 LABEL_8:
   v12 = 0;
 LABEL_12:
-  v14 = [v7 assetAudience];
+  assetAudience = [subscriptionCopy assetAudience];
 
-  if (v14)
+  if (assetAudience)
   {
-    v15 = [v7 internalAsset];
+    internalAsset = [subscriptionCopy internalAsset];
     v16 = &kUARPAssetManagerServicePallasInternalCacheDirectory;
-    if (!v15)
+    if (!internalAsset)
     {
       v16 = &kUARPAssetManagerServicePallasCacheDirectory;
     }
@@ -83,14 +83,14 @@ LABEL_12:
     v10 = v17;
   }
 
-  v18 = [(UARPAssetManagerServiceMobileAssetCache *)self assetCacheRootDirectory];
-  v19 = [v7 identifier];
-  v20 = [NSMutableArray arrayWithObjects:v18, v10, v19, v12, 0];
+  assetCacheRootDirectory = [(UARPAssetManagerServiceMobileAssetCache *)self assetCacheRootDirectory];
+  identifier = [subscriptionCopy identifier];
+  v20 = [NSMutableArray arrayWithObjects:assetCacheRootDirectory, v10, identifier, v12, 0];
 
-  if (([v7 softwareUpdateAsset] & 1) == 0)
+  if (([subscriptionCopy softwareUpdateAsset] & 1) == 0)
   {
-    v21 = [v7 hwFusing];
-    [v20 addObject:v21];
+    hwFusing = [subscriptionCopy hwFusing];
+    [v20 addObject:hwFusing];
   }
 
   v13 = [NSURL fileURLWithPathComponents:v20];
@@ -114,16 +114,16 @@ LABEL_19:
   return result;
 }
 
-- (id)createCacheRecordForAsset:(id)a3 withSubscription:(id)a4 withPath:(id)a5
+- (id)createCacheRecordForAsset:(id)asset withSubscription:(id)subscription withPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  assetCopy = asset;
+  subscriptionCopy = subscription;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v29 = v9;
-    v10 = v7;
+    v29 = pathCopy;
+    v10 = assetCopy;
     v11 = 0;
   }
 
@@ -136,18 +136,18 @@ LABEL_19:
       goto LABEL_13;
     }
 
-    v29 = v9;
-    v11 = [[UARPAssetVersionBase alloc] initWithAssetVersion:v7];
+    v29 = pathCopy;
+    v11 = [[UARPAssetVersionBase alloc] initWithAssetVersion:assetCopy];
     v10 = 0;
   }
 
-  v12 = v8;
-  v13 = [v12 softwareUpdateAsset];
-  if (v10 && v13)
+  v12 = subscriptionCopy;
+  softwareUpdateAsset = [v12 softwareUpdateAsset];
+  if (v10 && softwareUpdateAsset)
   {
     v14 = getRestoreVersionForMAAsset(v10);
     getOSVersionForMAAsset(v10);
-    v15 = v28 = v8;
+    v15 = v28 = subscriptionCopy;
     v16 = getBuildVersionForMAAsset(v10);
     v27 = [[UARPAssetVersionSoftwareUpdate alloc] initWithRestoreVersion:v14 osVersion:v15 buildVersion:v16 internalAsset:{objc_msgSend(v12, "internalAsset")}];
 
@@ -161,7 +161,7 @@ LABEL_19:
     v20 = objc_opt_new();
     [v20 addObject:v19];
 
-    v8 = v28;
+    subscriptionCopy = v28;
     v11 = v27;
   }
 
@@ -179,7 +179,7 @@ LABEL_19:
     v20 = 0;
   }
 
-  v9 = v29;
+  pathCopy = v29;
   v24 = [UARPAssetCacheRecord alloc];
   v25 = [NSURL fileURLWithPath:v29];
   v23 = [(UARPAssetCacheRecord *)v24 initWithAssetVersion:v11 assetURL:v25 deploymentRules:v20];

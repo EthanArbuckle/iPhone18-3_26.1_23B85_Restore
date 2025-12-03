@@ -1,63 +1,63 @@
 @interface ConversationHUDDetailsViewController
-- (_TtC15ConversationKit36ConversationHUDDetailsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit36ConversationHUDDetailsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didTapClose;
 - (void)didTapMessages;
 - (void)dismissPeoplePicker;
-- (void)setIsOnScreen:(BOOL)a3;
+- (void)setIsOnScreen:(BOOL)screen;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ConversationHUDDetailsViewController
 
-- (void)setIsOnScreen:(BOOL)a3
+- (void)setIsOnScreen:(BOOL)screen
 {
-  v4 = self;
-  ConversationHUDDetailsViewController.isOnScreen.setter(a3);
+  selfCopy = self;
+  ConversationHUDDetailsViewController.isOnScreen.setter(screen);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   ConversationHUDDetailsViewController.viewDidLoad()();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  ConversationHUDDetailsViewController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  ConversationHUDDetailsViewController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (_TtC15ConversationKit36ConversationHUDDetailsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit36ConversationHUDDetailsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   ConversationHUDDetailsViewController.init(nibName:bundle:)();
 }
 
 - (void)didTapClose
 {
-  v2 = self;
+  selfCopy = self;
   ConversationHUDDetailsViewController.didTapClose()();
 }
 
 - (void)didTapMessages
 {
-  v2 = self;
+  selfCopy = self;
   ConversationHUDDetailsViewController.didTapMessages()();
 }
 
 - (void)dismissPeoplePicker
 {
-  v2 = self;
+  selfCopy = self;
   ConversationHUDDetailsViewController.dismissPeoplePicker()();
 }
 

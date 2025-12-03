@@ -1,5 +1,5 @@
 @interface IDSSessionCanceledMetric
-- (IDSSessionCanceledMetric)initWithGuid:(id)a3;
+- (IDSSessionCanceledMetric)initWithGuid:(id)guid;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -8,25 +8,25 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSSessionCanceledMetric *)self guid];
-  if (v4)
+  guid = [(IDSSessionCanceledMetric *)self guid];
+  if (guid)
   {
-    CFDictionarySetValue(v3, @"guid", v4);
+    CFDictionarySetValue(v3, @"guid", guid);
   }
 
   return v3;
 }
 
-- (IDSSessionCanceledMetric)initWithGuid:(id)a3
+- (IDSSessionCanceledMetric)initWithGuid:(id)guid
 {
-  v5 = a3;
+  guidCopy = guid;
   v9.receiver = self;
   v9.super_class = IDSSessionCanceledMetric;
   v6 = [(IDSSessionCanceledMetric *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_guid, a3);
+    objc_storeStrong(&v6->_guid, guid);
   }
 
   return v7;

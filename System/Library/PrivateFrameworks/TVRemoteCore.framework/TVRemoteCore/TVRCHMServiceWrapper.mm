@@ -1,64 +1,64 @@
 @interface TVRCHMServiceWrapper
-+ (id)wrapperWithService:(id)a3;
++ (id)wrapperWithService:(id)service;
 - (BOOL)supportsInfoKey;
 - (NSString)description;
 - (NSString)identifier;
 - (NSString)model;
-- (TVRCHMServiceWrapper)initWithService:(id)a3;
+- (TVRCHMServiceWrapper)initWithService:(id)service;
 - (TVRCHMServiceWrapperDelegate)delegate;
-- (id)_televisionServiceForAccessory:(id)a3;
-- (int64_t)_remoteKeyForTVRCButton:(id)a3;
-- (void)_checkVolumeServicesForAccessory:(id)a3;
-- (void)_disconnectWithError:(id)a3;
-- (void)_readValueForCharacteristic:(id)a3 completionHandler:(id)a4;
+- (id)_televisionServiceForAccessory:(id)accessory;
+- (int64_t)_remoteKeyForTVRCButton:(id)button;
+- (void)_checkVolumeServicesForAccessory:(id)accessory;
+- (void)_disconnectWithError:(id)error;
+- (void)_readValueForCharacteristic:(id)characteristic completionHandler:(id)handler;
 - (void)_sendMuteKey;
-- (void)_sendRemoteKey:(int64_t)a3;
-- (void)_sendVolumeKey:(BOOL)a3;
+- (void)_sendRemoteKey:(int64_t)key;
+- (void)_sendVolumeKey:(BOOL)key;
 - (void)_sendWakeKey;
-- (void)_serviceActiveStateChanged:(id)a3;
-- (void)_serviceNameChanged:(id)a3;
-- (void)_serviceRemoved:(id)a3;
-- (void)_setCharacteristicsForService:(id)a3;
+- (void)_serviceActiveStateChanged:(id)changed;
+- (void)_serviceNameChanged:(id)changed;
+- (void)_serviceRemoved:(id)removed;
+- (void)_setCharacteristicsForService:(id)service;
 - (void)_startObservingServiceNotifications;
 - (void)_stopObservingServiceNotifications;
 - (void)_togglePowerButton;
 - (void)_updateMuteState;
 - (void)_updatePowerState;
-- (void)_writeValue:(id)a3 toCharacteristic:(id)a4;
+- (void)_writeValue:(id)value toCharacteristic:(id)characteristic;
 - (void)connect;
-- (void)sendButtonEvent:(id)a3;
+- (void)sendButtonEvent:(id)event;
 @end
 
 @implementation TVRCHMServiceWrapper
 
-+ (id)wrapperWithService:(id)a3
++ (id)wrapperWithService:(id)service
 {
-  v3 = a3;
-  v4 = [[TVRCHMServiceWrapper alloc] initWithService:v3];
+  serviceCopy = service;
+  v4 = [[TVRCHMServiceWrapper alloc] initWithService:serviceCopy];
 
   return v4;
 }
 
-- (TVRCHMServiceWrapper)initWithService:(id)a3
+- (TVRCHMServiceWrapper)initWithService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v12.receiver = self;
   v12.super_class = TVRCHMServiceWrapper;
   v6 = [(TVRCHMServiceWrapper *)&v12 init];
   v7 = v6;
-  if (v5 && v6)
+  if (serviceCopy && v6)
   {
-    objc_storeStrong(&v6->_service, a3);
-    v8 = [v5 accessory];
+    objc_storeStrong(&v6->_service, service);
+    accessory = [serviceCopy accessory];
     accessory = v7->_accessory;
-    v7->_accessory = v8;
+    v7->_accessory = accessory;
 
     v7->_connected = 0;
     v7->_connectionState = 0;
-    v10 = [v5 accessory];
-    [(TVRCHMServiceWrapper *)v7 _checkVolumeServicesForAccessory:v10];
+    accessory2 = [serviceCopy accessory];
+    [(TVRCHMServiceWrapper *)v7 _checkVolumeServicesForAccessory:accessory2];
 
-    [(TVRCHMServiceWrapper *)v7 _setCharacteristicsForService:v5];
+    [(TVRCHMServiceWrapper *)v7 _setCharacteristicsForService:serviceCopy];
   }
 
   return v7;
@@ -67,44 +67,44 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(TVRCHMServiceWrapper *)self name];
-  [v3 appendString:v4 withName:@"name"];
+  name = [(TVRCHMServiceWrapper *)self name];
+  [v3 appendString:name withName:@"name"];
 
-  v5 = [(TVRCHMServiceWrapper *)self model];
-  [v3 appendString:v5 withName:@"model"];
+  model = [(TVRCHMServiceWrapper *)self model];
+  [v3 appendString:model withName:@"model"];
 
   v6 = [v3 appendBool:-[TVRCHMServiceWrapper connected](self withName:{"connected"), @"connected"}];
   v7 = [v3 appendObject:self->_service withName:@"underlyingHMService"];
-  v8 = [(TVRCHMServiceWrapper *)self identifier];
-  [v3 appendString:v8 withName:@"identifier"];
+  identifier = [(TVRCHMServiceWrapper *)self identifier];
+  [v3 appendString:identifier withName:@"identifier"];
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (NSString)identifier
 {
-  v2 = [(HMService *)self->_service accessory];
-  v3 = [v2 deviceIdentifier];
+  accessory = [(HMService *)self->_service accessory];
+  deviceIdentifier = [accessory deviceIdentifier];
 
-  return v3;
+  return deviceIdentifier;
 }
 
 - (NSString)model
 {
-  v2 = [(HMService *)self->_service accessory];
-  v3 = [v2 category];
-  v4 = [v3 categoryType];
+  accessory = [(HMService *)self->_service accessory];
+  category = [accessory category];
+  categoryType = [category categoryType];
 
-  if ([v4 isEqualToString:*MEMORY[0x277CCE930]])
+  if ([categoryType isEqualToString:*MEMORY[0x277CCE930]])
   {
     v5 = TVRCDeviceModelTypeAirplaySetTopBox;
   }
 
   else
   {
-    v6 = [v4 isEqualToString:*MEMORY[0x277CCE938]];
+    v6 = [categoryType isEqualToString:*MEMORY[0x277CCE938]];
     v5 = TVRCDeviceModelTypeAirplayTelevision;
     if (v6)
     {
@@ -133,31 +133,31 @@
       _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "Attempting to connect service %@", &v17, 0xCu);
     }
 
-    v5 = [(HMService *)self->_service accessory];
-    v6 = [(HMService *)v5 home];
+    accessory = [(HMService *)self->_service accessory];
+    home = [(HMService *)accessory home];
     home = self->_home;
-    self->_home = v6;
+    self->_home = home;
 
     v8 = _TVRCHomeKitLog();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (accessory)
     {
       if (v9)
       {
         v17 = 138412290;
-        v18 = v5;
+        v18 = accessory;
         _os_log_impl(&dword_26CF7F000, v8, OS_LOG_TYPE_DEFAULT, "Found parent accessory %@", &v17, 0xCu);
       }
 
-      v10 = [(HMService *)v5 isReachable];
+      isReachable = [(HMService *)accessory isReachable];
       v11 = _TVRCHomeKitLog();
       v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-      if (v10)
+      if (isReachable)
       {
         if (v12)
         {
           v17 = 138412290;
-          v18 = v5;
+          v18 = accessory;
           _os_log_impl(&dword_26CF7F000, v11, OS_LOG_TYPE_DEFAULT, "Accessory %@ is reachable and local. Informing delegate that we can connect", &v17, 0xCu);
         }
 
@@ -174,7 +174,7 @@
       if (v12)
       {
         v17 = 138412290;
-        v18 = v5;
+        v18 = accessory;
         _os_log_impl(&dword_26CF7F000, v11, OS_LOG_TYPE_DEFAULT, "Accessory %@ is not reachable or local. Informing delegate that we disconnected", &v17, 0xCu);
       }
 
@@ -202,55 +202,55 @@ LABEL_18:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendButtonEvent:(id)a3
+- (void)sendButtonEvent:(id)event
 {
-  v10 = a3;
-  v4 = [v10 eventType];
-  if (v4 == 2)
+  eventCopy = event;
+  eventType = [eventCopy eventType];
+  if (eventType == 2)
   {
-    v7 = [(TVRCHMServiceWrapper *)self _remoteKeyForTVRCButton:v10];
+    v7 = [(TVRCHMServiceWrapper *)self _remoteKeyForTVRCButton:eventCopy];
     if (v7 != -1)
     {
       [(TVRCHMServiceWrapper *)self _sendRemoteKey:v7];
     }
 
-    v8 = [v10 button];
-    v9 = [v8 buttonType];
+    button = [eventCopy button];
+    buttonType = [button buttonType];
 
-    if (![(TVRCHMServiceWrapper *)self isTVAwake]&& v9 != 30)
+    if (![(TVRCHMServiceWrapper *)self isTVAwake]&& buttonType != 30)
     {
       [(TVRCHMServiceWrapper *)self _sendWakeKey];
     }
 
-    if (v9 == 29)
+    if (buttonType == 29)
     {
       [(TVRCHMServiceWrapper *)self _sendMuteKey];
     }
 
-    else if (v9 == 30)
+    else if (buttonType == 30)
     {
       [(TVRCHMServiceWrapper *)self _togglePowerButton];
     }
   }
 
-  else if (v4 == 1)
+  else if (eventType == 1)
   {
-    v5 = [v10 button];
-    v6 = [v5 buttonType];
+    button2 = [eventCopy button];
+    buttonType2 = [button2 buttonType];
 
-    if ((v6 & 0xFFFFFFFFFFFFFFFELL) == 0xA)
+    if ((buttonType2 & 0xFFFFFFFFFFFFFFFELL) == 0xA)
     {
-      [(TVRCHMServiceWrapper *)self _sendVolumeKey:v6 == 10];
+      [(TVRCHMServiceWrapper *)self _sendVolumeKey:buttonType2 == 10];
     }
   }
 }
 
 - (BOOL)supportsInfoKey
 {
-  v2 = [(HMCharacteristic *)self->_serviceCharacteristic metadata];
-  v3 = [v2 validValues];
+  metadata = [(HMCharacteristic *)self->_serviceCharacteristic metadata];
+  validValues = [metadata validValues];
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:15];
-  v5 = [v3 containsObject:v4];
+  v5 = [validValues containsObject:v4];
 
   return v5;
 }
@@ -259,10 +259,10 @@ LABEL_18:
 {
   if (self->_service)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:self selector:sel__serviceNameChanged_ name:@"TVRCMatchPointServiceNameChangedNotification" object:self->_service];
-    [v3 addObserver:self selector:sel__serviceRemoved_ name:@"TVRCMatchPointServiceRemovedNotification" object:self->_service];
-    [v3 addObserver:self selector:sel__serviceActiveStateChanged_ name:@"TVRCMatchPointServiceActiveStateChangedNotification" object:self->_service];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__serviceNameChanged_ name:@"TVRCMatchPointServiceNameChangedNotification" object:self->_service];
+    [defaultCenter addObserver:self selector:sel__serviceRemoved_ name:@"TVRCMatchPointServiceRemovedNotification" object:self->_service];
+    [defaultCenter addObserver:self selector:sel__serviceActiveStateChanged_ name:@"TVRCMatchPointServiceActiveStateChangedNotification" object:self->_service];
   }
 }
 
@@ -270,13 +270,13 @@ LABEL_18:
 {
   if (self->_service)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self name:@"TVRCMatchPointServiceNameChangedNotification" object:self->_service];
-    [v3 removeObserver:self name:@"TVRCMatchPointServiceRemovedNotification" object:self->_service];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"TVRCMatchPointServiceNameChangedNotification" object:self->_service];
+    [defaultCenter removeObserver:self name:@"TVRCMatchPointServiceRemovedNotification" object:self->_service];
   }
 }
 
-- (void)_serviceNameChanged:(id)a3
+- (void)_serviceNameChanged:(id)changed
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = _TVRCHomeKitLog();
@@ -285,27 +285,27 @@ LABEL_18:
     v5 = objc_opt_class();
     service = self->_service;
     v7 = v5;
-    v8 = [(TVRCHMServiceWrapper *)self name];
+    name = [(TVRCHMServiceWrapper *)self name];
     v12 = 138412802;
     v13 = v5;
     v14 = 2112;
     v15 = service;
     v16 = 2112;
-    v17 = v8;
+    v17 = name;
     _os_log_impl(&dword_26CF7F000, v4, OS_LOG_TYPE_DEFAULT, "%@ got notification that services updated name %@. New name : %@", &v12, 0x20u);
   }
 
   if (self->_connected)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v10 = [(TVRCHMServiceWrapper *)self name];
-    [WeakRetained service:self updatedName:v10];
+    name2 = [(TVRCHMServiceWrapper *)self name];
+    [WeakRetained service:self updatedName:name2];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_serviceRemoved:(id)a3
+- (void)_serviceRemoved:(id)removed
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = _TVRCHomeKitLog();
@@ -330,11 +330,11 @@ LABEL_18:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_serviceActiveStateChanged:(id)a3
+- (void)_serviceActiveStateChanged:(id)changed
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"TVRCMatchPointServiceActiveStateKey"];
+  userInfo = [changed userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"TVRCMatchPointServiceActiveStateKey"];
 
   v5 = _TVRCHomeKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -347,10 +347,10 @@ LABEL_18:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_disconnectWithError:(id)a3
+- (void)_disconnectWithError:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = _TVRCHomeKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -358,7 +358,7 @@ LABEL_18:
     v10 = 138412546;
     v11 = service;
     v12 = 2114;
-    v13 = v4;
+    v13 = errorCopy;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "Attempting to disconnect service %@ with error %{public}@", &v10, 0x16u);
   }
 
@@ -373,12 +373,12 @@ LABEL_18:
   self->_home = 0;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained disconnectedFromService:self error:v4];
+  [WeakRetained disconnectedFromService:self error:errorCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendRemoteKey:(int64_t)a3
+- (void)_sendRemoteKey:(int64_t)key
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = _TVRCHomeKitLog();
@@ -386,7 +386,7 @@ LABEL_18:
   {
     service = self->_service;
     v10 = 134218242;
-    v11 = a3;
+    keyCopy = key;
     v12 = 2112;
     v13 = service;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "Attempting to send key of type %ld to service %@", &v10, 0x16u);
@@ -394,7 +394,7 @@ LABEL_18:
 
   if (self->_serviceCharacteristic)
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v7 = [MEMORY[0x277CCABB0] numberWithInteger:key];
     [(TVRCHMServiceWrapper *)self _writeValue:v7 toCharacteristic:self->_serviceCharacteristic];
   }
 
@@ -405,7 +405,7 @@ LABEL_18:
     {
       v8 = self->_service;
       v10 = 138412290;
-      v11 = v8;
+      keyCopy = v8;
       _os_log_impl(&dword_26CF7F000, v7, OS_LOG_TYPE_DEFAULT, "No characteristic of type HMCharacteristicRemoteKey exists for service %@", &v10, 0xCu);
     }
   }
@@ -586,9 +586,9 @@ void __40__TVRCHMServiceWrapper__updateMuteState__block_invoke(uint64_t a1, void
 
   if (self->_activeCharacteristic)
   {
-    v5 = [(TVRCHMServiceWrapper *)self isTVAwake];
+    isTVAwake = [(TVRCHMServiceWrapper *)self isTVAwake];
     objc_initWeak(buf, self);
-    v6 = !v5;
+    v6 = !isTVAwake;
     activeCharacteristic = self->_activeCharacteristic;
     v8 = [MEMORY[0x277CCABB0] numberWithInteger:v6];
     v12[0] = MEMORY[0x277D85DD0];
@@ -656,16 +656,16 @@ void __42__TVRCHMServiceWrapper__togglePowerButton__block_invoke(uint64_t a1, vo
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendVolumeKey:(BOOL)a3
+- (void)_sendVolumeKey:(BOOL)key
 {
-  v3 = a3;
+  keyCopy = key;
   v15 = *MEMORY[0x277D85DE8];
   v5 = _TVRCHomeKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
     service = self->_service;
-    if (v3)
+    if (keyCopy)
     {
       v6 = @"YES";
     }
@@ -679,7 +679,7 @@ void __42__TVRCHMServiceWrapper__togglePowerButton__block_invoke(uint64_t a1, vo
 
   if (self->_volumeSelectorCharacteristic)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:!v3];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:!keyCopy];
     [(TVRCHMServiceWrapper *)self _writeValue:v8 toCharacteristic:self->_volumeSelectorCharacteristic];
   }
 
@@ -712,9 +712,9 @@ void __42__TVRCHMServiceWrapper__togglePowerButton__block_invoke(uint64_t a1, vo
 
   if (self->_muteCharacteristic)
   {
-    v5 = [(TVRCHMServiceWrapper *)self muteEnabled];
+    muteEnabled = [(TVRCHMServiceWrapper *)self muteEnabled];
     objc_initWeak(buf, self);
-    v6 = !v5;
+    v6 = !muteEnabled;
     muteCharacteristic = self->_muteCharacteristic;
     v8 = [MEMORY[0x277CCABB0] numberWithBool:v6];
     v12[0] = MEMORY[0x277D85DD0];
@@ -782,75 +782,75 @@ void __36__TVRCHMServiceWrapper__sendMuteKey__block_invoke(uint64_t a1, void *a2
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)_remoteKeyForTVRCButton:(id)a3
+- (int64_t)_remoteKeyForTVRCButton:(id)button
 {
-  v3 = [a3 button];
-  v4 = [v3 buttonType];
+  button = [button button];
+  buttonType = [button buttonType];
 
   v5 = -1;
   v6 = 9;
   v7 = 10;
   v8 = 15;
-  if (v4 != 25)
+  if (buttonType != 25)
   {
     v8 = -1;
   }
 
-  if (v4 != 24)
+  if (buttonType != 24)
   {
     v7 = v8;
   }
 
-  if (v4 != 23)
+  if (buttonType != 23)
   {
     v6 = v7;
   }
 
   v9 = 6;
   v10 = 7;
-  if (v4 != 15)
+  if (buttonType != 15)
   {
     v10 = -1;
   }
 
-  if (v4 != 14)
+  if (buttonType != 14)
   {
     v9 = v10;
   }
 
-  if (v4 <= 22)
+  if (buttonType <= 22)
   {
     v6 = v9;
   }
 
   v11 = 4;
   v12 = 5;
-  if (v4 != 13)
+  if (buttonType != 13)
   {
     v12 = -1;
   }
 
-  if (v4 != 12)
+  if (buttonType != 12)
   {
     v11 = v12;
   }
 
-  if (v4 == 5)
+  if (buttonType == 5)
   {
     v5 = 11;
   }
 
-  if (v4 == 1)
+  if (buttonType == 1)
   {
     v5 = 8;
   }
 
-  if (v4 > 11)
+  if (buttonType > 11)
   {
     v5 = v11;
   }
 
-  if (v4 <= 13)
+  if (buttonType <= 13)
   {
     return v5;
   }
@@ -861,15 +861,15 @@ void __36__TVRCHMServiceWrapper__sendMuteKey__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (id)_televisionServiceForAccessory:(id)a3
+- (id)_televisionServiceForAccessory:(id)accessory
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [a3 services];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  services = [accessory services];
+  v4 = [services countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -881,12 +881,12 @@ void __36__TVRCHMServiceWrapper__sendMuteKey__block_invoke(uint64_t a1, void *a2
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(services);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 serviceType];
-        v11 = [v10 isEqualToString:v7];
+        serviceType = [v9 serviceType];
+        v11 = [serviceType isEqualToString:v7];
 
         if (v11)
         {
@@ -895,7 +895,7 @@ void __36__TVRCHMServiceWrapper__sendMuteKey__block_invoke(uint64_t a1, void *a2
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [services countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v5)
       {
         continue;
@@ -913,16 +913,16 @@ LABEL_11:
   return v12;
 }
 
-- (void)_setCharacteristicsForService:(id)a3
+- (void)_setCharacteristicsForService:(id)service
 {
   v33 = *MEMORY[0x277D85DE8];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v22 = a3;
-  v4 = [v22 characteristics];
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  serviceCopy = service;
+  characteristics = [serviceCopy characteristics];
+  v5 = [characteristics countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v5)
   {
     v6 = v5;
@@ -936,23 +936,23 @@ LABEL_11:
       {
         if (*v25 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(characteristics);
         }
 
         v11 = *(*(&v24 + 1) + 8 * v10);
         v12 = _TVRCHomeKitLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
-          v20 = [v11 localizedDescription];
+          localizedDescription = [v11 localizedDescription];
           *buf = 138543618;
-          v29 = v20;
+          v29 = localizedDescription;
           v30 = 2112;
-          v31 = v22;
+          v31 = serviceCopy;
           _os_log_debug_impl(&dword_26CF7F000, v12, OS_LOG_TYPE_DEBUG, "Found characteristic, %{public}@ for service %@", buf, 0x16u);
         }
 
-        v13 = [v11 characteristicType];
-        v14 = [v13 isEqualToString:v8];
+        characteristicType = [v11 characteristicType];
+        v14 = [characteristicType isEqualToString:v8];
 
         if (v14)
         {
@@ -962,7 +962,7 @@ LABEL_11:
             *buf = 138543618;
             v29 = v11;
             v30 = 2112;
-            v31 = v22;
+            v31 = serviceCopy;
             _os_log_impl(&dword_26CF7F000, v15, OS_LOG_TYPE_DEFAULT, "Found characteristic of type HMCharacteristicRemoteKey, %{public}@ for service %@", buf, 0x16u);
           }
 
@@ -971,8 +971,8 @@ LABEL_11:
 
         else
         {
-          v17 = [v11 characteristicType];
-          v18 = [v17 isEqualToString:v9];
+          characteristicType2 = [v11 characteristicType];
+          v18 = [characteristicType2 isEqualToString:v9];
 
           if (!v18)
           {
@@ -985,7 +985,7 @@ LABEL_11:
             *buf = 138543618;
             v29 = v11;
             v30 = 2112;
-            v31 = v22;
+            v31 = serviceCopy;
             _os_log_impl(&dword_26CF7F000, v19, OS_LOG_TYPE_DEFAULT, "Found characteristic of type HMCharacteristicTypeActive, %{public}@ for service %@", buf, 0x16u);
           }
 
@@ -1004,7 +1004,7 @@ LABEL_17:
       }
 
       while (v6 != v10);
-      v6 = [v4 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v6 = [characteristics countByEnumeratingWithState:&v24 objects:v32 count:16];
     }
 
     while (v6);
@@ -1033,15 +1033,15 @@ void __54__TVRCHMServiceWrapper__setCharacteristicsForService___block_invoke(uin
   }
 }
 
-- (void)_checkVolumeServicesForAccessory:(id)a3
+- (void)_checkVolumeServicesForAccessory:(id)accessory
 {
   v52 = *MEMORY[0x277D85DE8];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v4 = [a3 services];
-  v5 = [v4 countByEnumeratingWithState:&v42 objects:v51 count:16];
+  services = [accessory services];
+  v5 = [services countByEnumeratingWithState:&v42 objects:v51 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1053,12 +1053,12 @@ LABEL_3:
     {
       if (*v43 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(services);
       }
 
       v10 = *(*(&v42 + 1) + 8 * v9);
-      v11 = [v10 serviceType];
-      v12 = [v11 isEqualToString:v8];
+      serviceType = [v10 serviceType];
+      v12 = [serviceType isEqualToString:v8];
 
       if (v12)
       {
@@ -1067,7 +1067,7 @@ LABEL_3:
 
       if (v6 == ++v9)
       {
-        v6 = [v4 countByEnumeratingWithState:&v42 objects:v51 count:16];
+        v6 = [services countByEnumeratingWithState:&v42 objects:v51 count:16];
         if (!v6)
         {
           goto LABEL_32;
@@ -1086,8 +1086,8 @@ LABEL_3:
       v38 = 0u;
       v39 = 0u;
       v35 = v13;
-      v14 = [v13 characteristics];
-      v15 = [v14 countByEnumeratingWithState:&v38 objects:v50 count:16];
+      characteristics = [v13 characteristics];
+      v15 = [characteristics countByEnumeratingWithState:&v38 objects:v50 count:16];
       if (!v15)
       {
         goto LABEL_31;
@@ -1105,12 +1105,12 @@ LABEL_3:
         {
           if (*v39 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(characteristics);
           }
 
           v21 = *(*(&v38 + 1) + 8 * i);
-          v22 = [v21 characteristicType];
-          v23 = [v22 isEqualToString:v18];
+          characteristicType = [v21 characteristicType];
+          v23 = [characteristicType isEqualToString:v18];
 
           if (v23)
           {
@@ -1129,8 +1129,8 @@ LABEL_3:
 
           else
           {
-            v25 = [v21 characteristicType];
-            v26 = [v25 isEqualToString:v19];
+            characteristicType2 = [v21 characteristicType];
+            v26 = [characteristicType2 isEqualToString:v19];
 
             if (v26)
             {
@@ -1150,8 +1150,8 @@ LABEL_3:
 
             else
             {
-              v29 = [v21 characteristicType];
-              v30 = [v29 isEqualToString:v34];
+              characteristicType3 = [v21 characteristicType];
+              v30 = [characteristicType3 isEqualToString:v34];
 
               if (!v30)
               {
@@ -1181,12 +1181,12 @@ LABEL_3:
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v38 objects:v50 count:16];
+        v16 = [characteristics countByEnumeratingWithState:&v38 objects:v50 count:16];
         if (!v16)
         {
 LABEL_31:
 
-          v4 = v35;
+          services = v35;
           goto LABEL_32;
         }
       }
@@ -1221,12 +1221,12 @@ void __57__TVRCHMServiceWrapper__checkVolumeServicesForAccessory___block_invoke(
   }
 }
 
-- (void)_writeValue:(id)a3 toCharacteristic:(id)a4
+- (void)_writeValue:(id)value toCharacteristic:(id)characteristic
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CD19B0] writeRequestWithCharacteristic:v7 value:v6];
+  valueCopy = value;
+  characteristicCopy = characteristic;
+  v8 = [MEMORY[0x277CD19B0] writeRequestWithCharacteristic:characteristicCopy value:valueCopy];
   v9 = MEMORY[0x277CD1978];
   v29[0] = v8;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
@@ -1236,9 +1236,9 @@ void __57__TVRCHMServiceWrapper__checkVolumeServicesForAccessory___block_invoke(
   v20 = 3221225472;
   v21 = __53__TVRCHMServiceWrapper__writeValue_toCharacteristic___block_invoke;
   v22 = &unk_279D82DD8;
-  v12 = v7;
+  v12 = characteristicCopy;
   v23 = v12;
-  v13 = v6;
+  v13 = valueCopy;
   v24 = v13;
   [v11 setCompletionHandler:&v19];
   [v11 setProgressHandler:{&__block_literal_global_5, v19, v20, v21, v22}];
@@ -1314,12 +1314,12 @@ void __53__TVRCHMServiceWrapper__writeValue_toCharacteristic___block_invoke_32(u
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_readValueForCharacteristic:(id)a3 completionHandler:(id)a4
+- (void)_readValueForCharacteristic:(id)characteristic completionHandler:(id)handler
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CD1988] readRequestWithCharacteristic:v6];
+  characteristicCopy = characteristic;
+  handlerCopy = handler;
+  v8 = [MEMORY[0x277CD1988] readRequestWithCharacteristic:characteristicCopy];
   v9 = MEMORY[0x277CD1978];
   v29[0] = v8;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
@@ -1329,14 +1329,14 @@ void __53__TVRCHMServiceWrapper__writeValue_toCharacteristic___block_invoke_32(u
   v23[1] = 3221225472;
   v23[2] = __70__TVRCHMServiceWrapper__readValueForCharacteristic_completionHandler___block_invoke;
   v23[3] = &unk_279D82E20;
-  v12 = v7;
+  v12 = handlerCopy;
   v24 = v12;
   [v11 setProgressHandler:v23];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __70__TVRCHMServiceWrapper__readValueForCharacteristic_completionHandler___block_invoke_35;
   v20[3] = &unk_279D82E48;
-  v13 = v6;
+  v13 = characteristicCopy;
   v21 = v13;
   v14 = v12;
   v22 = v14;

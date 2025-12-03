@@ -1,19 +1,19 @@
 @interface VFXMTLShaderBindingsGenerator
 + (void)allocateRegistry;
 + (void)deallocateRegistry;
-+ (void)registerArgument:(id)a3 frequency:(int)a4 block:(id)a5;
-+ (void)registerArgument:(id)a3 frequency:(int)a4 needsRenderResource:(BOOL)a5 block:(id)a6;
-+ (void)registerSemantic:(id)a3 withBlock:(id)a4;
-+ (void)registerShadableArgumentBindingBlockForBuffers:(id)a3 textures:(id)a4 samplers:(id)a5;
++ (void)registerArgument:(id)argument frequency:(int)frequency block:(id)block;
++ (void)registerArgument:(id)argument frequency:(int)frequency needsRenderResource:(BOOL)resource block:(id)block;
++ (void)registerSemantic:(id)semantic withBlock:(id)block;
++ (void)registerShadableArgumentBindingBlockForBuffers:(id)buffers textures:(id)textures samplers:(id)samplers;
 + (void)unregisterBindings;
 - (VFXMTLShaderBindingsGenerator)init;
-- (id)_dictionaryForFrequency:(int)a3;
-- (int64_t)_searchBindings:(id)a3 forArgumentNamed:(id)a4 type:(int64_t)a5;
-- (void)_checkForAssociatedSamplerOnBinding:(id)a3 argument:(id)a4;
-- (void)_parseBindings:(id)a3 function:(id)a4 renderPipeline:(id)a5 isClientProgram:(BOOL)a6 customBindingsOut:(id *)a7;
-- (void)addResourceBindingsForArgument:(id)a3 frequency:(int)a4 needsRenderResource:(BOOL)a5 block:(id)a6;
+- (id)_dictionaryForFrequency:(int)frequency;
+- (int64_t)_searchBindings:(id)bindings forArgumentNamed:(id)named type:(int64_t)type;
+- (void)_checkForAssociatedSamplerOnBinding:(id)binding argument:(id)argument;
+- (void)_parseBindings:(id)bindings function:(id)function renderPipeline:(id)pipeline isClientProgram:(BOOL)program customBindingsOut:(id *)out;
+- (void)addResourceBindingsForArgument:(id)argument frequency:(int)frequency needsRenderResource:(BOOL)resource block:(id)block;
 - (void)dealloc;
-- (void)generateBindingsForPipeline:(id)a3 withReflection:(id)a4 program:(__CFXProgram *)a5 materialIdentifier:(__CFString *)a6 overrides:(__CFXRenderingOverride *)a7;
+- (void)generateBindingsForPipeline:(id)pipeline withReflection:(id)reflection program:(__CFXProgram *)program materialIdentifier:(__CFString *)identifier overrides:(__CFXRenderingOverride *)overrides;
 @end
 
 @implementation VFXMTLShaderBindingsGenerator
@@ -52,9 +52,9 @@
   qword_1ED73A420 = 0;
 }
 
-+ (void)registerSemantic:(id)a3 withBlock:(id)a4
++ (void)registerSemantic:(id)semantic withBlock:(id)block
 {
-  if (objc_msgSend_objectForKey_(qword_1ED73B048, a2, a3, a4))
+  if (objc_msgSend_objectForKey_(qword_1ED73B048, a2, semantic, block))
   {
     v6 = sub_1AF0D5194();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -64,14 +64,14 @@
   }
 
   v14 = qword_1ED73B048;
-  v15 = _Block_copy(a4);
-  objc_msgSend_setObject_forKey_(v14, v16, v15, a3);
+  v15 = _Block_copy(block);
+  objc_msgSend_setObject_forKey_(v14, v16, v15, semantic);
 }
 
-+ (void)registerArgument:(id)a3 frequency:(int)a4 block:(id)a5
++ (void)registerArgument:(id)argument frequency:(int)frequency block:(id)block
 {
-  v6 = *&a4;
-  if (objc_msgSend_objectForKey_(qword_1ED73A420, a2, a3, *&a4))
+  v6 = *&frequency;
+  if (objc_msgSend_objectForKey_(qword_1ED73A420, a2, argument, *&frequency))
   {
     v8 = sub_1AF0D5194();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -81,15 +81,15 @@
   }
 
   v16 = [VFXMTLArgumentBinder alloc];
-  v18 = objc_msgSend_initWithBlock_frequency_needsRenderResource_(v16, v17, a5, v6, 0);
-  objc_msgSend_setObject_forKey_(qword_1ED73A420, v19, v18, a3);
+  v18 = objc_msgSend_initWithBlock_frequency_needsRenderResource_(v16, v17, block, v6, 0);
+  objc_msgSend_setObject_forKey_(qword_1ED73A420, v19, v18, argument);
 }
 
-+ (void)registerArgument:(id)a3 frequency:(int)a4 needsRenderResource:(BOOL)a5 block:(id)a6
++ (void)registerArgument:(id)argument frequency:(int)frequency needsRenderResource:(BOOL)resource block:(id)block
 {
-  v7 = a5;
-  v8 = *&a4;
-  if (objc_msgSend_objectForKey_(qword_1ED73A420, a2, a3, *&a4))
+  resourceCopy = resource;
+  v8 = *&frequency;
+  if (objc_msgSend_objectForKey_(qword_1ED73A420, a2, argument, *&frequency))
   {
     v10 = sub_1AF0D5194();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -99,15 +99,15 @@
   }
 
   v18 = [VFXMTLArgumentBinder alloc];
-  v20 = objc_msgSend_initWithBlock_frequency_needsRenderResource_(v18, v19, a6, v8, v7);
-  objc_msgSend_setObject_forKey_(qword_1ED73A420, v21, v20, a3);
+  v20 = objc_msgSend_initWithBlock_frequency_needsRenderResource_(v18, v19, block, v8, resourceCopy);
+  objc_msgSend_setObject_forKey_(qword_1ED73A420, v21, v20, argument);
 }
 
-+ (void)registerShadableArgumentBindingBlockForBuffers:(id)a3 textures:(id)a4 samplers:(id)a5
++ (void)registerShadableArgumentBindingBlockForBuffers:(id)buffers textures:(id)textures samplers:(id)samplers
 {
-  qword_1ED73A3F0 = _Block_copy(a3);
-  qword_1ED73A400 = _Block_copy(a4);
-  qword_1ED73A408 = _Block_copy(a5);
+  qword_1ED73A3F0 = _Block_copy(buffers);
+  qword_1ED73A400 = _Block_copy(textures);
+  qword_1ED73A408 = _Block_copy(samplers);
 }
 
 + (void)unregisterBindings
@@ -151,14 +151,14 @@
   [(VFXMTLShaderBindingsGenerator *)&v3 dealloc];
 }
 
-- (int64_t)_searchBindings:(id)a3 forArgumentNamed:(id)a4 type:(int64_t)a5
+- (int64_t)_searchBindings:(id)bindings forArgumentNamed:(id)named type:(int64_t)type
 {
   v33 = *MEMORY[0x1E69E9840];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, a2, &v24, v32, 16);
+  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(bindings, a2, &v24, v32, 16);
   if (v8)
   {
     v12 = v8;
@@ -169,19 +169,19 @@ LABEL_3:
     {
       if (*v25 != v13)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(bindings);
       }
 
       v15 = *(*(&v24 + 1) + 8 * v14);
       v16 = objc_msgSend_name(v15, v9, v10, v11);
-      if (objc_msgSend_isEqualToString_(v16, v17, a4, v18))
+      if (objc_msgSend_isEqualToString_(v16, v17, named, v18))
       {
         break;
       }
 
       if (v12 == ++v14)
       {
-        v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v9, &v24, v32, 16);
+        v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(bindings, v9, &v24, v32, 16);
         if (v12)
         {
           goto LABEL_3;
@@ -191,7 +191,7 @@ LABEL_3:
       }
     }
 
-    if (objc_msgSend_type(v15, v9, v10, v11) == a5)
+    if (objc_msgSend_type(v15, v9, v10, v11) == type)
     {
       return objc_msgSend_index(v15, v19, v20, v21);
     }
@@ -200,9 +200,9 @@ LABEL_3:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v29 = a4;
+      namedCopy = named;
       v30 = 1024;
-      v31 = a5;
+      typeCopy = type;
       _os_log_impl(&dword_1AF0CE000, v23, OS_LOG_TYPE_DEFAULT, "Warning: arguments named %@ is reserved for type %d", buf, 0x12u);
     }
   }
@@ -210,28 +210,28 @@ LABEL_3:
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)_parseBindings:(id)a3 function:(id)a4 renderPipeline:(id)a5 isClientProgram:(BOOL)a6 customBindingsOut:(id *)a7
+- (void)_parseBindings:(id)bindings function:(id)function renderPipeline:(id)pipeline isClientProgram:(BOOL)program customBindingsOut:(id *)out
 {
-  v110 = a6;
+  programCopy = program;
   v126 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!function)
   {
     v9 = sub_1AF0D5194();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      sub_1AFDEAA3C(v9, a2, a3, a4, a5, v10, v11, v12);
+      sub_1AFDEAA3C(v9, a2, bindings, function, pipeline, v10, v11, v12);
     }
   }
 
-  v13 = objc_msgSend_functionType(a4, a2, a3, a4, a5);
+  v13 = objc_msgSend_functionType(function, a2, bindings, function, pipeline);
   v103 = sub_1AF1F1F6C(v13);
   self->_current.stage = v103;
-  self->_current.bindings = a3;
+  self->_current.bindings = bindings;
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
   v121 = 0u;
-  v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v14, &v118, v125, 16);
+  v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(bindings, v14, &v118, v125, 16);
   if (v18)
   {
     v109 = *v119;
@@ -242,11 +242,11 @@ LABEL_3:
       {
         if (*v119 != v109)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(bindings);
         }
 
         v20 = *(*(&v118 + 1) + 8 * v19);
-        if ((objc_msgSend_isUsed(v20, v15, v16, v17) | v110) == 1)
+        if ((objc_msgSend_isUsed(v20, v15, v16, v17) | programCopy) == 1)
         {
           v21 = objc_msgSend_name(v20, v15, v16, v17);
           v25 = objc_msgSend_type(v20, v22, v23, v24);
@@ -294,11 +294,11 @@ LABEL_3:
                 }
 
 LABEL_35:
-                v35 = *a7;
-                if (!*a7)
+                v35 = *out;
+                if (!*out)
                 {
                   v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
-                  *a7 = v35;
+                  *out = v35;
                 }
 
                 objc_msgSend_addObject_(v35, v32, v20, v34);
@@ -327,7 +327,7 @@ LABEL_35:
                 v45 = v101;
                 if (v37 == 1)
                 {
-                  v100 = a7;
+                  outCopy = out;
                   __p = 0;
                   v116 = 0;
                   v117 = 0;
@@ -438,7 +438,7 @@ LABEL_35:
                   }
 
                   objc_msgSend_setSemanticsCount_(v101, v57, (v116 - __p) >> 4, v59);
-                  a7 = v100;
+                  out = outCopy;
                   if (objc_msgSend_semanticsCount(v101, v86, v87, v88))
                   {
                     v92 = 16 * objc_msgSend_semanticsCount(v101, v89, v90, v91);
@@ -469,7 +469,7 @@ LABEL_11:
       }
 
       while (v19 != v18);
-      v99 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v15, &v118, v125, 16);
+      v99 = objc_msgSend_countByEnumeratingWithState_objects_count_(bindings, v15, &v118, v125, 16);
       v18 = v99;
     }
 
@@ -477,68 +477,68 @@ LABEL_11:
   }
 }
 
-- (void)generateBindingsForPipeline:(id)a3 withReflection:(id)a4 program:(__CFXProgram *)a5 materialIdentifier:(__CFString *)a6 overrides:(__CFXRenderingOverride *)a7
+- (void)generateBindingsForPipeline:(id)pipeline withReflection:(id)reflection program:(__CFXProgram *)program materialIdentifier:(__CFString *)identifier overrides:(__CFXRenderingOverride *)overrides
 {
   v96[1] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_generateLock);
-  self->_current.programBindingBlocks = sub_1AF1D5C74(a5);
-  self->_current.overrides = a7;
-  v12 = sub_1AF1D5DFC(a5);
+  self->_current.programBindingBlocks = sub_1AF1D5C74(program);
+  self->_current.overrides = overrides;
+  v12 = sub_1AF1D5DFC(program);
   v94 = 0;
   self->_worldBuffer = -1;
-  if (objc_msgSend_vertexFunction(a3, v13, v14, v15))
+  if (objc_msgSend_vertexFunction(pipeline, v13, v14, v15))
   {
-    v19 = objc_msgSend_vertexBindings(a4, v16, v17, v18);
-    v23 = objc_msgSend_vertexFunction(a3, v20, v21, v22);
-    objc_msgSend__parseBindings_function_renderPipeline_isClientProgram_customBindingsOut_(self, v24, v19, v23, a3, v12, &v94);
+    v19 = objc_msgSend_vertexBindings(reflection, v16, v17, v18);
+    v23 = objc_msgSend_vertexFunction(pipeline, v20, v21, v22);
+    objc_msgSend__parseBindings_function_renderPipeline_isClientProgram_customBindingsOut_(self, v24, v19, v23, pipeline, v12, &v94);
   }
 
-  if (objc_msgSend_fragmentFunction(a3, v16, v17, v18))
+  if (objc_msgSend_fragmentFunction(pipeline, v16, v17, v18))
   {
-    v28 = objc_msgSend_fragmentBindings(a4, v25, v26, v27);
-    v32 = objc_msgSend_fragmentFunction(a3, v29, v30, v31);
-    objc_msgSend__parseBindings_function_renderPipeline_isClientProgram_customBindingsOut_(self, v33, v28, v32, a3, v12, &v94);
+    v28 = objc_msgSend_fragmentBindings(reflection, v25, v26, v27);
+    v32 = objc_msgSend_fragmentFunction(pipeline, v29, v30, v31);
+    objc_msgSend__parseBindings_function_renderPipeline_isClientProgram_customBindingsOut_(self, v33, v28, v32, pipeline, v12, &v94);
   }
 
   if (self->_worldBuffer.vertexIndex != 255 || self->_worldBuffer.fragmentIndex != 255)
   {
-    *(a3 + 4) = self->_worldBuffer;
+    *(pipeline + 4) = self->_worldBuffer;
   }
 
   if (objc_msgSend_count(self->_frameBindings, v25, v26, v27))
   {
     v37 = objc_msgSend_allValues(self->_frameBindings, v34, v35, v36);
-    objc_msgSend_setFrameBufferBindings_(a3, v38, v37, v39);
+    objc_msgSend_setFrameBufferBindings_(pipeline, v38, v37, v39);
     objc_msgSend_removeAllObjects(self->_frameBindings, v40, v41, v42);
   }
 
   if (objc_msgSend_count(self->_nodeBindings, v34, v35, v36))
   {
     v46 = objc_msgSend_allValues(self->_nodeBindings, v43, v44, v45);
-    objc_msgSend_setNodeBufferBindings_(a3, v47, v46, v48);
+    objc_msgSend_setNodeBufferBindings_(pipeline, v47, v46, v48);
     objc_msgSend_removeAllObjects(self->_nodeBindings, v49, v50, v51);
   }
 
   if (objc_msgSend_count(self->_shadableBindings, v43, v44, v45))
   {
     v55 = objc_msgSend_allValues(self->_shadableBindings, v52, v53, v54);
-    objc_msgSend_setShadableBufferBindings_(a3, v56, v55, v57);
+    objc_msgSend_setShadableBufferBindings_(pipeline, v56, v55, v57);
     objc_msgSend_removeAllObjects(self->_shadableBindings, v58, v59, v60);
   }
 
   if (objc_msgSend_count(self->_lightBindings, v52, v53, v54))
   {
     v64 = objc_msgSend_allValues(self->_lightBindings, v61, v62, v63);
-    objc_msgSend_setLightBufferBindings_(a3, v65, v64, v66);
+    objc_msgSend_setLightBufferBindings_(pipeline, v65, v64, v66);
     objc_msgSend_removeAllObjects(self->_lightBindings, v67, v68, v69);
   }
 
-  v70 = objc_msgSend_vertexBindings(a4, v61, v62, v63);
-  v74 = objc_msgSend_vertexFunction(a3, v71, v72, v73);
-  objc_msgSend__computeUsageForBindings_function_(a3, v75, v70, v74);
-  v79 = objc_msgSend_fragmentBindings(a4, v76, v77, v78);
-  v83 = objc_msgSend_fragmentFunction(a3, v80, v81, v82);
-  objc_msgSend__computeUsageForBindings_function_(a3, v84, v79, v83);
+  v70 = objc_msgSend_vertexBindings(reflection, v61, v62, v63);
+  v74 = objc_msgSend_vertexFunction(pipeline, v71, v72, v73);
+  objc_msgSend__computeUsageForBindings_function_(pipeline, v75, v70, v74);
+  v79 = objc_msgSend_fragmentBindings(reflection, v76, v77, v78);
+  v83 = objc_msgSend_fragmentFunction(pipeline, v80, v81, v82);
+  objc_msgSend__computeUsageForBindings_function_(pipeline, v84, v79, v83);
   os_unfair_lock_unlock(&self->_generateLock);
   v88 = v94;
   if (v94)
@@ -557,24 +557,24 @@ LABEL_11:
     v95 = @"bindings";
     v96[0] = v94;
     v92 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v91, v96, &v95, 1);
-    objc_msgSend_postNotificationName_object_userInfo_(v90, v93, @"VFXProgramDidCompileNotification", a5, v92);
+    objc_msgSend_postNotificationName_object_userInfo_(v90, v93, @"VFXProgramDidCompileNotification", program, v92);
     v88 = v94;
   }
 }
 
-- (id)_dictionaryForFrequency:(int)a3
+- (id)_dictionaryForFrequency:(int)frequency
 {
-  if (a3 <= 2)
+  if (frequency <= 2)
   {
-    return *(&self->super.isa + qword_1AFE42B10[a3]);
+    return *(&self->super.isa + qword_1AFE42B10[frequency]);
   }
 
   return v3;
 }
 
-- (void)_checkForAssociatedSamplerOnBinding:(id)a3 argument:(id)a4
+- (void)_checkForAssociatedSamplerOnBinding:(id)binding argument:(id)argument
 {
-  v6 = objc_msgSend_name(a4, a2, a3, a4);
+  v6 = objc_msgSend_name(argument, a2, binding, argument);
   v9 = objc_msgSend_stringByAppendingString_(v6, v7, @"Sampler", v8);
   v11 = objc_msgSend__searchBindings_forArgumentNamed_type_(self, v10, self->_current.bindings, v9, 3);
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
@@ -582,7 +582,7 @@ LABEL_11:
     stage = self->_current.stage;
     if (stage == 1)
     {
-      *(a3 + 12) = v11;
+      *(binding + 12) = v11;
     }
 
     else if (stage)
@@ -596,31 +596,31 @@ LABEL_11:
 
     else
     {
-      *(a3 + 11) = v11;
+      *(binding + 11) = v11;
     }
   }
 }
 
-- (void)addResourceBindingsForArgument:(id)a3 frequency:(int)a4 needsRenderResource:(BOOL)a5 block:(id)a6
+- (void)addResourceBindingsForArgument:(id)argument frequency:(int)frequency needsRenderResource:(BOOL)resource block:(id)block
 {
-  v7 = a5;
-  v10 = objc_msgSend__dictionaryForFrequency_(self, a2, *&a4, *&a4);
-  v14 = objc_msgSend_name(a3, v11, v12, v13);
+  resourceCopy = resource;
+  v10 = objc_msgSend__dictionaryForFrequency_(self, a2, *&frequency, *&frequency);
+  v14 = objc_msgSend_name(argument, v11, v12, v13);
   v17 = objc_msgSend_objectForKeyedSubscript_(v10, v15, v14, v16);
   if (v17)
   {
     v21 = v17;
     v22 = objc_msgSend_type(v17, v18, v19, v20);
-    if (v22 != objc_msgSend_type(a3, v23, v24, v25))
+    if (v22 != objc_msgSend_type(argument, v23, v24, v25))
     {
       v29 = sub_1AF0D5194();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
       {
-        sub_1AFDEAB30(a3, v21, v29, v28);
+        sub_1AFDEAB30(argument, v21, v29, v28);
       }
     }
 
-    if (objc_msgSend_bindBlock(v21, v26, v27, v28) != a6)
+    if (objc_msgSend_bindBlock(v21, v26, v27, v28) != block)
     {
       v33 = sub_1AF0D5194();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
@@ -633,17 +633,17 @@ LABEL_11:
   else
   {
     v21 = objc_alloc_init(VFXMTLResourceBinding);
-    objc_msgSend_setBindBlock_(v21, v38, a6, v39);
-    objc_msgSend_setNeedsRenderResource_(v21, v40, v7, v41);
-    objc_msgSend_setBinding_(v21, v42, a3, v43);
-    v47 = objc_msgSend_name(a3, v44, v45, v46);
+    objc_msgSend_setBindBlock_(v21, v38, block, v39);
+    objc_msgSend_setNeedsRenderResource_(v21, v40, resourceCopy, v41);
+    objc_msgSend_setBinding_(v21, v42, argument, v43);
+    v47 = objc_msgSend_name(argument, v44, v45, v46);
     objc_msgSend_setObject_forKeyedSubscript_(v10, v48, v21, v47);
   }
 
   stage = self->_current.stage;
   if (stage == 1)
   {
-    v21[10] = objc_msgSend_index(a3, v30, v31, v32);
+    v21[10] = objc_msgSend_index(argument, v30, v31, v32);
   }
 
   else if (stage)
@@ -657,12 +657,12 @@ LABEL_11:
 
   else
   {
-    v21[9] = objc_msgSend_index(a3, v30, v31, v32);
+    v21[9] = objc_msgSend_index(argument, v30, v31, v32);
   }
 
-  if (objc_msgSend_type(a3, v50, v51, v52) == 2)
+  if (objc_msgSend_type(argument, v50, v51, v52) == 2)
   {
-    objc_msgSend__checkForAssociatedSamplerOnBinding_argument_(self, v54, v21, a3);
+    objc_msgSend__checkForAssociatedSamplerOnBinding_argument_(self, v54, v21, argument);
   }
 }
 

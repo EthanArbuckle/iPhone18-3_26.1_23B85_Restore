@@ -1,10 +1,10 @@
 @interface MFNanoServerMessageSender
 - (MFNanoServerMessageSender)init;
-- (id)_libraryMessageForMessageId:(id)a3;
-- (id)_messageToSendWithCompositionContext:(id)a3;
-- (id)_sendComposedMessage:(id)a3;
-- (void)_didReceiveMessageDeliveryNotification:(id)a3;
-- (void)sendMessage:(id)a3 progressHandler:(id)a4;
+- (id)_libraryMessageForMessageId:(id)id;
+- (id)_messageToSendWithCompositionContext:(id)context;
+- (id)_sendComposedMessage:(id)message;
+- (void)_didReceiveMessageDeliveryNotification:(id)notification;
+- (void)sendMessage:(id)message progressHandler:(id)handler;
 @end
 
 @implementation MFNanoServerMessageSender
@@ -46,31 +46,31 @@
   return v2;
 }
 
-- (void)sendMessage:(id)a3 progressHandler:(id)a4
+- (void)sendMessage:(id)message progressHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100093F14;
   block[3] = &unk_100159BE8;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = messageCopy;
+  v9 = handlerCopy;
+  v10 = messageCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_didReceiveMessageDeliveryNotification:(id)a3
+- (void)_didReceiveMessageDeliveryNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"sent"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:@"sent"];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKey:@"failed"];
+  userInfo2 = [notificationCopy userInfo];
+  v8 = [userInfo2 objectForKey:@"failed"];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
@@ -94,10 +94,10 @@
   dispatch_semaphore_signal(self->_messagesDeliveredSemaphore);
 }
 
-- (id)_sendComposedMessage:(id)a3
+- (id)_sendComposedMessage:(id)message
 {
-  v3 = a3;
-  v4 = [MailAccount accountThatMessageIsFrom:v3 includingInactive:1];
+  messageCopy = message;
+  v4 = [MailAccount accountThatMessageIsFrom:messageCopy includingInactive:1];
   if ([v4 restrictedFromSendingExternally])
   {
     v5 = 0;
@@ -105,9 +105,9 @@
 
   else
   {
-    [v3 markAsViewed];
+    [messageCopy markAsViewed];
     v6 = +[MFDeliveryQueue sharedDeliveryQueue];
-    v7 = [v6 append:v3];
+    v7 = [v6 append:messageCopy];
     if (v7)
     {
       [v6 processQueueAndPlaySoundOnSuccess:0 forceAll:0];
@@ -129,9 +129,9 @@
 
       v9 = v8;
       _Block_object_dispose(&v15, 8);
-      v10 = [v8 defaultInstance];
-      v11 = [v3 headers];
-      [v10 recordContactEventsForHeaders:v11 recentsDomain:kMFMobileMailBundleIdentifier];
+      defaultInstance = [v8 defaultInstance];
+      headers = [messageCopy headers];
+      [defaultInstance recordContactEventsForHeaders:headers recentsDomain:kMFMobileMailBundleIdentifier];
 
       v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@://%lld", @"x-last-sent-message", [v7 libraryID]);
       v5 = [NSURL URLWithString:v12];
@@ -146,7 +146,7 @@
   return v5;
 }
 
-- (id)_messageToSendWithCompositionContext:(id)a3
+- (id)_messageToSendWithCompositionContext:(id)context
 {
   v9 = 0;
   v10 = &v9;
@@ -158,9 +158,9 @@
   v6[1] = 3221225472;
   v6[2] = sub_1000959D0;
   v6[3] = &unk_100159C60;
-  v7 = a3;
+  contextCopy = context;
   v8 = &v9;
-  v3 = v7;
+  v3 = contextCopy;
   dispatch_sync(&_dispatch_main_q, v6);
   v4 = v10[5];
 
@@ -169,16 +169,16 @@
   return v4;
 }
 
-- (id)_libraryMessageForMessageId:(id)a3
+- (id)_libraryMessageForMessageId:(id)id
 {
-  v3 = [NSURL URLWithString:a3];
-  v4 = [v3 mf_messageCriterion];
+  v3 = [NSURL URLWithString:id];
+  mf_messageCriterion = [v3 mf_messageCriterion];
   v5 = +[MFMailMessageLibrary defaultInstance];
-  v6 = [v5 messagesMatchingCriterion:v4 options:6144];
+  v6 = [v5 messagesMatchingCriterion:mf_messageCriterion options:6144];
 
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
 @end

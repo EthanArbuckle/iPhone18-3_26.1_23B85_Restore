@@ -1,12 +1,12 @@
 @interface UIKeyboardScheduledTask
 - (BOOL)isValid;
 - (BOOL)repeats;
-- (UIKeyboardScheduledTask)initWithTaskQueue:(id)a3 timeInterval:(double)a4 repeats:(BOOL)a5 task:(id)a6 breadcrumb:(id)a7;
+- (UIKeyboardScheduledTask)initWithTaskQueue:(id)queue timeInterval:(double)interval repeats:(BOOL)repeats task:(id)task breadcrumb:(id)breadcrumb;
 - (void)dealloc;
 - (void)handleDeferredTimerFiredEvent;
 - (void)invalidate;
 - (void)resetTimer;
-- (void)timerFired:(id)a3;
+- (void)timerFired:(id)fired;
 @end
 
 @implementation UIKeyboardScheduledTask
@@ -29,9 +29,9 @@
   v3 = _Block_copy(aBlock);
   objc_storeWeak(v9 + 5, v3);
   [(UIKeyboardScheduledTask *)self setEnqueuedTask:v3];
-  v4 = [(UIKeyboardScheduledTask *)self taskQueue];
-  v5 = [(UIKeyboardScheduledTask *)self breadcrumb];
-  [v4 addTask:v3 breadcrumb:v5];
+  taskQueue = [(UIKeyboardScheduledTask *)self taskQueue];
+  breadcrumb = [(UIKeyboardScheduledTask *)self breadcrumb];
+  [taskQueue addTask:v3 breadcrumb:breadcrumb];
 
   objc_destroyWeak(&v7);
   _Block_object_dispose(&v8, 8);
@@ -57,16 +57,16 @@ void __56__UIKeyboardScheduledTask_handleDeferredTimerFiredEvent__block_invoke(u
 
 - (void)invalidate
 {
-  v4 = self;
-  v2 = [(UIKeyboardScheduledTask *)v4 timer];
-  [v2 invalidate];
+  selfCopy = self;
+  timer = [(UIKeyboardScheduledTask *)selfCopy timer];
+  [timer invalidate];
 
-  [(UIKeyboardScheduledTask *)v4 setTimer:0];
-  v3 = [(UIKeyboardScheduledTask *)v4 deferredAction];
-  [v3 invalidate];
+  [(UIKeyboardScheduledTask *)selfCopy setTimer:0];
+  deferredAction = [(UIKeyboardScheduledTask *)selfCopy deferredAction];
+  [deferredAction invalidate];
 
-  [(UIKeyboardScheduledTask *)v4 setDeferredAction:0];
-  [(UIKeyboardScheduledTask *)v4 setEnqueuedTask:0];
+  [(UIKeyboardScheduledTask *)selfCopy setDeferredAction:0];
+  [(UIKeyboardScheduledTask *)selfCopy setEnqueuedTask:0];
 }
 
 - (void)dealloc
@@ -80,24 +80,24 @@ void __56__UIKeyboardScheduledTask_handleDeferredTimerFiredEvent__block_invoke(u
 
 - (BOOL)isValid
 {
-  v3 = [(UIKeyboardScheduledTask *)self timer];
-  if ([v3 isValid])
+  timer = [(UIKeyboardScheduledTask *)self timer];
+  if ([timer isValid])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(UIKeyboardScheduledTask *)self deferredAction];
-    if ([v5 isValid])
+    deferredAction = [(UIKeyboardScheduledTask *)self deferredAction];
+    if ([deferredAction isValid])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(UIKeyboardScheduledTask *)self enqueuedTask];
-      v4 = v6 != 0;
+      enqueuedTask = [(UIKeyboardScheduledTask *)self enqueuedTask];
+      v4 = enqueuedTask != 0;
     }
   }
 
@@ -108,34 +108,34 @@ void __56__UIKeyboardScheduledTask_handleDeferredTimerFiredEvent__block_invoke(u
 {
   if (pthread_main_np() != 1)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:860 description:{@"%s may only be called from the main thread.", "-[UIKeyboardScheduledTask resetTimer]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:860 description:{@"%s may only be called from the main thread.", "-[UIKeyboardScheduledTask resetTimer]"}];
   }
 
   if ([(UIKeyboardScheduledTask *)self isValid])
   {
-    v4 = [(UIKeyboardScheduledTask *)self timer];
-    v5 = [v4 isValid];
+    timer = [(UIKeyboardScheduledTask *)self timer];
+    isValid = [timer isValid];
 
-    if (v5)
+    if (isValid)
     {
-      v6 = [(UIKeyboardScheduledTask *)self timer];
+      timer2 = [(UIKeyboardScheduledTask *)self timer];
       v7 = MEMORY[0x1E695DF00];
       [(UIKeyboardScheduledTask *)self timeInterval];
       v8 = [v7 dateWithTimeIntervalSinceNow:?];
-      [v6 setFireDate:v8];
+      [timer2 setFireDate:v8];
     }
 
     else
     {
       v9 = MEMORY[0x1E695DFF0];
       [(UIKeyboardScheduledTask *)self timeInterval];
-      v6 = [v9 scheduledTimerWithTimeInterval:self target:sel_timerFired_ selector:0 userInfo:-[UIKeyboardScheduledTask repeats](self repeats:{"repeats"), v10}];
-      [(UIKeyboardScheduledTask *)self setTimer:v6];
+      timer2 = [v9 scheduledTimerWithTimeInterval:self target:sel_timerFired_ selector:0 userInfo:-[UIKeyboardScheduledTask repeats](self repeats:{"repeats"), v10}];
+      [(UIKeyboardScheduledTask *)self setTimer:timer2];
     }
 
-    v11 = [(UIKeyboardScheduledTask *)self deferredAction];
-    [v11 invalidate];
+    deferredAction = [(UIKeyboardScheduledTask *)self deferredAction];
+    [deferredAction invalidate];
 
     [(UIKeyboardScheduledTask *)self setDeferredAction:0];
 
@@ -143,29 +143,29 @@ void __56__UIKeyboardScheduledTask_handleDeferredTimerFiredEvent__block_invoke(u
   }
 }
 
-- (UIKeyboardScheduledTask)initWithTaskQueue:(id)a3 timeInterval:(double)a4 repeats:(BOOL)a5 task:(id)a6 breadcrumb:(id)a7
+- (UIKeyboardScheduledTask)initWithTaskQueue:(id)queue timeInterval:(double)interval repeats:(BOOL)repeats task:(id)task breadcrumb:(id)breadcrumb
 {
-  v9 = a5;
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  repeatsCopy = repeats;
+  queueCopy = queue;
+  taskCopy = task;
+  breadcrumbCopy = breadcrumb;
   v24.receiver = self;
   v24.super_class = UIKeyboardScheduledTask;
   v16 = [(UIKeyboardScheduledTask *)&v24 init];
   v17 = v16;
   if (v16)
   {
-    v16->_timeInterval = a4;
-    v18 = [v14 copy];
+    v16->_timeInterval = interval;
+    v18 = [taskCopy copy];
     task = v17->_task;
     v17->_task = v18;
 
-    objc_storeStrong(&v17->_taskQueue, a3);
-    v20 = [v15 copy];
+    objc_storeStrong(&v17->_taskQueue, queue);
+    v20 = [breadcrumbCopy copy];
     breadcrumb = v17->_breadcrumb;
     v17->_breadcrumb = v20;
 
-    v22 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:v17 target:sel_timerFired_ selector:0 userInfo:v9 repeats:a4];
+    v22 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:v17 target:sel_timerFired_ selector:0 userInfo:repeatsCopy repeats:interval];
     [(UIKeyboardScheduledTask *)v17 setTimer:v22];
   }
 
@@ -174,26 +174,26 @@ void __56__UIKeyboardScheduledTask_handleDeferredTimerFiredEvent__block_invoke(u
 
 - (BOOL)repeats
 {
-  v2 = [(UIKeyboardScheduledTask *)self timer];
-  [v2 timeInterval];
+  timer = [(UIKeyboardScheduledTask *)self timer];
+  [timer timeInterval];
   v4 = v3 > 0.0;
 
   return v4;
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
-  v5 = [(UIKeyboardScheduledTask *)self deferredAction];
-  if (([v5 isValid] & 1) == 0)
+  deferredAction = [(UIKeyboardScheduledTask *)self deferredAction];
+  if (([deferredAction isValid] & 1) == 0)
   {
-    v4 = [(UIKeyboardScheduledTask *)self enqueuedTask];
+    enqueuedTask = [(UIKeyboardScheduledTask *)self enqueuedTask];
 
-    if (v4)
+    if (enqueuedTask)
     {
       return;
     }
 
-    v5 = [_UIActionWhenIdle actionWhenIdleWithTarget:self selector:sel_handleDeferredTimerFiredEvent object:0];
+    deferredAction = [_UIActionWhenIdle actionWhenIdleWithTarget:self selector:sel_handleDeferredTimerFiredEvent object:0];
     [(UIKeyboardScheduledTask *)self setDeferredAction:?];
   }
 }

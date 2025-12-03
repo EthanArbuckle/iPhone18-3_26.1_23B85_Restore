@@ -1,28 +1,28 @@
 @interface IRCandicateClassificationEligibility
-+ (id)_generateSettingsStruct:(id)a3;
-+ (int64_t)_eligibilityTypeFromEvent:(id)a3;
-+ (int64_t)classificationEligibilityForCandidate:(id)a3 withHistoryEventsAsc:(id)a4 systemState:(id)a5;
++ (id)_generateSettingsStruct:(id)struct;
++ (int64_t)_eligibilityTypeFromEvent:(id)event;
++ (int64_t)classificationEligibilityForCandidate:(id)candidate withHistoryEventsAsc:(id)asc systemState:(id)state;
 @end
 
 @implementation IRCandicateClassificationEligibility
 
-+ (int64_t)classificationEligibilityForCandidate:(id)a3 withHistoryEventsAsc:(id)a4 systemState:(id)a5
++ (int64_t)classificationEligibilityForCandidate:(id)candidate withHistoryEventsAsc:(id)asc systemState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 candidateIdentifier];
-  v11 = [IRCandicateClassificationEligibility _generateSettingsStruct:v7];
+  candidateCopy = candidate;
+  ascCopy = asc;
+  stateCopy = state;
+  candidateIdentifier = [candidateCopy candidateIdentifier];
+  v11 = [IRCandicateClassificationEligibility _generateSettingsStruct:candidateCopy];
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__9;
   v36 = __Block_byref_object_dispose__9;
   v37 = objc_opt_new();
-  v12 = [v11 initialStateIsOneTap];
-  v13 = [v12 BOOLValue];
+  initialStateIsOneTap = [v11 initialStateIsOneTap];
+  bOOLValue = [initialStateIsOneTap BOOLValue];
 
-  if (v13)
+  if (bOOLValue)
   {
     [v33[5] setEligibilityState:1];
   }
@@ -33,13 +33,13 @@
   v24[1] = 3221225472;
   v24[2] = __111__IRCandicateClassificationEligibility_classificationEligibilityForCandidate_withHistoryEventsAsc_systemState___block_invoke;
   v24[3] = &unk_2797E1B90;
-  v16 = v10;
+  v16 = candidateIdentifier;
   v25 = v16;
-  v17 = v9;
+  v17 = stateCopy;
   v26 = v17;
   v18 = v14;
   v27 = v18;
-  v19 = v8;
+  v19 = ascCopy;
   v28 = v19;
   v20 = v15;
   v29 = v20;
@@ -119,9 +119,9 @@ LABEL_14:
   }
 }
 
-+ (int64_t)_eligibilityTypeFromEvent:(id)a3
++ (int64_t)_eligibilityTypeFromEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = [IREventDO eventDOWithMediaType:5];
   v5 = [IREventDO eventDOWithMediaType:0];
   v14 = [IREventDO eventDOWithMediaType:3];
@@ -132,39 +132,39 @@ LABEL_14:
   v10 = [IREventDO eventDOWithMediaType:8];
   v11 = [IREventDO eventDOWithMediaType:9];
   v12 = [IREventDO eventDOWithMediaType:10];
-  if (([v3 isEqual:v4] & 1) == 0)
+  if (([eventCopy isEqual:v4] & 1) == 0)
   {
-    if ([v3 isEqual:v5])
+    if ([eventCopy isEqual:v5])
     {
       v6 = 1;
     }
 
-    else if ([v3 isEqual:v14] & 1) != 0 || (objc_msgSend(v3, "isEqual:", v7))
+    else if ([eventCopy isEqual:v14] & 1) != 0 || (objc_msgSend(eventCopy, "isEqual:", v7))
     {
       v6 = 4;
     }
 
-    else if ([v3 isEqual:v8])
+    else if ([eventCopy isEqual:v8])
     {
       v6 = 2;
     }
 
-    else if ([v3 isEqual:v9])
+    else if ([eventCopy isEqual:v9])
     {
       v6 = 3;
     }
 
-    else if ([v3 isEqual:v10])
+    else if ([eventCopy isEqual:v10])
     {
       v6 = 5;
     }
 
-    else if ([v3 isEqual:v11])
+    else if ([eventCopy isEqual:v11])
     {
       v6 = 6;
     }
 
-    else if ([v3 isEqual:v12])
+    else if ([eventCopy isEqual:v12])
     {
       v6 = 7;
     }
@@ -178,34 +178,34 @@ LABEL_14:
   return v6;
 }
 
-+ (id)_generateSettingsStruct:(id)a3
++ (id)_generateSettingsStruct:(id)struct
 {
-  v3 = a3;
+  structCopy = struct;
   v4 = objc_alloc_init(IREligibilitySettings);
-  v5 = [v3 isFirstPartyDevice];
+  isFirstPartyDevice = [structCopy isFirstPartyDevice];
 
   v6 = +[IRPreferences shared];
   v7 = v6;
-  if (v5)
+  if (isFirstPartyDevice)
   {
-    v8 = [v6 uprankToOneTapEligibilityThreshold1stParty];
-    [(IREligibilitySettings *)v4 setUpRankToOneTapThr:v8];
+    uprankToOneTapEligibilityThreshold1stParty = [v6 uprankToOneTapEligibilityThreshold1stParty];
+    [(IREligibilitySettings *)v4 setUpRankToOneTapThr:uprankToOneTapEligibilityThreshold1stParty];
 
     v9 = +[IRPreferences shared];
-    v10 = [v9 uprankToAutorouteEligibilityThreshold1stParty];
-    [(IREligibilitySettings *)v4 setUprankToAutorouteThr:v10];
+    uprankToAutorouteEligibilityThreshold1stParty = [v9 uprankToAutorouteEligibilityThreshold1stParty];
+    [(IREligibilitySettings *)v4 setUprankToAutorouteThr:uprankToAutorouteEligibilityThreshold1stParty];
 
     v11 = +[IRPreferences shared];
-    v12 = [v11 downrankToNoneEligibilityThreshold1stParty];
-    [(IREligibilitySettings *)v4 setDownrankToNoneThr:v12];
+    downrankToNoneEligibilityThreshold1stParty = [v11 downrankToNoneEligibilityThreshold1stParty];
+    [(IREligibilitySettings *)v4 setDownrankToNoneThr:downrankToNoneEligibilityThreshold1stParty];
 
     v13 = +[IRPreferences shared];
-    v14 = [v13 downrankToNoneEligibilityBasedOnDismissAndRejectThreshold1stParty];
-    [(IREligibilitySettings *)v4 setDownrankToNoneWithIgnoringThr:v14];
+    downrankToNoneEligibilityBasedOnDismissAndRejectThreshold1stParty = [v13 downrankToNoneEligibilityBasedOnDismissAndRejectThreshold1stParty];
+    [(IREligibilitySettings *)v4 setDownrankToNoneWithIgnoringThr:downrankToNoneEligibilityBasedOnDismissAndRejectThreshold1stParty];
 
     v15 = +[IRPreferences shared];
-    v16 = [v15 downrankToOneTapEligibilityThreshold1stParty];
-    [(IREligibilitySettings *)v4 setDownrankToOneTapThr:v16];
+    downrankToOneTapEligibilityThreshold1stParty = [v15 downrankToOneTapEligibilityThreshold1stParty];
+    [(IREligibilitySettings *)v4 setDownrankToOneTapThr:downrankToOneTapEligibilityThreshold1stParty];
 
     v17 = +[IRPreferences shared];
     [v17 eligibilityInitStateIsOneTap1stParty];
@@ -213,24 +213,24 @@ LABEL_14:
 
   else
   {
-    v18 = [v6 uprankToOneTapEligibilityThreshold3rdParty];
-    [(IREligibilitySettings *)v4 setUpRankToOneTapThr:v18];
+    uprankToOneTapEligibilityThreshold3rdParty = [v6 uprankToOneTapEligibilityThreshold3rdParty];
+    [(IREligibilitySettings *)v4 setUpRankToOneTapThr:uprankToOneTapEligibilityThreshold3rdParty];
 
     v19 = +[IRPreferences shared];
-    v20 = [v19 uprankToAutorouteEligibilityThreshold3rdParty];
-    [(IREligibilitySettings *)v4 setUprankToAutorouteThr:v20];
+    uprankToAutorouteEligibilityThreshold3rdParty = [v19 uprankToAutorouteEligibilityThreshold3rdParty];
+    [(IREligibilitySettings *)v4 setUprankToAutorouteThr:uprankToAutorouteEligibilityThreshold3rdParty];
 
     v21 = +[IRPreferences shared];
-    v22 = [v21 downrankToNoneEligibilityThreshold3rdParty];
-    [(IREligibilitySettings *)v4 setDownrankToNoneThr:v22];
+    downrankToNoneEligibilityThreshold3rdParty = [v21 downrankToNoneEligibilityThreshold3rdParty];
+    [(IREligibilitySettings *)v4 setDownrankToNoneThr:downrankToNoneEligibilityThreshold3rdParty];
 
     v23 = +[IRPreferences shared];
-    v24 = [v23 downrankToNoneEligibilityBasedOnDismissAndRejectThreshold3rdParty];
-    [(IREligibilitySettings *)v4 setDownrankToNoneWithIgnoringThr:v24];
+    downrankToNoneEligibilityBasedOnDismissAndRejectThreshold3rdParty = [v23 downrankToNoneEligibilityBasedOnDismissAndRejectThreshold3rdParty];
+    [(IREligibilitySettings *)v4 setDownrankToNoneWithIgnoringThr:downrankToNoneEligibilityBasedOnDismissAndRejectThreshold3rdParty];
 
     v25 = +[IRPreferences shared];
-    v26 = [v25 downrankToOneTapEligibilityThreshold3rdParty];
-    [(IREligibilitySettings *)v4 setDownrankToOneTapThr:v26];
+    downrankToOneTapEligibilityThreshold3rdParty = [v25 downrankToOneTapEligibilityThreshold3rdParty];
+    [(IREligibilitySettings *)v4 setDownrankToOneTapThr:downrankToOneTapEligibilityThreshold3rdParty];
 
     v17 = +[IRPreferences shared];
     [v17 eligibilityInitStateIsOneTap3rdParty];
@@ -239,12 +239,12 @@ LABEL_14:
   [(IREligibilitySettings *)v4 setInitialStateIsOneTap:v27];
 
   v28 = +[IRPreferences shared];
-  v29 = [v28 brokeredUseScansForEligibilityOfMainDevice];
-  -[IREligibilitySettings setUseBrokeredScanForMain:](v4, "setUseBrokeredScanForMain:", [v29 BOOLValue]);
+  brokeredUseScansForEligibilityOfMainDevice = [v28 brokeredUseScansForEligibilityOfMainDevice];
+  -[IREligibilitySettings setUseBrokeredScanForMain:](v4, "setUseBrokeredScanForMain:", [brokeredUseScansForEligibilityOfMainDevice BOOLValue]);
 
   v30 = +[IRPreferences shared];
-  v31 = [v30 brokeredUseScansForEligibilityOfSecondaryDevice];
-  -[IREligibilitySettings setUseBrokeredScanForSecondary:](v4, "setUseBrokeredScanForSecondary:", [v31 BOOLValue]);
+  brokeredUseScansForEligibilityOfSecondaryDevice = [v30 brokeredUseScansForEligibilityOfSecondaryDevice];
+  -[IREligibilitySettings setUseBrokeredScanForSecondary:](v4, "setUseBrokeredScanForSecondary:", [brokeredUseScansForEligibilityOfSecondaryDevice BOOLValue]);
 
   return v4;
 }

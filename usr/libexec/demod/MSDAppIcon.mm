@@ -1,20 +1,20 @@
 @interface MSDAppIcon
-+ (id)getIconImageForApp:(id)a3 withSize:(CGSize)a4 andScale:(float)a5;
-+ (id)getIconImagesOfVisibleAppsWithSize:(CGSize)a3 andScale:(float)a4;
++ (id)getIconImageForApp:(id)app withSize:(CGSize)size andScale:(float)scale;
++ (id)getIconImagesOfVisibleAppsWithSize:(CGSize)size andScale:(float)scale;
 @end
 
 @implementation MSDAppIcon
 
-+ (id)getIconImageForApp:(id)a3 withSize:(CGSize)a4 andScale:(float)a5
++ (id)getIconImageForApp:(id)app withSize:(CGSize)size andScale:(float)scale
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  appCopy = app;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 0;
-  if (!v8)
+  if (!appCopy)
   {
     v9 = sub_100063A54();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -25,7 +25,7 @@
     goto LABEL_25;
   }
 
-  v9 = [[ISIcon alloc] initWithBundleIdentifier:v8];
+  v9 = [[ISIcon alloc] initWithBundleIdentifier:appCopy];
   if (!v9)
   {
     v9 = sub_100063A54();
@@ -37,11 +37,11 @@
     goto LABEL_25;
   }
 
-  v10 = [[ISImageDescriptor alloc] initWithSize:width scale:{height, a5}];
+  v10 = [[ISImageDescriptor alloc] initWithSize:width scale:{height, scale}];
   if (!v10)
   {
     v17 = sub_100063A54();
-    sub_1000C4D3C(v17, v8);
+    sub_1000C4D3C(v17, appCopy);
 LABEL_25:
     v15 = 0;
     goto LABEL_10;
@@ -95,7 +95,7 @@ LABEL_24:
     *buf = 136315394;
     v31 = "+[MSDAppIcon getIconImageForApp:withSize:andScale:]";
     v32 = 2114;
-    v33 = v8;
+    v33 = appCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s - Found icon image for app:  %{public}@", buf, 0x16u);
   }
 
@@ -107,19 +107,19 @@ LABEL_10:
   return v15;
 }
 
-+ (id)getIconImagesOfVisibleAppsWithSize:(CGSize)a3 andScale:(float)a4
++ (id)getIconImagesOfVisibleAppsWithSize:(CGSize)size andScale:(float)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = +[NSMutableDictionary dictionary];
   v8 = +[MSDAppHelper sharedInstance];
-  v9 = [v8 visibleApps];
+  visibleApps = [v8 visibleApps];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v9;
+  v10 = visibleApps;
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v11)
   {
@@ -138,7 +138,7 @@ LABEL_10:
         }
 
         v17 = *(*(&v26 + 1) + 8 * v16);
-        *&v13 = a4;
+        *&v13 = scale;
         v18 = [MSDAppIcon getIconImageForApp:v17 withSize:width andScale:height, v13, v25, v26];
         v19 = v18;
         if (v18)

@@ -2,7 +2,7 @@
 + (ATXModeAnchorModelSuggestionClient)sharedInstance;
 - (id)_init;
 - (void)_pingServer;
-- (void)anchorModelDidProvideModeSuggestions:(id)a3;
+- (void)anchorModelDidProvideModeSuggestions:(id)suggestions;
 @end
 
 @implementation ATXModeAnchorModelSuggestionClient
@@ -107,12 +107,12 @@ void __49__ATXModeAnchorModelSuggestionClient__pingServer__block_invoke_18()
   }
 }
 
-- (void)anchorModelDidProvideModeSuggestions:(id)a3
+- (void)anchorModelDidProvideModeSuggestions:(id)suggestions
 {
   xpcClientHelper = self->_xpcClientHelper;
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v5 = [(_PASXPCClientHelper *)xpcClientHelper remoteObjectProxyWithErrorHandler:&__block_literal_global_23_4];
-  [v5 anchorModelDidProvideModeSuggestions:v4];
+  [v5 anchorModelDidProvideModeSuggestions:suggestionsCopy];
 }
 
 void __75__ATXModeAnchorModelSuggestionClient_anchorModelDidProvideModeSuggestions___block_invoke(uint64_t a1, void *a2)

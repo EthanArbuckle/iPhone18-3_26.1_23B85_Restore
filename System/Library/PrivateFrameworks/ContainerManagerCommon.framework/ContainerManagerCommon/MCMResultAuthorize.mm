@@ -1,28 +1,28 @@
 @interface MCMResultAuthorize
-- (BOOL)encodeResultOntoReply:(id)a3;
+- (BOOL)encodeResultOntoReply:(id)reply;
 - (_TtC22ContainerManagerCommon18MCMResultAuthorize)init;
-- (_TtC22ContainerManagerCommon18MCMResultAuthorize)initWithError:(id)a3;
+- (_TtC22ContainerManagerCommon18MCMResultAuthorize)initWithError:(id)error;
 @end
 
 @implementation MCMResultAuthorize
 
-- (_TtC22ContainerManagerCommon18MCMResultAuthorize)initWithError:(id)a3
+- (_TtC22ContainerManagerCommon18MCMResultAuthorize)initWithError:(id)error
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC22ContainerManagerCommon18MCMResultAuthorize_authResult) = 0;
   v5.receiver = self;
   v5.super_class = type metadata accessor for MCMResultAuthorize();
-  return [(MCMResultBase *)&v5 initWithError:a3];
+  return [(MCMResultBase *)&v5 initWithError:error];
 }
 
-- (BOOL)encodeResultOntoReply:(id)a3
+- (BOOL)encodeResultOntoReply:(id)reply
 {
   v5 = *(&self->super.super.isa + OBJC_IVAR____TtC22ContainerManagerCommon18MCMResultAuthorize_authResult);
   swift_unknownObjectRetain();
-  v6 = self;
-  xpc_dictionary_set_uint64(a3, "ReplyAuthorized", v5);
-  v8.receiver = v6;
+  selfCopy = self;
+  xpc_dictionary_set_uint64(reply, "ReplyAuthorized", v5);
+  v8.receiver = selfCopy;
   v8.super_class = type metadata accessor for MCMResultAuthorize();
-  LOBYTE(v5) = [(MCMResultBase *)&v8 encodeResultOntoReply:a3];
+  LOBYTE(v5) = [(MCMResultBase *)&v8 encodeResultOntoReply:reply];
   swift_unknownObjectRelease();
 
   return v5;

@@ -1,50 +1,50 @@
 @interface DTSysmonTapLocalDelegate
-- (DTSysmonTapLocalDelegate)initWithConfig:(id)a3;
+- (DTSysmonTapLocalDelegate)initWithConfig:(id)config;
 - (id)validateConfig;
-- (void)_addCPUUsageToSample:(id)a3;
-- (void)_addSample:(id)a3;
+- (void)_addCPUUsageToSample:(id)sample;
+- (void)_addSample:(id)sample;
 - (void)_createAttributesSample;
-- (void)_handleSysmonCoalitionTable:(id)a3 startTime:(unint64_t)a4 endTime:(unint64_t)a5;
-- (void)_handleSysmonProcessTable:(id)a3 startTime:(unint64_t)a4 endTime:(unint64_t)a5;
-- (void)_handleSysmonSystemTable:(id)a3 startTime:(unint64_t)a4 endTime:(unint64_t)a5;
-- (void)_purgeOldSamplesForCurrentTime:(unint64_t)a3;
+- (void)_handleSysmonCoalitionTable:(id)table startTime:(unint64_t)time endTime:(unint64_t)endTime;
+- (void)_handleSysmonProcessTable:(id)table startTime:(unint64_t)time endTime:(unint64_t)endTime;
+- (void)_handleSysmonSystemTable:(id)table startTime:(unint64_t)time endTime:(unint64_t)endTime;
+- (void)_purgeOldSamplesForCurrentTime:(unint64_t)time;
 - (void)dealloc;
-- (void)fetchDataForReason:(unint64_t)a3 block:(id)a4;
-- (void)setTap:(id)a3;
+- (void)fetchDataForReason:(unint64_t)reason block:(id)block;
+- (void)setTap:(id)tap;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation DTSysmonTapLocalDelegate
 
-- (DTSysmonTapLocalDelegate)initWithConfig:(id)a3
+- (DTSysmonTapLocalDelegate)initWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v21.receiver = self;
   v21.super_class = DTSysmonTapLocalDelegate;
   v6 = [(DTSysmonTapLocalDelegate *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    if (!v5)
+    if (!configCopy)
     {
       sub_248030228();
     }
 
-    objc_storeStrong(&v6->_config, a3);
-    v8 = [(DTSysmonTapConfig *)v7->_config pids];
+    objc_storeStrong(&v6->_config, config);
+    pids = [(DTSysmonTapConfig *)v7->_config pids];
     pidFilter = v7->_pidFilter;
-    v7->_pidFilter = v8;
+    v7->_pidFilter = pids;
 
-    v10 = [(DTTapConfig *)v7->_config bufferMode];
-    v7->_isWindowed = v10 == 2;
-    if (v10 == 2)
+    bufferMode = [(DTTapConfig *)v7->_config bufferMode];
+    v7->_isWindowed = bufferMode == 2;
+    if (bufferMode == 2)
     {
       info = 0;
       mach_timebase_info(&info);
-      v11 = [(DTTapConfig *)v7->_config windowSize];
-      v12 = ((3 * v11) >> 1) * info.denom / info.numer;
-      v7->_purgeEveryNTicks = (v11 >> 1) * info.denom / info.numer;
+      windowSize = [(DTTapConfig *)v7->_config windowSize];
+      v12 = ((3 * windowSize) >> 1) * info.denom / info.numer;
+      v7->_purgeEveryNTicks = (windowSize >> 1) * info.denom / info.numer;
       v7->_effectiveWindowSize = v12;
     }
 
@@ -89,9 +89,9 @@
 - (id)validateConfig
 {
   v3 = objc_opt_new();
-  v4 = [(DTSysmonTapConfig *)self->_config processAttributes];
+  processAttributes = [(DTSysmonTapConfig *)self->_config processAttributes];
 
-  if (v4)
+  if (processAttributes)
   {
     v5 = +[DTSysmonTapSupportedAttributes localProcessAttributes];
     v6 = objc_opt_new();
@@ -99,7 +99,7 @@
     v50 = &v49;
     v51 = 0x2020000000;
     v52 = 0;
-    v7 = [(DTSysmonTapConfig *)self->_config processAttributes];
+    processAttributes2 = [(DTSysmonTapConfig *)self->_config processAttributes];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = sub_247FFBE28;
@@ -109,7 +109,7 @@
     v9 = v6;
     v47 = v9;
     v48 = &v49;
-    [v7 enumerateObjectsUsingBlock:v45];
+    [processAttributes2 enumerateObjectsUsingBlock:v45];
 
     if ((v50[3] & 1) == 0)
     {
@@ -127,13 +127,13 @@
     _Block_object_dispose(&v49, 8);
   }
 
-  v13 = [(DTSysmonTapConfig *)self->_config systemAttributes];
+  systemAttributes = [(DTSysmonTapConfig *)self->_config systemAttributes];
 
-  if (v13)
+  if (systemAttributes)
   {
     v14 = +[DTSysmonTapSupportedAttributes localSystemAttributes];
     v15 = objc_opt_new();
-    v16 = [(DTSysmonTapConfig *)self->_config systemAttributes];
+    systemAttributes2 = [(DTSysmonTapConfig *)self->_config systemAttributes];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = sub_247FFBEBC;
@@ -142,7 +142,7 @@
     v43 = v17;
     v18 = v15;
     v44 = v18;
-    [v16 enumerateObjectsUsingBlock:v42];
+    [systemAttributes2 enumerateObjectsUsingBlock:v42];
 
     if ([v18 count])
     {
@@ -153,9 +153,9 @@
     }
   }
 
-  v22 = [(DTSysmonTapConfig *)self->_config coalitionAttributes];
+  coalitionAttributes = [(DTSysmonTapConfig *)self->_config coalitionAttributes];
 
-  if (v22)
+  if (coalitionAttributes)
   {
     v23 = +[DTSysmonTapSupportedAttributes localCoalitionAttributes];
     v24 = objc_opt_new();
@@ -163,7 +163,7 @@
     v50 = &v49;
     v51 = 0x2020000000;
     v52 = 0;
-    v25 = [(DTSysmonTapConfig *)self->_config coalitionAttributes];
+    coalitionAttributes2 = [(DTSysmonTapConfig *)self->_config coalitionAttributes];
     v35 = MEMORY[0x277D85DD0];
     v36 = 3221225472;
     v37 = sub_247FFBF1C;
@@ -173,7 +173,7 @@
     v27 = v24;
     v40 = v27;
     v41 = &v49;
-    [v25 enumerateObjectsUsingBlock:&v35];
+    [coalitionAttributes2 enumerateObjectsUsingBlock:&v35];
 
     if ((v50[3] & 1) == 0)
     {
@@ -206,36 +206,36 @@
   return v33;
 }
 
-- (void)setTap:(id)a3
+- (void)setTap:(id)tap
 {
-  v4 = a3;
-  if (!v4)
+  tapCopy = tap;
+  if (!tapCopy)
   {
     sub_248030254();
   }
 
-  v5 = v4;
-  objc_storeWeak(&self->_tap, v4);
+  v5 = tapCopy;
+  objc_storeWeak(&self->_tap, tapCopy);
 }
 
-- (void)_addSample:(id)a3
+- (void)_addSample:(id)sample
 {
-  v4 = a3;
+  sampleCopy = sample;
   dispatch_semaphore_wait(self->_samplesLock, 0xFFFFFFFFFFFFFFFFLL);
-  [(NSMutableArray *)self->_samples addObject:v4];
+  [(NSMutableArray *)self->_samples addObject:sampleCopy];
   dispatch_semaphore_signal(self->_samplesLock);
 }
 
-- (void)_addCPUUsageToSample:(id)a3
+- (void)_addCPUUsageToSample:(id)sample
 {
   v35[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sampleCopy = sample;
   *out_processor_infoCnt = 0;
   out_processor_info = 0;
   v5 = MEMORY[0x24C1C3A30]();
   if (!host_processor_info(v5, 2, out_processor_infoCnt, &out_processor_info, &out_processor_infoCnt[1]))
   {
-    v28 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if (out_processor_infoCnt[0])
     {
       v6 = 0;
@@ -272,7 +272,7 @@
         v16 = [MEMORY[0x277CCABB0] numberWithDouble:v12];
         v35[3] = v16;
         v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:4];
-        [v28 insertObject:v17 atIndex:0];
+        [array insertObject:v17 atIndex:0];
 
         v7 = v7 + v11;
         v8 = v8 + v12;
@@ -306,41 +306,41 @@
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:4];
 
     v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:out_processor_infoCnt[0]];
-    [v4 setObject:v23 forKeyedSubscript:@"CPUCount"];
+    [sampleCopy setObject:v23 forKeyedSubscript:@"CPUCount"];
 
     v24 = [MEMORY[0x277CCABB0] numberWithInt:v29];
-    [v4 setObject:v24 forKeyedSubscript:@"EnabledCPUs"];
+    [sampleCopy setObject:v24 forKeyedSubscript:@"EnabledCPUs"];
 
-    [v4 setObject:v28 forKeyedSubscript:@"PerCPUUsage"];
-    [v4 setObject:v22 forKeyedSubscript:@"SystemCPUUsage"];
-    v25 = [v4 objectForKeyedSubscript:@"Type"];
+    [sampleCopy setObject:array forKeyedSubscript:@"PerCPUUsage"];
+    [sampleCopy setObject:v22 forKeyedSubscript:@"SystemCPUUsage"];
+    v25 = [sampleCopy objectForKeyedSubscript:@"Type"];
     LODWORD(v19) = [v25 unsignedIntValue];
 
-    v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v19 | 0x20];
-    [v4 setObject:v26 forKeyedSubscript:@"Type"];
+    0x20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v19 | 0x20];
+    [sampleCopy setObject:0x20 forKeyedSubscript:@"Type"];
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSysmonProcessTable:(id)a3 startTime:(unint64_t)a4 endTime:(unint64_t)a5
+- (void)_handleSysmonProcessTable:(id)table startTime:(unint64_t)time endTime:(unint64_t)endTime
 {
-  v8 = a3;
+  tableCopy = table;
   v9 = objc_opt_new();
   v10 = objc_opt_new();
   [v9 setObject:&unk_285A36E40 forKeyedSubscript:@"Type"];
   [v9 setObject:v10 forKeyedSubscript:@"Processes"];
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:time];
   [v9 setObject:v11 forKeyedSubscript:@"StartMachAbsTime"];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a5];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:endTime];
   [v9 setObject:v12 forKeyedSubscript:@"EndMachAbsTime"];
 
   v27 = MEMORY[0x277D85DD0];
   v28 = 3221225472;
   v29 = sub_247FFC7A4;
   v30 = &unk_278EF4380;
-  v31 = self;
+  selfCopy = self;
   v13 = v10;
   v32 = v13;
   sysmon_table_apply();
@@ -349,10 +349,10 @@
   processesFromLastSample = self->_processesFromLastSample;
   if (processesFromLastSample)
   {
-    v16 = [(NSDictionary *)processesFromLastSample allKeys];
-    v17 = [v16 mutableCopy];
+    allKeys = [(NSDictionary *)processesFromLastSample allKeys];
+    v17 = [allKeys mutableCopy];
 
-    v18 = [v13 allKeys];
+    allKeys2 = [v13 allKeys];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = sub_247FFCEE0;
@@ -360,13 +360,13 @@
     v19 = v17;
     v24 = v19;
     v25 = v13;
-    v26 = self;
-    [v18 enumerateObjectsUsingBlock:v23];
+    selfCopy2 = self;
+    [allKeys2 enumerateObjectsUsingBlock:v23];
 
     if ([v19 count])
     {
-      v20 = [v19 allObjects];
-      [v9 setObject:v20 forKeyedSubscript:@"DeadProcesses"];
+      allObjects = [v19 allObjects];
+      [v9 setObject:allObjects forKeyedSubscript:@"DeadProcesses"];
     }
   }
 
@@ -383,22 +383,22 @@
     [(DTSysmonTapLocalDelegate *)self _addSample:v9];
   }
 
-  if (self->_isWindowed && self->_purgeEveryNTicks + self->_lastWindowPurgeTime < a5)
+  if (self->_isWindowed && self->_purgeEveryNTicks + self->_lastWindowPurgeTime < endTime)
   {
-    [(DTSysmonTapLocalDelegate *)self _purgeOldSamplesForCurrentTime:a5];
+    [(DTSysmonTapLocalDelegate *)self _purgeOldSamplesForCurrentTime:endTime];
   }
 }
 
-- (void)_handleSysmonSystemTable:(id)a3 startTime:(unint64_t)a4 endTime:(unint64_t)a5
+- (void)_handleSysmonSystemTable:(id)table startTime:(unint64_t)time endTime:(unint64_t)endTime
 {
-  v8 = a3;
+  tableCopy = table;
   v9 = objc_opt_new();
   v10 = objc_opt_new();
   [v9 setObject:&unk_285A36E58 forKeyedSubscript:@"Type"];
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:time];
   [v9 setObject:v11 forKeyedSubscript:@"StartMachAbsTime"];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a5];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:endTime];
   [v9 setObject:v12 forKeyedSubscript:@"EndMachAbsTime"];
 
   v16 = MEMORY[0x277D85DD0];
@@ -427,30 +427,30 @@
     [(DTSysmonTapLocalDelegate *)self _addSample:v9];
   }
 
-  if (self->_isWindowed && self->_purgeEveryNTicks + self->_lastWindowPurgeTime < a5)
+  if (self->_isWindowed && self->_purgeEveryNTicks + self->_lastWindowPurgeTime < endTime)
   {
-    [(DTSysmonTapLocalDelegate *)self _purgeOldSamplesForCurrentTime:a5];
+    [(DTSysmonTapLocalDelegate *)self _purgeOldSamplesForCurrentTime:endTime];
   }
 }
 
-- (void)_handleSysmonCoalitionTable:(id)a3 startTime:(unint64_t)a4 endTime:(unint64_t)a5
+- (void)_handleSysmonCoalitionTable:(id)table startTime:(unint64_t)time endTime:(unint64_t)endTime
 {
-  v8 = a3;
+  tableCopy = table;
   v9 = objc_opt_new();
   v10 = objc_opt_new();
   [v9 setObject:&unk_285A36E70 forKeyedSubscript:@"Type"];
   [v9 setObject:v10 forKeyedSubscript:@"Coalitions"];
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:time];
   [v9 setObject:v11 forKeyedSubscript:@"StartMachAbsTime"];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a5];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:endTime];
   [v9 setObject:v12 forKeyedSubscript:@"EndMachAbsTime"];
 
   v27 = MEMORY[0x277D85DD0];
   v28 = 3221225472;
   v29 = sub_247FFD6E0;
   v30 = &unk_278EF4380;
-  v31 = self;
+  selfCopy = self;
   v13 = v10;
   v32 = v13;
   sysmon_table_apply();
@@ -459,24 +459,24 @@
   coalitionsFromLastSample = self->_coalitionsFromLastSample;
   if (coalitionsFromLastSample)
   {
-    v16 = [(NSDictionary *)coalitionsFromLastSample allKeys];
-    v17 = [v16 mutableCopy];
+    allKeys = [(NSDictionary *)coalitionsFromLastSample allKeys];
+    v17 = [allKeys mutableCopy];
 
-    v18 = [v13 allKeys];
+    allKeys2 = [v13 allKeys];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = sub_247FFD918;
     v23[3] = &unk_278EF43A8;
     v19 = v17;
     v24 = v19;
-    v25 = self;
+    selfCopy2 = self;
     v26 = v13;
-    [v18 enumerateObjectsUsingBlock:v23];
+    [allKeys2 enumerateObjectsUsingBlock:v23];
 
     if ([v19 count])
     {
-      v20 = [v19 allObjects];
-      [v9 setObject:v20 forKeyedSubscript:@"DeadCoalitions"];
+      allObjects = [v19 allObjects];
+      [v9 setObject:allObjects forKeyedSubscript:@"DeadCoalitions"];
     }
   }
 
@@ -493,9 +493,9 @@
     [(DTSysmonTapLocalDelegate *)self _addSample:v9];
   }
 
-  if (self->_isWindowed && self->_purgeEveryNTicks + self->_lastWindowPurgeTime < a5)
+  if (self->_isWindowed && self->_purgeEveryNTicks + self->_lastWindowPurgeTime < endTime)
   {
-    [(DTSysmonTapLocalDelegate *)self _purgeOldSamplesForCurrentTime:a5];
+    [(DTSysmonTapLocalDelegate *)self _purgeOldSamplesForCurrentTime:endTime];
   }
 }
 
@@ -505,28 +505,28 @@
   newAttributesSample = self->_newAttributesSample;
   self->_newAttributesSample = v3;
 
-  v5 = [(DTSysmonTapConfig *)self->_config processAttributes];
+  processAttributes = [(DTSysmonTapConfig *)self->_config processAttributes];
 
-  if (v5)
+  if (processAttributes)
   {
-    v6 = [(DTSysmonTapConfig *)self->_config processAttributes];
-    [(NSMutableDictionary *)self->_newAttributesSample setObject:v6 forKeyedSubscript:@"ProcessesAttributes"];
+    processAttributes2 = [(DTSysmonTapConfig *)self->_config processAttributes];
+    [(NSMutableDictionary *)self->_newAttributesSample setObject:processAttributes2 forKeyedSubscript:@"ProcessesAttributes"];
   }
 
-  v7 = [(DTSysmonTapConfig *)self->_config systemAttributes];
+  systemAttributes = [(DTSysmonTapConfig *)self->_config systemAttributes];
 
-  if (v7)
+  if (systemAttributes)
   {
-    v8 = [(DTSysmonTapConfig *)self->_config systemAttributes];
-    [(NSMutableDictionary *)self->_newAttributesSample setObject:v8 forKeyedSubscript:@"SystemAttributes"];
+    systemAttributes2 = [(DTSysmonTapConfig *)self->_config systemAttributes];
+    [(NSMutableDictionary *)self->_newAttributesSample setObject:systemAttributes2 forKeyedSubscript:@"SystemAttributes"];
   }
 
-  v9 = [(DTSysmonTapConfig *)self->_config coalitionAttributes];
+  coalitionAttributes = [(DTSysmonTapConfig *)self->_config coalitionAttributes];
 
-  if (v9)
+  if (coalitionAttributes)
   {
-    v10 = [(DTSysmonTapConfig *)self->_config coalitionAttributes];
-    [(NSMutableDictionary *)self->_newAttributesSample setObject:v10 forKeyedSubscript:@"CoalitionAttributes"];
+    coalitionAttributes2 = [(DTSysmonTapConfig *)self->_config coalitionAttributes];
+    [(NSMutableDictionary *)self->_newAttributesSample setObject:coalitionAttributes2 forKeyedSubscript:@"CoalitionAttributes"];
   }
 
   v11 = self->_newAttributesSample;
@@ -534,7 +534,7 @@
   [(NSMutableDictionary *)v11 setObject:&unk_285A36E88 forKeyedSubscript:@"Type"];
 }
 
-- (void)_purgeOldSamplesForCurrentTime:(unint64_t)a3
+- (void)_purgeOldSamplesForCurrentTime:(unint64_t)time
 {
   effectiveWindowSize = self->_effectiveWindowSize;
   v6 = [(NSMutableArray *)self->_samples count];
@@ -545,41 +545,41 @@
 
   v7 = v6;
   v8 = 0;
-  v25 = a3;
-  v26 = a3 - effectiveWindowSize;
+  timeCopy = time;
+  v26 = time - effectiveWindowSize;
   while (1)
   {
-    v9 = [(NSMutableArray *)self->_samples objectAtIndexedSubscript:v8, v25];
-    v10 = [v9 objectForKeyedSubscript:@"StartMachAbsTime"];
-    v11 = [v10 unsignedLongLongValue];
+    timeCopy = [(NSMutableArray *)self->_samples objectAtIndexedSubscript:v8, timeCopy];
+    v10 = [timeCopy objectForKeyedSubscript:@"StartMachAbsTime"];
+    unsignedLongLongValue = [v10 unsignedLongLongValue];
 
-    v12 = [v9 objectForKeyedSubscript:@"EndMachAbsTime"];
-    v13 = [v12 unsignedLongLongValue];
+    v12 = [timeCopy objectForKeyedSubscript:@"EndMachAbsTime"];
+    unsignedLongLongValue2 = [v12 unsignedLongLongValue];
 
-    if (v13 >= v26)
+    if (unsignedLongLongValue2 >= v26)
     {
       break;
     }
 
-    v14 = [v9 objectForKeyedSubscript:@"Type"];
-    v15 = [v14 unsignedLongLongValue];
+    v14 = [timeCopy objectForKeyedSubscript:@"Type"];
+    unsignedLongLongValue3 = [v14 unsignedLongLongValue];
 
-    if ((v15 & 4) != 0)
+    if ((unsignedLongLongValue3 & 4) != 0)
     {
-      v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v11];
+      v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:unsignedLongLongValue];
       [(NSMutableDictionary *)self->_processesAtWindowBeginning setObject:v18 forKeyedSubscript:@"StartMachAbsTime"];
 
-      v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v13];
+      v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:unsignedLongLongValue2];
       [(NSMutableDictionary *)self->_processesAtWindowBeginning setObject:v19 forKeyedSubscript:@"EndMachAbsTime"];
 
-      systemAtWindowBeginning = [v9 objectForKeyedSubscript:@"Processes"];
+      systemAtWindowBeginning = [timeCopy objectForKeyedSubscript:@"Processes"];
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = sub_247FFDEFC;
       v30[3] = &unk_278EF43F8;
       v30[4] = self;
       [systemAtWindowBeginning enumerateKeysAndObjectsUsingBlock:v30];
-      v20 = [v9 objectForKeyedSubscript:@"DeadProcesses"];
+      v20 = [timeCopy objectForKeyedSubscript:@"DeadProcesses"];
       v21 = v20;
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
@@ -593,27 +593,27 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    if ((v15 & 0x28) == 0)
+    if ((unsignedLongLongValue3 & 0x28) == 0)
     {
-      if ((v15 & 0x10) == 0)
+      if ((unsignedLongLongValue3 & 0x10) == 0)
       {
         goto LABEL_10;
       }
 
-      v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v11];
+      v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:unsignedLongLongValue];
       [(NSMutableDictionary *)self->_coalitionsAtWindowBeginning setObject:v23 forKeyedSubscript:@"StartMachAbsTime"];
 
-      v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v13];
+      v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:unsignedLongLongValue2];
       [(NSMutableDictionary *)self->_coalitionsAtWindowBeginning setObject:v24 forKeyedSubscript:@"EndMachAbsTime"];
 
-      systemAtWindowBeginning = [v9 objectForKeyedSubscript:@"Coalitions"];
+      systemAtWindowBeginning = [timeCopy objectForKeyedSubscript:@"Coalitions"];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = sub_247FFDF1C;
       v28[3] = &unk_278EF43F8;
       v28[4] = self;
       [systemAtWindowBeginning enumerateKeysAndObjectsUsingBlock:v28];
-      v20 = [v9 objectForKeyedSubscript:@"DeadCoalitions"];
+      v20 = [timeCopy objectForKeyedSubscript:@"DeadCoalitions"];
       v21 = v20;
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
@@ -624,7 +624,7 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    v16 = v9;
+    v16 = timeCopy;
     systemAtWindowBeginning = self->_systemAtWindowBeginning;
     self->_systemAtWindowBeginning = v16;
 LABEL_9:
@@ -633,12 +633,12 @@ LABEL_10:
     if (v7 == ++v8)
     {
       v8 = v7;
-      a3 = v25;
+      time = timeCopy;
       goto LABEL_15;
     }
   }
 
-  a3 = v25;
+  time = timeCopy;
   if (!v8)
   {
     goto LABEL_16;
@@ -647,18 +647,18 @@ LABEL_10:
 LABEL_15:
   [(NSMutableArray *)self->_samples removeObjectsInRange:0, v8];
 LABEL_16:
-  self->_lastWindowPurgeTime = a3;
+  self->_lastWindowPurgeTime = time;
 }
 
 - (void)start
 {
-  v3 = [(DTSysmonTapConfig *)self->_config processAttributes];
+  processAttributes = [(DTSysmonTapConfig *)self->_config processAttributes];
 
-  if (v3)
+  if (processAttributes)
   {
     v4 = objc_opt_new();
     v5 = +[DTSysmonTapSupportedAttributes localProcessAttributesMap];
-    v6 = [(DTSysmonTapConfig *)self->_config processAttributes];
+    processAttributes2 = [(DTSysmonTapConfig *)self->_config processAttributes];
     v70[0] = MEMORY[0x277D85DD0];
     v70[1] = 3221225472;
     v70[2] = sub_247FFE674;
@@ -667,7 +667,7 @@ LABEL_16:
     v7 = v4;
     v72 = v7;
     v8 = v5;
-    [v6 enumerateObjectsUsingBlock:v70];
+    [processAttributes2 enumerateObjectsUsingBlock:v70];
 
     processAttributes = self->_processAttributes;
     self->_processAttributes = v7;
@@ -694,13 +694,13 @@ LABEL_16:
     sysmon_request_set_interval();
   }
 
-  v15 = [(DTSysmonTapConfig *)self->_config systemAttributes];
+  systemAttributes = [(DTSysmonTapConfig *)self->_config systemAttributes];
 
-  if (v15)
+  if (systemAttributes)
   {
     v16 = objc_opt_new();
     v17 = +[DTSysmonTapSupportedAttributes localSystemAttributesMap];
-    v18 = [(DTSysmonTapConfig *)self->_config systemAttributes];
+    systemAttributes2 = [(DTSysmonTapConfig *)self->_config systemAttributes];
     v66[0] = MEMORY[0x277D85DD0];
     v66[1] = 3221225472;
     v66[2] = sub_247FFE834;
@@ -709,7 +709,7 @@ LABEL_16:
     v19 = v16;
     v68 = v19;
     v20 = v17;
-    [v18 enumerateObjectsUsingBlock:v66];
+    [systemAttributes2 enumerateObjectsUsingBlock:v66];
 
     systemAttributes = self->_systemAttributes;
     self->_systemAttributes = v19;
@@ -736,13 +736,13 @@ LABEL_16:
     sysmon_request_set_interval();
   }
 
-  v27 = [(DTSysmonTapConfig *)self->_config coalitionAttributes];
+  coalitionAttributes = [(DTSysmonTapConfig *)self->_config coalitionAttributes];
 
-  if (v27)
+  if (coalitionAttributes)
   {
     v28 = objc_opt_new();
     v29 = +[DTSysmonTapSupportedAttributes localCoalitionAttributesMap];
-    v30 = [(DTSysmonTapConfig *)self->_config coalitionAttributes];
+    coalitionAttributes2 = [(DTSysmonTapConfig *)self->_config coalitionAttributes];
     v62[0] = MEMORY[0x277D85DD0];
     v62[1] = 3221225472;
     v62[2] = sub_247FFE9F4;
@@ -751,7 +751,7 @@ LABEL_16:
     v31 = v28;
     v64 = v31;
     v32 = v29;
-    [v30 enumerateObjectsUsingBlock:v62];
+    [coalitionAttributes2 enumerateObjectsUsingBlock:v62];
 
     coalitionAttributes = self->_coalitionAttributes;
     self->_coalitionAttributes = v31;
@@ -816,7 +816,7 @@ LABEL_13:
     self->_lastWindowPurgeTime = mach_absolute_time();
     if (!self->_systemRequest)
     {
-      v51 = [(DTSysmonTapConfig *)self->_config sampleInterval];
+      sampleInterval = [(DTSysmonTapConfig *)self->_config sampleInterval];
       v52 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, self->_serialQ);
       pollTimer = self->_pollTimer;
       self->_pollTimer = v52;
@@ -829,8 +829,8 @@ LABEL_13:
       handler[4] = self;
       dispatch_source_set_event_handler(v54, handler);
       v55 = self->_pollTimer;
-      v56 = dispatch_time(0, v51);
-      dispatch_source_set_timer(v55, v56, v51, 0x989680uLL);
+      v56 = dispatch_time(0, sampleInterval);
+      dispatch_source_set_timer(v55, v56, sampleInterval, 0x989680uLL);
       dispatch_resume(self->_pollTimer);
     }
   }
@@ -888,9 +888,9 @@ LABEL_13:
   }
 }
 
-- (void)fetchDataForReason:(unint64_t)a3 block:(id)a4
+- (void)fetchDataForReason:(unint64_t)reason block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   dispatch_semaphore_wait(self->_samplesLock, 0xFFFFFFFFFFFFFFFFLL);
   if ([(NSMutableArray *)self->_samples count])
   {
@@ -935,13 +935,13 @@ LABEL_13:
     {
       v12 = [(NSMutableArray *)self->_samples objectAtIndexedSubscript:0];
       v13 = [(NSMutableDictionary *)self->_newAttributesSample objectForKeyedSubscript:@"Type"];
-      v14 = [v13 unsignedIntValue];
+      unsignedIntValue = [v13 unsignedIntValue];
 
       v15 = [v12 objectForKeyedSubscript:@"Type"];
       LODWORD(v13) = [v15 unsignedIntValue];
 
       [v12 addEntriesFromDictionary:self->_newAttributesSample];
-      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v13 | v14];
+      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v13 | unsignedIntValue];
       [v12 setObject:v16 forKeyedSubscript:@"Type"];
 
       newAttributesSample = self->_newAttributesSample;
@@ -952,15 +952,15 @@ LABEL_13:
     [v18 setTapVersion:0x10000];
     [v18 setSamples:self->_samples];
     [v18 setSupportsPeek:1];
-    [v18 setFinalMemo:a3 == 1 && self->_stopWasCalled];
-    v6[2](v6, v18, 1);
+    [v18 setFinalMemo:reason == 1 && self->_stopWasCalled];
+    blockCopy[2](blockCopy, v18, 1);
     [(NSMutableArray *)self->_samples removeAllObjects];
   }
 
   else
   {
     v19 = [[DTTapHeartbeatMemo alloc] initWithTimestamp:mach_absolute_time()];
-    v6[2](v6, v19, 1);
+    blockCopy[2](blockCopy, v19, 1);
   }
 
   dispatch_semaphore_signal(self->_samplesLock);

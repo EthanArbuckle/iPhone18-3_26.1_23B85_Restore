@@ -1,5 +1,5 @@
 @interface VOSCommandCategory
-+ (BOOL)categories:(id)a3 containsCommand:(id)a4;
++ (BOOL)categories:(id)categories containsCommand:(id)command;
 + (NSArray)allCategories;
 + (VOSCommandCategory)advancedNavigation;
 + (VOSCommandCategory)basicNavigation;
@@ -17,9 +17,9 @@
 + (VOSCommandCategory)system;
 + (VOSCommandCategory)textNavigation;
 + (VOSCommandCategory)voiceOverFeatures;
-- (BOOL)containsCommand:(id)a3;
+- (BOOL)containsCommand:(id)command;
 - (VOSCommandCategory)init;
-- (VOSCommandCategory)initWithCommands:(id)a3 localizedCategoryName:(id)a4;
+- (VOSCommandCategory)initWithCommands:(id)commands localizedCategoryName:(id)name;
 @end
 
 @implementation VOSCommandCategory
@@ -513,8 +513,8 @@
     v10 = v12;
   }
 
-  v13 = [MEMORY[0x277CCAC38] processInfo];
-  if ([v13 physicalMemory] > 0x773593FF)
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  if ([processInfo physicalMemory] > 0x773593FF)
   {
     v14 = AXRuntimeCheck_HasANE();
 
@@ -523,8 +523,8 @@
       goto LABEL_7;
     }
 
-    v13 = +[VOSCommand DescribeImage];
-    v15 = [v10 arrayByAddingObject:v13];
+    processInfo = +[VOSCommand DescribeImage];
+    v15 = [v10 arrayByAddingObject:processInfo];
 
     v10 = v15;
   }
@@ -538,8 +538,8 @@ LABEL_7:
     v10 = v17;
   }
 
-  v18 = [MEMORY[0x277CCAC38] processInfo];
-  if ([v18 physicalMemory] > 0x773593FF)
+  processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+  if ([processInfo2 physicalMemory] > 0x773593FF)
   {
     v19 = AXRuntimeCheck_HasANE();
 
@@ -548,8 +548,8 @@ LABEL_7:
       goto LABEL_13;
     }
 
-    v18 = +[VOSCommand ToggleAutomaticAccessibility];
-    v20 = [v10 arrayByAddingObject:v18];
+    processInfo2 = +[VOSCommand ToggleAutomaticAccessibility];
+    v20 = [v10 arrayByAddingObject:processInfo2];
 
     v10 = v20;
   }
@@ -787,18 +787,18 @@ LABEL_13:
   return v14;
 }
 
-- (VOSCommandCategory)initWithCommands:(id)a3 localizedCategoryName:(id)a4
+- (VOSCommandCategory)initWithCommands:(id)commands localizedCategoryName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  commandsCopy = commands;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = VOSCommandCategory;
   v8 = [(VOSCommandCategory *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    [(VOSCommandCategory *)v8 setLocalizedCategoryName:v7];
-    v10 = [v6 sortedArrayUsingComparator:&__block_literal_global_8];
+    [(VOSCommandCategory *)v8 setLocalizedCategoryName:nameCopy];
+    v10 = [commandsCopy sortedArrayUsingComparator:&__block_literal_global_8];
     [(VOSCommandCategory *)v9 setCommands:v10];
   }
 
@@ -817,31 +817,31 @@ uint64_t __61__VOSCommandCategory_initWithCommands_localizedCategoryName___block
 
 - (VOSCommandCategory)init
 {
-  v3 = [MEMORY[0x277CBEA60] array];
-  v4 = [(VOSCommandCategory *)self initWithCommands:v3 localizedCategoryName:&stru_283729578];
+  array = [MEMORY[0x277CBEA60] array];
+  v4 = [(VOSCommandCategory *)self initWithCommands:array localizedCategoryName:&stru_283729578];
 
   return v4;
 }
 
-- (BOOL)containsCommand:(id)a3
+- (BOOL)containsCommand:(id)command
 {
-  v4 = a3;
-  v5 = [(VOSCommandCategory *)self commands];
-  v6 = [v5 containsObject:v4];
+  commandCopy = command;
+  commands = [(VOSCommandCategory *)self commands];
+  v6 = [commands containsObject:commandCopy];
 
   return v6;
 }
 
-+ (BOOL)categories:(id)a3 containsCommand:(id)a4
++ (BOOL)categories:(id)categories containsCommand:(id)command
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  categoriesCopy = categories;
+  commandCopy = command;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = categoriesCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -855,7 +855,7 @@ uint64_t __61__VOSCommandCategory_initWithCommands_localizedCategoryName___block
           objc_enumerationMutation(v7);
         }
 
-        if ([*(*(&v13 + 1) + 8 * i) containsCommand:{v6, v13}])
+        if ([*(*(&v13 + 1) + 8 * i) containsCommand:{commandCopy, v13}])
         {
           LOBYTE(v8) = 1;
           goto LABEL_11;

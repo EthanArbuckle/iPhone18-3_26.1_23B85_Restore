@@ -10,7 +10,7 @@
 
 - (MPModelSong)orphanMusicVideo
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MPModelAlbum.orphanMusicVideo.getter();
 
   return v3;
@@ -18,7 +18,7 @@
 
 - (NSString)representativeTitle
 {
-  v2 = self;
+  selfCopy = self;
   MPModelAlbum.representativeTitle.getter();
   v4 = v3;
 
@@ -60,8 +60,8 @@
 
 - (NSString)shortDescription
 {
-  v2 = self;
-  v3 = [(MPModelAlbum *)v2 title:0x22203A656C746954];
+  selfCopy = self;
+  v3 = [(MPModelAlbum *)selfCopy title:0x22203A656C746954];
   if (v3)
   {
     v4 = v3;

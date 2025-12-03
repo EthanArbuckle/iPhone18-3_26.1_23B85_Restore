@@ -5,8 +5,8 @@
 - (id)_service;
 - (void)dealloc;
 - (void)forceReleaseAllAudioMessageRetainLock;
-- (void)getAudioFileWithRequestId:(id)a3 completion:(id)a4;
-- (void)releaseAudioMessageRetainLockFromRequestId:(id)a3;
+- (void)getAudioFileWithRequestId:(id)id completion:(id)completion;
+- (void)releaseAudioMessageRetainLockFromRequestId:(id)id;
 @end
 
 @implementation CSSiriAudioMessageRequestClient
@@ -44,17 +44,17 @@ void __72__CSSiriAudioMessageRequestClient_forceReleaseAllAudioMessageRetainLock
   [v1 forceReleaseAllAudioMessageRetainLock];
 }
 
-- (void)releaseAudioMessageRetainLockFromRequestId:(id)a3
+- (void)releaseAudioMessageRetainLockFromRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__CSSiriAudioMessageRequestClient_releaseAudioMessageRetainLockFromRequestId___block_invoke;
   v7[3] = &unk_2784C6FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
@@ -64,20 +64,20 @@ void __78__CSSiriAudioMessageRequestClient_releaseAudioMessageRetainLockFromRequ
   [v2 releaseAudioMessageRetainLockFromRequestId:*(a1 + 40)];
 }
 
-- (void)getAudioFileWithRequestId:(id)a3 completion:(id)a4
+- (void)getAudioFileWithRequestId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__CSSiriAudioMessageRequestClient_getAudioFileWithRequestId_completion___block_invoke;
   block[3] = &unk_2784C6C68;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = idCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = idCopy;
   dispatch_async(queue, block);
 }
 
@@ -106,10 +106,10 @@ uint64_t __72__CSSiriAudioMessageRequestClient_getAudioFileWithRequestId_complet
 
 - (id)_service
 {
-  v2 = [(CSSiriAudioMessageRequestClient *)self _connection];
-  v3 = [v2 remoteObjectProxy];
+  _connection = [(CSSiriAudioMessageRequestClient *)self _connection];
+  remoteObjectProxy = [_connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (id)_connection
@@ -119,10 +119,10 @@ uint64_t __72__CSSiriAudioMessageRequestClient_getAudioFileWithRequestId_complet
   xpcConnection = self->_xpcConnection;
   if (!xpcConnection)
   {
-    v4 = [MEMORY[0x277CCAD78] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     xpcConnectionUUIDString = self->_xpcConnectionUUIDString;
-    self->_xpcConnectionUUIDString = v5;
+    self->_xpcConnectionUUIDString = uUIDString;
 
     v7 = *MEMORY[0x277D015D8];
     if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
@@ -132,9 +132,9 @@ uint64_t __72__CSSiriAudioMessageRequestClient_getAudioFileWithRequestId_complet
       _os_log_impl(&dword_222E4D000, v7, OS_LOG_TYPE_DEFAULT, "%s Creating new xpc connection...", buf, 0xCu);
     }
 
-    v8 = [(CSSiriAudioMessageRequestClient *)self _newConnection];
+    _newConnection = [(CSSiriAudioMessageRequestClient *)self _newConnection];
     v9 = self->_xpcConnection;
-    self->_xpcConnection = v8;
+    self->_xpcConnection = _newConnection;
 
     objc_initWeak(buf, self);
     v10 = self->_xpcConnectionUUIDString;

@@ -1,26 +1,26 @@
 @interface HMDCoreDataCloudTransformableLocalHomeObject
-+ (void)_addHomeForObjectWithID:(void *)a3 additionalUpdates:(void *)a4 context:;
++ (void)_addHomeForObjectWithID:(void *)d additionalUpdates:(void *)updates context:;
 @end
 
 @implementation HMDCoreDataCloudTransformableLocalHomeObject
 
-+ (void)_addHomeForObjectWithID:(void *)a3 additionalUpdates:(void *)a4 context:
++ (void)_addHomeForObjectWithID:(void *)d additionalUpdates:(void *)updates context:
 {
   v84[1] = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v67 = a3;
-  v7 = a4;
+  dCopy = d;
+  updatesCopy = updates;
   v66 = objc_opt_self();
-  v8 = [v6 entity];
+  entity = [v6 entity];
   v9 = +[_MKFHomeSetting entity];
-  v10 = [v8 isKindOfEntity:v9];
+  v10 = [entity isKindOfEntity:v9];
 
   p_cache = &OBJC_METACLASS___HMDAccessCodeManagerUtilities.cache;
   if (v10)
   {
     v12 = +[_MKFHome entity];
-    v13 = [v12 propertiesByName];
-    v14 = [v13 objectForKeyedSubscript:@"settings_"];
+    propertiesByName = [v12 propertiesByName];
+    v14 = [propertiesByName objectForKeyedSubscript:@"settings_"];
     v77 = v14;
     v15 = &v77;
   }
@@ -28,13 +28,13 @@
   else
   {
     v16 = +[_MKFGuestAccessCode entity];
-    v17 = [v8 isKindOfEntity:v16];
+    v17 = [entity isKindOfEntity:v16];
 
     if (v17)
     {
       v12 = +[_MKFHome entity];
-      v13 = [v12 propertiesByName];
-      v14 = [v13 objectForKeyedSubscript:@"guestAccessCodes_"];
+      propertiesByName = [v12 propertiesByName];
+      v14 = [propertiesByName objectForKeyedSubscript:@"guestAccessCodes_"];
       v76 = v14;
       v15 = &v76;
     }
@@ -42,7 +42,7 @@
     else
     {
       v18 = +[_MKFRemovedUserAccessCode entity];
-      v19 = [v8 isKindOfEntity:v18];
+      v19 = [entity isKindOfEntity:v18];
 
       if (!v19)
       {
@@ -51,8 +51,8 @@
       }
 
       v12 = +[_MKFHome entity];
-      v13 = [v12 propertiesByName];
-      v14 = [v13 objectForKeyedSubscript:@"removedAccessCodes_"];
+      propertiesByName = [v12 propertiesByName];
+      v14 = [propertiesByName objectForKeyedSubscript:@"removedAccessCodes_"];
       v75 = v14;
       v15 = &v75;
     }
@@ -62,17 +62,17 @@
 
 LABEL_8:
   v20 = v6;
-  v21 = v7;
+  v21 = updatesCopy;
   v72 = objc_opt_self();
   v22 = v20;
   v70 = v22;
   v71 = v21;
-  v69 = v8;
+  v69 = entity;
   while (1)
   {
-    v23 = [v22 entity];
-    v24 = [p_cache + 353 entity];
-    v25 = [v23 isKindOfEntity:v24];
+    entity2 = [v22 entity];
+    entity3 = [p_cache + 353 entity];
+    v25 = [entity2 isKindOfEntity:entity3];
 
     if (v25)
     {
@@ -81,24 +81,24 @@ LABEL_8:
       goto LABEL_42;
     }
 
-    v26 = [v22 entity];
-    if (v26)
+    entity4 = [v22 entity];
+    if (entity4)
     {
-      v27 = v26;
+      v27 = entity4;
       while (1)
       {
-        v28 = [v27 userInfo];
-        v29 = [v28 objectForKeyedSubscript:@"parent"];
+        userInfo = [v27 userInfo];
+        v29 = [userInfo objectForKeyedSubscript:@"parent"];
 
         if (v29)
         {
           break;
         }
 
-        v30 = [v27 superentity];
+        superentity = [v27 superentity];
 
-        v27 = v30;
-        if (!v30)
+        v27 = superentity;
+        if (!superentity)
         {
           v29 = 0;
           break;
@@ -156,7 +156,7 @@ LABEL_8:
       objc_autoreleasePoolPop(v49);
       v33 = 0;
 LABEL_37:
-      v53 = v67;
+      v53 = dCopy;
 
       v44 = 0;
       goto LABEL_43;
@@ -185,9 +185,9 @@ LABEL_37:
 
     if (isKindOfClass)
     {
-      v39 = [v35 objectID];
+      objectID = [v35 objectID];
 
-      v22 = v39;
+      v22 = objectID;
     }
 
     else
@@ -207,7 +207,7 @@ LABEL_37:
         v83 = v32;
         _os_log_impl(&dword_229538000, v42, OS_LOG_TYPE_ERROR, "%{public}@Object value for '%{public}@' is not an object: %@", buf, 0x20u);
 
-        v8 = v69;
+        entity = v69;
       }
 
       objc_autoreleasePoolPop(v40);
@@ -241,7 +241,7 @@ LABEL_37:
 LABEL_41:
   v44 = 0;
 LABEL_42:
-  v53 = v67;
+  v53 = dCopy;
 LABEL_43:
 
   if (v44)
@@ -279,7 +279,7 @@ LABEL_43:
     }
 
     objc_autoreleasePoolPop(v60);
-    v53 = v67;
+    v53 = dCopy;
   }
 
   v65 = *MEMORY[0x277D85DE8];

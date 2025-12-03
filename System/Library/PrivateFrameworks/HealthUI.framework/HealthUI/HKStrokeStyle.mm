@@ -1,36 +1,36 @@
 @interface HKStrokeStyle
-+ (HKStrokeStyle)strokeStyleWithColor:(id)a3 lineWidth:(double)a4;
++ (HKStrokeStyle)strokeStyleWithColor:(id)color lineWidth:(double)width;
 - (HKStrokeStyle)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)applyToContext:(CGContext *)a3 dashPhase:(double)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)applyToContext:(CGContext *)context dashPhase:(double)phase;
 @end
 
 @implementation HKStrokeStyle
 
-+ (HKStrokeStyle)strokeStyleWithColor:(id)a3 lineWidth:(double)a4
++ (HKStrokeStyle)strokeStyleWithColor:(id)color lineWidth:(double)width
 {
-  v6 = a3;
-  v7 = objc_alloc_init(a1);
+  colorCopy = color;
+  v7 = objc_alloc_init(self);
   v8 = v7;
-  if (v6)
+  if (colorCopy)
   {
-    [v7 setStrokeColor:v6];
+    [v7 setStrokeColor:colorCopy];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69DC888] clearColor];
-    [v8 setStrokeColor:v9];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v8 setStrokeColor:clearColor];
   }
 
-  [v8 setLineWidth:a4];
+  [v8 setLineWidth:width];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(UIColor *)self->_strokeColor copy];
   v6 = *(v4 + 24);
   *(v4 + 24) = v5;
@@ -54,27 +54,27 @@
     *&v2->_lineCap = 0x100000000;
     v2->_dashStyle = 0;
     v2->_blendMode = 0;
-    v4 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
     strokeColor = v3->_strokeColor;
-    v3->_strokeColor = v4;
+    v3->_strokeColor = clearColor;
   }
 
   return v3;
 }
 
-- (void)applyToContext:(CGContext *)a3 dashPhase:(double)a4
+- (void)applyToContext:(CGContext *)context dashPhase:(double)phase
 {
-  CGContextSetStrokeColorWithColor(a3, [(UIColor *)self->_strokeColor CGColor]);
-  CGContextSetLineWidth(a3, self->_lineWidth);
-  CGContextSetLineCap(a3, self->_lineCap);
-  CGContextSetLineJoin(a3, self->_lineJoin);
-  CGContextSetBlendMode(a3, self->_blendMode);
+  CGContextSetStrokeColorWithColor(context, [(UIColor *)self->_strokeColor CGColor]);
+  CGContextSetLineWidth(context, self->_lineWidth);
+  CGContextSetLineCap(context, self->_lineCap);
+  CGContextSetLineJoin(context, self->_lineJoin);
+  CGContextSetBlendMode(context, self->_blendMode);
   v7 = self->_dashStyle - 1;
   if (v7 <= 3)
   {
     v8 = *(&off_1E81BB668 + v7);
 
-    CGContextSetLineDash(a3, a4, v8, 2uLL);
+    CGContextSetLineDash(context, phase, v8, 2uLL);
   }
 }
 

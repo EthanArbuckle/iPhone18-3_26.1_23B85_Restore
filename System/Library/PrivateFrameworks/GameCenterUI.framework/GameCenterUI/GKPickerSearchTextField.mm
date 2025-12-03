@@ -9,34 +9,34 @@
 {
   v8.receiver = self;
   v8.super_class = GKPickerSearchTextField;
-  v3 = [(GKPickerSearchTextField *)&v8 becomeFirstResponder];
-  v4 = [(GKPickerSearchTextField *)self delegate];
+  becomeFirstResponder = [(GKPickerSearchTextField *)&v8 becomeFirstResponder];
+  delegate = [(GKPickerSearchTextField *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(GKPickerSearchTextField *)self delegate];
-    [v6 searchTextFieldDidBecomeFirstResponder:self];
+    delegate2 = [(GKPickerSearchTextField *)self delegate];
+    [delegate2 searchTextFieldDidBecomeFirstResponder:self];
   }
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
   v8.receiver = self;
   v8.super_class = GKPickerSearchTextField;
-  v3 = [(GKPickerSearchTextField *)&v8 resignFirstResponder];
-  v4 = [(GKPickerSearchTextField *)self delegate];
+  resignFirstResponder = [(GKPickerSearchTextField *)&v8 resignFirstResponder];
+  delegate = [(GKPickerSearchTextField *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(GKPickerSearchTextField *)self delegate];
-    [v6 searchTextFieldDidResignFirstResponder:self];
+    delegate2 = [(GKPickerSearchTextField *)self delegate];
+    [delegate2 searchTextFieldDidResignFirstResponder:self];
   }
 
-  return v3;
+  return resignFirstResponder;
 }
 
 @end

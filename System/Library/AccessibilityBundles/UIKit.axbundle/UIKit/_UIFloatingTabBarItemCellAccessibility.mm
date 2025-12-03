@@ -1,5 +1,5 @@
 @interface _UIFloatingTabBarItemCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (_NSRange)accessibilityRowRange;
 - (id)accessibilityAttributedHint;
@@ -16,42 +16,42 @@
 
 @implementation _UIFloatingTabBarItemCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UIFloatingTabBarItemCell" hasInstanceMethod:@"_itemView" withFullSignature:{"@", 0}];
   objc_storeStrong(v4, obj);
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
-  v4 = [v3 isAccessibilityElement];
-  MEMORY[0x29EDC9740](v3);
-  return v4;
+  _axItemView = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
+  isAccessibilityElement = [_axItemView isAccessibilityElement];
+  MEMORY[0x29EDC9740](_axItemView);
+  return isAccessibilityElement;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
-  v4 = [v3 accessibilityLabel];
-  MEMORY[0x29EDC9740](v3);
+  _axItemView = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
+  accessibilityLabel = [_axItemView accessibilityLabel];
+  MEMORY[0x29EDC9740](_axItemView);
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (_NSRange)accessibilityRowRange
 {
-  v5 = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
-  v6 = [v5 accessibilityRowRange];
+  _axItemView = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
+  accessibilityRowRange = [_axItemView accessibilityRowRange];
   v7 = v2;
-  MEMORY[0x29EDC9740](v5);
-  v3 = v6;
+  MEMORY[0x29EDC9740](_axItemView);
+  v3 = accessibilityRowRange;
   v4 = v7;
   result.length = v4;
   result.location = v3;
@@ -60,93 +60,93 @@
 
 - (id)accessibilityAttributedLabel
 {
-  v5 = [(_UIFloatingTabBarItemCellAccessibility *)self accessibilityIdentifier];
-  v6 = [v5 isEqual:@"UIA.TV.Tab.tvs.sbd.4000"];
-  *&v2 = MEMORY[0x29EDC9740](v5).n128_u64[0];
+  accessibilityIdentifier = [(_UIFloatingTabBarItemCellAccessibility *)self accessibilityIdentifier];
+  v6 = [accessibilityIdentifier isEqual:@"UIA.TV.Tab.tvs.sbd.4000"];
+  *&v2 = MEMORY[0x29EDC9740](accessibilityIdentifier).n128_u64[0];
   if (v6)
   {
-    v8 = 0;
+    accessibilityAttributedLabel = 0;
   }
 
   else
   {
-    v4 = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
-    v8 = [v4 accessibilityAttributedLabel];
-    MEMORY[0x29EDC9740](v4);
+    _axItemView = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
+    accessibilityAttributedLabel = [_axItemView accessibilityAttributedLabel];
+    MEMORY[0x29EDC9740](_axItemView);
   }
 
-  return v8;
+  return accessibilityAttributedLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
-  v4 = [v3 accessibilityTraits];
-  MEMORY[0x29EDC9740](v3);
-  return v4;
+  _axItemView = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
+  accessibilityTraits = [_axItemView accessibilityTraits];
+  MEMORY[0x29EDC9740](_axItemView);
+  return accessibilityTraits;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
-  v4 = [v3 accessibilityValue];
-  MEMORY[0x29EDC9740](v3);
+  _axItemView = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
+  accessibilityValue = [_axItemView accessibilityValue];
+  MEMORY[0x29EDC9740](_axItemView);
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (id)accessibilityAttributedValue
 {
-  v3 = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
-  v4 = [v3 accessibilityAttributedValue];
-  MEMORY[0x29EDC9740](v3);
+  _axItemView = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
+  accessibilityAttributedValue = [_axItemView accessibilityAttributedValue];
+  MEMORY[0x29EDC9740](_axItemView);
 
-  return v4;
+  return accessibilityAttributedValue;
 }
 
 - (id)accessibilityHint
 {
-  v3 = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
-  v4 = [v3 accessibilityHint];
-  MEMORY[0x29EDC9740](v3);
+  _axItemView = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
+  accessibilityHint = [_axItemView accessibilityHint];
+  MEMORY[0x29EDC9740](_axItemView);
 
-  return v4;
+  return accessibilityHint;
 }
 
 - (id)accessibilityAttributedHint
 {
-  v3 = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
-  v4 = [v3 accessibilityAttributedHint];
-  MEMORY[0x29EDC9740](v3);
+  _axItemView = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
+  accessibilityAttributedHint = [_axItemView accessibilityAttributedHint];
+  MEMORY[0x29EDC9740](_axItemView);
 
-  return v4;
+  return accessibilityAttributedHint;
 }
 
 - (id)accessibilityIdentifier
 {
-  v3 = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
-  v4 = [v3 accessibilityIdentifier];
-  MEMORY[0x29EDC9740](v3);
+  _axItemView = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
+  accessibilityIdentifier = [_axItemView accessibilityIdentifier];
+  MEMORY[0x29EDC9740](_axItemView);
 
-  return v4;
+  return accessibilityIdentifier;
 }
 
 - (id)accessibilityUserInputLabels
 {
-  v3 = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
-  v4 = [v3 accessibilityUserInputLabels];
-  MEMORY[0x29EDC9740](v3);
+  _axItemView = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
+  accessibilityUserInputLabels = [_axItemView accessibilityUserInputLabels];
+  MEMORY[0x29EDC9740](_axItemView);
 
-  return v4;
+  return accessibilityUserInputLabels;
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
-  v4 = [v3 accessibilityCustomActions];
-  MEMORY[0x29EDC9740](v3);
+  _axItemView = [(_UIFloatingTabBarItemCellAccessibility *)self _axItemView];
+  accessibilityCustomActions = [_axItemView accessibilityCustomActions];
+  MEMORY[0x29EDC9740](_axItemView);
 
-  return v4;
+  return accessibilityCustomActions;
 }
 
 @end

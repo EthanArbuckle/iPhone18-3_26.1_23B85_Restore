@@ -1,23 +1,23 @@
 @interface SYInputStreamTransaction
-- (SYInputStreamTransaction)initWithURL:(id)a3 metadata:(id)a4 decompressedSize:(unint64_t)a5;
+- (SYInputStreamTransaction)initWithURL:(id)l metadata:(id)metadata decompressedSize:(unint64_t)size;
 @end
 
 @implementation SYInputStreamTransaction
 
-- (SYInputStreamTransaction)initWithURL:(id)a3 metadata:(id)a4 decompressedSize:(unint64_t)a5
+- (SYInputStreamTransaction)initWithURL:(id)l metadata:(id)metadata decompressedSize:(unint64_t)size
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  metadataCopy = metadata;
   v19.receiver = self;
   v19.super_class = SYInputStreamTransaction;
   v10 = [(SYInputStreamTransaction *)&v19 init];
-  if (v10 && (v11 = [[SYCompressedFileInputStream alloc] initWithCompressedFileAtURL:v8], stream = v10->_stream, v10->_stream = v11, stream, v10->_stream))
+  if (v10 && (v11 = [[SYCompressedFileInputStream alloc] initWithCompressedFileAtURL:lCopy], stream = v10->_stream, v10->_stream = v11, stream, v10->_stream))
   {
-    v13 = [v9 copy];
+    v13 = [metadataCopy copy];
     metadata = v10->_metadata;
     v10->_metadata = v13;
 
-    v15 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:a5];
+    v15 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:size];
     progress = v10->_progress;
     v10->_progress = v15;
 

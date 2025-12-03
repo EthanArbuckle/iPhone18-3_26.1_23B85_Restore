@@ -1,61 +1,61 @@
 @interface SFCardViewDisappearFeedback
-- (SFCardViewDisappearFeedback)initWithCard:(id)a3 event:(unint64_t)a4;
-- (SFCardViewDisappearFeedback)initWithCoder:(id)a3;
-- (SFCardViewDisappearFeedback)initWithEvent:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFCardViewDisappearFeedback)initWithCard:(id)card event:(unint64_t)event;
+- (SFCardViewDisappearFeedback)initWithCoder:(id)coder;
+- (SFCardViewDisappearFeedback)initWithEvent:(unint64_t)event;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCardViewDisappearFeedback
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SFCardViewDisappearFeedback;
-  v4 = a3;
-  [(SFFeedback *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_card forKey:{@"_card", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_cardDisappearEvent forKey:@"_cardDisappearEvent"];
+  coderCopy = coder;
+  [(SFFeedback *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_card forKey:{@"_card", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_cardDisappearEvent forKey:@"_cardDisappearEvent"];
 }
 
-- (SFCardViewDisappearFeedback)initWithCoder:(id)a3
+- (SFCardViewDisappearFeedback)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SFCardViewDisappearFeedback;
-  v5 = [(SFFeedback *)&v9 initWithCoder:v4];
+  v5 = [(SFFeedback *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_card"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_card"];
     card = v5->_card;
     v5->_card = v6;
 
-    v5->_cardDisappearEvent = [v4 decodeIntegerForKey:@"_cardDisappearEvent"];
+    v5->_cardDisappearEvent = [coderCopy decodeIntegerForKey:@"_cardDisappearEvent"];
   }
 
   return v5;
 }
 
-- (SFCardViewDisappearFeedback)initWithEvent:(unint64_t)a3
+- (SFCardViewDisappearFeedback)initWithEvent:(unint64_t)event
 {
   v5.receiver = self;
   v5.super_class = SFCardViewDisappearFeedback;
   result = [(SFFeedback *)&v5 init];
   if (result)
   {
-    result->_cardDisappearEvent = a3;
+    result->_cardDisappearEvent = event;
   }
 
   return result;
 }
 
-- (SFCardViewDisappearFeedback)initWithCard:(id)a3 event:(unint64_t)a4
+- (SFCardViewDisappearFeedback)initWithCard:(id)card event:(unint64_t)event
 {
-  v7 = a3;
-  v8 = [(SFCardViewDisappearFeedback *)self initWithEvent:a4];
+  cardCopy = card;
+  v8 = [(SFCardViewDisappearFeedback *)self initWithEvent:event];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_card, a3);
+    objc_storeStrong(&v8->_card, card);
   }
 
   return v9;

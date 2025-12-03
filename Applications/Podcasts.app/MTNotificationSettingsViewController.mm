@@ -1,16 +1,16 @@
 @interface MTNotificationSettingsViewController
-- (_TtC8Podcasts36MTNotificationSettingsViewController)initWithCoder:(id)a3;
-- (_TtC8Podcasts36MTNotificationSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)dismissButtonTappedFrom:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC8Podcasts36MTNotificationSettingsViewController)initWithCoder:(id)coder;
+- (_TtC8Podcasts36MTNotificationSettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)dismissButtonTappedFrom:(id)from;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MTNotificationSettingsViewController
 
-- (_TtC8Podcasts36MTNotificationSettingsViewController)initWithCoder:(id)a3
+- (_TtC8Podcasts36MTNotificationSettingsViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8Podcasts36MTNotificationSettingsViewController_contentViewController) = 0;
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC8Podcasts36MTNotificationSettingsViewController_newEpisodeNotifcationGroupInitialHighlightedPodcastUuid);
@@ -21,9 +21,9 @@
   return result;
 }
 
-- (_TtC8Podcasts36MTNotificationSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8Podcasts36MTNotificationSettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -35,8 +35,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1003A63FC(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1003A63FC(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
@@ -52,23 +52,23 @@
   sub_1003A6B64(v4);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for MTNotificationSettingsViewController();
   v4 = v5.receiver;
-  [(MTNotificationSettingsViewController *)&v5 viewWillAppear:v3];
+  [(MTNotificationSettingsViewController *)&v5 viewWillAppear:appearCopy];
   sub_1001CF2A0();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for MTNotificationSettingsViewController();
   v4 = v5.receiver;
-  [(MTNotificationSettingsViewController *)&v5 viewDidAppear:v3];
+  [(MTNotificationSettingsViewController *)&v5 viewDidAppear:appearCopy];
   if (qword_1005727E8 != -1)
   {
     swift_once();
@@ -77,13 +77,13 @@
   swift_unknownObjectWeakAssign();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for MTNotificationSettingsViewController();
   v4 = v6.receiver;
-  [(MTNotificationSettingsViewController *)&v6 viewDidDisappear:v3];
+  [(MTNotificationSettingsViewController *)&v6 viewDidDisappear:disappearCopy];
   if (qword_1005727E8 != -1)
   {
     swift_once();
@@ -94,11 +94,11 @@
   swift_unknownObjectWeakAssign();
 }
 
-- (void)dismissButtonTappedFrom:(id)a3
+- (void)dismissButtonTappedFrom:(id)from
 {
-  if (a3)
+  if (from)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -108,7 +108,7 @@
   {
     v6 = 0u;
     v7 = 0u;
-    v5 = self;
+    selfCopy2 = self;
   }
 
   [(MTNotificationSettingsViewController *)self dismissViewControllerAnimated:1 completion:0, v6, v7];

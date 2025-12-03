@@ -1,10 +1,10 @@
 @interface OITSUIntDictionary
-- (OITSUIntDictionary)initWithCapacity:(unint64_t)a3;
+- (OITSUIntDictionary)initWithCapacity:(unint64_t)capacity;
 @end
 
 @implementation OITSUIntDictionary
 
-- (OITSUIntDictionary)initWithCapacity:(unint64_t)a3
+- (OITSUIntDictionary)initWithCapacity:(unint64_t)capacity
 {
   v8.receiver = self;
   v8.super_class = OITSUIntDictionary;
@@ -19,7 +19,7 @@
       v5->super.mDictionary = 0;
     }
 
-    v5->super.mDictionary = CFDictionaryCreateMutable(0, a3, 0, 0);
+    v5->super.mDictionary = CFDictionaryCreateMutable(0, capacity, 0, 0);
   }
 
   return v5;

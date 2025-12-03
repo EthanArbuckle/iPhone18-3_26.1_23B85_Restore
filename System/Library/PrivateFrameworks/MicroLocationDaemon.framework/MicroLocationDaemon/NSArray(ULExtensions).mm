@@ -9,7 +9,7 @@
 
 + (id)fromFloatVector:()ULExtensions
 {
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = *a3;
   v7 = *(a3 + 8);
   if (*a3 != v7)
@@ -18,7 +18,7 @@
     {
       LODWORD(v5) = *v6;
       v8 = [MEMORY[0x277CCABB0] numberWithFloat:v5];
-      [v4 addObject:v8];
+      [array addObject:v8];
 
       ++v6;
     }
@@ -26,7 +26,7 @@
     while (v6 != v7);
   }
 
-  v9 = [v4 copy];
+  v9 = [array copy];
 
   return v9;
 }
@@ -34,7 +34,7 @@
 + (void)toFloatVector:()ULExtensions
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a1;
+  selfCopy = self;
   a2[1] = 0;
   a2[2] = 0;
   *a2 = 0;
@@ -42,7 +42,7 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = v3;
+  v4 = selfCopy;
   v5 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
@@ -125,7 +125,7 @@
 
 + (id)fromStringVector:()ULExtensions
 {
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = *a3;
   v6 = a3[1];
   if (*a3 != v6)
@@ -139,7 +139,7 @@
       }
 
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v7];
-      [v4 addObject:v8];
+      [array addObject:v8];
 
       v5 += 3;
     }
@@ -147,7 +147,7 @@
     while (v5 != v6);
   }
 
-  v9 = [v4 copy];
+  v9 = [array copy];
 
   return v9;
 }
@@ -162,8 +162,8 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = a1;
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  selfCopy = self;
+  v8 = [selfCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = *v19;
@@ -173,7 +173,7 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
@@ -189,7 +189,7 @@
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);

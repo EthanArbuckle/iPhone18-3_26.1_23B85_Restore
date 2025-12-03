@@ -1,75 +1,75 @@
 @interface AKSafetyScreenManager
 - (AKSafetyScreenManager)init;
-- (AKSafetyScreenManager)initWithAccountManager:(id)a3;
-- (BOOL)_hasSeenSafetyScreenForAccount:(id)a3;
-- (BOOL)_safetyScreenEligibilityForAccount:(id)a3;
-- (BOOL)shouldShowSafetyScreenForAccount:(id)a3;
-- (void)_setSafetyScreenSeen:(BOOL)a3 forAccount:(id)a4;
-- (void)markSafetyScreenSeenForAccount:(id)a3;
+- (AKSafetyScreenManager)initWithAccountManager:(id)manager;
+- (BOOL)_hasSeenSafetyScreenForAccount:(id)account;
+- (BOOL)_safetyScreenEligibilityForAccount:(id)account;
+- (BOOL)shouldShowSafetyScreenForAccount:(id)account;
+- (void)_setSafetyScreenSeen:(BOOL)seen forAccount:(id)account;
+- (void)markSafetyScreenSeenForAccount:(id)account;
 @end
 
 @implementation AKSafetyScreenManager
 
 - (AKSafetyScreenManager)init
 {
-  v6 = self;
+  selfCopy = self;
   v4 = +[AKAccountManager sharedInstance];
-  v6 = 0;
-  v6 = [(AKSafetyScreenManager *)self initWithAccountManager:?];
-  v5 = MEMORY[0x1E69E5928](v6);
+  selfCopy = 0;
+  selfCopy = [(AKSafetyScreenManager *)self initWithAccountManager:?];
+  v5 = MEMORY[0x1E69E5928](selfCopy);
   MEMORY[0x1E69E5920](v4);
-  objc_storeStrong(&v6, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (AKSafetyScreenManager)initWithAccountManager:(id)a3
+- (AKSafetyScreenManager)initWithAccountManager:(id)manager
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, manager);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = AKSafetyScreenManager;
   v6 = [(AKSafetyScreenManager *)&v7 init];
-  v9 = v6;
-  objc_storeStrong(&v9, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    objc_storeStrong(&v9->_accountManager, location[0]);
+    objc_storeStrong(&selfCopy->_accountManager, location[0]);
   }
 
-  v5 = MEMORY[0x1E69E5928](v9);
+  v5 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (void)markSafetyScreenSeenForAccount:(id)a3
+- (void)markSafetyScreenSeenForAccount:(id)account
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKSafetyScreenManager *)v4 _setSafetyScreenSeen:1 forAccount:location[0]];
+  objc_storeStrong(location, account);
+  [(AKSafetyScreenManager *)selfCopy _setSafetyScreenSeen:1 forAccount:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)_setSafetyScreenSeen:(BOOL)a3 forAccount:(id)a4
+- (void)_setSafetyScreenSeen:(BOOL)seen forAccount:(id)account
 {
   v20 = *MEMORY[0x1E69E9840];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  seenCopy = seen;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, account);
   v8 = location;
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:v15];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:seenCopy];
   [v8 setAccountProperty:? forKey:?];
   MEMORY[0x1E69E5920](v7);
   v13 = 0;
-  accountManager = v17->_accountManager;
+  accountManager = selfCopy->_accountManager;
   v12 = 0;
   v6 = [(AKAccountManager *)accountManager saveAccount:location error:&v12];
   objc_storeStrong(&v13, v12);
@@ -78,7 +78,7 @@
     v9 = _AKLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      if (v15)
+      if (seenCopy)
       {
         v5 = @"YES";
       }
@@ -113,30 +113,30 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)shouldShowSafetyScreenForAccount:(id)a3
+- (BOOL)shouldShowSafetyScreenForAccount:(id)account
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   LOBYTE(v4) = 0;
-  if ([(AKSafetyScreenManager *)v6 _safetyScreenEligibilityForAccount:location[0]])
+  if ([(AKSafetyScreenManager *)selfCopy _safetyScreenEligibilityForAccount:location[0]])
   {
-    v4 = ![(AKSafetyScreenManager *)v6 _hasSeenSafetyScreenForAccount:location[0]];
+    v4 = ![(AKSafetyScreenManager *)selfCopy _hasSeenSafetyScreenForAccount:location[0]];
   }
 
   objc_storeStrong(location, 0);
   return v4 & 1;
 }
 
-- (BOOL)_safetyScreenEligibilityForAccount:(id)a3
+- (BOOL)_safetyScreenEligibilityForAccount:(id)account
 {
   v27 = *MEMORY[0x1E69E9840];
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v21 = [(AKAccountManager *)v23->_accountManager isEligibleForSafetyScreenForAccount:location[0]];
+  objc_storeStrong(location, account);
+  v21 = [(AKAccountManager *)selfCopy->_accountManager isEligibleForSafetyScreenForAccount:location[0]];
   if (v21)
   {
     v20 = _AKLogSystem();
@@ -164,19 +164,19 @@
 
   else
   {
-    v17 = [(AKAccountManager *)v23->_accountManager additionalInfoForAccount:location[0]];
+    v17 = [(AKAccountManager *)selfCopy->_accountManager additionalInfoForAccount:location[0]];
     v8 = objc_opt_class();
     v9 = [v17 objectForKeyedSubscript:@"isEligibleForSafetyScreen"];
     v16 = _AKSafeCast_4(v8, v9);
     MEMORY[0x1E69E5920](v9);
     if (v16)
     {
-      v15 = [v16 BOOLValue];
+      bOOLValue = [v16 BOOLValue];
       oslog = _AKLogSystem();
       v13 = OS_LOG_TYPE_DEBUG;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
       {
-        if (v15)
+        if (bOOLValue)
         {
           v4 = @"YES";
         }
@@ -191,7 +191,7 @@
       }
 
       objc_storeStrong(&oslog, 0);
-      v24 = v15 & 1;
+      v24 = bOOLValue & 1;
       v18 = 1;
     }
 
@@ -221,13 +221,13 @@
   return v24 & 1;
 }
 
-- (BOOL)_hasSeenSafetyScreenForAccount:(id)a3
+- (BOOL)_hasSeenSafetyScreenForAccount:(id)account
 {
   v7 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] accountPropertyForKey:@"safetyScreenSeen"];
   v6 = [v4 BOOLValue] & 1;
   objc_storeStrong(&v4, 0);

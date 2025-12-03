@@ -1,57 +1,57 @@
 @interface ADLKTExecutor
-- (ADLKTExecutor)initWithDescriptor:(id)a3 forLayout:(unint64_t)a4;
-- (ADLKTExecutor)initWithDescriptor:(id)a3 forLayout:(unint64_t)a4 executorParameters:(id)a5;
-- (ADLKTExecutor)initWithSize:(CGSize)a3;
+- (ADLKTExecutor)initWithDescriptor:(id)descriptor forLayout:(unint64_t)layout;
+- (ADLKTExecutor)initWithDescriptor:(id)descriptor forLayout:(unint64_t)layout executorParameters:(id)parameters;
+- (ADLKTExecutor)initWithSize:(CGSize)size;
 - (__CVBuffer)createConfidenceBuffer;
 - (__CVBuffer)createOpticalFlowBuffer;
-- (id)downscaleImageAndGenerateMipmapsIfNeeded:(id)a3 inputTexture:(id)a4;
+- (id)downscaleImageAndGenerateMipmapsIfNeeded:(id)needed inputTexture:(id)texture;
 - (id)lastExecutionStatistics;
-- (int64_t)convertInputFormatIfNeeded:(__CVBuffer *)a3 greyscaleInput:(__CVBuffer *)a4;
-- (int64_t)executeFromFrame:(__CVBuffer *)a3 toFrame:(__CVBuffer *)a4 validBufferRect:(CGRect)a5 outputOpticalFlow:(__CVBuffer *)a6 outputConfidence:(__CVBuffer *)a7;
-- (int64_t)executeFromFrameToPreviousFrame:(__CVBuffer *)a3 outputOpticalFlow:(__CVBuffer *)a4 outputConfidence:(__CVBuffer *)a5;
-- (int64_t)executeWithFrame:(__CVBuffer *)a3 createOpticalFlowBuffer:(__CVBuffer *)a4;
-- (int64_t)processFrame:(__CVBuffer *)a3 validBufferRect:(CGRect)a4 intoOpticalFlowBuffer:(__CVBuffer *)a5 outputConfidence:(__CVBuffer *)a6;
-- (int64_t)validateInputs:(__CVBuffer *)a3 validBufferRect:(CGRect *)a4 outputConfidence:(__CVBuffer *)a5;
-- (void)createColorConvertingSession:(__CVBuffer *)a3;
+- (int64_t)convertInputFormatIfNeeded:(__CVBuffer *)needed greyscaleInput:(__CVBuffer *)input;
+- (int64_t)executeFromFrame:(__CVBuffer *)frame toFrame:(__CVBuffer *)toFrame validBufferRect:(CGRect)rect outputOpticalFlow:(__CVBuffer *)flow outputConfidence:(__CVBuffer *)confidence;
+- (int64_t)executeFromFrameToPreviousFrame:(__CVBuffer *)frame outputOpticalFlow:(__CVBuffer *)flow outputConfidence:(__CVBuffer *)confidence;
+- (int64_t)executeWithFrame:(__CVBuffer *)frame createOpticalFlowBuffer:(__CVBuffer *)buffer;
+- (int64_t)processFrame:(__CVBuffer *)frame validBufferRect:(CGRect)rect intoOpticalFlowBuffer:(__CVBuffer *)buffer outputConfidence:(__CVBuffer *)confidence;
+- (int64_t)validateInputs:(__CVBuffer *)inputs validBufferRect:(CGRect *)rect outputConfidence:(__CVBuffer *)confidence;
+- (void)createColorConvertingSession:(__CVBuffer *)session;
 - (void)dealloc;
 @end
 
 @implementation ADLKTExecutor
 
-- (int64_t)executeFromFrame:(__CVBuffer *)a3 toFrame:(__CVBuffer *)a4 validBufferRect:(CGRect)a5 outputOpticalFlow:(__CVBuffer *)a6 outputConfidence:(__CVBuffer *)a7
+- (int64_t)executeFromFrame:(__CVBuffer *)frame toFrame:(__CVBuffer *)toFrame validBufferRect:(CGRect)rect outputOpticalFlow:(__CVBuffer *)flow outputConfidence:(__CVBuffer *)confidence
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v16 = [MEMORY[0x277CBEAA8] now];
   [v16 timeIntervalSince1970];
   v18 = v17;
 
-  v19 = [(ADExecutor *)self executorParameters];
-  v20 = [v19 logger];
-  [v20 logPixelBuffer:a3 name:"inputColor" timestamp:v18];
+  executorParameters = [(ADExecutor *)self executorParameters];
+  logger = [executorParameters logger];
+  [logger logPixelBuffer:frame name:"inputColor" timestamp:v18];
 
-  v21 = [(ADExecutor *)self executorParameters];
-  v22 = [v21 logger];
-  [v22 logPixelBuffer:a4 name:"inputSecondaryColor" timestamp:v18];
+  executorParameters2 = [(ADExecutor *)self executorParameters];
+  logger2 = [executorParameters2 logger];
+  [logger2 logPixelBuffer:toFrame name:"inputSecondaryColor" timestamp:v18];
 
   self->_isFirstTime = 1;
-  result = [(ADLKTExecutor *)self processFrame:a4 validBufferRect:0 intoOpticalFlowBuffer:0 outputConfidence:x, y, width, height];
+  result = [(ADLKTExecutor *)self processFrame:toFrame validBufferRect:0 intoOpticalFlowBuffer:0 outputConfidence:x, y, width, height];
   if (!result)
   {
-    result = [(ADLKTExecutor *)self processFrame:a3 validBufferRect:a6 intoOpticalFlowBuffer:a7 outputConfidence:x, y, width, height];
+    result = [(ADLKTExecutor *)self processFrame:frame validBufferRect:flow intoOpticalFlowBuffer:confidence outputConfidence:x, y, width, height];
     if (!result)
     {
-      v24 = [(ADExecutor *)self executorParameters];
-      v25 = [v24 logger];
-      [v25 logPixelBuffer:a6 name:"outputOpticalFlow" timestamp:v18];
+      executorParameters3 = [(ADExecutor *)self executorParameters];
+      logger3 = [executorParameters3 logger];
+      [logger3 logPixelBuffer:flow name:"outputOpticalFlow" timestamp:v18];
 
-      if (a7)
+      if (confidence)
       {
-        v26 = [(ADExecutor *)self executorParameters];
-        v27 = [v26 logger];
-        [v27 logPixelBuffer:a7 name:"outputConfidence" timestamp:v18];
+        executorParameters4 = [(ADExecutor *)self executorParameters];
+        logger4 = [executorParameters4 logger];
+        [logger4 logPixelBuffer:confidence name:"outputConfidence" timestamp:v18];
       }
 
       return 0;
@@ -61,29 +61,29 @@
   return result;
 }
 
-- (int64_t)executeFromFrameToPreviousFrame:(__CVBuffer *)a3 outputOpticalFlow:(__CVBuffer *)a4 outputConfidence:(__CVBuffer *)a5
+- (int64_t)executeFromFrameToPreviousFrame:(__CVBuffer *)frame outputOpticalFlow:(__CVBuffer *)flow outputConfidence:(__CVBuffer *)confidence
 {
   v9 = [MEMORY[0x277CBEAA8] now];
   [v9 timeIntervalSince1970];
   v11 = v10;
 
-  v12 = [(ADExecutor *)self executorParameters];
-  v13 = [v12 logger];
-  [v13 logPixelBuffer:a3 name:"inputColor" timestamp:v11];
+  executorParameters = [(ADExecutor *)self executorParameters];
+  logger = [executorParameters logger];
+  [logger logPixelBuffer:frame name:"inputColor" timestamp:v11];
 
-  result = [(ADLKTExecutor *)self processFrame:a3 validBufferRect:a4 intoOpticalFlowBuffer:a5 outputConfidence:*MEMORY[0x277CBF398], *(MEMORY[0x277CBF398] + 8), *(MEMORY[0x277CBF398] + 16), *(MEMORY[0x277CBF398] + 24)];
+  result = [(ADLKTExecutor *)self processFrame:frame validBufferRect:flow intoOpticalFlowBuffer:confidence outputConfidence:*MEMORY[0x277CBF398], *(MEMORY[0x277CBF398] + 8), *(MEMORY[0x277CBF398] + 16), *(MEMORY[0x277CBF398] + 24)];
   if (!result)
   {
-    v15 = [(ADExecutor *)self executorParameters];
-    v16 = [v15 logger];
-    [v16 logPixelBuffer:a4 name:"outputOpticalFlow" timestamp:v11];
+    executorParameters2 = [(ADExecutor *)self executorParameters];
+    logger2 = [executorParameters2 logger];
+    [logger2 logPixelBuffer:flow name:"outputOpticalFlow" timestamp:v11];
 
     result = 0;
-    if (a5)
+    if (confidence)
     {
-      v17 = [(ADExecutor *)self executorParameters];
-      v18 = [v17 logger];
-      [v18 logPixelBuffer:a5 name:"outputConfidence" timestamp:v11];
+      executorParameters3 = [(ADExecutor *)self executorParameters];
+      logger3 = [executorParameters3 logger];
+      [logger3 logPixelBuffer:confidence name:"outputConfidence" timestamp:v11];
 
       return 0;
     }
@@ -92,25 +92,25 @@
   return result;
 }
 
-- (int64_t)executeWithFrame:(__CVBuffer *)a3 createOpticalFlowBuffer:(__CVBuffer *)a4
+- (int64_t)executeWithFrame:(__CVBuffer *)frame createOpticalFlowBuffer:(__CVBuffer *)buffer
 {
   v6 = 0;
-  *a4 = 0;
+  *buffer = 0;
   if (!self->_isFirstTime)
   {
-    v7 = a3;
-    v8 = [(ADLKTExecutor *)self createOpticalFlowBuffer:a3];
-    a3 = v7;
+    frameCopy = frame;
+    v8 = [(ADLKTExecutor *)self createOpticalFlowBuffer:frame];
+    frame = frameCopy;
     v6 = v8;
-    *a4 = v8;
+    *buffer = v8;
   }
 
-  result = [(ADLKTExecutor *)self executeWithFrame:a3 intoOpticalFlowBuffer:v6];
+  result = [(ADLKTExecutor *)self executeWithFrame:frame intoOpticalFlowBuffer:v6];
   if (result)
   {
     if (!self->_isFirstTime)
     {
-      v10 = *a4;
+      v10 = *buffer;
       v11 = result;
       CVPixelBufferRelease(v10);
       return v11;
@@ -120,20 +120,20 @@
   return result;
 }
 
-- (int64_t)processFrame:(__CVBuffer *)a3 validBufferRect:(CGRect)a4 intoOpticalFlowBuffer:(__CVBuffer *)a5 outputConfidence:(__CVBuffer *)a6
+- (int64_t)processFrame:(__CVBuffer *)frame validBufferRect:(CGRect)rect intoOpticalFlowBuffer:(__CVBuffer *)buffer outputConfidence:(__CVBuffer *)confidence
 {
-  v66 = a4;
-  result = [(ADLKTExecutor *)self validateInputs:a3 validBufferRect:&v66 outputConfidence:?];
+  rectCopy = rect;
+  result = [(ADLKTExecutor *)self validateInputs:frame validBufferRect:&rectCopy outputConfidence:?];
   if (!result)
   {
     *[(MTLBuffer *)self->_meanIntensitiesAtCoarsestScale[self->_currentFrameIndex] contents]= 0;
-    v11 = [(ADExecutor *)self executorParameters];
-    v12 = [v11 stepsToExecute];
+    executorParameters = [(ADExecutor *)self executorParameters];
+    stepsToExecute = [executorParameters stepsToExecute];
 
-    v13 = [(ADExecutor *)self executorParameters];
-    v64 = [v13 timeProfiler];
+    executorParameters2 = [(ADExecutor *)self executorParameters];
+    timeProfiler = [executorParameters2 timeProfiler];
 
-    if (v12 < 1)
+    if (stepsToExecute < 1)
     {
       v28 = -22977;
 LABEL_39:
@@ -142,10 +142,10 @@ LABEL_39:
     }
 
     kdebug_trace();
-    [v64 startWithUTFString:"preprocess metal inputs"];
+    [timeProfiler startWithUTFString:"preprocess metal inputs"];
     [(ADExecutor *)self frameExecutionStart];
     v65 = 0;
-    v14 = [(ADLKTExecutor *)self convertInputFormatIfNeeded:a3 greyscaleInput:&v65];
+    v14 = [(ADLKTExecutor *)self convertInputFormatIfNeeded:frame greyscaleInput:&v65];
     if (v14)
     {
 LABEL_38:
@@ -154,27 +154,27 @@ LABEL_38:
     }
 
     v15 = [ADMetalUtils bindPixelBufferToMTL2DTexture:v65 metalDevice:self->_device];
-    v63 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-    [v63 setLabel:@"lkt_pyramid_features"];
-    width = v66.size.width;
-    height = v66.size.height;
-    v18 = [v15 width];
-    v19 = [v15 height];
-    v20 = [(ADLKTExecutor *)self downscaleImageAndGenerateMipmapsIfNeeded:v63 inputTexture:v15];
+    commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+    [commandBuffer setLabel:@"lkt_pyramid_features"];
+    width = rectCopy.size.width;
+    height = rectCopy.size.height;
+    width = [v15 width];
+    height = [v15 height];
+    v20 = [(ADLKTExecutor *)self downscaleImageAndGenerateMipmapsIfNeeded:commandBuffer inputTexture:v15];
 
-    v21 = [v20 width];
-    v22 = [v20 height];
+    width2 = [v20 width];
+    height2 = [v20 height];
     v23 = height;
     v24 = width;
-    v25 = v24 / v18;
-    v26 = v23 / v19;
-    v66.origin.x = 0.0;
-    v66.origin.y = 0.0;
-    v66.size.width = ceilf(v25 * v21);
-    v66.size.height = ceilf(v26 * v22);
-    [v64 stopWithUTFString:"preprocess metal inputs"];
+    v25 = v24 / width;
+    v26 = v23 / height;
+    rectCopy.origin.x = 0.0;
+    rectCopy.origin.y = 0.0;
+    rectCopy.size.width = ceilf(v25 * width2);
+    rectCopy.size.height = ceilf(v26 * height2);
+    [timeProfiler stopWithUTFString:"preprocess metal inputs"];
     kdebug_trace();
-    if (v12 == 1)
+    if (stepsToExecute == 1)
     {
       v27 = -22977;
 LABEL_37:
@@ -184,9 +184,9 @@ LABEL_37:
     }
 
     kdebug_trace();
-    [v64 startWithUTFString:"pyramids encode"];
-    v29 = [(ADExecutor *)self executorParameters];
-    if ([v29 enableStatistics])
+    [timeProfiler startWithUTFString:"pyramids encode"];
+    executorParameters3 = [(ADExecutor *)self executorParameters];
+    if ([executorParameters3 enableStatistics])
     {
       v30 = self->_meanIntensitiesAtCoarsestScale[self->_currentFrameIndex];
     }
@@ -200,7 +200,7 @@ LABEL_37:
 
     pyramids = self->_pyramids;
     v60 = v31;
-    v33 = [(ADLKTOpticalFlow *)self->_lkt encodePyramidFeaturesToCommandBuffer:v63 grayscaleTexture:v20 validBufferRect:self->_pyramids[self->_currentFrameIndex] outPyramidsArray:self->_features[self->_currentFrameIndex] outFeaturesArray:self->_derivitives[self->_currentFrameIndex] outDerivitiveArray:v31 outMeanIntensityAtCoarsestScale:v66.origin.x, v66.origin.y, v66.size.width, v66.size.height];
+    v33 = [(ADLKTOpticalFlow *)self->_lkt encodePyramidFeaturesToCommandBuffer:commandBuffer grayscaleTexture:v20 validBufferRect:self->_pyramids[self->_currentFrameIndex] outPyramidsArray:self->_features[self->_currentFrameIndex] outFeaturesArray:self->_derivitives[self->_currentFrameIndex] outDerivitiveArray:v31 outMeanIntensityAtCoarsestScale:rectCopy.origin.x, rectCopy.origin.y, rectCopy.size.width, rectCopy.size.height];
     if (v33)
     {
       v27 = v33;
@@ -211,20 +211,20 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    [v63 commit];
+    [commandBuffer commit];
     if (self->_isFirstTime)
     {
       self->_isFirstTime = 0;
-      if (a5)
+      if (buffer)
       {
-        PixelBufferUtils::blacken(a5, v36);
+        PixelBufferUtils::blacken(buffer, v36);
       }
 
-      v59 = v12 - 2;
-      if (a6)
+      v59 = stepsToExecute - 2;
+      if (confidence)
       {
         v62 = 0;
-        PixelBufferUtils::blacken(a6, v36);
+        PixelBufferUtils::blacken(confidence, v36);
         v37 = "pyramids encode";
         v61 = 0;
       }
@@ -239,10 +239,10 @@ LABEL_36:
 
     else
     {
-      [v64 stopWithUTFString:"pyramids encode"];
+      [timeProfiler stopWithUTFString:"pyramids encode"];
       kdebug_trace();
-      v59 = v12 - 3;
-      if (v12 < 3)
+      v59 = stepsToExecute - 3;
+      if (stepsToExecute < 3)
       {
         v34 = 0;
         v35 = 0;
@@ -251,11 +251,11 @@ LABEL_36:
       }
 
       kdebug_trace();
-      [v64 startWithUTFString:"solver encode"];
-      v61 = [ADMetalUtils bindPixelBufferToMTL2DTexture:a5 metalDevice:self->_device];
-      if (a6)
+      [timeProfiler startWithUTFString:"solver encode"];
+      v61 = [ADMetalUtils bindPixelBufferToMTL2DTexture:buffer metalDevice:self->_device];
+      if (confidence)
       {
-        v62 = [ADMetalUtils bindPixelBufferToMTL2DTexture:a6 metalDevice:self->_device];
+        v62 = [ADMetalUtils bindPixelBufferToMTL2DTexture:confidence metalDevice:self->_device];
       }
 
       else
@@ -263,26 +263,26 @@ LABEL_36:
         v62 = 0;
       }
 
-      v38 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+      commandBuffer2 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
 
-      [v38 setLabel:@"lkt_optical_flow_solver"];
+      [commandBuffer2 setLabel:@"lkt_optical_flow_solver"];
       v39 = [(NSMutableArray *)pyramids[self->_currentFrameIndex] objectAtIndexedSubscript:0];
-      v40 = [v39 width];
+      width3 = [v39 width];
       v41 = [(NSMutableArray *)pyramids[self->_currentFrameIndex] objectAtIndexedSubscript:0];
-      v42 = [v41 height];
-      v66.origin.x = 0.0;
-      v66.origin.y = 0.0;
-      v66.size.width = ceilf(v25 * v40);
-      v66.size.height = ceilf(v26 * v42);
+      height3 = [v41 height];
+      rectCopy.origin.x = 0.0;
+      rectCopy.origin.y = 0.0;
+      rectCopy.size.width = ceilf(v25 * width3);
+      rectCopy.size.height = ceilf(v26 * height3);
 
       currentFrameIndex = self->_currentFrameIndex;
-      [(ADLKTOpticalFlow *)self->_lkt encodeOpticalFlowSolverToCommandBuffer:v38 currentFeaturesArray:self->_features[currentFrameIndex] currentDerivitiveArray:self->_derivitives[currentFrameIndex] previousFeaturesArray:self->_features[currentFrameIndex ^ 1] previousDerivitiveArray:self->_derivitives[currentFrameIndex ^ 1] currentPyramidsArray:pyramids[currentFrameIndex] validBufferRect:v66.origin.x outShiftMap:v66.origin.y outConfidenceMap:v66.size.width, v66.size.height, v61, v62];
-      [v38 commit];
+      [(ADLKTOpticalFlow *)self->_lkt encodeOpticalFlowSolverToCommandBuffer:commandBuffer2 currentFeaturesArray:self->_features[currentFrameIndex] currentDerivitiveArray:self->_derivitives[currentFrameIndex] previousFeaturesArray:self->_features[currentFrameIndex ^ 1] previousDerivitiveArray:self->_derivitives[currentFrameIndex ^ 1] currentPyramidsArray:pyramids[currentFrameIndex] validBufferRect:rectCopy.origin.x outShiftMap:rectCopy.origin.y outConfidenceMap:rectCopy.size.width, rectCopy.size.height, v61, v62];
+      [commandBuffer2 commit];
       v37 = "solver encode";
-      v63 = v38;
+      commandBuffer = commandBuffer2;
     }
 
-    [v64 stopWithUTFString:v37];
+    [timeProfiler stopWithUTFString:v37];
     kdebug_trace();
     if (!v59)
     {
@@ -290,12 +290,12 @@ LABEL_36:
     }
 
     kdebug_trace();
-    [v64 startWithUTFString:"metal execution"];
-    [v63 waitUntilCompleted];
+    [timeProfiler startWithUTFString:"metal execution"];
+    [commandBuffer waitUntilCompleted];
     v44 = v59 - 1;
-    if (a6 && (-[ADExecutor executorParameters](self, "executorParameters"), v45 = objc_claimAutoreleasedReturnValue(), v46 = [v45 confidenceUnits], v45, v46))
+    if (confidence && (-[ADExecutor executorParameters](self, "executorParameters"), v45 = objc_claimAutoreleasedReturnValue(), v46 = [v45 confidenceUnits], v45, v46))
     {
-      [v64 stopWithUTFString:"metal execution"];
+      [timeProfiler stopWithUTFString:"metal execution"];
       kdebug_trace();
       if (v59 == 1)
       {
@@ -303,9 +303,9 @@ LABEL_36:
       }
 
       kdebug_trace();
-      [v64 startWithUTFString:"postprocess confidence"];
-      v47 = [(ADExecutor *)self executorParameters];
-      v48 = [v47 confidenceUnits];
+      [timeProfiler startWithUTFString:"postprocess confidence"];
+      executorParameters4 = [(ADExecutor *)self executorParameters];
+      confidenceUnits = [executorParameters4 confidenceUnits];
       LODWORD(v49) = -8388608;
       LODWORD(v50) = 981467093;
       LODWORD(v51) = 2139095040;
@@ -313,7 +313,7 @@ LABEL_36:
       LODWORD(v53) = -8388608;
       LODWORD(v54) = 981467093;
       v55 = [ADConfidenceLevelRanges rangesForUnits:0 lowLevel:v49 mediumLevel:v50 highLevel:v52, v53, v54, v51];
-      [ADUtils postProcessConfidence:a6 confidenceOutput:a6 rawConfidenceUnits:0 outConfidenceUnits:v48 confidenceLevelRanges:v55];
+      [ADUtils postProcessConfidence:confidence confidenceOutput:confidence rawConfidenceUnits:0 outConfidenceUnits:confidenceUnits confidenceLevelRanges:v55];
       v44 = v59 - 2;
 
       v56 = "postprocess confidence";
@@ -329,7 +329,7 @@ LABEL_36:
     }
 
     self->_currentFrameIndex ^= 1u;
-    [v64 stopWithUTFString:v56];
+    [timeProfiler stopWithUTFString:v56];
     kdebug_trace();
     if (v44 >= 1)
     {
@@ -351,10 +351,10 @@ LABEL_34:
 
 - (id)lastExecutionStatistics
 {
-  v3 = [(ADExecutor *)self executorParameters];
-  v4 = [v3 enableStatistics];
+  executorParameters = [(ADExecutor *)self executorParameters];
+  enableStatistics = [executorParameters enableStatistics];
 
-  if (v4)
+  if (enableStatistics)
   {
     v5 = objc_alloc_init(ADLKTStatistics);
     v6 = *[(MTLBuffer *)self->_meanIntensitiesAtCoarsestScale[self->_currentFrameIndex] contents];
@@ -408,11 +408,11 @@ LABEL_34:
   return v5;
 }
 
-- (int64_t)validateInputs:(__CVBuffer *)a3 validBufferRect:(CGRect *)a4 outputConfidence:(__CVBuffer *)a5
+- (int64_t)validateInputs:(__CVBuffer *)inputs validBufferRect:(CGRect *)rect outputConfidence:(__CVBuffer *)confidence
 {
   v28 = *MEMORY[0x277D85DE8];
   p_inputSize = &self->_inputSize;
-  if (self->_inputSize.width != CVPixelBufferGetWidth(a3) || self->_inputSize.height != CVPixelBufferGetHeight(a3))
+  if (self->_inputSize.width != CVPixelBufferGetWidth(inputs) || self->_inputSize.height != CVPixelBufferGetHeight(inputs))
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -426,9 +426,9 @@ LABEL_34:
     v22 = 2048;
     v23 = height;
     v24 = 2048;
-    v25 = CVPixelBufferGetWidth(a3);
+    v25 = CVPixelBufferGetWidth(inputs);
     v26 = 2048;
-    v27 = CVPixelBufferGetHeight(a3);
+    v27 = CVPixelBufferGetHeight(inputs);
     v12 = MEMORY[0x277D86220];
     v13 = "invalid input buffer size (expected: %fx%f, got %zux%zu)";
     v14 = 42;
@@ -437,17 +437,17 @@ LABEL_17:
     return -22957;
   }
 
-  if (CGRectIsNull(*a4))
+  if (CGRectIsNull(*rect))
   {
     v11 = *p_inputSize;
-    a4->origin.x = 0.0;
-    a4->origin.y = 0.0;
-    a4->size = v11;
+    rect->origin.x = 0.0;
+    rect->origin.y = 0.0;
+    rect->size = v11;
   }
 
   else
   {
-    if (a4->origin.x != 0.0 || a4->origin.y != 0.0)
+    if (rect->origin.x != 0.0 || rect->origin.y != 0.0)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -458,10 +458,10 @@ LABEL_17:
       return -22951;
     }
 
-    v11.width = a4->size.width;
+    v11.width = rect->size.width;
   }
 
-  if (v11.width > p_inputSize->width || a4->size.height > self->_inputSize.height)
+  if (v11.width > p_inputSize->width || rect->size.height > self->_inputSize.height)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -475,16 +475,16 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (!a5)
+  if (!confidence)
   {
     return 0;
   }
 
-  v17 = [(ADExecutor *)self executorParameters];
-  v18 = [v17 confidenceParameters];
-  v19 = [v18 enableConfidence];
+  executorParameters = [(ADExecutor *)self executorParameters];
+  confidenceParameters = [executorParameters confidenceParameters];
+  enableConfidence = [confidenceParameters enableConfidence];
 
-  if (v19)
+  if (enableConfidence)
   {
     return 0;
   }
@@ -498,20 +498,20 @@ LABEL_17:
   return -22961;
 }
 
-- (id)downscaleImageAndGenerateMipmapsIfNeeded:(id)a3 inputTexture:(id)a4
+- (id)downscaleImageAndGenerateMipmapsIfNeeded:(id)needed inputTexture:(id)texture
 {
-  v6 = a3;
-  v7 = a4;
-  downscaledInputTexture = v7;
+  neededCopy = needed;
+  textureCopy = texture;
+  downscaledInputTexture = textureCopy;
   if (self->_inputSize.width > self->_downscaledInputSize.width)
   {
-    [(MPSImageBilinearScale *)self->_bilinearScaler encodeToCommandBuffer:v6 sourceTexture:v7 destinationTexture:self->_downscaledInputTexture];
+    [(MPSImageBilinearScale *)self->_bilinearScaler encodeToCommandBuffer:neededCopy sourceTexture:textureCopy destinationTexture:self->_downscaledInputTexture];
     if (self->_inputSize.width / self->_downscaledInputSize.width > 2.0)
     {
-      v9 = [v6 blitCommandEncoder];
-      [v9 setLabel:@"lkt_generateMipmapsForDownscale"];
-      [v9 generateMipmapsForTexture:self->_downscaledInputTexture];
-      [v9 endEncoding];
+      blitCommandEncoder = [neededCopy blitCommandEncoder];
+      [blitCommandEncoder setLabel:@"lkt_generateMipmapsForDownscale"];
+      [blitCommandEncoder generateMipmapsForTexture:self->_downscaledInputTexture];
+      [blitCommandEncoder endEncoding];
     }
 
     downscaledInputTexture = self->_downscaledInputTexture;
@@ -522,12 +522,12 @@ LABEL_17:
   return downscaledInputTexture;
 }
 
-- (int64_t)convertInputFormatIfNeeded:(__CVBuffer *)a3 greyscaleInput:(__CVBuffer *)a4
+- (int64_t)convertInputFormatIfNeeded:(__CVBuffer *)needed greyscaleInput:(__CVBuffer *)input
 {
-  if (CVPixelBufferGetPixelFormatType(a3) == 1278226488)
+  if (CVPixelBufferGetPixelFormatType(needed) == 1278226488)
   {
     result = 0;
-    *a4 = a3;
+    *input = needed;
   }
 
   else
@@ -549,11 +549,11 @@ LABEL_17:
       self->_greyscaleInput = v13;
     }
 
-    [(ADLKTExecutor *)self createColorConvertingSession:a3];
-    if (PixelBufferUtilsSession::run(self->_colorConvertingSession, a3, self->_greyscaleInput))
+    [(ADLKTExecutor *)self createColorConvertingSession:needed];
+    if (PixelBufferUtilsSession::run(self->_colorConvertingSession, needed, self->_greyscaleInput))
     {
       result = 0;
-      *a4 = self->_greyscaleInput;
+      *input = self->_greyscaleInput;
     }
 
     else
@@ -571,22 +571,22 @@ LABEL_17:
   return result;
 }
 
-- (void)createColorConvertingSession:(__CVBuffer *)a3
+- (void)createColorConvertingSession:(__CVBuffer *)session
 {
   colorConvertingSession = self->_colorConvertingSession;
   if (!colorConvertingSession)
   {
 LABEL_12:
-    CVPixelBufferGetWidth(a3);
-    CVPixelBufferGetHeight(a3);
-    CVPixelBufferGetPixelFormatType(a3);
+    CVPixelBufferGetWidth(session);
+    CVPixelBufferGetHeight(session);
+    CVPixelBufferGetPixelFormatType(session);
     CVPixelBufferGetWidth(self->_greyscaleInput);
     CVPixelBufferGetHeight(self->_greyscaleInput);
     CVPixelBufferGetPixelFormatType(self->_greyscaleInput);
     PixelBufferUtilsSession::createCropScaleConvertRotateSession();
   }
 
-  if (!a3 || (var4 = colorConvertingSession->var4, width = colorConvertingSession->var3.width, height = colorConvertingSession->var3.height, width != CVPixelBufferGetWidth(a3)) || height != CVPixelBufferGetHeight(a3) || CVPixelBufferGetPixelFormatType(a3) != var4 || (greyscaleInput = self->_greyscaleInput) == 0 || (v10 = self->_colorConvertingSession, var6 = v10->var6, v13 = v10->var5.width, v12 = v10->var5.height, v13 != CVPixelBufferGetWidth(greyscaleInput)) || v12 != CVPixelBufferGetHeight(greyscaleInput) || CVPixelBufferGetPixelFormatType(greyscaleInput) != var6)
+  if (!session || (var4 = colorConvertingSession->var4, width = colorConvertingSession->var3.width, height = colorConvertingSession->var3.height, width != CVPixelBufferGetWidth(session)) || height != CVPixelBufferGetHeight(session) || CVPixelBufferGetPixelFormatType(session) != var4 || (greyscaleInput = self->_greyscaleInput) == 0 || (v10 = self->_colorConvertingSession, var6 = v10->var6, v13 = v10->var5.width, v12 = v10->var5.height, v13 != CVPixelBufferGetWidth(greyscaleInput)) || v12 != CVPixelBufferGetHeight(greyscaleInput) || CVPixelBufferGetPixelFormatType(greyscaleInput) != var6)
   {
     v14 = self->_colorConvertingSession;
     if (v14)
@@ -637,11 +637,11 @@ LABEL_12:
   [(ADExecutor *)&v9 dealloc];
 }
 
-- (ADLKTExecutor)initWithDescriptor:(id)a3 forLayout:(unint64_t)a4 executorParameters:(id)a5
+- (ADLKTExecutor)initWithDescriptor:(id)descriptor forLayout:(unint64_t)layout executorParameters:(id)parameters
 {
   v114 = *MEMORY[0x277D85DE8];
-  v99 = a3;
-  v95 = a5;
+  descriptorCopy = descriptor;
+  parametersCopy = parameters;
   kdebug_trace();
   v112.receiver = self;
   v112.super_class = ADLKTExecutor;
@@ -649,38 +649,38 @@ LABEL_12:
   v8 = v7;
   if (v7)
   {
-    [(ADExecutor *)v7 setExecutorParameters:v95];
+    [(ADExecutor *)v7 setExecutorParameters:parametersCopy];
     v9 = v8;
     v8->_colorConvertingSession = 0;
     v8->_isFirstTime = 1;
     v8->_currentFrameIndex = 0;
     v101 = v8;
-    [v99 inputSizeForLayout:a4];
+    [descriptorCopy inputSizeForLayout:layout];
     p_width = &v8->_inputSize.width;
     v8->_inputSize.width = v11;
     v8->_inputSize.height = v12;
-    [v99 downscaledInputSizeForLayout:a4];
+    [descriptorCopy downscaledInputSizeForLayout:layout];
     v13 = &v8->_downscaledInputSize.width;
     v8->_downscaledInputSize.width = v14;
     v8->_downscaledInputSize.height = v15;
-    [v99 outputSizeForLayout:a4];
+    [descriptorCopy outputSizeForLayout:layout];
     v8->_outputSize.width = v16;
     v8->_outputSize.height = v17;
     v18 = MTLCreateSystemDefaultDevice();
     device = v8->_device;
     v8->_device = v18;
 
-    v20 = [(MTLDevice *)v8->_device newCommandQueue];
+    newCommandQueue = [(MTLDevice *)v8->_device newCommandQueue];
     commandQueue = v8->_commandQueue;
-    v8->_commandQueue = v20;
+    v8->_commandQueue = newCommandQueue;
 
     v22 = [ADLKTOpticalFlow alloc];
     v23 = v8->_device;
     width = v8->_downscaledInputSize.width;
     height = v8->_downscaledInputSize.height;
-    if (v99)
+    if (descriptorCopy)
     {
-      [v99 opticalFlowConfig];
+      [descriptorCopy opticalFlowConfig];
     }
 
     else
@@ -689,27 +689,27 @@ LABEL_12:
       memset(v110, 0, sizeof(v110));
     }
 
-    v26 = [(ADExecutor *)v8 executorParameters];
-    v27 = v99;
-    v28 = [v26 confidenceParameters];
+    executorParameters = [(ADExecutor *)v8 executorParameters];
+    v27 = descriptorCopy;
+    confidenceParameters = [executorParameters confidenceParameters];
     if (v22)
     {
-      v29 = [(ADLKTOpticalFlow *)v22 initWithDevice:v23 inputSize:v110 config:v28 confidenceParameters:width, height];
+      height = [(ADLKTOpticalFlow *)v22 initWithDevice:v23 inputSize:v110 config:confidenceParameters confidenceParameters:width, height];
     }
 
     else
     {
 
-      v29 = 0;
-      v27 = v99;
+      height = 0;
+      v27 = descriptorCopy;
     }
 
     lkt = v101->_lkt;
-    v101->_lkt = v29;
+    v101->_lkt = height;
 
     if (v27)
     {
-      [v99 opticalFlowConfig];
+      [descriptorCopy opticalFlowConfig];
       v31 = v109;
     }
 
@@ -734,16 +734,16 @@ LABEL_12:
       {
         v39 = v9->_downscaledInputSize.height;
         v36 = v101;
-        v37 = [v99 downscaledInputDescriptor];
-        +[ADMetalUtils textureForSize:pixelFormat:metalDevice:](ADMetalUtils, "textureForSize:pixelFormat:metalDevice:", [v37 pixelFormat], v101->_device, v33, v39);
+        downscaledInputDescriptor = [descriptorCopy downscaledInputDescriptor];
+        +[ADMetalUtils textureForSize:pixelFormat:metalDevice:](ADMetalUtils, "textureForSize:pixelFormat:metalDevice:", [downscaledInputDescriptor pixelFormat], v101->_device, v33, v39);
       }
 
       else
       {
         v35 = v9->_inputSize.height;
         v36 = v101;
-        v37 = [v99 downscaledInputDescriptor];
-        +[ADMetalUtils textureForSize:pixelFormat:mipmapped:metalDevice:](ADMetalUtils, "textureForSize:pixelFormat:mipmapped:metalDevice:", [v37 pixelFormat], 1, v101->_device, v32 * 0.5, v35 * 0.5);
+        downscaledInputDescriptor = [descriptorCopy downscaledInputDescriptor];
+        +[ADMetalUtils textureForSize:pixelFormat:mipmapped:metalDevice:](ADMetalUtils, "textureForSize:pixelFormat:mipmapped:metalDevice:", [downscaledInputDescriptor pixelFormat], 1, v101->_device, v32 * 0.5, v35 * 0.5);
       }
       v38 = ;
       downscaledInputTexture = v36->_downscaledInputTexture;
@@ -782,8 +782,8 @@ LABEL_12:
       v105 = 0u;
       v102 = 0u;
       v103 = 0u;
-      v52 = [v99 featuresDescriptors];
-      v53 = [v52 countByEnumeratingWithState:&v102 objects:v113 count:16];
+      featuresDescriptors = [descriptorCopy featuresDescriptors];
+      v53 = [featuresDescriptors countByEnumeratingWithState:&v102 objects:v113 count:16];
       if (v53)
       {
         v54 = *v103;
@@ -793,17 +793,17 @@ LABEL_12:
           {
             if (*v103 != v54)
             {
-              objc_enumerationMutation(v52);
+              objc_enumerationMutation(featuresDescriptors);
             }
 
             v56 = *(*(&v102 + 1) + 8 * i);
             v57 = features[v43];
-            [v56 sizeForLayout:a4];
+            [v56 sizeForLayout:layout];
             v60 = +[ADMetalUtils textureForSize:pixelFormat:metalDevice:](ADMetalUtils, "textureForSize:pixelFormat:metalDevice:", [v56 pixelFormat], v101->_device, v58, v59);
             [(NSMutableArray *)v57 addObject:v60];
           }
 
-          v53 = [v52 countByEnumeratingWithState:&v102 objects:v113 count:16];
+          v53 = [featuresDescriptors countByEnumeratingWithState:&v102 objects:v113 count:16];
         }
 
         while (v53);
@@ -811,25 +811,25 @@ LABEL_12:
 
       for (j = 0; ; j = v63 + 1)
       {
-        v62 = [v99 derivitivesDescriptors];
+        derivitivesDescriptors = [descriptorCopy derivitivesDescriptors];
         v63 = j;
-        v64 = [v62 count] > j;
+        v64 = [derivitivesDescriptors count] > j;
 
         if (!v64)
         {
           break;
         }
 
-        v65 = [v99 derivitivesDescriptors];
-        v66 = [v65 objectAtIndex:v63];
+        derivitivesDescriptors2 = [descriptorCopy derivitivesDescriptors];
+        v66 = [derivitivesDescriptors2 objectAtIndex:v63];
 
-        [v66 sizeForLayout:a4];
+        [v66 sizeForLayout:layout];
         v68 = v67;
         v70 = v69;
-        v71 = [v66 pixelFormat];
+        pixelFormat = [v66 pixelFormat];
         pixelBufferOut[0] = 0;
         BufferAttributes = getBufferAttributes();
-        if (CVPixelBufferCreate(allocator, v68, v70, v71, BufferAttributes, pixelBufferOut))
+        if (CVPixelBufferCreate(allocator, v68, v70, pixelFormat, BufferAttributes, pixelBufferOut))
         {
           v73 = 0;
         }
@@ -847,22 +847,22 @@ LABEL_12:
 
       for (k = 0; ; k = v78 + 1)
       {
-        v77 = [v99 pyramidsDescriptors];
+        pyramidsDescriptors = [descriptorCopy pyramidsDescriptors];
         v78 = k;
-        v79 = [v77 count] > k;
+        v79 = [pyramidsDescriptors count] > k;
 
         if (!v79)
         {
           break;
         }
 
-        v80 = [v99 pyramidsDescriptors];
-        v81 = [v80 objectAtIndex:v78];
+        pyramidsDescriptors2 = [descriptorCopy pyramidsDescriptors];
+        v81 = [pyramidsDescriptors2 objectAtIndex:v78];
 
-        if (v99 && ([v99 opticalFlowConfig], v82 = v107, pixelBufferOut[1], (v82 & 1) != 0))
+        if (descriptorCopy && ([descriptorCopy opticalFlowConfig], v82 = v107, pixelBufferOut[1], (v82 & 1) != 0))
         {
           v83 = pyramids[v43];
-          [v81 sizeForLayout:a4];
+          [v81 sizeForLayout:layout];
           v86 = +[ADMetalUtils textureForSize:pixelFormat:metalDevice:](ADMetalUtils, "textureForSize:pixelFormat:metalDevice:", [v81 pixelFormat], v101->_device, v84, v85);
           [(NSMutableArray *)v83 addObject:v86];
         }
@@ -872,7 +872,7 @@ LABEL_12:
           v87 = pyramids[v43];
           v88 = v101->_derivities_pbuf[v43][v78];
           v89 = +[ADMetalUtils getMTLPixelFormat:](ADMetalUtils, "getMTLPixelFormat:", [v81 pixelFormat]);
-          [v81 sizeForLayout:a4];
+          [v81 sizeForLayout:layout];
           v86 = [ADMetalUtils bindPixelBufferToMTL2DTexture:v88 pixelFormat:v89 textureSize:0 plane:v101->_device metalDevice:0 error:?];
           [(NSMutableArray *)v87 addObject:v86];
         }
@@ -882,9 +882,9 @@ LABEL_12:
       v91 = v101->_meanIntensitiesAtCoarsestScale[v43];
       v101->_meanIntensitiesAtCoarsestScale[v43] = v90;
 
-      v92 = [(MTLBuffer *)v101->_meanIntensitiesAtCoarsestScale[v43] contents];
+      contents = [(MTLBuffer *)v101->_meanIntensitiesAtCoarsestScale[v43] contents];
       v44 = 0;
-      *v92 = -1082130432;
+      *contents = -1082130432;
       v43 = 1;
       v8 = v101;
     }
@@ -898,19 +898,19 @@ LABEL_12:
   return v93;
 }
 
-- (ADLKTExecutor)initWithDescriptor:(id)a3 forLayout:(unint64_t)a4
+- (ADLKTExecutor)initWithDescriptor:(id)descriptor forLayout:(unint64_t)layout
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   v7 = objc_opt_new();
-  v8 = [(ADLKTExecutor *)self initWithDescriptor:v6 forLayout:a4 executorParameters:v7];
+  v8 = [(ADLKTExecutor *)self initWithDescriptor:descriptorCopy forLayout:layout executorParameters:v7];
 
   return v8;
 }
 
-- (ADLKTExecutor)initWithSize:(CGSize)a3
+- (ADLKTExecutor)initWithSize:(CGSize)size
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CED088] createWithSize:255 andLayout:{a3.width, a3.height}];
+  v4 = [MEMORY[0x277CED088] createWithSize:255 andLayout:{size.width, size.height}];
   v5 = [ADLKTTexturesDescriptor alloc];
   v12[0] = v4;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];

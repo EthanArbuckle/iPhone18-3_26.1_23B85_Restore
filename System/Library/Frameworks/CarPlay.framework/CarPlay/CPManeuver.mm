@@ -2,13 +2,13 @@
 + (NSArray)accNavParameters;
 + (NSDictionary)accNavParameterKeysIndexed;
 + (NSDictionary)accNavParametersIndexed;
-+ (id)_descriptionForJunctionType:(unint64_t)a3;
-+ (id)_descriptionForManeuverType:(unint64_t)a3;
-+ (id)_descriptionForTrafficSide:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_descriptionForJunctionType:(unint64_t)type;
++ (id)_descriptionForManeuverType:(unint64_t)type;
++ (id)_descriptionForTrafficSide:(unint64_t)side;
+- (BOOL)isEqual:(id)equal;
 - (CPManeuver)init;
-- (CPManeuver)initWithCoder:(id)a3;
-- (CPManeuver)maneuverWithComponent:(id)a3;
+- (CPManeuver)initWithCoder:(id)coder;
+- (CPManeuver)maneuverWithComponent:(id)component;
 - (NSArray)stringInstructionVariants;
 - (NSMeasurement)initialDistance;
 - (NSMeasurement)initialDistanceDisplay;
@@ -18,13 +18,13 @@
 - (UIImage)junctionImage;
 - (UIImage)notificationSymbolImage;
 - (UIImage)symbolImage;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 - (void)setCardBackgroundColor:(UIColor *)cardBackgroundColor;
 - (void)setDashboardJunctionImage:(UIImage *)dashboardJunctionImage;
 - (void)setDashboardSymbolImage:(UIImage *)dashboardSymbolImage;
-- (void)setInitialDistance:(id)a3;
-- (void)setInitialDistanceDisplay:(id)a3;
+- (void)setInitialDistance:(id)distance;
+- (void)setInitialDistanceDisplay:(id)display;
 - (void)setJunctionImage:(UIImage *)junctionImage;
 - (void)setNotificationSymbolImage:(UIImage *)notificationSymbolImage;
 - (void)setSymbolImage:(UIImage *)symbolImage;
@@ -41,9 +41,9 @@
   if (v2)
   {
     [CPAccNavUpdate resetUpdate:v2];
-    v3 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v2->_identifier;
-    v2->_identifier = v3;
+    v2->_identifier = uUID;
 
     instructionVariants = v2->_instructionVariants;
     v2->_instructionVariants = MEMORY[0x277CBEBF8];
@@ -52,13 +52,13 @@
   return v2;
 }
 
-- (CPManeuver)initWithCoder:(id)a3
+- (CPManeuver)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CPManeuver *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPManeuverCardBackgroundColorKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPManeuverCardBackgroundColorKey"];
     v7 = v6;
     if (v6)
     {
@@ -67,11 +67,11 @@
       v5->_cardBackgroundColor = v8;
     }
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPIdentifierKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPIdentifierKey"];
     identifier = v5->_identifier;
     v5->_identifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPManeuverSymbolKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPManeuverSymbolKey"];
     symbolSet = v5->_symbolSet;
     v5->_symbolSet = v12;
 
@@ -79,27 +79,27 @@
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = [v14 setWithObjects:{v15, v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"kCPManeuverAttributedInstructionVariantsKey"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"kCPManeuverAttributedInstructionVariantsKey"];
     attributedInstructionVariants = v5->_attributedInstructionVariants;
     v5->_attributedInstructionVariants = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPManeuverInitialTravelEstimatesKey"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPManeuverInitialTravelEstimatesKey"];
     initialTravelEstimates = v5->_initialTravelEstimates;
     v5->_initialTravelEstimates = v20;
 
-    v5->_displayStyle = [v4 decodeIntegerForKey:@"kCPManeuverStyleKey"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPManeuverJunctionImageKey"];
+    v5->_displayStyle = [coderCopy decodeIntegerForKey:@"kCPManeuverStyleKey"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPManeuverJunctionImageKey"];
     junctionImageSet = v5->_junctionImageSet;
     v5->_junctionImageSet = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPManeuverDashboardSymbolKey"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPManeuverDashboardSymbolKey"];
     dashboardSymbolImageSet = v5->_dashboardSymbolImageSet;
     v5->_dashboardSymbolImageSet = v24;
 
     v26 = MEMORY[0x277CBEB98];
     v27 = objc_opt_class();
     v28 = [v26 setWithObjects:{v27, objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"kCPManeuverDashboardInstructionVariantsKey"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"kCPManeuverDashboardInstructionVariantsKey"];
     dashboardInstructionVariants = v5->_dashboardInstructionVariants;
     v5->_dashboardInstructionVariants = v29;
 
@@ -107,22 +107,22 @@
     v32 = objc_opt_class();
     v33 = objc_opt_class();
     v34 = [v31 setWithObjects:{v32, v33, objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"kCPManeuverDashboardAttributedInstructionVariantsKey"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"kCPManeuverDashboardAttributedInstructionVariantsKey"];
     dashboardAttributedInstructionVariants = v5->_dashboardAttributedInstructionVariants;
     v5->_dashboardAttributedInstructionVariants = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPManeuverDashboardJunctionImageKey"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPManeuverDashboardJunctionImageKey"];
     dashboardJunctionImageSet = v5->_dashboardJunctionImageSet;
     v5->_dashboardJunctionImageSet = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPManeuverNotificationSymbolKey"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPManeuverNotificationSymbolKey"];
     notificationSymbolImageSet = v5->_notificationSymbolImageSet;
     v5->_notificationSymbolImageSet = v39;
 
     v41 = MEMORY[0x277CBEB98];
     v42 = objc_opt_class();
     v43 = [v41 setWithObjects:{v42, objc_opt_class(), 0}];
-    v44 = [v4 decodeObjectOfClasses:v43 forKey:@"kCPManeuverNotificationInstructionVariantsKey"];
+    v44 = [coderCopy decodeObjectOfClasses:v43 forKey:@"kCPManeuverNotificationInstructionVariantsKey"];
     notificationInstructionVariants = v5->_notificationInstructionVariants;
     v5->_notificationInstructionVariants = v44;
 
@@ -130,125 +130,125 @@
     v47 = objc_opt_class();
     v48 = objc_opt_class();
     v49 = [v46 setWithObjects:{v47, v48, objc_opt_class(), 0}];
-    v50 = [v4 decodeObjectOfClasses:v49 forKey:@"kCPManeuverNotificationAttributedInstructionVariantsKey"];
+    v50 = [coderCopy decodeObjectOfClasses:v49 forKey:@"kCPManeuverNotificationAttributedInstructionVariantsKey"];
     notificationAttributedInstructionVariants = v5->_notificationAttributedInstructionVariants;
     v5->_notificationAttributedInstructionVariants = v50;
 
-    [CPAccNavUpdate decodeUpdate:v5 withCoder:v4];
+    [CPAccNavUpdate decodeUpdate:v5 withCoder:coderCopy];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v17 = a3;
-  v4 = [(CPManeuver *)self cardBackgroundColor];
-  [v17 encodeObject:v4 forKey:@"kCPManeuverCardBackgroundColorKey"];
+  coderCopy = coder;
+  cardBackgroundColor = [(CPManeuver *)self cardBackgroundColor];
+  [coderCopy encodeObject:cardBackgroundColor forKey:@"kCPManeuverCardBackgroundColorKey"];
 
-  v5 = [(CPManeuver *)self identifier];
-  [v17 encodeObject:v5 forKey:@"kCPIdentifierKey"];
+  identifier = [(CPManeuver *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"kCPIdentifierKey"];
 
-  v6 = [(CPManeuver *)self symbolSet];
-  [v17 encodeObject:v6 forKey:@"kCPManeuverSymbolKey"];
+  symbolSet = [(CPManeuver *)self symbolSet];
+  [coderCopy encodeObject:symbolSet forKey:@"kCPManeuverSymbolKey"];
 
-  v7 = [(CPManeuver *)self attributedInstructionVariants];
-  [v17 encodeObject:v7 forKey:@"kCPManeuverAttributedInstructionVariantsKey"];
+  attributedInstructionVariants = [(CPManeuver *)self attributedInstructionVariants];
+  [coderCopy encodeObject:attributedInstructionVariants forKey:@"kCPManeuverAttributedInstructionVariantsKey"];
 
-  v8 = [(CPManeuver *)self initialTravelEstimates];
-  [v17 encodeObject:v8 forKey:@"kCPManeuverInitialTravelEstimatesKey"];
+  initialTravelEstimates = [(CPManeuver *)self initialTravelEstimates];
+  [coderCopy encodeObject:initialTravelEstimates forKey:@"kCPManeuverInitialTravelEstimatesKey"];
 
-  [v17 encodeInteger:-[CPManeuver displayStyle](self forKey:{"displayStyle"), @"kCPManeuverStyleKey"}];
-  v9 = [(CPManeuver *)self junctionImageSet];
-  [v17 encodeObject:v9 forKey:@"kCPManeuverJunctionImageKey"];
+  [coderCopy encodeInteger:-[CPManeuver displayStyle](self forKey:{"displayStyle"), @"kCPManeuverStyleKey"}];
+  junctionImageSet = [(CPManeuver *)self junctionImageSet];
+  [coderCopy encodeObject:junctionImageSet forKey:@"kCPManeuverJunctionImageKey"];
 
-  v10 = [(CPManeuver *)self dashboardSymbolImageSet];
-  [v17 encodeObject:v10 forKey:@"kCPManeuverDashboardSymbolKey"];
+  dashboardSymbolImageSet = [(CPManeuver *)self dashboardSymbolImageSet];
+  [coderCopy encodeObject:dashboardSymbolImageSet forKey:@"kCPManeuverDashboardSymbolKey"];
 
-  v11 = [(CPManeuver *)self dashboardInstructionVariants];
-  [v17 encodeObject:v11 forKey:@"kCPManeuverDashboardInstructionVariantsKey"];
+  dashboardInstructionVariants = [(CPManeuver *)self dashboardInstructionVariants];
+  [coderCopy encodeObject:dashboardInstructionVariants forKey:@"kCPManeuverDashboardInstructionVariantsKey"];
 
-  v12 = [(CPManeuver *)self dashboardAttributedInstructionVariants];
-  [v17 encodeObject:v12 forKey:@"kCPManeuverDashboardAttributedInstructionVariantsKey"];
+  dashboardAttributedInstructionVariants = [(CPManeuver *)self dashboardAttributedInstructionVariants];
+  [coderCopy encodeObject:dashboardAttributedInstructionVariants forKey:@"kCPManeuverDashboardAttributedInstructionVariantsKey"];
 
-  v13 = [(CPManeuver *)self dashboardJunctionImageSet];
-  [v17 encodeObject:v13 forKey:@"kCPManeuverDashboardJunctionImageKey"];
+  dashboardJunctionImageSet = [(CPManeuver *)self dashboardJunctionImageSet];
+  [coderCopy encodeObject:dashboardJunctionImageSet forKey:@"kCPManeuverDashboardJunctionImageKey"];
 
-  v14 = [(CPManeuver *)self notificationSymbolImageSet];
-  [v17 encodeObject:v14 forKey:@"kCPManeuverNotificationSymbolKey"];
+  notificationSymbolImageSet = [(CPManeuver *)self notificationSymbolImageSet];
+  [coderCopy encodeObject:notificationSymbolImageSet forKey:@"kCPManeuverNotificationSymbolKey"];
 
-  v15 = [(CPManeuver *)self notificationInstructionVariants];
-  [v17 encodeObject:v15 forKey:@"kCPManeuverNotificationInstructionVariantsKey"];
+  notificationInstructionVariants = [(CPManeuver *)self notificationInstructionVariants];
+  [coderCopy encodeObject:notificationInstructionVariants forKey:@"kCPManeuverNotificationInstructionVariantsKey"];
 
-  v16 = [(CPManeuver *)self notificationAttributedInstructionVariants];
-  [v17 encodeObject:v16 forKey:@"kCPManeuverNotificationAttributedInstructionVariantsKey"];
+  notificationAttributedInstructionVariants = [(CPManeuver *)self notificationAttributedInstructionVariants];
+  [coderCopy encodeObject:notificationAttributedInstructionVariants forKey:@"kCPManeuverNotificationAttributedInstructionVariantsKey"];
 
-  [CPAccNavUpdate encodeUpdate:self withCoder:v17];
+  [CPAccNavUpdate encodeUpdate:self withCoder:coderCopy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CPAccNavUpdate copyUpdate:self];
-  v5 = [(CPManeuver *)self identifier];
+  identifier = [(CPManeuver *)self identifier];
   v6 = v4[2];
-  v4[2] = v5;
+  v4[2] = identifier;
 
-  v7 = [(CPManeuver *)self symbolSet];
-  [v4 setSymbolSet:v7];
+  symbolSet = [(CPManeuver *)self symbolSet];
+  [v4 setSymbolSet:symbolSet];
 
-  v8 = [(CPManeuver *)self junctionImageSet];
-  [v4 setJunctionImageSet:v8];
+  junctionImageSet = [(CPManeuver *)self junctionImageSet];
+  [v4 setJunctionImageSet:junctionImageSet];
 
-  v9 = [(CPManeuver *)self attributedInstructionVariants];
-  [v4 setAttributedInstructionVariants:v9];
+  attributedInstructionVariants = [(CPManeuver *)self attributedInstructionVariants];
+  [v4 setAttributedInstructionVariants:attributedInstructionVariants];
 
-  v10 = [(CPManeuver *)self initialTravelEstimates];
-  [v4 setInitialTravelEstimates:v10];
+  initialTravelEstimates = [(CPManeuver *)self initialTravelEstimates];
+  [v4 setInitialTravelEstimates:initialTravelEstimates];
 
   [v4 setDisplayStyle:{-[CPManeuver displayStyle](self, "displayStyle")}];
-  v11 = [(CPManeuver *)self dashboardSymbolImageSet];
-  [v4 setDashboardSymbolImageSet:v11];
+  dashboardSymbolImageSet = [(CPManeuver *)self dashboardSymbolImageSet];
+  [v4 setDashboardSymbolImageSet:dashboardSymbolImageSet];
 
-  v12 = [(CPManeuver *)self dashboardInstructionVariants];
-  [v4 setDashboardInstructionVariants:v12];
+  dashboardInstructionVariants = [(CPManeuver *)self dashboardInstructionVariants];
+  [v4 setDashboardInstructionVariants:dashboardInstructionVariants];
 
-  v13 = [(CPManeuver *)self dashboardAttributedInstructionVariants];
-  [v4 setDashboardAttributedInstructionVariants:v13];
+  dashboardAttributedInstructionVariants = [(CPManeuver *)self dashboardAttributedInstructionVariants];
+  [v4 setDashboardAttributedInstructionVariants:dashboardAttributedInstructionVariants];
 
-  v14 = [(CPManeuver *)self dashboardJunctionImageSet];
-  [v4 setDashboardJunctionImageSet:v14];
+  dashboardJunctionImageSet = [(CPManeuver *)self dashboardJunctionImageSet];
+  [v4 setDashboardJunctionImageSet:dashboardJunctionImageSet];
 
-  v15 = [(CPManeuver *)self notificationSymbolImageSet];
-  [v4 setNotificationSymbolImageSet:v15];
+  notificationSymbolImageSet = [(CPManeuver *)self notificationSymbolImageSet];
+  [v4 setNotificationSymbolImageSet:notificationSymbolImageSet];
 
-  v16 = [(CPManeuver *)self notificationInstructionVariants];
-  [v4 setNotificationInstructionVariants:v16];
+  notificationInstructionVariants = [(CPManeuver *)self notificationInstructionVariants];
+  [v4 setNotificationInstructionVariants:notificationInstructionVariants];
 
-  v17 = [(CPManeuver *)self notificationAttributedInstructionVariants];
-  [v4 setNotificationAttributedInstructionVariants:v17];
+  notificationAttributedInstructionVariants = [(CPManeuver *)self notificationAttributedInstructionVariants];
+  [v4 setNotificationAttributedInstructionVariants:notificationAttributedInstructionVariants];
 
-  v18 = [(CPManeuver *)self cardBackgroundColor];
-  [v4 setCardBackgroundColor:v18];
+  cardBackgroundColor = [(CPManeuver *)self cardBackgroundColor];
+  [v4 setCardBackgroundColor:cardBackgroundColor];
 
   return v4;
 }
 
 - (NSArray)stringInstructionVariants
 {
-  v3 = [(CPManeuver *)self attributedInstructionVariants];
+  attributedInstructionVariants = [(CPManeuver *)self attributedInstructionVariants];
 
-  if (v3)
+  if (attributedInstructionVariants)
   {
-    v4 = [(CPManeuver *)self attributedInstructionVariants];
-    v5 = [v4 cps_map:&__block_literal_global_12];
+    attributedInstructionVariants2 = [(CPManeuver *)self attributedInstructionVariants];
+    instructionVariants = [attributedInstructionVariants2 cps_map:&__block_literal_global_12];
   }
 
   else
   {
-    v5 = [(CPManeuver *)self instructionVariants];
+    instructionVariants = [(CPManeuver *)self instructionVariants];
   }
 
-  return v5;
+  return instructionVariants;
 }
 
 - (NSString)description
@@ -276,28 +276,28 @@
   return v13;
 }
 
-+ (id)_descriptionForManeuverType:(unint64_t)a3
++ (id)_descriptionForManeuverType:(unint64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_278A11388[a3];
+    return off_278A11388[type];
   }
 }
 
-+ (id)_descriptionForTrafficSide:(unint64_t)a3
++ (id)_descriptionForTrafficSide:(unint64_t)side
 {
   v3 = @"right";
-  if (a3)
+  if (side)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (side == 1)
   {
     return @"left";
   }
@@ -308,15 +308,15 @@
   }
 }
 
-+ (id)_descriptionForJunctionType:(unint64_t)a3
++ (id)_descriptionForJunctionType:(unint64_t)type
 {
   v3 = @"intersection";
-  if (a3)
+  if (type)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"roundabout";
   }
@@ -362,10 +362,10 @@
 
 - (UIImage)symbolImage
 {
-  v2 = [(CPManeuver *)self symbolSet];
-  v3 = [v2 image];
+  symbolSet = [(CPManeuver *)self symbolSet];
+  image = [symbolSet image];
 
-  return v3;
+  return image;
 }
 
 - (void)setJunctionImage:(UIImage *)junctionImage
@@ -383,18 +383,18 @@
 
 - (UIImage)junctionImage
 {
-  v2 = [(CPManeuver *)self junctionImageSet];
-  v3 = [v2 image];
+  junctionImageSet = [(CPManeuver *)self junctionImageSet];
+  image = [junctionImageSet image];
 
-  return v3;
+  return image;
 }
 
 - (UIImage)dashboardSymbolImage
 {
-  v2 = [(CPManeuver *)self dashboardSymbolImageSet];
-  v3 = [v2 image];
+  dashboardSymbolImageSet = [(CPManeuver *)self dashboardSymbolImageSet];
+  image = [dashboardSymbolImageSet image];
 
-  return v3;
+  return image;
 }
 
 - (void)setDashboardSymbolImage:(UIImage *)dashboardSymbolImage
@@ -412,10 +412,10 @@
 
 - (UIImage)dashboardJunctionImage
 {
-  v2 = [(CPManeuver *)self dashboardJunctionImageSet];
-  v3 = [v2 image];
+  dashboardJunctionImageSet = [(CPManeuver *)self dashboardJunctionImageSet];
+  image = [dashboardJunctionImageSet image];
 
-  return v3;
+  return image;
 }
 
 - (void)setDashboardJunctionImage:(UIImage *)dashboardJunctionImage
@@ -433,10 +433,10 @@
 
 - (UIImage)notificationSymbolImage
 {
-  v2 = [(CPManeuver *)self notificationSymbolImageSet];
-  v3 = [v2 image];
+  notificationSymbolImageSet = [(CPManeuver *)self notificationSymbolImageSet];
+  image = [notificationSymbolImageSet image];
 
-  return v3;
+  return image;
 }
 
 - (void)setNotificationSymbolImage:(UIImage *)notificationSymbolImage
@@ -452,11 +452,11 @@
   self->_notificationSymbolImageSet = v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (objc_opt_isKindOfClass())
   {
     if (v5 == self)
@@ -473,13 +473,13 @@
         goto LABEL_13;
       }
 
-      v6 = [(CPManeuver *)self junctionImage];
+      junctionImage = [(CPManeuver *)self junctionImage];
 
-      v7 = [(CPManeuver *)v5 junctionImage];
+      junctionImage2 = [(CPManeuver *)v5 junctionImage];
 
-      v8 = [(CPManeuver *)v5 identifier];
-      v9 = [(CPManeuver *)self identifier];
-      v10 = [v8 isEqual:v9] && (v6 != 0) != (v7 == 0) && +[CPAccNavUpdate isUpdate:equalTo:](CPAccNavUpdate, "isUpdate:equalTo:", self, v5);
+      identifier = [(CPManeuver *)v5 identifier];
+      identifier2 = [(CPManeuver *)self identifier];
+      v10 = [identifier isEqual:identifier2] && (junctionImage != 0) != (junctionImage2 == 0) && +[CPAccNavUpdate isUpdate:equalTo:](CPAccNavUpdate, "isUpdate:equalTo:", self, v5);
     }
 
     v11 = v5;
@@ -499,42 +499,42 @@ LABEL_13:
 
 - (NSMeasurement)initialDistance
 {
-  v2 = [(CPManeuver *)self initialTravelEstimates];
-  v3 = [v2 distanceRemaining];
+  initialTravelEstimates = [(CPManeuver *)self initialTravelEstimates];
+  distanceRemaining = [initialTravelEstimates distanceRemaining];
 
-  return v3;
+  return distanceRemaining;
 }
 
-- (void)setInitialDistance:(id)a3
+- (void)setInitialDistance:(id)distance
 {
-  v4 = a3;
+  distanceCopy = distance;
   v5 = [CPTravelEstimates alloc];
-  v6 = [(CPManeuver *)self initialTravelEstimates];
-  v7 = [v6 distanceRemainingToDisplay];
-  v8 = [(CPManeuver *)self initialTravelEstimates];
-  [v8 timeRemaining];
-  v9 = [(CPTravelEstimates *)v5 initWithDistanceRemaining:v4 distanceRemainingToDisplay:v7 timeRemaining:?];
+  initialTravelEstimates = [(CPManeuver *)self initialTravelEstimates];
+  distanceRemainingToDisplay = [initialTravelEstimates distanceRemainingToDisplay];
+  initialTravelEstimates2 = [(CPManeuver *)self initialTravelEstimates];
+  [initialTravelEstimates2 timeRemaining];
+  v9 = [(CPTravelEstimates *)v5 initWithDistanceRemaining:distanceCopy distanceRemainingToDisplay:distanceRemainingToDisplay timeRemaining:?];
 
   [(CPManeuver *)self setInitialTravelEstimates:v9];
 }
 
 - (NSMeasurement)initialDistanceDisplay
 {
-  v2 = [(CPManeuver *)self initialTravelEstimates];
-  v3 = [v2 distanceRemainingToDisplay];
+  initialTravelEstimates = [(CPManeuver *)self initialTravelEstimates];
+  distanceRemainingToDisplay = [initialTravelEstimates distanceRemainingToDisplay];
 
-  return v3;
+  return distanceRemainingToDisplay;
 }
 
-- (void)setInitialDistanceDisplay:(id)a3
+- (void)setInitialDistanceDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   v5 = [CPTravelEstimates alloc];
-  v6 = [(CPManeuver *)self initialTravelEstimates];
-  v7 = [v6 distanceRemaining];
-  v8 = [(CPManeuver *)self initialTravelEstimates];
-  [v8 timeRemaining];
-  v9 = [(CPTravelEstimates *)v5 initWithDistanceRemaining:v7 distanceRemainingToDisplay:v4 timeRemaining:?];
+  initialTravelEstimates = [(CPManeuver *)self initialTravelEstimates];
+  distanceRemaining = [initialTravelEstimates distanceRemaining];
+  initialTravelEstimates2 = [(CPManeuver *)self initialTravelEstimates];
+  [initialTravelEstimates2 timeRemaining];
+  v9 = [(CPTravelEstimates *)v5 initWithDistanceRemaining:distanceRemaining distanceRemainingToDisplay:displayCopy timeRemaining:?];
 
   [(CPManeuver *)self setInitialTravelEstimates:v9];
 }
@@ -667,7 +667,7 @@ void __46__CPManeuver_CPAccNavUpdate__accNavParameters__block_invoke()
   block[1] = 3221225472;
   block[2] = __53__CPManeuver_CPAccNavUpdate__accNavParametersIndexed__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (accNavParametersIndexed_onceToken_0 != -1)
   {
     dispatch_once(&accNavParametersIndexed_onceToken_0, block);
@@ -693,7 +693,7 @@ uint64_t __53__CPManeuver_CPAccNavUpdate__accNavParametersIndexed__block_invoke(
   block[1] = 3221225472;
   block[2] = __56__CPManeuver_CPAccNavUpdate__accNavParameterKeysIndexed__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (accNavParameterKeysIndexed_onceToken_0 != -1)
   {
     dispatch_once(&accNavParameterKeysIndexed_onceToken_0, block);
@@ -713,15 +713,15 @@ uint64_t __56__CPManeuver_CPAccNavUpdate__accNavParameterKeysIndexed__block_invo
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (CPManeuver)maneuverWithComponent:(id)a3
+- (CPManeuver)maneuverWithComponent:(id)component
 {
   v4 = MEMORY[0x277CE82E8];
-  v5 = a3;
+  componentCopy = component;
   v6 = [v4 alloc];
-  v7 = [v5 component];
-  v8 = [v6 initWithManeuver:self component:v7];
+  component = [componentCopy component];
+  v8 = [v6 initWithManeuver:self component:component];
 
-  v9 = [objc_alloc(MEMORY[0x277CF8A98]) initWithComponent:v5 accNavInfo:v8];
+  v9 = [objc_alloc(MEMORY[0x277CF8A98]) initWithComponent:componentCopy accNavInfo:v8];
 
   return v9;
 }

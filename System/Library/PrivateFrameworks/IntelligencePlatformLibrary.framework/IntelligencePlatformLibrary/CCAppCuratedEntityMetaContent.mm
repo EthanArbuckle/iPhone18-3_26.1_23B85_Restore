@@ -1,26 +1,26 @@
 @interface CCAppCuratedEntityMetaContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCAppCuratedEntityMetaContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCAppCuratedEntityMetaContent)initWithSourceItemIdentifier:(id)a3 relevancyScore:(id)a4 error:(id *)a5;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCAppCuratedEntityMetaContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCAppCuratedEntityMetaContent)initWithSourceItemIdentifier:(id)identifier relevancyScore:(id)score error:(id *)error;
 - (NSString)sourceItemIdentifier;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCAppCuratedEntityMetaContent
 
-- (CCAppCuratedEntityMetaContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCAppCuratedEntityMetaContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"sourceItemIdentifier"];
-    v10 = [v6 objectForKeyedSubscript:@"relevancyScore"];
-    v11 = [[CCAppCuratedEntityMetaContent alloc] initWithSourceItemIdentifier:v9 relevancyScore:v10 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"sourceItemIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"relevancyScore"];
+    v11 = [[CCAppCuratedEntityMetaContent alloc] initWithSourceItemIdentifier:v9 relevancyScore:v10 error:error];
   }
 
   else
@@ -37,8 +37,8 @@
   v3 = objc_opt_new();
   if (self->_sourceItemIdentifier)
   {
-    v4 = [(CCAppCuratedEntityMetaContent *)self sourceItemIdentifier];
-    [v3 setObject:v4 forKeyedSubscript:@"sourceItemIdentifier"];
+    sourceItemIdentifier = [(CCAppCuratedEntityMetaContent *)self sourceItemIdentifier];
+    [v3 setObject:sourceItemIdentifier forKeyedSubscript:@"sourceItemIdentifier"];
   }
 
   if (self->_hasRelevancyScore)
@@ -54,13 +54,13 @@
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v9 = a3;
+  blockCopy = block;
   if (self->_sourceItemIdentifier)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:39434 stringValue:self->_sourceItemIdentifier];
-    v9[2](v9, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_hasRelevancyScore)
@@ -68,7 +68,7 @@
     v6 = objc_alloc(MEMORY[0x1E69939F0]);
     *&v7 = self->_relevancyScore;
     v8 = [v6 initWithFieldType:39435 floatValue:v7];
-    v9[2](v9, v8);
+    blockCopy[2](blockCopy, v8);
   }
 }
 
@@ -79,10 +79,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -203,11 +203,11 @@ LABEL_28:
 
         v29 = objc_opt_class();
         NSStringFromClass(v29);
-        v31 = v30 = v5;
+        v31 = v30 = dataCopy;
         v32 = *&v6[*v9];
         v10 = CCSkipFieldErrorForMessage();
 
-        v5 = v30;
+        dataCopy = v30;
       }
 
 LABEL_33:
@@ -247,15 +247,15 @@ LABEL_40:
   return v36;
 }
 
-- (CCAppCuratedEntityMetaContent)initWithSourceItemIdentifier:(id)a3 relevancyScore:(id)a4 error:(id *)a5
+- (CCAppCuratedEntityMetaContent)initWithSourceItemIdentifier:(id)identifier relevancyScore:(id)score error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  scoreCopy = score;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!identifierCopy)
   {
     v12 = 0;
-    if (!v9)
+    if (!scoreCopy)
     {
       goto LABEL_8;
     }
@@ -269,12 +269,12 @@ LABEL_6:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v16 = 0;
+      selfCopy = 0;
       v12 = v14;
       goto LABEL_11;
     }
 
-    [v9 floatValue];
+    [scoreCopy floatValue];
     CCPBDataWriterWriteFloatField();
     v12 = v14;
     goto LABEL_8;
@@ -286,35 +286,35 @@ LABEL_6:
   if (!v11)
   {
     CCSetError();
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
   CCPBDataWriterWriteStringField();
-  if (v9)
+  if (scoreCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  v15 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v15 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v16 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v16;
+  return selfCopy;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
   v3 = @"AppCuratedEntityMetaContent_relevancyScore";
-  if (a3 != 39435)
+  if (identifier != 39435)
   {
     v3 = 0;
   }
 
-  if (a3 == 39434)
+  if (identifier == 39434)
   {
     return @"AppCuratedEntityMetaContent_sourceItemIdentifier";
   }

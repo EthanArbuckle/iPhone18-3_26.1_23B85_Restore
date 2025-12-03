@@ -1,10 +1,10 @@
 @interface AVPlayerTaggedBufferOutput
-+ (AVPlayerTaggedBufferOutput)taggedBufferOutputWithVideoOutput:(id)a3;
++ (AVPlayerTaggedBufferOutput)taggedBufferOutputWithVideoOutput:(id)output;
 - (AVPlayerTaggedBufferOutput)init;
-- (AVPlayerTaggedBufferOutput)initWithSpecification:(id)a3;
-- (AVPlayerTaggedBufferOutput)initWithVideoOutput:(id)a3;
-- (BOOL)hasNewTaggedBufferGroupForHostTime:(id *)a3;
-- (OpaqueCMTaggedBufferGroup)copyTaggedBufferGroupForHostTime:(id *)a3 presentationTimeStamp:(id *)a4;
+- (AVPlayerTaggedBufferOutput)initWithSpecification:(id)specification;
+- (AVPlayerTaggedBufferOutput)initWithVideoOutput:(id)output;
+- (BOOL)hasNewTaggedBufferGroupForHostTime:(id *)time;
+- (OpaqueCMTaggedBufferGroup)copyTaggedBufferGroupForHostTime:(id *)time presentationTimeStamp:(id *)stamp;
 - (id)realOutput;
 - (void)dealloc;
 @end
@@ -20,21 +20,21 @@
   objc_exception_throw(v12);
 }
 
-- (AVPlayerTaggedBufferOutput)initWithSpecification:(id)a3
+- (AVPlayerTaggedBufferOutput)initWithSpecification:(id)specification
 {
-  v4 = -[AVPlayerVideoOutput initWithSpecification:]([AVPlayerVideoOutput alloc], "initWithSpecification:", [a3 realSpecification]);
+  v4 = -[AVPlayerVideoOutput initWithSpecification:]([AVPlayerVideoOutput alloc], "initWithSpecification:", [specification realSpecification]);
 
   return [(AVPlayerTaggedBufferOutput *)self initWithVideoOutput:v4];
 }
 
-- (AVPlayerTaggedBufferOutput)initWithVideoOutput:(id)a3
+- (AVPlayerTaggedBufferOutput)initWithVideoOutput:(id)output
 {
   v6.receiver = self;
   v6.super_class = AVPlayerTaggedBufferOutput;
   v4 = [(AVPlayerTaggedBufferOutput *)&v6 init];
   if (v4)
   {
-    v4->_realOutput = a3;
+    v4->_realOutput = output;
   }
 
   return v4;
@@ -47,9 +47,9 @@
   [(AVPlayerTaggedBufferOutput *)&v3 dealloc];
 }
 
-+ (AVPlayerTaggedBufferOutput)taggedBufferOutputWithVideoOutput:(id)a3
++ (AVPlayerTaggedBufferOutput)taggedBufferOutputWithVideoOutput:(id)output
 {
-  v3 = [[AVPlayerTaggedBufferOutput alloc] initWithVideoOutput:a3];
+  v3 = [[AVPlayerTaggedBufferOutput alloc] initWithVideoOutput:output];
 
   return v3;
 }
@@ -61,18 +61,18 @@
   return v2;
 }
 
-- (BOOL)hasNewTaggedBufferGroupForHostTime:(id *)a3
+- (BOOL)hasNewTaggedBufferGroupForHostTime:(id *)time
 {
   realOutput = self->_realOutput;
-  v5 = *a3;
+  v5 = *time;
   return [(AVPlayerVideoOutput *)realOutput hasNewTaggedBufferGroupForHostTime:&v5];
 }
 
-- (OpaqueCMTaggedBufferGroup)copyTaggedBufferGroupForHostTime:(id *)a3 presentationTimeStamp:(id *)a4
+- (OpaqueCMTaggedBufferGroup)copyTaggedBufferGroupForHostTime:(id *)time presentationTimeStamp:(id *)stamp
 {
   realOutput = self->_realOutput;
-  v6 = *a3;
-  return [(AVPlayerVideoOutput *)realOutput copyTaggedBufferGroupForHostTime:&v6 presentationTimeStamp:a4 activeConfiguration:0];
+  v6 = *time;
+  return [(AVPlayerVideoOutput *)realOutput copyTaggedBufferGroupForHostTime:&v6 presentationTimeStamp:stamp activeConfiguration:0];
 }
 
 @end

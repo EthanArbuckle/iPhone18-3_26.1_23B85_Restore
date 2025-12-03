@@ -6,16 +6,16 @@
 
 - (id)navigationControl
 {
-  v2 = [a1 parentViewController];
-  v3 = [a1 parentViewController];
-  v4 = [v3 conformsToProtocol:&unk_286E28918];
+  parentViewController = [self parentViewController];
+  parentViewController2 = [self parentViewController];
+  v4 = [parentViewController2 conformsToProtocol:&unk_286E28918];
 
-  if (!v4 || (v5 = v2) == 0)
+  if (!v4 || (navigationControl = parentViewController) == 0)
   {
-    v5 = [v2 navigationControl];
+    navigationControl = [parentViewController navigationControl];
   }
 
-  return v5;
+  return navigationControl;
 }
 
 @end

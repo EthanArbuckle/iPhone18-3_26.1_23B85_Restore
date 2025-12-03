@@ -1,65 +1,65 @@
 @interface REElementDataSourceUpdate
-+ (id)insertElement:(id)a3 inSection:(id)a4;
-+ (id)refreshElement:(id)a3 inSection:(id)a4;
-+ (id)reloadElement:(id)a3 inSection:(id)a4;
-+ (id)removeElement:(id)a3 inSection:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (REElementDataSourceUpdate)initWithElement:(id)a3 section:(id)a4 updateType:(unint64_t)a5;
++ (id)insertElement:(id)element inSection:(id)section;
++ (id)refreshElement:(id)element inSection:(id)section;
++ (id)reloadElement:(id)element inSection:(id)section;
++ (id)removeElement:(id)element inSection:(id)section;
+- (BOOL)isEqual:(id)equal;
+- (REElementDataSourceUpdate)initWithElement:(id)element section:(id)section updateType:(unint64_t)type;
 - (unint64_t)hash;
 @end
 
 @implementation REElementDataSourceUpdate
 
-- (REElementDataSourceUpdate)initWithElement:(id)a3 section:(id)a4 updateType:(unint64_t)a5
+- (REElementDataSourceUpdate)initWithElement:(id)element section:(id)section updateType:(unint64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  elementCopy = element;
+  sectionCopy = section;
   v14.receiver = self;
   v14.super_class = REElementDataSourceUpdate;
   v11 = [(REElementDataSourceUpdate *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_element, a3);
-    objc_storeStrong(&v12->_section, a4);
-    v12->_type = a5;
+    objc_storeStrong(&v11->_element, element);
+    objc_storeStrong(&v12->_section, section);
+    v12->_type = type;
   }
 
   return v12;
 }
 
-+ (id)reloadElement:(id)a3 inSection:(id)a4
++ (id)reloadElement:(id)element inSection:(id)section
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithElement:v6 section:v5 updateType:0];
+  sectionCopy = section;
+  elementCopy = element;
+  v7 = [objc_alloc(objc_opt_class()) initWithElement:elementCopy section:sectionCopy updateType:0];
 
   return v7;
 }
 
-+ (id)insertElement:(id)a3 inSection:(id)a4
++ (id)insertElement:(id)element inSection:(id)section
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithElement:v6 section:v5 updateType:2];
+  sectionCopy = section;
+  elementCopy = element;
+  v7 = [objc_alloc(objc_opt_class()) initWithElement:elementCopy section:sectionCopy updateType:2];
 
   return v7;
 }
 
-+ (id)removeElement:(id)a3 inSection:(id)a4
++ (id)removeElement:(id)element inSection:(id)section
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithElement:v6 section:v5 updateType:1];
+  sectionCopy = section;
+  elementCopy = element;
+  v7 = [objc_alloc(objc_opt_class()) initWithElement:elementCopy section:sectionCopy updateType:1];
 
   return v7;
 }
 
-+ (id)refreshElement:(id)a3 inSection:(id)a4
++ (id)refreshElement:(id)element inSection:(id)section
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithElement:v6 section:v5 updateType:4];
+  sectionCopy = section;
+  elementCopy = element;
+  v7 = [objc_alloc(objc_opt_class()) initWithElement:elementCopy section:sectionCopy updateType:4];
 
   return v7;
 }
@@ -74,13 +74,13 @@
   return v4 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(REElement *)self->_element isEqual:v5[1]]&& [(NSString *)self->_section isEqualToString:v5[3]]&& self->_type == v5[2];
   }
 

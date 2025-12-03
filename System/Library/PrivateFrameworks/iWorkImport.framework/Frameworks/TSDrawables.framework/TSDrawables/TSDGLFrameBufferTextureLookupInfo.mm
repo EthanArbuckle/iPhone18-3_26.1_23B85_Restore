@@ -1,9 +1,9 @@
 @interface TSDGLFrameBufferTextureLookupInfo
 + (id)invalidTextureLookupInfo;
-+ (id)textureLookupInfoWithAttachment:(unsigned int)a3 indexOnAttachment:(int64_t)a4 textureName:(unsigned int)a5 textureSize:(CGSize)a6 name:(id)a7 target:(unsigned int)a8;
++ (id)textureLookupInfoWithAttachment:(unsigned int)attachment indexOnAttachment:(int64_t)onAttachment textureName:(unsigned int)name textureSize:(CGSize)size name:(id)a7 target:(unsigned int)target;
 - (CGSize)textureSize;
 - (NSString)name;
-- (TSDGLFrameBufferTextureLookupInfo)initWithAttachment:(unsigned int)a3 indexOnAttachment:(int64_t)a4 textureName:(unsigned int)a5 textureSize:(CGSize)a6 name:(id)a7 target:(unsigned int)a8 valid:(BOOL)a9;
+- (TSDGLFrameBufferTextureLookupInfo)initWithAttachment:(unsigned int)attachment indexOnAttachment:(int64_t)onAttachment textureName:(unsigned int)name textureSize:(CGSize)size name:(id)a7 target:(unsigned int)target valid:(BOOL)valid;
 - (id)description;
 - (int64_t)indexOnAttachment;
 - (unsigned)attachment;
@@ -14,24 +14,24 @@
 
 @implementation TSDGLFrameBufferTextureLookupInfo
 
-- (TSDGLFrameBufferTextureLookupInfo)initWithAttachment:(unsigned int)a3 indexOnAttachment:(int64_t)a4 textureName:(unsigned int)a5 textureSize:(CGSize)a6 name:(id)a7 target:(unsigned int)a8 valid:(BOOL)a9
+- (TSDGLFrameBufferTextureLookupInfo)initWithAttachment:(unsigned int)attachment indexOnAttachment:(int64_t)onAttachment textureName:(unsigned int)name textureSize:(CGSize)size name:(id)a7 target:(unsigned int)target valid:(BOOL)valid
 {
-  height = a6.height;
-  width = a6.width;
+  height = size.height;
+  width = size.width;
   v22.receiver = self;
   v22.super_class = TSDGLFrameBufferTextureLookupInfo;
   v17 = [(TSDGLFrameBufferTextureLookupInfo *)&v22 init];
   v20 = v17;
   if (v17)
   {
-    v17->_indexOnAttachment = a4;
-    v17->_attachment = a3;
-    v17->_textureName = a5;
+    v17->_indexOnAttachment = onAttachment;
+    v17->_attachment = attachment;
+    v17->_textureName = name;
     v17->_textureSize.width = width;
     v17->_textureSize.height = height;
     v17->_name = objc_msgSend_copy(a7, v18, v19);
-    v20->_target = a8;
-    v20->_valid = a9;
+    v20->_target = target;
+    v20->_valid = valid;
   }
 
   return v20;
@@ -44,15 +44,15 @@
   [(TSDGLFrameBufferTextureLookupInfo *)&v3 dealloc];
 }
 
-+ (id)textureLookupInfoWithAttachment:(unsigned int)a3 indexOnAttachment:(int64_t)a4 textureName:(unsigned int)a5 textureSize:(CGSize)a6 name:(id)a7 target:(unsigned int)a8
++ (id)textureLookupInfoWithAttachment:(unsigned int)attachment indexOnAttachment:(int64_t)onAttachment textureName:(unsigned int)name textureSize:(CGSize)size name:(id)a7 target:(unsigned int)target
 {
-  v8 = *&a8;
-  height = a6.height;
-  width = a6.width;
-  v12 = *&a5;
-  v14 = *&a3;
+  v8 = *&target;
+  height = size.height;
+  width = size.width;
+  v12 = *&name;
+  v14 = *&attachment;
   v15 = objc_alloc(objc_opt_class());
-  v17 = objc_msgSend_initWithAttachment_indexOnAttachment_textureName_textureSize_name_target_valid_(v15, v16, v14, a4, v12, a7, v8, 1, width, height);
+  v17 = objc_msgSend_initWithAttachment_indexOnAttachment_textureName_textureSize_name_target_valid_(v15, v16, v14, onAttachment, v12, a7, v8, 1, width, height);
 
   return v17;
 }

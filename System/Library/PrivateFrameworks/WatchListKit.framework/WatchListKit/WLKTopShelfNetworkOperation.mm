@@ -1,13 +1,13 @@
 @interface WLKTopShelfNetworkOperation
-- (WLKTopShelfNetworkOperation)initWithEndPoint:(id)a3 queryParameters:(id)a4 ignoreCache:(BOOL)a5;
+- (WLKTopShelfNetworkOperation)initWithEndPoint:(id)point queryParameters:(id)parameters ignoreCache:(BOOL)cache;
 - (void)processResponse;
 @end
 
 @implementation WLKTopShelfNetworkOperation
 
-- (WLKTopShelfNetworkOperation)initWithEndPoint:(id)a3 queryParameters:(id)a4 ignoreCache:(BOOL)a5
+- (WLKTopShelfNetworkOperation)initWithEndPoint:(id)point queryParameters:(id)parameters ignoreCache:(BOOL)cache
 {
-  if (a5)
+  if (cache)
   {
     v7 = 9;
   }
@@ -18,10 +18,10 @@
   }
 
   v8 = MEMORY[0x277CCABB0];
-  v9 = a4;
-  v10 = a3;
+  parametersCopy = parameters;
+  pointCopy = point;
   v11 = [v8 numberWithDouble:15.0];
-  v12 = [WLKURLRequestProperties requestPropertiesWithEndpoint:v10 queryParameters:v9 httpMethod:0 headers:0 caller:0 timeout:v11 apiVersion:&unk_288222BA8 options:v7];
+  v12 = [WLKURLRequestProperties requestPropertiesWithEndpoint:pointCopy queryParameters:parametersCopy httpMethod:0 headers:0 caller:0 timeout:v11 apiVersion:&unk_288222BA8 options:v7];
 
   v15.receiver = self;
   v15.super_class = WLKTopShelfNetworkOperation;
@@ -32,9 +32,9 @@
 
 - (void)processResponse
 {
-  v3 = [(WLKUTSNetworkRequestOperation *)self responseDictionary];
+  responseDictionary = [(WLKUTSNetworkRequestOperation *)self responseDictionary];
   payload = self->_payload;
-  self->_payload = v3;
+  self->_payload = responseDictionary;
 
   MEMORY[0x2821F96F8]();
 }

@@ -1,29 +1,29 @@
 @interface PXCPLUIStatusProvider
 - (PXCPLUIStatusProvider)init;
-- (PXCPLUIStatusProvider)initWithPhotoLibrary:(id)a3 actionManager:(id)a4 presentationStyle:(unint64_t)a5;
-- (PXCPLUIStatusProvider)initWithStatusProvider:(id)a3 actionManager:(id)a4 presentationStyle:(unint64_t)a5;
-- (void)_statusDidChange:(id)a3;
+- (PXCPLUIStatusProvider)initWithPhotoLibrary:(id)library actionManager:(id)manager presentationStyle:(unint64_t)style;
+- (PXCPLUIStatusProvider)initWithStatusProvider:(id)provider actionManager:(id)manager presentationStyle:(unint64_t)style;
+- (void)_statusDidChange:(id)change;
 - (void)_updateStatus;
 - (void)_updateStatusProviderMonitor;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXCPLUIStatusProvider
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (PXCPLStatusProviderMonitorObservationContext == a5)
+  observableCopy = observable;
+  if (PXCPLStatusProviderMonitorObservationContext == context)
   {
     [(PXCPLUIStatusProvider *)self _updateStatusProviderMonitor];
   }
 
   else
   {
-    if (PXCPLStatusProviderObservationContext != a5)
+    if (PXCPLStatusProviderObservationContext != context)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"PXCPLUIStatusProvider.m" lineNumber:1252 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLUIStatusProvider.m" lineNumber:1252 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -34,28 +34,28 @@
 
 - (void)_updateStatus
 {
-  v3 = [(PXCPLStatusProvider *)self->_statusProvider status];
-  [(PXCPLUIStatusProvider *)self _statusDidChange:v3];
+  status = [(PXCPLStatusProvider *)self->_statusProvider status];
+  [(PXCPLUIStatusProvider *)self _statusDidChange:status];
 }
 
 - (void)_updateStatusProviderMonitor
 {
   [(PXCPLStatusProvider *)self->_statusProvider unregisterChangeObserver:self context:PXCPLStatusProviderObservationContext];
-  v3 = [(PXCPLStatusProviderMonitor *)self->_statusProviderMonitor statusProvider];
+  statusProvider = [(PXCPLStatusProviderMonitor *)self->_statusProviderMonitor statusProvider];
   statusProvider = self->_statusProvider;
-  self->_statusProvider = v3;
+  self->_statusProvider = statusProvider;
 
   [(PXCPLStatusProvider *)self->_statusProvider registerChangeObserver:self context:PXCPLStatusProviderObservationContext];
 
   [(PXCPLUIStatusProvider *)self _updateStatus];
 }
 
-- (void)_statusDidChange:(id)a3
+- (void)_statusDidChange:(id)change
 {
   v153 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ![v4 isEnabled])
+  changeCopy = change;
+  v5 = changeCopy;
+  if (!changeCopy || ![changeCopy isEnabled])
   {
     v6 = 0;
     goto LABEL_238;
@@ -63,24 +63,24 @@
 
   if ([v5 isInSoftResetSync])
   {
-    v137 = 1;
+    isInHardResetSync = 1;
   }
 
   else
   {
-    v137 = [v5 isInHardResetSync];
+    isInHardResetSync = [v5 isInHardResetSync];
   }
 
   [v5 fractionCompletedForLibraryRebuild];
   v8 = v7;
-  v9 = [v5 syncDate];
+  syncDate = [v5 syncDate];
 
-  v126 = [v5 syncDate];
-  v10 = [v5 exitDate];
-  v125 = [v5 numberOfItemsFailingToUpload];
-  v124 = [v5 numberOfPhotoAssets];
-  v123 = [v5 numberOfVideoAssets];
-  v122 = [v5 numberOfOtherAssets];
+  syncDate2 = [v5 syncDate];
+  exitDate = [v5 exitDate];
+  numberOfItemsFailingToUpload = [v5 numberOfItemsFailingToUpload];
+  numberOfPhotoAssets = [v5 numberOfPhotoAssets];
+  numberOfVideoAssets = [v5 numberOfVideoAssets];
+  numberOfOtherAssets = [v5 numberOfOtherAssets];
   if ([v5 numberOfReferencedItems])
   {
     _PXCPLUIStatusLocalizedString(@"PXCPLStatus_Referenced_NItems");
@@ -88,22 +88,22 @@
     PXLocalizedStringWithValidatedFormat();
   }
 
-  v11 = [v5 sharedLibraryState];
-  v132 = [v5 isUpgradeSuggestedToAccessAllPhotos];
+  sharedLibraryState = [v5 sharedLibraryState];
+  isUpgradeSuggestedToAccessAllPhotos = [v5 isUpgradeSuggestedToAccessAllPhotos];
   v12 = ([v5 isExceedingQuota] & 1) != 0 || objc_msgSend(v5, "cloudQuotaState") == 2;
   if ([v5 sharedLibraryMovingToShared])
   {
-    v13 = [v5 isExceedingSharedLibraryQuota];
+    isExceedingSharedLibraryQuota = [v5 isExceedingSharedLibraryQuota];
   }
 
   else
   {
-    v13 = 1;
+    isExceedingSharedLibraryQuota = 1;
   }
 
   if ([v5 numberOfItemsToUpload])
   {
-    v14 = !v12 | v13;
+    v14 = !v12 | isExceedingSharedLibraryQuota;
   }
 
   else
@@ -111,11 +111,11 @@
     v14 = 0;
   }
 
-  v15 = [v5 sharedLibraryMovingToPersonal];
+  sharedLibraryMovingToPersonal = [v5 sharedLibraryMovingToPersonal];
   if ([v5 sharedLibraryMovingToShared])
   {
     v16 = [v5 isExceedingSharedLibraryQuota] ^ 1;
-    if (!v15)
+    if (!sharedLibraryMovingToPersonal)
     {
       LOBYTE(v16) = 1;
     }
@@ -128,14 +128,14 @@
     v17 = 0;
   }
 
-  v18 = (v11 & 0xFFFFFFFFFFFFFFFELL) == 2 && v10 == 0;
+  v18 = (sharedLibraryState & 0xFFFFFFFFFFFFFFFELL) == 2 && exitDate == 0;
   v19 = !v18;
   v127 = v19;
-  v121 = v9;
-  v129 = v11;
+  v121 = syncDate;
+  v129 = sharedLibraryState;
   if (v18)
   {
-    v135 = [v5 sharedLibraryExitingWithNumberOfAssetsRemaining];
+    sharedLibraryExitingWithNumberOfAssetsRemaining = [v5 sharedLibraryExitingWithNumberOfAssetsRemaining];
     v27 = 0;
     v23 = 0;
     v116 = 0;
@@ -159,7 +159,7 @@ LABEL_37:
       v20 = v22;
     }
 
-    v135 = [v5 numberOfItemsToUpload];
+    sharedLibraryExitingWithNumberOfAssetsRemaining = [v5 numberOfItemsToUpload];
     v23 = 0;
     v116 = 0;
     v24 = 0;
@@ -172,7 +172,7 @@ LABEL_37:
 
   if ([v5 numberOfItemsToAdd])
   {
-    v135 = [v5 numberOfItemsToAdd];
+    sharedLibraryExitingWithNumberOfAssetsRemaining = [v5 numberOfItemsToAdd];
     v27 = 0;
     v23 = 0;
     v116 = 0;
@@ -186,7 +186,7 @@ LABEL_37:
 
   if (v17)
   {
-    v135 = [v5 sharedLibraryMovingToShared];
+    sharedLibraryExitingWithNumberOfAssetsRemaining = [v5 sharedLibraryMovingToShared];
     v27 = 0;
     v23 = 0;
     v25 = 0;
@@ -202,7 +202,7 @@ LABEL_52:
 
   if ([v5 sharedLibraryMovingToPersonal])
   {
-    v135 = [v5 sharedLibraryMovingToPersonal];
+    sharedLibraryExitingWithNumberOfAssetsRemaining = [v5 sharedLibraryMovingToPersonal];
     v27 = 0;
     v116 = 0;
     v25 = 0;
@@ -215,7 +215,7 @@ LABEL_52:
 
   if ([v5 numberOfOriginalsToDownload])
   {
-    v135 = [v5 numberOfOriginalsToDownload];
+    sharedLibraryExitingWithNumberOfAssetsRemaining = [v5 numberOfOriginalsToDownload];
     v27 = 0;
     v23 = 0;
     v116 = 0;
@@ -228,15 +228,15 @@ LABEL_52:
 
   else
   {
-    v83 = [v5 isSyncing];
-    v135 = 0;
+    isSyncing = [v5 isSyncing];
+    sharedLibraryExitingWithNumberOfAssetsRemaining = 0;
     v27 = 0;
     v23 = 0;
     v116 = 0;
     v26 = 0;
-    if (v9)
+    if (syncDate)
     {
-      v84 = v83;
+      v84 = isSyncing;
     }
 
     else
@@ -244,7 +244,7 @@ LABEL_52:
       v84 = 1;
     }
 
-    v85 = v84 | v137;
+    v85 = v84 | isInHardResetSync;
     v25 = v85 ^ 1;
     v138 = v85 & 1;
     v24 = 1;
@@ -252,7 +252,7 @@ LABEL_52:
   }
 
 LABEL_38:
-  v29 = [v5 isExceedingSharedLibraryQuota];
+  isExceedingSharedLibraryQuota2 = [v5 isExceedingSharedLibraryQuota];
   v134 = v5;
   if ([v5 isInHeavyThermalPressure])
   {
@@ -312,7 +312,7 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  if ((v12 & (v27 | v23) | v116 & v29))
+  if ((v12 & (v27 | v23) | v116 & isExceedingSharedLibraryQuota2))
   {
     if ([v5 isExceedingSharedLibraryQuota])
     {
@@ -420,7 +420,7 @@ LABEL_271:
 
   if (v25)
   {
-    if (!v125 || v10)
+    if (!numberOfItemsFailingToUpload || exitDate)
     {
       v34 = 0;
       v30 = 0;
@@ -449,26 +449,26 @@ LABEL_271:
   {
     v30 = 0;
     v32 = 0;
-    v31 = (v23 | v116 | v27 | v26 | v127 ^ 1) & (v137 ^ 1);
+    v31 = (v23 | v116 | v27 | v26 | v127 ^ 1) & (isInHardResetSync ^ 1);
     v34 = 1;
   }
 
 LABEL_61:
-  v35 = [(PXCPLUIStatusProvider *)self presentationStyle];
+  presentationStyle = [(PXCPLUIStatusProvider *)self presentationStyle];
   v36 = -1.0;
   v120 = v34;
-  if (v35 < 2)
+  if (presentationStyle < 2)
   {
-    v37 = [(PXCPLUIStatusProvider *)self presentationStyle];
+    presentationStyle2 = [(PXCPLUIStatusProvider *)self presentationStyle];
     if (v34)
     {
       if (v34 == 2)
       {
-        v38 = [(PXCPLUIStatusProvider *)self currentDateForTesting];
-        v39 = v38;
-        if (v38)
+        currentDateForTesting = [(PXCPLUIStatusProvider *)self currentDateForTesting];
+        v39 = currentDateForTesting;
+        if (currentDateForTesting)
         {
-          v40 = v38;
+          v40 = currentDateForTesting;
         }
 
         else
@@ -479,7 +479,7 @@ LABEL_61:
         v54 = v40;
 
         _RegisterServiceActivity(v138, v54);
-        v119 = _PXCPLStatusPendingStateDescription(2, v138, v32, v137, v135, v129, v37 == 1);
+        v135 = _PXCPLStatusPendingStateDescription(2, v138, v32, isInHardResetSync, sharedLibraryExitingWithNumberOfAssetsRemaining, v129, presentationStyle2 == 1);
         v42 = v32;
         v130 = _PXCPLStatusPausedStateDescription(v32, v116, [v5 hasCloudQuotaOffer]);
         if (v30)
@@ -492,7 +492,7 @@ LABEL_61:
           v55 = -1.0;
         }
 
-        if (v137)
+        if (isInHardResetSync)
         {
           v36 = -1.0;
         }
@@ -509,12 +509,12 @@ LABEL_61:
         goto LABEL_95;
       }
 
-      v46 = [(PXCPLUIStatusProvider *)self currentDateForTesting];
-      v47 = v46;
+      currentDateForTesting2 = [(PXCPLUIStatusProvider *)self currentDateForTesting];
+      v47 = currentDateForTesting2;
       v41 = v31;
-      if (v46)
+      if (currentDateForTesting2)
       {
-        v48 = v46;
+        v48 = currentDateForTesting2;
       }
 
       else
@@ -526,8 +526,8 @@ LABEL_61:
 
       _RegisterServiceActivity(v138, v57);
       v42 = v32;
-      v119 = _PXCPLStatusPendingStateDescription(1, v138, v32, v137, v135, v129, v37 == 1);
-      if (v137)
+      v135 = _PXCPLStatusPendingStateDescription(1, v138, v32, isInHardResetSync, sharedLibraryExitingWithNumberOfAssetsRemaining, v129, presentationStyle2 == 1);
+      if (isInHardResetSync)
       {
         v36 = -1.0;
       }
@@ -540,7 +540,7 @@ LABEL_61:
       goto LABEL_101;
     }
 
-    if (v10)
+    if (exitDate)
     {
       if (PXCPLIsInTestReadonlyMode_onceToken != -1)
       {
@@ -554,13 +554,13 @@ LABEL_61:
         v136 = 0;
         v45 = 0;
         v115 = 0;
-        v119 = @"Read-Only iCloud Photos";
+        v135 = @"Read-Only iCloud Photos";
         v41 = 8;
         v130 = @"Apple Internal. Some interactions with the Cloud might be limited.";
         goto LABEL_189;
       }
 
-      if (v37 == 1)
+      if (presentationStyle2 == 1)
       {
         v58 = @"PXCPLStatus_DisabledAndDeleted_Short";
       }
@@ -571,7 +571,7 @@ LABEL_61:
       }
 
       v59 = _PXCPLUIStatusLocalizedString(v58);
-      if (PXCPLNumberOfCalendarUnitsUntilDate(16, v10) >= 1)
+      if (PXCPLNumberOfCalendarUnitsUntilDate(16, exitDate) >= 1)
       {
         _PXCPLUIStatusLocalizedString(@"PXCPLStatus_DisabledAndDeleted_NDays");
         objc_claimAutoreleasedReturnValue();
@@ -583,7 +583,7 @@ LABEL_61:
       if (v59)
       {
 LABEL_124:
-        if (((v56 == 0) & v132) == 1)
+        if (((v56 == 0) & isUpgradeSuggestedToAccessAllPhotos) == 1)
         {
           v56 = v59;
           v59 = PXLocalizedStringFromTable(@"PXCPLStatusUpgradeSuggestedToAccessAllPhotos", @"PhotosUICore");
@@ -591,7 +591,7 @@ LABEL_124:
           v41 = 11;
         }
 
-        v119 = v59;
+        v135 = v59;
         if (v56)
         {
           v42 = v32;
@@ -614,9 +614,9 @@ LABEL_188:
           v66 = 0;
         }
 
-        if (!v66 && v125)
+        if (!v66 && numberOfItemsFailingToUpload)
         {
-          if (v37 == 1)
+          if (presentationStyle2 == 1)
           {
             v67 = @"PXCPLStatus_Push_Failed_NItems_Short";
           }
@@ -638,12 +638,12 @@ LABEL_188:
           goto LABEL_188;
         }
 
-        v80 = [v5 cloudQuotaTitle];
-        v81 = v80;
-        if (v80)
+        cloudQuotaTitle = [v5 cloudQuotaTitle];
+        v81 = cloudQuotaTitle;
+        if (cloudQuotaTitle)
         {
           v42 = v32;
-          v82 = v80;
+          v82 = cloudQuotaTitle;
         }
 
         else
@@ -682,7 +682,7 @@ LABEL_187:
       v41 = v31;
     }
 
-    if (_HasUploadActivityInLastSeconds(480.0) && (v37 != 1 ? (v61 = @"PXCPLStatus_UploadComplete") : (v61 = @"PXCPLStatus_UploadComplete_Short"), _PXCPLUIStatusLocalizedString(v61), (v62 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (_HasUploadActivityInLastSeconds(480.0) && (presentationStyle2 != 1 ? (v61 = @"PXCPLStatus_UploadComplete") : (v61 = @"PXCPLStatus_UploadComplete_Short"), _PXCPLUIStatusLocalizedString(v61), (v62 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v59 = v62;
     }
@@ -690,11 +690,11 @@ LABEL_187:
     else
     {
       v131 = v56;
-      v63 = [(PXCPLUIStatusProvider *)self currentDateForTesting];
-      v64 = v63;
-      if (v63)
+      currentDateForTesting3 = [(PXCPLUIStatusProvider *)self currentDateForTesting];
+      v64 = currentDateForTesting3;
+      if (currentDateForTesting3)
       {
-        v65 = v63;
+        v65 = currentDateForTesting3;
       }
 
       else
@@ -702,7 +702,7 @@ LABEL_187:
         v65 = [MEMORY[0x1E695DF00] now];
       }
 
-      v59 = _PXCPLStatusLastUpdateDescription(v126, v65, v37 == 1);
+      v59 = _PXCPLStatusLastUpdateDescription(syncDate2, v65, presentationStyle2 == 1);
 
       v56 = v131;
     }
@@ -710,7 +710,7 @@ LABEL_187:
     goto LABEL_124;
   }
 
-  if (v35 != 2)
+  if (presentationStyle != 2)
   {
 LABEL_72:
     v42 = v32;
@@ -719,7 +719,7 @@ LABEL_72:
     v45 = 0;
     v115 = 0;
     v130 = 0;
-    v119 = 0;
+    v135 = 0;
 LABEL_95:
     v41 = v31;
     goto LABEL_189;
@@ -733,11 +733,11 @@ LABEL_95:
       v42 = v32;
       if (v8 == -1.0)
       {
-        if (v135)
+        if (sharedLibraryExitingWithNumberOfAssetsRemaining)
         {
           v60 = MEMORY[0x1E696AEC0];
           v57 = PXLocalizedStringFromTable(@"PXCPLStatus_Sync_%lu_Items_Library", @"PhotosUICore");
-          v119 = [v60 localizedStringWithFormat:v57, v135];
+          v135 = [v60 localizedStringWithFormat:v57, sharedLibraryExitingWithNumberOfAssetsRemaining];
 LABEL_101:
 
           goto LABEL_102;
@@ -751,7 +751,7 @@ LABEL_101:
         v43 = @"PXCPLStatus_Rebuild_Short";
       }
 
-      v119 = PXLocalizedStringFromTable(v43, @"PhotosUICore");
+      v135 = PXLocalizedStringFromTable(v43, @"PhotosUICore");
 LABEL_102:
       v44 = 0;
       v136 = 0;
@@ -777,7 +777,7 @@ LABEL_102:
   v50 = PXLocalizedStringFromTable(v49, @"PhotosUICore");
   [(PXCPLStatusProvider *)self->_statusProvider nextOverrideResumeTimeInterval];
   v52 = vcvtad_u64_f64(v51 / 3600.0);
-  v119 = v50;
+  v135 = v50;
   if (v52 > 11)
   {
     if (v52 != 12)
@@ -813,15 +813,15 @@ LABEL_139:
   }
 
 LABEL_142:
-  v68 = [v5 hasCloudQuotaOffer];
-  v69 = [v5 cloudQuotaActionTitle];
+  hasCloudQuotaOffer = [v5 hasCloudQuotaOffer];
+  cloudQuotaActionTitle = [v5 cloudQuotaActionTitle];
   v70 = PXLocalizedStringFromTable(@"PXCPLStatus_Sync_Paused_AlertTitle", @"PhotosUICore");
   v71 = v70;
   if (v31 == 2)
   {
     v72 = _PXCPLStatusResumeActionConfirmationAlertMessage(v32, v53);
     v73 = v72;
-    v74 = v69;
+    v74 = cloudQuotaActionTitle;
     v75 = _PXCPLStatusResumeActionTitle(v32);
 LABEL_173:
     v78 = v75;
@@ -829,9 +829,9 @@ LABEL_173:
     goto LABEL_174;
   }
 
-  v72 = _PXCPLStatusPausedStateDescription(v32, v116, v68);
+  v72 = _PXCPLStatusPausedStateDescription(v32, v116, hasCloudQuotaOffer);
   v76 = v72;
-  v77 = v69;
+  v77 = cloudQuotaActionTitle;
   v78 = 0;
   if (v31 <= 5)
   {
@@ -906,7 +906,7 @@ LABEL_174:
   if (v30 && ![v88 length])
   {
     v115 = 1;
-    v89 = _PXCPLStatusPendingStateDescription(2, v138, 1, v137, v135, v129, 0);
+    v89 = _PXCPLStatusPendingStateDescription(2, v138, 1, isInHardResetSync, sharedLibraryExitingWithNumberOfAssetsRemaining, v129, 0);
 
     v130 = 0;
     v136 = v89;
@@ -923,14 +923,14 @@ LABEL_174:
   v45 = v117;
 LABEL_189:
   v6 = objc_alloc_init(PXCPLUIStatus);
-  v90 = [(PXCPLUIStatusProvider *)self actionManager];
+  actionManager = [(PXCPLUIStatusProvider *)self actionManager];
 
   v91 = 0;
   v128 = v42;
-  v133 = v10;
-  if (v41 && v90)
+  v133 = exitDate;
+  if (v41 && actionManager)
   {
-    v92 = [v5 cloudQuotaActionTitle];
+    cloudQuotaActionTitle2 = [v5 cloudQuotaActionTitle];
     if (v41 <= 5)
     {
       if (v41 <= 2)
@@ -1001,7 +1001,7 @@ LABEL_230:
               v44 = *v101;
               v136 = v105;
               v94 = v96;
-              v10 = v133;
+              exitDate = v133;
               v5 = v134;
               goto LABEL_231;
             }
@@ -1122,7 +1122,7 @@ LABEL_232:
   }
 
   LODWORD(v106) = -1.0;
-  [(PXCPLUIStatus *)v6 setStateDescription:v119, v106];
+  [(PXCPLUIStatus *)v6 setStateDescription:v135, v106];
   [(PXCPLUIStatus *)v6 setFailureDescription:v130];
   [(PXCPLUIStatus *)v6 setInternalInformationMessage:v109];
   [(PXCPLUIStatus *)v6 setPaused:v115];
@@ -1138,15 +1138,15 @@ LABEL_232:
   [(PXCPLUIStatus *)v6 setActivity:v138];
   [(PXCPLUIStatus *)v6 setPauseReason:v128];
   [(PXCPLUIStatus *)v6 setServiceAction:v118];
-  [(PXCPLUIStatus *)v6 setInResetSync:v137];
+  [(PXCPLUIStatus *)v6 setInResetSync:isInHardResetSync];
   [(PXCPLUIStatus *)v6 setIsRestoringLibrary:v8 != -1.0];
   [(PXCPLUIStatus *)v6 setHasCompletedInitialSync:v121 != 0];
-  [(PXCPLUIStatus *)v6 setIsExiting:v10 != 0];
-  [(PXCPLUIStatus *)v6 setNumberOfItemsFailingToUpload:v125];
-  [(PXCPLUIStatus *)v6 setIsUpgradeSuggestedToAccessAllPhotos:v132];
-  [(PXCPLUIStatus *)v6 setNumberOfPhotoAssets:v124];
-  [(PXCPLUIStatus *)v6 setNumberOfVideoAssets:v123];
-  [(PXCPLUIStatus *)v6 setNumberOfOtherAssets:v122];
+  [(PXCPLUIStatus *)v6 setIsExiting:exitDate != 0];
+  [(PXCPLUIStatus *)v6 setNumberOfItemsFailingToUpload:numberOfItemsFailingToUpload];
+  [(PXCPLUIStatus *)v6 setIsUpgradeSuggestedToAccessAllPhotos:isUpgradeSuggestedToAccessAllPhotos];
+  [(PXCPLUIStatus *)v6 setNumberOfPhotoAssets:numberOfPhotoAssets];
+  [(PXCPLUIStatus *)v6 setNumberOfVideoAssets:numberOfVideoAssets];
+  [(PXCPLUIStatus *)v6 setNumberOfOtherAssets:numberOfOtherAssets];
 
   v5 = v134;
 LABEL_238:
@@ -1205,19 +1205,19 @@ uint64_t __42__PXCPLUIStatusProvider__statusDidChange___block_invoke_2(uint64_t 
   return [*(a1 + 32) signalChange:*(a1 + 48)];
 }
 
-- (PXCPLUIStatusProvider)initWithPhotoLibrary:(id)a3 actionManager:(id)a4 presentationStyle:(unint64_t)a5
+- (PXCPLUIStatusProvider)initWithPhotoLibrary:(id)library actionManager:(id)manager presentationStyle:(unint64_t)style
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  libraryCopy = library;
+  managerCopy = manager;
+  if (!libraryCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXCPLUIStatusProvider.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLUIStatusProvider.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
-  v11 = [[PXCPLStatusProviderMonitor alloc] initWithPhotoLibrary:v9];
-  v12 = [(PXCPLStatusProviderMonitor *)v11 statusProvider];
-  v13 = [(PXCPLUIStatusProvider *)self initWithStatusProvider:v12 actionManager:v10 presentationStyle:a5];
+  v11 = [[PXCPLStatusProviderMonitor alloc] initWithPhotoLibrary:libraryCopy];
+  statusProvider = [(PXCPLStatusProviderMonitor *)v11 statusProvider];
+  v13 = [(PXCPLUIStatusProvider *)self initWithStatusProvider:statusProvider actionManager:managerCopy presentationStyle:style];
   v14 = v13;
   if (v13)
   {
@@ -1228,24 +1228,24 @@ uint64_t __42__PXCPLUIStatusProvider__statusDidChange___block_invoke_2(uint64_t 
   return v14;
 }
 
-- (PXCPLUIStatusProvider)initWithStatusProvider:(id)a3 actionManager:(id)a4 presentationStyle:(unint64_t)a5
+- (PXCPLUIStatusProvider)initWithStatusProvider:(id)provider actionManager:(id)manager presentationStyle:(unint64_t)style
 {
-  v9 = a3;
-  v10 = a4;
+  providerCopy = provider;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = PXCPLUIStatusProvider;
   v11 = [(PXCPLUIStatusProvider *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_actionManager, a4);
-    objc_storeStrong(&v12->_statusProvider, a3);
-    v12->_presentationStyle = a5;
+    objc_storeStrong(&v11->_actionManager, manager);
+    objc_storeStrong(&v12->_statusProvider, provider);
+    v12->_presentationStyle = style;
     [(PXCPLStatusProvider *)v12->_statusProvider registerChangeObserver:v12 context:PXCPLStatusProviderObservationContext];
-    v13 = [(PXCPLStatusProvider *)v12->_statusProvider status];
-    if (v13)
+    status = [(PXCPLStatusProvider *)v12->_statusProvider status];
+    if (status)
     {
-      [(PXCPLUIStatusProvider *)v12 _statusDidChange:v13];
+      [(PXCPLUIStatusProvider *)v12 _statusDidChange:status];
     }
   }
 
@@ -1254,8 +1254,8 @@ uint64_t __42__PXCPLUIStatusProvider__statusDidChange___block_invoke_2(uint64_t 
 
 - (PXCPLUIStatusProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCPLUIStatusProvider.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXCPLUIStatusProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLUIStatusProvider.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXCPLUIStatusProvider init]"}];
 
   abort();
 }

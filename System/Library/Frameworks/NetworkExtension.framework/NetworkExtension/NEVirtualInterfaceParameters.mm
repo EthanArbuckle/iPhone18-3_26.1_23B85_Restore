@@ -1,55 +1,55 @@
 @interface NEVirtualInterfaceParameters
-- (NEVirtualInterfaceParameters)initWithCoder:(id)a3;
-- (NEVirtualInterfaceParameters)initWithType:(int64_t)a3 maxPendingPackets:(unint64_t)a4 ethernetAddress:(id)a5 mtu:(id)a6;
-- (NEVirtualInterfaceParameters)initWithVirtualInterface:(NEVirtualInterface_s *)a3;
-- (NEVirtualInterface_s)createVirtualInterfaceWithQueue:(id)a3 clientInfo:(void *)a4;
+- (NEVirtualInterfaceParameters)initWithCoder:(id)coder;
+- (NEVirtualInterfaceParameters)initWithType:(int64_t)type maxPendingPackets:(unint64_t)packets ethernetAddress:(id)address mtu:(id)mtu;
+- (NEVirtualInterfaceParameters)initWithVirtualInterface:(NEVirtualInterface_s *)interface;
+- (NEVirtualInterface_s)createVirtualInterfaceWithQueue:(id)queue clientInfo:(void *)info;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEVirtualInterfaceParameters
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NEVirtualInterfaceParameters *)self controlSocket];
-  [v4 encodeObject:v5 forKey:@"controlSocket"];
+  coderCopy = coder;
+  controlSocket = [(NEVirtualInterfaceParameters *)self controlSocket];
+  [coderCopy encodeObject:controlSocket forKey:@"controlSocket"];
 
-  v6 = [(NEVirtualInterfaceParameters *)self name];
-  [v4 encodeObject:v6 forKey:@"name"];
+  name = [(NEVirtualInterfaceParameters *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  [v4 encodeInteger:-[NEVirtualInterfaceParameters type](self forKey:{"type"), @"type"}];
-  [v4 encodeInt64:-[NEVirtualInterfaceParameters maxPendingPackets](self forKey:{"maxPendingPackets"), @"maxPendingPackets"}];
-  v7 = [(NEVirtualInterfaceParameters *)self ethernetAddress];
-  [v4 encodeObject:v7 forKey:@"ethernetAddress"];
+  [coderCopy encodeInteger:-[NEVirtualInterfaceParameters type](self forKey:{"type"), @"type"}];
+  [coderCopy encodeInt64:-[NEVirtualInterfaceParameters maxPendingPackets](self forKey:{"maxPendingPackets"), @"maxPendingPackets"}];
+  ethernetAddress = [(NEVirtualInterfaceParameters *)self ethernetAddress];
+  [coderCopy encodeObject:ethernetAddress forKey:@"ethernetAddress"];
 
   v8 = [(NEVirtualInterfaceParameters *)self mtu];
-  [v4 encodeObject:v8 forKey:@"mtu"];
+  [coderCopy encodeObject:v8 forKey:@"mtu"];
 }
 
-- (NEVirtualInterfaceParameters)initWithCoder:(id)a3
+- (NEVirtualInterfaceParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = NEVirtualInterfaceParameters;
   v5 = [(NEVirtualInterfaceParameters *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"controlSocket"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"controlSocket"];
     controlSocket = v5->_controlSocket;
     v5->_controlSocket = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v8;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_maxPendingPackets = [v4 decodeInt64ForKey:@"maxPendingPackets"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ethernetAddress"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_maxPendingPackets = [coderCopy decodeInt64ForKey:@"maxPendingPackets"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ethernetAddress"];
     ethernetAddress = v5->_ethernetAddress;
     v5->_ethernetAddress = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mtu"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mtu"];
     mtu = v5->_mtu;
     v5->_mtu = v12;
   }
@@ -57,12 +57,12 @@
   return v5;
 }
 
-- (NEVirtualInterface_s)createVirtualInterfaceWithQueue:(id)a3 clientInfo:(void *)a4
+- (NEVirtualInterface_s)createVirtualInterfaceWithQueue:(id)queue clientInfo:(void *)info
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NEVirtualInterfaceParameters *)self controlSocket];
-  v8 = dup([v7 fileDescriptor]);
+  queueCopy = queue;
+  controlSocket = [(NEVirtualInterfaceParameters *)self controlSocket];
+  v8 = dup([controlSocket fileDescriptor]);
 
   if (v8 < 0)
   {
@@ -88,8 +88,8 @@
   else
   {
     v9 = *MEMORY[0x1E695E480];
-    v10 = [(NEVirtualInterfaceParameters *)self name];
-    v11 = NEVirtualInterfaceCreateFromSocketAndName(v9, v8, [v10 UTF8String], -[NEVirtualInterfaceParameters type](self, "type"), v6, a4);
+    name = [(NEVirtualInterfaceParameters *)self name];
+    v11 = NEVirtualInterfaceCreateFromSocketAndName(v9, v8, [name UTF8String], -[NEVirtualInterfaceParameters type](self, "type"), queueCopy, info);
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -108,43 +108,43 @@
   [(NEVirtualInterfaceParameters *)&v3 dealloc];
 }
 
-- (NEVirtualInterfaceParameters)initWithType:(int64_t)a3 maxPendingPackets:(unint64_t)a4 ethernetAddress:(id)a5 mtu:(id)a6
+- (NEVirtualInterfaceParameters)initWithType:(int64_t)type maxPendingPackets:(unint64_t)packets ethernetAddress:(id)address mtu:(id)mtu
 {
-  v11 = a5;
-  v12 = a6;
+  addressCopy = address;
+  mtuCopy = mtu;
   v16.receiver = self;
   v16.super_class = NEVirtualInterfaceParameters;
   v13 = [(NEVirtualInterfaceParameters *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_type = a3;
-    v13->_maxPendingPackets = a4;
-    objc_storeStrong(&v13->_ethernetAddress, a5);
-    objc_storeStrong(&v14->_mtu, a6);
+    v13->_type = type;
+    v13->_maxPendingPackets = packets;
+    objc_storeStrong(&v13->_ethernetAddress, address);
+    objc_storeStrong(&v14->_mtu, mtu);
   }
 
   return v14;
 }
 
-- (NEVirtualInterfaceParameters)initWithVirtualInterface:(NEVirtualInterface_s *)a3
+- (NEVirtualInterfaceParameters)initWithVirtualInterface:(NEVirtualInterface_s *)interface
 {
   v14.receiver = self;
   v14.super_class = NEVirtualInterfaceParameters;
   v4 = [(NEVirtualInterfaceParameters *)&v14 init];
   if (v4)
   {
-    if (a3)
+    if (interface)
     {
-      v5 = [objc_alloc(MEMORY[0x1E696AC00]) initWithFileDescriptor:dup(*(a3 + 74)) closeOnDealloc:1];
+      v5 = [objc_alloc(MEMORY[0x1E696AC00]) initWithFileDescriptor:dup(*(interface + 74)) closeOnDealloc:1];
       controlSocket = v4->_controlSocket;
       v4->_controlSocket = v5;
 
-      v7 = CFStringCreateWithCString(*MEMORY[0x1E695E480], a3 + 265, 0x600u);
+      v7 = CFStringCreateWithCString(*MEMORY[0x1E695E480], interface + 265, 0x600u);
       name = v4->_name;
       v4->_name = &v7->isa;
 
-      v9 = *(a3 + 32);
+      v9 = *(interface + 32);
     }
 
     else

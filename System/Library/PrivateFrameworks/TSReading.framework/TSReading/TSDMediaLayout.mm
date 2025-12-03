@@ -2,13 +2,13 @@
 - (CGRect)alignmentFrame;
 - (CGRect)alignmentFrameInRoot;
 - (CGRect)boundsForStandardKnobs;
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3;
-- (TSDMediaLayout)initWithInfo:(id)a3;
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root;
+- (TSDMediaLayout)initWithInfo:(id)info;
 - (id)mediaInfo;
 - (id)stroke;
-- (void)dynamicStrokeWidthUpdateToValue:(double)a3;
-- (void)processChangedProperty:(int)a3;
-- (void)setGeometry:(id)a3;
+- (void)dynamicStrokeWidthUpdateToValue:(double)value;
+- (void)processChangedProperty:(int)property;
+- (void)setGeometry:(id)geometry;
 @end
 
 @implementation TSDMediaLayout
@@ -26,41 +26,41 @@
   return result;
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
   v7.receiver = self;
   v7.super_class = TSDMediaLayout;
   [(TSDDrawableLayout *)&v7 processChangedProperty:?];
-  if (a3 == 517)
+  if (property == 517)
   {
     [(TSDLayout *)self invalidateFrame];
     [(TSDMediaLayout *)self invalidateAlignmentFrame];
     if (([(TSDInfo *)[(TSDLayout *)self info] isInlineWithText]& 1) != 0 || [(TSDInfo *)[(TSDLayout *)self info] isAnchoredToText])
     {
-      v5 = [(TSDAbstractLayout *)self parent];
-      if (v5)
+      parent = [(TSDAbstractLayout *)self parent];
+      if (parent)
       {
-        v6 = v5;
+        parent2 = parent;
         while ((objc_opt_respondsToSelector() & 1) == 0)
         {
-          v6 = [(TSDAbstractLayout *)v6 parent];
-          if (!v6)
+          parent2 = [(TSDAbstractLayout *)parent2 parent];
+          if (!parent2)
           {
             return;
           }
         }
 
-        [(TSDAbstractLayout *)v6 wrappableChildInvalidated:self];
+        [(TSDAbstractLayout *)parent2 wrappableChildInvalidated:self];
       }
     }
   }
 }
 
-- (TSDMediaLayout)initWithInfo:(id)a3
+- (TSDMediaLayout)initWithInfo:(id)info
 {
   v4.receiver = self;
   v4.super_class = TSDMediaLayout;
-  result = [(TSDLayout *)&v4 initWithInfo:a3];
+  result = [(TSDLayout *)&v4 initWithInfo:info];
   if (result)
   {
     *&result->mMediaInvalidFlags |= 1u;
@@ -84,23 +84,23 @@
     return self->mDynamicStroke;
   }
 
-  v5 = [(TSDMediaLayout *)self mediaInfo];
+  mediaInfo = [(TSDMediaLayout *)self mediaInfo];
 
-  return [v5 stroke];
+  return [mediaInfo stroke];
 }
 
-- (void)dynamicStrokeWidthUpdateToValue:(double)a3
+- (void)dynamicStrokeWidthUpdateToValue:(double)value
 {
-  v5 = [(TSDStroke *)self->mDynamicStroke isFrame];
+  isFrame = [(TSDStroke *)self->mDynamicStroke isFrame];
   mDynamicStroke = self->mDynamicStroke;
-  if (v5)
+  if (isFrame)
   {
-    [(TSDMutableStroke *)mDynamicStroke setAssetScale:a3];
+    [(TSDMutableStroke *)mDynamicStroke setAssetScale:value];
   }
 
   else
   {
-    [(TSDMutableStroke *)mDynamicStroke setWidth:a3];
+    [(TSDMutableStroke *)mDynamicStroke setWidth:value];
   }
 
   [(TSDMediaLayout *)self processChangedProperty:517];
@@ -109,16 +109,16 @@
   [v7 processChangedProperty:517];
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   if ((*&self->mMediaInvalidFlags & 1) == 0)
   {
-    v5 = [(TSDAbstractLayout *)self geometry];
-    if (v5 && (v6 = v5, ![(TSDLayoutGeometry *)v5 differsInMoreThanTranslationFrom:a3]))
+    geometry = [(TSDAbstractLayout *)self geometry];
+    if (geometry && (v6 = geometry, ![(TSDLayoutGeometry *)geometry differsInMoreThanTranslationFrom:geometry]))
     {
-      if (a3)
+      if (geometry)
       {
-        [a3 transform];
+        [geometry transform];
         v8 = v16.f64[1];
         v7 = v16.f64[0];
         v10 = v17.f64[1];
@@ -154,14 +154,14 @@
 
   v15.receiver = self;
   v15.super_class = TSDMediaLayout;
-  [(TSDDrawableLayout *)&v15 setGeometry:a3];
+  [(TSDDrawableLayout *)&v15 setGeometry:geometry];
 }
 
-- (CGRect)computeAlignmentFrameInRoot:(BOOL)a3
+- (CGRect)computeAlignmentFrameInRoot:(BOOL)root
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMediaLayout computeAlignmentFrameInRoot:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMediaLayout.m"), 177, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMediaLayout.m"), 177, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSDMediaLayout computeAlignmentFrameInRoot:]"), 0}]);
 }
 

@@ -1,6 +1,6 @@
 @interface HMFPrivateObjectFormatter
 + (id)defaultFormatter;
-- (id)privateStringForObjectValue:(id)a3;
+- (id)privateStringForObjectValue:(id)value;
 @end
 
 @implementation HMFPrivateObjectFormatter
@@ -12,20 +12,20 @@
   return v2;
 }
 
-- (id)privateStringForObjectValue:(id)a3
+- (id)privateStringForObjectValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 privateDescription];
+    privateDescription = [valueCopy privateDescription];
 LABEL_5:
-    v5 = v4;
+    v5 = privateDescription;
     goto LABEL_7;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 redactedDescription];
+    privateDescription = [valueCopy redactedDescription];
     goto LABEL_5;
   }
 

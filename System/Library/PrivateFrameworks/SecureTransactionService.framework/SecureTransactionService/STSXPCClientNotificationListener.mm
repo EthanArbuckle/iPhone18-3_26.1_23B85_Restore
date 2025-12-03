@@ -1,49 +1,49 @@
 @interface STSXPCClientNotificationListener
 - (BOOL)connected;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSXPCListenerEndpoint)xpcEndpoint;
-- (STSXPCClientNotificationListener)initWithDelegate:(id)a3 queue:(id)a4;
+- (STSXPCClientNotificationListener)initWithDelegate:(id)delegate queue:(id)queue;
 - (STSXPCClientNotificationListenerDelegate)delegate;
-- (id)_asynchronousRemoteProxyWithErrorHandler:(id)a3;
-- (id)_generateFromCredRequest:(id)a3;
+- (id)_asynchronousRemoteProxyWithErrorHandler:(id)handler;
+- (id)_generateFromCredRequest:(id)request;
 - (id)_stsHandoverNotificationListenerCallbackProtocol;
 - (id)_stsHandoverNotificationListenerProtocol;
-- (id)_synchronousRemoteProxyWithErrorHandler:(id)a3;
+- (id)_synchronousRemoteProxyWithErrorHandler:(id)handler;
 - (id)startHandoff;
-- (unint64_t)_translateFromCarrierConnectionStatus:(unint64_t)a3;
-- (void)_executeWhenXPCAvailable:(id)a3;
-- (void)activateISO18013CredentialWithIdentifier:(id)a3 elementSelection:(id)a4 authData:(id)a5 completion:(id)a6;
-- (void)alternativeCarrierConnectedWithStatus:(unint64_t)a3;
-- (void)alternativeCarrierDisconnectedWithStatus:(unint64_t)a3;
-- (void)alternativerCarrierSend:(id)a3 completion:(id)a4;
-- (void)connectionEstablishedWithSTSReaderCryptarch:(id)a3 sessionTranscriptBytes:(id)a4;
+- (unint64_t)_translateFromCarrierConnectionStatus:(unint64_t)status;
+- (void)_executeWhenXPCAvailable:(id)available;
+- (void)activateISO18013CredentialWithIdentifier:(id)identifier elementSelection:(id)selection authData:(id)data completion:(id)completion;
+- (void)alternativeCarrierConnectedWithStatus:(unint64_t)status;
+- (void)alternativeCarrierDisconnectedWithStatus:(unint64_t)status;
+- (void)alternativerCarrierSend:(id)send completion:(id)completion;
+- (void)connectionEstablishedWithSTSReaderCryptarch:(id)cryptarch sessionTranscriptBytes:(id)bytes;
 - (void)dealloc;
 - (void)invalidateXPCConnection;
-- (void)iso18013DecryptedDeviceResponse:(id)a3 sessionDataStatus:(id)a4 mDocResponseStatus:(id)a5 error:(id)a6;
-- (void)processCredentialRequestList:(id)a3 readerAuthInfo:(id)a4;
+- (void)iso18013DecryptedDeviceResponse:(id)response sessionDataStatus:(id)status mDocResponseStatus:(id)responseStatus error:(id)error;
+- (void)processCredentialRequestList:(id)list readerAuthInfo:(id)info;
 - (void)sendConnectionHandoverCompleted;
 - (void)sendConnectionHandoverStarted;
-- (void)sendISO18013SessionData:(id)a3 status:(id)a4 completion:(id)a5;
-- (void)sendISO18013SessionEstablishment:(id)a3 completion:(id)a4;
-- (void)testGetRemoteTransceiverProxyXPCEndpointWithType:(unint64_t)a3 completion:(id)a4;
-- (void)transactionEndedWithIdentifier:(id)a3 error:(id)a4;
-- (void)transactionStarted:(unint64_t)a3;
+- (void)sendISO18013SessionData:(id)data status:(id)status completion:(id)completion;
+- (void)sendISO18013SessionEstablishment:(id)establishment completion:(id)completion;
+- (void)testGetRemoteTransceiverProxyXPCEndpointWithType:(unint64_t)type completion:(id)completion;
+- (void)transactionEndedWithIdentifier:(id)identifier error:(id)error;
+- (void)transactionStarted:(unint64_t)started;
 @end
 
 @implementation STSXPCClientNotificationListener
 
-- (STSXPCClientNotificationListener)initWithDelegate:(id)a3 queue:(id)a4
+- (STSXPCClientNotificationListener)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = STSXPCClientNotificationListener;
   v8 = [(STSXPCClientNotificationListener *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_callbackQueue, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_callbackQueue, queue);
     if (!v9->_callbackQueue)
     {
       v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -65,7 +65,7 @@
 
 - (BOOL)connected
 {
-  v2 = self;
+  selfCopy = self;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_265383F40;
@@ -73,15 +73,15 @@
   v5[4] = self;
   os_unfair_lock_lock(&self->_xpcUpdateLock);
   v3 = sub_265383F40(v5);
-  os_unfair_lock_unlock(&v2->_xpcUpdateLock);
-  LOBYTE(v2) = [v3 BOOLValue];
+  os_unfair_lock_unlock(&selfCopy->_xpcUpdateLock);
+  LOBYTE(selfCopy) = [v3 BOOLValue];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)_executeWhenXPCAvailable:(id)a3
+- (void)_executeWhenXPCAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -90,9 +90,9 @@
   v7[1] = 3221225472;
   v8 = sub_2653840B0;
   v9 = &unk_279B93DB0;
-  v10 = self;
+  selfCopy = self;
   v12 = &v13;
-  v5 = v4;
+  v5 = availableCopy;
   v11 = v5;
   v6 = v7;
   os_unfair_lock_lock(&self->_xpcUpdateLock);
@@ -107,20 +107,20 @@
   _Block_object_dispose(&v13, 8);
 }
 
-- (void)alternativerCarrierSend:(id)a3 completion:(id)a4
+- (void)alternativerCarrierSend:(id)send completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  sendCopy = send;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_265384218;
   v11[3] = &unk_279B93E28;
-  v13 = v8;
+  v13 = completionCopy;
   v14 = a2;
   v11[4] = self;
-  v12 = v7;
-  v9 = v7;
-  v10 = v8;
+  v12 = sendCopy;
+  v9 = sendCopy;
+  v10 = completionCopy;
   [(STSXPCClientNotificationListener *)self _executeWhenXPCAvailable:v11];
 }
 
@@ -172,38 +172,38 @@
   return v3;
 }
 
-- (void)activateISO18013CredentialWithIdentifier:(id)a3 elementSelection:(id)a4 authData:(id)a5 completion:(id)a6
+- (void)activateISO18013CredentialWithIdentifier:(id)identifier elementSelection:(id)selection authData:(id)data completion:(id)completion
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = sub_265387464([STSCredentialSelect alloc], v14, v13, v12);
+  completionCopy = completion;
+  dataCopy = data;
+  selectionCopy = selection;
+  identifierCopy = identifier;
+  v15 = sub_265387464([STSCredentialSelect alloc], identifierCopy, selectionCopy, dataCopy);
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = sub_265384C38;
   v18[3] = &unk_279B93DD8;
   v18[4] = self;
-  v19 = v11;
+  v19 = completionCopy;
   v20 = a2;
-  v16 = v11;
+  v16 = completionCopy;
   v17 = [(STSXPCClientNotificationListener *)self _asynchronousRemoteProxyWithErrorHandler:v18];
   [v17 sendCredentialSelect:v15 callback:v16];
 }
 
-- (void)sendISO18013SessionEstablishment:(id)a3 completion:(id)a4
+- (void)sendISO18013SessionEstablishment:(id)establishment completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_265384F38;
   v14[3] = &unk_279B93DD8;
   v14[4] = self;
-  v8 = v7;
+  v8 = completionCopy;
   v15 = v8;
   v16 = a2;
-  v9 = a3;
+  establishmentCopy = establishment;
   v10 = [(STSXPCClientNotificationListener *)self _asynchronousRemoteProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -211,22 +211,22 @@
   v12[3] = &unk_279B93E00;
   v13 = v8;
   v11 = v8;
-  [v10 iso18013ReaderSendSessionEstablishment:v9 callback:v12];
+  [v10 iso18013ReaderSendSessionEstablishment:establishmentCopy callback:v12];
 }
 
-- (void)sendISO18013SessionData:(id)a3 status:(id)a4 completion:(id)a5
+- (void)sendISO18013SessionData:(id)data status:(id)status completion:(id)completion
 {
-  v9 = a5;
+  completionCopy = completion;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_265385264;
   v17[3] = &unk_279B93DD8;
   v17[4] = self;
-  v10 = v9;
+  v10 = completionCopy;
   v18 = v10;
   v19 = a2;
-  v11 = a4;
-  v12 = a3;
+  statusCopy = status;
+  dataCopy = data;
   v13 = [(STSXPCClientNotificationListener *)self _asynchronousRemoteProxyWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -234,18 +234,18 @@
   v15[3] = &unk_279B93E00;
   v16 = v10;
   v14 = v10;
-  [v13 iso18013ReaderSendSessionData:v12 status:v11 callback:v15];
+  [v13 iso18013ReaderSendSessionData:dataCopy status:statusCopy callback:v15];
 }
 
-- (void)testGetRemoteTransceiverProxyXPCEndpointWithType:(unint64_t)a3 completion:(id)a4
+- (void)testGetRemoteTransceiverProxyXPCEndpointWithType:(unint64_t)type completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_265385570;
   v13[3] = &unk_279B93DD8;
   v13[4] = self;
-  v8 = v7;
+  v8 = completionCopy;
   v14 = v8;
   v15 = a2;
   v9 = [(STSXPCClientNotificationListener *)self _asynchronousRemoteProxyWithErrorHandler:v13];
@@ -255,13 +255,13 @@
   v11[3] = &unk_279B93EA0;
   v12 = v8;
   v10 = v8;
-  [v9 getRemoteTransceiverProxyXPCEndpointWithType:a3 == 0 callback:v11];
+  [v9 getRemoteTransceiverProxyXPCEndpointWithType:type == 0 callback:v11];
 }
 
 - (void)invalidateXPCConnection
 {
-  v3 = [(STSXPCClientNotificationListener *)self xpcConnection];
-  [v3 invalidate];
+  xpcConnection = [(STSXPCClientNotificationListener *)self xpcConnection];
+  [xpcConnection invalidate];
 
   [(STSXPCClientNotificationListener *)self setXpcConnection:0];
 }
@@ -278,40 +278,40 @@
 
 - (NSXPCListenerEndpoint)xpcEndpoint
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(STSXPCClientNotificationListener *)v2 xpc];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(STSXPCClientNotificationListener *)selfCopy xpc];
 
   if (!v3)
   {
-    v4 = [MEMORY[0x277CCAE98] anonymousListener];
-    [(STSXPCClientNotificationListener *)v2 setXpc:v4];
+    anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
+    [(STSXPCClientNotificationListener *)selfCopy setXpc:anonymousListener];
 
-    v5 = [(STSXPCClientNotificationListener *)v2 xpc];
-    [v5 setDelegate:v2];
+    v5 = [(STSXPCClientNotificationListener *)selfCopy xpc];
+    [v5 setDelegate:selfCopy];
 
-    v6 = [(STSXPCClientNotificationListener *)v2 xpc];
+    v6 = [(STSXPCClientNotificationListener *)selfCopy xpc];
     [v6 resume];
   }
 
-  v7 = [(STSXPCClientNotificationListener *)v2 xpc];
-  v8 = [v7 endpoint];
+  v7 = [(STSXPCClientNotificationListener *)selfCopy xpc];
+  endpoint = [v7 endpoint];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v8;
+  return endpoint;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = sub_2653859C4;
   v12 = &unk_279B93EF0;
-  v13 = self;
-  v14 = v5;
-  v6 = v5;
+  selfCopy = self;
+  v14 = connectionCopy;
+  v6 = connectionCopy;
   os_unfair_lock_lock(&self->_xpcUpdateLock);
   v7 = sub_2653859C4(&v9);
   os_unfair_lock_unlock(&self->_xpcUpdateLock);
@@ -320,38 +320,38 @@
   return self;
 }
 
-- (void)transactionStarted:(unint64_t)a3
+- (void)transactionStarted:(unint64_t)started
 {
-  if (a3 - 1 > 3)
+  if (started - 1 > 3)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = qword_2653A6F60[a3 - 1];
+    v3 = qword_2653A6F60[started - 1];
   }
 
-  v4 = [(STSXPCClientNotificationListener *)self delegate];
-  [v4 transactionStarted:v3];
+  delegate = [(STSXPCClientNotificationListener *)self delegate];
+  [delegate transactionStarted:v3];
 }
 
-- (void)processCredentialRequestList:(id)a3 readerAuthInfo:(id)a4
+- (void)processCredentialRequestList:(id)list readerAuthInfo:(id)info
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v10 = [(STSXPCClientNotificationListener *)self delegate];
-  if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+  listCopy = list;
+  infoCopy = info;
+  delegate = [(STSXPCClientNotificationListener *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v47 = v10;
+    v47 = delegate;
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v48 = v6;
-    v12 = v6;
+    v48 = listCopy;
+    v12 = listCopy;
     v13 = [v12 countByEnumeratingWithState:&v50 objects:v54 count:16];
     if (v13)
     {
@@ -388,9 +388,9 @@
       while (v16);
     }
 
-    if (v7)
+    if (infoCopy)
     {
-      v21 = *(v7 + 10);
+      v21 = *(infoCopy + 10);
     }
 
     else
@@ -424,17 +424,17 @@
     v45 = [v11 copy];
     v44 = [STS18013ReaderAuthInfo alloc];
     v46 = v22;
-    if (v7)
+    if (infoCopy)
     {
-      v30 = *(v7 + 1);
-      v31 = *(v7 + 2);
-      v32 = *(v7 + 3);
-      v33 = *(v7 + 4);
-      v43 = *(v7 + 5);
-      v42 = *(v7 + 6);
-      v34 = *(v7 + 7);
-      v35 = *(v7 + 8);
-      v36 = *(v7 + 9);
+      v30 = *(infoCopy + 1);
+      v31 = *(infoCopy + 2);
+      v32 = *(infoCopy + 3);
+      v33 = *(infoCopy + 4);
+      v43 = *(infoCopy + 5);
+      v42 = *(infoCopy + 6);
+      v34 = *(infoCopy + 7);
+      v35 = *(infoCopy + 8);
+      v36 = *(infoCopy + 9);
     }
 
     else
@@ -450,12 +450,12 @@
       v36 = 0;
     }
 
-    v6 = v48;
+    listCopy = v48;
     v37 = v36;
     v41 = v33;
     v38 = [(STS18013ReaderAuthInfo *)v44 initWithIdentifier:v30 organization:v31 organizationUnit:v32 iconData:v33 iconURL:v43 iconMediaType:v42 privacyPolicyURL:v34 merchantCategoryCode:v35 certificateData:v37 readerAnalyticsData:v49];
 
-    v10 = v47;
+    delegate = v47;
     [v47 processISO18013CredentialProposals:v45 readerAuthInfo:v38];
   }
 
@@ -467,53 +467,53 @@
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transactionEndedWithIdentifier:(id)a3 error:(id)a4
+- (void)transactionEndedWithIdentifier:(id)identifier error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STSXPCClientNotificationListener *)self delegate];
-  [v8 transactionEndedWithIdentifier:v7 error:v6];
+  errorCopy = error;
+  identifierCopy = identifier;
+  delegate = [(STSXPCClientNotificationListener *)self delegate];
+  [delegate transactionEndedWithIdentifier:identifierCopy error:errorCopy];
 }
 
-- (void)alternativeCarrierConnectedWithStatus:(unint64_t)a3
+- (void)alternativeCarrierConnectedWithStatus:(unint64_t)status
 {
-  v5 = [(STSXPCClientNotificationListener *)self delegate];
+  delegate = [(STSXPCClientNotificationListener *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 alternativeCarrierConnectedWithStatus:{-[STSXPCClientNotificationListener _translateFromCarrierConnectionStatus:](self, "_translateFromCarrierConnectionStatus:", a3)}];
+    [delegate alternativeCarrierConnectedWithStatus:{-[STSXPCClientNotificationListener _translateFromCarrierConnectionStatus:](self, "_translateFromCarrierConnectionStatus:", status)}];
   }
 }
 
-- (void)alternativeCarrierDisconnectedWithStatus:(unint64_t)a3
+- (void)alternativeCarrierDisconnectedWithStatus:(unint64_t)status
 {
-  v5 = [(STSXPCClientNotificationListener *)self delegate];
+  delegate = [(STSXPCClientNotificationListener *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 alternativeCarrierDisconnectedWithStatus:{-[STSXPCClientNotificationListener _translateFromCarrierConnectionStatus:](self, "_translateFromCarrierConnectionStatus:", a3)}];
+    [delegate alternativeCarrierDisconnectedWithStatus:{-[STSXPCClientNotificationListener _translateFromCarrierConnectionStatus:](self, "_translateFromCarrierConnectionStatus:", status)}];
   }
 }
 
-- (void)iso18013DecryptedDeviceResponse:(id)a3 sessionDataStatus:(id)a4 mDocResponseStatus:(id)a5 error:(id)a6
+- (void)iso18013DecryptedDeviceResponse:(id)response sessionDataStatus:(id)status mDocResponseStatus:(id)responseStatus error:(id)error
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(STSXPCClientNotificationListener *)self delegate];
+  responseCopy = response;
+  statusCopy = status;
+  responseStatusCopy = responseStatus;
+  errorCopy = error;
+  delegate = [(STSXPCClientNotificationListener *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v13 receiveISO18013DeviceResponse:v14 sessionDataStatus:v10 mDocResponseStatus:v11 error:v12];
+    [delegate receiveISO18013DeviceResponse:responseCopy sessionDataStatus:statusCopy mDocResponseStatus:responseStatusCopy error:errorCopy];
   }
 }
 
-- (void)connectionEstablishedWithSTSReaderCryptarch:(id)a3 sessionTranscriptBytes:(id)a4
+- (void)connectionEstablishedWithSTSReaderCryptarch:(id)cryptarch sessionTranscriptBytes:(id)bytes
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(STSXPCClientNotificationListener *)self delegate];
+  cryptarchCopy = cryptarch;
+  bytesCopy = bytes;
+  delegate = [(STSXPCClientNotificationListener *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 connectionEstablishedWithSTSReaderCryptarch:v8 sessionTranscript:v6];
+    [delegate connectionEstablishedWithSTSReaderCryptarch:cryptarchCopy sessionTranscript:bytesCopy];
   }
 }
 
@@ -537,18 +537,18 @@
   return v2;
 }
 
-- (id)_generateFromCredRequest:(id)a3
+- (id)_generateFromCredRequest:(id)request
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  requestCopy = request;
+  v4 = requestCopy;
+  if (!requestCopy)
   {
     v5 = objc_opt_new();
     v6 = 0;
     goto LABEL_5;
   }
 
-  if (!v3[1])
+  if (!requestCopy[1])
   {
     v5 = objc_opt_new();
     v6 = *(v4 + 2);
@@ -605,30 +605,30 @@ LABEL_10:
   return v5;
 }
 
-- (unint64_t)_translateFromCarrierConnectionStatus:(unint64_t)a3
+- (unint64_t)_translateFromCarrierConnectionStatus:(unint64_t)status
 {
-  if (a3 - 1 > 6)
+  if (status - 1 > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_2653A6F80[a3 - 1];
+    return qword_2653A6F80[status - 1];
   }
 }
 
-- (id)_synchronousRemoteProxyWithErrorHandler:(id)a3
+- (id)_synchronousRemoteProxyWithErrorHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_265386D24;
   v9[3] = &unk_279B93F40;
   v9[4] = self;
-  v10 = v5;
+  v10 = handlerCopy;
   v11 = a2;
-  v6 = v5;
+  v6 = handlerCopy;
   os_unfair_lock_lock(&self->_xpcUpdateLock);
   v7 = sub_265386D24(v9);
   os_unfair_lock_unlock(&self->_xpcUpdateLock);
@@ -636,17 +636,17 @@ LABEL_10:
   return v7;
 }
 
-- (id)_asynchronousRemoteProxyWithErrorHandler:(id)a3
+- (id)_asynchronousRemoteProxyWithErrorHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2653870B4;
   v9[3] = &unk_279B93F40;
   v9[4] = self;
-  v10 = v5;
+  v10 = handlerCopy;
   v11 = a2;
-  v6 = v5;
+  v6 = handlerCopy;
   os_unfair_lock_lock(&self->_xpcUpdateLock);
   v7 = sub_2653870B4(v9);
   os_unfair_lock_unlock(&self->_xpcUpdateLock);

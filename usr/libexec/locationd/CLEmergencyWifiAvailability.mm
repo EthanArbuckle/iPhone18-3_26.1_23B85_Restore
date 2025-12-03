@@ -1,11 +1,11 @@
 @interface CLEmergencyWifiAvailability
-- (CLEmergencyWifiAvailability)initWithUniverse:(id)a3;
-- (void)_processReceivedWiFiDeviceLinkScore:(unsigned int)a3;
+- (CLEmergencyWifiAvailability)initWithUniverse:(id)universe;
+- (void)_processReceivedWiFiDeviceLinkScore:(unsigned int)score;
 - (void)_registerForEventsNotification;
 - (void)_registerForLinkChangedNotifications;
 - (void)_registerForLqmScoreNotifications;
 - (void)_registerForWowChangeNotifications;
-- (void)_scheduleWifiArtifactsAllocation:(const char *)a3;
+- (void)_scheduleWifiArtifactsAllocation:(const char *)allocation;
 - (void)_setup;
 - (void)_setupMonitoringEvent;
 - (void)_submitWifiAvailabilityEventToBiome;
@@ -15,7 +15,7 @@
 - (void)_unregisterForLqmScoreNotifications;
 - (void)_unregisterForWowChangeNotifications;
 - (void)dealloc;
-- (void)processReceivedWiFiDeviceLinkScore:(unsigned int)a3;
+- (void)processReceivedWiFiDeviceLinkScore:(unsigned int)score;
 - (void)registerForEventsNotification;
 - (void)setup;
 - (void)submitWifiAvailabilityEventToBiome;
@@ -25,7 +25,7 @@
 
 @implementation CLEmergencyWifiAvailability
 
-- (CLEmergencyWifiAvailability)initWithUniverse:(id)a3
+- (CLEmergencyWifiAvailability)initWithUniverse:(id)universe
 {
   if (qword_1025D4660 != -1)
   {
@@ -51,8 +51,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->fUniverse = a3;
-    v6->fQueue = [objc_msgSend(a3 "silo")];
+    v6->fUniverse = universe;
+    v6->fQueue = [objc_msgSend(universe "silo")];
     v8 = [objc_msgSend(objc_msgSend(objc_msgSend(BiomeLibrary() "Device")];
     v7->fWifiAvailabilityBMSource = v8;
     v9 = v8;
@@ -222,7 +222,7 @@
   [(CLEmergencyWifiAvailability *)self _unregisterForLqmScoreNotifications];
 }
 
-- (void)_scheduleWifiArtifactsAllocation:(const char *)a3
+- (void)_scheduleWifiArtifactsAllocation:(const char *)allocation
 {
   dispatch_assert_queue_V2(self->fQueue);
   if (qword_1025D4660 != -1)
@@ -236,13 +236,13 @@
     *buf = 136315394;
     v8 = "[CLEmergencyWifiAvailability _scheduleWifiArtifactsAllocation:]";
     v9 = 2080;
-    v10 = a3;
+    allocationCopy = allocation;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEBUG, "%s, reason, %s", buf, 0x16u);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_1018844A4(a3);
+    sub_1018844A4(allocation);
   }
 
   block[0] = _NSConcreteStackBlock;
@@ -823,7 +823,7 @@ LABEL_12:
   }
 }
 
-- (void)processReceivedWiFiDeviceLinkScore:(unsigned int)a3
+- (void)processReceivedWiFiDeviceLinkScore:(unsigned int)score
 {
   fQueue = self->fQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -831,13 +831,13 @@ LABEL_12:
   v4[2] = sub_100463224;
   v4[3] = &unk_102455868;
   v4[4] = self;
-  v5 = a3;
+  scoreCopy = score;
   dispatch_async(fQueue, v4);
 }
 
-- (void)_processReceivedWiFiDeviceLinkScore:(unsigned int)a3
+- (void)_processReceivedWiFiDeviceLinkScore:(unsigned int)score
 {
-  v3 = *&a3;
+  v3 = *&score;
   dispatch_assert_queue_V2(self->fQueue);
   fReceivedCallBacks = self->fReceivedCallBacks;
   if (fReceivedCallBacks)

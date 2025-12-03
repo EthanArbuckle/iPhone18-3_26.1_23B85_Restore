@@ -1,6 +1,6 @@
 @interface OADCountedGraphicFeature
-- (OADCountedGraphicFeature)initWithFeature:(id)a3;
-- (int64_t)compareUsageCount:(id)a3;
+- (OADCountedGraphicFeature)initWithFeature:(id)feature;
+- (int64_t)compareUsageCount:(id)count;
 - (void)dealloc;
 @end
 
@@ -16,26 +16,26 @@
   [(OADCountedGraphicFeature *)&v4 dealloc];
 }
 
-- (OADCountedGraphicFeature)initWithFeature:(id)a3
+- (OADCountedGraphicFeature)initWithFeature:(id)feature
 {
-  v5 = a3;
+  featureCopy = feature;
   v9.receiver = self;
   v9.super_class = OADCountedGraphicFeature;
   v6 = [(OADCountedGraphicFeature *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mFeature, a3);
+    objc_storeStrong(&v6->mFeature, feature);
     v7->mUsageCount = 1;
   }
 
   return v7;
 }
 
-- (int64_t)compareUsageCount:(id)a3
+- (int64_t)compareUsageCount:(id)count
 {
   mUsageCount = self->mUsageCount;
-  v4 = *(a3 + 2);
+  v4 = *(count + 2);
   v5 = mUsageCount > v4;
   v6 = mUsageCount != v4;
   if (v5)

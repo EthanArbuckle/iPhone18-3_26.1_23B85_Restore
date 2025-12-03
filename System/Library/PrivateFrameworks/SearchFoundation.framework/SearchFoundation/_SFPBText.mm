@@ -1,33 +1,33 @@
 @interface _SFPBText
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBText)initWithDictionary:(id)a3;
-- (_SFPBText)initWithFacade:(id)a3;
-- (_SFPBText)initWithJSON:(id)a3;
+- (_SFPBText)initWithDictionary:(id)dictionary;
+- (_SFPBText)initWithFacade:(id)facade;
+- (_SFPBText)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setText:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setText:(id)text;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBText
 
-- (_SFPBText)initWithFacade:(id)a3
+- (_SFPBText)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBText *)self init];
   if (v5)
   {
-    v6 = [v4 text];
+    text = [facadeCopy text];
 
-    if (v6)
+    if (text)
     {
-      v7 = [v4 text];
-      [(_SFPBText *)v5 setText:v7];
+      text2 = [facadeCopy text];
+      [(_SFPBText *)v5 setText:text2];
     }
 
-    if ([v4 hasMaxLines])
+    if ([facadeCopy hasMaxLines])
     {
-      -[_SFPBText setMaxLines:](v5, "setMaxLines:", [v4 maxLines]);
+      -[_SFPBText setMaxLines:](v5, "setMaxLines:", [facadeCopy maxLines]);
     }
 
     v8 = v5;
@@ -36,15 +36,15 @@
   return v5;
 }
 
-- (_SFPBText)initWithDictionary:(id)a3
+- (_SFPBText)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _SFPBText;
   v5 = [(_SFPBText *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"text"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"text"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(_SFPBText *)v5 setText:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"maxLines"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"maxLines"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (_SFPBText)initWithJSON:(id)a3
+- (_SFPBText)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBText *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBText *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBText *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,47 +101,47 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_maxLines)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[_SFPBText maxLines](self, "maxLines")}];
-    [v3 setObject:v4 forKeyedSubscript:@"maxLines"];
+    [dictionary setObject:v4 forKeyedSubscript:@"maxLines"];
   }
 
   if (self->_text)
   {
-    v5 = [(_SFPBText *)self text];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"text"];
+    text = [(_SFPBText *)self text];
+    v6 = [text copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"text"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBText *)self text];
-    v6 = [v4 text];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    text = [(_SFPBText *)self text];
+    text2 = [equalCopy text];
+    v7 = text2;
+    if ((text != 0) != (text2 == 0))
     {
-      v8 = [(_SFPBText *)self text];
-      if (!v8)
+      text3 = [(_SFPBText *)self text];
+      if (!text3)
       {
 
 LABEL_10:
         maxLines = self->_maxLines;
-        v13 = maxLines == [v4 maxLines];
+        v13 = maxLines == [equalCopy maxLines];
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBText *)self text];
-      v11 = [v4 text];
-      v12 = [v10 isEqual:v11];
+      v9 = text3;
+      text4 = [(_SFPBText *)self text];
+      text5 = [equalCopy text];
+      v12 = [text4 isEqual:text5];
 
       if (v12)
       {
@@ -160,11 +160,11 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBText *)self text];
-  if (v4)
+  toCopy = to;
+  text = [(_SFPBText *)self text];
+  if (text)
   {
     PBDataWriterWriteStringField();
   }
@@ -175,9 +175,9 @@ LABEL_8:
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   text = self->_text;
   self->_text = v4;
 

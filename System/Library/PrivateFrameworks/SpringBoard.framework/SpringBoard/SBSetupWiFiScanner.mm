@@ -1,10 +1,10 @@
 @interface SBSetupWiFiScanner
-- (void)_thread_callCompletionHandlerWithGuessedCountries:(id)a3;
+- (void)_thread_callCompletionHandlerWithGuessedCountries:(id)countries;
 - (void)_thread_cancelScanning;
 - (void)_thread_closeWifiConnection;
-- (void)_thread_wifiScanComplete:(__CFArray *)a3 error:(BOOL)a4;
+- (void)_thread_wifiScanComplete:(__CFArray *)complete error:(BOOL)error;
 - (void)_wifiScanningThread;
-- (void)beginScanningWithCompletionHandler:(id)a3;
+- (void)beginScanningWithCompletionHandler:(id)handler;
 - (void)cancel;
 - (void)dealloc;
 @end
@@ -19,9 +19,9 @@
   [(SBSetupWiFiScanner *)&v3 dealloc];
 }
 
-- (void)beginScanningWithCompletionHandler:(id)a3
+- (void)beginScanningWithCompletionHandler:(id)handler
 {
-  [(SBSetupWiFiScanner *)self _setCompletionHandler:a3];
+  [(SBSetupWiFiScanner *)self _setCompletionHandler:handler];
   v4 = [objc_alloc(MEMORY[0x277CCACC8]) initWithTarget:self selector:sel__wifiScanningThread object:0];
   [v4 setName:@"com.apple.SpringBoard.BuddyWiFiScanning"];
   [v4 setQualityOfService:17];
@@ -86,13 +86,13 @@ LABEL_11:
   CFRelease(v15);
 }
 
-- (void)_thread_wifiScanComplete:(__CFArray *)a3 error:(BOOL)a4
+- (void)_thread_wifiScanComplete:(__CFArray *)complete error:(BOOL)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v7 = [(SBSetupWiFiScanner *)self _state];
-  if (a3 && v7 != 2)
+  _state = [(SBSetupWiFiScanner *)self _state];
+  if (complete && _state != 2)
   {
-    if (a4)
+    if (error)
     {
       [(SBSetupWiFiScanner *)self _thread_callCompletionHandlerWithGuessedCountries:0];
 LABEL_41:
@@ -102,7 +102,7 @@ LABEL_41:
     }
 
     v8 = objc_autoreleasePoolPush();
-    Count = CFArrayGetCount(a3);
+    Count = CFArrayGetCount(complete);
     if (Count < 1)
     {
       [(SBSetupWiFiScanner *)self _thread_callCompletionHandlerWithGuessedCountries:0];
@@ -118,7 +118,7 @@ LABEL_40:
     v45 = 3;
     do
     {
-      CFArrayGetValueAtIndex(a3, v13);
+      CFArrayGetValueAtIndex(complete, v13);
       if (WiFiNetworkGet11dCountryCodeFromIe())
       {
         v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v46 length:2 encoding:1];
@@ -163,14 +163,14 @@ LABEL_40:
     v37 = 0u;
     v38 = 0u;
     v20 = v12;
-    v21 = [v20 countByEnumeratingWithState:&v37 objects:v48 count:16];
-    if (v21)
+    array = [v20 countByEnumeratingWithState:&v37 objects:v48 count:16];
+    if (array)
     {
       v22 = 0;
       v23 = *v38;
       do
       {
-        for (j = 0; j != v21; j = j + 1)
+        for (j = 0; j != array; j = j + 1)
         {
           if (*v38 != v23)
           {
@@ -184,18 +184,18 @@ LABEL_40:
           }
         }
 
-        v21 = [v20 countByEnumeratingWithState:&v37 objects:v48 count:16];
+        array = [v20 countByEnumeratingWithState:&v37 objects:v48 count:16];
       }
 
-      while (v21);
+      while (array);
 
       if (!v22)
       {
-        v21 = 0;
+        array = 0;
         goto LABEL_39;
       }
 
-      v21 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
@@ -218,7 +218,7 @@ LABEL_40:
             v31 = *(*(&v33 + 1) + 8 * k);
             if ([v26 countForObject:v31] == v22)
             {
-              [v21 addObject:v31];
+              [array addObject:v31];
             }
           }
 
@@ -231,7 +231,7 @@ LABEL_40:
 
 LABEL_39:
     v8 = v32;
-    [(SBSetupWiFiScanner *)self _thread_callCompletionHandlerWithGuessedCountries:v21];
+    [(SBSetupWiFiScanner *)self _thread_callCompletionHandlerWithGuessedCountries:array];
 
     goto LABEL_40;
   }
@@ -260,27 +260,27 @@ LABEL_39:
   }
 }
 
-- (void)_thread_callCompletionHandlerWithGuessedCountries:(id)a3
+- (void)_thread_callCompletionHandlerWithGuessedCountries:(id)countries
 {
-  v6 = a3;
-  v4 = [(SBSetupWiFiScanner *)self _completionHandler];
-  v5 = v4;
-  if (v4)
+  countriesCopy = countries;
+  _completionHandler = [(SBSetupWiFiScanner *)self _completionHandler];
+  v5 = _completionHandler;
+  if (_completionHandler)
   {
-    (*(v4 + 16))(v4, v6);
+    (*(_completionHandler + 16))(_completionHandler, countriesCopy);
     [(SBSetupWiFiScanner *)self _setCompletionHandler:0];
   }
 }
 
 - (void)cancel
 {
-  v3 = [(SBSetupWiFiScanner *)self _scanningThread];
-  if (v3)
+  _scanningThread = [(SBSetupWiFiScanner *)self _scanningThread];
+  if (_scanningThread)
   {
-    v4 = v3;
-    [v3 cancel];
+    v4 = _scanningThread;
+    [_scanningThread cancel];
     [(SBSetupWiFiScanner *)self performSelector:sel__thread_cancelScanning onThread:v4 withObject:0 waitUntilDone:0];
-    v3 = v4;
+    _scanningThread = v4;
   }
 }
 

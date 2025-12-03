@@ -2,12 +2,12 @@
 + (id)sharedMonitor;
 - (BOOL)_hideSensitiveUI;
 - (BOOL)_isVendorRelease;
-- (HKSPSensitiveUIMonitor)initWithCallbackScheduler:(id)a3;
+- (HKSPSensitiveUIMonitor)initWithCallbackScheduler:(id)scheduler;
 - (void)_handleNotification;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)overrideHideSensitiveUI:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)overrideHideSensitiveUI:(BOOL)i;
 @end
 
 @implementation HKSPSensitiveUIMonitor
@@ -49,21 +49,21 @@ void __42__HKSPSensitiveUIMonitor__isVendorRelease__block_invoke()
   _MergedGlobals_14 = [@"Vendor" isEqualToString:v0];
 }
 
-- (HKSPSensitiveUIMonitor)initWithCallbackScheduler:(id)a3
+- (HKSPSensitiveUIMonitor)initWithCallbackScheduler:(id)scheduler
 {
-  v4 = a3;
+  schedulerCopy = scheduler;
   v14.receiver = self;
   v14.super_class = HKSPSensitiveUIMonitor;
   v5 = [(HKSPSensitiveUIMonitor *)&v14 init];
   if (v5)
   {
-    v6 = [[HKSPObserverSet alloc] initWithCallbackScheduler:v4];
+    v6 = [[HKSPObserverSet alloc] initWithCallbackScheduler:schedulerCopy];
     observers = v5->_observers;
     v5->_observers = v6;
 
-    v8 = [MEMORY[0x277CBEBD0] hksp_internalUserDefaults];
+    hksp_internalUserDefaults = [MEMORY[0x277CBEBD0] hksp_internalUserDefaults];
     userDefaults = v5->_userDefaults;
-    v5->_userDefaults = v8;
+    v5->_userDefaults = hksp_internalUserDefaults;
 
     v10 = objc_alloc_init(MEMORY[0x277D2BA60]);
     npsManager = v5->_npsManager;
@@ -86,11 +86,11 @@ void __42__HKSPSensitiveUIMonitor__isVendorRelease__block_invoke()
   [(HKSPSensitiveUIMonitor *)&v3 dealloc];
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -104,7 +104,7 @@ void __42__HKSPSensitiveUIMonitor__isVendorRelease__block_invoke()
     *buf = 138543618;
     v8 = objc_opt_class();
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v4 = v8;
     _os_log_impl(&dword_269A84000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@.%p] sensitiveUIStateChanged", buf, 0x16u);
   }
@@ -128,13 +128,13 @@ void __45__HKSPSensitiveUIMonitor__handleNotification__block_invoke_2(uint64_t a
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"hideAzulSensitiveUI"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"hideAzulSensitiveUI"])
   {
     v13 = HKSPLogForCategory(0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -142,7 +142,7 @@ void __45__HKSPSensitiveUIMonitor__handleNotification__block_invoke_2(uint64_t a
       *buf = 138543618;
       v18 = objc_opt_class();
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       v14 = v18;
       _os_log_impl(&dword_269A84000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@.%p] NSUserDefaults key path changed", buf, 0x16u);
     }
@@ -154,7 +154,7 @@ void __45__HKSPSensitiveUIMonitor__handleNotification__block_invoke_2(uint64_t a
   {
     v16.receiver = self;
     v16.super_class = HKSPSensitiveUIMonitor;
-    [(HKSPSensitiveUIMonitor *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(HKSPSensitiveUIMonitor *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -211,14 +211,14 @@ void __42__HKSPSensitiveUIMonitor__hideSensitiveUI__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = *(v2 + 9);
 }
 
-- (void)overrideHideSensitiveUI:(BOOL)a3
+- (void)overrideHideSensitiveUI:(BOOL)i
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __50__HKSPSensitiveUIMonitor_overrideHideSensitiveUI___block_invoke;
   v4[3] = &unk_279C74040;
   v4[4] = self;
-  v5 = a3;
+  iCopy = i;
   [(HKSPSensitiveUIMonitor *)self _withLock:v4];
   [(HKSPSensitiveUIMonitor *)self _handleNotification];
 }

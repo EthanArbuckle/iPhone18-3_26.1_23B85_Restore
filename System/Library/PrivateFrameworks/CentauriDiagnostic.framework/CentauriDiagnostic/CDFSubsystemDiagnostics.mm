@@ -1,10 +1,10 @@
 @interface CDFSubsystemDiagnostics
-+ (BOOL)collectFileWithRegex:(id)a3 from:(id)a4 to:(id)a5 mostRecent:(unint64_t)a6;
-+ (BOOL)collectFilesWithRegex:(id)a3 from:(id)a4 to:(id)a5;
-+ (BOOL)collectFilesWithRegexes:(id)a3 from:(id)a4 to:(id)a5 mostRecent:(unint64_t)a6;
-+ (BOOL)createSubsystemDirectoryStructure:(id)a3 outputDir:(id)a4 subDirectoryList:(id)a5;
++ (BOOL)collectFileWithRegex:(id)regex from:(id)from to:(id)to mostRecent:(unint64_t)recent;
++ (BOOL)collectFilesWithRegex:(id)regex from:(id)from to:(id)to;
++ (BOOL)collectFilesWithRegexes:(id)regexes from:(id)from to:(id)to mostRecent:(unint64_t)recent;
++ (BOOL)createSubsystemDirectoryStructure:(id)structure outputDir:(id)dir subDirectoryList:(id)list;
 + (BOOL)isCentauriPlatform;
-- (BOOL)collectStateSnapshotsFrom:(id)a3 to:(id)a4 runtimeFlags:(unint64_t)a5;
+- (BOOL)collectStateSnapshotsFrom:(id)from to:(id)to runtimeFlags:(unint64_t)flags;
 - (CDFSubsystemDiagnostics)init;
 @end
 
@@ -20,9 +20,9 @@
   if (v2)
   {
     v2->_buildEnv = 0;
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 bundleIdentifier];
-    [v5 cStringUsingEncoding:4];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [bundleIdentifier cStringUsingEncoding:4];
 
     if ((os_variant_has_internal_diagnostics() & 1) != 0 || os_variant_has_internal_content())
     {
@@ -49,29 +49,29 @@
   return v3;
 }
 
-- (BOOL)collectStateSnapshotsFrom:(id)a3 to:(id)a4 runtimeFlags:(unint64_t)a5
+- (BOOL)collectStateSnapshotsFrom:(id)from to:(id)to runtimeFlags:(unint64_t)flags
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!(self->_buildEnv | a5))
+  fromCopy = from;
+  toCopy = to;
+  if (!(self->_buildEnv | flags))
   {
     goto LABEL_5;
   }
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [v8 path];
-  v12 = [v10 fileExistsAtPath:v11];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [fromCopy path];
+  v12 = [defaultManager fileExistsAtPath:path];
 
   if ((v12 & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v8 path];
+      path2 = [fromCopy path];
       v22 = 136315394;
       v23 = "[CDFSubsystemDiagnostics collectStateSnapshotsFrom:to:runtimeFlags:]";
       v24 = 2114;
-      v25 = v17;
+      v25 = path2;
       v18 = MEMORY[0x277D86220];
       v19 = "CDF: %s: invalid directory path sourcepath: %{public}@";
 LABEL_10:
@@ -83,19 +83,19 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v13 = [MEMORY[0x277CCAA00] defaultManager];
-  v14 = [v9 path];
-  v15 = [v13 fileExistsAtPath:v14];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  path3 = [toCopy path];
+  v15 = [defaultManager2 fileExistsAtPath:path3];
 
   if ((v15 & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v9 path];
+      path2 = [toCopy path];
       v22 = 136315394;
       v23 = "[CDFSubsystemDiagnostics collectStateSnapshotsFrom:to:runtimeFlags:]";
       v24 = 2114;
-      v25 = v17;
+      v25 = path2;
       v18 = MEMORY[0x277D86220];
       v19 = "CDF: %s: invalid directory path destpath: %{public}@";
       goto LABEL_10;
@@ -104,9 +104,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  [CDFSubsystemDiagnostics collectFilesWithRegex:@"^(CentauriConfigAccessLog|CentauriEventLog|CentauriMSILog|CentauriPowerStateLog|CentauriStateDump)\\.txt(\\.synced)?$" from:v8 to:v9];
-  [CDFSubsystemDiagnostics collectFilesWithRegex:@"^(AddFileList|FaultReportState|History)\\.txt(\\.synced)?$" from:v8 to:v9];
-  [CDFSubsystemDiagnostics collectFilesWithRegex:@"^(AirshipStateDump)\\.bin(\\.synced)?$" from:v8 to:v9];
+  [CDFSubsystemDiagnostics collectFilesWithRegex:@"^(CentauriConfigAccessLog|CentauriEventLog|CentauriMSILog|CentauriPowerStateLog|CentauriStateDump)\\.txt(\\.synced)?$" from:fromCopy to:toCopy];
+  [CDFSubsystemDiagnostics collectFilesWithRegex:@"^(AddFileList|FaultReportState|History)\\.txt(\\.synced)?$" from:fromCopy to:toCopy];
+  [CDFSubsystemDiagnostics collectFilesWithRegex:@"^(AirshipStateDump)\\.bin(\\.synced)?$" from:fromCopy to:toCopy];
 LABEL_5:
   v16 = 1;
 LABEL_12:
@@ -115,28 +115,28 @@ LABEL_12:
   return v16;
 }
 
-+ (BOOL)createSubsystemDirectoryStructure:(id)a3 outputDir:(id)a4 subDirectoryList:(id)a5
++ (BOOL)createSubsystemDirectoryStructure:(id)structure outputDir:(id)dir subDirectoryList:(id)list
 {
   v51 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
-  v37 = v8;
-  v10 = a5;
+  structureCopy = structure;
+  dirCopy = dir;
+  v9 = structureCopy;
+  v37 = dirCopy;
+  listCopy = list;
   v11 = 0x277CCA000uLL;
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
-  v13 = [v9 path];
-  v14 = [v12 fileExistsAtPath:v13];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v9 path];
+  v14 = [defaultManager fileExistsAtPath:path];
 
   if (v14)
   {
-    v35 = v12;
-    v36 = v10;
+    v35 = defaultManager;
+    v36 = listCopy;
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    obj = v10;
+    obj = listCopy;
     v15 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v15)
     {
@@ -156,19 +156,19 @@ LABEL_12:
 
           v19 = *(*(&v42 + 1) + 8 * v18);
           v20 = [v9 URLByAppendingPathComponent:v19 isDirectory:{1, v35, v36}];
-          v21 = [*(v11 + 2560) defaultManager];
-          v22 = [v20 path];
-          v23 = [v21 fileExistsAtPath:v22];
+          defaultManager2 = [*(v11 + 2560) defaultManager];
+          path2 = [v20 path];
+          v23 = [defaultManager2 fileExistsAtPath:path2];
 
           if (v23)
           {
             v24 = v17;
             v25 = v9;
             v26 = v11;
-            v27 = [*(v11 + 2560) defaultManager];
+            defaultManager3 = [*(v11 + 2560) defaultManager];
             v28 = [v37 URLByAppendingPathComponent:v19 isDirectory:1];
             v41 = 0;
-            v29 = [v27 createDirectoryAtURL:v28 withIntermediateDirectories:1 attributes:0 error:&v41];
+            v29 = [defaultManager3 createDirectoryAtURL:v28 withIntermediateDirectories:1 attributes:0 error:&v41];
             v30 = v41;
 
             if (v29)
@@ -216,8 +216,8 @@ LABEL_12:
       v40 = 0;
     }
 
-    v12 = v35;
-    v10 = v36;
+    defaultManager = v35;
+    listCopy = v36;
     v32 = v40;
   }
 
@@ -239,25 +239,25 @@ LABEL_12:
   return v32 & 1;
 }
 
-+ (BOOL)collectFilesWithRegex:(id)a3 from:(id)a4 to:(id)a5
++ (BOOL)collectFilesWithRegex:(id)regex from:(id)from to:(id)to
 {
   v69 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [v8 path];
-  LOBYTE(a4) = [v10 fileExistsAtPath:v11];
+  regexCopy = regex;
+  fromCopy = from;
+  toCopy = to;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [fromCopy path];
+  LOBYTE(from) = [defaultManager fileExistsAtPath:path];
 
-  if ((a4 & 1) == 0)
+  if ((from & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [v8 path];
+      path2 = [fromCopy path];
       *buf = 136315394;
       v64 = "+[CDFSubsystemDiagnostics collectFilesWithRegex:from:to:]";
       v65 = 2114;
-      v66 = v33;
+      v66 = path2;
       v34 = MEMORY[0x277D86220];
       v35 = "CDF: %s: invalid directory path sourcepath: %{public}@";
 LABEL_25:
@@ -269,18 +269,18 @@ LABEL_26:
     goto LABEL_35;
   }
 
-  v12 = [v9 path];
-  v13 = [v10 fileExistsAtPath:v12];
+  path3 = [toCopy path];
+  v13 = [defaultManager fileExistsAtPath:path3];
 
   if ((v13 & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [v9 path];
+      path2 = [toCopy path];
       *buf = 136315394;
       v64 = "+[CDFSubsystemDiagnostics collectFilesWithRegex:from:to:]";
       v65 = 2114;
-      v66 = v33;
+      v66 = path2;
       v34 = MEMORY[0x277D86220];
       v35 = "CDF: %s: invalid directory path destpath: %{public}@";
       goto LABEL_25;
@@ -290,7 +290,7 @@ LABEL_26:
   }
 
   v60 = 0;
-  v14 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:v7 options:0 error:&v60];
+  v14 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:regexCopy options:0 error:&v60];
   v15 = v60;
   if (v14)
   {
@@ -298,16 +298,16 @@ LABEL_26:
     v62 = *MEMORY[0x277CBE8A8];
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v62 count:1];
     v59 = 0;
-    v18 = [v10 contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:v17 options:1 error:&v59];
+    v18 = [defaultManager contentsOfDirectoryAtURL:fromCopy includingPropertiesForKeys:v17 options:1 error:&v59];
     v47 = v59;
 
     if (v18)
     {
       v44 = v15;
-      v45 = v8;
-      v50 = v10;
-      v51 = v9;
-      v46 = v7;
+      v45 = fromCopy;
+      v50 = defaultManager;
+      v51 = toCopy;
+      v46 = regexCopy;
       v57 = 0u;
       v58 = 0u;
       v55 = 0u;
@@ -337,23 +337,23 @@ LABEL_26:
             v27 = v26;
             if (v25 && [v26 BOOLValue])
             {
-              v28 = [v24 lastPathComponent];
-              if ([v14 rangeOfFirstMatchInString:v28 options:0 range:{0, objc_msgSend(v28, "length")}] != 0x7FFFFFFFFFFFFFFFLL)
+              lastPathComponent = [v24 lastPathComponent];
+              if ([v14 rangeOfFirstMatchInString:lastPathComponent options:0 range:{0, objc_msgSend(lastPathComponent, "length")}] != 0x7FFFFFFFFFFFFFFFLL)
               {
                 v29 = v14;
-                v30 = [v51 URLByAppendingPathComponent:v28 isDirectory:0];
+                v30 = [v51 URLByAppendingPathComponent:lastPathComponent isDirectory:0];
                 v53 = 0;
                 v31 = [v50 copyItemAtURL:v24 toURL:v30 error:&v53];
                 v32 = v53;
                 if ((v31 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
                 {
-                  v48 = [v32 localizedDescription];
+                  localizedDescription = [v32 localizedDescription];
                   *buf = 136315650;
                   v64 = "+[CDFSubsystemDiagnostics collectFilesWithRegex:from:to:]";
                   v65 = 2114;
-                  v66 = v28;
+                  v66 = lastPathComponent;
                   v67 = 2114;
-                  v68 = v48;
+                  v68 = localizedDescription;
                   _os_log_impl(&dword_2433AC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "CDF: %s: Failed to copy %{public}@: %{public}@", buf, 0x20u);
                 }
 
@@ -376,10 +376,10 @@ LABEL_26:
         v52 = 0;
       }
 
-      v8 = v45;
-      v7 = v46;
-      v10 = v50;
-      v9 = v51;
+      fromCopy = v45;
+      regexCopy = v46;
+      defaultManager = v50;
+      toCopy = v51;
       v18 = v43;
       v15 = v44;
       v36 = v52;
@@ -390,13 +390,13 @@ LABEL_26:
       v36 = 0;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v38 = [v8 path];
+        path4 = [fromCopy path];
         [v47 localizedDescription];
         v40 = v39 = v14;
         *buf = 136315650;
         v64 = "+[CDFSubsystemDiagnostics collectFilesWithRegex:from:to:]";
         v65 = 2114;
-        v66 = v38;
+        v66 = path4;
         v67 = 2114;
         v68 = v40;
         _os_log_impl(&dword_2433AC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "CDF: %s: Failed to get directory contents from %{public}@: %{public}@", buf, 0x20u);
@@ -414,13 +414,13 @@ LABEL_26:
     v36 = 0;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v37 = [v15 localizedDescription];
+      localizedDescription2 = [v15 localizedDescription];
       *buf = 136315650;
       v64 = "+[CDFSubsystemDiagnostics collectFilesWithRegex:from:to:]";
       v65 = 2114;
-      v66 = v7;
+      v66 = regexCopy;
       v67 = 2114;
-      v68 = v37;
+      v68 = localizedDescription2;
       _os_log_impl(&dword_2433AC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "CDF: %s: Failed to create regex from pattern %{public}@: %{public}@", buf, 0x20u);
 
       v36 = 0;
@@ -432,15 +432,15 @@ LABEL_35:
   return v36 & 1;
 }
 
-+ (BOOL)collectFileWithRegex:(id)a3 from:(id)a4 to:(id)a5 mostRecent:(unint64_t)a6
++ (BOOL)collectFileWithRegex:(id)regex from:(id)from to:(id)to mostRecent:(unint64_t)recent
 {
   v96[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
-  v13 = [v10 path];
-  v14 = [v12 fileExistsAtPath:v13];
+  regexCopy = regex;
+  fromCopy = from;
+  toCopy = to;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [fromCopy path];
+  v14 = [defaultManager fileExistsAtPath:path];
 
   if ((v14 & 1) == 0)
   {
@@ -449,11 +449,11 @@ LABEL_35:
       goto LABEL_39;
     }
 
-    v53 = [v10 path];
+    path2 = [fromCopy path];
     *buf = 136315394;
     v87 = "+[CDFSubsystemDiagnostics collectFileWithRegex:from:to:mostRecent:]";
     v88 = 2114;
-    v89 = v53;
+    v89 = path2;
     v54 = MEMORY[0x277D86220];
     v55 = "CDF: %s: invalid directory path sourcepath: %{public}@";
 LABEL_38:
@@ -462,9 +462,9 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  v15 = [MEMORY[0x277CCAA00] defaultManager];
-  v16 = [v11 path];
-  v17 = [v15 fileExistsAtPath:v16];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  path3 = [toCopy path];
+  v17 = [defaultManager2 fileExistsAtPath:path3];
 
   if ((v17 & 1) == 0)
   {
@@ -473,33 +473,33 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v53 = [v11 path];
+    path2 = [toCopy path];
     *buf = 136315394;
     v87 = "+[CDFSubsystemDiagnostics collectFileWithRegex:from:to:mostRecent:]";
     v88 = 2114;
-    v89 = v53;
+    v89 = path2;
     v54 = MEMORY[0x277D86220];
     v55 = "CDF: %s: invalid directory path destpath: %{public}@";
     goto LABEL_38;
   }
 
-  if (v9 && a6)
+  if (regexCopy && recent)
   {
     v85 = 0;
-    v18 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:v9 options:0 error:&v85];
+    v18 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:regexCopy options:0 error:&v85];
     v19 = v85;
     v73 = v18;
     if (!v18)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v58 = [v19 localizedDescription];
+        localizedDescription = [v19 localizedDescription];
         *buf = 136315650;
         v87 = "+[CDFSubsystemDiagnostics collectFileWithRegex:from:to:mostRecent:]";
         v88 = 2114;
-        v89 = v9;
+        v89 = regexCopy;
         v90 = 2114;
-        v91 = v58;
+        recentCopy2 = localizedDescription;
         _os_log_impl(&dword_2433AC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "CDF: %s: Failed to create regex from pattern %{public}@: %{public}@", buf, 0x20u);
       }
 
@@ -508,24 +508,24 @@ LABEL_38:
     }
 
     v72 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v20 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
     v21 = *MEMORY[0x277CBE8A8];
     v96[0] = *MEMORY[0x277CBE8A8];
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v96 count:1];
     v84 = v19;
-    v23 = [v20 contentsOfDirectoryAtURL:v10 includingPropertiesForKeys:v22 options:1 error:&v84];
+    v23 = [defaultManager3 contentsOfDirectoryAtURL:fromCopy includingPropertiesForKeys:v22 options:1 error:&v84];
     v71 = v84;
 
     v24 = v23;
     v25 = v23 != 0;
     if (v24)
     {
-      v68 = v20;
-      v69 = v11;
+      v68 = defaultManager3;
+      v69 = toCopy;
       v62 = v25;
-      v64 = a6;
-      v65 = v10;
-      v63 = v9;
+      recentCopy = recent;
+      v65 = fromCopy;
+      v63 = regexCopy;
       v83 = 0u;
       v81 = 0u;
       v82 = 0u;
@@ -553,9 +553,9 @@ LABEL_38:
             v34 = v33;
             if (v32 && [v33 BOOLValue])
             {
-              v35 = [v31 lastPathComponent];
-              v36 = [v31 lastPathComponent];
-              v37 = [v73 rangeOfFirstMatchInString:v36 options:0 range:{0, objc_msgSend(v35, "length")}];
+              lastPathComponent = [v31 lastPathComponent];
+              lastPathComponent2 = [v31 lastPathComponent];
+              v37 = [v73 rangeOfFirstMatchInString:lastPathComponent2 options:0 range:{0, objc_msgSend(lastPathComponent, "length")}];
 
               if (v37 != 0x7FFFFFFFFFFFFFFFLL)
               {
@@ -581,7 +581,7 @@ LABEL_38:
         v38 = 0;
         v67 = *v76;
         v39 = MEMORY[0x277D86220];
-        v10 = v65;
+        fromCopy = v65;
         do
         {
           for (j = 0; j != v70; ++j)
@@ -592,14 +592,14 @@ LABEL_38:
             }
 
             v41 = *(*(&v75 + 1) + 8 * j);
-            v42 = [v41 lastPathComponent];
-            v43 = [v10 URLByAppendingPathComponent:v42 isDirectory:0];
+            lastPathComponent3 = [v41 lastPathComponent];
+            v43 = [fromCopy URLByAppendingPathComponent:lastPathComponent3 isDirectory:0];
 
-            v44 = [v41 lastPathComponent];
-            v45 = [v69 URLByAppendingPathComponent:v44 isDirectory:0];
+            lastPathComponent4 = [v41 lastPathComponent];
+            v45 = [v69 URLByAppendingPathComponent:lastPathComponent4 isDirectory:0];
 
-            v46 = [v43 path];
-            v47 = [v68 fileExistsAtPath:v46];
+            path4 = [v43 path];
+            v47 = [v68 fileExistsAtPath:path4];
 
             if (v47)
             {
@@ -609,7 +609,7 @@ LABEL_38:
 
               if (v48)
               {
-                if (++v38 == v64)
+                if (++v38 == recentCopy)
                 {
 
                   v71 = v49;
@@ -619,22 +619,22 @@ LABEL_38:
 
               else if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
               {
-                v50 = [v41 lastPathComponent];
-                v51 = [v49 domain];
-                v52 = [v49 code];
+                lastPathComponent5 = [v41 lastPathComponent];
+                domain = [v49 domain];
+                code = [v49 code];
                 *buf = 136315906;
                 v87 = "+[CDFSubsystemDiagnostics collectFileWithRegex:from:to:mostRecent:]";
                 v88 = 2114;
-                v89 = v50;
+                v89 = lastPathComponent5;
                 v90 = 2114;
-                v91 = v51;
+                recentCopy2 = domain;
                 v92 = 2050;
-                v93 = v52;
+                v93 = code;
                 _os_log_impl(&dword_2433AC000, v39, OS_LOG_TYPE_DEFAULT, "CDF: %s: Failed to transfer %{public}@ error domain: %{public}@: code:%{public}ld", buf, 0x2Au);
               }
 
               v71 = v49;
-              v10 = v65;
+              fromCopy = v65;
             }
           }
 
@@ -647,12 +647,12 @@ LABEL_38:
       else
       {
 LABEL_48:
-        v10 = v65;
+        fromCopy = v65;
       }
 
-      v9 = v63;
-      v20 = v68;
-      v11 = v69;
+      regexCopy = v63;
+      defaultManager3 = v68;
+      toCopy = v69;
       v25 = v62;
       v24 = v61;
     }
@@ -660,13 +660,13 @@ LABEL_48:
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v59 = v71;
-      v60 = [v71 localizedDescription];
+      localizedDescription2 = [v71 localizedDescription];
       *buf = 136315650;
       v87 = "+[CDFSubsystemDiagnostics collectFileWithRegex:from:to:mostRecent:]";
       v88 = 2114;
-      v89 = v10;
+      v89 = fromCopy;
       v90 = 2114;
-      v91 = v60;
+      recentCopy2 = localizedDescription2;
       _os_log_impl(&dword_2433AC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "CDF: %s: Failed to get %{public}@ contents:error %{public}@", buf, 0x20u);
 
 LABEL_51:
@@ -685,9 +685,9 @@ LABEL_52:
     *buf = 136315650;
     v87 = "+[CDFSubsystemDiagnostics collectFileWithRegex:from:to:mostRecent:]";
     v88 = 2114;
-    v89 = v9;
+    v89 = regexCopy;
     v90 = 2050;
-    v91 = a6;
+    recentCopy2 = recent;
     _os_log_impl(&dword_2433AC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "CDF: %s: invalid name %{public}@ with count %{public}lu", buf, 0x20u);
   }
 
@@ -709,26 +709,26 @@ uint64_t __67__CDFSubsystemDiagnostics_collectFileWithRegex_from_to_mostRecent__
   return v7;
 }
 
-+ (BOOL)collectFilesWithRegexes:(id)a3 from:(id)a4 to:(id)a5 mostRecent:(unint64_t)a6
++ (BOOL)collectFilesWithRegexes:(id)regexes from:(id)from to:(id)to mostRecent:(unint64_t)recent
 {
   v46 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
-  v34 = v10;
-  v13 = [v10 path];
-  v14 = [v12 fileExistsAtPath:v13];
+  regexesCopy = regexes;
+  fromCopy = from;
+  toCopy = to;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v34 = fromCopy;
+  path = [fromCopy path];
+  v14 = [defaultManager fileExistsAtPath:path];
 
   if ((v14 & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [v10 path];
+      path2 = [fromCopy path];
       *buf = 136315394;
       v40 = "+[CDFSubsystemDiagnostics collectFilesWithRegexes:from:to:mostRecent:]";
       v41 = 2114;
-      v42 = v27;
+      v42 = path2;
       v28 = MEMORY[0x277D86220];
       v29 = "CDF: %s: invalid directory path sourcepath: %{public}@";
 LABEL_19:
@@ -740,18 +740,18 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v15 = [v11 path];
-  v16 = [v12 fileExistsAtPath:v15];
+  path3 = [toCopy path];
+  v16 = [defaultManager fileExistsAtPath:path3];
 
   if ((v16 & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [v11 path];
+      path2 = [toCopy path];
       *buf = 136315394;
       v40 = "+[CDFSubsystemDiagnostics collectFilesWithRegexes:from:to:mostRecent:]";
       v41 = 2114;
-      v42 = v27;
+      v42 = path2;
       v28 = MEMORY[0x277D86220];
       v29 = "CDF: %s: invalid directory path destpath: %{public}@";
       goto LABEL_19;
@@ -760,13 +760,13 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v32 = v12;
-  v33 = v9;
+  v32 = defaultManager;
+  v33 = regexesCopy;
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v17 = v9;
+  v17 = regexesCopy;
   v18 = [v17 countByEnumeratingWithState:&v35 objects:v45 count:16];
   if (v18)
   {
@@ -783,7 +783,7 @@ LABEL_20:
         }
 
         v23 = *(*(&v35 + 1) + 8 * i);
-        v24 = [CDFSubsystemDiagnostics collectFileWithRegex:v23 from:v34 to:v11 mostRecent:a6, v32, v33];
+        v24 = [CDFSubsystemDiagnostics collectFileWithRegex:v23 from:v34 to:toCopy mostRecent:recent, v32, v33];
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 136315650;
@@ -809,8 +809,8 @@ LABEL_20:
   }
 
   v26 = 1;
-  v12 = v32;
-  v9 = v33;
+  defaultManager = v32;
+  regexesCopy = v33;
 LABEL_21:
 
   v30 = *MEMORY[0x277D85DE8];

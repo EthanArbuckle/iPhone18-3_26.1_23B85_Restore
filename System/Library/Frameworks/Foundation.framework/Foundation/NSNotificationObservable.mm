@@ -1,18 +1,18 @@
 @interface NSNotificationObservable
-+ (id)observableWithName:(id)a3 object:(id)a4;
-- (NSNotificationObservable)initWithName:(id)a3 object:(id)a4;
++ (id)observableWithName:(id)name object:(id)object;
+- (NSNotificationObservable)initWithName:(id)name object:(id)object;
 @end
 
 @implementation NSNotificationObservable
 
-+ (id)observableWithName:(id)a3 object:(id)a4
++ (id)observableWithName:(id)name object:(id)object
 {
-  v4 = [[a1 alloc] initWithName:a3 object:a4];
+  v4 = [[self alloc] initWithName:name object:object];
 
   return v4;
 }
 
-- (NSNotificationObservable)initWithName:(id)a3 object:(id)a4
+- (NSNotificationObservable)initWithName:(id)name object:(id)object
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -20,7 +20,7 @@
   v6 = [(NSNotificationObservable *)&v8 init];
   if (v6)
   {
-    [+[NSNotificationCenter defaultCenter](NSNotificationCenter addObserver:"addObserver:selector:name:object:" selector:v6 name:sel_receiveObservedValue_ object:a3, a4];
+    [+[NSNotificationCenter defaultCenter](NSNotificationCenter addObserver:"addObserver:selector:name:object:" selector:v6 name:sel_receiveObservedValue_ object:name, object];
   }
 
   return v6;

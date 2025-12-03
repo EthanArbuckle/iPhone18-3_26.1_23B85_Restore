@@ -1,19 +1,19 @@
 @interface _GCSonyPSVR2SenseControllerProfile
-+ (BOOL)device:(id)a3 fuseWithDevice:(id *)a4 forClient:(id)a5;
-+ (BOOL)logicalDevice:(id)a3 getSystemButtonName:(id *)a4 sfSymbolName:(id *)a5 needsMFiCompatibility:(BOOL *)a6;
-+ (BOOL)logicalDevice:(id)a3 shouldMakeControllerForClient:(id)a4;
++ (BOOL)device:(id)device fuseWithDevice:(id *)withDevice forClient:(id)client;
++ (BOOL)logicalDevice:(id)device getSystemButtonName:(id *)name sfSymbolName:(id *)symbolName needsMFiCompatibility:(BOOL *)compatibility;
++ (BOOL)logicalDevice:(id)device shouldMakeControllerForClient:(id)client;
 + (_GCPhysicalDeviceManager)deviceManager;
-+ (id)logicalDevice:(id)a3 makeControllerInputDescriptionWithIdentifier:(id)a4 bindings:(id)a5 forClient:(id)a6;
-+ (id)logicalDevice:(id)a3 makeControllerMotionWithIdentifier:(id)a4;
-+ (id)logicalDevice:(id)a3 makeControllerPhysicalInputProfileDescriptionWithIdentifier:(id)a4 bindings:(id)a5 forClient:(id)a6;
-+ (id)logicalDevice:(id)a3 makeControllerSpatialDescriptionWithIdentifier:(id)a4 forClient:(id)a5;
-+ (id)logicalDeviceControllerProductCategory:(id)a3 forClient:(id)a4;
-+ (id)logicalDeviceControllerVendorName:(id)a3 forClient:(id)a4;
-+ (id)physicalDeviceGetHapticCapabilities:(id)a3;
-+ (id)physicalDeviceGetHapticCapabilityGraph:(id)a3;
-+ (void)deviceManager:(id)a3 willPublishPhysicalDevice:(id)a4;
-+ (void)physicalDevice:(id)a3 getBatteryWithReply:(id)a4;
-+ (void)physicalDevice:(id)a3 getSensorsEnabledWithReply:(id)a4;
++ (id)logicalDevice:(id)device makeControllerInputDescriptionWithIdentifier:(id)identifier bindings:(id)bindings forClient:(id)client;
++ (id)logicalDevice:(id)device makeControllerMotionWithIdentifier:(id)identifier;
++ (id)logicalDevice:(id)device makeControllerPhysicalInputProfileDescriptionWithIdentifier:(id)identifier bindings:(id)bindings forClient:(id)client;
++ (id)logicalDevice:(id)device makeControllerSpatialDescriptionWithIdentifier:(id)identifier forClient:(id)client;
++ (id)logicalDeviceControllerProductCategory:(id)category forClient:(id)client;
++ (id)logicalDeviceControllerVendorName:(id)name forClient:(id)client;
++ (id)physicalDeviceGetHapticCapabilities:(id)capabilities;
++ (id)physicalDeviceGetHapticCapabilityGraph:(id)graph;
++ (void)deviceManager:(id)manager willPublishPhysicalDevice:(id)device;
++ (void)physicalDevice:(id)device getBatteryWithReply:(id)reply;
++ (void)physicalDevice:(id)device getSensorsEnabledWithReply:(id)reply;
 @end
 
 @implementation _GCSonyPSVR2SenseControllerProfile
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __51___GCSonyPSVR2SenseControllerProfile_deviceManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (deviceManager_onceToken != -1)
   {
     dispatch_once(&deviceManager_onceToken, block);
@@ -35,46 +35,46 @@
   return v2;
 }
 
-+ (void)deviceManager:(id)a3 willPublishPhysicalDevice:(id)a4
++ (void)deviceManager:(id)manager willPublishPhysicalDevice:(id)device
 {
-  [a4 setDelegate:a1];
+  [device setDelegate:self];
   v4 = GCLookupService();
   [v4 setHasPairedSpatialController:1];
 }
 
-+ (void)physicalDevice:(id)a3 getSensorsEnabledWithReply:(id)a4
++ (void)physicalDevice:(id)device getSensorsEnabledWithReply:(id)reply
 {
-  v5 = a4;
-  v6 = [a3 motionServiceServer];
+  replyCopy = reply;
+  motionServiceServer = [device motionServiceServer];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __80___GCSonyPSVR2SenseControllerProfile_physicalDevice_getSensorsEnabledWithReply___block_invoke;
   v8[3] = &unk_1E8419550;
-  v9 = v5;
-  v7 = v5;
-  [v6 readSensorsActiveWithReply:v8];
+  v9 = replyCopy;
+  v7 = replyCopy;
+  [motionServiceServer readSensorsActiveWithReply:v8];
 }
 
-+ (BOOL)device:(id)a3 fuseWithDevice:(id *)a4 forClient:(id)a5
++ (BOOL)device:(id)device fuseWithDevice:(id *)withDevice forClient:(id)client
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [a5 configuration];
-  if (([v8 spatialGamepadSupported] & 1) == 0)
+  deviceCopy = device;
+  configuration = [client configuration];
+  if (([configuration spatialGamepadSupported] & 1) == 0)
   {
-    v10 = [v7 propertyForKey:@"PSVR2DeviceType"];
+    v10 = [deviceCopy propertyForKey:@"PSVR2DeviceType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v10 UTF8String];
-      if (v11)
+      uTF8String = [v10 UTF8String];
+      if (uTF8String)
       {
-        v12 = v11;
-        if (strcmp(v11, "Unknown"))
+        v12 = uTF8String;
+        if (strcmp(uTF8String, "Unknown"))
         {
           if (!strcmp(v12, "Sense Left"))
           {
-            *a4 = 0;
+            *withDevice = 0;
             v9 = 1;
             goto LABEL_9;
           }
@@ -86,14 +86,14 @@
             v30 = 0u;
             v31 = 0u;
             v32 = 0u;
-            v16 = [v15 physicalDevices];
-            v17 = [v16 allValues];
+            physicalDevices = [v15 physicalDevices];
+            allValues = [physicalDevices allValues];
 
-            v18 = [v17 countByEnumeratingWithState:&v29 objects:v33 count:16];
+            v18 = [allValues countByEnumeratingWithState:&v29 objects:v33 count:16];
             if (v18)
             {
               v19 = v18;
-              v27 = a4;
+              withDeviceCopy = withDevice;
               v28 = v15;
               v20 = *v30;
               while (2)
@@ -102,7 +102,7 @@
                 {
                   if (*v30 != v20)
                   {
-                    objc_enumerationMutation(v17);
+                    objc_enumerationMutation(allValues);
                   }
 
                   v22 = *(*(&v29 + 1) + 8 * i);
@@ -110,16 +110,16 @@
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v24 = [v23 UTF8String];
-                    if (v24)
+                    uTF8String2 = [v23 UTF8String];
+                    if (uTF8String2)
                     {
-                      v25 = v24;
-                      if (strcmp(v24, "Unknown"))
+                      v25 = uTF8String2;
+                      if (strcmp(uTF8String2, "Unknown"))
                       {
                         if (!strcmp(v25, "Sense Left"))
                         {
                           v26 = v22;
-                          *v27 = v22;
+                          *withDeviceCopy = v22;
 
                           v9 = 1;
                           goto LABEL_25;
@@ -129,7 +129,7 @@
                   }
                 }
 
-                v19 = [v17 countByEnumeratingWithState:&v29 objects:v33 count:16];
+                v19 = [allValues countByEnumeratingWithState:&v29 objects:v33 count:16];
                 if (v19)
                 {
                   continue;
@@ -167,10 +167,10 @@ LABEL_10:
   return v9;
 }
 
-+ (BOOL)logicalDevice:(id)a3 shouldMakeControllerForClient:(id)a4
++ (BOOL)logicalDevice:(id)device shouldMakeControllerForClient:(id)client
 {
   v6 = 0;
-  v4 = [a1 device:a3 fuseWithDevice:&v6 forClient:a4] ^ 1;
+  v4 = [self device:device fuseWithDevice:&v6 forClient:client] ^ 1;
   if (v6)
   {
     return 1;
@@ -182,33 +182,33 @@ LABEL_10:
   }
 }
 
-+ (id)logicalDeviceControllerProductCategory:(id)a3 forClient:(id)a4
++ (id)logicalDeviceControllerProductCategory:(id)category forClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  categoryCopy = category;
+  clientCopy = client;
   v16 = 0;
-  if ([a1 device:v6 fuseWithDevice:&v16 forClient:v7] && v16)
+  if ([self device:categoryCopy fuseWithDevice:&v16 forClient:clientCopy] && v16)
   {
     v8 = @"MFi";
     goto LABEL_14;
   }
 
-  v9 = [v7 configuration];
-  v10 = v9;
-  if (!v9 || ![v9 spatialGamepadProductCategoryIncludesChirality])
+  configuration = [clientCopy configuration];
+  v10 = configuration;
+  if (!configuration || ![configuration spatialGamepadProductCategoryIncludesChirality])
   {
     goto LABEL_12;
   }
 
-  v11 = [v6 propertyForKey:@"PSVR2DeviceType"];
+  v11 = [categoryCopy propertyForKey:@"PSVR2DeviceType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v11 UTF8String];
-    if (v12)
+    uTF8String = [v11 UTF8String];
+    if (uTF8String)
     {
-      v13 = v12;
-      if (strcmp(v12, "Unknown"))
+      v13 = uTF8String;
+      if (strcmp(uTF8String, "Unknown"))
       {
         if (!strcmp(v13, "Sense Left"))
         {
@@ -235,7 +235,7 @@ LABEL_10:
 LABEL_11:
 
 LABEL_12:
-  v8 = [a1 logicalDeviceControllerProductCategory:v6];
+  v8 = [self logicalDeviceControllerProductCategory:categoryCopy];
 LABEL_13:
 
 LABEL_14:
@@ -243,54 +243,54 @@ LABEL_14:
   return v8;
 }
 
-+ (id)logicalDeviceControllerVendorName:(id)a3 forClient:(id)a4
++ (id)logicalDeviceControllerVendorName:(id)name forClient:(id)client
 {
-  v6 = a3;
+  nameCopy = name;
   v10 = 0;
-  if ([a1 device:v6 fuseWithDevice:&v10 forClient:a4] && v10)
+  if ([self device:nameCopy fuseWithDevice:&v10 forClient:client] && v10)
   {
     v7 = @"PlayStation VR2 Sense Controllers (L/R)";
   }
 
   else
   {
-    v8 = [v6 underlyingDevice];
-    v7 = [v8 propertyForKey:@"Product"];
+    underlyingDevice = [nameCopy underlyingDevice];
+    v7 = [underlyingDevice propertyForKey:@"Product"];
   }
 
   return v7;
 }
 
-+ (BOOL)logicalDevice:(id)a3 getSystemButtonName:(id *)a4 sfSymbolName:(id *)a5 needsMFiCompatibility:(BOOL *)a6
++ (BOOL)logicalDevice:(id)device getSystemButtonName:(id *)name sfSymbolName:(id *)symbolName needsMFiCompatibility:(BOOL *)compatibility
 {
-  *a4 = *MEMORY[0x1E69A0400];
-  *a5 = @"logo.playstation";
+  *name = *MEMORY[0x1E69A0400];
+  *symbolName = @"logo.playstation";
   return 1;
 }
 
-+ (id)logicalDevice:(id)a3 makeControllerPhysicalInputProfileDescriptionWithIdentifier:(id)a4 bindings:(id)a5 forClient:(id)a6
++ (id)logicalDevice:(id)device makeControllerPhysicalInputProfileDescriptionWithIdentifier:(id)identifier bindings:(id)bindings forClient:(id)client
 {
   v124[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v117 = a5;
-  v12 = a6;
+  deviceCopy = device;
+  identifierCopy = identifier;
+  bindingsCopy = bindings;
+  clientCopy = client;
   v119 = 0;
-  LODWORD(a5) = [a1 device:v10 fuseWithDevice:&v119 forClient:v12];
+  LODWORD(bindings) = [self device:deviceCopy fuseWithDevice:&v119 forClient:clientCopy];
   v116 = v119;
-  v101 = a5;
-  v113 = v10;
-  v105 = v12;
-  v106 = v11;
-  if (a5)
+  bindingsCopy2 = bindings;
+  v113 = deviceCopy;
+  v105 = clientCopy;
+  v106 = identifierCopy;
+  if (bindings)
   {
-    v13 = 1;
+    spatialGamepadProductCategoryIncludesChirality = 1;
   }
 
   else
   {
-    v14 = [v12 configuration];
-    v13 = [v14 spatialGamepadProductCategoryIncludesChirality];
+    configuration = [clientCopy configuration];
+    spatialGamepadProductCategoryIncludesChirality = [configuration spatialGamepadProductCategoryIncludesChirality];
   }
 
   v15 = [GCDeviceButtonInputDescription alloc];
@@ -303,8 +303,8 @@ LABEL_14:
 
   v19 = [GCDeviceButtonInputDescription alloc];
   v20 = [*MEMORY[0x1E69A0428] key];
-  v21 = (v13 & 1) == 0;
-  if (v13)
+  v21 = (spatialGamepadProductCategoryIncludesChirality & 1) == 0;
+  if (spatialGamepadProductCategoryIncludesChirality)
   {
     v22 = @"Button X";
   }
@@ -314,7 +314,7 @@ LABEL_14:
     v22 = @"Button A";
   }
 
-  if (v13)
+  if (spatialGamepadProductCategoryIncludesChirality)
   {
     v23 = @"Button Y";
   }
@@ -324,7 +324,7 @@ LABEL_14:
     v23 = @"Button B";
   }
 
-  if (v13)
+  if (spatialGamepadProductCategoryIncludesChirality)
   {
     v24 = @"Left Shoulder";
   }
@@ -334,7 +334,7 @@ LABEL_14:
     v24 = @"Grip";
   }
 
-  if (v13)
+  if (spatialGamepadProductCategoryIncludesChirality)
   {
     v25 = @"Right Shoulder";
   }
@@ -344,7 +344,7 @@ LABEL_14:
     v25 = @"Grip";
   }
 
-  if (v13)
+  if (spatialGamepadProductCategoryIncludesChirality)
   {
     v26 = @"Left Trigger";
   }
@@ -354,7 +354,7 @@ LABEL_14:
     v26 = @"Trigger";
   }
 
-  if (v13)
+  if (spatialGamepadProductCategoryIncludesChirality)
   {
     v27 = @"Right Trigger";
   }
@@ -443,7 +443,7 @@ LABEL_14:
 
   if (v116)
   {
-    v57 = v101;
+    v57 = bindingsCopy2;
   }
 
   else
@@ -458,8 +458,8 @@ LABEL_14:
   v95 = v56;
   if (v57 == 1)
   {
-    v94 = [v117 firstObject];
-    v93 = [v116 gamepadEventSource];
+    firstObject = [bindingsCopy firstObject];
+    gamepadEventSource = [v116 gamepadEventSource];
     v58 = [[_GCGamepadEventFusionConfig alloc] initWithSourceCount:2];
     [(_GCGamepadEventFusionConfig *)v58 setPassRule:1 forElement:6 forSourceAtIndex:1];
     [(_GCGamepadEventFusionConfig *)v58 setPassRule:1 forElement:7 forSourceAtIndex:1];
@@ -482,8 +482,8 @@ LABEL_14:
     [(_GCGamepadEventFusionConfig *)v58 setPassRule:1 forElement:22 forSourceAtIndex:0];
     [(_GCGamepadEventFusionConfig *)v58 setPassRule:1 forElement:23 forSourceAtIndex:0];
     v59 = [_GCGamepadEventFusionDescription alloc];
-    v123[0] = v94;
-    v123[1] = v93;
+    v123[0] = firstObject;
+    v123[1] = gamepadEventSource;
     v60 = [MEMORY[0x1E695DEC8] arrayWithObjects:v123 count:2];
     v61 = v43;
     v62 = v53;
@@ -515,8 +515,8 @@ LABEL_14:
     v102 = [(_GCDevicePhysicalInputComponentDescription *)v118 initWithIdentifier:v106 elements:v69 bindings:v92];
 
     v70 = v116;
-    v71 = v94;
-    v117 = v92;
+    v71 = firstObject;
+    bindingsCopy = v92;
     v72 = v103;
     v73 = v106;
     v74 = v109;
@@ -539,14 +539,14 @@ LABEL_14:
     goto LABEL_44;
   }
 
-  v80 = [v78 UTF8String];
-  if (!v80)
+  uTF8String = [v78 UTF8String];
+  if (!uTF8String)
   {
     goto LABEL_44;
   }
 
-  v81 = v80;
-  if (!strcmp(v80, "Unknown"))
+  v81 = uTF8String;
+  if (!strcmp(uTF8String, "Unknown"))
   {
     goto LABEL_44;
   }
@@ -565,7 +565,7 @@ LABEL_14:
     v87 = v85;
     v76 = v111;
     v72 = v103;
-    v102 = [(_GCDevicePhysicalInputComponentDescription *)v87 initWithIdentifier:v106 elements:v86 bindings:v117];
+    v102 = [(_GCDevicePhysicalInputComponentDescription *)v87 initWithIdentifier:v106 elements:v86 bindings:bindingsCopy];
 
     v67 = v99;
     v74 = v109;
@@ -589,7 +589,7 @@ LABEL_14:
     v120[6] = v108;
     v91 = [MEMORY[0x1E695DEC8] arrayWithObjects:v120 count:7];
     v76 = v111;
-    v102 = [(_GCDevicePhysicalInputComponentDescription *)v90 initWithIdentifier:v106 elements:v91 bindings:v117];
+    v102 = [(_GCDevicePhysicalInputComponentDescription *)v90 initWithIdentifier:v106 elements:v91 bindings:bindingsCopy];
 
     v67 = v99;
     v74 = v109;
@@ -601,7 +601,7 @@ LABEL_14:
 LABEL_44:
     v82 = [_GCDevicePhysicalInputComponentDescription alloc];
     v76 = v111;
-    v102 = [(_GCDevicePhysicalInputComponentDescription *)v82 initWithIdentifier:v106 elements:MEMORY[0x1E695E0F0] bindings:v117];
+    v102 = [(_GCDevicePhysicalInputComponentDescription *)v82 initWithIdentifier:v106 elements:MEMORY[0x1E695E0F0] bindings:bindingsCopy];
     v74 = v109;
     v66 = v104;
   }
@@ -617,27 +617,27 @@ LABEL_47:
   return v102;
 }
 
-+ (id)logicalDevice:(id)a3 makeControllerInputDescriptionWithIdentifier:(id)a4 bindings:(id)a5 forClient:(id)a6
++ (id)logicalDevice:(id)device makeControllerInputDescriptionWithIdentifier:(id)identifier bindings:(id)bindings forClient:(id)client
 {
   v220[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v189 = a5;
-  v11 = a6;
+  deviceCopy = device;
+  bindingsCopy = bindings;
+  clientCopy = client;
   v199 = 0;
-  v183 = a4;
-  v181 = [a1 device:v10 fuseWithDevice:&v199 forClient:v11];
-  v186 = v11;
-  v187 = v10;
+  identifierCopy = identifier;
+  v181 = [self device:deviceCopy fuseWithDevice:&v199 forClient:clientCopy];
+  v186 = clientCopy;
+  v187 = deviceCopy;
   v185 = v199;
   if (v181)
   {
-    v12 = 1;
+    spatialGamepadProductCategoryIncludesChirality = 1;
   }
 
   else
   {
-    v13 = [v11 configuration];
-    v12 = [v13 spatialGamepadProductCategoryIncludesChirality];
+    configuration = [clientCopy configuration];
+    spatialGamepadProductCategoryIncludesChirality = [configuration spatialGamepadProductCategoryIncludesChirality];
   }
 
   v14 = [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.options"];
@@ -686,9 +686,9 @@ LABEL_47:
   [v24 setEventTouchValueField:28];
   v27 = [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.square"];
   [v21 setSupportsTouch:1];
-  v178 = v12 & 1;
-  v179 = v12;
-  if (v12)
+  v178 = spatialGamepadProductCategoryIncludesChirality & 1;
+  v179 = spatialGamepadProductCategoryIncludesChirality;
+  if (spatialGamepadProductCategoryIncludesChirality)
   {
     v28 = @"Button X";
   }
@@ -698,7 +698,7 @@ LABEL_47:
     v28 = @"Button A";
   }
 
-  if (v12)
+  if (spatialGamepadProductCategoryIncludesChirality)
   {
     v29 = @"Button Y";
   }
@@ -708,7 +708,7 @@ LABEL_47:
     v29 = @"Button B";
   }
 
-  if (v12)
+  if (spatialGamepadProductCategoryIncludesChirality)
   {
     v30 = @"Left Shoulder";
   }
@@ -718,7 +718,7 @@ LABEL_47:
     v30 = @"Grip";
   }
 
-  if (v12)
+  if (spatialGamepadProductCategoryIncludesChirality)
   {
     v31 = @"Right Shoulder";
   }
@@ -728,7 +728,7 @@ LABEL_47:
     v31 = @"Grip";
   }
 
-  if (v12)
+  if (spatialGamepadProductCategoryIncludesChirality)
   {
     v32 = @"Left Trigger";
   }
@@ -739,7 +739,7 @@ LABEL_47:
   }
 
   v33 = @"Right Trigger";
-  if ((v12 & 1) == 0)
+  if ((spatialGamepadProductCategoryIncludesChirality & 1) == 0)
   {
     v33 = @"Trigger";
   }
@@ -844,54 +844,54 @@ LABEL_47:
   [v51 setEventTouchedValueField:33];
   v54 = MEMORY[0x1E69A06B8];
   v55 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
-  v56 = [v51 localizedName];
-  v57 = [v51 symbol];
-  v58 = [v54 sourceWithElementAliases:v55 localizedName:v56 symbol:v57 direction:10];
+  localizedName = [v51 localizedName];
+  symbol = [v51 symbol];
+  v58 = [v54 sourceWithElementAliases:v55 localizedName:localizedName symbol:symbol direction:10];
   v220[0] = v58;
   v59 = [MEMORY[0x1E695DEC8] arrayWithObjects:v220 count:1];
   [v51 setXSources:v59];
 
   v60 = MEMORY[0x1E69A06B8];
   v61 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
-  v62 = [v51 localizedName];
-  v63 = [v51 symbol];
-  v64 = [v60 sourceWithElementAliases:v61 localizedName:v62 symbol:v63 direction:5];
+  localizedName2 = [v51 localizedName];
+  symbol2 = [v51 symbol];
+  v64 = [v60 sourceWithElementAliases:v61 localizedName:localizedName2 symbol:symbol2 direction:5];
   v219 = v64;
   v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v219 count:1];
   [v51 setYSources:v65];
 
   v66 = MEMORY[0x1E69A06B8];
   v67 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
-  v68 = [v51 localizedName];
-  v69 = [v51 symbol];
-  v70 = [v66 sourceWithElementAliases:v67 localizedName:v68 symbol:v69 direction:1];
+  localizedName3 = [v51 localizedName];
+  symbol3 = [v51 symbol];
+  v70 = [v66 sourceWithElementAliases:v67 localizedName:localizedName3 symbol:symbol3 direction:1];
   v218 = v70;
   v71 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v218 count:1];
   [v51 setUpSources:v71];
 
   v72 = MEMORY[0x1E69A06B8];
   v73 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
-  v74 = [v51 localizedName];
-  v75 = [v51 symbol];
-  v76 = [v72 sourceWithElementAliases:v73 localizedName:v74 symbol:v75 direction:2];
+  localizedName4 = [v51 localizedName];
+  symbol4 = [v51 symbol];
+  v76 = [v72 sourceWithElementAliases:v73 localizedName:localizedName4 symbol:symbol4 direction:2];
   v217 = v76;
   v77 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v217 count:1];
   [v51 setRightSources:v77];
 
   v78 = MEMORY[0x1E69A06B8];
   v79 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
-  v80 = [v51 localizedName];
-  v81 = [v51 symbol];
-  v82 = [v78 sourceWithElementAliases:v79 localizedName:v80 symbol:v81 direction:4];
+  localizedName5 = [v51 localizedName];
+  symbol5 = [v51 symbol];
+  v82 = [v78 sourceWithElementAliases:v79 localizedName:localizedName5 symbol:symbol5 direction:4];
   v216 = v82;
   v83 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v216 count:1];
   [v51 setDownSources:v83];
 
   v84 = MEMORY[0x1E69A06B8];
   v85 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
-  v86 = [v51 localizedName];
-  v87 = [v51 symbol];
-  v88 = [v84 sourceWithElementAliases:v85 localizedName:v86 symbol:v87 direction:8];
+  localizedName6 = [v51 localizedName];
+  symbol6 = [v51 symbol];
+  v88 = [v84 sourceWithElementAliases:v85 localizedName:localizedName6 symbol:symbol6 direction:8];
   v215 = v88;
   v89 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v215 count:1];
   [v51 setLeftSources:v89];
@@ -939,54 +939,54 @@ LABEL_47:
   [v101 setEventTouchedValueField:34];
   v104 = MEMORY[0x1E69A06B8];
   v105 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
-  v106 = [v101 localizedName];
-  v107 = [v101 symbol];
-  v108 = [v104 sourceWithElementAliases:v105 localizedName:v106 symbol:v107 direction:10];
+  localizedName7 = [v101 localizedName];
+  symbol7 = [v101 symbol];
+  v108 = [v104 sourceWithElementAliases:v105 localizedName:localizedName7 symbol:symbol7 direction:10];
   v212 = v108;
   v109 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v212 count:1];
   [v101 setXSources:v109];
 
   v110 = MEMORY[0x1E69A06B8];
   v111 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
-  v112 = [v101 localizedName];
-  v113 = [v101 symbol];
-  v114 = [v110 sourceWithElementAliases:v111 localizedName:v112 symbol:v113 direction:5];
+  localizedName8 = [v101 localizedName];
+  symbol8 = [v101 symbol];
+  v114 = [v110 sourceWithElementAliases:v111 localizedName:localizedName8 symbol:symbol8 direction:5];
   v211 = v114;
   v115 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v211 count:1];
   [v101 setYSources:v115];
 
   v116 = MEMORY[0x1E69A06B8];
   v117 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
-  v118 = [v101 localizedName];
-  v119 = [v101 symbol];
-  v120 = [v116 sourceWithElementAliases:v117 localizedName:v118 symbol:v119 direction:1];
+  localizedName9 = [v101 localizedName];
+  symbol9 = [v101 symbol];
+  v120 = [v116 sourceWithElementAliases:v117 localizedName:localizedName9 symbol:symbol9 direction:1];
   v210 = v120;
   v121 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v210 count:1];
   [v101 setUpSources:v121];
 
   v122 = MEMORY[0x1E69A06B8];
   v123 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
-  v124 = [v101 localizedName];
-  v125 = [v101 symbol];
-  v126 = [v122 sourceWithElementAliases:v123 localizedName:v124 symbol:v125 direction:2];
+  localizedName10 = [v101 localizedName];
+  symbol10 = [v101 symbol];
+  v126 = [v122 sourceWithElementAliases:v123 localizedName:localizedName10 symbol:symbol10 direction:2];
   v209 = v126;
   v127 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v209 count:1];
   [v101 setRightSources:v127];
 
   v128 = MEMORY[0x1E69A06B8];
   v129 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
-  v130 = [v101 localizedName];
-  v131 = [v101 symbol];
-  v132 = [v128 sourceWithElementAliases:v129 localizedName:v130 symbol:v131 direction:4];
+  localizedName11 = [v101 localizedName];
+  symbol11 = [v101 symbol];
+  v132 = [v128 sourceWithElementAliases:v129 localizedName:localizedName11 symbol:symbol11 direction:4];
   v208 = v132;
   v133 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v208 count:1];
   [v101 setDownSources:v133];
 
   v134 = MEMORY[0x1E69A06B8];
   v135 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
-  v136 = [v101 localizedName];
-  v137 = [v101 symbol];
-  v138 = [v134 sourceWithElementAliases:v135 localizedName:v136 symbol:v137 direction:8];
+  localizedName12 = [v101 localizedName];
+  symbol12 = [v101 symbol];
+  v138 = [v134 sourceWithElementAliases:v135 localizedName:localizedName12 symbol:symbol12 direction:8];
   v207 = v138;
   v139 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v207 count:1];
   [v101 setLeftSources:v139];
@@ -1034,8 +1034,8 @@ LABEL_47:
 
   if (v155 == 1)
   {
-    v180 = [v189 firstObject];
-    v182 = [v185 gamepadEventSource];
+    firstObject = [bindingsCopy firstObject];
+    gamepadEventSource = [v185 gamepadEventSource];
     v156 = [[_GCGamepadEventFusionConfig alloc] initWithSourceCount:2];
     [(_GCGamepadEventFusionConfig *)v156 setPassRule:1 forElement:6 forSourceAtIndex:1];
     [(_GCGamepadEventFusionConfig *)v156 setPassRule:1 forElement:7 forSourceAtIndex:1];
@@ -1058,8 +1058,8 @@ LABEL_47:
     [(_GCGamepadEventFusionConfig *)v156 setPassRule:1 forElement:22 forSourceAtIndex:0];
     [(_GCGamepadEventFusionConfig *)v156 setPassRule:1 forElement:23 forSourceAtIndex:0];
     v157 = [_GCGamepadEventFusionDescription alloc];
-    v203[0] = v180;
-    v203[1] = v182;
+    v203[0] = firstObject;
+    v203[1] = gamepadEventSource;
     v158 = [MEMORY[0x1E695DEC8] arrayWithObjects:v203 count:2];
     v159 = [(_GCGamepadEventFusionDescription *)v157 initWithConfiguration:v156 sources:v158];
     v204 = v159;
@@ -1078,12 +1078,12 @@ LABEL_47:
     v202[9] = v191;
     v202[10] = v101;
     v202[11] = v151;
-    v162 = v180;
+    v162 = firstObject;
     v163 = [MEMORY[0x1E695DEC8] arrayWithObjects:v202 count:12];
     [v154 setElements:v163];
 
     v164 = v160;
-    v165 = v182;
+    v165 = gamepadEventSource;
     v166 = v187;
 LABEL_32:
 
@@ -1093,15 +1093,15 @@ LABEL_32:
   v166 = v187;
   v162 = [v187 propertyForKey:@"PSVR2DeviceType"];
   objc_opt_class();
-  v164 = v189;
+  v164 = bindingsCopy;
   v161 = v184;
   if (objc_opt_isKindOfClass())
   {
-    v167 = [v162 UTF8String];
-    if (v167)
+    uTF8String = [v162 UTF8String];
+    if (uTF8String)
     {
-      v168 = v167;
-      if (strcmp(v167, "Unknown"))
+      v168 = uTF8String;
+      if (strcmp(uTF8String, "Unknown"))
       {
         if (!strcmp(v168, "Sense Left"))
         {
@@ -1144,16 +1144,16 @@ LABEL_32:
 
 LABEL_38:
 
-  v169 = [[_GCControllerInputComponentDescription alloc] initWithIdentifier:v183 controllerInputs:v154 bindings:v164];
+  v169 = [[_GCControllerInputComponentDescription alloc] initWithIdentifier:identifierCopy controllerInputs:v154 bindings:v164];
   v170 = *MEMORY[0x1E69E9840];
 
   return v169;
 }
 
-+ (id)logicalDevice:(id)a3 makeControllerMotionWithIdentifier:(id)a4
++ (id)logicalDevice:(id)device makeControllerMotionWithIdentifier:(id)identifier
 {
-  v4 = a4;
-  v5 = [[GCMotion alloc] initWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[GCMotion alloc] initWithIdentifier:identifierCopy];
 
   [(GCMotion *)v5 _setHasRotationRate:1];
   [(GCMotion *)v5 _setHasAttitude:0];
@@ -1161,32 +1161,32 @@ LABEL_38:
   return v5;
 }
 
-+ (id)logicalDevice:(id)a3 makeControllerSpatialDescriptionWithIdentifier:(id)a4 forClient:(id)a5
++ (id)logicalDevice:(id)device makeControllerSpatialDescriptionWithIdentifier:(id)identifier forClient:(id)client
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a5 configuration];
-  v10 = [v9 spatialGamepadSupported];
+  deviceCopy = device;
+  identifierCopy = identifier;
+  configuration = [client configuration];
+  spatialGamepadSupported = [configuration spatialGamepadSupported];
 
-  if (!v10)
+  if (!spatialGamepadSupported)
   {
     v17 = 0;
     goto LABEL_12;
   }
 
   v11 = objc_opt_new();
-  v12 = [v7 propertyForKey:@"RegistryID"];
+  v12 = [deviceCopy propertyForKey:@"RegistryID"];
   [(_GCDeviceSpatialParameters *)v11 setTrackingSourceIOServiceRegistryID:v12];
 
-  v13 = [v7 propertyForKey:@"PSVR2DeviceType"];
+  v13 = [deviceCopy propertyForKey:@"PSVR2DeviceType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v13 UTF8String];
-    if (v14)
+    uTF8String = [v13 UTF8String];
+    if (uTF8String)
     {
-      v15 = v14;
-      if (strcmp(v14, "Unknown"))
+      v15 = uTF8String;
+      if (strcmp(uTF8String, "Unknown"))
       {
         if (!strcmp(v15, "Sense Left"))
         {
@@ -1204,44 +1204,44 @@ LABEL_10:
     }
   }
 
-  v17 = [[_GCControllerRemoteSpatialComponentDescription alloc] initWithIdentifier:v8 facade:v11];
+  v17 = [[_GCControllerRemoteSpatialComponentDescription alloc] initWithIdentifier:identifierCopy facade:v11];
 
 LABEL_12:
 
   return v17;
 }
 
-+ (void)physicalDevice:(id)a3 getBatteryWithReply:(id)a4
++ (void)physicalDevice:(id)device getBatteryWithReply:(id)reply
 {
-  v5 = a4;
-  v6 = [a3 batteryServiceServer];
+  replyCopy = reply;
+  batteryServiceServer = [device batteryServiceServer];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __73___GCSonyPSVR2SenseControllerProfile_physicalDevice_getBatteryWithReply___block_invoke;
   v8[3] = &unk_1E8419578;
-  v9 = v5;
-  v7 = v5;
-  [v6 readBatteryWithReply:v8];
+  v9 = replyCopy;
+  v7 = replyCopy;
+  [batteryServiceServer readBatteryWithReply:v8];
 }
 
-+ (id)physicalDeviceGetHapticCapabilities:(id)a3
++ (id)physicalDeviceGetHapticCapabilities:(id)capabilities
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [a3 propertyForKey:@"PSVR2DeviceType"];
+  v3 = [capabilities propertyForKey:@"PSVR2DeviceType"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_6;
   }
 
-  v4 = [v3 UTF8String];
-  if (!v4)
+  uTF8String = [v3 UTF8String];
+  if (!uTF8String)
   {
     goto LABEL_6;
   }
 
-  v5 = v4;
-  if (!strcmp(v4, "Unknown"))
+  v5 = uTF8String;
+  if (!strcmp(uTF8String, "Unknown"))
   {
     goto LABEL_6;
   }
@@ -1275,23 +1275,23 @@ LABEL_7:
   return v6;
 }
 
-+ (id)physicalDeviceGetHapticCapabilityGraph:(id)a3
++ (id)physicalDeviceGetHapticCapabilityGraph:(id)graph
 {
-  v3 = [a3 propertyForKey:@"PSVR2DeviceType"];
+  v3 = [graph propertyForKey:@"PSVR2DeviceType"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_6;
   }
 
-  v4 = [v3 UTF8String];
-  if (!v4)
+  uTF8String = [v3 UTF8String];
+  if (!uTF8String)
   {
     goto LABEL_6;
   }
 
-  v5 = v4;
-  if (!strcmp(v4, "Unknown"))
+  v5 = uTF8String;
+  if (!strcmp(uTF8String, "Unknown"))
   {
     goto LABEL_6;
   }

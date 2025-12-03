@@ -1,29 +1,29 @@
 @interface CRDataDetectorUtilities
-+ (BOOL)_shouldGroupAllEntitiesFor:(id)a3 lines:(id)a4;
-+ (_NSRange)_mappedUrlificationRangeFor:(_NSRange)a3 withMapping:(id)a4;
-+ (double)_personNameScoreForFullNameString:(id)a3 locale:(id)a4;
-+ (double)_personNameScoreForString:(id)a3 locale:(id)a4;
-+ (id)_personNameFromFullNameString:(id)a3;
-+ (id)_personNameLineInRegion:(id)a3;
-+ (id)_personNameLineInRegion:(id)a3 defaultLocale:(id)a4;
-+ (id)_regionsForTranscript:(id)a3 inRange:(_NSRange)a4 mapping:(id)a5;
-+ (id)_stringByRemovingNamePrefixes:(id)a3;
-+ (id)computeDataDetectorRegionsForText:(id)a3 locale:(id)a4 transcriptComponents:(id)a5 ddQOS:(int)a6;
-+ (id)computeGroupRegionsWithDataDetectorRegions:(id)a3 inRegion:(id)a4;
-+ (unint64_t)_dataCountOfType:(unint64_t)a3 inRegions:(id)a4;
-+ (unint64_t)_groupTypeFromChildren:(id)a3;
-+ (void)debugDataDetectorForRegion:(id)a3 withImage:(id)a4 ddQOS:(int)a5;
++ (BOOL)_shouldGroupAllEntitiesFor:(id)for lines:(id)lines;
++ (_NSRange)_mappedUrlificationRangeFor:(_NSRange)for withMapping:(id)mapping;
++ (double)_personNameScoreForFullNameString:(id)string locale:(id)locale;
++ (double)_personNameScoreForString:(id)string locale:(id)locale;
++ (id)_personNameFromFullNameString:(id)string;
++ (id)_personNameLineInRegion:(id)region;
++ (id)_personNameLineInRegion:(id)region defaultLocale:(id)locale;
++ (id)_regionsForTranscript:(id)transcript inRange:(_NSRange)range mapping:(id)mapping;
++ (id)_stringByRemovingNamePrefixes:(id)prefixes;
++ (id)computeDataDetectorRegionsForText:(id)text locale:(id)locale transcriptComponents:(id)components ddQOS:(int)s;
++ (id)computeGroupRegionsWithDataDetectorRegions:(id)regions inRegion:(id)region;
++ (unint64_t)_dataCountOfType:(unint64_t)type inRegions:(id)regions;
++ (unint64_t)_groupTypeFromChildren:(id)children;
++ (void)debugDataDetectorForRegion:(id)region withImage:(id)image ddQOS:(int)s;
 @end
 
 @implementation CRDataDetectorUtilities
 
-+ (_NSRange)_mappedUrlificationRangeFor:(_NSRange)a3 withMapping:(id)a4
++ (_NSRange)_mappedUrlificationRangeFor:(_NSRange)for withMapping:(id)mapping
 {
-  length = a3.length;
-  location = a3.location;
+  length = for.length;
+  location = for.location;
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (location >= [v6 count] || (v7 = length + location - 1, v7 >= objc_msgSend(v6, "count")))
+  mappingCopy = mapping;
+  if (location >= [mappingCopy count] || (v7 = length + location - 1, v7 >= objc_msgSend(mappingCopy, "count")))
   {
     v13 = CROSLogForCategory(7);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -33,66 +33,66 @@
       v18 = 2048;
       v19 = length;
       v20 = 2048;
-      v21 = [v6 count];
+      v21 = [mappingCopy count];
       _os_log_impl(&dword_1B40D2000, v13, OS_LOG_TYPE_ERROR, "_mappedUrlificationRangeFor:withMapping: Range (%ld, %ld) out of bounds for mapping length %ld.", &v16, 0x20u);
     }
 
     v12 = 0;
-    v9 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v8 = [v6 objectAtIndexedSubscript:location];
-    v9 = [v8 unsignedIntegerValue];
+    v8 = [mappingCopy objectAtIndexedSubscript:location];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-    v10 = [v6 objectAtIndexedSubscript:v7];
-    v11 = [v10 unsignedIntegerValue];
+    v10 = [mappingCopy objectAtIndexedSubscript:v7];
+    unsignedIntegerValue2 = [v10 unsignedIntegerValue];
 
-    v12 = v11 - v9 + 1;
+    v12 = unsignedIntegerValue2 - unsignedIntegerValue + 1;
   }
 
-  v14 = v9;
+  v14 = unsignedIntegerValue;
   v15 = v12;
   result.length = v15;
   result.location = v14;
   return result;
 }
 
-+ (id)_regionsForTranscript:(id)a3 inRange:(_NSRange)a4 mapping:(id)a5
++ (id)_regionsForTranscript:(id)transcript inRange:(_NSRange)range mapping:(id)mapping
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
-  v9 = a5;
-  v10 = [objc_opt_class() _mappedUrlificationRangeFor:location withMapping:{length, v9}];
+  length = range.length;
+  location = range.location;
+  transcriptCopy = transcript;
+  mappingCopy = mapping;
+  v10 = [objc_opt_class() _mappedUrlificationRangeFor:location withMapping:{length, mappingCopy}];
   v12 = v11;
-  v20.location = [v8 representedRange];
+  v20.location = [transcriptCopy representedRange];
   v21.location = v10;
   v21.length = v12;
   v13 = NSIntersectionRange(v20, v21);
-  v14 = v13.length;
+  regionsSuitableForDataDetectorOutput = v13.length;
   if (v13.length)
   {
-    v15 = [v8 representedRange];
-    v16 = [v8 outputRegion];
-    v17 = [v16 outputRegionWithContentsOfCharacterRange:{v13.location - v15, v13.length}];
+    representedRange = [transcriptCopy representedRange];
+    outputRegion = [transcriptCopy outputRegion];
+    v17 = [outputRegion outputRegionWithContentsOfCharacterRange:{v13.location - representedRange, v13.length}];
 
-    v14 = [v17 regionsSuitableForDataDetectorOutput];
+    regionsSuitableForDataDetectorOutput = [v17 regionsSuitableForDataDetectorOutput];
   }
 
-  return v14;
+  return regionsSuitableForDataDetectorOutput;
 }
 
-+ (double)_personNameScoreForString:(id)a3 locale:(id)a4
++ (double)_personNameScoreForString:(id)string locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  localeCopy = locale;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__CRDataDetectorUtilities__personNameScoreForString_locale___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED95FE28 != -1)
   {
     dispatch_once(&qword_1ED95FE28, block);
@@ -100,20 +100,20 @@
 
   v8 = qword_1ED95FE20;
   objc_sync_enter(v8);
-  if ([v7 isEqualToString:@"en-US"])
+  if ([localeCopy isEqualToString:@"en-US"])
   {
-    [qword_1ED95FE20 personNameScoreForStringWithGazetteers:v6 locale:v7 useLastNameGazetteer:1];
+    [qword_1ED95FE20 personNameScoreForStringWithGazetteers:stringCopy locale:localeCopy useLastNameGazetteer:1];
   }
 
   else
   {
-    [qword_1ED95FE20 personNameScoreForStringWithGazetteers:v6 locale:v7 useLastNameGazetteer:0];
+    [qword_1ED95FE20 personNameScoreForStringWithGazetteers:stringCopy locale:localeCopy useLastNameGazetteer:0];
   }
 
   v10 = -1.79769313e308;
   if (v9 <= -1.79769313e308 || (v10 = v9, v9 < 0.0))
   {
-    [qword_1ED95FE20 personNameScoreForStringWithTagger:v6 locale:v7];
+    [qword_1ED95FE20 personNameScoreForStringWithTagger:stringCopy locale:localeCopy];
     if (v10 < v11)
     {
       v10 = v11;
@@ -138,14 +138,14 @@ void __60__CRDataDetectorUtilities__personNameScoreForString_locale___block_invo
   qword_1ED95FE20 = v3;
 }
 
-+ (double)_personNameScoreForFullNameString:(id)a3 locale:(id)a4
++ (double)_personNameScoreForFullNameString:(id)string locale:(id)locale
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() _personNameFromFullNameString:v5];
+  stringCopy = string;
+  localeCopy = locale;
+  v7 = [objc_opt_class() _personNameFromFullNameString:stringCopy];
   if (v7)
   {
-    [objc_opt_class() _personNameScoreForString:v7 locale:v6];
+    [objc_opt_class() _personNameScoreForString:v7 locale:localeCopy];
     v9 = v8;
   }
 
@@ -157,10 +157,10 @@ void __60__CRDataDetectorUtilities__personNameScoreForString_locale___block_invo
   return v9;
 }
 
-+ (id)_stringByRemovingNamePrefixes:(id)a3
++ (id)_stringByRemovingNamePrefixes:(id)prefixes
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  prefixesCopy = prefixes;
   if ((atomic_load_explicit(&qword_1ED95FE40, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ED95FE40))
   {
     qword_1ED95FE38 = objc_opt_new();
@@ -172,7 +172,7 @@ void __60__CRDataDetectorUtilities__personNameScoreForString_locale___block_invo
     dispatch_once(&qword_1ED95FE30, &__block_literal_global_168);
   }
 
-  v4 = v3;
+  v4 = prefixesCopy;
   v5 = 0;
   v21 = v4;
 LABEL_5:
@@ -308,18 +308,18 @@ uint64_t __57__CRDataDetectorUtilities__stringByRemovingNamePrefixes___block_inv
   return v7;
 }
 
-+ (id)_personNameFromFullNameString:(id)a3
++ (id)_personNameFromFullNameString:(id)string
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   if (qword_1ED95FE50 != -1)
   {
     dispatch_once(&qword_1ED95FE50, &__block_literal_global_185);
   }
 
-  if ([v4 length] <= 0x23)
+  if ([stringCopy length] <= 0x23)
   {
-    v6 = [a1 _stringByRemovingNamePrefixes:v4];
+    v6 = [self _stringByRemovingNamePrefixes:stringCopy];
 
     v7 = [v6 stringByFoldingWithOptions:128 locale:0];
     if ([v7 length] && (v8 = objc_msgSend(v7, "length"), v8 == objc_msgSend(v6, "length")))
@@ -348,7 +348,7 @@ uint64_t __57__CRDataDetectorUtilities__stringByRemovingNamePrefixes___block_inv
       v5 = 0;
     }
 
-    v4 = v6;
+    stringCopy = v6;
   }
 
   else
@@ -366,28 +366,28 @@ void __57__CRDataDetectorUtilities__personNameFromFullNameString___block_invoke(
   qword_1ED95FE48 = v0;
 }
 
-+ (id)_personNameLineInRegion:(id)a3
++ (id)_personNameLineInRegion:(id)region
 {
-  v3 = [a1 _personNameLineInRegion:a3 defaultLocale:@"en-US"];
+  v3 = [self _personNameLineInRegion:region defaultLocale:@"en-US"];
 
   return v3;
 }
 
-+ (id)_personNameLineInRegion:(id)a3 defaultLocale:(id)a4
++ (id)_personNameLineInRegion:(id)region defaultLocale:(id)locale
 {
   v82[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v69 = a4;
-  v73 = v5;
-  if ([v5 type] == 8)
+  regionCopy = region;
+  localeCopy = locale;
+  v73 = regionCopy;
+  if ([regionCopy type] == 8)
   {
-    v82[0] = v5;
+    v82[0] = regionCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:1];
   }
 
   else
   {
-    v6 = [v5 contentsWithTypes:8];
+    v6 = [regionCopy contentsWithTypes:8];
   }
 
   v78 = 0u;
@@ -417,55 +417,55 @@ void __57__CRDataDetectorUtilities__personNameFromFullNameString___block_invoke(
       }
 
       v11 = *(*(&v76 + 1) + 8 * i);
-      v12 = [v11 text];
-      v13 = [v12 length] == 0;
+      text = [v11 text];
+      v13 = [text length] == 0;
 
       if (!v13)
       {
-        v14 = [v73 recognizedLocale];
-        v15 = v14;
-        if (v14)
+        recognizedLocale = [v73 recognizedLocale];
+        v15 = recognizedLocale;
+        if (recognizedLocale)
         {
-          v16 = v14;
+          v16 = recognizedLocale;
         }
 
         else
         {
-          v17 = [v73 children];
-          v18 = [v17 firstObject];
-          v19 = [v18 recognizedLocale];
-          v20 = v19;
-          v21 = v69;
-          if (v19)
+          children = [v73 children];
+          firstObject = [children firstObject];
+          recognizedLocale2 = [firstObject recognizedLocale];
+          v20 = recognizedLocale2;
+          v21 = localeCopy;
+          if (recognizedLocale2)
           {
-            v21 = v19;
+            v21 = recognizedLocale2;
           }
 
           v16 = v21;
         }
 
         v22 = objc_opt_class();
-        v23 = [v11 text];
-        [v22 _personNameScoreForFullNameString:v23 locale:v16];
+        text2 = [v11 text];
+        [v22 _personNameScoreForFullNameString:text2 locale:v16];
         v25 = v24;
 
         if (v25 > v9)
         {
 LABEL_16:
-          v26 = v72;
+          text3 = v72;
           v72 = v11;
           v9 = v25;
           goto LABEL_23;
         }
 
-        v27 = v70;
+        boundingQuad4 = v70;
         if (!v8)
         {
           goto LABEL_24;
         }
 
-        v26 = [v8 text];
-        v28 = [v26 componentsSeparatedByString:@" "];
+        text3 = [v8 text];
+        v28 = [text3 componentsSeparatedByString:@" "];
         if ([v28 count] != 1)
         {
 
@@ -473,49 +473,49 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        v67 = [v11 text];
-        v68 = [v67 componentsSeparatedByString:@" "];
+        text4 = [v11 text];
+        v68 = [text4 componentsSeparatedByString:@" "];
         if ([v68 count] != 1)
         {
           v38 = 0;
           goto LABEL_35;
         }
 
-        v66 = [v8 boundingQuad];
-        [v66 topLeft];
+        boundingQuad = [v8 boundingQuad];
+        [boundingQuad topLeft];
         v30 = v29;
-        v65 = [v11 boundingQuad];
-        [v65 topLeft];
+        boundingQuad2 = [v11 boundingQuad];
+        [boundingQuad2 topLeft];
         v32 = v31;
         if (v30 >= v31)
         {
-          v64 = [v8 boundingQuad];
-          [v64 topLeft];
+          boundingQuad3 = [v8 boundingQuad];
+          [boundingQuad3 topLeft];
           v40 = v39;
-          v27 = [v11 boundingQuad];
-          [v27 topLeft];
+          boundingQuad4 = [v11 boundingQuad];
+          [boundingQuad4 topLeft];
           v36 = v40 - v41;
         }
 
         else
         {
-          v63 = [v8 boundingQuad];
-          [v63 topLeft];
+          boundingQuad5 = [v8 boundingQuad];
+          [boundingQuad5 topLeft];
           v34 = v33;
-          v62 = [v11 boundingQuad];
-          [v62 topLeft];
+          boundingQuad6 = [v11 boundingQuad];
+          [boundingQuad6 topLeft];
           v36 = -(v34 - v35);
         }
 
-        v70 = v27;
-        v42 = [v11 boundingQuad];
-        [v42 size];
+        v70 = boundingQuad4;
+        boundingQuad7 = [v11 boundingQuad];
+        [boundingQuad7 size];
         if (v36 / v43 >= 1.0)
         {
 
           v38 = 0;
           v51 = v70;
-          v52 = v64;
+          v52 = boundingQuad3;
           if (v30 >= v32)
           {
             goto LABEL_34;
@@ -524,18 +524,18 @@ LABEL_23:
 
         else
         {
-          v61 = [v11 boundingQuad];
-          [v61 topLeft];
+          boundingQuad8 = [v11 boundingQuad];
+          [boundingQuad8 topLeft];
           v45 = v44;
-          v46 = [v8 boundingQuad];
-          [v46 bottomLeft];
+          boundingQuad9 = [v8 boundingQuad];
+          [boundingQuad9 bottomLeft];
           v48 = v47;
-          v49 = [v11 boundingQuad];
-          [v49 size];
+          boundingQuad10 = [v11 boundingQuad];
+          [boundingQuad10 size];
           v38 = (v45 - v48) / v50 < 0.5;
 
           v51 = v70;
-          v52 = v64;
+          v52 = boundingQuad3;
           if (v30 >= v32)
           {
 LABEL_34:
@@ -544,10 +544,10 @@ LABEL_35:
             if (v38)
             {
               v53 = objc_opt_class();
-              v54 = [v8 text];
-              v80[0] = v54;
-              v55 = [v11 text];
-              v80[1] = v55;
+              text5 = [v8 text];
+              v80[0] = text5;
+              text6 = [v11 text];
+              v80[1] = text6;
               v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:v80 count:2];
               v57 = [v56 componentsJoinedByString:@" "];
               [v53 _personNameScoreForFullNameString:v57 locale:v16];
@@ -567,8 +567,8 @@ LABEL_24:
           }
         }
 
-        v51 = v62;
-        v52 = v63;
+        v51 = boundingQuad6;
+        v52 = boundingQuad5;
         goto LABEL_34;
       }
     }
@@ -583,15 +583,15 @@ LABEL_41:
   return v72;
 }
 
-+ (id)computeDataDetectorRegionsForText:(id)a3 locale:(id)a4 transcriptComponents:(id)a5 ddQOS:(int)a6
++ (id)computeDataDetectorRegionsForText:(id)text locale:(id)locale transcriptComponents:(id)components ddQOS:(int)s
 {
-  v6 = *&a6;
+  v6 = *&s;
   v75 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v46 = a4;
-  v41 = a5;
-  v42 = v9;
-  if ([v9 length])
+  textCopy = text;
+  localeCopy = locale;
+  componentsCopy = components;
+  v42 = textCopy;
+  if ([textCopy length])
   {
     v10 = CROSLogForCategory(7);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -599,18 +599,18 @@ LABEL_41:
       *buf = 136315906;
       v68 = "+[CRDataDetectorUtilities computeDataDetectorRegionsForText:locale:transcriptComponents:ddQOS:]";
       v69 = 2048;
-      v70 = [v9 length];
+      v70 = [textCopy length];
       v71 = 2112;
-      v72 = v46;
+      v72 = localeCopy;
       v73 = 2048;
-      v74 = [v41 count];
+      v74 = [componentsCopy count];
       _os_log_impl(&dword_1B40D2000, v10, OS_LOG_TYPE_DEBUG, "%s: Computing data detector regions (text-length:%lu locale:%@ #components:%lu)", buf, 0x2Au);
     }
 
     v62 = 0;
-    v40 = [v9 _crDDFriendlyTextWithIndexMapping:&v62];
+    v40 = [textCopy _crDDFriendlyTextWithIndexMapping:&v62];
     v11 = v62;
-    v38 = [MEMORY[0x1E6999A90] _crConfigForLocale:v46];
+    v38 = [MEMORY[0x1E6999A90] _crConfigForLocale:localeCopy];
     [v38 setQos:v6];
     v37 = [MEMORY[0x1E6999A88] scanString:v40 range:0 configuration:{objc_msgSend(v40, "length"), v38}];
     v44 = objc_opt_new();
@@ -648,7 +648,7 @@ LABEL_41:
           v56 = 0u;
           v53 = 0u;
           v54 = 0u;
-          v14 = v41;
+          v14 = componentsCopy;
           v15 = [v14 countByEnumeratingWithState:&v53 objects:v65 count:16];
           if (v15)
           {
@@ -664,8 +664,8 @@ LABEL_41:
 
                 v18 = *(*(&v53 + 1) + 8 * j);
                 v19 = objc_opt_class();
-                v20 = [v12 urlificationRange];
-                v22 = [v19 _regionsForTranscript:v18 inRange:v20 mapping:{v21, v11}];
+                urlificationRange = [v12 urlificationRange];
+                v22 = [v19 _regionsForTranscript:v18 inRange:urlificationRange mapping:{v21, v11}];
                 if (v22)
                 {
                   [v13 addObjectsFromArray:v22];
@@ -678,7 +678,7 @@ LABEL_41:
             while (v15);
           }
 
-          v23 = [[CRDataDetectorsOutputRegion alloc] initWithDataDetectorsResult:v12 children:v13 locale:v46 originalString:v42 ddFriendlyString:v40 matchToOriginalIndexMapping:v11];
+          v23 = [[CRDataDetectorsOutputRegion alloc] initWithDataDetectorsResult:v12 children:v13 locale:localeCopy originalString:v42 ddFriendlyString:v40 matchToOriginalIndexMapping:v11];
           if ([(CRDataDetectorsOutputRegion *)v23 dataType]&& [(CRDataDetectorsOutputRegion *)v23 dataType]!= 10)
           {
             [v44 addObject:v23];
@@ -695,7 +695,7 @@ LABEL_41:
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v48 = v41;
+    v48 = componentsCopy;
     v24 = [v48 countByEnumeratingWithState:&v49 objects:v64 count:16];
     if (v24)
     {
@@ -711,19 +711,19 @@ LABEL_41:
 
           v27 = *(*(&v49 + 1) + 8 * k);
           v28 = objc_opt_class();
-          v29 = [v27 outputRegion];
-          v30 = [v28 _personNameLineInRegion:v29];
+          outputRegion = [v27 outputRegion];
+          v30 = [v28 _personNameLineInRegion:outputRegion];
 
           if (v30)
           {
-            v31 = [v30 text];
-            v32 = [MEMORY[0x1E6999A80] resultFromText:v31 personName:v31 jobTitle:0 department:0 company:0];
+            text = [v30 text];
+            v32 = [MEMORY[0x1E6999A80] resultFromText:text personName:text jobTitle:0 department:0 company:0];
             if (v32)
             {
               v33 = [CRDataDetectorsOutputRegion alloc];
               v63 = v30;
               v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v63 count:1];
-              v35 = [(CRDataDetectorsOutputRegion *)v33 initWithDataType:10 ddResult:v32 children:v34 locale:v46];
+              v35 = [(CRDataDetectorsOutputRegion *)v33 initWithDataType:10 ddResult:v32 children:v34 locale:localeCopy];
 
               [v44 addObject:v35];
             }
@@ -745,17 +745,17 @@ LABEL_41:
   return v44;
 }
 
-+ (unint64_t)_groupTypeFromChildren:(id)a3
++ (unint64_t)_groupTypeFromChildren:(id)children
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count] <= 0xC)
+  childrenCopy = children;
+  if ([childrenCopy count] <= 0xC)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = v3;
+    v4 = childrenCopy;
     v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
@@ -824,16 +824,16 @@ LABEL_25:
   return v8;
 }
 
-+ (unint64_t)_dataCountOfType:(unint64_t)a3 inRegions:(id)a4
++ (unint64_t)_dataCountOfType:(unint64_t)type inRegions:(id)regions
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = a4;
+  regionsCopy = regions;
   v6 = 0;
-  v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [regionsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -844,10 +844,10 @@ LABEL_25:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(regionsCopy);
         }
 
-        if ([*(*(&v11 + 1) + 8 * v9) dataType] == a3)
+        if ([*(*(&v11 + 1) + 8 * v9) dataType] == type)
         {
           ++v6;
         }
@@ -856,7 +856,7 @@ LABEL_25:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [regionsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -865,34 +865,34 @@ LABEL_25:
   return v6;
 }
 
-+ (BOOL)_shouldGroupAllEntitiesFor:(id)a3 lines:(id)a4
++ (BOOL)_shouldGroupAllEntitiesFor:(id)for lines:(id)lines
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 count] >= 3 && objc_msgSend(v7, "count") <= 0xF && objc_msgSend(a1, "_dataCountOfType:inRegions:", 10, v6) == 1 && (objc_msgSend(a1, "_dataCountOfType:inRegions:", 3, v6) - 1) < 3;
+  forCopy = for;
+  linesCopy = lines;
+  v8 = [linesCopy count] >= 3 && objc_msgSend(linesCopy, "count") <= 0xF && objc_msgSend(self, "_dataCountOfType:inRegions:", 10, forCopy) == 1 && (objc_msgSend(self, "_dataCountOfType:inRegions:", 3, forCopy) - 1) < 3;
 
   return v8;
 }
 
-+ (id)computeGroupRegionsWithDataDetectorRegions:(id)a3 inRegion:(id)a4
++ (id)computeGroupRegionsWithDataDetectorRegions:(id)regions inRegion:(id)region
 {
   v59[1] = *MEMORY[0x1E69E9840];
-  v39 = a3;
-  v31 = a4;
+  regionsCopy = regions;
+  regionCopy = region;
   v34 = objc_opt_new();
   v32 = [[CRTextFeatureOrderV2 alloc] initWithAngleThresholdForRotatedCrops:0.0];
-  v33 = [v31 contentsWithTypes:8];
+  v33 = [regionCopy contentsWithTypes:8];
   obj = [CRTextFeatureOrderV2 orderAndGroupRegions:v32 coarseDelegate:"orderAndGroupRegions:coarseDelegate:fineDelegate:coarseOnly:" fineDelegate:? coarseOnly:?];
-  if ([obj count] >= 2 && objc_msgSend(a1, "_shouldGroupAllEntitiesFor:lines:", v39, v33))
+  if ([obj count] >= 2 && objc_msgSend(self, "_shouldGroupAllEntitiesFor:lines:", regionsCopy, v33))
   {
     v5 = [obj objectAtIndexedSubscript:0];
-    v6 = [v5 boundingQuad];
-    [v6 baselineAngle];
+    boundingQuad = [v5 boundingQuad];
+    [boundingQuad baselineAngle];
     v7 = [CRBlockOutputRegion blockWithLines:v33 confidence:2 quad:0 baselineAngle:?];
 
     v8 = [CRGroupRegion alloc];
-    v9 = [v7 boundingQuad];
-    v10 = -[CRGroupRegion initWithBoundingQuad:layoutDirection:subregions:](v8, "initWithBoundingQuad:layoutDirection:subregions:", v9, [v7 layoutDirection], v33);
+    boundingQuad2 = [v7 boundingQuad];
+    v10 = -[CRGroupRegion initWithBoundingQuad:layoutDirection:subregions:](v8, "initWithBoundingQuad:layoutDirection:subregions:", boundingQuad2, [v7 layoutDirection], v33);
     v59[0] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:1];
 
@@ -923,7 +923,7 @@ LABEL_25:
         v51 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v43 = v39;
+        v43 = regionsCopy;
         v13 = [v43 countByEnumeratingWithState:&v48 objects:v57 count:16];
         if (v13)
         {
@@ -938,11 +938,11 @@ LABEL_25:
               }
 
               v16 = *(*(&v48 + 1) + 8 * j);
-              v17 = [v12 boundingQuad];
-              v18 = [v17 denormalizedQuad];
-              v19 = [v16 boundingQuad];
-              v20 = [v19 denormalizedQuad];
-              v21 = [v18 entirelyContainsQuad:v20];
+              boundingQuad3 = [v12 boundingQuad];
+              denormalizedQuad = [boundingQuad3 denormalizedQuad];
+              boundingQuad4 = [v16 boundingQuad];
+              denormalizedQuad2 = [boundingQuad4 denormalizedQuad];
+              v21 = [denormalizedQuad entirelyContainsQuad:denormalizedQuad2];
 
               if (v21)
               {
@@ -959,15 +959,15 @@ LABEL_25:
         v22 = [objc_opt_class() _groupTypeFromChildren:v42];
         if (v22)
         {
-          v23 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
           if (v22 == 2)
           {
             v46 = 0u;
             v47 = 0u;
             v44 = 0u;
             v45 = 0u;
-            v24 = [v12 subregions];
-            v25 = [v24 countByEnumeratingWithState:&v44 objects:v56 count:16];
+            subregions = [v12 subregions];
+            v25 = [subregions countByEnumeratingWithState:&v44 objects:v56 count:16];
             if (v25)
             {
               v26 = *v45;
@@ -977,25 +977,25 @@ LABEL_25:
                 {
                   if (*v45 != v26)
                   {
-                    objc_enumerationMutation(v24);
+                    objc_enumerationMutation(subregions);
                   }
 
                   v28 = *(*(&v44 + 1) + 8 * k);
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    [v23 addObject:v28];
+                    [array addObject:v28];
                   }
                 }
 
-                v25 = [v24 countByEnumeratingWithState:&v44 objects:v56 count:16];
+                v25 = [subregions countByEnumeratingWithState:&v44 objects:v56 count:16];
               }
 
               while (v25);
             }
           }
 
-          v29 = [[CRDataDetectorsGroupOutputRegion alloc] initWithDDRegions:v42 children:v23 groupType:v22];
+          v29 = [[CRDataDetectorsGroupOutputRegion alloc] initWithDDRegions:v42 children:array groupType:v22];
           if (v29)
           {
             [v34 addObject:v29];
@@ -1012,29 +1012,29 @@ LABEL_25:
   return v34;
 }
 
-+ (void)debugDataDetectorForRegion:(id)a3 withImage:(id)a4 ddQOS:(int)a5
++ (void)debugDataDetectorForRegion:(id)region withImage:(id)image ddQOS:(int)s
 {
-  v5 = *&a5;
-  v20 = a3;
-  v7 = a4;
+  v5 = *&s;
+  regionCopy = region;
+  imageCopy = image;
   if (qword_1ED95FE60 != -1)
   {
     dispatch_once(&qword_1ED95FE60, &__block_literal_global_198);
   }
 
-  v8 = [v20 text];
-  v9 = [v20 recognizedLocale];
-  v10 = [v20 transcriptComponents];
-  v11 = [CRDataDetectorUtilities computeDataDetectorRegionsForText:v8 locale:v9 transcriptComponents:v10 ddQOS:v5];
+  text = [regionCopy text];
+  recognizedLocale = [regionCopy recognizedLocale];
+  transcriptComponents = [regionCopy transcriptComponents];
+  v11 = [CRDataDetectorUtilities computeDataDetectorRegionsForText:text locale:recognizedLocale transcriptComponents:transcriptComponents ddQOS:v5];
 
-  v12 = [v7 imageByOverlayingRegions:v11 strings:0 lineWidth:4.0 red:0.0 green:0.2 blue:0.8 alpha:0.8];
+  v12 = [imageCopy imageByOverlayingRegions:v11 strings:0 lineWidth:4.0 red:0.0 green:0.2 blue:0.8 alpha:0.8];
 
   v13 = [[CRTextFeatureOrderV2 alloc] initWithAngleThresholdForRotatedCrops:0.0];
-  v14 = [v20 contentsWithTypes:8];
+  v14 = [regionCopy contentsWithTypes:8];
   v15 = [(CRTextFeatureOrderV2 *)v13 orderAndGroupRegions:v14];
   v16 = [v12 imageByOverlayingRegions:v15 strings:0 lineWidth:4.0 red:0.2 green:0.8 blue:0.0 alpha:0.5];
 
-  v17 = [CRDataDetectorUtilities computeGroupRegionsWithDataDetectorRegions:v11 inRegion:v20];
+  v17 = [CRDataDetectorUtilities computeGroupRegionsWithDataDetectorRegions:v11 inRegion:regionCopy];
   v18 = [v16 imageByOverlayingRegions:v17 strings:0 lineWidth:8.0 red:1.0 green:0.0 blue:0.0 alpha:0.8];
 
   v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/dd_debug_%lu.png", qword_1ED95FE58, objc_msgSend(v18, "hash")];

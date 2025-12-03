@@ -1,23 +1,23 @@
 @interface HMDMetricsDeviceStateManager
-+ (id)lastUpdateForSoftwareVersion:(id)a3 dateProvider:(id)a4 userDefaults:(id)a5 updateDefaultsIfNeeded:(BOOL)a6;
-+ (int64_t)_daysSinceSoftwareUpdateFrom:(id)a3 dateProvider:(id)a4;
++ (id)lastUpdateForSoftwareVersion:(id)version dateProvider:(id)provider userDefaults:(id)defaults updateDefaultsIfNeeded:(BOOL)needed;
++ (int64_t)_daysSinceSoftwareUpdateFrom:(id)from dateProvider:(id)provider;
 + (int64_t)internalDeviceDaysSinceSoftwareUpdate;
-- (HMDMetricsDeviceStateManager)initWithCurrentSoftwareVersion:(id)a3 logEventSubmitter:(id)a4 dailyScheduler:(id)a5 dateProvider:(id)a6 keyCountProvider:(id)a7 userDefaults:(id)a8 fileManager:(id)a9;
-- (HMDMetricsDeviceStateManager)initWithLogEventSubmitter:(id)a3 dailyScheduler:(id)a4 dateProvider:(id)a5;
+- (HMDMetricsDeviceStateManager)initWithCurrentSoftwareVersion:(id)version logEventSubmitter:(id)submitter dailyScheduler:(id)scheduler dateProvider:(id)provider keyCountProvider:(id)countProvider userDefaults:(id)defaults fileManager:(id)manager;
+- (HMDMetricsDeviceStateManager)initWithLogEventSubmitter:(id)submitter dailyScheduler:(id)scheduler dateProvider:(id)provider;
 - (HMMDateProvider)dateProvider;
 - (int64_t)deviceDaysSinceSoftwareUpdate;
-- (int64_t)fetchSizeInBytesForFilepath:(id)a3;
-- (unint64_t)bitMaskForKeyType:(unint64_t)a3;
-- (unint64_t)duplicateKeysBitMapFromKeyCounts:(id)a3;
-- (unint64_t)fetchSqliteDatabaseSizeInKBForFileName:(id)a3;
-- (unint64_t)missingKeysBitMapFromKeyCounts:(id)a3;
+- (int64_t)fetchSizeInBytesForFilepath:(id)filepath;
+- (unint64_t)bitMaskForKeyType:(unint64_t)type;
+- (unint64_t)duplicateKeysBitMapFromKeyCounts:(id)counts;
+- (unint64_t)fetchSqliteDatabaseSizeInKBForFileName:(id)name;
+- (unint64_t)missingKeysBitMapFromKeyCounts:(id)counts;
 - (void)configure;
 - (void)handleHomeDataLoaded;
-- (void)populateAggregationAnalysisLogEvent:(id)a3 forDate:(id)a4;
+- (void)populateAggregationAnalysisLogEvent:(id)event forDate:(id)date;
 - (void)runDailyTask;
 - (void)updateCachedPairingKeyStates;
-- (void)updateWithDataSyncState:(unint64_t)a3;
-- (void)updateWithHomeManagerStatus:(unint64_t)a3;
+- (void)updateWithDataSyncState:(unint64_t)state;
+- (void)updateWithHomeManagerStatus:(unint64_t)status;
 @end
 
 @implementation HMDMetricsDeviceStateManager
@@ -33,7 +33,7 @@
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -44,27 +44,27 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HMDMetricsDeviceStateManager *)v4 updateCachedPairingKeyStates];
+  [(HMDMetricsDeviceStateManager *)selfCopy updateCachedPairingKeyStates];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)populateAggregationAnalysisLogEvent:(id)a3 forDate:(id)a4
+- (void)populateAggregationAnalysisLogEvent:(id)event forDate:(id)date
 {
-  v5 = a3;
-  [v5 setCoreDataRootSizeKB:{-[HMDMetricsDeviceStateManager coreDataRootSizeKB](self, "coreDataRootSizeKB")}];
-  [v5 setCoreDataLocalStoreSizeKB:{-[HMDMetricsDeviceStateManager coreDataLocalStoreSizeKB](self, "coreDataLocalStoreSizeKB")}];
-  [v5 setCoreDataCloudStoreSizeKB:{-[HMDMetricsDeviceStateManager coreDataCloudStoreSizeKB](self, "coreDataCloudStoreSizeKB")}];
-  [v5 setCoreDataSharedCloudStoreSizeKB:{-[HMDMetricsDeviceStateManager coreDataSharedCloudStoreSizeKB](self, "coreDataSharedCloudStoreSizeKB")}];
-  [v5 setLegacyV1DatabaseSizeKB:{-[HMDMetricsDeviceStateManager legacyV1DatabaseSizeKB](self, "legacyV1DatabaseSizeKB")}];
-  [v5 setLegacyV3DatabaseSizeKB:{-[HMDMetricsDeviceStateManager legacyV3DatabaseSizeKB](self, "legacyV3DatabaseSizeKB")}];
-  [v5 setEventStoreHH2SizeKB:{-[HMDMetricsDeviceStateManager eventStoreHH2SizeKB](self, "eventStoreHH2SizeKB")}];
+  eventCopy = event;
+  [eventCopy setCoreDataRootSizeKB:{-[HMDMetricsDeviceStateManager coreDataRootSizeKB](self, "coreDataRootSizeKB")}];
+  [eventCopy setCoreDataLocalStoreSizeKB:{-[HMDMetricsDeviceStateManager coreDataLocalStoreSizeKB](self, "coreDataLocalStoreSizeKB")}];
+  [eventCopy setCoreDataCloudStoreSizeKB:{-[HMDMetricsDeviceStateManager coreDataCloudStoreSizeKB](self, "coreDataCloudStoreSizeKB")}];
+  [eventCopy setCoreDataSharedCloudStoreSizeKB:{-[HMDMetricsDeviceStateManager coreDataSharedCloudStoreSizeKB](self, "coreDataSharedCloudStoreSizeKB")}];
+  [eventCopy setLegacyV1DatabaseSizeKB:{-[HMDMetricsDeviceStateManager legacyV1DatabaseSizeKB](self, "legacyV1DatabaseSizeKB")}];
+  [eventCopy setLegacyV3DatabaseSizeKB:{-[HMDMetricsDeviceStateManager legacyV3DatabaseSizeKB](self, "legacyV3DatabaseSizeKB")}];
+  [eventCopy setEventStoreHH2SizeKB:{-[HMDMetricsDeviceStateManager eventStoreHH2SizeKB](self, "eventStoreHH2SizeKB")}];
 }
 
 - (void)handleHomeDataLoaded
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -75,7 +75,7 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HMDMetricsDeviceStateManager *)v4 updateCachedPairingKeyStates];
+  [(HMDMetricsDeviceStateManager *)selfCopy updateCachedPairingKeyStates];
   v7 = *MEMORY[0x277D85DE8];
 }
 
@@ -91,18 +91,18 @@
   return v6;
 }
 
-- (unint64_t)bitMaskForKeyType:(unint64_t)a3
+- (unint64_t)bitMaskForKeyType:(unint64_t)type
 {
-  if (a3 > 1751999336)
+  if (type > 1751999336)
   {
-    if (a3 == 1751999337)
+    if (type == 1751999337)
     {
       return 8;
     }
 
-    if (a3 != 1752001330)
+    if (type != 1752001330)
     {
-      if (a3 == 1752001641)
+      if (type == 1752001641)
       {
         return 32;
       }
@@ -115,14 +115,14 @@
 
   else
   {
-    if (a3 == 1751216195)
+    if (type == 1751216195)
     {
       return 2;
     }
 
-    if (a3 != 1751216211)
+    if (type != 1751216211)
     {
-      if (a3 == 1751216227)
+      if (type == 1751216227)
       {
         return 4;
       }
@@ -134,15 +134,15 @@
   }
 }
 
-- (unint64_t)duplicateKeysBitMapFromKeyCounts:(id)a3
+- (unint64_t)duplicateKeysBitMapFromKeyCounts:(id)counts
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  countsCopy = counts;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [countsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -154,20 +154,20 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(countsCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v4 objectForKeyedSubscript:v10];
-        v12 = [v11 integerValue];
+        v11 = [countsCopy objectForKeyedSubscript:v10];
+        integerValue = [v11 integerValue];
 
-        if (v12 >= 2)
+        if (integerValue >= 2)
         {
           v7 |= -[HMDMetricsDeviceStateManager bitMaskForKeyType:](self, "bitMaskForKeyType:", [v10 unsignedIntegerValue]);
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [countsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -182,15 +182,15 @@
   return v7;
 }
 
-- (unint64_t)missingKeysBitMapFromKeyCounts:(id)a3
+- (unint64_t)missingKeysBitMapFromKeyCounts:(id)counts
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  countsCopy = counts;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [countsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -202,20 +202,20 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(countsCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v4 objectForKeyedSubscript:v10];
-        v12 = [v11 integerValue];
+        v11 = [countsCopy objectForKeyedSubscript:v10];
+        integerValue = [v11 integerValue];
 
-        if (!v12)
+        if (!integerValue)
         {
           v7 |= -[HMDMetricsDeviceStateManager bitMaskForKeyType:](self, "bitMaskForKeyType:", [v10 unsignedIntegerValue]);
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [countsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -230,15 +230,15 @@
   return v7;
 }
 
-- (int64_t)fetchSizeInBytesForFilepath:(id)a3
+- (int64_t)fetchSizeInBytesForFilepath:(id)filepath
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4 && (-[HMDMetricsDeviceStateManager fileManager](self, "fileManager"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 fileExistsAtPath:v4], v5, (v6 & 1) != 0))
+  filepathCopy = filepath;
+  if (filepathCopy && (-[HMDMetricsDeviceStateManager fileManager](self, "fileManager"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 fileExistsAtPath:filepathCopy], v5, (v6 & 1) != 0))
   {
-    v7 = [(HMDMetricsDeviceStateManager *)self fileManager];
+    fileManager = [(HMDMetricsDeviceStateManager *)self fileManager];
     v24 = 0;
-    v8 = [v7 attributesOfItemAtPath:v4 error:&v24];
+    v8 = [fileManager attributesOfItemAtPath:filepathCopy error:&v24];
     v9 = v24;
 
     if (v8)
@@ -257,13 +257,13 @@
 
       v12 = v11;
 
-      v13 = [v12 integerValue];
+      integerValue = [v12 integerValue];
     }
 
     else
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = self;
+      selfCopy = self;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
@@ -276,14 +276,14 @@
       }
 
       objc_autoreleasePoolPop(v18);
-      v13 = 0;
+      integerValue = 0;
     }
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -291,23 +291,23 @@
       *buf = 138543618;
       v26 = v17;
       v27 = 2112;
-      v28 = v4;
+      v28 = filepathCopy;
       _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_ERROR, "%{public}@Root path or database file path not found: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v14);
-    v13 = 0;
+    integerValue = 0;
   }
 
   v22 = *MEMORY[0x277D85DE8];
-  return v13;
+  return integerValue;
 }
 
-- (unint64_t)fetchSqliteDatabaseSizeInKBForFileName:(id)a3
+- (unint64_t)fetchSqliteDatabaseSizeInKBForFileName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = determineHomeKitDaemonRootStorePath();
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  v6 = [v5 stringByAppendingPathComponent:nameCopy];
 
   v7 = [(HMDMetricsDeviceStateManager *)self fetchSizeInBytesForFilepath:v6]>> 10;
   return v7;
@@ -317,13 +317,13 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  v3 = [(HMDMetricsDeviceStateManager *)self keyCountProvider];
-  v4 = [v3 countAccessoryPairingKeysForMetrics];
+  keyCountProvider = [(HMDMetricsDeviceStateManager *)self keyCountProvider];
+  countAccessoryPairingKeysForMetrics = [keyCountProvider countAccessoryPairingKeysForMetrics];
 
-  self->_bitMappedMissingKeys = [(HMDMetricsDeviceStateManager *)self missingKeysBitMapFromKeyCounts:v4];
-  self->_bitMappedDuplicateKeys = [(HMDMetricsDeviceStateManager *)self duplicateKeysBitMapFromKeyCounts:v4];
+  self->_bitMappedMissingKeys = [(HMDMetricsDeviceStateManager *)self missingKeysBitMapFromKeyCounts:countAccessoryPairingKeysForMetrics];
+  self->_bitMappedDuplicateKeys = [(HMDMetricsDeviceStateManager *)self duplicateKeysBitMapFromKeyCounts:countAccessoryPairingKeysForMetrics];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -333,7 +333,7 @@
     v12 = 138544130;
     v13 = v8;
     v14 = 2112;
-    v15 = v4;
+    v15 = countAccessoryPairingKeysForMetrics;
     v16 = 2048;
     v17 = bitMappedMissingKeys;
     v18 = 2048;
@@ -346,26 +346,26 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithHomeManagerStatus:(unint64_t)a3
+- (void)updateWithHomeManagerStatus:(unint64_t)status
 {
   os_unfair_lock_lock_with_options();
-  if (self->_currentHomeManagerStatus != a3)
+  if (self->_currentHomeManagerStatus != status)
   {
-    self->_currentHomeManagerStatus = a3;
+    self->_currentHomeManagerStatus = status;
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)updateWithDataSyncState:(unint64_t)a3
+- (void)updateWithDataSyncState:(unint64_t)state
 {
   os_unfair_lock_lock_with_options();
-  if (self->_currentDataSyncState != a3)
+  if (self->_currentDataSyncState != state)
   {
-    self->_currentDataSyncState = a3;
-    v5 = [(HMDMetricsDeviceStateManager *)self logEventSubmitter];
-    v6 = [[HMDDataSyncStateLogEvent alloc] initWithDataSyncState:a3];
-    [v5 submitLogEvent:v6];
+    self->_currentDataSyncState = state;
+    logEventSubmitter = [(HMDMetricsDeviceStateManager *)self logEventSubmitter];
+    v6 = [[HMDDataSyncStateLogEvent alloc] initWithDataSyncState:state];
+    [logEventSubmitter submitLogEvent:v6];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -375,7 +375,7 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -386,21 +386,21 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:v4 selector:sel_handleHomeDataLoaded name:@"HMDHomeManagerHomeDataLoadedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:selfCopy selector:sel_handleHomeDataLoaded name:@"HMDHomeManagerHomeDataLoadedNotification" object:0];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMetricsDeviceStateManager)initWithCurrentSoftwareVersion:(id)a3 logEventSubmitter:(id)a4 dailyScheduler:(id)a5 dateProvider:(id)a6 keyCountProvider:(id)a7 userDefaults:(id)a8 fileManager:(id)a9
+- (HMDMetricsDeviceStateManager)initWithCurrentSoftwareVersion:(id)version logEventSubmitter:(id)submitter dailyScheduler:(id)scheduler dateProvider:(id)provider keyCountProvider:(id)countProvider userDefaults:(id)defaults fileManager:(id)manager
 {
-  v15 = a3;
-  v26 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  versionCopy = version;
+  submitterCopy = submitter;
+  schedulerCopy = scheduler;
+  providerCopy = provider;
+  countProviderCopy = countProvider;
+  defaultsCopy = defaults;
+  managerCopy = manager;
   v27.receiver = self;
   v27.super_class = HMDMetricsDeviceStateManager;
   v21 = [(HMDMetricsDeviceStateManager *)&v27 init];
@@ -408,57 +408,57 @@
   if (v21)
   {
     v21->_currentDataSyncState = 0;
-    v23 = [objc_opt_class() lastUpdateForSoftwareVersion:v15 dateProvider:v17 userDefaults:v19 updateDefaultsIfNeeded:1];
+    v23 = [objc_opt_class() lastUpdateForSoftwareVersion:versionCopy dateProvider:providerCopy userDefaults:defaultsCopy updateDefaultsIfNeeded:1];
     lastSoftwareUpdateDate = v22->_lastSoftwareUpdateDate;
     v22->_lastSoftwareUpdateDate = v23;
 
-    objc_storeStrong(&v22->_logEventSubmitter, a4);
-    objc_storeWeak(&v22->_dateProvider, v17);
-    objc_storeStrong(&v22->_keyCountProvider, a7);
-    objc_storeStrong(&v22->_fileManager, a9);
-    [v16 registerDailyTaskRunner:v22];
+    objc_storeStrong(&v22->_logEventSubmitter, submitter);
+    objc_storeWeak(&v22->_dateProvider, providerCopy);
+    objc_storeStrong(&v22->_keyCountProvider, countProvider);
+    objc_storeStrong(&v22->_fileManager, manager);
+    [schedulerCopy registerDailyTaskRunner:v22];
   }
 
   return v22;
 }
 
-- (HMDMetricsDeviceStateManager)initWithLogEventSubmitter:(id)a3 dailyScheduler:(id)a4 dateProvider:(id)a5
+- (HMDMetricsDeviceStateManager)initWithLogEventSubmitter:(id)submitter dailyScheduler:(id)scheduler dateProvider:(id)provider
 {
   v8 = MEMORY[0x277D0F8E8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 productInfo];
-  v13 = [v12 softwareVersion];
-  v14 = [v13 versionString];
-  v15 = [MEMORY[0x277CFEC78] systemStore];
-  v16 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  providerCopy = provider;
+  schedulerCopy = scheduler;
+  submitterCopy = submitter;
+  productInfo = [v8 productInfo];
+  softwareVersion = [productInfo softwareVersion];
+  versionString = [softwareVersion versionString];
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v17 = objc_alloc_init(HMDFileManager);
-  v18 = [(HMDMetricsDeviceStateManager *)self initWithCurrentSoftwareVersion:v14 logEventSubmitter:v11 dailyScheduler:v10 dateProvider:v9 keyCountProvider:v15 userDefaults:v16 fileManager:v17];
+  v18 = [(HMDMetricsDeviceStateManager *)self initWithCurrentSoftwareVersion:versionString logEventSubmitter:submitterCopy dailyScheduler:schedulerCopy dateProvider:providerCopy keyCountProvider:systemStore userDefaults:standardUserDefaults fileManager:v17];
 
   return v18;
 }
 
 + (int64_t)internalDeviceDaysSinceSoftwareUpdate
 {
-  v3 = [MEMORY[0x277D17DB0] sharedInstance];
+  mEMORY[0x277D17DB0] = [MEMORY[0x277D17DB0] sharedInstance];
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x277D0F8E8] productInfo];
-  v6 = [v5 softwareVersion];
-  v7 = [v6 versionString];
-  v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v9 = [v4 lastUpdateForSoftwareVersion:v7 dateProvider:v3 userDefaults:v8 updateDefaultsIfNeeded:0];
+  productInfo = [MEMORY[0x277D0F8E8] productInfo];
+  softwareVersion = [productInfo softwareVersion];
+  versionString = [softwareVersion versionString];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v9 = [v4 lastUpdateForSoftwareVersion:versionString dateProvider:mEMORY[0x277D17DB0] userDefaults:standardUserDefaults updateDefaultsIfNeeded:0];
 
-  v10 = [a1 _daysSinceSoftwareUpdateFrom:v9 dateProvider:v3];
+  v10 = [self _daysSinceSoftwareUpdateFrom:v9 dateProvider:mEMORY[0x277D17DB0]];
   return v10;
 }
 
-+ (int64_t)_daysSinceSoftwareUpdateFrom:(id)a3 dateProvider:(id)a4
++ (int64_t)_daysSinceSoftwareUpdateFrom:(id)from dateProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6 || (v8 = MEMORY[0x277D17DB0], [v6 startOfCurrentDay], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "daysFromDate:toDate:", v5, v9), v9, (v10 & 0x8000000000000000) != 0))
+  fromCopy = from;
+  providerCopy = provider;
+  v7 = providerCopy;
+  if (!providerCopy || (v8 = MEMORY[0x277D17DB0], [providerCopy startOfCurrentDay], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "daysFromDate:toDate:", fromCopy, v9), v9, (v10 & 0x8000000000000000) != 0))
   {
     v11 = -1;
   }
@@ -476,32 +476,32 @@
   return v11;
 }
 
-+ (id)lastUpdateForSoftwareVersion:(id)a3 dateProvider:(id)a4 userDefaults:(id)a5 updateDefaultsIfNeeded:(BOOL)a6
++ (id)lastUpdateForSoftwareVersion:(id)version dateProvider:(id)provider userDefaults:(id)defaults updateDefaultsIfNeeded:(BOOL)needed
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v11 stringForKey:@"HMDMetricsDeviceStateManagerLastStoredSoftwareVersionKey"];
-  v13 = [v11 objectForKey:@"HMDMetricsDeviceStateManagerLastStoredSoftwareDateKey"];
+  neededCopy = needed;
+  versionCopy = version;
+  providerCopy = provider;
+  defaultsCopy = defaults;
+  v12 = [defaultsCopy stringForKey:@"HMDMetricsDeviceStateManagerLastStoredSoftwareVersionKey"];
+  v13 = [defaultsCopy objectForKey:@"HMDMetricsDeviceStateManagerLastStoredSoftwareDateKey"];
   v14 = v13;
-  if (v12 && v13 && ([v12 isEqualToString:v9] & 1) != 0)
+  if (v12 && v13 && ([v12 isEqualToString:versionCopy] & 1) != 0)
   {
-    v15 = v14;
+    startOfCurrentDay = v14;
   }
 
   else
   {
-    v15 = [v10 startOfCurrentDay];
+    startOfCurrentDay = [providerCopy startOfCurrentDay];
 
-    if (v6)
+    if (neededCopy)
     {
-      [v11 setObject:v9 forKey:@"HMDMetricsDeviceStateManagerLastStoredSoftwareVersionKey"];
-      [v11 setObject:v15 forKey:@"HMDMetricsDeviceStateManagerLastStoredSoftwareDateKey"];
+      [defaultsCopy setObject:versionCopy forKey:@"HMDMetricsDeviceStateManagerLastStoredSoftwareVersionKey"];
+      [defaultsCopy setObject:startOfCurrentDay forKey:@"HMDMetricsDeviceStateManagerLastStoredSoftwareDateKey"];
     }
   }
 
-  return v15;
+  return startOfCurrentDay;
 }
 
 @end

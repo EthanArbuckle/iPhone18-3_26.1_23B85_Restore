@@ -1,19 +1,19 @@
 @interface ACCHIDServer
 + (id)sharedServer;
-- (ACCHIDServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)shouldAcceptXPCConnection:(id)a3;
+- (ACCHIDServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)shouldAcceptXPCConnection:(id)connection;
 - (NSXPCConnection)activeConnection;
-- (void)unregisterAllDescriptors:(id)a3;
+- (void)unregisterAllDescriptors:(id)descriptors;
 @end
 
 @implementation ACCHIDServer
 
-- (ACCHIDServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4
+- (ACCHIDServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification
 {
   v10.receiver = self;
   v10.super_class = ACCHIDServer;
-  v4 = [(ACCFeatureServer *)&v10 initWithXPCServiceName:a3 andFeatureNotification:a4];
+  v4 = [(ACCFeatureServer *)&v10 initWithXPCServiceName:name andFeatureNotification:notification];
   if (v4)
   {
     v5 = objc_alloc_init(NSMutableArray);
@@ -30,10 +30,10 @@
   return v4;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -69,16 +69,16 @@
   }
 
   v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___AccessoryHIDXPCServerProtocol];
-  [v7 setExportedInterface:v12];
+  [connectionCopy setExportedInterface:v12];
 
-  v13 = [[ACCHIDServerRemote alloc] initWithXPCConnection:v7];
-  [v7 setExportedObject:v13];
+  v13 = [[ACCHIDServerRemote alloc] initWithXPCConnection:connectionCopy];
+  [connectionCopy setExportedObject:v13];
 
   v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___AccessoryHIDXPCClientProtocol];
-  [v7 setRemoteObjectInterface:v14];
+  [connectionCopy setRemoteObjectInterface:v14];
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v7);
+  objc_initWeak(&from, connectionCopy);
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = __51__ACCHIDServer_listener_shouldAcceptNewConnection___block_invoke;
@@ -86,9 +86,9 @@
   objc_copyWeak(&v29, &from);
   v28[4] = self;
   objc_copyWeak(&v30, &location);
-  [v7 setInvalidationHandler:v28];
-  v15 = [(ACCHIDServer *)self clientConnections];
-  [v15 addObject:v7];
+  [connectionCopy setInvalidationHandler:v28];
+  clientConnections = [(ACCHIDServer *)self clientConnections];
+  [clientConnections addObject:connectionCopy];
 
   if (gLogObjects && gNumLogObjects >= 5)
   {
@@ -108,22 +108,22 @@
 
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(ACCHIDServer *)self clientConnections];
-    v19 = [v18 count];
+    clientConnections2 = [(ACCHIDServer *)self clientConnections];
+    v19 = [clientConnections2 count];
     *buf = 134217984;
     v34 = v19;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[#HID] There are now %lu client(s).", buf, 0xCu);
   }
 
-  [v7 resume];
-  v20 = [(ACCHIDServer *)self clientConnections];
-  v21 = [v20 count] == 1;
+  [connectionCopy resume];
+  clientConnections3 = [(ACCHIDServer *)self clientConnections];
+  v21 = [clientConnections3 count] == 1;
 
   if (v21)
   {
-    [(ACCHIDServer *)self setActiveConnection:v7];
-    v22 = [(ACCHIDServer *)self activeConnection];
-    v23 = [v22 remoteObjectProxyWithErrorHandler:&__block_literal_global_6];
+    [(ACCHIDServer *)self setActiveConnection:connectionCopy];
+    activeConnection = [(ACCHIDServer *)self activeConnection];
+    v23 = [activeConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_6];
     [(ACCHIDServer *)self setRemoteObject:v23];
 
     if (gLogObjects && gNumLogObjects >= 5)
@@ -144,8 +144,8 @@
 
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v26 = [(ACCHIDServer *)self remoteObject];
-      [(ACCHIDServer *)v26 listener:buf shouldAcceptNewConnection:v24];
+      remoteObject = [(ACCHIDServer *)self remoteObject];
+      [(ACCHIDServer *)remoteObject listener:buf shouldAcceptNewConnection:v24];
     }
   }
 
@@ -276,15 +276,15 @@ void __51__ACCHIDServer_listener_shouldAcceptNewConnection___block_invoke_71(id 
   }
 }
 
-- (BOOL)shouldAcceptXPCConnection:(id)a3
+- (BOOL)shouldAcceptXPCConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(ACCHIDServer *)self clientConnections];
-  if ([v5 count])
+  connectionCopy = connection;
+  clientConnections = [(ACCHIDServer *)self clientConnections];
+  if ([clientConnections count])
   {
-    v6 = [(ACCHIDServer *)self clientConnections];
-    v7 = [v6 objectAtIndexedSubscript:0];
-    v8 = [v7 isEqual:v4];
+    clientConnections2 = [(ACCHIDServer *)self clientConnections];
+    v7 = [clientConnections2 objectAtIndexedSubscript:0];
+    v8 = [v7 isEqual:connectionCopy];
   }
 
   else
@@ -366,11 +366,11 @@ void __52__ACCHIDServer_unregisterHIDDescriptor_componentID___block_invoke(id a1
   }
 }
 
-- (void)unregisterAllDescriptors:(id)a3
+- (void)unregisterAllDescriptors:(id)descriptors
 {
-  v4 = a3;
-  v5 = [(ACCHIDServer *)self remoteObject];
-  [v5 unregisterAllDescriptors:v4 withReply:&__block_literal_global_80];
+  descriptorsCopy = descriptors;
+  remoteObject = [(ACCHIDServer *)self remoteObject];
+  [remoteObject unregisterAllDescriptors:descriptorsCopy withReply:&__block_literal_global_80];
 }
 
 void __41__ACCHIDServer_unregisterAllDescriptors___block_invoke(id a1, BOOL a2)
@@ -477,13 +477,13 @@ void __73__ACCHIDServer_getReportResponse_componentID_reportType_reportID_report
 
 - (NSXPCConnection)activeConnection
 {
-  v3 = [(ACCHIDServer *)self clientConnections];
-  v4 = [v3 count];
+  clientConnections = [(ACCHIDServer *)self clientConnections];
+  v4 = [clientConnections count];
 
   if (v4)
   {
-    v5 = [(ACCHIDServer *)self clientConnections];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    clientConnections2 = [(ACCHIDServer *)self clientConnections];
+    v6 = [clientConnections2 objectAtIndexedSubscript:0];
   }
 
   else
@@ -500,7 +500,7 @@ void __73__ACCHIDServer_getReportResponse_componentID_reportType_reportID_report
   block[1] = 3221225472;
   block[2] = __28__ACCHIDServer_sharedServer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedServer_once_1 != -1)
   {
     dispatch_once(&sharedServer_once_1, block);

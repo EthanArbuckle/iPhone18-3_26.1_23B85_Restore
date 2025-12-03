@@ -1,20 +1,20 @@
 @interface SPUISDateFormatManager
-+ (BOOL)date:(id)a3 isBetweenDate:(id)a4 andDate:(id)a5;
-+ (BOOL)hasRelativeFormatForDate:(id)a3;
-+ (BOOL)isDate:(id)a3 withinTimeInterval:(double)a4 includePast:(BOOL)a5;
-+ (id)dyanmicStringFromDate:(id)a3;
-+ (id)dynamicDateTimeStringsFromDate:(id)a3;
-+ (id)dynamicStringFromDate:(id)a3 isCompact:(BOOL)a4;
-+ (id)fullDateTimeStringsFromDate:(id)a3;
-+ (id)icalConformingStringFromDate:(id)a3;
-+ (id)nextUpcomingDateForDateComponents:(id)a3 fromDate:(id)a4;
-+ (id)shortDateTimeStringFromDate:(id)a3 isAllDay:(BOOL)a4 showAllDayString:(BOOL)a5;
-+ (id)stringFromBirthdayComponents:(id)a3;
-+ (id)stringFromTimeInterval:(double)a3;
-+ (id)stringsFromDate:(id)a3 toDate:(id)a4 isAllDay:(BOOL)a5;
++ (BOOL)date:(id)date isBetweenDate:(id)betweenDate andDate:(id)andDate;
++ (BOOL)hasRelativeFormatForDate:(id)date;
++ (BOOL)isDate:(id)date withinTimeInterval:(double)interval includePast:(BOOL)past;
++ (id)dyanmicStringFromDate:(id)date;
++ (id)dynamicDateTimeStringsFromDate:(id)date;
++ (id)dynamicStringFromDate:(id)date isCompact:(BOOL)compact;
++ (id)fullDateTimeStringsFromDate:(id)date;
++ (id)icalConformingStringFromDate:(id)date;
++ (id)nextUpcomingDateForDateComponents:(id)components fromDate:(id)date;
++ (id)shortDateTimeStringFromDate:(id)date isAllDay:(BOOL)day showAllDayString:(BOOL)string;
++ (id)stringFromBirthdayComponents:(id)components;
++ (id)stringFromTimeInterval:(double)interval;
++ (id)stringsFromDate:(id)date toDate:(id)toDate isAllDay:(BOOL)day;
 + (id)tomorrow;
 + (void)initialize;
-+ (void)overrideLocale:(id)a3;
++ (void)overrideLocale:(id)locale;
 - (CNDateComponentsFormatter)birthdayDateComponentsFormatter;
 - (NSDateComponentsFormatter)dateComponentsFormatter;
 - (NSDateFormatter)dateFormatter;
@@ -42,7 +42,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sharedDateFormatManager = objc_opt_new();
 
@@ -57,8 +57,8 @@
   v2 = [(SPUISDateFormatManager *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_purgeMemory name:@"UIApplicationDidReceiveMemoryWarningNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_purgeMemory name:@"UIApplicationDidReceiveMemoryWarningNotification" object:0];
   }
 
   return v2;
@@ -122,8 +122,8 @@
   if (!v4)
   {
     v4 = objc_opt_new();
-    v5 = [(SPUISDateFormatManager *)self currentLocale];
-    [(CNDateComponentsFormatter *)v4 setLocale:v5];
+    currentLocale = [(SPUISDateFormatManager *)self currentLocale];
+    [(CNDateComponentsFormatter *)v4 setLocale:currentLocale];
 
     objc_storeStrong(p_birthdayDateComponentsFormatter, v4);
   }
@@ -140,9 +140,9 @@
     v4 = objc_opt_new();
     [(NSDateComponentsFormatter *)v4 setZeroFormattingBehavior:0];
     [(NSDateComponentsFormatter *)v4 setUnitsStyle:0];
-    v5 = [(SPUISDateFormatManager *)self currentLocale];
-    v6 = [(NSDateComponentsFormatter *)v4 calendar];
-    [v6 setLocale:v5];
+    currentLocale = [(SPUISDateFormatManager *)self currentLocale];
+    calendar = [(NSDateComponentsFormatter *)v4 calendar];
+    [calendar setLocale:currentLocale];
 
     objc_storeStrong(p_dateComponentsFormatter, v4);
   }
@@ -161,8 +161,8 @@
     [(NSDateFormatter *)v4 setDateStyle:1];
     [(NSDateFormatter *)v4 setTimeStyle:0];
     [(NSDateFormatter *)v4 setDoesRelativeDateFormatting:1];
-    v5 = [(SPUISDateFormatManager *)self currentLocale];
-    [(NSDateFormatter *)v4 setLocale:v5];
+    currentLocale = [(SPUISDateFormatManager *)self currentLocale];
+    [(NSDateFormatter *)v4 setLocale:currentLocale];
 
     objc_storeStrong(p_shortRelativeDateFormatter, v4);
   }
@@ -181,8 +181,8 @@
     [(NSDateFormatter *)v4 setDateStyle:2];
     [(NSDateFormatter *)v4 setTimeStyle:0];
     [(NSDateFormatter *)v4 setDoesRelativeDateFormatting:1];
-    v5 = [(SPUISDateFormatManager *)self currentLocale];
-    [(NSDateFormatter *)v4 setLocale:v5];
+    currentLocale = [(SPUISDateFormatManager *)self currentLocale];
+    [(NSDateFormatter *)v4 setLocale:currentLocale];
 
     objc_storeStrong(p_mediumRelativeDateFormatter, v4);
   }
@@ -201,8 +201,8 @@
     [(NSDateFormatter *)v4 setDateStyle:4];
     [(NSDateFormatter *)v4 setTimeStyle:0];
     [(NSDateFormatter *)v4 setDoesRelativeDateFormatting:1];
-    v5 = [(SPUISDateFormatManager *)self currentLocale];
-    [(NSDateFormatter *)v4 setLocale:v5];
+    currentLocale = [(SPUISDateFormatManager *)self currentLocale];
+    [(NSDateFormatter *)v4 setLocale:currentLocale];
 
     objc_storeStrong(p_longRelativeDateFormatter, v4);
   }
@@ -218,12 +218,12 @@
   {
     v4 = objc_opt_new();
     v5 = MEMORY[0x277CCA968];
-    v6 = [(SPUISDateFormatManager *)self currentLocale];
-    v7 = [v5 dateFormatFromTemplate:@"EEEE" options:0 locale:v6];
+    currentLocale = [(SPUISDateFormatManager *)self currentLocale];
+    v7 = [v5 dateFormatFromTemplate:@"EEEE" options:0 locale:currentLocale];
     [(NSDateFormatter *)v4 setDateFormat:v7];
 
-    v8 = [(SPUISDateFormatManager *)self currentLocale];
-    [(NSDateFormatter *)v4 setLocale:v8];
+    currentLocale2 = [(SPUISDateFormatManager *)self currentLocale];
+    [(NSDateFormatter *)v4 setLocale:currentLocale2];
 
     objc_storeStrong(p_dayOfWeekFormatter, v4);
   }
@@ -239,12 +239,12 @@
   {
     v4 = objc_opt_new();
     v5 = MEMORY[0x277CCA968];
-    v6 = [(SPUISDateFormatManager *)self currentLocale];
-    v7 = [v5 dateFormatFromTemplate:@"E" options:0 locale:v6];
+    currentLocale = [(SPUISDateFormatManager *)self currentLocale];
+    v7 = [v5 dateFormatFromTemplate:@"E" options:0 locale:currentLocale];
     [(NSDateFormatter *)v4 setDateFormat:v7];
 
-    v8 = [(SPUISDateFormatManager *)self currentLocale];
-    [(NSDateFormatter *)v4 setLocale:v8];
+    currentLocale2 = [(SPUISDateFormatManager *)self currentLocale];
+    [(NSDateFormatter *)v4 setLocale:currentLocale2];
 
     objc_storeStrong(p_shortDayOfWeekFormatter, v4);
   }
@@ -263,8 +263,8 @@
     [(NSDateFormatter *)v4 setDateStyle:1];
     [(NSDateFormatter *)v4 setTimeStyle:1];
     [(NSDateFormatter *)v4 setDoesRelativeDateFormatting:1];
-    v5 = [(SPUISDateFormatManager *)self currentLocale];
-    [(NSDateFormatter *)v4 setLocale:v5];
+    currentLocale = [(SPUISDateFormatManager *)self currentLocale];
+    [(NSDateFormatter *)v4 setLocale:currentLocale];
 
     objc_storeStrong(p_shortDateTimeFormatter, v4);
   }
@@ -282,8 +282,8 @@
     [(NSDateFormatter *)v4 setFormattingContext:1];
     [(NSDateFormatter *)v4 setDateStyle:0];
     [(NSDateFormatter *)v4 setTimeStyle:1];
-    v5 = [(SPUISDateFormatManager *)self currentLocale];
-    [(NSDateFormatter *)v4 setLocale:v5];
+    currentLocale = [(SPUISDateFormatManager *)self currentLocale];
+    [(NSDateFormatter *)v4 setLocale:currentLocale];
 
     objc_storeStrong(p_shortTimeFormatter, v4);
   }
@@ -301,8 +301,8 @@
     v5 = [@"EMMMdyyyy" stringByAppendingString:@"jmma"];
     [(NSDateFormatter *)v4 setFormattingContext:1];
     v6 = MEMORY[0x277CCA968];
-    v7 = [(SPUISDateFormatManager *)self currentLocale];
-    v8 = [v6 dateFormatFromTemplate:v5 options:0 locale:v7];
+    currentLocale = [(SPUISDateFormatManager *)self currentLocale];
+    v8 = [v6 dateFormatFromTemplate:v5 options:0 locale:currentLocale];
     [(NSDateFormatter *)v4 setDateFormat:v8];
 
     objc_storeStrong(p_dateFormatter, v4);
@@ -320,8 +320,8 @@
     v4 = objc_opt_new();
     [(NSDateIntervalFormatter *)v4 setDateStyle:1];
     [(NSDateIntervalFormatter *)v4 setTimeStyle:1];
-    v5 = [(SPUISDateFormatManager *)self currentLocale];
-    [(NSDateIntervalFormatter *)v4 setLocale:v5];
+    currentLocale = [(SPUISDateFormatManager *)self currentLocale];
+    [(NSDateIntervalFormatter *)v4 setLocale:currentLocale];
 
     objc_storeStrong(p_shortDateTimeIntervalFormatter, v4);
   }
@@ -344,8 +344,8 @@
     v6 = [v5 componentsJoinedByString:&stru_287C50EE8];
 
     v7 = MEMORY[0x277CCA968];
-    v8 = [(SPUISDateFormatManager *)self currentLocale];
-    v9 = [v7 dateFormatFromTemplate:v6 options:0 locale:v8];
+    currentLocale = [(SPUISDateFormatManager *)self currentLocale];
+    v9 = [v7 dateFormatFromTemplate:v6 options:0 locale:currentLocale];
     [(NSDateIntervalFormatter *)v4 setDateTemplate:v9];
 
     objc_storeStrong(p_mediumDayOfWeekDateTimeIntervalFormatter, v4);
@@ -365,8 +365,8 @@
     v4 = objc_opt_new();
     [(NSDateIntervalFormatter *)v4 setDateStyle:1];
     [(NSDateIntervalFormatter *)v4 setTimeStyle:0];
-    v5 = [(SPUISDateFormatManager *)self currentLocale];
-    [(NSDateIntervalFormatter *)v4 setLocale:v5];
+    currentLocale = [(SPUISDateFormatManager *)self currentLocale];
+    [(NSDateIntervalFormatter *)v4 setLocale:currentLocale];
 
     objc_storeStrong(p_shortDateIntervalFormatter, v4);
   }
@@ -388,8 +388,8 @@
     v6 = [v5 componentsJoinedByString:&stru_287C50EE8];
 
     v7 = MEMORY[0x277CCA968];
-    v8 = [(SPUISDateFormatManager *)self currentLocale];
-    v9 = [v7 dateFormatFromTemplate:v6 options:0 locale:v8];
+    currentLocale = [(SPUISDateFormatManager *)self currentLocale];
+    v9 = [v7 dateFormatFromTemplate:v6 options:0 locale:currentLocale];
     [(NSDateIntervalFormatter *)v4 setDateTemplate:v9];
 
     objc_storeStrong(p_mediumDayOfWeekDateIntervalFormatter, v4);
@@ -408,8 +408,8 @@
   {
     v4 = objc_opt_new();
     v5 = MEMORY[0x277CCA968];
-    v6 = [(SPUISDateFormatManager *)self currentLocale];
-    v7 = [v5 dateFormatFromTemplate:@"EMMMdyyyy" options:0 locale:v6];
+    currentLocale = [(SPUISDateFormatManager *)self currentLocale];
+    v7 = [v5 dateFormatFromTemplate:@"EMMMdyyyy" options:0 locale:currentLocale];
     [(NSDateIntervalFormatter *)v4 setDateTemplate:v7];
 
     objc_storeStrong(p_allDayDateFormatter, v4);
@@ -427,8 +427,8 @@
     v4 = objc_opt_new();
     v5 = [@"EMMMdyyyy" stringByAppendingString:@"jmma"];
     v6 = MEMORY[0x277CCA968];
-    v7 = [(SPUISDateFormatManager *)self currentLocale];
-    v8 = [v6 dateFormatFromTemplate:v5 options:0 locale:v7];
+    currentLocale = [(SPUISDateFormatManager *)self currentLocale];
+    v8 = [v6 dateFormatFromTemplate:v5 options:0 locale:currentLocale];
     [(NSDateIntervalFormatter *)v4 setDateTemplate:v8];
 
     objc_storeStrong(p_dateIntervalFormatter, v4);
@@ -440,38 +440,38 @@
 - (id)allFormatters
 {
   v22[16] = *MEMORY[0x277D85DE8];
-  v21 = [(SPUISDateFormatManager *)self birthdayDateComponentsFormatter];
-  v22[0] = v21;
-  v20 = [(SPUISDateFormatManager *)self dateComponentsFormatter];
-  v22[1] = v20;
-  v19 = [(SPUISDateFormatManager *)self shortRelativeDateFormatter];
-  v22[2] = v19;
-  v18 = [(SPUISDateFormatManager *)self mediumRelativeDateFormatter];
-  v22[3] = v18;
-  v17 = [(SPUISDateFormatManager *)self longRelativeDateFormatter];
-  v22[4] = v17;
-  v16 = [(SPUISDateFormatManager *)self dayOfWeekFormatter];
-  v22[5] = v16;
-  v3 = [(SPUISDateFormatManager *)self shortDayOfWeekFormatter];
-  v22[6] = v3;
-  v4 = [(SPUISDateFormatManager *)self shortDateTimeFormatter];
-  v22[7] = v4;
-  v5 = [(SPUISDateFormatManager *)self shortTimeFormatter];
-  v22[8] = v5;
-  v6 = [(SPUISDateFormatManager *)self dateFormatter];
-  v22[9] = v6;
-  v7 = [(SPUISDateFormatManager *)self shortDateTimeIntervalFormatter];
-  v22[10] = v7;
-  v8 = [(SPUISDateFormatManager *)self mediumDayOfWeekDateTimeIntervalFormatter];
-  v22[11] = v8;
-  v9 = [(SPUISDateFormatManager *)self shortDateIntervalFormatter];
-  v22[12] = v9;
-  v10 = [(SPUISDateFormatManager *)self mediumDayOfWeekDateIntervalFormatter];
-  v22[13] = v10;
-  v11 = [(SPUISDateFormatManager *)self allDayDateFormatter];
-  v22[14] = v11;
-  v12 = [(SPUISDateFormatManager *)self dateIntervalFormatter];
-  v22[15] = v12;
+  birthdayDateComponentsFormatter = [(SPUISDateFormatManager *)self birthdayDateComponentsFormatter];
+  v22[0] = birthdayDateComponentsFormatter;
+  dateComponentsFormatter = [(SPUISDateFormatManager *)self dateComponentsFormatter];
+  v22[1] = dateComponentsFormatter;
+  shortRelativeDateFormatter = [(SPUISDateFormatManager *)self shortRelativeDateFormatter];
+  v22[2] = shortRelativeDateFormatter;
+  mediumRelativeDateFormatter = [(SPUISDateFormatManager *)self mediumRelativeDateFormatter];
+  v22[3] = mediumRelativeDateFormatter;
+  longRelativeDateFormatter = [(SPUISDateFormatManager *)self longRelativeDateFormatter];
+  v22[4] = longRelativeDateFormatter;
+  dayOfWeekFormatter = [(SPUISDateFormatManager *)self dayOfWeekFormatter];
+  v22[5] = dayOfWeekFormatter;
+  shortDayOfWeekFormatter = [(SPUISDateFormatManager *)self shortDayOfWeekFormatter];
+  v22[6] = shortDayOfWeekFormatter;
+  shortDateTimeFormatter = [(SPUISDateFormatManager *)self shortDateTimeFormatter];
+  v22[7] = shortDateTimeFormatter;
+  shortTimeFormatter = [(SPUISDateFormatManager *)self shortTimeFormatter];
+  v22[8] = shortTimeFormatter;
+  dateFormatter = [(SPUISDateFormatManager *)self dateFormatter];
+  v22[9] = dateFormatter;
+  shortDateTimeIntervalFormatter = [(SPUISDateFormatManager *)self shortDateTimeIntervalFormatter];
+  v22[10] = shortDateTimeIntervalFormatter;
+  mediumDayOfWeekDateTimeIntervalFormatter = [(SPUISDateFormatManager *)self mediumDayOfWeekDateTimeIntervalFormatter];
+  v22[11] = mediumDayOfWeekDateTimeIntervalFormatter;
+  shortDateIntervalFormatter = [(SPUISDateFormatManager *)self shortDateIntervalFormatter];
+  v22[12] = shortDateIntervalFormatter;
+  mediumDayOfWeekDateIntervalFormatter = [(SPUISDateFormatManager *)self mediumDayOfWeekDateIntervalFormatter];
+  v22[13] = mediumDayOfWeekDateIntervalFormatter;
+  allDayDateFormatter = [(SPUISDateFormatManager *)self allDayDateFormatter];
+  v22[14] = allDayDateFormatter;
+  dateIntervalFormatter = [(SPUISDateFormatManager *)self dateIntervalFormatter];
+  v22[15] = dateIntervalFormatter;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:16];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -481,84 +481,84 @@
 
 - (id)currentLocale
 {
-  v2 = [(SPUISDateFormatManager *)self overrideLocale];
-  v3 = v2;
-  if (v2)
+  overrideLocale = [(SPUISDateFormatManager *)self overrideLocale];
+  v3 = overrideLocale;
+  if (overrideLocale)
   {
-    v4 = v2;
+    currentLocale = overrideLocale;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   }
 
-  v5 = v4;
+  v5 = currentLocale;
 
   return v5;
 }
 
 - (id)calendar
 {
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [(SPUISDateFormatManager *)self currentLocale];
-  [v3 setLocale:v4];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  currentLocale = [(SPUISDateFormatManager *)self currentLocale];
+  [currentCalendar setLocale:currentLocale];
 
-  return v3;
+  return currentCalendar;
 }
 
 + (id)tomorrow
 {
   v3 = objc_opt_new();
   [v3 setDay:1];
-  v4 = [a1 calendar];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [v4 dateByAddingComponents:v3 toDate:v5 options:0];
+  calendar = [self calendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [calendar dateByAddingComponents:v3 toDate:date options:0];
 
   return v6;
 }
 
-+ (BOOL)date:(id)a3 isBetweenDate:(id)a4 andDate:(id)a5
++ (BOOL)date:(id)date isBetweenDate:(id)betweenDate andDate:(id)andDate
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 compare:a4] != -1 && objc_msgSend(v7, "compare:", v8) != 1;
+  dateCopy = date;
+  andDateCopy = andDate;
+  v9 = [dateCopy compare:betweenDate] != -1 && objc_msgSend(dateCopy, "compare:", andDateCopy) != 1;
 
   return v9;
 }
 
-+ (BOOL)isDate:(id)a3 withinTimeInterval:(double)a4 includePast:(BOOL)a5
++ (BOOL)isDate:(id)date withinTimeInterval:(double)interval includePast:(BOOL)past
 {
-  if (!a3)
+  if (!date)
   {
     return 0;
   }
 
-  v5 = a5;
-  [a3 timeIntervalSinceNow];
+  pastCopy = past;
+  [date timeIntervalSinceNow];
   v8 = fabs(v7);
-  if (v5)
+  if (pastCopy)
   {
     v7 = v8;
   }
 
-  return v7 <= a4 && v7 >= 0.0;
+  return v7 <= interval && v7 >= 0.0;
 }
 
-+ (BOOL)hasRelativeFormatForDate:(id)a3
++ (BOOL)hasRelativeFormatForDate:(id)date
 {
-  v3 = a3;
-  if (v3)
+  dateCopy = date;
+  if (dateCopy)
   {
-    v4 = [sharedDateFormatManager calendar];
-    if ([v4 isDateInYesterday:v3] & 1) != 0 || (objc_msgSend(v4, "isDateInToday:", v3))
+    calendar = [sharedDateFormatManager calendar];
+    if ([calendar isDateInYesterday:dateCopy] & 1) != 0 || (objc_msgSend(calendar, "isDateInToday:", dateCopy))
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = [v4 isDateInTomorrow:v3];
+      v5 = [calendar isDateInTomorrow:dateCopy];
     }
   }
 
@@ -570,42 +570,42 @@
   return v5;
 }
 
-+ (id)shortDateTimeStringFromDate:(id)a3 isAllDay:(BOOL)a4 showAllDayString:(BOOL)a5
++ (id)shortDateTimeStringFromDate:(id)date isAllDay:(BOOL)day showAllDayString:(BOOL)string
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  if (v6)
+  stringCopy = string;
+  dayCopy = day;
+  dateCopy = date;
+  if (dayCopy)
   {
-    if (v5)
+    if (stringCopy)
     {
-      v8 = [SPUISUtilities localizedStringForKey:@"ALL_DAY_SHORT_FORMAT"];
+      shortDateTimeFormatter = [SPUISUtilities localizedStringForKey:@"ALL_DAY_SHORT_FORMAT"];
     }
 
     else
     {
-      v8 = @"%@";
+      shortDateTimeFormatter = @"%@";
     }
 
     v10 = MEMORY[0x277CCACA8];
-    v11 = [sharedDateFormatManager shortRelativeDateFormatter];
-    v12 = [v11 stringFromDate:v7];
-    v9 = [v10 localizedStringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:0, v12];
+    shortRelativeDateFormatter = [sharedDateFormatManager shortRelativeDateFormatter];
+    v12 = [shortRelativeDateFormatter stringFromDate:dateCopy];
+    v9 = [v10 localizedStringWithValidatedFormat:shortDateTimeFormatter validFormatSpecifiers:@"%@" error:0, v12];
   }
 
   else
   {
-    v8 = [sharedDateFormatManager shortDateTimeFormatter];
-    v9 = [(__CFString *)v8 stringFromDate:v7];
+    shortDateTimeFormatter = [sharedDateFormatManager shortDateTimeFormatter];
+    v9 = [(__CFString *)shortDateTimeFormatter stringFromDate:dateCopy];
   }
 
   return v9;
 }
 
-+ (id)dynamicStringFromDate:(id)a3 isCompact:(BOOL)a4
++ (id)dynamicStringFromDate:(id)date isCompact:(BOOL)compact
 {
-  v6 = a3;
-  if (!v6)
+  dateCopy = date;
+  if (!dateCopy)
   {
     v9 = &stru_287C50EE8;
     goto LABEL_13;
@@ -613,7 +613,7 @@
 
   v7 = sharedDateFormatManager;
   v8 = v7;
-  if (a4)
+  if (compact)
   {
     [v7 shortRelativeDateFormatter];
   }
@@ -623,28 +623,28 @@
     [v7 mediumRelativeDateFormatter];
   }
   v10 = ;
-  v9 = [v10 stringFromDate:v6];
+  v9 = [v10 stringFromDate:dateCopy];
 
-  v11 = [sharedDateFormatManager calendar];
-  v12 = [v11 isDateInToday:v6];
+  calendar = [sharedDateFormatManager calendar];
+  v12 = [calendar isDateInToday:dateCopy];
 
   if (v12)
   {
-    v13 = [v8 shortTimeFormatter];
+    shortTimeFormatter = [v8 shortTimeFormatter];
   }
 
   else
   {
-    if (([a1 hasRelativeFormatForDate:v6] & 1) != 0 || !objc_msgSend(a1, "isDateWithinWeeksTime:", v6))
+    if (([self hasRelativeFormatForDate:dateCopy] & 1) != 0 || !objc_msgSend(self, "isDateWithinWeeksTime:", dateCopy))
     {
       goto LABEL_12;
     }
 
-    v13 = [v8 dayOfWeekFormatter];
+    shortTimeFormatter = [v8 dayOfWeekFormatter];
   }
 
-  v14 = v13;
-  v15 = [v13 stringFromDate:v6];
+  v14 = shortTimeFormatter;
+  v15 = [shortTimeFormatter stringFromDate:dateCopy];
 
   v9 = v15;
 LABEL_12:
@@ -654,17 +654,17 @@ LABEL_13:
   return v9;
 }
 
-+ (id)dyanmicStringFromDate:(id)a3
++ (id)dyanmicStringFromDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = sharedDateFormatManager;
-  v6 = [v5 shortRelativeDateFormatter];
-  v7 = [v6 stringFromDate:v4];
+  shortRelativeDateFormatter = [v5 shortRelativeDateFormatter];
+  v7 = [shortRelativeDateFormatter stringFromDate:dateCopy];
 
-  if (([a1 hasRelativeFormatForDate:v4] & 1) == 0 && objc_msgSend(a1, "isDateWithinMonthsTime:", v4))
+  if (([self hasRelativeFormatForDate:dateCopy] & 1) == 0 && objc_msgSend(self, "isDateWithinMonthsTime:", dateCopy))
   {
-    v8 = [v5 mediumDayOfWeekDateIntervalFormatter];
-    v9 = [v8 stringFromDate:v4 toDate:v4];
+    mediumDayOfWeekDateIntervalFormatter = [v5 mediumDayOfWeekDateIntervalFormatter];
+    v9 = [mediumDayOfWeekDateIntervalFormatter stringFromDate:dateCopy toDate:dateCopy];
 
     v7 = v9;
   }
@@ -672,24 +672,24 @@ LABEL_13:
   return v7;
 }
 
-+ (id)dynamicDateTimeStringsFromDate:(id)a3
++ (id)dynamicDateTimeStringsFromDate:(id)date
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = sharedDateFormatManager;
-  v6 = [sharedDateFormatManager shortRelativeDateFormatter];
-  v7 = [v6 stringFromDate:v4];
+  shortRelativeDateFormatter = [sharedDateFormatManager shortRelativeDateFormatter];
+  v7 = [shortRelativeDateFormatter stringFromDate:dateCopy];
 
-  if (([a1 hasRelativeFormatForDate:v4] & 1) == 0 && objc_msgSend(a1, "isDateWithinMonthsTime:", v4))
+  if (([self hasRelativeFormatForDate:dateCopy] & 1) == 0 && objc_msgSend(self, "isDateWithinMonthsTime:", dateCopy))
   {
-    v8 = [v5 mediumDayOfWeekDateIntervalFormatter];
-    v9 = [v8 stringFromDate:v4 toDate:v4];
+    mediumDayOfWeekDateIntervalFormatter = [v5 mediumDayOfWeekDateIntervalFormatter];
+    v9 = [mediumDayOfWeekDateIntervalFormatter stringFromDate:dateCopy toDate:dateCopy];
 
     v7 = v9;
   }
 
-  v10 = [v5 shortTimeFormatter];
-  v11 = [v10 stringFromDate:v4];
+  shortTimeFormatter = [v5 shortTimeFormatter];
+  v11 = [shortTimeFormatter stringFromDate:dateCopy];
 
   if (v7 && v11)
   {
@@ -720,16 +720,16 @@ LABEL_10:
   return v15;
 }
 
-+ (id)fullDateTimeStringsFromDate:(id)a3
++ (id)fullDateTimeStringsFromDate:(id)date
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v4 = sharedDateFormatManager;
-  v5 = a3;
-  v6 = [v4 longRelativeDateFormatter];
-  v7 = [v6 stringFromDate:v5];
+  dateCopy = date;
+  longRelativeDateFormatter = [v4 longRelativeDateFormatter];
+  v7 = [longRelativeDateFormatter stringFromDate:dateCopy];
 
-  v8 = [v4 shortTimeFormatter];
-  v9 = [v8 stringFromDate:v5];
+  shortTimeFormatter = [v4 shortTimeFormatter];
+  v9 = [shortTimeFormatter stringFromDate:dateCopy];
 
   if (v7)
   {
@@ -758,18 +758,18 @@ LABEL_10:
   return v11;
 }
 
-+ (id)stringsFromDate:(id)a3 toDate:(id)a4 isAllDay:(BOOL)a5
++ (id)stringsFromDate:(id)date toDate:(id)toDate isAllDay:(BOOL)day
 {
-  v5 = a5;
+  dayCopy = day;
   v20[2] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if (a3)
+  toDateCopy = toDate;
+  if (date)
   {
     v9 = sharedDateFormatManager;
-    v10 = a3;
-    if ([a1 isDateWithinMonthsTime:v10] && (!v8 || objc_msgSend(a1, "isDateWithinMonthsTime:", v8)))
+    dateCopy = date;
+    if ([self isDateWithinMonthsTime:dateCopy] && (!toDateCopy || objc_msgSend(self, "isDateWithinMonthsTime:", toDateCopy)))
     {
-      if (v5)
+      if (dayCopy)
       {
         [v9 mediumDayOfWeekDateIntervalFormatter];
       }
@@ -780,7 +780,7 @@ LABEL_10:
       }
     }
 
-    else if (v5)
+    else if (dayCopy)
     {
       [v9 shortDateIntervalFormatter];
     }
@@ -791,19 +791,19 @@ LABEL_10:
     }
     v11 = ;
     v13 = v11;
-    if (v8)
+    if (toDateCopy)
     {
-      v14 = v8;
+      v14 = toDateCopy;
     }
 
     else
     {
-      v14 = v10;
+      v14 = dateCopy;
     }
 
-    v15 = [v11 stringFromDate:v10 toDate:v14];
+    v15 = [v11 stringFromDate:dateCopy toDate:v14];
 
-    if (v5)
+    if (dayCopy)
     {
       v20[0] = v15;
       v16 = [SPUISUtilities localizedStringForKey:@"ALL_DAY"];
@@ -828,20 +828,20 @@ LABEL_10:
   return v12;
 }
 
-+ (id)stringFromBirthdayComponents:(id)a3
++ (id)stringFromBirthdayComponents:(id)components
 {
   v3 = sharedDateFormatManager;
-  v4 = a3;
-  v5 = [v3 birthdayDateComponentsFormatter];
-  v6 = [v5 stringFromDateComponents:v4];
+  componentsCopy = components;
+  birthdayDateComponentsFormatter = [v3 birthdayDateComponentsFormatter];
+  v6 = [birthdayDateComponentsFormatter stringFromDateComponents:componentsCopy];
 
   return v6;
 }
 
-+ (id)icalConformingStringFromDate:(id)a3
++ (id)icalConformingStringFromDate:(id)date
 {
   v3 = MEMORY[0x277CCA968];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc_init(v3);
   v6 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en_US_POSIX"];
   [v5 setLocale:v6];
@@ -850,16 +850,16 @@ LABEL_10:
   v7 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:0];
   [v5 setTimeZone:v7];
 
-  v8 = [v5 stringFromDate:v4];
+  v8 = [v5 stringFromDate:dateCopy];
 
   return v8;
 }
 
-+ (id)stringFromTimeInterval:(double)a3
++ (id)stringFromTimeInterval:(double)interval
 {
-  v4 = [sharedDateFormatManager dateComponentsFormatter];
-  v5 = v4;
-  v6 = round(a3);
+  dateComponentsFormatter = [sharedDateFormatManager dateComponentsFormatter];
+  v5 = dateComponentsFormatter;
+  v6 = round(interval);
   if (v6 < 3600.0)
   {
     v7 = 192;
@@ -870,35 +870,35 @@ LABEL_10:
     v7 = 224;
   }
 
-  [v4 setAllowedUnits:v7];
+  [dateComponentsFormatter setAllowedUnits:v7];
   v8 = [v5 stringFromTimeInterval:v6];
 
   return v8;
 }
 
-+ (id)nextUpcomingDateForDateComponents:(id)a3 fromDate:(id)a4
++ (id)nextUpcomingDateForDateComponents:(id)components fromDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 calendar];
+  dateCopy = date;
+  componentsCopy = components;
+  calendar = [componentsCopy calendar];
   v8 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  [v8 setMonth:{objc_msgSend(v6, "month")}];
-  [v8 setLeapMonth:{objc_msgSend(v6, "isLeapMonth")}];
-  v9 = [v6 day];
+  [v8 setMonth:{objc_msgSend(componentsCopy, "month")}];
+  [v8 setLeapMonth:{objc_msgSend(componentsCopy, "isLeapMonth")}];
+  v9 = [componentsCopy day];
 
   [v8 setDay:v9];
   [v8 setHour:12];
-  v10 = [MEMORY[0x277CBEA80] currentCalendar];
-  v11 = [v10 nextDateAfterDate:v5 matchingHour:0 minute:0 second:0 options:6];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v11 = [currentCalendar nextDateAfterDate:dateCopy matchingHour:0 minute:0 second:0 options:6];
 
-  v12 = [v7 nextDateAfterDate:v11 matchingComponents:v8 options:256];
+  v12 = [calendar nextDateAfterDate:v11 matchingComponents:v8 options:256];
 
   return v12;
 }
 
-+ (void)overrideLocale:(id)a3
++ (void)overrideLocale:(id)locale
 {
-  [sharedDateFormatManager setOverrideLocale:a3];
+  [sharedDateFormatManager setOverrideLocale:locale];
   v3 = sharedDateFormatManager;
 
   [v3 purgeMemory];

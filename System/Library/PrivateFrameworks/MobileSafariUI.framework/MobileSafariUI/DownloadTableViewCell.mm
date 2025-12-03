@@ -1,50 +1,50 @@
 @interface DownloadTableViewCell
 + (id)tableViewCellForSizeEstimation;
-- (DownloadTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (DownloadTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (DownloadTableViewCellDelegate)delegate;
 - (id)_busyStatus;
-- (id)_buttonWithSymbolName:(id)a3;
-- (void)_buttonPressed:(id)a3;
-- (void)_downloadChanged:(id)a3;
-- (void)_downloadURLChanged:(id)a3;
+- (id)_buttonWithSymbolName:(id)name;
+- (void)_buttonPressed:(id)pressed;
+- (void)_downloadChanged:(id)changed;
+- (void)_downloadURLChanged:(id)changed;
 - (void)_updateCellContents;
 - (void)_updateCellContentsForSizing;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)downloadIconCache:(id)a3 didGenerateNewIcon:(id)a4 forSource:(id)a5;
-- (void)setDownload:(id)a3;
-- (void)setIconCache:(id)a3;
+- (void)downloadIconCache:(id)cache didGenerateNewIcon:(id)icon forSource:(id)source;
+- (void)setDownload:(id)download;
+- (void)setIconCache:(id)cache;
 @end
 
 @implementation DownloadTableViewCell
 
 + (id)tableViewCellForSizeEstimation
 {
-  v2 = [[a1 alloc] initWithStyle:0 reuseIdentifier:0];
+  v2 = [[self alloc] initWithStyle:0 reuseIdentifier:0];
   [v2 _updateCellContentsForSizing];
 
   return v2;
 }
 
-- (DownloadTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (DownloadTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v80[3] = *MEMORY[0x277D85DE8];
   v77.receiver = self;
   v77.super_class = DownloadTableViewCell;
-  v4 = [(DownloadTableViewCell *)&v77 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(DownloadTableViewCell *)&v77 initWithStyle:3 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v76 = [(DownloadTableViewCell *)v4 contentView];
-    v6 = [(DownloadTableViewCell *)v5 layoutManager];
-    [v76 setLayoutMargins:{10.0, 0.0, 10.0, 0.0}];
-    v75 = v6;
-    v7 = [v6 textLabelForCell:v5];
+    contentView = [(DownloadTableViewCell *)v4 contentView];
+    layoutManager = [(DownloadTableViewCell *)v5 layoutManager];
+    [contentView setLayoutMargins:{10.0, 0.0, 10.0, 0.0}];
+    v75 = layoutManager;
+    v7 = [layoutManager textLabelForCell:v5];
     nameLabel = v5->_nameLabel;
     v5->_nameLabel = v7;
 
     [(UILabel *)v5->_nameLabel setAdjustsFontForContentSizeCategory:1];
-    v9 = [v6 detailTextLabelForCell:v5];
+    v9 = [layoutManager detailTextLabelForCell:v5];
     statusLabel = v5->_statusLabel;
     v5->_statusLabel = v9;
 
@@ -52,8 +52,8 @@
     v11 = [MEMORY[0x277D74300] safari_monospacedDigitFontForTextStyle:*MEMORY[0x277D76938]];
     [(UILabel *)v5->_statusLabel setFont:v11];
 
-    v12 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v5->_statusLabel setTextColor:v12];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v5->_statusLabel setTextColor:secondaryLabelColor];
 
     v13 = [(DownloadTableViewCell *)v5 _buttonWithSymbolName:@"xmark"];
     cancelButton = v5->_cancelButton;
@@ -109,62 +109,62 @@
     v5->_iconView = v29;
     v31 = v29;
 
-    [v76 addSubview:v23];
-    [v76 addSubview:v27];
-    [v76 addSubview:v31];
+    [contentView addSubview:v23];
+    [contentView addSubview:v27];
+    [contentView addSubview:v31];
     v61 = MEMORY[0x277CCAAD0];
-    v74 = [(UIImageView *)v31 leadingAnchor];
-    v73 = [v76 leadingAnchor];
-    v72 = [v74 constraintEqualToAnchor:v73 constant:16.0];
+    leadingAnchor = [(UIImageView *)v31 leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v72 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v78[0] = v72;
-    v71 = [(UIImageView *)v31 widthAnchor];
-    v70 = [v71 constraintEqualToConstant:48.0];
+    widthAnchor = [(UIImageView *)v31 widthAnchor];
+    v70 = [widthAnchor constraintEqualToConstant:48.0];
     v78[1] = v70;
-    v69 = [(UIImageView *)v31 heightAnchor];
-    v68 = [v69 constraintEqualToConstant:48.0];
+    heightAnchor = [(UIImageView *)v31 heightAnchor];
+    v68 = [heightAnchor constraintEqualToConstant:48.0];
     v78[2] = v68;
-    v67 = [(UIImageView *)v31 centerYAnchor];
-    v66 = [v76 centerYAnchor];
-    v65 = [v67 constraintEqualToAnchor:v66];
+    centerYAnchor = [(UIImageView *)v31 centerYAnchor];
+    centerYAnchor2 = [contentView centerYAnchor];
+    v65 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v78[3] = v65;
-    v64 = [(UIImageView *)v31 topAnchor];
-    v63 = [v76 topAnchor];
-    v62 = [v64 constraintGreaterThanOrEqualToAnchor:v63 constant:14.0];
+    topAnchor = [(UIImageView *)v31 topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v62 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:14.0];
     v78[4] = v62;
-    v32 = [(UIImageView *)v31 topAnchor];
-    v33 = [(UILabel *)v5->_nameLabel topAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    topAnchor3 = [(UIImageView *)v31 topAnchor];
+    topAnchor4 = [(UILabel *)v5->_nameLabel topAnchor];
+    v34 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
 
     v60 = v34;
     LODWORD(v35) = 1144750080;
     [v34 setPriority:v35];
     v78[5] = v34;
-    v58 = [(UILabel *)v5->_nameLabel topAnchor];
-    v57 = [v76 topAnchor];
-    v56 = [v58 constraintLessThanOrEqualToAnchor:v57 constant:40.0];
+    topAnchor5 = [(UILabel *)v5->_nameLabel topAnchor];
+    topAnchor6 = [contentView topAnchor];
+    v56 = [topAnchor5 constraintLessThanOrEqualToAnchor:topAnchor6 constant:40.0];
     v78[6] = v56;
-    v54 = [v23 leadingAnchor];
-    v53 = [(UIImageView *)v5->_iconView trailingAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53 constant:12.0];
+    leadingAnchor3 = [v23 leadingAnchor];
+    trailingAnchor = [(UIImageView *)v5->_iconView trailingAnchor];
+    v52 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:12.0];
     v78[7] = v52;
-    v51 = [v76 bottomAnchor];
+    bottomAnchor = [contentView bottomAnchor];
     v59 = v23;
-    v50 = [v23 bottomAnchor];
-    v49 = [v51 constraintGreaterThanOrEqualToAnchor:v50 constant:16.0];
+    bottomAnchor2 = [v23 bottomAnchor];
+    v49 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:16.0];
     v78[8] = v49;
     v36 = v27;
-    v48 = [v27 leadingAnchor];
-    v47 = [v23 trailingAnchor];
-    v37 = [v48 constraintEqualToAnchor:v47 constant:24.0];
+    leadingAnchor4 = [v27 leadingAnchor];
+    trailingAnchor2 = [v23 trailingAnchor];
+    v37 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor2 constant:24.0];
     v78[9] = v37;
     v55 = v27;
-    v38 = [v27 trailingAnchor];
-    v39 = [v76 trailingAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39 constant:-16.0];
+    trailingAnchor3 = [v27 trailingAnchor];
+    trailingAnchor4 = [contentView trailingAnchor];
+    v40 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
     v78[10] = v40;
-    v41 = [v36 centerYAnchor];
-    v42 = [v76 centerYAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42];
+    centerYAnchor3 = [v36 centerYAnchor];
+    centerYAnchor4 = [contentView centerYAnchor];
+    v43 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v78[11] = v43;
     v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v78 count:12];
     [v61 activateConstraints:v44];
@@ -191,12 +191,12 @@
   SFDeferrableUpdateViewDidMoveToWindow();
 }
 
-- (id)_buttonWithSymbolName:(id)a3
+- (id)_buttonWithSymbolName:(id)name
 {
   v4 = MEMORY[0x277D755D0];
-  v5 = a3;
+  nameCopy = name;
   v6 = [v4 configurationWithPointSize:15.0];
-  v7 = [MEMORY[0x277D755B8] systemImageNamed:v5 withConfiguration:v6];
+  v7 = [MEMORY[0x277D755B8] systemImageNamed:nameCopy withConfiguration:v6];
 
   v8 = [MEMORY[0x277D75220] buttonWithType:1];
   [v8 setImage:v7 forState:0];
@@ -210,64 +210,64 @@
   return v8;
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
-  v5 = a3;
+  pressedCopy = pressed;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if (self->_cancelButton == v5)
+  if (self->_cancelButton == pressedCopy)
   {
     [WeakRetained cancelDownload:self->_download];
   }
 
-  else if (self->_resumeButton == v5)
+  else if (self->_resumeButton == pressedCopy)
   {
     [WeakRetained resumeDownload:self->_download];
   }
 
-  else if (self->_revealButton == v5)
+  else if (self->_revealButton == pressedCopy)
   {
     [WeakRetained revealDownload:self->_download];
   }
 }
 
-- (void)setIconCache:(id)a3
+- (void)setIconCache:(id)cache
 {
-  objc_storeStrong(&self->_iconCache, a3);
-  v5 = a3;
-  [v5 addCacheObserver:self];
+  objc_storeStrong(&self->_iconCache, cache);
+  cacheCopy = cache;
+  [cacheCopy addCacheObserver:self];
 }
 
-- (void)setDownload:(id)a3
+- (void)setDownload:(id)download
 {
-  v5 = a3;
+  downloadCopy = download;
   download = self->_download;
-  if (download != v5)
+  if (download != downloadCopy)
   {
-    v10 = v5;
+    v10 = downloadCopy;
     if (download)
     {
-      v7 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v7 removeObserver:self name:0 object:self->_download];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self name:0 object:self->_download];
     }
 
-    objc_storeStrong(&self->_download, a3);
+    objc_storeStrong(&self->_download, download);
     v8 = [(_SFDownloadIconCache *)self->_iconCache iconForSource:v10];
     [(UIImageView *)self->_iconView setImage:v8];
 
-    v5 = v10;
+    downloadCopy = v10;
     if (v10)
     {
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v9 addObserver:self selector:sel__downloadChanged_ name:*MEMORY[0x277CDB990] object:v10];
-      [v9 addObserver:self selector:sel__downloadURLChanged_ name:*MEMORY[0x277CDB988] object:v10];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel__downloadChanged_ name:*MEMORY[0x277CDB990] object:v10];
+      [defaultCenter2 addObserver:self selector:sel__downloadURLChanged_ name:*MEMORY[0x277CDB988] object:v10];
       [(DownloadTableViewCell *)self _updateCellContents];
 
-      v5 = v10;
+      downloadCopy = v10;
     }
   }
 }
 
-- (void)_downloadChanged:(id)a3
+- (void)_downloadChanged:(id)changed
 {
   if (SFDeferrableUpdateViewShouldAttemptToUpdateContents())
   {
@@ -276,17 +276,17 @@
   }
 }
 
-- (void)_downloadURLChanged:(id)a3
+- (void)_downloadURLChanged:(id)changed
 {
-  v4 = [(_SFDownload *)self->_download filenameWithoutExtension];
-  [(UILabel *)self->_nameLabel setText:v4];
+  filenameWithoutExtension = [(_SFDownload *)self->_download filenameWithoutExtension];
+  [(UILabel *)self->_nameLabel setText:filenameWithoutExtension];
 }
 
 - (void)_updateCellContents
 {
   v23[5] = *MEMORY[0x277D85DE8];
-  v3 = [(_SFDownload *)self->_download filenameWithoutExtension];
-  [(UILabel *)self->_nameLabel setText:v3];
+  filenameWithoutExtension = [(_SFDownload *)self->_download filenameWithoutExtension];
+  [(UILabel *)self->_nameLabel setText:filenameWithoutExtension];
 
   [(UIButton *)self->_cancelButton setHidden:[(_SFDownload *)self->_download isIdle]];
   [(UIButton *)self->_resumeButton setHidden:[(_SFDownload *)self->_download canResume]^ 1];
@@ -388,13 +388,13 @@
 
   v23[3] = v15;
   v22[4] = @"uuid";
-  v16 = [(_SFDownload *)self->_download identifier];
-  v17 = [v16 UUIDString];
-  v18 = v17;
+  identifier = [(_SFDownload *)self->_download identifier];
+  uUIDString = [identifier UUIDString];
+  v18 = uUIDString;
   v19 = &stru_2827BF158;
-  if (v17)
+  if (uUIDString)
   {
-    v19 = v17;
+    v19 = uUIDString;
   }
 
   v23[4] = v19;
@@ -413,12 +413,12 @@
 
 - (id)_busyStatus
 {
-  v3 = [(_SFDownload *)self->_download bytesExpected];
+  bytesExpected = [(_SFDownload *)self->_download bytesExpected];
   [(_SFDownload *)self->_download bytesLoaded];
   v4 = MEMORY[0x277CCACA8];
   v5 = _WBSLocalizedString();
   v6 = NSLocalizedFileSizeDescription();
-  if (v3 < 0)
+  if (bytesExpected < 0)
   {
     v8 = [v4 stringWithFormat:v5, v6];
   }
@@ -432,11 +432,11 @@
   return v8;
 }
 
-- (void)downloadIconCache:(id)a3 didGenerateNewIcon:(id)a4 forSource:(id)a5
+- (void)downloadIconCache:(id)cache didGenerateNewIcon:(id)icon forSource:(id)source
 {
-  if (self->_download == a5)
+  if (self->_download == source)
   {
-    [(UIImageView *)self->_iconView setImage:a4];
+    [(UIImageView *)self->_iconView setImage:icon];
   }
 }
 

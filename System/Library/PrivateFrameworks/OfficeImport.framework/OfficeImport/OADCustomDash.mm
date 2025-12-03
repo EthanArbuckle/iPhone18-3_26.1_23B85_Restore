@@ -1,13 +1,13 @@
 @interface OADCustomDash
 + (id)defaultProperties;
 - (BOOL)isAnythingOverridden;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADCustomDash)initWithDefaults;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)stops;
 - (unint64_t)hash;
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3;
-- (void)setStops:(id)a3;
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values;
+- (void)setStops:(id)stops;
 @end
 
 @implementation OADCustomDash
@@ -28,19 +28,19 @@
 {
   v5.receiver = self;
   v5.super_class = OADCustomDash;
-  v2 = [(OADProperties *)&v5 initWithDefaults];
-  if (v2)
+  initWithDefaults = [(OADProperties *)&v5 initWithDefaults];
+  if (initWithDefaults)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
-    [(OADCustomDash *)v2 setStops:v3];
+    array = [MEMORY[0x277CBEA60] array];
+    [(OADCustomDash *)initWithDefaults setStops:array];
   }
 
-  return v2;
+  return initWithDefaults;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setStops:self->mStops];
   return v4;
 }
@@ -59,39 +59,39 @@ void __34__OADCustomDash_defaultProperties__block_invoke()
   return [(OADProperties *)&v4 isAnythingOverridden]|| [(OADCustomDash *)self areStopsOverridden];
 }
 
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v12.receiver = self;
   v12.super_class = OADCustomDash;
-  [(OADProperties *)&v12 fixPropertiesForChangingParentPreservingEffectiveValues:v4];
-  if ([(OADCustomDash *)self areStopsOverridden]|| ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != v4))
+  [(OADProperties *)&v12 fixPropertiesForChangingParentPreservingEffectiveValues:valuesCopy];
+  if ([(OADCustomDash *)self areStopsOverridden]|| ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != valuesCopy))
   {
     v6 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_areStopsOverridden];
 
     if (v6)
     {
-      v7 = [(OADCustomDash *)self stops];
+      stops = [(OADCustomDash *)self stops];
     }
 
     else
     {
-      v7 = 0;
+      stops = 0;
     }
 
-    v8 = [v4 possiblyInexistentOverrideForSelector:sel_areStopsOverridden];
+    v8 = [valuesCopy possiblyInexistentOverrideForSelector:sel_areStopsOverridden];
 
     if (v8)
     {
-      v9 = [v4 stops];
+      stops2 = [valuesCopy stops];
     }
 
     else
     {
-      v9 = 0;
+      stops2 = 0;
     }
 
-    v10 = TCObjectEqual(v7, v9);
+    v10 = TCObjectEqual(stops, stops2);
     mStops = self->mStops;
     if (v10)
     {
@@ -100,7 +100,7 @@ void __34__OADCustomDash_defaultProperties__block_invoke()
 
     else if (!mStops && v6)
     {
-      [(OADCustomDash *)self setStops:v7];
+      [(OADCustomDash *)self setStops:stops];
     }
   }
 }
@@ -114,9 +114,9 @@ void __34__OADCustomDash_defaultProperties__block_invoke()
   return v3;
 }
 
-- (void)setStops:(id)a3
+- (void)setStops:(id)stops
 {
-  v4 = [a3 copy];
+  v4 = [stops copy];
   mStops = self->mStops;
   self->mStops = v4;
 }
@@ -132,14 +132,14 @@ void __34__OADCustomDash_defaultProperties__block_invoke()
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = OADCustomDash;
-  if ([(OADDash *)&v7 isEqual:v4])
+  if ([(OADDash *)&v7 isEqual:equalCopy])
   {
-    v5 = TCObjectEqual(self->mStops, v4[3]);
+    v5 = TCObjectEqual(self->mStops, equalCopy[3]);
   }
 
   else

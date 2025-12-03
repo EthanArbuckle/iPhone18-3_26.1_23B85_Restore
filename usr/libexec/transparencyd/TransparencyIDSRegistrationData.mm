@@ -1,28 +1,28 @@
 @interface TransparencyIDSRegistrationData
 - (id)metricsTimeToCreate;
-- (id)validateSignature:(id)a3 withPublicKey:(id)a4;
+- (id)validateSignature:(id)signature withPublicKey:(id)key;
 @end
 
 @implementation TransparencyIDSRegistrationData
 
-- (id)validateSignature:(id)a3 withPublicKey:(id)a4
+- (id)validateSignature:(id)signature withPublicKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TransparencyIDSRegistrationData *)self publicKey];
+  signatureCopy = signature;
+  keyCopy = key;
+  publicKey = [(TransparencyIDSRegistrationData *)self publicKey];
 
-  if (v8)
+  if (publicKey)
   {
     [(TransparencyIDSRegistrationData *)self signature];
 
-    v9 = [(TransparencyIDSRegistrationData *)self publicKey];
-    v10 = [v7 isEqual:v9];
+    publicKey2 = [(TransparencyIDSRegistrationData *)self publicKey];
+    v10 = [keyCopy isEqual:publicKey2];
 
     if (v10)
     {
-      v11 = [(TransparencyIDSRegistrationData *)self tbsKTIDSRegistrationData];
-      v12 = [(TransparencyIDSRegistrationData *)self signature];
-      v13 = [v6 verifyData:v11 signature:v12 accountPublicKeyInfo:v7 error:0];
+      tbsKTIDSRegistrationData = [(TransparencyIDSRegistrationData *)self tbsKTIDSRegistrationData];
+      signature = [(TransparencyIDSRegistrationData *)self signature];
+      v13 = [signatureCopy verifyData:tbsKTIDSRegistrationData signature:signature accountPublicKeyInfo:keyCopy error:0];
 
       if (v13)
       {
@@ -51,29 +51,29 @@
 
 - (id)metricsTimeToCreate
 {
-  v3 = [(TransparencyIDSRegistrationData *)self createdAt];
+  createdAt = [(TransparencyIDSRegistrationData *)self createdAt];
 
-  if (v3)
+  if (createdAt)
   {
-    v4 = [(TransparencyIDSRegistrationData *)self signedAt];
+    signedAt = [(TransparencyIDSRegistrationData *)self signedAt];
 
-    if (v4)
+    if (signedAt)
     {
-      v5 = [(TransparencyIDSRegistrationData *)self signedAt];
+      signedAt2 = [(TransparencyIDSRegistrationData *)self signedAt];
       [(TransparencyIDSRegistrationData *)self createdAt];
     }
 
     else
     {
-      v5 = [(TransparencyIDSRegistrationData *)self createdAt];
+      signedAt2 = [(TransparencyIDSRegistrationData *)self createdAt];
       +[NSDate date];
     }
     v6 = ;
-    [v5 timeIntervalSinceDate:v6];
-    v3 = [NSNumber numberWithDouble:?];
+    [signedAt2 timeIntervalSinceDate:v6];
+    createdAt = [NSNumber numberWithDouble:?];
   }
 
-  return v3;
+  return createdAt;
 }
 
 @end

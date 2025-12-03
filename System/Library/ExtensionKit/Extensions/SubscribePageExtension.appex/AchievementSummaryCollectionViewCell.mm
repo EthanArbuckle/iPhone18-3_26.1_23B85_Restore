@@ -7,13 +7,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10055B340();
 }
 
 - (void)configureBackgroundColor
 {
-  v2 = self;
+  selfCopy = self;
   sub_10055B240();
 }
 

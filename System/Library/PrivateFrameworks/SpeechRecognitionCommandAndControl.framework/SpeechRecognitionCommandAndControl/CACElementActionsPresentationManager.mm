@@ -1,16 +1,16 @@
 @interface CACElementActionsPresentationManager
-- (void)showElementActionsForElement:(id)a3 usingPortraitUpRect:(CGRect)a4;
+- (void)showElementActionsForElement:(id)element usingPortraitUpRect:(CGRect)rect;
 @end
 
 @implementation CACElementActionsPresentationManager
 
-- (void)showElementActionsForElement:(id)a3 usingPortraitUpRect:(CGRect)a4
+- (void)showElementActionsForElement:(id)element usingPortraitUpRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  elementCopy = element;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __89__CACElementActionsPresentationManager_showElementActionsForElement_usingPortraitUpRect___block_invoke;
@@ -20,12 +20,12 @@
   v11[1] = 3221225472;
   v11[2] = __89__CACElementActionsPresentationManager_showElementActionsForElement_usingPortraitUpRect___block_invoke_2;
   v11[3] = &unk_279CEBE08;
-  v12 = v9;
+  v12 = elementCopy;
   v13 = x;
   v14 = y;
   v15 = width;
   v16 = height;
-  v10 = v9;
+  v10 = elementCopy;
   [(CACSimpleContentViewManager *)self showViewControllerWithCreationHandler:v17 updateHandler:v11];
 }
 

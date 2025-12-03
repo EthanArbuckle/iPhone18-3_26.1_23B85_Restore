@@ -3,27 +3,27 @@
 - (CGRect)firstLineRect;
 - (CGRect)lastLineRect;
 - (UIImage)image;
-- (_UITextLayoutPreviewRenderer)initWithTextLayoutManager:(id)a3 range:(id)a4 unifyRects:(BOOL)a5;
+- (_UITextLayoutPreviewRenderer)initWithTextLayoutManager:(id)manager range:(id)range unifyRects:(BOOL)rects;
 - (void)_updateDataIfNeeded;
-- (void)addRenderingAttributes:(id)a3;
-- (void)removeRenderingAttributes:(id)a3;
+- (void)addRenderingAttributes:(id)attributes;
+- (void)removeRenderingAttributes:(id)attributes;
 @end
 
 @implementation _UITextLayoutPreviewRenderer
 
-- (_UITextLayoutPreviewRenderer)initWithTextLayoutManager:(id)a3 range:(id)a4 unifyRects:(BOOL)a5
+- (_UITextLayoutPreviewRenderer)initWithTextLayoutManager:(id)manager range:(id)range unifyRects:(BOOL)rects
 {
-  v9 = a3;
-  v10 = a4;
+  managerCopy = manager;
+  rangeCopy = range;
   v14.receiver = self;
   v14.super_class = _UITextLayoutPreviewRenderer;
   v11 = [(_UITextLayoutPreviewRenderer *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_textLayoutManager, a3);
-    objc_storeStrong(&v12->_range, a4);
-    v12->_unifyRects = a5;
+    objc_storeStrong(&v11->_textLayoutManager, manager);
+    objc_storeStrong(&v12->_range, range);
+    v12->_unifyRects = rects;
     v12->_calculated = 0;
   }
 
@@ -118,8 +118,8 @@
 
     if ([v3 count] == 1)
     {
-      v8 = [v3 firstObject];
-      [v8 CGRectValue];
+      firstObject = [v3 firstObject];
+      [firstObject CGRectValue];
       self->_middleRect.origin.x = v9;
       self->_middleRect.origin.y = v10;
       self->_middleRect.size.width = v11;
@@ -128,15 +128,15 @@
 
     else if ([v3 count])
     {
-      v13 = [v3 firstObject];
-      [v13 CGRectValue];
+      firstObject2 = [v3 firstObject];
+      [firstObject2 CGRectValue];
       self->_firstRect.origin.x = v14;
       self->_firstRect.origin.y = v15;
       self->_firstRect.size.width = v16;
       self->_firstRect.size.height = v17;
 
-      v18 = [v3 lastObject];
-      [v18 CGRectValue];
+      lastObject = [v3 lastObject];
+      [lastObject CGRectValue];
       self->_lastRect.origin.x = v19;
       self->_lastRect.origin.y = v20;
       self->_lastRect.size.width = v21;
@@ -228,25 +228,25 @@
   }
 }
 
-- (void)addRenderingAttributes:(id)a3
+- (void)addRenderingAttributes:(id)attributes
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __55___UITextLayoutPreviewRenderer_addRenderingAttributes___block_invoke;
   v3[3] = &unk_1E70F6948;
   v3[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v3];
+  [attributes enumerateKeysAndObjectsUsingBlock:v3];
 }
 
-- (void)removeRenderingAttributes:(id)a3
+- (void)removeRenderingAttributes:(id)attributes
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributesCopy = attributes;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [attributesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -258,14 +258,14 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attributesCopy);
         }
 
         [(NSTextLayoutManager *)self->_textLayoutManager removeRenderingAttribute:*(*(&v9 + 1) + 8 * v8++) forTextRange:self->_range];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [attributesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);

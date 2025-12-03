@@ -1,5 +1,5 @@
 @interface NUIContainerStackViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)canBecomeFocused;
 - (id)_axVisibleViews;
 - (id)accessibilityLabel;
@@ -7,16 +7,16 @@
 
 @implementation NUIContainerStackViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NUIContainerStackView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"NUIContainerView" hasInstanceMethod:@"visibleArrangedSubviews" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NUIContainerStackView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"NUIContainerView" hasInstanceMethod:@"visibleArrangedSubviews" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(NUIContainerStackViewAccessibility *)self _axVisibleViews];
+  _axVisibleViews = [(NUIContainerStackViewAccessibility *)self _axVisibleViews];
   v3 = MEMORY[0x29C2D9FC0]();
 
   return v3;
@@ -40,9 +40,9 @@
   v13 = 0u;
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 gestureRecognizers];
+  gestureRecognizers = [v2 gestureRecognizers];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [gestureRecognizers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -52,7 +52,7 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -64,7 +64,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [gestureRecognizers countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;

@@ -1,30 +1,30 @@
 @interface PKTransformStrokesAnimation
-- (id)initWithStrokes:(double)a3 startTime:(double)a4 duration:(double)a5 destinationFrame:(double)a6 fadeOutDuration:(double)a7;
-- (void)newStrokesAtTime:(uint64_t)a1;
+- (id)initWithStrokes:(double)strokes startTime:(double)time duration:(double)duration destinationFrame:(double)frame fadeOutDuration:(double)outDuration;
+- (void)newStrokesAtTime:(uint64_t)time;
 @end
 
 @implementation PKTransformStrokesAnimation
 
-- (id)initWithStrokes:(double)a3 startTime:(double)a4 duration:(double)a5 destinationFrame:(double)a6 fadeOutDuration:(double)a7
+- (id)initWithStrokes:(double)strokes startTime:(double)time duration:(double)duration destinationFrame:(double)frame fadeOutDuration:(double)outDuration
 {
   v40 = *MEMORY[0x1E69E9840];
   v18 = a2;
-  if (a1)
+  if (self)
   {
-    v38.receiver = a1;
+    v38.receiver = self;
     v38.super_class = PKTransformStrokesAnimation;
     v19 = objc_msgSendSuper2(&v38, sel_init);
-    a1 = v19;
+    self = v19;
     if (v19)
     {
       objc_storeStrong(v19 + 1, a2);
-      *(a1 + 2) = a3;
-      *(a1 + 3) = a4;
-      *(a1 + 9) = a5;
-      *(a1 + 10) = a6;
-      *(a1 + 11) = a7;
-      *(a1 + 12) = a8;
-      *(a1 + 4) = a9;
+      *(self + 2) = strokes;
+      *(self + 3) = time;
+      *(self + 9) = duration;
+      *(self + 10) = frame;
+      *(self + 11) = outDuration;
+      *(self + 12) = a8;
+      *(self + 4) = a9;
       x = *MEMORY[0x1E695F050];
       y = *(MEMORY[0x1E695F050] + 8);
       width = *(MEMORY[0x1E695F050] + 16);
@@ -73,31 +73,31 @@
         while (v26);
       }
 
-      *(a1 + 5) = x;
-      *(a1 + 6) = y;
-      *(a1 + 7) = width;
-      *(a1 + 8) = height;
+      *(self + 5) = x;
+      *(self + 6) = y;
+      *(self + 7) = width;
+      *(self + 8) = height;
       v43.origin.x = x;
       v43.origin.y = y;
       v43.size.width = width;
       v43.size.height = height;
-      *(a1 + 13) = CGRectUnion(v43, *(a1 + 9));
+      *(self + 13) = CGRectUnion(v43, *(self + 9));
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)newStrokesAtTime:(uint64_t)a1
+- (void)newStrokesAtTime:(uint64_t)time
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!time)
   {
     return 0;
   }
 
-  v3 = *(a1 + 24);
-  v4 = a2 - *(a1 + 16);
+  v3 = *(time + 24);
+  v4 = a2 - *(time + 16);
   v5 = v4 / v3;
   if (v4 / v3 > 1.0)
   {
@@ -107,25 +107,25 @@
   v6 = v5 * v5 * (v5 * -2.0 + 3.0);
   v33 = 0u;
   v34 = 0u;
-  v7 = *(a1 + 40);
-  if (*(a1 + 32) >= v3)
+  v7 = *(time + 40);
+  if (*(time + 32) >= v3)
   {
     v8 = v3;
   }
 
   else
   {
-    v8 = *(a1 + 32);
+    v8 = *(time + 32);
   }
 
   v32 = 0uLL;
-  [PKMetalUtility transformConvertingRect:v7 toRect:*(a1 + 48) percent:*(a1 + 56), *(a1 + 64), *(a1 + 72), *(a1 + 80), *(a1 + 88), *(a1 + 96), *&v6];
-  v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(*(a1 + 8), "count")}];
+  [PKMetalUtility transformConvertingRect:v7 toRect:*(time + 48) percent:*(time + 56), *(time + 64), *(time + 72), *(time + 80), *(time + 88), *(time + 96), *&v6];
+  v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(*(time + 8), "count")}];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = *(a1 + 8);
+  obj = *(time + 8);
   v9 = [obj countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v9)
   {
@@ -143,20 +143,20 @@
 
         v14 = *(*(&v28 + 1) + 8 * i);
         v15 = [v14 ink];
-        v16 = [v15 color];
+        color = [v15 color];
 
-        [v16 alphaComponent];
-        v18 = [v16 colorWithAlphaComponent:v11 * v17];
+        [color alphaComponent];
+        v18 = [color colorWithAlphaComponent:v11 * v17];
         v19 = [v14 mutableCopy];
         v27[0] = v32;
         v27[1] = v33;
         v27[2] = v34;
         [v19 _applyTransform:v27];
         v20 = [v14 ink];
-        v21 = [v20 identifier];
+        identifier = [v20 identifier];
         v22 = [v14 ink];
         [v22 weight];
-        v23 = [PKInk inkWithIdentifier:v21 color:v18 weight:?];
+        v23 = [PKInk inkWithIdentifier:identifier color:v18 weight:?];
         [v19 setInk:v23];
 
         [v26 addObject:v19];

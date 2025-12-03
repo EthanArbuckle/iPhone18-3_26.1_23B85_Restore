@@ -1,15 +1,15 @@
 @interface PLCropOverlayAccessibility
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation PLCropOverlayAccessibility
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v23 = *MEMORY[0x29EDCA608];
-  v7 = a4;
+  eventCopy = event;
   [(PLCropOverlayAccessibility *)self safeValueForKey:@"subviews"];
   v18 = 0u;
   v19 = 0u;
@@ -31,7 +31,7 @@
 
         v13 = *(*(&v18 + 1) + 8 * i);
         [(PLCropOverlayAccessibility *)self convertPoint:v13 toView:x, y, v18];
-        v14 = [v13 _accessibilityHitTest:v7 withEvent:?];
+        v14 = [v13 _accessibilityHitTest:eventCopy withEvent:?];
         if (v14)
         {
           v15 = v14;

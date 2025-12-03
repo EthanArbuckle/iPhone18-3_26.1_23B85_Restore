@@ -1,16 +1,16 @@
 @interface _DKObject
-+ (id)fetchObjectWithUUID:(id)a3 context:(id)a4;
-+ (id)fromPBCodable:(id)a3;
-+ (id)objectFromManagedObject:(id)a3 readMetadata:(BOOL)a4 excludedMetadataKeys:(id)a5 cache:(id)a6;
-- (BOOL)copyBaseObjectInfoFromManagedObject:(id)a3 cache:(id)a4;
-- (BOOL)copyToManagedObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)fetchObjectWithUUID:(id)d context:(id)context;
++ (id)fromPBCodable:(id)codable;
++ (id)objectFromManagedObject:(id)object readMetadata:(BOOL)metadata excludedMetadataKeys:(id)keys cache:(id)cache;
+- (BOOL)copyBaseObjectInfoFromManagedObject:(id)object cache:(id)cache;
+- (BOOL)copyToManagedObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_DKObject)init;
-- (_DKObject)initWithCoder:(id)a3;
+- (_DKObject)initWithCoder:(id)coder;
 - (id)entityName;
 - (id)stringValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DKObject
@@ -22,24 +22,24 @@
   return [(_DKObject *)&v3 init];
 }
 
-+ (id)fromPBCodable:(id)a3
++ (id)fromPBCodable:(id)codable
 {
-  v3 = a3;
+  codableCopy = codable;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [(_DKPRValue *)v4 type];
-    v6 = [(_DKPRValueType *)v5 type];
+    v4 = codableCopy;
+    type = [(_DKPRValue *)v4 type];
+    v5Type = [(_DKPRValueType *)type type];
 
-    if (v6 > 2)
+    if (v5Type > 2)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = [(__objc2_class *)*off_1E7368F80[v6] fromPBCodable:v4];
+      v7 = [(__objc2_class *)*off_1E7368F80[v5Type] fromPBCodable:v4];
     }
   }
 
@@ -51,27 +51,27 @@
   return v7;
 }
 
-- (_DKObject)initWithCoder:(id)a3
+- (_DKObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = _DKObject;
   v5 = [(_DKObject *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     UUID = v5->_UUID;
     v5->_UUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"source"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"source"];
     source = v5->_source;
     v5->_source = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localCreationDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localCreationDate"];
     localCreationDate = v5->_localCreationDate;
     v5->_localCreationDate = v12;
 
@@ -81,14 +81,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v5 = a3;
-  [v5 encodeObject:UUID forKey:@"UUID"];
-  [v5 encodeObject:self->_source forKey:@"source"];
-  [v5 encodeObject:self->_creationDate forKey:@"creationDate"];
-  [v5 encodeObject:self->_localCreationDate forKey:@"localCreationDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"UUID"];
+  [coderCopy encodeObject:self->_source forKey:@"source"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeObject:self->_localCreationDate forKey:@"localCreationDate"];
 }
 
 - (NSString)description
@@ -98,8 +98,8 @@
     v3 = MEMORY[0x1E696AEC0];
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [(NSUUID *)self->_UUID UUIDString];
-    [v3 stringWithFormat:@"%@: { UUID=%@; source=%@; creationDate=%@, localCreationDate=%@ }", v5, v6, self->_source, self->_creationDate, self->_localCreationDate];
+    uUIDString = [(NSUUID *)self->_UUID UUIDString];
+    [v3 stringWithFormat:@"%@: { UUID=%@; source=%@; creationDate=%@, localCreationDate=%@ }", v5, uUIDString, self->_source, self->_creationDate, self->_localCreationDate];
   }
 
   else
@@ -107,8 +107,8 @@
     v9 = MEMORY[0x1E696AEC0];
     v10 = objc_opt_class();
     v5 = NSStringFromClass(v10);
-    v6 = [(NSUUID *)self->_UUID UUIDString];
-    [v9 stringWithFormat:@"%@: { UUID=%@; source=%@; }", v5, v6, self->_source, v11, v12];
+    uUIDString = [(NSUUID *)self->_UUID UUIDString];
+    [v9 stringWithFormat:@"%@: { UUID=%@; source=%@; }", v5, uUIDString, self->_source, v11, v12];
   }
   v7 = ;
 
@@ -119,8 +119,8 @@
 {
   if ([(_DKObject *)self conformsToProtocol:&unk_1F05F7418])
   {
-    v3 = [(_DKObject *)self primaryValue];
-    v4 = [v3 description];
+    primaryValue = [(_DKObject *)self primaryValue];
+    v4 = [primaryValue description];
   }
 
   else
@@ -131,30 +131,30 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(_DKObject *)self source];
-        v9 = [(_DKObject *)v7 source];
-        if (v8 != v9)
+        source = [(_DKObject *)self source];
+        source2 = [(_DKObject *)v7 source];
+        if (source != source2)
         {
-          v10 = [(_DKObject *)self source];
-          v3 = [(_DKObject *)v7 source];
-          if (![v10 isEqual:v3])
+          source3 = [(_DKObject *)self source];
+          source4 = [(_DKObject *)v7 source];
+          if (![source3 isEqual:source4])
           {
             v11 = 0;
 LABEL_14:
@@ -163,25 +163,25 @@ LABEL_15:
             goto LABEL_16;
           }
 
-          v17 = v10;
+          v17 = source3;
         }
 
-        v12 = [(_DKObject *)self UUID];
-        v13 = [(_DKObject *)v7 UUID];
-        if (v12 == v13)
+        uUID = [(_DKObject *)self UUID];
+        uUID2 = [(_DKObject *)v7 UUID];
+        if (uUID == uUID2)
         {
           v11 = 1;
         }
 
         else
         {
-          v14 = [(_DKObject *)self UUID];
-          v15 = [(_DKObject *)v7 UUID];
-          v11 = [v14 isEqual:v15];
+          uUID3 = [(_DKObject *)self UUID];
+          uUID4 = [(_DKObject *)v7 UUID];
+          v11 = [uUID3 isEqual:uUID4];
         }
 
-        v10 = v17;
-        if (v8 == v9)
+        source3 = v17;
+        if (source == source2)
         {
           goto LABEL_15;
         }
@@ -205,10 +205,10 @@ LABEL_16:
   return [v2 entityName];
 }
 
-+ (id)fetchObjectWithUUID:(id)a3 context:(id)a4
++ (id)fetchObjectWithUUID:(id)d context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -219,9 +219,9 @@ LABEL_16:
   v11[1] = 3221225472;
   v11[2] = __55___DKObject_MOConversion__fetchObjectWithUUID_context___block_invoke;
   v11[3] = &unk_1E7368808;
-  v7 = v6;
+  v7 = contextCopy;
   v12 = v7;
-  v8 = v5;
+  v8 = dCopy;
   v13 = v8;
   v14 = &v15;
   [v7 performWithOptions:4 andBlock:v11];
@@ -232,21 +232,21 @@ LABEL_16:
   return v9;
 }
 
-+ (id)objectFromManagedObject:(id)a3 readMetadata:(BOOL)a4 excludedMetadataKeys:(id)a5 cache:(id)a6
++ (id)objectFromManagedObject:(id)object readMetadata:(BOOL)metadata excludedMetadataKeys:(id)keys cache:(id)cache
 {
-  v26 = a4;
+  metadataCopy = metadata;
   v33[4] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v27 = a5;
-  v9 = a6;
+  objectCopy = object;
+  keysCopy = keys;
+  cacheCopy = cache;
   v33[0] = objc_opt_class();
   v33[1] = objc_opt_class();
   v33[2] = objc_opt_class();
   v33[3] = objc_opt_class();
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:4];
-  v11 = v8;
-  v12 = [v8 entity];
-  v13 = [v12 name];
+  v11 = objectCopy;
+  entity = [objectCopy entity];
+  name = [entity name];
 
   v30 = 0u;
   v31 = 0u;
@@ -268,12 +268,12 @@ LABEL_16:
         }
 
         v19 = *(*(&v28 + 1) + 8 * i);
-        v20 = [v19 entityName];
-        v21 = [v13 isEqualToString:v20];
+        entityName = [v19 entityName];
+        v21 = [name isEqualToString:entityName];
 
         if (v21)
         {
-          v22 = [v19 objectFromManagedObject:v11 readMetadata:v26 excludedMetadataKeys:v27 cache:v9];
+          v22 = [v19 objectFromManagedObject:v11 readMetadata:metadataCopy excludedMetadataKeys:keysCopy cache:cacheCopy];
           if (v22)
           {
             v23 = v22;
@@ -300,9 +300,9 @@ LABEL_12:
   return v23;
 }
 
-- (BOOL)copyToManagedObject:(id)a3
+- (BOOL)copyToManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if ((isKindOfClass & 1) == 0)
@@ -310,41 +310,41 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  v6 = v4;
-  v7 = [(_DKObject *)self UUID];
-  v8 = [v7 UUIDString];
-  [v6 setUuid:v8];
+  v6 = objectCopy;
+  uUID = [(_DKObject *)self UUID];
+  uUIDString = [uUID UUIDString];
+  [v6 setUuid:uUIDString];
 
   v9 = MEMORY[0x1E696AD98];
-  v10 = [v6 uuid];
-  v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(v10, "hash")}];
+  uuid = [v6 uuid];
+  v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(uuid, "hash")}];
   [v6 setUuidHash:v11];
 
-  v12 = [MEMORY[0x1E695DF00] date];
-  v13 = [(_DKObject *)self creationDate];
-  v14 = v13;
-  if (v13)
+  date = [MEMORY[0x1E695DF00] date];
+  creationDate = [(_DKObject *)self creationDate];
+  v14 = creationDate;
+  if (creationDate)
   {
-    v15 = v13;
+    v15 = creationDate;
   }
 
   else
   {
-    v15 = v12;
+    v15 = date;
   }
 
   [v6 setCreationDate:v15];
 
-  [v6 setLocalCreationDate:v12];
+  [v6 setLocalCreationDate:date];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v16 = v6;
-    v17 = [v16 streamName];
-    if ([v17 isEqualToString:@"/device/isPluggedIn"])
+    streamName = [v16 streamName];
+    if ([streamName isEqualToString:@"/device/isPluggedIn"])
     {
-      v18 = [v16 creationDate];
-      [v18 timeIntervalSinceReferenceDate];
+      creationDate2 = [v16 creationDate];
+      [creationDate2 timeIntervalSinceReferenceDate];
       v20 = v19;
       [v16 endDate];
       v22 = v20 - v21;
@@ -359,23 +359,23 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v17 = +[_CDLogging knowledgeChannel];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
+      streamName = +[_CDLogging knowledgeChannel];
+      if (os_log_type_enabled(streamName, OS_LOG_TYPE_FAULT))
       {
-        [(_DKObject(MOConversion) *)v16 copyToManagedObject:v12, v17];
+        [(_DKObject(MOConversion) *)v16 copyToManagedObject:date, streamName];
       }
     }
 
 LABEL_13:
   }
 
-  v23 = [(_DKObject *)self source];
+  source = [(_DKObject *)self source];
 
-  if (v23)
+  if (source)
   {
-    v24 = [(_DKObject *)self source];
-    v25 = [v6 managedObjectContext];
-    v26 = [_DKSourceMOConverter insertSource:v24 inManagedObjectContext:v25];
+    source2 = [(_DKObject *)self source];
+    managedObjectContext = [v6 managedObjectContext];
+    v26 = [_DKSourceMOConverter insertSource:source2 inManagedObjectContext:managedObjectContext];
     [v6 setSource:v26];
   }
 
@@ -383,33 +383,33 @@ LABEL_17:
   return isKindOfClass & 1;
 }
 
-- (BOOL)copyBaseObjectInfoFromManagedObject:(id)a3 cache:(id)a4
+- (BOOL)copyBaseObjectInfoFromManagedObject:(id)object cache:(id)cache
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v7 = v5;
+    v7 = objectCopy;
     v8 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v9 = [v7 uuid];
-    v10 = [v8 initWithUUIDString:v9];
+    uuid = [v7 uuid];
+    v10 = [v8 initWithUUIDString:uuid];
     [(_DKObject *)self setUUID:v10];
 
-    v11 = [v7 source];
+    source = [v7 source];
 
-    if (v11)
+    if (source)
     {
-      v12 = [v7 source];
-      v13 = [_DKSourceMOConverter sourceFromManagedObject:v12];
+      source2 = [v7 source];
+      v13 = [_DKSourceMOConverter sourceFromManagedObject:source2];
       [(_DKObject *)self setSource:v13];
     }
 
-    v14 = [v7 creationDate];
-    [(_DKObject *)self setCreationDate:v14];
+    creationDate = [v7 creationDate];
+    [(_DKObject *)self setCreationDate:creationDate];
 
-    v15 = [v7 localCreationDate];
-    [(_DKObject *)self setLocalCreationDate:v15];
+    localCreationDate = [v7 localCreationDate];
+    [(_DKObject *)self setLocalCreationDate:localCreationDate];
   }
 
   return isKindOfClass & 1;

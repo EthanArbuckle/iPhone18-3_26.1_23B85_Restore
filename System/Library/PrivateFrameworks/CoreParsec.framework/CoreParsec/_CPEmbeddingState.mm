@@ -1,8 +1,8 @@
 @interface _CPEmbeddingState
-- (BOOL)isEqual:(id)a3;
-- (_CPEmbeddingState)initWithFacade:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CPEmbeddingState)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPEmbeddingState
@@ -14,42 +14,42 @@
   return v2 ^ v3 ^ [(_CPSpotlightEmbeddingState *)self->_spotlightEmbeddingState hash]^ (2654435761 * self->_hasSuppressedResults) ^ (2654435761 * self->_hasKeywordResults) ^ (2654435761 * self->_hasHybridResults) ^ (2654435761 * self->_hasMetadataResults);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   queryStatus = self->_queryStatus;
-  if (queryStatus != [v4 queryStatus])
+  if (queryStatus != [equalCopy queryStatus])
   {
     goto LABEL_16;
   }
 
   hasQueryEmbedding = self->_hasQueryEmbedding;
-  if (hasQueryEmbedding != [v4 hasQueryEmbedding])
+  if (hasQueryEmbedding != [equalCopy hasQueryEmbedding])
   {
     goto LABEL_16;
   }
 
   hasEmbeddingResults = self->_hasEmbeddingResults;
-  if (hasEmbeddingResults != [v4 hasEmbeddingResults])
+  if (hasEmbeddingResults != [equalCopy hasEmbeddingResults])
   {
     goto LABEL_16;
   }
 
   hasResults = self->_hasResults;
-  if (hasResults != [v4 hasResults])
+  if (hasResults != [equalCopy hasResults])
   {
     goto LABEL_16;
   }
 
-  v9 = [(_CPEmbeddingState *)self spotlightEmbeddingState];
-  v10 = [v4 spotlightEmbeddingState];
-  v11 = v10;
-  if ((v9 != 0) == (v10 == 0))
+  spotlightEmbeddingState = [(_CPEmbeddingState *)self spotlightEmbeddingState];
+  spotlightEmbeddingState2 = [equalCopy spotlightEmbeddingState];
+  v11 = spotlightEmbeddingState2;
+  if ((spotlightEmbeddingState != 0) == (spotlightEmbeddingState2 == 0))
   {
 
 LABEL_16:
@@ -57,13 +57,13 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v12 = [(_CPEmbeddingState *)self spotlightEmbeddingState];
-  if (v12)
+  spotlightEmbeddingState3 = [(_CPEmbeddingState *)self spotlightEmbeddingState];
+  if (spotlightEmbeddingState3)
   {
-    v13 = v12;
-    v14 = [(_CPEmbeddingState *)self spotlightEmbeddingState];
-    v15 = [v4 spotlightEmbeddingState];
-    v16 = [v14 isEqual:v15];
+    v13 = spotlightEmbeddingState3;
+    spotlightEmbeddingState4 = [(_CPEmbeddingState *)self spotlightEmbeddingState];
+    spotlightEmbeddingState5 = [equalCopy spotlightEmbeddingState];
+    v16 = [spotlightEmbeddingState4 isEqual:spotlightEmbeddingState5];
 
     if (!v16)
     {
@@ -76,33 +76,33 @@ LABEL_16:
   }
 
   hasSuppressedResults = self->_hasSuppressedResults;
-  if (hasSuppressedResults != [v4 hasSuppressedResults])
+  if (hasSuppressedResults != [equalCopy hasSuppressedResults])
   {
     goto LABEL_16;
   }
 
   hasKeywordResults = self->_hasKeywordResults;
-  if (hasKeywordResults != [v4 hasKeywordResults])
+  if (hasKeywordResults != [equalCopy hasKeywordResults])
   {
     goto LABEL_16;
   }
 
   hasHybridResults = self->_hasHybridResults;
-  if (hasHybridResults != [v4 hasHybridResults])
+  if (hasHybridResults != [equalCopy hasHybridResults])
   {
     goto LABEL_16;
   }
 
   hasMetadataResults = self->_hasMetadataResults;
-  v21 = hasMetadataResults == [v4 hasMetadataResults];
+  v21 = hasMetadataResults == [equalCopy hasMetadataResults];
 LABEL_17:
 
   return v21;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   if ([(_CPEmbeddingState *)self queryStatus])
   {
     queryStatus = self->_queryStatus;
@@ -127,11 +127,11 @@ LABEL_17:
     PBDataWriterWriteBOOLField();
   }
 
-  v8 = [(_CPEmbeddingState *)self spotlightEmbeddingState];
+  spotlightEmbeddingState = [(_CPEmbeddingState *)self spotlightEmbeddingState];
 
-  if (v8)
+  if (spotlightEmbeddingState)
   {
-    v9 = [(_CPEmbeddingState *)self spotlightEmbeddingState];
+    spotlightEmbeddingState2 = [(_CPEmbeddingState *)self spotlightEmbeddingState];
     PBDataWriterWriteSubmessage();
   }
 
@@ -160,62 +160,62 @@ LABEL_17:
   }
 }
 
-- (_CPEmbeddingState)initWithFacade:(id)a3
+- (_CPEmbeddingState)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_CPEmbeddingState *)self init];
   if (v5)
   {
-    if ([v4 queryStatus])
+    if ([facadeCopy queryStatus])
     {
-      -[_CPEmbeddingState setQueryStatus:](v5, "setQueryStatus:", [v4 queryStatus]);
+      -[_CPEmbeddingState setQueryStatus:](v5, "setQueryStatus:", [facadeCopy queryStatus]);
     }
 
-    -[_CPEmbeddingState setHasQueryEmbedding:](v5, "setHasQueryEmbedding:", [v4 hasQueryEmbedding]);
-    -[_CPEmbeddingState setHasEmbeddingResults:](v5, "setHasEmbeddingResults:", [v4 hasEmbeddingResults]);
-    -[_CPEmbeddingState setHasResults:](v5, "setHasResults:", [v4 hasResults]);
-    -[_CPEmbeddingState setHasSuppressedResults:](v5, "setHasSuppressedResults:", [v4 hasSuppressedResults]);
-    v6 = [v4 spotlightEmbeddingState];
+    -[_CPEmbeddingState setHasQueryEmbedding:](v5, "setHasQueryEmbedding:", [facadeCopy hasQueryEmbedding]);
+    -[_CPEmbeddingState setHasEmbeddingResults:](v5, "setHasEmbeddingResults:", [facadeCopy hasEmbeddingResults]);
+    -[_CPEmbeddingState setHasResults:](v5, "setHasResults:", [facadeCopy hasResults]);
+    -[_CPEmbeddingState setHasSuppressedResults:](v5, "setHasSuppressedResults:", [facadeCopy hasSuppressedResults]);
+    spotlightEmbeddingState = [facadeCopy spotlightEmbeddingState];
 
-    if (v6)
+    if (spotlightEmbeddingState)
     {
       v7 = objc_alloc_init(_CPSpotlightEmbeddingState);
-      v8 = [v4 spotlightEmbeddingState];
-      v9 = [v8 embeddedPhotosAssetsCount];
+      spotlightEmbeddingState2 = [facadeCopy spotlightEmbeddingState];
+      embeddedPhotosAssetsCount = [spotlightEmbeddingState2 embeddedPhotosAssetsCount];
 
-      if (v9)
+      if (embeddedPhotosAssetsCount)
       {
-        v10 = [v4 spotlightEmbeddingState];
-        v11 = [v10 embeddedPhotosAssetsCount];
-        [(_CPSpotlightEmbeddingState *)v7 setEmbeddedPhotosAssetsCount:v11];
+        spotlightEmbeddingState3 = [facadeCopy spotlightEmbeddingState];
+        embeddedPhotosAssetsCount2 = [spotlightEmbeddingState3 embeddedPhotosAssetsCount];
+        [(_CPSpotlightEmbeddingState *)v7 setEmbeddedPhotosAssetsCount:embeddedPhotosAssetsCount2];
       }
 
-      v12 = [v4 spotlightEmbeddingState];
-      v13 = [v12 totalPhotosAssetsCount];
+      spotlightEmbeddingState4 = [facadeCopy spotlightEmbeddingState];
+      totalPhotosAssetsCount = [spotlightEmbeddingState4 totalPhotosAssetsCount];
 
-      if (v13)
+      if (totalPhotosAssetsCount)
       {
-        v14 = [v4 spotlightEmbeddingState];
-        v15 = [v14 totalPhotosAssetsCount];
-        [(_CPSpotlightEmbeddingState *)v7 setTotalPhotosAssetsCount:v15];
+        spotlightEmbeddingState5 = [facadeCopy spotlightEmbeddingState];
+        totalPhotosAssetsCount2 = [spotlightEmbeddingState5 totalPhotosAssetsCount];
+        [(_CPSpotlightEmbeddingState *)v7 setTotalPhotosAssetsCount:totalPhotosAssetsCount2];
       }
 
-      v16 = [v4 spotlightEmbeddingState];
-      v17 = [v16 embeddedPhotosAssetsPercentage];
+      spotlightEmbeddingState6 = [facadeCopy spotlightEmbeddingState];
+      embeddedPhotosAssetsPercentage = [spotlightEmbeddingState6 embeddedPhotosAssetsPercentage];
 
-      if (v17)
+      if (embeddedPhotosAssetsPercentage)
       {
-        v18 = [v4 spotlightEmbeddingState];
-        v19 = [v18 embeddedPhotosAssetsPercentage];
-        [(_CPSpotlightEmbeddingState *)v7 setEmbeddedPhotosAssetsPercentage:v19];
+        spotlightEmbeddingState7 = [facadeCopy spotlightEmbeddingState];
+        embeddedPhotosAssetsPercentage2 = [spotlightEmbeddingState7 embeddedPhotosAssetsPercentage];
+        [(_CPSpotlightEmbeddingState *)v7 setEmbeddedPhotosAssetsPercentage:embeddedPhotosAssetsPercentage2];
       }
 
       [(_CPEmbeddingState *)v5 setSpotlightEmbeddingState:v7];
     }
 
-    -[_CPEmbeddingState setHasSuppressedResults:](v5, "setHasSuppressedResults:", [v4 hasSuppressedResults]);
-    -[_CPEmbeddingState setHasKeywordResults:](v5, "setHasKeywordResults:", [v4 hasKeywordResults]);
-    -[_CPEmbeddingState setHasHybridResults:](v5, "setHasHybridResults:", [v4 hasHybridResults]);
+    -[_CPEmbeddingState setHasSuppressedResults:](v5, "setHasSuppressedResults:", [facadeCopy hasSuppressedResults]);
+    -[_CPEmbeddingState setHasKeywordResults:](v5, "setHasKeywordResults:", [facadeCopy hasKeywordResults]);
+    -[_CPEmbeddingState setHasHybridResults:](v5, "setHasHybridResults:", [facadeCopy hasHybridResults]);
     v20 = v5;
   }
 

@@ -1,20 +1,20 @@
 @interface MADVideoSessionSafetyResult
-- (MADVideoSessionSafetyResult)initWithCoder:(id)a3;
-- (MADVideoSessionSafetyResult)initWithSensitivityAttributes:(id)a3 requestID:(id)a4;
+- (MADVideoSessionSafetyResult)initWithCoder:(id)coder;
+- (MADVideoSessionSafetyResult)initWithSensitivityAttributes:(id)attributes requestID:(id)d;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADVideoSessionSafetyResult
 
-- (MADVideoSessionSafetyResult)initWithSensitivityAttributes:(id)a3 requestID:(id)a4
+- (MADVideoSessionSafetyResult)initWithSensitivityAttributes:(id)attributes requestID:(id)d
 {
   v24[5] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = MADVideoSessionSafetyResult;
-  v8 = [(MADVideoSessionResult *)&v19 initWithRequestID:v7];
+  v8 = [(MADVideoSessionResult *)&v19 initWithRequestID:dCopy];
   if (!v8)
   {
 LABEL_7:
@@ -23,7 +23,7 @@ LABEL_7:
   }
 
   v18 = 0;
-  v9 = [objc_alloc(getSCSensitivityAnalysisClass()) initWithPixelBufferClassificationDictionary:v6 error:&v18];
+  v9 = [objc_alloc(getSCSensitivityAnalysisClass()) initWithPixelBufferClassificationDictionary:attributesCopy error:&v18];
   v10 = v18;
   if (v9)
   {
@@ -53,7 +53,7 @@ LABEL_7:
     }
 
     v12 = *v11;
-    v13 = [v6 objectForKeyedSubscript:v12];
+    v13 = [attributesCopy objectForKeyedSubscript:v12];
     confidenceTypeN = v8->_confidenceTypeN;
     v8->_confidenceTypeN = v13;
 
@@ -72,20 +72,20 @@ LABEL_11:
   return v15;
 }
 
-- (MADVideoSessionSafetyResult)initWithCoder:(id)a3
+- (MADVideoSessionSafetyResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MADVideoSessionSafetyResult;
-  v5 = [(MADVideoSessionResult *)&v11 initWithCoder:v4];
+  v5 = [(MADVideoSessionResult *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
     getSCSensitivityAnalysisClass();
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AnalysisResult"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AnalysisResult"];
     analysisResult = v5->_analysisResult;
     v5->_analysisResult = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ConfidenceTypeN"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ConfidenceTypeN"];
     confidenceTypeN = v5->_confidenceTypeN;
     v5->_confidenceTypeN = v8;
   }
@@ -93,29 +93,29 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = MADVideoSessionSafetyResult;
-  [(MADVideoSessionResult *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_analysisResult forKey:@"AnalysisResult"];
-  [v4 encodeObject:self->_confidenceTypeN forKey:@"ConfidenceTypeN"];
+  [(MADVideoSessionResult *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_analysisResult forKey:@"AnalysisResult"];
+  [coderCopy encodeObject:self->_confidenceTypeN forKey:@"ConfidenceTypeN"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"AnalysisResult: %@, ", self->_analysisResult];
-  [v3 appendFormat:@"ConfidenceTypeN: %@, ", self->_confidenceTypeN];
-  v6 = [(MADVideoSessionResult *)self requestID];
-  [v3 appendFormat:@"RequestID: %@>", v6];
+  [string appendFormat:@"AnalysisResult: %@, ", self->_analysisResult];
+  [string appendFormat:@"ConfidenceTypeN: %@, ", self->_confidenceTypeN];
+  requestID = [(MADVideoSessionResult *)self requestID];
+  [string appendFormat:@"RequestID: %@>", requestID];
 
-  return v3;
+  return string;
 }
 
 - (void)initWithSensitivityAttributes:(uint64_t)a3 requestID:.cold.1(void *a1, uint64_t a2, uint64_t a3)

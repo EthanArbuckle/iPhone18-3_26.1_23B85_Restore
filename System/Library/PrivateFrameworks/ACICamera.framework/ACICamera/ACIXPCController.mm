@@ -1,17 +1,17 @@
 @interface ACIXPCController
-- (ACIXPCController)initWithDelegate:(void *)a3 connection:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (ACIXPCController)initWithDelegate:(void *)delegate connection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (int)start;
 - (int)stop;
 - (void)dealloc;
-- (void)newEvent:(id)a3;
+- (void)newEvent:(id)event;
 @end
 
 @implementation ACIXPCController
 
-- (ACIXPCController)initWithDelegate:(void *)a3 connection:(id)a4
+- (ACIXPCController)initWithDelegate:(void *)delegate connection:(id)connection
 {
-  v7 = a4;
+  connectionCopy = connection;
   v23.receiver = self;
   v23.super_class = ACIXPCController;
   v8 = [(ACIXPCController *)&v23 init];
@@ -21,25 +21,25 @@
     v10 = *(v8 + 5);
     *(v8 + 5) = v9;
 
-    aci::SP<aci::SourceManager,&(void ACISPRetain<aci::SourceManager>(aci::SourceManager &)),&(void ACISPRelease<aci::SourceManager>(aci::SourceManager &))>::setPtr(v8 + 8, a3);
+    aci::SP<aci::SourceManager,&(void ACISPRetain<aci::SourceManager>(aci::SourceManager &)),&(void ACISPRelease<aci::SourceManager>(aci::SourceManager &))>::setPtr(v8 + 8, delegate);
     v11 = *(*(*(v8 + 8) + 200) + 24);
     v12 = aci2nsString();
     v13 = *(v8 + 1);
     *(v8 + 1) = v12;
 
-    v14 = [MEMORY[0x277CCAD78] UUID];
-    v15 = [v14 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     v16 = *(v8 + 2);
-    *(v8 + 2) = v15;
+    *(v8 + 2) = uUIDString;
 
-    objc_storeStrong(v8 + 3, a4);
+    objc_storeStrong(v8 + 3, connection);
     v17 = [*(v8 + 3) synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_2];
     v18 = *(v8 + 7);
     *(v8 + 7) = v17;
 
-    v19 = [MEMORY[0x277CCAE98] anonymousListener];
+    anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
     v20 = *(v8 + 4);
-    *(v8 + 4) = v19;
+    *(v8 + 4) = anonymousListener;
 
     [*(v8 + 4) setDelegate:v8];
     [*(v8 + 4) resume];
@@ -72,23 +72,23 @@ void __48__ACIXPCController_initWithDelegate_connection___block_invoke(uint64_t 
   [(ACIXPCController *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = +[ACIXPCProvider remoteServiceReceiverInterface];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v7 = +[ACIXPCProvider remoteServiceSenderInterface];
-  [v5 setRemoteObjectInterface:v7];
+  [connectionCopy setRemoteObjectInterface:v7];
 
-  [v5 _setQueue:self->_queue];
-  [v5 resume];
+  [connectionCopy _setQueue:self->_queue];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)newEvent:(id)a3
+- (void)newEvent:(id)event
 {
   v9 = *MEMORY[0x277D85DE8];
   v3 = _aciLogGeneral();
@@ -114,14 +114,14 @@ void __48__ACIXPCController_initWithDelegate_connection___block_invoke(uint64_t 
   syncServiceManagerProxy = self->_syncServiceManagerProxy;
   name = self->_name;
   uuid = self->_uuid;
-  v7 = [(NSXPCListener *)self->_listener endpoint];
+  endpoint = [(NSXPCListener *)self->_listener endpoint];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __25__ACIXPCController_start__block_invoke;
   v16[3] = &unk_278BBBE80;
   v16[4] = self;
   v16[5] = &v17;
-  [(ACIRemoteServiceManagerProtocol *)syncServiceManagerProxy subscribeService:name uuid:uuid endpoint:v7 withReply:v16];
+  [(ACIRemoteServiceManagerProtocol *)syncServiceManagerProxy subscribeService:name uuid:uuid endpoint:endpoint withReply:v16];
 
   v8 = *(v18 + 6);
   if (!v8)

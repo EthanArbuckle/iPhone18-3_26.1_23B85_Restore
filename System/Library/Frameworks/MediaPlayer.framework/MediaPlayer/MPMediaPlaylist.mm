@@ -1,34 +1,34 @@
 @interface MPMediaPlaylist
-+ (BOOL)_isValidPlaylistProperty:(id)a3;
-+ (BOOL)canFilterByProperty:(id)a3;
++ (BOOL)_isValidPlaylistProperty:(id)property;
++ (BOOL)canFilterByProperty:(id)property;
 + (void)_createFilterableDictionary;
 - (BOOL)existsInLibrary;
 - (BOOL)isCloudMix;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFavoriteSongsPlaylist;
 - (MPMediaEntityPersistentID)persistentID;
-- (MPMediaPlaylist)initWithCoder:(id)a3;
-- (MPMediaPlaylist)initWithMultiverseIdentifier:(id)a3 library:(id)a4;
-- (MPMediaPlaylist)initWithPersistentID:(unint64_t)a3;
-- (MPMediaPlaylist)initWithPersistentID:(unint64_t)a3 mediaLibrary:(id)a4;
+- (MPMediaPlaylist)initWithCoder:(id)coder;
+- (MPMediaPlaylist)initWithMultiverseIdentifier:(id)identifier library:(id)library;
+- (MPMediaPlaylist)initWithPersistentID:(unint64_t)d;
+- (MPMediaPlaylist)initWithPersistentID:(unint64_t)d mediaLibrary:(id)library;
 - (MPMediaPlaylistAttribute)playlistAttributes;
 - (id)artworkCatalog;
-- (id)artworkCatalogsWithMaximumCount:(unint64_t)a3;
+- (id)artworkCatalogsWithMaximumCount:(unint64_t)count;
 - (id)items;
 - (id)multiverseIdentifier;
 - (id)representativeArtists;
 - (id)representativeItem;
 - (id)seedTracksQuery;
-- (id)tiledArtworkCatalogWithRows:(unint64_t)a3 columns:(unint64_t)a4;
-- (id)valueForProperty:(id)a3;
+- (id)tiledArtworkCatalogWithRows:(unint64_t)rows columns:(unint64_t)columns;
+- (id)valueForProperty:(id)property;
 - (unint64_t)count;
 - (unint64_t)mediaTypes;
 - (void)addItemWithProductID:(NSString *)productID completionHandler:(void *)completionHandler;
 - (void)addMediaItems:(NSArray *)mediaItems completionHandler:(void *)completionHandler;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeArtworkWithSourceType:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeArtworkWithSourceType:(int64_t)type;
 - (void)removeFirstItem;
-- (void)setUserSelectedArtworkImage:(id)a3;
+- (void)setUserSelectedArtworkImage:(id)image;
 @end
 
 @implementation MPMediaPlaylist
@@ -102,14 +102,14 @@
   }
 }
 
-- (id)artworkCatalogsWithMaximumCount:(unint64_t)a3
+- (id)artworkCatalogsWithMaximumCount:(unint64_t)count
 {
-  if (a3)
+  if (count)
   {
     v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:?];
-    v6 = [MEMORY[0x1E695DFA8] setWithCapacity:a3];
-    v7 = [(MPMediaItemCollection *)self itemsQuery];
-    v8 = [v7 copy];
+    v6 = [MEMORY[0x1E695DFA8] setWithCapacity:count];
+    itemsQuery = [(MPMediaItemCollection *)self itemsQuery];
+    v8 = [itemsQuery copy];
 
     v9 = +[MPMediaItem artworkCatalogCacheProperties];
     [v8 setItemPropertiesToFetch:v9];
@@ -122,7 +122,7 @@
     v16 = v6;
     v10 = v5;
     v17 = v10;
-    v18 = a3;
+    countCopy = count;
     v11 = v6;
     [v8 _enumerateItemsUsingBlock:v15];
     v12 = v17;
@@ -157,11 +157,11 @@ void __69__MPMediaPlaylist_MPArtworkCatalog__artworkCatalogsWithMaximumCount___b
   }
 }
 
-- (id)tiledArtworkCatalogWithRows:(unint64_t)a3 columns:(unint64_t)a4
+- (id)tiledArtworkCatalogWithRows:(unint64_t)rows columns:(unint64_t)columns
 {
   v7 = objc_alloc_init(MPTiledArtworkRequest);
-  [(MPTiledArtworkRequest *)v7 setNumberOfColumns:a3];
-  [(MPTiledArtworkRequest *)v7 setNumberOfRows:a4];
+  [(MPTiledArtworkRequest *)v7 setNumberOfColumns:rows];
+  [(MPTiledArtworkRequest *)v7 setNumberOfRows:columns];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __73__MPMediaPlaylist_MPArtworkCatalog__tiledArtworkCatalogWithRows_columns___block_invoke;
@@ -173,8 +173,8 @@ void __69__MPMediaPlaylist_MPArtworkCatalog__artworkCatalogsWithMaximumCount___b
 
   [(MPTiledArtworkRequest *)v7 setNamespaceIdentifier:@"MPMediaPlaylist"];
   v9 = MEMORY[0x1E696AD98];
-  v10 = [(MPMediaEntity *)self mediaLibrary];
-  v11 = [v9 numberWithUnsignedLongLong:{objc_msgSend(v10, "currentEntityRevision")}];
+  mediaLibrary = [(MPMediaEntity *)self mediaLibrary];
+  v11 = [v9 numberWithUnsignedLongLong:{objc_msgSend(mediaLibrary, "currentEntityRevision")}];
   [(MPTiledArtworkRequest *)v7 setRevisionIdentifier:v11];
 
   v12 = [MPArtworkCatalog alloc];
@@ -187,19 +187,19 @@ void __69__MPMediaPlaylist_MPArtworkCatalog__artworkCatalogsWithMaximumCount___b
 - (id)artworkCatalog
 {
   v3 = [MPMediaLibraryArtworkRequest alloc];
-  v4 = [(MPMediaEntity *)self mediaLibrary];
-  v5 = [(MPMediaLibraryArtworkRequest *)v3 initWithLibrary:v4 identifier:[(MPMediaPlaylist *)self persistentID] entityType:1 artworkType:5];
+  mediaLibrary = [(MPMediaEntity *)self mediaLibrary];
+  v5 = [(MPMediaLibraryArtworkRequest *)v3 initWithLibrary:mediaLibrary identifier:[(MPMediaPlaylist *)self persistentID] entityType:1 artworkType:5];
 
   v6 = [MPArtworkCatalog alloc];
-  v7 = [(MPMediaEntity *)self mediaLibrary];
-  v8 = [v7 artworkDataSource];
-  v9 = [(MPArtworkCatalog *)v6 initWithToken:v5 dataSource:v8];
+  mediaLibrary2 = [(MPMediaEntity *)self mediaLibrary];
+  artworkDataSource = [mediaLibrary2 artworkDataSource];
+  v9 = [(MPArtworkCatalog *)v6 initWithToken:v5 dataSource:artworkDataSource];
 
-  v10 = [(MPMediaEntity *)self mediaLibrary];
-  v11 = [v10 artworkDataSource];
-  LODWORD(v8) = [v11 areRepresentationsAvailableForCatalog:v9];
+  mediaLibrary3 = [(MPMediaEntity *)self mediaLibrary];
+  artworkDataSource2 = [mediaLibrary3 artworkDataSource];
+  LODWORD(artworkDataSource) = [artworkDataSource2 areRepresentationsAvailableForCatalog:v9];
 
-  if (v8)
+  if (artworkDataSource)
   {
     v12 = v9;
   }
@@ -212,31 +212,31 @@ void __69__MPMediaPlaylist_MPArtworkCatalog__artworkCatalogsWithMaximumCount___b
   return v12;
 }
 
-- (void)removeArtworkWithSourceType:(int64_t)a3
+- (void)removeArtworkWithSourceType:(int64_t)type
 {
-  v5 = [(MPMediaEntity *)self mediaLibrary];
-  [v5 removeArtworkForEntityPersistentID:-[MPMediaPlaylist persistentID](self entityType:"persistentID") artworkType:1 sourceType:{5, a3}];
+  mediaLibrary = [(MPMediaEntity *)self mediaLibrary];
+  [mediaLibrary removeArtworkForEntityPersistentID:-[MPMediaPlaylist persistentID](self entityType:"persistentID") artworkType:1 sourceType:{5, type}];
 }
 
-- (void)setUserSelectedArtworkImage:(id)a3
+- (void)setUserSelectedArtworkImage:(id)image
 {
   v83[0] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  imageCopy = image;
+  if (!imageCopy)
   {
     goto LABEL_65;
   }
 
-  v5 = [(MPMediaEntity *)self mediaLibrary];
-  v6 = [v5 isHomeSharingLibrary];
+  mediaLibrary = [(MPMediaEntity *)self mediaLibrary];
+  isHomeSharingLibrary = [mediaLibrary isHomeSharingLibrary];
 
-  if (v6)
+  if (isHomeSharingLibrary)
   {
     goto LABEL_65;
   }
 
-  v7 = [(MPMediaEntity *)self mediaLibrary];
-  v8 = UIImageJPEGRepresentation(v4, *MEMORY[0x1E69B1368]);
+  mediaLibrary2 = [(MPMediaEntity *)self mediaLibrary];
+  v8 = UIImageJPEGRepresentation(imageCopy, *MEMORY[0x1E69B1368]);
   memset(v74, 0, sizeof(v74));
   CC_SHA256_Init(v74);
   v9 = v8;
@@ -439,9 +439,9 @@ LABEL_66:
   if (*v79 != 2000)
   {
 LABEL_60:
-    v70 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v71 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-    [v70 handleFailureInFunction:v71 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+    [currentHandler handleFailureInFunction:v71 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
     v57 = &stru_1F149ECA8;
     goto LABEL_51;
@@ -481,30 +481,30 @@ LABEL_50:
   v57 = v40;
 LABEL_51:
 
-  [v7 importArtworkTokenForEntityPersistentID:-[MPMediaPlaylist persistentID](self entityType:"persistentID") artworkToken:1 artworkType:v57 sourceType:{5, 100}];
-  v58 = [(MPMediaEntity *)self mediaLibrary];
-  v59 = [(MPMediaPlaylist *)self representativeItem];
-  v60 = [v58 importOriginalArtworkFromImageData:v9 withArtworkToken:v57 artworkType:5 sourceType:100 mediaType:{objc_msgSend(v59, "mediaType")}];
+  [mediaLibrary2 importArtworkTokenForEntityPersistentID:-[MPMediaPlaylist persistentID](self entityType:"persistentID") artworkToken:1 artworkType:v57 sourceType:{5, 100}];
+  mediaLibrary3 = [(MPMediaEntity *)self mediaLibrary];
+  representativeItem = [(MPMediaPlaylist *)self representativeItem];
+  v60 = [mediaLibrary3 importOriginalArtworkFromImageData:v9 withArtworkToken:v57 artworkType:5 sourceType:100 mediaType:{objc_msgSend(representativeItem, "mediaType")}];
 
   if (v60)
   {
-    v73 = v4;
-    v61 = [v7 libraryDataProvider];
+    v73 = imageCopy;
+    libraryDataProvider = [mediaLibrary2 libraryDataProvider];
     objc_opt_class();
     v62 = v9;
     if (objc_opt_isKindOfClass())
     {
-      v63 = [v61 library];
+      library = [libraryDataProvider library];
     }
 
     else
     {
-      v63 = 0;
+      library = 0;
     }
 
-    [v63 notifyDisplayValuesPropertyDidChange];
-    v64 = [v7 userIdentity];
-    v65 = [MPCloudController controllerWithUserIdentity:v64];
+    [library notifyDisplayValuesPropertyDidChange];
+    userIdentity = [mediaLibrary2 userIdentity];
+    v65 = [MPCloudController controllerWithUserIdentity:userIdentity];
 
     if ([v65 isCloudEnabled])
     {
@@ -514,17 +514,17 @@ LABEL_51:
     v66 = [(MPMediaPlaylist *)self valueForProperty:@"coverArtworkRecipe"];
     if (([@"{version:0.0}" isEqualToString:v66] & 1) == 0)
     {
-      v72 = v7;
+      v72 = mediaLibrary2;
       [(MPMediaItemCollection *)self setValue:@"{version:0.0}" forProperty:@"coverArtworkRecipe"];
       v67 = [(MPMediaPlaylist *)self valueForProperty:@"isCollaborative"];
 
       if (v67)
       {
-        v68 = [(MPMediaPlaylist *)self persistentID];
+        persistentID = [(MPMediaPlaylist *)self persistentID];
         v77 = @"coverArtworkRecipe";
         v78 = @"{version:0.0}";
         v69 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
-        [v65 editCollaborationWithPersistentID:v68 properties:v69 trackEdits:MEMORY[0x1E695E0F0] completion:&__block_literal_global_19576];
+        [v65 editCollaborationWithPersistentID:persistentID properties:v69 trackEdits:MEMORY[0x1E695E0F0] completion:&__block_literal_global_19576];
       }
 
       else
@@ -535,11 +535,11 @@ LABEL_51:
         [v65 setPlaylistProperties:v69 trackList:0 forPlaylistWithPersistentID:-[MPMediaPlaylist persistentID](self completionHandler:{"persistentID"), &__block_literal_global_211}];
       }
 
-      v7 = v72;
+      mediaLibrary2 = v72;
     }
 
     v9 = v62;
-    v4 = v73;
+    imageCopy = v73;
   }
 
 LABEL_65:
@@ -579,19 +579,19 @@ LABEL_65:
   if (!representativeArtists)
   {
     v4 = [(MPMediaPlaylist *)self valueForProperty:@"descriptionInfo"];
-    v5 = [v4 componentsSeparatedByString:{@", , , "}];
+    allObjects2 = [v4 componentsSeparatedByString:{@", , , "}];
 
-    if (!v5)
+    if (!allObjects2)
     {
       v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:3];
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v7 = [(MPMediaPlaylist *)self seedTracksQuery];
-      v8 = [v7 items];
+      seedTracksQuery = [(MPMediaPlaylist *)self seedTracksQuery];
+      items = [seedTracksQuery items];
 
-      v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [items countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v9)
       {
         v10 = v9;
@@ -602,7 +602,7 @@ LABEL_65:
           {
             if (*v20 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(items);
             }
 
             v13 = [*(*(&v19 + 1) + 8 * i) valueForProperty:@"albumArtist"];
@@ -617,7 +617,7 @@ LABEL_65:
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v10 = [items countByEnumeratingWithState:&v19 objects:v23 count:16];
           if (v10)
           {
             continue;
@@ -631,27 +631,27 @@ LABEL_14:
 
       if ([v6 count])
       {
-        v14 = [v6 allObjects];
-        v15 = [v14 componentsJoinedByString:{@", , , "}];
+        allObjects = [v6 allObjects];
+        v15 = [allObjects componentsJoinedByString:{@", , , "}];
         [(MPMediaItemCollection *)self setValue:v15 forProperty:@"descriptionInfo" withCompletionBlock:0];
 
-        v5 = [v6 allObjects];
+        allObjects2 = [v6 allObjects];
       }
 
       else
       {
-        v5 = 0;
+        allObjects2 = 0;
       }
     }
 
-    if ([v5 count] < 4)
+    if ([allObjects2 count] < 4)
     {
-      v16 = v5;
+      v16 = allObjects2;
     }
 
     else
     {
-      v16 = [v5 subarrayWithRange:{0, 3}];
+      v16 = [allObjects2 subarrayWithRange:{0, 3}];
     }
 
     v17 = self->_representativeArtists;
@@ -665,48 +665,48 @@ LABEL_14:
 
 - (id)multiverseIdentifier
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:452 description:@"subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:452 description:@"subclass must implement"];
 
   return 0;
 }
 
 - (id)representativeItem
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:447 description:@"subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:447 description:@"subclass must implement"];
 
   return 0;
 }
 
 - (unint64_t)mediaTypes
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:442 description:@"subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:442 description:@"subclass must implement"];
 
   return -1;
 }
 
 - (unint64_t)count
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:437 description:@"subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:437 description:@"subclass must implement"];
 
   return 0;
 }
 
 - (id)items
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:432 description:@"subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:432 description:@"subclass must implement"];
 
   return 0;
 }
 
 - (void)removeFirstItem
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:297 description:@"subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:297 description:@"subclass must implement"];
 }
 
 - (BOOL)isFavoriteSongsPlaylist
@@ -720,108 +720,108 @@ LABEL_14:
 - (MPMediaPlaylistAttribute)playlistAttributes
 {
   v2 = [(MPMediaPlaylist *)self valueForProperty:@"playlistAttributes"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (MPMediaEntityPersistentID)persistentID
 {
   v2 = [(MPMediaPlaylist *)self valueForProperty:@"playlistPersistentID"];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (BOOL)existsInLibrary
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:260 description:@"subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:260 description:@"subclass must implement"];
 
   return 1;
 }
 
 - (void)addMediaItems:(NSArray *)mediaItems completionHandler:(void *)completionHandler
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:254 description:@"subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:254 description:@"subclass must implement"];
 }
 
 - (void)addItemWithProductID:(NSString *)productID completionHandler:(void *)completionHandler
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:251 description:@"subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:251 description:@"subclass must implement"];
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v5 = a3;
-  v6 = [objc_opt_class() _isValidPlaylistProperty:v5];
+  propertyCopy = property;
+  v6 = [objc_opt_class() _isValidPlaylistProperty:propertyCopy];
 
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:246 description:@"subclass must implement"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:246 description:@"subclass must implement"];
   }
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:222 description:@"subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:222 description:@"subclass must implement"];
 }
 
-- (MPMediaPlaylist)initWithCoder:(id)a3
+- (MPMediaPlaylist)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:217 description:@"subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:217 description:@"subclass must implement"];
 
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(MPMediaPlaylist *)self persistentID];
-    v6 = v5 == [v4 persistentID];
+    persistentID = [(MPMediaPlaylist *)self persistentID];
+    v6 = persistentID == [equalCopy persistentID];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = MPMediaPlaylist;
-    v6 = [(MPMediaItemCollection *)&v8 isEqual:v4];
+    v6 = [(MPMediaItemCollection *)&v8 isEqual:equalCopy];
   }
 
   return v6;
 }
 
-- (MPMediaPlaylist)initWithMultiverseIdentifier:(id)a3 library:(id)a4
+- (MPMediaPlaylist)initWithMultiverseIdentifier:(id)identifier library:(id)library
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 mediaObjectType];
-  if (v9 != 7)
+  identifierCopy = identifier;
+  libraryCopy = library;
+  mediaObjectType = [identifierCopy mediaObjectType];
+  if (mediaObjectType != 7)
   {
-    v34 = v9;
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:130 description:{@"Playlist was initialized with a multiverse identifier containing the wrong object type (%d)", v34}];
+    v34 = mediaObjectType;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaPlaylist.m" lineNumber:130 description:{@"Playlist was initialized with a multiverse identifier containing the wrong object type (%d)", v34}];
   }
 
-  v10 = [v7 libraryIdentifiers];
-  v37 = v7;
-  v11 = malloc_type_malloc(8 * [v7 libraryIdentifiersCount], 0x100004000313F17uLL);
-  v39 = v8;
+  libraryIdentifiers = [identifierCopy libraryIdentifiers];
+  v37 = identifierCopy;
+  v11 = malloc_type_malloc(8 * [identifierCopy libraryIdentifiersCount], 0x100004000313F17uLL);
+  v39 = libraryCopy;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v12 = v10;
+  v12 = libraryIdentifiers;
   v13 = [v12 countByEnumeratingWithState:&v41 objects:v45 count:16];
   obj = v12;
   if (!v13)
@@ -833,7 +833,7 @@ LABEL_14:
   }
 
   v14 = v13;
-  v36 = self;
+  selfCopy = self;
   v15 = 0;
   v16 = *v42;
   v17 = 1;
@@ -848,8 +848,8 @@ LABEL_14:
 
       v19 = *(*(&v41 + 1) + 8 * i);
       v11[v15] = [v19 libraryId];
-      v20 = [v19 libraryName];
-      if (![v20 length])
+      libraryName = [v19 libraryName];
+      if (![libraryName length])
       {
 
 LABEL_12:
@@ -857,9 +857,9 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v21 = [v19 libraryName];
-      v22 = [v39 uniqueIdentifier];
-      v23 = [v21 isEqualToString:v22];
+      libraryName2 = [v19 libraryName];
+      uniqueIdentifier = [v39 uniqueIdentifier];
+      v23 = [libraryName2 isEqualToString:uniqueIdentifier];
 
       if ((v23 & 1) == 0)
       {
@@ -876,7 +876,7 @@ LABEL_13:
   while (v14);
 
   v40 = 0;
-  self = v36;
+  self = selfCopy;
   if ((v17 & 1) == 0)
   {
     free(v11);
@@ -892,7 +892,7 @@ LABEL_18:
   {
 LABEL_29:
     self = [(MPMediaPlaylist *)self initWithPersistentID:v40];
-    v32 = self;
+    selfCopy2 = self;
   }
 
   else
@@ -905,13 +905,13 @@ LABEL_19:
 
     if ([v24 hasCloudUniversalLibraryId])
     {
-      v26 = [v24 cloudUniversalLibraryId];
-      v27 = [v26 length];
+      cloudUniversalLibraryId = [v24 cloudUniversalLibraryId];
+      v27 = [cloudUniversalLibraryId length];
 
       if (v27)
       {
-        v28 = [v24 cloudUniversalLibraryId];
-        v29 = [v39 collectionExistsWithCloudUniversalLibraryID:v28 groupingType:6 existentPID:&v40];
+        cloudUniversalLibraryId2 = [v24 cloudUniversalLibraryId];
+        v29 = [v39 collectionExistsWithCloudUniversalLibraryID:cloudUniversalLibraryId2 groupingType:6 existentPID:&v40];
 
         if (v29)
         {
@@ -925,70 +925,70 @@ LABEL_19:
       goto LABEL_29;
     }
 
-    v30 = [v24 name];
-    v31 = [v39 collectionExistsWithName:v30 groupingType:6 existentPID:&v40];
+    name = [v24 name];
+    v31 = [v39 collectionExistsWithName:name groupingType:6 existentPID:&v40];
 
     if (v31)
     {
       goto LABEL_29;
     }
 
-    v32 = 0;
+    selfCopy2 = 0;
   }
 
-  return v32;
+  return selfCopy2;
 }
 
-- (MPMediaPlaylist)initWithPersistentID:(unint64_t)a3 mediaLibrary:(id)a4
+- (MPMediaPlaylist)initWithPersistentID:(unint64_t)d mediaLibrary:(id)library
 {
-  v5 = [a4 playlistWithPersistentID:a3];
+  v5 = [library playlistWithPersistentID:d];
 
   return v5;
 }
 
-- (MPMediaPlaylist)initWithPersistentID:(unint64_t)a3
+- (MPMediaPlaylist)initWithPersistentID:(unint64_t)d
 {
   v5 = +[MPMediaLibrary defaultMediaLibrary];
-  v6 = [(MPMediaPlaylist *)self initWithPersistentID:a3 mediaLibrary:v5];
+  v6 = [(MPMediaPlaylist *)self initWithPersistentID:d mediaLibrary:v5];
 
   return v6;
 }
 
-+ (BOOL)_isValidPlaylistProperty:(id)a3
++ (BOOL)_isValidPlaylistProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   v5 = __filterableDictionary_19618;
   if (!__filterableDictionary_19618)
   {
-    [a1 _createFilterableDictionary];
+    [self _createFilterableDictionary];
     v5 = __filterableDictionary_19618;
   }
 
-  v6 = CFDictionaryContainsKey(v5, [v4 hash]) != 0;
+  v6 = CFDictionaryContainsKey(v5, [propertyCopy hash]) != 0;
 
   return v6;
 }
 
-+ (BOOL)canFilterByProperty:(id)a3
++ (BOOL)canFilterByProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   v5 = __filterableDictionary_19618;
   if (!__filterableDictionary_19618)
   {
-    [a1 _createFilterableDictionary];
+    [self _createFilterableDictionary];
     v5 = __filterableDictionary_19618;
   }
 
-  if (CFDictionaryGetValue(v5, [v4 hash]))
+  if (CFDictionaryGetValue(v5, [propertyCopy hash]))
   {
     v6 = 1;
   }
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___MPMediaPlaylist;
-    v6 = objc_msgSendSuper2(&v8, sel_canFilterByProperty_, v4);
+    v6 = objc_msgSendSuper2(&v8, sel_canFilterByProperty_, propertyCopy);
   }
 
   return v6;

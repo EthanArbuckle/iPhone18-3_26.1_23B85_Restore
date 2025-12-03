@@ -1,16 +1,16 @@
 @interface MOGroupedInteraction
-- (MOGroupedInteraction)initWithScoredContact:(id)a3 interactionScore:(id)a4 interaction:(id)a5;
+- (MOGroupedInteraction)initWithScoredContact:(id)contact interactionScore:(id)score interaction:(id)interaction;
 - (id)description;
-- (void)addInteraction:(id)a3;
+- (void)addInteraction:(id)interaction;
 @end
 
 @implementation MOGroupedInteraction
 
-- (MOGroupedInteraction)initWithScoredContact:(id)a3 interactionScore:(id)a4 interaction:(id)a5
+- (MOGroupedInteraction)initWithScoredContact:(id)contact interactionScore:(id)score interaction:(id)interaction
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contactCopy = contact;
+  scoreCopy = score;
+  interactionCopy = interaction;
   if (initWithScoredContact_interactionScore_interaction__onceToken != -1)
   {
     [MOGroupedInteraction initWithScoredContact:interactionScore:interaction:];
@@ -21,20 +21,20 @@
   v12 = [(MOGenericInteraction *)&v18 init];
   if (v12)
   {
-    v13 = [v11 participants];
-    [(MOGenericInteraction *)v12 setParticipants:v13];
+    participants = [interactionCopy participants];
+    [(MOGenericInteraction *)v12 setParticipants:participants];
 
-    v14 = [v11 interactionKey];
-    [(MOGenericInteraction *)v12 setInteractionKey:v14];
+    interactionKey = [interactionCopy interactionKey];
+    [(MOGenericInteraction *)v12 setInteractionKey:interactionKey];
 
-    objc_storeStrong(&v12->_scoredContact, a3);
-    objc_storeStrong(&v12->_interactionScore, a4);
+    objc_storeStrong(&v12->_scoredContact, contact);
+    objc_storeStrong(&v12->_interactionScore, score);
     v12->_isScoredContactUsable = 0;
     v15 = objc_opt_new();
     interactions = v12->_interactions;
     v12->_interactions = v15;
 
-    [(MOGroupedInteraction *)v12 addInteraction:v11];
+    [(MOGroupedInteraction *)v12 addInteraction:interactionCopy];
   }
 
   return v12;
@@ -47,20 +47,20 @@ void __75__MOGroupedInteraction_initWithScoredContact_interactionScore_interacti
   _objc_release_x1();
 }
 
-- (void)addInteraction:(id)a3
+- (void)addInteraction:(id)interaction
 {
-  v12 = a3;
-  v4 = [(MOGroupedInteraction *)self interactions];
-  [v4 addObject:v12];
+  interactionCopy = interaction;
+  interactions = [(MOGroupedInteraction *)self interactions];
+  [interactions addObject:interactionCopy];
 
   if (![(MOGroupedInteraction *)self isScoredContactUsable])
   {
-    v5 = [(MOGroupedInteraction *)self scoredContact];
+    scoredContact = [(MOGroupedInteraction *)self scoredContact];
 
-    if (v5)
+    if (scoredContact)
     {
       v6 = _callLikeMechanismsSet;
-      v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v12 mechanism]);
+      v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [interactionCopy mechanism]);
       LODWORD(v6) = [v6 containsObject:v7];
 
       if (!v6)
@@ -68,9 +68,9 @@ void __75__MOGroupedInteraction_initWithScoredContact_interactionScore_interacti
         goto LABEL_5;
       }
 
-      v8 = [v12 endDate];
-      v9 = [v12 startDate];
-      [v8 timeIntervalSinceDate:v9];
+      endDate = [interactionCopy endDate];
+      startDate = [interactionCopy startDate];
+      [endDate timeIntervalSinceDate:startDate];
       v11 = v10;
 
       if (v11 >= 5.0)
@@ -85,11 +85,11 @@ LABEL_5:
 - (id)description
 {
   v3 = [NSString alloc];
-  v4 = [(MOGenericInteraction *)self interactionKey];
-  v5 = [(MOGroupedInteraction *)self scoredContact];
-  v6 = [(MOGroupedInteraction *)self interactionScore];
-  v7 = [(MOGroupedInteraction *)self interactions];
-  v8 = [v3 initWithFormat:@"<MOGroupedInteraction | groupKey:%@ scoredContact:%@ score:%@ interactions:%@>", v4, v5, v6, v7];
+  interactionKey = [(MOGenericInteraction *)self interactionKey];
+  scoredContact = [(MOGroupedInteraction *)self scoredContact];
+  interactionScore = [(MOGroupedInteraction *)self interactionScore];
+  interactions = [(MOGroupedInteraction *)self interactions];
+  v8 = [v3 initWithFormat:@"<MOGroupedInteraction | groupKey:%@ scoredContact:%@ score:%@ interactions:%@>", interactionKey, scoredContact, interactionScore, interactions];
 
   return v8;
 }

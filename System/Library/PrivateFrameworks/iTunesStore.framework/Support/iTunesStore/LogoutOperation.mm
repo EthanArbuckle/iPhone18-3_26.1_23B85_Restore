@@ -1,5 +1,5 @@
 @interface LogoutOperation
-- (LogoutOperation)initWithAccount:(id)a3;
+- (LogoutOperation)initWithAccount:(id)account;
 - (SSAccount)account;
 - (id)_copyAuthenticationContext;
 - (id)_sbsyncData;
@@ -11,16 +11,16 @@
 
 @implementation LogoutOperation
 
-- (LogoutOperation)initWithAccount:(id)a3
+- (LogoutOperation)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = LogoutOperation;
   v6 = [(LogoutOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
@@ -47,8 +47,8 @@
 - (id)_copyAuthenticationContext
 {
   v3 = [SSMutableAuthenticationContext alloc];
-  v4 = [(LogoutOperation *)self account];
-  v5 = [v3 initWithAccount:v4];
+  account = [(LogoutOperation *)self account];
+  v5 = [v3 initWithAccount:account];
 
   [v5 setPromptStyle:1000];
   return v5;
@@ -58,17 +58,17 @@
 {
   v4 = [[SetAutomaticDownloadKindsOperation alloc] initWithDownloadKinds:0];
   [(SetAutomaticDownloadKindsOperation *)v4 setShouldSuppressServerDialogs:1];
-  v3 = [(LogoutOperation *)self _copyAuthenticationContext];
-  [(SetAutomaticDownloadKindsOperation *)v4 setAuthenticationContext:v3];
+  _copyAuthenticationContext = [(LogoutOperation *)self _copyAuthenticationContext];
+  [(SetAutomaticDownloadKindsOperation *)v4 setAuthenticationContext:_copyAuthenticationContext];
   [(LogoutOperation *)self runSubOperation:v4 returningError:0];
 }
 
 - (void)_disableBookkeeper
 {
   v17 = [SSURLBagContext contextWithBagType:0];
-  v3 = [(LogoutOperation *)self account];
-  v4 = [v3 uniqueIdentifier];
-  [v17 setUserIdentifier:v4];
+  account = [(LogoutOperation *)self account];
+  uniqueIdentifier = [account uniqueIdentifier];
+  [v17 setUserIdentifier:uniqueIdentifier];
 
   v5 = [(LogoutOperation *)self loadedURLBagWithContext:v17 returningError:0];
   v6 = [v5 valueForKey:@"push-notification-types"];
@@ -83,8 +83,8 @@
       v9 = +[DaemonProtocolDataProvider provider];
       [v8 setDataProvider:v9];
 
-      v10 = [(LogoutOperation *)self _copyAuthenticationContext];
-      [v8 setAuthenticationContext:v10];
+      _copyAuthenticationContext = [(LogoutOperation *)self _copyAuthenticationContext];
+      [v8 setAuthenticationContext:_copyAuthenticationContext];
       v11 = objc_alloc_init(SSMutableURLRequestProperties);
       [v11 setHTTPMethod:@"POST"];
       v12 = [NSURL URLWithString:v7];
@@ -93,11 +93,11 @@
       [v11 setValue:@"application/x-apple-plist" forHTTPHeaderField:@"Content-Type"];
       v13 = objc_alloc_init(NSMutableDictionary);
       v14 = +[ISDevice sharedInstance];
-      v15 = [v14 guid];
+      guid = [v14 guid];
 
-      if (v15)
+      if (guid)
       {
-        [v13 setObject:v15 forKey:@"guid"];
+        [v13 setObject:guid forKey:@"guid"];
       }
 
       v16 = [[NSDictionary alloc] initWithObjectsAndKeys:{@"0", @"bookkeeperDomain:com.apple.upp", 0}];
@@ -120,15 +120,15 @@
   v3 = 0;
   if (!v4)
   {
-    v5 = [(LogoutOperation *)self account];
-    v6 = [v5 uniqueIdentifier];
-    v7 = [v6 unsignedLongLongValue];
+    account = [(LogoutOperation *)self account];
+    uniqueIdentifier = [account uniqueIdentifier];
+    unsignedLongLongValue = [uniqueIdentifier unsignedLongLongValue];
 
     v8 = objc_alloc_init(SSVFairPlaySubscriptionController);
     v9 = [NSData alloc];
     v10 = [v9 initWithBytesNoCopy:v15 length:HIDWORD(v13) freeWhenDone:0];
     v12 = 0;
-    [v8 generateSubscriptionBagRequestWithAccountUniqueIdentifier:v7 transactionType:303 machineIDData:v10 returningSubscriptionBagData:&v12 error:0];
+    [v8 generateSubscriptionBagRequestWithAccountUniqueIdentifier:unsignedLongLongValue transactionType:303 machineIDData:v10 returningSubscriptionBagData:&v12 error:0];
     v3 = v12;
   }
 
@@ -152,22 +152,22 @@
   [v15 setDataProvider:v3];
 
   [v15 setUseUserSpecificURLBag:1];
-  v4 = [(LogoutOperation *)self _copyAuthenticationContext];
-  [v15 setAuthenticationContext:v4];
+  _copyAuthenticationContext = [(LogoutOperation *)self _copyAuthenticationContext];
+  [v15 setAuthenticationContext:_copyAuthenticationContext];
   v5 = objc_alloc_init(SSMutableURLRequestProperties);
   v6 = objc_alloc_init(NSMutableDictionary);
   v7 = +[ISDevice sharedInstance];
-  v8 = [v7 guid];
+  guid = [v7 guid];
 
-  if (v8)
+  if (guid)
   {
-    [v6 setObject:v8 forKey:@"guid"];
+    [v6 setObject:guid forKey:@"guid"];
   }
 
-  v9 = [(LogoutOperation *)self _sbsyncData];
-  if (v9)
+  _sbsyncData = [(LogoutOperation *)self _sbsyncData];
+  if (_sbsyncData)
   {
-    [v6 setObject:v9 forKey:@"sbsync"];
+    [v6 setObject:_sbsyncData forKey:@"sbsync"];
   }
 
   if ([v6 count])
@@ -182,8 +182,8 @@
 
   [v15 setRequestProperties:v5];
   [(LogoutOperation *)self runSubOperation:v15 returningError:0];
-  v11 = [v15 dataProvider];
-  v12 = [v11 output];
+  dataProvider = [v15 dataProvider];
+  output = [dataProvider output];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

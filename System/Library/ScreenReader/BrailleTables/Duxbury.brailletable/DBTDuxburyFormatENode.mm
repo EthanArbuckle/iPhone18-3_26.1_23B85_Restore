@@ -1,5 +1,5 @@
 @interface DBTDuxburyFormatENode
-- (BOOL)foundInnerCode:(id)a3;
+- (BOOL)foundInnerCode:(id)code;
 - (DBTDuxburyFormatEExpressionNode)expressionNode;
 - (id)LaTeXRepresentation;
 @end
@@ -10,23 +10,23 @@
 {
   v3 = [(DBTDuxburyFormatNode *)self firstChildMatchingBlock:&__block_literal_global];
   v4 = [(DBTDuxburyFormatNode *)self firstChildMatchingBlock:&__block_literal_global_132];
-  v5 = [(DBTDuxburyFormatENode *)self expressionNode];
-  v6 = [v5 LaTeXRepresentation];
-  v7 = [v6 mutableCopy];
+  expressionNode = [(DBTDuxburyFormatENode *)self expressionNode];
+  laTeXRepresentation = [expressionNode LaTeXRepresentation];
+  v7 = [laTeXRepresentation mutableCopy];
 
   if (v3 | v4)
   {
     [v7 appendString:@"\\limits"];
     if (v3)
     {
-      v8 = [v3 LaTeXRepresentation];
-      [v7 appendFormat:@"^{%@}", v8];
+      laTeXRepresentation2 = [v3 LaTeXRepresentation];
+      [v7 appendFormat:@"^{%@}", laTeXRepresentation2];
     }
 
     if (v4)
     {
-      v9 = [v4 LaTeXRepresentation];
-      [v7 appendFormat:@"_{%@}", v9];
+      laTeXRepresentation3 = [v4 LaTeXRepresentation];
+      [v7 appendFormat:@"_{%@}", laTeXRepresentation3];
     }
   }
 
@@ -51,14 +51,14 @@ BOOL __44__DBTDuxburyFormatENode_LaTeXRepresentation__block_invoke_2(id a1, DBTD
   return isKindOfClass & 1;
 }
 
-- (BOOL)foundInnerCode:(id)a3
+- (BOOL)foundInnerCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   if (![(DBTDuxburyFormatENode *)self hasSeenOverNode]&& ![(DBTDuxburyFormatENode *)self hasSeenUnderNode])
   {
     v5 = objc_alloc_init(DBTDuxburyFormatEExpressionNode);
-    v6 = [(DBTDuxburyFormatNode *)self children];
-    [(DBTDuxburyFormatNode *)v5 addChildren:v6];
+    children = [(DBTDuxburyFormatNode *)self children];
+    [(DBTDuxburyFormatNode *)v5 addChildren:children];
 
     [(DBTDuxburyFormatNode *)self removeAllChildren];
     [(DBTDuxburyFormatNode *)self addChild:v5];
@@ -66,7 +66,7 @@ BOOL __44__DBTDuxburyFormatENode_LaTeXRepresentation__block_invoke_2(id a1, DBTD
   }
 
   v7 = +[DBTDuxburyFormatONode beginCode];
-  v8 = [v4 isEqualToString:v7];
+  v8 = [codeCopy isEqualToString:v7];
 
   if (v8)
   {
@@ -74,7 +74,7 @@ BOOL __44__DBTDuxburyFormatENode_LaTeXRepresentation__block_invoke_2(id a1, DBTD
   }
 
   v9 = +[DBTDuxburyFormatUNode beginCode];
-  v10 = [v4 isEqualToString:v9];
+  v10 = [codeCopy isEqualToString:v9];
 
   if (v10)
   {

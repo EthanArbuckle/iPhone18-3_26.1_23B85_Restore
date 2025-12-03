@@ -1,16 +1,16 @@
 @interface _MFXFrameInterpolatorEffect
-- (_MFXFrameInterpolatorEffect)initWithDevice:(id)a3 descriptor:(id)a4;
+- (_MFXFrameInterpolatorEffect)initWithDevice:(id)device descriptor:(id)descriptor;
 - (void)dealloc;
-- (void)encodeToCommandBuffer:(id)a3;
-- (void)encodeToCommandQueue:(id)a3;
+- (void)encodeToCommandBuffer:(id)buffer;
+- (void)encodeToCommandQueue:(id)queue;
 @end
 
 @implementation _MFXFrameInterpolatorEffect
 
-- (_MFXFrameInterpolatorEffect)initWithDevice:(id)a3 descriptor:(id)a4
+- (_MFXFrameInterpolatorEffect)initWithDevice:(id)device descriptor:(id)descriptor
 {
-  v6 = a3;
-  v25 = a4;
+  deviceCopy = device;
+  descriptorCopy = descriptor;
   v27.receiver = self;
   v27.super_class = _MFXFrameInterpolatorEffect;
   v7 = [(_MTLFXEffectBase *)&v27 init];
@@ -18,17 +18,17 @@
   v21 = [v22 pathForResource:@"default" ofType:@"metallib"];
   v8 = [MEMORY[0x277CBEBC0] URLWithString:v21];
   v26 = 0;
-  v23 = [v6 newLibraryWithURL:v8 error:&v26];
+  v23 = [deviceCopy newLibraryWithURL:v8 error:&v26];
   v20 = v26;
 
-  v9 = [v25 scaler];
-  obj = v9;
-  if (!v9)
+  scaler = [descriptorCopy scaler];
+  obj = scaler;
+  if (!scaler)
   {
     goto LABEL_10;
   }
 
-  if ([v9 conformsToProtocol:&unk_284C66EF0])
+  if ([scaler conformsToProtocol:&unk_284C66EF0])
   {
     v10 = &OBJC_IVAR____MFXFrameInterpolatorEffect__temporalScaler;
     goto LABEL_4;
@@ -55,7 +55,7 @@ LABEL_4:
       v7->_inputWidth = [v13 inputWidth];
       v7->_inputHeight = [v13 inputHeight];
       v7->_outputWidth = [v13 outputWidth];
-      v14 = [v13 outputHeight];
+      outputHeight = [v13 outputHeight];
       goto LABEL_11;
     }
 
@@ -77,25 +77,25 @@ LABEL_8:
       v7->_inputWidth = [v18 inputWidth];
       v7->_inputHeight = [v18 inputHeight];
       v7->_outputWidth = [v18 outputWidth];
-      v14 = [v18 outputHeight];
+      outputHeight = [v18 outputHeight];
       goto LABEL_11;
     }
 
 LABEL_10:
-    v7->_depthTextureFormat = [v25 depthTextureFormat];
-    v7->_motionTextureFormat = [v25 motionTextureFormat];
-    v7->_inputWidth = [v25 inputWidth];
-    v7->_inputHeight = [v25 inputHeight];
-    v7->_outputWidth = [v25 outputWidth];
-    v14 = [v25 outputHeight];
+    v7->_depthTextureFormat = [descriptorCopy depthTextureFormat];
+    v7->_motionTextureFormat = [descriptorCopy motionTextureFormat];
+    v7->_inputWidth = [descriptorCopy inputWidth];
+    v7->_inputHeight = [descriptorCopy inputHeight];
+    v7->_outputWidth = [descriptorCopy outputWidth];
+    outputHeight = [descriptorCopy outputHeight];
 LABEL_11:
-    v7->_outputHeight = v14;
-    v7->_outputTextureFormat = [v25 outputTextureFormat];
-    v7->_colorTextureFormat = [v25 colorTextureFormat];
+    v7->_outputHeight = outputHeight;
+    v7->_outputTextureFormat = [descriptorCopy outputTextureFormat];
+    v7->_colorTextureFormat = [descriptorCopy colorTextureFormat];
     v7->_contentWidth = v7->_inputWidth;
     v7->_contentHeight = v7->_inputHeight;
-    v7->_outputTextureFormat = [v25 outputTextureFormat];
-    v6;
+    v7->_outputTextureFormat = [descriptorCopy outputTextureFormat];
+    deviceCopy;
     operator new();
   }
 
@@ -117,18 +117,18 @@ LABEL_11:
   [(_MFXFrameInterpolatorEffect *)&v2 dealloc];
 }
 
-- (void)encodeToCommandQueue:(id)a3
+- (void)encodeToCommandQueue:(id)queue
 {
-  v4 = [a3 commandBuffer];
+  commandBuffer = [queue commandBuffer];
   [(_MFXFrameInterpolatorEffect *)self encodeToCommandBuffer:?];
-  [v4 commit];
+  [commandBuffer commit];
 }
 
-- (void)encodeToCommandBuffer:(id)a3
+- (void)encodeToCommandBuffer:(id)buffer
 {
-  v24 = a3;
+  bufferCopy = buffer;
   [(_MTLFXEffectBase *)self _beginEncode];
-  v4 = v24;
+  v4 = bufferCopy;
   {
     MetalFXHUDInstanceV3(void)::v3 = WEAK_HUDServiceV3();
   }
@@ -155,7 +155,7 @@ LABEL_11:
   if (temporalScaler)
   {
     v8 = temporalScaler;
-    v9 = [(MTLFXTemporalScalerSPI *)self->_temporalScaler dilatedMotionVectors];
+    dilatedMotionVectors = [(MTLFXTemporalScalerSPI *)self->_temporalScaler dilatedMotionVectors];
   }
 
   else
@@ -167,11 +167,11 @@ LABEL_11:
       denoisedScaler = self->_denoisedScaler;
       if (denoisedScaler || (p_denoisedScaler = &self->_denoisedScaler4, (denoisedScaler = self->_denoisedScaler4) != 0))
       {
-        v20 = [(MTLFXTemporalDenoisedScalerSPI *)denoisedScaler dilatedMotionVectors];
+        dilatedMotionVectors2 = [(MTLFXTemporalDenoisedScalerSPI *)denoisedScaler dilatedMotionVectors];
         v21 = *(&v25 + 1);
-        *(&v25 + 1) = v20;
+        *(&v25 + 1) = dilatedMotionVectors2;
 
-        v37 = [(MTLFXTemporalDenoisedScalerSPI *)*p_denoisedScaler inputContentWidth];
+        inputContentWidth = [(MTLFXTemporalDenoisedScalerSPI *)*p_denoisedScaler inputContentWidth];
         LODWORD(contentHeight) = [(MTLFXTemporalDenoisedScalerSPI *)*p_denoisedScaler inputContentHeight];
       }
 
@@ -181,7 +181,7 @@ LABEL_11:
         v22 = self->_motionTexture;
         contentWidth = self->_contentWidth;
         *(&v25 + 1) = v22;
-        v37 = contentWidth;
+        inputContentWidth = contentWidth;
         contentHeight = self->_contentHeight;
       }
 
@@ -189,7 +189,7 @@ LABEL_11:
       v38 = contentHeight;
       if (MTLReportFailureTypeEnabled())
       {
-        checkInputOutputTexturesForInterpolation(self->_colorTexture, self->_prevColorTexture, self->_depthTexture, self->_motionTexture, self->_outputTexture, v37, v38, self->_colorTextureFormat, v37, v38, self->_outputWidth, self->_outputHeight, self->_outputTextureFormat);
+        checkInputOutputTexturesForInterpolation(self->_colorTexture, self->_prevColorTexture, self->_depthTexture, self->_motionTexture, self->_outputTexture, inputContentWidth, v38, self->_colorTextureFormat, inputContentWidth, v38, self->_outputWidth, self->_outputHeight, self->_outputTextureFormat);
         if (self->_nearPlane == 0.0)
         {
           MTLReportFailure();
@@ -248,13 +248,13 @@ LABEL_11:
     }
 
     v8 = temporalScaler4;
-    v9 = [(MTL4FXTemporalScalerSPI *)self->_temporalScaler4 dilatedMotionVectors];
+    dilatedMotionVectors = [(MTL4FXTemporalScalerSPI *)self->_temporalScaler4 dilatedMotionVectors];
   }
 
   v11 = *(&v25 + 1);
-  *(&v25 + 1) = v9;
+  *(&v25 + 1) = dilatedMotionVectors;
 
-  v37 = [(MTLFXTemporalScalerSPI *)v8 inputContentWidth];
+  inputContentWidth = [(MTLFXTemporalScalerSPI *)v8 inputContentWidth];
   LODWORD(contentHeight) = [(MTLFXTemporalScalerSPI *)v8 inputContentHeight];
   goto LABEL_11;
 }

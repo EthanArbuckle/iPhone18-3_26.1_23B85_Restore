@@ -1,16 +1,16 @@
 @interface PXPhotosDetailsBarsControllerAccessibility
-- (id)_barButtonItemForBarItemIdentifier:(id)a3;
+- (id)_barButtonItemForBarItemIdentifier:(id)identifier;
 @end
 
 @implementation PXPhotosDetailsBarsControllerAccessibility
 
-- (id)_barButtonItemForBarItemIdentifier:(id)a3
+- (id)_barButtonItemForBarItemIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = PXPhotosDetailsBarsControllerAccessibility;
-  v3 = a3;
-  v4 = [(PXPhotosDetailsBarsControllerAccessibility *)&v8 _barButtonItemForBarItemIdentifier:v3];
-  v5 = [v3 isEqualToString:{@"PXBarItemIdentifierActionMenu", v8.receiver, v8.super_class}];
+  identifierCopy = identifier;
+  v4 = [(PXPhotosDetailsBarsControllerAccessibility *)&v8 _barButtonItemForBarItemIdentifier:identifierCopy];
+  v5 = [identifierCopy isEqualToString:{@"PXBarItemIdentifierActionMenu", v8.receiver, v8.super_class}];
 
   if (v5)
   {

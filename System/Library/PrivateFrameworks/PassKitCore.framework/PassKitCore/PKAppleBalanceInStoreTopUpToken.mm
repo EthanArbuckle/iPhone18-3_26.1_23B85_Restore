@@ -1,22 +1,22 @@
 @interface PKAppleBalanceInStoreTopUpToken
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExpired;
-- (PKAppleBalanceInStoreTopUpToken)initWithCoder:(id)a3;
-- (PKAppleBalanceInStoreTopUpToken)initWithDictionary:(id)a3 accountIdentifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKAppleBalanceInStoreTopUpToken)initWithCoder:(id)coder;
+- (PKAppleBalanceInStoreTopUpToken)initWithDictionary:(id)dictionary accountIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)displayableToken;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAppleBalanceInStoreTopUpToken
 
-- (PKAppleBalanceInStoreTopUpToken)initWithDictionary:(id)a3 accountIdentifier:(id)a4
+- (PKAppleBalanceInStoreTopUpToken)initWithDictionary:(id)dictionary accountIdentifier:(id)identifier
 {
   v81 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
   v75.receiver = self;
   v75.super_class = PKAppleBalanceInStoreTopUpToken;
   v8 = [(PKAppleBalanceInStoreTopUpToken *)&v75 init];
@@ -25,9 +25,9 @@
     goto LABEL_56;
   }
 
-  v9 = v7;
-  v10 = v6;
-  v69 = [v6 PKDictionaryForKey:@"token"];
+  v9 = identifierCopy;
+  v10 = dictionaryCopy;
+  v69 = [dictionaryCopy PKDictionaryForKey:@"token"];
   v11 = [v69 PKStringForKey:@"payload"];
   v12 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v11 options:0];
   v74 = 0;
@@ -60,9 +60,9 @@
     expirationDate = v8->_expirationDate;
     v8->_expirationDate = v21;
 
-    v23 = [v12 SHA256Hash];
+    sHA256Hash = [v12 SHA256Hash];
     p_super = &v8->_payload->super;
-    v8->_payload = v23;
+    v8->_payload = sHA256Hash;
   }
 
   if (!v8->_token)
@@ -75,7 +75,7 @@
       _os_log_impl(&dword_1AD337000, v30, OS_LOG_TYPE_DEFAULT, "Top Up Token failed to initialize: missing token", buf, 2u);
     }
 
-    v6 = v10;
+    dictionaryCopy = v10;
     goto LABEL_19;
   }
 
@@ -83,7 +83,7 @@
   if (!v8->_expirationDate)
   {
     v30 = PKLogFacilityTypeGetObject(0xFuLL);
-    v6 = v10;
+    dictionaryCopy = v10;
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -91,18 +91,18 @@
     }
 
 LABEL_19:
-    v7 = v9;
+    identifierCopy = v9;
 LABEL_20:
     v31 = v69;
 
     goto LABEL_21;
   }
 
-  v6 = v10;
+  dictionaryCopy = v10;
   if (!v8->_payload)
   {
     v30 = PKLogFacilityTypeGetObject(0xFuLL);
-    v7 = v9;
+    identifierCopy = v9;
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -114,7 +114,7 @@ LABEL_20:
 
   v68 = v14;
   v25 = [v24 PKStringForKey:@"accountId"];
-  v7 = v9;
+  identifierCopy = v9;
   v26 = v9;
   v27 = v25;
   v28 = v27;
@@ -155,7 +155,7 @@ LABEL_48:
     }
   }
 
-  v33 = [v6 PKStringForKey:@"tokenIdentifier"];
+  v33 = [dictionaryCopy PKStringForKey:@"tokenIdentifier"];
   tokenIdentifier = v8->_tokenIdentifier;
   v8->_tokenIdentifier = v33;
 
@@ -179,7 +179,7 @@ LABEL_49:
   v63 = v28;
   v64 = v12;
   v65 = v11;
-  v66 = v7;
+  v66 = identifierCopy;
   v62 = [v69 PKDictionaryForKey:@"header"];
   v35 = [v62 PKArrayContaining:objc_opt_class() forKey:@"x5c"];
   v36 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -233,17 +233,17 @@ LABEL_49:
     v8->_signature = v48;
 
     v50 = v8->_signature;
-    v7 = v66;
+    identifierCopy = v66;
     if (v50)
     {
-      v51 = [v6 PKURLForKey:@"termsURL"];
+      v51 = [dictionaryCopy PKURLForKey:@"termsURL"];
       termsURL = v8->_termsURL;
       v8->_termsURL = v51;
 
-      v53 = [v6 PKStringForKey:@"tokenType"];
+      v53 = [dictionaryCopy PKStringForKey:@"tokenType"];
       v8->_tokenType = PKAppleBalanceInStoreTopUpTokenTypeFromString(v53);
 
-      v54 = [v6 PKStringForKey:@"state"];
+      v54 = [dictionaryCopy PKStringForKey:@"state"];
       v55 = v54;
       if (v54)
       {
@@ -260,7 +260,7 @@ LABEL_49:
       if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v78 = v6;
+        v78 = dictionaryCopy;
         _os_log_impl(&dword_1AD337000, v55, OS_LOG_TYPE_DEFAULT, "Top Up Token failed to initialize: missing signature %@", buf, 0xCu);
       }
     }
@@ -276,12 +276,12 @@ LABEL_56:
   }
 
   v60 = PKLogFacilityTypeGetObject(0xFuLL);
-  v7 = v66;
+  identifierCopy = v66;
   v31 = v69;
   if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v78 = v6;
+    v78 = dictionaryCopy;
     _os_log_impl(&dword_1AD337000, v60, OS_LOG_TYPE_DEFAULT, "Top Up Token failed to initialize: missing or invalid certificate data %@", buf, 0xCu);
   }
 
@@ -296,22 +296,22 @@ LABEL_57:
 - (BOOL)isExpired
 {
   expirationDate = self->_expirationDate;
-  v3 = [MEMORY[0x1E695DF00] date];
-  LOBYTE(expirationDate) = [(NSDate *)expirationDate compare:v3]== NSOrderedAscending;
+  date = [MEMORY[0x1E695DF00] date];
+  LOBYTE(expirationDate) = [(NSDate *)expirationDate compare:date]== NSOrderedAscending;
 
   return expirationDate;
 }
 
 - (id)displayableToken
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   token = self->_token;
   v5 = [(NSString *)token length];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__PKAppleBalanceInStoreTopUpToken_displayableToken__block_invoke;
   v8[3] = &unk_1E79C4288;
-  v6 = v3;
+  v6 = string;
   v9 = v6;
   [(NSString *)token enumerateSubstringsInRange:0 options:v5 usingBlock:2, v8];
 
@@ -331,28 +331,28 @@ void __51__PKAppleBalanceInStoreTopUpToken_displayableToken__block_invoke(uint64
   [*(a1 + 32) appendString:v5];
 }
 
-- (PKAppleBalanceInStoreTopUpToken)initWithCoder:(id)a3
+- (PKAppleBalanceInStoreTopUpToken)initWithCoder:(id)coder
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKAppleBalanceInStoreTopUpToken *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"token"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"token"];
     token = v5->_token;
     v5->_token = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tokenIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tokenIdentifier"];
     tokenIdentifier = v5->_tokenIdentifier;
     v5->_tokenIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v10;
 
-    v5->_tokenType = [v4 decodeIntegerForKey:@"tokenType"];
-    v5->_state = [v4 decodeIntegerForKey:@"state"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"termsURL"];
+    v5->_tokenType = [coderCopy decodeIntegerForKey:@"tokenType"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"state"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"termsURL"];
     termsURL = v5->_termsURL;
     v5->_termsURL = v12;
 
@@ -361,15 +361,15 @@ void __51__PKAppleBalanceInStoreTopUpToken_displayableToken__block_invoke(uint64
     v24[1] = objc_opt_class();
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
     v16 = [v14 setWithArray:v15];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"certificateChain"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"certificateChain"];
     certificateChain = v5->_certificateChain;
     v5->_certificateChain = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
     payload = v5->_payload;
     v5->_payload = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
     signature = v5->_signature;
     v5->_signature = v21;
   }
@@ -377,24 +377,24 @@ void __51__PKAppleBalanceInStoreTopUpToken_displayableToken__block_invoke(uint64
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   token = self->_token;
-  v5 = a3;
-  [v5 encodeObject:token forKey:@"token"];
-  [v5 encodeObject:self->_tokenIdentifier forKey:@"tokenIdentifier"];
-  [v5 encodeObject:self->_expirationDate forKey:@"expirationDate"];
-  [v5 encodeInteger:self->_tokenType forKey:@"tokenType"];
-  [v5 encodeInteger:self->_state forKey:@"state"];
-  [v5 encodeObject:self->_termsURL forKey:@"termsURL"];
-  [v5 encodeObject:self->_certificateChain forKey:@"certificateChain"];
-  [v5 encodeObject:self->_payload forKey:@"payload"];
-  [v5 encodeObject:self->_signature forKey:@"signature"];
+  coderCopy = coder;
+  [coderCopy encodeObject:token forKey:@"token"];
+  [coderCopy encodeObject:self->_tokenIdentifier forKey:@"tokenIdentifier"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  [coderCopy encodeInteger:self->_tokenType forKey:@"tokenType"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
+  [coderCopy encodeObject:self->_termsURL forKey:@"termsURL"];
+  [coderCopy encodeObject:self->_certificateChain forKey:@"certificateChain"];
+  [coderCopy encodeObject:self->_payload forKey:@"payload"];
+  [coderCopy encodeObject:self->_signature forKey:@"signature"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -402,7 +402,7 @@ void __51__PKAppleBalanceInStoreTopUpToken_displayableToken__block_invoke(uint64
   }
 
   token = self->_token;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (token && v6)
   {
     if (([(NSString *)token isEqual:?]& 1) == 0)
@@ -417,7 +417,7 @@ void __51__PKAppleBalanceInStoreTopUpToken_displayableToken__block_invoke(uint64
   }
 
   tokenIdentifier = self->_tokenIdentifier;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (tokenIdentifier && v8)
   {
     if (([(NSString *)tokenIdentifier isEqual:?]& 1) == 0)
@@ -432,7 +432,7 @@ void __51__PKAppleBalanceInStoreTopUpToken_displayableToken__block_invoke(uint64
   }
 
   expirationDate = self->_expirationDate;
-  v10 = v4[4];
+  v10 = equalCopy[4];
   if (expirationDate && v10)
   {
     if (([(NSDate *)expirationDate isEqual:?]& 1) == 0)
@@ -446,13 +446,13 @@ void __51__PKAppleBalanceInStoreTopUpToken_displayableToken__block_invoke(uint64
     goto LABEL_36;
   }
 
-  if (self->_tokenType != v4[2] || self->_state != v4[5])
+  if (self->_tokenType != equalCopy[2] || self->_state != equalCopy[5])
   {
     goto LABEL_36;
   }
 
   termsURL = self->_termsURL;
-  v12 = v4[6];
+  v12 = equalCopy[6];
   if (termsURL && v12)
   {
     if (([(NSURL *)termsURL isEqual:?]& 1) == 0)
@@ -467,7 +467,7 @@ void __51__PKAppleBalanceInStoreTopUpToken_displayableToken__block_invoke(uint64
   }
 
   certificateChain = self->_certificateChain;
-  v14 = v4[7];
+  v14 = equalCopy[7];
   if (certificateChain && v14)
   {
     if (([(NSArray *)certificateChain isEqual:?]& 1) == 0)
@@ -482,7 +482,7 @@ void __51__PKAppleBalanceInStoreTopUpToken_displayableToken__block_invoke(uint64
   }
 
   payload = self->_payload;
-  v16 = v4[8];
+  v16 = equalCopy[8];
   if (!payload || !v16)
   {
     if (payload == v16)
@@ -502,7 +502,7 @@ LABEL_36:
 
 LABEL_32:
   signature = self->_signature;
-  v18 = v4[9];
+  v18 = equalCopy[9];
   if (signature && v18)
   {
     v19 = [(NSData *)signature isEqual:?];
@@ -520,15 +520,15 @@ LABEL_37:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_token];
-  [v3 safelyAddObject:self->_tokenIdentifier];
-  [v3 safelyAddObject:self->_expirationDate];
-  [v3 safelyAddObject:self->_termsURL];
-  [v3 safelyAddObject:self->_certificateChain];
-  [v3 safelyAddObject:self->_payload];
-  [v3 safelyAddObject:self->_signature];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_token];
+  [array safelyAddObject:self->_tokenIdentifier];
+  [array safelyAddObject:self->_expirationDate];
+  [array safelyAddObject:self->_termsURL];
+  [array safelyAddObject:self->_certificateChain];
+  [array safelyAddObject:self->_payload];
+  [array safelyAddObject:self->_signature];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_tokenType - v4 + 32 * v4;
   v6 = self->_state - v5 + 32 * v5;
 
@@ -584,36 +584,36 @@ LABEL_37:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKAppleBalanceInStoreTopUpToken allocWithZone:](PKAppleBalanceInStoreTopUpToken init];
-  v6 = [(NSString *)self->_token copyWithZone:a3];
+  v6 = [(NSString *)self->_token copyWithZone:zone];
   token = v5->_token;
   v5->_token = v6;
 
-  v8 = [(NSString *)self->_tokenIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_tokenIdentifier copyWithZone:zone];
   tokenIdentifier = v5->_tokenIdentifier;
   v5->_tokenIdentifier = v8;
 
-  v10 = [(NSDate *)self->_expirationDate copyWithZone:a3];
+  v10 = [(NSDate *)self->_expirationDate copyWithZone:zone];
   expirationDate = v5->_expirationDate;
   v5->_expirationDate = v10;
 
   v5->_tokenType = self->_tokenType;
   v5->_state = self->_state;
-  v12 = [(NSURL *)self->_termsURL copyWithZone:a3];
+  v12 = [(NSURL *)self->_termsURL copyWithZone:zone];
   termsURL = v5->_termsURL;
   v5->_termsURL = v12;
 
-  v14 = [(NSArray *)self->_certificateChain copyWithZone:a3];
+  v14 = [(NSArray *)self->_certificateChain copyWithZone:zone];
   certificateChain = v5->_certificateChain;
   v5->_certificateChain = v14;
 
-  v16 = [(NSData *)self->_payload copyWithZone:a3];
+  v16 = [(NSData *)self->_payload copyWithZone:zone];
   payload = v5->_payload;
   v5->_payload = v16;
 
-  v18 = [(NSData *)self->_signature copyWithZone:a3];
+  v18 = [(NSData *)self->_signature copyWithZone:zone];
   signature = v5->_signature;
   v5->_signature = v18;
 

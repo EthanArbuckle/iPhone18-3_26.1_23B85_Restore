@@ -1,16 +1,16 @@
 @interface JavaNetSocks4Message
 - (JavaNetSocks4Message)init;
 - (id)description;
-- (id)getErrorStringWithInt:(int)a3;
+- (id)getErrorStringWithInt:(int)int;
 - (int)getCommandOrResult;
 - (int)getIP;
 - (int)getLength;
 - (int)getPort;
 - (uint64_t)getVersionNumber;
 - (void)dealloc;
-- (void)setCommandOrResultWithInt:(int)a3;
-- (void)setIPWithByteArray:(id)a3;
-- (void)setPortWithInt:(int)a3;
+- (void)setCommandOrResultWithInt:(int)int;
+- (void)setIPWithByteArray:(id)array;
+- (void)setPortWithInt:(int)int;
 @end
 
 @implementation JavaNetSocks4Message
@@ -39,7 +39,7 @@
   return *(&buffer->super.size_ + 5);
 }
 
-- (void)setCommandOrResultWithInt:(int)a3
+- (void)setCommandOrResultWithInt:(int)int
 {
   buffer = self->buffer_;
   if (!buffer)
@@ -53,7 +53,7 @@
     IOSArray_throwOutOfBoundsWithMsg(size, 1);
   }
 
-  *(&buffer->super.size_ + 5) = a3;
+  *(&buffer->super.size_ + 5) = int;
 }
 
 - (int)getPort
@@ -67,9 +67,9 @@
   return LibcoreIoMemory_peekShortWithByteArray_withInt_withJavaNioByteOrder_(buffer, 2, JavaNioByteOrder_BIG_ENDIAN__);
 }
 
-- (void)setPortWithInt:(int)a3
+- (void)setPortWithInt:(int)int
 {
-  v3 = a3;
+  intCopy = int;
   buffer = self->buffer_;
   if ((atomic_load_explicit(JavaNioByteOrder__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -78,7 +78,7 @@
 
   v5 = JavaNioByteOrder_BIG_ENDIAN__;
 
-  LibcoreIoMemory_pokeShortWithByteArray_withInt_withShort_withJavaNioByteOrder_(buffer, 2, v3, v5);
+  LibcoreIoMemory_pokeShortWithByteArray_withInt_withShort_withJavaNioByteOrder_(buffer, 2, intCopy, v5);
 }
 
 - (int)getIP
@@ -94,14 +94,14 @@
   return LibcoreIoMemory_peekIntWithByteArray_withInt_withJavaNioByteOrder_(buffer, 4, v3);
 }
 
-- (void)setIPWithByteArray:(id)a3
+- (void)setIPWithByteArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     goto LABEL_12;
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
   if (v4 <= 0)
   {
     IOSArray_throwOutOfBoundsWithMsg(v4, 0);
@@ -120,8 +120,8 @@ LABEL_12:
     IOSArray_throwOutOfBoundsWithMsg(size, 4);
   }
 
-  buffer->buffer_[0] = *(a3 + 12);
-  v7 = *(a3 + 2);
+  buffer->buffer_[0] = *(array + 12);
+  v7 = *(array + 2);
   if (v7 <= 1)
   {
     IOSArray_throwOutOfBoundsWithMsg(v7, 1);
@@ -134,8 +134,8 @@ LABEL_12:
     IOSArray_throwOutOfBoundsWithMsg(v9, 5);
   }
 
-  v8->buffer_[1] = *(a3 + 13);
-  v10 = *(a3 + 2);
+  v8->buffer_[1] = *(array + 13);
+  v10 = *(array + 2);
   if (v10 <= 2)
   {
     IOSArray_throwOutOfBoundsWithMsg(v10, 2);
@@ -148,8 +148,8 @@ LABEL_12:
     IOSArray_throwOutOfBoundsWithMsg(v12, 6);
   }
 
-  v11->buffer_[2] = *(a3 + 14);
-  v13 = *(a3 + 2);
+  v11->buffer_[2] = *(array + 14);
+  v13 = *(array + 2);
   if (v13 <= 3)
   {
     IOSArray_throwOutOfBoundsWithMsg(v13, 3);
@@ -162,7 +162,7 @@ LABEL_12:
     IOSArray_throwOutOfBoundsWithMsg(v15, 7);
   }
 
-  v14->buffer_[3] = *(a3 + 15);
+  v14->buffer_[3] = *(array + 15);
 }
 
 - (id)description
@@ -185,7 +185,7 @@ LABEL_12:
 
 - (uint64_t)getVersionNumber
 {
-  v1 = *(a1 + 8);
+  v1 = *(self + 8);
   if (!v1)
   {
     JreThrowNullPointerException();
@@ -234,16 +234,16 @@ LABEL_10:
   }
 }
 
-- (id)getErrorStringWithInt:(int)a3
+- (id)getErrorStringWithInt:(int)int
 {
-  if ((a3 - 91) > 2)
+  if ((int - 91) > 2)
   {
     return @"Success";
   }
 
   else
   {
-    return *(&off_100449B90 + (a3 - 91));
+    return *(&off_100449B90 + (int - 91));
   }
 }
 

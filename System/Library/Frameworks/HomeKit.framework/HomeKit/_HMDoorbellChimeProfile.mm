@@ -1,9 +1,9 @@
 @interface _HMDoorbellChimeProfile
 + (id)logCategory;
 - (_HMDoorbellChimeProfileDelegate)delegate;
-- (void)_handleDoorbellChimeMessage:(id)a3;
+- (void)_handleDoorbellChimeMessage:(id)message;
 - (void)_registerNotificationHandlers;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation _HMDoorbellChimeProfile
@@ -20,11 +20,11 @@
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock_with_options();
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->_lock + 1);
 }
@@ -38,18 +38,18 @@
   return WeakRetained;
 }
 
-- (void)_handleDoorbellChimeMessage:(id)a3
+- (void)_handleDoorbellChimeMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(_HMDoorbellChimeProfile *)self delegate];
-  [v5 didReceiveDoorbellChimeMessage:v4];
+  messageCopy = message;
+  delegate = [(_HMDoorbellChimeProfile *)self delegate];
+  [delegate didReceiveDoorbellChimeMessage:messageCopy];
 }
 
 - (void)_registerNotificationHandlers
 {
-  v4 = [(_HMAccessoryProfile *)self context];
-  v3 = [v4 messageDispatcher];
-  [v3 registerForMessage:@"HM.doorbell.chime" receiver:self selector:sel__handleDoorbellChimeMessage_];
+  context = [(_HMAccessoryProfile *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher registerForMessage:@"HM.doorbell.chime" receiver:self selector:sel__handleDoorbellChimeMessage_];
 }
 
 @end

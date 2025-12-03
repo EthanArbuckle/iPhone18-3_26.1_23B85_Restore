@@ -1,24 +1,24 @@
 @interface HMMutableArray
-+ (HMMutableArray)arrayWithArray:(id)a3;
++ (HMMutableArray)arrayWithArray:(id)array;
 + (id)array;
-- (BOOL)addObjectIfNotPresent:(id)a3;
-- (BOOL)containsObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMMutableArray)initWithArray:(id)a3;
+- (BOOL)addObjectIfNotPresent:(id)present;
+- (BOOL)containsObject:(id)object;
+- (BOOL)isEqual:(id)equal;
+- (HMMutableArray)initWithArray:(id)array;
 - (NSArray)array;
-- (id)filteredArrayUsingPredicate:(id)a3;
-- (id)firstItemWithValue:(id)a3 forKey:(id)a4;
-- (id)itemsWithValue:(id)a3 forKey:(id)a4;
+- (id)filteredArrayUsingPredicate:(id)predicate;
+- (id)firstItemWithValue:(id)value forKey:(id)key;
+- (id)itemsWithValue:(id)value forKey:(id)key;
 - (unint64_t)count;
-- (void)addObject:(id)a3;
-- (void)addObjectsFromArray:(id)a3;
+- (void)addObject:(id)object;
+- (void)addObjectsFromArray:(id)array;
 - (void)removeAllObjects;
-- (void)removeObject:(id)a3;
-- (void)removeObjectsAtIndexes:(id)a3;
-- (void)removeObjectsInArray:(id)a3;
-- (void)replaceObject:(id)a3;
-- (void)setArray:(id)a3;
-- (void)setIfDifferent:(id)a3;
+- (void)removeObject:(id)object;
+- (void)removeObjectsAtIndexes:(id)indexes;
+- (void)removeObjectsInArray:(id)array;
+- (void)replaceObject:(id)object;
+- (void)setArray:(id)array;
+- (void)setIfDifferent:(id)different;
 @end
 
 @implementation HMMutableArray
@@ -26,8 +26,8 @@
 - (NSArray)array
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMMutableArray *)self internal];
-  v4 = [v3 copy];
+  internal = [(HMMutableArray *)self internal];
+  v4 = [internal copy];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -37,16 +37,16 @@
 + (id)array
 {
   v2 = [HMMutableArray alloc];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(HMMutableArray *)v2 initWithArray:v3];
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = [(HMMutableArray *)v2 initWithArray:array];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -56,11 +56,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMMutableArray *)self array];
-      v7 = [(HMMutableArray *)v5 array];
+      v5 = equalCopy;
+      array = [(HMMutableArray *)self array];
+      array2 = [(HMMutableArray *)v5 array];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [array isEqual:array2];
     }
 
     else
@@ -72,78 +72,78 @@
   return v8;
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMMutableArray *)self internal];
-  v6 = [v5 containsObject:v4];
+  internal = [(HMMutableArray *)self internal];
+  v6 = [internal containsObject:objectCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v6;
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
-  v5 = a3;
+  arrayCopy = array;
   os_unfair_lock_lock_with_options();
-  if (v5)
+  if (arrayCopy)
   {
-    v4 = [(HMMutableArray *)self internal];
-    [v4 addObjectsFromArray:v5];
+    internal = [(HMMutableArray *)self internal];
+    [internal addObjectsFromArray:arrayCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setIfDifferent:(id)a3
+- (void)setIfDifferent:(id)different
 {
-  v9 = a3;
+  differentCopy = different;
   os_unfair_lock_lock_with_options();
   v4 = MEMORY[0x1E695DFD8];
-  v5 = [(HMMutableArray *)self internal];
-  v6 = [v4 setWithArray:v5];
+  internal = [(HMMutableArray *)self internal];
+  v6 = [v4 setWithArray:internal];
 
-  if (([v6 isEqualToSet:v9] & 1) == 0)
+  if (([v6 isEqualToSet:differentCopy] & 1) == 0)
   {
-    v7 = [(HMMutableArray *)self internal];
-    v8 = [v9 allObjects];
-    [v7 setArray:v8];
+    internal2 = [(HMMutableArray *)self internal];
+    allObjects = [differentCopy allObjects];
+    [internal2 setArray:allObjects];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setArray:(id)a3
+- (void)setArray:(id)array
 {
-  v5 = a3;
+  arrayCopy = array;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMMutableArray *)self internal];
-  if (v5)
+  internal = [(HMMutableArray *)self internal];
+  if (arrayCopy)
   {
-    [v4 setArray:v5];
+    [internal setArray:arrayCopy];
   }
 
   else
   {
-    [v4 removeAllObjects];
+    [internal removeAllObjects];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)firstItemWithValue:(id)a3 forKey:(id)a4
+- (id)firstItemWithValue:(id)value forKey:(id)key
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   os_unfair_lock_lock_with_options();
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(HMMutableArray *)self internal];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  internal = [(HMMutableArray *)self internal];
+  v9 = [internal countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = *v19;
@@ -153,12 +153,12 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(internal);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 valueForKeyPath:v7];
-        v14 = [v13 isEqual:v6];
+        v13 = [v12 valueForKeyPath:keyCopy];
+        v14 = [v13 isEqual:valueCopy];
 
         if (v14)
         {
@@ -168,7 +168,7 @@
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [internal countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v9)
       {
         continue;
@@ -187,20 +187,20 @@ LABEL_11:
   return v15;
 }
 
-- (id)itemsWithValue:(id)a3 forKey:(id)a4
+- (id)itemsWithValue:(id)value forKey:(id)key
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   os_unfair_lock_lock_with_options();
-  v18 = self;
-  v8 = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [(HMMutableArray *)self internal];
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  internal = [(HMMutableArray *)self internal];
+  v10 = [internal countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = *v20;
@@ -210,37 +210,37 @@ LABEL_11:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(internal);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v13 valueForKeyPath:v7];
-        v15 = [v14 isEqual:v6];
+        v14 = [v13 valueForKeyPath:keyCopy];
+        v15 = [v14 isEqual:valueCopy];
 
         if (v15)
         {
-          [v8 addObject:v13];
+          [array addObject:v13];
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [internal countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v10);
   }
 
-  os_unfair_lock_unlock(&v18->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v16 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return array;
 }
 
-- (id)filteredArrayUsingPredicate:(id)a3
+- (id)filteredArrayUsingPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMMutableArray *)self internal];
-  v6 = [v5 filteredArrayUsingPredicate:v4];
+  internal = [(HMMutableArray *)self internal];
+  v6 = [internal filteredArrayUsingPredicate:predicateCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -250,24 +250,24 @@ LABEL_11:
 - (unint64_t)count
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMMutableArray *)self internal];
-  v4 = [v3 count];
+  internal = [(HMMutableArray *)self internal];
+  v4 = [internal count];
 
   os_unfair_lock_unlock(&self->_lock);
   return v4;
 }
 
-- (BOOL)addObjectIfNotPresent:(id)a3
+- (BOOL)addObjectIfNotPresent:(id)present
 {
-  v4 = a3;
+  presentCopy = present;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMMutableArray *)self internal];
-  v6 = [v5 containsObject:v4];
+  internal = [(HMMutableArray *)self internal];
+  v6 = [internal containsObject:presentCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(HMMutableArray *)self internal];
-    [v7 addObject:v4];
+    internal2 = [(HMMutableArray *)self internal];
+    [internal2 addObject:presentCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -275,12 +275,12 @@ LABEL_11:
   return v6 ^ 1;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMMutableArray *)self internal];
-  [v4 addObject:v5];
+  internal = [(HMMutableArray *)self internal];
+  [internal addObject:objectCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -288,84 +288,84 @@ LABEL_11:
 - (void)removeAllObjects
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMMutableArray *)self internal];
-  [v3 removeAllObjects];
+  internal = [(HMMutableArray *)self internal];
+  [internal removeAllObjects];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObjectsAtIndexes:(id)a3
+- (void)removeObjectsAtIndexes:(id)indexes
 {
-  v5 = a3;
+  indexesCopy = indexes;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMMutableArray *)self internal];
-  [v4 removeObjectsAtIndexes:v5];
+  internal = [(HMMutableArray *)self internal];
+  [internal removeObjectsAtIndexes:indexesCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObjectsInArray:(id)a3
+- (void)removeObjectsInArray:(id)array
 {
-  v5 = a3;
+  arrayCopy = array;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMMutableArray *)self internal];
-  [v4 removeObjectsInArray:v5];
+  internal = [(HMMutableArray *)self internal];
+  [internal removeObjectsInArray:arrayCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMMutableArray *)self internal];
-  [v4 removeObject:v5];
+  internal = [(HMMutableArray *)self internal];
+  [internal removeObject:objectCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)replaceObject:(id)a3
+- (void)replaceObject:(id)object
 {
-  v6 = a3;
+  objectCopy = object;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMMutableArray *)self internal];
-  [v4 removeObject:v6];
+  internal = [(HMMutableArray *)self internal];
+  [internal removeObject:objectCopy];
 
-  v5 = [(HMMutableArray *)self internal];
-  [v5 addObject:v6];
+  internal2 = [(HMMutableArray *)self internal];
+  [internal2 addObject:objectCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (HMMutableArray)initWithArray:(id)a3
+- (HMMutableArray)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = HMMutableArray;
   v5 = [(HMMutableArray *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (arrayCopy)
     {
-      v6 = [v4 mutableCopy];
+      array = [arrayCopy mutableCopy];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
     internal = v5->_internal;
-    v5->_internal = v6;
+    v5->_internal = array;
   }
 
   return v5;
 }
 
-+ (HMMutableArray)arrayWithArray:(id)a3
++ (HMMutableArray)arrayWithArray:(id)array
 {
-  v3 = a3;
-  v4 = [[HMMutableArray alloc] initWithArray:v3];
+  arrayCopy = array;
+  v4 = [[HMMutableArray alloc] initWithArray:arrayCopy];
 
   return v4;
 }

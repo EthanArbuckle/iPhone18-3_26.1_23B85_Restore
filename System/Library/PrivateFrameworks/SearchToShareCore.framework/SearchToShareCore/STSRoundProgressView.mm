@@ -1,35 +1,35 @@
 @interface STSRoundProgressView
-- (STSRoundProgressView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (void)_setContentsScale:(double)a3;
-- (void)_setProgressArcLayer:(id)a3;
+- (STSRoundProgressView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (void)_setContentsScale:(double)scale;
+- (void)_setProgressArcLayer:(id)layer;
 - (void)_setupSubviews;
 - (void)_updateSublayersContentsScale;
 - (void)_updateUIProgress;
 - (void)didMoveToWindow;
-- (void)increaseUIProgress:(id)a3;
+- (void)increaseUIProgress:(id)progress;
 - (void)layoutSubviews;
-- (void)recalculateIncreaseProgress:(double)a3 withTimeDiff:(double)a4;
+- (void)recalculateIncreaseProgress:(double)progress withTimeDiff:(double)diff;
 - (void)resetProgress;
-- (void)setInitialIncreaseRatePerFrame:(double)a3;
-- (void)setPieRadius:(double)a3;
-- (void)setProgress:(double)a3;
+- (void)setInitialIncreaseRatePerFrame:(double)frame;
+- (void)setPieRadius:(double)radius;
+- (void)setProgress:(double)progress;
 - (void)startProgressTimer;
 - (void)stopProgressTimer;
 @end
 
 @implementation STSRoundProgressView
 
-- (STSRoundProgressView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (STSRoundProgressView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = STSRoundProgressView;
-  v5 = [(STSRoundProgressView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(STSRoundProgressView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_style = a4;
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [(STSRoundProgressView *)v6 setBackgroundColor:v7];
+    v5->_style = style;
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(STSRoundProgressView *)v6 setBackgroundColor:clearColor];
 
     [(STSRoundProgressView *)v6 _setupSubviews];
   }
@@ -50,32 +50,32 @@
   v7.receiver = self;
   v7.super_class = STSRoundProgressView;
   [(STSRoundProgressView *)&v7 didMoveToWindow];
-  v3 = [(STSRoundProgressView *)self window];
-  v4 = [v3 screen];
-  [v4 scale];
+  window = [(STSRoundProgressView *)self window];
+  screen = [window screen];
+  [screen scale];
   v6 = v5;
 
   [(STSRoundProgressView *)self _setContentsScale:v6];
 }
 
-- (void)_setContentsScale:(double)a3
+- (void)_setContentsScale:(double)scale
 {
-  if (self->__contentsScale != a3)
+  if (self->__contentsScale != scale)
   {
-    self->__contentsScale = a3;
+    self->__contentsScale = scale;
     [(STSRoundProgressView *)self _updateSublayersContentsScale];
   }
 }
 
-- (void)_setProgressArcLayer:(id)a3
+- (void)_setProgressArcLayer:(id)layer
 {
-  v5 = a3;
-  if (self->__progressArcLayer != v5)
+  layerCopy = layer;
+  if (self->__progressArcLayer != layerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__progressArcLayer, a3);
+    v6 = layerCopy;
+    objc_storeStrong(&self->__progressArcLayer, layer);
     [(STSRoundProgressView *)self _updateSublayersContentsScale];
-    v5 = v6;
+    layerCopy = v6;
   }
 }
 
@@ -83,8 +83,8 @@
 {
   [(STSRoundProgressView *)self _contentsScale];
   v4 = v3;
-  v5 = [(STSRoundProgressView *)self _progressArcLayer];
-  [v5 setContentsScale:v4];
+  _progressArcLayer = [(STSRoundProgressView *)self _progressArcLayer];
+  [_progressArcLayer setContentsScale:v4];
 }
 
 - (void)_setupSubviews
@@ -95,11 +95,11 @@
   v9 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v7, v8, v3, v5}];
   [v9 setAutoresizingMask:18];
   [(STSRoundProgressView *)self addSubview:v9];
-  v10 = [v9 layer];
+  layer = [v9 layer];
   style = self->_style;
   if (style == 1)
   {
-    v32 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
     v14 = 0;
     v13 = 1;
     v12 = 0.5;
@@ -110,14 +110,14 @@
     v12 = 1.0;
     if (style)
     {
-      v32 = 0;
+      blackColor = 0;
       v13 = 0;
       v14 = 0;
     }
 
     else
     {
-      v32 = [MEMORY[0x277D75348] whiteColor];
+      blackColor = [MEMORY[0x277D75348] whiteColor];
       v13 = 1;
       v14 = 1;
     }
@@ -138,23 +138,23 @@
   [(STSRoundProgressView *)self resetProgress];
   if (v13)
   {
-    v18 = [MEMORY[0x277CD9F90] layer];
+    layer2 = [MEMORY[0x277CD9F90] layer];
     sliceLayer = self->_sliceLayer;
-    self->_sliceLayer = v18;
+    self->_sliceLayer = layer2;
 
     [(CAShapeLayer *)self->_sliceLayer setZPosition:0.0];
     [(CAShapeLayer *)self->_sliceLayer setStrokeColor:0];
     v20 = self->_sliceLayer;
-    v21 = v32;
-    -[CAShapeLayer setFillColor:](v20, "setFillColor:", [v32 CGColor]);
-    v22 = [MEMORY[0x277CD9F90] layer];
+    v21 = blackColor;
+    -[CAShapeLayer setFillColor:](v20, "setFillColor:", [blackColor CGColor]);
+    layer3 = [MEMORY[0x277CD9F90] layer];
     circleLayer = self->_circleLayer;
-    self->_circleLayer = v22;
+    self->_circleLayer = layer3;
 
     [(CAShapeLayer *)self->_circleLayer setZPosition:0.0];
     v24 = self->_circleLayer;
-    v25 = v32;
-    -[CAShapeLayer setStrokeColor:](v24, "setStrokeColor:", [v32 CGColor]);
+    v25 = blackColor;
+    -[CAShapeLayer setStrokeColor:](v24, "setStrokeColor:", [blackColor CGColor]);
     [(CAShapeLayer *)self->_circleLayer setFillColor:0];
     [(CAShapeLayer *)self->_circleLayer setLineWidth:v16];
     pieRadius = self->_pieRadius;
@@ -165,27 +165,27 @@
     CGPathCloseSubpath(Mutable);
     [(CAShapeLayer *)self->_circleLayer setPath:Mutable];
     CGPathRelease(Mutable);
-    [v10 addSublayer:self->_circleLayer];
-    [v10 addSublayer:self->_sliceLayer];
+    [layer addSublayer:self->_circleLayer];
+    [layer addSublayer:self->_sliceLayer];
   }
 
   if (v14)
   {
     v30 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.75];
-    [v10 setShadowColor:{objc_msgSend(v30, "CGColor")}];
+    [layer setShadowColor:{objc_msgSend(v30, "CGColor")}];
 
-    [v10 setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+    [layer setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
     LODWORD(v31) = 1.0;
-    [v10 setShadowOpacity:v31];
-    [v10 setShadowRadius:0.5];
+    [layer setShadowOpacity:v31];
+    [layer setShadowRadius:0.5];
   }
 
   [(STSRoundProgressView *)self _updateUIProgress];
 }
 
-- (void)setPieRadius:(double)a3
+- (void)setPieRadius:(double)radius
 {
-  self->_pieRadius = a3;
+  self->_pieRadius = radius;
   [(STSRoundProgressView *)self bounds];
   x = v12.origin.x;
   y = v12.origin.y;
@@ -199,8 +199,8 @@
   MidY = CGRectGetMidY(v13);
   self->_pieCenter.x = MidX;
   self->_pieCenter.y = MidY;
-  v10 = [(STSRoundProgressView *)self layer];
-  [v10 setCornerRadius:self->_pieRadius];
+  layer = [(STSRoundProgressView *)self layer];
+  [layer setCornerRadius:self->_pieRadius];
 }
 
 - (void)stopProgressTimer
@@ -226,9 +226,9 @@
   }
 }
 
-- (void)increaseUIProgress:(id)a3
+- (void)increaseUIProgress:(id)progress
 {
-  v10 = a3;
+  progressCopy = progress;
   realProgress = self->_realProgress;
   if (realProgress != 0.0)
   {
@@ -293,27 +293,27 @@ LABEL_13:
     CFRelease(Mutable);
   }
 
-  v9 = [(STSRoundProgressView *)self _progressArcLayer];
-  if (v9)
+  _progressArcLayer = [(STSRoundProgressView *)self _progressArcLayer];
+  if (_progressArcLayer)
   {
-    v10 = v9;
-    [v9 setStartAngle:4.71238898];
+    v10 = _progressArcLayer;
+    [_progressArcLayer setStartAngle:4.71238898];
     [v10 setEndAngle:v4];
-    v9 = v10;
+    _progressArcLayer = v10;
   }
 }
 
-- (void)setInitialIncreaseRatePerFrame:(double)a3
+- (void)setInitialIncreaseRatePerFrame:(double)frame
 {
   if (!self->_progressTimer)
   {
-    self->_increaseRate = a3;
+    self->_increaseRate = frame;
   }
 }
 
-- (void)recalculateIncreaseProgress:(double)a3 withTimeDiff:(double)a4
+- (void)recalculateIncreaseProgress:(double)progress withTimeDiff:(double)diff
 {
-  v4 = a3 / a4 / 60.0;
+  v4 = progress / diff / 60.0;
   if (v4 < 0.000166666667)
   {
     v4 = 0.000166666667;
@@ -322,20 +322,20 @@ LABEL_13:
   self->_increaseRate = v4;
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  self->_progress = a3;
+  self->_progress = progress;
   if (!self->_progressTimer && self->_realProgress <= 1.0)
   {
     [(STSRoundProgressView *)self startProgressTimer];
   }
 
-  if (a3 > 0.0)
+  if (progress > 0.0)
   {
     realProgress = self->_realProgress;
-    if (realProgress < 1.0 && realProgress < a3)
+    if (realProgress < 1.0 && realProgress < progress)
     {
-      if (a3 >= 1.0)
+      if (progress >= 1.0)
       {
         v12 = 1.0 - self->_uiProgress;
         v13 = 0.1;
@@ -343,20 +343,20 @@ LABEL_13:
 
       else
       {
-        v7 = [MEMORY[0x277CBEAA8] date];
-        [v7 timeIntervalSinceDate:self->_prevUpdateTime];
+        date = [MEMORY[0x277CBEAA8] date];
+        [date timeIntervalSinceDate:self->_prevUpdateTime];
         v9 = v8;
 
-        v10 = [MEMORY[0x277CBEAA8] date];
+        date2 = [MEMORY[0x277CBEAA8] date];
         prevUpdateTime = self->_prevUpdateTime;
-        self->_prevUpdateTime = v10;
+        self->_prevUpdateTime = date2;
 
         v12 = 1.0 - self->_uiProgress;
-        v13 = v9 * (v12 / (a3 - self->_realProgress));
+        v13 = v9 * (v12 / (progress - self->_realProgress));
       }
 
       [(STSRoundProgressView *)self recalculateIncreaseProgress:v12 withTimeDiff:v13];
-      self->_realProgress = a3;
+      self->_realProgress = progress;
     }
   }
 }
@@ -366,9 +366,9 @@ LABEL_13:
   self->_uiProgress = 0.0;
   self->_increaseRate = 0.00166666667;
   self->_realProgress = 0.0;
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   prevUpdateTime = self->_prevUpdateTime;
-  self->_prevUpdateTime = v3;
+  self->_prevUpdateTime = date;
 
   [(STSRoundProgressView *)self stopProgressTimer];
 

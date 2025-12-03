@@ -1,51 +1,51 @@
 @interface IMActivityController
-- (IMActivityController)initWithActivityItems:(id)a3 applicationActivities:(id)a4 shareType:(int64_t)a5 propertySource:(id)a6 sharingStyle:(int64_t)a7 customActivityTypeOrder:(id)a8 customShareActivityTitle:(id)a9 tracker:(id)a10;
-- (IMActivityController)initWithActivityItems:(id)a3 applicationActivities:(id)a4 shareType:(int64_t)a5 propertySource:(id)a6 tracker:(id)a7;
+- (IMActivityController)initWithActivityItems:(id)items applicationActivities:(id)activities shareType:(int64_t)type propertySource:(id)source sharingStyle:(int64_t)style customActivityTypeOrder:(id)order customShareActivityTitle:(id)title tracker:(id)self0;
+- (IMActivityController)initWithActivityItems:(id)items applicationActivities:(id)activities shareType:(int64_t)type propertySource:(id)source tracker:(id)tracker;
 - (NSArray)excludedActivityTypes;
 - (NSArray)expandedActivityItems;
-- (id)expandedActivityItemsFromActivityItems:(id)a3 conformingToProtocol:(id)a4;
+- (id)expandedActivityItemsFromActivityItems:(id)items conformingToProtocol:(id)protocol;
 - (id)includedActivityTypes;
 - (id)viewController;
 - (void)dealloc;
-- (void)setCompletionHandler:(id)a3;
+- (void)setCompletionHandler:(id)handler;
 @end
 
 @implementation IMActivityController
 
-- (IMActivityController)initWithActivityItems:(id)a3 applicationActivities:(id)a4 shareType:(int64_t)a5 propertySource:(id)a6 tracker:(id)a7
+- (IMActivityController)initWithActivityItems:(id)items applicationActivities:(id)activities shareType:(int64_t)type propertySource:(id)source tracker:(id)tracker
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  itemsCopy = items;
+  activitiesCopy = activities;
+  sourceCopy = source;
+  trackerCopy = tracker;
   v17 = [(IMActivityController *)self init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_activityItems, a3);
-    objc_storeStrong(&v18->_applicationActivities, a4);
-    v18->_shareType = a5;
-    v19 = [[AEAssetActivityPropertyProvider alloc] initWithPropertySource:v15];
+    objc_storeStrong(&v17->_activityItems, items);
+    objc_storeStrong(&v18->_applicationActivities, activities);
+    v18->_shareType = type;
+    v19 = [[AEAssetActivityPropertyProvider alloc] initWithPropertySource:sourceCopy];
     propertyProvider = v18->_propertyProvider;
     v18->_propertyProvider = v19;
 
-    objc_storeStrong(&v18->_tracker, a7);
+    objc_storeStrong(&v18->_tracker, tracker);
   }
 
   return v18;
 }
 
-- (IMActivityController)initWithActivityItems:(id)a3 applicationActivities:(id)a4 shareType:(int64_t)a5 propertySource:(id)a6 sharingStyle:(int64_t)a7 customActivityTypeOrder:(id)a8 customShareActivityTitle:(id)a9 tracker:(id)a10
+- (IMActivityController)initWithActivityItems:(id)items applicationActivities:(id)activities shareType:(int64_t)type propertySource:(id)source sharingStyle:(int64_t)style customActivityTypeOrder:(id)order customShareActivityTitle:(id)title tracker:(id)self0
 {
-  v17 = a8;
-  v18 = a9;
-  v19 = [(IMActivityController *)self initWithActivityItems:a3 applicationActivities:a4 shareType:a5 propertySource:a6 tracker:a10];
+  orderCopy = order;
+  titleCopy = title;
+  v19 = [(IMActivityController *)self initWithActivityItems:items applicationActivities:activities shareType:type propertySource:source tracker:tracker];
   v20 = v19;
   if (v19)
   {
-    v19->_sharingStyle = a7;
-    objc_storeStrong(&v19->_customActivityTypeOrder, a8);
-    v21 = [v18 copy];
+    v19->_sharingStyle = style;
+    objc_storeStrong(&v19->_customActivityTypeOrder, order);
+    v21 = [titleCopy copy];
     customShareActivityTitle = v20->_customShareActivityTitle;
     v20->_customShareActivityTitle = v21;
   }
@@ -53,9 +53,9 @@
   return v20;
 }
 
-- (void)setCompletionHandler:(id)a3
+- (void)setCompletionHandler:(id)handler
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(handler);
   self->_completionHandler = v4;
 
   _objc_release_x1(v4);
@@ -63,29 +63,29 @@
 
 - (id)viewController
 {
-  v3 = [(IMActivityController *)self activityVC];
+  activityVC = [(IMActivityController *)self activityVC];
 
-  if (!v3)
+  if (!activityVC)
   {
     v4 = [BCActivityViewController alloc];
-    v5 = [(IMActivityController *)self activityItems];
-    v6 = [(IMActivityController *)self expandedActivityItems];
-    v7 = [(IMActivityController *)self applicationActivities];
-    v8 = [(IMActivityController *)self sharingStyle];
-    v9 = [(IMActivityController *)self customActivityTypeOrder];
-    v10 = [(IMActivityController *)self customShareActivityTitle];
-    v11 = [(IMActivityController *)self propertyProvider];
-    v12 = [(IMActivityController *)self tracker];
-    v13 = [(BCActivityViewController *)v4 initWithRootActivityItems:v5 expandedActivityItems:v6 applicationActivities:v7 sharingStyle:v8 customActivityTypeOrder:v9 customShareActivityTitle:v10 appAnalyticsProvider:v11 tracker:v12];
+    activityItems = [(IMActivityController *)self activityItems];
+    expandedActivityItems = [(IMActivityController *)self expandedActivityItems];
+    applicationActivities = [(IMActivityController *)self applicationActivities];
+    sharingStyle = [(IMActivityController *)self sharingStyle];
+    customActivityTypeOrder = [(IMActivityController *)self customActivityTypeOrder];
+    customShareActivityTitle = [(IMActivityController *)self customShareActivityTitle];
+    propertyProvider = [(IMActivityController *)self propertyProvider];
+    tracker = [(IMActivityController *)self tracker];
+    v13 = [(BCActivityViewController *)v4 initWithRootActivityItems:activityItems expandedActivityItems:expandedActivityItems applicationActivities:applicationActivities sharingStyle:sharingStyle customActivityTypeOrder:customActivityTypeOrder customShareActivityTitle:customShareActivityTitle appAnalyticsProvider:propertyProvider tracker:tracker];
 
     if ([(IMActivityController *)self shareType]!= &dword_0 + 2)
     {
-      v14 = [(IMActivityController *)self includedActivityTypes];
-      [(BCActivityViewController *)v13 setIncludedActivityTypes:v14];
+      includedActivityTypes = [(IMActivityController *)self includedActivityTypes];
+      [(BCActivityViewController *)v13 setIncludedActivityTypes:includedActivityTypes];
     }
 
-    v15 = [(IMActivityController *)self excludedActivityTypes];
-    [(BCActivityViewController *)v13 setExcludedActivityTypes:v15];
+    excludedActivityTypes = [(IMActivityController *)self excludedActivityTypes];
+    [(BCActivityViewController *)v13 setExcludedActivityTypes:excludedActivityTypes];
 
     [(BCActivityViewController *)v13 setManagedBook:self->_managedBook];
     v18[0] = _NSConcreteStackBlock;
@@ -97,9 +97,9 @@
     [(IMActivityController *)self setActivityVC:v13];
   }
 
-  v16 = [(IMActivityController *)self activityVC];
+  activityVC2 = [(IMActivityController *)self activityVC];
 
-  return v16;
+  return activityVC2;
 }
 
 - (void)dealloc
@@ -123,27 +123,27 @@
     v15[1] = UIActivityTypeMarkupAsPDF;
     v15[2] = UIActivityTypeAddToReadingList;
     v3 = [NSArray arrayWithObjects:v15 count:3];
-    v4 = [(IMActivityController *)self propertyProvider];
-    v5 = [v4 assetType];
+    propertyProvider = [(IMActivityController *)self propertyProvider];
+    assetType = [propertyProvider assetType];
 
-    v6 = [(IMActivityController *)self propertyProvider];
-    v7 = [v6 isStoreAsset];
+    propertyProvider2 = [(IMActivityController *)self propertyProvider];
+    isStoreAsset = [propertyProvider2 isStoreAsset];
 
-    if (self->_managedBook || !((v5 == &dword_0 + 3) | v7 & 1))
+    if (self->_managedBook || !((assetType == &dword_0 + 3) | isStoreAsset & 1))
     {
       v8 = [v3 arrayByAddingObject:UIActivityTypeAirDrop];
 
       v3 = v8;
     }
 
-    if (v5 != &dword_0 + 3)
+    if (assetType != &dword_0 + 3)
     {
       v9 = [v3 arrayByAddingObject:UIActivityTypeSaveToFiles];
 
       v3 = v9;
     }
 
-    if ((v7 & 1) == 0)
+    if ((isStoreAsset & 1) == 0)
     {
       v10 = [v3 arrayByAddingObject:UIActivityTypePostToFacebook];
 
@@ -156,8 +156,8 @@
     v11 = +[IMActivity activityTypes];
     v12 = [NSMutableArray arrayWithArray:v11];
 
-    v13 = [(IMActivityController *)self includedActivityTypes];
-    [v12 removeObjectsInArray:v13];
+    includedActivityTypes = [(IMActivityController *)self includedActivityTypes];
+    [v12 removeObjectsInArray:includedActivityTypes];
 
     v3 = [v12 copy];
   }
@@ -190,8 +190,8 @@
         v10 = v9;
         if (v9)
         {
-          v11 = [v9 supportedActivityTypes];
-          [v3 addObjectsFromArray:v11];
+          supportedActivityTypes = [v9 supportedActivityTypes];
+          [v3 addObjectsFromArray:supportedActivityTypes];
         }
 
         else
@@ -221,8 +221,8 @@
   expandedActivityItems = self->_expandedActivityItems;
   if (!expandedActivityItems)
   {
-    v4 = [(IMActivityController *)self activityItems];
-    v5 = [(IMActivityController *)self expandedActivityItemsFromActivityItems:v4 conformingToProtocol:&OBJC_PROTOCOL___UIActivityItemSource];
+    activityItems = [(IMActivityController *)self activityItems];
+    v5 = [(IMActivityController *)self expandedActivityItemsFromActivityItems:activityItems conformingToProtocol:&OBJC_PROTOCOL___UIActivityItemSource];
     v6 = self->_expandedActivityItems;
     self->_expandedActivityItems = v5;
 
@@ -232,19 +232,19 @@
   return expandedActivityItems;
 }
 
-- (id)expandedActivityItemsFromActivityItems:(id)a3 conformingToProtocol:(id)a4
+- (id)expandedActivityItemsFromActivityItems:(id)items conformingToProtocol:(id)protocol
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  itemsCopy = items;
+  protocolCopy = protocol;
+  if ([itemsCopy count])
   {
     v8 = +[NSMutableArray array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = v6;
-    v9 = v6;
+    v18 = itemsCopy;
+    v9 = itemsCopy;
     v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
@@ -260,15 +260,15 @@
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
-          if ([v14 conformsToProtocol:v7])
+          if ([v14 conformsToProtocol:protocolCopy])
           {
             [v8 addObject:v14];
           }
 
           if ([v14 conformsToProtocol:&OBJC_PROTOCOL___IMActivityItemSourceExpanding])
           {
-            v15 = [v14 expandedItemProviders];
-            v16 = [(IMActivityController *)self expandedActivityItemsFromActivityItems:v15 conformingToProtocol:v7];
+            expandedItemProviders = [v14 expandedItemProviders];
+            v16 = [(IMActivityController *)self expandedActivityItemsFromActivityItems:expandedItemProviders conformingToProtocol:protocolCopy];
 
             if (v16)
             {
@@ -283,7 +283,7 @@
       while (v11);
     }
 
-    v6 = v18;
+    itemsCopy = v18;
   }
 
   else

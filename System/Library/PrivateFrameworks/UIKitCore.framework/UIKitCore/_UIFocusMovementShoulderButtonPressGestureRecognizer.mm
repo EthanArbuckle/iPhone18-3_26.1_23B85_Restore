@@ -1,5 +1,5 @@
 @interface _UIFocusMovementShoulderButtonPressGestureRecognizer
-- (unint64_t)focusHeadingForPresses:(id)a3;
+- (unint64_t)focusHeadingForPresses:(id)presses;
 - (void)configureDefaults;
 @end
 
@@ -12,21 +12,21 @@
   [(_UIFocusMovementPressGestureRecognizer *)self setShouldRepeat:1];
 }
 
-- (unint64_t)focusHeadingForPresses:(id)a3
+- (unint64_t)focusHeadingForPresses:(id)presses
 {
-  v3 = [a3 lastObject];
-  v4 = v3;
-  if (v3)
+  lastObject = [presses lastObject];
+  v4 = lastObject;
+  if (lastObject)
   {
-    v5 = [v3 type];
-    if (v5 == 35)
+    type = [lastObject type];
+    if (type == 35)
     {
       v6 = 32;
     }
 
     else
     {
-      v6 = 16 * (v5 == 34);
+      v6 = 16 * (type == 34);
     }
   }
 

@@ -10,8 +10,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(GEOETATrafficUpdateErrorInfo *)self internalErrors];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  internalErrors = [(GEOETATrafficUpdateErrorInfo *)self internalErrors];
+  v3 = [internalErrors countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -22,7 +22,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(internalErrors);
         }
 
         if ([*(*(&v9 + 1) + 8 * i) containsString:@"[PROMPT]"])
@@ -32,7 +32,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [internalErrors countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;

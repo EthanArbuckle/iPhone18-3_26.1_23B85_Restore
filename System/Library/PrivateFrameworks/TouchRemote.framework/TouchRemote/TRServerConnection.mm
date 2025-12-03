@@ -1,59 +1,59 @@
 @interface TRServerConnection
 - (SFService)service;
-- (TRServerConnection)initWithService:(id)a3;
+- (TRServerConnection)initWithService:(id)service;
 - (void)invalidate;
-- (void)sendEvent:(id)a3;
-- (void)sendRequest:(id)a3;
-- (void)sendResponse:(id)a3;
+- (void)sendEvent:(id)event;
+- (void)sendRequest:(id)request;
+- (void)sendResponse:(id)response;
 @end
 
 @implementation TRServerConnection
 
-- (TRServerConnection)initWithService:(id)a3
+- (TRServerConnection)initWithService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v8.receiver = self;
   v8.super_class = TRServerConnection;
   v5 = [(TRServerConnection *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_service, v4);
+    objc_storeWeak(&v5->_service, serviceCopy);
   }
 
   return v6;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_service);
-  [WeakRetained sendEvent:v4];
+  [WeakRetained sendEvent:eventCopy];
 }
 
-- (void)sendRequest:(id)a3
+- (void)sendRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_service);
-  [WeakRetained sendRequest:v4];
+  [WeakRetained sendRequest:requestCopy];
 }
 
-- (void)sendResponse:(id)a3
+- (void)sendResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   WeakRetained = objc_loadWeakRetained(&self->_service);
-  [WeakRetained sendResponse:v4];
+  [WeakRetained sendResponse:responseCopy];
 }
 
 - (void)invalidate
 {
   objc_storeWeak(&self->_service, 0);
-  v3 = [(TRConnection *)self invalidationHandler];
+  invalidationHandler = [(TRConnection *)self invalidationHandler];
 
-  if (v3)
+  if (invalidationHandler)
   {
-    v4 = [(TRConnection *)self invalidationHandler];
-    v4[2]();
+    invalidationHandler2 = [(TRConnection *)self invalidationHandler];
+    invalidationHandler2[2]();
   }
 }
 

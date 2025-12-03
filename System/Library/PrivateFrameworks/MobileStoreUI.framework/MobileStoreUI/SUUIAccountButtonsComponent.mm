@@ -1,21 +1,21 @@
 @interface SUUIAccountButtonsComponent
-- (SUUIAccountButtonsComponent)initWithCustomPageContext:(id)a3;
-- (SUUIAccountButtonsComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4;
-- (SUUIAccountButtonsComponent)initWithViewElement:(id)a3;
+- (SUUIAccountButtonsComponent)initWithCustomPageContext:(id)context;
+- (SUUIAccountButtonsComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind;
+- (SUUIAccountButtonsComponent)initWithViewElement:(id)element;
 @end
 
 @implementation SUUIAccountButtonsComponent
 
-- (SUUIAccountButtonsComponent)initWithCustomPageContext:(id)a3
+- (SUUIAccountButtonsComponent)initWithCustomPageContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = SUUIAccountButtonsComponent;
-  v5 = [(SUUIPageComponent *)&v9 initWithCustomPageContext:v4];
+  v5 = [(SUUIPageComponent *)&v9 initWithCustomPageContext:contextCopy];
   if (v5)
   {
-    v6 = [v4 componentDictionary];
-    v7 = [v6 objectForKey:@"hideTerms"];
+    componentDictionary = [contextCopy componentDictionary];
+    v7 = [componentDictionary objectForKey:@"hideTerms"];
     if (objc_opt_respondsToSelector())
     {
       v5->_hidesTermsAndConditions = [v7 BOOLValue];
@@ -25,16 +25,16 @@
   return v5;
 }
 
-- (SUUIAccountButtonsComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4
+- (SUUIAccountButtonsComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind
 {
-  v6 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = SUUIAccountButtonsComponent;
-  v7 = [(SUUIPageComponent *)&v13 initWithFeaturedContentContext:v6 kind:a4];
+  v7 = [(SUUIPageComponent *)&v13 initWithFeaturedContentContext:contextCopy kind:kind];
   if (v7)
   {
-    v8 = [v6 componentDictionary];
-    v9 = [v8 objectForKey:@"ecommerceLink"];
+    componentDictionary = [contextCopy componentDictionary];
+    v9 = [componentDictionary objectForKey:@"ecommerceLink"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,11 +47,11 @@
   return v7;
 }
 
-- (SUUIAccountButtonsComponent)initWithViewElement:(id)a3
+- (SUUIAccountButtonsComponent)initWithViewElement:(id)element
 {
   v4.receiver = self;
   v4.super_class = SUUIAccountButtonsComponent;
-  return [(SUUIPageComponent *)&v4 initWithViewElement:a3];
+  return [(SUUIPageComponent *)&v4 initWithViewElement:element];
 }
 
 @end

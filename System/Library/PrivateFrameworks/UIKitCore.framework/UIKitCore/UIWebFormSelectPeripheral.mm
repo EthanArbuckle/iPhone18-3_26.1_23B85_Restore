@@ -1,12 +1,12 @@
 @interface UIWebFormSelectPeripheral
-+ (id)createPeripheralWithDOMHTMLSelectElement:(id)a3;
-- (UIWebFormSelectPeripheral)initWithDOMHTMLSelectElement:(id)a3;
++ (id)createPeripheralWithDOMHTMLSelectElement:(id)element;
+- (UIWebFormSelectPeripheral)initWithDOMHTMLSelectElement:(id)element;
 - (void)dealloc;
 @end
 
 @implementation UIWebFormSelectPeripheral
 
-- (UIWebFormSelectPeripheral)initWithDOMHTMLSelectElement:(id)a3
+- (UIWebFormSelectPeripheral)initWithDOMHTMLSelectElement:(id)element
 {
   v23.receiver = self;
   v23.super_class = UIWebFormSelectPeripheral;
@@ -14,29 +14,29 @@
   v5 = v4;
   if (v4)
   {
-    v22 = a3;
-    [(UIWebFormSelectPeripheral *)v4 set_selectionNode:a3];
+    elementCopy = element;
+    [(UIWebFormSelectPeripheral *)v4 set_selectionNode:element];
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     WebThreadLock();
-    v7 = [(DOMHTMLSelectElement *)v5->_selectionNode multiple];
-    v8 = [(DOMHTMLSelectElement *)v5->_selectionNode completeLength];
-    if (v8)
+    multiple = [(DOMHTMLSelectElement *)v5->_selectionNode multiple];
+    completeLength = [(DOMHTMLSelectElement *)v5->_selectionNode completeLength];
+    if (completeLength)
     {
       v9 = 0;
       v10 = 0;
       v11 = 0;
       v12 = 0x7FFFFFFFFFFFFFFFLL;
-      v13 = v8;
+      v13 = completeLength;
       do
       {
         v14 = [-[DOMHTMLSelectElement listItemAtIndex:](v5->_selectionNode listItemAtIndex:{v9), "createSelectedItem"}];
         if (v14)
         {
           v15 = v14;
-          v16 = [v14 isGroup];
-          if ((v7 & 1) == 0)
+          isGroup = [v14 isGroup];
+          if ((multiple & 1) == 0)
           {
-            v17 = [v15 selected];
+            selected = [v15 selected];
             if (v12 == 0x7FFFFFFFFFFFFFFFLL)
             {
               v18 = v9;
@@ -47,14 +47,14 @@
               v18 = v12;
             }
 
-            if (v17)
+            if (selected)
             {
               v10 = v15;
               v12 = v18;
             }
           }
 
-          v11 |= v16;
+          v11 |= isGroup;
           [v6 addObject:v15];
         }
 
@@ -78,16 +78,16 @@
 
     else
     {
-      if (((v7 | v11) & 1) == 0)
+      if (((multiple | v11) & 1) == 0)
       {
-        v20 = [[UIWebSelectSinglePicker alloc] initWithDOMHTMLSelectElement:v22 allItems:v6];
+        v20 = [[UIWebSelectSinglePicker alloc] initWithDOMHTMLSelectElement:elementCopy allItems:v6];
         goto LABEL_21;
       }
 
       v19 = UIWebSelectMultiplePicker;
     }
 
-    v20 = [[v19 alloc] initWithDOMHTMLSelectElement:v22 cachedItems:v6 singleSelectionItem:v10 singleSelectionIndex:v12 multipleSelection:v7];
+    v20 = [[v19 alloc] initWithDOMHTMLSelectElement:elementCopy cachedItems:v6 singleSelectionItem:v10 singleSelectionIndex:v12 multipleSelection:multiple];
 LABEL_21:
     [(UIWebFormSelectPeripheral *)v5 set_selectControl:v20];
   }
@@ -95,9 +95,9 @@ LABEL_21:
   return v5;
 }
 
-+ (id)createPeripheralWithDOMHTMLSelectElement:(id)a3
++ (id)createPeripheralWithDOMHTMLSelectElement:(id)element
 {
-  v3 = [[UIWebFormSelectPeripheral alloc] initWithDOMHTMLSelectElement:a3];
+  v3 = [[UIWebFormSelectPeripheral alloc] initWithDOMHTMLSelectElement:element];
 
   return v3;
 }

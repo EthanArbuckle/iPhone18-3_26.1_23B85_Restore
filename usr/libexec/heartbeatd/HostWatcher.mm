@@ -1,69 +1,69 @@
 @interface HostWatcher
-+ (int)dumpConnectedHosts:(id *)a3;
-+ (void)addService:(id)a3 forHostID:(__CFString *)a4;
-+ (void)cleanupClosedSocketForPeer:(id)a3;
-+ (void)invalidateServiceWithPID:(int)a3 heartBeatRef:(unint64_t)a4;
-+ (void)invalidateWatcherForHost:(__CFString *)a3;
-+ (void)removeService:(id)a3 forHostID:(__CFString *)a4;
-- (HostWatcher)initWithCheckinGoop:(void *)a3;
++ (int)dumpConnectedHosts:(id *)hosts;
++ (void)addService:(id)service forHostID:(__CFString *)d;
++ (void)cleanupClosedSocketForPeer:(id)peer;
++ (void)invalidateServiceWithPID:(int)d heartBeatRef:(unint64_t)ref;
++ (void)invalidateWatcherForHost:(__CFString *)host;
++ (void)removeService:(id)service forHostID:(__CFString *)d;
+- (HostWatcher)initWithCheckinGoop:(void *)goop;
 - (id)description;
-- (id)receiveMessage:(char *)a3 size:(unint64_t *)a4;
-- (int)receivePacket:(char *)a3 size:(unint64_t)a4;
-- (int)sendPacket:(const char *)a3 size:(unint64_t)a4;
-- (void)addService:(id)a3;
+- (id)receiveMessage:(char *)message size:(unint64_t *)size;
+- (int)receivePacket:(char *)packet size:(unint64_t)size;
+- (int)sendPacket:(const char *)packet size:(unint64_t)size;
+- (void)addService:(id)service;
 - (void)dealloc;
-- (void)enumerateServices:(id)a3;
-- (void)handleSleepNotification:(unsigned int)a3 service:(unsigned int)a4 messageArgument:(void *)a5;
+- (void)enumerateServices:(id)services;
+- (void)handleSleepNotification:(unsigned int)notification service:(unsigned int)service messageArgument:(void *)argument;
 - (void)invalidate;
-- (void)powerLogForService:(id)a3 event:(id)a4;
-- (void)removeService:(id)a3;
+- (void)powerLogForService:(id)service event:(id)event;
+- (void)removeService:(id)service;
 - (void)runWatcher;
 @end
 
 @implementation HostWatcher
 
-+ (void)cleanupClosedSocketForPeer:(id)a3
++ (void)cleanupClosedSocketForPeer:(id)peer
 {
-  v3 = a3;
+  peerCopy = peer;
   v4 = qword_100010C18;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001284;
   block[3] = &unk_10000C4C8;
-  v7 = v3;
-  v5 = v3;
+  v7 = peerCopy;
+  v5 = peerCopy;
   dispatch_sync(v4, block);
 }
 
-+ (void)addService:(id)a3 forHostID:(__CFString *)a4
++ (void)addService:(id)service forHostID:(__CFString *)d
 {
-  v5 = a3;
+  serviceCopy = service;
   v6 = qword_100010C18;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100001640;
   v8[3] = &unk_10000C4F0;
-  v9 = v5;
-  v10 = a4;
-  v7 = v5;
+  v9 = serviceCopy;
+  dCopy = d;
+  v7 = serviceCopy;
   dispatch_sync(v6, v8);
 }
 
-+ (void)removeService:(id)a3 forHostID:(__CFString *)a4
++ (void)removeService:(id)service forHostID:(__CFString *)d
 {
-  v5 = a3;
+  serviceCopy = service;
   v6 = qword_100010C18;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100001748;
   v8[3] = &unk_10000C4F0;
-  v9 = v5;
-  v10 = a4;
-  v7 = v5;
+  v9 = serviceCopy;
+  dCopy = d;
+  v7 = serviceCopy;
   dispatch_sync(v6, v8);
 }
 
-+ (void)invalidateWatcherForHost:(__CFString *)a3
++ (void)invalidateWatcherForHost:(__CFString *)host
 {
   v18 = 0;
   v19 = &v18;
@@ -76,14 +76,14 @@
   v19[5] = v4;
 
   v6 = qword_100010C18;
-  if (a3)
+  if (host)
   {
     v7 = v17;
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_1000019F0;
     v17[3] = &unk_10000C518;
-    v17[5] = a3;
+    v17[5] = host;
   }
 
   else
@@ -130,18 +130,18 @@
   _Block_object_dispose(&v18, 8);
 }
 
-+ (void)invalidateServiceWithPID:(int)a3 heartBeatRef:(unint64_t)a4
++ (void)invalidateServiceWithPID:(int)d heartBeatRef:(unint64_t)ref
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100001B84;
   v4[3] = &unk_10000C5C8;
-  v4[4] = a4;
-  v5 = a3;
+  v4[4] = ref;
+  dCopy = d;
   dispatch_sync(qword_100010C18, v4);
 }
 
-+ (int)dumpConnectedHosts:(id *)a3
++ (int)dumpConnectedHosts:(id *)hosts
 {
   v4 = objc_alloc_init(NSMutableArray);
   v5 = v4;
@@ -158,11 +158,11 @@
 
     v8 = [v7 count];
     v9 = 0;
-    if (a3 && v8)
+    if (hosts && v8)
     {
       v10 = v7;
       v9 = 0;
-      *a3 = v7;
+      *hosts = v7;
     }
   }
 
@@ -180,12 +180,12 @@
   return v9;
 }
 
-- (int)sendPacket:(const char *)a3 size:(unint64_t)a4
+- (int)sendPacket:(const char *)packet size:(unint64_t)size
 {
   if ([(HostWatcher *)self ldConn])
   {
     v6 = 0;
-    while (a4 > v6)
+    while (size > v6)
     {
       [(HostWatcher *)self ldConn];
       v7 = lockdown_send();
@@ -206,12 +206,12 @@
   }
 }
 
-- (int)receivePacket:(char *)a3 size:(unint64_t)a4
+- (int)receivePacket:(char *)packet size:(unint64_t)size
 {
   if ([(HostWatcher *)self ldConn])
   {
     v6 = 0;
-    while (a4 > v6)
+    while (size > v6)
     {
       [(HostWatcher *)self ldConn];
       v7 = lockdown_recv();
@@ -232,10 +232,10 @@
   }
 }
 
-- (id)receiveMessage:(char *)a3 size:(unint64_t *)a4
+- (id)receiveMessage:(char *)message size:(unint64_t *)size
 {
   v27 = 0;
-  if (!a3 || !a4)
+  if (!message || !size)
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -289,9 +289,9 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  if (*a4 >= v17)
+  if (*size >= v17)
   {
-    v19 = *a3;
+    v19 = *message;
   }
 
   else
@@ -303,10 +303,10 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Growing read buffer size to %d.", buf, 8u);
     }
 
-    *a4 = v27;
-    free(*a3);
-    v18 = malloc_type_malloc(*a4, 0x96FD4A89uLL);
-    *a3 = v18;
+    *size = v27;
+    free(*message);
+    v18 = malloc_type_malloc(*size, 0x96FD4A89uLL);
+    *message = v18;
     if (!v18)
     {
       if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -314,7 +314,7 @@ LABEL_11:
         goto LABEL_11;
       }
 
-      v25 = *a4;
+      v25 = *size;
       *buf = 134217984;
       *v29 = v25;
       v10 = "Failed to allocate buffer of size %ld.";
@@ -345,7 +345,7 @@ LABEL_11:
   }
 
   v23 = [NSData alloc];
-  v24 = [v23 initWithBytes:*a3 length:v27];
+  v24 = [v23 initWithBytes:*message length:v27];
   if (!v24)
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -370,11 +370,11 @@ LABEL_11:
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = [(HostWatcher *)self hostID];
+    hostID = [(HostWatcher *)self hostID];
     *buf = 138543618;
     *v29 = v13;
     *&v29[8] = 2114;
-    *&v29[10] = v26;
+    *&v29[10] = hostID;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Invalid message (%{public}@) received from host %{public}@.", buf, 0x16u);
   }
 
@@ -392,9 +392,9 @@ LABEL_13:
   v3 = &_os_log_default;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(HostWatcher *)self hostID];
+    hostID = [(HostWatcher *)self hostID];
     *buf = 138543362;
-    v10 = v4;
+    v10 = hostID;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Invalidating host watcher: %{public}@", buf, 0xCu);
   }
 
@@ -420,8 +420,8 @@ LABEL_13:
   v34 = 0x2020000000;
   v35 = sub_1000030A8();
   objc_initWeak(&location, self);
-  v3 = [(HostWatcher *)self pingQueue];
-  dispatch_assert_queue_V2(v3);
+  pingQueue = [(HostWatcher *)self pingQueue];
+  dispatch_assert_queue_V2(pingQueue);
 
   v36 = malloc_type_malloc(v37, 0x4F5288A3uLL);
   if (!v36)
@@ -519,7 +519,7 @@ LABEL_35:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Starting loop for %{public}@", buf, 0xCu);
   }
 
-  LOBYTE(v12) = 0;
+  LOBYTE(pingSem) = 0;
   *&v11 = 134218242;
   v23 = v11;
   while (![(HostWatcher *)self invalidated]&& ![(HostWatcher *)self aboutToSleep])
@@ -539,13 +539,13 @@ LABEL_35:
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Failed to send ping: %d %{public}s", buf, 0x12u);
       }
 
-      LOBYTE(v12) = 0;
+      LOBYTE(pingSem) = 0;
       break;
     }
 
     v13 = objc_autoreleasePoolPush();
-    v12 = [(HostWatcher *)self receiveMessage:&v36 size:&v37];
-    if (v12)
+    pingSem = [(HostWatcher *)self receiveMessage:&v36 size:&v37];
+    if (pingSem)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -559,7 +559,7 @@ LABEL_35:
         *buf = v23;
         *v39 = v14;
         *&v39[8] = 2114;
-        *&v39[10] = v12;
+        *&v39[10] = pingSem;
         _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "Received response at %llu: %{public}@", buf, 0x16u);
       }
     }
@@ -571,7 +571,7 @@ LABEL_35:
     }
 
     objc_autoreleasePoolPop(v13);
-    if (!v12)
+    if (!pingSem)
     {
       break;
     }
@@ -585,11 +585,11 @@ LABEL_35:
     objc_copyWeak(&v25, &location);
     dispatch_after(v15, v16, v24);
 
-    v12 = [(HostWatcher *)self pingSem];
-    dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
+    pingSem = [(HostWatcher *)self pingSem];
+    dispatch_semaphore_wait(pingSem, 0xFFFFFFFFFFFFFFFFLL);
 
     objc_destroyWeak(&v25);
-    LOBYTE(v12) = 1;
+    LOBYTE(pingSem) = 1;
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -600,7 +600,7 @@ LABEL_35:
   }
 
   dispatch_source_cancel(v10);
-  if ((v12 & 1) == 0)
+  if ((pingSem & 1) == 0)
   {
     goto LABEL_42;
   }
@@ -617,11 +617,11 @@ LABEL_43:
   _Block_object_dispose(&v32, 8);
 }
 
-- (void)handleSleepNotification:(unsigned int)a3 service:(unsigned int)a4 messageArgument:(void *)a5
+- (void)handleSleepNotification:(unsigned int)notification service:(unsigned int)service messageArgument:(void *)argument
 {
   objc_initWeak(&location, self);
-  HIDWORD(v9) = a3 + 536870288;
-  LODWORD(v9) = a3 + 536870288;
+  HIDWORD(v9) = notification + 536870288;
+  LODWORD(v9) = notification + 536870288;
   v8 = v9 >> 4;
   if (v8 <= 1)
   {
@@ -636,7 +636,7 @@ LABEL_24:
         }
 
         *buf = 67109120;
-        v28 = a3;
+        notificationCopy = notification;
         v11 = "Unknown power notification: %d";
         goto LABEL_26;
       }
@@ -649,14 +649,14 @@ LABEL_24:
 
       if ([(HostWatcher *)self systemSleepNotificationProcessed])
       {
-        v10 = IOAllowPowerChange([(HostWatcher *)self powerConn], a5);
+        v10 = IOAllowPowerChange([(HostWatcher *)self powerConn], argument);
         if (!v10 || !os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_30;
         }
 
         *buf = 67109120;
-        v28 = v10;
+        notificationCopy = v10;
         v11 = "IOAllowPowerChange failed: %08x";
 LABEL_26:
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, v11, buf, 8u);
@@ -664,8 +664,8 @@ LABEL_26:
       }
 
       [(HostWatcher *)self setAboutToSleep:1];
-      v13 = [(HostWatcher *)self pingSem];
-      dispatch_semaphore_signal(v13);
+      pingSem = [(HostWatcher *)self pingSem];
+      dispatch_semaphore_signal(pingSem);
 
       v14 = qword_100010C18;
       block[0] = _NSConcreteStackBlock;
@@ -677,19 +677,19 @@ LABEL_26:
       v15 = &_os_log_default;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
       {
-        v16 = [(HostWatcher *)self peerName];
-        v17 = [(HostWatcher *)self servicesAwaitingClose];
-        sub_1000079BC(v16, v17, buf);
+        peerName = [(HostWatcher *)self peerName];
+        servicesAwaitingClose = [(HostWatcher *)self servicesAwaitingClose];
+        sub_1000079BC(peerName, servicesAwaitingClose, buf);
       }
 
-      v18 = [(HostWatcher *)self pingQueue];
+      pingQueue = [(HostWatcher *)self pingQueue];
       v19 = _NSConcreteStackBlock;
       v20 = 3221225472;
       v21 = sub_100003860;
       v22 = &unk_10000C738;
       objc_copyWeak(v23, &location);
-      v23[1] = a5;
-      dispatch_sync(v18, &v19);
+      v23[1] = argument;
+      dispatch_sync(pingQueue, &v19);
 
       [(HostWatcher *)self setSystemSleepNotificationProcessed:1, v19, v20, v21, v22];
       objc_destroyWeak(v23);
@@ -704,11 +704,11 @@ LABEL_26:
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Power notification: kIOMessageCanSystemSleep", buf, 2u);
       }
 
-      v12 = IOAllowPowerChange([(HostWatcher *)self powerConn], a5);
+      v12 = IOAllowPowerChange([(HostWatcher *)self powerConn], argument);
       if (v12 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        v28 = v12;
+        notificationCopy = v12;
         v11 = "IOAllowPowerChange failed: %08x";
         goto LABEL_26;
       }
@@ -751,24 +751,24 @@ LABEL_30:
 
 - (id)description
 {
-  v3 = [(HostWatcher *)self descriptionOverride];
+  descriptionOverride = [(HostWatcher *)self descriptionOverride];
 
-  if (v3)
+  if (descriptionOverride)
   {
-    v4 = [(HostWatcher *)self descriptionOverride];
+    descriptionOverride2 = [(HostWatcher *)self descriptionOverride];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = HostWatcher;
-    v4 = [(HostWatcher *)&v6 description];
+    descriptionOverride2 = [(HostWatcher *)&v6 description];
   }
 
-  return v4;
+  return descriptionOverride2;
 }
 
-- (HostWatcher)initWithCheckinGoop:(void *)a3
+- (HostWatcher)initWithCheckinGoop:(void *)goop
 {
   v58.receiver = self;
   v58.super_class = HostWatcher;
@@ -782,7 +782,7 @@ LABEL_30:
 
   v64[0] = @"CheckinConnectionInfo";
   v64[1] = @"NoHeartBeat";
-  v65[0] = a3;
+  v65[0] = goop;
   v65[1] = &__kCFBooleanTrue;
   v5 = [NSDictionary dictionaryWithObjects:v65 forKeys:v64 count:2];
   v6 = secure_lockdown_checkin();
@@ -867,8 +867,8 @@ LABEL_30:
                   if (v32)
                   {
                     v33 = [NSString alloc];
-                    v34 = [v4 hostID];
-                    v35 = [v33 initWithFormat:@"com.apple.mobile.heartbeat.pingQueue.%@", v34];
+                    hostID = [v4 hostID];
+                    v35 = [v33 initWithFormat:@"com.apple.mobile.heartbeat.pingQueue.%@", hostID];
 
                     if (v35)
                     {
@@ -1130,12 +1130,12 @@ LABEL_48:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Deallocating host watcher: %{public}@", buf, 0xCu);
   }
 
-  v3 = [(HostWatcher *)self watchedServices];
-  [v3 enumerateObjectsUsingBlock:&stru_10000C778];
+  watchedServices = [(HostWatcher *)self watchedServices];
+  [watchedServices enumerateObjectsUsingBlock:&stru_10000C778];
 
   if (self->_ldConn)
   {
@@ -1151,7 +1151,7 @@ LABEL_48:
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v9) = v5;
+        LODWORD(selfCopy) = v5;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IODeregisterForSystemPower failed: %08x", buf, 8u);
       }
     }
@@ -1171,12 +1171,12 @@ LABEL_48:
   [(HostWatcher *)&v7 dealloc];
 }
 
-- (void)powerLogForService:(id)a3 event:(id)a4
+- (void)powerLogForService:(id)service event:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  serviceCopy = service;
+  eventCopy = event;
+  v8 = eventCopy;
+  if (!serviceCopy || !eventCopy)
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -1192,19 +1192,19 @@ LABEL_13:
 
   v9 = [NSMutableDictionary alloc];
   v23[0] = @"HostName";
-  v10 = [(HostWatcher *)self hostName];
-  v24[0] = v10;
+  hostName = [(HostWatcher *)self hostName];
+  v24[0] = hostName;
   v23[1] = @"HostClient";
-  v11 = [v6 hostClient];
-  v24[1] = v11;
+  hostClient = [serviceCopy hostClient];
+  v24[1] = hostClient;
   v23[2] = @"Service";
-  v12 = [v6 serviceName];
-  v24[2] = v12;
+  serviceName = [serviceCopy serviceName];
+  v24[2] = serviceName;
   v23[3] = @"ServiceInstanceID";
-  v13 = [v6 serviceInstanceID];
-  v14 = [v13 UUIDString];
+  serviceInstanceID = [serviceCopy serviceInstanceID];
+  uUIDString = [serviceInstanceID UUIDString];
   v23[4] = @"Transport";
-  v24[3] = v14;
+  v24[3] = uUIDString;
   v24[4] = @"network";
   v15 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:5];
   v16 = [v9 initWithDictionary:v15];
@@ -1236,7 +1236,7 @@ LABEL_13:
     }
 
     v18 = v17;
-    [v6 serviceStartTime];
+    [serviceCopy serviceStartTime];
     v20 = [NSNumber numberWithDouble:v18 - v19];
     [v16 setObject:v20 forKeyedSubscript:@"DurationSeconds"];
   }
@@ -1247,42 +1247,42 @@ LABEL_8:
 LABEL_14:
 }
 
-- (void)addService:(id)a3
+- (void)addService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   dispatch_assert_queue_V2(qword_100010C18);
-  if (v5)
+  if (serviceCopy)
   {
-    [(HostWatcher *)self powerLogForService:v5 event:@"com.apple.mobile.heartbeat.ServiceStart"];
-    v4 = [(HostWatcher *)self watchedServices];
-    [v4 addObject:v5];
+    [(HostWatcher *)self powerLogForService:serviceCopy event:@"com.apple.mobile.heartbeat.ServiceStart"];
+    watchedServices = [(HostWatcher *)self watchedServices];
+    [watchedServices addObject:serviceCopy];
   }
 }
 
-- (void)removeService:(id)a3
+- (void)removeService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   dispatch_assert_queue_V2(qword_100010C18);
-  if (v5)
+  if (serviceCopy)
   {
-    [(HostWatcher *)self powerLogForService:v5 event:@"com.apple.mobile.heartbeat.ServiceStop"];
-    v4 = [(HostWatcher *)self watchedServices];
-    [v4 removeObject:v5];
+    [(HostWatcher *)self powerLogForService:serviceCopy event:@"com.apple.mobile.heartbeat.ServiceStop"];
+    watchedServices = [(HostWatcher *)self watchedServices];
+    [watchedServices removeObject:serviceCopy];
   }
 }
 
-- (void)enumerateServices:(id)a3
+- (void)enumerateServices:(id)services
 {
-  v4 = a3;
+  servicesCopy = services;
   dispatch_assert_queue_V2(qword_100010C18);
-  v5 = [(HostWatcher *)self watchedServices];
+  watchedServices = [(HostWatcher *)self watchedServices];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000512C;
   v7[3] = &unk_10000C7A0;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = servicesCopy;
+  v6 = servicesCopy;
+  [watchedServices enumerateObjectsUsingBlock:v7];
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface JSCloudLibraryStatusProvider
 - (JSValue)isCloudLibraryEnabled;
 - (JSValue)isCloudLibraryLoaded;
-- (void)setIsCloudLibraryEnabled:(void *)a3;
+- (void)setIsCloudLibraryEnabled:(void *)enabled;
 @end
 
 @implementation JSCloudLibraryStatusProvider
 
-- (void)setIsCloudLibraryEnabled:(void *)a3
+- (void)setIsCloudLibraryEnabled:(void *)enabled
 {
-  v4 = a3;
-  v5 = a1;
+  enabledCopy = enabled;
+  selfCopy = self;
 }
 
 - (JSValue)isCloudLibraryEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_216ECD918();
 
   return v3;
@@ -22,7 +22,7 @@
 
 - (JSValue)isCloudLibraryLoaded
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_216ECD970();
 
   return v3;

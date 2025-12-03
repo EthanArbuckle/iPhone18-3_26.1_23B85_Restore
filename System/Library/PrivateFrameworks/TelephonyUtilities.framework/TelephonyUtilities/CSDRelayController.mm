@@ -8,26 +8,26 @@
 
 - (CSDRelayMessagingController)relayMessagingController
 {
-  v2 = [(CSDRelayController *)self callStateController];
-  v3 = [v2 relayMessagingController];
+  callStateController = [(CSDRelayController *)self callStateController];
+  relayMessagingController = [callStateController relayMessagingController];
 
-  return v3;
+  return relayMessagingController;
 }
 
 - (CSDCallController)callController
 {
-  v2 = [(CSDRelayController *)self callStateController];
-  v3 = [v2 callController];
+  callStateController = [(CSDRelayController *)self callStateController];
+  callController = [callStateController callController];
 
-  return v3;
+  return callController;
 }
 
 - (NSArray)allCalls
 {
   v2 = +[TUCallCenter sharedInstance];
-  v3 = [v2 _allCalls];
+  _allCalls = [v2 _allCalls];
 
-  return v3;
+  return _allCalls;
 }
 
 @end

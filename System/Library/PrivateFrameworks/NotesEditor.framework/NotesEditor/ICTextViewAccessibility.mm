@@ -1,17 +1,17 @@
 @interface ICTextViewAccessibility
-+ (id)icaxEmphasisStyleNameFromAttributes:(id)a3;
++ (id)icaxEmphasisStyleNameFromAttributes:(id)attributes;
 @end
 
 @implementation ICTextViewAccessibility
 
-+ (id)icaxEmphasisStyleNameFromAttributes:(id)a3
++ (id)icaxEmphasisStyleNameFromAttributes:(id)attributes
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D35D88]];
+  attributesCopy = attributes;
+  v4 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D35D88]];
 
   if (v4)
   {
-    v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277D74188]];
+    v5 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D74188]];
     ICEmphasisColorTypeForNSTextHighlightColorScheme();
 
     v6 = NSStringForEmphasisColorType();

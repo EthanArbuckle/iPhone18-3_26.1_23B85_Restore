@@ -1,16 +1,16 @@
 @interface MUExpandableHoursView
-- (BOOL)shouldStackForProposedWidth:(double)a3;
+- (BOOL)shouldStackForProposedWidth:(double)width;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MUExpandableHoursView)initWithBusinessHoursConfiguration:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MUExpandableHoursView)initWithBusinessHoursConfiguration:(id)configuration;
 - (MUExpandableHoursViewDelegate)delegate;
 - (void)_addDayRowViewsToStackViewIfNeeded;
 - (void)_buildDayRowViewModels;
 - (void)_createDayRowViewsIfNeeded;
 - (void)_invokeChildrenOfStackingChange;
 - (void)_setupStackView;
-- (void)_updateHoursVisibilityAnimated:(BOOL)a3;
-- (void)setStacked:(BOOL)a3;
+- (void)_updateHoursVisibilityAnimated:(BOOL)animated;
+- (void)setStacked:(BOOL)stacked;
 @end
 
 @implementation MUExpandableHoursView
@@ -58,16 +58,16 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setStacked:(BOOL)a3
+- (void)setStacked:(BOOL)stacked
 {
-  if (self->_stacked != a3)
+  if (self->_stacked != stacked)
   {
-    self->_stacked = a3;
+    self->_stacked = stacked;
     [(MUExpandableHoursView *)self _invokeChildrenOfStackingChange];
   }
 }
 
-- (BOOL)shouldStackForProposedWidth:(double)a3
+- (BOOL)shouldStackForProposedWidth:(double)width
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
@@ -88,7 +88,7 @@
           objc_enumerationMutation(v4);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) shouldStackForProposedWidth:{a3, v10}])
+        if ([*(*(&v10 + 1) + 8 * i) shouldStackForProposedWidth:{width, v10}])
         {
           LOBYTE(v5) = 1;
           goto LABEL_11;
@@ -111,9 +111,9 @@ LABEL_11:
   return v5;
 }
 
-- (void)_updateHoursVisibilityAnimated:(BOOL)a3
+- (void)_updateHoursVisibilityAnimated:(BOOL)animated
 {
-  if (a3)
+  if (animated)
   {
     v4 = 0.300000012;
   }
@@ -191,10 +191,10 @@ void __56__MUExpandableHoursView__updateHoursVisibilityAnimated___block_invoke(u
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(MUExpandableHoursView *)self intrinsicContentSize];
   v6 = fmin(width, v5);
   v8 = fmin(height, v7);
@@ -271,8 +271,8 @@ void __56__MUExpandableHoursView__updateHoursVisibilityAnimated___block_invoke(u
   [(MUExpandableHoursView *)self addSubview:self->_hoursSummaryView, v19, v20, v21, v22];
   [(MUExpandableHoursView *)self addSubview:self->_contentStackView];
   v10 = [MUStackLayout alloc];
-  v11 = [(MUExpandableHoursView *)self layoutMarginsGuide];
-  v12 = [(MUStackLayout *)v10 initWithContainer:v11 axis:1];
+  layoutMarginsGuide = [(MUExpandableHoursView *)self layoutMarginsGuide];
+  v12 = [(MUStackLayout *)v10 initWithContainer:layoutMarginsGuide axis:1];
   summaryAndHoursStackLayout = self->_summaryAndHoursStackLayout;
   self->_summaryAndHoursStackLayout = v12;
 
@@ -304,8 +304,8 @@ void __40__MUExpandableHoursView__setupStackView__block_invoke(uint64_t a1)
 - (void)_addDayRowViewsToStackViewIfNeeded
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(MUStackView *)self->_contentStackView arrangedSubviews];
-  v4 = [v3 isEqual:self->_dayRowViews];
+  arrangedSubviews = [(MUStackView *)self->_contentStackView arrangedSubviews];
+  v4 = [arrangedSubviews isEqual:self->_dayRowViews];
 
   if ((v4 & 1) == 0)
   {
@@ -333,9 +333,9 @@ void __40__MUExpandableHoursView__setupStackView__block_invoke(uint64_t a1)
 
           v11 = *(*(&v20 + 1) + 8 * i);
           [(MUStackView *)self->_contentStackView addArrangedSubview:v11];
-          v12 = [v11 viewModel];
-          v13 = [v12 labelHeaderString];
-          v14 = [v13 length];
+          viewModel = [v11 viewModel];
+          labelHeaderString = [viewModel labelHeaderString];
+          v14 = [labelHeaderString length];
 
           if (v10 && v14)
           {
@@ -344,9 +344,9 @@ void __40__MUExpandableHoursView__setupStackView__block_invoke(uint64_t a1)
 
           v7 = v11;
 
-          v15 = [v7 widthAnchor];
-          v16 = [(MUStackView *)self->_contentStackView widthAnchor];
-          v17 = [v15 constraintEqualToAnchor:v16];
+          widthAnchor = [v7 widthAnchor];
+          widthAnchor2 = [(MUStackView *)self->_contentStackView widthAnchor];
+          v17 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
           [v17 setActive:1];
 
           [v7 setHidden:1];
@@ -396,12 +396,12 @@ MUDayRowView *__51__MUExpandableHoursView__createDayRowViewsIfNeeded__block_invo
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v37 = self;
+  selfCopy = self;
   obj = [(MUBusinessHoursConfiguration *)self->_config businessHours];
   v38 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v38)
   {
-    v39 = 1;
+    hoursType = 1;
     v36 = *v44;
     v4 = 0x1E696F000uLL;
     do
@@ -416,33 +416,33 @@ MUDayRowView *__51__MUExpandableHoursView__createDayRowViewsIfNeeded__block_invo
 
         v6 = *(*(&v43 + 1) + 8 * v5);
         v41 = v5;
-        if ([v6 hoursType] == v39)
+        if ([v6 hoursType] == hoursType)
         {
 LABEL_11:
-          v42 = &stru_1F44CA030;
+          localizedHoursStringNormalHours = &stru_1F44CA030;
           goto LABEL_20;
         }
 
-        v39 = [v6 hoursType];
-        v7 = [v6 hoursType];
-        if (v7 == 2)
+        hoursType = [v6 hoursType];
+        hoursType2 = [v6 hoursType];
+        if (hoursType2 == 2)
         {
-          v8 = [v6 localizedMessage];
-          if (!v8)
+          localizedMessage = [v6 localizedMessage];
+          if (!localizedMessage)
           {
             v10 = [*(v4 + 1128) localizedHoursDayRangeString:v6];
             v11 = v10;
             if (v10)
             {
-              v12 = v10;
+              localizedHoursStringSpecialHours = v10;
             }
 
             else
             {
-              v12 = [*(v4 + 1128) localizedHoursStringSpecialHours];
+              localizedHoursStringSpecialHours = [*(v4 + 1128) localizedHoursStringSpecialHours];
             }
 
-            v42 = v12;
+            localizedHoursStringNormalHours = localizedHoursStringSpecialHours;
 
             goto LABEL_18;
           }
@@ -450,33 +450,33 @@ LABEL_11:
 
         else
         {
-          if (v7 != 1)
+          if (hoursType2 != 1)
           {
             goto LABEL_11;
           }
 
-          v8 = [v6 localizedMessage];
-          if (!v8)
+          localizedMessage = [v6 localizedMessage];
+          if (!localizedMessage)
           {
-            v42 = [*(v4 + 1128) localizedHoursStringNormalHours];
+            localizedHoursStringNormalHours = [*(v4 + 1128) localizedHoursStringNormalHours];
 LABEL_18:
             v9 = 0;
             goto LABEL_19;
           }
         }
 
-        v9 = v8;
-        v42 = v9;
+        v9 = localizedMessage;
+        localizedHoursStringNormalHours = v9;
 LABEL_19:
 
 LABEL_20:
         v13 = objc_alloc(*(v4 + 1128));
-        v14 = [(MUBusinessHoursConfiguration *)v37->_config placeTimeZone];
-        v15 = [v13 initWithBusinessHours:v6 timeZone:v14 localizedHoursStringOptions:2];
+        placeTimeZone = [(MUBusinessHoursConfiguration *)selfCopy->_config placeTimeZone];
+        v15 = [v13 initWithBusinessHours:v6 timeZone:placeTimeZone localizedHoursStringOptions:2];
 
-        v16 = [v15 operatingHours];
-        v17 = [v16 placeDailyHours];
-        v18 = [v15 formatData:v17];
+        operatingHours = [v15 operatingHours];
+        placeDailyHours = [operatingHours placeDailyHours];
+        v18 = [v15 formatData:placeDailyHours];
 
         v19 = [v18 objectForKeyedSubscript:@"DaysShort"];
         v20 = [v18 objectForKeyedSubscript:@"DaysFull"];
@@ -492,13 +492,13 @@ LABEL_20:
             v25 = v24;
             if (!v23)
             {
-              [(MUDayRowViewModel *)v24 setLabelHeaderString:v42];
+              [(MUDayRowViewModel *)v24 setLabelHeaderString:localizedHoursStringNormalHours];
             }
 
             v26 = [v22 objectAtIndexedSubscript:v23];
-            v27 = [v26 BOOLValue];
+            bOOLValue = [v26 BOOLValue];
 
-            if (v27)
+            if (bOOLValue)
             {
               v28 = v20;
             }
@@ -514,8 +514,8 @@ LABEL_20:
             v30 = [v21 objectAtIndexedSubscript:v23];
             [(MUDayRowViewModel *)v25 setHourStrings:v30];
 
-            v31 = [v15 AMPMSymbols];
-            [(MUDayRowViewModel *)v25 setAMPMStrings:v31];
+            aMPMSymbols = [v15 AMPMSymbols];
+            [(MUDayRowViewModel *)v25 setAMPMStrings:aMPMSymbols];
 
             [v3 addObject:v25];
             ++v23;
@@ -536,15 +536,15 @@ LABEL_20:
   }
 
   v32 = [v3 copy];
-  dayRowViewModels = v37->_dayRowViewModels;
-  v37->_dayRowViewModels = v32;
+  dayRowViewModels = selfCopy->_dayRowViewModels;
+  selfCopy->_dayRowViewModels = v32;
 
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (MUExpandableHoursView)initWithBusinessHoursConfiguration:(id)a3
+- (MUExpandableHoursView)initWithBusinessHoursConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = MUExpandableHoursView;
   v6 = [(MUPlaceSectionRowView *)&v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -557,7 +557,7 @@ LABEL_20:
       _os_signpost_emit_with_name_impl(&dword_1C5620000, v7, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "MUExpandableHoursViewInit", "", v10, 2u);
     }
 
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, configuration);
     v6->_expanded = 0;
     [(MUExpandableHoursView *)v6 setAccessibilityIdentifier:@"ExpandableHours"];
     [(MUExpandableHoursView *)v6 _buildDayRowViewModels];

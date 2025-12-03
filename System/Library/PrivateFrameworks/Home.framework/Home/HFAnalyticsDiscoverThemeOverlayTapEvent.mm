@@ -1,15 +1,15 @@
 @interface HFAnalyticsDiscoverThemeOverlayTapEvent
-- (HFAnalyticsDiscoverThemeOverlayTapEvent)initWithData:(id)a3;
+- (HFAnalyticsDiscoverThemeOverlayTapEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsDiscoverThemeOverlayTapEvent
 
-- (HFAnalyticsDiscoverThemeOverlayTapEvent)initWithData:(id)a3
+- (HFAnalyticsDiscoverThemeOverlayTapEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"discoverThemeTapKey"];
+  v5 = [dataCopy objectForKeyedSubscript:@"discoverThemeTapKey"];
 
   if (objc_opt_isKindOfClass())
   {
@@ -39,11 +39,11 @@
 {
   v7.receiver = self;
   v7.super_class = HFAnalyticsDiscoverThemeOverlayTapEvent;
-  v3 = [(HFAnalyticsEvent *)&v7 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v7 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsDiscoverThemeOverlayTapEvent *)self themeType];
-  [v4 na_safeSetObject:v5 forKey:@"themeOverlayType"];
+  themeType = [(HFAnalyticsDiscoverThemeOverlayTapEvent *)self themeType];
+  [v4 na_safeSetObject:themeType forKey:@"themeOverlayType"];
 
   return v4;
 }

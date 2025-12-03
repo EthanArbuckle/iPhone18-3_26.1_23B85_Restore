@@ -1,26 +1,26 @@
 @interface OrgApacheLuceneUtilPackedPagedGrowableWriter
-- (OrgApacheLuceneUtilPackedPagedGrowableWriter)initWithLong:(int64_t)a3 withInt:(int)a4 withInt:(int)a5 withFloat:(float)a6;
-- (OrgApacheLuceneUtilPackedPagedGrowableWriter)initWithLong:(int64_t)a3 withInt:(int)a4 withInt:(int)a5 withFloat:(float)a6 withBoolean:(BOOL)a7;
-- (id)newUnfilledCopyWithLong:(int64_t)a3;
+- (OrgApacheLuceneUtilPackedPagedGrowableWriter)initWithLong:(int64_t)long withInt:(int)int withInt:(int)withInt withFloat:(float)float;
+- (OrgApacheLuceneUtilPackedPagedGrowableWriter)initWithLong:(int64_t)long withInt:(int)int withInt:(int)withInt withFloat:(float)float withBoolean:(BOOL)boolean;
+- (id)newUnfilledCopyWithLong:(int64_t)long;
 - (int64_t)baseRamBytesUsed;
 @end
 
 @implementation OrgApacheLuceneUtilPackedPagedGrowableWriter
 
-- (OrgApacheLuceneUtilPackedPagedGrowableWriter)initWithLong:(int64_t)a3 withInt:(int)a4 withInt:(int)a5 withFloat:(float)a6
+- (OrgApacheLuceneUtilPackedPagedGrowableWriter)initWithLong:(int64_t)long withInt:(int)int withInt:(int)withInt withFloat:(float)float
 {
-  OrgApacheLuceneUtilPackedAbstractPagedMutable_initWithInt_withLong_withInt_(self, a5, a3, a4);
-  *(&self->super.bitsPerValue_ + 1) = a6;
+  OrgApacheLuceneUtilPackedAbstractPagedMutable_initWithInt_withLong_withInt_(self, withInt, long, int);
+  *(&self->super.bitsPerValue_ + 1) = float;
   [(OrgApacheLuceneUtilPackedAbstractPagedMutable *)self fillPages];
   return self;
 }
 
-- (OrgApacheLuceneUtilPackedPagedGrowableWriter)initWithLong:(int64_t)a3 withInt:(int)a4 withInt:(int)a5 withFloat:(float)a6 withBoolean:(BOOL)a7
+- (OrgApacheLuceneUtilPackedPagedGrowableWriter)initWithLong:(int64_t)long withInt:(int)int withInt:(int)withInt withFloat:(float)float withBoolean:(BOOL)boolean
 {
-  v7 = a7;
-  OrgApacheLuceneUtilPackedAbstractPagedMutable_initWithInt_withLong_withInt_(self, a5, a3, a4);
-  *(&self->super.bitsPerValue_ + 1) = a6;
-  if (v7)
+  booleanCopy = boolean;
+  OrgApacheLuceneUtilPackedAbstractPagedMutable_initWithInt_withLong_withInt_(self, withInt, long, int);
+  *(&self->super.bitsPerValue_ + 1) = float;
+  if (booleanCopy)
   {
     [(OrgApacheLuceneUtilPackedAbstractPagedMutable *)self fillPages];
   }
@@ -28,13 +28,13 @@
   return self;
 }
 
-- (id)newUnfilledCopyWithLong:(int64_t)a3
+- (id)newUnfilledCopyWithLong:(int64_t)long
 {
-  v5 = [(OrgApacheLuceneUtilPackedAbstractPagedMutable *)self pageSize];
+  pageSize = [(OrgApacheLuceneUtilPackedAbstractPagedMutable *)self pageSize];
   bitsPerValue = self->super.bitsPerValue_;
   v7 = *(&self->super.bitsPerValue_ + 1);
   v8 = [OrgApacheLuceneUtilPackedPagedGrowableWriter alloc];
-  OrgApacheLuceneUtilPackedAbstractPagedMutable_initWithInt_withLong_withInt_(v8, bitsPerValue, a3, v5);
+  OrgApacheLuceneUtilPackedAbstractPagedMutable_initWithInt_withLong_withInt_(v8, bitsPerValue, long, pageSize);
   *(&v8->super.bitsPerValue_ + 1) = v7;
 
   return v8;

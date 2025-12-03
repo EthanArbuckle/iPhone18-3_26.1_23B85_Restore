@@ -1,73 +1,73 @@
 @interface JSBag
-- (id)BOOLean:(id)a3;
-- (id)array:(id)a3;
-- (id)dictionary:(id)a3;
-- (id)double:(id)a3;
-- (id)integer:(id)a3;
-- (id)string:(id)a3;
-- (id)url:(id)a3;
+- (id)BOOLean:(id)lean;
+- (id)array:(id)array;
+- (id)dictionary:(id)dictionary;
+- (id)double:(id)double;
+- (id)integer:(id)integer;
+- (id)string:(id)string;
+- (id)url:(id)url;
 @end
 
 @implementation JSBag
 
-- (id)string:(id)a3
+- (id)string:(id)string
 {
-  v4 = a3;
-  v5 = self;
+  stringCopy = string;
+  selfCopy = self;
   v6 = sub_27058A394();
 
   return v6;
 }
 
-- (id)double:(id)a3
+- (id)double:(id)double
 {
-  v4 = a3;
-  v5 = self;
+  doubleCopy = double;
+  selfCopy = self;
   v6 = sub_27058A394();
 
   return v6;
 }
 
-- (id)integer:(id)a3
+- (id)integer:(id)integer
 {
-  v4 = a3;
-  v5 = self;
+  integerCopy = integer;
+  selfCopy = self;
   v6 = sub_27058A394();
 
   return v6;
 }
 
-- (id)BOOLean:(id)a3
+- (id)BOOLean:(id)lean
 {
-  v4 = a3;
-  v5 = self;
+  leanCopy = lean;
+  selfCopy = self;
   v6 = sub_27058A394();
 
   return v6;
 }
 
-- (id)array:(id)a3
+- (id)array:(id)array
 {
-  v4 = a3;
-  v5 = self;
+  arrayCopy = array;
+  selfCopy = self;
   v6 = sub_27058A394();
 
   return v6;
 }
 
-- (id)dictionary:(id)a3
+- (id)dictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = self;
+  dictionaryCopy = dictionary;
+  selfCopy = self;
   v6 = sub_27058A394();
 
   return v6;
 }
 
-- (id)url:(id)a3
+- (id)url:(id)url
 {
-  v4 = a3;
-  v5 = self;
+  urlCopy = url;
+  selfCopy = self;
   v6 = sub_27058A394();
 
   return v6;

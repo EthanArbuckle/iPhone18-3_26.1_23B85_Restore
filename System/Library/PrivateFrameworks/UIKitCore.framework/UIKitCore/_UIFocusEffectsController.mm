@@ -2,12 +2,12 @@
 - (CGPoint)currentOffset;
 - (CGPoint)displayOffset;
 - (_UIFocusEffectsController)init;
-- (void)_notifyObserversForMovementDirection:(CGVector)a3;
-- (void)addObserver:(id)a3;
+- (void)_notifyObserversForMovementDirection:(CGVector)direction;
+- (void)addObserver:(id)observer;
 - (void)cancelRollbackAnimation;
 - (void)reset;
 - (void)startRollbackAnimation;
-- (void)updateCurrentOffset:(CGPoint)a3 overrideDisplayOffset:(id)a4;
+- (void)updateCurrentOffset:(CGPoint)offset overrideDisplayOffset:(id)displayOffset;
 @end
 
 @implementation _UIFocusEffectsController
@@ -48,12 +48,12 @@
   return result;
 }
 
-- (void)updateCurrentOffset:(CGPoint)a3 overrideDisplayOffset:(id)a4
+- (void)updateCurrentOffset:(CGPoint)offset overrideDisplayOffset:(id)displayOffset
 {
-  x = a3.x;
-  y = a3.y;
-  [a4 CGPointValue];
-  if (a4)
+  x = offset.x;
+  y = offset.y;
+  [displayOffset CGPointValue];
+  if (displayOffset)
   {
     v8 = self->_displayOffset.x != v6;
     if (self->_displayOffset.y != displayOffset.x)
@@ -79,7 +79,7 @@
 
     if (self->_displayOffsetAccumulatorEnabled)
     {
-      if (a4)
+      if (displayOffset)
       {
         self->_displayOffset.x = v6;
         self->_displayOffset.y = displayOffset.x;
@@ -118,7 +118,7 @@
       v27 = _UIInternalPreference_FocusEngineMotionEffectMaxOffset;
       if (_UIInternalPreferencesRevisionVar != _UIInternalPreference_FocusEngineMotionEffectMaxOffset)
       {
-        v28 = displayOffset;
+        displayOffsetCopy = displayOffset;
         v32 = _Q4;
         *v36 = _Q3;
         while (v19 >= v27)
@@ -129,7 +129,7 @@
           {
             _Q4 = v32;
             _Q3 = *v36;
-            displayOffset.x = v28.x;
+            displayOffset.x = displayOffsetCopy.x;
             goto LABEL_21;
           }
         }
@@ -144,20 +144,20 @@ LABEL_21:
     v20 = vmaxnmq_f64(vminnmq_f64(vdivq_f64(self->_displayOffset, vdupq_lane_s64(*&displayOffset.x, 0)), _Q3), _Q4);
     v21 = v20.f64[1];
     v30 = v20.f64[0];
-    [(_UIFocusEffectsController *)self _notifyObserversForMovementDirection:v28];
+    [(_UIFocusEffectsController *)self _notifyObserversForMovementDirection:displayOffsetCopy];
     v22 = +[UIWindow _applicationKeyWindow];
     if (v22)
     {
       v34 = v22;
-      v23 = [v22 _focusSystem];
-      v24 = [v23 focusedItem];
+      _focusSystem = [v22 _focusSystem];
+      focusedItem = [_focusSystem focusedItem];
 
-      if (v24 && (objc_opt_respondsToSelector() & 1) != 0)
+      if (focusedItem && (objc_opt_respondsToSelector() & 1) != 0)
       {
         v25 = [UIFocusMovementHint alloc];
-        [v24 frame];
+        [focusedItem frame];
         v26 = [(UIFocusMovementHint *)v25 initWithMovementDirection:v30 itemSize:v21];
-        [v24 didHintFocusMovement:v26];
+        [focusedItem didHintFocusMovement:v26];
       }
 
       v22 = v34;
@@ -188,35 +188,35 @@ LABEL_21:
   v6 = v4;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)_notifyObserversForMovementDirection:(CGVector)a3
+- (void)_notifyObserversForMovementDirection:(CGVector)direction
 {
-  dy = a3.dy;
-  dx = a3.dx;
+  dy = direction.dy;
+  dx = direction.dx;
   v16 = *MEMORY[0x1E69E9840];
-  v6 = [(NSHashTable *)self->_observers setRepresentation];
+  setRepresentation = [(NSHashTable *)self->_observers setRepresentation];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [setRepresentation countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -228,14 +228,14 @@ LABEL_21:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(setRepresentation);
         }
 
         [*(*(&v11 + 1) + 8 * v10++) focusEffectsController:self updateMovementDirection:{dx, dy}];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [setRepresentation countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);

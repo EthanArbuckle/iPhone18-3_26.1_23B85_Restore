@@ -1,25 +1,25 @@
 @interface PKApplyActionContentTextItemODIDetail
 - (NSCopying)identifier;
-- (PKApplyActionContentTextItemODIDetail)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKApplyActionContentTextItemODIDetail)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)odiAttributesDictionary;
 @end
 
 @implementation PKApplyActionContentTextItemODIDetail
 
-- (PKApplyActionContentTextItemODIDetail)initWithDictionary:(id)a3
+- (PKApplyActionContentTextItemODIDetail)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PKApplyActionContentTextItemODIDetail;
   v5 = [(PKApplyActionContentTextItemODIDetail *)&v11 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"odiAttribute"];
+    v6 = [dictionaryCopy PKStringForKey:@"odiAttribute"];
     odiAttribute = v5->_odiAttribute;
     v5->_odiAttribute = v6;
 
-    v8 = [v4 PKStringForKey:@"odiValue"];
+    v8 = [dictionaryCopy PKStringForKey:@"odiValue"];
     odiValue = v5->_odiValue;
     v5->_odiValue = v8;
   }
@@ -57,14 +57,14 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKApplyActionContentTextItemODIDetail allocWithZone:](PKApplyActionContentTextItemODIDetail init];
-  v6 = [(NSString *)self->_odiAttribute copyWithZone:a3];
+  v6 = [(NSString *)self->_odiAttribute copyWithZone:zone];
   odiAttribute = v5->_odiAttribute;
   v5->_odiAttribute = v6;
 
-  v8 = [(NSString *)self->_odiValue copyWithZone:a3];
+  v8 = [(NSString *)self->_odiValue copyWithZone:zone];
   odiValue = v5->_odiValue;
   v5->_odiValue = v8;
 

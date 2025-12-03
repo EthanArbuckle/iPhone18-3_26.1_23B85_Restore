@@ -1,21 +1,21 @@
 @interface BlockQuoteLayerView
-- (_TtC7Journal19BlockQuoteLayerView)initWithCoder:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC7Journal19BlockQuoteLayerView)initWithCoder:(id)coder;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation BlockQuoteLayerView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_100096310(x, y, width, height);
 }
 
-- (_TtC7Journal19BlockQuoteLayerView)initWithCoder:(id)a3
+- (_TtC7Journal19BlockQuoteLayerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7Journal19BlockQuoteLayerView_quoteAreas) = _swiftEmptyArrayStorage;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7Journal19BlockQuoteLayerView_barInset) = 0;

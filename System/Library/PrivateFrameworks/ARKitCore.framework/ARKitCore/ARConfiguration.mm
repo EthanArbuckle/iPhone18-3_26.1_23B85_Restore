@@ -2,33 +2,33 @@
 + (AVCaptureDevice)configurableCaptureDeviceForPrimaryCamera;
 + (BOOL)shouldProvideNonBinnedVideoFormats;
 + (NSArray)supportedVideoFormats;
-+ (id)_querySupportedVideoFormatsForJasper:(int64_t)a3;
-+ (id)_supportedVideoFormatsForJasper:(int64_t)a3;
-+ (void)setShouldProvideNonBinnedVideoFormats:(BOOL)a3;
-+ (void)setShouldProvideX420VideoFormat:(BOOL)a3;
-+ (void)setShouldUse30FPSJasperFormats:(BOOL)a3;
++ (id)_querySupportedVideoFormatsForJasper:(int64_t)jasper;
++ (id)_supportedVideoFormatsForJasper:(int64_t)jasper;
++ (void)setShouldProvideNonBinnedVideoFormats:(BOOL)formats;
++ (void)setShouldProvideX420VideoFormat:(BOOL)format;
++ (void)setShouldUse30FPSJasperFormats:(BOOL)formats;
 - (ARImageSensorSettings)imageSensorSettings;
 - (ARParentImageSensorSettings)parentImageSensorSettings;
 - (ARReplaySensorProtocol)replaySensor;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isKindOfConfiguration:(Class)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isKindOfConfiguration:(Class)configuration;
 - (NSString)deviceModel;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)depthSensorSettingsForJasper;
 - (id)description;
 - (id)descriptionWithoutBrackets;
-- (id)getAsKindOfConfiguration:(Class)a3;
+- (id)getAsKindOfConfiguration:(Class)configuration;
 - (id)initPrivate;
 - (id)techniques;
 - (id)techniquesForStillImageGraph;
 - (unint64_t)hash;
-- (void)_createTechniques:(id)a3 forStillImage:(BOOL)a4;
-- (void)setCameraPosition:(int64_t)a3;
-- (void)setCustomSensors:(id)a3;
-- (void)setDepthSensorNumberOfPointsMode:(int64_t)a3;
+- (void)_createTechniques:(id)techniques forStillImage:(BOOL)image;
+- (void)setCameraPosition:(int64_t)position;
+- (void)setCustomSensors:(id)sensors;
+- (void)setDepthSensorNumberOfPointsMode:(int64_t)mode;
 - (void)setFrameSemantics:(ARFrameSemantics)frameSemantics;
-- (void)setJasperFrameRate:(int64_t)a3;
-- (void)setTimeOfFlightProjectorMode:(id)a3;
+- (void)setJasperFrameRate:(int64_t)rate;
+- (void)setTimeOfFlightProjectorMode:(id)mode;
 - (void)setVideoFormat:(ARVideoFormat *)videoFormat;
 @end
 
@@ -62,10 +62,10 @@ LABEL_14:
       return v2;
     }
 
-    v3 = [objc_opt_class() supportedVideoFormats];
-    v4 = [v3 firstObject];
+    supportedVideoFormats = [objc_opt_class() supportedVideoFormats];
+    firstObject = [supportedVideoFormats firstObject];
     v5 = *(v2 + 2);
-    *(v2 + 2) = v4;
+    *(v2 + 2) = firstObject;
 
     if (*(v2 + 2))
     {
@@ -123,8 +123,8 @@ LABEL_11:
 - (void)setVideoFormat:(ARVideoFormat *)videoFormat
 {
   v4 = videoFormat;
-  v5 = [objc_opt_class() supportedVideoFormats];
-  v6 = [v5 indexOfObject:v4];
+  supportedVideoFormats = [objc_opt_class() supportedVideoFormats];
+  v6 = [supportedVideoFormats indexOfObject:v4];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -140,9 +140,9 @@ LABEL_11:
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(ARConfiguration *)self imageSensorSettings];
-  [v4 setDropsInitialFramesOutsideExposureTargetOffsetThreshold:{-[ARConfiguration dropInitialFramesOutsideExposureTarget](self, "dropInitialFramesOutsideExposureTarget")}];
-  v7[0] = v4;
+  imageSensorSettings = [(ARConfiguration *)self imageSensorSettings];
+  [imageSensorSettings setDropsInitialFramesOutsideExposureTargetOffsetThreshold:{-[ARConfiguration dropInitialFramesOutsideExposureTarget](self, "dropInitialFramesOutsideExposureTarget")}];
+  v7[0] = imageSensorSettings;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   [v3 setSettings:v5];
 
@@ -156,24 +156,24 @@ LABEL_11:
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = [ARImageSensorSettings alloc];
-  v4 = [(ARConfiguration *)self videoFormat];
-  v5 = [(ARImageSensorSettings *)v3 initWithVideoFormat:v4];
+  videoFormat = [(ARConfiguration *)self videoFormat];
+  v5 = [(ARImageSensorSettings *)v3 initWithVideoFormat:videoFormat];
 
   [(ARImageSensorSettings *)v5 setAutoFocusEnabled:[(ARConfiguration *)self isAutoFocusEnabled]];
   [(ARImageSensorSettings *)v5 setVideoHDRAllowed:[(ARConfiguration *)self videoHDRAllowed]];
   [(ARImageSensorSettings *)v5 setSupportsCapturingHighResolutionFrames:1];
   [(ARImageSensorSettings *)v5 setFocusPixelBlurScoreDeliveryEnabled:[(ARConfiguration *)self focusPixelBlurScoreDeliveryEnabled]];
   [(ARImageSensorSettings *)v5 setCalibrationDataOutputEnabled:[(ARConfiguration *)self shouldUseJasper]];
-  v6 = [(ARConfiguration *)self videoFormat];
-  v7 = [v6 captureDevicePosition];
+  videoFormat2 = [(ARConfiguration *)self videoFormat];
+  captureDevicePosition = [videoFormat2 captureDevicePosition];
 
-  if (v7 == 2)
+  if (captureDevicePosition == 2)
   {
     v8 = [ARKitUserDefaults valueForKey:@"com.apple.arkit.imagesensor.face.mirror"];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 BOOLValue];
+      bOOLValue = [v8 BOOLValue];
       if (_ARLogSensor_onceToken_10 != -1)
       {
         [ARConfiguration imageSensorSettings];
@@ -188,7 +188,7 @@ LABEL_11:
         v15 = "disabled";
         *v17 = 138543874;
         *&v17[4] = v14;
-        if (v10)
+        if (bOOLValue)
         {
           v15 = "enabled";
         }
@@ -203,10 +203,10 @@ LABEL_11:
 
     else
     {
-      v10 = 1;
+      bOOLValue = 1;
     }
 
-    [(ARImageSensorSettings *)v5 setMirrorVideoOutput:v10, *v17];
+    [(ARImageSensorSettings *)v5 setMirrorVideoOutput:bOOLValue, *v17];
   }
 
   return v5;
@@ -217,17 +217,17 @@ LABEL_11:
   if ([(ARConfiguration *)self shouldUseJasper])
   {
     v3 = [objc_opt_class() _supportedVideoFormatsForJasper:self->_depthSensorNumberOfPointsMode];
-    v4 = [v3 firstObject];
+    firstObject = [v3 firstObject];
 
-    if (v4)
+    if (firstObject)
     {
-      v5 = [[ARDepthSensorSettings alloc] initWithVideoFormat:v4];
-      v6 = [(ARConfiguration *)self timeOfFlightProjectorMode];
+      v5 = [[ARDepthSensorSettings alloc] initWithVideoFormat:firstObject];
+      timeOfFlightProjectorMode = [(ARConfiguration *)self timeOfFlightProjectorMode];
 
-      if (v6 != @"ARTimeOfFlightProjectorModeNone")
+      if (timeOfFlightProjectorMode != @"ARTimeOfFlightProjectorModeNone")
       {
-        v7 = [(ARConfiguration *)self timeOfFlightProjectorMode];
-        [(ARDepthSensorSettings *)v5 setTimeOfFlightProjectorMode:v7];
+        timeOfFlightProjectorMode2 = [(ARConfiguration *)self timeOfFlightProjectorMode];
+        [(ARDepthSensorSettings *)v5 setTimeOfFlightProjectorMode:timeOfFlightProjectorMode2];
       }
     }
 
@@ -245,7 +245,7 @@ LABEL_11:
   return v5;
 }
 
-+ (id)_querySupportedVideoFormatsForJasper:(int64_t)a3
++ (id)_querySupportedVideoFormatsForJasper:(int64_t)jasper
 {
   v32[3] = *MEMORY[0x1E69E9840];
   if (s_customJasperFrameRate)
@@ -294,7 +294,7 @@ LABEL_11:
           *buf = 138543874;
           v27 = v20;
           v28 = 2048;
-          v29 = a1;
+          selfCopy2 = self;
           v30 = 2048;
           v31 = [v6 count];
           _os_log_impl(&dword_1C241C000, v11, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Expected 3 jasper frame rate values: %lu", buf, 0x20u);
@@ -308,7 +308,7 @@ LABEL_11:
         *buf = 138543874;
         v27 = v23;
         v28 = 2048;
-        v29 = a1;
+        selfCopy2 = self;
         v30 = 2048;
         v31 = [v6 count];
         _os_log_impl(&dword_1C241C000, v11, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Expected 3 jasper frame rate values: %lu", buf, 0x20u);
@@ -316,7 +316,7 @@ LABEL_11:
     }
   }
 
-  v12 = [ARVideoFormat bestTimeOfFlightFormatForDevicePosition:1 depthSensorNumberOfPointsMode:a3 frameRates:v6];
+  v12 = [ARVideoFormat bestTimeOfFlightFormatForDevicePosition:1 depthSensorNumberOfPointsMode:jasper frameRates:v6];
   v13 = v12;
   if (v12)
   {
@@ -340,16 +340,16 @@ LABEL_11:
   return v14;
 }
 
-+ (id)_supportedVideoFormatsForJasper:(int64_t)a3
++ (id)_supportedVideoFormatsForJasper:(int64_t)jasper
 {
-  if ([a1 isSupported])
+  if ([self isSupported])
   {
-    v5 = [s_supportedJasperFormatsCache firstObject];
-    v6 = [v5 device];
+    firstObject = [s_supportedJasperFormatsCache firstObject];
+    device = [firstObject device];
 
-    if (!v6 || s_supportedJasperFormatsCache && ![s_supportedJasperFormatsCache count])
+    if (!device || s_supportedJasperFormatsCache && ![s_supportedJasperFormatsCache count])
     {
-      v7 = [a1 _querySupportedVideoFormatsForJasper:a3];
+      v7 = [self _querySupportedVideoFormatsForJasper:jasper];
       v8 = s_supportedJasperFormatsCache;
       s_supportedJasperFormatsCache = v7;
     }
@@ -358,8 +358,8 @@ LABEL_11:
     v11[1] = 3221225472;
     v11[2] = __51__ARConfiguration__supportedVideoFormatsForJasper___block_invoke;
     v11[3] = &__block_descriptor_48_e5_v8__0l;
-    v11[4] = a1;
-    v11[5] = a3;
+    v11[4] = self;
+    v11[5] = jasper;
     if (_supportedVideoFormatsForJasper__onceToken != -1)
     {
       dispatch_once(&_supportedVideoFormatsForJasper__onceToken, v11);
@@ -383,19 +383,19 @@ void __51__ARConfiguration__supportedVideoFormatsForJasper___block_invoke(uint64
   s_supportedJasperFormatsCache = v1;
 }
 
-- (void)setCustomSensors:(id)a3
+- (void)setCustomSensors:(id)sensors
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  sensorsCopy = sensors;
+  v6 = sensorsCopy;
+  if (sensorsCopy)
   {
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v7 = v5;
-    v8 = [v7 countByEnumeratingWithState:&v40 objects:v44 count:16];
+    supportedVideoFormats = sensorsCopy;
+    v8 = [supportedVideoFormats countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (!v8)
     {
       goto LABEL_24;
@@ -408,7 +408,7 @@ LABEL_4:
     {
       if (*v41 != v9)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(supportedVideoFormats);
       }
 
       v11 = *(*(&v40 + 1) + 8 * v10);
@@ -419,7 +419,7 @@ LABEL_4:
 
       if (v8 == ++v10)
       {
-        v8 = [v7 countByEnumeratingWithState:&v40 objects:v44 count:16];
+        v8 = [supportedVideoFormats countByEnumeratingWithState:&v40 objects:v44 count:16];
         if (v8)
         {
           goto LABEL_4;
@@ -438,8 +438,8 @@ LABEL_4:
     if (isKindOfClass)
     {
       v16 = objc_loadWeakRetained(&location);
-      v17 = [v16 templateConfiguration];
-      objc_storeWeak(&location, v17);
+      templateConfiguration = [v16 templateConfiguration];
+      objc_storeWeak(&location, templateConfiguration);
     }
 
     v18 = objc_loadWeakRetained(&location);
@@ -481,7 +481,7 @@ LABEL_20:
       *buf = 138543874;
       v46 = v33;
       v47 = 2048;
-      v48 = self;
+      selfCopy3 = self;
       v49 = 2114;
       v50 = v34;
       _os_log_impl(&dword_1C241C000, v31, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Video format updated from replay sensor: %{public}@", buf, 0x20u);
@@ -491,10 +491,10 @@ LABEL_20:
     goto LABEL_23;
   }
 
-  v7 = [objc_opt_class() supportedVideoFormats];
-  v19 = [v7 firstObject];
+  supportedVideoFormats = [objc_opt_class() supportedVideoFormats];
+  firstObject = [supportedVideoFormats firstObject];
   v20 = self->_videoFormat;
-  self->_videoFormat = v19;
+  self->_videoFormat = firstObject;
 
   v12 = _ARLogGeneral_11();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -505,7 +505,7 @@ LABEL_20:
     *buf = 138543874;
     v46 = v22;
     v47 = 2048;
-    v48 = self;
+    selfCopy3 = self;
     v49 = 2114;
     v50 = v23;
     _os_log_impl(&dword_1C241C000, v12, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Video format reset to default: %{public}@", buf, 0x20u);
@@ -514,7 +514,7 @@ LABEL_20:
 LABEL_23:
 
 LABEL_24:
-  objc_storeStrong(&self->_customSensors, a3);
+  objc_storeStrong(&self->_customSensors, sensors);
   v35 = _ARLogGeneral_11();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
   {
@@ -524,22 +524,22 @@ LABEL_24:
     *buf = 138543874;
     v46 = v37;
     v47 = 2048;
-    v48 = self;
+    selfCopy3 = self;
     v49 = 2048;
     v50 = customSensors;
     _os_log_impl(&dword_1C241C000, v35, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Custom sensors set: %p", buf, 0x20u);
   }
 }
 
-- (void)setCameraPosition:(int64_t)a3
+- (void)setCameraPosition:(int64_t)position
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a3 && (-[ARConfiguration videoFormat](self, "videoFormat"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 captureDevicePosition], v5, v6 != a3))
+  if (position && (-[ARConfiguration videoFormat](self, "videoFormat"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 captureDevicePosition], v5, v6 != position))
   {
-    v7 = [ARVideoFormat supportedVideoFormatsForDevicePosition:a3 deviceType:*MEMORY[0x1E6986950]];
-    v10 = [v7 firstObject];
+    supportedVideoFormats = [ARVideoFormat supportedVideoFormatsForDevicePosition:position deviceType:*MEMORY[0x1E6986950]];
+    firstObject = [supportedVideoFormats firstObject];
     videoFormat = self->_videoFormat;
-    self->_videoFormat = v10;
+    self->_videoFormat = firstObject;
 
     v12 = _ARLogGeneral_11();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -550,7 +550,7 @@ LABEL_24:
       v16 = 138543874;
       v17 = v14;
       v18 = 2048;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
       v21 = v15;
       _os_log_impl(&dword_1C241C000, v12, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Using custom video format for configuration, it may not be supported: %{public}@", &v16, 0x20u);
@@ -559,13 +559,13 @@ LABEL_24:
 
   else
   {
-    v7 = [objc_opt_class() supportedVideoFormats];
-    v8 = [v7 firstObject];
+    supportedVideoFormats = [objc_opt_class() supportedVideoFormats];
+    firstObject2 = [supportedVideoFormats firstObject];
     v9 = self->_videoFormat;
-    self->_videoFormat = v8;
+    self->_videoFormat = firstObject2;
   }
 
-  self->_cameraPosition = a3;
+  self->_cameraPosition = position;
 }
 
 - (void)setFrameSemantics:(ARFrameSemantics)frameSemantics
@@ -587,16 +587,16 @@ LABEL_24:
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    deviceModel = v3;
   }
 
   else
   {
-    v6 = [(ARConfiguration *)self replaySensor];
-    v5 = [v6 deviceModel];
+    replaySensor = [(ARConfiguration *)self replaySensor];
+    deviceModel = [replaySensor deviceModel];
   }
 
-  return v5;
+  return deviceModel;
 }
 
 - (ARReplaySensorProtocol)replaySensor
@@ -606,8 +606,8 @@ LABEL_24:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(ARConfiguration *)self customSensors];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  customSensors = [(ARConfiguration *)self customSensors];
+  v3 = [customSensors countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -617,7 +617,7 @@ LABEL_24:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(customSensors);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -628,7 +628,7 @@ LABEL_24:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [customSensors countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -643,17 +643,17 @@ LABEL_11:
   return v3;
 }
 
-- (void)setTimeOfFlightProjectorMode:(id)a3
+- (void)setTimeOfFlightProjectorMode:(id)mode
 {
-  v4 = a3;
-  if (([v4 isEqualToString:@"ARTimeOfFlightProjectorModeNone"] & 1) == 0 && (objc_msgSend(objc_opt_class(), "supportsTimeOfFlightProjectorMode") & 1) == 0)
+  modeCopy = mode;
+  if (([modeCopy isEqualToString:@"ARTimeOfFlightProjectorModeNone"] & 1) == 0 && (objc_msgSend(objc_opt_class(), "supportsTimeOfFlightProjectorMode") & 1) == 0)
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Projector Mode is not supported on this device" userInfo:0];
     objc_exception_throw(v6);
   }
 
   timeOfFlightProjectorMode = self->_timeOfFlightProjectorMode;
-  self->_timeOfFlightProjectorMode = v4;
+  self->_timeOfFlightProjectorMode = modeCopy;
 }
 
 - (id)techniques
@@ -698,21 +698,21 @@ LABEL_11:
   return v5;
 }
 
-- (void)_createTechniques:(id)a3 forStillImage:(BOOL)a4
+- (void)_createTechniques:(id)techniques forStillImage:(BOOL)image
 {
-  v4 = a4;
+  imageCopy = image;
   v66 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  techniquesCopy = techniques;
   v7 = ~[(ARConfiguration *)self frameSemantics]& 3;
-  v8 = [(ARConfiguration *)self frameSemantics];
-  v9 = ([(ARConfiguration *)self frameSemantics]& 4) == 0 || v4;
-  v10 = [(ARConfiguration *)self frameSemantics];
-  v11 = [(ARConfiguration *)self frameSemantics];
+  frameSemantics = [(ARConfiguration *)self frameSemantics];
+  v9 = ([(ARConfiguration *)self frameSemantics]& 4) == 0 || imageCopy;
+  frameSemantics2 = [(ARConfiguration *)self frameSemantics];
+  frameSemantics3 = [(ARConfiguration *)self frameSemantics];
   if (!v7 && [objc_opt_class() supportsFrameSemantics:3])
   {
     if (ARDeviceSupportsJasper())
     {
-      v12 = [ARDepthTechnique sceneDepthTechniqueForPrioritization:[(ARConfiguration *)self _depthPrioritization] temporalSmoothing:(v11 >> 4) & 1];
+      v12 = [ARDepthTechnique sceneDepthTechniqueForPrioritization:[(ARConfiguration *)self _depthPrioritization] temporalSmoothing:(frameSemantics3 >> 4) & 1];
     }
 
     else
@@ -721,18 +721,18 @@ LABEL_11:
     }
 
     v15 = v12;
-    v20 = v10 & 8 | v11 & 0x10;
-    _ARAddScalingTechniquesToTechniques(v6, !self->_disableOcclusionForPersonSegmentation, 0, 256.0, 192.0);
+    v20 = frameSemantics2 & 8 | frameSemantics3 & 0x10;
+    _ARAddScalingTechniquesToTechniques(techniquesCopy, !self->_disableOcclusionForPersonSegmentation, 0, 256.0, 192.0);
     v17 = objc_opt_new();
-    [v17 setDisableTemporalSegmentation:v4];
+    [v17 setDisableTemporalSegmentation:imageCopy];
     v21 = objc_alloc(MEMORY[0x1E695DF70]);
     v22 = objc_opt_new();
     v23 = [v21 initWithObjects:{v17, v22, 0}];
 
     if (v20 && ARDeviceSupportsJasper())
     {
-      v24 = _ARParentTechniqueForDepthTechnique(v15, v4);
-      [v6 addObject:v24];
+      v24 = _ARParentTechniqueForDepthTechnique(v15, imageCopy);
+      [techniquesCopy addObject:v24];
     }
 
     else
@@ -747,39 +747,39 @@ LABEL_11:
     }
 
     v18 = [(ARParentTechnique *)[ARPersonOcclusionParentTechnique alloc] initWithParallelTechniques:v23];
-    v26 = [(ARConfiguration *)self smartPersonOcclusionEnabled];
+    smartPersonOcclusionEnabled = [(ARConfiguration *)self smartPersonOcclusionEnabled];
     v27 = 0;
-    if (v26 && !v4)
+    if (smartPersonOcclusionEnabled && !imageCopy)
     {
       v27 = [ARKitUserDefaults integerForKey:@"com.apple.arkit.personOcclusion.optimizationStrategy"];
     }
 
     [(ARPersonOcclusionParentTechnique *)v18 setOptimizationStrategy:v27];
-    [v6 addObject:v18];
+    [techniquesCopy addObject:v18];
     v28 = objc_opt_new();
-    [v6 addObject:v28];
+    [techniquesCopy addObject:v28];
 
     goto LABEL_38;
   }
 
-  if ((v8 & 1) != 0 && [objc_opt_class() supportsFrameSemantics:1])
+  if ((frameSemantics & 1) != 0 && [objc_opt_class() supportsFrameSemantics:1])
   {
     v13 = !self->_disableOcclusionForPersonSegmentation;
     v14 = [(ARConfiguration *)self getAsKindOfConfiguration:objc_opt_class()];
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 prepareForPortraitImageData];
+      prepareForPortraitImageData = [v14 prepareForPortraitImageData];
     }
 
     else
     {
-      v16 = 0;
+      prepareForPortraitImageData = 0;
     }
 
-    _ARAddScalingTechniquesToTechniques(v6, v13, v16, 256.0, 192.0);
+    _ARAddScalingTechniquesToTechniques(techniquesCopy, v13, prepareForPortraitImageData, 256.0, 192.0);
     v17 = objc_opt_new();
-    [v17 setDisableTemporalSegmentation:v4];
+    [v17 setDisableTemporalSegmentation:imageCopy];
     v29 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v17, 0}];
     if (!self->_disableOcclusionForPersonSegmentation)
     {
@@ -787,7 +787,7 @@ LABEL_11:
       [v29 addObject:v30];
     }
 
-    v31 = v10 & 8 | v11 & 0x10;
+    v31 = frameSemantics2 & 8 | frameSemantics3 & 0x10;
     v18 = [(ARParentTechnique *)[ARPersonOcclusionParentTechnique alloc] initWithParallelTechniques:v29];
     if ([(ARConfiguration *)self smartPersonOcclusionEnabled])
     {
@@ -800,12 +800,12 @@ LABEL_11:
     }
 
     [(ARPersonOcclusionParentTechnique *)v18 setOptimizationStrategy:v32];
-    [v6 addObject:v18];
+    [techniquesCopy addObject:v18];
     if (v31 && ARDeviceSupportsJasper())
     {
-      v33 = [ARDepthTechnique sceneDepthTechniqueForPrioritization:[(ARConfiguration *)self _depthPrioritization] temporalSmoothing:(v11 >> 4) & 1];
-      v34 = _ARParentTechniqueForDepthTechnique(v33, v4);
-      [v6 addObject:v34];
+      v33 = [ARDepthTechnique sceneDepthTechniqueForPrioritization:[(ARConfiguration *)self _depthPrioritization] temporalSmoothing:(frameSemantics3 >> 4) & 1];
+      v34 = _ARParentTechniqueForDepthTechnique(v33, imageCopy);
+      [techniquesCopy addObject:v34];
     }
 
 LABEL_38:
@@ -818,12 +818,12 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if (v10 & 8 | v11 & 0x10 && ARDeviceSupportsJasper())
+  if (frameSemantics2 & 8 | frameSemantics3 & 0x10 && ARDeviceSupportsJasper())
   {
-    v15 = [ARDepthTechnique sceneDepthTechniqueForPrioritization:[(ARConfiguration *)self _depthPrioritization] temporalSmoothing:(v11 >> 4) & 1];
-    v17 = _ARParentTechniqueForDepthTechnique(v15, v4);
-    _ARAddScalingTechniquesToTechniques(v6, 0, 0, 256.0, 192.0);
-    [v6 addObject:v17];
+    v15 = [ARDepthTechnique sceneDepthTechniqueForPrioritization:[(ARConfiguration *)self _depthPrioritization] temporalSmoothing:(frameSemantics3 >> 4) & 1];
+    v17 = _ARParentTechniqueForDepthTechnique(v15, imageCopy);
+    _ARAddScalingTechniquesToTechniques(techniquesCopy, 0, 0, 256.0, 192.0);
+    [techniquesCopy addObject:v17];
     v18 = 0;
     goto LABEL_38;
   }
@@ -851,7 +851,7 @@ LABEL_39:
         *buf = 138544130;
         v59 = v41;
         v60 = 2048;
-        v61 = self;
+        selfCopy = self;
         v62 = 2048;
         v63 = v36;
         v64 = 2048;
@@ -859,7 +859,7 @@ LABEL_39:
         _os_log_impl(&dword_1C241C000, v39, OS_LOG_TYPE_INFO, "%{public}@ <%p>: ARConfiguration for Body Detection Scaler dimensions: (%f,%f)", buf, 0x2Au);
       }
 
-      _ARAddScalingTechniquesToTechniques(v6, 0, 0, v36, v38);
+      _ARAddScalingTechniquesToTechniques(techniquesCopy, 0, 0, v36, v38);
     }
 
     v42 = objc_opt_new();
@@ -872,8 +872,8 @@ LABEL_39:
 
     if (v18)
     {
-      v47 = [(ARParentTechnique *)v18 techniques];
-      v48 = [(ARParentTechnique *)v47 arrayByAddingObject:v46];
+      techniques = [(ARParentTechnique *)v18 techniques];
+      v48 = [(ARParentTechnique *)techniques arrayByAddingObject:v46];
       [(ARPersonOcclusionParentTechnique *)v18 setTechniques:v48];
     }
 
@@ -882,9 +882,9 @@ LABEL_39:
       v49 = [ARParentTechnique alloc];
       v56 = v46;
       v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v56 count:1];
-      v47 = [(ARParentTechnique *)v49 initWithParallelTechniques:v50];
+      techniques = [(ARParentTechnique *)v49 initWithParallelTechniques:v50];
 
-      [v6 addObject:v47];
+      [techniquesCopy addObject:techniques];
     }
   }
 
@@ -893,16 +893,16 @@ LABEL_48:
   if ((objc_opt_isKindOfClass() & 1) == 0 || ([(ARConfiguration *)self isWorldTrackingEnabled]& 1) == 0)
   {
     v51 = [ARWorldAlignmentTechnique alloc];
-    v52 = [(ARConfiguration *)self worldAlignment];
-    v53 = [(ARConfiguration *)self videoFormat];
-    v54 = -[ARWorldAlignmentTechnique initWithAlignment:cameraPosition:](v51, "initWithAlignment:cameraPosition:", v52, [v53 captureDevicePosition]);
-    [v6 addObject:v54];
+    worldAlignment = [(ARConfiguration *)self worldAlignment];
+    videoFormat = [(ARConfiguration *)self videoFormat];
+    v54 = -[ARWorldAlignmentTechnique initWithAlignment:cameraPosition:](v51, "initWithAlignment:cameraPosition:", worldAlignment, [videoFormat captureDevicePosition]);
+    [techniquesCopy addObject:v54];
   }
 
   if ([(ARConfiguration *)self lightEstimation]== 1 || [(ARConfiguration *)self lightEstimation]== 2)
   {
     v55 = objc_opt_new();
-    [v6 addObject:v55];
+    [techniquesCopy addObject:v55];
   }
 }
 
@@ -912,7 +912,7 @@ LABEL_48:
   objc_exception_throw(v2);
 }
 
-+ (void)setShouldUse30FPSJasperFormats:(BOOL)a3
++ (void)setShouldUse30FPSJasperFormats:(BOOL)formats
 {
   if (s_customJasperFrameRate != 30)
   {
@@ -925,12 +925,12 @@ LABEL_48:
   }
 }
 
-- (void)setJasperFrameRate:(int64_t)a3
+- (void)setJasperFrameRate:(int64_t)rate
 {
-  if (self->_jasperFrameRate != a3)
+  if (self->_jasperFrameRate != rate)
   {
-    self->_jasperFrameRate = a3;
-    s_customJasperFrameRate = a3;
+    self->_jasperFrameRate = rate;
+    s_customJasperFrameRate = rate;
     v3 = s_supportedJasperFormatsCache;
     if (s_supportedJasperFormatsCache)
     {
@@ -939,12 +939,12 @@ LABEL_48:
   }
 }
 
-- (void)setDepthSensorNumberOfPointsMode:(int64_t)a3
+- (void)setDepthSensorNumberOfPointsMode:(int64_t)mode
 {
-  if (self->_depthSensorNumberOfPointsMode != a3 || s_customNumberOfPointsMode != a3)
+  if (self->_depthSensorNumberOfPointsMode != mode || s_customNumberOfPointsMode != mode)
   {
-    self->_depthSensorNumberOfPointsMode = a3;
-    s_customNumberOfPointsMode = a3;
+    self->_depthSensorNumberOfPointsMode = mode;
+    s_customNumberOfPointsMode = mode;
     v4 = s_supportedJasperFormatsCache;
     if (s_supportedJasperFormatsCache)
     {
@@ -963,41 +963,41 @@ LABEL_48:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 firstObject];
+      firstObject = [v3 firstObject];
 
-      if (v4)
+      if (firstObject)
       {
-        v4 = [MEMORY[0x1E69870A0] defaultDeviceWithDeviceType:*MEMORY[0x1E6986950] mediaType:*MEMORY[0x1E6987608] position:1];
+        firstObject = [MEMORY[0x1E69870A0] defaultDeviceWithDeviceType:*MEMORY[0x1E6986950] mediaType:*MEMORY[0x1E6987608] position:1];
       }
     }
 
     else
     {
-      v4 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
-+ (void)setShouldProvideX420VideoFormat:(BOOL)a3
++ (void)setShouldProvideX420VideoFormat:(BOOL)format
 {
-  if (s_provideX420VideoFormat != a3)
+  if (s_provideX420VideoFormat != format)
   {
-    s_provideX420VideoFormat = a3;
+    s_provideX420VideoFormat = format;
   }
 }
 
-+ (void)setShouldProvideNonBinnedVideoFormats:(BOOL)a3
++ (void)setShouldProvideNonBinnedVideoFormats:(BOOL)formats
 {
-  if (s_provideNonBinnedVideoFormats != a3)
+  if (s_provideNonBinnedVideoFormats != formats)
   {
-    s_provideNonBinnedVideoFormats = a3;
+    s_provideNonBinnedVideoFormats = formats;
   }
 }
 
@@ -1020,32 +1020,32 @@ LABEL_48:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   v38.receiver = self;
   v38.super_class = ARConfiguration;
-  if (![(ARConfiguration *)&v38 isEqual:v6])
+  if (![(ARConfiguration *)&v38 isEqual:equalCopy])
   {
-    if (![v6 isMemberOfClass:objc_opt_class()])
+    if (![equalCopy isMemberOfClass:objc_opt_class()])
     {
       v7 = 0;
       goto LABEL_38;
     }
 
-    v8 = v6;
-    v9 = [(ARConfiguration *)self customSensors];
-    v10 = [v8 customSensors];
-    v11 = v10;
-    if (v9 == v10)
+    v8 = equalCopy;
+    customSensors = [(ARConfiguration *)self customSensors];
+    customSensors2 = [v8 customSensors];
+    v11 = customSensors2;
+    if (customSensors == customSensors2)
     {
     }
 
     else
     {
-      v3 = [(ARConfiguration *)self customSensors];
-      v4 = [v8 customSensors];
-      v12 = [v3 isEqualToArray:v4];
+      customSensors3 = [(ARConfiguration *)self customSensors];
+      customSensors4 = [v8 customSensors];
+      v12 = [customSensors3 isEqualToArray:customSensors4];
 
       if (!v12)
       {
@@ -1056,79 +1056,79 @@ LABEL_37:
       }
     }
 
-    v13 = [(ARConfiguration *)self videoFormat];
-    v14 = [v8 videoFormat];
-    if (v13 != v14)
+    videoFormat = [(ARConfiguration *)self videoFormat];
+    videoFormat2 = [v8 videoFormat];
+    if (videoFormat != videoFormat2)
     {
-      v3 = [(ARConfiguration *)self videoFormat];
-      v4 = [v8 videoFormat];
-      if (![v3 isEqual:v4])
+      customSensors3 = [(ARConfiguration *)self videoFormat];
+      customSensors4 = [v8 videoFormat];
+      if (![customSensors3 isEqual:customSensors4])
       {
         LOBYTE(v15) = 0;
         goto LABEL_35;
       }
     }
 
-    v16 = [(ARConfiguration *)self isAutoFocusEnabled];
-    if (v16 == [v8 isAutoFocusEnabled])
+    isAutoFocusEnabled = [(ARConfiguration *)self isAutoFocusEnabled];
+    if (isAutoFocusEnabled == [v8 isAutoFocusEnabled])
     {
-      v17 = [(ARConfiguration *)self worldAlignment];
-      if (v17 == [v8 worldAlignment])
+      worldAlignment = [(ARConfiguration *)self worldAlignment];
+      if (worldAlignment == [v8 worldAlignment])
       {
-        v18 = [(ARConfiguration *)self lightEstimation];
-        if (v18 == [v8 lightEstimation])
+        lightEstimation = [(ARConfiguration *)self lightEstimation];
+        if (lightEstimation == [v8 lightEstimation])
         {
-          v19 = [(ARConfiguration *)self providesAudioData];
-          if (v19 == [v8 providesAudioData])
+          providesAudioData = [(ARConfiguration *)self providesAudioData];
+          if (providesAudioData == [v8 providesAudioData])
           {
-            v20 = [(ARConfiguration *)self frameDebugOptions];
-            if (v20 == [v8 frameDebugOptions])
+            frameDebugOptions = [(ARConfiguration *)self frameDebugOptions];
+            if (frameDebugOptions == [v8 frameDebugOptions])
             {
-              v21 = [(ARConfiguration *)self cameraPosition];
-              if (v21 == [v8 cameraPosition])
+              cameraPosition = [(ARConfiguration *)self cameraPosition];
+              if (cameraPosition == [v8 cameraPosition])
               {
-                v22 = [(ARConfiguration *)self isPersonMetadataEnabled];
-                if (v22 == [v8 isPersonMetadataEnabled])
+                isPersonMetadataEnabled = [(ARConfiguration *)self isPersonMetadataEnabled];
+                if (isPersonMetadataEnabled == [v8 isPersonMetadataEnabled])
                 {
-                  v23 = [(ARConfiguration *)self allowCameraInMultipleForegroundAppLayout];
-                  if (v23 == [v8 allowCameraInMultipleForegroundAppLayout])
+                  allowCameraInMultipleForegroundAppLayout = [(ARConfiguration *)self allowCameraInMultipleForegroundAppLayout];
+                  if (allowCameraInMultipleForegroundAppLayout == [v8 allowCameraInMultipleForegroundAppLayout])
                   {
-                    v24 = [(ARConfiguration *)self disableOcclusionForPersonSegmentation];
-                    if (v24 == [v8 disableOcclusionForPersonSegmentation])
+                    disableOcclusionForPersonSegmentation = [(ARConfiguration *)self disableOcclusionForPersonSegmentation];
+                    if (disableOcclusionForPersonSegmentation == [v8 disableOcclusionForPersonSegmentation])
                     {
-                      v25 = [(ARConfiguration *)self disableMLRelocalization];
-                      if (v25 == [v8 disableMLRelocalization])
+                      disableMLRelocalization = [(ARConfiguration *)self disableMLRelocalization];
+                      if (disableMLRelocalization == [v8 disableMLRelocalization])
                       {
-                        v26 = [(ARConfiguration *)self disableRenderSyncScheduling];
-                        if (v26 == [v8 disableRenderSyncScheduling])
+                        disableRenderSyncScheduling = [(ARConfiguration *)self disableRenderSyncScheduling];
+                        if (disableRenderSyncScheduling == [v8 disableRenderSyncScheduling])
                         {
-                          v27 = [(ARConfiguration *)self dropInitialFramesOutsideExposureTarget];
-                          if (v27 == [v8 dropInitialFramesOutsideExposureTarget])
+                          dropInitialFramesOutsideExposureTarget = [(ARConfiguration *)self dropInitialFramesOutsideExposureTarget];
+                          if (dropInitialFramesOutsideExposureTarget == [v8 dropInitialFramesOutsideExposureTarget])
                           {
-                            v28 = [(ARConfiguration *)self frameSemantics];
-                            if (v28 == [v8 frameSemantics])
+                            frameSemantics = [(ARConfiguration *)self frameSemantics];
+                            if (frameSemantics == [v8 frameSemantics])
                             {
-                              v29 = [(ARConfiguration *)self timeOfFlightProjectorMode];
-                              v30 = [v8 timeOfFlightProjectorMode];
-                              if (v29 == v30)
+                              timeOfFlightProjectorMode = [(ARConfiguration *)self timeOfFlightProjectorMode];
+                              timeOfFlightProjectorMode2 = [v8 timeOfFlightProjectorMode];
+                              if (timeOfFlightProjectorMode == timeOfFlightProjectorMode2)
                               {
-                                v31 = [(ARConfiguration *)self depthSensorNumberOfPointsMode];
-                                if (v31 == [v8 depthSensorNumberOfPointsMode])
+                                depthSensorNumberOfPointsMode = [(ARConfiguration *)self depthSensorNumberOfPointsMode];
+                                if (depthSensorNumberOfPointsMode == [v8 depthSensorNumberOfPointsMode])
                                 {
-                                  v32 = [(ARConfiguration *)self smartPersonOcclusionEnabled];
-                                  if (v32 == [v8 smartPersonOcclusionEnabled])
+                                  smartPersonOcclusionEnabled = [(ARConfiguration *)self smartPersonOcclusionEnabled];
+                                  if (smartPersonOcclusionEnabled == [v8 smartPersonOcclusionEnabled])
                                   {
-                                    v33 = [(ARConfiguration *)self jasperFrameRate];
-                                    if (v33 == [v8 jasperFrameRate])
+                                    jasperFrameRate = [(ARConfiguration *)self jasperFrameRate];
+                                    if (jasperFrameRate == [v8 jasperFrameRate])
                                     {
-                                      v34 = [(ARConfiguration *)self videoHDRAllowed];
-                                      if (v34 == [v8 videoHDRAllowed])
+                                      videoHDRAllowed = [(ARConfiguration *)self videoHDRAllowed];
+                                      if (videoHDRAllowed == [v8 videoHDRAllowed])
                                       {
-                                        v35 = [(ARConfiguration *)self maxUltrawideImageForwardingFrameRate];
-                                        if (v35 == [v8 maxUltrawideImageForwardingFrameRate])
+                                        maxUltrawideImageForwardingFrameRate = [(ARConfiguration *)self maxUltrawideImageForwardingFrameRate];
+                                        if (maxUltrawideImageForwardingFrameRate == [v8 maxUltrawideImageForwardingFrameRate])
                                         {
-                                          v36 = [(ARConfiguration *)self focusPixelBlurScoreDeliveryEnabled];
-                                          v15 = v36 ^ [v8 focusPixelBlurScoreDeliveryEnabled] ^ 1;
+                                          focusPixelBlurScoreDeliveryEnabled = [(ARConfiguration *)self focusPixelBlurScoreDeliveryEnabled];
+                                          v15 = focusPixelBlurScoreDeliveryEnabled ^ [v8 focusPixelBlurScoreDeliveryEnabled] ^ 1;
 
                                           v7 = v15;
                                           goto LABEL_34;
@@ -1155,7 +1155,7 @@ LABEL_37:
     LOBYTE(v15) = 0;
     v7 = 0;
 LABEL_34:
-    if (v13 == v14)
+    if (videoFormat == videoFormat2)
     {
 LABEL_36:
 
@@ -1190,9 +1190,9 @@ LABEL_38:
   }
 
   [v3 appendFormat:@" worldAlignment=%@", v6];
-  v7 = [(ARConfiguration *)self lightEstimation];
+  lightEstimation = [(ARConfiguration *)self lightEstimation];
   v8 = @"Enabled";
-  if (!v7)
+  if (!lightEstimation)
   {
     v8 = @"Disabled";
   }
@@ -1201,8 +1201,8 @@ LABEL_38:
   v9 = NSStringFromARFrameSemantics([(ARConfiguration *)self frameSemantics]);
   [v4 appendFormat:@" frameSemantics=%@", v9];
 
-  v10 = [(ARConfiguration *)self videoFormat];
-  [v4 appendFormat:@" videoFormat=%@", v10];
+  videoFormat = [(ARConfiguration *)self videoFormat];
+  [v4 appendFormat:@" videoFormat=%@", videoFormat];
 
   return v4;
 }
@@ -1214,60 +1214,60 @@ LABEL_38:
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p", v5, self];
 
-  v7 = [(ARConfiguration *)self descriptionWithoutBrackets];
-  [v6 appendString:v7];
+  descriptionWithoutBrackets = [(ARConfiguration *)self descriptionWithoutBrackets];
+  [v6 appendString:descriptionWithoutBrackets];
 
   [v6 appendString:@">"];
 
   return v6;
 }
 
-- (BOOL)isKindOfConfiguration:(Class)a3
+- (BOOL)isKindOfConfiguration:(Class)configuration
 {
-  v3 = [(ARConfiguration *)self getAsKindOfConfiguration:a3];
+  v3 = [(ARConfiguration *)self getAsKindOfConfiguration:configuration];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)getAsKindOfConfiguration:(Class)a3
+- (id)getAsKindOfConfiguration:(Class)configuration
 {
   if (objc_opt_isKindOfClass())
   {
-    v4 = self;
+    selfCopy = self;
     goto LABEL_8;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = self;
-    v6 = [(ARConfiguration *)v5 templateConfiguration];
+    selfCopy2 = self;
+    templateConfiguration = [(ARConfiguration *)selfCopy2 templateConfiguration];
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v4 = [(ARConfiguration *)v5 templateConfiguration];
+      selfCopy = [(ARConfiguration *)selfCopy2 templateConfiguration];
 
       goto LABEL_8;
     }
   }
 
-  v4 = 0;
+  selfCopy = 0;
 LABEL_8:
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initPrivate"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initPrivate"}];
   objc_storeStrong((v5 + 16), self->_videoFormat);
   *(v5 + 35) = [(ARConfiguration *)self isAutoFocusEnabled];
   *(v5 + 48) = self->_worldAlignment;
   *(v5 + 72) = self->_lightEstimation;
   *(v5 + 32) = self->_providesAudioData;
-  v6 = [(NSArray *)self->_customSensors copyWithZone:a3];
+  v6 = [(NSArray *)self->_customSensors copyWithZone:zone];
   v7 = *(v5 + 64);
   *(v5 + 64) = v6;
 

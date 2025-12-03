@@ -1,16 +1,16 @@
 @interface TSCHLegendViewCache
-- (CGPoint)originForCell:(id)a3;
+- (CGPoint)originForCell:(id)cell;
 - (CGSize)legendSize;
-- (TSCHLegendViewCache)initWithLegendModelCache:(id)a3 legendWidth:(double)a4;
+- (TSCHLegendViewCache)initWithLegendModelCache:(id)cache legendWidth:(double)width;
 - (void)dealloc;
 @end
 
 @implementation TSCHLegendViewCache
 
-- (TSCHLegendViewCache)initWithLegendModelCache:(id)a3 legendWidth:(double)a4
+- (TSCHLegendViewCache)initWithLegendModelCache:(id)cache legendWidth:(double)width
 {
-  v7 = a3;
-  if (v7)
+  cacheCopy = cache;
+  if (cacheCopy)
   {
     v159.receiver = self;
     v159.super_class = TSCHLegendViewCache;
@@ -20,12 +20,12 @@
     {
 LABEL_40:
       self = self;
-      v70 = self;
+      selfCopy = self;
       goto LABEL_41;
     }
 
-    v12 = objc_storeWeak(&v11->_modelCache, v7);
-    self->_cellCount = objc_msgSend_cellCount(v7, v13, v14, v15, v16);
+    v12 = objc_storeWeak(&v11->_modelCache, cacheCopy);
+    self->_cellCount = objc_msgSend_cellCount(cacheCopy, v13, v14, v15, v16);
 
     v17 = malloc_type_calloc(self->_cellCount, 0x10uLL, 0x1000040451B5BE8uLL);
     self->_cellOrigins = v17;
@@ -36,7 +36,7 @@ LABEL_40:
       v43 = v42;
 
       cellCount = self->_cellCount;
-      v156 = v7;
+      v156 = cacheCopy;
       while (1)
       {
         v45 = cellCount;
@@ -53,12 +53,12 @@ LABEL_40:
           v49 = sub_27632D088(v46 - 1, v45, v48);
 
           v47 = v47 + v43 + v49;
-          v50 = v47 > a4 || v46++ >= v45;
+          v50 = v47 > width || v46++ >= v45;
         }
 
         while (!v50);
         cellCount = v45 - 1;
-        if (v47 <= a4)
+        if (v47 <= width)
         {
           self->_numberOfColumns = v45;
           p_numberOfColumns = &self->_numberOfColumns;
@@ -119,7 +119,7 @@ LABEL_22:
       {
         v106 = 0;
         v107 = 0.0;
-        v108 = fmax(a4 - v72, 0.0) / v74;
+        v108 = fmax(width - v72, 0.0) / v74;
         v109 = 0.5;
         v110 = v95 * 0.5;
         v157 = p_numberOfColumns;
@@ -188,23 +188,23 @@ LABEL_22:
         v135 = 0.0;
       }
 
-      v7 = v156;
+      cacheCopy = v156;
       objc_msgSend_largestCellSize(v156, v102, (numberOfRows - 1), 0.0, v104);
       v137 = v136;
       objc_msgSend_horizontalCellSpacing(v156, v138, v136, v139, v140);
       v142 = v141;
       objc_msgSend_effectiveStrokeWidth(v156, v143, v141, v144, v145);
       v147 = ceil(v137 + v146 + v142 * 2.0);
-      if (v147 > a4)
+      if (v147 > width)
       {
-        a4 = v147;
+        width = v147;
       }
 
       v148 = objc_loadWeakRetained(&self->_modelCache);
       objc_msgSend_effectiveStrokeWidth(v148, v149, v150, v151, v152);
       v154 = v153 + self->_numberOfRows * v88 + v135 * v81;
 
-      self->_finalSize.width = a4;
+      self->_finalSize.width = width;
       self->_finalSize.height = v154;
       goto LABEL_40;
     }
@@ -220,10 +220,10 @@ LABEL_22:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v66, v67, v68, v69);
   }
 
-  v70 = 0;
+  selfCopy = 0;
 LABEL_41:
 
-  return v70;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -239,12 +239,12 @@ LABEL_41:
   [(TSCHLegendViewCache *)&v4 dealloc];
 }
 
-- (CGPoint)originForCell:(id)a3
+- (CGPoint)originForCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   WeakRetained = objc_loadWeakRetained(&self->_modelCache);
   v10 = objc_msgSend_cells(WeakRetained, v6, v7, v8, v9);
-  v15 = objc_msgSend_indexOfObject_(v10, v11, v12, v13, v14, v4);
+  v15 = objc_msgSend_indexOfObject_(v10, v11, v12, v13, v14, cellCopy);
 
   if (v15 >= self->_cellCount)
   {

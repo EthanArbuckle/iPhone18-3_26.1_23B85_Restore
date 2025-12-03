@@ -61,7 +61,7 @@
     v23 = v12;
     *(&v11 + 1) = v12;
     v21 = v11;
-    v13 = [(CICircleSplashDistortion *)self _kernel];
+    _kernel = [(CICircleSplashDistortion *)self _kernel];
     v14 = *MEMORY[0x1E695F040];
     v15 = *(MEMORY[0x1E695F040] + 8);
     v16 = *(MEMORY[0x1E695F040] + 16);
@@ -77,7 +77,7 @@
     inputRadius = self->inputRadius;
     v25[0] = v19;
     v25[1] = inputRadius;
-    return [v13 applyWithExtent:v24 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v25, 2), v14, v15, v16, v17}];
+    return [_kernel applyWithExtent:v24 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v25, 2), v14, v15, v16, v17}];
   }
 
   else

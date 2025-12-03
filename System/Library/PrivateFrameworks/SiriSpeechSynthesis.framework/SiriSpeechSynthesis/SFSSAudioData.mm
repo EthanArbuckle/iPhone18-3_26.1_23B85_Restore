@@ -1,19 +1,19 @@
 @interface SFSSAudioData
 - (AudioStreamBasicDescription)asbd;
-- (BOOL)populateWithOpusData:(id)a3;
-- (BOOL)populateWithPCMData:(id)a3;
-- (SFSSAudioData)initWithASBD:(AudioStreamBasicDescription *)a3 rawData:(id)a4;
+- (BOOL)populateWithOpusData:(id)data;
+- (BOOL)populateWithPCMData:(id)data;
+- (SFSSAudioData)initWithASBD:(AudioStreamBasicDescription *)d rawData:(id)data;
 - (double)duration;
-- (void)setAsbd:(AudioStreamBasicDescription *)a3;
+- (void)setAsbd:(AudioStreamBasicDescription *)asbd;
 @end
 
 @implementation SFSSAudioData
 
-- (void)setAsbd:(AudioStreamBasicDescription *)a3
+- (void)setAsbd:(AudioStreamBasicDescription *)asbd
 {
-  v3 = *&a3->mSampleRate;
-  v4 = *&a3->mBytesPerPacket;
-  *&self->_asbd.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v3 = *&asbd->mSampleRate;
+  v4 = *&asbd->mBytesPerPacket;
+  *&self->_asbd.mBitsPerChannel = *&asbd->mBitsPerChannel;
   *&self->_asbd.mSampleRate = v3;
   *&self->_asbd.mBytesPerPacket = v4;
 }
@@ -38,8 +38,8 @@
     v4 = 0.0;
     if (v19 * v3 != 0.0)
     {
-      v5 = [(SFSSAudioData *)self audioData];
-      v6 = [v5 length];
+      audioData = [(SFSSAudioData *)self audioData];
+      v6 = [audioData length];
       [(SFSSAudioData *)self asbd];
       [(SFSSAudioData *)self asbd];
       LODWORD(v7) = v16;
@@ -56,10 +56,10 @@
       [(SFSSAudioData *)self asbd];
       if (v14 != 0.0)
       {
-        v8 = [(SFSSAudioData *)self packetCount];
+        packetCount = [(SFSSAudioData *)self packetCount];
         [(SFSSAudioData *)self asbd];
         LODWORD(v9) = v13;
-        v10 = v8 * v9;
+        v10 = packetCount * v9;
         [(SFSSAudioData *)self asbd];
         return v10 / v12;
       }
@@ -69,17 +69,17 @@
   return v4;
 }
 
-- (BOOL)populateWithOpusData:(id)a3
+- (BOOL)populateWithOpusData:(id)data
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB28] data];
-  v6 = [MEMORY[0x277CBEB28] data];
-  v7 = [v4 length];
-  v8 = [v4 bytes];
+  dataCopy = data;
+  data = [MEMORY[0x277CBEB28] data];
+  data2 = [MEMORY[0x277CBEB28] data];
+  v7 = [dataCopy length];
+  bytes = [dataCopy bytes];
   if (v7)
   {
-    v9 = v8;
+    v9 = bytes;
     v10 = 0;
     v11 = 0;
     while (1)
@@ -104,11 +104,11 @@
         break;
       }
 
-      v19 = [v5 length];
+      v19 = [data length];
       LODWORD(v20) = 0;
       HIDWORD(v20) = v12;
-      [v6 appendBytes:&v19 length:16];
-      [v5 appendBytes:v9 + v11 length:v12];
+      [data2 appendBytes:&v19 length:16];
+      [data appendBytes:v9 + v11 length:v12];
       ++v10;
       v11 += v12;
       if (v14 >= v7)
@@ -137,8 +137,8 @@
     v10 = 0;
 LABEL_13:
     [(SFSSAudioData *)self setPacketCount:v10];
-    [(SFSSAudioData *)self setPacketDescriptions:v6];
-    [(SFSSAudioData *)self setAudioData:v5];
+    [(SFSSAudioData *)self setPacketDescriptions:data2];
+    [(SFSSAudioData *)self setAudioData:data];
     v16 = 1;
   }
 
@@ -146,18 +146,18 @@ LABEL_13:
   return v16;
 }
 
-- (BOOL)populateWithPCMData:(id)a3
+- (BOOL)populateWithPCMData:(id)data
 {
-  [(SFSSAudioData *)self setAudioData:a3];
+  [(SFSSAudioData *)self setAudioData:data];
   [(SFSSAudioData *)self setPacketCount:0];
   [(SFSSAudioData *)self setPacketDescriptions:0];
   return 1;
 }
 
-- (SFSSAudioData)initWithASBD:(AudioStreamBasicDescription *)a3 rawData:(id)a4
+- (SFSSAudioData)initWithASBD:(AudioStreamBasicDescription *)d rawData:(id)data
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dataCopy = data;
   v20.receiver = self;
   v20.super_class = SFSSAudioData;
   v7 = [(SFSSAudioData *)&v20 init];
@@ -167,15 +167,15 @@ LABEL_13:
     goto LABEL_6;
   }
 
-  v10 = *&a3->mSampleRate;
-  v9 = *&a3->mBytesPerPacket;
-  *&v7->_asbd.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v10 = *&d->mSampleRate;
+  v9 = *&d->mBytesPerPacket;
+  *&v7->_asbd.mBitsPerChannel = *&d->mBitsPerChannel;
   *&v7->_asbd.mSampleRate = v10;
   *&v7->_asbd.mBytesPerPacket = v9;
   mFormatID = v7->_asbd.mFormatID;
   if (mFormatID == 1869641075)
   {
-    if ([(SFSSAudioData *)v7 populateWithOpusData:v6])
+    if ([(SFSSAudioData *)v7 populateWithOpusData:dataCopy])
     {
       goto LABEL_6;
     }
@@ -218,7 +218,7 @@ LABEL_13:
     goto LABEL_10;
   }
 
-  [(SFSSAudioData *)v7 populateWithPCMData:v6];
+  [(SFSSAudioData *)v7 populateWithPCMData:dataCopy];
 LABEL_6:
   v12 = v8;
 LABEL_11:

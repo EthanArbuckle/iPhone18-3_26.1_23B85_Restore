@@ -1,31 +1,31 @@
 @interface EMUnsubscribeAction
-- (EMUnsubscribeAction)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (EMUnsubscribeAction)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMUnsubscribeAction
 
-- (EMUnsubscribeAction)initWithCoder:(id)a3
+- (EMUnsubscribeAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = EMUnsubscribeAction;
-  v5 = [(EMMessageChangeAction *)&v7 initWithCoder:v4];
+  v5 = [(EMMessageChangeAction *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_shouldStopDeletingMessages = [v4 decodeBoolForKey:@"EFPropertyKey_shouldStopDeletingMessages"];
+    v5->_shouldStopDeletingMessages = [coderCopy decodeBoolForKey:@"EFPropertyKey_shouldStopDeletingMessages"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = EMUnsubscribeAction;
-  [(EMMessageChangeAction *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[EMUnsubscribeAction shouldStopDeletingMessages](self forKey:{"shouldStopDeletingMessages"), @"EFPropertyKey_shouldStopDeletingMessages"}];
+  [(EMMessageChangeAction *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[EMUnsubscribeAction shouldStopDeletingMessages](self forKey:{"shouldStopDeletingMessages"), @"EFPropertyKey_shouldStopDeletingMessages"}];
 }
 
 @end

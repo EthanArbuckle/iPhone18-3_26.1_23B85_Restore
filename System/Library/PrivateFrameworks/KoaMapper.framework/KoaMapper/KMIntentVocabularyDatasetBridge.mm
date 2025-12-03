@@ -1,15 +1,15 @@
 @interface KMIntentVocabularyDatasetBridge
 - (BOOL)_resolveCascadeItemType;
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4;
-- (KMIntentVocabularyDatasetBridge)initWithAppId:(id)a3 intentSlot:(id)a4 storeManager:(id)a5 authorization:(id)a6 itemMapper:(id)a7;
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block;
+- (KMIntentVocabularyDatasetBridge)initWithAppId:(id)id intentSlot:(id)slot storeManager:(id)manager authorization:(id)authorization itemMapper:(id)mapper;
 @end
 
 @implementation KMIntentVocabularyDatasetBridge
 
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  blockCopy = block;
   if ([(KMIntentVocabularyAuthorization *)self->_authorization isAuthorizedApp:self->_appId])
   {
     v6 = KVAdditionalFieldTypeToNumber();
@@ -70,8 +70,8 @@ LABEL_16:
             goto LABEL_17;
           }
 
-          v19 = [v18 firstObject];
-          v20 = v5[2](v5, v19);
+          firstObject = [v18 firstObject];
+          v20 = blockCopy[2](blockCopy, firstObject);
 
           objc_autoreleasePoolPop(v16);
           if (!v20)
@@ -214,14 +214,14 @@ LABEL_4:
   return v4;
 }
 
-- (KMIntentVocabularyDatasetBridge)initWithAppId:(id)a3 intentSlot:(id)a4 storeManager:(id)a5 authorization:(id)a6 itemMapper:(id)a7
+- (KMIntentVocabularyDatasetBridge)initWithAppId:(id)id intentSlot:(id)slot storeManager:(id)manager authorization:(id)authorization itemMapper:(id)mapper
 {
   v42 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  idCopy = id;
+  slotCopy = slot;
+  managerCopy = manager;
+  authorizationCopy = authorization;
+  mapperCopy = mapper;
   v29.receiver = self;
   v29.super_class = KMIntentVocabularyDatasetBridge;
   v17 = [(KMIntentVocabularyDatasetBridge *)&v29 init];
@@ -231,11 +231,11 @@ LABEL_4:
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v17->_appId, a3);
-  objc_storeStrong(&v18->_intentSlot, a4);
-  objc_storeStrong(&v18->_storeManager, a5);
-  objc_storeStrong(&v18->_authorization, a6);
-  objc_storeStrong(&v18->_itemMapper, a7);
+  objc_storeStrong(&v17->_appId, id);
+  objc_storeStrong(&v18->_intentSlot, slot);
+  objc_storeStrong(&v18->_storeManager, manager);
+  objc_storeStrong(&v18->_authorization, authorization);
+  objc_storeStrong(&v18->_itemMapper, mapper);
   appId = v18->_appId;
   if (!appId || !v18->_intentSlot || !v18->_storeManager || !v18->_authorization || !v18->_itemMapper)
   {
@@ -255,7 +255,7 @@ LABEL_4:
       v36 = 2112;
       v37 = storeManager;
       v38 = 2112;
-      v39 = authorization;
+      authorizationCopy2 = authorization;
       v40 = 2112;
       v41 = itemMapper;
       _os_log_error_impl(&dword_2559DF000, v21, OS_LOG_TYPE_ERROR, "%s Cannot initialize with appId: %@ intentSlot: %@ storeManager: %@ authorization: %@ itemMapper: %@", buf, 0x3Eu);

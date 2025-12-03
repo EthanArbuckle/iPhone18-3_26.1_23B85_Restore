@@ -1,12 +1,12 @@
 @interface MPSImage
 + (id)defaultAllocator;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MPSImage)init;
-- (MPSImage)initWithDescriptor:(id)a3 featureChannels:(unint64_t)a4 featureChannelsLayout:(unint64_t)a5 featureChannelFormat:(unint64_t)a6 onDevice:(id)a7;
+- (MPSImage)initWithDescriptor:(id)descriptor featureChannels:(unint64_t)channels featureChannelsLayout:(unint64_t)layout featureChannelFormat:(unint64_t)format onDevice:(id)device;
 - (MPSImage)initWithDevice:(id)device imageDescriptor:(const MPSImageDescriptor *)imageDescriptor;
 - (MPSImage)initWithParentImage:(MPSImage *)parent sliceRange:(NSRange)sliceRange featureChannels:(NSUInteger)featureChannels;
-- (MPSImage)initWithTexture:(id)a3 featureChannels:(unint64_t)a4 featureChannelsLayout:(unint64_t)a5;
 - (MPSImage)initWithTexture:(id)texture featureChannels:(NSUInteger)featureChannels;
+- (MPSImage)initWithTexture:(id)texture featureChannels:(unint64_t)channels featureChannelsLayout:(unint64_t)layout;
 - (MPSImage)subImageWithFeatureChannelRange:(NSRange)range;
 - (MPSImageBatch)batchRepresentation;
 - (MPSImageBatch)batchRepresentationWithSubRange:(NSRange)subRange;
@@ -143,7 +143,7 @@
   return 0;
 }
 
-- (MPSImage)initWithDescriptor:(id)a3 featureChannels:(unint64_t)a4 featureChannelsLayout:(unint64_t)a5 featureChannelFormat:(unint64_t)a6 onDevice:(id)a7
+- (MPSImage)initWithDescriptor:(id)descriptor featureChannels:(unint64_t)channels featureChannelsLayout:(unint64_t)layout featureChannelFormat:(unint64_t)format onDevice:(id)device
 {
   v63.receiver = self;
   v63.super_class = MPSImage;
@@ -153,7 +153,7 @@
     return v12;
   }
 
-  if (!a3)
+  if (!descriptor)
   {
     if (!MTLReportFailureTypeEnabled())
     {
@@ -167,7 +167,7 @@ LABEL_13:
     goto LABEL_10;
   }
 
-  if (!a7)
+  if (!device)
   {
     if (!MTLReportFailureTypeEnabled())
     {
@@ -177,29 +177,29 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  MPSDevice = MPSDevice::GetMPSDevice(a7);
+  MPSDevice = MPSDevice::GetMPSDevice(device);
   if (!MPSDevice)
   {
     goto LABEL_10;
   }
 
   v12->_device = MPSDevice;
-  v12->_featureChannelsLayout = a5;
-  v12->_height = objc_msgSend_height(a3, v14, v15, v16, v17);
-  v12->_featureChannels = a4;
-  v12->_textureType = objc_msgSend_textureType(a3, v18, v19, v20, v21);
+  v12->_featureChannelsLayout = layout;
+  v12->_height = objc_msgSend_height(descriptor, v14, v15, v16, v17);
+  v12->_featureChannels = channels;
+  v12->_textureType = objc_msgSend_textureType(descriptor, v18, v19, v20, v21);
   v12->_label = 0;
   device = v12->_device;
-  v27 = objc_msgSend_pixelFormat(a3, v23, v24, v25, v26);
-  PixelInfo = MPSDevice::GetPixelInfo(device, v27, a6);
+  v27 = objc_msgSend_pixelFormat(descriptor, v23, v24, v25, v26);
+  PixelInfo = MPSDevice::GetPixelInfo(device, v27, format);
   v12->_pixelInfo = PixelInfo;
   v12->_featureChannelFormat = (PixelInfo >> 59) & 7;
   v12->_updatedAlready = 0;
-  v33 = (a4 + 3) >> 2;
-  if (a5)
+  v33 = (channels + 3) >> 2;
+  if (layout)
   {
-    objc_msgSend_arrayLength(a3, v29, v30, v31, v32);
-    if (objc_msgSend_arrayLength(a3, v34, v35, v36, v37) % v33)
+    objc_msgSend_arrayLength(descriptor, v29, v30, v31, v32);
+    if (objc_msgSend_arrayLength(descriptor, v34, v35, v36, v37) % v33)
     {
       if (MTLReportFailureTypeEnabled())
       {
@@ -209,20 +209,20 @@ LABEL_13:
       goto LABEL_10;
     }
 
-    v12->_width = objc_msgSend_width(a3, v38, v39, v40, v41);
-    v46 = objc_msgSend_arrayLength(a3, v42, v43, v44, v45) / v33;
+    v12->_width = objc_msgSend_width(descriptor, v38, v39, v40, v41);
+    v46 = objc_msgSend_arrayLength(descriptor, v42, v43, v44, v45) / v33;
   }
 
   else
   {
-    v12->_width = objc_msgSend_width(a3, v29, v30, v31, v32) / v33;
-    v46 = objc_msgSend_arrayLength(a3, v51, v52, v53, v54);
+    v12->_width = objc_msgSend_width(descriptor, v29, v30, v31, v32) / v33;
+    v46 = objc_msgSend_arrayLength(descriptor, v51, v52, v53, v54);
   }
 
   v12->_numberOfImages = v46;
-  v55 = objc_msgSend_pixelFormat(a3, v47, v48, v49, v50);
-  v60 = objc_msgSend_usage(a3, v56, v57, v58, v59);
-  if (sub_22E35F698(v55, v60, a4, v12->_device, v12))
+  v55 = objc_msgSend_pixelFormat(descriptor, v47, v48, v49, v50);
+  v60 = objc_msgSend_usage(descriptor, v56, v57, v58, v59);
+  if (sub_22E35F698(v55, v60, channels, v12->_device, v12))
   {
 LABEL_10:
 
@@ -291,7 +291,7 @@ LABEL_15:
   return MEMORY[0x2821F9670](self, sel_initWithTexture_featureChannels_featureChannelsLayout_, texture, featureChannels, 1);
 }
 
-- (MPSImage)initWithTexture:(id)a3 featureChannels:(unint64_t)a4 featureChannelsLayout:(unint64_t)a5
+- (MPSImage)initWithTexture:(id)texture featureChannels:(unint64_t)channels featureChannelsLayout:(unint64_t)layout
 {
   v77.receiver = self;
   v77.super_class = MPSImage;
@@ -301,7 +301,7 @@ LABEL_15:
     return v12;
   }
 
-  if (!a3)
+  if (!texture)
   {
     if (!MTLReportFailureTypeEnabled())
     {
@@ -315,7 +315,7 @@ LABEL_19:
     goto LABEL_14;
   }
 
-  v13 = objc_msgSend_device(a3, v8, v9, v10, v11);
+  v13 = objc_msgSend_device(texture, v8, v9, v10, v11);
   if (!v13)
   {
     if (!MTLReportFailureTypeEnabled())
@@ -335,20 +335,20 @@ LABEL_14:
   }
 
   v12[1] = MPSDevice;
-  v12[5] = a5;
-  v12[3] = objc_msgSend_height(a3, v15, v16, v17, v18);
-  v12[4] = a4;
-  v12[8] = objc_msgSend_textureType(a3, v19, v20, v21, v22);
+  v12[5] = layout;
+  v12[3] = objc_msgSend_height(texture, v15, v16, v17, v18);
+  v12[4] = channels;
+  v12[8] = objc_msgSend_textureType(texture, v19, v20, v21, v22);
   v12[9] = 0;
   *(v12 + 160) = 0;
-  v23 = (a4 + 3) >> 2;
-  v28 = objc_msgSend_width(a3, v24, v25, v26, v27);
-  if (a5)
+  v23 = (channels + 3) >> 2;
+  v28 = objc_msgSend_width(texture, v24, v25, v26, v27);
+  if (layout)
   {
     v12[2] = v28;
-    v12[7] = objc_msgSend_arrayLength(a3, v29, v30, v31, v32) / v23;
-    objc_msgSend_arrayLength(a3, v33, v34, v35, v36);
-    if (objc_msgSend_arrayLength(a3, v37, v38, v39, v40) % v23)
+    v12[7] = objc_msgSend_arrayLength(texture, v29, v30, v31, v32) / v23;
+    objc_msgSend_arrayLength(texture, v33, v34, v35, v36);
+    if (objc_msgSend_arrayLength(texture, v37, v38, v39, v40) % v23)
     {
       if (MTLReportFailureTypeEnabled())
       {
@@ -362,15 +362,15 @@ LABEL_14:
   else
   {
     v12[2] = v28 / v23;
-    v12[7] = objc_msgSend_arrayLength(a3, v29, v30, v31, v32);
+    v12[7] = objc_msgSend_arrayLength(texture, v29, v30, v31, v32);
   }
 
-  atomic_store(a3, v12 + 12);
+  atomic_store(texture, v12 + 12);
   *(v12 + 152) = 4;
-  if (objc_msgSend_buffer(a3, v41, v42, v43, v44))
+  if (objc_msgSend_buffer(texture, v41, v42, v43, v44))
   {
     *(v12 + 153) = 0;
-    v49 = objc_msgSend_device(a3, v45, v46, v47, v48);
+    v49 = objc_msgSend_device(texture, v45, v46, v47, v48);
     v50 = MPSDevice::GetMPSDevice(v49);
     if (!v50)
     {
@@ -380,26 +380,26 @@ LABEL_14:
     goto LABEL_12;
   }
 
-  *(v12 + 153) = objc_msgSend_iosurface(a3, v45, v46, v47, v48) == 0;
-  v75 = objc_msgSend_device(a3, v71, v72, v73, v74);
+  *(v12 + 153) = objc_msgSend_iosurface(texture, v45, v46, v47, v48) == 0;
+  v75 = objc_msgSend_device(texture, v71, v72, v73, v74);
   v50 = MPSDevice::GetMPSDevice(v75);
   if (v50)
   {
 LABEL_12:
     v55 = v50;
-    v56 = objc_msgSend_pixelFormat(a3, v51, v52, v53, v54);
+    v56 = objc_msgSend_pixelFormat(texture, v51, v52, v53, v54);
     v12[16] = MPSDevice::GetPixelInfo(v55, v56, MPSImageFeatureChannelFormatNone);
   }
 
 LABEL_13:
   v57 = v12[1];
-  v58 = objc_msgSend_pixelFormat(a3, v51, v52, v53, v54);
+  v58 = objc_msgSend_pixelFormat(texture, v51, v52, v53, v54);
   PixelInfo = MPSDevice::GetPixelInfo(v57, v58, MPSImageFeatureChannelFormatNone);
   v12[10] = PixelInfo;
   v12[6] = (PixelInfo >> 59) & 7;
-  v64 = objc_msgSend_pixelFormat(a3, v60, v61, v62, v63);
-  v69 = objc_msgSend_usage(a3, v65, v66, v67, v68);
-  if (sub_22E35F698(v64, v69, a4, v12[1], v12))
+  v64 = objc_msgSend_pixelFormat(texture, v60, v61, v62, v63);
+  v69 = objc_msgSend_usage(texture, v65, v66, v67, v68);
+  if (sub_22E35F698(v64, v69, channels, v12[1], v12))
   {
     goto LABEL_14;
   }
@@ -784,7 +784,7 @@ LABEL_40:
       }
 
       v25 = objc_alloc(objc_opt_class());
-      v20 = objc_msgSend_initWithParentImage_sliceRange_featureChannels_(v25, v26, self, v15, v18, v24);
+      selfCopy2 = objc_msgSend_initWithParentImage_sliceRange_featureChannels_(v25, v26, self, v15, v18, v24);
       goto LABEL_24;
     }
 
@@ -798,11 +798,11 @@ LABEL_41:
     return 0;
   }
 
-  v19 = self;
-  v20 = self;
+  selfCopy = self;
+  selfCopy2 = self;
 LABEL_24:
 
-  return v20;
+  return selfCopy2;
 }
 
 - (MPSImageBatch)batchRepresentation
@@ -994,7 +994,7 @@ LABEL_24:
     return objc_msgSend_stringWithFormat_(v6, v7, v10, v8, v9, v69, v71, v72, v73, v74);
   }
 
-  v12 = self;
+  selfCopy = self;
   if (qword_280AFEC50 == -1)
   {
     v13 = off_280AFEC28;
@@ -1007,7 +1007,7 @@ LABEL_24:
   else
   {
     dispatch_once(&qword_280AFEC50, &unk_2842174C0);
-    self = v12;
+    self = selfCopy;
     v13 = off_280AFEC28;
     if (!off_280AFEC28)
     {
@@ -1090,7 +1090,7 @@ LABEL_24:
     else
     {
       v22 = (off_280AFEC48)();
-      self = v12;
+      self = selfCopy;
       v13 = off_280AFEC28;
     }
 
@@ -1119,8 +1119,8 @@ LABEL_24:
     if (explicit)
     {
       v29 = objc_msgSend_height(explicit, a2, v2, v3, v4);
-      v30 = atomic_load_explicit(&v12->_texture, memory_order_acquire);
-      if ((v12->_texture._type & 2) == 0)
+      v30 = atomic_load_explicit(&selfCopy->_texture, memory_order_acquire);
+      if ((selfCopy->_texture._type & 2) == 0)
       {
 LABEL_44:
         v31 = p_texture;
@@ -1131,8 +1131,8 @@ LABEL_44:
     else
     {
       v29 = objc_msgSend_height(parent->var0._subTex.parent, a2, v2, v3, v4);
-      v30 = atomic_load_explicit(&v12->_texture, memory_order_acquire);
-      if ((v12->_texture._type & 2) == 0)
+      v30 = atomic_load_explicit(&selfCopy->_texture, memory_order_acquire);
+      if ((selfCopy->_texture._type & 2) == 0)
       {
         goto LABEL_44;
       }
@@ -1156,13 +1156,13 @@ LABEL_48:
     v13(v77, v29, v32, v20, 0);
     if (!v77[0])
     {
-      return objc_msgSend_debugDescription(v12, v33, v34, v35, v36);
+      return objc_msgSend_debugDescription(selfCopy, v33, v34, v35, v36);
     }
 
-    v37 = atomic_load_explicit(&v12->_texture, memory_order_acquire);
-    if ((v12->_texture._type & 2) != 0)
+    v37 = atomic_load_explicit(&selfCopy->_texture, memory_order_acquire);
+    if ((selfCopy->_texture._type & 2) != 0)
     {
-      if (v12->_texture.var0._subTex.subRangeSize >= 2)
+      if (selfCopy->_texture.var0._subTex.subRangeSize >= 2)
       {
 LABEL_55:
         v38 = atomic_load_explicit(p_texture, memory_order_acquire);
@@ -1210,7 +1210,7 @@ LABEL_63:
         else
         {
           v65 = MEMORY[0x277CCACA8];
-          v70 = objc_msgSend_debugDescription(v12, v56, v57, v58, v59);
+          v70 = objc_msgSend_debugDescription(selfCopy, v56, v57, v58, v59);
           return objc_msgSend_stringWithFormat_(v65, v66, @"<Err: unable to transcode texture to CGImage>\n\t%@\n", v67, v68, v70, v71, v72, v73, v74);
         }
       }
@@ -1220,7 +1220,7 @@ LABEL_63:
     {
       if (!v37)
       {
-        v37 = v12->_texture.var0._subTex.parent;
+        v37 = selfCopy->_texture.var0._subTex.parent;
       }
 
       if (objc_msgSend_textureType(v37, v33, v34, v35, v36) != 2)
@@ -1265,39 +1265,39 @@ LABEL_72:
   return objc_msgSend_debugDescription(self, a2, v2, v3, v4);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_13;
   }
 
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(isEqual) = 1;
     return isEqual;
   }
 
   v5 = objc_opt_class();
-  if (v5 != objc_opt_class() || self->_featureChannels != *(a3 + 4))
+  if (v5 != objc_opt_class() || self->_featureChannels != *(equal + 4))
   {
     goto LABEL_13;
   }
 
-  isEqual = objc_msgSend_isEqual_(*(self->_device + 2), v6, *(*(a3 + 1) + 16), v7, v8);
+  isEqual = objc_msgSend_isEqual_(*(self->_device + 2), v6, *(*(equal + 1) + 16), v7, v8);
   if (!isEqual)
   {
     return isEqual;
   }
 
-  if (self->_height != *(a3 + 3) || self->_width != *(a3 + 2) || self->_numberOfImages != *(a3 + 7) || self->_textureType != *(a3 + 8))
+  if (self->_height != *(equal + 3) || self->_width != *(equal + 2) || self->_numberOfImages != *(equal + 7) || self->_textureType != *(equal + 8))
   {
 LABEL_13:
     LOBYTE(isEqual) = 0;
     return isEqual;
   }
 
-  LOBYTE(isEqual) = sub_22E3612EC(&self->_texture, a3 + 96, v10, v11, v12);
+  LOBYTE(isEqual) = sub_22E3612EC(&self->_texture, equal + 96, v10, v11, v12);
   return isEqual;
 }
 

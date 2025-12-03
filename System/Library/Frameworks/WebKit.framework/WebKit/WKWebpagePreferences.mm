@@ -19,29 +19,29 @@
 - (unint64_t)_colorSchemePreference;
 - (unint64_t)_deviceOrientationAndMotionAccessPolicy;
 - (unint64_t)_popUpPolicy;
-- (void)_setActiveContentRuleListActionPatterns:(id)a3;
-- (void)_setApplicationNameForUserAgentWithModernCompatibility:(id)a3;
-- (void)_setAutoplayPolicy:(int64_t)a3;
-- (void)_setCaptivePortalModeEnabled:(BOOL)a3;
-- (void)_setColorSchemePreference:(unint64_t)a3;
-- (void)_setContentBlockersEnabled:(BOOL)a3;
-- (void)_setContentRuleListsEnabled:(BOOL)a3 exceptions:(id)a4;
-- (void)_setCustomHeaderFields:(id)a3;
-- (void)_setCustomNavigatorPlatform:(id)a3;
-- (void)_setCustomUserAgent:(id)a3;
-- (void)_setCustomUserAgentAsSiteSpecificQuirks:(id)a3;
-- (void)_setDeviceOrientationAndMotionAccessPolicy:(unint64_t)a3;
-- (void)_setNetworkConnectionIntegrityEnabled:(BOOL)a3;
-- (void)_setPopUpPolicy:(unint64_t)a3;
-- (void)_setPushAndNotificationAPIEnabled:(BOOL)a3;
-- (void)_setUserContentController:(id)a3;
-- (void)_setVisibilityAdjustmentSelectors:(id)a3;
-- (void)_setVisibilityAdjustmentSelectorsIncludingShadowHosts:(id)a3;
-- (void)_setWebsiteDataStore:(id)a3;
+- (void)_setActiveContentRuleListActionPatterns:(id)patterns;
+- (void)_setApplicationNameForUserAgentWithModernCompatibility:(id)compatibility;
+- (void)_setAutoplayPolicy:(int64_t)policy;
+- (void)_setCaptivePortalModeEnabled:(BOOL)enabled;
+- (void)_setColorSchemePreference:(unint64_t)preference;
+- (void)_setContentBlockersEnabled:(BOOL)enabled;
+- (void)_setContentRuleListsEnabled:(BOOL)enabled exceptions:(id)exceptions;
+- (void)_setCustomHeaderFields:(id)fields;
+- (void)_setCustomNavigatorPlatform:(id)platform;
+- (void)_setCustomUserAgent:(id)agent;
+- (void)_setCustomUserAgentAsSiteSpecificQuirks:(id)quirks;
+- (void)_setDeviceOrientationAndMotionAccessPolicy:(unint64_t)policy;
+- (void)_setNetworkConnectionIntegrityEnabled:(BOOL)enabled;
+- (void)_setPopUpPolicy:(unint64_t)policy;
+- (void)_setPushAndNotificationAPIEnabled:(BOOL)enabled;
+- (void)_setUserContentController:(id)controller;
+- (void)_setVisibilityAdjustmentSelectors:(id)selectors;
+- (void)_setVisibilityAdjustmentSelectorsIncludingShadowHosts:(id)hosts;
+- (void)_setWebsiteDataStore:(id)store;
 - (void)dealloc;
 - (void)setLockdownModeEnabled:(BOOL)lockdownModeEnabled;
 - (void)setPreferredContentMode:(WKContentMode)preferredContentMode;
-- (void)setPreferredHTTPSNavigationPolicy:(int64_t)a3;
+- (void)setPreferredHTTPSNavigationPolicy:(int64_t)policy;
 @end
 
 @implementation WKWebpagePreferences
@@ -81,7 +81,7 @@
 
 + (WKWebpagePreferences)defaultPreferences
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v3 = v2;
   if (v2)
   {
@@ -100,9 +100,9 @@
   if (v2)
   {
     v4 = API::Object::apiObjectsUnderConstruction(v2);
-    v5 = [(WKWebpagePreferences *)v3 _apiObject];
+    _apiObject = [(WKWebpagePreferences *)v3 _apiObject];
     v9 = v3;
-    v10 = v5;
+    v10 = _apiObject;
     WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v4, &v10, &v9, v8);
     API::WebsitePolicies::WebsitePolicies([(WKWebpagePreferences *)v3 _apiObject]);
   }
@@ -110,9 +110,9 @@
   return v3;
 }
 
-- (void)_setContentBlockersEnabled:(BOOL)a3
+- (void)_setContentBlockersEnabled:(BOOL)enabled
 {
-  LOBYTE(self[2].super.isa) = a3;
+  LOBYTE(self[2].super.isa) = enabled;
   v4 = *self[2]._websitePolicies.m_storage.data;
   *self[2]._websitePolicies.m_storage.data = 0;
   if (v4)
@@ -121,10 +121,10 @@
   }
 }
 
-- (void)_setContentRuleListsEnabled:(BOOL)a3 exceptions:(id)a4
+- (void)_setContentRuleListsEnabled:(BOOL)enabled exceptions:(id)exceptions
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = WTF::HashTable<WTF::String,WTF::String,WTF::IdentityExtractor,WTF::DefaultHash<WTF::String>,WTF::HashTraits<WTF::String>,WTF::HashTraits<WTF::String>,WTF::FastMalloc>::computeBestTableSize([a4 count]);
+  v7 = WTF::HashTable<WTF::String,WTF::String,WTF::IdentityExtractor,WTF::DefaultHash<WTF::String>,WTF::HashTraits<WTF::String>,WTF::HashTraits<WTF::String>,WTF::FastMalloc>::computeBestTableSize([exceptions count]);
   v8 = WTF::fastZeroedMalloc((8 * v7 + 16));
   v9 = (v8 + 16);
   v25 = (v8 + 16);
@@ -135,7 +135,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = [a4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v11 = [exceptions countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v11)
   {
     v12 = *v22;
@@ -145,7 +145,7 @@
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(exceptions);
         }
 
         MEMORY[0x19EB02040](&v20, *(*(&v21 + 1) + 8 * i));
@@ -158,7 +158,7 @@
         }
       }
 
-      v11 = [a4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v11 = [exceptions countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v11);
@@ -166,7 +166,7 @@
   }
 
   v25 = 0;
-  LOBYTE(self[2].super.isa) = a3;
+  LOBYTE(self[2].super.isa) = enabled;
   v17 = *self[2]._websitePolicies.m_storage.data;
   *self[2]._websitePolicies.m_storage.data = v9;
   if (v17)
@@ -179,7 +179,7 @@
   }
 }
 
-- (void)_setActiveContentRuleListActionPatterns:(id)a3
+- (void)_setActiveContentRuleListActionPatterns:(id)patterns
 {
   v9 = 0;
   v10 = &v9;
@@ -193,7 +193,7 @@
   v8[2] = __64__WKWebpagePreferences__setActiveContentRuleListActionPatterns___block_invoke;
   v8[3] = &unk_1E76314D8;
   v8[4] = &v9;
-  [a3 enumerateKeysAndObjectsUsingBlock:v8];
+  [patterns enumerateKeysAndObjectsUsingBlock:v8];
   v5 = v10[6];
   v10[6] = 0;
   v6 = *&self->_websitePolicies.m_storage.data[24];
@@ -283,7 +283,7 @@ unint64_t __64__WKWebpagePreferences__setActiveContentRuleListActionPatterns___b
 
 - (id)_activeContentRuleListActionPatterns
 {
-  v22 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = WTF::HashTable<WTF::String,WTF::KeyValuePair<WTF::String,mpark::variant<WTF::String,unsigned long long,long long,BOOL,double>>,WTF::KeyValuePairKeyExtractor<WTF::KeyValuePair<WTF::String,mpark::variant<WTF::String,unsigned long long,long long,BOOL,double>>>,WTF::DefaultHash<WTF::String>,WTF::HashMap<WTF::String,mpark::variant<WTF::String,unsigned long long,long long,BOOL,double>,WTF::DefaultHash<WTF::String>,WTF::HashTraits<WTF::String>,WTF::HashTraits<mpark::variant<WTF::String,unsigned long long,long long,BOOL,double>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::HashTraits<WTF::String>,WTF::FastMalloc>::begin(&self->_websitePolicies.m_storage.data[24]);
   v4 = v3;
   v6 = v5;
@@ -358,7 +358,7 @@ unint64_t __64__WKWebpagePreferences__setActiveContentRuleListActionPatterns___b
         v19 = &stru_1F1147748;
       }
 
-      [v22 setObject:v9 forKey:v23];
+      [dictionary setObject:v9 forKey:v23];
       v20 = v23;
       v23 = 0;
       if (v20)
@@ -376,14 +376,14 @@ unint64_t __64__WKWebpagePreferences__setActiveContentRuleListActionPatterns___b
     while (v4 != v8);
   }
 
-  return v22;
+  return dictionary;
 }
 
-- (void)_setAutoplayPolicy:(int64_t)a3
+- (void)_setAutoplayPolicy:(int64_t)policy
 {
-  if (a3 <= 3)
+  if (policy <= 3)
   {
-    self[2]._websitePolicies.m_storage.data[10] = a3;
+    self[2]._websitePolicies.m_storage.data[10] = policy;
   }
 }
 
@@ -400,9 +400,9 @@ unint64_t __64__WKWebpagePreferences__setActiveContentRuleListActionPatterns___b
   }
 }
 
-- (void)_setDeviceOrientationAndMotionAccessPolicy:(unint64_t)a3
+- (void)_setDeviceOrientationAndMotionAccessPolicy:(unint64_t)policy
 {
-  if (a3 == 1)
+  if (policy == 1)
   {
     v3 = 256;
   }
@@ -412,7 +412,7 @@ unint64_t __64__WKWebpagePreferences__setActiveContentRuleListActionPatterns___b
     v3 = 257;
   }
 
-  if (!a3)
+  if (!policy)
   {
     v3 = 258;
   }
@@ -439,11 +439,11 @@ unint64_t __64__WKWebpagePreferences__setActiveContentRuleListActionPatterns___b
   }
 }
 
-- (void)_setPopUpPolicy:(unint64_t)a3
+- (void)_setPopUpPolicy:(unint64_t)policy
 {
-  if (a3 <= 2)
+  if (policy <= 2)
   {
-    self[2]._websitePolicies.m_storage.data[11] = a3;
+    self[2]._websitePolicies.m_storage.data[11] = policy;
   }
 }
 
@@ -508,9 +508,9 @@ unint64_t __64__WKWebpagePreferences__setActiveContentRuleListActionPatterns___b
   return v3;
 }
 
-- (void)_setCustomHeaderFields:(id)a3
+- (void)_setCustomHeaderFields:(id)fields
 {
-  v5 = [a3 count];
+  v5 = [fields count];
   v8 = v5;
   v19 = 0uLL;
   if (v5)
@@ -529,7 +529,7 @@ unint64_t __64__WKWebpagePreferences__setActiveContentRuleListActionPatterns___b
       v13 = v10 + 16;
       while (1)
       {
-        v14 = [objc_msgSend(a3 objectAtIndexedSubscript:{v9, v19), "_apiObject"}];
+        v14 = [objc_msgSend(fields objectAtIndexedSubscript:{v9, v19), "_apiObject"}];
         if ((*(*v14 + 16))(v14) != 52)
         {
           break;
@@ -621,10 +621,10 @@ LABEL_3:
   return v3;
 }
 
-- (void)_setWebsiteDataStore:(id)a3
+- (void)_setWebsiteDataStore:(id)store
 {
-  v4 = a3 + 8;
-  CFRetain(*(a3 + 2));
+  v4 = store + 8;
+  CFRetain(*(store + 2));
   v5 = *&self[2]._websitePolicies.m_storage.data[32];
   *&self[2]._websitePolicies.m_storage.data[32] = v4;
   if (v5)
@@ -657,12 +657,12 @@ LABEL_3:
   return v3;
 }
 
-- (void)_setUserContentController:(id)a3
+- (void)_setUserContentController:(id)controller
 {
-  v4 = a3 + 8;
-  if (a3)
+  v4 = controller + 8;
+  if (controller)
   {
-    CFRetain(*(a3 + 2));
+    CFRetain(*(controller + 2));
   }
 
   v5 = *&self[2]._websitePolicies.m_storage.data[40];
@@ -675,9 +675,9 @@ LABEL_3:
   }
 }
 
-- (void)_setCustomUserAgent:(id)a3
+- (void)_setCustomUserAgent:(id)agent
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, agent);
   v5 = v8;
   v8 = 0;
   v6 = *&self[1]._websitePolicies.m_storage.data[8];
@@ -737,9 +737,9 @@ LABEL_7:
   return v4;
 }
 
-- (void)_setCustomUserAgentAsSiteSpecificQuirks:(id)a3
+- (void)_setCustomUserAgentAsSiteSpecificQuirks:(id)quirks
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, quirks);
   v5 = v8;
   v8 = 0;
   v6 = *&self[1]._websitePolicies.m_storage.data[16];
@@ -799,9 +799,9 @@ LABEL_7:
   return v4;
 }
 
-- (void)_setCustomNavigatorPlatform:(id)a3
+- (void)_setCustomNavigatorPlatform:(id)platform
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, platform);
   v5 = v8;
   v8 = 0;
   v6 = *&self[1]._websitePolicies.m_storage.data[24];
@@ -908,9 +908,9 @@ LABEL_10:
   return v4;
 }
 
-- (void)_setApplicationNameForUserAgentWithModernCompatibility:(id)a3
+- (void)_setApplicationNameForUserAgentWithModernCompatibility:(id)compatibility
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, compatibility);
   v5 = v8;
   if (v8)
   {
@@ -935,15 +935,15 @@ LABEL_10:
   }
 }
 
-- (void)_setCaptivePortalModeEnabled:(BOOL)a3
+- (void)_setCaptivePortalModeEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if (!a3 && (WTF::processHasEntitlement() & 1) == 0 && (WTF::processHasEntitlement() & 1) == 0)
+  enabledCopy = enabled;
+  if (!enabled && (WTF::processHasEntitlement() & 1) == 0 && (WTF::processHasEntitlement() & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"The 'com.apple.developer.web-browser' restricted entitlement is required to disable Lockdown mode"];
   }
 
-  LOWORD(self[3].super.isa) = v3 | 0x100;
+  LOWORD(self[3].super.isa) = enabledCopy | 0x100;
 }
 
 - (unint64_t)_colorSchemePreference
@@ -960,11 +960,11 @@ LABEL_10:
   }
 }
 
-- (void)_setColorSchemePreference:(unint64_t)a3
+- (void)_setColorSchemePreference:(unint64_t)preference
 {
-  if (a3 <= 2)
+  if (preference <= 2)
   {
-    self[2]._websitePolicies.m_storage.data[19] = a3;
+    self[2]._websitePolicies.m_storage.data[19] = preference;
   }
 }
 
@@ -1025,19 +1025,19 @@ LABEL_10:
   LOWORD(self[3].super.isa) = v3 | 0x100;
 }
 
-- (void)setPreferredHTTPSNavigationPolicy:(int64_t)a3
+- (void)setPreferredHTTPSNavigationPolicy:(int64_t)policy
 {
-  if (a3 >= 4)
+  if (policy >= 4)
   {
-    v3 = 0;
+    policyCopy = 0;
   }
 
   else
   {
-    v3 = a3;
+    policyCopy = policy;
   }
 
-  self[2]._websitePolicies.m_storage.data[23] = v3;
+  self[2]._websitePolicies.m_storage.data[23] = policyCopy;
 }
 
 - (int64_t)preferredHTTPSNavigationPolicy
@@ -1053,9 +1053,9 @@ LABEL_10:
   }
 }
 
-- (void)_setNetworkConnectionIntegrityEnabled:(BOOL)a3
+- (void)_setNetworkConnectionIntegrityEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 449;
   }
@@ -1068,12 +1068,12 @@ LABEL_10:
   *&self[1]._websitePolicies.m_storage.data[40] = *&self[1]._websitePolicies.m_storage.data[40] & 0xFE3E | v3;
 }
 
-- (void)_setVisibilityAdjustmentSelectorsIncludingShadowHosts:(id)a3
+- (void)_setVisibilityAdjustmentSelectorsIncludingShadowHosts:(id)hosts
 {
   v59 = *MEMORY[0x1E69E9840];
   v54 = 0;
   v55 = 0;
-  v5 = [a3 count];
+  v5 = [hosts count];
   if (v5)
   {
     if (v5 >> 28)
@@ -1091,12 +1091,12 @@ LABEL_42:
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v50 objects:v58 count:16];
+  v6 = [hosts countByEnumeratingWithState:&v50 objects:v58 count:16];
   if (v6)
   {
     v36 = *v51;
-    v33 = self;
-    obj = a3;
+    selfCopy = self;
+    obj = hosts;
     do
     {
       v7 = 0;
@@ -1249,7 +1249,7 @@ LABEL_42:
 
       while (v7 != v35);
       v6 = [obj countByEnumeratingWithState:&v50 objects:v58 count:16];
-      self = v33;
+      self = selfCopy;
     }
 
     while (v6);
@@ -1374,15 +1374,15 @@ LABEL_42:
   return result;
 }
 
-- (void)_setVisibilityAdjustmentSelectors:(id)a3
+- (void)_setVisibilityAdjustmentSelectors:(id)selectors
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a3, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(selectors, "count")}];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  v6 = [selectors countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v6)
   {
     v7 = *v10;
@@ -1393,7 +1393,7 @@ LABEL_42:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(selectors);
         }
 
         v13 = [MEMORY[0x1E695DFD8] setWithObject:*(*(&v9 + 1) + 8 * v8)];
@@ -1402,7 +1402,7 @@ LABEL_42:
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v6 = [selectors countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v6);
@@ -1485,9 +1485,9 @@ LABEL_42:
   return v3;
 }
 
-- (void)_setPushAndNotificationAPIEnabled:(BOOL)a3
+- (void)_setPushAndNotificationAPIEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }

@@ -1,13 +1,13 @@
 @interface PHVoicemailManagerFactory
-+ (id)getFTVoiceMailWithOnVoicemailsChanged:(id)a3;
++ (id)getFTVoiceMailWithOnVoicemailsChanged:(id)changed;
 - (PHVoicemailManagerFactory)init;
 @end
 
 @implementation PHVoicemailManagerFactory
 
-+ (id)getFTVoiceMailWithOnVoicemailsChanged:(id)a3
++ (id)getFTVoiceMailWithOnVoicemailsChanged:(id)changed
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(changed);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   v5 = sub_100079BD0(sub_100079430, v4);

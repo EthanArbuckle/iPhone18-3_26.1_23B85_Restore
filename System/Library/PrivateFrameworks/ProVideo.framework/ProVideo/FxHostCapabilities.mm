@@ -1,6 +1,6 @@
 @interface FxHostCapabilities
 + (id)getRemoteHostCapabilities;
-+ (void)setRemoteHostCapabilities:(id)a3;
++ (void)setRemoteHostCapabilities:(id)capabilities;
 - (BOOL)formatsFloatRGBABitmapsAsARGB;
 - (BOOL)hostIsFCE;
 - (BOOL)hostIsFCP;
@@ -12,7 +12,7 @@
 - (BOOL)supportsHiddenParameters;
 - (BOOL)supportsTemporalBitmaps;
 - (BOOL)upscalesFields;
-- (FxHostCapabilities)initWithAPIManager:(id)a3;
+- (FxHostCapabilities)initWithAPIManager:(id)manager;
 - (id)glContextPixelFormatAttributes;
 - (id)hostID;
 - (unint64_t)timeBase;
@@ -22,7 +22,7 @@
 
 @implementation FxHostCapabilities
 
-- (FxHostCapabilities)initWithAPIManager:(id)a3
+- (FxHostCapabilities)initWithAPIManager:(id)manager
 {
   v15.receiver = self;
   v15.super_class = FxHostCapabilities;
@@ -54,7 +54,7 @@
 
       v4->_hostCapPriv->var1 = MainBundle;
       v4->_hostCapPriv->var0 = [objc_msgSend(MEMORY[0x277CCA8D8] "mainBundle")];
-      v8 = [a3 apiForProtocol:&unk_28735F220];
+      v8 = [manager apiForProtocol:&unk_28735F220];
       if (v8)
       {
         v4->_hostCapPriv->var2 = [v8 hostProperties];
@@ -108,13 +108,13 @@
   [(FxHostCapabilities *)&v6 dealloc];
 }
 
-+ (void)setRemoteHostCapabilities:(id)a3
++ (void)setRemoteHostCapabilities:(id)capabilities
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = *"";
   block[2] = __48__FxHostCapabilities_setRemoteHostCapabilities___block_invoke;
   block[3] = &unk_279AA8060;
-  block[4] = a3;
+  block[4] = capabilities;
   if (setRemoteHostCapabilities__onceToken != -1)
   {
     dispatch_once(&setRemoteHostCapabilities__onceToken, block);
@@ -238,9 +238,9 @@ id __48__FxHostCapabilities_setRemoteHostCapabilities___block_invoke(uint64_t a1
     v5 = [var2 valueForKey:@"HostVersion"];
     if (v5)
     {
-      v6 = [v5 intValue];
+      intValue = [v5 intValue];
       hostCapPriv = self->_hostCapPriv;
-      hostCapPriv->var1 = v6;
+      hostCapPriv->var1 = intValue;
     }
 
     else

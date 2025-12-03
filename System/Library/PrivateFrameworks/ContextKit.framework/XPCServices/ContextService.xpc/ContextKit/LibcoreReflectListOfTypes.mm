@@ -3,15 +3,15 @@
 - (id)description;
 - (id)getResolvedTypes;
 - (int)length;
-- (void)addWithJavaLangReflectType:(id)a3;
+- (void)addWithJavaLangReflectType:(id)type;
 - (void)dealloc;
 @end
 
 @implementation LibcoreReflectListOfTypes
 
-- (void)addWithJavaLangReflectType:(id)a3
+- (void)addWithJavaLangReflectType:(id)type
 {
-  if (!a3)
+  if (!type)
   {
     v4 = new_JavaLangNullPointerException_initWithNSString_(@"type == null");
     objc_exception_throw(v4);
@@ -89,7 +89,7 @@ LABEL_7:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_LibcoreReflectListOfTypes_initWithInt_(0);
     JreStrongAssignAndConsume(&LibcoreReflectListOfTypes_EMPTY_, v2);

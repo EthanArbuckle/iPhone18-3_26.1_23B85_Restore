@@ -1,11 +1,11 @@
 @interface EKChangeListener
-+ (BOOL)isSyncStatusChangeNotification:(id)a3;
-+ (id)changedIdentifiersForNotification:(id)a3;
-+ (id)updatedObjectFor:(id)a3 changeNotification:(id)a4;
++ (BOOL)isSyncStatusChangeNotification:(id)notification;
++ (id)changedIdentifiersForNotification:(id)notification;
++ (id)updatedObjectFor:(id)for changeNotification:(id)notification;
 - (EKChangeListener)init;
 - (id)_orderedDelegates;
-- (void)objectsChangedNotification:(id)a3;
-- (void)registerDelegate:(id)a3;
+- (void)objectsChangedNotification:(id)notification;
+- (void)registerDelegate:(id)delegate;
 @end
 
 @implementation EKChangeListener
@@ -17,31 +17,31 @@
   v2 = [(EKChangeListener *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
-    [(EKChangeListener *)v2 setDelegates:v3];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    [(EKChangeListener *)v2 setDelegates:weakObjectsPointerArray];
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v2 selector:sel_objectsChangedNotification_ name:@"EKEventModifiedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_objectsChangedNotification_ name:@"EKEventModifiedNotification" object:0];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel_objectsChangedNotification_ name:@"EKEventStoreChangedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_objectsChangedNotification_ name:@"EKEventStoreChangedNotification" object:0];
   }
 
   return v2;
 }
 
-- (void)registerDelegate:(id)a3
+- (void)registerDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(EKChangeListener *)self delegates];
-  [v5 addPointer:v4];
+  delegateCopy = delegate;
+  delegates = [(EKChangeListener *)self delegates];
+  [delegates addPointer:delegateCopy];
 }
 
 - (id)_orderedDelegates
 {
-  v2 = [(EKChangeListener *)self delegates];
-  v3 = [v2 allObjects];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_14];
+  delegates = [(EKChangeListener *)self delegates];
+  allObjects = [delegates allObjects];
+  v4 = [allObjects sortedArrayUsingComparator:&__block_literal_global_14];
 
   return v4;
 }
@@ -63,23 +63,23 @@ uint64_t __37__EKChangeListener__orderedDelegates__block_invoke(uint64_t a1, voi
   return v6;
 }
 
-- (void)objectsChangedNotification:(id)a3
+- (void)objectsChangedNotification:(id)notification
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![EKChangeListener isSyncStatusChangeNotification:v4])
+  notificationCopy = notification;
+  if (![EKChangeListener isSyncStatusChangeNotification:notificationCopy])
   {
-    v5 = [(EKChangeListener *)self delegates];
-    [v5 compact];
+    delegates = [(EKChangeListener *)self delegates];
+    [delegates compact];
 
-    v35 = [v4 userInfo];
-    v6 = [v35 objectForKeyedSubscript:@"EKEventStoreRevert"];
-    v7 = [v6 BOOLValue];
+    userInfo = [notificationCopy userInfo];
+    v6 = [userInfo objectForKeyedSubscript:@"EKEventStoreRevert"];
+    bOOLValue = [v6 BOOLValue];
 
-    if (v7)
+    if (bOOLValue)
     {
-      v8 = [v4 userInfo];
-      v42 = [v8 objectForKeyedSubscript:@"EKEventStoreModifiedEventIdentifier"];
+      userInfo2 = [notificationCopy userInfo];
+      v42 = [userInfo2 objectForKeyedSubscript:@"EKEventStoreModifiedEventIdentifier"];
     }
 
     else
@@ -87,7 +87,7 @@ uint64_t __37__EKChangeListener__orderedDelegates__block_invoke(uint64_t a1, voi
       v42 = 0;
     }
 
-    v36 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
@@ -97,9 +97,9 @@ uint64_t __37__EKChangeListener__orderedDelegates__block_invoke(uint64_t a1, voi
     if (v43)
     {
       v41 = *v65;
-      v39 = self;
-      v40 = v4;
-      v38 = v7;
+      selfCopy = self;
+      v40 = notificationCopy;
+      v38 = bOOLValue;
       do
       {
         for (i = 0; i != v43; ++i)
@@ -110,29 +110,29 @@ uint64_t __37__EKChangeListener__orderedDelegates__block_invoke(uint64_t a1, voi
           }
 
           v10 = *(*(&v64 + 1) + 8 * i);
-          v11 = [MEMORY[0x1E695DF90] dictionary];
-          v12 = [MEMORY[0x1E695DF70] array];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
+          array2 = [MEMORY[0x1E695DF70] array];
           aBlock[0] = MEMORY[0x1E69E9820];
           aBlock[1] = 3221225472;
           aBlock[2] = __47__EKChangeListener_objectsChangedNotification___block_invoke;
           aBlock[3] = &unk_1E77FD9E8;
           aBlock[4] = self;
-          v59 = v4;
-          v13 = v11;
+          v59 = notificationCopy;
+          v13 = dictionary;
           v60 = v13;
-          v63 = v7;
+          v63 = bOOLValue;
           v61 = v42;
-          v14 = v12;
+          v14 = array2;
           v62 = v14;
           v15 = _Block_copy(aBlock);
           if (objc_opt_respondsToSelector())
           {
-            v16 = [v10 trackedObjectMap];
+            trackedObjectMap = [v10 trackedObjectMap];
             v54 = 0u;
             v55 = 0u;
             v56 = 0u;
             v57 = 0u;
-            v17 = [v16 countByEnumeratingWithState:&v54 objects:v70 count:16];
+            v17 = [trackedObjectMap countByEnumeratingWithState:&v54 objects:v70 count:16];
             if (v17)
             {
               v18 = v17;
@@ -145,22 +145,22 @@ uint64_t __37__EKChangeListener__orderedDelegates__block_invoke(uint64_t a1, voi
                 {
                   if (*v55 != v19)
                   {
-                    objc_enumerationMutation(v16);
+                    objc_enumerationMutation(trackedObjectMap);
                   }
 
                   v21 = *(*(&v54 + 1) + 8 * j);
-                  v22 = [v16 objectForKeyedSubscript:v21];
+                  v22 = [trackedObjectMap objectForKeyedSubscript:v21];
                   v15[2](v15, v21, v22);
                 }
 
-                v18 = [v16 countByEnumeratingWithState:&v54 objects:v70 count:16];
+                v18 = [trackedObjectMap countByEnumeratingWithState:&v54 objects:v70 count:16];
               }
 
               while (v18);
 LABEL_26:
-              self = v39;
-              v4 = v40;
-              v7 = v38;
+              self = selfCopy;
+              notificationCopy = v40;
+              bOOLValue = v38;
               v14 = v44;
               v13 = v45;
             }
@@ -172,8 +172,8 @@ LABEL_26:
             v53 = 0u;
             v50 = 0u;
             v51 = 0u;
-            v16 = [v10 trackedObjects];
-            v23 = [v16 countByEnumeratingWithState:&v50 objects:v69 count:16];
+            trackedObjectMap = [v10 trackedObjects];
+            v23 = [trackedObjectMap countByEnumeratingWithState:&v50 objects:v69 count:16];
             if (v23)
             {
               v24 = v23;
@@ -186,15 +186,15 @@ LABEL_26:
                 {
                   if (*v51 != v25)
                   {
-                    objc_enumerationMutation(v16);
+                    objc_enumerationMutation(trackedObjectMap);
                   }
 
                   v27 = *(*(&v50 + 1) + 8 * k);
-                  v28 = [v27 specificIdentifier];
-                  (v15)[2](v15, v28, v27);
+                  specificIdentifier = [v27 specificIdentifier];
+                  (v15)[2](v15, specificIdentifier, v27);
                 }
 
-                v24 = [v16 countByEnumeratingWithState:&v50 objects:v69 count:16];
+                v24 = [trackedObjectMap countByEnumeratingWithState:&v50 objects:v69 count:16];
               }
 
               while (v24);
@@ -202,7 +202,7 @@ LABEL_26:
             }
           }
 
-          if (v7 && [v14 count] && (objc_opt_respondsToSelector() & 1) != 0)
+          if (bOOLValue && [v14 count] && (objc_opt_respondsToSelector() & 1) != 0)
           {
             [v10 trackedObjectsDidRevert:v14];
           }
@@ -210,7 +210,7 @@ LABEL_26:
           [v10 trackedObjectsDidUpdate:v13];
           if (objc_opt_respondsToSelector())
           {
-            [v36 addObject:v10];
+            [array addObject:v10];
           }
         }
 
@@ -224,7 +224,7 @@ LABEL_26:
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v29 = v36;
+    v29 = array;
     v30 = [v29 countByEnumeratingWithState:&v46 objects:v68 count:16];
     if (v30)
     {
@@ -281,32 +281,32 @@ void __47__EKChangeListener_objectsChangedNotification___block_invoke(uint64_t a
   }
 }
 
-+ (id)updatedObjectFor:(id)a3 changeNotification:(id)a4
++ (id)updatedObjectFor:(id)for changeNotification:(id)notification
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"EKEventStoreChangeTypeUserInfoKey"];
+  forCopy = for;
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"EKEventStoreChangeTypeUserInfoKey"];
   v9 = v8;
   if (v8 && [v8 integerValue] != 1)
   {
-    v13 = v5;
+    object2 = forCopy;
     goto LABEL_18;
   }
 
-  v10 = [v7 objectForKeyedSubscript:@"EKEventStoreRevert"];
-  v11 = [v10 BOOLValue];
+  v10 = [userInfo objectForKeyedSubscript:@"EKEventStoreRevert"];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
-    v12 = [v6 object];
+    object = [notificationCopy object];
 
-    if (v12)
+    if (object)
     {
-      v13 = [v6 object];
-      v14 = [v13 specificIdentifier];
-      v15 = [v5 specificIdentifier];
-      v16 = [v14 isEqual:v15];
+      object2 = [notificationCopy object];
+      specificIdentifier = [object2 specificIdentifier];
+      specificIdentifier2 = [forCopy specificIdentifier];
+      v16 = [specificIdentifier isEqual:specificIdentifier2];
 
       if (v16)
       {
@@ -315,19 +315,19 @@ void __47__EKChangeListener_objectsChangedNotification___block_invoke(uint64_t a
     }
   }
 
-  v17 = [objc_opt_class() changedIdentifiersForNotification:v6];
-  v18 = [v5 uniqueIdentifier];
-  v19 = [v17 containsObject:v18];
+  v17 = [objc_opt_class() changedIdentifiersForNotification:notificationCopy];
+  uniqueIdentifier = [forCopy uniqueIdentifier];
+  v19 = [v17 containsObject:uniqueIdentifier];
 
   if ((v19 & 1) == 0 && v17)
   {
     goto LABEL_16;
   }
 
-  if (![v5 _refreshable])
+  if (![forCopy _refreshable])
   {
-    v13 = [v6 object];
-    if (v13)
+    object2 = [notificationCopy object];
+    if (object2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -339,27 +339,27 @@ void __47__EKChangeListener_objectsChangedNotification___block_invoke(uint64_t a
     goto LABEL_16;
   }
 
-  if ([v5 refreshAndNotify:0])
+  if ([forCopy refreshAndNotify:0])
   {
 LABEL_16:
-    v13 = v5;
+    object2 = forCopy;
     goto LABEL_17;
   }
 
-  v13 = 0;
+  object2 = 0;
 LABEL_17:
 
 LABEL_18:
 
-  return v13;
+  return object2;
 }
 
-+ (id)changedIdentifiersForNotification:(id)a3
++ (id)changedIdentifiersForNotification:(id)notification
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  objc_sync_enter(v3);
-  v4 = objc_getAssociatedObject(v3, &changedIdentifiersForNotification__associatedObjectKey);
+  notificationCopy = notification;
+  objc_sync_enter(notificationCopy);
+  v4 = objc_getAssociatedObject(notificationCopy, &changedIdentifiersForNotification__associatedObjectKey);
   if (v4)
   {
     objc_opt_class();
@@ -377,24 +377,24 @@ LABEL_18:
 
   else
   {
-    v6 = [v3 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"EKEventStoreModifiedEventIdentifier"];
+    userInfo = [notificationCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:@"EKEventStoreModifiedEventIdentifier"];
 
     if (v7)
     {
       v5 = [MEMORY[0x1E695DFD8] setWithObject:v7];
-      objc_setAssociatedObject(v3, &changedIdentifiersForNotification__associatedObjectKey, v5, 1);
+      objc_setAssociatedObject(notificationCopy, &changedIdentifiersForNotification__associatedObjectKey, v5, 1);
       v4 = 0;
     }
 
     else
     {
-      v8 = [v3 userInfo];
-      v9 = [v8 objectForKeyedSubscript:@"EKEventStoreChangedObjectIDsUserInfoKey"];
+      userInfo2 = [notificationCopy userInfo];
+      v9 = [userInfo2 objectForKeyedSubscript:@"EKEventStoreChangedObjectIDsUserInfoKey"];
 
       if (v9)
       {
-        v10 = [v3 object];
+        object = [notificationCopy object];
         v11 = [MEMORY[0x1E695DFA8] set];
         v23 = 0u;
         v24 = 0u;
@@ -427,16 +427,16 @@ LABEL_18:
           while (v13);
         }
 
-        v17 = [v10 uniqueIdentifiersForEventsWithObjectIDs:v11];
+        v17 = [object uniqueIdentifiersForEventsWithObjectIDs:v11];
         if (v17)
         {
-          objc_setAssociatedObject(v3, &changedIdentifiersForNotification__associatedObjectKey, v17, 1);
+          objc_setAssociatedObject(notificationCopy, &changedIdentifiersForNotification__associatedObjectKey, v17, 1);
         }
 
         else
         {
-          v18 = [MEMORY[0x1E695DFB0] null];
-          objc_setAssociatedObject(v3, &changedIdentifiersForNotification__associatedObjectKey, v18, 1);
+          null = [MEMORY[0x1E695DFB0] null];
+          objc_setAssociatedObject(notificationCopy, &changedIdentifiersForNotification__associatedObjectKey, null, 1);
         }
 
         v4 = v17;
@@ -451,16 +451,16 @@ LABEL_18:
     }
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(notificationCopy);
   v19 = *MEMORY[0x1E69E9840];
 
   return v5;
 }
 
-+ (BOOL)isSyncStatusChangeNotification:(id)a3
++ (BOOL)isSyncStatusChangeNotification:(id)notification
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"EKEventStoreChangeTypeUserInfoKey"];
+  userInfo = [notification userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"EKEventStoreChangeTypeUserInfoKey"];
 
   if (v4)
   {

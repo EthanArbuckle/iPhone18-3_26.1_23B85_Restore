@@ -1,12 +1,12 @@
 @interface MRFrameManager
 + (void)initialize;
 - (MRFrameManager)init;
-- (id)frameWithFrameID:(id)a3;
-- (id)resourcePathForFrameID:(id)a3 andResource:(id)a4;
-- (id)sizeScriptForFrameID:(id)a3;
+- (id)frameWithFrameID:(id)d;
+- (id)resourcePathForFrameID:(id)d andResource:(id)resource;
+- (id)sizeScriptForFrameID:(id)d;
 - (void)cleanup;
 - (void)dealloc;
-- (void)recycleFrame:(id)a3;
+- (void)recycleFrame:(id)frame;
 - (void)releaseResources;
 @end
 
@@ -14,7 +14,7 @@
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___MRFrameManager;
   objc_msgSendSuper2(&v2, "initialize");
   if (!qword_1EF3C8)
@@ -123,22 +123,22 @@
   [(NSMutableDictionary *)self->mFramePools removeAllObjects];
 }
 
-- (id)frameWithFrameID:(id)a3
+- (id)frameWithFrameID:(id)d
 {
-  if (a3)
+  if (d)
   {
     objc_sync_enter(self);
-    v5 = [(NSMutableDictionary *)self->mFramePools objectForKey:a3];
+    v5 = [(NSMutableDictionary *)self->mFramePools objectForKey:d];
     v6 = v5;
     if (v5 && [v5 count])
     {
-      v7 = [v6 anyObject];
-      if (v7 != +[NSNull null])
+      anyObject = [v6 anyObject];
+      if (anyObject != +[NSNull null])
       {
-        [v6 removeObject:v7];
+        [v6 removeObject:anyObject];
 LABEL_21:
         objc_sync_exit(self);
-        return v7;
+        return anyObject;
       }
     }
 
@@ -147,75 +147,75 @@ LABEL_21:
       v8 = [objc_msgSend(+[MPFrameManager sharedManager](MPFrameManager "sharedManager")];
       if (v8)
       {
-        v9 = v8;
+        dCopy = v8;
       }
 
       else
       {
-        v9 = a3;
+        dCopy = d;
       }
 
-      v10 = NSClassFromString([@"MRFrame" stringByAppendingString:v9]);
+      v10 = NSClassFromString([@"MRFrame" stringByAppendingString:dCopy]);
       v11 = [NSBundle bundleForClass:v10];
       if (v11 == [NSBundle bundleForClass:objc_opt_class()]&& v10 != 0)
       {
-        v7 = [[v10 alloc] initWithFrameID:a3];
-        if (v7)
+        anyObject = [[v10 alloc] initWithFrameID:d];
+        if (anyObject)
         {
-          v13 = [(NSMutableDictionary *)self->mFrameSets objectForKey:a3];
+          v13 = [(NSMutableDictionary *)self->mFrameSets objectForKey:d];
           if (v13)
           {
-            [v13 addObject:v7];
+            [v13 addObject:anyObject];
           }
 
           else
           {
-            [(NSMutableDictionary *)self->mFrameSets setObject:[NSMutableSet forKey:"setWithObject:" setWithObject:v7], a3];
+            [(NSMutableDictionary *)self->mFrameSets setObject:[NSMutableSet forKey:"setWithObject:" setWithObject:anyObject], d];
           }
 
           goto LABEL_21;
         }
       }
 
-      [(NSMutableDictionary *)self->mFramePools setObject:+[NSMutableSet setWithObject:](NSMutableSet forKey:"setWithObject:", +[NSNull null]), a3];
+      [(NSMutableDictionary *)self->mFramePools setObject:+[NSMutableSet setWithObject:](NSMutableSet forKey:"setWithObject:", +[NSNull null]), d];
     }
 
-    v7 = 0;
+    anyObject = 0;
     goto LABEL_21;
   }
 
   return 0;
 }
 
-- (void)recycleFrame:(id)a3
+- (void)recycleFrame:(id)frame
 {
   objc_sync_enter(self);
-  v5 = -[NSMutableDictionary objectForKey:](self->mFramePools, "objectForKey:", [a3 frameID]);
+  v5 = -[NSMutableDictionary objectForKey:](self->mFramePools, "objectForKey:", [frame frameID]);
   if (v5)
   {
-    [v5 addObject:a3];
+    [v5 addObject:frame];
   }
 
   else
   {
-    -[NSMutableDictionary setObject:forKey:](self->mFramePools, "setObject:forKey:", +[NSMutableSet setWithObject:](NSMutableSet, "setWithObject:", a3), [a3 frameID]);
+    -[NSMutableDictionary setObject:forKey:](self->mFramePools, "setObject:forKey:", +[NSMutableSet setWithObject:](NSMutableSet, "setWithObject:", frame), [frame frameID]);
   }
 
   objc_sync_exit(self);
 }
 
-- (id)resourcePathForFrameID:(id)a3 andResource:(id)a4
+- (id)resourcePathForFrameID:(id)d andResource:(id)resource
 {
   v5 = [objc_msgSend(+[MPFrameManager sharedManager](MPFrameManager "sharedManager")];
   if (!v5)
   {
-    return a4;
+    return resource;
   }
 
-  return [v5 stringByAppendingPathComponent:a4];
+  return [v5 stringByAppendingPathComponent:resource];
 }
 
-- (id)sizeScriptForFrameID:(id)a3
+- (id)sizeScriptForFrameID:(id)d
 {
   v3 = [+[MPFrameManager sharedManager](MPFrameManager "sharedManager")];
 

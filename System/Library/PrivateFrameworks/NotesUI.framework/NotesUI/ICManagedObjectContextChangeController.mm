@@ -1,15 +1,15 @@
 @interface ICManagedObjectContextChangeController
-- (ICManagedObjectContextChangeController)initWithManagedObjectContexts:(id)a3 delegate:(id)a4;
+- (ICManagedObjectContextChangeController)initWithManagedObjectContexts:(id)contexts delegate:(id)delegate;
 - (ICManagedObjectContextChangeControllerDelegate)delegate;
 - (NSSet)objectTypeKeys;
 - (void)_performUpdatesIfNeeded;
 - (void)addObservers;
 - (void)dealloc;
-- (void)managedObjectContextObjectsDidChange:(id)a3;
+- (void)managedObjectContextObjectsDidChange:(id)change;
 - (void)performUpdatesIfNeeded;
 - (void)performUpdatesIfNeededAndWait;
 - (void)removeObservers;
-- (void)setUpdateInterval:(double)a3;
+- (void)setUpdateInterval:(double)interval;
 @end
 
 @implementation ICManagedObjectContextChangeController
@@ -17,16 +17,16 @@
 - (void)addObservers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(ICManagedObjectContextChangeController *)self managedObjectContexts];
+  managedObjectContexts = [(ICManagedObjectContextChangeController *)self managedObjectContexts];
 
-  if (v3)
+  if (managedObjectContexts)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(ICManagedObjectContextChangeController *)self managedObjectContexts];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    managedObjectContexts2 = [(ICManagedObjectContextChangeController *)self managedObjectContexts];
+    v5 = [managedObjectContexts2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -38,15 +38,15 @@
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(managedObjectContexts2);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
-          v11 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v11 addObserver:self selector:sel_managedObjectContextObjectsDidChange_ name:v8 object:v10];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter addObserver:self selector:sel_managedObjectContextObjectsDidChange_ name:v8 object:v10];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [managedObjectContexts2 countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v6);
@@ -55,27 +55,27 @@
 
   else
   {
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:self selector:sel_managedObjectContextObjectsDidChange_ name:*MEMORY[0x1E695D360] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_managedObjectContextObjectsDidChange_ name:*MEMORY[0x1E695D360] object:0];
   }
 }
 
-- (ICManagedObjectContextChangeController)initWithManagedObjectContexts:(id)a3 delegate:(id)a4
+- (ICManagedObjectContextChangeController)initWithManagedObjectContexts:(id)contexts delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  contextsCopy = contexts;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = ICManagedObjectContextChangeController;
   v9 = [(ICManagedObjectContextChangeController *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_managedObjectContexts, a3);
+    objc_storeStrong(&v9->_managedObjectContexts, contexts);
     v11 = [MEMORY[0x1E695DFA8] set];
     needsUpdateManagedObjectIDs = v10->_needsUpdateManagedObjectIDs;
     v10->_needsUpdateManagedObjectIDs = v11;
 
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v10->_objectTypes = 15;
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_create("com.apple.notes.moc-change-controller-object-ids-serial-queue", v13);
@@ -104,13 +104,13 @@
 - (void)performUpdatesIfNeeded
 {
   objc_initWeak(&location, self);
-  v3 = [(ICManagedObjectContextChangeController *)self needsUpdateManagedObjectIDsSerialQueue];
+  needsUpdateManagedObjectIDsSerialQueue = [(ICManagedObjectContextChangeController *)self needsUpdateManagedObjectIDsSerialQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __64__ICManagedObjectContextChangeController_performUpdatesIfNeeded__block_invoke;
   v4[3] = &unk_1E846AA18;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(needsUpdateManagedObjectIDsSerialQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -132,25 +132,25 @@ void __64__ICManagedObjectContextChangeController_performUpdatesIfNeeded__block_
   [(ICManagedObjectContextChangeController *)self _performUpdatesIfNeeded];
 }
 
-- (void)setUpdateInterval:(double)a3
+- (void)setUpdateInterval:(double)interval
 {
-  self->_updateInterval = a3;
-  v4 = [(ICManagedObjectContextChangeController *)self updateSelectorDelayer];
-  [v4 setDelay:a3];
+  self->_updateInterval = interval;
+  updateSelectorDelayer = [(ICManagedObjectContextChangeController *)self updateSelectorDelayer];
+  [updateSelectorDelayer setDelay:interval];
 }
 
-- (void)managedObjectContextObjectsDidChange:(id)a3
+- (void)managedObjectContextObjectsDidChange:(id)change
 {
   val = self;
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  changeCopy = change;
   v4 = [MEMORY[0x1E695DFA8] set];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(ICManagedObjectContextChangeController *)val objectTypeKeys];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  objectTypeKeys = [(ICManagedObjectContextChangeController *)val objectTypeKeys];
+  v6 = [objectTypeKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
     v7 = *v23;
@@ -162,12 +162,12 @@ void __64__ICManagedObjectContextChangeController_performUpdatesIfNeeded__block_
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectTypeKeys);
         }
 
         v10 = *(*(&v22 + 1) + 8 * v9);
-        v11 = [v3 userInfo];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        userInfo = [changeCopy userInfo];
+        v12 = [userInfo objectForKeyedSubscript:v10];
 
         if ([v10 isEqualToString:v8])
         {
@@ -182,26 +182,26 @@ void __64__ICManagedObjectContextChangeController_performUpdatesIfNeeded__block_
       }
 
       while (v6 != v9);
-      v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v6 = [objectTypeKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v6);
   }
 
-  v14 = [(ICManagedObjectContextChangeController *)val delegate];
-  v15 = [v14 managedObjectContextChangeController:val managedObjectIDsToUpdateForUpdatedManagedObjects:v4];
+  delegate = [(ICManagedObjectContextChangeController *)val delegate];
+  v15 = [delegate managedObjectContextChangeController:val managedObjectIDsToUpdateForUpdatedManagedObjects:v4];
 
   if ([v15 count])
   {
     objc_initWeak(&location, val);
-    v16 = [(ICManagedObjectContextChangeController *)val needsUpdateManagedObjectIDsSerialQueue];
+    needsUpdateManagedObjectIDsSerialQueue = [(ICManagedObjectContextChangeController *)val needsUpdateManagedObjectIDsSerialQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __79__ICManagedObjectContextChangeController_managedObjectContextObjectsDidChange___block_invoke_2;
     block[3] = &unk_1E846A288;
     objc_copyWeak(&v20, &location);
     v19 = v15;
-    dispatch_async(v16, block);
+    dispatch_async(needsUpdateManagedObjectIDsSerialQueue, block);
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(&location);
@@ -257,14 +257,14 @@ void __79__ICManagedObjectContextChangeController_managedObjectContextObjectsDid
 
 - (void)_performUpdatesIfNeeded
 {
-  v3 = [(ICManagedObjectContextChangeController *)self needsUpdateManagedObjectIDs];
-  v4 = [v3 count];
+  needsUpdateManagedObjectIDs = [(ICManagedObjectContextChangeController *)self needsUpdateManagedObjectIDs];
+  v4 = [needsUpdateManagedObjectIDs count];
 
   if (v4)
   {
     objc_initWeak(&location, self);
-    v5 = [(ICManagedObjectContextChangeController *)self updateSelectorDelayer];
-    [v5 cancelPreviousFireRequests];
+    updateSelectorDelayer = [(ICManagedObjectContextChangeController *)self updateSelectorDelayer];
+    [updateSelectorDelayer cancelPreviousFireRequests];
 
     v7 = MEMORY[0x1E69E9820];
     objc_copyWeak(&v8, &location);
@@ -288,13 +288,13 @@ void __65__ICManagedObjectContextChangeController__performUpdatesIfNeeded__block
 - (void)removeObservers
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(ICManagedObjectContextChangeController *)self managedObjectContexts];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  managedObjectContexts = [(ICManagedObjectContextChangeController *)self managedObjectContexts];
+  v5 = [managedObjectContexts countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -307,14 +307,14 @@ void __65__ICManagedObjectContextChangeController__performUpdatesIfNeeded__block
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(managedObjectContexts);
         }
 
-        [v3 removeObserver:self name:v8 object:*(*(&v10 + 1) + 8 * v9++)];
+        [defaultCenter removeObserver:self name:v8 object:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [managedObjectContexts countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);

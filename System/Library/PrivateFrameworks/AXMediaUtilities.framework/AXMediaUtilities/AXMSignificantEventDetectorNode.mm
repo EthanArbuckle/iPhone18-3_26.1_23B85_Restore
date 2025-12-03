@@ -1,16 +1,16 @@
 @interface AXMSignificantEventDetectorNode
-+ (BOOL)addSignificantEventResultToContext:(id)a3 forIdentifier:(id)a4 confidence:(double)a5 markAsSensitiveCaptionContent:(BOOL)a6;
++ (BOOL)addSignificantEventResultToContext:(id)context forIdentifier:(id)identifier confidence:(double)confidence markAsSensitiveCaptionContent:(BOOL)content;
 + (BOOL)isSupported;
 - (BOOL)validateVisionKitSoftLinkSymbols;
-- (void)evaluate:(id)a3 metrics:(id)a4;
+- (void)evaluate:(id)evaluate metrics:(id)metrics;
 @end
 
 @implementation AXMSignificantEventDetectorNode
 
 + (BOOL)isSupported
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 physicalMemory] > 0x773593FF;
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  v3 = [processInfo physicalMemory] > 0x773593FF;
 
   return v3;
 }
@@ -36,14 +36,14 @@
   }
 }
 
-- (void)evaluate:(id)a3 metrics:(id)a4
+- (void)evaluate:(id)evaluate metrics:(id)metrics
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  evaluateCopy = evaluate;
+  metricsCopy = metrics;
   v25.receiver = self;
   v25.super_class = AXMSignificantEventDetectorNode;
-  [(AXMEvaluationNode *)&v25 evaluate:v6 metrics:v7];
+  [(AXMEvaluationNode *)&v25 evaluate:evaluateCopy metrics:metricsCopy];
   context = objc_autoreleasePoolPush();
   request = self->_request;
   if (!request)
@@ -57,14 +57,14 @@
 
   v27[0] = request;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
-  [(AXMEvaluationNode *)self evaluateRequests:v11 withContext:v6 requestHandlerOptions:0 metrics:v7 error:0];
+  [(AXMEvaluationNode *)self evaluateRequests:v11 withContext:evaluateCopy requestHandlerOptions:0 metrics:metricsCopy error:0];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = [(VN6Mb1ME89lyW3HpahkEygIG *)self->_request results];
-  v13 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  results = [(VN6Mb1ME89lyW3HpahkEygIG *)self->_request results];
+  v13 = [results countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v13)
   {
     v14 = v13;
@@ -75,16 +75,16 @@
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(results);
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
-        v18 = [v17 identifier];
+        identifier = [v17 identifier];
         [v17 confidence];
-        [AXMSignificantEventDetectorNode addSignificantEventResultToContext:v6 forIdentifier:v18 confidence:0 markAsSensitiveCaptionContent:v19];
+        [AXMSignificantEventDetectorNode addSignificantEventResultToContext:evaluateCopy forIdentifier:identifier confidence:0 markAsSensitiveCaptionContent:v19];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v14 = [results countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v14);
@@ -93,11 +93,11 @@
   objc_autoreleasePoolPop(context);
 }
 
-+ (BOOL)addSignificantEventResultToContext:(id)a3 forIdentifier:(id)a4 confidence:(double)a5 markAsSensitiveCaptionContent:(BOOL)a6
++ (BOOL)addSignificantEventResultToContext:(id)context forIdentifier:(id)identifier confidence:(double)confidence markAsSensitiveCaptionContent:(BOOL)content
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
+  contentCopy = content;
+  contextCopy = context;
+  identifierCopy = identifier;
   v42 = 0;
   v43 = &v42;
   v44 = 0x2020000000;
@@ -126,7 +126,7 @@ LABEL_47:
     goto LABEL_48;
   }
 
-  if ([v10 isEqualToString:*v11])
+  if ([identifierCopy isEqualToString:*v11])
   {
     v13 = AXMSignificantEventCategoryBlood;
     goto LABEL_39;
@@ -151,7 +151,7 @@ LABEL_47:
     goto LABEL_44;
   }
 
-  if ([v10 isEqualToString:*v14])
+  if ([identifierCopy isEqualToString:*v14])
   {
     v13 = AXMSignificantEventCategoryDemonstration;
     goto LABEL_39;
@@ -176,7 +176,7 @@ LABEL_47:
     goto LABEL_45;
   }
 
-  if ([v10 isEqualToString:*v16])
+  if ([identifierCopy isEqualToString:*v16])
   {
     v13 = AXMSignificantEventCategoryDestruction;
     goto LABEL_39;
@@ -201,7 +201,7 @@ LABEL_47:
     goto LABEL_46;
   }
 
-  if ([v10 isEqualToString:*v18])
+  if ([identifierCopy isEqualToString:*v18])
   {
     v13 = AXMSignificantEventCategoryFireDevastation;
     goto LABEL_39;
@@ -226,7 +226,7 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  if ([v10 isEqualToString:*v20])
+  if ([identifierCopy isEqualToString:*v20])
   {
     v13 = AXMSignificantEventCategoryFloodDevastation;
     goto LABEL_39;
@@ -254,7 +254,7 @@ LABEL_48:
     _Unwind_Resume(v41);
   }
 
-  if ([v10 isEqualToString:*v22])
+  if ([identifierCopy isEqualToString:*v22])
   {
     v13 = AXMSignificantEventCategoryFuneral;
   }
@@ -262,7 +262,7 @@ LABEL_48:
   else
   {
     v24 = getVN2vIWnsZbk4Su55oeWfKDq1_0();
-    v25 = [v10 isEqualToString:v24];
+    v25 = [identifierCopy isEqualToString:v24];
 
     if (v25)
     {
@@ -272,7 +272,7 @@ LABEL_48:
     else
     {
       v26 = getVNmNJnu0xlW8CZXt6hJ7Rpb0_0();
-      v27 = [v10 isEqualToString:v26];
+      v27 = [identifierCopy isEqualToString:v26];
 
       if (v27)
       {
@@ -282,7 +282,7 @@ LABEL_48:
       else
       {
         v28 = getVN35FOB1QhtSfYGRIJvTgtTq_0();
-        v29 = [v10 isEqualToString:v28];
+        v29 = [identifierCopy isEqualToString:v28];
 
         if (v29)
         {
@@ -292,7 +292,7 @@ LABEL_48:
         else
         {
           v30 = getVN6ZsEIQ9ri2eF1vhsxw5COm_0();
-          v31 = [v10 isEqualToString:v30];
+          v31 = [identifierCopy isEqualToString:v30];
 
           if (!v31)
           {
@@ -315,13 +315,13 @@ LABEL_39:
   }
 
   v33 = v32;
-  [v9 size];
+  [contextCopy size];
   v36 = v35;
-  v34 = a5;
-  *&v35 = v34;
+  confidenceCopy = confidence;
+  *&v35 = confidenceCopy;
   v38 = [AXMVisionFeature significantEventClassificationWithCategory:v33 confidence:v35 canvasSize:v36, v37];
-  [v38 setCaptionMayContainSensitiveContent:v6];
-  [v9 appendFeature:v38];
+  [v38 setCaptionMayContainSensitiveContent:contentCopy];
+  [contextCopy appendFeature:v38];
 
   v39 = 1;
 LABEL_42:

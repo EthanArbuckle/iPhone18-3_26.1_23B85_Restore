@@ -1,19 +1,19 @@
 @interface _PSZkwUtils
-+ (id)clientModelMismatchErrorResponseForRequest:(id)a3 requestedClientModelId:(id)a4 actualClientModelId:(id)a5;
++ (id)clientModelMismatchErrorResponseForRequest:(id)request requestedClientModelId:(id)id actualClientModelId:(id)modelId;
 @end
 
 @implementation _PSZkwUtils
 
-+ (id)clientModelMismatchErrorResponseForRequest:(id)a3 requestedClientModelId:(id)a4 actualClientModelId:(id)a5
++ (id)clientModelMismatchErrorResponseForRequest:(id)request requestedClientModelId:(id)id actualClientModelId:(id)modelId
 {
   v21[1] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696AEC0];
-  v8 = a3;
-  v9 = [v7 stringWithFormat:@"Wrong delegate for request. Expected %@ but found %@.", a4, a5];
+  requestCopy = request;
+  modelId = [v7 stringWithFormat:@"Wrong delegate for request. Expected %@ but found %@.", id, modelId];
   v10 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    [_PSZkwUtils clientModelMismatchErrorResponseForRequest:v9 requestedClientModelId:v10 actualClientModelId:?];
+    [_PSZkwUtils clientModelMismatchErrorResponseForRequest:modelId requestedClientModelId:v10 actualClientModelId:?];
   }
 
   v11 = objc_alloc(getATXSuggestionRequestResponseClass());
@@ -22,10 +22,10 @@
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
   v20 = *MEMORY[0x1E696A578];
-  v21[0] = v9;
+  v21[0] = modelId;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
   v16 = [v12 errorWithDomain:v14 code:5 userInfo:v15];
-  v17 = [v11 initWithSuggestions:0 feedbackMetadata:0 originalRequest:v8 responseCode:3 error:v16];
+  v17 = [v11 initWithSuggestions:0 feedbackMetadata:0 originalRequest:requestCopy responseCode:3 error:v16];
 
   v18 = *MEMORY[0x1E69E9840];
 

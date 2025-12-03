@@ -1,22 +1,22 @@
 @interface WBCharacterRun
-+ (void)readFrom:(id)a3 wrdTextRun:(WrdCharacterTextRun *)a4 run:(id)a5 paragraph:(id)a6;
++ (void)readFrom:(id)from wrdTextRun:(WrdCharacterTextRun *)run run:(id)a5 paragraph:(id)paragraph;
 - (WrdCharacterProperties)wrdProperties;
 @end
 
 @implementation WBCharacterRun
 
-+ (void)readFrom:(id)a3 wrdTextRun:(WrdCharacterTextRun *)a4 run:(id)a5 paragraph:(id)a6
++ (void)readFrom:(id)from wrdTextRun:(WrdCharacterTextRun *)run run:(id)a5 paragraph:(id)paragraph
 {
-  v16 = a3;
+  fromCopy = from;
   v9 = a5;
-  v10 = a6;
-  var4 = a4->var4;
-  var5 = a4->var5;
-  v13 = [v10 document];
-  v14 = [v9 properties];
-  [WBCharacterProperties readFrom:v16 wrdProperties:var4 tracked:var5 document:v13 properties:v14];
+  paragraphCopy = paragraph;
+  var4 = run->var4;
+  var5 = run->var5;
+  document = [paragraphCopy document];
+  properties = [v9 properties];
+  [WBCharacterProperties readFrom:fromCopy wrdProperties:var4 tracked:var5 document:document properties:properties];
 
-  v15 = [v16 readCharactersForTextRun:a4];
+  v15 = [fromCopy readCharactersForTextRun:run];
   [v9 setString:v15];
 }
 

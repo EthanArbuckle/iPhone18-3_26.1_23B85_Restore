@@ -1,10 +1,10 @@
 @interface MXSessionSecure
 + (void)initialize;
-- (MXSessionSecure)initWithOptions:(id)a3;
-- (int)_beginInterruptionWithSecTask:(__SecTask *)a3 andFlags:(unint64_t)a4;
-- (int)_endInterruptionWithSecTask:(__SecTask *)a3 andStatus:(id)a4;
-- (int)copyPropertyForKeyInternal:(id)a3 valueOut:(id *)a4;
-- (int)setPropertyForKeyInternal:(id)a3 value:(id)a4 fromPropertiesBatch:(id)a5;
+- (MXSessionSecure)initWithOptions:(id)options;
+- (int)_beginInterruptionWithSecTask:(__SecTask *)task andFlags:(unint64_t)flags;
+- (int)_endInterruptionWithSecTask:(__SecTask *)task andStatus:(id)status;
+- (int)copyPropertyForKeyInternal:(id)internal valueOut:(id *)out;
+- (int)setPropertyForKeyInternal:(id)internal value:(id)value fromPropertiesBatch:(id)batch;
 - (void)dealloc;
 - (void)dumpDebugInfo;
 @end
@@ -13,7 +13,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sNonSerializedCopyProperties_1 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{@"AudioBehaviour", @"AudioCategory", @"AudioMode", @"AudioToolboxIsPlaying", @"AuditToken", @"ClientName", @"ClientPID", @"ClientPriority", @"AudioSessionID", @"CoreSessionID", @"CurrentInputSampleRate", @"MXSessionID", @"ReporterIDs", 0}];
     sNonSerializedSetProperties_1 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{@"AuditToken", @"ClientName", @"AudioSessionID", @"ReporterIDs", 0}];
@@ -22,7 +22,7 @@
   }
 }
 
-- (MXSessionSecure)initWithOptions:(id)a3
+- (MXSessionSecure)initWithOptions:(id)options
 {
   location[16] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -30,7 +30,7 @@
   v4 = [(MXSessionBase *)&v9 init];
   if (v4)
   {
-    if (a3 && (v5 = [[MXCoreSessionSecure alloc] initWithOptions:a3]) != 0)
+    if (options && (v5 = [[MXCoreSessionSecure alloc] initWithOptions:options]) != 0)
     {
       [(MXSessionBase *)v4 setParentCoreSession:v5];
 
@@ -62,9 +62,9 @@
   [(MXSessionBase *)&v3 dealloc];
 }
 
-- (int)copyPropertyForKeyInternal:(id)a3 valueOut:(id *)a4
+- (int)copyPropertyForKeyInternal:(id)internal valueOut:(id *)out
 {
-  if (!a3)
+  if (!internal)
   {
     [MXSessionSecure copyPropertyForKeyInternal:? valueOut:?];
     return v13;
@@ -77,43 +77,43 @@
     return v11;
   }
 
-  if (!a4)
+  if (!out)
   {
     [MXSessionSecure copyPropertyForKeyInternal:? valueOut:?];
     return v12;
   }
 
-  if ([a3 isEqualToString:@"AudioToolboxIsPlaying"])
+  if ([internal isEqualToString:@"AudioToolboxIsPlaying"])
   {
     v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:0];
 LABEL_8:
     v8 = v7;
     result = 0;
-    *a4 = v8;
+    *out = v8;
     return result;
   }
 
-  if ([a3 isEqualToString:@"MXSessionID"])
+  if ([internal isEqualToString:@"MXSessionID"])
   {
     v7 = [(MXSessionBase *)self ID];
     goto LABEL_8;
   }
 
-  v10 = [(MXSessionBase *)self parentCoreSession];
+  parentCoreSession = [(MXSessionBase *)self parentCoreSession];
 
-  return [(MXCoreSessionBase *)v10 copyPropertyForKey:a3 valueOut:a4];
+  return [(MXCoreSessionBase *)parentCoreSession copyPropertyForKey:internal valueOut:out];
 }
 
-- (int)setPropertyForKeyInternal:(id)a3 value:(id)a4 fromPropertiesBatch:(id)a5
+- (int)setPropertyForKeyInternal:(id)internal value:(id)value fromPropertiesBatch:(id)batch
 {
-  if (a3)
+  if (internal)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(MXSessionBase *)self parentCoreSession];
+      parentCoreSession = [(MXSessionBase *)self parentCoreSession];
 
-      return [(MXCoreSessionBase *)v8 setPropertyForKey:a3 value:a4];
+      return [(MXCoreSessionBase *)parentCoreSession setPropertyForKey:internal value:value];
     }
 
     else
@@ -130,18 +130,18 @@ LABEL_8:
   }
 }
 
-- (int)_beginInterruptionWithSecTask:(__SecTask *)a3 andFlags:(unint64_t)a4
+- (int)_beginInterruptionWithSecTask:(__SecTask *)task andFlags:(unint64_t)flags
 {
-  v6 = [(MXSessionBase *)self parentCoreSession];
+  parentCoreSession = [(MXSessionBase *)self parentCoreSession];
 
-  return [(MXCoreSessionBase *)v6 _beginInterruptionWithSecTask:a3 andFlags:a4];
+  return [(MXCoreSessionBase *)parentCoreSession _beginInterruptionWithSecTask:task andFlags:flags];
 }
 
-- (int)_endInterruptionWithSecTask:(__SecTask *)a3 andStatus:(id)a4
+- (int)_endInterruptionWithSecTask:(__SecTask *)task andStatus:(id)status
 {
-  v6 = [(MXSessionBase *)self parentCoreSession];
+  parentCoreSession = [(MXSessionBase *)self parentCoreSession];
 
-  return [(MXCoreSessionBase *)v6 _endInterruptionWithSecTask:a3 andStatus:a4];
+  return [(MXCoreSessionBase *)parentCoreSession _endInterruptionWithSecTask:task andStatus:status];
 }
 
 - (void)dumpDebugInfo

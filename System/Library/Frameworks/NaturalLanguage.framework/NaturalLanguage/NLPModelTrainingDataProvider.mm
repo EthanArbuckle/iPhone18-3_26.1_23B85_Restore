@@ -1,22 +1,22 @@
 @interface NLPModelTrainingDataProvider
-- (NLPModelTrainingDataProvider)initWithConfiguration:(id)a3 numberOfInstances:(unint64_t)a4 dataSource:(void *)a5 instanceDataProvider:(id)a6;
-- (id)instanceAtIndex:(unint64_t)a3;
+- (NLPModelTrainingDataProvider)initWithConfiguration:(id)configuration numberOfInstances:(unint64_t)instances dataSource:(void *)source instanceDataProvider:(id)provider;
+- (id)instanceAtIndex:(unint64_t)index;
 @end
 
 @implementation NLPModelTrainingDataProvider
 
-- (NLPModelTrainingDataProvider)initWithConfiguration:(id)a3 numberOfInstances:(unint64_t)a4 dataSource:(void *)a5 instanceDataProvider:(id)a6
+- (NLPModelTrainingDataProvider)initWithConfiguration:(id)configuration numberOfInstances:(unint64_t)instances dataSource:(void *)source instanceDataProvider:(id)provider
 {
-  v10 = a6;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = NLPModelTrainingDataProvider;
-  v11 = [(NLDataProvider *)&v16 initWithConfiguration:a3 dataURL:0];
+  v11 = [(NLDataProvider *)&v16 initWithConfiguration:configuration dataURL:0];
   v12 = v11;
   if (v11)
   {
-    v11->_numberOfInstances = a4;
-    v11->_dataSource = a5;
-    v13 = MEMORY[0x19EAFC6F0](v10);
+    v11->_numberOfInstances = instances;
+    v11->_dataSource = source;
+    v13 = MEMORY[0x19EAFC6F0](providerCopy);
     instanceDataProvider = v12->_instanceDataProvider;
     v12->_instanceDataProvider = v13;
   }
@@ -24,7 +24,7 @@
   return v12;
 }
 
-- (id)instanceAtIndex:(unint64_t)a3
+- (id)instanceAtIndex:(unint64_t)index
 {
   v41 = *MEMORY[0x1E69E9840];
   dataSource = self->_dataSource;
@@ -40,12 +40,12 @@
     goto LABEL_26;
   }
 
-  v7 = [(NLDataProvider *)self configuration];
-  v8 = [v7 type];
+  configuration = [(NLDataProvider *)self configuration];
+  type = [configuration type];
 
-  if (v8 != 1)
+  if (type != 1)
   {
-    if (!v8)
+    if (!type)
     {
       v9 = [v6 objectForKey:kNLPStringKey];
       v10 = [v6 objectForKey:kNLPLabelKey];
@@ -78,7 +78,7 @@ LABEL_25:
     }
 
 LABEL_26:
-    NSLog(&cfstr_SkippingInvali.isa, a3);
+    NSLog(&cfstr_SkippingInvali.isa, index);
     v11 = 0;
     goto LABEL_27;
   }

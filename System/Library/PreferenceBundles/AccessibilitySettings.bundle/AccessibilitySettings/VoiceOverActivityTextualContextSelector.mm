@@ -1,16 +1,16 @@
 @interface VoiceOverActivityTextualContextSelector
 - (id)activity;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation VoiceOverActivityTextualContextSelector
 
 - (id)activity
 {
-  v2 = [(VoiceOverActivityTextualContextSelector *)self specifier];
-  v3 = [v2 propertyForKey:@"activity"];
+  specifier = [(VoiceOverActivityTextualContextSelector *)self specifier];
+  v3 = [specifier propertyForKey:@"activity"];
 
   return v3;
 }
@@ -74,34 +74,34 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(VoiceOverActivityTextualContextSelector *)self specifierAtIndexPath:a5];
+  cellCopy = cell;
+  v8 = [(VoiceOverActivityTextualContextSelector *)self specifierAtIndexPath:path];
   v11 = [v8 propertyForKey:@"context"];
 
-  v9 = [(VoiceOverActivityTextualContextSelector *)self activity];
-  v10 = [v9 textualContexts];
-  [v7 setChecked:{objc_msgSend(v10, "containsObject:", v11)}];
+  activity = [(VoiceOverActivityTextualContextSelector *)self activity];
+  textualContexts = [activity textualContexts];
+  [cellCopy setChecked:{objc_msgSend(textualContexts, "containsObject:", v11)}];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = VoiceOverActivityTextualContextSelector;
-  v7 = a3;
-  [(VoiceOverActivityTextualContextSelector *)&v20 tableView:v7 didSelectRowAtIndexPath:v6];
-  v8 = [(VoiceOverActivityTextualContextSelector *)self specifierAtIndexPath:v6, v20.receiver, v20.super_class];
+  viewCopy = view;
+  [(VoiceOverActivityTextualContextSelector *)&v20 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [(VoiceOverActivityTextualContextSelector *)self specifierAtIndexPath:pathCopy, v20.receiver, v20.super_class];
   v9 = [v8 propertyForKey:@"context"];
 
-  v10 = [(VoiceOverActivityTextualContextSelector *)self activity];
-  v11 = [v10 textualContexts];
-  if (v11)
+  activity = [(VoiceOverActivityTextualContextSelector *)self activity];
+  textualContexts = [activity textualContexts];
+  if (textualContexts)
   {
-    v12 = [(VoiceOverActivityTextualContextSelector *)self activity];
-    v13 = [v12 textualContexts];
-    v14 = [v13 mutableCopy];
+    activity2 = [(VoiceOverActivityTextualContextSelector *)self activity];
+    textualContexts2 = [activity2 textualContexts];
+    v14 = [textualContexts2 mutableCopy];
   }
 
   else
@@ -119,20 +119,20 @@
     [v14 addObject:v9];
   }
 
-  v15 = [(VoiceOverActivityTextualContextSelector *)self activity];
-  [v15 setTextualContexts:v14];
+  activity3 = [(VoiceOverActivityTextualContextSelector *)self activity];
+  [activity3 setTextualContexts:v14];
 
   v16 = VOTLogActivities();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(VoiceOverActivityTextualContextSelector *)self activity];
-    v18 = [v17 textualContexts];
+    activity4 = [(VoiceOverActivityTextualContextSelector *)self activity];
+    textualContexts3 = [activity4 textualContexts];
     *buf = 138412290;
-    v22 = v18;
+    v22 = textualContexts3;
     _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "Context selected: %@", buf, 0xCu);
   }
 
-  v19 = [v7 cellForRowAtIndexPath:v6];
+  v19 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   [v19 setChecked:{objc_msgSend(v14, "containsObject:", v9)}];
 }

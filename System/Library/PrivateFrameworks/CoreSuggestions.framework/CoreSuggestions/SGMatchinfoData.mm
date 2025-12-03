@@ -1,12 +1,12 @@
 @interface SGMatchinfoData
-+ (id)matchinfoDataWithEntityId:(id)a3 detailEntityId:(id)a4;
-+ (id)matchinfoDataWithEntityId:(id)a3 detailEntityId:(id)a4 matchinfoData:(id)a5;
-- (BOOL)isEqualToMatchinfoData:(id)a3;
-- (SGMatchinfoData)initWithCoder:(id)a3;
-- (SGMatchinfoData)initWithMatchinfoDataWithEntityId:(id)a3 detailEntityId:(id)a4 matchinfoData:(id)a5;
++ (id)matchinfoDataWithEntityId:(id)id detailEntityId:(id)entityId;
++ (id)matchinfoDataWithEntityId:(id)id detailEntityId:(id)entityId matchinfoData:(id)data;
+- (BOOL)isEqualToMatchinfoData:(id)data;
+- (SGMatchinfoData)initWithCoder:(id)coder;
+- (SGMatchinfoData)initWithMatchinfoDataWithEntityId:(id)id detailEntityId:(id)entityId matchinfoData:(id)data;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGMatchinfoData
@@ -18,20 +18,20 @@
   return v2;
 }
 
-- (BOOL)isEqualToMatchinfoData:(id)a3
+- (BOOL)isEqualToMatchinfoData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   entityId = self->_entityId;
-  v6 = [v4 entityId];
-  if ([(NSNumber *)entityId isEqualToNumber:v6])
+  entityId = [dataCopy entityId];
+  if ([(NSNumber *)entityId isEqualToNumber:entityId])
   {
     detailEntityId = self->_detailEntityId;
-    v8 = [v4 detailEntityId];
-    if ([(NSNumber *)detailEntityId isEqualToNumber:v8])
+    detailEntityId = [dataCopy detailEntityId];
+    if ([(NSNumber *)detailEntityId isEqualToNumber:detailEntityId])
     {
       matchinfoData = self->_matchinfoData;
-      v10 = [v4 matchinfoData];
-      v11 = [(NSData *)matchinfoData isEqualToData:v10];
+      matchinfoData = [dataCopy matchinfoData];
+      v11 = [(NSData *)matchinfoData isEqualToData:matchinfoData];
     }
 
     else
@@ -48,25 +48,25 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   entityId = self->_entityId;
-  v5 = a3;
-  [v5 encodeObject:entityId forKey:@"entityId"];
-  [v5 encodeObject:self->_detailEntityId forKey:@"detailEntityId"];
-  [v5 encodeObject:self->_matchinfoData forKey:@"matchinfoData"];
+  coderCopy = coder;
+  [coderCopy encodeObject:entityId forKey:@"entityId"];
+  [coderCopy encodeObject:self->_detailEntityId forKey:@"detailEntityId"];
+  [coderCopy encodeObject:self->_matchinfoData forKey:@"matchinfoData"];
 }
 
-- (SGMatchinfoData)initWithCoder:(id)a3
+- (SGMatchinfoData)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = SGMatchinfoData;
   v6 = [(SGMatchinfoData *)&v20 init];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v8 = [v5 decodeObjectOfClasses:v7 forKey:@"entityId"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"entityId"];
 
     if (v8)
     {
@@ -82,7 +82,7 @@
     }
 
     v11 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v12 = [v5 decodeObjectOfClasses:v11 forKey:@"detailEntityId"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"detailEntityId"];
 
     if (v12)
     {
@@ -98,7 +98,7 @@
     }
 
     v15 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v16 = [v5 decodeObjectOfClasses:v15 forKey:@"matchinfoData"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"matchinfoData"];
 
     if (v16)
     {
@@ -124,42 +124,42 @@
   return [(NSData *)self->_matchinfoData hash]- v4 + 32 * v4;
 }
 
-- (SGMatchinfoData)initWithMatchinfoDataWithEntityId:(id)a3 detailEntityId:(id)a4 matchinfoData:(id)a5
+- (SGMatchinfoData)initWithMatchinfoDataWithEntityId:(id)id detailEntityId:(id)entityId matchinfoData:(id)data
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  idCopy = id;
+  entityIdCopy = entityId;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = SGMatchinfoData;
   v12 = [(SGMatchinfoData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_entityId, a3);
-    objc_storeStrong(&v13->_detailEntityId, a4);
-    objc_storeStrong(&v13->_matchinfoData, a5);
+    objc_storeStrong(&v12->_entityId, id);
+    objc_storeStrong(&v13->_detailEntityId, entityId);
+    objc_storeStrong(&v13->_matchinfoData, data);
   }
 
   return v13;
 }
 
-+ (id)matchinfoDataWithEntityId:(id)a3 detailEntityId:(id)a4
++ (id)matchinfoDataWithEntityId:(id)id detailEntityId:(id)entityId
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
+  entityIdCopy = entityId;
+  idCopy = id;
+  v8 = [self alloc];
   v9 = objc_opt_new();
-  v10 = [v8 initWithMatchinfoDataWithEntityId:v7 detailEntityId:v6 matchinfoData:v9];
+  v10 = [v8 initWithMatchinfoDataWithEntityId:idCopy detailEntityId:entityIdCopy matchinfoData:v9];
 
   return v10;
 }
 
-+ (id)matchinfoDataWithEntityId:(id)a3 detailEntityId:(id)a4 matchinfoData:(id)a5
++ (id)matchinfoDataWithEntityId:(id)id detailEntityId:(id)entityId matchinfoData:(id)data
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithMatchinfoDataWithEntityId:v10 detailEntityId:v9 matchinfoData:v8];
+  dataCopy = data;
+  entityIdCopy = entityId;
+  idCopy = id;
+  v11 = [[self alloc] initWithMatchinfoDataWithEntityId:idCopy detailEntityId:entityIdCopy matchinfoData:dataCopy];
 
   return v11;
 }

@@ -1,15 +1,15 @@
 @interface EPSagaTransactionSendGraduateMessageTransaction
 - (EPTransactionDelegate)delegate;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionSendGraduateMessageTransaction
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  objc_storeStrong(&self->_routingSlipEntry, a3);
-  v7 = a3;
-  v8 = a4;
+  objc_storeStrong(&self->_routingSlipEntry, entry);
+  entryCopy = entry;
+  registryCopy = registry;
   v9 = nr_daemon_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -23,7 +23,7 @@
     }
   }
 
-  v12 = [v7 objectForKeyedSubscript:@"coreBluetoothID"];
+  v12 = [entryCopy objectForKeyedSubscript:@"coreBluetoothID"];
   v13 = objc_opt_new();
   v14 = [EPRoutingSlipEntry alloc];
   v15 = objc_opt_class();
@@ -36,16 +36,16 @@
 
   [v13 setRunningStatusCode:2];
   [v13 setNotUnrollable:1];
-  v19 = [v8 serviceFromClass:objc_opt_class()];
+  v19 = [registryCopy serviceFromClass:objc_opt_class()];
 
   [v19 addTransaction:v13];
-  v20 = [(EPRoutingSlipEntry *)self->_routingSlipEntry queue];
+  queue = [(EPRoutingSlipEntry *)self->_routingSlipEntry queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100012B74;
   block[3] = &unk_100175660;
   block[4] = self;
-  dispatch_async(v20, block);
+  dispatch_async(queue, block);
 }
 
 - (EPTransactionDelegate)delegate

@@ -1,7 +1,7 @@
 @interface W5IOPowerManagement
 - (W5IOPowerManagement)init;
 - (void)dealloc;
-- (void)setUpdatedPowerManagementCallback:(id)a3;
+- (void)setUpdatedPowerManagementCallback:(id)callback;
 - (void)startEventMonitoring;
 - (void)stopEventMonitoring;
 @end
@@ -27,12 +27,12 @@
   return v2;
 }
 
-- (void)setUpdatedPowerManagementCallback:(id)a3
+- (void)setUpdatedPowerManagementCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_updatedPowerManagementCallback = [a3 copy];
+    self->_updatedPowerManagementCallback = [callback copy];
   }
 
   else
@@ -43,7 +43,7 @@
     v6[2] = sub_100081424;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }

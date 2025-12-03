@@ -1,7 +1,7 @@
 @interface AMSPaymentRequest
 - (AMSPaymentRequest)init;
-- (AMSPaymentRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AMSPaymentRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSPaymentRequest
@@ -19,33 +19,33 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSPaymentRequest *)self paymentContentItems];
-  [v4 encodeObject:v5 forKey:@"paymentContentItems"];
+  coderCopy = coder;
+  paymentContentItems = [(AMSPaymentRequest *)self paymentContentItems];
+  [coderCopy encodeObject:paymentContentItems forKey:@"paymentContentItems"];
 
-  v6 = [(AMSPaymentRequest *)self localizedNavigationTitle];
-  [v4 encodeObject:v6 forKey:@"localizedNavigationTitle"];
+  localizedNavigationTitle = [(AMSPaymentRequest *)self localizedNavigationTitle];
+  [coderCopy encodeObject:localizedNavigationTitle forKey:@"localizedNavigationTitle"];
 
-  v7 = [(AMSPaymentRequest *)self salableInfo];
-  [v4 encodeObject:v7 forKey:@"salableInfo"];
+  salableInfo = [(AMSPaymentRequest *)self salableInfo];
+  [coderCopy encodeObject:salableInfo forKey:@"salableInfo"];
 
-  v8 = [(AMSPaymentRequest *)self secondaryContentItems];
-  [v4 encodeObject:v8 forKey:@"secondaryContentItems"];
+  secondaryContentItems = [(AMSPaymentRequest *)self secondaryContentItems];
+  [coderCopy encodeObject:secondaryContentItems forKey:@"secondaryContentItems"];
 
-  v9 = [(AMSPaymentRequest *)self secondarySalableInfo];
-  [v4 encodeObject:v9 forKey:@"secondarySalableInfo"];
+  secondarySalableInfo = [(AMSPaymentRequest *)self secondarySalableInfo];
+  [coderCopy encodeObject:secondarySalableInfo forKey:@"secondarySalableInfo"];
 
-  [v4 encodeBool:-[AMSPaymentRequest drawBackground](self forKey:{"drawBackground"), @"drawBackground"}];
-  [v4 encodeBool:-[AMSPaymentRequest drawBottomDivider](self forKey:{"drawBottomDivider"), @"drawBottomDivider"}];
-  v10 = [(AMSPaymentRequest *)self languageTagBagValue];
-  [v4 encodeObject:v10 forKey:@"languageTagBagValue"];
+  [coderCopy encodeBool:-[AMSPaymentRequest drawBackground](self forKey:{"drawBackground"), @"drawBackground"}];
+  [coderCopy encodeBool:-[AMSPaymentRequest drawBottomDivider](self forKey:{"drawBottomDivider"), @"drawBottomDivider"}];
+  languageTagBagValue = [(AMSPaymentRequest *)self languageTagBagValue];
+  [coderCopy encodeObject:languageTagBagValue forKey:@"languageTagBagValue"];
 }
 
-- (AMSPaymentRequest)initWithCoder:(id)a3
+- (AMSPaymentRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = AMSPaymentRequest;
   v5 = [(AMSPaymentRequest *)&v25 init];
@@ -54,32 +54,32 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"paymentContentItems"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"paymentContentItems"];
     paymentContentItems = v5->_paymentContentItems;
     v5->_paymentContentItems = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedNavigationTitle"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedNavigationTitle"];
     localizedNavigationTitle = v5->_localizedNavigationTitle;
     v5->_localizedNavigationTitle = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"salableInfo"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"salableInfo"];
     salableInfo = v5->_salableInfo;
     v5->_salableInfo = v13;
 
     v15 = MEMORY[0x1E695DFD8];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"secondaryContentItems"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"secondaryContentItems"];
     secondaryContentItems = v5->_secondaryContentItems;
     v5->_secondaryContentItems = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondarySalableInfo"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondarySalableInfo"];
     secondarySalableInfo = v5->_secondarySalableInfo;
     v5->_secondarySalableInfo = v20;
 
-    v5->_drawBackground = [v4 decodeBoolForKey:@"drawBackground"];
-    v5->_drawBottomDivider = [v4 decodeBoolForKey:@"drawBottomDivider"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"languageTagBagValue"];
+    v5->_drawBackground = [coderCopy decodeBoolForKey:@"drawBackground"];
+    v5->_drawBottomDivider = [coderCopy decodeBoolForKey:@"drawBottomDivider"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"languageTagBagValue"];
     languageTagBagValue = v5->_languageTagBagValue;
     v5->_languageTagBagValue = v22;
   }

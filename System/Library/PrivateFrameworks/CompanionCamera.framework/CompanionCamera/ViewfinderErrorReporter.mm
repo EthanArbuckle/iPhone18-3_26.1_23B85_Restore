@@ -1,5 +1,5 @@
 @interface ViewfinderErrorReporter
-+ (void)_logError:(id)a3;
++ (void)_logError:(id)error;
 @end
 
 @implementation ViewfinderErrorReporter
@@ -27,9 +27,9 @@ id __41__ViewfinderErrorReporter_report_status___block_invoke_2(uint64_t a1)
   return v4;
 }
 
-+ (void)_logError:(id)a3
++ (void)_logError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   if (_logError__onceToken != -1)
   {
     +[ViewfinderErrorReporter _logError:];
@@ -38,7 +38,7 @@ id __41__ViewfinderErrorReporter_report_status___block_invoke_2(uint64_t a1)
   v4 = _logError__log;
   if (os_log_type_enabled(_logError__log, OS_LOG_TYPE_ERROR))
   {
-    [(ViewfinderErrorReporter *)v4 _logError:v3];
+    [(ViewfinderErrorReporter *)v4 _logError:errorCopy];
   }
 }
 

@@ -1,35 +1,35 @@
 @interface HMAccessControl
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMAccessControl)init;
-- (HMAccessControl)initWithCoder:(id)a3;
-- (HMAccessControl)initWithUser:(id)a3;
+- (HMAccessControl)initWithCoder:(id)coder;
+- (HMAccessControl)initWithUser:(id)user;
 - (HMUser)user;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setUser:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setUser:(id)user;
 @end
 
 @implementation HMAccessControl
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMAccessControl *)self user];
-  [v4 encodeConditionalObject:v5 forKey:@"HM.user"];
+  coderCopy = coder;
+  user = [(HMAccessControl *)self user];
+  [coderCopy encodeConditionalObject:user forKey:@"HM.user"];
 }
 
-- (HMAccessControl)initWithCoder:(id)a3
+- (HMAccessControl)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.user"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.user"];
 
   v6 = [(HMAccessControl *)self initWithUser:v5];
   return v6;
 }
 
-- (void)setUser:(id)a3
+- (void)setUser:(id)user
 {
-  obj = a3;
+  obj = user;
   os_unfair_lock_lock_with_options();
   objc_storeWeak(&self->_user, obj);
   if (obj)
@@ -49,10 +49,10 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -62,7 +62,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -73,15 +73,15 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMAccessControl *)self user];
-      v8 = [(HMAccessControl *)v6 user];
-      v9 = v8;
+      user = [(HMAccessControl *)self user];
+      user2 = [(HMAccessControl *)v6 user];
+      v9 = user2;
       v10 = 0;
-      if (v7 && v8)
+      if (user && user2)
       {
-        v11 = [v7 uniqueIdentifier];
-        v12 = [v9 uniqueIdentifier];
-        v10 = [v11 isEqual:v12];
+        uniqueIdentifier = [user uniqueIdentifier];
+        uniqueIdentifier2 = [v9 uniqueIdentifier];
+        v10 = [uniqueIdentifier isEqual:uniqueIdentifier2];
       }
     }
 
@@ -110,17 +110,17 @@
   }
 }
 
-- (HMAccessControl)initWithUser:(id)a3
+- (HMAccessControl)initWithUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v8.receiver = self;
   v8.super_class = HMAccessControl;
   v5 = [(HMAccessControl *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_user, v4);
-    v6->_cachedHash = [v4 hash];
+    objc_storeWeak(&v5->_user, userCopy);
+    v6->_cachedHash = [userCopy hash];
   }
 
   return v6;

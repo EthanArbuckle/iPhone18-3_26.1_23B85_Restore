@@ -1,18 +1,18 @@
 @interface STConcreteUserSafetyPolicyWriter
-- (id)writeUserSafetyInterventionPolicy:(int64_t)a3;
+- (id)writeUserSafetyInterventionPolicy:(int64_t)policy;
 @end
 
 @implementation STConcreteUserSafetyPolicyWriter
 
-- (id)writeUserSafetyInterventionPolicy:(int64_t)a3
+- (id)writeUserSafetyInterventionPolicy:(int64_t)policy
 {
   v4 = [MOLocalSettingsStore alloc];
   v5 = [v4 initWithName:@"UserSafetyStore" sharedContainer:STManagedSettingsContainer];
   v6 = +[STUserDeviceState fetchRequestMatchingLocalUserDeviceState];
   v7 = [v6 execute:0];
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
-  if (!v8)
+  if (!firstObject)
   {
     v10 = [NSError errorWithDomain:STErrorDomain code:12 userInfo:0];
     v9 = [STResult failure:v10];
@@ -20,16 +20,16 @@
     goto LABEL_24;
   }
 
-  if ([v8 msInterventionPolicy] == a3)
+  if ([firstObject msInterventionPolicy] == policy)
   {
     v9 = +[STResult success];
     goto LABEL_24;
   }
 
-  v11 = [v5 userSafety];
-  v12 = [v11 scanningPolicy];
+  userSafety = [v5 userSafety];
+  scanningPolicy = [userSafety scanningPolicy];
 
-  switch(a3)
+  switch(policy)
   {
     case 2:
       v14 = &MOUserSafetyInterventionTypeTeen;
@@ -48,28 +48,28 @@ LABEL_12:
 
   v15 = 0;
 LABEL_14:
-  v16 = [v5 userSafety];
-  [v16 setScanningPolicy:v15];
+  userSafety2 = [v5 userSafety];
+  [userSafety2 setScanningPolicy:v15];
 
-  [v8 setMsInterventionPolicy:a3];
+  [firstObject setMsInterventionPolicy:policy];
   v17 = +[STLog userSafetyPolicyWriter];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v28 = v12;
+    v28 = scanningPolicy;
     v29 = 2112;
     v30 = v15;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Successfully wrote user safety policy from %@ to %@", buf, 0x16u);
   }
 
-  v18 = [v8 managedObjectContext];
-  v19 = [v18 hasChanges];
+  managedObjectContext = [firstObject managedObjectContext];
+  hasChanges = [managedObjectContext hasChanges];
 
-  if (v19)
+  if (hasChanges)
   {
-    v20 = [v8 managedObjectContext];
+    managedObjectContext2 = [firstObject managedObjectContext];
     v26 = 0;
-    v21 = [v20 save:&v26];
+    v21 = [managedObjectContext2 save:&v26];
     v22 = v26;
 
     if ((v21 & 1) == 0)

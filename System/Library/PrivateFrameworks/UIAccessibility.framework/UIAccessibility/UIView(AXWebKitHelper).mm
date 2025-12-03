@@ -7,12 +7,12 @@
 
 - (double)accessibilityConvertPointFromSceneReferenceCoordinates:()AXWebKitHelper
 {
-  v6 = [a1 window];
-  v7 = AXConvertFromDisplayPointToWindowPoint(v6, a2, a3);
+  window = [self window];
+  v7 = AXConvertFromDisplayPointToWindowPoint(window, a2, a3);
   v9 = v8;
 
-  v10 = [a1 window];
-  [a1 convertPoint:v10 fromView:{v7, v9}];
+  window2 = [self window];
+  [self convertPoint:window2 fromView:{v7, v9}];
   v12 = v11;
 
   return v12;
@@ -20,9 +20,9 @@
 
 - (uint64_t)accessibilityConvertRectToSceneReferenceCoordinates:()AXWebKitHelper
 {
-  v8 = UIAccessibilityConvertFrameToScreenCoordinates(*&a2, a1);
+  v8 = UIAccessibilityConvertFrameToScreenCoordinates(*&a2, self);
 
-  return [(UIView *)a1 _accessibilityConvertSystemBoundedScreenRectToContextSpace:v8.origin.x, v8.origin.y, v8.size.width, v8.size.height];
+  return [(UIView *)self _accessibilityConvertSystemBoundedScreenRectToContextSpace:v8.origin.x, v8.origin.y, v8.size.width, v8.size.height];
 }
 
 @end

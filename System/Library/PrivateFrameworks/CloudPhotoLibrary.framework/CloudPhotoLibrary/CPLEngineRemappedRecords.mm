@@ -1,11 +1,11 @@
 @interface CPLEngineRemappedRecords
-- (BOOL)addRemappedRecordWithScopedIdentifier:(id)a3 realScopedIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6;
-- (BOOL)isRecordWithScopedIdentifierRemapped:(id)a3;
-- (BOOL)removeRemappedRecordWithScopedIdentifier:(id)a3 error:(id *)a4;
-- (id)_fixupRemappedRecordsAndReturnBestCloudScopedIdentifierFromRemappedScopedIdentifiers:(id)a3 fallback:(id)a4;
-- (id)realScopedIdentifierForRemappedScopedIdentifier:(id)a3;
-- (id)scopedIdentifiersRemappedToScopedIdentifier:(id)a3;
+- (BOOL)addRemappedRecordWithScopedIdentifier:(id)identifier realScopedIdentifier:(id)scopedIdentifier error:(id *)error;
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error;
+- (BOOL)isRecordWithScopedIdentifierRemapped:(id)remapped;
+- (BOOL)removeRemappedRecordWithScopedIdentifier:(id)identifier error:(id *)error;
+- (id)_fixupRemappedRecordsAndReturnBestCloudScopedIdentifierFromRemappedScopedIdentifiers:(id)identifiers fallback:(id)fallback;
+- (id)realScopedIdentifierForRemappedScopedIdentifier:(id)identifier;
+- (id)scopedIdentifiersRemappedToScopedIdentifier:(id)identifier;
 - (void)writeTransactionDidFail;
 - (void)writeTransactionDidSucceed;
 @end
@@ -30,34 +30,34 @@
   self->_perTransactionRemappedScopedIdentifiers = 0;
 }
 
-- (BOOL)isRecordWithScopedIdentifierRemapped:(id)a3
+- (BOOL)isRecordWithScopedIdentifierRemapped:(id)remapped
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 isRecordWithScopedIdentifierRemapped:v4];
+  remappedCopy = remapped;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject isRecordWithScopedIdentifierRemapped:remappedCopy];
 
   return v6;
 }
 
-- (id)scopedIdentifiersRemappedToScopedIdentifier:(id)a3
+- (id)scopedIdentifiersRemappedToScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 scopedIdentifiersRemappedToScopedIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject scopedIdentifiersRemappedToScopedIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)realScopedIdentifierForRemappedScopedIdentifier:(id)a3
+- (id)realScopedIdentifierForRemappedScopedIdentifier:(id)identifier
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_perTransactionRemappedScopedIdentifiers objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_perTransactionRemappedScopedIdentifiers objectForKeyedSubscript:identifierCopy];
   if (!v5)
   {
-    v6 = v4;
+    v6 = identifierCopy;
     v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v8 = [(CPLEngineStorage *)self platformObject];
+    platformObject = [(CPLEngineStorage *)self platformObject];
     v9 = v6;
     v10 = v9;
     if ([v7 containsObject:v9])
@@ -85,7 +85,7 @@ LABEL_7:
         v11 = [(NSMutableDictionary *)self->_perTransactionRemappedScopedIdentifiers objectForKeyedSubscript:v5];
         if (!v11)
         {
-          v11 = [v8 realScopedIdentifierForRemappedScopedIdentifier:v5];
+          v11 = [platformObject realScopedIdentifierForRemappedScopedIdentifier:v5];
           if (!v11)
           {
             break;
@@ -147,21 +147,21 @@ LABEL_7:
   return v5;
 }
 
-- (id)_fixupRemappedRecordsAndReturnBestCloudScopedIdentifierFromRemappedScopedIdentifiers:(id)a3 fallback:(id)a4
+- (id)_fixupRemappedRecordsAndReturnBestCloudScopedIdentifierFromRemappedScopedIdentifiers:(id)identifiers fallback:(id)fallback
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPLEngineStorage *)self engineStore];
-  v9 = [v8 idMapping];
+  identifiersCopy = identifiers;
+  fallbackCopy = fallback;
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  idMapping = [engineStore idMapping];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = v6;
+  v10 = identifiersCopy;
   v11 = [v10 countByEnumeratingWithState:&v30 objects:v34 count:16];
-  v12 = v7;
+  v12 = fallbackCopy;
   if (v11)
   {
     v13 = v11;
@@ -177,14 +177,14 @@ LABEL_7:
 
         v16 = *(*(&v30 + 1) + 8 * i);
         v29 = 0;
-        v17 = [v9 localScopedIdentifierForCloudScopedIdentifier:v16 isFinal:&v29];
+        v17 = [idMapping localScopedIdentifierForCloudScopedIdentifier:v16 isFinal:&v29];
         if (v17)
         {
           v18 = v17;
           v12 = v16;
 
           v19 = [v12 copy];
-          v20 = [(CPLEngineStorage *)self engineStore];
+          engineStore2 = [(CPLEngineStorage *)self engineStore];
           v27[0] = MEMORY[0x1E69E9820];
           v27[1] = 3221225472;
           v27[2] = __122__CPLEngineRemappedRecords__fixupRemappedRecordsAndReturnBestCloudScopedIdentifierFromRemappedScopedIdentifiers_fallback___block_invoke;
@@ -197,7 +197,7 @@ LABEL_7:
           v25[3] = &unk_1E86205E0;
           v26 = v28;
           v21 = v28;
-          v22 = [v20 performWriteTransactionWithBlock:v27 completionHandler:v25];
+          v22 = [engineStore2 performWriteTransactionWithBlock:v27 completionHandler:v25];
 
           goto LABEL_11;
         }
@@ -212,7 +212,7 @@ LABEL_7:
       break;
     }
 
-    v12 = v7;
+    v12 = fallbackCopy;
   }
 
 LABEL_11:
@@ -266,13 +266,13 @@ uint64_t __122__CPLEngineRemappedRecords__fixupRemappedRecordsAndReturnBestCloud
   return v5;
 }
 
-- (BOOL)removeRemappedRecordWithScopedIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeRemappedRecordWithScopedIdentifier:(id)identifier error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
   v15 = 0;
-  v8 = [v7 removeRemappedRecordWithScopedIdentifier:v6 error:&v15];
+  v8 = [platformObject removeRemappedRecordWithScopedIdentifier:identifierCopy error:&v15];
   v9 = v15;
 
   if (v8)
@@ -289,17 +289,17 @@ uint64_t __122__CPLEngineRemappedRecords__fixupRemappedRecordsAndReturnBestCloud
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v17 = v6;
+        v17 = identifierCopy;
         v18 = 2112;
         v19 = v9;
         _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_ERROR, "Failed to discard remapped record %@: %@ - ignoring", buf, 0x16u);
       }
     }
 
-    if (a4)
+    if (error)
     {
       v12 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -307,19 +307,19 @@ uint64_t __122__CPLEngineRemappedRecords__fixupRemappedRecordsAndReturnBestCloud
   return v8;
 }
 
-- (BOOL)addRemappedRecordWithScopedIdentifier:(id)a3 realScopedIdentifier:(id)a4 error:(id *)a5
+- (BOOL)addRemappedRecordWithScopedIdentifier:(id)identifier realScopedIdentifier:(id)scopedIdentifier error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CPLEngineStorage *)self platformObject];
+  identifierCopy = identifier;
+  scopedIdentifierCopy = scopedIdentifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
   v17 = 0;
-  v11 = [v10 addRemappedRecordWithScopedIdentifier:v8 realScopedIdentifier:v9 error:&v17];
+  v11 = [platformObject addRemappedRecordWithScopedIdentifier:identifierCopy realScopedIdentifier:scopedIdentifierCopy error:&v17];
   v12 = v17;
 
   if (v11)
   {
-    [(NSMutableDictionary *)self->_perTransactionRemappedScopedIdentifiers removeObjectForKey:v8];
+    [(NSMutableDictionary *)self->_perTransactionRemappedScopedIdentifiers removeObjectForKey:identifierCopy];
   }
 
   else
@@ -330,19 +330,19 @@ uint64_t __122__CPLEngineRemappedRecords__fixupRemappedRecordsAndReturnBestCloud
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v19 = v8;
+        v19 = identifierCopy;
         v20 = 2112;
-        v21 = v9;
+        v21 = scopedIdentifierCopy;
         v22 = 2112;
         v23 = v12;
         _os_log_impl(&dword_1DC05A000, v13, OS_LOG_TYPE_ERROR, "Failed to remapped record %@ -> %@: %@ - ignoring", buf, 0x20u);
       }
     }
 
-    if (a5)
+    if (error)
     {
       v14 = v12;
-      *a5 = v12;
+      *error = v12;
     }
   }
 
@@ -350,12 +350,12 @@ uint64_t __122__CPLEngineRemappedRecords__fixupRemappedRecordsAndReturnBestCloud
   return v11;
 }
 
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error
 {
-  v10 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a6) = [v10 deleteRecordsForScopeIndex:a3 maxCount:a4 deletedCount:a5 error:a6];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject deleteRecordsForScopeIndex:index maxCount:count deletedCount:deletedCount error:error];
 
-  return a6;
+  return error;
 }
 
 @end

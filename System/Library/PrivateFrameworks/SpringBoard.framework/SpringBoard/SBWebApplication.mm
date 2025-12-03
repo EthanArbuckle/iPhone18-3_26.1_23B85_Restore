@@ -1,16 +1,16 @@
 @interface SBWebApplication
-+ (id)_webClipIdentifierFromWebAppIdentifier:(id)a3;
++ (id)_webClipIdentifierFromWebAppIdentifier:(id)identifier;
 @end
 
 @implementation SBWebApplication
 
-+ (id)_webClipIdentifierFromWebAppIdentifier:(id)a3
++ (id)_webClipIdentifierFromWebAppIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [v3 length];
-  if (v4 > [@"sceneID:com.apple.webapp-" length] && objc_msgSend(v3, "hasPrefix:", @"sceneID:com.apple.webapp-"))
+  identifierCopy = identifier;
+  v4 = [identifierCopy length];
+  if (v4 > [@"sceneID:com.apple.webapp-" length] && objc_msgSend(identifierCopy, "hasPrefix:", @"sceneID:com.apple.webapp-"))
   {
-    v5 = [v3 substringFromIndex:{objc_msgSend(@"sceneID:com.apple.webapp-", "length")}];
+    v5 = [identifierCopy substringFromIndex:{objc_msgSend(@"sceneID:com.apple.webapp-", "length")}];
   }
 
   else

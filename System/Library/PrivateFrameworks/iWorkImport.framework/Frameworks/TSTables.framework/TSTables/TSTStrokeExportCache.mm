@@ -1,21 +1,21 @@
 @interface TSTStrokeExportCache
 - (TSTSimpleRange)range;
-- (TSTStrokeExportCache)initWithMergedStack:(id)a3;
-- (id)strokeAtIndex:(unsigned int)a3;
+- (TSTStrokeExportCache)initWithMergedStack:(id)stack;
+- (id)strokeAtIndex:(unsigned int)index;
 @end
 
 @implementation TSTStrokeExportCache
 
-- (TSTStrokeExportCache)initWithMergedStack:(id)a3
+- (TSTStrokeExportCache)initWithMergedStack:(id)stack
 {
-  v5 = a3;
+  stackCopy = stack;
   v10.receiver = self;
   v10.super_class = TSTStrokeExportCache;
   v6 = [(TSTStrokeExportCache *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mergedStrokes, a3);
+    objc_storeStrong(&v6->_mergedStrokes, stack);
     v7->_range = xmmword_2217E1DE8;
     stroke = v7->_stroke;
     v7->_stroke = 0;
@@ -24,10 +24,10 @@
   return v7;
 }
 
-- (id)strokeAtIndex:(unsigned int)a3
+- (id)strokeAtIndex:(unsigned int)index
 {
-  v5 = *&a3;
-  v7 = objc_msgSend_range(self, a2, *&a3, v3, v4);
+  v5 = *&index;
+  v7 = objc_msgSend_range(self, a2, *&index, v3, v4);
   if (!v8 || v7 > v5 || &v8[v7 - 1] < v5)
   {
     v12 = objc_msgSend_mergedStrokes(self, v8, v9, v10, v11);

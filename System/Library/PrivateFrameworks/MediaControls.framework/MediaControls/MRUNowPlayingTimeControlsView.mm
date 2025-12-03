@@ -1,34 +1,34 @@
 @interface MRUNowPlayingTimeControlsView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)hitRect;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRUNowPlayingTimeControlsView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRUNowPlayingTimeControlsView)initWithFrame:(CGRect)frame;
 - (double)timeLabelsAlpha;
 - (id)viewForLastBaselineLayout;
 - (int64_t)labelStyle;
 - (void)layoutSubviews;
 - (void)layoutSubviewsLive;
 - (void)layoutTimeLabels;
-- (void)setContentScale:(double)a3;
-- (void)setLayout:(int64_t)a3;
-- (void)setLeftAlignLive:(BOOL)a3;
-- (void)setOnScreen:(BOOL)a3;
-- (void)setSliderExpansionFactor:(double)a3;
-- (void)setSliderHeight:(double)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setTimeControls:(id)a3 forPresentationInterval:(id)a4;
-- (void)sliderTouchCancel:(id)a3;
-- (void)sliderValueChanged:(id)a3;
+- (void)setContentScale:(double)scale;
+- (void)setLayout:(int64_t)layout;
+- (void)setLeftAlignLive:(BOOL)live;
+- (void)setOnScreen:(BOOL)screen;
+- (void)setSliderExpansionFactor:(double)factor;
+- (void)setSliderHeight:(double)height;
+- (void)setStylingProvider:(id)provider;
+- (void)setTimeControls:(id)controls forPresentationInterval:(id)interval;
+- (void)sliderTouchCancel:(id)cancel;
+- (void)sliderValueChanged:(id)changed;
 - (void)updateBackgroundMask;
 - (void)updateBacklightLuminance;
 - (void)updateContentSizeCategory;
 - (void)updateDisplayLink;
 - (void)updateDisplayLinkPaused;
 - (void)updateElapsedTime;
-- (void)updateElapsedTimeForDate:(id)a3;
-- (void)updateElapsedTimeOnDisplayLinkTick:(id)a3;
-- (void)updateElapsedTimeWithElapsedTime:(double)a3;
+- (void)updateElapsedTimeForDate:(id)date;
+- (void)updateElapsedTimeOnDisplayLinkTick:(id)tick;
+- (void)updateElapsedTimeWithElapsedTime:(double)time;
 - (void)updateElapsedTimeWithThrottle;
 - (void)updateVisibility;
 - (void)updateVisualStyling;
@@ -36,12 +36,12 @@
 
 @implementation MRUNowPlayingTimeControlsView
 
-- (MRUNowPlayingTimeControlsView)initWithFrame:(CGRect)a3
+- (MRUNowPlayingTimeControlsView)initWithFrame:(CGRect)frame
 {
   v52[6] = *MEMORY[0x1E69E9840];
   v49.receiver = self;
   v49.super_class = MRUNowPlayingTimeControlsView;
-  v3 = [(MRUNowPlayingTimeControlsView *)&v49 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUNowPlayingTimeControlsView *)&v49 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -86,24 +86,24 @@
 
     [(CAGradientLayer *)v4->_liveBackgroundMask setStartPoint:0.0, 0.0];
     [(CAGradientLayer *)v4->_liveBackgroundMask setEndPoint:1.0, 0.0];
-    v15 = [MEMORY[0x1E69DC888] blackColor];
-    v16 = v15;
-    v52[0] = [v15 CGColor];
-    v17 = [MEMORY[0x1E69DC888] blackColor];
-    v18 = v17;
-    v52[1] = [v17 CGColor];
-    v19 = [MEMORY[0x1E69DC888] clearColor];
-    v20 = v19;
-    v52[2] = [v19 CGColor];
-    v21 = [MEMORY[0x1E69DC888] clearColor];
-    v22 = v21;
-    v52[3] = [v21 CGColor];
-    v23 = [MEMORY[0x1E69DC888] blackColor];
-    v24 = v23;
-    v52[4] = [v23 CGColor];
-    v25 = [MEMORY[0x1E69DC888] blackColor];
-    v26 = v25;
-    v52[5] = [v25 CGColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v16 = blackColor;
+    v52[0] = [blackColor CGColor];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    v18 = blackColor2;
+    v52[1] = [blackColor2 CGColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    v20 = clearColor;
+    v52[2] = [clearColor CGColor];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    v22 = clearColor2;
+    v52[3] = [clearColor2 CGColor];
+    blackColor3 = [MEMORY[0x1E69DC888] blackColor];
+    v24 = blackColor3;
+    v52[4] = [blackColor3 CGColor];
+    blackColor4 = [MEMORY[0x1E69DC888] blackColor];
+    v26 = blackColor4;
+    v52[5] = [blackColor4 CGColor];
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:6];
     [(CAGradientLayer *)v4->_liveBackgroundMask setColors:v27];
 
@@ -112,8 +112,8 @@
     v4->_liveBackground = v28;
 
     v30 = v4->_liveBackgroundMask;
-    v31 = [(UIView *)v4->_liveBackground layer];
-    [v31 setMask:v30];
+    layer = [(UIView *)v4->_liveBackground layer];
+    [layer setMask:v30];
 
     [(MRUNowPlayingTimeControlsView *)v4 addSubview:v4->_liveBackground];
     v32 = objc_alloc_init(MEMORY[0x1E6988158]);
@@ -175,8 +175,8 @@ void __47__MRUNowPlayingTimeControlsView_initWithFrame___block_invoke(uint64_t a
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(MRUNowPlayingTimeControlsView *)self traitCollection];
+  [traitCollection displayScale];
 
   layout = self->_layout;
   if (layout == 4)
@@ -247,8 +247,8 @@ void __47__MRUNowPlayingTimeControlsView_initWithFrame___block_invoke(uint64_t a
     v95.size.width = v8;
     v95.size.height = v10;
     CGRectGetWidth(v95);
-    v17 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
-    [v17 displayScale];
+    traitCollection2 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
+    [traitCollection2 displayScale];
     v82 = v18;
     UIRectCenteredYInRectScale();
     v13 = v19;
@@ -304,8 +304,8 @@ LABEL_15:
   {
     [(UILabel *)self->_elapsedTimeLabel sizeThatFits:v8, v10];
     MRUSizeCeilToViewScale(self);
-    v45 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
-    [v45 displayScale];
+    traitCollection3 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
+    [traitCollection3 displayScale];
     v83 = v46;
     UIRectCenteredYInRectScale();
     v48 = v47;
@@ -335,8 +335,8 @@ LABEL_15:
     v108.size.width = v8;
     v108.size.height = v10;
     CGRectGetMaxX(v108);
-    v59 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
-    [v59 displayScale];
+    traitCollection4 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
+    [traitCollection4 displayScale];
     v84 = v60;
     UIRectCenteredYInRectScale();
     v62 = v61;
@@ -369,8 +369,8 @@ LABEL_15:
     v111.size.width = v8;
     v111.size.height = v10;
     CGRectGetWidth(v111);
-    v73 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
-    [v73 displayScale];
+    traitCollection5 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
+    [traitCollection5 displayScale];
     v81 = v74;
     UIRectCenteredYInRectScale();
     v13 = v75;
@@ -425,8 +425,8 @@ LABEL_16:
   v29 = CGRectInset(v28, 20.0, 0.0);
   [(UILabel *)self->_liveLabel sizeThatFits:v29.size.width, v29.size.height];
   UIRectGetCenter();
-  v5 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
-  [v5 displayScale];
+  traitCollection = [(MRUNowPlayingTimeControlsView *)self traitCollection];
+  [traitCollection displayScale];
   UIRectCenteredAboutPointScale();
   v7 = v6;
   v9 = v8;
@@ -439,8 +439,8 @@ LABEL_16:
   v30.size.width = width;
   v30.size.height = height;
   CGRectGetWidth(v30);
-  v14 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
-  [v14 displayScale];
+  traitCollection2 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
+  [traitCollection2 displayScale];
   v24 = v15;
   UIRectCenteredYInRectScale();
   v17 = v16;
@@ -538,9 +538,9 @@ LABEL_16:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   layout = self->_layout;
   if (layout == 4)
   {
@@ -567,7 +567,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  [(MRUNowPlayingTimeControlsView *)self intrinsicContentSize:a3.width];
+  [(MRUNowPlayingTimeControlsView *)self intrinsicContentSize:fits.width];
 LABEL_10:
   v8 = width;
   result.height = v6;
@@ -579,141 +579,141 @@ LABEL_10:
 {
   if (self->_layout == 2)
   {
-    v2 = self->_elapsedTimeLabel;
+    viewForLastBaselineLayout = self->_elapsedTimeLabel;
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = MRUNowPlayingTimeControlsView;
-    v2 = [(MRUNowPlayingTimeControlsView *)&v4 viewForLastBaselineLayout];
+    viewForLastBaselineLayout = [(MRUNowPlayingTimeControlsView *)&v4 viewForLastBaselineLayout];
   }
 
-  return v2;
+  return viewForLastBaselineLayout;
 }
 
-- (void)setTimeControls:(id)a3 forPresentationInterval:(id)a4
+- (void)setTimeControls:(id)controls forPresentationInterval:(id)interval
 {
-  objc_storeStrong(&self->_timeControls, a3);
-  v7 = a3;
-  v8 = a4;
-  [v7 startTime];
+  objc_storeStrong(&self->_timeControls, controls);
+  controlsCopy = controls;
+  intervalCopy = interval;
+  [controlsCopy startTime];
   *&v9 = v9;
   [(MRUSlider *)self->_slider setMinimumValue:v9];
-  [v7 duration];
+  [controlsCopy duration];
   *&v10 = v10;
   [(MRUSlider *)self->_slider setMaximumValue:v10];
-  v11 = [v7 scrubbable];
-  v12 = [(MRUNowPlayingTimeControlsView *)self slider];
-  [v12 setEnabled:v11];
+  scrubbable = [controlsCopy scrubbable];
+  slider = [(MRUNowPlayingTimeControlsView *)self slider];
+  [slider setEnabled:scrubbable];
 
-  v13 = [v7 isEnabled];
-  v14 = [(MRUNowPlayingTimeControlsView *)self slider];
-  [v14 setMinimumTrackVisible:v13];
+  isEnabled = [controlsCopy isEnabled];
+  slider2 = [(MRUNowPlayingTimeControlsView *)self slider];
+  [slider2 setMinimumTrackVisible:isEnabled];
 
-  v15 = [v7 liveText];
+  liveText = [controlsCopy liveText];
 
-  v16 = [(MRUNowPlayingTimeControlsView *)self liveLabel];
-  [v16 setText:v15];
+  liveLabel = [(MRUNowPlayingTimeControlsView *)self liveLabel];
+  [liveLabel setText:liveText];
 
-  v17 = [v8 startDate];
+  startDate = [intervalCopy startDate];
 
-  [(MRUNowPlayingTimeControlsView *)self updateElapsedTimeForDate:v17];
+  [(MRUNowPlayingTimeControlsView *)self updateElapsedTimeForDate:startDate];
   [(MRUNowPlayingTimeControlsView *)self updateDisplayLinkPaused];
   [(MRUNowPlayingTimeControlsView *)self updateVisibility];
 
   [(MRUNowPlayingTimeControlsView *)self setNeedsLayout];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUSlider *)self->_slider setStylingProvider:v6];
     [(MRUNowPlayingTimeControlsView *)self updateVisualStyling];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setOnScreen:(BOOL)a3
+- (void)setOnScreen:(BOOL)screen
 {
-  if (self->_onScreen != a3)
+  if (self->_onScreen != screen)
   {
-    self->_onScreen = a3;
+    self->_onScreen = screen;
     [(MRUNowPlayingTimeControlsView *)self updateDisplayLink];
   }
 }
 
-- (void)setLayout:(int64_t)a3
+- (void)setLayout:(int64_t)layout
 {
-  if (self->_layout != a3)
+  if (self->_layout != layout)
   {
-    self->_layout = a3;
+    self->_layout = layout;
     [(MRUNowPlayingTimeControlsView *)self updateContentSizeCategory];
-    [(MRUSlider *)self->_slider setStretchLimit:MRUNowPlayingTimeControlsStretchLimit(a3)];
+    [(MRUSlider *)self->_slider setStretchLimit:MRUNowPlayingTimeControlsStretchLimit(layout)];
 
     [(MRUNowPlayingTimeControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setLeftAlignLive:(BOOL)a3
+- (void)setLeftAlignLive:(BOOL)live
 {
-  if (self->_leftAlignLive != a3)
+  if (self->_leftAlignLive != live)
   {
-    self->_leftAlignLive = a3;
+    self->_leftAlignLive = live;
     [(MRUNowPlayingTimeControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setSliderHeight:(double)a3
+- (void)setSliderHeight:(double)height
 {
-  if (self->_sliderHeight != a3)
+  if (self->_sliderHeight != height)
   {
-    self->_sliderHeight = a3;
+    self->_sliderHeight = height;
     [(MRUNowPlayingTimeControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setSliderExpansionFactor:(double)a3
+- (void)setSliderExpansionFactor:(double)factor
 {
-  if (self->_sliderExpansionFactor != a3)
+  if (self->_sliderExpansionFactor != factor)
   {
-    self->_sliderExpansionFactor = a3;
+    self->_sliderExpansionFactor = factor;
     [(MRUSlider *)self->_slider setExpansionFactor:?];
 
     [(MRUNowPlayingTimeControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setContentScale:(double)a3
+- (void)setContentScale:(double)scale
 {
-  if (vabdd_f64(self->_contentScale, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_contentScale, scale) > 2.22044605e-16)
   {
-    self->_contentScale = a3;
+    self->_contentScale = scale;
     [(MRUNowPlayingTimeControlsView *)self updateContentSizeCategory];
   }
 }
 
-- (void)sliderValueChanged:(id)a3
+- (void)sliderValueChanged:(id)changed
 {
-  v5 = a3;
-  [v5 value];
+  changedCopy = changed;
+  [changedCopy value];
   [(MRUNowPlayingTimeControlsView *)self updateElapsedTimeWithElapsedTime:v4];
   if (self->_layout != 2)
   {
     [(MRUNowPlayingTimeControlsView *)self layoutIfNeeded];
   }
 
-  if (([v5 isTracking] & 1) == 0)
+  if (([changedCopy isTracking] & 1) == 0)
   {
     [(MRUNowPlayingTimeControlsView *)self updateElapsedTimeWithThrottle];
   }
 }
 
-- (void)sliderTouchCancel:(id)a3
+- (void)sliderTouchCancel:(id)cancel
 {
   [(MRUNowPlayingTimeControlsView *)self updateDisplayLinkPaused];
 
@@ -755,10 +755,10 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(MRUNowPlayingTimeControlsView *)self hitRect];
   v10 = x;
   v11 = y;
@@ -775,26 +775,26 @@ LABEL_10:
 
 - (void)updateVisualStyling
 {
-  v3 = [(MRUNowPlayingTimeControlsView *)self labelStyle];
+  labelStyle = [(MRUNowPlayingTimeControlsView *)self labelStyle];
   stylingProvider = self->_stylingProvider;
   elapsedTimeLabel = self->_elapsedTimeLabel;
-  v6 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:v3 toView:elapsedTimeLabel traitCollection:v6];
+  traitCollection = [(MRUNowPlayingTimeControlsView *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:labelStyle toView:elapsedTimeLabel traitCollection:traitCollection];
 
   v7 = self->_stylingProvider;
   remainingTimeLabel = self->_remainingTimeLabel;
-  v9 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
-  [(MRUVisualStylingProvider *)v7 applyStyle:v3 toView:remainingTimeLabel traitCollection:v9];
+  traitCollection2 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
+  [(MRUVisualStylingProvider *)v7 applyStyle:labelStyle toView:remainingTimeLabel traitCollection:traitCollection2];
 
   v10 = self->_stylingProvider;
   liveLabel = self->_liveLabel;
-  v12 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
-  [(MRUVisualStylingProvider *)v10 applyStyle:v3 toView:liveLabel traitCollection:v12];
+  traitCollection3 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
+  [(MRUVisualStylingProvider *)v10 applyStyle:labelStyle toView:liveLabel traitCollection:traitCollection3];
 
   v13 = self->_stylingProvider;
   liveBackground = self->_liveBackground;
-  v15 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
-  [(MRUVisualStylingProvider *)v13 applyStyle:3 toView:liveBackground traitCollection:v15];
+  traitCollection4 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
+  [(MRUVisualStylingProvider *)v13 applyStyle:3 toView:liveBackground traitCollection:traitCollection4];
 }
 
 - (int64_t)labelStyle
@@ -804,10 +804,10 @@ LABEL_10:
     return 0;
   }
 
-  v4 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
-  v5 = [v4 mr_shouldDim];
+  traitCollection = [(MRUNowPlayingTimeControlsView *)self traitCollection];
+  mr_shouldDim = [traitCollection mr_shouldDim];
 
-  if (v5)
+  if (mr_shouldDim)
   {
     return 2;
   }
@@ -823,10 +823,10 @@ LABEL_10:
   v3 = 1.0;
   if (([(MRUSlider *)self->_slider isTracking]& 1) == 0)
   {
-    v4 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
-    v5 = [v4 mr_shouldDim];
+    traitCollection = [(MRUNowPlayingTimeControlsView *)self traitCollection];
+    mr_shouldDim = [traitCollection mr_shouldDim];
 
-    if ((v5 & 1) == 0)
+    if ((mr_shouldDim & 1) == 0)
     {
       if (self->_layout == 2)
       {
@@ -857,8 +857,8 @@ LABEL_10:
       v11 = CAFrameRateRangeMake(1.0, 30.0, 5.0);
       [(CADisplayLink *)self->_displayLink setPreferredFrameRateRange:*&v11.minimum, *&v11.maximum, *&v11.preferred];
       v6 = self->_displayLink;
-      v7 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [(CADisplayLink *)v6 addToRunLoop:v7 forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [(CADisplayLink *)v6 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
       [(MRUNowPlayingTimeControlsView *)self updateDisplayLinkPaused];
     }
@@ -866,8 +866,8 @@ LABEL_10:
 
   else if (displayLink)
   {
-    v8 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)displayLink removeFromRunLoop:v8 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop2 = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)displayLink removeFromRunLoop:mainRunLoop2 forMode:*MEMORY[0x1E695DA28]];
 
     [(CADisplayLink *)self->_displayLink invalidate];
     v9 = self->_displayLink;
@@ -886,12 +886,12 @@ LABEL_10:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = objc_opt_class();
-      v7 = [(MRUSlider *)self->_slider isTracking];
+      isTracking = [(MRUSlider *)self->_slider isTracking];
       timeControls = self->_timeControls;
       v9 = 138543874;
       v10 = v6;
       v11 = 1024;
-      v12 = v7;
+      v12 = isTracking;
       v13 = 2114;
       v14 = timeControls;
       _os_log_impl(&dword_1A20FC000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ updateDisplayLinkPaused tracking: %{BOOL}u | time controls: %{public}@", &v9, 0x1Cu);
@@ -901,7 +901,7 @@ LABEL_10:
   }
 }
 
-- (void)updateElapsedTimeOnDisplayLinkTick:(id)a3
+- (void)updateElapsedTimeOnDisplayLinkTick:(id)tick
 {
   [(MRUNowPlayingTimeControlsView *)self updateElapsedTime];
 
@@ -914,12 +914,12 @@ LABEL_10:
   [(MRUNowPlayingTimeControlsView *)self updateElapsedTimeForDate:v3];
 }
 
-- (void)updateElapsedTimeForDate:(id)a3
+- (void)updateElapsedTimeForDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   if (([(MRUSlider *)self->_slider isTracking]& 1) == 0)
   {
-    [(MRUTimeControls *)self->_timeControls elapsedTimeForDate:v6];
+    [(MRUTimeControls *)self->_timeControls elapsedTimeForDate:dateCopy];
     v5 = v4;
     *&v4 = v4;
     [(MRUSlider *)self->_slider setValue:v4];
@@ -927,31 +927,31 @@ LABEL_10:
   }
 }
 
-- (void)updateElapsedTimeWithElapsedTime:(double)a3
+- (void)updateElapsedTimeWithElapsedTime:(double)time
 {
   [(MRUTimeControls *)self->_timeControls duration];
-  if (v5 <= a3)
+  if (v5 <= time)
   {
-    a3 = v5;
+    time = v5;
   }
 
-  v13 = [(AVTimeFormatter *)self->_elapsedTimeFormatter stringFromSeconds:a3];
+  v13 = [(AVTimeFormatter *)self->_elapsedTimeFormatter stringFromSeconds:time];
   remainingTimeFormatter = self->_remainingTimeFormatter;
   [(MRUTimeControls *)self->_timeControls duration];
-  v8 = [(AVTimeFormatter *)remainingTimeFormatter stringFromSeconds:v7 - a3];
-  v9 = [(MRUNowPlayingTimeControlsView *)self traitCollection];
-  if ([v9 mr_shouldDim])
+  time = [(AVTimeFormatter *)remainingTimeFormatter stringFromSeconds:v7 - time];
+  traitCollection = [(MRUNowPlayingTimeControlsView *)self traitCollection];
+  if ([traitCollection mr_shouldDim])
   {
   }
 
   else
   {
-    v10 = [(MRUTimeControls *)self->_timeControls isEnabled];
+    isEnabled = [(MRUTimeControls *)self->_timeControls isEnabled];
 
-    if (v10)
+    if (isEnabled)
     {
       [(UILabel *)self->_elapsedTimeLabel setText:v13];
-      [(UILabel *)self->_remainingTimeLabel setText:v8];
+      [(UILabel *)self->_remainingTimeLabel setText:time];
       goto LABEL_8;
     }
   }
@@ -959,7 +959,7 @@ LABEL_10:
   v11 = -[NSRegularExpression stringByReplacingMatchesInString:options:range:withTemplate:](self->_regexNumberDecimalDigit, "stringByReplacingMatchesInString:options:range:withTemplate:", v13, 0, 0, [v13 length], @"–");
   [(UILabel *)self->_elapsedTimeLabel setText:v11];
 
-  v12 = -[NSRegularExpression stringByReplacingMatchesInString:options:range:withTemplate:](self->_regexNumberDecimalDigit, "stringByReplacingMatchesInString:options:range:withTemplate:", v8, 0, 0, [v8 length], @"–");
+  v12 = -[NSRegularExpression stringByReplacingMatchesInString:options:range:withTemplate:](self->_regexNumberDecimalDigit, "stringByReplacingMatchesInString:options:range:withTemplate:", time, 0, 0, [time length], @"–");
   [(UILabel *)self->_remainingTimeLabel setText:v12];
 
 LABEL_8:
@@ -1039,14 +1039,14 @@ uint64_t __62__MRUNowPlayingTimeControlsView_updateElapsedTimeWithThrottle__bloc
 
 - (void)updateVisibility
 {
-  v3 = [(MRUTimeControls *)self->_timeControls isLive];
-  [(UILabel *)self->_elapsedTimeLabel setHidden:v3];
-  [(UILabel *)self->_remainingTimeLabel setHidden:v3];
-  [(MRUSlider *)self->_slider setHidden:v3];
-  [(UILabel *)self->_liveLabel setHidden:v3 ^ 1];
+  isLive = [(MRUTimeControls *)self->_timeControls isLive];
+  [(UILabel *)self->_elapsedTimeLabel setHidden:isLive];
+  [(UILabel *)self->_remainingTimeLabel setHidden:isLive];
+  [(MRUSlider *)self->_slider setHidden:isLive];
+  [(UILabel *)self->_liveLabel setHidden:isLive ^ 1];
   liveBackground = self->_liveBackground;
 
-  [(UIView *)liveBackground setHidden:v3 ^ 1];
+  [(UIView *)liveBackground setHidden:isLive ^ 1];
 }
 
 @end

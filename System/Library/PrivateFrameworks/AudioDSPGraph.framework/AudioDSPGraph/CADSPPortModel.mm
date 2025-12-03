@@ -1,8 +1,8 @@
 @interface CADSPPortModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)name;
 - (id).cxx_construct;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CADSPPortModel
@@ -14,13 +14,13 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v11 = 1;
       goto LABEL_17;
@@ -37,20 +37,20 @@
       size = self->_this.name.__rep_.__l.__size_;
     }
 
-    v7 = *(&v4->_this.name.__rep_.__l + 23);
+    v7 = *(&equalCopy->_this.name.__rep_.__l + 23);
     v8 = v7;
     if ((v7 & 0x80u) != 0)
     {
-      v7 = v4->_this.name.__rep_.__l.__size_;
+      v7 = equalCopy->_this.name.__rep_.__l.__size_;
     }
 
     if (size == v7)
     {
       v9 = v5 >= 0 ? &self->_this : self->_this.name.__rep_.__l.__data_;
-      v10 = v8 >= 0 ? &v4->_this : v4->_this.name.__rep_.__l.__data_;
+      v10 = v8 >= 0 ? &equalCopy->_this : equalCopy->_this.name.__rep_.__l.__data_;
       if (!memcmp(v9, v10, size))
       {
-        v11 = self->_this.var0 == v4->_this.var0;
+        v11 = self->_this.var0 == equalCopy->_this.var0;
         goto LABEL_17;
       }
     }
@@ -62,9 +62,9 @@ LABEL_17:
   return v11;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CADSPMutablePortModel allocWithZone:a3];
+  v4 = [CADSPMutablePortModel allocWithZone:zone];
   std::string::operator=(&v4->super._this, &self->_this);
   v4->super._this.var0 = self->_this.var0;
   return v4;

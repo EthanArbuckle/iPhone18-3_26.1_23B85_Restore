@@ -1,10 +1,10 @@
 @interface BYODConfirmFinishSetupViewController
 + (id)log;
-- (BYODConfirmFinishSetupViewController)initWithDomainName:(id)a3 acAccount:(id)a4;
-- (void)_addButtonTrayButtons:(id)a3;
-- (void)_learnMoreButtonTapped:(id)a3;
+- (BYODConfirmFinishSetupViewController)initWithDomainName:(id)name acAccount:(id)account;
+- (void)_addButtonTrayButtons:(id)buttons;
+- (void)_learnMoreButtonTapped:(id)tapped;
 - (void)_listDefaultEmail;
-- (void)_verifyButtonTapped:(id)a3;
+- (void)_verifyButtonTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_2BB94;
   block[3] = &unk_B8D78;
-  block[4] = a1;
+  block[4] = self;
   if (qword_D64B0 != -1)
   {
     dispatch_once(&qword_D64B0, block);
@@ -27,18 +27,18 @@
   return v2;
 }
 
-- (BYODConfirmFinishSetupViewController)initWithDomainName:(id)a3 acAccount:(id)a4
+- (BYODConfirmFinishSetupViewController)initWithDomainName:(id)name acAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  accountCopy = account;
   v11.receiver = self;
   v11.super_class = BYODConfirmFinishSetupViewController;
-  v8 = [(BYODBaseViewController *)&v11 initWithACAccount:v7];
+  v8 = [(BYODBaseViewController *)&v11 initWithACAccount:accountCopy];
   v9 = v8;
   if (v8)
   {
-    [(BYODConfirmFinishSetupViewController *)v8 setDomainName:v6];
-    [(BYODConfirmFinishSetupViewController *)v9 setLoggedInUserAccount:v7];
+    [(BYODConfirmFinishSetupViewController *)v8 setDomainName:nameCopy];
+    [(BYODConfirmFinishSetupViewController *)v9 setLoggedInUserAccount:accountCopy];
   }
 
   return v9;
@@ -89,21 +89,21 @@
     [(BYODBaseViewController *)self createViewControllerWithTitle:v4 attributedDetail:v15 detailTextAlignment:1 detailTextFontSize:v5 icon:18.0];
   }
 
-  v17 = [(BYODConfirmFinishSetupViewController *)self navigationItem];
-  [v17 setHidesBackButton:1];
+  navigationItem = [(BYODConfirmFinishSetupViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 }
 
-- (void)_addButtonTrayButtons:(id)a3
+- (void)_addButtonTrayButtons:(id)buttons
 {
-  v16 = a3;
+  buttonsCopy = buttons;
   v4 = +[OBBoldTrayButton boldButton];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"BYOD_VERIFY_BUTTON" value:&stru_B9FC8 table:@"AccountPreferences"];
   [v4 setTitle:v6 forState:0];
 
   [v4 addTarget:self action:"_verifyButtonTapped:" forControlEvents:64];
-  v7 = [v16 buttonTray];
-  [v7 addButton:v4];
+  buttonTray = [buttonsCopy buttonTray];
+  [buttonTray addButton:v4];
 
   if (MUISolariumFeatureEnabled())
   {
@@ -113,12 +113,12 @@
     [v8 setTitle:v10 forState:0];
 
     [v8 addTarget:self action:"_learnMoreButtonTapped:" forControlEvents:64];
-    v11 = [v16 headerView];
-    [v11 addAccessoryButton:v8];
+    headerView = [buttonsCopy headerView];
+    [headerView addAccessoryButton:v8];
 
-    v12 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelButtonTapped:"];
-    v13 = [(BYODConfirmFinishSetupViewController *)self navigationItem];
-    [v13 setLeftBarButtonItem:v12];
+    buttonTray2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelButtonTapped:"];
+    navigationItem = [(BYODConfirmFinishSetupViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:buttonTray2];
   }
 
   else
@@ -129,27 +129,27 @@
     [v8 setTitle:v15 forState:0];
 
     [v8 addTarget:self action:"_cancelButtonTapped:" forControlEvents:64];
-    v12 = [v16 buttonTray];
-    [v12 addButton:v8];
+    buttonTray2 = [buttonsCopy buttonTray];
+    [buttonTray2 addButton:v8];
   }
 }
 
-- (void)_verifyButtonTapped:(id)a3
+- (void)_verifyButtonTapped:(id)tapped
 {
-  v4 = a3;
-  [v4 setEnabled:0];
+  tappedCopy = tapped;
+  [tappedCopy setEnabled:0];
   v5 = [[BYODSpinner alloc] initWithViewController:self];
   [(BYODConfirmFinishSetupViewController *)self setSpinner:v5];
 
-  v6 = [(BYODConfirmFinishSetupViewController *)self spinner];
-  [v6 startSpinner];
+  spinner = [(BYODConfirmFinishSetupViewController *)self spinner];
+  [spinner startSpinner];
 
   v7 = [BYODDomainVerifyTransferRequest alloc];
-  v8 = [(BYODConfirmFinishSetupViewController *)self loggedInUserAccount];
-  v9 = [(BYODConfirmFinishSetupViewController *)self loggedInUserAccount];
-  v10 = [v9 accountStore];
-  v11 = [(BYODConfirmFinishSetupViewController *)self domainName];
-  v12 = [(BYODDomainVerifyTransferRequest *)v7 initWithAccount:v8 accountStore:v10 domain:v11];
+  loggedInUserAccount = [(BYODConfirmFinishSetupViewController *)self loggedInUserAccount];
+  loggedInUserAccount2 = [(BYODConfirmFinishSetupViewController *)self loggedInUserAccount];
+  accountStore = [loggedInUserAccount2 accountStore];
+  domainName = [(BYODConfirmFinishSetupViewController *)self domainName];
+  v12 = [(BYODDomainVerifyTransferRequest *)v7 initWithAccount:loggedInUserAccount accountStore:accountStore domain:domainName];
 
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
@@ -165,10 +165,10 @@
 - (void)_listDefaultEmail
 {
   v3 = [BYODListEmailRequest alloc];
-  v4 = [(BYODConfirmFinishSetupViewController *)self loggedInUserAccount];
-  v5 = [(BYODConfirmFinishSetupViewController *)self loggedInUserAccount];
-  v6 = [v5 accountStore];
-  v7 = [(BYODListEmailRequest *)v3 initWithAccount:v4 accountStore:v6];
+  loggedInUserAccount = [(BYODConfirmFinishSetupViewController *)self loggedInUserAccount];
+  loggedInUserAccount2 = [(BYODConfirmFinishSetupViewController *)self loggedInUserAccount];
+  accountStore = [loggedInUserAccount2 accountStore];
+  v7 = [(BYODListEmailRequest *)v3 initWithAccount:loggedInUserAccount accountStore:accountStore];
 
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
@@ -181,7 +181,7 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_learnMoreButtonTapped:(id)a3
+- (void)_learnMoreButtonTapped:(id)tapped
 {
   v6 = +[UIApplication sharedApplication];
   v3 = [NSBundle bundleForClass:objc_opt_class()];

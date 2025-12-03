@@ -1,6 +1,6 @@
 @interface DragDropController.DropDelegate
 - (_TtCC5Music18DragDropControllerP33_A2D93B940709760920FE5612D029DD8B12DropDelegate)init;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
 @end
 
 @implementation DragDropController.DropDelegate
@@ -25,16 +25,16 @@
   return [(DragDropController.DropDelegate *)&v9 init];
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtCC5Music18DragDropControllerP33_A2D93B940709760920FE5612D029DD8B12DropDelegate_onDropSessionDidUpdate);
   if (v4)
   {
-    v7 = a3;
+    interactionCopy = interaction;
     swift_unknownObjectRetain();
-    v8 = self;
+    selfCopy = self;
     sub_100030444(v4);
-    v9 = v4(a4);
+    v9 = v4(update);
     sub_100020438(v4);
 
     swift_unknownObjectRelease();

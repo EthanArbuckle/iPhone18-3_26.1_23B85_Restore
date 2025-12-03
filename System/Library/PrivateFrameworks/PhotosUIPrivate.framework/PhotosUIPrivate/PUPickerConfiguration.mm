@@ -1,7 +1,7 @@
 @interface PUPickerConfiguration
-+ (id)_fetchOrderedItemObjectIDsWithPhotoLibrary:(id)a3 itemIdentifiers:(id)a4 sourceType:(int64_t)a5;
-+ (id)limitedLibraryApplicationPreselectedObjectIDsOrCreateEmptySelectionWithTrustedIdentifier:(id)a3 auditToken:(id *)a4 photoLibrary:(id)a5;
-+ (id)limitedLibraryApplicationTrustedIdentifierWithConnection:(id)a3 purposedIdentifier:(id)a4 error:(id *)a5;
++ (id)_fetchOrderedItemObjectIDsWithPhotoLibrary:(id)library itemIdentifiers:(id)identifiers sourceType:(int64_t)type;
++ (id)limitedLibraryApplicationPreselectedObjectIDsOrCreateEmptySelectionWithTrustedIdentifier:(id)identifier auditToken:(id *)token photoLibrary:(id)library;
++ (id)limitedLibraryApplicationTrustedIdentifierWithConnection:(id)connection purposedIdentifier:(id)identifier error:(id *)error;
 - (BOOL)allowsCollectionNavigation;
 - (BOOL)allowsConfidentialWarning;
 - (BOOL)allowsContextMenuInteraction;
@@ -46,18 +46,18 @@
 - (NSString)prompt;
 - (NSString)title;
 - (PUPickerConfiguration)init;
-- (PUPickerConfiguration)initWithPHPickerConfiguration:(id)a3 connection:(id)a4;
-- (PUPickerConfiguration)initWithPHPickerConfiguration:(id)a3 connection:(id)a4 overriddenGeneratedFilter:(id)a5 allowsDownload:(BOOL)a6 usesMemoriesLayout:(BOOL)a7;
-- (id)cancellationImageNameWithBehavior:(int64_t)a3;
-- (id)cancellationTitleWithBehavior:(int64_t)a3;
-- (id)fetchOrderedItemObjectIDsUsingItemIdentifiers:(id)a3;
-- (id)initForUIImagePickerControllerWithPHPickerConfiguration:(id)a3 connection:(id)a4 overriddenGeneratedFilter:(id)a5;
-- (id)locationMetadataSubtitleWithSelectionCount:(int64_t)a3 includesLocation:(BOOL)a4 usesShortVersion:(BOOL)a5 leadingImageName:(id *)a6;
-- (id)promptWithSelectionCount:(int64_t)a3;
-- (id)stagingSubtitleWithSelectionCount:(int64_t)a3 includesLocation:(BOOL)a4 subtitleLeadingImageName:(id *)a5;
-- (id)stagingTitleWithSelectionCount:(int64_t)a3 selectionMediaType:(int64_t)a4;
-- (int64_t)cancellationBehaviorWithTraitCollection:(id)a3;
-- (int64_t)cancellationSystemItemWithBehavior:(int64_t)a3;
+- (PUPickerConfiguration)initWithPHPickerConfiguration:(id)configuration connection:(id)connection;
+- (PUPickerConfiguration)initWithPHPickerConfiguration:(id)configuration connection:(id)connection overriddenGeneratedFilter:(id)filter allowsDownload:(BOOL)download usesMemoriesLayout:(BOOL)layout;
+- (id)cancellationImageNameWithBehavior:(int64_t)behavior;
+- (id)cancellationTitleWithBehavior:(int64_t)behavior;
+- (id)fetchOrderedItemObjectIDsUsingItemIdentifiers:(id)identifiers;
+- (id)initForUIImagePickerControllerWithPHPickerConfiguration:(id)configuration connection:(id)connection overriddenGeneratedFilter:(id)filter;
+- (id)locationMetadataSubtitleWithSelectionCount:(int64_t)count includesLocation:(BOOL)location usesShortVersion:(BOOL)version leadingImageName:(id *)name;
+- (id)promptWithSelectionCount:(int64_t)count;
+- (id)stagingSubtitleWithSelectionCount:(int64_t)count includesLocation:(BOOL)location subtitleLeadingImageName:(id *)name;
+- (id)stagingTitleWithSelectionCount:(int64_t)count selectionMediaType:(int64_t)type;
+- (int64_t)cancellationBehaviorWithTraitCollection:(id)collection;
+- (int64_t)cancellationSystemItemWithBehavior:(int64_t)behavior;
 - (int64_t)clientEncodingPolicy;
 - (int64_t)confirmationBehavior;
 - (int64_t)confirmationSystemItem;
@@ -68,37 +68,37 @@
 - (int64_t)sourceType;
 - (unint64_t)disabledCapabilities;
 - (unint64_t)edgesWithoutContentMargins;
-- (void)setDidDismissOnboardingHeaderView:(BOOL)a3;
-- (void)setDidDismissOnboardingOverlayView:(BOOL)a3;
-- (void)setDidShowPhotosIndicator:(BOOL)a3;
-- (void)setEdgesWithoutContentMargins:(unint64_t)a3;
-- (void)setInteractiveBarTransitionFractionExpanded:(double)a3;
-- (void)setMinimumSelectionLimit:(int64_t)a3;
-- (void)setPrimaryButtonType:(int64_t)a3;
-- (void)setPrompt:(id)a3;
-- (void)setSecondaryButtonType:(int64_t)a3;
-- (void)setSelectionLimit:(int64_t)a3;
-- (void)setSupportsInteractiveBarTransition:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (void)setDidDismissOnboardingHeaderView:(BOOL)view;
+- (void)setDidDismissOnboardingOverlayView:(BOOL)view;
+- (void)setDidShowPhotosIndicator:(BOOL)indicator;
+- (void)setEdgesWithoutContentMargins:(unint64_t)margins;
+- (void)setInteractiveBarTransitionFractionExpanded:(double)expanded;
+- (void)setMinimumSelectionLimit:(int64_t)limit;
+- (void)setPrimaryButtonType:(int64_t)type;
+- (void)setPrompt:(id)prompt;
+- (void)setSecondaryButtonType:(int64_t)type;
+- (void)setSelectionLimit:(int64_t)limit;
+- (void)setSupportsInteractiveBarTransition:(BOOL)transition;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PUPickerConfiguration
 
-+ (id)_fetchOrderedItemObjectIDsWithPhotoLibrary:(id)a3 itemIdentifiers:(id)a4 sourceType:(int64_t)a5
++ (id)_fetchOrderedItemObjectIDsWithPhotoLibrary:(id)library itemIdentifiers:(id)identifiers sourceType:(int64_t)type
 {
   v7 = sub_1B3C9C788();
-  v8 = a3;
-  v9 = sub_1B3881E08(v8, v7, a5);
+  libraryCopy = library;
+  v9 = sub_1B3881E08(libraryCopy, v7, type);
 
   return v9;
 }
 
 - (BOOL)showsWallpaperSuggestions
 {
-  v2 = [(PUPickerConfiguration *)self suggestionGroup];
-  v3 = [v2 isForWallpaper];
+  suggestionGroup = [(PUPickerConfiguration *)self suggestionGroup];
+  isForWallpaper = [suggestionGroup isForWallpaper];
 
-  return v3;
+  return isForWallpaper;
 }
 
 - (int64_t)clientEncodingPolicy
@@ -143,33 +143,33 @@
 
   else
   {
-    v4 = [(PUPickerConfiguration *)self generatedFilter];
-    LODWORD(v3) = [v4 containsStickersFilter];
+    generatedFilter = [(PUPickerConfiguration *)self generatedFilter];
+    LODWORD(v3) = [generatedFilter containsStickersFilter];
 
     if (v3)
     {
-      v5 = [(PUPickerConfiguration *)self photoLibrary];
-      v6 = [v5 librarySpecificFetchOptions];
+      photoLibrary = [(PUPickerConfiguration *)self photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-      [v6 setIncludeAssetSourceTypes:5];
+      [librarySpecificFetchOptions setIncludeAssetSourceTypes:5];
       v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"kind", 0];
-      [v6 setInternalPredicate:v7];
+      [librarySpecificFetchOptions setInternalPredicate:v7];
 
-      [v6 setIncludeGuestAssets:1];
-      [v6 setShouldPrefetchCount:1];
-      v8 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:v6];
+      [librarySpecificFetchOptions setIncludeGuestAssets:1];
+      [librarySpecificFetchOptions setShouldPrefetchCount:1];
+      v8 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:librarySpecificFetchOptions];
       v3 = [v8 count];
 
       v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= 0", @"stickerConfidenceScore"];
       v10 = MEMORY[0x1E696AB28];
-      v11 = [v6 internalPredicate];
-      v17[0] = v11;
+      internalPredicate = [librarySpecificFetchOptions internalPredicate];
+      v17[0] = internalPredicate;
       v17[1] = v9;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
       v13 = [v10 andPredicateWithSubpredicates:v12];
-      [v6 setInternalPredicate:v13];
+      [librarySpecificFetchOptions setInternalPredicate:v13];
 
-      v14 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:v6];
+      v14 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:librarySpecificFetchOptions];
       v15 = [v14 count];
 
       LOBYTE(v3) = v3 >= 0xB && v15 / v3 < 0.9;
@@ -181,23 +181,23 @@
 
 - (BOOL)shouldDisableInlinePlayback
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = ([v2 _disabledPrivateCapabilities] >> 3) & 1;
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  v3 = ([phPickerConfiguration _disabledPrivateCapabilities] >> 3) & 1;
 
   return v3;
 }
 
 - (BOOL)pickerClientShouldRespectOptionsMenu
 {
-  v3 = [(PUPickerConfiguration *)self pickerClientIdentification];
-  v4 = [v3 trustedCallerBundleID];
+  pickerClientIdentification = [(PUPickerConfiguration *)self pickerClientIdentification];
+  trustedCallerBundleID = [pickerClientIdentification trustedCallerBundleID];
 
   if (pickerClientShouldRespectOptionsMenu_onceToken != -1)
   {
     dispatch_once(&pickerClientShouldRespectOptionsMenu_onceToken, &__block_literal_global_40676);
   }
 
-  if (PFIsPhotosMessagesApp() & 1) != 0 || ([pickerClientShouldRespectOptionsMenu_supportedBundleIDs containsObject:v4])
+  if (PFIsPhotosMessagesApp() & 1) != 0 || ([pickerClientShouldRespectOptionsMenu_supportedBundleIDs containsObject:trustedCallerBundleID])
   {
     LOBYTE(v5) = 1;
   }
@@ -249,10 +249,10 @@ void __61__PUPickerConfiguration_pickerClientShouldRespectOptionsMenu__block_inv
 {
   if ([(PUPickerConfiguration *)self isLimitedLibraryPicker])
   {
-    v3 = [(PUPickerConfiguration *)self phPickerConfiguration];
-    v4 = [v3 _limitedLibraryHeaderDismissedBefore];
+    phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+    _limitedLibraryHeaderDismissedBefore = [phPickerConfiguration _limitedLibraryHeaderDismissedBefore];
 
-    if (v4)
+    if (_limitedLibraryHeaderDismissedBefore)
     {
       return 0;
     }
@@ -260,10 +260,10 @@ void __61__PUPickerConfiguration_pickerClientShouldRespectOptionsMenu__block_inv
 
   if (![(PUPickerConfiguration *)self isLimitedLibraryPicker])
   {
-    v5 = [(PUPickerConfiguration *)self phPickerConfiguration];
-    v6 = [v5 _onboardingHeaderDismissedBefore];
+    phPickerConfiguration2 = [(PUPickerConfiguration *)self phPickerConfiguration];
+    _onboardingHeaderDismissedBefore = [phPickerConfiguration2 _onboardingHeaderDismissedBefore];
 
-    if (v6)
+    if (_onboardingHeaderDismissedBefore)
     {
       return 0;
     }
@@ -310,10 +310,10 @@ void __61__PUPickerConfiguration_pickerClientShouldRespectOptionsMenu__block_inv
 
 - (BOOL)shouldShowCommunicationSafetyIntervention
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = [v2 disabledCapabilities];
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  disabledCapabilities = [phPickerConfiguration disabledCapabilities];
 
-  if ((v3 & 0x10) != 0)
+  if ((disabledCapabilities & 0x10) != 0)
   {
     return 0;
   }
@@ -325,32 +325,32 @@ void __61__PUPickerConfiguration_pickerClientShouldRespectOptionsMenu__block_inv
 
 - (BOOL)allowsConfidentialWarning
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = ([v2 _disabledPrivateCapabilities] & 0x80) == 0;
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  v3 = ([phPickerConfiguration _disabledPrivateCapabilities] & 0x80) == 0;
 
   return v3;
 }
 
 - (BOOL)disableAutoPlaybackInPreview
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = ([v2 _disabledPrivateCapabilities] >> 13) & 1;
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  v3 = ([phPickerConfiguration _disabledPrivateCapabilities] >> 13) & 1;
 
   return v3;
 }
 
 - (BOOL)disableAutoPreferredContentSize
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = ([v2 _disabledPrivateCapabilities] >> 12) & 1;
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  v3 = ([phPickerConfiguration _disabledPrivateCapabilities] >> 12) & 1;
 
   return v3;
 }
 
 - (BOOL)hasClearBackgroundColor
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = ([v2 _disabledPrivateCapabilities] >> 4) & 1;
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  v3 = ([phPickerConfiguration _disabledPrivateCapabilities] >> 4) & 1;
 
   return v3;
 }
@@ -389,18 +389,18 @@ void __61__PUPickerConfiguration_pickerClientShouldRespectOptionsMenu__block_inv
 
 - (BOOL)excludesEmptyItems
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = ([v2 _disabledPrivateCapabilities] & 0x4000) == 0;
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  v3 = ([phPickerConfiguration _disabledPrivateCapabilities] & 0x4000) == 0;
 
   return v3;
 }
 
 - (BOOL)allowsNewItemCreation
 {
-  v3 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v4 = [v3 _disabledPrivateCapabilities];
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  _disabledPrivateCapabilities = [phPickerConfiguration _disabledPrivateCapabilities];
 
-  if ((v4 & 0x20) != 0 || [(PUPickerConfiguration *)self primaryButtonType]|| [(PUPickerConfiguration *)self sourceType]!= 2)
+  if ((_disabledPrivateCapabilities & 0x20) != 0 || [(PUPickerConfiguration *)self primaryButtonType]|| [(PUPickerConfiguration *)self sourceType]!= 2)
   {
     return 0;
   }
@@ -423,9 +423,9 @@ void __61__PUPickerConfiguration_pickerClientShouldRespectOptionsMenu__block_inv
 
 - (BOOL)excludesSortAndFilterMenu
 {
-  v3 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v4 = [v3 _disabledPrivateCapabilities];
-  result = (v4 & 0x100) != 0 || ([(PUPickerConfiguration *)self suggestionGroup], v5 = ;
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  _disabledPrivateCapabilities = [phPickerConfiguration _disabledPrivateCapabilities];
+  result = (_disabledPrivateCapabilities & 0x100) != 0 || ([(PUPickerConfiguration *)self suggestionGroup], v5 = ;
   return result;
 }
 
@@ -438,8 +438,8 @@ void __61__PUPickerConfiguration_pickerClientShouldRespectOptionsMenu__block_inv
 
   else
   {
-    v3 = [(PUPickerConfiguration *)self phPickerConfiguration];
-    v4 = ([v3 _disabledPrivateCapabilities] >> 2) & 1;
+    phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+    v4 = ([phPickerConfiguration _disabledPrivateCapabilities] >> 2) & 1;
   }
 
   return v4;
@@ -447,26 +447,26 @@ void __61__PUPickerConfiguration_pickerClientShouldRespectOptionsMenu__block_inv
 
 - (BOOL)excludesFavoritesAlbum
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = ([v2 _disabledPrivateCapabilities] >> 15) & 1;
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  v3 = ([phPickerConfiguration _disabledPrivateCapabilities] >> 15) & 1;
 
   return v3;
 }
 
 - (BOOL)excludesHiddenAlbum
 {
-  v3 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v4 = [v3 _disabledPrivateCapabilities];
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  _disabledPrivateCapabilities = [phPickerConfiguration _disabledPrivateCapabilities];
 
-  return (v4 & 2) != 0 || [(PUPickerConfiguration *)self _pickerClientSDKIsDawnAndBelow]&& [(PUPickerConfiguration *)self isLimitedLibraryPicker];
+  return (_disabledPrivateCapabilities & 2) != 0 || [(PUPickerConfiguration *)self _pickerClientSDKIsDawnAndBelow]&& [(PUPickerConfiguration *)self isLimitedLibraryPicker];
 }
 
 - (BOOL)excludesSharedAlbums
 {
-  v3 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v4 = [v3 _disabledPrivateCapabilities];
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  _disabledPrivateCapabilities = [phPickerConfiguration _disabledPrivateCapabilities];
 
-  return (v4 & 1) != 0 || [(PUPickerConfiguration *)self _pickerClientSDKIsDawnAndBelow]&& [(PUPickerConfiguration *)self isLimitedLibraryPicker];
+  return (_disabledPrivateCapabilities & 1) != 0 || [(PUPickerConfiguration *)self _pickerClientSDKIsDawnAndBelow]&& [(PUPickerConfiguration *)self isLimitedLibraryPicker];
 }
 
 - (BOOL)allowsOpeningStagingArea
@@ -484,10 +484,10 @@ void __61__PUPickerConfiguration_pickerClientShouldRespectOptionsMenu__block_inv
 
 - (BOOL)allowsSelectionStaging
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = [v2 _usesOpenPanelLayout];
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  _usesOpenPanelLayout = [phPickerConfiguration _usesOpenPanelLayout];
 
-  return v3 ^ 1;
+  return _usesOpenPanelLayout ^ 1;
 }
 
 - (BOOL)allowsSidebar
@@ -497,16 +497,16 @@ void __61__PUPickerConfiguration_pickerClientShouldRespectOptionsMenu__block_inv
     return 0;
   }
 
-  v3 = [(PUPickerConfiguration *)self albumsConfiguration];
-  if (v3)
+  albumsConfiguration = [(PUPickerConfiguration *)self albumsConfiguration];
+  if (albumsConfiguration)
   {
 
     return 0;
   }
 
-  v4 = [(PUPickerConfiguration *)self peopleConfiguration];
+  peopleConfiguration = [(PUPickerConfiguration *)self peopleConfiguration];
 
-  if (v4)
+  if (peopleConfiguration)
   {
     return 0;
   }
@@ -521,26 +521,26 @@ void __61__PUPickerConfiguration_pickerClientShouldRespectOptionsMenu__block_inv
     return 0;
   }
 
-  v4 = [(PUPickerConfiguration *)self generatedFilter];
-  v5 = [v4 allowsAlbums];
+  generatedFilter = [(PUPickerConfiguration *)self generatedFilter];
+  allowsAlbums = [generatedFilter allowsAlbums];
 
-  return v5;
+  return allowsAlbums;
 }
 
 - (BOOL)allowsNavigationPushPopAnimation
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = [v2 _usesOpenPanelLayout];
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  _usesOpenPanelLayout = [phPickerConfiguration _usesOpenPanelLayout];
 
-  return v3 ^ 1;
+  return _usesOpenPanelLayout ^ 1;
 }
 
 - (BOOL)allowsInteractivePopGesture
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = [v2 _usesOpenPanelLayout];
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  _usesOpenPanelLayout = [phPickerConfiguration _usesOpenPanelLayout];
 
-  return v3 ^ 1;
+  return _usesOpenPanelLayout ^ 1;
 }
 
 - (BOOL)allowsSwipeToSelect
@@ -568,27 +568,27 @@ void __61__PUPickerConfiguration_pickerClientShouldRespectOptionsMenu__block_inv
 
 - (BOOL)isOrderedSelection
 {
-  v3 = [(PUPickerConfiguration *)self selection];
-  if (v3 != 1)
+  selection = [(PUPickerConfiguration *)self selection];
+  if (selection != 1)
   {
-    LOBYTE(v3) = [(PUPickerConfiguration *)self selection]== 3;
+    LOBYTE(selection) = [(PUPickerConfiguration *)self selection]== 3;
   }
 
-  return v3;
+  return selection;
 }
 
 - (BOOL)hasPreselection
 {
-  v3 = [(PUPickerConfiguration *)self preselectedItemIdentifiers];
-  if ([v3 count])
+  preselectedItemIdentifiers = [(PUPickerConfiguration *)self preselectedItemIdentifiers];
+  if ([preselectedItemIdentifiers count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(PUPickerConfiguration *)self preselectedItemObjectIDs];
-    v4 = [v5 count] != 0;
+    preselectedItemObjectIDs = [(PUPickerConfiguration *)self preselectedItemObjectIDs];
+    v4 = [preselectedItemObjectIDs count] != 0;
   }
 
   return v4;
@@ -596,47 +596,47 @@ void __61__PUPickerConfiguration_pickerClientShouldRespectOptionsMenu__block_inv
 
 - (BOOL)hasFilterablePHPickerFilter
 {
-  v2 = [(PUPickerConfiguration *)self generatedFilter];
-  v3 = [v2 requiredAssetTypes] != 131070;
+  generatedFilter = [(PUPickerConfiguration *)self generatedFilter];
+  v3 = [generatedFilter requiredAssetTypes] != 131070;
 
   return v3;
 }
 
 - (int64_t)minimumSelectionLimit
 {
-  v3 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v4 = [v3 minimumSelectionLimit];
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  minimumSelectionLimit = [phPickerConfiguration minimumSelectionLimit];
 
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (minimumSelectionLimit == 0x7FFFFFFFFFFFFFFFLL)
   {
     return [(PUPickerConfiguration *)self hasPreselection]^ 1;
   }
 
-  v6 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v7 = [v6 minimumSelectionLimit];
+  phPickerConfiguration2 = [(PUPickerConfiguration *)self phPickerConfiguration];
+  minimumSelectionLimit2 = [phPickerConfiguration2 minimumSelectionLimit];
 
-  return v7;
+  return minimumSelectionLimit2;
 }
 
 - (int64_t)selectionLimit
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = [v2 selectionLimit];
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  selectionLimit = [phPickerConfiguration selectionLimit];
 
-  return v3;
+  return selectionLimit;
 }
 
 - (NSString)fetchType
 {
-  v2 = [(PUPickerConfiguration *)self sourceType];
-  if ((v2 - 1) > 5)
+  sourceType = [(PUPickerConfiguration *)self sourceType];
+  if ((sourceType - 1) > 5)
   {
     v3 = MEMORY[0x1E6978D98];
   }
 
   else
   {
-    v3 = qword_1E7B79470[v2 - 1];
+    v3 = qword_1E7B79470[sourceType - 1];
   }
 
   v4 = *v3;
@@ -646,37 +646,37 @@ void __61__PUPickerConfiguration_pickerClientShouldRespectOptionsMenu__block_inv
 
 - (int64_t)sourceType
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = [v2 _sourceType];
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  _sourceType = [phPickerConfiguration _sourceType];
 
-  return v3;
+  return _sourceType;
 }
 
 - (unint64_t)disabledCapabilities
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = [v2 disabledCapabilities];
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  disabledCapabilities = [phPickerConfiguration disabledCapabilities];
 
-  return v3;
+  return disabledCapabilities;
 }
 
 - (unint64_t)edgesWithoutContentMargins
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = [v2 edgesWithoutContentMargins];
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  edgesWithoutContentMargins = [phPickerConfiguration edgesWithoutContentMargins];
 
-  return v3;
+  return edgesWithoutContentMargins;
 }
 
 - (int64_t)confirmationSystemItem
 {
-  v3 = [(PUPickerConfiguration *)self primaryButtonType];
+  primaryButtonType = [(PUPickerConfiguration *)self primaryButtonType];
   v4 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v3 <= 2)
+  if (primaryButtonType <= 2)
   {
-    if (v3)
+    if (primaryButtonType)
     {
-      if (v3 == 2)
+      if (primaryButtonType == 2)
       {
         return 4;
       }
@@ -689,32 +689,32 @@ void __61__PUPickerConfiguration_pickerClientShouldRespectOptionsMenu__block_inv
 
     else
     {
-      v6 = [(PUPickerConfiguration *)self confirmationBehavior];
-      if (v6 >= 5)
+      confirmationBehavior = [(PUPickerConfiguration *)self confirmationBehavior];
+      if (confirmationBehavior >= 5)
       {
         return 0x7FFFFFFFFFFFFFFFLL;
       }
 
       else
       {
-        return qword_1B3D0D298[v6];
+        return qword_1B3D0D298[confirmationBehavior];
       }
     }
   }
 
   else
   {
-    if (v3 == 5)
+    if (primaryButtonType == 5)
     {
       v4 = 3;
     }
 
-    if (v3 == 4)
+    if (primaryButtonType == 4)
     {
       v4 = 2;
     }
 
-    if (v3 == 3)
+    if (primaryButtonType == 3)
     {
       return 0;
     }
@@ -728,13 +728,13 @@ void __61__PUPickerConfiguration_pickerClientShouldRespectOptionsMenu__block_inv
 
 - (NSString)confirmationTitle
 {
-  v3 = [(PUPickerConfiguration *)self primaryButtonType];
+  primaryButtonType = [(PUPickerConfiguration *)self primaryButtonType];
   v4 = 0;
-  if (v3 <= 3)
+  if (primaryButtonType <= 3)
   {
-    if (v3)
+    if (primaryButtonType)
     {
-      if (v3 != 2 && v3 != 3)
+      if (primaryButtonType != 2 && primaryButtonType != 3)
       {
         goto LABEL_14;
       }
@@ -742,8 +742,8 @@ void __61__PUPickerConfiguration_pickerClientShouldRespectOptionsMenu__block_inv
 
     else
     {
-      v5 = [(PUPickerConfiguration *)self confirmationBehavior];
-      if (v5 && v5 != 3 && v5 != 1)
+      confirmationBehavior = [(PUPickerConfiguration *)self confirmationBehavior];
+      if (confirmationBehavior && confirmationBehavior != 3 && confirmationBehavior != 1)
       {
         v4 = 0;
         goto LABEL_14;
@@ -755,7 +755,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v3 == 4 || v3 == 5 || v3 == 6)
+  if (primaryButtonType == 4 || primaryButtonType == 5 || primaryButtonType == 6)
   {
     goto LABEL_13;
   }
@@ -793,36 +793,36 @@ LABEL_14:
 
 - (int64_t)secondaryButtonType
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = [v2 _secondaryButtonType];
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  _secondaryButtonType = [phPickerConfiguration _secondaryButtonType];
 
-  return v3;
+  return _secondaryButtonType;
 }
 
 - (int64_t)primaryButtonType
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = [v2 _primaryButtonType];
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  _primaryButtonType = [phPickerConfiguration _primaryButtonType];
 
-  return v3;
+  return _primaryButtonType;
 }
 
 - (NSString)title
 {
-  v3 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v4 = [v3 title];
-  v5 = v4;
-  if (v4)
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  title = [phPickerConfiguration title];
+  v5 = title;
+  if (title)
   {
-    v6 = v4;
+    v6 = title;
   }
 
   else
   {
-    v7 = [(PUPickerConfiguration *)self phPickerConfiguration];
-    v8 = [(PUPickerConfiguration *)self generatedFilter];
-    v9 = [(PUPickerConfiguration *)self containerCollectionTitle];
-    v6 = PUPickerConfigurationGetTitle(v7, v8, v9);
+    phPickerConfiguration2 = [(PUPickerConfiguration *)self phPickerConfiguration];
+    generatedFilter = [(PUPickerConfiguration *)self generatedFilter];
+    containerCollectionTitle = [(PUPickerConfiguration *)self containerCollectionTitle];
+    v6 = PUPickerConfigurationGetTitle(phPickerConfiguration2, generatedFilter, containerCollectionTitle);
   }
 
   return v6;
@@ -830,46 +830,46 @@ LABEL_14:
 
 - (NSString)prompt
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = [v2 prompt];
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  prompt = [phPickerConfiguration prompt];
 
-  return v3;
+  return prompt;
 }
 
 - (NSString)initialSearchText
 {
-  v2 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v3 = [v2 _searchText];
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  _searchText = [phPickerConfiguration _searchText];
 
-  return v3;
+  return _searchText;
 }
 
-- (id)locationMetadataSubtitleWithSelectionCount:(int64_t)a3 includesLocation:(BOOL)a4 usesShortVersion:(BOOL)a5 leadingImageName:(id *)a6
+- (id)locationMetadataSubtitleWithSelectionCount:(int64_t)count includesLocation:(BOOL)location usesShortVersion:(BOOL)version leadingImageName:(id *)name
 {
-  v7 = a5;
-  v8 = a4;
+  versionCopy = version;
+  locationCopy = location;
   if ([(PUPickerConfiguration *)self excludesLocationMetadataSubtitle])
   {
     v9 = 0;
-    if (a6)
+    if (name)
     {
-      *a6 = 0;
+      *name = 0;
     }
   }
 
   else
   {
-    if (v7)
+    if (versionCopy)
     {
-      if (a6)
+      if (name)
       {
-        *a6 = 0;
+        *name = 0;
       }
     }
 
-    else if (a6)
+    else if (name)
     {
-      if (v8)
+      if (locationCopy)
       {
         v10 = @"location.fill";
       }
@@ -879,7 +879,7 @@ LABEL_14:
         v10 = @"location.slash";
       }
 
-      *a6 = v10;
+      *name = v10;
     }
 
     v9 = PXLocalizedString();
@@ -888,30 +888,30 @@ LABEL_14:
   return v9;
 }
 
-- (id)stagingSubtitleWithSelectionCount:(int64_t)a3 includesLocation:(BOOL)a4 subtitleLeadingImageName:(id *)a5
+- (id)stagingSubtitleWithSelectionCount:(int64_t)count includesLocation:(BOOL)location subtitleLeadingImageName:(id *)name
 {
-  v6 = a4;
-  if (!a5)
+  locationCopy = location;
+  if (!name)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:852 description:{@"Invalid parameter not satisfying: %@", @"outSubtitleLeadingImageName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:852 description:{@"Invalid parameter not satisfying: %@", @"outSubtitleLeadingImageName"}];
   }
 
-  v9 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v10 = [v9 _disabledPrivateCapabilities];
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  _disabledPrivateCapabilities = [phPickerConfiguration _disabledPrivateCapabilities];
 
-  if ((v10 & 0x800) != 0 || [(PUPickerConfiguration *)self excludesLocationMetadataSubtitle])
+  if ((_disabledPrivateCapabilities & 0x800) != 0 || [(PUPickerConfiguration *)self excludesLocationMetadataSubtitle])
   {
     v11 = 0;
-    *a5 = 0;
+    *name = 0;
   }
 
   else
   {
     if (MEMORY[0x1B8C6D660]())
     {
-      v12 = [(PUPickerConfiguration *)self allowsOpeningStagingArea];
-      v13 = a3 > 0 && v12;
+      allowsOpeningStagingArea = [(PUPickerConfiguration *)self allowsOpeningStagingArea];
+      v13 = count > 0 && allowsOpeningStagingArea;
     }
 
     else
@@ -919,13 +919,13 @@ LABEL_14:
       v13 = 0;
     }
 
-    v11 = [(PUPickerConfiguration *)self locationMetadataSubtitleWithSelectionCount:a3 includesLocation:v6 usesShortVersion:v13 leadingImageName:a5];
+    v11 = [(PUPickerConfiguration *)self locationMetadataSubtitleWithSelectionCount:count includesLocation:locationCopy usesShortVersion:v13 leadingImageName:name];
   }
 
   return v11;
 }
 
-- (id)stagingTitleWithSelectionCount:(int64_t)a3 selectionMediaType:(int64_t)a4
+- (id)stagingTitleWithSelectionCount:(int64_t)count selectionMediaType:(int64_t)type
 {
   if ([(PUPickerConfiguration *)self isSingleSelection])
   {
@@ -933,14 +933,14 @@ LABEL_14:
     goto LABEL_37;
   }
 
-  v8 = [(PUPickerConfiguration *)self sourceType];
-  v9 = v8;
-  if (a3 < 1)
+  sourceType = [(PUPickerConfiguration *)self sourceType];
+  v9 = sourceType;
+  if (count < 1)
   {
-    if (v8 == 4)
+    if (sourceType == 4)
     {
-      v13 = [(PUPickerConfiguration *)self photoLibrary];
-      [v13 px_peoplePetsHomeVisibility];
+      photoLibrary = [(PUPickerConfiguration *)self photoLibrary];
+      [photoLibrary px_peoplePetsHomeVisibility];
     }
 
     v15 = PXLocalizedString();
@@ -948,36 +948,36 @@ LABEL_14:
 
   else
   {
-    v10 = [(PUPickerConfiguration *)self allowsOpeningStagingArea];
+    allowsOpeningStagingArea = [(PUPickerConfiguration *)self allowsOpeningStagingArea];
     if (v9 > 3)
     {
       switch(v9)
       {
         case 6:
-          if (v10)
+          if (allowsOpeningStagingArea)
           {
-            v18 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v18 handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:800 description:{@"Invalid parameter not satisfying: %@", @"!self.allowsOpeningStagingArea"}];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:800 description:{@"Invalid parameter not satisfying: %@", @"!self.allowsOpeningStagingArea"}];
           }
 
           goto LABEL_33;
         case 5:
-          if (v10)
+          if (allowsOpeningStagingArea)
           {
-            v21 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v21 handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:794 description:{@"Invalid parameter not satisfying: %@", @"!self.allowsOpeningStagingArea"}];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:794 description:{@"Invalid parameter not satisfying: %@", @"!self.allowsOpeningStagingArea"}];
           }
 
           goto LABEL_33;
         case 4:
-          if (v10)
+          if (allowsOpeningStagingArea)
           {
-            v19 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v19 handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:778 description:{@"Invalid parameter not satisfying: %@", @"!self.allowsOpeningStagingArea"}];
+            currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler3 handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:778 description:{@"Invalid parameter not satisfying: %@", @"!self.allowsOpeningStagingArea"}];
           }
 
-          v12 = [(PUPickerConfiguration *)self photoLibrary];
-          [v12 px_peoplePetsHomeVisibility];
+          photoLibrary2 = [(PUPickerConfiguration *)self photoLibrary];
+          [photoLibrary2 px_peoplePetsHomeVisibility];
 
           goto LABEL_33;
       }
@@ -988,33 +988,33 @@ LABEL_14:
       switch(v9)
       {
         case 1:
-          if (v10)
+          if (allowsOpeningStagingArea)
           {
-            v17 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v17 handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:788 description:{@"Invalid parameter not satisfying: %@", @"!self.allowsOpeningStagingArea"}];
+            currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler4 handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:788 description:{@"Invalid parameter not satisfying: %@", @"!self.allowsOpeningStagingArea"}];
           }
 
           goto LABEL_33;
         case 2:
-          if (v10)
+          if (allowsOpeningStagingArea)
           {
-            v20 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v20 handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:797 description:{@"Invalid parameter not satisfying: %@", @"!self.allowsOpeningStagingArea"}];
+            currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler5 handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:797 description:{@"Invalid parameter not satisfying: %@", @"!self.allowsOpeningStagingArea"}];
           }
 
           goto LABEL_33;
         case 3:
-          if (v10)
+          if (allowsOpeningStagingArea)
           {
-            v11 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v11 handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:791 description:{@"Invalid parameter not satisfying: %@", @"!self.allowsOpeningStagingArea"}];
+            currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler6 handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:791 description:{@"Invalid parameter not satisfying: %@", @"!self.allowsOpeningStagingArea"}];
           }
 
           goto LABEL_33;
       }
     }
 
-    if (v10)
+    if (allowsOpeningStagingArea)
     {
 LABEL_33:
       v14 = PXLocalizedString();
@@ -1032,22 +1032,22 @@ LABEL_37:
   return v7;
 }
 
-- (id)promptWithSelectionCount:(int64_t)a3
+- (id)promptWithSelectionCount:(int64_t)count
 {
-  v5 = [(PUPickerConfiguration *)self selectionLimit];
-  if (a3 >= 1 && v5 >= 2 && [(PUPickerConfiguration *)self selectionLimit]- 5 <= a3)
+  selectionLimit = [(PUPickerConfiguration *)self selectionLimit];
+  if (count >= 1 && selectionLimit >= 2 && [(PUPickerConfiguration *)self selectionLimit]- 5 <= count)
   {
     goto LABEL_10;
   }
 
-  v6 = [(PUPickerConfiguration *)self prompt];
+  prompt = [(PUPickerConfiguration *)self prompt];
 
-  if (!v6)
+  if (!prompt)
   {
     if ([(PUPickerConfiguration *)self isLimitedLibraryPicker])
     {
       [(PUPickerConfiguration *)self hasPreselection];
-      v7 = PXLocalizedString();
+      prompt2 = PXLocalizedString();
       goto LABEL_12;
     }
 
@@ -1060,28 +1060,28 @@ LABEL_37:
 LABEL_10:
     [(PUPickerConfiguration *)self selectionLimit];
     [(PUPickerConfiguration *)self sourceType];
-    v8 = [(PUPickerConfiguration *)self generatedFilter];
-    [v8 displayAssetMediaType];
-    v9 = [(PUPickerConfiguration *)self photoLibrary];
-    [v9 px_peoplePetsHomeVisibility];
+    generatedFilter = [(PUPickerConfiguration *)self generatedFilter];
+    [generatedFilter displayAssetMediaType];
+    photoLibrary = [(PUPickerConfiguration *)self photoLibrary];
+    [photoLibrary px_peoplePetsHomeVisibility];
     v10 = PUPickerConfigurationGetSelectionLimitString();
 
     goto LABEL_13;
   }
 
-  v7 = [(PUPickerConfiguration *)self prompt];
+  prompt2 = [(PUPickerConfiguration *)self prompt];
 LABEL_12:
-  v10 = v7;
+  v10 = prompt2;
 LABEL_13:
 
   return v10;
 }
 
-- (int64_t)cancellationSystemItemWithBehavior:(int64_t)a3
+- (int64_t)cancellationSystemItemWithBehavior:(int64_t)behavior
 {
-  v4 = [(PUPickerConfiguration *)self secondaryButtonType];
+  secondaryButtonType = [(PUPickerConfiguration *)self secondaryButtonType];
   v5 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 == 2)
+  if (behavior == 2)
   {
     v6 = 1;
   }
@@ -1091,22 +1091,22 @@ LABEL_13:
     v6 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (a3 == 3)
+  if (behavior == 3)
   {
     v6 = 24;
   }
 
-  if (!v4)
+  if (!secondaryButtonType)
   {
     v5 = v6;
   }
 
-  if (v4 == 2)
+  if (secondaryButtonType == 2)
   {
     v5 = 1;
   }
 
-  if (v4 == 4)
+  if (secondaryButtonType == 4)
   {
     return 24;
   }
@@ -1117,7 +1117,7 @@ LABEL_13:
   }
 }
 
-- (id)cancellationImageNameWithBehavior:(int64_t)a3
+- (id)cancellationImageNameWithBehavior:(int64_t)behavior
 {
   if ([(PUPickerConfiguration *)self secondaryButtonType]== 3)
   {
@@ -1130,15 +1130,15 @@ LABEL_13:
   }
 }
 
-- (id)cancellationTitleWithBehavior:(int64_t)a3
+- (id)cancellationTitleWithBehavior:(int64_t)behavior
 {
-  v4 = [(PUPickerConfiguration *)self secondaryButtonType];
+  secondaryButtonType = [(PUPickerConfiguration *)self secondaryButtonType];
   v5 = 0;
-  if (v4 <= 2)
+  if (secondaryButtonType <= 2)
   {
-    if (v4)
+    if (secondaryButtonType)
     {
-      if (v4 != 2)
+      if (secondaryButtonType != 2)
       {
         goto LABEL_13;
       }
@@ -1146,7 +1146,7 @@ LABEL_13:
       goto LABEL_12;
     }
 
-    if ((a3 - 1) < 3)
+    if ((behavior - 1) < 3)
     {
 LABEL_12:
       v5 = PXLocalizedString();
@@ -1156,7 +1156,7 @@ LABEL_12:
     v5 = 0;
   }
 
-  else if (v4 == 3 || v4 == 4 || v4 == 5)
+  else if (secondaryButtonType == 3 || secondaryButtonType == 4 || secondaryButtonType == 5)
   {
     goto LABEL_12;
   }
@@ -1166,15 +1166,15 @@ LABEL_13:
   return v5;
 }
 
-- (int64_t)cancellationBehaviorWithTraitCollection:(id)a3
+- (int64_t)cancellationBehaviorWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PUPickerConfiguration *)self secondaryButtonType];
-  if (v5 <= 2)
+  collectionCopy = collection;
+  secondaryButtonType = [(PUPickerConfiguration *)self secondaryButtonType];
+  if (secondaryButtonType <= 2)
   {
-    if (v5)
+    if (secondaryButtonType)
     {
-      if (v5 == 2)
+      if (secondaryButtonType == 2)
       {
         v7 = 2;
       }
@@ -1187,17 +1187,17 @@ LABEL_13:
 
     else
     {
-      v8 = [v4 _presentationSemanticContext];
-      v9 = [(PUPickerConfiguration *)self disabledCapabilities];
+      _presentationSemanticContext = [collectionCopy _presentationSemanticContext];
+      disabledCapabilities = [(PUPickerConfiguration *)self disabledCapabilities];
       v7 = 0;
-      if (v8 != 3 && (v9 & 8) == 0)
+      if (_presentationSemanticContext != 3 && (disabledCapabilities & 8) == 0)
       {
         if ([(PUPickerConfiguration *)self selection]== 2 || [(PUPickerConfiguration *)self selection]== 3)
         {
-          v10 = [(PUPickerConfiguration *)self phPickerConfiguration];
-          v11 = [v10 _disabledPrivateCapabilities];
+          phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+          _disabledPrivateCapabilities = [phPickerConfiguration _disabledPrivateCapabilities];
 
-          if ((v11 & 0x400) != 0)
+          if ((_disabledPrivateCapabilities & 0x400) != 0)
           {
             v7 = 2;
           }
@@ -1219,12 +1219,12 @@ LABEL_13:
   else
   {
     v6 = 3;
-    if (v5 != 4)
+    if (secondaryButtonType != 4)
     {
-      v6 = v5 == 5;
+      v6 = secondaryButtonType == 5;
     }
 
-    if (v5 == 3)
+    if (secondaryButtonType == 3)
     {
       v7 = 2;
     }
@@ -1238,145 +1238,145 @@ LABEL_13:
   return v7;
 }
 
-- (id)fetchOrderedItemObjectIDsUsingItemIdentifiers:(id)a3
+- (id)fetchOrderedItemObjectIDsUsingItemIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(PUPickerConfiguration *)self photoLibrary];
-  v6 = [PUPickerConfiguration _fetchOrderedItemObjectIDsWithPhotoLibrary:v5 itemIdentifiers:v4 sourceType:[(PUPickerConfiguration *)self sourceType]];
+  identifiersCopy = identifiers;
+  photoLibrary = [(PUPickerConfiguration *)self photoLibrary];
+  v6 = [PUPickerConfiguration _fetchOrderedItemObjectIDsWithPhotoLibrary:photoLibrary itemIdentifiers:identifiersCopy sourceType:[(PUPickerConfiguration *)self sourceType]];
 
   return v6;
 }
 
-- (void)setInteractiveBarTransitionFractionExpanded:(double)a3
+- (void)setInteractiveBarTransitionFractionExpanded:(double)expanded
 {
-  if (self->_interactiveBarTransitionFractionExpanded != a3)
+  if (self->_interactiveBarTransitionFractionExpanded != expanded)
   {
-    self->_interactiveBarTransitionFractionExpanded = a3;
+    self->_interactiveBarTransitionFractionExpanded = expanded;
     [(PUPickerConfiguration *)self signalChange:64];
   }
 }
 
-- (void)setSupportsInteractiveBarTransition:(BOOL)a3
+- (void)setSupportsInteractiveBarTransition:(BOOL)transition
 {
-  if (self->_supportsInteractiveBarTransition != a3)
+  if (self->_supportsInteractiveBarTransition != transition)
   {
-    self->_supportsInteractiveBarTransition = a3;
+    self->_supportsInteractiveBarTransition = transition;
     [(PUPickerConfiguration *)self signalChange:32];
   }
 }
 
-- (void)setDidShowPhotosIndicator:(BOOL)a3
+- (void)setDidShowPhotosIndicator:(BOOL)indicator
 {
-  if (self->_didShowPhotosIndicator != a3)
+  if (self->_didShowPhotosIndicator != indicator)
   {
-    self->_didShowPhotosIndicator = a3;
+    self->_didShowPhotosIndicator = indicator;
     [(PUPickerConfiguration *)self signalChange:16];
   }
 }
 
-- (void)setDidDismissOnboardingHeaderView:(BOOL)a3
+- (void)setDidDismissOnboardingHeaderView:(BOOL)view
 {
-  if (self->_didDismissOnboardingHeaderView != a3)
+  if (self->_didDismissOnboardingHeaderView != view)
   {
-    self->_didDismissOnboardingHeaderView = a3;
+    self->_didDismissOnboardingHeaderView = view;
     [(PUPickerConfiguration *)self signalChange:8];
   }
 }
 
-- (void)setDidDismissOnboardingOverlayView:(BOOL)a3
+- (void)setDidDismissOnboardingOverlayView:(BOOL)view
 {
-  if (self->_didDismissOnboardingOverlayView != a3)
+  if (self->_didDismissOnboardingOverlayView != view)
   {
-    self->_didDismissOnboardingOverlayView = a3;
+    self->_didDismissOnboardingOverlayView = view;
     [(PUPickerConfiguration *)self signalChange:4];
   }
 }
 
-- (void)setSecondaryButtonType:(int64_t)a3
+- (void)setSecondaryButtonType:(int64_t)type
 {
-  if ([(PHPickerConfiguration *)self->_phPickerConfiguration _secondaryButtonType]!= a3)
+  if ([(PHPickerConfiguration *)self->_phPickerConfiguration _secondaryButtonType]!= type)
   {
-    [(PHPickerConfiguration *)self->_phPickerConfiguration _setSecondaryButtonType:a3];
+    [(PHPickerConfiguration *)self->_phPickerConfiguration _setSecondaryButtonType:type];
 
     [(PUPickerConfiguration *)self signalChange:4096];
   }
 }
 
-- (void)setPrimaryButtonType:(int64_t)a3
+- (void)setPrimaryButtonType:(int64_t)type
 {
-  if ([(PHPickerConfiguration *)self->_phPickerConfiguration _primaryButtonType]!= a3)
+  if ([(PHPickerConfiguration *)self->_phPickerConfiguration _primaryButtonType]!= type)
   {
-    [(PHPickerConfiguration *)self->_phPickerConfiguration _setPrimaryButtonType:a3];
+    [(PHPickerConfiguration *)self->_phPickerConfiguration _setPrimaryButtonType:type];
 
     [(PUPickerConfiguration *)self signalChange:2048];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
-  v4 = [(PHPickerConfiguration *)self->_phPickerConfiguration title];
-  if (v4 == v6)
+  titleCopy = title;
+  title = [(PHPickerConfiguration *)self->_phPickerConfiguration title];
+  if (title == titleCopy)
   {
   }
 
   else
   {
-    v5 = [v6 isEqual:v4];
+    v5 = [titleCopy isEqual:title];
 
     if ((v5 & 1) == 0)
     {
-      [(PHPickerConfiguration *)self->_phPickerConfiguration setTitle:v6];
+      [(PHPickerConfiguration *)self->_phPickerConfiguration setTitle:titleCopy];
       [(PUPickerConfiguration *)self signalChange:1024];
     }
   }
 }
 
-- (void)setPrompt:(id)a3
+- (void)setPrompt:(id)prompt
 {
-  v6 = a3;
-  v4 = [(PHPickerConfiguration *)self->_phPickerConfiguration prompt];
-  if (v4 == v6)
+  promptCopy = prompt;
+  prompt = [(PHPickerConfiguration *)self->_phPickerConfiguration prompt];
+  if (prompt == promptCopy)
   {
   }
 
   else
   {
-    v5 = [v6 isEqual:v4];
+    v5 = [promptCopy isEqual:prompt];
 
     if ((v5 & 1) == 0)
     {
-      [(PHPickerConfiguration *)self->_phPickerConfiguration setPrompt:v6];
+      [(PHPickerConfiguration *)self->_phPickerConfiguration setPrompt:promptCopy];
       [(PUPickerConfiguration *)self signalChange:512];
     }
   }
 }
 
-- (void)setMinimumSelectionLimit:(int64_t)a3
+- (void)setMinimumSelectionLimit:(int64_t)limit
 {
-  if ([(PHPickerConfiguration *)self->_phPickerConfiguration minimumSelectionLimit]!= a3)
+  if ([(PHPickerConfiguration *)self->_phPickerConfiguration minimumSelectionLimit]!= limit)
   {
-    [(PHPickerConfiguration *)self->_phPickerConfiguration setMinimumSelectionLimit:a3];
+    [(PHPickerConfiguration *)self->_phPickerConfiguration setMinimumSelectionLimit:limit];
 
     [(PUPickerConfiguration *)self signalChange:256];
   }
 }
 
-- (void)setSelectionLimit:(int64_t)a3
+- (void)setSelectionLimit:(int64_t)limit
 {
-  if ([(PHPickerConfiguration *)self->_phPickerConfiguration selectionLimit]!= a3)
+  if ([(PHPickerConfiguration *)self->_phPickerConfiguration selectionLimit]!= limit)
   {
-    [(PHPickerConfiguration *)self->_phPickerConfiguration setSelectionLimit:a3];
+    [(PHPickerConfiguration *)self->_phPickerConfiguration setSelectionLimit:limit];
 
     [(PUPickerConfiguration *)self signalChange:2];
   }
 }
 
-- (void)setEdgesWithoutContentMargins:(unint64_t)a3
+- (void)setEdgesWithoutContentMargins:(unint64_t)margins
 {
-  if ([(PHPickerConfiguration *)self->_phPickerConfiguration edgesWithoutContentMargins]!= a3)
+  if ([(PHPickerConfiguration *)self->_phPickerConfiguration edgesWithoutContentMargins]!= margins)
   {
-    [(PHPickerConfiguration *)self->_phPickerConfiguration setEdgesWithoutContentMargins:a3];
+    [(PHPickerConfiguration *)self->_phPickerConfiguration setEdgesWithoutContentMargins:margins];
 
     [(PUPickerConfiguration *)self signalChange:1];
   }
@@ -1384,9 +1384,9 @@ LABEL_13:
 
 - (BOOL)isValidConfiguration
 {
-  v3 = [(PUPickerConfiguration *)self preferredAssetRepresentationMode];
-  v4 = v3 >= *MEMORY[0x1E6979190];
-  if (v3 < *MEMORY[0x1E6979190])
+  preferredAssetRepresentationMode = [(PUPickerConfiguration *)self preferredAssetRepresentationMode];
+  v4 = preferredAssetRepresentationMode >= *MEMORY[0x1E6979190];
+  if (preferredAssetRepresentationMode < *MEMORY[0x1E6979190])
   {
     v5 = PLPickerGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1396,8 +1396,8 @@ LABEL_13:
     }
   }
 
-  v6 = [(PUPickerConfiguration *)self preferredAssetRepresentationMode];
-  if (v6 > *MEMORY[0x1E6979188])
+  preferredAssetRepresentationMode2 = [(PUPickerConfiguration *)self preferredAssetRepresentationMode];
+  if (preferredAssetRepresentationMode2 > *MEMORY[0x1E6979188])
   {
     v7 = PLPickerGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1409,8 +1409,8 @@ LABEL_13:
     v4 = 0;
   }
 
-  v8 = [(PUPickerConfiguration *)self selection];
-  if (v8 < *MEMORY[0x1E69791A0])
+  selection = [(PUPickerConfiguration *)self selection];
+  if (selection < *MEMORY[0x1E69791A0])
   {
     v9 = PLPickerGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1422,8 +1422,8 @@ LABEL_13:
     v4 = 0;
   }
 
-  v10 = [(PUPickerConfiguration *)self selection];
-  if (v10 > *MEMORY[0x1E6979198])
+  selection2 = [(PUPickerConfiguration *)self selection];
+  if (selection2 > *MEMORY[0x1E6979198])
   {
     v11 = PLPickerGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1435,8 +1435,8 @@ LABEL_13:
     v4 = 0;
   }
 
-  v12 = [(PUPickerConfiguration *)self mode];
-  if (v12 < *MEMORY[0x1E69791B0])
+  mode = [(PUPickerConfiguration *)self mode];
+  if (mode < *MEMORY[0x1E69791B0])
   {
     v13 = PLPickerGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1448,8 +1448,8 @@ LABEL_13:
     v4 = 0;
   }
 
-  v14 = [(PUPickerConfiguration *)self mode];
-  if (v14 > *MEMORY[0x1E69791A8])
+  mode2 = [(PUPickerConfiguration *)self mode];
+  if (mode2 > *MEMORY[0x1E69791A8])
   {
     v15 = PLPickerGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1461,8 +1461,8 @@ LABEL_13:
     v4 = 0;
   }
 
-  v16 = [(PUPickerConfiguration *)self sourceType];
-  if (v16 < *MEMORY[0x1E6979250])
+  sourceType = [(PUPickerConfiguration *)self sourceType];
+  if (sourceType < *MEMORY[0x1E6979250])
   {
     v17 = PLPickerGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1474,8 +1474,8 @@ LABEL_13:
     v4 = 0;
   }
 
-  v18 = [(PUPickerConfiguration *)self sourceType];
-  if (v18 > *MEMORY[0x1E6979248])
+  sourceType2 = [(PUPickerConfiguration *)self sourceType];
+  if (sourceType2 > *MEMORY[0x1E6979248])
   {
     v19 = PLPickerGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1523,27 +1523,27 @@ LABEL_13:
     v4 = 0;
   }
 
-  v23 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v24 = [v23 filter];
-  v25 = [v24 _puPickerFilter];
-  if (v25)
+  phPickerConfiguration = [(PUPickerConfiguration *)self phPickerConfiguration];
+  filter = [phPickerConfiguration filter];
+  _puPickerFilter = [filter _puPickerFilter];
+  if (_puPickerFilter)
   {
-    v26 = v25;
-    v27 = [(PUPickerConfiguration *)self phPickerConfiguration];
-    v28 = [v27 filter];
-    v29 = [v28 _puPickerFilter];
-    v30 = [v29 isValidFilter];
+    v26 = _puPickerFilter;
+    phPickerConfiguration2 = [(PUPickerConfiguration *)self phPickerConfiguration];
+    filter2 = [phPickerConfiguration2 filter];
+    _puPickerFilter2 = [filter2 _puPickerFilter];
+    isValidFilter = [_puPickerFilter2 isValidFilter];
 
-    if (v30)
+    if (isValidFilter)
     {
       goto LABEL_53;
     }
 
-    v23 = PLPickerGetLog();
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    phPickerConfiguration = PLPickerGetLog();
+    if (os_log_type_enabled(phPickerConfiguration, OS_LOG_TYPE_ERROR))
     {
       *v89 = 0;
-      _os_log_impl(&dword_1B36F3000, v23, OS_LOG_TYPE_ERROR, "invalid filter", v89, 2u);
+      _os_log_impl(&dword_1B36F3000, phPickerConfiguration, OS_LOG_TYPE_ERROR, "invalid filter", v89, 2u);
     }
 
     v4 = 0;
@@ -1554,9 +1554,9 @@ LABEL_13:
   }
 
 LABEL_53:
-  v31 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v32 = [v31 _aspectRatio];
-  [v32 _aspectRatio];
+  phPickerConfiguration3 = [(PUPickerConfiguration *)self phPickerConfiguration];
+  _aspectRatio = [phPickerConfiguration3 _aspectRatio];
+  [_aspectRatio _aspectRatio];
   if (v33 > 0.0)
   {
 
@@ -1564,19 +1564,19 @@ LABEL_59:
     goto LABEL_60;
   }
 
-  v34 = [(PUPickerConfiguration *)self phPickerConfiguration];
-  v35 = [v34 _aspectRatio];
-  [v35 _aspectRatio];
+  phPickerConfiguration4 = [(PUPickerConfiguration *)self phPickerConfiguration];
+  _aspectRatio2 = [phPickerConfiguration4 _aspectRatio];
+  [_aspectRatio2 _aspectRatio];
   v37 = v36;
   v38 = *MEMORY[0x1E6979180];
 
   if (v37 != v38)
   {
-    v31 = PLPickerGetLog();
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+    phPickerConfiguration3 = PLPickerGetLog();
+    if (os_log_type_enabled(phPickerConfiguration3, OS_LOG_TYPE_ERROR))
     {
       *v89 = 0;
-      _os_log_impl(&dword_1B36F3000, v31, OS_LOG_TYPE_ERROR, "aspect ratio too small", v89, 2u);
+      _os_log_impl(&dword_1B36F3000, phPickerConfiguration3, OS_LOG_TYPE_ERROR, "aspect ratio too small", v89, 2u);
     }
 
     v4 = 0;
@@ -1586,8 +1586,8 @@ LABEL_59:
 LABEL_60:
   if (![(PUPickerConfiguration *)self receivedPhotoLibrary])
   {
-    v39 = [(PUPickerConfiguration *)self preselectedItemObjectIDs];
-    v40 = [v39 count];
+    preselectedItemObjectIDs = [(PUPickerConfiguration *)self preselectedItemObjectIDs];
+    v40 = [preselectedItemObjectIDs count];
 
     if (v40)
     {
@@ -1604,8 +1604,8 @@ LABEL_60:
 
   if (![(PUPickerConfiguration *)self receivedPhotoLibrary])
   {
-    v42 = [(PUPickerConfiguration *)self preselectedItemIdentifiers];
-    v43 = [v42 count];
+    preselectedItemIdentifiers = [(PUPickerConfiguration *)self preselectedItemIdentifiers];
+    v43 = [preselectedItemIdentifiers count];
 
     if (v43)
     {
@@ -1622,10 +1622,10 @@ LABEL_60:
 
   if (![(PUPickerConfiguration *)self isLimitedLibraryPicker])
   {
-    v45 = [(PUPickerConfiguration *)self preselectedItemObjectIDs];
-    v46 = [v45 count];
-    v47 = [(PUPickerConfiguration *)self preselectedItemIdentifiers];
-    v48 = [v47 count];
+    preselectedItemObjectIDs2 = [(PUPickerConfiguration *)self preselectedItemObjectIDs];
+    v46 = [preselectedItemObjectIDs2 count];
+    preselectedItemIdentifiers2 = [(PUPickerConfiguration *)self preselectedItemIdentifiers];
+    v48 = [preselectedItemIdentifiers2 count];
 
     if (v46 > v48)
     {
@@ -1640,15 +1640,15 @@ LABEL_60:
     }
   }
 
-  v50 = [(PUPickerConfiguration *)self peopleConfiguration];
+  peopleConfiguration = [(PUPickerConfiguration *)self peopleConfiguration];
 
-  if (v50)
+  if (peopleConfiguration)
   {
     if (![(PUPickerConfiguration *)self receivedPhotoLibrary])
     {
-      v51 = [(PUPickerConfiguration *)self peopleConfiguration];
-      v52 = [v51 _identifiers];
-      v53 = [v52 count];
+      peopleConfiguration2 = [(PUPickerConfiguration *)self peopleConfiguration];
+      _identifiers = [peopleConfiguration2 _identifiers];
+      v53 = [_identifiers count];
 
       if (v53)
       {
@@ -1665,9 +1665,9 @@ LABEL_60:
 
     if (![(PUPickerConfiguration *)self receivedPhotoLibrary])
     {
-      v55 = [(PUPickerConfiguration *)self peopleConfiguration];
-      v56 = [v55 suggestedIdentifiers];
-      v57 = [v56 count];
+      peopleConfiguration3 = [(PUPickerConfiguration *)self peopleConfiguration];
+      suggestedIdentifiers = [peopleConfiguration3 suggestedIdentifiers];
+      v57 = [suggestedIdentifiers count];
 
       if (v57)
       {
@@ -1684,9 +1684,9 @@ LABEL_60:
 
     if (![(PUPickerConfiguration *)self receivedPhotoLibrary])
     {
-      v59 = [(PUPickerConfiguration *)self peopleConfiguration];
-      v60 = [v59 disabledIdentifiers];
-      v61 = [v60 count];
+      peopleConfiguration4 = [(PUPickerConfiguration *)self peopleConfiguration];
+      disabledIdentifiers = [peopleConfiguration4 disabledIdentifiers];
+      v61 = [disabledIdentifiers count];
 
       if (v61)
       {
@@ -1701,14 +1701,14 @@ LABEL_60:
       }
     }
 
-    v63 = [(PUPickerConfiguration *)self pickerClientIdentification];
-    v64 = [v63 trustedCallerBundleID];
+    pickerClientIdentification = [(PUPickerConfiguration *)self pickerClientIdentification];
+    trustedCallerBundleID = [pickerClientIdentification trustedCallerBundleID];
 
-    if (([v64 isEqualToString:@"com.apple.Preferences"] & 1) == 0 && (objc_msgSend(v64, "isEqualToString:", @"com.apple.Photos") & 1) == 0 && (objc_msgSend(v64, "isEqualToString:", *MEMORY[0x1E69C4140]) & 1) == 0 && (objc_msgSend(v64, "isEqualToString:", @"com.apple.mobileslideshow") & 1) == 0 && (objc_msgSend(v64, "isEqualToString:", @"com.apple.Bridge") & 1) == 0)
+    if (([trustedCallerBundleID isEqualToString:@"com.apple.Preferences"] & 1) == 0 && (objc_msgSend(trustedCallerBundleID, "isEqualToString:", @"com.apple.Photos") & 1) == 0 && (objc_msgSend(trustedCallerBundleID, "isEqualToString:", *MEMORY[0x1E69C4140]) & 1) == 0 && (objc_msgSend(trustedCallerBundleID, "isEqualToString:", @"com.apple.mobileslideshow") & 1) == 0 && (objc_msgSend(trustedCallerBundleID, "isEqualToString:", @"com.apple.Bridge") & 1) == 0)
     {
-      v65 = [(PUPickerConfiguration *)self peopleConfiguration];
-      v66 = [v65 suggestedIdentifiers];
-      v67 = [v66 count];
+      peopleConfiguration5 = [(PUPickerConfiguration *)self peopleConfiguration];
+      suggestedIdentifiers2 = [peopleConfiguration5 suggestedIdentifiers];
+      v67 = [suggestedIdentifiers2 count];
 
       if (v67)
       {
@@ -1724,15 +1724,15 @@ LABEL_60:
     }
   }
 
-  v69 = [(PUPickerConfiguration *)self albumsConfiguration];
+  albumsConfiguration = [(PUPickerConfiguration *)self albumsConfiguration];
 
-  if (v69)
+  if (albumsConfiguration)
   {
     if (![(PUPickerConfiguration *)self receivedPhotoLibrary])
     {
-      v70 = [(PUPickerConfiguration *)self albumsConfiguration];
-      v71 = [v70 _identifiers];
-      v72 = [v71 count];
+      albumsConfiguration2 = [(PUPickerConfiguration *)self albumsConfiguration];
+      _identifiers2 = [albumsConfiguration2 _identifiers];
+      v72 = [_identifiers2 count];
 
       if (v72)
       {
@@ -1749,9 +1749,9 @@ LABEL_60:
 
     if (![(PUPickerConfiguration *)self receivedPhotoLibrary])
     {
-      v74 = [(PUPickerConfiguration *)self albumsConfiguration];
-      v75 = [v74 suggestedIdentifiers];
-      v76 = [v75 count];
+      albumsConfiguration3 = [(PUPickerConfiguration *)self albumsConfiguration];
+      suggestedIdentifiers3 = [albumsConfiguration3 suggestedIdentifiers];
+      v76 = [suggestedIdentifiers3 count];
 
       if (v76)
       {
@@ -1768,9 +1768,9 @@ LABEL_60:
 
     if (![(PUPickerConfiguration *)self receivedPhotoLibrary])
     {
-      v78 = [(PUPickerConfiguration *)self albumsConfiguration];
-      v79 = [v78 disabledIdentifiers];
-      v80 = [v79 count];
+      albumsConfiguration4 = [(PUPickerConfiguration *)self albumsConfiguration];
+      disabledIdentifiers2 = [albumsConfiguration4 disabledIdentifiers];
+      v80 = [disabledIdentifiers2 count];
 
       if (v80)
       {
@@ -1800,8 +1800,8 @@ LABEL_60:
       v4 = 0;
     }
 
-    v83 = [(PUPickerConfiguration *)self limitedLibraryClientIdentifier];
-    v84 = [v83 length];
+    limitedLibraryClientIdentifier = [(PUPickerConfiguration *)self limitedLibraryClientIdentifier];
+    v84 = [limitedLibraryClientIdentifier length];
 
     if (!v84)
     {
@@ -1815,9 +1815,9 @@ LABEL_60:
       v4 = 0;
     }
 
-    v86 = [(PUPickerConfiguration *)self LimitedLibraryError];
+    limitedLibraryError = [(PUPickerConfiguration *)self LimitedLibraryError];
 
-    if (v86)
+    if (limitedLibraryError)
     {
       v87 = PLPickerGetLog();
       if (os_log_type_enabled(v87, OS_LOG_TYPE_ERROR))
@@ -1833,16 +1833,16 @@ LABEL_60:
   return v4;
 }
 
-- (PUPickerConfiguration)initWithPHPickerConfiguration:(id)a3 connection:(id)a4 overriddenGeneratedFilter:(id)a5 allowsDownload:(BOOL)a6 usesMemoriesLayout:(BOOL)a7
+- (PUPickerConfiguration)initWithPHPickerConfiguration:(id)configuration connection:(id)connection overriddenGeneratedFilter:(id)filter allowsDownload:(BOOL)download usesMemoriesLayout:(BOOL)layout
 {
   v156 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v144 = a4;
-  v15 = a5;
-  if (!v14)
+  configurationCopy = configuration;
+  connectionCopy = connection;
+  filterCopy = filter;
+  if (!configurationCopy)
   {
-    v122 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v122 handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:253 description:{@"Invalid parameter not satisfying: %@", @"phPickerConfiguration != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:253 description:{@"Invalid parameter not satisfying: %@", @"phPickerConfiguration != nil"}];
   }
 
   v147.receiver = self;
@@ -1851,81 +1851,81 @@ LABEL_60:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_phPickerConfiguration, a3);
-    v18 = [v14 preferredAssetRepresentationMode];
+    objc_storeStrong(&v16->_phPickerConfiguration, configuration);
+    preferredAssetRepresentationMode = [configurationCopy preferredAssetRepresentationMode];
     IsCompatibilityConversionDisabled = PXPreferencesIsCompatibilityConversionDisabled();
-    if (v18)
+    if (preferredAssetRepresentationMode)
     {
-      IsCompatibilityConversionDisabled = v18;
+      IsCompatibilityConversionDisabled = preferredAssetRepresentationMode;
     }
 
     v17->_preferredAssetRepresentationMode = IsCompatibilityConversionDisabled;
-    v17->_selection = [v14 selection];
-    v17->_mode = [v14 mode];
-    if (v15)
+    v17->_selection = [configurationCopy selection];
+    v17->_mode = [configurationCopy mode];
+    if (filterCopy)
     {
-      v20 = v15;
+      v20 = filterCopy;
     }
 
     else
     {
       v21 = [PUPickerGeneratedFilter alloc];
-      v22 = [v14 filter];
-      v23 = [v22 _puPickerFilter];
-      v20 = [(PUPickerGeneratedFilter *)v21 initWithFilter:v23];
+      filter = [configurationCopy filter];
+      _puPickerFilter = [filter _puPickerFilter];
+      v20 = [(PUPickerGeneratedFilter *)v21 initWithFilter:_puPickerFilter];
     }
 
     v141 = v20;
     objc_storeStrong(&v17->_generatedFilter, v20);
-    v24 = [v14 photoLibrary];
-    v25 = v24;
-    if (v24)
+    photoLibrary = [configurationCopy photoLibrary];
+    v25 = photoLibrary;
+    if (photoLibrary)
     {
-      v26 = v24;
+      imagePickerPhotoLibrary = photoLibrary;
     }
 
     else
     {
-      v26 = [MEMORY[0x1E69789A8] imagePickerPhotoLibrary];
+      imagePickerPhotoLibrary = [MEMORY[0x1E69789A8] imagePickerPhotoLibrary];
     }
 
-    v27 = v26;
+    v27 = imagePickerPhotoLibrary;
 
     objc_storeStrong(&v17->_photoLibrary, v27);
-    v28 = [v14 photoLibrary];
-    v17->_receivedPhotoLibrary = v28 != 0;
+    photoLibrary2 = [configurationCopy photoLibrary];
+    v17->_receivedPhotoLibrary = photoLibrary2 != 0;
 
-    v17->_onlyReturnsIdentifiers = [v14 _onlyReturnsIdentifiers];
-    v17->_allowsDownscaling = [v14 _allowsDownscaling];
-    v17->_allowsEncodingPolicyModification = [v14 _allowsEncodingPolicyModification];
-    v29 = [v14 _suggestionGroup];
+    v17->_onlyReturnsIdentifiers = [configurationCopy _onlyReturnsIdentifiers];
+    v17->_allowsDownscaling = [configurationCopy _allowsDownscaling];
+    v17->_allowsEncodingPolicyModification = [configurationCopy _allowsEncodingPolicyModification];
+    _suggestionGroup = [configurationCopy _suggestionGroup];
     suggestionGroup = v17->_suggestionGroup;
-    v17->_suggestionGroup = v29;
+    v17->_suggestionGroup = _suggestionGroup;
 
-    v31 = [v14 _albumsConfiguration];
+    _albumsConfiguration = [configurationCopy _albumsConfiguration];
     albumsConfiguration = v17->_albumsConfiguration;
-    v17->_albumsConfiguration = v31;
+    v17->_albumsConfiguration = _albumsConfiguration;
 
-    v33 = [v14 _peopleConfiguration];
+    _peopleConfiguration = [configurationCopy _peopleConfiguration];
     peopleConfiguration = v17->_peopleConfiguration;
-    v17->_peopleConfiguration = v33;
+    v17->_peopleConfiguration = _peopleConfiguration;
 
-    v17->_usesMemoriesLayout = a7;
-    v35 = [v14 _peopleConfiguration];
+    v17->_usesMemoriesLayout = layout;
+    _peopleConfiguration2 = [configurationCopy _peopleConfiguration];
 
-    v142 = v15;
-    if (v35)
+    v142 = filterCopy;
+    if (_peopleConfiguration2)
     {
-      v36 = [v14 _peopleConfiguration];
-      v37 = [v36 suggestedIdentifiers];
+      _peopleConfiguration3 = [configurationCopy _peopleConfiguration];
+      suggestedIdentifiers = [_peopleConfiguration3 suggestedIdentifiers];
 
-      v38 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithArray:v37];
-      v39 = [v14 _peopleConfiguration];
-      v40 = [v39 _identifiers];
+      v38 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithArray:suggestedIdentifiers];
+      _peopleConfiguration4 = [configurationCopy _peopleConfiguration];
+      _identifiers = [_peopleConfiguration4 _identifiers];
 
-      if ([v40 count])
+      if ([_identifiers count])
       {
-        [v38 addObjectsFromArray:v40];
+        [v38 addObjectsFromArray:_identifiers];
       }
 
       if ([v38 count])
@@ -1936,12 +1936,12 @@ LABEL_60:
       }
     }
 
-    v17->_allowsDownload = a6;
+    v17->_allowsDownload = download;
     v143 = v27;
-    if (v144)
+    if (connectionCopy)
     {
-      v43 = [objc_alloc(MEMORY[0x1E69BF1E0]) initWithConnection:v144];
-      v44 = [v43 trustedCallerBundleID];
+      v43 = [objc_alloc(MEMORY[0x1E69BF1E0]) initWithConnection:connectionCopy];
+      trustedCallerBundleID = [v43 trustedCallerBundleID];
       *v154 = 0u;
       v155 = 0u;
       if (v43)
@@ -1962,16 +1962,16 @@ LABEL_60:
       v48 = v146;
       if (v47)
       {
-        v49 = [v47 localizedName];
+        localizedName = [v47 localizedName];
         pickerClientDisplayName = v17->_pickerClientDisplayName;
-        v17->_pickerClientDisplayName = v49;
+        v17->_pickerClientDisplayName = localizedName;
 
-        v51 = [v47 SDKVersion];
-        v17->_pickerClientSDKVersion = [v51 integerValue];
+        sDKVersion = [v47 SDKVersion];
+        v17->_pickerClientSDKVersion = [sDKVersion integerValue];
 
-        if (!v44)
+        if (!trustedCallerBundleID)
         {
-          v44 = [v47 bundleIdentifier];
+          trustedCallerBundleID = [v47 bundleIdentifier];
         }
       }
 
@@ -1991,7 +1991,7 @@ LABEL_60:
 
     else
     {
-      v44 = 0;
+      trustedCallerBundleID = 0;
       v46 = 0;
       v43 = 0;
       v45 = 1;
@@ -2001,17 +2001,17 @@ LABEL_60:
     objc_storeStrong(&v17->_pickerClientIdentification, v43);
     v17->_pickerClientAccessAllowedResult = v45;
     v17->_pickerClientIsEntitledForOrHasPrivateLibraryAccess = v46;
-    v139 = v44;
-    objc_storeStrong(&v17->_pickerClientBundleIdentifier, v44);
-    v53 = [v14 _purposedLimitedLibraryApplicationIdentifier];
-    v54 = v53 != 0;
+    v139 = trustedCallerBundleID;
+    objc_storeStrong(&v17->_pickerClientBundleIdentifier, trustedCallerBundleID);
+    _purposedLimitedLibraryApplicationIdentifier = [configurationCopy _purposedLimitedLibraryApplicationIdentifier];
+    v54 = _purposedLimitedLibraryApplicationIdentifier != 0;
 
-    if (v53)
+    if (_purposedLimitedLibraryApplicationIdentifier)
     {
-      v55 = [v14 _purposedLimitedLibraryApplicationIdentifier];
+      _purposedLimitedLibraryApplicationIdentifier2 = [configurationCopy _purposedLimitedLibraryApplicationIdentifier];
       v145 = 0;
-      v56 = [PUPickerConfiguration limitedLibraryApplicationTrustedIdentifierWithConnection:v144 purposedIdentifier:v55 error:&v145];
-      v53 = v145;
+      v56 = [PUPickerConfiguration limitedLibraryApplicationTrustedIdentifierWithConnection:connectionCopy purposedIdentifier:_purposedLimitedLibraryApplicationIdentifier2 error:&v145];
+      _purposedLimitedLibraryApplicationIdentifier = v145;
     }
 
     else
@@ -2021,19 +2021,19 @@ LABEL_60:
 
     v17->_isLimitedLibraryPicker = v54;
     objc_storeStrong(&v17->_limitedLibraryClientIdentifier, v56);
-    v138 = v53;
-    objc_storeStrong(&v17->_LimitedLibraryError, v53);
+    v138 = _purposedLimitedLibraryApplicationIdentifier;
+    objc_storeStrong(&v17->_LimitedLibraryError, _purposedLimitedLibraryApplicationIdentifier);
     v57 = MEMORY[0x1E695DFB8];
-    v58 = [v14 preselectedItemIdentifiers];
-    v59 = [v57 orderedSetWithArray:v58];
+    preselectedItemIdentifiers = [configurationCopy preselectedItemIdentifiers];
+    v59 = [v57 orderedSetWithArray:preselectedItemIdentifiers];
     preselectedItemIdentifiers = v17->_preselectedItemIdentifiers;
     v17->_preselectedItemIdentifiers = v59;
 
     if (v56)
     {
-      if (v144)
+      if (connectionCopy)
       {
-        [v144 auditToken];
+        [connectionCopy auditToken];
       }
 
       else
@@ -2042,44 +2042,44 @@ LABEL_60:
         v155 = 0u;
       }
 
-      v61 = [PUPickerConfiguration limitedLibraryApplicationPreselectedObjectIDsOrCreateEmptySelectionWithTrustedIdentifier:v56 auditToken:v154 photoLibrary:v27];
-      v62 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v61];
+      preselectedItemIdentifiers2 = [PUPickerConfiguration limitedLibraryApplicationPreselectedObjectIDsOrCreateEmptySelectionWithTrustedIdentifier:v56 auditToken:v154 photoLibrary:v27];
+      v62 = [MEMORY[0x1E695DFB8] orderedSetWithArray:preselectedItemIdentifiers2];
     }
 
     else
     {
-      v61 = [v14 preselectedItemIdentifiers];
-      v62 = +[PUPickerConfiguration _fetchOrderedItemObjectIDsWithPhotoLibrary:itemIdentifiers:sourceType:](PUPickerConfiguration, "_fetchOrderedItemObjectIDsWithPhotoLibrary:itemIdentifiers:sourceType:", v27, v61, [v14 _sourceType]);
+      preselectedItemIdentifiers2 = [configurationCopy preselectedItemIdentifiers];
+      v62 = +[PUPickerConfiguration _fetchOrderedItemObjectIDsWithPhotoLibrary:itemIdentifiers:sourceType:](PUPickerConfiguration, "_fetchOrderedItemObjectIDsWithPhotoLibrary:itemIdentifiers:sourceType:", v27, preselectedItemIdentifiers2, [configurationCopy _sourceType]);
     }
 
     preselectedItemObjectIDs = v17->_preselectedItemObjectIDs;
     v17->_preselectedItemObjectIDs = v62;
 
-    if ([v14 _sourceType] == 1 || objc_msgSend(v14, "_sourceType") == 3 || objc_msgSend(v14, "_sourceType") == 4)
+    if ([configurationCopy _sourceType] == 1 || objc_msgSend(configurationCopy, "_sourceType") == 3 || objc_msgSend(configurationCopy, "_sourceType") == 4)
     {
       v64 = 0;
     }
 
     else
     {
-      v83 = [v27 librarySpecificFetchOptions];
-      [v83 setIncludeAllPhotosSmartAlbum:1];
-      v137 = [v14 _containerIdentifier];
-      if (v137)
+      librarySpecificFetchOptions = [v27 librarySpecificFetchOptions];
+      [librarySpecificFetchOptions setIncludeAllPhotosSmartAlbum:1];
+      _containerIdentifier = [configurationCopy _containerIdentifier];
+      if (_containerIdentifier)
       {
-        v84 = PUPickerConfigurationGetFetchType(v14);
+        v84 = PUPickerConfigurationGetFetchType(configurationCopy);
         v85 = *MEMORY[0x1E6978DC0];
         if ([v84 isEqualToString:*MEMORY[0x1E6978DC0]])
         {
-          v86 = v14;
+          v86 = configurationCopy;
           v87 = PUPickerConfigurationGetFetchType(v86);
-          v88 = [v86 _containerIdentifier];
+          _containerIdentifier2 = [v86 _containerIdentifier];
           v131 = v84;
-          v133 = v83;
+          v133 = librarySpecificFetchOptions;
           v135 = v87;
-          if (v88)
+          if (_containerIdentifier2)
           {
-            v128 = v88;
+            v128 = _containerIdentifier2;
             if ([v87 isEqualToString:v85])
             {
               v89 = PLPickerGetLog();
@@ -2090,40 +2090,40 @@ LABEL_60:
                 _os_log_impl(&dword_1B36F3000, v89, OS_LOG_TYPE_DEFAULT, "Looking for person with identifier: %@", v154, 0xCu);
               }
 
-              v90 = [v86 photoLibrary];
-              v91 = [v90 librarySpecificFetchOptions];
+              photoLibrary3 = [v86 photoLibrary];
+              librarySpecificFetchOptions2 = [photoLibrary3 librarySpecificFetchOptions];
 
-              [v91 setFetchLimit:1];
-              [v91 setPersonContext:5];
-              v92 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-              v125 = v91;
-              [v91 setIncludedDetectionTypes:v92];
+              [librarySpecificFetchOptions2 setFetchLimit:1];
+              [librarySpecificFetchOptions2 setPersonContext:5];
+              px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+              v125 = librarySpecificFetchOptions2;
+              [librarySpecificFetchOptions2 setIncludedDetectionTypes:px_defaultDetectionTypes];
 
               v93 = MEMORY[0x1E6978980];
               *v154 = v128;
               v94 = [MEMORY[0x1E695DEC8] arrayWithObjects:v154 count:1];
-              v95 = [v93 fetchPersonsWithLocalIdentifiers:v94 options:v91];
-              v96 = [v95 firstObject];
+              v95 = [v93 fetchPersonsWithLocalIdentifiers:v94 options:librarySpecificFetchOptions2];
+              firstObject = [v95 firstObject];
 
-              v88 = v128;
+              _containerIdentifier2 = v128;
             }
 
             else
             {
-              v96 = 0;
-              v88 = v128;
+              firstObject = 0;
+              _containerIdentifier2 = v128;
             }
           }
 
           else
           {
-            v96 = 0;
+            firstObject = 0;
           }
 
-          v109 = [v27 librarySpecificFetchOptions];
-          [v109 setIncludeTorsoAndFaceDetectionData:1];
-          v130 = v109;
-          v127 = [MEMORY[0x1E6978630] fetchAssetsForPerson:v96 options:v109];
+          librarySpecificFetchOptions3 = [v27 librarySpecificFetchOptions];
+          [librarySpecificFetchOptions3 setIncludeTorsoAndFaceDetectionData:1];
+          v130 = librarySpecificFetchOptions3;
+          v127 = [MEMORY[0x1E6978630] fetchAssetsForPerson:firstObject options:librarySpecificFetchOptions3];
           v110 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssetFetchResult:? title:? identifier:?];
           v111 = MEMORY[0x1E6978760];
           v124 = v110;
@@ -2133,43 +2133,43 @@ LABEL_60:
 
           v114 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:v27 orObject:0];
           v136 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v113 options:v114];
-          v115 = [v96 px_localizedName];
-          if ([v115 length])
+          px_localizedName = [firstObject px_localizedName];
+          if ([px_localizedName length])
           {
-            v103 = [v96 px_localizedName];
+            px_localizedName2 = [firstObject px_localizedName];
           }
 
           else
           {
-            v150 = v96;
+            v150 = firstObject;
             v116 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v150 count:1];
-            v103 = PXLocalizedStringForPeople();
+            px_localizedName2 = PXLocalizedStringForPeople();
           }
 
           v104 = v131;
 
-          v83 = v133;
+          librarySpecificFetchOptions = v133;
         }
 
         else if ([v84 isEqualToString:*MEMORY[0x1E6978DD8]])
         {
-          v96 = PUPickerConfigurationGetSocialGroup(v14);
-          v129 = [v27 librarySpecificFetchOptions];
-          v126 = [MEMORY[0x1E6978630] fetchExclusiveAssetsForSocialGroup:v96 options:v129];
-          v123 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssetFetchResult:v126 title:&stru_1F2AC6818 identifier:v137];
+          firstObject = PUPickerConfigurationGetSocialGroup(configurationCopy);
+          librarySpecificFetchOptions4 = [v27 librarySpecificFetchOptions];
+          v126 = [MEMORY[0x1E6978630] fetchExclusiveAssetsForSocialGroup:firstObject options:librarySpecificFetchOptions4];
+          v123 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssetFetchResult:v126 title:&stru_1F2AC6818 identifier:_containerIdentifier];
           v99 = MEMORY[0x1E6978760];
           v149 = v123;
           [MEMORY[0x1E695DEC8] arrayWithObjects:&v149 count:1];
           v132 = v84;
-          v100 = v134 = v83;
+          v100 = v134 = librarySpecificFetchOptions;
           v101 = [v99 transientCollectionListWithCollections:v100 title:&stru_1F2AC6818];
 
           v102 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:v27 orObject:0];
           v136 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v101 options:v102];
-          v103 = [v96 localizedTitle];
+          px_localizedName2 = [firstObject localizedTitle];
 
           v104 = v132;
-          v83 = v134;
+          librarySpecificFetchOptions = v134;
         }
 
         else
@@ -2179,21 +2179,21 @@ LABEL_60:
           if (os_log_type_enabled(v105, OS_LOG_TYPE_DEFAULT))
           {
             *v154 = 138412290;
-            *&v154[4] = v137;
+            *&v154[4] = _containerIdentifier;
             _os_log_impl(&dword_1B36F3000, v105, OS_LOG_TYPE_DEFAULT, "Looking for custom asset collection with identifier: %@", v154, 0xCu);
           }
 
           v106 = MEMORY[0x1E6978650];
-          v148 = v137;
+          v148 = _containerIdentifier;
           v107 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v148 count:1];
-          v108 = [v106 fetchAssetCollectionsWithLocalIdentifiers:v107 options:v83];
+          v108 = [v106 fetchAssetCollectionsWithLocalIdentifiers:v107 options:librarySpecificFetchOptions];
 
           v136 = v108;
-          v96 = [v108 firstObject];
-          v103 = [v96 localizedTitle];
+          firstObject = [v108 firstObject];
+          px_localizedName2 = [firstObject localizedTitle];
         }
 
-        v98 = v103;
+        v98 = px_localizedName2;
         v97 = v136;
       }
 
@@ -2203,9 +2203,9 @@ LABEL_60:
         v98 = 0;
       }
 
-      v117 = [(PHFetchResult *)v97 firstObject];
+      firstObject2 = [(PHFetchResult *)v97 firstObject];
 
-      if (!v117)
+      if (!firstObject2)
       {
         v118 = PLPickerGetLog();
         if (os_log_type_enabled(v118, OS_LOG_TYPE_DEFAULT))
@@ -2214,7 +2214,7 @@ LABEL_60:
           _os_log_impl(&dword_1B36F3000, v118, OS_LOG_TYPE_DEFAULT, "No custom collection specified/found. Using all photos asset collection.", v154, 2u);
         }
 
-        v119 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:2 subtype:1000000205 options:v83];
+        v119 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:2 subtype:1000000205 options:librarySpecificFetchOptions];
 
         v98 = 0;
         v97 = v119;
@@ -2228,13 +2228,13 @@ LABEL_60:
       objc_storeStrong(&v17->_containerCollectionTitle, v98);
     }
 
-    v65 = [v14 _peopleConfiguration];
-    v66 = [v65 suggestedIdentifiers];
-    v67 = v66;
+    _peopleConfiguration5 = [configurationCopy _peopleConfiguration];
+    suggestedIdentifiers2 = [_peopleConfiguration5 suggestedIdentifiers];
+    v67 = suggestedIdentifiers2;
     v68 = MEMORY[0x1E695E0F0];
-    if (v66)
+    if (suggestedIdentifiers2)
     {
-      v69 = v66;
+      v69 = suggestedIdentifiers2;
     }
 
     else
@@ -2246,10 +2246,10 @@ LABEL_60:
 
     if ([v70 count])
     {
-      v71 = [(PUPickerConfiguration *)v17 photoLibrary];
-      v72 = [v71 librarySpecificFetchOptions];
+      photoLibrary4 = [(PUPickerConfiguration *)v17 photoLibrary];
+      librarySpecificFetchOptions5 = [photoLibrary4 librarySpecificFetchOptions];
 
-      v73 = [MEMORY[0x1E6978980] fetchPersonsWithLocalIdentifiers:v70 options:v72];
+      v73 = [MEMORY[0x1E6978980] fetchPersonsWithLocalIdentifiers:v70 options:librarySpecificFetchOptions5];
       v74 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v70];
       v68 = [v73 px_fetchedObjectIDsSortedByLocalIdentifiers:v74];
     }
@@ -2258,7 +2258,7 @@ LABEL_60:
     suggestedItemObjectIDs = v17->_suggestedItemObjectIDs;
     v17->_suggestedItemObjectIDs = v75;
 
-    v77 = PUPickerConfigurationGetTitle(v14, v141, v64);
+    v77 = PUPickerConfigurationGetTitle(configurationCopy, v141, v64);
     v78 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssets:MEMORY[0x1E695E0F0] title:v77 identifier:*MEMORY[0x1E69C41A8] photoLibrary:v143];
     allPhotosVirtualCollection = v17->_allPhotosVirtualCollection;
     v17->_allPhotosVirtualCollection = v78;
@@ -2267,7 +2267,7 @@ LABEL_60:
     v17->_interactiveBarTransitionFractionExpanded = 1.0;
     v17->_interactiveBarTransitionWindowHeight = 0.0;
 
-    v15 = v142;
+    filterCopy = v142;
   }
 
   if ([(PUPickerConfiguration *)v17 isValidConfiguration])
@@ -2285,33 +2285,33 @@ LABEL_60:
   return v81;
 }
 
-- (id)initForUIImagePickerControllerWithPHPickerConfiguration:(id)a3 connection:(id)a4 overriddenGeneratedFilter:(id)a5
+- (id)initForUIImagePickerControllerWithPHPickerConfiguration:(id)configuration connection:(id)connection overriddenGeneratedFilter:(id)filter
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  configurationCopy = configuration;
+  connectionCopy = connection;
+  filterCopy = filter;
+  if (!configurationCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"phPickerConfiguration != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"phPickerConfiguration != nil"}];
   }
 
-  v12 = -[PUPickerConfiguration initWithPHPickerConfiguration:connection:overriddenGeneratedFilter:allowsDownload:usesMemoriesLayout:](self, "initWithPHPickerConfiguration:connection:overriddenGeneratedFilter:allowsDownload:usesMemoriesLayout:", v9, v10, v11, [v9 _onlyReturnsIdentifiers] ^ 1, objc_msgSend(v9, "_usesMemoriesLayout"));
+  v12 = -[PUPickerConfiguration initWithPHPickerConfiguration:connection:overriddenGeneratedFilter:allowsDownload:usesMemoriesLayout:](self, "initWithPHPickerConfiguration:connection:overriddenGeneratedFilter:allowsDownload:usesMemoriesLayout:", configurationCopy, connectionCopy, filterCopy, [configurationCopy _onlyReturnsIdentifiers] ^ 1, objc_msgSend(configurationCopy, "_usesMemoriesLayout"));
 
   return v12;
 }
 
-- (PUPickerConfiguration)initWithPHPickerConfiguration:(id)a3 connection:(id)a4
+- (PUPickerConfiguration)initWithPHPickerConfiguration:(id)configuration connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  configurationCopy = configuration;
+  connectionCopy = connection;
+  if (!configurationCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:225 description:{@"Invalid parameter not satisfying: %@", @"phPickerConfiguration != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:225 description:{@"Invalid parameter not satisfying: %@", @"phPickerConfiguration != nil"}];
   }
 
-  v9 = -[PUPickerConfiguration initWithPHPickerConfiguration:connection:overriddenGeneratedFilter:allowsDownload:usesMemoriesLayout:](self, "initWithPHPickerConfiguration:connection:overriddenGeneratedFilter:allowsDownload:usesMemoriesLayout:", v7, v8, 0, 0, [v7 _usesMemoriesLayout]);
+  v9 = -[PUPickerConfiguration initWithPHPickerConfiguration:connection:overriddenGeneratedFilter:allowsDownload:usesMemoriesLayout:](self, "initWithPHPickerConfiguration:connection:overriddenGeneratedFilter:allowsDownload:usesMemoriesLayout:", configurationCopy, connectionCopy, 0, 0, [configurationCopy _usesMemoriesLayout]);
 
   return v9;
 }
@@ -2323,21 +2323,21 @@ LABEL_60:
 
   if (!v5)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:0 file:@"PUPickerConfiguration.m" lineNumber:218 description:@"Self must not be nil."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:0 file:@"PUPickerConfiguration.m" lineNumber:218 description:@"Self must not be nil."];
   }
 
   return v5;
 }
 
-+ (id)limitedLibraryApplicationPreselectedObjectIDsOrCreateEmptySelectionWithTrustedIdentifier:(id)a3 auditToken:(id *)a4 photoLibrary:(id)a5
++ (id)limitedLibraryApplicationPreselectedObjectIDsOrCreateEmptySelectionWithTrustedIdentifier:(id)identifier auditToken:(id *)token photoLibrary:(id)library
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  libraryCopy = library;
   v9 = MEMORY[0x1E69BE510];
-  v10 = [v8 managedObjectContextForCurrentQueueQoS];
-  v11 = [v9 fetchLimitedLibraryFetchFilterWithApplicationIdentifier:v7 inManagedObjectContext:v10];
+  managedObjectContextForCurrentQueueQoS = [libraryCopy managedObjectContextForCurrentQueueQoS];
+  v11 = [v9 fetchLimitedLibraryFetchFilterWithApplicationIdentifier:identifierCopy inManagedObjectContext:managedObjectContextForCurrentQueueQoS];
 
   v12 = PLPickerGetLog();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -2346,39 +2346,39 @@ LABEL_60:
     if (v13)
     {
       *buf = 138412290;
-      *&buf[4] = v7;
+      *&buf[4] = identifierCopy;
       _os_log_impl(&dword_1B36F3000, v12, OS_LOG_TYPE_DEFAULT, "Fetching existing selection for client: %@", buf, 0xCu);
     }
 
-    v14 = [MEMORY[0x1E69BE540] entityName];
-    v15 = [v11 predicateForEntityName:v14];
+    entityName = [MEMORY[0x1E69BE540] entityName];
+    libraryInternalClient = [v11 predicateForEntityName:entityName];
 
-    if (!v15)
+    if (!libraryInternalClient)
     {
-      v22 = MEMORY[0x1E695E0F0];
+      fetchedObjectIDs2 = MEMORY[0x1E695E0F0];
       goto LABEL_14;
     }
 
-    v16 = [v8 librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
     v17 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:0];
     v28 = v17;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:1];
-    [v16 setSortDescriptors:v18];
+    [librarySpecificFetchOptions setSortDescriptors:v18];
 
-    [v16 setInternalPredicate:v15];
-    [v16 setIncludeAssetSourceTypes:5];
-    v19 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:v16];
-    v20 = [v19 fetchedObjectIDs];
-    v21 = [v20 count];
+    [librarySpecificFetchOptions setInternalPredicate:libraryInternalClient];
+    [librarySpecificFetchOptions setIncludeAssetSourceTypes:5];
+    v19 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:librarySpecificFetchOptions];
+    fetchedObjectIDs = [v19 fetchedObjectIDs];
+    v21 = [fetchedObjectIDs count];
 
     if (v21)
     {
-      v22 = [v19 fetchedObjectIDs];
+      fetchedObjectIDs2 = [v19 fetchedObjectIDs];
     }
 
     else
     {
-      v22 = MEMORY[0x1E695E0F0];
+      fetchedObjectIDs2 = MEMORY[0x1E695E0F0];
     }
   }
 
@@ -2387,29 +2387,29 @@ LABEL_60:
     if (v13)
     {
       *buf = 138412290;
-      *&buf[4] = v7;
+      *&buf[4] = identifierCopy;
       _os_log_impl(&dword_1B36F3000, v12, OS_LOG_TYPE_DEFAULT, "Creating initial empty fetch filter for client: %@", buf, 0xCu);
     }
 
-    v23 = [v8 assetsdClient];
-    v15 = [v23 libraryInternalClient];
+    assetsdClient = [libraryCopy assetsdClient];
+    libraryInternalClient = [assetsdClient libraryInternalClient];
 
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __138__PUPickerConfiguration_limitedLibraryApplicationPreselectedObjectIDsOrCreateEmptySelectionWithTrustedIdentifier_auditToken_photoLibrary___block_invoke;
     v26[3] = &unk_1E7B80280;
-    v27 = v7;
-    v24 = *&a4->var0[4];
-    *buf = *a4->var0;
+    v27 = identifierCopy;
+    v24 = *&token->var0[4];
+    *buf = *token->var0;
     v30 = v24;
-    v22 = MEMORY[0x1E695E0F0];
-    [v15 setFetchFilterWithAssets:MEMORY[0x1E695E0F0] forApplication:v27 withAuditToken:buf completionHandler:v26];
-    v16 = v27;
+    fetchedObjectIDs2 = MEMORY[0x1E695E0F0];
+    [libraryInternalClient setFetchFilterWithAssets:MEMORY[0x1E695E0F0] forApplication:v27 withAuditToken:buf completionHandler:v26];
+    librarySpecificFetchOptions = v27;
   }
 
 LABEL_14:
 
-  return v22;
+  return fetchedObjectIDs2;
 }
 
 void __138__PUPickerConfiguration_limitedLibraryApplicationPreselectedObjectIDsOrCreateEmptySelectionWithTrustedIdentifier_auditToken_photoLibrary___block_invoke(uint64_t a1, uint64_t a2)
@@ -2428,16 +2428,16 @@ void __138__PUPickerConfiguration_limitedLibraryApplicationPreselectedObjectIDsO
   }
 }
 
-+ (id)limitedLibraryApplicationTrustedIdentifierWithConnection:(id)a3 purposedIdentifier:(id)a4 error:(id *)a5
++ (id)limitedLibraryApplicationTrustedIdentifierWithConnection:(id)connection purposedIdentifier:(id)identifier error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!a5)
+  connectionCopy = connection;
+  identifierCopy = identifier;
+  if (!error)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PUPickerConfiguration.m" lineNumber:490 description:{@"Invalid parameter not satisfying: %@", @"outError != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPickerConfiguration.m" lineNumber:490 description:{@"Invalid parameter not satisfying: %@", @"outError != nil"}];
 
-    if (v9)
+    if (connectionCopy)
     {
       goto LABEL_3;
     }
@@ -2448,13 +2448,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v9)
+  if (!connectionCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_3:
-  if (![v10 length])
+  if (![identifierCopy length])
   {
     v15 = PLClientApplicationIdentifierFromXPCConnection();
     v13 = v15;
@@ -2472,12 +2472,12 @@ LABEL_3:
     goto LABEL_14;
   }
 
-  v11 = [v9 valueForEntitlement:*MEMORY[0x1E69BF3D0]];
-  v12 = [v11 BOOLValue];
+  v11 = [connectionCopy valueForEntitlement:*MEMORY[0x1E69BF3D0]];
+  bOOLValue = [v11 BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
-    v13 = v10;
+    v13 = identifierCopy;
     v14 = 0;
     goto LABEL_14;
   }
@@ -2489,7 +2489,7 @@ LABEL_13:
   v13 = 0;
 LABEL_14:
   v20 = v14;
-  *a5 = v14;
+  *error = v14;
 
   return v13;
 }

@@ -1,6 +1,6 @@
 @interface GKLeaderboardEntry
-+ (id)fromGKScore:(id)a3;
-- (GKLeaderboardEntry)initWithInternalRepresentation:(id)a3;
++ (id)fromGKScore:(id)score;
+- (GKLeaderboardEntry)initWithInternalRepresentation:(id)representation;
 - (GKPlayer)player;
 - (id)_gkScore;
 - (id)description;
@@ -8,16 +8,16 @@
 
 @implementation GKLeaderboardEntry
 
-- (GKLeaderboardEntry)initWithInternalRepresentation:(id)a3
+- (GKLeaderboardEntry)initWithInternalRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v8.receiver = self;
   v8.super_class = GKLeaderboardEntry;
   v5 = [(GKLeaderboardEntry *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(GKLeaderboardEntry *)v5 setInternal:v4];
+    [(GKLeaderboardEntry *)v5 setInternal:representationCopy];
   }
 
   return v6;
@@ -26,9 +26,9 @@
 - (GKPlayer)player
 {
   v3 = [GKPlayer alloc];
-  v4 = [(GKLeaderboardEntry *)self internal];
-  v5 = [v4 player];
-  v6 = [(GKPlayer *)v3 initWithInternalRepresentation:v5];
+  internal = [(GKLeaderboardEntry *)self internal];
+  player = [internal player];
+  v6 = [(GKPlayer *)v3 initWithInternalRepresentation:player];
 
   return v6;
 }
@@ -39,49 +39,49 @@
   [(GKScoreInternal *)v3 setRank:[(GKLeaderboardEntry *)self rank]];
   [(GKScoreInternal *)v3 setContext:[(GKLeaderboardEntry *)self context]];
   [(GKScoreInternal *)v3 setValue:[(GKLeaderboardEntry *)self score]];
-  v4 = [(GKLeaderboardEntry *)self formattedScore];
-  [(GKScoreInternal *)v3 setFormattedValue:v4];
+  formattedScore = [(GKLeaderboardEntry *)self formattedScore];
+  [(GKScoreInternal *)v3 setFormattedValue:formattedScore];
 
-  v5 = [(GKLeaderboardEntry *)self player];
-  v6 = [v5 internal];
-  [(GKScoreInternal *)v3 setPlayer:v6];
+  player = [(GKLeaderboardEntry *)self player];
+  internal = [player internal];
+  [(GKScoreInternal *)v3 setPlayer:internal];
 
-  v7 = [(GKLeaderboardEntry *)self internal];
-  v8 = [v7 baseLeaderboardID];
-  [(GKScoreInternal *)v3 setLeaderboardIdentifier:v8];
+  internal2 = [(GKLeaderboardEntry *)self internal];
+  baseLeaderboardID = [internal2 baseLeaderboardID];
+  [(GKScoreInternal *)v3 setLeaderboardIdentifier:baseLeaderboardID];
 
   v9 = [[GKScore alloc] initWithInternalRepresentation:v3];
 
   return v9;
 }
 
-+ (id)fromGKScore:(id)a3
++ (id)fromGKScore:(id)score
 {
-  v3 = a3;
+  scoreCopy = score;
   v4 = objc_alloc_init(GKLeaderboardEntryInternal);
-  v5 = [v3 internal];
-  -[GKLeaderboardEntryInternal setRank:](v4, "setRank:", [v5 rank]);
+  internal = [scoreCopy internal];
+  -[GKLeaderboardEntryInternal setRank:](v4, "setRank:", [internal rank]);
 
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v3 internal];
-  -[GKLeaderboardEntryInternal setContext:](v4, "setContext:", [v6 _gkConvertUInt64ClampingValue:{objc_msgSend(v7, "context")}]);
+  internal2 = [scoreCopy internal];
+  -[GKLeaderboardEntryInternal setContext:](v4, "setContext:", [v6 _gkConvertUInt64ClampingValue:{objc_msgSend(internal2, "context")}]);
 
   v8 = MEMORY[0x277CCABB0];
-  v9 = [v3 internal];
-  -[GKLeaderboardEntryInternal setScore:](v4, "setScore:", [v8 _gkConvertInt64ClampingValue:{objc_msgSend(v9, "value")}]);
+  internal3 = [scoreCopy internal];
+  -[GKLeaderboardEntryInternal setScore:](v4, "setScore:", [v8 _gkConvertInt64ClampingValue:{objc_msgSend(internal3, "value")}]);
 
-  v10 = [v3 internal];
-  v11 = [v10 formattedValue];
-  [(GKLeaderboardEntryInternal *)v4 setFormattedScore:v11];
+  internal4 = [scoreCopy internal];
+  formattedValue = [internal4 formattedValue];
+  [(GKLeaderboardEntryInternal *)v4 setFormattedScore:formattedValue];
 
-  v12 = [v3 internal];
-  v13 = [v12 player];
-  [(GKLeaderboardEntryInternal *)v4 setPlayer:v13];
+  internal5 = [scoreCopy internal];
+  player = [internal5 player];
+  [(GKLeaderboardEntryInternal *)v4 setPlayer:player];
 
-  v14 = [v3 internal];
+  internal6 = [scoreCopy internal];
 
-  v15 = [v14 leaderboardIdentifier];
-  [(GKLeaderboardEntryInternal *)v4 setBaseLeaderboardID:v15];
+  leaderboardIdentifier = [internal6 leaderboardIdentifier];
+  [(GKLeaderboardEntryInternal *)v4 setBaseLeaderboardID:leaderboardIdentifier];
 
   v16 = [[GKLeaderboardEntry alloc] initWithInternalRepresentation:v4];
 
@@ -91,12 +91,12 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(GKLeaderboardEntry *)self player];
+  player = [(GKLeaderboardEntry *)self player];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[GKLeaderboardEntry rank](self, "rank")}];
-  v6 = [(GKLeaderboardEntry *)self formattedScore];
+  formattedScore = [(GKLeaderboardEntry *)self formattedScore];
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[GKLeaderboardEntry context](self, "context")}];
-  v8 = [(GKLeaderboardEntry *)self date];
-  v9 = [v3 stringWithFormat:@"Player: %@, Rank: %@, Formatted Score: %@, Context: %@, Date: %@", v4, v5, v6, v7, v8];
+  date = [(GKLeaderboardEntry *)self date];
+  v9 = [v3 stringWithFormat:@"Player: %@, Rank: %@, Formatted Score: %@, Context: %@, Date: %@", player, v5, formattedScore, v7, date];
 
   return v9;
 }

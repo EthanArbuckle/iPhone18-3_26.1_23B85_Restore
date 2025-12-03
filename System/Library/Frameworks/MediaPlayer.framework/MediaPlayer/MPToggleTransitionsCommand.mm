@@ -1,7 +1,7 @@
 @interface MPToggleTransitionsCommand
 - (id)_mediaRemoteCommandInfoOptions;
-- (void)setActive:(BOOL)a3;
-- (void)setTransitionStyle:(int64_t)a3;
+- (void)setActive:(BOOL)active;
+- (void)setTransitionStyle:(int64_t)style;
 @end
 
 @implementation MPToggleTransitionsCommand
@@ -20,20 +20,20 @@
   return v5;
 }
 
-- (void)setTransitionStyle:(int64_t)a3
+- (void)setTransitionStyle:(int64_t)style
 {
-  if (self->_transitionStyle != a3)
+  if (self->_transitionStyle != style)
   {
-    self->_transitionStyle = a3;
+    self->_transitionStyle = style;
     [(MPRemoteCommand *)self notifyPropagatablePropertyChanged];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     [(MPRemoteCommand *)self notifyPropagatablePropertyChanged];
   }
 }

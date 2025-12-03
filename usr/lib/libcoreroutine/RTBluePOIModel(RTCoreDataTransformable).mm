@@ -48,11 +48,11 @@ LABEL_8:
   v3 = MEMORY[0x277D010B0];
   v4 = a3;
   v5 = [v3 alloc];
-  v6 = [v4 identifier];
-  v7 = [v4 featureToHashedApMapping];
+  identifier = [v4 identifier];
+  featureToHashedApMapping = [v4 featureToHashedApMapping];
   v8 = [v4 url];
 
-  v9 = [v5 initWithIdentifier:v6 featureToHashedApMapping:v7 url:v8];
+  v9 = [v5 initWithIdentifier:identifier featureToHashedApMapping:featureToHashedApMapping url:v8];
 
   return v9;
 }
@@ -61,7 +61,7 @@ LABEL_8:
 {
   if (a3)
   {
-    v3 = [RTBluePOIModelMO managedObjectWithBluePOIModel:a1 inManagedObjectContext:a3];
+    v3 = [RTBluePOIModelMO managedObjectWithBluePOIModel:self inManagedObjectContext:a3];
   }
 
   else

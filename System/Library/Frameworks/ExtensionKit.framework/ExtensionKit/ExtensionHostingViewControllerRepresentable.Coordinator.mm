@@ -1,15 +1,15 @@
 @interface ExtensionHostingViewControllerRepresentable.Coordinator
 - (_TtCV12ExtensionKit43ExtensionHostingViewControllerRepresentable11Coordinator)init;
-- (void)hostViewControllerDidActivate:(id)a3;
+- (void)hostViewControllerDidActivate:(id)activate;
 @end
 
 @implementation ExtensionHostingViewControllerRepresentable.Coordinator
 
-- (void)hostViewControllerDidActivate:(id)a3
+- (void)hostViewControllerDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D29EEF18(v4);
+  activateCopy = activate;
+  selfCopy = self;
+  sub_1D29EEF18(activateCopy);
 }
 
 - (_TtCV12ExtensionKit43ExtensionHostingViewControllerRepresentable11Coordinator)init

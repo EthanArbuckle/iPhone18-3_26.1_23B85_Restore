@@ -1,15 +1,15 @@
 @interface _UIDragEventSample
-+ (id)sampleFromHIDEvent:(__IOHIDEvent *)a3;
++ (id)sampleFromHIDEvent:(__IOHIDEvent *)event;
 - ($F7B13D6E51BC3EBB4857CD228418B675)sampleFlags;
 - (CAPoint3D)locationInWindow;
 - (CAPoint3D)sceneLocation;
-- (id)copyWithSampleFlags:(id *)a3;
-- (id)hitTestWithEvent:(id)a3;
+- (id)copyWithSampleFlags:(id *)flags;
+- (id)hitTestWithEvent:(id)event;
 @end
 
 @implementation _UIDragEventSample
 
-+ (id)sampleFromHIDEvent:(__IOHIDEvent *)a3
++ (id)sampleFromHIDEvent:(__IOHIDEvent *)event
 {
   v34[16] = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -58,19 +58,19 @@
 
   v19 = [v7 count];
 
-  v20 = [(UIWindow *)v5 _fbsScene];
+  _fbsScene = [(UIWindow *)v5 _fbsScene];
   v21 = v10 / v19;
   v22 = v9 / v19;
   *(v4 + 32) = v21;
   *(v4 + 40) = v22;
   *(v4 + 48) = v11 / v19;
-  *(v4 + 56) = _UIConvertScenePoint3DToWindow(v20, v5, v21, v22);
+  *(v4 + 56) = _UIConvertScenePoint3DToWindow(_fbsScene, v5, v21, v22);
   *(v4 + 64) = v23;
   *(v4 + 72) = v24;
-  *(v4 + 8) = _UIEventHIDIsDragEventLocusType(a3, 2);
-  *(v4 + 9) = _UIEventHIDIsDragEventLocusType(a3, 1);
-  *(v4 + 10) = _UIEventHIDIsDragEventLocusType(a3, 3);
-  *(v4 + 11) = _UIEventHIDIsDragEventLocusType(a3, 4);
+  *(v4 + 8) = _UIEventHIDIsDragEventLocusType(event, 2);
+  *(v4 + 9) = _UIEventHIDIsDragEventLocusType(event, 1);
+  *(v4 + 10) = _UIEventHIDIsDragEventLocusType(event, 3);
+  *(v4 + 11) = _UIEventHIDIsDragEventLocusType(event, 4);
   *&v30 = 0;
   *(&v30 + 1) = &v30;
   *&v31 = 0x2020000000;
@@ -80,7 +80,7 @@
   v34[2] = ___UIEventHIDAnyChildIsTouching_block_invoke_0;
   v34[3] = &unk_1E70F3838;
   v34[4] = &v30;
-  _UIEventHIDEnumerateChildren(a3, 11, v34);
+  _UIEventHIDEnumerateChildren(event, 11, v34);
   LOBYTE(v19) = *(*(&v30 + 1) + 24);
   _Block_object_dispose(&v30, 8);
   *(v4 + 12) = v19 ^ 1;
@@ -118,25 +118,25 @@ LABEL_17:
   return v4;
 }
 
-- (id)copyWithSampleFlags:(id *)a3
+- (id)copyWithSampleFlags:(id *)flags
 {
   objc_opt_class();
   v5 = objc_opt_new();
-  v6 = [(_UIDragEventSample *)self window];
+  window = [(_UIDragEventSample *)self window];
   v7 = *(v5 + 24);
-  *(v5 + 24) = v6;
+  *(v5 + 24) = window;
 
-  v8 = *&a3->var0.x;
-  *(v5 + 48) = a3->var0.z;
+  v8 = *&flags->var0.x;
+  *(v5 + 48) = flags->var0.z;
   *(v5 + 32) = v8;
-  z = a3->var1.z;
-  *(v5 + 56) = *&a3->var1.x;
+  z = flags->var1.z;
+  *(v5 + 56) = *&flags->var1.x;
   *(v5 + 72) = z;
-  *(v5 + 8) = a3->var2;
-  *(v5 + 9) = a3->var3;
-  *(v5 + 10) = a3->var4;
-  *(v5 + 11) = a3->var5;
-  *(v5 + 12) = a3->var6;
+  *(v5 + 8) = flags->var2;
+  *(v5 + 9) = flags->var3;
+  *(v5 + 10) = flags->var4;
+  *(v5 + 11) = flags->var5;
+  *(v5 + 12) = flags->var6;
   *(v5 + 16) = self->_windowServerHitTestContextID;
   *(v5 + 13) = [(_UIDragEventSample *)self hasBeenDelivered];
   return v5;
@@ -162,9 +162,9 @@ LABEL_17:
   return result;
 }
 
-- (id)hitTestWithEvent:(id)a3
+- (id)hitTestWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   window = self->_window;
   if (window && ![(UIView *)window isHidden])
   {
@@ -174,13 +174,13 @@ LABEL_17:
     if (self->_isPolicyDriven)
     {
       v11 = self->_window;
-      v12 = [(UIWindow *)&v11->super.super.super.isa _fbsScene];
-      v6 = [(UIWindow *)v11 _hitTestLocation:v12 sceneLocationZ:self->_window inScene:v4 withWindowServerHitTestWindow:x event:y, z];
+      _fbsScene = [(UIWindow *)&v11->super.super.super.isa _fbsScene];
+      v6 = [(UIWindow *)v11 _hitTestLocation:_fbsScene sceneLocationZ:self->_window inScene:eventCopy withWindowServerHitTestWindow:x event:y, z];
     }
 
     else
     {
-      v6 = [UIWindow _globalHitTestForLocation:self->_window sceneLocationZ:v4 inWindowServerHitTestWindow:self->_sceneLocation.x withEvent:self->_sceneLocation.y, self->_sceneLocation.z];
+      v6 = [UIWindow _globalHitTestForLocation:self->_window sceneLocationZ:eventCopy inWindowServerHitTestWindow:self->_sceneLocation.x withEvent:self->_sceneLocation.y, self->_sceneLocation.z];
     }
   }
 

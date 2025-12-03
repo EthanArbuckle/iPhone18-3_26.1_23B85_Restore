@@ -1,10 +1,10 @@
 @interface ICUserIdentityContext
-- (BOOL)isEqual:(id)a3;
-- (ICUserIdentityContext)initWithCoder:(id)a3;
-- (ICUserIdentityContext)initWithIdentity:(id)a3 identityStore:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (ICUserIdentityContext)initWithCoder:(id)coder;
+- (ICUserIdentityContext)initWithIdentity:(id)identity identityStore:(id)store;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICUserIdentityContext
@@ -84,27 +84,27 @@
   return (v57 + v58) ^ __ROR8__(v57, 47) ^ v60 ^ __ROR8__(v57 + v58, 32) ^ v60 ^ __ROR8__(v58 ^ v59, 43);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identity = self->_identity;
-  v5 = a3;
-  [v5 encodeObject:identity forKey:@"i"];
-  [v5 encodeObject:self->_identityStore forKey:@"s"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identity forKey:@"i"];
+  [coderCopy encodeObject:self->_identityStore forKey:@"s"];
 }
 
-- (ICUserIdentityContext)initWithCoder:(id)a3
+- (ICUserIdentityContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ICUserIdentityContext;
   v5 = [(ICUserIdentityContext *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"i"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"i"];
     identity = v5->_identity;
     v5->_identity = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"s"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"s"];
     identityStore = v5->_identityStore;
     v5->_identityStore = v8;
   }
@@ -112,19 +112,19 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if ([(ICUserIdentityContext *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(ICUserIdentityContext *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       identityStore = v5->_identityStore;
       v7 = self->_identityStore;
       v8 = v7;
@@ -185,18 +185,18 @@ LABEL_16:
   return v6;
 }
 
-- (ICUserIdentityContext)initWithIdentity:(id)a3 identityStore:(id)a4
+- (ICUserIdentityContext)initWithIdentity:(id)identity identityStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  identityCopy = identity;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = ICUserIdentityContext;
   v9 = [(ICUserIdentityContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identity, a3);
-    objc_storeStrong(&v10->_identityStore, a4);
+    objc_storeStrong(&v9->_identity, identity);
+    objc_storeStrong(&v10->_identityStore, store);
   }
 
   return v10;

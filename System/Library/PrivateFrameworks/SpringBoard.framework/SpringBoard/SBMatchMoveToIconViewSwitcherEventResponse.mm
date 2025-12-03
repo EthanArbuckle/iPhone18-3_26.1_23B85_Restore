@@ -1,26 +1,26 @@
 @interface SBMatchMoveToIconViewSwitcherEventResponse
 - (CGRect)iconFrame;
-- (id)_initWithAppLayout:(id)a3 active:(BOOL)a4 iconFrame:(CGRect)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)_initWithAppLayout:(id)layout active:(BOOL)active iconFrame:(CGRect)frame;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBMatchMoveToIconViewSwitcherEventResponse
 
-- (id)_initWithAppLayout:(id)a3 active:(BOOL)a4 iconFrame:(CGRect)a5
+- (id)_initWithAppLayout:(id)layout active:(BOOL)active iconFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
   v16.receiver = self;
   v16.super_class = SBMatchMoveToIconViewSwitcherEventResponse;
   v13 = [(SBChainableModifierEventResponse *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_appLayout, a3);
-    v14->_active = a4;
+    objc_storeStrong(&v13->_appLayout, layout);
+    v14->_active = active;
     v14->_iconFrame.origin.x = x;
     v14->_iconFrame.origin.y = y;
     v14->_iconFrame.size.width = width;
@@ -30,14 +30,14 @@
   return v14;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v10.receiver = self;
   v10.super_class = SBMatchMoveToIconViewSwitcherEventResponse;
-  v4 = [(SBChainableModifierEventResponse *)&v10 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBChainableModifierEventResponse *)&v10 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = [v4 appendBool:self->_active withName:@"active"];
-  v6 = [(SBAppLayout *)self->_appLayout succinctDescription];
-  v7 = [v4 appendObject:v6 withName:@"appLayout"];
+  succinctDescription = [(SBAppLayout *)self->_appLayout succinctDescription];
+  v7 = [v4 appendObject:succinctDescription withName:@"appLayout"];
 
   if (self->_active)
   {

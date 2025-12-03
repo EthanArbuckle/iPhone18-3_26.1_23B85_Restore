@@ -11,8 +11,8 @@
 + (BOOL)canRepairCustodian
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E698DDF8] sharedBag];
-  v3 = [v2 configurationAtKey:@"custodianCfgsV2"];
+  mEMORY[0x1E698DDF8] = [MEMORY[0x1E698DDF8] sharedBag];
+  v3 = [mEMORY[0x1E698DDF8] configurationAtKey:@"custodianCfgsV2"];
 
   v4 = _AALogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -33,7 +33,7 @@
       _os_log_impl(&dword_1B6F6A000, v6, OS_LOG_TYPE_DEFAULT, "Returning canRepairCustodianV2 from urlbag: %@", &v13, 0xCu);
     }
 
-    v7 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
@@ -47,10 +47,10 @@
       _os_log_impl(&dword_1B6F6A000, v9, OS_LOG_TYPE_DEFAULT, "Returning canRepairCustodian based on feature flag: %d", &v13, 8u);
     }
 
-    v7 = _os_feature_enabled_impl();
+    bOOLValue = _os_feature_enabled_impl();
   }
 
-  v10 = v7;
+  v10 = bOOLValue;
 
   v11 = *MEMORY[0x1E69E9840];
   return v10;
@@ -59,8 +59,8 @@
 + (BOOL)canRepairBeneficiary
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E698DDF8] sharedBag];
-  v3 = [v2 configurationAtKey:@"inheritanceCfgs"];
+  mEMORY[0x1E698DDF8] = [MEMORY[0x1E698DDF8] sharedBag];
+  v3 = [mEMORY[0x1E698DDF8] configurationAtKey:@"inheritanceCfgs"];
 
   v4 = _AALogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -103,8 +103,8 @@
 + (int64_t)maxRepairCount
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E698DDF8] sharedBag];
-  v3 = [v2 configurationAtKey:@"custodianCfgsV2"];
+  mEMORY[0x1E698DDF8] = [MEMORY[0x1E698DDF8] sharedBag];
+  v3 = [mEMORY[0x1E698DDF8] configurationAtKey:@"custodianCfgsV2"];
 
   v4 = _AALogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -126,7 +126,7 @@
       _os_log_impl(&dword_1B6F6A000, v6, OS_LOG_TYPE_DEFAULT, "Returning maxRepairCountV2 from urlbag: %@", &v11, 0xCu);
     }
 
-    v8 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
@@ -137,18 +137,18 @@
       _os_log_impl(&dword_1B6F6A000, v6, OS_LOG_TYPE_DEFAULT, "Returning maxRepairCount default value: 1", &v11, 2u);
     }
 
-    v8 = 1;
+    integerValue = 1;
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v8;
+  return integerValue;
 }
 
 + (int64_t)maxRepairCountForBeneficiaries
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E698DDF8] sharedBag];
-  v3 = [v2 configurationAtKey:@"inheritanceCfgs"];
+  mEMORY[0x1E698DDF8] = [MEMORY[0x1E698DDF8] sharedBag];
+  v3 = [mEMORY[0x1E698DDF8] configurationAtKey:@"inheritanceCfgs"];
 
   v4 = _AALogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -170,7 +170,7 @@
       _os_log_impl(&dword_1B6F6A000, v6, OS_LOG_TYPE_DEFAULT, "Returning maxRepairCount from urlbag: %@", &v11, 0xCu);
     }
 
-    v8 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
@@ -181,18 +181,18 @@
       _os_log_impl(&dword_1B6F6A000, v6, OS_LOG_TYPE_DEFAULT, "Returning maxRepairCount default value: 1", &v11, 2u);
     }
 
-    v8 = 1;
+    integerValue = 1;
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v8;
+  return integerValue;
 }
 
 + (BOOL)isLCInviteAcceptanceEnabled
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E698DDF8] sharedBag];
-  v3 = [v2 configurationAtKey:@"inheritanceCfgs"];
+  mEMORY[0x1E698DDF8] = [MEMORY[0x1E698DDF8] sharedBag];
+  v3 = [mEMORY[0x1E698DDF8] configurationAtKey:@"inheritanceCfgs"];
 
   v4 = _AALogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

@@ -1,15 +1,15 @@
 @interface CESRAppEntityMapping
-- (BOOL)isEqual:(id)a3;
-- (CESRAppEntityMapping)initWithSourceBundleId:(id)a3 assistantSchemaType:(id)a4 appEntityName:(id)a5 primaryVocabLabel:(id)a6 extractionVocabLabels:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (CESRAppEntityMapping)initWithSourceBundleId:(id)id assistantSchemaType:(id)type appEntityName:(id)name primaryVocabLabel:(id)label extractionVocabLabels:(id)labels;
 - (unint64_t)hash;
 @end
 
 @implementation CESRAppEntityMapping
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = a3;
-  if (v8 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
     goto LABEL_58;
@@ -22,14 +22,14 @@
     goto LABEL_58;
   }
 
-  v9 = v8;
-  v10 = [(CESRAppEntityMapping *)self sourceBundleId];
-  if (v10 || ([(CESRAppEntityMapping *)v9 sourceBundleId], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  v9 = equalCopy;
+  sourceBundleId = [(CESRAppEntityMapping *)self sourceBundleId];
+  if (sourceBundleId || ([(CESRAppEntityMapping *)v9 sourceBundleId], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(CESRAppEntityMapping *)self sourceBundleId];
-    v4 = [(CESRAppEntityMapping *)v9 sourceBundleId];
-    v44 = v3;
-    if (([v3 isEqualToString:v4] & 1) == 0)
+    sourceBundleId2 = [(CESRAppEntityMapping *)self sourceBundleId];
+    sourceBundleId3 = [(CESRAppEntityMapping *)v9 sourceBundleId];
+    v44 = sourceBundleId2;
+    if (([sourceBundleId2 isEqualToString:sourceBundleId3] & 1) == 0)
     {
 
       v11 = 0;
@@ -44,37 +44,37 @@
     v43 = 0;
   }
 
-  v12 = [(CESRAppEntityMapping *)self assistantSchemaType];
-  if (!v12)
+  assistantSchemaType = [(CESRAppEntityMapping *)self assistantSchemaType];
+  if (!assistantSchemaType)
   {
-    v40 = [(CESRAppEntityMapping *)v9 assistantSchemaType];
-    if (!v40)
+    assistantSchemaType2 = [(CESRAppEntityMapping *)v9 assistantSchemaType];
+    if (!assistantSchemaType2)
     {
       v42 = v9;
-      v40 = 0;
+      assistantSchemaType2 = 0;
       v41 = 0;
       goto LABEL_21;
     }
   }
 
   v13 = v5;
-  v14 = [(CESRAppEntityMapping *)self assistantSchemaType];
-  v15 = [(CESRAppEntityMapping *)v9 assistantSchemaType];
-  if ([v14 isEqualToString:v15])
+  assistantSchemaType3 = [(CESRAppEntityMapping *)self assistantSchemaType];
+  assistantSchemaType4 = [(CESRAppEntityMapping *)v9 assistantSchemaType];
+  if ([assistantSchemaType3 isEqualToString:assistantSchemaType4])
   {
     v42 = v9;
-    v36 = v14;
+    v36 = assistantSchemaType3;
     v41 = 1;
     v5 = v13;
-    v6 = v15;
+    v6 = assistantSchemaType4;
 LABEL_21:
-    v16 = [(CESRAppEntityMapping *)self appEntityName];
-    if (v16 || ([(CESRAppEntityMapping *)v42 appEntityName], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
+    appEntityName = [(CESRAppEntityMapping *)self appEntityName];
+    if (appEntityName || ([(CESRAppEntityMapping *)v42 appEntityName], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v3 = [(CESRAppEntityMapping *)self appEntityName];
-      v38 = [(CESRAppEntityMapping *)v42 appEntityName];
-      v39 = v3;
-      if (![v3 isEqualToString:?])
+      sourceBundleId2 = [(CESRAppEntityMapping *)self appEntityName];
+      appEntityName2 = [(CESRAppEntityMapping *)v42 appEntityName];
+      v39 = sourceBundleId2;
+      if (![sourceBundleId2 isEqualToString:?])
       {
         v11 = 0;
         v9 = v42;
@@ -94,12 +94,12 @@ LABEL_21:
     v37 = v9 = v42;
     if (v37 || ([(CESRAppEntityMapping *)v42 primaryVocabLabel], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v17 = [(CESRAppEntityMapping *)self primaryVocabLabel];
-      v18 = [(CESRAppEntityMapping *)v42 primaryVocabLabel];
-      v34 = v17;
-      v19 = v17;
-      v3 = v18;
-      if (![v19 isEqual:v18])
+      primaryVocabLabel = [(CESRAppEntityMapping *)self primaryVocabLabel];
+      primaryVocabLabel2 = [(CESRAppEntityMapping *)v42 primaryVocabLabel];
+      v34 = primaryVocabLabel;
+      v19 = primaryVocabLabel;
+      sourceBundleId2 = primaryVocabLabel2;
+      if (![v19 isEqual:primaryVocabLabel2])
       {
         v11 = 0;
 LABEL_42:
@@ -115,7 +115,7 @@ LABEL_43:
         if (!v35)
         {
 LABEL_47:
-          if (!v16)
+          if (!appEntityName)
           {
           }
 
@@ -123,7 +123,7 @@ LABEL_47:
           {
           }
 
-          if (!v12)
+          if (!assistantSchemaType)
           {
           }
 
@@ -140,40 +140,40 @@ LABEL_46:
         goto LABEL_47;
       }
 
-      v31 = v16;
+      v31 = appEntityName;
       v32 = v6;
       v30 = 1;
     }
 
     else
     {
-      v31 = v16;
+      v31 = appEntityName;
       v32 = v6;
       v28 = 0;
       v30 = 0;
     }
 
-    v20 = [(CESRAppEntityMapping *)self extractionVocabLabels];
-    if (v20 || ([(CESRAppEntityMapping *)v42 extractionVocabLabels], (v26 = objc_claimAutoreleasedReturnValue()) != 0))
+    extractionVocabLabels = [(CESRAppEntityMapping *)self extractionVocabLabels];
+    if (extractionVocabLabels || ([(CESRAppEntityMapping *)v42 extractionVocabLabels], (v26 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v29 = v5;
       v21 = [(CESRAppEntityMapping *)self extractionVocabLabels:v26];
-      v22 = [(CESRAppEntityMapping *)v42 extractionVocabLabels];
-      v11 = [v21 isEqualToDictionary:v22];
+      extractionVocabLabels2 = [(CESRAppEntityMapping *)v42 extractionVocabLabels];
+      v11 = [v21 isEqualToDictionary:extractionVocabLabels2];
 
-      if (v20)
+      if (extractionVocabLabels)
       {
 
         if (!v30)
         {
           v5 = v29;
-          v16 = v31;
+          appEntityName = v31;
           v6 = v32;
           goto LABEL_43;
         }
 
         v5 = v29;
-        v16 = v31;
+        appEntityName = v31;
         v6 = v32;
         goto LABEL_42;
       }
@@ -190,7 +190,7 @@ LABEL_46:
       v6 = v32;
     }
 
-    v16 = v31;
+    appEntityName = v31;
     if ((v30 & 1) == 0)
     {
       goto LABEL_43;
@@ -199,7 +199,7 @@ LABEL_46:
     goto LABEL_42;
   }
 
-  if (v12)
+  if (assistantSchemaType)
   {
   }
 
@@ -215,7 +215,7 @@ LABEL_54:
   }
 
 LABEL_55:
-  if (!v10)
+  if (!sourceBundleId)
   {
   }
 
@@ -225,38 +225,38 @@ LABEL_58:
 
 - (unint64_t)hash
 {
-  v3 = [(CESRAppEntityMapping *)self sourceBundleId];
-  v4 = [v3 hash];
-  v5 = [(CESRAppEntityMapping *)self assistantSchemaType];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CESRAppEntityMapping *)self appEntityName];
-  v8 = [v7 hash];
-  v9 = [(CESRAppEntityMapping *)self primaryVocabLabel];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(CESRAppEntityMapping *)self extractionVocabLabels];
-  v12 = [v11 hash];
+  sourceBundleId = [(CESRAppEntityMapping *)self sourceBundleId];
+  v4 = [sourceBundleId hash];
+  assistantSchemaType = [(CESRAppEntityMapping *)self assistantSchemaType];
+  v6 = [assistantSchemaType hash] ^ v4;
+  appEntityName = [(CESRAppEntityMapping *)self appEntityName];
+  v8 = [appEntityName hash];
+  primaryVocabLabel = [(CESRAppEntityMapping *)self primaryVocabLabel];
+  v10 = v6 ^ v8 ^ [primaryVocabLabel hash];
+  extractionVocabLabels = [(CESRAppEntityMapping *)self extractionVocabLabels];
+  v12 = [extractionVocabLabels hash];
 
   return v10 ^ v12;
 }
 
-- (CESRAppEntityMapping)initWithSourceBundleId:(id)a3 assistantSchemaType:(id)a4 appEntityName:(id)a5 primaryVocabLabel:(id)a6 extractionVocabLabels:(id)a7
+- (CESRAppEntityMapping)initWithSourceBundleId:(id)id assistantSchemaType:(id)type appEntityName:(id)name primaryVocabLabel:(id)label extractionVocabLabels:(id)labels
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  idCopy = id;
+  typeCopy = type;
+  nameCopy = name;
+  labelCopy = label;
+  labelsCopy = labels;
   v21.receiver = self;
   v21.super_class = CESRAppEntityMapping;
   v17 = [(CESRAppEntityMapping *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_sourceBundleId, a3);
-    objc_storeStrong(&v18->_assistantSchemaType, a4);
-    objc_storeStrong(&v18->_appEntityName, a5);
-    objc_storeStrong(&v18->_primaryVocabLabel, a6);
-    objc_storeStrong(&v18->_extractionVocabLabels, a7);
+    objc_storeStrong(&v17->_sourceBundleId, id);
+    objc_storeStrong(&v18->_assistantSchemaType, type);
+    objc_storeStrong(&v18->_appEntityName, name);
+    objc_storeStrong(&v18->_primaryVocabLabel, label);
+    objc_storeStrong(&v18->_extractionVocabLabels, labels);
   }
 
   return v18;

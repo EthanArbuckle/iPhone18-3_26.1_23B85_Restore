@@ -1,5 +1,5 @@
 @interface PKPaymentPreferenceCardCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -7,11 +7,11 @@
 
 @implementation PKPaymentPreferenceCardCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPaymentPreferenceCardCell" hasInstanceVariable:@"_accessoryViewType" withType:"NSInteger"];
-  [v3 validateClass:@"PKPaymentPreferenceCardCell" hasInstanceVariable:@"_actionSwitch" withType:"UISwitch"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPaymentPreferenceCardCell" hasInstanceVariable:@"_accessoryViewType" withType:"NSInteger"];
+  [validationsCopy validateClass:@"PKPaymentPreferenceCardCell" hasInstanceVariable:@"_actionSwitch" withType:"UISwitch"];
 }
 
 - (CGPoint)accessibilityActivationPoint
@@ -44,17 +44,17 @@
   if ([(PKPaymentPreferenceCardCellAccessibility *)self safeIntegerForKey:@"_accessoryViewType"]== 1)
   {
     v3 = [(PKPaymentPreferenceCardCellAccessibility *)self safeValueForKey:@"actionSwitch"];
-    v4 = [v3 accessibilityValue];
+    accessibilityValue = [v3 accessibilityValue];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = PKPaymentPreferenceCardCellAccessibility;
-    v4 = [(PKPaymentPreferenceCardCellAccessibility *)&v6 accessibilityValue];
+    accessibilityValue = [(PKPaymentPreferenceCardCellAccessibility *)&v6 accessibilityValue];
   }
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits

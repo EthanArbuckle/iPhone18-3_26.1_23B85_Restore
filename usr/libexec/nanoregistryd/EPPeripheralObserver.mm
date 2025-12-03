@@ -1,36 +1,36 @@
 @interface EPPeripheralObserver
 - (CBPeripheral)peripheral;
-- (id)newConnectorWithDelegate:(id)a3;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
+- (id)newConnectorWithDelegate:(id)delegate;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
 @end
 
 @implementation EPPeripheralObserver
 
 - (CBPeripheral)peripheral
 {
-  v2 = [(EPResource *)self resourceManager];
-  v3 = [v2 peripheral];
+  resourceManager = [(EPResource *)self resourceManager];
+  peripheral = [resourceManager peripheral];
 
-  return v3;
+  return peripheral;
 }
 
-- (id)newConnectorWithDelegate:(id)a3
+- (id)newConnectorWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(EPResource *)self resourceManager];
-  v6 = [v5 newConnectorWithDelegate:v4];
+  delegateCopy = delegate;
+  resourceManager = [(EPResource *)self resourceManager];
+  v6 = [resourceManager newConnectorWithDelegate:delegateCopy];
 
   return v6;
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EPResource *)self ownerDelegate];
+  peripheralCopy = peripheral;
+  servicesCopy = services;
+  ownerDelegate = [(EPResource *)self ownerDelegate];
   if (objc_opt_respondsToSelector())
   {
     v9 = sub_1000A98C0();
@@ -46,21 +46,21 @@
         v14 = 138412546;
         v15 = v13;
         v16 = 2048;
-        v17 = v8;
+        v17 = ownerDelegate;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Calling peripheral:didDiscoverServices: on %@[%p]", &v14, 0x16u);
       }
     }
 
-    [v8 peripheral:v6 didDiscoverServices:v7];
+    [ownerDelegate peripheral:peripheralCopy didDiscoverServices:servicesCopy];
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(EPResource *)self ownerDelegate];
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  errorCopy = error;
+  ownerDelegate = [(EPResource *)self ownerDelegate];
   if (objc_opt_respondsToSelector())
   {
     v12 = sub_1000A98C0();
@@ -76,21 +76,21 @@
         v17 = 138412546;
         v18 = v16;
         v19 = 2048;
-        v20 = v11;
+        v20 = ownerDelegate;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Calling peripheral:didDiscoverCharacteristicsForService:error: on %@[%p]", &v17, 0x16u);
       }
     }
 
-    [v11 peripheral:v8 didDiscoverCharacteristicsForService:v9 error:v10];
+    [ownerDelegate peripheral:peripheralCopy didDiscoverCharacteristicsForService:serviceCopy error:errorCopy];
   }
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(EPResource *)self ownerDelegate];
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  ownerDelegate = [(EPResource *)self ownerDelegate];
   if (objc_opt_respondsToSelector())
   {
     v12 = sub_1000A98C0();
@@ -106,21 +106,21 @@
         v17 = 138412546;
         v18 = v16;
         v19 = 2048;
-        v20 = v11;
+        v20 = ownerDelegate;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Calling peripheral:didWriteValueForCharacteristic:error: on %@[%p]", &v17, 0x16u);
       }
     }
 
-    [v11 peripheral:v8 didWriteValueForCharacteristic:v9 error:v10];
+    [ownerDelegate peripheral:peripheralCopy didWriteValueForCharacteristic:characteristicCopy error:errorCopy];
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(EPResource *)self ownerDelegate];
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  ownerDelegate = [(EPResource *)self ownerDelegate];
   if (objc_opt_respondsToSelector())
   {
     v12 = sub_1000A98C0();
@@ -136,12 +136,12 @@
         v17 = 138412546;
         v18 = v16;
         v19 = 2048;
-        v20 = v11;
+        v20 = ownerDelegate;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Calling peripheral:didUpdateValueForCharacteristic:error: on %@[%p]", &v17, 0x16u);
       }
     }
 
-    [v11 peripheral:v8 didUpdateValueForCharacteristic:v9 error:v10];
+    [ownerDelegate peripheral:peripheralCopy didUpdateValueForCharacteristic:characteristicCopy error:errorCopy];
   }
 }
 

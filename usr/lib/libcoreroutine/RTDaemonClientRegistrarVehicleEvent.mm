@@ -1,10 +1,10 @@
 @interface RTDaemonClientRegistrarVehicleEvent
 - (BOOL)invocationsPending;
-- (RTDaemonClientRegistrarVehicleEvent)initWithVehicleLocationProvider:(id)a3 queue:(id)a4;
+- (RTDaemonClientRegistrarVehicleEvent)initWithVehicleLocationProvider:(id)provider queue:(id)queue;
 - (RTDaemonClientRegistrarVehicleEventProtocol)delegate;
 - (int64_t)countOfPendingInvocations;
-- (void)addPendingVehicleEventBlock:(id)a3 failBlock:(id)a4 description:(id)a5;
-- (void)onVehicleEventNotification:(id)a3;
+- (void)addPendingVehicleEventBlock:(id)block failBlock:(id)failBlock description:(id)description;
+- (void)onVehicleEventNotification:(id)notification;
 - (void)startMonitoringVehicleEvents;
 - (void)stopMonitoringVehicleEvents;
 @end
@@ -13,8 +13,8 @@
 
 - (BOOL)invocationsPending
 {
-  v2 = [(RTDaemonClientRegistrarVehicleEvent *)self dispatcher];
-  v3 = [v2 countOfPendingInvocations] != 0;
+  dispatcher = [(RTDaemonClientRegistrarVehicleEvent *)self dispatcher];
+  v3 = [dispatcher countOfPendingInvocations] != 0;
 
   return v3;
 }
@@ -23,27 +23,27 @@
 {
   if ([(RTDaemonClientRegistrarVehicleEvent *)self invocationsPending])
   {
-    v3 = [(RTDaemonClientRegistrarVehicleEvent *)self dispatcher];
-    [v3 dispatchPendingInvocations];
+    dispatcher = [(RTDaemonClientRegistrarVehicleEvent *)self dispatcher];
+    [dispatcher dispatchPendingInvocations];
   }
 
   if (![(RTDaemonClientRegistrarVehicleEvent *)self registered])
   {
-    v4 = [(RTDaemonClientRegistrarVehicleEvent *)self vehicleLocationProvider];
+    vehicleLocationProvider = [(RTDaemonClientRegistrarVehicleEvent *)self vehicleLocationProvider];
     v5 = +[(RTNotification *)RTVehicleEventNotification];
-    [v4 addObserver:self selector:sel_onVehicleEventNotification_ name:v5];
+    [vehicleLocationProvider addObserver:self selector:sel_onVehicleEventNotification_ name:v5];
 
     [(RTDaemonClientRegistrarVehicleEvent *)self setRegistered:1];
   }
 }
 
-- (RTDaemonClientRegistrarVehicleEvent)initWithVehicleLocationProvider:(id)a3 queue:(id)a4
+- (RTDaemonClientRegistrarVehicleEvent)initWithVehicleLocationProvider:(id)provider queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  v10 = 0;
-  if (v7 && v8)
+  providerCopy = provider;
+  queueCopy = queue;
+  v9 = queueCopy;
+  selfCopy = 0;
+  if (providerCopy && queueCopy)
   {
     v18.receiver = self;
     v18.super_class = RTDaemonClientRegistrarVehicleEvent;
@@ -51,50 +51,50 @@
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_queue, a4);
+      objc_storeStrong(&v11->_queue, queue);
       v13 = [RTInvocationDispatcher alloc];
-      v14 = [(RTDaemonClientRegistrarVehicleEvent *)v12 queue];
-      v15 = [(RTInvocationDispatcher *)v13 initWithQueue:v14];
+      queue = [(RTDaemonClientRegistrarVehicleEvent *)v12 queue];
+      v15 = [(RTInvocationDispatcher *)v13 initWithQueue:queue];
       dispatcher = v12->_dispatcher;
       v12->_dispatcher = v15;
 
-      objc_storeStrong(&v12->_vehicleLocationProvider, a3);
+      objc_storeStrong(&v12->_vehicleLocationProvider, provider);
     }
 
     self = v12;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)stopMonitoringVehicleEvents
 {
-  v3 = [(RTDaemonClientRegistrarVehicleEvent *)self dispatcher];
-  [v3 removeAllPendingInvocations];
+  dispatcher = [(RTDaemonClientRegistrarVehicleEvent *)self dispatcher];
+  [dispatcher removeAllPendingInvocations];
 
   if ([(RTDaemonClientRegistrarVehicleEvent *)self registered])
   {
-    v4 = [(RTDaemonClientRegistrarVehicleEvent *)self vehicleLocationProvider];
+    vehicleLocationProvider = [(RTDaemonClientRegistrarVehicleEvent *)self vehicleLocationProvider];
     v5 = +[(RTNotification *)RTVehicleEventNotification];
-    [v4 removeObserver:self fromNotification:v5];
+    [vehicleLocationProvider removeObserver:self fromNotification:v5];
 
     [(RTDaemonClientRegistrarVehicleEvent *)self setRegistered:0];
   }
 }
 
-- (void)onVehicleEventNotification:(id)a3
+- (void)onVehicleEventNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTDaemonClientRegistrarVehicleEvent *)self queue];
+  notificationCopy = notification;
+  queue = [(RTDaemonClientRegistrarVehicleEvent *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__RTDaemonClientRegistrarVehicleEvent_onVehicleEventNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __66__RTDaemonClientRegistrarVehicleEvent_onVehicleEventNotification___block_invoke(uint64_t a1)
@@ -113,21 +113,21 @@ void __66__RTDaemonClientRegistrarVehicleEvent_onVehicleEventNotification___bloc
 
 - (int64_t)countOfPendingInvocations
 {
-  v2 = [(RTDaemonClientRegistrarVehicleEvent *)self dispatcher];
-  v3 = [v2 countOfPendingInvocations];
+  dispatcher = [(RTDaemonClientRegistrarVehicleEvent *)self dispatcher];
+  countOfPendingInvocations = [dispatcher countOfPendingInvocations];
 
-  return v3;
+  return countOfPendingInvocations;
 }
 
-- (void)addPendingVehicleEventBlock:(id)a3 failBlock:(id)a4 description:(id)a5
+- (void)addPendingVehicleEventBlock:(id)block failBlock:(id)failBlock description:(id)description
 {
-  if (a3)
+  if (block)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
-    v11 = [(RTDaemonClientRegistrarVehicleEvent *)self dispatcher];
-    [v11 enqueueBlock:v10 failureBlock:v9 description:{@"%@", v8}];
+    descriptionCopy = description;
+    failBlockCopy = failBlock;
+    blockCopy = block;
+    dispatcher = [(RTDaemonClientRegistrarVehicleEvent *)self dispatcher];
+    [dispatcher enqueueBlock:blockCopy failureBlock:failBlockCopy description:{@"%@", descriptionCopy}];
   }
 }
 

@@ -1,14 +1,14 @@
 @interface EDUserNotificationMailboxCutoffController
 + (OS_os_log)log;
-- (BOOL)_shouldUpdateCutoffForMessage:(id)a3;
-- (BOOL)_updateCutoffForMailbox:(id)a3 date:(id)a4;
-- (BOOL)isMessageAboveMailboxCutoff:(id)a3;
-- (id)cutoffDateForMailbox:(id)a3;
+- (BOOL)_shouldUpdateCutoffForMessage:(id)message;
+- (BOOL)_updateCutoffForMailbox:(id)mailbox date:(id)date;
+- (BOOL)isMessageAboveMailboxCutoff:(id)cutoff;
+- (id)cutoffDateForMailbox:(id)mailbox;
 - (void)_initializeIfNeeded;
 - (void)_readFromDefaults;
 - (void)_writeToDefaults;
-- (void)clearCutoffForMailbox:(id)a3;
-- (void)updateCutoffForMailboxesWithMessages:(id)a3;
+- (void)clearCutoffForMailbox:(id)mailbox;
+- (void)updateCutoffForMailboxesWithMessages:(id)messages;
 @end
 
 @implementation EDUserNotificationMailboxCutoffController
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __48__EDUserNotificationMailboxCutoffController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_109 != -1)
   {
     dispatch_once(&log_onceToken_109, block);
@@ -38,17 +38,17 @@ void __48__EDUserNotificationMailboxCutoffController_log__block_invoke(uint64_t 
   log_log_109 = v1;
 }
 
-- (id)cutoffDateForMailbox:(id)a3
+- (id)cutoffDateForMailbox:(id)mailbox
 {
-  v4 = a3;
+  mailboxCopy = mailbox;
   [(EDUserNotificationMailboxCutoffController *)self _initializeIfNeeded];
-  v5 = [v4 URL];
-  v6 = [v5 absoluteString];
+  v5 = [mailboxCopy URL];
+  absoluteString = [v5 absoluteString];
 
-  if (v6)
+  if (absoluteString)
   {
-    v7 = [(EDUserNotificationMailboxCutoffController *)self mailboxCutoffs];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    mailboxCutoffs = [(EDUserNotificationMailboxCutoffController *)self mailboxCutoffs];
+    v8 = [mailboxCutoffs objectForKeyedSubscript:absoluteString];
   }
 
   else
@@ -59,21 +59,21 @@ void __48__EDUserNotificationMailboxCutoffController_log__block_invoke(uint64_t 
   return v8;
 }
 
-- (BOOL)isMessageAboveMailboxCutoff:(id)a3
+- (BOOL)isMessageAboveMailboxCutoff:(id)cutoff
 {
-  v4 = a3;
+  cutoffCopy = cutoff;
   [(EDUserNotificationMailboxCutoffController *)self _initializeIfNeeded];
-  v5 = [v4 mailbox];
-  v6 = [v5 URL];
-  v7 = [v6 absoluteString];
+  mailbox = [cutoffCopy mailbox];
+  v6 = [mailbox URL];
+  absoluteString = [v6 absoluteString];
 
-  v8 = [(EDUserNotificationMailboxCutoffController *)self mailboxCutoffs];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  mailboxCutoffs = [(EDUserNotificationMailboxCutoffController *)self mailboxCutoffs];
+  v9 = [mailboxCutoffs objectForKeyedSubscript:absoluteString];
 
   if (v9)
   {
-    v10 = [v4 dateReceived];
-    v11 = [v10 ef_isLaterThanDate:v9];
+    dateReceived = [cutoffCopy dateReceived];
+    v11 = [dateReceived ef_isLaterThanDate:v9];
   }
 
   else
@@ -84,16 +84,16 @@ void __48__EDUserNotificationMailboxCutoffController_log__block_invoke(uint64_t 
   return v11;
 }
 
-- (void)updateCutoffForMailboxesWithMessages:(id)a3
+- (void)updateCutoffForMailboxesWithMessages:(id)messages
 {
   v26 = *MEMORY[0x1E69E9840];
-  v18 = a3;
+  messagesCopy = messages;
   [(EDUserNotificationMailboxCutoffController *)self _initializeIfNeeded];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = v18;
+  v4 = messagesCopy;
   v5 = [v4 countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v5)
   {
@@ -111,14 +111,14 @@ void __48__EDUserNotificationMailboxCutoffController_log__block_invoke(uint64_t 
         v9 = *(*(&v19 + 1) + 8 * i);
         if ([(EDUserNotificationMailboxCutoffController *)self _shouldUpdateCutoffForMessage:v9])
         {
-          v10 = [v9 mailbox];
-          v11 = [v10 URL];
-          v12 = [v11 absoluteString];
+          mailbox = [v9 mailbox];
+          v11 = [mailbox URL];
+          absoluteString = [v11 absoluteString];
 
-          if (v12)
+          if (absoluteString)
           {
-            v13 = [v9 dateReceived];
-            v14 = [(EDUserNotificationMailboxCutoffController *)self _updateCutoffForMailbox:v12 date:v13];
+            dateReceived = [v9 dateReceived];
+            v14 = [(EDUserNotificationMailboxCutoffController *)self _updateCutoffForMailbox:absoluteString date:dateReceived];
 
             v6 |= v14;
           }
@@ -128,8 +128,8 @@ void __48__EDUserNotificationMailboxCutoffController_log__block_invoke(uint64_t 
             v15 = +[EDUserNotificationMailboxCutoffController log];
             if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
             {
-              v16 = [v9 remoteID];
-              [(EDUserNotificationMailboxCutoffController *)v16 updateCutoffForMailboxesWithMessages:buf, &v24, v15];
+              remoteID = [v9 remoteID];
+              [(EDUserNotificationMailboxCutoffController *)remoteID updateCutoffForMailboxesWithMessages:buf, &v24, v15];
             }
           }
         }
@@ -153,52 +153,52 @@ void __48__EDUserNotificationMailboxCutoffController_log__block_invoke(uint64_t 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clearCutoffForMailbox:(id)a3
+- (void)clearCutoffForMailbox:(id)mailbox
 {
-  v9 = a3;
+  mailboxCopy = mailbox;
   [(EDUserNotificationMailboxCutoffController *)self _initializeIfNeeded];
-  v4 = [v9 URL];
-  v5 = [v4 absoluteString];
+  v4 = [mailboxCopy URL];
+  absoluteString = [v4 absoluteString];
 
-  if (v5)
+  if (absoluteString)
   {
-    v6 = [(EDUserNotificationMailboxCutoffController *)self mailboxCutoffs];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    mailboxCutoffs = [(EDUserNotificationMailboxCutoffController *)self mailboxCutoffs];
+    v7 = [mailboxCutoffs objectForKeyedSubscript:absoluteString];
 
     if (v7)
     {
-      v8 = [(EDUserNotificationMailboxCutoffController *)self mailboxCutoffs];
-      [v8 setObject:0 forKeyedSubscript:v5];
+      mailboxCutoffs2 = [(EDUserNotificationMailboxCutoffController *)self mailboxCutoffs];
+      [mailboxCutoffs2 setObject:0 forKeyedSubscript:absoluteString];
 
       [(EDUserNotificationMailboxCutoffController *)self _writeToDefaults];
     }
   }
 }
 
-- (BOOL)_shouldUpdateCutoffForMessage:(id)a3
+- (BOOL)_shouldUpdateCutoffForMessage:(id)message
 {
-  v3 = [a3 flags];
-  v4 = [v3 read];
+  flags = [message flags];
+  read = [flags read];
 
-  return v4;
+  return read;
 }
 
-- (BOOL)_updateCutoffForMailbox:(id)a3 date:(id)a4
+- (BOOL)_updateCutoffForMailbox:(id)mailbox date:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EDUserNotificationMailboxCutoffController *)self mailboxCutoffs];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  mailboxCopy = mailbox;
+  dateCopy = date;
+  mailboxCutoffs = [(EDUserNotificationMailboxCutoffController *)self mailboxCutoffs];
+  v9 = [mailboxCutoffs objectForKeyedSubscript:mailboxCopy];
 
-  if (v9 && ![v7 ef_isLaterThanDate:v9])
+  if (v9 && ![dateCopy ef_isLaterThanDate:v9])
   {
     v11 = 0;
   }
 
   else
   {
-    v10 = [(EDUserNotificationMailboxCutoffController *)self mailboxCutoffs];
-    [v10 setObject:v7 forKeyedSubscript:v6];
+    mailboxCutoffs2 = [(EDUserNotificationMailboxCutoffController *)self mailboxCutoffs];
+    [mailboxCutoffs2 setObject:dateCopy forKeyedSubscript:mailboxCopy];
 
     v11 = 1;
   }
@@ -208,9 +208,9 @@ void __48__EDUserNotificationMailboxCutoffController_log__block_invoke(uint64_t 
 
 - (void)_initializeIfNeeded
 {
-  v3 = [(EDUserNotificationMailboxCutoffController *)self mailboxCutoffs];
+  mailboxCutoffs = [(EDUserNotificationMailboxCutoffController *)self mailboxCutoffs];
 
-  if (!v3)
+  if (!mailboxCutoffs)
   {
 
     [(EDUserNotificationMailboxCutoffController *)self _readFromDefaults];
@@ -219,8 +219,8 @@ void __48__EDUserNotificationMailboxCutoffController_log__block_invoke(uint64_t 
 
 - (void)_readFromDefaults
 {
-  v6 = [MEMORY[0x1E695E000] em_userDefaults];
-  v3 = [v6 objectForKey:@"UserNotificationMailboxCutoffs"];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v3 = [em_userDefaults objectForKey:@"UserNotificationMailboxCutoffs"];
   if (v3)
   {
     v4 = v3;
@@ -237,9 +237,9 @@ void __48__EDUserNotificationMailboxCutoffController_log__block_invoke(uint64_t 
 
 - (void)_writeToDefaults
 {
-  v4 = [MEMORY[0x1E695E000] em_userDefaults];
-  v3 = [(EDUserNotificationMailboxCutoffController *)self mailboxCutoffs];
-  [v4 setObject:v3 forKey:@"UserNotificationMailboxCutoffs"];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  mailboxCutoffs = [(EDUserNotificationMailboxCutoffController *)self mailboxCutoffs];
+  [em_userDefaults setObject:mailboxCutoffs forKey:@"UserNotificationMailboxCutoffs"];
 }
 
 - (void)updateCutoffForMailboxesWithMessages:(void *)a3 .cold.1(void *a1, uint8_t *buf, void *a3, os_log_t log)

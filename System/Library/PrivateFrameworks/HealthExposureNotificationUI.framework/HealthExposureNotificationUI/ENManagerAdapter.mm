@@ -1,25 +1,25 @@
 @interface ENManagerAdapter
 + (_TtC28HealthExposureNotificationUI16ENManagerAdapter)defaultAdapter;
-+ (void)setDefaultAdapter:(id)a3;
++ (void)setDefaultAdapter:(id)adapter;
 - (BOOL)areAvailabilityAlertsEnabled;
 - (BOOL)isAvailabilityAlertsSwitchEnabled;
 - (BOOL)isExposureLoggingDataPresent;
-- (BOOL)tccContainsRecordForBundleIdentifier:(id)a3;
+- (BOOL)tccContainsRecordForBundleIdentifier:(id)identifier;
 - (NSSet)statusChangeObservers;
 - (int64_t)exposureNotificationStatus;
-- (void)didEnterLegalConsentPageForRegion:(id)a3;
-- (void)fetchAgencyModelForRegionCode:(id)a3 reason:(unsigned int)a4 completion:(id)a5;
-- (void)notifyChangeObserversForChangeFrom:(int64_t)a3 to:(int64_t)a4;
-- (void)onboardingDidStartForRegion:(id)a3 source:(int64_t)a4;
-- (void)setActivePhaseOneAppWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)setAreAvailabilityAlertsEnabled:(BOOL)a3;
-- (void)setExposureNotificationStatus:(int64_t)a3;
-- (void)setIsAvailabilityAlertsSwitchEnabled:(BOOL)a3;
-- (void)setIsExposureLoggingDataPresent:(BOOL)a3;
-- (void)setShareAnalyticsEnabled:(BOOL)a3 region:(id)a4 version:(id)a5 completion:(id)a6;
-- (void)setStatusChangeObservers:(id)a3;
-- (void)setTravelStatusEnabled:(BOOL)a3 region:(id)a4 completion:(id)a5;
-- (void)setUserConsent:(int64_t)a3 region:(id)a4 text:(id)a5 version:(id)a6 completion:(id)a7;
+- (void)didEnterLegalConsentPageForRegion:(id)region;
+- (void)fetchAgencyModelForRegionCode:(id)code reason:(unsigned int)reason completion:(id)completion;
+- (void)notifyChangeObserversForChangeFrom:(int64_t)from to:(int64_t)to;
+- (void)onboardingDidStartForRegion:(id)region source:(int64_t)source;
+- (void)setActivePhaseOneAppWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)setAreAvailabilityAlertsEnabled:(BOOL)enabled;
+- (void)setExposureNotificationStatus:(int64_t)status;
+- (void)setIsAvailabilityAlertsSwitchEnabled:(BOOL)enabled;
+- (void)setIsExposureLoggingDataPresent:(BOOL)present;
+- (void)setShareAnalyticsEnabled:(BOOL)enabled region:(id)region version:(id)version completion:(id)completion;
+- (void)setStatusChangeObservers:(id)observers;
+- (void)setTravelStatusEnabled:(BOOL)enabled region:(id)region completion:(id)completion;
+- (void)setUserConsent:(int64_t)consent region:(id)region text:(id)text version:(id)version completion:(id)completion;
 @end
 
 @implementation ENManagerAdapter
@@ -31,11 +31,11 @@
   return *(self + v3);
 }
 
-- (void)setExposureNotificationStatus:(int64_t)a3
+- (void)setExposureNotificationStatus:(int64_t)status
 {
   v5 = OBJC_IVAR____TtC28HealthExposureNotificationUI16ENManagerAdapter_exposureNotificationStatus;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = status;
 }
 
 - (BOOL)isExposureLoggingDataPresent
@@ -45,11 +45,11 @@
   return *(self + v3);
 }
 
-- (void)setIsExposureLoggingDataPresent:(BOOL)a3
+- (void)setIsExposureLoggingDataPresent:(BOOL)present
 {
   v5 = OBJC_IVAR____TtC28HealthExposureNotificationUI16ENManagerAdapter_isExposureLoggingDataPresent;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = present;
 }
 
 - (BOOL)areAvailabilityAlertsEnabled
@@ -59,11 +59,11 @@
   return *(self + v3);
 }
 
-- (void)setAreAvailabilityAlertsEnabled:(BOOL)a3
+- (void)setAreAvailabilityAlertsEnabled:(BOOL)enabled
 {
   v5 = OBJC_IVAR____TtC28HealthExposureNotificationUI16ENManagerAdapter_areAvailabilityAlertsEnabled;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = enabled;
 }
 
 - (BOOL)isAvailabilityAlertsSwitchEnabled
@@ -73,11 +73,11 @@
   return *(self + v3);
 }
 
-- (void)setIsAvailabilityAlertsSwitchEnabled:(BOOL)a3
+- (void)setIsAvailabilityAlertsSwitchEnabled:(BOOL)enabled
 {
   v5 = OBJC_IVAR____TtC28HealthExposureNotificationUI16ENManagerAdapter_isAvailabilityAlertsSwitchEnabled;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = enabled;
 }
 
 + (_TtC28HealthExposureNotificationUI16ENManagerAdapter)defaultAdapter
@@ -91,10 +91,10 @@
   return static ENManagerAdapter.defaultAdapter;
 }
 
-+ (void)setDefaultAdapter:(id)a3
++ (void)setDefaultAdapter:(id)adapter
 {
   v3 = qword_28151EB60;
-  v4 = a3;
+  adapterCopy = adapter;
   if (v3 != -1)
   {
     swift_once();
@@ -102,7 +102,7 @@
 
   swift_beginAccess();
   v5 = static ENManagerAdapter.defaultAdapter;
-  static ENManagerAdapter.defaultAdapter = v4;
+  static ENManagerAdapter.defaultAdapter = adapterCopy;
 }
 
 - (NSSet)statusChangeObservers
@@ -118,7 +118,7 @@
   return v5;
 }
 
-- (void)setStatusChangeObservers:(id)a3
+- (void)setStatusChangeObservers:(id)observers
 {
   type metadata accessor for ENManagerAdapter.StatusChangeObserver();
   sub_2516CFAA4(&qword_27F454410, type metadata accessor for ENManagerAdapter.StatusChangeObserver);
@@ -129,32 +129,32 @@
   *(self + v5) = v4;
 }
 
-- (void)onboardingDidStartForRegion:(id)a3 source:(int64_t)a4
+- (void)onboardingDidStartForRegion:(id)region source:(int64_t)source
 {
   v7 = swift_allocObject();
-  v7[2] = a4;
+  v7[2] = source;
   v7[3] = self;
-  v7[4] = a3;
-  v8 = a3;
-  v10 = self;
-  v9 = v8;
+  v7[4] = region;
+  regionCopy = region;
+  selfCopy = self;
+  v9 = regionCopy;
   sub_2516C59C8(sub_2516ABFD8, v7);
 }
 
-- (void)didEnterLegalConsentPageForRegion:(id)a3
+- (void)didEnterLegalConsentPageForRegion:(id)region
 {
   v5 = swift_allocObject();
   *(v5 + 16) = self;
-  *(v5 + 24) = a3;
-  v6 = a3;
-  v8 = self;
-  v7 = v6;
+  *(v5 + 24) = region;
+  regionCopy = region;
+  selfCopy = self;
+  v7 = regionCopy;
   sub_2516C59C8(sub_2516CFC58, v5);
 }
 
-- (void)setActivePhaseOneAppWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)setActivePhaseOneAppWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_251703164();
   v8 = v7;
   v9 = swift_allocObject();
@@ -165,34 +165,34 @@
   v10[4] = v8;
   v10[5] = sub_2516CFD10;
   v10[6] = v9;
-  v11 = self;
+  selfCopy = self;
 
   sub_2516C59C8(sub_2516CFC4C, v10);
 }
 
-- (void)fetchAgencyModelForRegionCode:(id)a3 reason:(unsigned int)a4 completion:(id)a5
+- (void)fetchAgencyModelForRegionCode:(id)code reason:(unsigned int)reason completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = objc_opt_self();
-  v11 = self;
-  v12 = [v10 regionWithCode_];
+  selfCopy = self;
+  regionWithCode_ = [v10 regionWithCode_];
   v13 = swift_allocObject();
-  *(v13 + 16) = v11;
-  *(v13 + 24) = v12;
-  *(v13 + 32) = a4;
+  *(v13 + 16) = selfCopy;
+  *(v13 + 24) = regionWithCode_;
+  *(v13 + 32) = reason;
   *(v13 + 40) = sub_2516CF644;
   *(v13 + 48) = v9;
-  v15 = v11;
-  v14 = v12;
+  v15 = selfCopy;
+  v14 = regionWithCode_;
 
   sub_2516C59C8(sub_2516B9C50, v13);
 }
 
-- (void)setShareAnalyticsEnabled:(BOOL)a3 region:(id)a4 version:(id)a5 completion:(id)a6
+- (void)setShareAnalyticsEnabled:(BOOL)enabled region:(id)region version:(id)version completion:(id)completion
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(completion);
   v10 = sub_251703164();
   v12 = v11;
   v13 = swift_allocObject();
@@ -200,42 +200,42 @@
   v14 = swift_allocObject();
   *(v14 + 16) = v10;
   *(v14 + 24) = v12;
-  *(v14 + 32) = a3;
+  *(v14 + 32) = enabled;
   *(v14 + 40) = self;
-  *(v14 + 48) = a4;
+  *(v14 + 48) = region;
   *(v14 + 56) = sub_2516CFD10;
   *(v14 + 64) = v13;
-  v15 = a4;
-  v17 = self;
-  v16 = v15;
+  regionCopy = region;
+  selfCopy = self;
+  v16 = regionCopy;
 
   sub_2516C59C8(sub_2516CFC48, v14);
 }
 
-- (void)setTravelStatusEnabled:(BOOL)a3 region:(id)a4 completion:(id)a5
+- (void)setTravelStatusEnabled:(BOOL)enabled region:(id)region completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = swift_allocObject();
   *(v10 + 16) = self;
-  *(v10 + 24) = a3;
-  *(v10 + 32) = a4;
+  *(v10 + 24) = enabled;
+  *(v10 + 32) = region;
   *(v10 + 40) = sub_2516CFD10;
   *(v10 + 48) = v9;
-  v11 = a4;
-  v13 = self;
-  v12 = v11;
+  regionCopy = region;
+  selfCopy = self;
+  v12 = regionCopy;
 
   sub_2516C59C8(sub_2516CFC44, v10);
 }
 
-- (void)setUserConsent:(int64_t)a3 region:(id)a4 text:(id)a5 version:(id)a6 completion:(id)a7
+- (void)setUserConsent:(int64_t)consent region:(id)region text:(id)text version:(id)version completion:(id)completion
 {
-  v11 = _Block_copy(a7);
-  if (a5)
+  v11 = _Block_copy(completion);
+  if (text)
   {
-    a5 = sub_251703164();
+    text = sub_251703164();
     v13 = v12;
   }
 
@@ -251,34 +251,34 @@
   v18 = swift_allocObject();
   v18[2] = v14;
   v18[3] = v16;
-  v18[4] = a3;
-  v18[5] = a5;
+  v18[4] = consent;
+  v18[5] = text;
   v18[6] = v13;
   v18[7] = self;
-  v18[8] = a4;
+  v18[8] = region;
   v18[9] = sub_2516CF548;
   v18[10] = v17;
-  v19 = a4;
-  v21 = self;
-  v20 = v19;
+  regionCopy = region;
+  selfCopy = self;
+  v20 = regionCopy;
 
   sub_2516C59C8(sub_2516CFC40, v18);
 }
 
-- (BOOL)tccContainsRecordForBundleIdentifier:(id)a3
+- (BOOL)tccContainsRecordForBundleIdentifier:(id)identifier
 {
   sub_251703164();
-  v4 = self;
+  selfCopy = self;
   _s28HealthExposureNotificationUI16ENManagerAdapterC17tccContainsRecord19forBundleIdentifierSbSS_tF_0();
   v6 = v5;
 
   return v6 & 1;
 }
 
-- (void)notifyChangeObserversForChangeFrom:(int64_t)a3 to:(int64_t)a4
+- (void)notifyChangeObserversForChangeFrom:(int64_t)from to:(int64_t)to
 {
-  v6 = self;
-  sub_2516EFBAC(a3, a4);
+  selfCopy = self;
+  sub_2516EFBAC(from, to);
 }
 
 @end

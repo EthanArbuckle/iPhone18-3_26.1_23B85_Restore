@@ -1,5 +1,5 @@
 @interface SleepScoreResultsNotification
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)userInfo;
 - (NSString)identifier;
 - (_TtC11SleepHealth29SleepScoreResultsNotification)init;
@@ -21,11 +21,11 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_269BF89C8();
     swift_unknownObjectRelease();
@@ -34,7 +34,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = SleepScoreResultsNotification.isEqual(_:)(v8);
@@ -45,7 +45,7 @@
 
 - (NSDictionary)userInfo
 {
-  v2 = self;
+  selfCopy = self;
   SleepScoreResultsNotification.userInfo.getter();
 
   sub_269BE5A00();

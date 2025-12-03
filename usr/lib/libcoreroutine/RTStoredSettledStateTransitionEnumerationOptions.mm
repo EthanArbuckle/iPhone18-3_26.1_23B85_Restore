@@ -1,16 +1,16 @@
 @interface RTStoredSettledStateTransitionEnumerationOptions
-- (RTStoredSettledStateTransitionEnumerationOptions)initWithAscending:(BOOL)a3 dateInterval:(id)a4 limit:(id)a5 batchSize:(unint64_t)a6;
+- (RTStoredSettledStateTransitionEnumerationOptions)initWithAscending:(BOOL)ascending dateInterval:(id)interval limit:(id)limit batchSize:(unint64_t)size;
 - (id)description;
 @end
 
 @implementation RTStoredSettledStateTransitionEnumerationOptions
 
-- (RTStoredSettledStateTransitionEnumerationOptions)initWithAscending:(BOOL)a3 dateInterval:(id)a4 limit:(id)a5 batchSize:(unint64_t)a6
+- (RTStoredSettledStateTransitionEnumerationOptions)initWithAscending:(BOOL)ascending dateInterval:(id)interval limit:(id)limit batchSize:(unint64_t)size
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (v12 && ![v12 unsignedIntegerValue])
+  intervalCopy = interval;
+  limitCopy = limit;
+  v13 = limitCopy;
+  if (limitCopy && ![limitCopy unsignedIntegerValue])
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -19,7 +19,7 @@
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: !limit || (limit && limit.unsignedIntegerValue > 0)", buf, 2u);
     }
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -30,17 +30,17 @@
     v15 = v14;
     if (v14)
     {
-      v14->_ascending = a3;
-      objc_storeStrong(&v14->_dateInterval, a4);
-      objc_storeStrong(&v15->_limit, a5);
-      v15->_batchSize = a6;
+      v14->_ascending = ascending;
+      objc_storeStrong(&v14->_dateInterval, interval);
+      objc_storeStrong(&v15->_limit, limit);
+      v15->_batchSize = size;
     }
 
     self = v15;
-    v16 = self;
+    selfCopy = self;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (id)description
@@ -56,11 +56,11 @@
     v4 = @"NO";
   }
 
-  v5 = [(NSDateInterval *)self->_dateInterval startDate];
-  v6 = [v5 stringFromDate];
-  v7 = [(NSDateInterval *)self->_dateInterval endDate];
-  v8 = [v7 stringFromDate];
-  v9 = [v3 stringWithFormat:@"ascending, %@, startDate, %@, endDate, %@, limit, %@", v4, v6, v8, self->_limit];
+  startDate = [(NSDateInterval *)self->_dateInterval startDate];
+  stringFromDate = [startDate stringFromDate];
+  endDate = [(NSDateInterval *)self->_dateInterval endDate];
+  stringFromDate2 = [endDate stringFromDate];
+  v9 = [v3 stringWithFormat:@"ascending, %@, startDate, %@, endDate, %@, limit, %@", v4, stringFromDate, stringFromDate2, self->_limit];
 
   return v9;
 }

@@ -1,26 +1,26 @@
 @interface IFGraphicSymbolOverridesParser
-- (CGSize)_parseSymbolOffsetFromRawItem:(id)a3;
-- (IFGraphicSymbolOverridesParser)initWithRawOverrides:(id)a3;
-- (float)_parseSymbolSizeAdjusterFromRawItem:(id)a3;
-- (id)_parseSymbolContent:(id)a3;
+- (CGSize)_parseSymbolOffsetFromRawItem:(id)item;
+- (IFGraphicSymbolOverridesParser)initWithRawOverrides:(id)overrides;
+- (float)_parseSymbolSizeAdjusterFromRawItem:(id)item;
+- (id)_parseSymbolContent:(id)content;
 - (id)parse;
-- (int64_t)_parseShapeFromRawShape:(id)a3;
-- (int64_t)_parseSymbolWeightFromRawItem:(id)a3;
-- (unint64_t)_parseSymbolSizeFromRawItem:(id)a3;
+- (int64_t)_parseShapeFromRawShape:(id)shape;
+- (int64_t)_parseSymbolWeightFromRawItem:(id)item;
+- (unint64_t)_parseSymbolSizeFromRawItem:(id)item;
 - (void)parse;
 @end
 
 @implementation IFGraphicSymbolOverridesParser
 
-- (IFGraphicSymbolOverridesParser)initWithRawOverrides:(id)a3
+- (IFGraphicSymbolOverridesParser)initWithRawOverrides:(id)overrides
 {
-  v4 = a3;
+  overridesCopy = overrides;
   v9.receiver = self;
   v9.super_class = IFGraphicSymbolOverridesParser;
   v5 = [(IFGraphicSymbolOverridesParser *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [overridesCopy copy];
     rawOverrides = v5->_rawOverrides;
     v5->_rawOverrides = v6;
   }
@@ -30,13 +30,13 @@
 
 - (id)parse
 {
-  v3 = [(IFGraphicSymbolOverridesParser *)self rawOverrides];
-  v4 = [v3 _IF_numberForKey:@"version"];
+  rawOverrides = [(IFGraphicSymbolOverridesParser *)self rawOverrides];
+  v4 = [rawOverrides _IF_numberForKey:@"version"];
 
   if ([v4 intValue] == 2)
   {
-    v5 = [(IFGraphicSymbolOverridesParser *)self rawOverrides];
-    v6 = [v5 _IF_dictionaryForKey:@"symbols"];
+    rawOverrides2 = [(IFGraphicSymbolOverridesParser *)self rawOverrides];
+    v6 = [rawOverrides2 _IF_dictionaryForKey:@"symbols"];
     v7 = [(IFGraphicSymbolOverridesParser *)self _parseSymbolContent:v6];
   }
 
@@ -54,16 +54,16 @@
   return v7;
 }
 
-- (id)_parseSymbolContent:(id)a3
+- (id)_parseSymbolContent:(id)content
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contentCopy = content;
   v24 = objc_opt_new();
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v4;
+  obj = contentCopy;
   v26 = [obj countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v26)
   {
@@ -131,7 +131,7 @@
                     }
 
                     v18 = *(*(&v35 + 1) + 8 * j);
-                    v19 = [v18 intValue];
+                    intValue = [v18 intValue];
                     v20 = [v18 compare:@"default"];
                     if (v20)
                     {
@@ -143,11 +143,11 @@
 
                     else
                     {
-                      v19 = 0x7FFFFFFFLL;
+                      intValue = 0x7FFFFFFFLL;
                     }
 
                     v21 = [v13 _IF_dictionaryForKey:v18];
-                    v22 = [[IFGraphicSymbolOverride alloc] initWithShape:v12 enclosureDimension:v19];
+                    v22 = [[IFGraphicSymbolOverride alloc] initWithShape:v12 enclosureDimension:intValue];
                     [(IFGraphicSymbolOverride *)v22 setIsDefault:v20 == 0];
                     [(IFGraphicSymbolOverride *)v22 setSymbolWeight:[(IFGraphicSymbolOverridesParser *)self _parseSymbolWeightFromRawItem:v21]];
                     [(IFGraphicSymbolOverride *)v22 setSymbolSize:[(IFGraphicSymbolOverridesParser *)self _parseSymbolSizeFromRawItem:v21]];
@@ -197,14 +197,14 @@ LABEL_26:
   return v24;
 }
 
-- (int64_t)_parseShapeFromRawShape:(id)a3
+- (int64_t)_parseShapeFromRawShape:(id)shape
 {
-  v3 = a3;
-  if ([v3 caseInsensitiveCompare:@"rounded_rect"])
+  shapeCopy = shape;
+  if ([shapeCopy caseInsensitiveCompare:@"rounded_rect"])
   {
-    if ([v3 caseInsensitiveCompare:@"capsule"])
+    if ([shapeCopy caseInsensitiveCompare:@"capsule"])
     {
-      if ([v3 caseInsensitiveCompare:@"circle"])
+      if ([shapeCopy caseInsensitiveCompare:@"circle"])
       {
         v4 = IFDefaultLog();
         if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -235,9 +235,9 @@ LABEL_26:
   return v5;
 }
 
-- (int64_t)_parseSymbolWeightFromRawItem:(id)a3
+- (int64_t)_parseSymbolWeightFromRawItem:(id)item
 {
-  v3 = [a3 _IF_stringForKey:@"symbol_weight"];
+  v3 = [item _IF_stringForKey:@"symbol_weight"];
   v4 = v3;
   if (v3)
   {
@@ -308,9 +308,9 @@ LABEL_24:
   return v6;
 }
 
-- (unint64_t)_parseSymbolSizeFromRawItem:(id)a3
+- (unint64_t)_parseSymbolSizeFromRawItem:(id)item
 {
-  v3 = [a3 _IF_stringForKey:@"symbol_size"];
+  v3 = [item _IF_stringForKey:@"symbol_size"];
   v4 = v3;
   if (v3)
   {
@@ -345,9 +345,9 @@ LABEL_12:
   return v6;
 }
 
-- (float)_parseSymbolSizeAdjusterFromRawItem:(id)a3
+- (float)_parseSymbolSizeAdjusterFromRawItem:(id)item
 {
-  v3 = [a3 _IF_stringForKey:@"pointsize_to_shape_mul"];
+  v3 = [item _IF_stringForKey:@"pointsize_to_shape_mul"];
   v4 = v3;
   if (v3)
   {
@@ -363,14 +363,14 @@ LABEL_12:
   return v6;
 }
 
-- (CGSize)_parseSymbolOffsetFromRawItem:(id)a3
+- (CGSize)_parseSymbolOffsetFromRawItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 _IF_stringForKey:@"x_offset"];
+  itemCopy = item;
+  v4 = [itemCopy _IF_stringForKey:@"x_offset"];
   [v4 floatValue];
   v6 = v5;
 
-  v7 = [v3 _IF_stringForKey:@"y_offset"];
+  v7 = [itemCopy _IF_stringForKey:@"y_offset"];
 
   [v7 floatValue];
   v9 = v8;

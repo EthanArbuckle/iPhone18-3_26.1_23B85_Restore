@@ -1,23 +1,23 @@
 @interface HMIRemoveFaceCropsOperation
-- (HMIRemoveFaceCropsOperation)initWithDataSource:(id)a3 faceCropUUIDs:(id)a4;
+- (HMIRemoveFaceCropsOperation)initWithDataSource:(id)source faceCropUUIDs:(id)ds;
 - (void)main;
 - (void)mainInsideAutoreleasePool;
 @end
 
 @implementation HMIRemoveFaceCropsOperation
 
-- (HMIRemoveFaceCropsOperation)initWithDataSource:(id)a3 faceCropUUIDs:(id)a4
+- (HMIRemoveFaceCropsOperation)initWithDataSource:(id)source faceCropUUIDs:(id)ds
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  dsCopy = ds;
   v12.receiver = self;
   v12.super_class = HMIRemoveFaceCropsOperation;
   v9 = [(HMFOperation *)&v12 initWithTimeout:20.0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataSource, a3);
-    objc_storeStrong(&v10->_faceCropUUIDs, a4);
+    objc_storeStrong(&v9->_dataSource, source);
+    objc_storeStrong(&v10->_faceCropUUIDs, ds);
   }
 
   return v10;
@@ -34,14 +34,14 @@
 - (void)mainInsideAutoreleasePool
 {
   objc_initWeak(&location, self);
-  v3 = [(HMIRemoveFaceCropsOperation *)self dataSource];
-  v4 = [(HMIRemoveFaceCropsOperation *)self faceCropUUIDs];
+  dataSource = [(HMIRemoveFaceCropsOperation *)self dataSource];
+  faceCropUUIDs = [(HMIRemoveFaceCropsOperation *)self faceCropUUIDs];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __56__HMIRemoveFaceCropsOperation_mainInsideAutoreleasePool__block_invoke;
   v5[3] = &unk_2787528E0;
   objc_copyWeak(&v6, &location);
-  [v3 removeFaceCropsWithUUIDs:v4 completion:v5];
+  [dataSource removeFaceCropsWithUUIDs:faceCropUUIDs completion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);

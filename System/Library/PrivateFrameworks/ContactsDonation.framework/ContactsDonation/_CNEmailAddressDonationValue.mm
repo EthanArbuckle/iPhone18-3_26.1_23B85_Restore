@@ -1,31 +1,31 @@
 @interface _CNEmailAddressDonationValue
-- (BOOL)isEqual:(id)a3;
-- (_CNEmailAddressDonationValue)initWithCoder:(id)a3;
-- (_CNEmailAddressDonationValue)initWithEmailAddress:(id)a3 label:(id)a4 origin:(id)a5;
-- (id)copyWithNewExpirationDate:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CNEmailAddressDonationValue)initWithCoder:(id)coder;
+- (_CNEmailAddressDonationValue)initWithEmailAddress:(id)address label:(id)label origin:(id)origin;
+- (id)copyWithNewExpirationDate:(id)date;
 - (id)description;
 - (unint64_t)hash;
-- (void)acceptDonationValueVisitor:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updatePropertyListRepresentation:(id)a3;
+- (void)acceptDonationValueVisitor:(id)visitor;
+- (void)encodeWithCoder:(id)coder;
+- (void)updatePropertyListRepresentation:(id)representation;
 @end
 
 @implementation _CNEmailAddressDonationValue
 
-- (_CNEmailAddressDonationValue)initWithEmailAddress:(id)a3 label:(id)a4 origin:(id)a5
+- (_CNEmailAddressDonationValue)initWithEmailAddress:(id)address label:(id)label origin:(id)origin
 {
-  v8 = a3;
-  v9 = a4;
+  addressCopy = address;
+  labelCopy = label;
   v17.receiver = self;
   v17.super_class = _CNEmailAddressDonationValue;
-  v10 = [(CNDonationValue *)&v17 initWithOrigin:a5];
+  v10 = [(CNDonationValue *)&v17 initWithOrigin:origin];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [addressCopy copy];
     emailAddress = v10->_emailAddress;
     v10->_emailAddress = v11;
 
-    v13 = [v9 copy];
+    v13 = [labelCopy copy];
     label = v10->_label;
     v10->_label = v13;
 
@@ -38,46 +38,46 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CFBDF0] descriptionBuilderWithObject:self];
-  v4 = [(_CNEmailAddressDonationValue *)self emailAddress];
-  v5 = [v3 appendName:@"email" object:v4];
+  emailAddress = [(_CNEmailAddressDonationValue *)self emailAddress];
+  v5 = [v3 appendName:@"email" object:emailAddress];
 
-  v6 = [(CNDonationValue *)self origin];
-  v7 = [v3 appendName:@"origin" object:v6];
+  origin = [(CNDonationValue *)self origin];
+  v7 = [v3 appendName:@"origin" object:origin];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (id)copyWithNewExpirationDate:(id)a3
+- (id)copyWithNewExpirationDate:(id)date
 {
-  v4 = a3;
-  v5 = [(CNDonationValue *)self origin];
-  v6 = [v5 mutableCopy];
+  dateCopy = date;
+  origin = [(CNDonationValue *)self origin];
+  v6 = [origin mutableCopy];
 
-  [v6 setExpirationDate:v4];
+  [v6 setExpirationDate:dateCopy];
   v7 = objc_alloc(objc_opt_class());
-  v8 = [(_CNEmailAddressDonationValue *)self emailAddress];
-  v9 = [(_CNEmailAddressDonationValue *)self label];
-  v10 = [v7 initWithEmailAddress:v8 label:v9 origin:v6];
+  emailAddress = [(_CNEmailAddressDonationValue *)self emailAddress];
+  label = [(_CNEmailAddressDonationValue *)self label];
+  v10 = [v7 initWithEmailAddress:emailAddress label:label origin:v6];
 
   return v10;
 }
 
-- (_CNEmailAddressDonationValue)initWithCoder:(id)a3
+- (_CNEmailAddressDonationValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = _CNEmailAddressDonationValue;
-  v5 = [(CNDonationValue *)&v14 initWithCoder:v4];
+  v5 = [(CNDonationValue *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_emailAddress"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_emailAddress"];
     v7 = [v6 copy];
     emailAddress = v5->_emailAddress;
     v5->_emailAddress = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_label"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_label"];
     v10 = [v9 copy];
     label = v5->_label;
     v5->_label = v10;
@@ -88,26 +88,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _CNEmailAddressDonationValue;
-  v4 = a3;
-  [(CNDonationValue *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_emailAddress forKey:{@"_emailAddress", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_label forKey:@"_label"];
+  coderCopy = coder;
+  [(CNDonationValue *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_emailAddress forKey:{@"_emailAddress", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_label forKey:@"_label"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x277CFBE18];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __40___CNEmailAddressDonationValue_isEqual___block_invoke;
   v15[3] = &unk_2785698D8;
   v15[4] = self;
-  v16 = v4;
+  v16 = equalCopy;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __40___CNEmailAddressDonationValue_isEqual___block_invoke_2;
@@ -154,22 +154,22 @@
   return v6;
 }
 
-- (void)acceptDonationValueVisitor:(id)a3
+- (void)acceptDonationValueVisitor:(id)visitor
 {
-  v4 = a3;
-  v6 = [(_CNEmailAddressDonationValue *)self emailAddress];
-  v5 = [(_CNEmailAddressDonationValue *)self label];
-  [v4 visitDonationValue:self emailAddress:v6 label:v5];
+  visitorCopy = visitor;
+  emailAddress = [(_CNEmailAddressDonationValue *)self emailAddress];
+  label = [(_CNEmailAddressDonationValue *)self label];
+  [visitorCopy visitDonationValue:self emailAddress:emailAddress label:label];
 }
 
-- (void)updatePropertyListRepresentation:(id)a3
+- (void)updatePropertyListRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [(_CNEmailAddressDonationValue *)self emailAddress];
-  [v4 setObject:v5 forKeyedSubscript:@"email-address"];
+  representationCopy = representation;
+  emailAddress = [(_CNEmailAddressDonationValue *)self emailAddress];
+  [representationCopy setObject:emailAddress forKeyedSubscript:@"email-address"];
 
-  v6 = [(_CNEmailAddressDonationValue *)self label];
-  [v4 setObject:v6 forKeyedSubscript:@"label"];
+  label = [(_CNEmailAddressDonationValue *)self label];
+  [representationCopy setObject:label forKeyedSubscript:@"label"];
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface SecTapToRadar
-+ (BOOL)askUserIfTTR:(id)a3;
-+ (BOOL)isRateLimited:(id)a3;
-+ (id)keyname:(id)a3;
-+ (void)triggerTapToRadar:(id)a3;
++ (BOOL)askUserIfTTR:(id)r;
++ (BOOL)isRateLimited:(id)limited;
++ (id)keyname:(id)keyname;
++ (void)triggerTapToRadar:(id)radar;
 - (BOOL)isRateLimited;
-- (id)initTapToRadar:(id)a3 description:(id)a4 radar:(id)a5;
+- (id)initTapToRadar:(id)radar description:(id)description radar:(id)a5;
 - (void)clearRetryTimestamp;
 - (void)trigger;
 - (void)updateRetryTimestamp;
@@ -14,13 +14,13 @@
 
 - (void)trigger
 {
-  v3 = [(SecTapToRadar *)self queue];
+  queue = [(SecTapToRadar *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __24__SecTapToRadar_trigger__block_invoke;
   block[3] = &unk_1E70E4300;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 void __24__SecTapToRadar_trigger__block_invoke(uint64_t a1)
@@ -69,8 +69,8 @@ void __24__SecTapToRadar_trigger__block_invoke(uint64_t a1)
 - (void)updateRetryTimestamp
 {
   v6 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.security"];
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [v3 dateByAddingTimeInterval:86400.0];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [date dateByAddingTimeInterval:86400.0];
   v5 = [objc_opt_class() keyname:self];
   [v6 setObject:v4 forKey:v5];
 }
@@ -83,8 +83,8 @@ void __24__SecTapToRadar_trigger__block_invoke(uint64_t a1)
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x1E695DF00] date];
-    v7 = [v5 compare:v6] != -1;
+    date = [MEMORY[0x1E695DF00] date];
+    v7 = [v5 compare:date] != -1;
   }
 
   else
@@ -96,10 +96,10 @@ void __24__SecTapToRadar_trigger__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)initTapToRadar:(id)a3 description:(id)a4 radar:(id)a5
+- (id)initTapToRadar:(id)radar description:(id)description radar:(id)a5
 {
-  v9 = a3;
-  v10 = a4;
+  radarCopy = radar;
+  descriptionCopy = description;
   v11 = a5;
   v25.receiver = self;
   v25.super_class = SecTapToRadar;
@@ -107,8 +107,8 @@ void __24__SecTapToRadar_trigger__block_invoke(uint64_t a1)
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_alert, a3);
-    objc_storeStrong(&v13->_radarDescription, a4);
+    objc_storeStrong(&v12->_alert, radar);
+    objc_storeStrong(&v13->_radarDescription, description);
     objc_storeStrong(&v13->_radarnumber, a5);
     v14 = dispatch_queue_create("com.apple.security.diagnostic-queue", 0);
     queue = v13->_queue;
@@ -118,9 +118,9 @@ void __24__SecTapToRadar_trigger__block_invoke(uint64_t a1)
     v17 = dispatch_get_global_queue(-32768, 0);
     dispatch_set_target_queue(v16, v17);
 
-    v18 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     created = v13->_created;
-    v13->_created = v18;
+    v13->_created = date;
 
     componentName = v13->_componentName;
     v13->_componentName = @"Security";
@@ -137,7 +137,7 @@ void __24__SecTapToRadar_trigger__block_invoke(uint64_t a1)
   return v13;
 }
 
-+ (BOOL)askUserIfTTR:(id)a3
++ (BOOL)askUserIfTTR:(id)r
 {
   v18[4] = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E695EE70];
@@ -146,13 +146,13 @@ void __24__SecTapToRadar_trigger__block_invoke(uint64_t a1)
   v18[0] = @"Tap-To-Radar";
   v18[1] = @"Go away";
   v17[2] = *MEMORY[0x1E695EE60];
-  v4 = a3;
-  v5 = [v4 alert];
-  v18[2] = v5;
+  rCopy = r;
+  alert = [rCopy alert];
+  v18[2] = alert;
   v17[3] = *MEMORY[0x1E695EE58];
-  v6 = [v4 componentName];
+  componentName = [rCopy componentName];
 
-  v18[3] = v6;
+  v18[3] = componentName;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:4];
 
   error = 0;
@@ -184,34 +184,34 @@ void __24__SecTapToRadar_trigger__block_invoke(uint64_t a1)
   return v10;
 }
 
-+ (void)triggerTapToRadar:(id)a3
++ (void)triggerTapToRadar:(id)radar
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  radarCopy = radar;
   v4 = secLogObjForScope("secttr");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 alert];
+    alert = [radarCopy alert];
     *buf = 138412290;
-    v42 = v5;
+    v42 = alert;
     _os_log_impl(&dword_1887D2000, v4, OS_LOG_TYPE_DEFAULT, "Triggering TTR: %@", buf, 0xCu);
   }
 
-  v6 = [v3 queue];
-  dispatch_assert_queue_V2(v6);
+  queue = [radarCopy queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [v3 alert];
-  v9 = [v3 radarnumber];
-  v10 = [v7 stringWithFormat:@"SFA: %@ - %@", v8, v9];
+  alert2 = [radarCopy alert];
+  radarnumber = [radarCopy radarnumber];
+  v10 = [v7 stringWithFormat:@"SFA: %@ - %@", alert2, radarnumber];
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [v3 radarDescription];
-  v13 = [v3 reason];
-  v14 = v13;
-  if (v13)
+  radarDescription = [radarCopy radarDescription];
+  reason = [radarCopy reason];
+  v14 = reason;
+  if (reason)
   {
-    v15 = v13;
+    v15 = reason;
   }
 
   else
@@ -219,42 +219,42 @@ void __24__SecTapToRadar_trigger__block_invoke(uint64_t a1)
     v15 = &stru_1EFA8C6C8;
   }
 
-  v16 = [v3 radarnumber];
-  v17 = [v3 created];
-  v18 = [v11 stringWithFormat:@"%@\n%@\nRelated radar: rdar://%@\nRequest triggered at: %@", v12, v15, v16, v17];
+  radarnumber2 = [radarCopy radarnumber];
+  created = [radarCopy created];
+  v18 = [v11 stringWithFormat:@"%@\n%@\nRelated radar: rdar://%@\nRequest triggered at: %@", radarDescription, v15, radarnumber2, created];
 
   v19 = [objc_alloc(MEMORY[0x1E696AF20]) initWithString:@"tap-to-radar://new"];
-  v20 = [v19 queryItems];
-  v21 = [v20 mutableCopy];
+  queryItems = [v19 queryItems];
+  v21 = [queryItems mutableCopy];
   v22 = v21;
   if (v21)
   {
-    v23 = v21;
+    array = v21;
   }
 
   else
   {
-    v23 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
-  v24 = v23;
+  v24 = array;
 
   v25 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Title" value:v10];
   [v24 addObject:v25];
 
   v26 = objc_alloc(MEMORY[0x1E696AF60]);
-  v27 = [v3 componentName];
-  v28 = [v26 initWithName:@"ComponentName" value:v27];
+  componentName = [radarCopy componentName];
+  v28 = [v26 initWithName:@"ComponentName" value:componentName];
   [v24 addObject:v28];
 
   v29 = objc_alloc(MEMORY[0x1E696AF60]);
-  v30 = [v3 componentVersion];
-  v31 = [v29 initWithName:@"ComponentVersion" value:v30];
+  componentVersion = [radarCopy componentVersion];
+  v31 = [v29 initWithName:@"ComponentVersion" value:componentVersion];
   [v24 addObject:v31];
 
   v32 = objc_alloc(MEMORY[0x1E696AF60]);
-  v33 = [v3 componentID];
-  v34 = [v32 initWithName:@"ComponentID" value:v33];
+  componentID = [radarCopy componentID];
+  v34 = [v32 initWithName:@"ComponentID" value:componentID];
   [v24 addObject:v34];
 
   v35 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Reproducibility" value:@"Not Applicable"];
@@ -268,13 +268,13 @@ void __24__SecTapToRadar_trigger__block_invoke(uint64_t a1)
 
   [v19 setQueryItems:v24];
   v38 = [v19 URL];
-  v39 = [MEMORY[0x1E6963608] defaultWorkspace];
-  [v39 openSensitiveURL:v38 withOptions:0];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:v38 withOptions:0];
 
   v40 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)isRateLimited:(id)a3
++ (BOOL)isRateLimited:(id)limited
 {
   if (SecTTRDisabled)
   {
@@ -283,15 +283,15 @@ void __24__SecTapToRadar_trigger__block_invoke(uint64_t a1)
 
   else
   {
-    return [a3 isRateLimited];
+    return [limited isRateLimited];
   }
 }
 
-+ (id)keyname:(id)a3
++ (id)keyname:(id)keyname
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 radarnumber];
-  v5 = [v3 stringWithFormat:@"%@-%@", @"NextTTRDate", v4];
+  radarnumber = [keyname radarnumber];
+  v5 = [v3 stringWithFormat:@"%@-%@", @"NextTTRDate", radarnumber];
 
   return v5;
 }

@@ -10,28 +10,28 @@
 - (uint64_t)brc_hexadecimalString
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 bytes];
-  v4 = [a1 length];
+  bytes = [self bytes];
+  v4 = [self length];
 
-  return [v2 brc_hexadecimalStringWithBytes:v3 length:v4];
+  return [v2 brc_hexadecimalStringWithBytes:bytes length:v4];
 }
 
 - (id)brc_truncatedSHA256
 {
   v9 = *MEMORY[0x277D85DE8];
   v2 = [BRCUserDefaults defaultsForMangledID:0];
-  v3 = [v2 validationKeyTruncationLength];
+  validationKeyTruncationLength = [v2 validationKeyTruncationLength];
 
   memset(v8, 0, sizeof(v8));
-  CC_SHA256([a1 bytes], objc_msgSend(a1, "length"), v8);
-  if (v3 >= 0x20)
+  CC_SHA256([self bytes], objc_msgSend(self, "length"), v8);
+  if (validationKeyTruncationLength >= 0x20)
   {
     v4 = 32;
   }
 
   else
   {
-    v4 = v3;
+    v4 = validationKeyTruncationLength;
   }
 
   v5 = [MEMORY[0x277CBEA90] dataWithBytes:v8 length:v4];

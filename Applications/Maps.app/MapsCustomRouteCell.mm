@@ -2,9 +2,9 @@
 + (NSString)reuseIdentifier;
 - (MapsCustomRouteCellDelegate)delegate;
 - (_TtC4Maps19MapsCustomRouteCell)init;
-- (_TtC4Maps19MapsCustomRouteCell)initWithCoder:(id)a3;
-- (_TtC4Maps19MapsCustomRouteCell)initWithFrame:(CGRect)a3;
-- (void)setDelegate:(id)a3;
+- (_TtC4Maps19MapsCustomRouteCell)initWithCoder:(id)coder;
+- (_TtC4Maps19MapsCustomRouteCell)initWithFrame:(CGRect)frame;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation MapsCustomRouteCell
@@ -23,10 +23,10 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1001EF110();
 
   swift_unknownObjectRelease();
@@ -40,19 +40,19 @@
   return [(MapsCustomRouteCell *)&v4 initWithFrame:0.0, 0.0, 0.0, 0.0];
 }
 
-- (_TtC4Maps19MapsCustomRouteCell)initWithFrame:(CGRect)a3
+- (_TtC4Maps19MapsCustomRouteCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   swift_unknownObjectWeakInit();
   v9.receiver = self;
   v9.super_class = type metadata accessor for MapsCustomRouteCell();
   return [(MapsCustomRouteCell *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC4Maps19MapsCustomRouteCell)initWithCoder:(id)a3
+- (_TtC4Maps19MapsCustomRouteCell)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   result = _assertionFailure(_:_:file:line:flags:)();

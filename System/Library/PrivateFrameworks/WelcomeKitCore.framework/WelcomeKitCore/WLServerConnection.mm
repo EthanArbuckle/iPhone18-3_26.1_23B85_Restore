@@ -1,9 +1,9 @@
 @interface WLServerConnection
-- (BOOL)_isTerminated:(const char *)a3 length:(int64_t)a4;
+- (BOOL)_isTerminated:(const char *)terminated length:(int64_t)length;
 - (WLServerConnection)init;
 - (WLServerConnectionDelegate)delegate;
-- (int)_listen:(int)a3;
-- (void)_accept:(int)a3;
+- (int)_listen:(int)_listen;
+- (void)_accept:(int)_accept;
 - (void)close;
 - (void)dealloc;
 @end
@@ -91,7 +91,7 @@ void __29__WLServerConnection_listen___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (int)_listen:(int)a3
+- (int)_listen:(int)_listen
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = socket(2, 1, 0);
@@ -105,7 +105,7 @@ void __29__WLServerConnection_listen___block_invoke(uint64_t a1)
     _WLLog();
     *&v8.sa_len = 512;
     *&v8.sa_data[6] = 0;
-    *v8.sa_data = bswap32(a3) >> 16;
+    *v8.sa_data = bswap32(_listen) >> 16;
     v7 = 1;
     if (setsockopt(v4, 0xFFFF, 4, &v7, 4u) || bind(v4, &v8, 0x10u) || (_WLLog(), listen(v4, 5)))
     {
@@ -118,17 +118,17 @@ void __29__WLServerConnection_listen___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)_accept:(int)a3
+- (void)_accept:(int)_accept
 {
   v17 = *MEMORY[0x277D85DE8];
   v15 = 0;
   _WLLog();
-  if (a3 != -1)
+  if (_accept != -1)
   {
     *&v16.sa_len = 0;
     *&v16.sa_data[6] = 0;
     v15 = 16;
-    for (i = accept(a3, &v16, &v15); (i & 0x80000000) == 0; i = accept(a3, &v16, &v15))
+    for (i = accept(_accept, &v16, &v15); (i & 0x80000000) == 0; i = accept(_accept, &v16, &v15))
     {
       _WLLog();
       v6 = dispatch_queue_create("WLServerConnection Connection Read Queue", 0);
@@ -168,15 +168,15 @@ void __30__WLServerConnection__accept___block_invoke(uint64_t a1)
   [WeakRetained _read:*(a1 + 40)];
 }
 
-- (BOOL)_isTerminated:(const char *)a3 length:(int64_t)a4
+- (BOOL)_isTerminated:(const char *)terminated length:(int64_t)length
 {
-  v4 = &a3[a4];
-  v5 = a3[a4 - 1];
-  if (a3[a4 - 1])
+  v4 = &terminated[length];
+  v5 = terminated[length - 1];
+  if (terminated[length - 1])
   {
-    if (a4 < 4)
+    if (length < 4)
     {
-      if (a4 < 2)
+      if (length < 2)
       {
         return 0;
       }

@@ -1,29 +1,29 @@
 @interface HKHeartRateQueryUtility
-+ (id)_minMaxStatisticsFromChartPoints:(id)a3 dateInterval:(id)a4;
-+ (id)_orderedDisplayTypeContextResults:(id)a3;
-+ (void)enumerateDisplayTypeContextsWithBlock:(id)a3;
++ (id)_minMaxStatisticsFromChartPoints:(id)points dateInterval:(id)interval;
++ (id)_orderedDisplayTypeContextResults:(id)results;
++ (void)enumerateDisplayTypeContextsWithBlock:(id)block;
 - (HKHeartRateQueryHandler)queryHandler;
-- (HKHeartRateQueryUtility)initWithQueryHandler:(id)a3 dateInterval:(id)a4 timeScope:(int64_t)a5 resultsHandler:(id)a6;
+- (HKHeartRateQueryUtility)initWithQueryHandler:(id)handler dateInterval:(id)interval timeScope:(int64_t)scope resultsHandler:(id)resultsHandler;
 - (void)setupQueries;
 @end
 
 @implementation HKHeartRateQueryUtility
 
-- (HKHeartRateQueryUtility)initWithQueryHandler:(id)a3 dateInterval:(id)a4 timeScope:(int64_t)a5 resultsHandler:(id)a6
+- (HKHeartRateQueryUtility)initWithQueryHandler:(id)handler dateInterval:(id)interval timeScope:(int64_t)scope resultsHandler:(id)resultsHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  handlerCopy = handler;
+  intervalCopy = interval;
+  resultsHandlerCopy = resultsHandler;
   v19.receiver = self;
   v19.super_class = HKHeartRateQueryUtility;
   v13 = [(HKHeartRateQueryUtility *)&v19 init];
   v14 = v13;
   if (v13)
   {
-    [(HKHeartRateQueryUtility *)v13 setQueryHandler:v10];
-    [(HKHeartRateQueryUtility *)v14 setDateInterval:v11];
-    [(HKHeartRateQueryUtility *)v14 setTimeScope:a5];
-    [(HKHeartRateQueryUtility *)v14 setResultsHandler:v12];
+    [(HKHeartRateQueryUtility *)v13 setQueryHandler:handlerCopy];
+    [(HKHeartRateQueryUtility *)v14 setDateInterval:intervalCopy];
+    [(HKHeartRateQueryUtility *)v14 setTimeScope:scope];
+    [(HKHeartRateQueryUtility *)v14 setResultsHandler:resultsHandlerCopy];
     v15 = HKCreateSerialDispatchQueue();
     [(HKHeartRateQueryUtility *)v14 setClientQueue:v15];
 
@@ -55,7 +55,7 @@
   v7[3] = &unk_1E81B5620;
   v4 = v3;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   objc_copyWeak(&v11, &location);
   v10 = v12;
   [HKHeartRateQueryUtility enumerateDisplayTypeContextsWithBlock:v7];
@@ -157,31 +157,31 @@ void __39__HKHeartRateQueryUtility_setupQueries__block_invoke_4(uint64_t a1)
   v6[2](v6, v2, v5, *(*(*(a1 + 40) + 8) + 40));
 }
 
-+ (void)enumerateDisplayTypeContextsWithBlock:(id)a3
++ (void)enumerateDisplayTypeContextsWithBlock:(id)block
 {
   for (i = 0; i != 7; ++i)
   {
-    (*(a3 + 2))(a3, i);
+    (*(block + 2))(block, i);
   }
 }
 
-+ (id)_minMaxStatisticsFromChartPoints:(id)a3 dateInterval:(id)a4
++ (id)_minMaxStatisticsFromChartPoints:(id)points dateInterval:(id)interval
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5 || ![v5 count])
+  pointsCopy = points;
+  intervalCopy = interval;
+  if (!pointsCopy || ![pointsCopy count])
   {
     v21 = 0;
     goto LABEL_21;
   }
 
-  v33 = v6;
+  v33 = intervalCopy;
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = v5;
+  v7 = pointsCopy;
   v8 = [v7 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (!v8)
   {
@@ -206,14 +206,14 @@ void __39__HKHeartRateQueryUtility_setupQueries__block_invoke_4(uint64_t a1)
       v14 = *(*(&v34 + 1) + 8 * i);
       if (!v11 || ([*(*(&v34 + 1) + 8 * i) minYValue], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "compare:", v11), v15, v16 == -1))
       {
-        v17 = [v14 minYValue];
+        minYValue = [v14 minYValue];
 
-        v11 = v17;
+        v11 = minYValue;
         if (v10)
         {
 LABEL_13:
-          v18 = [v14 maxYValue];
-          v19 = [v18 compare:v10];
+          maxYValue = [v14 maxYValue];
+          v19 = [maxYValue compare:v10];
 
           if (v19 != 1)
           {
@@ -227,9 +227,9 @@ LABEL_13:
         goto LABEL_13;
       }
 
-      v20 = [v14 maxYValue];
+      maxYValue2 = [v14 maxYValue];
 
-      v10 = v20;
+      v10 = maxYValue2;
     }
 
     v9 = [v7 countByEnumeratingWithState:&v34 objects:v38 count:16];
@@ -240,21 +240,21 @@ LABEL_20:
 
   v22 = [MEMORY[0x1E696C370] quantityTypeForIdentifier:*MEMORY[0x1E696BD30]];
   v23 = objc_alloc(MEMORY[0x1E696C4C0]);
-  v6 = v33;
-  v24 = [v33 startDate];
-  v25 = [v33 endDate];
-  v21 = [v23 initWithDataType:v22 startDate:v24 endDate:v25];
+  intervalCopy = v33;
+  startDate = [v33 startDate];
+  endDate = [v33 endDate];
+  v21 = [v23 initWithDataType:v22 startDate:startDate endDate:endDate];
 
   v26 = MEMORY[0x1E696C348];
-  v27 = [MEMORY[0x1E696C510] _countPerMinuteUnit];
+  _countPerMinuteUnit = [MEMORY[0x1E696C510] _countPerMinuteUnit];
   [v11 doubleValue];
-  v28 = [v26 quantityWithUnit:v27 doubleValue:?];
+  v28 = [v26 quantityWithUnit:_countPerMinuteUnit doubleValue:?];
   [v21 setMinimumQuantity:v28];
 
   v29 = MEMORY[0x1E696C348];
-  v30 = [MEMORY[0x1E696C510] _countPerMinuteUnit];
+  _countPerMinuteUnit2 = [MEMORY[0x1E696C510] _countPerMinuteUnit];
   [v10 doubleValue];
-  v31 = [v29 quantityWithUnit:v30 doubleValue:?];
+  v31 = [v29 quantityWithUnit:_countPerMinuteUnit2 doubleValue:?];
   [v21 setMaximumQuantity:v31];
 
 LABEL_21:
@@ -262,18 +262,18 @@ LABEL_21:
   return v21;
 }
 
-+ (id)_orderedDisplayTypeContextResults:(id)a3
++ (id)_orderedDisplayTypeContextResults:(id)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__HKHeartRateQueryUtility__orderedDisplayTypeContextResults___block_invoke;
   v10[3] = &unk_1E81B5670;
-  v11 = v3;
+  v11 = resultsCopy;
   v5 = v4;
   v12 = v5;
-  v6 = v3;
+  v6 = resultsCopy;
   [HKHeartRateQueryUtility enumerateDisplayTypeContextsWithBlock:v10];
   v7 = v12;
   v8 = v5;

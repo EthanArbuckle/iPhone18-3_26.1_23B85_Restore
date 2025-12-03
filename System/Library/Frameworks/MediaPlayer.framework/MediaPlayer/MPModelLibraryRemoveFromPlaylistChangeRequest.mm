@@ -1,13 +1,13 @@
 @interface MPModelLibraryRemoveFromPlaylistChangeRequest
-- (MPModelLibraryRemoveFromPlaylistChangeRequest)initWithPlaylist:(id)a3 inMediaLibrary:(id)a4 andEntriesToRemove:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
-- (void)performWithResponseHandler:(id)a3;
+- (MPModelLibraryRemoveFromPlaylistChangeRequest)initWithPlaylist:(id)playlist inMediaLibrary:(id)library andEntriesToRemove:(id)remove;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
+- (void)performWithResponseHandler:(id)handler;
 @end
 
 @implementation MPModelLibraryRemoveFromPlaylistChangeRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -21,37 +21,37 @@
   return v5;
 }
 
-- (void)performWithResponseHandler:(id)a3
+- (void)performWithResponseHandler:(id)handler
 {
-  v4 = [(MPModelLibraryRemoveFromPlaylistChangeRequest *)self newOperationWithResponseHandler:a3];
+  v4 = [(MPModelLibraryRemoveFromPlaylistChangeRequest *)self newOperationWithResponseHandler:handler];
   v3 = +[MPModelLibraryChangeRequest sharedOperationQueue];
   [v3 addOperation:v4];
 }
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(MPModelLibraryRemoveFromPlaylistChangeRequestOperation);
   [(MPModelLibraryRemoveFromPlaylistChangeRequestOperation *)v5 setRequest:self];
-  [(MPModelLibraryRemoveFromPlaylistChangeRequestOperation *)v5 setResponseHandler:v4];
+  [(MPModelLibraryRemoveFromPlaylistChangeRequestOperation *)v5 setResponseHandler:handlerCopy];
 
   return v5;
 }
 
-- (MPModelLibraryRemoveFromPlaylistChangeRequest)initWithPlaylist:(id)a3 inMediaLibrary:(id)a4 andEntriesToRemove:(id)a5
+- (MPModelLibraryRemoveFromPlaylistChangeRequest)initWithPlaylist:(id)playlist inMediaLibrary:(id)library andEntriesToRemove:(id)remove
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  playlistCopy = playlist;
+  libraryCopy = library;
+  removeCopy = remove;
   v17.receiver = self;
   v17.super_class = MPModelLibraryRemoveFromPlaylistChangeRequest;
   v12 = [(MPModelLibraryRemoveFromPlaylistChangeRequest *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_mediaLibrary, a4);
-    objc_storeStrong(&v13->_playlist, a3);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_mediaLibrary, library);
+    objc_storeStrong(&v13->_playlist, playlist);
+    v14 = [removeCopy copy];
     entriesToRemove = v13->_entriesToRemove;
     v13->_entriesToRemove = v14;
   }

@@ -46,7 +46,7 @@
   v9 = v8;
   obj = v7;
   v22 = a2;
-  v23 = self;
+  selfCopy = self;
   v10 = 0;
   v11 = *v27;
   do
@@ -72,7 +72,7 @@
         v17 = [[NSString alloc] initWithFormat:@"%016llX", +[BCGeneratePersistentIDPlistProducer UniqueNumber](BCGeneratePersistentIDPlistProducer, "UniqueNumber")];
         if ([v17 length] != &dword_10)
         {
-          sub_13330(v22, v23, v17);
+          sub_13330(v22, selfCopy, v17);
         }
 
         v18 = [[NSMutableDictionary alloc] initWithDictionary:v15];
@@ -102,7 +102,7 @@
   }
 
   while (v9);
-  self = v23;
+  self = selfCopy;
   if (v10)
   {
     [(NSMutableDictionary *)v5 setObject:v4 forKey:@"Books"];

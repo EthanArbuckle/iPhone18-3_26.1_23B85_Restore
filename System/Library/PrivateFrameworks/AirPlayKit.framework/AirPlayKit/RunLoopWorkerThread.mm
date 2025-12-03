@@ -10,7 +10,7 @@
 {
   ObjectType = swift_getObjectType();
   v4 = qword_27E35E188;
-  v5 = self;
+  selfCopy = self;
   if (v4 != -1)
   {
     swift_once();
@@ -19,7 +19,7 @@
   v6 = sub_23E900764();
   __swift_project_value_buffer(v6, qword_27E367168);
   sub_23E882260(0xD00000000000005BLL, 0x800000023E909230, 0x74696E696564, 0xE600000000000000);
-  v7 = v5;
+  v7 = selfCopy;
   [(RunLoopWorkerThread *)v7 cancel];
 
   v8.receiver = v7;
@@ -29,9 +29,9 @@
 
 - (void)main
 {
-  v3 = self;
+  selfCopy = self;
   v2 = MEMORY[0x23EF17D10]();
-  sub_23E8D80B4(v3, v3);
+  sub_23E8D80B4(selfCopy, selfCopy);
   objc_autoreleasePoolPop(v2);
 }
 

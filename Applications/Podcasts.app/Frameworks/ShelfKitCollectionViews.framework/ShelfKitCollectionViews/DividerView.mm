@@ -1,12 +1,12 @@
 @interface DividerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC23ShelfKitCollectionViews11DividerView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC23ShelfKitCollectionViews11DividerView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation DividerView
 
-- (_TtC23ShelfKitCollectionViews11DividerView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews11DividerView)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC23ShelfKitCollectionViews11DividerView_separatorInset);
   v4 = *&UIEdgeInsetsZero.bottom;
@@ -18,12 +18,12 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v4 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews11DividerView_style);
-  v5 = self;
-  v6 = sub_2349EC(v4, v5);
+  selfCopy = self;
+  v6 = sub_2349EC(v4, selfCopy);
 
   v7 = width;
   v8 = v6;
@@ -34,7 +34,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_233CF4();
 }
 

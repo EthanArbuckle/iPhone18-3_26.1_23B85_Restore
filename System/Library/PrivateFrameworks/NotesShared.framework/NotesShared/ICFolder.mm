@@ -1,67 +1,67 @@
 @interface ICFolder
-+ (BOOL)isTitleValid:(id)a3 account:(id)a4 folder:(id)a5 parentFolder:(id)a6 error:(id *)a7;
-+ (ICFolder)folderWithIdentifier:(id)a3 context:(id)a4;
-+ (id)ancestorFolderPredicatesWithBlock:(id)a3;
-+ (id)contentInfoTextWithNoteCount:(int64_t)a3 subfolderCount:(int64_t)a4;
-+ (id)deduplicatingTitle:(id)a3 forFolder:(id)a4 forNewFolderParent:(id)a5 ofAccount:(id)a6;
-+ (id)defaultFolderInContext:(id)a3;
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5;
++ (BOOL)isTitleValid:(id)valid account:(id)account folder:(id)folder parentFolder:(id)parentFolder error:(id *)error;
++ (ICFolder)folderWithIdentifier:(id)identifier context:(id)context;
++ (id)ancestorFolderPredicatesWithBlock:(id)block;
++ (id)contentInfoTextWithNoteCount:(int64_t)count subfolderCount:(int64_t)subfolderCount;
++ (id)deduplicatingTitle:(id)title forFolder:(id)folder forNewFolderParent:(id)parent ofAccount:(id)account;
++ (id)defaultFolderInContext:(id)context;
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context;
 + (id)keyPathsForValuesAffectingCanBeSharedViaICloud;
-+ (id)newCloudObjectForRecord:(id)a3 accountID:(id)a4 context:(id)a5;
-+ (id)newFolderInAccount:(id)a3;
-+ (id)newFolderInParentFolder:(id)a3;
-+ (id)newFolderWithIdentifier:(id)a3 account:(id)a4 query:(id)a5;
-+ (id)newFolderWithIdentifier:(id)a3 parentFolder:(id)a4;
-+ (id)newPlaceholderObjectForRecordName:(id)a3 accountID:(id)a4 context:(id)a5;
-+ (id)objc_defaultSmartFolderTitleWithComponents:(id)a3;
-+ (id)objc_smartFolderWithQuery:(id)a3 account:(id)a4;
-+ (id)objc_smartFolderWithQuery:(id)a3 titleComponents:(id)a4 account:(id)a5;
++ (id)newCloudObjectForRecord:(id)record accountID:(id)d context:(id)context;
++ (id)newFolderInAccount:(id)account;
++ (id)newFolderInParentFolder:(id)folder;
++ (id)newFolderWithIdentifier:(id)identifier account:(id)account query:(id)query;
++ (id)newFolderWithIdentifier:(id)identifier parentFolder:(id)folder;
++ (id)newPlaceholderObjectForRecordName:(id)name accountID:(id)d context:(id)context;
++ (id)objc_defaultSmartFolderTitleWithComponents:(id)components;
++ (id)objc_smartFolderWithQuery:(id)query account:(id)account;
++ (id)objc_smartFolderWithQuery:(id)query titleComponents:(id)components account:(id)account;
 + (id)predicateForDeprecatedObjects;
 + (id)predicateForVisibleCustomFolders;
-+ (id)predicateForVisibleFoldersIncludingHiddenNoteContainers:(BOOL)a3 inContext:(id)a4;
++ (id)predicateForVisibleFoldersIncludingHiddenNoteContainers:(BOOL)containers inContext:(id)context;
 + (id)predicateForVisibleObjects;
 + (id)purgableFoldersFetchRequest;
 + (id)reservedFolderTitles;
-+ (id)rootSharingFolderForNote:(id)a3;
-+ (id)stringByScrubbingStringForFolderName:(id)a3;
-+ (id)visibleFoldersInContext:(id)a3;
-+ (id)visibleSmartFoldersForHashtagStandardizedContent:(id)a3 account:(id)a4;
-+ (unint64_t)countOfFoldersMatchingPredicate:(id)a3 context:(id)a4;
-+ (unint64_t)maximumDepthOfFolders:(id)a3;
-+ (unint64_t)maximumDistanceToLeafFolderOfFolders:(id)a3;
-+ (void)deleteFolder:(id)a3;
-+ (void)purgeFolder:(id)a3;
++ (id)rootSharingFolderForNote:(id)note;
++ (id)stringByScrubbingStringForFolderName:(id)name;
++ (id)visibleFoldersInContext:(id)context;
++ (id)visibleSmartFoldersForHashtagStandardizedContent:(id)content account:(id)account;
++ (unint64_t)countOfFoldersMatchingPredicate:(id)predicate context:(id)context;
++ (unint64_t)maximumDepthOfFolders:(id)folders;
++ (unint64_t)maximumDistanceToLeafFolderOfFolders:(id)folders;
++ (void)deleteFolder:(id)folder;
++ (void)purgeFolder:(id)folder;
 - (BOOL)canAddSubfolder;
 - (BOOL)canBeSharedViaICloud;
 - (BOOL)canMoveAddOrDeleteContents;
-- (BOOL)containsSharedDescendantFolders:(BOOL *)a3;
-- (BOOL)containsSharedNotesOrSharedDescendantFolders:(BOOL *)a3;
+- (BOOL)containsSharedDescendantFolders:(BOOL *)folders;
+- (BOOL)containsSharedNotesOrSharedDescendantFolders:(BOOL *)folders;
 - (BOOL)hasAllMandatoryFields;
-- (BOOL)hasExpectedReferenceActionsInUserSpecificRecord:(id)a3;
-- (BOOL)hasSharedContentsNotSharedViaSharedFolder:(id)a3;
-- (BOOL)isAncestorOfFolder:(id)a3;
+- (BOOL)hasExpectedReferenceActionsInUserSpecificRecord:(id)record;
+- (BOOL)hasSharedContentsNotSharedViaSharedFolder:(id)folder;
+- (BOOL)isAncestorOfFolder:(id)folder;
 - (BOOL)isDefaultFolderForAccount;
 - (BOOL)isDefaultFolderOrDescendantOfDefaultFolder;
 - (BOOL)isDeletable;
-- (BOOL)isDescendantOfFolder:(id)a3;
+- (BOOL)isDescendantOfFolder:(id)folder;
 - (BOOL)isEditableSmartFolder;
 - (BOOL)isInICloudAccount;
 - (BOOL)isLeaf;
 - (BOOL)isMovable;
 - (BOOL)isRenamable;
-- (BOOL)isSharedViaSharedFolder:(id)a3;
+- (BOOL)isSharedViaSharedFolder:(id)folder;
 - (BOOL)isShowingDateHeaders;
 - (BOOL)isSubfolderOfReadonlyFolder;
 - (BOOL)isSystemFolder;
-- (BOOL)isTitleValid:(id)a3 error:(id *)a4;
+- (BOOL)isTitleValid:(id)valid error:(id *)error;
 - (BOOL)isTrashFolder;
-- (BOOL)mergeCloudKitRecord:(id)a3 accountID:(id)a4 approach:(int64_t)a5 mergeableFieldState:(id)a6;
-- (BOOL)mergeDataFromUserSpecificRecord:(id)a3 accountID:(id)a4;
+- (BOOL)mergeCloudKitRecord:(id)record accountID:(id)d approach:(int64_t)approach mergeableFieldState:(id)state;
+- (BOOL)mergeDataFromUserSpecificRecord:(id)record accountID:(id)d;
 - (BOOL)supportsDateHeaders;
 - (BOOL)validate;
-- (BOOL)validateForInsert:(id *)a3;
-- (BOOL)validateForUpdate:(id *)a3;
-- (BOOL)visibleChildFoldersContainsFolderWithTitle:(id)a3;
+- (BOOL)validateForInsert:(id *)insert;
+- (BOOL)validateForUpdate:(id *)update;
+- (BOOL)visibleChildFoldersContainsFolderWithTitle:(id)title;
 - (BOOL)wantsUserSpecificRecord;
 - (CSSearchableItemAttributeSet)searchableItemAttributeSet;
 - (CSSearchableItemAttributeSet)userActivityContentAttributeSet;
@@ -78,8 +78,8 @@
 - (id)childCloudObjects;
 - (id)customNoteSortType;
 - (id)ic_loggingValues;
-- (id)makeCloudKitRecordForApproach:(int64_t)a3 mergeableFieldState:(id)a4;
-- (id)makeUserSpecificCloudKitRecordForApproach:(int64_t)a3;
+- (id)makeCloudKitRecordForApproach:(int64_t)approach mergeableFieldState:(id)state;
+- (id)makeUserSpecificCloudKitRecordForApproach:(int64_t)approach;
 - (id)objectsToBeDeletedBeforeThisObject;
 - (id)pinnedNotesInFolder;
 - (id)predicateForFoldersInFolder;
@@ -93,36 +93,36 @@
 - (id)rootSharingFolder;
 - (id)searchableTextContent;
 - (id)shareType;
-- (id)visibleChildFolderWithTitle:(id)a3;
+- (id)visibleChildFolderWithTitle:(id)title;
 - (id)visibleNoteContainerChildren;
 - (id)visibleNoteContainerChildrenUnsorted;
 - (id)visibleNotesIncludingChildFolders;
-- (int64_t)compare:(id)a3;
-- (int64_t)intrinsicNotesVersionForScenario:(unint64_t)a3;
+- (int64_t)compare:(id)compare;
+- (int64_t)intrinsicNotesVersionForScenario:(unint64_t)scenario;
 - (unint64_t)countOfVisibleNotesInFolder;
 - (unint64_t)depth;
-- (unint64_t)indexOfVisibleChild:(id)a3;
+- (unint64_t)indexOfVisibleChild:(id)child;
 - (unint64_t)maximumDepthIncludingChildFolders;
 - (unint64_t)maximumDistanceToLeafFolder;
 - (unint64_t)visibleNoteContainerChildrenCount;
-- (void)associateAppEntityWithSearchableItemAttributeSet:(id)a3;
+- (void)associateAppEntityWithSearchableItemAttributeSet:(id)set;
 - (void)awakeFromFetch;
-- (void)fixBrokenReferencesWithError:(id)a3;
+- (void)fixBrokenReferencesWithError:(id)error;
 - (void)markForDeletion;
-- (void)mergeParentFromRecord:(id)a3;
+- (void)mergeParentFromRecord:(id)record;
 - (void)objectWasDeletedFromCloudByAnotherDevice;
-- (void)recursivelyAddSubfoldersToArray:(id)a3;
-- (void)setAccount:(id)a3;
-- (void)setCustomNoteSortType:(id)a3;
-- (void)setFolderType:(signed __int16)a3;
-- (void)setMarkedForDeletion:(BOOL)a3;
-- (void)setNeedsInitialFetchFromCloud:(BOOL)a3;
-- (void)setParent:(id)a3;
-- (void)setSmartFolderQueryJSON:(id)a3;
-- (void)setSmartFolderQueryObjC:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)recursivelyAddSubfoldersToArray:(id)array;
+- (void)setAccount:(id)account;
+- (void)setCustomNoteSortType:(id)type;
+- (void)setFolderType:(signed __int16)type;
+- (void)setMarkedForDeletion:(BOOL)deletion;
+- (void)setNeedsInitialFetchFromCloud:(BOOL)cloud;
+- (void)setParent:(id)parent;
+- (void)setSmartFolderQueryJSON:(id)n;
+- (void)setSmartFolderQueryObjC:(id)c;
+- (void)setTitle:(id)title;
 - (void)unmarkForDeletionIncludingParentHierarchy;
-- (void)updateChangeCountWithReason:(id)a3;
+- (void)updateChangeCountWithReason:(id)reason;
 - (void)updateSortOrder;
 @end
 
@@ -132,7 +132,7 @@
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCA920];
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___ICFolder;
   v3 = objc_msgSendSuper2(&v8, sel_predicateForDeprecatedObjects);
   v9[0] = v3;
@@ -148,7 +148,7 @@
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCA920];
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___ICFolder;
   v3 = objc_msgSendSuper2(&v8, sel_predicateForVisibleObjects);
   v9[0] = v3;
@@ -168,15 +168,15 @@
   [(ICFolder *)self updateSortOrder];
   if ([(ICFolder *)self folderType]== 1)
   {
-    v3 = [(ICFolder *)self visibleNotesCount]== 0;
+    isDeprecated = [(ICFolder *)self visibleNotesCount]== 0;
   }
 
   else
   {
-    v3 = [(ICFolder *)self isDeprecated];
+    isDeprecated = [(ICFolder *)self isDeprecated];
   }
 
-  [(ICFolder *)self setIsHiddenNoteContainer:v3];
+  [(ICFolder *)self setIsHiddenNoteContainer:isDeprecated];
 }
 
 - (void)updateSortOrder
@@ -201,14 +201,14 @@
 
 - (BOOL)isDefaultFolderOrDescendantOfDefaultFolder
 {
-  v3 = [(ICFolder *)self parent];
+  parent = [(ICFolder *)self parent];
 
-  if (v3)
+  if (parent)
   {
-    v4 = [(ICFolder *)self parent];
-    v5 = [v4 isDefaultFolderOrDescendantOfDefaultFolder];
+    parent2 = [(ICFolder *)self parent];
+    isDefaultFolderOrDescendantOfDefaultFolder = [parent2 isDefaultFolderOrDescendantOfDefaultFolder];
 
-    return v5;
+    return isDefaultFolderOrDescendantOfDefaultFolder;
   }
 
   else
@@ -220,19 +220,19 @@
 
 - (BOOL)isDefaultFolderForAccount
 {
-  v3 = [(ICFolder *)self account];
-  v4 = [v3 standardFolderIdentifierWithPrefix:@"DefaultFolder"];
+  account = [(ICFolder *)self account];
+  v4 = [account standardFolderIdentifierWithPrefix:@"DefaultFolder"];
 
-  v5 = [(ICFolder *)self identifier];
-  v6 = v5;
+  identifier = [(ICFolder *)self identifier];
+  v6 = identifier;
   if (v4)
   {
-    v7 = [v5 isEqualToString:v4];
+    v7 = [identifier isEqualToString:v4];
   }
 
   else
   {
-    v7 = [v5 hasPrefix:@"DefaultFolder"];
+    v7 = [identifier hasPrefix:@"DefaultFolder"];
   }
 
   v8 = v7;
@@ -242,9 +242,9 @@
 
 - (unint64_t)countOfVisibleNotesInFolder
 {
-  v3 = [(ICFolder *)self predicateForVisibleNotesInFolder];
-  v4 = [(ICFolder *)self managedObjectContext];
-  v5 = [ICNote countOfNotesMatchingPredicate:v3 context:v4];
+  predicateForVisibleNotesInFolder = [(ICFolder *)self predicateForVisibleNotesInFolder];
+  managedObjectContext = [(ICFolder *)self managedObjectContext];
+  v5 = [ICNote countOfNotesMatchingPredicate:predicateForVisibleNotesInFolder context:managedObjectContext];
 
   return v5;
 }
@@ -255,12 +255,12 @@
   if (-[ICFolder isSmartFolder](self, "isSmartFolder") && (-[ICFolder smartFolderQuery](self, "smartFolderQuery"), v3 = objc_claimAutoreleasedReturnValue(), [v3 entityName], v4 = objc_claimAutoreleasedReturnValue(), +[ICNote entity](ICNote, "entity"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "name"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v4, "isEqualToString:", v6), v6, v5, v4, v3, v7))
   {
     v8 = MEMORY[0x277CCA920];
-    v9 = [(ICFolder *)self smartFolderQuery];
-    v10 = [v9 predicate];
-    v26[0] = v10;
-    v11 = [(ICFolder *)self account];
-    v12 = [v11 identifier];
-    v13 = [ICNote predicateForNotesInAccountWithIdentifier:v12];
+    smartFolderQuery = [(ICFolder *)self smartFolderQuery];
+    predicate = [smartFolderQuery predicate];
+    v26[0] = predicate;
+    account = [(ICFolder *)self account];
+    identifier = [account identifier];
+    v13 = [ICNote predicateForNotesInAccountWithIdentifier:identifier];
     v26[1] = v13;
     v14 = +[(ICCloudSyncingObject *)ICNote];
     v26[2] = v14;
@@ -270,8 +270,8 @@
 
   else
   {
-    v17 = [(ICFolder *)self folderType];
-    if (v17 == 1)
+    folderType = [(ICFolder *)self folderType];
+    if (folderType == 1)
     {
       v18 = 1;
       v19 = 1;
@@ -285,13 +285,13 @@
       v20 = +[ICAccount hidesCallNotesInCustomFolders]^ 1;
     }
 
-    v21 = [(ICFolder *)self predicateForNotesInFolder];
-    v22 = [(ICFolder *)self managedObjectContext];
-    v23 = [ICNote predicateForVisibleNotesIncludingTrash:v17 == 1 includingSystemPaper:v19 includingMathNotes:v18 includingCallNotes:v20 inContext:v22];
+    predicateForNotesInFolder = [(ICFolder *)self predicateForNotesInFolder];
+    managedObjectContext = [(ICFolder *)self managedObjectContext];
+    v23 = [ICNote predicateForVisibleNotesIncludingTrash:folderType == 1 includingSystemPaper:v19 includingMathNotes:v18 includingCallNotes:v20 inContext:managedObjectContext];
     v25[1] = v23;
-    v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
+    smartFolderQuery = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
 
-    v16 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:1 subpredicates:v9];
+    v16 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:1 subpredicates:smartFolderQuery];
   }
 
   return v16;
@@ -299,16 +299,16 @@
 
 - (BOOL)isTrashFolder
 {
-  v3 = [(ICFolder *)self folderType];
-  if (v3 != 1)
+  folderType = [(ICFolder *)self folderType];
+  if (folderType != 1)
   {
-    v4 = [(ICFolder *)self identifier];
-    v5 = [v4 hasPrefix:@"TrashFolder"];
+    identifier = [(ICFolder *)self identifier];
+    v5 = [identifier hasPrefix:@"TrashFolder"];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(folderType) = v5;
   }
 
-  return v3;
+  return folderType;
 }
 
 - (id)predicateForNotesInFolder
@@ -320,43 +320,43 @@
 
 - (NSString)searchIndexingIdentifier
 {
-  v2 = [(ICFolder *)self objectID];
-  v3 = [v2 URIRepresentation];
-  v4 = [v3 absoluteString];
+  objectID = [(ICFolder *)self objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  absoluteString = [uRIRepresentation absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
 - (NSString)searchDomainIdentifier
 {
-  v2 = [(ICFolder *)self account];
-  v3 = [v2 identifier];
+  account = [(ICFolder *)self account];
+  identifier = [account identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (CSSearchableItemAttributeSet)userActivityContentAttributeSet
 {
   v3 = [objc_alloc(MEMORY[0x277CC34B8]) initWithItemContentType:@"com.apple.notes.spotlightrecord"];
-  v4 = [(ICFolder *)self dateForLastTitleModification];
-  [v3 setContentModificationDate:v4];
+  dateForLastTitleModification = [(ICFolder *)self dateForLastTitleModification];
+  [v3 setContentModificationDate:dateForLastTitleModification];
 
   return v3;
 }
 
 - (CSSearchableItemAttributeSet)searchableItemAttributeSet
 {
-  v3 = [(ICFolder *)self userActivityContentAttributeSet];
-  v4 = [(ICFolder *)self localizedTitle];
-  [v3 setDisplayName:v4];
-  [v3 setTextContent:v4];
-  [v3 setIc_searchResultType:4];
-  [v3 ic_populateValuesForSpecializedFields];
+  userActivityContentAttributeSet = [(ICFolder *)self userActivityContentAttributeSet];
+  localizedTitle = [(ICFolder *)self localizedTitle];
+  [userActivityContentAttributeSet setDisplayName:localizedTitle];
+  [userActivityContentAttributeSet setTextContent:localizedTitle];
+  [userActivityContentAttributeSet setIc_searchResultType:4];
+  [userActivityContentAttributeSet ic_populateValuesForSpecializedFields];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[ICNoteContainer isSharedViaICloud](self, "isSharedViaICloud")}];
-  [v3 setShared:v5];
+  [userActivityContentAttributeSet setShared:v5];
 
-  v6 = [(ICFolder *)self account];
-  if ([v6 isManaged])
+  account = [(ICFolder *)self account];
+  if ([account isManaged])
   {
     v7 = &unk_282747C28;
   }
@@ -366,32 +366,32 @@
     v7 = &unk_282747C40;
   }
 
-  [v3 setDataOwnerType:v7];
+  [userActivityContentAttributeSet setDataOwnerType:v7];
 
   if (objc_opt_respondsToSelector())
   {
-    [(ICFolder *)self associateAppEntityWithSearchableItemAttributeSet:v3];
+    [(ICFolder *)self associateAppEntityWithSearchableItemAttributeSet:userActivityContentAttributeSet];
   }
 
-  return v3;
+  return userActivityContentAttributeSet;
 }
 
 - (id)searchableTextContent
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(ICFolder *)self title];
-  if (v4)
+  array = [MEMORY[0x277CBEB18] array];
+  title = [(ICFolder *)self title];
+  if (title)
   {
-    [v3 addObject:v4];
+    [array addObject:title];
   }
 
-  v5 = [(ICFolder *)self localizedTitle];
-  if (v5)
+  localizedTitle = [(ICFolder *)self localizedTitle];
+  if (localizedTitle)
   {
-    [v3 addObject:v5];
+    [array addObject:localizedTitle];
   }
 
-  v6 = [v3 componentsJoinedByString:@" "];
+  v6 = [array componentsJoinedByString:@" "];
 
   return v6;
 }
@@ -399,38 +399,38 @@
 - (void)unmarkForDeletionIncludingParentHierarchy
 {
   [(ICCloudSyncingObject *)self unmarkForDeletion];
-  v3 = [(ICFolder *)self parent];
-  [v3 unmarkForDeletionIncludingParentHierarchy];
+  parent = [(ICFolder *)self parent];
+  [parent unmarkForDeletionIncludingParentHierarchy];
 }
 
-- (BOOL)mergeCloudKitRecord:(id)a3 accountID:(id)a4 approach:(int64_t)a5 mergeableFieldState:(id)a6
+- (BOOL)mergeCloudKitRecord:(id)record accountID:(id)d approach:(int64_t)approach mergeableFieldState:(id)state
 {
   v67 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  if (!a5)
+  recordCopy = record;
+  if (!approach)
   {
     v65.receiver = self;
     v65.super_class = ICFolder;
-    if (![(ICCloudSyncingObject *)&v65 mergeCloudKitRecord:v10 accountID:a4 approach:0 mergeableFieldState:a6])
+    if (![(ICCloudSyncingObject *)&v65 mergeCloudKitRecord:recordCopy accountID:d approach:0 mergeableFieldState:state])
     {
       goto LABEL_6;
     }
 
     [(ICFolder *)self unmarkForDeletionIncludingParentHierarchy];
-    v14 = [v10 recordID];
-    v15 = [v14 recordName];
-    [(ICFolder *)self setIdentifier:v15];
+    recordID = [recordCopy recordID];
+    recordName = [recordID recordName];
+    [(ICFolder *)self setIdentifier:recordName];
 
-    v16 = [v10 objectForKeyedSubscript:@"TitleModificationDate"];
+    v16 = [recordCopy objectForKeyedSubscript:@"TitleModificationDate"];
     [(ICFolder *)self needsInitialFetchFromCloud];
-    v17 = [(ICFolder *)self title];
-    v18 = [v17 length];
+    title = [(ICFolder *)self title];
+    v18 = [title length];
 
-    v19 = [(ICFolder *)self dateForLastTitleModification];
-    if (v19)
+    dateForLastTitleModification = [(ICFolder *)self dateForLastTitleModification];
+    if (dateForLastTitleModification)
     {
-      v20 = [(ICFolder *)self dateForLastTitleModification];
-      v21 = [v16 ic_isLaterThanDate:v20];
+      dateForLastTitleModification2 = [(ICFolder *)self dateForLastTitleModification];
+      v21 = [v16 ic_isLaterThanDate:dateForLastTitleModification2];
 
       v22 = v21 ^ 1;
     }
@@ -440,8 +440,8 @@
       v22 = 0;
     }
 
-    v25 = [(ICCloudSyncingObject *)self userSpecificServerRecord];
-    if (v25)
+    userSpecificServerRecord = [(ICCloudSyncingObject *)self userSpecificServerRecord];
+    if (userSpecificServerRecord)
     {
       v22 |= [(ICCloudSyncingObject *)self isSharedRootObject];
     }
@@ -449,27 +449,27 @@
     if (v18 && (v22 & 1) != 0)
     {
 LABEL_19:
-      v35 = [v10 objectForKeyedSubscript:@"ImportedFromLegacy"];
+      v35 = [recordCopy objectForKeyedSubscript:@"ImportedFromLegacy"];
 
       if (v35)
       {
-        v36 = [v10 objectForKeyedSubscript:@"ImportedFromLegacy"];
+        v36 = [recordCopy objectForKeyedSubscript:@"ImportedFromLegacy"];
         -[ICFolder setImportedFromLegacy:](self, "setImportedFromLegacy:", [v36 BOOLValue]);
       }
 
-      v37 = [(ICFolder *)self identifier];
-      if ([v37 hasPrefix:@"TrashFolder"])
+      identifier = [(ICFolder *)self identifier];
+      if ([identifier hasPrefix:@"TrashFolder"])
       {
-        v38 = [(ICFolder *)self folderType];
+        folderType = [(ICFolder *)self folderType];
 
-        if (v38 != 1)
+        if (folderType != 1)
         {
-          v39 = [(ICFolder *)self identifier];
-          v40 = [v39 isEqualToString:@"TrashFolder"];
+          identifier2 = [(ICFolder *)self identifier];
+          v40 = [identifier2 isEqualToString:@"TrashFolder"];
 
           if (v40)
           {
-            v59 = v10;
+            v59 = recordCopy;
             v41 = os_log_create("com.apple.notes", "Cloud");
             if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
             {
@@ -481,8 +481,8 @@ LABEL_19:
             v63 = 0u;
             v60 = 0u;
             v61 = 0u;
-            v42 = [(ICFolder *)self notes];
-            v43 = [v42 copy];
+            notes = [(ICFolder *)self notes];
+            v43 = [notes copy];
 
             v44 = [v43 countByEnumeratingWithState:&v60 objects:v66 count:16];
             if (v44)
@@ -499,12 +499,12 @@ LABEL_19:
                   }
 
                   v48 = *(*(&v60 + 1) + 8 * i);
-                  v49 = [v48 account];
-                  v50 = [v49 trashFolder];
-                  [v48 setFolder:v50];
+                  account = [v48 account];
+                  trashFolder = [account trashFolder];
+                  [v48 setFolder:trashFolder];
 
-                  v51 = [MEMORY[0x277CBEAA8] date];
-                  [v48 setFolderModificationDate:v51];
+                  date = [MEMORY[0x277CBEAA8] date];
+                  [v48 setFolderModificationDate:date];
 
                   [v48 updateChangeCountWithReason:@"Moved to trash folder"];
                 }
@@ -517,7 +517,7 @@ LABEL_19:
 
             [ICFolder deleteFolder:self];
             v23 = 0;
-            v10 = v59;
+            recordCopy = v59;
 LABEL_44:
 
             goto LABEL_7;
@@ -531,8 +531,8 @@ LABEL_44:
       {
       }
 
-      v52 = [(ICFolder *)self identifier];
-      v53 = [v52 hasPrefix:@"SystemPaper"];
+      identifier3 = [(ICFolder *)self identifier];
+      v53 = [identifier3 hasPrefix:@"SystemPaper"];
 
       if (v53)
       {
@@ -549,24 +549,24 @@ LABEL_44:
 
       else
       {
-        v55 = [v10 ic_encryptedInlineableDataAssetForKeyPrefix:@"MergeableData"];
+        v55 = [recordCopy ic_encryptedInlineableDataAssetForKeyPrefix:@"MergeableData"];
         if (v55)
         {
           [(ICFolder *)self mergeWithMergeableData:v55];
           [(ICFolder *)self saveMergeableDataIfNeeded];
         }
 
-        v56 = [v10 encryptedValues];
-        v57 = [v56 objectForKeyedSubscript:@"SmartFolderQueryJSONEncrypted"];
+        encryptedValues = [recordCopy encryptedValues];
+        v57 = [encryptedValues objectForKeyedSubscript:@"SmartFolderQueryJSONEncrypted"];
 
-        v58 = [v57 ic_stringValue];
-        [(ICFolder *)self setSmartFolderQueryJSON:v58];
-        if (v58)
+        ic_stringValue = [v57 ic_stringValue];
+        [(ICFolder *)self setSmartFolderQueryJSON:ic_stringValue];
+        if (ic_stringValue)
         {
           [(ICFolder *)self setFolderType:2];
         }
 
-        [(ICFolder *)self mergeParentFromRecord:v10];
+        [(ICFolder *)self mergeParentFromRecord:recordCopy];
 
         v23 = 1;
       }
@@ -575,43 +575,43 @@ LABEL_44:
     }
 
     [(ICFolder *)self setDateForLastTitleModification:v16];
-    v26 = [v10 encryptedValues];
-    v27 = [v26 objectForKeyedSubscript:@"TitleEncrypted"];
+    encryptedValues2 = [recordCopy encryptedValues];
+    v27 = [encryptedValues2 objectForKeyedSubscript:@"TitleEncrypted"];
 
     if (v27)
     {
-      v28 = [v27 ic_stringValue];
+      ic_stringValue2 = [v27 ic_stringValue];
     }
 
     else
     {
-      v29 = [v10 objectForKeyedSubscript:@"Title"];
+      v29 = [recordCopy objectForKeyedSubscript:@"Title"];
 
       if (!v29)
       {
 LABEL_18:
-        v31 = [(ICFolder *)self title];
-        v32 = [(ICFolder *)self parent];
-        v33 = [(ICFolder *)self account];
-        v34 = [ICFolder deduplicatingTitle:v31 forFolder:self forNewFolderParent:v32 ofAccount:v33];
+        title2 = [(ICFolder *)self title];
+        parent = [(ICFolder *)self parent];
+        account2 = [(ICFolder *)self account];
+        v34 = [ICFolder deduplicatingTitle:title2 forFolder:self forNewFolderParent:parent ofAccount:account2];
         [(ICFolder *)self setTitle:v34];
 
         goto LABEL_19;
       }
 
-      v28 = [v10 objectForKeyedSubscript:@"Title"];
+      ic_stringValue2 = [recordCopy objectForKeyedSubscript:@"Title"];
     }
 
-    v30 = v28;
-    [(ICFolder *)self setTitle:v28];
+    v30 = ic_stringValue2;
+    [(ICFolder *)self setTitle:ic_stringValue2];
 
     goto LABEL_18;
   }
 
   v11 = MEMORY[0x277D36198];
-  v12 = [(ICFolder *)self className];
-  v13 = ICStringFromSyncingApproach(a5);
-  [v11 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICFolder(CloudKit) mergeCloudKitRecord:accountID:approach:mergeableFieldState:]" simulateCrash:1 showAlert:0 format:{@"Object %@ does not support sync approach: %@", v12, v13}];
+  className = [(ICFolder *)self className];
+  v13 = ICStringFromSyncingApproach(approach);
+  [v11 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICFolder(CloudKit) mergeCloudKitRecord:accountID:approach:mergeableFieldState:]" simulateCrash:1 showAlert:0 format:{@"Object %@ does not support sync approach: %@", className, v13}];
 
 LABEL_6:
   v23 = 0;
@@ -620,17 +620,17 @@ LABEL_7:
   return v23;
 }
 
-- (void)mergeParentFromRecord:(id)a3
+- (void)mergeParentFromRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"ParentModificationDate"];
+  recordCopy = record;
+  v5 = [recordCopy objectForKeyedSubscript:@"ParentModificationDate"];
   if (!v5 || ([(ICFolder *)self parentModificationDate], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
-    v10 = [(ICFolder *)self parentModificationDate];
+    parentModificationDate = [(ICFolder *)self parentModificationDate];
 
     v11 = os_log_create("com.apple.notes", "Cloud");
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
-    if (v10)
+    if (parentModificationDate)
     {
       if (v12)
       {
@@ -646,20 +646,20 @@ LABEL_7:
     }
 
 LABEL_14:
-    v11 = [v4 objectForKeyedSubscript:@"ParentFolder"];
-    v13 = [v4 share];
+    v11 = [recordCopy objectForKeyedSubscript:@"ParentFolder"];
+    share = [recordCopy share];
 
-    v14 = [v11 recordID];
-    v15 = [v14 ic_isOwnedByCurrentUser];
+    recordID = [v11 recordID];
+    ic_isOwnedByCurrentUser = [recordID ic_isOwnedByCurrentUser];
 
-    v16 = [v4 recordID];
-    v17 = [ICUserSpecificRecordIDParser isUserSpecificRecordID:v16];
+    recordID2 = [recordCopy recordID];
+    v17 = [ICUserSpecificRecordIDParser isUserSpecificRecordID:recordID2];
 
     if (v11)
     {
-      if (v13)
+      if (share)
       {
-        v18 = v15;
+        v18 = ic_isOwnedByCurrentUser;
       }
 
       else
@@ -672,19 +672,19 @@ LABEL_14:
         goto LABEL_31;
       }
 
-      v19 = [(ICFolder *)self account];
-      v20 = [v19 identifier];
+      account = [(ICFolder *)self account];
+      identifier = [account identifier];
 
-      v21 = [v11 recordID];
-      v22 = [(ICFolder *)self managedObjectContext];
-      v23 = v20;
-      v24 = [ICFolder existingCloudObjectForRecordID:v21 accountID:v20 context:v22];
+      recordID3 = [v11 recordID];
+      managedObjectContext = [(ICFolder *)self managedObjectContext];
+      v23 = identifier;
+      v24 = [ICFolder existingCloudObjectForRecordID:recordID3 accountID:identifier context:managedObjectContext];
 
       if (!v24)
       {
         v30 = v23;
-        v25 = [v11 recordID];
-        v26 = [v25 recordName];
+        recordID4 = [v11 recordID];
+        recordName = [recordID4 recordName];
 
         v27 = os_log_create("com.apple.notes", "Cloud");
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -692,8 +692,8 @@ LABEL_14:
           [ICFolder(CloudKit) mergeParentFromRecord:?];
         }
 
-        v28 = [(ICFolder *)self account];
-        v24 = [ICFolder newFolderWithIdentifier:v26 account:v28];
+        account2 = [(ICFolder *)self account];
+        v24 = [ICFolder newFolderWithIdentifier:recordName account:account2];
 
         [v24 setNeedsInitialFetchFromCloud:1];
         v23 = v30;
@@ -714,7 +714,7 @@ LABEL_31:
       [(ICFolder *)self setParent:0];
     }
 
-    if (v13)
+    if (share)
     {
       v29 = 0;
     }
@@ -732,8 +732,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v7 = [(ICFolder *)self parentModificationDate];
-  v8 = [v5 ic_isLaterThanDate:v7];
+  parentModificationDate2 = [(ICFolder *)self parentModificationDate];
+  v8 = [v5 ic_isLaterThanDate:parentModificationDate2];
 
   v9 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -749,39 +749,39 @@ LABEL_31:
 LABEL_32:
 }
 
-- (id)makeCloudKitRecordForApproach:(int64_t)a3 mergeableFieldState:(id)a4
+- (id)makeCloudKitRecordForApproach:(int64_t)approach mergeableFieldState:(id)state
 {
   v33.receiver = self;
   v33.super_class = ICFolder;
-  v6 = [(ICCloudSyncingObject *)&v33 makeCloudKitRecordForApproach:a3 mergeableFieldState:a4];
+  v6 = [(ICCloudSyncingObject *)&v33 makeCloudKitRecordForApproach:approach mergeableFieldState:state];
   if ([(ICCloudSyncingObject *)self isOwnedByCurrentUser]|| ![(ICCloudSyncingObject *)self isSharedRootObject])
   {
-    v7 = [(ICFolder *)self dateForLastTitleModification];
+    dateForLastTitleModification = [(ICFolder *)self dateForLastTitleModification];
 
-    if (v7)
+    if (dateForLastTitleModification)
     {
-      v8 = [(ICFolder *)self dateForLastTitleModification];
-      [v6 setObject:v8 forKeyedSubscript:@"TitleModificationDate"];
+      dateForLastTitleModification2 = [(ICFolder *)self dateForLastTitleModification];
+      [v6 setObject:dateForLastTitleModification2 forKeyedSubscript:@"TitleModificationDate"];
     }
 
-    v9 = [(ICFolder *)self title];
+    title = [(ICFolder *)self title];
 
-    if (v9)
+    if (title)
     {
-      v10 = [(ICFolder *)self title];
-      v11 = [v10 dataUsingEncoding:4];
-      v12 = [v6 encryptedValues];
-      [v12 setObject:v11 forKeyedSubscript:@"TitleEncrypted"];
+      title2 = [(ICFolder *)self title];
+      v11 = [title2 dataUsingEncoding:4];
+      encryptedValues = [v6 encryptedValues];
+      [encryptedValues setObject:v11 forKeyedSubscript:@"TitleEncrypted"];
     }
 
-    v13 = [(ICFolder *)self parent];
-    v14 = [v13 recordID];
+    parent = [(ICFolder *)self parent];
+    recordID = [parent recordID];
 
-    v15 = [v14 zoneID];
-    if (v15 && (v16 = v15, [v14 zoneID], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "recordID"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "zoneID"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v17, "isEqual:", v19), v19, v18, v17, v16, v20))
+    zoneID = [recordID zoneID];
+    if (zoneID && (v16 = zoneID, [recordID zoneID], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "recordID"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "zoneID"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v17, "isEqual:", v19), v19, v18, v17, v16, v20))
     {
       v21 = objc_alloc(MEMORY[0x277CBC620]);
-      v22 = [v21 initWithRecordID:v14 action:*MEMORY[0x277CBC070]];
+      v22 = [v21 initWithRecordID:recordID action:*MEMORY[0x277CBC070]];
       [v6 setObject:v22 forKeyedSubscript:@"ParentFolder"];
     }
 
@@ -790,24 +790,24 @@ LABEL_32:
       [v6 setObject:0 forKeyedSubscript:@"ParentFolder"];
     }
 
-    v23 = [(ICFolder *)self parentModificationDate];
+    parentModificationDate = [(ICFolder *)self parentModificationDate];
 
-    if (v23)
+    if (parentModificationDate)
     {
-      v24 = [(ICFolder *)self parentModificationDate];
-      [v6 setObject:v24 forKeyedSubscript:@"ParentModificationDate"];
+      parentModificationDate2 = [(ICFolder *)self parentModificationDate];
+      [v6 setObject:parentModificationDate2 forKeyedSubscript:@"ParentModificationDate"];
     }
 
-    v25 = [(ICFolder *)self mergeableData];
+    mergeableData = [(ICFolder *)self mergeableData];
 
-    if (v25)
+    if (mergeableData)
     {
-      v26 = [(ICFolder *)self mergeableData];
-      [v6 ic_setEncryptedInlineableDataAsset:v26 forKeyPrefix:@"MergeableData" approach:a3 withObject:self];
+      mergeableData2 = [(ICFolder *)self mergeableData];
+      [v6 ic_setEncryptedInlineableDataAsset:mergeableData2 forKeyPrefix:@"MergeableData" approach:approach withObject:self];
     }
   }
 
-  if (!a3)
+  if (!approach)
   {
     [v6 setWantsChainPCS:1];
     if ([(ICFolder *)self importedFromLegacy])
@@ -816,42 +816,42 @@ LABEL_32:
       [v6 setObject:v27 forKeyedSubscript:@"ImportedFromLegacy"];
     }
 
-    v28 = [(ICFolder *)self smartFolderQueryJSON];
+    smartFolderQueryJSON = [(ICFolder *)self smartFolderQueryJSON];
 
-    if (v28)
+    if (smartFolderQueryJSON)
     {
-      v29 = [(ICFolder *)self smartFolderQueryJSON];
-      v30 = [v29 dataUsingEncoding:4];
-      v31 = [v6 encryptedValues];
-      [v31 setObject:v30 forKeyedSubscript:@"SmartFolderQueryJSONEncrypted"];
+      smartFolderQueryJSON2 = [(ICFolder *)self smartFolderQueryJSON];
+      v30 = [smartFolderQueryJSON2 dataUsingEncoding:4];
+      encryptedValues2 = [v6 encryptedValues];
+      [encryptedValues2 setObject:v30 forKeyedSubscript:@"SmartFolderQueryJSONEncrypted"];
     }
   }
 
   return v6;
 }
 
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context
 {
-  v7 = a3;
-  v8 = [ICAccount cloudKitAccountWithIdentifier:a4 context:a5];
-  v9 = [v7 recordName];
+  dCopy = d;
+  v8 = [ICAccount cloudKitAccountWithIdentifier:iD context:context];
+  recordName = [dCopy recordName];
 
-  v10 = [v8 folderWithIdentifier:v9];
+  v10 = [v8 folderWithIdentifier:recordName];
 
   return v10;
 }
 
-+ (id)newCloudObjectForRecord:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)newCloudObjectForRecord:(id)record accountID:(id)d context:(id)context
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [ICAccount cloudKitAccountWithIdentifier:v7 context:a5];
-  v10 = [v8 recordID];
-  v11 = [v10 recordName];
-  v12 = [ICFolder newFolderWithIdentifier:v11 account:v9];
+  dCopy = d;
+  recordCopy = record;
+  v9 = [ICAccount cloudKitAccountWithIdentifier:dCopy context:context];
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  v12 = [ICFolder newFolderWithIdentifier:recordName account:v9];
 
-  [v12 mergeCloudKitRecord:v8 accountID:v7 approach:0];
-  [v12 setServerRecord:v8];
+  [v12 mergeCloudKitRecord:recordCopy accountID:dCopy approach:0];
+  [v12 setServerRecord:recordCopy];
 
   [v12 setInCloud:1];
   [v12 clearChangeCountWithReason:@"Created folder"];
@@ -860,14 +860,14 @@ LABEL_32:
   return v12;
 }
 
-+ (id)newPlaceholderObjectForRecordName:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)newPlaceholderObjectForRecordName:(id)name accountID:(id)d context:(id)context
 {
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS___ICFolder;
-  v7 = a5;
-  v8 = a4;
-  v9 = objc_msgSendSuper2(&v12, sel_newPlaceholderObjectForRecordName_accountID_context_, a3, v8, v7);
-  v10 = [ICAccount cloudKitAccountWithIdentifier:v8 context:v7, v12.receiver, v12.super_class];
+  contextCopy = context;
+  dCopy = d;
+  v9 = objc_msgSendSuper2(&v12, sel_newPlaceholderObjectForRecordName_accountID_context_, name, dCopy, contextCopy);
+  v10 = [ICAccount cloudKitAccountWithIdentifier:dCopy context:contextCopy, v12.receiver, v12.super_class];
 
   [v9 setAccount:v10];
   return v9;
@@ -875,23 +875,23 @@ LABEL_32:
 
 - (BOOL)isInICloudAccount
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ICFolder *)self managedObjectContext];
+  managedObjectContext = [(ICFolder *)self managedObjectContext];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __39__ICFolder_CloudKit__isInICloudAccount__block_invoke;
   v5[3] = &unk_278194DE8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __39__ICFolder_CloudKit__isInICloudAccount__block_invoke(uint64_t a1)
@@ -900,27 +900,27 @@ void __39__ICFolder_CloudKit__isInICloudAccount__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 accountType] == 1;
 }
 
-- (void)fixBrokenReferencesWithError:(id)a3
+- (void)fixBrokenReferencesWithError:(id)error
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ICCloudSyncingObject *)self loggingDescription];
+    loggingDescription = [(ICCloudSyncingObject *)self loggingDescription];
     [(ICFolder *)self parent];
-    obj = v44 = v4;
-    v7 = [obj loggingDescription];
-    v8 = [(ICFolder *)self notes];
-    v9 = [v8 allObjects];
-    v10 = [v9 valueForKey:@"loggingDescription"];
-    v11 = [(ICFolder *)self children];
-    v12 = [v11 allObjects];
-    v13 = [v12 valueForKey:@"loggingDescription"];
+    obj = v44 = errorCopy;
+    loggingDescription2 = [obj loggingDescription];
+    notes = [(ICFolder *)self notes];
+    allObjects = [notes allObjects];
+    v10 = [allObjects valueForKey:@"loggingDescription"];
+    children = [(ICFolder *)self children];
+    allObjects2 = [children allObjects];
+    v13 = [allObjects2 valueForKey:@"loggingDescription"];
     *buf = 138413314;
-    *v57 = v6;
+    *v57 = loggingDescription;
     *&v57[8] = 2112;
-    *&v57[10] = v7;
+    *&v57[10] = loggingDescription2;
     v58 = 2112;
     v59 = v10;
     v60 = 2112;
@@ -929,22 +929,22 @@ void __39__ICFolder_CloudKit__isInICloudAccount__block_invoke(uint64_t a1)
     v63 = v44;
     _os_log_impl(&dword_214D51000, v5, OS_LOG_TYPE_DEFAULT, "Fixing broken references for folder: %@\n\tParent: %@\n\tNotes: %@\n\tChildren: %@\n\tError: %@", buf, 0x34u);
 
-    v4 = v44;
+    errorCopy = v44;
   }
 
   if (![(ICFolder *)self markedForDeletion])
   {
-    v18 = [(ICCloudSyncingObject *)self serverShare];
-    if (v18)
+    serverShare = [(ICCloudSyncingObject *)self serverShare];
+    if (serverShare)
     {
     }
 
     else
     {
-      v39 = [(ICCloudSyncingObject *)self serverRecord];
-      v40 = [v39 share];
+      serverRecord = [(ICCloudSyncingObject *)self serverRecord];
+      share = [serverRecord share];
 
-      if (!v40)
+      if (!share)
       {
         goto LABEL_38;
       }
@@ -960,16 +960,16 @@ void __39__ICFolder_CloudKit__isInICloudAccount__block_invoke(uint64_t a1)
     v14 = os_log_create("com.apple.notes", "Cloud");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(ICFolder *)self visibleNotesCount];
-      v16 = [(ICFolder *)self identifier];
+      visibleNotesCount = [(ICFolder *)self visibleNotesCount];
+      identifier = [(ICFolder *)self identifier];
       *buf = 67109378;
-      *v57 = v15;
+      *v57 = visibleNotesCount;
       *&v57[4] = 2112;
-      *&v57[6] = v16;
+      *&v57[6] = identifier;
       _os_log_impl(&dword_214D51000, v14, OS_LOG_TYPE_DEFAULT, "Found a deleted folder with %d undeleted notes: %@", buf, 0x12u);
     }
 
-    v17 = v14;
+    children2 = v14;
 LABEL_36:
 
     [(ICCloudSyncingObject *)self unmarkForDeletion];
@@ -985,8 +985,8 @@ LABEL_36:
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v17 = [(ICFolder *)self children];
-    v19 = [v17 countByEnumeratingWithState:&v50 objects:v55 count:16];
+    children2 = [(ICFolder *)self children];
+    v19 = [children2 countByEnumeratingWithState:&v50 objects:v55 count:16];
     if (v19)
     {
       v20 = v19;
@@ -997,7 +997,7 @@ LABEL_36:
         {
           if (*v51 != v21)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(children2);
           }
 
           if (([*(*(&v50 + 1) + 8 * i) markedForDeletion] & 1) == 0)
@@ -1005,9 +1005,9 @@ LABEL_36:
             v14 = os_log_create("com.apple.notes", "Cloud");
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
-              v41 = [(ICFolder *)self identifier];
+              identifier2 = [(ICFolder *)self identifier];
               *buf = 138412290;
-              *v57 = v41;
+              *v57 = identifier2;
               _os_log_impl(&dword_214D51000, v14, OS_LOG_TYPE_DEFAULT, "Found a deleted folder with at least one undeleted child folder: %@", buf, 0xCu);
             }
 
@@ -1015,7 +1015,7 @@ LABEL_36:
           }
         }
 
-        v20 = [v17 countByEnumeratingWithState:&v50 objects:v55 count:16];
+        v20 = [children2 countByEnumeratingWithState:&v50 objects:v55 count:16];
         if (v20)
         {
           continue;
@@ -1025,17 +1025,17 @@ LABEL_36:
       }
     }
 
-    v23 = [(ICFolder *)self notes];
-    v24 = [v23 count];
+    notes2 = [(ICFolder *)self notes];
+    v24 = [notes2 count];
 
     if (v24)
     {
       v25 = os_log_create("com.apple.notes", "Cloud");
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [(ICFolder *)self identifier];
+        identifier3 = [(ICFolder *)self identifier];
         *buf = 138412290;
-        *v57 = v26;
+        *v57 = identifier3;
         _os_log_impl(&dword_214D51000, v25, OS_LOG_TYPE_DEFAULT, "Broken references because we still have notes in folder (%@)", buf, 0xCu);
       }
 
@@ -1043,9 +1043,9 @@ LABEL_36:
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v27 = self;
-      v28 = [(ICFolder *)self notes];
-      v29 = [v28 copy];
+      selfCopy = self;
+      notes3 = [(ICFolder *)self notes];
+      v29 = [notes3 copy];
 
       v30 = [v29 countByEnumeratingWithState:&v46 objects:v54 count:16];
       if (v30)
@@ -1069,12 +1069,12 @@ LABEL_36:
               [(ICFolder(CloudKit) *)buf fixBrokenReferencesWithError:v34, v57, v35];
             }
 
-            v36 = [(ICFolder *)v27 account];
-            v37 = [v36 trashFolder];
-            [v34 setFolder:v37];
+            account = [(ICFolder *)selfCopy account];
+            trashFolder = [account trashFolder];
+            [v34 setFolder:trashFolder];
 
-            v38 = [MEMORY[0x277CBEAA8] date];
-            [v34 setFolderModificationDate:v38];
+            date = [MEMORY[0x277CBEAA8] date];
+            [v34 setFolderModificationDate:date];
 
             [v34 updateChangeCountWithReason:@"Moved to trash folder"];
             ++v33;
@@ -1090,13 +1090,13 @@ LABEL_36:
 
     else
     {
-      [(ICCloudSyncingObject *)self findAndResaveUserSpecificRecordThrowingReferenceViolationForDeletionWithError:v4];
+      [(ICCloudSyncingObject *)self findAndResaveUserSpecificRecordThrowingReferenceViolationForDeletionWithError:errorCopy];
       v42 = os_log_create("com.apple.notes", "Cloud");
       if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
       {
-        v43 = [(ICCloudSyncingObject *)self shortLoggingDescription];
+        shortLoggingDescription = [(ICCloudSyncingObject *)self shortLoggingDescription];
         *buf = 138412290;
-        *v57 = v43;
+        *v57 = shortLoggingDescription;
         _os_log_impl(&dword_214D51000, v42, OS_LOG_TYPE_INFO, "Broken reference for %@, but not un-deleting or moving any notes", buf, 0xCu);
       }
     }
@@ -1114,8 +1114,8 @@ LABEL_38:
     return 0;
   }
 
-  v3 = [(ICFolder *)self title];
-  v4 = [v3 length] != 0;
+  title = [(ICFolder *)self title];
+  v4 = [title length] != 0;
 
   return v4;
 }
@@ -1124,16 +1124,16 @@ LABEL_38:
 {
   v11.receiver = self;
   v11.super_class = ICFolder;
-  v3 = [(ICCloudSyncingObject *)&v11 objectsToBeDeletedBeforeThisObject];
-  v4 = [v3 mutableCopy];
+  objectsToBeDeletedBeforeThisObject = [(ICCloudSyncingObject *)&v11 objectsToBeDeletedBeforeThisObject];
+  v4 = [objectsToBeDeletedBeforeThisObject mutableCopy];
 
-  v5 = [(ICFolder *)self notes];
-  v6 = [v5 allObjects];
-  [v4 addObjectsFromArray:v6];
+  notes = [(ICFolder *)self notes];
+  allObjects = [notes allObjects];
+  [v4 addObjectsFromArray:allObjects];
 
-  v7 = [(ICFolder *)self children];
-  v8 = [v7 allObjects];
-  [v4 addObjectsFromArray:v8];
+  children = [(ICFolder *)self children];
+  allObjects2 = [children allObjects];
+  [v4 addObjectsFromArray:allObjects2];
 
   v9 = [v4 copy];
 
@@ -1150,8 +1150,8 @@ LABEL_38:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(ICFolder *)self children];
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  children = [(ICFolder *)self children];
+  v4 = [children countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1162,7 +1162,7 @@ LABEL_3:
     {
       if (*v18 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(children);
       }
 
       v8 = *(*(&v17 + 1) + 8 * v7);
@@ -1173,7 +1173,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+        v5 = [children countByEnumeratingWithState:&v17 objects:v23 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -1192,8 +1192,8 @@ LABEL_10:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v3 = [(ICFolder *)self notes];
-    v9 = [v3 countByEnumeratingWithState:&v13 objects:v22 count:16];
+    children = [(ICFolder *)self notes];
+    v9 = [children countByEnumeratingWithState:&v13 objects:v22 count:16];
     if (!v9)
     {
 LABEL_18:
@@ -1209,7 +1209,7 @@ LABEL_12:
     {
       if (*v14 != v11)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(children);
       }
 
       if (![*(*(&v13 + 1) + 8 * v12) hasSuccessfullyPushedLatestVersionToCloud])
@@ -1219,7 +1219,7 @@ LABEL_12:
 
       if (v10 == ++v12)
       {
-        v10 = [v3 countByEnumeratingWithState:&v13 objects:v22 count:16];
+        v10 = [children countByEnumeratingWithState:&v13 objects:v22 count:16];
         if (v10)
         {
           goto LABEL_12;
@@ -1235,36 +1235,36 @@ LABEL_12:
 
 - (BOOL)wantsUserSpecificRecord
 {
-  v3 = [(ICNoteContainer *)self isSharedViaICloud];
-  if (v3)
+  isSharedViaICloud = [(ICNoteContainer *)self isSharedViaICloud];
+  if (isSharedViaICloud)
   {
-    LOBYTE(v3) = ![(ICCloudSyncingObject *)self isOwnedByCurrentUser];
+    LOBYTE(isSharedViaICloud) = ![(ICCloudSyncingObject *)self isOwnedByCurrentUser];
   }
 
-  return v3;
+  return isSharedViaICloud;
 }
 
-- (id)makeUserSpecificCloudKitRecordForApproach:(int64_t)a3
+- (id)makeUserSpecificCloudKitRecordForApproach:(int64_t)approach
 {
   v15.receiver = self;
   v15.super_class = ICFolder;
-  v4 = [(ICCloudSyncingObject *)&v15 makeUserSpecificCloudKitRecordForApproach:a3];
-  v5 = [(ICFolder *)self title];
+  v4 = [(ICCloudSyncingObject *)&v15 makeUserSpecificCloudKitRecordForApproach:approach];
+  title = [(ICFolder *)self title];
 
-  if (v5)
+  if (title)
   {
-    v6 = [(ICFolder *)self title];
-    v7 = [v6 dataUsingEncoding:4];
-    v8 = [v4 encryptedValues];
-    [v8 setObject:v7 forKeyedSubscript:@"TitleEncrypted"];
+    title2 = [(ICFolder *)self title];
+    v7 = [title2 dataUsingEncoding:4];
+    encryptedValues = [v4 encryptedValues];
+    [encryptedValues setObject:v7 forKeyedSubscript:@"TitleEncrypted"];
   }
 
-  v9 = [(ICFolder *)self parent];
-  v10 = [v9 recordID];
+  parent = [(ICFolder *)self parent];
+  recordID = [parent recordID];
 
-  if (v10 && [v10 ic_isOwnedByCurrentUser])
+  if (recordID && [recordID ic_isOwnedByCurrentUser])
   {
-    v11 = [objc_alloc(MEMORY[0x277CBC620]) initWithRecordID:v10 action:1];
+    v11 = [objc_alloc(MEMORY[0x277CBC620]) initWithRecordID:recordID action:1];
     [v4 setObject:v11 forKeyedSubscript:@"ParentFolder"];
   }
 
@@ -1273,45 +1273,45 @@ LABEL_12:
     [v4 setObject:0 forKeyedSubscript:@"ParentFolder"];
   }
 
-  v12 = [(ICFolder *)self parentModificationDate];
+  parentModificationDate = [(ICFolder *)self parentModificationDate];
 
-  if (v12)
+  if (parentModificationDate)
   {
-    v13 = [(ICFolder *)self parentModificationDate];
-    [v4 setObject:v13 forKeyedSubscript:@"ParentModificationDate"];
+    parentModificationDate2 = [(ICFolder *)self parentModificationDate];
+    [v4 setObject:parentModificationDate2 forKeyedSubscript:@"ParentModificationDate"];
   }
 
   return v4;
 }
 
-- (BOOL)mergeDataFromUserSpecificRecord:(id)a3 accountID:(id)a4
+- (BOOL)mergeDataFromUserSpecificRecord:(id)record accountID:(id)d
 {
-  v6 = a3;
+  recordCopy = record;
   v12.receiver = self;
   v12.super_class = ICFolder;
-  v7 = [(ICCloudSyncingObject *)&v12 mergeDataFromUserSpecificRecord:v6 accountID:a4];
+  v7 = [(ICCloudSyncingObject *)&v12 mergeDataFromUserSpecificRecord:recordCopy accountID:d];
   if (v7)
   {
-    v8 = [v6 encryptedValues];
-    v9 = [v8 objectForKeyedSubscript:@"TitleEncrypted"];
+    encryptedValues = [recordCopy encryptedValues];
+    v9 = [encryptedValues objectForKeyedSubscript:@"TitleEncrypted"];
 
     if (v9)
     {
-      v10 = [v9 ic_stringValue];
-      [(ICFolder *)self setTitle:v10];
+      ic_stringValue = [v9 ic_stringValue];
+      [(ICFolder *)self setTitle:ic_stringValue];
     }
 
-    [(ICFolder *)self mergeParentFromRecord:v6];
+    [(ICFolder *)self mergeParentFromRecord:recordCopy];
   }
 
   return v7;
 }
 
-- (BOOL)hasExpectedReferenceActionsInUserSpecificRecord:(id)a3
+- (BOOL)hasExpectedReferenceActionsInUserSpecificRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   objc_opt_class();
-  v4 = [v3 objectForKeyedSubscript:@"ParentFolder"];
+  v4 = [recordCopy objectForKeyedSubscript:@"ParentFolder"];
 
   v5 = ICDynamicCast();
 
@@ -1410,43 +1410,43 @@ void __32__ICFolder_reservedFolderTitles__block_invoke()
   reservedFolderTitles_reservedFolderTitles = v16;
 }
 
-+ (id)deduplicatingTitle:(id)a3 forFolder:(id)a4 forNewFolderParent:(id)a5 ofAccount:(id)a6
++ (id)deduplicatingTitle:(id)title forFolder:(id)folder forNewFolderParent:(id)parent ofAccount:(id)account
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (!v10 && !v11 && !v12)
+  titleCopy = title;
+  folderCopy = folder;
+  parentCopy = parent;
+  accountCopy = account;
+  account2 = accountCopy;
+  if (!folderCopy && !parentCopy && !accountCopy)
   {
-    v13 = os_log_create("com.apple.notes", "CoreData");
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    account2 = os_log_create("com.apple.notes", "CoreData");
+    if (os_log_type_enabled(account2, OS_LOG_TYPE_ERROR))
     {
-      [ICFolder deduplicatingTitle:v13 forFolder:? forNewFolderParent:? ofAccount:?];
+      [ICFolder deduplicatingTitle:account2 forFolder:? forNewFolderParent:? ofAccount:?];
     }
 
     v14 = 0;
     goto LABEL_30;
   }
 
-  if (v12)
+  if (accountCopy)
   {
-    if (!v11)
+    if (!parentCopy)
     {
       goto LABEL_18;
     }
 
 LABEL_12:
-    if (v13)
+    if (account2)
     {
-      v15 = [v11 account];
+      account = [parentCopy account];
 
-      if (v15 != v13)
+      if (account != account2)
       {
         v16 = os_log_create("com.apple.notes", "CoreData");
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
-          [ICFolder deduplicatingTitle:v13 forFolder:v11 forNewFolderParent:? ofAccount:?];
+          [ICFolder deduplicatingTitle:account2 forFolder:parentCopy forNewFolderParent:? ofAccount:?];
         }
       }
     }
@@ -1454,28 +1454,28 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  if (v11)
+  if (parentCopy)
   {
-    v13 = [v11 account];
+    account2 = [parentCopy account];
     goto LABEL_12;
   }
 
-  v13 = [v10 account];
+  account2 = [folderCopy account];
 LABEL_18:
-  v17 = [v13 visibleFoldersWithParent:v11];
+  v17 = [account2 visibleFoldersWithParent:parentCopy];
   v18 = [v17 mutableCopy];
 
-  if (v10)
+  if (folderCopy)
   {
-    [v18 removeObject:v10];
+    [v18 removeObject:folderCopy];
   }
 
   v28 = v18;
   v19 = [v18 valueForKey:@"title"];
-  v20 = [v13 reservedAccountFolderTitles];
-  v21 = [v19 setByAddingObjectsFromSet:v20];
+  reservedAccountFolderTitles = [account2 reservedAccountFolderTitles];
+  v21 = [v19 setByAddingObjectsFromSet:reservedAccountFolderTitles];
 
-  v22 = v9;
+  v22 = titleCopy;
   if ([v21 containsObject:v22])
   {
     v23 = 1;
@@ -1517,17 +1517,17 @@ LABEL_30:
   return v14;
 }
 
-+ (id)stringByScrubbingStringForFolderName:(id)a3
++ (id)stringByScrubbingStringForFolderName:(id)name
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA900] newlineCharacterSet];
-  v5 = [v3 rangeOfCharacterFromSet:v4];
+  nameCopy = name;
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+  v5 = [nameCopy rangeOfCharacterFromSet:newlineCharacterSet];
 
-  v6 = v3;
+  v6 = nameCopy;
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [MEMORY[0x277CCA900] newlineCharacterSet];
-    v8 = [v3 componentsSeparatedByCharactersInSet:v7];
+    newlineCharacterSet2 = [MEMORY[0x277CCA900] newlineCharacterSet];
+    v8 = [nameCopy componentsSeparatedByCharactersInSet:newlineCharacterSet2];
 
     v6 = [v8 componentsJoinedByString:@" "];
   }
@@ -1542,28 +1542,28 @@ LABEL_30:
   return v6;
 }
 
-+ (id)ancestorFolderPredicatesWithBlock:(id)a3
++ (id)ancestorFolderPredicatesWithBlock:(id)block
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  blockCopy = block;
+  array = [MEMORY[0x277CBEB18] array];
   if (+[ICFolder folderDepthLimit])
   {
     v5 = 0;
     v6 = 1;
     do
     {
-      v7 = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       v8 = v6;
       do
       {
-        [v7 addObject:@"parent"];
+        [array2 addObject:@"parent"];
         --v8;
       }
 
       while (v8);
-      v9 = [v7 componentsJoinedByString:@"."];
-      v10 = v3[2](v3, v9);
-      [v4 addObject:v10];
+      v9 = [array2 componentsJoinedByString:@"."];
+      v10 = blockCopy[2](blockCopy, v9);
+      [array addObject:v10];
 
       ++v5;
       ++v6;
@@ -1572,27 +1572,27 @@ LABEL_30:
     while (v5 < +[ICFolder folderDepthLimit]);
   }
 
-  return v4;
+  return array;
 }
 
 - (id)cacheKey
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ICFolder *)self account];
-  v5 = [v4 identifier];
-  v6 = [(ICFolder *)self identifier];
-  v7 = [v3 stringWithFormat:@"%@:%@", v5, v6];
+  account = [(ICFolder *)self account];
+  identifier = [account identifier];
+  identifier2 = [(ICFolder *)self identifier];
+  v7 = [v3 stringWithFormat:@"%@:%@", identifier, identifier2];
 
   return v7;
 }
 
-- (void)setCustomNoteSortType:(id)a3
+- (void)setCustomNoteSortType:(id)type
 {
-  v4 = [a3 valueRepresentation];
-  [(ICFolder *)self setCustomNoteSortTypeValue:v4];
+  valueRepresentation = [type valueRepresentation];
+  [(ICFolder *)self setCustomNoteSortTypeValue:valueRepresentation];
 
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [(ICFolder *)self setCustomNoteSortTypeModificationDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(ICFolder *)self setCustomNoteSortTypeModificationDate:date];
 }
 
 - (id)customNoteSortType
@@ -1600,8 +1600,8 @@ LABEL_30:
   if ([(ICFolder *)self supportsCustomNoteSortType])
   {
     v3 = MEMORY[0x277D361F0];
-    v4 = [(ICFolder *)self customNoteSortTypeValue];
-    v5 = [v3 folderNoteSortTypeFromValue:v4];
+    customNoteSortTypeValue = [(ICFolder *)self customNoteSortTypeValue];
+    v5 = [v3 folderNoteSortTypeFromValue:customNoteSortTypeValue];
   }
 
   else
@@ -1637,18 +1637,18 @@ LABEL_30:
 
 - (BOOL)isSubfolderOfReadonlyFolder
 {
-  v3 = [(ICCloudSyncingObject *)self serverShare];
-  if (v3)
+  serverShare = [(ICCloudSyncingObject *)self serverShare];
+  if (serverShare)
   {
-    v4 = 0;
+    isSharedReadOnly = 0;
   }
 
   else
   {
-    v4 = [(ICNoteContainer *)self isSharedReadOnly];
+    isSharedReadOnly = [(ICNoteContainer *)self isSharedReadOnly];
   }
 
-  return v4;
+  return isSharedReadOnly;
 }
 
 - (BOOL)isDeletable
@@ -1666,27 +1666,27 @@ LABEL_30:
 
 - (BOOL)isLeaf
 {
-  v2 = [(ICFolder *)self visibleNoteContainerChildren];
-  v3 = [v2 count] == 0;
+  visibleNoteContainerChildren = [(ICFolder *)self visibleNoteContainerChildren];
+  v3 = [visibleNoteContainerChildren count] == 0;
 
   return v3;
 }
 
 - (unint64_t)depth
 {
-  v2 = [(ICFolder *)self parent];
+  parent = [(ICFolder *)self parent];
   objc_opt_class();
   v3 = 0;
   if (objc_opt_isKindOfClass())
   {
-    v4 = v2;
+    v4 = parent;
     do
     {
       ++v3;
-      v2 = [v4 parent];
+      parent = [v4 parent];
 
       objc_opt_class();
-      v4 = v2;
+      v4 = parent;
     }
 
     while ((objc_opt_isKindOfClass() & 1) != 0);
@@ -1695,15 +1695,15 @@ LABEL_30:
   return v3;
 }
 
-+ (unint64_t)maximumDepthOfFolders:(id)a3
++ (unint64_t)maximumDepthOfFolders:(id)folders
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  foldersCopy = folders;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [foldersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1715,17 +1715,17 @@ LABEL_30:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(foldersCopy);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) maximumDepthIncludingChildFolders];
-        if (v6 <= v9)
+        maximumDepthIncludingChildFolders = [*(*(&v11 + 1) + 8 * i) maximumDepthIncludingChildFolders];
+        if (v6 <= maximumDepthIncludingChildFolders)
         {
-          v6 = v9;
+          v6 = maximumDepthIncludingChildFolders;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [foldersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -1749,8 +1749,8 @@ LABEL_30:
 
   else
   {
-    v4 = [(ICFolder *)self visibleSubFolders];
-    v5 = [ICFolder maximumDepthOfFolders:v4];
+    visibleSubFolders = [(ICFolder *)self visibleSubFolders];
+    v5 = [ICFolder maximumDepthOfFolders:visibleSubFolders];
 
     return v5;
   }
@@ -1763,19 +1763,19 @@ LABEL_30:
     return 0;
   }
 
-  v4 = [(ICFolder *)self maximumDepthIncludingChildFolders];
-  return v4 - [(ICFolder *)self depth];
+  maximumDepthIncludingChildFolders = [(ICFolder *)self maximumDepthIncludingChildFolders];
+  return maximumDepthIncludingChildFolders - [(ICFolder *)self depth];
 }
 
-+ (unint64_t)maximumDistanceToLeafFolderOfFolders:(id)a3
++ (unint64_t)maximumDistanceToLeafFolderOfFolders:(id)folders
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  foldersCopy = folders;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [foldersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1787,17 +1787,17 @@ LABEL_30:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(foldersCopy);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) maximumDistanceToLeafFolder];
-        if (v6 <= v9)
+        maximumDistanceToLeafFolder = [*(*(&v11 + 1) + 8 * i) maximumDistanceToLeafFolder];
+        if (v6 <= maximumDistanceToLeafFolder)
         {
-          v6 = v9;
+          v6 = maximumDistanceToLeafFolder;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [foldersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -1811,29 +1811,29 @@ LABEL_30:
   return v6;
 }
 
-- (BOOL)isDescendantOfFolder:(id)a3
+- (BOOL)isDescendantOfFolder:(id)folder
 {
-  v4 = a3;
-  if (v4 && ([(ICFolder *)self parent], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  folderCopy = folder;
+  if (folderCopy && ([(ICFolder *)self parent], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
     do
     {
-      v7 = [v6 identifier];
-      v8 = [v4 identifier];
-      v9 = [v7 isEqualToString:v8];
+      identifier = [v6 identifier];
+      identifier2 = [folderCopy identifier];
+      v9 = [identifier isEqualToString:identifier2];
 
       if (v9)
       {
         break;
       }
 
-      v10 = [v6 parent];
+      parent = [v6 parent];
 
-      v6 = v10;
+      v6 = parent;
     }
 
-    while (v10);
+    while (parent);
   }
 
   else
@@ -1852,8 +1852,8 @@ LABEL_30:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(ICFolder *)self notes];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  notes = [(ICFolder *)self notes];
+  v5 = [notes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1864,15 +1864,15 @@ LABEL_30:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(notes);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) participants];
-        v10 = [v9 allObjects];
-        [v3 addObjectsFromArray:v10];
+        participants = [*(*(&v12 + 1) + 8 * i) participants];
+        allObjects = [participants allObjects];
+        [v3 addObjectsFromArray:allObjects];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [notes countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -1883,18 +1883,18 @@ LABEL_30:
 
 - (BOOL)isMovable
 {
-  v3 = [(ICFolder *)self account];
-  v4 = [v3 defaultFolder];
-  if (v4 == self)
+  account = [(ICFolder *)self account];
+  defaultFolder = [account defaultFolder];
+  if (defaultFolder == self)
   {
     LOBYTE(v7) = 0;
   }
 
   else
   {
-    v5 = [(ICFolder *)self account];
-    v6 = [v5 trashFolder];
-    if (v6 == self)
+    account2 = [(ICFolder *)self account];
+    trashFolder = [account2 trashFolder];
+    if (trashFolder == self)
     {
       LOBYTE(v7) = 0;
     }
@@ -1923,33 +1923,33 @@ LABEL_30:
 
 - (BOOL)canAddSubfolder
 {
-  v3 = [(ICFolder *)self canMoveAddOrDeleteContents];
-  if (v3)
+  canMoveAddOrDeleteContents = [(ICFolder *)self canMoveAddOrDeleteContents];
+  if (canMoveAddOrDeleteContents)
   {
     if ([(ICFolder *)self isDefaultFolderForAccount]|| [(ICFolder *)self isTrashFolder])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(canMoveAddOrDeleteContents) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(ICFolder *)self isSmartFolder];
+      LOBYTE(canMoveAddOrDeleteContents) = ![(ICFolder *)self isSmartFolder];
     }
   }
 
-  return v3;
+  return canMoveAddOrDeleteContents;
 }
 
 - (id)visibleNoteContainerChildrenUnsorted
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(ICFolder *)self children];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  children = [(ICFolder *)self children];
+  v5 = [children countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1960,65 +1960,65 @@ LABEL_30:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(children);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
         if (([v9 markedForDeletion] & 1) == 0 && (objc_msgSend(v9, "isUnsupported") & 1) == 0 && (objc_msgSend(v9, "isHiddenNoteContainer") & 1) == 0)
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [children countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)visibleNoteContainerChildren
 {
-  v2 = [(ICFolder *)self visibleNoteContainerChildrenUnsorted];
-  v3 = [v2 sortedArrayUsingSelector:sel_compare_];
+  visibleNoteContainerChildrenUnsorted = [(ICFolder *)self visibleNoteContainerChildrenUnsorted];
+  v3 = [visibleNoteContainerChildrenUnsorted sortedArrayUsingSelector:sel_compare_];
 
   return v3;
 }
 
 - (unint64_t)visibleNoteContainerChildrenCount
 {
-  v2 = [(ICFolder *)self visibleNoteContainerChildrenUnsorted];
-  v3 = [v2 count];
+  visibleNoteContainerChildrenUnsorted = [(ICFolder *)self visibleNoteContainerChildrenUnsorted];
+  v3 = [visibleNoteContainerChildrenUnsorted count];
 
   return v3;
 }
 
-- (unint64_t)indexOfVisibleChild:(id)a3
+- (unint64_t)indexOfVisibleChild:(id)child
 {
-  v4 = a3;
-  v5 = [(ICNoteContainer *)self subFolderIdentifiersOrderedSet];
-  v6 = [v4 identifier];
-  v7 = [v5 indexOfObject:v6];
+  childCopy = child;
+  subFolderIdentifiersOrderedSet = [(ICNoteContainer *)self subFolderIdentifiersOrderedSet];
+  identifier = [childCopy identifier];
+  v7 = [subFolderIdentifiersOrderedSet indexOfObject:identifier];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(ICFolder *)self visibleSubFolders];
-    v7 = [v8 indexOfObject:v4];
+    visibleSubFolders = [(ICFolder *)self visibleSubFolders];
+    v7 = [visibleSubFolders indexOfObject:childCopy];
   }
 
   return v7;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  compareCopy = compare;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = compareCopy;
     if ([(ICFolder *)self isDefaultFolderForAccount])
     {
       v6 = -1;
@@ -2033,11 +2033,11 @@ LABEL_57:
       goto LABEL_57;
     }
 
-    v14 = [(ICFolder *)self sortOrder];
-    if (v14 != [v5 sortOrder])
+    sortOrder = [(ICFolder *)self sortOrder];
+    if (sortOrder != [v5 sortOrder])
     {
-      v25 = [(ICFolder *)self sortOrder];
-      if (v25 > [v5 sortOrder])
+      sortOrder2 = [(ICFolder *)self sortOrder];
+      if (sortOrder2 > [v5 sortOrder])
       {
         v6 = 1;
       }
@@ -2050,33 +2050,33 @@ LABEL_57:
       goto LABEL_57;
     }
 
-    v15 = [(ICFolder *)self parent];
-    v16 = [v5 parent];
+    parent = [(ICFolder *)self parent];
+    parent2 = [v5 parent];
 
-    if (v15 != v16)
+    if (parent != parent2)
     {
-      v17 = self;
+      selfCopy = self;
       v18 = v5;
-      v19 = [(ICFolder *)v17 depth];
-      v20 = [v18 depth];
-      v21 = v20;
-      v22 = v17;
-      if (v19 <= v20)
+      depth = [(ICFolder *)selfCopy depth];
+      depth2 = [v18 depth];
+      v21 = depth2;
+      parent4 = selfCopy;
+      if (depth <= depth2)
       {
-        v24 = v18;
-        if (v20 > v19)
+        parent3 = v18;
+        if (depth2 > depth)
         {
-          v24 = v18;
+          parent3 = v18;
           do
           {
-            v27 = v24;
-            v24 = [v24 parent];
+            v27 = parent3;
+            parent3 = [parent3 parent];
 
             --v21;
           }
 
-          while (v21 > v19);
-          v22 = v17;
+          while (v21 > depth);
+          parent4 = selfCopy;
         }
       }
 
@@ -2084,47 +2084,47 @@ LABEL_57:
       {
         do
         {
-          v23 = v22;
-          v22 = [v22 parent];
+          v23 = parent4;
+          parent4 = [parent4 parent];
 
-          --v19;
+          --depth;
         }
 
-        while (v19 > v21);
-        v24 = v18;
+        while (depth > v21);
+        parent3 = v18;
       }
 
-      v28 = [v22 parent];
-      v29 = [v24 parent];
+      v22Parent = [parent4 parent];
+      v24Parent = [parent3 parent];
 
-      if (v28 == v29)
+      if (v22Parent == v24Parent)
       {
-        v30 = v22;
-        v31 = v24;
+        v22Parent2 = parent4;
+        v24Parent2 = parent3;
       }
 
       else
       {
         do
         {
-          v30 = [v22 parent];
+          v22Parent2 = [parent4 parent];
 
-          v31 = [v24 parent];
+          v24Parent2 = [parent3 parent];
 
-          v32 = [v30 parent];
-          v33 = [v31 parent];
+          v30Parent = [v22Parent2 parent];
+          v31Parent = [v24Parent2 parent];
 
-          v24 = v31;
-          v22 = v30;
+          parent3 = v24Parent2;
+          parent4 = v22Parent2;
         }
 
-        while (v32 != v33);
+        while (v30Parent != v31Parent);
       }
 
-      if ([v30 isEqual:v31])
+      if ([v22Parent2 isEqual:v24Parent2])
       {
-        v34 = [(ICFolder *)v17 depth];
-        if (v34 < [v18 depth])
+        depth3 = [(ICFolder *)selfCopy depth];
+        if (depth3 < [v18 depth])
         {
           v6 = -1;
         }
@@ -2137,14 +2137,14 @@ LABEL_57:
 
       else
       {
-        v6 = [v30 compare:v31];
+        v6 = [v22Parent2 compare:v24Parent2];
       }
 
       goto LABEL_57;
     }
 
-    v26 = [(ICFolder *)self parent];
-    if (v26)
+    parent5 = [(ICFolder *)self parent];
+    if (parent5)
     {
       [(ICFolder *)self parent];
     }
@@ -2154,15 +2154,15 @@ LABEL_57:
       [(ICFolder *)self account];
     }
     v35 = ;
-    v36 = [v35 subFolderIdentifiersOrderedSet];
+    subFolderIdentifiersOrderedSet = [v35 subFolderIdentifiersOrderedSet];
 
-    if (v36 && [v36 count])
+    if (subFolderIdentifiersOrderedSet && [subFolderIdentifiersOrderedSet count])
     {
-      v37 = [(ICFolder *)self identifier];
-      v38 = [v36 indexOfObject:v37];
+      identifier = [(ICFolder *)self identifier];
+      v38 = [subFolderIdentifiersOrderedSet indexOfObject:identifier];
 
-      v39 = [v5 identifier];
-      v40 = [v36 indexOfObject:v39];
+      identifier2 = [v5 identifier];
+      v40 = [subFolderIdentifiersOrderedSet indexOfObject:identifier2];
 
       if (v38 != 0x7FFFFFFFFFFFFFFFLL && v38 == v40)
       {
@@ -2201,9 +2201,9 @@ LABEL_57:
       }
     }
 
-    v42 = [(ICFolder *)self localizedTitle];
-    v43 = [v5 localizedTitle];
-    v6 = [v42 localizedStandardCompare:v43];
+    localizedTitle = [(ICFolder *)self localizedTitle];
+    localizedTitle2 = [v5 localizedTitle];
+    v6 = [localizedTitle localizedStandardCompare:localizedTitle2];
 
 LABEL_56:
     goto LABEL_57;
@@ -2243,51 +2243,51 @@ LABEL_58:
   return v6;
 }
 
-- (void)setNeedsInitialFetchFromCloud:(BOOL)a3
+- (void)setNeedsInitialFetchFromCloud:(BOOL)cloud
 {
-  v3 = a3;
-  if ([(ICFolder *)self needsInitialFetchFromCloud]!= a3)
+  cloudCopy = cloud;
+  if ([(ICFolder *)self needsInitialFetchFromCloud]!= cloud)
   {
-    v5 = [(ICFolder *)self account];
-    [v5 willChangeValueForKey:@"visibleFolders"];
+    account = [(ICFolder *)self account];
+    [account willChangeValueForKey:@"visibleFolders"];
 
-    v6 = [(ICFolder *)self account];
-    [v6 willChangeValueForKey:@"visibleNoteContainers"];
+    account2 = [(ICFolder *)self account];
+    [account2 willChangeValueForKey:@"visibleNoteContainers"];
 
     v9.receiver = self;
     v9.super_class = ICFolder;
-    [(ICCloudSyncingObject *)&v9 setNeedsInitialFetchFromCloud:v3];
-    v7 = [(ICFolder *)self account];
-    [v7 didChangeValueForKey:@"visibleFolders"];
+    [(ICCloudSyncingObject *)&v9 setNeedsInitialFetchFromCloud:cloudCopy];
+    account3 = [(ICFolder *)self account];
+    [account3 didChangeValueForKey:@"visibleFolders"];
 
-    v8 = [(ICFolder *)self account];
-    [v8 didChangeValueForKey:@"visibleNoteContainers"];
+    account4 = [(ICFolder *)self account];
+    [account4 didChangeValueForKey:@"visibleNoteContainers"];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
-  v4 = [(ICFolder *)self title];
-  v5 = [v6 isEqualToString:v4];
+  titleCopy = title;
+  title = [(ICFolder *)self title];
+  v5 = [titleCopy isEqualToString:title];
 
   if ((v5 & 1) == 0)
   {
     [(ICFolder *)self willChangeValueForKey:@"title"];
-    [(ICFolder *)self setPrimitiveValue:v6 forKey:@"title"];
+    [(ICFolder *)self setPrimitiveValue:titleCopy forKey:@"title"];
     [(ICFolder *)self didChangeValueForKey:@"title"];
   }
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  v13 = a3;
-  v4 = [(ICFolder *)self parent];
+  parentCopy = parent;
+  parent = [(ICFolder *)self parent];
 
-  v5 = v13;
-  if (v4 != v13)
+  v5 = parentCopy;
+  if (parent != parentCopy)
   {
-    if (v13 == self)
+    if (parentCopy == self)
     {
       v6 = MEMORY[0x277D36198];
       v7 = @"Cannot set a folder's parent to be itself";
@@ -2295,34 +2295,34 @@ LABEL_58:
 
     else
     {
-      if (![(ICFolder *)v13 isDescendantOfFolder:self])
+      if (![(ICFolder *)parentCopy isDescendantOfFolder:self])
       {
-        v8 = [(ICFolder *)self parent];
-        v9 = [(ICFolder *)self account];
-        [v9 willChangeValueForKey:@"visibleNoteContainerChildren"];
+        parent2 = [(ICFolder *)self parent];
+        account = [(ICFolder *)self account];
+        [account willChangeValueForKey:@"visibleNoteContainerChildren"];
 
         [(ICFolder *)self willChangeValueForKey:@"parent"];
         [(ICFolder *)self willChangeValueForKey:@"parentCloudObject"];
-        [v8 willChangeValueForKey:@"children"];
-        [(ICFolder *)v13 willChangeValueForKey:@"children"];
-        [(ICFolder *)self setPrimitiveValue:v13 forKey:@"parent"];
-        v10 = [v8 mutableSetValueForKey:@"children"];
+        [parent2 willChangeValueForKey:@"children"];
+        [(ICFolder *)parentCopy willChangeValueForKey:@"children"];
+        [(ICFolder *)self setPrimitiveValue:parentCopy forKey:@"parent"];
+        v10 = [parent2 mutableSetValueForKey:@"children"];
         [v10 removeObject:self];
 
-        v11 = [(ICFolder *)v13 mutableSetValueForKey:@"children"];
+        v11 = [(ICFolder *)parentCopy mutableSetValueForKey:@"children"];
         [v11 addObject:self];
 
-        [v8 didChangeValueForKey:@"children"];
-        [(ICFolder *)v13 didChangeValueForKey:@"children"];
+        [parent2 didChangeValueForKey:@"children"];
+        [(ICFolder *)parentCopy didChangeValueForKey:@"children"];
         [(ICFolder *)self didChangeValueForKey:@"parent"];
         [(ICFolder *)self didChangeValueForKey:@"parentCloudObject"];
-        v12 = [(ICFolder *)self account];
-        [v12 didChangeValueForKey:@"visibleNoteContainerChildren"];
+        account2 = [(ICFolder *)self account];
+        [account2 didChangeValueForKey:@"visibleNoteContainerChildren"];
 
         [(ICFolder *)self updateSortOrder];
         [(ICCloudSyncingObject *)self resetToIntrinsicNotesVersionAndPropagateToChildObjects];
-        [v8 markShareDirtyIfNeededWithReason:@"Reparented folder"];
-        [(ICCloudSyncingObject *)v13 markShareDirtyIfNeededWithReason:@"Reparented folder"];
+        [parent2 markShareDirtyIfNeededWithReason:@"Reparented folder"];
+        [(ICCloudSyncingObject *)parentCopy markShareDirtyIfNeededWithReason:@"Reparented folder"];
 
         goto LABEL_8;
       }
@@ -2333,23 +2333,23 @@ LABEL_58:
 
     [v6 handleFailedAssertWithCondition:"NO" functionName:"-[ICFolder setParent:]" simulateCrash:1 showAlert:1 alertMessage:@"An issue occured when moving a folder. Do you want to file a radar?" format:v7];
 LABEL_8:
-    v5 = v13;
+    v5 = parentCopy;
   }
 }
 
-- (BOOL)isAncestorOfFolder:(id)a3
+- (BOOL)isAncestorOfFolder:(id)folder
 {
-  v4 = a3;
-  v5 = [(ICFolder *)self account];
-  v6 = [v4 account];
+  folderCopy = folder;
+  account = [(ICFolder *)self account];
+  account2 = [folderCopy account];
 
-  if (v5 == v6)
+  if (account == account2)
   {
-    v8 = [v4 parent];
-    v9 = v8;
-    if (v8)
+    parent = [folderCopy parent];
+    v9 = parent;
+    if (parent)
     {
-      v7 = v8 == self || [(ICFolder *)self isAncestorOfFolder:v8];
+      v7 = parent == self || [(ICFolder *)self isAncestorOfFolder:parent];
     }
 
     else
@@ -2368,8 +2368,8 @@ LABEL_8:
 
 - (NSArray)ancestorFolderObjectIDs
 {
-  v2 = [(ICCloudSyncingObject *)self ancestorCloudObjects];
-  v3 = [v2 ic_compactMap:&__block_literal_global_102];
+  ancestorCloudObjects = [(ICCloudSyncingObject *)self ancestorCloudObjects];
+  v3 = [ancestorCloudObjects ic_compactMap:&__block_literal_global_102];
 
   return v3;
 }
@@ -2385,33 +2385,33 @@ id __35__ICFolder_ancestorFolderObjectIDs__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICFolder *)self account];
-  if (([v5 isEqual:v4] & 1) == 0)
+  accountCopy = account;
+  account = [(ICFolder *)self account];
+  if (([account isEqual:accountCopy] & 1) == 0)
   {
     [(ICFolder *)self willChangeValueForKey:@"account"];
-    [(ICFolder *)self setPrimitiveValue:v4 forKey:@"account"];
-    v6 = [v5 mutableSetValueForKey:@"folders"];
+    [(ICFolder *)self setPrimitiveValue:accountCopy forKey:@"account"];
+    v6 = [account mutableSetValueForKey:@"folders"];
     [v6 removeObject:self];
 
-    v7 = [v4 mutableSetValueForKey:@"folders"];
+    v7 = [accountCopy mutableSetValueForKey:@"folders"];
     [v7 addObject:self];
 
     [(ICFolder *)self didChangeValueForKey:@"account"];
-    [(ICFolder *)self setOwner:v4];
-    v8 = [v4 accountNameForAccountListSorting];
-    [(ICFolder *)self setAccountNameForAccountListSorting:v8];
+    [(ICFolder *)self setOwner:accountCopy];
+    accountNameForAccountListSorting = [accountCopy accountNameForAccountListSorting];
+    [(ICFolder *)self setAccountNameForAccountListSorting:accountNameForAccountListSorting];
 
     [(ICFolder *)self updateSortOrder];
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v9 = [(ICFolder *)self children];
-    v10 = [v9 copy];
+    children = [(ICFolder *)self children];
+    v10 = [children copy];
 
     v11 = [v10 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v11)
@@ -2428,7 +2428,7 @@ id __35__ICFolder_ancestorFolderObjectIDs__block_invoke(uint64_t a1, void *a2)
             objc_enumerationMutation(v10);
           }
 
-          [*(*(&v26 + 1) + 8 * v14++) setAccount:v4];
+          [*(*(&v26 + 1) + 8 * v14++) setAccount:accountCopy];
         }
 
         while (v12 != v14);
@@ -2442,8 +2442,8 @@ id __35__ICFolder_ancestorFolderObjectIDs__block_invoke(uint64_t a1, void *a2)
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v15 = [(ICFolder *)self notes];
-    v16 = [v15 copy];
+    notes = [(ICFolder *)self notes];
+    v16 = [notes copy];
 
     v17 = [v16 countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v17)
@@ -2460,7 +2460,7 @@ id __35__ICFolder_ancestorFolderObjectIDs__block_invoke(uint64_t a1, void *a2)
             objc_enumerationMutation(v16);
           }
 
-          [*(*(&v22 + 1) + 8 * v20++) setAccount:v4];
+          [*(*(&v22 + 1) + 8 * v20++) setAccount:accountCopy];
         }
 
         while (v18 != v20);
@@ -2473,12 +2473,12 @@ id __35__ICFolder_ancestorFolderObjectIDs__block_invoke(uint64_t a1, void *a2)
     v21 = os_log_create("com.apple.notes", "Accounts");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      [(ICFolder *)v4 setAccount:v21];
+      [(ICFolder *)accountCopy setAccount:v21];
     }
   }
 }
 
-- (int64_t)intrinsicNotesVersionForScenario:(unint64_t)a3
+- (int64_t)intrinsicNotesVersionForScenario:(unint64_t)scenario
 {
   if ([(ICCloudSyncingObject *)self isUnsupported]|| [(ICCloudSyncingObject *)self needsInitialFetchFromCloudCheckingParent])
   {
@@ -2490,56 +2490,56 @@ id __35__ICFolder_ancestorFolderObjectIDs__block_invoke(uint64_t a1, void *a2)
   {
     if ([(ICFolder *)self isSmartFolder])
     {
-      v6 = [(ICFolder *)self smartFolderQuery];
-      v7 = [v6 minimumSupportedVersion];
+      smartFolderQuery = [(ICFolder *)self smartFolderQuery];
+      minimumSupportedVersion = [smartFolderQuery minimumSupportedVersion];
     }
 
     else if ([(ICCloudSyncingObject *)self isSharedRootObject])
     {
-      v7 = 4;
+      minimumSupportedVersion = 4;
     }
 
     else
     {
-      v7 = 0;
+      minimumSupportedVersion = 0;
     }
 
     v8.receiver = self;
     v8.super_class = ICFolder;
-    result = [(ICCloudSyncingObject *)&v8 intrinsicNotesVersionForScenario:a3];
-    if (v7 > result)
+    result = [(ICCloudSyncingObject *)&v8 intrinsicNotesVersionForScenario:scenario];
+    if (minimumSupportedVersion > result)
     {
-      return v7;
+      return minimumSupportedVersion;
     }
   }
 
   return result;
 }
 
-+ (id)contentInfoTextWithNoteCount:(int64_t)a3 subfolderCount:(int64_t)a4
++ (id)contentInfoTextWithNoteCount:(int64_t)count subfolderCount:(int64_t)subfolderCount
 {
-  v6 = [MEMORY[0x277CBEB18] array];
-  if (a4)
+  array = [MEMORY[0x277CBEB18] array];
+  if (subfolderCount)
   {
     v7 = MEMORY[0x277CCACA8];
     v8 = __ICLocalizedFrameworkString_impl(@"%lu Folders", @"%lu Folders", 0, 1);
-    v9 = [v7 localizedStringWithFormat:v8, a4];
+    subfolderCount = [v7 localizedStringWithFormat:v8, subfolderCount];
 
-    [v6 addObject:v9];
+    [array addObject:subfolderCount];
   }
 
-  if (a3)
+  if (count)
   {
     v10 = MEMORY[0x277CCACA8];
     v11 = __ICLocalizedFrameworkString_impl(@"%lu Notes", @"%lu Notes", 0, 1);
-    v12 = [v10 localizedStringWithFormat:v11, a3];
+    v12 = [v10 localizedStringWithFormat:v11, count];
 
-    [v6 addObject:v12];
+    [array addObject:v12];
   }
 
-  if ([v6 count])
+  if ([array count])
   {
-    v13 = [v6 componentsJoinedByString:@" · "];
+    v13 = [array componentsJoinedByString:@" · "];
   }
 
   else
@@ -2552,15 +2552,15 @@ id __35__ICFolder_ancestorFolderObjectIDs__block_invoke(uint64_t a1, void *a2)
 
 - (void)markForDeletion
 {
-  v1 = [a1 serverShare];
+  serverShare = [self serverShare];
   OUTLINED_FUNCTION_0_9();
   OUTLINED_FUNCTION_3_1(&dword_214D51000, v2, v3, "A shared folder is deleted but may have not been unshared yet: %@, share: %@", v4, v5, v6, v7, v8);
 }
 
-- (void)setMarkedForDeletion:(BOOL)a3
+- (void)setMarkedForDeletion:(BOOL)deletion
 {
-  v3 = a3;
-  if (a3 && ![(ICFolder *)self isDeletable])
+  deletionCopy = deletion;
+  if (deletion && ![(ICFolder *)self isDeletable])
   {
     v6 = os_log_create("com.apple.notes", "Delete");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -2572,35 +2572,35 @@ id __35__ICFolder_ancestorFolderObjectIDs__block_invoke(uint64_t a1, void *a2)
   else
   {
     [(ICFolder *)self willChangeValueForKey:@"markedForDeletion"];
-    v5 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+    v5 = [MEMORY[0x277CCABB0] numberWithBool:deletionCopy];
     [(ICFolder *)self setPrimitiveValue:v5 forKey:@"markedForDeletion"];
 
     [(ICFolder *)self didChangeValueForKey:@"markedForDeletion"];
-    v7 = [(ICFolder *)self account];
-    [v7 setMarkedForDeletion:0];
+    account = [(ICFolder *)self account];
+    [account setMarkedForDeletion:0];
   }
 }
 
-- (void)updateChangeCountWithReason:(id)a3
+- (void)updateChangeCountWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v11.receiver = self;
   v11.super_class = ICFolder;
-  [(ICCloudSyncingObject *)&v11 updateChangeCountWithReason:v4];
-  v5 = [(ICFolder *)self changedValues];
+  [(ICCloudSyncingObject *)&v11 updateChangeCountWithReason:reasonCopy];
+  changedValues = [(ICFolder *)self changedValues];
   v6 = NSStringFromSelector(sel_title);
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [changedValues objectForKeyedSubscript:v6];
   if (v7)
   {
 
 LABEL_4:
-    [(ICCloudSyncingObject *)self updateUserSpecificChangeCountWithReason:v4];
+    [(ICCloudSyncingObject *)self updateUserSpecificChangeCountWithReason:reasonCopy];
     goto LABEL_5;
   }
 
-  v8 = [(ICFolder *)self changedValues];
+  changedValues2 = [(ICFolder *)self changedValues];
   v9 = NSStringFromSelector(sel_parent);
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v10 = [changedValues2 objectForKeyedSubscript:v9];
 
   if (v10)
   {
@@ -2617,37 +2617,37 @@ LABEL_5:
     return 0;
   }
 
-  v4 = [(ICFolder *)self customNoteSortType];
-  v3 = [v4 resolvedCustomSortTypeOrder] != 3;
+  customNoteSortType = [(ICFolder *)self customNoteSortType];
+  v3 = [customNoteSortType resolvedCustomSortTypeOrder] != 3;
 
   return v3;
 }
 
 - (BOOL)isShowingDateHeaders
 {
-  LODWORD(v3) = [(ICFolder *)self supportsDateHeaders];
-  if (v3)
+  LODWORD(dateHeadersType) = [(ICFolder *)self supportsDateHeaders];
+  if (dateHeadersType)
   {
-    v3 = [(ICFolder *)self dateHeadersType];
-    if (v3)
+    dateHeadersType = [(ICFolder *)self dateHeadersType];
+    if (dateHeadersType)
     {
-      LOBYTE(v3) = v3 == 2;
+      LOBYTE(dateHeadersType) = dateHeadersType == 2;
     }
 
     else
     {
-      LOBYTE(v3) = [MEMORY[0x277D361C8] defaultDateHeadersType] == 2;
+      LOBYTE(dateHeadersType) = [MEMORY[0x277D361C8] defaultDateHeadersType] == 2;
     }
   }
 
-  return v3;
+  return dateHeadersType;
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v6.receiver = self;
   v6.super_class = ICFolder;
-  v4 = [(ICFolder *)&v6 validateForInsert:a3];
+  v4 = [(ICFolder *)&v6 validateForInsert:insert];
   if (v4)
   {
     LOBYTE(v4) = [(ICFolder *)self validate];
@@ -2656,11 +2656,11 @@ LABEL_5:
   return v4;
 }
 
-- (BOOL)validateForUpdate:(id *)a3
+- (BOOL)validateForUpdate:(id *)update
 {
   v6.receiver = self;
   v6.super_class = ICFolder;
-  v4 = [(ICFolder *)&v6 validateForUpdate:a3];
+  v4 = [(ICFolder *)&v6 validateForUpdate:update];
   if (v4)
   {
     LOBYTE(v4) = [(ICFolder *)self validate];
@@ -2671,48 +2671,48 @@ LABEL_5:
 
 - (BOOL)validate
 {
-  v3 = [(ICFolder *)self depth];
-  if (v3 > +[ICFolder folderDepthLimit])
+  depth = [(ICFolder *)self depth];
+  if (depth > +[ICFolder folderDepthLimit])
   {
-    v4 = [(ICFolder *)self parent];
-    v5 = [v4 parent];
-    [(ICFolder *)self setParent:v5];
+    parent = [(ICFolder *)self parent];
+    v4Parent = [parent parent];
+    [(ICFolder *)self setParent:v4Parent];
   }
 
-  v6 = [(ICFolder *)self title];
-  if (!v6 || (v7 = v6, -[ICFolder title](self, "title"), v8 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "stringByTrimmingCharactersInSet:", v9), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v9, v8, v7, !v11))
+  title = [(ICFolder *)self title];
+  if (!title || (v7 = title, -[ICFolder title](self, "title"), v8 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "stringByTrimmingCharactersInSet:", v9), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v9, v8, v7, !v11))
   {
     v12 = objc_opt_class();
-    v13 = [objc_opt_class() localizedNewFolderName];
-    v14 = [(ICFolder *)self parent];
-    v15 = [(ICFolder *)self account];
-    v16 = [v12 deduplicatingTitle:v13 forFolder:self forNewFolderParent:v14 ofAccount:v15];
+    localizedNewFolderName = [objc_opt_class() localizedNewFolderName];
+    parent2 = [(ICFolder *)self parent];
+    account = [(ICFolder *)self account];
+    v16 = [v12 deduplicatingTitle:localizedNewFolderName forFolder:self forNewFolderParent:parent2 ofAccount:account];
     [(ICFolder *)self setTitle:v16];
   }
 
   return 1;
 }
 
-- (BOOL)isTitleValid:(id)a3 error:(id *)a4
+- (BOOL)isTitleValid:(id)valid error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ICFolder *)self account];
-  v8 = [(ICFolder *)self parent];
-  LOBYTE(a4) = [ICFolder isTitleValid:v6 account:v7 folder:self parentFolder:v8 error:a4];
+  validCopy = valid;
+  account = [(ICFolder *)self account];
+  parent = [(ICFolder *)self parent];
+  LOBYTE(error) = [ICFolder isTitleValid:validCopy account:account folder:self parentFolder:parent error:error];
 
-  return a4;
+  return error;
 }
 
-+ (BOOL)isTitleValid:(id)a3 account:(id)a4 folder:(id)a5 parentFolder:(id)a6 error:(id *)a7
++ (BOOL)isTitleValid:(id)valid account:(id)account folder:(id)folder parentFolder:(id)parentFolder error:(id *)error
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  validCopy = valid;
+  accountCopy = account;
+  folderCopy = folder;
+  parentFolderCopy = parentFolder;
+  if (validCopy)
   {
-    v15 = v11;
+    v15 = validCopy;
   }
 
   else
@@ -2720,12 +2720,12 @@ LABEL_5:
     v15 = &stru_2827172C0;
   }
 
-  v16 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v17 = [(__CFString *)v15 stringByTrimmingCharactersInSet:v16];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v17 = [(__CFString *)v15 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if (![v17 length])
   {
-    if (a7)
+    if (error)
     {
       v18 = __ICLocalizedFrameworkString_impl(@"Please choose a different name.", @"Please choose a different name.", 0, 1);
       v21 = __ICLocalizedFrameworkString_impl(@"Folder names can’t be blank.", @"Folder names can’t be blank.", 0, 1);
@@ -2741,7 +2741,7 @@ LABEL_19:
 
   if ([v17 length] >= 0x81)
   {
-    if (a7)
+    if (error)
     {
       v18 = __ICLocalizedFrameworkString_impl(@"Please choose a different name.", @"Please choose a different name.", 0, 1);
       v19 = MEMORY[0x277CCACA8];
@@ -2759,7 +2759,7 @@ LABEL_17:
         v35[0] = v18;
         v35[1] = v21;
         v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
-        *a7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:1024 userInfo:v32];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:1024 userInfo:v32];
 
         v22 = 0;
       }
@@ -2770,12 +2770,12 @@ LABEL_17:
     goto LABEL_19;
   }
 
-  v23 = [v12 visibleFoldersWithParent:v14];
+  v23 = [accountCopy visibleFoldersWithParent:parentFolderCopy];
   v24 = [v23 mutableCopy];
 
-  if (v13)
+  if (folderCopy)
   {
-    [v24 removeObject:v13];
+    [v24 removeObject:folderCopy];
   }
 
   v25 = [v24 valueForKey:@"title"];
@@ -2784,14 +2784,14 @@ LABEL_17:
   v27 = +[ICFolder reservedFolderTitles];
   [v26 unionSet:v27];
 
-  v28 = [v12 reservedAccountFolderTitles];
-  [v26 unionSet:v28];
+  reservedAccountFolderTitles = [accountCopy reservedAccountFolderTitles];
+  [v26 unionSet:reservedAccountFolderTitles];
 
   v29 = [v26 containsObject:v17];
   v30 = v29;
   v21 = 0;
   v18 = 0;
-  if (a7 && v29)
+  if (error && v29)
   {
     v18 = __ICLocalizedFrameworkString_impl(@"Name Taken", @"Name Taken", 0, 1);
     v21 = __ICLocalizedFrameworkString_impl(@"Please choose a different name.", @"Please choose a different name.", 0, 1);
@@ -2799,7 +2799,7 @@ LABEL_17:
 
   v22 = v30 ^ 1;
 
-  if (a7)
+  if (error)
   {
     goto LABEL_17;
   }
@@ -2809,28 +2809,28 @@ LABEL_20:
   return v22;
 }
 
-- (BOOL)visibleChildFoldersContainsFolderWithTitle:(id)a3
+- (BOOL)visibleChildFoldersContainsFolderWithTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(ICFolder *)self account];
-  v6 = [v5 visibleFoldersWithParent:self];
+  titleCopy = title;
+  account = [(ICFolder *)self account];
+  v6 = [account visibleFoldersWithParent:self];
 
   v7 = [v6 valueForKey:@"title"];
-  v8 = [v7 containsObject:v4];
+  v8 = [v7 containsObject:titleCopy];
 
   return v8;
 }
 
-- (id)visibleChildFolderWithTitle:(id)a3
+- (id)visibleChildFolderWithTitle:(id)title
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  titleCopy = title;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(ICFolder *)self account];
-  v6 = [v5 visibleFoldersWithParent:self];
+  account = [(ICFolder *)self account];
+  v6 = [account visibleFoldersWithParent:self];
 
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
@@ -2846,8 +2846,8 @@ LABEL_20:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 title];
-        v12 = [v11 isEqualToString:v4];
+        title = [v10 title];
+        v12 = [title isEqualToString:titleCopy];
 
         if (v12)
         {
@@ -2873,25 +2873,25 @@ LABEL_11:
 
 - (id)accountName
 {
-  v2 = [(ICFolder *)self account];
-  v3 = [v2 localizedName];
+  account = [(ICFolder *)self account];
+  localizedName = [account localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (id)visibleNotesIncludingChildFolders
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(ICFolder *)self visibleNotes];
-  v5 = [v3 arrayWithArray:v4];
+  visibleNotes = [(ICFolder *)self visibleNotes];
+  v5 = [v3 arrayWithArray:visibleNotes];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(ICFolder *)self children];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  children = [(ICFolder *)self children];
+  v7 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2902,14 +2902,14 @@ LABEL_11:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(children);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) visibleNotesIncludingChildFolders];
-        [v5 addObjectsFromArray:v11];
+        visibleNotesIncludingChildFolders = [*(*(&v14 + 1) + 8 * i) visibleNotesIncludingChildFolders];
+        [v5 addObjectsFromArray:visibleNotesIncludingChildFolders];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -2922,8 +2922,8 @@ LABEL_11:
 
 - (id)recursiveVisibleSubfolders
 {
-  v3 = [(ICFolder *)self visibleNoteContainerChildrenUnsorted];
-  v4 = [v3 count];
+  visibleNoteContainerChildrenUnsorted = [(ICFolder *)self visibleNoteContainerChildrenUnsorted];
+  v4 = [visibleNoteContainerChildrenUnsorted count];
 
   if (v4)
   {
@@ -2940,17 +2940,17 @@ LABEL_11:
   return v6;
 }
 
-- (void)recursivelyAddSubfoldersToArray:(id)a3
+- (void)recursivelyAddSubfoldersToArray:(id)array
 {
-  v4 = a3;
-  v5 = [(ICFolder *)self visibleNoteContainerChildrenUnsorted];
+  arrayCopy = array;
+  visibleNoteContainerChildrenUnsorted = [(ICFolder *)self visibleNoteContainerChildrenUnsorted];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__ICFolder_recursivelyAddSubfoldersToArray___block_invoke;
   v7[3] = &unk_278197D70;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = arrayCopy;
+  v6 = arrayCopy;
+  [visibleNoteContainerChildrenUnsorted enumerateObjectsUsingBlock:v7];
 }
 
 void __44__ICFolder_recursivelyAddSubfoldersToArray___block_invoke(uint64_t a1, void *a2)
@@ -2977,12 +2977,12 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v5 = [(ICFolder *)self title];
-  v6 = v5;
+  title = [(ICFolder *)self title];
+  v6 = title;
   v7 = &stru_2827172C0;
-  if (v5)
+  if (title)
   {
-    v7 = v5;
+    v7 = title;
   }
 
   v4 = v7;
@@ -2996,18 +2996,18 @@ LABEL_9:
 {
   v12.receiver = self;
   v12.super_class = ICFolder;
-  v3 = [(ICCloudSyncingObject *)&v12 ic_loggingValues];
-  v4 = [v3 mutableCopy];
+  ic_loggingValues = [(ICCloudSyncingObject *)&v12 ic_loggingValues];
+  v4 = [ic_loggingValues mutableCopy];
 
-  v5 = [(ICFolder *)self managedObjectContext];
+  managedObjectContext = [(ICFolder *)self managedObjectContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __28__ICFolder_ic_loggingValues__block_invoke;
   v9[3] = &unk_278194AD8;
   v6 = v4;
   v10 = v6;
-  v11 = self;
-  [v5 performBlockAndWait:v9];
+  selfCopy = self;
+  [managedObjectContext performBlockAndWait:v9];
 
   v7 = v6;
   return v6;
@@ -3077,7 +3077,7 @@ void __28__ICFolder_ic_loggingValues__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)containsSharedDescendantFolders:(BOOL *)a3
+- (BOOL)containsSharedDescendantFolders:(BOOL *)folders
 {
   v12 = 0;
   v13 = &v12;
@@ -3087,18 +3087,18 @@ void __28__ICFolder_ic_loggingValues__block_invoke(uint64_t a1)
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v4 = [(ICFolder *)self recursiveVisibleSubfolders];
+  recursiveVisibleSubfolders = [(ICFolder *)self recursiveVisibleSubfolders];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__ICFolder_containsSharedDescendantFolders___block_invoke;
   v7[3] = &unk_278197D98;
   v7[4] = &v8;
   v7[5] = &v12;
-  v7[6] = a3;
-  [v4 enumerateObjectsUsingBlock:v7];
-  if (a3)
+  v7[6] = folders;
+  [recursiveVisibleSubfolders enumerateObjectsUsingBlock:v7];
+  if (folders)
   {
-    *a3 = *(v13 + 24);
+    *folders = *(v13 + 24);
   }
 
   v5 = *(v9 + 24);
@@ -3129,7 +3129,7 @@ void __44__ICFolder_containsSharedDescendantFolders___block_invoke(void *a1, voi
   }
 }
 
-- (BOOL)containsSharedNotesOrSharedDescendantFolders:(BOOL *)a3
+- (BOOL)containsSharedNotesOrSharedDescendantFolders:(BOOL *)folders
 {
   v14 = 0;
   v15 = &v14;
@@ -3143,7 +3143,7 @@ void __44__ICFolder_containsSharedDescendantFolders___block_invoke(void *a1, voi
   *(v15 + 24) = v5;
   if (v5)
   {
-    if (!a3)
+    if (!folders)
     {
       goto LABEL_6;
     }
@@ -3151,22 +3151,22 @@ void __44__ICFolder_containsSharedDescendantFolders___block_invoke(void *a1, voi
     if (*(v11 + 24) != 1)
     {
 LABEL_5:
-      *a3 = *(v11 + 24);
+      *folders = *(v11 + 24);
       goto LABEL_6;
     }
   }
 
-  v6 = [(ICFolder *)self visibleNotesIncludingChildFolders];
+  visibleNotesIncludingChildFolders = [(ICFolder *)self visibleNotesIncludingChildFolders];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__ICFolder_containsSharedNotesOrSharedDescendantFolders___block_invoke;
   v9[3] = &unk_278197DC0;
   v9[4] = &v14;
   v9[5] = &v10;
-  v9[6] = a3;
-  [v6 enumerateObjectsUsingBlock:v9];
+  v9[6] = folders;
+  [visibleNotesIncludingChildFolders enumerateObjectsUsingBlock:v9];
 
-  if (a3)
+  if (folders)
   {
     goto LABEL_5;
   }
@@ -3201,25 +3201,25 @@ void __57__ICFolder_containsSharedNotesOrSharedDescendantFolders___block_invoke(
 
 - (id)rootSharedFoldersInDescendantsIncludingSelf
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(ICCloudSyncingObject *)self isSharedRootObject])
   {
-    [v3 addObject:self];
+    [array addObject:self];
   }
 
-  v4 = [(ICFolder *)self recursiveVisibleSubfolders];
-  v5 = [v4 ic_objectsPassingTest:&__block_literal_global_183];
-  [v3 addObjectsFromArray:v5];
+  recursiveVisibleSubfolders = [(ICFolder *)self recursiveVisibleSubfolders];
+  v5 = [recursiveVisibleSubfolders ic_objectsPassingTest:&__block_literal_global_183];
+  [array addObjectsFromArray:v5];
 
-  v6 = [v3 copy];
+  v6 = [array copy];
 
   return v6;
 }
 
 - (id)rootSharedNotesIncludingChildFolders
 {
-  v2 = [(ICFolder *)self visibleNotesIncludingChildFolders];
-  v3 = [v2 ic_objectsPassingTest:&__block_literal_global_186];
+  visibleNotesIncludingChildFolders = [(ICFolder *)self visibleNotesIncludingChildFolders];
+  v3 = [visibleNotesIncludingChildFolders ic_objectsPassingTest:&__block_literal_global_186];
 
   return v3;
 }
@@ -3228,57 +3228,57 @@ void __57__ICFolder_containsSharedNotesOrSharedDescendantFolders___block_invoke(
 {
   if ([(ICNoteContainer *)self isSharedViaICloud])
   {
-    v3 = self;
-    if (v3)
+    selfCopy = self;
+    if (selfCopy)
     {
       do
       {
-        if ([(ICCloudSyncingObject *)v3 isSharedRootObject])
+        if ([(ICCloudSyncingObject *)selfCopy isSharedRootObject])
         {
           break;
         }
 
-        v4 = [(ICFolder *)v3 parent];
+        parent = [(ICFolder *)selfCopy parent];
 
-        v3 = v4;
+        selfCopy = parent;
       }
 
-      while (v4);
+      while (parent);
     }
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-+ (id)rootSharingFolderForNote:(id)a3
++ (id)rootSharingFolderForNote:(id)note
 {
-  v3 = [a3 folder];
-  v4 = [v3 rootSharingFolder];
+  folder = [note folder];
+  rootSharingFolder = [folder rootSharingFolder];
 
-  return v4;
+  return rootSharingFolder;
 }
 
-- (BOOL)isSharedViaSharedFolder:(id)a3
+- (BOOL)isSharedViaSharedFolder:(id)folder
 {
-  v4 = a3;
-  if (-[ICNoteContainer isSharedViaICloud](self, "isSharedViaICloud") && [v4 isSharedViaICloud])
+  folderCopy = folder;
+  if (-[ICNoteContainer isSharedViaICloud](self, "isSharedViaICloud") && [folderCopy isSharedViaICloud])
   {
-    v5 = [(ICFolder *)self rootSharingFolder];
-    v6 = [v5 identifier];
-    v7 = [v4 identifier];
-    if ([v6 isEqualToString:v7])
+    rootSharingFolder = [(ICFolder *)self rootSharingFolder];
+    identifier = [rootSharingFolder identifier];
+    identifier2 = [folderCopy identifier];
+    if ([identifier isEqualToString:identifier2])
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [v4 isDescendantOfFolder:v5];
+      v8 = [folderCopy isDescendantOfFolder:rootSharingFolder];
     }
   }
 
@@ -3290,23 +3290,23 @@ void __57__ICFolder_containsSharedNotesOrSharedDescendantFolders___block_invoke(
   return v8;
 }
 
-- (BOOL)hasSharedContentsNotSharedViaSharedFolder:(id)a3
+- (BOOL)hasSharedContentsNotSharedViaSharedFolder:(id)folder
 {
-  v4 = a3;
-  if (-[ICNoteContainer isSharedViaICloud](self, "isSharedViaICloud") && !-[ICFolder isSharedViaSharedFolder:](self, "isSharedViaSharedFolder:", v4) || (-[ICFolder rootSharedNotesIncludingChildFolders](self, "rootSharedNotesIncludingChildFolders"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6))
+  folderCopy = folder;
+  if (-[ICNoteContainer isSharedViaICloud](self, "isSharedViaICloud") && !-[ICFolder isSharedViaSharedFolder:](self, "isSharedViaSharedFolder:", folderCopy) || (-[ICFolder rootSharedNotesIncludingChildFolders](self, "rootSharedNotesIncludingChildFolders"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6))
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [(ICFolder *)self rootSharedFoldersInDescendantsIncludingSelf];
+    rootSharedFoldersInDescendantsIncludingSelf = [(ICFolder *)self rootSharedFoldersInDescendantsIncludingSelf];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __54__ICFolder_hasSharedContentsNotSharedViaSharedFolder___block_invoke;
     v10[3] = &unk_278197DE8;
-    v11 = v4;
-    v7 = [v8 ic_containsObjectPassingTest:v10];
+    v11 = folderCopy;
+    v7 = [rootSharedFoldersInDescendantsIncludingSelf ic_containsObjectPassingTest:v10];
   }
 
   return v7;
@@ -3314,16 +3314,16 @@ void __57__ICFolder_containsSharedNotesOrSharedDescendantFolders___block_invoke(
 
 - (id)childCloudObjects
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(ICFolder *)self notes];
-  v5 = [v4 allObjects];
-  [v3 addObjectsFromArray:v5];
+  array = [MEMORY[0x277CBEB18] array];
+  notes = [(ICFolder *)self notes];
+  allObjects = [notes allObjects];
+  [array addObjectsFromArray:allObjects];
 
-  v6 = [(ICFolder *)self children];
-  v7 = [v6 allObjects];
-  [v3 addObjectsFromArray:v7];
+  children = [(ICFolder *)self children];
+  allObjects2 = [children allObjects];
+  [array addObjectsFromArray:allObjects2];
 
-  return v3;
+  return array;
 }
 
 - (id)shareType
@@ -3335,7 +3335,7 @@ void __57__ICFolder_containsSharedNotesOrSharedDescendantFolders___block_invoke(
 
 + (id)keyPathsForValuesAffectingCanBeSharedViaICloud
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___ICFolder;
   v2 = objc_msgSendSuper2(&v5, sel_keyPathsForValuesAffectingCanBeSharedViaICloud);
   v3 = [v2 mutableCopy];
@@ -3349,31 +3349,31 @@ void __57__ICFolder_containsSharedNotesOrSharedDescendantFolders___block_invoke(
 
 - (BOOL)canBeSharedViaICloud
 {
-  v3 = [(ICFolder *)self isModernCustomFolder];
-  if (v3)
+  isModernCustomFolder = [(ICFolder *)self isModernCustomFolder];
+  if (isModernCustomFolder)
   {
     if ([(ICFolder *)self isSmartFolder])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isModernCustomFolder) = 0;
     }
 
     else
     {
       v5.receiver = self;
       v5.super_class = ICFolder;
-      LOBYTE(v3) = [(ICNoteContainer *)&v5 canBeSharedViaICloud];
+      LOBYTE(isModernCustomFolder) = [(ICNoteContainer *)&v5 canBeSharedViaICloud];
     }
   }
 
-  return v3;
+  return isModernCustomFolder;
 }
 
-- (void)setFolderType:(signed __int16)a3
+- (void)setFolderType:(signed __int16)type
 {
-  v3 = a3;
-  if ([(ICFolder *)self folderType]!= a3)
+  typeCopy = type;
+  if ([(ICFolder *)self folderType]!= type)
   {
-    if ((v3 & 0xFFFFFFFE) == 2 && ([(ICFolder *)self isDefaultFolderForAccount]|| [(ICFolder *)self isTrashFolder]))
+    if ((typeCopy & 0xFFFFFFFE) == 2 && ([(ICFolder *)self isDefaultFolderForAccount]|| [(ICFolder *)self isTrashFolder]))
     {
       v5 = MEMORY[0x277D36198];
 
@@ -3382,40 +3382,40 @@ void __57__ICFolder_containsSharedNotesOrSharedDescendantFolders___block_invoke(
 
     else
     {
-      v6 = [(ICCloudSyncingObject *)self intrinsicNotesVersion];
+      intrinsicNotesVersion = [(ICCloudSyncingObject *)self intrinsicNotesVersion];
       [(ICFolder *)self willChangeValueForKey:@"folderType"];
-      v7 = [MEMORY[0x277CCABB0] numberWithShort:v3];
+      v7 = [MEMORY[0x277CCABB0] numberWithShort:typeCopy];
       [(ICFolder *)self setPrimitiveValue:v7 forKey:@"folderType"];
 
       [(ICFolder *)self didChangeValueForKey:@"folderType"];
-      if ([(ICCloudSyncingObject *)self intrinsicNotesVersion]!= v6)
+      if ([(ICCloudSyncingObject *)self intrinsicNotesVersion]!= intrinsicNotesVersion)
       {
         [(ICCloudSyncingObject *)self resetToIntrinsicNotesVersionAndPropagateToChildObjects];
       }
 
-      if (v3 == 2)
+      if (typeCopy == 2)
       {
-        v10 = [MEMORY[0x277CCAB98] defaultCenter];
-        v8 = [(ICFolder *)self account];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        account = [(ICFolder *)self account];
         v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{self, @"ICAccountDidAddSmartFolderNotificationFolderKey", 0}];
-        [v10 postNotificationName:@"ICSmartFolderAddedNotification" object:v8 userInfo:v9];
+        [defaultCenter postNotificationName:@"ICSmartFolderAddedNotification" object:account userInfo:v9];
       }
     }
   }
 }
 
-- (void)setSmartFolderQueryJSON:(id)a3
+- (void)setSmartFolderQueryJSON:(id)n
 {
-  v6 = a3;
-  v4 = [(ICFolder *)self smartFolderQueryJSON];
-  v5 = [v6 isEqualToString:v4];
+  nCopy = n;
+  smartFolderQueryJSON = [(ICFolder *)self smartFolderQueryJSON];
+  v5 = [nCopy isEqualToString:smartFolderQueryJSON];
 
   if ((v5 & 1) == 0)
   {
     [(ICFolder *)self willChangeValueForKey:@"smartFolderQueryJSON"];
-    [(ICFolder *)self setPrimitiveValue:v6 forKey:@"smartFolderQueryJSON"];
+    [(ICFolder *)self setPrimitiveValue:nCopy forKey:@"smartFolderQueryJSON"];
     [(ICFolder *)self didChangeValueForKey:@"smartFolderQueryJSON"];
-    if (v6)
+    if (nCopy)
     {
       [(ICFolder *)self setFolderType:2];
     }
@@ -3426,45 +3426,45 @@ void __57__ICFolder_containsSharedNotesOrSharedDescendantFolders___block_invoke(
 
 - (BOOL)isEditableSmartFolder
 {
-  v3 = [(ICFolder *)self isSmartFolder];
-  if (v3)
+  isSmartFolder = [(ICFolder *)self isSmartFolder];
+  if (isSmartFolder)
   {
-    v4 = [(ICFolder *)self smartFolderQuery];
-    v5 = [v4 canBeEdited];
+    smartFolderQuery = [(ICFolder *)self smartFolderQuery];
+    canBeEdited = [smartFolderQuery canBeEdited];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isSmartFolder) = canBeEdited;
   }
 
-  return v3;
+  return isSmartFolder;
 }
 
-+ (id)visibleSmartFoldersForHashtagStandardizedContent:(id)a3 account:(id)a4
++ (id)visibleSmartFoldersForHashtagStandardizedContent:(id)content account:(id)account
 {
   v27[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  contentCopy = content;
+  accountCopy = account;
+  if ([contentCopy length])
   {
-    v8 = [a1 fetchRequest];
+    fetchRequest = [self fetchRequest];
     v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"folderType == %d", 2];
     v10 = MEMORY[0x277CCAC30];
-    v11 = [v7 identifier];
-    v12 = [v10 predicateWithFormat:@"account.identifier == %@", v11];
+    identifier = [accountCopy identifier];
+    v12 = [v10 predicateWithFormat:@"account.identifier == %@", identifier];
 
-    v13 = [a1 predicateForVisibleObjects];
+    predicateForVisibleObjects = [self predicateForVisibleObjects];
     v14 = MEMORY[0x277CCA920];
     v22 = v9;
     v27[0] = v9;
     v27[1] = v12;
-    v27[2] = v13;
+    v27[2] = predicateForVisibleObjects;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:3];
     v16 = [v14 andPredicateWithSubpredicates:v15];
 
-    [v8 setPredicate:v16];
-    [v8 setReturnsObjectsAsFaults:0];
-    v17 = [v7 managedObjectContext];
+    [fetchRequest setPredicate:v16];
+    [fetchRequest setReturnsObjectsAsFaults:0];
+    managedObjectContext = [accountCopy managedObjectContext];
     v26 = 0;
-    v18 = [v17 executeFetchRequest:v8 error:&v26];
+    v18 = [managedObjectContext executeFetchRequest:fetchRequest error:&v26];
     v19 = v26;
     if (v19)
     {
@@ -3478,8 +3478,8 @@ void __57__ICFolder_containsSharedNotesOrSharedDescendantFolders___block_invoke(
       v23[1] = 3221225472;
       v23[2] = __69__ICFolder_visibleSmartFoldersForHashtagStandardizedContent_account___block_invoke;
       v23[3] = &unk_278197E38;
-      v24 = v7;
-      v25 = v6;
+      v24 = accountCopy;
+      v25 = contentCopy;
       v20 = [v18 ic_compactMap:v23];
     }
   }
@@ -3524,90 +3524,90 @@ void *__69__ICFolder_visibleSmartFoldersForHashtagStandardizedContent_account___
   return v9;
 }
 
-+ (id)newFolderInAccount:(id)a3
++ (id)newFolderInAccount:(id)account
 {
   v4 = MEMORY[0x277CCAD78];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
-  v8 = [a1 newFolderWithIdentifier:v7 account:v5];
+  accountCopy = account;
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [self newFolderWithIdentifier:uUIDString account:accountCopy];
 
   return v8;
 }
 
-+ (id)newFolderWithIdentifier:(id)a3 account:(id)a4 query:(id)a5
++ (id)newFolderWithIdentifier:(id)identifier account:(id)account query:(id)query
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  identifierCopy = identifier;
+  accountCopy = account;
+  queryCopy = query;
+  if (!accountCopy)
   {
     v11 = MEMORY[0x277D36198];
-    v12 = NSStringFromClass(a1);
+    v12 = NSStringFromClass(self);
     [v11 handleFailedAssertWithCondition:"account" functionName:"+[ICFolder(Management) newFolderWithIdentifier:account:query:]" simulateCrash:1 showAlert:0 format:{@"Trying to create a %@ with no account", v12}];
   }
 
-  v13 = [v9 managedObjectContext];
-  v14 = [a1 newObjectWithIdentifier:v8 context:v13];
+  managedObjectContext = [accountCopy managedObjectContext];
+  v14 = [self newObjectWithIdentifier:identifierCopy context:managedObjectContext];
 
-  v15 = [v9 persistentStore];
-  [v14 assignToPersistentStore:v15];
+  persistentStore = [accountCopy persistentStore];
+  [v14 assignToPersistentStore:persistentStore];
 
-  [v14 setAccount:v9];
-  if (v10)
+  [v14 setAccount:accountCopy];
+  if (queryCopy)
   {
-    [v14 setSmartFolderQuery:v10];
+    [v14 setSmartFolderQuery:queryCopy];
   }
 
   return v14;
 }
 
-+ (id)newFolderInParentFolder:(id)a3
++ (id)newFolderInParentFolder:(id)folder
 {
   v4 = MEMORY[0x277CCAD78];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
-  v8 = [a1 newFolderWithIdentifier:v7 parentFolder:v5];
+  folderCopy = folder;
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [self newFolderWithIdentifier:uUIDString parentFolder:folderCopy];
 
   return v8;
 }
 
-+ (id)newFolderWithIdentifier:(id)a3 parentFolder:(id)a4
++ (id)newFolderWithIdentifier:(id)identifier parentFolder:(id)folder
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  folderCopy = folder;
+  if (!folderCopy)
   {
     v8 = MEMORY[0x277D36198];
-    v9 = NSStringFromClass(a1);
+    v9 = NSStringFromClass(self);
     [v8 handleFailedAssertWithCondition:"parentFolder" functionName:"+[ICFolder(Management) newFolderWithIdentifier:parentFolder:]" simulateCrash:1 showAlert:0 format:{@"Trying to create a %@ with no parent folder", v9}];
   }
 
-  v10 = [v7 account];
-  v11 = [a1 newFolderWithIdentifier:v6 account:v10];
+  account = [folderCopy account];
+  v11 = [self newFolderWithIdentifier:identifierCopy account:account];
 
-  [v11 setParent:v7];
+  [v11 setParent:folderCopy];
   return v11;
 }
 
-+ (void)deleteFolder:(id)a3
++ (void)deleteFolder:(id)folder
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  folderCopy = folder;
   v5 = os_log_create("com.apple.notes", "Delete");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(ICFolder(Management) *)v4 deleteFolder:v5];
+    [(ICFolder(Management) *)folderCopy deleteFolder:v5];
   }
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v27 = v4;
-  v6 = [v4 notes];
-  v7 = [v6 copy];
+  v27 = folderCopy;
+  notes = [folderCopy notes];
+  v7 = [notes copy];
 
   v8 = [v7 countByEnumeratingWithState:&v36 objects:v47 count:16];
   if (v8)
@@ -3630,30 +3630,30 @@ void *__69__ICFolder_visibleSmartFoldersForHashtagStandardizedContent_account___
         v14 = os_log_create("com.apple.notes", "Delete");
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
-          v31 = [v13 account];
-          v30 = [v31 trashFolder];
-          v29 = [v30 identifier];
-          v18 = [v13 identifier];
-          v19 = [v13 account];
-          v20 = [v19 identifier];
+          account = [v13 account];
+          trashFolder = [account trashFolder];
+          identifier = [trashFolder identifier];
+          identifier2 = [v13 identifier];
+          account2 = [v13 account];
+          identifier3 = [account2 identifier];
           *buf = 138412802;
-          v42 = v29;
+          v42 = identifier;
           v43 = 2112;
-          v44 = v18;
+          v44 = identifier2;
           v45 = 2112;
-          v46 = v20;
+          v46 = identifier3;
           _os_log_debug_impl(&dword_214D51000, v14, OS_LOG_TYPE_DEBUG, "Setting trash folder %@ to note %@ in account %@", buf, 0x20u);
 
           v7 = v28;
           v11 = 0x278192000;
         }
 
-        v15 = [v13 account];
-        v16 = [v15 trashFolder];
-        [v13 setFolder:v16];
+        account3 = [v13 account];
+        trashFolder2 = [account3 trashFolder];
+        [v13 setFolder:trashFolder2];
 
-        v17 = [MEMORY[0x277CBEAA8] date];
-        [v13 setFolderModificationDate:v17];
+        date = [MEMORY[0x277CBEAA8] date];
+        [v13 setFolderModificationDate:date];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v36 objects:v47 count:16];
@@ -3666,8 +3666,8 @@ void *__69__ICFolder_visibleSmartFoldersForHashtagStandardizedContent_account___
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v21 = [v27 children];
-  v22 = [v21 copy];
+  children = [v27 children];
+  v22 = [children copy];
 
   v23 = [v22 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v23)
@@ -3683,7 +3683,7 @@ void *__69__ICFolder_visibleSmartFoldersForHashtagStandardizedContent_account___
           objc_enumerationMutation(v22);
         }
 
-        [a1 deleteFolder:*(*(&v32 + 1) + 8 * j)];
+        [self deleteFolder:*(*(&v32 + 1) + 8 * j)];
       }
 
       v24 = [v22 countByEnumeratingWithState:&v32 objects:v40 count:16];
@@ -3708,51 +3708,51 @@ void *__69__ICFolder_visibleSmartFoldersForHashtagStandardizedContent_account___
   return v2;
 }
 
-+ (void)purgeFolder:(id)a3
++ (void)purgeFolder:(id)folder
 {
-  v3 = a3;
-  v4 = [v3 managedObjectContext];
-  [v4 deleteObject:v3];
+  folderCopy = folder;
+  managedObjectContext = [folderCopy managedObjectContext];
+  [managedObjectContext deleteObject:folderCopy];
 }
 
-+ (id)defaultFolderInContext:(id)a3
++ (id)defaultFolderInContext:(id)context
 {
-  v3 = [ICAccount defaultAccountInContext:a3];
-  v4 = [v3 defaultFolder];
+  v3 = [ICAccount defaultAccountInContext:context];
+  defaultFolder = [v3 defaultFolder];
 
-  return v4;
+  return defaultFolder;
 }
 
-+ (ICFolder)folderWithIdentifier:(id)a3 context:(id)a4
++ (ICFolder)folderWithIdentifier:(id)identifier context:(id)context
 {
   v6 = MEMORY[0x277CCAC30];
-  v7 = a4;
-  v8 = [v6 predicateWithFormat:@"%K == %@", @"identifier", a3];
-  v9 = [a1 foldersMatchingPredicate:v8 context:v7];
+  contextCopy = context;
+  identifier = [v6 predicateWithFormat:@"%K == %@", @"identifier", identifier];
+  v9 = [self foldersMatchingPredicate:identifier context:contextCopy];
 
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
-+ (id)visibleFoldersInContext:(id)a3
++ (id)visibleFoldersInContext:(id)context
 {
-  v4 = a3;
-  v5 = [a1 predicateForVisibleFoldersInContext:v4];
-  v6 = [a1 foldersMatchingPredicate:v5 context:v4];
+  contextCopy = context;
+  v5 = [self predicateForVisibleFoldersInContext:contextCopy];
+  v6 = [self foldersMatchingPredicate:v5 context:contextCopy];
 
   return v6;
 }
 
-+ (unint64_t)countOfFoldersMatchingPredicate:(id)a3 context:(id)a4
++ (unint64_t)countOfFoldersMatchingPredicate:(id)predicate context:(id)context
 {
-  v5 = a3;
+  predicateCopy = predicate;
   v6 = MEMORY[0x277CBE428];
-  v7 = a4;
+  contextCopy = context;
   v8 = [v6 fetchRequestWithEntityName:@"ICFolder"];
-  [v8 setPredicate:v5];
+  [v8 setPredicate:predicateCopy];
   v13 = 0;
-  v9 = [v7 countForFetchRequest:v8 error:&v13];
+  v9 = [contextCopy countForFetchRequest:v8 error:&v13];
 
   v10 = v13;
   if (v10)
@@ -3760,7 +3760,7 @@ void *__69__ICFolder_visibleSmartFoldersForHashtagStandardizedContent_account___
     v11 = os_log_create("com.apple.notes", "CoreData");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(ICFolder(Management) *)v5 countOfFoldersMatchingPredicate:v10 context:v11];
+      [(ICFolder(Management) *)predicateCopy countOfFoldersMatchingPredicate:v10 context:v11];
     }
   }
 
@@ -3772,15 +3772,15 @@ void *__69__ICFolder_visibleSmartFoldersForHashtagStandardizedContent_account___
   return v9;
 }
 
-+ (id)predicateForVisibleFoldersIncludingHiddenNoteContainers:(BOOL)a3 inContext:(id)a4
++ (id)predicateForVisibleFoldersIncludingHiddenNoteContainers:(BOOL)containers inContext:(id)context
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v5 = [a1 predicateForVisibleObjects];
-  v15[0] = v5;
+  predicateForVisibleObjects = [self predicateForVisibleObjects];
+  v15[0] = predicateForVisibleObjects;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   v7 = [v6 mutableCopy];
 
-  if (!a3)
+  if (!containers)
   {
     v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"owner != self && isHiddenNoteContainer == NO"];
     v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"owner == self && SUBQUERY(owner.ownerInverse, $noteContainer, $noteContainer.markedForDeletion != YES).@count > 3", v8];
@@ -3812,27 +3812,27 @@ void *__69__ICFolder_visibleSmartFoldersForHashtagStandardizedContent_account___
 
 - (NSArray)visibleNotesInFolder
 {
-  v3 = [(ICFolder *)self predicateForVisibleNotesInFolder];
-  v4 = [(ICFolder *)self managedObjectContext];
-  v5 = [ICNote notesMatchingPredicate:v3 context:v4];
+  predicateForVisibleNotesInFolder = [(ICFolder *)self predicateForVisibleNotesInFolder];
+  managedObjectContext = [(ICFolder *)self managedObjectContext];
+  v5 = [ICNote notesMatchingPredicate:predicateForVisibleNotesInFolder context:managedObjectContext];
 
   return v5;
 }
 
 - (id)pinnedNotesInFolder
 {
-  v3 = [(ICFolder *)self predicateForPinnedNotesInFolder];
-  v4 = [(ICFolder *)self managedObjectContext];
-  v5 = [ICNote notesMatchingPredicate:v3 context:v4];
+  predicateForPinnedNotesInFolder = [(ICFolder *)self predicateForPinnedNotesInFolder];
+  managedObjectContext = [(ICFolder *)self managedObjectContext];
+  v5 = [ICNote notesMatchingPredicate:predicateForPinnedNotesInFolder context:managedObjectContext];
 
   return v5;
 }
 
 - (NSArray)foldersInFolder
 {
-  v3 = [(ICFolder *)self predicateForFoldersInFolder];
-  v4 = [(ICFolder *)self managedObjectContext];
-  v5 = [ICFolder foldersMatchingPredicate:v3 context:v4];
+  predicateForFoldersInFolder = [(ICFolder *)self predicateForFoldersInFolder];
+  managedObjectContext = [(ICFolder *)self managedObjectContext];
+  v5 = [ICFolder foldersMatchingPredicate:predicateForFoldersInFolder context:managedObjectContext];
 
   return v5;
 }
@@ -3847,8 +3847,8 @@ void *__69__ICFolder_visibleSmartFoldersForHashtagStandardizedContent_account___
 - (id)predicateForPinnedNotesInFolder
 {
   v7[2] = *MEMORY[0x277D85DE8];
-  v2 = [(ICFolder *)self predicateForNotesInFolder];
-  v7[0] = v2;
+  predicateForNotesInFolder = [(ICFolder *)self predicateForNotesInFolder];
+  v7[0] = predicateForNotesInFolder;
   v3 = +[ICNote predicateForPinnedNotes];
   v7[1] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:2];
@@ -3861,11 +3861,11 @@ void *__69__ICFolder_visibleSmartFoldersForHashtagStandardizedContent_account___
 - (id)predicateForVisibleAttachmentsInFolder
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v3 = [(ICFolder *)self managedObjectContext];
-  v4 = [(ICBaseAttachment *)ICAttachment predicateForVisibleAttachmentsInContext:v3];
+  managedObjectContext = [(ICFolder *)self managedObjectContext];
+  v4 = [(ICBaseAttachment *)ICAttachment predicateForVisibleAttachmentsInContext:managedObjectContext];
   v9[0] = v4;
-  v5 = [(ICFolder *)self predicateForAttachmentsInFolder];
-  v9[1] = v5;
+  predicateForAttachmentsInFolder = [(ICFolder *)self predicateForAttachmentsInFolder];
+  v9[1] = predicateForAttachmentsInFolder;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:2];
 
   v7 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:1 subpredicates:v6];
@@ -3873,50 +3873,50 @@ void *__69__ICFolder_visibleSmartFoldersForHashtagStandardizedContent_account___
   return v7;
 }
 
-- (void)associateAppEntityWithSearchableItemAttributeSet:(id)a3
+- (void)associateAppEntityWithSearchableItemAttributeSet:(id)set
 {
-  v4 = a3;
-  v5 = self;
-  ICFolder.associateAppEntity(with:)(v4);
+  setCopy = set;
+  selfCopy = self;
+  ICFolder.associateAppEntity(with:)(setCopy);
 }
 
 - (ICQueryObjC)smartFolderQueryObjC
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ICFolder.smartFolderQuery.getter();
 
   return v3;
 }
 
-- (void)setSmartFolderQueryObjC:(id)a3
+- (void)setSmartFolderQueryObjC:(id)c
 {
-  v5 = a3;
-  v6 = self;
-  ICFolder.smartFolderQuery.setter(a3);
+  cCopy = c;
+  selfCopy = self;
+  ICFolder.smartFolderQuery.setter(c);
 }
 
-+ (id)objc_smartFolderWithQuery:(id)a3 titleComponents:(id)a4 account:(id)a5
++ (id)objc_smartFolderWithQuery:(id)query titleComponents:(id)components account:(id)account
 {
   v7 = sub_2150A4ED0();
   swift_getObjCClassMetadata();
-  v8 = a3;
-  v9 = a5;
-  v10 = static ICFolder.makeSmartFolder(with:titleComponents:in:)(v8, v7, v9);
+  queryCopy = query;
+  accountCopy = account;
+  v10 = static ICFolder.makeSmartFolder(with:titleComponents:in:)(queryCopy, v7, accountCopy);
 
   return v10;
 }
 
-+ (id)objc_smartFolderWithQuery:(id)a3 account:(id)a4
++ (id)objc_smartFolderWithQuery:(id)query account:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  accountCopy = account;
   v8 = sub_2150A4EB0();
-  v9 = [a1 objc:v6 smartFolderWithQuery:v8 titleComponents:v7 account:?];
+  v9 = [self objc:queryCopy smartFolderWithQuery:v8 titleComponents:accountCopy account:?];
 
   return v9;
 }
 
-+ (id)objc_defaultSmartFolderTitleWithComponents:(id)a3
++ (id)objc_defaultSmartFolderTitleWithComponents:(id)components
 {
   v3 = sub_2150A4ED0();
   _sSo8ICFolderC11NotesSharedE23defaultSmartFolderTitle10componentsSSSaySSG_tFZ_0(v3);

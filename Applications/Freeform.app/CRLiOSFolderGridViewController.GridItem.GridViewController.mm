@@ -10,7 +10,7 @@
   swift_getObjectType();
   v5.receiver = self;
   v5.super_class = _s8GridItemC18GridViewControllerCMa();
-  v3 = self;
+  selfCopy = self;
   [(CRLiOSFolderGridViewController.Item.ViewController *)&v5 viewDidLoad];
   sub_1005B981C(&unk_101A150B0);
   v4 = swift_allocObject();

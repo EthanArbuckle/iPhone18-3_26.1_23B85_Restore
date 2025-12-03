@@ -1,45 +1,45 @@
 @interface NPKVehicleConnectivityCoordinator
-+ (id)_secureElementPassMatchingAID:(id)a3 subcredentialIdentifier:(id)a4;
-+ (id)_subcredentialIdentifierForPass:(id)a3;
-- (BOOL)isVehicleConnectedForPass:(id)a3;
++ (id)_secureElementPassMatchingAID:(id)d subcredentialIdentifier:(id)identifier;
++ (id)_subcredentialIdentifierForPass:(id)pass;
+- (BOOL)isVehicleConnectedForPass:(id)pass;
 - (NPKVehicleConnectivityCoordinator)init;
-- (NPKVehicleConnectivityCoordinator)initWithDistributedNotificationCenter:(id)a3;
+- (NPKVehicleConnectivityCoordinator)initWithDistributedNotificationCenter:(id)center;
 - (NPKVehicleConnectivityCoordinatorDelegate)delegate;
-- (void)_handleCarKeyVehicleStatusChangeNotification:(id)a3;
-- (void)_parseVehicleStatusChangeNotificationObject:(id)a3 outApplicationIdentifier:(id *)a4 outSubcredentialIdentifier:(id *)a5;
+- (void)_handleCarKeyVehicleStatusChangeNotification:(id)notification;
+- (void)_parseVehicleStatusChangeNotificationObject:(id)object outApplicationIdentifier:(id *)identifier outSubcredentialIdentifier:(id *)subcredentialIdentifier;
 @end
 
 @implementation NPKVehicleConnectivityCoordinator
 
 - (NPKVehicleConnectivityCoordinator)init
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  v4 = [(NPKVehicleConnectivityCoordinator *)self initWithDistributedNotificationCenter:v3];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  v4 = [(NPKVehicleConnectivityCoordinator *)self initWithDistributedNotificationCenter:defaultCenter];
 
   return v4;
 }
 
-- (NPKVehicleConnectivityCoordinator)initWithDistributedNotificationCenter:(id)a3
+- (NPKVehicleConnectivityCoordinator)initWithDistributedNotificationCenter:(id)center
 {
-  v5 = a3;
+  centerCopy = center;
   v9.receiver = self;
   v9.super_class = NPKVehicleConnectivityCoordinator;
   v6 = [(NPKVehicleConnectivityCoordinator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_distributedNotificationCenter, a3);
+    objc_storeStrong(&v6->_distributedNotificationCenter, center);
     [(NPKVehicleConnectivityCoordinator *)v7 _registerObservers];
   }
 
   return v7;
 }
 
-- (BOOL)isVehicleConnectedForPass:(id)a3
+- (BOOL)isVehicleConnectedForPass:(id)pass
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (![v3 isCarKeyPass] || (objc_msgSend(v3, "npkSupportsBluetooth") & 1) == 0)
+  passCopy = pass;
+  if (![passCopy isCarKeyPass] || (objc_msgSend(passCopy, "npkSupportsBluetooth") & 1) == 0)
   {
     v4 = pk_General_log();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_ERROR);
@@ -67,7 +67,7 @@
   v8 = v19;
   if (!v8)
   {
-    v11 = [objc_opt_class() _subcredentialIdentifierForPass:v3];
+    v11 = [objc_opt_class() _subcredentialIdentifierForPass:passCopy];
     v12 = [v7 objectForKeyedSubscript:v11];
     LOBYTE(v10) = v12 != 0;
     v13 = pk_General_log();
@@ -78,9 +78,9 @@
       v15 = pk_General_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v3 uniqueID];
+        uniqueID = [passCopy uniqueID];
         *buf = 138412546;
-        v21 = v16;
+        v21 = uniqueID;
         v22 = 2112;
         v23 = v12;
         _os_log_impl(&dword_25B300000, v15, OS_LOG_TYPE_DEFAULT, "Notice: NPKVehicleConnectivityCoordinator: Vehicle report for pass %@ is %@", buf, 0x16u);
@@ -111,14 +111,14 @@ LABEL_18:
   return v10;
 }
 
-- (void)_handleCarKeyVehicleStatusChangeNotification:(id)a3
+- (void)_handleCarKeyVehicleStatusChangeNotification:(id)notification
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   v16 = 0;
   v17 = 0;
-  [(NPKVehicleConnectivityCoordinator *)self _parseVehicleStatusChangeNotificationObject:v5 outApplicationIdentifier:&v17 outSubcredentialIdentifier:&v16];
+  [(NPKVehicleConnectivityCoordinator *)self _parseVehicleStatusChangeNotificationObject:object outApplicationIdentifier:&v17 outSubcredentialIdentifier:&v16];
   v6 = v17;
   v7 = v16;
 
@@ -131,7 +131,7 @@ LABEL_18:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v19 = v4;
+      v19 = notificationCopy;
       v20 = 2112;
       v21 = v6;
       v22 = 2112;
@@ -143,8 +143,8 @@ LABEL_18:
   v11 = [objc_opt_class() _secureElementPassMatchingAID:v6 subcredentialIdentifier:v7];
   if (v11)
   {
-    v12 = [(NPKVehicleConnectivityCoordinator *)self delegate];
-    [v12 vehicleConnectivityCoordinator:self didUpdateVehicleStatusForPass:v11];
+    delegate = [(NPKVehicleConnectivityCoordinator *)self delegate];
+    [delegate vehicleConnectivityCoordinator:self didUpdateVehicleStatusForPass:v11];
   }
 
   else
@@ -157,12 +157,12 @@ LABEL_18:
       goto LABEL_8;
     }
 
-    v12 = pk_General_log();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    delegate = pk_General_log();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v19 = v7;
-      _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: NPKVehicleConnectivityCoordinator: Unable to identify pass for subcredential: %@", buf, 0xCu);
+      _os_log_impl(&dword_25B300000, delegate, OS_LOG_TYPE_DEFAULT, "Notice: NPKVehicleConnectivityCoordinator: Unable to identify pass for subcredential: %@", buf, 0xCu);
     }
   }
 
@@ -170,22 +170,22 @@ LABEL_8:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_parseVehicleStatusChangeNotificationObject:(id)a3 outApplicationIdentifier:(id *)a4 outSubcredentialIdentifier:(id *)a5
+- (void)_parseVehicleStatusChangeNotificationObject:(id)object outApplicationIdentifier:(id *)identifier outSubcredentialIdentifier:(id *)subcredentialIdentifier
 {
-  v7 = a3;
-  if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  objectCopy = object;
+  if (objectCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = [v7 componentsSeparatedByString:@":"];
-    *a4 = [v8 firstObject];
+    v8 = [objectCopy componentsSeparatedByString:@":"];
+    *identifier = [v8 firstObject];
     if ([v8 count] == 2)
     {
-      v9 = [v8 lastObject];
-      *a5 = v9;
+      lastObject = [v8 lastObject];
+      *subcredentialIdentifier = lastObject;
     }
 
     else
     {
-      *a5 = 0;
+      *subcredentialIdentifier = 0;
     }
   }
 
@@ -206,25 +206,25 @@ LABEL_8:
   }
 }
 
-+ (id)_secureElementPassMatchingAID:(id)a3 subcredentialIdentifier:(id)a4
++ (id)_secureElementPassMatchingAID:(id)d subcredentialIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277D37FC0] sharedInstance];
-  v7 = [v6 passesOfType:1];
+  identifierCopy = identifier;
+  mEMORY[0x277D37FC0] = [MEMORY[0x277D37FC0] sharedInstance];
+  v7 = [mEMORY[0x277D37FC0] passesOfType:1];
 
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __91__NPKVehicleConnectivityCoordinator__secureElementPassMatchingAID_subcredentialIdentifier___block_invoke;
   v16 = &unk_279944ED8;
-  v17 = v5;
-  v18 = a1;
-  v8 = v5;
+  v17 = identifierCopy;
+  selfCopy = self;
+  v8 = identifierCopy;
   v9 = [v7 pk_objectsPassingTest:&v13];
 
-  v10 = [v9 firstObject];
-  v11 = [v10 secureElementPass];
+  firstObject = [v9 firstObject];
+  secureElementPass = [firstObject secureElementPass];
 
-  return v11;
+  return secureElementPass;
 }
 
 uint64_t __91__NPKVehicleConnectivityCoordinator__secureElementPassMatchingAID_subcredentialIdentifier___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -239,17 +239,17 @@ uint64_t __91__NPKVehicleConnectivityCoordinator__secureElementPassMatchingAID_s
   return v9;
 }
 
-+ (id)_subcredentialIdentifierForPass:(id)a3
++ (id)_subcredentialIdentifierForPass:(id)pass
 {
-  v3 = [a3 secureElementPass];
-  v4 = [v3 devicePrimaryContactlessPaymentApplication];
+  secureElementPass = [pass secureElementPass];
+  devicePrimaryContactlessPaymentApplication = [secureElementPass devicePrimaryContactlessPaymentApplication];
 
-  v5 = [v4 subcredentials];
-  v6 = [v5 anyObject];
+  subcredentials = [devicePrimaryContactlessPaymentApplication subcredentials];
+  anyObject = [subcredentials anyObject];
 
-  v7 = [v6 identifier];
+  identifier = [anyObject identifier];
 
-  return v7;
+  return identifier;
 }
 
 - (NPKVehicleConnectivityCoordinatorDelegate)delegate

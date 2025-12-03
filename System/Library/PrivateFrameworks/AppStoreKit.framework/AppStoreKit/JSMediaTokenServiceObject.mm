@@ -1,7 +1,7 @@
 @interface JSMediaTokenServiceObject
 - (NSString)tokenString;
 - (_TtC11AppStoreKit25JSMediaTokenServiceObject)init;
-- (id)overrideToken:(id)a3;
+- (id)overrideToken:(id)token;
 - (id)refreshToken;
 - (void)resetToken;
 @end
@@ -10,17 +10,17 @@
 
 - (id)refreshToken
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E1785B74();
 
   return v3;
 }
 
-- (id)overrideToken:(id)a3
+- (id)overrideToken:(id)token
 {
   swift_getObjectType();
   sub_1E13006E4(0, &qword_1EE1E2DB8);
-  v4 = a3;
+  tokenCopy = token;
   v5 = sub_1E1AF6D4C();
   v6 = sub_1E1AF6D5C();
 
@@ -48,7 +48,7 @@
 - (void)resetToken
 {
   sub_1E1AF44CC();
-  v3 = self;
+  selfCopy = self;
   sub_1E1AF44BC();
   if (qword_1EE1EAE10 != -1)
   {
@@ -64,7 +64,7 @@
   sub_1E1AF448C();
 
   __swift_destroy_boxed_opaque_existential_1(v7);
-  [*(&v3->super.isa + OBJC_IVAR____TtC11AppStoreKit25JSMediaTokenServiceObject_tokenService) invalidateMediaToken];
+  [*(&selfCopy->super.isa + OBJC_IVAR____TtC11AppStoreKit25JSMediaTokenServiceObject_tokenService) invalidateMediaToken];
 }
 
 - (_TtC11AppStoreKit25JSMediaTokenServiceObject)init

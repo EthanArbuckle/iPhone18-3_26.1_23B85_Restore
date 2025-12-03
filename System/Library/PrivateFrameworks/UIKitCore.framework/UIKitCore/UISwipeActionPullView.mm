@@ -7,7 +7,7 @@
 - (UIEdgeInsets)contentInsets;
 - (UIEdgeInsets)extraInsets;
 - (UIEdgeInsets)pullViewInsets;
-- (UISwipeActionPullView)initWithFrame:(CGRect)a3 cellEdge:(unint64_t)a4 style:(unint64_t)a5;
+- (UISwipeActionPullView)initWithFrame:(CGRect)frame cellEdge:(unint64_t)edge style:(unint64_t)style;
 - (UISwipeActionPullViewDelegate)delegate;
 - (double)_directionalMultiplier;
 - (double)_interButtonPadding;
@@ -15,42 +15,42 @@
 - (double)_totalInterButtonPadding;
 - (double)confirmationThreshold;
 - (double)openThreshold;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)sourceViewForAction:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)sourceViewForAction:(id)action;
 - (void)_layoutClippingLayer;
-- (void)_performAction:(id)a3 offset:(double)a4 extraOffset:(double)a5;
-- (void)_pressedButton:(id)a3;
+- (void)_performAction:(id)action offset:(double)offset extraOffset:(double)extraOffset;
+- (void)_pressedButton:(id)button;
 - (void)_rebuildButtons;
-- (void)_setLayerBounds:(CGRect)a3;
-- (void)_setWidth:(double)a3;
+- (void)_setLayerBounds:(CGRect)bounds;
+- (void)_setWidth:(double)width;
 - (void)_setupClippingViewIfNeeded;
-- (void)_tappedButton:(id)a3;
-- (void)_unpressedButton:(id)a3;
-- (void)configureWithSwipeActions:(id)a3;
+- (void)_tappedButton:(id)button;
+- (void)_unpressedButton:(id)button;
+- (void)configureWithSwipeActions:(id)actions;
 - (void)freeze;
 - (void)layoutSubviews;
-- (void)moveToOffset:(double)a3 extraOffset:(double)a4 animator:(id)a5 usingSpringWithStiffness:(double)a6 initialVelocity:(double)a7;
+- (void)moveToOffset:(double)offset extraOffset:(double)extraOffset animator:(id)animator usingSpringWithStiffness:(double)stiffness initialVelocity:(double)velocity;
 - (void)resetView;
-- (void)setBounds:(CGRect)a3;
-- (void)setButtonsUnderlapSwipedView:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)swipeActionButton:(id)a3 willDisplayContextMenuWithAnimator:(id)a4;
+- (void)setBounds:(CGRect)bounds;
+- (void)setButtonsUnderlapSwipedView:(BOOL)view;
+- (void)setFrame:(CGRect)frame;
+- (void)swipeActionButton:(id)button willDisplayContextMenuWithAnimator:(id)animator;
 @end
 
 @implementation UISwipeActionPullView
 
-- (UISwipeActionPullView)initWithFrame:(CGRect)a3 cellEdge:(unint64_t)a4 style:(unint64_t)a5
+- (UISwipeActionPullView)initWithFrame:(CGRect)frame cellEdge:(unint64_t)edge style:(unint64_t)style
 {
   v14.receiver = self;
   v14.super_class = UISwipeActionPullView;
-  v7 = [(UIView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(UIView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v7;
   if (v7)
   {
-    v7->_cellEdge = a4;
-    v7->_style = a5;
-    v9 = [(UIView *)v7 traitCollection];
-    v10 = +[UISwipeActionVisualStyleProvider visualStyleForIdiom:](UISwipeActionVisualStyleProvider, "visualStyleForIdiom:", [v9 userInterfaceIdiom]);
+    v7->_cellEdge = edge;
+    v7->_style = style;
+    traitCollection = [(UIView *)v7 traitCollection];
+    v10 = +[UISwipeActionVisualStyleProvider visualStyleForIdiom:](UISwipeActionVisualStyleProvider, "visualStyleForIdiom:", [traitCollection userInterfaceIdiom]);
     [(UISwipeActionPullView *)v8 setVisualStyle:v10];
 
     [(UIView *)v8 anchorPoint];
@@ -80,38 +80,38 @@
 
 - (UIContextualAction)primarySwipeAction
 {
-  v3 = [(UISwipeActionPullView *)self _swipeActionCount];
-  if (v3)
+  _swipeActionCount = [(UISwipeActionPullView *)self _swipeActionCount];
+  if (_swipeActionCount)
   {
-    v3 = [(NSArray *)self->_actions objectAtIndexedSubscript:v3 - 1];
+    _swipeActionCount = [(NSArray *)self->_actions objectAtIndexedSubscript:_swipeActionCount - 1];
   }
 
-  return v3;
+  return _swipeActionCount;
 }
 
 - (BOOL)primaryActionIsDestructive
 {
-  v2 = [(UISwipeActionPullView *)self primarySwipeAction];
-  v3 = [v2 isDestructive];
+  primarySwipeAction = [(UISwipeActionPullView *)self primarySwipeAction];
+  isDestructive = [primarySwipeAction isDestructive];
 
-  return v3;
+  return isDestructive;
 }
 
 - (UIColor)primaryActionColor
 {
-  v2 = [(UISwipeActionPullView *)self primarySwipeAction];
-  v3 = [v2 backgroundColor];
+  primarySwipeAction = [(UISwipeActionPullView *)self primarySwipeAction];
+  backgroundColor = [primarySwipeAction backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (void)setButtonsUnderlapSwipedView:(BOOL)a3
+- (void)setButtonsUnderlapSwipedView:(BOOL)view
 {
-  self->_buttonsUnderlapSwipedView = a3;
-  if (a3)
+  self->_buttonsUnderlapSwipedView = view;
+  if (view)
   {
-    v4 = [(UISwipeActionPullView *)self visualStyle];
-    [v4 defaultButtonWidth];
+    visualStyle = [(UISwipeActionPullView *)self visualStyle];
+    [visualStyle defaultButtonWidth];
     self->_minimumOffset = v5;
 
     buttonsUnderlapSwipedView = self->_buttonsUnderlapSwipedView;
@@ -201,10 +201,10 @@
     self->_confirmationThreshold = v4 * v6;
   }
 
-  v7 = [(UIView *)self traitCollection];
-  v8 = [v7 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v8 != 6)
+  if (userInterfaceIdiom != 6)
   {
     return self->_confirmationThreshold;
   }
@@ -233,9 +233,9 @@
 
 - (double)_directionalMultiplier
 {
-  v2 = [(UISwipeActionPullView *)self cellEdge];
+  cellEdge = [(UISwipeActionPullView *)self cellEdge];
   result = 1.0;
-  if (v2 == 8)
+  if (cellEdge == 8)
   {
     return -1.0;
   }
@@ -260,8 +260,8 @@
 
 - (double)_paddingToSwipedView
 {
-  v3 = [(UISwipeActionPullView *)self visualStyle];
-  [v3 paddingToSwipeViewForStyle:self->_style];
+  visualStyle = [(UISwipeActionPullView *)self visualStyle];
+  [visualStyle paddingToSwipeViewForStyle:self->_style];
   v5 = v4;
 
   return v5;
@@ -269,8 +269,8 @@
 
 - (double)_interButtonPadding
 {
-  v3 = [(UISwipeActionPullView *)self visualStyle];
-  [v3 interButtonPaddingForStyle:self->_style];
+  visualStyle = [(UISwipeActionPullView *)self visualStyle];
+  [visualStyle interButtonPaddingForStyle:self->_style];
   v5 = v4;
 
   return v5;
@@ -307,24 +307,24 @@
     v7 = self->_clippingView;
     self->_clippingView = v6;
 
-    v10 = [(UIView *)self->_clippingView layer];
-    [(UIView *)v10 setMasksToBounds:1];
-    [(UIView *)v10 setMaskedCorners:15];
-    [(UIView *)v10 setCornerCurve:*MEMORY[0x1E69796E8]];
+    layer = [(UIView *)self->_clippingView layer];
+    [(UIView *)layer setMasksToBounds:1];
+    [(UIView *)layer setMaskedCorners:15];
+    [(UIView *)layer setCornerCurve:*MEMORY[0x1E69796E8]];
     if (self->_roundedStyleCornerRadius > 0.0)
     {
-      [(UIView *)v10 setCornerRadius:?];
+      [(UIView *)layer setCornerRadius:?];
     }
 
     else
     {
-      v8 = [(UISwipeActionPullView *)self visualStyle];
-      [v8 buttonCornerRadiusForStyle:self->_style view:self];
-      [(UIView *)v10 setCornerRadius:?];
+      visualStyle = [(UISwipeActionPullView *)self visualStyle];
+      [visualStyle buttonCornerRadiusForStyle:self->_style view:self];
+      [(UIView *)layer setCornerRadius:?];
     }
 
     [(UIView *)self insertSubview:self->_clippingView atIndex:0];
-    v9 = v10;
+    v9 = layer;
   }
 
   else
@@ -342,7 +342,7 @@
 
 - (void)_rebuildButtons
 {
-  v3 = [(UISwipeActionPullView *)self _swipeActionCount];
+  _swipeActionCount = [(UISwipeActionPullView *)self _swipeActionCount];
   v4 = 416;
   buttons = self->_buttons;
   if (!buttons)
@@ -350,7 +350,7 @@
     goto LABEL_5;
   }
 
-  if (v3 == [(NSMutableArray *)buttons count])
+  if (_swipeActionCount == [(NSMutableArray *)buttons count])
   {
     return;
   }
@@ -378,15 +378,15 @@ LABEL_5:
   }
 
   v39 = clippingView;
-  v10 = [(UISwipeActionPullView *)self cellEdge];
+  cellEdge = [(UISwipeActionPullView *)self cellEdge];
   v11 = 1;
-  if (v10 != 8)
+  if (cellEdge != 8)
   {
     v11 = 2;
   }
 
   v37 = v11;
-  if (v10 == 8)
+  if (cellEdge == 8)
   {
     v12 = 0.0;
   }
@@ -417,24 +417,24 @@ LABEL_5:
 
   else
   {
-    v17 = v3 == 1;
+    v17 = _swipeActionCount == 1;
   }
 
   if (v17)
   {
-    v18 = [(NSArray *)self->_actions firstObject];
-    if ([v18 forcesFallbackBackgroundColor])
+    firstObject = [(NSArray *)self->_actions firstObject];
+    if ([firstObject forcesFallbackBackgroundColor])
     {
-      v19 = [(UISwipeActionPullView *)self visualStyle];
-      v20 = [v19 defaultButtonBackgroundColor];
+      visualStyle = [(UISwipeActionPullView *)self visualStyle];
+      defaultButtonBackgroundColor = [visualStyle defaultButtonBackgroundColor];
     }
 
     else
     {
-      v20 = [v18 backgroundColor];
+      defaultButtonBackgroundColor = [firstObject backgroundColor];
     }
 
-    [(UIView *)self setBackgroundColor:v20];
+    [(UIView *)self setBackgroundColor:defaultButtonBackgroundColor];
   }
 
   else
@@ -442,35 +442,35 @@ LABEL_5:
     [(UIView *)self setBackgroundColor:0];
   }
 
-  v21 = [(UIView *)self traitCollection];
-  v22 = _UITableConstantsForTraitCollection(v21);
-  v23 = [(UIView *)self traitCollection];
-  v38 = [v22 defaultImageSymbolConfigurationForTraitCollection:v23];
+  traitCollection = [(UIView *)self traitCollection];
+  v22 = _UITableConstantsForTraitCollection(traitCollection);
+  traitCollection2 = [(UIView *)self traitCollection];
+  v38 = [v22 defaultImageSymbolConfigurationForTraitCollection:traitCollection2];
 
-  if (v3)
+  if (_swipeActionCount)
   {
     v24 = v15 * 3.0;
     v36 = *MEMORY[0x1E69796E8];
     do
     {
       v25 = v4;
-      v26 = [objc_alloc(-[UISwipeActionPullView _buttonClass](self _buttonClass];
-      v27 = [(UISwipeActionPullView *)self visualStyle];
-      [v26 setVisualStyle:v27];
+      _buttonClass = [objc_alloc(-[UISwipeActionPullView _buttonClass](self _buttonClass];
+      visualStyle2 = [(UISwipeActionPullView *)self visualStyle];
+      [_buttonClass setVisualStyle:visualStyle2];
 
       if (self->_style == 2)
       {
-        v28 = [v26 layer];
-        [v28 setMasksToBounds:1];
+        layer = [_buttonClass layer];
+        [layer setMasksToBounds:1];
 
-        v29 = [v26 layer];
-        [v29 setCornerCurve:v36];
+        layer2 = [_buttonClass layer];
+        [layer2 setCornerCurve:v36];
 
-        v30 = [(UISwipeActionPullView *)self visualStyle];
-        [v30 interitemButtonCornerRadiusForStyle:self->_style];
+        visualStyle3 = [(UISwipeActionPullView *)self visualStyle];
+        [visualStyle3 interitemButtonCornerRadiusForStyle:self->_style];
         v32 = v31;
-        v33 = [v26 layer];
-        [v33 setCornerRadius:v32];
+        layer3 = [_buttonClass layer];
+        [layer3 setCornerRadius:v32];
       }
 
       else
@@ -484,29 +484,29 @@ LABEL_5:
             v34 = -v34;
           }
 
-          [v26 setExtensionLength:v34 * 3.0];
+          [_buttonClass setExtensionLength:v34 * 3.0];
         }
       }
 
-      [v26 addTarget:self action:sel__tappedButton_ forControlEvents:64];
-      [v26 addTarget:self action:sel__pressedButton_ forControlEvents:1];
-      [v26 addTarget:self action:sel__unpressedButton_ forControlEvents:384];
-      [v26 setPreferredSymbolConfiguration:v38 forImageInState:0];
-      [v26 setContentHorizontalAlignment:v37];
-      v35 = [v26 titleLabel];
-      [v35 setTextAlignment:1];
+      [_buttonClass addTarget:self action:sel__tappedButton_ forControlEvents:64];
+      [_buttonClass addTarget:self action:sel__pressedButton_ forControlEvents:1];
+      [_buttonClass addTarget:self action:sel__unpressedButton_ forControlEvents:384];
+      [_buttonClass setPreferredSymbolConfiguration:v38 forImageInState:0];
+      [_buttonClass setContentHorizontalAlignment:v37];
+      titleLabel = [_buttonClass titleLabel];
+      [titleLabel setTextAlignment:1];
 
-      [v26 setAnchorPoint:{v12, 0.5}];
-      [v26 setFrame:{minimumOffset, 0.0, v24, Height}];
-      [v26 setAutosizes:{-[UISwipeActionPullView autosizesButtons](self, "autosizesButtons")}];
+      [_buttonClass setAnchorPoint:{v12, 0.5}];
+      [_buttonClass setFrame:{minimumOffset, 0.0, v24, Height}];
+      [_buttonClass setAutosizes:{-[UISwipeActionPullView autosizesButtons](self, "autosizesButtons")}];
       v4 = v25;
-      [*(&self->super.super.super.isa + v25) addObject:v26];
-      [(UIView *)v39 addSubview:v26];
+      [*(&self->super.super.super.isa + v25) addObject:_buttonClass];
+      [(UIView *)v39 addSubview:_buttonClass];
 
-      --v3;
+      --_swipeActionCount;
     }
 
-    while (v3);
+    while (_swipeActionCount);
   }
 }
 
@@ -593,24 +593,24 @@ id __39__UISwipeActionPullView_layoutSubviews__block_invoke_2(uint64_t a1, void 
   return v7;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(UISwipeActionPullView *)self _setWidth:CGRectGetWidth(a3)];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [(UISwipeActionPullView *)self _setWidth:CGRectGetWidth(frame)];
   v8.receiver = self;
   v8.super_class = UISwipeActionPullView;
   [(UIView *)&v8 setFrame:x, y, width, height];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v8.receiver = self;
   v8.super_class = UISwipeActionPullView;
@@ -622,23 +622,23 @@ id __39__UISwipeActionPullView_layoutSubviews__block_invoke_2(uint64_t a1, void 
   [(UISwipeActionPullView *)self _setWidth:CGRectGetWidth(v9)];
 }
 
-- (void)_setWidth:(double)a3
+- (void)_setWidth:(double)width
 {
   [(UISwipeActionPullView *)self _directionalMultiplier];
-  v6 = v5 * a3;
+  v6 = v5 * width;
 
   [(UISwipeActionPullView *)self moveToOffset:0 extraOffset:v6 animator:0.0 usingSpringWithStiffness:0.0 initialVelocity:0.0];
 }
 
-- (void)_setLayerBounds:(CGRect)a3
+- (void)_setLayerBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v30 = *MEMORY[0x1E69E9840];
-  v8 = [(UIView *)self layer];
-  [v8 setBounds:{x, y, width, height}];
+  layer = [(UIView *)self layer];
+  [layer setBounds:{x, y, width, height}];
 
   [(UISwipeActionPullView *)self _layoutClippingLayer];
   v27 = 0u;
@@ -665,8 +665,8 @@ id __39__UISwipeActionPullView_layoutSubviews__block_invoke_2(uint64_t a1, void 
         v16 = v15;
         v18 = v17;
         v20 = v19;
-        v21 = [v14 superview];
-        [v21 bounds];
+        superview = [v14 superview];
+        [superview bounds];
         v22 = CGRectGetHeight(v31);
 
         [v14 setBounds:{v16, v18, v20, v22}];
@@ -690,8 +690,8 @@ id __39__UISwipeActionPullView_layoutSubviews__block_invoke_2(uint64_t a1, void 
 {
   if (self->_clippingView)
   {
-    v3 = [(UIView *)self layer];
-    [v3 bounds];
+    layer = [(UIView *)self layer];
+    [layer bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -709,8 +709,8 @@ id __39__UISwipeActionPullView_layoutSubviews__block_invoke_2(uint64_t a1, void 
     }
 
     v13 = fmax(v9 - left, 0.0);
-    v14 = [(UIView *)self->_clippingView layer];
-    [v14 setBounds:{v5, v7, v13, v11}];
+    layer2 = [(UIView *)self->_clippingView layer];
+    [layer2 setBounds:{v5, v7, v13, v11}];
 
     v19.origin.x = v5;
     v19.origin.y = v7;
@@ -722,8 +722,8 @@ id __39__UISwipeActionPullView_layoutSubviews__block_invoke_2(uint64_t a1, void 
     v20.size.width = v13;
     v20.size.height = v11;
     MidY = CGRectGetMidY(v20);
-    v17 = [(UIView *)self->_clippingView layer];
-    [v17 setPosition:{MidX, MidY}];
+    layer3 = [(UIView *)self->_clippingView layer];
+    [layer3 setPosition:{MidX, MidY}];
   }
 }
 
@@ -814,15 +814,15 @@ uint64_t __34__UISwipeActionPullView_resetView__block_invoke(uint64_t a1)
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v25 + 1) + 8 * v7) _outermostLayer];
-        [v8 position];
+        _outermostLayer = [*(*(&v25 + 1) + 8 * v7) _outermostLayer];
+        [_outermostLayer position];
         v10 = v9;
-        v11 = [v8 presentationLayer];
-        [v11 position];
+        presentationLayer = [_outermostLayer presentationLayer];
+        [presentationLayer position];
         v13 = v12;
 
-        [v8 setPosition:{v13, v10}];
-        [v8 removeAllAnimations];
+        [_outermostLayer setPosition:{v13, v10}];
+        [_outermostLayer removeAllAnimations];
 
         ++v7;
       }
@@ -834,28 +834,28 @@ uint64_t __34__UISwipeActionPullView_resetView__block_invoke(uint64_t a1)
     while (v5);
   }
 
-  v14 = [(UIView *)self layer];
-  [v14 bounds];
+  layer = [(UIView *)self layer];
+  [layer bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  v21 = [(UIView *)self layer];
-  v22 = [v21 presentationLayer];
-  [v22 bounds];
+  layer2 = [(UIView *)self layer];
+  presentationLayer2 = [layer2 presentationLayer];
+  [presentationLayer2 bounds];
   Width = CGRectGetWidth(v31);
 
   [(UISwipeActionPullView *)self _setLayerBounds:v16, v18, Width, v20];
-  v24 = [(UIView *)self layer];
-  [v24 removeAllAnimations];
+  layer3 = [(UIView *)self layer];
+  [layer3 removeAllAnimations];
 }
 
-- (void)configureWithSwipeActions:(id)a3
+- (void)configureWithSwipeActions:(id)actions
 {
-  v4 = [a3 reverseObjectEnumerator];
-  v5 = [v4 allObjects];
+  reverseObjectEnumerator = [actions reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
   actions = self->_actions;
-  self->_actions = v5;
+  self->_actions = allObjects;
 
   [(UISwipeActionPullView *)self setState:0];
   self->_swipeActionsDidChange = 1;
@@ -863,35 +863,35 @@ uint64_t __34__UISwipeActionPullView_resetView__block_invoke(uint64_t a1)
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)moveToOffset:(double)a3 extraOffset:(double)a4 animator:(id)a5 usingSpringWithStiffness:(double)a6 initialVelocity:(double)a7
+- (void)moveToOffset:(double)offset extraOffset:(double)extraOffset animator:(id)animator usingSpringWithStiffness:(double)stiffness initialVelocity:(double)velocity
 {
-  v115 = a6;
+  stiffnessCopy = stiffness;
   v129 = *MEMORY[0x1E69E9840];
-  v10 = a5;
+  animatorCopy = animator;
   [(UISwipeActionPullView *)self _paddingToSwipedView];
   v12 = v11;
-  v13 = [(UISwipeActionPullView *)self cellEdge];
+  cellEdge = [(UISwipeActionPullView *)self cellEdge];
   v14 = 0.0;
-  if (a3 >= 0.0)
+  if (offset >= 0.0)
   {
-    v15 = a3;
+    offsetCopy = offset;
   }
 
   else
   {
-    v15 = 0.0;
+    offsetCopy = 0.0;
   }
 
-  v16 = v15 - v12;
-  if (v15 - v12 < 0.0)
+  v16 = offsetCopy - v12;
+  if (offsetCopy - v12 < 0.0)
   {
     v16 = 0.0;
   }
 
   v17 = 8;
-  v18 = fmin(a3, 0.0);
+  v18 = fmin(offset, 0.0);
   v19 = fmin(v18 + v12, 0.0);
-  if (v13 == 8)
+  if (cellEdge == 8)
   {
     v17 = 24;
     v20 = v19;
@@ -902,19 +902,19 @@ uint64_t __34__UISwipeActionPullView_resetView__block_invoke(uint64_t a1)
     v20 = v16;
   }
 
-  if (v13 == 8)
+  if (cellEdge == 8)
   {
-    v15 = v18;
+    offsetCopy = v18;
   }
 
-  v106 = v15;
+  v106 = offsetCopy;
   v21 = *(&self->_contentInsets.top + v17);
-  v22 = [(UISwipeActionPullView *)self _swipeActionCount];
+  _swipeActionCount = [(UISwipeActionPullView *)self _swipeActionCount];
   v23 = self->_buttons;
-  if (v22 != [(NSMutableArray *)v23 count])
+  if (_swipeActionCount != [(NSMutableArray *)v23 count])
   {
-    v103 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v103 handleFailureInMethod:a2 object:self file:@"UISwipeActionPullView.m" lineNumber:514 description:@"The swipe action count does not match the number of swipe action buttons."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISwipeActionPullView.m" lineNumber:514 description:@"The swipe action count does not match the number of swipe action buttons."];
   }
 
   if (v20 >= 0.0)
@@ -960,22 +960,22 @@ uint64_t __34__UISwipeActionPullView_resetView__block_invoke(uint64_t a1)
       v27 = v29;
     }
 
-    v14 = (v27 - v29) / v22;
+    v14 = (v27 - v29) / _swipeActionCount;
   }
 
-  v30 = [(UISwipeActionPullView *)self _interButtonPadding];
+  _interButtonPadding = [(UISwipeActionPullView *)self _interButtonPadding];
   v32 = v31;
-  v33 = MEMORY[0x1EEE9AC00](v30);
+  v33 = MEMORY[0x1EEE9AC00](_interButtonPadding);
   v35 = (v104 - ((v34 + 15) & 0xFFFFFFFFFFFFFFF0));
-  v36 = [(UISwipeActionPullView *)self autosizesButtons];
+  autosizesButtons = [(UISwipeActionPullView *)self autosizesButtons];
   v104[1] = v104;
-  if (!v36)
+  if (!autosizesButtons)
   {
-    v48 = v27 / (v22 + 1);
+    v48 = v27 / (_swipeActionCount + 1);
     if (v48 <= v21)
     {
-      v37 = v27 / (v22 + 1);
-      if (!v22)
+      v37 = v27 / (_swipeActionCount + 1);
+      if (!_swipeActionCount)
       {
         goto LABEL_107;
       }
@@ -983,18 +983,18 @@ uint64_t __34__UISwipeActionPullView_resetView__block_invoke(uint64_t a1)
 
     else
     {
-      v37 = v48 + (v48 - v21) / v22;
+      v37 = v48 + (v48 - v21) / _swipeActionCount;
       v48 = v21;
-      if (!v22)
+      if (!_swipeActionCount)
       {
         goto LABEL_107;
       }
     }
 
-    v49 = v22 - 1;
+    v49 = _swipeActionCount - 1;
     v50 = v48 + v37;
-    v51 = (v22 + 1) & 0xFFFFFFFFFFFFFFFELL;
-    v52 = vdupq_n_s64(v22 - 1);
+    v51 = (_swipeActionCount + 1) & 0xFFFFFFFFFFFFFFFELL;
+    v52 = vdupq_n_s64(_swipeActionCount - 1);
     v53 = xmmword_18A64C520;
     v54 = v35 + 1;
     v55 = vdupq_n_s64(2uLL);
@@ -1042,7 +1042,7 @@ uint64_t __34__UISwipeActionPullView_resetView__block_invoke(uint64_t a1)
   }
 
   [(UISwipeActionPullView *)self _totalInterButtonPadding];
-  if (v22)
+  if (_swipeActionCount)
   {
     v38 = 0;
     v39 = v21 + v37;
@@ -1055,9 +1055,9 @@ uint64_t __34__UISwipeActionPullView_resetView__block_invoke(uint64_t a1)
       ++v38;
     }
 
-    while (v22 != v38);
+    while (_swipeActionCount != v38);
     v42 = 0;
-    v43 = v22;
+    v43 = _swipeActionCount;
     do
     {
       v44 = [(NSMutableArray *)v23 objectAtIndexedSubscript:v42];
@@ -1080,11 +1080,11 @@ uint64_t __34__UISwipeActionPullView_resetView__block_invoke(uint64_t a1)
 
     while (v43);
 LABEL_53:
-    v118 = v22 - 1;
-    if (v22 == 1)
+    v118 = _swipeActionCount - 1;
+    if (_swipeActionCount == 1)
     {
-      v59 = [(NSMutableArray *)v23 firstObject];
-      [v59 buttonWidth];
+      firstObject = [(NSMutableArray *)v23 firstObject];
+      [firstObject buttonWidth];
       v61 = v14 + v60;
 
       v62 = v21 + v61;
@@ -1099,7 +1099,7 @@ LABEL_53:
     v63 = 0;
     v112 = fabs(v106);
     v111 = v121;
-    v107 = v115 + v115;
+    v107 = stiffnessCopy + stiffnessCopy;
     v110 = 2.22044605e-16;
     v109 = 3221225472;
     v114 = v23;
@@ -1115,17 +1115,17 @@ LABEL_53:
         v66 = v66 + v35[v67++];
       }
 
-      while (v22 != v67);
-      v68 = [(UISwipeActionPullView *)self state];
-      v70 = v112 >= v110 && v68 != 0;
+      while (_swipeActionCount != v67);
+      state = [(UISwipeActionPullView *)self state];
+      v70 = v112 >= v110 && state != 0;
       v117 = 441;
-      v72 = v115 > 0.0 && self->_isTentative != v70;
+      v72 = stiffnessCopy > 0.0 && self->_isTentative != v70;
       v73 = *(&self->super.super.super.isa + v64);
       if (v73)
       {
         if (v73 == 1)
         {
-          if (v22 != 1 && v70)
+          if (_swipeActionCount != 1 && v70)
           {
             if (!v63)
             {
@@ -1167,7 +1167,7 @@ LABEL_87:
       v75 = 1;
       v66 = v27;
 LABEL_89:
-      v76 = [v65 _outermostLayer];
+      _outermostLayer = [v65 _outermostLayer];
       [v65 bounds];
       v79 = v78;
       v81 = v80;
@@ -1209,7 +1209,7 @@ LABEL_89:
       aBlock[1] = v109;
       v121[0] = __100__UISwipeActionPullView_moveToOffset_extraOffset_animator_usingSpringWithStiffness_initialVelocity___block_invoke;
       v121[1] = &unk_1E7101718;
-      v92 = v76;
+      v92 = _outermostLayer;
       v122 = v92;
       v124 = v91;
       v93 = v65;
@@ -1226,18 +1226,18 @@ LABEL_89:
         v97 = v107 * v96;
         +[_UISwipeActionSpringAnimationParameters defaultDamping];
         v99 = [[UISpringTimingParameters alloc] initWithMass:1.0 stiffness:v97 damping:v98 initialVelocity:0.0, 0.0];
-        v100 = v10;
+        v100 = animatorCopy;
         v101 = [[UIViewPropertyAnimator alloc] initWithDuration:v99 timingParameters:0.0];
         [(UIViewPropertyAnimator *)v101 addAnimations:v95];
         [(UIViewPropertyAnimator *)v101 startAnimation];
 
-        v10 = v100;
+        animatorCopy = v100;
         v64 = v108;
       }
 
-      else if (v10)
+      else if (animatorCopy)
       {
-        [v10 addAnimations:v94];
+        [animatorCopy addAnimations:v94];
       }
 
       else
@@ -1255,13 +1255,13 @@ LABEL_89:
       v23 = v114;
     }
 
-    while (v63 != v22);
+    while (v63 != _swipeActionCount);
   }
 
 LABEL_107:
   [(UIView *)self bounds];
   Height = CGRectGetHeight(v130);
-  if (v10)
+  if (animatorCopy)
   {
     v119[0] = MEMORY[0x1E69E9820];
     v119[1] = 3221225472;
@@ -1272,7 +1272,7 @@ LABEL_107:
     v119[5] = 0;
     *&v119[7] = v105;
     *&v119[8] = Height;
-    [v10 addAnimations:v119];
+    [animatorCopy addAnimations:v119];
   }
 
   else
@@ -1297,20 +1297,20 @@ uint64_t __100__UISwipeActionPullView_moveToOffset_extraOffset_animator_usingSpr
   return [v7 setBounds:{v3, v4, v5, v6}];
 }
 
-- (void)_performAction:(id)a3 offset:(double)a4 extraOffset:(double)a5
+- (void)_performAction:(id)action offset:(double)offset extraOffset:(double)extraOffset
 {
-  v8 = a3;
-  v10 = [(UISwipeActionPullView *)self primarySwipeAction];
+  actionCopy = action;
+  primarySwipeAction = [(UISwipeActionPullView *)self primarySwipeAction];
 
-  if (v10 == v8)
+  if (primarySwipeAction == actionCopy)
   {
-    v9 = [(UISwipeActionPullView *)self primaryActionIsDestructive];
+    primaryActionIsDestructive = [(UISwipeActionPullView *)self primaryActionIsDestructive];
 
-    if (v9)
+    if (primaryActionIsDestructive)
     {
       [(UISwipeActionPullView *)self setState:2];
 
-      [(UISwipeActionPullView *)self moveToOffset:0 extraOffset:a4 animator:a5 usingSpringWithStiffness:1.0 initialVelocity:0.0];
+      [(UISwipeActionPullView *)self moveToOffset:0 extraOffset:offset animator:extraOffset usingSpringWithStiffness:1.0 initialVelocity:0.0];
     }
   }
 
@@ -1319,22 +1319,22 @@ uint64_t __100__UISwipeActionPullView_moveToOffset_extraOffset_animator_usingSpr
   }
 }
 
-- (id)sourceViewForAction:(id)a3
+- (id)sourceViewForAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__188;
   v16 = __Block_byref_object_dispose__188;
-  v17 = self;
-  buttons = v17->_buttons;
+  selfCopy = self;
+  buttons = selfCopy->_buttons;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__UISwipeActionPullView_sourceViewForAction___block_invoke;
   v9[3] = &unk_1E7122C28;
-  v9[4] = v17;
-  v6 = v4;
+  v9[4] = selfCopy;
+  v6 = actionCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableArray *)buttons enumerateObjectsUsingBlock:v9];
@@ -1360,9 +1360,9 @@ void __45__UISwipeActionPullView_sourceViewForAction___block_invoke(void *a1, vo
   }
 }
 
-- (void)_tappedButton:(id)a3
+- (void)_tappedButton:(id)button
 {
-  if (self->_pressedButton == a3)
+  if (self->_pressedButton == button)
   {
     v4 = [(NSMutableArray *)self->_buttons indexOfObject:?];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1374,31 +1374,31 @@ void __45__UISwipeActionPullView_sourceViewForAction___block_invoke(void *a1, vo
   }
 }
 
-- (void)_pressedButton:(id)a3
+- (void)_pressedButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   if (!self->_pressedButton)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_pressedButton, a3);
-    v5 = v6;
+    v6 = buttonCopy;
+    objc_storeStrong(&self->_pressedButton, button);
+    buttonCopy = v6;
   }
 }
 
-- (void)_unpressedButton:(id)a3
+- (void)_unpressedButton:(id)button
 {
   pressedButton = self->_pressedButton;
-  if (pressedButton == a3)
+  if (pressedButton == button)
   {
     self->_pressedButton = 0;
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1407,7 +1407,7 @@ void __45__UISwipeActionPullView_sourceViewForAction___block_invoke(void *a1, vo
   v22 = 0;
   if (self->_pressedButton)
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -1427,17 +1427,17 @@ void __45__UISwipeActionPullView_sourceViewForAction___block_invoke(void *a1, vo
     {
       v15.receiver = self;
       v15.super_class = UISwipeActionPullView;
-      v11 = [(UIView *)&v15 hitTest:v7 withEvent:x, y];
+      v11 = [(UIView *)&v15 hitTest:eventCopy withEvent:x, y];
       v12 = v18[5];
       v18[5] = v11;
 
       v10 = v18[5];
     }
 
-    v8 = v10;
+    selfCopy = v10;
   }
 
-  v13 = v8;
+  v13 = selfCopy;
   _Block_object_dispose(&v17, 8);
 
   return v13;
@@ -1476,12 +1476,12 @@ void __43__UISwipeActionPullView_hitTest_withEvent___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)swipeActionButton:(id)a3 willDisplayContextMenuWithAnimator:(id)a4
+- (void)swipeActionButton:(id)button willDisplayContextMenuWithAnimator:(id)animator
 {
-  v5 = [(NSMutableArray *)self->_buttons indexOfObject:a3, a4];
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+  animator = [(NSMutableArray *)self->_buttons indexOfObject:button, animator];
+  if (animator != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = v5;
+    v6 = animator;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v7 = [(NSArray *)self->_actions objectAtIndexedSubscript:v6];
     [WeakRetained swipeActionPullView:self tappedAction:v7];

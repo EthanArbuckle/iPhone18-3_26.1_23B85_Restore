@@ -1,11 +1,11 @@
 @interface PUIPhotosPrivacyController
-+ (BOOL)isServiceRestricted:(id)a3;
-+ (void)setTCCForService:(__CFString *)a3 appIdentifier:(id)a4 value:(int)a5 completion:(id)a6;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (id)_photosStatus:(id)a3;
++ (BOOL)isServiceRestricted:(id)restricted;
++ (void)setTCCForService:(__CFString *)service appIdentifier:(id)identifier value:(int)value completion:(id)completion;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (id)_photosStatus:(id)status;
 - (id)_specifiersWithCombinedPickerUsage;
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4 showPhotosAccess:(BOOL)a5 showPhotosAddAccess:(BOOL)a6 showPickerUsage:(BOOL)a7;
-- (void)_setPhotosStatus:(id)a3 specifier:(id)a4;
+- (id)appSpecifierWithName:(id)name bundleID:(id)d showPhotosAccess:(BOOL)access showPhotosAddAccess:(BOOL)addAccess showPickerUsage:(BOOL)usage;
+- (void)_setPhotosStatus:(id)status specifier:(id)specifier;
 - (void)_updatePhotosAuthorizationStates;
 - (void)provideNavigationDonations;
 - (void)updateSpecifiersForImposedSettings;
@@ -13,15 +13,15 @@
 
 @implementation PUIPhotosPrivacyController
 
-+ (BOOL)isServiceRestricted:(id)a3
++ (BOOL)isServiceRestricted:(id)restricted
 {
-  v3 = a3;
+  restrictedCopy = restricted;
   CFPreferencesAppSynchronize(@"com.apple.springboard");
   v4 = CFPreferencesCopyAppValue(@"SBParentalControlsCapabilities", @"com.apple.springboard");
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 containsObject:v3];
+    v6 = [v4 containsObject:restrictedCopy];
   }
 
   else
@@ -32,12 +32,12 @@
   return v6;
 }
 
-+ (void)setTCCForService:(__CFString *)a3 appIdentifier:(id)a4 value:(int)a5 completion:(id)a6
++ (void)setTCCForService:(__CFString *)service appIdentifier:(id)identifier value:(int)value completion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
-  if (a5 != 5)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (value != 5)
   {
     if (setTCCForService_appIdentifier_value_completion__onceToken != -1)
     {
@@ -48,33 +48,33 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v29 = a3;
+      serviceCopy = service;
       v30 = 2112;
-      v31 = v10;
+      v31 = identifierCopy;
       v32 = 1024;
-      v33 = a5;
+      valueCopy = value;
       _os_log_impl(&dword_2657FE000, v12, OS_LOG_TYPE_DEFAULT, "Setting TCC auth for service: %@ appIdentifier:%@, accessLevel:%d", buf, 0x1Cu);
     }
 
-    [v10 cStringUsingEncoding:4];
+    [identifierCopy cStringUsingEncoding:4];
     v13 = tcc_identity_create();
     v14 = tcc_service_singleton_for_CF_name();
     v15 = 0;
-    if ((a5 - 1) <= 2)
+    if ((value - 1) <= 2)
     {
-      v15 = qword_265869FE8[a5 - 1];
+      v15 = qword_265869FE8[value - 1];
     }
 
-    v16 = CFEqual(a3, *MEMORY[0x277D6C1D0]);
-    if (a5 == 2 && v16 && TCCLibraryCore() && gettcc_server_message_prompt_authorization_valueSymbolLoc())
+    v16 = CFEqual(service, *MEMORY[0x277D6C1D0]);
+    if (value == 2 && v16 && TCCLibraryCore() && gettcc_server_message_prompt_authorization_valueSymbolLoc())
     {
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __78__PUIPhotosPrivacyController_setTCCForService_appIdentifier_value_completion___block_invoke_143;
       aBlock[3] = &unk_279BA1F38;
-      v27 = a1;
-      v25 = v10;
-      v26 = v11;
+      selfCopy = self;
+      v25 = identifierCopy;
+      v26 = completionCopy;
       v17 = _Block_copy(aBlock);
       v18 = setTCCForService_appIdentifier_value_completion__tccServer;
       v19 = v13;
@@ -92,9 +92,9 @@
     else
     {
       tcc_server_message_set_authorization_value();
-      if (v11)
+      if (completionCopy)
       {
-        v11[2](v11);
+        completionCopy[2](completionCopy);
       }
     }
   }
@@ -137,15 +137,15 @@ void __78__PUIPhotosPrivacyController_setTCCForService_appIdentifier_value_compl
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v5 initWithKey:@"PHOTOS" table:@"Privacy" locale:v6 bundleURL:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v7 = [v5 initWithKey:@"PHOTOS" table:@"Privacy" locale:currentLocale bundleURL:bundleURL];
 
   v8 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:v9 bundleURL:v4];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:currentLocale2 bundleURL:bundleURL];
 
   v14[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -206,14 +206,14 @@ void __78__PUIPhotosPrivacyController_setTCCForService_appIdentifier_value_compl
             {
               [v90 addObject:v16];
               v17 = PUIDisplayNameForApp(v15);
-              v18 = [(PUIPhotosPrivacyController *)val photosAddOnlyAllAppIDs];
-              v19 = [v18 containsObject:v16];
+              photosAddOnlyAllAppIDs = [(PUIPhotosPrivacyController *)val photosAddOnlyAllAppIDs];
+              v19 = [photosAddOnlyAllAppIDs containsObject:v16];
 
-              v20 = [(PUIPhotosPrivacyController *)val photosReadWriteAllAppIDs];
-              v21 = [v20 containsObject:v16];
+              photosReadWriteAllAppIDs = [(PUIPhotosPrivacyController *)val photosReadWriteAllAppIDs];
+              v21 = [photosReadWriteAllAppIDs containsObject:v16];
 
-              v22 = [(PUIPhotosPrivacyController *)val pickerUsageAppIDs];
-              v23 = [v22 containsObject:v16];
+              pickerUsageAppIDs = [(PUIPhotosPrivacyController *)val pickerUsageAppIDs];
+              v23 = [pickerUsageAppIDs containsObject:v16];
 
               v24 = [(PUIPhotosPrivacyController *)val appSpecifierWithName:v17 bundleID:v16 showPhotosAccess:v21 showPhotosAddAccess:v19 showPickerUsage:v23];
               [v24 setProperty:v16 forKey:v84];
@@ -246,7 +246,7 @@ void __78__PUIPhotosPrivacyController_setTCCForService_appIdentifier_value_compl
     v75 = PUIGetActivePairedDevice();
     if (v75 && objc_opt_class())
     {
-      v26 = [MEMORY[0x277D2BD58] sharedInstance];
+      mEMORY[0x277D2BD58] = [MEMORY[0x277D2BD58] sharedInstance];
       ScreenScale();
       v102 = 0u;
       v103 = 0u;
@@ -263,8 +263,8 @@ void __78__PUIPhotosPrivacyController_setTCCForService_appIdentifier_value_compl
       v79 = v28;
       v101 = 0uLL;
       v100 = 0uLL;
-      v82 = [(PUIPhotosPrivacyController *)val photosAllAppIDs];
-      v29 = [v82 countByEnumeratingWithState:&v100 objects:v113 count:16];
+      photosAllAppIDs = [(PUIPhotosPrivacyController *)val photosAllAppIDs];
+      v29 = [photosAllAppIDs countByEnumeratingWithState:&v100 objects:v113 count:16];
       if (v29)
       {
         v85 = *v101;
@@ -275,7 +275,7 @@ void __78__PUIPhotosPrivacyController_setTCCForService_appIdentifier_value_compl
           {
             if (*v101 != v85)
             {
-              objc_enumerationMutation(v82);
+              objc_enumerationMutation(photosAllAppIDs);
             }
 
             v31 = *(*(&v100 + 1) + 8 * j);
@@ -294,14 +294,14 @@ void __78__PUIPhotosPrivacyController_setTCCForService_appIdentifier_value_compl
                 v32 = PUIDisplayNameForWatchApp(v33);
               }
 
-              v34 = [(PUIPhotosPrivacyController *)val photosAddOnlyAllAppIDs];
-              v35 = [v34 containsObject:v31];
+              photosAddOnlyAllAppIDs2 = [(PUIPhotosPrivacyController *)val photosAddOnlyAllAppIDs];
+              v35 = [photosAddOnlyAllAppIDs2 containsObject:v31];
 
-              v36 = [(PUIPhotosPrivacyController *)val photosReadWriteAllAppIDs];
-              v37 = [v36 containsObject:v31];
+              photosReadWriteAllAppIDs2 = [(PUIPhotosPrivacyController *)val photosReadWriteAllAppIDs];
+              v37 = [photosReadWriteAllAppIDs2 containsObject:v31];
 
-              v38 = [(PUIPhotosPrivacyController *)val pickerUsageAppIDs];
-              v39 = [v38 containsObject:v31];
+              pickerUsageAppIDs2 = [(PUIPhotosPrivacyController *)val pickerUsageAppIDs];
+              v39 = [pickerUsageAppIDs2 containsObject:v31];
 
               if (v32)
               {
@@ -325,7 +325,7 @@ void __78__PUIPhotosPrivacyController_setTCCForService_appIdentifier_value_compl
               v43 = v41;
               v98 = v43;
               objc_copyWeak(&v99, buf);
-              [v26 getIconForBundleID:v33 iconVariant:v79 block:v97 timeout:-1.0];
+              [mEMORY[0x277D2BD58] getIconForBundleID:v33 iconVariant:v79 block:v97 timeout:-1.0];
               [v89 addObject:v43];
               objc_destroyWeak(&v99);
 
@@ -333,21 +333,21 @@ void __78__PUIPhotosPrivacyController_setTCCForService_appIdentifier_value_compl
             }
           }
 
-          v29 = [v82 countByEnumeratingWithState:&v100 objects:v113 count:16];
+          v29 = [photosAllAppIDs countByEnumeratingWithState:&v100 objects:v113 count:16];
         }
 
         while (v29);
       }
     }
 
-    v44 = [MEMORY[0x277D3B240] sharedInstance];
-    v45 = [v44 photosPickerPresentedLibraryLogsByClient];
+    mEMORY[0x277D3B240] = [MEMORY[0x277D3B240] sharedInstance];
+    photosPickerPresentedLibraryLogsByClient = [mEMORY[0x277D3B240] photosPickerPresentedLibraryLogsByClient];
 
     v95 = 0u;
     v96 = 0u;
     v93 = 0u;
     v94 = 0u;
-    v86 = v45;
+    v86 = photosPickerPresentedLibraryLogsByClient;
     v46 = [v86 countByEnumeratingWithState:&v93 objects:v112 count:16];
     if (v46)
     {
@@ -367,8 +367,8 @@ void __78__PUIPhotosPrivacyController_setTCCForService_appIdentifier_value_compl
 
           v50 = *(*(&v93 + 1) + 8 * k);
           v51 = [v50 objectForKeyedSubscript:v48];
-          v52 = [(PUIPhotosPrivacyController *)val pickerUsageAppIDs];
-          v53 = [v52 containsObject:v51];
+          pickerUsageAppIDs3 = [(PUIPhotosPrivacyController *)val pickerUsageAppIDs];
+          v53 = [pickerUsageAppIDs3 containsObject:v51];
 
           if ([v90 containsObject:v51] & 1 | ((v53 & 1) == 0))
           {
@@ -388,8 +388,8 @@ void __78__PUIPhotosPrivacyController_setTCCForService_appIdentifier_value_compl
             v54 = v92;
             if (v55)
             {
-              v56 = [v55 localizedName];
-              v57 = [(PUIPhotosPrivacyController *)val appSpecifierWithName:v56 bundleID:v51 showPhotosAccess:0 showPhotosAddAccess:0 showPickerUsage:1];
+              localizedName = [v55 localizedName];
+              v57 = [(PUIPhotosPrivacyController *)val appSpecifierWithName:localizedName bundleID:v51 showPhotosAccess:0 showPhotosAddAccess:0 showPickerUsage:1];
               [v57 setProperty:v51 forKey:v83];
               [v57 setProperty:MEMORY[0x277CBEC38] forKey:v80];
               v58 = [MEMORY[0x277CCABB0] numberWithInt:!v88];
@@ -400,14 +400,14 @@ void __78__PUIPhotosPrivacyController_setTCCForService_appIdentifier_value_compl
 
             else
             {
-              v56 = _PUILoggingFacility();
-              if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
+              localizedName = _PUILoggingFacility();
+              if (os_log_type_enabled(localizedName, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
                 v109 = v51;
                 v110 = 2112;
                 v111 = v54;
-                _os_log_impl(&dword_2657FE000, v56, OS_LOG_TYPE_DEFAULT, "Skipping app (%@) without bundle record with error: %@", buf, 0x16u);
+                _os_log_impl(&dword_2657FE000, localizedName, OS_LOG_TYPE_DEFAULT, "Skipping app (%@) without bundle record with error: %@", buf, 0x16u);
               }
             }
           }
@@ -427,18 +427,18 @@ void __78__PUIPhotosPrivacyController_setTCCForService_appIdentifier_value_compl
     v61 = NSClassFromString(&cfstr_Psphotostccgri.isa);
     if (v61)
     {
-      v62 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+      emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
       v63 = *MEMORY[0x277D3FFB8];
-      [v62 setProperty:@"PHOTOS_GRID_GROUP" forKey:*MEMORY[0x277D3FFB8]];
+      [emptyGroupSpecifier setProperty:@"PHOTOS_GRID_GROUP" forKey:*MEMORY[0x277D3FFB8]];
       v64 = PUI_LocalizedStringForPrivacy(@"PHOTOS_GRID_FOOTER");
-      [v62 setProperty:v64 forKey:*MEMORY[0x277D3FF88]];
+      [emptyGroupSpecifier setProperty:v64 forKey:*MEMORY[0x277D3FF88]];
       v65 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:&stru_28771E540 target:val set:0 get:0 detail:0 cell:-1 edit:0];
       [v65 setProperty:@"PHOTOS_GRID_CELL" forKey:v63];
       v66 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D76F30]];
       [v65 setProperty:v66 forKey:*MEMORY[0x277D40140]];
 
       [v65 setProperty:v61 forKey:*MEMORY[0x277D3FE58]];
-      [v60 addObject:v62];
+      [v60 addObject:emptyGroupSpecifier];
       [v60 addObject:v65];
     }
 
@@ -510,27 +510,27 @@ uint64_t __64__PUIPhotosPrivacyController__specifiersWithCombinedPickerUsage__bl
   return v7;
 }
 
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4 showPhotosAccess:(BOOL)a5 showPhotosAddAccess:(BOOL)a6 showPickerUsage:(BOOL)a7
+- (id)appSpecifierWithName:(id)name bundleID:(id)d showPhotosAccess:(BOOL)access showPhotosAddAccess:(BOOL)addAccess showPickerUsage:(BOOL)usage
 {
-  v24 = a7;
-  v7 = a6;
-  v8 = a5;
+  usageCopy = usage;
+  addAccessCopy = addAccess;
+  accessCopy = access;
   v11 = MEMORY[0x277D3FAD8];
-  v12 = a4;
-  v13 = a3;
-  v14 = [v11 preferenceSpecifierNamed:v13 target:self set:sel__setPhotosStatus_specifier_ get:sel__photosStatus_ detail:objc_opt_class() cell:2 edit:0];
+  dCopy = d;
+  nameCopy = name;
+  v14 = [v11 preferenceSpecifierNamed:nameCopy target:self set:sel__setPhotosStatus_specifier_ get:sel__photosStatus_ detail:objc_opt_class() cell:2 edit:0];
 
-  [v14 setIdentifier:v12];
-  [v14 setProperty:v12 forKey:@"appBundleID"];
+  [v14 setIdentifier:dCopy];
+  [v14 setProperty:dCopy forKey:@"appBundleID"];
 
   v15 = PUI_LocalizedStringForPrivacy(@"PHOTOS_AUTH_ONGOING_HEADER");
   [v14 setProperty:v15 forKey:*MEMORY[0x277D40110]];
 
-  v16 = [MEMORY[0x277CBEB18] array];
-  v17 = [MEMORY[0x277CBEB18] array];
-  if (!v8 && !v7 || (PUI_LocalizedStringForPrivacy(@"PHOTOS_NO_ACCESS_AUTHORIZATION"), v22 = objc_claimAutoreleasedReturnValue(), [v16 addObject:v22], v22, objc_msgSend(v17, "addObject:", &unk_28772B360), objc_msgSend(v14, "setProperty:forKey:", MEMORY[0x277CBEC38], @"hasTCCOptions"), !v7))
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  if (!accessCopy && !addAccessCopy || (PUI_LocalizedStringForPrivacy(@"PHOTOS_NO_ACCESS_AUTHORIZATION"), v22 = objc_claimAutoreleasedReturnValue(), [array addObject:v22], v22, objc_msgSend(array2, "addObject:", &unk_28772B360), objc_msgSend(v14, "setProperty:forKey:", MEMORY[0x277CBEC38], @"hasTCCOptions"), !addAccessCopy))
   {
-    if (!v8)
+    if (!accessCopy)
     {
       goto LABEL_5;
     }
@@ -539,33 +539,33 @@ uint64_t __64__PUIPhotosPrivacyController__specifiersWithCombinedPickerUsage__bl
   }
 
   v23 = PUI_LocalizedStringForPrivacy(@"PHOTOS_ADD_ONLY_AUTHORIZATION");
-  [v16 addObject:v23];
+  [array addObject:v23];
 
-  [v17 addObject:&unk_28772B378];
-  if (v8)
+  [array2 addObject:&unk_28772B378];
+  if (accessCopy)
   {
 LABEL_4:
     v18 = PUI_LocalizedStringForPrivacy(@"PHOTOS_LIMITED_AUTHORIZATION");
-    [v16 addObject:v18];
+    [array addObject:v18];
 
-    [v17 addObject:&unk_28772B330];
+    [array2 addObject:&unk_28772B330];
     v19 = PUI_LocalizedStringForPrivacy(@"PHOTOS_FULL_AUTHORIZATION");
-    [v16 addObject:v19];
+    [array addObject:v19];
 
-    [v17 addObject:&unk_28772B348];
+    [array2 addObject:&unk_28772B348];
   }
 
 LABEL_5:
-  if (v24)
+  if (usageCopy)
   {
     v20 = PUI_LocalizedStringForPrivacy(@"PHOTOS_PICKER_ONLY_AUTHORIZATION");
-    [v16 addObject:v20];
+    [array addObject:v20];
 
-    [v17 addObject:&unk_28772B390];
+    [array2 addObject:&unk_28772B390];
     [v14 setProperty:MEMORY[0x277CBEC38] forKey:@"hasPickerInfo"];
   }
 
-  [v14 setValues:v17 titles:v16];
+  [v14 setValues:array2 titles:array];
 
   return v14;
 }
@@ -596,33 +596,33 @@ LABEL_5:
   v11 = PUIPhotosPolicyBundleIdentifiersWithRecentPickerUsage();
   [(PUIPhotosPrivacyController *)self setPickerUsageAppIDs:v11];
 
-  v12 = [(PUIPhotosPrivacyController *)self photosReadWriteAllowedAppIDs];
-  v13 = [(PUIPhotosPrivacyController *)self photosReadWriteLimitedAppIDs];
-  v14 = [v12 setByAddingObjectsFromSet:v13];
+  photosReadWriteAllowedAppIDs = [(PUIPhotosPrivacyController *)self photosReadWriteAllowedAppIDs];
+  photosReadWriteLimitedAppIDs = [(PUIPhotosPrivacyController *)self photosReadWriteLimitedAppIDs];
+  v14 = [photosReadWriteAllowedAppIDs setByAddingObjectsFromSet:photosReadWriteLimitedAppIDs];
   [(PUIPhotosPrivacyController *)self setPhotosReadWriteAllowedOrLimitedAppIDs:v14];
 
-  v15 = [(PUIPhotosPrivacyController *)self photosReadWriteAllowedOrLimitedAppIDs];
-  v16 = [v15 setByAddingObjectsFromSet:v6];
+  photosReadWriteAllowedOrLimitedAppIDs = [(PUIPhotosPrivacyController *)self photosReadWriteAllowedOrLimitedAppIDs];
+  v16 = [photosReadWriteAllowedOrLimitedAppIDs setByAddingObjectsFromSet:v6];
   [(PUIPhotosPrivacyController *)self setPhotosReadWriteAllAppIDs:v16];
 
-  v17 = [(PUIPhotosPrivacyController *)self photosReadWriteAllAppIDs];
-  v18 = [v17 setByAddingObjectsFromSet:v10];
+  photosReadWriteAllAppIDs = [(PUIPhotosPrivacyController *)self photosReadWriteAllAppIDs];
+  v18 = [photosReadWriteAllAppIDs setByAddingObjectsFromSet:v10];
   [(PUIPhotosPrivacyController *)self setPhotosReadWriteAllAppIDs:v18];
 
   v19 = [v8 setByAddingObjectsFromSet:v9];
 
   [(PUIPhotosPrivacyController *)self setPhotosAddOnlyAllAppIDs:v19];
-  v20 = [(PUIPhotosPrivacyController *)self photosReadWriteAllAppIDs];
-  v21 = [(PUIPhotosPrivacyController *)self photosAddOnlyAllAppIDs];
-  v22 = [v20 setByAddingObjectsFromSet:v21];
+  photosReadWriteAllAppIDs2 = [(PUIPhotosPrivacyController *)self photosReadWriteAllAppIDs];
+  photosAddOnlyAllAppIDs = [(PUIPhotosPrivacyController *)self photosAddOnlyAllAppIDs];
+  v22 = [photosReadWriteAllAppIDs2 setByAddingObjectsFromSet:photosAddOnlyAllAppIDs];
   [(PUIPhotosPrivacyController *)self setPhotosAllAppIDs:v22];
 }
 
-- (void)_setPhotosStatus:(id)a3 specifier:(id)a4
+- (void)_setPhotosStatus:(id)status specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = [a4 propertyForKey:@"appBundleID"];
-  if ([v6 intValue] == 2)
+  statusCopy = status;
+  v7 = [specifier propertyForKey:@"appBundleID"];
+  if ([statusCopy intValue] == 2)
   {
     v8 = *MEMORY[0x277D6C1D0];
     v19[0] = MEMORY[0x277D85DD0];
@@ -634,10 +634,10 @@ LABEL_5:
     goto LABEL_16;
   }
 
-  if ([v6 intValue] == 1)
+  if ([statusCopy intValue] == 1)
   {
-    v9 = [(PUIPhotosPrivacyController *)self photosReadWriteAllowedOrLimitedAppIDs];
-    v10 = [v9 containsObject:v7];
+    photosReadWriteAllowedOrLimitedAppIDs = [(PUIPhotosPrivacyController *)self photosReadWriteAllowedOrLimitedAppIDs];
+    v10 = [photosReadWriteAllowedOrLimitedAppIDs containsObject:v7];
 
     if (v10)
     {
@@ -650,7 +650,7 @@ LABEL_5:
     goto LABEL_15;
   }
 
-  if ([v6 intValue] == 3)
+  if ([statusCopy intValue] == 3)
   {
     v11 = *MEMORY[0x277D6C1D0];
     v12 = v7;
@@ -660,27 +660,27 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v6 intValue] && objc_msgSend(v6, "intValue") != 5)
+  if ([statusCopy intValue] && objc_msgSend(statusCopy, "intValue") != 5)
   {
     v18 = _PUILoggingFacility();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [PUIPhotosPrivacyController _setPhotosStatus:v6 specifier:v18];
+      [PUIPhotosPrivacyController _setPhotosStatus:statusCopy specifier:v18];
     }
   }
 
   else
   {
-    v14 = [(PUIPhotosPrivacyController *)self photosReadWriteAllowedOrLimitedAppIDs];
-    v15 = [v14 containsObject:v7];
+    photosReadWriteAllowedOrLimitedAppIDs2 = [(PUIPhotosPrivacyController *)self photosReadWriteAllowedOrLimitedAppIDs];
+    v15 = [photosReadWriteAllowedOrLimitedAppIDs2 containsObject:v7];
 
     if (v15)
     {
       [PUIPhotosPrivacyController setTCCForService:*MEMORY[0x277D6C1D0] appIdentifier:v7 value:0];
     }
 
-    v16 = [(PUIPhotosPrivacyController *)self photosAddOnlyAllowedAppIDs];
-    v17 = [v16 containsObject:v7];
+    photosAddOnlyAllowedAppIDs = [(PUIPhotosPrivacyController *)self photosAddOnlyAllowedAppIDs];
+    v17 = [photosAddOnlyAllowedAppIDs containsObject:v7];
 
     if (v17)
     {
@@ -704,11 +704,11 @@ uint64_t __57__PUIPhotosPrivacyController__setPhotosStatus_specifier___block_inv
   return [v2 reloadSpecifiers];
 }
 
-- (id)_photosStatus:(id)a3
+- (id)_photosStatus:(id)status
 {
-  v4 = [a3 propertyForKey:@"appBundleID"];
-  v5 = [(PUIPhotosPrivacyController *)self photosReadWriteAllowedAppIDs];
-  v6 = [v5 containsObject:v4];
+  v4 = [status propertyForKey:@"appBundleID"];
+  photosReadWriteAllowedAppIDs = [(PUIPhotosPrivacyController *)self photosReadWriteAllowedAppIDs];
+  v6 = [photosReadWriteAllowedAppIDs containsObject:v4];
 
   if (v6)
   {
@@ -717,8 +717,8 @@ uint64_t __57__PUIPhotosPrivacyController__setPhotosStatus_specifier___block_inv
 
   else
   {
-    v8 = [(PUIPhotosPrivacyController *)self photosReadWriteLimitedAppIDs];
-    v9 = [v8 containsObject:v4];
+    photosReadWriteLimitedAppIDs = [(PUIPhotosPrivacyController *)self photosReadWriteLimitedAppIDs];
+    v9 = [photosReadWriteLimitedAppIDs containsObject:v4];
 
     if (v9)
     {
@@ -727,8 +727,8 @@ uint64_t __57__PUIPhotosPrivacyController__setPhotosStatus_specifier___block_inv
 
     else
     {
-      v10 = [(PUIPhotosPrivacyController *)self photosAddOnlyAllowedAppIDs];
-      v11 = [v10 containsObject:v4];
+      photosAddOnlyAllowedAppIDs = [(PUIPhotosPrivacyController *)self photosAddOnlyAllowedAppIDs];
+      v11 = [photosAddOnlyAllowedAppIDs containsObject:v4];
 
       if (v11)
       {
@@ -737,8 +737,8 @@ uint64_t __57__PUIPhotosPrivacyController__setPhotosStatus_specifier___block_inv
 
       else
       {
-        v12 = [(PUIPhotosPrivacyController *)self pickerUsageAppIDs];
-        v13 = [v12 containsObject:v4];
+        pickerUsageAppIDs = [(PUIPhotosPrivacyController *)self pickerUsageAppIDs];
+        v13 = [pickerUsageAppIDs containsObject:v4];
 
         if (v13)
         {
@@ -788,10 +788,10 @@ uint64_t __57__PUIPhotosPrivacyController__setPhotosStatus_specifier___block_inv
         {
           v11 = v10;
           v12 = [v9 objectForKeyedSubscript:v7];
-          v13 = [v12 BOOLValue];
-          v14 = [v3 BOOLValue];
+          bOOLValue = [v12 BOOLValue];
+          bOOLValue2 = [v3 BOOLValue];
 
-          if (v13 == v14)
+          if (bOOLValue == bOOLValue2)
           {
             continue;
           }
@@ -816,13 +816,13 @@ uint64_t __57__PUIPhotosPrivacyController__setPhotosStatus_specifier___block_inv
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = [(PUIPhotosPrivacyController *)self specifierForID:@"PICKER_APP_GROUP"];
   v13 = 0;
-  if (-[PUIPhotosPrivacyController getGroup:row:ofSpecifier:](self, "getGroup:row:ofSpecifier:", &v13, 0, v8) && (v9 = [v7 section], v9 == v13))
+  if (-[PUIPhotosPrivacyController getGroup:row:ofSpecifier:](self, "getGroup:row:ofSpecifier:", &v13, 0, v8) && (v9 = [pathCopy section], v9 == v13))
   {
     v10 = 0;
   }
@@ -831,7 +831,7 @@ uint64_t __57__PUIPhotosPrivacyController__setPhotosStatus_specifier___block_inv
   {
     v12.receiver = self;
     v12.super_class = PUIPhotosPrivacyController;
-    v10 = [(PUIPhotosPrivacyController *)&v12 tableView:v6 shouldHighlightRowAtIndexPath:v7];
+    v10 = [(PUIPhotosPrivacyController *)&v12 tableView:viewCopy shouldHighlightRowAtIndexPath:pathCopy];
   }
 
   return v10;

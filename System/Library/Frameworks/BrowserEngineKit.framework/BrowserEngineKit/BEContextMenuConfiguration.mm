@@ -1,7 +1,7 @@
 @interface BEContextMenuConfiguration
 - (BEContextMenuConfiguration)init;
-- (BOOL)fulfillUsingConfiguration:(id)a3;
-- (void)_prepareWithCompletion:(id)a3;
+- (BOOL)fulfillUsingConfiguration:(id)configuration;
+- (void)_prepareWithCompletion:(id)completion;
 @end
 
 @implementation BEContextMenuConfiguration
@@ -13,18 +13,18 @@
   return [(UIContextMenuConfiguration *)&v3 init];
 }
 
-- (void)_prepareWithCompletion:(id)a3
+- (void)_prepareWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [[_BEBurnableBlock alloc] initWithTimeout:v4 block:0 defaultInputProvider:0.5];
+  completionCopy = completion;
+  v5 = [[_BEBurnableBlock alloc] initWithTimeout:completionCopy block:0 defaultInputProvider:0.5];
 
   deferredCompletion = self->_deferredCompletion;
   self->_deferredCompletion = v5;
 }
 
-- (BOOL)fulfillUsingConfiguration:(id)a3
+- (BOOL)fulfillUsingConfiguration:(id)configuration
 {
-  v4 = [(_BEBurnableBlock *)self->_deferredCompletion performWithInput:a3];
+  v4 = [(_BEBurnableBlock *)self->_deferredCompletion performWithInput:configuration];
   deferredCompletion = self->_deferredCompletion;
   self->_deferredCompletion = 0;
 

@@ -1,14 +1,14 @@
 @interface NSDateFormatter
 + (NSString)localizedStringFromDate:(NSDate *)date dateStyle:(NSDateFormatterStyle)dstyle timeStyle:(NSDateFormatterStyle)tstyle;
-+ (id)_componentsFromFormatString:(id)a3;
-+ (id)_formatStringFromComponents:(id)a3;
++ (id)_componentsFromFormatString:(id)string;
++ (id)_formatStringFromComponents:(id)components;
 + (void)initialize;
 + (void)setDefaultFormatterBehavior:(NSDateFormatterBehavior)defaultFormatterBehavior;
-- (BOOL)_mayDecorateAttributedStringForObjectValue:(id)a3;
+- (BOOL)_mayDecorateAttributedStringForObjectValue:(id)value;
 - (BOOL)_usesCharacterDirection;
 - (BOOL)doesRelativeDateFormatting;
 - (BOOL)generatesCalendarDates;
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5;
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description;
 - (BOOL)isLenient;
 - (NSArray)eraSymbols;
 - (NSArray)longEraSymbols;
@@ -34,7 +34,7 @@
 - (NSDate)gregorianStartDate;
 - (NSDate)twoDigitStartDate;
 - (NSDateFormatter)init;
-- (NSDateFormatter)initWithCoder:(id)a3;
+- (NSDateFormatter)initWithCoder:(id)coder;
 - (NSDateFormatterStyle)dateStyle;
 - (NSDateFormatterStyle)timeStyle;
 - (NSFormattingContext)formattingContext;
@@ -43,26 +43,26 @@
 - (NSString)dateFormat;
 - (NSString)stringFromDate:(NSDate *)date;
 - (NSTimeZone)timeZone;
-- (id)_attributedStringWithFieldsFromDate:(id)a3;
+- (id)_attributedStringWithFieldsFromDate:(id)date;
 - (id)_dateFormat;
-- (id)_getLocaleAlreadyLocked:(BOOL)a3;
+- (id)_getLocaleAlreadyLocked:(BOOL)locked;
 - (id)_locale_forOldMethods;
-- (id)_nextChangeDateAfterDate:(id)a3;
+- (id)_nextChangeDateAfterDate:(id)date;
 - (id)_timeZone_forOldMethods;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)stringForObjectValue:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)stringForObjectValue:(id)value;
 - (int64_t)_cacheGenerationCount;
 - (void)_clearFormatter;
 - (void)_regenerateFormatter;
 - (void)_regenerateFormatterIfAbsent;
 - (void)_reset;
-- (void)_setDateFormat:(id)a3;
-- (void)_setDateFormat:(id)a3 alreadyLocked:(BOOL)a4;
-- (void)_setIsLenient:(BOOL)a3;
-- (void)_setUsesCharacterDirection:(BOOL)a3;
+- (void)_setDateFormat:(id)format;
+- (void)_setDateFormat:(id)format alreadyLocked:(BOOL)locked;
+- (void)_setIsLenient:(BOOL)lenient;
+- (void)_setUsesCharacterDirection:(BOOL)direction;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)receiveObservedValue:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)receiveObservedValue:(id)value;
 - (void)setAMSymbol:(NSString *)AMSymbol;
 - (void)setCalendar:(NSCalendar *)calendar;
 - (void)setDateStyle:(NSDateFormatterStyle)dateStyle;
@@ -114,32 +114,32 @@
 {
   [(NSDateFormatter *)self _clearFormatter];
   self->_counter = _localeNotificationCount();
-  v3 = [(NSMutableDictionary *)self->_attributes objectForKey:@"locale"];
-  v4 = [(NSMutableDictionary *)self->_attributes objectForKey:@"dateStyle"];
+  currentLocale = [(NSMutableDictionary *)self->_attributes objectForKey:@"locale"];
+  integerValue = [(NSMutableDictionary *)self->_attributes objectForKey:@"dateStyle"];
   v5 = [(NSMutableDictionary *)self->_attributes objectForKey:@"timeStyle"];
   v6 = MEMORY[0x1E695E4A8];
-  if (!v3)
+  if (!currentLocale)
   {
-    v3 = [MEMORY[0x1E695DF58] currentLocale];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
   }
 
   v7 = *v6;
-  if (v4)
+  if (integerValue)
   {
-    v4 = [v4 integerValue];
+    integerValue = [integerValue integerValue];
   }
 
   if (v5)
   {
-    v8 = [v5 integerValue];
+    integerValue2 = [v5 integerValue];
   }
 
   else
   {
-    v8 = kCFDateFormatterNoStyle;
+    integerValue2 = kCFDateFormatterNoStyle;
   }
 
-  v9 = CFDateFormatterCreate(v7, v3, v4, v8);
+  v9 = CFDateFormatterCreate(v7, currentLocale, integerValue, integerValue2);
   self->_formatter = v9;
   if (v9)
   {
@@ -373,7 +373,7 @@
 {
   if (!__NSDateFormatterDefaultBehavior)
   {
-    [a1 setDefaultFormatterBehavior:0];
+    [self setDefaultFormatterBehavior:0];
   }
 }
 
@@ -383,16 +383,16 @@
   v3 = [(NSMutableDictionary *)self->_attributes objectForKey:@"generatesCalendarDates"];
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  return v4;
+  return bOOLValue;
 }
 
 - (NSArray)shortStandaloneWeekdaySymbols
@@ -590,18 +590,18 @@ LABEL_2:
   v4 = formatter;
   os_unfair_lock_unlock(&self->_lock);
   v5 = v4;
-  v6 = [(__CFDateFormatter *)v5 intValue];
+  intValue = [(__CFDateFormatter *)v5 intValue];
   if (!v5)
   {
     if (self->_formatter)
     {
-      v6 = [CFDateFormatterCopyProperty(self->_formatter @"kCFDateFormatterFormattingContextKey")];
+      intValue = [CFDateFormatterCopyProperty(self->_formatter @"kCFDateFormatterFormattingContextKey")];
     }
   }
 
-  if (v6 > 257)
+  if (intValue > 257)
   {
-    switch(v6)
+    switch(intValue)
     {
       case 258:
         return 4;
@@ -616,9 +616,9 @@ LABEL_2:
 
   else
   {
-    if (v6 != -1)
+    if (intValue != -1)
     {
-      if (v6 == 257)
+      if (intValue == 257)
       {
         return 5;
       }
@@ -653,33 +653,33 @@ LABEL_2:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5[1] setDictionary:self->_attributes];
   os_unfair_lock_unlock(&self->_lock);
   [v5 _clearFormatter];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = NSDateFormatter;
   [(NSFormatter *)&v5 encodeWithCoder:?];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSDateFormatters cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [a3 encodeObject:self->_attributes forKey:@"NS.attributes"];
+  [coder encodeObject:self->_attributes forKey:@"NS.attributes"];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (NSDateFormatter)initWithCoder:(id)a3
+- (NSDateFormatter)initWithCoder:(id)coder
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -689,13 +689,13 @@ LABEL_2:
   if (v4)
   {
     v4->_lock._os_unfair_lock_opaque = 0;
-    if (([a3 allowsKeyedCoding] & 1) == 0)
+    if (([coder allowsKeyedCoding] & 1) == 0)
     {
 
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSDateFormatters cannot be decoded by non-keyed archivers" userInfo:0]);
     }
 
-    v6 = [a3 decodeObjectForKey:@"NS.attributes"];
+    v6 = [coder decodeObjectForKey:@"NS.attributes"];
     v5->_attributes = v6;
     v7 = [-[NSMutableDictionary objectForKey:](v6 objectForKey:{@"formatterBehavior", "integerValue"}];
     if (v7 != 1040)
@@ -703,15 +703,15 @@ LABEL_2:
       attributes = v5->_attributes;
       if (v7)
       {
-        v9 = 1040;
+        defaultFormatterBehavior = 1040;
       }
 
       else
       {
-        v9 = [objc_opt_class() defaultFormatterBehavior];
+        defaultFormatterBehavior = [objc_opt_class() defaultFormatterBehavior];
       }
 
-      [(NSMutableDictionary *)attributes setValue:[NSNumber forKey:"numberWithInteger:" numberWithInteger:v9], @"formatterBehavior"];
+      [(NSMutableDictionary *)attributes setValue:[NSNumber forKey:"numberWithInteger:" numberWithInteger:defaultFormatterBehavior], @"formatterBehavior"];
     }
 
     [(NSDateFormatter *)v5 _clearFormatter];
@@ -748,15 +748,15 @@ LABEL_2:
 
   else
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
 
-    return [v4 dictionaryRepresentation];
+    return [standardUserDefaults dictionaryRepresentation];
   }
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  if (!a3 || !_NSIsNSDate())
+  if (!value || !_NSIsNSDate())
   {
     return 0;
   }
@@ -769,7 +769,7 @@ LABEL_2:
 
   [(NSDateFormatter *)self _regenerateFormatterIfAbsent];
   formatter = self->_formatter;
-  if (formatter && (StringWithDate = CFDateFormatterCreateStringWithDate(*MEMORY[0x1E695E4A8], formatter, a3)) != 0)
+  if (formatter && (StringWithDate = CFDateFormatterCreateStringWithDate(*MEMORY[0x1E695E4A8], formatter, value)) != 0)
   {
     v7 = StringWithDate;
   }
@@ -783,7 +783,7 @@ LABEL_2:
   {
     v8 = objc_alloc_init(_NSStringProxyForContext);
     [(_NSStringProxyForContext *)v8 setString:v7];
-    [(_NSStringProxyForContext *)v8 setItem:a3];
+    [(_NSStringProxyForContext *)v8 setItem:value];
     v9 = [objc_allocWithZone(objc_opt_class()) init];
     [v9[1] setDictionary:self->_attributes];
     [(_NSStringProxyForContext *)v8 _retainFormatter:v9];
@@ -795,7 +795,7 @@ LABEL_2:
   return v7;
 }
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v16[0] = 0;
@@ -807,7 +807,7 @@ LABEL_2:
 
   v10 = objc_opt_class();
   MethodImplementation = class_getMethodImplementation(v10, sel_getObjectValue_forString_range_error_);
-  if (a5)
+  if (description)
   {
     v12 = v16;
   }
@@ -819,18 +819,18 @@ LABEL_2:
 
   if (MethodImplementation == getObjectValue_forString_errorDescription__baseIMP)
   {
-    ObjectValue = getObjectValue(self, a3, a4, 0, 1, v12);
+    ObjectValue = getObjectValue(self, value, string, 0, 1, v12);
   }
 
   else
   {
-    ObjectValue = [(NSDateFormatter *)self getObjectValue:a3 forString:a4 range:0 error:v12];
+    ObjectValue = [(NSDateFormatter *)self getObjectValue:value forString:string range:0 error:v12];
   }
 
   v14 = ObjectValue;
-  if (a5)
+  if (description)
   {
-    *a5 = [v16[0] localizedDescription];
+    *description = [v16[0] localizedDescription];
   }
 
   return v14;
@@ -989,9 +989,9 @@ LABEL_8:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_getLocaleAlreadyLocked:(BOOL)a3
+- (id)_getLocaleAlreadyLocked:(BOOL)locked
 {
-  if (!a3)
+  if (!locked)
   {
     os_unfair_lock_lock(&self->_lock);
   }
@@ -1018,7 +1018,7 @@ LABEL_8:
   }
 
   v7 = Locale;
-  if (!a3)
+  if (!locked)
   {
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -1055,18 +1055,18 @@ LABEL_8:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_setDateFormat:(id)a3 alreadyLocked:(BOOL)a4
+- (void)_setDateFormat:(id)format alreadyLocked:(BOOL)locked
 {
-  if (!a4)
+  if (!locked)
   {
     os_unfair_lock_lock(&self->_lock);
   }
 
   v7 = [(NSMutableDictionary *)self->_attributes objectForKey:@"dateFormat"];
-  if (!a3 || v7) && ([v7 isEqualToString:a3])
+  if (!format || v7) && ([v7 isEqualToString:format])
   {
 LABEL_11:
-    if (a4)
+    if (locked)
     {
       return;
     }
@@ -1075,14 +1075,14 @@ LABEL_11:
   }
 
   ++self->_cacheGeneration;
-  v8 = [a3 copyWithZone:0];
+  v8 = [format copyWithZone:0];
   [(NSMutableDictionary *)self->_attributes setValue:v8 forKey:@"dateFormat"];
   if (!v8 || (formatter = self->_formatter) == 0)
   {
     if (!v8)
     {
       [(NSDateFormatter *)self _clearFormatter];
-      if (a4)
+      if (locked)
       {
         return;
       }
@@ -1094,7 +1094,7 @@ LABEL_11:
   }
 
   CFDateFormatterSetFormat(formatter, v8);
-  if (a4)
+  if (locked)
   {
     return;
   }
@@ -1119,11 +1119,11 @@ LABEL_14:
   return v3;
 }
 
-- (void)_setDateFormat:(id)a3
+- (void)_setDateFormat:(id)format
 {
   os_unfair_lock_lock(&self->_lock);
   ++self->_cacheGeneration;
-  v5 = [a3 copyWithZone:0];
+  v5 = [format copyWithZone:0];
   [(NSMutableDictionary *)self->_attributes setValue:v5 forKey:@"dateFormat"];
   formatter = self->_formatter;
   if (formatter)
@@ -1134,13 +1134,13 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_setIsLenient:(BOOL)a3
+- (void)_setIsLenient:(BOOL)lenient
 {
-  v3 = a3;
+  lenientCopy = lenient;
   os_unfair_lock_lock(&self->_lock);
   ++self->_cacheGeneration;
   v5 = MEMORY[0x1E695E4D0];
-  if (!v3)
+  if (!lenientCopy)
   {
     v5 = MEMORY[0x1E695E4C0];
   }
@@ -1322,17 +1322,17 @@ LABEL_2:
     formatter = self->_formatter;
     if (!formatter)
     {
-      v5 = 0;
+      bOOLValue = 0;
       goto LABEL_7;
     }
 
     v3 = CFDateFormatterCopyProperty(formatter, *MEMORY[0x1E695E568]);
   }
 
-  v5 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 LABEL_7:
   os_unfair_lock_unlock(&self->_lock);
-  return v5;
+  return bOOLValue;
 }
 
 - (void)setLenient:(BOOL)lenient
@@ -3102,17 +3102,17 @@ LABEL_2:
     formatter = self->_formatter;
     if (!formatter)
     {
-      v5 = 0;
+      bOOLValue = 0;
       goto LABEL_7;
     }
 
     v3 = CFDateFormatterCopyProperty(formatter, *MEMORY[0x1E695E550]);
   }
 
-  v5 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 LABEL_7:
   os_unfair_lock_unlock(&self->_lock);
-  return v5;
+  return bOOLValue;
 }
 
 - (void)setDoesRelativeDateFormatting:(BOOL)doesRelativeDateFormatting
@@ -3178,23 +3178,23 @@ LABEL_7:
     formatter = self->_formatter;
     if (!formatter)
     {
-      v5 = 0;
+      bOOLValue = 0;
       goto LABEL_7;
     }
 
     v3 = CFDateFormatterCopyProperty(formatter, *MEMORY[0x1E695E5E8]);
   }
 
-  v5 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 LABEL_7:
   os_unfair_lock_unlock(&self->_lock);
-  return v5;
+  return bOOLValue;
 }
 
-- (void)_setUsesCharacterDirection:(BOOL)a3
+- (void)_setUsesCharacterDirection:(BOOL)direction
 {
   v4 = MEMORY[0x1E695E4D0];
-  if (!a3)
+  if (!direction)
   {
     v4 = MEMORY[0x1E695E4C0];
   }
@@ -3254,10 +3254,10 @@ LABEL_7:
   return self->_cacheGeneration;
 }
 
-- (BOOL)_mayDecorateAttributedStringForObjectValue:(id)a3
+- (BOOL)_mayDecorateAttributedStringForObjectValue:(id)value
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3 && (_NSIsNSDate() & 1) != 0)
+  if (value && (_NSIsNSDate() & 1) != 0)
   {
     v5 = objc_opt_class();
     MethodImplementation = class_getMethodImplementation(v5, sel_attributedStringForObjectValue_withDefaultAttributes_);
@@ -3269,14 +3269,14 @@ LABEL_7:
   {
     v9.receiver = self;
     v9.super_class = NSDateFormatter;
-    return [(NSFormatter *)&v9 _mayDecorateAttributedStringForObjectValue:a3];
+    return [(NSFormatter *)&v9 _mayDecorateAttributedStringForObjectValue:value];
   }
 }
 
-- (id)_attributedStringWithFieldsFromDate:(id)a3
+- (id)_attributedStringWithFieldsFromDate:(id)date
 {
   v12[5] = *MEMORY[0x1E69E9840];
-  if (!a3 || !_NSIsNSDate())
+  if (!date || !_NSIsNSDate())
   {
     return 0;
   }
@@ -3290,7 +3290,7 @@ LABEL_7:
   [(NSDateFormatter *)self _regenerateFormatterIfAbsent];
   if (self->_formatter)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     AttributedStringAndFieldsWithAbsoluteTime = _CFDateFormatterCreateAttributedStringAndFieldsWithAbsoluteTime();
   }
 
@@ -3304,7 +3304,7 @@ LABEL_7:
   {
     v7 = objc_alloc_init(_NSStringProxyForContext);
     [(_NSStringProxyForContext *)v7 setString:[(NSAttributedString *)v6 string]];
-    [(_NSStringProxyForContext *)v7 setItem:a3];
+    [(_NSStringProxyForContext *)v7 setItem:date];
     v8 = [objc_allocWithZone(objc_opt_class()) init];
     [v8[1] setDictionary:self->_attributes];
     [(_NSStringProxyForContext *)v7 _retainFormatter:v8];
@@ -3324,11 +3324,11 @@ LABEL_7:
   return v6;
 }
 
-+ (id)_componentsFromFormatString:(id)a3
++ (id)_componentsFromFormatString:(id)string
 {
   v48 = *MEMORY[0x1E69E9840];
-  v31 = [MEMORY[0x1E695DF70] array];
-  v4 = [a3 length];
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = [string length];
   if (qword_1ED43F148 != -1)
   {
     dispatch_once(&qword_1ED43F148, &__block_literal_global_7);
@@ -3343,15 +3343,15 @@ LABEL_7:
   v36 = 0u;
   *buffer = 0u;
   v34 = 0u;
-  theString = a3;
+  theString = string;
   v44 = 0;
   v45 = v4;
-  CharactersPtr = CFStringGetCharactersPtr(a3);
+  CharactersPtr = CFStringGetCharactersPtr(string);
   CStringPtr = 0;
   v42 = CharactersPtr;
   if (!CharactersPtr)
   {
-    CStringPtr = CFStringGetCStringPtr(a3, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(string, 0x600u);
   }
 
   v46 = 0;
@@ -3452,7 +3452,7 @@ LABEL_20:
       {
         if (v12 > v11)
         {
-          [v31 addObject:{_CreateComponent(v7, v11, v12 - v11, (v13 ^ 1) & 1)}];
+          [array addObject:{_CreateComponent(v7, v11, v12 - v11, (v13 ^ 1) & 1)}];
           v7 = +[(NSString *)NSMutableString];
           v11 = v12;
         }
@@ -3493,13 +3493,13 @@ LABEL_20:
 LABEL_46:
   if ([(NSString *)v7 length])
   {
-    [v31 addObject:{_CreateComponent(v7, v11, v21 - v11, v28)}];
+    [array addObject:{_CreateComponent(v7, v11, v21 - v11, v28)}];
   }
 
-  return v31;
+  return array;
 }
 
-+ (id)_formatStringFromComponents:(id)a3
++ (id)_formatStringFromComponents:(id)components
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = +[(NSString *)NSMutableString];
@@ -3507,7 +3507,7 @@ LABEL_46:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v15 objects:v14 count:16];
+  v5 = [components countByEnumeratingWithState:&v15 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3521,7 +3521,7 @@ LABEL_46:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(components);
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
@@ -3556,7 +3556,7 @@ LABEL_10:
       }
 
       while (v6 != v10);
-      v6 = [a3 countByEnumeratingWithState:&v15 objects:v14 count:16];
+      v6 = [components countByEnumeratingWithState:&v15 objects:v14 count:16];
     }
 
     while (v6);
@@ -3565,17 +3565,17 @@ LABEL_10:
   return v4;
 }
 
-- (id)_nextChangeDateAfterDate:(id)a3
+- (id)_nextChangeDateAfterDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v18 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!date)
   {
-    return v3;
+    return dateCopy;
   }
 
-  v5 = [(NSDateFormatter *)self dateFormat];
-  if (![(NSString *)v5 length])
+  dateFormat = [(NSDateFormatter *)self dateFormat];
+  if (![(NSString *)dateFormat length])
   {
     return 0;
   }
@@ -3595,7 +3595,7 @@ LABEL_10:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v15 = v5;
+      v15 = dateFormat;
       v16 = 2112;
       v17 = v7;
       _os_log_error_impl(&dword_18075C000, v11, OS_LOG_TYPE_ERROR, "Fail to get calendar units from date format %@; skeleton: %@", buf, 0x16u);
@@ -3616,22 +3616,22 @@ LABEL_10:
 
     if (++v9 == 14)
     {
-      v3 = 0;
+      dateCopy = 0;
       goto LABEL_15;
     }
   }
 
-  v12 = [(NSDateFormatter *)self calendar];
-  v3 = [(NSCalendar *)v12 nextDateAfterDate:v3 matchingUnit:v10 value:[(NSCalendar *)v12 component:v10 fromDate:v3]+ 1 options:1024];
+  calendar = [(NSDateFormatter *)self calendar];
+  dateCopy = [(NSCalendar *)calendar nextDateAfterDate:dateCopy matchingUnit:v10 value:[(NSCalendar *)calendar component:v10 fromDate:dateCopy]+ 1 options:1024];
 LABEL_15:
   CFRelease(v7);
-  return v3;
+  return dateCopy;
 }
 
-- (void)receiveObservedValue:(id)a3
+- (void)receiveObservedValue:(id)value
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (value)
   {
     if ((_NSIsNSDate() & 1) == 0)
     {
@@ -3640,7 +3640,7 @@ LABEL_15:
 
     v6.receiver = self;
     v6.super_class = NSDateFormatter;
-    [(NSDateFormatter *)&v6 receiveObservedValue:[(NSDateFormatter *)self stringFromDate:a3]];
+    [(NSDateFormatter *)&v6 receiveObservedValue:[(NSDateFormatter *)self stringFromDate:value]];
   }
 
   else

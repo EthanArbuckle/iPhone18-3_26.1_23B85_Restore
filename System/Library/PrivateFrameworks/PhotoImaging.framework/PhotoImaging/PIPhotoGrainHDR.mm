@@ -90,7 +90,7 @@
   [(NSNumber *)self->inputAmount floatValue];
   if (v3 < 0.001)
   {
-    v4 = self->inputImage;
+    imageByPremultiplyingAlpha = self->inputImage;
     goto LABEL_11;
   }
 
@@ -105,7 +105,7 @@
   {
     v7 = fminf(fmaxf(v6, 10.0), 3200.0);
     v8 = log10(v7);
-    v9 = [(PIPhotoGrainHDR *)self _interpolateGrainKernel];
+    _interpolateGrainKernel = [(PIPhotoGrainHDR *)self _interpolateGrainKernel];
     [outputImage_inputGrain extent];
     v11 = v10;
     v13 = v12;
@@ -116,7 +116,7 @@
     v18 = [MEMORY[0x1E696AD98] numberWithFloat:v10];
     v67[1] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:2];
-    v20 = [v9 applyWithExtent:v19 arguments:{v11, v13, v15, v17}];
+    v20 = [_interpolateGrainKernel applyWithExtent:v19 arguments:{v11, v13, v15, v17}];
 
     [v20 extent];
     v22 = v21 + -2.0;
@@ -125,7 +125,7 @@
     v26 = v25;
     v28 = v27;
     v30 = v29;
-    v31 = [(PIPhotoGrainHDR *)self _paddedTileKernel];
+    _paddedTileKernel = [(PIPhotoGrainHDR *)self _paddedTileKernel];
     v64[0] = MEMORY[0x1E69E9820];
     v64[1] = 3221225472;
     v64[2] = __30__PIPhotoGrainHDR_outputImage__block_invoke_2;
@@ -137,7 +137,7 @@
     v32 = [MEMORY[0x1E695F688] vectorWithX:v22 Y:v22 Z:1.0 / v22 W:1.0 / v22];
     v66 = v32;
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v66 count:1];
-    v34 = [v31 applyWithExtent:v64 roiCallback:v20 inputImage:v33 arguments:{*MEMORY[0x1E695F040], *(MEMORY[0x1E695F040] + 8), *(MEMORY[0x1E695F040] + 16), *(MEMORY[0x1E695F040] + 24)}];
+    v34 = [_paddedTileKernel applyWithExtent:v64 roiCallback:v20 inputImage:v33 arguments:{*MEMORY[0x1E695F040], *(MEMORY[0x1E695F040] + 8), *(MEMORY[0x1E695F040] + 16), *(MEMORY[0x1E695F040] + 24)}];
 
     [(NSNumber *)self->inputSeed doubleValue];
     __src = v35;
@@ -160,14 +160,14 @@
 
     *&v38 = grainParams(v7);
     v40 = v39;
-    v41 = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
-    v42 = [(PIPhotoGrainHDR *)self _grainBlendAndMixKernel];
-    [v41 extent];
+    imageByUnpremultiplyingAlpha = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
+    _grainBlendAndMixKernel = [(PIPhotoGrainHDR *)self _grainBlendAndMixKernel];
+    [imageByUnpremultiplyingAlpha extent];
     v44 = v43;
     v46 = v45;
     v48 = v47;
     v50 = v49;
-    v65[0] = v41;
+    v65[0] = imageByUnpremultiplyingAlpha;
     v65[1] = v34;
     LODWORD(v43) = v40;
     v51 = [MEMORY[0x1E696AD98] numberWithFloat:v43];
@@ -175,20 +175,20 @@
     v65[2] = v51;
     v65[3] = inputAmount;
     v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:v65 count:4];
-    v54 = [v42 applyWithExtent:v53 arguments:{v44, v46, v48, v50}];
+    v54 = [_grainBlendAndMixKernel applyWithExtent:v53 arguments:{v44, v46, v48, v50}];
 
-    v4 = [v54 imageByPremultiplyingAlpha];
+    imageByPremultiplyingAlpha = [v54 imageByPremultiplyingAlpha];
   }
 
   else
   {
 LABEL_10:
-    v4 = 0;
+    imageByPremultiplyingAlpha = 0;
   }
 
 LABEL_11:
 
-  return v4;
+  return imageByPremultiplyingAlpha;
 }
 
 void __30__PIPhotoGrainHDR_outputImage__block_invoke()

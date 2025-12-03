@@ -1,26 +1,26 @@
 @interface VCPVideoCNNBackbone
-+ (id)sharedModel:(id)a3 outputNames:(id)a4 properties:(id)a5;
-- (VCPVideoCNNBackbone)initWithConfig:(id)a3;
-- (int)inference:(float *)a3 settling:(BOOL)a4;
++ (id)sharedModel:(id)model outputNames:(id)names properties:(id)properties;
+- (VCPVideoCNNBackbone)initWithConfig:(id)config;
+- (int)inference:(float *)inference settling:(BOOL)settling;
 @end
 
 @implementation VCPVideoCNNBackbone
 
-+ (id)sharedModel:(id)a3 outputNames:(id)a4 properties:(id)a5
++ (id)sharedModel:(id)model outputNames:(id)names properties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  modelCopy = model;
+  namesCopy = names;
+  propertiesCopy = properties;
   v10 = +[VCPSharedInstanceManager sharedManager];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __58__VCPVideoCNNBackbone_sharedModel_outputNames_properties___block_invoke;
   v16[3] = &unk_1E834E480;
-  v11 = v7;
+  v11 = modelCopy;
   v17 = v11;
-  v12 = v8;
+  v12 = namesCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = propertiesCopy;
   v19 = v13;
   v14 = [v10 sharedInstanceWithIdentifier:@"VCPVideoCNNBackboneEspresso" andCreationBlock:v16];
 
@@ -34,16 +34,16 @@ VCPCNNModelEspresso *__58__VCPVideoCNNBackbone_sharedModel_outputNames_propertie
   return v1;
 }
 
-- (VCPVideoCNNBackbone)initWithConfig:(id)a3
+- (VCPVideoCNNBackbone)initWithConfig:(id)config
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configCopy = config;
   self->_outputBeforeFc = 0;
   self->_outputBeforeFcSettling = 0;
-  v5 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v6 = [v5 resourceURL];
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-  v7 = [MEMORY[0x1E695DFF8] URLWithString:@"video_backbone.espresso.net" relativeToURL:v6];
+  v7 = [MEMORY[0x1E695DFF8] URLWithString:@"video_backbone.espresso.net" relativeToURL:resourceURL];
   v22.receiver = self;
   v22.super_class = VCPVideoCNNBackbone;
   v8 = [(VCPVideoCNNBackbone *)&v22 init];
@@ -85,7 +85,7 @@ VCPCNNModelEspresso *__58__VCPVideoCNNBackbone_sharedModel_outputNames_propertie
     goto LABEL_9;
   }
 
-  v18 = [(VCPCNNModelEspresso *)v17 prepareModelWithConfig:v4];
+  v18 = [(VCPCNNModelEspresso *)v17 prepareModelWithConfig:configCopy];
 
   if (v18)
   {
@@ -102,13 +102,13 @@ LABEL_10:
   return v20;
 }
 
-- (int)inference:(float *)a3 settling:(BOOL)a4
+- (int)inference:(float *)inference settling:(BOOL)settling
 {
-  v4 = a4;
-  v6 = [(VCPCNNModelEspresso *)self->_modelEspresso espressoForward:a3];
+  settlingCopy = settling;
+  v6 = [(VCPCNNModelEspresso *)self->_modelEspresso espressoForward:inference];
   if (!v6)
   {
-    if (v4)
+    if (settlingCopy)
     {
       [(VCPCNNModelEspresso *)self->_modelEspresso outputBlobs];
       self->_outputBeforeFcSettling = __p[21];

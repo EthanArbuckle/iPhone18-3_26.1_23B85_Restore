@@ -1,7 +1,7 @@
 @interface WFScanChannel
 - (NSString)description;
 - (WFScanChannel)init;
-- (WFScanChannel)initWithChannel:(int64_t)a3 flags:(int64_t)a4;
+- (WFScanChannel)initWithChannel:(int64_t)channel flags:(int64_t)flags;
 @end
 
 @implementation WFScanChannel
@@ -22,15 +22,15 @@
   return v6;
 }
 
-- (WFScanChannel)initWithChannel:(int64_t)a3 flags:(int64_t)a4
+- (WFScanChannel)initWithChannel:(int64_t)channel flags:(int64_t)flags
 {
   v7.receiver = self;
   v7.super_class = WFScanChannel;
   result = [(WFScanChannel *)&v7 init];
   if (result)
   {
-    result->_channel = a3;
-    result->_flags = a4;
+    result->_channel = channel;
+    result->_flags = flags;
   }
 
   return result;

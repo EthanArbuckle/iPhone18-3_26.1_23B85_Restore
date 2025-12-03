@@ -1,23 +1,23 @@
 @interface IdentityGesture
 - (_TtC13CoreIDVShared15IdentityGesture)init;
-- (_TtC13CoreIDVShared15IdentityGesture)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC13CoreIDVShared15IdentityGesture)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IdentityGesture
 
-- (_TtC13CoreIDVShared15IdentityGesture)initWithCoder:(id)a3
+- (_TtC13CoreIDVShared15IdentityGesture)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
-  v6 = a3;
+  coderCopy = coder;
   v7 = sub_225CCE444();
-  v8 = [v6 decodeIntegerForKey_];
+  decodeIntegerForKey_ = [coderCopy decodeIntegerForKey_];
 
-  *(&self->super.isa + OBJC_IVAR____TtC13CoreIDVShared15IdentityGesture_gesture) = v8;
+  *(&self->super.isa + OBJC_IVAR____TtC13CoreIDVShared15IdentityGesture_gesture) = decodeIntegerForKey_;
   v9 = sub_225CCE444();
-  v10 = [v6 decodeIntegerForKey_];
+  decodeIntegerForKey_2 = [coderCopy decodeIntegerForKey_];
 
-  *(&self->super.isa + OBJC_IVAR____TtC13CoreIDVShared15IdentityGesture_type) = v10;
+  *(&self->super.isa + OBJC_IVAR____TtC13CoreIDVShared15IdentityGesture_type) = decodeIntegerForKey_2;
   v13.receiver = self;
   v13.super_class = ObjectType;
   v11 = [(IdentityGesture *)&v13 init];
@@ -25,17 +25,17 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC13CoreIDVShared15IdentityGesture_gesture);
-  v5 = a3;
-  v9 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = sub_225CCE444();
-  [v5 encodeInteger:v4 forKey:v6];
+  [coderCopy encodeInteger:v4 forKey:v6];
 
-  v7 = *(&v9->super.isa + OBJC_IVAR____TtC13CoreIDVShared15IdentityGesture_type);
+  v7 = *(&selfCopy->super.isa + OBJC_IVAR____TtC13CoreIDVShared15IdentityGesture_type);
   v8 = sub_225CCE444();
-  [v5 encodeInteger:v7 forKey:v8];
+  [coderCopy encodeInteger:v7 forKey:v8];
 }
 
 - (_TtC13CoreIDVShared15IdentityGesture)init

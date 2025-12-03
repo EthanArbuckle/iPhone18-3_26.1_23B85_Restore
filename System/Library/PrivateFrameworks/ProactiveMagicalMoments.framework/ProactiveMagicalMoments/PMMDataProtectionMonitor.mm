@@ -1,7 +1,7 @@
 @interface PMMDataProtectionMonitor
-+ (id)PMMDataProtectionMonitorDataProtectionStatus:(int64_t)a3;
-+ (id)PMMDataProtectionMonitorEncryptedDataAvailabilityToString:(int64_t)a3;
-+ (id)PMMDataProtectionMonitorLockStateToString:(int64_t)a3;
++ (id)PMMDataProtectionMonitorDataProtectionStatus:(int64_t)status;
++ (id)PMMDataProtectionMonitorEncryptedDataAvailabilityToString:(int64_t)string;
++ (id)PMMDataProtectionMonitorLockStateToString:(int64_t)string;
 - (BOOL)dataProtectionEnabled;
 - (BOOL)unlockedSinceBoot;
 - (PMMDataProtectionMonitor)init;
@@ -9,12 +9,12 @@
 - (int64_t)encryptedDataAvailability;
 - (void)_registerForKeyBagNotifications;
 - (void)dealloc;
-- (void)handkeKeybagLockStatusChange:(int64_t)a3;
+- (void)handkeKeybagLockStatusChange:(int64_t)change;
 - (void)handleUnlockedSinceBoot;
-- (void)setDataProtectionStatus:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setEncryptedDataAvailability:(int64_t)a3;
-- (void)setUnlockedSinceBoot:(BOOL)a3;
+- (void)setDataProtectionStatus:(BOOL)status;
+- (void)setDelegate:(id)delegate;
+- (void)setEncryptedDataAvailability:(int64_t)availability;
+- (void)setUnlockedSinceBoot:(BOOL)boot;
 @end
 
 @implementation PMMDataProtectionMonitor
@@ -27,41 +27,41 @@
   return encryptedDataAvailability;
 }
 
-+ (id)PMMDataProtectionMonitorLockStateToString:(int64_t)a3
++ (id)PMMDataProtectionMonitorLockStateToString:(int64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_278592250[a3];
+    return off_278592250[string];
   }
 }
 
-+ (id)PMMDataProtectionMonitorEncryptedDataAvailabilityToString:(int64_t)a3
++ (id)PMMDataProtectionMonitorEncryptedDataAvailabilityToString:(int64_t)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_278592270[a3 - 1];
+    return off_278592270[string - 1];
   }
 }
 
-+ (id)PMMDataProtectionMonitorDataProtectionStatus:(int64_t)a3
++ (id)PMMDataProtectionMonitorDataProtectionStatus:(int64_t)status
 {
   v3 = @"unknown";
-  if (a3 == 1)
+  if (status == 1)
   {
     v3 = @"enabled";
   }
 
-  if (a3)
+  if (status)
   {
     return v3;
   }
@@ -96,7 +96,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 134217984;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_22639A000, a2, OS_LOG_TYPE_ERROR, "Failed to determine lock state, %ld", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -113,16 +113,16 @@
   [(PMMDataProtectionMonitor *)&v5 dealloc];
 }
 
-- (void)handkeKeybagLockStatusChange:(int64_t)a3
+- (void)handkeKeybagLockStatusChange:(int64_t)change
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = 2;
-  if (a3 == 2)
+  if (change == 2)
   {
     v5 = 3;
   }
 
-  if (a3 == 1)
+  if (change == 1)
   {
     v6 = 1;
   }
@@ -137,7 +137,7 @@
   v7 = __atxlog_handle_default();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [PMMDataProtectionMonitor PMMDataProtectionMonitorLockStateToString:a3];
+    v8 = [PMMDataProtectionMonitor PMMDataProtectionMonitorLockStateToString:change];
     v9 = [PMMDataProtectionMonitor PMMDataProtectionMonitorEncryptedDataAvailabilityToString:[(PMMDataProtectionMonitor *)self encryptedDataAvailability]];
     v11 = 138412546;
     v12 = v8;
@@ -170,9 +170,9 @@
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   pthread_rwlock_wrlock(&self->_rwlock);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
@@ -184,13 +184,13 @@
   pthread_rwlock_unlock(&self->_rwlock);
 }
 
-- (void)setEncryptedDataAvailability:(int64_t)a3
+- (void)setEncryptedDataAvailability:(int64_t)availability
 {
   v11 = *MEMORY[0x277D85DE8];
   pthread_rwlock_wrlock(&self->_rwlock);
-  if (self->_encryptedDataAvailability != a3)
+  if (self->_encryptedDataAvailability != availability)
   {
-    self->_encryptedDataAvailability = a3;
+    self->_encryptedDataAvailability = availability;
     v5 = __atxlog_handle_default();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -219,14 +219,14 @@
   return unlockedSinceBoot;
 }
 
-- (void)setUnlockedSinceBoot:(BOOL)a3
+- (void)setUnlockedSinceBoot:(BOOL)boot
 {
-  v3 = a3;
+  bootCopy = boot;
   v10 = *MEMORY[0x277D85DE8];
   pthread_rwlock_wrlock(&self->_rwlock);
-  if (self->_unlockedSinceBoot != v3)
+  if (self->_unlockedSinceBoot != bootCopy)
   {
-    self->_unlockedSinceBoot = v3;
+    self->_unlockedSinceBoot = bootCopy;
     v5 = __atxlog_handle_default();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -255,14 +255,14 @@
   return v3;
 }
 
-- (void)setDataProtectionStatus:(BOOL)a3
+- (void)setDataProtectionStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   v11 = *MEMORY[0x277D85DE8];
   pthread_rwlock_wrlock(&self->_rwlock);
-  if (self->_dataProtectionStatus != v3)
+  if (self->_dataProtectionStatus != statusCopy)
   {
-    self->_dataProtectionStatus = v3;
+    self->_dataProtectionStatus = statusCopy;
     v5 = __atxlog_handle_default();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {

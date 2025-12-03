@@ -1,6 +1,6 @@
 @interface CKWatchfaceInProcessPreviewGenerator
 + (Class)implementation;
-+ (void)generateFacePreviewImageFromUrl:(id)a3 completionBlock:(id)a4;
++ (void)generateFacePreviewImageFromUrl:(id)url completionBlock:(id)block;
 @end
 
 @implementation CKWatchfaceInProcessPreviewGenerator
@@ -24,19 +24,19 @@ uint64_t __54__CKWatchfaceInProcessPreviewGenerator_implementation__block_invoke
   return result;
 }
 
-+ (void)generateFacePreviewImageFromUrl:(id)a3 completionBlock:(id)a4
++ (void)generateFacePreviewImageFromUrl:(id)url completionBlock:(id)block
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [a1 implementation];
-  if (v7)
+  urlCopy = url;
+  blockCopy = block;
+  implementation = [self implementation];
+  if (implementation)
   {
-    [v7 generateFacePreviewImageFromUrl:v8 completionBlock:v6];
+    [implementation generateFacePreviewImageFromUrl:urlCopy completionBlock:blockCopy];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0);
   }
 }
 

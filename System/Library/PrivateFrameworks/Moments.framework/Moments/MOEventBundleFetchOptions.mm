@@ -1,82 +1,82 @@
 @interface MOEventBundleFetchOptions
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFetchOptions:(id)a3;
-- (MOEventBundleFetchOptions)initWithAllowedCategories:(id)a3 dateInterval:(id)a4 ascending:(BOOL)a5 limit:(id)a6 includeDeletedBundles:(BOOL)a7 skipRanking:(BOOL)a8 interfaceType:(unint64_t)a9;
-- (MOEventBundleFetchOptions)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFetchOptions:(id)options;
+- (MOEventBundleFetchOptions)initWithAllowedCategories:(id)categories dateInterval:(id)interval ascending:(BOOL)ascending limit:(id)limit includeDeletedBundles:(BOOL)bundles skipRanking:(BOOL)ranking interfaceType:(unint64_t)type;
+- (MOEventBundleFetchOptions)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOEventBundleFetchOptions
 
-- (MOEventBundleFetchOptions)initWithAllowedCategories:(id)a3 dateInterval:(id)a4 ascending:(BOOL)a5 limit:(id)a6 includeDeletedBundles:(BOOL)a7 skipRanking:(BOOL)a8 interfaceType:(unint64_t)a9
+- (MOEventBundleFetchOptions)initWithAllowedCategories:(id)categories dateInterval:(id)interval ascending:(BOOL)ascending limit:(id)limit includeDeletedBundles:(BOOL)bundles skipRanking:(BOOL)ranking interfaceType:(unint64_t)type
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
+  categoriesCopy = categories;
+  intervalCopy = interval;
+  limitCopy = limit;
   v22.receiver = self;
   v22.super_class = MOEventBundleFetchOptions;
   v19 = [(MOEventBundleFetchOptions *)&v22 init];
   v20 = v19;
   if (v19)
   {
-    v19->_ascending = a5;
-    objc_storeStrong(&v19->_dateInterval, a4);
-    objc_storeStrong(&v20->_limit, a6);
+    v19->_ascending = ascending;
+    objc_storeStrong(&v19->_dateInterval, interval);
+    objc_storeStrong(&v20->_limit, limit);
     v20->_filterBundle = 0;
-    objc_storeStrong(&v20->_categories, a3);
-    v20->_includeDeletedBundles = a7;
-    v20->_skipRanking = a8;
-    v20->_interfaceType = a9;
+    objc_storeStrong(&v20->_categories, categories);
+    v20->_includeDeletedBundles = bundles;
+    v20->_skipRanking = ranking;
+    v20->_interfaceType = type;
   }
 
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   ascending = self->_ascending;
-  v8 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithBool:ascending];
-  [v8 encodeObject:v6 forKey:@"ascending"];
+  [coderCopy encodeObject:v6 forKey:@"ascending"];
 
-  [v8 encodeObject:self->_dateInterval forKey:@"dateInterval"];
-  [v8 encodeObject:self->_limit forKey:@"limit"];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeObject:self->_limit forKey:@"limit"];
   v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_skipRanking];
-  [v8 encodeObject:v7 forKey:@"skipRanking"];
+  [coderCopy encodeObject:v7 forKey:@"skipRanking"];
 
-  [v8 encodeBool:self->_includeDeletedBundles forKey:@"includeDeletedBundles"];
-  [v8 encodeObject:self->_identifiers forKey:@"identifiers"];
-  [v8 encodeInt64:self->_interfaceType forKey:@"interfaceType"];
-  [v8 encodeBool:self->_personalizedSensingFilter forKey:@"pssFilter"];
-  [v8 encodeBool:self->_personalizedSensingVisitsAllowed forKey:@"pssVisits"];
-  [v8 encodeBool:self->_skipLocalization forKey:@"skipLocalization"];
+  [coderCopy encodeBool:self->_includeDeletedBundles forKey:@"includeDeletedBundles"];
+  [coderCopy encodeObject:self->_identifiers forKey:@"identifiers"];
+  [coderCopy encodeInt64:self->_interfaceType forKey:@"interfaceType"];
+  [coderCopy encodeBool:self->_personalizedSensingFilter forKey:@"pssFilter"];
+  [coderCopy encodeBool:self->_personalizedSensingVisitsAllowed forKey:@"pssVisits"];
+  [coderCopy encodeBool:self->_skipLocalization forKey:@"skipLocalization"];
 }
 
-- (MOEventBundleFetchOptions)initWithCoder:(id)a3
+- (MOEventBundleFetchOptions)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ascending"];
-  v21 = [v4 BOOLValue];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ascending"];
+  bOOLValue = [v4 BOOLValue];
 
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"limit"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"skipRanking"];
-  v8 = [v7 BOOLValue];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"limit"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"skipRanking"];
+  bOOLValue2 = [v7 BOOLValue];
 
-  v9 = [v3 decodeBoolForKey:@"includeDeletedBundles"];
-  v10 = [v3 decodeBoolForKey:@"skipLocalization"];
-  v11 = [v3 decodeBoolForKey:@"pssFilter"];
-  v12 = [v3 decodeBoolForKey:@"pssVisits"];
+  v9 = [coderCopy decodeBoolForKey:@"includeDeletedBundles"];
+  v10 = [coderCopy decodeBoolForKey:@"skipLocalization"];
+  v11 = [coderCopy decodeBoolForKey:@"pssFilter"];
+  v12 = [coderCopy decodeBoolForKey:@"pssVisits"];
   v13 = MEMORY[0x277CBEB98];
   v14 = objc_opt_class();
   v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-  v16 = [v3 decodeObjectOfClasses:v15 forKey:@"identifiers"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"identifiers"];
 
-  v17 = [v3 decodeInt64ForKey:@"interfaceType"];
-  v18 = [(MOEventBundleFetchOptions *)self initWithDateInterval:v5 ascending:v21 limit:v6 includeDeletedBundles:v9 skipRanking:v8];
+  v17 = [coderCopy decodeInt64ForKey:@"interfaceType"];
+  v18 = [(MOEventBundleFetchOptions *)self initWithDateInterval:v5 ascending:bOOLValue limit:v6 includeDeletedBundles:v9 skipRanking:bOOLValue2];
   v19 = v18;
   if (v18)
   {
@@ -90,36 +90,36 @@
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MOEventBundleFetchOptions *)self isEqualToFetchOptions:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MOEventBundleFetchOptions *)self isEqualToFetchOptions:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToFetchOptions:(id)a3
+- (BOOL)isEqualToFetchOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   ascending = self->_ascending;
-  v7 = [v5 ascending];
+  ascending = [optionsCopy ascending];
   dateInterval = self->_dateInterval;
   if (dateInterval)
   {
     goto LABEL_2;
   }
 
-  v3 = [v5 dateInterval];
-  if (!v3)
+  dateInterval = [optionsCopy dateInterval];
+  if (!dateInterval)
   {
     v13 = 1;
     goto LABEL_11;
@@ -128,13 +128,13 @@
   if (self->_dateInterval)
   {
 LABEL_2:
-    v9 = [v5 dateInterval];
-    if (v9)
+    dateInterval2 = [optionsCopy dateInterval];
+    if (dateInterval2)
     {
-      v10 = v9;
+      v10 = dateInterval2;
       v11 = self->_dateInterval;
-      v12 = [v5 dateInterval];
-      v13 = [(NSDateInterval *)v11 isEqualToDateInterval:v12];
+      dateInterval3 = [optionsCopy dateInterval];
+      v13 = [(NSDateInterval *)v11 isEqualToDateInterval:dateInterval3];
 
       if (dateInterval)
       {
@@ -162,20 +162,20 @@ LABEL_11:
 LABEL_12:
   if (self->_limit)
   {
-    v14 = [v5 limit];
-    if (v14)
+    limit = [optionsCopy limit];
+    if (limit)
     {
       v15 = 0;
     }
 
     else if (self->_limit)
     {
-      v16 = [v5 limit];
-      if (v16)
+      limit2 = [optionsCopy limit];
+      if (limit2)
       {
         limit = self->_limit;
-        v18 = [v5 limit];
-        LOBYTE(limit) = [(NSNumber *)limit isEqualToNumber:v18];
+        limit3 = [optionsCopy limit];
+        LOBYTE(limit) = [(NSNumber *)limit isEqualToNumber:limit3];
 
         v15 = limit ^ 1;
       }
@@ -198,13 +198,13 @@ LABEL_12:
   }
 
   filterBundle = self->_filterBundle;
-  v20 = [v5 filterBundle];
+  filterBundle = [optionsCopy filterBundle];
   skipRanking = self->_skipRanking;
-  v22 = [v5 skipRanking];
+  skipRanking = [optionsCopy skipRanking];
   v23 = 0;
-  if (ascending == v7 && ((v13 ^ 1) & 1) == 0 && (v15 & 1) == 0)
+  if (ascending == ascending && ((v13 ^ 1) & 1) == 0 && (v15 & 1) == 0)
   {
-    v23 = filterBundle == v20 && (v22 & 1) == skipRanking;
+    v23 = filterBundle == filterBundle && (skipRanking & 1) == skipRanking;
   }
 
   return v23;
@@ -237,11 +237,11 @@ LABEL_12:
     v4 = @"NO";
   }
 
-  v5 = [(NSDateInterval *)self->_dateInterval startDate];
-  v6 = [v5 stringFromDate];
-  v7 = [(NSDateInterval *)self->_dateInterval endDate];
-  v8 = [v7 stringFromDate];
-  v9 = v8;
+  startDate = [(NSDateInterval *)self->_dateInterval startDate];
+  stringFromDate = [startDate stringFromDate];
+  endDate = [(NSDateInterval *)self->_dateInterval endDate];
+  stringFromDate2 = [endDate stringFromDate];
+  v9 = stringFromDate2;
   if (self->_filterBundle)
   {
     v10 = @"YES";
@@ -282,7 +282,7 @@ LABEL_12:
     v13 = @"NO";
   }
 
-  v14 = [v3 stringWithFormat:@"ascending, %@, startDate, %@, endDate, %@, limit, %@, filterBundle, %@, skipRanking, %@, interfaceType, %lu, pssFilter, %@, pssVisits, %@", v4, v6, v8, self->_limit, v10, v11, self->_interfaceType, v12, v13];
+  v14 = [v3 stringWithFormat:@"ascending, %@, startDate, %@, endDate, %@, limit, %@, filterBundle, %@, skipRanking, %@, interfaceType, %lu, pssFilter, %@, pssVisits, %@", v4, stringFromDate, stringFromDate2, self->_limit, v10, v11, self->_interfaceType, v12, v13];
 
   return v14;
 }

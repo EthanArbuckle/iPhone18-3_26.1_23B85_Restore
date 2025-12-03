@@ -1,23 +1,23 @@
 @interface IDSHeartbeatCenter
 + (IDSHeartbeatCenter)sharedInstance;
-- (BOOL)_registration:(id)a3 needsRenewal:(double *)a4;
+- (BOOL)_registration:(id)_registration needsRenewal:(double *)renewal;
 - (IDSHeartbeatCenter)init;
 - (double)_nextRegistrationHeartbeatTime;
 - (double)registrationHBI;
 - (id)_registrationsPendingHeartbeat;
 - (void)__reallyUpdateRegistrationHeartbeat;
-- (void)_bagReloaded:(id)a3;
-- (void)_serverHeartBeat:(id)a3;
-- (void)_serverHeartBeatTimerHit:(id)a3;
-- (void)_serverHeartBeatTimerHitOnMain:(id)a3;
+- (void)_bagReloaded:(id)reloaded;
+- (void)_serverHeartBeat:(id)beat;
+- (void)_serverHeartBeatTimerHit:(id)hit;
+- (void)_serverHeartBeatTimerHitOnMain:(id)main;
 - (void)_startRegistrationHeartbeat;
 - (void)_stopRegistrationHeartbeat;
 - (void)_updateRegistrationHeartbeat;
-- (void)addRegistrationInfo:(id)a3;
+- (void)addRegistrationInfo:(id)info;
 - (void)checkHeartbeat;
-- (void)connectionMonitorDidUpdate:(id)a3;
+- (void)connectionMonitorDidUpdate:(id)update;
 - (void)noteRegistrationStateChanged;
-- (void)removeRegistrationInfo:(id)a3;
+- (void)removeRegistrationInfo:(id)info;
 - (void)updateHeartbeat;
 @end
 
@@ -59,9 +59,9 @@
   return v2;
 }
 
-- (void)_serverHeartBeat:(id)a3
+- (void)_serverHeartBeat:(id)beat
 {
-  [a3 invalidate];
+  [beat invalidate];
   v4 = +[IDSRegistrationReasonTracker sharedInstance];
   [v4 setMostRecentIDSRegistrationReason:2];
 
@@ -80,9 +80,9 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v26 = self;
-  v8 = [(IDSHeartbeatCenter *)self _registrationsPendingHeartbeat];
-  v9 = [v8 countByEnumeratingWithState:&v27 objects:v33 count:16];
+  selfCopy = self;
+  _registrationsPendingHeartbeat = [(IDSHeartbeatCenter *)self _registrationsPendingHeartbeat];
+  v9 = [_registrationsPendingHeartbeat countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (!v9)
   {
     v11 = 0;
@@ -99,7 +99,7 @@
     {
       if (*v28 != v12)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(_registrationsPendingHeartbeat);
       }
 
       v14 = *(*(&v27 + 1) + 8 * v13);
@@ -131,10 +131,10 @@
 
         else
         {
-          v22 = [v14 canSendRegistration];
+          canSendRegistration = [v14 canSendRegistration];
           v18 = +[IMRGLog registration];
           v23 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-          if (v22)
+          if (canSendRegistration)
           {
             if (v23)
             {
@@ -176,7 +176,7 @@ LABEL_23:
     }
 
     while (v10 != v13);
-    v24 = [v8 countByEnumeratingWithState:&v27 objects:v33 count:16];
+    v24 = [_registrationsPendingHeartbeat countByEnumeratingWithState:&v27 objects:v33 count:16];
     v10 = v24;
   }
 
@@ -203,12 +203,12 @@ LABEL_30:
     }
   }
 
-  [(IDSHeartbeatCenter *)v26 updateHeartbeat];
+  [(IDSHeartbeatCenter *)selfCopy updateHeartbeat];
 }
 
-- (void)_serverHeartBeatTimerHit:(id)a3
+- (void)_serverHeartBeatTimerHit:(id)hit
 {
-  v4 = a3;
+  hitCopy = hit;
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -216,14 +216,14 @@ LABEL_30:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Server heartbeat hit", &v13, 2u);
   }
 
-  v6 = [(IDSHeartbeatCenter *)self networkConnectionMonitor];
-  v7 = [v6 isImmediatelyReachable];
+  networkConnectionMonitor = [(IDSHeartbeatCenter *)self networkConnectionMonitor];
+  isImmediatelyReachable = [networkConnectionMonitor isImmediatelyReachable];
 
-  if (v7)
+  if (isImmediatelyReachable)
   {
     [(IDSHeartbeatCenter *)self setWaitingForNetworkAvailability:0];
     sub_100450174(0, @"Server Heartbeat", @"Need to re-register now", 1109);
-    [(IDSHeartbeatCenter *)self _serverHeartBeat:v4];
+    [(IDSHeartbeatCenter *)self _serverHeartBeat:hitCopy];
   }
 
   else
@@ -245,18 +245,18 @@ LABEL_30:
   }
 }
 
-- (BOOL)_registration:(id)a3 needsRenewal:(double *)a4
+- (BOOL)_registration:(id)_registration needsRenewal:(double *)renewal
 {
-  v5 = a3;
+  _registrationCopy = _registration;
   v6 = [IDSHeartbeatCenter registrationHBI]_0();
-  v7 = [v5 registrationDate];
-  v8 = [v5 nextRegistrationDate];
-  if (v7)
+  registrationDate = [_registrationCopy registrationDate];
+  nextRegistrationDate = [_registrationCopy nextRegistrationDate];
+  if (registrationDate)
   {
-    [v7 timeIntervalSinceNow];
-    if (v8)
+    [registrationDate timeIntervalSinceNow];
+    if (nextRegistrationDate)
     {
-      [v8 timeIntervalSinceNow];
+      [nextRegistrationDate timeIntervalSinceNow];
       v6 = v10;
     }
 
@@ -266,9 +266,9 @@ LABEL_30:
     }
   }
 
-  if ([v5 registrationType])
+  if ([_registrationCopy registrationType])
   {
-    if (([v5 canSendRegistration] & 1) == 0)
+    if (([_registrationCopy canSendRegistration] & 1) == 0)
     {
       v11 = +[IMRGLog registration];
       if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -277,7 +277,7 @@ LABEL_30:
       }
 
       v16 = 138412290;
-      v17 = *&v5;
+      v17 = *&_registrationCopy;
       v12 = "Skipping this registration for heartbeat consideration, it is an Apple ID one - and it apparently can't register: %@";
       goto LABEL_18;
     }
@@ -295,7 +295,7 @@ LABEL_10:
       }
     }
 
-    if (a4)
+    if (renewal)
     {
       goto LABEL_22;
     }
@@ -315,14 +315,14 @@ LABEL_10:
   }
 
   v16 = 138412290;
-  v17 = *&v5;
+  v17 = *&_registrationCopy;
   v12 = "Skipping this registration for heartbeat consideration, it is an SMS one - and the SIM is not present: %@";
 LABEL_18:
   _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, v12, &v16, 0xCu);
 LABEL_19:
 
   v13 = 0;
-  if (a4)
+  if (renewal)
   {
     if (v6 < 14400.0)
     {
@@ -330,7 +330,7 @@ LABEL_19:
     }
 
 LABEL_22:
-    *a4 = v6;
+    *renewal = v6;
   }
 
 LABEL_23:
@@ -668,17 +668,17 @@ LABEL_16:
   self->_registrationHeartbeatTimer = v21;
 }
 
-- (void)_serverHeartBeatTimerHitOnMain:(id)a3
+- (void)_serverHeartBeatTimerHitOnMain:(id)main
 {
-  v4 = a3;
+  mainCopy = main;
   v5 = im_primary_queue();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10035CCE4;
   v7[3] = &unk_100BD6E40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = mainCopy;
+  v6 = mainCopy;
   dispatch_async(v5, v7);
 }
 
@@ -762,9 +762,9 @@ LABEL_16:
   }
 }
 
-- (void)_bagReloaded:(id)a3
+- (void)_bagReloaded:(id)reloaded
 {
-  v4 = a3;
+  reloadedCopy = reloaded;
   if (self->_registrationHeartbeatTimer)
   {
     v5 = +[IMRGLog registration];
@@ -790,9 +790,9 @@ LABEL_16:
   }
 }
 
-- (void)addRegistrationInfo:(id)a3
+- (void)addRegistrationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   registrations = self->_registrations;
   if (!registrations)
   {
@@ -803,35 +803,35 @@ LABEL_16:
     registrations = self->_registrations;
   }
 
-  if (([(NSMutableArray *)registrations containsObject:v4]& 1) == 0)
+  if (([(NSMutableArray *)registrations containsObject:infoCopy]& 1) == 0)
   {
     v8 = +[IMRGLog registration];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = infoCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Adding registration info to heartbeat: %@", &v9, 0xCu);
     }
 
-    [(NSMutableArray *)self->_registrations addObject:v4];
+    [(NSMutableArray *)self->_registrations addObject:infoCopy];
     [(IDSHeartbeatCenter *)self updateHeartbeat];
   }
 }
 
-- (void)removeRegistrationInfo:(id)a3
+- (void)removeRegistrationInfo:(id)info
 {
-  v4 = a3;
-  if ([(NSMutableArray *)self->_registrations containsObject:v4])
+  infoCopy = info;
+  if ([(NSMutableArray *)self->_registrations containsObject:infoCopy])
   {
     v5 = +[IMRGLog registration];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = infoCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing registration info from heartbeat: %@", &v7, 0xCu);
     }
 
-    [(NSMutableArray *)self->_registrations removeObject:v4];
+    [(NSMutableArray *)self->_registrations removeObject:infoCopy];
     [(IDSHeartbeatCenter *)self updateHeartbeat];
   }
 
@@ -842,7 +842,7 @@ LABEL_16:
   }
 }
 
-- (void)connectionMonitorDidUpdate:(id)a3
+- (void)connectionMonitorDidUpdate:(id)update
 {
   if ([(IDSHeartbeatCenter *)self waitingForNetworkAvailability])
   {

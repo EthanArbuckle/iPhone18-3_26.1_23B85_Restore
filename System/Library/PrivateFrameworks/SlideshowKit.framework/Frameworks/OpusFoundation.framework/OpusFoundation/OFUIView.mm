@@ -1,7 +1,7 @@
 @interface OFUIView
 - (void)commonInit;
 - (void)dealloc;
-- (void)registerDraggingPasteboardType:(id)a3;
+- (void)registerDraggingPasteboardType:(id)type;
 @end
 
 @implementation OFUIView
@@ -21,13 +21,13 @@
   [(OFViewProxy *)&v3 dealloc];
 }
 
-- (void)registerDraggingPasteboardType:(id)a3
+- (void)registerDraggingPasteboardType:(id)type
 {
   if (([(NSMutableArray *)self->_draggingPasteboardTypes containsObject:?]& 1) == 0)
   {
     draggingPasteboardTypes = self->_draggingPasteboardTypes;
 
-    [(NSMutableArray *)draggingPasteboardTypes addObject:a3];
+    [(NSMutableArray *)draggingPasteboardTypes addObject:type];
   }
 }
 

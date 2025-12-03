@@ -2,10 +2,10 @@
 - (CSLPRFDepthAutoLaunchAppSettingKincaidImpl)init;
 - (CSLPRFDepthAutoLaunchSettingCoordinatorImplDelegate)delegate;
 - (CSLPRFDepthAutoLaunchSettings)settings;
-- (void)_withLock:(id)a3;
-- (void)applySettings:(id)a3;
+- (void)_withLock:(id)lock;
+- (void)applySettings:(id)settings;
 - (void)removeLegacySettings;
-- (void)twoWaySyncSettingDidUpdate:(id)a3;
+- (void)twoWaySyncSettingDidUpdate:(id)update;
 @end
 
 @implementation CSLPRFDepthAutoLaunchAppSettingKincaidImpl
@@ -17,33 +17,33 @@
   return WeakRetained;
 }
 
-- (void)twoWaySyncSettingDidUpdate:(id)a3
+- (void)twoWaySyncSettingDidUpdate:(id)update
 {
-  v5 = [(CSLPRFDepthAutoLaunchAppSettingKincaidImpl *)self delegate];
-  v4 = [(CSLPRFDepthAutoLaunchAppSettingKincaidImpl *)self settings];
-  [v5 autoLaunchSettingCoordinator:self didUpdateSettings:v4];
+  delegate = [(CSLPRFDepthAutoLaunchAppSettingKincaidImpl *)self delegate];
+  settings = [(CSLPRFDepthAutoLaunchAppSettingKincaidImpl *)self settings];
+  [delegate autoLaunchSettingCoordinator:self didUpdateSettings:settings];
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)applySettings:(id)a3
+- (void)applySettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__CSLPRFDepthAutoLaunchAppSettingKincaidImpl_applySettings___block_invoke;
   v6[3] = &unk_2787455E0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = settingsCopy;
+  selfCopy = self;
+  v5 = settingsCopy;
   [(CSLPRFDepthAutoLaunchAppSettingKincaidImpl *)self _withLock:v6];
 }
 
@@ -175,8 +175,8 @@ void __54__CSLPRFDepthAutoLaunchAppSettingKincaidImpl_settings__block_invoke(uin
     v3->_changeSourceSetting = v6;
 
     v8 = [CSLPRFTwoWaySyncSetting alloc];
-    v9 = [@"com.apple.Carousel.AutoLaunchDepthEnabledChanged" UTF8String];
-    v10 = [(CSLPRFTwoWaySyncSetting *)v8 initWithKey:@"AutoLaunchDepthEnabled" defaultValue:MEMORY[0x277CBEC28] notification:v9];
+    uTF8String = [@"com.apple.Carousel.AutoLaunchDepthEnabledChanged" UTF8String];
+    v10 = [(CSLPRFTwoWaySyncSetting *)v8 initWithKey:@"AutoLaunchDepthEnabled" defaultValue:MEMORY[0x277CBEC28] notification:uTF8String];
     enabledSetting = v3->_enabledSetting;
     v3->_enabledSetting = v10;
 

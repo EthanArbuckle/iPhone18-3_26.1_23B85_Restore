@@ -1,26 +1,26 @@
 @interface CatalogEditorialCollectionDetailViewController
-- (_TtC9SeymourUI46CatalogEditorialCollectionDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)moreOptionsButtonTapped:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC9SeymourUI46CatalogEditorialCollectionDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)moreOptionsButtonTapped:(id)tapped;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CatalogEditorialCollectionDetailViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BD1780C();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = sub_20C1333A4();
   v6 = *(v5 - 8);
   MEMORY[0x28223BE20](v5);
@@ -28,11 +28,11 @@
   v9 = type metadata accessor for CatalogEditorialCollectionDetailViewController();
   v15.receiver = self;
   v15.super_class = v9;
-  v10 = self;
-  [(CatalogEditorialCollectionDetailViewController *)&v15 viewDidAppear:v3];
+  selfCopy = self;
+  [(CatalogEditorialCollectionDetailViewController *)&v15 viewDidAppear:appearCopy];
   v11 = OBJC_IVAR____TtC9SeymourUI46CatalogEditorialCollectionDetailViewController_dataProvider;
   sub_20BF657DC();
-  v14[1] = *(&v10->super.super.super.isa + v11);
+  v14[1] = *(&selfCopy->super.super.super.isa + v11);
   sub_20BF659E4(v8);
   type metadata accessor for CatalogEditorialCollectionPageDataProvider();
   sub_20BD191D4(&qword_27C76E1F0, 255, type metadata accessor for CatalogEditorialCollectionPageDataProvider);
@@ -43,13 +43,13 @@
   sub_20C139364();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CatalogEditorialCollectionDetailViewController();
   v4 = v7.receiver;
-  [(CatalogEditorialCollectionDetailViewController *)&v7 viewDidDisappear:v3];
+  [(CatalogEditorialCollectionDetailViewController *)&v7 viewDidDisappear:disappearCopy];
   sub_20BD191D4(&qword_27C76E1D8, v5, type metadata accessor for CatalogEditorialCollectionDetailViewController);
   sub_20BD191D4(&qword_27C76E1E8, v6, type metadata accessor for CatalogEditorialCollectionDetailViewController);
   sub_20C139374();
@@ -69,33 +69,33 @@
   sub_20B9D8614(v6, v7, v8, v9);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_20BD17CBC(a3);
+  selfCopy = self;
+  sub_20BD17CBC(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_20BD17EB0(a3);
+  selfCopy = self;
+  sub_20BD17EB0(disappear);
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CatalogEditorialCollectionDetailViewController();
   v4 = v7.receiver;
-  [(CatalogEditorialCollectionDetailViewController *)&v7 viewIsAppearing:v3];
+  [(CatalogEditorialCollectionDetailViewController *)&v7 viewIsAppearing:appearingCopy];
   [*(*(*&v4[OBJC_IVAR____TtC9SeymourUI46CatalogEditorialCollectionDetailViewController_dataProvider] + 32) + OBJC_IVAR____TtC9SeymourUI11CatalogPage_collectionView) contentOffset];
   sub_20BE82728(v5, v6);
 }
 
-- (void)moreOptionsButtonTapped:(id)a3
+- (void)moreOptionsButtonTapped:(id)tapped
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_20C13DA64();
   swift_unknownObjectRelease();
   sub_20BD18630();
@@ -103,7 +103,7 @@
   __swift_destroy_boxed_opaque_existential_1(&v5);
 }
 
-- (_TtC9SeymourUI46CatalogEditorialCollectionDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI46CatalogEditorialCollectionDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

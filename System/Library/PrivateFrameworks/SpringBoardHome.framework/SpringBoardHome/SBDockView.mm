@@ -1,7 +1,7 @@
 @interface SBDockView
 - (BOOL)isDockInset;
 - (CGRect)dockListViewFrame;
-- (SBDockView)initWithDockListView:(id)a3 forSnapshot:(BOOL)a4;
+- (SBDockView)initWithDockListView:(id)view forSnapshot:(BOOL)snapshot;
 - (SBDockViewDelegate)delegate;
 - (UIEdgeInsets)_dockOverhangInsets;
 - (double)_layoutScale;
@@ -14,12 +14,12 @@
 - (void)_updateBackgroundUserInterfaceStyle;
 - (void)_updateCornerRadii;
 - (void)dealloc;
-- (void)getDockViewMetrics:(id *)a3;
+- (void)getDockViewMetrics:(id *)metrics;
 - (void)layoutSubviews;
 - (void)listLayoutProviderDidChange;
-- (void)setContentVisibility:(unint64_t)a3;
-- (void)setDockEdge:(unint64_t)a3;
-- (void)setDockListOffset:(double)a3;
+- (void)setContentVisibility:(unint64_t)visibility;
+- (void)setDockEdge:(unint64_t)edge;
+- (void)setDockListOffset:(double)offset;
 @end
 
 @implementation SBDockView
@@ -37,16 +37,16 @@
 
 - (id)_visualConfiguration
 {
-  v2 = [(SBDockView *)self _listLayout];
-  v3 = [v2 rootFolderVisualConfiguration];
+  _listLayout = [(SBDockView *)self _listLayout];
+  rootFolderVisualConfiguration = [_listLayout rootFolderVisualConfiguration];
 
-  return v3;
+  return rootFolderVisualConfiguration;
 }
 
 - (id)_listLayout
 {
-  v2 = [(SBIconListView *)self->_iconListView layoutProvider];
-  v3 = [v2 layoutForIconLocation:@"SBIconLocationRoot"];
+  layoutProvider = [(SBIconListView *)self->_iconListView layoutProvider];
+  v3 = [layoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
 
   return v3;
 }
@@ -61,15 +61,15 @@
   v7 = *(MEMORY[0x1E69DDCE0] + 24);
   if (![(SBDockView *)self isDockInset]&& BSFloatGreaterThanFloat())
   {
-    v9 = [(SBDockView *)self dockEdge];
+    dockEdge = [(SBDockView *)self dockEdge];
     [(SBDockView *)self bounds];
     v11 = v10;
     rect = v10;
     v13 = v12;
     v15 = v14;
     rect_16 = v16;
-    v17 = [(SBDockView *)self _screen];
-    [v17 bounds];
+    _screen = [(SBDockView *)self _screen];
+    [_screen bounds];
     rect_24 = v19;
     v34 = v18;
 
@@ -90,7 +90,7 @@
     {
       v24 = v6 - v23;
       v25 = v8 - v23;
-      if (v9 == 1)
+      if (dockEdge == 1)
       {
         v6 = v24;
       }
@@ -106,7 +106,7 @@
 
     else
     {
-      if (v9 == 2)
+      if (dockEdge == 2)
       {
         v5 = -v22;
       }
@@ -134,11 +134,11 @@
 
 - (double)_minimumHomeScreenScale
 {
-  v3 = [(SBDockView *)self delegate];
-  v4 = v3;
-  if (v3)
+  delegate = [(SBDockView *)self delegate];
+  v4 = delegate;
+  if (delegate)
   {
-    [v3 minimumHomeScreenScaleForDockView:self];
+    [delegate minimumHomeScreenScaleForDockView:self];
     v6 = v5;
   }
 
@@ -159,8 +159,8 @@
 
 - (BOOL)isDockInset
 {
-  v2 = [(SBDockView *)self _visualConfiguration];
-  [v2 dockBackgroundViewCornerRadius];
+  _visualConfiguration = [(SBDockView *)self _visualConfiguration];
+  [_visualConfiguration dockBackgroundViewCornerRadius];
   v4 = v3;
 
   return v4 > 0.0;
@@ -168,24 +168,24 @@
 
 - (double)dockHeight
 {
-  v2 = [(SBDockView *)self _visualConfiguration];
-  [v2 dockViewHeight];
+  _visualConfiguration = [(SBDockView *)self _visualConfiguration];
+  [_visualConfiguration dockViewHeight];
   v4 = v3;
 
   return v4;
 }
 
-- (SBDockView)initWithDockListView:(id)a3 forSnapshot:(BOOL)a4
+- (SBDockView)initWithDockListView:(id)view forSnapshot:(BOOL)snapshot
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  viewCopy = view;
   v8 = [(SBDockView *)self initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_iconListView, a3);
+    objc_storeStrong(&v8->_iconListView, view);
     v9->_dockEdge = 4;
-    v9->_forSnapshot = a4;
+    v9->_forSnapshot = snapshot;
     v10 = objc_alloc_init(MEMORY[0x1E69DD250]);
     glassView = v9->_glassView;
     v9->_glassView = v10;
@@ -209,27 +209,27 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
 
   v4.receiver = self;
   v4.super_class = SBDockView;
   [(SBDockView *)&v4 dealloc];
 }
 
-- (void)setDockEdge:(unint64_t)a3
+- (void)setDockEdge:(unint64_t)edge
 {
-  if (self->_dockEdge != a3)
+  if (self->_dockEdge != edge)
   {
-    self->_dockEdge = a3;
+    self->_dockEdge = edge;
     [(SBDockView *)self setNeedsLayout];
   }
 }
 
 - (double)dockHeightPadding
 {
-  v2 = [(SBDockView *)self _visualConfiguration];
-  [v2 dockListViewInsets];
+  _visualConfiguration = [(SBDockView *)self _visualConfiguration];
+  [_visualConfiguration dockListViewInsets];
   v4 = v3;
 
   return v4;
@@ -253,7 +253,7 @@
   return result;
 }
 
-- (void)getDockViewMetrics:(id *)a3
+- (void)getDockViewMetrics:(id *)metrics
 {
   [(SBDockView *)self bounds];
   x = v49.origin.x;
@@ -337,15 +337,15 @@
   [(SBDockView *)self dockListOffset];
   BSFloatIsZero();
   UIRectRoundToScale();
-  a3->var0.origin.x = v34;
-  a3->var0.origin.y = v35;
-  a3->var0.size.width = v36;
-  a3->var0.size.height = v37;
+  metrics->var0.origin.x = v34;
+  metrics->var0.origin.y = v35;
+  metrics->var0.size.width = v36;
+  metrics->var0.size.height = v37;
   UIRectRoundToScale();
-  a3->var1.origin.x = v38;
-  a3->var1.origin.y = v39;
-  a3->var1.size.width = v40;
-  a3->var1.size.height = v41;
+  metrics->var1.origin.x = v38;
+  metrics->var1.origin.y = v39;
+  metrics->var1.size.width = v40;
+  metrics->var1.size.height = v41;
 }
 
 - (void)listLayoutProviderDidChange
@@ -356,19 +356,19 @@
   [(SBDockView *)self layoutIfNeeded];
 }
 
-- (void)setDockListOffset:(double)a3
+- (void)setDockListOffset:(double)offset
 {
-  if (self->_dockListOffset != a3)
+  if (self->_dockListOffset != offset)
   {
-    self->_dockListOffset = a3;
+    self->_dockListOffset = offset;
     [(SBDockView *)self setNeedsLayout];
   }
 }
 
 - (void)_updateCornerRadii
 {
-  v3 = [(SBDockView *)self _visualConfiguration];
-  [v3 dockBackgroundViewCornerRadius];
+  _visualConfiguration = [(SBDockView *)self _visualConfiguration];
+  [_visualConfiguration dockBackgroundViewCornerRadius];
   v5 = v4;
 
   glassView = self->_glassView;
@@ -380,28 +380,28 @@
 {
   if ((SBHPerformanceFlagEnabled(5) & 1) == 0)
   {
-    v6 = [(SBDockView *)self traitCollection];
-    -[UIView sbh_applyDockGlassWithUserInterfaceStyle:](self->_glassView, "sbh_applyDockGlassWithUserInterfaceStyle:", [MEMORY[0x1E69DD1B8] sbh_dockGlassUserInterfaceStyleFromTraitCollection:v6]);
-    v3 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:v6];
-    v4 = [(UIView *)self->_glassView traitOverrides];
+    traitCollection = [(SBDockView *)self traitCollection];
+    -[UIView sbh_applyDockGlassWithUserInterfaceStyle:](self->_glassView, "sbh_applyDockGlassWithUserInterfaceStyle:", [MEMORY[0x1E69DD1B8] sbh_dockGlassUserInterfaceStyleFromTraitCollection:traitCollection]);
+    v3 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:traitCollection];
+    traitOverrides = [(UIView *)self->_glassView traitOverrides];
     v5 = objc_opt_self();
-    [v4 setObject:v3 forTrait:v5];
+    [traitOverrides setObject:v3 forTrait:v5];
   }
 }
 
-- (void)setContentVisibility:(unint64_t)a3
+- (void)setContentVisibility:(unint64_t)visibility
 {
-  if (self->_contentVisibility != a3)
+  if (self->_contentVisibility != visibility)
   {
-    self->_contentVisibility = a3;
+    self->_contentVisibility = visibility;
     [(SBDockView *)self _applyGlass];
   }
 }
 
 - (double)_layoutScale
 {
-  v2 = [(SBDockView *)self _listLayout];
-  [v2 iconImageInfo];
+  _listLayout = [(SBDockView *)self _listLayout];
+  [_listLayout iconImageInfo];
   v4 = v3;
 
   return v4;
@@ -413,13 +413,13 @@
   {
     [(UIView *)self->_glassView _setBackground:0];
     glassView = self->_glassView;
-    v4 = [MEMORY[0x1E69DC888] systemGrayColor];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
     [(UIView *)glassView setBackgroundColor:?];
   }
 
   else
   {
-    v4 = [(SBDockView *)self traitCollection];
+    systemGrayColor = [(SBDockView *)self traitCollection];
     -[UIView sbh_applyDockGlassWithGrouping:userInterfaceStyle:highlightsDisplayAngle:](self->_glassView, "sbh_applyDockGlassWithGrouping:userInterfaceStyle:highlightsDisplayAngle:", 1, [MEMORY[0x1E69DD1B8] sbh_dockGlassUserInterfaceStyleFromTraitCollection:?], SBHContentVisibilityIsVisible(-[SBDockView contentVisibility](self, "contentVisibility")));
   }
 }

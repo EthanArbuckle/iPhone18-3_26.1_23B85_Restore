@@ -1,14 +1,14 @@
 @interface StubFeatureAvailability
-- (void)setPaidBundleViaOfferAvailability:(id)a3;
+- (void)setPaidBundleViaOfferAvailability:(id)availability;
 @end
 
 @implementation StubFeatureAvailability
 
-- (void)setPaidBundleViaOfferAvailability:(id)a3
+- (void)setPaidBundleViaOfferAvailability:(id)availability
 {
   paidBundleViaOfferAvailability = self->paidBundleViaOfferAvailability;
-  self->paidBundleViaOfferAvailability = a3;
-  v3 = a3;
+  self->paidBundleViaOfferAvailability = availability;
+  availabilityCopy = availability;
 }
 
 @end

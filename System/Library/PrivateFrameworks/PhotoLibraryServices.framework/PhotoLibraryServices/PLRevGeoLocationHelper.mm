@@ -1,17 +1,17 @@
 @interface PLRevGeoLocationHelper
 + (BOOL)isCurrentRevGeoProviderAutoNavi;
 + (id)currentRevGeoProvider;
-+ (void)simulateAutoNaviForBlock:(id)a3;
++ (void)simulateAutoNaviForBlock:(id)block;
 @end
 
 @implementation PLRevGeoLocationHelper
 
 + (id)currentRevGeoProvider
 {
-  v2 = [getGEOCountryConfigurationClass() sharedConfiguration];
-  v3 = [v2 countryCode];
+  sharedConfiguration = [getGEOCountryConfigurationClass() sharedConfiguration];
+  countryCode = [sharedConfiguration countryCode];
 
-  if ([v3 isEqualToString:@"CN"])
+  if ([countryCode isEqualToString:@"CN"])
   {
     goto LABEL_5;
   }
@@ -37,10 +37,10 @@ LABEL_5:
 
 + (BOOL)isCurrentRevGeoProviderAutoNavi
 {
-  v2 = [getGEOCountryConfigurationClass() sharedConfiguration];
-  v3 = [v2 countryCode];
+  sharedConfiguration = [getGEOCountryConfigurationClass() sharedConfiguration];
+  countryCode = [sharedConfiguration countryCode];
 
-  if ([v3 isEqualToString:@"CN"])
+  if ([countryCode isEqualToString:@"CN"])
   {
     v4 = 1;
   }
@@ -58,10 +58,10 @@ LABEL_5:
   return v4 & 1;
 }
 
-+ (void)simulateAutoNaviForBlock:(id)a3
++ (void)simulateAutoNaviForBlock:(id)block
 {
   v3 = SimulateGeoServiceAutoNaviProvider_onceToken;
-  v4 = a3;
+  blockCopy = block;
   if (v3 != -1)
   {
     dispatch_once(&SimulateGeoServiceAutoNaviProvider_onceToken, &__block_literal_global_16819);
@@ -69,7 +69,7 @@ LABEL_5:
 
   v5 = simulateGeoServiceAutoNaviProvider;
   simulateGeoServiceAutoNaviProvider = 1;
-  v4[2](v4);
+  blockCopy[2](blockCopy);
 
   simulateGeoServiceAutoNaviProvider = v5;
 }

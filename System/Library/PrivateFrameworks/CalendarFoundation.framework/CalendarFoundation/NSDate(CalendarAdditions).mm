@@ -10,10 +10,10 @@
 - (id)dateForEndOfDayInTimeZone:()CalendarAdditions
 {
   v4 = a3;
-  v5 = [a1 dateForStartOfDayInTimeZone:v4];
-  if ([a1 isEqual:v5])
+  v5 = [self dateForStartOfDayInTimeZone:v4];
+  if ([self isEqual:v5])
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
   else
@@ -31,7 +31,7 @@
     block[1] = 3221225472;
     block[2] = __55__NSDate_CalendarAdditions__dateForEndOfDayInTimeZone___block_invoke;
     block[3] = &unk_1E7EC6818;
-    block[4] = a1;
+    block[4] = self;
     v15 = &v16;
     v12 = v4;
     v13 = v7;
@@ -39,11 +39,11 @@
     v9 = v7;
     dispatch_sync(v8, block);
 
-    v6 = v17[5];
+    selfCopy = v17[5];
     _Block_object_dispose(&v16, 8);
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)dateAtHour:()CalendarAdditions minute:second:inTimeZone:
@@ -60,7 +60,7 @@
   v15[1] = 3221225472;
   v15[2] = __65__NSDate_CalendarAdditions__dateAtHour_minute_second_inTimeZone___block_invoke;
   v15[3] = &unk_1E7EC6840;
-  v15[4] = a1;
+  v15[4] = self;
   v16 = v10;
   v19 = a4;
   v20 = a5;
@@ -88,9 +88,9 @@
   v7[1] = 3221225472;
   v7[2] = __65__NSDate_CalendarAdditions__dateWithoutTimeComponentsInTimeZone___block_invoke;
   v7[3] = &unk_1E7EC6868;
-  v7[4] = a1;
+  v7[4] = self;
   v7[5] = &v8;
-  [a1 _performBlockBehindDispatchSync:v7 inTimeZone:v4];
+  [self _performBlockBehindDispatchSync:v7 inTimeZone:v4];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 

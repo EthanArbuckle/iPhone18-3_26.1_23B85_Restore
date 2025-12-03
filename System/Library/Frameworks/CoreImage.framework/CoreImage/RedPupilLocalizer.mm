@@ -8,7 +8,7 @@
 {
   v45[2] = *MEMORY[0x1E69E9840];
   inputImage = self->inputImage;
-  v4 = [(NSNumber *)self->inputIterations intValue];
+  intValue = [(NSNumber *)self->inputIterations intValue];
   [(NSNumber *)self->inputScale floatValue];
   v39 = v5;
   [(NSNumber *)self->inputDecay floatValue];
@@ -56,7 +56,7 @@
       [(CIVector *)self->inputAxisLong _norm];
       v31 = v30;
       [(CIVector *)self->inputAxisShort _norm];
-      if (v4 >= 1)
+      if (intValue >= 1)
       {
         v33 = (v31 * 0.75 + v32 * 0.25) * v39;
         v34 = self->inputImage;
@@ -83,10 +83,10 @@
           v41[3] = v38;
           v41[4] = &unk_1F10835A8;
           v29 = -[CIImage imageByClampingToExtent](-[CIImage imageByApplyingFilter:withInputParameters:](v34, "imageByApplyingFilter:withInputParameters:", @"CIAreaRedRadialCentroid", [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:5]), "imageByClampingToExtent");
-          --v4;
+          --intValue;
         }
 
-        while (v4);
+        while (intValue);
       }
     }
 

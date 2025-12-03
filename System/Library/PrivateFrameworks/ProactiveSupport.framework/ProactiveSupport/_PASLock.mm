@@ -1,11 +1,11 @@
 @interface _PASLock
-- (_PASLock)initWithGuardedData:(id)a3;
+- (_PASLock)initWithGuardedData:(id)data;
 - (id)guardedDataAssertingLockContext;
-- (unsigned)runWithLockAcquired:(id)a3 shouldContinueBlock:(id)a4;
-- (unsigned)tryWithLockAcquired:(id)a3;
-- (void)_runThenUnlock:(uint64_t)a1;
+- (unsigned)runWithLockAcquired:(id)acquired shouldContinueBlock:(id)block;
+- (unsigned)tryWithLockAcquired:(id)acquired;
+- (void)_runThenUnlock:(uint64_t)unlock;
 - (void)dealloc;
-- (void)runWithLockAcquired:(id)a3;
+- (void)runWithLockAcquired:(id)acquired;
 @end
 
 @implementation _PASLock
@@ -58,21 +58,21 @@ LABEL_11:
   return [(_PASLock *)self unsafeGuardedData];
 }
 
-- (unsigned)runWithLockAcquired:(id)a3 shouldContinueBlock:(id)a4
+- (unsigned)runWithLockAcquired:(id)acquired shouldContinueBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  acquiredCopy = acquired;
+  blockCopy = block;
   v8 = objc_autoreleasePoolPush();
-  v9 = v7[2](v7);
+  v9 = blockCopy[2](blockCopy);
   objc_autoreleasePoolPop(v8);
   if (v9)
   {
-    while ([(_PASLock *)self tryWithLockAcquired:v6])
+    while ([(_PASLock *)self tryWithLockAcquired:acquiredCopy])
     {
       v10 = 1;
       sleep(1u);
       v11 = objc_autoreleasePoolPush();
-      v12 = v7[2](v7);
+      v12 = blockCopy[2](blockCopy);
       objc_autoreleasePoolPop(v11);
       if ((v12 & 1) == 0)
       {
@@ -93,9 +93,9 @@ LABEL_7:
   return v10;
 }
 
-- (unsigned)tryWithLockAcquired:(id)a3
+- (unsigned)tryWithLockAcquired:(id)acquired
 {
-  v4 = a3;
+  acquiredCopy = acquired;
   if (pthread_mutex_trylock(&self->_lock))
   {
     v5 = 1;
@@ -103,36 +103,36 @@ LABEL_7:
 
   else
   {
-    [(_PASLock *)self _runThenUnlock:v4];
+    [(_PASLock *)self _runThenUnlock:acquiredCopy];
     v5 = 0;
   }
 
   return v5;
 }
 
-- (void)_runThenUnlock:(uint64_t)a1
+- (void)_runThenUnlock:(uint64_t)unlock
 {
   v3 = a2;
-  if (a1)
+  if (unlock)
   {
-    *(a1 + 72) = pthread_self();
-    v3[2](v3, *(a1 + 80));
-    *(a1 + 72) = 0;
-    pthread_mutex_unlock((a1 + 8));
+    *(unlock + 72) = pthread_self();
+    v3[2](v3, *(unlock + 80));
+    *(unlock + 72) = 0;
+    pthread_mutex_unlock((unlock + 8));
   }
 }
 
-- (void)runWithLockAcquired:(id)a3
+- (void)runWithLockAcquired:(id)acquired
 {
-  v4 = a3;
+  acquiredCopy = acquired;
   pthread_mutex_lock(&self->_lock);
-  [(_PASLock *)self _runThenUnlock:v4];
+  [(_PASLock *)self _runThenUnlock:acquiredCopy];
 }
 
-- (_PASLock)initWithGuardedData:(id)a3
+- (_PASLock)initWithGuardedData:(id)data
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = _PASLock;
   v6 = [(_PASLock *)&v9 init];
@@ -144,7 +144,7 @@ LABEL_7:
     pthread_mutexattr_settype(&v10, 2);
     pthread_mutex_init(&v6->_lock, &v10);
     pthread_mutexattr_destroy(&v10);
-    objc_storeStrong(&v6->_guardedData, a3);
+    objc_storeStrong(&v6->_guardedData, data);
   }
 
   v7 = *MEMORY[0x1E69E9840];

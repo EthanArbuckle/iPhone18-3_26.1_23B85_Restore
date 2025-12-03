@@ -1,22 +1,22 @@
 @interface PXMonthsSublayoutComposition
-- (UIEdgeInsets)sublayoutInsetsForStylableType:(int64_t)a3;
+- (UIEdgeInsets)sublayoutInsetsForStylableType:(int64_t)type;
 - (id)configuredLayoutGenerator;
-- (void)setMetrics:(id)a3;
+- (void)setMetrics:(id)metrics;
 - (void)updateSublayoutAttributes;
 @end
 
 @implementation PXMonthsSublayoutComposition
 
-- (UIEdgeInsets)sublayoutInsetsForStylableType:(int64_t)a3
+- (UIEdgeInsets)sublayoutInsetsForStylableType:(int64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     +[PXCursorInteractionSettings sharedInstance];
     [objc_claimAutoreleasedReturnValue() monthsPadding];
     goto LABEL_10;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v7 = *off_1E7721FA8;
     v8 = *(off_1E7721FA8 + 1);
@@ -25,25 +25,25 @@
     goto LABEL_11;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
 LABEL_13:
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXMonthsSublayoutComposition.m" lineNumber:103 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMonthsSublayoutComposition.m" lineNumber:103 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
   v5 = +[PXKeyboardSettings sharedInstance];
-  v6 = [v5 monthsFocusAnimationStyle];
+  monthsFocusAnimationStyle = [v5 monthsFocusAnimationStyle];
   [v5 monthsFocusPadding];
-  if (v6 == 2 || v6 == 1)
+  if (monthsFocusAnimationStyle == 2 || monthsFocusAnimationStyle == 1)
   {
 LABEL_10:
     PXEdgeInsetsMake();
   }
 
-  if (v6)
+  if (monthsFocusAnimationStyle)
   {
 
     goto LABEL_13;
@@ -68,8 +68,8 @@ LABEL_11:
 
 - (id)configuredLayoutGenerator
 {
-  v3 = [(PXMonthsSublayoutComposition *)self metrics];
-  v4 = [v3 copy];
+  metrics = [(PXMonthsSublayoutComposition *)self metrics];
+  v4 = [metrics copy];
 
   [(PXGSublayoutComposition *)self referenceSize];
   [v4 setReferenceSize:?];
@@ -143,19 +143,19 @@ id __57__PXMonthsSublayoutComposition_configuredLayoutGenerator__block_invoke(ui
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v4 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  v5 = [(PXGSublayoutComposition *)self layout];
-  v6 = [(PXGSublayoutComposition *)self numberOfSublayouts];
+  layout = [(PXGSublayoutComposition *)self layout];
+  numberOfSublayouts = [(PXGSublayoutComposition *)self numberOfSublayouts];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __57__PXMonthsSublayoutComposition_updateSublayoutAttributes__block_invoke;
   v14[3] = &unk_1E77438C8;
-  v15 = v5;
+  v15 = layout;
   v16 = v3;
   v17 = v4;
   v7 = v4;
   v8 = v3;
-  v9 = v5;
-  [(PXGSublayoutComposition *)self enumerateSublayoutProvidersForRange:0 usingBlock:v6, v14];
+  v9 = layout;
+  [(PXGSublayoutComposition *)self enumerateSublayoutProvidersForRange:0 usingBlock:numberOfSublayouts, v14];
   v10 = [v8 copy];
   indexesOfChapterHeaders = self->_indexesOfChapterHeaders;
   self->_indexesOfChapterHeaders = v10;
@@ -165,14 +165,14 @@ id __57__PXMonthsSublayoutComposition_configuredLayoutGenerator__block_invoke(ui
   self->_indexesOfHeroes = v12;
 }
 
-- (void)setMetrics:(id)a3
+- (void)setMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_metrics != v4)
+  metricsCopy = metrics;
+  v5 = metricsCopy;
+  if (self->_metrics != metricsCopy)
   {
-    v9 = v4;
-    v6 = [(PXMonthsLayoutMetrics *)v4 isEqual:?];
+    v9 = metricsCopy;
+    v6 = [(PXMonthsLayoutMetrics *)metricsCopy isEqual:?];
     v5 = v9;
     if (!v6)
     {

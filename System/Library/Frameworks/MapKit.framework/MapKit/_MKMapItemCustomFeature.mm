@@ -1,9 +1,9 @@
 @interface _MKMapItemCustomFeature
 - ($F24F406B2B787EFB06265DBA3D28CBD5)coordinate;
-- (_MKMapItemCustomFeature)initWithCoder:(id)a3;
-- (_MKMapItemCustomFeature)initWithMapItem:(id)a3;
+- (_MKMapItemCustomFeature)initWithCoder:(id)coder;
+- (_MKMapItemCustomFeature)initWithMapItem:(id)item;
 - (void)deselect;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)select;
 @end
 
@@ -36,21 +36,21 @@
   [(VKCustomFeature *)self->_feature setStyleAttributes:v4];
 }
 
-- (_MKMapItemCustomFeature)initWithMapItem:(id)a3
+- (_MKMapItemCustomFeature)initWithMapItem:(id)item
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v17.receiver = self;
   v17.super_class = _MKMapItemCustomFeature;
   v5 = [(_MKMapItemCustomFeature *)&v17 init];
   if (v5)
   {
-    v6 = [v4 location];
-    [v6 coordinate];
+    location = [itemCopy location];
+    [location coordinate];
     v5->_coordinate.latitude = v7;
 
-    v8 = [v4 location];
-    [v8 coordinate];
+    location2 = [itemCopy location];
+    [location2 coordinate];
     v5->_coordinate.longitude = v9;
 
     v10 = [objc_alloc(MEMORY[0x1E69DF408]) initWithCoordinate:{v5->_coordinate.latitude, v5->_coordinate.longitude}];
@@ -58,41 +58,41 @@
     v5->_feature = v10;
 
     v12 = v5->_feature;
-    v13 = [v4 name];
-    [(VKCustomFeature *)v12 setText:v13 locale:0];
+    name = [itemCopy name];
+    [(VKCustomFeature *)v12 setText:name locale:0];
 
-    v14 = [v4 _styleAttributes];
+    _styleAttributes = [itemCopy _styleAttributes];
     v18[0] = xmmword_1A30F77E0;
     v18[1] = unk_1A30F77F0;
     v18[2] = xmmword_1A30F7800;
-    [v14 replaceAttributes:v18 count:6];
-    [(VKCustomFeature *)v5->_feature setStyleAttributes:v14];
-    -[VKCustomFeature setBusinessID:](v5->_feature, "setBusinessID:", [v4 _muid]);
-    -[VKCustomFeature setFeatureID:](v5->_feature, "setFeatureID:", [v4 _customIconID]);
+    [_styleAttributes replaceAttributes:v18 count:6];
+    [(VKCustomFeature *)v5->_feature setStyleAttributes:_styleAttributes];
+    -[VKCustomFeature setBusinessID:](v5->_feature, "setBusinessID:", [itemCopy _muid]);
+    -[VKCustomFeature setFeatureID:](v5->_feature, "setFeatureID:", [itemCopy _customIconID]);
     styleAttributes = v5->_styleAttributes;
-    v5->_styleAttributes = v14;
+    v5->_styleAttributes = _styleAttributes;
   }
 
   return v5;
 }
 
-- (_MKMapItemCustomFeature)initWithCoder:(id)a3
+- (_MKMapItemCustomFeature)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _MKMapItemCustomFeature;
   v5 = [(_MKMapItemCustomFeature *)&v13 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"coordinate.latitude"];
+    [coderCopy decodeDoubleForKey:@"coordinate.latitude"];
     v5->_coordinate.latitude = v6;
-    [v4 decodeDoubleForKey:@"coordinate.longitude"];
+    [coderCopy decodeDoubleForKey:@"coordinate.longitude"];
     v5->_coordinate.longitude = v7;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"feature"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"feature"];
     feature = v5->_feature;
     v5->_feature = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"styleAttributes"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"styleAttributes"];
     styleAttributes = v5->_styleAttributes;
     v5->_styleAttributes = v10;
   }
@@ -100,14 +100,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   latitude = self->_coordinate.latitude;
-  v5 = a3;
-  [v5 encodeDouble:@"coordinate.latitude" forKey:latitude];
-  [v5 encodeDouble:@"coordinate.longitude" forKey:self->_coordinate.longitude];
-  [v5 encodeObject:self->_feature forKey:@"feature"];
-  [v5 encodeObject:self->_styleAttributes forKey:@"styleAttributes"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"coordinate.latitude" forKey:latitude];
+  [coderCopy encodeDouble:@"coordinate.longitude" forKey:self->_coordinate.longitude];
+  [coderCopy encodeObject:self->_feature forKey:@"feature"];
+  [coderCopy encodeObject:self->_styleAttributes forKey:@"styleAttributes"];
 }
 
 @end

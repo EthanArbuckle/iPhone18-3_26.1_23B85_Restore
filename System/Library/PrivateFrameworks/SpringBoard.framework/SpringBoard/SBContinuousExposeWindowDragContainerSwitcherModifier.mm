@@ -1,67 +1,67 @@
 @interface SBContinuousExposeWindowDragContainerSwitcherModifier
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
 - (BOOL)shouldConfigureInAppDockHiddenAssertion;
 - (BOOL)wantsDockBehaviorAssertion;
-- (BOOL)wantsSceneResizesHostedContextForAppLayout:(id)a3;
+- (BOOL)wantsSceneResizesHostedContextForAppLayout:(id)layout;
 - (CGRect)_boundingBoxForCurrentStage;
-- (SBContinuousExposeWindowDragContainerSwitcherModifier)initWithAppLayouts:(id)a3 initialAppLayout:(id)a4 selectedDisplayItem:(id)a5 windowDragContentSwitcherModifier:(id)a6;
+- (SBContinuousExposeWindowDragContainerSwitcherModifier)initWithAppLayouts:(id)layouts initialAppLayout:(id)layout selectedDisplayItem:(id)item windowDragContentSwitcherModifier:(id)modifier;
 - (double)_dockProgressForDraggedWindow;
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (double)continuousExposeStripProgress;
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (double)dockProgress;
 - (double)homeScreenDimmingAlpha;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (id)_appLayoutContainingDisplayItem:(id)a3;
-- (id)_createInterceptableTransitionRequestForActivatingAppLayout:(id)a3 withSelectedDisplayItem:(id)a4;
-- (id)adjustedContinuousExposeIdentifiersInStripFromPreviousIdentifiersInStrip:(id)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (id)_appLayoutContainingDisplayItem:(id)item;
+- (id)_createInterceptableTransitionRequestForActivatingAppLayout:(id)layout withSelectedDisplayItem:(id)item;
+- (id)adjustedContinuousExposeIdentifiersInStripFromPreviousIdentifiersInStrip:(id)strip;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)appLayout;
 - (id)appLayoutOnStage;
-- (id)appLayoutsForContinuousExposeIdentifier:(id)a3;
-- (id)handleGestureEvent:(id)a3;
-- (id)handleTapAppLayoutEvent:(id)a3;
-- (id)handleTapOutsideToDismissEvent:(id)a3;
-- (id)handleTimerEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
-- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5;
-- (id)routingModifier:(id)a3 topMostLayoutElementsByModifier:(id)a4;
+- (id)appLayoutsForContinuousExposeIdentifier:(id)identifier;
+- (id)handleGestureEvent:(id)event;
+- (id)handleTapAppLayoutEvent:(id)event;
+- (id)handleTapOutsideToDismissEvent:(id)event;
+- (id)handleTimerEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
+- (id)responseForProposedChildResponse:(id)response childModifier:(id)modifier event:(id)event;
+- (id)routingModifier:(id)modifier topMostLayoutElementsByModifier:(id)byModifier;
 - (id)topMostLayoutElements;
 - (id)visibleSplitViewHandleDimmingViews;
 - (id)visibleSplitViewHandleNubViews;
-- (int64_t)occlusionStateForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (void)didMoveToParentModifier:(id)a3;
+- (int64_t)occlusionStateForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBContinuousExposeWindowDragContainerSwitcherModifier
 
-- (SBContinuousExposeWindowDragContainerSwitcherModifier)initWithAppLayouts:(id)a3 initialAppLayout:(id)a4 selectedDisplayItem:(id)a5 windowDragContentSwitcherModifier:(id)a6
+- (SBContinuousExposeWindowDragContainerSwitcherModifier)initWithAppLayouts:(id)layouts initialAppLayout:(id)layout selectedDisplayItem:(id)item windowDragContentSwitcherModifier:(id)modifier
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  layoutCopy = layout;
+  itemCopy = item;
+  modifierCopy = modifier;
   v17.receiver = self;
   v17.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-  v14 = [(SBFilteringSwitcherModifier *)&v17 initWithAppLayouts:a3 modifier:v13];
+  v14 = [(SBFilteringSwitcherModifier *)&v17 initWithAppLayouts:layouts modifier:modifierCopy];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_initialAppLayout, a4);
-    objc_storeStrong(&v15->_selectedDisplayItem, a5);
-    objc_storeStrong(&v15->_windowDragContentSwitcherModifier, a6);
+    objc_storeStrong(&v14->_initialAppLayout, layout);
+    objc_storeStrong(&v15->_selectedDisplayItem, item);
+    objc_storeStrong(&v15->_windowDragContentSwitcherModifier, modifier);
     v15->_windowDragSpringLoadState = 0;
   }
 
   return v15;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v12.receiver = self;
   v12.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
   [(SBFilteringSwitcherModifier *)&v12 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     v5 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self _appLayoutContainingDisplayItem:self->_selectedDisplayItem];
     v6 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutContainingAppLayout:v5];
@@ -91,11 +91,11 @@
   }
 }
 
-- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5
+- (id)responseForProposedChildResponse:(id)response childModifier:(id)modifier event:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-  v6 = [(SBChainableModifier *)&v10 responseForProposedChildResponse:a3 childModifier:a4 event:a5];
+  v6 = [(SBChainableModifier *)&v10 responseForProposedChildResponse:response childModifier:modifier event:event];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __110__SBContinuousExposeWindowDragContainerSwitcherModifier_responseForProposedChildResponse_childModifier_event___block_invoke;
@@ -174,15 +174,15 @@ SBPerformTransitionSwitcherEventResponse *__110__SBContinuousExposeWindowDragCon
   return v3;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v17.receiver = self;
   v17.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v17 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v17 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
-  if ([v6 isEqualToString:self->_continuousExposeSpringLoadReasonWithAppLayout])
+  if ([reason isEqualToString:self->_continuousExposeSpringLoadReasonWithAppLayout])
   {
     windowDragSpringLoadState = self->_windowDragSpringLoadState;
     switch(windowDragSpringLoadState)
@@ -220,7 +220,7 @@ LABEL_10:
     }
   }
 
-  if ([v6 isEqualToString:@"kContinuousExposeSpringLoadBlinkingReason"] && self->_blinkCount <= 3)
+  if ([reason isEqualToString:@"kContinuousExposeSpringLoadBlinkingReason"] && self->_blinkCount <= 3)
   {
     v13 = [[SBTimerEventSwitcherEventResponse alloc] initWithDelay:0 validator:@"kContinuousExposeSpringLoadBlinkingReason" reason:0.1];
     v14 = SBAppendSwitcherModifierResponse(v13, v5);
@@ -234,40 +234,40 @@ LABEL_10:
   return v5;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v18.receiver = self;
   v18.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v18 handleTransitionEvent:v4];
-  if ([v4 isAppLaunchDuringWindowDragGestureTransition] && objc_msgSend(v4, "phase") == 1)
+  v5 = [(SBSwitcherModifier *)&v18 handleTransitionEvent:eventCopy];
+  if ([eventCopy isAppLaunchDuringWindowDragGestureTransition] && objc_msgSend(eventCopy, "phase") == 1)
   {
-    v6 = [(SBContinuousExposeWindowDragContentSwitcherModifier *)self->_windowDragContentSwitcherModifier gestureModifier];
-    v7 = [v4 toAppLayout];
-    [v6 updateProposedAppLayoutWithAppLayout:v7 andInitialAppLayout:self->_initialAppLayout];
+    gestureModifier = [(SBContinuousExposeWindowDragContentSwitcherModifier *)self->_windowDragContentSwitcherModifier gestureModifier];
+    toAppLayout = [eventCopy toAppLayout];
+    [gestureModifier updateProposedAppLayoutWithAppLayout:toAppLayout andInitialAppLayout:self->_initialAppLayout];
 
     windowDragContentSwitcherModifier = self->_windowDragContentSwitcherModifier;
-    v9 = [v4 toAppLayout];
-    [(SBContinuousExposeWindowDragContentSwitcherModifier *)windowDragContentSwitcherModifier updateFloorModifiersWithAppLayout:v9];
+    toAppLayout2 = [eventCopy toAppLayout];
+    [(SBContinuousExposeWindowDragContentSwitcherModifier *)windowDragContentSwitcherModifier updateFloorModifiersWithAppLayout:toAppLayout2];
   }
 
-  if ([v4 phase] == 3)
+  if ([eventCopy phase] == 3)
   {
     self->_blinkCount = 0;
   }
 
-  if ([v4 phase] == 1)
+  if ([eventCopy phase] == 1)
   {
     initialAppLayout = self->_initialAppLayout;
-    v11 = [v4 toAppLayout];
-    LOBYTE(initialAppLayout) = [(SBAppLayout *)initialAppLayout isEqual:v11];
+    toAppLayout3 = [eventCopy toAppLayout];
+    LOBYTE(initialAppLayout) = [(SBAppLayout *)initialAppLayout isEqual:toAppLayout3];
 
     if ((initialAppLayout & 1) == 0)
     {
       v12 = [SBInvalidateContinuousExposeIdentifiersEventResponse alloc];
-      v13 = [v4 fromAppLayout];
-      v14 = [v4 toAppLayout];
-      v15 = [(SBInvalidateContinuousExposeIdentifiersEventResponse *)v12 initWithTransitioningFromAppLayout:v13 transitioningToAppLayout:v14 animated:1];
+      fromAppLayout = [eventCopy fromAppLayout];
+      toAppLayout4 = [eventCopy toAppLayout];
+      v15 = [(SBInvalidateContinuousExposeIdentifiersEventResponse *)v12 initWithTransitioningFromAppLayout:fromAppLayout transitioningToAppLayout:toAppLayout4 animated:1];
 
       v16 = SBAppendSwitcherModifierResponse(v15, v5);
 
@@ -278,15 +278,15 @@ LABEL_10:
   return v5;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v27.receiver = self;
   v27.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v27 handleGestureEvent:v4];
-  self->_gesturePhase = [v4 phase];
-  v6 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutOnStage];
-  if ([v6 containsItem:self->_selectedDisplayItem])
+  v5 = [(SBSwitcherModifier *)&v27 handleGestureEvent:eventCopy];
+  self->_gesturePhase = [eventCopy phase];
+  appLayoutOnStage = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutOnStage];
+  if ([appLayoutOnStage containsItem:self->_selectedDisplayItem])
   {
     self->_windowDragSpringLoadState = 0;
 LABEL_12:
@@ -300,14 +300,14 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  [v4 locationInContainerView];
+  [eventCopy locationInContainerView];
   v8 = v7;
   v10 = v9;
-  v11 = [v4 selectedAppLayout];
-  v12 = [v11 itemForLayoutRole:1];
+  selectedAppLayout = [eventCopy selectedAppLayout];
+  v12 = [selectedAppLayout itemForLayoutRole:1];
 
   v13 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutAtLocation:v12 withDraggedItem:1 environment:v8, v10];
-  if (v13 && ([v6 isOrContainsAppLayout:v13] & 1) == 0)
+  if (v13 && ([appLayoutOnStage isOrContainsAppLayout:v13] & 1) == 0)
   {
     v15 = v13;
     v14 = self->_springLoadTargetAppLayout;
@@ -326,10 +326,10 @@ LABEL_12:
     {
       self->_windowDragSpringLoadState = 1;
       v25 = MEMORY[0x277CCACA8];
-      v26 = [(SBAppLayout *)self->_springLoadTargetAppLayout continuousExposeIdentifier];
-      v16 = [MEMORY[0x277CCAD78] UUID];
-      v17 = [v16 UUIDString];
-      v18 = [v25 stringWithFormat:@"kSpringLoading-%@-%@", v26, v17];
+      continuousExposeIdentifier = [(SBAppLayout *)self->_springLoadTargetAppLayout continuousExposeIdentifier];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      v18 = [v25 stringWithFormat:@"kSpringLoading-%@-%@", continuousExposeIdentifier, uUIDString];
       v19 = self->_continuousExposeSpringLoadReasonWithAppLayout;
       self->_continuousExposeSpringLoadReasonWithAppLayout = v18;
 
@@ -355,67 +355,67 @@ LABEL_13:
   return v5;
 }
 
-- (id)handleTapAppLayoutEvent:(id)a3
+- (id)handleTapAppLayoutEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v11 handleTapAppLayoutEvent:v4];
-  v6 = [v4 appLayout];
-  v7 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self _createInterceptableTransitionRequestForActivatingAppLayout:v6 withSelectedDisplayItem:self->_selectedDisplayItem];
+  v5 = [(SBSwitcherModifier *)&v11 handleTapAppLayoutEvent:eventCopy];
+  appLayout = [eventCopy appLayout];
+  v7 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self _createInterceptableTransitionRequestForActivatingAppLayout:appLayout withSelectedDisplayItem:self->_selectedDisplayItem];
 
   if (v7)
   {
     v8 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v7 gestureInitiated:0];
     v9 = SBAppendSwitcherModifierResponse(v8, v5);
 
-    [v4 handleWithReason:@"SpringLoading"];
+    [eventCopy handleWithReason:@"SpringLoading"];
     v5 = v9;
   }
 
   return v5;
 }
 
-- (id)handleTapOutsideToDismissEvent:(id)a3
+- (id)handleTapOutsideToDismissEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-  v3 = a3;
-  v4 = [(SBSwitcherModifier *)&v6 handleTapOutsideToDismissEvent:v3];
-  [v3 handleWithReason:{@"In window drag", v6.receiver, v6.super_class}];
+  eventCopy = event;
+  v4 = [(SBSwitcherModifier *)&v6 handleTapOutsideToDismissEvent:eventCopy];
+  [eventCopy handleWithReason:{@"In window drag", v6.receiver, v6.super_class}];
 
   return v4;
 }
 
 - (id)appLayoutOnStage
 {
-  v2 = [(SBContinuousExposeWindowDragContentSwitcherModifier *)self->_windowDragContentSwitcherModifier gestureModifier];
-  v3 = [v2 proposedAppLayout];
+  gestureModifier = [(SBContinuousExposeWindowDragContentSwitcherModifier *)self->_windowDragContentSwitcherModifier gestureModifier];
+  proposedAppLayout = [gestureModifier proposedAppLayout];
 
-  return v3;
+  return proposedAppLayout;
 }
 
 - (id)appLayout
 {
-  v2 = [(SBContinuousExposeWindowDragContentSwitcherModifier *)self->_windowDragContentSwitcherModifier gestureModifier];
-  v3 = [v2 proposedAppLayout];
+  gestureModifier = [(SBContinuousExposeWindowDragContentSwitcherModifier *)self->_windowDragContentSwitcherModifier gestureModifier];
+  proposedAppLayout = [gestureModifier proposedAppLayout];
 
-  return v3;
+  return proposedAppLayout;
 }
 
-- (id)adjustedContinuousExposeIdentifiersInStripFromPreviousIdentifiersInStrip:(id)a3
+- (id)adjustedContinuousExposeIdentifiersInStripFromPreviousIdentifiersInStrip:(id)strip
 {
-  v4 = a3;
-  if (-[SBAppLayout containsItem:](self->_initialAppLayout, "containsItem:", self->_selectedDisplayItem) || (-[SBDisplayItem bundleIdentifier](self->_selectedDisplayItem, "bundleIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 containsObject:v5], v5, !v6))
+  stripCopy = strip;
+  if (-[SBAppLayout containsItem:](self->_initialAppLayout, "containsItem:", self->_selectedDisplayItem) || (-[SBDisplayItem bundleIdentifier](self->_selectedDisplayItem, "bundleIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [stripCopy containsObject:v5], v5, !v6))
   {
     v10.receiver = self;
     v10.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-    v7 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v10 adjustedContinuousExposeIdentifiersInStripFromPreviousIdentifiersInStrip:v4];
+    v7 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v10 adjustedContinuousExposeIdentifiersInStripFromPreviousIdentifiersInStrip:stripCopy];
   }
 
   else
   {
-    v7 = v4;
+    v7 = stripCopy;
   }
 
   v8 = v7;
@@ -423,24 +423,24 @@ LABEL_13:
   return v8;
 }
 
-- (id)appLayoutsForContinuousExposeIdentifier:(id)a3
+- (id)appLayoutsForContinuousExposeIdentifier:(id)identifier
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-  v5 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v13 appLayoutsForContinuousExposeIdentifier:v4];
+  v5 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v13 appLayoutsForContinuousExposeIdentifier:identifierCopy];
   if (![(SBAppLayout *)self->_initialAppLayout containsItem:self->_selectedDisplayItem])
   {
-    v6 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutOnStage];
-    v7 = [v6 containsItem:self->_selectedDisplayItem];
+    appLayoutOnStage = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutOnStage];
+    v7 = [appLayoutOnStage containsItem:self->_selectedDisplayItem];
 
     if (v7)
     {
-      v8 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutOnStage];
-      v9 = [v8 leafAppLayoutForItem:self->_selectedDisplayItem];
+      appLayoutOnStage2 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutOnStage];
+      v9 = [appLayoutOnStage2 leafAppLayoutForItem:self->_selectedDisplayItem];
 
-      v10 = [v9 continuousExposeIdentifier];
+      continuousExposeIdentifier = [v9 continuousExposeIdentifier];
       if (BSEqualStrings())
       {
         v11 = [v5 count];
@@ -454,7 +454,7 @@ LABEL_7:
 
         v14[0] = v9;
         [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-        v5 = v10 = v5;
+        v5 = continuousExposeIdentifier = v5;
       }
 
       goto LABEL_7;
@@ -477,9 +477,9 @@ LABEL_8:
   v10.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
   [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v10 homeScreenDimmingAlpha];
   v4 = v3;
-  v5 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self switcherSettings];
-  v6 = [v5 windowingSettings];
-  [v6 maxHomeScreenDimmingAlphaForNonFullscreen];
+  switcherSettings = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  [windowingSettings maxHomeScreenDimmingAlphaForNonFullscreen];
   v8 = v7;
 
   if (v4 <= v8)
@@ -501,8 +501,8 @@ LABEL_8:
   v4 = v3;
   if (BSFloatIsZero())
   {
-    v5 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutOnStage];
-    if ([v5 containsItem:self->_selectedDisplayItem])
+    appLayoutOnStage = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutOnStage];
+    if ([appLayoutOnStage containsItem:self->_selectedDisplayItem])
     {
     }
 
@@ -520,18 +520,18 @@ LABEL_8:
   return v4;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-  v5 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v10 animationAttributesForLayoutElement:v4];
-  if (![v4 switcherLayoutElementType] && (objc_msgSend(v4, "containsItem:", self->_selectedDisplayItem) & 1) == 0)
+  v5 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v10 animationAttributesForLayoutElement:elementCopy];
+  if (![elementCopy switcherLayoutElementType] && (objc_msgSend(elementCopy, "containsItem:", self->_selectedDisplayItem) & 1) == 0)
   {
     v6 = [v5 mutableCopy];
-    v7 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self medusaSettings];
-    v8 = [v7 resizeAnimationSettings];
-    [v6 setLayoutSettings:v8];
+    medusaSettings = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self medusaSettings];
+    resizeAnimationSettings = [medusaSettings resizeAnimationSettings];
+    [v6 setLayoutSettings:resizeAnimationSettings];
 
     [v6 setUpdateMode:3];
     v5 = v6;
@@ -540,11 +540,11 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   initialAppLayout = self->_initialAppLayout;
-  v8 = [v6 itemForLayoutRole:a3];
+  v8 = [layoutCopy itemForLayoutRole:scene];
   LOBYTE(initialAppLayout) = [(SBAppLayout *)initialAppLayout containsItem:v8];
 
   if (initialAppLayout)
@@ -556,69 +556,69 @@ LABEL_8:
   {
     v11.receiver = self;
     v11.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-    v9 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v11 isLayoutRoleMatchMovedToScene:a3 inAppLayout:v6];
+    v9 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v11 isLayoutRoleMatchMovedToScene:scene inAppLayout:layoutCopy];
   }
 
   return v9;
 }
 
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   initialAppLayout = self->_initialAppLayout;
-  v8 = [v6 itemForLayoutRole:a3];
+  v8 = [layoutCopy itemForLayoutRole:blurred];
   if (![(SBAppLayout *)initialAppLayout containsItem:v8])
   {
 
     goto LABEL_5;
   }
 
-  v9 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self windowManagementContext];
-  v10 = [v9 isFlexibleWindowingEnabled];
+  windowManagementContext = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self windowManagementContext];
+  isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-  if (v10)
+  if (isFlexibleWindowingEnabled)
   {
 LABEL_5:
     v12.receiver = self;
     v12.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-    LOBYTE(a3) = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v12 isLayoutRoleBlurred:a3 inAppLayout:v6];
+    LOBYTE(blurred) = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v12 isLayoutRoleBlurred:blurred inAppLayout:layoutCopy];
     goto LABEL_6;
   }
 
   v13.receiver = self;
   v13.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-  LODWORD(a3) = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v13 isLayoutRoleContentReady:a3 inAppLayout:v6]^ 1;
+  LODWORD(blurred) = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v13 isLayoutRoleContentReady:blurred inAppLayout:layoutCopy]^ 1;
 LABEL_6:
 
-  return a3;
+  return blurred;
 }
 
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v15.receiver = self;
   v15.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-  v6 = a4;
-  [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v15 blurDelayForLayoutRole:a3 inAppLayout:v6];
+  layoutCopy = layout;
+  [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v15 blurDelayForLayoutRole:role inAppLayout:layoutCopy];
   v8 = v7;
   initialAppLayout = self->_initialAppLayout;
-  v10 = [v6 itemForLayoutRole:{a3, v15.receiver, v15.super_class}];
+  v10 = [layoutCopy itemForLayoutRole:{role, v15.receiver, v15.super_class}];
 
   LODWORD(initialAppLayout) = [(SBAppLayout *)initialAppLayout containsItem:v10];
   if (initialAppLayout)
   {
-    v11 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self switcherSettings];
-    v12 = [v11 animationSettings];
-    [v12 resizeBlurDelay];
+    switcherSettings = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings resizeBlurDelay];
     v8 = v13;
   }
 
   return v8;
 }
 
-- (BOOL)wantsSceneResizesHostedContextForAppLayout:(id)a3
+- (BOOL)wantsSceneResizesHostedContextForAppLayout:(id)layout
 {
-  v4 = a3;
-  if ([(SBAppLayout *)self->_initialAppLayout containsAnyItemFromAppLayout:v4])
+  layoutCopy = layout;
+  if ([(SBAppLayout *)self->_initialAppLayout containsAnyItemFromAppLayout:layoutCopy])
   {
     v5 = 0;
   }
@@ -627,16 +627,16 @@ LABEL_6:
   {
     v7.receiver = self;
     v7.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-    v5 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v7 wantsSceneResizesHostedContextForAppLayout:v4];
+    v5 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v7 wantsSceneResizesHostedContextForAppLayout:layoutCopy];
   }
 
   return v5;
 }
 
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([(SBAppLayout *)self->_springLoadTargetAppLayout isOrContainsAppLayout:v6])
+  layoutCopy = layout;
+  if ([(SBAppLayout *)self->_springLoadTargetAppLayout isOrContainsAppLayout:layoutCopy])
   {
     if (self->_blinkCount)
     {
@@ -653,21 +653,21 @@ LABEL_6:
   {
     v10.receiver = self;
     v10.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-    [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v10 dimmingAlphaForLayoutRole:a3 inAppLayout:v6];
+    [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v10 dimmingAlphaForLayoutRole:role inAppLayout:layoutCopy];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  if (![v8 containsItem:self->_selectedDisplayItem] || self->_windowDragSpringLoadState != 1 || (-[SBContinuousExposeWindowDragContainerSwitcherModifier appLayoutOnStage](self, "appLayoutOnStage"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "containsItem:", self->_selectedDisplayItem), v9, v11 = 0.5, v10))
+  layoutCopy = layout;
+  if (![layoutCopy containsItem:self->_selectedDisplayItem] || self->_windowDragSpringLoadState != 1 || (-[SBContinuousExposeWindowDragContainerSwitcherModifier appLayoutOnStage](self, "appLayoutOnStage"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "containsItem:", self->_selectedDisplayItem), v9, v11 = 0.5, v10))
   {
     v14.receiver = self;
     v14.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-    [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v14 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v14 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v11 = v12;
   }
 
@@ -708,25 +708,25 @@ LABEL_6:
   {
     if ([(SBAppLayout *)self->_initialAppLayout containsItem:self->_selectedDisplayItem]|| ([(SBContinuousExposeWindowDragContainerSwitcherModifier *)self displayItemInSlideOver], v4 = objc_claimAutoreleasedReturnValue(), v5 = BSEqualObjects(), v4, v5))
     {
-      v6 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self windowManagementContext];
-      v7 = [v6 isFlexibleWindowingEnabled];
+      windowManagementContext = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self windowManagementContext];
+      isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-      v8 = [(SBSwitcherModifier *)self windowingConfiguration];
+      windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
       [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self containerViewBounds];
       v10 = v9;
       [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self floatingDockHeight];
       v12 = v11;
-      if (v7)
+      if (isFlexibleWindowingEnabled)
       {
-        [v8 dockTopMargin];
+        [windowingConfiguration dockTopMargin];
         v14 = v13;
-        v15 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayouts];
+        appLayouts = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayouts];
         v29[0] = MEMORY[0x277D85DD0];
         v29[1] = 3221225472;
         v29[2] = __86__SBContinuousExposeWindowDragContainerSwitcherModifier__dockProgressForDraggedWindow__block_invoke;
         v29[3] = &unk_2783AE1A0;
         v29[4] = self;
-        v16 = [v15 indexOfObjectPassingTest:v29];
+        v16 = [appLayouts indexOfObjectPassingTest:v29];
 
         MaxY = 0.0;
         if (v16 != 0x7FFFFFFFFFFFFFFFLL)
@@ -736,12 +736,12 @@ LABEL_6:
           v21 = v20;
           [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self anchorPointForIndex:v16];
           MaxY = v21 + v19 + (0.5 - v22) * v21;
-          v23 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self displayItemInSlideOver];
+          displayItemInSlideOver = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self displayItemInSlideOver];
           v24 = BSEqualObjects();
 
           if (v24)
           {
-            [v8 slideOverBorderWidth];
+            [windowingConfiguration slideOverBorderWidth];
             MaxY = MaxY + v25;
           }
         }
@@ -749,7 +749,7 @@ LABEL_6:
 
       else
       {
-        [v8 screenEdgePadding];
+        [windowingConfiguration screenEdgePadding];
         v14 = v26;
         [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self _boundingBoxForCurrentStage];
         MaxY = CGRectGetMaxY(v30);
@@ -769,10 +769,10 @@ LABEL_6:
 
 - (BOOL)shouldConfigureInAppDockHiddenAssertion
 {
-  v3 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self windowManagementContext];
-  v4 = [v3 isFlexibleWindowingEnabled];
+  windowManagementContext = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self windowManagementContext];
+  isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-  if (v4)
+  if (isFlexibleWindowingEnabled)
   {
     if ([(SBContinuousExposeWindowDragContainerSwitcherModifier *)self isSoftwareKeyboardVisible]&& ([(SBContinuousExposeWindowDragContainerSwitcherModifier *)self isMedusaHostedKeyboardVisible]& 1) != 0)
     {
@@ -790,18 +790,18 @@ LABEL_6:
       return 1;
     }
 
-    v6 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutOnStage];
+    appLayoutOnStage = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutOnStage];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __96__SBContinuousExposeWindowDragContainerSwitcherModifier_shouldConfigureInAppDockHiddenAssertion__block_invoke;
     v45[3] = &unk_2783A8C90;
     v45[4] = self;
-    v7 = [v6 appLayoutWithItemsPassingTest:v45];
+    v7 = [appLayoutOnStage appLayoutWithItemsPassingTest:v45];
 
     if (v7)
     {
-      v8 = [v7 allItems];
-      v9 = [v8 count];
+      allItems = [v7 allItems];
+      v9 = [allItems count];
 
       if (v9)
       {
@@ -812,24 +812,24 @@ LABEL_6:
         v15 = v14;
         [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self floatingDockHeight];
         v17 = v16;
-        v18 = [(SBSwitcherModifier *)self windowingConfiguration];
-        v19 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self displayItemLayoutAttributesCalculator];
-        v20 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self switcherInterfaceOrientation];
+        windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
+        displayItemLayoutAttributesCalculator = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self displayItemLayoutAttributesCalculator];
+        switcherInterfaceOrientation = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self switcherInterfaceOrientation];
         [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self screenScale];
         v22 = v21;
-        v23 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self isDisplayEmbedded];
-        v24 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self prefersStripHidden];
+        isDisplayEmbedded = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self isDisplayEmbedded];
+        prefersStripHidden = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self prefersStripHidden];
         [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self leftStatusBarPartIntersectionRegion];
         v26 = v25;
         v28 = v27;
         v30 = v29;
         v32 = v31;
         [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self rightStatusBarPartIntersectionRegion];
-        v37 = [v19 flexibleWindowingAutoLayoutSpaceForAppLayout:v7 containerOrientation:v20 floatingDockHeight:v23 screenScale:v24 bounds:0 isEmbeddedDisplay:v17 prefersStripHidden:v22 prefersDockHidden:v44 leftStatusBarPartIntersectionRegion:v43 rightStatusBarPartIntersectionRegion:{v13, v15, v26, v28, v30, v32, v33, v34, v35, v36}];
+        v37 = [displayItemLayoutAttributesCalculator flexibleWindowingAutoLayoutSpaceForAppLayout:v7 containerOrientation:switcherInterfaceOrientation floatingDockHeight:isDisplayEmbedded screenScale:prefersStripHidden bounds:0 isEmbeddedDisplay:v17 prefersStripHidden:v22 prefersDockHidden:v44 leftStatusBarPartIntersectionRegion:v43 rightStatusBarPartIntersectionRegion:{v13, v15, v26, v28, v30, v32, v33, v34, v35, v36}];
 
         [v37 boundingBox];
         v40 = v38 + v39;
-        [v18 dockTopMargin];
+        [windowingConfiguration dockTopMargin];
         v42 = v15 - v17 - v41;
 
         if (v40 > v42)
@@ -855,48 +855,48 @@ LABEL_6:
 {
   v14.receiver = self;
   v14.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-  v3 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v14 topMostLayoutElements];
-  v4 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self displayItemInSlideOver];
-  if (v4)
+  topMostLayoutElements = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v14 topMostLayoutElements];
+  displayItemInSlideOver = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self displayItemInSlideOver];
+  if (displayItemInSlideOver)
   {
-    if ([(SBAppLayout *)self->_appLayoutContainingAppLayout containsItem:v4])
+    if ([(SBAppLayout *)self->_appLayoutContainingAppLayout containsItem:displayItemInSlideOver])
     {
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __78__SBContinuousExposeWindowDragContainerSwitcherModifier_topMostLayoutElements__block_invoke;
       v13[3] = &unk_2783B76C8;
       v13[4] = self;
-      v5 = [v3 indexOfObjectPassingTest:v13];
+      v5 = [topMostLayoutElements indexOfObjectPassingTest:v13];
       if (v5 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v6 = v5;
-        v7 = [(SBAppLayout *)self->_appLayoutContainingAppLayout leafAppLayoutForItem:v4];
-        v8 = [v3 sb_arrayByInsertingOrMovingObject:v7 toIndex:v6];
+        v7 = [(SBAppLayout *)self->_appLayoutContainingAppLayout leafAppLayoutForItem:displayItemInSlideOver];
+        v8 = [topMostLayoutElements sb_arrayByInsertingOrMovingObject:v7 toIndex:v6];
 
-        v3 = v8;
+        topMostLayoutElements = v8;
       }
     }
   }
 
-  v9 = [(SBAppLayout *)self->_appLayoutContainingAppLayout allItems];
-  if ([v9 count] >= 2)
+  allItems = [(SBAppLayout *)self->_appLayoutContainingAppLayout allItems];
+  if ([allItems count] >= 2)
   {
     appLayoutContainingAppLayout = self->_appLayoutContainingAppLayout;
-    v11 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutOnStage];
-    LOBYTE(appLayoutContainingAppLayout) = [(SBAppLayout *)appLayoutContainingAppLayout isOrContainsAppLayout:v11];
+    appLayoutOnStage = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutOnStage];
+    LOBYTE(appLayoutContainingAppLayout) = [(SBAppLayout *)appLayoutContainingAppLayout isOrContainsAppLayout:appLayoutOnStage];
 
     if (appLayoutContainingAppLayout)
     {
       goto LABEL_9;
     }
 
-    [v3 sb_arrayByRemovingObject:self->_appLayoutContainingAppLayout];
-    v3 = v9 = v3;
+    [topMostLayoutElements sb_arrayByRemovingObject:self->_appLayoutContainingAppLayout];
+    topMostLayoutElements = allItems = topMostLayoutElements;
   }
 
 LABEL_9:
 
-  return v3;
+  return topMostLayoutElements;
 }
 
 uint64_t __78__SBContinuousExposeWindowDragContainerSwitcherModifier_topMostLayoutElements__block_invoke(uint64_t a1, void *a2)
@@ -922,17 +922,17 @@ uint64_t __78__SBContinuousExposeWindowDragContainerSwitcherModifier_topMostLayo
   return v4;
 }
 
-- (int64_t)occlusionStateForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (int64_t)occlusionStateForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   gesturePhase = self->_gesturePhase;
-  v8 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutOnStage];
-  v9 = v8;
+  appLayoutOnStage = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutOnStage];
+  v9 = appLayoutOnStage;
   if (gesturePhase != 3)
   {
-    if ([v8 isOrContainsAppLayout:v6] && !self->_autoLayoutSpaceWithDraggedItemExcluded)
+    if ([appLayoutOnStage isOrContainsAppLayout:layoutCopy] && !self->_autoLayoutSpaceWithDraggedItemExcluded)
     {
-      v10 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutContainingAppLayout:v6];
+      v10 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutContainingAppLayout:layoutCopy];
       v50[0] = MEMORY[0x277D85DD0];
       v50[1] = 3221225472;
       v50[2] = __97__SBContinuousExposeWindowDragContainerSwitcherModifier_occlusionStateForLayoutRole_inAppLayout___block_invoke;
@@ -942,13 +942,13 @@ uint64_t __78__SBContinuousExposeWindowDragContainerSwitcherModifier_topMostLayo
 
       if (v11)
       {
-        v12 = [v11 allItems];
-        v13 = [v12 count];
+        allItems = [v11 allItems];
+        v13 = [allItems count];
 
         if (v13)
         {
-          v14 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self displayItemLayoutAttributesCalculator];
-          v48 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self switcherInterfaceOrientation];
+          displayItemLayoutAttributesCalculator = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self displayItemLayoutAttributesCalculator];
+          switcherInterfaceOrientation = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self switcherInterfaceOrientation];
           [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self floatingDockHeight];
           v47 = v15;
           [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self screenScale];
@@ -958,16 +958,16 @@ uint64_t __78__SBContinuousExposeWindowDragContainerSwitcherModifier_topMostLayo
           v20 = v19;
           v22 = v21;
           v24 = v23;
-          v25 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self isDisplayEmbedded];
-          v26 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self prefersStripHidden];
-          v27 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self prefersDockHidden];
+          isDisplayEmbedded = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self isDisplayEmbedded];
+          prefersStripHidden = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self prefersStripHidden];
+          prefersDockHidden = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self prefersDockHidden];
           [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self leftStatusBarPartIntersectionRegion];
           v29 = v28;
           v31 = v30;
           v33 = v32;
           v35 = v34;
           [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self rightStatusBarPartIntersectionRegion];
-          v40 = [v14 flexibleWindowingAutoLayoutSpaceForAppLayout:v11 containerOrientation:v48 floatingDockHeight:v25 screenScale:v26 bounds:v27 isEmbeddedDisplay:v47 prefersStripHidden:v46 prefersDockHidden:v18 leftStatusBarPartIntersectionRegion:v20 rightStatusBarPartIntersectionRegion:{v22, v24, v29, v31, v33, v35, v36, v37, v38, v39}];
+          v40 = [displayItemLayoutAttributesCalculator flexibleWindowingAutoLayoutSpaceForAppLayout:v11 containerOrientation:switcherInterfaceOrientation floatingDockHeight:isDisplayEmbedded screenScale:prefersStripHidden bounds:prefersDockHidden isEmbeddedDisplay:v47 prefersStripHidden:v46 prefersDockHidden:v18 leftStatusBarPartIntersectionRegion:v20 rightStatusBarPartIntersectionRegion:{v22, v24, v29, v31, v33, v35, v36, v37, v38, v39}];
           autoLayoutSpaceWithDraggedItemExcluded = self->_autoLayoutSpaceWithDraggedItemExcluded;
           self->_autoLayoutSpaceWithDraggedItemExcluded = v40;
         }
@@ -976,7 +976,7 @@ uint64_t __78__SBContinuousExposeWindowDragContainerSwitcherModifier_topMostLayo
 
     if (self->_autoLayoutSpaceWithDraggedItemExcluded)
     {
-      v42 = [v6 itemForLayoutRole:a3];
+      v42 = [layoutCopy itemForLayoutRole:role];
       if (([(SBDisplayItem *)v42 isEqualToItem:?]& 1) != 0)
       {
         v43 = 1;
@@ -1010,7 +1010,7 @@ LABEL_20:
 
   v49.receiver = self;
   v49.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-  v43 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v49 occlusionStateForLayoutRole:a3 inAppLayout:v6];
+  v43 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v49 occlusionStateForLayoutRole:role inAppLayout:layoutCopy];
 LABEL_21:
 
   return v43;
@@ -1020,20 +1020,20 @@ LABEL_21:
 {
   v33.receiver = self;
   v33.super_class = SBContinuousExposeWindowDragContainerSwitcherModifier;
-  v3 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v33 visibleSplitViewHandleNubViews];
-  v4 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self windowManagementContext];
-  v5 = [v4 isFlexibleWindowingEnabled];
+  visibleSplitViewHandleNubViews = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)&v33 visibleSplitViewHandleNubViews];
+  windowManagementContext = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self windowManagementContext];
+  isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-  if (v5)
+  if (isFlexibleWindowingEnabled)
   {
-    v6 = [v3 mutableCopy];
-    v7 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayouts];
+    v6 = [visibleSplitViewHandleNubViews mutableCopy];
+    appLayouts = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayouts];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __87__SBContinuousExposeWindowDragContainerSwitcherModifier_visibleSplitViewHandleNubViews__block_invoke;
     v32[3] = &unk_2783AE1A0;
     v32[4] = self;
-    v8 = [v7 indexOfObjectPassingTest:v32];
+    v8 = [appLayouts indexOfObjectPassingTest:v32];
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1069,14 +1069,14 @@ LABEL_21:
     v31 = v14;
     v20 = v6;
     v24 = v20;
-    [v3 enumerateObjectsUsingBlock:v23];
+    [visibleSplitViewHandleNubViews enumerateObjectsUsingBlock:v23];
     v21 = v24;
     v15 = v20;
   }
 
   else
   {
-    v15 = v3;
+    v15 = visibleSplitViewHandleNubViews;
   }
 
   return v15;
@@ -1125,8 +1125,8 @@ LABEL_9:
 
 - (id)visibleSplitViewHandleDimmingViews
 {
-  v2 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self visibleSplitViewHandleNubViews];
-  v3 = [v2 bs_map:&__block_literal_global_346];
+  visibleSplitViewHandleNubViews = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self visibleSplitViewHandleNubViews];
+  v3 = [visibleSplitViewHandleNubViews bs_map:&__block_literal_global_346];
 
   return v3;
 }
@@ -1142,18 +1142,18 @@ SBSwitcherSplitViewHandleDimmingElement *__91__SBContinuousExposeWindowDragConta
   return v5;
 }
 
-- (id)routingModifier:(id)a3 topMostLayoutElementsByModifier:(id)a4
+- (id)routingModifier:(id)modifier topMostLayoutElementsByModifier:(id)byModifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  modifierCopy = modifier;
+  byModifierCopy = byModifier;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v5 modifiers];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  modifiers = [modifierCopy modifiers];
+  v9 = [modifiers countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1164,40 +1164,40 @@ SBSwitcherSplitViewHandleDimmingElement *__91__SBContinuousExposeWindowDragConta
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(modifiers);
         }
 
-        v13 = [v6 objectForKey:*(*(&v17 + 1) + 8 * i)];
+        v13 = [byModifierCopy objectForKey:*(*(&v17 + 1) + 8 * i)];
         [v7 addObjectsFromArray:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [modifiers countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
   }
 
   v14 = [objc_alloc(MEMORY[0x277CBEB70]) initWithArray:v7];
-  v15 = [v14 array];
+  array = [v14 array];
 
-  return v15;
+  return array;
 }
 
-- (id)_createInterceptableTransitionRequestForActivatingAppLayout:(id)a3 withSelectedDisplayItem:(id)a4
+- (id)_createInterceptableTransitionRequestForActivatingAppLayout:(id)layout withSelectedDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutOnStage];
+  layoutCopy = layout;
+  itemCopy = item;
+  appLayoutOnStage = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutOnStage];
   v9 = self->_initialAppLayout;
-  v10 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self _appLayoutContainingDisplayItem:v7];
+  v10 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self _appLayoutContainingDisplayItem:itemCopy];
   if (v10)
   {
-    v11 = [(SBContinuousExposeWindowDragContentSwitcherModifier *)self->_windowDragContentSwitcherModifier gestureModifier];
-    v12 = [v11 appLayoutByAddingAppLayout:v10 toAppLayout:v6];
+    gestureModifier = [(SBContinuousExposeWindowDragContentSwitcherModifier *)self->_windowDragContentSwitcherModifier gestureModifier];
+    v12 = [gestureModifier appLayoutByAddingAppLayout:v10 toAppLayout:layoutCopy];
 
-    if (![v8 containsItem:v7] || (v13 = -[SBAppLayout containsItem:](v9, "containsItem:", v7), v14 = v12, !v13))
+    if (![appLayoutOnStage containsItem:itemCopy] || (v13 = -[SBAppLayout containsItem:](v9, "containsItem:", itemCopy), v14 = v12, !v13))
     {
-      v14 = v6;
+      v14 = layoutCopy;
     }
 
     v15 = v14;
@@ -1217,17 +1217,17 @@ SBSwitcherSplitViewHandleDimmingElement *__91__SBContinuousExposeWindowDragConta
   return v18;
 }
 
-- (id)_appLayoutContainingDisplayItem:(id)a3
+- (id)_appLayoutContainingDisplayItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayouts];
+  itemCopy = item;
+  appLayouts = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayouts];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __89__SBContinuousExposeWindowDragContainerSwitcherModifier__appLayoutContainingDisplayItem___block_invoke;
   v9[3] = &unk_2783A8CB8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 bs_firstObjectPassingTest:v9];
+  v10 = itemCopy;
+  v6 = itemCopy;
+  v7 = [appLayouts bs_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -1235,15 +1235,15 @@ SBSwitcherSplitViewHandleDimmingElement *__91__SBContinuousExposeWindowDragConta
 - (CGRect)_boundingBoxForCurrentStage
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutOnStage];
-  if (v3)
+  appLayoutOnStage = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayoutOnStage];
+  if (appLayoutOnStage)
   {
-    v4 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:v3];
+    v4 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:appLayoutOnStage];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    obj = [v3 allItems];
+    obj = [appLayoutOnStage allItems];
     v5 = [obj countByEnumeratingWithState:&v41 objects:v45 count:16];
     if (v5)
     {
@@ -1272,13 +1272,13 @@ SBSwitcherSplitViewHandleDimmingElement *__91__SBContinuousExposeWindowDragConta
           v22 = v21;
           if ([(SBDisplayItem *)self->_selectedDisplayItem isEqualToItem:v13])
           {
-            v23 = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayouts];
+            appLayouts = [(SBContinuousExposeWindowDragContainerSwitcherModifier *)self appLayouts];
             v40[0] = MEMORY[0x277D85DD0];
             v40[1] = 3221225472;
             v40[2] = __84__SBContinuousExposeWindowDragContainerSwitcherModifier__boundingBoxForCurrentStage__block_invoke;
             v40[3] = &unk_2783AE1A0;
             v40[4] = self;
-            v24 = [v23 indexOfObjectPassingTest:v40];
+            v24 = [appLayouts indexOfObjectPassingTest:v40];
 
             if (v24 != 0x7FFFFFFFFFFFFFFFLL)
             {

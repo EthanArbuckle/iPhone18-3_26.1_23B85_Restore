@@ -4,11 +4,11 @@
 + (id)sharedInstance;
 + (id)userAccount;
 + (int64_t)effectiveAge;
-+ (void)fetchGenderAndAgeData:(BOOL)a3 completionHandler:(id)a4;
++ (void)fetchGenderAndAgeData:(BOOL)data completionHandler:(id)handler;
 - (APIDAccountProvider)init;
 - (BOOL)_loadIDAccounts;
-- (int64_t)getAgeFromSegmentData:(id)a3;
-- (int64_t)getEffectiveAgeFromBirthYear:(int64_t)a3;
+- (int64_t)getAgeFromSegmentData:(id)data;
+- (int64_t)getEffectiveAgeFromBirthYear:(int64_t)year;
 - (void)dealloc;
 @end
 
@@ -23,18 +23,18 @@
   v5 = self->_accountSettings;
   if (v5)
   {
-    v6 = [(APIDAccountsSettings *)self->_accountSettings IDAccountsRecord];
-    v7 = [(APIDAccountsSettings *)self->_accountSettings storefront];
-    v8 = [(APIDAccountsSettings *)self->_accountSettings monthlyIDResetCount];
+    iDAccountsRecord = [(APIDAccountsSettings *)self->_accountSettings IDAccountsRecord];
+    storefront = [(APIDAccountsSettings *)self->_accountSettings storefront];
+    monthlyIDResetCount = [(APIDAccountsSettings *)self->_accountSettings monthlyIDResetCount];
     v9 = +[APIDAccountsDefaultsSettings settings];
-    v10 = [v9 storefrontOverride];
+    storefrontOverride = [v9 storefrontOverride];
 
-    if (!+[APSystemInternal isAppleInternalInstall]|| !v10)
+    if (!+[APSystemInternal isAppleInternalInstall]|| !storefrontOverride)
     {
       goto LABEL_19;
     }
 
-    if ([v10 length] < 6)
+    if ([storefrontOverride length] < 6)
     {
       v13 = APLogForCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -43,14 +43,14 @@
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Using override without modelnumber", buf, 2u);
       }
 
-      v12 = [NSString stringWithFormat:@"%@%@", v10, @"-1, 30"];
+      v12 = [NSString stringWithFormat:@"%@%@", storefrontOverride, @"-1, 30"];
     }
 
     else
     {
-      if ([v10 length] < 7)
+      if ([storefrontOverride length] < 7)
       {
-        if ([v7 length] < 7)
+        if ([storefront length] < 7)
         {
           goto LABEL_16;
         }
@@ -62,42 +62,42 @@
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Merging the storefronts into a new value.", buf, 2u);
         }
 
-        v26 = v10;
-        v25 = [v7 substringFromIndex:6];
+        v26 = storefrontOverride;
+        v25 = [storefront substringFromIndex:6];
         v14 = [NSString stringWithFormat:@"%@%@", v26, v25];
 
-        v7 = v25;
+        storefront = v25;
 LABEL_15:
 
-        v7 = v14;
+        storefront = v14;
 LABEL_16:
         v15 = APLogForCategory();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           *buf = 138739971;
-          v28 = v7;
+          v28 = storefront;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "StorefrontOverridden as = %{sensitive}@", buf, 0xCu);
         }
 
 LABEL_19:
-        v16 = [[APIDAccount alloc] initWithIDAccountsRecord:v6 storefront:v7 monthlyIDResetCount:v8];
+        v16 = [[APIDAccount alloc] initWithIDAccountsRecord:iDAccountsRecord storefront:storefront monthlyIDResetCount:monthlyIDResetCount];
         [(APIDAccountProvider *)self setIdAccount:v16];
 
         v17 = +[APIDAccountsDefaultsSettings settings];
-        v18 = [v17 effectiveBirthYear];
+        effectiveBirthYear = [v17 effectiveBirthYear];
 
-        if (+[APSystemInternal isAppleInternalInstall](APSystemInternal, "isAppleInternalInstall") && v18 && [v18 integerValue] >= 1)
+        if (+[APSystemInternal isAppleInternalInstall](APSystemInternal, "isAppleInternalInstall") && effectiveBirthYear && [effectiveBirthYear integerValue] >= 1)
         {
-          -[APIDAccountProvider setEffectiveAge:](self, "setEffectiveAge:", -[APIDAccountProvider getEffectiveAgeFromBirthYear:](self, "getEffectiveAgeFromBirthYear:", [v18 integerValue]));
+          -[APIDAccountProvider setEffectiveAge:](self, "setEffectiveAge:", -[APIDAccountProvider getEffectiveAgeFromBirthYear:](self, "getEffectiveAgeFromBirthYear:", [effectiveBirthYear integerValue]));
 LABEL_30:
 
           goto LABEL_31;
         }
 
-        if ([v7 hasPrefix:@"143441"])
+        if ([storefront hasPrefix:@"143441"])
         {
-          v19 = [(APIDAccountProvider *)self idAccount];
-          -[APIDAccountProvider setEffectiveAge:](self, "setEffectiveAge:", -[APIDAccountProvider getEffectiveAgeFromBirthYear:](self, "getEffectiveAgeFromBirthYear:", [v19 effectiveBirthYear]));
+          idAccount = [(APIDAccountProvider *)self idAccount];
+          -[APIDAccountProvider setEffectiveAge:](self, "setEffectiveAge:", -[APIDAccountProvider getEffectiveAgeFromBirthYear:](self, "getEffectiveAgeFromBirthYear:", [idAccount effectiveBirthYear]));
 
           v20 = APLogForCategory();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -111,7 +111,7 @@ LABEL_28:
 
         else
         {
-          v22 = [v6 objectForKeyedSubscript:@"segmentData"];
+          v22 = [iDAccountsRecord objectForKeyedSubscript:@"segmentData"];
           [(APIDAccountProvider *)self setEffectiveAge:[(APIDAccountProvider *)self getAgeFromSegmentData:v22]];
 
           v20 = APLogForCategory();
@@ -133,18 +133,18 @@ LABEL_28:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Use the large specific full value for Override", buf, 2u);
       }
 
-      v12 = v10;
+      v12 = storefrontOverride;
     }
 
     v14 = v12;
     goto LABEL_15;
   }
 
-  v6 = APLogForCategory();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  iDAccountsRecord = APLogForCategory();
+  if (os_log_type_enabled(iDAccountsRecord, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Error reading from settings module.", buf, 2u);
+    _os_log_impl(&_mh_execute_header, iDAccountsRecord, OS_LOG_TYPE_ERROR, "Error reading from settings module.", buf, 2u);
   }
 
 LABEL_31:
@@ -154,11 +154,11 @@ LABEL_31:
 
 + (id)segmentData
 {
-  v2 = [a1 sharedInstance];
-  v3 = [v2 accountSettings];
-  v4 = [v3 IDAccountsRecord];
+  sharedInstance = [self sharedInstance];
+  accountSettings = [sharedInstance accountSettings];
+  iDAccountsRecord = [accountSettings IDAccountsRecord];
 
-  v5 = [v4 objectForKeyedSubscript:@"segmentData"];
+  v5 = [iDAccountsRecord objectForKeyedSubscript:@"segmentData"];
 
   return v5;
 }
@@ -177,26 +177,26 @@ LABEL_31:
 
 + (id)privateUserAccount
 {
-  v2 = [a1 sharedInstance];
-  v3 = [v2 idAccount];
+  sharedInstance = [self sharedInstance];
+  idAccount = [sharedInstance idAccount];
 
-  return v3;
+  return idAccount;
 }
 
 + (id)userAccount
 {
-  v2 = [a1 sharedInstance];
-  v3 = [v2 idAccount];
+  sharedInstance = [self sharedInstance];
+  idAccount = [sharedInstance idAccount];
 
-  return v3;
+  return idAccount;
 }
 
 + (int64_t)effectiveAge
 {
-  v2 = [a1 sharedInstance];
-  v3 = [v2 effectiveAge];
+  sharedInstance = [self sharedInstance];
+  effectiveAge = [sharedInstance effectiveAge];
 
-  return v3;
+  return effectiveAge;
 }
 
 - (APIDAccountProvider)init
@@ -245,14 +245,14 @@ LABEL_6:
   [(APIDAccountProvider *)&v4 dealloc];
 }
 
-- (int64_t)getAgeFromSegmentData:(id)a3
+- (int64_t)getAgeFromSegmentData:(id)data
 {
-  if (!a3)
+  if (!data)
   {
     return -1;
   }
 
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [data dataUsingEncoding:4];
   v15 = 0;
   v4 = [NSJSONSerialization JSONObjectWithData:v3 options:0 error:&v15];
   v5 = v15;
@@ -292,9 +292,9 @@ LABEL_6:
   return v7;
 }
 
-- (int64_t)getEffectiveAgeFromBirthYear:(int64_t)a3
+- (int64_t)getEffectiveAgeFromBirthYear:(int64_t)year
 {
-  if (!a3)
+  if (!year)
   {
     return -1;
   }
@@ -303,13 +303,13 @@ LABEL_6:
   v5 = +[NSDate date];
   v6 = [v4 component:4 fromDate:v5];
 
-  v7 = v6 + ~a3;
+  v7 = v6 + ~year;
   return v7;
 }
 
-+ (void)fetchGenderAndAgeData:(BOOL)a3 completionHandler:(id)a4
++ (void)fetchGenderAndAgeData:(BOOL)data completionHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = +[APIDAccountProvider segmentData];
   v6 = v5;
   v7 = @"nil";
@@ -369,9 +369,9 @@ LABEL_6:
     v36 = v21;
     v23 = [v21 component:4 fromDate:v22];
 
-    v24 = [v19 integerValue];
-    v17 = v23 - v24;
-    if (v24)
+    integerValue = [v19 integerValue];
+    v17 = v23 - integerValue;
+    if (integerValue)
     {
       v11 = v20;
       if (v17 > 17)
@@ -445,7 +445,7 @@ LABEL_6:
   if (v26)
   {
     v37 = v11;
-    v28 = [v26 integerValue];
+    integerValue2 = [v26 integerValue];
     v29 = APLogForCategory();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
@@ -456,7 +456,7 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "userProvidedGenderString %{private}@ = %{sensitive}@", buf, 0x16u);
     }
 
-    if (v28 == 1)
+    if (integerValue2 == 1)
     {
       v30 = [v39 objectForKeyedSubscript:@"17"];
       v31 = APLogForCategory();
@@ -510,9 +510,9 @@ LABEL_45:
   [v33 setValue:v34 forKey:@"age"];
 
   v35 = [v33 copy];
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, v35);
+    handlerCopy[2](handlerCopy, v35);
   }
 }
 

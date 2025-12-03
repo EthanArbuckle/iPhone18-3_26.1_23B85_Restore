@@ -14,7 +14,7 @@
 
 - (UIWindow)bannerWindow
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100028BC4();
 
   return v3;

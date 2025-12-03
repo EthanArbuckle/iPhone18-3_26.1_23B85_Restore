@@ -1,15 +1,15 @@
 @interface AMSCarrierOfferRegistrationPrivacyValidator
-+ (id)allowedIdentifiersFrom:(id)a3 forAccount:(id)a4;
++ (id)allowedIdentifiersFrom:(id)from forAccount:(id)account;
 @end
 
 @implementation AMSCarrierOfferRegistrationPrivacyValidator
 
-+ (id)allowedIdentifiersFrom:(id)a3 forAccount:(id)a4
++ (id)allowedIdentifiersFrom:(id)from forAccount:(id)account
 {
   v5 = sub_192F9669C();
   swift_getObjCClassMetadata();
-  v6 = a4;
-  static CarrierOfferRegistrationPrivacyValidator.allowedIdentifiers(from:forAccount:)(v5, v6);
+  accountCopy = account;
+  static CarrierOfferRegistrationPrivacyValidator.allowedIdentifiers(from:forAccount:)(v5, accountCopy);
 
   v7 = sub_192F96D9C();
 

@@ -1,8 +1,8 @@
 @interface MEExtensionHostContext
 + (id)extensionHostRequestScheduler;
 - (MEMailComposeExtensionHostDelegate)composeExtensionHostDelegate;
-- (void)regenerateEmailAddressTokenChangesForSession:(id)a3;
-- (void)regenerateSecurityStatusInformationForSession:(id)a3;
+- (void)regenerateEmailAddressTokenChangesForSession:(id)session;
+- (void)regenerateSecurityStatusInformationForSession:(id)session;
 @end
 
 @implementation MEExtensionHostContext
@@ -26,16 +26,16 @@ void __55__MEExtensionHostContext_extensionHostRequestScheduler__block_invoke()
   extensionHostRequestScheduler_scheduler = v0;
 }
 
-- (void)regenerateEmailAddressTokenChangesForSession:(id)a3
+- (void)regenerateEmailAddressTokenChangesForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = +[MEExtensionHostContext extensionHostRequestScheduler];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__MEExtensionHostContext_regenerateEmailAddressTokenChangesForSession___block_invoke;
   v7[3] = &unk_279859068;
   v7[4] = self;
-  v6 = v4;
+  v6 = sessionCopy;
   v8 = v6;
   [v5 performBlock:v7];
 }
@@ -48,16 +48,16 @@ void __71__MEExtensionHostContext_regenerateEmailAddressTokenChangesForSession__
   [v4 regenerateEmailAddressTokenChangesForSession:v2 forContextUUID:v3];
 }
 
-- (void)regenerateSecurityStatusInformationForSession:(id)a3
+- (void)regenerateSecurityStatusInformationForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = +[MEExtensionHostContext extensionHostRequestScheduler];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__MEExtensionHostContext_regenerateSecurityStatusInformationForSession___block_invoke;
   v7[3] = &unk_279859068;
   v7[4] = self;
-  v6 = v4;
+  v6 = sessionCopy;
   v8 = v6;
   [v5 performBlock:v7];
 }

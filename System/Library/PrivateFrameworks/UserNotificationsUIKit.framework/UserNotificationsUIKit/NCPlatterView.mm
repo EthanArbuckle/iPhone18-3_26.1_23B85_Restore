@@ -2,38 +2,38 @@
 - (BOOL)supportsGlass;
 - (BOOL)supportsMitosis;
 - (BOOL)unmanagedBackdropContrast;
-- (NCPlatterView)initWithFrame:(CGRect)a3;
-- (NCPlatterView)initWithRecipeNamesByTraitCollection:(id)a3 inBundle:(id)a4;
+- (NCPlatterView)initWithFrame:(CGRect)frame;
+- (NCPlatterView)initWithRecipeNamesByTraitCollection:(id)collection inBundle:(id)bundle;
 - (UIColor)glassTintColor;
 - (UIColor)tintColor;
 - (UITraitChangeRegistration)glassLuminanceValueTraitChangeRegistration;
 - (double)_continuousCornerRadius;
 - (double)glassSmoothness;
 - (int64_t)materialRecipe;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
 - (void)addOrRemoveZDepthDebugViewsIfNeeded;
 - (void)dealloc;
 - (void)glassLuminanceChanged;
 - (void)immediatelyEndGlassTransitionAnimators;
 - (void)layoutSubviews;
 - (void)removeLightEffectsIfNeeded;
-- (void)setApparentZDistanceToUser:(int64_t)a3;
-- (void)setBackgroundHidden:(BOOL)a3;
-- (void)setDebugBorderView:(id)a3;
-- (void)setDebugLabel:(id)a3;
-- (void)setGlassLuminanceValueTraitChangeRegistration:(id)a3;
-- (void)setGlassMode:(unint64_t)a3;
-- (void)setGlassSmoothness:(double)a3;
-- (void)setGlassTintColor:(id)a3;
-- (void)setGlassTransitionAnimator:(id)a3;
-- (void)setMaterialRecipe:(int64_t)a3;
-- (void)setOpacityTransitionAnimator:(id)a3;
-- (void)setRootListScrollVelocity:(double)a3;
-- (void)setTintColor:(id)a3;
-- (void)updateLightWithFillLightEnabled:(BOOL)a3 edgeLightEnabled:(BOOL)a4 duration:(double)a5 delay:(double)a6;
-- (void)updateWithApparentZDistanceToUser:(int64_t)a3;
-- (void)updateWithApparentZDistanceToUser:(int64_t)a3 withAnimation:(BOOL)a4;
-- (void)updateWithGlassMode:(unint64_t)a3;
+- (void)setApparentZDistanceToUser:(int64_t)user;
+- (void)setBackgroundHidden:(BOOL)hidden;
+- (void)setDebugBorderView:(id)view;
+- (void)setDebugLabel:(id)label;
+- (void)setGlassLuminanceValueTraitChangeRegistration:(id)registration;
+- (void)setGlassMode:(unint64_t)mode;
+- (void)setGlassSmoothness:(double)smoothness;
+- (void)setGlassTintColor:(id)color;
+- (void)setGlassTransitionAnimator:(id)animator;
+- (void)setMaterialRecipe:(int64_t)recipe;
+- (void)setOpacityTransitionAnimator:(id)animator;
+- (void)setRootListScrollVelocity:(double)velocity;
+- (void)setTintColor:(id)color;
+- (void)updateLightWithFillLightEnabled:(BOOL)enabled edgeLightEnabled:(BOOL)lightEnabled duration:(double)duration delay:(double)delay;
+- (void)updateWithApparentZDistanceToUser:(int64_t)user;
+- (void)updateWithApparentZDistanceToUser:(int64_t)user withAnimation:(BOOL)animation;
+- (void)updateWithGlassMode:(unint64_t)mode;
 - (void)updateZDepthDebugViewsIfNeeded;
 @end
 
@@ -41,15 +41,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   NCPlatterView.layoutSubviews()();
 }
 
 - (void)dealloc
 {
-  v2 = self;
-  sub_21E8BF97C(v2);
-  v3.receiver = v2;
+  selfCopy = self;
+  sub_21E8BF97C(selfCopy);
+  v3.receiver = selfCopy;
   v3.super_class = NCPlatterView;
   [(NCPlatterView *)&v3 dealloc];
 }
@@ -62,17 +62,17 @@
   return result;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v7.receiver = self;
   v7.super_class = NCPlatterView;
-  v4 = self;
-  [(PLPlatterView *)&v7 _setContinuousCornerRadius:a3];
-  v5 = [(PLPlatterView *)v4 customContentView:v7.receiver];
+  selfCopy = self;
+  [(PLPlatterView *)&v7 _setContinuousCornerRadius:radius];
+  v5 = [(PLPlatterView *)selfCopy customContentView:v7.receiver];
   if (v5)
   {
     v6 = v5;
-    [(NCPlatterView *)v4 _continuousCornerRadius];
+    [(NCPlatterView *)selfCopy _continuousCornerRadius];
     [(UIView *)v6 _setContinuousCornerRadius:?];
   }
 
@@ -89,12 +89,12 @@
   return [(PLPlatterView *)&v3 materialRecipe];
 }
 
-- (void)setMaterialRecipe:(int64_t)a3
+- (void)setMaterialRecipe:(int64_t)recipe
 {
   v5.receiver = self;
   v5.super_class = NCPlatterView;
-  v4 = self;
-  [(PLPlatterView *)&v5 setMaterialRecipe:a3];
+  selfCopy = self;
+  [(PLPlatterView *)&v5 setMaterialRecipe:recipe];
   sub_21E8BFA34();
 }
 
@@ -102,24 +102,24 @@
 {
   v4.receiver = self;
   v4.super_class = NCPlatterView;
-  v2 = [(NCPlatterView *)&v4 tintColor];
+  tintColor = [(NCPlatterView *)&v4 tintColor];
 
-  return v2;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v9.receiver = self;
   v9.super_class = NCPlatterView;
-  v4 = self;
-  v5 = a3;
-  [(NCPlatterView *)&v9 setTintColor:v5];
-  v6 = [(PLPlatterView *)v4 customContentView:v9.receiver];
+  selfCopy = self;
+  colorCopy = color;
+  [(NCPlatterView *)&v9 setTintColor:colorCopy];
+  v6 = [(PLPlatterView *)selfCopy customContentView:v9.receiver];
   if (v6)
   {
     v7 = v6;
-    v8 = [(NCPlatterView *)v4 tintColor];
-    [(UIView *)v7 setTintColor:v8];
+    tintColor = [(NCPlatterView *)selfCopy tintColor];
+    [(UIView *)v7 setTintColor:tintColor];
   }
 
   else
@@ -128,13 +128,13 @@
   }
 }
 
-- (void)setBackgroundHidden:(BOOL)a3
+- (void)setBackgroundHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = self;
-  if ([(NCPlatterView *)v4 _isBackgroundHidden]!= v3)
+  hiddenCopy = hidden;
+  selfCopy = self;
+  if ([(NCPlatterView *)selfCopy _isBackgroundHidden]!= hiddenCopy)
   {
-    [(NCPlatterView *)v4 set_isBackgroundHidden:v3];
+    [(NCPlatterView *)selfCopy set_isBackgroundHidden:hiddenCopy];
     sub_21E8BFA34();
   }
 }
@@ -160,11 +160,11 @@
   return *(&self->super.super.super.super.isa + v3);
 }
 
-- (void)setGlassSmoothness:(double)a3
+- (void)setGlassSmoothness:(double)smoothness
 {
   v5 = OBJC_IVAR___NCPlatterView_glassSmoothness;
   swift_beginAccess();
-  *(&self->super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.isa + v5) = smoothness;
 }
 
 - (UIColor)glassTintColor
@@ -174,14 +174,14 @@
   return *(&self->super.super.super.super.isa + v3);
 }
 
-- (void)setGlassTintColor:(id)a3
+- (void)setGlassTintColor:(id)color
 {
   v5 = OBJC_IVAR___NCPlatterView_glassTintColor;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.super.isa + v5) = color;
+  colorCopy = color;
+  selfCopy = self;
 
   sub_21E8BFA34();
 }
@@ -193,26 +193,26 @@
   return *(&self->super.super.super.super.isa + v3);
 }
 
-- (void)setApparentZDistanceToUser:(int64_t)a3
+- (void)setApparentZDistanceToUser:(int64_t)user
 {
   v5 = OBJC_IVAR___NCPlatterView_apparentZDistanceToUser;
   v6 = *(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_apparentZDistanceToUser);
-  v7 = self;
-  [(NCPlatterView *)v7 setLastApparentZDistanceToUser:v6];
-  *(&self->super.super.super.super.isa + v5) = a3;
+  selfCopy = self;
+  [(NCPlatterView *)selfCopy setLastApparentZDistanceToUser:v6];
+  *(&self->super.super.super.super.isa + v5) = user;
 }
 
-- (void)updateWithApparentZDistanceToUser:(int64_t)a3
+- (void)updateWithApparentZDistanceToUser:(int64_t)user
 {
-  v8 = self;
-  v4 = [(NCPlatterView *)v8 window];
-  if (!v4)
+  selfCopy = self;
+  window = [(NCPlatterView *)selfCopy window];
+  if (!window)
   {
     goto LABEL_4;
   }
 
-  v5 = v4;
-  if ([v4 isHidden])
+  v5 = window;
+  if ([window isHidden])
   {
 
 LABEL_4:
@@ -220,50 +220,50 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v7 = [(NCPlatterView *)v8 isHidden];
+  isHidden = [(NCPlatterView *)selfCopy isHidden];
 
-  v6 = v7 ^ 1;
+  v6 = isHidden ^ 1;
 LABEL_6:
-  [(NCPlatterView *)v8 updateWithApparentZDistanceToUser:a3 withAnimation:v6];
+  [(NCPlatterView *)selfCopy updateWithApparentZDistanceToUser:user withAnimation:v6];
 }
 
-- (void)updateWithApparentZDistanceToUser:(int64_t)a3 withAnimation:(BOOL)a4
+- (void)updateWithApparentZDistanceToUser:(int64_t)user withAnimation:(BOOL)animation
 {
-  v5 = self;
-  if ([(NCPlatterView *)v5 apparentZDistanceToUser]!= a3)
+  selfCopy = self;
+  if ([(NCPlatterView *)selfCopy apparentZDistanceToUser]!= user)
   {
-    [(NCPlatterView *)v5 setApparentZDistanceToUser:a3];
+    [(NCPlatterView *)selfCopy setApparentZDistanceToUser:user];
     sub_21E8BFA34();
   }
 }
 
-- (void)setRootListScrollVelocity:(double)a3
+- (void)setRootListScrollVelocity:(double)velocity
 {
-  v4 = self;
-  sub_21E8BBC34(a3);
+  selfCopy = self;
+  sub_21E8BBC34(velocity);
 }
 
-- (void)setGlassMode:(unint64_t)a3
+- (void)setGlassMode:(unint64_t)mode
 {
-  *(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_glassMode) = a3;
-  v3 = self;
+  *(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_glassMode) = mode;
+  selfCopy = self;
   sub_21E8BBD38();
 }
 
-- (void)updateWithGlassMode:(unint64_t)a3
+- (void)updateWithGlassMode:(unint64_t)mode
 {
-  v4 = self;
-  if ([(NCPlatterView *)v4 glassMode]!= a3)
+  selfCopy = self;
+  if ([(NCPlatterView *)selfCopy glassMode]!= mode)
   {
-    [(NCPlatterView *)v4 setGlassMode:a3];
+    [(NCPlatterView *)selfCopy setGlassMode:mode];
   }
 }
 
-- (void)updateLightWithFillLightEnabled:(BOOL)a3 edgeLightEnabled:(BOOL)a4 duration:(double)a5 delay:(double)a6
+- (void)updateLightWithFillLightEnabled:(BOOL)enabled edgeLightEnabled:(BOOL)lightEnabled duration:(double)duration delay:(double)delay
 {
-  v7 = a4;
-  v9 = self;
-  sub_21E8BC1EC(a3, v7, a5);
+  lightEnabledCopy = lightEnabled;
+  selfCopy = self;
+  sub_21E8BC1EC(enabled, lightEnabledCopy, duration);
 }
 
 - (void)removeLightEffectsIfNeeded
@@ -271,28 +271,28 @@ LABEL_6:
   if (*(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_breakthroughLightHandle))
   {
     *(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_breakthroughLightHandle) = 0;
-    v2 = self;
+    selfCopy = self;
     sub_21E8BFA34();
   }
 }
 
-- (void)setGlassTransitionAnimator:(id)a3
+- (void)setGlassTransitionAnimator:(id)animator
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_glassTransitionAnimator);
-  *(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_glassTransitionAnimator) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_glassTransitionAnimator) = animator;
+  animatorCopy = animator;
 }
 
-- (void)setOpacityTransitionAnimator:(id)a3
+- (void)setOpacityTransitionAnimator:(id)animator
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_opacityTransitionAnimator);
-  *(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_opacityTransitionAnimator) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_opacityTransitionAnimator) = animator;
+  animatorCopy = animator;
 }
 
 - (void)immediatelyEndGlassTransitionAnimators
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E8BCC84();
 }
 
@@ -303,9 +303,9 @@ LABEL_6:
   return v2;
 }
 
-- (void)setGlassLuminanceValueTraitChangeRegistration:(id)a3
+- (void)setGlassLuminanceValueTraitChangeRegistration:(id)registration
 {
-  *(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_glassLuminanceValueTraitChangeRegistration) = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_glassLuminanceValueTraitChangeRegistration) = registration;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
@@ -313,44 +313,44 @@ LABEL_6:
 
 - (void)glassLuminanceChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E8BFA34();
 }
 
-- (void)setDebugBorderView:(id)a3
+- (void)setDebugBorderView:(id)view
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_debugBorderView);
-  *(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_debugBorderView) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_debugBorderView) = view;
+  viewCopy = view;
 }
 
-- (void)setDebugLabel:(id)a3
+- (void)setDebugLabel:(id)label
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_debugLabel);
-  *(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_debugLabel) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR___NCPlatterView_debugLabel) = label;
+  labelCopy = label;
 }
 
 - (void)addOrRemoveZDepthDebugViewsIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E8BE9A4();
 }
 
 - (void)updateZDepthDebugViewsIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E8BEEA0();
 }
 
-- (NCPlatterView)initWithFrame:(CGRect)a3
+- (NCPlatterView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (NCPlatterView)initWithRecipeNamesByTraitCollection:(id)a3 inBundle:(id)a4
+- (NCPlatterView)initWithRecipeNamesByTraitCollection:(id)collection inBundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

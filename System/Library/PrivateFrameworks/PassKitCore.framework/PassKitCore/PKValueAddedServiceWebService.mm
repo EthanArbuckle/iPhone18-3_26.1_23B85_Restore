@@ -1,24 +1,24 @@
 @interface PKValueAddedServiceWebService
-- (PKValueAddedServiceWebService)initWithValueAddedServiceTransaction:(id)a3;
-- (void)downloadMerchantPayloadWithCompletion:(id)a3;
-- (void)downloadPassWithCompletion:(id)a3;
+- (PKValueAddedServiceWebService)initWithValueAddedServiceTransaction:(id)transaction;
+- (void)downloadMerchantPayloadWithCompletion:(id)completion;
+- (void)downloadPassWithCompletion:(id)completion;
 @end
 
 @implementation PKValueAddedServiceWebService
 
-- (PKValueAddedServiceWebService)initWithValueAddedServiceTransaction:(id)a3
+- (PKValueAddedServiceWebService)initWithValueAddedServiceTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   v12.receiver = self;
   v12.super_class = PKValueAddedServiceWebService;
   v6 = [(PKValueAddedServiceWebService *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_valueAddedTransaction, a3);
-    v8 = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
-    [v8 setURLCache:0];
-    v9 = [MEMORY[0x1E695AC78] sessionWithConfiguration:v8];
+    objc_storeStrong(&v6->_valueAddedTransaction, transaction);
+    defaultSessionConfiguration = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
+    [defaultSessionConfiguration setURLCache:0];
+    v9 = [MEMORY[0x1E695AC78] sessionWithConfiguration:defaultSessionConfiguration];
     urlSession = v7->_urlSession;
     v7->_urlSession = v9;
   }
@@ -26,20 +26,20 @@
   return v7;
 }
 
-- (void)downloadMerchantPayloadWithCompletion:(id)a3
+- (void)downloadMerchantPayloadWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x1E695DFF8];
   urlSession = self->_urlSession;
-  v7 = [(PKValueAddedServiceTransaction *)self->_valueAddedTransaction merchantURL];
-  v8 = [v5 URLWithString:v7];
+  merchantURL = [(PKValueAddedServiceTransaction *)self->_valueAddedTransaction merchantURL];
+  v8 = [v5 URLWithString:merchantURL];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __71__PKValueAddedServiceWebService_downloadMerchantPayloadWithCompletion___block_invoke;
   v14 = &unk_1E79CDA40;
-  v15 = self;
-  v16 = v4;
-  v9 = v4;
+  selfCopy = self;
+  v16 = completionCopy;
+  v9 = completionCopy;
   v10 = [(NSURLSession *)urlSession dataTaskWithURL:v8 completionHandler:&v11];
   [v10 resume];
 }
@@ -80,23 +80,23 @@ void __71__PKValueAddedServiceWebService_downloadMerchantPayloadWithCompletion__
   }
 }
 
-- (void)downloadPassWithCompletion:(id)a3
+- (void)downloadPassWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(NSDictionary *)self->_merchantPayload objectForKey:@"URLs"];
   v6 = [v5 objectForKey:@"passDownload"];
 
   v7 = [MEMORY[0x1E695DFF8] URLWithString:v6];
-  v8 = [v7 scheme];
-  if ([v8 isEqualToString:@"https"])
+  scheme = [v7 scheme];
+  if ([scheme isEqualToString:@"https"])
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [v7 scheme];
-    if ([v10 isEqualToString:@"http"])
+    scheme2 = [v7 scheme];
+    if ([scheme2 isEqualToString:@"http"])
     {
       v9 = !PKAllowHTTP();
     }
@@ -116,7 +116,7 @@ void __71__PKValueAddedServiceWebService_downloadMerchantPayloadWithCompletion__
       _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "VAS Pass download failed: invalid passDownload URL", v14, 2u);
     }
 
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
@@ -127,7 +127,7 @@ void __71__PKValueAddedServiceWebService_downloadMerchantPayloadWithCompletion__
     v15[2] = __60__PKValueAddedServiceWebService_downloadPassWithCompletion___block_invoke;
     v15[3] = &unk_1E79CDA40;
     v15[4] = self;
-    v16 = v4;
+    v16 = completionCopy;
     v12 = [(NSURLSession *)urlSession dataTaskWithURL:v7 completionHandler:v15];
     [v12 resume];
   }

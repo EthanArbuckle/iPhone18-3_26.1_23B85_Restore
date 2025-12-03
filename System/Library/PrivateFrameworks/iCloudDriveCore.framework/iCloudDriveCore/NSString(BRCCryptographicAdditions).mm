@@ -11,10 +11,10 @@
 - (id)brc_SHA256
 {
   v7 = *MEMORY[0x277D85DE8];
-  v1 = [a1 UTF8String];
+  uTF8String = [self UTF8String];
   memset(v6, 0, sizeof(v6));
-  v2 = strlen(v1);
-  CC_SHA256(v1, v2, v6);
+  v2 = strlen(uTF8String);
+  CC_SHA256(uTF8String, v2, v6);
   v3 = [MEMORY[0x277CBEA90] dataWithBytes:v6 length:32];
   v4 = *MEMORY[0x277D85DE8];
 
@@ -69,14 +69,14 @@
 - (id)brc_SHA1WithSalt:()BRCCryptographicAdditions
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a1;
+  selfCopy = self;
   v6 = a3;
-  v7 = [a1 UTF8String];
-  v8 = [v6 UTF8String];
+  uTF8String = [self UTF8String];
+  uTF8String2 = [v6 UTF8String];
 
-  v9 = strlen(v7);
-  v10 = strlen(v8);
-  CCHmac(0, v7, v9, v8, v10, macOut);
+  v9 = strlen(uTF8String);
+  v10 = strlen(uTF8String2);
+  CCHmac(0, uTF8String, v9, uTF8String2, v10, macOut);
   v11 = [MEMORY[0x277CCACA8] brc_hexadecimalStringWithBytes:macOut length:20];
   v12 = *MEMORY[0x277D85DE8];
 
@@ -86,14 +86,14 @@
 - (id)brc_SHA256WithSalt:()BRCCryptographicAdditions
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a1;
+  selfCopy = self;
   v6 = a3;
-  v7 = [a1 UTF8String];
-  v8 = [v6 bytes];
-  v9 = strlen(v7);
+  uTF8String = [self UTF8String];
+  bytes = [v6 bytes];
+  v9 = strlen(uTF8String);
   v10 = [v6 length];
 
-  CCHmac(2u, v7, v9, v8, v10, &v14);
+  CCHmac(2u, uTF8String, v9, bytes, v10, &v14);
   v11 = [MEMORY[0x277CBEA90] dataWithBytes:&v14 length:32];
   v12 = *MEMORY[0x277D85DE8];
 
@@ -102,8 +102,8 @@
 
 - (id)brc_dataFromHexidecimalString
 {
-  v2 = [a1 UTF8String];
-  v3 = [a1 length];
+  uTF8String = [self UTF8String];
+  v3 = [self length];
   if (v3)
   {
     v4 = 0;
@@ -117,7 +117,7 @@
     if (v3)
     {
       v5 = 0;
-      v6 = v2 + 1;
+      v6 = uTF8String + 1;
       do
       {
         *__str = *(v6 - 1);

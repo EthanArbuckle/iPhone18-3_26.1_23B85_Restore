@@ -1,10 +1,10 @@
 @interface _MPMoviePlayerProxyView
 - (MPMoviePlayerController)controller;
-- (_MPMoviePlayerProxyView)initWithMoviePlayerController:(id)a3;
-- (void)_updateContainmentInWindow:(id)a3 superview:(id)a4;
-- (void)setFrame:(CGRect)a3;
-- (void)willMoveToSuperview:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (_MPMoviePlayerProxyView)initWithMoviePlayerController:(id)controller;
+- (void)_updateContainmentInWindow:(id)window superview:(id)superview;
+- (void)setFrame:(CGRect)frame;
+- (void)willMoveToSuperview:(id)superview;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _MPMoviePlayerProxyView
@@ -16,118 +16,118 @@
   return WeakRetained;
 }
 
-- (void)_updateContainmentInWindow:(id)a3 superview:(id)a4
+- (void)_updateContainmentInWindow:(id)window superview:(id)superview
 {
-  v23 = a4;
+  superviewCopy = superview;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  if (a3 | v23)
+  if (window | superviewCopy)
   {
-    if (!v23)
+    if (!superviewCopy)
     {
       goto LABEL_11;
     }
 
-    v10 = [WeakRetained hostingViewController];
-    if (!v10)
+    hostingViewController = [WeakRetained hostingViewController];
+    if (!hostingViewController)
     {
-      v10 = [MEMORY[0x1E69DD258] viewControllerForView:v23];
+      hostingViewController = [MEMORY[0x1E69DD258] viewControllerForView:superviewCopy];
     }
 
-    v11 = [WeakRetained playerViewController];
-    v12 = [v11 parentViewController];
+    playerViewController = [WeakRetained playerViewController];
+    parentViewController = [playerViewController parentViewController];
 
-    if (v10 != v12)
+    if (hostingViewController != parentViewController)
     {
       [WeakRetained prepareToPlay];
-      v13 = [WeakRetained playerViewController];
-      v14 = [v13 parentViewController];
+      playerViewController2 = [WeakRetained playerViewController];
+      parentViewController2 = [playerViewController2 parentViewController];
 
-      if (v14)
+      if (parentViewController2)
       {
-        v15 = [WeakRetained playerViewController];
-        [v15 willMoveToParentViewController:0];
+        playerViewController3 = [WeakRetained playerViewController];
+        [playerViewController3 willMoveToParentViewController:0];
 
-        v16 = [WeakRetained playerViewController];
-        v17 = [v16 view];
-        [v17 removeFromSuperview];
+        playerViewController4 = [WeakRetained playerViewController];
+        view = [playerViewController4 view];
+        [view removeFromSuperview];
 
-        v18 = [WeakRetained playerViewController];
-        [v18 removeFromParentViewController];
+        playerViewController5 = [WeakRetained playerViewController];
+        [playerViewController5 removeFromParentViewController];
       }
 
-      v19 = [WeakRetained playerViewController];
-      [v10 addChildViewController:v19];
+      playerViewController6 = [WeakRetained playerViewController];
+      [hostingViewController addChildViewController:playerViewController6];
 
-      v20 = [WeakRetained playerViewController];
-      v21 = [v20 view];
-      [(_MPMoviePlayerProxyView *)self addSubview:v21];
+      playerViewController7 = [WeakRetained playerViewController];
+      view2 = [playerViewController7 view];
+      [(_MPMoviePlayerProxyView *)self addSubview:view2];
 
-      v22 = [WeakRetained playerViewController];
-      [v22 didMoveToParentViewController:v10];
+      playerViewController8 = [WeakRetained playerViewController];
+      [playerViewController8 didMoveToParentViewController:hostingViewController];
     }
   }
 
   else
   {
-    v7 = [WeakRetained playerViewController];
-    [v7 willMoveToParentViewController:0];
+    playerViewController9 = [WeakRetained playerViewController];
+    [playerViewController9 willMoveToParentViewController:0];
 
-    v8 = [WeakRetained playerViewController];
-    v9 = [v8 view];
-    [v9 removeFromSuperview];
+    playerViewController10 = [WeakRetained playerViewController];
+    view3 = [playerViewController10 view];
+    [view3 removeFromSuperview];
 
-    v10 = [WeakRetained playerViewController];
-    [v10 removeFromParentViewController];
+    hostingViewController = [WeakRetained playerViewController];
+    [hostingViewController removeFromParentViewController];
   }
 
 LABEL_11:
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = _MPMoviePlayerProxyView;
   [(_MPMoviePlayerProxyView *)&v11 setFrame:?];
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  v9 = [WeakRetained playerViewController];
-  v10 = [v9 view];
-  [v10 setFrame:{x, y, width, height}];
+  playerViewController = [WeakRetained playerViewController];
+  view = [playerViewController view];
+  [view setFrame:{x, y, width, height}];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v6.receiver = self;
   v6.super_class = _MPMoviePlayerProxyView;
-  v4 = a3;
-  [(_MPMoviePlayerProxyView *)&v6 willMoveToSuperview:v4];
+  superviewCopy = superview;
+  [(_MPMoviePlayerProxyView *)&v6 willMoveToSuperview:superviewCopy];
   v5 = [(_MPMoviePlayerProxyView *)self window:v6.receiver];
-  [(_MPMoviePlayerProxyView *)self _updateContainmentInWindow:v5 superview:v4];
+  [(_MPMoviePlayerProxyView *)self _updateContainmentInWindow:v5 superview:superviewCopy];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v6.receiver = self;
   v6.super_class = _MPMoviePlayerProxyView;
-  v4 = a3;
-  [(_MPMoviePlayerProxyView *)&v6 willMoveToWindow:v4];
+  windowCopy = window;
+  [(_MPMoviePlayerProxyView *)&v6 willMoveToWindow:windowCopy];
   v5 = [(_MPMoviePlayerProxyView *)self superview:v6.receiver];
-  [(_MPMoviePlayerProxyView *)self _updateContainmentInWindow:v4 superview:v5];
+  [(_MPMoviePlayerProxyView *)self _updateContainmentInWindow:windowCopy superview:v5];
 }
 
-- (_MPMoviePlayerProxyView)initWithMoviePlayerController:(id)a3
+- (_MPMoviePlayerProxyView)initWithMoviePlayerController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = _MPMoviePlayerProxyView;
   v5 = [(_MPMoviePlayerProxyView *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_controller, v4);
+    objc_storeWeak(&v5->_controller, controllerCopy);
   }
 
   return v6;

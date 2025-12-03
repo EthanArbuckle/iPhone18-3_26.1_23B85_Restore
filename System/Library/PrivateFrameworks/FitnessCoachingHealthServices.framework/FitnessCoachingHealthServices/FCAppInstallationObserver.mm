@@ -1,9 +1,9 @@
 @interface FCAppInstallationObserver
 - (BOOL)fitnessAppInstalled;
 - (FCAppInstallationObserver)init;
-- (void)_applicationsInstalled:(id)a3;
-- (void)_applicationsUninstalled:(id)a3;
-- (void)_setAppInstalled:(BOOL)a3;
+- (void)_applicationsInstalled:(id)installed;
+- (void)_applicationsUninstalled:(id)uninstalled;
+- (void)_setAppInstalled:(BOOL)installed;
 - (void)_updateApplicationInstalled;
 @end
 
@@ -22,11 +22,11 @@
 
     v2->_unfairLock._os_unfair_lock_opaque = 0;
     [(FCAppInstallationObserver *)v2 _setAppInstalled:[(FCCAppInstallationUtility *)v2->_appInstallationUtility fitnessAppInstalled]];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__applicationsInstalled_ name:*MEMORY[0x277D10448] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__applicationsInstalled_ name:*MEMORY[0x277D10448] object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel__applicationsUninstalled_ name:*MEMORY[0x277D10458] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__applicationsUninstalled_ name:*MEMORY[0x277D10458] object:0];
   }
 
   return v2;
@@ -40,18 +40,18 @@
   return isAppInstalled;
 }
 
-- (void)_setAppInstalled:(BOOL)a3
+- (void)_setAppInstalled:(BOOL)installed
 {
   os_unfair_lock_lock(&self->_unfairLock);
-  self->_isAppInstalled = a3;
+  self->_isAppInstalled = installed;
 
   os_unfair_lock_unlock(&self->_unfairLock);
 }
 
-- (void)_applicationsInstalled:(id)a3
+- (void)_applicationsInstalled:(id)installed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D10440]];
+  userInfo = [installed userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D10440]];
 
   if ([v5 containsObject:*MEMORY[0x277D09BD0]])
   {
@@ -59,10 +59,10 @@
   }
 }
 
-- (void)_applicationsUninstalled:(id)a3
+- (void)_applicationsUninstalled:(id)uninstalled
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D10450]];
+  userInfo = [uninstalled userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D10450]];
 
   if ([v5 containsObject:*MEMORY[0x277D09BD0]])
   {
@@ -73,25 +73,25 @@
 - (void)_updateApplicationInstalled
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(FCAppInstallationObserver *)self fitnessAppInstalled];
-  v4 = [(FCCAppInstallationUtility *)self->_appInstallationUtility fitnessAppInstalled];
-  if (v3 != v4)
+  fitnessAppInstalled = [(FCAppInstallationObserver *)self fitnessAppInstalled];
+  fitnessAppInstalled2 = [(FCCAppInstallationUtility *)self->_appInstallationUtility fitnessAppInstalled];
+  if (fitnessAppInstalled != fitnessAppInstalled2)
   {
-    v5 = v4;
-    [(FCAppInstallationObserver *)self _setAppInstalled:v4];
+    v5 = fitnessAppInstalled2;
+    [(FCAppInstallationObserver *)self _setAppInstalled:fitnessAppInstalled2];
     _HKInitializeLogging();
     v6 = *MEMORY[0x277CCC290];
     if (os_log_type_enabled(*MEMORY[0x277CCC290], OS_LOG_TYPE_DEFAULT))
     {
       v9[0] = 67240448;
-      v9[1] = v3;
+      v9[1] = fitnessAppInstalled;
       v10 = 1026;
       v11 = v5;
       _os_log_impl(&dword_24B55B000, v6, OS_LOG_TYPE_DEFAULT, "Fitness app installed state changed: %{public}d -> %{public}d", v9, 0xEu);
     }
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:@"FCFitnessInstallStateChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"FCFitnessInstallStateChangedNotification" object:0];
   }
 
   v8 = *MEMORY[0x277D85DE8];

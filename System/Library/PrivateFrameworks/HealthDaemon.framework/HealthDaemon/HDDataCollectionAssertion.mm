@@ -1,30 +1,30 @@
 @interface HDDataCollectionAssertion
 - (id)description;
-- (void)setObserverState:(id)a3;
+- (void)setObserverState:(id)state;
 @end
 
 @implementation HDDataCollectionAssertion
 
-- (void)setObserverState:(id)a3
+- (void)setObserverState:(id)state
 {
   v22 = *MEMORY[0x277D85DE8];
-  v15 = a3;
+  stateCopy = state;
   os_unfair_lock_lock(&self->_lock);
-  if ([v15 isEqual:self->_observerState])
+  if ([stateCopy isEqual:self->_observerState])
   {
     os_unfair_lock_unlock(&self->_lock);
   }
 
   else
   {
-    v4 = [v15 copy];
+    v4 = [stateCopy copy];
     observerState = self->_observerState;
     self->_observerState = v4;
 
     os_unfair_lock_unlock(&self->_lock);
     WeakRetained = objc_loadWeakRetained(&self->_dataCollectionManager);
-    v7 = self;
-    v8 = v15;
+    selfCopy = self;
+    v8 = stateCopy;
     if (WeakRetained)
     {
       _HKInitializeLogging();
@@ -34,7 +34,7 @@
         *buf = 138543874;
         *&buf[4] = WeakRetained;
         *&buf[12] = 2114;
-        *&buf[14] = v7;
+        *&buf[14] = selfCopy;
         *&buf[22] = 2114;
         v17 = v8;
         _os_log_impl(&dword_228986000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Data collection observer %{public}@ changed to state %{public}@", buf, 0x20u);
@@ -42,8 +42,8 @@
 
       if (!v8)
       {
-        v14 = [MEMORY[0x277CCA890] currentHandler];
-        [v14 handleFailureInMethod:sel__dataCollectionObserver_didChangeState_ object:WeakRetained file:@"HDDataCollectionManager.m" lineNumber:400 description:{@"Invalid parameter not satisfying: %@", @"state != nil"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:sel__dataCollectionObserver_didChangeState_ object:WeakRetained file:@"HDDataCollectionManager.m" lineNumber:400 description:{@"Invalid parameter not satisfying: %@", @"state != nil"}];
       }
 
       v10 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:WeakRetained activityName:@"ObserverDidChangeState"];
@@ -53,7 +53,7 @@
       *&buf[16] = __66__HDDataCollectionManager__dataCollectionObserver_didChangeState___block_invoke;
       v17 = &unk_278616D68;
       v18 = WeakRetained;
-      v19 = v7;
+      v19 = selfCopy;
       v20 = v8;
       v21 = v10;
       v12 = v10;

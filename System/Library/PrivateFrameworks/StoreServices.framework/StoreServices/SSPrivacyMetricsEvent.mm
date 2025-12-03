@@ -2,9 +2,9 @@
 - (BOOL)acknowledged;
 - (BOOL)displayed;
 - (SSPrivacyMetricsEvent)init;
-- (void)setAcknowledged:(BOOL)a3;
-- (void)setAcknowledgmentIdentifier:(id)a3;
-- (void)setDisplayed:(BOOL)a3;
+- (void)setAcknowledged:(BOOL)acknowledged;
+- (void)setAcknowledgmentIdentifier:(id)identifier;
+- (void)setDisplayed:(BOOL)displayed;
 @end
 
 @implementation SSPrivacyMetricsEvent
@@ -34,47 +34,47 @@
 - (BOOL)displayed
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"displayed"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setAcknowledged:(BOOL)a3
+- (void)setAcknowledged:(BOOL)acknowledged
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:acknowledged];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"acknowledged"];
 }
 
-- (void)setAcknowledgmentIdentifier:(id)a3
+- (void)setAcknowledgmentIdentifier:(id)identifier
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v4 = +[SSPrivacyController storePrivacyIdentifiers];
-  if ([v4 containsObject:v9])
+  if ([v4 containsObject:identifierCopy])
   {
 
 LABEL_4:
     v7 = @"Store";
-    v8 = self;
+    selfCopy2 = self;
     goto LABEL_6;
   }
 
   v5 = +[SSPrivacyController appStorePrivacyIdentifiers];
-  v6 = [v5 containsObject:v9];
+  v6 = [v5 containsObject:identifierCopy];
 
   if (v6)
   {
     goto LABEL_4;
   }
 
-  v8 = self;
-  v7 = v9;
+  selfCopy2 = self;
+  v7 = identifierCopy;
 LABEL_6:
-  [(SSMetricsMutableEvent *)v8 setProperty:v7 forBodyKey:@"acknowledgmentGroup"];
+  [(SSMetricsMutableEvent *)selfCopy2 setProperty:v7 forBodyKey:@"acknowledgmentGroup"];
 }
 
-- (void)setDisplayed:(BOOL)a3
+- (void)setDisplayed:(BOOL)displayed
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:displayed];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"displayed"];
 }
 

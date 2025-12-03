@@ -1,24 +1,24 @@
 @interface CloudDeviceLibraryItemController
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSelected;
-- (_TtC14MobileSafariUI32CloudDeviceLibraryItemController)initWithConfiguration:(id)a3;
+- (_TtC14MobileSafariUI32CloudDeviceLibraryItemController)initWithConfiguration:(id)configuration;
 - (int64_t)hash;
 - (void)didSelectItem;
-- (void)updateListContentConfiguration:(id)a3;
+- (void)updateListContentConfiguration:(id)configuration;
 @end
 
 @implementation CloudDeviceLibraryItemController
 
-- (void)updateListContentConfiguration:(id)a3
+- (void)updateListContentConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  sub_215A1FE2C(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_215A1FE2C(configurationCopy);
 }
 
 - (BOOL)isSelected
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_215A1FFF8();
 
   return v3 & 1;
@@ -26,15 +26,15 @@
 
 - (void)didSelectItem
 {
-  v2 = self;
+  selfCopy = self;
   sub_215A2024C();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_215A70B70();
     swift_unknownObjectRelease();
@@ -43,7 +43,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_215A2035C(v8);
@@ -54,13 +54,13 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_215A20688();
 
   return v3;
 }
 
-- (_TtC14MobileSafariUI32CloudDeviceLibraryItemController)initWithConfiguration:(id)a3
+- (_TtC14MobileSafariUI32CloudDeviceLibraryItemController)initWithConfiguration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

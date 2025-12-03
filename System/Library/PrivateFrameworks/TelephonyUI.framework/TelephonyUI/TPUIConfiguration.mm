@@ -384,7 +384,7 @@ LABEL_53:
   block[1] = 3221225472;
   block[2] = __43__TPUIConfiguration_inCallBottomBarSpacing__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (inCallBottomBarSpacing_onceToken != -1)
   {
     dispatch_once(&inCallBottomBarSpacing_onceToken, block);
@@ -416,7 +416,7 @@ unint64_t __43__TPUIConfiguration_inCallBottomBarSpacing__block_invoke(uint64_t 
   block[1] = 3221225472;
   block[2] = __40__TPUIConfiguration_pipStatusBarPadding__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (pipStatusBarPadding_onceToken != -1)
   {
     dispatch_once(&pipStatusBarPadding_onceToken, block);

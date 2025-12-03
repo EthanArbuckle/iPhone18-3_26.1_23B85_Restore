@@ -1,44 +1,44 @@
 @interface CRLGPUDataBuffer
-+ (id)newDataBufferWithVertexAttributes:(id)a3 meshSize:(CGSize)a4;
-+ (id)newDataBufferWithVertexAttributes:(id)a3 meshSize:(CGSize)a4 device:(id)a5;
-+ (id)newDataBufferWithVertexAttributes:(id)a3 quadParticleCount:(unint64_t)a4;
-+ (id)newDataBufferWithVertexAttributes:(id)a3 quadParticleCount:(unint64_t)a4 device:(id)a5;
-+ (id)newDataBufferWithVertexAttributes:(id)a3 vertexCount:(unint64_t)a4 indexElementCount:(unint64_t)a5;
-+ (id)newDataBufferWithVertexAttributes:(id)a3 vertexCount:(unint64_t)a4 indexElementCount:(unint64_t)a5 device:(id)a6;
-+ (id)newDataBufferWithVertexRect:(CGRect)a3 textureRect:(CGRect)a4 meshSize:(CGSize)a5 textureFlipped:(BOOL)a6 includeCenterAttribute:(BOOL)a7;
-+ (id)newDataBufferWithVertexRect:(CGRect)a3 textureRect:(CGRect)a4 meshSize:(CGSize)a5 textureFlipped:(BOOL)a6 includeCenterAttribute:(BOOL)a7 addTransparentBorder:(BOOL)a8;
-+ (id)newDataBufferWithVertexRect:(CGRect)a3 textureRect:(CGRect)a4 meshSize:(CGSize)a5 textureFlipped:(BOOL)a6 includeCenterAttribute:(BOOL)a7 addTransparentBorder:(BOOL)a8 device:(id)a9;
-+ (void)p_addTransparentBorderInsetToTextureRect:(CGRect *)a3 vertexRect:(CGRect *)a4;
-- ($94F468A8D4C62B317260615823C2B210)GLPoint2DForAttribute:(id)a3 atIndex:(unint64_t)a4;
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)GLPoint4DForAttribute:(id)a3 atIndex:(unint64_t)a4;
-- ($E2C29196C7A5C696474C6955C5A9CE06)GLPoint3DForAttribute:(id)a3 atIndex:(unint64_t)a4;
-- (BOOL)p_setAttributeUpdateData:(id *)a3 fromAttribute:(id)a4;
-- (CRLGPUDataBuffer)initWithVertexAttributes:(id)a3 meshSize:(CGSize)a4 bufferCount:(unint64_t)a5;
-- (CRLGPUDataBuffer)initWithVertexAttributes:(id)a3 vertexCount:(unint64_t)a4 indexElementCount:(unint64_t)a5 bufferCount:(unint64_t)a6;
-- (CRLGPUDataBuffer)initWithVertexRect:(CGRect)a3 textureRect:(CGRect)a4 meshSize:(CGSize)a5 textureFlipped:(BOOL)a6 includeCenterAttribute:(BOOL)a7 addTransparentBorder:(BOOL)a8;
++ (id)newDataBufferWithVertexAttributes:(id)attributes meshSize:(CGSize)size;
++ (id)newDataBufferWithVertexAttributes:(id)attributes meshSize:(CGSize)size device:(id)device;
++ (id)newDataBufferWithVertexAttributes:(id)attributes quadParticleCount:(unint64_t)count;
++ (id)newDataBufferWithVertexAttributes:(id)attributes quadParticleCount:(unint64_t)count device:(id)device;
++ (id)newDataBufferWithVertexAttributes:(id)attributes vertexCount:(unint64_t)count indexElementCount:(unint64_t)elementCount;
++ (id)newDataBufferWithVertexAttributes:(id)attributes vertexCount:(unint64_t)count indexElementCount:(unint64_t)elementCount device:(id)device;
++ (id)newDataBufferWithVertexRect:(CGRect)rect textureRect:(CGRect)textureRect meshSize:(CGSize)size textureFlipped:(BOOL)flipped includeCenterAttribute:(BOOL)attribute;
++ (id)newDataBufferWithVertexRect:(CGRect)rect textureRect:(CGRect)textureRect meshSize:(CGSize)size textureFlipped:(BOOL)flipped includeCenterAttribute:(BOOL)attribute addTransparentBorder:(BOOL)border;
++ (id)newDataBufferWithVertexRect:(CGRect)rect textureRect:(CGRect)textureRect meshSize:(CGSize)size textureFlipped:(BOOL)flipped includeCenterAttribute:(BOOL)attribute addTransparentBorder:(BOOL)border device:(id)device;
++ (void)p_addTransparentBorderInsetToTextureRect:(CGRect *)rect vertexRect:(CGRect *)vertexRect;
+- ($94F468A8D4C62B317260615823C2B210)GLPoint2DForAttribute:(id)attribute atIndex:(unint64_t)index;
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)GLPoint4DForAttribute:(id)attribute atIndex:(unint64_t)index;
+- ($E2C29196C7A5C696474C6955C5A9CE06)GLPoint3DForAttribute:(id)attribute atIndex:(unint64_t)index;
+- (BOOL)p_setAttributeUpdateData:(id *)data fromAttribute:(id)attribute;
+- (CRLGPUDataBuffer)initWithVertexAttributes:(id)attributes meshSize:(CGSize)size bufferCount:(unint64_t)count;
+- (CRLGPUDataBuffer)initWithVertexAttributes:(id)attributes vertexCount:(unint64_t)count indexElementCount:(unint64_t)elementCount bufferCount:(unint64_t)bufferCount;
+- (CRLGPUDataBuffer)initWithVertexRect:(CGRect)rect textureRect:(CGRect)textureRect meshSize:(CGSize)size textureFlipped:(BOOL)flipped includeCenterAttribute:(BOOL)attribute addTransparentBorder:(BOOL)border;
 - (NSString)description;
-- (float)GLfloatForAttribute:(id)a3 atIndex:(unint64_t)a4;
-- (id)vertexAttributeNamed:(id)a3;
+- (float)GLfloatForAttribute:(id)attribute atIndex:(unint64_t)index;
+- (id)vertexAttributeNamed:(id)named;
 - (void)dealloc;
 - (void)disableGLElementArrayBuffer;
-- (void)disableWithDevice:(id)a3;
-- (void)drawWithEncoder:(id)a3 atIndex:(unint64_t)a4;
-- (void)drawWithEncoder:(id)a3 atIndex:(unint64_t)a4 advanceDynamicBuffer:(BOOL)a5;
-- (void)drawWithEncoder:(id)a3 atIndex:(unint64_t)a4 range:(_NSRange)a5 advanceDynamicBuffer:(BOOL)a6;
+- (void)disableWithDevice:(id)device;
+- (void)drawWithEncoder:(id)encoder atIndex:(unint64_t)index;
+- (void)drawWithEncoder:(id)encoder atIndex:(unint64_t)index advanceDynamicBuffer:(BOOL)buffer;
+- (void)drawWithEncoder:(id)encoder atIndex:(unint64_t)index range:(_NSRange)range advanceDynamicBuffer:(BOOL)buffer;
 - (void)enableDataBuffer;
 - (void)enableGLElementArrayBuffer;
-- (void)encodeWithEncoder:(id)a3 atIndex:(unint64_t)a4;
+- (void)encodeWithEncoder:(id)encoder atIndex:(unint64_t)index;
 - (void)p_setupElementArrayBufferIfNecessary;
 - (void)p_setupGLElementArrayBufferIfNecessary;
-- (void)setDataForAttribute:(id)a3 atIndex:(unint64_t)a4 fromAttribute:(id)a5 dataBuffer:(id)a6 index:(unint64_t)a7;
-- (void)setGLPoint2D:(id)a3 forAttribute:(id)a4 atIndex:(unint64_t)a5;
-- (void)setGLPoint3D:(id)a3 forAttribute:(id)a4 atIndex:(unint64_t)a5;
-- (void)setGLPoint4D:(id)a3 forAttribute:(id)a4 atIndex:(unint64_t)a5;
-- (void)setGLfloat:(float)a3 forAttribute:(id)a4 atIndex:(unint64_t)a5;
+- (void)setDataForAttribute:(id)attribute atIndex:(unint64_t)index fromAttribute:(id)fromAttribute dataBuffer:(id)buffer index:(unint64_t)a7;
+- (void)setGLPoint2D:(id)d forAttribute:(id)attribute atIndex:(unint64_t)index;
+- (void)setGLPoint3D:(id)d forAttribute:(id)attribute atIndex:(unint64_t)index;
+- (void)setGLPoint4D:(id)d forAttribute:(id)attribute atIndex:(unint64_t)index;
+- (void)setGLfloat:(float)lfloat forAttribute:(id)attribute atIndex:(unint64_t)index;
 - (void)teardown;
-- (void)updateDataBufferAttributes:(id)a3 withBlock:(id)a4;
-- (void)updateDataBufferAttributesWithBlock:(id)a3;
-- (void)updateMetalDataBufferAttributes:(id)a3 withBlock:(id)a4;
+- (void)updateDataBufferAttributes:(id)attributes withBlock:(id)block;
+- (void)updateDataBufferAttributesWithBlock:(id)block;
+- (void)updateMetalDataBufferAttributes:(id)attributes withBlock:(id)block;
 @end
 
 @implementation CRLGPUDataBuffer
@@ -221,11 +221,11 @@ LABEL_34:
   }
 }
 
-- (CRLGPUDataBuffer)initWithVertexAttributes:(id)a3 vertexCount:(unint64_t)a4 indexElementCount:(unint64_t)a5 bufferCount:(unint64_t)a6
+- (CRLGPUDataBuffer)initWithVertexAttributes:(id)attributes vertexCount:(unint64_t)count indexElementCount:(unint64_t)elementCount bufferCount:(unint64_t)bufferCount
 {
-  v10 = a3;
-  v54 = a4;
-  if (a4 < 0xFFFF)
+  attributesCopy = attributes;
+  countCopy = count;
+  if (count < 0xFFFF)
   {
     v65.receiver = self;
     v65.super_class = CRLGPUDataBuffer;
@@ -233,14 +233,14 @@ LABEL_34:
     v16 = v15;
     if (v15)
     {
-      count = a5;
+      count = elementCount;
       [(CRLGPUDataBuffer *)v15 setDrawMode:5];
       [(CRLGPUDataBuffer *)v16 setMetalDrawMode:4];
-      v17 = [[NSMutableArray alloc] initWithArray:v10];
+      v17 = [[NSMutableArray alloc] initWithArray:attributesCopy];
       vertexAttributes = v16->_vertexAttributes;
       v16->_vertexAttributes = v17;
 
-      v16->_vertexCount = a4;
+      v16->_vertexCount = count;
       v19 = objc_alloc_init(NSMutableArray);
       arrayBuffers = v16->_arrayBuffers;
       v16->_arrayBuffers = v19;
@@ -250,8 +250,8 @@ LABEL_34:
       v16->_attributeToArrayBuffersDictionary = v21;
 
       v16->_isDynamicallyBuffered = 1;
-      v52 = v10;
-      v53 = [NSMutableArray arrayWithArray:v10];
+      v52 = attributesCopy;
+      v53 = [NSMutableArray arrayWithArray:attributesCopy];
       if ([v53 count])
       {
         *&v23 = 67109378;
@@ -280,8 +280,8 @@ LABEL_34:
                 }
 
                 v31 = *(*(&v61 + 1) + 8 * i);
-                v32 = [v31 bufferUsage];
-                if (v32 == [v24 bufferUsage])
+                bufferUsage = [v31 bufferUsage];
+                if (bufferUsage == [v24 bufferUsage])
                 {
                   [v25 addObject:v31];
                 }
@@ -296,14 +296,14 @@ LABEL_34:
           if ([v24 bufferUsage] == 35044)
           {
             v16->_isDynamicallyBuffered = 0;
-            a6 = 1;
+            bufferCount = 1;
           }
 
-          v33 = [[CRLGLDataArrayBuffer alloc] initWithVertexAttributes:v25 vertexCount:v54 bufferCount:a6];
+          v33 = [[CRLGLDataArrayBuffer alloc] initWithVertexAttributes:v25 vertexCount:countCopy bufferCount:bufferCount];
           v56 = v25;
           if (v33)
           {
-            v55 = a6;
+            bufferCountCopy = bufferCount;
             v59 = 0u;
             v60 = 0u;
             v57 = 0u;
@@ -326,8 +326,8 @@ LABEL_34:
                   v39 = *(*(&v57 + 1) + 8 * j);
                   [v39 setDataBuffer:v16];
                   v40 = v16->_attributeToArrayBuffersDictionary;
-                  v41 = [v39 name];
-                  [(NSMutableDictionary *)v40 setObject:v33 forKey:v41];
+                  name = [v39 name];
+                  [(NSMutableDictionary *)v40 setObject:v33 forKey:name];
                 }
 
                 v36 = [v34 countByEnumeratingWithState:&v57 objects:v66 count:16];
@@ -337,7 +337,7 @@ LABEL_34:
             }
 
             [(NSMutableArray *)v16->_arrayBuffers addObject:v33];
-            a6 = v55;
+            bufferCount = bufferCountCopy;
           }
 
           else
@@ -396,11 +396,11 @@ LABEL_34:
         v16->_gLElementData = malloc_type_calloc(count, 2uLL, 0x1000040BDFB0063uLL);
       }
 
-      v10 = v52;
+      attributesCopy = v52;
     }
 
     self = v16;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -431,17 +431,17 @@ LABEL_34:
     v13 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLGLDataBuffer.m"];
     [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:988 isFatal:0 description:"Too many vertices!"];
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (CRLGPUDataBuffer)initWithVertexAttributes:(id)a3 meshSize:(CGSize)a4 bufferCount:(unint64_t)a5
+- (CRLGPUDataBuffer)initWithVertexAttributes:(id)attributes meshSize:(CGSize)size bufferCount:(unint64_t)count
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
+  height = size.height;
+  width = size.width;
+  attributesCopy = attributes;
   if (width <= 1.0 || height <= 1.0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -471,86 +471,86 @@ LABEL_34:
     [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:1045 isFatal:0 description:"Mesh size is not at least 2x2!"];
   }
 
-  v14 = [(CRLGPUDataBuffer *)self initWithVertexAttributes:v9 vertexCount:(width * height) indexElementCount:((width + width) * (height + -1.0)) bufferCount:a5];
+  v14 = [(CRLGPUDataBuffer *)self initWithVertexAttributes:attributesCopy vertexCount:(width * height) indexElementCount:((width + width) * (height + -1.0)) bufferCount:count];
   v14->_gLElementMeshSize.width = width;
   v14->_gLElementMeshSize.height = height;
 
   return v14;
 }
 
-+ (id)newDataBufferWithVertexAttributes:(id)a3 vertexCount:(unint64_t)a4 indexElementCount:(unint64_t)a5
++ (id)newDataBufferWithVertexAttributes:(id)attributes vertexCount:(unint64_t)count indexElementCount:(unint64_t)elementCount
 {
-  v8 = a3;
-  v9 = [[a1 alloc] initWithVertexAttributes:v8 vertexCount:a4 indexElementCount:a5 bufferCount:2];
+  attributesCopy = attributes;
+  v9 = [[self alloc] initWithVertexAttributes:attributesCopy vertexCount:count indexElementCount:elementCount bufferCount:2];
 
   return v9;
 }
 
-+ (id)newDataBufferWithVertexAttributes:(id)a3 meshSize:(CGSize)a4
++ (id)newDataBufferWithVertexAttributes:(id)attributes meshSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithVertexAttributes:v7 meshSize:2 bufferCount:{width, height}];
+  height = size.height;
+  width = size.width;
+  attributesCopy = attributes;
+  v8 = [[self alloc] initWithVertexAttributes:attributesCopy meshSize:2 bufferCount:{width, height}];
 
   return v8;
 }
 
-+ (id)newDataBufferWithVertexAttributes:(id)a3 quadParticleCount:(unint64_t)a4
++ (id)newDataBufferWithVertexAttributes:(id)attributes quadParticleCount:(unint64_t)count
 {
-  v6 = 4 * a4;
-  v7 = 6 * a4;
-  v8 = a3;
-  v9 = [[a1 alloc] initWithVertexAttributes:v8 vertexCount:v6 indexElementCount:v7 bufferCount:2];
+  v6 = 4 * count;
+  v7 = 6 * count;
+  attributesCopy = attributes;
+  v9 = [[self alloc] initWithVertexAttributes:attributesCopy vertexCount:v6 indexElementCount:v7 bufferCount:2];
 
   if (v9)
   {
-    v9[10] = a4;
+    v9[10] = count;
   }
 
   return v9;
 }
 
-+ (id)newDataBufferWithVertexRect:(CGRect)a3 textureRect:(CGRect)a4 meshSize:(CGSize)a5 textureFlipped:(BOOL)a6 includeCenterAttribute:(BOOL)a7
++ (id)newDataBufferWithVertexRect:(CGRect)rect textureRect:(CGRect)textureRect meshSize:(CGSize)size textureFlipped:(BOOL)flipped includeCenterAttribute:(BOOL)attribute
 {
-  height = a5.height;
-  width = a5.width;
-  v17 = a4.size.width;
-  v18 = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3.size.height;
-  v12 = a3.size.width;
-  v13 = a3.origin.y;
-  v14 = a3.origin.x;
-  v15 = [a1 alloc];
+  height = size.height;
+  width = size.width;
+  v17 = textureRect.size.width;
+  v18 = textureRect.size.height;
+  y = textureRect.origin.y;
+  x = textureRect.origin.x;
+  v11 = rect.size.height;
+  v12 = rect.size.width;
+  v13 = rect.origin.y;
+  v14 = rect.origin.x;
+  v15 = [self alloc];
 
   return [v15 initWithVertexRect:*&width textureRect:*&height meshSize:1 textureFlipped:v14 includeCenterAttribute:v13 addTransparentBorder:{v12, v11, x, y, v17, v18}];
 }
 
-+ (id)newDataBufferWithVertexRect:(CGRect)a3 textureRect:(CGRect)a4 meshSize:(CGSize)a5 textureFlipped:(BOOL)a6 includeCenterAttribute:(BOOL)a7 addTransparentBorder:(BOOL)a8
++ (id)newDataBufferWithVertexRect:(CGRect)rect textureRect:(CGRect)textureRect meshSize:(CGSize)size textureFlipped:(BOOL)flipped includeCenterAttribute:(BOOL)attribute addTransparentBorder:(BOOL)border
 {
-  v8 = a6;
-  height = a5.height;
-  width = a5.width;
-  v19 = a4.size.width;
-  v20 = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3.size.height;
-  v14 = a3.size.width;
-  v15 = a3.origin.y;
-  v16 = a3.origin.x;
-  v17 = [a1 alloc];
+  flippedCopy = flipped;
+  height = size.height;
+  width = size.width;
+  v19 = textureRect.size.width;
+  v20 = textureRect.size.height;
+  y = textureRect.origin.y;
+  x = textureRect.origin.x;
+  v13 = rect.size.height;
+  v14 = rect.size.width;
+  v15 = rect.origin.y;
+  v16 = rect.origin.x;
+  v17 = [self alloc];
 
-  return [v17 initWithVertexRect:*&width textureRect:*&height meshSize:v8 textureFlipped:v16 includeCenterAttribute:v15 addTransparentBorder:{v14, v13, x, y, v19, v20}];
+  return [v17 initWithVertexRect:*&width textureRect:*&height meshSize:flippedCopy textureFlipped:v16 includeCenterAttribute:v15 addTransparentBorder:{v14, v13, x, y, v19, v20}];
 }
 
-+ (void)p_addTransparentBorderInsetToTextureRect:(CGRect *)a3 vertexRect:(CGRect *)a4
++ (void)p_addTransparentBorderInsetToTextureRect:(CGRect *)rect vertexRect:(CGRect *)vertexRect
 {
-  if (a3)
+  if (rect)
   {
-    if (a4)
+    if (vertexRect)
     {
       goto LABEL_22;
     }
@@ -584,7 +584,7 @@ LABEL_34:
   v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLGLDataBuffer.m"];
   [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:1097 isFatal:0 description:"invalid nil value for '%{public}s'", "textureRect"];
 
-  if (!a4)
+  if (!vertexRect)
   {
 LABEL_13:
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -615,21 +615,21 @@ LABEL_13:
   }
 
 LABEL_22:
-  width = a3->size.width;
+  width = rect->size.width;
   if (width != 0.0)
   {
-    height = a3->size.height;
+    height = rect->size.height;
     if (height != 0.0)
     {
-      v14 = a4->size.width;
+      v14 = vertexRect->size.width;
       if (v14 != 0.0)
       {
-        v15 = a4->size.height;
+        v15 = vertexRect->size.height;
         if (v15 != 0.0)
         {
           v16 = v14 / width;
-          x = a3->origin.x;
-          y = a3->origin.y;
+          x = rect->origin.x;
+          y = rect->origin.y;
           v19 = v15 / height;
           if (CGRectGetMinX(*(&width - 2)) == 0.0)
           {
@@ -641,7 +641,7 @@ LABEL_22:
             v20 = 0.0;
           }
 
-          if (CGRectGetMaxX(*a3) == 1.0)
+          if (CGRectGetMaxX(*rect) == 1.0)
           {
             v21 = 1.0;
           }
@@ -651,7 +651,7 @@ LABEL_22:
             v21 = 0.0;
           }
 
-          if (CGRectGetMinY(*a3) == 0.0)
+          if (CGRectGetMinY(*rect) == 0.0)
           {
             v22 = -1.0;
           }
@@ -661,45 +661,45 @@ LABEL_22:
             v22 = 0.0;
           }
 
-          CGRectGetMaxY(*a3);
-          v23 = v20 / v16 + CGRectGetMinX(*a3);
-          v24 = v22 / v19 + CGRectGetMinY(*a3);
-          v25 = v21 / v16 + CGRectGetMaxX(*a3);
-          CGRectGetMaxY(*a3);
+          CGRectGetMaxY(*rect);
+          v23 = v20 / v16 + CGRectGetMinX(*rect);
+          v24 = v22 / v19 + CGRectGetMinY(*rect);
+          v25 = v21 / v16 + CGRectGetMaxX(*rect);
+          CGRectGetMaxY(*rect);
           v26 = sub_10011EC88(v23, v24, v25);
           v28 = v27;
           v30 = v29;
           v32 = v31;
-          v33 = CGRectGetMinX(*a4) + v20;
-          v34 = CGRectGetMinY(*a4) + v22;
-          v35 = CGRectGetMaxX(*a4) + v21;
-          CGRectGetMaxY(*a4);
+          v33 = CGRectGetMinX(*vertexRect) + v20;
+          v34 = CGRectGetMinY(*vertexRect) + v22;
+          v35 = CGRectGetMaxX(*vertexRect) + v21;
+          CGRectGetMaxY(*vertexRect);
           v36 = sub_10011EC88(v33, v34, v35);
-          a3->origin.x = v26;
-          a3->origin.y = v28;
-          a3->size.width = v30;
-          a3->size.height = v32;
-          a4->origin.x = v36;
-          a4->origin.y = v37;
-          a4->size.width = v38;
-          a4->size.height = v39;
+          rect->origin.x = v26;
+          rect->origin.y = v28;
+          rect->size.width = v30;
+          rect->size.height = v32;
+          vertexRect->origin.x = v36;
+          vertexRect->origin.y = v37;
+          vertexRect->size.width = v38;
+          vertexRect->size.height = v39;
         }
       }
     }
   }
 }
 
-- (CRLGPUDataBuffer)initWithVertexRect:(CGRect)a3 textureRect:(CGRect)a4 meshSize:(CGSize)a5 textureFlipped:(BOOL)a6 includeCenterAttribute:(BOOL)a7 addTransparentBorder:(BOOL)a8
+- (CRLGPUDataBuffer)initWithVertexRect:(CGRect)rect textureRect:(CGRect)textureRect meshSize:(CGSize)size textureFlipped:(BOOL)flipped includeCenterAttribute:(BOOL)attribute addTransparentBorder:(BOOL)border
 {
-  v8 = a6;
-  height_low = LODWORD(a5.height);
-  width_low = LODWORD(a5.width);
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v40 = a3;
-  v39 = a4;
+  flippedCopy = flipped;
+  height_low = LODWORD(size.height);
+  width_low = LODWORD(size.width);
+  height = textureRect.size.height;
+  width = textureRect.size.width;
+  y = textureRect.origin.y;
+  x = textureRect.origin.x;
+  rectCopy = rect;
+  textureRectCopy = textureRect;
   v44.origin.x = CGRectZero.origin.x;
   v44.origin.y = CGRectZero.origin.y;
   v44.size.width = CGRectZero.size.width;
@@ -709,9 +709,9 @@ LABEL_22:
   v43.size.width = width;
   v43.size.height = height;
   v15 = CGRectEqualToRect(v43, v44);
-  if (v8)
+  if (flippedCopy)
   {
-    [objc_opt_class() p_addTransparentBorderInsetToTextureRect:&v39 vertexRect:&v40];
+    [objc_opt_class() p_addTransparentBorderInsetToTextureRect:&textureRectCopy vertexRect:&rectCopy];
   }
 
   v16 = objc_alloc_init(NSMutableArray);
@@ -755,7 +755,7 @@ LABEL_22:
 
     v21 = 0;
     v22 = 0;
-    v23 = sub_100120414(v40.origin.x, v40.origin.y, v40.size.width, v40.size.height);
+    v23 = sub_100120414(rectCopy.origin.x, rectCopy.origin.y, rectCopy.size.width, rectCopy.size.height);
     v37 = (v42 + -1.0);
     v25 = v24;
     v26 = (v41 + -1.0);
@@ -765,13 +765,13 @@ LABEL_22:
       v28 = 0;
       do
       {
-        v29 = sub_100121734(v28 / v26, v22 / v27, v40.origin.x, v40.origin.y, v40.size.width);
+        v29 = sub_100121734(v28 / v26, v22 / v27, rectCopy.origin.x, rectCopy.origin.y, rectCopy.size.width);
         *&v29 = v29;
         *&v30 = v30;
         [(CRLGPUDataBuffer *)v20 setGLPoint2D:v17 forAttribute:v21 atIndex:v29, v30];
         if (!v15)
         {
-          v33 = sub_100121734(v28 / v26, v22 / v27, v39.origin.x, v39.origin.y, v39.size.width);
+          v33 = sub_100121734(v28 / v26, v22 / v27, textureRectCopy.origin.x, textureRectCopy.origin.y, textureRectCopy.size.width);
           *&v33 = v33;
           *&v34 = v34;
           if (width_low)
@@ -882,26 +882,26 @@ LABEL_22:
   }
 }
 
-+ (id)newDataBufferWithVertexAttributes:(id)a3 vertexCount:(unint64_t)a4 indexElementCount:(unint64_t)a5 device:(id)a6
++ (id)newDataBufferWithVertexAttributes:(id)attributes vertexCount:(unint64_t)count indexElementCount:(unint64_t)elementCount device:(id)device
 {
-  v11 = a6;
-  v12 = a3;
-  v13 = [[a1 alloc] initWithVertexAttributes:v12 vertexCount:a4 indexElementCount:a5 bufferCount:3];
+  deviceCopy = device;
+  attributesCopy = attributes;
+  v13 = [[self alloc] initWithVertexAttributes:attributesCopy vertexCount:count indexElementCount:elementCount bufferCount:3];
 
   if (v13)
   {
-    objc_storeStrong(v13 + 12, a6);
+    objc_storeStrong(v13 + 12, device);
   }
 
   return v13;
 }
 
-+ (id)newDataBufferWithVertexAttributes:(id)a3 meshSize:(CGSize)a4 device:(id)a5
++ (id)newDataBufferWithVertexAttributes:(id)attributes meshSize:(CGSize)size device:(id)device
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  attributesCopy = attributes;
+  deviceCopy = device;
   if (width <= 1.0 || height <= 1.0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -931,7 +931,7 @@ LABEL_22:
     [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:1261 isFatal:0 description:"Mesh size is not at least 2x2!"];
   }
 
-  v14 = [CRLGPUDataBuffer newDataBufferWithVertexAttributes:v8 vertexCount:(width * height) indexElementCount:((width + width) * (height + -1.0)) device:v9];
+  v14 = [CRLGPUDataBuffer newDataBufferWithVertexAttributes:attributesCopy vertexCount:(width * height) indexElementCount:((width + width) * (height + -1.0)) device:deviceCopy];
   v15 = v14;
   if (v14)
   {
@@ -942,37 +942,37 @@ LABEL_22:
   return v15;
 }
 
-+ (id)newDataBufferWithVertexAttributes:(id)a3 quadParticleCount:(unint64_t)a4 device:(id)a5
++ (id)newDataBufferWithVertexAttributes:(id)attributes quadParticleCount:(unint64_t)count device:(id)device
 {
-  result = [CRLGPUDataBuffer newDataBufferWithVertexAttributes:a3 vertexCount:4 * a4 indexElementCount:6 * a4 device:a5];
+  result = [CRLGPUDataBuffer newDataBufferWithVertexAttributes:attributes vertexCount:4 * count indexElementCount:6 * count device:device];
   if (result)
   {
-    *(result + 10) = a4;
+    *(result + 10) = count;
   }
 
   return result;
 }
 
-+ (id)newDataBufferWithVertexRect:(CGRect)a3 textureRect:(CGRect)a4 meshSize:(CGSize)a5 textureFlipped:(BOOL)a6 includeCenterAttribute:(BOOL)a7 addTransparentBorder:(BOOL)a8 device:(id)a9
++ (id)newDataBufferWithVertexRect:(CGRect)rect textureRect:(CGRect)textureRect meshSize:(CGSize)size textureFlipped:(BOOL)flipped includeCenterAttribute:(BOOL)attribute addTransparentBorder:(BOOL)border device:(id)device
 {
-  v9 = a7;
-  v10 = a6;
-  height = a5.height;
-  width = a5.width;
-  v24 = a4.size.width;
-  v25 = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a3.size.height;
-  v16 = a3.size.width;
-  v17 = a3.origin.y;
-  v18 = a3.origin.x;
-  v20 = a7;
-  v21 = [[a1 alloc] initWithVertexRect:*&width textureRect:*&height meshSize:v10 textureFlipped:v18 includeCenterAttribute:v17 addTransparentBorder:{v16, v15, x, y, v24, v25, v26, v27}];
+  attributeCopy = attribute;
+  flippedCopy = flipped;
+  height = size.height;
+  width = size.width;
+  v24 = textureRect.size.width;
+  v25 = textureRect.size.height;
+  y = textureRect.origin.y;
+  x = textureRect.origin.x;
+  v15 = rect.size.height;
+  v16 = rect.size.width;
+  v17 = rect.origin.y;
+  v18 = rect.origin.x;
+  attributeCopy2 = attribute;
+  v21 = [[self alloc] initWithVertexRect:*&width textureRect:*&height meshSize:flippedCopy textureFlipped:v18 includeCenterAttribute:v17 addTransparentBorder:{v16, v15, x, y, v24, v25, v26, v27}];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(v21 + 12, v9);
+    objc_storeStrong(v21 + 12, attributeCopy);
   }
 
   return v22;
@@ -1080,10 +1080,10 @@ LABEL_8:
 
   if (self->_conformsToMetalProtocol)
   {
-    v13 = [(CRLGPUDataBuffer *)self metalDrawMode];
-    if (v13 < 5)
+    metalDrawMode = [(CRLGPUDataBuffer *)self metalDrawMode];
+    if (metalDrawMode < 5)
     {
-      v14 = &off_101842770[v13];
+      v14 = &off_101842770[metalDrawMode];
 LABEL_14:
       v16 = *v14;
       goto LABEL_17;
@@ -1094,10 +1094,10 @@ LABEL_14:
 
   else
   {
-    v15 = [(CRLGPUDataBuffer *)self drawMode];
-    if (v15 < 7)
+    drawMode = [(CRLGPUDataBuffer *)self drawMode];
+    if (drawMode < 7)
     {
-      v14 = &off_101842798[v15];
+      v14 = &off_101842798[drawMode];
       goto LABEL_14;
     }
 
@@ -1136,15 +1136,15 @@ LABEL_17:
   }
 }
 
-- (void)disableWithDevice:(id)a3
+- (void)disableWithDevice:(id)device
 {
   metalElementData = self->_metalElementData;
   self->_metalElementData = 0;
 }
 
-- (void)encodeWithEncoder:(id)a3 atIndex:(unint64_t)a4
+- (void)encodeWithEncoder:(id)encoder atIndex:(unint64_t)index
 {
-  v6 = a3;
+  encoderCopy = encoder;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1158,7 +1158,7 @@ LABEL_17:
     do
     {
       v11 = 0;
-      v12 = a4;
+      indexCopy = index;
       do
       {
         if (*v14 != v10)
@@ -1166,10 +1166,10 @@ LABEL_17:
           objc_enumerationMutation(v7);
         }
 
-        a4 = v12 + 1;
-        [*(*(&v13 + 1) + 8 * v11) encodeArrayBufferWithEncoder:v6 atIndex:{v12, v13}];
+        index = indexCopy + 1;
+        [*(*(&v13 + 1) + 8 * v11) encodeArrayBufferWithEncoder:encoderCopy atIndex:{indexCopy, v13}];
         v11 = v11 + 1;
-        ++v12;
+        ++indexCopy;
       }
 
       while (v9 != v11);
@@ -1180,12 +1180,12 @@ LABEL_17:
   }
 }
 
-- (void)drawWithEncoder:(id)a3 atIndex:(unint64_t)a4 range:(_NSRange)a5 advanceDynamicBuffer:(BOOL)a6
+- (void)drawWithEncoder:(id)encoder atIndex:(unint64_t)index range:(_NSRange)range advanceDynamicBuffer:(BOOL)buffer
 {
-  v6 = a6;
-  length = a5.length;
-  location = a5.location;
-  v11 = a3;
+  bufferCopy = buffer;
+  length = range.length;
+  location = range.location;
+  encoderCopy = encoder;
   [(CRLGPUDataBuffer *)self enableDataBuffer];
   if (!self->_conformsToMetalProtocol)
   {
@@ -1216,13 +1216,13 @@ LABEL_17:
     [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:1502 isFatal:0 description:"Can only be called on a buffer that conforms to metal protocol!"];
   }
 
-  [(CRLGPUDataBuffer *)self encodeWithEncoder:v11 atIndex:a4];
+  [(CRLGPUDataBuffer *)self encodeWithEncoder:encoderCopy atIndex:index];
   if (self->_gLElementDataBufferWasSetup && self->_elementArrayCount)
   {
     height = self->_gLElementMeshSize.height;
     if (self->_gLElementMeshSize.width == CGSizeZero.width && height == CGSizeZero.height)
     {
-      [v11 drawIndexedPrimitives:-[CRLGPUDataBuffer metalDrawMode](self indexCount:"metalDrawMode" indexType:height) indexBuffer:length indexBufferOffset:{0, self->_metalElementData, 2 * location}];
+      [encoderCopy drawIndexedPrimitives:-[CRLGPUDataBuffer metalDrawMode](self indexCount:"metalDrawMode" indexType:height) indexBuffer:length indexBufferOffset:{0, self->_metalElementData, 2 * location}];
     }
 
     else if (height + -1.0 > 0.0)
@@ -1231,7 +1231,7 @@ LABEL_17:
       v18 = 1;
       do
       {
-        [v11 drawIndexedPrimitives:-[CRLGPUDataBuffer metalDrawMode](self indexCount:"metalDrawMode") indexType:(self->_gLElementMeshSize.width + self->_gLElementMeshSize.width) indexBuffer:0 indexBufferOffset:{self->_metalElementData, (self->_gLElementMeshSize.width * v17 + self->_gLElementMeshSize.width * v17)}];
+        [encoderCopy drawIndexedPrimitives:-[CRLGPUDataBuffer metalDrawMode](self indexCount:"metalDrawMode") indexType:(self->_gLElementMeshSize.width + self->_gLElementMeshSize.width) indexBuffer:0 indexBufferOffset:{self->_metalElementData, (self->_gLElementMeshSize.width * v17 + self->_gLElementMeshSize.width * v17)}];
         v19 = v18++;
         v17 += 2;
       }
@@ -1242,10 +1242,10 @@ LABEL_17:
 
   else
   {
-    [v11 drawPrimitives:-[CRLGPUDataBuffer metalDrawMode](self vertexStart:"metalDrawMode") vertexCount:{location, length}];
+    [encoderCopy drawPrimitives:-[CRLGPUDataBuffer metalDrawMode](self vertexStart:"metalDrawMode") vertexCount:{location, length}];
   }
 
-  if ([(CRLGPUDataBuffer *)self isDynamicallyBuffered]&& v6)
+  if ([(CRLGPUDataBuffer *)self isDynamicallyBuffered]&& bufferCopy)
   {
     arrayBuffers = self->_arrayBuffers;
     self->_currentBufferIndex = (self->_currentBufferIndex + 1) % 3;
@@ -1283,7 +1283,7 @@ LABEL_17:
   }
 }
 
-- (void)drawWithEncoder:(id)a3 atIndex:(unint64_t)a4
+- (void)drawWithEncoder:(id)encoder atIndex:(unint64_t)index
 {
   elementArrayCount = self->_elementArrayCount;
   if (!elementArrayCount)
@@ -1291,10 +1291,10 @@ LABEL_17:
     elementArrayCount = self->_vertexCount;
   }
 
-  [(CRLGPUDataBuffer *)self drawWithEncoder:a3 atIndex:a4 range:0 advanceDynamicBuffer:elementArrayCount, 1];
+  [(CRLGPUDataBuffer *)self drawWithEncoder:encoder atIndex:index range:0 advanceDynamicBuffer:elementArrayCount, 1];
 }
 
-- (void)drawWithEncoder:(id)a3 atIndex:(unint64_t)a4 advanceDynamicBuffer:(BOOL)a5
+- (void)drawWithEncoder:(id)encoder atIndex:(unint64_t)index advanceDynamicBuffer:(BOOL)buffer
 {
   elementArrayCount = self->_elementArrayCount;
   if (!elementArrayCount)
@@ -1302,32 +1302,32 @@ LABEL_17:
     elementArrayCount = self->_vertexCount;
   }
 
-  [(CRLGPUDataBuffer *)self drawWithEncoder:a3 atIndex:a4 range:0 advanceDynamicBuffer:elementArrayCount, a5];
+  [(CRLGPUDataBuffer *)self drawWithEncoder:encoder atIndex:index range:0 advanceDynamicBuffer:elementArrayCount, buffer];
 }
 
-- (float)GLfloatForAttribute:(id)a3 atIndex:(unint64_t)a4
+- (float)GLfloatForAttribute:(id)attribute atIndex:(unint64_t)index
 {
-  v5 = a3;
-  v6 = [v5 dataArrayBuffer];
-  [v6 GLfloatForAttribute:v5 atIndex:a4];
+  attributeCopy = attribute;
+  dataArrayBuffer = [attributeCopy dataArrayBuffer];
+  [dataArrayBuffer GLfloatForAttribute:attributeCopy atIndex:index];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setGLfloat:(float)a3 forAttribute:(id)a4 atIndex:(unint64_t)a5
+- (void)setGLfloat:(float)lfloat forAttribute:(id)attribute atIndex:(unint64_t)index
 {
-  v7 = a4;
-  v9 = [v7 dataArrayBuffer];
-  *&v8 = a3;
-  [v9 setGLfloat:v7 forAttribute:a5 atIndex:v8];
+  attributeCopy = attribute;
+  dataArrayBuffer = [attributeCopy dataArrayBuffer];
+  *&v8 = lfloat;
+  [dataArrayBuffer setGLfloat:attributeCopy forAttribute:index atIndex:v8];
 }
 
-- ($94F468A8D4C62B317260615823C2B210)GLPoint2DForAttribute:(id)a3 atIndex:(unint64_t)a4
+- ($94F468A8D4C62B317260615823C2B210)GLPoint2DForAttribute:(id)attribute atIndex:(unint64_t)index
 {
-  v5 = a3;
-  v6 = [v5 dataArrayBuffer];
-  [v6 GLPoint2DForAttribute:v5 atIndex:a4];
+  attributeCopy = attribute;
+  dataArrayBuffer = [attributeCopy dataArrayBuffer];
+  [dataArrayBuffer GLPoint2DForAttribute:attributeCopy atIndex:index];
   v8 = v7;
   v10 = v9;
 
@@ -1338,22 +1338,22 @@ LABEL_17:
   return result;
 }
 
-- (void)setGLPoint2D:(id)a3 forAttribute:(id)a4 atIndex:(unint64_t)a5
+- (void)setGLPoint2D:(id)d forAttribute:(id)attribute atIndex:(unint64_t)index
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v8 = a4;
-  v11 = [v8 dataArrayBuffer];
+  var1 = d.var1;
+  var0 = d.var0;
+  attributeCopy = attribute;
+  dataArrayBuffer = [attributeCopy dataArrayBuffer];
   *&v9 = var0;
   *&v10 = var1;
-  [v11 setGLPoint2D:v8 forAttribute:a5 atIndex:{v9, v10}];
+  [dataArrayBuffer setGLPoint2D:attributeCopy forAttribute:index atIndex:{v9, v10}];
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)GLPoint3DForAttribute:(id)a3 atIndex:(unint64_t)a4
+- ($E2C29196C7A5C696474C6955C5A9CE06)GLPoint3DForAttribute:(id)attribute atIndex:(unint64_t)index
 {
-  v5 = a3;
-  v6 = [v5 dataArrayBuffer];
-  [v6 GLPoint3DForAttribute:v5 atIndex:a4];
+  attributeCopy = attribute;
+  dataArrayBuffer = [attributeCopy dataArrayBuffer];
+  [dataArrayBuffer GLPoint3DForAttribute:attributeCopy atIndex:index];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -1367,24 +1367,24 @@ LABEL_17:
   return result;
 }
 
-- (void)setGLPoint3D:(id)a3 forAttribute:(id)a4 atIndex:(unint64_t)a5
+- (void)setGLPoint3D:(id)d forAttribute:(id)attribute atIndex:(unint64_t)index
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v9 = a4;
-  v13 = [v9 dataArrayBuffer];
+  var2 = d.var2;
+  var1 = d.var1;
+  var0 = d.var0;
+  attributeCopy = attribute;
+  dataArrayBuffer = [attributeCopy dataArrayBuffer];
   *&v10 = var0;
   *&v11 = var1;
   *&v12 = var2;
-  [v13 setGLPoint3D:v9 forAttribute:a5 atIndex:{v10, v11, v12}];
+  [dataArrayBuffer setGLPoint3D:attributeCopy forAttribute:index atIndex:{v10, v11, v12}];
 }
 
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)GLPoint4DForAttribute:(id)a3 atIndex:(unint64_t)a4
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)GLPoint4DForAttribute:(id)attribute atIndex:(unint64_t)index
 {
-  v5 = a3;
-  v6 = [v5 dataArrayBuffer];
-  [v6 GLPoint4DForAttribute:v5 atIndex:a4];
+  attributeCopy = attribute;
+  dataArrayBuffer = [attributeCopy dataArrayBuffer];
+  [dataArrayBuffer GLPoint4DForAttribute:attributeCopy atIndex:index];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -1401,57 +1401,57 @@ LABEL_17:
   return result;
 }
 
-- (void)setGLPoint4D:(id)a3 forAttribute:(id)a4 atIndex:(unint64_t)a5
+- (void)setGLPoint4D:(id)d forAttribute:(id)attribute atIndex:(unint64_t)index
 {
-  var3 = a3.var3;
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v10 = a4;
-  v15 = [v10 dataArrayBuffer];
+  var3 = d.var3;
+  var2 = d.var2;
+  var1 = d.var1;
+  var0 = d.var0;
+  attributeCopy = attribute;
+  dataArrayBuffer = [attributeCopy dataArrayBuffer];
   *&v11 = var0;
   *&v12 = var1;
   *&v13 = var2;
   *&v14 = var3;
-  [v15 setGLPoint4D:v10 forAttribute:a5 atIndex:{v11, v12, v13, v14}];
+  [dataArrayBuffer setGLPoint4D:attributeCopy forAttribute:index atIndex:{v11, v12, v13, v14}];
 }
 
-- (void)setDataForAttribute:(id)a3 atIndex:(unint64_t)a4 fromAttribute:(id)a5 dataBuffer:(id)a6 index:(unint64_t)a7
+- (void)setDataForAttribute:(id)attribute atIndex:(unint64_t)index fromAttribute:(id)fromAttribute dataBuffer:(id)buffer index:(unint64_t)a7
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v12 componentCount];
-  if (v15 > 2)
+  attributeCopy = attribute;
+  fromAttributeCopy = fromAttribute;
+  bufferCopy = buffer;
+  componentCount = [attributeCopy componentCount];
+  if (componentCount > 2)
   {
-    if (v15 == 3)
+    if (componentCount == 3)
     {
-      [v14 GLPoint3DForAttribute:v13 atIndex:a7];
-      [(CRLGPUDataBuffer *)self setGLPoint3D:v12 forAttribute:a4 atIndex:?];
+      [bufferCopy GLPoint3DForAttribute:fromAttributeCopy atIndex:a7];
+      [(CRLGPUDataBuffer *)self setGLPoint3D:attributeCopy forAttribute:index atIndex:?];
       goto LABEL_19;
     }
 
-    if (v15 == 4)
+    if (componentCount == 4)
     {
-      [v14 GLPoint4DForAttribute:v13 atIndex:a7];
-      [(CRLGPUDataBuffer *)self setGLPoint4D:v12 forAttribute:a4 atIndex:?];
+      [bufferCopy GLPoint4DForAttribute:fromAttributeCopy atIndex:a7];
+      [(CRLGPUDataBuffer *)self setGLPoint4D:attributeCopy forAttribute:index atIndex:?];
       goto LABEL_19;
     }
   }
 
   else
   {
-    if (v15 == 1)
+    if (componentCount == 1)
     {
-      [v14 GLfloatForAttribute:v13 atIndex:a7];
-      [(CRLGPUDataBuffer *)self setGLfloat:v12 forAttribute:a4 atIndex:?];
+      [bufferCopy GLfloatForAttribute:fromAttributeCopy atIndex:a7];
+      [(CRLGPUDataBuffer *)self setGLfloat:attributeCopy forAttribute:index atIndex:?];
       goto LABEL_19;
     }
 
-    if (v15 == 2)
+    if (componentCount == 2)
     {
-      [v14 GLPoint2DForAttribute:v13 atIndex:a7];
-      [(CRLGPUDataBuffer *)self setGLPoint2D:v12 forAttribute:a4 atIndex:?];
+      [bufferCopy GLPoint2DForAttribute:fromAttributeCopy atIndex:a7];
+      [(CRLGPUDataBuffer *)self setGLPoint2D:attributeCopy forAttribute:index atIndex:?];
       goto LABEL_19;
     }
   }
@@ -1485,15 +1485,15 @@ LABEL_17:
 LABEL_19:
 }
 
-- (id)vertexAttributeNamed:(id)a3
+- (id)vertexAttributeNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CRLGPUDataBuffer *)self vertexAttributes];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  vertexAttributes = [(CRLGPUDataBuffer *)self vertexAttributes];
+  v6 = [vertexAttributes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -1503,12 +1503,12 @@ LABEL_19:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(vertexAttributes);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v4];
+        name = [v9 name];
+        v11 = [name isEqualToString:namedCopy];
 
         if (v11)
         {
@@ -1517,7 +1517,7 @@ LABEL_19:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [vertexAttributes countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -1532,21 +1532,21 @@ LABEL_11:
   return v6;
 }
 
-- (void)updateDataBufferAttributesWithBlock:(id)a3
+- (void)updateDataBufferAttributesWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CRLGPUDataBuffer *)self vertexAttributes];
-  [(CRLGPUDataBuffer *)self updateMetalDataBufferAttributes:v5 withBlock:v4];
+  blockCopy = block;
+  vertexAttributes = [(CRLGPUDataBuffer *)self vertexAttributes];
+  [(CRLGPUDataBuffer *)self updateMetalDataBufferAttributes:vertexAttributes withBlock:blockCopy];
 }
 
-- (void)updateMetalDataBufferAttributes:(id)a3 withBlock:(id)a4
+- (void)updateMetalDataBufferAttributes:(id)attributes withBlock:(id)block
 {
-  v13 = a3;
-  v6 = a4;
-  if (v13 && [v13 count])
+  attributesCopy = attributes;
+  blockCopy = block;
+  if (attributesCopy && [attributesCopy count])
   {
     self->_isUpdatingRawDataBuffer = 1;
-    v7 = [v13 count];
+    v7 = [attributesCopy count];
     v8 = malloc_type_calloc(0x58uLL, v7, 0xBB058E14uLL);
     v9 = v8;
     if (v7)
@@ -1555,7 +1555,7 @@ LABEL_11:
       v11 = v8;
       do
       {
-        v12 = [v13 objectAtIndex:v10];
+        v12 = [attributesCopy objectAtIndex:v10];
         [(CRLGPUDataBuffer *)self p_setAttributeUpdateData:v11 fromAttribute:v12];
 
         ++v10;
@@ -1565,20 +1565,20 @@ LABEL_11:
       while (v7 != v10);
     }
 
-    v6[2](v6, v9, v7);
+    blockCopy[2](blockCopy, v9, v7);
     self->_isUpdatingRawDataBuffer = 0;
     free(v9);
   }
 }
 
-- (void)updateDataBufferAttributes:(id)a3 withBlock:(id)a4
+- (void)updateDataBufferAttributes:(id)attributes withBlock:(id)block
 {
-  v19 = a3;
-  v6 = a4;
-  if (v19 && [v19 count])
+  attributesCopy = attributes;
+  blockCopy = block;
+  if (attributesCopy && [attributesCopy count])
   {
     self->_isUpdatingRawDataBuffer = 1;
-    v7 = [v19 count];
+    v7 = [attributesCopy count];
     v8 = malloc_type_calloc(0x58uLL, v7, 0xCE15204CuLL);
     v9 = v8;
     if (v7)
@@ -1587,7 +1587,7 @@ LABEL_11:
       v11 = v8;
       do
       {
-        v12 = [v19 objectAtIndex:v10];
+        v12 = [attributesCopy objectAtIndex:v10];
         [(CRLGPUDataBuffer *)self p_setAttributeUpdateData:v11 fromAttribute:v12];
 
         ++v10;
@@ -1595,7 +1595,7 @@ LABEL_11:
       }
 
       while (v7 != v10);
-      v6[2](v6, v9, v7);
+      blockCopy[2](blockCopy, v9, v7);
       v13 = 0;
       self->_isUpdatingRawDataBuffer = 0;
       v14 = v9 + 9;
@@ -1605,9 +1605,9 @@ LABEL_11:
         {
           v16 = *(v14 - 1);
           v15 = *v14;
-          v17 = [v19 objectAtIndex:v13];
-          v18 = [v17 dataArrayBuffer];
-          [v18 addIndexRangeNeedsUpdate:{v16, v15}];
+          v17 = [attributesCopy objectAtIndex:v13];
+          dataArrayBuffer = [v17 dataArrayBuffer];
+          [dataArrayBuffer addIndexRangeNeedsUpdate:{v16, v15}];
         }
 
         ++v13;
@@ -1619,7 +1619,7 @@ LABEL_11:
 
     else
     {
-      v6[2](v6, v8, 0);
+      blockCopy[2](blockCopy, v8, 0);
       self->_isUpdatingRawDataBuffer = 0;
     }
 
@@ -1627,31 +1627,31 @@ LABEL_11:
   }
 }
 
-- (BOOL)p_setAttributeUpdateData:(id *)a3 fromAttribute:(id)a4
+- (BOOL)p_setAttributeUpdateData:(id *)data fromAttribute:(id)attribute
 {
-  v6 = a4;
-  v7 = v6;
+  attributeCopy = attribute;
+  v7 = attributeCopy;
   isUpdatingRawDataBuffer = self->_isUpdatingRawDataBuffer;
   if (isUpdatingRawDataBuffer)
   {
-    v9 = [v6 dataArrayBuffer];
-    a3->var3 = [v9 dataPointer];
+    dataArrayBuffer = [attributeCopy dataArrayBuffer];
+    data->var3 = [dataArrayBuffer dataPointer];
 
-    a3->var0 = [v7 dataType];
-    a3->var1 = [v7 componentCount];
-    a3->var2 = [v7 isNormalized];
-    a3->var4 = [v7 bufferOffset];
-    v10 = [v7 dataArrayBuffer];
-    a3->var5 = [v10 dataBufferEntrySize];
+    data->var0 = [v7 dataType];
+    data->var1 = [v7 componentCount];
+    data->var2 = [v7 isNormalized];
+    data->var4 = [v7 bufferOffset];
+    dataArrayBuffer2 = [v7 dataArrayBuffer];
+    data->var5 = [dataArrayBuffer2 dataBufferEntrySize];
 
-    v11 = [v7 dataArrayBuffer];
-    a3->var6 = [v11 vertexCount];
+    dataArrayBuffer3 = [v7 dataArrayBuffer];
+    data->var6 = [dataArrayBuffer3 vertexCount];
 
-    a3->var7 = 1;
-    var6 = a3->var6;
-    a3->var8.location = 0;
-    a3->var8.length = var6;
-    a3->var9 = sub_1001792DC([v7 dataType]);
+    data->var7 = 1;
+    var6 = data->var6;
+    data->var8.location = 0;
+    data->var8.length = var6;
+    data->var9 = sub_1001792DC([v7 dataType]);
   }
 
   else

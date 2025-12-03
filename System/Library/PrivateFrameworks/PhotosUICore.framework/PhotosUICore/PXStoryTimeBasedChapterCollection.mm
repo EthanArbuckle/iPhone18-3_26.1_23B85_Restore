@@ -1,33 +1,33 @@
 @interface PXStoryTimeBasedChapterCollection
-- (BOOL)canApplyEdits:(id)a3 error:(id *)a4;
-- (BOOL)containsChapterBeginningWithAsset:(id)a3;
-- (PXStoryTimeBasedChapterCollection)initWithAssets:(id)a3 keyAsset:(id)a4 configuration:(id)a5;
-- (id)_dateForAsset:(id)a3;
-- (id)_initWithChapters:(id)a3 usesAssetLocalCreationDates:(BOOL)a4;
-- (id)chapterAtIndex:(int64_t)a3;
-- (id)chapterContainingAsset:(id)a3;
-- (id)copyByApplyingEdits:(id)a3;
-- (int64_t)indexOfChapterWithIdentifier:(id)a3;
+- (BOOL)canApplyEdits:(id)edits error:(id *)error;
+- (BOOL)containsChapterBeginningWithAsset:(id)asset;
+- (PXStoryTimeBasedChapterCollection)initWithAssets:(id)assets keyAsset:(id)asset configuration:(id)configuration;
+- (id)_dateForAsset:(id)asset;
+- (id)_initWithChapters:(id)chapters usesAssetLocalCreationDates:(BOOL)dates;
+- (id)chapterAtIndex:(int64_t)index;
+- (id)chapterContainingAsset:(id)asset;
+- (id)copyByApplyingEdits:(id)edits;
+- (int64_t)indexOfChapterWithIdentifier:(id)identifier;
 - (int64_t)numberOfChapters;
-- (void)enumerateChaptersUsingBlock:(id)a3;
+- (void)enumerateChaptersUsingBlock:(id)block;
 @end
 
 @implementation PXStoryTimeBasedChapterCollection
 
-- (id)copyByApplyingEdits:(id)a3
+- (id)copyByApplyingEdits:(id)edits
 {
   v79 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXStoryTimeBasedChapterCollection *)self chapters];
-  v6 = [v5 mutableCopy];
+  editsCopy = edits;
+  chapters = [(PXStoryTimeBasedChapterCollection *)self chapters];
+  v6 = [chapters mutableCopy];
 
-  v52 = self;
-  v56 = [(PXStoryTimeBasedChapterCollection *)self usesAssetLocalCreationDates];
+  selfCopy = self;
+  usesAssetLocalCreationDates = [(PXStoryTimeBasedChapterCollection *)self usesAssetLocalCreationDates];
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  obj = v4;
+  obj = editsCopy;
   v71 = [obj countByEnumeratingWithState:&v74 objects:v78 count:16];
   if (v71)
   {
@@ -52,27 +52,27 @@
         v10 = v6;
         v73 = v10;
         v11 = _Block_copy(aBlock);
-        v12 = [v9 kind];
-        if (v12 > 1)
+        kind = [v9 kind];
+        if (kind > 1)
         {
-          if (v12 == 2)
+          if (kind == 2)
           {
             v66 = v11;
             v21 = v9;
-            v22 = [v21 firstAsset];
-            v23 = _DateForAsset(v22, v56);
+            firstAsset = [v21 firstAsset];
+            v23 = _DateForAsset(firstAsset, usesAssetLocalCreationDates);
             v24 = [_PXStoryTimeBasedChapter alloc];
             v25 = v7;
             v26 = objc_alloc(*(v7 + 2944));
-            v27 = [MEMORY[0x1E695DF00] distantFuture];
+            distantFuture = [MEMORY[0x1E695DF00] distantFuture];
             v69 = v23;
-            v28 = [v26 initWithStartDate:v23 endDate:v27];
-            v65 = v22;
-            v29 = [v22 uuid];
-            v30 = [(_PXStoryTimeBasedChapter *)v24 initWithDateInterval:v28 firstAssetLocalIdentifier:v29];
+            v28 = [v26 initWithStartDate:v23 endDate:distantFuture];
+            v65 = firstAsset;
+            uuid = [firstAsset uuid];
+            v30 = [(_PXStoryTimeBasedChapter *)v24 initWithDateInterval:v28 firstAssetLocalIdentifier:uuid];
 
-            v31 = [v21 chapterConfiguration];
-            v31[2](v31, v30);
+            chapterConfiguration = [v21 chapterConfiguration];
+            chapterConfiguration[2](chapterConfiguration, v30);
 
             v68 = v30;
             v32 = [v10 indexOfObject:v30 inSortedRange:0 options:objc_msgSend(v10 usingComparator:{"count"), 1024, &__block_literal_global_29_19946}];
@@ -83,14 +83,14 @@
               v34 = [v33 copy];
 
               v59 = objc_alloc(*(v25 + 2944));
-              v61 = [v34 dateInterval];
-              v57 = [v61 startDate];
+              dateInterval = [v34 dateInterval];
+              startDate = [dateInterval startDate];
               v35 = [v23 dateByAddingTimeInterval:-1.0];
-              v36 = [v34 dateInterval];
-              v37 = [v36 endDate];
-              [v35 earlierDate:v37];
+              dateInterval2 = [v34 dateInterval];
+              endDate = [dateInterval2 endDate];
+              [v35 earlierDate:endDate];
               v39 = v38 = v32;
-              v40 = [v59 initWithStartDate:v57 endDate:v39];
+              v40 = [v59 initWithStartDate:startDate endDate:v39];
               [v34 setDateInterval:v40];
 
               v32 = v38;
@@ -101,16 +101,16 @@
             {
               v60 = [v10 objectAtIndexedSubscript:v32];
               v54 = objc_alloc(MEMORY[0x1E696AB80]);
-              v62 = [v68 dateInterval];
-              v53 = [v62 startDate];
-              v58 = [v60 dateInterval];
-              [v58 startDate];
+              dateInterval3 = [v68 dateInterval];
+              startDate2 = [dateInterval3 startDate];
+              dateInterval4 = [v60 dateInterval];
+              [dateInterval4 startDate];
               v41 = v64 = v32;
               v42 = [v41 dateByAddingTimeInterval:-1.0];
-              v43 = [v68 dateInterval];
-              v44 = [v43 endDate];
-              v45 = [v42 earlierDate:v44];
-              v46 = [v54 initWithStartDate:v53 endDate:v45];
+              dateInterval5 = [v68 dateInterval];
+              endDate2 = [dateInterval5 endDate];
+              v45 = [v42 earlierDate:endDate2];
+              v46 = [v54 initWithStartDate:startDate2 endDate:v45];
               [v68 setDateInterval:v46];
 
               v32 = v64;
@@ -125,13 +125,13 @@
 
           else
           {
-            if (v12 != 3)
+            if (kind != 3)
             {
               goto LABEL_20;
             }
 
-            v13 = [v9 deletedChapterIdentifier];
-            v14 = v11[2](v11, v13);
+            deletedChapterIdentifier = [v9 deletedChapterIdentifier];
+            v14 = v11[2](v11, deletedChapterIdentifier);
 
             if (v14 != 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -142,11 +142,11 @@
           goto LABEL_19;
         }
 
-        if (v12 == 1)
+        if (kind == 1)
         {
           v15 = v9;
-          v16 = [v15 editedChapterIdentifier];
-          v17 = v11[2](v11, v16);
+          editedChapterIdentifier = [v15 editedChapterIdentifier];
+          v17 = v11[2](v11, editedChapterIdentifier);
 
           v7 = 0x1E696A000;
           if (v17 != 0x7FFFFFFFFFFFFFFFLL)
@@ -155,8 +155,8 @@
             v19 = [v18 copy];
 
             v7 = 0x1E696A000;
-            v20 = [v15 chapterChangeRequest];
-            (v20)[2](v20, v19);
+            chapterChangeRequest = [v15 chapterChangeRequest];
+            (chapterChangeRequest)[2](chapterChangeRequest, v19);
 
             [v10 setObject:v19 atIndexedSubscript:v17];
           }
@@ -166,10 +166,10 @@ LABEL_19:
           goto LABEL_20;
         }
 
-        if (!v12)
+        if (!kind)
         {
-          v50 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v50 handleFailureInMethod:a2 object:v52 file:@"PXStoryTimeBasedChapterCollection.m" lineNumber:218 description:@"Code which should be unreachable has been reached"];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PXStoryTimeBasedChapterCollection.m" lineNumber:218 description:@"Code which should be unreachable has been reached"];
 
           abort();
         }
@@ -187,7 +187,7 @@ LABEL_20:
     while (v47);
   }
 
-  v48 = [[PXStoryTimeBasedChapterCollection alloc] _initWithChapters:v6 usesAssetLocalCreationDates:v56];
+  v48 = [[PXStoryTimeBasedChapterCollection alloc] _initWithChapters:v6 usesAssetLocalCreationDates:usesAssetLocalCreationDates];
   return v48;
 }
 
@@ -214,7 +214,7 @@ uint64_t __57__PXStoryTimeBasedChapterCollection_copyByApplyingEdits___block_inv
   return v4;
 }
 
-- (BOOL)canApplyEdits:(id)a3 error:(id *)a4
+- (BOOL)canApplyEdits:(id)edits error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
   v32 = 0;
@@ -231,7 +231,7 @@ uint64_t __57__PXStoryTimeBasedChapterCollection_copyByApplyingEdits___block_inv
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a3;
+  obj = edits;
   v5 = [obj countByEnumeratingWithState:&v22 objects:v36 count:16];
   if (v5)
   {
@@ -254,21 +254,21 @@ uint64_t __57__PXStoryTimeBasedChapterCollection_copyByApplyingEdits___block_inv
         aBlock[5] = &v26;
         aBlock[6] = &v32;
         v9 = _Block_copy(aBlock);
-        v10 = [v8 kind];
-        if (v10)
+        kind = [v8 kind];
+        if (kind)
         {
-          if (v10 == 1)
+          if (kind == 1)
           {
             v13 = v8;
-            v14 = [v13 editedChapterIdentifier];
-            v9[2](v9, v14);
+            editedChapterIdentifier = [v13 editedChapterIdentifier];
+            v9[2](v9, editedChapterIdentifier);
           }
 
-          else if (v10 == 3)
+          else if (kind == 3)
           {
             v11 = v8;
-            v12 = [v11 deletedChapterIdentifier];
-            v9[2](v9, v12);
+            deletedChapterIdentifier = [v11 deletedChapterIdentifier];
+            v9[2](v9, deletedChapterIdentifier);
           }
         }
 
@@ -288,9 +288,9 @@ uint64_t __57__PXStoryTimeBasedChapterCollection_copyByApplyingEdits___block_inv
     while (v5);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v27[5];
+    *error = v27[5];
   }
 
   v17 = *(v33 + 24);
@@ -323,19 +323,19 @@ void __57__PXStoryTimeBasedChapterCollection_canApplyEdits_error___block_invoke(
   }
 }
 
-- (id)chapterContainingAsset:(id)a3
+- (id)chapterContainingAsset:(id)asset
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = _DateForAsset(v4, [(PXStoryTimeBasedChapterCollection *)self usesAssetLocalCreationDates]);
+  assetCopy = asset;
+  v5 = _DateForAsset(assetCopy, [(PXStoryTimeBasedChapterCollection *)self usesAssetLocalCreationDates]);
   if (v5)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(PXStoryTimeBasedChapterCollection *)self chapters];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    chapters = [(PXStoryTimeBasedChapterCollection *)self chapters];
+    v7 = [chapters countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = *v15;
@@ -345,12 +345,12 @@ void __57__PXStoryTimeBasedChapterCollection_canApplyEdits_error___block_invoke(
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(chapters);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 extendedDateIntervalForComparisonWithAssetDates];
-          v12 = [v11 containsDate:v5];
+          extendedDateIntervalForComparisonWithAssetDates = [v10 extendedDateIntervalForComparisonWithAssetDates];
+          v12 = [extendedDateIntervalForComparisonWithAssetDates containsDate:v5];
 
           if (v12)
           {
@@ -359,7 +359,7 @@ void __57__PXStoryTimeBasedChapterCollection_canApplyEdits_error___block_invoke(
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [chapters countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v7)
         {
           continue;
@@ -380,79 +380,79 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)containsChapterBeginningWithAsset:(id)a3
+- (BOOL)containsChapterBeginningWithAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(PXStoryTimeBasedChapterCollection *)self chapterBeginningAssetLocalIdentifiers];
-  v6 = [v4 uuid];
+  assetCopy = asset;
+  chapterBeginningAssetLocalIdentifiers = [(PXStoryTimeBasedChapterCollection *)self chapterBeginningAssetLocalIdentifiers];
+  uuid = [assetCopy uuid];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(assetCopy) = [chapterBeginningAssetLocalIdentifiers containsObject:uuid];
+  return assetCopy;
 }
 
-- (int64_t)indexOfChapterWithIdentifier:(id)a3
+- (int64_t)indexOfChapterWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PXStoryTimeBasedChapterCollection *)self chapterIndexesByIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  chapterIndexesByIdentifier = [(PXStoryTimeBasedChapterCollection *)self chapterIndexesByIdentifier];
+  v6 = [chapterIndexesByIdentifier objectForKeyedSubscript:identifierCopy];
 
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v7;
+  return integerValue;
 }
 
-- (id)chapterAtIndex:(int64_t)a3
+- (id)chapterAtIndex:(int64_t)index
 {
-  v4 = [(PXStoryTimeBasedChapterCollection *)self chapters];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  chapters = [(PXStoryTimeBasedChapterCollection *)self chapters];
+  v5 = [chapters objectAtIndexedSubscript:index];
 
   return v5;
 }
 
 - (int64_t)numberOfChapters
 {
-  v2 = [(PXStoryTimeBasedChapterCollection *)self chapters];
-  v3 = [v2 count];
+  chapters = [(PXStoryTimeBasedChapterCollection *)self chapters];
+  v3 = [chapters count];
 
   return v3;
 }
 
-- (id)_dateForAsset:(id)a3
+- (id)_dateForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   if ([(PXStoryTimeBasedChapterCollection *)self usesAssetLocalCreationDates])
   {
-    [v4 localCreationDate];
+    [assetCopy localCreationDate];
   }
 
   else
   {
-    [v4 creationDate];
+    [assetCopy creationDate];
   }
   v5 = ;
 
   return v5;
 }
 
-- (void)enumerateChaptersUsingBlock:(id)a3
+- (void)enumerateChaptersUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXStoryTimeBasedChapterCollection *)self chapters];
+  blockCopy = block;
+  chapters = [(PXStoryTimeBasedChapterCollection *)self chapters];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__PXStoryTimeBasedChapterCollection_enumerateChaptersUsingBlock___block_invoke;
   v7[3] = &unk_1E772F3C0;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [chapters enumerateObjectsUsingBlock:v7];
 }
 
 void __65__PXStoryTimeBasedChapterCollection_enumerateChaptersUsingBlock___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -463,15 +463,15 @@ void __65__PXStoryTimeBasedChapterCollection_enumerateChaptersUsingBlock___block
   (*(v5 + 16))(v5, v6, v7, a4);
 }
 
-- (id)_initWithChapters:(id)a3 usesAssetLocalCreationDates:(BOOL)a4
+- (id)_initWithChapters:(id)chapters usesAssetLocalCreationDates:(BOOL)dates
 {
-  v6 = a3;
+  chaptersCopy = chapters;
   v26.receiver = self;
   v26.super_class = PXStoryTimeBasedChapterCollection;
   v7 = [(PXStoryTimeBasedChapterCollection *)&v26 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [chaptersCopy copy];
     chapters = v7->_chapters;
     v7->_chapters = v8;
 
@@ -495,7 +495,7 @@ void __65__PXStoryTimeBasedChapterCollection_enumerateChaptersUsingBlock___block
     chapterBeginningAssetLocalIdentifiers = v7->_chapterBeginningAssetLocalIdentifiers;
     v7->_chapterBeginningAssetLocalIdentifiers = v17;
 
-    v7->_usesAssetLocalCreationDates = a4;
+    v7->_usesAssetLocalCreationDates = dates;
   }
 
   return v7;
@@ -520,20 +520,20 @@ void __83__PXStoryTimeBasedChapterCollection__initWithChapters_usesAssetLocalCre
   }
 }
 
-- (PXStoryTimeBasedChapterCollection)initWithAssets:(id)a3 keyAsset:(id)a4 configuration:(id)a5
+- (PXStoryTimeBasedChapterCollection)initWithAssets:(id)assets keyAsset:(id)asset configuration:(id)configuration
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  assetsCopy = assets;
+  assetCopy = asset;
+  configurationCopy = configuration;
   v10 = objc_alloc_init(_PXStoryTimeBasedChapterCollectionConfiguration);
-  v30 = v9;
-  (*(v9 + 2))(v9, v10);
-  v33 = [(_PXStoryTimeBasedChapterCollectionConfiguration *)v10 chapters];
-  v11 = [v33 sortedArrayUsingComparator:&__block_literal_global_19970];
+  v30 = configurationCopy;
+  (*(configurationCopy + 2))(configurationCopy, v10);
+  chapters = [(_PXStoryTimeBasedChapterCollectionConfiguration *)v10 chapters];
+  v11 = [chapters sortedArrayUsingComparator:&__block_literal_global_19970];
   v28 = v10;
-  v12 = [(_PXStoryTimeBasedChapterCollectionConfiguration *)v10 usesAssetLocalCreationDates];
-  v13 = [v7 count];
+  usesAssetLocalCreationDates = [(_PXStoryTimeBasedChapterCollectionConfiguration *)v10 usesAssetLocalCreationDates];
+  v13 = [assetsCopy count];
   v14 = objc_alloc(MEMORY[0x1E695DF70]);
   if (v13 <= 1)
   {
@@ -546,18 +546,18 @@ void __83__PXStoryTimeBasedChapterCollection__initWithChapters_usesAssetLocalCre
   }
 
   v16 = [v14 initWithCapacity:v15];
-  v17 = [v8 uuid];
-  v31 = v17;
+  uuid = [assetCopy uuid];
+  v31 = uuid;
   if (v13 >= 1)
   {
-    v18 = v17;
+    v18 = uuid;
     for (i = 0; i != v13; ++i)
     {
-      v20 = [v7 objectAtIndexedSubscript:i];
-      v21 = _DateForAsset(v20, v12);
-      v22 = [v20 uuid];
-      v23 = v22;
-      if (v21 && v22 && ([v22 isEqualToString:v18] & 1) == 0)
+      v20 = [assetsCopy objectAtIndexedSubscript:i];
+      v21 = _DateForAsset(v20, usesAssetLocalCreationDates);
+      uuid2 = [v20 uuid];
+      v23 = uuid2;
+      if (v21 && uuid2 && ([uuid2 isEqualToString:v18] & 1) == 0)
       {
         v24 = [[_PXStoryTimeBasedAssetInfo alloc] initWithDate:v21 uuid:v23];
         [v16 addObject:v24];
@@ -569,14 +569,14 @@ void __83__PXStoryTimeBasedChapterCollection__initWithChapters_usesAssetLocalCre
 
   [v16 sortUsingComparator:&__block_literal_global_5];
   memset(v34, 0, sizeof(v34));
-  obj = v33;
+  obj = chapters;
   if ([obj countByEnumeratingWithState:v34 objects:v35 count:16])
   {
     [**(&v34[0] + 1) extendedDateIntervalForComparisonWithAssetDates];
-    v25 = [objc_claimAutoreleasedReturnValue() startDate];
+    startDate = [objc_claimAutoreleasedReturnValue() startDate];
     [v16 count];
     v16;
-    v25;
+    startDate;
     PXFirstIndexInSortedRangePassingTest();
   }
 

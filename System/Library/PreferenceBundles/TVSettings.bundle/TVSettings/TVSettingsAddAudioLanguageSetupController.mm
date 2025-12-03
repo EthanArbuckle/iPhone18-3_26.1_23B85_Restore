@@ -8,8 +8,8 @@
 {
   v6 = objc_alloc_init(PSSpecifier);
   v3 = [TVSettingsAddAudioLanguageController alloc];
-  v4 = [(TVSettingsAddLanguageSetupController *)self topLevelController];
-  v5 = [(TVSettingsAddAudioLanguageController *)v3 initWithTopLevelController:v4];
+  topLevelController = [(TVSettingsAddLanguageSetupController *)self topLevelController];
+  v5 = [(TVSettingsAddAudioLanguageController *)v3 initWithTopLevelController:topLevelController];
 
   [(TVSettingsAddAudioLanguageController *)v5 setRootController:self];
   [(TVSettingsAddAudioLanguageController *)v5 setSpecifier:v6];

@@ -1,22 +1,22 @@
 @interface SMFenceInfo
-- (SMFenceInfo)initWithDate:(id)a3 fenceRadius:(double)a4;
+- (SMFenceInfo)initWithDate:(id)date fenceRadius:(double)radius;
 @end
 
 @implementation SMFenceInfo
 
-- (SMFenceInfo)initWithDate:(id)a3 fenceRadius:(double)a4
+- (SMFenceInfo)initWithDate:(id)date fenceRadius:(double)radius
 {
-  v6 = a3;
+  dateCopy = date;
   v11.receiver = self;
   v11.super_class = SMFenceInfo;
   v7 = [(SMFenceInfo *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dateCopy copy];
     date = v7->_date;
     v7->_date = v8;
 
-    v7->_fenceRadius = a4;
+    v7->_fenceRadius = radius;
   }
 
   return v7;

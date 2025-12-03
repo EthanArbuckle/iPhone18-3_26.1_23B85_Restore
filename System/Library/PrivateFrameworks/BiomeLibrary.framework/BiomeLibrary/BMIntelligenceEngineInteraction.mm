@@ -1,18 +1,18 @@
 @interface BMIntelligenceEngineInteraction
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMIntelligenceEngineInteraction)initWithAbsoluteTimestamp:(id)a3 transcriptStatementId:(id)a4 appIntentInvocationUUID:(id)a5 sirikitIntentItemId:(id)a6 trigger:(int)a7 tupleInteraction:(id)a8 candidateInteractions:(id)a9;
-- (BMIntelligenceEngineInteraction)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMIntelligenceEngineInteraction)initWithAbsoluteTimestamp:(id)timestamp transcriptStatementId:(id)id appIntentInvocationUUID:(id)d sirikitIntentItemId:(id)itemId trigger:(int)trigger tupleInteraction:(id)interaction candidateInteractions:(id)interactions;
+- (BMIntelligenceEngineInteraction)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSString)description;
 - (NSUUID)appIntentInvocationUUID;
 - (id)_candidateInteractionsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMIntelligenceEngineInteraction
@@ -41,25 +41,25 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMIntelligenceEngineInteraction *)self absoluteTimestamp];
-    v7 = [v5 absoluteTimestamp];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    absoluteTimestamp = [(BMIntelligenceEngineInteraction *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v8 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v9 = [(BMIntelligenceEngineInteraction *)self absoluteTimestamp];
-      v10 = [v5 absoluteTimestamp];
-      v11 = [v9 isEqual:v10];
+      absoluteTimestamp3 = [(BMIntelligenceEngineInteraction *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v11 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v11)
       {
@@ -67,18 +67,18 @@
       }
     }
 
-    v13 = [(BMIntelligenceEngineInteraction *)self transcriptStatementId];
-    v14 = [v5 transcriptStatementId];
-    v15 = v14;
-    if (v13 == v14)
+    transcriptStatementId = [(BMIntelligenceEngineInteraction *)self transcriptStatementId];
+    transcriptStatementId2 = [v5 transcriptStatementId];
+    v15 = transcriptStatementId2;
+    if (transcriptStatementId == transcriptStatementId2)
     {
     }
 
     else
     {
-      v16 = [(BMIntelligenceEngineInteraction *)self transcriptStatementId];
-      v17 = [v5 transcriptStatementId];
-      v18 = [v16 isEqual:v17];
+      transcriptStatementId3 = [(BMIntelligenceEngineInteraction *)self transcriptStatementId];
+      transcriptStatementId4 = [v5 transcriptStatementId];
+      v18 = [transcriptStatementId3 isEqual:transcriptStatementId4];
 
       if (!v18)
       {
@@ -86,18 +86,18 @@
       }
     }
 
-    v19 = [(BMIntelligenceEngineInteraction *)self appIntentInvocationUUID];
-    v20 = [v5 appIntentInvocationUUID];
-    v21 = v20;
-    if (v19 == v20)
+    appIntentInvocationUUID = [(BMIntelligenceEngineInteraction *)self appIntentInvocationUUID];
+    appIntentInvocationUUID2 = [v5 appIntentInvocationUUID];
+    v21 = appIntentInvocationUUID2;
+    if (appIntentInvocationUUID == appIntentInvocationUUID2)
     {
     }
 
     else
     {
-      v22 = [(BMIntelligenceEngineInteraction *)self appIntentInvocationUUID];
-      v23 = [v5 appIntentInvocationUUID];
-      v24 = [v22 isEqual:v23];
+      appIntentInvocationUUID3 = [(BMIntelligenceEngineInteraction *)self appIntentInvocationUUID];
+      appIntentInvocationUUID4 = [v5 appIntentInvocationUUID];
+      v24 = [appIntentInvocationUUID3 isEqual:appIntentInvocationUUID4];
 
       if (!v24)
       {
@@ -105,18 +105,18 @@
       }
     }
 
-    v25 = [(BMIntelligenceEngineInteraction *)self sirikitIntentItemId];
-    v26 = [v5 sirikitIntentItemId];
-    v27 = v26;
-    if (v25 == v26)
+    sirikitIntentItemId = [(BMIntelligenceEngineInteraction *)self sirikitIntentItemId];
+    sirikitIntentItemId2 = [v5 sirikitIntentItemId];
+    v27 = sirikitIntentItemId2;
+    if (sirikitIntentItemId == sirikitIntentItemId2)
     {
     }
 
     else
     {
-      v28 = [(BMIntelligenceEngineInteraction *)self sirikitIntentItemId];
-      v29 = [v5 sirikitIntentItemId];
-      v30 = [v28 isEqual:v29];
+      sirikitIntentItemId3 = [(BMIntelligenceEngineInteraction *)self sirikitIntentItemId];
+      sirikitIntentItemId4 = [v5 sirikitIntentItemId];
+      v30 = [sirikitIntentItemId3 isEqual:sirikitIntentItemId4];
 
       if (!v30)
       {
@@ -124,21 +124,21 @@
       }
     }
 
-    v31 = [(BMIntelligenceEngineInteraction *)self trigger];
-    if (v31 == [v5 trigger])
+    trigger = [(BMIntelligenceEngineInteraction *)self trigger];
+    if (trigger == [v5 trigger])
     {
-      v32 = [(BMIntelligenceEngineInteraction *)self tupleInteraction];
-      v33 = [v5 tupleInteraction];
-      v34 = v33;
-      if (v32 == v33)
+      tupleInteraction = [(BMIntelligenceEngineInteraction *)self tupleInteraction];
+      tupleInteraction2 = [v5 tupleInteraction];
+      v34 = tupleInteraction2;
+      if (tupleInteraction == tupleInteraction2)
       {
       }
 
       else
       {
-        v35 = [(BMIntelligenceEngineInteraction *)self tupleInteraction];
-        v36 = [v5 tupleInteraction];
-        v37 = [v35 isEqual:v36];
+        tupleInteraction3 = [(BMIntelligenceEngineInteraction *)self tupleInteraction];
+        tupleInteraction4 = [v5 tupleInteraction];
+        v37 = [tupleInteraction3 isEqual:tupleInteraction4];
 
         if (!v37)
         {
@@ -146,18 +146,18 @@
         }
       }
 
-      v39 = [(BMIntelligenceEngineInteraction *)self candidateInteractions];
-      v40 = [v5 candidateInteractions];
-      if (v39 == v40)
+      candidateInteractions = [(BMIntelligenceEngineInteraction *)self candidateInteractions];
+      candidateInteractions2 = [v5 candidateInteractions];
+      if (candidateInteractions == candidateInteractions2)
       {
         v12 = 1;
       }
 
       else
       {
-        v41 = [(BMIntelligenceEngineInteraction *)self candidateInteractions];
-        v42 = [v5 candidateInteractions];
-        v12 = [v41 isEqual:v42];
+        candidateInteractions3 = [(BMIntelligenceEngineInteraction *)self candidateInteractions];
+        candidateInteractions4 = [v5 candidateInteractions];
+        v12 = [candidateInteractions3 isEqual:candidateInteractions4];
       }
 
       goto LABEL_23;
@@ -212,12 +212,12 @@ LABEL_24:
 - (id)jsonDictionary
 {
   v32[7] = *MEMORY[0x1E69E9840];
-  v3 = [(BMIntelligenceEngineInteraction *)self absoluteTimestamp];
-  if (v3)
+  absoluteTimestamp = [(BMIntelligenceEngineInteraction *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMIntelligenceEngineInteraction *)self absoluteTimestamp];
-    [v5 timeIntervalSinceReferenceDate];
+    absoluteTimestamp2 = [(BMIntelligenceEngineInteraction *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSinceReferenceDate];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -226,83 +226,83 @@ LABEL_24:
     v6 = 0;
   }
 
-  v7 = [(BMIntelligenceEngineInteraction *)self transcriptStatementId];
-  v8 = [v7 jsonDictionary];
+  transcriptStatementId = [(BMIntelligenceEngineInteraction *)self transcriptStatementId];
+  jsonDictionary = [transcriptStatementId jsonDictionary];
 
-  v9 = [(BMIntelligenceEngineInteraction *)self appIntentInvocationUUID];
-  v30 = [v9 UUIDString];
+  appIntentInvocationUUID = [(BMIntelligenceEngineInteraction *)self appIntentInvocationUUID];
+  uUIDString = [appIntentInvocationUUID UUIDString];
 
-  v10 = [(BMIntelligenceEngineInteraction *)self sirikitIntentItemId];
+  sirikitIntentItemId = [(BMIntelligenceEngineInteraction *)self sirikitIntentItemId];
   v11 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMIntelligenceEngineInteraction trigger](self, "trigger")}];
-  v12 = [(BMIntelligenceEngineInteraction *)self tupleInteraction];
-  v13 = [v12 jsonDictionary];
+  tupleInteraction = [(BMIntelligenceEngineInteraction *)self tupleInteraction];
+  jsonDictionary2 = [tupleInteraction jsonDictionary];
 
-  v14 = [(BMIntelligenceEngineInteraction *)self _candidateInteractionsJSONArray];
+  _candidateInteractionsJSONArray = [(BMIntelligenceEngineInteraction *)self _candidateInteractionsJSONArray];
   v31[0] = @"absoluteTimestamp";
-  v15 = v6;
+  null = v6;
   if (!v6)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v15;
-  v32[0] = v15;
+  v28 = null;
+  v32[0] = null;
   v31[1] = @"transcriptStatementId";
-  v16 = v8;
-  if (!v8)
+  null2 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v16;
-  v32[1] = v16;
+  v27 = null2;
+  v32[1] = null2;
   v31[2] = @"appIntentInvocationUUID";
-  v17 = v30;
-  if (!v30)
+  null3 = uUIDString;
+  if (!uUIDString)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[2] = v17;
+  v32[2] = null3;
   v31[3] = @"sirikitIntentItemId";
-  v18 = v10;
-  if (!v10)
+  null4 = sirikitIntentItemId;
+  if (!sirikitIntentItemId)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v17;
+  v26 = null3;
   v29 = v6;
-  v32[3] = v18;
+  v32[3] = null4;
   v31[4] = @"trigger";
-  v19 = v11;
+  null5 = v11;
   if (!v11)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v8;
-  v32[4] = v19;
+  v20 = jsonDictionary;
+  v32[4] = null5;
   v31[5] = @"tupleInteraction";
-  v21 = v13;
-  if (!v13)
+  null6 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[5] = v21;
+  v32[5] = null6;
   v31[6] = @"candidateInteractions";
-  v22 = v14;
-  if (!v14)
+  null7 = _candidateInteractionsJSONArray;
+  if (!_candidateInteractionsJSONArray)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[6] = v22;
+  v32[6] = null7;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:7];
-  if (v14)
+  if (_candidateInteractionsJSONArray)
   {
-    if (v13)
+    if (jsonDictionary2)
     {
       goto LABEL_20;
     }
@@ -317,7 +317,7 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (!v13)
+  if (!jsonDictionary2)
   {
     goto LABEL_30;
   }
@@ -331,11 +331,11 @@ LABEL_20:
 LABEL_31:
 
 LABEL_21:
-  if (!v10)
+  if (!sirikitIntentItemId)
   {
   }
 
-  if (v30)
+  if (uUIDString)
   {
     if (v20)
     {
@@ -379,8 +379,8 @@ LABEL_26:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMIntelligenceEngineInteraction *)self candidateInteractions];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  candidateInteractions = [(BMIntelligenceEngineInteraction *)self candidateInteractions];
+  v5 = [candidateInteractions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -391,14 +391,14 @@ LABEL_26:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(candidateInteractions);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [candidateInteractions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -409,11 +409,11 @@ LABEL_26:
   return v3;
 }
 
-- (BMIntelligenceEngineInteraction)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMIntelligenceEngineInteraction)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v161[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"absoluteTimestamp"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
   v7 = 0x1E695D000uLL;
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -444,27 +444,27 @@ LABEL_26:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v8 = 0;
           goto LABEL_95;
         }
 
         v99 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v100 = v5;
+        v100 = dictionaryCopy;
         v101 = *MEMORY[0x1E698F240];
         v160 = *MEMORY[0x1E696A578];
         v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (as time internal since 2001 (CFAbsoluteTime)), NSString (ISO8601 format), or NSDate", objc_opt_class(), @"absoluteTimestamp"];
         v161[0] = v25;
         v102 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v161 forKeys:&v160 count:1];
         v103 = v101;
-        v5 = v100;
+        dictionaryCopy = v100;
         v132 = v102;
         v104 = [v99 initWithDomain:v103 code:2 userInfo:?];
         v8 = 0;
-        v105 = a4;
-        a4 = 0;
-        *v105 = v104;
+        errorCopy = error;
+        error = 0;
+        *errorCopy = v104;
         goto LABEL_93;
       }
 
@@ -480,7 +480,7 @@ LABEL_26:
   }
 
 LABEL_9:
-  v16 = [v5 objectForKeyedSubscript:@"transcriptStatementId"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"transcriptStatementId"];
   if (!v16 || (v17 = *(v7 + 4016), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v132 = 0;
@@ -496,24 +496,24 @@ LABEL_9:
     v26 = v140;
     if (v26)
     {
-      if (a4)
+      if (error)
       {
         v26 = v26;
-        *a4 = v26;
+        *error = v26;
       }
 
-      a4 = 0;
+      error = 0;
       goto LABEL_93;
     }
 
 LABEL_12:
-    v18 = [v5 objectForKeyedSubscript:@"appIntentInvocationUUID"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"appIntentInvocationUUID"];
     if (v18 && (v19 = *(v7 + 4016), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
 LABEL_92:
 
@@ -526,7 +526,7 @@ LABEL_92:
         v36 = v16;
         v37 = *MEMORY[0x1E698F240];
         v154 = *MEMORY[0x1E696A578];
-        v38 = a4;
+        errorCopy2 = error;
         v39 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"appIntentInvocationUUID"];
         v155 = v39;
         v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v155 forKeys:&v154 count:1];
@@ -534,8 +534,8 @@ LABEL_92:
         v16 = v36;
         v8 = v35;
         v42 = v40;
-        a4 = 0;
-        *v38 = [v34 initWithDomain:v41 code:2 userInfo:v40];
+        error = 0;
+        *errorCopy2 = [v34 initWithDomain:v41 code:2 userInfo:v40];
         goto LABEL_90;
       }
 
@@ -544,7 +544,7 @@ LABEL_92:
       v28 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v27];
       if (!v28)
       {
-        if (!a4)
+        if (!error)
         {
           v39 = v27;
           v8 = v127;
@@ -552,7 +552,7 @@ LABEL_92:
         }
 
         v94 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v113 = a4;
+        errorCopy3 = error;
         v95 = v16;
         v96 = *MEMORY[0x1E698F240];
         v156 = *MEMORY[0x1E696A578];
@@ -561,9 +561,9 @@ LABEL_92:
         v97 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v157 forKeys:&v156 count:1];
         v98 = v96;
         v16 = v95;
-        *v113 = [v94 initWithDomain:v98 code:2 userInfo:v97];
+        *errorCopy3 = [v94 initWithDomain:v98 code:2 userInfo:v97];
 
-        a4 = 0;
+        error = 0;
         v39 = v27;
         v8 = v127;
 LABEL_90:
@@ -584,13 +584,13 @@ LABEL_91:
       v126 = 0;
     }
 
-    v20 = [v5 objectForKeyedSubscript:@"sirikitIntentItemId"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"sirikitIntentItemId"];
     if (v20 && (v21 = *(v7 + 4016), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v125 = 0;
           v39 = v126;
@@ -602,7 +602,7 @@ LABEL_91:
         v44 = v16;
         v45 = *MEMORY[0x1E698F240];
         v152 = *MEMORY[0x1E696A578];
-        v46 = a4;
+        errorCopy4 = error;
         v123 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"sirikitIntentItemId"];
         v153 = v123;
         v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v153 forKeys:&v152 count:1];
@@ -610,8 +610,8 @@ LABEL_91:
         v16 = v44;
         v8 = v129;
         v125 = 0;
-        a4 = 0;
-        *v46 = [v43 initWithDomain:v48 code:2 userInfo:v47];
+        error = 0;
+        *errorCopy4 = [v43 initWithDomain:v48 code:2 userInfo:v47];
         v22 = v47;
 LABEL_88:
         v39 = v126;
@@ -629,7 +629,7 @@ LABEL_89:
       v125 = 0;
     }
 
-    v22 = [v5 objectForKeyedSubscript:@"trigger"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"trigger"];
     v121 = v6;
     v122 = v18;
     if (v22 && (v23 = *(v7 + 4016), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -637,7 +637,7 @@ LABEL_89:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v24 = a4;
+        errorCopy8 = error;
         v123 = v22;
       }
 
@@ -646,7 +646,7 @@ LABEL_89:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v123 = 0;
             goto LABEL_88;
@@ -656,7 +656,7 @@ LABEL_89:
           v119 = v16;
           v106 = *MEMORY[0x1E698F240];
           v150 = *MEMORY[0x1E696A578];
-          v107 = a4;
+          errorCopy6 = error;
           v55 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"trigger"];
           v151 = v55;
           v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v151 forKeys:&v150 count:1];
@@ -664,13 +664,13 @@ LABEL_89:
           v16 = v119;
           v109 = [v124 initWithDomain:v108 code:2 userInfo:v56];
           v123 = 0;
-          a4 = 0;
-          *v107 = v109;
+          error = 0;
+          *errorCopy6 = v109;
           v18 = v122;
           goto LABEL_86;
         }
 
-        v24 = a4;
+        errorCopy8 = error;
         v123 = [MEMORY[0x1E696AD98] numberWithInt:BMIntelligenceEngineInteractionDonationTriggerFromString(v22)];
       }
 
@@ -679,11 +679,11 @@ LABEL_89:
 
     else
     {
-      v24 = a4;
+      errorCopy8 = error;
       v123 = 0;
     }
 
-    v49 = [v5 objectForKeyedSubscript:@"tupleInteraction"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"tupleInteraction"];
     v120 = v22;
     if (!v49 || (v50 = *(v7 + 4016), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -691,14 +691,14 @@ LABEL_89:
       v117 = v16;
       v115 = 0;
 LABEL_47:
-      v51 = [v5 objectForKeyedSubscript:@"candidateInteractions"];
-      v52 = [*(v7 + 4016) null];
-      v53 = [v51 isEqual:v52];
+      v51 = [dictionaryCopy objectForKeyedSubscript:@"candidateInteractions"];
+      null = [*(v7 + 4016) null];
+      v53 = [v51 isEqual:null];
 
       v130 = v8;
       if (v53)
       {
-        v112 = v24;
+        v112 = errorCopy8;
         v114 = v20;
 
         v51 = 0;
@@ -709,7 +709,7 @@ LABEL_60:
 
       if (!v51)
       {
-        v112 = v24;
+        v112 = errorCopy8;
         v114 = v20;
         goto LABEL_60;
       }
@@ -718,7 +718,7 @@ LABEL_60:
       v54 = 0x1E695D000;
       if (objc_opt_isKindOfClass())
       {
-        v112 = v24;
+        v112 = errorCopy8;
         v114 = v20;
 LABEL_61:
         v66 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v51, "count")}];
@@ -735,7 +735,7 @@ LABEL_61:
 
         v68 = v67;
         v69 = *v136;
-        v111 = v5;
+        v111 = dictionaryCopy;
 LABEL_63:
         v70 = 0;
         while (1)
@@ -756,7 +756,7 @@ LABEL_63:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v5 = v111;
+            dictionaryCopy = v111;
             v77 = v112;
             v6 = v121;
             v20 = v114;
@@ -791,7 +791,7 @@ LABEL_63:
               *v112 = v83;
             }
 
-            v5 = v111;
+            dictionaryCopy = v111;
             v6 = v121;
             v85 = v130;
             v20 = v114;
@@ -800,7 +800,7 @@ LABEL_81:
             v8 = v85;
 LABEL_82:
 
-            a4 = 0;
+            error = 0;
             goto LABEL_83;
           }
 
@@ -811,7 +811,7 @@ LABEL_82:
           if (v68 == v70)
           {
             v68 = [v51 countByEnumeratingWithState:&v135 objects:v145 count:16];
-            v5 = v111;
+            dictionaryCopy = v111;
             if (v68)
             {
               goto LABEL_63;
@@ -820,8 +820,8 @@ LABEL_82:
 LABEL_71:
 
             v56 = v115;
-            a4 = -[BMIntelligenceEngineInteraction initWithAbsoluteTimestamp:transcriptStatementId:appIntentInvocationUUID:sirikitIntentItemId:trigger:tupleInteraction:candidateInteractions:](self, "initWithAbsoluteTimestamp:transcriptStatementId:appIntentInvocationUUID:sirikitIntentItemId:trigger:tupleInteraction:candidateInteractions:", v8, v132, v126, v125, [v123 intValue], v115, v66);
-            self = a4;
+            error = -[BMIntelligenceEngineInteraction initWithAbsoluteTimestamp:transcriptStatementId:appIntentInvocationUUID:sirikitIntentItemId:trigger:tupleInteraction:candidateInteractions:](self, "initWithAbsoluteTimestamp:transcriptStatementId:appIntentInvocationUUID:sirikitIntentItemId:trigger:tupleInteraction:candidateInteractions:", v8, v132, v126, v125, [v123 intValue], v115, v66);
+            self = error;
             v6 = v121;
             v20 = v114;
 LABEL_84:
@@ -832,7 +832,7 @@ LABEL_84:
           }
         }
 
-        v5 = v111;
+        dictionaryCopy = v111;
         v77 = v112;
         v6 = v121;
         v20 = v114;
@@ -860,7 +860,7 @@ LABEL_76:
         goto LABEL_81;
       }
 
-      if (v24)
+      if (errorCopy8)
       {
         v89 = objc_alloc(MEMORY[0x1E696ABC0]);
         v90 = *MEMORY[0x1E698F240];
@@ -870,18 +870,18 @@ LABEL_76:
         [MEMORY[0x1E695DF20] dictionaryWithObjects:&v147 forKeys:&v146 count:1];
         v91 = v20;
         v93 = v92 = v8;
-        *v24 = [v89 initWithDomain:v90 code:2 userInfo:v93];
+        *errorCopy8 = [v89 initWithDomain:v90 code:2 userInfo:v93];
 
         v8 = v92;
         v20 = v91;
-        a4 = 0;
+        error = 0;
         v6 = v121;
 LABEL_83:
         v56 = v115;
         goto LABEL_84;
       }
 
-      a4 = 0;
+      error = 0;
       v56 = v115;
       v55 = v116;
       v6 = v121;
@@ -908,22 +908,22 @@ LABEL_85:
         goto LABEL_47;
       }
 
-      if (v24)
+      if (errorCopy8)
       {
         v57 = v57;
-        *v24 = v57;
+        *errorCopy8 = v57;
       }
 
-      a4 = 0;
+      error = 0;
       v6 = v121;
     }
 
     else
     {
       v58 = v49;
-      if (!v24)
+      if (!errorCopy8)
       {
-        a4 = 0;
+        error = 0;
         v6 = v121;
         v55 = v58;
         goto LABEL_87;
@@ -935,7 +935,7 @@ LABEL_85:
       v60 = *MEMORY[0x1E698F240];
       v148 = *MEMORY[0x1E696A578];
       v61 = v20;
-      v62 = v24;
+      v62 = errorCopy8;
       v63 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"tupleInteraction"];
       v149 = v63;
       v64 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v149 forKeys:&v148 count:1];
@@ -946,7 +946,7 @@ LABEL_85:
       v20 = v61;
       v18 = v122;
 
-      a4 = 0;
+      error = 0;
       v55 = v58;
       v56 = v63;
       v6 = v121;
@@ -958,7 +958,7 @@ LABEL_87:
     goto LABEL_88;
   }
 
-  if (a4)
+  if (error)
   {
     v30 = objc_alloc(MEMORY[0x1E696ABC0]);
     v128 = v8;
@@ -968,9 +968,9 @@ LABEL_87:
     v132 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"transcriptStatementId"];
     v159 = v132;
     v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v159 forKeys:&v158 count:1];
-    *a4 = [v30 initWithDomain:v32 code:2 userInfo:v33];
+    *error = [v30 initWithDomain:v32 code:2 userInfo:v33];
 
-    a4 = 0;
+    error = 0;
     v25 = v31;
     v8 = v128;
 LABEL_93:
@@ -980,22 +980,22 @@ LABEL_93:
 
 LABEL_95:
   v87 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMIntelligenceEngineInteraction *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_hasRaw_absoluteTimestamp)
   {
     raw_absoluteTimestamp = self->_raw_absoluteTimestamp;
@@ -1006,7 +1006,7 @@ LABEL_95:
   {
     v18 = 0;
     PBDataWriterPlaceMark();
-    [(BMIntelligenceEngineInteractionTranscriptStatementID *)self->_transcriptStatementId writeTo:v4];
+    [(BMIntelligenceEngineInteractionTranscriptStatementID *)self->_transcriptStatementId writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1026,7 +1026,7 @@ LABEL_95:
   {
     v18 = 0;
     PBDataWriterPlaceMark();
-    [(BMIntelligenceEngineInteractionTupleInteraction *)self->_tupleInteraction writeTo:v4];
+    [(BMIntelligenceEngineInteractionTupleInteraction *)self->_tupleInteraction writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1053,7 +1053,7 @@ LABEL_95:
         v12 = *(*(&v14 + 1) + 8 * v11);
         v18 = 0;
         PBDataWriterPlaceMark();
-        [v12 writeTo:{v4, v14}];
+        [v12 writeTo:{toCopy, v14}];
         PBDataWriterRecallMark();
         ++v11;
       }
@@ -1068,9 +1068,9 @@ LABEL_95:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v41.receiver = self;
   v41.super_class = BMIntelligenceEngineInteraction;
   v5 = [(BMEventBase *)&v41 init];
@@ -1080,12 +1080,12 @@ LABEL_95:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_62;
       }
@@ -1096,18 +1096,18 @@ LABEL_95:
       while (1)
       {
         LOBYTE(v42) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v42 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v42 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (LOBYTE(v42) & 0x7F) << v8;
@@ -1124,9 +1124,9 @@ LABEL_95:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_62;
       }
@@ -1157,18 +1157,18 @@ LABEL_47:
           while (1)
           {
             LOBYTE(v42) = 0;
-            v20 = [v4 position] + 1;
-            if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+            v20 = [fromCopy position] + 1;
+            if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
             {
-              v22 = [v4 data];
-              [v22 getBytes:&v42 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v42 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v19 |= (LOBYTE(v42) & 0x7F) << v17;
@@ -1184,7 +1184,7 @@ LABEL_47:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v19 > 4)
+          if (([fromCopy hasError] & 1) != 0 || v19 > 4)
           {
 LABEL_57:
             LODWORD(v19) = 0;
@@ -1212,7 +1212,7 @@ LABEL_44:
           goto LABEL_65;
         }
 
-        v31 = [[BMIntelligenceEngineInteractionTupleInteraction alloc] initByReadFrom:v4];
+        v31 = [[BMIntelligenceEngineInteractionTupleInteraction alloc] initByReadFrom:fromCopy];
         if (!v31)
         {
           goto LABEL_65;
@@ -1239,7 +1239,7 @@ LABEL_54:
         goto LABEL_65;
       }
 
-      v26 = [[BMIntelligenceEngineInteractionCandidateInteraction alloc] initByReadFrom:v4];
+      v26 = [[BMIntelligenceEngineInteractionCandidateInteraction alloc] initByReadFrom:fromCopy];
       if (!v26)
       {
         goto LABEL_65;
@@ -1250,8 +1250,8 @@ LABEL_54:
       PBReaderRecallMark();
 
 LABEL_61:
-      v35 = [v4 position];
-      if (v35 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_62;
       }
@@ -1262,18 +1262,18 @@ LABEL_61:
       case 1:
         v5->_hasRaw_absoluteTimestamp = 1;
         v42 = 0.0;
-        v28 = [v4 position] + 8;
-        if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 8, v29 <= objc_msgSend(v4, "length")))
+        v28 = [fromCopy position] + 8;
+        if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 8, v29 <= objc_msgSend(fromCopy, "length")))
         {
-          v34 = [v4 data];
-          [v34 getBytes:&v42 range:{objc_msgSend(v4, "position"), 8}];
+          data3 = [fromCopy data];
+          [data3 getBytes:&v42 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_raw_absoluteTimestamp = v42;
@@ -1286,7 +1286,7 @@ LABEL_61:
           goto LABEL_65;
         }
 
-        v31 = [[BMIntelligenceEngineInteractionTranscriptStatementID alloc] initByReadFrom:v4];
+        v31 = [[BMIntelligenceEngineInteractionTranscriptStatementID alloc] initByReadFrom:fromCopy];
         if (!v31)
         {
           goto LABEL_65;
@@ -1316,8 +1316,8 @@ LABEL_62:
   candidateInteractions = v5->_candidateInteractions;
   v5->_candidateInteractions = v36;
 
-  v38 = [v4 hasError];
-  if (v38)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_66:
     v39 = 0;
@@ -1335,37 +1335,37 @@ LABEL_63:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMIntelligenceEngineInteraction *)self absoluteTimestamp];
-  v5 = [(BMIntelligenceEngineInteraction *)self transcriptStatementId];
-  v6 = [(BMIntelligenceEngineInteraction *)self appIntentInvocationUUID];
-  v7 = [(BMIntelligenceEngineInteraction *)self sirikitIntentItemId];
+  absoluteTimestamp = [(BMIntelligenceEngineInteraction *)self absoluteTimestamp];
+  transcriptStatementId = [(BMIntelligenceEngineInteraction *)self transcriptStatementId];
+  appIntentInvocationUUID = [(BMIntelligenceEngineInteraction *)self appIntentInvocationUUID];
+  sirikitIntentItemId = [(BMIntelligenceEngineInteraction *)self sirikitIntentItemId];
   v8 = BMIntelligenceEngineInteractionDonationTriggerAsString([(BMIntelligenceEngineInteraction *)self trigger]);
-  v9 = [(BMIntelligenceEngineInteraction *)self tupleInteraction];
-  v10 = [(BMIntelligenceEngineInteraction *)self candidateInteractions];
-  v11 = [v3 initWithFormat:@"BMIntelligenceEngineInteraction with absoluteTimestamp: %@, transcriptStatementId: %@, appIntentInvocationUUID: %@, sirikitIntentItemId: %@, trigger: %@, tupleInteraction: %@, candidateInteractions: %@", v4, v5, v6, v7, v8, v9, v10];
+  tupleInteraction = [(BMIntelligenceEngineInteraction *)self tupleInteraction];
+  candidateInteractions = [(BMIntelligenceEngineInteraction *)self candidateInteractions];
+  v11 = [v3 initWithFormat:@"BMIntelligenceEngineInteraction with absoluteTimestamp: %@, transcriptStatementId: %@, appIntentInvocationUUID: %@, sirikitIntentItemId: %@, trigger: %@, tupleInteraction: %@, candidateInteractions: %@", absoluteTimestamp, transcriptStatementId, appIntentInvocationUUID, sirikitIntentItemId, v8, tupleInteraction, candidateInteractions];
 
   return v11;
 }
 
-- (BMIntelligenceEngineInteraction)initWithAbsoluteTimestamp:(id)a3 transcriptStatementId:(id)a4 appIntentInvocationUUID:(id)a5 sirikitIntentItemId:(id)a6 trigger:(int)a7 tupleInteraction:(id)a8 candidateInteractions:(id)a9
+- (BMIntelligenceEngineInteraction)initWithAbsoluteTimestamp:(id)timestamp transcriptStatementId:(id)id appIntentInvocationUUID:(id)d sirikitIntentItemId:(id)itemId trigger:(int)trigger tupleInteraction:(id)interaction candidateInteractions:(id)interactions
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v26 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = a9;
+  timestampCopy = timestamp;
+  idCopy = id;
+  dCopy = d;
+  itemIdCopy = itemId;
+  interactionCopy = interaction;
+  interactionsCopy = interactions;
   v27.receiver = self;
   v27.super_class = BMIntelligenceEngineInteraction;
   v19 = [(BMEventBase *)&v27 init];
   if (v19)
   {
     v19->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v14)
+    if (timestampCopy)
     {
       v19->_hasRaw_absoluteTimestamp = 1;
-      [v14 timeIntervalSinceReferenceDate];
+      [timestampCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -1375,12 +1375,12 @@ LABEL_63:
     }
 
     v19->_raw_absoluteTimestamp = v20;
-    objc_storeStrong(&v19->_transcriptStatementId, a4);
-    if (v15)
+    objc_storeStrong(&v19->_transcriptStatementId, id);
+    if (dCopy)
     {
       v28[0] = 0;
       v28[1] = 0;
-      [v15 getUUIDBytes:v28];
+      [dCopy getUUIDBytes:v28];
       v21 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v28 length:16];
       raw_appIntentInvocationUUID = v19->_raw_appIntentInvocationUUID;
       v19->_raw_appIntentInvocationUUID = v21;
@@ -1392,10 +1392,10 @@ LABEL_63:
       v19->_raw_appIntentInvocationUUID = 0;
     }
 
-    objc_storeStrong(&v19->_sirikitIntentItemId, a6);
-    v19->_trigger = a7;
-    objc_storeStrong(&v19->_tupleInteraction, a8);
-    objc_storeStrong(&v19->_candidateInteractions, a9);
+    objc_storeStrong(&v19->_sirikitIntentItemId, itemId);
+    v19->_trigger = trigger;
+    objc_storeStrong(&v19->_tupleInteraction, interaction);
+    objc_storeStrong(&v19->_candidateInteractions, interactions);
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -1454,9 +1454,9 @@ id __42__BMIntelligenceEngineInteraction_columns__block_invoke(uint64_t a1, void
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1464,8 +1464,8 @@ id __42__BMIntelligenceEngineInteraction_columns__block_invoke(uint64_t a1, void
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMIntelligenceEngineInteraction alloc] initByReadFrom:v7];
     v4 = v8;

@@ -1,29 +1,29 @@
 @interface BKSwipeGestureRecognizer
-- (BKSwipeGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (BOOL)_checkForSwipeWithDelta:(CGPoint)a3 time:(double)a4;
-- (CGPoint)centroidOfTouches:(id)a3 excludingEnded:(BOOL)a4;
-- (CGPoint)locationInView:(id)a3;
-- (CGPoint)locationOfTouch:(unint64_t)a3 inView:(id)a4;
+- (BKSwipeGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (BOOL)_checkForSwipeWithDelta:(CGPoint)delta time:(double)time;
+- (CGPoint)centroidOfTouches:(id)touches excludingEnded:(BOOL)ended;
+- (CGPoint)locationInView:(id)view;
+- (CGPoint)locationOfTouch:(unint64_t)touch inView:(id)view;
 - (CGPoint)startPoint;
-- (void)_appendSubclassDescription:(id)a3;
+- (void)_appendSubclassDescription:(id)description;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation BKSwipeGestureRecognizer
 
-- (CGPoint)centroidOfTouches:(id)a3 excludingEnded:(BOOL)a4
+- (CGPoint)centroidOfTouches:(id)touches excludingEnded:(BOOL)ended
 {
-  v4 = a4;
-  v5 = a3;
+  endedCopy = ended;
+  touchesCopy = touches;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v6 = [touchesCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -37,15 +37,15 @@
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(touchesCopy);
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        if (!v4 || [*(*(&v23 + 1) + 8 * i) phase] <= 2)
+        if (!endedCopy || [*(*(&v23 + 1) + 8 * i) phase] <= 2)
         {
-          v14 = [v13 window];
+          window = [v13 window];
           [v13 locationInView:0];
-          [v14 convertPoint:0 toWindow:?];
+          [window convertPoint:0 toWindow:?];
           v16 = v15;
           v18 = v17;
 
@@ -55,7 +55,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v7 = [touchesCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v7);
@@ -81,11 +81,11 @@
   return result;
 }
 
-- (BKSwipeGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (BKSwipeGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v9.receiver = self;
   v9.super_class = BKSwipeGestureRecognizer;
-  v4 = [(BKSwipeGestureRecognizer *)&v9 initWithTarget:a3 action:a4];
+  v4 = [(BKSwipeGestureRecognizer *)&v9 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -109,11 +109,11 @@
 
 - (CGPoint)startPoint
 {
-  v3 = [(BKSwipeGestureRecognizer *)self view];
-  v4 = [(BKSwipeGestureRecognizer *)self view];
-  v5 = [v4 window];
-  [v5 convertPoint:0 fromWindow:{self->_startLocation.x, self->_startLocation.y}];
-  [v3 convertPoint:0 fromView:?];
+  view = [(BKSwipeGestureRecognizer *)self view];
+  view2 = [(BKSwipeGestureRecognizer *)self view];
+  window = [view2 window];
+  [window convertPoint:0 fromWindow:{self->_startLocation.x, self->_startLocation.y}];
+  [view convertPoint:0 fromView:?];
   v7 = v6;
   v9 = v8;
 
@@ -134,17 +134,17 @@
   [(BKSwipeGestureRecognizer *)&v3 reset];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = a3;
-  v6 = v5;
+  beganCopy = began;
+  v6 = beganCopy;
   if ((*(self + 120) & 1) == 0)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v7 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v7 = [beganCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v7)
     {
       v8 = v7;
@@ -163,9 +163,9 @@
 
           if (!v12)
           {
-            v13 = [v11 window];
+            window = [v11 window];
             [v11 locationInView:0];
-            [v13 convertPoint:0 toWindow:?];
+            [window convertPoint:0 toWindow:?];
             v15 = v14;
             v17 = v16;
 
@@ -196,11 +196,11 @@
   }
 }
 
-- (BOOL)_checkForSwipeWithDelta:(CGPoint)a3 time:(double)a4
+- (BOOL)_checkForSwipeWithDelta:(CGPoint)delta time:(double)time
 {
   minimumPrimaryMovement = self->_minimumPrimaryMovement;
-  v5 = -a4;
-  if (a4 >= 0.5)
+  v5 = -time;
+  if (time >= 0.5)
   {
     v5 = -0.5;
   }
@@ -241,31 +241,31 @@
 
   direction = self->_direction;
   v17 = direction & 3;
-  if (v17 == 1 && a3.x < 0.0)
+  if (v17 == 1 && delta.x < 0.0)
   {
     goto LABEL_23;
   }
 
-  if (v17 == 2 && a3.x > 0.0)
+  if (v17 == 2 && delta.x > 0.0)
   {
     goto LABEL_23;
   }
 
   v18 = direction & 0xC;
-  if (v18 == 4 && a3.y > 0.0)
+  if (v18 == 4 && delta.y > 0.0)
   {
     goto LABEL_23;
   }
 
-  if (v18 == 8 && a3.y < 0.0)
+  if (v18 == 8 && delta.y < 0.0)
   {
     goto LABEL_23;
   }
 
   if (v17)
   {
-    v19 = fabs(a3.x);
-    if (v19 > v11 || (v20 = fabs(a3.y), v20 > v15))
+    v19 = fabs(delta.x);
+    if (v19 > v11 || (v20 = fabs(delta.y), v20 > v15))
     {
 LABEL_23:
       LOBYTE(v17) = 0;
@@ -286,8 +286,8 @@ LABEL_24:
     return v17 & 1;
   }
 
-  v22 = fabs(a3.y);
-  v23 = fabs(a3.x);
+  v22 = fabs(delta.y);
+  v23 = fabs(delta.x);
   if (v22 > v11 || v23 > v15)
   {
     goto LABEL_24;
@@ -303,7 +303,7 @@ LABEL_24:
   return v17 & 1;
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v5 = CACurrentMediaTime();
   if ([(NSMutableArray *)self->_touches count]>= self->_numberOfTouchesRequired)
@@ -336,9 +336,9 @@ LABEL_24:
           }
 
           v14 = *(*(&v41 + 1) + 8 * i);
-          v15 = [v14 window];
+          window = [v14 window];
           [v14 locationInView:0];
-          [v15 convertPoint:0 toWindow:?];
+          [window convertPoint:0 toWindow:?];
           v17 = v16;
           v19 = v18;
 
@@ -346,20 +346,20 @@ LABEL_24:
           [v20 CGPointValue];
           v22 = v17 - v21;
           v24 = v19 - v23;
-          v25 = [(BKSwipeGestureRecognizer *)self view];
-          v26 = [v25 window];
+          view = [(BKSwipeGestureRecognizer *)self view];
+          window2 = [view window];
 
-          if (v26)
+          if (window2)
           {
-            v27 = [(BKSwipeGestureRecognizer *)self view];
-            [v26 convertPoint:0 fromWindow:{v22, v24}];
-            [v27 convertPoint:0 fromView:?];
+            view2 = [(BKSwipeGestureRecognizer *)self view];
+            [window2 convertPoint:0 fromWindow:{v22, v24}];
+            [view2 convertPoint:0 fromView:?];
             v29 = v28;
             v31 = v30;
 
-            v32 = [(BKSwipeGestureRecognizer *)self view];
-            [v26 convertPoint:0 fromWindow:{CGPointZero.x, y}];
-            [v32 convertPoint:0 fromView:?];
+            view3 = [(BKSwipeGestureRecognizer *)self view];
+            [window2 convertPoint:0 fromWindow:{CGPointZero.x, y}];
+            [view3 convertPoint:0 fromView:?];
             v34 = v33;
             v36 = v35;
 
@@ -383,10 +383,10 @@ LABEL_24:
 
       if (v9)
       {
-        v39 = self;
+        selfCopy2 = self;
         v40 = 3;
 LABEL_22:
-        [(BKSwipeGestureRecognizer *)v39 setState:v40];
+        [(BKSwipeGestureRecognizer *)selfCopy2 setState:v40];
         return;
       }
     }
@@ -400,7 +400,7 @@ LABEL_22:
       return;
     }
 
-    v39 = self;
+    selfCopy2 = self;
     v40 = 5;
     goto LABEL_22;
   }
@@ -408,14 +408,14 @@ LABEL_22:
   [(BKSwipeGestureRecognizer *)self setState:5];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = a3;
+  endedCopy = ended;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [endedCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -426,7 +426,7 @@ LABEL_22:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(endedCopy);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
@@ -435,7 +435,7 @@ LABEL_22:
         [(NSMutableArray *)self->_touches removeObject:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [endedCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -452,14 +452,14 @@ LABEL_22:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v5 = a3;
+  cancelledCopy = cancelled;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [cancelledCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -470,7 +470,7 @@ LABEL_22:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(cancelledCopy);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
@@ -479,7 +479,7 @@ LABEL_22:
         [(NSMutableArray *)self->_touches removeObject:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [cancelledCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -496,12 +496,12 @@ LABEL_22:
   }
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 window];
-  [v5 convertPoint:0 fromWindow:{self->_startLocation.x, self->_startLocation.y}];
-  [v4 convertPoint:0 fromView:?];
+  viewCopy = view;
+  window = [viewCopy window];
+  [window convertPoint:0 fromWindow:{self->_startLocation.x, self->_startLocation.y}];
+  [viewCopy convertPoint:0 fromView:?];
   v7 = v6;
   v9 = v8;
 
@@ -512,19 +512,19 @@ LABEL_22:
   return result;
 }
 
-- (CGPoint)locationOfTouch:(unint64_t)a3 inView:(id)a4
+- (CGPoint)locationOfTouch:(unint64_t)touch inView:(id)view
 {
   touches = self->_touches;
-  v6 = a4;
-  v7 = [(NSMutableArray *)touches objectAtIndex:a3];
+  viewCopy = view;
+  v7 = [(NSMutableArray *)touches objectAtIndex:touch];
   v8 = objc_getAssociatedObject(v7, &unk_295B10);
 
   [v8 CGPointValue];
   v10 = v9;
   v12 = v11;
-  v13 = [v6 window];
-  [v13 convertPoint:0 fromWindow:{v10, v12}];
-  [v6 convertPoint:0 fromView:?];
+  window = [viewCopy window];
+  [window convertPoint:0 fromWindow:{v10, v12}];
+  [viewCopy convertPoint:0 fromView:?];
   v15 = v14;
   v17 = v16;
 
@@ -535,20 +535,20 @@ LABEL_22:
   return result;
 }
 
-- (void)_appendSubclassDescription:(id)a3
+- (void)_appendSubclassDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   numberOfTouchesRequired = self->_numberOfTouchesRequired;
-  v8 = v4;
+  v8 = descriptionCopy;
   if (numberOfTouchesRequired != 1)
   {
-    [v4 appendFormat:@"; numberOfTouchesRequired = %lu", numberOfTouchesRequired];
-    v4 = v8;
+    [descriptionCopy appendFormat:@"; numberOfTouchesRequired = %lu", numberOfTouchesRequired];
+    descriptionCopy = v8;
   }
 
   if (self->_direction)
   {
-    [v4 appendString:@"; direction = "];
+    [descriptionCopy appendString:@"; direction = "];
     direction = self->_direction;
     if (direction)
     {
@@ -560,7 +560,7 @@ LABEL_12:
         if ((v7 & 4) == 0)
         {
 LABEL_15:
-          v4 = v8;
+          descriptionCopy = v8;
           if ((v7 & 8) == 0)
           {
             goto LABEL_18;
@@ -571,9 +571,9 @@ LABEL_15:
         }
 
         [v8 appendString:{@", "}];
-        v4 = v8;
+        descriptionCopy = v8;
 LABEL_14:
-        [v4 appendString:@"up"];
+        [descriptionCopy appendString:@"up"];
         v7 = self->_direction;
         goto LABEL_15;
       }
@@ -583,7 +583,7 @@ LABEL_14:
 
     else if ((direction & 2) == 0)
     {
-      v4 = v8;
+      descriptionCopy = v8;
       if ((direction & 4) == 0)
       {
         if ((direction & 8) == 0)
@@ -593,7 +593,7 @@ LABEL_14:
 
 LABEL_17:
         [v8 appendString:@"down"];
-        v4 = v8;
+        descriptionCopy = v8;
         goto LABEL_18;
       }
 

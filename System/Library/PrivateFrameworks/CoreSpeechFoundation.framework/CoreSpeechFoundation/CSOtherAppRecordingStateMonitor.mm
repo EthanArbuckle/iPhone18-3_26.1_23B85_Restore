@@ -1,14 +1,14 @@
 @interface CSOtherAppRecordingStateMonitor
 + (id)sharedInstance;
-- (BOOL)_isEntitledWithDecodedAuditToken:(id *)a3;
+- (BOOL)_isEntitledWithDecodedAuditToken:(id *)token;
 - (BOOL)isOtherNonEligibleAppRecording;
 - (CSOtherAppRecordingStateMonitor)init;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_startObservingOtherAppRecordingState;
 - (void)_startObservingSystemControllerLifecycle;
 - (void)_stopMonitoring;
-- (void)_systemControllerDied:(id)a3;
-- (void)handleOtherAppRecordingStateChange:(id)a3;
+- (void)_systemControllerDied:(id)died;
+- (void)handleOtherAppRecordingStateChange:(id)change;
 @end
 
 @implementation CSOtherAppRecordingStateMonitor
@@ -16,12 +16,12 @@
 - (BOOL)isOtherNonEligibleAppRecording
 {
   v38 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  v3 = [v2 attributeForKey:*MEMORY[0x1E69AEB58]];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  v3 = [mEMORY[0x1E69AED08] attributeForKey:*MEMORY[0x1E69AEB58]];
   if ([v3 count])
   {
     v25 = v3;
-    v26 = v2;
+    v26 = mEMORY[0x1E69AED08];
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
@@ -150,7 +150,7 @@
 LABEL_28:
 
     v3 = v25;
-    v2 = v26;
+    mEMORY[0x1E69AED08] = v26;
     v22 = v29;
   }
 
@@ -175,15 +175,15 @@ LABEL_28:
   return v3;
 }
 
-- (BOOL)_isEntitledWithDecodedAuditToken:(id *)a3
+- (BOOL)_isEntitledWithDecodedAuditToken:(id *)token
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = *&a3->var0[4];
-  *v13 = *a3->var0;
+  v4 = *&token->var0[4];
+  *v13 = *token->var0;
   *&v13[16] = v4;
   v5 = [CSUtils checkEntitlementForToken:v13 withEntitlement:@"com.apple.corespeech.supportheysiriwhenrecord"];
-  v6 = *&a3->var0[4];
-  *v13 = *a3->var0;
+  v6 = *&token->var0[4];
+  *v13 = *token->var0;
   *&v13[16] = v6;
   if ([CSUtils checkEntitlementForToken:v13 withEntitlement:@"com.apple.corespeech.supportheysiriwhenrecord.sae"])
   {
@@ -229,31 +229,31 @@ LABEL_28:
 
 - (void)_startObservingSystemControllerLifecycle
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = MEMORY[0x1E69AECB0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69AECB0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AECB0] object:0];
 
   v9 = [MEMORY[0x1E695DEC8] arrayWithObject:*v4];
-  v5 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v5 setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [mEMORY[0x1E69AED08] setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v7 = *v4;
-  v8 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v6 addObserver:self selector:sel__systemControllerDied_ name:v7 object:v8];
+  mEMORY[0x1E69AED08]2 = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [defaultCenter2 addObserver:self selector:sel__systemControllerDied_ name:v7 object:mEMORY[0x1E69AED08]2];
 }
 
-- (void)_systemControllerDied:(id)a3
+- (void)_systemControllerDied:(id)died
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  diedCopy = died;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[CSOtherAppRecordingStateMonitor _systemControllerDied:]";
     v9 = 2114;
-    v10 = v4;
+    v10 = diedCopy;
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s notification = %{public}@", &v7, 0x16u);
   }
 
@@ -266,21 +266,21 @@ LABEL_28:
 
 - (void)_startObservingOtherAppRecordingState
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = MEMORY[0x1E69AEB78];
-  [v3 removeObserver:self name:*MEMORY[0x1E69AEB78] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AEB78] object:0];
 
   v9 = [MEMORY[0x1E695DEC8] arrayWithObject:*v4];
-  v5 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v5 setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [mEMORY[0x1E69AED08] setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v7 = *v4;
-  v8 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v6 addObserver:self selector:sel_handleOtherAppRecordingStateChange_ name:v7 object:v8];
+  mEMORY[0x1E69AED08]2 = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [defaultCenter2 addObserver:self selector:sel_handleOtherAppRecordingStateChange_ name:v7 object:mEMORY[0x1E69AED08]2];
 }
 
-- (void)handleOtherAppRecordingStateChange:(id)a3
+- (void)handleOtherAppRecordingStateChange:(id)change
 {
   v9 = *MEMORY[0x1E69E9840];
   if ([(CSOtherAppRecordingStateMonitor *)self isOtherNonEligibleAppRecording])
@@ -305,11 +305,11 @@ LABEL_28:
 
 - (void)_stopMonitoring
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   [(CSOtherAppRecordingStateMonitor *)self _startObservingSystemControllerLifecycle];
 
@@ -320,7 +320,7 @@ LABEL_28:
 {
   if (+[CSUtils isDarwinOS])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -328,10 +328,10 @@ LABEL_28:
     v5.receiver = self;
     v5.super_class = CSOtherAppRecordingStateMonitor;
     self = [(CSEventMonitor *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 uint64_t __49__CSOtherAppRecordingStateMonitor_sharedInstance__block_invoke()

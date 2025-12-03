@@ -1,14 +1,14 @@
 @interface HACCStatusView
 + (id)_backgroundUpdateQueue;
-- (BOOL)shouldAddSeparatorForView:(id)a3;
-- (CGSize)liveListenImageSize:(id)a3 forProductID:(id)a4;
+- (BOOL)shouldAddSeparatorForView:(id)view;
+- (CGSize)liveListenImageSize:(id)size forProductID:(id)d;
 - (HACCContentModuleDelegate)delegate;
-- (HACCStatusView)initWithFrame:(CGRect)a3;
+- (HACCStatusView)initWithFrame:(CGRect)frame;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
-- (id)liveListenImageNameFromBluetoothRoute:(id)a3;
-- (void)_updateBatterySubtitleLabelForDevice:(id)a3;
-- (void)_updateBatterySubtitleLabelForLeft:(double)a3 right:(double)a4 andAvailableEars:(int)a5;
+- (id)liveListenImageNameFromBluetoothRoute:(id)route;
+- (void)_updateBatterySubtitleLabelForDevice:(id)device;
+- (void)_updateBatterySubtitleLabelForLeft:(double)left right:(double)right andAvailableEars:(int)ears;
 - (void)dealloc;
 - (void)updateConstraints;
 - (void)updateValue;
@@ -16,12 +16,12 @@
 
 @implementation HACCStatusView
 
-- (HACCStatusView)initWithFrame:(CGRect)a3
+- (HACCStatusView)initWithFrame:(CGRect)frame
 {
   v36[1] = *MEMORY[0x277D85DE8];
   v35.receiver = self;
   v35.super_class = HACCStatusView;
-  v3 = [(HUICCCapsuleButton *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUICCCapsuleButton *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     objc_initWeak(&location, v3);
@@ -67,16 +67,16 @@
     v3->_iconImageView = v16;
 
     [(HUICCCapsuleButton *)v3 setIconView:v3->_iconImageView];
-    v18 = [MEMORY[0x277D26E58] sharedAVSystemController];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
     v19 = MEMORY[0x277D26C68];
     v36[0] = *MEMORY[0x277D26C68];
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
-    [v18 setAttribute:v20 forKey:*MEMORY[0x277D26DD0] error:0];
+    [mEMORY[0x277D26E58] setAttribute:v20 forKey:*MEMORY[0x277D26DD0] error:0];
 
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v22 = *v19;
-    v23 = [MEMORY[0x277D26E58] sharedAVSystemController];
-    [v21 addObserver:v3 selector:sel_updateValue name:v22 object:v23];
+    mEMORY[0x277D26E58]2 = [MEMORY[0x277D26E58] sharedAVSystemController];
+    [defaultCenter addObserver:v3 selector:sel_updateValue name:v22 object:mEMORY[0x277D26E58]2];
 
     v24 = objc_alloc_init(MEMORY[0x277CF0DB0]);
     batteryController = v3->_batteryController;
@@ -149,13 +149,13 @@ void __32__HACCStatusView_initWithFrame___block_invoke_4(uint64_t a1)
   [(HACCStatusView *)&v2 updateConstraints];
 }
 
-- (CGSize)liveListenImageSize:(id)a3 forProductID:(id)a4
+- (CGSize)liveListenImageSize:(id)size forProductID:(id)d
 {
-  v5 = a4;
-  [a3 size];
+  dCopy = d;
+  [size size];
   v7 = v6;
   v9 = v8;
-  v10 = [v5 isEqualToString:{@"76, 8202"}];
+  v10 = [dCopy isEqualToString:{@"76, 8202"}];
 
   v11 = 26.0;
   if (v10)
@@ -178,9 +178,9 @@ void __32__HACCStatusView_initWithFrame___block_invoke_4(uint64_t a1)
   return result;
 }
 
-- (id)liveListenImageNameFromBluetoothRoute:(id)a3
+- (id)liveListenImageNameFromBluetoothRoute:(id)route
 {
-  v3 = [(HACCStatusView *)self _productIdentifierFromBluetoothRoute:a3];
+  v3 = [(HACCStatusView *)self _productIdentifierFromBluetoothRoute:route];
   v4 = [v3 isEqualToString:{@"76, 8203"}];
   v5 = [v3 isEqualToString:{@"76, 8204"}];
   v6 = [v3 isEqualToString:{@"76, 8206"}];
@@ -302,34 +302,34 @@ void __40__HACCStatusView__backgroundUpdateQueue__block_invoke()
   v36.receiver = self;
   v36.super_class = HACCStatusView;
   [(HUICCCapsuleButton *)&v36 updateValue];
-  v3 = [(HACCStatusView *)self delegate];
-  v4 = [v3 conformsToProtocol:&unk_28647C0E8];
+  delegate = [(HACCStatusView *)self delegate];
+  v4 = [delegate conformsToProtocol:&unk_28647C0E8];
 
   if (!v4)
   {
-    v6 = 0;
+    currentHearingDevice = 0;
     goto LABEL_6;
   }
 
-  v5 = [(HACCStatusView *)self delegate];
-  v6 = [v5 currentHearingDevice];
+  delegate2 = [(HACCStatusView *)self delegate];
+  currentHearingDevice = [delegate2 currentHearingDevice];
 
-  if (!v6)
+  if (!currentHearingDevice)
   {
 LABEL_6:
     v7 = 1;
     goto LABEL_9;
   }
 
-  if ([v6 propertyIsAvailable:4 forEar:{objc_msgSend(v6, "availableEars")}])
+  if ([currentHearingDevice propertyIsAvailable:4 forEar:{objc_msgSend(currentHearingDevice, "availableEars")}])
   {
-    [(HACCStatusView *)self _updateBatterySubtitleLabelForDevice:v6];
+    [(HACCStatusView *)self _updateBatterySubtitleLabelForDevice:currentHearingDevice];
   }
 
   else
   {
-    v8 = [(HUICCCapsuleButton *)self subtitleLabel];
-    [v8 setText:0];
+    subtitleLabel = [(HUICCCapsuleButton *)self subtitleLabel];
+    [subtitleLabel setText:0];
   }
 
   v7 = 0;
@@ -341,55 +341,55 @@ LABEL_9:
   v34 = __Block_byref_object_dispose_;
   v35 = accessibilityHearingAidImageNamed(@"hearingDevicesIcon");
   v9 = v31[5];
-  v10 = [MEMORY[0x277D75348] whiteColor];
-  v11 = [v9 _flatImageWithColor:v10];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v11 = [v9 _flatImageWithColor:whiteColor];
   v12 = v31[5];
   v31[5] = v11;
 
   if ((v7 & 1) != 0 || ([MEMORY[0x277D12DE8] sharedInstance], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "hearingAidReachable"), v13, (v14 & 1) == 0))
   {
-    v15 = [MEMORY[0x277D12E00] sharedInstance];
+    mEMORY[0x277D12E00] = [MEMORY[0x277D12E00] sharedInstance];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __29__HACCStatusView_updateValue__block_invoke;
     v29[3] = &unk_2796F6EA0;
     v29[4] = self;
     v29[5] = &v30;
-    [v15 getCurrentRouteInformationWithCompletion:v29];
+    [mEMORY[0x277D12E00] getCurrentRouteInformationWithCompletion:v29];
   }
 
   else
   {
-    v15 = [v6 name];
-    v16 = [MEMORY[0x277D12DE8] sharedInstance];
-    v17 = [v16 hearingAidReachable];
+    mEMORY[0x277D12E00] = [currentHearingDevice name];
+    mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
+    hearingAidReachable = [mEMORY[0x277D12DE8] hearingAidReachable];
 
-    if (v17)
+    if (hearingAidReachable)
     {
-      v18 = [MEMORY[0x277D12DE8] sharedInstance];
-      v19 = [v18 connectedDeviceName];
+      mEMORY[0x277D12DE8]2 = [MEMORY[0x277D12DE8] sharedInstance];
+      connectedDeviceName = [mEMORY[0x277D12DE8]2 connectedDeviceName];
 
-      if ([v19 length])
+      if ([connectedDeviceName length])
       {
         v20 = MEMORY[0x277CCACA8];
         v21 = hearingLocString();
-        v22 = [v20 localizedStringWithFormat:v21, v19];
+        v22 = [v20 localizedStringWithFormat:v21, connectedDeviceName];
 
-        v23 = [v15 stringByAppendingFormat:@"\n%@", v22];
+        v23 = [mEMORY[0x277D12E00] stringByAppendingFormat:@"\n%@", v22];
 
-        v15 = v23;
+        mEMORY[0x277D12E00] = v23;
       }
     }
 
-    if (v15)
+    if (mEMORY[0x277D12E00])
     {
-      v24 = [(HUICCCapsuleButton *)self titleLabel];
-      [v24 setText:v15];
+      titleLabel = [(HUICCCapsuleButton *)self titleLabel];
+      [titleLabel setText:mEMORY[0x277D12E00]];
     }
 
     v25 = v31[5];
-    v26 = [MEMORY[0x277D75348] whiteColor];
-    v27 = [v25 _flatImageWithColor:v26];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    v27 = [v25 _flatImageWithColor:whiteColor2];
     v28 = v31[5];
     v31[5] = v27;
 
@@ -484,30 +484,30 @@ void __29__HACCStatusView_updateValue__block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)_updateBatterySubtitleLabelForDevice:(id)a3
+- (void)_updateBatterySubtitleLabelForDevice:(id)device
 {
-  v4 = a3;
-  [v4 leftBatteryLevel];
+  deviceCopy = device;
+  [deviceCopy leftBatteryLevel];
   v6 = v5;
-  [v4 rightBatteryLevel];
+  [deviceCopy rightBatteryLevel];
   v8 = v7;
-  v9 = [v4 availableEars];
+  availableEars = [deviceCopy availableEars];
 
-  [(HACCStatusView *)self _updateBatterySubtitleLabelForLeft:v9 right:v6 andAvailableEars:v8];
+  [(HACCStatusView *)self _updateBatterySubtitleLabelForLeft:availableEars right:v6 andAvailableEars:v8];
 }
 
-- (void)_updateBatterySubtitleLabelForLeft:(double)a3 right:(double)a4 andAvailableEars:(int)a5
+- (void)_updateBatterySubtitleLabelForLeft:(double)left right:(double)right andAvailableEars:(int)ears
 {
-  if (a5)
+  if (ears)
   {
-    v6 = a4;
-    if (a5 == 6 && vabdd_f64(a3, a4) >= 0.05)
+    leftCopy = right;
+    if (ears == 6 && vabdd_f64(left, right) >= 0.05)
     {
       v13 = MEMORY[0x277CCACA8];
       v14 = hearingLocString();
       v15 = hearingLocString();
       numberFormatter = self->_numberFormatter;
-      v17 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+      v17 = [MEMORY[0x277CCABB0] numberWithDouble:left];
       v18 = [(NSNumberFormatter *)numberFormatter stringFromNumber:v17];
       v9 = [v13 stringWithFormat:v14, v15, v18];
 
@@ -515,7 +515,7 @@ void __29__HACCStatusView_updateValue__block_invoke_3(uint64_t a1)
       v20 = hearingLocString();
       v21 = hearingLocString();
       v22 = self->_numberFormatter;
-      v23 = [MEMORY[0x277CCABB0] numberWithDouble:v6];
+      v23 = [MEMORY[0x277CCABB0] numberWithDouble:leftCopy];
       v24 = [(NSNumberFormatter *)v22 stringFromNumber:v23];
       v11 = [v19 stringWithFormat:v20, v21, v24];
 
@@ -526,15 +526,15 @@ void __29__HACCStatusView_updateValue__block_invoke_3(uint64_t a1)
 
     else
     {
-      if (a5 == 2)
+      if (ears == 2)
       {
-        v6 = a3;
+        leftCopy = left;
       }
 
       v8 = MEMORY[0x277CCACA8];
       v9 = hearingLocString();
       v10 = self->_numberFormatter;
-      v11 = [MEMORY[0x277CCABB0] numberWithDouble:v6];
+      v11 = [MEMORY[0x277CCABB0] numberWithDouble:leftCopy];
       v12 = [(NSNumberFormatter *)v10 stringFromNumber:v11];
       [v8 stringWithFormat:v9, v12, v28];
     }
@@ -546,23 +546,23 @@ void __29__HACCStatusView_updateValue__block_invoke_3(uint64_t a1)
     v29 = 0;
   }
 
-  v26 = [(HUICCCapsuleButton *)self subtitleLabel:a3];
+  v26 = [(HUICCCapsuleButton *)self subtitleLabel:left];
   [v26 setText:v29];
 
-  v27 = [(HACCStatusView *)self delegate];
-  [v27 updateHeight];
+  delegate = [(HACCStatusView *)self delegate];
+  [delegate updateHeight];
 }
 
-- (BOOL)shouldAddSeparatorForView:(id)a3
+- (BOOL)shouldAddSeparatorForView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 subviews];
-  v6 = [v5 count];
+  viewCopy = view;
+  subviews = [viewCopy subviews];
+  v6 = [subviews count];
 
   if (v6)
   {
-    v7 = [v4 subviews];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    subviews2 = [viewCopy subviews];
+    v8 = [subviews2 objectAtIndexedSubscript:0];
 
     if ([(HACCStatusView *)self module]|| (objc_opt_respondsToSelector() & 1) == 0)
     {
@@ -585,43 +585,43 @@ void __29__HACCStatusView_updateValue__block_invoke_3(uint64_t a1)
 
 - (id)accessibilityLabel
 {
-  v2 = [(HUICCCapsuleButton *)self titleLabel];
-  v3 = [v2 accessibilityLabel];
+  titleLabel = [(HUICCCapsuleButton *)self titleLabel];
+  accessibilityLabel = [titleLabel accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(HACCStatusView *)self delegate];
-  v4 = [v3 currentHearingDevice];
+  delegate = [(HACCStatusView *)self delegate];
+  currentHearingDevice = [delegate currentHearingDevice];
 
-  if ([v4 isConnected])
+  if ([currentHearingDevice isConnected])
   {
-    if ([v4 leftAvailable])
+    if ([currentHearingDevice leftAvailable])
     {
       v5 = MEMORY[0x277CCACA8];
       v6 = hearingLocString();
       numberFormatter = self->_numberFormatter;
       v8 = MEMORY[0x277CCABB0];
-      [v4 leftBatteryLevel];
+      [currentHearingDevice leftBatteryLevel];
       v9 = [v8 numberWithDouble:?];
       v10 = [(NSNumberFormatter *)numberFormatter stringFromNumber:v9];
-      v11 = [v5 stringWithFormat:v6, v10];
+      batteryDevice = [v5 stringWithFormat:v6, v10];
     }
 
     else
     {
-      v11 = 0;
+      batteryDevice = 0;
     }
 
-    if ([v4 rightAvailable])
+    if ([currentHearingDevice rightAvailable])
     {
       v20 = MEMORY[0x277CCACA8];
       v15 = hearingLocString();
       v21 = self->_numberFormatter;
       v22 = MEMORY[0x277CCABB0];
-      [v4 rightBatteryLevel];
+      [currentHearingDevice rightBatteryLevel];
       v17 = [v22 numberWithDouble:?];
       v18 = [(NSNumberFormatter *)v21 stringFromNumber:v17];
       v19 = [v20 stringWithFormat:v15, v18];
@@ -633,31 +633,31 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v11 = [(HACCStatusView *)self batteryDevice];
+  batteryDevice = [(HACCStatusView *)self batteryDevice];
 
-  if (!v11)
+  if (!batteryDevice)
   {
     goto LABEL_10;
   }
 
-  v12 = [(HACCStatusView *)self batteryDevice];
-  v13 = [v12 percentCharge] / 100.0;
+  batteryDevice2 = [(HACCStatusView *)self batteryDevice];
+  v13 = [batteryDevice2 percentCharge] / 100.0;
 
   v14 = MEMORY[0x277CCACA8];
   v15 = hearingLocString();
   v16 = self->_numberFormatter;
   v17 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
   v18 = [(NSNumberFormatter *)v16 stringFromNumber:v17];
-  v11 = [v14 stringWithFormat:v15, v18];
+  batteryDevice = [v14 stringWithFormat:v15, v18];
   v19 = 0;
 LABEL_9:
 
 LABEL_11:
-  if ([v11 length] || objc_msgSend(v19, "length"))
+  if ([batteryDevice length] || objc_msgSend(v19, "length"))
   {
     v27.receiver = self;
     v27.super_class = HACCStatusView;
-    v23 = [(HUICCCapsuleButton *)&v27 accessibilityValue];
+    accessibilityValue = [(HUICCCapsuleButton *)&v27 accessibilityValue];
     v26 = hearingLocString();
     v24 = __AXStringForVariables();
   }

@@ -1,15 +1,15 @@
 @interface _UIVisualEffectContentView
-- (_UIVisualEffectContentView)initWithFrame:(CGRect)a3;
+- (_UIVisualEffectContentView)initWithFrame:(CGRect)frame;
 - (id)description;
 - (void)_didInvalidateIntrinsicContentSize;
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3;
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view;
 - (void)_notifyContentViewMonitors;
 - (void)applyIdentityFilterEffects;
 - (void)applyRequestedFilterEffects;
-- (void)didAddSubview:(id)a3;
-- (void)setDisableGroupFiltering:(BOOL)a3;
-- (void)setFilters:(id)a3;
-- (void)willRemoveSubview:(id)a3;
+- (void)didAddSubview:(id)subview;
+- (void)setDisableGroupFiltering:(BOOL)filtering;
+- (void)setFilters:(id)filters;
+- (void)willRemoveSubview:(id)subview;
 @end
 
 @implementation _UIVisualEffectContentView
@@ -20,12 +20,12 @@
   self->_currentlyDisplayingRequestedEffects = 1;
   if (self->_disableGroupFiltering)
   {
-    v3 = [(UIView *)self subviews];
+    subviews = [(UIView *)self subviews];
     v8 = 0u;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+    v4 = [subviews countByEnumeratingWithState:&v8 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -37,14 +37,14 @@
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(subviews);
           }
 
           _UIVisualEffectSubviewApplyFilters(*(*(&v8 + 1) + 8 * v7++), self->super._filters, self->_currentlyDisplayingRequestedEffects);
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+        v5 = [subviews countByEnumeratingWithState:&v8 objects:v13 count:16];
       }
 
       while (v5);
@@ -61,15 +61,15 @@
 
 - (void)_notifyContentViewMonitors
 {
-  v2 = [(UIView *)self superview];
-  [v2 _didUpdateContentView];
+  superview = [(UIView *)self superview];
+  [superview _didUpdateContentView];
 }
 
-- (_UIVisualEffectContentView)initWithFrame:(CGRect)a3
+- (_UIVisualEffectContentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIVisualEffectContentView;
-  v3 = [(_UIVisualEffectSubview *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UIVisualEffectSubview *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -83,25 +83,25 @@
   return v4;
 }
 
-- (void)setDisableGroupFiltering:(BOOL)a3
+- (void)setDisableGroupFiltering:(BOOL)filtering
 {
-  v3 = a3;
+  filteringCopy = filtering;
   v33 = *MEMORY[0x1E69E9840];
   if ([(NSArray *)self->super._filters count])
   {
-    if (v3 && !self->_disableGroupFiltering)
+    if (filteringCopy && !self->_disableGroupFiltering)
     {
-      v5 = [(UIView *)self subviews];
-      if ([v5 count])
+      subviews = [(UIView *)self subviews];
+      if ([subviews count])
       {
-        v22 = v3;
+        v22 = filteringCopy;
         v6 = _UIVisualEffectSubviewConvertToCAFilterArray(self->super._filters);
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v21 = v5;
-        v7 = v5;
+        v21 = subviews;
+        v7 = subviews;
         v8 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
         if (v8)
         {
@@ -117,8 +117,8 @@
               }
 
               v12 = *(*(&v27 + 1) + 8 * i);
-              v13 = [v12 layer];
-              [v13 setFilters:v6];
+              layer = [v12 layer];
+              [layer setFilters:v6];
 
               _UIVisualEffectSubviewApplyFilters(v12, self->super._filters, self->_currentlyDisplayingRequestedEffects);
             }
@@ -129,8 +129,8 @@
           while (v9);
         }
 
-        LOBYTE(v3) = v22;
-        v5 = v21;
+        LOBYTE(filteringCopy) = v22;
+        subviews = v21;
       }
 
       v14 = _UIVisualEffectSubviewSetFilters(self, self->super._filters, MEMORY[0x1E695E0F0]);
@@ -139,14 +139,14 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    if (self->_disableGroupFiltering && !v3)
+    if (self->_disableGroupFiltering && !filteringCopy)
     {
-      v5 = [(UIView *)self subviews];
+      subviews = [(UIView *)self subviews];
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v15 = [v5 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v15 = [subviews countByEnumeratingWithState:&v23 objects:v31 count:16];
       if (v15)
       {
         v16 = v15;
@@ -157,14 +157,14 @@ LABEL_24:
           {
             if (*v24 != v17)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(subviews);
             }
 
-            v19 = [*(*(&v23 + 1) + 8 * j) layer];
-            [v19 setFilters:0];
+            layer2 = [*(*(&v23 + 1) + 8 * j) layer];
+            [layer2 setFilters:0];
           }
 
-          v16 = [v5 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          v16 = [subviews countByEnumeratingWithState:&v23 objects:v31 count:16];
         }
 
         while (v16);
@@ -177,27 +177,27 @@ LABEL_24:
   }
 
 LABEL_25:
-  self->_disableGroupFiltering = v3;
+  self->_disableGroupFiltering = filteringCopy;
 }
 
-- (void)setFilters:(id)a3
+- (void)setFilters:(id)filters
 {
   v20 = *MEMORY[0x1E69E9840];
   if (self->_disableGroupFiltering)
   {
-    v4 = [a3 copy];
+    v4 = [filters copy];
     filters = self->super._filters;
     self->super._filters = v4;
 
-    v6 = [(UIView *)self subviews];
-    if ([v6 count])
+    subviews = [(UIView *)self subviews];
+    if ([subviews count])
     {
       v7 = _UIVisualEffectSubviewConvertToCAFilterArray(self->super._filters);
       v14 = 0u;
       v15 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v8 = v6;
+      v8 = subviews;
       v9 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
       if (v9)
       {
@@ -213,8 +213,8 @@ LABEL_25:
               objc_enumerationMutation(v8);
             }
 
-            v13 = [*(*(&v14 + 1) + 8 * v12) layer];
-            [v13 setFilters:v7];
+            layer = [*(*(&v14 + 1) + 8 * v12) layer];
+            [layer setFilters:v7];
 
             ++v12;
           }
@@ -232,7 +232,7 @@ LABEL_25:
   {
     v18.receiver = self;
     v18.super_class = _UIVisualEffectContentView;
-    [(_UIVisualEffectSubview *)&v18 setFilters:a3];
+    [(_UIVisualEffectSubview *)&v18 setFilters:filters];
   }
 }
 
@@ -242,12 +242,12 @@ LABEL_25:
   self->_currentlyDisplayingRequestedEffects = 0;
   if (self->_disableGroupFiltering)
   {
-    v3 = [(UIView *)self subviews];
+    subviews = [(UIView *)self subviews];
     v8 = 0u;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+    v4 = [subviews countByEnumeratingWithState:&v8 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -259,14 +259,14 @@ LABEL_25:
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(subviews);
           }
 
           _UIVisualEffectSubviewApplyFilters(*(*(&v8 + 1) + 8 * v7++), self->super._filters, self->_currentlyDisplayingRequestedEffects);
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+        v5 = [subviews countByEnumeratingWithState:&v8 objects:v13 count:16];
       }
 
       while (v5);
@@ -281,28 +281,28 @@ LABEL_25:
   }
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
-  v6 = a3;
+  subviewCopy = subview;
   [(_UIVisualEffectContentView *)self _notifyContentViewMonitors];
   if (self->_disableGroupFiltering && [(NSArray *)self->super._filters count])
   {
     v4 = _UIVisualEffectSubviewConvertToCAFilterArray(self->super._filters);
-    v5 = [v6 layer];
-    [v5 setFilters:v4];
+    layer = [subviewCopy layer];
+    [layer setFilters:v4];
 
-    _UIVisualEffectSubviewApplyFilters(v6, self->super._filters, self->_currentlyDisplayingRequestedEffects);
+    _UIVisualEffectSubviewApplyFilters(subviewCopy, self->super._filters, self->_currentlyDisplayingRequestedEffects);
   }
 }
 
-- (void)willRemoveSubview:(id)a3
+- (void)willRemoveSubview:(id)subview
 {
-  v5 = a3;
+  subviewCopy = subview;
   [(_UIVisualEffectContentView *)self _notifyContentViewMonitors];
   if (self->_disableGroupFiltering)
   {
-    v4 = [v5 layer];
-    [v4 setFilters:0];
+    layer = [subviewCopy layer];
+    [layer setFilters:0];
   }
 }
 
@@ -314,11 +314,11 @@ LABEL_25:
   [(_UIVisualEffectContentView *)self _notifyContentViewMonitors];
 }
 
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view
 {
   v4.receiver = self;
   v4.super_class = _UIVisualEffectContentView;
-  [(UIView *)&v4 _intrinsicContentSizeInvalidatedForChildView:a3];
+  [(UIView *)&v4 _intrinsicContentSizeInvalidatedForChildView:view];
   [(_UIVisualEffectContentView *)self _notifyContentViewMonitors];
 }
 

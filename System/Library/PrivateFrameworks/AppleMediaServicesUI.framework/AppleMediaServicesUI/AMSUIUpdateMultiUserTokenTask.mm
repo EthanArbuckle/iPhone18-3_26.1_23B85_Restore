@@ -1,25 +1,25 @@
 @interface AMSUIUpdateMultiUserTokenTask
-+ (BOOL)_errorIsRecoverable:(id)a3;
-- (AMSUIUpdateMultiUserTokenTask)initWithAccount:(id)a3 homeIdentifier:(id)a4 viewController:(id)a5;
++ (BOOL)_errorIsRecoverable:(id)recoverable;
+- (AMSUIUpdateMultiUserTokenTask)initWithAccount:(id)account homeIdentifier:(id)identifier viewController:(id)controller;
 - (id)performTask;
 @end
 
 @implementation AMSUIUpdateMultiUserTokenTask
 
-- (AMSUIUpdateMultiUserTokenTask)initWithAccount:(id)a3 homeIdentifier:(id)a4 viewController:(id)a5
+- (AMSUIUpdateMultiUserTokenTask)initWithAccount:(id)account homeIdentifier:(id)identifier viewController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  accountCopy = account;
+  identifierCopy = identifier;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = AMSUIUpdateMultiUserTokenTask;
   v12 = [(AMSTask *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_account, a3);
-    objc_storeStrong(&v13->_homeIdentifier, a4);
-    objc_storeStrong(&v13->_viewController, a5);
+    objc_storeStrong(&v12->_account, account);
+    objc_storeStrong(&v13->_homeIdentifier, identifier);
+    objc_storeStrong(&v13->_viewController, controller);
   }
 
   return v13;
@@ -300,17 +300,17 @@ uint64_t __44__AMSUIUpdateMultiUserTokenTask_performTask__block_invoke(uint64_t 
   return v24;
 }
 
-+ (BOOL)_errorIsRecoverable:(id)a3
++ (BOOL)_errorIsRecoverable:(id)recoverable
 {
-  v3 = a3;
-  if ([v3 ams_hasDomain:*MEMORY[0x1E698C548] code:108] && (objc_msgSend(v3, "ams_underlyingErrorWithDomain:code:", *MEMORY[0x1E698DB28], -7013), v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  recoverableCopy = recoverable;
+  if ([recoverableCopy ams_hasDomain:*MEMORY[0x1E698C548] code:108] && (objc_msgSend(recoverableCopy, "ams_underlyingErrorWithDomain:code:", *MEMORY[0x1E698DB28], -7013), v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v3 ams_hasDomain:@"AMSDCloudDataErrorDomain" code:9];
+    v5 = [recoverableCopy ams_hasDomain:@"AMSDCloudDataErrorDomain" code:9];
   }
 
   return v5;

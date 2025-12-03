@@ -1,15 +1,15 @@
 @interface APPBAggregateDistributionMetric
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCount:(BOOL)a3;
-- (void)setHasStandardDeviation:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCount:(BOOL)count;
+- (void)setHasStandardDeviation:(BOOL)deviation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBAggregateDistributionMetric
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (void)setHasCount:(BOOL)a3
+- (void)setHasCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -41,9 +41,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasStandardDeviation:(BOOL)a3
+- (void)setHasStandardDeviation:(BOOL)deviation
 {
-  if (a3)
+  if (deviation)
   {
     v3 = 4;
   }
@@ -61,8 +61,8 @@
   v7.receiver = self;
   v7.super_class = APPBAggregateDistributionMetric;
   v3 = [(APPBAggregateDistributionMetric *)&v7 description];
-  v4 = [(APPBAggregateDistributionMetric *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBAggregateDistributionMetric *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -124,27 +124,27 @@ LABEL_9:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_metric)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -164,38 +164,38 @@ LABEL_7:
   }
 
   PBDataWriterWriteFloatField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_8:
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_9:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_metric)
   {
-    [v4 setMetric:?];
-    v4 = v6;
+    [toCopy setMetric:?];
+    toCopy = v6;
   }
 
   if (self->_bundleID)
   {
     [v6 setBundleID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 6) = self->_count;
-    *(v4 + 44) |= 2u;
+    *(toCopy + 6) = self->_count;
+    *(toCopy + 44) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -214,26 +214,26 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 2) = LODWORD(self->_average);
-  *(v4 + 44) |= 1u;
+  *(toCopy + 2) = LODWORD(self->_average);
+  *(toCopy + 44) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_8:
-    *(v4 + 10) = LODWORD(self->_standardDeviation);
-    *(v4 + 44) |= 4u;
+    *(toCopy + 10) = LODWORD(self->_standardDeviation);
+    *(toCopy + 44) |= 4u;
   }
 
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_metric copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_metric copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleID copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
@@ -275,16 +275,16 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
   metric = self->_metric;
-  if (metric | *(v4 + 4))
+  if (metric | *(equalCopy + 4))
   {
     if (![(NSString *)metric isEqual:?])
     {
@@ -293,7 +293,7 @@ LABEL_4:
   }
 
   bundleID = self->_bundleID;
-  if (bundleID | *(v4 + 2))
+  if (bundleID | *(equalCopy + 2))
   {
     if (![(NSString *)bundleID isEqual:?])
     {
@@ -303,13 +303,13 @@ LABEL_4:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_count != *(v4 + 6))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_count != *(equalCopy + 6))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
 LABEL_20:
     v7 = 0;
@@ -318,21 +318,21 @@ LABEL_20:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_average != *(v4 + 2))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_average != *(equalCopy + 2))
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_20;
   }
 
-  v7 = (*(v4 + 44) & 4) == 0;
+  v7 = (*(equalCopy + 44) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_standardDeviation != *(v4 + 10))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_standardDeviation != *(equalCopy + 10))
     {
       goto LABEL_20;
     }
@@ -432,28 +432,28 @@ LABEL_9:
   return v4 ^ v3 ^ v7 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(APPBAggregateDistributionMetric *)self setMetric:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(APPBAggregateDistributionMetric *)self setBundleID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 2) != 0)
   {
-    self->_count = *(v4 + 6);
+    self->_count = *(fromCopy + 6);
     *&self->_has |= 2u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 1) == 0)
     {
 LABEL_7:
@@ -466,17 +466,17 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 44) & 1) == 0)
+  else if ((*(fromCopy + 44) & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_average = *(v4 + 2);
+  self->_average = *(fromCopy + 2);
   *&self->_has |= 1u;
-  if ((*(v4 + 44) & 4) != 0)
+  if ((*(fromCopy + 44) & 4) != 0)
   {
 LABEL_8:
-    self->_standardDeviation = *(v4 + 10);
+    self->_standardDeviation = *(fromCopy + 10);
     *&self->_has |= 4u;
   }
 

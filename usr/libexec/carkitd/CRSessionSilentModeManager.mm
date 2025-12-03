@@ -1,9 +1,9 @@
 @interface CRSessionSilentModeManager
-- (CRSessionSilentModeManager)initWithSessionStatus:(id)a3;
-- (void)matchDeviceSilentModeToCarPlaySilentModeWithReason:(id)a3;
+- (CRSessionSilentModeManager)initWithSessionStatus:(id)status;
+- (void)matchDeviceSilentModeToCarPlaySilentModeWithReason:(id)reason;
 - (void)ringerSwitchDidChange;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
 - (void)setupObservers;
 - (void)silentModeDidChangeDuringSession;
 - (void)silentModePanelStateDidChange;
@@ -12,16 +12,16 @@
 
 @implementation CRSessionSilentModeManager
 
-- (CRSessionSilentModeManager)initWithSessionStatus:(id)a3
+- (CRSessionSilentModeManager)initWithSessionStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   v11.receiver = self;
   v11.super_class = CRSessionSilentModeManager;
   v6 = [(CRSessionSilentModeManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sessionStatus, a3);
+    objc_storeStrong(&v6->_sessionStatus, status);
     [(CARSessionStatus *)v7->_sessionStatus addSessionObserver:v7];
     v8 = objc_alloc_init(CRSessionSilentModeStatus);
     muteStatus = v7->_muteStatus;
@@ -31,19 +31,19 @@
   return v7;
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = [(CRSessionSilentModeStatus *)self->_muteStatus getCarPlaySilentModePreference];
+  getCarPlaySilentModePreference = [(CRSessionSilentModeStatus *)self->_muteStatus getCarPlaySilentModePreference];
   v5 = CarSilentModeLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"CarPlay silent mode state has not been set yet";
-    if (v4 == 2)
+    if (getCarPlaySilentModePreference == 2)
     {
       v6 = @"Unmute when session starts";
     }
 
-    if (v4 == 1)
+    if (getCarPlaySilentModePreference == 1)
     {
       v6 = @"Mute when session starts";
     }
@@ -54,13 +54,13 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Session connecting, Silent Mode Status: %@", &v15, 0xCu);
   }
 
-  v8 = [(CRSessionSilentModeStatus *)self->_muteStatus isDeviceSilentModeOn];
-  self->_deviceIsMuted = v8;
-  self->_shouldResetToMuted = v8;
+  isDeviceSilentModeOn = [(CRSessionSilentModeStatus *)self->_muteStatus isDeviceSilentModeOn];
+  self->_deviceIsMuted = isDeviceSilentModeOn;
+  self->_shouldResetToMuted = isDeviceSilentModeOn;
   self->_shouldResetMuteState = 0;
   v9 = CarSilentModeLogging();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v4 == 1)
+  if (getCarPlaySilentModePreference == 1)
   {
     if (v10)
     {
@@ -88,7 +88,7 @@
 
   else
   {
-    if (v4 != 2)
+    if (getCarPlaySilentModePreference != 2)
     {
       if (v10)
       {
@@ -132,7 +132,7 @@ LABEL_27:
   [(CRSessionSilentModeManager *)self setupObservers];
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
   v4 = CarSilentModeLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -162,8 +162,8 @@ LABEL_27:
 
 - (void)silentModeDidChangeDuringSession
 {
-  v3 = [(CRSessionSilentModeStatus *)self->_muteStatus isDeviceSilentModeOn];
-  if (self->_deviceIsMuted != v3)
+  isDeviceSilentModeOn = [(CRSessionSilentModeStatus *)self->_muteStatus isDeviceSilentModeOn];
+  if (self->_deviceIsMuted != isDeviceSilentModeOn)
   {
     v4 = CarSilentModeLogging();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -179,7 +179,7 @@ LABEL_27:
         v6 = @"Unmuted";
       }
 
-      if (v3)
+      if (isDeviceSilentModeOn)
       {
         v5 = @"Muted";
       }
@@ -211,7 +211,7 @@ LABEL_27:
 
     else
     {
-      self->_shouldResetToMuted = v3;
+      self->_shouldResetToMuted = isDeviceSilentModeOn;
       self->_shouldResetMuteState = 0;
       v9 = +[NSDistributedNotificationCenter defaultCenter];
       [v9 postNotificationName:CRExternalProcessChangedSilentMode object:0 userInfo:0];
@@ -219,7 +219,7 @@ LABEL_27:
   }
 
   self->_lastModeChangeByCarkitd = 0;
-  self->_deviceIsMuted = v3;
+  self->_deviceIsMuted = isDeviceSilentModeOn;
 }
 
 - (void)setupObservers
@@ -271,11 +271,11 @@ LABEL_27:
   objc_destroyWeak(&location);
 }
 
-- (void)matchDeviceSilentModeToCarPlaySilentModeWithReason:(id)a3
+- (void)matchDeviceSilentModeToCarPlaySilentModeWithReason:(id)reason
 {
   muteStatus = self->_muteStatus;
-  v5 = a3;
-  [(CRSessionSilentModeStatus *)self->_muteStatus setDeviceSilentMode:[(CRSessionSilentModeStatus *)muteStatus getCarPlaySilentModePreference]== 1 reason:v5];
+  reasonCopy = reason;
+  [(CRSessionSilentModeStatus *)self->_muteStatus setDeviceSilentMode:[(CRSessionSilentModeStatus *)muteStatus getCarPlaySilentModePreference]== 1 reason:reasonCopy];
 }
 
 @end

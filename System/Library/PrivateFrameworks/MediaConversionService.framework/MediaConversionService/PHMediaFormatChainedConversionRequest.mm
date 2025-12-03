@@ -1,27 +1,27 @@
 @interface PHMediaFormatChainedConversionRequest
-+ (id)chainedRequestForAdjustmentRenderRequest:(id)a3 dependingOnRequest:(id)a4 error:(id *)a5;
-+ (id)chainedRequestForRequest:(id)a3 dependingOnRequest:(id)a4 error:(id *)a5 successUpdateHandler:(id)a6;
-+ (id)requestForSource:(id)a3 destinationCapabilities:(id)a4 error:(id *)a5;
-- (void)enqueueSubrequestsOnConversionManager:(id)a3;
-- (void)enumerateSubrequests:(id)a3;
++ (id)chainedRequestForAdjustmentRenderRequest:(id)request dependingOnRequest:(id)onRequest error:(id *)error;
++ (id)chainedRequestForRequest:(id)request dependingOnRequest:(id)onRequest error:(id *)error successUpdateHandler:(id)handler;
++ (id)requestForSource:(id)source destinationCapabilities:(id)capabilities error:(id *)error;
+- (void)enqueueSubrequestsOnConversionManager:(id)manager;
+- (void)enumerateSubrequests:(id)subrequests;
 - (void)postProcessSuccessfulCompositeRequest;
 @end
 
 @implementation PHMediaFormatChainedConversionRequest
 
-+ (id)chainedRequestForAdjustmentRenderRequest:(id)a3 dependingOnRequest:(id)a4 error:(id *)a5
++ (id)chainedRequestForAdjustmentRenderRequest:(id)request dependingOnRequest:(id)onRequest error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  onRequestCopy = onRequest;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __107__PHMediaFormatChainedConversionRequest_chainedRequestForAdjustmentRenderRequest_dependingOnRequest_error___block_invoke;
   v14[3] = &unk_27989B6F0;
-  v15 = v9;
-  v16 = v8;
-  v10 = v8;
-  v11 = v9;
-  v12 = [a1 chainedRequestForRequest:v10 dependingOnRequest:v11 error:a5 successUpdateHandler:v14];
+  v15 = onRequestCopy;
+  v16 = requestCopy;
+  v10 = requestCopy;
+  v11 = onRequestCopy;
+  v12 = [self chainedRequestForRequest:v10 dependingOnRequest:v11 error:error successUpdateHandler:v14];
 
   return v12;
 }
@@ -46,23 +46,23 @@ void __107__PHMediaFormatChainedConversionRequest_chainedRequestForAdjustmentRen
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)chainedRequestForRequest:(id)a3 dependingOnRequest:(id)a4 error:(id *)a5 successUpdateHandler:(id)a6
++ (id)chainedRequestForRequest:(id)request dependingOnRequest:(id)onRequest error:(id *)error successUpdateHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v12)
+  requestCopy = request;
+  onRequestCopy = onRequest;
+  handlerCopy = handler;
+  if (onRequestCopy)
   {
-    if (v11)
+    if (requestCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PHMediaFormatConversion.m" lineNumber:1983 description:{@"Invalid parameter not satisfying: %@", @"dependentRequest"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1983 description:{@"Invalid parameter not satisfying: %@", @"dependentRequest"}];
 
-    if (v13)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -70,37 +70,37 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:a1 file:@"PHMediaFormatConversion.m" lineNumber:1982 description:{@"Invalid parameter not satisfying: %@", @"independentRequest"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1982 description:{@"Invalid parameter not satisfying: %@", @"independentRequest"}];
 
-  if (!v11)
+  if (!requestCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v13)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v19 = [MEMORY[0x277CCA890] currentHandler];
-  [v19 handleFailureInMethod:a2 object:a1 file:@"PHMediaFormatConversion.m" lineNumber:1984 description:{@"Invalid parameter not satisfying: %@", @"updateHandler"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHMediaFormatConversion.m" lineNumber:1984 description:{@"Invalid parameter not satisfying: %@", @"updateHandler"}];
 
 LABEL_4:
   v14 = objc_opt_new();
-  [v14 setIndependentRequest:v12];
-  [v12 setParentRequest:v14];
-  [v14 setDependentRequest:v11];
-  [v11 setParentRequest:v14];
-  [v14 setSuccessUpdateHandler:v13];
-  v15 = [v14 compositeRequestCommonInitWithError:a5];
+  [v14 setIndependentRequest:onRequestCopy];
+  [onRequestCopy setParentRequest:v14];
+  [v14 setDependentRequest:requestCopy];
+  [requestCopy setParentRequest:v14];
+  [v14 setSuccessUpdateHandler:handlerCopy];
+  v15 = [v14 compositeRequestCommonInitWithError:error];
 
   return v15;
 }
 
-+ (id)requestForSource:(id)a3 destinationCapabilities:(id)a4 error:(id *)a5
++ (id)requestForSource:(id)source destinationCapabilities:(id)capabilities error:(id *)error
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
@@ -114,39 +114,39 @@ LABEL_4:
 
 - (void)postProcessSuccessfulCompositeRequest
 {
-  v4 = [(PHMediaFormatChainedConversionRequest *)self dependentRequest];
-  v3 = [v4 destination];
-  [(PHMediaFormatConversionRequest *)self setDestination:v3];
+  dependentRequest = [(PHMediaFormatChainedConversionRequest *)self dependentRequest];
+  destination = [dependentRequest destination];
+  [(PHMediaFormatConversionRequest *)self setDestination:destination];
 }
 
-- (void)enumerateSubrequests:(id)a3
+- (void)enumerateSubrequests:(id)subrequests
 {
-  v5 = a3;
-  v6 = [(PHMediaFormatChainedConversionRequest *)self independentRequest];
-  (*(a3 + 2))(v5, v6);
+  subrequestsCopy = subrequests;
+  independentRequest = [(PHMediaFormatChainedConversionRequest *)self independentRequest];
+  (*(subrequests + 2))(subrequestsCopy, independentRequest);
 
-  v7 = [(PHMediaFormatChainedConversionRequest *)self dependentRequest];
-  (*(a3 + 2))(v5, v7);
+  dependentRequest = [(PHMediaFormatChainedConversionRequest *)self dependentRequest];
+  (*(subrequests + 2))(subrequestsCopy, dependentRequest);
 }
 
-- (void)enqueueSubrequestsOnConversionManager:(id)a3
+- (void)enqueueSubrequestsOnConversionManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(PHMediaFormatChainedConversionRequest *)self independentRequest];
+  managerCopy = manager;
+  independentRequest = [(PHMediaFormatChainedConversionRequest *)self independentRequest];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__PHMediaFormatChainedConversionRequest_enqueueSubrequestsOnConversionManager___block_invoke;
   v8[3] = &unk_27989BA48;
   v8[4] = self;
-  [v4 enqueueConversionRequest:v5 completionHandler:v8];
+  [managerCopy enqueueConversionRequest:independentRequest completionHandler:v8];
 
-  v6 = [(PHMediaFormatChainedConversionRequest *)self dependentRequest];
+  dependentRequest = [(PHMediaFormatChainedConversionRequest *)self dependentRequest];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__PHMediaFormatChainedConversionRequest_enqueueSubrequestsOnConversionManager___block_invoke_805;
   v7[3] = &unk_27989BA48;
   v7[4] = self;
-  [v4 enqueueConversionRequest:v6 completionHandler:v7];
+  [managerCopy enqueueConversionRequest:dependentRequest completionHandler:v7];
 }
 
 uint64_t __79__PHMediaFormatChainedConversionRequest_enqueueSubrequestsOnConversionManager___block_invoke(uint64_t a1)

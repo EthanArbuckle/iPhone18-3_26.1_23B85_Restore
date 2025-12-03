@@ -1,8 +1,8 @@
 @interface AlarmAuthorization
-- (BOOL)setWithState:(id)a3 bundleID:(id)a4 error:(id *)a5;
+- (BOOL)setWithState:(id)state bundleID:(id)d error:(id *)error;
 - (_TtC8AlarmKit18AlarmAuthorization)init;
-- (id)stateWithBundleID:(id)a3 error:(id *)a4;
-- (id)supportsAlarmKitWithBundleID:(id)a3 error:(id *)a4;
+- (id)stateWithBundleID:(id)d error:(id *)error;
+- (id)supportsAlarmKitWithBundleID:(id)d error:(id *)error;
 @end
 
 @implementation AlarmAuthorization
@@ -28,24 +28,24 @@
   return [(AlarmAuthorization *)&v9 init];
 }
 
-- (BOOL)setWithState:(id)a3 bundleID:(id)a4 error:(id *)a5
+- (BOOL)setWithState:(id)state bundleID:(id)d error:(id *)error
 {
   v8 = sub_1BBBF53F4();
   v10 = v9;
-  v11 = a3;
-  v12 = self;
+  stateCopy = state;
+  selfCopy = self;
   v13._countAndFlagsBits = v8;
   v13._object = v10;
-  AlarmAuthorization.set(state:bundleID:)(v11, v13);
+  AlarmAuthorization.set(state:bundleID:)(stateCopy, v13);
 
   if (v14)
   {
-    if (a5)
+    if (error)
     {
       v15 = sub_1BBBF51E4();
 
       v16 = v15;
-      *a5 = v15;
+      *error = v15;
     }
 
     else
@@ -56,24 +56,24 @@
   return v14 == 0;
 }
 
-- (id)stateWithBundleID:(id)a3 error:(id *)a4
+- (id)stateWithBundleID:(id)d error:(id *)error
 {
   v6 = sub_1BBBF53F4();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v6;
   v10._object = v8;
   v11.super.super.isa = AlarmAuthorization.state(bundleID:)(v10).super.super.isa;
 
   if (v12.super.super.isa)
   {
-    if (a4)
+    if (error)
     {
       v13 = sub_1BBBF51E4();
 
       v14 = v13;
       isa = 0;
-      *a4 = v13;
+      *error = v13;
     }
 
     else
@@ -91,16 +91,16 @@
   return isa;
 }
 
-- (id)supportsAlarmKitWithBundleID:(id)a3 error:(id *)a4
+- (id)supportsAlarmKitWithBundleID:(id)d error:(id *)error
 {
   sub_1BBBF53F4();
   v5 = *((*(&self->super.isa + OBJC_IVAR____TtC8AlarmKit18AlarmAuthorization_client))[2] + OBJC_IVAR____TtC8AlarmKitP33_5624AB39E48C05673B65736F2442C9F09Singleton_queue);
-  v6 = self;
+  selfCopy = self;
   sub_1BBBF5534();
 
-  v7 = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithBool_];
+  initWithBool_ = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithBool_];
 
-  return v7;
+  return initWithBool_;
 }
 
 @end

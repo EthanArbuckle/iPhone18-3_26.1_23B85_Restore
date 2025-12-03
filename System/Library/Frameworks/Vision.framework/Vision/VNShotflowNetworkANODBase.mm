@@ -3,7 +3,7 @@
 + (const)cellStartsX;
 + (const)cellStartsY;
 + (const)ratios;
-- (VNShotflowNetworkANODBase)initWithModelPath:(id)a3 espressoEngineID:(int)a4 espressoDeviceID:(int)a5 espressoStorageType:(int)a6 threshold:(float)a7;
+- (VNShotflowNetworkANODBase)initWithModelPath:(id)path espressoEngineID:(int)d espressoDeviceID:(int)iD espressoStorageType:(int)type threshold:(float)threshold;
 - (void)initializeBuffers;
 @end
 
@@ -17,16 +17,16 @@
   operator new();
 }
 
-- (VNShotflowNetworkANODBase)initWithModelPath:(id)a3 espressoEngineID:(int)a4 espressoDeviceID:(int)a5 espressoStorageType:(int)a6 threshold:(float)a7
+- (VNShotflowNetworkANODBase)initWithModelPath:(id)path espressoEngineID:(int)d espressoDeviceID:(int)iD espressoStorageType:(int)type threshold:(float)threshold
 {
-  v8 = *&a6;
-  v9 = *&a5;
-  v10 = *&a4;
-  v12 = a3;
+  v8 = *&type;
+  v9 = *&iD;
+  v10 = *&d;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = VNShotflowNetworkANODBase;
-  *&v13 = a7;
-  v14 = [(VNShotflowNetwork *)&v18 initWithModelPath:v12 espressoEngineID:v10 espressoDeviceID:v9 espressoStorageType:v8 threshold:v13];
+  *&v13 = threshold;
+  v14 = [(VNShotflowNetwork *)&v18 initWithModelPath:pathCopy espressoEngineID:v10 espressoDeviceID:v9 espressoStorageType:v8 threshold:v13];
   v15 = v14;
   if (v14)
   {

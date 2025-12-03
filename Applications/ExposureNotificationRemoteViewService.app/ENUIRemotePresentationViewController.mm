@@ -1,10 +1,10 @@
 @interface ENUIRemotePresentationViewController
 - (ENUIRemotePresentationViewController)init;
-- (id)_viewControllerToShowForPresentationRequest:(id)a3;
-- (void)_finishWithError:(id)a3;
-- (void)_handleOnboardingResult:(int64_t)a3 completion:(id)a4;
+- (id)_viewControllerToShowForPresentationRequest:(id)request;
+- (void)_finishWithError:(id)error;
+- (void)_handleOnboardingResult:(int64_t)result completion:(id)completion;
 - (void)dealloc;
-- (void)setPresentationRequest:(id)a3;
+- (void)setPresentationRequest:(id)request;
 - (void)show;
 - (void)viewDidLoad;
 @end
@@ -59,9 +59,9 @@
   }
 }
 
-- (void)setPresentationRequest:(id)a3
+- (void)setPresentationRequest:(id)request
 {
-  objc_storeStrong(&self->_presentationRequest, a3);
+  objc_storeStrong(&self->_presentationRequest, request);
   if (self->_presentationRequest)
   {
 
@@ -99,47 +99,47 @@ LABEL_8:
   }
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v5 = [(ENUIRemotePresentationViewController *)self _hostViewController];
-  [v5 didFinishWithError:v4];
+  _hostViewController = [(ENUIRemotePresentationViewController *)self _hostViewController];
+  [_hostViewController didFinishWithError:errorCopy];
 }
 
-- (id)_viewControllerToShowForPresentationRequest:(id)a3
+- (id)_viewControllerToShowForPresentationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 requestType];
-  if (v5 == 3)
+  requestCopy = request;
+  requestType = [requestCopy requestType];
+  if (requestType == 3)
   {
     objc_initWeak(&location, self);
     v12 = +[ENUIViewControllerFactory sharedInstance];
-    v13 = [v4 appBundleIdentifier];
-    v14 = [v4 agencyRegion];
+    appBundleIdentifier = [requestCopy appBundleIdentifier];
+    agencyRegion = [requestCopy agencyRegion];
     v15 = v19;
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100001768;
     v19[3] = &unk_1000041E8;
     objc_copyWeak(&v20, &location);
-    v16 = [v12 createPreApprovalDialogueWithBundleIdentifier:v13 region:v14 completion:v19];
+    v16 = [v12 createPreApprovalDialogueWithBundleIdentifier:appBundleIdentifier region:agencyRegion completion:v19];
     goto LABEL_8;
   }
 
-  if (v5 == 2)
+  if (requestType == 2)
   {
     objc_initWeak(&location, self);
     v12 = +[ENUIViewControllerFactory sharedInstance];
-    v13 = [v4 appBundleIdentifier];
-    v14 = [v4 agencyRegion];
+    appBundleIdentifier = [requestCopy appBundleIdentifier];
+    agencyRegion = [requestCopy agencyRegion];
     v15 = v21;
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_100001634;
     v21[3] = &unk_1000041E8;
     objc_copyWeak(&v22, &location);
-    v16 = [v12 createKeyReleaseDialogueWithBundleIdentifier:v13 region:v14 completion:v21];
+    v16 = [v12 createKeyReleaseDialogueWithBundleIdentifier:appBundleIdentifier region:agencyRegion completion:v21];
 LABEL_8:
     v11 = v16;
 
@@ -148,11 +148,11 @@ LABEL_8:
     goto LABEL_14;
   }
 
-  if (v5 == 1)
+  if (requestType == 1)
   {
-    v6 = [v4 agencyRegion];
-    v7 = [v6 regionCode];
-    v8 = [_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel regionForRegionCode:v7];
+    agencyRegion2 = [requestCopy agencyRegion];
+    regionCode = [agencyRegion2 regionCode];
+    v8 = [_TtC28HealthExposureNotificationUI27ENUIPublicHealthAgencyModel regionForRegionCode:regionCode];
 
     if (v8)
     {
@@ -193,19 +193,19 @@ LABEL_14:
   return v11;
 }
 
-- (void)_handleOnboardingResult:(int64_t)a3 completion:(id)a4
+- (void)_handleOnboardingResult:(int64_t)result completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(ENUIRemotePresentationViewController *)self presentationRequest];
-  [v7 onboardingRequestCompletedWithDecision:a3 != 0];
+  completionCopy = completion;
+  presentationRequest = [(ENUIRemotePresentationViewController *)self presentationRequest];
+  [presentationRequest onboardingRequestCompletedWithDecision:result != 0];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100001978;
   v9[3] = &unk_100004238;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(ENUIRemotePresentationViewController *)self _performAfterActivation:v9];
 }
 

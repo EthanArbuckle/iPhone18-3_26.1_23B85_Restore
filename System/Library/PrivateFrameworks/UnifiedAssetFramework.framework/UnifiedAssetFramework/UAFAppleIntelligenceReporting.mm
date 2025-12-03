@@ -1,11 +1,11 @@
 @interface UAFAppleIntelligenceReporting
-+ (void)recordEvent:(id)a3 :(id)a4 :(int64_t)a5;
++ (void)recordEvent:(id)event :(id)a4 :(int64_t)a5;
 - (UAFAppleIntelligenceReporting)init;
 @end
 
 @implementation UAFAppleIntelligenceReporting
 
-+ (void)recordEvent:(id)a3 :(id)a4 :(int64_t)a5
++ (void)recordEvent:(id)event :(id)a4 :(int64_t)a5
 {
   v6 = sub_1BCFA7D58();
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBD2B528, &qword_1BCFAC3C8);

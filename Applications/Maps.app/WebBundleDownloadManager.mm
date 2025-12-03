@@ -1,22 +1,22 @@
 @interface WebBundleDownloadManager
-- (BOOL)_fileHashesInFiles:(id)a3 areEqualToFilesInDirectory:(id)a4 error:(id *)a5;
-- (BOOL)_isVersion:(id)a3 newerThan:(id)a4;
-- (BOOL)_saveFileData:(id)a3 toDirectory:(id)a4 toFilePath:(id)a5 error:(id *)a6;
-- (BOOL)_saveWebBundleManifestToDevice:(id)a3 error:(id *)a4;
-- (WebBundleDownloadManager)initWithConfiguration:(id)a3;
-- (id)_fileHashForFile:(id)a3;
+- (BOOL)_fileHashesInFiles:(id)files areEqualToFilesInDirectory:(id)directory error:(id *)error;
+- (BOOL)_isVersion:(id)version newerThan:(id)than;
+- (BOOL)_saveFileData:(id)data toDirectory:(id)directory toFilePath:(id)path error:(id *)error;
+- (BOOL)_saveWebBundleManifestToDevice:(id)device error:(id *)error;
+- (WebBundleDownloadManager)initWithConfiguration:(id)configuration;
+- (id)_fileHashForFile:(id)file;
 - (id)_loadCachedWebBundleVersion;
-- (id)loadWebBundleManifestWithError:(id *)a3;
+- (id)loadWebBundleManifestWithError:(id *)error;
 - (id)observers;
-- (void)_downloadCompleteWithNewDirectory:(id)a3 withError:(id)a4;
-- (void)_downloadManifestWithForce:(BOOL)a3 completion:(id)a4;
-- (void)_downloadWebBundleFileWithPath:(id)a3 inDirectory:(id)a4 withCompletion:(id)a5;
-- (void)_downloadWebBundleWithForce:(BOOL)a3;
-- (void)_updateCachedBundleFromBuiltInDirectoryWithManifest:(id)a3 error:(id *)a4;
-- (void)_updateCachedBundleFromDownloadedBundleDirectoryWithManifest:(id)a3 error:(id *)a4;
+- (void)_downloadCompleteWithNewDirectory:(id)directory withError:(id)error;
+- (void)_downloadManifestWithForce:(BOOL)force completion:(id)completion;
+- (void)_downloadWebBundleFileWithPath:(id)path inDirectory:(id)directory withCompletion:(id)completion;
+- (void)_downloadWebBundleWithForce:(BOOL)force;
+- (void)_updateCachedBundleFromBuiltInDirectoryWithManifest:(id)manifest error:(id *)error;
+- (void)_updateCachedBundleFromDownloadedBundleDirectoryWithManifest:(id)manifest error:(id *)error;
 - (void)_updateOnDevicesWebBundleIfNeed;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation WebBundleDownloadManager
@@ -63,8 +63,8 @@
       }
     }
 
-    v6 = [(WebBundleConfiguration *)self->_configuration absoluteBuiltInWebBundleDirectory];
-    v7 = [v6 URLByAppendingPathComponent:@"manifest.json"];
+    absoluteBuiltInWebBundleDirectory = [(WebBundleConfiguration *)self->_configuration absoluteBuiltInWebBundleDirectory];
+    v7 = [absoluteBuiltInWebBundleDirectory URLByAppendingPathComponent:@"manifest.json"];
 
     v8 = [NSData dataWithContentsOfURL:v7];
     if (!v8)
@@ -91,15 +91,15 @@
   _Block_object_dispose(&v16, 8);
 }
 
-- (BOOL)_isVersion:(id)a3 newerThan:(id)a4
+- (BOOL)_isVersion:(id)version newerThan:(id)than
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  versionCopy = version;
+  thanCopy = than;
+  if ([versionCopy length])
   {
-    if ([v6 length])
+    if ([thanCopy length])
     {
-      v7 = [v5 compare:v6 options:64] == 1;
+      v7 = [versionCopy compare:thanCopy options:64] == 1;
     }
 
     else
@@ -116,25 +116,25 @@
   return v7;
 }
 
-- (void)_updateCachedBundleFromBuiltInDirectoryWithManifest:(id)a3 error:(id *)a4
+- (void)_updateCachedBundleFromBuiltInDirectoryWithManifest:(id)manifest error:(id *)error
 {
   configuration = self->_configuration;
-  v7 = a3;
-  v9 = [(WebBundleConfiguration *)configuration absoluteCachedWebBundleDirectory];
-  v8 = [(WebBundleConfiguration *)self->_configuration absoluteBuiltInWebBundleDirectory];
-  [WebBundleFileHelper copyWebBundleFilesToDirectory:v9 fromDirectory:v8 webBundleManifest:v7 error:a4];
+  manifestCopy = manifest;
+  absoluteCachedWebBundleDirectory = [(WebBundleConfiguration *)configuration absoluteCachedWebBundleDirectory];
+  absoluteBuiltInWebBundleDirectory = [(WebBundleConfiguration *)self->_configuration absoluteBuiltInWebBundleDirectory];
+  [WebBundleFileHelper copyWebBundleFilesToDirectory:absoluteCachedWebBundleDirectory fromDirectory:absoluteBuiltInWebBundleDirectory webBundleManifest:manifestCopy error:error];
 
-  [(WebBundleConfiguration *)self->_configuration setWebBundleDirectory:v9];
+  [(WebBundleConfiguration *)self->_configuration setWebBundleDirectory:absoluteCachedWebBundleDirectory];
   [RAPWebBundleConfigurationManager saveConfiguration:self->_configuration];
 }
 
-- (void)_updateCachedBundleFromDownloadedBundleDirectoryWithManifest:(id)a3 error:(id *)a4
+- (void)_updateCachedBundleFromDownloadedBundleDirectoryWithManifest:(id)manifest error:(id *)error
 {
   configuration = self->_configuration;
-  v7 = a3;
-  v9 = [(WebBundleConfiguration *)configuration absoluteCachedWebBundleDirectory];
-  v8 = [(WebBundleConfiguration *)self->_configuration webBundleDirectory];
-  [WebBundleFileHelper copyWebBundleFilesToDirectory:v9 fromDirectory:v8 webBundleManifest:v7 error:a4];
+  manifestCopy = manifest;
+  absoluteCachedWebBundleDirectory = [(WebBundleConfiguration *)configuration absoluteCachedWebBundleDirectory];
+  webBundleDirectory = [(WebBundleConfiguration *)self->_configuration webBundleDirectory];
+  [WebBundleFileHelper copyWebBundleFilesToDirectory:absoluteCachedWebBundleDirectory fromDirectory:webBundleDirectory webBundleManifest:manifestCopy error:error];
 }
 
 - (id)_loadCachedWebBundleVersion
@@ -162,19 +162,19 @@
   }
 
   v7 = +[NSFileManager defaultManager];
-  v8 = [(WebBundleConfiguration *)self->_configuration absoluteCachedWebBundleDirectory];
-  v9 = [v8 path];
-  v10 = [v7 contentsOfDirectoryAtPath:v9 error:0];
+  absoluteCachedWebBundleDirectory = [(WebBundleConfiguration *)self->_configuration absoluteCachedWebBundleDirectory];
+  path = [absoluteCachedWebBundleDirectory path];
+  v10 = [v7 contentsOfDirectoryAtPath:path error:0];
 
   v11 = sub_100038318();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = [v10 count];
-    v13 = [(WebBundleConfiguration *)self->_configuration absoluteCachedWebBundleDirectory];
+    absoluteCachedWebBundleDirectory2 = [(WebBundleConfiguration *)self->_configuration absoluteCachedWebBundleDirectory];
     v16 = 134218242;
     v17 = v12;
     v18 = 2112;
-    v19 = v13;
+    v19 = absoluteCachedWebBundleDirectory2;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "number of files in cached web bundle directory: %lu, directory:%@", &v16, 0x16u);
   }
 
@@ -191,22 +191,22 @@
   return v14;
 }
 
-- (BOOL)_saveFileData:(id)a3 toDirectory:(id)a4 toFilePath:(id)a5 error:(id *)a6
+- (BOOL)_saveFileData:(id)data toDirectory:(id)directory toFilePath:(id)path error:(id *)error
 {
-  v9 = a3;
-  v10 = [a4 URLByAppendingPathComponent:a5];
-  v11 = [v10 URLByDeletingLastPathComponent];
+  dataCopy = data;
+  v10 = [directory URLByAppendingPathComponent:path];
+  uRLByDeletingLastPathComponent = [v10 URLByDeletingLastPathComponent];
   v12 = +[NSFileManager defaultManager];
   v22 = 0;
-  [v12 createDirectoryAtURL:v11 withIntermediateDirectories:1 attributes:0 error:&v22];
+  [v12 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v22];
   v13 = v22;
 
   if (v13)
   {
-    if (a6)
+    if (error)
     {
       v14 = v13;
-      *a6 = v13;
+      *error = v13;
     }
 
     v15 = sub_100038318();
@@ -225,7 +225,7 @@ LABEL_7:
   }
 
   v21 = 0;
-  [v9 writeToURL:v10 options:0 error:&v21];
+  [dataCopy writeToURL:v10 options:0 error:&v21];
   v13 = v21;
   v18 = sub_100038318();
   v19 = v18;
@@ -240,11 +240,11 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "File %@ saving error: %@", buf, 0x16u);
     }
 
-    if (a6)
+    if (error)
     {
       v20 = v13;
       v16 = 0;
-      *a6 = v13;
+      *error = v13;
       goto LABEL_8;
     }
 
@@ -265,9 +265,9 @@ LABEL_8:
   return v16;
 }
 
-- (id)_fileHashForFile:(id)a3
+- (id)_fileHashForFile:(id)file
 {
-  v3 = [NSData dataWithContentsOfURL:a3];
+  v3 = [NSData dataWithContentsOfURL:file];
   if (v3)
   {
     v4 = [NSMutableData dataWithLength:32];
@@ -283,15 +283,15 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)_fileHashesInFiles:(id)a3 areEqualToFilesInDirectory:(id)a4 error:(id *)a5
+- (BOOL)_fileHashesInFiles:(id)files areEqualToFilesInDirectory:(id)directory error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  filesCopy = files;
+  directoryCopy = directory;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = v8;
+  v10 = filesCopy;
   v11 = [v10 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v11)
   {
@@ -307,16 +307,16 @@ LABEL_8:
         }
 
         v15 = *(*(&v28 + 1) + 8 * i);
-        v16 = [v15 filePath];
-        v17 = [v9 URLByAppendingPathComponent:v16];
+        filePath = [v15 filePath];
+        v17 = [directoryCopy URLByAppendingPathComponent:filePath];
 
         v18 = [(WebBundleDownloadManager *)self _fileHashForFile:v17];
-        v19 = [v15 fileHash];
-        if (([v18 isEqualToString:v19] & 1) == 0)
+        fileHash = [v15 fileHash];
+        if (([v18 isEqualToString:fileHash] & 1) == 0)
         {
           v21 = +[NSFileManager defaultManager];
-          v22 = [v17 path];
-          v23 = [v21 fileExistsAtPath:v22];
+          path = [v17 path];
+          v23 = [v21 fileExistsAtPath:path];
 
           v24 = sub_100038318();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
@@ -331,17 +331,17 @@ LABEL_8:
               v25 = @" NOT";
             }
 
-            v26 = [v17 absoluteString];
+            absoluteString = [v17 absoluteString];
             *buf = 138412546;
             v33 = v25;
             v34 = 2112;
-            v35 = v26;
+            v35 = absoluteString;
             _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "File%@ exists and hashes doesn't match: %@", buf, 0x16u);
           }
 
-          if (a5)
+          if (error)
           {
-            *a5 = [NSError errorWithDomain:@"com.apple.Maps.ReportAProblem.Downloader" code:-4 userInfo:0];
+            *error = [NSError errorWithDomain:@"com.apple.Maps.ReportAProblem.Downloader" code:-4 userInfo:0];
           }
 
           v20 = 0;
@@ -365,11 +365,11 @@ LABEL_18:
   return v20;
 }
 
-- (id)loadWebBundleManifestWithError:(id *)a3
+- (id)loadWebBundleManifestWithError:(id *)error
 {
   v5 = +[NSUserDefaults standardUserDefaults];
-  v6 = [(WebBundleConfiguration *)self->_configuration manifestKey];
-  v7 = [v5 objectForKey:v6];
+  manifestKey = [(WebBundleConfiguration *)self->_configuration manifestKey];
+  v7 = [v5 objectForKey:manifestKey];
 
   if (v7)
   {
@@ -377,7 +377,7 @@ LABEL_18:
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [NSSet setWithObjects:v8, v9, v10, objc_opt_class(), 0];
-    v12 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v11 fromData:v7 error:a3];
+    v12 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v11 fromData:v7 error:error];
   }
 
   else
@@ -388,28 +388,28 @@ LABEL_18:
   return v12;
 }
 
-- (BOOL)_saveWebBundleManifestToDevice:(id)a3 error:(id *)a4
+- (BOOL)_saveWebBundleManifestToDevice:(id)device error:(id *)error
 {
-  v6 = a3;
+  deviceCopy = device;
   v7 = +[NSUserDefaults standardUserDefaults];
   v14 = 0;
-  v8 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v14];
+  v8 = [NSKeyedArchiver archivedDataWithRootObject:deviceCopy requiringSecureCoding:1 error:&v14];
 
   v9 = v14;
   v10 = v9;
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       v11 = v9;
-      *a4 = v10;
+      *error = v10;
     }
   }
 
   else
   {
-    v12 = [(WebBundleConfiguration *)self->_configuration manifestKey];
-    [v7 setObject:v8 forKey:v12];
+    manifestKey = [(WebBundleConfiguration *)self->_configuration manifestKey];
+    [v7 setObject:v8 forKey:manifestKey];
 
     [v7 synchronize];
   }
@@ -417,22 +417,22 @@ LABEL_18:
   return v10 == 0;
 }
 
-- (void)_downloadCompleteWithNewDirectory:(id)a3 withError:(id)a4
+- (void)_downloadCompleteWithNewDirectory:(id)directory withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  directoryCopy = directory;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = sub_100038318();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v7;
+      v14 = errorCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Download failed with error:%@", &v13, 0xCu);
     }
 
-    v9 = [(WebBundleDownloadManager *)self observers];
-    [v9 webBundleEncounteredError:v7];
+    observers = [(WebBundleDownloadManager *)self observers];
+    [observers webBundleEncounteredError:errorCopy];
 LABEL_5:
 
     goto LABEL_10;
@@ -440,7 +440,7 @@ LABEL_5:
 
   v10 = sub_100038318();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
-  if (!v6)
+  if (!directoryCopy)
   {
     if (v11)
     {
@@ -448,35 +448,35 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Web bundle hasn't changed", &v13, 2u);
     }
 
-    v9 = [(WebBundleDownloadManager *)self observers];
-    [v9 webBundleHadNoChanges];
+    observers = [(WebBundleDownloadManager *)self observers];
+    [observers webBundleHadNoChanges];
     goto LABEL_5;
   }
 
   if (v11)
   {
     v13 = 138412290;
-    v14 = v6;
+    v14 = directoryCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Download complete with new directory: %@", &v13, 0xCu);
   }
 
-  v12 = [(WebBundleDownloadManager *)self observers];
-  [v12 webBundleUpdatedWithWebBundlePath:v6];
+  observers2 = [(WebBundleDownloadManager *)self observers];
+  [observers2 webBundleUpdatedWithWebBundlePath:directoryCopy];
 
-  [(WebBundleConfiguration *)self->_configuration setWebBundleDirectory:v6];
+  [(WebBundleConfiguration *)self->_configuration setWebBundleDirectory:directoryCopy];
   [RAPWebBundleConfigurationManager saveConfiguration:self->_configuration];
   [(WebBundleDownloadManager *)self _updateOnDevicesWebBundleIfNeed];
 LABEL_10:
   [(WebBundleDownloadManager *)self setWebBundleDownloading:0];
 }
 
-- (void)_downloadWebBundleFileWithPath:(id)a3 inDirectory:(id)a4 withCompletion:(id)a5
+- (void)_downloadWebBundleFileWithPath:(id)path inDirectory:(id)directory withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WebBundleConfiguration *)self->_configuration serverURL];
-  v12 = [v11 URLByAppendingPathComponent:v8];
+  pathCopy = path;
+  directoryCopy = directory;
+  completionCopy = completion;
+  serverURL = [(WebBundleConfiguration *)self->_configuration serverURL];
+  v12 = [serverURL URLByAppendingPathComponent:pathCopy];
 
   v13 = [NSURLRequest requestWithURL:v12];
   objc_initWeak(&location, self);
@@ -486,11 +486,11 @@ LABEL_10:
   v19[2] = sub_100F59450;
   v19[3] = &unk_10165E330;
   objc_copyWeak(&v23, &location);
-  v15 = v10;
+  v15 = completionCopy;
   v22 = v15;
-  v16 = v9;
+  v16 = directoryCopy;
   v20 = v16;
-  v17 = v8;
+  v17 = pathCopy;
   v21 = v17;
   v18 = [v14 dataTaskWithRequest:v13 completionHandler:v19];
 
@@ -499,14 +499,14 @@ LABEL_10:
   objc_destroyWeak(&location);
 }
 
-- (void)_downloadManifestWithForce:(BOOL)a3 completion:(id)a4
+- (void)_downloadManifestWithForce:(BOOL)force completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  forceCopy = force;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v7 = +[GEOResourceManifestManager modernManager];
-  v8 = [v7 activeTileGroup];
-  v9 = [v8 explicitResources];
+  activeTileGroup = [v7 activeTileGroup];
+  explicitResources = [activeTileGroup explicitResources];
 
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
@@ -514,7 +514,7 @@ LABEL_10:
   v18[3] = &unk_10165E2B8;
   objc_copyWeak(&v19, &location);
   v10 = [NSPredicate predicateWithBlock:v18];
-  v11 = [v9 filteredArrayUsingPredicate:v10];
+  v11 = [explicitResources filteredArrayUsingPredicate:v10];
 
   v12 = +[GEOResourceRequester sharedRequester];
   global_queue = geo_get_global_queue();
@@ -523,9 +523,9 @@ LABEL_10:
   v15[2] = sub_100F597C4;
   v15[3] = &unk_10165E308;
   objc_copyWeak(&v17, &location);
-  v14 = v6;
+  v14 = completionCopy;
   v16 = v14;
-  [v12 fetchResources:v11 force:v4 manifestConfiguration:0 auditToken:0 queue:global_queue handler:v15];
+  [v12 fetchResources:v11 force:forceCopy manifestConfiguration:0 auditToken:0 queue:global_queue handler:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&v19);
@@ -533,7 +533,7 @@ LABEL_10:
   objc_destroyWeak(&location);
 }
 
-- (void)_downloadWebBundleWithForce:(BOOL)a3
+- (void)_downloadWebBundleWithForce:(BOOL)force
 {
   if (![(WebBundleDownloadManager *)self isWebBundleDownloading])
   {
@@ -544,35 +544,35 @@ LABEL_10:
     v6[2] = sub_100F599A0;
     v6[3] = &unk_101661AE0;
     v6[4] = self;
-    v7 = a3;
+    forceCopy = force;
     dispatch_async(downloadingQueue, v6);
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(WebBundleDownloadManager *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(WebBundleDownloadManager *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(WebBundleDownloadManager *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(WebBundleDownloadManager *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
-- (WebBundleDownloadManager)initWithConfiguration:(id)a3
+- (WebBundleDownloadManager)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = WebBundleDownloadManager;
   v6 = [(WebBundleDownloadManager *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.maps.webbundle.downloading", v8);
     downloadingQueue = v7->_downloadingQueue;

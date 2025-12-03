@@ -1,28 +1,28 @@
 @interface _UIVisualEffectConfig
-+ (_UIVisualEffectConfig)configWithContentConfig:(id)a3;
-+ (_UIVisualEffectConfig)configWithLayerConfigs:(id)a3;
++ (_UIVisualEffectConfig)configWithContentConfig:(id)config;
++ (_UIVisualEffectConfig)configWithLayerConfigs:(id)configs;
 - (id)description;
-- (void)addLayerConfig:(id)a3;
-- (void)enumerateLayerConfigs:(id)a3;
+- (void)addLayerConfig:(id)config;
+- (void)enumerateLayerConfigs:(id)configs;
 @end
 
 @implementation _UIVisualEffectConfig
 
-+ (_UIVisualEffectConfig)configWithContentConfig:(id)a3
++ (_UIVisualEffectConfig)configWithContentConfig:(id)config
 {
-  v3 = a3;
+  configCopy = config;
   v4 = objc_alloc_init(_UIVisualEffectConfig);
   contentConfig = v4->_contentConfig;
-  v4->_contentConfig = v3;
+  v4->_contentConfig = configCopy;
 
   return v4;
 }
 
-+ (_UIVisualEffectConfig)configWithLayerConfigs:(id)a3
++ (_UIVisualEffectConfig)configWithLayerConfigs:(id)configs
 {
-  v3 = a3;
+  configsCopy = configs;
   v4 = objc_alloc_init(_UIVisualEffectConfig);
-  v5 = [v3 mutableCopy];
+  v5 = [configsCopy mutableCopy];
 
   layerConfigs = v4->_layerConfigs;
   v4->_layerConfigs = v5;
@@ -30,37 +30,37 @@
   return v4;
 }
 
-- (void)addLayerConfig:(id)a3
+- (void)addLayerConfig:(id)config
 {
   layerConfigs = self->_layerConfigs;
   if (layerConfigs)
   {
-    v9 = a3;
-    [(NSMutableArray *)layerConfigs addObject:v9];
-    v4 = v9;
+    configCopy = config;
+    [(NSMutableArray *)layerConfigs addObject:configCopy];
+    v4 = configCopy;
   }
 
   else
   {
     v6 = MEMORY[0x1E695DF70];
-    v7 = a3;
-    v8 = [[v6 alloc] initWithObjects:{v7, 0}];
+    configCopy2 = config;
+    v8 = [[v6 alloc] initWithObjects:{configCopy2, 0}];
 
     v4 = self->_layerConfigs;
     self->_layerConfigs = v8;
   }
 }
 
-- (void)enumerateLayerConfigs:(id)a3
+- (void)enumerateLayerConfigs:(id)configs
 {
-  v4 = a3;
+  configsCopy = configs;
   layerConfigs = self->_layerConfigs;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47___UIVisualEffectConfig_enumerateLayerConfigs___block_invoke;
   v7[3] = &unk_1E70F6BB8;
-  v8 = v4;
-  v6 = v4;
+  v8 = configsCopy;
+  v6 = configsCopy;
   [(NSMutableArray *)layerConfigs enumerateObjectsUsingBlock:v7];
 }
 

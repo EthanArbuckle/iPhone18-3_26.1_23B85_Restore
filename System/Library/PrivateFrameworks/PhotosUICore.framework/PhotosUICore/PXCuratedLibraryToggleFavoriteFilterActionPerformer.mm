@@ -1,6 +1,6 @@
 @interface PXCuratedLibraryToggleFavoriteFilterActionPerformer
-- (PXCuratedLibraryToggleFavoriteFilterActionPerformer)initWithViewModel:(id)a3;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
+- (PXCuratedLibraryToggleFavoriteFilterActionPerformer)initWithViewModel:(id)model;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (int64_t)menuActionState;
 - (void)performUserInteractionTask;
 @end
@@ -9,40 +9,40 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
-  [v3 setFavorite:{objc_msgSend(v3, "favorite") ^ 1}];
-  [(PXCuratedLibraryToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:v3];
+  currentContentFilterState = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
+  [currentContentFilterState setFavorite:{objc_msgSend(currentContentFilterState, "favorite") ^ 1}];
+  [(PXCuratedLibraryToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:currentContentFilterState];
 }
 
 - (int64_t)menuActionState
 {
-  v2 = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
-  v3 = [v2 isContentFilterActive:11];
+  currentContentFilterState = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
+  v3 = [currentContentFilterState isContentFilterActive:11];
 
   return v3;
 }
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
-  if (a3 == 1)
+  if (case == 1)
   {
-    v5 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-    v6 = [v5 allPhotosContentFilterState];
+    viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
+    allPhotosContentFilterState = [viewModel allPhotosContentFilterState];
 
-    if (v6)
+    if (allPhotosContentFilterState)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v11 = objc_opt_class();
         v12 = NSStringFromClass(v11);
-        v13 = [v6 px_descriptionForAssertionMessage];
-        [v10 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryToggleFavoriteFilterActionPerformer.m" lineNumber:39 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.viewModel.allPhotosContentFilterState", v12, v13}];
+        px_descriptionForAssertionMessage = [allPhotosContentFilterState px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryToggleFavoriteFilterActionPerformer.m" lineNumber:39 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.viewModel.allPhotosContentFilterState", v12, px_descriptionForAssertionMessage}];
       }
     }
 
-    if ([v6 favorite])
+    if ([allPhotosContentFilterState favorite])
     {
       v7 = @"DISABLE_FAVORITES_FILTER_SHORTCUT";
     }
@@ -63,11 +63,11 @@
   return v8;
 }
 
-- (PXCuratedLibraryToggleFavoriteFilterActionPerformer)initWithViewModel:(id)a3
+- (PXCuratedLibraryToggleFavoriteFilterActionPerformer)initWithViewModel:(id)model
 {
   v4.receiver = self;
   v4.super_class = PXCuratedLibraryToggleFavoriteFilterActionPerformer;
-  return [(PXCuratedLibraryActionPerformer *)&v4 initWithActionType:@"PXCuratedLibraryActionToggleFavoriteFilter" viewModel:a3];
+  return [(PXCuratedLibraryActionPerformer *)&v4 initWithActionType:@"PXCuratedLibraryActionToggleFavoriteFilter" viewModel:model];
 }
 
 @end

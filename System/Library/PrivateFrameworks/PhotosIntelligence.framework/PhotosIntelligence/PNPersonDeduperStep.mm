@@ -1,15 +1,15 @@
 @interface PNPersonDeduperStep
-- (BOOL)addPotentialMergeCandidateForPerson:(id)a3 withOtherPerson:(id)a4 updateBlock:(id)a5;
-- (BOOL)isPersonSimilar:(id)a3 withOtherPerson:(id)a4 withDistance:(float)a5 minAgeType:(unsigned __int16)a6;
-- (BOOL)shouldStopWithUpdateBlock:(id)a3;
+- (BOOL)addPotentialMergeCandidateForPerson:(id)person withOtherPerson:(id)otherPerson updateBlock:(id)block;
+- (BOOL)isPersonSimilar:(id)similar withOtherPerson:(id)person withDistance:(float)distance minAgeType:(unsigned __int16)type;
+- (BOOL)shouldStopWithUpdateBlock:(id)block;
 - (NSString)metricsKey;
 - (NSString)name;
-- (PNPersonDeduperStep)initWithPersonClusterManager:(id)a3 invalidCandidatesMapping:(id)a4 profile:(id)a5;
+- (PNPersonDeduperStep)initWithPersonClusterManager:(id)manager invalidCandidatesMapping:(id)mapping profile:(id)profile;
 - (PNPersonPromoterDelegate)delegate;
-- (float)adjustedThreshold:(float)a3 forMinAgeType:(unsigned __int16)a4;
-- (id)_resolveMergeCandidate:(id)a3 forPerson:(id)a4;
-- (id)mergeCandidatePersonsWithUpdateBlock:(id)a3;
-- (void)dedupePersons:(id)a3 withOtherPersons:(id)a4 updateBlock:(id)a5 resultBlock:(id)a6;
+- (float)adjustedThreshold:(float)threshold forMinAgeType:(unsigned __int16)type;
+- (id)_resolveMergeCandidate:(id)candidate forPerson:(id)person;
+- (id)mergeCandidatePersonsWithUpdateBlock:(id)block;
+- (void)dedupePersons:(id)persons withOtherPersons:(id)otherPersons updateBlock:(id)block resultBlock:(id)resultBlock;
 @end
 
 @implementation PNPersonDeduperStep
@@ -21,64 +21,64 @@
   return WeakRetained;
 }
 
-- (float)adjustedThreshold:(float)a3 forMinAgeType:(unsigned __int16)a4
+- (float)adjustedThreshold:(float)threshold forMinAgeType:(unsigned __int16)type
 {
-  v4 = a4;
+  typeCopy = type;
   if ([(PNPersonDeduperProfile *)self->_profile shouldAdjustThresholdOnAgeType])
   {
-    if (v4 == 2)
+    if (typeCopy == 2)
     {
       v6 = 0.8;
-      return a3 * v6;
+      return threshold * v6;
     }
 
-    if (v4 == 1)
+    if (typeCopy == 1)
     {
       v6 = 0.7;
-      return a3 * v6;
+      return threshold * v6;
     }
   }
 
-  return a3;
+  return threshold;
 }
 
-- (BOOL)addPotentialMergeCandidateForPerson:(id)a3 withOtherPerson:(id)a4 updateBlock:(id)a5
+- (BOOL)addPotentialMergeCandidateForPerson:(id)person withOtherPerson:(id)otherPerson updateBlock:(id)block
 {
   v60 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 quarantined] & 1) != 0 || (objc_msgSend(v9, "quarantined"))
+  personCopy = person;
+  otherPersonCopy = otherPerson;
+  blockCopy = block;
+  if ([personCopy quarantined] & 1) != 0 || (objc_msgSend(otherPersonCopy, "quarantined"))
   {
     goto LABEL_5;
   }
 
-  v11 = [(PNPersonDeduperStep *)self invalidCandidatesMapping];
-  v12 = [v9 localIdentifier];
-  v13 = [v11 objectForKeyedSubscript:v12];
-  v14 = [v8 localIdentifier];
-  if (([v13 containsObject:v14] & 1) == 0)
+  invalidCandidatesMapping = [(PNPersonDeduperStep *)self invalidCandidatesMapping];
+  localIdentifier = [otherPersonCopy localIdentifier];
+  v13 = [invalidCandidatesMapping objectForKeyedSubscript:localIdentifier];
+  localIdentifier2 = [personCopy localIdentifier];
+  if (([v13 containsObject:localIdentifier2] & 1) == 0)
   {
-    v45 = v10;
-    v17 = [(PNPersonDeduperStep *)self invalidCandidatesMapping];
-    [v8 localIdentifier];
+    v45 = blockCopy;
+    invalidCandidatesMapping2 = [(PNPersonDeduperStep *)self invalidCandidatesMapping];
+    [personCopy localIdentifier];
     v18 = v42 = self;
-    v19 = [v17 objectForKeyedSubscript:v18];
-    v20 = [v9 localIdentifier];
-    v43 = [v19 containsObject:v20];
+    v19 = [invalidCandidatesMapping2 objectForKeyedSubscript:v18];
+    localIdentifier3 = [otherPersonCopy localIdentifier];
+    v43 = [v19 containsObject:localIdentifier3];
 
     if (v43)
     {
       v15 = 0;
-      v10 = v45;
+      blockCopy = v45;
       goto LABEL_6;
     }
 
     v51 = 0;
-    v21 = [(PNPersonDeduperStep *)v42 personClusterManager];
+    personClusterManager = [(PNPersonDeduperStep *)v42 personClusterManager];
     v50 = 0;
-    v10 = v45;
-    [v21 distanceWithOverlapCheckBetweenPerson:v8 andPerson:v9 useCommonMoments:1 minAgeType:&v51 updateBlock:v45 error:&v50];
+    blockCopy = v45;
+    [personClusterManager distanceWithOverlapCheckBetweenPerson:personCopy andPerson:otherPersonCopy useCommonMoments:1 minAgeType:&v51 updateBlock:v45 error:&v50];
     v23 = v22;
     v24 = COERCE_DOUBLE(v50);
 
@@ -87,30 +87,30 @@
       if (![(PNPersonDeduperStep *)v42 shouldStopWithUpdateBlock:v45])
       {
         *&v25 = v23;
-        if ([(PNPersonDeduperStep *)v42 isPersonSimilar:v8 withOtherPerson:v9 withDistance:v51 minAgeType:v25])
+        if ([(PNPersonDeduperStep *)v42 isPersonSimilar:personCopy withOtherPerson:otherPersonCopy withDistance:v51 minAgeType:v25])
         {
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
           {
             *buf = 134218498;
             v55 = v23;
             v56 = 2112;
-            v57 = v9;
+            v57 = otherPersonCopy;
             v58 = 2112;
-            v59 = v8;
+            v59 = personCopy;
             _os_log_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Found a merge candidate with distance %.3f: %@ for %@", buf, 0x20u);
           }
 
-          v53[0] = v8;
-          v53[1] = v9;
+          v53[0] = personCopy;
+          v53[1] = otherPersonCopy;
           v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:2];
           v46 = 0u;
           v47 = 0u;
           v48 = 0u;
           v49 = 0u;
-          v26 = [(PNPersonDeduperStep *)v42 mergeRelations];
-          v27 = NSAllMapTableKeys(v26);
+          mergeRelations = [(PNPersonDeduperStep *)v42 mergeRelations];
+          mergeRelations4 = NSAllMapTableKeys(mergeRelations);
 
-          v28 = [v27 countByEnumeratingWithState:&v46 objects:v52 count:16];
+          v28 = [mergeRelations4 countByEnumeratingWithState:&v46 objects:v52 count:16];
           if (v28)
           {
             v29 = v28;
@@ -121,20 +121,20 @@ LABEL_18:
             {
               if (*v47 != v30)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(mergeRelations4);
               }
 
               v32 = *(*(&v46 + 1) + 8 * v31);
-              v33 = [v32 lastObject];
-              v34 = v33;
-              if (v33 == v9)
+              lastObject = [v32 lastObject];
+              v34 = lastObject;
+              if (lastObject == otherPersonCopy)
               {
                 break;
               }
 
               if (v29 == ++v31)
               {
-                v29 = [v27 countByEnumeratingWithState:&v46 objects:v52 count:16];
+                v29 = [mergeRelations4 countByEnumeratingWithState:&v46 objects:v52 count:16];
                 if (v29)
                 {
                   goto LABEL_18;
@@ -144,33 +144,33 @@ LABEL_18:
               }
             }
 
-            v35 = [(PNPersonDeduperStep *)v42 mergeRelations];
-            v36 = [v35 objectForKey:v32];
+            mergeRelations2 = [(PNPersonDeduperStep *)v42 mergeRelations];
+            v36 = [mergeRelations2 objectForKey:v32];
             [v36 floatValue];
             v38 = v37;
 
             if (v38 > v23)
             {
-              v39 = [(PNPersonDeduperStep *)v42 mergeRelations];
-              [v39 removeObjectForKey:v32];
+              mergeRelations3 = [(PNPersonDeduperStep *)v42 mergeRelations];
+              [mergeRelations3 removeObjectForKey:v32];
 
               goto LABEL_29;
             }
 
             v41 = v44;
-            v10 = v45;
+            blockCopy = v45;
           }
 
           else
           {
 LABEL_29:
 
-            v27 = [(PNPersonDeduperStep *)v42 mergeRelations];
+            mergeRelations4 = [(PNPersonDeduperStep *)v42 mergeRelations];
             *&v40 = v23;
             v34 = [MEMORY[0x1E696AD98] numberWithFloat:v40];
             v41 = v44;
-            [v27 setObject:v34 forKey:v44];
-            v10 = v45;
+            [mergeRelations4 setObject:v34 forKey:v44];
+            blockCopy = v45;
           }
 
           v15 = 1;
@@ -199,24 +199,24 @@ LABEL_6:
   return v15;
 }
 
-- (id)mergeCandidatePersonsWithUpdateBlock:(id)a3
+- (id)mergeCandidatePersonsWithUpdateBlock:(id)block
 {
   v184 = *MEMORY[0x1E69E9840];
-  v111 = a3;
+  blockCopy = block;
   v106 = [MEMORY[0x1E695DFA8] set];
-  v4 = [(PNPersonDeduperStep *)self personClusterManager];
+  personClusterManager = [(PNPersonDeduperStep *)self personClusterManager];
   v5 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:5 valueOptions:0];
   v165 = 0u;
   v166 = 0u;
   v167 = 0u;
   v168 = 0u;
-  v6 = [(PNPersonDeduperStep *)self mergeRelations];
-  v7 = [v6 keyEnumerator];
+  mergeRelations = [(PNPersonDeduperStep *)self mergeRelations];
+  keyEnumerator = [mergeRelations keyEnumerator];
 
-  obj = v7;
-  v8 = [v7 countByEnumeratingWithState:&v165 objects:v183 count:16];
+  obj = keyEnumerator;
+  v8 = [keyEnumerator countByEnumeratingWithState:&v165 objects:v183 count:16];
   v112 = v5;
-  v114 = self;
+  selfCopy = self;
   if (v8)
   {
     v9 = v8;
@@ -231,7 +231,7 @@ LABEL_6:
         }
 
         v12 = *(*(&v165 + 1) + 8 * i);
-        if ([(PNPersonDeduperStep *)self shouldStopWithUpdateBlock:v111])
+        if ([(PNPersonDeduperStep *)self shouldStopWithUpdateBlock:blockCopy])
         {
           v98 = v106;
           v100 = v106;
@@ -241,13 +241,13 @@ LABEL_110:
           goto LABEL_111;
         }
 
-        v13 = [v12 firstObject];
-        v14 = [v12 lastObject];
-        v15 = [v13 isVerified];
-        v16 = [v14 isVerified];
-        if (v15)
+        firstObject = [v12 firstObject];
+        lastObject = [v12 lastObject];
+        isVerified = [firstObject isVerified];
+        isVerified2 = [lastObject isVerified];
+        if (isVerified)
         {
-          v17 = v16 == 0;
+          v17 = isVerified2 == 0;
         }
 
         else
@@ -257,50 +257,50 @@ LABEL_110:
 
         if (v17)
         {
-          if ((v16 & 1) != 0 || (v18 = [v13 faceCount], !((v18 >= objc_msgSend(v14, "faceCount")) | v15 & 1)))
+          if ((isVerified2 & 1) != 0 || (v18 = [firstObject faceCount], !((v18 >= objc_msgSend(lastObject, "faceCount")) | isVerified & 1)))
           {
-            v20 = [v12 lastObject];
+            lastObject2 = [v12 lastObject];
 
-            v19 = [v12 firstObject];
+            firstObject2 = [v12 firstObject];
 
             if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412546;
-              *v178 = v19;
+              *v178 = firstObject2;
               *&v178[8] = 2112;
-              *&v178[10] = v20;
+              *&v178[10] = lastObject2;
               _os_log_debug_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Swaping source person and person to merge: %@ merging in to %@", buf, 0x16u);
             }
           }
 
           else
           {
-            v19 = v14;
-            v20 = v13;
+            firstObject2 = lastObject;
+            lastObject2 = firstObject;
           }
 
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v31 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v31 handleFailureInMethod:a2 object:v114 file:@"PNPersonDeduperStep.m" lineNumber:176 description:@"Person source should be type of PNPersonCluster"];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PNPersonDeduperStep.m" lineNumber:176 description:@"Person source should be type of PNPersonCluster"];
           }
 
-          v22 = [(PNPersonDeduperStep *)v114 mergeRelations];
-          v23 = [v22 objectForKey:v12];
+          mergeRelations2 = [(PNPersonDeduperStep *)selfCopy mergeRelations];
+          v23 = [mergeRelations2 objectForKey:v12];
           [v23 floatValue];
           v25 = v24;
 
-          v26 = [v4 numberOfAssetsInCommonBetweenPerson:v20 andPerson:v19];
-          v27 = [v4 numberOfMomentsInCommonBetweenPerson:v20 andPerson:v19];
+          v26 = [personClusterManager numberOfAssetsInCommonBetweenPerson:lastObject2 andPerson:firstObject2];
+          v27 = [personClusterManager numberOfMomentsInCommonBetweenPerson:lastObject2 andPerson:firstObject2];
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
           {
-            v29 = [v19 localIdentifier];
-            v30 = [v20 localIdentifier];
+            localIdentifier = [firstObject2 localIdentifier];
+            localIdentifier2 = [lastObject2 localIdentifier];
             *buf = 138413314;
-            *v178 = v29;
+            *v178 = localIdentifier;
             *&v178[8] = 2112;
-            *&v178[10] = v30;
+            *&v178[10] = localIdentifier2;
             v179 = 2048;
             v180 = v25;
             v181 = 1024;
@@ -312,28 +312,28 @@ LABEL_110:
             v5 = v112;
           }
 
-          v28 = [(NSMapTable *)v5 objectForKey:v20];
+          v28 = [(NSMapTable *)v5 objectForKey:lastObject2];
           if (v28)
           {
-            v21 = v28;
-            [v28 addObject:v19];
+            currentHandler2 = v28;
+            [v28 addObject:firstObject2];
           }
 
           else
           {
-            v21 = [MEMORY[0x1E695DFA8] setWithObject:v19];
-            [(NSMapTable *)v5 setObject:v21 forKey:v20];
+            currentHandler2 = [MEMORY[0x1E695DFA8] setWithObject:firstObject2];
+            [(NSMapTable *)v5 setObject:currentHandler2 forKey:lastObject2];
           }
 
-          v14 = v19;
-          v13 = v20;
-          self = v114;
+          lastObject = firstObject2;
+          firstObject = lastObject2;
+          self = selfCopy;
         }
 
         else
         {
-          v21 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v21 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperStep.m" lineNumber:164 description:@"It's impossible at this point to merge two verified persons together."];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperStep.m" lineNumber:164 description:@"It's impossible at this point to merge two verified persons together."];
         }
       }
 
@@ -373,7 +373,7 @@ LABEL_110:
 
         v110 = v34;
         v36 = *(*(&v161 + 1) + 8 * v34);
-        if ([(PNPersonDeduperStep *)self shouldStopWithUpdateBlock:v111, v105])
+        if ([(PNPersonDeduperStep *)self shouldStopWithUpdateBlock:blockCopy, v105])
         {
           v98 = v106;
           v102 = v106;
@@ -455,8 +455,8 @@ LABEL_110:
                         v55 = *(*(&v153 + 1) + 8 * j);
                         if (v46 != v55)
                         {
-                          v56 = [v55 backingAssetIdentifiers];
-                          [v48 unionSet:v56];
+                          backingAssetIdentifiers = [v55 backingAssetIdentifiers];
+                          [v48 unionSet:backingAssetIdentifiers];
                         }
                       }
 
@@ -466,8 +466,8 @@ LABEL_110:
                     while (v52);
                   }
 
-                  v57 = [v46 backingAssetIdentifiers];
-                  v58 = [v4 assetsOverlapBetweenPersonAssetIdentifiers:v57 andPersonAssetIdentifiers:v48];
+                  backingAssetIdentifiers2 = [v46 backingAssetIdentifiers];
+                  v58 = [personClusterManager assetsOverlapBetweenPersonAssetIdentifiers:backingAssetIdentifiers2 andPersonAssetIdentifiers:v48];
 
                   v5 = v112;
                   if (v58)
@@ -500,7 +500,7 @@ LABEL_110:
             while (v43);
           }
 
-          self = v114;
+          self = selfCopy;
           v37 = v115;
           v33 = MEMORY[0x1E69E9C10];
         }
@@ -508,9 +508,9 @@ LABEL_110:
         if ([v37 count])
         {
           v152 = 0;
-          v59 = [v4 representativeFaceObservationForPerson:v130 ageType:&v152];
-          v60 = [v130 representativeFaceByFaceIdentifiers];
-          v61 = [v60 allValues];
+          v59 = [personClusterManager representativeFaceObservationForPerson:v130 ageType:&v152];
+          representativeFaceByFaceIdentifiers = [v130 representativeFaceByFaceIdentifiers];
+          allValues = [representativeFaceByFaceIdentifiers allValues];
 
           v62 = [v37 copy];
           v148 = 0u;
@@ -522,7 +522,7 @@ LABEL_110:
           if (v119)
           {
             v118 = *v149;
-            v113 = v61;
+            v113 = allValues;
             do
             {
               for (k = 0; k != v119; ++k)
@@ -533,23 +533,23 @@ LABEL_110:
                 }
 
                 objb = *(*(&v148 + 1) + 8 * k);
-                v64 = [objb representativeFaceByFaceIdentifiers];
-                v65 = [v64 allValues];
+                representativeFaceByFaceIdentifiers2 = [objb representativeFaceByFaceIdentifiers];
+                allValues2 = [representativeFaceByFaceIdentifiers2 allValues];
 
-                if ([v61 count] > 1 || objc_msgSend(v65, "count") >= 2)
+                if ([allValues count] > 1 || objc_msgSend(allValues2, "count") >= 2)
                 {
                   v120 = k;
-                  v66 = [v61 count];
-                  v67 = [v65 count];
+                  v66 = [allValues count];
+                  v67 = [allValues2 count];
                   v147 = 0;
-                  v68 = [v4 representativeFaceObservationForPerson:objb ageType:&v147];
-                  v69 = [v4 minAgeTypeForFaceAgeType:v152 andFaceAgeType:v147];
+                  v68 = [personClusterManager representativeFaceObservationForPerson:objb ageType:&v147];
+                  v69 = [personClusterManager minAgeTypeForFaceAgeType:v152 andFaceAgeType:v147];
                   v143 = 0u;
                   v144 = 0u;
                   v70 = (v69 - 1) < 2;
                   v145 = 0u;
                   v146 = 0u;
-                  v71 = v61;
+                  v71 = allValues;
                   v126 = [v71 countByEnumeratingWithState:&v143 objects:v171 count:16];
                   if (v126)
                   {
@@ -558,7 +558,7 @@ LABEL_110:
                     v117 = vcvtps_u32_f32(vcvts_n_f32_u64(v67 * v66, 1uLL));
                     v73 = flt_1C7592EE0[v70];
                     v122 = *v144;
-                    v124 = v65;
+                    v124 = allValues2;
                     do
                     {
                       v74 = 0;
@@ -575,7 +575,7 @@ LABEL_110:
                         v140 = 0u;
                         v141 = 0u;
                         v142 = 0u;
-                        v76 = v65;
+                        v76 = allValues2;
                         v77 = [v76 countByEnumeratingWithState:&v139 objects:v170 count:16];
                         if (v77)
                         {
@@ -591,9 +591,9 @@ LABEL_110:
                               }
 
                               v81 = *(*(&v139 + 1) + 8 * m);
-                              v82 = [v4 visionHelper];
+                              visionHelper = [personClusterManager visionHelper];
                               v138 = 0;
-                              [v82 distanceBetweenFaceObservation:v75 andFaceObservation:v81 error:&v138];
+                              [visionHelper distanceBetweenFaceObservation:v75 andFaceObservation:v81 error:&v138];
                               v84 = v83;
                               v85 = v138;
 
@@ -601,12 +601,12 @@ LABEL_110:
                               {
                                 if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
                                 {
-                                  v86 = [v130 localIdentifier];
-                                  v87 = [objb localIdentifier];
+                                  localIdentifier3 = [v130 localIdentifier];
+                                  localIdentifier4 = [objb localIdentifier];
                                   *buf = 138413058;
-                                  *v178 = v86;
+                                  *v178 = localIdentifier3;
                                   *&v178[8] = 2112;
-                                  *&v178[10] = v87;
+                                  *&v178[10] = localIdentifier4;
                                   v179 = 2048;
                                   v180 = v84;
                                   v181 = 2048;
@@ -627,7 +627,7 @@ LABEL_110:
                         }
 
                         v74 = v128 + 1;
-                        v65 = v124;
+                        allValues2 = v124;
                       }
 
                       while (v128 + 1 != v126);
@@ -636,8 +636,8 @@ LABEL_110:
 
                     while (v126);
 
-                    v61 = v113;
-                    self = v114;
+                    allValues = v113;
+                    self = selfCopy;
                     k = v120;
                     if (v72 > v117)
                     {
@@ -714,7 +714,7 @@ LABEL_110:
 
         v94 = *(*(&v134 + 1) + 8 * n);
         v95 = objc_autoreleasePoolPush();
-        if ([(PNPersonDeduperStep *)self shouldStopWithUpdateBlock:v111])
+        if ([(PNPersonDeduperStep *)self shouldStopWithUpdateBlock:blockCopy])
         {
           v98 = v106;
           v104 = v106;
@@ -726,7 +726,7 @@ LABEL_110:
         v96 = [(PNPersonDeduperStep *)self _resolveMergeCandidate:v112 forPerson:v94];
         if ([v96 count])
         {
-          [v4 mergePersons:v96 withPerson:v94];
+          [personClusterManager mergePersons:v96 withPerson:v94];
           [v106 unionSet:v96];
         }
 
@@ -743,8 +743,8 @@ LABEL_110:
     }
   }
 
-  v97 = [(PNPersonDeduperStep *)self mergeRelations];
-  [v97 removeAllObjects];
+  mergeRelations3 = [(PNPersonDeduperStep *)self mergeRelations];
+  [mergeRelations3 removeAllObjects];
 
   v98 = v106;
   v99 = v106;
@@ -755,20 +755,20 @@ LABEL_111:
   return v98;
 }
 
-- (id)_resolveMergeCandidate:(id)a3 forPerson:(id)a4
+- (id)_resolveMergeCandidate:(id)candidate forPerson:(id)person
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:v7];
+  candidateCopy = candidate;
+  personCopy = person;
+  v8 = [candidateCopy objectForKey:personCopy];
   if ([v8 count])
   {
-    [v6 removeObjectForKey:v7];
-    v9 = [(PNPersonDeduperStep *)self personClusterManager];
+    [candidateCopy removeObjectForKey:personCopy];
+    personClusterManager = [(PNPersonDeduperStep *)self personClusterManager];
     v28 = [v8 mutableCopy];
-    v26 = v7;
-    v27 = [v7 localIdentifier];
-    v10 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v27, 0}];
+    v26 = personCopy;
+    localIdentifier = [personCopy localIdentifier];
+    v10 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{localIdentifier, 0}];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -790,14 +790,14 @@ LABEL_111:
           }
 
           v15 = *(*(&v31 + 1) + 8 * i);
-          v16 = [v15 localIdentifier];
-          [v9 mergeConfidenceBetweenPersonLocalIdentifier:v16 andCandidateLocalIdentifiers:v10];
+          localIdentifier2 = [v15 localIdentifier];
+          [personClusterManager mergeConfidenceBetweenPersonLocalIdentifier:localIdentifier2 andCandidateLocalIdentifiers:v10];
           if (v17 == -1.0)
           {
-            v18 = v6;
+            v18 = candidateCopy;
             v30 = 0;
             v29 = 0;
-            [v9 distanceBetweenPerson:v15 andPerson:v26 useCommonMoments:1 minAgeType:&v30 updateBlock:&__block_literal_global_1194 error:&v29];
+            [personClusterManager distanceBetweenPerson:v15 andPerson:v26 useCommonMoments:1 minAgeType:&v30 updateBlock:&__block_literal_global_1194 error:&v29];
             v20 = v19;
             v21 = v29;
             if (v21)
@@ -806,21 +806,21 @@ LABEL_111:
               if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412802;
-                v36 = v27;
+                v36 = localIdentifier;
                 v37 = 2112;
-                v38 = v16;
+                v38 = localIdentifier2;
                 v39 = 2112;
                 v40 = v21;
                 _os_log_error_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "error updating confidence cache between %@ and %@: %@", buf, 0x20u);
               }
             }
 
-            [v9 updateConfidenceCacheBetweenPersonLocalIdentifier:v16 andOtherPersonLocalIdentifier:v27 withDistance:v20];
+            [personClusterManager updateConfidenceCacheBetweenPersonLocalIdentifier:localIdentifier2 andOtherPersonLocalIdentifier:localIdentifier withDistance:v20];
 
-            v6 = v18;
+            candidateCopy = v18;
           }
 
-          v22 = [(PNPersonDeduperStep *)self _resolveMergeCandidate:v6 forPerson:v15];
+          v22 = [(PNPersonDeduperStep *)self _resolveMergeCandidate:candidateCopy forPerson:v15];
           [v28 unionSet:v22];
         }
 
@@ -830,7 +830,7 @@ LABEL_111:
       while (v12);
     }
 
-    v7 = v26;
+    personCopy = v26;
     v8 = v24;
   }
 
@@ -842,28 +842,28 @@ LABEL_111:
   return v28;
 }
 
-- (BOOL)shouldStopWithUpdateBlock:(id)a3
+- (BOOL)shouldStopWithUpdateBlock:(id)block
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (self->_shouldStop && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
   {
-    v8 = [MEMORY[0x1E696AF00] callStackSymbols];
+    callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
     v9 = 138412290;
-    v10 = v8;
+    v10 = callStackSymbols;
     _os_log_fault_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "Progress reported again but it should have stop. %@", &v9, 0xCu);
   }
 
   [(PNPersonDeduperStep *)self progress];
-  v4[2](v4, &self->_shouldStop);
+  blockCopy[2](blockCopy, &self->_shouldStop);
   if (self->_shouldStop)
   {
     shouldStop = 1;
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
-      v6 = [(PNPersonDeduperStep *)self name];
+      name = [(PNPersonDeduperStep *)self name];
       v9 = 138412290;
-      v10 = v6;
+      v10 = name;
       _os_log_impl(&dword_1C6F5C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Step %@ got cancelled.", &v9, 0xCu);
 
       shouldStop = self->_shouldStop;
@@ -880,56 +880,56 @@ LABEL_111:
 
 - (NSString)metricsKey
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperStep.m" lineNumber:75 description:{@"%s needs to be implemented by subclasses", "-[PNPersonDeduperStep metricsKey]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PNPersonDeduperStep.m" lineNumber:75 description:{@"%s needs to be implemented by subclasses", "-[PNPersonDeduperStep metricsKey]"}];
 
   abort();
 }
 
-- (BOOL)isPersonSimilar:(id)a3 withOtherPerson:(id)a4 withDistance:(float)a5 minAgeType:(unsigned __int16)a6
+- (BOOL)isPersonSimilar:(id)similar withOtherPerson:(id)person withDistance:(float)distance minAgeType:(unsigned __int16)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperStep.m" lineNumber:68 description:{@"%s needs to be implemented by subclasses", "-[PNPersonDeduperStep isPersonSimilar:withOtherPerson:withDistance:minAgeType:]"}];
+  similarCopy = similar;
+  personCopy = person;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PNPersonDeduperStep.m" lineNumber:68 description:{@"%s needs to be implemented by subclasses", "-[PNPersonDeduperStep isPersonSimilar:withOtherPerson:withDistance:minAgeType:]"}];
 
   abort();
 }
 
-- (void)dedupePersons:(id)a3 withOtherPersons:(id)a4 updateBlock:(id)a5 resultBlock:(id)a6
+- (void)dedupePersons:(id)persons withOtherPersons:(id)otherPersons updateBlock:(id)block resultBlock:(id)resultBlock
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperStep.m" lineNumber:62 description:{@"%s needs to be implemented by subclasses", "-[PNPersonDeduperStep dedupePersons:withOtherPersons:updateBlock:resultBlock:]"}];
+  personsCopy = persons;
+  otherPersonsCopy = otherPersons;
+  blockCopy = block;
+  resultBlockCopy = resultBlock;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PNPersonDeduperStep.m" lineNumber:62 description:{@"%s needs to be implemented by subclasses", "-[PNPersonDeduperStep dedupePersons:withOtherPersons:updateBlock:resultBlock:]"}];
 
   abort();
 }
 
 - (NSString)name
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperStep.m" lineNumber:55 description:{@"%s needs to be implemented by subclasses", "-[PNPersonDeduperStep name]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PNPersonDeduperStep.m" lineNumber:55 description:{@"%s needs to be implemented by subclasses", "-[PNPersonDeduperStep name]"}];
 
   abort();
 }
 
-- (PNPersonDeduperStep)initWithPersonClusterManager:(id)a3 invalidCandidatesMapping:(id)a4 profile:(id)a5
+- (PNPersonDeduperStep)initWithPersonClusterManager:(id)manager invalidCandidatesMapping:(id)mapping profile:(id)profile
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  mappingCopy = mapping;
+  profileCopy = profile;
   v17.receiver = self;
   v17.super_class = PNPersonDeduperStep;
   v12 = [(PNPersonDeduperStep *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_personClusterManager, a3);
-    objc_storeStrong(&v13->_invalidCandidatesMapping, a4);
-    objc_storeStrong(&v13->_profile, a5);
+    objc_storeStrong(&v12->_personClusterManager, manager);
+    objc_storeStrong(&v13->_invalidCandidatesMapping, mapping);
+    objc_storeStrong(&v13->_profile, profile);
     v14 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:0 valueOptions:0];
     mergeRelations = v13->_mergeRelations;
     v13->_mergeRelations = v14;

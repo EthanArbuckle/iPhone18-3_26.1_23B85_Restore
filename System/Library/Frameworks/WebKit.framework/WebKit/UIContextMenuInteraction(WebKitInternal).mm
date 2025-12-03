@@ -13,7 +13,7 @@
   v2[2] = WTF::BlockPtr<UIMenu * ()(UIMenu *)>::fromCallable<[UIContextMenuInteraction(WebKitInternal) _wk_isMenuVisible]::$_1>([UIContextMenuInteraction(WebKitInternal) _wk_isMenuVisible]::$_1)::{lambda(void *,UIMenu *)#1}::__invoke;
   v2[3] = &WTF::BlockPtr<UIMenu * ()(UIMenu *)>::fromCallable<[UIContextMenuInteraction(WebKitInternal) _wk_isMenuVisible]::$_1>([UIContextMenuInteraction(WebKitInternal) _wk_isMenuVisible]::$_1)::descriptor;
   v2[4] = &v4;
-  [a1 updateVisibleMenuWithBlock:v2];
+  [self updateVisibleMenuWithBlock:v2];
   _Block_release(v2);
   return v4;
 }

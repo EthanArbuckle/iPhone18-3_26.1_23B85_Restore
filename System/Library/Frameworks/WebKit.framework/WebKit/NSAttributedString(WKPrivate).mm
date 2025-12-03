@@ -26,7 +26,7 @@
   v12 = __90__NSAttributedString_WKPrivate___loadFromHTMLWithOptions_contentLoader_completionHandler___block_invoke;
   v13 = &unk_1E76311B8;
   v14 = a3;
-  v15 = a1;
+  selfCopy = self;
   v16 = a5;
   v17 = a4;
   if ([MEMORY[0x1E696AF00] isMainThread])

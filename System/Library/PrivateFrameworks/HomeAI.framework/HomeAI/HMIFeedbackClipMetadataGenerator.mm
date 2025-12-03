@@ -1,204 +1,204 @@
 @interface HMIFeedbackClipMetadataGenerator
-+ (id)metadataForCameraProfile:(id)a3;
-+ (id)metadataForClip:(id)a3;
-+ (id)metadataForClip:(id)a3 withCameraProfile:(id)a4 inHome:(id)a5;
-+ (id)metadataForHome:(id)a3;
++ (id)metadataForCameraProfile:(id)profile;
++ (id)metadataForClip:(id)clip;
++ (id)metadataForClip:(id)clip withCameraProfile:(id)profile inHome:(id)home;
++ (id)metadataForHome:(id)home;
 @end
 
 @implementation HMIFeedbackClipMetadataGenerator
 
-+ (id)metadataForCameraProfile:(id)a3
++ (id)metadataForCameraProfile:(id)profile
 {
   v64[13] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 settingsControl];
-  v5 = [v4 nightVision];
-  v6 = [v4 currentHorizontalTilt];
-  v7 = [v4 currentVerticalTilt];
-  v8 = [v4 opticalZoom];
-  v9 = [v4 digitalZoom];
-  v10 = [v4 imageRotation];
-  v55 = v4;
-  v11 = [v4 imageMirroring];
-  v12 = [v3 accessory];
+  profileCopy = profile;
+  settingsControl = [profileCopy settingsControl];
+  nightVision = [settingsControl nightVision];
+  currentHorizontalTilt = [settingsControl currentHorizontalTilt];
+  currentVerticalTilt = [settingsControl currentVerticalTilt];
+  opticalZoom = [settingsControl opticalZoom];
+  digitalZoom = [settingsControl digitalZoom];
+  imageRotation = [settingsControl imageRotation];
+  v55 = settingsControl;
+  imageMirroring = [settingsControl imageMirroring];
+  accessory = [profileCopy accessory];
 
-  if (v12)
+  if (accessory)
   {
-    v57 = [v12 name];
-    v59 = [v12 uniqueIdentifier];
-    v62 = [v12 model];
-    v61 = [v12 manufacturer];
-    v58 = [v12 firmwareVersion];
-    v13 = [v12 room];
-    v14 = v13;
-    if (v13)
+    name = [accessory name];
+    uniqueIdentifier = [accessory uniqueIdentifier];
+    model = [accessory model];
+    manufacturer = [accessory manufacturer];
+    firmwareVersion = [accessory firmwareVersion];
+    room = [accessory room];
+    v14 = room;
+    if (room)
     {
-      v60 = [v13 name];
+      name2 = [room name];
     }
 
     else
     {
-      v60 = 0;
+      name2 = 0;
     }
 
     v63[0] = @"cameraName";
-    if (v57)
+    if (name)
     {
       v48 = 0;
-      v15 = v57;
+      null = name;
       goto LABEL_9;
     }
   }
 
   else
   {
-    v59 = 0;
-    v60 = 0;
-    v58 = 0;
-    v61 = 0;
-    v62 = 0;
+    uniqueIdentifier = 0;
+    name2 = 0;
+    firmwareVersion = 0;
+    manufacturer = 0;
+    model = 0;
     v63[0] = @"cameraName";
   }
 
-  v15 = [MEMORY[0x277CBEB68] null];
-  v57 = 0;
+  null = [MEMORY[0x277CBEB68] null];
+  name = 0;
   v48 = 1;
 LABEL_9:
-  v43 = v15;
-  v64[0] = v15;
+  v43 = null;
+  v64[0] = null;
   v63[1] = @"cameraUUID";
-  v16 = [v59 UUIDString];
-  v47 = v16;
-  if (!v16)
+  uUIDString = [uniqueIdentifier UUIDString];
+  v47 = uUIDString;
+  if (!uUIDString)
   {
-    v16 = [MEMORY[0x277CBEB68] null];
+    uUIDString = [MEMORY[0x277CBEB68] null];
   }
 
-  v42 = v16;
-  v64[1] = v16;
+  v42 = uUIDString;
+  v64[1] = uUIDString;
   v63[2] = @"roomName";
-  v17 = v60;
-  if (!v60)
+  null2 = name2;
+  if (!name2)
   {
-    v17 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v41 = v17;
-  v64[2] = v17;
+  v41 = null2;
+  v64[2] = null2;
   v63[3] = @"nightVision";
-  v18 = [v5 value];
-  v56 = v18;
-  if (!v18)
+  value = [nightVision value];
+  v56 = value;
+  if (!value)
   {
-    v18 = [MEMORY[0x277CBEB68] null];
+    value = [MEMORY[0x277CBEB68] null];
   }
 
-  v49 = v12;
-  v40 = v18;
-  v64[3] = v18;
+  v49 = accessory;
+  v40 = value;
+  v64[3] = value;
   v63[4] = @"currentHorizontalTilt";
-  v19 = [v6 value];
-  v46 = v19;
-  if (!v19)
+  value2 = [currentHorizontalTilt value];
+  v46 = value2;
+  if (!value2)
   {
-    v19 = [MEMORY[0x277CBEB68] null];
+    value2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v54 = v5;
-  v39 = v19;
-  v64[4] = v19;
+  v54 = nightVision;
+  v39 = value2;
+  v64[4] = value2;
   v63[5] = @"currentVerticalTilt";
-  v20 = [v7 value];
-  v21 = v20;
-  if (!v20)
+  value3 = [currentVerticalTilt value];
+  v21 = value3;
+  if (!value3)
   {
-    v20 = [MEMORY[0x277CBEB68] null];
+    value3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v38 = v20;
-  v64[5] = v20;
+  v38 = value3;
+  v64[5] = value3;
   v63[6] = @"opticalZoom";
-  v52 = v8;
-  v22 = [v8 value];
-  v23 = v22;
-  if (!v22)
+  v52 = opticalZoom;
+  value4 = [opticalZoom value];
+  v23 = value4;
+  if (!value4)
   {
-    v22 = [MEMORY[0x277CBEB68] null];
+    value4 = [MEMORY[0x277CBEB68] null];
   }
 
-  v53 = v7;
-  v37 = v22;
-  v64[6] = v22;
+  v53 = currentVerticalTilt;
+  v37 = value4;
+  v64[6] = value4;
   v63[7] = @"digitalZoom";
-  v24 = [v9 value];
-  v25 = v24;
-  if (!v24)
+  value5 = [digitalZoom value];
+  v25 = value5;
+  if (!value5)
   {
-    v24 = [MEMORY[0x277CBEB68] null];
+    value5 = [MEMORY[0x277CBEB68] null];
   }
 
-  v36 = v24;
-  v64[7] = v24;
+  v36 = value5;
+  v64[7] = value5;
   v63[8] = @"imageRotation";
-  v26 = [v10 value];
-  v27 = v26;
-  if (!v26)
+  value6 = [imageRotation value];
+  v27 = value6;
+  if (!value6)
   {
-    v26 = [MEMORY[0x277CBEB68] null];
+    value6 = [MEMORY[0x277CBEB68] null];
   }
 
   v45 = v21;
-  v35 = v26;
-  v64[8] = v26;
+  v35 = value6;
+  v64[8] = value6;
   v63[9] = @"imageMirroring";
-  v50 = v11;
-  v28 = [v11 value];
-  v29 = v28;
-  if (!v28)
+  v50 = imageMirroring;
+  value7 = [imageMirroring value];
+  null3 = value7;
+  if (!value7)
   {
-    v29 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v51 = v6;
-  v64[9] = v29;
+  v51 = currentHorizontalTilt;
+  v64[9] = null3;
   v63[10] = @"model";
-  v30 = v62;
-  if (!v62)
+  null4 = model;
+  if (!model)
   {
-    v30 = [MEMORY[0x277CBEB68] null];
+    null4 = [MEMORY[0x277CBEB68] null];
   }
 
-  v64[10] = v30;
+  v64[10] = null4;
   v63[11] = @"manufacturer";
-  v31 = v61;
-  if (!v61)
+  null5 = manufacturer;
+  if (!manufacturer)
   {
-    v31 = [MEMORY[0x277CBEB68] null];
+    null5 = [MEMORY[0x277CBEB68] null];
   }
 
-  v64[11] = v31;
+  v64[11] = null5;
   v63[12] = @"firmwareVersion";
-  v32 = v58;
-  if (!v58)
+  null6 = firmwareVersion;
+  if (!firmwareVersion)
   {
-    v32 = [MEMORY[0x277CBEB68] null];
+    null6 = [MEMORY[0x277CBEB68] null];
   }
 
-  v64[12] = v32;
+  v64[12] = null6;
   v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v64 forKeys:v63 count:13];
-  if (!v58)
+  if (!firmwareVersion)
   {
   }
 
-  if (!v61)
+  if (!manufacturer)
   {
   }
 
-  if (!v62)
+  if (!model)
   {
   }
 
-  if (!v28)
+  if (!value7)
   {
   }
 
@@ -229,7 +229,7 @@ LABEL_9:
     v33 = 0;
   }
 
-  if (v60)
+  if (name2)
   {
     if (v47)
     {
@@ -254,35 +254,35 @@ LABEL_55:
   return v44;
 }
 
-+ (id)metadataForClip:(id)a3
++ (id)metadataForClip:(id)clip
 {
   v18[5] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 significantEvents];
-  v5 = [v4 na_map:&__block_literal_global_16];
+  clipCopy = clip;
+  significantEvents = [clipCopy significantEvents];
+  v5 = [significantEvents na_map:&__block_literal_global_16];
 
   v17[0] = @"clipUUID";
-  v6 = [v3 uniqueIdentifier];
-  v7 = [v6 UUIDString];
-  v18[0] = v7;
+  uniqueIdentifier = [clipCopy uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v18[0] = uUIDString;
   v17[1] = @"startDate";
-  v8 = [v3 startDate];
-  v9 = HMIConvertNSDateToIsoDateString(v8);
+  startDate = [clipCopy startDate];
+  v9 = HMIConvertNSDateToIsoDateString(startDate);
   v18[1] = v9;
   v17[2] = @"duration";
   v10 = MEMORY[0x277CCABB0];
-  [v3 duration];
+  [clipCopy duration];
   v11 = [v10 numberWithDouble:?];
   v12 = HMIJSONDecimalNumberForNumber(v11, 2);
   v18[2] = v12;
   v17[3] = @"quality";
-  [v3 quality];
+  [clipCopy quality];
 
   v13 = HMStringFromCameraClipQuality();
   v18[3] = v13;
   v17[4] = @"significantEvents";
-  v14 = [v5 allObjects];
-  v18[4] = v14;
+  allObjects = [v5 allObjects];
+  v18[4] = allObjects;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:5];
 
   return v15;
@@ -316,26 +316,26 @@ id __52__HMIFeedbackClipMetadataGenerator_metadataForClip___block_invoke(uint64_
   return v10;
 }
 
-+ (id)metadataForHome:(id)a3
++ (id)metadataForHome:(id)home
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"homeUUID";
-  v3 = [a3 uniqueIdentifier];
-  v4 = [v3 UUIDString];
-  v8[0] = v4;
+  uniqueIdentifier = [home uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v8[0] = uUIDString;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   return v5;
 }
 
-+ (id)metadataForClip:(id)a3 withCameraProfile:(id)a4 inHome:(id)a5
++ (id)metadataForClip:(id)clip withCameraProfile:(id)profile inHome:(id)home
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [HMIFeedbackClipMetadataGenerator metadataForClip:a3];
-  v10 = [HMIFeedbackClipMetadataGenerator metadataForCameraProfile:v8];
+  homeCopy = home;
+  profileCopy = profile;
+  v9 = [HMIFeedbackClipMetadataGenerator metadataForClip:clip];
+  v10 = [HMIFeedbackClipMetadataGenerator metadataForCameraProfile:profileCopy];
 
-  v11 = [HMIFeedbackClipMetadataGenerator metadataForHome:v7];
+  v11 = [HMIFeedbackClipMetadataGenerator metadataForHome:homeCopy];
 
   v12 = [[HMIFeedbackClipMetadata alloc] initWithClipMetadata:v9 cameraMetadata:v10 homeMetadata:v11];
 

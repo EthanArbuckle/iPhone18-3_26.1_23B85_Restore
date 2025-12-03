@@ -1,19 +1,19 @@
 @interface RCWelcomeViewController
-- (RCWelcomeViewController)initWithCompletionBlock:(id)a3;
+- (RCWelcomeViewController)initWithCompletionBlock:(id)block;
 - (id)keyCommands;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)handleContinueButton:(id)a3;
-- (void)handleWelcomeItem1LearnMoreLinkButton:(id)a3;
+- (void)handleContinueButton:(id)button;
+- (void)handleWelcomeItem1LearnMoreLinkButton:(id)button;
 - (void)setupSubviewsForDefaultScreen;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation RCWelcomeViewController
 
-- (RCWelcomeViewController)initWithCompletionBlock:(id)a3
+- (RCWelcomeViewController)initWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"WHATS_NEW_TITLE_FULL" value:&stru_100295BB8 table:0];
   v11.receiver = self;
@@ -22,7 +22,7 @@
 
   if (v7)
   {
-    v8 = objc_retainBlock(v4);
+    v8 = objc_retainBlock(blockCopy);
     completionBlock = v7->_completionBlock;
     v7->_completionBlock = v8;
   }
@@ -42,12 +42,12 @@
   [v3 setTitle:v5 forState:0];
 
   v6 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v7 = [v6 standardInteractionTintColor];
-  [v3 setTintColor:v7];
+  standardInteractionTintColor = [v6 standardInteractionTintColor];
+  [v3 setTintColor:standardInteractionTintColor];
 
   [v3 addTarget:self action:"handleContinueButton:" forControlEvents:64];
-  v8 = [(RCWelcomeViewController *)self buttonTray];
-  [v8 addButton:v3];
+  buttonTray = [(RCWelcomeViewController *)self buttonTray];
+  [buttonTray addButton:v3];
 
   [(RCWelcomeViewController *)self becomeFirstResponder];
 }
@@ -61,19 +61,19 @@
   return v3;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = RCWelcomeViewController;
-  [(RCWelcomeViewController *)&v3 viewDidAppear:a3];
+  [(RCWelcomeViewController *)&v3 viewDidAppear:appear];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [v2 supportedInterfaceOrientations];
+  supportedInterfaceOrientations = [v2 supportedInterfaceOrientations];
 
-  return v3;
+  return supportedInterfaceOrientations;
 }
 
 - (void)setupSubviewsForDefaultScreen
@@ -106,7 +106,7 @@
   [(RCWelcomeViewController *)self addBulletedListItemWithTitle:v17 description:v19 image:v15];
 }
 
-- (void)handleContinueButton:(id)a3
+- (void)handleContinueButton:(id)button
 {
   +[RCWelcomeUtilities finishShowingWelcomeScreen];
   completionBlock = self->_completionBlock;
@@ -114,7 +114,7 @@
   [(RCWelcomeViewController *)self dismissViewControllerAnimated:1 completion:completionBlock];
 }
 
-- (void)handleWelcomeItem1LearnMoreLinkButton:(id)a3
+- (void)handleWelcomeItem1LearnMoreLinkButton:(id)button
 {
   v4 = [NSURL URLWithString:@"https://support.apple.com/guide/iphone/make-a-recording-iph4d2a39a3b/ios"];
   v3 = +[UIApplication sharedApplication];

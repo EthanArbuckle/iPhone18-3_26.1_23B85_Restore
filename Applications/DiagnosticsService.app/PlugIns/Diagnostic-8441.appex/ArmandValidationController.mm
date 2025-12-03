@@ -9,9 +9,9 @@
 {
   v3 = ODIServiceProviderIdAppleCare;
   v4 = +[NSBundle mainBundle];
-  v5 = [v4 bundleIdentifier];
+  bundleIdentifier = [v4 bundleIdentifier];
 
-  v6 = [[ODISession alloc] initWithServiceIdentifier:v3 forDSIDType:2 andLocationBundleIdentifier:v5];
+  v6 = [[ODISession alloc] initWithServiceIdentifier:v3 forDSIDType:2 andLocationBundleIdentifier:bundleIdentifier];
   v7 = v6;
   if (v6)
   {

@@ -20,55 +20,55 @@
 
 - (uint64_t)vuicore_isResourceURL
 {
-  v1 = [a1 scheme];
-  v2 = [v1 isEqualToString:@"resource"];
+  scheme = [self scheme];
+  v2 = [scheme isEqualToString:@"resource"];
 
   return v2;
 }
 
 - (uint64_t)vuicore_isSymbolURL
 {
-  v1 = [a1 scheme];
-  v2 = [v1 isEqualToString:@"symbol"];
+  scheme = [self scheme];
+  v2 = [scheme isEqualToString:@"symbol"];
 
   return v2;
 }
 
 - (uint64_t)vuicore_isResourceOrSymbolURL
 {
-  if ([a1 vuicore_isResourceURL])
+  if ([self vuicore_isResourceURL])
   {
     return 1;
   }
 
-  return [a1 vuicore_isSymbolURL];
+  return [self vuicore_isSymbolURL];
 }
 
 - (id)vuicore_resourceName
 {
-  v2 = [a1 host];
-  v3 = [a1 path];
-  v4 = [v2 stringByAppendingString:v3];
+  host = [self host];
+  path = [self path];
+  v4 = [host stringByAppendingString:path];
 
   return v4;
 }
 
 - (uint64_t)vuicore_isAppIconURL
 {
-  v1 = [a1 scheme];
-  v2 = [v1 isEqualToString:@"appicon"];
+  scheme = [self scheme];
+  v2 = [scheme isEqualToString:@"appicon"];
 
   return v2;
 }
 
 - (BOOL)vuicore_imageURLType
 {
-  v1 = [a1 path];
-  v2 = [v1 pathExtension];
+  path = [self path];
+  pathExtension = [path pathExtension];
 
-  if (v2)
+  if (pathExtension)
   {
-    v3 = [v2 compare:@"lcr" options:1] == 0;
+    v3 = [pathExtension compare:@"lcr" options:1] == 0;
   }
 
   else

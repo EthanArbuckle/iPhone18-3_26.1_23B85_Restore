@@ -1,5 +1,5 @@
 @interface _MBLGetNextClientOrMessageJob
-- (id)initForMBLMailbox:(id)a3;
+- (id)initForMBLMailbox:(id)mailbox;
 - (void)run;
 @end
 
@@ -47,9 +47,9 @@ LABEL_3:
       v6 = *(*(&v40 + 1) + 8 * v5);
       if (((v30[2])(v30, v6) & 1) == 0)
       {
-        v7 = [v6 message];
-        v8 = [v7 account];
-        v9 = [v29 containsObject:v8];
+        message = [v6 message];
+        account = [message account];
+        v9 = [v29 containsObject:account];
 
         if (v9)
         {
@@ -102,8 +102,8 @@ LABEL_3:
           v15 = *(*(&v36 + 1) + 8 * i);
           if (!sub_100044FFC([v10 addObject:v15], v15))
           {
-            v16 = [v15 account];
-            v17 = [v29 containsObject:v16];
+            account2 = [v15 account];
+            v17 = [v29 containsObject:account2];
 
             if (v17)
             {
@@ -152,8 +152,8 @@ LABEL_26:
 
             v24 = *(*(&v32 + 1) + 8 * j);
             [v10 addObject:v24];
-            v25 = [v24 account];
-            v26 = [v29 containsObject:v25];
+            account3 = [v24 account];
+            v26 = [v29 containsObject:account3];
 
             if (v26)
             {
@@ -181,16 +181,16 @@ LABEL_38:
   _Block_object_dispose(&v45, 8);
 }
 
-- (id)initForMBLMailbox:(id)a3
+- (id)initForMBLMailbox:(id)mailbox
 {
-  v4 = a3;
+  mailboxCopy = mailbox;
   v8.receiver = self;
   v8.super_class = _MBLGetNextClientOrMessageJob;
   v5 = [(_MBLGetNextClientOrMessageJob *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_messageBodyLoader, v4);
+    objc_storeWeak(&v5->_messageBodyLoader, mailboxCopy);
   }
 
   return v6;

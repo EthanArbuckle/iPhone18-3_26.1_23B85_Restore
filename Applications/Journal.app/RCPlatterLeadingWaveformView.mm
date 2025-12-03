@@ -11,9 +11,9 @@
 - (unint64_t)numberOfSlices
 {
   v2 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [v2 platterCompactViewSliceCount];
+  platterCompactViewSliceCount = [v2 platterCompactViewSliceCount];
 
-  return v3;
+  return platterCompactViewSliceCount;
 }
 
 - (double)sliceWidth

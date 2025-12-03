@@ -15,8 +15,8 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(WFLeadingInsetTableViewCell *)self contentView];
-  [v3 directionalLayoutMargins];
+  contentView = [(WFLeadingInsetTableViewCell *)self contentView];
+  [contentView directionalLayoutMargins];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -25,8 +25,8 @@
   v11 = v10;
   [(WFLeadingInsetTableViewCell *)self _airportSettingsCellConnectionStateExtraLeadingInset];
   v13 = v11 + v12;
-  v14 = [(WFLeadingInsetTableViewCell *)self contentView];
-  [v14 setDirectionalLayoutMargins:{v5, v13, v7, v9}];
+  contentView2 = [(WFLeadingInsetTableViewCell *)self contentView];
+  [contentView2 setDirectionalLayoutMargins:{v5, v13, v7, v9}];
 
   v15.receiver = self;
   v15.super_class = WFLeadingInsetTableViewCell;
@@ -35,12 +35,12 @@
 
 - (double)_airportSettingsCellConnectionStateExtraLeadingInset
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
 
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 bounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   v7 = v6;
 
   if (v4 >= v7)

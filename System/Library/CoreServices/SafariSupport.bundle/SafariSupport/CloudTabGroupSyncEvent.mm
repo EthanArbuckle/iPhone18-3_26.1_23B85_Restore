@@ -1,5 +1,5 @@
 @interface CloudTabGroupSyncEvent
-- (CloudTabGroupSyncEvent)initWithDictionaryRepresentation:(id)a3;
+- (CloudTabGroupSyncEvent)initWithDictionaryRepresentation:(id)representation;
 - (NSArray)childEvents;
 - (NSDictionary)dictionaryRepresentation;
 - (id)_defaultSubtitle;
@@ -8,15 +8,15 @@
 
 @implementation CloudTabGroupSyncEvent
 
-- (CloudTabGroupSyncEvent)initWithDictionaryRepresentation:(id)a3
+- (CloudTabGroupSyncEvent)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v27.receiver = self;
   v27.super_class = CloudTabGroupSyncEvent;
   v5 = [(CloudTabGroupSyncEvent *)&v27 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"Title"];
+    v6 = [representationCopy objectForKeyedSubscript:@"Title"];
     v7 = v6;
     if (v6)
     {
@@ -30,15 +30,15 @@
 
     objc_storeStrong(&v5->_title, v8);
 
-    v9 = [v4 objectForKeyedSubscript:@"Subtitle"];
+    v9 = [representationCopy objectForKeyedSubscript:@"Subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v9;
 
-    v11 = [v4 objectForKeyedSubscript:@"SymbolName"];
+    v11 = [representationCopy objectForKeyedSubscript:@"SymbolName"];
     symbolName = v5->_symbolName;
     v5->_symbolName = v11;
 
-    v13 = [v4 objectForKeyedSubscript:@"ExtraAttributes"];
+    v13 = [representationCopy objectForKeyedSubscript:@"ExtraAttributes"];
     v14 = [v13 objectForKeyedSubscript:@"Metadata"];
     v15 = v14;
     if (v14)
@@ -53,7 +53,7 @@
 
     objc_storeStrong(&v5->_metadata, v16);
 
-    v17 = [v4 objectForKeyedSubscript:@"ExtraAttributes"];
+    v17 = [representationCopy objectForKeyedSubscript:@"ExtraAttributes"];
     v18 = [v17 objectForKeyedSubscript:@"Children"];
     v19 = v18;
     v20 = &__NSArray0__struct;
@@ -120,10 +120,10 @@
   v10[0] = @"Title";
   v10[1] = @"Subtitle";
   subtitle = self->_subtitle;
-  v4 = subtitle;
+  _defaultSubtitle = subtitle;
   if (!subtitle)
   {
-    v4 = [(CloudTabGroupSyncEvent *)self _defaultSubtitle];
+    _defaultSubtitle = [(CloudTabGroupSyncEvent *)self _defaultSubtitle];
   }
 
   symbolName = self->_symbolName;
@@ -132,13 +132,13 @@
     symbolName = &stru_100137BA8;
   }
 
-  v11[1] = v4;
+  v11[1] = _defaultSubtitle;
   v11[2] = symbolName;
   v10[2] = @"SymbolName";
   v10[3] = @"ExtraAttributes";
   v6 = symbolName;
-  v7 = [(CloudTabGroupSyncEvent *)self extraAttributes];
-  v11[3] = v7;
+  extraAttributes = [(CloudTabGroupSyncEvent *)self extraAttributes];
+  v11[3] = extraAttributes;
   v8 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:4];
 
   if (!subtitle)

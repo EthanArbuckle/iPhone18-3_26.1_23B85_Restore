@@ -1,14 +1,14 @@
 @interface BatteryGasgaugeControllerInputs
-- (BOOL)validateAndInitializeParameters:(id)a3;
+- (BOOL)validateAndInitializeParameters:(id)parameters;
 @end
 
 @implementation BatteryGasgaugeControllerInputs
 
-- (BOOL)validateAndInitializeParameters:(id)a3
+- (BOOL)validateAndInitializeParameters:(id)parameters
 {
   v11 = 0;
-  v4 = a3;
-  self->_ggReset = [v4 BOOLFromKey:@"shouldResetLifeTimeTemp" defaultValue:0 failed:&v11];
+  parametersCopy = parameters;
+  self->_ggReset = [parametersCopy BOOLFromKey:@"shouldResetLifeTimeTemp" defaultValue:0 failed:&v11];
   v5 = handleForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -27,7 +27,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ggReset: %@", buf, 0xCu);
   }
 
-  v7 = [v4 BOOLFromKey:@"Lock" defaultValue:1 failed:&v11];
+  v7 = [parametersCopy BOOLFromKey:@"Lock" defaultValue:1 failed:&v11];
   self->_ggLock = v7;
   v8 = handleForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))

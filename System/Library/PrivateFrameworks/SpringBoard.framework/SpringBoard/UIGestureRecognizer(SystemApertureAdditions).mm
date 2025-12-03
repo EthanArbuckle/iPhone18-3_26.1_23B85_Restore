@@ -6,9 +6,9 @@
 
 - (uint64_t)sb_cancel
 {
-  [a1 setEnabled:0];
+  [self setEnabled:0];
 
-  return [a1 setEnabled:1];
+  return [self setEnabled:1];
 }
 
 @end

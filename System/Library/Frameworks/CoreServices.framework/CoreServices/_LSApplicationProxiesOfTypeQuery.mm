@@ -1,37 +1,37 @@
 @interface _LSApplicationProxiesOfTypeQuery
-+ (id)queryWithType:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (_LSApplicationProxiesOfTypeQuery)initWithCoder:(id)a3;
++ (id)queryWithType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (_LSApplicationProxiesOfTypeQuery)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)_enumerateWithXPCConnection:(id)a3 block:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_enumerateWithXPCConnection:(id)connection block:(id)block;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LSApplicationProxiesOfTypeQuery
 
-+ (id)queryWithType:(unint64_t)a3
++ (id)queryWithType:(unint64_t)type
 {
-  v4 = [[a1 alloc] _init];
-  if (v4)
+  _init = [[self alloc] _init];
+  if (_init)
   {
-    v4[2] = a3;
+    _init[2] = type;
   }
 
-  return v4;
+  return _init;
 }
 
-- (void)_enumerateWithXPCConnection:(id)a3 block:(id)a4
+- (void)_enumerateWithXPCConnection:(id)connection block:(id)block
 {
-  v5 = a4;
-  v6 = [(_LSApplicationProxiesOfTypeQuery *)self type];
-  if (v6 >= 3)
+  blockCopy = block;
+  type = [(_LSApplicationProxiesOfTypeQuery *)self type];
+  if (type >= 3)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = *off_1E6A1AE40[v6];
+    v7 = *off_1E6A1AE40[type];
   }
 
   v9[0] = MEMORY[0x1E69E9820];
@@ -40,22 +40,22 @@
   v9[3] = &unk_1E6A1ADD8;
   v10 = v7;
   v8 = v7;
-  yieldAppsMatchingSearch(v5, v9);
+  yieldAppsMatchingSearch(blockCopy, v9);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = _LSApplicationProxiesOfTypeQuery;
-  if ([(_LSQuery *)&v10 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(_LSQuery *)&v10 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [v5 type];
-    if (v6 == [(_LSApplicationProxiesOfTypeQuery *)self type])
+    v5 = equalCopy;
+    type = [v5 type];
+    if (type == [(_LSApplicationProxiesOfTypeQuery *)self type])
     {
-      v7 = [v5 isLegacy];
-      v8 = v7 ^ [(_LSQuery *)self isLegacy]^ 1;
+      isLegacy = [v5 isLegacy];
+      v8 = isLegacy ^ [(_LSQuery *)self isLegacy]^ 1;
     }
 
     else
@@ -74,30 +74,30 @@
 
 - (unint64_t)hash
 {
-  v3 = [(_LSApplicationProxiesOfTypeQuery *)self type];
+  type = [(_LSApplicationProxiesOfTypeQuery *)self type];
   v5.receiver = self;
   v5.super_class = _LSApplicationProxiesOfTypeQuery;
-  return [(_LSQuery *)&v5 hash]| (v3 << 16);
+  return [(_LSQuery *)&v5 hash]| (type << 16);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = _LSApplicationProxiesOfTypeQuery;
-  [(_LSQuery *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[_LSApplicationProxiesOfTypeQuery type](self forKey:{"type"), @"type"}];
+  [(_LSQuery *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[_LSApplicationProxiesOfTypeQuery type](self forKey:{"type"), @"type"}];
 }
 
-- (_LSApplicationProxiesOfTypeQuery)initWithCoder:(id)a3
+- (_LSApplicationProxiesOfTypeQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = _LSApplicationProxiesOfTypeQuery;
-  v5 = [(_LSQuery *)&v7 initWithCoder:v4];
+  v5 = [(_LSQuery *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   return v5;

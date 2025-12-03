@@ -1,33 +1,33 @@
 @interface GCSCopilotFusedControllersCollection
 - (BOOL)storeVersionIsCompatible;
-- (GCSCopilotFusedControllersCollection)initWithSettingsStore:(id)a3 userDefaults:(id)a4;
+- (GCSCopilotFusedControllersCollection)initWithSettingsStore:(id)store userDefaults:(id)defaults;
 - (GCSSettingsStoreService)settingsStore;
-- (id)_unitTest_fusePilotController:(id)a3 withCopilot:(id)a4;
-- (id)copilotFusedControllerForControllerIdentifier:(id)a3;
-- (id)copilotFusedControllerForCopilotControllerIdentifier:(id)a3;
-- (id)copilotFusedControllerForFusedControllerIdentifier:(id)a3;
-- (id)copilotFusedControllerForPilotControllerIdentifier:(id)a3;
-- (void)_unitTest_saveCopilotFusedControllers:(id)a3;
-- (void)_unitTest_unfuseCopilotFusedController:(id)a3;
+- (id)_unitTest_fusePilotController:(id)controller withCopilot:(id)copilot;
+- (id)copilotFusedControllerForControllerIdentifier:(id)identifier;
+- (id)copilotFusedControllerForCopilotControllerIdentifier:(id)identifier;
+- (id)copilotFusedControllerForFusedControllerIdentifier:(id)identifier;
+- (id)copilotFusedControllerForPilotControllerIdentifier:(id)identifier;
+- (void)_unitTest_saveCopilotFusedControllers:(id)controllers;
+- (void)_unitTest_unfuseCopilotFusedController:(id)controller;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)updateCopilotFusedControllers:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)updateCopilotFusedControllers:(id)controllers;
 @end
 
 @implementation GCSCopilotFusedControllersCollection
 
-- (GCSCopilotFusedControllersCollection)initWithSettingsStore:(id)a3 userDefaults:(id)a4
+- (GCSCopilotFusedControllersCollection)initWithSettingsStore:(id)store userDefaults:(id)defaults
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  defaultsCopy = defaults;
   v14.receiver = self;
   v14.super_class = GCSCopilotFusedControllersCollection;
   v8 = [(GCSCopilotFusedControllersCollection *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_settingsStore, v6);
-    objc_storeStrong(&v9->_userDefaults, a4);
+    objc_storeWeak(&v8->_settingsStore, storeCopy);
+    objc_storeStrong(&v9->_userDefaults, defaults);
     [(GCUserDefaults *)v9->_userDefaults addObserver:v9 forKeyPath:@"copilotFusedControllers" options:5 context:0];
     WeakRetained = objc_loadWeakRetained(&v9->_settingsStore);
     objc_opt_class();
@@ -51,10 +51,10 @@
   return v3;
 }
 
-- (id)copilotFusedControllerForControllerIdentifier:(id)a3
+- (id)copilotFusedControllerForControllerIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -75,14 +75,14 @@
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 fusedControllerIdentifier];
-        if ([v11 isEqualToString:v4])
+        fusedControllerIdentifier = [v10 fusedControllerIdentifier];
+        if ([fusedControllerIdentifier isEqualToString:identifierCopy])
         {
           goto LABEL_14;
         }
 
-        v12 = [v10 pilotIdentifier];
-        if ([v12 isEqualToString:v4])
+        pilotIdentifier = [v10 pilotIdentifier];
+        if ([pilotIdentifier isEqualToString:identifierCopy])
         {
 
 LABEL_14:
@@ -91,8 +91,8 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        v13 = [v10 copilotIdentifier];
-        v14 = [v13 isEqualToString:v4];
+        copilotIdentifier = [v10 copilotIdentifier];
+        v14 = [copilotIdentifier isEqualToString:identifierCopy];
 
         if (v14)
         {
@@ -123,10 +123,10 @@ LABEL_16:
   return v15;
 }
 
-- (id)copilotFusedControllerForFusedControllerIdentifier:(id)a3
+- (id)copilotFusedControllerForFusedControllerIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -146,8 +146,8 @@ LABEL_16:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 fusedControllerIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        fusedControllerIdentifier = [v9 fusedControllerIdentifier];
+        v11 = [fusedControllerIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -173,10 +173,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)copilotFusedControllerForPilotControllerIdentifier:(id)a3
+- (id)copilotFusedControllerForPilotControllerIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -196,8 +196,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 pilotIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        pilotIdentifier = [v9 pilotIdentifier];
+        v11 = [pilotIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -223,10 +223,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)copilotFusedControllerForCopilotControllerIdentifier:(id)a3
+- (id)copilotFusedControllerForCopilotControllerIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -246,8 +246,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 copilotIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        copilotIdentifier = [v9 copilotIdentifier];
+        v11 = [copilotIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -273,14 +273,14 @@ LABEL_11:
   return v6;
 }
 
-- (void)updateCopilotFusedControllers:(id)a3
+- (void)updateCopilotFusedControllers:(id)controllers
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllersCopy = controllers;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [(GCSCopilotFusedControllersCollection *)self storeVersionIsCompatible])
   {
-    v5 = [v4 objectForKeyedSubscript:@"data"];
+    v5 = [controllersCopy objectForKeyedSubscript:@"data"];
     if (v5)
     {
       v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSObject count](v5, "count")}];
@@ -323,9 +323,9 @@ LABEL_11:
       v14 = getGCSLogger();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = [(GCSCopilotFusedControllersCollection *)self values];
+        values = [(GCSCopilotFusedControllersCollection *)self values];
         *buf = 138412290;
-        v24 = v15;
+        v24 = values;
         _os_log_impl(&dword_24E4FA000, v14, OS_LOG_TYPE_INFO, "GCSCopilotFusedControllersCollection.values = %@", buf, 0xCu);
       }
     }
@@ -337,9 +337,9 @@ LABEL_11:
     v5 = getGCSLogger();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v16 = [(GCSCopilotFusedControllersCollection *)self values];
+      values2 = [(GCSCopilotFusedControllersCollection *)self values];
       *buf = 138412290;
-      v24 = v16;
+      v24 = values2;
       _os_log_impl(&dword_24E4FA000, v5, OS_LOG_TYPE_INFO, "GCSCopilotFusedControllersCollection.values = %@", buf, 0xCu);
     }
   }
@@ -347,23 +347,23 @@ LABEL_11:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"copilotFusedControllers"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"copilotFusedControllers"])
   {
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
   }
 
   else
   {
-    if (![v10 isEqualToString:@"settingsVersion"])
+    if (![pathCopy isEqualToString:@"settingsVersion"])
     {
       v15.receiver = self;
       v15.super_class = GCSCopilotFusedControllersCollection;
-      [(GCSCopilotFusedControllersCollection *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(GCSCopilotFusedControllersCollection *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
       goto LABEL_7;
     }
 
@@ -394,28 +394,28 @@ LABEL_7:
   [(GCSCopilotFusedControllersCollection *)&v6 dealloc];
 }
 
-- (id)_unitTest_fusePilotController:(id)a3 withCopilot:(id)a4
+- (id)_unitTest_fusePilotController:(id)controller withCopilot:(id)copilot
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(GCSCopilotFusedControllersCollection *)self copilotFusedControllerForControllerIdentifier:v8];
+  copilotCopy = copilot;
+  controllerCopy = controller;
+  v9 = [(GCSCopilotFusedControllersCollection *)self copilotFusedControllerForControllerIdentifier:controllerCopy];
 
   if (v9)
   {
     [GCSCopilotFusedControllersCollection _unitTest_fusePilotController:a2 withCopilot:self];
   }
 
-  v10 = [(GCSCopilotFusedControllersCollection *)self copilotFusedControllerForControllerIdentifier:v7];
+  v10 = [(GCSCopilotFusedControllersCollection *)self copilotFusedControllerForControllerIdentifier:copilotCopy];
 
   if (v10)
   {
     [GCSCopilotFusedControllersCollection _unitTest_fusePilotController:a2 withCopilot:self];
   }
 
-  v11 = [MEMORY[0x277CCAD78] UUID];
-  v12 = [v11 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v13 = [[GCSCopilotFusedController alloc] initWithFusedControllerIdentifier:v12 pilotIdentifier:v8 copilotIdentifier:v7];
+  v13 = [[GCSCopilotFusedController alloc] initWithFusedControllerIdentifier:uUIDString pilotIdentifier:controllerCopy copilotIdentifier:copilotCopy];
   values = self->_values;
   if (values)
   {
@@ -435,12 +435,12 @@ LABEL_7:
 
   [(GCSCopilotFusedControllersCollection *)self _unitTest_saveCopilotFusedControllers:v18];
 
-  return v12;
+  return uUIDString;
 }
 
-- (void)_unitTest_unfuseCopilotFusedController:(id)a3
+- (void)_unitTest_unfuseCopilotFusedController:(id)controller
 {
-  v10 = [(GCSCopilotFusedControllersCollection *)self copilotFusedControllerForControllerIdentifier:a3];
+  v10 = [(GCSCopilotFusedControllersCollection *)self copilotFusedControllerForControllerIdentifier:controller];
   if (!v10)
   {
     [(GCSCopilotFusedControllersCollection *)a2 _unitTest_unfuseCopilotFusedController:?];
@@ -466,16 +466,16 @@ LABEL_7:
   [(GCSCopilotFusedControllersCollection *)self _unitTest_saveCopilotFusedControllers:v9];
 }
 
-- (void)_unitTest_saveCopilotFusedControllers:(id)a3
+- (void)_unitTest_saveCopilotFusedControllers:(id)controllers
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllersCopy = controllers;
   v5 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = controllersCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v7)
   {
@@ -491,8 +491,8 @@ LABEL_7:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v17 + 1) + 8 * v10) jsonObject];
-        [v5 addObject:v11];
+        jsonObject = [*(*(&v17 + 1) + 8 * v10) jsonObject];
+        [v5 addObject:jsonObject];
 
         ++v10;
       }

@@ -1,19 +1,19 @@
 @interface LSRSpeechAssets
-+ (id)assetConfigParameters:(id)a3;
++ (id)assetConfigParameters:(id)parameters;
 + (id)sharedInstance;
 + (void)initialize;
-- (BOOL)_geoLMCompatibleWithMainAsset:(id)a3 geoAssetConfig:(id)a4;
-- (id)installedGeoLMRegionSpecificAssetForLanguage:(id)a3 clientID:(id)a4 regionId:(id)a5 mainAssetConfig:(id)a6;
-- (id)installedHammerConfigFileForLanguage:(id)a3 assetType:(unint64_t)a4 clientID:(id)a5;
-- (id)installedLanguageDetectorAssetWithClientID:(id)a3;
-- (void)installedLanguagesForAssetType:(unint64_t)a3 completion:(id)a4;
+- (BOOL)_geoLMCompatibleWithMainAsset:(id)asset geoAssetConfig:(id)config;
+- (id)installedGeoLMRegionSpecificAssetForLanguage:(id)language clientID:(id)d regionId:(id)id mainAssetConfig:(id)config;
+- (id)installedHammerConfigFileForLanguage:(id)language assetType:(unint64_t)type clientID:(id)d;
+- (id)installedLanguageDetectorAssetWithClientID:(id)d;
+- (void)installedLanguagesForAssetType:(unint64_t)type completion:(id)completion;
 @end
 
 @implementation LSRSpeechAssets
 
-- (id)installedLanguageDetectorAssetWithClientID:(id)a3
+- (id)installedLanguageDetectorAssetWithClientID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 stringForKey:kSFSpeechRecognizerCustomLIDAssetPathKey];
 
@@ -36,7 +36,7 @@
   {
     v8 = SFEntitledAssetConfigForLanguageDetector();
     v9 = +[SFEntitledAssetManager sharedInstance];
-    v7 = [v9 installedAssetWithConfig:v8 regionId:0 shouldSubscribe:1 subscriberId:v3 expiration:0];
+    v7 = [v9 installedAssetWithConfig:v8 regionId:0 shouldSubscribe:1 subscriberId:dCopy expiration:0];
 
     v10 = SFLogConnection;
     if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_INFO))
@@ -52,15 +52,15 @@
   return v7;
 }
 
-- (BOOL)_geoLMCompatibleWithMainAsset:(id)a3 geoAssetConfig:(id)a4
+- (BOOL)_geoLMCompatibleWithMainAsset:(id)asset geoAssetConfig:(id)config
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[_EARSpeechModelInfo alloc] initWithConfig:v5];
-  v8 = [[_EARSpeechModelInfo alloc] initWithConfig:v6];
-  v9 = [v7 version];
-  v10 = [v8 version];
-  v11 = [v9 isEqualToString:v10];
+  assetCopy = asset;
+  configCopy = config;
+  v7 = [[_EARSpeechModelInfo alloc] initWithConfig:assetCopy];
+  v8 = [[_EARSpeechModelInfo alloc] initWithConfig:configCopy];
+  version = [v7 version];
+  version2 = [v8 version];
+  v11 = [version isEqualToString:version2];
 
   if (v11)
   {
@@ -73,18 +73,18 @@
     v13 = SFLogConnection;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v7 version];
-      v16 = [v8 version];
+      version3 = [v7 version];
+      version4 = [v8 version];
       v17 = 136316162;
       v18 = "[LSRSpeechAssets _geoLMCompatibleWithMainAsset:geoAssetConfig:]";
       v19 = 2112;
-      v20 = v15;
+      v20 = version3;
       v21 = 2112;
-      v22 = v16;
+      v22 = version4;
       v23 = 2112;
-      v24 = v5;
+      v24 = assetCopy;
       v25 = 2112;
-      v26 = v6;
+      v26 = configCopy;
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s GeoLM: model-info.version doesn't match. mainASRModelInfo.version=%@ geoLMModelInfo.version=%@ mainAssetConfig=%@ geoAssetConfig=%@", &v17, 0x34u);
     }
 
@@ -94,22 +94,22 @@
   return v12;
 }
 
-- (id)installedGeoLMRegionSpecificAssetForLanguage:(id)a3 clientID:(id)a4 regionId:(id)a5 mainAssetConfig:(id)a6
+- (id)installedGeoLMRegionSpecificAssetForLanguage:(id)language clientID:(id)d regionId:(id)id mainAssetConfig:(id)config
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  v14 = [[SFEntitledAssetConfig alloc] initWithLanguage:v10 assetType:5];
+  languageCopy = language;
+  idCopy = id;
+  configCopy = config;
+  dCopy = d;
+  v14 = [[SFEntitledAssetConfig alloc] initWithLanguage:languageCopy assetType:5];
   v15 = +[SFEntitledAssetManager sharedInstance];
-  v16 = [v15 installedAssetWithConfig:v14 regionId:v11 shouldSubscribe:1 subscriberId:v13 expiration:0];
+  v16 = [v15 installedAssetWithConfig:v14 regionId:idCopy shouldSubscribe:1 subscriberId:dCopy expiration:0];
 
   if ([v16 length])
   {
     v17 = [SFEntitledAssetManager jsonFilenameForAssetType:5];
     v18 = [v16 stringByAppendingPathComponent:v17];
 
-    if ([(LSRSpeechAssets *)self _geoLMCompatibleWithMainAsset:v12 geoAssetConfig:v18])
+    if ([(LSRSpeechAssets *)self _geoLMCompatibleWithMainAsset:configCopy geoAssetConfig:v18])
     {
       v19 = v18;
     }
@@ -122,7 +122,7 @@
         v23 = 136315395;
         v24 = "[LSRSpeechAssets installedGeoLMRegionSpecificAssetForLanguage:clientID:regionId:mainAssetConfig:]";
         v25 = 2113;
-        v26 = v11;
+        v26 = idCopy;
         _os_log_fault_impl(&_mh_execute_header, v21, OS_LOG_TYPE_FAULT, "%s GeoLM: Region specific asset for %{private}@ is incompatible with the main asset.", &v23, 0x16u);
       }
 
@@ -138,9 +138,9 @@
       v23 = 136315651;
       v24 = "[LSRSpeechAssets installedGeoLMRegionSpecificAssetForLanguage:clientID:regionId:mainAssetConfig:]";
       v25 = 2112;
-      v26 = v10;
+      v26 = languageCopy;
       v27 = 2113;
-      v28 = v11;
+      v28 = idCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%s GeoLM: No region specific asset found for language: %@, regionId: %{private}@", &v23, 0x20u);
     }
 
@@ -150,20 +150,20 @@
   return v19;
 }
 
-- (id)installedHammerConfigFileForLanguage:(id)a3 assetType:(unint64_t)a4 clientID:(id)a5
+- (id)installedHammerConfigFileForLanguage:(id)language assetType:(unint64_t)type clientID:(id)d
 {
-  v7 = a3;
-  if (a4 == 7)
+  languageCopy = language;
+  if (type == 7)
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = a5;
-    v10 = [[SFEntitledAssetConfig alloc] initWithLanguage:v7 assetType:1];
+    dCopy = d;
+    v10 = [[SFEntitledAssetConfig alloc] initWithLanguage:languageCopy assetType:1];
     v11 = +[SFEntitledAssetManager sharedInstance];
-    v12 = [v11 installedAssetWithConfig:v10 regionId:0 shouldSubscribe:1 subscriberId:v9 expiration:0];
+    v12 = [v11 installedAssetWithConfig:v10 regionId:0 shouldSubscribe:1 subscriberId:dCopy expiration:0];
 
     if ([v12 length])
     {
@@ -200,7 +200,7 @@
         v19 = 136315394;
         v20 = "[LSRSpeechAssets installedHammerConfigFileForLanguage:assetType:clientID:]";
         v21 = 2112;
-        v22 = v7;
+        v22 = languageCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s No Hammer asset found for language: %@", &v19, 0x16u);
       }
 
@@ -211,13 +211,13 @@
   return v8;
 }
 
-- (void)installedLanguagesForAssetType:(unint64_t)a3 completion:(id)a4
+- (void)installedLanguagesForAssetType:(unint64_t)type completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v5 = a4;
+    completionCopy = completion;
     v6 = +[SFEntitledAssetManager sharedInstance];
-    v7 = [v6 installedLanguagesForAssetType:a3];
+    v7 = [v6 installedLanguagesForAssetType:type];
 
     v8 = SFLogConnection;
     if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_INFO))
@@ -233,14 +233,14 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s Installed languages for %@: %@", &v11, 0x20u);
     }
 
-    v5[2](v5, v7);
+    completionCopy[2](completionCopy, v7);
   }
 }
 
-+ (id)assetConfigParameters:(id)a3
++ (id)assetConfigParameters:(id)parameters
 {
-  v3 = a3;
-  v4 = [[NSData alloc] initWithContentsOfFile:v3];
+  parametersCopy = parameters;
+  v4 = [[NSData alloc] initWithContentsOfFile:parametersCopy];
   if (v4)
   {
     v13 = 0;
@@ -270,7 +270,7 @@
         *buf = 136315394;
         v15 = "+[LSRSpeechAssets assetConfigParameters:]";
         v16 = 2112;
-        v17 = v3;
+        v17 = parametersCopy;
         _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s Failed to parse json config file:%@", buf, 0x16u);
       }
 
@@ -286,7 +286,7 @@
       *buf = 136315394;
       v15 = "+[LSRSpeechAssets assetConfigParameters:]";
       v16 = 2112;
-      v17 = v3;
+      v17 = parametersCopy;
       _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s Failed to read json file: %@", buf, 0x16u);
     }
 
@@ -310,7 +310,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     SFLogInitIfNeeded();

@@ -1,12 +1,12 @@
 @interface VIE5Runner
-+ (int)allocatePort:(e5rt_io_port *)a3 description:(id)a4 io:(id *)a5;
-+ (int)getPort:(e5rt_io_port *)a3 description:(id *)a4;
-+ (int)surfaceTypeE5rtType:(int)a3 toVIType:(unint64_t *)a4;
-+ (int)tensorDTypeE5rtType:(int)a3 toVIType:(unint64_t *)a4;
-+ (void)releasePorts:(id)a3 descriptions:(id)a4 boundedIOs:(id)a5 wasBound:(BOOL)a6;
-- (VIE5Runner)initWithBundleURL:(id)a3 mainFunctionName:(id)a4;
-- (__CVBuffer)getInputImageBuffer:(id)a3;
-- (id)executeAndGet:(id)a3 error:(id *)a4;
++ (int)allocatePort:(e5rt_io_port *)port description:(id)description io:(id *)io;
++ (int)getPort:(e5rt_io_port *)port description:(id *)description;
++ (int)surfaceTypeE5rtType:(int)type toVIType:(unint64_t *)iType;
++ (int)tensorDTypeE5rtType:(int)type toVIType:(unint64_t *)iType;
++ (void)releasePorts:(id)ports descriptions:(id)descriptions boundedIOs:(id)os wasBound:(BOOL)bound;
+- (VIE5Runner)initWithBundleURL:(id)l mainFunctionName:(id)name;
+- (__CVBuffer)getInputImageBuffer:(id)buffer;
+- (id)executeAndGet:(id)get error:(id *)error;
 - (int)compileNetworksOnDevice;
 - (int)execute;
 - (int)initNetworks;
@@ -17,10 +17,10 @@
 
 @implementation VIE5Runner
 
-- (VIE5Runner)initWithBundleURL:(id)a3 mainFunctionName:(id)a4
+- (VIE5Runner)initWithBundleURL:(id)l mainFunctionName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = VIE5Runner;
   v9 = [(VIE5Runner *)&v18 init];
@@ -28,8 +28,8 @@
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_bundleURL, a3);
-    objc_storeStrong(&v10->_mainFunctionName, a4);
+    objc_storeStrong(&v9->_bundleURL, l);
+    objc_storeStrong(&v10->_mainFunctionName, name);
     v11 = objc_alloc_init(MEMORY[0x1E695DF20]);
     outputPorts = v10->_outputPorts;
     v10->_outputPorts = v11;
@@ -70,39 +70,39 @@
   [(VIE5Runner *)&v3 dealloc];
 }
 
-- (__CVBuffer)getInputImageBuffer:(id)a3
+- (__CVBuffer)getInputImageBuffer:(id)buffer
 {
-  v3 = [(NSDictionary *)self->_boundInputs objectForKeyedSubscript:a3];
-  v4 = [v3 pointerValue];
+  v3 = [(NSDictionary *)self->_boundInputs objectForKeyedSubscript:buffer];
+  pointerValue = [v3 pointerValue];
 
-  return v4;
+  return pointerValue;
 }
 
-+ (int)surfaceTypeE5rtType:(int)a3 toVIType:(unint64_t *)a4
++ (int)surfaceTypeE5rtType:(int)type toVIType:(unint64_t *)iType
 {
-  if (a3 > 5)
+  if (type > 5)
   {
     return 5;
   }
 
   result = 0;
-  *a4 = a3;
+  *iType = type;
   return result;
 }
 
-+ (int)tensorDTypeE5rtType:(int)a3 toVIType:(unint64_t *)a4
++ (int)tensorDTypeE5rtType:(int)type toVIType:(unint64_t *)iType
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return 5;
   }
 
   result = 0;
-  *a4 = a3;
+  *iType = type;
   return result;
 }
 
-+ (int)getPort:(e5rt_io_port *)a3 description:(id *)a4
++ (int)getPort:(e5rt_io_port *)port description:(id *)description
 {
   v43 = *MEMORY[0x1E69E9840];
   v39 = 0;
@@ -293,7 +293,7 @@ LABEL_47:
       v29 = v34;
       v30 = [VIE5RunnerPortDesc alloc];
       v31 = [v25 copy];
-      *a4 = [(VIE5RunnerPortDesc *)v30 initWithShape:v31 type:0 dtype:v29 csize:v35 strides:MEMORY[0x1E695E0F0]];
+      *description = [(VIE5RunnerPortDesc *)v30 initWithShape:v31 type:0 dtype:v29 csize:v35 strides:MEMORY[0x1E695E0F0]];
 
       v6 = e5rt_surface_desc_release();
       if (!v6)
@@ -339,15 +339,15 @@ LABEL_10:
   return v6;
 }
 
-+ (int)allocatePort:(e5rt_io_port *)a3 description:(id)a4 io:(id *)a5
++ (int)allocatePort:(e5rt_io_port *)port description:(id)description io:(id *)io
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if ([v6 type])
+  descriptionCopy = description;
+  if ([descriptionCopy type])
   {
-    if ([v6 type] == 1)
+    if ([descriptionCopy type] == 1)
     {
-      if ([v6 dtype] != 4 && objc_msgSend(v6, "csize") == 4)
+      if ([descriptionCopy dtype] != 4 && objc_msgSend(descriptionCopy, "csize") == 4)
       {
         if (+[_TtC12VisualLookUp8VILogger shouldLogInternalMessage])
         {
@@ -451,7 +451,7 @@ LABEL_25:
           goto LABEL_57;
         }
 
-        *a5 = [MEMORY[0x1E696B098] valueWithPointer:0];
+        *io = [MEMORY[0x1E696B098] valueWithPointer:0];
         v32 = e5rt_tensor_desc_release();
         if (v32)
         {
@@ -511,7 +511,7 @@ LABEL_25:
 
   else
   {
-    if ([v6 dtype] != 2)
+    if ([descriptionCopy dtype] != 2)
     {
       if (+[_TtC12VisualLookUp8VILogger shouldLogInternalMessage])
       {
@@ -531,16 +531,16 @@ LABEL_27:
       goto LABEL_58;
     }
 
-    v9 = [v6 shape];
-    v10 = [v9 objectAtIndexedSubscript:1];
-    v11 = [v10 unsignedLongValue];
+    shape = [descriptionCopy shape];
+    v10 = [shape objectAtIndexedSubscript:1];
+    unsignedLongValue = [v10 unsignedLongValue];
 
-    v12 = [v6 shape];
-    v13 = [v12 objectAtIndexedSubscript:0];
-    v14 = [v13 unsignedLongValue];
+    shape2 = [descriptionCopy shape];
+    v13 = [shape2 objectAtIndexedSubscript:0];
+    unsignedLongValue2 = [v13 unsignedLongValue];
 
-    v15 = VICreateCVPixelBufferWithFormat(v11, v14, 0x42475241u);
-    *a5 = [MEMORY[0x1E696B098] valueWithPointer:v15];
+    v15 = VICreateCVPixelBufferWithFormat(unsignedLongValue, unsignedLongValue2, 0x42475241u);
+    *io = [MEMORY[0x1E696B098] valueWithPointer:v15];
     CVPixelBufferGetIOSurface(v15);
     v16 = e5rt_surface_object_create_from_iosurface();
     if (v16)
@@ -613,8 +613,8 @@ LABEL_58:
 - (int)initNetworks
 {
   v121 = *MEMORY[0x1E69E9840];
-  v3 = [(VIE5Runner *)self loadPrecompiledNetwork];
-  if (!v3)
+  loadPrecompiledNetwork = [(VIE5Runner *)self loadPrecompiledNetwork];
+  if (!loadPrecompiledNetwork)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -941,10 +941,10 @@ LABEL_58:
 
           v60 = *(*(&v108 + 1) + 8 * v59);
           v61 = [(NSDictionary *)self->_inputPorts objectForKeyedSubscript:v60];
-          v62 = [v61 pointerValue];
+          pointerValue = [v61 pointerValue];
           v63 = [(NSDictionary *)self->_inputs objectForKeyedSubscript:v60];
           v107 = 0;
-          v4 = [VIE5Runner allocatePort:v62 description:v63 io:&v107];
+          v4 = [VIE5Runner allocatePort:pointerValue description:v63 io:&v107];
           v64 = v107;
 
           if (v4)
@@ -1026,10 +1026,10 @@ LABEL_68:
 
           v72 = *(*(&v103 + 1) + 8 * v71);
           v73 = [(NSDictionary *)self->_outputPorts objectForKeyedSubscript:v72];
-          v74 = [v73 pointerValue];
+          pointerValue2 = [v73 pointerValue];
           v75 = [(NSDictionary *)self->_outputs objectForKeyedSubscript:v72];
           v102 = 0;
-          v4 = [VIE5Runner allocatePort:v74 description:v75 io:&v102];
+          v4 = [VIE5Runner allocatePort:pointerValue2 description:v75 io:&v102];
           v64 = v102;
 
           if (v4)
@@ -1133,7 +1133,7 @@ LABEL_74:
     goto LABEL_36;
   }
 
-  v4 = v3;
+  v4 = loadPrecompiledNetwork;
   v5 = e5rt_get_last_error_message();
   if (+[_TtC12VisualLookUp8VILogger shouldLogInternalMessage])
   {
@@ -1154,8 +1154,8 @@ LABEL_74:
 - (int)loadPrecompiledNetwork
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(NSURL *)self->_bundleURL path];
-  [v3 UTF8String];
+  path = [(NSURL *)self->_bundleURL path];
+  [path UTF8String];
   [(NSString *)self->_mainFunctionName UTF8String];
   precompiled_compute_operation = e5rt_execution_stream_operation_create_precompiled_compute_operation();
 
@@ -1239,8 +1239,8 @@ LABEL_14:
             }
           }
 
-          v15 = [(NSURL *)self->_bundleURL path];
-          [v15 UTF8String];
+          path = [(NSURL *)self->_bundleURL path];
+          [path UTF8String];
           precompiled_compute_operation_with_options = e5rt_e5_compiler_compile();
 
           if (precompiled_compute_operation_with_options)
@@ -1357,18 +1357,18 @@ LABEL_14:
   return precompiled_compute_operation_with_options;
 }
 
-+ (void)releasePorts:(id)a3 descriptions:(id)a4 boundedIOs:(id)a5 wasBound:(BOOL)a6
++ (void)releasePorts:(id)ports descriptions:(id)descriptions boundedIOs:(id)os wasBound:(BOOL)bound
 {
-  v6 = a6;
+  boundCopy = bound;
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  portsCopy = ports;
+  descriptionsCopy = descriptions;
+  osCopy = os;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v12 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  v12 = [portsCopy countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1379,31 +1379,31 @@ LABEL_14:
       {
         if (*v33 != v14)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(portsCopy);
         }
 
-        v16 = [v9 objectForKey:*(*(&v32 + 1) + 8 * i)];
+        v16 = [portsCopy objectForKey:*(*(&v32 + 1) + 8 * i)];
         v17 = v16;
         if (v16)
         {
-          v31 = [v16 pointerValue];
+          pointerValue = [v16 pointerValue];
           e5rt_io_port_release();
         }
       }
 
-      v13 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
+      v13 = [portsCopy countByEnumeratingWithState:&v32 objects:v37 count:16];
     }
 
     while (v13);
   }
 
-  if (v6)
+  if (boundCopy)
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v18 = v11;
+    v18 = osCopy;
     v19 = [v18 countByEnumeratingWithState:&v27 objects:v36 count:16];
     if (v19)
     {
@@ -1422,10 +1422,10 @@ LABEL_14:
           v24 = [v18 objectForKey:{v23, v27}];
           if (v24)
           {
-            v25 = [v10 objectForKeyedSubscript:v23];
-            v26 = [v25 type];
+            v25 = [descriptionsCopy objectForKeyedSubscript:v23];
+            type = [v25 type];
 
-            if (!v26)
+            if (!type)
             {
               CVPixelBufferRelease([v24 pointerValue]);
             }
@@ -1473,20 +1473,20 @@ LABEL_14:
   return v2;
 }
 
-- (id)executeAndGet:(id)a3 error:(id *)a4
+- (id)executeAndGet:(id)get error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  getCopy = get;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v6)
+  if (getCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     if ([(VIE5Runner *)self execute])
     {
-      if (a4)
+      if (error)
       {
         v8 = objc_alloc(MEMORY[0x1E696ABC0]);
-        *a4 = [v8 initWithDomain:@"com.apple.argos.e5rt" code:0 userInfo:MEMORY[0x1E695E0F8]];
+        *error = [v8 initWithDomain:@"com.apple.argos.e5rt" code:0 userInfo:MEMORY[0x1E695E0F8]];
       }
 
       os_unfair_lock_unlock(&self->_lock);
@@ -1494,13 +1494,13 @@ LABEL_14:
       goto LABEL_16;
     }
 
-    v27 = a4;
+    errorCopy = error;
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v25 = v6;
-    obj = v6;
+    v25 = getCopy;
+    obj = getCopy;
     v10 = [obj countByEnumeratingWithState:&v28 objects:v34 count:16];
     if (v10)
     {
@@ -1517,33 +1517,33 @@ LABEL_14:
 
           v14 = *(*(&v28 + 1) + 8 * i);
           v15 = [(NSDictionary *)self->_boundOutputs objectForKeyedSubscript:v14];
-          v16 = [v15 pointerValue];
+          pointerValue = [v15 pointerValue];
 
           v17 = objc_alloc(MEMORY[0x1E695FED0]);
           v18 = [(NSDictionary *)self->_outputs objectForKeyedSubscript:v14];
-          v19 = [v18 shape];
-          v20 = [v17 initWithShape:v19 dataType:65568 error:v27];
+          shape = [v18 shape];
+          v20 = [v17 initWithShape:shape dataType:65568 error:errorCopy];
 
           if (!v20)
           {
-            if (v27)
+            if (errorCopy)
             {
-              v23 = [*v27 localizedDescription];
+              localizedDescription = [*errorCopy localizedDescription];
             }
 
             else
             {
-              v23 = @"unknown";
+              localizedDescription = @"unknown";
             }
 
-            v6 = v25;
+            getCopy = v25;
             if (+[_TtC12VisualLookUp8VILogger shouldLogInternalMessage])
             {
               v24 = +[_TtC12VisualLookUp8VILogger log];
               if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138543362;
-                v33 = v23;
+                v33 = localizedDescription;
                 _os_log_impl(&dword_1D9962000, v24, OS_LOG_TYPE_ERROR, "VIE5Runner: unable to allocate output array: %{public}@", buf, 0xCu);
               }
             }
@@ -1554,7 +1554,7 @@ LABEL_14:
             goto LABEL_17;
           }
 
-          memcpy([v20 dataPointer], v16, 4 * objc_msgSend(v20, "count"));
+          memcpy([v20 dataPointer], pointerValue, 4 * objc_msgSend(v20, "count"));
           [v7 setValue:v20 forKey:v14];
         }
 
@@ -1569,7 +1569,7 @@ LABEL_14:
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    v6 = v25;
+    getCopy = v25;
   }
 
   v9 = [v7 copy];

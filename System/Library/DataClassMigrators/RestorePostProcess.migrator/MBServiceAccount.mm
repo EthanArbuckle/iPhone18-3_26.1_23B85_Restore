@@ -1,9 +1,9 @@
 @interface MBServiceAccount
 + (NSArray)allServiceAccounts;
-+ (id)_stringForAccountCredentialRenewResult:(int64_t)a3;
++ (id)_stringForAccountCredentialRenewResult:(int64_t)result;
 + (id)accountsQueue;
-+ (unint64_t)_optionsFromACAccount:(id)a3 currentOptions:(unint64_t)a4;
-+ (void)_setBackupEnabled:(BOOL)a3 account:(id)a4 completion:(id)a5;
++ (unint64_t)_optionsFromACAccount:(id)account currentOptions:(unint64_t)options;
++ (void)_setBackupEnabled:(BOOL)enabled account:(id)account completion:(id)completion;
 + (void)enableBackupInPreferences;
 - (BOOL)hasAppleAccount;
 - (BOOL)isAuthenticated;
@@ -15,24 +15,24 @@
 - (BOOL)isEnabledForBackup;
 - (BOOL)isManagedAppleID;
 - (BOOL)isPrimaryAccount;
-- (BOOL)verifyAppleAccountCredentialsWithContext:(BOOL)a3;
+- (BOOL)verifyAppleAccountCredentialsWithContext:(BOOL)context;
 - (MBPersona)persona;
-- (MBServiceAccount)initWithPersona:(id)a3 account:(id)a4 options:(unint64_t)a5;
-- (MBServiceAccount)initWithPersona:(id)a3 accountIdentifier:(id)a4 dsid:(id)a5 altDSID:(id)a6 serviceURL:(id)a7 chunkStoreURL:(id)a8 options:(unint64_t)a9;
-- (MBServiceAccount)initWithPersona:(id)a3 error:(id *)a4;
+- (MBServiceAccount)initWithPersona:(id)persona account:(id)account options:(unint64_t)options;
+- (MBServiceAccount)initWithPersona:(id)persona accountIdentifier:(id)identifier dsid:(id)dsid altDSID:(id)d serviceURL:(id)l chunkStoreURL:(id)rL options:(unint64_t)options;
+- (MBServiceAccount)initWithPersona:(id)persona error:(id *)error;
 - (NSString)accountIdentifier;
 - (NSString)altDSID;
 - (NSString)appleID;
 - (NSString)dsid;
 - (NSURL)chunkStoreURL;
 - (NSURL)serviceURL;
-- (id)_updateApplePasswordSync:(id)a3;
+- (id)_updateApplePasswordSync:(id)sync;
 - (id)description;
 - (id)updateAppleAccountSync;
-- (void)_reloadAccountPropertiesFromACAccount:(id)a3;
+- (void)_reloadAccountPropertiesFromACAccount:(id)account;
 - (void)_reloadAccounts;
-- (void)_updateAppleAccount:(id)a3;
-- (void)_updateApplePassword:(id)a3 completionHandler:(id)a4;
+- (void)_updateAppleAccount:(id)account;
+- (void)_updateApplePassword:(id)password completionHandler:(id)handler;
 - (void)renewCredentials;
 @end
 
@@ -44,7 +44,7 @@
   block[1] = 3221225472;
   block[2] = sub_DA18;
   block[3] = &unk_24A60;
-  block[4] = a1;
+  block[4] = self;
   if (qword_2A830 != -1)
   {
     dispatch_once(&qword_2A830, block);
@@ -95,38 +95,38 @@
 
         v10 = *(*(&v32 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 personaIdentifier];
-        if (v12)
+        personaIdentifier = [v10 personaIdentifier];
+        if (personaIdentifier)
         {
-          v13 = [UMUserPersonaAttributes personaAttributesForIdentifier:v12];
+          v13 = [UMUserPersonaAttributes personaAttributesForIdentifier:personaIdentifier];
           if (v13)
           {
             v14 = v13;
             if ([v10 aa_isAccountClass:v8])
             {
 LABEL_19:
-              v16 = @"/private/var/mobile";
+              path = @"/private/var/mobile";
               goto LABEL_20;
             }
 
             if ([v14 isEnterprisePersona])
             {
-              v15 = [v14 personaLayoutPathURL];
-              v16 = [v15 path];
+              personaLayoutPathURL = [v14 personaLayoutPathURL];
+              path = [personaLayoutPathURL path];
 
-              if (!v16)
+              if (!path)
               {
-                v17 = MBGetDefaultLog();
-                if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+                aa_accountClass2 = MBGetDefaultLog();
+                if (os_log_type_enabled(aa_accountClass2, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138543362;
-                  v37 = v12;
-                  _os_log_impl(&dword_0, v17, OS_LOG_TYPE_ERROR, "nil volumeMountPoint for %{public}@", buf, 0xCu);
-                  v25 = v12;
+                  v37 = personaIdentifier;
+                  _os_log_impl(&dword_0, aa_accountClass2, OS_LOG_TYPE_ERROR, "nil volumeMountPoint for %{public}@", buf, 0xCu);
+                  v25 = personaIdentifier;
                   _MBLog();
                 }
 
-                v16 = 0;
+                path = 0;
 LABEL_32:
                 v19 = 0;
 LABEL_33:
@@ -135,8 +135,8 @@ LABEL_33:
               }
 
 LABEL_20:
-              v17 = [MBPersona personaWithAttributes:v14 volumeMountPoint:v16, v25, v26];
-              v19 = [[a1 alloc] initWithPersona:v17 account:v10 options:0];
+              aa_accountClass2 = [MBPersona personaWithAttributes:v14 volumeMountPoint:path, v25, v26];
+              v19 = [[self alloc] initWithPersona:aa_accountClass2 account:v10 options:0];
               if (v19)
               {
                 [v29 addObject:v19];
@@ -145,32 +145,32 @@ LABEL_20:
               goto LABEL_33;
             }
 
-            v16 = 0;
+            path = 0;
 LABEL_27:
             v19 = 0;
-            v17 = v12;
-            v12 = 0;
+            aa_accountClass2 = personaIdentifier;
+            personaIdentifier = 0;
             goto LABEL_33;
           }
 
-          v16 = MBGetDefaultLog();
-          if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+          path = MBGetDefaultLog();
+          if (!os_log_type_enabled(path, OS_LOG_TYPE_ERROR))
           {
             v14 = 0;
             v19 = 0;
             goto LABEL_34;
           }
 
-          v20 = [v10 aa_accountClass];
+          aa_accountClass = [v10 aa_accountClass];
           *buf = 138543618;
-          v37 = v12;
+          v37 = personaIdentifier;
           v38 = 2112;
-          v39 = v20;
-          _os_log_impl(&dword_0, v16, OS_LOG_TYPE_ERROR, "Failed to fetch the attributes for persona %{public}@ accountClass %@", buf, 0x16u);
+          v39 = aa_accountClass;
+          _os_log_impl(&dword_0, path, OS_LOG_TYPE_ERROR, "Failed to fetch the attributes for persona %{public}@ accountClass %@", buf, 0x16u);
 
-          v17 = [v10 aa_accountClass];
-          v25 = v12;
-          v26 = v17;
+          aa_accountClass2 = [v10 aa_accountClass];
+          v25 = personaIdentifier;
+          v26 = aa_accountClass2;
           _MBLog();
 LABEL_31:
           v14 = 0;
@@ -179,7 +179,7 @@ LABEL_31:
 
         if (![v10 aa_isAccountClass:v8])
         {
-          v16 = 0;
+          path = 0;
           v14 = 0;
           goto LABEL_27;
         }
@@ -187,28 +187,28 @@ LABEL_31:
         v18 = [UMUserPersonaAttributes personaAttributesForPersonaType:0];
         if (!v18)
         {
-          v17 = MBGetDefaultLog();
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+          aa_accountClass2 = MBGetDefaultLog();
+          if (os_log_type_enabled(aa_accountClass2, OS_LOG_TYPE_ERROR))
           {
             *buf = 0;
-            _os_log_impl(&dword_0, v17, OS_LOG_TYPE_ERROR, "Failed to fetch the attributes for personal persona", buf, 2u);
+            _os_log_impl(&dword_0, aa_accountClass2, OS_LOG_TYPE_ERROR, "Failed to fetch the attributes for personal persona", buf, 2u);
             _MBLog();
           }
 
-          v16 = 0;
-          v12 = 0;
+          path = 0;
+          personaIdentifier = 0;
           goto LABEL_31;
         }
 
         v14 = v18;
-        v12 = [v18 userPersonaUniqueString];
-        if (v12)
+        personaIdentifier = [v18 userPersonaUniqueString];
+        if (personaIdentifier)
         {
           goto LABEL_19;
         }
 
         v19 = 0;
-        v16 = @"/private/var/mobile";
+        path = @"/private/var/mobile";
 LABEL_34:
 
         objc_autoreleasePoolPop(v11);
@@ -237,29 +237,29 @@ LABEL_34:
   return v29;
 }
 
-- (MBServiceAccount)initWithPersona:(id)a3 error:(id *)a4
+- (MBServiceAccount)initWithPersona:(id)persona error:(id *)error
 {
-  v6 = a3;
-  if (!a4)
+  personaCopy = persona;
+  if (!error)
   {
     sub_138A8();
   }
 
-  v7 = v6;
-  if (!v6)
+  v7 = personaCopy;
+  if (!personaCopy)
   {
     sub_1387C();
   }
 
-  v8 = [MBPersona personaWithUMPersona:v6 error:a4];
+  v8 = [MBPersona personaWithUMPersona:personaCopy error:error];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 personaIdentifier];
+    personaIdentifier = [v8 personaIdentifier];
     v11 = +[ACAccountStore defaultStore];
     if ([v9 isPersonalPersona])
     {
-      v12 = [v11 aa_primaryAppleAccount];
+      aa_primaryAppleAccount = [v11 aa_primaryAppleAccount];
     }
 
     else
@@ -270,62 +270,62 @@ LABEL_34:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v28 = v10;
+          v28 = personaIdentifier;
           _os_log_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "Found an unexpected persona type for persona %{public}@", buf, 0xCu);
           _MBLog();
         }
 
-        v13 = 0;
+        selfCopy = 0;
         goto LABEL_24;
       }
 
-      v12 = [v11 mb_accountForPersonaIdentifier:v10];
+      aa_primaryAppleAccount = [v11 mb_accountForPersonaIdentifier:personaIdentifier];
     }
 
-    v14 = v12;
-    if (v12)
+    v14 = aa_primaryAppleAccount;
+    if (aa_primaryAppleAccount)
     {
-      v15 = [(MBServiceAccount *)v12 personaIdentifier];
-      if (v15 && (v16 = v15, -[MBServiceAccount personaIdentifier](v14, "personaIdentifier"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 isEqualToString:v10], v17, v16, (v18 & 1) == 0))
+      personaIdentifier2 = [(MBServiceAccount *)aa_primaryAppleAccount personaIdentifier];
+      if (personaIdentifier2 && (v16 = personaIdentifier2, -[MBServiceAccount personaIdentifier](v14, "personaIdentifier"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 isEqualToString:personaIdentifier], v17, v16, (v18 & 1) == 0))
       {
         v23 = MBGetDefaultLog();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
-          v24 = [(MBServiceAccount *)v14 personaIdentifier];
+          personaIdentifier3 = [(MBServiceAccount *)v14 personaIdentifier];
           *buf = 138543618;
-          v28 = v24;
+          v28 = personaIdentifier3;
           v29 = 2114;
-          v30 = v10;
+          v30 = personaIdentifier;
           _os_log_impl(&dword_0, v23, OS_LOG_TYPE_ERROR, "Persona identifier mismatch: %{public}@ != %{public}@", buf, 0x16u);
 
-          v26 = [(MBServiceAccount *)v14 personaIdentifier];
+          personaIdentifier4 = [(MBServiceAccount *)v14 personaIdentifier];
           _MBLog();
         }
 
-        *a4 = [MBError errorWithCode:1 format:@"Persona identifier mismatch"];
+        *error = [MBError errorWithCode:1 format:@"Persona identifier mismatch"];
 
-        v13 = 0;
+        selfCopy = 0;
         self = v14;
       }
 
       else
       {
-        v19 = [v9 volumeMountPoint];
+        volumeMountPoint = [v9 volumeMountPoint];
         v20 = MBGetDefaultLog();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
           *buf = 138412802;
-          v28 = v10;
+          v28 = personaIdentifier;
           v29 = 2048;
           v30 = 0;
           v31 = 2112;
-          v32 = v19;
+          v32 = volumeMountPoint;
           _os_log_impl(&dword_0, v20, OS_LOG_TYPE_INFO, "Found personaIdentifier:%@, options:0x%lx, volumeMountPoint:%@", buf, 0x20u);
           _MBLog();
         }
 
         self = [(MBServiceAccount *)self initWithPersona:v9 account:v14 options:0];
-        v13 = self;
+        selfCopy = self;
       }
     }
 
@@ -335,13 +335,13 @@ LABEL_34:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v28 = v10;
+        v28 = personaIdentifier;
         _os_log_impl(&dword_0, v21, OS_LOG_TYPE_ERROR, "Failed to find the account for persona %{public}@", buf, 0xCu);
         _MBLog();
       }
 
       [MBError errorWithCode:210 format:@"No account found"];
-      *a4 = v13 = 0;
+      *error = selfCopy = 0;
     }
 
 LABEL_24:
@@ -349,46 +349,46 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v13 = 0;
+  selfCopy = 0;
 LABEL_25:
 
-  return v13;
+  return selfCopy;
 }
 
-+ (unint64_t)_optionsFromACAccount:(id)a3 currentOptions:(unint64_t)a4
++ (unint64_t)_optionsFromACAccount:(id)account currentOptions:(unint64_t)options
 {
   v5 = kAccountDataclassBackup;
-  v6 = a3;
-  if ([v6 isEnabledForDataclass:v5])
+  accountCopy = account;
+  if ([accountCopy isEnabledForDataclass:v5])
   {
     v7 = +[MBManagedPolicy sharedPolicy];
     v8 = [v7 checkIfCloudBackupIsAllowed:0];
 
     if (v8)
     {
-      v9 = a4 | 0x11;
+      v9 = options | 0x11;
     }
 
     else
     {
-      v9 = a4 & 0xFFFFFFFFFFFFFFEELL | 0x10;
+      v9 = options & 0xFFFFFFFFFFFFFFEELL | 0x10;
     }
   }
 
   else
   {
-    v9 = a4 & 0xFFFFFFFFFFFFFFEELL | 0x10;
+    v9 = options & 0xFFFFFFFFFFFFFFEELL | 0x10;
   }
 
-  v10 = [v6 aa_isPrimaryEmailVerified];
+  aa_isPrimaryEmailVerified = [accountCopy aa_isPrimaryEmailVerified];
   v11 = 2;
-  if (!v10)
+  if (!aa_isPrimaryEmailVerified)
   {
     v11 = 0;
   }
 
   v12 = v11 | v9 & 0xFFFFFFFFFFFFFE51;
-  if ([v6 isEnabledForDataclass:kAccountDataclassCloudPhotos])
+  if ([accountCopy isEnabledForDataclass:kAccountDataclassCloudPhotos])
   {
     v13 = 4;
   }
@@ -398,20 +398,20 @@ LABEL_25:
     v13 = 0;
   }
 
-  v14 = [v6 aa_isManagedAppleID];
+  aa_isManagedAppleID = [accountCopy aa_isManagedAppleID];
   v15 = 8;
-  if (!v14)
+  if (!aa_isManagedAppleID)
   {
     v15 = 0;
   }
 
   v16 = v12 | v15 | v13;
-  v17 = [v6 credential];
-  v18 = [v17 token];
-  v19 = v18 != 0;
+  credential = [accountCopy credential];
+  token = [credential token];
+  v19 = token != 0;
 
   v20 = v16 | (32 * v19);
-  if ([v6 aa_isAccountClass:AAAccountClassPrimary])
+  if ([accountCopy aa_isAccountClass:AAAccountClassPrimary])
   {
     v21 = 128;
   }
@@ -421,7 +421,7 @@ LABEL_25:
     v21 = 0;
   }
 
-  v22 = [v6 aa_useCellularForDataclass:v5];
+  v22 = [accountCopy aa_useCellularForDataclass:v5];
 
   v23 = 256;
   if (!v22)
@@ -432,148 +432,148 @@ LABEL_25:
   return v20 | v21 | v23;
 }
 
-- (MBServiceAccount)initWithPersona:(id)a3 account:(id)a4 options:(unint64_t)a5
+- (MBServiceAccount)initWithPersona:(id)persona account:(id)account options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  personaCopy = persona;
+  accountCopy = account;
+  if (!personaCopy)
   {
     sub_138D4();
   }
 
-  v10 = v9;
-  v11 = [MBServiceAccount _optionsFromACAccount:v9 currentOptions:a5];
-  v27 = self;
+  v10 = accountCopy;
+  v11 = [MBServiceAccount _optionsFromACAccount:accountCopy currentOptions:options];
+  selfCopy = self;
   v12 = [v10 propertiesForDataclass:kAccountDataclassBackup];
   v13 = [v12 objectForKeyedSubscript:@"url"];
   v14 = [NSURL URLWithString:v13];
 
-  v15 = [v10 username];
-  v16 = [v14 _URLByInsertingUser:v15];
+  username = [v10 username];
+  v16 = [v14 _URLByInsertingUser:username];
 
   v17 = [v10 propertiesForDataclass:kAccountDataclassContent];
   v18 = [v17 objectForKeyedSubscript:@"url"];
   v19 = [NSURL URLWithString:v18];
 
-  v20 = [v10 username];
-  v21 = [v19 _URLByInsertingUser:v20];
+  username2 = [v10 username];
+  v21 = [v19 _URLByInsertingUser:username2];
 
-  v22 = [v10 identifier];
-  v23 = [v10 aa_personID];
-  v24 = [v10 aa_altDSID];
-  v25 = [(MBServiceAccount *)v27 initWithPersona:v8 accountIdentifier:v22 dsid:v23 altDSID:v24 serviceURL:v16 chunkStoreURL:v21 options:v11];
+  identifier = [v10 identifier];
+  aa_personID = [v10 aa_personID];
+  aa_altDSID = [v10 aa_altDSID];
+  v25 = [(MBServiceAccount *)selfCopy initWithPersona:personaCopy accountIdentifier:identifier dsid:aa_personID altDSID:aa_altDSID serviceURL:v16 chunkStoreURL:v21 options:v11];
 
   return v25;
 }
 
-- (MBServiceAccount)initWithPersona:(id)a3 accountIdentifier:(id)a4 dsid:(id)a5 altDSID:(id)a6 serviceURL:(id)a7 chunkStoreURL:(id)a8 options:(unint64_t)a9
+- (MBServiceAccount)initWithPersona:(id)persona accountIdentifier:(id)identifier dsid:(id)dsid altDSID:(id)d serviceURL:(id)l chunkStoreURL:(id)rL options:(unint64_t)options
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if (!v15)
+  personaCopy = persona;
+  identifierCopy = identifier;
+  dsidCopy = dsid;
+  dCopy = d;
+  lCopy = l;
+  rLCopy = rL;
+  if (!personaCopy)
   {
     sub_13900();
   }
 
-  v21 = v20;
+  v21 = rLCopy;
   v39.receiver = self;
   v39.super_class = MBServiceAccount;
   v22 = [(MBServiceAccount *)&v39 init];
   if (v22)
   {
-    v23 = [[_MBImmutableServiceAccountProperties alloc] _initWithPersona:v15 accountIdentifier:v16 dsid:v17 altDSID:v18 serviceURL:v19 chunkStoreURL:v21 options:a9];
+    v23 = [[_MBImmutableServiceAccountProperties alloc] _initWithPersona:personaCopy accountIdentifier:identifierCopy dsid:dsidCopy altDSID:dCopy serviceURL:lCopy chunkStoreURL:v21 options:options];
     properties = v22->_properties;
     v22->_properties = v23;
 
     v25 = MBGetDefaultLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
-      v26 = [v15 personaIdentifier];
-      v35 = [(MBServiceAccount *)v22 isEnabled];
-      v34 = [(MBServiceAccount *)v22 isEnabledForBackup];
-      v33 = [(MBServiceAccount *)v22 isEmailVerified];
-      v27 = [(MBServiceAccount *)v22 isAuthenticated];
-      v38 = v18;
-      v28 = [(_MBImmutableServiceAccountProperties *)v22->_properties options];
-      [v15 volumeMountPoint];
-      v29 = v37 = v19;
-      v30 = [(MBServiceAccount *)v22 isBackupOnCellularEnabled];
+      personaIdentifier = [personaCopy personaIdentifier];
+      isEnabled = [(MBServiceAccount *)v22 isEnabled];
+      isEnabledForBackup = [(MBServiceAccount *)v22 isEnabledForBackup];
+      isEmailVerified = [(MBServiceAccount *)v22 isEmailVerified];
+      isAuthenticated = [(MBServiceAccount *)v22 isAuthenticated];
+      v38 = dCopy;
+      options = [(_MBImmutableServiceAccountProperties *)v22->_properties options];
+      [personaCopy volumeMountPoint];
+      v29 = v37 = lCopy;
+      isBackupOnCellularEnabled = [(MBServiceAccount *)v22 isBackupOnCellularEnabled];
       *buf = 138545666;
-      v41 = v16;
+      v41 = identifierCopy;
       v42 = 2114;
-      v43 = v26;
+      v43 = personaIdentifier;
       v44 = 2112;
-      v45 = v17;
+      v45 = dsidCopy;
       v46 = 1024;
-      v47 = v35;
+      v47 = isEnabled;
       v48 = 1024;
-      v49 = v34;
+      v49 = isEnabledForBackup;
       v50 = 1024;
-      v51 = v33;
+      v51 = isEmailVerified;
       v52 = 1024;
-      v53 = v27;
+      v53 = isAuthenticated;
       v54 = 2048;
-      v55 = v28;
+      v55 = options;
       v56 = 2114;
       v57 = v29;
       v58 = 1024;
-      v59 = v30;
+      v59 = isBackupOnCellularEnabled;
       _os_log_impl(&dword_0, v25, OS_LOG_TYPE_INFO, "Loaded properties for account %{public}@, persona:%{public}@, dsid:%@, enabled:%d, enabledForBackup:%d, emailVerified:%d, authenticated:%d, options:0x%lx, volume:%{public}@, isBackupOnCellularEnabled:%d", buf, 0x52u);
 
-      v36 = [v15 personaIdentifier];
+      personaIdentifier2 = [personaCopy personaIdentifier];
       [(MBServiceAccount *)v22 isEnabled];
       [(MBServiceAccount *)v22 isEnabledForBackup];
       [(MBServiceAccount *)v22 isEmailVerified];
       [(MBServiceAccount *)v22 isAuthenticated];
       [(_MBImmutableServiceAccountProperties *)v22->_properties options];
-      v32 = [v15 volumeMountPoint];
+      volumeMountPoint = [personaCopy volumeMountPoint];
       [(MBServiceAccount *)v22 isBackupOnCellularEnabled];
       _MBLog();
 
-      v19 = v37;
-      v18 = v38;
+      lCopy = v37;
+      dCopy = v38;
     }
   }
 
   return v22;
 }
 
-- (void)_reloadAccountPropertiesFromACAccount:(id)a3
+- (void)_reloadAccountPropertiesFromACAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(MBServiceAccount *)self properties];
-  v6 = [v5 _deriveNewAccountPropertiesFromACAccount:v4];
+  accountCopy = account;
+  properties = [(MBServiceAccount *)self properties];
+  v6 = [properties _deriveNewAccountPropertiesFromACAccount:accountCopy];
 
   [(MBServiceAccount *)self setProperties:v6];
   v7 = MBGetDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v6 accountIdentifier];
-    v9 = [v6 dsid];
+    accountIdentifier = [v6 accountIdentifier];
+    dsid = [v6 dsid];
     *buf = 138545154;
-    v13 = v8;
+    v13 = accountIdentifier;
     v14 = 2112;
-    v15 = v9;
+    v15 = dsid;
     v16 = 1024;
-    v17 = [(MBServiceAccount *)self isEnabled];
+    isEnabled = [(MBServiceAccount *)self isEnabled];
     v18 = 1024;
-    v19 = [(MBServiceAccount *)self isEnabledForBackup];
+    isEnabledForBackup = [(MBServiceAccount *)self isEnabledForBackup];
     v20 = 1024;
-    v21 = [(MBServiceAccount *)self isEmailVerified];
+    isEmailVerified = [(MBServiceAccount *)self isEmailVerified];
     v22 = 1024;
-    v23 = [(MBServiceAccount *)self isAuthenticated];
+    isAuthenticated = [(MBServiceAccount *)self isAuthenticated];
     v24 = 2048;
-    v25 = [v6 options];
+    options = [v6 options];
     v26 = 1024;
-    v27 = [(MBServiceAccount *)self isBackupOnCellularEnabled];
+    isBackupOnCellularEnabled = [(MBServiceAccount *)self isBackupOnCellularEnabled];
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "Reloaded properties for account %{public}@, dsid:%@, enabled:%d, enabledForBackup:%d, emailVerified:%d, authenticated:%d, options:0x%lx, isBackupOnCellularEnabled:%d", buf, 0x3Eu);
 
-    v10 = [v6 accountIdentifier];
-    v11 = [v6 dsid];
+    accountIdentifier2 = [v6 accountIdentifier];
+    dsid2 = [v6 dsid];
     [(MBServiceAccount *)self isEnabled];
     [(MBServiceAccount *)self isEnabledForBackup];
     [(MBServiceAccount *)self isEmailVerified];
@@ -586,58 +586,58 @@ LABEL_25:
 
 - (NSString)dsid
 {
-  v2 = [(MBServiceAccount *)self properties];
-  v3 = [v2 dsid];
+  properties = [(MBServiceAccount *)self properties];
+  dsid = [properties dsid];
 
-  return v3;
+  return dsid;
 }
 
 - (NSString)altDSID
 {
-  v2 = [(MBServiceAccount *)self properties];
-  v3 = [v2 altDSID];
+  properties = [(MBServiceAccount *)self properties];
+  altDSID = [properties altDSID];
 
-  return v3;
+  return altDSID;
 }
 
 - (NSString)accountIdentifier
 {
-  v2 = [(MBServiceAccount *)self properties];
-  v3 = [v2 accountIdentifier];
+  properties = [(MBServiceAccount *)self properties];
+  accountIdentifier = [properties accountIdentifier];
 
-  return v3;
+  return accountIdentifier;
 }
 
 - (MBPersona)persona
 {
-  v2 = [(MBServiceAccount *)self properties];
-  v3 = [v2 persona];
+  properties = [(MBServiceAccount *)self properties];
+  persona = [properties persona];
 
-  return v3;
+  return persona;
 }
 
 - (NSURL)serviceURL
 {
-  v2 = [(MBServiceAccount *)self properties];
-  v3 = [v2 serviceURL];
+  properties = [(MBServiceAccount *)self properties];
+  serviceURL = [properties serviceURL];
 
-  return v3;
+  return serviceURL;
 }
 
 - (NSURL)chunkStoreURL
 {
-  v2 = [(MBServiceAccount *)self properties];
-  v3 = [v2 chunkStoreURL];
+  properties = [(MBServiceAccount *)self properties];
+  chunkStoreURL = [properties chunkStoreURL];
 
-  return v3;
+  return chunkStoreURL;
 }
 
 - (BOOL)isEnabledForBackup
 {
   if ([(MBServiceAccount *)self isEnabled])
   {
-    v3 = [(MBServiceAccount *)self properties];
-    v4 = [v3 options] & 1;
+    properties = [(MBServiceAccount *)self properties];
+    v4 = [properties options] & 1;
   }
 
   else
@@ -650,51 +650,51 @@ LABEL_25:
 
 - (BOOL)isEnabled
 {
-  v2 = [(MBServiceAccount *)self properties];
-  v3 = ~[v2 options];
+  properties = [(MBServiceAccount *)self properties];
+  v3 = ~[properties options];
 
   return (v3 & 3) == 0;
 }
 
 - (BOOL)isCloudPhotosEnabled
 {
-  v2 = [(MBServiceAccount *)self properties];
-  v3 = ([v2 options] >> 2) & 1;
+  properties = [(MBServiceAccount *)self properties];
+  v3 = ([properties options] >> 2) & 1;
 
   return v3;
 }
 
 - (BOOL)isAuthenticated
 {
-  v2 = [(MBServiceAccount *)self properties];
-  v3 = ([v2 options] >> 5) & 1;
+  properties = [(MBServiceAccount *)self properties];
+  v3 = ([properties options] >> 5) & 1;
 
   return v3;
 }
 
 - (BOOL)isManagedAppleID
 {
-  v2 = [(MBServiceAccount *)self properties];
-  v3 = ([v2 options] >> 3) & 1;
+  properties = [(MBServiceAccount *)self properties];
+  v3 = ([properties options] >> 3) & 1;
 
   return v3;
 }
 
 - (BOOL)isBackupOnCellularEnabled
 {
-  v2 = [(MBServiceAccount *)self properties];
-  v3 = ~[v2 options];
+  properties = [(MBServiceAccount *)self properties];
+  v3 = ~[properties options];
 
   return (v3 & 0x300) == 0;
 }
 
 - (BOOL)isBeneficiaryAccount
 {
-  v2 = [(MBServiceAccount *)self altDSID];
-  if (v2)
+  altDSID = [(MBServiceAccount *)self altDSID];
+  if (altDSID)
   {
     v3 = +[AKAccountManager sharedInstance];
-    v4 = [v3 authKitAccountWithAltDSID:v2];
+    v4 = [v3 authKitAccountWithAltDSID:altDSID];
 
     v5 = +[AKAccountManager sharedInstance];
     v6 = [v5 isBeneficiaryForAccount:v4];
@@ -710,62 +710,62 @@ LABEL_25:
 
 - (BOOL)hasAppleAccount
 {
-  v2 = [(MBServiceAccount *)self properties];
-  v3 = ([v2 options] >> 4) & 1;
+  properties = [(MBServiceAccount *)self properties];
+  v3 = ([properties options] >> 4) & 1;
 
   return v3;
 }
 
 - (BOOL)isEmailVerified
 {
-  v2 = [(MBServiceAccount *)self properties];
-  v3 = ([v2 options] >> 1) & 1;
+  properties = [(MBServiceAccount *)self properties];
+  v3 = ([properties options] >> 1) & 1;
 
   return v3;
 }
 
 - (BOOL)isPrimaryAccount
 {
-  v2 = [(MBServiceAccount *)self properties];
-  v3 = ([v2 options] >> 7) & 1;
+  properties = [(MBServiceAccount *)self properties];
+  v3 = ([properties options] >> 7) & 1;
 
   return v3;
 }
 
 - (void)_reloadAccounts
 {
-  v3 = [objc_opt_class() accountsQueue];
+  accountsQueue = [objc_opt_class() accountsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_F1B4;
   block[3] = &unk_24A88;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(accountsQueue, block);
 }
 
-+ (void)_setBackupEnabled:(BOOL)a3 account:(id)a4 completion:(id)a5
++ (void)_setBackupEnabled:(BOOL)enabled account:(id)account completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (!v7)
+  enabledCopy = enabled;
+  accountCopy = account;
+  completionCopy = completion;
+  if (!accountCopy)
   {
     sub_13980();
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = completionCopy;
+  if (!completionCopy)
   {
     sub_13954();
   }
 
-  v10 = [v7 identifier];
+  identifier = [accountCopy identifier];
   v11 = kAccountDataclassBackup;
   v12 = MBGetDefaultLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
-    if (v6)
+    if (enabledCopy)
     {
       v13 = "Enabling";
     }
@@ -779,9 +779,9 @@ LABEL_25:
     v28 = 2114;
     v29 = v11;
     v30 = 2114;
-    v31 = v10;
+    v31 = identifier;
     v32 = 1024;
-    v33 = v6;
+    v33 = enabledCopy;
     _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "%s %{public}@ on account %{public}@ : %d", buf, 0x26u);
     _MBLog();
   }
@@ -803,10 +803,10 @@ LABEL_25:
     block[1] = 3221225472;
     block[2] = sub_F5F0;
     block[3] = &unk_24AF8;
-    v24 = v6;
-    v20 = v7;
+    v24 = enabledCopy;
+    v20 = accountCopy;
     v21 = v11;
-    v22 = v10;
+    v22 = identifier;
     v23 = v9;
     dispatch_async(v17, block);
   }
@@ -817,7 +817,7 @@ LABEL_25:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v27 = v10;
+      v27 = identifier;
       v28 = 2114;
       v29 = v11;
       v30 = 2112;
@@ -839,16 +839,16 @@ LABEL_25:
   CFNotificationCenterPostNotificationWithOptions(DarwinNotifyCenter, ACAccountStoreDidChangeNotification, 0, 0, 4uLL);
 }
 
-+ (id)_stringForAccountCredentialRenewResult:(int64_t)a3
++ (id)_stringForAccountCredentialRenewResult:(int64_t)result
 {
-  if (a3 > 2)
+  if (result > 2)
   {
     return @"failed to renew with unknown result";
   }
 
   else
   {
-    return *(&off_24C70 + a3);
+    return *(&off_24C70 + result);
   }
 }
 
@@ -864,32 +864,32 @@ LABEL_25:
 
   if ([(MBServiceAccount *)self hasAppleAccount])
   {
-    v4 = [objc_opt_class() accountsQueue];
+    accountsQueue = [objc_opt_class() accountsQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_FD34;
     block[3] = &unk_24A88;
     block[4] = self;
-    dispatch_sync(v4, block);
+    dispatch_sync(accountsQueue, block);
   }
 }
 
 - (id)description
 {
-  v3 = [(MBServiceAccount *)self properties];
-  v4 = [v3 persona];
+  properties = [(MBServiceAccount *)self properties];
+  persona = [properties persona];
   v5 = objc_opt_class();
-  v6 = [v3 accountIdentifier];
-  v7 = [v4 personaIdentifier];
-  v8 = [v3 dsid];
-  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@: %p id=(%@,%@,%@), persona=%@ isPrimary=%d, isEnabled=%d, isEnabledForBackup=%d, options=0x%lx>", v5, self, v6, v7, v8, v4, -[MBServiceAccount isPrimaryAccount](self, "isPrimaryAccount"), -[MBServiceAccount isEnabled](self, "isEnabled"), -[MBServiceAccount isEnabledForBackup](self, "isEnabledForBackup"), [v3 options]);;
+  accountIdentifier = [properties accountIdentifier];
+  personaIdentifier = [persona personaIdentifier];
+  dsid = [properties dsid];
+  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@: %p id=(%@,%@,%@), persona=%@ isPrimary=%d, isEnabled=%d, isEnabledForBackup=%d, options=0x%lx>", v5, self, accountIdentifier, personaIdentifier, dsid, persona, -[MBServiceAccount isPrimaryAccount](self, "isPrimaryAccount"), -[MBServiceAccount isEnabled](self, "isEnabled"), -[MBServiceAccount isEnabledForBackup](self, "isEnabledForBackup"), [properties options]);;
 
   return v9;
 }
 
-- (void)_updateAppleAccount:(id)a3
+- (void)_updateAppleAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -900,19 +900,19 @@ LABEL_25:
 
   if ([(MBServiceAccount *)self hasAppleAccount])
   {
-    v6 = [objc_opt_class() accountsQueue];
+    accountsQueue = [objc_opt_class() accountsQueue];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1018C;
     v7[3] = &unk_24B88;
     v7[4] = self;
-    v8 = v4;
-    dispatch_sync(v6, v7);
+    v8 = accountCopy;
+    dispatch_sync(accountsQueue, v7);
   }
 
-  else if (v4)
+  else if (accountCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(accountCopy + 2))(accountCopy, 0);
   }
 }
 
@@ -956,14 +956,14 @@ LABEL_25:
     v10 = sub_1066C;
     v11 = sub_1067C;
     v12 = 0;
-    v3 = [objc_opt_class() accountsQueue];
+    accountsQueue = [objc_opt_class() accountsQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_10824;
     v6[3] = &unk_24BD8;
     v6[4] = self;
     v6[5] = &v7;
-    dispatch_sync(v3, v6);
+    dispatch_sync(accountsQueue, v6);
 
     v4 = v8[5];
     _Block_object_dispose(&v7, 8);
@@ -977,32 +977,32 @@ LABEL_25:
   return v4;
 }
 
-- (void)_updateApplePassword:(id)a3 completionHandler:(id)a4
+- (void)_updateApplePassword:(id)password completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  passwordCopy = password;
+  handlerCopy = handler;
   if ([(MBServiceAccount *)self hasAppleAccount])
   {
-    v8 = [objc_opt_class() accountsQueue];
+    accountsQueue = [objc_opt_class() accountsQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_109EC;
     block[3] = &unk_24C28;
     block[4] = self;
-    v11 = v7;
-    v10 = v6;
-    dispatch_sync(v8, block);
+    v11 = handlerCopy;
+    v10 = passwordCopy;
+    dispatch_sync(accountsQueue, block);
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (id)_updateApplePasswordSync:(id)a3
+- (id)_updateApplePasswordSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
@@ -1021,7 +1021,7 @@ LABEL_25:
   v11 = v18;
   v5 = dispatch_semaphore_create(0);
   v9 = v5;
-  [(MBServiceAccount *)self _updateApplePassword:v4 completionHandler:v8];
+  [(MBServiceAccount *)self _updateApplePassword:syncCopy completionHandler:v8];
   MBSemaphoreWaitForever();
   v6 = v13[5];
 
@@ -1031,7 +1031,7 @@ LABEL_25:
   return v6;
 }
 
-- (BOOL)verifyAppleAccountCredentialsWithContext:(BOOL)a3
+- (BOOL)verifyAppleAccountCredentialsWithContext:(BOOL)context
 {
   v4 = MBGetDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1042,8 +1042,8 @@ LABEL_25:
   }
 
   v5 = objc_opt_new();
-  v6 = [(MBServiceAccount *)self appleID];
-  [v5 setUsername:v6];
+  appleID = [(MBServiceAccount *)self appleID];
+  [v5 setUsername:appleID];
 
   [v5 setIsUsernameEditable:0];
   [v5 setServiceType:1];

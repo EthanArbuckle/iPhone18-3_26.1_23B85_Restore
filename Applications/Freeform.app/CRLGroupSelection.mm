@@ -1,23 +1,23 @@
 @interface CRLGroupSelection
 - (BOOL)isCrossContainerSelection;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)containerGroups;
 - (NSString)description;
-- (_TtC8Freeform17CRLGroupSelection)initWithBoardItems:(id)a3;
-- (_TtC8Freeform17CRLGroupSelection)initWithContainerGroups:(id)a3 hasSelectedItemsInNonGroupContainer:(BOOL)a4;
-- (_TtC8Freeform17CRLGroupSelection)initWithGroupItem:(id)a3;
+- (_TtC8Freeform17CRLGroupSelection)initWithBoardItems:(id)items;
+- (_TtC8Freeform17CRLGroupSelection)initWithContainerGroups:(id)groups hasSelectedItemsInNonGroupContainer:(BOOL)container;
+- (_TtC8Freeform17CRLGroupSelection)initWithGroupItem:(id)item;
 @end
 
 @implementation CRLGroupSelection
 
-- (_TtC8Freeform17CRLGroupSelection)initWithGroupItem:(id)a3
+- (_TtC8Freeform17CRLGroupSelection)initWithGroupItem:(id)item
 {
   self->_TtC8Freeform21CRLBoardItemSelection_opaque[OBJC_IVAR____TtC8Freeform17CRLGroupSelection_hasSelectedItemsInNonGroupContainer] = 0;
   sub_1005B981C(&unk_1019F4D60);
   inited = swift_initStackObject();
   *(inited + 16) = xmmword_101465920;
-  *(inited + 32) = a3;
-  v5 = a3;
+  *(inited + 32) = item;
+  itemCopy = item;
   sub_1005BC5DC(inited);
   v7 = v6;
   swift_setDeallocating();
@@ -27,23 +27,23 @@
   return v8;
 }
 
-- (_TtC8Freeform17CRLGroupSelection)initWithContainerGroups:(id)a3 hasSelectedItemsInNonGroupContainer:(BOOL)a4
+- (_TtC8Freeform17CRLGroupSelection)initWithContainerGroups:(id)groups hasSelectedItemsInNonGroupContainer:(BOOL)container
 {
   type metadata accessor for CRLGroupItem();
   sub_100A5E238(&qword_101A0E4D0, 255, type metadata accessor for CRLGroupItem);
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  self->_TtC8Freeform21CRLBoardItemSelection_opaque[OBJC_IVAR____TtC8Freeform17CRLGroupSelection_hasSelectedItemsInNonGroupContainer] = a4;
+  self->_TtC8Freeform21CRLBoardItemSelection_opaque[OBJC_IVAR____TtC8Freeform17CRLGroupSelection_hasSelectedItemsInNonGroupContainer] = container;
   sub_1012E3BE0(v6);
   v8 = v7;
 
   return sub_100616DB8(v8);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -52,7 +52,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_100A5DBCC(v8);
@@ -63,7 +63,7 @@
 
 - (NSArray)containerGroups
 {
-  v2 = self;
+  selfCopy = self;
 
   sub_100A5D724(v3);
 
@@ -75,7 +75,7 @@
 
 - (BOOL)isCrossContainerSelection
 {
-  v2 = self;
+  selfCopy = self;
 
   v4 = sub_100A5D724(v3);
 
@@ -91,7 +91,7 @@
 
   if (v5 <= 1)
   {
-    v6 = v2->_TtC8Freeform21CRLBoardItemSelection_opaque[OBJC_IVAR____TtC8Freeform17CRLGroupSelection_hasSelectedItemsInNonGroupContainer];
+    v6 = selfCopy->_TtC8Freeform21CRLBoardItemSelection_opaque[OBJC_IVAR____TtC8Freeform17CRLGroupSelection_hasSelectedItemsInNonGroupContainer];
   }
 
   else
@@ -104,7 +104,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_100A5DFC0();
 
   v3 = String._bridgeToObjectiveC()();
@@ -112,7 +112,7 @@
   return v3;
 }
 
-- (_TtC8Freeform17CRLGroupSelection)initWithBoardItems:(id)a3
+- (_TtC8Freeform17CRLGroupSelection)initWithBoardItems:(id)items
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

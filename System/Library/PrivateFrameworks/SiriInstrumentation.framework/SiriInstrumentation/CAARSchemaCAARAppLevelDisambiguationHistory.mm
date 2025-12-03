@@ -1,48 +1,48 @@
 @interface CAARSchemaCAARAppLevelDisambiguationHistory
-- (BOOL)isEqual:(id)a3;
-- (CAARSchemaCAARAppLevelDisambiguationHistory)initWithDictionary:(id)a3;
-- (CAARSchemaCAARAppLevelDisambiguationHistory)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CAARSchemaCAARAppLevelDisambiguationHistory)initWithDictionary:(id)dictionary;
+- (CAARSchemaCAARAppLevelDisambiguationHistory)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasMinutesSinceLastDisambiguationSameApps:(BOOL)a3;
-- (void)setHasNumAppDisambiguationsLastInfinity:(BOOL)a3;
-- (void)setHasNumAppDisambiguationsLastOneDay:(BOOL)a3;
-- (void)setHasNumAppDisambiguationsLastOneHour:(BOOL)a3;
-- (void)setHasNumAppDisambiguationsLastSevenDays:(BOOL)a3;
-- (void)setHasNumAppDisambiguationsLastSixHours:(BOOL)a3;
-- (void)setHasNumAppDisambiguationsLastTenMinutes:(BOOL)a3;
-- (void)setHasNumAppDisambiguationsLastTwentyEightDays:(BOOL)a3;
-- (void)setHasNumSelectedAppDisambiguationsLastInfinity:(BOOL)a3;
-- (void)setHasNumSelectedAppDisambiguationsLastOneDay:(BOOL)a3;
-- (void)setHasNumSelectedAppDisambiguationsLastOneHour:(BOOL)a3;
-- (void)setHasNumSelectedAppDisambiguationsLastSevenDays:(BOOL)a3;
-- (void)setHasNumSelectedAppDisambiguationsLastSixHours:(BOOL)a3;
-- (void)setHasNumSelectedAppDisambiguationsLastTenMinutes:(BOOL)a3;
-- (void)setHasNumSelectedAppDisambiguationsLastTwentyEightDays:(BOOL)a3;
-- (void)setHasNumSelectedAppDisambiguationsTwoMinutes:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasMinutesSinceLastDisambiguationSameApps:(BOOL)apps;
+- (void)setHasNumAppDisambiguationsLastInfinity:(BOOL)infinity;
+- (void)setHasNumAppDisambiguationsLastOneDay:(BOOL)day;
+- (void)setHasNumAppDisambiguationsLastOneHour:(BOOL)hour;
+- (void)setHasNumAppDisambiguationsLastSevenDays:(BOOL)days;
+- (void)setHasNumAppDisambiguationsLastSixHours:(BOOL)hours;
+- (void)setHasNumAppDisambiguationsLastTenMinutes:(BOOL)minutes;
+- (void)setHasNumAppDisambiguationsLastTwentyEightDays:(BOOL)days;
+- (void)setHasNumSelectedAppDisambiguationsLastInfinity:(BOOL)infinity;
+- (void)setHasNumSelectedAppDisambiguationsLastOneDay:(BOOL)day;
+- (void)setHasNumSelectedAppDisambiguationsLastOneHour:(BOOL)hour;
+- (void)setHasNumSelectedAppDisambiguationsLastSevenDays:(BOOL)days;
+- (void)setHasNumSelectedAppDisambiguationsLastSixHours:(BOOL)hours;
+- (void)setHasNumSelectedAppDisambiguationsLastTenMinutes:(BOOL)minutes;
+- (void)setHasNumSelectedAppDisambiguationsLastTwentyEightDays:(BOOL)days;
+- (void)setHasNumSelectedAppDisambiguationsTwoMinutes:(BOOL)minutes;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CAARSchemaCAARAppLevelDisambiguationHistory
 
-- (CAARSchemaCAARAppLevelDisambiguationHistory)initWithDictionary:(id)a3
+- (CAARSchemaCAARAppLevelDisambiguationHistory)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v40.receiver = self;
   v40.super_class = CAARSchemaCAARAppLevelDisambiguationHistory;
   v5 = [(CAARSchemaCAARAppLevelDisambiguationHistory *)&v40 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"numAppDisambiguationsLastTwoMinutes"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"numAppDisambiguationsLastTwoMinutes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARAppLevelDisambiguationHistory setNumAppDisambiguationsLastTwoMinutes:](v5, "setNumAppDisambiguationsLastTwoMinutes:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"numAppDisambiguationsLastTenMinutes"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"numAppDisambiguationsLastTenMinutes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,21 +50,21 @@
     }
 
     v30 = v7;
-    v8 = [v4 objectForKeyedSubscript:@"numAppDisambiguationsLastOneHour"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"numAppDisambiguationsLastOneHour"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARAppLevelDisambiguationHistory setNumAppDisambiguationsLastOneHour:](v5, "setNumAppDisambiguationsLastOneHour:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"numAppDisambiguationsLastSixHours"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"numAppDisambiguationsLastSixHours"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARAppLevelDisambiguationHistory setNumAppDisambiguationsLastSixHours:](v5, "setNumAppDisambiguationsLastSixHours:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"numAppDisambiguationsLastOneDay"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"numAppDisambiguationsLastOneDay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,7 +72,7 @@
     }
 
     v35 = v8;
-    v11 = [v4 objectForKeyedSubscript:@"numAppDisambiguationsLastSevenDays"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"numAppDisambiguationsLastSevenDays"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,14 +80,14 @@
     }
 
     v12 = v6;
-    v13 = [v4 objectForKeyedSubscript:@"numAppDisambiguationsLastTwentyEightDays"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"numAppDisambiguationsLastTwentyEightDays"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARAppLevelDisambiguationHistory setNumAppDisambiguationsLastTwentyEightDays:](v5, "setNumAppDisambiguationsLastTwentyEightDays:", [v13 unsignedIntValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"numAppDisambiguationsLastInfinity"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"numAppDisambiguationsLastInfinity"];
     objc_opt_class();
     v39 = v14;
     if (objc_opt_isKindOfClass())
@@ -95,7 +95,7 @@
       -[CAARSchemaCAARAppLevelDisambiguationHistory setNumAppDisambiguationsLastInfinity:](v5, "setNumAppDisambiguationsLastInfinity:", [v14 unsignedIntValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"numSelectedAppDisambiguationsTwoMinutes"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"numSelectedAppDisambiguationsTwoMinutes"];
     objc_opt_class();
     v38 = v15;
     v16 = v12;
@@ -104,14 +104,14 @@
       -[CAARSchemaCAARAppLevelDisambiguationHistory setNumSelectedAppDisambiguationsTwoMinutes:](v5, "setNumSelectedAppDisambiguationsTwoMinutes:", [v38 unsignedIntValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"numSelectedAppDisambiguationsLastTenMinutes"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"numSelectedAppDisambiguationsLastTenMinutes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARAppLevelDisambiguationHistory setNumSelectedAppDisambiguationsLastTenMinutes:](v5, "setNumSelectedAppDisambiguationsLastTenMinutes:", [v17 unsignedIntValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"numSelectedAppDisambiguationsLastOneHour"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"numSelectedAppDisambiguationsLastOneHour"];
     objc_opt_class();
     v37 = v18;
     if (objc_opt_isKindOfClass())
@@ -120,7 +120,7 @@
     }
 
     v34 = v9;
-    v19 = [v4 objectForKeyedSubscript:@"numSelectedAppDisambiguationsLastSixHours"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"numSelectedAppDisambiguationsLastSixHours"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -128,7 +128,7 @@
     }
 
     v33 = v10;
-    v20 = [v4 objectForKeyedSubscript:@"numSelectedAppDisambiguationsLastOneDay"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"numSelectedAppDisambiguationsLastOneDay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -136,7 +136,7 @@
     }
 
     v32 = v11;
-    v21 = [v4 objectForKeyedSubscript:@"numSelectedAppDisambiguationsLastSevenDays"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"numSelectedAppDisambiguationsLastSevenDays"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -144,7 +144,7 @@
     }
 
     v31 = v13;
-    v22 = [v4 objectForKeyedSubscript:@"numSelectedAppDisambiguationsLastTwentyEightDays"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"numSelectedAppDisambiguationsLastTwentyEightDays"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -153,7 +153,7 @@
 
     v29 = v19;
     v36 = v16;
-    v23 = [v4 objectForKeyedSubscript:@"numSelectedAppDisambiguationsLastInfinity"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"numSelectedAppDisambiguationsLastInfinity"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -161,14 +161,14 @@
     }
 
     v24 = v17;
-    v25 = [v4 objectForKeyedSubscript:@"wasAppSelectedInLastDisambiguation"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"wasAppSelectedInLastDisambiguation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARAppLevelDisambiguationHistory setWasAppSelectedInLastDisambiguation:](v5, "setWasAppSelectedInLastDisambiguation:", [v25 BOOLValue]);
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"minutesSinceLastDisambiguationSameApps"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"minutesSinceLastDisambiguationSameApps"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -181,30 +181,30 @@
   return v5;
 }
 
-- (CAARSchemaCAARAppLevelDisambiguationHistory)initWithJSON:(id)a3
+- (CAARSchemaCAARAppLevelDisambiguationHistory)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CAARSchemaCAARAppLevelDisambiguationHistory *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CAARSchemaCAARAppLevelDisambiguationHistory *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CAARSchemaCAARAppLevelDisambiguationHistory *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -217,19 +217,19 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   p_has = &self->_has;
   if ((*(&self->_has + 2) & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppLevelDisambiguationHistory minutesSinceLastDisambiguationSameApps](self, "minutesSinceLastDisambiguationSameApps")}];
-    [v3 setObject:v5 forKeyedSubscript:@"minutesSinceLastDisambiguationSameApps"];
+    [dictionary setObject:v5 forKeyedSubscript:@"minutesSinceLastDisambiguationSameApps"];
   }
 
   v6 = *p_has;
   if ((*p_has & 0x80) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppLevelDisambiguationHistory numAppDisambiguationsLastInfinity](self, "numAppDisambiguationsLastInfinity")}];
-    [v3 setObject:v10 forKeyedSubscript:@"numAppDisambiguationsLastInfinity"];
+    [dictionary setObject:v10 forKeyedSubscript:@"numAppDisambiguationsLastInfinity"];
 
     v6 = *p_has;
     if ((*p_has & 0x10) == 0)
@@ -250,7 +250,7 @@ LABEL_5:
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppLevelDisambiguationHistory numAppDisambiguationsLastOneDay](self, "numAppDisambiguationsLastOneDay")}];
-  [v3 setObject:v11 forKeyedSubscript:@"numAppDisambiguationsLastOneDay"];
+  [dictionary setObject:v11 forKeyedSubscript:@"numAppDisambiguationsLastOneDay"];
 
   v6 = *p_has;
   if ((*p_has & 4) == 0)
@@ -266,7 +266,7 @@ LABEL_6:
 
 LABEL_27:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppLevelDisambiguationHistory numAppDisambiguationsLastOneHour](self, "numAppDisambiguationsLastOneHour")}];
-  [v3 setObject:v12 forKeyedSubscript:@"numAppDisambiguationsLastOneHour"];
+  [dictionary setObject:v12 forKeyedSubscript:@"numAppDisambiguationsLastOneHour"];
 
   v6 = *p_has;
   if ((*p_has & 0x20) == 0)
@@ -282,7 +282,7 @@ LABEL_7:
 
 LABEL_28:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppLevelDisambiguationHistory numAppDisambiguationsLastSevenDays](self, "numAppDisambiguationsLastSevenDays")}];
-  [v3 setObject:v13 forKeyedSubscript:@"numAppDisambiguationsLastSevenDays"];
+  [dictionary setObject:v13 forKeyedSubscript:@"numAppDisambiguationsLastSevenDays"];
 
   v6 = *p_has;
   if ((*p_has & 8) == 0)
@@ -298,7 +298,7 @@ LABEL_8:
 
 LABEL_29:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppLevelDisambiguationHistory numAppDisambiguationsLastSixHours](self, "numAppDisambiguationsLastSixHours")}];
-  [v3 setObject:v14 forKeyedSubscript:@"numAppDisambiguationsLastSixHours"];
+  [dictionary setObject:v14 forKeyedSubscript:@"numAppDisambiguationsLastSixHours"];
 
   v6 = *p_has;
   if ((*p_has & 2) == 0)
@@ -314,7 +314,7 @@ LABEL_9:
 
 LABEL_30:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppLevelDisambiguationHistory numAppDisambiguationsLastTenMinutes](self, "numAppDisambiguationsLastTenMinutes")}];
-  [v3 setObject:v15 forKeyedSubscript:@"numAppDisambiguationsLastTenMinutes"];
+  [dictionary setObject:v15 forKeyedSubscript:@"numAppDisambiguationsLastTenMinutes"];
 
   v6 = *p_has;
   if ((*p_has & 0x40) == 0)
@@ -330,7 +330,7 @@ LABEL_10:
 
 LABEL_31:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppLevelDisambiguationHistory numAppDisambiguationsLastTwentyEightDays](self, "numAppDisambiguationsLastTwentyEightDays")}];
-  [v3 setObject:v16 forKeyedSubscript:@"numAppDisambiguationsLastTwentyEightDays"];
+  [dictionary setObject:v16 forKeyedSubscript:@"numAppDisambiguationsLastTwentyEightDays"];
 
   v6 = *p_has;
   if ((*p_has & 1) == 0)
@@ -346,7 +346,7 @@ LABEL_11:
 
 LABEL_32:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppLevelDisambiguationHistory numAppDisambiguationsLastTwoMinutes](self, "numAppDisambiguationsLastTwoMinutes")}];
-  [v3 setObject:v17 forKeyedSubscript:@"numAppDisambiguationsLastTwoMinutes"];
+  [dictionary setObject:v17 forKeyedSubscript:@"numAppDisambiguationsLastTwoMinutes"];
 
   v6 = *p_has;
   if ((*p_has & 0x8000) == 0)
@@ -362,7 +362,7 @@ LABEL_12:
 
 LABEL_33:
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppLevelDisambiguationHistory numSelectedAppDisambiguationsLastInfinity](self, "numSelectedAppDisambiguationsLastInfinity")}];
-  [v3 setObject:v18 forKeyedSubscript:@"numSelectedAppDisambiguationsLastInfinity"];
+  [dictionary setObject:v18 forKeyedSubscript:@"numSelectedAppDisambiguationsLastInfinity"];
 
   v6 = *p_has;
   if ((*p_has & 0x1000) == 0)
@@ -378,7 +378,7 @@ LABEL_13:
 
 LABEL_34:
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppLevelDisambiguationHistory numSelectedAppDisambiguationsLastOneDay](self, "numSelectedAppDisambiguationsLastOneDay")}];
-  [v3 setObject:v19 forKeyedSubscript:@"numSelectedAppDisambiguationsLastOneDay"];
+  [dictionary setObject:v19 forKeyedSubscript:@"numSelectedAppDisambiguationsLastOneDay"];
 
   v6 = *p_has;
   if ((*p_has & 0x400) == 0)
@@ -394,7 +394,7 @@ LABEL_14:
 
 LABEL_35:
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppLevelDisambiguationHistory numSelectedAppDisambiguationsLastOneHour](self, "numSelectedAppDisambiguationsLastOneHour")}];
-  [v3 setObject:v20 forKeyedSubscript:@"numSelectedAppDisambiguationsLastOneHour"];
+  [dictionary setObject:v20 forKeyedSubscript:@"numSelectedAppDisambiguationsLastOneHour"];
 
   v6 = *p_has;
   if ((*p_has & 0x2000) == 0)
@@ -410,7 +410,7 @@ LABEL_15:
 
 LABEL_36:
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppLevelDisambiguationHistory numSelectedAppDisambiguationsLastSevenDays](self, "numSelectedAppDisambiguationsLastSevenDays")}];
-  [v3 setObject:v21 forKeyedSubscript:@"numSelectedAppDisambiguationsLastSevenDays"];
+  [dictionary setObject:v21 forKeyedSubscript:@"numSelectedAppDisambiguationsLastSevenDays"];
 
   v6 = *p_has;
   if ((*p_has & 0x800) == 0)
@@ -426,7 +426,7 @@ LABEL_16:
 
 LABEL_37:
   v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppLevelDisambiguationHistory numSelectedAppDisambiguationsLastSixHours](self, "numSelectedAppDisambiguationsLastSixHours")}];
-  [v3 setObject:v22 forKeyedSubscript:@"numSelectedAppDisambiguationsLastSixHours"];
+  [dictionary setObject:v22 forKeyedSubscript:@"numSelectedAppDisambiguationsLastSixHours"];
 
   v6 = *p_has;
   if ((*p_has & 0x200) == 0)
@@ -442,7 +442,7 @@ LABEL_17:
 
 LABEL_38:
   v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppLevelDisambiguationHistory numSelectedAppDisambiguationsLastTenMinutes](self, "numSelectedAppDisambiguationsLastTenMinutes")}];
-  [v3 setObject:v23 forKeyedSubscript:@"numSelectedAppDisambiguationsLastTenMinutes"];
+  [dictionary setObject:v23 forKeyedSubscript:@"numSelectedAppDisambiguationsLastTenMinutes"];
 
   v6 = *p_has;
   if ((*p_has & 0x4000) == 0)
@@ -458,25 +458,25 @@ LABEL_18:
 
 LABEL_39:
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppLevelDisambiguationHistory numSelectedAppDisambiguationsLastTwentyEightDays](self, "numSelectedAppDisambiguationsLastTwentyEightDays")}];
-  [v3 setObject:v24 forKeyedSubscript:@"numSelectedAppDisambiguationsLastTwentyEightDays"];
+  [dictionary setObject:v24 forKeyedSubscript:@"numSelectedAppDisambiguationsLastTwentyEightDays"];
 
   if ((*p_has & 0x100) != 0)
   {
 LABEL_19:
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppLevelDisambiguationHistory numSelectedAppDisambiguationsTwoMinutes](self, "numSelectedAppDisambiguationsTwoMinutes")}];
-    [v3 setObject:v7 forKeyedSubscript:@"numSelectedAppDisambiguationsTwoMinutes"];
+    [dictionary setObject:v7 forKeyedSubscript:@"numSelectedAppDisambiguationsTwoMinutes"];
   }
 
 LABEL_20:
   if (*(&self->_has + 2))
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARAppLevelDisambiguationHistory wasAppSelectedInLastDisambiguation](self, "wasAppSelectedInLastDisambiguation")}];
-    [v3 setObject:v8 forKeyedSubscript:@"wasAppSelectedInLastDisambiguation"];
+    [dictionary setObject:v8 forKeyedSubscript:@"wasAppSelectedInLastDisambiguation"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -718,18 +718,18 @@ LABEL_37:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_73;
   }
 
   p_has = &self->_has;
   has = self->_has;
-  v7 = v4 + 40;
-  v8 = v4[40];
+  v7 = equalCopy + 40;
+  v8 = equalCopy[40];
   if ((*&has & 1) != (v8 & 1))
   {
     goto LABEL_73;
@@ -738,7 +738,7 @@ LABEL_37:
   if (*&has)
   {
     numAppDisambiguationsLastTwoMinutes = self->_numAppDisambiguationsLastTwoMinutes;
-    if (numAppDisambiguationsLastTwoMinutes != [v4 numAppDisambiguationsLastTwoMinutes])
+    if (numAppDisambiguationsLastTwoMinutes != [equalCopy numAppDisambiguationsLastTwoMinutes])
     {
       goto LABEL_73;
     }
@@ -756,7 +756,7 @@ LABEL_37:
   if (v10)
   {
     numAppDisambiguationsLastTenMinutes = self->_numAppDisambiguationsLastTenMinutes;
-    if (numAppDisambiguationsLastTenMinutes != [v4 numAppDisambiguationsLastTenMinutes])
+    if (numAppDisambiguationsLastTenMinutes != [equalCopy numAppDisambiguationsLastTenMinutes])
     {
       goto LABEL_73;
     }
@@ -774,7 +774,7 @@ LABEL_37:
   if (v12)
   {
     numAppDisambiguationsLastOneHour = self->_numAppDisambiguationsLastOneHour;
-    if (numAppDisambiguationsLastOneHour != [v4 numAppDisambiguationsLastOneHour])
+    if (numAppDisambiguationsLastOneHour != [equalCopy numAppDisambiguationsLastOneHour])
     {
       goto LABEL_73;
     }
@@ -792,7 +792,7 @@ LABEL_37:
   if (v14)
   {
     numAppDisambiguationsLastSixHours = self->_numAppDisambiguationsLastSixHours;
-    if (numAppDisambiguationsLastSixHours != [v4 numAppDisambiguationsLastSixHours])
+    if (numAppDisambiguationsLastSixHours != [equalCopy numAppDisambiguationsLastSixHours])
     {
       goto LABEL_73;
     }
@@ -810,7 +810,7 @@ LABEL_37:
   if (v16)
   {
     numAppDisambiguationsLastOneDay = self->_numAppDisambiguationsLastOneDay;
-    if (numAppDisambiguationsLastOneDay != [v4 numAppDisambiguationsLastOneDay])
+    if (numAppDisambiguationsLastOneDay != [equalCopy numAppDisambiguationsLastOneDay])
     {
       goto LABEL_73;
     }
@@ -828,7 +828,7 @@ LABEL_37:
   if (v18)
   {
     numAppDisambiguationsLastSevenDays = self->_numAppDisambiguationsLastSevenDays;
-    if (numAppDisambiguationsLastSevenDays != [v4 numAppDisambiguationsLastSevenDays])
+    if (numAppDisambiguationsLastSevenDays != [equalCopy numAppDisambiguationsLastSevenDays])
     {
       goto LABEL_73;
     }
@@ -846,7 +846,7 @@ LABEL_37:
   if (v20)
   {
     numAppDisambiguationsLastTwentyEightDays = self->_numAppDisambiguationsLastTwentyEightDays;
-    if (numAppDisambiguationsLastTwentyEightDays != [v4 numAppDisambiguationsLastTwentyEightDays])
+    if (numAppDisambiguationsLastTwentyEightDays != [equalCopy numAppDisambiguationsLastTwentyEightDays])
     {
       goto LABEL_73;
     }
@@ -864,7 +864,7 @@ LABEL_37:
   if (v22)
   {
     numAppDisambiguationsLastInfinity = self->_numAppDisambiguationsLastInfinity;
-    if (numAppDisambiguationsLastInfinity != [v4 numAppDisambiguationsLastInfinity])
+    if (numAppDisambiguationsLastInfinity != [equalCopy numAppDisambiguationsLastInfinity])
     {
       goto LABEL_73;
     }
@@ -882,7 +882,7 @@ LABEL_37:
   if (v24)
   {
     numSelectedAppDisambiguationsTwoMinutes = self->_numSelectedAppDisambiguationsTwoMinutes;
-    if (numSelectedAppDisambiguationsTwoMinutes != [v4 numSelectedAppDisambiguationsTwoMinutes])
+    if (numSelectedAppDisambiguationsTwoMinutes != [equalCopy numSelectedAppDisambiguationsTwoMinutes])
     {
       goto LABEL_73;
     }
@@ -900,7 +900,7 @@ LABEL_37:
   if (v26)
   {
     numSelectedAppDisambiguationsLastTenMinutes = self->_numSelectedAppDisambiguationsLastTenMinutes;
-    if (numSelectedAppDisambiguationsLastTenMinutes != [v4 numSelectedAppDisambiguationsLastTenMinutes])
+    if (numSelectedAppDisambiguationsLastTenMinutes != [equalCopy numSelectedAppDisambiguationsLastTenMinutes])
     {
       goto LABEL_73;
     }
@@ -918,7 +918,7 @@ LABEL_37:
   if (v28)
   {
     numSelectedAppDisambiguationsLastOneHour = self->_numSelectedAppDisambiguationsLastOneHour;
-    if (numSelectedAppDisambiguationsLastOneHour != [v4 numSelectedAppDisambiguationsLastOneHour])
+    if (numSelectedAppDisambiguationsLastOneHour != [equalCopy numSelectedAppDisambiguationsLastOneHour])
     {
       goto LABEL_73;
     }
@@ -936,7 +936,7 @@ LABEL_37:
   if (v30)
   {
     numSelectedAppDisambiguationsLastSixHours = self->_numSelectedAppDisambiguationsLastSixHours;
-    if (numSelectedAppDisambiguationsLastSixHours != [v4 numSelectedAppDisambiguationsLastSixHours])
+    if (numSelectedAppDisambiguationsLastSixHours != [equalCopy numSelectedAppDisambiguationsLastSixHours])
     {
       goto LABEL_73;
     }
@@ -954,7 +954,7 @@ LABEL_37:
   if (v32)
   {
     numSelectedAppDisambiguationsLastOneDay = self->_numSelectedAppDisambiguationsLastOneDay;
-    if (numSelectedAppDisambiguationsLastOneDay != [v4 numSelectedAppDisambiguationsLastOneDay])
+    if (numSelectedAppDisambiguationsLastOneDay != [equalCopy numSelectedAppDisambiguationsLastOneDay])
     {
       goto LABEL_73;
     }
@@ -972,7 +972,7 @@ LABEL_37:
   if (v34)
   {
     numSelectedAppDisambiguationsLastSevenDays = self->_numSelectedAppDisambiguationsLastSevenDays;
-    if (numSelectedAppDisambiguationsLastSevenDays != [v4 numSelectedAppDisambiguationsLastSevenDays])
+    if (numSelectedAppDisambiguationsLastSevenDays != [equalCopy numSelectedAppDisambiguationsLastSevenDays])
     {
       goto LABEL_73;
     }
@@ -990,7 +990,7 @@ LABEL_37:
   if (v36)
   {
     numSelectedAppDisambiguationsLastTwentyEightDays = self->_numSelectedAppDisambiguationsLastTwentyEightDays;
-    if (numSelectedAppDisambiguationsLastTwentyEightDays != [v4 numSelectedAppDisambiguationsLastTwentyEightDays])
+    if (numSelectedAppDisambiguationsLastTwentyEightDays != [equalCopy numSelectedAppDisambiguationsLastTwentyEightDays])
     {
       goto LABEL_73;
     }
@@ -1007,14 +1007,14 @@ LABEL_37:
   if ((*&has & 0x8000) != 0)
   {
     numSelectedAppDisambiguationsLastInfinity = self->_numSelectedAppDisambiguationsLastInfinity;
-    if (numSelectedAppDisambiguationsLastInfinity != [v4 numSelectedAppDisambiguationsLastInfinity])
+    if (numSelectedAppDisambiguationsLastInfinity != [equalCopy numSelectedAppDisambiguationsLastInfinity])
     {
       goto LABEL_73;
     }
   }
 
   v39 = *(&self->_has + 2);
-  v40 = *(v4 + 82);
+  v40 = *(equalCopy + 82);
   if ((v39 & 1) != (v40 & 1))
   {
     goto LABEL_73;
@@ -1023,10 +1023,10 @@ LABEL_37:
   if (v39)
   {
     wasAppSelectedInLastDisambiguation = self->_wasAppSelectedInLastDisambiguation;
-    if (wasAppSelectedInLastDisambiguation == [v4 wasAppSelectedInLastDisambiguation])
+    if (wasAppSelectedInLastDisambiguation == [equalCopy wasAppSelectedInLastDisambiguation])
     {
       v39 = *(&self->_has + 2);
-      v40 = *(v4 + 82);
+      v40 = *(equalCopy + 82);
       goto LABEL_69;
     }
 
@@ -1045,7 +1045,7 @@ LABEL_69:
   if (v42)
   {
     minutesSinceLastDisambiguationSameApps = self->_minutesSinceLastDisambiguationSameApps;
-    if (minutesSinceLastDisambiguationSameApps != [v4 minutesSinceLastDisambiguationSameApps])
+    if (minutesSinceLastDisambiguationSameApps != [equalCopy minutesSinceLastDisambiguationSameApps])
     {
       goto LABEL_73;
     }
@@ -1057,9 +1057,9 @@ LABEL_74:
   return v44;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   p_has = &self->_has;
   has = self->_has;
   if (has)
@@ -1287,9 +1287,9 @@ LABEL_17:
   }
 }
 
-- (void)setHasMinutesSinceLastDisambiguationSameApps:(BOOL)a3
+- (void)setHasMinutesSinceLastDisambiguationSameApps:(BOOL)apps
 {
-  if (a3)
+  if (apps)
   {
     v3 = 2;
   }
@@ -1302,9 +1302,9 @@ LABEL_17:
   *(&self->_has + 2) = *(&self->_has + 2) & 0xFD | v3;
 }
 
-- (void)setHasNumSelectedAppDisambiguationsLastInfinity:(BOOL)a3
+- (void)setHasNumSelectedAppDisambiguationsLastInfinity:(BOOL)infinity
 {
-  if (a3)
+  if (infinity)
   {
     v3 = 0x8000;
   }
@@ -1317,9 +1317,9 @@ LABEL_17:
   *&self->_has = v3 & 0x8000 | *&self->_has & 0x7FFF;
 }
 
-- (void)setHasNumSelectedAppDisambiguationsLastTwentyEightDays:(BOOL)a3
+- (void)setHasNumSelectedAppDisambiguationsLastTwentyEightDays:(BOOL)days
 {
-  if (a3)
+  if (days)
   {
     v3 = 0x4000;
   }
@@ -1332,9 +1332,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasNumSelectedAppDisambiguationsLastSevenDays:(BOOL)a3
+- (void)setHasNumSelectedAppDisambiguationsLastSevenDays:(BOOL)days
 {
-  if (a3)
+  if (days)
   {
     v3 = 0x2000;
   }
@@ -1347,9 +1347,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasNumSelectedAppDisambiguationsLastOneDay:(BOOL)a3
+- (void)setHasNumSelectedAppDisambiguationsLastOneDay:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 4096;
   }
@@ -1362,9 +1362,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasNumSelectedAppDisambiguationsLastSixHours:(BOOL)a3
+- (void)setHasNumSelectedAppDisambiguationsLastSixHours:(BOOL)hours
 {
-  if (a3)
+  if (hours)
   {
     v3 = 2048;
   }
@@ -1377,9 +1377,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasNumSelectedAppDisambiguationsLastOneHour:(BOOL)a3
+- (void)setHasNumSelectedAppDisambiguationsLastOneHour:(BOOL)hour
 {
-  if (a3)
+  if (hour)
   {
     v3 = 1024;
   }
@@ -1392,9 +1392,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasNumSelectedAppDisambiguationsLastTenMinutes:(BOOL)a3
+- (void)setHasNumSelectedAppDisambiguationsLastTenMinutes:(BOOL)minutes
 {
-  if (a3)
+  if (minutes)
   {
     v3 = 512;
   }
@@ -1407,9 +1407,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasNumSelectedAppDisambiguationsTwoMinutes:(BOOL)a3
+- (void)setHasNumSelectedAppDisambiguationsTwoMinutes:(BOOL)minutes
 {
-  if (a3)
+  if (minutes)
   {
     v3 = 256;
   }
@@ -1422,9 +1422,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasNumAppDisambiguationsLastInfinity:(BOOL)a3
+- (void)setHasNumAppDisambiguationsLastInfinity:(BOOL)infinity
 {
-  if (a3)
+  if (infinity)
   {
     v3 = 128;
   }
@@ -1437,9 +1437,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasNumAppDisambiguationsLastTwentyEightDays:(BOOL)a3
+- (void)setHasNumAppDisambiguationsLastTwentyEightDays:(BOOL)days
 {
-  if (a3)
+  if (days)
   {
     v3 = 64;
   }
@@ -1452,9 +1452,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasNumAppDisambiguationsLastSevenDays:(BOOL)a3
+- (void)setHasNumAppDisambiguationsLastSevenDays:(BOOL)days
 {
-  if (a3)
+  if (days)
   {
     v3 = 32;
   }
@@ -1467,9 +1467,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasNumAppDisambiguationsLastOneDay:(BOOL)a3
+- (void)setHasNumAppDisambiguationsLastOneDay:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 16;
   }
@@ -1482,9 +1482,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasNumAppDisambiguationsLastSixHours:(BOOL)a3
+- (void)setHasNumAppDisambiguationsLastSixHours:(BOOL)hours
 {
-  if (a3)
+  if (hours)
   {
     v3 = 8;
   }
@@ -1497,9 +1497,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasNumAppDisambiguationsLastOneHour:(BOOL)a3
+- (void)setHasNumAppDisambiguationsLastOneHour:(BOOL)hour
 {
-  if (a3)
+  if (hour)
   {
     v3 = 4;
   }
@@ -1512,9 +1512,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasNumAppDisambiguationsLastTenMinutes:(BOOL)a3
+- (void)setHasNumAppDisambiguationsLastTenMinutes:(BOOL)minutes
 {
-  if (a3)
+  if (minutes)
   {
     v3 = 2;
   }

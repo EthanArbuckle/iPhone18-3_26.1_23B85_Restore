@@ -1,18 +1,18 @@
 @interface PLModelMigrationAction_MigrateSuggestedByClientTypeCameraSmartSharing
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4 shouldForce:(BOOL)a5;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error shouldForce:(BOOL)force;
 @end
 
 @implementation PLModelMigrationAction_MigrateSuggestedByClientTypeCameraSmartSharing
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4 shouldForce:(BOOL)a5
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error shouldForce:(BOOL)force
 {
   v140 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  contextCopy = context;
   v93 = 0;
   v94 = &v93;
   v95 = 0x2020000000;
   v96 = 1;
-  if (a5 || !MEMORY[0x19EAEE230]())
+  if (force || !MEMORY[0x19EAEE230]())
   {
     *&v104 = 0;
     *(&v104 + 1) = &v104;
@@ -30,7 +30,7 @@
     [v19 setFetchBatchSize:1];
     v21 = (*(&v104 + 1) + 40);
     obj = *(*(&v104 + 1) + 40);
-    v22 = [v7 executeFetchRequest:v19 error:&obj];
+    v22 = [contextCopy executeFetchRequest:v19 error:&obj];
     objc_storeStrong(v21, obj);
     if (![v22 count])
     {
@@ -39,8 +39,8 @@
 
       if (v45)
       {
-        v46 = [(PLModelMigrationActionCore *)self logger];
-        v47 = v46 == 0;
+        logger = [(PLModelMigrationActionCore *)self logger];
+        v47 = logger == 0;
 
         if (v47)
         {
@@ -111,7 +111,7 @@
       goto LABEL_38;
     }
 
-    v83 = [v22 firstObject];
+    firstObject = [v22 firstObject];
     v23 = +[PLManagedAsset fetchRequest];
     v24 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != 0", @"libraryScopeShareState"];
     [v23 setPredicate:v24];
@@ -119,7 +119,7 @@
     [v23 setFetchBatchSize:100];
     v25 = (*(&v104 + 1) + 40);
     v91 = *(*(&v104 + 1) + 40);
-    v26 = [v7 executeFetchRequest:v23 error:&v91];
+    v26 = [contextCopy executeFetchRequest:v23 error:&v91];
     objc_storeStrong(v25, v91);
     if (![v26 count])
     {
@@ -146,7 +146,7 @@
     v90 = &v93;
     v82 = v27;
     v87 = v82;
-    v28 = [v7 enumerateWithIncrementalSaveUsingObjects:v26 withBlock:v86];
+    v28 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v26 withBlock:v86];
     v29 = v28;
     v30 = v94[3];
     if (v30 == 2)
@@ -166,9 +166,9 @@
 
     else
     {
-      [v83 setCountOfAssetsAddedByCameraSmartSharing:?];
+      [firstObject setCountOfAssetsAddedByCameraSmartSharing:?];
       v85 = 0;
-      v53 = [v7 save:&v85];
+      v53 = [contextCopy save:&v85];
       v29 = v85;
       if (!v53)
       {
@@ -195,8 +195,8 @@ LABEL_11:
         goto LABEL_33;
       }
 
-      v70 = [(PLModelMigrationActionCore *)self logger];
-      v71 = v70 == 0;
+      logger2 = [(PLModelMigrationActionCore *)self logger];
+      v71 = logger2 == 0;
 
       if (!v71)
       {
@@ -280,8 +280,8 @@ LABEL_12:
       goto LABEL_33;
     }
 
-    v35 = [(PLModelMigrationActionCore *)self logger];
-    v36 = v35 == 0;
+    logger3 = [(PLModelMigrationActionCore *)self logger];
+    v36 = logger3 == 0;
 
     if (!v36)
     {
@@ -345,10 +345,10 @@ LABEL_34:
       [(PLModelMigrationActionCore *)self finalizeProgress];
       v62 = v94[3];
       v63 = *(*(&v104 + 1) + 40);
-      if (v62 != 1 && a4)
+      if (v62 != 1 && error)
       {
         v63 = v63;
-        *a4 = v63;
+        *error = v63;
       }
 
       v57 = v94[3];
@@ -381,8 +381,8 @@ LABEL_32:
 
   if (v9)
   {
-    v10 = [(PLModelMigrationActionCore *)self logger];
-    v11 = v10 == 0;
+    logger4 = [(PLModelMigrationActionCore *)self logger];
+    v11 = logger4 == 0;
 
     if (v11)
     {

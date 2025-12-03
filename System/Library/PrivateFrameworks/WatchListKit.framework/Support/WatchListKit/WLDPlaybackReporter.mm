@@ -1,30 +1,30 @@
 @interface WLDPlaybackReporter
 + (id)_cachedMetadataByIdentifier;
 + (id)_cachedNotFoundIdentifiers;
-+ (int64_t)_intentsMediaItemTypeFromWLKContentType:(unint64_t)a3;
-+ (void)_decorateVODSummary:(id)a3 completion:(id)a4;
-+ (void)_donateIntentWithPlaybackSummary:(id)a3 andMetadata:(id)a4;
-- (WLDPlaybackReporter)initWithSessionID:(id)a3;
++ (int64_t)_intentsMediaItemTypeFromWLKContentType:(unint64_t)type;
++ (void)_decorateVODSummary:(id)summary completion:(id)completion;
++ (void)_donateIntentWithPlaybackSummary:(id)summary andMetadata:(id)metadata;
+- (WLDPlaybackReporter)initWithSessionID:(id)d;
 - (void)_clearBDTimer;
-- (void)_reportPlayEvent:(id)a3 summary:(id)a4 completion:(id)a5;
-- (void)_scheduleTimedReportForSummary:(id)a3 afterMillis:(id)a4;
+- (void)_reportPlayEvent:(id)event summary:(id)summary completion:(id)completion;
+- (void)_scheduleTimedReportForSummary:(id)summary afterMillis:(id)millis;
 - (void)dealloc;
-- (void)getCachedCanonicalIDForSummary:(id)a3 completionHandler:(id)a4;
-- (void)reportPlayback:(id)a3 completion:(id)a4;
+- (void)getCachedCanonicalIDForSummary:(id)summary completionHandler:(id)handler;
+- (void)reportPlayback:(id)playback completion:(id)completion;
 @end
 
 @implementation WLDPlaybackReporter
 
-- (WLDPlaybackReporter)initWithSessionID:(id)a3
+- (WLDPlaybackReporter)initWithSessionID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = WLDPlaybackReporter;
   v6 = [(WLDPlaybackReporter *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sessionID, a3);
+    objc_storeStrong(&v6->_sessionID, d);
   }
 
   v8 = WLKPlaybackTrackingLogObject();
@@ -45,7 +45,7 @@
   {
     sessionID = self->_sessionID;
     *buf = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
     v9 = sessionID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "WLDPlaybackReporter - %@ dealloc: sessionID: %@", buf, 0x16u);
@@ -57,39 +57,39 @@
   [(WLDPlaybackReporter *)&v5 dealloc];
 }
 
-- (void)reportPlayback:(id)a3 completion:(id)a4
+- (void)reportPlayback:(id)playback completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  objc_sync_enter(v9);
+  playbackCopy = playback;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v10 = [[WLKTransactionScope alloc] initWithIdentifier:@"WLDPlaybackReporter.reportPlayback"];
-  transaction = v9->_transaction;
-  v9->_transaction = v10;
+  transaction = selfCopy->_transaction;
+  selfCopy->_transaction = v10;
 
-  objc_storeStrong(&v9->_lastSummary, a3);
+  objc_storeStrong(&selfCopy->_lastSummary, playback);
   v12 = WLKPlaybackTrackingLogObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [WLKPlaybackSummary debugStringForPlaybackState:[(WLKPlaybackSummary *)v9->_lastSummary playbackState]];
+    v13 = [WLKPlaybackSummary debugStringForPlaybackState:[(WLKPlaybackSummary *)selfCopy->_lastSummary playbackState]];
     *buf = 138412546;
-    v20 = v9;
+    v20 = selfCopy;
     v21 = 2112;
     v22 = v13;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "WLDPlaybackReporter - %@ Begin Transaction: setLastSummary playbackState %@", buf, 0x16u);
   }
 
-  objc_sync_exit(v9);
-  [(WLDPlaybackReporter *)v9 _clearBDTimer];
+  objc_sync_exit(selfCopy);
+  [(WLDPlaybackReporter *)selfCopy _clearBDTimer];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = __49__WLDPlaybackReporter_reportPlayback_completion___block_invoke;
   v16[3] = &unk_100045280;
-  v17 = v7;
-  v18 = v8;
-  v16[4] = v9;
-  v14 = v7;
-  v15 = v8;
+  v17 = playbackCopy;
+  v18 = completionCopy;
+  v16[4] = selfCopy;
+  v14 = playbackCopy;
+  v15 = completionCopy;
   [v14 resolveChannelID:v16];
 }
 
@@ -284,18 +284,18 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)getCachedCanonicalIDForSummary:(id)a3 completionHandler:(id)a4
+- (void)getCachedCanonicalIDForSummary:(id)summary completionHandler:(id)handler
 {
-  v6 = a3;
+  summaryCopy = summary;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __72__WLDPlaybackReporter_getCachedCanonicalIDForSummary_completionHandler___block_invoke;
   v9[3] = &unk_100044F00;
-  v11 = self;
-  v12 = a4;
-  v10 = v6;
-  v7 = v6;
-  v8 = v12;
+  selfCopy = self;
+  handlerCopy = handler;
+  v10 = summaryCopy;
+  v7 = summaryCopy;
+  v8 = handlerCopy;
   [v7 resolveChannelID:v9];
 }
 
@@ -445,17 +445,17 @@ void __49__WLDPlaybackReporter__cachedNotFoundIdentifiers__block_invoke(id a1)
   _objc_release_x1();
 }
 
-+ (void)_decorateVODSummary:(id)a3 completion:(id)a4
++ (void)_decorateVODSummary:(id)summary completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __54__WLDPlaybackReporter__decorateVODSummary_completion___block_invoke;
   v8[3] = &unk_1000452E8;
-  v9 = a3;
-  v10 = a4;
-  v11 = a1;
-  v6 = v9;
-  v7 = v10;
+  summaryCopy = summary;
+  completionCopy = completion;
+  selfCopy = self;
+  v6 = summaryCopy;
+  v7 = completionCopy;
   [v6 resolveChannelID:v8];
 }
 
@@ -680,23 +680,23 @@ void __54__WLDPlaybackReporter__decorateVODSummary_completion___block_invoke_36(
   }
 }
 
-- (void)_reportPlayEvent:(id)a3 summary:(id)a4 completion:(id)a5
+- (void)_reportPlayEvent:(id)event summary:(id)summary completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  summaryCopy = summary;
+  completionCopy = completion;
   v11 = [WLDPlayActivityReportOperation alloc];
-  v39 = v8;
+  v39 = eventCopy;
   v12 = [NSArray arrayWithObjects:&v39 count:1];
   v13 = [(WLDPlayActivityReportOperation *)v11 initWithPlayEvents:v12];
 
   v14 = +[TVAppAccountStoreObjC activeAccount];
-  v15 = [v14 ams_DSID];
-  v16 = [v15 stringValue];
+  ams_DSID = [v14 ams_DSID];
+  stringValue = [ams_DSID stringValue];
 
-  v17 = [v9 accountID];
-  v18 = v16;
-  v19 = v17;
+  accountID = [summaryCopy accountID];
+  v18 = stringValue;
+  v19 = accountID;
   v20 = v19;
   if (v18 == v19)
   {
@@ -722,7 +722,7 @@ LABEL_8:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v34 = self;
+      selfCopy2 = self;
       v35 = 2112;
       v36 = v18;
       v37 = 2112;
@@ -743,18 +743,18 @@ LABEL_12:
   v28[3] = &unk_100045310;
   objc_copyWeak(&v31, &location);
   v28[4] = self;
-  v24 = v9;
+  v24 = summaryCopy;
   v29 = v24;
-  v25 = v10;
+  v25 = completionCopy;
   v30 = v25;
   [(WLDPlayActivityReportOperation *)v13 setCompletionBlock:v28];
   v26 = WLKPlaybackTrackingLogObject();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v34 = self;
+    selfCopy2 = self;
     v35 = 2048;
-    v36 = v8;
+    v36 = eventCopy;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "WLDPlaybackReporter - %@ Queueing activity report: %p", buf, 0x16u);
   }
 
@@ -783,34 +783,34 @@ void __59__WLDPlaybackReporter__reportPlayEvent_summary_completion___block_invok
   [v6 _cleanupWithSuccess:v2 == 0 error:v7 completion:*(a1 + 48)];
 }
 
-+ (int64_t)_intentsMediaItemTypeFromWLKContentType:(unint64_t)a3
++ (int64_t)_intentsMediaItemTypeFromWLKContentType:(unint64_t)type
 {
-  if (a3 - 1 > 4)
+  if (type - 1 > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_100040F20[a3 - 1];
+    return qword_100040F20[type - 1];
   }
 }
 
-+ (void)_donateIntentWithPlaybackSummary:(id)a3 andMetadata:(id)a4
++ (void)_donateIntentWithPlaybackSummary:(id)summary andMetadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 playbackState] == 1)
+  summaryCopy = summary;
+  metadataCopy = metadata;
+  if ([summaryCopy playbackState] == 1)
   {
     v42 = 0;
     v8 = [LSBundleRecord bundleRecordWithApplicationIdentifier:@"com.apple.tv" error:&v42];
     v9 = v42;
     if (kCFBundleExecutableKey)
     {
-      v10 = [v6 contentTitle];
-      if (v10)
+      contentTitle = [summaryCopy contentTitle];
+      if (contentTitle)
       {
-        [v6 contentTitle];
+        [summaryCopy contentTitle];
       }
 
       else
@@ -822,11 +822,11 @@ void __59__WLDPlaybackReporter__reportPlayEvent_summary_completion___block_invok
       v35 = v8;
       v36 = v9;
       v34 = v12;
-      if ([a1 _intentsMediaItemTypeFromWLKContentType:{objc_msgSend(v7, "contentType")}] == 13)
+      if ([self _intentsMediaItemTypeFromWLKContentType:{objc_msgSend(metadataCopy, "contentType")}] == 13)
       {
         v13 = [INMediaItem alloc];
-        v14 = [v7 canonicalShowID];
-        v15 = [v13 initWithIdentifier:v14 title:v12 type:12 artwork:0];
+        canonicalShowID = [metadataCopy canonicalShowID];
+        v15 = [v13 initWithIdentifier:canonicalShowID title:v12 type:12 artwork:0];
 
         v16 = 0;
       }
@@ -838,9 +838,9 @@ void __59__WLDPlaybackReporter__reportPlayEvent_summary_completion___block_invok
       }
 
       v17 = [INMediaItem alloc];
-      v18 = [v7 canonicalID];
+      canonicalID = [metadataCopy canonicalID];
       v33 = v16;
-      v19 = [v17 initWithIdentifier:v18 title:v16 type:objc_msgSend(a1 artwork:{"_intentsMediaItemTypeFromWLKContentType:", objc_msgSend(v7, "contentType")), 0}];
+      v19 = [v17 initWithIdentifier:canonicalID title:v16 type:objc_msgSend(self artwork:{"_intentsMediaItemTypeFromWLKContentType:", objc_msgSend(metadataCopy, "contentType")), 0}];
 
       v20 = [INPlayMediaIntent alloc];
       v45 = v19;
@@ -848,14 +848,14 @@ void __59__WLDPlaybackReporter__reportPlayEvent_summary_completion___block_invok
       v32 = v15;
       v22 = [v20 initWithMediaItems:v21 mediaContainer:v15 playShuffled:&__kCFBooleanFalse playbackRepeatMode:1 resumePlayback:&__kCFBooleanTrue playbackQueueLocation:1 playbackSpeed:&off_100049CB0 mediaSearch:0];
 
-      v37 = v7;
-      v23 = [v7 siriActionsCategories];
+      v37 = metadataCopy;
+      siriActionsCategories = [metadataCopy siriActionsCategories];
       v24 = objc_opt_new();
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v25 = v23;
+      v25 = siriActionsCategories;
       v26 = [v25 countByEnumeratingWithState:&v38 objects:v44 count:16];
       if (v26)
       {
@@ -887,7 +887,7 @@ void __59__WLDPlaybackReporter__reportPlayEvent_summary_completion___block_invok
       [v31 donateInteractionWithCompletion:&__block_literal_global_55];
 
       v9 = v36;
-      v7 = v37;
+      metadataCopy = v37;
       v11 = v34;
       v8 = v35;
     }
@@ -930,80 +930,80 @@ void __68__WLDPlaybackReporter__donateIntentWithPlaybackSummary_andMetadata___bl
 
 - (void)_clearBDTimer
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  BDTimer = v2->_BDTimer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  BDTimer = selfCopy->_BDTimer;
   if (BDTimer)
   {
     v4 = WLKPlaybackTrackingLogObject();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138412290;
-      v6 = v2;
+      v6 = selfCopy;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "WLDPlaybackReporter - %@ TR: Cancelling existing timer", &v5, 0xCu);
     }
 
-    dispatch_source_cancel(v2->_BDTimer);
-    BDTimer = v2->_BDTimer;
+    dispatch_source_cancel(selfCopy->_BDTimer);
+    BDTimer = selfCopy->_BDTimer;
   }
 
-  v2->_BDTimer = 0;
+  selfCopy->_BDTimer = 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_scheduleTimedReportForSummary:(id)a3 afterMillis:(id)a4
+- (void)_scheduleTimedReportForSummary:(id)summary afterMillis:(id)millis
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  summaryCopy = summary;
+  millisCopy = millis;
+  if (millisCopy)
   {
-    v8 = [v6 playbackState] == 1;
-    v9 = WLKPlaybackTrackingLogObject();
-    v10 = os_log_type_enabled(&v9->super, OS_LOG_TYPE_DEFAULT);
+    v8 = [summaryCopy playbackState] == 1;
+    selfCopy2 = WLKPlaybackTrackingLogObject();
+    v10 = os_log_type_enabled(&selfCopy2->super, OS_LOG_TYPE_DEFAULT);
     if (v8)
     {
       if (v10)
       {
         *buf = 138412546;
-        v21 = self;
+        selfCopy3 = self;
         v22 = 2112;
-        v23 = v7;
-        _os_log_impl(&_mh_execute_header, &v9->super, OS_LOG_TYPE_DEFAULT, "WLDPlaybackReporter - %@ TR: Will schedule timed report in %@ millis", buf, 0x16u);
+        v23 = millisCopy;
+        _os_log_impl(&_mh_execute_header, &selfCopy2->super, OS_LOG_TYPE_DEFAULT, "WLDPlaybackReporter - %@ TR: Will schedule timed report in %@ millis", buf, 0x16u);
       }
 
-      v9 = self;
-      objc_sync_enter(v9);
+      selfCopy2 = self;
+      objc_sync_enter(selfCopy2);
       v11 = WLDDispatchQueue();
       v12 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v11);
-      BDTimer = v9->_BDTimer;
-      v9->_BDTimer = v12;
+      BDTimer = selfCopy2->_BDTimer;
+      selfCopy2->_BDTimer = v12;
 
-      [v7 doubleValue];
+      [millisCopy doubleValue];
       v15 = dispatch_time(0, (v14 * 1000000.0));
-      dispatch_source_set_timer(v9->_BDTimer, v15, 0xFFFFFFFFFFFFFFFFLL, 0);
-      objc_initWeak(buf, v9);
-      v16 = v9->_BDTimer;
+      dispatch_source_set_timer(selfCopy2->_BDTimer, v15, 0xFFFFFFFFFFFFFFFFLL, 0);
+      objc_initWeak(buf, selfCopy2);
+      v16 = selfCopy2->_BDTimer;
       handler[0] = _NSConcreteStackBlock;
       handler[1] = 3221225472;
       handler[2] = __66__WLDPlaybackReporter__scheduleTimedReportForSummary_afterMillis___block_invoke;
       handler[3] = &unk_100045380;
       objc_copyWeak(&v19, buf);
-      handler[4] = v9;
-      v18 = v6;
+      handler[4] = selfCopy2;
+      v18 = summaryCopy;
       dispatch_source_set_event_handler(v16, handler);
-      dispatch_activate(v9->_BDTimer);
+      dispatch_activate(selfCopy2->_BDTimer);
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(buf);
-      objc_sync_exit(v9);
+      objc_sync_exit(selfCopy2);
     }
 
     else if (v10)
     {
       *buf = 138412290;
-      v21 = self;
-      _os_log_impl(&_mh_execute_header, &v9->super, OS_LOG_TYPE_DEFAULT, "WLDPlaybackReporter - %@ TR: Will not generate timed report because playback state is not playing", buf, 0xCu);
+      selfCopy3 = self;
+      _os_log_impl(&_mh_execute_header, &selfCopy2->super, OS_LOG_TYPE_DEFAULT, "WLDPlaybackReporter - %@ TR: Will not generate timed report because playback state is not playing", buf, 0xCu);
     }
   }
 }

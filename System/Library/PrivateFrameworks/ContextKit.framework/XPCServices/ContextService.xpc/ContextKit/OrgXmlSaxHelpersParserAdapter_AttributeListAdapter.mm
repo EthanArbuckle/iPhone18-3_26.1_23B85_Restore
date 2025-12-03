@@ -1,7 +1,7 @@
 @interface OrgXmlSaxHelpersParserAdapter_AttributeListAdapter
-- (id)getTypeWithNSString:(id)a3;
-- (id)getValueWithNSString:(id)a3;
-- (int)getIndexWithNSString:(id)a3;
+- (id)getTypeWithNSString:(id)string;
+- (id)getValueWithNSString:(id)string;
+- (int)getIndexWithNSString:(id)string;
 - (int)getLength;
 - (void)__javaClone;
 - (void)dealloc;
@@ -20,7 +20,7 @@
   return [(OrgXmlSaxAttributeList *)qAtts getLength];
 }
 
-- (int)getIndexWithNSString:(id)a3
+- (int)getIndexWithNSString:(id)string
 {
   v5 = *(objc_loadWeak(&self->this$0_) + 11);
   if (!v5)
@@ -28,10 +28,10 @@
     goto LABEL_10;
   }
 
-  v6 = [v5 getLength];
-  if (v6 >= 1)
+  getLength = [v5 getLength];
+  if (getLength >= 1)
   {
-    v7 = v6;
+    v7 = getLength;
     v8 = 0;
     while (1)
     {
@@ -47,7 +47,7 @@
         break;
       }
 
-      if ([v10 isEqual:a3])
+      if ([v10 isEqual:string])
       {
         return v8;
       }
@@ -68,10 +68,10 @@ LABEL_8:
   return v8;
 }
 
-- (id)getTypeWithNSString:(id)a3
+- (id)getTypeWithNSString:(id)string
 {
   qAtts = self->qAtts_;
-  if (!qAtts || (v4 = [(OrgXmlSaxAttributeList *)qAtts getTypeWithNSString:a3]) == 0)
+  if (!qAtts || (v4 = [(OrgXmlSaxAttributeList *)qAtts getTypeWithNSString:string]) == 0)
   {
     JreThrowNullPointerException();
   }
@@ -79,7 +79,7 @@ LABEL_8:
   return [v4 intern];
 }
 
-- (id)getValueWithNSString:(id)a3
+- (id)getValueWithNSString:(id)string
 {
   qAtts = self->qAtts_;
   if (!qAtts)
@@ -87,7 +87,7 @@ LABEL_8:
     JreThrowNullPointerException();
   }
 
-  return [(OrgXmlSaxAttributeList *)qAtts getValueWithNSString:a3];
+  return [(OrgXmlSaxAttributeList *)qAtts getValueWithNSString:string];
 }
 
 - (void)dealloc

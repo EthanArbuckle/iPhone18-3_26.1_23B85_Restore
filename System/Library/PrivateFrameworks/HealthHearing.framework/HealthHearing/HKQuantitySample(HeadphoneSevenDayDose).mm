@@ -7,10 +7,10 @@
 
 - (uint64_t)hk_canTriggerHeadphoneExposureNotification
 {
-  v4 = [a1 quantityType];
-  v5 = [v4 code];
+  quantityType = [self quantityType];
+  code = [quantityType code];
 
-  if (v5 != 173)
+  if (code != 173)
   {
     return 0;
   }
@@ -20,12 +20,12 @@
     return 1;
   }
 
-  v7 = [a1 sourceRevision];
-  v8 = [v7 source];
+  sourceRevision = [self sourceRevision];
+  source = [sourceRevision source];
 
-  if (v8)
+  if (source)
   {
-    v6 = [v8 _isLocalDevice];
+    _isLocalDevice = [source _isLocalDevice];
   }
 
   else
@@ -37,20 +37,20 @@
       [(HKQuantitySample(HeadphoneSevenDayDose) *)v9 hk_canTriggerHeadphoneExposureNotification];
     }
 
-    v6 = 1;
+    _isLocalDevice = 1;
   }
 
-  return v6;
+  return _isLocalDevice;
 }
 
 - (void)hk_canTriggerHeadphoneExposureNotification
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a1;
+  selfCopy = self;
   v4 = NSStringFromSelector(a2);
   v6 = 138543362;
   v7 = v4;
-  _os_log_error_impl(&dword_25175B000, v3, OS_LOG_TYPE_ERROR, "[%{public}@] missing source, defaulting to YES", &v6, 0xCu);
+  _os_log_error_impl(&dword_25175B000, selfCopy, OS_LOG_TYPE_ERROR, "[%{public}@] missing source, defaulting to YES", &v6, 0xCu);
 
   v5 = *MEMORY[0x277D85DE8];
 }

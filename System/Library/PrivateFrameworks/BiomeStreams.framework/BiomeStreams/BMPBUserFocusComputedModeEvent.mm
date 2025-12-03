@@ -1,28 +1,28 @@
 @interface BMPBUserFocusComputedModeEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsModeSemanticType:(id)a3;
-- (int)StringAsModeUpdateReason:(id)a3;
-- (int)StringAsModeUpdateSource:(id)a3;
+- (int)StringAsModeSemanticType:(id)type;
+- (int)StringAsModeUpdateReason:(id)reason;
+- (int)StringAsModeUpdateSource:(id)source;
 - (int)modeSemanticType;
 - (int)modeUpdateReason;
 - (int)modeUpdateSource;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasModeUpdateReason:(BOOL)a3;
-- (void)setHasModeUpdateSource:(BOOL)a3;
-- (void)setHasStarting:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasModeUpdateReason:(BOOL)reason;
+- (void)setHasModeUpdateSource:(BOOL)source;
+- (void)setHasStarting:(BOOL)starting;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBUserFocusComputedModeEvent
 
-- (void)setHasStarting:(BOOL)a3
+- (void)setHasStarting:(BOOL)starting
 {
-  if (a3)
+  if (starting)
   {
     v3 = 8;
   }
@@ -48,9 +48,9 @@
   }
 }
 
-- (void)setHasModeUpdateReason:(BOOL)a3
+- (void)setHasModeUpdateReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 2;
   }
@@ -63,25 +63,25 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsModeUpdateReason:(id)a3
+- (int)StringAsModeUpdateReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"UserAction"])
+  else if ([reasonCopy isEqualToString:@"UserAction"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Scheduled"])
+  else if ([reasonCopy isEqualToString:@"Scheduled"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Automation"])
+  else if ([reasonCopy isEqualToString:@"Automation"])
   {
     v4 = 3;
   }
@@ -107,55 +107,55 @@
   }
 }
 
-- (int)StringAsModeSemanticType:(id)a3
+- (int)StringAsModeSemanticType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Custom"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Custom"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Default"])
+  else if ([typeCopy isEqualToString:@"Default"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Sleep"])
+  else if ([typeCopy isEqualToString:@"Sleep"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Driving"])
+  else if ([typeCopy isEqualToString:@"Driving"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Exercise"])
+  else if ([typeCopy isEqualToString:@"Exercise"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Work"])
+  else if ([typeCopy isEqualToString:@"Work"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PersonalTime"])
+  else if ([typeCopy isEqualToString:@"PersonalTime"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Reading"])
+  else if ([typeCopy isEqualToString:@"Reading"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Gaming"])
+  else if ([typeCopy isEqualToString:@"Gaming"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Mindfulness"])
+  else if ([typeCopy isEqualToString:@"Mindfulness"])
   {
     v4 = 9;
   }
@@ -181,9 +181,9 @@
   }
 }
 
-- (void)setHasModeUpdateSource:(BOOL)a3
+- (void)setHasModeUpdateSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 4;
   }
@@ -196,25 +196,25 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsModeUpdateSource:(id)a3
+- (int)StringAsModeUpdateSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Local"])
+  else if ([sourceCopy isEqualToString:@"Local"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Cloud"])
+  else if ([sourceCopy isEqualToString:@"Cloud"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Paired"])
+  else if ([sourceCopy isEqualToString:@"Paired"])
   {
     v4 = 3;
   }
@@ -233,20 +233,20 @@
   v8.receiver = self;
   v8.super_class = BMPBUserFocusComputedModeEvent;
   v4 = [(BMPBUserFocusComputedModeEvent *)&v8 description];
-  v5 = [(BMPBUserFocusComputedModeEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBUserFocusComputedModeEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   mode = self->_mode;
   if (mode)
   {
-    [v3 setObject:mode forKey:@"mode"];
+    [dictionary setObject:mode forKey:@"mode"];
   }
 
   has = self->_has;
@@ -339,14 +339,14 @@ LABEL_21:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_mode)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -354,7 +354,7 @@ LABEL_21:
   {
     starting = self->_starting;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -375,7 +375,7 @@ LABEL_5:
 
   modeUpdateReason = self->_modeUpdateReason;
   PBDataWriterWriteInt32Field();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -391,38 +391,38 @@ LABEL_6:
 LABEL_15:
   modeSemanticType = self->_modeSemanticType;
   PBDataWriterWriteInt32Field();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_7:
     modeUpdateSource = self->_modeUpdateSource;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_8:
   if (self->_semanticModeIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_mode)
   {
-    [v4 setMode:?];
-    v4 = v6;
+    [toCopy setMode:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 40) = self->_starting;
-    *(v4 + 44) |= 8u;
+    *(toCopy + 40) = self->_starting;
+    *(toCopy + 44) |= 8u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -441,8 +441,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 5) = self->_modeUpdateReason;
-  *(v4 + 44) |= 2u;
+  *(toCopy + 5) = self->_modeUpdateReason;
+  *(toCopy + 44) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -456,27 +456,27 @@ LABEL_6:
   }
 
 LABEL_15:
-  *(v4 + 4) = self->_modeSemanticType;
-  *(v4 + 44) |= 1u;
+  *(toCopy + 4) = self->_modeSemanticType;
+  *(toCopy + 44) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_7:
-    *(v4 + 6) = self->_modeUpdateSource;
-    *(v4 + 44) |= 4u;
+    *(toCopy + 6) = self->_modeUpdateSource;
+    *(toCopy + 44) |= 4u;
   }
 
 LABEL_8:
   if (self->_semanticModeIdentifier)
   {
     [v6 setSemanticModeIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_mode copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_mode copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -528,23 +528,23 @@ LABEL_5:
   }
 
 LABEL_6:
-  v9 = [(NSString *)self->_semanticModeIdentifier copyWithZone:a3];
+  v9 = [(NSString *)self->_semanticModeIdentifier copyWithZone:zone];
   v10 = *(v5 + 32);
   *(v5 + 32) = v9;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
   mode = self->_mode;
-  if (mode | *(v4 + 1))
+  if (mode | *(equalCopy + 1))
   {
     if (![(NSString *)mode isEqual:?])
     {
@@ -552,10 +552,10 @@ LABEL_6:
     }
   }
 
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if ((*&self->_has & 8) == 0)
   {
-    if ((*(v4 + 44) & 8) == 0)
+    if ((*(equalCopy + 44) & 8) == 0)
     {
       goto LABEL_6;
     }
@@ -565,21 +565,21 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if ((*(v4 + 44) & 8) == 0)
+  if ((*(equalCopy + 44) & 8) == 0)
   {
     goto LABEL_29;
   }
 
-  v7 = *(v4 + 40);
+  v7 = *(equalCopy + 40);
   if (self->_starting)
   {
-    if ((*(v4 + 40) & 1) == 0)
+    if ((*(equalCopy + 40) & 1) == 0)
     {
       goto LABEL_29;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_29;
   }
@@ -587,45 +587,45 @@ LABEL_29:
 LABEL_6:
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_modeUpdateReason != *(v4 + 5))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_modeUpdateReason != *(equalCopy + 5))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_29;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_modeSemanticType != *(v4 + 4))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_modeSemanticType != *(equalCopy + 4))
     {
       goto LABEL_29;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_modeUpdateSource != *(v4 + 6))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_modeUpdateSource != *(equalCopy + 6))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_29;
   }
 
   semanticModeIdentifier = self->_semanticModeIdentifier;
-  if (semanticModeIdentifier | *(v4 + 4))
+  if (semanticModeIdentifier | *(equalCopy + 4))
   {
     v9 = [(NSString *)semanticModeIdentifier isEqual:?];
   }
@@ -695,22 +695,22 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(NSString *)self->_semanticModeIdentifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(BMPBUserFocusComputedModeEvent *)self setMode:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 8) != 0)
   {
-    self->_starting = *(v4 + 40);
+    self->_starting = *(fromCopy + 40);
     *&self->_has |= 8u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -723,14 +723,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 44) & 2) == 0)
+  else if ((*(fromCopy + 44) & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_modeUpdateReason = *(v4 + 5);
+  self->_modeUpdateReason = *(fromCopy + 5);
   *&self->_has |= 2u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 1) == 0)
   {
 LABEL_6:
@@ -743,20 +743,20 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_modeSemanticType = *(v4 + 4);
+  self->_modeSemanticType = *(fromCopy + 4);
   *&self->_has |= 1u;
-  if ((*(v4 + 44) & 4) != 0)
+  if ((*(fromCopy + 44) & 4) != 0)
   {
 LABEL_7:
-    self->_modeUpdateSource = *(v4 + 6);
+    self->_modeUpdateSource = *(fromCopy + 6);
     *&self->_has |= 4u;
   }
 
 LABEL_8:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBUserFocusComputedModeEvent *)self setSemanticModeIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

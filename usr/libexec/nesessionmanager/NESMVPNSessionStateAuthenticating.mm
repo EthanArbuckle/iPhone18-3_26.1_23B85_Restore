@@ -1,6 +1,6 @@
 @interface NESMVPNSessionStateAuthenticating
 - (NESMVPNSessionStateAuthenticating)init;
-- (void)enterWithSession:(id)a3;
+- (void)enterWithSession:(id)session;
 - (void)handleTimeout;
 @end
 
@@ -22,8 +22,8 @@
 
   else
   {
-    v9 = [0 authenticationPlugin];
-    sub_1000198A8(v9, v10);
+    authenticationPlugin = [0 authenticationPlugin];
+    sub_1000198A8(authenticationPlugin, v10);
 
     [0 setLastStopReason:11];
     Property = 0;
@@ -32,11 +32,11 @@
   [Property setState:5];
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
   v15.receiver = self;
   v15.super_class = NESMVPNSessionStateAuthenticating;
-  [(NESMVPNSessionState *)&v15 enterWithSession:a3];
+  [(NESMVPNSessionState *)&v15 enterWithSession:session];
   if (self)
   {
     if (![objc_getProperty(self v4])
@@ -54,15 +54,15 @@ LABEL_9:
 
   else
   {
-    v14 = [0 prepareConfigurationForStart];
+    prepareConfigurationForStart = [0 prepareConfigurationForStart];
     v6 = 0;
-    if ((v14 & 1) == 0)
+    if ((prepareConfigurationForStart & 1) == 0)
     {
       goto LABEL_12;
     }
   }
 
-  v8 = [v6 authenticationPlugin];
+  authenticationPlugin = [v6 authenticationPlugin];
   if (self)
   {
     v9 = objc_getProperty(self, v7, 16, 1);
@@ -73,8 +73,8 @@ LABEL_9:
     v9 = 0;
   }
 
-  v10 = [v9 configuration];
-  v11 = sub_1000187A4(v8, v10);
+  configuration = [v9 configuration];
+  v11 = sub_1000187A4(authenticationPlugin, configuration);
 
   if (!v11)
   {

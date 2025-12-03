@@ -1,24 +1,24 @@
 @interface TPSTipCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (TPSTipCollectionViewCellAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (TPSTipCollectionViewCellAccessibility)initWithFrame:(CGRect)frame;
 - (id)_accessibilityScannerGroupElements;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setTip:(id)a3 withCellAppearance:(id)a4;
+- (void)setTip:(id)tip withCellAppearance:(id)appearance;
 @end
 
 @implementation TPSTipCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TPSTipCollectionViewCell" isKindOfClass:@"TPSBaseTipCollectionViewCell"];
-  [v3 validateClass:@"TPSBaseTipCollectionViewCell" hasInstanceMethod:@"tip" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TPSTip" hasInstanceMethod:@"fullContentAssets" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TPSAssets" hasInstanceMethod:@"alt" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TPSBaseTipCollectionViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TPSBaseTipCollectionViewCell" hasInstanceMethod:@"heroAssetView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TPSImageAssetView" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TPSVideoAssetView" hasInstanceMethod:@"videoPath" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TPSTipCollectionViewCell" isKindOfClass:@"TPSBaseTipCollectionViewCell"];
+  [validationsCopy validateClass:@"TPSBaseTipCollectionViewCell" hasInstanceMethod:@"tip" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TPSTip" hasInstanceMethod:@"fullContentAssets" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TPSAssets" hasInstanceMethod:@"alt" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TPSBaseTipCollectionViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TPSBaseTipCollectionViewCell" hasInstanceMethod:@"heroAssetView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TPSImageAssetView" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TPSVideoAssetView" hasInstanceMethod:@"videoPath" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilityScannerGroupElements
@@ -37,19 +37,19 @@
     v13[1] = &unk_2A234B568;
     v6 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
     v14[0] = v6;
-    v7 = [MEMORY[0x29EDB8D80] arrayWithObjects:v14 count:1];
+    _accessibilityScannerGroupElements = [MEMORY[0x29EDB8D80] arrayWithObjects:v14 count:1];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = TPSTipCollectionViewCellAccessibility;
-    v7 = [(TPSTipCollectionViewCellAccessibility *)&v10 _accessibilityScannerGroupElements];
+    _accessibilityScannerGroupElements = [(TPSTipCollectionViewCellAccessibility *)&v10 _accessibilityScannerGroupElements];
   }
 
   v8 = *MEMORY[0x29EDCA608];
 
-  return v7;
+  return _accessibilityScannerGroupElements;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -64,8 +64,8 @@
   v4 = [(TPSTipCollectionViewCellAccessibility *)self safeValueForKey:@"titleLabel"];
   v5 = __UIAccessibilityCastAsClass();
 
-  v6 = [v5 accessibilityTraits];
-  [v5 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | v6];
+  accessibilityTraits = [v5 accessibilityTraits];
+  [v5 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | accessibilityTraits];
   v7 = [(TPSTipCollectionViewCellAccessibility *)self safeValueForKey:@"tip"];
   v8 = __UIAccessibilitySafeClass();
 
@@ -96,21 +96,21 @@
   }
 }
 
-- (TPSTipCollectionViewCellAccessibility)initWithFrame:(CGRect)a3
+- (TPSTipCollectionViewCellAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = TPSTipCollectionViewCellAccessibility;
-  v3 = [(TPSTipCollectionViewCellAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TPSTipCollectionViewCellAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(TPSTipCollectionViewCellAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;
 }
 
-- (void)setTip:(id)a3 withCellAppearance:(id)a4
+- (void)setTip:(id)tip withCellAppearance:(id)appearance
 {
   v5.receiver = self;
   v5.super_class = TPSTipCollectionViewCellAccessibility;
-  [(TPSTipCollectionViewCellAccessibility *)&v5 setTip:a3 withCellAppearance:a4];
+  [(TPSTipCollectionViewCellAccessibility *)&v5 setTip:tip withCellAppearance:appearance];
   [(TPSTipCollectionViewCellAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

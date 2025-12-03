@@ -15,12 +15,12 @@
     v5 = v7;
     if (v4)
     {
-      if ([a1 length])
+      if ([self length])
       {
-        [a1 appendString:{@", "}];
+        [self appendString:{@", "}];
       }
 
-      v4 = [a1 appendString:v7];
+      v4 = [self appendString:v7];
       v5 = v7;
     }
   }

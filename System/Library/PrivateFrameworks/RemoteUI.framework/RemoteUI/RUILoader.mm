@@ -1,31 +1,31 @@
 @interface RUILoader
 - (BOOL)anyWebViewLoading;
-- (BOOL)receivedValidResponse:(id)a3 forRequest:(id)a4;
+- (BOOL)receivedValidResponse:(id)response forRequest:(id)request;
 - (RUIDecodingUserInfo)decodingUserInfo;
 - (RUILoader)init;
 - (RUIParserDelegate)parserDelegate;
 - (id)sessionConfiguration;
 - (id)urlSessionDelegate;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)_finishLoadWithObjectModel:(id)a3 url:(id)a4 actionSignal:(id)a5 error:(id)a6;
-- (void)_handleShouldLoadRequestResult:(id)a3 completionHandler:(id)a4;
-- (void)_loadResourcesWithURL:(id)a3;
-- (void)_showPrimaryAlertForObjectModel:(id)a3 completion:(id)a4;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)_finishLoadWithObjectModel:(id)model url:(id)url actionSignal:(id)signal error:(id)error;
+- (void)_handleShouldLoadRequestResult:(id)result completionHandler:(id)handler;
+- (void)_loadResourcesWithURL:(id)l;
+- (void)_showPrimaryAlertForObjectModel:(id)model completion:(id)completion;
 - (void)cancel;
 - (void)completePendingPageRefresh;
 - (void)dealloc;
 - (void)didParseData;
-- (void)failWithError:(id)a3 forRequest:(id)a4;
+- (void)failWithError:(id)error forRequest:(id)request;
 - (void)initializeSwift;
-- (void)loadRequest:(id)a3;
-- (void)loadXMLUIWithData:(id)a3 baseURL:(id)a4;
-- (void)loadXMLUIWithRequest:(id)a3;
-- (void)loadXMLUIWithURL:(id)a3;
-- (void)parseData:(id)a3;
-- (void)parseData:(id)a3 completion:(id)a4;
-- (void)shouldLoadRequest:(id)a3 completionHandler:(id)a4;
-- (void)webViewFinishedLoadingWithURL:(id)a3;
+- (void)loadRequest:(id)request;
+- (void)loadXMLUIWithData:(id)data baseURL:(id)l;
+- (void)loadXMLUIWithRequest:(id)request;
+- (void)loadXMLUIWithURL:(id)l;
+- (void)parseData:(id)data;
+- (void)parseData:(id)data completion:(id)completion;
+- (void)shouldLoadRequest:(id)request completionHandler:(id)handler;
+- (void)webViewFinishedLoadingWithURL:(id)l;
 @end
 
 @implementation RUILoader
@@ -49,8 +49,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = RUILoader;
@@ -65,9 +65,9 @@
     v3 = _RUILoggingFacility();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [MEMORY[0x277CCACC8] callStackSymbols];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
       *buf = 138412290;
-      v8 = v4;
+      v8 = callStackSymbols;
       _os_log_impl(&dword_21B93D000, v3, OS_LOG_TYPE_DEFAULT, "RemoteUILoader cancel %@", buf, 0xCu);
     }
   }
@@ -80,26 +80,26 @@
   [(RUIHTTPRequest *)&v6 cancel];
 }
 
-- (void)loadRequest:(id)a3
+- (void)loadRequest:(id)request
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  requestCopy = request;
+  v5 = requestCopy;
   if (!self->_url)
   {
-    v6 = [v4 URL];
+    v6 = [requestCopy URL];
     url = self->_url;
     self->_url = v6;
   }
 
-  v8 = [(RUIHTTPRequest *)self delegate];
+  delegate = [(RUIHTTPRequest *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 telemetryDelegate];
+    telemetryDelegate = [delegate telemetryDelegate];
     v10 = [RUITelemetryElement alloc];
     v11 = [[RUIXMLElement alloc] initWithName:&stru_282D68F58];
     v12 = [(RUITelemetryElement *)v10 initWithXMLElement:v11 url:self->_url];
-    [v9 willLoadURL:v12];
+    [telemetryDelegate willLoadURL:v12];
   }
 
   v13 = [v5 mutableCopy];
@@ -110,9 +110,9 @@
     [v13 setValue:@"application/x-buddyml" forHTTPHeaderField:@"Accept"];
     if (!self->_userInterfaceStyle)
     {
-      v15 = [MEMORY[0x277D759A0] mainScreen];
-      v16 = [v15 traitCollection];
-      self->_userInterfaceStyle = [v16 userInterfaceStyle];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      traitCollection = [mainScreen traitCollection];
+      self->_userInterfaceStyle = [traitCollection userInterfaceStyle];
 
       if (_isInternalInstall())
       {
@@ -128,8 +128,8 @@
     }
 
     v19 = [MEMORY[0x277CCABB0] numberWithInteger:self->_userInterfaceStyle];
-    v20 = [v19 stringValue];
-    [v13 setValue:v20 forHTTPHeaderField:@"X-Apple-I-Appearance"];
+    stringValue = [v19 stringValue];
+    [v13 setValue:stringValue forHTTPHeaderField:@"X-Apple-I-Appearance"];
   }
 
   v21.receiver = self;
@@ -137,17 +137,17 @@
   [(RUIHTTPRequest *)&v21 loadRequest:v13];
 }
 
-- (void)_handleShouldLoadRequestResult:(id)a3 completionHandler:(id)a4
+- (void)_handleShouldLoadRequestResult:(id)result completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 URL];
+  resultCopy = result;
+  handlerCopy = handler;
+  v8 = [resultCopy URL];
   url = self->_url;
   self->_url = v8;
 
-  if (!v6 || -[RUILoader allowNonSecureHTTP](self, "allowNonSecureHTTP") || ([v6 URL], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "scheme"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", @"https"), v11, v10, (v12 & 1) != 0))
+  if (!resultCopy || -[RUILoader allowNonSecureHTTP](self, "allowNonSecureHTTP") || ([resultCopy URL], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "scheme"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", @"https"), v11, v10, (v12 & 1) != 0))
   {
-    v7[2](v7, v6, 0);
+    handlerCopy[2](handlerCopy, resultCopy, 0);
   }
 
   else
@@ -156,11 +156,11 @@
     v15 = 3221225472;
     v16 = __62__RUILoader__handleShouldLoadRequestResult_completionHandler___block_invoke;
     v17 = &unk_2782E84F8;
-    v18 = self;
-    v19 = v6;
+    selfCopy = self;
+    v19 = resultCopy;
     dispatch_async(MEMORY[0x277D85CD0], &v14);
     v13 = [RUIHTTPRequest nonSecureConnectionNotAllowedError:v14];
-    (v7)[2](v7, 0, v13);
+    (handlerCopy)[2](handlerCopy, 0, v13);
   }
 }
 
@@ -171,40 +171,40 @@ void __62__RUILoader__handleShouldLoadRequestResult_completionHandler___block_in
   [v2 failWithError:v3 forRequest:*(a1 + 40)];
 }
 
-- (void)shouldLoadRequest:(id)a3 completionHandler:(id)a4
+- (void)shouldLoadRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RUIHTTPRequest *)self delegate];
+  requestCopy = request;
+  handlerCopy = handler;
+  delegate = [(RUIHTTPRequest *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(RUIHTTPRequest *)self delegate];
+    delegate2 = [(RUIHTTPRequest *)self delegate];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __49__RUILoader_shouldLoadRequest_completionHandler___block_invoke;
     v16[3] = &unk_2782E85E8;
     v16[4] = self;
-    v17 = v7;
-    [v10 loader:self willLoadRequest:v6 redirectResponse:0 completionHandler:v16];
+    v17 = handlerCopy;
+    [delegate2 loader:self willLoadRequest:requestCopy redirectResponse:0 completionHandler:v16];
   }
 
   else
   {
-    v11 = v6;
-    v12 = [(RUIHTTPRequest *)self delegate];
+    v11 = requestCopy;
+    delegate3 = [(RUIHTTPRequest *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(RUIHTTPRequest *)self delegate];
-      v15 = [v14 loader:self willLoadRequest:v11 redirectResponse:0];
+      delegate4 = [(RUIHTTPRequest *)self delegate];
+      v15 = [delegate4 loader:self willLoadRequest:v11 redirectResponse:0];
 
       v11 = v15;
     }
 
-    [(RUILoader *)self _handleShouldLoadRequestResult:v11 completionHandler:v7];
+    [(RUILoader *)self _handleShouldLoadRequestResult:v11 completionHandler:handlerCopy];
   }
 }
 
@@ -223,13 +223,13 @@ uint64_t __49__RUILoader_shouldLoadRequest_completionHandler___block_invoke(uint
 
 - (id)sessionConfiguration
 {
-  v3 = [(RUIHTTPRequest *)self delegate];
+  delegate = [(RUIHTTPRequest *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(RUIHTTPRequest *)self delegate];
-    v6 = [v5 sessionConfigurationForLoader:self];
+    delegate2 = [(RUIHTTPRequest *)self delegate];
+    v6 = [delegate2 sessionConfigurationForLoader:self];
   }
 
   else
@@ -256,62 +256,62 @@ uint64_t __49__RUILoader_shouldLoadRequest_completionHandler___block_invoke(uint
   return sessionDelegateAdapter;
 }
 
-- (void)loadXMLUIWithURL:(id)a3
+- (void)loadXMLUIWithURL:(id)l
 {
-  v6 = a3;
+  lCopy = l;
   v5 = [MEMORY[0x277CCAD20] requestWithURL:?];
   [(RUILoader *)self loadRequest:v5];
   if ([(RUIHTTPRequest *)self isLoading])
   {
-    objc_storeStrong(&self->_url, a3);
+    objc_storeStrong(&self->_url, l);
   }
 }
 
-- (void)loadXMLUIWithRequest:(id)a3
+- (void)loadXMLUIWithRequest:(id)request
 {
-  v6 = a3;
+  requestCopy = request;
   [(RUILoader *)self loadRequest:?];
   if ([(RUIHTTPRequest *)self isLoading])
   {
-    v4 = [v6 URL];
+    v4 = [requestCopy URL];
     url = self->_url;
     self->_url = v4;
   }
 }
 
-- (void)loadXMLUIWithData:(id)a3 baseURL:(id)a4
+- (void)loadXMLUIWithData:(id)data baseURL:(id)l
 {
-  objc_storeStrong(&self->_url, a4);
-  v6 = a3;
-  [(RUILoader *)self parseData:v6];
+  objc_storeStrong(&self->_url, l);
+  dataCopy = data;
+  [(RUILoader *)self parseData:dataCopy];
 
   [(RUILoader *)self didParseData];
 }
 
-- (void)parseData:(id)a3
+- (void)parseData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [RUIParser alloc];
   url = self->_url;
   style = self->_style;
   WeakRetained = objc_loadWeakRetained(&self->_parserDelegate);
-  v8 = [(RUILoader *)self decodingUserInfo];
-  v9 = [(RUIParser *)v5 initWithXML:v4 baseURL:url style:style delegate:WeakRetained decodingUserInfo:v8];
+  decodingUserInfo = [(RUILoader *)self decodingUserInfo];
+  v9 = [(RUIParser *)v5 initWithXML:dataCopy baseURL:url style:style delegate:WeakRetained decodingUserInfo:decodingUserInfo];
 
   parser = self->_parser;
   self->_parser = v9;
 }
 
-- (void)parseData:(id)a3 completion:(id)a4
+- (void)parseData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v8 = [RUIParser alloc];
   url = self->_url;
   style = self->_style;
   WeakRetained = objc_loadWeakRetained(&self->_parserDelegate);
-  v12 = [(RUILoader *)self decodingUserInfo];
-  v13 = [(RUIParser *)v8 initWithBaseURL:url style:style delegate:WeakRetained decodingUserInfo:v12];
+  decodingUserInfo = [(RUILoader *)self decodingUserInfo];
+  v13 = [(RUIParser *)v8 initWithBaseURL:url style:style delegate:WeakRetained decodingUserInfo:decodingUserInfo];
   parser = self->_parser;
   self->_parser = v13;
 
@@ -321,10 +321,10 @@ uint64_t __49__RUILoader_shouldLoadRequest_completionHandler___block_invoke(uint
   block[2] = __34__RUILoader_parseData_completion___block_invoke;
   block[3] = &unk_2782E8610;
   block[4] = self;
-  v19 = v6;
-  v20 = v7;
-  v16 = v7;
-  v17 = v6;
+  v19 = dataCopy;
+  v20 = completionCopy;
+  v16 = completionCopy;
+  v17 = dataCopy;
   dispatch_async(v15, block);
 }
 
@@ -350,27 +350,27 @@ uint64_t __34__RUILoader_parseData_completion___block_invoke_2(void *a1)
   return v2();
 }
 
-- (void)_loadResourcesWithURL:(id)a3
+- (void)_loadResourcesWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [(RUIHTTPRequest *)self delegate];
-  v6 = [(RUIParser *)self->_parser uiObjectModel];
-  v7 = [(RUIParser *)self->_parser actionSignal];
-  v8 = [(RUIParser *)self->_parser succeeded];
-  v9 = [(RUIParser *)self->_parser error];
-  v10 = v9;
-  if (v8)
+  lCopy = l;
+  delegate = [(RUIHTTPRequest *)self delegate];
+  uiObjectModel = [(RUIParser *)self->_parser uiObjectModel];
+  actionSignal = [(RUIParser *)self->_parser actionSignal];
+  succeeded = [(RUIParser *)self->_parser succeeded];
+  error = [(RUIParser *)self->_parser error];
+  v10 = error;
+  if (succeeded)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __35__RUILoader__loadResourcesWithURL___block_invoke;
     aBlock[3] = &unk_2782E8480;
     aBlock[4] = self;
-    v11 = v6;
+    v11 = uiObjectModel;
     v27 = v11;
-    v12 = v4;
+    v12 = lCopy;
     v28 = v12;
-    v13 = v7;
+    v13 = actionSignal;
     v29 = v13;
     v10 = v10;
     v30 = v10;
@@ -381,8 +381,8 @@ uint64_t __34__RUILoader_parseData_completion___block_invoke_2(void *a1)
       v20[1] = 3221225472;
       v20[2] = __35__RUILoader__loadResourcesWithURL___block_invoke_2;
       v20[3] = &unk_2782E8480;
-      v21 = v5;
-      v22 = self;
+      v21 = delegate;
+      selfCopy = self;
       v23 = v11;
       v24 = v12;
       v25 = v13;
@@ -403,12 +403,12 @@ uint64_t __34__RUILoader_parseData_completion___block_invoke_2(void *a1)
 
   else
   {
-    if (!v9)
+    if (!error)
     {
       v10 = [RUIHTTPRequest errorWithCode:4];
     }
 
-    [(RUILoader *)self _finishLoadWithObjectModel:v6 url:v4 actionSignal:v7 error:v10];
+    [(RUILoader *)self _finishLoadWithObjectModel:uiObjectModel url:lCopy actionSignal:actionSignal error:v10];
   }
 }
 
@@ -430,30 +430,30 @@ void __35__RUILoader__loadResourcesWithURL___block_invoke_2(uint64_t a1)
   [v2 loader:v7 loadResourcesForObjectModel:v3 completion:v8];
 }
 
-- (void)_finishLoadWithObjectModel:(id)a3 url:(id)a4 actionSignal:(id)a5 error:(id)a6
+- (void)_finishLoadWithObjectModel:(id)model url:(id)url actionSignal:(id)signal error:(id)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  modelCopy = model;
+  urlCopy = url;
+  signalCopy = signal;
+  errorCopy = error;
   if (_isInternalInstall())
   {
     v14 = _RUILoggingFacility();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v11;
+      *(&buf + 4) = urlCopy;
       _os_log_impl(&dword_21B93D000, v14, OS_LOG_TYPE_DEFAULT, "Finished load of %@", &buf, 0xCu);
     }
   }
 
-  v15 = self;
-  v16 = [(RUIHTTPRequest *)v15 delegate];
+  selfCopy = self;
+  delegate = [(RUIHTTPRequest *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    v17 = [(RUIHTTPRequest *)v15 request];
-    [v16 loader:v15 didFinishLoadWithError:v13 forRequest:v17];
+    request = [(RUIHTTPRequest *)selfCopy request];
+    [delegate loader:selfCopy didFinishLoadWithError:errorCopy forRequest:request];
 
 LABEL_9:
     v18 = 1;
@@ -462,7 +462,7 @@ LABEL_9:
 
   if (objc_opt_respondsToSelector())
   {
-    [v16 loader:v15 didFinishLoadWithError:v13];
+    [delegate loader:selfCopy didFinishLoadWithError:errorCopy];
     goto LABEL_9;
   }
 
@@ -473,7 +473,7 @@ LABEL_11:
   v39 = 0x3032000000;
   v40 = __Block_byref_object_copy_;
   v41 = __Block_byref_object_dispose_;
-  v19 = v12;
+  v19 = signalCopy;
   v42 = v19;
   if (*(*(&buf + 1) + 40))
   {
@@ -482,49 +482,49 @@ LABEL_11:
 
   else
   {
-    v21 = [v10 primaryAlert];
-    if (v21)
+    primaryAlert = [modelCopy primaryAlert];
+    if (primaryAlert)
     {
       v20 = 1;
     }
 
     else
     {
-      v22 = [v10 clientInfo];
-      v20 = [v22 count] != 0;
+      clientInfo = [modelCopy clientInfo];
+      v20 = [clientInfo count] != 0;
     }
   }
 
-  [v10 setSourceURL:v11];
+  [modelCopy setSourceURL:urlCopy];
   if (objc_opt_respondsToSelector())
   {
-    v23 = [v16 telemetryDelegate];
-    [v10 setTelemetryDelegate:v23];
+    telemetryDelegate = [delegate telemetryDelegate];
+    [modelCopy setTelemetryDelegate:telemetryDelegate];
   }
 
-  v24 = [(RUIHTTPRequest *)v15 delegate];
-  [v10 setDelegate:v24];
+  delegate2 = [(RUIHTTPRequest *)selfCopy delegate];
+  [modelCopy setDelegate:delegate2];
 
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __63__RUILoader__finishLoadWithObjectModel_url_actionSignal_error___block_invoke;
   v30[3] = &unk_2782E8688;
-  v25 = v13;
+  v25 = errorCopy;
   v36 = v20;
   v31 = v25;
   p_buf = &buf;
-  v26 = v10;
+  v26 = modelCopy;
   v32 = v26;
-  v27 = v16;
+  v27 = delegate;
   v33 = v27;
-  v34 = v15;
+  v34 = selfCopy;
   v37 = v18;
-  [(RUILoader *)v15 _showPrimaryAlertForObjectModel:v26 completion:v30];
-  parser = v15->_parser;
-  v15->_parser = 0;
+  [(RUILoader *)selfCopy _showPrimaryAlertForObjectModel:v26 completion:v30];
+  parser = selfCopy->_parser;
+  selfCopy->_parser = 0;
 
-  url = v15->_url;
-  v15->_url = 0;
+  url = selfCopy->_url;
+  selfCopy->_url = 0;
 
   _Block_object_dispose(&buf, 8);
 }
@@ -657,20 +657,20 @@ void __39__RUILoader_completePendingPageRefresh__block_invoke(uint64_t a1)
   [v9 removeAllObjects];
 }
 
-- (void)_showPrimaryAlertForObjectModel:(id)a3 completion:(id)a4
+- (void)_showPrimaryAlertForObjectModel:(id)model completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RUIHTTPRequest *)self delegate];
+  modelCopy = model;
+  completionCopy = completion;
+  delegate = [(RUIHTTPRequest *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
-  v10 = [(RUIHTTPRequest *)self delegate];
-  v11 = v10;
+  delegate2 = [(RUIHTTPRequest *)self delegate];
+  delegate3 = delegate2;
   if (v9)
   {
-    v12 = [v10 viewControllerForAlertPresentation];
+    viewControllerForAlertPresentation = [delegate2 viewControllerForAlertPresentation];
 LABEL_5:
-    v14 = v12;
+    v14 = viewControllerForAlertPresentation;
 
     goto LABEL_7;
   }
@@ -679,34 +679,34 @@ LABEL_5:
 
   if (v13)
   {
-    v11 = [(RUIHTTPRequest *)self delegate];
-    v12 = [v11 parentViewControllerForObjectModel:v6];
+    delegate3 = [(RUIHTTPRequest *)self delegate];
+    viewControllerForAlertPresentation = [delegate3 parentViewControllerForObjectModel:modelCopy];
     goto LABEL_5;
   }
 
   v14 = 0;
 LABEL_7:
-  v15 = [v6 primaryAlert];
+  primaryAlert = [modelCopy primaryAlert];
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
   v19[3] = __Block_byref_object_copy_;
   v19[4] = __Block_byref_object_dispose_;
-  v20 = self;
-  if (v15)
+  selfCopy = self;
+  if (primaryAlert)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __56__RUILoader__showPrimaryAlertForObjectModel_completion___block_invoke;
     v16[3] = &unk_2782E86B0;
-    v17 = v7;
+    v17 = completionCopy;
     v18 = v19;
-    [v15 runAlertInController:v14 completion:v16];
+    [primaryAlert runAlertInController:v14 completion:v16];
   }
 
   else
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   _Block_object_dispose(v19, 8);
@@ -723,8 +723,8 @@ void __56__RUILoader__showPrimaryAlertForObjectModel_completion___block_invoke(u
 - (BOOL)anyWebViewLoading
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(RUIParser *)self->_parser uiObjectModel];
-  [v2 allPages];
+  uiObjectModel = [(RUIParser *)self->_parser uiObjectModel];
+  [uiObjectModel allPages];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -745,11 +745,11 @@ void __56__RUILoader__showPrimaryAlertForObjectModel_completion___block_invoke(u
         v7 = *(*(&v12 + 1) + 8 * i);
         if ([v7 hasWebView])
         {
-          v8 = [v7 webViewOM];
-          v9 = [v8 webView];
-          v10 = [v9 isLoading];
+          webViewOM = [v7 webViewOM];
+          webView = [webViewOM webView];
+          isLoading = [webView isLoading];
 
-          if (v10)
+          if (isLoading)
           {
             LOBYTE(v4) = 1;
             goto LABEL_12;
@@ -778,7 +778,7 @@ LABEL_12:
   if ([(RUILoader *)self anyWebViewLoading])
   {
     objc_initWeak(&location, self);
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v5 = RUIWebViewDidFinishLoadNotification;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
@@ -786,7 +786,7 @@ LABEL_12:
     v8[3] = &unk_2782E86D8;
     objc_copyWeak(&v10, &location);
     v9 = v3;
-    v6 = [v4 addObserverForName:v5 object:0 queue:0 usingBlock:v8];
+    v6 = [defaultCenter addObserverForName:v5 object:0 queue:0 usingBlock:v8];
     webViewLoadNotificationObserver = self->_webViewLoadNotificationObserver;
     self->_webViewLoadNotificationObserver = v6;
 
@@ -806,42 +806,42 @@ void __25__RUILoader_didParseData__block_invoke(uint64_t a1)
   [WeakRetained webViewFinishedLoadingWithURL:*(a1 + 32)];
 }
 
-- (void)webViewFinishedLoadingWithURL:(id)a3
+- (void)webViewFinishedLoadingWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   if (![(RUILoader *)self anyWebViewLoading])
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self->_webViewLoadNotificationObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_webViewLoadNotificationObserver];
 
-    [(RUILoader *)self allWebViewsFinishedLoadingWithURL:v5];
+    [(RUILoader *)self allWebViewsFinishedLoadingWithURL:lCopy];
   }
 }
 
-- (void)failWithError:(id)a3 forRequest:(id)a4
+- (void)failWithError:(id)error forRequest:(id)request
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  requestCopy = request;
   if (_isInternalInstall())
   {
     v8 = _RUILoggingFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v6;
+      v18 = errorCopy;
       _os_log_impl(&dword_21B93D000, v8, OS_LOG_TYPE_DEFAULT, "RUILoader failed with error %@", &v17, 0xCu);
     }
   }
 
-  v9 = [(RUIHTTPRequest *)self delegate];
+  delegate = [(RUIHTTPRequest *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
-  v11 = [(RUIHTTPRequest *)self delegate];
-  v12 = v11;
+  delegate2 = [(RUIHTTPRequest *)self delegate];
+  delegate4 = delegate2;
   if (v10)
   {
-    [v11 loader:self didFinishLoadWithError:v6 forRequest:v7];
+    [delegate2 loader:self didFinishLoadWithError:errorCopy forRequest:requestCopy];
 LABEL_11:
 
     goto LABEL_12;
@@ -849,11 +849,11 @@ LABEL_11:
 
   v13 = objc_opt_respondsToSelector();
 
-  v14 = [(RUIHTTPRequest *)self delegate];
-  v12 = v14;
+  delegate3 = [(RUIHTTPRequest *)self delegate];
+  delegate4 = delegate3;
   if (v13)
   {
-    [v14 loader:self didFinishLoadWithError:v6];
+    [delegate3 loader:self didFinishLoadWithError:errorCopy];
     goto LABEL_11;
   }
 
@@ -861,8 +861,8 @@ LABEL_11:
 
   if (v15)
   {
-    v12 = [(RUIHTTPRequest *)self delegate];
-    [v12 loader:self didFailWithError:v6];
+    delegate4 = [(RUIHTTPRequest *)self delegate];
+    [delegate4 loader:self didFailWithError:errorCopy];
     goto LABEL_11;
   }
 
@@ -871,22 +871,22 @@ LABEL_12:
   self->_url = 0;
 }
 
-- (BOOL)receivedValidResponse:(id)a3 forRequest:(id)a4
+- (BOOL)receivedValidResponse:(id)response forRequest:(id)request
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 allHeaderFields];
+    allHeaderFields = [responseCopy allHeaderFields];
     if (_isInternalInstall())
     {
       v9 = _RUILoggingFacility();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v20 = v8;
+        v20 = allHeaderFields;
         _os_log_impl(&dword_21B93D000, v9, OS_LOG_TYPE_DEFAULT, "loader receivedValidResponse. headers: %@", buf, 0xCu);
       }
     }
@@ -896,15 +896,15 @@ LABEL_12:
     v18[2] = __46__RUILoader_receivedValidResponse_forRequest___block_invoke;
     v18[3] = &unk_2782E8700;
     v18[4] = self;
-    [v8 enumerateKeysAndObjectsUsingBlock:v18];
-    v10 = [(RUIHTTPRequest *)self delegate];
+    [allHeaderFields enumerateKeysAndObjectsUsingBlock:v18];
+    delegate = [(RUIHTTPRequest *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
-    v12 = [(RUIHTTPRequest *)self delegate];
-    v13 = v12;
+    delegate2 = [(RUIHTTPRequest *)self delegate];
+    delegate3 = delegate2;
     if (v11)
     {
-      [v12 loader:self didReceiveHTTPResponse:v6 forRequest:v7];
+      [delegate2 loader:self didReceiveHTTPResponse:responseCopy forRequest:requestCopy];
     }
 
     else
@@ -918,8 +918,8 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v13 = [(RUIHTTPRequest *)self delegate];
-      [v13 loader:self didReceiveHTTPResponse:v6];
+      delegate3 = [(RUIHTTPRequest *)self delegate];
+      [delegate3 loader:self didReceiveHTTPResponse:responseCopy];
     }
 
     goto LABEL_11;
@@ -928,7 +928,7 @@ LABEL_11:
 LABEL_12:
   v17.receiver = self;
   v17.super_class = RUILoader;
-  v15 = [(RUIHTTPRequest *)&v17 receivedValidResponse:v6 forRequest:v7];
+  v15 = [(RUIHTTPRequest *)&v17 receivedValidResponse:responseCopy forRequest:requestCopy];
 
   return v15;
 }
@@ -961,19 +961,19 @@ void __46__RUILoader_receivedValidResponse_forRequest___block_invoke(uint64_t a1
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
+  redirectionCopy = redirection;
+  requestCopy = request;
+  handlerCopy = handler;
   if (_isInternalInstall())
   {
     v13 = _RUILoggingFacility();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v10 URL];
-      v15 = [v11 URL];
+      v14 = [redirectionCopy URL];
+      v15 = [requestCopy URL];
       *buf = 138412546;
       v25 = v14;
       v26 = 2112;
@@ -982,38 +982,38 @@ void __46__RUILoader_receivedValidResponse_forRequest___block_invoke(uint64_t a1
     }
   }
 
-  if (v10)
+  if (redirectionCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __85__RUILoader_URLSession_task_willPerformHTTPRedirection_newRequest_completionHandler___block_invoke;
     aBlock[3] = &unk_2782E8728;
     aBlock[4] = self;
-    v23 = v12;
+    v23 = handlerCopy;
     v16 = _Block_copy(aBlock);
-    v17 = [(RUIHTTPRequest *)self delegate];
+    delegate = [(RUIHTTPRequest *)self delegate];
     v18 = objc_opt_respondsToSelector();
 
     if (v18)
     {
-      v19 = [(RUIHTTPRequest *)self delegate];
+      delegate2 = [(RUIHTTPRequest *)self delegate];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __85__RUILoader_URLSession_task_willPerformHTTPRedirection_newRequest_completionHandler___block_invoke_2;
       v20[3] = &unk_2782E8750;
       v21 = v16;
-      [v19 loader:self willLoadRequest:v11 redirectResponse:v10 completionHandler:v20];
+      [delegate2 loader:self willLoadRequest:requestCopy redirectResponse:redirectionCopy completionHandler:v20];
     }
 
     else
     {
-      (*(v16 + 2))(v16, v11);
+      (*(v16 + 2))(v16, requestCopy);
     }
   }
 
   else
   {
-    (*(v12 + 2))(v12, v11);
+    (*(handlerCopy + 2))(handlerCopy, requestCopy);
   }
 }
 
@@ -1050,22 +1050,22 @@ uint64_t __85__RUILoader_URLSession_task_willPerformHTTPRedirection_newRequest_c
   return (*(v3 + 16))(v3, a2);
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(RUIHTTPRequest *)self delegate];
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  delegate = [(RUIHTTPRequest *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(RUIHTTPRequest *)self delegate];
-    [v10 loader:self didReceiveChallenge:v11 completionHandler:v7];
+    delegate2 = [(RUIHTTPRequest *)self delegate];
+    [delegate2 loader:self didReceiveChallenge:challengeCopy completionHandler:handlerCopy];
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    v7[2](v7, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 }
 
@@ -1078,13 +1078,13 @@ uint64_t __85__RUILoader_URLSession_task_willPerformHTTPRedirection_newRequest_c
 
 - (void)initializeSwift
 {
-  v2 = self;
+  selfCopy = self;
   RUILoader.initializeSwift()();
 }
 
 - (RUIDecodingUserInfo)decodingUserInfo
 {
-  v2 = self;
+  selfCopy = self;
   sub_21B9C07A0(&type metadata for DecodingUserInfoAssociatedKey, &off_28172C550, &v5);
 
   v3 = v5;

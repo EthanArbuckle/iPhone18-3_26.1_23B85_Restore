@@ -1,7 +1,7 @@
 @interface HMDCompositeNumberSetting
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualValue:(id)a3;
-- (HMDCompositeNumberSetting)initWithValue:(id)a3 readVersion:(id)a4 writeVersion:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualValue:(id)value;
+- (HMDCompositeNumberSetting)initWithValue:(id)value readVersion:(id)version writeVersion:(id)writeVersion;
 - (id)attributeDescriptions;
 @end
 
@@ -12,23 +12,23 @@
   v12[1] = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = HMDCompositeNumberSetting;
-  v3 = [(HMDCompositeSetting *)&v11 attributeDescriptions];
+  attributeDescriptions = [(HMDCompositeSetting *)&v11 attributeDescriptions];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMDCompositeNumberSetting *)self numberValue];
-  v6 = [v4 initWithName:@"value" value:v5];
+  numberValue = [(HMDCompositeNumberSetting *)self numberValue];
+  v6 = [v4 initWithName:@"value" value:numberValue];
   v12[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  v8 = [v7 arrayByAddingObjectsFromArray:v3];
+  v8 = [v7 arrayByAddingObjectsFromArray:attributeDescriptions];
 
   v9 = *MEMORY[0x277D85DE8];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -38,7 +38,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -64,18 +64,18 @@
   return v8;
 }
 
-- (BOOL)isEqualValue:(id)a3
+- (BOOL)isEqualValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  valueCopy = value;
+  v5 = valueCopy;
+  if (valueCopy == self)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(HMDCompositeNumberSetting *)v4 conformsToProtocol:&unk_283EDADB0])
+    if ([(HMDCompositeNumberSetting *)valueCopy conformsToProtocol:&unk_283EDADB0])
     {
       v6 = v5;
     }
@@ -89,9 +89,9 @@
     v8 = v7;
     if (v7)
     {
-      v9 = [(HMDCompositeNumberSetting *)v7 numberValue];
-      v10 = [(HMDCompositeNumberSetting *)self numberValue];
-      v11 = [v9 isEqual:v10];
+      numberValue = [(HMDCompositeNumberSetting *)v7 numberValue];
+      numberValue2 = [(HMDCompositeNumberSetting *)self numberValue];
+      v11 = [numberValue isEqual:numberValue2];
     }
 
     else
@@ -103,15 +103,15 @@
   return v11;
 }
 
-- (HMDCompositeNumberSetting)initWithValue:(id)a3 readVersion:(id)a4 writeVersion:(id)a5
+- (HMDCompositeNumberSetting)initWithValue:(id)value readVersion:(id)version writeVersion:(id)writeVersion
 {
-  v8 = a3;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = HMDCompositeNumberSetting;
-  v9 = [(HMDCompositeSetting *)&v13 initWithReadVersion:a4 writeVersion:a5];
+  v9 = [(HMDCompositeSetting *)&v13 initWithReadVersion:version writeVersion:writeVersion];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [valueCopy copy];
     numberValue = v9->_numberValue;
     v9->_numberValue = v10;
   }

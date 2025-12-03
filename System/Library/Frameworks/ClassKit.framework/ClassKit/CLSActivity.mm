@@ -1,54 +1,54 @@
 @interface CLSActivity
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (CLSActivity)initWithCKRecord:(id)a3;
-- (CLSActivity)initWithDatabaseRow:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (CLSActivity)initWithCKRecord:(id)record;
+- (CLSActivity)initWithDatabaseRow:(id)row;
 - (NSString)parentReferenceName;
-- (id)generateInsightEventsWithDatabase:(id)a3;
-- (void)bindTo:(id)a3;
-- (void)populate:(id)a3;
-- (void)willBeDeletedFromDatabase:(id)a3;
+- (id)generateInsightEventsWithDatabase:(id)database;
+- (void)bindTo:(id)to;
+- (void)populate:(id)populate;
+- (void)willBeDeletedFromDatabase:(id)database;
 @end
 
 @implementation CLSActivity
 
-- (CLSActivity)initWithCKRecord:(id)a3
+- (CLSActivity)initWithCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(CLSActivity *)self _init];
-  if (v5)
+  recordCopy = record;
+  _init = [(CLSActivity *)self _init];
+  if (_init)
   {
-    v6 = [v4 objectForKeyedSubscript:@"parentEntityName"];
-    [(CLSActivity *)v5 setParentEntityName:v6];
+    v6 = [recordCopy objectForKeyedSubscript:@"parentEntityName"];
+    [(CLSActivity *)_init setParentEntityName:v6];
 
-    [(CLSActivity *)v5 _initCommonPropsWithRecord:v4];
-    v7 = [v4 objectForKeyedSubscript:@"primaryActivityItemIdentifier"];
-    [(CLSActivity *)v5 setPrimaryActivityItemIdentifier:v7];
+    [(CLSActivity *)_init _initCommonPropsWithRecord:recordCopy];
+    v7 = [recordCopy objectForKeyedSubscript:@"primaryActivityItemIdentifier"];
+    [(CLSActivity *)_init setPrimaryActivityItemIdentifier:v7];
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)populate:(id)a3
+- (void)populate:(id)populate
 {
   v7.receiver = self;
   v7.super_class = CLSActivity;
-  v4 = a3;
-  [(CLSActivity *)&v7 populate:v4];
+  populateCopy = populate;
+  [(CLSActivity *)&v7 populate:populateCopy];
   v5 = [(CLSActivity *)self primaryActivityItemIdentifier:v7.receiver];
-  [v4 setObject:v5 forKeyedSubscript:@"primaryActivityItemIdentifier"];
+  [populateCopy setObject:v5 forKeyedSubscript:@"primaryActivityItemIdentifier"];
 
-  v6 = [(CLSActivity *)self parentEntityName];
-  [v4 setObject:v6 forKeyedSubscript:@"parentEntityName"];
+  parentEntityName = [(CLSActivity *)self parentEntityName];
+  [populateCopy setObject:parentEntityName forKeyedSubscript:@"parentEntityName"];
 
-  [(CLSActivity *)self updateParentReferencesForRecord:v4];
+  [(CLSActivity *)self updateParentReferencesForRecord:populateCopy];
 }
 
 - (NSString)parentReferenceName
 {
-  v2 = [(CLSActivity *)self parentEntityName];
+  parentEntityName = [(CLSActivity *)self parentEntityName];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [v2 isEqualToString:v4];
+  v5 = [parentEntityName isEqualToString:v4];
 
   if (v5)
   {
@@ -61,14 +61,14 @@
   }
 }
 
-- (id)generateInsightEventsWithDatabase:(id)a3
+- (id)generateInsightEventsWithDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [(CLSActivity *)self primaryActivityItemIdentifier];
+  databaseCopy = database;
+  primaryActivityItemIdentifier = [(CLSActivity *)self primaryActivityItemIdentifier];
 
-  if (v5)
+  if (primaryActivityItemIdentifier)
   {
-    v6 = sub_10004BE2C(v4, self, 206, 0);
+    v6 = sub_10004BE2C(databaseCopy, self, 206, 0);
     v7 = objc_autoreleasePoolPush();
     v18 = 0u;
     v19 = 0u;
@@ -90,14 +90,14 @@
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
-          v14 = [(CLSActivity *)self objectID];
-          [v13 setActivityID:v14];
+          objectID = [(CLSActivity *)self objectID];
+          [v13 setActivityID:objectID];
 
-          v15 = [(CLSActivity *)self parentObjectID];
-          [v13 setParentObjectID:v15];
+          parentObjectID = [(CLSActivity *)self parentObjectID];
+          [v13 setParentObjectID:parentObjectID];
 
-          v16 = [(CLSActivity *)self primaryActivityItemIdentifier];
-          [v13 setPrimaryActivityItemIdentifier:v16];
+          primaryActivityItemIdentifier2 = [(CLSActivity *)self primaryActivityItemIdentifier];
+          [v13 setPrimaryActivityItemIdentifier:primaryActivityItemIdentifier2];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -117,52 +117,52 @@
   return v8;
 }
 
-- (CLSActivity)initWithDatabaseRow:(id)a3
+- (CLSActivity)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = [(CLSActivity *)self _init];
-  if (v5)
+  rowCopy = row;
+  _init = [(CLSActivity *)self _init];
+  if (_init)
   {
-    v6 = sub_10016D778(v4, @"parentEntityName");
-    [(CLSActivity *)v5 _initCommonPropsWithDatabaseRow:v4];
-    v7 = sub_10016D778(v4, @"primaryActivityItemIdentifier");
-    [(CLSActivity *)v5 setPrimaryActivityItemIdentifier:v7];
+    v6 = sub_10016D778(rowCopy, @"parentEntityName");
+    [(CLSActivity *)_init _initCommonPropsWithDatabaseRow:rowCopy];
+    v7 = sub_10016D778(rowCopy, @"primaryActivityItemIdentifier");
+    [(CLSActivity *)_init setPrimaryActivityItemIdentifier:v7];
 
-    [(CLSActivity *)v5 setParentEntityName:v6];
-    v8 = sub_10016D778(v4, @"parentObjectID");
-    [(CLSActivity *)v5 setParentObjectID:v8];
+    [(CLSActivity *)_init setParentEntityName:v6];
+    v8 = sub_10016D778(rowCopy, @"parentObjectID");
+    [(CLSActivity *)_init setParentObjectID:v8];
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   v8.receiver = self;
   v8.super_class = CLSActivity;
-  v4 = a3;
-  [(CLSActivity *)&v8 bindTo:v4];
+  toCopy = to;
+  [(CLSActivity *)&v8 bindTo:toCopy];
   v5 = [(CLSActivity *)self primaryActivityItemIdentifier:v8.receiver];
-  sub_1000982FC(v4, v5, @"primaryActivityItemIdentifier");
+  sub_1000982FC(toCopy, v5, @"primaryActivityItemIdentifier");
 
-  v6 = [(CLSActivity *)self parentEntityName];
-  sub_1000982FC(v4, v6, @"parentEntityName");
+  parentEntityName = [(CLSActivity *)self parentEntityName];
+  sub_1000982FC(toCopy, parentEntityName, @"parentEntityName");
 
-  v7 = [(CLSActivity *)self parentObjectID];
-  sub_1000982FC(v4, v7, @"parentObjectID");
+  parentObjectID = [(CLSActivity *)self parentObjectID];
+  sub_1000982FC(toCopy, parentObjectID, @"parentObjectID");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  switch(a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  switch(version)
   {
     case 2uLL:
 LABEL_13:
       if (sub_1000B9298(v8, @"drop index CLSActivityClone_objectID", 0, 0, 0) && sub_1000B9298(v8, @"create unique index CLSActivity_objectID on CLSActivity (objectID)", 0, 0, 0) && sub_1000B9298(v8, @"drop index CLSActivityClone_parentObjectID", 0, 0, 0) && sub_1000B9298(v8, @"create index CLSActivity_parentObjectID on CLSActivity (parentObjectID)", 0, 0, 0))
       {
-        a3 = 3;
+        version = 3;
         break;
       }
 
@@ -178,7 +178,7 @@ LABEL_7:
 
       goto LABEL_13;
     case 0uLL:
-      if (!sub_1000B9298(v7, @"create table CLSActivity(   objectID          text not null,    parentObjectID    text not null,    appIdentifier     text not null,    dateCreated       real not null,    dateLastModified  real not null,    primaryActivityItemIdentifier text,    foreign key(parentObjectID) references CLSContext(objectID) on delete cascade on update cascade)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index CLSActivity_objectID on CLSActivity (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index CLSActivity_parentObjectID on CLSActivity (parentObjectID)", 0, 0, 0))
+      if (!sub_1000B9298(databaseCopy, @"create table CLSActivity(   objectID          text not null,    parentObjectID    text not null,    appIdentifier     text not null,    dateCreated       real not null,    dateLastModified  real not null,    primaryActivityItemIdentifier text,    foreign key(parentObjectID) references CLSContext(objectID) on delete cascade on update cascade)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index CLSActivity_objectID on CLSActivity (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index CLSActivity_parentObjectID on CLSActivity (parentObjectID)", 0, 0, 0))
       {
         goto LABEL_19;
       }
@@ -186,21 +186,21 @@ LABEL_7:
       goto LABEL_7;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_20:
 
   return v9;
 }
 
-- (void)willBeDeletedFromDatabase:(id)a3
+- (void)willBeDeletedFromDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [(CLSActivity *)self objectID];
-  v7 = v5;
+  databaseCopy = database;
+  objectID = [(CLSActivity *)self objectID];
+  v7 = objectID;
   v6 = [NSArray arrayWithObjects:&v7 count:1];
 
-  [v4 deleteAll:objc_opt_class() where:@"activityID = ?" bindings:v6];
+  [databaseCopy deleteAll:objc_opt_class() where:@"activityID = ?" bindings:v6];
 }
 
 @end

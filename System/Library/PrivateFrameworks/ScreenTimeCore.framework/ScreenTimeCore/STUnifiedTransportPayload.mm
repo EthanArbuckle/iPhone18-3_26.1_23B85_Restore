@@ -1,48 +1,48 @@
 @interface STUnifiedTransportPayload
-+ (id)_descriptionDictionariesForBlueprintDictionaries:(id)a3;
-+ (id)_descriptionDictionariesForSettingsDictionaries:(id)a3;
-+ (id)_descriptionDictionaryForBlueprintPayloadDictionary:(id)a3;
-+ (id)_descriptionDictionaryForCheckinRequestPayloadDictionary:(id)a3;
-+ (id)_descriptionDictionaryForCheckinResponsePayloadDictionary:(id)a3;
-+ (id)_descriptionDictionaryForPayloadDictionary:(id)a3 type:(id)a4;
-+ (id)_descriptionDictionaryForSettingsPayloadDictionary:(id)a3;
++ (id)_descriptionDictionariesForBlueprintDictionaries:(id)dictionaries;
++ (id)_descriptionDictionariesForSettingsDictionaries:(id)dictionaries;
++ (id)_descriptionDictionaryForBlueprintPayloadDictionary:(id)dictionary;
++ (id)_descriptionDictionaryForCheckinRequestPayloadDictionary:(id)dictionary;
++ (id)_descriptionDictionaryForCheckinResponsePayloadDictionary:(id)dictionary;
++ (id)_descriptionDictionaryForPayloadDictionary:(id)dictionary type:(id)type;
++ (id)_descriptionDictionaryForSettingsPayloadDictionary:(id)dictionary;
 - (NSString)UUID;
 - (NSString)payloadType;
-- (STUnifiedTransportPayload)initWithCoder:(id)a3;
-- (STUnifiedTransportPayload)initWithPayload:(id)a3 type:(id)a4 userInfo:(id)a5;
-- (STUnifiedTransportPayload)initWithPayload:(id)a3 userInfo:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (STUnifiedTransportPayload)initWithCoder:(id)coder;
+- (STUnifiedTransportPayload)initWithPayload:(id)payload type:(id)type userInfo:(id)info;
+- (STUnifiedTransportPayload)initWithPayload:(id)payload userInfo:(id)info;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setUUID:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setUUID:(id)d;
 @end
 
 @implementation STUnifiedTransportPayload
 
-- (STUnifiedTransportPayload)initWithPayload:(id)a3 type:(id)a4 userInfo:(id)a5
+- (STUnifiedTransportPayload)initWithPayload:(id)payload type:(id)type userInfo:(id)info
 {
-  v8 = a4;
-  v9 = [(STUnifiedTransportPayload *)self initWithPayload:a3 userInfo:a5];
-  v10 = [(STUnifiedTransportPayload *)v9 userInfo];
-  [v10 setObject:v8 forKeyedSubscript:@"RMUnifiedTransportPayloadTypeKey"];
+  typeCopy = type;
+  v9 = [(STUnifiedTransportPayload *)self initWithPayload:payload userInfo:info];
+  userInfo = [(STUnifiedTransportPayload *)v9 userInfo];
+  [userInfo setObject:typeCopy forKeyedSubscript:@"RMUnifiedTransportPayloadTypeKey"];
 
   return v9;
 }
 
-- (STUnifiedTransportPayload)initWithPayload:(id)a3 userInfo:(id)a4
+- (STUnifiedTransportPayload)initWithPayload:(id)payload userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  infoCopy = info;
   v16.receiver = self;
   v16.super_class = STUnifiedTransportPayload;
   v8 = [(STUnifiedTransportPayload *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [payloadCopy copy];
     payloadDictionary = v8->_payloadDictionary;
     v8->_payloadDictionary = v9;
 
-    v11 = [v7 mutableCopy];
+    v11 = [infoCopy mutableCopy];
     v12 = v11;
     if (v11)
     {
@@ -63,36 +63,36 @@
 
 - (NSString)UUID
 {
-  v2 = [(STUnifiedTransportPayload *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"RMUnifiedTransportPayloadIdentifierKey"];
+  userInfo = [(STUnifiedTransportPayload *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"RMUnifiedTransportPayloadIdentifierKey"];
 
   return v3;
 }
 
-- (void)setUUID:(id)a3
+- (void)setUUID:(id)d
 {
-  v5 = [a3 copy];
-  v4 = [(STUnifiedTransportPayload *)self userInfo];
-  [v4 setObject:v5 forKeyedSubscript:@"RMUnifiedTransportPayloadIdentifierKey"];
+  v5 = [d copy];
+  userInfo = [(STUnifiedTransportPayload *)self userInfo];
+  [userInfo setObject:v5 forKeyedSubscript:@"RMUnifiedTransportPayloadIdentifierKey"];
 }
 
 - (NSString)payloadType
 {
-  v2 = [(STUnifiedTransportPayload *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"RMUnifiedTransportPayloadTypeKey"];
+  userInfo = [(STUnifiedTransportPayload *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"RMUnifiedTransportPayloadTypeKey"];
 
   return v3;
 }
 
-+ (id)_descriptionDictionariesForBlueprintDictionaries:(id)a3
++ (id)_descriptionDictionariesForBlueprintDictionaries:(id)dictionaries
 {
-  v3 = a3;
-  v35 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  dictionariesCopy = dictionaries;
+  v35 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dictionariesCopy count]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v3;
+  obj = dictionariesCopy;
   v4 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v4)
   {
@@ -232,15 +232,15 @@
   return v35;
 }
 
-+ (id)_descriptionDictionariesForSettingsDictionaries:(id)a3
++ (id)_descriptionDictionariesForSettingsDictionaries:(id)dictionaries
 {
-  v3 = a3;
-  v49 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  dictionariesCopy = dictionaries;
+  v49 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dictionariesCopy count]);
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v3;
+  obj = dictionariesCopy;
   v50 = [obj countByEnumeratingWithState:&v51 objects:v55 count:16];
   if (v50)
   {
@@ -455,11 +455,11 @@
   return v49;
 }
 
-+ (id)_descriptionDictionaryForCheckinRequestPayloadDictionary:(id)a3
++ (id)_descriptionDictionaryForCheckinRequestPayloadDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
-  v5 = [v3 objectForKeyedSubscript:@"Blueprints"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"Blueprints"];
   v6 = [v5 count];
   v7 = [NSNumber numberWithUnsignedInteger:v6];
   [v4 setObject:v7 forKeyedSubscript:@"NumberOfBlueprints"];
@@ -471,8 +471,8 @@
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v9 = [v5 allKeys];
-    v10 = [v9 countByEnumeratingWithState:&v46 objects:v51 count:16];
+    allKeys = [v5 allKeys];
+    v10 = [allKeys countByEnumeratingWithState:&v46 objects:v51 count:16];
     if (v10)
     {
       v11 = v10;
@@ -483,13 +483,13 @@
         {
           if (*v47 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allKeys);
           }
 
           [v8 addObject:*(*(&v46 + 1) + 8 * i)];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v46 objects:v51 count:16];
+        v11 = [allKeys countByEnumeratingWithState:&v46 objects:v51 count:16];
       }
 
       while (v11);
@@ -498,7 +498,7 @@
     [v4 setObject:v8 forKeyedSubscript:@"Blueprints"];
   }
 
-  v14 = [v3 objectForKeyedSubscript:@"Settings"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"Settings"];
   v15 = [v14 count];
   v16 = [NSNumber numberWithUnsignedInteger:v15];
   [v4 setObject:v16 forKeyedSubscript:@"NumberOfSettings"];
@@ -510,8 +510,8 @@
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v18 = [v14 allKeys];
-    v19 = [v18 countByEnumeratingWithState:&v42 objects:v50 count:16];
+    allKeys2 = [v14 allKeys];
+    v19 = [allKeys2 countByEnumeratingWithState:&v42 objects:v50 count:16];
     if (v19)
     {
       v20 = v19;
@@ -522,13 +522,13 @@
         {
           if (*v43 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(allKeys2);
           }
 
           [v17 addObject:*(*(&v42 + 1) + 8 * j)];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v42 objects:v50 count:16];
+        v20 = [allKeys2 countByEnumeratingWithState:&v42 objects:v50 count:16];
       }
 
       while (v20);
@@ -537,7 +537,7 @@
     [v4 setObject:v17 forKeyedSubscript:@"Settings"];
   }
 
-  v23 = [v3 objectForKeyedSubscript:@"UserDeviceState"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"UserDeviceState"];
   v24 = objc_opt_new();
   v25 = [v23 objectForKeyedSubscript:@"user"];
   v26 = v25;
@@ -615,33 +615,33 @@
   return v40;
 }
 
-+ (id)_descriptionDictionaryForCheckinResponsePayloadDictionary:(id)a3
++ (id)_descriptionDictionaryForCheckinResponsePayloadDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_new();
-  v6 = [v4 objectForKeyedSubscript:@"Blueprints"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"Blueprints"];
   v7 = [v6 count];
   v8 = [NSNumber numberWithUnsignedInteger:v7];
   [v5 setObject:v8 forKeyedSubscript:@"NumberOfBlueprints"];
 
   if (v7)
   {
-    v9 = [a1 _descriptionDictionariesForBlueprintDictionaries:v6];
+    v9 = [self _descriptionDictionariesForBlueprintDictionaries:v6];
     [v5 setObject:v9 forKeyedSubscript:@"Blueprints"];
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"Settings"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"Settings"];
   v11 = [v10 count];
   v12 = [NSNumber numberWithUnsignedInteger:v11];
   [v5 setObject:v12 forKeyedSubscript:@"NumberOfSettings"];
 
   if (v11)
   {
-    v13 = [a1 _descriptionDictionariesForSettingsDictionaries:v10];
+    v13 = [self _descriptionDictionariesForSettingsDictionaries:v10];
     [v5 setObject:v13 forKeyedSubscript:@"Settings"];
   }
 
-  v14 = [v4 objectForKeyedSubscript:@"UserDeviceState"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"UserDeviceState"];
   v15 = objc_opt_new();
   v16 = [v14 objectForKeyedSubscript:@"user"];
   v17 = v16;
@@ -719,11 +719,11 @@
   return v31;
 }
 
-+ (id)_descriptionDictionaryForBlueprintPayloadDictionary:(id)a3
++ (id)_descriptionDictionaryForBlueprintPayloadDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_new();
-  v6 = [v4 objectForKeyedSubscript:@"Blueprints"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"Blueprints"];
 
   v7 = [v6 count];
   v8 = [NSNumber numberWithUnsignedInteger:v7];
@@ -731,18 +731,18 @@
 
   if (v7)
   {
-    v9 = [a1 _descriptionDictionariesForBlueprintDictionaries:v6];
+    v9 = [self _descriptionDictionariesForBlueprintDictionaries:v6];
     [v5 setObject:v9 forKeyedSubscript:@"Blueprints"];
   }
 
   return v5;
 }
 
-+ (id)_descriptionDictionaryForSettingsPayloadDictionary:(id)a3
++ (id)_descriptionDictionaryForSettingsPayloadDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_new();
-  v6 = [v4 objectForKeyedSubscript:@"Settings"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"Settings"];
 
   v7 = [v6 count];
   v8 = [NSNumber numberWithUnsignedInteger:v7];
@@ -750,21 +750,21 @@
 
   if (v7)
   {
-    v9 = [a1 _descriptionDictionariesForSettingsDictionaries:v6];
+    v9 = [self _descriptionDictionariesForSettingsDictionaries:v6];
     [v5 setObject:v9 forKeyedSubscript:@"Settings"];
   }
 
   return v5;
 }
 
-+ (id)_descriptionDictionaryForPayloadDictionary:(id)a3 type:(id)a4
++ (id)_descriptionDictionaryForPayloadDictionary:(id)dictionary type:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  typeCopy = type;
   v8 = objc_opt_new();
-  if ([v7 isEqualToString:@"RMUnifiedTransportPayloadTypeCheckinRequest"])
+  if ([typeCopy isEqualToString:@"RMUnifiedTransportPayloadTypeCheckinRequest"])
   {
-    v9 = [a1 _descriptionDictionaryForCheckinRequestPayloadDictionary:v6];
+    v9 = [self _descriptionDictionaryForCheckinRequestPayloadDictionary:dictionaryCopy];
 LABEL_7:
     v10 = v9;
 LABEL_8:
@@ -773,45 +773,45 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v7 isEqualToString:@"RMUnifiedTransportPayloadTypeCheckinResponse"])
+  if ([typeCopy isEqualToString:@"RMUnifiedTransportPayloadTypeCheckinResponse"])
   {
-    v9 = [a1 _descriptionDictionaryForCheckinResponsePayloadDictionary:v6];
+    v9 = [self _descriptionDictionaryForCheckinResponsePayloadDictionary:dictionaryCopy];
     goto LABEL_7;
   }
 
-  if ([v7 isEqualToString:@"RMUnifiedTransportPayloadTypeBlueprints"])
+  if ([typeCopy isEqualToString:@"RMUnifiedTransportPayloadTypeBlueprints"])
   {
-    v9 = [a1 _descriptionDictionaryForBlueprintPayloadDictionary:v6];
+    v9 = [self _descriptionDictionaryForBlueprintPayloadDictionary:dictionaryCopy];
     goto LABEL_7;
   }
 
-  if ([v7 isEqualToString:@"RMUnifiedTransportPayloadTypeUsageRequest"])
+  if ([typeCopy isEqualToString:@"RMUnifiedTransportPayloadTypeUsageRequest"])
   {
     v10 = &off_1001B2600;
     goto LABEL_8;
   }
 
-  if ([v7 isEqualToString:@"RMUnifiedTransportPayloadTypeUsageResponse"])
+  if ([typeCopy isEqualToString:@"RMUnifiedTransportPayloadTypeUsageResponse"])
   {
     v10 = &off_1001B2628;
     goto LABEL_8;
   }
 
-  if ([v7 isEqualToString:@"RMUnifiedTransportPayloadTypeAskForTimeRequest"])
+  if ([typeCopy isEqualToString:@"RMUnifiedTransportPayloadTypeAskForTimeRequest"])
   {
     v9 = STGetDescriptionForAskForTimeRequestDictionary();
     goto LABEL_7;
   }
 
-  if ([v7 isEqualToString:@"RMUnifiedTransportPayloadTypeAskForTimeResponse"])
+  if ([typeCopy isEqualToString:@"RMUnifiedTransportPayloadTypeAskForTimeResponse"])
   {
     v9 = STGetDescriptionForAskForTimeResponseDictionary();
     goto LABEL_7;
   }
 
-  if ([v7 isEqualToString:@"RMUnifiedTransportPayloadTypeFamilySettings"])
+  if ([typeCopy isEqualToString:@"RMUnifiedTransportPayloadTypeFamilySettings"])
   {
-    v9 = [a1 _descriptionDictionaryForSettingsPayloadDictionary:v6];
+    v9 = [self _descriptionDictionaryForSettingsPayloadDictionary:dictionaryCopy];
     goto LABEL_7;
   }
 
@@ -823,19 +823,19 @@ LABEL_9:
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(STUnifiedTransportPayload *)self payloadType];
-  v5 = [(STUnifiedTransportPayload *)self UUID];
-  v6 = [(STUnifiedTransportPayload *)self payloadDictionary];
-  v7 = [(STUnifiedTransportPayload *)self payloadType];
-  v8 = [STUnifiedTransportPayload _descriptionDictionaryForPayloadDictionary:v6 type:v7];
-  v9 = [NSString stringWithFormat:@"<%@ { Type: %@ UUID: %@ Contents: %@}>", v3, v4, v5, v8];
+  payloadType = [(STUnifiedTransportPayload *)self payloadType];
+  uUID = [(STUnifiedTransportPayload *)self UUID];
+  payloadDictionary = [(STUnifiedTransportPayload *)self payloadDictionary];
+  payloadType2 = [(STUnifiedTransportPayload *)self payloadType];
+  v8 = [STUnifiedTransportPayload _descriptionDictionaryForPayloadDictionary:payloadDictionary type:payloadType2];
+  v9 = [NSString stringWithFormat:@"<%@ { Type: %@ UUID: %@ Contents: %@}>", v3, payloadType, uUID, v8];
 
   return v9;
 }
 
-- (STUnifiedTransportPayload)initWithCoder:(id)a3
+- (STUnifiedTransportPayload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v34.receiver = self;
   v34.super_class = STUnifiedTransportPayload;
   v5 = [(STUnifiedTransportPayload *)&v34 init];
@@ -858,7 +858,7 @@ LABEL_9:
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v33 initWithObjects:{v32, v31, v30, v29, v28, v27, v26, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"payloadDictionary"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"payloadDictionary"];
     payloadDictionary = v5->_payloadDictionary;
     v5->_payloadDictionary = v15;
 
@@ -867,7 +867,7 @@ LABEL_9:
     v19 = objc_opt_class();
     v20 = objc_opt_class();
     v21 = [v17 initWithObjects:{v18, v19, v20, objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"userInfo"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"userInfo"];
     v23 = [v22 mutableCopy];
     userInfo = v5->_userInfo;
     v5->_userInfo = v23;
@@ -876,15 +876,15 @@ LABEL_9:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   payloadDictionary = self->_payloadDictionary;
-  v5 = a3;
-  [v5 encodeObject:payloadDictionary forKey:@"payloadDictionary"];
-  [v5 encodeObject:self->_userInfo forKey:@"userInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:payloadDictionary forKey:@"payloadDictionary"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"userInfo"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithPayload:self->_payloadDictionary userInfo:self->_userInfo];
   [v4 setDestinations:self->_destinations];

@@ -1,16 +1,16 @@
 @interface PUPhotoCommentCell
-+ (double)heightForComment:(id)a3 ofAsset:(id)a4 forWidth:(double)a5 forInterfaceOrientation:(int64_t)a6;
-+ (id)_attributionStringForComment:(id)a3 ofAsset:(id)a4;
-+ (id)_commentStringForComment:(id)a3;
-+ (id)_synthesizedAttributedString:(id)a3 withWordWrapping:(BOOL)a4;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (PUPhotoCommentCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (double)heightForComment:(id)comment ofAsset:(id)asset forWidth:(double)width forInterfaceOrientation:(int64_t)orientation;
++ (id)_attributionStringForComment:(id)comment ofAsset:(id)asset;
++ (id)_commentStringForComment:(id)comment;
++ (id)_synthesizedAttributedString:(id)string withWordWrapping:(BOOL)wrapping;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (PUPhotoCommentCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_updateContent;
-- (void)delete:(id)a3;
+- (void)delete:(id)delete;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setComment:(id)a3;
-- (void)setUsesCompactSeparators:(BOOL)a3;
+- (void)setComment:(id)comment;
+- (void)setUsesCompactSeparators:(BOOL)separators;
 @end
 
 @implementation PUPhotoCommentCell
@@ -21,8 +21,8 @@
   v29.super_class = PUPhotoCommentCell;
   [(PUPhotoCommentCell *)&v29 layoutSubviews];
   v3 = [MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:{-[PUPhotoCommentCell semanticContentAttribute](self, "semanticContentAttribute")}];
-  v4 = [(PUPhotoCommentCell *)self contentView];
-  [v4 bounds];
+  contentView = [(PUPhotoCommentCell *)self contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
 
@@ -53,8 +53,8 @@
   v18 = v17;
   if (v3)
   {
-    v19 = [(PUPhotoCommentCell *)self contentView];
-    [v19 bounds];
+    contentView2 = [(PUPhotoCommentCell *)self contentView];
+    [contentView2 bounds];
     MaxX = CGRectGetMaxX(v31);
     v32.origin.x = 15.0;
     v32.origin.y = 6.0;
@@ -74,8 +74,8 @@
   v25 = v24;
   if (v3)
   {
-    v26 = [(PUPhotoCommentCell *)self contentView];
-    [v26 bounds];
+    contentView3 = [(PUPhotoCommentCell *)self contentView];
+    [contentView3 bounds];
     v27 = CGRectGetMaxX(v34);
     v35.origin.x = 15.0;
     v35.origin.y = v21;
@@ -92,10 +92,10 @@
   [(UILabel *)self->_commentBylineLabel setFrame:v28, v21, v23, v25];
 }
 
-- (void)setComment:(id)a3
+- (void)setComment:(id)comment
 {
-  v4 = a3 | self->_comment;
-  objc_storeStrong(&self->_comment, a3);
+  v4 = comment | self->_comment;
+  objc_storeStrong(&self->_comment, comment);
   if (v4)
   {
 
@@ -112,28 +112,28 @@
   commentBylineLabel = self->_commentBylineLabel;
   v6 = objc_opt_class();
   comment = self->_comment;
-  v8 = [(PUPhotoCommentCell *)self asset];
-  v9 = [v6 _attributionStringForComment:comment ofAsset:v8];
+  asset = [(PUPhotoCommentCell *)self asset];
+  v9 = [v6 _attributionStringForComment:comment ofAsset:asset];
   [(UILabel *)commentBylineLabel setAttributedText:v9];
 
   styledSeparatorView = self->_styledSeparatorView;
-  v11 = [MEMORY[0x1E69DC888] separatorColor];
-  [(UIView *)styledSeparatorView setBackgroundColor:v11];
+  separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+  [(UIView *)styledSeparatorView setBackgroundColor:separatorColor];
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69C39E8];
   v7[0] = self->_comment;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
-  v6 = [(PUPhotoCommentCell *)self asset];
-  [v4 removeComments:v5 fromAsset:v6 completionHandler:0];
+  asset = [(PUPhotoCommentCell *)self asset];
+  [v4 removeComments:v5 fromAsset:asset completionHandler:0];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (sel_delete_ == a3)
+  if (sel_delete_ == action)
   {
     comment = self->_comment;
 
@@ -150,11 +150,11 @@
   }
 }
 
-- (void)setUsesCompactSeparators:(BOOL)a3
+- (void)setUsesCompactSeparators:(BOOL)separators
 {
-  if (self->_usesCompactSeparators != a3)
+  if (self->_usesCompactSeparators != separators)
   {
-    self->_usesCompactSeparators = a3;
+    self->_usesCompactSeparators = separators;
     [(PUPhotoCommentCell *)self setNeedsLayout];
   }
 }
@@ -168,11 +168,11 @@
   self->_comment = 0;
 }
 
-- (PUPhotoCommentCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PUPhotoCommentCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v26.receiver = self;
   v26.super_class = PUPhotoCommentCell;
-  v4 = [(PUPhotoCommentCell *)&v26 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PUPhotoCommentCell *)&v26 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -191,34 +191,34 @@
     v5->_styledSeparatorView = v13;
 
     v15 = v5->_styledSeparatorView;
-    v16 = [MEMORY[0x1E69DC888] separatorColor];
-    [(UIView *)v15 setBackgroundColor:v16];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+    [(UIView *)v15 setBackgroundColor:separatorColor];
 
     v17 = [objc_alloc(MEMORY[0x1E69DD168]) initWithFrame:{v7, v8, v9, v10}];
     commentContentTextView = v5->_commentContentTextView;
     v5->_commentContentTextView = v17;
 
-    v19 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITextView *)v5->_commentContentTextView setBackgroundColor:v19];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UITextView *)v5->_commentContentTextView setBackgroundColor:clearColor];
 
     [(UITextView *)v5->_commentContentTextView setDataDetectorTypes:2];
     [(UITextView *)v5->_commentContentTextView setEditable:0];
     [(UITextView *)v5->_commentContentTextView setSelectable:1];
     [(UITextView *)v5->_commentContentTextView _setInteractiveTextSelectionDisabled:1];
     [(UITextView *)v5->_commentContentTextView setTextContainerInset:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
-    v20 = [(UITextView *)v5->_commentContentTextView textContainer];
-    [v20 setLineFragmentPadding:0.0];
+    textContainer = [(UITextView *)v5->_commentContentTextView textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
     v21 = v5->_commentBylineLabel;
-    v22 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v21 setBackgroundColor:v22];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v21 setBackgroundColor:clearColor2];
 
     [(UILabel *)v5->_commentBylineLabel setNumberOfLines:0];
-    v23 = [(PUPhotoCommentCell *)v5 contentView];
-    [v23 addSubview:v5->_commentContentTextView];
+    contentView = [(PUPhotoCommentCell *)v5 contentView];
+    [contentView addSubview:v5->_commentContentTextView];
 
-    v24 = [(PUPhotoCommentCell *)v5 contentView];
-    [v24 addSubview:v5->_commentBylineLabel];
+    contentView2 = [(PUPhotoCommentCell *)v5 contentView];
+    [contentView2 addSubview:v5->_commentBylineLabel];
 
     [(PUPhotoCommentCell *)v5 addSubview:v5->_styledSeparatorView];
   }
@@ -226,44 +226,44 @@
   return v5;
 }
 
-+ (id)_attributionStringForComment:(id)a3 ofAsset:(id)a4
++ (id)_attributionStringForComment:(id)comment ofAsset:(id)asset
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  commentCopy = comment;
+  assetCopy = asset;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [v5 isCaption];
-  if ([v5 isMyComment])
+  [commentCopy isCaption];
+  if ([commentCopy isMyComment])
   {
-    v13 = PLLocalizedFrameworkString();
+    fullName = PLLocalizedFrameworkString();
   }
 
   else
   {
-    v8 = [v5 photoLibrary];
+    photoLibrary = [commentCopy photoLibrary];
     v9 = MEMORY[0x1E6978AC0];
-    v10 = [v8 librarySpecificFetchOptions];
-    v11 = [v9 fetchContributorForComment:v5 options:v10];
-    v12 = [v11 firstObject];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    v11 = [v9 fetchContributorForComment:commentCopy options:librarySpecificFetchOptions];
+    firstObject = [v11 firstObject];
 
-    v13 = [v12 fullName];
+    fullName = [firstObject fullName];
   }
 
-  v14 = [v13 length];
+  v14 = [fullName length];
   v15 = MEMORY[0x1E69DB648];
   if (v14)
   {
     v34[0] = *MEMORY[0x1E69DB650];
-    v16 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     v17 = v15;
     v34[1] = *v15;
-    v35[0] = v16;
-    v18 = [MEMORY[0x1E69BE1B8] sharedCache];
-    v19 = [v18 commentAttributionNameFont];
-    v35[1] = v19;
+    v35[0] = labelColor;
+    mEMORY[0x1E69BE1B8] = [MEMORY[0x1E69BE1B8] sharedCache];
+    commentAttributionNameFont = [mEMORY[0x1E69BE1B8] commentAttributionNameFont];
+    v35[1] = commentAttributionNameFont;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:2];
 
-    v21 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v13 attributes:v20];
+    v21 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:fullName attributes:v20];
     [v7 addObject:v21];
   }
 
@@ -273,24 +273,24 @@
     [v7 addObject:&stru_1F2AC6818];
   }
 
-  v22 = [v5 commentDate];
+  commentDate = [commentCopy commentDate];
   v23 = PLRelativePrettyDateForDate();
 
   [v7 addObject:v23];
-  if (([v6 isVideo] & 1) == 0)
+  if (([assetCopy isVideo] & 1) == 0)
   {
-    [v6 isStreamedVideo];
+    [assetCopy isStreamedVideo];
   }
 
   v24 = v17;
   v25 = PLLocalizedFrameworkString();
   v32[0] = *MEMORY[0x1E69DB650];
-  v26 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   v32[1] = *v24;
-  v33[0] = v26;
-  v27 = [MEMORY[0x1E69BE1B8] sharedCache];
-  v28 = [v27 commentAttributionDateFont];
-  v33[1] = v28;
+  v33[0] = secondaryLabelColor;
+  mEMORY[0x1E69BE1B8]2 = [MEMORY[0x1E69BE1B8] sharedCache];
+  commentAttributionDateFont = [mEMORY[0x1E69BE1B8]2 commentAttributionDateFont];
+  v33[1] = commentAttributionDateFont;
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
 
   v30 = [MEMORY[0x1E696AAB0] px_stringWithFormat:v25 defaultAttributes:v29 arguments:v7];
@@ -298,36 +298,36 @@
   return v30;
 }
 
-+ (id)_commentStringForComment:(id)a3
++ (id)_commentStringForComment:(id)comment
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = [a3 commentText];
+  commentText = [comment commentText];
   v10[0] = *MEMORY[0x1E69DB650];
-  v4 = [MEMORY[0x1E69DC888] labelColor];
-  v11[0] = v4;
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v11[0] = labelColor;
   v10[1] = *MEMORY[0x1E69DB648];
-  v5 = [MEMORY[0x1E69BE1B8] sharedCache];
-  v6 = [v5 commentTextFont];
-  v11[1] = v6;
+  mEMORY[0x1E69BE1B8] = [MEMORY[0x1E69BE1B8] sharedCache];
+  commentTextFont = [mEMORY[0x1E69BE1B8] commentTextFont];
+  v11[1] = commentTextFont;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
 
-  v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v3 attributes:v7];
+  v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:commentText attributes:v7];
 
   return v8;
 }
 
-+ (double)heightForComment:(id)a3 ofAsset:(id)a4 forWidth:(double)a5 forInterfaceOrientation:(int64_t)a6
++ (double)heightForComment:(id)comment ofAsset:(id)asset forWidth:(double)width forInterfaceOrientation:(int64_t)orientation
 {
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 _commentStringForComment:v10];
+  assetCopy = asset;
+  commentCopy = comment;
+  v11 = [self _commentStringForComment:commentCopy];
   v12 = [PUPhotoCommentCell _synthesizedAttributedString:v11 withWordWrapping:1];
 
-  v13 = a5 + -30.0;
+  v13 = width + -30.0;
   [v12 boundingRectWithSize:1 options:0 context:{v13, 1.79769313e308}];
   v20 = CGRectIntegral(v19);
   v14 = v20.size.height + 0.0;
-  v15 = [a1 _attributionStringForComment:v10 ofAsset:{v9, v20.origin.x, v20.origin.y, v20.size.width}];
+  v15 = [self _attributionStringForComment:commentCopy ofAsset:{assetCopy, v20.origin.x, v20.origin.y, v20.size.width}];
 
   v16 = [PUPhotoCommentCell _synthesizedAttributedString:v15 withWordWrapping:1];
 
@@ -346,20 +346,20 @@
   return v17;
 }
 
-+ (id)_synthesizedAttributedString:(id)a3 withWordWrapping:(BOOL)a4
++ (id)_synthesizedAttributedString:(id)string withWordWrapping:(BOOL)wrapping
 {
-  v4 = a4;
-  v5 = a3;
-  if ([v5 length])
+  wrappingCopy = wrapping;
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v6 = [MEMORY[0x1E69DCC10] _defaultAttributes];
-    v7 = [v6 mutableCopy];
+    _defaultAttributes = [MEMORY[0x1E69DCC10] _defaultAttributes];
+    v7 = [_defaultAttributes mutableCopy];
 
     v8 = *MEMORY[0x1E69DB688];
     v9 = [v7 objectForKey:*MEMORY[0x1E69DB688]];
     v10 = [v9 mutableCopy];
 
-    if (v4)
+    if (wrappingCopy)
     {
       v11 = 0;
     }
@@ -371,10 +371,10 @@
 
     [v10 setLineBreakMode:v11];
     [v7 setObject:v10 forKey:v8];
-    v12 = [v5 length];
+    v12 = [stringCopy length];
     v13 = objc_alloc(MEMORY[0x1E696AD40]);
-    v14 = [v5 string];
-    v15 = [v13 initWithString:v14 attributes:v7];
+    string = [stringCopy string];
+    v15 = [v13 initWithString:string attributes:v7];
 
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -382,7 +382,7 @@
     v18[3] = &unk_1E7B7AA60;
     v16 = v15;
     v19 = v16;
-    [v5 enumerateAttributesInRange:0 options:v12 usingBlock:{0, v18}];
+    [stringCopy enumerateAttributesInRange:0 options:v12 usingBlock:{0, v18}];
   }
 
   else

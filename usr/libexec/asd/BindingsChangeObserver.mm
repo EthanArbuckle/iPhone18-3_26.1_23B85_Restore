@@ -14,7 +14,7 @@
 
 - (void)registerObservers
 {
-  v2 = self;
+  selfCopy = self;
   BindingsChangeObserver.registerObservers()();
 }
 

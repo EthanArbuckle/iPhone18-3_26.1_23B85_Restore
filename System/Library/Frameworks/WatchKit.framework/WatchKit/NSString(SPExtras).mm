@@ -13,7 +13,7 @@
 
   v2 = _sp_stringByEncodingIllegalFilenameCharacters_characterSetExcludingSlashAndPercent;
 
-  return [a1 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  return [self stringByAddingPercentEncodingWithAllowedCharacters:v2];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface BMPBAppLaunchEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsLaunchType:(id)a3;
+- (int)StringAsLaunchType:(id)type;
 - (int)launchType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasLaunchType:(BOOL)a3;
-- (void)setHasStarting:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasLaunchType:(BOOL)type;
+- (void)setHasStarting:(BOOL)starting;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBAppLaunchEvent
@@ -29,9 +29,9 @@
   }
 }
 
-- (void)setHasLaunchType:(BOOL)a3
+- (void)setHasLaunchType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -44,25 +44,25 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsLaunchType:(id)a3
+- (int)StringAsLaunchType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unused"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unused"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"App"])
+  else if ([typeCopy isEqualToString:@"App"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Extension"])
+  else if ([typeCopy isEqualToString:@"Extension"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SystemUI"])
+  else if ([typeCopy isEqualToString:@"SystemUI"])
   {
     v4 = 3;
   }
@@ -75,9 +75,9 @@
   return v4;
 }
 
-- (void)setHasStarting:(BOOL)a3
+- (void)setHasStarting:(BOOL)starting
 {
-  if (a3)
+  if (starting)
   {
     v3 = 8;
   }
@@ -90,9 +90,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -111,20 +111,20 @@
   v8.receiver = self;
   v8.super_class = BMPBAppLaunchEvent;
   v4 = [(BMPBAppLaunchEvent *)&v8 description];
-  v5 = [(BMPBAppLaunchEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBAppLaunchEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   launchReason = self->_launchReason;
   if (launchReason)
   {
-    [v3 setObject:launchReason forKey:@"launchReason"];
+    [dictionary setObject:launchReason forKey:@"launchReason"];
   }
 
   has = self->_has;
@@ -213,14 +213,14 @@ LABEL_12:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_launchReason)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -228,7 +228,7 @@ LABEL_12:
   {
     launchType = self->_launchType;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -249,7 +249,7 @@ LABEL_5:
 
   starting = self->_starting;
   PBDataWriterWriteBOOLField();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -265,62 +265,62 @@ LABEL_6:
 LABEL_23:
   absoluteTimestamp = self->_absoluteTimestamp;
   PBDataWriterWriteDoubleField();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_7:
     duration = self->_duration;
     PBDataWriterWriteDoubleField();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_8:
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_parentBundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_extensionHostID)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_shortVersionString)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_exactVersionString)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_launchReason)
   {
-    [v4 setLaunchReason:?];
-    v4 = v6;
+    [toCopy setLaunchReason:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 14) = self->_launchType;
-    *(v4 + 84) |= 4u;
+    *(toCopy + 14) = self->_launchType;
+    *(toCopy + 84) |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -339,8 +339,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 80) = self->_starting;
-  *(v4 + 84) |= 8u;
+  *(toCopy + 80) = self->_starting;
+  *(toCopy + 84) |= 8u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -354,51 +354,51 @@ LABEL_6:
   }
 
 LABEL_23:
-  *(v4 + 1) = *&self->_absoluteTimestamp;
-  *(v4 + 84) |= 1u;
+  *(toCopy + 1) = *&self->_absoluteTimestamp;
+  *(toCopy + 84) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_7:
-    *(v4 + 2) = *&self->_duration;
-    *(v4 + 84) |= 2u;
+    *(toCopy + 2) = *&self->_duration;
+    *(toCopy + 84) |= 2u;
   }
 
 LABEL_8:
   if (self->_bundleID)
   {
     [v6 setBundleID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_parentBundleID)
   {
     [v6 setParentBundleID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_extensionHostID)
   {
     [v6 setExtensionHostID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_shortVersionString)
   {
     [v6 setShortVersionString:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_exactVersionString)
   {
     [v6 setExactVersionString:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_launchReason copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_launchReason copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
@@ -450,39 +450,39 @@ LABEL_5:
   }
 
 LABEL_6:
-  v9 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v9 = [(NSString *)self->_bundleID copyWithZone:zone];
   v10 = *(v5 + 24);
   *(v5 + 24) = v9;
 
-  v11 = [(NSString *)self->_parentBundleID copyWithZone:a3];
+  v11 = [(NSString *)self->_parentBundleID copyWithZone:zone];
   v12 = *(v5 + 64);
   *(v5 + 64) = v11;
 
-  v13 = [(NSString *)self->_extensionHostID copyWithZone:a3];
+  v13 = [(NSString *)self->_extensionHostID copyWithZone:zone];
   v14 = *(v5 + 40);
   *(v5 + 40) = v13;
 
-  v15 = [(NSString *)self->_shortVersionString copyWithZone:a3];
+  v15 = [(NSString *)self->_shortVersionString copyWithZone:zone];
   v16 = *(v5 + 72);
   *(v5 + 72) = v15;
 
-  v17 = [(NSString *)self->_exactVersionString copyWithZone:a3];
+  v17 = [(NSString *)self->_exactVersionString copyWithZone:zone];
   v18 = *(v5 + 32);
   *(v5 + 32) = v17;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_37;
   }
 
   launchReason = self->_launchReason;
-  if (launchReason | *(v4 + 6))
+  if (launchReason | *(equalCopy + 6))
   {
     if (![(NSString *)launchReason isEqual:?])
     {
@@ -490,23 +490,23 @@ LABEL_6:
     }
   }
 
-  v6 = *(v4 + 84);
+  v6 = *(equalCopy + 84);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 84) & 4) == 0 || self->_launchType != *(v4 + 14))
+    if ((*(equalCopy + 84) & 4) == 0 || self->_launchType != *(equalCopy + 14))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(v4 + 84) & 4) != 0)
+  else if ((*(equalCopy + 84) & 4) != 0)
   {
     goto LABEL_37;
   }
 
   if ((*&self->_has & 8) == 0)
   {
-    if ((*(v4 + 84) & 8) == 0)
+    if ((*(equalCopy + 84) & 8) == 0)
     {
       goto LABEL_11;
     }
@@ -516,21 +516,21 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  if ((*(v4 + 84) & 8) == 0)
+  if ((*(equalCopy + 84) & 8) == 0)
   {
     goto LABEL_37;
   }
 
-  v7 = *(v4 + 80);
+  v7 = *(equalCopy + 80);
   if (self->_starting)
   {
-    if ((*(v4 + 80) & 1) == 0)
+    if ((*(equalCopy + 80) & 1) == 0)
     {
       goto LABEL_37;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
     goto LABEL_37;
   }
@@ -538,38 +538,38 @@ LABEL_37:
 LABEL_11:
   if (*&self->_has)
   {
-    if ((*(v4 + 84) & 1) == 0 || self->_absoluteTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 84) & 1) == 0 || self->_absoluteTimestamp != *(equalCopy + 1))
     {
       goto LABEL_37;
     }
   }
 
-  else if (*(v4 + 84))
+  else if (*(equalCopy + 84))
   {
     goto LABEL_37;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 84) & 2) == 0 || self->_duration != *(v4 + 2))
+    if ((*(equalCopy + 84) & 2) == 0 || self->_duration != *(equalCopy + 2))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(v4 + 84) & 2) != 0)
+  else if ((*(equalCopy + 84) & 2) != 0)
   {
     goto LABEL_37;
   }
 
   bundleID = self->_bundleID;
-  if (bundleID | *(v4 + 3) && ![(NSString *)bundleID isEqual:?])
+  if (bundleID | *(equalCopy + 3) && ![(NSString *)bundleID isEqual:?])
   {
     goto LABEL_37;
   }
 
   parentBundleID = self->_parentBundleID;
-  if (parentBundleID | *(v4 + 8))
+  if (parentBundleID | *(equalCopy + 8))
   {
     if (![(NSString *)parentBundleID isEqual:?])
     {
@@ -578,7 +578,7 @@ LABEL_11:
   }
 
   extensionHostID = self->_extensionHostID;
-  if (extensionHostID | *(v4 + 5))
+  if (extensionHostID | *(equalCopy + 5))
   {
     if (![(NSString *)extensionHostID isEqual:?])
     {
@@ -587,7 +587,7 @@ LABEL_11:
   }
 
   shortVersionString = self->_shortVersionString;
-  if (shortVersionString | *(v4 + 9))
+  if (shortVersionString | *(equalCopy + 9))
   {
     if (![(NSString *)shortVersionString isEqual:?])
     {
@@ -596,7 +596,7 @@ LABEL_11:
   }
 
   exactVersionString = self->_exactVersionString;
-  if (exactVersionString | *(v4 + 4))
+  if (exactVersionString | *(equalCopy + 4))
   {
     v13 = [(NSString *)exactVersionString isEqual:?];
   }
@@ -715,22 +715,22 @@ LABEL_11:
   return v19 ^ [(NSString *)self->_exactVersionString hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 6))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 6))
   {
     [(BMPBAppLaunchEvent *)self setLaunchReason:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 84);
+  v5 = *(fromCopy + 84);
   if ((v5 & 4) != 0)
   {
-    self->_launchType = *(v4 + 14);
+    self->_launchType = *(fromCopy + 14);
     *&self->_has |= 4u;
-    v5 = *(v4 + 84);
+    v5 = *(fromCopy + 84);
     if ((v5 & 8) == 0)
     {
 LABEL_5:
@@ -743,14 +743,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 84) & 8) == 0)
+  else if ((*(fromCopy + 84) & 8) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_starting = *(v4 + 80);
+  self->_starting = *(fromCopy + 80);
   *&self->_has |= 8u;
-  v5 = *(v4 + 84);
+  v5 = *(fromCopy + 84);
   if ((v5 & 1) == 0)
   {
 LABEL_6:
@@ -763,44 +763,44 @@ LABEL_6:
   }
 
 LABEL_23:
-  self->_absoluteTimestamp = *(v4 + 1);
+  self->_absoluteTimestamp = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 84) & 2) != 0)
+  if ((*(fromCopy + 84) & 2) != 0)
   {
 LABEL_7:
-    self->_duration = *(v4 + 2);
+    self->_duration = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_8:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BMPBAppLaunchEvent *)self setBundleID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(BMPBAppLaunchEvent *)self setParentBundleID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(BMPBAppLaunchEvent *)self setExtensionHostID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(BMPBAppLaunchEvent *)self setShortVersionString:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBAppLaunchEvent *)self setExactVersionString:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

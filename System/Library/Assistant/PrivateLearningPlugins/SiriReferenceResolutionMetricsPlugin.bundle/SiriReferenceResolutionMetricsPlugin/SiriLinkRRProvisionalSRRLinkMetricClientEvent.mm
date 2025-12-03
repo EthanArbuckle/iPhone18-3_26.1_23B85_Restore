@@ -1,26 +1,26 @@
 @interface SiriLinkRRProvisionalSRRLinkMetricClientEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (SiriLinkRRProvisionalLinkEntityPresent)linkEntityPresent;
-- (SiriLinkRRProvisionalSRRLinkMetricClientEvent)initWithDictionary:(id)a3;
-- (SiriLinkRRProvisionalSRRLinkMetricClientEvent)initWithJSON:(id)a3;
+- (SiriLinkRRProvisionalSRRLinkMetricClientEvent)initWithDictionary:(id)dictionary;
+- (SiriLinkRRProvisionalSRRLinkMetricClientEvent)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
-- (void)setLinkEntityPresent:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setLinkEntityPresent:(id)present;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SiriLinkRRProvisionalSRRLinkMetricClientEvent
 
-- (SiriLinkRRProvisionalSRRLinkMetricClientEvent)initWithDictionary:(id)a3
+- (SiriLinkRRProvisionalSRRLinkMetricClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = SiriLinkRRProvisionalSRRLinkMetricClientEvent;
   v5 = [(SiriLinkRRProvisionalSRRLinkMetricClientEvent *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkEntityPresent"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkEntityPresent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,30 +34,30 @@
   return v5;
 }
 
-- (SiriLinkRRProvisionalSRRLinkMetricClientEvent)initWithJSON:(id)a3
+- (SiriLinkRRProvisionalSRRLinkMetricClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [NSJSONSerialization JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [NSJSONSerialization JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SiriLinkRRProvisionalSRRLinkMetricClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SiriLinkRRProvisionalSRRLinkMetricClientEvent *)self dictionaryRepresentation];
-  if ([NSJSONSerialization isValidJSONObject:v2])
+  dictionaryRepresentation = [(SiriLinkRRProvisionalSRRLinkMetricClientEvent *)self dictionaryRepresentation];
+  if ([NSJSONSerialization isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [NSJSONSerialization dataWithJSONObject:v2 options:0 error:0];
+    v3 = [NSJSONSerialization dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -73,11 +73,11 @@
   v3 = +[NSMutableDictionary dictionary];
   if (self->_linkEntityPresent)
   {
-    v4 = [(SiriLinkRRProvisionalSRRLinkMetricClientEvent *)self linkEntityPresent];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    linkEntityPresent = [(SiriLinkRRProvisionalSRRLinkMetricClientEvent *)self linkEntityPresent];
+    dictionaryRepresentation = [linkEntityPresent dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"linkEntityPresent"];
+      [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"linkEntityPresent"];
     }
 
     else
@@ -92,21 +92,21 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     whichEvent_Type = self->_whichEvent_Type;
-    if (whichEvent_Type == [v4 whichEvent_Type])
+    if (whichEvent_Type == [equalCopy whichEvent_Type])
     {
-      v6 = [(SiriLinkRRProvisionalSRRLinkMetricClientEvent *)self linkEntityPresent];
-      v7 = [v4 linkEntityPresent];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      linkEntityPresent = [(SiriLinkRRProvisionalSRRLinkMetricClientEvent *)self linkEntityPresent];
+      linkEntityPresent2 = [equalCopy linkEntityPresent];
+      v8 = linkEntityPresent2;
+      if ((linkEntityPresent != 0) != (linkEntityPresent2 == 0))
       {
-        v9 = [(SiriLinkRRProvisionalSRRLinkMetricClientEvent *)self linkEntityPresent];
-        if (!v9)
+        linkEntityPresent3 = [(SiriLinkRRProvisionalSRRLinkMetricClientEvent *)self linkEntityPresent];
+        if (!linkEntityPresent3)
         {
 
 LABEL_11:
@@ -114,10 +114,10 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(SiriLinkRRProvisionalSRRLinkMetricClientEvent *)self linkEntityPresent];
-        v12 = [v4 linkEntityPresent];
-        v13 = [v11 isEqual:v12];
+        v10 = linkEntityPresent3;
+        linkEntityPresent4 = [(SiriLinkRRProvisionalSRRLinkMetricClientEvent *)self linkEntityPresent];
+        linkEntityPresent5 = [equalCopy linkEntityPresent];
+        v13 = [linkEntityPresent4 isEqual:linkEntityPresent5];
 
         if (v13)
         {
@@ -137,14 +137,14 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(SiriLinkRRProvisionalSRRLinkMetricClientEvent *)self linkEntityPresent];
+  toCopy = to;
+  linkEntityPresent = [(SiriLinkRRProvisionalSRRLinkMetricClientEvent *)self linkEntityPresent];
 
-  if (v4)
+  if (linkEntityPresent)
   {
-    v5 = [(SiriLinkRRProvisionalSRRLinkMetricClientEvent *)self linkEntityPresent];
+    linkEntityPresent2 = [(SiriLinkRRProvisionalSRRLinkMetricClientEvent *)self linkEntityPresent];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -164,16 +164,16 @@ LABEL_9:
   return v3;
 }
 
-- (void)setLinkEntityPresent:(id)a3
+- (void)setLinkEntityPresent:(id)present
 {
   v3 = 101;
-  if (!a3)
+  if (!present)
   {
     v3 = 0;
   }
 
   self->_whichEvent_Type = v3;
-  objc_storeStrong(&self->_linkEntityPresent, a3);
+  objc_storeStrong(&self->_linkEntityPresent, present);
 }
 
 - (id)qualifiedMessageName

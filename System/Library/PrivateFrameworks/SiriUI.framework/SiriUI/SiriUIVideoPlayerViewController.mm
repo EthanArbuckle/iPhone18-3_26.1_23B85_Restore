@@ -1,26 +1,26 @@
 @interface SiriUIVideoPlayerViewController
 - (BOOL)shouldPlayHighResolutionContent;
-- (SiriUIVideoPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SiriUIVideoPlayerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SiriUIVideoPlayerViewControllerDelegate)videoPlayerControllerDelegate;
-- (void)_playbackDidFinish:(id)a3;
+- (void)_playbackDidFinish:(id)finish;
 - (void)_registerObservers;
 - (void)_removeObservers;
 - (void)_restoreAudioPlaybackCategoryAndOptions;
 - (void)_updateAudioSessionCategory;
 - (void)dealloc;
-- (void)doneButtonTapped:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setPlayer:(id)a3;
+- (void)doneButtonTapped:(id)tapped;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setPlayer:(id)player;
 - (void)shouldPlayHighResolutionContent;
 @end
 
 @implementation SiriUIVideoPlayerViewController
 
-- (SiriUIVideoPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SiriUIVideoPlayerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = SiriUIVideoPlayerViewController;
-  v4 = [(SiriUIVideoPlayerViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(SiriUIVideoPlayerViewController *)&v8 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -30,9 +30,9 @@
     v4->_observingViewController = 0;
     v4->_playerStatusObserverContext = &v4->_observingPlayerStatus;
     v4->_itemStatusObserverContext = &v4->_observingItemStatus;
-    v6 = [(SiriUIVideoPlayerViewController *)v4 player];
+    player = [(SiriUIVideoPlayerViewController *)v4 player];
 
-    if (v6)
+    if (player)
     {
       [(SiriUIVideoPlayerViewController *)v5 _registerObservers];
     }
@@ -41,16 +41,16 @@
   return v5;
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v4 = a3;
-  v5 = [(SiriUIVideoPlayerViewController *)self player];
+  playerCopy = player;
+  player = [(SiriUIVideoPlayerViewController *)self player];
 
-  if (v5 != v4)
+  if (player != playerCopy)
   {
-    v6 = [(SiriUIVideoPlayerViewController *)self player];
+    player2 = [(SiriUIVideoPlayerViewController *)self player];
 
-    if (v6)
+    if (player2)
     {
       [(SiriUIVideoPlayerViewController *)self _removeObservers];
       [(SiriUIVideoPlayerViewController *)self _restoreAudioPlaybackCategoryAndOptions];
@@ -58,7 +58,7 @@
 
     v7.receiver = self;
     v7.super_class = SiriUIVideoPlayerViewController;
-    [(SiriUIVideoPlayerViewController *)&v7 setPlayer:v4];
+    [(SiriUIVideoPlayerViewController *)&v7 setPlayer:playerCopy];
     [(SiriUIVideoPlayerViewController *)self _registerObservers];
   }
 }
@@ -71,26 +71,26 @@
   [(SiriUIVideoPlayerViewController *)&v3 dealloc];
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
+  tappedCopy = tapped;
+  defaultCenter = [v4 defaultCenter];
   v7 = [MEMORY[0x277CCAB88] notificationWithName:@"AVPlayerViewControllerUserDidTapDoneButtonNotification" object:self];
-  [v6 postNotification:v7];
+  [defaultCenter postNotification:v7];
 
   v8.receiver = self;
   v8.super_class = SiriUIVideoPlayerViewController;
-  [(SiriUIVideoPlayerViewController *)&v8 doneButtonTapped:v5];
+  [(SiriUIVideoPlayerViewController *)&v8 doneButtonTapped:tappedCopy];
 }
 
 - (BOOL)shouldPlayHighResolutionContent
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   Width = CGRectGetWidth(v18);
-  [v2 scale];
+  [mainScreen scale];
   if (Width * v4 <= 320.0)
   {
     v12 = 0;
@@ -138,18 +138,18 @@
   return v12;
 }
 
-- (void)_playbackDidFinish:(id)a3
+- (void)_playbackDidFinish:(id)finish
 {
-  v4 = [(SiriUIVideoPlayerViewController *)self videoPlayerControllerDelegate];
+  videoPlayerControllerDelegate = [(SiriUIVideoPlayerViewController *)self videoPlayerControllerDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SiriUIVideoPlayerViewController *)self videoPlayerControllerDelegate];
-    [v6 playbackDidFinishForVideoPlayerViewController:self];
+    videoPlayerControllerDelegate2 = [(SiriUIVideoPlayerViewController *)self videoPlayerControllerDelegate];
+    [videoPlayerControllerDelegate2 playbackDidFinishForVideoPlayerViewController:self];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:@"SiriUIVideoPlaybackDidFinishNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SiriUIVideoPlaybackDidFinishNotification" object:self];
   }
 }
 
@@ -157,39 +157,39 @@
 {
   if (!self->_observingPlayerStatus)
   {
-    v3 = [(SiriUIVideoPlayerViewController *)self player];
+    player = [(SiriUIVideoPlayerViewController *)self player];
     v4 = NSStringFromSelector(sel_status);
-    [v3 addObserver:self forKeyPath:v4 options:1 context:self->_playerStatusObserverContext];
+    [player addObserver:self forKeyPath:v4 options:1 context:self->_playerStatusObserverContext];
 
     self->_observingPlayerStatus = 1;
   }
 
-  v5 = [(SiriUIVideoPlayerViewController *)self player];
-  v10 = [v5 currentItem];
+  player2 = [(SiriUIVideoPlayerViewController *)self player];
+  currentItem = [player2 currentItem];
 
   if (!self->_observingItemStatus)
   {
     v6 = NSStringFromSelector(sel_status);
-    [v10 addObserver:self forKeyPath:v6 options:1 context:self->_itemStatusObserverContext];
+    [currentItem addObserver:self forKeyPath:v6 options:1 context:self->_itemStatusObserverContext];
 
     self->_observingItemStatus = 1;
   }
 
   if (!self->_observingPlayback)
   {
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:self selector:sel__playbackDidFinish_ name:*MEMORY[0x277CE60C0] object:v10];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__playbackDidFinish_ name:*MEMORY[0x277CE60C0] object:currentItem];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:self selector:sel__playbackDidFinish_ name:*MEMORY[0x277CE60D0] object:v10];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__playbackDidFinish_ name:*MEMORY[0x277CE60D0] object:currentItem];
 
     self->_observingPlayback = 1;
   }
 
   if (!self->_observingViewController)
   {
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:self selector:sel__playbackDidFinish_ name:@"AVPlayerViewControllerUserDidTapDoneButtonNotification" object:self];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel__playbackDidFinish_ name:@"AVPlayerViewControllerUserDidTapDoneButtonNotification" object:self];
 
     self->_observingViewController = 1;
   }
@@ -199,44 +199,44 @@
 {
   if (self->_observingPlayerStatus)
   {
-    v3 = [(SiriUIVideoPlayerViewController *)self player];
-    v4 = [v3 currentItem];
+    player = [(SiriUIVideoPlayerViewController *)self player];
+    currentItem = [player currentItem];
     v5 = NSStringFromSelector(sel_status);
-    [v4 removeObserver:self forKeyPath:v5 context:self->_itemStatusObserverContext];
+    [currentItem removeObserver:self forKeyPath:v5 context:self->_itemStatusObserverContext];
 
     self->_observingPlayerStatus = 0;
   }
 
   if (self->_observingItemStatus)
   {
-    v6 = [(SiriUIVideoPlayerViewController *)self player];
+    player2 = [(SiriUIVideoPlayerViewController *)self player];
     v7 = NSStringFromSelector(sel_status);
-    [v6 removeObserver:self forKeyPath:v7 context:self->_playerStatusObserverContext];
+    [player2 removeObserver:self forKeyPath:v7 context:self->_playerStatusObserverContext];
 
     self->_observingItemStatus = 0;
   }
 
   if (self->_observingPlayback)
   {
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v9 = *MEMORY[0x277CE60C0];
-    v10 = [(SiriUIVideoPlayerViewController *)self player];
-    v11 = [v10 currentItem];
-    [v8 removeObserver:self name:v9 object:v11];
+    player3 = [(SiriUIVideoPlayerViewController *)self player];
+    currentItem2 = [player3 currentItem];
+    [defaultCenter removeObserver:self name:v9 object:currentItem2];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
     v13 = *MEMORY[0x277CE60D0];
-    v14 = [(SiriUIVideoPlayerViewController *)self player];
-    v15 = [v14 currentItem];
-    [v12 removeObserver:self name:v13 object:v15];
+    player4 = [(SiriUIVideoPlayerViewController *)self player];
+    currentItem3 = [player4 currentItem];
+    [defaultCenter2 removeObserver:self name:v13 object:currentItem3];
 
     self->_observingPlayback = 0;
   }
 
   if (self->_observingViewController)
   {
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 removeObserver:self name:@"AVPlayerViewControllerUserDidTapDoneButtonNotification" object:self];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 removeObserver:self name:@"AVPlayerViewControllerUserDidTapDoneButtonNotification" object:self];
 
     self->_observingViewController = 0;
   }
@@ -256,25 +256,25 @@
   OUTLINED_FUNCTION_1_0(&dword_26948D000, v0, v1, "%s Unable to restore AVAudioSession category to %{public}@: %{public}@", v2);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (self->_playerStatusObserverContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (self->_playerStatusObserverContext == context)
   {
-    if ([v11 status] == 1)
+    if ([objectCopy status] == 1)
     {
       [(SiriUIVideoPlayerViewController *)self _updateAudioSessionCategory];
-      [v11 play];
-      v17 = [MEMORY[0x277CCAB98] defaultCenter];
-      v18 = v17;
+      [objectCopy play];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      v18 = defaultCenter;
       v19 = &SiriUIVideoPlaybackDidStartNotification;
       goto LABEL_10;
     }
   }
 
-  else if (self->_itemStatusObserverContext == a6 && [v11 status] == 2)
+  else if (self->_itemStatusObserverContext == context && [objectCopy status] == 2)
   {
     v13 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
@@ -282,19 +282,19 @@
       [SiriUIVideoPlayerViewController observeValueForKeyPath:v13 ofObject:? change:? context:?];
     }
 
-    v14 = [(SiriUIVideoPlayerViewController *)self videoPlayerControllerDelegate];
+    videoPlayerControllerDelegate = [(SiriUIVideoPlayerViewController *)self videoPlayerControllerDelegate];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      v16 = [(SiriUIVideoPlayerViewController *)self videoPlayerControllerDelegate];
-      [v16 playbackDidFailForVideoPlayerViewController:self];
+      videoPlayerControllerDelegate2 = [(SiriUIVideoPlayerViewController *)self videoPlayerControllerDelegate];
+      [videoPlayerControllerDelegate2 playbackDidFailForVideoPlayerViewController:self];
 
-      v17 = [MEMORY[0x277CCAB98] defaultCenter];
-      v18 = v17;
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      v18 = defaultCenter;
       v19 = &SiriUIVideoPlaybackDidFinishNotification;
 LABEL_10:
-      [v17 postNotificationName:*v19 object:self];
+      [defaultCenter postNotificationName:*v19 object:self];
     }
   }
 }

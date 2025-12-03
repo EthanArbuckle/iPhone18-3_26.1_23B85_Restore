@@ -1,7 +1,7 @@
 @interface WFContentPropertyPossibleValuesSynchronousGetter
 - (NSString)description;
-- (WFContentPropertyPossibleValuesSynchronousGetter)initWithSynchronousGetter:(id)a3;
-- (void)getValuesWithCompletionBlock:(id)a3;
+- (WFContentPropertyPossibleValuesSynchronousGetter)initWithSynchronousGetter:(id)getter;
+- (void)getValuesWithCompletionBlock:(id)block;
 @end
 
 @implementation WFContentPropertyPossibleValuesSynchronousGetter
@@ -17,24 +17,24 @@
   return v7;
 }
 
-- (void)getValuesWithCompletionBlock:(id)a3
+- (void)getValuesWithCompletionBlock:(id)block
 {
   getter = self->_getter;
   v5 = getter[2];
-  v6 = a3;
+  blockCopy = block;
   v7 = v5(getter);
-  (*(a3 + 2))(v6, v7);
+  (*(block + 2))(blockCopy, v7);
 }
 
-- (WFContentPropertyPossibleValuesSynchronousGetter)initWithSynchronousGetter:(id)a3
+- (WFContentPropertyPossibleValuesSynchronousGetter)initWithSynchronousGetter:(id)getter
 {
-  v4 = a3;
+  getterCopy = getter;
   v10.receiver = self;
   v10.super_class = WFContentPropertyPossibleValuesSynchronousGetter;
   v5 = [(WFContentPropertyPossibleValuesSynchronousGetter *)&v10 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(getterCopy);
     getter = v5->_getter;
     v5->_getter = v6;
 

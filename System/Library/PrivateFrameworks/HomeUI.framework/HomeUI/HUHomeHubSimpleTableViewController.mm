@@ -1,21 +1,21 @@
 @interface HUHomeHubSimpleTableViewController
-- (HUHomeHubSimpleTableViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4 descriptionStringWithFormatKey:(id)a5;
+- (HUHomeHubSimpleTableViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style descriptionStringWithFormatKey:(id)key;
 - (void)loadView;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUHomeHubSimpleTableViewController
 
-- (HUHomeHubSimpleTableViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4 descriptionStringWithFormatKey:(id)a5
+- (HUHomeHubSimpleTableViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style descriptionStringWithFormatKey:(id)key
 {
   v7.receiver = self;
   v7.super_class = HUHomeHubSimpleTableViewController;
-  result = [(HUItemTableViewController *)&v7 initWithItemManager:a3 tableViewStyle:a4];
+  result = [(HUItemTableViewController *)&v7 initWithItemManager:manager tableViewStyle:style];
   if (result)
   {
-    result->_descriptionStringWithFormatKey = a5;
+    result->_descriptionStringWithFormatKey = key;
   }
 
   return result;
@@ -26,8 +26,8 @@
   v6.receiver = self;
   v6.super_class = HUHomeHubSimpleTableViewController;
   [(HUHomeHubSimpleTableViewController *)&v6 loadView];
-  v3 = [(HUHomeHubSimpleTableViewController *)self tableView];
-  [v3 setAllowsSelection:0];
+  tableView = [(HUHomeHubSimpleTableViewController *)self tableView];
+  [tableView setAllowsSelection:0];
 
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -37,11 +37,11 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = HUHomeHubSimpleTableViewController;
-  [(HUItemTableViewController *)&v5 viewWillAppear:a3];
+  [(HUItemTableViewController *)&v5 viewWillAppear:appear];
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -50,11 +50,11 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HUHomeHubSimpleTableViewController;
-  [(HUItemTableViewController *)&v5 viewWillDisappear:a3];
+  [(HUItemTableViewController *)&v5 viewWillDisappear:disappear];
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -63,27 +63,27 @@
   }
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v30 = a4;
+  itemCopy = item;
   v7 = MEMORY[0x277D756E0];
-  v8 = a3;
-  v9 = [v7 cellConfiguration];
-  v10 = [v30 latestResults];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  [v9 setText:v11];
+  cellCopy = cell;
+  cellConfiguration = [v7 cellConfiguration];
+  latestResults = [itemCopy latestResults];
+  v11 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  [cellConfiguration setText:v11];
 
-  v12 = [v9 textProperties];
-  [v12 setAlignment:4];
+  textProperties = [cellConfiguration textProperties];
+  [textProperties setAlignment:4];
 
-  v13 = [v30 latestResults];
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277D13E30]];
+  latestResults2 = [itemCopy latestResults];
+  v14 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13E30]];
 
-  v15 = [(HUHomeHubSimpleTableViewController *)self descriptionStringWithFormatKey];
-  if (v15)
+  descriptionStringWithFormatKey = [(HUHomeHubSimpleTableViewController *)self descriptionStringWithFormatKey];
+  if (descriptionStringWithFormatKey)
   {
-    v16 = [(HUHomeHubSimpleTableViewController *)self descriptionStringWithFormatKey];
-    v23 = HULocalizedStringWithFormat(v16, @"%@", v17, v18, v19, v20, v21, v22, v14);
+    descriptionStringWithFormatKey2 = [(HUHomeHubSimpleTableViewController *)self descriptionStringWithFormatKey];
+    v23 = HULocalizedStringWithFormat(descriptionStringWithFormatKey2, @"%@", v17, v18, v19, v20, v21, v22, v14);
   }
 
   else
@@ -101,18 +101,18 @@
     v24 = 0;
   }
 
-  [v9 setSecondaryText:v24];
-  v25 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v26 = [v9 secondaryTextProperties];
-  [v26 setColor:v25];
+  [cellConfiguration setSecondaryText:v24];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  secondaryTextProperties = [cellConfiguration secondaryTextProperties];
+  [secondaryTextProperties setColor:secondaryLabelColor];
 
-  v27 = [v30 latestResults];
-  v28 = [v27 objectForKeyedSubscript:*MEMORY[0x277D13E98]];
-  [v9 setImage:v28];
+  latestResults3 = [itemCopy latestResults];
+  v28 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13E98]];
+  [cellConfiguration setImage:v28];
 
-  [v8 setContentConfiguration:v9];
-  v29 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  [v8 setBackgroundColor:v29];
+  [cellCopy setContentConfiguration:cellConfiguration];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  [cellCopy setBackgroundColor:secondarySystemBackgroundColor];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface MTL4PipelineStageDynamicLinkingDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4PipelineStageDynamicLinkingDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -26,18 +26,18 @@
   [(MTL4PipelineStageDynamicLinkingDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setMaxCallStackDepth:self->_maxCallStackDepth];
   [v4 setBinaryLinkedFunctions:self->_binaryLinkedFunctions];
   [v4 setPreloadedLibraries:self->_preloadedLibraries];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v7) = 1;
   }
@@ -45,15 +45,15 @@
   else
   {
     Class = object_getClass(self);
-    if (Class == object_getClass(a3) && (maxCallStackDepth = self->_maxCallStackDepth, maxCallStackDepth == [a3 maxCallStackDepth]))
+    if (Class == object_getClass(equal) && (maxCallStackDepth = self->_maxCallStackDepth, maxCallStackDepth == [equal maxCallStackDepth]))
     {
-      v7 = MTLCompareArray(self->_binaryLinkedFunctions, [a3 binaryLinkedFunctions], 1, 0);
+      v7 = MTLCompareArray(self->_binaryLinkedFunctions, [equal binaryLinkedFunctions], 1, 0);
       if (v7)
       {
         preloadedLibraries = self->_preloadedLibraries;
-        v9 = [a3 preloadedLibraries];
+        preloadedLibraries = [equal preloadedLibraries];
 
-        LOBYTE(v7) = MTLCompareArray(preloadedLibraries, v9, 1, 0);
+        LOBYTE(v7) = MTLCompareArray(preloadedLibraries, preloadedLibraries, 1, 0);
       }
     }
 

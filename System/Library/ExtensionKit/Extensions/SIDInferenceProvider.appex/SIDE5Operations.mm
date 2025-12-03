@@ -1,38 +1,38 @@
 @interface SIDE5Operations
-+ (e5rt_execution_stream_operation)compileAndRetrieveESOP:(id)a3 alreadyCompiled:(BOOL)a4 error:(id *)a5;
-+ (id)executeESOP:(e5rt_execution_stream_operation *)a3 inputData:(id)a4 error:(id *)a5;
-+ (id)generateErrorObject:(id)a3;
++ (e5rt_execution_stream_operation)compileAndRetrieveESOP:(id)p alreadyCompiled:(BOOL)compiled error:(id *)error;
++ (id)executeESOP:(e5rt_execution_stream_operation *)p inputData:(id)data error:(id *)error;
++ (id)generateErrorObject:(id)object;
 + (id)getLastErrorMessage;
-+ (id)parseOutputData:()unordered_map<std:(e5rt_io_port *) :()std:()std:(std:(e5rt_io_port *>>> *)a3 :(id *)a4 allocator<std::pair<const)std::string :equal_to<std::string> :hash<std::string> string error:;
-+ (int)bindInputs:(e5rt_execution_stream_operation *)a3 inputData:(id)a4 error:(id *)a5;
-+ (int)instantiateProgramLibrary:(e5rt_program_library *)a3 FromBundle:(id)a4 error:(id *)a5;
-+ (int)instantiateProgramLibrary:(e5rt_program_library *)a3 FromModel:(id)a4 error:(id *)a5;
-+ (unordered_map<std::string,)bindOutputs:()std:()std:(std:(e5rt_io_port *>>> *__return_ptr)retstr :(id)a2 allocator<std:(SEL)a3 :(e5rt_execution_stream_operation *)a4 pair<const)std:(id *)a5 :string :equal_to<std::string> :hash<std::string> error:;
-+ (void)releaseESOP:(e5rt_execution_stream_operation *)a3;
++ (id)parseOutputData:()unordered_map<std:(e5rt_io_port *) :()std:()std:(std:(e5rt_io_port *>>> *)std :(id *)a4 allocator<std::pair<const)std::string :equal_to<std::string> :hash<std::string> string error:;
++ (int)bindInputs:(e5rt_execution_stream_operation *)inputs inputData:(id)data error:(id *)error;
++ (int)instantiateProgramLibrary:(e5rt_program_library *)library FromBundle:(id)bundle error:(id *)error;
++ (int)instantiateProgramLibrary:(e5rt_program_library *)library FromModel:(id)model error:(id *)error;
++ (unordered_map<std::string,)bindOutputs:()std:()std:(std:(e5rt_io_port *>>> *__return_ptr)retstr :(id)a2 allocator<std:(SEL)std :(e5rt_execution_stream_operation *)a4 pair<const)std:(id *)a5 :string :equal_to<std::string> :hash<std::string> error:;
++ (void)releaseESOP:(e5rt_execution_stream_operation *)p;
 @end
 
 @implementation SIDE5Operations
 
-+ (e5rt_execution_stream_operation)compileAndRetrieveESOP:(id)a3 alreadyCompiled:(BOOL)a4 error:(id *)a5
++ (e5rt_execution_stream_operation)compileAndRetrieveESOP:(id)p alreadyCompiled:(BOOL)compiled error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  compiledCopy = compiled;
+  pCopy = p;
   v11 = 0;
-  if (v6)
+  if (compiledCopy)
   {
-    v9 = [a1 instantiateProgramLibrary:&v11 FromBundle:v8 error:a5];
+    v9 = [self instantiateProgramLibrary:&v11 FromBundle:pCopy error:error];
   }
 
   else
   {
-    v9 = [a1 instantiateProgramLibrary:&v11 FromModel:v8 error:a5];
+    v9 = [self instantiateProgramLibrary:&v11 FromModel:pCopy error:error];
   }
 
   if (v9 || e5rt_program_library_retain_program_function())
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [a1 generateErrorObject:0];
+      *error = [self generateErrorObject:0];
     }
 
 LABEL_8:
@@ -50,9 +50,9 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [a1 generateErrorObject:0];
+      *error = [self generateErrorObject:0];
     }
 
     e5rt_precompiled_compute_op_create_options_release();
@@ -60,9 +60,9 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = [a1 generateErrorObject:0];
+    *error = [self generateErrorObject:0];
   }
 
   e5rt_program_library_release();
@@ -72,30 +72,30 @@ LABEL_9:
   return 0;
 }
 
-+ (int)instantiateProgramLibrary:(e5rt_program_library *)a3 FromBundle:(id)a4 error:(id *)a5
++ (int)instantiateProgramLibrary:(e5rt_program_library *)library FromBundle:(id)bundle error:(id *)error
 {
-  v7 = a4;
-  NSLog(@"Bundle Path: %@", v7);
-  [v7 UTF8String];
+  bundleCopy = bundle;
+  NSLog(@"Bundle Path: %@", bundleCopy);
+  [bundleCopy UTF8String];
   v8 = e5rt_program_library_create();
   v9 = v8;
-  if (a5 && v8)
+  if (error && v8)
   {
-    *a5 = [a1 generateErrorObject:0];
+    *error = [self generateErrorObject:0];
   }
 
   return v9;
 }
 
-+ (int)instantiateProgramLibrary:(e5rt_program_library *)a3 FromModel:(id)a4 error:(id *)a5
++ (int)instantiateProgramLibrary:(e5rt_program_library *)library FromModel:(id)model error:(id *)error
 {
-  v7 = a4;
+  modelCopy = model;
   v8 = e5rt_e5_compiler_create();
   if (v8)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [a1 generateErrorObject:0];
+      *error = [self generateErrorObject:0];
     }
   }
 
@@ -104,9 +104,9 @@ LABEL_9:
     v8 = e5rt_e5_compiler_options_create();
     if (v8)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = [a1 generateErrorObject:0];
+        *error = [self generateErrorObject:0];
       }
 
       e5rt_e5_compiler_release();
@@ -117,16 +117,16 @@ LABEL_9:
       v8 = e5rt_e5_compiler_options_set_compute_device_types_mask();
       if (v8)
       {
-        if (a5)
+        if (error)
         {
-          *a5 = [a1 generateErrorObject:0];
+          *error = [self generateErrorObject:0];
         }
       }
 
       else
       {
-        NSLog(@"Path: %@", v7);
-        [v7 UTF8String];
+        NSLog(@"Path: %@", modelCopy);
+        [modelCopy UTF8String];
         v8 = e5rt_e5_compiler_compile();
         if (!v8)
         {
@@ -136,9 +136,9 @@ LABEL_9:
           goto LABEL_17;
         }
 
-        if (a5)
+        if (error)
         {
-          *a5 = [a1 generateErrorObject:0];
+          *error = [self generateErrorObject:0];
         }
       }
 
@@ -152,35 +152,35 @@ LABEL_17:
   return v8;
 }
 
-+ (id)executeESOP:(e5rt_execution_stream_operation *)a3 inputData:(id)a4 error:(id *)a5
++ (id)executeESOP:(e5rt_execution_stream_operation *)p inputData:(id)data error:(id *)error
 {
-  v8 = a4;
-  if (!a3)
+  dataCopy = data;
+  if (!p)
   {
-    if (a5)
+    if (error)
     {
-      [a1 generateErrorObject:@"ESOP handle is NULL in executeESOP"];
-      *a5 = v10 = 0;
+      [self generateErrorObject:@"ESOP handle is NULL in executeESOP"];
+      *error = v10 = 0;
       goto LABEL_25;
     }
 
     goto LABEL_11;
   }
 
-  if ([a1 bindInputs:a3 inputData:v8 error:a5])
+  if ([self bindInputs:p inputData:dataCopy error:error])
   {
 LABEL_11:
     v10 = 0;
     goto LABEL_25;
   }
 
-  [a1 bindOutputs:a3 error:a5];
+  [self bindOutputs:p error:error];
   v15 = 0;
   if (e5rt_execution_stream_create())
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [a1 generateErrorObject:0];
+      *error = [self generateErrorObject:0];
     }
 
     for (i = v17; i; i = *i)
@@ -191,9 +191,9 @@ LABEL_11:
 
   else if (e5rt_execution_stream_encode_operation())
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [a1 generateErrorObject:0];
+      *error = [self generateErrorObject:0];
     }
 
     e5rt_execution_stream_release();
@@ -209,14 +209,14 @@ LABEL_11:
     {
       e5rt_execution_stream_release();
       sub_100003588(v14, v16);
-      v10 = [a1 parseOutputData:v14 error:a5];
+      v10 = [self parseOutputData:v14 error:error];
       sub_1000034A4(v14);
       goto LABEL_24;
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = [a1 generateErrorObject:0];
+      *error = [self generateErrorObject:0];
     }
 
     e5rt_execution_stream_release();
@@ -235,10 +235,10 @@ LABEL_25:
   return v10;
 }
 
-+ (id)parseOutputData:()unordered_map<std:(e5rt_io_port *) :()std:()std:(std:(e5rt_io_port *>>> *)a3 :(id *)a4 allocator<std::pair<const)std::string :equal_to<std::string> :hash<std::string> string error:
++ (id)parseOutputData:()unordered_map<std:(e5rt_io_port *) :()std:()std:(std:(e5rt_io_port *>>> *)std :(id *)a4 allocator<std::pair<const)std::string :equal_to<std::string> :hash<std::string> string error:
 {
   v6 = objc_opt_new();
-  var0 = a3->var0.var1.var0;
+  var0 = std->var0.var1.var0;
   if (var0)
   {
     while (1)
@@ -260,7 +260,7 @@ LABEL_25:
       {
         if (a4)
         {
-          *a4 = [a1 generateErrorObject:0];
+          *a4 = [self generateErrorObject:0];
         }
 
         e5rt_buffer_object_release();
@@ -273,7 +273,7 @@ LABEL_25:
       {
         if (a4)
         {
-          *a4 = [a1 generateErrorObject:0];
+          *a4 = [self generateErrorObject:0];
         }
 
         e5rt_tensor_desc_release();
@@ -285,7 +285,7 @@ LABEL_25:
       {
         if (a4)
         {
-          *a4 = [a1 generateErrorObject:0];
+          *a4 = [self generateErrorObject:0];
         }
 
         goto LABEL_31;
@@ -295,7 +295,7 @@ LABEL_25:
       {
         if (a4)
         {
-          *a4 = [a1 generateErrorObject:0];
+          *a4 = [self generateErrorObject:0];
         }
 
         goto LABEL_31;
@@ -307,7 +307,7 @@ LABEL_25:
         if (a4)
         {
           v15 = [NSString stringWithFormat:@"IOSurfaceLock failed with code: %d", v10];
-          *a4 = [a1 generateErrorObject:v15];
+          *a4 = [self generateErrorObject:v15];
         }
 
 LABEL_31:
@@ -327,7 +327,7 @@ LABEL_31:
         if (a4)
         {
           v16 = [NSString stringWithFormat:@"IOSurfaceUnlock failed with code: %d", v13];
-          *a4 = [a1 generateErrorObject:v16];
+          *a4 = [self generateErrorObject:v16];
         }
 
         e5rt_tensor_desc_dtype_release();
@@ -350,7 +350,7 @@ LABEL_31:
 
     if (a4)
     {
-      *a4 = [a1 generateErrorObject:0];
+      *a4 = [self generateErrorObject:0];
     }
 
     e5rt_io_port_release();
@@ -368,14 +368,14 @@ LABEL_13:
   return v14;
 }
 
-+ (int)bindInputs:(e5rt_execution_stream_operation *)a3 inputData:(id)a4 error:(id *)a5
++ (int)bindInputs:(e5rt_execution_stream_operation *)inputs inputData:(id)data error:(id *)error
 {
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = a4;
-  if (![v6 countByEnumeratingWithState:&v17 objects:v23 count:16])
+  dataCopy = data;
+  if (![dataCopy countByEnumeratingWithState:&v17 objects:v23 count:16])
   {
     iosurface = 0;
     goto LABEL_42;
@@ -389,9 +389,9 @@ LABEL_13:
   iosurface = e5rt_execution_stream_operation_retain_input_port();
   if (iosurface)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [a1 generateErrorObject:0];
+      *error = [self generateErrorObject:0];
     }
   }
 
@@ -400,9 +400,9 @@ LABEL_13:
     iosurface = e5rt_io_port_retain_tensor_desc();
     if (iosurface)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = [a1 generateErrorObject:0];
+        *error = [self generateErrorObject:0];
       }
 
       e5rt_io_port_release();
@@ -416,9 +416,9 @@ LABEL_13:
         iosurface = e5rt_buffer_object_get_iosurface();
         if (iosurface)
         {
-          if (a5)
+          if (error)
           {
-            *a5 = [a1 generateErrorObject:0];
+            *error = [self generateErrorObject:0];
           }
         }
 
@@ -430,9 +430,9 @@ LABEL_13:
             iosurface = e5rt_tensor_desc_dtype_get_element_size();
             if (iosurface)
             {
-              if (a5)
+              if (error)
               {
-                *a5 = [a1 generateErrorObject:0];
+                *error = [self generateErrorObject:0];
               }
             }
 
@@ -441,9 +441,9 @@ LABEL_13:
               iosurface = e5rt_tensor_desc_get_shape();
               if (iosurface)
               {
-                if (a5)
+                if (error)
                 {
-                  *a5 = [a1 generateErrorObject:0];
+                  *error = [self generateErrorObject:0];
                 }
               }
 
@@ -455,10 +455,10 @@ LABEL_13:
                   v10 = IOSurfaceLock(0, 0, 0);
                   if (v10)
                   {
-                    if (a5)
+                    if (error)
                     {
                       v12 = [NSString stringWithFormat:@"IOSurfaceLock failed with code: %d", v10];
-                      *a5 = [a1 generateErrorObject:v12];
+                      *error = [self generateErrorObject:v12];
                     }
 
                     e5rt_io_port_release();
@@ -471,14 +471,14 @@ LABEL_13:
                   else
                   {
                     IOSurfaceGetBaseAddress(0);
-                    v11 = [v6 objectForKeyedSubscript:v7];
-                    if (a5)
+                    v11 = [dataCopy objectForKeyedSubscript:v7];
+                    if (error)
                     {
                       v21 = NSLocalizedDescriptionKey;
                       v13 = [NSString stringWithFormat:@"Unsupported tensor rank %zu for feature '%@'. Only ranks 1 and 2 are supported.", 0, v7];
                       v22 = v13;
                       v14 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-                      *a5 = [NSError errorWithDomain:@"SIDInferenceProvider" code:11 userInfo:v14];
+                      *error = [NSError errorWithDomain:@"SIDInferenceProvider" code:11 userInfo:v14];
                     }
 
                     IOSurfaceUnlock(0, 0, 0);
@@ -492,9 +492,9 @@ LABEL_13:
                   goto LABEL_42;
                 }
 
-                if (a5)
+                if (error)
                 {
-                  *a5 = [a1 generateErrorObject:0];
+                  *error = [self generateErrorObject:0];
                 }
               }
             }
@@ -506,9 +506,9 @@ LABEL_13:
             goto LABEL_42;
           }
 
-          if (a5)
+          if (error)
           {
-            *a5 = [a1 generateErrorObject:0];
+            *error = [self generateErrorObject:0];
           }
         }
 
@@ -518,9 +518,9 @@ LABEL_13:
         goto LABEL_42;
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = [a1 generateErrorObject:0];
+        *error = [self generateErrorObject:0];
       }
 
       e5rt_io_port_release();
@@ -533,7 +533,7 @@ LABEL_42:
   return iosurface;
 }
 
-+ (unordered_map<std::string,)bindOutputs:()std:()std:(std:(e5rt_io_port *>>> *__return_ptr)retstr :(id)a2 allocator<std:(SEL)a3 :(e5rt_execution_stream_operation *)a4 pair<const)std:(id *)a5 :string :equal_to<std::string> :hash<std::string> error:
++ (unordered_map<std::string,)bindOutputs:()std:()std:(std:(e5rt_io_port *>>> *__return_ptr)retstr :(id)a2 allocator<std:(SEL)std :(e5rt_execution_stream_operation *)a4 pair<const)std:(id *)a5 :string :equal_to<std::string> :hash<std::string> error:
 {
   v31 = 0;
   retstr->var0.var0 = 0u;
@@ -546,8 +546,8 @@ LABEL_42:
     {
       v9 = [a2 generateErrorObject:0];
       *a5 = v9;
-      v10 = [v9 localizedDescription];
-      NSLog(@"Error: Failed to get number of outputs, %@", v10);
+      localizedDescription = [v9 localizedDescription];
+      NSLog(@"Error: Failed to get number of outputs, %@", localizedDescription);
     }
 
     return result;
@@ -563,8 +563,8 @@ LABEL_42:
 
     v11 = [a2 generateErrorObject:0];
     *a5 = v11;
-    v12 = [v11 localizedDescription];
-    NSLog(@"Error: Failed to get output names, %@", v12);
+    localizedDescription2 = [v11 localizedDescription];
+    NSLog(@"Error: Failed to get output names, %@", localizedDescription2);
     goto LABEL_7;
   }
 
@@ -589,8 +589,8 @@ LABEL_42:
         {
           v19 = [a2 generateErrorObject:0];
           *a5 = v19;
-          v20 = [v19 localizedDescription];
-          NSLog(@"Error: Failed to retain tensor descriptors, %@", v20);
+          localizedDescription3 = [v19 localizedDescription];
+          NSLog(@"Error: Failed to retain tensor descriptors, %@", localizedDescription3);
         }
 
         e5rt_io_port_release();
@@ -603,8 +603,8 @@ LABEL_42:
         {
           v21 = [a2 generateErrorObject:0];
           *a5 = v21;
-          v22 = [v21 localizedDescription];
-          NSLog(@"Error: Failed to alloc output buffer object, %@", v22);
+          localizedDescription4 = [v21 localizedDescription];
+          NSLog(@"Error: Failed to alloc output buffer object, %@", localizedDescription4);
         }
 
         e5rt_io_port_release();
@@ -618,8 +618,8 @@ LABEL_42:
         {
           v23 = [a2 generateErrorObject:0];
           *a5 = v23;
-          v24 = [v23 localizedDescription];
-          NSLog(@"Error: Failed to bind output buffer object, %@", v24);
+          localizedDescription5 = [v23 localizedDescription];
+          NSLog(@"Error: Failed to bind output buffer object, %@", localizedDescription5);
         }
 
         e5rt_io_port_release();
@@ -671,8 +671,8 @@ LABEL_42:
 
     v18 = [a2 generateErrorObject:0];
     *a5 = v18;
-    v12 = [v18 localizedDescription];
-    NSLog(@"Error: Failed to retain output port, %@", v12);
+    localizedDescription2 = [v18 localizedDescription];
+    NSLog(@"Error: Failed to retain output port, %@", localizedDescription2);
 LABEL_7:
   }
 
@@ -687,9 +687,9 @@ LABEL_35:
   return result;
 }
 
-+ (void)releaseESOP:(e5rt_execution_stream_operation *)a3
++ (void)releaseESOP:(e5rt_execution_stream_operation *)p
 {
-  if (a3)
+  if (p)
   {
     e5rt_execution_stream_operation_release();
   }
@@ -706,22 +706,22 @@ LABEL_35:
   return last_error_message;
 }
 
-+ (id)generateErrorObject:(id)a3
++ (id)generateErrorObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
     v5 = [NSError alloc];
     v14 = NSLocalizedDescriptionKey;
-    v15 = v4;
-    v6 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-    v7 = [v5 initWithDomain:@"com.apple.servicesintelligenced" code:-1 userInfo:v6];
+    v15 = objectCopy;
+    getLastErrorMessage = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
+    v7 = [v5 initWithDomain:@"com.apple.servicesintelligenced" code:-1 userInfo:getLastErrorMessage];
   }
 
   else
   {
-    v6 = [a1 getLastErrorMessage];
-    v8 = [NSString stringWithFormat:@"E5RT operation failed with message = %@", v6];
+    getLastErrorMessage = [self getLastErrorMessage];
+    v8 = [NSString stringWithFormat:@"E5RT operation failed with message = %@", getLastErrorMessage];
     v9 = [NSError alloc];
     v12 = NSLocalizedDescriptionKey;
     v13 = v8;

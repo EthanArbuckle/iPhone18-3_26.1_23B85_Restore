@@ -1,8 +1,8 @@
 @interface SPUISApplicationResultBuilder
-+ (id)formattedAlternateNamesForBundleId:(id)a3 withAlternateNames:(id)a4;
-- (SPUISApplicationResultBuilder)initWithResult:(id)a3;
++ (id)formattedAlternateNamesForBundleId:(id)id withAlternateNames:(id)names;
+- (SPUISApplicationResultBuilder)initWithResult:(id)result;
 - (id)buildApplicationURL;
-- (id)buildBadgingImageWithThumbnail:(id)a3;
+- (id)buildBadgingImageWithThumbnail:(id)thumbnail;
 - (id)buildCommand;
 - (id)buildFillToolParameterCommand;
 - (id)buildResult;
@@ -13,17 +13,17 @@
 
 @implementation SPUISApplicationResultBuilder
 
-+ (id)formattedAlternateNamesForBundleId:(id)a3 withAlternateNames:(id)a4
++ (id)formattedAlternateNamesForBundleId:(id)id withAlternateNames:(id)names
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  idCopy = id;
+  namesCopy = names;
   if (formattedAlternateNamesForBundleId_withAlternateNames__onceToken != -1)
   {
     +[SPUISApplicationResultBuilder formattedAlternateNamesForBundleId:withAlternateNames:];
   }
 
-  v7 = [formattedAlternateNamesForBundleId_withAlternateNames__cache objectForKey:v5];
+  v7 = [formattedAlternateNamesForBundleId_withAlternateNames__cache objectForKey:idCopy];
   if (!v7)
   {
     v7 = objc_opt_new();
@@ -31,7 +31,7 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = v6;
+    v8 = namesCopy;
     v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
@@ -49,21 +49,21 @@
           v13 = *(*(&v20 + 1) + 8 * i);
           if ([v13 length])
           {
-            v14 = [v13 localizedLowercaseString];
-            v15 = [v14 isEqualToString:v13];
+            localizedLowercaseString = [v13 localizedLowercaseString];
+            v15 = [localizedLowercaseString isEqualToString:v13];
 
             if (v15)
             {
-              v16 = [v13 localizedCapitalizedString];
+              localizedCapitalizedString = [v13 localizedCapitalizedString];
             }
 
             else
             {
-              v16 = v13;
+              localizedCapitalizedString = v13;
             }
 
-            v17 = v16;
-            [v7 addObject:v16];
+            v17 = localizedCapitalizedString;
+            [v7 addObject:localizedCapitalizedString];
           }
         }
 
@@ -73,7 +73,7 @@
       while (v10);
     }
 
-    [formattedAlternateNamesForBundleId_withAlternateNames__cache setObject:v7 forKey:v5];
+    [formattedAlternateNamesForBundleId_withAlternateNames__cache setObject:v7 forKey:idCopy];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -88,39 +88,39 @@ uint64_t __87__SPUISApplicationResultBuilder_formattedAlternateNamesForBundleId_
   return MEMORY[0x2821F96F8]();
 }
 
-- (SPUISApplicationResultBuilder)initWithResult:(id)a3
+- (SPUISApplicationResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v23.receiver = self;
   v23.super_class = SPUISApplicationResultBuilder;
-  v5 = [(SPUISResultBuilder *)&v23 initWithResult:v4];
+  v5 = [(SPUISResultBuilder *)&v23 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 url];
-    if (v6 && (v7 = v6, [v4 url], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isFileURL"), v8, v7, v9))
+    v6 = [resultCopy url];
+    if (v6 && (v7 = v6, [resultCopy url], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isFileURL"), v8, v7, v9))
     {
       v10 = MEMORY[0x277CCA8D8];
-      v11 = [v4 url];
-      v12 = [v11 path];
-      v13 = [v10 bundleWithPath:v12];
+      v11 = [resultCopy url];
+      path = [v11 path];
+      applicationBundleIdentifier = [v10 bundleWithPath:path];
 
-      v14 = [v13 bundleIdentifier];
-      [(SPUISApplicationResultBuilder *)v5 setBundleId:v14];
+      bundleIdentifier = [applicationBundleIdentifier bundleIdentifier];
+      [(SPUISApplicationResultBuilder *)v5 setBundleId:bundleIdentifier];
     }
 
     else
     {
-      v13 = [v4 applicationBundleIdentifier];
-      [(SPUISApplicationResultBuilder *)v5 setBundleId:v13];
+      applicationBundleIdentifier = [resultCopy applicationBundleIdentifier];
+      [(SPUISApplicationResultBuilder *)v5 setBundleId:applicationBundleIdentifier];
     }
 
     v15 = objc_opt_class();
-    v16 = [(SPUISApplicationResultBuilder *)v5 bundleId];
-    v17 = [v4 valueForAttribute:*MEMORY[0x277CC2408] withType:objc_opt_class()];
-    v18 = [v15 formattedAlternateNamesForBundleId:v16 withAlternateNames:v17];
+    bundleId = [(SPUISApplicationResultBuilder *)v5 bundleId];
+    v17 = [resultCopy valueForAttribute:*MEMORY[0x277CC2408] withType:objc_opt_class()];
+    v18 = [v15 formattedAlternateNamesForBundleId:bundleId withAlternateNames:v17];
     [(SPUISApplicationResultBuilder *)v5 setAlternateNames:v18];
 
-    v19 = [v4 valueForAttribute:*MEMORY[0x277CC2760] withType:objc_opt_class()];
+    v19 = [resultCopy valueForAttribute:*MEMORY[0x277CC2760] withType:objc_opt_class()];
     if (v19)
     {
       [(SPUISApplicationResultBuilder *)v5 setName:v19];
@@ -128,9 +128,9 @@ uint64_t __87__SPUISApplicationResultBuilder_formattedAlternateNamesForBundleId_
 
     else
     {
-      v20 = [v4 title];
-      v21 = [v20 text];
-      [(SPUISApplicationResultBuilder *)v5 setName:v21];
+      title = [resultCopy title];
+      text = [title text];
+      [(SPUISApplicationResultBuilder *)v5 setName:text];
     }
   }
 
@@ -140,19 +140,19 @@ uint64_t __87__SPUISApplicationResultBuilder_formattedAlternateNamesForBundleId_
 - (id)buildResult
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [(SPUISResultBuilder *)self queryContext];
-  v4 = [v3 searchString];
+  queryContext = [(SPUISResultBuilder *)self queryContext];
+  searchString = [queryContext searchString];
 
-  v30 = v4;
-  if ([v4 length])
+  v30 = searchString;
+  if ([searchString length])
   {
-    v5 = [(SPUISApplicationResultBuilder *)self name];
-    v6 = [v5 localizedStandardContainsString:v4];
+    name = [(SPUISApplicationResultBuilder *)self name];
+    v6 = [name localizedStandardContainsString:searchString];
 
     if ((v6 & 1) == 0)
     {
-      v7 = [(SPUISResultBuilder *)self queryContext];
-      v8 = [v7 evaluator];
+      queryContext2 = [(SPUISResultBuilder *)self queryContext];
+      evaluator = [queryContext2 evaluator];
 
       v33 = 0u;
       v34 = 0u;
@@ -175,13 +175,13 @@ uint64_t __87__SPUISApplicationResultBuilder_formattedAlternateNamesForBundleId_
 
             v13 = *(*(&v31 + 1) + 8 * i);
             v14 = [v13 localizedStandardContainsString:v30];
-            v15 = [(SPUISApplicationResultBuilder *)self name];
-            v16 = getHighlightedRichText(v13, v8, v15, 0);
+            name2 = [(SPUISApplicationResultBuilder *)self name];
+            v16 = getHighlightedRichText(v13, evaluator, name2, 0);
 
-            v17 = [v16 formattedTextPieces];
-            v18 = [v17 count];
+            formattedTextPieces = [v16 formattedTextPieces];
+            v18 = [formattedTextPieces count];
 
-            v19 = [(SPUISApplicationResultBuilder *)self matchedAlternateName];
+            matchedAlternateName = [(SPUISApplicationResultBuilder *)self matchedAlternateName];
 
             if (v14)
             {
@@ -191,7 +191,7 @@ uint64_t __87__SPUISApplicationResultBuilder_formattedAlternateNamesForBundleId_
               goto LABEL_19;
             }
 
-            if (v18 >= 2 && v19 == 0)
+            if (v18 >= 2 && matchedAlternateName == 0)
             {
               [(SPUISApplicationResultBuilder *)self setHighlightedAlternateName:v16];
               [(SPUISApplicationResultBuilder *)self setMatchedAlternateName:v13];
@@ -212,58 +212,58 @@ LABEL_19:
     }
   }
 
-  v21 = [(SPUISApplicationResultBuilder *)self matchedAlternateName];
+  matchedAlternateName2 = [(SPUISApplicationResultBuilder *)self matchedAlternateName];
 
-  if (v21)
+  if (matchedAlternateName2)
   {
-    v22 = [(SPUISApplicationResultBuilder *)self matchedAlternateName];
-    v23 = [(SPUISResultBuilder *)self result];
-    [v23 setCompletion:v22];
+    matchedAlternateName3 = [(SPUISApplicationResultBuilder *)self matchedAlternateName];
+    result = [(SPUISResultBuilder *)self result];
+    [result setCompletion:matchedAlternateName3];
   }
 
   if (![(SPUISResultBuilder *)self isTopHit])
   {
-    v24 = [(SPUISResultBuilder *)self buildInlineCard];
-    v25 = [(SPUISResultBuilder *)self result];
-    [v25 setInlineCard:v24];
+    buildInlineCard = [(SPUISResultBuilder *)self buildInlineCard];
+    result2 = [(SPUISResultBuilder *)self result];
+    [result2 setInlineCard:buildInlineCard];
   }
 
-  v26 = [(SPUISResultBuilder *)self result];
+  result3 = [(SPUISResultBuilder *)self result];
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v26;
+  return result3;
 }
 
 - (id)buildTitle
 {
   if ([(SPUISApplicationResultBuilder *)self isFromOneness])
   {
-    v3 = objc_opt_new();
+    name2 = objc_opt_new();
     v4 = MEMORY[0x277D4C3A0];
-    v5 = [(SPUISApplicationResultBuilder *)self name];
-    v6 = [v4 textWithString:v5];
+    name = [(SPUISApplicationResultBuilder *)self name];
+    v6 = [v4 textWithString:name];
 
     [v6 setIsEmphasized:1];
-    [v3 addObject:v6];
+    [name2 addObject:v6];
     v7 = [MEMORY[0x277D4C3A0] textWithString:@" — "];
-    [v3 addObject:v7];
+    [name2 addObject:v7];
 
     v8 = MEMORY[0x277D4C3A0];
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"From iPhone" value:0 table:0];
     v11 = [v8 textWithString:v10];
-    [v3 addObject:v11];
+    [name2 addObject:v11];
 
     v12 = objc_opt_new();
-    [v12 setFormattedTextPieces:v3];
+    [v12 setFormattedTextPieces:name2];
   }
 
   else
   {
     v13 = MEMORY[0x277D4C598];
-    v3 = [(SPUISApplicationResultBuilder *)self name];
-    v12 = [v13 textWithString:v3];
+    name2 = [(SPUISApplicationResultBuilder *)self name];
+    v12 = [v13 textWithString:name2];
   }
 
   return v12;
@@ -271,45 +271,45 @@ LABEL_19:
 
 - (id)buildThumbnail
 {
-  v3 = [(SPUISApplicationResultBuilder *)self buildApplicationURL];
-  if (v3 && ![(SPUISApplicationResultBuilder *)self isFromOneness])
+  buildApplicationURL = [(SPUISApplicationResultBuilder *)self buildApplicationURL];
+  if (buildApplicationURL && ![(SPUISApplicationResultBuilder *)self isFromOneness])
   {
-    v4 = objc_opt_new();
-    [v4 setFilePath:v3];
+    bundleId = objc_opt_new();
+    [bundleId setFilePath:buildApplicationURL];
   }
 
   else
   {
-    v4 = [(SPUISApplicationResultBuilder *)self bundleId];
+    bundleId = [(SPUISApplicationResultBuilder *)self bundleId];
 
-    if (v4)
+    if (bundleId)
     {
-      v4 = objc_opt_new();
-      v5 = [(SPUISApplicationResultBuilder *)self bundleId];
-      [v4 setBundleIdentifier:v5];
+      bundleId = objc_opt_new();
+      bundleId2 = [(SPUISApplicationResultBuilder *)self bundleId];
+      [bundleId setBundleIdentifier:bundleId2];
 
       if ([(SPUISApplicationResultBuilder *)self isFromOneness])
       {
-        [v4 setIconType:2];
+        [bundleId setIconType:2];
       }
     }
   }
 
-  return v4;
+  return bundleId;
 }
 
 - (id)buildApplicationURL
 {
-  v3 = [(SPUISApplicationResultBuilder *)self appURL];
-  if (v3)
+  appURL = [(SPUISApplicationResultBuilder *)self appURL];
+  if (appURL)
   {
-    v4 = [(SPUISApplicationResultBuilder *)self appURL];
-    v5 = [v4 path];
-    v6 = [v5 fileSystemRepresentation];
+    appURL2 = [(SPUISApplicationResultBuilder *)self appURL];
+    path = [appURL2 path];
+    fileSystemRepresentation = [path fileSystemRepresentation];
 
-    if (v6)
+    if (fileSystemRepresentation)
     {
-      v7 = realpath_DARWIN_EXTSN(v6, 0);
+      v7 = realpath_DARWIN_EXTSN(fileSystemRepresentation, 0);
       if (v7)
       {
         v8 = v7;
@@ -322,21 +322,21 @@ LABEL_19:
 
         else
         {
-          v11 = v3;
+          v11 = appURL;
         }
 
         v12 = v11;
 
         free(v8);
-        v3 = v12;
+        appURL = v12;
       }
     }
   }
 
-  return v3;
+  return appURL;
 }
 
-- (id)buildBadgingImageWithThumbnail:(id)a3
+- (id)buildBadgingImageWithThumbnail:(id)thumbnail
 {
   if ([(SPUISApplicationResultBuilder *)self isFromOneness])
   {
@@ -356,12 +356,12 @@ LABEL_19:
 - (id)buildFillToolParameterCommand
 {
   v3 = objc_opt_new();
-  v4 = [(SPUISApplicationResultBuilder *)self buildApplicationURL];
-  v5 = [v4 path];
-  [v3 setApplicationPath:v5];
+  buildApplicationURL = [(SPUISApplicationResultBuilder *)self buildApplicationURL];
+  path = [buildApplicationURL path];
+  [v3 setApplicationPath:path];
 
-  v6 = [(SPUISApplicationResultBuilder *)self bundleId];
-  [v3 setBundleIdentifier:v6];
+  bundleId = [(SPUISApplicationResultBuilder *)self bundleId];
+  [v3 setBundleIdentifier:bundleId];
 
   return v3;
 }
@@ -370,32 +370,32 @@ LABEL_19:
 {
   if ([(SPUISApplicationResultBuilder *)self isFromOneness])
   {
-    v3 = objc_opt_new();
-    v4 = [(SPUISResultBuilder *)self result];
-    v5 = [v4 applicationBundleIdentifier];
-    [v3 setApplicationBundleIdentifier:v5];
+    buildCommand = objc_opt_new();
+    result = [(SPUISResultBuilder *)self result];
+    applicationBundleIdentifier = [result applicationBundleIdentifier];
+    [buildCommand setApplicationBundleIdentifier:applicationBundleIdentifier];
 
-    [v3 setIsOnenessApplication:1];
+    [buildCommand setIsOnenessApplication:1];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SPUISApplicationResultBuilder;
-    v3 = [(SPUISResultBuilder *)&v7 buildCommand];
+    buildCommand = [(SPUISResultBuilder *)&v7 buildCommand];
   }
 
-  return v3;
+  return buildCommand;
 }
 
 - (id)buildSecondaryCommand
 {
-  v3 = [(SPUISApplicationResultBuilder *)self bundleId];
-  if (v3 && (v4 = v3, v5 = [(SPUISApplicationResultBuilder *)self isFromOneness], v4, !v5))
+  bundleId = [(SPUISApplicationResultBuilder *)self bundleId];
+  if (bundleId && (v4 = bundleId, v5 = [(SPUISApplicationResultBuilder *)self isFromOneness], v4, !v5))
   {
-    v8 = [(SPUISApplicationResultBuilder *)self bundleId];
+    bundleId2 = [(SPUISApplicationResultBuilder *)self bundleId];
     v9 = +[SPUISICloudDriveUtilities icloudDriveBundleId_objc];
-    v10 = [v8 isEqualToString:v9];
+    v10 = [bundleId2 isEqualToString:v9];
 
     if (v10)
     {
@@ -405,27 +405,27 @@ LABEL_19:
     else
     {
       v11 = objc_opt_new();
-      v12 = [(SPUISApplicationResultBuilder *)self bundleId];
-      [v11 setBundleIdentifier:v12];
+      bundleId3 = [(SPUISApplicationResultBuilder *)self bundleId];
+      [v11 setBundleIdentifier:bundleId3];
 
       v6 = objc_opt_new();
       [v6 setEntityType:5];
-      v13 = [(SPUISApplicationResultBuilder *)self appURL];
-      v14 = [v13 path];
-      if (v14)
+      appURL = [(SPUISApplicationResultBuilder *)self appURL];
+      path = [appURL path];
+      if (path)
       {
-        [v6 setEntityIdentifier:v14];
+        [v6 setEntityIdentifier:path];
       }
 
       else
       {
-        v15 = [(SPUISApplicationResultBuilder *)self bundleId];
-        [v6 setEntityIdentifier:v15];
+        bundleId4 = [(SPUISApplicationResultBuilder *)self bundleId];
+        [v6 setEntityIdentifier:bundleId4];
       }
 
       [v6 setTokenImage:v11];
-      v16 = [(SPUISApplicationResultBuilder *)self name];
-      [v6 setTokenString:v16];
+      name = [(SPUISApplicationResultBuilder *)self name];
+      [v6 setTokenString:name];
     }
   }
 

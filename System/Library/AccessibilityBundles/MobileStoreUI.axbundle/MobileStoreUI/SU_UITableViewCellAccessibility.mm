@@ -1,23 +1,23 @@
 @interface SU_UITableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)tableTextAccessibleLabel:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)tableTextAccessibleLabel:(id)label;
 @end
 
 @implementation SU_UITableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUICircleProgressIndicator"];
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"tableTextAccessibleLabel:" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUICircleProgressIndicator"];
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"tableTextAccessibleLabel:" withFullSignature:{"@", 0}];
 }
 
-- (id)tableTextAccessibleLabel:(id)a3
+- (id)tableTextAccessibleLabel:(id)label
 {
   v10.receiver = self;
   v10.super_class = SU_UITableViewCellAccessibility;
-  v4 = [(SU_UITableViewCellAccessibility *)&v10 tableTextAccessibleLabel:a3];
-  v5 = [(SU_UITableViewCellAccessibility *)self accessoryView];
+  v4 = [(SU_UITableViewCellAccessibility *)&v10 tableTextAccessibleLabel:label];
+  accessoryView = [(SU_UITableViewCellAccessibility *)self accessoryView];
   NSClassFromString(&cfstr_Suuicircleprog_0.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 

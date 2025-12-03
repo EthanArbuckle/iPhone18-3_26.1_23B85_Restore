@@ -1,30 +1,30 @@
 @interface XRVMState
-+ (id)stateFrom:(id)a3;
++ (id)stateFrom:(id)from;
 + (void)initialize;
 - (XRVMState)init;
-- (XRVMState)initWithCoder:(id)a3;
-- (id)_annotationForRegion:(id)a3;
+- (XRVMState)initWithCoder:(id)coder;
+- (id)_annotationForRegion:(id)region;
 - (id)description;
-- (id)detailsForRegion:(id)a3;
-- (id)regionForAddress:(unint64_t)a3;
-- (id)regionsWithOptions:(int)a3;
-- (void)_addRegion:(id)a3 annotation:(id)a4 new:(BOOL)a5;
-- (void)_annotateRange:(_CSRange)a3 withPath:(id)a4 type:(id)a5;
+- (id)detailsForRegion:(id)region;
+- (id)regionForAddress:(unint64_t)address;
+- (id)regionsWithOptions:(int)options;
+- (void)_addRegion:(id)region annotation:(id)annotation new:(BOOL)new;
+- (void)_annotateRange:(_CSRange)range withPath:(id)path type:(id)type;
 - (void)_recalculateSizes;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)hydrateWithPreviousState:(id)a3;
-- (void)setPageSize:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)hydrateWithPreviousState:(id)state;
+- (void)setPageSize:(unint64_t)size;
 @end
 
 @implementation XRVMState
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    MEMORY[0x2821F9670](a1, sel_setVersion_);
+    MEMORY[0x2821F9670](self, sel_setVersion_);
   }
 }
 
@@ -59,26 +59,26 @@
   [(XRVMState *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    [v4 encodeInteger:5 forKey:@"VMStateVersion"];
-    [v4 encodeInt64:self->_machAbsolute forKey:@"VMStateMachAbsolute"];
-    [v4 encodeInt64:self->_totalSize forKey:@"VMStateTotalSize"];
-    [v4 encodeInt64:self->_sharedRegionStart forKey:@"VMStateSharedStart"];
-    [v4 encodeInt64:self->_sharedRegionLength forKey:@"VMStateSharedLength"];
-    [v4 encodeObject:self->_regions forKey:@"VMStateRegions"];
+    [coderCopy encodeInteger:5 forKey:@"VMStateVersion"];
+    [coderCopy encodeInt64:self->_machAbsolute forKey:@"VMStateMachAbsolute"];
+    [coderCopy encodeInt64:self->_totalSize forKey:@"VMStateTotalSize"];
+    [coderCopy encodeInt64:self->_sharedRegionStart forKey:@"VMStateSharedStart"];
+    [coderCopy encodeInt64:self->_sharedRegionLength forKey:@"VMStateSharedLength"];
+    [coderCopy encodeObject:self->_regions forKey:@"VMStateRegions"];
     Count = CFDictionaryGetCount(self->_pageAnnotationsByRegion);
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:Count];
-    [v4 encodeObject:v6 forKey:@"VMStateAnnotationCount"];
+    [coderCopy encodeObject:v6 forKey:@"VMStateAnnotationCount"];
 
     v7 = Count;
     v8 = malloc_type_malloc(8 * Count, 0x80040B8603338uLL);
     v9 = malloc_type_malloc(8 * Count, 0x80040B8603338uLL);
     CFDictionaryGetKeysAndValues(self->_pageAnnotationsByRegion, v8, v9);
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:Count];
     if (Count)
     {
@@ -91,7 +91,7 @@
         v16 = *v12++;
         v17 = v16;
         v18 = v14;
-        [v10 addObject:v18];
+        [array addObject:v18];
         [v11 addObject:v17];
 
         --v7;
@@ -100,8 +100,8 @@
       while (v7);
     }
 
-    [v4 encodeObject:v10 forKey:@"VMStateAnnotationRegionsKeys"];
-    [v4 encodeObject:v11 forKey:@"VMSTateAnnotations"];
+    [coderCopy encodeObject:array forKey:@"VMStateAnnotationRegionsKeys"];
+    [coderCopy encodeObject:v11 forKey:@"VMSTateAnnotations"];
     if (v8)
     {
       free(v8);
@@ -115,21 +115,21 @@
     goto LABEL_18;
   }
 
-  [v4 encodeValueOfObjCType:"Q" at:&self->_machAbsolute];
-  [v4 encodeObject:self->_regions];
-  [v4 encodeValueOfObjCType:"Q" at:&self->_totalSize];
-  [v4 encodeValueOfObjCType:"Q" at:&self->_sharedRegionStart];
-  [v4 encodeValueOfObjCType:"Q" at:&self->_sharedRegionLength];
+  [coderCopy encodeValueOfObjCType:"Q" at:&self->_machAbsolute];
+  [coderCopy encodeObject:self->_regions];
+  [coderCopy encodeValueOfObjCType:"Q" at:&self->_totalSize];
+  [coderCopy encodeValueOfObjCType:"Q" at:&self->_sharedRegionStart];
+  [coderCopy encodeValueOfObjCType:"Q" at:&self->_sharedRegionLength];
   v22 = CFDictionaryGetCount(self->_pageAnnotationsByRegion);
-  [v4 encodeValueOfObjCType:"I" at:&v22];
+  [coderCopy encodeValueOfObjCType:"I" at:&v22];
   v19 = malloc_type_malloc(8 * v22, 0x80040B8603338uLL);
   v20 = malloc_type_malloc(8 * v22, 0x80040B8603338uLL);
   CFDictionaryGetKeysAndValues(self->_pageAnnotationsByRegion, v19, v20);
   if (v22)
   {
-    for (i = 0; i < v22; [v4 encodeObject:v20[i++]])
+    for (i = 0; i < v22; [coderCopy encodeObject:v20[i++]])
     {
-      [v4 encodeObject:v19[i]];
+      [coderCopy encodeObject:v19[i]];
     }
   }
 
@@ -148,13 +148,13 @@ LABEL_16:
 LABEL_18:
 }
 
-- (XRVMState)initWithCoder:(id)a3
+- (XRVMState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = v4;
+  coderCopy = coder;
+  v5 = coderCopy;
   if (self)
   {
-    if ([v4 allowsKeyedCoding])
+    if ([coderCopy allowsKeyedCoding])
     {
       v6 = [v5 decodeIntegerForKey:@"VMStateVersion"];
     }
@@ -229,9 +229,9 @@ LABEL_18:
       }
 
       *(&self->super.isa + v9) = v8;
-      v30 = [v5 decodeObject];
+      decodeObject = [v5 decodeObject];
       v31 = self->_regions;
-      self->_regions = v30;
+      self->_regions = decodeObject;
 
       if (v7 != 4)
       {
@@ -250,9 +250,9 @@ LABEL_18:
       {
         for (i = 0; i < v36; ++i)
         {
-          v33 = [v5 decodeObject];
-          v34 = [v5 decodeObject];
-          CFDictionarySetValue(self->_pageAnnotationsByRegion, v33, v34);
+          decodeObject2 = [v5 decodeObject];
+          decodeObject3 = [v5 decodeObject];
+          CFDictionarySetValue(self->_pageAnnotationsByRegion, decodeObject2, decodeObject3);
         }
       }
     }
@@ -274,16 +274,16 @@ LABEL_18:
   return v5;
 }
 
-+ (id)stateFrom:(id)a3
++ (id)stateFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_alloc_init(XRVMState);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = fromCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -341,8 +341,8 @@ LABEL_18:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v9 = [v8 path];
-          v10 = [v9 isEqualToString:@"unused shared library"];
+          path = [v8 path];
+          v10 = [path isEqualToString:@"unused shared library"];
 
           if ((v10 & 1) == 0 && ([v8 isSubmapRegion] & 1) == 0 && (objc_msgSend(v8, "isNullRegion") & 1) == 0)
           {
@@ -366,11 +366,11 @@ LABEL_18:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)detailsForRegion:(id)a3
+- (id)detailsForRegion:(id)region
 {
-  if (a3)
+  if (region)
   {
-    v4 = CFDictionaryGetValue(self->_pageAnnotationsByRegion, a3);
+    v4 = CFDictionaryGetValue(self->_pageAnnotationsByRegion, region);
   }
 
   else
@@ -381,7 +381,7 @@ LABEL_18:
   return v4;
 }
 
-- (void)setPageSize:(unint64_t)a3
+- (void)setPageSize:(unint64_t)size
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -404,15 +404,15 @@ LABEL_18:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 pageSize] == a3)
+        if ([v10 pageSize] == size)
         {
 
           goto LABEL_11;
         }
 
-        [v10 setPageSize:a3];
+        [v10 setPageSize:size];
         v11 = [(XRVMState *)self _annotationForRegion:v10];
-        [v11 setPageSize:a3];
+        [v11 setPageSize:size];
       }
 
       v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -430,18 +430,18 @@ LABEL_11:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hydrateWithPreviousState:(id)a3
+- (void)hydrateWithPreviousState:(id)state
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  stateCopy = state;
+  if (stateCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v16 = self;
+    selfCopy = self;
     v6 = self->_regions;
     v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
@@ -470,14 +470,14 @@ LABEL_11:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v12 = [v4 regionForAddress:{objc_msgSend(v11, "unsignedLongLongValue")}];
+              v12 = [stateCopy regionForAddress:{objc_msgSend(v11, "unsignedLongLongValue")}];
               if (v12)
               {
                 [(NSMutableArray *)v5 addObject:v12];
-                v13 = [v4 _annotationForRegion:v12];
+                v13 = [stateCopy _annotationForRegion:v12];
                 if (v13)
                 {
-                  CFDictionarySetValue(v16->_pageAnnotationsByRegion, v12, v13);
+                  CFDictionarySetValue(selfCopy->_pageAnnotationsByRegion, v12, v13);
                 }
               }
             }
@@ -493,18 +493,18 @@ LABEL_11:
       while (v8);
     }
 
-    regions = v16->_regions;
-    v16->_regions = v5;
+    regions = selfCopy->_regions;
+    selfCopy->_regions = v5;
 
-    [(XRVMState *)v16 _recalculateSizes];
+    [(XRVMState *)selfCopy _recalculateSizes];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)regionForAddress:(unint64_t)a3
+- (id)regionForAddress:(unint64_t)address
 {
-  v4 = [XRVMRegion regionIndexInArray:self->_regions forAddress:a3];
+  v4 = [XRVMRegion regionIndexInArray:self->_regions forAddress:address];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -518,19 +518,19 @@ LABEL_11:
   return v5;
 }
 
-- (void)_addRegion:(id)a3 annotation:(id)a4 new:(BOOL)a5
+- (void)_addRegion:(id)region annotation:(id)annotation new:(BOOL)new
 {
-  v5 = a5;
-  key = a3;
-  v8 = a4;
+  newCopy = new;
+  key = region;
+  annotationCopy = annotation;
   if (key)
   {
-    if (v5)
+    if (newCopy)
     {
       v9 = key;
-      if (v8)
+      if (annotationCopy)
       {
-        CFDictionarySetValue(self->_pageAnnotationsByRegion, key, v8);
+        CFDictionarySetValue(self->_pageAnnotationsByRegion, key, annotationCopy);
         v9 = key;
       }
 
@@ -546,11 +546,11 @@ LABEL_11:
   }
 }
 
-- (id)_annotationForRegion:(id)a3
+- (id)_annotationForRegion:(id)region
 {
-  if (a3)
+  if (region)
   {
-    v4 = CFDictionaryGetValue(self->_pageAnnotationsByRegion, a3);
+    v4 = CFDictionaryGetValue(self->_pageAnnotationsByRegion, region);
   }
 
   else
@@ -561,38 +561,38 @@ LABEL_11:
   return v4;
 }
 
-- (void)_annotateRange:(_CSRange)a3 withPath:(id)a4 type:(id)a5
+- (void)_annotateRange:(_CSRange)range withPath:(id)path type:(id)type
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v25 = a4;
-  v9 = a5;
+  var1 = range.var1;
+  var0 = range.var0;
+  pathCopy = path;
+  typeCopy = type;
   v10 = [XRVMRegion regionIndexInArray:self->_regions forAddress:var0];
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = v10;
     v12 = [(NSMutableArray *)self->_regions objectAtIndex:v10];
-    v13 = [v12 location];
-    v14 = var0 - v13;
-    if (var0 > v13)
+    location = [v12 location];
+    v14 = var0 - location;
+    if (var0 > location)
     {
-      v15 = v13;
+      v15 = location;
       v16 = [v12 copy];
       [v16 setAddress:v15 size:v14];
       [(NSMutableArray *)self->_regions insertObject:v16 atIndex:v11++];
     }
 
     v17 = var0 + var1;
-    v18 = [XRVMRegion regionIndexInArray:self->_regions forAddress:var0 + var1];
-    if (v18 != 0x7FFFFFFFFFFFFFFFLL)
+    var1 = [XRVMRegion regionIndexInArray:self->_regions forAddress:var0 + var1];
+    if (var1 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v19 = v18;
-      v20 = [(NSMutableArray *)self->_regions objectAtIndex:v18];
-      v21 = [v20 location];
-      v22 = [v20 virtualSize];
-      if (v22 + v21 > v17)
+      v19 = var1;
+      v20 = [(NSMutableArray *)self->_regions objectAtIndex:var1];
+      location2 = [v20 location];
+      virtualSize = [v20 virtualSize];
+      if (virtualSize + location2 > v17)
       {
-        v24 = v22 + v21 - v17;
+        v24 = virtualSize + location2 - v17;
         if (v20 == v12)
         {
           v23 = [v20 copy];
@@ -615,15 +615,15 @@ LABEL_11:
     }
 
     [v12 setAddress:var0 size:var1];
-    [v12 setPath:v25 type:v9];
+    [v12 setPath:pathCopy type:typeCopy];
   }
 }
 
-- (id)regionsWithOptions:(int)a3
+- (id)regionsWithOptions:(int)options
 {
-  v20 = a3;
+  optionsCopy = options;
   v27 = *MEMORY[0x277D85DE8];
-  v21 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -654,20 +654,20 @@ LABEL_32:
       }
 
       v12 = *(*(&v22 + 1) + 8 * v10);
-      v13 = [v12 path];
-      v14 = [v13 isEqualToString:@"unused shared library"];
+      path = [v12 path];
+      v14 = [path isEqualToString:@"unused shared library"];
 
       if (v14)
       {
         if (v11)
         {
-          [v21 addObject:v11];
+          [array addObject:v11];
         }
 
         v7 = 0;
       }
 
-      else if ((v20 & 1) != 0 && v11 && [v12 typeMatches:v11] && objc_msgSend(v12, "isAdjacentTo:", v11))
+      else if ((optionsCopy & 1) != 0 && v11 && [v12 typeMatches:v11] && objc_msgSend(v12, "isAdjacentTo:", v11))
       {
         if (v8)
         {
@@ -687,12 +687,12 @@ LABEL_32:
         if (v8)
         {
           v15 = [[XRVMCoalescedRegion alloc] initWithRegions:v8 groupName:0];
-          [v21 addObject:v15];
+          [array addObject:v15];
         }
 
         else if (v11)
         {
-          [v21 addObject:v11];
+          [array addObject:v11];
         }
 
         v7 = v12;
@@ -712,7 +712,7 @@ LABEL_32:
   if (v8)
   {
     v17 = [[XRVMCoalescedRegion alloc] initWithRegions:v8 groupName:0];
-    [v21 addObject:v17];
+    [array addObject:v17];
 
 LABEL_31:
     v4 = v7;
@@ -721,7 +721,7 @@ LABEL_31:
 
   if (v7)
   {
-    [v21 addObject:v7];
+    [array addObject:v7];
     v8 = 0;
     goto LABEL_31;
   }
@@ -731,7 +731,7 @@ LABEL_33:
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return array;
 }
 
 @end

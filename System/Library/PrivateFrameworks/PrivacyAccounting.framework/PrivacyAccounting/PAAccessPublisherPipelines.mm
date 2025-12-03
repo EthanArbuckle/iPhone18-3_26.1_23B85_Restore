@@ -1,12 +1,12 @@
 @interface PAAccessPublisherPipelines
-+ (double)nextStartTimeForEndTime:(double)a3 iteration:(double)a4;
-+ (id)accessPublisherWithoutHiddenOrMissingApps:(id)a3 withBundleLookup:(id)a4;
-+ (id)accessRecordsFromPublisher:(id)a3 reversed:(BOOL)a4;
-+ (id)coalesceAccessRecordsFromPublisher:(id)a3 withCoalescingWindowDuration:(double)a4 reversed:(BOOL)a5;
-+ (id)completeAccessRecordFromPartialAccessRecord:(id)a3 nextAccessPublisher:(id)a4;
-+ (id)completeAccessRecordFromPartialAccessRecord:(id)a3 nextStartTime:(id)a4 accessPublisher:(id)a5;
-+ (id)findBeginningForPartialAccessRecord:(id)a3 iteration:(double)a4 nextStartTime:(id)a5 endTime:(double)a6 accessPublisher:(id)a7;
-+ (id)ongoingAccessRecordsFromPublisher:(id)a3;
++ (double)nextStartTimeForEndTime:(double)time iteration:(double)iteration;
++ (id)accessPublisherWithoutHiddenOrMissingApps:(id)apps withBundleLookup:(id)lookup;
++ (id)accessRecordsFromPublisher:(id)publisher reversed:(BOOL)reversed;
++ (id)coalesceAccessRecordsFromPublisher:(id)publisher withCoalescingWindowDuration:(double)duration reversed:(BOOL)reversed;
++ (id)completeAccessRecordFromPartialAccessRecord:(id)record nextAccessPublisher:(id)publisher;
++ (id)completeAccessRecordFromPartialAccessRecord:(id)record nextStartTime:(id)time accessPublisher:(id)publisher;
++ (id)findBeginningForPartialAccessRecord:(id)record iteration:(double)iteration nextStartTime:(id)time endTime:(double)endTime accessPublisher:(id)publisher;
++ (id)ongoingAccessRecordsFromPublisher:(id)publisher;
 @end
 
 @implementation PAAccessPublisherPipelines
@@ -21,20 +21,20 @@ id __72__PAAccessPublisherPipelines_accessPublisherWithoutHiddenOrMissingApps___
   return v4;
 }
 
-+ (id)accessPublisherWithoutHiddenOrMissingApps:(id)a3 withBundleLookup:(id)a4
++ (id)accessPublisherWithoutHiddenOrMissingApps:(id)apps withBundleLookup:(id)lookup
 {
-  v5 = a4;
+  lookupCopy = lookup;
   v6 = MEMORY[0x1E695DF90];
-  v7 = a3;
-  v8 = [v6 dictionary];
+  appsCopy = apps;
+  dictionary = [v6 dictionary];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__PAAccessPublisherPipelines_accessPublisherWithoutHiddenOrMissingApps_withBundleLookup___block_invoke;
   aBlock[3] = &unk_1E86AC278;
-  v18 = v8;
-  v19 = v5;
-  v9 = v5;
-  v10 = v8;
+  v18 = dictionary;
+  v19 = lookupCopy;
+  v9 = lookupCopy;
+  v10 = dictionary;
   v11 = _Block_copy(aBlock);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -42,7 +42,7 @@ id __72__PAAccessPublisherPipelines_accessPublisherWithoutHiddenOrMissingApps___
   v15[3] = &unk_1E86AC2A0;
   v16 = v11;
   v12 = v11;
-  v13 = [v7 filterWithIsIncluded:v15];
+  v13 = [appsCopy filterWithIsIncluded:v15];
 
   return v13;
 }
@@ -127,14 +127,14 @@ uint64_t __76__PAAccessPublisherPipelines_accessPublisherWithoutUnknownCategoryA
   return v6 ^ 1u;
 }
 
-+ (id)accessRecordsFromPublisher:(id)a3 reversed:(BOOL)a4
++ (id)accessRecordsFromPublisher:(id)publisher reversed:(BOOL)reversed
 {
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __66__PAAccessPublisherPipelines_accessRecordsFromPublisher_reversed___block_invoke;
   v8[3] = &__block_descriptor_33_e79___PAAccessRecordAccumulator_24__0__PAAccessRecordAccumulator_8__BMStoreEvent_16l;
-  v9 = a4;
-  v4 = [a3 scanWithInitial:0 nextPartialResult:v8];
+  reversedCopy = reversed;
+  v4 = [publisher scanWithInitial:0 nextPartialResult:v8];
   v5 = [v4 filterWithIsIncluded:&__block_literal_global_35];
   v6 = [v5 mapWithTransform:&__block_literal_global_38];
 
@@ -299,12 +299,12 @@ BOOL __66__PAAccessPublisherPipelines_accessRecordsFromPublisher_reversed___bloc
   return v3;
 }
 
-+ (id)ongoingAccessRecordsFromPublisher:(id)a3
++ (id)ongoingAccessRecordsFromPublisher:(id)publisher
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
-  v5 = [v3 dictionary];
-  v6 = [v4 reduceWithInitial:v5 nextPartialResult:&__block_literal_global_41];
+  publisherCopy = publisher;
+  dictionary = [v3 dictionary];
+  v6 = [publisherCopy reduceWithInitial:dictionary nextPartialResult:&__block_literal_global_41];
 
   v7 = [v6 flatMapWithTransform:&__block_literal_global_44];
 
@@ -388,26 +388,26 @@ id __64__PAAccessPublisherPipelines_ongoingAccessRecordsFromPublisher___block_in
   return v17;
 }
 
-+ (id)coalesceAccessRecordsFromPublisher:(id)a3 withCoalescingWindowDuration:(double)a4 reversed:(BOOL)a5
++ (id)coalesceAccessRecordsFromPublisher:(id)publisher withCoalescingWindowDuration:(double)duration reversed:(BOOL)reversed
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E695DFB0];
-  v8 = a3;
-  v9 = [v7 null];
+  publisherCopy = publisher;
+  null = [v7 null];
   v10 = objc_alloc(MEMORY[0x1E698F0E8]);
-  v23[0] = v9;
+  v23[0] = null;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
   v12 = [v10 initWithSequence:v11];
-  v13 = [v8 mergeWithOther:v12];
+  v13 = [publisherCopy mergeWithOther:v12];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __103__PAAccessPublisherPipelines_coalesceAccessRecordsFromPublisher_withCoalescingWindowDuration_reversed___block_invoke;
   v19[3] = &unk_1E86AC3B0;
-  v20 = v9;
-  v22 = a5;
-  v21 = a4;
-  v14 = v9;
+  v20 = null;
+  reversedCopy = reversed;
+  durationCopy = duration;
+  v14 = null;
   v15 = [v13 scanWithInitial:0 nextPartialResult:v19];
   v16 = [v15 flatMapWithTransform:&__block_literal_global_110];
 
@@ -514,17 +514,17 @@ id __103__PAAccessPublisherPipelines_coalesceAccessRecordsFromPublisher_withCoal
   return v6;
 }
 
-+ (id)completeAccessRecordFromPartialAccessRecord:(id)a3 nextAccessPublisher:(id)a4
++ (id)completeAccessRecordFromPartialAccessRecord:(id)record nextAccessPublisher:(id)publisher
 {
-  v6 = a3;
+  recordCopy = record;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __94__PAAccessPublisherPipelines_completeAccessRecordFromPartialAccessRecord_nextAccessPublisher___block_invoke;
   v10[3] = &unk_1E86AC3F8;
-  v11 = v6;
-  v12 = a1;
-  v7 = v6;
-  v8 = [a1 completeAccessRecordFromPartialAccessRecord:v7 nextStartTime:v10 accessPublisher:a4];
+  v11 = recordCopy;
+  selfCopy = self;
+  v7 = recordCopy;
+  v8 = [self completeAccessRecordFromPartialAccessRecord:v7 nextStartTime:v10 accessPublisher:publisher];
 
   return v8;
 }
@@ -537,20 +537,20 @@ uint64_t __94__PAAccessPublisherPipelines_completeAccessRecordFromPartialAccessR
   return [v1 nextStartTimeForEndTime:? iteration:?];
 }
 
-+ (id)completeAccessRecordFromPartialAccessRecord:(id)a3 nextStartTime:(id)a4 accessPublisher:(id)a5
++ (id)completeAccessRecordFromPartialAccessRecord:(id)record nextStartTime:(id)time accessPublisher:(id)publisher
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  [v8 endTime];
-  v12 = [a1 findBeginningForPartialAccessRecord:v8 iteration:v10 nextStartTime:v9 endTime:0.0 accessPublisher:v11];
+  recordCopy = record;
+  publisherCopy = publisher;
+  timeCopy = time;
+  [recordCopy endTime];
+  v12 = [self findBeginningForPartialAccessRecord:recordCopy iteration:timeCopy nextStartTime:publisherCopy endTime:0.0 accessPublisher:v11];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __104__PAAccessPublisherPipelines_completeAccessRecordFromPartialAccessRecord_nextStartTime_accessPublisher___block_invoke;
   v16[3] = &unk_1E86AC420;
-  v17 = v8;
-  v13 = v8;
+  v17 = recordCopy;
+  v13 = recordCopy;
   v14 = [v12 mapWithTransform:v16];
 
   return v14;
@@ -573,13 +573,13 @@ PACompleteAccessRecord *__104__PAAccessPublisherPipelines_completeAccessRecordFr
   return v12;
 }
 
-+ (id)findBeginningForPartialAccessRecord:(id)a3 iteration:(double)a4 nextStartTime:(id)a5 endTime:(double)a6 accessPublisher:(id)a7
++ (id)findBeginningForPartialAccessRecord:(id)record iteration:(double)iteration nextStartTime:(id)time endTime:(double)endTime accessPublisher:(id)publisher
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  v15 = v13[2](v13, a4);
-  if (v15 == a6 || (v16 = v15, v14[2](v14), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
+  recordCopy = record;
+  timeCopy = time;
+  publisherCopy = publisher;
+  v15 = timeCopy[2](timeCopy, iteration);
+  if (v15 == endTime || (v16 = v15, publisherCopy[2](publisherCopy), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v24 = objc_alloc(MEMORY[0x1E698F0E8]);
     v23 = [v24 initWithSequence:MEMORY[0x1E695E0F0]];
@@ -592,26 +592,26 @@ PACompleteAccessRecord *__104__PAAccessPublisherPipelines_completeAccessRecordFr
     v35[1] = 3221225472;
     v35[2] = __114__PAAccessPublisherPipelines_findBeginningForPartialAccessRecord_iteration_nextStartTime_endTime_accessPublisher___block_invoke;
     v35[3] = &__block_descriptor_40_e22_B16__0__BMStoreEvent_8l;
-    *&v35[4] = a6;
+    *&v35[4] = endTime;
     v19 = [v17 filterWithIsIncluded:v35];
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __114__PAAccessPublisherPipelines_findBeginningForPartialAccessRecord_iteration_nextStartTime_endTime_accessPublisher___block_invoke_2;
     v33[3] = &unk_1E86AC468;
-    v21 = v12;
+    v21 = recordCopy;
     v34 = v21;
-    v22 = [v19 reduceWithInitial:v20 nextPartialResult:v33];
+    v22 = [v19 reduceWithInitial:null nextPartialResult:v33];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __114__PAAccessPublisherPipelines_findBeginningForPartialAccessRecord_iteration_nextStartTime_endTime_accessPublisher___block_invoke_3;
     v26[3] = &unk_1E86AC490;
-    v30 = a1;
+    selfCopy = self;
     v27 = v21;
-    v31 = a4;
-    v28 = v13;
+    iterationCopy = iteration;
+    v28 = timeCopy;
     v32 = v16;
-    v29 = v14;
+    v29 = publisherCopy;
     v23 = [v22 flatMapWithTransform:v26];
   }
 
@@ -686,26 +686,26 @@ id __114__PAAccessPublisherPipelines_findBeginningForPartialAccessRecord_iterati
   return v9;
 }
 
-+ (double)nextStartTimeForEndTime:(double)a3 iteration:(double)a4
++ (double)nextStartTimeForEndTime:(double)time iteration:(double)iteration
 {
-  if (a4 <= 4.0)
+  if (iteration <= 4.0)
   {
-    v6 = exp2(a4);
+    v6 = exp2(iteration);
     v7 = -5.0;
   }
 
   else
   {
-    if (a4 > 10.0)
+    if (iteration > 10.0)
     {
       return 0.0;
     }
 
-    v6 = exp2(a4 + -5.0) * 3.0;
+    v6 = exp2(iteration + -5.0) * 3.0;
     v7 = -60.0;
   }
 
-  return a3 + v6 * v7 * 60.0;
+  return time + v6 * v7 * 60.0;
 }
 
 @end

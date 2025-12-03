@@ -37,10 +37,10 @@
 
 + (BOOL)canEnableZoomBounce
 {
-  v2 = [objc_opt_self() currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [objc_opt_self() currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return v3 != 1;
+  return userInterfaceIdiom != 1;
 }
 
 + (PXPhotosDetailsNavigationSettings)sharedInstance

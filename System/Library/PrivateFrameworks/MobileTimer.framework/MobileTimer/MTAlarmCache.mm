@@ -1,7 +1,7 @@
 @interface MTAlarmCache
 - (BOOL)_isUpdateNeeded;
-- (MTAlarmCache)initWithUpdateBlock:(id)a3;
-- (void)_withLock:(id)a3;
+- (MTAlarmCache)initWithUpdateBlock:(id)block;
+- (void)_withLock:(id)lock;
 - (void)markNeedsUpdate;
 @end
 
@@ -25,27 +25,27 @@
   return v2;
 }
 
-- (MTAlarmCache)initWithUpdateBlock:(id)a3
+- (MTAlarmCache)initWithUpdateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = MTAlarmCache;
   v5 = [(MTAlarmCache *)&v14 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     orderedAlarms = v5->_orderedAlarms;
-    v5->_orderedAlarms = v6;
+    v5->_orderedAlarms = array;
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     sleepAlarms = v5->_sleepAlarms;
-    v5->_sleepAlarms = v8;
+    v5->_sleepAlarms = array2;
 
     nextAlarm = v5->_nextAlarm;
     v5->_nextAlarm = 0;
 
     v5->_needsUpdate = 1;
-    v11 = [v4 copy];
+    v11 = [blockCopy copy];
     updateBlock = v5->_updateBlock;
     v5->_updateBlock = v11;
 
@@ -55,11 +55,11 @@
   return v5;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_cacheLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_cacheLock);
 }

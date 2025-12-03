@@ -1,58 +1,58 @@
 @interface SBHLibraryCategoryStackView
-- (CGRect)frameForStackedViewAtIndex:(unint64_t)a3;
+- (CGRect)frameForStackedViewAtIndex:(unint64_t)index;
 - (CGRect)visibleContentFrame;
-- (SBHLibraryCategoryStackView)initWithFrame:(CGRect)a3;
+- (SBHLibraryCategoryStackView)initWithFrame:(CGRect)frame;
 - (SBIconImageInfo)_innerIconImageInfo;
-- (double)alphaForStackedViewAtIndex:(unint64_t)a3;
-- (id)_scalingAnimationSettingsForStackedViewAtIndex:(unint64_t)a3 scale:(double *)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (double)alphaForStackedViewAtIndex:(unint64_t)index;
+- (id)_scalingAnimationSettingsForStackedViewAtIndex:(unint64_t)index scale:(double *)scale;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)makeBackgroundView;
 - (id)matchingCategoryStackView;
 - (id)succinctDescription;
 - (unint64_t)_innerIconImageOptions;
 - (void)_appendConfiguredPodBackgroundView;
-- (void)_enumerateIconImageViewsUsingBlock:(id)a3;
+- (void)_enumerateIconImageViewsUsingBlock:(id)block;
 - (void)_reconfigurePodBackgroundViews;
 - (void)_removeLastPodBackgroundView;
 - (void)_resetAllPodBackgroundViews;
-- (void)_updateIconImageViewsAnimated:(BOOL)a3;
+- (void)_updateIconImageViewsAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setBackdropGroupName:(id)a3;
-- (void)setDisplayedIconImageInfo:(SBIconImageInfo *)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
-- (void)setInnerIcons:(id)a3 animated:(BOOL)a4;
-- (void)setNumberOfCategories:(unint64_t)a3;
-- (void)setOverlapping:(BOOL)a3;
-- (void)setPrefersFlatImageLayers:(BOOL)a3;
+- (void)setBackdropGroupName:(id)name;
+- (void)setDisplayedIconImageInfo:(SBIconImageInfo *)info;
+- (void)setEditing:(BOOL)editing;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
+- (void)setInnerIcons:(id)icons animated:(BOOL)animated;
+- (void)setNumberOfCategories:(unint64_t)categories;
+- (void)setOverlapping:(BOOL)overlapping;
+- (void)setPrefersFlatImageLayers:(BOOL)layers;
 @end
 
 @implementation SBHLibraryCategoryStackView
 
-- (SBHLibraryCategoryStackView)initWithFrame:(CGRect)a3
+- (SBHLibraryCategoryStackView)initWithFrame:(CGRect)frame
 {
   v18[2] = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = SBHLibraryCategoryStackView;
-  v3 = [(SBHLibraryCategoryStackView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBHLibraryCategoryStackView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     podBackgroundViews = v3->_podBackgroundViews;
-    v3->_podBackgroundViews = v4;
+    v3->_podBackgroundViews = array;
 
-    v6 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     iconImageViews = v3->_iconImageViews;
-    v3->_iconImageViews = v6;
+    v3->_iconImageViews = weakToStrongObjectsMapTable;
 
     v3->_numberOfCategories = 1;
     v8 = +[SBHHomeScreenDomain rootSettings];
-    v9 = [v8 iconAnimationSettings];
-    v10 = [v9 libraryIndicatorIconSettings];
+    iconAnimationSettings = [v8 iconAnimationSettings];
+    libraryIndicatorIconSettings = [iconAnimationSettings libraryIndicatorIconSettings];
     iconSettings = v3->_iconSettings;
-    v3->_iconSettings = v10;
+    v3->_iconSettings = libraryIndicatorIconSettings;
 
     [(SBHLibraryCategoryStackView *)v3 _appendConfiguredPodBackgroundView];
     v12 = objc_opt_self();
@@ -74,27 +74,27 @@
   [v4 setNumberOfCategories:{-[SBHLibraryCategoryStackView numberOfCategories](self, "numberOfCategories")}];
   [(SBHLibraryCategoryStackView *)self iconImageInfo];
   [v4 setIconImageInfo:?];
-  v5 = [(SBHLibraryCategoryStackView *)self innerIcons];
-  [v4 setInnerIcons:v5];
+  innerIcons = [(SBHLibraryCategoryStackView *)self innerIcons];
+  [v4 setInnerIcons:innerIcons];
 
-  v6 = [(SBHLibraryCategoryStackView *)self backdropGroupName];
-  [v4 setBackdropGroupName:v6];
+  backdropGroupName = [(SBHLibraryCategoryStackView *)self backdropGroupName];
+  [v4 setBackdropGroupName:backdropGroupName];
 
   [v4 setInnerIconImageInfoFrozen:{-[SBHLibraryCategoryStackView isInnerIconImageInfoFrozen](self, "isInnerIconImageInfoFrozen")}];
 
   return v4;
 }
 
-- (void)setNumberOfCategories:(unint64_t)a3
+- (void)setNumberOfCategories:(unint64_t)categories
 {
-  if (self->_numberOfCategories != a3)
+  if (self->_numberOfCategories != categories)
   {
-    self->_numberOfCategories = a3;
+    self->_numberOfCategories = categories;
     [(SBHLibraryCategoryStackView *)self setNeedsLayout];
   }
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
@@ -112,18 +112,18 @@
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
     v7 = v3;
     v8 = v4;
-    self->_editing = a3;
+    self->_editing = editing;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __42__SBHLibraryCategoryStackView_setEditing___block_invoke;
     v5[3] = &__block_descriptor_33_e33_v32__0__SBHIconLayerView_8Q16_B24l;
-    v6 = a3;
+    editingCopy = editing;
     [(SBHLibraryCategoryStackView *)self _enumerateIconImageViewsUsingBlock:v5];
   }
 }
@@ -150,20 +150,20 @@ void __42__SBHLibraryCategoryStackView_setEditing___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
     v8 = v3;
     v9 = v4;
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     podBackgroundViews = self->_podBackgroundViews;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __46__SBHLibraryCategoryStackView_setHighlighted___block_invoke;
     v6[3] = &unk_1E808B6B8;
     v6[4] = self;
-    v7 = a3;
+    highlightedCopy = highlighted;
     [(NSMutableArray *)podBackgroundViews enumerateObjectsUsingBlock:v6];
   }
 }
@@ -208,19 +208,19 @@ uint64_t __46__SBHLibraryCategoryStackView_setHighlighted___block_invoke_2(uint6
   return [v1 setTransform:v4];
 }
 
-- (void)setOverlapping:(BOOL)a3
+- (void)setOverlapping:(BOOL)overlapping
 {
-  if (self->_overlapping != a3)
+  if (self->_overlapping != overlapping)
   {
     v8 = v3;
     v9 = v4;
-    self->_overlapping = a3;
+    self->_overlapping = overlapping;
     podBackgroundViews = self->_podBackgroundViews;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __46__SBHLibraryCategoryStackView_setOverlapping___block_invoke;
     v6[3] = &__block_descriptor_33_e23_v32__0__UIView_8Q16_B24l;
-    v7 = a3;
+    overlappingCopy = overlapping;
     [(NSMutableArray *)podBackgroundViews enumerateObjectsUsingBlock:v6];
   }
 }
@@ -246,12 +246,12 @@ void __46__SBHLibraryCategoryStackView_setOverlapping___block_invoke(uint64_t a1
   [v3 setTransform:&v5];
 }
 
-- (void)setInnerIcons:(id)a3 animated:(BOOL)a4
+- (void)setInnerIcons:(id)icons animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v6 = MEMORY[0x1E696AC90];
-  v7 = a3;
-  v8 = [v7 count];
+  iconsCopy = icons;
+  v8 = [iconsCopy count];
   if (v8 >= 4)
   {
     v9 = 4;
@@ -263,36 +263,36 @@ void __46__SBHLibraryCategoryStackView_setOverlapping___block_invoke(uint64_t a1
   }
 
   v11 = [v6 indexSetWithIndexesInRange:{0, v9}];
-  v10 = [v7 objectsAtIndexes:?];
+  v10 = [iconsCopy objectsAtIndexes:?];
 
   if ((BSEqualArrays() & 1) == 0)
   {
     objc_storeStrong(&self->_innerIcons, v10);
-    [(SBHLibraryCategoryStackView *)self _updateIconImageViewsAnimated:v4];
+    [(SBHLibraryCategoryStackView *)self _updateIconImageViewsAnimated:animatedCopy];
   }
 }
 
-- (void)setBackdropGroupName:(id)a3
+- (void)setBackdropGroupName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   if ((BSEqualStrings() & 1) == 0)
   {
-    objc_storeStrong(&self->_backdropGroupName, a3);
+    objc_storeStrong(&self->_backdropGroupName, name);
     podBackgroundViews = self->_podBackgroundViews;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __52__SBHLibraryCategoryStackView_setBackdropGroupName___block_invoke;
     v7[3] = &unk_1E808BDC0;
-    v8 = v5;
+    v8 = nameCopy;
     [(NSMutableArray *)podBackgroundViews enumerateObjectsUsingBlock:v7];
   }
 }
 
-- (void)setPrefersFlatImageLayers:(BOOL)a3
+- (void)setPrefersFlatImageLayers:(BOOL)layers
 {
-  if (self->_prefersFlatImageLayers != a3)
+  if (self->_prefersFlatImageLayers != layers)
   {
-    self->_prefersFlatImageLayers = a3;
+    self->_prefersFlatImageLayers = layers;
     [(SBHLibraryCategoryStackView *)self _updateIconImageViewsAnimated:0];
   }
 }
@@ -359,15 +359,15 @@ void __46__SBHLibraryCategoryStackView_setOverlapping___block_invoke(uint64_t a1
   return result;
 }
 
-- (CGRect)frameForStackedViewAtIndex:(unint64_t)a3
+- (CGRect)frameForStackedViewAtIndex:(unint64_t)index
 {
   [(SBHLibraryCategoryStackView *)self bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SBHLibraryCategoryStackView *)self traitCollection];
-  [v12 displayScale];
+  traitCollection = [(SBHLibraryCategoryStackView *)self traitCollection];
+  [traitCollection displayScale];
 
   v13 = MEMORY[0x1E69DDA98];
   if ([*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] != 1)
@@ -389,10 +389,10 @@ void __46__SBHLibraryCategoryStackView_setOverlapping___block_invoke(uint64_t a1
   return result;
 }
 
-- (double)alphaForStackedViewAtIndex:(unint64_t)a3
+- (double)alphaForStackedViewAtIndex:(unint64_t)index
 {
   result = 0.0;
-  if (self->_numberOfCategories > a3)
+  if (self->_numberOfCategories > index)
   {
     return 1.0;
   }
@@ -404,8 +404,8 @@ void __46__SBHLibraryCategoryStackView_setOverlapping___block_invoke(uint64_t a1
 {
   v3 = [_SBHLibraryCategoryStackViewBackgroundView alloc];
   v4 = [(_SBHLibraryCategoryStackViewBackgroundView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  v5 = [(SBHLibraryCategoryStackView *)self backdropGroupName];
-  [(_SBHLibraryCategoryStackViewBackgroundView *)v4 setBackdropGroupName:v5];
+  backdropGroupName = [(SBHLibraryCategoryStackView *)self backdropGroupName];
+  [(_SBHLibraryCategoryStackViewBackgroundView *)v4 setBackdropGroupName:backdropGroupName];
 
   [(_SBHLibraryCategoryStackViewBackgroundView *)v4 setAutoresizingMask:18];
 
@@ -541,27 +541,27 @@ void __45__SBHLibraryCategoryStackView_layoutSubviews__block_invoke(uint64_t a1,
 
 - (void)_appendConfiguredPodBackgroundView
 {
-  v3 = [(SBHLibraryCategoryStackView *)self makeBackgroundView];
-  [v3 setAutoresizingMask:18];
-  [(SBHLibraryCategoryStackView *)self addSubview:v3];
-  [(SBHLibraryCategoryStackView *)self sendSubviewToBack:v3];
-  [(NSMutableArray *)self->_podBackgroundViews addObject:v3];
+  makeBackgroundView = [(SBHLibraryCategoryStackView *)self makeBackgroundView];
+  [makeBackgroundView setAutoresizingMask:18];
+  [(SBHLibraryCategoryStackView *)self addSubview:makeBackgroundView];
+  [(SBHLibraryCategoryStackView *)self sendSubviewToBack:makeBackgroundView];
+  [(NSMutableArray *)self->_podBackgroundViews addObject:makeBackgroundView];
   if ([(NSMutableArray *)self->_podBackgroundViews count]== 1)
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __65__SBHLibraryCategoryStackView__appendConfiguredPodBackgroundView__block_invoke;
     v4[3] = &unk_1E808BE08;
-    v5 = v3;
+    v5 = makeBackgroundView;
     [(SBHLibraryCategoryStackView *)self _enumerateIconImageViewsUsingBlock:v4];
   }
 }
 
 - (void)_removeLastPodBackgroundView
 {
-  v3 = [(NSMutableArray *)self->_podBackgroundViews lastObject];
+  lastObject = [(NSMutableArray *)self->_podBackgroundViews lastObject];
   [(NSMutableArray *)self->_podBackgroundViews removeLastObject];
-  [v3 removeFromSuperview];
+  [lastObject removeFromSuperview];
   if (![(NSMutableArray *)self->_podBackgroundViews count])
   {
     [(SBHLibraryCategoryStackView *)self _enumerateIconImageViewsUsingBlock:&__block_literal_global_34];
@@ -626,18 +626,18 @@ void __45__SBHLibraryCategoryStackView_layoutSubviews__block_invoke(uint64_t a1,
   }
 }
 
-- (void)_enumerateIconImageViewsUsingBlock:(id)a3
+- (void)_enumerateIconImageViewsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SBHLibraryCategoryStackView *)self innerIcons];
+  blockCopy = block;
+  innerIcons = [(SBHLibraryCategoryStackView *)self innerIcons];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__SBHLibraryCategoryStackView__enumerateIconImageViewsUsingBlock___block_invoke;
   v7[3] = &unk_1E808BE50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [innerIcons enumerateObjectsUsingBlock:v7];
 }
 
 uint64_t __66__SBHLibraryCategoryStackView__enumerateIconImageViewsUsingBlock___block_invoke(uint64_t a1, uint64_t a2)
@@ -654,19 +654,19 @@ uint64_t __66__SBHLibraryCategoryStackView__enumerateIconImageViewsUsingBlock___
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)_updateIconImageViewsAnimated:(BOOL)a3
+- (void)_updateIconImageViewsAnimated:(BOOL)animated
 {
   v64 = *MEMORY[0x1E69E9840];
-  v5 = [(SBHLibraryCategoryStackView *)self traitCollection];
-  v6 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:v5];
-  v7 = [(SBHLibraryCategoryStackView *)self displayedImageAppearance];
-  v8 = [(SBHLibraryCategoryStackView *)self innerIcons];
+  traitCollection = [(SBHLibraryCategoryStackView *)self traitCollection];
+  v6 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:traitCollection];
+  displayedImageAppearance = [(SBHLibraryCategoryStackView *)self displayedImageAppearance];
+  innerIcons = [(SBHLibraryCategoryStackView *)self innerIcons];
   [(SBHLibraryCategoryStackView *)self _innerIconImageInfo];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(SBHLibraryCategoryStackView *)self _innerIconImageOptions];
+  _innerIconImageOptions = [(SBHLibraryCategoryStackView *)self _innerIconImageOptions];
   if (SBHIconImageAppearanceTypeHasGlass([v6 appearanceType]))
   {
     if (![(UIView *)self sbh_hasGlassGroup])
@@ -680,23 +680,23 @@ uint64_t __66__SBHLibraryCategoryStackView__enumerateIconImageViewsUsingBlock___
     [(UIView *)self sbh_removeGlass];
   }
 
-  v18 = [v6 appearanceType];
-  if (v18 == [v7 appearanceType] && objc_msgSend(v6, "hasTintColor") && objc_msgSend(v7, "hasTintColor") && (objc_msgSend(v6, "tintColor"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "tintColor"), v20 = objc_claimAutoreleasedReturnValue(), v21 = BSEqualObjects(), v20, v19, (v21 & 1) == 0))
+  appearanceType = [v6 appearanceType];
+  if (appearanceType == [displayedImageAppearance appearanceType] && objc_msgSend(v6, "hasTintColor") && objc_msgSend(displayedImageAppearance, "hasTintColor") && (objc_msgSend(v6, "tintColor"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(displayedImageAppearance, "tintColor"), v20 = objc_claimAutoreleasedReturnValue(), v21 = BSEqualObjects(), v20, v19, (v21 & 1) == 0))
   {
-    v37 = [v6 tintColor];
+    tintColor = [v6 tintColor];
     v60[0] = MEMORY[0x1E69E9820];
     v60[1] = 3221225472;
     v60[2] = __61__SBHLibraryCategoryStackView__updateIconImageViewsAnimated___block_invoke;
     v60[3] = &unk_1E808BE08;
-    v61 = v37;
-    v38 = v37;
+    v61 = tintColor;
+    v38 = tintColor;
     [(SBHLibraryCategoryStackView *)self _enumerateIconImageViewsUsingBlock:v60];
     [(SBHLibraryCategoryStackView *)self setDisplayedImageAppearance:v6];
   }
 
   else
   {
-    v41 = v7;
+    v41 = displayedImageAppearance;
     v51[0] = MEMORY[0x1E69E9820];
     v51[1] = 3221225472;
     v51[2] = __61__SBHLibraryCategoryStackView__updateIconImageViewsAnimated___block_invoke_2;
@@ -709,18 +709,18 @@ uint64_t __66__SBHLibraryCategoryStackView__enumerateIconImageViewsUsingBlock___
     v55 = v12;
     v56 = v14;
     v57 = v16;
-    v53 = v5;
-    v58 = v17;
-    v59 = a3;
-    v40 = v8;
-    [v8 enumerateObjectsUsingBlock:v51];
+    v53 = traitCollection;
+    v58 = _innerIconImageOptions;
+    animatedCopy = animated;
+    v40 = innerIcons;
+    [innerIcons enumerateObjectsUsingBlock:v51];
     v22 = [MEMORY[0x1E695DFA8] set];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v23 = [(NSMapTable *)self->_iconImageViews keyEnumerator];
-    v24 = [v23 countByEnumeratingWithState:&v47 objects:v63 count:16];
+    keyEnumerator = [(NSMapTable *)self->_iconImageViews keyEnumerator];
+    v24 = [keyEnumerator countByEnumeratingWithState:&v47 objects:v63 count:16];
     if (v24)
     {
       v25 = v24;
@@ -731,12 +731,12 @@ uint64_t __66__SBHLibraryCategoryStackView__enumerateIconImageViewsUsingBlock___
         {
           if (*v48 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v28 = *(*(&v47 + 1) + 8 * i);
-          v29 = [(SBHLibraryCategoryStackView *)self innerIcons];
-          v30 = [v29 containsObject:v28];
+          innerIcons2 = [(SBHLibraryCategoryStackView *)self innerIcons];
+          v30 = [innerIcons2 containsObject:v28];
 
           if ((v30 & 1) == 0)
           {
@@ -746,7 +746,7 @@ uint64_t __66__SBHLibraryCategoryStackView__enumerateIconImageViewsUsingBlock___
           }
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v47 objects:v63 count:16];
+        v25 = [keyEnumerator countByEnumeratingWithState:&v47 objects:v63 count:16];
       }
 
       while (v25);
@@ -758,7 +758,7 @@ uint64_t __66__SBHLibraryCategoryStackView__enumerateIconImageViewsUsingBlock___
     v44 = 0u;
     v32 = v22;
     v33 = [v32 countByEnumeratingWithState:&v43 objects:v62 count:16];
-    v8 = v40;
+    innerIcons = v40;
     if (v33)
     {
       v34 = v33;
@@ -783,7 +783,7 @@ uint64_t __66__SBHLibraryCategoryStackView__enumerateIconImageViewsUsingBlock___
 
     [(SBHLibraryCategoryStackView *)self setDisplayedImageAppearance:v39];
     v6 = v42;
-    v7 = v41;
+    displayedImageAppearance = v41;
   }
 }
 
@@ -845,40 +845,40 @@ uint64_t __61__SBHLibraryCategoryStackView__updateIconImageViewsAnimated___block
   return [v2 setAlpha:1.0];
 }
 
-- (id)_scalingAnimationSettingsForStackedViewAtIndex:(unint64_t)a3 scale:(double *)a4
+- (id)_scalingAnimationSettingsForStackedViewAtIndex:(unint64_t)index scale:(double *)scale
 {
   v6 = self->_iconSettings;
   v7 = v6;
-  if (a3 == 1)
+  if (index == 1)
   {
     [(SBHLibraryIndicatorIconSettings *)v6 pod2Scale];
     v9 = v11;
-    v10 = [(SBHLibraryIndicatorIconSettings *)v7 pod2AnimationSettings];
+    pod2AnimationSettings = [(SBHLibraryIndicatorIconSettings *)v7 pod2AnimationSettings];
   }
 
-  else if (a3)
+  else if (index)
   {
-    if (a3 >= 3)
+    if (index >= 3)
     {
-      NSLog(&cfstr_NoIndicatorIco.isa, a3);
+      NSLog(&cfstr_NoIndicatorIco.isa, index);
     }
 
     [(SBHLibraryIndicatorIconSettings *)v7 pod3Scale];
     v9 = v12;
-    v10 = [(SBHLibraryIndicatorIconSettings *)v7 pod3AnimationSettings];
+    pod2AnimationSettings = [(SBHLibraryIndicatorIconSettings *)v7 pod3AnimationSettings];
   }
 
   else
   {
     [(SBHLibraryIndicatorIconSettings *)v6 pod1Scale];
     v9 = v8;
-    v10 = [(SBHLibraryIndicatorIconSettings *)v7 pod1AnimationSettings];
+    pod2AnimationSettings = [(SBHLibraryIndicatorIconSettings *)v7 pod1AnimationSettings];
   }
 
-  v13 = v10;
-  if (a4)
+  v13 = pod2AnimationSettings;
+  if (scale)
   {
-    *a4 = v9;
+    *scale = v9;
   }
 
   return v13;
@@ -886,32 +886,32 @@ uint64_t __61__SBHLibraryCategoryStackView__updateIconImageViewsAnimated___block
 
 - (id)succinctDescription
 {
-  v2 = [(SBHLibraryCategoryStackView *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHLibraryCategoryStackView *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHLibraryCategoryStackView *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHLibraryCategoryStackView *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBHLibraryCategoryStackView *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBHLibraryCategoryStackView *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __69__SBHLibraryCategoryStackView_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E8088F18;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -929,7 +929,7 @@ void __69__SBHLibraryCategoryStackView_descriptionBuilderWithMultilinePrefix___b
   [v5 appendString:v6 withName:@"backdropGroupName"];
 }
 
-- (void)setDisplayedIconImageInfo:(SBIconImageInfo *)a3
+- (void)setDisplayedIconImageInfo:(SBIconImageInfo *)info
 {
   self->_displayedIconImageInfo.size.width = v3;
   self->_displayedIconImageInfo.size.height = v4;

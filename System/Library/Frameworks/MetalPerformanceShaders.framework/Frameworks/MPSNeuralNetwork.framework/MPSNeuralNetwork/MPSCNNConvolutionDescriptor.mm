@@ -1,15 +1,15 @@
 @interface MPSCNNConvolutionDescriptor
 + (MPSCNNConvolutionDescriptor)cnnConvolutionDescriptorWithKernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight inputFeatureChannels:(NSUInteger)inputFeatureChannels outputFeatureChannels:(NSUInteger)outputFeatureChannels;
 + (MPSCNNConvolutionDescriptor)cnnConvolutionDescriptorWithKernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight inputFeatureChannels:(NSUInteger)inputFeatureChannels outputFeatureChannels:(NSUInteger)outputFeatureChannels neuronFilter:(const MPSCNNNeuron *)neuronFilter;
-+ (MPSCNNConvolutionDescriptor)cnnConvolutionDescriptorWithKernelWidth:(unint64_t)a3 kernelHeight:(unint64_t)a4 inputFeatureChannels:(unint64_t)a5 outputFeatureChannels:(unint64_t)a6 postFilters:(id)a7;
++ (MPSCNNConvolutionDescriptor)cnnConvolutionDescriptorWithKernelWidth:(unint64_t)width kernelHeight:(unint64_t)height inputFeatureChannels:(unint64_t)channels outputFeatureChannels:(unint64_t)featureChannels postFilters:(id)filters;
 - (MPSCNNConvolutionDescriptor)init;
 - (MPSCNNConvolutionDescriptor)initWithCoder:(NSCoder *)aDecoder;
-- (MPSCNNConvolutionDescriptor)initWithKernelWidth:(unint64_t)a3 kernelHeight:(unint64_t)a4 inputFeatureChannels:(unint64_t)a5 outputFeatureChannels:(unint64_t)a6;
-- (MPSCNNConvolutionDescriptor)initWithKernelWidth:(unint64_t)a3 kernelHeight:(unint64_t)a4 inputFeatureChannels:(unint64_t)a5 outputFeatureChannels:(unint64_t)a6 neuronFilter:(id)a7;
+- (MPSCNNConvolutionDescriptor)initWithKernelWidth:(unint64_t)width kernelHeight:(unint64_t)height inputFeatureChannels:(unint64_t)channels outputFeatureChannels:(unint64_t)featureChannels;
+- (MPSCNNConvolutionDescriptor)initWithKernelWidth:(unint64_t)width kernelHeight:(unint64_t)height inputFeatureChannels:(unint64_t)channels outputFeatureChannels:(unint64_t)featureChannels neuronFilter:(id)filter;
 - (NeuronInfo)neuronInfo;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (id)newDescriptorWithNeuronInfo:(NeuronInfo *)a3;
+- (id)newDescriptorWithNeuronInfo:(NeuronInfo *)info;
 - (void)dealloc;
 - (void)encodeWithCoder:(NSCoder *)aCoder;
 - (void)setBatchNormalizationParametersForInferenceWithMean:(const float *)mean variance:(const float *)variance gamma:(const float *)gamma beta:(const float *)beta epsilon:(const float)epsilon;
@@ -18,8 +18,8 @@
 - (void)setNeuron:(const MPSCNNNeuron *)neuron;
 - (void)setNeuronToPReLUWithParametersA:(NSData *)A;
 - (void)setNeuronType:(MPSCNNNeuronType)neuronType parameterA:(float)parameterA parameterB:(float)parameterB;
-- (void)setNeuronType:(int)a3;
-- (void)setNeuronType:(int)a3 parameterA:(float)a4 parameterB:(float)a5 parameterC:(float)a6;
+- (void)setNeuronType:(int)type;
+- (void)setNeuronType:(int)type parameterA:(float)a parameterB:(float)b parameterC:(float)c;
 @end
 
 @implementation MPSCNNConvolutionDescriptor
@@ -30,39 +30,39 @@
   {
     if (!fusedNeuronDescriptor)
     {
-      v5 = self;
+      selfCopy = self;
       v6 = MTLReportFailureTypeEnabled();
-      self = v5;
+      self = selfCopy;
       if (v6)
       {
         MTLReportFailure();
-        self = v5;
+        self = selfCopy;
       }
     }
 
-    v4 = self;
+    selfCopy2 = self;
 
-    v4->_fusedNeuronDescriptor = fusedNeuronDescriptor;
+    selfCopy2->_fusedNeuronDescriptor = fusedNeuronDescriptor;
   }
 }
 
-- (void)setNeuronType:(int)a3
+- (void)setNeuronType:(int)type
 {
-  if (a3 == 10)
+  if (type == 10)
   {
-    v11 = *&a3;
+    v11 = *&type;
     v12 = MTLReportFailureTypeEnabled();
-    *&a3 = v11;
+    *&type = v11;
     v13 = v12;
-    v14 = self;
+    selfCopy2 = self;
     if (v13)
     {
       MTLReportFailure();
-      v14 = self;
-      *&a3 = v11;
+      selfCopy2 = self;
+      *&type = v11;
     }
 
-    fusedNeuronDescriptor = v14->_fusedNeuronDescriptor;
+    fusedNeuronDescriptor = selfCopy2->_fusedNeuronDescriptor;
   }
 
   else
@@ -70,7 +70,7 @@
     fusedNeuronDescriptor = self->_fusedNeuronDescriptor;
   }
 
-  objc_msgSend_setNeuronType_(fusedNeuronDescriptor, a2, *&a3, v3, v4, v5, v6, v7);
+  objc_msgSend_setNeuronType_(fusedNeuronDescriptor, a2, *&type, v3, v4, v5, v6, v7);
 }
 
 - (void)setNeuronType:(MPSCNNNeuronType)neuronType parameterA:(float)parameterA parameterB:(float)parameterB
@@ -94,21 +94,21 @@
   objc_msgSend_setB_(fusedNeuronDescriptor, v21, v22, v23, v24, v25, v26, v27, v29);
 }
 
-- (void)setNeuronType:(int)a3 parameterA:(float)a4 parameterB:(float)a5 parameterC:(float)a6
+- (void)setNeuronType:(int)type parameterA:(float)a parameterB:(float)b parameterC:(float)c
 {
-  if ((a3 - 12) < 3)
+  if ((type - 12) < 3)
   {
     goto LABEL_2;
   }
 
-  v40 = *&a3;
-  if (a3 == 10 && MTLReportFailureTypeEnabled())
+  v40 = *&type;
+  if (type == 10 && MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }
 
   v41 = MTLReportFailureTypeEnabled();
-  *&a3 = v40;
+  *&type = v40;
   if (v41)
   {
     MTLReportFailure();
@@ -118,15 +118,15 @@
   else
   {
 LABEL_2:
-    objc_msgSend_setNeuronType_(self->_fusedNeuronDescriptor, a2, *&a3, v6, v7, v8, v9, v10);
+    objc_msgSend_setNeuronType_(self->_fusedNeuronDescriptor, a2, *&type, v6, v7, v8, v9, v10);
   }
 
-  *&v22 = a4;
+  *&v22 = a;
   objc_msgSend_setA_(self->_fusedNeuronDescriptor, v15, v16, v17, v18, v19, v20, v21, v22);
-  *&v23 = a5;
+  *&v23 = b;
   objc_msgSend_setB_(self->_fusedNeuronDescriptor, v24, v25, v26, v27, v28, v29, v30, v23);
   fusedNeuronDescriptor = self->_fusedNeuronDescriptor;
-  *&v39 = a6;
+  *&v39 = c;
 
   objc_msgSend_setC_(fusedNeuronDescriptor, v31, v32, v33, v34, v35, v36, v37, v39);
 }
@@ -145,13 +145,13 @@ LABEL_2:
   return result;
 }
 
-- (MPSCNNConvolutionDescriptor)initWithKernelWidth:(unint64_t)a3 kernelHeight:(unint64_t)a4 inputFeatureChannels:(unint64_t)a5 outputFeatureChannels:(unint64_t)a6 neuronFilter:(id)a7
+- (MPSCNNConvolutionDescriptor)initWithKernelWidth:(unint64_t)width kernelHeight:(unint64_t)height inputFeatureChannels:(unint64_t)channels outputFeatureChannels:(unint64_t)featureChannels neuronFilter:(id)filter
 {
-  result = objc_msgSend_initWithKernelWidth_kernelHeight_inputFeatureChannels_outputFeatureChannels_(self, a2, a3, a4, a5, a6, a7, v7);
+  result = objc_msgSend_initWithKernelWidth_kernelHeight_inputFeatureChannels_outputFeatureChannels_(self, a2, width, height, channels, featureChannels, filter, v7);
   if (result)
   {
     v16 = result;
-    objc_msgSend_setNeuron_(result, v10, a7, v11, v12, v13, v14, v15);
+    objc_msgSend_setNeuron_(result, v10, filter, v11, v12, v13, v14, v15);
     return v16;
   }
 
@@ -160,7 +160,7 @@ LABEL_2:
 
 + (MPSCNNConvolutionDescriptor)cnnConvolutionDescriptorWithKernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight inputFeatureChannels:(NSUInteger)inputFeatureChannels outputFeatureChannels:(NSUInteger)outputFeatureChannels
 {
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   v14 = objc_msgSend_initWithKernelWidth_kernelHeight_inputFeatureChannels_outputFeatureChannels_(v10, v11, kernelWidth, kernelHeight, inputFeatureChannels, outputFeatureChannels, v12, v13);
 
   return v14;
@@ -192,15 +192,15 @@ LABEL_2:
   return result;
 }
 
-- (MPSCNNConvolutionDescriptor)initWithKernelWidth:(unint64_t)a3 kernelHeight:(unint64_t)a4 inputFeatureChannels:(unint64_t)a5 outputFeatureChannels:(unint64_t)a6
+- (MPSCNNConvolutionDescriptor)initWithKernelWidth:(unint64_t)width kernelHeight:(unint64_t)height inputFeatureChannels:(unint64_t)channels outputFeatureChannels:(unint64_t)featureChannels
 {
-  result = objc_msgSend_init(self, a2, a3, a4, a5, a6, v6, v7);
+  result = objc_msgSend_init(self, a2, width, height, channels, featureChannels, v6, v7);
   if (result)
   {
-    result->_kernelWidth = a3;
-    result->_kernelHeight = a4;
-    result->_inputFeatureChannels = a5;
-    result->_outputFeatureChannels = a6;
+    result->_kernelWidth = width;
+    result->_kernelHeight = height;
+    result->_inputFeatureChannels = channels;
+    result->_outputFeatureChannels = featureChannels;
   }
 
   return result;
@@ -217,16 +217,16 @@ LABEL_3:
       return;
     }
 
-    v3 = self;
+    selfCopy = self;
     v4 = groups;
     v5 = MTLReportFailureTypeEnabled();
     groups = v4;
     v6 = v5;
-    self = v3;
+    self = selfCopy;
     if (v6)
     {
       MTLReportFailure();
-      self = v3;
+      self = selfCopy;
       groups = v4;
     }
   }
@@ -238,32 +238,32 @@ LABEL_3:
 
   if (self->_inputFeatureChannels % groups)
   {
-    v12 = self;
+    selfCopy2 = self;
     v13 = groups;
     v14 = MTLReportFailureTypeEnabled();
     groups = v13;
     v15 = v14;
-    self = v12;
+    self = selfCopy2;
     if (v15)
     {
       MTLReportFailure();
-      self = v12;
+      self = selfCopy2;
       groups = v13;
     }
   }
 
   if (self->_outputFeatureChannels % groups)
   {
-    v16 = self;
+    selfCopy3 = self;
     v17 = groups;
     v18 = MTLReportFailureTypeEnabled();
     groups = v17;
     v19 = v18;
-    self = v16;
+    self = selfCopy3;
     if (v19)
     {
       MTLReportFailure();
-      self = v16;
+      self = selfCopy3;
       groups = v17;
     }
   }
@@ -271,16 +271,16 @@ LABEL_3:
   v7 = self->_outputFeatureChannels / groups;
   if (((self->_inputFeatureChannels / groups) & 3) != 0)
   {
-    v23 = self;
+    selfCopy4 = self;
     v20 = groups;
     v21 = MTLReportFailureTypeEnabled();
     groups = v20;
     v22 = v21;
-    self = v23;
+    self = selfCopy4;
     if (v22)
     {
       MTLReportFailure();
-      self = v23;
+      self = selfCopy4;
       groups = v20;
     }
   }
@@ -290,19 +290,19 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v8 = self;
+  selfCopy5 = self;
   v9 = groups;
   v10 = MTLReportFailureTypeEnabled();
   groups = v9;
   v11 = v10;
-  self = v8;
+  self = selfCopy5;
   if (!v11)
   {
     goto LABEL_3;
   }
 
   MTLReportFailure();
-  v8->_groups = v9;
+  selfCopy5->_groups = v9;
 }
 
 - (void)setBatchNormalizationParametersForInferenceWithMean:(const float *)mean variance:(const float *)variance gamma:(const float *)gamma beta:(const float *)beta epsilon:(const float)epsilon
@@ -617,24 +617,24 @@ LABEL_30:
 
 + (MPSCNNConvolutionDescriptor)cnnConvolutionDescriptorWithKernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight inputFeatureChannels:(NSUInteger)inputFeatureChannels outputFeatureChannels:(NSUInteger)outputFeatureChannels neuronFilter:(const MPSCNNNeuron *)neuronFilter
 {
-  v12 = [a1 alloc];
+  v12 = [self alloc];
   v15 = objc_msgSend_initWithKernelWidth_kernelHeight_inputFeatureChannels_outputFeatureChannels_neuronFilter_(v12, v13, kernelWidth, kernelHeight, inputFeatureChannels, outputFeatureChannels, neuronFilter, v14);
 
   return v15;
 }
 
-+ (MPSCNNConvolutionDescriptor)cnnConvolutionDescriptorWithKernelWidth:(unint64_t)a3 kernelHeight:(unint64_t)a4 inputFeatureChannels:(unint64_t)a5 outputFeatureChannels:(unint64_t)a6 postFilters:(id)a7
++ (MPSCNNConvolutionDescriptor)cnnConvolutionDescriptorWithKernelWidth:(unint64_t)width kernelHeight:(unint64_t)height inputFeatureChannels:(unint64_t)channels outputFeatureChannels:(unint64_t)featureChannels postFilters:(id)filters
 {
-  v11 = [a1 alloc];
-  v15 = objc_msgSend_initWithKernelWidth_kernelHeight_inputFeatureChannels_outputFeatureChannels_(v11, v12, a3, a4, a5, a6, v13, v14);
+  v11 = [self alloc];
+  v15 = objc_msgSend_initWithKernelWidth_kernelHeight_inputFeatureChannels_outputFeatureChannels_(v11, v12, width, height, channels, featureChannels, v13, v14);
 
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  result = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8, v9, v10, v11);
+  result = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8, v9, v10, v11);
   if (result)
   {
     v16 = objc_msgSend_initWithKernelWidth_kernelHeight_inputFeatureChannels_outputFeatureChannels_(result, v13, self->_kernelWidth, self->_kernelHeight, self->_inputFeatureChannels, self->_outputFeatureChannels, v14, v15);
@@ -646,7 +646,7 @@ LABEL_30:
     *(v16 + 104) = self->_dilationRateY;
 
     *(v16 + 120) = self->_fusedNeuronDescriptor;
-    v23 = objc_msgSend_copyWithZone_(self->_batchNormalizationData, v17, a3, v18, v19, v20, v21, v22);
+    v23 = objc_msgSend_copyWithZone_(self->_batchNormalizationData, v17, zone, v18, v19, v20, v21, v22);
     result = v16;
     *(v16 + 72) = v23;
     *(v16 + 112) = self->_depthWiseConvolution;
@@ -814,7 +814,7 @@ LABEL_30:
   return objc_msgSend_stringWithFormat_(v3, v18, @"%@\n\tkernel width: %lu\n\tkernel height: %lu\n\tInput feature channels: %lu\n\tOutput feature channels: %lu\n\tX stride (pixels): %lu\n\tY stride (pixels): %lu\n\tGroups:    %lu\n\tsubPixelScaleFactor:    %lu\n\tdilationRateX:    %lu\n\tdilationRateY:    %lu\n\tBatch norm data: %p\n\tneuron:\n%@\n", v19, v20, v21, v22, v23, v4, v27, v26, v25, groups, subPixelScaleFactor, dilationRateX, dilationRateY, batchNormalizationData, v17);
 }
 
-- (id)newDescriptorWithNeuronInfo:(NeuronInfo *)a3
+- (id)newDescriptorWithNeuronInfo:(NeuronInfo *)info
 {
   if (self->_neuron_deprecated && (v78 = self, v79 = MTLReportFailureTypeEnabled(), self = v78, v79))
   {
@@ -836,14 +836,14 @@ LABEL_30:
     MTLReportFailure();
   }
 
-  objc_msgSend_setNeuronType_(v17[15], v41, a3->type, v42, v43, v44, v45, v46);
-  *&v47 = a3->a;
+  objc_msgSend_setNeuronType_(v17[15], v41, info->type, v42, v43, v44, v45, v46);
+  *&v47 = info->a;
   objc_msgSend_setA_(v17[15], v48, v49, v50, v51, v52, v53, v54, v47);
-  *&v55 = a3->b;
+  *&v55 = info->b;
   objc_msgSend_setB_(v17[15], v56, v57, v58, v59, v60, v61, v62, v55);
-  *&v63 = a3->c;
+  *&v63 = info->c;
   objc_msgSend_setC_(v17[15], v64, v65, v66, v67, v68, v69, v70, v63);
-  objc_msgSend_setData_(v17[15], v71, a3->aData, v72, v73, v74, v75, v76);
+  objc_msgSend_setData_(v17[15], v71, info->aData, v72, v73, v74, v75, v76);
   return v17;
 }
 

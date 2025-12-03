@@ -1,12 +1,12 @@
 @interface CSSpeechUaapXPCClient
 - (CSSpeechUaapXPCClient)init;
-- (void)_handleConnectionError:(id)a3;
+- (void)_handleConnectionError:(id)error;
 - (void)dealloc;
 - (void)invalidate;
 - (void)registerDatapackUpdate;
-- (void)registerMultilingualUaapApp:(id)a3 withAssetFiles:(id)a4 completion:(id)a5;
-- (void)registerUaapApp:(id)a3 forLocale:(id)a4 withAssetFiles:(id)a5 completion:(id)a6;
-- (void)registerUaapApp:(id)a3 withAssetFiles:(id)a4 completion:(id)a5;
+- (void)registerMultilingualUaapApp:(id)app withAssetFiles:(id)files completion:(id)completion;
+- (void)registerUaapApp:(id)app forLocale:(id)locale withAssetFiles:(id)files completion:(id)completion;
+- (void)registerUaapApp:(id)app withAssetFiles:(id)files completion:(id)completion;
 @end
 
 @implementation CSSpeechUaapXPCClient
@@ -53,12 +53,12 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerMultilingualUaapApp:(id)a3 withAssetFiles:(id)a4 completion:(id)a5
+- (void)registerMultilingualUaapApp:(id)app withAssetFiles:(id)files completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  appCopy = app;
+  filesCopy = files;
+  completionCopy = completion;
   empty = xpc_dictionary_create_empty();
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -66,10 +66,10 @@
   v24[3] = &unk_2784C4A28;
   v12 = empty;
   v25 = v12;
-  [v9 enumerateKeysAndObjectsUsingBlock:v24];
+  [filesCopy enumerateKeysAndObjectsUsingBlock:v24];
   *keys = xmmword_2784C4A48;
-  v13 = v8;
-  values[0] = xpc_string_create([v8 UTF8String]);
+  v13 = appCopy;
+  values[0] = xpc_string_create([appCopy UTF8String]);
   v14 = v12;
   values[1] = v14;
   *v27 = xmmword_2784C4A58;
@@ -82,7 +82,7 @@
   v22[1] = 3221225472;
   v22[2] = __79__CSSpeechUaapXPCClient_registerMultilingualUaapApp_withAssetFiles_completion___block_invoke_3;
   v22[3] = &unk_2784C6A48;
-  v18 = v10;
+  v18 = completionCopy;
   v23 = v18;
   xpc_connection_send_message_with_reply(connection, v15, queue, v22);
 
@@ -151,13 +151,13 @@ void __79__CSSpeechUaapXPCClient_registerMultilingualUaapApp_withAssetFiles_comp
   xpc_array_append_value(v3, v5);
 }
 
-- (void)registerUaapApp:(id)a3 forLocale:(id)a4 withAssetFiles:(id)a5 completion:(id)a6
+- (void)registerUaapApp:(id)app forLocale:(id)locale withAssetFiles:(id)files completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  appCopy = app;
+  localeCopy = locale;
+  filesCopy = files;
+  completionCopy = completion;
   empty = xpc_array_create_empty();
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -165,15 +165,15 @@ void __79__CSSpeechUaapXPCClient_registerMultilingualUaapApp_withAssetFiles_comp
   v28[3] = &unk_2784C49E8;
   v15 = empty;
   v29 = v15;
-  [v12 enumerateObjectsUsingBlock:v28];
+  [filesCopy enumerateObjectsUsingBlock:v28];
   *keys = xmmword_2784C4A08;
   v34 = "locale";
-  v16 = v10;
-  values[0] = xpc_string_create([v10 UTF8String]);
+  v16 = appCopy;
+  values[0] = xpc_string_create([appCopy UTF8String]);
   v17 = v15;
   values[1] = v17;
-  v18 = v11;
-  values[2] = xpc_string_create([v11 UTF8String]);
+  v18 = localeCopy;
+  values[2] = xpc_string_create([localeCopy UTF8String]);
   *v31 = xmmword_2784C4A58;
   v30[0] = xpc_uint64_create(2uLL);
   v30[1] = xpc_dictionary_create(keys, values, 3uLL);
@@ -184,7 +184,7 @@ void __79__CSSpeechUaapXPCClient_registerMultilingualUaapApp_withAssetFiles_comp
   v26[1] = 3221225472;
   v26[2] = __77__CSSpeechUaapXPCClient_registerUaapApp_forLocale_withAssetFiles_completion___block_invoke_2;
   v26[3] = &unk_2784C6A48;
-  v22 = v13;
+  v22 = completionCopy;
   v27 = v22;
   xpc_connection_send_message_with_reply(connection, v19, queue, v26);
 
@@ -234,12 +234,12 @@ void __77__CSSpeechUaapXPCClient_registerUaapApp_forLocale_withAssetFiles_comple
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerUaapApp:(id)a3 withAssetFiles:(id)a4 completion:(id)a5
+- (void)registerUaapApp:(id)app withAssetFiles:(id)files completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  appCopy = app;
+  filesCopy = files;
+  completionCopy = completion;
   empty = xpc_array_create_empty();
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -247,10 +247,10 @@ void __77__CSSpeechUaapXPCClient_registerUaapApp_forLocale_withAssetFiles_comple
   v24[3] = &unk_2784C49E8;
   v12 = empty;
   v25 = v12;
-  [v9 enumerateObjectsUsingBlock:v24];
+  [filesCopy enumerateObjectsUsingBlock:v24];
   *keys = xmmword_2784C4A48;
-  v13 = v8;
-  values[0] = xpc_string_create([v8 UTF8String]);
+  v13 = appCopy;
+  values[0] = xpc_string_create([appCopy UTF8String]);
   v14 = v12;
   values[1] = v14;
   *v27 = xmmword_2784C4A58;
@@ -263,7 +263,7 @@ void __77__CSSpeechUaapXPCClient_registerUaapApp_forLocale_withAssetFiles_comple
   v22[1] = 3221225472;
   v22[2] = __67__CSSpeechUaapXPCClient_registerUaapApp_withAssetFiles_completion___block_invoke_2;
   v22[3] = &unk_2784C6A48;
-  v18 = v10;
+  v18 = completionCopy;
   v23 = v18;
   xpc_connection_send_message_with_reply(connection, v15, queue, v22);
 
@@ -313,16 +313,16 @@ void __67__CSSpeechUaapXPCClient_registerUaapApp_withAssetFiles_completion___blo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleConnectionError:(id)a3
+- (void)_handleConnectionError:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  errorCopy = error;
+  if (errorCopy)
   {
     v4 = MEMORY[0x277D863F8];
     v5 = *MEMORY[0x277D015D8];
     v6 = os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR);
-    if (v3 == v4 || v3 == MEMORY[0x277D863F0])
+    if (errorCopy == v4 || errorCopy == MEMORY[0x277D863F0])
     {
       if (v6)
       {
@@ -339,7 +339,7 @@ void __67__CSSpeechUaapXPCClient_registerUaapApp_withAssetFiles_completion___blo
       v11 = 136315394;
       v12 = "[CSSpeechUaapXPCClient _handleConnectionError:]";
       v13 = 2080;
-      string = xpc_dictionary_get_string(v3, v9);
+      string = xpc_dictionary_get_string(errorCopy, v9);
       _os_log_error_impl(&dword_222E4D000, v10, OS_LOG_TYPE_ERROR, "%s CSSpeechUaapXPCConnection error: %s", &v11, 0x16u);
     }
   }

@@ -26,13 +26,13 @@
 {
   v3 = +[VUIMediaAPIRequestFactory familyMembersRequest];
   objc_initWeak(&location, self);
-  v4 = [(VUILibraryFamilyMembersDataSource *)self mediaClient];
+  mediaClient = [(VUILibraryFamilyMembersDataSource *)self mediaClient];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __47__VUILibraryFamilyMembersDataSource_startFetch__block_invoke;
   v5[3] = &unk_1E872EA80;
   objc_copyWeak(&v6, &location);
-  [v4 fetchContentForUrl:v3 completion:v5];
+  [mediaClient fetchContentForUrl:v3 completion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -93,8 +93,8 @@ void __47__VUILibraryFamilyMembersDataSource_startFetch__block_invoke_3(uint64_t
 - (void)_orderFamilyMembersByFirstName
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(VUILibraryFamilyMembersDataSource *)self familyMembers];
-  v4 = [v3 mutableCopy];
+  familyMembers = [(VUILibraryFamilyMembersDataSource *)self familyMembers];
+  v4 = [familyMembers mutableCopy];
 
   v5 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"firstName" ascending:1 selector:sel_localizedCaseInsensitiveCompare_];
   v8[0] = v5;

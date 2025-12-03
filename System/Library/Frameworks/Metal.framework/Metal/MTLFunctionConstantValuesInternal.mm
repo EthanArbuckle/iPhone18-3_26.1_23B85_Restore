@@ -1,14 +1,14 @@
 @interface MTLFunctionConstantValuesInternal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLFunctionConstantValuesInternal)init;
-- (const)constantValueWithFunctionConstant:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (const)constantValueWithFunctionConstant:(id)constant;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 - (void)reset;
-- (void)setConstantValue:(const void *)a3 type:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setConstantValue:(const void *)a3 type:(unint64_t)a4 withName:(id)a5;
-- (void)setConstantValues:(const void *)a3 type:(unint64_t)a4 withRange:(_NSRange)a5;
+- (void)setConstantValue:(const void *)value type:(unint64_t)type atIndex:(unint64_t)index;
+- (void)setConstantValue:(const void *)value type:(unint64_t)type withName:(id)name;
+- (void)setConstantValues:(const void *)values type:(unint64_t)type withRange:(_NSRange)range;
 @end
 
 @implementation MTLFunctionConstantValuesInternal
@@ -40,9 +40,9 @@
   [(MTLFunctionConstantValuesInternal *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v3)
   {
     v4 = *(v3 + 8);
@@ -59,71 +59,71 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     return 0;
   }
 
   constantStorage = self->_constantStorage;
-  v8 = *(a3 + 1);
+  v8 = *(equal + 1);
 
   return MTLConstantStorage::isEqual(constantStorage, v8);
 }
 
-- (void)setConstantValue:(const void *)a3 type:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setConstantValue:(const void *)value type:(unint64_t)type atIndex:(unint64_t)index
 {
-  if (a5 >= 0x10000)
+  if (index >= 0x10000)
   {
-    [(MTLFunctionConstantValuesInternal *)a5 setConstantValue:a2 type:a3 atIndex:a4, a5, v5, v6, v7];
+    [(MTLFunctionConstantValuesInternal *)index setConstantValue:a2 type:value atIndex:type, index, v5, v6, v7];
   }
 
   constantStorage = self->_constantStorage;
-  _MTLConstantDataSize(a4);
+  _MTLConstantDataSize(type);
   operator new[]();
 }
 
-- (void)setConstantValues:(const void *)a3 type:(unint64_t)a4 withRange:(_NSRange)a5
+- (void)setConstantValues:(const void *)values type:(unint64_t)type withRange:(_NSRange)range
 {
-  location = a5.location;
-  v9 = a5.location + a5.length;
-  if (a5.location + a5.length > 0x10000)
+  location = range.location;
+  v9 = range.location + range.length;
+  if (range.location + range.length > 0x10000)
   {
-    [(MTLFunctionConstantValuesInternal *)a5.location + a5.length setConstantValues:a2 type:a3 withRange:a4, a5.location, a5.length, v5, v6];
+    [(MTLFunctionConstantValuesInternal *)range.location + range.length setConstantValues:a2 type:values withRange:type, range.location, range.length, v5, v6];
   }
 
-  if (MTLDataTypeGetComponentCount(a4) == 3)
+  if (MTLDataTypeGetComponentCount(type) == 3)
   {
-    ComponentType = MTLDataTypeGetComponentType(a4);
+    ComponentType = MTLDataTypeGetComponentType(type);
     _MTLConstantDataSize(ComponentType);
   }
 
   else
   {
-    _MTLConstantDataSize(a4);
+    _MTLConstantDataSize(type);
   }
 
   if (location < v9)
   {
     constantStorage = self->_constantStorage;
-    _MTLConstantDataSize(a4);
+    _MTLConstantDataSize(type);
     operator new[]();
   }
 }
 
-- (void)setConstantValue:(const void *)a3 type:(unint64_t)a4 withName:(id)a5
+- (void)setConstantValue:(const void *)value type:(unint64_t)type withName:(id)name
 {
   constantStorage = self->_constantStorage;
-  v8 = [a5 UTF8String];
+  uTF8String = [name UTF8String];
 
-  MTLConstantStorage::setConstantData(constantStorage, v8, a4, a3);
+  MTLConstantStorage::setConstantData(constantStorage, uTF8String, type, value);
 }
 
 - (void)reset
@@ -142,31 +142,31 @@
 - (id)description
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v3 = [(MTLFunctionConstantValuesInternal *)self newNamedConstantArray];
-  v4 = [(MTLFunctionConstantValuesInternal *)self newIndexedConstantArray];
+  newNamedConstantArray = [(MTLFunctionConstantValuesInternal *)self newNamedConstantArray];
+  newIndexedConstantArray = [(MTLFunctionConstantValuesInternal *)self newIndexedConstantArray];
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = MTLFunctionConstantValuesInternal;
   v6 = [(MTLFunctionConstantValuesInternal *)&v11 description];
   v12[0] = @"named constants";
-  v7 = arrayDescription(v3);
+  v7 = arrayDescription(newNamedConstantArray);
   v12[1] = @"index constants";
   v13[0] = v7;
-  v13[1] = arrayDescription(v4);
+  v13[1] = arrayDescription(newIndexedConstantArray);
   v8 = [v5 stringWithFormat:@"%@\n%@", v6, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v13, v12, 2)];
 
   v9 = *MEMORY[0x1E69E9840];
   return v8;
 }
 
-- (const)constantValueWithFunctionConstant:(id)a3
+- (const)constantValueWithFunctionConstant:(id)constant
 {
-  result = MTLConstantStorage::findConstantValue(self->_constantStorage, a3);
+  result = MTLConstantStorage::findConstantValue(self->_constantStorage, constant);
   if (result)
   {
     v5 = result;
     v6 = *result;
-    if ([a3 type] == v6)
+    if ([constant type] == v6)
     {
       return *(v5 + 1);
     }

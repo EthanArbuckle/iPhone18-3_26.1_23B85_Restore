@@ -8,12 +8,12 @@
 - (id)description
 {
   v3 = +[NSMutableString string];
-  v4 = [(SSHBHIDSSHBTurtleInputPacket *)self descriptionDictionary];
+  descriptionDictionary = [(SSHBHIDSSHBTurtleInputPacket *)self descriptionDictionary];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [descriptionDictionary countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -24,15 +24,15 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(descriptionDictionary);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v4 objectForKeyedSubscript:v9];
+        v10 = [descriptionDictionary objectForKeyedSubscript:v9];
         [v3 appendFormat:@"%@=%@\n", v9, v10];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [descriptionDictionary countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);

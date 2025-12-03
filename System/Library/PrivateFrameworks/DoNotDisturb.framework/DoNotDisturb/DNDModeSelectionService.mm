@@ -1,24 +1,24 @@
 @interface DNDModeSelectionService
-+ (id)serviceForClientIdentifier:(id)a3;
++ (id)serviceForClientIdentifier:(id)identifier;
 - (BOOL)_queue_registerForUpdatesIfRequired;
-- (BOOL)activateModeWithDetails:(id)a3 error:(id *)a4;
-- (BOOL)invalidateModeAssertionWithUUID:(id)a3 error:(id *)a4;
-- (BOOL)promotePlaceholderWithModeIdentifier:(id)a3 error:(id *)a4;
-- (id)_initWithClientIdentifier:(id)a3;
-- (id)activeModeAssertionWithError:(id *)a3;
+- (BOOL)activateModeWithDetails:(id)details error:(id *)error;
+- (BOOL)invalidateModeAssertionWithUUID:(id)d error:(id *)error;
+- (BOOL)promotePlaceholderWithModeIdentifier:(id)identifier error:(id *)error;
+- (id)_initWithClientIdentifier:(id)identifier;
+- (id)activeModeAssertionWithError:(id *)error;
 - (void)_queue_registerForUpdatesIfRequired;
-- (void)addListener:(id)a3 withCompletionHandler:(id)a4;
-- (void)remoteService:(id)a3 didReceiveUpdatedActiveModeAssertion:(id)a4 stateUpdate:(id)a5;
-- (void)remoteService:(id)a3 didReceiveUpdatedAvailableModes:(id)a4;
-- (void)remoteService:(id)a3 didReceiveUpdatedModes:(id)a4;
-- (void)removeListener:(id)a3;
+- (void)addListener:(id)listener withCompletionHandler:(id)handler;
+- (void)remoteService:(id)service didReceiveUpdatedActiveModeAssertion:(id)assertion stateUpdate:(id)update;
+- (void)remoteService:(id)service didReceiveUpdatedAvailableModes:(id)modes;
+- (void)remoteService:(id)service didReceiveUpdatedModes:(id)modes;
+- (void)removeListener:(id)listener;
 @end
 
 @implementation DNDModeSelectionService
 
-+ (id)serviceForClientIdentifier:(id)a3
++ (id)serviceForClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (serviceForClientIdentifier__onceToken_8 != -1)
   {
     +[DNDModeSelectionService serviceForClientIdentifier:];
@@ -35,10 +35,10 @@
   block[1] = 3221225472;
   block[2] = __54__DNDModeSelectionService_serviceForClientIdentifier___block_invoke_2;
   block[3] = &unk_27843A080;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v13;
-  v12 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_sync(v5, block);
   v7 = v14[5];
 
@@ -83,15 +83,15 @@ void __54__DNDModeSelectionService_serviceForClientIdentifier___block_invoke_2(u
   }
 }
 
-- (id)_initWithClientIdentifier:(id)a3
+- (id)_initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = DNDModeSelectionService;
   v5 = [(DNDModeSelectionService *)&v20 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v6;
 
@@ -109,7 +109,7 @@ void __54__DNDModeSelectionService_serviceForClientIdentifier___block_invoke_2(u
     listeners = v5->_listeners;
     v5->_listeners = v14;
 
-    v16 = [DNDModeConfigurationService serviceForClientIdentifier:v4];
+    v16 = [DNDModeConfigurationService serviceForClientIdentifier:identifierCopy];
     modeConfigurationService = v5->_modeConfigurationService;
     v5->_modeConfigurationService = v16;
 
@@ -120,10 +120,10 @@ void __54__DNDModeSelectionService_serviceForClientIdentifier___block_invoke_2(u
   return v5;
 }
 
-- (BOOL)activateModeWithDetails:(id)a3 error:(id *)a4
+- (BOOL)activateModeWithDetails:(id)details error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  detailsCopy = details;
   v7 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeSelectionService.activateModeWithIdentifier", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -148,7 +148,7 @@ void __54__DNDModeSelectionService_serviceForClientIdentifier___block_invoke_2(u
   v22 = v10;
   v23 = &v31;
   v24 = &v25;
-  [v9 activateModeWithDetails:v6 withRequestDetails:v8 completionHandler:v21];
+  [v9 activateModeWithDetails:detailsCopy withRequestDetails:v8 completionHandler:v21];
 
   v11 = *(v32 + 24);
   v12 = DNDLogModeSelection;
@@ -157,34 +157,34 @@ void __54__DNDModeSelectionService_serviceForClientIdentifier___block_invoke_2(u
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v6 modeIdentifier];
+      modeIdentifier = [detailsCopy modeIdentifier];
       *buf = 138543618;
       v37 = v8;
       v38 = 2114;
-      v39 = v14;
+      v39 = modeIdentifier;
       _os_log_impl(&dword_22002F000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] Activate mode with identifier, modeIdentifier=%{public}@", buf, 0x16u);
     }
   }
 
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    v19 = [v6 modeIdentifier];
+    modeIdentifier2 = [detailsCopy modeIdentifier];
     v20 = v26[5];
     *buf = 138543874;
     v37 = v8;
     v38 = 2114;
-    v39 = v19;
+    v39 = modeIdentifier2;
     v40 = 2114;
     v41 = v20;
     _os_log_error_impl(&dword_22002F000, v13, OS_LOG_TYPE_ERROR, "[%{public}@] Error when setting mode with identifier, modeIdentifier=%{public}@ error='%{public}@'", buf, 0x20u);
   }
 
-  if (a4)
+  if (error)
   {
     v15 = v26[5];
     if (v15)
     {
-      *a4 = v15;
+      *error = v15;
     }
   }
 
@@ -213,10 +213,10 @@ void __57__DNDModeSelectionService_activateModeWithDetails_error___block_invoke(
   os_activity_scope_leave(&v9);
 }
 
-- (BOOL)invalidateModeAssertionWithUUID:(id)a3 error:(id *)a4
+- (BOOL)invalidateModeAssertionWithUUID:(id)d error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v7 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeSelectionService.invalidateModeAssertionWithUUID", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -241,7 +241,7 @@ void __57__DNDModeSelectionService_activateModeWithDetails_error___block_invoke(
   v18 = v10;
   v19 = &v27;
   v20 = &v21;
-  [v9 invalidateModeAssertionWithUUID:v6 withRequestDetails:v8 completionHandler:v17];
+  [v9 invalidateModeAssertionWithUUID:dCopy withRequestDetails:v8 completionHandler:v17];
 
   v11 = DNDLogModeSelection;
   if (*(v28 + 24) == 1)
@@ -251,9 +251,9 @@ void __57__DNDModeSelectionService_activateModeWithDetails_error___block_invoke(
       *buf = 138543618;
       v33 = v8;
       v34 = 2114;
-      v35 = v6;
+      v35 = dCopy;
       _os_log_impl(&dword_22002F000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Invalidate mode assertion with UUID, assertionUUID=%{public}@", buf, 0x16u);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_9;
       }
@@ -262,7 +262,7 @@ void __57__DNDModeSelectionService_activateModeWithDetails_error___block_invoke(
     }
 
 LABEL_6:
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -279,11 +279,11 @@ LABEL_6:
   *buf = 138543874;
   v33 = v8;
   v34 = 2114;
-  v35 = v6;
+  v35 = dCopy;
   v36 = 2114;
   v37 = v16;
   _os_log_error_impl(&dword_22002F000, v11, OS_LOG_TYPE_ERROR, "[%{public}@] Error when invalidating mode assertion with UUID, assertionUUID=%{public}@ error='%{public}@'", buf, 0x20u);
-  if (!a4)
+  if (!error)
   {
     goto LABEL_9;
   }
@@ -292,7 +292,7 @@ LABEL_7:
   v12 = v22[5];
   if (v12)
   {
-    *a4 = v12;
+    *error = v12;
   }
 
 LABEL_9:
@@ -321,7 +321,7 @@ void __65__DNDModeSelectionService_invalidateModeAssertionWithUUID_error___block
   os_activity_scope_leave(&v9);
 }
 
-- (id)activeModeAssertionWithError:(id *)a3
+- (id)activeModeAssertionWithError:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
   state.opaque[0] = 0;
@@ -365,9 +365,9 @@ void __65__DNDModeSelectionService_invalidateModeAssertionWithUUID_error___block
       [(DNDModeSelectionService *)v6 activeModeAssertionWithError:v16];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(v16[0] + 40);
+      *error = *(v16[0] + 40);
     }
   }
 
@@ -406,19 +406,19 @@ void __56__DNDModeSelectionService_activeModeAssertionWithError___block_invoke(u
   *(v9 + 40) = v6;
 }
 
-- (BOOL)promotePlaceholderWithModeIdentifier:(id)a3 error:(id *)a4
+- (BOOL)promotePlaceholderWithModeIdentifier:(id)identifier error:(id *)error
 {
-  v4 = [(DNDModeConfigurationService *)self->_modeConfigurationService createModeConfigurationUsingTemplateForModeIdentifier:a3 error:a4];
+  v4 = [(DNDModeConfigurationService *)self->_modeConfigurationService createModeConfigurationUsingTemplateForModeIdentifier:identifier error:error];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (void)addListener:(id)a3 withCompletionHandler:(id)a4
+- (void)addListener:(id)listener withCompletionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeSelectionService.addListener", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -427,7 +427,7 @@ void __56__DNDModeSelectionService_activeModeAssertionWithError___block_invoke(u
   if (os_log_type_enabled(DNDLogModeSelection, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = v6;
+    v22 = listenerCopy;
     _os_log_impl(&dword_22002F000, v9, OS_LOG_TYPE_DEFAULT, "Adding update listener: listener=%{public}@", buf, 0xCu);
   }
 
@@ -440,10 +440,10 @@ void __56__DNDModeSelectionService_activeModeAssertionWithError___block_invoke(u
   v16 = v8;
   v11 = v8;
   objc_copyWeak(&v19, buf);
-  v17 = v6;
-  v18 = v7;
-  v12 = v7;
-  v13 = v6;
+  v17 = listenerCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = listenerCopy;
   dispatch_async(queue, v15);
 
   objc_destroyWeak(&v19);
@@ -515,10 +515,10 @@ void __61__DNDModeSelectionService_addListener_withCompletionHandler___block_inv
   os_activity_scope_leave(&v3);
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listenerCopy = listener;
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDModeSelectionService.removeListener", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -527,7 +527,7 @@ void __61__DNDModeSelectionService_addListener_withCompletionHandler___block_inv
   if (os_log_type_enabled(DNDLogModeSelection, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v4;
+    v17 = listenerCopy;
     _os_log_impl(&dword_22002F000, v6, OS_LOG_TYPE_DEFAULT, "Removing update listener: listener=%{public}@", buf, 0xCu);
   }
 
@@ -540,8 +540,8 @@ void __61__DNDModeSelectionService_addListener_withCompletionHandler___block_inv
   v12 = v5;
   v8 = v5;
   objc_copyWeak(&v14, buf);
-  v13 = v4;
-  v9 = v4;
+  v13 = listenerCopy;
+  v9 = listenerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v14);
@@ -565,20 +565,20 @@ void __42__DNDModeSelectionService_removeListener___block_invoke(uint64_t a1)
   os_activity_scope_leave(&v4);
 }
 
-- (void)remoteService:(id)a3 didReceiveUpdatedActiveModeAssertion:(id)a4 stateUpdate:(id)a5
+- (void)remoteService:(id)service didReceiveUpdatedActiveModeAssertion:(id)assertion stateUpdate:(id)update
 {
-  v7 = a4;
-  v8 = a5;
+  assertionCopy = assertion;
+  updateCopy = update;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __90__DNDModeSelectionService_remoteService_didReceiveUpdatedActiveModeAssertion_stateUpdate___block_invoke;
   block[3] = &unk_27843A210;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = assertionCopy;
+  v14 = updateCopy;
+  v10 = updateCopy;
+  v11 = assertionCopy;
   dispatch_async(queue, block);
 }
 
@@ -648,17 +648,17 @@ uint64_t __90__DNDModeSelectionService_remoteService_didReceiveUpdatedActiveMode
   return result;
 }
 
-- (void)remoteService:(id)a3 didReceiveUpdatedModes:(id)a4
+- (void)remoteService:(id)service didReceiveUpdatedModes:(id)modes
 {
-  v5 = a4;
+  modesCopy = modes;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__DNDModeSelectionService_remoteService_didReceiveUpdatedModes___block_invoke;
   v8[3] = &unk_27843A1E8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = modesCopy;
+  v7 = modesCopy;
   dispatch_async(queue, v8);
 }
 
@@ -726,17 +726,17 @@ uint64_t __64__DNDModeSelectionService_remoteService_didReceiveUpdatedModes___bl
   return result;
 }
 
-- (void)remoteService:(id)a3 didReceiveUpdatedAvailableModes:(id)a4
+- (void)remoteService:(id)service didReceiveUpdatedAvailableModes:(id)modes
 {
-  v5 = a4;
+  modesCopy = modes;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__DNDModeSelectionService_remoteService_didReceiveUpdatedAvailableModes___block_invoke;
   v8[3] = &unk_27843A1E8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = modesCopy;
+  v7 = modesCopy;
   dispatch_async(queue, v8);
 }
 

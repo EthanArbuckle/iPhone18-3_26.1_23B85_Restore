@@ -1,50 +1,50 @@
 @interface _LSStartupJournalledInstallNotification
-- (_LSStartupJournalledInstallNotification)initWithNotification:(int)a3 appProxies:(id)a4 plugins:(BOOL)a5;
-- (void)dispatchToObserver:(id)a3 forInstallProgressService:(id)a4;
+- (_LSStartupJournalledInstallNotification)initWithNotification:(int)notification appProxies:(id)proxies plugins:(BOOL)plugins;
+- (void)dispatchToObserver:(id)observer forInstallProgressService:(id)service;
 @end
 
 @implementation _LSStartupJournalledInstallNotification
 
-- (_LSStartupJournalledInstallNotification)initWithNotification:(int)a3 appProxies:(id)a4 plugins:(BOOL)a5
+- (_LSStartupJournalledInstallNotification)initWithNotification:(int)notification appProxies:(id)proxies plugins:(BOOL)plugins
 {
-  v8 = a4;
+  proxiesCopy = proxies;
   v14.receiver = self;
   v14.super_class = _LSStartupJournalledInstallNotification;
   v9 = [(_LSStartupJournalledInstallNotification *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_notification = a3;
-    v11 = [v8 copy];
+    v9->_notification = notification;
+    v11 = [proxiesCopy copy];
     proxies = v10->_proxies;
     v10->_proxies = v11;
 
-    v10->_plugins = a5;
+    v10->_plugins = plugins;
   }
 
   return v10;
 }
 
-- (void)dispatchToObserver:(id)a3 forInstallProgressService:(id)a4
+- (void)dispatchToObserver:(id)observer forInstallProgressService:(id)service
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  serviceCopy = service;
+  observerCopy = observer;
   v8 = _LSProgressLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(_LSStartupJournalledInstallNotification *)self notification];
-    v10 = [(_LSStartupJournalledInstallNotification *)self proxies];
+    notification = [(_LSStartupJournalledInstallNotification *)self notification];
+    proxies = [(_LSStartupJournalledInstallNotification *)self proxies];
     v14 = 134218242;
-    v15 = v9;
+    v15 = notification;
     v16 = 2112;
-    v17 = v10;
+    v17 = proxies;
     _os_log_impl(&dword_18162D000, v8, OS_LOG_TYPE_INFO, "Sending notification %lu for proxies %@ to observer.", &v14, 0x16u);
   }
 
-  v11 = [(_LSStartupJournalledInstallNotification *)self notification];
-  v12 = [(_LSStartupJournalledInstallNotification *)self proxies];
-  [v6 directlySendNotification:v11 withProxies:v12 toObserver:v7];
+  notification2 = [(_LSStartupJournalledInstallNotification *)self notification];
+  proxies2 = [(_LSStartupJournalledInstallNotification *)self proxies];
+  [serviceCopy directlySendNotification:notification2 withProxies:proxies2 toObserver:observerCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 }

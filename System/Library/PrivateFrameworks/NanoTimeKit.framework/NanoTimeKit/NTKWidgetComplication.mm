@@ -1,33 +1,33 @@
 @interface NTKWidgetComplication
-+ (NTKWidgetComplication)complicationWithDescriptor:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)snapshotContext:(id)a3 isStaleRelativeToContext:(id)a4;
++ (NTKWidgetComplication)complicationWithDescriptor:(id)descriptor;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)snapshotContext:(id)context isStaleRelativeToContext:(id)toContext;
 - (INIntent)intent;
-- (NTKWidgetComplication)initWithCoder:(id)a3;
+- (NTKWidgetComplication)initWithCoder:(id)coder;
 - (id)_createUniqueIdentifier;
-- (id)_initWithComplicationType:(unint64_t)a3 JSONDictionary:(id)a4;
+- (id)_initWithComplicationType:(unint64_t)type JSONDictionary:(id)dictionary;
 - (id)analyticsIdentifier;
 - (id)appIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)customDailySnapshotKeyForFamily:(int64_t)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)customDailySnapshotKeyForFamily:(int64_t)family device:(id)device;
 - (id)description;
-- (id)ntk_localizedNameWithOptions:(unint64_t)a3 forRichComplicationSlot:(BOOL)a4;
-- (void)_addKeysToJSONDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)ntk_localizedNameWithOptions:(unint64_t)options forRichComplicationSlot:(BOOL)slot;
+- (void)_addKeysToJSONDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKWidgetComplication
 
-- (id)ntk_localizedNameWithOptions:(unint64_t)a3 forRichComplicationSlot:(BOOL)a4
+- (id)ntk_localizedNameWithOptions:(unint64_t)options forRichComplicationSlot:(BOOL)slot
 {
-  if (a3 <= 1)
+  if (options <= 1)
   {
-    v5 = 1;
+    optionsCopy = 1;
   }
 
   else
   {
-    v5 = a3;
+    optionsCopy = options;
   }
 
   v33 = 0;
@@ -45,53 +45,53 @@
   v7 = v6;
   v31 = v7;
   v8 = _Block_copy(&v27);
-  if ((v5 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     v9 = [(NTKComplication *)self localizedSectionHeaderName:v27];
     v8[2](v8, v9);
   }
 
-  v10 = [MEMORY[0x277CBBAE8] currentDevice];
-  v11 = NTKSharedWidgetComplicationProvider(v10);
-  v12 = [(NTKWidgetComplication *)self descriptor];
-  v13 = [v11 infoForDescriptor:v12];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  v11 = NTKSharedWidgetComplicationProvider(currentDevice);
+  descriptor = [(NTKWidgetComplication *)self descriptor];
+  v13 = [v11 infoForDescriptor:descriptor];
 
-  if (v5)
+  if (optionsCopy)
   {
-    v14 = [v13 localizedDisplayName];
-    v15 = [v34[5] localizedLowercaseString];
-    v16 = [v14 localizedLowercaseString];
-    v17 = NTKEqualObjects(v15, v16);
+    localizedDisplayName = [v13 localizedDisplayName];
+    localizedLowercaseString = [v34[5] localizedLowercaseString];
+    localizedLowercaseString2 = [localizedDisplayName localizedLowercaseString];
+    v17 = NTKEqualObjects(localizedLowercaseString, localizedLowercaseString2);
 
     if ((v17 & 1) == 0)
     {
-      v8[2](v8, v14);
+      v8[2](v8, localizedDisplayName);
     }
   }
 
   if (![v34[5] length])
   {
-    v18 = [v13 localizedAppName];
+    localizedAppName = [v13 localizedAppName];
     v19 = v34[5];
-    v34[5] = v18;
+    v34[5] = localizedAppName;
 
     v20 = v34[5];
-    v21 = [(NTKWidgetComplication *)self descriptor];
-    v22 = [v21 containerBundleIdentifier];
-    LOBYTE(v20) = NTKEqualObjects(v20, v22);
+    descriptor2 = [(NTKWidgetComplication *)self descriptor];
+    containerBundleIdentifier = [descriptor2 containerBundleIdentifier];
+    LOBYTE(v20) = NTKEqualObjects(v20, containerBundleIdentifier);
 
     v23 = v20 ^ 1;
-    if ((v5 & 1) == 0)
+    if ((optionsCopy & 1) == 0)
     {
       v23 = 1;
     }
 
     if ((v23 & 1) == 0)
     {
-      v24 = [(NTKComplication *)self localizedSectionHeaderName];
-      if ([v24 length])
+      localizedSectionHeaderName = [(NTKComplication *)self localizedSectionHeaderName];
+      if ([localizedSectionHeaderName length])
       {
-        objc_storeStrong(v34 + 5, v24);
+        objc_storeStrong(v34 + 5, localizedSectionHeaderName);
       }
     }
   }
@@ -126,56 +126,56 @@ void __99__NTKWidgetComplication_NTKComplicationItem__ntk_localizedNameWithOptio
   }
 }
 
-+ (NTKWidgetComplication)complicationWithDescriptor:(id)a3
++ (NTKWidgetComplication)complicationWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithComplicationType:56];
-  v6 = [v4 copy];
+  descriptorCopy = descriptor;
+  v5 = [[self alloc] initWithComplicationType:56];
+  v6 = [descriptorCopy copy];
 
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [v5 _createUniqueIdentifier];
-  [v5 setUniqueIdentifier:v8];
+  _createUniqueIdentifier = [v5 _createUniqueIdentifier];
+  [v5 setUniqueIdentifier:_createUniqueIdentifier];
 
   return v5;
 }
 
-- (id)customDailySnapshotKeyForFamily:(int64_t)a3 device:(id)a4
+- (id)customDailySnapshotKeyForFamily:(int64_t)family device:(id)device
 {
-  v6 = a4;
-  if ([v6 isRunningNapiliGMOrLater])
+  deviceCopy = device;
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
-    v7 = [(NTKComplication *)self uniqueIdentifier];
+    uniqueIdentifier = [(NTKComplication *)self uniqueIdentifier];
   }
 
   else
   {
-    v8 = [NTKCompanionWidgetComplicationManager instanceForDevice:v6];
-    v9 = [(NTKWidgetComplication *)self descriptor];
-    v10 = [v8 sampleTemplateForWidget:v9 family:a3];
+    v8 = [NTKCompanionWidgetComplicationManager instanceForDevice:deviceCopy];
+    descriptor = [(NTKWidgetComplication *)self descriptor];
+    v10 = [v8 sampleTemplateForWidget:descriptor family:family];
 
-    v11 = [v10 creationDate];
-    [v11 timeIntervalSinceReferenceDate];
+    creationDate = [v10 creationDate];
+    [creationDate timeIntervalSinceReferenceDate];
     v13 = v12;
 
     v14 = MEMORY[0x277CCACA8];
-    v15 = [(NTKComplication *)self uniqueIdentifier];
-    v7 = [v14 stringWithFormat:@"%@, %ld", v15, v13];
+    uniqueIdentifier2 = [(NTKComplication *)self uniqueIdentifier];
+    uniqueIdentifier = [v14 stringWithFormat:@"%@, %ld", uniqueIdentifier2, v13];
   }
 
-  return v7;
+  return uniqueIdentifier;
 }
 
 - (id)analyticsIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = NTKReportingValueForComplication(self);
-  v5 = [(NTKWidgetComplication *)self descriptor];
-  v6 = [v5 extensionBundleIdentifier];
-  v7 = [(NTKWidgetComplication *)self descriptor];
-  v8 = [v7 kind];
-  v9 = [v3 stringWithFormat:@"%@:%@:%@", v4, v6, v8];
+  descriptor = [(NTKWidgetComplication *)self descriptor];
+  extensionBundleIdentifier = [descriptor extensionBundleIdentifier];
+  descriptor2 = [(NTKWidgetComplication *)self descriptor];
+  kind = [descriptor2 kind];
+  v9 = [v3 stringWithFormat:@"%@:%@:%@", v4, extensionBundleIdentifier, kind];
 
   return v9;
 }
@@ -183,79 +183,79 @@ void __99__NTKWidgetComplication_NTKComplicationItem__ntk_localizedNameWithOptio
 - (id)_createUniqueIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NTKWidgetComplication *)self descriptor];
-  v5 = [v4 containerBundleIdentifier];
-  v6 = [(NTKWidgetComplication *)self descriptor];
-  v7 = [v6 extensionBundleIdentifier];
-  v8 = [(NTKWidgetComplication *)self descriptor];
-  v9 = [v8 kind];
-  v10 = [(NTKWidgetComplication *)self descriptor];
-  v11 = [v10 intentReference];
-  v12 = [v3 stringWithFormat:@"%@-%@-%@-%li", v5, v7, v9, objc_msgSend(v11, "indexingHash")];
+  descriptor = [(NTKWidgetComplication *)self descriptor];
+  containerBundleIdentifier = [descriptor containerBundleIdentifier];
+  descriptor2 = [(NTKWidgetComplication *)self descriptor];
+  extensionBundleIdentifier = [descriptor2 extensionBundleIdentifier];
+  descriptor3 = [(NTKWidgetComplication *)self descriptor];
+  kind = [descriptor3 kind];
+  descriptor4 = [(NTKWidgetComplication *)self descriptor];
+  intentReference = [descriptor4 intentReference];
+  v12 = [v3 stringWithFormat:@"%@-%@-%@-%li", containerBundleIdentifier, extensionBundleIdentifier, kind, objc_msgSend(intentReference, "indexingHash")];
 
   return v12;
 }
 
 - (id)appIdentifier
 {
-  v2 = [(NTKWidgetComplication *)self descriptor];
-  v3 = [v2 containerBundleIdentifier];
+  descriptor = [(NTKWidgetComplication *)self descriptor];
+  containerBundleIdentifier = [descriptor containerBundleIdentifier];
 
-  return v3;
+  return containerBundleIdentifier;
 }
 
-- (BOOL)snapshotContext:(id)a3 isStaleRelativeToContext:(id)a4
+- (BOOL)snapshotContext:(id)context isStaleRelativeToContext:(id)toContext
 {
   v5.receiver = self;
   v5.super_class = NTKWidgetComplication;
-  return [(NTKComplication *)&v5 snapshotContext:a3 isStaleRelativeToContext:a4];
+  return [(NTKComplication *)&v5 snapshotContext:context isStaleRelativeToContext:toContext];
 }
 
 - (INIntent)intent
 {
-  v2 = [(CLKWidgetComplicationDescriptor *)self->_descriptor intentReference];
-  v3 = [v2 intent];
+  intentReference = [(CLKWidgetComplicationDescriptor *)self->_descriptor intentReference];
+  intent = [intentReference intent];
 
-  return v3;
+  return intent;
 }
 
-- (NTKWidgetComplication)initWithCoder:(id)a3
+- (NTKWidgetComplication)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = NTKWidgetComplication;
-  v5 = [(NTKComplication *)&v10 initWithCoder:v4];
+  v5 = [(NTKComplication *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"descriptor"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"descriptor"];
     descriptor = v5->_descriptor;
     v5->_descriptor = v6;
 
-    v8 = [(NTKWidgetComplication *)v5 _createUniqueIdentifier];
-    [(NTKComplication *)v5 setUniqueIdentifier:v8];
+    _createUniqueIdentifier = [(NTKWidgetComplication *)v5 _createUniqueIdentifier];
+    [(NTKComplication *)v5 setUniqueIdentifier:_createUniqueIdentifier];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = NTKWidgetComplication;
-  v4 = a3;
-  [(NTKThirdPartyComplication *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_descriptor forKey:{@"descriptor", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(NTKThirdPartyComplication *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_descriptor forKey:{@"descriptor", v5.receiver, v5.super_class}];
 }
 
-- (id)_initWithComplicationType:(unint64_t)a3 JSONDictionary:(id)a4
+- (id)_initWithComplicationType:(unint64_t)type JSONDictionary:(id)dictionary
 {
-  v6 = a4;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = NTKWidgetComplication;
-  v7 = [(NTKComplication *)&v14 _initWithComplicationType:a3 JSONDictionary:v6];
+  v7 = [(NTKComplication *)&v14 _initWithComplicationType:type JSONDictionary:dictionaryCopy];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"descriptor"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"descriptor"];
     v9 = MEMORY[0x277CCA2A8];
     if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -271,26 +271,26 @@ void __99__NTKWidgetComplication_NTKComplicationItem__ntk_localizedNameWithOptio
       [MEMORY[0x277CBEAD8] raise:*v9 format:@"CLKWidgetComplicationDescriptor is not defined or an incorrect class"];
     }
 
-    v12 = [v7 _createUniqueIdentifier];
-    [v7 setUniqueIdentifier:v12];
+    _createUniqueIdentifier = [v7 _createUniqueIdentifier];
+    [v7 setUniqueIdentifier:_createUniqueIdentifier];
   }
 
   return v7;
 }
 
-- (void)_addKeysToJSONDictionary:(id)a3
+- (void)_addKeysToJSONDictionary:(id)dictionary
 {
   v9.receiver = self;
   v9.super_class = NTKWidgetComplication;
-  v4 = a3;
-  [(NTKThirdPartyComplication *)&v9 _addKeysToJSONDictionary:v4];
+  dictionaryCopy = dictionary;
+  [(NTKThirdPartyComplication *)&v9 _addKeysToJSONDictionary:dictionaryCopy];
   v5 = [(NTKWidgetComplication *)self descriptor:v9.receiver];
-  v6 = [v5 containerBundleIdentifier];
-  [v4 setObject:v6 forKeyedSubscript:@"app"];
+  containerBundleIdentifier = [v5 containerBundleIdentifier];
+  [dictionaryCopy setObject:containerBundleIdentifier forKeyedSubscript:@"app"];
 
-  v7 = [(NTKWidgetComplication *)self descriptor];
-  v8 = [v7 JSONObjectRepresentation];
-  [v4 setObject:v8 forKeyedSubscript:@"descriptor"];
+  descriptor = [(NTKWidgetComplication *)self descriptor];
+  jSONObjectRepresentation = [descriptor JSONObjectRepresentation];
+  [dictionaryCopy setObject:jSONObjectRepresentation forKeyedSubscript:@"descriptor"];
 }
 
 - (id)description
@@ -299,32 +299,32 @@ void __99__NTKWidgetComplication_NTKComplicationItem__ntk_localizedNameWithOptio
   v10.receiver = self;
   v10.super_class = NTKWidgetComplication;
   v4 = [(NTKComplication *)&v10 description];
-  v5 = [(CLKWidgetComplicationDescriptor *)self->_descriptor extensionBundleIdentifier];
-  v6 = [(CLKWidgetComplicationDescriptor *)self->_descriptor kind];
-  v7 = [(CLKWidgetComplicationDescriptor *)self->_descriptor intentReference];
-  v8 = [v3 stringWithFormat:@"%@ (%@, %@, %lli)", v4, v5, v6, objc_msgSend(v7, "indexingHash")];
+  extensionBundleIdentifier = [(CLKWidgetComplicationDescriptor *)self->_descriptor extensionBundleIdentifier];
+  kind = [(CLKWidgetComplicationDescriptor *)self->_descriptor kind];
+  intentReference = [(CLKWidgetComplicationDescriptor *)self->_descriptor intentReference];
+  v8 = [v3 stringWithFormat:@"%@ (%@, %@, %lli)", v4, extensionBundleIdentifier, kind, objc_msgSend(intentReference, "indexingHash")];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NTKWidgetComplication;
-  v4 = [(NTKComplication *)&v6 copyWithZone:a3];
+  v4 = [(NTKComplication *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 4, self->_descriptor);
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[NTKWidgetComplication descriptor](self, "descriptor"), v5 = objc_claimAutoreleasedReturnValue(), [v4 descriptor], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqual:", v6), v6, v5, v7))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[NTKWidgetComplication descriptor](self, "descriptor"), v5 = objc_claimAutoreleasedReturnValue(), [equalCopy descriptor], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqual:", v6), v6, v5, v7))
   {
     v10.receiver = self;
     v10.super_class = NTKWidgetComplication;
-    v8 = [(NTKComplication *)&v10 isEqual:v4];
+    v8 = [(NTKComplication *)&v10 isEqual:equalCopy];
   }
 
   else

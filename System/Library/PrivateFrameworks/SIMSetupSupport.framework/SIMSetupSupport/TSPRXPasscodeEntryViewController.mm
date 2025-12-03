@@ -1,22 +1,22 @@
 @interface TSPRXPasscodeEntryViewController
-- (TSPRXPasscodeEntryViewController)initWithBtDevice:(id)a3 passcodeType:(int)a4;
+- (TSPRXPasscodeEntryViewController)initWithBtDevice:(id)device passcodeType:(int)type;
 - (TSSIMSetupFlowDelegate)delegate;
-- (void)_handlePINCodeUpdate:(id)a3;
+- (void)_handlePINCodeUpdate:(id)update;
 - (void)retry;
 @end
 
 @implementation TSPRXPasscodeEntryViewController
 
-- (TSPRXPasscodeEntryViewController)initWithBtDevice:(id)a3 passcodeType:(int)a4
+- (TSPRXPasscodeEntryViewController)initWithBtDevice:(id)device passcodeType:(int)type
 {
-  v7 = a3;
+  deviceCopy = device;
   v22.receiver = self;
   v22.super_class = TSPRXPasscodeEntryViewController;
   v8 = [(TSPRXPasscodeEntryViewController *)&v22 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_btDevice, a3);
+    objc_storeStrong(&v8->_btDevice, device);
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"PRXCARD_AUTHENTICATION_TITLE" value:&stru_28753DF48 table:@"Localizable"];
     [(TSPRXPasscodeEntryViewController *)v9 setTitle:v11];
@@ -27,15 +27,15 @@
 
     [(TSPRXPasscodeEntryViewController *)v9 setDismissalType:3];
     [(PRXPasscodeEntryViewController *)v9 setNumberOfDigits:6];
-    v14 = a4 + 1;
-    if ((a4 + 1) <= 0xA)
+    v14 = type + 1;
+    if ((type + 1) <= 0xA)
     {
       if (((1 << v14) & 0x7C1) != 0)
       {
         v15 = _TSLogDomain();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          [TSPRXPasscodeEntryViewController initWithBtDevice:a4 passcodeType:v15];
+          [TSPRXPasscodeEntryViewController initWithBtDevice:type passcodeType:v15];
         }
 
         goto LABEL_12;
@@ -50,7 +50,7 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      if (a4 == 3)
+      if (type == 3)
       {
         v16 = v9;
         v17 = 8;
@@ -96,21 +96,21 @@ void __41__TSPRXPasscodeEntryViewController_retry__block_invoke(uint64_t a1)
   [v1 setText:&stru_28753DF48];
 }
 
-- (void)_handlePINCodeUpdate:(id)a3
+- (void)_handlePINCodeUpdate:(id)update
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = _TSLogDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = v4;
+    v8 = updateCopy;
     v9 = 2080;
     v10 = "[TSPRXPasscodeEntryViewController _handlePINCodeUpdate:]";
     _os_log_impl(&dword_262AA8000, v5, OS_LOG_TYPE_DEFAULT, "auth code = %@ @%s", &v7, 0x16u);
   }
 
-  [(SSProximityDevice *)self->_btDevice verifyPIN:v4];
+  [(SSProximityDevice *)self->_btDevice verifyPIN:updateCopy];
   v6 = *MEMORY[0x277D85DE8];
 }
 

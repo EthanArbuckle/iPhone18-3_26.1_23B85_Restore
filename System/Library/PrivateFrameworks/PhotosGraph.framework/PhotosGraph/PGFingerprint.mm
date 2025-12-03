@@ -1,35 +1,35 @@
 @interface PGFingerprint
-+ (id)_assetFingerprintWithFeatureExtractor:(id)a3 forAsset:(id)a4 withTransformers:(id)a5 error:(id *)a6;
-+ (id)_generateErrorWithErrorCode:(int64_t)a3 errorMessage:(id)a4 underlyingError:(id)a5;
-+ (id)assetCollectionFingerprintWithVersion:(int64_t)a3 forAssetCollection:(id)a4 withGraph:(id)a5 withTransformers:(id)a6 error:(id *)a7;
-+ (id)assetCollectionFingerprintsDataframeWithVersion:(int64_t)a3 forAssetCollections:(id)a4 withGraph:(id)a5 withTransformers:(id)a6 progressReporter:(id)a7 error:(id *)a8;
-+ (id)assetCollectionFingerprintsWithVersion:(int64_t)a3 forAssetCollections:(id)a4 withGraph:(id)a5 withTransformers:(id)a6 error:(id *)a7;
-+ (id)assetFingerprintWithVersion:(int64_t)a3 forAsset:(id)a4 withGraph:(id)a5 withTransformers:(id)a6 error:(id *)a7;
-+ (id)assetFingerprintsDataframeWithVersion:(int64_t)a3 forAssets:(id)a4 withGraph:(id)a5 withTransformers:(id)a6 progressReporter:(id)a7 error:(id *)a8;
-+ (id)assetFingerprintsWithVersion:(int64_t)a3 forAssets:(id)a4 withGraph:(id)a5 withTransformers:(id)a6 error:(id *)a7;
-+ (id)memoryFeatureNodesFingerprintsDataFrameWithVersion:(int64_t)a3 forFeatureNodes:(id)a4 uniqueMemoryIdentifiers:(id)a5 withGraph:(id)a6 progressReporter:(id)a7 error:(id *)a8;
-+ (id)momentNodeFingerprintsDataFrameWithVersion:(int64_t)a3 forMomentNodes:(id)a4 withGraph:(id)a5 progressReporter:(id)a6 error:(id *)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFingerprint:(id)a3;
-- (PGFingerprint)initWithFloatArray:(id)a3 withFeatureNames:(id)a4;
++ (id)_assetFingerprintWithFeatureExtractor:(id)extractor forAsset:(id)asset withTransformers:(id)transformers error:(id *)error;
++ (id)_generateErrorWithErrorCode:(int64_t)code errorMessage:(id)message underlyingError:(id)error;
++ (id)assetCollectionFingerprintWithVersion:(int64_t)version forAssetCollection:(id)collection withGraph:(id)graph withTransformers:(id)transformers error:(id *)error;
++ (id)assetCollectionFingerprintsDataframeWithVersion:(int64_t)version forAssetCollections:(id)collections withGraph:(id)graph withTransformers:(id)transformers progressReporter:(id)reporter error:(id *)error;
++ (id)assetCollectionFingerprintsWithVersion:(int64_t)version forAssetCollections:(id)collections withGraph:(id)graph withTransformers:(id)transformers error:(id *)error;
++ (id)assetFingerprintWithVersion:(int64_t)version forAsset:(id)asset withGraph:(id)graph withTransformers:(id)transformers error:(id *)error;
++ (id)assetFingerprintsDataframeWithVersion:(int64_t)version forAssets:(id)assets withGraph:(id)graph withTransformers:(id)transformers progressReporter:(id)reporter error:(id *)error;
++ (id)assetFingerprintsWithVersion:(int64_t)version forAssets:(id)assets withGraph:(id)graph withTransformers:(id)transformers error:(id *)error;
++ (id)memoryFeatureNodesFingerprintsDataFrameWithVersion:(int64_t)version forFeatureNodes:(id)nodes uniqueMemoryIdentifiers:(id)identifiers withGraph:(id)graph progressReporter:(id)reporter error:(id *)error;
++ (id)momentNodeFingerprintsDataFrameWithVersion:(int64_t)version forMomentNodes:(id)nodes withGraph:(id)graph progressReporter:(id)reporter error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFingerprint:(id)fingerprint;
+- (PGFingerprint)initWithFloatArray:(id)array withFeatureNames:(id)names;
 @end
 
 @implementation PGFingerprint
 
-- (BOOL)isEqualToFingerprint:(id)a3
+- (BOOL)isEqualToFingerprint:(id)fingerprint
 {
-  v4 = a3;
-  v5 = [(PGFingerprint *)self floatArray];
-  v6 = [v4 floatArray];
+  fingerprintCopy = fingerprint;
+  floatArray = [(PGFingerprint *)self floatArray];
+  floatArray2 = [fingerprintCopy floatArray];
 
-  LOBYTE(v4) = [v5 isApproximatelyEqualTo:v6];
-  return v4;
+  LOBYTE(fingerprintCopy) = [floatArray isApproximatelyEqualTo:floatArray2];
+  return fingerprintCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -37,106 +37,106 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PGFingerprint *)self isEqualToFingerprint:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PGFingerprint *)self isEqualToFingerprint:equalCopy];
   }
 
   return v5;
 }
 
-- (PGFingerprint)initWithFloatArray:(id)a3 withFeatureNames:(id)a4
+- (PGFingerprint)initWithFloatArray:(id)array withFeatureNames:(id)names
 {
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  namesCopy = names;
   v11.receiver = self;
   v11.super_class = PGFingerprint;
   v8 = [(PGFingerprint *)&v11 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [arrayCopy copy];
     [(PGFingerprint *)v8 setFloatArray:v9];
 
-    [(PGFingerprint *)v8 setFeatureNames:v7];
+    [(PGFingerprint *)v8 setFeatureNames:namesCopy];
   }
 
   return v8;
 }
 
-+ (id)_generateErrorWithErrorCode:(int64_t)a3 errorMessage:(id)a4 underlyingError:(id)a5
++ (id)_generateErrorWithErrorCode:(int64_t)code errorMessage:(id)message underlyingError:(id)error
 {
-  v7 = a5;
+  errorCopy = error;
   v8 = MEMORY[0x277CBEB38];
-  v9 = a4;
+  messageCopy = message;
   v10 = objc_alloc_init(v8);
-  [v10 setObject:v9 forKey:*MEMORY[0x277CCA450]];
+  [v10 setObject:messageCopy forKey:*MEMORY[0x277CCA450]];
 
-  if (v7)
+  if (errorCopy)
   {
-    [v10 setObject:v7 forKey:*MEMORY[0x277CCA7E8]];
+    [v10 setObject:errorCopy forKey:*MEMORY[0x277CCA7E8]];
   }
 
-  v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.PhotosGraph.PGFingerprint" code:a3 userInfo:v10];
+  v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.PhotosGraph.PGFingerprint" code:code userInfo:v10];
 
   return v11;
 }
 
-+ (id)memoryFeatureNodesFingerprintsDataFrameWithVersion:(int64_t)a3 forFeatureNodes:(id)a4 uniqueMemoryIdentifiers:(id)a5 withGraph:(id)a6 progressReporter:(id)a7 error:(id *)a8
++ (id)memoryFeatureNodesFingerprintsDataFrameWithVersion:(int64_t)version forFeatureNodes:(id)nodes uniqueMemoryIdentifiers:(id)identifiers withGraph:(id)graph progressReporter:(id)reporter error:(id *)error
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if ([PGFingerprintVersionHelper isMemoryNodeFingerprintVersion:a3])
+  nodesCopy = nodes;
+  identifiersCopy = identifiers;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([PGFingerprintVersionHelper isMemoryNodeFingerprintVersion:version])
   {
-    v18 = [PGFingerprintVersionHelper featureExtractorForFingerprintVersion:a3 withGraph:v16 withTransformers:0 error:a8];
-    v19 = v18;
+    v18 = [PGFingerprintVersionHelper featureExtractorForFingerprintVersion:version withGraph:graphCopy withTransformers:0 error:error];
+    version2 = v18;
     if (v18)
     {
-      v20 = [v18 featureVectorsWithEntities:v14 entityLabels:v15 progressReporter:v17 error:a8];
+      v20 = [v18 featureVectorsWithEntities:nodesCopy entityLabels:identifiersCopy progressReporter:reporterCopy error:error];
       if (v20)
       {
-        v21 = v20;
-        v22 = v21;
+        version = v20;
+        v22 = version;
       }
 
       else
       {
-        if (a8)
+        if (error)
         {
-          v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to extract feature vectors for (%ld) memories.", objc_msgSend(v14, "count")];
-          *a8 = [a1 _generateErrorWithErrorCode:3 errorMessage:v23 underlyingError:0];
+          v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to extract feature vectors for (%ld) memories.", objc_msgSend(nodesCopy, "count")];
+          *error = [self _generateErrorWithErrorCode:3 errorMessage:v23 underlyingError:0];
         }
 
-        v21 = 0;
+        version = 0;
         v22 = 0;
       }
     }
 
     else
     {
-      if (!a8)
+      if (!error)
       {
-        v19 = 0;
+        version2 = 0;
         v22 = 0;
         goto LABEL_14;
       }
 
-      v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to build feature extractor for fingerprint version: %ld", a3];
-      [a1 _generateErrorWithErrorCode:2 errorMessage:v21 underlyingError:0];
-      *a8 = v22 = 0;
+      version = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to build feature extractor for fingerprint version: %ld", version];
+      [self _generateErrorWithErrorCode:2 errorMessage:version underlyingError:0];
+      *error = v22 = 0;
     }
   }
 
   else
   {
-    if (!a8)
+    if (!error)
     {
       v22 = 0;
       goto LABEL_15;
     }
 
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fingerprint version not supported for memory node collection: %ld", a3];
-    [a1 _generateErrorWithErrorCode:1 errorMessage:v19 underlyingError:0];
-    *a8 = v22 = 0;
+    version2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fingerprint version not supported for memory node collection: %ld", version];
+    [self _generateErrorWithErrorCode:1 errorMessage:version2 underlyingError:0];
+    *error = v22 = 0;
   }
 
 LABEL_14:
@@ -146,14 +146,14 @@ LABEL_15:
   return v22;
 }
 
-+ (id)momentNodeFingerprintsDataFrameWithVersion:(int64_t)a3 forMomentNodes:(id)a4 withGraph:(id)a5 progressReporter:(id)a6 error:(id *)a7
++ (id)momentNodeFingerprintsDataFrameWithVersion:(int64_t)version forMomentNodes:(id)nodes withGraph:(id)graph progressReporter:(id)reporter error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if ([PGFingerprintVersionHelper isMomentNodeFingerprintVersion:a3])
+  nodesCopy = nodes;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([PGFingerprintVersionHelper isMomentNodeFingerprintVersion:version])
   {
-    v15 = [PGFingerprintVersionHelper featureExtractorForFingerprintVersion:a3 withGraph:v13 withTransformers:0 error:a7];
+    v15 = [PGFingerprintVersionHelper featureExtractorForFingerprintVersion:version withGraph:graphCopy withTransformers:0 error:error];
     if (v15)
     {
       v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -162,34 +162,34 @@ LABEL_15:
       v30 = 3221225472;
       v31 = __108__PGFingerprint_momentNodeFingerprintsDataFrameWithVersion_forMomentNodes_withGraph_progressReporter_error___block_invoke;
       v32 = &unk_278887190;
-      v33 = v13;
+      v33 = graphCopy;
       v18 = v16;
       v34 = v18;
       v19 = v17;
       v35 = v19;
-      [v12 enumerateUUIDsUsingBlock:&v29];
-      v20 = [v15 featureVectorsWithEntities:v19 entityLabels:v18 progressReporter:v14 error:a7];
+      [nodesCopy enumerateUUIDsUsingBlock:&v29];
+      v20 = [v15 featureVectorsWithEntities:v19 entityLabels:v18 progressReporter:reporterCopy error:error];
       v21 = v20;
       if (v20)
       {
         v22 = v20;
       }
 
-      else if (a7)
+      else if (error)
       {
         v25 = MEMORY[0x277CCACA8];
         v26 = [v19 count];
         v27 = [v25 stringWithFormat:@"Failed to extract feature vectors for (%ld) moment nodes.", v26, v29, v30, v31, v32, v33, v34];
-        *a7 = [a1 _generateErrorWithErrorCode:3 errorMessage:v27 underlyingError:0];
+        *error = [self _generateErrorWithErrorCode:3 errorMessage:v27 underlyingError:0];
       }
     }
 
     else
     {
-      if (a7 && !*a7)
+      if (error && !*error)
       {
-        v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to build feature extractor for fingerprint version: %ld", a3];
-        *a7 = [a1 _generateErrorWithErrorCode:2 errorMessage:v24 underlyingError:0];
+        version = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to build feature extractor for fingerprint version: %ld", version];
+        *error = [self _generateErrorWithErrorCode:2 errorMessage:version underlyingError:0];
       }
 
       v21 = 0;
@@ -198,10 +198,10 @@ LABEL_15:
 
   else
   {
-    if (a7)
+    if (error)
     {
-      v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fingerprint version not supported for moment node collection: %ld", a3];
-      *a7 = [a1 _generateErrorWithErrorCode:1 errorMessage:v23 underlyingError:0];
+      version2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fingerprint version not supported for moment node collection: %ld", version];
+      *error = [self _generateErrorWithErrorCode:1 errorMessage:version2 underlyingError:0];
     }
 
     v21 = 0;
@@ -221,26 +221,26 @@ void __108__PGFingerprint_momentNodeFingerprintsDataFrameWithVersion_forMomentNo
   [*(a1 + 48) addObject:v7];
 }
 
-+ (id)assetCollectionFingerprintsDataframeWithVersion:(int64_t)a3 forAssetCollections:(id)a4 withGraph:(id)a5 withTransformers:(id)a6 progressReporter:(id)a7 error:(id *)a8
++ (id)assetCollectionFingerprintsDataframeWithVersion:(int64_t)version forAssetCollections:(id)collections withGraph:(id)graph withTransformers:(id)transformers progressReporter:(id)reporter error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if ([PGFingerprintVersionHelper isMomentFingerprintVersion:a3]|| [PGFingerprintVersionHelper isMemoryFingerprintVersion:a3])
+  collectionsCopy = collections;
+  graphCopy = graph;
+  transformersCopy = transformers;
+  reporterCopy = reporter;
+  if ([PGFingerprintVersionHelper isMomentFingerprintVersion:version]|| [PGFingerprintVersionHelper isMemoryFingerprintVersion:version])
   {
-    v18 = [PGFingerprintVersionHelper featureExtractorForFingerprintVersion:a3 withGraph:v15 withTransformers:v16 error:a8];
+    v18 = [PGFingerprintVersionHelper featureExtractorForFingerprintVersion:version withGraph:graphCopy withTransformers:transformersCopy error:error];
     if (v18)
     {
-      v29 = v17;
+      v29 = reporterCopy;
       v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v30 = v14;
-      v20 = v14;
+      v30 = collectionsCopy;
+      v20 = collectionsCopy;
       v21 = [v20 countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v21)
       {
@@ -255,8 +255,8 @@ void __108__PGFingerprint_momentNodeFingerprintsDataFrameWithVersion_forMomentNo
               objc_enumerationMutation(v20);
             }
 
-            v25 = [*(*(&v31 + 1) + 8 * i) localIdentifier];
-            [v19 addObject:v25];
+            localIdentifier = [*(*(&v31 + 1) + 8 * i) localIdentifier];
+            [v19 addObject:localIdentifier];
           }
 
           v22 = [v20 countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -265,47 +265,47 @@ void __108__PGFingerprint_momentNodeFingerprintsDataFrameWithVersion_forMomentNo
         while (v22);
       }
 
-      v17 = v29;
-      a8 = [v18 featureVectorsWithEntities:v20 entityLabels:v19 progressReporter:v29 error:a8];
+      reporterCopy = v29;
+      error = [v18 featureVectorsWithEntities:v20 entityLabels:v19 progressReporter:v29 error:error];
 
-      v14 = v30;
+      collectionsCopy = v30;
     }
 
     else
     {
-      a8 = 0;
+      error = 0;
     }
   }
 
-  else if (a8)
+  else if (error)
   {
-    v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fingerprint version not supported for asset collections: %ld", a3];
-    *a8 = [a1 _generateErrorWithErrorCode:1 errorMessage:v28 underlyingError:0];
+    version = [MEMORY[0x277CCACA8] stringWithFormat:@"Fingerprint version not supported for asset collections: %ld", version];
+    *error = [self _generateErrorWithErrorCode:1 errorMessage:version underlyingError:0];
 
-    a8 = 0;
+    error = 0;
   }
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return a8;
+  return error;
 }
 
-+ (id)assetCollectionFingerprintsWithVersion:(int64_t)a3 forAssetCollections:(id)a4 withGraph:(id)a5 withTransformers:(id)a6 error:(id *)a7
++ (id)assetCollectionFingerprintsWithVersion:(int64_t)version forAssetCollections:(id)collections withGraph:(id)graph withTransformers:(id)transformers error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v34 = a5;
-  v33 = a6;
-  if ([PGFingerprintVersionHelper isMomentFingerprintVersion:a3]|| [PGFingerprintVersionHelper isMemoryFingerprintVersion:a3])
+  collectionsCopy = collections;
+  graphCopy = graph;
+  transformersCopy = transformers;
+  if ([PGFingerprintVersionHelper isMomentFingerprintVersion:version]|| [PGFingerprintVersionHelper isMemoryFingerprintVersion:version])
   {
-    v28 = a7;
+    errorCopy = error;
     v31 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v29 = v11;
-    obj = v11;
+    v29 = collectionsCopy;
+    obj = collectionsCopy;
     v12 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v12)
     {
@@ -328,13 +328,13 @@ void __108__PGFingerprint_momentNodeFingerprintsDataFrameWithVersion_forMomentNo
           v20 = *(*(&v36 + 1) + 8 * v17);
           v21 = objc_autoreleasePoolPush();
           v35 = v19;
-          v14 = [a1 assetCollectionFingerprintWithVersion:a3 forAssetCollection:v20 withGraph:v34 withTransformers:v33 error:&v35];
+          v14 = [self assetCollectionFingerprintWithVersion:version forAssetCollection:v20 withGraph:graphCopy withTransformers:transformersCopy error:&v35];
           v15 = v35;
 
           if (v14)
           {
-            v22 = [v20 localIdentifier];
-            [v31 setObject:v14 forKeyedSubscript:v22];
+            localIdentifier = [v20 localIdentifier];
+            [v31 setObject:v14 forKeyedSubscript:localIdentifier];
           }
 
           objc_autoreleasePoolPop(v21);
@@ -361,11 +361,11 @@ void __108__PGFingerprint_momentNodeFingerprintsDataFrameWithVersion_forMomentNo
       v24 = v31;
     }
 
-    else if (v28)
+    else if (errorCopy)
     {
       v23 = v15;
       v24 = 0;
-      *v28 = v15;
+      *errorCopy = v15;
     }
 
     else
@@ -373,15 +373,15 @@ void __108__PGFingerprint_momentNodeFingerprintsDataFrameWithVersion_forMomentNo
       v24 = 0;
     }
 
-    v11 = v29;
+    collectionsCopy = v29;
   }
 
   else
   {
-    if (a7)
+    if (error)
     {
-      v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fingerprint version not supported for asset collections: %ld", a3];
-      *a7 = [a1 _generateErrorWithErrorCode:1 errorMessage:v25 underlyingError:0];
+      version = [MEMORY[0x277CCACA8] stringWithFormat:@"Fingerprint version not supported for asset collections: %ld", version];
+      *error = [self _generateErrorWithErrorCode:1 errorMessage:version underlyingError:0];
     }
 
     v24 = 0;
@@ -392,24 +392,24 @@ void __108__PGFingerprint_momentNodeFingerprintsDataFrameWithVersion_forMomentNo
   return v24;
 }
 
-+ (id)assetCollectionFingerprintWithVersion:(int64_t)a3 forAssetCollection:(id)a4 withGraph:(id)a5 withTransformers:(id)a6 error:(id *)a7
++ (id)assetCollectionFingerprintWithVersion:(int64_t)version forAssetCollection:(id)collection withGraph:(id)graph withTransformers:(id)transformers error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if ([PGFingerprintVersionHelper isMomentFingerprintVersion:a3]|| [PGFingerprintVersionHelper isMemoryFingerprintVersion:a3])
+  collectionCopy = collection;
+  graphCopy = graph;
+  transformersCopy = transformers;
+  if ([PGFingerprintVersionHelper isMomentFingerprintVersion:version]|| [PGFingerprintVersionHelper isMemoryFingerprintVersion:version])
   {
-    v15 = [PGFingerprintVersionHelper featureExtractorForFingerprintVersion:a3 withGraph:v13 withTransformers:v14 error:a7];
-    v16 = v15;
+    v15 = [PGFingerprintVersionHelper featureExtractorForFingerprintVersion:version withGraph:graphCopy withTransformers:transformersCopy error:error];
+    version = v15;
     if (v15)
     {
-      v17 = [v15 floatVectorWithEntity:v12 error:a7];
-      v18 = [v16 featureNames];
-      v19 = v18;
+      v17 = [v15 floatVectorWithEntity:collectionCopy error:error];
+      featureNames = [version featureNames];
+      v19 = featureNames;
       v20 = 0;
-      if (v17 && v18)
+      if (v17 && featureNames)
       {
-        v20 = [[PGFingerprint alloc] initWithFloatArray:v17 withFeatureNames:v18];
+        v20 = [[PGFingerprint alloc] initWithFloatArray:v17 withFeatureNames:featureNames];
       }
     }
 
@@ -421,11 +421,11 @@ void __108__PGFingerprint_momentNodeFingerprintsDataFrameWithVersion_forMomentNo
     goto LABEL_11;
   }
 
-  if (a7)
+  if (error)
   {
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fingerprint version not supported for asset collections: %ld", a3];
-    [a1 _generateErrorWithErrorCode:1 errorMessage:v16 underlyingError:0];
-    *a7 = v20 = 0;
+    version = [MEMORY[0x277CCACA8] stringWithFormat:@"Fingerprint version not supported for asset collections: %ld", version];
+    [self _generateErrorWithErrorCode:1 errorMessage:version underlyingError:0];
+    *error = v20 = 0;
 LABEL_11:
 
     goto LABEL_12;
@@ -437,18 +437,18 @@ LABEL_12:
   return v20;
 }
 
-+ (id)_assetFingerprintWithFeatureExtractor:(id)a3 forAsset:(id)a4 withTransformers:(id)a5 error:(id *)a6
++ (id)_assetFingerprintWithFeatureExtractor:(id)extractor forAsset:(id)asset withTransformers:(id)transformers error:(id *)error
 {
-  if (a3)
+  if (extractor)
   {
-    v8 = a3;
-    v9 = [v8 floatVectorWithEntity:a4 error:a6];
-    v10 = [v8 featureNames];
+    extractorCopy = extractor;
+    v9 = [extractorCopy floatVectorWithEntity:asset error:error];
+    featureNames = [extractorCopy featureNames];
 
     v11 = 0;
-    if (v9 && v10)
+    if (v9 && featureNames)
     {
-      v11 = [[PGFingerprint alloc] initWithFloatArray:v9 withFeatureNames:v10];
+      v11 = [[PGFingerprint alloc] initWithFloatArray:v9 withFeatureNames:featureNames];
     }
   }
 
@@ -460,26 +460,26 @@ LABEL_12:
   return v11;
 }
 
-+ (id)assetFingerprintsDataframeWithVersion:(int64_t)a3 forAssets:(id)a4 withGraph:(id)a5 withTransformers:(id)a6 progressReporter:(id)a7 error:(id *)a8
++ (id)assetFingerprintsDataframeWithVersion:(int64_t)version forAssets:(id)assets withGraph:(id)graph withTransformers:(id)transformers progressReporter:(id)reporter error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if ([PGFingerprintVersionHelper isAssetFingerprintVersion:a3])
+  assetsCopy = assets;
+  graphCopy = graph;
+  transformersCopy = transformers;
+  reporterCopy = reporter;
+  if ([PGFingerprintVersionHelper isAssetFingerprintVersion:version])
   {
-    v18 = [PGFingerprintVersionHelper featureExtractorForFingerprintVersion:a3 withGraph:v15 withTransformers:v16 error:a8];
+    v18 = [PGFingerprintVersionHelper featureExtractorForFingerprintVersion:version withGraph:graphCopy withTransformers:transformersCopy error:error];
     if (v18)
     {
-      v29 = v15;
+      v29 = graphCopy;
       v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v30 = v14;
-      v20 = v14;
+      v30 = assetsCopy;
+      v20 = assetsCopy;
       v21 = [v20 countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v21)
       {
@@ -494,8 +494,8 @@ LABEL_12:
               objc_enumerationMutation(v20);
             }
 
-            v25 = [*(*(&v31 + 1) + 8 * i) localIdentifier];
-            [v19 addObject:v25];
+            localIdentifier = [*(*(&v31 + 1) + 8 * i) localIdentifier];
+            [v19 addObject:localIdentifier];
           }
 
           v22 = [v20 countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -504,47 +504,47 @@ LABEL_12:
         while (v22);
       }
 
-      a8 = [v18 featureVectorsWithEntities:v20 entityLabels:v19 progressReporter:v17 error:a8];
+      error = [v18 featureVectorsWithEntities:v20 entityLabels:v19 progressReporter:reporterCopy error:error];
 
-      v15 = v29;
-      v14 = v30;
+      graphCopy = v29;
+      assetsCopy = v30;
     }
 
     else
     {
-      a8 = 0;
+      error = 0;
     }
   }
 
-  else if (a8)
+  else if (error)
   {
-    v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fingerprint version not supported for assets: %ld", a3];
-    *a8 = [a1 _generateErrorWithErrorCode:1 errorMessage:v26 underlyingError:0];
+    version = [MEMORY[0x277CCACA8] stringWithFormat:@"Fingerprint version not supported for assets: %ld", version];
+    *error = [self _generateErrorWithErrorCode:1 errorMessage:version underlyingError:0];
 
-    a8 = 0;
+    error = 0;
   }
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return a8;
+  return error;
 }
 
-+ (id)assetFingerprintsWithVersion:(int64_t)a3 forAssets:(id)a4 withGraph:(id)a5 withTransformers:(id)a6 error:(id *)a7
++ (id)assetFingerprintsWithVersion:(int64_t)version forAssets:(id)assets withGraph:(id)graph withTransformers:(id)transformers error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v33 = a5;
-  v32 = a6;
-  if ([PGFingerprintVersionHelper isAssetFingerprintVersion:a3])
+  assetsCopy = assets;
+  graphCopy = graph;
+  transformersCopy = transformers;
+  if ([PGFingerprintVersionHelper isAssetFingerprintVersion:version])
   {
-    v28 = a7;
+    errorCopy = error;
     v31 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v29 = v12;
-    obj = v12;
+    v29 = assetsCopy;
+    obj = assetsCopy;
     v13 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v13)
     {
@@ -565,13 +565,13 @@ LABEL_12:
           v19 = *(*(&v35 + 1) + 8 * v17);
           v20 = objc_autoreleasePoolPush();
           v34 = v18;
-          v21 = [a1 assetFingerprintWithVersion:a3 forAsset:v19 withGraph:v33 withTransformers:v32 error:&v34];
+          v21 = [self assetFingerprintWithVersion:version forAsset:v19 withGraph:graphCopy withTransformers:transformersCopy error:&v34];
           v15 = v34;
 
           if (v21)
           {
-            v22 = [v19 localIdentifier];
-            [v31 setObject:v21 forKeyedSubscript:v22];
+            localIdentifier = [v19 localIdentifier];
+            [v31 setObject:v21 forKeyedSubscript:localIdentifier];
           }
 
           objc_autoreleasePoolPop(v20);
@@ -596,11 +596,11 @@ LABEL_12:
       v24 = v31;
     }
 
-    else if (v28)
+    else if (errorCopy)
     {
       v25 = v15;
       v24 = 0;
-      *v28 = v15;
+      *errorCopy = v15;
     }
 
     else
@@ -608,15 +608,15 @@ LABEL_12:
       v24 = 0;
     }
 
-    v12 = v29;
+    assetsCopy = v29;
   }
 
   else
   {
-    if (a7)
+    if (error)
     {
-      v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fingerprint version not supported for assets: %ld", a3];
-      *a7 = [a1 _generateErrorWithErrorCode:1 errorMessage:v23 underlyingError:0];
+      version = [MEMORY[0x277CCACA8] stringWithFormat:@"Fingerprint version not supported for assets: %ld", version];
+      *error = [self _generateErrorWithErrorCode:1 errorMessage:version underlyingError:0];
     }
 
     v24 = 0;
@@ -627,25 +627,25 @@ LABEL_12:
   return v24;
 }
 
-+ (id)assetFingerprintWithVersion:(int64_t)a3 forAsset:(id)a4 withGraph:(id)a5 withTransformers:(id)a6 error:(id *)a7
++ (id)assetFingerprintWithVersion:(int64_t)version forAsset:(id)asset withGraph:(id)graph withTransformers:(id)transformers error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if ([PGFingerprintVersionHelper isAssetFingerprintVersion:a3])
+  assetCopy = asset;
+  graphCopy = graph;
+  transformersCopy = transformers;
+  if ([PGFingerprintVersionHelper isAssetFingerprintVersion:version])
   {
-    v15 = [PGFingerprintVersionHelper featureExtractorForFingerprintVersion:a3 withGraph:v13 withTransformers:v14 error:a7];
-    v16 = [a1 _assetFingerprintWithFeatureExtractor:v15 forAsset:v12 withTransformers:v14 error:a7];
+    version = [PGFingerprintVersionHelper featureExtractorForFingerprintVersion:version withGraph:graphCopy withTransformers:transformersCopy error:error];
+    v16 = [self _assetFingerprintWithFeatureExtractor:version forAsset:assetCopy withTransformers:transformersCopy error:error];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  if (a7)
+  if (error)
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fingerprint version not supported for assets: %ld", a3];
-    [a1 _generateErrorWithErrorCode:1 errorMessage:v15 underlyingError:0];
-    *a7 = v16 = 0;
+    version = [MEMORY[0x277CCACA8] stringWithFormat:@"Fingerprint version not supported for assets: %ld", version];
+    [self _generateErrorWithErrorCode:1 errorMessage:version underlyingError:0];
+    *error = v16 = 0;
     goto LABEL_5;
   }
 

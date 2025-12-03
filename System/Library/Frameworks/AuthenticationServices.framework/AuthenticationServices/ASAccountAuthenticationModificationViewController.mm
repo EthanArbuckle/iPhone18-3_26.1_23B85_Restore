@@ -13,9 +13,9 @@
 {
   v4.receiver = self;
   v4.super_class = ASAccountAuthenticationModificationViewController;
-  v2 = [(ASAccountAuthenticationModificationViewController *)&v4 extensionContext];
+  extensionContext = [(ASAccountAuthenticationModificationViewController *)&v4 extensionContext];
 
-  return v2;
+  return extensionContext;
 }
 
 - (void)convertAccountToSignInWithAppleWithoutUserInteractionForServiceIdentifier:(ASCredentialServiceIdentifier *)serviceIdentifier existingCredential:(ASPasswordCredential *)existingCredential userInfo:(NSDictionary *)userInfo
@@ -43,9 +43,9 @@
     [ASAccountAuthenticationModificationViewController convertAccountToSignInWithAppleWithoutUserInteractionForServiceIdentifier:existingCredential:userInfo:];
   }
 
-  v14 = [(ASAccountAuthenticationModificationViewController *)self extensionContext];
+  extensionContext = [(ASAccountAuthenticationModificationViewController *)self extensionContext];
   v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ASExtensionErrorDomain" code:1000 userInfo:0];
-  [v14 cancelRequestWithError:v15];
+  [extensionContext cancelRequestWithError:v15];
 }
 
 - (void)prepareInterfaceToConvertAccountToSignInWithAppleForServiceIdentifier:(ASCredentialServiceIdentifier *)serviceIdentifier existingCredential:(ASPasswordCredential *)existingCredential userInfo:(NSDictionary *)userInfo
@@ -73,9 +73,9 @@
     [ASAccountAuthenticationModificationViewController convertAccountToSignInWithAppleWithoutUserInteractionForServiceIdentifier:existingCredential:userInfo:];
   }
 
-  v14 = [(ASAccountAuthenticationModificationViewController *)self extensionContext];
+  extensionContext = [(ASAccountAuthenticationModificationViewController *)self extensionContext];
   v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ASExtensionErrorDomain" code:1000 userInfo:0];
-  [v14 cancelRequestWithError:v15];
+  [extensionContext cancelRequestWithError:v15];
 }
 
 - (void)changePasswordWithoutUserInteractionForServiceIdentifier:(ASCredentialServiceIdentifier *)serviceIdentifier existingCredential:(ASPasswordCredential *)existingCredential newPassword:(NSString *)newPassword userInfo:(NSDictionary *)userInfo
@@ -103,9 +103,9 @@
     [ASAccountAuthenticationModificationViewController convertAccountToSignInWithAppleWithoutUserInteractionForServiceIdentifier:existingCredential:userInfo:];
   }
 
-  v15 = [(ASAccountAuthenticationModificationViewController *)self extensionContext];
+  extensionContext = [(ASAccountAuthenticationModificationViewController *)self extensionContext];
   v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ASExtensionErrorDomain" code:1000 userInfo:0];
-  [v15 cancelRequestWithError:v16];
+  [extensionContext cancelRequestWithError:v16];
 }
 
 - (void)prepareInterfaceToChangePasswordForServiceIdentifier:(ASCredentialServiceIdentifier *)serviceIdentifier existingCredential:(ASPasswordCredential *)existingCredential newPassword:(NSString *)newPassword userInfo:(NSDictionary *)userInfo
@@ -133,16 +133,16 @@
     [ASAccountAuthenticationModificationViewController convertAccountToSignInWithAppleWithoutUserInteractionForServiceIdentifier:existingCredential:userInfo:];
   }
 
-  v15 = [(ASAccountAuthenticationModificationViewController *)self extensionContext];
+  extensionContext = [(ASAccountAuthenticationModificationViewController *)self extensionContext];
   v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ASExtensionErrorDomain" code:1000 userInfo:0];
-  [v15 cancelRequestWithError:v16];
+  [extensionContext cancelRequestWithError:v16];
 }
 
 - (void)cancelRequest
 {
-  v3 = [(ASAccountAuthenticationModificationViewController *)self extensionContext];
+  extensionContext = [(ASAccountAuthenticationModificationViewController *)self extensionContext];
   v2 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ASExtensionErrorDomain" code:1 userInfo:0];
-  [v3 cancelRequestWithError:v2];
+  [extensionContext cancelRequestWithError:v2];
 }
 
 - (void)convertAccountToSignInWithAppleWithoutUserInteractionForServiceIdentifier:existingCredential:userInfo:.cold.1()

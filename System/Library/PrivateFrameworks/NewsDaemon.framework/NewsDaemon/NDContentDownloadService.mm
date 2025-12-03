@@ -1,14 +1,14 @@
 @interface NDContentDownloadService
 + (id)_cacheLookupQueue;
 + (id)_downloadQueue;
-- (BOOL)_canRetryDownloadWithError:(id)a3;
+- (BOOL)_canRetryDownloadWithError:(id)error;
 - (BOOL)_hasReachedStorageLimits;
-- (BOOL)_isFatalError:(id)a3;
-- (NDContentDownloadService)initWithContentContext:(id)a3 ANFHelper:(id)a4;
+- (BOOL)_isFatalError:(id)error;
+- (NDContentDownloadService)initWithContentContext:(id)context ANFHelper:(id)helper;
 - (NSXPCConnection)currentConnection;
 - (id)_downloadKeyQueue;
 - (id)_unfinishedRequests;
-- (id)keyedOperationQueue:(id)a3 performAsyncOperationForKey:(id)a4 completion:(id)a5;
+- (id)keyedOperationQueue:(id)queue performAsyncOperationForKey:(id)key completion:(id)completion;
 - (unint64_t)_storageUsedByDownloads;
 - (void)_catchUpConsumer;
 - (void)_cleanUpAVAssetDownloads;
@@ -18,21 +18,21 @@
 - (void)_recordWhetherTasksAreUnfinished;
 - (void)_revisitDownloadQueue;
 - (void)dealloc;
-- (void)flushCacheLookupsWithCompletion:(id)a3;
+- (void)flushCacheLookupsWithCompletion:(id)completion;
 - (void)ping;
-- (void)registerDownloadConsumer:(id)a3;
-- (void)setCurrentConnection:(id)a3;
-- (void)setDownloadLimits:(id)a3;
-- (void)setDownloadRequests:(id)a3;
+- (void)registerDownloadConsumer:(id)consumer;
+- (void)setCurrentConnection:(id)connection;
+- (void)setDownloadLimits:(id)limits;
+- (void)setDownloadRequests:(id)requests;
 @end
 
 @implementation NDContentDownloadService
 
-- (NDContentDownloadService)initWithContentContext:(id)a3 ANFHelper:(id)a4
+- (NDContentDownloadService)initWithContentContext:(id)context ANFHelper:(id)helper
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  contextCopy = context;
+  helperCopy = helper;
+  if (!contextCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100052F54();
   }
@@ -43,13 +43,13 @@
   if (v9)
   {
     v10 = [NDDownloadServiceStore alloc];
-    v11 = [v7 contentDirectory];
-    v12 = [(NDDownloadServiceStore *)v10 initWithParentDirectory:v11];
+    contentDirectory = [contextCopy contentDirectory];
+    v12 = [(NDDownloadServiceStore *)v10 initWithParentDirectory:contentDirectory];
     v13 = *(v9 + 5);
     *(v9 + 5) = v12;
 
-    objc_storeStrong(v9 + 6, a3);
-    objc_storeStrong(v9 + 7, a4);
+    objc_storeStrong(v9 + 6, context);
+    objc_storeStrong(v9 + 7, helper);
     v14 = objc_alloc_init(NSMutableSet);
     v15 = *(v9 + 16);
     *(v9 + 16) = v14;
@@ -62,13 +62,13 @@
     v19 = *(v9 + 18);
     *(v9 + 18) = v18;
 
-    v20 = [[NDDownloadOperationFactory alloc] initWithContext:v7 ANFHelper:*(v9 + 7)];
+    v20 = [[NDDownloadOperationFactory alloc] initWithContext:contextCopy ANFHelper:*(v9 + 7)];
     v21 = *(v9 + 8);
     *(v9 + 8) = v20;
 
     v22 = [NDContentArchiveStore alloc];
-    v23 = [v7 contentDirectory];
-    v24 = [(NDContentArchiveStore *)v22 initWithCacheDirectory:v23];
+    contentDirectory2 = [contextCopy contentDirectory];
+    v24 = [(NDContentArchiveStore *)v22 initWithCacheDirectory:contentDirectory2];
     v25 = *(v9 + 11);
     *(v9 + 11) = v24;
 
@@ -115,25 +115,25 @@
   [(NDContentDownloadService *)&v3 dealloc];
 }
 
-- (void)setCurrentConnection:(id)a3
+- (void)setCurrentConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(NDContentDownloadService *)self currentConsumer];
+  connectionCopy = connection;
+  currentConsumer = [(NDContentDownloadService *)self currentConsumer];
 
-  if (v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (currentConsumer && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100053040();
   }
 
-  objc_storeWeak(&self->_currentConnection, v4);
+  objc_storeWeak(&self->_currentConnection, connectionCopy);
 }
 
-- (void)registerDownloadConsumer:(id)a3
+- (void)registerDownloadConsumer:(id)consumer
 {
-  v4 = a3;
+  consumerCopy = consumer;
   +[NSThread isMainThread];
   v5 = os_transaction_create();
-  v6 = [(NDContentDownloadService *)self prewarmGroup];
+  prewarmGroup = [(NDContentDownloadService *)self prewarmGroup];
   IsEmpty = FCDispatchGroupIsEmpty();
 
   if (IsEmpty)
@@ -144,38 +144,38 @@
     v18[3] = &unk_100071E78;
     v8 = &v19;
     v18[4] = self;
-    v19 = v4;
+    v19 = consumerCopy;
     v9 = &v20;
     v20 = v5;
     v10 = v5;
-    v11 = v4;
+    v11 = consumerCopy;
     sub_100008798(v18);
   }
 
   else
   {
-    v12 = [(NDContentDownloadService *)self prewarmGroup];
+    prewarmGroup2 = [(NDContentDownloadService *)self prewarmGroup];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000088FC;
     v15[3] = &unk_100071E78;
     v8 = &v16;
     v15[4] = self;
-    v16 = v4;
+    v16 = consumerCopy;
     v9 = &v17;
     v17 = v5;
     v13 = v5;
-    v14 = v4;
-    dispatch_group_notify(v12, &_dispatch_main_q, v15);
+    v14 = consumerCopy;
+    dispatch_group_notify(prewarmGroup2, &_dispatch_main_q, v15);
   }
 }
 
-- (void)setDownloadRequests:(id)a3
+- (void)setDownloadRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   +[NSThread isMainThread];
   v5 = os_transaction_create();
-  v6 = [(NDContentDownloadService *)self prewarmGroup];
+  prewarmGroup = [(NDContentDownloadService *)self prewarmGroup];
   IsEmpty = FCDispatchGroupIsEmpty();
 
   if (IsEmpty)
@@ -186,38 +186,38 @@
     v18[3] = &unk_100071E78;
     v8 = &v19;
     v18[4] = self;
-    v19 = v4;
+    v19 = requestsCopy;
     v9 = &v20;
     v20 = v5;
     v10 = v5;
-    v11 = v4;
+    v11 = requestsCopy;
     sub_100008BE4(v18);
   }
 
   else
   {
-    v12 = [(NDContentDownloadService *)self prewarmGroup];
+    prewarmGroup2 = [(NDContentDownloadService *)self prewarmGroup];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100008D2C;
     v15[3] = &unk_100071E78;
     v8 = &v16;
     v15[4] = self;
-    v16 = v4;
+    v16 = requestsCopy;
     v9 = &v17;
     v17 = v5;
     v13 = v5;
-    v14 = v4;
-    dispatch_group_notify(v12, &_dispatch_main_q, v15);
+    v14 = requestsCopy;
+    dispatch_group_notify(prewarmGroup2, &_dispatch_main_q, v15);
   }
 }
 
-- (void)setDownloadLimits:(id)a3
+- (void)setDownloadLimits:(id)limits
 {
-  v4 = a3;
+  limitsCopy = limits;
   +[NSThread isMainThread];
   v5 = os_transaction_create();
-  v6 = [(NDContentDownloadService *)self prewarmGroup];
+  prewarmGroup = [(NDContentDownloadService *)self prewarmGroup];
   IsEmpty = FCDispatchGroupIsEmpty();
 
   if (IsEmpty)
@@ -227,39 +227,39 @@
     v18[2] = sub_100008FF8;
     v18[3] = &unk_100071E78;
     v8 = v19;
-    v19[0] = v4;
+    v19[0] = limitsCopy;
     v19[1] = self;
     v9 = &v20;
     v20 = v5;
     v10 = v5;
-    v11 = v4;
+    v11 = limitsCopy;
     sub_100008FF8(v18);
   }
 
   else
   {
-    v12 = [(NDContentDownloadService *)self prewarmGroup];
+    prewarmGroup2 = [(NDContentDownloadService *)self prewarmGroup];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000090C8;
     v15[3] = &unk_100071E78;
     v8 = v16;
-    v16[0] = v4;
+    v16[0] = limitsCopy;
     v16[1] = self;
     v9 = &v17;
     v17 = v5;
     v13 = v5;
-    v14 = v4;
-    dispatch_group_notify(v12, &_dispatch_main_q, v15);
+    v14 = limitsCopy;
+    dispatch_group_notify(prewarmGroup2, &_dispatch_main_q, v15);
   }
 }
 
-- (void)flushCacheLookupsWithCompletion:(id)a3
+- (void)flushCacheLookupsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   +[NSThread isMainThread];
   v5 = os_transaction_create();
-  v6 = [(NDContentDownloadService *)self prewarmGroup];
+  prewarmGroup = [(NDContentDownloadService *)self prewarmGroup];
   IsEmpty = FCDispatchGroupIsEmpty();
 
   if (IsEmpty)
@@ -270,29 +270,29 @@
     v18[3] = &unk_100071F40;
     v8 = &v20;
     v19 = v5;
-    v20 = v4;
+    v20 = completionCopy;
     v9 = &v19;
     v18[4] = self;
     v10 = v5;
-    v11 = v4;
+    v11 = completionCopy;
     sub_100009324(v18);
   }
 
   else
   {
-    v12 = [(NDContentDownloadService *)self prewarmGroup];
+    prewarmGroup2 = [(NDContentDownloadService *)self prewarmGroup];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000094A8;
     v15[3] = &unk_100071F40;
     v8 = &v17;
     v16 = v5;
-    v17 = v4;
+    v17 = completionCopy;
     v9 = &v16;
     v15[4] = self;
     v13 = v5;
-    v14 = v4;
-    dispatch_group_notify(v12, &_dispatch_main_q, v15);
+    v14 = completionCopy;
+    dispatch_group_notify(prewarmGroup2, &_dispatch_main_q, v15);
   }
 }
 
@@ -306,33 +306,33 @@
   }
 }
 
-- (id)keyedOperationQueue:(id)a3 performAsyncOperationForKey:(id)a4 completion:(id)a5
+- (id)keyedOperationQueue:(id)queue performAsyncOperationForKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  keyCopy = key;
+  completionCopy = completion;
   +[NSThread isMainThread];
   v11 = FCOfflineDownloadsLog;
   if (os_log_type_enabled(FCOfflineDownloadsLog, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v9 description];
+    v13 = [keyCopy description];
     *buf = 138543362;
     v37 = v13;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "will handle next request in queue, request=%{public}@", buf, 0xCu);
   }
 
-  [(NDContentDownloadService *)self setActiveDownloadRequest:v9];
-  v14 = [(NDContentDownloadService *)self contentArchiveStore];
-  v15 = [v9 contentID];
-  v16 = [v14 interestTokenForContentID:v15];
+  [(NDContentDownloadService *)self setActiveDownloadRequest:keyCopy];
+  contentArchiveStore = [(NDContentDownloadService *)self contentArchiveStore];
+  contentID = [keyCopy contentID];
+  v16 = [contentArchiveStore interestTokenForContentID:contentID];
 
-  v17 = [(NDContentDownloadService *)self contentArchiveStore];
-  v18 = [v9 contentID];
-  [v17 prepareForContentID:v18];
+  contentArchiveStore2 = [(NDContentDownloadService *)self contentArchiveStore];
+  contentID2 = [keyCopy contentID];
+  [contentArchiveStore2 prepareForContentID:contentID2];
 
-  v19 = [(NDContentDownloadService *)self operationFactory];
-  v20 = [v19 operationForRequest:v9];
+  operationFactory = [(NDContentDownloadService *)self operationFactory];
+  v20 = [operationFactory operationForRequest:keyCopy];
 
   if (v20)
   {
@@ -346,7 +346,7 @@
     v34[2] = sub_100009AD4;
     v34[3] = &unk_100071F68;
     v34[4] = self;
-    v22 = v9;
+    v22 = keyCopy;
     v35 = v22;
     [v21 setArchiveHandler:v34];
     [v21 setProgressQueue:&_dispatch_main_q];
@@ -368,12 +368,12 @@
     v26[3] = &unk_100071FE0;
     objc_copyWeak(&v31, buf);
     v27 = v23;
-    v30 = v10;
-    v28 = self;
+    v30 = completionCopy;
+    selfCopy = self;
     v29 = v16;
     [v21 setFetchCompletionHandler:v26];
-    v24 = [objc_opt_class() _downloadQueue];
-    [v24 addOperation:v21];
+    _downloadQueue = [objc_opt_class() _downloadQueue];
+    [_downloadQueue addOperation:v21];
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(buf);
@@ -391,15 +391,15 @@
 {
   +[NSThread isMainThread];
   v33 = os_transaction_create();
-  v3 = [(NDContentDownloadService *)self store];
-  v4 = [v3 lastKnownRequests];
+  store = [(NDContentDownloadService *)self store];
+  lastKnownRequests = [store lastKnownRequests];
   downloadRequests = self->_downloadRequests;
-  self->_downloadRequests = v4;
+  self->_downloadRequests = lastKnownRequests;
 
-  v6 = [(NDContentDownloadService *)self store];
-  v7 = [v6 lastKnownLimits];
+  store2 = [(NDContentDownloadService *)self store];
+  lastKnownLimits = [store2 lastKnownLimits];
   downloadLimits = self->_downloadLimits;
-  self->_downloadLimits = v7;
+  self->_downloadLimits = lastKnownLimits;
 
   v43 = 0u;
   v44 = 0u;
@@ -423,37 +423,37 @@
         v10 = *(*(&v41 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
         v12 = +[NSMutableArray array];
-        v13 = [(NDContentDownloadService *)self contentArchiveStore];
-        v14 = [v10 contentID];
-        v15 = [v13 interestTokenForContentID:v14];
+        contentArchiveStore = [(NDContentDownloadService *)self contentArchiveStore];
+        contentID = [v10 contentID];
+        v15 = [contentArchiveStore interestTokenForContentID:contentID];
 
         [v12 addObject:v15];
-        v16 = [(NDContentDownloadService *)self contentArchiveStore];
-        v17 = [v10 contentID];
-        v18 = [v16 manifestForContentID:v17];
+        contentArchiveStore2 = [(NDContentDownloadService *)self contentArchiveStore];
+        contentID2 = [v10 contentID];
+        v18 = [contentArchiveStore2 manifestForContentID:contentID2];
 
         if (v18)
         {
-          v19 = [v18 copyWithAssetsOnly];
-          v20 = [(NDContentDownloadService *)self contentContext];
-          v21 = [v20 interestTokenForContentManifest:v19];
+          copyWithAssetsOnly = [v18 copyWithAssetsOnly];
+          contentContext = [(NDContentDownloadService *)self contentContext];
+          v21 = [contentContext interestTokenForContentManifest:copyWithAssetsOnly];
 
           [v12 addObject:v21];
         }
 
-        v22 = [(NDContentDownloadService *)self interestTokensByContentID];
-        v23 = [v10 contentID];
-        [v22 setObject:v12 forKey:v23];
+        interestTokensByContentID = [(NDContentDownloadService *)self interestTokensByContentID];
+        contentID3 = [v10 contentID];
+        [interestTokensByContentID setObject:v12 forKey:contentID3];
 
-        v24 = [(NDContentDownloadService *)self contentArchiveStore];
-        v25 = [v10 contentID];
-        v26 = [v24 isContentIDComplete:v25];
+        contentArchiveStore3 = [(NDContentDownloadService *)self contentArchiveStore];
+        contentID4 = [v10 contentID];
+        v26 = [contentArchiveStore3 isContentIDComplete:contentID4];
 
         if (v26)
         {
-          v27 = [(NDContentDownloadService *)self downloadedContentIDs];
-          v28 = [v10 contentID];
-          [v27 addObject:v28];
+          downloadedContentIDs = [(NDContentDownloadService *)self downloadedContentIDs];
+          contentID5 = [v10 contentID];
+          [downloadedContentIDs addObject:contentID5];
         }
 
         objc_autoreleasePoolPop(v11);
@@ -467,23 +467,23 @@
     while (v36);
   }
 
-  v29 = [objc_opt_class() _cacheLookupQueue];
+  _cacheLookupQueue = [objc_opt_class() _cacheLookupQueue];
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
   v40[2] = sub_10000A914;
   v40[3] = &unk_100071D20;
   v40[4] = self;
-  [v29 fc_addMainThreadOperationWithBlock:v40];
+  [_cacheLookupQueue fc_addMainThreadOperationWithBlock:v40];
 
-  v30 = [objc_opt_class() _cacheLookupQueue];
+  _cacheLookupQueue2 = [objc_opt_class() _cacheLookupQueue];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_10000A980;
   v39[3] = &unk_100071D20;
   v39[4] = self;
-  [v30 fc_addMainThreadOperationWithBlock:v39];
+  [_cacheLookupQueue2 fc_addMainThreadOperationWithBlock:v39];
 
-  v31 = [objc_opt_class() _cacheLookupQueue];
+  _cacheLookupQueue3 = [objc_opt_class() _cacheLookupQueue];
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
   v37[2] = sub_10000A988;
@@ -491,28 +491,28 @@
   v37[4] = self;
   v38 = v33;
   v32 = v33;
-  [v31 addOperationWithBlock:v37];
+  [_cacheLookupQueue3 addOperationWithBlock:v37];
 }
 
 - (void)_catchUpConsumer
 {
   +[NSThread isMainThread];
-  v3 = [(NDContentDownloadService *)self downloadRequests];
+  downloadRequests = [(NDContentDownloadService *)self downloadRequests];
   v74[0] = _NSConcreteStackBlock;
   v74[1] = 3221225472;
   v74[2] = sub_10000B0EC;
   v74[3] = &unk_100072008;
   v74[4] = self;
-  v4 = [v3 fc_arrayOfObjectsPassingTest:v74];
+  v4 = [downloadRequests fc_arrayOfObjectsPassingTest:v74];
 
   v5 = FCOfflineDownloadsLog;
   if (os_log_type_enabled(FCOfflineDownloadsLog, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(NDContentDownloadService *)self currentConsumer];
+    currentConsumer = [(NDContentDownloadService *)self currentConsumer];
     v8 = [v4 fc_arrayByTransformingWithBlock:&stru_100072048];
     *buf = 134218242;
-    v78 = v7;
+    v78 = currentConsumer;
     v79 = 2114;
     v80 = v8;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "will catch up consumer %p on downloaded contentIDs=%{public}@", buf, 0x16u);
@@ -540,26 +540,26 @@
         }
 
         v13 = *(*(&v70 + 1) + 8 * v12);
-        v14 = [(NDContentDownloadService *)self contentArchiveStore];
-        v15 = [v13 contentID];
-        v16 = [v14 isContentIDComplete:v15];
+        contentArchiveStore = [(NDContentDownloadService *)self contentArchiveStore];
+        contentID = [v13 contentID];
+        v16 = [contentArchiveStore isContentIDComplete:contentID];
 
         if (v16)
         {
-          v17 = [(NDContentDownloadService *)self contentArchiveStore];
-          v18 = [v13 contentID];
-          v19 = [v17 archivesForContentID:v18];
+          contentArchiveStore2 = [(NDContentDownloadService *)self contentArchiveStore];
+          contentID2 = [v13 contentID];
+          v19 = [contentArchiveStore2 archivesForContentID:contentID2];
 
           v20 = FCOperationLog;
           if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
           {
             v21 = v20;
             v22 = [v19 count];
-            v23 = [v13 contentID];
+            contentID3 = [v13 contentID];
             *buf = 134218242;
             v78 = v22;
             v79 = 2114;
-            v80 = v23;
+            v80 = contentID3;
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "will send %lu content archives to consumer for contentID=%{public}@", buf, 0x16u);
           }
 
@@ -583,8 +583,8 @@
                 }
 
                 v29 = *(*(&v66 + 1) + 8 * i);
-                v30 = [(NDContentDownloadService *)self currentConsumer];
-                [v30 downloadProgressedForRequest:v13 contentArchive:v29];
+                currentConsumer2 = [(NDContentDownloadService *)self currentConsumer];
+                [currentConsumer2 downloadProgressedForRequest:v13 contentArchive:v29];
               }
 
               v26 = [v24 countByEnumeratingWithState:&v66 objects:v76 count:16];
@@ -593,8 +593,8 @@
             while (v26);
           }
 
-          v31 = [(NDContentDownloadService *)self currentConsumer];
-          [v31 downloadFinishedForRequest:v13 error:0];
+          currentConsumer3 = [(NDContentDownloadService *)self currentConsumer];
+          [currentConsumer3 downloadFinishedForRequest:v13 error:0];
 
           v10 = v60;
         }
@@ -602,8 +602,8 @@
         else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
           v32 = [NSString alloc];
-          v33 = [v13 contentID];
-          v34 = [v32 initWithFormat:@"download is finished but archives are missing for contentID=%@", v33];
+          contentID4 = [v13 contentID];
+          v34 = [v32 initWithFormat:@"download is finished but archives are missing for contentID=%@", contentID4];
           *buf = 136315906;
           v78 = "[NDContentDownloadService _catchUpConsumer]";
           v79 = 2080;
@@ -625,13 +625,13 @@
     while (v10);
   }
 
-  v35 = [(NDContentDownloadService *)self activeDownloadRequest];
-  if (v35)
+  activeDownloadRequest = [(NDContentDownloadService *)self activeDownloadRequest];
+  if (activeDownloadRequest)
   {
-    v36 = v35;
-    v37 = [(NDContentDownloadService *)self downloadRequests];
-    v38 = [(NDContentDownloadService *)self activeDownloadRequest];
-    v39 = [v37 containsObject:v38];
+    v36 = activeDownloadRequest;
+    downloadRequests2 = [(NDContentDownloadService *)self downloadRequests];
+    activeDownloadRequest2 = [(NDContentDownloadService *)self activeDownloadRequest];
+    v39 = [downloadRequests2 containsObject:activeDownloadRequest2];
 
     if (v39)
     {
@@ -639,28 +639,28 @@
       if (os_log_type_enabled(FCOfflineDownloadsLog, OS_LOG_TYPE_DEFAULT))
       {
         v41 = v40;
-        v42 = [(NDContentDownloadService *)self currentConsumer];
-        v43 = [(NDContentDownloadService *)self activeDownloadRequest];
-        v44 = [v43 contentID];
+        currentConsumer4 = [(NDContentDownloadService *)self currentConsumer];
+        activeDownloadRequest3 = [(NDContentDownloadService *)self activeDownloadRequest];
+        contentID5 = [activeDownloadRequest3 contentID];
         [(NDContentDownloadService *)self activeDownloadProgress];
         *buf = 134218498;
-        v78 = v42;
+        v78 = currentConsumer4;
         v79 = 2114;
-        v80 = v44;
+        v80 = contentID5;
         v81 = 2048;
         v82[0] = v45;
         _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "will catch up consumer %p on active download id=%{public}@, progress=%.2f", buf, 0x20u);
       }
 
-      v46 = [(NDContentDownloadService *)self currentConsumer];
-      v47 = [(NDContentDownloadService *)self activeDownloadRequest];
+      currentConsumer5 = [(NDContentDownloadService *)self currentConsumer];
+      activeDownloadRequest4 = [(NDContentDownloadService *)self activeDownloadRequest];
       [(NDContentDownloadService *)self activeDownloadProgress];
-      [v46 downloadProgressedForRequest:v47 progress:?];
+      [currentConsumer5 downloadProgressedForRequest:activeDownloadRequest4 progress:?];
 
-      v48 = [(NDContentDownloadService *)self contentArchiveStore];
-      v49 = [(NDContentDownloadService *)self activeDownloadRequest];
-      v50 = [v49 contentID];
-      v51 = [v48 archivesForContentID:v50];
+      contentArchiveStore3 = [(NDContentDownloadService *)self contentArchiveStore];
+      activeDownloadRequest5 = [(NDContentDownloadService *)self activeDownloadRequest];
+      contentID6 = [activeDownloadRequest5 contentID];
+      v51 = [contentArchiveStore3 archivesForContentID:contentID6];
 
       v64 = 0u;
       v65 = 0u;
@@ -682,9 +682,9 @@
             }
 
             v57 = *(*(&v62 + 1) + 8 * j);
-            v58 = [(NDContentDownloadService *)self currentConsumer];
-            v59 = [(NDContentDownloadService *)self activeDownloadRequest];
-            [v58 downloadProgressedForRequest:v59 contentArchive:v57];
+            currentConsumer6 = [(NDContentDownloadService *)self currentConsumer];
+            activeDownloadRequest6 = [(NDContentDownloadService *)self activeDownloadRequest];
+            [currentConsumer6 downloadProgressedForRequest:activeDownloadRequest6 contentArchive:v57];
           }
 
           v54 = [v52 countByEnumeratingWithState:&v62 objects:v75 count:16];
@@ -703,39 +703,39 @@
   if (os_log_type_enabled(FCOfflineDownloadsLog, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(NDContentDownloadService *)self downloadRequests];
-    v6 = [(NDContentDownloadService *)self downloadedContentIDs];
-    v7 = [(NDContentDownloadService *)self errorsByContentID];
+    downloadRequests = [(NDContentDownloadService *)self downloadRequests];
+    downloadedContentIDs = [(NDContentDownloadService *)self downloadedContentIDs];
+    errorsByContentID = [(NDContentDownloadService *)self errorsByContentID];
     *buf = 138543874;
-    v21 = v5;
+    v21 = downloadRequests;
     v22 = 2114;
-    v23 = v6;
+    v23 = downloadedContentIDs;
     v24 = 2114;
-    v25 = v7;
+    v25 = errorsByContentID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "will revisit queues with requests=%{public}@, downloadFinished=%{public}@, errors=%{public}@", buf, 0x20u);
   }
 
-  v8 = [(NDContentDownloadService *)self _downloadKeyQueue];
+  _downloadKeyQueue = [(NDContentDownloadService *)self _downloadKeyQueue];
   v9 = FCOfflineDownloadsLog;
   if (os_log_type_enabled(FCOfflineDownloadsLog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v8 array];
-    v12 = [v11 fc_arrayByTransformingWithBlock:&stru_100072068];
+    array = [_downloadKeyQueue array];
+    v12 = [array fc_arrayByTransformingWithBlock:&stru_100072068];
     *buf = 138543362;
     v21 = v12;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "will perform downloads with queue=%{public}@", buf, 0xCu);
   }
 
-  v13 = [(NDContentDownloadService *)self downloadKeyedOperationQueue];
-  [v13 setKeyQueue:v8];
+  downloadKeyedOperationQueue = [(NDContentDownloadService *)self downloadKeyedOperationQueue];
+  [downloadKeyedOperationQueue setKeyQueue:_downloadKeyQueue];
 
   [(NDContentDownloadService *)self _recordWhetherTasksAreUnfinished];
-  v14 = [(NDContentDownloadService *)self ANFHelper];
-  [v14 pushInterest];
+  aNFHelper = [(NDContentDownloadService *)self ANFHelper];
+  [aNFHelper pushInterest];
 
   v15 = os_transaction_create();
-  v16 = [(NDContentDownloadService *)self downloadKeyedOperationQueue];
+  downloadKeyedOperationQueue2 = [(NDContentDownloadService *)self downloadKeyedOperationQueue];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10000B3E4;
@@ -743,7 +743,7 @@
   v18[4] = self;
   v19 = v15;
   v17 = v15;
-  [v16 notifyWhenAllOperationsAreFinishedUsingBlock:v18];
+  [downloadKeyedOperationQueue2 notifyWhenAllOperationsAreFinishedUsingBlock:v18];
 }
 
 - (id)_downloadKeyQueue
@@ -751,26 +751,26 @@
   +[NSThread isMainThread];
   v3 = +[FCNetworkReachability sharedNetworkReachability];
   v4 = +[NSProcessInfo processInfo];
-  v5 = [v3 isNetworkReachable];
+  isNetworkReachable = [v3 isNetworkReachable];
   if ([v3 isNetworkOnlyReachableViaCellular])
   {
-    v6 = 1;
+    isNetworkUsageExpensive = 1;
   }
 
   else
   {
-    v6 = [v3 isNetworkUsageExpensive];
+    isNetworkUsageExpensive = [v3 isNetworkUsageExpensive];
   }
 
-  v7 = [v3 isLowDataModeEnabled];
-  v8 = [v4 isLowPowerModeEnabled];
+  isLowDataModeEnabled = [v3 isLowDataModeEnabled];
+  isLowPowerModeEnabled = [v4 isLowPowerModeEnabled];
   v9 = IOPSDrawingUnlimitedPower();
-  v10 = [(NDContentDownloadService *)self _hasReachedStorageLimits];
+  _hasReachedStorageLimits = [(NDContentDownloadService *)self _hasReachedStorageLimits];
   v11 = FCOfflineDownloadsLog;
   if (os_log_type_enabled(FCOfflineDownloadsLog, OS_LOG_TYPE_DEFAULT))
   {
     v12 = @"false";
-    if (v5)
+    if (isNetworkReachable)
     {
       v13 = @"true";
     }
@@ -780,7 +780,7 @@
       v13 = @"false";
     }
 
-    if (v6)
+    if (isNetworkUsageExpensive)
     {
       v14 = @"true";
     }
@@ -792,7 +792,7 @@
 
     *buf = 138544642;
     v31 = v13;
-    if (v7)
+    if (isLowDataModeEnabled)
     {
       v15 = @"true";
     }
@@ -804,7 +804,7 @@
 
     v32 = 2114;
     v33 = v14;
-    if (v8)
+    if (isLowPowerModeEnabled)
     {
       v16 = @"true";
     }
@@ -828,7 +828,7 @@
 
     v36 = 2114;
     v37 = v16;
-    if (v10)
+    if (_hasReachedStorageLimits)
     {
       v12 = @"true";
     }
@@ -844,17 +844,17 @@
   v24[1] = 3221225472;
   v24[2] = sub_10000B758;
   v24[3] = &unk_100072088;
-  v25 = v6;
-  v26 = v7;
-  v27 = v8;
+  v25 = isNetworkUsageExpensive;
+  v26 = isLowDataModeEnabled;
+  v27 = isLowPowerModeEnabled;
   v28 = v9 ^ 1;
-  v29 = v10;
+  v29 = _hasReachedStorageLimits;
   v18 = objc_retainBlock(v24);
-  v19 = [(NDContentDownloadService *)self _unfinishedRequests];
-  v20 = [v19 fc_arrayOfObjectsPassingTest:v18];
+  _unfinishedRequests = [(NDContentDownloadService *)self _unfinishedRequests];
+  v20 = [_unfinishedRequests fc_arrayOfObjectsPassingTest:v18];
 
-  v21 = [(NDContentDownloadService *)self downloadedContentIDs];
-  [v21 count];
+  downloadedContentIDs = [(NDContentDownloadService *)self downloadedContentIDs];
+  [downloadedContentIDs count];
   [v20 count];
 
   v22 = [NSOrderedSet orderedSetWithArray:v20];
@@ -870,36 +870,36 @@
   v7[3] = &unk_100072008;
   v7[4] = self;
   v3 = objc_retainBlock(v7);
-  v4 = [(NDContentDownloadService *)self downloadRequests];
-  v5 = [v4 fc_arrayOfObjectsPassingTest:v3];
+  downloadRequests = [(NDContentDownloadService *)self downloadRequests];
+  v5 = [downloadRequests fc_arrayOfObjectsPassingTest:v3];
 
   return v5;
 }
 
-- (BOOL)_canRetryDownloadWithError:(id)a3
+- (BOOL)_canRetryDownloadWithError:(id)error
 {
-  if ([(NDContentDownloadService *)self _isFatalError:a3])
+  if ([(NDContentDownloadService *)self _isFatalError:error])
   {
     return 0;
   }
 
   v4 = +[FCNetworkReachability sharedNetworkReachability];
-  v5 = [v4 isNetworkReachable];
+  isNetworkReachable = [v4 isNetworkReachable];
 
-  return v5;
+  return isNetworkReachable;
 }
 
-- (BOOL)_isFatalError:(id)a3
+- (BOOL)_isFatalError:(id)error
 {
-  v3 = a3;
-  if ([v3 fc_isOfflineError] & 1) != 0 || (objc_msgSend(v3, "fc_isCancellationError"))
+  errorCopy = error;
+  if ([errorCopy fc_isOfflineError] & 1) != 0 || (objc_msgSend(errorCopy, "fc_isCancellationError"))
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 fc_isRecoverableNetworkError] ^ 1;
+    v4 = [errorCopy fc_isRecoverableNetworkError] ^ 1;
   }
 
   return v4;
@@ -922,18 +922,18 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "pruning interest tokens not in list=%{public}@", buf, 0xCu);
   }
 
-  v5 = [(NDContentDownloadService *)self interestTokensByContentID];
-  [v5 fc_removeObjectsForKeysNotInSet:v3];
+  interestTokensByContentID = [(NDContentDownloadService *)self interestTokensByContentID];
+  [interestTokensByContentID fc_removeObjectsForKeysNotInSet:v3];
 
-  v6 = [(NDContentDownloadService *)self downloadedContentIDs];
-  [v6 intersectSet:v3];
+  downloadedContentIDs = [(NDContentDownloadService *)self downloadedContentIDs];
+  [downloadedContentIDs intersectSet:v3];
 }
 
 - (void)_recordWhetherTasksAreUnfinished
 {
   +[NSThread isMainThread];
-  v3 = [(NDContentDownloadService *)self _unfinishedRequests];
-  v4 = [v3 count];
+  _unfinishedRequests = [(NDContentDownloadService *)self _unfinishedRequests];
+  v4 = [_unfinishedRequests count];
   v5 = FCOfflineDownloadsLog;
   if (os_log_type_enabled(FCOfflineDownloadsLog, OS_LOG_TYPE_DEFAULT))
   {
@@ -951,7 +951,7 @@
     v9 = 138543618;
     v10 = v6;
     v11 = 2048;
-    v12 = [v3 count];
+    v12 = [_unfinishedRequests count];
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "recording that work is %{public}@ due to unfinished count=%lu", &v9, 0x16u);
   }
 
@@ -962,22 +962,22 @@
 - (BOOL)_hasReachedStorageLimits
 {
   +[NSThread isMainThread];
-  v3 = [(NDContentDownloadService *)self contentContext];
-  v4 = [v3 contentHostDirectoryURL];
+  contentContext = [(NDContentDownloadService *)self contentContext];
+  contentHostDirectoryURL = [contentContext contentHostDirectoryURL];
 
-  v5 = [v4 fc_fileSystemFreeSize];
-  v6 = [(NDContentDownloadService *)self downloadLimits];
-  v7 = [v6 minDeviceStorage];
+  fc_fileSystemFreeSize = [contentHostDirectoryURL fc_fileSystemFreeSize];
+  downloadLimits = [(NDContentDownloadService *)self downloadLimits];
+  minDeviceStorage = [downloadLimits minDeviceStorage];
 
-  if (v5 <= v7)
+  if (fc_fileSystemFreeSize <= minDeviceStorage)
   {
     v17 = FCOfflineDownloadsLog;
     if (os_log_type_enabled(FCOfflineDownloadsLog, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v17;
-      v13 = [NSByteCountFormatter stringFromByteCount:v5 countStyle:0];
-      v14 = [(NDContentDownloadService *)self downloadLimits];
-      v15 = +[NSByteCountFormatter stringFromByteCount:countStyle:](NSByteCountFormatter, "stringFromByteCount:countStyle:", [v14 minDeviceStorage], 0);
+      v13 = [NSByteCountFormatter stringFromByteCount:fc_fileSystemFreeSize countStyle:0];
+      downloadLimits2 = [(NDContentDownloadService *)self downloadLimits];
+      v15 = +[NSByteCountFormatter stringFromByteCount:countStyle:](NSByteCountFormatter, "stringFromByteCount:countStyle:", [downloadLimits2 minDeviceStorage], 0);
       v20 = 138543618;
       v21 = v13;
       v22 = 2114;
@@ -989,11 +989,11 @@
 
   else
   {
-    v8 = [(NDContentDownloadService *)self _storageUsedByDownloads];
-    v9 = [(NDContentDownloadService *)self downloadLimits];
-    v10 = [v9 maxDownloadStorage];
+    _storageUsedByDownloads = [(NDContentDownloadService *)self _storageUsedByDownloads];
+    downloadLimits3 = [(NDContentDownloadService *)self downloadLimits];
+    maxDownloadStorage = [downloadLimits3 maxDownloadStorage];
 
-    if (v8 <= v10)
+    if (_storageUsedByDownloads <= maxDownloadStorage)
     {
       v18 = 0;
       goto LABEL_10;
@@ -1003,9 +1003,9 @@
     if (os_log_type_enabled(FCOfflineDownloadsLog, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [NSByteCountFormatter stringFromByteCount:v8 countStyle:0];
-      v14 = [(NDContentDownloadService *)self downloadLimits];
-      v15 = +[NSByteCountFormatter stringFromByteCount:countStyle:](NSByteCountFormatter, "stringFromByteCount:countStyle:", [v14 maxDownloadStorage], 0);
+      v13 = [NSByteCountFormatter stringFromByteCount:_storageUsedByDownloads countStyle:0];
+      downloadLimits2 = [(NDContentDownloadService *)self downloadLimits];
+      v15 = +[NSByteCountFormatter stringFromByteCount:countStyle:](NSByteCountFormatter, "stringFromByteCount:countStyle:", [downloadLimits2 maxDownloadStorage], 0);
       v20 = 138543618;
       v21 = v13;
       v22 = 2114;
@@ -1024,18 +1024,18 @@ LABEL_10:
 
 - (unint64_t)_storageUsedByDownloads
 {
-  v3 = [(NDContentDownloadService *)self contentContext];
-  v4 = [v3 storageSize];
-  v5 = [(NDContentDownloadService *)self contentArchiveStore];
-  v6 = [v5 storageSize];
+  contentContext = [(NDContentDownloadService *)self contentContext];
+  storageSize = [contentContext storageSize];
+  contentArchiveStore = [(NDContentDownloadService *)self contentArchiveStore];
+  storageSize2 = [contentArchiveStore storageSize];
 
-  return v4 + v6;
+  return storageSize + storageSize2;
 }
 
 - (void)_cleanUpAVAssetDownloads
 {
-  v2 = [(NDContentDownloadService *)self downloadRequests];
-  v3 = [v2 fc_containsObjectPassingTest:&stru_1000720F0];
+  downloadRequests = [(NDContentDownloadService *)self downloadRequests];
+  v3 = [downloadRequests fc_containsObjectPassingTest:&stru_1000720F0];
 
   if ((v3 & 1) == 0)
   {

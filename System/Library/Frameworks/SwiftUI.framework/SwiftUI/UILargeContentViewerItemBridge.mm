@@ -41,7 +41,7 @@
 
 - (UIImage)largeContentImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UILargeContentViewerItemBridge.largeContentImage.getter();
 
   return v3;
@@ -49,7 +49,7 @@
 
 - (UIAccessibilityHUDItem)accessibilityHUDRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UILargeContentViewerItemBridge.accessibilityHUDRepresentation.getter();
 
   return v3;

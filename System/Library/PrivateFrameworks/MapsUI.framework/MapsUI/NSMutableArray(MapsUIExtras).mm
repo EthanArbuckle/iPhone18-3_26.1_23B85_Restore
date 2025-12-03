@@ -10,7 +10,7 @@
   v4 = a3;
   if ([v4 count])
   {
-    [a1 addObjectsFromArray:v4];
+    [self addObjectsFromArray:v4];
   }
 }
 
@@ -18,10 +18,10 @@
 {
   if (a3)
   {
-    return [a1 addObject:?];
+    return [self addObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 @end

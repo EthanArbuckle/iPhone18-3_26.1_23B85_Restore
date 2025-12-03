@@ -1,34 +1,34 @@
 @interface SBSBackgroundContentDefinition
 - (SBSBackgroundContentDefinition)init;
-- (SBSBackgroundContentDefinition)initWithSceneIdentifier:(id)a3 clientBundleIdentifier:(id)a4;
-- (SBSBackgroundContentDefinition)initWithXPCDictionary:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBSBackgroundContentDefinition)initWithSceneIdentifier:(id)identifier clientBundleIdentifier:(id)bundleIdentifier;
+- (SBSBackgroundContentDefinition)initWithXPCDictionary:(id)dictionary;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation SBSBackgroundContentDefinition
 
 - (SBSBackgroundContentDefinition)init
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v7 = [(SBSBackgroundContentDefinition *)self initWithSceneIdentifier:v4 clientBundleIdentifier:v6];
+  v7 = [(SBSBackgroundContentDefinition *)self initWithSceneIdentifier:uUIDString clientBundleIdentifier:bundleIdentifier];
   return v7;
 }
 
-- (SBSBackgroundContentDefinition)initWithSceneIdentifier:(id)a3 clientBundleIdentifier:(id)a4
+- (SBSBackgroundContentDefinition)initWithSceneIdentifier:(id)identifier clientBundleIdentifier:(id)bundleIdentifier
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  if (bundleIdentifierCopy)
   {
-    if (v7)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -37,7 +37,7 @@
   else
   {
     [SBSBackgroundContentDefinition initWithSceneIdentifier:a2 clientBundleIdentifier:self];
-    if (v7)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -50,11 +50,11 @@ LABEL_3:
   v9 = [(SBSBackgroundContentDefinition *)&v15 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [bundleIdentifierCopy copy];
     clientBundleIdentifier = v9->_clientBundleIdentifier;
     v9->_clientBundleIdentifier = v10;
 
-    v12 = [v7 copy];
+    v12 = [identifierCopy copy];
     sceneIdentifier = v9->_sceneIdentifier;
     v9->_sceneIdentifier = v12;
   }
@@ -62,9 +62,9 @@ LABEL_3:
   return v9;
 }
 
-- (SBSBackgroundContentDefinition)initWithXPCDictionary:(id)a3
+- (SBSBackgroundContentDefinition)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = BSDeserializeStringFromXPCDictionaryWithKey();
   v6 = BSDeserializeStringFromXPCDictionaryWithKey();
 
@@ -72,11 +72,11 @@ LABEL_3:
   return v7;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v3 = a3;
+    dictionaryCopy = dictionary;
     BSSerializeStringToXPCDictionaryWithKey();
     BSSerializeStringToXPCDictionaryWithKey();
   }
@@ -84,32 +84,32 @@ LABEL_3:
 
 - (id)succinctDescription
 {
-  v2 = [(SBSBackgroundContentDefinition *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSBackgroundContentDefinition *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSBackgroundContentDefinition *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSBackgroundContentDefinition *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBSBackgroundContentDefinition *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBSBackgroundContentDefinition *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__SBSBackgroundContentDefinition_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E735F7F0;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

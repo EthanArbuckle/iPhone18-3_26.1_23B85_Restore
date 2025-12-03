@@ -6,9 +6,9 @@
 - (unint64_t)keychainSyncSettingValue;
 - (void)_fetchKeychainSyncingStatus;
 - (void)_primaryAppleAccountDidChange;
-- (void)_updateAccountOnInternalQueue:(id)a3;
+- (void)_updateAccountOnInternalQueue:(id)queue;
 - (void)_updateKeychainClique;
-- (void)performTaskOnceKeychainSyncValueHasBeenFetchedOnQueue:(id)a3 task:(id)a4;
+- (void)performTaskOnceKeychainSyncValueHasBeenFetchedOnQueue:(id)queue task:(id)task;
 @end
 
 @implementation WBSKeychainSyncingMonitor
@@ -70,8 +70,8 @@ void __42__WBSKeychainSyncingMonitor_sharedMonitor__block_invoke()
     synchronousGetterQueue = v2->_synchronousGetterQueue;
     v2->_synchronousGetterQueue = v12;
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v2 selector:sel__primaryAppleAccountDidChange name:@"WBSPrimaryAppleAccountDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__primaryAppleAccountDidChange name:@"WBSPrimaryAppleAccountDidChangeNotification" object:0];
 
     [(WBSKeychainSyncingMonitor *)v2 _primaryAppleAccountDidChange];
     v15 = v2;
@@ -138,7 +138,7 @@ void __58__WBSKeychainSyncingMonitor__primaryAppleAccountDidChange__block_invoke
   v6[2] = __56__WBSKeychainSyncingMonitor__fetchKeychainSyncingStatus__block_invoke;
   v6[3] = &unk_1E7CF1708;
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
   dispatch_async(keychainStatusFetchingQueue, v6);
 }
@@ -207,18 +207,18 @@ void *__53__WBSKeychainSyncingMonitor_keychainSyncSettingValue__block_invoke(voi
   return result;
 }
 
-- (void)_updateAccountOnInternalQueue:(id)a3
+- (void)_updateAccountOnInternalQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   primaryAppleAccountAltDSID = self->_primaryAppleAccountAltDSID;
-  v10 = v4;
+  v10 = queueCopy;
   primaryAppleAccount = self->_primaryAppleAccount;
   self->_primaryAppleAccount = v10;
   v7 = primaryAppleAccountAltDSID;
 
-  v8 = [(ACAccount *)v10 aa_altDSID];
+  aa_altDSID = [(ACAccount *)v10 aa_altDSID];
   v9 = self->_primaryAppleAccountAltDSID;
-  self->_primaryAppleAccountAltDSID = v8;
+  self->_primaryAppleAccountAltDSID = aa_altDSID;
 
   LOBYTE(primaryAppleAccount) = WBSIsEqual(v7, self->_primaryAppleAccountAltDSID);
   if ((primaryAppleAccount & 1) == 0)
@@ -247,8 +247,8 @@ void *__53__WBSKeychainSyncingMonitor_keychainSyncSettingValue__block_invoke(voi
     return [(WBSKeychainSyncingMonitor *)self keychainSyncSettingValue]== 2;
   }
 
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v4 = [v3 safari_numberForKey:@"iCloudKeychainEnabledOverride"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v4 = [safari_browserDefaults safari_numberForKey:@"iCloudKeychainEnabledOverride"];
 
   if (!v4)
   {
@@ -262,40 +262,40 @@ void *__53__WBSKeychainSyncingMonitor_keychainSyncSettingValue__block_invoke(voi
     _os_log_impl(&dword_1B8447000, v5, OS_LOG_TYPE_DEFAULT, "Overriding iCloud Keychain check due to iCloudKeychainEnabledOverrideDefault", v8, 2u);
   }
 
-  v6 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 - (BOOL)canKeychainSyncBeEnabled
 {
-  v2 = [MEMORY[0x1E69DF068] sharedManager];
-  v3 = [v2 isSharedIPad];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  isSharedIPad = [mEMORY[0x1E69DF068] isSharedIPad];
 
-  if (v3)
+  if (isSharedIPad)
   {
     return 0;
   }
 
-  v5 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v4 = [v5 BOOLRestrictionForFeature:*MEMORY[0x1E69ADE30]] == 0;
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v4 = [mEMORY[0x1E69ADFB8] BOOLRestrictionForFeature:*MEMORY[0x1E69ADE30]] == 0;
 
   return v4;
 }
 
-- (void)performTaskOnceKeychainSyncValueHasBeenFetchedOnQueue:(id)a3 task:(id)a4
+- (void)performTaskOnceKeychainSyncValueHasBeenFetchedOnQueue:(id)queue task:(id)task
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  taskCopy = task;
   synchronousGetterQueue = self->_synchronousGetterQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__WBSKeychainSyncingMonitor_performTaskOnceKeychainSyncValueHasBeenFetchedOnQueue_task___block_invoke;
   v11[3] = &unk_1E7CF16B8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = queueCopy;
+  v13 = taskCopy;
+  v9 = taskCopy;
+  v10 = queueCopy;
   dispatch_async(synchronousGetterQueue, v11);
 }
 

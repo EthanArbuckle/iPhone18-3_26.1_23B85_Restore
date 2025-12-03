@@ -1,21 +1,21 @@
 @interface SIRINLUEXTERNALNLU_ROUTERNLRouterTurnProbingResult
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALNLU_ROUTERNLRouterTurnProbingResult
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   nlParseResponse = self->_nlParseResponse;
-  v6 = v4[1];
-  v9 = v4;
+  v6 = fromCopy[1];
+  v9 = fromCopy;
   if (nlParseResponse)
   {
     if (!v6)
@@ -36,10 +36,10 @@
     [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnProbingResult *)self setNlParseResponse:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   pommesResponse = self->_pommesResponse;
-  v8 = v4[2];
+  v8 = fromCopy[2];
   if (pommesResponse)
   {
     if (v8)
@@ -56,13 +56,13 @@ LABEL_7:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((nlParseResponse = self->_nlParseResponse, !(nlParseResponse | v4[1])) || -[SIRINLUEXTERNALNLU_ROUTERNLParseResponse isEqual:](nlParseResponse, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((nlParseResponse = self->_nlParseResponse, !(nlParseResponse | equalCopy[1])) || -[SIRINLUEXTERNALNLU_ROUTERNLParseResponse isEqual:](nlParseResponse, "isEqual:")))
   {
     pommesResponse = self->_pommesResponse;
-    if (pommesResponse | v4[2])
+    if (pommesResponse | equalCopy[2])
     {
       v7 = [(SIRINLUEXTERNALNLU_ROUTERPommesResponse *)pommesResponse isEqual:?];
     }
@@ -81,72 +81,72 @@ LABEL_7:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALNLU_ROUTERNLParseResponse *)self->_nlParseResponse copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALNLU_ROUTERNLParseResponse *)self->_nlParseResponse copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(SIRINLUEXTERNALNLU_ROUTERPommesResponse *)self->_pommesResponse copyWithZone:a3];
+  v8 = [(SIRINLUEXTERNALNLU_ROUTERPommesResponse *)self->_pommesResponse copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_nlParseResponse)
   {
-    [v4 setNlParseResponse:?];
-    v4 = v5;
+    [toCopy setNlParseResponse:?];
+    toCopy = v5;
   }
 
   if (self->_pommesResponse)
   {
     [v5 setPommesResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_nlParseResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_pommesResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   nlParseResponse = self->_nlParseResponse;
   if (nlParseResponse)
   {
-    v5 = [(SIRINLUEXTERNALNLU_ROUTERNLParseResponse *)nlParseResponse dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"nl_parse_response"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTERNLParseResponse *)nlParseResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"nl_parse_response"];
   }
 
   pommesResponse = self->_pommesResponse;
   if (pommesResponse)
   {
-    v7 = [(SIRINLUEXTERNALNLU_ROUTERPommesResponse *)pommesResponse dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"pommes_response"];
+    dictionaryRepresentation2 = [(SIRINLUEXTERNALNLU_ROUTERPommesResponse *)pommesResponse dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"pommes_response"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -155,8 +155,8 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALNLU_ROUTERNLRouterTurnProbingResult;
   v4 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnProbingResult *)&v8 description];
-  v5 = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnProbingResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTERNLRouterTurnProbingResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

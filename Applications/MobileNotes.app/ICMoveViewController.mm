@@ -1,15 +1,15 @@
 @interface ICMoveViewController
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
 - (ICDataSource)dataSource;
-- (ICMoveViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (ICMoveViewController)initWithViewControllerManager:(id)a3 sourceObjectIds:(id)a4;
-- (ICMoveViewController)initWithViewMode:(int64_t)a3 viewControllerManager:(id)a4 viewControllerType:(int64_t)a5;
+- (ICMoveViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (ICMoveViewController)initWithViewControllerManager:(id)manager sourceObjectIds:(id)ids;
+- (ICMoveViewController)initWithViewMode:(int64_t)mode viewControllerManager:(id)manager viewControllerType:(int64_t)type;
 - (NSArray)sourceObjectIds;
 - (id)completionHandler;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)loadView;
-- (void)promptToAddFolderIn:(id)a3;
-- (void)setCompletionHandler:(id)a3;
+- (void)promptToAddFolderIn:(id)in;
+- (void)setCompletionHandler:(id)handler;
 - (void)viewDidLoad;
 @end
 
@@ -46,9 +46,9 @@
   return v3;
 }
 
-- (void)setCompletionHandler:(id)a3
+- (void)setCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -66,51 +66,51 @@
   v8 = *(self + OBJC_IVAR___ICMoveViewController_completionHandler);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_10000C840(v8);
 }
 
-- (ICMoveViewController)initWithViewControllerManager:(id)a3 sourceObjectIds:(id)a4
+- (ICMoveViewController)initWithViewControllerManager:(id)manager sourceObjectIds:(id)ids
 {
   sub_1000054A4(0, &qword_1006BFEC0);
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a3;
-  v7 = sub_1003EF0F8(v6, v5);
+  managerCopy = manager;
+  v7 = sub_1003EF0F8(managerCopy, v5);
 
   return v7;
 }
 
 - (void)loadView
 {
-  v3 = self;
+  selfCopy = self;
   v2 = sub_1003EEBD0(&OBJC_IVAR___ICMoveViewController____lazy_storage___collectionView, sub_1003EE118);
-  [(ICMoveViewController *)v3 setView:v2];
+  [(ICMoveViewController *)selfCopy setView:v2];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003ED828();
 }
 
 - (ICDataSource)dataSource
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1003EDFDC();
 
   return v3;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
   v5 = type metadata accessor for IndexPath();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v16 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a3;
+  viewCopy = view;
   isa = IndexPath._bridgeToObjectiveC()().super.isa;
-  v11 = [v9 cellForItemAtIndexPath:isa];
+  v11 = [viewCopy cellForItemAtIndexPath:isa];
 
   if (!v11)
   {
@@ -128,43 +128,43 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v13 = [v12 forceDisabledAppearance];
+  forceDisabledAppearance = [v12 forceDisabledAppearance];
 
-  v14 = v13 ^ 1;
+  v14 = forceDisabledAppearance ^ 1;
 LABEL_7:
   (*(v6 + 8))(v8, v5);
   return v14;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_1003EE454(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1003EE454(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)promptToAddFolderIn:(id)a3
+- (void)promptToAddFolderIn:(id)in
 {
-  v5 = a3;
-  v6 = self;
-  sub_1003EE71C(a3);
+  inCopy = in;
+  selfCopy = self;
+  sub_1003EE71C(in);
 }
 
-- (ICMoveViewController)initWithViewMode:(int64_t)a3 viewControllerManager:(id)a4 viewControllerType:(int64_t)a5
+- (ICMoveViewController)initWithViewMode:(int64_t)mode viewControllerManager:(id)manager viewControllerType:(int64_t)type
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (ICMoveViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICMoveViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

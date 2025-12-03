@@ -1,28 +1,28 @@
 @interface ATXDocumentPredictionClient
 + (BOOL)_isDemoModeEnabled;
 + (id)_getDocumentsForDemoMode;
-+ (void)categoriesForRequest:(id)a3 withReply:(id)a4;
-- (id)zkwPredictionsForRequest:(id)a3 error:(id *)a4;
++ (void)categoriesForRequest:(id)request withReply:(id)reply;
+- (id)zkwPredictionsForRequest:(id)request error:(id *)error;
 @end
 
 @implementation ATXDocumentPredictionClient
 
-+ (void)categoriesForRequest:(id)a3 withReply:(id)a4
++ (void)categoriesForRequest:(id)request withReply:(id)reply
 {
-  if (a4)
+  if (reply)
   {
     v4 = MEMORY[0x1E696ABC0];
-    v5 = a4;
+    replyCopy = reply;
     v6 = [v4 errorWithDomain:@"com.apple.ATXPredictionErrorDomain" code:4 userInfo:0];
-    v5[2](v5, 0, v6);
+    replyCopy[2](replyCopy, 0, v6);
   }
 }
 
-- (id)zkwPredictionsForRequest:(id)a3 error:(id *)a4
+- (id)zkwPredictionsForRequest:(id)request error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.ATXPredictionErrorDomain" code:4 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.ATXPredictionErrorDomain" code:4 userInfo:0];
   }
 
   return 0;
@@ -30,22 +30,22 @@
 
 + (BOOL)_isDemoModeEnabled
 {
-  v2 = [MEMORY[0x1E69C5CF8] isInternalBuild];
-  if (v2)
+  isInternalBuild = [MEMORY[0x1E69C5CF8] isInternalBuild];
+  if (isInternalBuild)
   {
     keyExistsAndHasValidFormat = 0;
-    LOBYTE(v2) = CFPreferencesGetAppBooleanValue(@"SpotlightPlusDocumentsDemoModeEnabled", *MEMORY[0x1E698B030], &keyExistsAndHasValidFormat) != 0;
+    LOBYTE(isInternalBuild) = CFPreferencesGetAppBooleanValue(@"SpotlightPlusDocumentsDemoModeEnabled", *MEMORY[0x1E698B030], &keyExistsAndHasValidFormat) != 0;
   }
 
-  return v2;
+  return isInternalBuild;
 }
 
 + (id)_getDocumentsForDemoMode
 {
   v24 = *MEMORY[0x1E69E9840];
-  v2 = [a1 _demoDocumentsPath];
+  _demoDocumentsPath = [self _demoDocumentsPath];
   v19 = 0;
-  v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v2 options:0 error:&v19];
+  v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:_demoDocumentsPath options:0 error:&v19];
   v4 = v19;
   if (v3)
   {

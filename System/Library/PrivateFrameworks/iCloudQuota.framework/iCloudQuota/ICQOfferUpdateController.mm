@@ -1,136 +1,136 @@
 @interface ICQOfferUpdateController
-- (ICQOfferUpdateController)initWithSession:(id)a3;
-- (void)performOfferUpdateWithContext:(id)a3 completion:(id)a4;
+- (ICQOfferUpdateController)initWithSession:(id)session;
+- (void)performOfferUpdateWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation ICQOfferUpdateController
 
-- (ICQOfferUpdateController)initWithSession:(id)a3
+- (ICQOfferUpdateController)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v6 = [(ICQOfferUpdateController *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sharedURLSession, a3);
+    objc_storeStrong(&v6->_sharedURLSession, session);
   }
 
   return v7;
 }
 
-- (void)performOfferUpdateWithContext:(id)a3 completion:(id)a4
+- (void)performOfferUpdateWithContext:(id)context completion:(id)completion
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v7 = _ICQGetLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 offerId];
-    v9 = [v5 buttonId];
-    v10 = [v5 isZeroAction];
-    v11 = [v5 account];
+    offerId = [contextCopy offerId];
+    buttonId = [contextCopy buttonId];
+    isZeroAction = [contextCopy isZeroAction];
+    account = [contextCopy account];
     *buf = 138413058;
-    *&buf[4] = v8;
+    *&buf[4] = offerId;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = buttonId;
     *&buf[22] = 1024;
-    *v50 = v10;
+    *v50 = isZeroAction;
     *&v50[4] = 2112;
-    *&v50[6] = v11;
+    *&v50[6] = account;
     _os_log_impl(&dword_275572000, v7, OS_LOG_TYPE_DEFAULT, "performOfferUpdateWithContext:%@ - %@ zeroAction:%d account:%@", buf, 0x26u);
   }
 
-  v12 = [v5 account];
-  v13 = v12 == 0;
+  account2 = [contextCopy account];
+  v13 = account2 == 0;
 
   if (v13)
   {
     v16 = ICQCreateError(0);
-    v6[2](v6, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
   }
 
   else
   {
     v14 = [ICQRequestProvider alloc];
-    v15 = [v5 account];
-    v16 = [(ICQRequestProvider *)v14 initWithAccount:v15];
+    account3 = [contextCopy account];
+    v16 = [(ICQRequestProvider *)v14 initWithAccount:account3];
 
-    v17 = [(ICQRequestProvider *)v16 urlForUpdateOfferWithContext:v5];
+    v17 = [(ICQRequestProvider *)v16 urlForUpdateOfferWithContext:contextCopy];
     if (!v17)
     {
       goto LABEL_22;
     }
 
     v18 = [MEMORY[0x277CCAB70] requestWithURL:v17 cachePolicy:1 timeoutInterval:30.0];
-    v19 = [MEMORY[0x277CBEB38] dictionary];
-    v20 = [v5 offerId];
-    v21 = [(ICQRequestProvider *)v16 willUseNewKey:@"quotaUpdateOfferURL" offerID:v20 notificationID:0];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    offerId2 = [contextCopy offerId];
+    v21 = [(ICQRequestProvider *)v16 willUseNewKey:@"quotaUpdateOfferURL" offerID:offerId2 notificationID:0];
 
     if (v21)
     {
-      v22 = [v5 buttonId];
+      buttonId2 = [contextCopy buttonId];
 
-      if (v22)
+      if (buttonId2)
       {
-        v23 = [v5 buttonId];
-        [v19 setObject:v23 forKeyedSubscript:@"buttonId"];
+        buttonId3 = [contextCopy buttonId];
+        [dictionary setObject:buttonId3 forKeyedSubscript:@"buttonId"];
       }
     }
 
     else
     {
-      v24 = [v5 account];
-      v25 = [v24 aa_personID];
+      account4 = [contextCopy account];
+      aa_personID = [account4 aa_personID];
 
-      if (v25)
+      if (aa_personID)
       {
-        v26 = [v5 account];
-        v27 = [v26 aa_personID];
-        [v19 setObject:v27 forKeyedSubscript:@"dsid"];
+        account5 = [contextCopy account];
+        aa_personID2 = [account5 aa_personID];
+        [dictionary setObject:aa_personID2 forKeyedSubscript:@"dsid"];
       }
 
-      v28 = [v5 buttonId];
+      buttonId4 = [contextCopy buttonId];
 
-      if (v28)
+      if (buttonId4)
       {
-        v29 = [v5 buttonId];
-        [v19 setObject:v29 forKeyedSubscript:@"btnId"];
+        buttonId5 = [contextCopy buttonId];
+        [dictionary setObject:buttonId5 forKeyedSubscript:@"btnId"];
       }
 
-      v30 = [v5 offerId];
+      offerId3 = [contextCopy offerId];
 
-      if (v30)
+      if (offerId3)
       {
-        v31 = [v5 offerId];
-        [v19 setObject:v31 forKeyedSubscript:@"offerId"];
+        offerId4 = [contextCopy offerId];
+        [dictionary setObject:offerId4 forKeyedSubscript:@"offerId"];
       }
 
-      if ([v5 isZeroAction])
+      if ([contextCopy isZeroAction])
       {
-        [v19 setObject:@"true" forKeyedSubscript:@"directAction"];
+        [dictionary setObject:@"true" forKeyedSubscript:@"directAction"];
       }
     }
 
     [(ICQRequestProvider *)v16 addCommonHeadersToRequest:v18];
-    if (![ICQRequestProvider attemptSetRequest:v18 toPostWithJSONDict:v19])
+    if (![ICQRequestProvider attemptSetRequest:v18 toPostWithJSONDict:dictionary])
     {
 
       v18 = 0;
     }
 
-    v32 = [v5 offerId];
-    v33 = [(ICQRequestProvider *)v16 httpMethodForKey:@"quotaUpdateOfferURL" offerID:v32 notificationID:0];
+    offerId5 = [contextCopy offerId];
+    v33 = [(ICQRequestProvider *)v16 httpMethodForKey:@"quotaUpdateOfferURL" offerID:offerId5 notificationID:0];
     [v18 setHTTPMethod:v33];
 
     if (v18)
     {
-      v34 = [v18 HTTPBody];
-      if (v34)
+      hTTPBody = [v18 HTTPBody];
+      if (hTTPBody)
       {
         v35 = objc_alloc(MEMORY[0x277CCACA8]);
-        v36 = [v18 HTTPBody];
-        v37 = [v35 initWithData:v36 encoding:4];
+        hTTPBody2 = [v18 HTTPBody];
+        v37 = [v35 initWithData:hTTPBody2 encoding:4];
       }
 
       else
@@ -141,14 +141,14 @@
       v39 = _ICQGetLogSystem();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
-        v40 = [v18 allHTTPHeaderFields];
-        v41 = [v18 HTTPBody];
+        allHTTPHeaderFields = [v18 allHTTPHeaderFields];
+        hTTPBody3 = [v18 HTTPBody];
         *buf = 138413058;
         *&buf[4] = v18;
         *&buf[12] = 2112;
-        *&buf[14] = v40;
+        *&buf[14] = allHTTPHeaderFields;
         *&buf[22] = 2112;
-        *v50 = v41;
+        *v50 = hTTPBody3;
         *&v50[8] = 2112;
         *&v50[10] = v37;
         _os_log_impl(&dword_275572000, v39, OS_LOG_TYPE_DEFAULT, "update offer request: %@ headers: %@ body: %@ body (as string): %@", buf, 0x2Au);
@@ -165,7 +165,7 @@
       v46[1] = 3221225472;
       v46[2] = __69__ICQOfferUpdateController_performOfferUpdateWithContext_completion___block_invoke;
       v46[3] = &unk_27A651E48;
-      v47 = v6;
+      v47 = completionCopy;
       v48 = buf;
       v43 = [v42 dataTaskWithRequest:v18 completionHandler:v46];
       [v43 resume];
@@ -185,7 +185,7 @@ LABEL_22:
       }
 
       v18 = ICQCreateError(0);
-      v6[2](v6, 0, v18);
+      completionCopy[2](completionCopy, 0, v18);
     }
   }
 

@@ -1,31 +1,31 @@
 @interface NMRMediaRemoteSetIconMessage
-+ (id)messageWithIcon:(id)a3 originalDigest:(id)a4 bundleID:(id)a5 originIdentifier:(id)a6;
-- (NMRMediaRemoteSetIconMessage)initWithProtobufData:(id)a3;
++ (id)messageWithIcon:(id)icon originalDigest:(id)digest bundleID:(id)d originIdentifier:(id)identifier;
+- (NMRMediaRemoteSetIconMessage)initWithProtobufData:(id)data;
 - (NSDate)serializationDate;
 - (NSNumber)originIdentifier;
-- (id)_initWithIcon:(id)a3 originalDigest:(id)a4 bundleID:(id)a5 originIdentifier:(id)a6;
+- (id)_initWithIcon:(id)icon originalDigest:(id)digest bundleID:(id)d originIdentifier:(id)identifier;
 - (id)protobufData;
 @end
 
 @implementation NMRMediaRemoteSetIconMessage
 
-+ (id)messageWithIcon:(id)a3 originalDigest:(id)a4 bundleID:(id)a5 originIdentifier:(id)a6
++ (id)messageWithIcon:(id)icon originalDigest:(id)digest bundleID:(id)d originIdentifier:(id)identifier
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] _initWithIcon:v13 originalDigest:v12 bundleID:v11 originIdentifier:v10];
+  identifierCopy = identifier;
+  dCopy = d;
+  digestCopy = digest;
+  iconCopy = icon;
+  v14 = [[self alloc] _initWithIcon:iconCopy originalDigest:digestCopy bundleID:dCopy originIdentifier:identifierCopy];
 
   return v14;
 }
 
-- (id)_initWithIcon:(id)a3 originalDigest:(id)a4 bundleID:(id)a5 originIdentifier:(id)a6
+- (id)_initWithIcon:(id)icon originalDigest:(id)digest bundleID:(id)d originIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  iconCopy = icon;
+  digestCopy = digest;
+  dCopy = d;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = NMRMediaRemoteSetIconMessage;
   v14 = [(NMRMediaRemoteSetIconMessage *)&v18 init];
@@ -35,10 +35,10 @@
     protobuf = v14->_protobuf;
     v14->_protobuf = v15;
 
-    [(_NMRMediaRemoteSetIconMessage *)v14->_protobuf setIconData:v10];
-    [(_NMRMediaRemoteSetIconMessage *)v14->_protobuf setOriginalDigest:v11];
-    [(_NMRMediaRemoteSetIconMessage *)v14->_protobuf setBundleID:v12];
-    -[_NMRMediaRemoteSetIconMessage setOriginIdentifier:](v14->_protobuf, "setOriginIdentifier:", [v13 intValue]);
+    [(_NMRMediaRemoteSetIconMessage *)v14->_protobuf setIconData:iconCopy];
+    [(_NMRMediaRemoteSetIconMessage *)v14->_protobuf setOriginalDigest:digestCopy];
+    [(_NMRMediaRemoteSetIconMessage *)v14->_protobuf setBundleID:dCopy];
+    -[_NMRMediaRemoteSetIconMessage setOriginIdentifier:](v14->_protobuf, "setOriginIdentifier:", [identifierCopy intValue]);
   }
 
   return v14;
@@ -75,15 +75,15 @@
   return v3;
 }
 
-- (NMRMediaRemoteSetIconMessage)initWithProtobufData:(id)a3
+- (NMRMediaRemoteSetIconMessage)initWithProtobufData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = NMRMediaRemoteSetIconMessage;
   v5 = [(NMRMediaRemoteSetIconMessage *)&v10 init];
   if (v5)
   {
-    v6 = [[_NMRMediaRemoteSetIconMessage alloc] initWithData:v4];
+    v6 = [[_NMRMediaRemoteSetIconMessage alloc] initWithData:dataCopy];
     protobuf = v5->_protobuf;
     v5->_protobuf = v6;
 

@@ -1,93 +1,93 @@
 @interface BCCacheOperation
-+ (id)operationWithKind:(unsigned __int16)a3 subject:(id)a4 request:(id)a5;
-+ (id)operationWithKind:(unsigned __int16)a3 subject:(id)a4 result:(id)a5 request:(id)a6;
-+ (id)operationWithKind:(unsigned __int16)a3 vendedImageInterest:(id)a4 request:(id)a5;
-+ (id)operationWithKind:(unsigned __int16)a3 vendedImageInterest:(id)a4 subject:(id)a5 request:(id)a6;
++ (id)operationWithKind:(unsigned __int16)kind subject:(id)subject request:(id)request;
++ (id)operationWithKind:(unsigned __int16)kind subject:(id)subject result:(id)result request:(id)request;
++ (id)operationWithKind:(unsigned __int16)kind vendedImageInterest:(id)interest request:(id)request;
++ (id)operationWithKind:(unsigned __int16)kind vendedImageInterest:(id)interest subject:(id)subject request:(id)request;
 - (id)description;
 - (id)descriptionForKind;
 @end
 
 @implementation BCCacheOperation
 
-+ (id)operationWithKind:(unsigned __int16)a3 vendedImageInterest:(id)a4 subject:(id)a5 request:(id)a6
++ (id)operationWithKind:(unsigned __int16)kind vendedImageInterest:(id)interest subject:(id)subject request:(id)request
 {
-  v8 = a3;
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
+  kindCopy = kind;
+  requestCopy = request;
+  subjectCopy = subject;
+  interestCopy = interest;
   v12 = objc_alloc_init(BCCacheOperation);
-  [(BCCacheOperation *)v12 setOperationKind:v8];
-  [(BCCacheOperation *)v12 setVendedImageInterest:v11];
+  [(BCCacheOperation *)v12 setOperationKind:kindCopy];
+  [(BCCacheOperation *)v12 setVendedImageInterest:interestCopy];
 
-  [(BCCacheOperation *)v12 setRequest:v9];
-  [(BCCacheOperation *)v12 setSubject:v10];
+  [(BCCacheOperation *)v12 setRequest:requestCopy];
+  [(BCCacheOperation *)v12 setSubject:subjectCopy];
 
   return v12;
 }
 
-+ (id)operationWithKind:(unsigned __int16)a3 vendedImageInterest:(id)a4 request:(id)a5
++ (id)operationWithKind:(unsigned __int16)kind vendedImageInterest:(id)interest request:(id)request
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = a4;
+  kindCopy = kind;
+  requestCopy = request;
+  interestCopy = interest;
   v9 = objc_alloc_init(BCCacheOperation);
-  [(BCCacheOperation *)v9 setOperationKind:v6];
-  [(BCCacheOperation *)v9 setVendedImageInterest:v8];
+  [(BCCacheOperation *)v9 setOperationKind:kindCopy];
+  [(BCCacheOperation *)v9 setVendedImageInterest:interestCopy];
 
-  [(BCCacheOperation *)v9 setRequest:v7];
+  [(BCCacheOperation *)v9 setRequest:requestCopy];
 
   return v9;
 }
 
-+ (id)operationWithKind:(unsigned __int16)a3 subject:(id)a4 request:(id)a5
++ (id)operationWithKind:(unsigned __int16)kind subject:(id)subject request:(id)request
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = a4;
+  kindCopy = kind;
+  requestCopy = request;
+  subjectCopy = subject;
   v9 = objc_alloc_init(BCCacheOperation);
-  [(BCCacheOperation *)v9 setOperationKind:v6];
-  [(BCCacheOperation *)v9 setRequest:v7];
+  [(BCCacheOperation *)v9 setOperationKind:kindCopy];
+  [(BCCacheOperation *)v9 setRequest:requestCopy];
 
-  [(BCCacheOperation *)v9 setSubject:v8];
+  [(BCCacheOperation *)v9 setSubject:subjectCopy];
 
   return v9;
 }
 
-+ (id)operationWithKind:(unsigned __int16)a3 subject:(id)a4 result:(id)a5 request:(id)a6
++ (id)operationWithKind:(unsigned __int16)kind subject:(id)subject result:(id)result request:(id)request
 {
-  v8 = a3;
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
+  kindCopy = kind;
+  requestCopy = request;
+  resultCopy = result;
+  subjectCopy = subject;
   v12 = objc_alloc_init(BCCacheOperation);
-  [(BCCacheOperation *)v12 setOperationKind:v8];
-  [(BCCacheOperation *)v12 setRequest:v9];
+  [(BCCacheOperation *)v12 setOperationKind:kindCopy];
+  [(BCCacheOperation *)v12 setRequest:requestCopy];
 
-  [(BCCacheOperation *)v12 setSubject:v11];
-  [(BCCacheOperation *)v12 setResult:v10];
+  [(BCCacheOperation *)v12 setSubject:subjectCopy];
+  [(BCCacheOperation *)v12 setResult:resultCopy];
 
   return v12;
 }
 
 - (id)description
 {
-  v2 = [(BCCacheOperation *)self descriptionForKind];
-  v3 = [NSString stringWithFormat:@"Op: %@", v2];
+  descriptionForKind = [(BCCacheOperation *)self descriptionForKind];
+  v3 = [NSString stringWithFormat:@"Op: %@", descriptionForKind];
 
   return v3;
 }
 
 - (id)descriptionForKind
 {
-  v2 = [(BCCacheOperation *)self operationKind];
-  if (v2 > 5)
+  operationKind = [(BCCacheOperation *)self operationKind];
+  if (operationKind > 5)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_2CE1E8 + v2);
+    return *(&off_2CE1E8 + operationKind);
   }
 }
 

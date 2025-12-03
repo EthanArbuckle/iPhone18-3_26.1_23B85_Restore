@@ -2,21 +2,21 @@
 - (BOOL)holdBeforeDisplaying;
 - (COSiCloudLoginViewController)init;
 - (id)detailString;
-- (id)detailTextKeyForActivationLockEnabled:(BOOL)a3 findMyWatchSupported:(BOOL)a4 stockholmSupported:(BOOL)a5;
+- (id)detailTextKeyForActivationLockEnabled:(BOOL)enabled findMyWatchSupported:(BOOL)supported stockholmSupported:(BOOL)stockholmSupported;
 - (id)followUpActions;
 - (id)localizedInformativeText;
 - (id)localizedTitle;
 - (id)localizedWaitScreenDescription;
 - (id)titleString;
 - (id)username;
-- (void)_signInToAccountWithPassword:(id)a3;
+- (void)_signInToAccountWithPassword:(id)password;
 - (void)_successfullySignedIn;
-- (void)loggedInSuccessfullyWithBuddyControllerDoneBlock:(id)a3;
-- (void)signInFailedWithError:(id)a3;
-- (void)stockholmSupportedInGizmoRegion:(BOOL)a3;
-- (void)tappedSkipButton:(id)a3;
+- (void)loggedInSuccessfullyWithBuddyControllerDoneBlock:(id)block;
+- (void)signInFailedWithError:(id)error;
+- (void)stockholmSupportedInGizmoRegion:(BOOL)region;
+- (void)tappedSkipButton:(id)button;
 - (void)updateAppleAccountProperties;
-- (void)updatedAppleAccountPropertiesWithAuthenticated:(BOOL)a3 error:(id)a4;
+- (void)updatedAppleAccountPropertiesWithAuthenticated:(BOOL)authenticated error:(id)error;
 @end
 
 @implementation COSiCloudLoginViewController
@@ -51,8 +51,8 @@
 
 - (id)username
 {
-  v2 = [(COSiCloudLoginViewController *)self account];
-  v3 = [COSiCloudAuthController usernameForiCloudAccount:v2];
+  account = [(COSiCloudLoginViewController *)self account];
+  v3 = [COSiCloudAuthController usernameForiCloudAccount:account];
 
   return v3;
 }
@@ -65,9 +65,9 @@
   return v3;
 }
 
-- (void)stockholmSupportedInGizmoRegion:(BOOL)a3
+- (void)stockholmSupportedInGizmoRegion:(BOOL)region
 {
-  v3 = a3;
+  regionCopy = region;
   if (sub_10002D1FC())
   {
     v5 = +[COSFindMyController isDeviceLocatorEnabled];
@@ -78,10 +78,10 @@
     v5 = 0;
   }
 
-  v6 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   HasCapabilityForString = BPSDeviceHasCapabilityForString();
 
-  v8 = [(COSiCloudLoginViewController *)self detailTextKeyForActivationLockEnabled:v5 findMyWatchSupported:HasCapabilityForString stockholmSupported:v3];
+  v8 = [(COSiCloudLoginViewController *)self detailTextKeyForActivationLockEnabled:v5 findMyWatchSupported:HasCapabilityForString stockholmSupported:regionCopy];
   detailTextKey = self->_detailTextKey;
   self->_detailTextKey = v8;
 
@@ -90,23 +90,23 @@
   [(COSAppleIDLoginViewController *)self checkAndReleaseHold];
 }
 
-- (id)detailTextKeyForActivationLockEnabled:(BOOL)a3 findMyWatchSupported:(BOOL)a4 stockholmSupported:(BOOL)a5
+- (id)detailTextKeyForActivationLockEnabled:(BOOL)enabled findMyWatchSupported:(BOOL)supported stockholmSupported:(BOOL)stockholmSupported
 {
-  v6 = a4;
-  v7 = a3;
+  supportedCopy = supported;
+  enabledCopy = enabled;
   v8 = [NSMutableString stringWithString:@"APPLEID_WHY_SIGN_IN"];
   v9 = v8;
-  if (v6)
+  if (supportedCopy)
   {
     [v8 appendFormat:@"_FIND_MY_VARIANT"];
   }
 
-  else if (v7)
+  else if (enabledCopy)
   {
     [v8 appendString:@"_ACTIVATION_LOCK_VARIANT"];
   }
 
-  if (!a5)
+  if (!stockholmSupported)
   {
     [v9 appendString:@"_NO_APPLE_PAY"];
   }
@@ -123,14 +123,14 @@
   return v5;
 }
 
-- (void)tappedSkipButton:(id)a3
+- (void)tappedSkipButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v5 = pbb_accountsignin_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = "[COSiCloudLoginViewController tappedSkipButton:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ %s", buf, 0x16u);
@@ -138,18 +138,18 @@
 
   [PBBridgeCAReporter recordSigninEventPair:2];
   [(COSiCloudLoginViewController *)self addFollowUpForPageWithCompletion:&stru_1002682A0];
-  v6 = [UIApp setupController];
-  v7 = [v6 pairingReportManager];
+  setupController = [UIApp setupController];
+  pairingReportManager = [setupController pairingReportManager];
 
-  [v7 addPairingTimeEventToPairingReportPlist:24 withValue:&__kCFBooleanTrue withError:0];
+  [pairingReportManager addPairingTimeEventToPairingReportPlist:24 withValue:&__kCFBooleanTrue withError:0];
   v8.receiver = self;
   v8.super_class = COSiCloudLoginViewController;
-  [(COSAppleIDLoginViewController *)&v8 tappedSkipButton:v4];
+  [(COSAppleIDLoginViewController *)&v8 tappedSkipButton:buttonCopy];
 }
 
-- (void)loggedInSuccessfullyWithBuddyControllerDoneBlock:(id)a3
+- (void)loggedInSuccessfullyWithBuddyControllerDoneBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100014D98;
@@ -157,9 +157,9 @@
   v7[4] = self;
   [(COSiCloudLoginViewController *)self removeFollowupForPageWithCompletion:v7];
   [PBBridgeCAReporter recordSigninEventPair:1];
-  v5 = [UIApp setupController];
-  v6 = [v5 appleIDSignInModel];
-  [v6 setHasSignedInToiCloud:1];
+  setupController = [UIApp setupController];
+  appleIDSignInModel = [setupController appleIDSignInModel];
+  [appleIDSignInModel setHasSignedInToiCloud:1];
 
   [(COSAppleIDLoginViewController *)self saveiTunesStoreAccountToPairedDeviceIfForSameAppleID];
   if (sub_10002D1FC() && +[COSFindMyController isDeviceLocatorEnabled])
@@ -167,36 +167,36 @@
     +[COSFindMyController recordShowingActivationLockDetailsForPairingDevice];
   }
 
-  if (v4)
+  if (blockCopy)
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 }
 
-- (void)signInFailedWithError:(id)a3
+- (void)signInFailedWithError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  if (![v5 isEqualToString:@"com.apple.appleaccount"])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:@"com.apple.appleaccount"])
   {
 
     goto LABEL_5;
   }
 
-  v6 = [v4 code];
+  code = [errorCopy code];
 
-  if (v6 != -6)
+  if (code != -6)
   {
 LABEL_5:
     v9.receiver = self;
     v9.super_class = COSiCloudLoginViewController;
-    [(COSAppleIDLoginViewController *)&v9 signInFailedWithError:v4];
+    [(COSAppleIDLoginViewController *)&v9 signInFailedWithError:errorCopy];
     goto LABEL_6;
   }
 
-  v7 = [UIApp setupController];
-  v8 = [v7 appleIDSignInModel];
-  [v8 setHasCombinedIDSSignInFailed:1];
+  setupController = [UIApp setupController];
+  appleIDSignInModel = [setupController appleIDSignInModel];
+  [appleIDSignInModel setHasCombinedIDSSignInFailed:1];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -211,10 +211,10 @@ LABEL_6:
 - (id)localizedWaitScreenDescription
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 isActivated];
+  isActivated = [v2 isActivated];
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3)
+  if (isActivated)
   {
     v6 = @"APPLEID_ACCOUNT_HOLD_DESCRIPTION";
   }
@@ -257,15 +257,15 @@ LABEL_6:
   return v5;
 }
 
-- (void)_signInToAccountWithPassword:(id)a3
+- (void)_signInToAccountWithPassword:(id)password
 {
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_1000152E8;
   v11 = &unk_100268358;
-  v12 = self;
-  v13 = a3;
-  v4 = v13;
+  selfCopy = self;
+  passwordCopy = password;
+  v4 = passwordCopy;
   v5 = objc_retainBlock(&v8);
   v6 = [v5 copy];
   primeBuysOnWatchCompletion = self->_primeBuysOnWatchCompletion;
@@ -287,11 +287,11 @@ LABEL_6:
 {
   v10.receiver = self;
   v10.super_class = COSiCloudLoginViewController;
-  v3 = [(COSAppleIDLoginViewController *)&v10 holdBeforeDisplaying];
-  v4 = [objc_opt_class() appleIDServiceState];
-  v5 = [v4 silentSignInSuccessful];
+  holdBeforeDisplaying = [(COSAppleIDLoginViewController *)&v10 holdBeforeDisplaying];
+  appleIDServiceState = [objc_opt_class() appleIDServiceState];
+  silentSignInSuccessful = [appleIDServiceState silentSignInSuccessful];
 
-  if ((v5 & 1) == 0)
+  if ((silentSignInSuccessful & 1) == 0)
   {
     v6 = pbb_accountsignin_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -306,13 +306,13 @@ LABEL_6:
     [(COSiCloudLoginViewController *)self updateAppleAccountProperties];
   }
 
-  return v3;
+  return holdBeforeDisplaying;
 }
 
 - (void)updateAppleAccountProperties
 {
   objc_initWeak(&location, self);
-  v3 = [(COSiCloudLoginViewController *)self account];
+  account = [(COSiCloudLoginViewController *)self account];
   v4 = pbb_accountsignin_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -321,27 +321,27 @@ LABEL_6:
     *buf = 138412546;
     v12 = v6;
     v13 = 2112;
-    v14 = v3;
+    v14 = account;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[%@] Updating properties for account: (%@)", buf, 0x16u);
   }
 
-  v7 = [(COSAppleIDLoginViewController *)self accountStore];
+  accountStore = [(COSAppleIDLoginViewController *)self accountStore];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000157CC;
   v8[3] = &unk_1002683A8;
   objc_copyWeak(&v9, &location);
-  [v7 aa_updatePropertiesForAppleAccount:v3 completion:v8];
+  [accountStore aa_updatePropertiesForAppleAccount:account completion:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)updatedAppleAccountPropertiesWithAuthenticated:(BOOL)a3 error:(id)a4
+- (void)updatedAppleAccountPropertiesWithAuthenticated:(BOOL)authenticated error:(id)error
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(COSiCloudLoginViewController *)self account];
+  authenticatedCopy = authenticated;
+  errorCopy = error;
+  account = [(COSiCloudLoginViewController *)self account];
   v8 = pbb_accountsignin_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -350,23 +350,23 @@ LABEL_6:
     *buf = 138413058;
     v15 = v10;
     v16 = 2112;
-    v17 = v7;
+    v17 = account;
     v18 = 1024;
-    v19 = v4;
+    v19 = authenticatedCopy;
     v20 = 2112;
-    v21 = v6;
+    v21 = errorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%@] Updated account properties for account: (%@); authenticated: (%d); error: (%@)", buf, 0x26u);
   }
 
-  if (!v6)
+  if (!errorCopy)
   {
-    v11 = [(COSAppleIDLoginViewController *)self accountStore];
+    accountStore = [(COSAppleIDLoginViewController *)self accountStore];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100015A84;
     v12[3] = &unk_1002682C8;
-    v13 = v7;
-    [v11 saveVerifiedAccount:v13 withCompletionHandler:v12];
+    v13 = account;
+    [accountStore saveVerifiedAccount:v13 withCompletionHandler:v12];
   }
 
   self->_hasUpdatedAppleAccountProperties = 1;

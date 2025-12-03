@@ -1,10 +1,10 @@
 @interface SUUIVerticalLockupCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_playAction:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_playAction:(id)action;
 - (BOOL)hasOnlyStringViews;
 - (CGPoint)accessibilityActivationPoint;
 - (id)_accessibilityFindPlayButton;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityCustomActions;
 - (id)accessibilityElements;
@@ -14,15 +14,15 @@
 
 @implementation SUUIVerticalLockupCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIViewReuseCollectionViewCell" hasInstanceMethod:@"allExistingViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIVerticalLockupCollectionViewCell" hasInstanceVariable:@"_lockupView" withType:"SUUIVerticalLockupView"];
-  [v3 validateClass:@"SUUIVerticalLockupCollectionViewCell" isKindOfClass:@"SUUICollectionViewCell"];
-  [v3 validateClass:@"SUUIImageView"];
-  [v3 validateClass:@"SUUIAdornedImageView" hasInstanceVariable:@"_reuseView" withType:"SUUIAdornedImageViewReuseView"];
-  [v3 validateClass:@"SUUIAdornedImageViewReuseView" hasInstanceVariable:@"_playButton" withType:"SUUIPlayButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIViewReuseCollectionViewCell" hasInstanceMethod:@"allExistingViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIVerticalLockupCollectionViewCell" hasInstanceVariable:@"_lockupView" withType:"SUUIVerticalLockupView"];
+  [validationsCopy validateClass:@"SUUIVerticalLockupCollectionViewCell" isKindOfClass:@"SUUICollectionViewCell"];
+  [validationsCopy validateClass:@"SUUIImageView"];
+  [validationsCopy validateClass:@"SUUIAdornedImageView" hasInstanceVariable:@"_reuseView" withType:"SUUIAdornedImageViewReuseView"];
+  [validationsCopy validateClass:@"SUUIAdornedImageViewReuseView" hasInstanceVariable:@"_playButton" withType:"SUUIPlayButton"];
 }
 
 - (BOOL)hasOnlyStringViews
@@ -83,9 +83,9 @@ LABEL_11:
 - (id)accessibilityCustomActions
 {
   v11[1] = *MEMORY[0x29EDCA608];
-  v3 = [(SUUIVerticalLockupCollectionViewCellAccessibility *)self _accessibilityFindPlayButton];
-  v4 = v3;
-  if (v3 && ([v3 accessibilityLabel], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  _accessibilityFindPlayButton = [(SUUIVerticalLockupCollectionViewCellAccessibility *)self _accessibilityFindPlayButton];
+  v4 = _accessibilityFindPlayButton;
+  if (_accessibilityFindPlayButton && ([_accessibilityFindPlayButton accessibilityLabel], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
     v7 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v5 target:self selector:sel__playAction_];
@@ -126,8 +126,8 @@ LABEL_11:
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
-        v8 = [v7 accessibilityIdentification];
-        v9 = [v8 isEqualToString:@"PlayButton"];
+        accessibilityIdentification = [v7 accessibilityIdentification];
+        v9 = [accessibilityIdentification isEqualToString:@"PlayButton"];
 
         if (v9)
         {
@@ -154,21 +154,21 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)_playAction:(id)a3
+- (BOOL)_playAction:(id)action
 {
-  v3 = [(SUUIVerticalLockupCollectionViewCellAccessibility *)self _accessibilityFindPlayButton];
-  v4 = v3;
-  if (v3)
+  _accessibilityFindPlayButton = [(SUUIVerticalLockupCollectionViewCellAccessibility *)self _accessibilityFindPlayButton];
+  v4 = _accessibilityFindPlayButton;
+  if (_accessibilityFindPlayButton)
   {
-    v5 = [v3 accessibilityActivate];
+    accessibilityActivate = [_accessibilityFindPlayButton accessibilityActivate];
   }
 
   else
   {
-    v5 = 0;
+    accessibilityActivate = 0;
   }
 
-  return v5;
+  return accessibilityActivate;
 }
 
 - (id)accessibilityLabel
@@ -216,7 +216,7 @@ LABEL_11:
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_isKindOfClass())
       {
         [v13 accessibilityLabel];
-        v9 = v14 = v9;
+        v9 = accessibilityLabel = v9;
 LABEL_9:
 
         goto LABEL_10;
@@ -226,8 +226,8 @@ LABEL_9:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0 && [v13 _accessibilityViewIsVisible])
       {
-        v14 = [v13 accessibilityLabel];
-        v23 = v14;
+        accessibilityLabel = [v13 accessibilityLabel];
+        v23 = accessibilityLabel;
         v24 = @"__AXStringForVariablesSentinel";
         __UIAXStringForVariables();
         v17 = v16 = v11;
@@ -264,11 +264,11 @@ LABEL_18:
 
 - (id)accessibilityValue
 {
-  v2 = [(SUUIVerticalLockupCollectionViewCellAccessibility *)self _accessibilityFindPlayButton];
-  v3 = [v2 safeValueForKey:@"_indeterminate"];
-  v4 = [v3 BOOLValue];
+  _accessibilityFindPlayButton = [(SUUIVerticalLockupCollectionViewCellAccessibility *)self _accessibilityFindPlayButton];
+  v3 = [_accessibilityFindPlayButton safeValueForKey:@"_indeterminate"];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     v5 = accessibilityLocalizedString(@"indeterminate.playback");
   }
@@ -313,8 +313,8 @@ LABEL_18:
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(SUUIVerticalLockupCollectionViewCellAccessibility *)self _accessibilityFindPlayButton];
-  if (v3)
+  _accessibilityFindPlayButton = [(SUUIVerticalLockupCollectionViewCellAccessibility *)self _accessibilityFindPlayButton];
+  if (_accessibilityFindPlayButton)
   {
     [(SUUIVerticalLockupCollectionViewCellAccessibility *)self accessibilityFrame];
   }
@@ -336,12 +336,12 @@ LABEL_18:
   return result;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v26 = *MEMORY[0x29EDCA608];
-  v7 = a4;
+  eventCopy = event;
   if (_AXSAutomationEnabled())
   {
     [(SUUIVerticalLockupCollectionViewCellAccessibility *)self _accessibilitySupplementaryFooterViewsForThisCell:1 includeText:1];
@@ -365,16 +365,16 @@ LABEL_18:
 
           v13 = *(*(&v21 + 1) + 8 * i);
           [(SUUIVerticalLockupCollectionViewCellAccessibility *)self convertPoint:v13 toView:x, y];
-          v14 = [v13 _accessibilityHitTest:v7 withEvent:?];
+          v14 = [v13 _accessibilityHitTest:eventCopy withEvent:?];
           if ([v14 isAccessibilityElement])
           {
-            v15 = [v14 accessibilityIdentification];
-            v16 = [v15 isEqualToString:@"PlayButton"];
+            accessibilityIdentification = [v14 accessibilityIdentification];
+            v16 = [accessibilityIdentification isEqualToString:@"PlayButton"];
 
             if (v16)
             {
-              v17 = [v14 accessibilityLabel];
-              [v14 setAccessibilityIdentifier:v17];
+              accessibilityLabel = [v14 accessibilityLabel];
+              [v14 setAccessibilityIdentifier:accessibilityLabel];
 
               goto LABEL_14;
             }
@@ -394,7 +394,7 @@ LABEL_18:
 
   v20.receiver = self;
   v20.super_class = SUUIVerticalLockupCollectionViewCellAccessibility;
-  v14 = [(SUUIVerticalLockupCollectionViewCellAccessibility *)&v20 _accessibilityHitTest:v7 withEvent:x, y];
+  v14 = [(SUUIVerticalLockupCollectionViewCellAccessibility *)&v20 _accessibilityHitTest:eventCopy withEvent:x, y];
 LABEL_14:
 
   v18 = *MEMORY[0x29EDCA608];

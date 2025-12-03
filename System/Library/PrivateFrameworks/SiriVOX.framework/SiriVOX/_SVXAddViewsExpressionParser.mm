@@ -1,40 +1,40 @@
 @interface _SVXAddViewsExpressionParser
-- (_SVXAddViewsExpressionParser)initWithParsingService:(id)a3 preferences:(id)a4;
-- (id)_parseViews:(id)a3 addViews:(id)a4 aceViewByAceId:(id)a5 aceIdByParseableExpressionIds:(id)a6;
-- (id)_prepareParsingModelWithAddViews:(id)a3;
-- (void)parseAddViews:(id)a3 reply:(id)a4;
+- (_SVXAddViewsExpressionParser)initWithParsingService:(id)service preferences:(id)preferences;
+- (id)_parseViews:(id)views addViews:(id)addViews aceViewByAceId:(id)id aceIdByParseableExpressionIds:(id)ids;
+- (id)_prepareParsingModelWithAddViews:(id)views;
+- (void)parseAddViews:(id)views reply:(id)reply;
 @end
 
 @implementation _SVXAddViewsExpressionParser
 
-- (id)_parseViews:(id)a3 addViews:(id)a4 aceViewByAceId:(id)a5 aceIdByParseableExpressionIds:(id)a6
+- (id)_parseViews:(id)views addViews:(id)addViews aceViewByAceId:(id)id aceIdByParseableExpressionIds:(id)ids
 {
   v57 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v38 = a5;
-  v37 = a6;
+  viewsCopy = views;
+  addViewsCopy = addViews;
+  idCopy = id;
+  idsCopy = ids;
   v11 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v47 = "[_SVXAddViewsExpressionParser _parseViews:addViews:aceViewByAceId:aceIdByParseableExpressionIds:]";
     v48 = 2112;
-    v49 = v10;
+    v49 = addViewsCopy;
     v50 = 2112;
-    v51 = v9;
+    v51 = viewsCopy;
     _os_log_impl(&dword_2695B9000, v11, OS_LOG_TYPE_INFO, "%s Successfully parsed expressions for command: %@\n    Parsed expressions: %@", buf, 0x20u);
   }
 
-  v34 = v10;
-  v33 = [v10 copy];
-  v12 = [v33 views];
-  v13 = [v12 mutableCopy];
+  v34 = addViewsCopy;
+  v33 = [addViewsCopy copy];
+  views = [v33 views];
+  v13 = [views mutableCopy];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v9;
+  obj = viewsCopy;
   v39 = [obj countByEnumeratingWithState:&v42 objects:v56 count:16];
   if (v39)
   {
@@ -51,10 +51,10 @@
         }
 
         v16 = *(*(&v42 + 1) + 8 * v14);
-        v17 = [v16 parseableExpression];
-        v18 = [v17 aceId];
-        v19 = [v37 objectForKey:v18];
-        v20 = [v38 objectForKey:v19];
+        parseableExpression = [v16 parseableExpression];
+        aceId = [parseableExpression aceId];
+        v19 = [idsCopy objectForKey:aceId];
+        v20 = [idCopy objectForKey:v19];
 
         v21 = [v20 copy];
         v22 = *v15;
@@ -85,7 +85,7 @@
           *buf = 136315650;
           v47 = "[_SVXAddViewsExpressionParser _parseViews:addViews:aceViewByAceId:aceIdByParseableExpressionIds:]";
           v48 = 2112;
-          v49 = v12;
+          v49 = views;
           v50 = 2112;
           v51 = v13;
           _os_log_impl(&dword_2695B9000, v26, OS_LOG_TYPE_INFO, "%s Splicing in applied parsed expression\n    Original views: %@\n    Updated views: %@", buf, 0x20u);
@@ -97,7 +97,7 @@
         v40[3] = &unk_279C67478;
         v27 = v20;
         v41 = v27;
-        v28 = [v12 indexOfObjectPassingTest:v40];
+        v28 = [views indexOfObjectPassingTest:v40];
         if (v28 >= [v13 count])
         {
           v29 = *v15;
@@ -138,16 +138,16 @@
   return v33;
 }
 
-- (id)_prepareParsingModelWithAddViews:(id)a3
+- (id)_prepareParsingModelWithAddViews:(id)views
 {
   v57 = *MEMORY[0x277D85DE8];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v37 = a3;
-  v4 = [v37 views];
-  v46 = [v4 countByEnumeratingWithState:&v48 objects:v56 count:16];
+  viewsCopy = views;
+  views = [viewsCopy views];
+  v46 = [views countByEnumeratingWithState:&v48 objects:v56 count:16];
   v5 = 0;
   v6 = 0;
   v7 = 0;
@@ -161,8 +161,8 @@
   v8 = *v49;
   v9 = *MEMORY[0x277CEF568];
   v45 = *MEMORY[0x277CEF568];
-  v38 = v4;
-  v39 = self;
+  v38 = views;
+  selfCopy = self;
   v40 = *v49;
   do
   {
@@ -170,19 +170,19 @@
     {
       if (*v49 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(views);
       }
 
       v11 = *(*(&v48 + 1) + 8 * i);
-      v12 = [v11 svx_parseableExpression];
-      v13 = v12;
-      if (v12)
+      svx_parseableExpression = [v11 svx_parseableExpression];
+      v13 = svx_parseableExpression;
+      if (svx_parseableExpression)
       {
         if (self->_ignoresLocallyParseableExpressions)
         {
           v44 = v7;
-          v14 = [v12 expressionString];
-          if (![v14 length])
+          expressionString = [svx_parseableExpression expressionString];
+          if (![expressionString length])
           {
             goto LABEL_13;
           }
@@ -192,19 +192,19 @@
           v15 = v43;
           if (!v43)
           {
-            speakableUtteranceParserProvider = v39->_speakableUtteranceParserProvider;
+            speakableUtteranceParserProvider = selfCopy->_speakableUtteranceParserProvider;
             v17 = objc_alloc(MEMORY[0x277CBEAF8]);
-            v18 = [(_SVXExpressionParser *)v39 preferences];
-            v19 = [v18 languageCode];
-            v20 = [v17 initWithLocaleIdentifier:v19];
+            preferences = [(_SVXExpressionParser *)selfCopy preferences];
+            languageCode = [preferences languageCode];
+            v20 = [v17 initWithLocaleIdentifier:languageCode];
             v21 = [(SVXAFSpeakableUtteranceParserProvider *)speakableUtteranceParserProvider getWithLocale:v20];
 
             v9 = v45;
             v15 = v21;
           }
 
-          v22 = [v11 groupIdentifier];
-          v23 = [_SVXSpeakableNamespaceDomainOccurrenceProvider providerForDomain:v22];
+          groupIdentifier = [v11 groupIdentifier];
+          v23 = [_SVXSpeakableNamespaceDomainOccurrenceProvider providerForDomain:groupIdentifier];
           [v15 registerProvider:v23 forNamespace:v9];
           [v13 expressionString];
           v25 = v24 = v9;
@@ -217,8 +217,8 @@
           {
             [v15 registerProvider:0 forNamespace:v24];
 
-            v4 = v38;
-            self = v39;
+            views = v38;
+            self = selfCopy;
             v6 = v41;
             v5 = v42;
 LABEL_13:
@@ -244,8 +244,8 @@ LABEL_20:
           v29 = [v23 count];
           [v15 registerProvider:0 forNamespace:v24];
 
-          v4 = v38;
-          self = v39;
+          views = v38;
+          self = selfCopy;
           v6 = v41;
           v5 = v42;
           v7 = v44;
@@ -266,10 +266,10 @@ LABEL_20:
           v6 = v30;
         }
 
-        v32 = [v11 aceId];
-        [v5 setObject:v11 forKey:v32];
-        v33 = [v13 aceId];
-        [v6 setObject:v32 forKey:v33];
+        aceId = [v11 aceId];
+        [v5 setObject:v11 forKey:aceId];
+        aceId2 = [v13 aceId];
+        [v6 setObject:aceId forKey:aceId2];
 
         [v7 addObject:v13];
         goto LABEL_20;
@@ -278,7 +278,7 @@ LABEL_20:
 LABEL_21:
     }
 
-    v46 = [v4 countByEnumeratingWithState:&v48 objects:v56 count:16];
+    v46 = [views countByEnumeratingWithState:&v48 objects:v56 count:16];
   }
 
   while (v46);
@@ -290,12 +290,12 @@ LABEL_25:
   return v34;
 }
 
-- (void)parseAddViews:(id)a3 reply:(id)a4
+- (void)parseAddViews:(id)views reply:(id)reply
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  viewsCopy = views;
+  replyCopy = reply;
+  if (replyCopy)
   {
     v8 = MEMORY[0x277CEF098];
     v9 = *MEMORY[0x277CEF098];
@@ -304,27 +304,27 @@ LABEL_25:
       *buf = 136315394;
       v23 = "[_SVXAddViewsExpressionParser parseAddViews:reply:]";
       v24 = 2112;
-      v25 = v6;
+      v25 = viewsCopy;
       _os_log_impl(&dword_2695B9000, v9, OS_LOG_TYPE_INFO, "%s Looking for parseable expressions in command %@", buf, 0x16u);
     }
 
-    v10 = [(_SVXAddViewsExpressionParser *)self _prepareParsingModelWithAddViews:v6];
-    v11 = [v10 parseableExpressions];
-    v12 = [v11 count];
+    v10 = [(_SVXAddViewsExpressionParser *)self _prepareParsingModelWithAddViews:viewsCopy];
+    parseableExpressions = [v10 parseableExpressions];
+    v12 = [parseableExpressions count];
 
     if (v12)
     {
-      v13 = [(_SVXExpressionParser *)self parsingService];
-      v14 = [v10 parseableExpressions];
+      parsingService = [(_SVXExpressionParser *)self parsingService];
+      parseableExpressions2 = [v10 parseableExpressions];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __52___SVXAddViewsExpressionParser_parseAddViews_reply___block_invoke;
       v18[3] = &unk_279C67450;
       v18[4] = self;
-      v19 = v6;
+      v19 = viewsCopy;
       v20 = v10;
-      v21 = v7;
-      [v13 parseExpressions:v14 targetDevice:0 reply:v18];
+      v21 = replyCopy;
+      [parsingService parseExpressions:parseableExpressions2 targetDevice:0 reply:v18];
     }
 
     else
@@ -335,23 +335,23 @@ LABEL_25:
         *buf = 136315394;
         v23 = "[_SVXAddViewsExpressionParser parseAddViews:reply:]";
         v24 = 2112;
-        v25 = v6;
+        v25 = viewsCopy;
         _os_log_impl(&dword_2695B9000, v15, OS_LOG_TYPE_INFO, "%s Found no parseable expressions in command %@", buf, 0x16u);
       }
 
-      v16 = [v6 copy];
-      (*(v7 + 2))(v7, 1, v16);
+      v16 = [viewsCopy copy];
+      (*(replyCopy + 2))(replyCopy, 1, v16);
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (_SVXAddViewsExpressionParser)initWithParsingService:(id)a3 preferences:(id)a4
+- (_SVXAddViewsExpressionParser)initWithParsingService:(id)service preferences:(id)preferences
 {
   v9.receiver = self;
   v9.super_class = _SVXAddViewsExpressionParser;
-  v4 = [(_SVXExpressionParser *)&v9 initWithParsingService:a3 preferences:a4];
+  v4 = [(_SVXExpressionParser *)&v9 initWithParsingService:service preferences:preferences];
   v5 = v4;
   if (v4)
   {

@@ -2,9 +2,9 @@
 - (AKAppleIDAuthenticationController)authenticationController;
 - (BOOL)_runningInMail;
 - (BOOL)_shouldAnchorCreateAccountButton;
-- (double)_heightForCreateNewAccountFooterWithWidth:(double)a3;
-- (double)_heightForCreateNewAccountSpecifierWithWidth:(double)a3;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)_heightForCreateNewAccountFooterWithWidth:(double)width;
+- (double)_heightForCreateNewAccountSpecifierWithWidth:(double)width;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)_silhouetteMonogram;
 - (id)_specifierForGroupWithiForgotLink;
 - (id)_specifierForLoginPasswordForm;
@@ -12,38 +12,38 @@
 - (id)_specifiersForCreateNewAccount;
 - (id)_specifiersForSignInButton;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_beginiCloudCreationFlowWithContinuationData:(id)a3 completion:(id)a4;
-- (void)_cancelButtonWasTapped:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_beginiCloudCreationFlowWithContinuationData:(id)data completion:(id)completion;
+- (void)_cancelButtonWasTapped:(id)tapped;
 - (void)_cancelPasswordDelegateIfNecessary;
-- (void)_createICloudMailButtonWasTapped:(id)a3;
-- (void)_createNewAppleIDButtonWasTapped:(id)a3;
-- (void)_enableICloudMailButtonWasTapped:(id)a3;
-- (void)_iForgotButtonWasTapped:(id)a3;
+- (void)_createICloudMailButtonWasTapped:(id)tapped;
+- (void)_createNewAppleIDButtonWasTapped:(id)tapped;
+- (void)_enableICloudMailButtonWasTapped:(id)tapped;
+- (void)_iForgotButtonWasTapped:(id)tapped;
 - (void)_openWebBasedCredentialRecoveryFlow;
 - (void)_presentAppleIDPrivacyInformationPane;
 - (void)_presentInvalidUsernameAlert;
 - (void)_reloadPasswordSpecifier;
-- (void)_setInteractionEnabled:(BOOL)a3;
-- (void)_setUsername:(id)a3 withSpecifier:(id)a4;
-- (void)_signInButtonWasTapped:(id)a3;
-- (void)_signInWithUsername:(id)a3 password:(id)a4;
-- (void)_textFieldValueDidChange:(id)a3;
+- (void)_setInteractionEnabled:(BOOL)enabled;
+- (void)_setUsername:(id)username withSpecifier:(id)specifier;
+- (void)_signInButtonWasTapped:(id)tapped;
+- (void)_signInWithUsername:(id)username password:(id)password;
+- (void)_textFieldValueDidChange:(id)change;
 - (void)_updateSignInButton;
-- (void)context:(id)a3 needsPasswordWithCompletion:(id)a4;
-- (void)createNewAppleIDWithCompletion:(id)a3;
+- (void)context:(id)context needsPasswordWithCompletion:(id)completion;
+- (void)createNewAppleIDWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)didFinishAuthWithContext:(id)a3 results:(id)a4 error:(id)a5;
+- (void)didFinishAuthWithContext:(id)context results:(id)results error:(id)error;
 - (void)hideBusyUI;
-- (void)remoteUIControllerDidDismiss:(id)a3;
-- (void)setSpecifier:(id)a3;
-- (void)setUsername:(id)a3;
-- (void)setUsernameEnabled:(BOOL)a3;
+- (void)remoteUIControllerDidDismiss:(id)dismiss;
+- (void)setSpecifier:(id)specifier;
+- (void)setUsername:(id)username;
+- (void)setUsernameEnabled:(BOOL)enabled;
 - (void)showBusyUI;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation PSAppleIDSplashViewController
@@ -52,19 +52,19 @@
 {
   v2 = MEMORY[0x1E69DCAB8];
   v3 = PSPreferencesFrameworkBundle();
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v5 = [v4 traitCollection];
-  v6 = [v2 imageNamed:@"PaddedSilhouetteMonogram" inBundle:v3 compatibleWithTraitCollection:v5];
-  v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v8 = [v6 imageWithTintColor:v7];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  v6 = [v2 imageNamed:@"PaddedSilhouetteMonogram" inBundle:v3 compatibleWithTraitCollection:traitCollection];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v8 = [v6 imageWithTintColor:secondaryLabelColor];
 
   return v8;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(RemoteUIController *)self->_remoteUIController setDelegate:0];
   powerAssertion = self->_powerAssertion;
@@ -85,17 +85,17 @@
   if (!specifiers)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = [(PSAppleIDSplashViewController *)self _specifierForGroupWithiForgotLink];
-    [(NSArray *)v4 addObject:v5];
+    _specifierForGroupWithiForgotLink = [(PSAppleIDSplashViewController *)self _specifierForGroupWithiForgotLink];
+    [(NSArray *)v4 addObject:_specifierForGroupWithiForgotLink];
 
-    v6 = [(PSAppleIDSplashViewController *)self _specifierForLoginUserForm];
+    _specifierForLoginUserForm = [(PSAppleIDSplashViewController *)self _specifierForLoginUserForm];
     userSpecifier = self->_userSpecifier;
-    self->_userSpecifier = v6;
+    self->_userSpecifier = _specifierForLoginUserForm;
 
     [(NSArray *)v4 addObject:self->_userSpecifier];
-    v8 = [(PSAppleIDSplashViewController *)self _specifierForLoginPasswordForm];
+    _specifierForLoginPasswordForm = [(PSAppleIDSplashViewController *)self _specifierForLoginPasswordForm];
     passwordSpecifier = self->_passwordSpecifier;
-    self->_passwordSpecifier = v8;
+    self->_passwordSpecifier = _specifierForLoginPasswordForm;
 
     if (self->_passwordHandler)
     {
@@ -104,12 +104,12 @@
 
     if (!self->_isPresentedModally)
     {
-      v10 = [(PSAppleIDSplashViewController *)self _specifiersForSignInButton];
-      [(NSArray *)v4 addObjectsFromArray:v10];
+      _specifiersForSignInButton = [(PSAppleIDSplashViewController *)self _specifiersForSignInButton];
+      [(NSArray *)v4 addObjectsFromArray:_specifiersForSignInButton];
     }
 
-    v11 = [(PSAppleIDSplashViewController *)self _specifiersForCreateNewAccount];
-    [(NSArray *)v4 addObjectsFromArray:v11];
+    _specifiersForCreateNewAccount = [(PSAppleIDSplashViewController *)self _specifiersForCreateNewAccount];
+    [(NSArray *)v4 addObjectsFromArray:_specifiersForCreateNewAccount];
 
     v12 = self->super._specifiers;
     self->super._specifiers = v4;
@@ -128,8 +128,8 @@
   [v3 setPlaceholder:v4];
 
   [v3 setProperty:@"PSSpecifierUsername" forKey:@"key"];
-  v5 = [(PSAppleIDSplashViewController *)self _silhouetteMonogram];
-  [v3 setProperty:v5 forKey:@"iconImage"];
+  _silhouetteMonogram = [(PSAppleIDSplashViewController *)self _silhouetteMonogram];
+  [v3 setProperty:_silhouetteMonogram forKey:@"iconImage"];
 
   [v3 setProperty:*MEMORY[0x1E69DE588] forKey:@"textContentType"];
   [v3 setIdentifier:@"LOGIN_USER"];
@@ -193,12 +193,12 @@ void __57__PSAppleIDSplashViewController__reloadPasswordSpecifier__block_invoke(
 
 - (id)_specifiersForSignInButton
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = +[PSSpecifier emptyGroupSpecifier];
-  v5 = [(PSAppleIDSplashViewController *)self serviceFooter];
-  [v4 setObject:v5 forKeyedSubscript:@"footerText"];
+  serviceFooter = [(PSAppleIDSplashViewController *)self serviceFooter];
+  [v4 setObject:serviceFooter forKeyedSubscript:@"footerText"];
 
-  [v3 addObject:v4];
+  [array addObject:v4];
   v6 = PS_LocalizedStringForAppleID(@"SIGN_IN_BUTTON");
   v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:0 cell:13 edit:0];
   signInButtonSpecifier = self->_signInButtonSpecifier;
@@ -206,28 +206,28 @@ void __57__PSAppleIDSplashViewController__reloadPasswordSpecifier__block_invoke(
 
   [(PSSpecifier *)self->_signInButtonSpecifier setProperty:MEMORY[0x1E695E110] forKey:@"enabled"];
   [(PSSpecifier *)self->_signInButtonSpecifier setButtonAction:sel__signInButtonWasTapped_];
-  [v3 addObject:self->_signInButtonSpecifier];
+  [array addObject:self->_signInButtonSpecifier];
 
-  return v3;
+  return array;
 }
 
 - (id)_specifiersForCreateNewAccount
 {
   if (self->_comingFromModernAddFlow)
   {
-    v2 = 0;
+    array = 0;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E6959A48] defaultStore];
-    v5 = [v4 aa_primaryAppleAccount];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+    aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
     if (([MEMORY[0x1E69DC668] isRunningInStoreDemoMode] & 1) != 0 || -[PSAppleIDSplashViewController _runningInMail](self, "_runningInMail"))
     {
-      if (([MEMORY[0x1E69DC668] isRunningInStoreDemoMode] & 1) == 0 && -[PSAppleIDSplashViewController _runningInMail](self, "_runningInMail") && objc_msgSend(v5, "aa_needsEmailConfiguration") && _os_feature_enabled_impl())
+      if (([MEMORY[0x1E69DC668] isRunningInStoreDemoMode] & 1) == 0 && -[PSAppleIDSplashViewController _runningInMail](self, "_runningInMail") && objc_msgSend(aa_primaryAppleAccount, "aa_needsEmailConfiguration") && _os_feature_enabled_impl())
       {
-        v2 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v6 = PS_RebrandedKeyForAppleID(@"CREATE_ICLOUD_MAIL_ACCOUNT_EXPLANATION_FOOTER");
         v7 = PS_LocalizedStringForAppleID(v6);
 
@@ -252,24 +252,24 @@ void __57__PSAppleIDSplashViewController__reloadPasswordSpecifier__block_invoke(
         v18 = PS_LocalizedStringForAppleID(@"CREATE_ICLOUD_MAIL_ACCOUNT_FOOTER_LEARN_MORE_KB_LINK");
         [(PSSpecifier *)v17 setProperty:v18 forKey:@"headerFooterHyperlinkButtonURL"];
 
-        [v2 addObject:self->_createNewAccountGroupSpecifier];
+        [array addObject:self->_createNewAccountGroupSpecifier];
         v19 = PS_LocalizedStringForAppleID(@"CREATE_ICLOUD_MAIL_ACCOUNT_BUTTON");
         v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:self set:0 get:0 detail:0 cell:13 edit:0];
         createNewAccountButtonSpecifier = self->_createNewAccountButtonSpecifier;
         self->_createNewAccountButtonSpecifier = v20;
 
         [(PSSpecifier *)self->_createNewAccountButtonSpecifier setButtonAction:sel__createICloudMailButtonWasTapped_];
-        [v2 addObject:self->_createNewAccountButtonSpecifier];
+        [array addObject:self->_createNewAccountButtonSpecifier];
       }
 
-      else if (([MEMORY[0x1E69DC668] isRunningInStoreDemoMode] & 1) != 0 || !-[PSAppleIDSplashViewController _runningInMail](self, "_runningInMail") || (objc_msgSend(v5, "aa_needsEmailConfiguration") & 1) != 0 || (objc_msgSend(v5, "isEnabledForDataclass:", *MEMORY[0x1E6959698]) & 1) != 0 || !_os_feature_enabled_impl())
+      else if (([MEMORY[0x1E69DC668] isRunningInStoreDemoMode] & 1) != 0 || !-[PSAppleIDSplashViewController _runningInMail](self, "_runningInMail") || (objc_msgSend(aa_primaryAppleAccount, "aa_needsEmailConfiguration") & 1) != 0 || (objc_msgSend(aa_primaryAppleAccount, "isEnabledForDataclass:", *MEMORY[0x1E6959698]) & 1) != 0 || !_os_feature_enabled_impl())
       {
-        v2 = 0;
+        array = 0;
       }
 
       else
       {
-        v2 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v22 = [PSSpecifier groupSpecifierWithID:@"ENABLE_MAIL_ACCOUNT_GROUP"];
         v23 = self->_createNewAccountGroupSpecifier;
         self->_createNewAccountGroupSpecifier = v22;
@@ -278,7 +278,7 @@ void __57__PSAppleIDSplashViewController__reloadPasswordSpecifier__block_invoke(
         v25 = PS_LocalizedStringForAppleID(@"ENABLE_ICLOUD_MAIL_ACCOUNT_FOOTER");
         [(PSSpecifier *)v24 setProperty:v25 forKey:@"footerText"];
 
-        [v2 addObject:self->_createNewAccountGroupSpecifier];
+        [array addObject:self->_createNewAccountGroupSpecifier];
         v26 = PS_LocalizedStringForAppleID(@"ENABLE_ICLOUD_MAIL_ACCOUNT_BUTTON");
         v27 = [PSSpecifier preferenceSpecifierNamed:v26 target:self set:0 get:0 detail:objc_opt_class() cell:13 edit:0];
         v28 = self->_createNewAccountButtonSpecifier;
@@ -286,22 +286,22 @@ void __57__PSAppleIDSplashViewController__reloadPasswordSpecifier__block_invoke(
 
         [(PSSpecifier *)self->_createNewAccountButtonSpecifier setProperty:objc_opt_class() forKey:@"cellClass"];
         v29 = self->_createNewAccountButtonSpecifier;
-        v30 = [v5 aa_childMailAccount];
-        v31 = [v30 accountPropertyForKey:@"defaultAddress"];
+        aa_childMailAccount = [aa_primaryAppleAccount aa_childMailAccount];
+        v31 = [aa_childMailAccount accountPropertyForKey:@"defaultAddress"];
         [(PSSpecifier *)v29 setProperty:v31 forKey:@"cellSubtitleText"];
 
         v32 = self->_createNewAccountButtonSpecifier;
-        v33 = [MEMORY[0x1E69DC888] grayColor];
-        [(PSSpecifier *)v32 setProperty:v33 forKey:@"cellSubtitleColor"];
+        grayColor = [MEMORY[0x1E69DC888] grayColor];
+        [(PSSpecifier *)v32 setProperty:grayColor forKey:@"cellSubtitleColor"];
 
         [(PSSpecifier *)self->_createNewAccountButtonSpecifier setButtonAction:sel__enableICloudMailButtonWasTapped_];
-        [v2 addObject:self->_createNewAccountButtonSpecifier];
+        [array addObject:self->_createNewAccountButtonSpecifier];
       }
     }
 
     else
     {
-      v2 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v59 = 0;
       v60 = &v59;
       v61 = 0x2050000000;
@@ -323,10 +323,10 @@ void __57__PSAppleIDSplashViewController__reloadPasswordSpecifier__block_invoke(
       v36 = getOBPrivacyAppleIDIdentifier();
       v57 = [v34 bundleWithIdentifier:v36];
 
-      v37 = [v57 privacyFlow];
-      v38 = [v37 localizedButtonCaption];
-      v39 = [v37 localizedButtonTitle];
-      v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", v38, v39];
+      privacyFlow = [v57 privacyFlow];
+      localizedButtonCaption = [privacyFlow localizedButtonCaption];
+      localizedButtonTitle = [privacyFlow localizedButtonTitle];
+      v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n%@", localizedButtonCaption, localizedButtonTitle];
       v41 = [PSSpecifier groupSpecifierWithID:@"Create"];
       v42 = self->_createNewAccountGroupSpecifier;
       self->_createNewAccountGroupSpecifier = v41;
@@ -338,7 +338,7 @@ void __57__PSAppleIDSplashViewController__reloadPasswordSpecifier__block_invoke(
 
       [(PSSpecifier *)self->_createNewAccountGroupSpecifier setProperty:v40 forKey:@"footerText"];
       v46 = self->_createNewAccountGroupSpecifier;
-      v65.location = [v40 rangeOfString:v39];
+      v65.location = [v40 rangeOfString:localizedButtonTitle];
       v47 = NSStringFromRange(v65);
       [(PSSpecifier *)v46 setProperty:v47 forKey:@"footerHyperlinkRange"];
 
@@ -350,7 +350,7 @@ void __57__PSAppleIDSplashViewController__reloadPasswordSpecifier__block_invoke(
       v51 = NSStringFromSelector(sel__presentAppleIDPrivacyInformationPane);
       [(PSSpecifier *)v50 setProperty:v51 forKey:@"footerHyperlinkAction"];
 
-      [v2 addObject:self->_createNewAccountGroupSpecifier];
+      [array addObject:self->_createNewAccountGroupSpecifier];
       v52 = PS_RebrandedKeyForAppleID(@"CREATE_ACCOUNT_BUTTON");
       v53 = PS_LocalizedStringForAppleID(v52);
       v54 = [PSSpecifier preferenceSpecifierNamed:v53 target:self set:0 get:0 detail:0 cell:13 edit:0];
@@ -358,11 +358,11 @@ void __57__PSAppleIDSplashViewController__reloadPasswordSpecifier__block_invoke(
       self->_createNewAccountButtonSpecifier = v54;
 
       [(PSSpecifier *)self->_createNewAccountButtonSpecifier setButtonAction:sel__createNewAppleIDButtonWasTapped_];
-      [v2 addObject:self->_createNewAccountButtonSpecifier];
+      [array addObject:self->_createNewAccountButtonSpecifier];
     }
   }
 
-  return v2;
+  return array;
 }
 
 - (id)_specifierForGroupWithiForgotLink
@@ -440,8 +440,8 @@ void __57__PSAppleIDSplashViewController__reloadPasswordSpecifier__block_invoke(
     cancelButtonBarItem = self->_cancelButtonBarItem;
     self->_cancelButtonBarItem = v7;
 
-    v9 = [(PSAppleIDSplashViewController *)self navigationItem];
-    [v9 setLeftBarButtonItem:self->_cancelButtonBarItem];
+    navigationItem = [(PSAppleIDSplashViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:self->_cancelButtonBarItem];
 
     v10 = objc_alloc(MEMORY[0x1E69DC708]);
     v11 = PS_LocalizedStringForAppleID(@"NEXT_BUTTON");
@@ -449,42 +449,42 @@ void __57__PSAppleIDSplashViewController__reloadPasswordSpecifier__block_invoke(
     nextButtonBarItem = self->_nextButtonBarItem;
     self->_nextButtonBarItem = v12;
 
-    v14 = [(PSAppleIDSplashViewController *)self navigationItem];
-    [v14 setRightBarButtonItem:self->_nextButtonBarItem];
+    navigationItem2 = [(PSAppleIDSplashViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:self->_nextButtonBarItem];
   }
 
   self->_isPasswordDirty = 0;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = PSAppleIDSplashViewController;
-  [(PSListController *)&v9 viewWillAppear:a3];
+  [(PSListController *)&v9 viewWillAppear:appear];
   [(PSAppleIDSplashViewController *)self _updateSignInButton];
   if (!self->_isPresentedModally)
   {
-    v4 = [(PSAppleIDSplashViewController *)self navigationItem];
-    v5 = [v4 title];
+    navigationItem = [(PSAppleIDSplashViewController *)self navigationItem];
+    title = [navigationItem title];
 
-    if (!v5)
+    if (!title)
     {
       v6 = PS_RebrandedKeyForAppleID(@"APPLE_ID_TITLE");
       v7 = PS_LocalizedStringForAppleID(v6);
-      v8 = [(PSAppleIDSplashViewController *)self navigationItem];
-      [v8 setTitle:v7];
+      navigationItem2 = [(PSAppleIDSplashViewController *)self navigationItem];
+      [navigationItem2 setTitle:v7];
     }
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if ([PSListController instancesRespondToSelector:sel_traitCollectionDidChange_])
   {
     v5.receiver = self;
     v5.super_class = PSAppleIDSplashViewController;
-    [(PSAppleIDSplashViewController *)&v5 traitCollectionDidChange:v4];
+    [(PSAppleIDSplashViewController *)&v5 traitCollectionDidChange:changeCopy];
   }
 
   if ([(PSAppleIDSplashViewController *)self _shouldAnchorCreateAccountButton])
@@ -495,13 +495,13 @@ void __57__PSAppleIDSplashViewController__reloadPasswordSpecifier__block_invoke(
 
 - (BOOL)_shouldAnchorCreateAccountButton
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = ([v3 sf_isiPad] & 1) == 0 && self->_createNewAccountButtonSpecifier != 0;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v4 = ([currentDevice sf_isiPad] & 1) == 0 && self->_createNewAccountButtonSpecifier != 0;
 
   return v4;
 }
 
-- (double)_heightForCreateNewAccountSpecifierWithWidth:(double)a3
+- (double)_heightForCreateNewAccountSpecifierWithWidth:(double)width
 {
   v4 = [(PSSpecifier *)self->_createNewAccountButtonSpecifier propertyForKey:@"cellObject"];
   v7 = v4;
@@ -509,7 +509,7 @@ void __57__PSAppleIDSplashViewController__reloadPasswordSpecifier__block_invoke(
   {
     LODWORD(v5) = 1148846080;
     LODWORD(v6) = 1112014848;
-    [v4 systemLayoutSizeFittingSize:a3 withHorizontalFittingPriority:*(MEMORY[0x1E69DE090] + 8) verticalFittingPriority:{v5, v6}];
+    [v4 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:*(MEMORY[0x1E69DE090] + 8) verticalFittingPriority:{v5, v6}];
     v9 = v8;
   }
 
@@ -521,41 +521,41 @@ void __57__PSAppleIDSplashViewController__reloadPasswordSpecifier__block_invoke(
   return v9;
 }
 
-- (double)_heightForCreateNewAccountFooterWithWidth:(double)a3
+- (double)_heightForCreateNewAccountFooterWithWidth:(double)width
 {
   v4 = [[PSFooterHyperlinkView alloc] initWithSpecifier:self->_createNewAccountGroupSpecifier];
   LODWORD(v5) = 1148846080;
   LODWORD(v6) = 1112014848;
-  [(PSFooterHyperlinkView *)v4 systemLayoutSizeFittingSize:a3 withHorizontalFittingPriority:*(MEMORY[0x1E69DE090] + 8) verticalFittingPriority:v5, v6];
+  [(PSFooterHyperlinkView *)v4 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:*(MEMORY[0x1E69DE090] + 8) verticalFittingPriority:v5, v6];
   v8 = v7;
 
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   v37.receiver = self;
   v37.super_class = PSAppleIDSplashViewController;
-  [(PSListController *)&v37 tableView:v6 heightForHeaderInSection:a4];
+  [(PSListController *)&v37 tableView:viewCopy heightForHeaderInSection:section];
   v8 = v7;
   if ([(PSAppleIDSplashViewController *)self _shouldAnchorCreateAccountButton])
   {
     v35 = 0;
     v36 = 0;
     [(PSListController *)self getGroup:&v36 row:&v35 ofSpecifier:self->_createNewAccountButtonSpecifier];
-    if (a4 >= 1 && v36 == a4)
+    if (section >= 1 && v36 == section)
     {
-      [v6 rectForSection:a4 - 1];
+      [viewCopy rectForSection:section - 1];
       MaxY = CGRectGetMaxY(v38);
-      v10 = [(PSAppleIDSplashViewController *)self view];
-      [v10 bounds];
+      view = [(PSAppleIDSplashViewController *)self view];
+      [view bounds];
       v12 = v11;
       v14 = v13;
       v16 = v15;
       v18 = v17;
-      v19 = [(PSAppleIDSplashViewController *)self view];
-      [v19 safeAreaInsets];
+      view2 = [(PSAppleIDSplashViewController *)self view];
+      [view2 safeAreaInsets];
       v21 = v12 + v20;
       v23 = v14 + v22;
       v25 = v16 - (v20 + v24);
@@ -590,10 +590,10 @@ void __57__PSAppleIDSplashViewController__reloadPasswordSpecifier__block_invoke(
   return v8;
 }
 
-- (void)_setUsername:(id)a3 withSpecifier:(id)a4
+- (void)_setUsername:(id)username withSpecifier:(id)specifier
 {
-  objc_storeStrong(&self->_username, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_username, username);
+  usernameCopy = username;
   password = self->_password;
   self->_password = 0;
 
@@ -602,14 +602,14 @@ void __57__PSAppleIDSplashViewController__reloadPasswordSpecifier__block_invoke(
   [(PSAppleIDSplashViewController *)self _reloadPasswordSpecifier];
 }
 
-- (void)_signInWithUsername:(id)a3 password:(id)a4
+- (void)_signInWithUsername:(id)username password:(id)password
 {
-  v6 = a3;
-  v7 = a4;
+  usernameCopy = username;
+  passwordCopy = password;
   passwordHandler = self->_passwordHandler;
   if (passwordHandler)
   {
-    passwordHandler[2](passwordHandler, v7, 0);
+    passwordHandler[2](passwordHandler, passwordCopy, 0);
     v9 = self->_passwordHandler;
     self->_passwordHandler = 0;
   }
@@ -630,15 +630,15 @@ void __57__PSAppleIDSplashViewController__reloadPasswordSpecifier__block_invoke(
     [v11 setIsUsernameEditable:1];
     [v11 setShouldUpdatePersistentServiceTokens:1];
     [v11 setFirstTimeLogin:1];
-    if (v6)
+    if (usernameCopy)
     {
-      [v11 setUsername:v6];
+      [v11 setUsername:usernameCopy];
       [v11 setIsUsernameEditable:0];
     }
 
-    if (v7)
+    if (passwordCopy)
     {
-      [v11 _setPassword:v7];
+      [v11 _setPassword:passwordCopy];
     }
 
     [(PSAppleIDSplashViewController *)self willBeginAuthWithContext:v11];
@@ -667,19 +667,19 @@ void __62__PSAppleIDSplashViewController__signInWithUsername_password___block_in
   [v2 authenticateWithContext:v5 completion:v4];
 }
 
-- (void)didFinishAuthWithContext:(id)a3 results:(id)a4 error:(id)a5
+- (void)didFinishAuthWithContext:(id)context results:(id)results error:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  contextCopy = context;
+  resultsCopy = results;
+  errorCopy = error;
+  if (errorCopy)
   {
     v11 = _PSLoggingFacility();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v10;
+      v20 = errorCopy;
       _os_log_impl(&dword_18B008000, v11, OS_LOG_TYPE_DEFAULT, "No dice with auth: %@", buf, 0xCu);
     }
 
@@ -689,9 +689,9 @@ void __62__PSAppleIDSplashViewController__signInWithUsername_password___block_in
     v13[3] = &unk_1E71DC598;
     v13[4] = self;
     v12 = &v14;
-    v14 = v9;
-    v15 = v10;
-    v16 = v8;
+    v14 = resultsCopy;
+    v15 = errorCopy;
+    v16 = contextCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v13);
   }
 
@@ -703,7 +703,7 @@ void __62__PSAppleIDSplashViewController__signInWithUsername_password___block_in
     block[3] = &unk_1E71DC570;
     block[4] = self;
     v12 = &v18;
-    v18 = v9;
+    v18 = resultsCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -861,19 +861,19 @@ void __72__PSAppleIDSplashViewController_didFinishAuthWithContext_results_error_
   }
 }
 
-- (void)_beginiCloudCreationFlowWithContinuationData:(id)a3 completion:(id)a4
+- (void)_beginiCloudCreationFlowWithContinuationData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __89__PSAppleIDSplashViewController__beginiCloudCreationFlowWithContinuationData_completion___block_invoke;
   block[3] = &unk_1E71DC5E8;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dataCopy;
+  selfCopy = self;
+  v13 = completionCopy;
+  v8 = completionCopy;
+  v9 = dataCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -970,7 +970,7 @@ void __89__PSAppleIDSplashViewController__beginiCloudCreationFlowWithContinuatio
   [*(*(a1 + 40) + 1592) loadRequest:v11 completion:0];
 }
 
-- (void)createNewAppleIDWithCompletion:(id)a3
+- (void)createNewAppleIDWithCompletion:(id)completion
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696ABC0];
@@ -978,20 +978,20 @@ void __89__PSAppleIDSplashViewController__beginiCloudCreationFlowWithContinuatio
   v10 = *MEMORY[0x1E696A578];
   v11[0] = @"This feature is not supported yet.";
   v6 = MEMORY[0x1E695DF20];
-  v7 = a3;
+  completionCopy = completion;
   v8 = [v6 dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9 = [v4 errorWithDomain:v5 code:0 userInfo:v8];
-  (*(a3 + 2))(v7, 0, 0, v9);
+  (*(completion + 2))(completionCopy, 0, 0, v9);
 }
 
 - (void)_openWebBasedCredentialRecoveryFlow
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v2 = [MEMORY[0x1E695DFF8] URLWithString:@"https://iforgot.apple.com"];
-  [v3 openURL:v2 options:MEMORY[0x1E695E0F8] completionHandler:0];
+  [mEMORY[0x1E69DC668] openURL:v2 options:MEMORY[0x1E695E0F8] completionHandler:0];
 }
 
-- (void)_textFieldValueDidChange:(id)a3
+- (void)_textFieldValueDidChange:(id)change
 {
   if ([(NSArray *)self->super._specifiers count])
   {
@@ -1002,9 +1002,9 @@ void __89__PSAppleIDSplashViewController__beginiCloudCreationFlowWithContinuatio
       v6 = [(NSArray *)self->super._specifiers objectAtIndex:v4];
       v7 = [(PSListController *)self indexPathForIndex:v4];
       v8 = [(UITableView *)self->super._table cellForRowAtIndexPath:v7];
-      v9 = [v8 isEditing];
+      isEditing = [v8 isEditing];
 
-      if (v9)
+      if (isEditing)
       {
         v10 = [(UITableView *)self->super._table cellForRowAtIndexPath:v7];
         objc_opt_class();
@@ -1012,17 +1012,17 @@ void __89__PSAppleIDSplashViewController__beginiCloudCreationFlowWithContinuatio
         {
           v11 = v5;
           v12 = [v6 propertyForKey:@"key"];
-          v13 = [v10 textField];
-          v14 = [v13 text];
+          textField = [v10 textField];
+          text = [textField text];
 
           if ([v12 isEqualToString:@"PSSpecifierPassword"])
           {
-            [(PSAppleIDSplashViewController *)self _setPassword:v14 withSpecifier:v6];
+            [(PSAppleIDSplashViewController *)self _setPassword:text withSpecifier:v6];
           }
 
           else if ([v12 isEqualToString:@"PSSpecifierUsername"])
           {
-            [(PSAppleIDSplashViewController *)self _setUsername:v14 withSpecifier:v6];
+            [(PSAppleIDSplashViewController *)self _setUsername:text withSpecifier:v6];
           }
 
           v5 = v11;
@@ -1038,20 +1038,20 @@ void __89__PSAppleIDSplashViewController__beginiCloudCreationFlowWithContinuatio
   [(PSAppleIDSplashViewController *)self _updateSignInButton];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v25.receiver = self;
   v25.super_class = PSAppleIDSplashViewController;
-  v8 = [(PSListController *)&v25 tableView:v6 cellForRowAtIndexPath:v7];
+  v8 = [(PSListController *)&v25 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_12;
   }
 
-  v9 = [(PSListController *)self specifierAtIndex:[(PSListController *)self indexForIndexPath:v7]];
+  v9 = [(PSListController *)self specifierAtIndex:[(PSListController *)self indexForIndexPath:pathCopy]];
   v10 = [v9 propertyForKey:@"key"];
   if ([v10 isEqualToString:@"PSSpecifierPassword"])
   {
@@ -1073,26 +1073,26 @@ LABEL_6:
 
 LABEL_7:
   [v8 setSeparatorInset:{0.0, 70.0, 0.0, 0.0}];
-  v13 = [v8 textField];
-  if (v13)
+  textField = [v8 textField];
+  if (textField)
   {
     v21 = v9;
     v14 = MEMORY[0x1E69DE5C0];
     if (self->_textFieldTextDidChangeObserver)
     {
-      v15 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v15 removeObserver:self->_textFieldTextDidChangeObserver name:*v14 object:v13];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self->_textFieldTextDidChangeObserver name:*v14 object:textField];
     }
 
     objc_initWeak(&location, self);
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v17 = *v14;
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __65__PSAppleIDSplashViewController_tableView_cellForRowAtIndexPath___block_invoke;
     v22[3] = &unk_1E71DC610;
     objc_copyWeak(&v23, &location);
-    v18 = [v16 addObserverForName:v17 object:v13 queue:0 usingBlock:v22];
+    v18 = [defaultCenter2 addObserverForName:v17 object:textField queue:0 usingBlock:v22];
     textFieldTextDidChangeObserver = self->_textFieldTextDidChangeObserver;
     self->_textFieldTextDidChangeObserver = v18;
 
@@ -1119,9 +1119,9 @@ void __65__PSAppleIDSplashViewController_tableView_cellForRowAtIndexPath___block
   if (self->_isPresentedModally)
   {
     v4 = v3 != 0;
-    v6 = [(PSAppleIDSplashViewController *)self navigationItem];
-    v5 = [v6 rightBarButtonItem];
-    [v5 setEnabled:v4];
+    navigationItem = [(PSAppleIDSplashViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:v4];
   }
 }
 
@@ -1129,25 +1129,25 @@ void __65__PSAppleIDSplashViewController_tableView_cellForRowAtIndexPath___block
 {
   [(PSSpecifier *)self->_createNewAccountButtonSpecifier setProperty:MEMORY[0x1E695E110] forKey:@"enabled"];
   [(PSListController *)self reloadSpecifier:self->_createNewAccountButtonSpecifier];
-  v3 = [(PSAppleIDSplashViewController *)self navigationItem];
+  navigationItem = [(PSAppleIDSplashViewController *)self navigationItem];
   v4 = PS_LocalizedStringForAppleID(@"VERIFYING_TITLE");
-  [v3 setTitle:v4];
+  [navigationItem setTitle:v4];
 
   LODWORD(v4) = self->_isPresentedModally;
-  v5 = [(PSAppleIDSplashViewController *)self navigationItem];
-  v6 = v5;
+  navigationItem2 = [(PSAppleIDSplashViewController *)self navigationItem];
+  v6 = navigationItem2;
   if (v4 == 1)
   {
-    [v5 setLeftBarButtonItem:0 animated:1];
+    [navigationItem2 setLeftBarButtonItem:0 animated:1];
   }
 
   else
   {
-    [v5 setHidesBackButton:1 animated:1];
+    [navigationItem2 setHidesBackButton:1 animated:1];
   }
 
-  v7 = [(PSAppleIDSplashViewController *)self navigationItem];
-  [v7 setRightBarButtonItem:self->_spinnerBarItem animated:1];
+  navigationItem3 = [(PSAppleIDSplashViewController *)self navigationItem];
+  [navigationItem3 setRightBarButtonItem:self->_spinnerBarItem animated:1];
 
   [(UIActivityIndicatorView *)self->_spinner startAnimating];
 
@@ -1158,106 +1158,106 @@ void __65__PSAppleIDSplashViewController_tableView_cellForRowAtIndexPath___block
 {
   [(PSSpecifier *)self->_createNewAccountButtonSpecifier setProperty:MEMORY[0x1E695E118] forKey:@"enabled"];
   [(PSListController *)self reloadSpecifier:self->_createNewAccountButtonSpecifier];
-  v3 = [(PSAppleIDSplashViewController *)self navigationItem];
-  v4 = [(PSAppleIDSplashViewController *)self serviceName];
-  [v3 setTitle:v4];
+  navigationItem = [(PSAppleIDSplashViewController *)self navigationItem];
+  serviceName = [(PSAppleIDSplashViewController *)self serviceName];
+  [navigationItem setTitle:serviceName];
 
-  LODWORD(v4) = self->_isPresentedModally;
-  v5 = [(PSAppleIDSplashViewController *)self navigationItem];
-  v6 = v5;
-  if (v4 == 1)
+  LODWORD(serviceName) = self->_isPresentedModally;
+  navigationItem2 = [(PSAppleIDSplashViewController *)self navigationItem];
+  v6 = navigationItem2;
+  if (serviceName == 1)
   {
-    [v5 setLeftBarButtonItem:self->_cancelButtonBarItem animated:1];
+    [navigationItem2 setLeftBarButtonItem:self->_cancelButtonBarItem animated:1];
   }
 
   else
   {
-    [v5 setHidesBackButton:0 animated:1];
+    [navigationItem2 setHidesBackButton:0 animated:1];
   }
 
-  v7 = [(PSAppleIDSplashViewController *)self navigationItem];
-  [v7 setRightBarButtonItem:self->_nextButtonBarItem animated:1];
+  navigationItem3 = [(PSAppleIDSplashViewController *)self navigationItem];
+  [navigationItem3 setRightBarButtonItem:self->_nextButtonBarItem animated:1];
 
   [(UIActivityIndicatorView *)self->_spinner stopAnimating];
 
   [(PSAppleIDSplashViewController *)self _setInteractionEnabled:1];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v11.receiver = self;
   v11.super_class = PSAppleIDSplashViewController;
-  v4 = a3;
-  [(PSListController *)&v11 setSpecifier:v4];
-  v5 = [v4 userInfo];
+  specifierCopy = specifier;
+  [(PSListController *)&v11 setSpecifier:specifierCopy];
+  userInfo = [specifierCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:@"account"];
+  v6 = [userInfo objectForKeyedSubscript:@"account"];
 
-  v7 = [v6 username];
-  if (v7)
+  username = [v6 username];
+  if (username)
   {
-    v8 = v7;
+    v8 = username;
     v9 = [v6 accountPropertyForKey:@"ACUISaysNotToSaveThis"];
 
     if (v9)
     {
       self->_comingFromModernAddFlow = 1;
-      v10 = [v6 username];
-      [(PSAppleIDSplashViewController *)self setUsername:v10];
+      username2 = [v6 username];
+      [(PSAppleIDSplashViewController *)self setUsername:username2];
 
       [(PSAppleIDSplashViewController *)self _signInButtonWasTapped:self->_nextButtonBarItem];
     }
   }
 }
 
-- (void)setUsername:(id)a3
+- (void)setUsername:(id)username
 {
-  objc_storeStrong(&self->_username, a3);
+  objc_storeStrong(&self->_username, username);
   [(PSAppleIDSplashViewController *)self _updateSignInButton];
   [(PSAppleIDSplashViewController *)self _cancelPasswordDelegateIfNecessary];
 
   [(PSAppleIDSplashViewController *)self _reloadPasswordSpecifier];
 }
 
-- (void)setUsernameEnabled:(BOOL)a3
+- (void)setUsernameEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = [(PSListController *)self specifierForID:@"PSSpecifierUsername"];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   [v5 setProperty:v4 forKey:@"enabled"];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = PSAppleIDSplashViewController;
   [(PSAppleIDSplashViewController *)&v5 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     [(PSAppleIDSplashViewController *)self _setInteractionEnabled:1];
   }
 }
 
-- (void)_setInteractionEnabled:(BOOL)a3
+- (void)_setInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(PSAppleIDSplashViewController *)self view];
-  [v5 setUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  view = [(PSAppleIDSplashViewController *)self view];
+  [view setUserInteractionEnabled:enabledCopy];
 
-  v8 = [(PSAppleIDSplashViewController *)self splitViewController];
-  v6 = [v8 masterViewController];
-  v7 = [v6 view];
-  [v7 setUserInteractionEnabled:v3];
+  splitViewController = [(PSAppleIDSplashViewController *)self splitViewController];
+  masterViewController = [splitViewController masterViewController];
+  view2 = [masterViewController view];
+  [view2 setUserInteractionEnabled:enabledCopy];
 }
 
-- (void)_iForgotButtonWasTapped:(id)a3
+- (void)_iForgotButtonWasTapped:(id)tapped
 {
   v4 = objc_alloc_init(getAKAppleIDAuthenticationInAppContextClass());
   [v4 setUsername:self->_username];
   [v4 setNeedsCredentialRecovery:1];
   [v4 setPresentingViewController:self];
   [(PSAppleIDSplashViewController *)self willBeginAuthWithContext:v4];
-  v5 = [(PSAppleIDSplashViewController *)self authenticationController];
+  authenticationController = [(PSAppleIDSplashViewController *)self authenticationController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__PSAppleIDSplashViewController__iForgotButtonWasTapped___block_invoke;
@@ -1265,16 +1265,16 @@ void __65__PSAppleIDSplashViewController_tableView_cellForRowAtIndexPath___block
   v7[4] = self;
   v8 = v4;
   v6 = v4;
-  [v5 authenticateWithContext:v6 completion:v7];
+  [authenticationController authenticateWithContext:v6 completion:v7];
 }
 
-- (void)_createNewAppleIDButtonWasTapped:(id)a3
+- (void)_createNewAppleIDButtonWasTapped:(id)tapped
 {
   v4 = objc_alloc_init(getAKAppleIDAuthenticationInAppContextClass());
   [v4 setNeedsNewAppleID:1];
   [v4 setPresentingViewController:self];
   [(PSAppleIDSplashViewController *)self willBeginAuthWithContext:v4];
-  v5 = [(PSAppleIDSplashViewController *)self authenticationController];
+  authenticationController = [(PSAppleIDSplashViewController *)self authenticationController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__PSAppleIDSplashViewController__createNewAppleIDButtonWasTapped___block_invoke;
@@ -1282,14 +1282,14 @@ void __65__PSAppleIDSplashViewController_tableView_cellForRowAtIndexPath___block
   v7[4] = self;
   v8 = v4;
   v6 = v4;
-  [v5 authenticateWithContext:v6 completion:v7];
+  [authenticationController authenticateWithContext:v6 completion:v7];
 }
 
-- (void)_createICloudMailButtonWasTapped:(id)a3
+- (void)_createICloudMailButtonWasTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E6959A48] defaultStore];
-  v6 = [v5 aa_primaryAppleAccount];
+  tappedCopy = tapped;
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -1308,30 +1308,30 @@ void __65__PSAppleIDSplashViewController_tableView_cellForRowAtIndexPath___block
 
   v8 = v7;
   _Block_object_dispose(&v14, 8);
-  v9 = [[v7 alloc] initWithAccountStore:v5 appleAccount:v6 presenter:self];
+  v9 = [[v7 alloc] initWithAccountStore:defaultStore appleAccount:aa_primaryAppleAccount presenter:self];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__PSAppleIDSplashViewController__createICloudMailButtonWasTapped___block_invoke;
   v11[3] = &unk_1E71DC570;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
+  v12 = aa_primaryAppleAccount;
+  v10 = aa_primaryAppleAccount;
   [v9 presentWithAlert:0 completionHandler:v11];
 }
 
-- (void)_enableICloudMailButtonWasTapped:(id)a3
+- (void)_enableICloudMailButtonWasTapped:(id)tapped
 {
-  v4 = [MEMORY[0x1E6959A48] defaultStore];
-  v5 = [v4 aa_primaryAppleAccount];
-  [v5 setEnabled:1 forDataclass:*MEMORY[0x1E6959698]];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  [aa_primaryAppleAccount setEnabled:1 forDataclass:*MEMORY[0x1E6959698]];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__PSAppleIDSplashViewController__enableICloudMailButtonWasTapped___block_invoke;
   v7[3] = &unk_1E71DC638;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
-  [v4 saveAccount:v6 withDataclassActions:0 doVerify:0 completion:v7];
+  v8 = aa_primaryAppleAccount;
+  v6 = aa_primaryAppleAccount;
+  [defaultStore saveAccount:v6 withDataclassActions:0 doVerify:0 completion:v7];
 }
 
 void __66__PSAppleIDSplashViewController__enableICloudMailButtonWasTapped___block_invoke(uint64_t a1, int a2)
@@ -1349,16 +1349,16 @@ void __66__PSAppleIDSplashViewController__enableICloudMailButtonWasTapped___bloc
   }
 }
 
-- (void)_cancelButtonWasTapped:(id)a3
+- (void)_cancelButtonWasTapped:(id)tapped
 {
-  v3 = [(PSAppleIDSplashViewController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PSAppleIDSplashViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_signInButtonWasTapped:(id)a3
+- (void)_signInButtonWasTapped:(id)tapped
 {
-  v4 = [(UITableView *)self->super._table firstResponder];
-  [v4 resignFirstResponder];
+  firstResponder = [(UITableView *)self->super._table firstResponder];
+  [firstResponder resignFirstResponder];
 
   [(PSAppleIDSplashViewController *)self showBusyUI];
   username = self->_username;
@@ -1431,14 +1431,14 @@ void __61__PSAppleIDSplashViewController__presentInvalidUsernameAlert__block_inv
 
 - (BOOL)_runningInMail
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.mobilemail"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.mobilemail"];
 
   return v4;
 }
 
-- (void)remoteUIControllerDidDismiss:(id)a3
+- (void)remoteUIControllerDidDismiss:(id)dismiss
 {
   remoteUICompletion = self->_remoteUICompletion;
   if (remoteUICompletion)
@@ -1449,13 +1449,13 @@ void __61__PSAppleIDSplashViewController__presentInvalidUsernameAlert__block_inv
   }
 }
 
-- (void)context:(id)a3 needsPasswordWithCompletion:(id)a4
+- (void)context:(id)context needsPasswordWithCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v5 = a4;
+    completionCopy = completion;
     [(PSAppleIDSplashViewController *)self hideBusyUI];
-    v6 = _Block_copy(v5);
+    v6 = _Block_copy(completionCopy);
 
     passwordHandler = self->_passwordHandler;
     self->_passwordHandler = v6;

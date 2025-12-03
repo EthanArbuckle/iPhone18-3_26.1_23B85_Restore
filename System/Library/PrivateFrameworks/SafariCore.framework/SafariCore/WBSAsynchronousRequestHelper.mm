@@ -1,33 +1,33 @@
 @interface WBSAsynchronousRequestHelper
-- (WBSAsynchronousRequestHelper)initWithRequest:(id)a3 queue:(id)a4 completionHandler:(id)a5;
+- (WBSAsynchronousRequestHelper)initWithRequest:(id)request queue:(id)queue completionHandler:(id)handler;
 - (void)cancel;
-- (void)connection:(id)a3 didFailWithError:(id)a4;
-- (void)connection:(id)a3 didReceiveData:(id)a4;
-- (void)connection:(id)a3 didReceiveResponse:(id)a4;
-- (void)connectionDidFinishLoading:(id)a3;
+- (void)connection:(id)connection didFailWithError:(id)error;
+- (void)connection:(id)connection didReceiveData:(id)data;
+- (void)connection:(id)connection didReceiveResponse:(id)response;
+- (void)connectionDidFinishLoading:(id)loading;
 - (void)dealloc;
 - (void)sendRequest;
 @end
 
 @implementation WBSAsynchronousRequestHelper
 
-- (WBSAsynchronousRequestHelper)initWithRequest:(id)a3 queue:(id)a4 completionHandler:(id)a5
+- (WBSAsynchronousRequestHelper)initWithRequest:(id)request queue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  queueCopy = queue;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = WBSAsynchronousRequestHelper;
   v11 = [(WBSAsynchronousRequestHelper *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_queue, a4);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_queue, queue);
+    v13 = [handlerCopy copy];
     handler = v12->_handler;
     v12->_handler = v13;
 
-    v15 = [objc_alloc(MEMORY[0x1E695AC40]) initWithRequest:v8 delegate:v12 startImmediately:0];
+    v15 = [objc_alloc(MEMORY[0x1E695AC40]) initWithRequest:requestCopy delegate:v12 startImmediately:0];
     connection = v12->_connection;
     v12->_connection = v15;
 
@@ -48,17 +48,17 @@
 - (void)sendRequest
 {
   connection = self->_connection;
-  v4 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [(NSURLConnection *)connection scheduleInRunLoop:v4 forMode:*MEMORY[0x1E695DA28]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [(NSURLConnection *)connection scheduleInRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
   [(NSURLConnection *)self->_connection start];
 
   objc_storeStrong(&self->_lifetimeExtender, self);
 }
 
-- (void)connection:(id)a3 didFailWithError:(id)a4
+- (void)connection:(id)connection didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   [(NSURLConnection *)self->_connection cancel];
   v6 = _Block_copy(self->_handler);
   v7 = self->_response;
@@ -67,10 +67,10 @@
   v13[1] = 3221225472;
   v13[2] = __60__WBSAsynchronousRequestHelper_connection_didFailWithError___block_invoke;
   v13[3] = &unk_1E7CF2AA8;
-  v15 = v5;
+  v15 = errorCopy;
   v16 = v6;
   v14 = v7;
-  v9 = v5;
+  v9 = errorCopy;
   v10 = v7;
   v11 = v6;
   [(NSOperationQueue *)queue addOperationWithBlock:v13];
@@ -78,37 +78,37 @@
   self->_lifetimeExtender = 0;
 }
 
-- (void)connection:(id)a3 didReceiveResponse:(id)a4
+- (void)connection:(id)connection didReceiveResponse:(id)response
 {
-  v6 = a4;
+  responseCopy = response;
   response = self->_response;
   p_response = &self->_response;
   if (!response)
   {
-    v9 = v6;
-    objc_storeStrong(p_response, a4);
-    v6 = v9;
+    v9 = responseCopy;
+    objc_storeStrong(p_response, response);
+    responseCopy = v9;
   }
 }
 
-- (void)connection:(id)a3 didReceiveData:(id)a4
+- (void)connection:(id)connection didReceiveData:(id)data
 {
   data = self->_data;
   if (data)
   {
 
-    [(NSMutableData *)data appendData:a4];
+    [(NSMutableData *)data appendData:data];
   }
 
   else
   {
-    v6 = [a4 mutableCopy];
+    v6 = [data mutableCopy];
     v7 = self->_data;
     self->_data = v6;
   }
 }
 
-- (void)connectionDidFinishLoading:(id)a3
+- (void)connectionDidFinishLoading:(id)loading
 {
   [(NSURLConnection *)self->_connection cancel];
   v4 = _Block_copy(self->_handler);

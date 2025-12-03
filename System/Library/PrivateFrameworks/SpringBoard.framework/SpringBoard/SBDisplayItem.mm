@@ -1,29 +1,29 @@
 @interface SBDisplayItem
-+ (SBDisplayItem)displayItemWithProtobufRepresentation:(id)a3;
-+ (SBDisplayItem)displayItemWithType:(int64_t)a3 bundleIdentifier:(id)a4 uniqueIdentifier:(id)a5;
++ (SBDisplayItem)displayItemWithProtobufRepresentation:(id)representation;
++ (SBDisplayItem)displayItemWithType:(int64_t)type bundleIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier;
 + (id)appLibraryDisplayItem;
-+ (id)displayItemForLayoutElement:(id)a3;
-+ (id)displayItemForWorkspaceEntity:(id)a3;
++ (id)displayItemForLayoutElement:(id)element;
++ (id)displayItemForWorkspaceEntity:(id)entity;
 + (id)homeScreenDisplayItem;
-- (BOOL)isEqualToDisplayItemForFloatingDockSuggestions:(id)a3;
+- (BOOL)isEqualToDisplayItemForFloatingDockSuggestions:(id)suggestions;
 - (BOOL)isHomeScreenDisplayItem;
 - (NSString)webClipIdentifier;
 - (SBDisplayItem)init;
-- (SBDisplayItem)initWithType:(int64_t)a3 bundleIdentifier:(id)a4 uniqueIdentifier:(id)a5;
+- (SBDisplayItem)initWithType:(int64_t)type bundleIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier;
 - (id)_calculateUniqueStringRepresentation;
-- (id)_initWithArrayPlistRepresentation:(id)a3;
-- (id)_initWithDictionaryPlistRepresentation:(id)a3;
-- (id)_initWithLegacyPlistRepresentation:(id)a3 sceneIdentifierFromBundleIdentifierGenerator:(id)a4;
-- (id)_initWithPlistRepresentation:(id)a3 sceneIdentifierFromBundleIdentifierGenerator:(id)a4;
-- (id)_newSceneIdentifierForBundleIdentifier:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_initWithArrayPlistRepresentation:(id)representation;
+- (id)_initWithDictionaryPlistRepresentation:(id)representation;
+- (id)_initWithLegacyPlistRepresentation:(id)representation sceneIdentifierFromBundleIdentifierGenerator:(id)generator;
+- (id)_initWithPlistRepresentation:(id)representation sceneIdentifierFromBundleIdentifierGenerator:(id)generator;
+- (id)_newSceneIdentifierForBundleIdentifier:(id)identifier;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)displayItemForFloatingDockSuggestionsComparison;
 - (id)plistRepresentation;
 - (id)protobufRepresentation;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (int64_t)compare:(id)a3;
-- (uint64_t)isEqualToItem:(uint64_t)a1;
+- (int64_t)compare:(id)compare;
+- (uint64_t)isEqualToItem:(uint64_t)item;
 - (void)protobufRepresentation;
 @end
 
@@ -32,10 +32,10 @@
 - (id)_calculateUniqueStringRepresentation
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SBDisplayItem *)self uniqueIdentifier];
-  v5 = [(SBDisplayItem *)self bundleIdentifier];
+  uniqueIdentifier = [(SBDisplayItem *)self uniqueIdentifier];
+  bundleIdentifier = [(SBDisplayItem *)self bundleIdentifier];
   v6 = SBLegacyDisplayItemTypeFromType(self->_type);
-  v7 = [v3 stringWithFormat:@"%@-%@-%@", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"%@-%@-%@", uniqueIdentifier, bundleIdentifier, v6];
 
   return v7;
 }
@@ -60,40 +60,40 @@
   return v3;
 }
 
-+ (SBDisplayItem)displayItemWithType:(int64_t)a3 bundleIdentifier:(id)a4 uniqueIdentifier:(id)a5
++ (SBDisplayItem)displayItemWithType:(int64_t)type bundleIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithType:a3 bundleIdentifier:v9 uniqueIdentifier:v8];
+  uniqueIdentifierCopy = uniqueIdentifier;
+  identifierCopy = identifier;
+  v10 = [[self alloc] initWithType:type bundleIdentifier:identifierCopy uniqueIdentifier:uniqueIdentifierCopy];
 
   return v10;
 }
 
-+ (id)displayItemForLayoutElement:(id)a3
++ (id)displayItemForLayoutElement:(id)element
 {
-  v4 = [a3 workspaceEntity];
-  v5 = [a1 displayItemForWorkspaceEntity:v4];
+  workspaceEntity = [element workspaceEntity];
+  v5 = [self displayItemForWorkspaceEntity:workspaceEntity];
 
   return v5;
 }
 
-+ (id)displayItemForWorkspaceEntity:(id)a3
++ (id)displayItemForWorkspaceEntity:(id)entity
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  entityCopy = entity;
+  v4 = entityCopy;
+  if (!entityCopy)
   {
-    v8 = 0;
+    displayItemRepresentation = 0;
     goto LABEL_9;
   }
 
-  if ([v3 isApplicationSceneEntity])
+  if ([entityCopy isApplicationSceneEntity])
   {
-    v5 = [v4 applicationSceneEntity];
-    v6 = [v5 sceneHandle];
+    applicationSceneEntity = [v4 applicationSceneEntity];
+    sceneHandle = [applicationSceneEntity sceneHandle];
 LABEL_4:
-    v7 = v6;
-    v8 = [v6 displayItemRepresentation];
+    bundleIdentifier = sceneHandle;
+    displayItemRepresentation = [sceneHandle displayItemRepresentation];
 LABEL_8:
 
     goto LABEL_9;
@@ -101,25 +101,25 @@ LABEL_8:
 
   if ([v4 isAppClipPlaceholderEntity])
   {
-    v5 = [v4 appClipPlaceholderEntity];
-    v7 = [v5 bundleIdentifier];
-    v9 = [v5 futureSceneIdentifier];
-    v8 = [SBDisplayItem displayItemWithType:0 bundleIdentifier:v7 uniqueIdentifier:v9];
+    applicationSceneEntity = [v4 appClipPlaceholderEntity];
+    bundleIdentifier = [applicationSceneEntity bundleIdentifier];
+    futureSceneIdentifier = [applicationSceneEntity futureSceneIdentifier];
+    displayItemRepresentation = [SBDisplayItem displayItemWithType:0 bundleIdentifier:bundleIdentifier uniqueIdentifier:futureSceneIdentifier];
 
     goto LABEL_8;
   }
 
   if ([v4 isDashBoardHostableEntity])
   {
-    v5 = [v4 dashBoardHostableEntity];
-    v6 = [v5 hostableEntity];
+    applicationSceneEntity = [v4 dashBoardHostableEntity];
+    sceneHandle = [applicationSceneEntity hostableEntity];
     goto LABEL_4;
   }
 
-  v8 = +[SBDisplayItem homeScreenDisplayItem];
+  displayItemRepresentation = +[SBDisplayItem homeScreenDisplayItem];
 LABEL_9:
 
-  return v8;
+  return displayItemRepresentation;
 }
 
 + (id)appLibraryDisplayItem
@@ -132,26 +132,26 @@ LABEL_9:
 
 - (SBDisplayItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBDisplayItem.m" lineNumber:221 description:@"use initWithType:..."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBDisplayItem.m" lineNumber:221 description:@"use initWithType:..."];
 
   return 0;
 }
 
-- (SBDisplayItem)initWithType:(int64_t)a3 bundleIdentifier:(id)a4 uniqueIdentifier:(id)a5
+- (SBDisplayItem)initWithType:(int64_t)type bundleIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier
 {
-  v9 = a4;
-  v10 = a5;
-  if ((a3 & 0x8000000000000000) == 0)
+  identifierCopy = identifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  if ((type & 0x8000000000000000) == 0)
   {
-    if (v9)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    [SBDisplayItem initWithType:a3 bundleIdentifier:a2 uniqueIdentifier:self];
-    if (a3)
+    [SBDisplayItem initWithType:type bundleIdentifier:a2 uniqueIdentifier:self];
+    if (type)
     {
       goto LABEL_6;
     }
@@ -159,20 +159,20 @@ LABEL_10:
     goto LABEL_4;
   }
 
-  [(SBDisplayItem *)a3 initWithType:a2 bundleIdentifier:self uniqueIdentifier:v9];
-  if (!v9)
+  [(SBDisplayItem *)type initWithType:a2 bundleIdentifier:self uniqueIdentifier:identifierCopy];
+  if (!identifierCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (a3)
+  if (type)
   {
     goto LABEL_6;
   }
 
 LABEL_4:
-  if ([v9 isEqualToString:@"com.apple.webapp"])
+  if ([identifierCopy isEqualToString:@"com.apple.webapp"])
   {
     [SBDisplayItem initWithType:a2 bundleIdentifier:self uniqueIdentifier:?];
   }
@@ -184,18 +184,18 @@ LABEL_6:
   v12 = v11;
   if (v11)
   {
-    v11->_type = a3;
-    v13 = [v9 copy];
+    v11->_type = type;
+    v13 = [identifierCopy copy];
     bundleIdentifier = v12->_bundleIdentifier;
     v12->_bundleIdentifier = v13;
 
-    v15 = [v10 copy];
+    v15 = [uniqueIdentifierCopy copy];
     uniqueIdentifier = v12->_uniqueIdentifier;
     v12->_uniqueIdentifier = v15;
 
-    v17 = [(SBDisplayItem *)v12 _calculateUniqueStringRepresentation];
+    _calculateUniqueStringRepresentation = [(SBDisplayItem *)v12 _calculateUniqueStringRepresentation];
     uniqueStringRepresentation = v12->_uniqueStringRepresentation;
-    v12->_uniqueStringRepresentation = v17;
+    v12->_uniqueStringRepresentation = _calculateUniqueStringRepresentation;
 
     v12->_uniqueStringRepresentationHash = [(NSString *)v12->_uniqueStringRepresentation hash];
   }
@@ -203,15 +203,15 @@ LABEL_6:
   return v12;
 }
 
-- (id)_initWithPlistRepresentation:(id)a3 sceneIdentifierFromBundleIdentifierGenerator:(id)a4
+- (id)_initWithPlistRepresentation:(id)representation sceneIdentifierFromBundleIdentifierGenerator:(id)generator
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  representationCopy = representation;
+  v7 = [generator copy];
   sceneIdentifierFromBundleIdentifierGenerator = self->_sceneIdentifierFromBundleIdentifierGenerator;
   self->_sceneIdentifierFromBundleIdentifierGenerator = v7;
 
   v9 = objc_opt_class();
-  v10 = v6;
+  v10 = representationCopy;
   if (v9)
   {
     if (objc_opt_isKindOfClass())
@@ -269,14 +269,14 @@ LABEL_6:
   return v18;
 }
 
-- (id)_initWithDictionaryPlistRepresentation:(id)a3
+- (id)_initWithDictionaryPlistRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"itemType"];
-  v6 = [v4 objectForKey:@"bundleID"];
-  v7 = [v4 objectForKey:@"uniqueID"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKey:@"itemType"];
+  v6 = [representationCopy objectForKey:@"bundleID"];
+  v7 = [representationCopy objectForKey:@"uniqueID"];
 
-  v8 = 0;
+  selfCopy = 0;
   if (v5 && v6)
   {
     v9 = SBDisplayItemTypeFromLegacyType(v5);
@@ -288,17 +288,17 @@ LABEL_6:
     }
 
     self = [(SBDisplayItem *)self initWithType:v9 bundleIdentifier:v6 uniqueIdentifier:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)_initWithArrayPlistRepresentation:(id)a3
+- (id)_initWithArrayPlistRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count] >= 2)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy && [representationCopy count] >= 2)
   {
     v6 = [v5 objectAtIndexedSubscript:0];
     v7 = objc_opt_class();
@@ -377,7 +377,7 @@ LABEL_6:
       v10 = v22;
     }
 
-    v13 = 0;
+    selfCopy = 0;
     if (v12 && v11)
     {
       v23 = SBDisplayItemTypeFromLegacyType(v12);
@@ -409,7 +409,7 @@ LABEL_6:
       }
 
       self = [(SBDisplayItem *)self initWithType:v24 bundleIdentifier:v11 uniqueIdentifier:v10];
-      v13 = self;
+      selfCopy = self;
     }
   }
 
@@ -418,21 +418,21 @@ LABEL_6:
     v10 = 0;
     v11 = 0;
     v12 = 0;
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (id)_initWithLegacyPlistRepresentation:(id)a3 sceneIdentifierFromBundleIdentifierGenerator:(id)a4
+- (id)_initWithLegacyPlistRepresentation:(id)representation sceneIdentifierFromBundleIdentifierGenerator:(id)generator
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  representationCopy = representation;
+  v7 = [generator copy];
   sceneIdentifierFromBundleIdentifierGenerator = self->_sceneIdentifierFromBundleIdentifierGenerator;
   self->_sceneIdentifierFromBundleIdentifierGenerator = v7;
 
   v9 = objc_opt_class();
-  v10 = SBSafeCast(v9, v6);
+  v10 = SBSafeCast(v9, representationCopy);
 
   if (v10 && [v10 count] == 2)
   {
@@ -455,7 +455,7 @@ LABEL_6:
 LABEL_9:
         self = [(SBDisplayItem *)self initWithType:v12 bundleIdentifier:v15 uniqueIdentifier:v16];
 
-        v18 = self;
+        selfCopy = self;
         goto LABEL_10;
       }
 
@@ -467,27 +467,27 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v18 = 0;
+  selfCopy = 0;
 LABEL_10:
 
-  return v18;
+  return selfCopy;
 }
 
-- (id)_newSceneIdentifierForBundleIdentifier:(id)a3
+- (id)_newSceneIdentifierForBundleIdentifier:(id)identifier
 {
   sceneIdentifierFromBundleIdentifierGenerator = self->_sceneIdentifierFromBundleIdentifierGenerator;
   if (sceneIdentifierFromBundleIdentifierGenerator)
   {
     v4 = sceneIdentifierFromBundleIdentifierGenerator[2];
-    v5 = a3;
-    v6 = v4(sceneIdentifierFromBundleIdentifierGenerator, v5);
+    identifierCopy = identifier;
+    v6 = v4(sceneIdentifierFromBundleIdentifierGenerator, identifierCopy);
   }
 
   else
   {
-    v7 = a3;
-    v5 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-    v6 = [v5 newSceneIdentifierForBundleIdentifier:v7];
+    identifierCopy2 = identifier;
+    identifierCopy = +[SBSceneManagerCoordinator mainDisplaySceneManager];
+    v6 = [identifierCopy newSceneIdentifierForBundleIdentifier:identifierCopy2];
   }
 
   return v6;
@@ -497,8 +497,8 @@ LABEL_10:
 {
   if ([(SBDisplayItem *)self type]== 5)
   {
-    v3 = [(SBDisplayItem *)self uniqueIdentifier];
-    v4 = [SBWebApplication _webClipIdentifierFromWebAppIdentifier:v3];
+    uniqueIdentifier = [(SBDisplayItem *)self uniqueIdentifier];
+    v4 = [SBWebApplication _webClipIdentifierFromWebAppIdentifier:uniqueIdentifier];
   }
 
   else
@@ -512,18 +512,18 @@ LABEL_10:
 - (id)plistRepresentation
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v3 = [(SBDisplayItem *)self type];
+  type = [(SBDisplayItem *)self type];
   v4 = MEMORY[0x277CBEB38];
   v11[0] = @"itemType";
-  v5 = SBLegacyDisplayItemTypeFromType(v3);
+  v5 = SBLegacyDisplayItemTypeFromType(type);
   v11[1] = @"bundleID";
   v12[0] = v5;
-  v6 = [(SBDisplayItem *)self bundleIdentifier];
-  v12[1] = v6;
+  bundleIdentifier = [(SBDisplayItem *)self bundleIdentifier];
+  v12[1] = bundleIdentifier;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v8 = [v4 dictionaryWithDictionary:v7];
 
-  if (v3 == 5)
+  if (type == 5)
   {
     [(SBDisplayItem *)self webClipIdentifier];
   }
@@ -541,26 +541,26 @@ LABEL_10:
   return v8;
 }
 
-+ (SBDisplayItem)displayItemWithProtobufRepresentation:(id)a3
++ (SBDisplayItem)displayItemWithProtobufRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  representationCopy = representation;
+  v4 = representationCopy;
+  if (!representationCopy)
   {
     v9 = 0;
     goto LABEL_19;
   }
 
-  v5 = [(SBPBDisplayItem *)v3 type];
-  if (v5 <= 2)
+  type = [(SBPBDisplayItem *)representationCopy type];
+  if (type <= 2)
   {
     v10 = 2;
-    if (v5 != 2)
+    if (type != 2)
     {
       v10 = 0;
     }
 
-    if (v5 == 1)
+    if (type == 1)
     {
       v11 = 1;
     }
@@ -573,7 +573,7 @@ LABEL_10:
 
   else
   {
-    switch(v5)
+    switch(type)
     {
       case 3:
         v11 = 3;
@@ -582,16 +582,16 @@ LABEL_10:
         v11 = 4;
         break;
       case 5:
-        v6 = [(SBPBDisplayItem *)v4 bundleIdentifier];
-        v7 = [(SBPBDisplayItem *)v4 webClipIdentifier];
-        if (v7)
+        bundleIdentifier = [(SBPBDisplayItem *)v4 bundleIdentifier];
+        webClipIdentifier = [(SBPBDisplayItem *)v4 webClipIdentifier];
+        if (webClipIdentifier)
         {
-          v8 = [SBWebApplication _webAppIdentifierFromWebClipIdentifier:v7];
+          sceneIdentifier = [SBWebApplication _webAppIdentifierFromWebClipIdentifier:webClipIdentifier];
         }
 
         else
         {
-          v8 = 0;
+          sceneIdentifier = 0;
         }
 
         v11 = 5;
@@ -602,10 +602,10 @@ LABEL_10:
     }
   }
 
-  v6 = [(SBPBDisplayItem *)v4 bundleIdentifier];
-  v8 = [(SBPBDisplayItem *)v4 sceneIdentifier];
+  bundleIdentifier = [(SBPBDisplayItem *)v4 bundleIdentifier];
+  sceneIdentifier = [(SBPBDisplayItem *)v4 sceneIdentifier];
 LABEL_18:
-  v9 = [SBDisplayItem displayItemWithType:v11 bundleIdentifier:v6 uniqueIdentifier:v8];
+  v9 = [SBDisplayItem displayItemWithType:v11 bundleIdentifier:bundleIdentifier uniqueIdentifier:sceneIdentifier];
 
 LABEL_19:
 
@@ -615,29 +615,29 @@ LABEL_19:
 - (id)protobufRepresentation
 {
   v4 = objc_alloc_init(SBPBDisplayItem);
-  v5 = [(SBDisplayItem *)self type];
-  v6 = protobufDisplayItemTypeFromType(v5);
+  type = [(SBDisplayItem *)self type];
+  v6 = protobufDisplayItemTypeFromType(type);
   [(SBPBDisplayItem *)v4 setType:v6];
-  v7 = [(SBDisplayItem *)self bundleIdentifier];
-  [(SBPBDisplayItem *)v4 setBundleIdentifier:v7];
+  bundleIdentifier = [(SBDisplayItem *)self bundleIdentifier];
+  [(SBPBDisplayItem *)v4 setBundleIdentifier:bundleIdentifier];
 
-  if (v5 == 5)
+  if (type == 5)
   {
-    v8 = [(SBDisplayItem *)self webClipIdentifier];
+    webClipIdentifier = [(SBDisplayItem *)self webClipIdentifier];
 
-    if (!v8)
+    if (!webClipIdentifier)
     {
       [(SBDisplayItem *)a2 protobufRepresentation];
     }
 
-    v9 = [(SBDisplayItem *)self webClipIdentifier];
-    [(SBPBDisplayItem *)v4 setWebClipIdentifier:v9];
+    webClipIdentifier2 = [(SBDisplayItem *)self webClipIdentifier];
+    [(SBPBDisplayItem *)v4 setWebClipIdentifier:webClipIdentifier2];
   }
 
   else
   {
-    v9 = [(SBDisplayItem *)self uniqueIdentifier];
-    [(SBPBDisplayItem *)v4 setSceneIdentifier:v9];
+    webClipIdentifier2 = [(SBDisplayItem *)self uniqueIdentifier];
+    [(SBPBDisplayItem *)v4 setSceneIdentifier:webClipIdentifier2];
   }
 
   return v4;
@@ -650,23 +650,23 @@ LABEL_19:
     return 0;
   }
 
-  v3 = [(SBDisplayItem *)self bundleIdentifier];
+  bundleIdentifier = [(SBDisplayItem *)self bundleIdentifier];
   v4 = FBSystemAppBundleID();
-  v5 = [v3 isEqual:v4];
+  v5 = [bundleIdentifier isEqual:v4];
 
   return v5;
 }
 
-- (uint64_t)isEqualToItem:(uint64_t)a1
+- (uint64_t)isEqualToItem:(uint64_t)item
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (item && v3)
   {
-    if (*(a1 + 40) == *(v3 + 5))
+    if (*(item + 40) == *(v3 + 5))
     {
-      v5 = [*(a1 + 8) isEqualToString:*(v3 + 1)];
+      v5 = [*(item + 8) isEqualToString:*(v3 + 1)];
     }
 
     else
@@ -678,25 +678,25 @@ LABEL_19:
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v5 = objc_opt_self();
-  v6 = SBSafeCast(v5, v4);
+  v6 = SBSafeCast(v5, compareCopy);
 
   if (v6)
   {
-    v7 = [(SBDisplayItem *)self uniqueIdentifier];
-    v8 = [v6 uniqueIdentifier];
-    v9 = [v7 compare:v8];
+    uniqueIdentifier = [(SBDisplayItem *)self uniqueIdentifier];
+    uniqueIdentifier2 = [v6 uniqueIdentifier];
+    v9 = [uniqueIdentifier compare:uniqueIdentifier2];
 
     if (!v9)
     {
-      v10 = [(SBDisplayItem *)self type];
-      if (v10 <= [v6 type])
+      type = [(SBDisplayItem *)self type];
+      if (type <= [v6 type])
       {
-        v11 = [(SBDisplayItem *)self type];
-        if (v11 >= [v6 type])
+        type2 = [(SBDisplayItem *)self type];
+        if (type2 >= [v6 type])
         {
           v9 = 0;
         }
@@ -724,65 +724,65 @@ LABEL_19:
 
 - (id)succinctDescription
 {
-  v2 = [(SBDisplayItem *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBDisplayItem *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBDisplayItem *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBDisplayItem *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)displayItemForFloatingDockSuggestionsComparison
 {
-  v3 = [(SBDisplayItem *)self bundleIdentifier];
-  v4 = [(SBDisplayItem *)self type];
-  if (v4 > 8)
+  bundleIdentifier = [(SBDisplayItem *)self bundleIdentifier];
+  type = [(SBDisplayItem *)self type];
+  if (type > 8)
   {
     v6 = 0;
   }
 
   else
   {
-    if (((1 << v4) & 0x1EE) != 0)
+    if (((1 << type) & 0x1EE) != 0)
     {
-      v5 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v5 = [objc_opt_class() displayItemWithType:0 bundleIdentifier:v3 uniqueIdentifier:0];
+      selfCopy = [objc_opt_class() displayItemWithType:0 bundleIdentifier:bundleIdentifier uniqueIdentifier:0];
     }
 
-    v6 = v5;
+    v6 = selfCopy;
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToDisplayItemForFloatingDockSuggestions:(id)a3
+- (BOOL)isEqualToDisplayItemForFloatingDockSuggestions:(id)suggestions
 {
-  v4 = a3;
-  if (([(SBDisplayItem *)self isEqualToItem:v4]& 1) != 0)
+  suggestionsCopy = suggestions;
+  if (([(SBDisplayItem *)self isEqualToItem:suggestionsCopy]& 1) != 0)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(SBDisplayItem *)self type];
-    if (v6 == [v4 type])
+    type = [(SBDisplayItem *)self type];
+    if (type == [suggestionsCopy type])
     {
-      v7 = [(SBDisplayItem *)self bundleIdentifier];
-      v8 = [v4 bundleIdentifier];
+      bundleIdentifier = [(SBDisplayItem *)self bundleIdentifier];
+      bundleIdentifier2 = [suggestionsCopy bundleIdentifier];
       v9 = BSEqualObjects();
-      v10 = 0x11u >> v6;
-      if (v6 > 8)
+      v10 = 0x11u >> type;
+      if (type > 8)
       {
         LOBYTE(v10) = 0;
       }
@@ -829,8 +829,8 @@ LABEL_19:
 
 - (void)protobufRepresentation
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBDisplayItem.m" lineNumber:392 description:@"Malformed display item"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBDisplayItem.m" lineNumber:392 description:@"Malformed display item"];
 }
 
 @end

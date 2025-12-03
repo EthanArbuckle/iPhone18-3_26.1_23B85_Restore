@@ -7,29 +7,29 @@
 - (void)execute
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = [(MPModelLibraryJoinCollaborationChangeRequest *)self->_request collaborationToJoin];
-  v5 = [v4 identifiers];
+  collaborationToJoin = [(MPModelLibraryJoinCollaborationChangeRequest *)self->_request collaborationToJoin];
+  identifiers = [collaborationToJoin identifiers];
 
-  v6 = [v5 universalStore];
-  v7 = [v6 globalPlaylistID];
+  universalStore = [identifiers universalStore];
+  globalPlaylistID = [universalStore globalPlaylistID];
 
-  v8 = [(MPModelLibraryJoinCollaborationChangeRequest *)self->_request invitationURL];
+  invitationURL = [(MPModelLibraryJoinCollaborationChangeRequest *)self->_request invitationURL];
   v9 = os_log_create("com.apple.amp.mediaplayer", "Default");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(MPModelLibraryJoinCollaborationChangeRequest *)self->_request collaborationToJoin];
+    collaborationToJoin2 = [(MPModelLibraryJoinCollaborationChangeRequest *)self->_request collaborationToJoin];
     *buf = 138543874;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v10;
+    v20 = collaborationToJoin2;
     v21 = 2114;
-    v22 = v7;
+    v22 = globalPlaylistID;
     _os_log_impl(&dword_1A238D000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ joining collaboration %{public}@ (globalPlaylistID = %{public}@)", buf, 0x20u);
   }
 
-  if (v7)
+  if (globalPlaylistID)
   {
-    v11 = v8 == 0;
+    v11 = invitationURL == 0;
   }
 
   else
@@ -39,8 +39,8 @@
 
   if (v11)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"MPModelLibraryJoinCollaborationChangeRequestOperation.m" lineNumber:29 description:@"Must have a non-nil playlistID and invitation URL"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryJoinCollaborationChangeRequestOperation.m" lineNumber:29 description:@"Must have a non-nil playlistID and invitation URL"];
   }
 
   v12 = +[MPCloudController sharedCloudController];
@@ -49,9 +49,9 @@
   v15[2] = __64__MPModelLibraryJoinCollaborationChangeRequestOperation_execute__block_invoke;
   v15[3] = &unk_1E767B030;
   v15[4] = self;
-  v16 = v5;
-  v13 = v5;
-  [v12 joinCollaborationWithGlobalPlaylistID:v7 invitationURL:v8 completion:v15];
+  v16 = identifiers;
+  v13 = identifiers;
+  [v12 joinCollaborationWithGlobalPlaylistID:globalPlaylistID invitationURL:invitationURL completion:v15];
 }
 
 void __64__MPModelLibraryJoinCollaborationChangeRequestOperation_execute__block_invoke(uint64_t a1, uint64_t a2, void *a3)

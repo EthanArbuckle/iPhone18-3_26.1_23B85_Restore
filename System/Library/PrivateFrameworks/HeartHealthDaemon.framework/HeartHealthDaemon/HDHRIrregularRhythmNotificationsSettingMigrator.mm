@@ -1,24 +1,24 @@
 @interface HDHRIrregularRhythmNotificationsSettingMigrator
-- (HDHRIrregularRhythmNotificationsSettingMigrator)initWithV1FeatureAvailabilityManager:(id)a3 v2FeatureAvailabilityManager:(id)a4;
+- (HDHRIrregularRhythmNotificationsSettingMigrator)initWithV1FeatureAvailabilityManager:(id)manager v2FeatureAvailabilityManager:(id)availabilityManager;
 - (void)_startObservingSettingChanges;
-- (void)_syncSettingIfPossibleFromManager:(id)a3 toManager:(id)a4;
-- (void)_syncSettingIfPossibleFromSource:(id)a3;
+- (void)_syncSettingIfPossibleFromManager:(id)manager toManager:(id)toManager;
+- (void)_syncSettingIfPossibleFromSource:(id)source;
 @end
 
 @implementation HDHRIrregularRhythmNotificationsSettingMigrator
 
-- (HDHRIrregularRhythmNotificationsSettingMigrator)initWithV1FeatureAvailabilityManager:(id)a3 v2FeatureAvailabilityManager:(id)a4
+- (HDHRIrregularRhythmNotificationsSettingMigrator)initWithV1FeatureAvailabilityManager:(id)manager v2FeatureAvailabilityManager:(id)availabilityManager
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  availabilityManagerCopy = availabilityManager;
   v14.receiver = self;
   v14.super_class = HDHRIrregularRhythmNotificationsSettingMigrator;
   v9 = [(HDHRIrregularRhythmNotificationsSettingMigrator *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_v1FeatureAvailabilityManager, a3);
-    objc_storeStrong(&v10->_v2FeatureAvailabilityManager, a4);
+    objc_storeStrong(&v9->_v1FeatureAvailabilityManager, manager);
+    objc_storeStrong(&v10->_v2FeatureAvailabilityManager, availabilityManager);
     v11 = HKCreateSerialDispatchQueue();
     queue = v10->_queue;
     v10->_queue = v11;
@@ -38,34 +38,34 @@
   [(HDFeatureAvailabilityExtension *)v2FeatureAvailabilityManager registerObserver:self queue:queue];
 }
 
-- (void)_syncSettingIfPossibleFromSource:(id)a3
+- (void)_syncSettingIfPossibleFromSource:(id)source
 {
-  v7 = a3;
-  v4 = [v7 featureIdentifier];
+  sourceCopy = source;
+  featureIdentifier = [sourceCopy featureIdentifier];
   v5 = 8;
-  if (v4 == *MEMORY[0x277CCC078])
+  if (featureIdentifier == *MEMORY[0x277CCC078])
   {
     v5 = 16;
   }
 
   v6 = *(&self->super.isa + v5);
 
-  [(HDHRIrregularRhythmNotificationsSettingMigrator *)self _syncSettingIfPossibleFromManager:v7 toManager:v6];
+  [(HDHRIrregularRhythmNotificationsSettingMigrator *)self _syncSettingIfPossibleFromManager:sourceCopy toManager:v6];
 }
 
-- (void)_syncSettingIfPossibleFromManager:(id)a3 toManager:(id)a4
+- (void)_syncSettingIfPossibleFromManager:(id)manager toManager:(id)toManager
 {
   v73 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  toManagerCopy = toManager;
   v64 = 0;
-  v8 = [v6 featureOnboardingRecordWithError:&v64];
+  v8 = [managerCopy featureOnboardingRecordWithError:&v64];
   v9 = v64;
   v10 = v9;
   if (v8)
   {
     v63 = v9;
-    v11 = [v7 featureOnboardingRecordWithError:&v63];
+    v11 = [toManagerCopy featureOnboardingRecordWithError:&v63];
     v12 = v63;
 
     if (v11)
@@ -79,17 +79,17 @@
           log = v13;
           v14 = objc_opt_class();
           v54 = v14;
-          v15 = [v6 featureIdentifier];
-          v16 = [v7 featureIdentifier];
-          v17 = [v6 featureIdentifier];
+          featureIdentifier = [managerCopy featureIdentifier];
+          featureIdentifier2 = [toManagerCopy featureIdentifier];
+          featureIdentifier3 = [managerCopy featureIdentifier];
           *buf = 138544130;
           v66 = v14;
           v67 = 2114;
-          v68 = v15;
+          v68 = featureIdentifier;
           v69 = 2114;
-          v70 = v16;
+          v70 = featureIdentifier2;
           v71 = 2114;
-          v72 = v17;
+          v72 = featureIdentifier3;
 LABEL_14:
           v20 = log;
           _os_log_impl(&dword_229486000, log, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping setting sync from %{public}@ to %{public}@: %{public}@ is not onboarded", buf, 0x2Au);
@@ -110,17 +110,17 @@ LABEL_27:
           log = v24;
           v25 = objc_opt_class();
           v54 = v25;
-          v15 = [v6 featureIdentifier];
-          v16 = [v7 featureIdentifier];
-          v17 = [v7 featureIdentifier];
+          featureIdentifier = [managerCopy featureIdentifier];
+          featureIdentifier2 = [toManagerCopy featureIdentifier];
+          featureIdentifier3 = [toManagerCopy featureIdentifier];
           *buf = 138544130;
           v66 = v25;
           v67 = 2114;
-          v68 = v15;
+          v68 = featureIdentifier;
           v69 = 2114;
-          v70 = v16;
+          v70 = featureIdentifier2;
           v71 = 2114;
-          v72 = v17;
+          v72 = featureIdentifier3;
           goto LABEL_14;
         }
 
@@ -129,12 +129,12 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v26 = [v8 featureSettings];
+      featureSettings = [v8 featureSettings];
       v27 = *MEMORY[0x277CCC120];
-      v20 = [v26 numberForKey:*MEMORY[0x277CCC120]];
+      v20 = [featureSettings numberForKey:*MEMORY[0x277CCC120]];
 
-      v28 = [v11 featureSettings];
-      v22 = [v28 numberForKey:v27];
+      featureSettings2 = [v11 featureSettings];
+      v22 = [featureSettings2 numberForKey:v27];
 
       if (v20 == v22 || v22 && [v20 isEqual:v22])
       {
@@ -145,23 +145,23 @@ LABEL_28:
           v49 = v29;
           v30 = objc_opt_class();
           logb = v30;
-          v31 = [v6 featureIdentifier];
-          v32 = [v7 featureIdentifier];
+          featureIdentifier4 = [managerCopy featureIdentifier];
+          featureIdentifier5 = [toManagerCopy featureIdentifier];
           *buf = 138543874;
           v66 = v30;
           v67 = 2114;
-          v68 = v31;
+          v68 = featureIdentifier4;
           v69 = 2114;
-          v70 = v32;
+          v70 = featureIdentifier5;
           _os_log_impl(&dword_229486000, v49, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping setting sync from %{public}@ to %{public}@: setting values already match", buf, 0x20u);
         }
       }
 
       else
       {
-        v33 = [v7 featureIdentifier];
+        featureIdentifier6 = [toManagerCopy featureIdentifier];
         v34 = v20;
-        v35 = v33;
+        v35 = featureIdentifier6;
         v55 = v34;
         if (v34)
         {
@@ -173,16 +173,16 @@ LABEL_28:
           v36 = v34;
           v57 = v36;
           v37 = &v58;
-          v58 = v6;
+          v58 = managerCopy;
           v59 = v35;
           v38 = v36;
           v39 = &v57;
-          [v7 setFeatureSettingNumber:v38 forKey:v27 completion:v56];
+          [toManagerCopy setFeatureSettingNumber:v38 forKey:v27 completion:v56];
         }
 
         else
         {
-          loga = v33;
+          loga = featureIdentifier6;
           _HKInitializeLogging();
           v44 = *MEMORY[0x277CCC2D8];
           if (os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_DEFAULT))
@@ -190,11 +190,11 @@ LABEL_28:
             v48 = v44;
             v45 = objc_opt_class();
             v50 = v45;
-            v46 = [v6 featureIdentifier];
+            featureIdentifier7 = [managerCopy featureIdentifier];
             *buf = 138543618;
             v66 = v45;
             v67 = 2114;
-            v68 = v46;
+            v68 = featureIdentifier7;
             _os_log_impl(&dword_229486000, v48, OS_LOG_TYPE_DEFAULT, "[%{public}@] Detected removal of setting from %{public}@", buf, 0x16u);
           }
 
@@ -204,11 +204,11 @@ LABEL_28:
           v60[3] = &unk_278660128;
           v60[4] = self;
           v39 = &v61;
-          v61 = v6;
+          v61 = managerCopy;
           v37 = &v62;
           v35 = loga;
           v62 = loga;
-          [v7 removeFeatureSettingValueForKey:v27 completion:v60];
+          [toManagerCopy removeFeatureSettingValueForKey:v27 completion:v60];
         }
 
         v20 = v55;
@@ -227,11 +227,11 @@ LABEL_28:
       v20 = v19;
       v21 = objc_opt_class();
       v22 = v21;
-      v23 = [v7 featureIdentifier];
+      featureIdentifier8 = [toManagerCopy featureIdentifier];
       *buf = 138543874;
       v66 = v21;
       v67 = 2114;
-      v68 = v23;
+      v68 = featureIdentifier8;
       v69 = 2114;
       v70 = v12;
       _os_log_error_impl(&dword_229486000, v20, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to retrieve onboarding record for %{public}@: %{public}@", buf, 0x20u);
@@ -247,11 +247,11 @@ LABEL_28:
     v40 = v18;
     v41 = objc_opt_class();
     v42 = v41;
-    v43 = [v6 featureIdentifier];
+    featureIdentifier9 = [managerCopy featureIdentifier];
     *buf = 138543874;
     v66 = v41;
     v67 = 2114;
-    v68 = v43;
+    v68 = featureIdentifier9;
     v69 = 2114;
     v70 = v10;
     _os_log_error_impl(&dword_229486000, v40, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to retrieve onboarding record for %{public}@: %{public}@", buf, 0x20u);

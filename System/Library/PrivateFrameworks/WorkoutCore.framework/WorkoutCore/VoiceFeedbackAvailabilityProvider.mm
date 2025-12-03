@@ -1,14 +1,14 @@
 @interface VoiceFeedbackAvailabilityProvider
 - (_TtC11WorkoutCore33VoiceFeedbackAvailabilityProvider)init;
-- (_TtC11WorkoutCore33VoiceFeedbackAvailabilityProvider)initWithWorkoutExperienceTypeBlock:(id)a3 workoutUltraModeBlock:(id)a4;
+- (_TtC11WorkoutCore33VoiceFeedbackAvailabilityProvider)initWithWorkoutExperienceTypeBlock:(id)block workoutUltraModeBlock:(id)modeBlock;
 @end
 
 @implementation VoiceFeedbackAvailabilityProvider
 
-- (_TtC11WorkoutCore33VoiceFeedbackAvailabilityProvider)initWithWorkoutExperienceTypeBlock:(id)a3 workoutUltraModeBlock:(id)a4
+- (_TtC11WorkoutCore33VoiceFeedbackAvailabilityProvider)initWithWorkoutExperienceTypeBlock:(id)block workoutUltraModeBlock:(id)modeBlock
 {
-  v6 = _Block_copy(a3);
-  v7 = _Block_copy(a4);
+  v6 = _Block_copy(block);
+  v7 = _Block_copy(modeBlock);
   v8 = swift_allocObject();
   *(v8 + 16) = v6;
   v9 = swift_allocObject();

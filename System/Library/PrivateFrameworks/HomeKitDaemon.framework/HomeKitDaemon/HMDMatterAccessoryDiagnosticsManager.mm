@@ -1,8 +1,8 @@
 @interface HMDMatterAccessoryDiagnosticsManager
-- (HMDMatterAccessoryDiagnosticsManager)initWithAccessory:(id)a3;
+- (HMDMatterAccessoryDiagnosticsManager)initWithAccessory:(id)accessory;
 - (MTRDevice)matterDevice;
-- (id)_diagnosticsMetadataFromFile:(id)a3 outError:(id *)a4;
-- (void)handleDiagnosticsTransferWithOptions:(id)a3 message:(id)a4;
+- (id)_diagnosticsMetadataFromFile:(id)file outError:(id *)error;
+- (void)handleDiagnosticsTransferWithOptions:(id)options message:(id)message;
 - (void)shutDown;
 - (void)start;
 @end
@@ -16,21 +16,21 @@
   return WeakRetained;
 }
 
-- (void)handleDiagnosticsTransferWithOptions:(id)a3 message:(id)a4
+- (void)handleDiagnosticsTransferWithOptions:(id)options message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  optionsCopy = options;
+  messageCopy = message;
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__HMDMatterAccessoryDiagnosticsManager_handleDiagnosticsTransferWithOptions_message___block_invoke;
   block[3] = &unk_27868A010;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = messageCopy;
+  v13 = optionsCopy;
+  v9 = optionsCopy;
+  v10 = messageCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __85__HMDMatterAccessoryDiagnosticsManager_handleDiagnosticsTransferWithOptions_message___block_invoke(uint64_t a1)
@@ -177,31 +177,31 @@ void __85__HMDMatterAccessoryDiagnosticsManager_handleDiagnosticsTransferWithOpt
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_diagnosticsMetadataFromFile:(id)a3 outError:(id *)a4
+- (id)_diagnosticsMetadataFromFile:(id)file outError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  fileCopy = file;
   v7 = MEMORY[0x277CBEBC0];
   v8 = HMDCreateHomeKitDaemonCacheDirectory();
   v9 = [v7 fileURLWithPath:v8];
 
   v10 = [v9 URLByAppendingPathComponent:@"MatterDiagnostics"];
 
-  v11 = [(HMDMatterAccessoryDiagnosticsManager *)self fileManager];
+  fileManager = [(HMDMatterAccessoryDiagnosticsManager *)self fileManager];
   v36 = 0;
-  LOBYTE(v9) = [v11 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:&v36];
+  LOBYTE(v9) = [fileManager createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:&v36];
   v12 = v36;
   if (v9)
   {
-    v13 = [v6 lastPathComponent];
-    v14 = [v10 URLByAppendingPathComponent:v13];
+    lastPathComponent = [fileCopy lastPathComponent];
+    v14 = [v10 URLByAppendingPathComponent:lastPathComponent];
 
     v35 = v12;
-    v15 = [v11 copyItemAtURL:v6 toURL:v14 error:&v35];
+    v15 = [fileManager copyItemAtURL:fileCopy toURL:v14 error:&v35];
     v16 = v35;
 
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     v20 = v19;
     if (v15)
@@ -209,18 +209,18 @@ void __85__HMDMatterAccessoryDiagnosticsManager_handleDiagnosticsTransferWithOpt
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         v21 = HMFGetLogIdentifier();
-        v22 = [v14 path];
+        path = [v14 path];
         *buf = 138543618;
         v38 = v21;
         v39 = 2112;
-        v40 = v22;
+        v40 = path;
         _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_INFO, "%{public}@Creating diagnostic metadata from path: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v17);
       v23 = objc_alloc(MEMORY[0x277CD16E0]);
-      v24 = [v14 path];
-      v25 = [v23 initWithSnapshotPath:v24 urlParameters:0 privacyPolicyURL:0 uploadDestination:0 consentVersion:0 uploadType:0];
+      path2 = [v14 path];
+      v25 = [v23 initWithSnapshotPath:path2 urlParameters:0 privacyPolicyURL:0 uploadDestination:0 consentVersion:0 uploadType:0];
     }
 
     else
@@ -238,11 +238,11 @@ void __85__HMDMatterAccessoryDiagnosticsManager_handleDiagnosticsTransferWithOpt
       }
 
       objc_autoreleasePoolPop(v17);
-      if (a4)
+      if (error)
       {
         v32 = v16;
         v25 = 0;
-        *a4 = v16;
+        *error = v16;
       }
 
       else
@@ -255,7 +255,7 @@ void __85__HMDMatterAccessoryDiagnosticsManager_handleDiagnosticsTransferWithOpt
   else
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy2 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -270,11 +270,11 @@ void __85__HMDMatterAccessoryDiagnosticsManager_handleDiagnosticsTransferWithOpt
     }
 
     objc_autoreleasePoolPop(v26);
-    if (a4)
+    if (error)
     {
       v30 = v12;
       v25 = 0;
-      *a4 = v12;
+      *error = v12;
     }
 
     else
@@ -292,13 +292,13 @@ void __85__HMDMatterAccessoryDiagnosticsManager_handleDiagnosticsTransferWithOpt
 
 - (void)shutDown
 {
-  v3 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__HMDMatterAccessoryDiagnosticsManager_shutDown__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __48__HMDMatterAccessoryDiagnosticsManager_shutDown__block_invoke(uint64_t a1)
@@ -329,13 +329,13 @@ uint64_t __48__HMDMatterAccessoryDiagnosticsManager_shutDown__block_invoke(uint6
 
 - (void)start
 {
-  v3 = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
+  workQueue = [(HMDAccessoryDiagnosticsManagerInternal *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__HMDMatterAccessoryDiagnosticsManager_start__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __45__HMDMatterAccessoryDiagnosticsManager_start__block_invoke(uint64_t a1)
@@ -364,11 +364,11 @@ void __45__HMDMatterAccessoryDiagnosticsManager_start__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMatterAccessoryDiagnosticsManager)initWithAccessory:(id)a3
+- (HMDMatterAccessoryDiagnosticsManager)initWithAccessory:(id)accessory
 {
   v9.receiver = self;
   v9.super_class = HMDMatterAccessoryDiagnosticsManager;
-  v3 = [(HMDAccessoryDiagnosticsManagerInternal *)&v9 initWithAccessory:a3];
+  v3 = [(HMDAccessoryDiagnosticsManagerInternal *)&v9 initWithAccessory:accessory];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277CD1E78]) initWithSupportedTypes:1 format:2 audio:0 options:0];

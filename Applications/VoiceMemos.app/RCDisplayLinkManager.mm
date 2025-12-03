@@ -2,13 +2,13 @@
 + (RCDisplayLinkManager)sharedManager;
 - (CAFrameRateRange)preferredFrameRateRange;
 - (RCDisplayLinkManager)init;
-- (void)_displayLinkDidUpdate:(id)a3;
+- (void)_displayLinkDidUpdate:(id)update;
 - (void)_pauseDisplayLink;
 - (void)_startDisplayLinkIfNeeded;
-- (void)addDisplayLinkObserver:(id)a3;
-- (void)removeDisplayLinkObserver:(id)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)setPreferredFrameRateRange:(CAFrameRateRange)a3;
+- (void)addDisplayLinkObserver:(id)observer;
+- (void)removeDisplayLinkObserver:(id)observer;
+- (void)setPaused:(BOOL)paused;
+- (void)setPreferredFrameRateRange:(CAFrameRateRange)range;
 @end
 
 @implementation RCDisplayLinkManager
@@ -81,9 +81,9 @@
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (a3)
+  if (paused)
   {
     [(RCDisplayLinkManager *)self _pauseDisplayLink];
   }
@@ -94,16 +94,16 @@
   }
 }
 
-- (void)addDisplayLinkObserver:(id)a3
+- (void)addDisplayLinkObserver:(id)observer
 {
-  [(NSHashTable *)self->_observers addObject:a3];
+  [(NSHashTable *)self->_observers addObject:observer];
 
   [(RCDisplayLinkManager *)self _startDisplayLinkIfNeeded];
 }
 
-- (void)removeDisplayLinkObserver:(id)a3
+- (void)removeDisplayLinkObserver:(id)observer
 {
-  [(NSHashTable *)self->_observers removeObject:a3];
+  [(NSHashTable *)self->_observers removeObject:observer];
   if (![(NSHashTable *)self->_observers count])
   {
 
@@ -111,16 +111,16 @@
   }
 }
 
-- (void)_displayLinkDidUpdate:(id)a3
+- (void)_displayLinkDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = self->_timeController;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(NSHashTable *)self->_observers allObjects];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v7 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -132,26 +132,26 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) displayLinkDidUpdate:v4 withTimeController:v5];
+        [*(*(&v11 + 1) + 8 * v10) displayLinkDidUpdate:updateCopy withTimeController:v5];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)setPreferredFrameRateRange:(CAFrameRateRange)a3
+- (void)setPreferredFrameRateRange:(CAFrameRateRange)range
 {
-  preferred = a3.preferred;
-  maximum = a3.maximum;
-  minimum = a3.minimum;
+  preferred = range.preferred;
+  maximum = range.maximum;
+  minimum = range.minimum;
   [(CADisplayLink *)self->_displayLink preferredFrameRateRange];
   v12.minimum = minimum;
   v12.maximum = maximum;

@@ -1,8 +1,8 @@
 @interface CNAutocompleteAggdPerformanceProbe
 - (CNAutocompleteAggdPerformanceProbe)init;
-- (CNAutocompleteAggdPerformanceProbe)initWithAggdProbe:(id)a3;
-- (void)recordLatency:(double)a3 forResultCount:(unint64_t)a4 forSource:(id)a5;
-- (void)recordNumberOfResultsReturned:(unint64_t)a3 inTimeInterval:(double)a4 forBatch:(unint64_t)a5 includesServers:(BOOL)a6;
+- (CNAutocompleteAggdPerformanceProbe)initWithAggdProbe:(id)probe;
+- (void)recordLatency:(double)latency forResultCount:(unint64_t)count forSource:(id)source;
+- (void)recordNumberOfResultsReturned:(unint64_t)returned inTimeInterval:(double)interval forBatch:(unint64_t)batch includesServers:(BOOL)servers;
 - (void)sendData;
 @end
 
@@ -23,35 +23,35 @@
   return v7;
 }
 
-- (CNAutocompleteAggdPerformanceProbe)initWithAggdProbe:(id)a3
+- (CNAutocompleteAggdPerformanceProbe)initWithAggdProbe:(id)probe
 {
-  v5 = a3;
+  probeCopy = probe;
   v11.receiver = self;
   v11.super_class = CNAutocompleteAggdPerformanceProbe;
   v6 = [(CNAutocompleteAggdPerformanceProbe *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_aggdProbe, a3);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v6->_aggdProbe, probe);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     pendingAddData = v7->_pendingAddData;
-    v7->_pendingAddData = v8;
+    v7->_pendingAddData = dictionary;
   }
 
   return v7;
 }
 
-- (void)recordNumberOfResultsReturned:(unint64_t)a3 inTimeInterval:(double)a4 forBatch:(unint64_t)a5 includesServers:(BOOL)a6
+- (void)recordNumberOfResultsReturned:(unint64_t)returned inTimeInterval:(double)interval forBatch:(unint64_t)batch includesServers:(BOOL)servers
 {
-  v6 = a6;
+  serversCopy = servers;
   v29[2] = *MEMORY[0x277D85DE8];
   v29[0] = @"latency";
-  v11 = CNAutocompleteProbeBatchKey(a5);
+  v11 = CNAutocompleteProbeBatchKey(batch);
   v29[1] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2];
   v14 = CNAutocompleteProbeBuildKey(v12, v13);
 
-  if (v6)
+  if (serversCopy)
   {
     v28[0] = v14;
     v28[1] = @"includingServers";
@@ -62,61 +62,61 @@
   }
 
   v27[0] = @"numberOfResults";
-  v18 = CNAutocompleteProbeBatchKey(a5);
+  v18 = CNAutocompleteProbeBatchKey(batch);
   v27[1] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
   v21 = CNAutocompleteProbeBuildKey(v19, v20);
 
-  v22 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-  v23 = [(CNAutocompleteAggdPerformanceProbe *)self pendingAddData];
-  [v23 setObject:v22 forKeyedSubscript:v14];
+  v22 = [MEMORY[0x277CCABB0] numberWithDouble:interval];
+  pendingAddData = [(CNAutocompleteAggdPerformanceProbe *)self pendingAddData];
+  [pendingAddData setObject:v22 forKeyedSubscript:v14];
 
-  v24 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v25 = [(CNAutocompleteAggdPerformanceProbe *)self pendingAddData];
-  [v25 setObject:v24 forKeyedSubscript:v21];
+  v24 = [MEMORY[0x277CCABB0] numberWithDouble:returned];
+  pendingAddData2 = [(CNAutocompleteAggdPerformanceProbe *)self pendingAddData];
+  [pendingAddData2 setObject:v24 forKeyedSubscript:v21];
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordLatency:(double)a3 forResultCount:(unint64_t)a4 forSource:(id)a5
+- (void)recordLatency:(double)latency forResultCount:(unint64_t)count forSource:(id)source
 {
   v22[2] = *MEMORY[0x277D85DE8];
   v22[0] = @"latency";
-  v22[1] = a5;
+  v22[1] = source;
   v8 = MEMORY[0x277CBEA60];
-  v9 = a5;
+  sourceCopy = source;
   v10 = [v8 arrayWithObjects:v22 count:2];
   v12 = CNAutocompleteProbeBuildKey(v10, v11);
 
   v21[0] = @"numberOfResults";
-  v21[1] = v9;
+  v21[1] = sourceCopy;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
   v15 = CNAutocompleteProbeBuildKey(v13, v14);
 
-  v16 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v17 = [(CNAutocompleteAggdPerformanceProbe *)self pendingAddData];
-  [v17 setObject:v16 forKeyedSubscript:v12];
+  v16 = [MEMORY[0x277CCABB0] numberWithDouble:latency];
+  pendingAddData = [(CNAutocompleteAggdPerformanceProbe *)self pendingAddData];
+  [pendingAddData setObject:v16 forKeyedSubscript:v12];
 
-  v18 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v18 = [MEMORY[0x277CCABB0] numberWithDouble:count];
 
-  v19 = [(CNAutocompleteAggdPerformanceProbe *)self pendingAddData];
-  [v19 setObject:v18 forKeyedSubscript:v15];
+  pendingAddData2 = [(CNAutocompleteAggdPerformanceProbe *)self pendingAddData];
+  [pendingAddData2 setObject:v18 forKeyedSubscript:v15];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
 - (void)sendData
 {
-  v3 = [(CNAutocompleteAggdPerformanceProbe *)self pendingAddData];
+  pendingAddData = [(CNAutocompleteAggdPerformanceProbe *)self pendingAddData];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __46__CNAutocompleteAggdPerformanceProbe_sendData__block_invoke;
   v5[3] = &unk_2781C4B78;
   v5[4] = self;
-  [v3 enumerateKeysAndObjectsUsingBlock:v5];
+  [pendingAddData enumerateKeysAndObjectsUsingBlock:v5];
 
-  v4 = [(CNAutocompleteAggdPerformanceProbe *)self aggdProbe];
-  [v4 sendData];
+  aggdProbe = [(CNAutocompleteAggdPerformanceProbe *)self aggdProbe];
+  [aggdProbe sendData];
 }
 
 void __46__CNAutocompleteAggdPerformanceProbe_sendData__block_invoke(uint64_t a1, void *a2, void *a3)

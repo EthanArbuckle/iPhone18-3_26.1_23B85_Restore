@@ -6,8 +6,8 @@
 
 - (NSString)shortDescription
 {
-  v2 = self;
-  [(MPModelTVSeason *)v2 number];
+  selfCopy = self;
+  [(MPModelTVSeason *)selfCopy number];
   v6._countAndFlagsBits = sub_1004BD934();
   sub_1004BC024(v6);
 

@@ -1,32 +1,32 @@
 @interface LAEnvironmentMechanismCompanion
-- (LAEnvironmentMechanismCompanion)initWithCoreMechanism:(id)a3;
+- (LAEnvironmentMechanismCompanion)initWithCoreMechanism:(id)mechanism;
 - (NSData)stateHash;
 - (int64_t)companionType;
 @end
 
 @implementation LAEnvironmentMechanismCompanion
 
-- (LAEnvironmentMechanismCompanion)initWithCoreMechanism:(id)a3
+- (LAEnvironmentMechanismCompanion)initWithCoreMechanism:(id)mechanism
 {
   v4.receiver = self;
   v4.super_class = LAEnvironmentMechanismCompanion;
-  return [(LAEnvironmentMechanism *)&v4 initWithCoreMechanism:a3];
+  return [(LAEnvironmentMechanism *)&v4 initWithCoreMechanism:mechanism];
 }
 
 - (int64_t)companionType
 {
-  v2 = [(LAEnvironmentMechanism *)self coreMechanism];
-  v3 = [v2 companionType];
+  coreMechanism = [(LAEnvironmentMechanism *)self coreMechanism];
+  companionType = [coreMechanism companionType];
 
-  return v3;
+  return companionType;
 }
 
 - (NSData)stateHash
 {
-  v2 = [(LAEnvironmentMechanism *)self coreMechanism];
-  v3 = [v2 stateHash];
+  coreMechanism = [(LAEnvironmentMechanism *)self coreMechanism];
+  stateHash = [coreMechanism stateHash];
 
-  return v3;
+  return stateHash;
 }
 
 @end

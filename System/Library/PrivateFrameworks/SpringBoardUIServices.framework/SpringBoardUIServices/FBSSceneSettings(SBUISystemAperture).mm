@@ -19,16 +19,16 @@
 
 - (uint64_t)SBUISA_layoutMode
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_layoutModeforSetting:3213009];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_layoutModeforSetting:3213009];
 
   return v2;
 }
 
 - (double)SBUISA_containerViewFrame
 {
-  v1 = [a1 otherSettings];
-  [v1 SBUISA_CGRectforSetting:3213010];
+  otherSettings = [self otherSettings];
+  [otherSettings SBUISA_CGRectforSetting:3213010];
   v3 = v2;
 
   return v3;
@@ -36,8 +36,8 @@
 
 - (double)SBUISA_obstructedAreaLayoutFrame
 {
-  v1 = [a1 otherSettings];
-  [v1 SBUISA_CGRectforSetting:3213015];
+  otherSettings = [self otherSettings];
+  [otherSettings SBUISA_CGRectforSetting:3213015];
   v3 = v2;
 
   return v3;
@@ -45,8 +45,8 @@
 
 - (double)SBUISA_resolvedLeadingViewFrame
 {
-  v1 = [a1 otherSettings];
-  [v1 SBUISA_CGRectforSetting:3213011];
+  otherSettings = [self otherSettings];
+  [otherSettings SBUISA_CGRectforSetting:3213011];
   v3 = v2;
 
   return v3;
@@ -54,8 +54,8 @@
 
 - (double)SBUISA_resolvedTrailingViewFrame
 {
-  v1 = [a1 otherSettings];
-  [v1 SBUISA_CGRectforSetting:3213012];
+  otherSettings = [self otherSettings];
+  [otherSettings SBUISA_CGRectforSetting:3213012];
   v3 = v2;
 
   return v3;
@@ -63,8 +63,8 @@
 
 - (double)SBUISA_resolvedMinimalViewFrame
 {
-  v1 = [a1 otherSettings];
-  [v1 SBUISA_CGRectforSetting:3213013];
+  otherSettings = [self otherSettings];
+  [otherSettings SBUISA_CGRectforSetting:3213013];
   v3 = v2;
 
   return v3;
@@ -72,8 +72,8 @@
 
 - (double)SBUISA_resolvedDetachedMinimalViewFrame
 {
-  v1 = [a1 otherSettings];
-  [v1 SBUISA_CGRectforSetting:3213014];
+  otherSettings = [self otherSettings];
+  [otherSettings SBUISA_CGRectforSetting:3213014];
   v3 = v2;
 
   return v3;
@@ -81,62 +81,62 @@
 
 - (uint64_t)SBUISA_minimalViewLayoutAxis
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:3213016];
-  v3 = [v2 unsignedIntegerValue];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:3213016];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)SBUISA_isBeingRemoved
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:3213017];
-  v3 = [v2 BOOLValue];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:3213017];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)SBUISA_isSecureFlipBookInRecordingMode
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:3213018];
-  v3 = [v2 BOOLValue];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:3213018];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)SBUISA_secureFlipBookActiveConfiguration
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_stringforSetting:3213019];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_stringforSetting:3213019];
 
   return v2;
 }
 
 - (id)SBUISA_secureFlipBookActiveComponentStates
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUISA_componentStatesForSetting:3213020];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings SBUISA_componentStatesForSetting:3213020];
 
   return v2;
 }
 
 - (id)SBUI_systemApertureDescription
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 SBUI_systemApertureDescription];
+  otherSettings = [self otherSettings];
+  sBUI_systemApertureDescription = [otherSettings SBUI_systemApertureDescription];
 
-  return v2;
+  return sBUI_systemApertureDescription;
 }
 
 - (id)SBUI_systemApertureDescriptionOfDiffFromSettings:()SBUISystemAperture
 {
   v4 = a3;
-  v5 = [a1 otherSettings];
-  v6 = [v4 otherSettings];
+  otherSettings = [self otherSettings];
+  otherSettings2 = [v4 otherSettings];
 
-  v7 = [v5 SBUI_systemApertureDescriptionOfDiffFromSettings:v6];
+  v7 = [otherSettings SBUI_systemApertureDescriptionOfDiffFromSettings:otherSettings2];
 
   return v7;
 }

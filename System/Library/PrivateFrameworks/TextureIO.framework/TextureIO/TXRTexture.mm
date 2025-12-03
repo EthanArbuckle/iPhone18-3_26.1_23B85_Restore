@@ -1,19 +1,19 @@
 @interface TXRTexture
-- (BOOL)exportToURL:(id)a3 error:(id *)a4;
-- (TXRTexture)initWithContentsOfURL:(id)a3 bufferAllocator:(id)a4 options:(id)a5 error:(id *)a6;
-- (TXRTexture)initWithData:(id)a3 bufferAllocator:(id)a4 options:(id)a5 error:(id *)a6;
-- (TXRTexture)initWithDataSourceProvider:(id)a3;
-- (id)copyWithPixelFormat:(unint64_t)a3 options:(id)a4 bufferAllocator:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)exportToAssetCatalogWithName:(id)a3 location:(id)a4 error:(id *)a5;
-- (void)generateMipmapsForRange:(_NSRange)a3 filter:(unint64_t)a4 error:(id *)a5;
+- (BOOL)exportToURL:(id)l error:(id *)error;
+- (TXRTexture)initWithContentsOfURL:(id)l bufferAllocator:(id)allocator options:(id)options error:(id *)error;
+- (TXRTexture)initWithData:(id)data bufferAllocator:(id)allocator options:(id)options error:(id *)error;
+- (TXRTexture)initWithDataSourceProvider:(id)provider;
+- (id)copyWithPixelFormat:(unint64_t)format options:(id)options bufferAllocator:(id)allocator;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)exportToAssetCatalogWithName:(id)name location:(id)location error:(id *)error;
+- (void)generateMipmapsForRange:(_NSRange)range filter:(unint64_t)filter error:(id *)error;
 @end
 
 @implementation TXRTexture
 
-- (TXRTexture)initWithDataSourceProvider:(id)a3
+- (TXRTexture)initWithDataSourceProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = TXRTexture;
   v5 = [(TXRTexture *)&v16 init];
@@ -23,89 +23,89 @@
     mipmapLevels = v5->_mipmapLevels;
     v5->_mipmapLevels = v6;
 
-    v8 = [v4 provideTextureInfo];
-    v5->_cubemap = [v8 cubemap];
-    v5->_pixelFormat = [v8 pixelFormat];
-    v5->_alphaInfo = [v8 alphaInfo];
-    [v8 dimensions];
+    provideTextureInfo = [providerCopy provideTextureInfo];
+    v5->_cubemap = [provideTextureInfo cubemap];
+    v5->_pixelFormat = [provideTextureInfo pixelFormat];
+    v5->_alphaInfo = [provideTextureInfo alphaInfo];
+    [provideTextureInfo dimensions];
     *v5->_dimensions = v9;
-    v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "mipmapLevelCount")}];
+    v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(provideTextureInfo, "mipmapLevelCount")}];
     v11 = v5->_mipmapLevels;
     v5->_mipmapLevels = v10;
 
-    if ([v8 mipmapLevelCount])
+    if ([provideTextureInfo mipmapLevelCount])
     {
       v12 = 0;
       do
       {
         v13 = v5->_mipmapLevels;
-        v14 = -[TXRMipmapLevel initAsLevel:arrayLength:cubemap:dataSourceProvider:]([TXRMipmapLevel alloc], "initAsLevel:arrayLength:cubemap:dataSourceProvider:", v12, [v8 arrayLength], objc_msgSend(v8, "cubemap"), v4);
+        v14 = -[TXRMipmapLevel initAsLevel:arrayLength:cubemap:dataSourceProvider:]([TXRMipmapLevel alloc], "initAsLevel:arrayLength:cubemap:dataSourceProvider:", v12, [provideTextureInfo arrayLength], objc_msgSend(provideTextureInfo, "cubemap"), providerCopy);
         [(NSMutableArray *)v13 addObject:v14];
 
         ++v12;
       }
 
-      while (v12 < [v8 mipmapLevelCount]);
+      while (v12 < [provideTextureInfo mipmapLevelCount]);
     }
   }
 
   return v5;
 }
 
-- (TXRTexture)initWithContentsOfURL:(id)a3 bufferAllocator:(id)a4 options:(id)a5 error:(id *)a6
+- (TXRTexture)initWithContentsOfURL:(id)l bufferAllocator:(id)allocator options:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v11)
+  lCopy = l;
+  allocatorCopy = allocator;
+  optionsCopy = options;
+  if (!allocatorCopy)
   {
-    v11 = objc_alloc_init(TXRDefaultBufferAllocator);
+    allocatorCopy = objc_alloc_init(TXRDefaultBufferAllocator);
   }
 
   bufferAllocator = self->_bufferAllocator;
-  self->_bufferAllocator = v11;
-  v14 = v11;
+  self->_bufferAllocator = allocatorCopy;
+  v14 = allocatorCopy;
 
-  v15 = [[TXRFileDataSourceProvider alloc] initWithURL:v10 bufferAllocator:v14 options:v12 error:a6];
+  v15 = [[TXRFileDataSourceProvider alloc] initWithURL:lCopy bufferAllocator:v14 options:optionsCopy error:error];
   v16 = [(TXRTexture *)self initWithDataSourceProvider:v15];
 
   return v16;
 }
 
-- (TXRTexture)initWithData:(id)a3 bufferAllocator:(id)a4 options:(id)a5 error:(id *)a6
+- (TXRTexture)initWithData:(id)data bufferAllocator:(id)allocator options:(id)options error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  allocatorCopy = allocator;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = TXRTexture;
   [(TXRTexture *)&v12 init];
   __assert_rtn("[TXRTexture initWithData:bufferAllocator:options:error:]", "TXRTexture.m", 410, "!TODO: Must Implement");
 }
 
-- (id)exportToAssetCatalogWithName:(id)a3 location:(id)a4 error:(id *)a5
+- (id)exportToAssetCatalogWithName:(id)name location:(id)location error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[TXRAssetCatalogSet alloc] initWithName:v8];
+  locationCopy = location;
+  nameCopy = name;
+  v9 = [[TXRAssetCatalogSet alloc] initWithName:nameCopy];
 
-  v10 = [(TXRAssetCatalogSet *)v9 exportAtLocation:v7 error:a5];
+  v10 = [(TXRAssetCatalogSet *)v9 exportAtLocation:locationCopy error:error];
 
   return v10;
 }
 
-- (BOOL)exportToURL:(id)a3 error:(id *)a4
+- (BOOL)exportToURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 pathExtension];
-  v8 = [v7 caseInsensitiveCompare:@"ktx"];
+  lCopy = l;
+  pathExtension = [lCopy pathExtension];
+  v8 = [pathExtension caseInsensitiveCompare:@"ktx"];
 
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       _newTXRErrorWithCodeAndErrorString(11, @"TXRTexture can only export to the KTX texture fil format");
-      *a4 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else
@@ -116,21 +116,21 @@
 
   else
   {
-    v9 = [TXRParserKTX exportTexture:self url:v6 error:a4];
+    v9 = [TXRParserKTX exportTexture:self url:lCopy error:error];
   }
 
   return v9;
 }
 
-- (void)generateMipmapsForRange:(_NSRange)a3 filter:(unint64_t)a4 error:(id *)a5
+- (void)generateMipmapsForRange:(_NSRange)range filter:(unint64_t)filter error:(id *)error
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.location >= [(NSMutableArray *)self->_mipmapLevels count])
+  length = range.length;
+  location = range.location;
+  if (range.location >= [(NSMutableArray *)self->_mipmapLevels count])
   {
-    if (a5)
+    if (error)
     {
-      *a5 = _newTXRErrorWithCodeAndErrorString(9, @"Range Location must be an index of an existing mipmap level");
+      *error = _newTXRErrorWithCodeAndErrorString(9, @"Range Location must be an index of an existing mipmap level");
     }
   }
 
@@ -182,8 +182,8 @@
         {
           v14 = objc_alloc(*(v13 + 3896));
           v15 = [(NSMutableArray *)self->_mipmapLevels objectAtIndexedSubscript:0];
-          v16 = [v15 elements];
-          v17 = [v14 initAsLevel:v42 arrayLength:objc_msgSend(v16 cubemap:"count") dataSourceProvider:{self->_cubemap, 0}];
+          elements = [v15 elements];
+          v17 = [v14 initAsLevel:v42 arrayLength:objc_msgSend(elements cubemap:"count") dataSourceProvider:{self->_cubemap, 0}];
 
           [(NSMutableArray *)self->_mipmapLevels addObject:v17];
         }
@@ -191,8 +191,8 @@
         v18 = 0;
 LABEL_18:
         v19 = [(NSMutableArray *)self->_mipmapLevels objectAtIndexedSubscript:0];
-        v20 = [v19 elements];
-        v21 = [v20 count];
+        elements2 = [v19 elements];
+        v21 = [elements2 count];
 
         if (v18 < v21)
         {
@@ -226,10 +226,10 @@ LABEL_18:
       for (i = 0; ; ++i)
       {
         v23 = [(NSMutableArray *)self->_mipmapLevels objectAtIndexedSubscript:0];
-        v24 = [v23 elements];
-        v25 = [v24 objectAtIndexedSubscript:0];
-        v26 = [v25 faces];
-        v27 = [v26 count];
+        elements3 = [v23 elements];
+        v25 = [elements3 objectAtIndexedSubscript:0];
+        faces = [v25 faces];
+        v27 = [faces count];
 
         if (i >= v27)
         {
@@ -238,15 +238,15 @@ LABEL_18:
         }
 
         v28 = [(NSMutableArray *)self->_mipmapLevels objectAtIndexedSubscript:location];
-        v29 = [v28 elements];
-        v30 = [v29 objectAtIndexedSubscript:v18];
-        v31 = [v30 faces];
-        v32 = [v31 objectAtIndexedSubscript:i];
+        elements4 = [v28 elements];
+        v30 = [elements4 objectAtIndexedSubscript:v18];
+        faces2 = [v30 faces];
+        v32 = [faces2 objectAtIndexedSubscript:i];
 
         v33 = [[TXRImageIndependent alloc] initWithImage:v32 dimensions:self->_pixelFormat pixelFormat:self->_alphaInfo alphaInfo:*v41.i64];
-        v34 = [TXRDataScaler newImageFromSourceImage:v33 bufferAllocattor:v44 filter:a4 error:a5];
+        v34 = [TXRDataScaler newImageFromSourceImage:v33 bufferAllocattor:v44 filter:filter error:error];
         v35 = v34;
-        if (*a5 || !v34)
+        if (*error || !v34)
         {
           break;
         }
@@ -260,12 +260,12 @@ LABEL_34:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = [+[TXRTexture allocWithZone:](TXRTexture init];
   objc_storeStrong(&v5->_bufferAllocator, self->_bufferAllocator);
-  v6 = [objc_msgSend(MEMORY[0x277CBEB18] allocWithZone:{a3), "initWithCapacity:", -[NSMutableArray count](self->_mipmapLevels, "count")}];
+  v6 = [objc_msgSend(MEMORY[0x277CBEB18] allocWithZone:{zone), "initWithCapacity:", -[NSMutableArray count](self->_mipmapLevels, "count")}];
   mipmapLevels = v5->_mipmapLevels;
   v5->_mipmapLevels = v6;
 
@@ -290,7 +290,7 @@ LABEL_34:
         }
 
         v13 = v5->_mipmapLevels;
-        v14 = [*(*(&v17 + 1) + 8 * v12) copyWithZone:{a3, v17}];
+        v14 = [*(*(&v17 + 1) + 8 * v12) copyWithZone:{zone, v17}];
         [(NSMutableArray *)v13 addObject:v14];
 
         ++v12;
@@ -307,10 +307,10 @@ LABEL_34:
   return v5;
 }
 
-- (id)copyWithPixelFormat:(unint64_t)a3 options:(id)a4 bufferAllocator:(id)a5
+- (id)copyWithPixelFormat:(unint64_t)format options:(id)options bufferAllocator:(id)allocator
 {
-  v6 = a4;
-  v7 = a5;
+  optionsCopy = options;
+  allocatorCopy = allocator;
   __assert_rtn("[TXRTexture copyWithPixelFormat:options:bufferAllocator:]", "TXRTexture.m", 574, "!TODO: Must Implement");
 }
 

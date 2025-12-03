@@ -1,34 +1,34 @@
 @interface CHTokenizedResult
-+ (id)loadFromFile:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTokenizedResult:(id)a3;
-- (CHTokenizedResult)initWithCoder:(id)a3;
-- (CHTokenizedResult)initWithIsMinimalDrawingResult:(BOOL)a3;
++ (id)loadFromFile:(id)file;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTokenizedResult:(id)result;
+- (CHTokenizedResult)initWithCoder:(id)coder;
+- (CHTokenizedResult)initWithIsMinimalDrawingResult:(BOOL)result;
 - (id)description;
 - (id)writeToFile;
-- (id)writeToFileInFolder:(id)a3 basename:(id)a4;
+- (id)writeToFileInFolder:(id)folder basename:(id)basename;
 - (unint64_t)hash;
 @end
 
 @implementation CHTokenizedResult
 
-- (CHTokenizedResult)initWithIsMinimalDrawingResult:(BOOL)a3
+- (CHTokenizedResult)initWithIsMinimalDrawingResult:(BOOL)result
 {
   v5.receiver = self;
   v5.super_class = CHTokenizedResult;
   result = [(CHTokenizedResult *)&v5 init];
   if (result)
   {
-    result->_isMinimalDrawingResult = a3;
+    result->_isMinimalDrawingResult = result;
   }
 
   return result;
 }
 
-- (CHTokenizedResult)initWithCoder:(id)a3
+- (CHTokenizedResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v9 = objc_msgSend_decodeBoolForKey_(v4, v5, @"isMinimalDrawingResult", v6, v7, v8);
+  coderCopy = coder;
+  v9 = objc_msgSend_decodeBoolForKey_(coderCopy, v5, @"isMinimalDrawingResult", v6, v7, v8);
   IsMinimalDrawingResult = objc_msgSend_initWithIsMinimalDrawingResult_(self, v10, v9, v11, v12, v13);
 
   return IsMinimalDrawingResult;
@@ -43,11 +43,11 @@
   return v2;
 }
 
-- (BOOL)isEqualToTokenizedResult:(id)a3
+- (BOOL)isEqualToTokenizedResult:(id)result
 {
-  v4 = a3;
-  v10 = v4;
-  if (self == v4)
+  resultCopy = result;
+  v10 = resultCopy;
+  if (self == resultCopy)
   {
 
     return 1;
@@ -63,13 +63,13 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToTokenizedResult = objc_msgSend_isEqualToTokenizedResult_(self, v5, v4, v6, v7, v8);
+    isEqualToTokenizedResult = objc_msgSend_isEqualToTokenizedResult_(self, v5, equalCopy, v6, v7, v8);
 
     return isEqualToTokenizedResult;
   }
@@ -110,20 +110,20 @@
   return v51;
 }
 
-- (id)writeToFileInFolder:(id)a3 basename:(id)a4
+- (id)writeToFileInFolder:(id)folder basename:(id)basename
 {
   v60 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  folderCopy = folder;
+  basenameCopy = basename;
   v8 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  v14 = objc_msgSend_absoluteString(v6, v9, v10, v11, v12, v13);
+  v14 = objc_msgSend_absoluteString(folderCopy, v9, v10, v11, v12, v13);
   v19 = objc_msgSend_fileExistsAtPath_(v8, v15, v14, v16, v17, v18);
 
   if (v19)
   {
     v24 = 0;
 LABEL_5:
-    v28 = objc_msgSend_URLByAppendingPathComponent_(v6, v20, v7, v21, v22, v23);
+    v28 = objc_msgSend_URLByAppendingPathComponent_(folderCopy, v20, basenameCopy, v21, v22, v23);
     v31 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], v29, self, 1, 0, v30);
     v54 = v24;
     objc_msgSend_writeToURL_options_error_(v31, v32, v28, 1, &v54, v33);
@@ -160,7 +160,7 @@ LABEL_5:
   }
 
   v55 = 0;
-  DirectoryAtURL_withIntermediateDirectories_attributes_error = objc_msgSend_createDirectoryAtURL_withIntermediateDirectories_attributes_error_(v8, v20, v6, 1, 0, &v55);
+  DirectoryAtURL_withIntermediateDirectories_attributes_error = objc_msgSend_createDirectoryAtURL_withIntermediateDirectories_attributes_error_(v8, v20, folderCopy, 1, 0, &v55);
   v26 = v55;
   v27 = v26;
   if (DirectoryAtURL_withIntermediateDirectories_attributes_error)
@@ -178,7 +178,7 @@ LABEL_5:
   if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v57 = v6;
+    v57 = folderCopy;
     v58 = 2112;
     v59 = v27;
     _os_log_impl(&dword_18366B000, v28, OS_LOG_TYPE_ERROR, "Drawing unable to create folder at URL %@: Error %@", buf, 0x16u);
@@ -190,9 +190,9 @@ LABEL_18:
   return v52;
 }
 
-+ (id)loadFromFile:(id)a3
++ (id)loadFromFile:(id)file
 {
-  v6 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x1E695DEF0], a2, a3, v3, v4, v5);
+  v6 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x1E695DEF0], a2, file, v3, v4, v5);
   v7 = MEMORY[0x1E696ACD0];
   v8 = objc_opt_class();
   v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v7, v9, v8, v6, 0, v10);

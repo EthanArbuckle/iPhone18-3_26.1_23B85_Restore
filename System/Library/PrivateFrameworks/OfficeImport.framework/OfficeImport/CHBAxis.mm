@@ -1,20 +1,20 @@
 @interface CHBAxis
-+ (Class)chbAxisClassWith:(XlChartPlotAxis *)a3 plotAxis:(int)a4;
-+ (Class)chbAxisClassWith:(id)a3;
-+ (id)readWithXlPlotAxis:(int)a3 state:(id)a4;
-+ (int)chbAxisIdForPlotAxis:(int)a3 state:(id)a4;
-+ (int)chdAxisPositionFromAxisType:(int)a3;
-+ (int)xlPlotAxisTypeFrom:(int)a3;
++ (Class)chbAxisClassWith:(XlChartPlotAxis *)with plotAxis:(int)axis;
++ (Class)chbAxisClassWith:(id)with;
++ (id)readWithXlPlotAxis:(int)axis state:(id)state;
++ (int)chbAxisIdForPlotAxis:(int)axis state:(id)state;
++ (int)chdAxisPositionFromAxisType:(int)type;
++ (int)xlPlotAxisTypeFrom:(int)from;
 @end
 
 @implementation CHBAxis
 
-+ (id)readWithXlPlotAxis:(int)a3 state:(id)a4
++ (id)readWithXlPlotAxis:(int)axis state:(id)state
 {
-  v4 = *&a3;
-  v5 = a4;
-  v6 = [v5 axisGroup];
-  if (!XlChartBinaryReader::hasAxis([v5 xlReader], v6, v4))
+  v4 = *&axis;
+  stateCopy = state;
+  axisGroup = [stateCopy axisGroup];
+  if (!XlChartBinaryReader::hasAxis([stateCopy xlReader], axisGroup, v4))
   {
 LABEL_20:
     v10 = 0;
@@ -22,8 +22,8 @@ LABEL_20:
   }
 
   v62 = 0;
-  v7 = [v5 xlReader];
-  (*(*v7 + 720))(v7, v6, v4, &v62);
+  xlReader = [stateCopy xlReader];
+  (*(*xlReader + 720))(xlReader, axisGroup, v4, &v62);
   v8 = [CHBAxis chbAxisClassWith:v62 plotAxis:v4];
   if (!v8)
   {
@@ -35,14 +35,14 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v9 = [(objc_class *)v8 readFrom:v62 state:v5];
+  v9 = [(objc_class *)v8 readFrom:v62 state:stateCopy];
   v10 = v9;
-  if (v6)
+  if (axisGroup)
   {
     [v9 setSecondary:1];
   }
 
-  v11 = [CHBAxis chbAxisIdForPlotAxis:v4 state:v5];
+  v11 = [CHBAxis chbAxisIdForPlotAxis:v4 state:stateCopy];
   [v10 setAxisId:v11];
   [v10 setAxisType:v11];
   [v10 setAxisPosition:{+[CHBAxis chdAxisPositionFromAxisType:](CHBAxis, "chdAxisPositionFromAxisType:", v11)}];
@@ -76,8 +76,8 @@ LABEL_20:
   v15 = [CHBGraphicProperties oadStrokeFrom:v14];
   [(OADGraphicProperties *)v13 setStroke:v15];
 
-  v16 = [v5 autoStyling];
-  [v16 resolveAxisGraphicProperties:v13];
+  autoStyling = [stateCopy autoStyling];
+  [autoStyling resolveAxisGraphicProperties:v13];
 
   [v10 setAxisGraphicProperties:v13];
   v17 = *(v62 + 72);
@@ -87,9 +87,9 @@ LABEL_20:
     [v10 setMinorTickMark:*(v17 + 32)];
     [v10 setTickLabelPosition:*(v17 + 36)];
     [v10 setTickLabelAutoRotation:XlChartTick::isAutoRotation(v17)];
-    v18 = [v5 xlReader];
+    xlReader2 = [stateCopy xlReader];
     v19 = *(v17 + 20);
-    if (*(v18 + 1344) == 1 && v19 >= 0x40)
+    if (*(xlReader2 + 1344) == 1 && v19 >= 0x40)
     {
       v20 = *(v17 + 16);
       v61[0] = 255;
@@ -97,9 +97,9 @@ LABEL_20:
       v61[2] = BYTE1(v20);
       v61[3] = BYTE2(v20);
       v21 = [OITSUColor colorWithCsColour:v61];
-      v22 = [v5 resources];
-      v23 = [v22 colors];
-      v24 = [v23 addOrEquivalentColorExcludingDefaults:v21];
+      resources = [stateCopy resources];
+      colors = [resources colors];
+      v24 = [colors addOrEquivalentColorExcludingDefaults:v21];
 
       [v10 setTickLabelColorIndex:v24];
     }
@@ -129,41 +129,41 @@ LABEL_20:
   v29 = [CHBGraphicProperties oadStrokeFrom:*(v62 + 40)];
   [(OADGraphicProperties *)v28 setStroke:v29];
 
-  v30 = [v5 autoStyling];
-  [v30 resolveMinorGridLinesGraphicProperties:v28];
+  autoStyling2 = [stateCopy autoStyling];
+  [autoStyling2 resolveMinorGridLinesGraphicProperties:v28];
 
   [v10 setMinorGridLinesGraphicProperties:v28];
   v31 = objc_alloc_init(OADGraphicProperties);
   v32 = [CHBGraphicProperties oadStrokeFrom:*(v62 + 32)];
   [(OADGraphicProperties *)v31 setStroke:v32];
 
-  v33 = [v5 autoStyling];
-  [v33 resolveMajorGridLinesGraphicProperties:v31];
+  autoStyling3 = [stateCopy autoStyling];
+  [autoStyling3 resolveMajorGridLinesGraphicProperties:v31];
 
   [v10 setMajorGridLinesGraphicProperties:v31];
-  v34 = [CHBGraphicProperties oadGraphicPropertiesFromState:v5 xlLineStyle:*(v62 + 48) xlFillStyle:*(v62 + 56)];
+  v34 = [CHBGraphicProperties oadGraphicPropertiesFromState:stateCopy xlLineStyle:*(v62 + 48) xlFillStyle:*(v62 + 56)];
   v35 = (*(*v62 + 32))(v62);
   v37 = v35 == 1 && v11 != 2;
   if (v35 == 2 || v37)
   {
-    v40 = [v5 autoStyling];
-    [v40 resolveWallGraphicProperties:v34];
+    autoStyling4 = [stateCopy autoStyling];
+    [autoStyling4 resolveWallGraphicProperties:v34];
 
-    v41 = [v5 chart];
-    [v41 setSideWallGraphicProperties:v34];
+    chart = [stateCopy chart];
+    [chart setSideWallGraphicProperties:v34];
 
-    v39 = [v5 chart];
-    [v39 setBackWallGraphicProperties:v34];
+    chart2 = [stateCopy chart];
+    [chart2 setBackWallGraphicProperties:v34];
     goto LABEL_38;
   }
 
   if (!v35)
   {
-    v38 = [v5 autoStyling];
-    [v38 resolveFloorGraphicProperties:v34];
+    autoStyling5 = [stateCopy autoStyling];
+    [autoStyling5 resolveFloorGraphicProperties:v34];
 
-    v39 = [v5 chart];
-    [v39 setFloorGraphicProperties:v34];
+    chart2 = [stateCopy chart];
+    [chart2 setFloorGraphicProperties:v34];
 LABEL_38:
   }
 
@@ -171,7 +171,7 @@ LABEL_38:
   v43 = *(v62 + 16);
   if (v43)
   {
-    v44 = [CHBTitle readFrom:v43 state:v5];
+    v44 = [CHBTitle readFrom:v43 state:stateCopy];
     [v10 setTitle:v44];
 
     v42 = v62;
@@ -188,8 +188,8 @@ LABEL_38:
       [OAXTextBody readTextBodyFromXmlNode:v46 textBody:v47 drawingState:v48];
       if ([(OADTextBody *)v47 paragraphCount])
       {
-        v49 = [(OADTextBody *)v47 firstParagraphEffects];
-        [v10 setLabelEffects:v49];
+        firstParagraphEffects = [(OADTextBody *)v47 firstParagraphEffects];
+        [v10 setLabelEffects:firstParagraphEffects];
       }
     }
 
@@ -203,8 +203,8 @@ LABEL_38:
     v52 = v51;
     if (v51 && [v51 hasEffects])
     {
-      v53 = [v5 autoStyling];
-      [v53 resolveAxisGraphicProperties:v52];
+      autoStyling6 = [stateCopy autoStyling];
+      [autoStyling6 resolveAxisGraphicProperties:v52];
 
       [v10 setAxisGraphicProperties:v52];
     }
@@ -218,8 +218,8 @@ LABEL_38:
     v55 = v54;
     if (v54 && [v54 hasEffects])
     {
-      v56 = [v5 autoStyling];
-      [v56 resolveAxisGraphicProperties:v55];
+      autoStyling7 = [stateCopy autoStyling];
+      [autoStyling7 resolveAxisGraphicProperties:v55];
 
       [v10 setMajorGridLinesGraphicProperties:v55];
     }
@@ -236,8 +236,8 @@ LABEL_38:
   v58 = v57;
   if (v57 && [v57 hasEffects])
   {
-    v59 = [v5 autoStyling];
-    [v59 resolveAxisGraphicProperties:v58];
+    autoStyling8 = [stateCopy autoStyling];
+    [autoStyling8 resolveAxisGraphicProperties:v58];
 
     [v10 setMinorGridLinesGraphicProperties:v58];
   }
@@ -254,10 +254,10 @@ LABEL_64:
   return v10;
 }
 
-+ (int)chbAxisIdForPlotAxis:(int)a3 state:(id)a4
++ (int)chbAxisIdForPlotAxis:(int)axis state:(id)state
 {
-  v5 = [a4 axisGroup];
-  if (v5)
+  axisGroup = [state axisGroup];
+  if (axisGroup)
   {
     v6 = 5;
   }
@@ -267,7 +267,7 @@ LABEL_64:
     v6 = 2;
   }
 
-  if (v5)
+  if (axisGroup)
   {
     v7 = 4;
   }
@@ -277,7 +277,7 @@ LABEL_64:
     v7 = 1;
   }
 
-  if (v5)
+  if (axisGroup)
   {
     v8 = 3;
   }
@@ -287,7 +287,7 @@ LABEL_64:
     v8 = 0;
   }
 
-  if (a3)
+  if (axis)
   {
     v9 = -1;
   }
@@ -297,12 +297,12 @@ LABEL_64:
     v9 = v8;
   }
 
-  if (a3 == 1)
+  if (axis == 1)
   {
     v9 = v7;
   }
 
-  if (a3 == 2)
+  if (axis == 2)
   {
     return v6;
   }
@@ -313,11 +313,11 @@ LABEL_64:
   }
 }
 
-+ (Class)chbAxisClassWith:(XlChartPlotAxis *)a3 plotAxis:(int)a4
++ (Class)chbAxisClassWith:(XlChartPlotAxis *)with plotAxis:(int)axis
 {
-  if (a3)
+  if (with)
   {
-    v5 = (*(a3->var0 + 4))(a3, a2);
+    v5 = (*(with->var0 + 4))(with, a2);
     if (!v5 || v5 == 2 || v5 == 1)
     {
       v6 = objc_opt_class();
@@ -337,9 +337,9 @@ LABEL_64:
   return v6;
 }
 
-+ (Class)chbAxisClassWith:(id)a3
++ (Class)chbAxisClassWith:(id)with
 {
-  v3 = a3;
+  withCopy = with;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -354,29 +354,29 @@ LABEL_64:
   return v4;
 }
 
-+ (int)xlPlotAxisTypeFrom:(int)a3
++ (int)xlPlotAxisTypeFrom:(int)from
 {
-  if ((a3 - 1) > 4)
+  if ((from - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return dword_25D6FE3EC[a3 - 1];
+    return dword_25D6FE3EC[from - 1];
   }
 }
 
-+ (int)chdAxisPositionFromAxisType:(int)a3
++ (int)chdAxisPositionFromAxisType:(int)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return -1;
   }
 
   else
   {
-    return dword_25D6FE400[a3];
+    return dword_25D6FE400[type];
   }
 }
 

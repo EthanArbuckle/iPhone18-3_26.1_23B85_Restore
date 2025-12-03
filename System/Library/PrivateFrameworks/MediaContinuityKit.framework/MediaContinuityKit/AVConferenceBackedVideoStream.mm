@@ -1,6 +1,6 @@
 @interface AVConferenceBackedVideoStream
 - (_TtC18MediaContinuityKit29AVConferenceBackedVideoStream)init;
-- (void)streamDidServerDie:(id)a3;
+- (void)streamDidServerDie:(id)die;
 @end
 
 @implementation AVConferenceBackedVideoStream
@@ -13,7 +13,7 @@
   return result;
 }
 
-- (void)streamDidServerDie:(id)a3
+- (void)streamDidServerDie:(id)die
 {
   sub_2584BBF74();
   swift_allocError();

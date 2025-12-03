@@ -1,5 +1,5 @@
 @interface PGCurationArrayTrait
-- (PGCurationArrayTrait)initWithItems:(id)a3 negativeItems:(id)a4;
+- (PGCurationArrayTrait)initWithItems:(id)items negativeItems:(id)negativeItems;
 - (id)debugDescription;
 @end
 
@@ -24,18 +24,18 @@
   return v8;
 }
 
-- (PGCurationArrayTrait)initWithItems:(id)a3 negativeItems:(id)a4
+- (PGCurationArrayTrait)initWithItems:(id)items negativeItems:(id)negativeItems
 {
-  v7 = a3;
-  v8 = a4;
+  itemsCopy = items;
+  negativeItemsCopy = negativeItems;
   v12.receiver = self;
   v12.super_class = PGCurationArrayTrait;
   v9 = [(PGCurationTrait *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_items, a3);
-    objc_storeStrong(&v10->_negativeItems, a4);
+    objc_storeStrong(&v9->_items, items);
+    objc_storeStrong(&v10->_negativeItems, negativeItems);
   }
 
   return v10;

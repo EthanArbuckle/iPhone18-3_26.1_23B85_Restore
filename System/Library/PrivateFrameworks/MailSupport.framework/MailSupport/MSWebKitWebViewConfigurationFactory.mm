@@ -12,8 +12,8 @@
 
   if ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl())
   {
-    v4 = [v2 defaultWebpagePreferences];
-    [v4 setAllowsContentJavaScript:0];
+    defaultWebpagePreferences = [v2 defaultWebpagePreferences];
+    [defaultWebpagePreferences setAllowsContentJavaScript:0];
   }
 
   else
@@ -23,14 +23,14 @@
 
   if (_os_feature_enabled_impl())
   {
-    v5 = [v2 preferences];
-    [v5 _disableRichJavaScriptFeatures];
+    preferences = [v2 preferences];
+    [preferences _disableRichJavaScriptFeatures];
   }
 
   if (_os_feature_enabled_impl())
   {
-    v6 = [v2 preferences];
-    [v6 _disableMediaPlaybackRelatedFeatures];
+    preferences2 = [v2 preferences];
+    [preferences2 _disableMediaPlaybackRelatedFeatures];
   }
 
   return v2;

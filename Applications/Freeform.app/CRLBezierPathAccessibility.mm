@@ -1,35 +1,35 @@
 @interface CRLBezierPathAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)_crlaxHasZeroArcs;
 - (BOOL)_crlaxIsCircular;
 - (BOOL)_crlaxIsDiamond;
 - (BOOL)_crlaxIsLineSegment;
 - (BOOL)_crlaxIsRectangular;
 - (BOOL)_crlaxIsTriangular;
-- (id)crlaxInferredLabelForSize:(CGSize)a3;
-- (int64_t)_crlaxElementAtIndex:(int64_t)a3;
-- (int64_t)_crlaxElementAtIndex:(int64_t)a3 associatedPoints:(CGPoint *)a4;
+- (id)crlaxInferredLabelForSize:(CGSize)size;
+- (int64_t)_crlaxElementAtIndex:(int64_t)index;
+- (int64_t)_crlaxElementAtIndex:(int64_t)index associatedPoints:(CGPoint *)points;
 - (unint64_t)_crlaxElementCount;
 - (unint64_t)_crlaxNumberOfArcs;
-- (unint64_t)_crlaxNumberOfLineSegmentsConsecutive:(BOOL)a3;
+- (unint64_t)_crlaxNumberOfLineSegmentsConsecutive:(BOOL)consecutive;
 - (unint64_t)_crlaxNumberOfSides;
 @end
 
 @implementation CRLBezierPathAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
-- (id)crlaxInferredLabelForSize:(CGSize)a3
+- (id)crlaxInferredLabelForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(CRLBezierPathAccessibility *)self _crlaxIsLineSegment])
   {
     v6 = +[NSBundle mainBundle];
@@ -92,10 +92,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v13 = [(CRLBezierPathAccessibility *)self _crlaxNumberOfSides];
-  if (v13)
+  _crlaxNumberOfSides = [(CRLBezierPathAccessibility *)self _crlaxNumberOfSides];
+  if (_crlaxNumberOfSides)
   {
-    v14 = v13;
+    v14 = _crlaxNumberOfSides;
     v7 = +[NSBundle mainBundle];
     v15 = [v7 localizedStringForKey:@"%@-sided shape" value:0 table:0];
     v16 = CRLAccessibilityLocalizedUnsignedInteger(v14);
@@ -105,26 +105,26 @@ LABEL_30:
     goto LABEL_17;
   }
 
-  v17 = [(CRLBezierPathAccessibility *)self _crlaxNumberOfLineSegments];
-  v18 = [(CRLBezierPathAccessibility *)self _crlaxHasZeroArcs];
-  if (v18 && v17)
+  _crlaxNumberOfLineSegments = [(CRLBezierPathAccessibility *)self _crlaxNumberOfLineSegments];
+  _crlaxHasZeroArcs = [(CRLBezierPathAccessibility *)self _crlaxHasZeroArcs];
+  if (_crlaxHasZeroArcs && _crlaxNumberOfLineSegments)
   {
     v7 = +[NSBundle mainBundle];
     v15 = [v7 localizedStringForKey:@"%@ line segments value:non-closed" table:{0, 0}];
-    v19 = CRLAccessibilityLocalizedUnsignedInteger(v17);
+    v19 = CRLAccessibilityLocalizedUnsignedInteger(_crlaxNumberOfLineSegments);
     v9 = [NSString stringWithFormat:v15, v19];
 
     goto LABEL_30;
   }
 
   v9 = 0;
-  if ((v18 & 1) == 0 && v17)
+  if ((_crlaxHasZeroArcs & 1) == 0 && _crlaxNumberOfLineSegments)
   {
-    v20 = [(CRLBezierPathAccessibility *)self _crlaxNumberOfArcs];
+    _crlaxNumberOfArcs = [(CRLBezierPathAccessibility *)self _crlaxNumberOfArcs];
     v7 = +[NSBundle mainBundle];
     v21 = [v7 localizedStringForKey:@"%1$@ line segments value:%2$@ arcs" table:{0, 0}];
-    v22 = CRLAccessibilityLocalizedUnsignedInteger(v17);
-    v23 = CRLAccessibilityLocalizedUnsignedInteger(v20);
+    v22 = CRLAccessibilityLocalizedUnsignedInteger(_crlaxNumberOfLineSegments);
+    v23 = CRLAccessibilityLocalizedUnsignedInteger(_crlaxNumberOfArcs);
     v9 = [NSString stringWithFormat:v21, v22, v23];
 
     goto LABEL_17;
@@ -144,70 +144,70 @@ LABEL_18:
 
 - (BOOL)_crlaxIsRectangular
 {
-  v2 = [(CRLBezierPathAccessibility *)self crlaxTarget];
-  v3 = [v2 isRectangular];
+  crlaxTarget = [(CRLBezierPathAccessibility *)self crlaxTarget];
+  isRectangular = [crlaxTarget isRectangular];
 
-  return v3;
+  return isRectangular;
 }
 
 - (BOOL)_crlaxIsTriangular
 {
-  v2 = [(CRLBezierPathAccessibility *)self crlaxTarget];
-  v3 = [v2 isTriangular];
+  crlaxTarget = [(CRLBezierPathAccessibility *)self crlaxTarget];
+  isTriangular = [crlaxTarget isTriangular];
 
-  return v3;
+  return isTriangular;
 }
 
 - (BOOL)_crlaxIsCircular
 {
-  v2 = [(CRLBezierPathAccessibility *)self crlaxTarget];
-  v3 = [v2 isCircular];
+  crlaxTarget = [(CRLBezierPathAccessibility *)self crlaxTarget];
+  isCircular = [crlaxTarget isCircular];
 
-  return v3;
+  return isCircular;
 }
 
 - (BOOL)_crlaxIsDiamond
 {
-  v2 = [(CRLBezierPathAccessibility *)self crlaxTarget];
-  v3 = [v2 isDiamond];
+  crlaxTarget = [(CRLBezierPathAccessibility *)self crlaxTarget];
+  isDiamond = [crlaxTarget isDiamond];
 
-  return v3;
+  return isDiamond;
 }
 
 - (BOOL)_crlaxIsLineSegment
 {
-  v2 = [(CRLBezierPathAccessibility *)self crlaxTarget];
-  v3 = [v2 isLineSegment];
+  crlaxTarget = [(CRLBezierPathAccessibility *)self crlaxTarget];
+  isLineSegment = [crlaxTarget isLineSegment];
 
-  return v3;
+  return isLineSegment;
 }
 
 - (unint64_t)_crlaxElementCount
 {
-  v2 = [(CRLBezierPathAccessibility *)self crlaxTarget];
-  v3 = [v2 elementCount];
+  crlaxTarget = [(CRLBezierPathAccessibility *)self crlaxTarget];
+  elementCount = [crlaxTarget elementCount];
 
-  return v3;
+  return elementCount;
 }
 
 - (BOOL)_crlaxHasZeroArcs
 {
-  v2 = [(CRLBezierPathAccessibility *)self crlaxTarget];
-  v3 = [v2 isFlat];
+  crlaxTarget = [(CRLBezierPathAccessibility *)self crlaxTarget];
+  isFlat = [crlaxTarget isFlat];
 
-  return v3;
+  return isFlat;
 }
 
 - (unint64_t)_crlaxNumberOfSides
 {
-  v3 = [(CRLBezierPathAccessibility *)self _crlaxElementCount];
+  _crlaxElementCount = [(CRLBezierPathAccessibility *)self _crlaxElementCount];
   if (![(CRLBezierPathAccessibility *)self _crlaxHasZeroArcs])
   {
     return 0;
   }
 
-  v4 = [(CRLBezierPathAccessibility *)self _crlaxNumberOfConsecutiveLineSegments];
-  v5 = v4 + [(CRLBezierPathAccessibility *)self _crlaxLastElementIsClose];
+  _crlaxNumberOfConsecutiveLineSegments = [(CRLBezierPathAccessibility *)self _crlaxNumberOfConsecutiveLineSegments];
+  v5 = _crlaxNumberOfConsecutiveLineSegments + [(CRLBezierPathAccessibility *)self _crlaxLastElementIsClose];
   v11 = 0.0;
   v12 = 0.0;
   if ([(CRLBezierPathAccessibility *)self _crlaxLastElementIsMove])
@@ -222,7 +222,7 @@ LABEL_18:
 
   v10 = 0.0;
   [(CRLBezierPathAccessibility *)self _crlaxElementAtIndex:0 associatedPoints:&v11, 0];
-  [(CRLBezierPathAccessibility *)self _crlaxElementAtIndex:v6 + v3 associatedPoints:&v9];
+  [(CRLBezierPathAccessibility *)self _crlaxElementAtIndex:v6 + _crlaxElementCount associatedPoints:&v9];
   if (v12 == v10 && v11 == v9)
   {
     return v5;
@@ -234,15 +234,15 @@ LABEL_18:
   }
 }
 
-- (unint64_t)_crlaxNumberOfLineSegmentsConsecutive:(BOOL)a3
+- (unint64_t)_crlaxNumberOfLineSegmentsConsecutive:(BOOL)consecutive
 {
-  v5 = [(CRLBezierPathAccessibility *)self _crlaxElementCount];
-  if (v5 < 2)
+  _crlaxElementCount = [(CRLBezierPathAccessibility *)self _crlaxElementCount];
+  if (_crlaxElementCount < 2)
   {
     return 0;
   }
 
-  v6 = v5;
+  v6 = _crlaxElementCount;
   v7 = 0;
   for (i = 1; i != v6; ++i)
   {
@@ -251,7 +251,7 @@ LABEL_18:
       ++v7;
     }
 
-    else if (a3)
+    else if (consecutive)
     {
       return v7;
     }
@@ -283,7 +283,7 @@ LABEL_18:
   return v3;
 }
 
-- (int64_t)_crlaxElementAtIndex:(int64_t)a3
+- (int64_t)_crlaxElementAtIndex:(int64_t)index
 {
   v6 = 0;
   v7 = &v6;
@@ -295,7 +295,7 @@ LABEL_18:
   v5[3] = &unk_10183B670;
   v5[4] = self;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = index;
   if (__CRLAccessibilityPerformSafeBlock(v5))
   {
     abort();
@@ -306,7 +306,7 @@ LABEL_18:
   return v3;
 }
 
-- (int64_t)_crlaxElementAtIndex:(int64_t)a3 associatedPoints:(CGPoint *)a4
+- (int64_t)_crlaxElementAtIndex:(int64_t)index associatedPoints:(CGPoint *)points
 {
   v7 = 0;
   v8 = &v7;
@@ -318,8 +318,8 @@ LABEL_18:
   v6[3] = &unk_1018427D8;
   v6[4] = self;
   v6[5] = &v7;
-  v6[6] = a3;
-  v6[7] = a4;
+  v6[6] = index;
+  v6[7] = points;
   if (__CRLAccessibilityPerformSafeBlock(v6))
   {
     abort();

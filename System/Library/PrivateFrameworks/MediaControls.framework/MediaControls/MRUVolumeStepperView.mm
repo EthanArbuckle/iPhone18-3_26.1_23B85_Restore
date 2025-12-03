@@ -1,28 +1,28 @@
 @interface MRUVolumeStepperView
-- (MRUVolumeStepperView)initWithFrame:(CGRect)a3;
+- (MRUVolumeStepperView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setContinuousButtonCornerRadius:(double)a3;
+- (void)setContinuousButtonCornerRadius:(double)radius;
 @end
 
 @implementation MRUVolumeStepperView
 
-- (MRUVolumeStepperView)initWithFrame:(CGRect)a3
+- (MRUVolumeStepperView)initWithFrame:(CGRect)frame
 {
   v23.receiver = self;
   v23.super_class = MRUVolumeStepperView;
-  v3 = [(MRUVolumeStepperView *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUVolumeStepperView *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E6997268] controlCenterModuleBackgroundMaterial];
+    controlCenterModuleBackgroundMaterial = [MEMORY[0x1E6997268] controlCenterModuleBackgroundMaterial];
     increaseMaterialView = v3->_increaseMaterialView;
-    v3->_increaseMaterialView = v4;
+    v3->_increaseMaterialView = controlCenterModuleBackgroundMaterial;
 
     [(UIView *)v3->_increaseMaterialView setUserInteractionEnabled:1];
     [(UIView *)v3->_increaseMaterialView setClipsToBounds:1];
     [(MRUVolumeStepperView *)v3 addSubview:v3->_increaseMaterialView];
-    v6 = [MEMORY[0x1E6997268] controlCenterModuleBackgroundMaterial];
+    controlCenterModuleBackgroundMaterial2 = [MEMORY[0x1E6997268] controlCenterModuleBackgroundMaterial];
     decreaseMaterialView = v3->_decreaseMaterialView;
-    v3->_decreaseMaterialView = v6;
+    v3->_decreaseMaterialView = controlCenterModuleBackgroundMaterial2;
 
     [(UIView *)v3->_decreaseMaterialView setUserInteractionEnabled:1];
     [(UIView *)v3->_decreaseMaterialView setClipsToBounds:1];
@@ -80,12 +80,12 @@
   [(CCUIButtonModuleView *)self->_decreaseButton setFrame:?];
 }
 
-- (void)setContinuousButtonCornerRadius:(double)a3
+- (void)setContinuousButtonCornerRadius:(double)radius
 {
   [(UIView *)self->_increaseMaterialView _setContinuousCornerRadius:?];
   decreaseMaterialView = self->_decreaseMaterialView;
 
-  [(UIView *)decreaseMaterialView _setContinuousCornerRadius:a3];
+  [(UIView *)decreaseMaterialView _setContinuousCornerRadius:radius];
 }
 
 @end

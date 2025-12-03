@@ -1,7 +1,7 @@
 @interface PXUIMapWidget
 + (id)sharedSnapshotRequestConcurrentQueue;
 - (BOOL)_containsLocationInPasteboard;
-- (BOOL)_hasCachedSnapshotImageForKey:(id)a3;
+- (BOOL)_hasCachedSnapshotImageForKey:(id)key;
 - (BOOL)_hasLocation;
 - (BOOL)_requiresDetailedAddressFooterString;
 - (BOOL)hasContentForCurrentInput;
@@ -16,56 +16,56 @@
 - (UIFont)footerFont;
 - (UIView)contentView;
 - (double)_horizontalLayoutWidth;
-- (double)preferredContentHeightForWidth:(double)a3;
-- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)a3;
+- (double)preferredContentHeightForWidth:(double)width;
+- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)width;
 - (id)_contextMenuActions;
 - (id)_copyLocationAction;
 - (id)_createSnapshotOptions;
 - (id)_fetchResultsForSections;
 - (id)_firstAsset;
-- (id)_localizedGeoDescriptionForAsset:(id)a3;
+- (id)_localizedGeoDescriptionForAsset:(id)asset;
 - (id)_pasteLocationAction;
 - (id)_reloadFooterQueue;
-- (id)_snapshotOptionsForExtendedTraitCollection:(id)a3 queue:(id)a4 viewSize:(CGSize)a5 snapshotMapType:(unint64_t)a6;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)_snapshotOptionsForExtendedTraitCollection:(id)collection queue:(id)queue viewSize:(CGSize)size snapshotMapType:(unint64_t)type;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (int64_t)_fetchCountOfAssetsWithLocation;
 - (int64_t)contentLayoutStyle;
-- (void)_clipboardChanged:(id)a3;
+- (void)_clipboardChanged:(id)changed;
 - (void)_copyLocationTapped;
 - (void)_didTapAdjustLocation;
-- (void)_fetchPlacesSnapshotUsingMapType:(unint64_t)a3 fetchResults:(id)a4 imageSize:(CGSize)a5 shouldFetchNearbyAssetCount:(BOOL)a6;
-- (void)_generateSnapshotsForExtendedTraitCollection:(id)a3 queue:(id)a4 size:(CGSize)a5 snapshotMapType:(unint64_t)a6 fetchResults:(id)a7 shouldFetchNearbyAssetCount:(BOOL)a8;
-- (void)_handleContentSizeCategoryDidChange:(id)a3;
+- (void)_fetchPlacesSnapshotUsingMapType:(unint64_t)type fetchResults:(id)results imageSize:(CGSize)size shouldFetchNearbyAssetCount:(BOOL)count;
+- (void)_generateSnapshotsForExtendedTraitCollection:(id)collection queue:(id)queue size:(CGSize)size snapshotMapType:(unint64_t)type fetchResults:(id)results shouldFetchNearbyAssetCount:(BOOL)count;
+- (void)_handleContentSizeCategoryDidChange:(id)change;
 - (void)_handleReloadFooterTitle;
-- (void)_handleSnapshotResponse:(id)a3 viewPort:(id)a4 snapshotMapType:(unint64_t)a5 shouldFetchNearbyAssetCount:(BOOL)a6 fetchedImageKey:(id)a7 error:(id)a8 userInterfaceStyle:(int64_t)a9;
-- (void)_handleTapGestureRecognizer:(id)a3;
+- (void)_handleSnapshotResponse:(id)response viewPort:(id)port snapshotMapType:(unint64_t)type shouldFetchNearbyAssetCount:(BOOL)count fetchedImageKey:(id)key error:(id)error userInterfaceStyle:(int64_t)style;
+- (void)_handleTapGestureRecognizer:(id)recognizer;
 - (void)_hasLocationDidChange;
 - (void)_layoutSubviews;
 - (void)_loadContainerView;
-- (void)_openMapsAtCoordinate:(CLLocationCoordinate2D)a3 title:(id)a4;
+- (void)_openMapsAtCoordinate:(CLLocationCoordinate2D)coordinate title:(id)title;
 - (void)_pasteLocationTapped;
 - (void)_presentLocationSearchPicker;
 - (void)_reloadFooterTitle;
-- (void)_setHasLoadedContentData:(BOOL)a3;
-- (void)_setImage:(id)a3 animated:(BOOL)a4;
-- (void)_showPlacesWithContentMode:(unint64_t)a3;
+- (void)_setHasLoadedContentData:(BOOL)data;
+- (void)_setImage:(id)image animated:(BOOL)animated;
+- (void)_showPlacesWithContentMode:(unint64_t)mode;
 - (void)_updateContentViewFrame;
 - (void)_updateFooterButton;
 - (void)_updateFooterContextMenu;
 - (void)_updateFooterHeight;
-- (void)_updateFooterWithTitle:(id)a3;
+- (void)_updateFooterWithTitle:(id)title;
 - (void)_updateHeight;
-- (void)controllerTraitCollectionDidChangeFrom:(id)a3 to:(id)a4;
+- (void)controllerTraitCollectionDidChangeFrom:(id)from to:(id)to;
 - (void)dealloc;
 - (void)loadContentData;
-- (void)photosDataSource:(id)a3 didChange:(id)a4;
-- (void)setContentSize:(CGSize)a3;
-- (void)setContext:(id)a3;
-- (void)setShowAddressLink:(BOOL)a3;
-- (void)setSpec:(id)a3;
+- (void)photosDataSource:(id)source didChange:(id)change;
+- (void)setContentSize:(CGSize)size;
+- (void)setContext:(id)context;
+- (void)setShowAddressLink:(BOOL)link;
+- (void)setSpec:(id)spec;
 - (void)unloadContentData;
 - (void)userDidSelectDisclosureControl;
-- (void)userDidSelectFooter:(id)a3;
+- (void)userDidSelectFooter:(id)footer;
 @end
 
 @implementation PXUIMapWidget
@@ -84,43 +84,43 @@
   return WeakRetained;
 }
 
-- (BOOL)_hasCachedSnapshotImageForKey:(id)a3
+- (BOOL)_hasCachedSnapshotImageForKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_fetchedImages objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_fetchedImages objectForKey:key];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)_setImage:(id)a3 animated:(BOOL)a4
+- (void)_setImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PXUIMapWidget *)self _imageView];
-  if (v6)
+  animatedCopy = animated;
+  imageCopy = image;
+  _imageView = [(PXUIMapWidget *)self _imageView];
+  if (imageCopy)
   {
-    v8 = [(PXUIMapWidget *)self spec];
-    v9 = [v8 defaultPlacesPlaceholderColor];
+    spec = [(PXUIMapWidget *)self spec];
+    defaultPlacesPlaceholderColor = [spec defaultPlacesPlaceholderColor];
   }
 
   else
   {
-    v9 = 0;
+    defaultPlacesPlaceholderColor = 0;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __36__PXUIMapWidget__setImage_animated___block_invoke;
   aBlock[3] = &unk_1E774A1B8;
-  v10 = v7;
+  v10 = _imageView;
   v19 = v10;
-  v11 = v6;
+  v11 = imageCopy;
   v20 = v11;
-  v12 = v9;
+  v12 = defaultPlacesPlaceholderColor;
   v21 = v12;
   v13 = _Block_copy(aBlock);
   v14 = v13;
-  if (v4)
+  if (animatedCopy)
   {
     v15 = MEMORY[0x1E69DD250];
     v16[0] = MEMORY[0x1E69E9820];
@@ -146,27 +146,27 @@ uint64_t __36__PXUIMapWidget__setImage_animated___block_invoke(uint64_t a1)
   return [v3 setBackgroundColor:v2];
 }
 
-- (void)_handleSnapshotResponse:(id)a3 viewPort:(id)a4 snapshotMapType:(unint64_t)a5 shouldFetchNearbyAssetCount:(BOOL)a6 fetchedImageKey:(id)a7 error:(id)a8 userInterfaceStyle:(int64_t)a9
+- (void)_handleSnapshotResponse:(id)response viewPort:(id)port snapshotMapType:(unint64_t)type shouldFetchNearbyAssetCount:(BOOL)count fetchedImageKey:(id)key error:(id)error userInterfaceStyle:(int64_t)style
 {
-  v11 = a6;
-  v32 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
-  v18 = v17;
+  countCopy = count;
+  responseCopy = response;
+  portCopy = port;
+  keyCopy = key;
+  errorCopy = error;
+  v18 = errorCopy;
   if (self->_isLoaded)
   {
-    if (v17)
+    if (errorCopy)
     {
-      if (a5 == 1)
+      if (type == 1)
       {
         [(PXUIMapWidget *)self _showPlaceholder];
       }
 
       else
       {
-        v20 = [(PXUIMapWidget *)self _imageView];
-        [v20 frame];
+        _imageView = [(PXUIMapWidget *)self _imageView];
+        [_imageView frame];
         v22 = v21;
         v24 = v23;
 
@@ -177,36 +177,36 @@ uint64_t __36__PXUIMapWidget__setImage_animated___block_invoke(uint64_t a1)
           v24 = v27;
         }
 
-        v28 = [(PXUIMapWidget *)self _fetchResultsForSections];
-        [(PXUIMapWidget *)self _fetchPlacesSnapshotUsingMapType:1 fetchResults:v28 imageSize:v11 shouldFetchNearbyAssetCount:v22, v24];
+        _fetchResultsForSections = [(PXUIMapWidget *)self _fetchResultsForSections];
+        [(PXUIMapWidget *)self _fetchPlacesSnapshotUsingMapType:1 fetchResults:_fetchResultsForSections imageSize:countCopy shouldFetchNearbyAssetCount:v22, v24];
       }
     }
 
     else
     {
-      if (a5)
+      if (type)
       {
-        v19 = ![(PXUIMapWidget *)self _hasCachedSnapshotImageForKey:v16];
+        v19 = ![(PXUIMapWidget *)self _hasCachedSnapshotImageForKey:keyCopy];
       }
 
       else
       {
-        [(NSMutableDictionary *)self->_fetchedImages setObject:v32 forKey:v16];
+        [(NSMutableDictionary *)self->_fetchedImages setObject:responseCopy forKey:keyCopy];
         v19 = 1;
       }
 
       if ([(PXUIMapWidget *)self _prefersVisionOSInfoPanelLayout])
       {
-        v29 = 1;
+        userInterfaceStyle = 1;
       }
 
       else
       {
-        v30 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-        v29 = [v30 userInterfaceStyle];
+        currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+        userInterfaceStyle = [currentTraitCollection userInterfaceStyle];
       }
 
-      if (v29 == a9)
+      if (userInterfaceStyle == style)
       {
         v31 = v19;
       }
@@ -219,7 +219,7 @@ uint64_t __36__PXUIMapWidget__setImage_animated___block_invoke(uint64_t a1)
       if (v31 == 1)
       {
         [(PXUIMapWidget *)self _setHasLoadedContentData:1];
-        [(PXUIMapWidget *)self _setImage:v32 animated:1];
+        [(PXUIMapWidget *)self _setImage:responseCopy animated:1];
       }
     }
   }
@@ -227,66 +227,66 @@ uint64_t __36__PXUIMapWidget__setImage_animated___block_invoke(uint64_t a1)
 
 - (id)_createSnapshotOptions
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = objc_alloc_init(PXPlacesSnapshotOptions);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (PXPlacesSnapshotFactory)_factory
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->__factory)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->__factory)
   {
-    v3 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-    v4 = [[PXPlacesSnapshotFactory alloc] initWithPhotoLibrary:v3];
-    factory = v2->__factory;
-    v2->__factory = v4;
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    v4 = [[PXPlacesSnapshotFactory alloc] initWithPhotoLibrary:px_deprecated_appPhotoLibrary];
+    factory = selfCopy->__factory;
+    selfCopy->__factory = v4;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v6 = v2->__factory;
+  v6 = selfCopy->__factory;
 
   return v6;
 }
 
-- (id)_snapshotOptionsForExtendedTraitCollection:(id)a3 queue:(id)a4 viewSize:(CGSize)a5 snapshotMapType:(unint64_t)a6
+- (id)_snapshotOptionsForExtendedTraitCollection:(id)collection queue:(id)queue viewSize:(CGSize)size snapshotMapType:(unint64_t)type
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(PXUIMapWidget *)self _createSnapshotOptions];
-  [v13 setExtendedTraitCollection:v12];
+  height = size.height;
+  width = size.width;
+  queueCopy = queue;
+  collectionCopy = collection;
+  _createSnapshotOptions = [(PXUIMapWidget *)self _createSnapshotOptions];
+  [_createSnapshotOptions setExtendedTraitCollection:collectionCopy];
 
   v14 = objc_alloc_init(PXPlacesGeotaggableMediaProvider);
-  [v13 setGeotaggableInformationDelegate:v14];
+  [_createSnapshotOptions setGeotaggableInformationDelegate:v14];
 
-  [v13 setQueue:v11];
-  [v13 setViewSize:{width, height}];
-  [v13 setSnapshotMapType:a6];
-  [v13 setPopoverImageType:5];
-  [v13 setShouldRenderThumbnailForNoLocation:1];
+  [_createSnapshotOptions setQueue:queueCopy];
+  [_createSnapshotOptions setViewSize:{width, height}];
+  [_createSnapshotOptions setSnapshotMapType:type];
+  [_createSnapshotOptions setPopoverImageType:5];
+  [_createSnapshotOptions setShouldRenderThumbnailForNoLocation:1];
 
-  return v13;
+  return _createSnapshotOptions;
 }
 
-- (void)_generateSnapshotsForExtendedTraitCollection:(id)a3 queue:(id)a4 size:(CGSize)a5 snapshotMapType:(unint64_t)a6 fetchResults:(id)a7 shouldFetchNearbyAssetCount:(BOOL)a8
+- (void)_generateSnapshotsForExtendedTraitCollection:(id)collection queue:(id)queue size:(CGSize)size snapshotMapType:(unint64_t)type fetchResults:(id)results shouldFetchNearbyAssetCount:(BOOL)count
 {
-  height = a5.height;
-  width = a5.width;
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = [v14 traitCollection];
-  v18 = v17;
-  if (v17)
+  height = size.height;
+  width = size.width;
+  collectionCopy = collection;
+  queueCopy = queue;
+  resultsCopy = results;
+  traitCollection = [collectionCopy traitCollection];
+  v18 = traitCollection;
+  if (traitCollection)
   {
-    v23 = [v17 traitCollectionByModifyingTraits:&__block_literal_global_520];
+    v23 = [traitCollection traitCollectionByModifyingTraits:&__block_literal_global_520];
     v19 = [v18 traitCollectionByModifyingTraits:&__block_literal_global_522];
   }
 
@@ -296,9 +296,9 @@ uint64_t __36__PXUIMapWidget__setImage_animated___block_invoke(uint64_t a1)
     v23 = 0;
   }
 
-  v20 = [(PXUIMapWidget *)self _snapshotOptionsForExtendedTraitCollection:v14 queue:v15 viewSize:a6 snapshotMapType:width, height];
+  height = [(PXUIMapWidget *)self _snapshotOptionsForExtendedTraitCollection:collectionCopy queue:queueCopy viewSize:type snapshotMapType:width, height];
   objc_initWeak(location, self);
-  v21 = [(PXUIMapWidget *)self _factory];
+  _factory = [(PXUIMapWidget *)self _factory];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __130__PXUIMapWidget__generateSnapshotsForExtendedTraitCollection_queue_size_snapshotMapType_fetchResults_shouldFetchNearbyAssetCount___block_invoke_3;
@@ -306,11 +306,11 @@ uint64_t __36__PXUIMapWidget__setImage_animated___block_invoke(uint64_t a1)
   objc_copyWeak(v29, location);
   v29[1] = *&width;
   v29[2] = *&height;
-  v29[3] = a6;
-  v30 = a8;
-  [v21 requestMapSnapshotWithAssets:v16 snapshotOptions:v20 snapshotTraitCollection:v23 popoverImageOptions:1 completion:v28];
+  v29[3] = type;
+  countCopy = count;
+  [_factory requestMapSnapshotWithAssets:resultsCopy snapshotOptions:height snapshotTraitCollection:v23 popoverImageOptions:1 completion:v28];
 
-  v22 = [(PXUIMapWidget *)self _factory];
+  _factory2 = [(PXUIMapWidget *)self _factory];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __130__PXUIMapWidget__generateSnapshotsForExtendedTraitCollection_queue_size_snapshotMapType_fetchResults_shouldFetchNearbyAssetCount___block_invoke_5;
@@ -318,9 +318,9 @@ uint64_t __36__PXUIMapWidget__setImage_animated___block_invoke(uint64_t a1)
   objc_copyWeak(v26, location);
   v26[1] = *&width;
   v26[2] = *&height;
-  v26[3] = a6;
-  v27 = a8;
-  [v22 requestMapSnapshotWithAssets:v16 snapshotOptions:v20 snapshotTraitCollection:v19 popoverImageOptions:1 completion:v25];
+  v26[3] = type;
+  countCopy2 = count;
+  [_factory2 requestMapSnapshotWithAssets:resultsCopy snapshotOptions:height snapshotTraitCollection:v19 popoverImageOptions:1 completion:v25];
 
   objc_destroyWeak(v26);
   objc_destroyWeak(v29);
@@ -381,12 +381,12 @@ void __130__PXUIMapWidget__generateSnapshotsForExtendedTraitCollection_queue_siz
   [WeakRetained _handleSnapshotResponse:*(a1 + 32) viewPort:*(a1 + 40) snapshotMapType:*(a1 + 80) shouldFetchNearbyAssetCount:*(a1 + 88) fetchedImageKey:v3 error:*(a1 + 48) userInterfaceStyle:1];
 }
 
-- (void)_fetchPlacesSnapshotUsingMapType:(unint64_t)a3 fetchResults:(id)a4 imageSize:(CGSize)a5 shouldFetchNearbyAssetCount:(BOOL)a6
+- (void)_fetchPlacesSnapshotUsingMapType:(unint64_t)type fetchResults:(id)results imageSize:(CGSize)size shouldFetchNearbyAssetCount:(BOOL)count
 {
-  v7 = a4;
+  resultsCopy = results;
   objc_initWeak(&location, self);
-  v8 = [(PXUIMapWidget *)self widgetDelegate];
-  v9 = [v8 widgetExtendedTraitCollection:self];
+  widgetDelegate = [(PXUIMapWidget *)self widgetDelegate];
+  v9 = [widgetDelegate widgetExtendedTraitCollection:self];
 
   [v9 displayScale];
   PXSizeRoundToPixel();
@@ -415,76 +415,76 @@ void __101__PXUIMapWidget__fetchPlacesSnapshotUsingMapType_fetchResults_imageSiz
   [WeakRetained _generateSnapshotsForExtendedTraitCollection:*(a1 + 32) queue:*(a1 + 40) size:*(a1 + 80) snapshotMapType:*(a1 + 48) fetchResults:*(a1 + 88) shouldFetchNearbyAssetCount:{*(a1 + 64), *(a1 + 72)}];
 }
 
-- (void)photosDataSource:(id)a3 didChange:(id)a4
+- (void)photosDataSource:(id)source didChange:(id)change
 {
-  v31 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  changeCopy = change;
   if (self->__contentView)
   {
     v8 = +[PXPhotosDetailsSettings sharedInstance];
-    v9 = [v8 placesWidgetShowOnlyPlaceholder];
+    placesWidgetShowOnlyPlaceholder = [v8 placesWidgetShowOnlyPlaceholder];
 
-    if ((v9 & 1) == 0)
+    if ((placesWidgetShowOnlyPlaceholder & 1) == 0)
     {
-      if (![v7 hasIncrementalChanges])
+      if (![changeCopy hasIncrementalChanges])
       {
         goto LABEL_13;
       }
 
-      v10 = [v7 originatingPhotoLibraryChange];
-      v11 = [(PXUIMapWidget *)self _firstAsset];
-      v12 = [v10 changeDetailsForObject:v11];
+      originatingPhotoLibraryChange = [changeCopy originatingPhotoLibraryChange];
+      _firstAsset = [(PXUIMapWidget *)self _firstAsset];
+      v12 = [originatingPhotoLibraryChange changeDetailsForObject:_firstAsset];
 
-      v13 = [v12 objectBeforeChanges];
-      if (v13)
+      objectBeforeChanges = [v12 objectBeforeChanges];
+      if (objectBeforeChanges)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v23 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v24 = objc_opt_class();
           v25 = NSStringFromClass(v24);
-          v26 = [v13 px_descriptionForAssertionMessage];
-          [v23 handleFailureInMethod:a2 object:self file:@"PXUIMapWidget.m" lineNumber:1198 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"assetChangeDetails.objectBeforeChanges", v25, v26}];
+          px_descriptionForAssertionMessage = [objectBeforeChanges px_descriptionForAssertionMessage];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIMapWidget.m" lineNumber:1198 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"assetChangeDetails.objectBeforeChanges", v25, px_descriptionForAssertionMessage}];
         }
       }
 
-      v14 = [v12 objectAfterChanges];
-      if (v14)
+      objectAfterChanges = [v12 objectAfterChanges];
+      if (objectAfterChanges)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v27 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
           v28 = objc_opt_class();
           v29 = NSStringFromClass(v28);
-          v30 = [v14 px_descriptionForAssertionMessage];
-          [v27 handleFailureInMethod:a2 object:self file:@"PXUIMapWidget.m" lineNumber:1199 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"assetChangeDetails.objectAfterChanges", v29, v30}];
+          px_descriptionForAssertionMessage2 = [objectAfterChanges px_descriptionForAssertionMessage];
+          [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXUIMapWidget.m" lineNumber:1199 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"assetChangeDetails.objectAfterChanges", v29, px_descriptionForAssertionMessage2}];
         }
       }
 
-      v15 = [v13 location];
-      v16 = [v14 location];
-      [v15 distanceFromLocation:v16];
+      location = [objectBeforeChanges location];
+      location2 = [objectAfterChanges location];
+      [location distanceFromLocation:location2];
       v18 = v17;
-      v19 = [v7 contentChangedIndexPaths];
-      v20 = [v19 count];
+      contentChangedIndexPaths = [changeCopy contentChangedIndexPaths];
+      v20 = [contentChangedIndexPaths count];
 
-      if ((v15 == 0) != (v16 == 0) || v18 != 0.0 || v20)
+      if ((location == 0) != (location2 == 0) || v18 != 0.0 || v20)
       {
 LABEL_13:
         [(PXUIMapWidget *)self _hasLocationDidChange];
-        v21 = [(PXUIMapWidget *)self _fetchResultsForSections];
+        _fetchResultsForSections = [(PXUIMapWidget *)self _fetchResultsForSections];
         [(NSMutableDictionary *)self->_fetchedImages removeAllObjects];
         if ([(PXUIMapWidget *)self _hasLocation])
         {
           [(PXUIMapWidget *)self _estimatedMapViewImageSize];
-          [(PXUIMapWidget *)self _fetchPlacesSnapshotUsingMapType:0 fetchResults:v21 imageSize:0 shouldFetchNearbyAssetCount:?];
+          [(PXUIMapWidget *)self _fetchPlacesSnapshotUsingMapType:0 fetchResults:_fetchResultsForSections imageSize:0 shouldFetchNearbyAssetCount:?];
         }
       }
 
-      v22 = [(PXUIMapWidget *)self widgetDelegate];
-      [v22 widgetPreferredContentHeightForWidthDidChange:self];
+      widgetDelegate = [(PXUIMapWidget *)self widgetDelegate];
+      [widgetDelegate widgetPreferredContentHeightForWidthDidChange:self];
     }
   }
 }
@@ -505,49 +505,49 @@ LABEL_13:
 - (void)_presentLocationSearchPicker
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXUIMapWidget *)self context];
-  v4 = [v3 assetCollections];
-  v5 = [v4 firstObject];
+  context = [(PXUIMapWidget *)self context];
+  assetCollections = [context assetCollections];
+  firstObject = [assetCollections firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    v6 = [(PXUIMapWidget *)self context];
-    v7 = [v6 assetsByCollection];
-    v8 = [v7 objectForKeyedSubscript:v5];
-    v9 = [v8 firstObject];
+    context2 = [(PXUIMapWidget *)self context];
+    assetsByCollection = [context2 assetsByCollection];
+    v8 = [assetsByCollection objectForKeyedSubscript:firstObject];
+    firstObject2 = [v8 firstObject];
 
-    if (v9)
+    if (firstObject2)
     {
       v10 = MEMORY[0x1E6978650];
-      v16[0] = v9;
+      v16[0] = firstObject2;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
       v12 = [v10 transientAssetCollectionWithAssets:v11 title:0];
 
       v13 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v12 options:0];
       v14 = [PXPhotosDetailsLocationSearchUIFactory searchViewControllerWithAssets:v13 delegate:self];
-      v15 = [(PXUIMapWidget *)self widgetDelegate];
-      [v15 widget:self transitionToViewController:v14 withTransitionType:2];
+      widgetDelegate = [(PXUIMapWidget *)self widgetDelegate];
+      [widgetDelegate widget:self transitionToViewController:v14 withTransitionType:2];
     }
   }
 }
 
-- (void)_clipboardChanged:(id)a3
+- (void)_clipboardChanged:(id)changed
 {
-  v10 = a3;
-  v4 = [v10 object];
+  changedCopy = changed;
+  object = [changedCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = v10;
+  v6 = changedCopy;
   if (isKindOfClass)
   {
-    v7 = [v10 object];
-    v8 = [v7 pasteboardTypes];
-    if ([v8 containsObject:@"com.apple.photos.pasteboard.location"])
+    object2 = [changedCopy object];
+    pasteboardTypes = [object2 pasteboardTypes];
+    if ([pasteboardTypes containsObject:@"com.apple.photos.pasteboard.location"])
     {
-      v9 = [(PXUIMapWidget *)self infoPanelLayoutEnabled];
+      infoPanelLayoutEnabled = [(PXUIMapWidget *)self infoPanelLayoutEnabled];
 
-      if (v9)
+      if (infoPanelLayoutEnabled)
       {
         [(PXUIMapWidget *)self _updateFooterContextMenu];
       }
@@ -557,60 +557,60 @@ LABEL_13:
     {
     }
 
-    v6 = v10;
+    v6 = changedCopy;
   }
 }
 
-- (void)_showPlacesWithContentMode:(unint64_t)a3
+- (void)_showPlacesWithContentMode:(unint64_t)mode
 {
-  v4 = [(PXUIMapWidget *)self _firstAsset];
-  v5 = [v4 photoLibrary];
+  _firstAsset = [(PXUIMapWidget *)self _firstAsset];
+  photoLibrary = [_firstAsset photoLibrary];
 
-  v6 = [(PXUIMapWidget *)self context];
-  v7 = [v6 photosDataSource];
-  v8 = [v7 firstAssetCollection];
+  context = [(PXUIMapWidget *)self context];
+  photosDataSource = [context photosDataSource];
+  firstAssetCollection = [photosDataSource firstAssetCollection];
 
-  v9 = v5;
-  v17 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v5];
+  v9 = photoLibrary;
+  v17 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:photoLibrary];
   v10 = [[PXLibraryFilterState alloc] initWithSharedLibraryStatusProvider:v17];
-  v11 = [(PXLibraryFilterState *)v10 viewMode];
-  v12 = PXPhotoKitAssetCollectionSupportsNearbyAssetsAffordance(v8);
-  v13 = [(PXUIMapWidget *)self _mapViewController];
-  v14 = [v13 mapFetchResultsController];
-  v15 = [v14 mapView];
-  [v15 centerCoordinate];
-  v18 = [_TtC12PhotosUICore17PXLemonadeMapView makeViewWithPhotoLibrary:v9 collection:v8 libraryFilterViewMode:v11 initialCenterCoordinate:1 wantsDismissButton:v12 wantsNearbyAssetsAffordance:1 enableGridView:?];
+  viewMode = [(PXLibraryFilterState *)v10 viewMode];
+  v12 = PXPhotoKitAssetCollectionSupportsNearbyAssetsAffordance(firstAssetCollection);
+  _mapViewController = [(PXUIMapWidget *)self _mapViewController];
+  mapFetchResultsController = [_mapViewController mapFetchResultsController];
+  mapView = [mapFetchResultsController mapView];
+  [mapView centerCoordinate];
+  v18 = [_TtC12PhotosUICore17PXLemonadeMapView makeViewWithPhotoLibrary:v9 collection:firstAssetCollection libraryFilterViewMode:viewMode initialCenterCoordinate:1 wantsDismissButton:v12 wantsNearbyAssetsAffordance:1 enableGridView:?];
 
-  v16 = [(PXUIMapWidget *)self widgetDelegate];
-  [v16 widget:self transitionToViewController:v18 withTransitionType:2];
+  widgetDelegate = [(PXUIMapWidget *)self widgetDelegate];
+  [widgetDelegate widget:self transitionToViewController:v18 withTransitionType:2];
 }
 
-- (void)controllerTraitCollectionDidChangeFrom:(id)a3 to:(id)a4
+- (void)controllerTraitCollectionDidChangeFrom:(id)from to:(id)to
 {
-  a3;
-  v6 = a4;
-  v7 = [(PXUIMapWidget *)self _imageView];
-  [v7 frame];
+  from;
+  toCopy = to;
+  _imageView = [(PXUIMapWidget *)self _imageView];
+  [_imageView frame];
 
   PXSizeIsEmpty();
 }
 
-- (void)_handleTapGestureRecognizer:(id)a3
+- (void)_handleTapGestureRecognizer:(id)recognizer
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 state] != 3)
+  recognizerCopy = recognizer;
+  if ([recognizerCopy state] != 3)
   {
     goto LABEL_13;
   }
 
-  v5 = [(PXUIMapWidget *)self _imageView];
-  v6 = [v5 image];
-  if (v6 && [(PXUIMapWidget *)self _hasLocation])
+  _imageView = [(PXUIMapWidget *)self _imageView];
+  image = [_imageView image];
+  if (image && [(PXUIMapWidget *)self _hasLocation])
   {
-    v7 = [(PXUIMapWidget *)self _prefersVisionOSInfoPanelLayout];
+    _prefersVisionOSInfoPanelLayout = [(PXUIMapWidget *)self _prefersVisionOSInfoPanelLayout];
 
-    if (!v7)
+    if (!_prefersVisionOSInfoPanelLayout)
     {
       if ([(PXUIMapWidget *)self infoPanelLayoutEnabled])
       {
@@ -624,13 +624,13 @@ LABEL_13:
       }
 
       objc_initWeak(&location, self);
-      v12 = [(PXUIMapWidget *)self widgetUnlockDelegate];
+      widgetUnlockDelegate = [(PXUIMapWidget *)self widgetUnlockDelegate];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __45__PXUIMapWidget__handleTapGestureRecognizer___block_invoke;
       v20[3] = &unk_1E774C318;
       objc_copyWeak(&v21, &location);
-      [v12 widget:self performAfterUnlockingDeviceIfNecessary:v20 failurehandler:0];
+      [widgetUnlockDelegate widget:self performAfterUnlockingDeviceIfNecessary:v20 failurehandler:0];
 
       objc_destroyWeak(&v21);
       objc_destroyWeak(&location);
@@ -656,13 +656,13 @@ LABEL_13:
     }
 
     objc_initWeak(&location, self);
-    v17 = [(PXUIMapWidget *)self widgetUnlockDelegate];
+    widgetUnlockDelegate2 = [(PXUIMapWidget *)self widgetUnlockDelegate];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __45__PXUIMapWidget__handleTapGestureRecognizer___block_invoke_2;
     v18[3] = &unk_1E774C318;
     objc_copyWeak(&v19, &location);
-    [v17 widget:self performAfterUnlockingDeviceIfNecessary:v18 failurehandler:0];
+    [widgetUnlockDelegate2 widget:self performAfterUnlockingDeviceIfNecessary:v18 failurehandler:0];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -686,13 +686,13 @@ void __45__PXUIMapWidget__handleTapGestureRecognizer___block_invoke_2(uint64_t a
 - (void)userDidSelectDisclosureControl
 {
   objc_initWeak(&location, self);
-  v3 = [(PXUIMapWidget *)self widgetUnlockDelegate];
+  widgetUnlockDelegate = [(PXUIMapWidget *)self widgetUnlockDelegate];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __47__PXUIMapWidget_userDidSelectDisclosureControl__block_invoke;
   v4[3] = &unk_1E774C318;
   objc_copyWeak(&v5, &location);
-  [v3 widget:self performAfterUnlockingDeviceIfNecessary:v4 failurehandler:0];
+  [widgetUnlockDelegate widget:self performAfterUnlockingDeviceIfNecessary:v4 failurehandler:0];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -704,12 +704,12 @@ void __47__PXUIMapWidget_userDidSelectDisclosureControl__block_invoke(uint64_t a
   [WeakRetained _showPlacesWithContentMode:0];
 }
 
-- (void)_openMapsAtCoordinate:(CLLocationCoordinate2D)a3 title:(id)a4
+- (void)_openMapsAtCoordinate:(CLLocationCoordinate2D)coordinate title:(id)title
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v7 = MEMORY[0x1E695DF00];
-  v8 = a4;
+  titleCopy = title;
   v9 = [v7 now];
   v10 = [PXProgressIndicatorAlertController beginShowingModalProgressWithConfiguration:&__block_literal_global_495];
   v13[0] = MEMORY[0x1E69E9820];
@@ -718,10 +718,10 @@ void __47__PXUIMapWidget_userDidSelectDisclosureControl__block_invoke(uint64_t a
   v13[3] = &unk_1E7747D28;
   v14 = v10;
   v15 = v9;
-  v16 = self;
+  selfCopy = self;
   v11 = v9;
   v12 = v10;
-  [PXPlacesMapController launchMapsAtCoordinate:v8 withTitle:v13 completionHandler:latitude, longitude];
+  [PXPlacesMapController launchMapsAtCoordinate:titleCopy withTitle:v13 completionHandler:latitude, longitude];
 }
 
 void __45__PXUIMapWidget__openMapsAtCoordinate_title___block_invoke_2(uint64_t a1, int a2)
@@ -773,7 +773,7 @@ void __45__PXUIMapWidget__openMapsAtCoordinate_title___block_invoke_2(uint64_t a
   }
 }
 
-- (void)userDidSelectFooter:(id)a3
+- (void)userDidSelectFooter:(id)footer
 {
   v19[1] = *MEMORY[0x1E69E9840];
   if ([(PXUIMapWidget *)self _hasLocation])
@@ -786,15 +786,15 @@ void __45__PXUIMapWidget__openMapsAtCoordinate_title___block_invoke_2(uint64_t a
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     [v4 sendEvent:@"com.apple.photos.CPAnalytics.infoPanelLocationTapped" withPayload:v7];
 
-    v8 = [(PXUIMapWidget *)self _firstAsset];
-    if ([(PXUIMapWidget *)self showAddressLink]&& v8)
+    _firstAsset = [(PXUIMapWidget *)self _firstAsset];
+    if ([(PXUIMapWidget *)self showAddressLink]&& _firstAsset)
     {
-      [v8 coordinate];
+      [_firstAsset coordinate];
       latitude = v20.latitude;
       longitude = v20.longitude;
       if (CLLocationCoordinate2DIsValid(v20))
       {
-        v11 = [(PXUIMapWidget *)self _localizedGeoDescriptionForAsset:v8];
+        v11 = [(PXUIMapWidget *)self _localizedGeoDescriptionForAsset:_firstAsset];
         [(PXUIMapWidget *)self _openMapsAtCoordinate:v11 title:latitude, longitude];
       }
     }
@@ -816,10 +816,10 @@ void __45__PXUIMapWidget__openMapsAtCoordinate_title___block_invoke_2(uint64_t a
 
 - (void)_updateHeight
 {
-  v3 = [(PXUIMapWidget *)self spec];
-  v4 = [v3 userInterfaceIdiom];
+  spec = [(PXUIMapWidget *)self spec];
+  userInterfaceIdiom = [spec userInterfaceIdiom];
 
-  if (v4 == 3)
+  if (userInterfaceIdiom == 3)
   {
     [(PXUIMapWidget *)self footerHeight];
     v6 = v5 + 400.0;
@@ -827,9 +827,9 @@ void __45__PXUIMapWidget__openMapsAtCoordinate_title___block_invoke_2(uint64_t a
 
   else
   {
-    v7 = [(PXUIMapWidget *)self _hasLocation];
+    _hasLocation = [(PXUIMapWidget *)self _hasLocation];
     v6 = 42.0;
-    if (v7)
+    if (_hasLocation)
     {
       v6 = 171.0;
     }
@@ -840,46 +840,46 @@ void __45__PXUIMapWidget__openMapsAtCoordinate_title___block_invoke_2(uint64_t a
 
 - (BOOL)_requiresDetailedAddressFooterString
 {
-  v2 = [MEMORY[0x1E695DF58] currentLocale];
-  v3 = [v2 countryCode];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  countryCode = [currentLocale countryCode];
 
-  LOBYTE(v2) = [v3 isEqualToString:@"CN"];
-  return v2;
+  LOBYTE(currentLocale) = [countryCode isEqualToString:@"CN"];
+  return currentLocale;
 }
 
-- (id)_localizedGeoDescriptionForAsset:(id)a3
+- (id)_localizedGeoDescriptionForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  assetCopy = asset;
+  v5 = assetCopy;
+  if (assetCopy)
   {
-    [v4 fetchPropertySetsIfNeeded];
+    [assetCopy fetchPropertySetsIfNeeded];
     if ([(PXUIMapWidget *)self _requiresDetailedAddressFooterString])
     {
-      v6 = [v5 px_singleLineMailingAddress];
+      px_singleLineMailingAddress = [v5 px_singleLineMailingAddress];
     }
 
     else
     {
       v10 = 0;
-      v7 = [v5 photosOneUpProperties];
-      v6 = [v7 localizedGeoDescriptionIsHome:&v10];
+      photosOneUpProperties = [v5 photosOneUpProperties];
+      px_singleLineMailingAddress = [photosOneUpProperties localizedGeoDescriptionIsHome:&v10];
 
       if (v10 == 1)
       {
         v8 = PXLocalizedStringFromTable(@"PXPlacesWidgetHomeTitle", @"PhotosUICore");
 
-        v6 = v8;
+        px_singleLineMailingAddress = v8;
       }
     }
   }
 
   else
   {
-    v6 = 0;
+    px_singleLineMailingAddress = 0;
   }
 
-  return v6;
+  return px_singleLineMailingAddress;
 }
 
 - (UIFont)footerFont
@@ -904,26 +904,26 @@ void __45__PXUIMapWidget__openMapsAtCoordinate_title___block_invoke_2(uint64_t a
 
 - (void)_updateFooterButton
 {
-  v3 = [(PXUIMapWidget *)self footerButton];
-  v4 = [(PXUIMapWidget *)self adjustButton];
+  footerButton = [(PXUIMapWidget *)self footerButton];
+  adjustButton = [(PXUIMapWidget *)self adjustButton];
   if ([(PXUIMapWidget *)self _hasLocation])
   {
-    v5 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
     v6 = MEMORY[0x1E69DCAD8];
-    v7 = [(PXUIMapWidget *)self footerFont];
-    v8 = [v6 configurationWithFont:v7];
+    footerFont = [(PXUIMapWidget *)self footerFont];
+    v8 = [v6 configurationWithFont:footerFont];
 
     v9 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.forward" withConfiguration:v8];
-    [v5 setImage:v9];
-    [v5 setImagePlacement:8];
-    [v5 setImagePadding:4.0];
-    [v5 setTitleLineBreakMode:5];
-    v10 = [(PXUIMapWidget *)self _prefersVisionOSInfoPanelLayout];
+    [plainButtonConfiguration setImage:v9];
+    [plainButtonConfiguration setImagePlacement:8];
+    [plainButtonConfiguration setImagePadding:4.0];
+    [plainButtonConfiguration setTitleLineBreakMode:5];
+    _prefersVisionOSInfoPanelLayout = [(PXUIMapWidget *)self _prefersVisionOSInfoPanelLayout];
     v11 = 10.0;
     v12 = 10.0;
     v13 = 10.0;
     v14 = 10.0;
-    if (!v10)
+    if (!_prefersVisionOSInfoPanelLayout)
     {
       v11 = *MEMORY[0x1E69DC5C0];
       v12 = *(MEMORY[0x1E69DC5C0] + 8);
@@ -931,79 +931,79 @@ void __45__PXUIMapWidget__openMapsAtCoordinate_title___block_invoke_2(uint64_t a
       v14 = *(MEMORY[0x1E69DC5C0] + 24);
     }
 
-    [v5 setContentInsets:{v11, v12, v13, v14}];
+    [plainButtonConfiguration setContentInsets:{v11, v12, v13, v14}];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __36__PXUIMapWidget__updateFooterButton__block_invoke;
     v38[3] = &unk_1E773DA10;
     v38[4] = self;
-    v39 = v10;
-    [v5 setTitleTextAttributesTransformer:v38];
-    if (v10)
+    v39 = _prefersVisionOSInfoPanelLayout;
+    [plainButtonConfiguration setTitleTextAttributesTransformer:v38];
+    if (_prefersVisionOSInfoPanelLayout)
     {
-      v15 = [v3 layer];
-      [v15 setCornerRadius:18.0];
+      layer = [footerButton layer];
+      [layer setCornerRadius:18.0];
 
-      v16 = [v3 layer];
-      [v16 setMasksToBounds:1];
+      layer2 = [footerButton layer];
+      [layer2 setMasksToBounds:1];
     }
 
     else
     {
-      [v5 setImageColorTransformer:&__block_literal_global_477];
-      v16 = [MEMORY[0x1E69DC888] clearColor];
-      v17 = [v5 background];
-      [v17 setBackgroundColor:v16];
+      [plainButtonConfiguration setImageColorTransformer:&__block_literal_global_477];
+      layer2 = [MEMORY[0x1E69DC888] clearColor];
+      background = [plainButtonConfiguration background];
+      [background setBackgroundColor:layer2];
     }
 
-    [v3 setConfiguration:v5];
+    [footerButton setConfiguration:plainButtonConfiguration];
   }
 
   else
   {
-    v5 = [v3 configuration];
-    [v5 setImage:0];
-    [v3 setConfiguration:v5];
+    plainButtonConfiguration = [footerButton configuration];
+    [plainButtonConfiguration setImage:0];
+    [footerButton setConfiguration:plainButtonConfiguration];
   }
 
-  v18 = [v3 titleLabel];
-  v19 = [v18 font];
-  v20 = [(PXUIMapWidget *)self footerFont];
+  titleLabel = [footerButton titleLabel];
+  font = [titleLabel font];
+  footerFont2 = [(PXUIMapWidget *)self footerFont];
 
-  v21 = v19 != v20;
-  if (v19 != v20)
+  v21 = font != footerFont2;
+  if (font != footerFont2)
   {
-    v22 = [(PXUIMapWidget *)self footerFont];
-    v23 = [v3 titleLabel];
-    [v23 setFont:v22];
+    footerFont3 = [(PXUIMapWidget *)self footerFont];
+    titleLabel2 = [footerButton titleLabel];
+    [titleLabel2 setFont:footerFont3];
   }
 
-  v24 = [v4 titleLabel];
-  v25 = [v24 font];
-  v26 = [(PXUIMapWidget *)self footerFont];
+  titleLabel3 = [adjustButton titleLabel];
+  font2 = [titleLabel3 font];
+  footerFont4 = [(PXUIMapWidget *)self footerFont];
 
-  if (v25 != v26)
+  if (font2 != footerFont4)
   {
-    v27 = [(PXUIMapWidget *)self footerFont];
-    v28 = [v4 titleLabel];
-    [v28 setFont:v27];
+    footerFont5 = [(PXUIMapWidget *)self footerFont];
+    titleLabel4 = [adjustButton titleLabel];
+    [titleLabel4 setFont:footerFont5];
 
     v21 = 1;
   }
 
   if ([(PXUIMapWidget *)self showAddressLink])
   {
-    v29 = [(PXUIMapWidget *)self cachedFooterTitle];
+    cachedFooterTitle = [(PXUIMapWidget *)self cachedFooterTitle];
   }
 
   else
   {
-    v29 = 0;
+    cachedFooterTitle = 0;
   }
 
-  v30 = [v3 titleForState:0];
+  v30 = [footerButton titleForState:0];
   v31 = v30;
-  if (v29 == v30)
+  if (cachedFooterTitle == v30)
   {
 
 LABEL_23:
@@ -1015,23 +1015,23 @@ LABEL_23:
     goto LABEL_27;
   }
 
-  v32 = [v29 isEqualToString:v30];
+  v32 = [cachedFooterTitle isEqualToString:v30];
 
   if (v32)
   {
     goto LABEL_23;
   }
 
-  [v3 setTitle:v29 forState:0];
-  [v3 setAccessibilityValue:v29];
-  [v3 alpha];
-  if (v33 == 0.0 && v29)
+  [footerButton setTitle:cachedFooterTitle forState:0];
+  [footerButton setAccessibilityValue:cachedFooterTitle];
+  [footerButton alpha];
+  if (v33 == 0.0 && cachedFooterTitle)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __36__PXUIMapWidget__updateFooterButton__block_invoke_2;
     aBlock[3] = &unk_1E774C648;
-    v34 = v3;
+    v34 = footerButton;
     v37 = v34;
     v35 = _Block_copy(aBlock);
     if ([v34 px_intersectsWindowBounds])
@@ -1126,22 +1126,22 @@ void __37__PXUIMapWidget__pasteLocationAction__block_invoke(uint64_t a1)
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([(PXUIMapWidget *)self _containsLocationInPasteboard])
   {
-    v4 = [(PXUIMapWidget *)self _pasteLocationAction];
-    [v3 addObject:v4];
+    _pasteLocationAction = [(PXUIMapWidget *)self _pasteLocationAction];
+    [v3 addObject:_pasteLocationAction];
   }
 
   if ([(PXUIMapWidget *)self _hasLocation])
   {
-    v5 = [(PXUIMapWidget *)self _copyLocationAction];
-    [v3 addObject:v5];
+    _copyLocationAction = [(PXUIMapWidget *)self _copyLocationAction];
+    [v3 addObject:_copyLocationAction];
   }
 
   return v3;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  if ([(PXUIMapWidget *)self _prefersVisionOSInfoPanelLayout:a3])
+  if ([(PXUIMapWidget *)self _prefersVisionOSInfoPanelLayout:interaction])
   {
     v5 = 0;
   }
@@ -1170,26 +1170,26 @@ id __71__PXUIMapWidget_contextMenuInteraction_configurationForMenuAtLocation___b
 
 - (void)_updateFooterContextMenu
 {
-  v3 = [(PXUIMapWidget *)self _hasLocation];
-  v4 = [(PXUIMapWidget *)self _containsLocationInPasteboard];
+  _hasLocation = [(PXUIMapWidget *)self _hasLocation];
+  _containsLocationInPasteboard = [(PXUIMapWidget *)self _containsLocationInPasteboard];
   v5 = +[PXPhotosDetailsSettings sharedInstance];
-  v6 = [v5 mapWidgetAllowCopyPasteLocation];
+  mapWidgetAllowCopyPasteLocation = [v5 mapWidgetAllowCopyPasteLocation];
 
-  v7 = [(PXUIMapWidget *)self context];
-  v8 = [v7 photosDataSource];
-  v9 = [v8 containsMultipleAssets];
+  context = [(PXUIMapWidget *)self context];
+  photosDataSource = [context photosDataSource];
+  containsMultipleAssets = [photosDataSource containsMultipleAssets];
 
-  if ((v3 || v4) && v6 && (v9 & 1) == 0)
+  if ((_hasLocation || _containsLocationInPasteboard) && mapWidgetAllowCopyPasteLocation && (containsMultipleAssets & 1) == 0)
   {
     v11 = [objc_alloc(MEMORY[0x1E69DC8E0]) initWithDelegate:self];
-    v10 = [(PXUIMapWidget *)self _contentView];
-    [v10 addInteraction:v11];
+    _contentView = [(PXUIMapWidget *)self _contentView];
+    [_contentView addInteraction:v11];
   }
 }
 
-- (void)_updateFooterWithTitle:(id)a3
+- (void)_updateFooterWithTitle:(id)title
 {
-  [(PXUIMapWidget *)self setCachedFooterTitle:a3];
+  [(PXUIMapWidget *)self setCachedFooterTitle:title];
   [(PXUIMapWidget *)self _updateFooterButton];
 
   [(PXUIMapWidget *)self _updateFooterHeight];
@@ -1198,15 +1198,15 @@ id __71__PXUIMapWidget_contextMenuInteraction_configurationForMenuAtLocation___b
 - (void)_handleReloadFooterTitle
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6991F28] startSignpost];
-  v4 = [(PXUIMapWidget *)self _firstAsset];
-  [v4 fetchPropertySetsIfNeeded];
-  v5 = [v4 photoLibrary];
-  v6 = [v4 localIdentifier];
-  v35[0] = v6;
+  startSignpost = [MEMORY[0x1E6991F28] startSignpost];
+  _firstAsset = [(PXUIMapWidget *)self _firstAsset];
+  [_firstAsset fetchPropertySetsIfNeeded];
+  photoLibrary = [_firstAsset photoLibrary];
+  localIdentifier = [_firstAsset localIdentifier];
+  v35[0] = localIdentifier;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
   v29 = 0;
-  v8 = [v5 requestAssetRevGeocodingForAssetLocalIdentifiers:v7 withError:&v29];
+  v8 = [photoLibrary requestAssetRevGeocodingForAssetLocalIdentifiers:v7 withError:&v29];
   v9 = v29;
 
   if ((v8 & 1) == 0)
@@ -1215,29 +1215,29 @@ id __71__PXUIMapWidget_contextMenuInteraction_configurationForMenuAtLocation___b
     if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
       v22 = logger;
-      v23 = [v4 uuid];
-      v24 = [v9 localizedDescription];
+      uuid = [_firstAsset uuid];
+      localizedDescription = [v9 localizedDescription];
       *location = 138478083;
-      *&location[4] = v23;
+      *&location[4] = uuid;
       v33 = 2114;
-      v34 = v24;
+      v34 = localizedDescription;
       _os_log_error_impl(&dword_1A3C1C000, v22, OS_LOG_TYPE_ERROR, "PXUIMapWidget error requesting rev geocoding for assetuuid: %{private}@, error: %{public}@", location, 0x16u);
     }
   }
 
-  v11 = [(PXUIMapWidget *)self _firstAsset];
-  if (v11)
+  _firstAsset2 = [(PXUIMapWidget *)self _firstAsset];
+  if (_firstAsset2)
   {
-    v25 = [(PXUIMapWidget *)self _localizedGeoDescriptionForAsset:v11];
+    v25 = [(PXUIMapWidget *)self _localizedGeoDescriptionForAsset:_firstAsset2];
     v12 = MEMORY[0x1E6991F28];
-    v13 = v5;
+    v13 = photoLibrary;
     v14 = v9;
     v15 = *MEMORY[0x1E6991C98];
     v16 = *MEMORY[0x1E6991E18];
     v30[0] = *MEMORY[0x1E6991E40];
     v30[1] = v16;
     v31[0] = @"com.apple.photos.CPAnalytics.infoPanelRevGeoLookupDuration";
-    v31[1] = v11;
+    v31[1] = _firstAsset2;
     v30[2] = *MEMORY[0x1E6991E20];
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
@@ -1245,8 +1245,8 @@ id __71__PXUIMapWidget_contextMenuInteraction_configurationForMenuAtLocation___b
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:3];
     v20 = v15;
     v9 = v14;
-    v5 = v13;
-    [v12 endSignpost:v3 forEventName:v20 withPayload:v19];
+    photoLibrary = v13;
+    [v12 endSignpost:startSignpost forEventName:v20 withPayload:v19];
 
     objc_initWeak(location, self);
     block[0] = MEMORY[0x1E69E9820];
@@ -1279,13 +1279,13 @@ void __41__PXUIMapWidget__handleReloadFooterTitle__block_invoke(uint64_t a1)
     if ([(PXUIMapWidget *)self _hasLocation])
     {
       objc_initWeak(&location, self);
-      v3 = [(PXUIMapWidget *)self _reloadFooterQueue];
+      _reloadFooterQueue = [(PXUIMapWidget *)self _reloadFooterQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __35__PXUIMapWidget__reloadFooterTitle__block_invoke;
       block[3] = &unk_1E774C318;
       objc_copyWeak(&v6, &location);
-      dispatch_async(v3, block);
+      dispatch_async(_reloadFooterQueue, block);
 
       objc_destroyWeak(&v6);
       objc_destroyWeak(&location);
@@ -1328,7 +1328,7 @@ void __35__PXUIMapWidget__reloadFooterQueue__block_invoke()
 
 - (void)_updateFooterHeight
 {
-  v3 = [(PXUIMapWidget *)self showAddressLink];
+  showAddressLink = [(PXUIMapWidget *)self showAddressLink];
   if ([(PXUIMapWidget *)self infoPanelLayoutEnabled])
   {
     if ([(PXUIMapWidget *)self _hasLocation])
@@ -1345,19 +1345,19 @@ void __35__PXUIMapWidget__reloadFooterQueue__block_invoke()
   else
   {
     v4 = 0.0;
-    if (v3)
+    if (showAddressLink)
     {
-      v5 = [(PXUIMapWidget *)self _contentView];
-      [v5 frame];
+      _contentView = [(PXUIMapWidget *)self _contentView];
+      [_contentView frame];
       v7 = v6;
 
-      v8 = [(PXUIMapWidget *)self footerButton];
-      v9 = [v8 titleLabel];
-      [v9 sizeThatFits:{v7, 0.0}];
+      footerButton = [(PXUIMapWidget *)self footerButton];
+      titleLabel = [footerButton titleLabel];
+      [titleLabel sizeThatFits:{v7, 0.0}];
       v11 = v10;
 
-      v12 = [(PXUIMapWidget *)self spec];
-      [v12 distanceBetweenMapViewAndAddressTop];
+      spec = [(PXUIMapWidget *)self spec];
+      [spec distanceBetweenMapViewAndAddressTop];
       v4 = v11 + v13;
     }
   }
@@ -1367,10 +1367,10 @@ void __35__PXUIMapWidget__reloadFooterQueue__block_invoke()
 
 - (id)_firstAsset
 {
-  v2 = [(PXUIMapWidget *)self context];
-  v3 = [v2 firstAsset];
+  context = [(PXUIMapWidget *)self context];
+  firstAsset = [context firstAsset];
 
-  return v3;
+  return firstAsset;
 }
 
 - (int64_t)contentLayoutStyle
@@ -1388,10 +1388,10 @@ void __35__PXUIMapWidget__reloadFooterQueue__block_invoke()
 
 - (NSString)localizedDisclosureTitle
 {
-  v3 = [(PXUIMapWidget *)self context];
-  v4 = [v3 viewSourceOrigin];
+  context = [(PXUIMapWidget *)self context];
+  viewSourceOrigin = [context viewSourceOrigin];
 
-  v5 = [(PXWidgetSpec *)self->_spec userInterfaceIdiom]== 3 || v4 == 1;
+  v5 = [(PXWidgetSpec *)self->_spec userInterfaceIdiom]== 3 || viewSourceOrigin == 1;
   if (v5 && [(PXUIMapWidget *)self infoPanelLayoutEnabled])
   {
     v6 = 0;
@@ -1407,22 +1407,22 @@ void __35__PXUIMapWidget__reloadFooterQueue__block_invoke()
 
 - (NSString)localizedTitle
 {
-  v3 = [(PXUIMapWidget *)self _cachedLocalizedTitle];
-  v4 = [(PXUIMapWidget *)self context];
-  if ([v4 viewSourceOrigin] != 1)
+  _cachedLocalizedTitle = [(PXUIMapWidget *)self _cachedLocalizedTitle];
+  context = [(PXUIMapWidget *)self context];
+  if ([context viewSourceOrigin] != 1)
   {
 
     goto LABEL_5;
   }
 
-  v5 = [(PXUIMapWidget *)self infoPanelLayoutEnabled];
+  infoPanelLayoutEnabled = [(PXUIMapWidget *)self infoPanelLayoutEnabled];
 
-  if (!v5)
+  if (!infoPanelLayoutEnabled)
   {
 LABEL_5:
-    if (v3)
+    if (_cachedLocalizedTitle)
     {
-      v7 = v3;
+      v7 = _cachedLocalizedTitle;
     }
 
     else
@@ -1450,18 +1450,18 @@ LABEL_9:
 
 - (double)_horizontalLayoutWidth
 {
-  v3 = [(PXUIMapWidget *)self _prefersVisionOSInfoPanelLayout];
+  _prefersVisionOSInfoPanelLayout = [(PXUIMapWidget *)self _prefersVisionOSInfoPanelLayout];
   result = 0.0;
-  if (v3)
+  if (_prefersVisionOSInfoPanelLayout)
   {
-    v5 = [(PXUIMapWidget *)self spec];
-    v6 = [v5 contentSizeCategory];
+    spec = [(PXUIMapWidget *)self spec];
+    contentSizeCategory = [spec contentSizeCategory];
 
-    [PXPhotosDetailsUIViewController dynamicTextScaleFactorForCategory:v6];
+    [PXPhotosDetailsUIViewController dynamicTextScaleFactorForCategory:contentSizeCategory];
     v8 = v7;
-    v9 = [(PXUIMapWidget *)self _hasLocation];
+    _hasLocation = [(PXUIMapWidget *)self _hasLocation];
     result = v8 * 325.0;
-    if (!v9)
+    if (!_hasLocation)
     {
       return 0.0;
     }
@@ -1470,7 +1470,7 @@ LABEL_9:
   return result;
 }
 
-- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)a3
+- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)width
 {
   if (![(PXUIMapWidget *)self _hasLocation])
   {
@@ -1481,20 +1481,20 @@ LABEL_9:
   return result;
 }
 
-- (double)preferredContentHeightForWidth:(double)a3
+- (double)preferredContentHeightForWidth:(double)width
 {
-  v4 = [(PXUIMapWidget *)self _prefersVisionOSInfoPanelLayout];
-  v5 = [(PXUIMapWidget *)self spec];
-  v6 = v5;
-  if (v4)
+  _prefersVisionOSInfoPanelLayout = [(PXUIMapWidget *)self _prefersVisionOSInfoPanelLayout];
+  spec = [(PXUIMapWidget *)self spec];
+  v6 = spec;
+  if (_prefersVisionOSInfoPanelLayout)
   {
-    v7 = [v5 contentSizeCategory];
+    contentSizeCategory = [spec contentSizeCategory];
 
-    [PXPhotosDetailsUIViewController dynamicTextScaleFactorForCategory:v7];
+    [PXPhotosDetailsUIViewController dynamicTextScaleFactorForCategory:contentSizeCategory];
     v9 = v8;
-    v10 = [(PXUIMapWidget *)self _hasLocation];
+    _hasLocation = [(PXUIMapWidget *)self _hasLocation];
     result = v9 * 171.0;
-    if (!v10)
+    if (!_hasLocation)
     {
       return 0.0;
     }
@@ -1502,7 +1502,7 @@ LABEL_9:
 
   else
   {
-    [v5 contentGuideInsets];
+    [spec contentGuideInsets];
     v13 = v12;
     v15 = v14;
 
@@ -1514,35 +1514,35 @@ LABEL_9:
 
 - (BOOL)_hasLocation
 {
-  v2 = [(PXUIMapWidget *)self context];
-  v3 = [v2 photosDataSource];
-  HasLocationForDataSource = PXPhotosDetailsContextHasLocationForDataSource(v3);
+  context = [(PXUIMapWidget *)self context];
+  photosDataSource = [context photosDataSource];
+  HasLocationForDataSource = PXPhotosDetailsContextHasLocationForDataSource(photosDataSource);
 
   return HasLocationForDataSource;
 }
 
 - (BOOL)hasContentForCurrentInput
 {
-  v3 = [(PXUIMapWidget *)self _firstAsset];
-  v4 = [(PXUIMapWidget *)self infoPanelLayoutEnabled];
-  v5 = [(PXUIMapWidget *)self context];
-  v6 = [v5 viewSourceOrigin];
+  _firstAsset = [(PXUIMapWidget *)self _firstAsset];
+  infoPanelLayoutEnabled = [(PXUIMapWidget *)self infoPanelLayoutEnabled];
+  context = [(PXUIMapWidget *)self context];
+  viewSourceOrigin = [context viewSourceOrigin];
 
-  v7 = [v3 canPerformEditOperation:3];
-  v8 = [(PXUIMapWidget *)self widgetUnlockDelegate];
-  v9 = [v8 widgetDeviceIsUnlocked:self];
+  v7 = [_firstAsset canPerformEditOperation:3];
+  widgetUnlockDelegate = [(PXUIMapWidget *)self widgetUnlockDelegate];
+  v9 = [widgetUnlockDelegate widgetDeviceIsUnlocked:self];
 
   if (v9)
   {
-    v10 = [(PXUIMapWidget *)self _hasLocation];
-    if (v10 || !v4)
+    _hasLocation = [(PXUIMapWidget *)self _hasLocation];
+    if (_hasLocation || !infoPanelLayoutEnabled)
     {
-      v11 = v10;
+      v11 = _hasLocation;
     }
 
     else
     {
-      v11 = (v6 == 1) & v7;
+      v11 = (viewSourceOrigin == 1) & v7;
     }
   }
 
@@ -1554,27 +1554,27 @@ LABEL_9:
   return v11;
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_spec, a3);
+    v6 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
     [(PXUIMapWidget *)self _updateFooterHeight];
     [(PXUIMapWidget *)self _updateHeight];
     [(PXUIMapWidget *)self _updateContentViewFrame];
-    v5 = v6;
+    specCopy = v6;
   }
 }
 
 - (void)_layoutSubviews
 {
-  v3 = [(PXUIMapWidget *)self spec];
-  [v3 contentGuideInsets];
+  spec = [(PXUIMapWidget *)self spec];
+  [spec contentGuideInsets];
 
-  v4 = [(PXUIMapWidget *)self _hasLocation];
-  if ([(PXUIMapWidget *)self _prefersVisionOSInfoPanelLayout]&& v4)
+  _hasLocation = [(PXUIMapWidget *)self _hasLocation];
+  if ([(PXUIMapWidget *)self _prefersVisionOSInfoPanelLayout]&& _hasLocation)
   {
     [(PXUIMapWidget *)self _horizontalLayoutWidth];
     width = v5;
@@ -1593,13 +1593,13 @@ LABEL_9:
 
   [(PXUIMapWidget *)self footerHeight];
   v9 = v8;
-  v10 = [(PXUIMapWidget *)self spec];
-  [v10 displayScale];
+  spec2 = [(PXUIMapWidget *)self spec];
+  [spec2 displayScale];
 
-  v11 = [(PXUIMapWidget *)self _firstAsset];
-  v12 = [v11 canPerformEditOperation:3];
+  _firstAsset = [(PXUIMapWidget *)self _firstAsset];
+  v12 = [_firstAsset canPerformEditOperation:3];
 
-  if (v4)
+  if (_hasLocation)
   {
     v13 = height - v9;
     v14 = v12 ^ 1u;
@@ -1617,21 +1617,21 @@ LABEL_9:
     v14 = 1;
   }
 
-  v18 = [(PXUIMapWidget *)self _imageView];
-  [v18 setFrame:{v17, v15, v16, v13}];
+  _imageView = [(PXUIMapWidget *)self _imageView];
+  [_imageView setFrame:{v17, v15, v16, v13}];
 
-  v19 = [(PXUIMapWidget *)self _imageView];
-  [v19 setHidden:!v4];
+  _imageView2 = [(PXUIMapWidget *)self _imageView];
+  [_imageView2 setHidden:!_hasLocation];
 
-  v20 = [(PXUIMapWidget *)self adjustButton];
-  [v20 setHidden:v14];
+  adjustButton = [(PXUIMapWidget *)self adjustButton];
+  [adjustButton setHidden:v14];
 
-  v21 = [MEMORY[0x1E69DC668] sharedApplication];
-  v22 = [v21 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v4)
+  if (_hasLocation)
   {
-    if (v22 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v23 = 2;
     }
@@ -1641,14 +1641,14 @@ LABEL_9:
       v23 = 1;
     }
 
-    v24 = [(PXUIMapWidget *)self footerButton];
-    [v24 setContentHorizontalAlignment:v23];
+    footerButton = [(PXUIMapWidget *)self footerButton];
+    [footerButton setContentHorizontalAlignment:v23];
 
-    v25 = [(PXUIMapWidget *)self footerButton];
-    [v25 setContentVerticalAlignment:0];
+    footerButton2 = [(PXUIMapWidget *)self footerButton];
+    [footerButton2 setContentVerticalAlignment:0];
 
-    v26 = [(PXUIMapWidget *)self footerButton];
-    [v26 setBackgroundColor:0];
+    footerButton3 = [(PXUIMapWidget *)self footerButton];
+    [footerButton3 setBackgroundColor:0];
 
     if ([(PXUIMapWidget *)self infoPanelLayoutEnabled])
     {
@@ -1663,19 +1663,19 @@ LABEL_9:
 
   else
   {
-    v27 = [(PXUIMapWidget *)self footerButton];
-    [v27 setContentHorizontalAlignment:0];
+    footerButton4 = [(PXUIMapWidget *)self footerButton];
+    [footerButton4 setContentHorizontalAlignment:0];
 
-    v28 = [(PXUIMapWidget *)self footerButton];
-    [v28 setContentVerticalAlignment:0];
+    footerButton5 = [(PXUIMapWidget *)self footerButton];
+    [footerButton5 setContentVerticalAlignment:0];
 
-    v29 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-    v30 = [(PXUIMapWidget *)self footerButton];
-    [v30 setBackgroundColor:v29];
+    quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+    footerButton6 = [(PXUIMapWidget *)self footerButton];
+    [footerButton6 setBackgroundColor:quaternarySystemFillColor];
 
-    v31 = [(PXUIMapWidget *)self footerButton];
-    v32 = [v31 layer];
-    [v32 setCornerRadius:8.0];
+    footerButton7 = [(PXUIMapWidget *)self footerButton];
+    layer = [footerButton7 layer];
+    [layer setCornerRadius:8.0];
 
     [(PXUIMapWidget *)self infoPanelLayoutEnabled];
   }
@@ -1690,16 +1690,16 @@ LABEL_9:
   v35.size.width = v16;
   v35.size.height = v13;
   CGRectGetMaxY(v35);
-  v33 = [(PXUIMapWidget *)self spec];
-  [v33 distanceBetweenMapViewAndAddressTop];
+  spec3 = [(PXUIMapWidget *)self spec];
+  [spec3 distanceBetweenMapViewAndAddressTop];
 
   PXRectRoundToPixel();
 }
 
 - (void)_updateContentViewFrame
 {
-  v3 = [(PXUIMapWidget *)self spec];
-  [v3 contentGuideInsets];
+  spec = [(PXUIMapWidget *)self spec];
+  [spec contentGuideInsets];
 
   width = self->_contentSize.width;
   height = self->_contentSize.height;
@@ -1708,8 +1708,8 @@ LABEL_9:
     PXEdgeInsetsInsetRect();
   }
 
-  v6 = [(PXUIMapWidget *)self _contentView];
-  [v6 setFrame:{0.0, 0.0, width, height}];
+  _contentView = [(PXUIMapWidget *)self _contentView];
+  [_contentView setFrame:{0.0, 0.0, width, height}];
 
   [(PXUIMapWidget *)self _layoutSubviews];
 }
@@ -1717,12 +1717,12 @@ LABEL_9:
 - (int64_t)_fetchCountOfAssetsWithLocation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v2 = [(PXUIMapWidget *)self _fetchResultsForSections];
+  _fetchResultsForSections = [(PXUIMapWidget *)self _fetchResultsForSections];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  v3 = [_fetchResultsForSections countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1734,7 +1734,7 @@ LABEL_9:
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_fetchResultsForSections);
         }
 
         v8 = *(*(&v19 + 1) + 8 * i);
@@ -1768,7 +1768,7 @@ LABEL_9:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v4 = [_fetchResultsForSections countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v4);
@@ -1785,21 +1785,21 @@ LABEL_9:
 - (id)_fetchResultsForSections
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PXUIMapWidget *)self context];
-  v5 = [v4 photosDataSource];
+  context = [(PXUIMapWidget *)self context];
+  photosDataSource = [context photosDataSource];
 
-  if ([v5 numberOfSections] >= 1)
+  if ([photosDataSource numberOfSections] >= 1)
   {
     v6 = 0;
     do
     {
-      v7 = [v5 assetsInSection:v6];
+      v7 = [photosDataSource assetsInSection:v6];
       [v3 addObject:v7];
 
       ++v6;
     }
 
-    while ([v5 numberOfSections] > v6);
+    while ([photosDataSource numberOfSections] > v6);
   }
 
   v8 = [MEMORY[0x1E695DEC8] arrayWithArray:v3];
@@ -1807,7 +1807,7 @@ LABEL_9:
   return v8;
 }
 
-- (void)_handleContentSizeCategoryDidChange:(id)a3
+- (void)_handleContentSizeCategoryDidChange:(id)change
 {
   footerFont = self->_footerFont;
   self->_footerFont = 0;
@@ -1817,27 +1817,27 @@ LABEL_9:
   [(PXUIMapWidget *)self _updateFooterButton];
 }
 
-- (void)_setHasLoadedContentData:(BOOL)a3
+- (void)_setHasLoadedContentData:(BOOL)data
 {
-  if (self->_hasLoadedContentData != a3)
+  if (self->_hasLoadedContentData != data)
   {
-    self->_hasLoadedContentData = a3;
-    v5 = [(PXUIMapWidget *)self widgetDelegate];
-    [v5 widgetHasLoadedContentDataDidChange:self];
+    self->_hasLoadedContentData = data;
+    widgetDelegate = [(PXUIMapWidget *)self widgetDelegate];
+    [widgetDelegate widgetHasLoadedContentDataDidChange:self];
   }
 }
 
 - (void)unloadContentData
 {
   self->_isLoaded = 0;
-  v3 = [(PXPhotosDetailsContext *)self->_context photosDataSource];
-  [v3 unregisterChangeObserver:self];
+  photosDataSource = [(PXPhotosDetailsContext *)self->_context photosDataSource];
+  [photosDataSource unregisterChangeObserver:self];
 }
 
 - (CGSize)_estimatedMapViewImageSize
 {
-  v3 = [(PXUIMapWidget *)self spec];
-  [v3 contentGuideInsets];
+  spec = [(PXUIMapWidget *)self spec];
+  [spec contentGuideInsets];
 
   if ([(PXUIMapWidget *)self _prefersVisionOSInfoPanelLayout])
   {
@@ -1875,16 +1875,16 @@ LABEL_9:
 - (void)loadContentData
 {
   self->_isLoaded = 1;
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__handleContentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleContentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 
   if ([(PXUIMapWidget *)self _hasLocation])
   {
     [(PXUIMapWidget *)self _estimatedMapViewImageSize];
     v5 = v4;
     v7 = v6;
-    v8 = [(PXUIMapWidget *)self _fetchResultsForSections];
-    [(PXUIMapWidget *)self _fetchPlacesSnapshotUsingMapType:0 fetchResults:v8 imageSize:0 shouldFetchNearbyAssetCount:v5, v7];
+    _fetchResultsForSections = [(PXUIMapWidget *)self _fetchResultsForSections];
+    [(PXUIMapWidget *)self _fetchPlacesSnapshotUsingMapType:0 fetchResults:_fetchResultsForSections imageSize:0 shouldFetchNearbyAssetCount:v5, v7];
   }
 }
 
@@ -1902,33 +1902,33 @@ LABEL_9:
     [v3 sendEvent:@"com.apple.photos.CPAnalytics.infoPanelAdjustLocationTapped" withPayload:v6];
   }
 
-  v7 = [(PXUIMapWidget *)self widgetUnlockDelegate];
+  widgetUnlockDelegate = [(PXUIMapWidget *)self widgetUnlockDelegate];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__PXUIMapWidget__didTapAdjustLocation__block_invoke;
   v8[3] = &unk_1E774C648;
   v8[4] = self;
-  [v7 widget:self performAfterUnlockingDeviceIfNecessary:v8 failurehandler:0];
+  [widgetUnlockDelegate widget:self performAfterUnlockingDeviceIfNecessary:v8 failurehandler:0];
 }
 
 - (void)_pasteLocationTapped
 {
-  v2 = [(PXUIMapWidget *)self _firstAsset];
-  if (v2)
+  _firstAsset = [(PXUIMapWidget *)self _firstAsset];
+  if (_firstAsset)
   {
-    v3 = v2;
-    PXAssignLocationFromPasteboardToAsset(v2);
-    v2 = v3;
+    v3 = _firstAsset;
+    PXAssignLocationFromPasteboardToAsset(_firstAsset);
+    _firstAsset = v3;
   }
 }
 
 - (BOOL)_containsLocationInPasteboard
 {
-  v2 = [(PXUIMapWidget *)self _firstAsset];
-  v3 = v2;
-  if (v2)
+  _firstAsset = [(PXUIMapWidget *)self _firstAsset];
+  v3 = _firstAsset;
+  if (_firstAsset)
   {
-    v4 = PXCanAssignLocationFromPasteboardToAsset(v2);
+    v4 = PXCanAssignLocationFromPasteboardToAsset(_firstAsset);
   }
 
   else
@@ -1941,12 +1941,12 @@ LABEL_9:
 
 - (void)_copyLocationTapped
 {
-  v2 = [(PXUIMapWidget *)self _firstAsset];
-  if (v2)
+  _firstAsset = [(PXUIMapWidget *)self _firstAsset];
+  if (_firstAsset)
   {
-    v3 = v2;
-    PXCopyLocationFromAssetToPasteboard(v2);
-    v2 = v3;
+    v3 = _firstAsset;
+    PXCopyLocationFromAssetToPasteboard(_firstAsset);
+    _firstAsset = v3;
   }
 }
 
@@ -1960,28 +1960,28 @@ LABEL_9:
     contentView = self->__contentView;
     self->__contentView = v6;
 
-    v8 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [(UIView *)self->__contentView setBackgroundColor:v8];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [(UIView *)self->__contentView setBackgroundColor:secondarySystemBackgroundColor];
 
-    v9 = [(PXUIMapWidget *)self widgetDelegate];
-    v56 = [v9 widgetExtendedTraitCollection:self];
+    widgetDelegate = [(PXUIMapWidget *)self widgetDelegate];
+    v56 = [widgetDelegate widgetExtendedTraitCollection:self];
 
     [v56 displayScale];
     v11 = v10;
     v12 = objc_alloc_init(off_1E7721760);
-    v13 = [(PXUIMapWidget *)self spec];
-    v54 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    spec = [(PXUIMapWidget *)self spec];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
     [v12 setBackgroundColor:?];
     [v12 setDisplayScale:v11];
-    v14 = [v56 userInterfaceIdiom];
-    v15 = [(PXUIMapWidget *)self infoPanelLayoutEnabled];
+    userInterfaceIdiom = [v56 userInterfaceIdiom];
+    infoPanelLayoutEnabled = [(PXUIMapWidget *)self infoPanelLayoutEnabled];
     [(PXUIMapWidget *)self footerHeight];
     v17 = height - v16;
     v18 = objc_alloc_init(PXImageUIView);
     [(PXImageUIView *)v18 setFrame:0.0, 0.0, width, v17];
-    v55 = v13;
-    v19 = [v13 defaultPlacesPlaceholderColor];
-    [(PXImageUIView *)v18 setBackgroundColor:v19];
+    v55 = spec;
+    defaultPlacesPlaceholderColor = [spec defaultPlacesPlaceholderColor];
+    [(PXImageUIView *)v18 setBackgroundColor:defaultPlacesPlaceholderColor];
 
     v20 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTapGestureRecognizer_];
     [(PXImageUIView *)v18 addGestureRecognizer:v20];
@@ -1991,8 +1991,8 @@ LABEL_9:
     [(PXImageUIView *)v18 setContentMode:2];
     [(PXImageUIView *)v18 setSpec:v12];
     [(PXImageUIView *)v18 setFloatingRotationEnabled:0];
-    [(PXImageUIView *)v18 setFloatingViewEnabled:v14 == 3];
-    if (v14 != 3)
+    [(PXImageUIView *)v18 setFloatingViewEnabled:userInterfaceIdiom == 3];
+    if (userInterfaceIdiom != 3)
     {
       [(PXImageUIView *)v18 setDrawsFocusRing:1];
       v21 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTapGestureRecognizer_];
@@ -2011,15 +2011,15 @@ LABEL_9:
 
     [v22 setAccessibilityIdentifier:@"com.apple.photos.infoPanel.map.footer.address"];
     objc_storeStrong(&self->_footerButton, v22);
-    v25 = [v22 titleLabel];
-    [v25 setLineBreakMode:5];
-    [v25 setNumberOfLines:{-[PXUIMapWidget infoPanelLayoutEnabled](self, "infoPanelLayoutEnabled")}];
-    [v25 setTextAlignment:4];
-    if (v15)
+    titleLabel = [v22 titleLabel];
+    [titleLabel setLineBreakMode:5];
+    [titleLabel setNumberOfLines:{-[PXUIMapWidget infoPanelLayoutEnabled](self, "infoPanelLayoutEnabled")}];
+    [titleLabel setTextAlignment:4];
+    if (infoPanelLayoutEnabled)
     {
       [(PXUIMapWidget *)self _updateFooterContextMenu];
-      v26 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v26 addObserver:self selector:sel__clipboardChanged_ name:*MEMORY[0x1E69DE270] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__clipboardChanged_ name:*MEMORY[0x1E69DE270] object:0];
 
       if ([(PXUIMapWidget *)self _prefersVisionOSInfoPanelLayout])
       {
@@ -2033,32 +2033,32 @@ LABEL_9:
       }
 
       [(UIView *)v28 setAutoresizingMask:18];
-      v29 = [(UIView *)v28 contentView];
-      [v29 addSubview:v22];
+      contentView = [(UIView *)v28 contentView];
+      [contentView addSubview:v22];
 
-      v30 = [(PXUIMapWidget *)self _prefersVisionOSInfoPanelLayout];
+      _prefersVisionOSInfoPanelLayout = [(PXUIMapWidget *)self _prefersVisionOSInfoPanelLayout];
       v31 = [MEMORY[0x1E69DC738] buttonWithType:1];
-      if (v30)
+      if (_prefersVisionOSInfoPanelLayout)
       {
-        v32 = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
+        borderlessButtonConfiguration = [MEMORY[0x1E69DC740] borderlessButtonConfiguration];
         v33 = PXLocalizedStringFromTable(@"PXPlacesWidgetAdjustButtonTitle", @"PhotosUICore");
-        [v32 setTitle:v33];
+        [borderlessButtonConfiguration setTitle:v33];
 
-        [v32 setContentInsets:{8.0, 8.0, 8.0, 8.0}];
+        [borderlessButtonConfiguration setContentInsets:{8.0, 8.0, 8.0, 8.0}];
         v34 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.3];
-        v35 = [v32 background];
-        [v35 setBackgroundColor:v34];
+        background = [borderlessButtonConfiguration background];
+        [background setBackgroundColor:v34];
 
-        v36 = [v32 background];
-        [v36 setCornerRadius:14.0];
+        background2 = [borderlessButtonConfiguration background];
+        [background2 setCornerRadius:14.0];
 
-        [(UIButton *)v31 setConfiguration:v32];
+        [(UIButton *)v31 setConfiguration:borderlessButtonConfiguration];
       }
 
       else
       {
-        v32 = PXLocalizedStringFromTable(@"PXPlacesWidgetAdjustButtonTitle", @"PhotosUICore");
-        [(UIButton *)v31 setTitle:v32 forState:0];
+        borderlessButtonConfiguration = PXLocalizedStringFromTable(@"PXPlacesWidgetAdjustButtonTitle", @"PhotosUICore");
+        [(UIButton *)v31 setTitle:borderlessButtonConfiguration forState:0];
       }
 
       [(UIButton *)v31 addTarget:self action:sel__didTapAdjustLocation forControlEvents:64];
@@ -2066,8 +2066,8 @@ LABEL_9:
       [(UIButton *)v31 setAccessibilityHint:v37];
 
       [(UIButton *)v31 setAccessibilityIdentifier:@"com.apple.photos.infoPanel.map.footer.adjust"];
-      v38 = [(UIView *)v28 contentView];
-      [v38 addSubview:v31];
+      contentView2 = [(UIView *)v28 contentView];
+      [contentView2 addSubview:v31];
 
       adjustButton = self->_adjustButton;
       self->_adjustButton = v31;
@@ -2077,11 +2077,11 @@ LABEL_9:
       self->_footerView = v28;
       v42 = v28;
 
-      v43 = [(UIView *)self->__contentView layer];
-      [v43 setCornerRadius:8.0];
+      layer = [(UIView *)self->__contentView layer];
+      [layer setCornerRadius:8.0];
 
-      v44 = [(UIView *)self->__contentView layer];
-      [v44 setMasksToBounds:1];
+      layer2 = [(UIView *)self->__contentView layer];
+      [layer2 setMasksToBounds:1];
 
       [(UIView *)self->__contentView addSubview:v18];
       [(UIView *)self->__contentView addSubview:v42];
@@ -2096,8 +2096,8 @@ LABEL_9:
     [(PXUIMapWidget *)self _reloadFooterTitle];
     [(PXUIMapWidget *)self _updateContentViewFrame];
     v45 = objc_alloc(MEMORY[0x1E69DD250]);
-    v46 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-    [v46 bounds];
+    px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+    [px_mainScreen bounds];
     v47 = [v45 initWithFrame:?];
     containerView = self->__containerView;
     self->__containerView = v47;
@@ -2108,9 +2108,9 @@ LABEL_9:
     v52 = -[_PXPlacesSnapshotKey initWithImageSize:userInterfaceStyle:](v49, "initWithImageSize:userInterfaceStyle:", [v56 userInterfaceStyle], v50, v51);
     if ([(PXUIMapWidget *)self _hasCachedSnapshotImageForKey:v52])
     {
-      v53 = [(PXUIMapWidget *)self _fetchResultsForSections];
+      _fetchResultsForSections = [(PXUIMapWidget *)self _fetchResultsForSections];
       [(PXUIMapWidget *)self _estimatedMapViewImageSize];
-      [(PXUIMapWidget *)self _fetchPlacesSnapshotUsingMapType:0 fetchResults:v53 imageSize:0 shouldFetchNearbyAssetCount:?];
+      [(PXUIMapWidget *)self _fetchPlacesSnapshotUsingMapType:0 fetchResults:_fetchResultsForSections imageSize:0 shouldFetchNearbyAssetCount:?];
     }
 
     else
@@ -2122,45 +2122,45 @@ LABEL_9:
 
 - (BOOL)infoPanelLayoutEnabled
 {
-  v3 = [(PXUIMapWidget *)self spec];
-  v4 = [v3 userInterfaceIdiom];
+  spec = [(PXUIMapWidget *)self spec];
+  userInterfaceIdiom = [spec userInterfaceIdiom];
 
-  v5 = [(PXUIMapWidget *)self context];
-  v6 = [v5 viewSourceOrigin];
+  context = [(PXUIMapWidget *)self context];
+  viewSourceOrigin = [context viewSourceOrigin];
 
-  return v6 == 1 && v4 != 3;
+  return viewSourceOrigin == 1 && userInterfaceIdiom != 3;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  if (self->_contentSize.width != a3.width || self->_contentSize.height != a3.height)
+  if (self->_contentSize.width != size.width || self->_contentSize.height != size.height)
   {
-    self->_contentSize = a3;
+    self->_contentSize = size;
     if (self->__contentView)
     {
       [(PXUIMapWidget *)self _updateContentViewFrame];
       if ([(PXUIMapWidget *)self _hasLocation])
       {
-        v9 = [(PXUIMapWidget *)self _fetchResultsForSections];
+        _fetchResultsForSections = [(PXUIMapWidget *)self _fetchResultsForSections];
         v5 = [(PXUIMapWidget *)self _hasLocation]^ 1;
-        v6 = [(PXUIMapWidget *)self _imageView];
-        [v6 frame];
-        [(PXUIMapWidget *)self _fetchPlacesSnapshotUsingMapType:v5 fetchResults:v9 imageSize:0 shouldFetchNearbyAssetCount:v7, v8];
+        _imageView = [(PXUIMapWidget *)self _imageView];
+        [_imageView frame];
+        [(PXUIMapWidget *)self _fetchPlacesSnapshotUsingMapType:v5 fetchResults:_fetchResultsForSections imageSize:0 shouldFetchNearbyAssetCount:v7, v8];
       }
     }
   }
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PXPhotosDetailsContext *)self->_context photosDataSource];
-  [v5 unregisterChangeObserver:self];
+  contextCopy = context;
+  photosDataSource = [(PXPhotosDetailsContext *)self->_context photosDataSource];
+  [photosDataSource unregisterChangeObserver:self];
 
-  v7 = [(PXPhotosDetailsContext *)v4 photosDataSource];
-  [v7 registerChangeObserver:self];
+  photosDataSource2 = [(PXPhotosDetailsContext *)contextCopy photosDataSource];
+  [photosDataSource2 registerChangeObserver:self];
   context = self->_context;
-  self->_context = v4;
+  self->_context = contextCopy;
 
   if (self->_isLoaded)
   {
@@ -2168,11 +2168,11 @@ LABEL_9:
   }
 }
 
-- (void)setShowAddressLink:(BOOL)a3
+- (void)setShowAddressLink:(BOOL)link
 {
-  if (self->_showAddressLink != a3)
+  if (self->_showAddressLink != link)
   {
-    self->_showAddressLink = a3;
+    self->_showAddressLink = link;
     if (self->_isLoaded)
     {
       [(PXUIMapWidget *)self _reloadFooterTitle];

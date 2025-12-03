@@ -1,14 +1,14 @@
 @interface HDHRNotificationAnalytics
-- (HDHRNotificationAnalytics)initWithEventSample:(id)a3 areHealthNotificationsAuthorized:(BOOL)a4;
-- (id)_createMetricFromEventSample:(id)a3;
+- (HDHRNotificationAnalytics)initWithEventSample:(id)sample areHealthNotificationsAuthorized:(BOOL)authorized;
+- (id)_createMetricFromEventSample:(id)sample;
 - (void)submit;
 @end
 
 @implementation HDHRNotificationAnalytics
 
-- (HDHRNotificationAnalytics)initWithEventSample:(id)a3 areHealthNotificationsAuthorized:(BOOL)a4
+- (HDHRNotificationAnalytics)initWithEventSample:(id)sample areHealthNotificationsAuthorized:(BOOL)authorized
 {
-  v6 = a3;
+  sampleCopy = sample;
   if (!HKImproveHealthAndActivityAnalyticsAllowed())
   {
     goto LABEL_5;
@@ -18,26 +18,26 @@
   v12.super_class = HDHRNotificationAnalytics;
   v7 = [(HDHRNotificationAnalytics *)&v12 init];
   self = v7;
-  if (!v7 || (v7->_areHealthNotificationsAuthorized = a4, [(HDHRNotificationAnalytics *)v7 _createMetricFromEventSample:v6], v8 = objc_claimAutoreleasedReturnValue(), metric = self->_metric, self->_metric = v8, metric, self->_metric))
+  if (!v7 || (v7->_areHealthNotificationsAuthorized = authorized, [(HDHRNotificationAnalytics *)v7 _createMetricFromEventSample:sampleCopy], v8 = objc_claimAutoreleasedReturnValue(), metric = self->_metric, self->_metric = v8, metric, self->_metric))
   {
     self = self;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
 LABEL_5:
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)_createMetricFromEventSample:(id)a3
+- (id)_createMetricFromEventSample:(id)sample
 {
-  v4 = a3;
-  v5 = [v4 metadata];
-  v6 = [v5 hk_safeValueIfExistsForKeyPath:*MEMORY[0x277CCE048] class:objc_opt_class() error:0];
+  sampleCopy = sample;
+  metadata = [sampleCopy metadata];
+  v6 = [metadata hk_safeValueIfExistsForKeyPath:*MEMORY[0x277CCE048] class:objc_opt_class() error:0];
 
   if (v6)
   {
@@ -51,16 +51,16 @@ LABEL_5:
     v8 = 0;
   }
 
-  v9 = [v4 categoryType];
-  v10 = [v9 code];
+  categoryType = [sampleCopy categoryType];
+  code = [categoryType code];
 
-  if (v10 > 155)
+  if (code > 155)
   {
-    if (v10 == 236)
+    if (code == 236)
     {
       v14 = [[HDHRNotificationMetric alloc] initWithNotificationType:@"Cardio Fitness" areHealthNotificationsAuthorized:self->_areHealthNotificationsAuthorized];
-      v19 = [v4 metadata];
-      v16 = [v19 hk_safeNumberIfExistsForKeyPath:*MEMORY[0x277CCE0D8] error:0];
+      metadata2 = [sampleCopy metadata];
+      v16 = [metadata2 hk_safeNumberIfExistsForKeyPath:*MEMORY[0x277CCE0D8] error:0];
 
       if (v16)
       {
@@ -80,14 +80,14 @@ LABEL_5:
 
     else
     {
-      if (v10 != 156)
+      if (code != 156)
       {
         goto LABEL_12;
       }
 
       v14 = [[HDHRNotificationMetric alloc] initWithNotificationType:@"IRN" areHealthNotificationsAuthorized:self->_areHealthNotificationsAuthorized];
-      v15 = [v4 metadata];
-      v16 = [v15 hk_safeStringIfExistsForKeyPath:*MEMORY[0x277CCDFB8] error:0];
+      metadata3 = [sampleCopy metadata];
+      v16 = [metadata3 hk_safeStringIfExistsForKeyPath:*MEMORY[0x277CCDFB8] error:0];
 
       if (v16)
       {
@@ -98,7 +98,7 @@ LABEL_5:
     goto LABEL_24;
   }
 
-  if (v10 == 140)
+  if (code == 140)
   {
     v11 = [HDHRNotificationMetric alloc];
     areHealthNotificationsAuthorized = self->_areHealthNotificationsAuthorized;
@@ -114,7 +114,7 @@ LABEL_16:
     goto LABEL_24;
   }
 
-  if (v10 == 147)
+  if (code == 147)
   {
     v11 = [HDHRNotificationMetric alloc];
     areHealthNotificationsAuthorized = self->_areHealthNotificationsAuthorized;
@@ -127,7 +127,7 @@ LABEL_12:
   v17 = HKLogHeartRateCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
-    [(HDHRNotificationAnalytics *)self _createMetricFromEventSample:v4];
+    [(HDHRNotificationAnalytics *)self _createMetricFromEventSample:sampleCopy];
   }
 
   v14 = 0;
@@ -140,10 +140,10 @@ LABEL_24:
 {
   objc_initWeak(&location, self);
   v3 = BiomeLibrary();
-  v4 = [v3 UserFocus];
-  v5 = [v4 ComputedMode];
-  v6 = [v5 publisher];
-  v7 = [v6 last];
+  userFocus = [v3 UserFocus];
+  computedMode = [userFocus ComputedMode];
+  publisher = [computedMode publisher];
+  last = [publisher last];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __35__HDHRNotificationAnalytics_submit__block_invoke;
@@ -155,7 +155,7 @@ LABEL_24:
   v9[3] = &unk_278660330;
   v9[4] = self;
   objc_copyWeak(&v10, &location);
-  v8 = [v7 sinkWithCompletion:v11 receiveInput:v9];
+  v8 = [last sinkWithCompletion:v11 receiveInput:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);

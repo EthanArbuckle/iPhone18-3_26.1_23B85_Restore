@@ -1,10 +1,10 @@
 @interface VKManifestTileGroupObserverProxy
-- (VKManifestTileGroupObserverProxy)initWithQueue:(id)a3;
+- (VKManifestTileGroupObserverProxy)initWithQueue:(id)queue;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)experimentConfigurationDidChange:(id)a3;
-- (void)resourceManifestManager:(id)a3 didChangeActiveTileGroup:(id)a4 fromOldTileGroup:(id)a5;
-- (void)resourceManifestManagerWillChangeActiveTileGroup:(id)a3;
+- (void)experimentConfigurationDidChange:(id)change;
+- (void)resourceManifestManager:(id)manager didChangeActiveTileGroup:(id)group fromOldTileGroup:(id)tileGroup;
+- (void)resourceManifestManagerWillChangeActiveTileGroup:(id)group;
 @end
 
 @implementation VKManifestTileGroupObserverProxy
@@ -17,10 +17,10 @@
   return self;
 }
 
-- (void)experimentConfigurationDidChange:(id)a3
+- (void)experimentConfigurationDidChange:(id)change
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   if (self->_experimentConfigurationDidChange.__f_.__f_)
   {
     if (GEOGetVectorKitVKDefaultLog_onceToken != -1)
@@ -36,7 +36,7 @@
       _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[observer:%p] Received ExperimentalConfigurationDidChange Notification", v9, 0xCu);
     }
 
-    v6 = v4;
+    v6 = changeCopy;
     *v9 = v6;
     f = self->_experimentConfigurationDidChange.__f_.__f_;
     if (!f)
@@ -50,12 +50,12 @@
   }
 }
 
-- (void)resourceManifestManager:(id)a3 didChangeActiveTileGroup:(id)a4 fromOldTileGroup:(id)a5
+- (void)resourceManifestManager:(id)manager didChangeActiveTileGroup:(id)group fromOldTileGroup:(id)tileGroup
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  groupCopy = group;
+  tileGroupCopy = tileGroup;
   if (self->_didChangeActiveTileGroup.__f_.__f_)
   {
     if (GEOGetVectorKitVKDefaultLog_onceToken != -1)
@@ -71,11 +71,11 @@
       _os_log_impl(&dword_1B2754000, v11, OS_LOG_TYPE_INFO, "[observer:%p] Received DidChangeActiveTileGroup Notification", buf, 0xCu);
     }
 
-    v12 = v8;
+    v12 = managerCopy;
     *buf = v12;
-    v13 = v9;
+    v13 = groupCopy;
     v18 = v13;
-    v14 = v10;
+    v14 = tileGroupCopy;
     v17 = v14;
     f = self->_didChangeActiveTileGroup.__f_.__f_;
     if (!f)
@@ -89,10 +89,10 @@
   }
 }
 
-- (void)resourceManifestManagerWillChangeActiveTileGroup:(id)a3
+- (void)resourceManifestManagerWillChangeActiveTileGroup:(id)group
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupCopy = group;
   if (self->_willChangeActiveTileGroup.__f_.__f_)
   {
     if (GEOGetVectorKitVKDefaultLog_onceToken != -1)
@@ -108,7 +108,7 @@
       _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "[observer:%p] Received WillChangeActiveTileGroup Notification", v9, 0xCu);
     }
 
-    v6 = v4;
+    v6 = groupCopy;
     *v9 = v6;
     f = self->_willChangeActiveTileGroup.__f_.__f_;
     if (!f)
@@ -161,30 +161,30 @@
     (*(v6->super.isa + 5))(v6, a2);
   }
 
-  v7 = [MEMORY[0x1E69A2478] modernManager];
-  [v7 removeTileGroupObserver:self];
+  modernManager = [MEMORY[0x1E69A2478] modernManager];
+  [modernManager removeTileGroupObserver:self];
 
-  v8 = [MEMORY[0x1E69A1D90] sharedConfiguration];
-  [v8 removeExperimentObserver:self];
+  mEMORY[0x1E69A1D90] = [MEMORY[0x1E69A1D90] sharedConfiguration];
+  [mEMORY[0x1E69A1D90] removeExperimentObserver:self];
 
   v9.receiver = self;
   v9.super_class = VKManifestTileGroupObserverProxy;
   [(VKManifestTileGroupObserverProxy *)&v9 dealloc];
 }
 
-- (VKManifestTileGroupObserverProxy)initWithQueue:(id)a3
+- (VKManifestTileGroupObserverProxy)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = VKManifestTileGroupObserverProxy;
   v5 = [(VKManifestTileGroupObserverProxy *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E69A2478] modernManager];
-    [v6 addTileGroupObserver:v5 queue:v4];
+    modernManager = [MEMORY[0x1E69A2478] modernManager];
+    [modernManager addTileGroupObserver:v5 queue:queueCopy];
 
-    v7 = [MEMORY[0x1E69A1D90] sharedConfiguration];
-    [v7 addExperimentObserver:v5 queue:v4];
+    mEMORY[0x1E69A1D90] = [MEMORY[0x1E69A1D90] sharedConfiguration];
+    [mEMORY[0x1E69A1D90] addExperimentObserver:v5 queue:queueCopy];
   }
 
   return v5;

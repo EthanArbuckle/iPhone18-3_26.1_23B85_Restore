@@ -1,6 +1,6 @@
 @interface GKPlayerActivityRelationshipPlayer
 + (id)secureCodedPropertyKeys;
-- (GKPlayerActivityRelationshipPlayer)initWithDictionary:(id)a3;
+- (GKPlayerActivityRelationshipPlayer)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __61__GKPlayerActivityRelationshipPlayer_secureCodedPropertyKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (secureCodedPropertyKeys_onceToken_337 != -1)
   {
     dispatch_once(&secureCodedPropertyKeys_onceToken_337, block);
@@ -42,28 +42,28 @@ void __61__GKPlayerActivityRelationshipPlayer_secureCodedPropertyKeys__block_inv
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (GKPlayerActivityRelationshipPlayer)initWithDictionary:(id)a3
+- (GKPlayerActivityRelationshipPlayer)initWithDictionary:(id)dictionary
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v12.receiver = self;
   v12.super_class = GKPlayerActivityRelationshipPlayer;
-  v3 = [(GKPlayerActivityRelationshipBase *)&v12 initWithDictionary:a3];
+  v3 = [(GKPlayerActivityRelationshipBase *)&v12 initWithDictionary:dictionary];
   if (v3)
   {
     v4 = objc_opt_new();
-    v5 = [(GKPlayerActivityRelationshipBase *)v3 name];
-    [v4 setAlias:v5];
+    name = [(GKPlayerActivityRelationshipBase *)v3 name];
+    [v4 setAlias:name];
 
-    v6 = [(GKPlayerActivityRelationshipBase *)v3 identifier];
-    [v4 setPlayerID:v6];
+    identifier = [(GKPlayerActivityRelationshipBase *)v3 identifier];
+    [v4 setPlayerID:identifier];
 
-    v7 = [(GKPlayerActivityRelationshipBase *)v3 image];
+    image = [(GKPlayerActivityRelationshipBase *)v3 image];
 
-    if (v7)
+    if (image)
     {
       v13 = @"template";
-      v8 = [(GKPlayerActivityRelationshipBase *)v3 image];
-      v14[0] = v8;
+      image2 = [(GKPlayerActivityRelationshipBase *)v3 image];
+      v14[0] = image2;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
       [v4 setPhotos:v9];
     }
@@ -81,8 +81,8 @@ void __61__GKPlayerActivityRelationshipPlayer_secureCodedPropertyKeys__block_inv
   v8.receiver = self;
   v8.super_class = GKPlayerActivityRelationshipPlayer;
   v4 = [(GKPlayerActivityRelationshipBase *)&v8 description];
-  v5 = [(GKPlayerActivityRelationshipPlayer *)self playerInternal];
-  v6 = [v3 stringWithFormat:@"%@ \nplayer: %@", v4, v5];
+  playerInternal = [(GKPlayerActivityRelationshipPlayer *)self playerInternal];
+  v6 = [v3 stringWithFormat:@"%@ \nplayer: %@", v4, playerInternal];
 
   return v6;
 }

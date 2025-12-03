@@ -1,35 +1,35 @@
 @interface LPiTunesCuratorProfileURLFetcher
-- (LPiTunesCuratorProfileURLFetcher)initWithCuratorID:(id)a3;
-- (void)_completedWithResponse:(id)a3;
-- (void)_failedWithError:(id)a3;
+- (LPiTunesCuratorProfileURLFetcher)initWithCuratorID:(id)d;
+- (void)_completedWithResponse:(id)response;
+- (void)_failedWithError:(id)error;
 - (void)cancel;
-- (void)fetchWithConfiguration:(id)a3 completionHandler:(id)a4;
+- (void)fetchWithConfiguration:(id)configuration completionHandler:(id)handler;
 @end
 
 @implementation LPiTunesCuratorProfileURLFetcher
 
-- (LPiTunesCuratorProfileURLFetcher)initWithCuratorID:(id)a3
+- (LPiTunesCuratorProfileURLFetcher)initWithCuratorID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = LPiTunesCuratorProfileURLFetcher;
   v6 = [(LPFetcher *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_curatorID, a3);
+    objc_storeStrong(&v6->_curatorID, d);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)fetchWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)fetchWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v7 = a3;
-  objc_storeStrong(&self->_configuration, a3);
-  v8 = a4;
-  v9 = _Block_copy(v8);
+  configurationCopy = configuration;
+  objc_storeStrong(&self->_configuration, configuration);
+  handlerCopy = handler;
+  v9 = _Block_copy(handlerCopy);
 
   completionHandler = self->_completionHandler;
   self->_completionHandler = v9;
@@ -116,18 +116,18 @@ void __77__LPiTunesCuratorProfileURLFetcher_fetchWithConfiguration_completionHan
   self->_completionHandler = 0;
 }
 
-- (void)_failedWithError:(id)a3
+- (void)_failedWithError:(id)error
 {
-  v5 = a3;
-  v4 = [[LPFetcherErrorResponse alloc] initWithError:v5 fetcher:self];
+  errorCopy = error;
+  v4 = [[LPFetcherErrorResponse alloc] initWithError:errorCopy fetcher:self];
   [(LPiTunesCuratorProfileURLFetcher *)self _completedWithResponse:v4];
 }
 
-- (void)_completedWithResponse:(id)a3
+- (void)_completedWithResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   completionHandler = self->_completionHandler;
-  v7 = v4;
+  v7 = responseCopy;
   if (completionHandler)
   {
     completionHandler[2]();

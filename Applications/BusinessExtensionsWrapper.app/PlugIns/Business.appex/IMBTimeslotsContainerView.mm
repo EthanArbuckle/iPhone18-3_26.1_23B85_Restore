@@ -1,8 +1,8 @@
 @interface IMBTimeslotsContainerView
 - (NSArray)timeslotViews;
-- (_TtC8Business25IMBTimeslotsContainerView)initWithFrame:(CGRect)a3;
+- (_TtC8Business25IMBTimeslotsContainerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setTimeslotViews:(id)a3;
+- (void)setTimeslotViews:(id)views;
 @end
 
 @implementation IMBTimeslotsContainerView
@@ -26,28 +26,28 @@
   return v4.super.isa;
 }
 
-- (void)setTimeslotViews:(id)a3
+- (void)setTimeslotViews:(id)views
 {
-  v3 = a3;
-  if (a3)
+  viewsCopy = views;
+  if (views)
   {
     type metadata accessor for IMBTimeslotView();
-    v3 = sub_1000AC19C();
+    viewsCopy = sub_1000AC19C();
   }
 
   v5 = OBJC_IVAR____TtC8Business25IMBTimeslotsContainerView_timeslotViews;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
+  *(self + v5) = viewsCopy;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100070C60();
 }
 
-- (_TtC8Business25IMBTimeslotsContainerView)initWithFrame:(CGRect)a3
+- (_TtC8Business25IMBTimeslotsContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

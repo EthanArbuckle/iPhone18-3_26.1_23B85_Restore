@@ -1,36 +1,36 @@
 @interface CNXPCListenerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (CNXPCListenerDelegate)initWithWithExportedObject:(id)a3 exportedInterfaceProtocol:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (CNXPCListenerDelegate)initWithWithExportedObject:(id)object exportedInterfaceProtocol:(id)protocol;
 @end
 
 @implementation CNXPCListenerDelegate
 
-- (CNXPCListenerDelegate)initWithWithExportedObject:(id)a3 exportedInterfaceProtocol:(id)a4
+- (CNXPCListenerDelegate)initWithWithExportedObject:(id)object exportedInterfaceProtocol:(id)protocol
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  protocolCopy = protocol;
   v13.receiver = self;
   v13.super_class = CNXPCListenerDelegate;
   v9 = [(CNXPCListenerDelegate *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_exportedObject, a3);
-    objc_storeStrong(&v10->_exportedInterfaceProtocol, a4);
+    objc_storeStrong(&v9->_exportedObject, object);
+    objc_storeStrong(&v10->_exportedInterfaceProtocol, protocol);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  [v5 setExportedObject:self->_exportedObject];
+  connectionCopy = connection;
+  [connectionCopy setExportedObject:self->_exportedObject];
   v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:self->_exportedInterfaceProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 resume];
+  [connectionCopy resume];
   v7 = self->_exportedObject;
   v8 = &unk_1EF47EFC8;
   if ([v7 conformsToProtocol:v8])
@@ -47,7 +47,7 @@
 
   if (v10)
   {
-    [v10 setAppConnection:v5];
+    [v10 setAppConnection:connectionCopy];
   }
 
   return 1;

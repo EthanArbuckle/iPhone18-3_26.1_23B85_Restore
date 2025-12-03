@@ -1,5 +1,5 @@
 @interface CKAudioMessageBalloonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
@@ -8,30 +8,30 @@
 
 @implementation CKAudioMessageBalloonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ChatKit.CKAudioMessageBalloonView" hasSwiftField:@"$__lazy_storage_$_timeLabel" withSwiftType:"Optional<UILabel>"];
-  [v3 validateClass:@"ChatKit.CKAudioMessageBalloonView" hasSwiftField:@"$__lazy_storage_$_transcriptionLabel" withSwiftType:"Optional<CKTranscriptionView>"];
-  [v3 validateClass:@"ChatKit.CKAudioMessageBalloonView" hasSwiftField:@"$__lazy_storage_$_playPauseButton" withSwiftType:"Optional<UIButton>"];
-  [v3 validateClass:@"ChatKit.CKTranscriptionView" hasSwiftField:@"text" withSwiftType:"Optional<String>"];
-  [v3 validateClass:@"ChatKit.CKTranscriptionView" hasSwiftField:@"expansionButton" withSwiftType:"UIButton"];
-  [v3 validateClass:@"ChatKit.CKTranscriptionView" hasSwiftField:@"expandedButtonColor" withSwiftType:"Optional<UIColor>"];
-  [v3 validateClass:@"ChatKit.CKAudioMessageBalloonView" isKindOfClass:@"CKBalloonView"];
-  [v3 validateClass:@"CKBalloonView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"CKBalloonViewDelegate" hasRequiredInstanceMethod:@"balloonViewTapped:withModifierFlags:selectedText:"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ChatKit.CKAudioMessageBalloonView" hasSwiftField:@"$__lazy_storage_$_timeLabel" withSwiftType:"Optional<UILabel>"];
+  [validationsCopy validateClass:@"ChatKit.CKAudioMessageBalloonView" hasSwiftField:@"$__lazy_storage_$_transcriptionLabel" withSwiftType:"Optional<CKTranscriptionView>"];
+  [validationsCopy validateClass:@"ChatKit.CKAudioMessageBalloonView" hasSwiftField:@"$__lazy_storage_$_playPauseButton" withSwiftType:"Optional<UIButton>"];
+  [validationsCopy validateClass:@"ChatKit.CKTranscriptionView" hasSwiftField:@"text" withSwiftType:"Optional<String>"];
+  [validationsCopy validateClass:@"ChatKit.CKTranscriptionView" hasSwiftField:@"expansionButton" withSwiftType:"UIButton"];
+  [validationsCopy validateClass:@"ChatKit.CKTranscriptionView" hasSwiftField:@"expandedButtonColor" withSwiftType:"Optional<UIColor>"];
+  [validationsCopy validateClass:@"ChatKit.CKAudioMessageBalloonView" isKindOfClass:@"CKBalloonView"];
+  [validationsCopy validateClass:@"CKBalloonView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"CKBalloonViewDelegate" hasRequiredInstanceMethod:@"balloonViewTapped:withModifierFlags:selectedText:"];
 }
 
 - (id)accessibilityLabel
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsSafeCategory();
-  v3 = [v2 _axMessageSender];
+  _axMessageSender = [v2 _axMessageSender];
   v4 = accessibilityLocalizedString(@"audio.message.label");
-  v5 = [v2 _axReplyDescription];
-  v6 = [v2 _axStickerDescription];
-  v7 = [v2 _axAcknowledgmentDescription];
-  v10 = [v2 _axMessageTime];
+  _axReplyDescription = [v2 _axReplyDescription];
+  _axStickerDescription = [v2 _axStickerDescription];
+  _axAcknowledgmentDescription = [v2 _axAcknowledgmentDescription];
+  _axMessageTime = [v2 _axMessageTime];
   v8 = __UIAXStringForVariables();
 
   return v8;
@@ -41,16 +41,16 @@
 {
   v11.receiver = self;
   v11.super_class = CKAudioMessageBalloonViewAccessibility;
-  v3 = [(CKAudioMessageBalloonViewAccessibility *)&v11 accessibilityCustomActions];
-  v4 = [v3 mutableCopy];
+  accessibilityCustomActions = [(CKAudioMessageBalloonViewAccessibility *)&v11 accessibilityCustomActions];
+  v4 = [accessibilityCustomActions mutableCopy];
 
   objc_opt_class();
   v5 = [(CKAudioMessageBalloonViewAccessibility *)self safeSwiftValueForKey:@"$__lazy_storage_$_playPauseButton"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 menu];
-  v8 = [v7 children];
-  v9 = _AXCustomActionsForActions(v8);
+  menu = [v6 menu];
+  children = [menu children];
+  v9 = _AXCustomActionsForActions(children);
   [v4 axSafelyAddObjectsFromArray:v9];
 
   return v4;
@@ -59,7 +59,7 @@
 - (id)accessibilityValue
 {
   v3 = [(CKAudioMessageBalloonViewAccessibility *)self safeSwiftValueForKey:@"$__lazy_storage_$_timeLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   AXDurationForDurationString();
   v5 = AXDurationStringForDuration();
@@ -85,8 +85,8 @@
   v3 = [v2 safeSwiftValueForKey:@"expansionButton"];
   v4 = [v2 safeSwiftValueForKey:@"expandedButtonColor"];
   [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
-  v5 = [v3 configuration];
-  v6 = [v5 baseForegroundColor];
+  configuration = [v3 configuration];
+  baseForegroundColor = [configuration baseForegroundColor];
   v7 = UIAccessibilityColorEqualToColor();
 
   if (v7)

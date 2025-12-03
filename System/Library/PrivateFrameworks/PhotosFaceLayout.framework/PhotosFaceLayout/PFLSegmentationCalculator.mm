@@ -1,10 +1,10 @@
 @interface PFLSegmentationCalculator
 + (id)sharedInstance;
 - (PFLSegmentationCalculator)init;
-- (id)queue_bestSegmentationForAsset:(id)a3 timePositions:(id)a4 error:(id *)a5;
-- (void)_queue_segmentationForAsset:(id)a3 timePosition:(unint64_t)a4 completion:(id)a5;
-- (void)bestSegmentationForAsset:(id)a3 completion:(id)a4;
-- (void)bestSegmentationForAsset:(id)a3 timePosition:(unint64_t)a4 completion:(id)a5;
+- (id)queue_bestSegmentationForAsset:(id)asset timePositions:(id)positions error:(id *)error;
+- (void)_queue_segmentationForAsset:(id)asset timePosition:(unint64_t)position completion:(id)completion;
+- (void)bestSegmentationForAsset:(id)asset completion:(id)completion;
+- (void)bestSegmentationForAsset:(id)asset timePosition:(unint64_t)position completion:(id)completion;
 @end
 
 @implementation PFLSegmentationCalculator
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __43__PFLSegmentationCalculator_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -61,20 +61,20 @@ uint64_t __43__PFLSegmentationCalculator_sharedInstance__block_invoke(uint64_t a
   return v3;
 }
 
-- (void)bestSegmentationForAsset:(id)a3 completion:(id)a4
+- (void)bestSegmentationForAsset:(id)asset completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__PFLSegmentationCalculator_bestSegmentationForAsset_completion___block_invoke;
   block[3] = &unk_27875BAA0;
-  v12 = v6;
-  v13 = v7;
+  v12 = assetCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = assetCopy;
+  v10 = completionCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -267,21 +267,21 @@ BOOL __65__PFLSegmentationCalculator_bestSegmentationForAsset_completion___block
   return v3 != 0;
 }
 
-- (void)bestSegmentationForAsset:(id)a3 timePosition:(unint64_t)a4 completion:(id)a5
+- (void)bestSegmentationForAsset:(id)asset timePosition:(unint64_t)position completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  assetCopy = asset;
+  completionCopy = completion;
   workQueue = self->_workQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__PFLSegmentationCalculator_bestSegmentationForAsset_timePosition_completion___block_invoke;
   v13[3] = &unk_27875BAC8;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = assetCopy;
+  v15 = completionCopy;
+  positionCopy = position;
+  v11 = completionCopy;
+  v12 = assetCopy;
   dispatch_async(workQueue, v13);
 }
 
@@ -322,15 +322,15 @@ void __78__PFLSegmentationCalculator_bestSegmentationForAsset_timePosition_compl
   [MEMORY[0x277D3A950] freeResources];
 }
 
-- (id)queue_bestSegmentationForAsset:(id)a3 timePositions:(id)a4 error:(id *)a5
+- (id)queue_bestSegmentationForAsset:(id)asset timePositions:(id)positions error:(id *)error
 {
   v74 = *MEMORY[0x277D85DE8];
-  v47 = a3;
+  assetCopy = asset;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = a4;
+  obj = positions;
   v48 = [obj countByEnumeratingWithState:&v59 objects:v73 count:16];
   if (v48)
   {
@@ -368,7 +368,7 @@ LABEL_3:
       block[3] = &unk_27875BB18;
       block[4] = v11;
       block[5] = self;
-      v13 = v47;
+      v13 = assetCopy;
       v50 = v13;
       v51 = v69;
       v52 = &v53;
@@ -385,10 +385,10 @@ LABEL_3:
       v15 = v54[5];
       if (v15)
       {
-        if (a5)
+        if (error)
         {
           v16 = v15;
-          *a5 = v15;
+          *error = v15;
         }
 
         v17 = pfl_layout_log();
@@ -404,8 +404,8 @@ LABEL_3:
         v18 = pfl_layout_log();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [(PISegmentationData *)self->_segmentationData scores];
-          v20 = [v19 objectForKeyedSubscript:v43];
+          scores = [(PISegmentationData *)self->_segmentationData scores];
+          v20 = [scores objectForKeyedSubscript:v43];
           [v20 floatValue];
           v22 = v21;
           [*(*&v69[8] + 40) visibleRect];
@@ -425,8 +425,8 @@ LABEL_3:
         }
 
         v28 = [PFLLayoutConfiguration alloc];
-        v29 = [v11 intValue];
-        v17 = [(PFLLayoutConfiguration *)v28 initWithAsset:v13 timePosition:v29 segmentationData:self->_segmentationData coreLayout:*(*&v69[8] + 40)];
+        intValue = [v11 intValue];
+        v17 = [(PFLLayoutConfiguration *)v28 initWithAsset:v13 timePosition:intValue segmentationData:self->_segmentationData coreLayout:*(*&v69[8] + 40)];
         [v17 cropScore];
         if (v30 > v8)
         {
@@ -482,11 +482,11 @@ LABEL_27:
   v35 = pfl_layout_log();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
   {
-    v36 = [v34 timePosition];
+    timePosition = [v34 timePosition];
     [v34 visibleRect];
     v41 = _rectAsString(v37, v38, v39, v40);
     *v69 = 134218242;
-    *&v69[4] = v36;
+    *&v69[4] = timePosition;
     *&v69[12] = 2112;
     *&v69[14] = v41;
     _os_log_impl(&dword_22D2ED000, v35, OS_LOG_TYPE_DEFAULT, "PFL: queue_bestSegmentationForAsset ALL DONE; winner == %ld (%@)", v69, 0x16u);
@@ -551,12 +551,12 @@ void __80__PFLSegmentationCalculator_queue_bestSegmentationForAsset_timePosition
   dispatch_semaphore_signal(*(a1[4] + 32));
 }
 
-- (void)_queue_segmentationForAsset:(id)a3 timePosition:(unint64_t)a4 completion:(id)a5
+- (void)_queue_segmentationForAsset:(id)asset timePosition:(unint64_t)position completion:(id)completion
 {
   v44[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [objc_alloc(MEMORY[0x277CD9A08]) initWithPhotoAsset:v8];
+  assetCopy = asset;
+  completionCopy = completion;
+  v10 = [objc_alloc(MEMORY[0x277CD9A08]) initWithPhotoAsset:assetCopy];
   PFCRectForTimePosition();
   v15 = flipYNormalizedRect(v11, v12, v13, v14);
   v17 = v16;
@@ -565,7 +565,7 @@ void __80__PFLSegmentationCalculator_queue_bestSegmentationForAsset_timePosition
   v22 = objc_alloc(MEMORY[0x277D3B488]);
   v23 = [v22 initWithScreenSize:*MEMORY[0x277D3B3C0] timeRect:*(MEMORY[0x277D3B3C0] + 8) inactiveTimeRect:v15 parallaxPadding:{v17, v19, v21, *&v15, *&v17, *&v19, *&v21, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
   v24 = [objc_alloc(MEMORY[0x277D3B530]) initWithPortraitConfiguration:v23 landscapeConfiguration:0];
-  v25 = [[PFLLayoutProvider alloc] initWithTimePosition:a4];
+  v25 = [[PFLLayoutProvider alloc] initWithTimePosition:position];
   v26 = MEMORY[0x277CBEB38];
   v27 = *MEMORY[0x277D3AAD8];
   v43[0] = *MEMORY[0x277D3AAE0];
@@ -589,11 +589,11 @@ void __80__PFLSegmentationCalculator_queue_bestSegmentationForAsset_timePosition
   v37[3] = &unk_27875BB40;
   v38 = v31;
   v39 = v25;
-  v41 = v9;
-  v42 = a4;
-  v40 = v8;
-  v33 = v9;
-  v34 = v8;
+  v41 = completionCopy;
+  positionCopy = position;
+  v40 = assetCopy;
+  v33 = completionCopy;
+  v34 = assetCopy;
   v35 = v25;
   v36 = v31;
   [v32 loadSegmentationDataForAsset:v10 options:v29 completion:v37];

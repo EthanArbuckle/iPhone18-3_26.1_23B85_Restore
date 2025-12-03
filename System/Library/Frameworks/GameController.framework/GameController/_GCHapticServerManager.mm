@@ -1,22 +1,22 @@
 @interface _GCHapticServerManager
 + (id)sharedInstance;
-- (BOOL)acceptNewConnection:(id)a3 fromHapticsEnabledApp:(id)a4;
-- (BOOL)playersHaveImpendingCommandsForStartTime:(double)a3 endTime:(double)a4;
-- (BOOL)readClientDataForStartTime:(double)a3 endTime:(double)a4;
+- (BOOL)acceptNewConnection:(id)connection fromHapticsEnabledApp:(id)app;
+- (BOOL)playersHaveImpendingCommandsForStartTime:(double)time endTime:(double)endTime;
+- (BOOL)readClientDataForStartTime:(double)time endTime:(double)endTime;
 - (_GCHapticServerManager)init;
-- (id)__onqueue_reserveChannels:(unint64_t)a3 forClient:(id)a4;
+- (id)__onqueue_reserveChannels:(unint64_t)channels forClient:(id)client;
 - (void)dealloc;
 - (void)enterRunloop;
-- (void)hapticClientProxyInitialized:(id)a3;
+- (void)hapticClientProxyInitialized:(id)initialized;
 - (void)identifyCompletedClients;
-- (void)logicalDeviceWasUnregistered:(id)a3;
-- (void)notifyPlayerNoLongerRetained:(id)a3;
-- (void)processActiveEventsForStartTime:(double)a3 endTime:(double)a4;
-- (void)processScheduledCommandsForStartTime:(double)a3 endTime:(double)a4;
-- (void)readListCommand:(HapticCommand *)a3 client:(id)a4 renderTime:(double)var2;
-- (void)readParamCurveListCommand:(HapticCommand *)a3 client:(id)a4;
-- (void)removeHapticClient:(id)a3;
-- (void)scheduleCommand:(const void *)a3;
+- (void)logicalDeviceWasUnregistered:(id)unregistered;
+- (void)notifyPlayerNoLongerRetained:(id)retained;
+- (void)processActiveEventsForStartTime:(double)time endTime:(double)endTime;
+- (void)processScheduledCommandsForStartTime:(double)time endTime:(double)endTime;
+- (void)readListCommand:(HapticCommand *)command client:(id)client renderTime:(double)var2;
+- (void)readParamCurveListCommand:(HapticCommand *)command client:(id)client;
+- (void)removeHapticClient:(id)client;
+- (void)scheduleCommand:(const void *)command;
 - (void)spawnInputThread;
 @end
 
@@ -49,21 +49,21 @@
   v2 = [(_GCHapticServerManager *)&v22 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     clients = v2->_clients;
-    v2->_clients = v3;
+    v2->_clients = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     logicalHapticDevices = v2->_logicalHapticDevices;
-    v2->_logicalHapticDevices = v5;
+    v2->_logicalHapticDevices = dictionary2;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     clientInvalidationHandlers = v2->_clientInvalidationHandlers;
-    v2->_clientInvalidationHandlers = v7;
+    v2->_clientInvalidationHandlers = dictionary3;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
     hapticPlayers = v2->_hapticPlayers;
-    v2->_hapticPlayers = v9;
+    v2->_hapticPlayers = dictionary4;
 
     v2->_nextClientID = 1;
     v2->_tickLengthSeconds = 0.06;
@@ -72,8 +72,8 @@
     runloopQueue = v2->_runloopQueue;
     v2->_runloopQueue = v12;
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v2 selector:sel_logicalDeviceWasUnregistered_ name:@"GCLogicalDeviceWasUnregisteredNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_logicalDeviceWasUnregistered_ name:@"GCLogicalDeviceWasUnregisteredNotification" object:0];
 
     objc_initWeak(&location, v2);
     v15 = objc_alloc_init(MEMORY[0x1E698D028]);
@@ -95,10 +95,10 @@
   return v2;
 }
 
-- (BOOL)acceptNewConnection:(id)a3 fromHapticsEnabledApp:(id)a4
+- (BOOL)acceptNewConnection:(id)connection fromHapticsEnabledApp:(id)app
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  appCopy = app;
   if (gc_isInternalBuild())
   {
     getGCHapticsLogger();
@@ -106,8 +106,8 @@
     [_GCHapticServerManager acceptNewConnection:fromHapticsEnabledApp:];
   }
 
-  v8 = [[_GCHapticClientConnection alloc] initWithConnection:v6 fromProcess:v7];
-  [v7 addConnection:v8];
+  v8 = [[_GCHapticClientConnection alloc] initWithConnection:connectionCopy fromProcess:appCopy];
+  [appCopy addConnection:v8];
   nextClientID = self->_nextClientID;
   self->_nextClientID = nextClientID + 1;
   v10 = +[_GCControllerManagerServer sharedInstance];
@@ -125,14 +125,14 @@
   objc_copyWeak(&v27, &from);
   v12 = _Block_copy(aBlock);
   appMonitor = self->_appMonitor;
-  v14 = [v6 processIdentifier];
+  processIdentifier = [connectionCopy processIdentifier];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __68___GCHapticServerManager_acceptNewConnection_fromHapticsEnabledApp___block_invoke_13;
   v22[3] = &unk_1E841A168;
   objc_copyWeak(&v23, location);
   objc_copyWeak(&v24, &from);
-  [(BKSApplicationStateMonitor *)appMonitor applicationInfoForPID:v14 completion:v22];
+  [(BKSApplicationStateMonitor *)appMonitor applicationInfoForPID:processIdentifier completion:v22];
   runloopQueue = self->_runloopQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -158,37 +158,37 @@
   return 1;
 }
 
-- (void)removeHapticClient:(id)a3
+- (void)removeHapticClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   runloopQueue = self->_runloopQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45___GCHapticServerManager_removeHapticClient___block_invoke;
   v7[3] = &unk_1E841A0F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_async(runloopQueue, v7);
 }
 
-- (void)hapticClientProxyInitialized:(id)a3
+- (void)hapticClientProxyInitialized:(id)initialized
 {
-  v4 = a3;
+  initializedCopy = initialized;
   logicalHapticDevices = self->_logicalHapticDevices;
-  v12 = v4;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)logicalHapticDevices objectForKey:v6];
+  v12 = initializedCopy;
+  identifier = [initializedCopy identifier];
+  v7 = [(NSMutableDictionary *)logicalHapticDevices objectForKey:identifier];
 
   if (!v7)
   {
     v8 = [_GCHapticLogicalDevice alloc];
-    v9 = [v12 identifier];
-    v7 = [(_GCHapticLogicalDevice *)v8 initWithIdentifier:v9 clientConnection:v12];
+    identifier2 = [v12 identifier];
+    v7 = [(_GCHapticLogicalDevice *)v8 initWithIdentifier:identifier2 clientConnection:v12];
 
     v10 = self->_logicalHapticDevices;
-    v11 = [v12 identifier];
-    [(NSMutableDictionary *)v10 setObject:v7 forKey:v11];
+    identifier3 = [v12 identifier];
+    [(NSMutableDictionary *)v10 setObject:v7 forKey:identifier3];
   }
 
   [(_GCHapticLogicalDevice *)v7 registerHapticClient:v12];
@@ -205,9 +205,9 @@
   }
 }
 
-- (void)logicalDeviceWasUnregistered:(id)a3
+- (void)logicalDeviceWasUnregistered:(id)unregistered
 {
-  v4 = a3;
+  unregisteredCopy = unregistered;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -219,9 +219,9 @@
   block[1] = 3221225472;
   block[2] = __55___GCHapticServerManager_logicalDeviceWasUnregistered___block_invoke;
   block[3] = &unk_1E841A1E0;
-  v6 = v4;
+  v6 = unregisteredCopy;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   dispatch_sync(runloopQueue, block);
   if (v14[5])
@@ -239,16 +239,16 @@
   _Block_object_dispose(&v13, 8);
 }
 
-- (void)scheduleCommand:(const void *)a3
+- (void)scheduleCommand:(const void *)command
 {
   hapticPlayers = self->_hapticPlayers;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:*(a3 + 2)];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:*(command + 2)];
   v6 = [(NSMutableDictionary *)hapticPlayers objectForKey:v5];
 
-  [v6 scheduleCommand:a3];
+  [v6 scheduleCommand:command];
 }
 
-- (BOOL)readClientDataForStartTime:(double)a3 endTime:(double)a4
+- (BOOL)readClientDataForStartTime:(double)time endTime:(double)endTime
 {
   v31 = *MEMORY[0x1E69E9840];
   v30.var0 = 168;
@@ -280,8 +280,8 @@
 
         v12 = [(NSMutableDictionary *)self->_clients objectForKeyedSubscript:*(*(&v24 + 1) + 8 * v11), v21];
         logicalHapticDevices = self->_logicalHapticDevices;
-        v14 = [v12 identifier];
-        v15 = [(NSMutableDictionary *)logicalHapticDevices objectForKey:v14];
+        identifier = [v12 identifier];
+        v15 = [(NSMutableDictionary *)logicalHapticDevices objectForKey:identifier];
         LOBYTE(logicalHapticDevices) = v15 == 0;
 
         if ((logicalHapticDevices & 1) == 0 && [v12 running] && (objc_msgSend(v12, "stopping") & 1) == 0)
@@ -306,7 +306,7 @@
               }
 
               buf = v30;
-              [(_GCHapticServerManager *)self readListCommand:&buf client:v12 renderTime:a3];
+              [(_GCHapticServerManager *)self readListCommand:&buf client:v12 renderTime:time];
               v7 = 1;
             }
 
@@ -343,7 +343,7 @@
   return v7 & 1;
 }
 
-- (void)processScheduledCommandsForStartTime:(double)a3 endTime:(double)a4
+- (void)processScheduledCommandsForStartTime:(double)time endTime:(double)endTime
 {
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
@@ -380,7 +380,7 @@
             else
             {
               [v14 time];
-              if (v15 >= a4)
+              if (v15 >= endTime)
               {
 
                 break;
@@ -402,7 +402,7 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)playersHaveImpendingCommandsForStartTime:(double)a3 endTime:(double)a4
+- (BOOL)playersHaveImpendingCommandsForStartTime:(double)time endTime:(double)endTime
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
@@ -426,7 +426,7 @@
         v10 = [(NSMutableDictionary *)self->_hapticPlayers objectForKey:*(*(&v14 + 1) + 8 * i), v14];
         if ([v10[1] count])
         {
-          v11 = [v10 hasScheduledEventsByTime:a4 + 1.0];
+          v11 = [v10 hasScheduledEventsByTime:endTime + 1.0];
 
           goto LABEL_11;
         }
@@ -449,7 +449,7 @@ LABEL_11:
   return v11;
 }
 
-- (void)processActiveEventsForStartTime:(double)a3 endTime:(double)a4
+- (void)processActiveEventsForStartTime:(double)time endTime:(double)endTime
 {
   v120 = *MEMORY[0x1E69E9840];
   [(_GCHapticServerManager *)self setActiveEvents:0];
@@ -457,7 +457,7 @@ LABEL_11:
   v92 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v72 = self;
+  selfCopy = self;
   obj = self->_logicalHapticDevices;
   v62 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v89 objects:v119 count:16];
   if (v62)
@@ -477,12 +477,12 @@ LABEL_11:
         }
 
         v61 = *(*(&v89 + 1) + 8 * v65);
-        v71 = [(NSMutableDictionary *)v72->_logicalHapticDevices objectForKeyedSubscript:v60];
+        v71 = [(NSMutableDictionary *)selfCopy->_logicalHapticDevices objectForKeyedSubscript:v60];
         v118 = 0;
         v117 = 0;
         v116 = 0;
         v115 = 0;
-        v66 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v87 = 0u;
         v88 = 0u;
         v85 = 0u;
@@ -505,7 +505,7 @@ LABEL_11:
               }
 
               v12 = *(*(&v85 + 1) + 8 * v11);
-              [v12 processSliceForLogicalDevice:v71 startTime:a3 endTime:a4];
+              [v12 processSliceForLogicalDevice:v71 startTime:time endTime:endTime];
               [v12 continuousIntensity];
               if (v13 > 0.0)
               {
@@ -520,8 +520,8 @@ LABEL_11:
               v84 = 0u;
               v81 = 0u;
               v82 = 0u;
-              v15 = [v12 actuators];
-              v16 = [v15 countByEnumeratingWithState:&v81 objects:v113 count:16];
+              actuators = [v12 actuators];
+              v16 = [actuators countByEnumeratingWithState:&v81 objects:v113 count:16];
               v70 = v9;
               v17 = v8;
               if (v16)
@@ -533,21 +533,21 @@ LABEL_11:
                   {
                     if (*v82 != v18)
                     {
-                      objc_enumerationMutation(v15);
+                      objc_enumerationMutation(actuators);
                     }
 
                     v20 = *(*(&v81 + 1) + 8 * i);
                     [v12 continuousIntensity];
                     v22 = v21;
-                    v23 = [v20 index];
-                    *(&v117 + v23) = v22 + *(&v117 + v23);
+                    index = [v20 index];
+                    *(&v117 + index) = v22 + *(&v117 + index);
                     [v12 continuousSharpness];
                     v25 = v24;
-                    v26 = [v20 index];
-                    *(&v115 + v26) = v25 + *(&v115 + v26);
+                    index2 = [v20 index];
+                    *(&v115 + index2) = v25 + *(&v115 + index2);
                   }
 
-                  v16 = [v15 countByEnumeratingWithState:&v81 objects:v113 count:16];
+                  v16 = [actuators countByEnumeratingWithState:&v81 objects:v113 count:16];
                 }
 
                 while (v16);
@@ -555,9 +555,9 @@ LABEL_11:
 
               v8 = v17;
               v9 = v70;
-              if (![(_GCHapticServerManager *)v72 activeEvents])
+              if (![(_GCHapticServerManager *)selfCopy activeEvents])
               {
-                -[_GCHapticServerManager setActiveEvents:](v72, "setActiveEvents:", [v12 hasProcessedActiveEventsAfterTime:a4 + -1.0] | -[_GCHapticServerManager activeEvents](v72, "activeEvents"));
+                -[_GCHapticServerManager setActiveEvents:](selfCopy, "setActiveEvents:", [v12 hasProcessedActiveEventsAfterTime:endTime + -1.0] | -[_GCHapticServerManager activeEvents](selfCopy, "activeEvents"));
               }
 
               if ([v12 transientsEnqueuedSinceLastQuery])
@@ -570,9 +570,9 @@ LABEL_11:
                 }
               }
 
-              if (([v12 isActiveAtTime:a3] & 1) == 0)
+              if (([v12 isActiveAtTime:time] & 1) == 0)
               {
-                [v66 addObject:v12];
+                [array addObject:v12];
               }
 
               ++v11;
@@ -648,9 +648,9 @@ LABEL_38:
             }
           }
 
-          v32 = [v71[10] actuators];
-          v33 = [v32 firstObject];
-          v34 = [v33 type] == 1;
+          actuators2 = [v71[10] actuators];
+          firstObject = [actuators2 firstObject];
+          v34 = [firstObject type] == 1;
 
           v37 = v71[9];
           if (v34)
@@ -696,7 +696,7 @@ LABEL_44:
         v80 = 0u;
         v77 = 0u;
         v78 = 0u;
-        v46 = v66;
+        v46 = array;
         v47 = [v46 countByEnumeratingWithState:&v77 objects:v94 count:16];
         if (v47)
         {
@@ -745,9 +745,9 @@ LABEL_44:
                 [_GCHapticServerManager processActiveEventsForStartTime:endTime:];
               }
 
-              hapticPlayers = v72->_hapticPlayers;
-              v56 = [v54 identifier];
-              [(NSMutableDictionary *)hapticPlayers removeObjectForKey:v56];
+              hapticPlayers = selfCopy->_hapticPlayers;
+              identifier = [v54 identifier];
+              [(NSMutableDictionary *)hapticPlayers removeObjectForKey:identifier];
             }
 
             v51 = [v50 countByEnumeratingWithState:&v73 objects:v93 count:16];
@@ -770,24 +770,24 @@ LABEL_44:
   v59 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyPlayerNoLongerRetained:(id)a3
+- (void)notifyPlayerNoLongerRetained:(id)retained
 {
-  v4 = a3;
+  retainedCopy = retained;
   runloopQueue = self->_runloopQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55___GCHapticServerManager_notifyPlayerNoLongerRetained___block_invoke;
   v7[3] = &unk_1E841A0F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = retainedCopy;
+  selfCopy = self;
+  v6 = retainedCopy;
   dispatch_async(runloopQueue, v7);
 }
 
 - (void)identifyCompletedClients
 {
   v46 = *MEMORY[0x1E69E9840];
-  v30 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
@@ -807,7 +807,7 @@ LABEL_44:
           objc_enumerationMutation(v3);
         }
 
-        [v30 setObject:v6 forKeyedSubscript:*(*(&v39 + 1) + 8 * i)];
+        [dictionary setObject:v6 forKeyedSubscript:*(*(&v39 + 1) + 8 * i)];
       }
 
       v4 = [(NSMutableDictionary *)v3 countByEnumeratingWithState:&v39 objects:v45 count:16];
@@ -848,21 +848,21 @@ LABEL_44:
             v14 = [v12 hasProcessedActiveEventsThisSlice] ^ 1;
           }
 
-          v15 = [v30 objectForKeyedSubscript:v13];
+          v15 = [dictionary objectForKeyedSubscript:v13];
           v16 = v15 == 0;
 
           v17 = MEMORY[0x1E696AD98];
           if (v16)
           {
             v18 = [MEMORY[0x1E696AD98] numberWithBool:v14];
-            [v30 setObject:v18 forKeyedSubscript:v13];
+            [dictionary setObject:v18 forKeyedSubscript:v13];
           }
 
           else
           {
-            v18 = [v30 objectForKeyedSubscript:v13];
+            v18 = [dictionary objectForKeyedSubscript:v13];
             v19 = [v17 numberWithBool:{objc_msgSend(v18, "BOOLValue") & v14}];
-            [v30 setObject:v19 forKeyedSubscript:v13];
+            [dictionary setObject:v19 forKeyedSubscript:v13];
           }
         }
       }
@@ -877,7 +877,7 @@ LABEL_44:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v20 = v30;
+  v20 = dictionary;
   v21 = [v20 countByEnumeratingWithState:&v31 objects:v43 count:16];
   if (v21)
   {
@@ -893,11 +893,11 @@ LABEL_44:
 
         v24 = *(*(&v31 + 1) + 8 * k);
         v25 = [v20 objectForKeyedSubscript:v24];
-        v26 = [v25 BOOLValue];
+        bOOLValue = [v25 BOOLValue];
 
         v27 = [(NSMutableDictionary *)self->_clients objectForKeyedSubscript:v24];
         v28 = v27;
-        if (v26)
+        if (bOOLValue)
         {
           [v27 setComplete:1];
         }
@@ -924,11 +924,11 @@ LABEL_44:
   }
 }
 
-- (void)readParamCurveListCommand:(HapticCommand *)a3 client:(id)a4
+- (void)readParamCurveListCommand:(HapticCommand *)command client:(id)client
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  var2 = a3->var2;
+  clientCopy = client;
+  var2 = command->var2;
   if (gc_isInternalBuild())
   {
     getGCHapticsLogger();
@@ -938,9 +938,9 @@ LABEL_44:
 
   *&v8 = 134218240;
   v17 = v8;
-  while (HapticSharedMemory::readCommand([v6 sharedMemory], a3))
+  while (HapticSharedMemory::readCommand([clientCopy sharedMemory], command))
   {
-    var1 = a3->var0.var1;
+    var1 = command->var0.var1;
     if (var1 != 10)
     {
       if (var1 == 9)
@@ -979,14 +979,14 @@ LABEL_44:
       break;
     }
 
-    a3->var2 = var2 + a3->var2;
+    command->var2 = var2 + command->var2;
     if (gc_isInternalBuild())
     {
       v10 = getGCHapticsLogger();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v11 = a3->var2;
-        v12 = a3->var0.var1;
+        v11 = command->var2;
+        v12 = command->var0.var1;
         *buf = v17;
         *&buf[4] = v11;
         v19 = 1024;
@@ -995,19 +995,19 @@ LABEL_44:
       }
     }
 
-    [(_GCHapticServerManager *)self scheduleCommand:a3];
+    [(_GCHapticServerManager *)self scheduleCommand:command];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)readListCommand:(HapticCommand *)a3 client:(id)a4 renderTime:(double)var2
+- (void)readListCommand:(HapticCommand *)command client:(id)client renderTime:(double)var2
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if (a3->var2 > var2)
+  clientCopy = client;
+  if (command->var2 > var2)
   {
-    var2 = a3->var2;
+    var2 = command->var2;
   }
 
   *&v9 = 67110144;
@@ -1016,7 +1016,7 @@ LABEL_44:
   {
     while (1)
     {
-      if (!HapticSharedMemory::readCommand([v8 sharedMemory], a3))
+      if (!HapticSharedMemory::readCommand([clientCopy sharedMemory], command))
       {
         if (!gc_isInternalBuild())
         {
@@ -1028,13 +1028,13 @@ LABEL_44:
         goto LABEL_22;
       }
 
-      var1 = a3->var0.var1;
+      var1 = command->var0.var1;
       if (var1 != 9)
       {
         break;
       }
 
-      a3->var2 = var2 + a3->var2;
+      command->var2 = var2 + command->var2;
       if (gc_isInternalBuild())
       {
         getGCHapticsLogger();
@@ -1042,23 +1042,23 @@ LABEL_44:
         [_GCHapticServerManager readListCommand:client:renderTime:];
       }
 
-      v12 = *&a3->var5.var5.var1[13].var1;
-      v33 = *&a3->var5.var5.var1[11].var1;
+      v12 = *&command->var5.var5.var1[13].var1;
+      v33 = *&command->var5.var5.var1[11].var1;
       v34 = v12;
-      v35 = *&a3->var5.var5.var1[15].var1;
-      v13 = *&a3->var5.var5.var1[5].var1;
-      v29 = *&a3->var5.var5.var1[3].var1;
+      v35 = *&command->var5.var5.var1[15].var1;
+      v13 = *&command->var5.var5.var1[5].var1;
+      v29 = *&command->var5.var5.var1[3].var1;
       v30 = v13;
-      v14 = *&a3->var5.var5.var1[9].var1;
-      v31 = *&a3->var5.var5.var1[7].var1;
+      v14 = *&command->var5.var5.var1[9].var1;
+      v31 = *&command->var5.var5.var1[7].var1;
       v32 = v14;
-      v15 = *&a3->var3;
-      *buf = *&a3->var0.var0;
+      v15 = *&command->var3;
+      *buf = *&command->var0.var0;
       *&buf[16] = v15;
-      v16 = *&a3->var5.var5.var1[1].var1;
-      *&buf[32] = *&a3->var5.var0.var0;
+      v16 = *&command->var5.var5.var1[1].var1;
+      *&buf[32] = *&command->var5.var0.var0;
       v28 = v16;
-      [(_GCHapticServerManager *)self readParamCurveListCommand:buf client:v8];
+      [(_GCHapticServerManager *)self readParamCurveListCommand:buf client:clientCopy];
     }
 
     if (var1 == 6)
@@ -1078,18 +1078,18 @@ LABEL_44:
       goto LABEL_22;
     }
 
-    a3->var2 = var2 + a3->var2;
-    [(_GCHapticServerManager *)self scheduleCommand:a3];
+    command->var2 = var2 + command->var2;
+    [(_GCHapticServerManager *)self scheduleCommand:command];
     if (gc_isInternalBuild())
     {
       v11 = getGCHapticsLogger();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        v17 = a3->var0.var1;
-        var4 = a3->var4;
-        var0 = a3->var5.var0.var0;
-        v20 = a3->var2;
-        var3 = a3->var3;
+        v17 = command->var0.var1;
+        var4 = command->var4;
+        var0 = command->var5.var0.var0;
+        v20 = command->var2;
+        var3 = command->var3;
         *buf = v26;
         *&buf[4] = v17;
         *&buf[8] = 2048;
@@ -1118,23 +1118,23 @@ LABEL_20:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (id)__onqueue_reserveChannels:(unint64_t)a3 forClient:(id)a4
+- (id)__onqueue_reserveChannels:(unint64_t)channels forClient:(id)client
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  clientCopy = client;
   logicalHapticDevices = self->_logicalHapticDevices;
-  v8 = [v6 identifier];
-  v9 = [(NSMutableDictionary *)logicalHapticDevices objectForKey:v8];
+  identifier = [clientCopy identifier];
+  v9 = [(NSMutableDictionary *)logicalHapticDevices objectForKey:identifier];
 
   v29 = v9;
   if (v9)
   {
-    v10 = [MEMORY[0x1E695DF70] array];
-    v11 = self;
-    objc_sync_enter(v11);
-    channelID = v11->_channelID;
-    v11->_channelID = channelID + a3;
-    objc_sync_exit(v11);
+    array = [MEMORY[0x1E695DF70] array];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    channelID = selfCopy->_channelID;
+    selfCopy->_channelID = channelID + channels;
+    objc_sync_exit(selfCopy);
 
     if (gc_isInternalBuild())
     {
@@ -1142,39 +1142,39 @@ LABEL_20:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
         *buf = 134218496;
-        v31 = a3;
+        channelsCopy = channels;
         v32 = 2048;
         v33 = channelID;
         v34 = 2048;
-        v35 = channelID + a3;
+        v35 = channelID + channels;
         _os_log_impl(&dword_1D2CD5000, v25, OS_LOG_TYPE_INFO, "reserving %lu channels, from [%lu - %lu)", buf, 0x20u);
       }
     }
 
-    if (channelID < channelID + a3)
+    if (channelID < channelID + channels)
     {
-      v13 = a3;
+      channelsCopy2 = channels;
       v14 = channelID;
       do
       {
         v15 = [_GCHapticPlayer alloc];
-        v16 = [v6 actuators];
-        v17 = [(_GCHapticPlayer *)v15 initWithIdentifier:v14 actuators:v16 client:v6];
+        actuators = [clientCopy actuators];
+        v17 = [(_GCHapticPlayer *)v15 initWithIdentifier:v14 actuators:actuators client:clientCopy];
 
-        [v10 addObject:v17];
+        [array addObject:v17];
         ++v14;
-        --v13;
+        --channelsCopy2;
       }
 
-      while (v13);
-      if (channelID < channelID + a3)
+      while (channelsCopy2);
+      if (channelID < channelID + channels)
       {
         v18 = 0;
         v28 = 134218242;
         do
         {
-          v19 = [v10 objectAtIndexedSubscript:{v18, v28}];
-          hapticPlayers = v11->_hapticPlayers;
+          v19 = [array objectAtIndexedSubscript:{v18, v28}];
+          hapticPlayers = selfCopy->_hapticPlayers;
           v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:channelID];
           [(NSMutableDictionary *)hapticPlayers setObject:v19 forKey:v21];
 
@@ -1184,7 +1184,7 @@ LABEL_20:
             if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
             {
               *buf = v28;
-              v31 = channelID;
+              channelsCopy = channelID;
               v32 = 2112;
               v33 = v19;
               _os_log_impl(&dword_1D2CD5000, v22, OS_LOG_TYPE_INFO, "_hapticPlayers[%lu] = %@", buf, 0x16u);
@@ -1196,10 +1196,10 @@ LABEL_20:
 
           ++channelID;
           ++v18;
-          --a3;
+          --channels;
         }
 
-        while (a3);
+        while (channels);
       }
     }
   }
@@ -1211,17 +1211,17 @@ LABEL_20:
       v26 = getGCHapticsLogger();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        v27 = [v6 identifier];
-        [(_GCHapticServerManager *)v27 __onqueue_reserveChannels:buf forClient:a3, v26];
+        identifier2 = [clientCopy identifier];
+        [(_GCHapticServerManager *)identifier2 __onqueue_reserveChannels:buf forClient:channels, v26];
       }
     }
 
-    v10 = 0;
+    array = 0;
   }
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return array;
 }
 
 - (void)acceptNewConnection:fromHapticsEnabledApp:.cold.1()

@@ -1,22 +1,22 @@
 @interface PKImageResizingConstraints
-+ (id)constraintsWithAspectFillToSize:(CGSize)a3;
-+ (id)constraintsWithAspectFitToSize:(CGSize)a3;
-+ (id)constraintsWithFixedHeight:(double)a3 minAspectRatio:(double)a4 maxAspectRatio:(double)a5;
-+ (id)constraintsWithFixedLargeDimenstion:(double)a3 minAspectRatio:(double)a4 maxAspectRatio:(double)a5;
-+ (id)constraintsWithFixedSmallDimenstion:(double)a3 minAspectRatio:(double)a4 maxAspectRatio:(double)a5;
-+ (id)constraintsWithFixedWidth:(double)a3 minAspectRatio:(double)a4 maxAspectRatio:(double)a5;
-+ (id)constraintsWithMaxSize:(CGSize)a3;
-+ (id)constraintsWithMaxSize:(CGSize)a3 minAspectRatio:(double)a4 maxAspectRatio:(double)a5;
-+ (id)constraintsWithMinSize:(CGSize)a3;
-+ (id)constraintsWithMinSize:(CGSize)a3 minAspectRatio:(double)a4 maxAspectRatio:(double)a5;
-- (BOOL)_getPixelCropRect:(CGRect *)a3 pixelOutputSize:(CGSize *)a4 forImageSize:(CGSize)a5 scale:(double)a6;
++ (id)constraintsWithAspectFillToSize:(CGSize)size;
++ (id)constraintsWithAspectFitToSize:(CGSize)size;
++ (id)constraintsWithFixedHeight:(double)height minAspectRatio:(double)ratio maxAspectRatio:(double)aspectRatio;
++ (id)constraintsWithFixedLargeDimenstion:(double)dimenstion minAspectRatio:(double)ratio maxAspectRatio:(double)aspectRatio;
++ (id)constraintsWithFixedSmallDimenstion:(double)dimenstion minAspectRatio:(double)ratio maxAspectRatio:(double)aspectRatio;
++ (id)constraintsWithFixedWidth:(double)width minAspectRatio:(double)ratio maxAspectRatio:(double)aspectRatio;
++ (id)constraintsWithMaxSize:(CGSize)size;
++ (id)constraintsWithMaxSize:(CGSize)size minAspectRatio:(double)ratio maxAspectRatio:(double)aspectRatio;
++ (id)constraintsWithMinSize:(CGSize)size;
++ (id)constraintsWithMinSize:(CGSize)size minAspectRatio:(double)ratio maxAspectRatio:(double)aspectRatio;
+- (BOOL)_getPixelCropRect:(CGRect *)rect pixelOutputSize:(CGSize *)size forImageSize:(CGSize)imageSize scale:(double)scale;
 - (BOOL)_reasonable;
-- (BOOL)getPixelCropRect:(CGRect *)a3 pixelOutputSize:(CGSize *)a4 forImage:(id)a5;
-- (CGRect)_getDrawRectForImage:(CGImage *)a3 withOutputSize:(CGSize)a4;
+- (BOOL)getPixelCropRect:(CGRect *)rect pixelOutputSize:(CGSize *)size forImage:(id)image;
+- (CGRect)_getDrawRectForImage:(CGImage *)image withOutputSize:(CGSize)size;
 - (PKImageResizingConstraints)init;
 - (id)_flippedConstraints;
-- (id)resizedImage:(id)a3;
-- (void)setOutputScale:(double)a3;
+- (id)resizedImage:(id)image;
+- (void)setOutputScale:(double)scale;
 @end
 
 @implementation PKImageResizingConstraints
@@ -34,98 +34,98 @@
   return v2;
 }
 
-- (void)setOutputScale:(double)a3
+- (void)setOutputScale:(double)scale
 {
-  if (a3 == 0.0)
+  if (scale == 0.0)
   {
-    a3 = PKScreenScale();
+    scale = PKScreenScale();
   }
 
-  self->_outputScale = a3;
+  self->_outputScale = scale;
 }
 
-+ (id)constraintsWithFixedWidth:(double)a3 minAspectRatio:(double)a4 maxAspectRatio:(double)a5
++ (id)constraintsWithFixedWidth:(double)width minAspectRatio:(double)ratio maxAspectRatio:(double)aspectRatio
 {
   v8 = objc_alloc_init(PKImageResizingConstraints);
   v8->_constraintType = 0;
-  v8->_fixedDimension = a3;
-  v8->_minAspectRatio = a4;
-  v8->_maxAspectRatio = a5;
+  v8->_fixedDimension = width;
+  v8->_minAspectRatio = ratio;
+  v8->_maxAspectRatio = aspectRatio;
   v8->_respectAspectRatioRange = 1;
 
   return v8;
 }
 
-+ (id)constraintsWithFixedHeight:(double)a3 minAspectRatio:(double)a4 maxAspectRatio:(double)a5
++ (id)constraintsWithFixedHeight:(double)height minAspectRatio:(double)ratio maxAspectRatio:(double)aspectRatio
 {
   v8 = objc_alloc_init(PKImageResizingConstraints);
   v8->_constraintType = 1;
-  v8->_fixedDimension = a3;
-  v8->_minAspectRatio = a4;
-  v8->_maxAspectRatio = a5;
+  v8->_fixedDimension = height;
+  v8->_minAspectRatio = ratio;
+  v8->_maxAspectRatio = aspectRatio;
   v8->_respectAspectRatioRange = 1;
 
   return v8;
 }
 
-+ (id)constraintsWithFixedLargeDimenstion:(double)a3 minAspectRatio:(double)a4 maxAspectRatio:(double)a5
++ (id)constraintsWithFixedLargeDimenstion:(double)dimenstion minAspectRatio:(double)ratio maxAspectRatio:(double)aspectRatio
 {
   v8 = objc_alloc_init(PKImageResizingConstraints);
   v8->_constraintType = 2;
-  v8->_fixedDimension = a3;
-  v8->_minAspectRatio = a4;
-  v8->_maxAspectRatio = a5;
+  v8->_fixedDimension = dimenstion;
+  v8->_minAspectRatio = ratio;
+  v8->_maxAspectRatio = aspectRatio;
   v8->_respectAspectRatioRange = 1;
 
   return v8;
 }
 
-+ (id)constraintsWithFixedSmallDimenstion:(double)a3 minAspectRatio:(double)a4 maxAspectRatio:(double)a5
++ (id)constraintsWithFixedSmallDimenstion:(double)dimenstion minAspectRatio:(double)ratio maxAspectRatio:(double)aspectRatio
 {
   v8 = objc_alloc_init(PKImageResizingConstraints);
   v8->_constraintType = 3;
-  v8->_fixedDimension = a3;
-  v8->_minAspectRatio = a4;
-  v8->_maxAspectRatio = a5;
+  v8->_fixedDimension = dimenstion;
+  v8->_minAspectRatio = ratio;
+  v8->_maxAspectRatio = aspectRatio;
   v8->_respectAspectRatioRange = 1;
 
   return v8;
 }
 
-+ (id)constraintsWithMaxSize:(CGSize)a3 minAspectRatio:(double)a4 maxAspectRatio:(double)a5
++ (id)constraintsWithMaxSize:(CGSize)size minAspectRatio:(double)ratio maxAspectRatio:(double)aspectRatio
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9 = objc_alloc_init(PKImageResizingConstraints);
   v9->_constraintType = 6;
   v9->_size.width = width;
   v9->_size.height = height;
-  v9->_minAspectRatio = a4;
-  v9->_maxAspectRatio = a5;
+  v9->_minAspectRatio = ratio;
+  v9->_maxAspectRatio = aspectRatio;
   v9->_respectAspectRatioRange = 1;
 
   return v9;
 }
 
-+ (id)constraintsWithMinSize:(CGSize)a3 minAspectRatio:(double)a4 maxAspectRatio:(double)a5
++ (id)constraintsWithMinSize:(CGSize)size minAspectRatio:(double)ratio maxAspectRatio:(double)aspectRatio
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9 = objc_alloc_init(PKImageResizingConstraints);
   v9->_constraintType = 7;
   v9->_size.width = width;
   v9->_size.height = height;
-  v9->_minAspectRatio = a4;
-  v9->_maxAspectRatio = a5;
+  v9->_minAspectRatio = ratio;
+  v9->_maxAspectRatio = aspectRatio;
   v9->_respectAspectRatioRange = 1;
 
   return v9;
 }
 
-+ (id)constraintsWithMaxSize:(CGSize)a3
++ (id)constraintsWithMaxSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = objc_alloc_init(PKImageResizingConstraints);
   v5->_constraintType = 6;
   v5->_size.width = width;
@@ -134,10 +134,10 @@
   return v5;
 }
 
-+ (id)constraintsWithMinSize:(CGSize)a3
++ (id)constraintsWithMinSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = objc_alloc_init(PKImageResizingConstraints);
   v5->_constraintType = 7;
   v5->_size.width = width;
@@ -146,10 +146,10 @@
   return v5;
 }
 
-+ (id)constraintsWithAspectFillToSize:(CGSize)a3
++ (id)constraintsWithAspectFillToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = objc_alloc_init(PKImageResizingConstraints);
   v5->_constraintType = 4;
   v5->_size.width = width;
@@ -158,10 +158,10 @@
   return v5;
 }
 
-+ (id)constraintsWithAspectFitToSize:(CGSize)a3
++ (id)constraintsWithAspectFitToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = objc_alloc_init(PKImageResizingConstraints);
   v5->_constraintType = 5;
   v5->_size.width = width;
@@ -170,15 +170,15 @@
   return v5;
 }
 
-- (id)resizedImage:(id)a3
+- (id)resizedImage:(id)image
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  imageCopy = image;
   memset(&v29, 0, sizeof(v29));
   v27 = 0.0;
   v28 = 0.0;
   v5 = 0;
-  if ([(PKImageResizingConstraints *)self getPixelCropRect:&v29 pixelOutputSize:&v27 forImage:v4])
+  if ([(PKImageResizingConstraints *)self getPixelCropRect:&v29 pixelOutputSize:&v27 forImage:imageCopy])
   {
     BitmapContext = _CreateBitmapContext(0, 0, 0, v27, v28, 1.0);
     if (!BitmapContext)
@@ -187,8 +187,8 @@
     }
 
     v7 = BitmapContext;
-    v8 = [v4 imageRef];
-    v9 = CGImageCreateWithImageInRect(v8, v29);
+    imageRef = [imageCopy imageRef];
+    v9 = CGImageCreateWithImageInRect(imageRef, v29);
     [(PKImageResizingConstraints *)self _getDrawRectForImage:v9 withOutputSize:v27, v28];
     v14 = v13;
     v15 = v10;
@@ -198,10 +198,10 @@
     if (outputCornerRadius > 0.0)
     {
       v19 = [PKRoundedPath pathWithRoundedRect:v14 cornerRadius:v10, v11, v12, outputCornerRadius * self->_outputScale];
-      v20 = [v19 CGPath];
+      cGPath = [v19 CGPath];
 
       CGContextBeginPath(v7);
-      CGContextAddPath(v7, v20);
+      CGContextAddPath(v7, cGPath);
       CGContextClosePath(v7);
       CGContextClip(v7);
     }
@@ -221,11 +221,11 @@
     if (Image)
     {
       outputMirrored = self->_outputMirrored;
-      v23 = [v4 orientation];
-      v24 = v23;
+      orientation = [imageCopy orientation];
+      v24 = orientation;
       if (outputMirrored)
       {
-        v24 = _MirroredOrientation(v23);
+        v24 = _MirroredOrientation(orientation);
       }
 
       v5 = [[PKImage alloc] initWithCGImage:Image scale:v24 orientation:self->_outputScale];
@@ -239,7 +239,7 @@ LABEL_11:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v31 = v4;
+        v31 = imageCopy;
         _os_log_impl(&dword_1AD337000, v25, OS_LOG_TYPE_DEFAULT, "PKImageResizingConstraints: failed to resize image %p - could not create destination context.", buf, 0xCu);
       }
 
@@ -250,39 +250,39 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)getPixelCropRect:(CGRect *)a3 pixelOutputSize:(CGSize *)a4 forImage:(id)a5
+- (BOOL)getPixelCropRect:(CGRect *)rect pixelOutputSize:(CGSize *)size forImage:(id)image
 {
-  v8 = a5;
-  if (([v8 orientation] - 1) > 3)
+  imageCopy = image;
+  if (([imageCopy orientation] - 1) > 3)
   {
-    v16 = [(PKImageResizingConstraints *)self _flippedConstraints];
-    [v8 size];
+    _flippedConstraints = [(PKImageResizingConstraints *)self _flippedConstraints];
+    [imageCopy size];
     v18 = v17;
     v20 = v19;
-    [v8 scale];
+    [imageCopy scale];
     v22 = v21;
 
-    v23 = [v16 _getPixelCropRect:a3 pixelOutputSize:a4 forImageSize:v18 scale:{v20, v22}];
+    v23 = [_flippedConstraints _getPixelCropRect:rect pixelOutputSize:size forImageSize:v18 scale:{v20, v22}];
     return v23;
   }
 
   else
   {
-    [v8 size];
+    [imageCopy size];
     v10 = v9;
     v12 = v11;
-    [v8 scale];
+    [imageCopy scale];
     v14 = v13;
 
-    return [(PKImageResizingConstraints *)self _getPixelCropRect:a3 pixelOutputSize:a4 forImageSize:v10 scale:v12, v14];
+    return [(PKImageResizingConstraints *)self _getPixelCropRect:rect pixelOutputSize:size forImageSize:v10 scale:v12, v14];
   }
 }
 
-- (BOOL)_getPixelCropRect:(CGRect *)a3 pixelOutputSize:(CGSize *)a4 forImageSize:(CGSize)a5 scale:(double)a6
+- (BOOL)_getPixelCropRect:(CGRect *)rect pixelOutputSize:(CGSize *)size forImageSize:(CGSize)imageSize scale:(double)scale
 {
-  v7 = self->_outputBorderTrim * a6;
-  v8 = v7 * -2.0 + a5.width * a6;
-  v9 = v7 * -2.0 + a5.height * a6;
+  v7 = self->_outputBorderTrim * scale;
+  v8 = v7 * -2.0 + imageSize.width * scale;
+  v9 = v7 * -2.0 + imageSize.height * scale;
   v10 = v9 > 0.0 && v8 > 0.0;
   if (!v10)
   {
@@ -321,7 +321,7 @@ LABEL_11:
     v16 = v7;
     v7 = v7 + floorf(v15);
     v8 = v9 * minAspectRatio;
-    if (!a3)
+    if (!rect)
     {
       goto LABEL_15;
     }
@@ -334,21 +334,21 @@ LABEL_11:
     v17 = (v9 - v8 / minAspectRatio) * 0.5;
     v16 = v7 + floorf(v17);
     v9 = v8 / minAspectRatio;
-    if (!a3)
+    if (!rect)
     {
       goto LABEL_15;
     }
 
 LABEL_14:
-    a3->origin.x = v7;
-    a3->origin.y = v16;
-    a3->size.width = v8;
-    a3->size.height = v9;
+    rect->origin.x = v7;
+    rect->origin.y = v16;
+    rect->size.width = v8;
+    rect->size.height = v9;
     goto LABEL_15;
   }
 
   v16 = v7;
-  if (a3)
+  if (rect)
   {
     goto LABEL_14;
   }
@@ -364,14 +364,14 @@ LABEL_15:
         {
           v9 = self->_fixedDimension * self->_outputScale;
           v8 = minAspectRatio * v9;
-          if (!a4)
+          if (!size)
           {
             return v10;
           }
 
 LABEL_57:
-          a4->width = v8;
-          a4->height = v9;
+          size->width = v8;
+          size->height = v9;
           return v10;
         }
 
@@ -381,7 +381,7 @@ LABEL_57:
       v8 = self->_fixedDimension * self->_outputScale;
 LABEL_44:
       v9 = v8 / minAspectRatio;
-      if (!a4)
+      if (!size)
       {
         return v10;
       }
@@ -409,7 +409,7 @@ LABEL_44:
 
     v9 = v8;
     v8 = minAspectRatio * v8;
-    if (!a4)
+    if (!size)
     {
       return v10;
     }
@@ -422,7 +422,7 @@ LABEL_44:
     outputScale = self->_outputScale;
     v8 = self->_size.width * outputScale;
     v9 = outputScale * self->_size.height;
-    if (!a4)
+    if (!size)
     {
       return v10;
     }
@@ -438,7 +438,7 @@ LABEL_44:
     if (v8 <= v29 && v9 <= v30)
     {
 LABEL_56:
-      if (!a4)
+      if (!size)
       {
         return v10;
       }
@@ -489,7 +489,7 @@ LABEL_55:
 LABEL_59:
   v8 = *MEMORY[0x1E695F060];
   v9 = *(MEMORY[0x1E695F060] + 8);
-  if (a4)
+  if (size)
   {
     goto LABEL_57;
   }
@@ -497,15 +497,15 @@ LABEL_59:
   return v10;
 }
 
-- (CGRect)_getDrawRectForImage:(CGImage *)a3 withOutputSize:(CGSize)a4
+- (CGRect)_getDrawRectForImage:(CGImage *)image withOutputSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   if (self->_constraintType == 5)
   {
-    v8 = CGImageGetWidth(a3);
+    v8 = CGImageGetWidth(image);
     v9 = v8;
-    v10 = CGImageGetHeight(a3);
+    v10 = CGImageGetHeight(image);
     v11 = v10;
     v12 = width / v8;
     if (!v8)

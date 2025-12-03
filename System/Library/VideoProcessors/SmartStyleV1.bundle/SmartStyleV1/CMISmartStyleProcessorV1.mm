@@ -6,29 +6,29 @@
 + (id)getDefaultProcessorConfigurationForStreaming;
 + (id)getDefaultProcessorConfigurationForStreamingAccelerated;
 + (id)getDefaultProcessorConfigurationForStreamingAcceleratedSquareAspectRatio;
-+ (id)getDefaultProcessorConfigurationForStreamingAcceleratedSquareAspectRatioWithFilterType:(unint64_t)a3;
-+ (id)getDefaultProcessorConfigurationForStreamingAcceleratedWithFilterType:(unint64_t)a3;
++ (id)getDefaultProcessorConfigurationForStreamingAcceleratedSquareAspectRatioWithFilterType:(unint64_t)type;
++ (id)getDefaultProcessorConfigurationForStreamingAcceleratedWithFilterType:(unint64_t)type;
 + (id)getDefaultProcessorConfigurationForStreamingSquareAspectRatio;
-+ (id)getDefaultProcessorConfigurationForStreamingSquareAspectRatioWithFilterType:(unint64_t)a3;
-+ (id)getDefaultProcessorConfigurationForStreamingWithFilterType:(unint64_t)a3;
-+ (unint64_t)getSmartStyleCoefficientsFilterType:(id)a3;
-+ (unsigned)getRequiredFilteredCoefficientsPixelBufferPoolSizeForFilterType:(unint64_t)a3;
-+ (unsigned)getRequiredInputBufferSizeForFilterType:(unint64_t)a3;
-- (BOOL)requiresReconfigurationForConfiguration:(id)a3;
++ (id)getDefaultProcessorConfigurationForStreamingSquareAspectRatioWithFilterType:(unint64_t)type;
++ (id)getDefaultProcessorConfigurationForStreamingWithFilterType:(unint64_t)type;
++ (unint64_t)getSmartStyleCoefficientsFilterType:(id)type;
++ (unsigned)getRequiredFilteredCoefficientsPixelBufferPoolSizeForFilterType:(unint64_t)type;
++ (unsigned)getRequiredInputBufferSizeForFilterType:(unint64_t)type;
+- (BOOL)requiresReconfigurationForConfiguration:(id)configuration;
 - (CMISmartStyleProcessorV1)init;
-- (CMISmartStyleProcessorV1)initWithOptionalMetalCommandQueue:(id)a3 ispSMGProcessingSession:(OpaqueFigCaptureISPProcessingSession *)a4;
-- (id)externalMemoryDescriptorForConfiguration:(id)a3;
-- (int)_configureInputLinearPixelBufferForPixelBufferRenderer:(__CVBuffer *)a3 withinputLinearCropRect:(CGRect)a4;
-- (int)_configureInputUnstyledPixelBufferForPixelBufferRenderer:(__CVBuffer *)a3 withinputUnstyledCropRect:(CGRect)a4 inputUnstyledThumbnailPixelBuffer:(__CVBuffer *)a5 withinputUnstyledThumbnailCropRect:(CGRect)a6;
-- (int)_configureOutputStyledThumbnailPixelBufferForPixelBufferRenderer:(__CVBuffer *)a3 unstyledThumbnailPixelBuffer:(__CVBuffer *)a4;
-- (int)_configureStyleEngineTargetThumbnailPixelBuffer:(__CVBuffer *)a3 inputTargetThumbnailPixelBuffer:(__CVBuffer *)a4;
+- (CMISmartStyleProcessorV1)initWithOptionalMetalCommandQueue:(id)queue ispSMGProcessingSession:(OpaqueFigCaptureISPProcessingSession *)session;
+- (id)externalMemoryDescriptorForConfiguration:(id)configuration;
+- (int)_configureInputLinearPixelBufferForPixelBufferRenderer:(__CVBuffer *)renderer withinputLinearCropRect:(CGRect)rect;
+- (int)_configureInputUnstyledPixelBufferForPixelBufferRenderer:(__CVBuffer *)renderer withinputUnstyledCropRect:(CGRect)rect inputUnstyledThumbnailPixelBuffer:(__CVBuffer *)buffer withinputUnstyledThumbnailCropRect:(CGRect)cropRect;
+- (int)_configureOutputStyledThumbnailPixelBufferForPixelBufferRenderer:(__CVBuffer *)renderer unstyledThumbnailPixelBuffer:(__CVBuffer *)buffer;
+- (int)_configureStyleEngineTargetThumbnailPixelBuffer:(__CVBuffer *)buffer inputTargetThumbnailPixelBuffer:(__CVBuffer *)pixelBuffer;
 - (int)finishProcessing;
 - (int)prewarm;
 - (int)process;
 - (int)purgeResources;
 - (int)resetState;
 - (int)setup;
-- (uint64_t)_configureStyleEngineInputUnstyledThumbnailPixelBuffer:(double)a3 withinputUnstyledCropRect:(double)a4 inputUnstyledThumbnailPixelBuffer:(double)a5 withinputUnstyledThumbnailCropRect:(double)a6 inputUnstyledThumbnailUsedForTargetGenerationPixelBuffer:(double)a7 withInputUnstyledThumbnailUsedForTargetGenerationCropRect:(double)a8;
+- (uint64_t)_configureStyleEngineInputUnstyledThumbnailPixelBuffer:(double)buffer withinputUnstyledCropRect:(double)rect inputUnstyledThumbnailPixelBuffer:(double)pixelBuffer withinputUnstyledThumbnailCropRect:(double)cropRect inputUnstyledThumbnailUsedForTargetGenerationPixelBuffer:(double)generationPixelBuffer withInputUnstyledThumbnailUsedForTargetGenerationCropRect:(double)generationCropRect;
 - (uint64_t)finishProcessing;
 - (uint64_t)prewarm;
 - (uint64_t)process;
@@ -36,9 +36,9 @@
 - (uint64_t)resetState;
 - (uint64_t)setup;
 - (void)dealloc;
-- (void)setCameraInfoByPortType:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setTuningParameters:(id)a3;
+- (void)setCameraInfoByPortType:(id)type;
+- (void)setConfiguration:(id)configuration;
+- (void)setTuningParameters:(id)parameters;
 @end
 
 @implementation CMISmartStyleProcessorV1
@@ -67,19 +67,19 @@
   return v3;
 }
 
-- (CMISmartStyleProcessorV1)initWithOptionalMetalCommandQueue:(id)a3 ispSMGProcessingSession:(OpaqueFigCaptureISPProcessingSession *)a4
+- (CMISmartStyleProcessorV1)initWithOptionalMetalCommandQueue:(id)queue ispSMGProcessingSession:(OpaqueFigCaptureISPProcessingSession *)session
 {
-  v7 = a3;
+  queueCopy = queue;
   v8 = [(CMISmartStyleProcessorV1 *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_metalCommandQueue, a3);
+    objc_storeStrong(&v8->_metalCommandQueue, queue);
     ispSMGProcessingSession = v9->_ispSMGProcessingSession;
-    v9->_ispSMGProcessingSession = a4;
-    if (a4)
+    v9->_ispSMGProcessingSession = session;
+    if (session)
     {
-      CFRetain(a4);
+      CFRetain(session);
     }
 
     if (ispSMGProcessingSession)
@@ -119,38 +119,38 @@
 
 - (int)process
 {
-  v3 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputSmartStyle];
-  v292 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputMetadataDict];
-  v290 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputLinearMetadataDict];
-  v4 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputUnstyledPixelBuffer];
-  v5 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputUnstyledThumbnailPixelBuffer];
-  v267 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputLearningTargetPixelBuffer];
-  v266 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputLearningTargetThumbnailPixelBuffer];
-  v282 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputLinearPixelBuffer];
-  v261 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputGainMapPixelBuffer];
-  v6 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputPersonMaskPixelBuffer];
-  v285 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputSkinMaskPixelBuffer];
-  v7 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputSkyMaskPixelBuffer];
-  v224 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputSRLPixelBuffer];
-  v269 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputStyleCoefficientsPixelBuffer];
-  v247 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputDeltaMapPixelBuffer];
-  v8 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputReferenceForDeltaMapComputationPixelBuffer];
-  v262 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput semanticStyleSceneType];
-  v284 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputTuningType];
+  inputSmartStyle = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputSmartStyle];
+  inputMetadataDict = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputMetadataDict];
+  inputLinearMetadataDict = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputLinearMetadataDict];
+  inputUnstyledPixelBuffer = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputUnstyledPixelBuffer];
+  inputUnstyledThumbnailPixelBuffer = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputUnstyledThumbnailPixelBuffer];
+  inputLearningTargetPixelBuffer = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputLearningTargetPixelBuffer];
+  inputLearningTargetThumbnailPixelBuffer = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputLearningTargetThumbnailPixelBuffer];
+  inputLinearPixelBuffer = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputLinearPixelBuffer];
+  inputGainMapPixelBuffer = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputGainMapPixelBuffer];
+  inputPersonMaskPixelBuffer = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputPersonMaskPixelBuffer];
+  inputSkinMaskPixelBuffer = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputSkinMaskPixelBuffer];
+  inputSkyMaskPixelBuffer = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputSkyMaskPixelBuffer];
+  inputSRLPixelBuffer = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputSRLPixelBuffer];
+  inputStyleCoefficientsPixelBuffer = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputStyleCoefficientsPixelBuffer];
+  inputDeltaMapPixelBuffer = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputDeltaMapPixelBuffer];
+  inputReferenceForDeltaMapComputationPixelBuffer = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputReferenceForDeltaMapComputationPixelBuffer];
+  semanticStyleSceneType = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput semanticStyleSceneType];
+  inputTuningType = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputTuningType];
   [(CMISmartStyleProcessorInputOutput *)self->_inputOutput personMasksValidHint];
   v263 = v9;
-  v229 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputWeightPlanePixelBufferScaledForISPSMG];
-  v274 = [(CMISmartStyleProcessorV1 *)self _isStreaming];
-  v10 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputStyledPixelBuffer];
-  v265 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputSmallLightMapPixelBuffer];
-  v264 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputSmallLinearLightMapPixelBuffer];
-  v11 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputDeltaMapPixelBuffer];
-  v270 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputLearnedStyleCoefficientsPixelBuffer];
+  inputWeightPlanePixelBufferScaledForISPSMG = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputWeightPlanePixelBufferScaledForISPSMG];
+  _isStreaming = [(CMISmartStyleProcessorV1 *)self _isStreaming];
+  outputStyledPixelBuffer = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputStyledPixelBuffer];
+  outputSmallLightMapPixelBuffer = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputSmallLightMapPixelBuffer];
+  outputSmallLinearLightMapPixelBuffer = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputSmallLinearLightMapPixelBuffer];
+  outputDeltaMapPixelBuffer = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputDeltaMapPixelBuffer];
+  outputLearnedStyleCoefficientsPixelBuffer = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputLearnedStyleCoefficientsPixelBuffer];
   [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputUnstyledCropRect];
   if (CGRectIsEmpty(v294))
   {
-    Width = CVPixelBufferGetWidth(v4);
-    Height = CVPixelBufferGetHeight(v4);
+    Width = CVPixelBufferGetWidth(inputUnstyledPixelBuffer);
+    Height = CVPixelBufferGetHeight(inputUnstyledPixelBuffer);
     v12 = 0.0;
     v13 = 0.0;
   }
@@ -167,8 +167,8 @@
   [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputUnstyledThumbnailCropRect];
   if (CGRectIsEmpty(v295))
   {
-    v281 = CVPixelBufferGetWidth(v5);
-    v280 = CVPixelBufferGetHeight(v5);
+    v281 = CVPixelBufferGetWidth(inputUnstyledThumbnailPixelBuffer);
+    v280 = CVPixelBufferGetHeight(inputUnstyledThumbnailPixelBuffer);
     v18 = 0.0;
     v19 = 0.0;
   }
@@ -185,9 +185,9 @@
   [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputPersonMaskCropRect];
   if (CGRectIsEmpty(v296))
   {
-    v260 = CVPixelBufferGetWidth(v6);
+    v260 = CVPixelBufferGetWidth(inputPersonMaskPixelBuffer);
     v258 = 0.0;
-    v259 = CVPixelBufferGetHeight(v6);
+    v259 = CVPixelBufferGetHeight(inputPersonMaskPixelBuffer);
     v257 = 0.0;
   }
 
@@ -203,9 +203,9 @@
   [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputSkyMaskCropRect];
   if (CGRectIsEmpty(v297))
   {
-    v256 = CVPixelBufferGetWidth(v7);
+    v256 = CVPixelBufferGetWidth(inputSkyMaskPixelBuffer);
     v254 = 0.0;
-    v255 = CVPixelBufferGetHeight(v7);
+    v255 = CVPixelBufferGetHeight(inputSkyMaskPixelBuffer);
     v253 = 0.0;
   }
 
@@ -221,9 +221,9 @@
   [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputSkinMaskCropRect];
   if (CGRectIsEmpty(v298))
   {
-    v252 = CVPixelBufferGetWidth(v285);
+    v252 = CVPixelBufferGetWidth(inputSkinMaskPixelBuffer);
     v250 = 0.0;
-    v251 = CVPixelBufferGetHeight(v285);
+    v251 = CVPixelBufferGetHeight(inputSkinMaskPixelBuffer);
     v249 = 0.0;
   }
 
@@ -239,9 +239,9 @@
   [(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputStyledCropRect];
   if (CGRectIsEmpty(v299))
   {
-    rect = CVPixelBufferGetWidth(v10);
+    rect = CVPixelBufferGetWidth(outputStyledPixelBuffer);
     v246 = 0.0;
-    v244 = CVPixelBufferGetHeight(v10);
+    v244 = CVPixelBufferGetHeight(outputStyledPixelBuffer);
     v245 = 0.0;
   }
 
@@ -257,8 +257,8 @@
   [(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputDeltaMapCropRect];
   if (CGRectIsEmpty(v300))
   {
-    CVPixelBufferGetWidth(v11);
-    CVPixelBufferGetHeight(v11);
+    CVPixelBufferGetWidth(outputDeltaMapPixelBuffer);
+    CVPixelBufferGetHeight(outputDeltaMapPixelBuffer);
     v222 = 0.0;
     v223 = 0.0;
   }
@@ -273,8 +273,8 @@
   [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputReferenceForDeltaMapComputationCropRect];
   if (CGRectIsEmpty(v301))
   {
-    CVPixelBufferGetWidth(v8);
-    CVPixelBufferGetHeight(v8);
+    CVPixelBufferGetWidth(inputReferenceForDeltaMapComputationPixelBuffer);
+    CVPixelBufferGetHeight(inputReferenceForDeltaMapComputationPixelBuffer);
     v220 = 0.0;
     v221 = 0.0;
   }
@@ -287,7 +287,7 @@
   }
 
   [(CMISmartStyleProcessorInputOutput *)self->_inputOutput primaryCaptureRect];
-  pixelBuffer = v8;
+  pixelBuffer = inputReferenceForDeltaMapComputationPixelBuffer;
   if (CGRectIsEmpty(v302))
   {
     v230 = 0.0;
@@ -324,7 +324,7 @@
     r1 = v52;
   }
 
-  v53 = v3;
+  v53 = inputSmartStyle;
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
   v56 = CGRectNull.size.width;
@@ -343,7 +343,7 @@
     v57 = v61;
   }
 
-  v62 = v6;
+  v62 = inputPersonMaskPixelBuffer;
   [(CMISmartStyleProcessorInputOutput *)self->_inputOutput deltaMapRegionToRenderRect];
   IsEmpty = CGRectIsEmpty(v305);
   v64 = v291;
@@ -366,40 +366,40 @@
   v233 = v70;
   [(CMISmartStyleProcessorInputOutput *)self->_inputOutput globalLinearSystemMixFactor];
   v231 = v71;
-  v243 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput residualsCalculationDisabled];
-  v232 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput applyDither];
-  v72 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput metalSharedEvent];
-  v279 = v72;
-  if (v72)
+  residualsCalculationDisabled = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput residualsCalculationDisabled];
+  applyDither = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput applyDither];
+  metalSharedEvent = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput metalSharedEvent];
+  v279 = metalSharedEvent;
+  if (metalSharedEvent)
   {
-    v73 = v72;
-    v74 = [(FigMetalContext *)self->_metalContext commandBuffer];
-    if (!v74)
+    v73 = metalSharedEvent;
+    commandBuffer = [(FigMetalContext *)self->_metalContext commandBuffer];
+    if (!commandBuffer)
     {
       [(CMISmartStyleProcessorV1 *)v293 process];
       v207 = v293[0];
 LABEL_155:
-      v116 = v284;
+      v116 = inputTuningType;
       v117 = v53;
       goto LABEL_142;
     }
 
-    v75 = v74;
-    [v74 encodeWaitForEvent:v73 value:1];
+    v75 = commandBuffer;
+    [commandBuffer encodeWaitForEvent:v73 value:1];
     [(FigMetalContext *)self->_metalContext commit];
   }
 
-  v227 = v10;
-  v228 = v11;
+  v227 = outputStyledPixelBuffer;
+  v228 = outputDeltaMapPixelBuffer;
   if (!self->_shouldGenerateTarget)
   {
-    v115 = 0;
-    v116 = v284;
+    inputPixelBuffer = 0;
+    v116 = inputTuningType;
     v117 = v53;
     goto LABEL_71;
   }
 
-  if (!(v4 | v5))
+  if (!(inputUnstyledPixelBuffer | inputUnstyledThumbnailPixelBuffer))
   {
     [CMISmartStyleProcessorV1 process];
 LABEL_154:
@@ -407,25 +407,25 @@ LABEL_154:
     goto LABEL_155;
   }
 
-  if (!v292)
+  if (!inputMetadataDict)
   {
     [CMISmartStyleProcessorV1 process];
     goto LABEL_154;
   }
 
-  if (!v282)
+  if (!inputLinearPixelBuffer)
   {
     [CMISmartStyleProcessorV1 process];
     goto LABEL_154;
   }
 
-  v219 = [v292 objectForKeyedSubscript:kFigCaptureStreamMetadata_PortType];
+  v219 = [inputMetadataDict objectForKeyedSubscript:kFigCaptureStreamMetadata_PortType];
   v76 = v291;
   v77 = v56;
   v78 = y;
   v79 = CGRectNull.origin.x;
-  v215 = v7;
-  if (v274)
+  v215 = inputSkyMaskPixelBuffer;
+  if (_isStreaming)
   {
     v80 = [v219 isEqual:{kFigCapturePortType_FrontFacingSuperWideCamera, CGRectNull.origin.x, y, v56, v291}];
     v76 = v291;
@@ -445,7 +445,7 @@ LABEL_154:
       FigCaptureAspectRatioForDimensions();
       v86 = v57;
       v87 = v81;
-      v7 = v85;
+      inputSkyMaskPixelBuffer = v85;
       FigCaptureUnityRect();
       v88 = v86;
       x = CGRectNull.origin.x;
@@ -470,9 +470,9 @@ LABEL_154:
 
   [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setStatsComputationRect:v79, v78, v77, v76];
   v93 = v62;
-  if ([(CMISmartStyleProcessorInputOutput *)self->_inputOutput subjectRelightingEnabled]&& v285 && v62)
+  if ([(CMISmartStyleProcessorInputOutput *)self->_inputOutput subjectRelightingEnabled]&& inputSkinMaskPixelBuffer && v62)
   {
-    if (!v224)
+    if (!inputSRLPixelBuffer)
     {
       [(CMISmartStyleProcessorV1 *)v293 process];
       v207 = v293[0];
@@ -486,16 +486,16 @@ LABEL_154:
     v96 = y;
     v97 = x;
     v98 = v13;
-    v99 = [v292 objectForKeyedSubscript:kFigCaptureStreamMetadata_DetectedObjectsInfo];
+    v99 = [inputMetadataDict objectForKeyedSubscript:kFigCaptureStreamMetadata_DetectedObjectsInfo];
     v100 = [v99 objectForKeyedSubscript:kFigCaptureStreamDetectedObjectsInfoKey_HumanFaces];
 
-    v101 = [v292 objectForKeyedSubscript:kFigCaptureStreamMetadata_ExposureBias];
+    v101 = [inputMetadataDict objectForKeyedSubscript:kFigCaptureStreamMetadata_ExposureBias];
     [v101 floatValue];
     v103 = v102;
 
     LODWORD(v211) = 0;
     LODWORD(v104) = v103;
-    [(CMISubjectRelightingStage *)self->_subjectRelightingStage runSRLForLivePhotosWithInputBuffer:v224 skinMask:v285 personMask:v62 instanceMasks:0 instanceMaskConfidences:0 skinToneClassification:0 expBias:v104 exifOrientation:v211 srlV2Plist:0 faceDataFromANST:v100];
+    [(CMISubjectRelightingStage *)self->_subjectRelightingStage runSRLForLivePhotosWithInputBuffer:inputSRLPixelBuffer skinMask:inputSkinMaskPixelBuffer personMask:v62 instanceMasks:0 instanceMaskConfidences:0 skinToneClassification:0 expBias:v104 exifOrientation:v211 srlV2Plist:0 faceDataFromANST:v100];
     [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputSRLCoefficientsBuf:0];
     previousSRLCurveParameter = self->_previousSRLCurveParameter;
     [(CMISubjectRelightingStage *)self->_subjectRelightingStage lastComputedCurveParameter];
@@ -543,9 +543,9 @@ LABEL_154:
     *&v113 = v112;
     [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputSRLCurveParameter:v113];
     self->_previousSRLCurveParameter = v112;
-    v114 = [(CMISubjectRelightingStage *)self->_subjectRelightingStage lastComputedRelightingStats];
-    v7 = [NSData dataWithData:v114];
-    [(CMISmartStyleProcessorInputOutput *)self->_inputOutput setOutputSRLStats:v7];
+    lastComputedRelightingStats = [(CMISubjectRelightingStage *)self->_subjectRelightingStage lastComputedRelightingStats];
+    inputSkyMaskPixelBuffer = [NSData dataWithData:lastComputedRelightingStats];
+    [(CMISmartStyleProcessorInputOutput *)self->_inputOutput setOutputSRLStats:inputSkyMaskPixelBuffer];
 
     v13 = v98;
     x = v97;
@@ -572,29 +572,29 @@ LABEL_154:
     v207 = 0;
 LABEL_166:
 
-    v116 = v284;
+    v116 = inputTuningType;
     goto LABEL_142;
   }
 
-  v120 = [(CMISmartStyleProcessorV1 *)self _configureInputUnstyledPixelBufferForPixelBufferRenderer:v4 withinputUnstyledCropRect:v5 inputUnstyledThumbnailPixelBuffer:v12 withinputUnstyledThumbnailCropRect:v13, Width, Height, v18, v19, v281, v280];
-  if (v120)
+  v280 = [(CMISmartStyleProcessorV1 *)self _configureInputUnstyledPixelBufferForPixelBufferRenderer:inputUnstyledPixelBuffer withinputUnstyledCropRect:inputUnstyledThumbnailPixelBuffer inputUnstyledThumbnailPixelBuffer:v12 withinputUnstyledThumbnailCropRect:v13, Width, Height, v18, v19, v281, v280];
+  if (v280)
   {
-    v207 = v120;
+    v207 = v280;
     [CMISmartStyleProcessorV1 process];
     goto LABEL_166;
   }
 
-  v115 = [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer inputPixelBuffer];
+  inputPixelBuffer = [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer inputPixelBuffer];
   [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputLinearCropRect];
   if (CGRectIsEmpty(v307))
   {
-    [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputLinearPixelBuffer:v282];
+    [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputLinearPixelBuffer:inputLinearPixelBuffer];
   }
 
   else
   {
     [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputLinearCropRect];
-    v121 = [(CMISmartStyleProcessorV1 *)self _configureInputLinearPixelBufferForPixelBufferRenderer:v282 withinputLinearCropRect:?];
+    v121 = [(CMISmartStyleProcessorV1 *)self _configureInputLinearPixelBufferForPixelBufferRenderer:inputLinearPixelBuffer withinputLinearCropRect:?];
     if (v121)
     {
       v207 = v121;
@@ -603,7 +603,7 @@ LABEL_166:
     }
   }
 
-  v122 = [(CMISmartStyleProcessorV1 *)self _configureOutputStyledThumbnailPixelBufferForPixelBufferRenderer:v4 unstyledThumbnailPixelBuffer:v5];
+  v122 = [(CMISmartStyleProcessorV1 *)self _configureOutputStyledThumbnailPixelBufferForPixelBufferRenderer:inputUnstyledPixelBuffer unstyledThumbnailPixelBuffer:inputUnstyledThumbnailPixelBuffer];
   if (v122)
   {
     v207 = v122;
@@ -612,29 +612,29 @@ LABEL_166:
   }
 
   [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputStyle:v53];
-  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputMetadataDict:v292];
-  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputLinearMetadataDict:v290];
-  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputGainMapPixelBuffer:v261];
+  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputMetadataDict:inputMetadataDict];
+  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputLinearMetadataDict:inputLinearMetadataDict];
+  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputGainMapPixelBuffer:inputGainMapPixelBuffer];
   [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputPersonMaskPixelBuffer:v93];
   [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputPersonMaskCropRect:v258, v257, v260, v259];
-  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputSkinMaskPixelBuffer:v285];
+  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputSkinMaskPixelBuffer:inputSkinMaskPixelBuffer];
   [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputSkinMaskCropRect:v250, v249, v252, v251];
   [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputSkyMaskPixelBuffer:v215];
   [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputSkyMaskCropRect:v254, v253, v256, v255];
-  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setSemanticStyleSceneType:v262];
-  v116 = v284;
-  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setTuningParameterVariant:v284];
-  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setIsStreaming:v274 & ~self->_shouldFlushCVMTLTextureCacheAfterProcessing & 1];
+  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setSemanticStyleSceneType:semanticStyleSceneType];
+  v116 = inputTuningType;
+  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setTuningParameterVariant:inputTuningType];
+  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setIsStreaming:_isStreaming & ~self->_shouldFlushCVMTLTextureCacheAfterProcessing & 1];
   LODWORD(v123) = v263;
   [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setPersonMasksValidHint:v123];
-  v124 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputImageStatistics];
-  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setOutputImageStatistics:v124];
+  outputImageStatistics = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputImageStatistics];
+  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setOutputImageStatistics:outputImageStatistics];
 
-  v125 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputImageStatisticsExtended];
-  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setOutputImageStatisticsExtended:v125];
+  outputImageStatisticsExtended = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputImageStatisticsExtended];
+  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setOutputImageStatisticsExtended:outputImageStatisticsExtended];
 
-  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setOutputSmallLightMapPixelBuffer:v265];
-  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setOutputSmallLinearLightMapPixelBuffer:v264];
+  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setOutputSmallLightMapPixelBuffer:outputSmallLightMapPixelBuffer];
+  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setOutputSmallLinearLightMapPixelBuffer:outputSmallLinearLightMapPixelBuffer];
 
 LABEL_71:
   if (self->_shouldEncodeLinear)
@@ -642,13 +642,13 @@ LABEL_71:
     [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputLinearCropRect];
     if (CGRectIsEmpty(v308))
     {
-      [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputLinearPixelBuffer:v282];
+      [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputLinearPixelBuffer:inputLinearPixelBuffer];
     }
 
     else
     {
       [(CMISmartStyleProcessorInputOutput *)self->_inputOutput inputLinearCropRect];
-      v126 = [(CMISmartStyleProcessorV1 *)self _configureInputLinearPixelBufferForPixelBufferRenderer:v282 withinputLinearCropRect:?];
+      v126 = [(CMISmartStyleProcessorV1 *)self _configureInputLinearPixelBufferForPixelBufferRenderer:inputLinearPixelBuffer withinputLinearCropRect:?];
       if (v126)
       {
         v207 = v126;
@@ -657,11 +657,11 @@ LABEL_71:
       }
     }
 
-    [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputMetadataDict:v292];
-    [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputLinearMetadataDict:v290];
+    [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputMetadataDict:inputMetadataDict];
+    [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputLinearMetadataDict:inputLinearMetadataDict];
     [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setOutputCodedLinearPixelBuffer:[(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputCodedLinearThumbnailPixelBuffer]];
-    v127 = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputCodedLinearThumbnailMetadata];
-    [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setOutputCodedLinearMetadata:v127];
+    outputCodedLinearThumbnailMetadata = [(CMISmartStyleProcessorInputOutput *)self->_inputOutput outputCodedLinearThumbnailMetadata];
+    [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setOutputCodedLinearMetadata:outputCodedLinearThumbnailMetadata];
   }
 
   if ((self->_shouldGenerateTarget || self->_shouldEncodeLinear) && [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer process])
@@ -673,11 +673,11 @@ LABEL_71:
 
   if (self->_shouldLearn)
   {
-    if (v4 | v5)
+    if (inputUnstyledPixelBuffer | inputUnstyledThumbnailPixelBuffer)
     {
-      if (self->_shouldIntegrate || self->_shouldApply || v270)
+      if (self->_shouldIntegrate || self->_shouldApply || outputLearnedStyleCoefficientsPixelBuffer)
       {
-        v128 = [(CMISmartStyleProcessorV1 *)self _configureStyleEngineInputUnstyledThumbnailPixelBuffer:v4 withinputUnstyledCropRect:v5 inputUnstyledThumbnailPixelBuffer:v115 withinputUnstyledThumbnailCropRect:v12 inputUnstyledThumbnailUsedForTargetGenerationPixelBuffer:v13 withInputUnstyledThumbnailUsedForTargetGenerationCropRect:Width, Height, v18, v19, v281, v280, *&x, *&y, *&v56, *&v291];
+        v128 = [(CMISmartStyleProcessorV1 *)self _configureStyleEngineInputUnstyledThumbnailPixelBuffer:inputUnstyledPixelBuffer withinputUnstyledCropRect:inputUnstyledThumbnailPixelBuffer inputUnstyledThumbnailPixelBuffer:inputPixelBuffer withinputUnstyledThumbnailCropRect:v12 inputUnstyledThumbnailUsedForTargetGenerationPixelBuffer:v13 withInputUnstyledThumbnailUsedForTargetGenerationCropRect:Width, Height, v18, v19, v281, v280, *&x, *&y, *&v56, *&v291];
         if (v128)
         {
           v207 = v128;
@@ -685,8 +685,8 @@ LABEL_71:
           goto LABEL_142;
         }
 
-        v129 = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor inputThumbnailPixelBuffer];
-        v130 = [(CMISmartStyleProcessorV1 *)self _configureStyleEngineTargetThumbnailPixelBuffer:v267 inputTargetThumbnailPixelBuffer:v266];
+        inputThumbnailPixelBuffer = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor inputThumbnailPixelBuffer];
+        v130 = [(CMISmartStyleProcessorV1 *)self _configureStyleEngineTargetThumbnailPixelBuffer:inputLearningTargetPixelBuffer inputTargetThumbnailPixelBuffer:inputLearningTargetThumbnailPixelBuffer];
         if (v130)
         {
           v207 = v130;
@@ -694,7 +694,7 @@ LABEL_71:
           goto LABEL_142;
         }
 
-        v131 = v5;
+        v131 = inputUnstyledThumbnailPixelBuffer;
         v283 = v56;
         v218 = x;
         v132 = v57;
@@ -702,29 +702,29 @@ LABEL_71:
         v134 = v18;
         v286 = v13;
         v135 = v12;
-        [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setInputWeightPlanePixelBufferScaledForISPSMG:v229];
-        [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setOutputLinearSystemCoefficientsPixelBuffer:v270];
-        v136 = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor tuningParameters];
+        [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setInputWeightPlanePixelBufferScaledForISPSMG:inputWeightPlanePixelBufferScaledForISPSMG];
+        [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setOutputLinearSystemCoefficientsPixelBuffer:outputLearnedStyleCoefficientsPixelBuffer];
+        tuningParameters = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor tuningParameters];
         v137 = 0.0;
-        [v136 cmi_floatValueForKey:@"StylePriorStrength" defaultValue:0 found:0.0];
+        [tuningParameters cmi_floatValueForKey:@"StylePriorStrength" defaultValue:0 found:0.0];
         v139 = v138;
         v140 = 1.0;
         if (v138 < 1.0)
         {
-          v7 = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor tuningParameters];
-          [(__CVBuffer *)v7 cmi_floatValueForKey:@"StylePriorStrength" defaultValue:0 found:0.0];
+          inputSkyMaskPixelBuffer = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor tuningParameters];
+          [(__CVBuffer *)inputSkyMaskPixelBuffer cmi_floatValueForKey:@"StylePriorStrength" defaultValue:0 found:0.0];
           if (v141 <= 0.0)
           {
             goto LABEL_91;
           }
         }
 
-        v142 = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor tuningParameters];
-        [v142 cmi_floatValueForKey:@"StylePriorStrength" defaultValue:0 found:0.0];
+        tuningParameters2 = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor tuningParameters];
+        [tuningParameters2 cmi_floatValueForKey:@"StylePriorStrength" defaultValue:0 found:0.0];
         if (v143 < 1.0)
         {
-          v144 = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor tuningParameters];
-          [v144 cmi_floatValueForKey:@"StylePriorStrength" defaultValue:0 found:0.0];
+          tuningParameters3 = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor tuningParameters];
+          [tuningParameters3 cmi_floatValueForKey:@"StylePriorStrength" defaultValue:0 found:0.0];
           v140 = v145;
         }
 
@@ -737,9 +737,9 @@ LABEL_91:
         }
 
         p_previousStyle = &self->_previousStyle;
-        v147 = [(CMISmartStyle *)self->_previousStyle castType];
-        v148 = [v117 castType];
-        if (![v147 isEqualToString:v148])
+        castType = [(CMISmartStyle *)self->_previousStyle castType];
+        castType2 = [v117 castType];
+        if (![castType isEqualToString:castType2])
         {
           goto LABEL_96;
         }
@@ -770,7 +770,7 @@ LABEL_91:
 LABEL_96:
         }
 
-        v158 = [v117 castType];
+        castType3 = [v117 castType];
         [v117 toneBias];
         v160 = v159;
         [v117 colorBias];
@@ -780,18 +780,18 @@ LABEL_96:
         LODWORD(v165) = v160;
         LODWORD(v166) = v162;
         *&v167 = v140;
-        [CMISmartStyleCCMPriorGenerator calculatePriorCCMforCast:v158 tone:v165 color:v166 intensity:v164 priorStrength:v167];
+        [CMISmartStyleCCMPriorGenerator calculatePriorCCMforCast:castType3 tone:v165 color:v166 intensity:v164 priorStrength:v167];
         v275 = v168;
         v271 = v169;
         v268 = v170;
-        v171 = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor configuration];
-        [v171 setLinearSystemPriorMatrix:{v275, v271, v268}];
+        configuration = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor configuration];
+        [configuration setLinearSystemPriorMatrix:{v275, v271, v268}];
 
 LABEL_98:
         objc_storeStrong(&self->_previousStyle, v117);
         self->_previousPriorStrength = v140;
-        v172 = v129 == 0;
-        v116 = v284;
+        v172 = inputThumbnailPixelBuffer == 0;
+        v116 = inputTuningType;
         v12 = v135;
         v13 = v286;
         v18 = v134;
@@ -799,7 +799,7 @@ LABEL_98:
         v57 = v132;
         x = v218;
         v56 = v283;
-        v5 = v131;
+        inputUnstyledThumbnailPixelBuffer = v131;
         goto LABEL_100;
       }
 
@@ -821,7 +821,7 @@ LABEL_100:
   {
     if (!self->_shouldLearn)
     {
-      if (!v269)
+      if (!inputStyleCoefficientsPixelBuffer)
       {
         [CMISmartStyleProcessorV1 process];
         goto LABEL_169;
@@ -832,7 +832,7 @@ LABEL_100:
 
     if (v172)
     {
-      v173 = [(CMISmartStyleProcessorV1 *)self _configureStyleEngineInputUnstyledThumbnailPixelBuffer:v4 withinputUnstyledCropRect:v5 inputUnstyledThumbnailPixelBuffer:v115 withinputUnstyledThumbnailCropRect:v12 inputUnstyledThumbnailUsedForTargetGenerationPixelBuffer:v13 withInputUnstyledThumbnailUsedForTargetGenerationCropRect:Width, Height, v18, v19, v281, v280, *&x, *&y, *&v56, *&v291];
+      v173 = [(CMISmartStyleProcessorV1 *)self _configureStyleEngineInputUnstyledThumbnailPixelBuffer:inputUnstyledPixelBuffer withinputUnstyledCropRect:inputUnstyledThumbnailPixelBuffer inputUnstyledThumbnailPixelBuffer:inputPixelBuffer withinputUnstyledThumbnailCropRect:v12 inputUnstyledThumbnailUsedForTargetGenerationPixelBuffer:v13 withInputUnstyledThumbnailUsedForTargetGenerationCropRect:Width, Height, v18, v19, v281, v280, *&x, *&y, *&v56, *&v291];
       if (v173)
       {
         v207 = v173;
@@ -850,7 +850,7 @@ LABEL_100:
 
   if (!self->_shouldLearn)
   {
-    if (v269)
+    if (inputStyleCoefficientsPixelBuffer)
     {
       [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setInputLinearSystemCoefficientsPixelBuffer:?];
       goto LABEL_110;
@@ -865,7 +865,7 @@ LABEL_169:
 LABEL_110:
   if (v172)
   {
-    v175 = [(CMISmartStyleProcessorV1 *)self _configureStyleEngineInputUnstyledThumbnailPixelBuffer:v4 withinputUnstyledCropRect:v5 inputUnstyledThumbnailPixelBuffer:v115 withinputUnstyledThumbnailCropRect:v12 inputUnstyledThumbnailUsedForTargetGenerationPixelBuffer:v13 withInputUnstyledThumbnailUsedForTargetGenerationCropRect:Width, Height, v18, v19, v281, v280, *&x, *&y, *&v56, *&v291];
+    v175 = [(CMISmartStyleProcessorV1 *)self _configureStyleEngineInputUnstyledThumbnailPixelBuffer:inputUnstyledPixelBuffer withinputUnstyledCropRect:inputUnstyledThumbnailPixelBuffer inputUnstyledThumbnailPixelBuffer:inputPixelBuffer withinputUnstyledThumbnailCropRect:v12 inputUnstyledThumbnailUsedForTargetGenerationPixelBuffer:v13 withInputUnstyledThumbnailUsedForTargetGenerationCropRect:Width, Height, v18, v19, v281, v280, *&x, *&y, *&v56, *&v291];
     if (v175)
     {
       v207 = v175;
@@ -874,12 +874,12 @@ LABEL_110:
     }
   }
 
-  v176 = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor configuration];
+  configuration2 = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor configuration];
   LODWORD(v177) = v231;
-  [v176 setGlobalLinearSystemMixFactor:v177];
+  [configuration2 setGlobalLinearSystemMixFactor:v177];
 
   [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setSpotlightAffineTransform:v235, v234, v233];
-  [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setApplyDither:v232];
+  [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setApplyDither:applyDither];
   v309.origin.x = v230;
   v309.origin.y = v238;
   v309.size.width = v236;
@@ -894,11 +894,11 @@ LABEL_110:
     v182 = v12;
     v183 = v238 * v179;
     v184 = v237 * v179;
-    v185 = [(CMISmartStyleProcessorBaseConfiguration *)self->_configuration styleEngineConfiguration];
-    [v185 thumbnailSize];
+    styleEngineConfiguration = [(CMISmartStyleProcessorBaseConfiguration *)self->_configuration styleEngineConfiguration];
+    [styleEngineConfiguration thumbnailSize];
     v187 = v186;
-    v188 = [(CMISmartStyleProcessorBaseConfiguration *)self->_configuration styleEngineConfiguration];
-    [v188 thumbnailSize];
+    styleEngineConfiguration2 = [(CMISmartStyleProcessorBaseConfiguration *)self->_configuration styleEngineConfiguration];
+    [styleEngineConfiguration2 thumbnailSize];
     v318.size.height = v189;
     v318.origin.x = 0.0;
     v318.origin.y = 0.0;
@@ -923,7 +923,7 @@ LABEL_110:
   v312.size.height = r1;
   v313 = CGRectIntersection(v312, v319);
   [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setSpotlightZoomROI:v313.origin.x, v313.origin.y, v313.size.width, v313.size.height];
-  [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setInputPixelBuffer:v4];
+  [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setInputPixelBuffer:inputUnstyledPixelBuffer];
   [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setOutputPixelBuffer:v227];
   v314.origin.x = v12;
   v314.origin.y = v13;
@@ -933,8 +933,8 @@ LABEL_110:
   {
     v190 = -v13;
     v191 = v13;
-    v192 = CVPixelBufferGetWidth(v4);
-    v193 = CVPixelBufferGetHeight(v4);
+    v192 = CVPixelBufferGetWidth(inputUnstyledPixelBuffer);
+    v193 = CVPixelBufferGetHeight(inputUnstyledPixelBuffer);
     if (pixelBuffer)
     {
       v194 = !v248;
@@ -995,12 +995,12 @@ LABEL_110:
     [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setRegionToRender:v276, v277, v278, v57];
   }
 
-  if (v247)
+  if (inputDeltaMapPixelBuffer)
   {
     [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setInputDeltaMapPixelBuffer:?];
   }
 
-  [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setResidualsCalculationDisabled:v243];
+  [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setResidualsCalculationDisabled:residualsCalculationDisabled];
   shouldLearn = self->_shouldLearn;
 LABEL_132:
   if (!shouldLearn && !self->_shouldIntegrate && !self->_shouldApply)
@@ -1009,16 +1009,16 @@ LABEL_132:
     goto LABEL_142;
   }
 
-  v202 = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor tuningParameters];
+  tuningParameters4 = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor tuningParameters];
   if (v116)
   {
-    v203 = [v117 castType];
+    castType4 = [v117 castType];
 
-    if (v203)
+    if (castType4)
     {
-      v204 = [v117 castType];
-      v205 = [CMISmartStyleCommonSettings styleEngineSpecificTuningForTuningVariant:v116 andCast:v204];
-      v206 = [v205 cmi_dictionaryMergedWithDefaultDict:v202];
+      castType5 = [v117 castType];
+      v205 = [CMISmartStyleCommonSettings styleEngineSpecificTuningForTuningVariant:v116 andCast:castType5];
+      v206 = [v205 cmi_dictionaryMergedWithDefaultDict:tuningParameters4];
       [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setTuningParameters:v206];
     }
   }
@@ -1037,7 +1037,7 @@ LABEL_148:
     goto LABEL_148;
   }
 
-  [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setTuningParameters:v202];
+  [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setTuningParameters:tuningParameters4];
   v207 = 0;
 LABEL_141:
 
@@ -1055,19 +1055,19 @@ LABEL_142:
     goto LABEL_5;
   }
 
-  v3 = [(FigMetalContext *)self->_metalContext commandQueue];
-  v4 = [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer metalCommandQueue];
-  v5 = v4;
-  if (v3 != v4)
+  commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+  metalCommandQueue = [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer metalCommandQueue];
+  v5 = metalCommandQueue;
+  if (commandQueue != metalCommandQueue)
   {
 
     goto LABEL_8;
   }
 
-  v6 = [(FigMetalContext *)self->_metalContext commandQueue];
-  v7 = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor metalCommandQueue];
+  commandQueue2 = [(FigMetalContext *)self->_metalContext commandQueue];
+  metalCommandQueue2 = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor metalCommandQueue];
 
-  if (v6 != v7)
+  if (commandQueue2 != metalCommandQueue2)
   {
 LABEL_8:
     [(CMISmartStyleProcessorV1 *)&v9 finishProcessing];
@@ -1144,20 +1144,20 @@ LABEL_5:
   return v3;
 }
 
-- (id)externalMemoryDescriptorForConfiguration:(id)a3
+- (id)externalMemoryDescriptorForConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [[CMIExternalMemoryConfiguration alloc] initWithMaxInputDimensions:0 inputPixelFormat:0 maxOutputDimensions:0 cmiResourceEnabled:0 processorSpecificOptions:&off_209D0];
   if (v5)
   {
-    v6 = [(CMISmartStyleProcessorBaseConfiguration *)self->_configuration styleEngineConfiguration];
-    [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setConfiguration:v6];
+    styleEngineConfiguration = [(CMISmartStyleProcessorBaseConfiguration *)self->_configuration styleEngineConfiguration];
+    [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setConfiguration:styleEngineConfiguration];
 
     v7 = [(CMIStyleEngineProcessor *)self->_styleEngineProcessor externalMemoryDescriptorForConfiguration:v5];
     if (v7)
     {
-      v8 = [v4 processorSpecificOptions];
-      v9 = [v8 objectForKeyedSubscript:@"ProcessingType"];
+      processorSpecificOptions = [configurationCopy processorSpecificOptions];
+      v9 = [processorSpecificOptions objectForKeyedSubscript:@"ProcessingType"];
       processingType = [v9 unsignedIntValue];
       if (!processingType)
       {
@@ -1205,8 +1205,8 @@ LABEL_12:
   }
 
   v7 = [FigMetalAllocator alloc];
-  v8 = [(FigMetalContext *)self->_metalContext device];
-  v9 = [v7 initWithDevice:v8 allocatorType:2];
+  device = [(FigMetalContext *)self->_metalContext device];
+  v9 = [v7 initWithDevice:device allocatorType:2];
   cmImagingAllocator = self->_cmImagingAllocator;
   self->_cmImagingAllocator = v9;
 
@@ -1220,16 +1220,16 @@ LABEL_12:
   metalCommandQueue = self->_metalCommandQueue;
   if (metalCommandQueue)
   {
-    v12 = metalCommandQueue;
+    commandQueue = metalCommandQueue;
   }
 
   else
   {
-    v12 = [(FigMetalContext *)self->_metalContext commandQueue];
+    commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
   }
 
   v13 = self->_metalCommandQueue;
-  self->_metalCommandQueue = v12;
+  self->_metalCommandQueue = commandQueue;
 
   if (!self->_metalCommandQueue)
   {
@@ -1383,37 +1383,37 @@ LABEL_13:
   return result;
 }
 
-- (void)setTuningParameters:(id)a3
+- (void)setTuningParameters:(id)parameters
 {
-  v4 = a3;
-  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setTuningParameters:v4];
-  [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setTuningParameters:v4];
+  parametersCopy = parameters;
+  [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setTuningParameters:parametersCopy];
+  [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setTuningParameters:parametersCopy];
   tuningParameters = self->_tuningParameters;
-  self->_tuningParameters = v4;
+  self->_tuningParameters = parametersCopy;
 }
 
-- (void)setCameraInfoByPortType:(id)a3
+- (void)setCameraInfoByPortType:(id)type
 {
   smartStylePixelBufferRenderer = self->_smartStylePixelBufferRenderer;
-  v5 = a3;
-  [(CMISmartStylePixelBufferRenderer *)smartStylePixelBufferRenderer setCameraInfoByPortType:v5];
-  [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setCameraInfoByPortType:v5];
+  typeCopy = type;
+  [(CMISmartStylePixelBufferRenderer *)smartStylePixelBufferRenderer setCameraInfoByPortType:typeCopy];
+  [(CMIStyleEngineProcessor *)self->_styleEngineProcessor setCameraInfoByPortType:typeCopy];
 }
 
-+ (unint64_t)getSmartStyleCoefficientsFilterType:(id)a3
++ (unint64_t)getSmartStyleCoefficientsFilterType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"iir"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"iir"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"iir3"])
+  else if ([typeCopy isEqualToString:@"iir3"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"fir10"])
+  else if ([typeCopy isEqualToString:@"fir10"])
   {
     v4 = 2;
   }
@@ -1490,20 +1490,20 @@ LABEL_13:
   return v2;
 }
 
-+ (id)getDefaultProcessorConfigurationForStreamingWithFilterType:(unint64_t)a3
++ (id)getDefaultProcessorConfigurationForStreamingWithFilterType:(unint64_t)type
 {
-  v5 = [a1 getDefaultProcessorConfigurationForStreaming];
-  [v5 setTemporalFilterInputBufferSize:{objc_msgSend(a1, "getRequiredInputBufferSizeForFilterType:", a3)}];
+  getDefaultProcessorConfigurationForStreaming = [self getDefaultProcessorConfigurationForStreaming];
+  [getDefaultProcessorConfigurationForStreaming setTemporalFilterInputBufferSize:{objc_msgSend(self, "getRequiredInputBufferSizeForFilterType:", type)}];
 
-  return v5;
+  return getDefaultProcessorConfigurationForStreaming;
 }
 
-+ (id)getDefaultProcessorConfigurationForStreamingAcceleratedWithFilterType:(unint64_t)a3
++ (id)getDefaultProcessorConfigurationForStreamingAcceleratedWithFilterType:(unint64_t)type
 {
-  v5 = [a1 getDefaultProcessorConfigurationForStreamingAccelerated];
-  [v5 setTemporalFilterInputBufferSize:{objc_msgSend(a1, "getRequiredInputBufferSizeForFilterType:", a3)}];
+  getDefaultProcessorConfigurationForStreamingAccelerated = [self getDefaultProcessorConfigurationForStreamingAccelerated];
+  [getDefaultProcessorConfigurationForStreamingAccelerated setTemporalFilterInputBufferSize:{objc_msgSend(self, "getRequiredInputBufferSizeForFilterType:", type)}];
 
-  return v5;
+  return getDefaultProcessorConfigurationForStreamingAccelerated;
 }
 
 + (id)getDefaultProcessorConfigurationForStreamingSquareAspectRatio
@@ -1538,45 +1538,45 @@ LABEL_13:
   return v2;
 }
 
-+ (id)getDefaultProcessorConfigurationForStreamingSquareAspectRatioWithFilterType:(unint64_t)a3
++ (id)getDefaultProcessorConfigurationForStreamingSquareAspectRatioWithFilterType:(unint64_t)type
 {
-  v5 = [a1 getDefaultProcessorConfigurationForStreamingSquareAspectRatio];
-  [v5 setTemporalFilterInputBufferSize:{objc_msgSend(a1, "getRequiredInputBufferSizeForFilterType:", a3)}];
+  getDefaultProcessorConfigurationForStreamingSquareAspectRatio = [self getDefaultProcessorConfigurationForStreamingSquareAspectRatio];
+  [getDefaultProcessorConfigurationForStreamingSquareAspectRatio setTemporalFilterInputBufferSize:{objc_msgSend(self, "getRequiredInputBufferSizeForFilterType:", type)}];
 
-  return v5;
+  return getDefaultProcessorConfigurationForStreamingSquareAspectRatio;
 }
 
-+ (id)getDefaultProcessorConfigurationForStreamingAcceleratedSquareAspectRatioWithFilterType:(unint64_t)a3
++ (id)getDefaultProcessorConfigurationForStreamingAcceleratedSquareAspectRatioWithFilterType:(unint64_t)type
 {
-  v5 = [a1 getDefaultProcessorConfigurationForStreamingAcceleratedSquareAspectRatio];
-  [v5 setTemporalFilterInputBufferSize:{objc_msgSend(a1, "getRequiredInputBufferSizeForFilterType:", a3)}];
+  getDefaultProcessorConfigurationForStreamingAcceleratedSquareAspectRatio = [self getDefaultProcessorConfigurationForStreamingAcceleratedSquareAspectRatio];
+  [getDefaultProcessorConfigurationForStreamingAcceleratedSquareAspectRatio setTemporalFilterInputBufferSize:{objc_msgSend(self, "getRequiredInputBufferSizeForFilterType:", type)}];
 
-  return v5;
+  return getDefaultProcessorConfigurationForStreamingAcceleratedSquareAspectRatio;
 }
 
-+ (unsigned)getRequiredFilteredCoefficientsPixelBufferPoolSizeForFilterType:(unint64_t)a3
++ (unsigned)getRequiredFilteredCoefficientsPixelBufferPoolSizeForFilterType:(unint64_t)type
 {
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     return 0;
   }
 
   else
   {
-    return dword_143A0[a3 - 1];
+    return dword_143A0[type - 1];
   }
 }
 
-+ (unsigned)getRequiredInputBufferSizeForFilterType:(unint64_t)a3
++ (unsigned)getRequiredInputBufferSizeForFilterType:(unint64_t)type
 {
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     return 0;
   }
 
   else
   {
-    return dword_143B0[a3 - 1];
+    return dword_143B0[type - 1];
   }
 }
 
@@ -1612,37 +1612,37 @@ LABEL_13:
   return v2;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if ([(CMISmartStyleProcessorV1 *)self requiresReconfigurationForConfiguration:?])
   {
     [(CMISmartStyleProcessorV1 *)self purgeResources];
-    objc_storeStrong(&self->_configuration, a3);
+    objc_storeStrong(&self->_configuration, configuration);
     self->_isSetupDone = 0;
     self->_processingType = 0;
   }
 }
 
-- (int)_configureInputUnstyledPixelBufferForPixelBufferRenderer:(__CVBuffer *)a3 withinputUnstyledCropRect:(CGRect)a4 inputUnstyledThumbnailPixelBuffer:(__CVBuffer *)a5 withinputUnstyledThumbnailCropRect:(CGRect)a6
+- (int)_configureInputUnstyledPixelBufferForPixelBufferRenderer:(__CVBuffer *)renderer withinputUnstyledCropRect:(CGRect)rect inputUnstyledThumbnailPixelBuffer:(__CVBuffer *)buffer withinputUnstyledThumbnailCropRect:(CGRect)cropRect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v11 = a4.size.height;
-  v12 = a4.size.width;
-  v13 = a4.origin.y;
-  v14 = a4.origin.x;
-  if (a3 && !CGRectIsEmpty(a4))
+  height = cropRect.size.height;
+  width = cropRect.size.width;
+  y = cropRect.origin.y;
+  x = cropRect.origin.x;
+  v11 = rect.size.height;
+  v12 = rect.size.width;
+  v13 = rect.origin.y;
+  v14 = rect.origin.x;
+  if (renderer && !CGRectIsEmpty(rect))
   {
-    if (!a5)
+    if (!buffer)
     {
       goto LABEL_17;
     }
   }
 
-  else if (!a5 || (v30.origin.x = x, v30.origin.y = y, v30.size.width = width, v30.size.height = height, CGRectIsEmpty(v30)))
+  else if (!buffer || (v30.origin.x = x, v30.origin.y = y, v30.size.width = width, v30.size.height = height, CGRectIsEmpty(v30)))
   {
     [CMISmartStyleProcessorV1 _configureInputUnstyledPixelBufferForPixelBufferRenderer:? withinputUnstyledCropRect:? inputUnstyledThumbnailPixelBuffer:? withinputUnstyledThumbnailCropRect:?];
     return v29;
@@ -1658,28 +1658,28 @@ LABEL_13:
     {
       v27 = height;
       v28 = width;
-      v23 = [(CMISmartStyleProcessorV1 *)self _pixelFormatCompatibleWithStyleProcessing:CVPixelBufferGetPixelFormatType(a5)];
+      v23 = [(CMISmartStyleProcessorV1 *)self _pixelFormatCompatibleWithStyleProcessing:CVPixelBufferGetPixelFormatType(buffer)];
       if (!self->_intermediateRendererInputUnstyledPixelBuffer && CVPixelBufferCreate(kCFAllocatorDefault, self->_intermediateStyleRendererThumbnailSize.width, self->_intermediateStyleRendererThumbnailSize.height, v23, self->_styleRendererPixelBufferAttributes, &self->_intermediateRendererInputUnstyledPixelBuffer))
       {
         [CMISmartStyleProcessorV1 _configureInputUnstyledPixelBufferForPixelBufferRenderer:? withinputUnstyledCropRect:? inputUnstyledThumbnailPixelBuffer:? withinputUnstyledThumbnailCropRect:?];
         return v29;
       }
 
-      if (self->_intermediateStyleRendererThumbnailSize.width == v28 && self->_intermediateStyleRendererThumbnailSize.height == v27 && (PixelFormatType = CVPixelBufferGetPixelFormatType(a5), PixelFormatType == CVPixelBufferGetPixelFormatType(self->_intermediateRendererInputUnstyledPixelBuffer)))
+      if (self->_intermediateStyleRendererThumbnailSize.width == v28 && self->_intermediateStyleRendererThumbnailSize.height == v27 && (PixelFormatType = CVPixelBufferGetPixelFormatType(buffer), PixelFormatType == CVPixelBufferGetPixelFormatType(self->_intermediateRendererInputUnstyledPixelBuffer)))
       {
-        if (x != 0.0 || y != 0.0 || self->_intermediateStyleRendererThumbnailSize.width != v28 || self->_intermediateStyleRendererThumbnailSize.height != v27 || CVPixelBufferGetPixelFormatType(a5) != v23)
+        if (x != 0.0 || y != 0.0 || self->_intermediateStyleRendererThumbnailSize.width != v28 || self->_intermediateStyleRendererThumbnailSize.height != v27 || CVPixelBufferGetPixelFormatType(buffer) != v23)
         {
           goto LABEL_16;
         }
 
-        [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputPixelBuffer:a5];
+        [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setInputPixelBuffer:buffer];
         smartStylePixelBufferRenderer = self->_smartStylePixelBufferRenderer;
-        intermediateRendererInputUnstyledPixelBuffer = a5;
+        intermediateRendererInputUnstyledPixelBuffer = buffer;
       }
 
       else
       {
-        if ([(CMISmartStyleProcessorUtilities *)self->_utilities downScalePixelBuffer:a5 toPixelBuffer:self->_intermediateRendererInputUnstyledPixelBuffer inputROI:x, y, width, height])
+        if ([(CMISmartStyleProcessorUtilities *)self->_utilities downScalePixelBuffer:buffer toPixelBuffer:self->_intermediateRendererInputUnstyledPixelBuffer inputROI:x, y, width, height])
         {
           [CMISmartStyleProcessorV1 _configureInputUnstyledPixelBufferForPixelBufferRenderer:? withinputUnstyledCropRect:? inputUnstyledThumbnailPixelBuffer:? withinputUnstyledThumbnailCropRect:?];
           return v29;
@@ -1697,7 +1697,7 @@ LABEL_13:
     intermediateRendererInputUnstyledThumbnailPixelBuffer = self->_intermediateRendererInputUnstyledThumbnailPixelBuffer;
     if (!intermediateRendererInputUnstyledThumbnailPixelBuffer)
     {
-      v19 = [(CMISmartStyleProcessorV1 *)self _pixelFormatCompatibleWithStyleProcessing:CVPixelBufferGetPixelFormatType(a5)];
+      v19 = [(CMISmartStyleProcessorV1 *)self _pixelFormatCompatibleWithStyleProcessing:CVPixelBufferGetPixelFormatType(buffer)];
       if (CVPixelBufferCreate(kCFAllocatorDefault, llround(self->_intermediateStyleRendererThumbnailSize.width * 0.5), llround(self->_intermediateStyleRendererThumbnailSize.height * 0.5), v19, self->_styleRendererPixelBufferAttributes, &self->_intermediateRendererInputUnstyledThumbnailPixelBuffer))
       {
         [CMISmartStyleProcessorV1 _configureInputUnstyledPixelBufferForPixelBufferRenderer:? withinputUnstyledCropRect:? inputUnstyledThumbnailPixelBuffer:? withinputUnstyledThumbnailCropRect:?];
@@ -1707,7 +1707,7 @@ LABEL_13:
       intermediateRendererInputUnstyledThumbnailPixelBuffer = self->_intermediateRendererInputUnstyledThumbnailPixelBuffer;
     }
 
-    if ([(CMISmartStyleProcessorUtilities *)self->_utilities downScalePixelBuffer:a5 toPixelBuffer:intermediateRendererInputUnstyledThumbnailPixelBuffer inputROI:x, y, width, height])
+    if ([(CMISmartStyleProcessorUtilities *)self->_utilities downScalePixelBuffer:buffer toPixelBuffer:intermediateRendererInputUnstyledThumbnailPixelBuffer inputROI:x, y, width, height])
     {
       [CMISmartStyleProcessorV1 _configureInputUnstyledPixelBufferForPixelBufferRenderer:? withinputUnstyledCropRect:? inputUnstyledThumbnailPixelBuffer:? withinputUnstyledThumbnailCropRect:?];
       return v29;
@@ -1717,7 +1717,7 @@ LABEL_13:
   }
 
 LABEL_16:
-  if (!a3)
+  if (!renderer)
   {
     [CMISmartStyleProcessorV1 _configureInputUnstyledPixelBufferForPixelBufferRenderer:? withinputUnstyledCropRect:? inputUnstyledThumbnailPixelBuffer:? withinputUnstyledThumbnailCropRect:?];
     return v29;
@@ -1734,7 +1734,7 @@ LABEL_17:
     return v29;
   }
 
-  v20 = [(CMISmartStyleProcessorV1 *)self _pixelFormatCompatibleWithStyleProcessing:CVPixelBufferGetPixelFormatType(a3)];
+  v20 = [(CMISmartStyleProcessorV1 *)self _pixelFormatCompatibleWithStyleProcessing:CVPixelBufferGetPixelFormatType(renderer)];
   p_intermediateRendererInputUnstyledPixelBuffer = &self->_intermediateRendererInputUnstyledPixelBuffer;
   v21 = self->_intermediateRendererInputUnstyledPixelBuffer;
   if (!v21)
@@ -1758,7 +1758,7 @@ LABEL_22:
     }
   }
 
-  if ([(CMISmartStyleProcessorUtilities *)self->_utilities downScalePixelBuffer:a3 toPixelBuffer:self->_intermediateRendererInputUnstyledPixelBuffer inputROI:v14, v13, v12, v11])
+  if ([(CMISmartStyleProcessorUtilities *)self->_utilities downScalePixelBuffer:renderer toPixelBuffer:self->_intermediateRendererInputUnstyledPixelBuffer inputROI:v14, v13, v12, v11])
   {
     [CMISmartStyleProcessorV1 _configureInputUnstyledPixelBufferForPixelBufferRenderer:? withinputUnstyledCropRect:? inputUnstyledThumbnailPixelBuffer:? withinputUnstyledThumbnailCropRect:?];
     return v29;
@@ -1768,22 +1768,22 @@ LABEL_22:
   return 0;
 }
 
-- (int)_configureInputLinearPixelBufferForPixelBufferRenderer:(__CVBuffer *)a3 withinputLinearCropRect:(CGRect)a4
+- (int)_configureInputLinearPixelBufferForPixelBufferRenderer:(__CVBuffer *)renderer withinputLinearCropRect:(CGRect)rect
 {
-  if (!a3)
+  if (!renderer)
   {
     [CMISmartStyleProcessorV1 _configureInputLinearPixelBufferForPixelBufferRenderer:? withinputLinearCropRect:?];
     return v20;
   }
 
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_styleRendererInputLinearThumbnailPixelBuffer = &self->_styleRendererInputLinearThumbnailPixelBuffer;
   if (self->_styleRendererInputLinearThumbnailPixelBuffer)
   {
-    v11 = [CMIStyleEngineProcessorUtilities numberOfPixelBufferPlanesThatNeedToBeBoundToMTLTextures:a3];
+    v11 = [CMIStyleEngineProcessorUtilities numberOfPixelBufferPlanesThatNeedToBeBoundToMTLTextures:renderer];
     v12 = [CMIStyleEngineProcessorUtilities numberOfPixelBufferPlanesThatNeedToBeBoundToMTLTextures:*p_styleRendererInputLinearThumbnailPixelBuffer];
     v13 = *p_styleRendererInputLinearThumbnailPixelBuffer;
     if (v11 == v12)
@@ -1803,7 +1803,7 @@ LABEL_22:
 
   v14 = self->_intermediateStyleRendererThumbnailSize.width;
   v15 = self->_intermediateStyleRendererThumbnailSize.height;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(renderer);
   if (CVPixelBufferCreate(kCFAllocatorDefault, v14, v15, PixelFormatType, self->_styleRendererPixelBufferAttributes, p_styleRendererInputLinearThumbnailPixelBuffer))
   {
     [CMISmartStyleProcessorV1 _configureInputLinearPixelBufferForPixelBufferRenderer:? withinputLinearCropRect:?];
@@ -1812,7 +1812,7 @@ LABEL_22:
 
   v13 = *p_styleRendererInputLinearThumbnailPixelBuffer;
 LABEL_10:
-  if ([(CMISmartStyleProcessorUtilities *)self->_utilities downScalePixelBuffer:a3 toPixelBuffer:v13 inputROI:x, y, width, height])
+  if ([(CMISmartStyleProcessorUtilities *)self->_utilities downScalePixelBuffer:renderer toPixelBuffer:v13 inputROI:x, y, width, height])
   {
     [CMISmartStyleProcessorV1 _configureInputLinearPixelBufferForPixelBufferRenderer:? withinputLinearCropRect:?];
     return v19;
@@ -1825,19 +1825,19 @@ LABEL_10:
   }
 }
 
-- (int)_configureOutputStyledThumbnailPixelBufferForPixelBufferRenderer:(__CVBuffer *)a3 unstyledThumbnailPixelBuffer:(__CVBuffer *)a4
+- (int)_configureOutputStyledThumbnailPixelBufferForPixelBufferRenderer:(__CVBuffer *)renderer unstyledThumbnailPixelBuffer:(__CVBuffer *)buffer
 {
-  if (a4)
+  if (buffer)
   {
-    v7 = a4;
+    rendererCopy = buffer;
   }
 
   else
   {
-    v7 = a3;
+    rendererCopy = renderer;
   }
 
-  v8 = [(CMISmartStyleProcessorV1 *)self _pixelFormatCompatibleWithStyleProcessing:CVPixelBufferGetPixelFormatType(v7)];
+  v8 = [(CMISmartStyleProcessorV1 *)self _pixelFormatCompatibleWithStyleProcessing:CVPixelBufferGetPixelFormatType(rendererCopy)];
   if (!self->_styleRendererOutputStyledThumbnailPixelBuffer && CVPixelBufferCreate(kCFAllocatorDefault, self->_intermediateStyleRendererThumbnailSize.width, self->_intermediateStyleRendererThumbnailSize.height, v8, self->_styleRendererPixelBufferAttributes, &self->_styleRendererOutputStyledThumbnailPixelBuffer))
   {
     [CMISmartStyleProcessorV1 _configureOutputStyledThumbnailPixelBufferForPixelBufferRenderer:? unstyledThumbnailPixelBuffer:?];
@@ -1846,26 +1846,26 @@ LABEL_10:
 
   else
   {
-    if (a4)
+    if (buffer)
     {
-      v9 = a4;
+      rendererCopy2 = buffer;
     }
 
     else
     {
-      v9 = a3;
+      rendererCopy2 = renderer;
     }
 
-    CVBufferPropagateAttachments(v9, self->_styleRendererOutputStyledThumbnailPixelBuffer);
+    CVBufferPropagateAttachments(rendererCopy2, self->_styleRendererOutputStyledThumbnailPixelBuffer);
     [(CMISmartStylePixelBufferRenderer *)self->_smartStylePixelBufferRenderer setOutputPixelBuffer:self->_styleRendererOutputStyledThumbnailPixelBuffer];
     return 0;
   }
 }
 
-- (int)_configureStyleEngineTargetThumbnailPixelBuffer:(__CVBuffer *)a3 inputTargetThumbnailPixelBuffer:(__CVBuffer *)a4
+- (int)_configureStyleEngineTargetThumbnailPixelBuffer:(__CVBuffer *)buffer inputTargetThumbnailPixelBuffer:(__CVBuffer *)pixelBuffer
 {
-  v7 = [(CMISmartStyleProcessorV1 *)self _isStreaming];
-  if (v7)
+  _isStreaming = [(CMISmartStyleProcessorV1 *)self _isStreaming];
+  if (_isStreaming)
   {
     v8 = 0;
   }
@@ -1877,10 +1877,10 @@ LABEL_10:
 
   if (!self->_shouldGenerateTarget)
   {
-    if (a4)
+    if (pixelBuffer)
     {
-      Width = CVPixelBufferGetWidth(a4);
-      Height = CVPixelBufferGetHeight(a4);
+      Width = CVPixelBufferGetWidth(pixelBuffer);
+      Height = CVPixelBufferGetHeight(pixelBuffer);
       if (self->_styleEngineTargetThumbnailSize.width != Width || self->_styleEngineTargetThumbnailSize.height != Height)
       {
         [CMISmartStyleProcessorV1 _configureStyleEngineTargetThumbnailPixelBuffer:? inputTargetThumbnailPixelBuffer:?];
@@ -1888,19 +1888,19 @@ LABEL_10:
       }
 
       styleEngineProcessor = self->_styleEngineProcessor;
-      styleRendererOutputStyledThumbnailPixelBuffer = a4;
+      styleRendererOutputStyledThumbnailPixelBuffer = pixelBuffer;
 LABEL_40:
       [(CMIStyleEngineProcessor *)styleEngineProcessor setTargetThumbnailPixelBuffer:styleRendererOutputStyledThumbnailPixelBuffer];
       return 0;
     }
 
-    v26 = CVPixelBufferGetWidth(a3);
-    v27 = CVPixelBufferGetHeight(a3);
+    v26 = CVPixelBufferGetWidth(buffer);
+    v27 = CVPixelBufferGetHeight(buffer);
     v28 = self->_styleEngineTargetThumbnailSize.width;
     if (v28 >= v26 && self->_styleEngineTargetThumbnailSize.height >= v27)
     {
       styleEngineProcessor = self->_styleEngineProcessor;
-      styleRendererOutputStyledThumbnailPixelBuffer = a3;
+      styleRendererOutputStyledThumbnailPixelBuffer = buffer;
       goto LABEL_40;
     }
 
@@ -1909,7 +1909,7 @@ LABEL_40:
     {
       v30 = v28;
       v31 = self->_styleEngineTargetThumbnailSize.height;
-      PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+      PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
       if (CVPixelBufferCreate(kCFAllocatorDefault, v30, v31, PixelFormatType, self->_styleEnginePixelBufferAttributes, &self->_styleEngineInputTargetStyledThumbnailPixelBuffer))
       {
         [CMISmartStyleProcessorV1 _configureStyleEngineTargetThumbnailPixelBuffer:? inputTargetThumbnailPixelBuffer:?];
@@ -1922,10 +1922,10 @@ LABEL_40:
     y = CGRectNull.origin.y;
     v34 = CGRectNull.size.width;
     v35 = CGRectNull.size.height;
-    v36 = [(CMISmartStyleProcessorUtilities *)self->_utilities downScalePixelBuffer:a3 toPixelBuffer:styleEngineInputTargetStyledThumbnailPixelBuffer inputROI:v8 filterOption:CGRectNull.origin.x, y, v34, v35];
+    v36 = [(CMISmartStyleProcessorUtilities *)self->_utilities downScalePixelBuffer:buffer toPixelBuffer:styleEngineInputTargetStyledThumbnailPixelBuffer inputROI:v8 filterOption:CGRectNull.origin.x, y, v34, v35];
     if (v36)
     {
-      v37 = v7;
+      v37 = _isStreaming;
     }
 
     else
@@ -1935,7 +1935,7 @@ LABEL_40:
 
     if ((v37 & 1) == 0)
     {
-      v36 = [(CMISmartStyleProcessorUtilities *)self->_utilities downScalePixelBuffer:a3 toPixelBuffer:self->_styleEngineInputTargetStyledThumbnailPixelBuffer inputROI:0 filterOption:CGRectNull.origin.x, y, v34, v35];
+      v36 = [(CMISmartStyleProcessorUtilities *)self->_utilities downScalePixelBuffer:buffer toPixelBuffer:self->_styleEngineInputTargetStyledThumbnailPixelBuffer inputROI:0 filterOption:CGRectNull.origin.x, y, v34, v35];
     }
 
     if (v36)
@@ -1978,7 +1978,7 @@ LABEL_39:
   v19 = [(CMISmartStyleProcessorUtilities *)self->_utilities downScalePixelBuffer:self->_styleRendererOutputStyledThumbnailPixelBuffer toPixelBuffer:v12 inputROI:v8 filterOption:CGRectNull.origin.x, v16, v17, v18];
   if (v19)
   {
-    v20 = v7;
+    v20 = _isStreaming;
   }
 
   else
@@ -2002,26 +2002,26 @@ LABEL_38:
   return v39;
 }
 
-- (uint64_t)_configureStyleEngineInputUnstyledThumbnailPixelBuffer:(double)a3 withinputUnstyledCropRect:(double)a4 inputUnstyledThumbnailPixelBuffer:(double)a5 withinputUnstyledThumbnailCropRect:(double)a6 inputUnstyledThumbnailUsedForTargetGenerationPixelBuffer:(double)a7 withInputUnstyledThumbnailUsedForTargetGenerationCropRect:(double)a8
+- (uint64_t)_configureStyleEngineInputUnstyledThumbnailPixelBuffer:(double)buffer withinputUnstyledCropRect:(double)rect inputUnstyledThumbnailPixelBuffer:(double)pixelBuffer withinputUnstyledThumbnailCropRect:(double)cropRect inputUnstyledThumbnailUsedForTargetGenerationPixelBuffer:(double)generationPixelBuffer withInputUnstyledThumbnailUsedForTargetGenerationCropRect:(double)generationCropRect
 {
   if (a12)
   {
-    a5 = a9;
+    pixelBuffer = a9;
   }
 
   if (a12)
   {
-    a4 = a8;
+    rect = generationCropRect;
   }
 
   if (a12)
   {
-    a3 = a7;
+    buffer = generationPixelBuffer;
   }
 
   if (a12)
   {
-    a2 = a6;
+    a2 = cropRect;
   }
 
   if (a12)
@@ -2029,19 +2029,19 @@ LABEL_38:
     a11 = a12;
   }
 
-  if (a13 && *(a1 + 168) < CVPixelBufferGetWidth(a13) && *(a1 + 176) < CVPixelBufferGetHeight(a13))
+  if (a13 && *(self + 168) < CVPixelBufferGetWidth(a13) && *(self + 176) < CVPixelBufferGetHeight(a13))
   {
-    a4 = a16;
-    a5 = a17;
+    rect = a16;
+    pixelBuffer = a17;
     a11 = a13;
     a2 = a14;
-    a3 = a15;
+    buffer = a15;
   }
 
-  v27 = [a1 _isStreaming];
+  _isStreaming = [self _isStreaming];
   if (a13)
   {
-    v28 = v27;
+    v28 = _isStreaming;
   }
 
   else
@@ -2059,32 +2059,32 @@ LABEL_38:
     v29 = 3;
   }
 
-  if (*(a1 + 168) == CVPixelBufferGetWidth(a11))
+  if (*(self + 168) == CVPixelBufferGetWidth(a11))
   {
     Height = CVPixelBufferGetHeight(a11);
-    v31 = *(a1 + 176);
-    if (v31 == Height && a4 == *(a1 + 168) && a5 == v31)
+    v31 = *(self + 176);
+    if (v31 == Height && rect == *(self + 168) && pixelBuffer == v31)
     {
-      v38 = *(a1 + 48);
+      v38 = *(self + 48);
       v37 = a11;
       goto LABEL_42;
     }
   }
 
-  v33 = *(a1 + 128);
+  v33 = *(self + 128);
   if (!v33)
   {
-    v34 = [a1 _pixelFormatCompatibleWithStyleProcessing:CVPixelBufferGetPixelFormatType(a11)];
-    if (CVPixelBufferCreate(kCFAllocatorDefault, *(a1 + 168), *(a1 + 176), v34, *(a1 + 144), (a1 + 128)))
+    v34 = [self _pixelFormatCompatibleWithStyleProcessing:CVPixelBufferGetPixelFormatType(a11)];
+    if (CVPixelBufferCreate(kCFAllocatorDefault, *(self + 168), *(self + 176), v34, *(self + 144), (self + 128)))
     {
       [CMISmartStyleProcessorV1 _configureStyleEngineInputUnstyledThumbnailPixelBuffer:? withinputUnstyledCropRect:? inputUnstyledThumbnailPixelBuffer:? withinputUnstyledThumbnailCropRect:? inputUnstyledThumbnailUsedForTargetGenerationPixelBuffer:? withInputUnstyledThumbnailUsedForTargetGenerationCropRect:?];
       return v40;
     }
 
-    v33 = *(a1 + 128);
+    v33 = *(self + 128);
   }
 
-  v35 = [*(a1 + 56) downScalePixelBuffer:a11 toPixelBuffer:v33 inputROI:v29 filterOption:{a2, a3, a4, a5}];
+  v35 = [*(self + 56) downScalePixelBuffer:a11 toPixelBuffer:v33 inputROI:v29 filterOption:{a2, buffer, rect, pixelBuffer}];
   if (v35)
   {
     v36 = v28;
@@ -2097,13 +2097,13 @@ LABEL_38:
 
   if ((v36 & 1) == 0)
   {
-    v35 = [*(a1 + 56) downScalePixelBuffer:a11 toPixelBuffer:*(a1 + 128) inputROI:0 filterOption:{a2, a3, a4, a5}];
+    v35 = [*(self + 56) downScalePixelBuffer:a11 toPixelBuffer:*(self + 128) inputROI:0 filterOption:{a2, buffer, rect, pixelBuffer}];
   }
 
   if (!v35)
   {
-    v37 = *(a1 + 128);
-    v38 = *(a1 + 48);
+    v37 = *(self + 128);
+    v38 = *(self + 48);
 LABEL_42:
     [v38 setInputThumbnailPixelBuffer:v37];
     return 0;
@@ -2113,35 +2113,35 @@ LABEL_42:
   return v41;
 }
 
-- (BOOL)requiresReconfigurationForConfiguration:(id)a3
+- (BOOL)requiresReconfigurationForConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = 1;
-  if (v4)
+  if (configurationCopy)
   {
     configuration = self->_configuration;
     if (configuration)
     {
-      v7 = [(CMISmartStyleProcessorBaseConfiguration *)configuration styleEngineConfiguration];
-      [v7 thumbnailSize];
+      styleEngineConfiguration = [(CMISmartStyleProcessorBaseConfiguration *)configuration styleEngineConfiguration];
+      [styleEngineConfiguration thumbnailSize];
       v9 = v8;
       v46 = v10;
-      v11 = [v4 styleEngineConfiguration];
-      [v11 thumbnailSize];
+      styleEngineConfiguration2 = [configurationCopy styleEngineConfiguration];
+      [styleEngineConfiguration2 thumbnailSize];
       v13 = v12;
       v15 = v14;
 
       [(CMISmartStyleProcessorBaseConfiguration *)self->_configuration intermediateStyleRendererThumbnailSize];
       v17 = v16;
       v19 = v18;
-      [v4 intermediateStyleRendererThumbnailSize];
+      [configurationCopy intermediateStyleRendererThumbnailSize];
       v21 = v20;
       v23 = v22;
-      v24 = [(CMISmartStyleProcessorBaseConfiguration *)self->_configuration styleEngineConfiguration];
-      [v24 spotlightCount];
+      styleEngineConfiguration3 = [(CMISmartStyleProcessorBaseConfiguration *)self->_configuration styleEngineConfiguration];
+      [styleEngineConfiguration3 spotlightCount];
       v26 = v25;
-      v27 = [v4 styleEngineConfiguration];
-      [v27 spotlightCount];
+      styleEngineConfiguration4 = [configurationCopy styleEngineConfiguration];
+      [styleEngineConfiguration4 spotlightCount];
       if (vceq_s32(v26, v28).u8[0])
       {
         v29 = v19 != v23 || v17 != v21;
@@ -2152,11 +2152,11 @@ LABEL_42:
         }
 
         v31 = v30 || v29;
-        v32 = [(CMISmartStyleProcessorBaseConfiguration *)self->_configuration styleEngineConfiguration];
-        [v32 spotlightCount];
+        styleEngineConfiguration5 = [(CMISmartStyleProcessorBaseConfiguration *)self->_configuration styleEngineConfiguration];
+        [styleEngineConfiguration5 spotlightCount];
         v34 = v33;
-        v35 = [v4 styleEngineConfiguration];
-        [v35 spotlightCount];
+        styleEngineConfiguration6 = [configurationCopy styleEngineConfiguration];
+        [styleEngineConfiguration6 spotlightCount];
         v37 = v31 | vmvn_s8(vceq_s32(v34, v36)).i32[1];
       }
 
@@ -2165,15 +2165,15 @@ LABEL_42:
         LOBYTE(v37) = 1;
       }
 
-      v38 = [(CMISmartStyleProcessorBaseConfiguration *)self->_configuration styleEngineConfiguration];
-      v39 = [v38 weightPlaneCount];
-      v40 = [v4 styleEngineConfiguration];
-      v41 = v37 | (v39 != [v40 weightPlaneCount]);
+      styleEngineConfiguration7 = [(CMISmartStyleProcessorBaseConfiguration *)self->_configuration styleEngineConfiguration];
+      weightPlaneCount = [styleEngineConfiguration7 weightPlaneCount];
+      styleEngineConfiguration8 = [configurationCopy styleEngineConfiguration];
+      v41 = v37 | (weightPlaneCount != [styleEngineConfiguration8 weightPlaneCount]);
 
-      v42 = [(CMISmartStyleProcessorBaseConfiguration *)self->_configuration styleEngineConfiguration];
-      v43 = [v42 linearSystemOrder];
-      v44 = [v4 styleEngineConfiguration];
-      v5 = v41 | (v43 != [v44 linearSystemOrder]);
+      styleEngineConfiguration9 = [(CMISmartStyleProcessorBaseConfiguration *)self->_configuration styleEngineConfiguration];
+      linearSystemOrder = [styleEngineConfiguration9 linearSystemOrder];
+      styleEngineConfiguration10 = [configurationCopy styleEngineConfiguration];
+      v5 = v41 | (linearSystemOrder != [styleEngineConfiguration10 linearSystemOrder]);
     }
   }
 
@@ -2289,7 +2289,7 @@ LABEL_42:
 - (uint64_t)process
 {
   result = FigSignalErrorAtGM();
-  *a1 = result;
+  *self = result;
   return result;
 }
 
@@ -2298,7 +2298,7 @@ LABEL_42:
   OUTLINED_FUNCTION_0();
   FigDebugAssert3();
   result = FigSignalErrorAtGM();
-  *a1 = result;
+  *self = result;
   return result;
 }
 
@@ -2307,7 +2307,7 @@ LABEL_42:
   OUTLINED_FUNCTION_0();
   FigDebugAssert3();
   result = FigSignalErrorAtGM();
-  *a1 = result;
+  *self = result;
   return result;
 }
 
@@ -2317,7 +2317,7 @@ LABEL_42:
   FigDebugAssert3();
   OUTLINED_FUNCTION_3();
   result = FigSignalErrorAtGM();
-  *a1 = result;
+  *self = result;
   return result;
 }
 
@@ -2326,7 +2326,7 @@ LABEL_42:
   OUTLINED_FUNCTION_0();
   FigDebugAssert3();
   result = FigSignalErrorAtGM();
-  *a1 = result;
+  *self = result;
   return result;
 }
 
@@ -2335,7 +2335,7 @@ LABEL_42:
   OUTLINED_FUNCTION_0();
   FigDebugAssert3();
   result = FigSignalErrorAtGM();
-  *a1 = result;
+  *self = result;
   return result;
 }
 

@@ -1,9 +1,9 @@
 @interface MPSNNLocalCorrelation
 - (MPSNNLocalCorrelation)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSNNLocalCorrelation)initWithDevice:(id)device windowInX:(NSUInteger)windowInX windowInY:(NSUInteger)windowInY strideInX:(NSUInteger)strideInX strideInY:(NSUInteger)strideInY;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 primaryOffset:(id *)a6 secondaryOffset:(id *)a7 kernelOffset:(id *)a8;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method primaryOffset:(id *)offset secondaryOffset:(id *)secondaryOffset kernelOffset:(id *)kernelOffset;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNNLocalCorrelation
@@ -41,23 +41,23 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v25.receiver = self;
   v25.super_class = MPSNNLocalCorrelation;
   [(MPSNNReduceBinary *)&v25 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_windowInX, @"MPSNNReduce.windowInX", v6, v7, v8, v9);
-  objc_msgSend_encodeInt64_forKey_(a3, v10, self->_windowInY, @"MPSNNReduce.windowInY", v11, v12, v13, v14);
-  objc_msgSend_encodeInt64_forKey_(a3, v15, self->_strideInX, @"MPSNNReduce.strideInX", v16, v17, v18, v19);
-  objc_msgSend_encodeInt64_forKey_(a3, v20, self->_strideInY, @"MPSNNReduce.strideInY", v21, v22, v23, v24);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_windowInX, @"MPSNNReduce.windowInX", v6, v7, v8, v9);
+  objc_msgSend_encodeInt64_forKey_(coder, v10, self->_windowInY, @"MPSNNReduce.windowInY", v11, v12, v13, v14);
+  objc_msgSend_encodeInt64_forKey_(coder, v15, self->_strideInX, @"MPSNNReduce.strideInX", v16, v17, v18, v19);
+  objc_msgSend_encodeInt64_forKey_(coder, v20, self->_strideInY, @"MPSNNReduce.strideInY", v21, v22, v23, v24);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNNLocalCorrelation;
-  result = [(MPSNNReduceBinary *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSNNReduceBinary *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 71) = self->_windowInX;
@@ -69,11 +69,11 @@
   return result;
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 primaryOffset:(id *)a6 secondaryOffset:(id *)a7 kernelOffset:(id *)a8
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method primaryOffset:(id *)offset secondaryOffset:(id *)secondaryOffset kernelOffset:(id *)kernelOffset
 {
   v17.receiver = self;
   v17.super_class = MPSNNLocalCorrelation;
-  v9 = [(MPSCNNBinaryKernel *)&v17 destinationImageDescriptorForSourceImages:a3 sourceStates:a4 paddingMethod:a5 primaryOffset:a6 secondaryOffset:a7 kernelOffset:a8];
+  v9 = [(MPSCNNBinaryKernel *)&v17 destinationImageDescriptorForSourceImages:images sourceStates:states paddingMethod:method primaryOffset:offset secondaryOffset:secondaryOffset kernelOffset:kernelOffset];
   objc_msgSend_setFeatureChannels_(v9, v10, ((2 * self->_windowInY) | 1) * ((2 * self->_windowInX) | 1), v11, v12, v13, v14, v15);
   return v9;
 }

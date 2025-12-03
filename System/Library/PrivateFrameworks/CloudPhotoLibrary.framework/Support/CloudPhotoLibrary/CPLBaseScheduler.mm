@@ -1,23 +1,23 @@
 @interface CPLBaseScheduler
-- (CPLBaseScheduler)initWithAbstractObject:(id)a3;
-- (id)scheduleNextSyncSessionAtDate:(id)a3;
+- (CPLBaseScheduler)initWithAbstractObject:(id)object;
+- (id)scheduleNextSyncSessionAtDate:(id)date;
 - (unint64_t)_nextSequenceNumber;
-- (void)closeAndDeactivate:(BOOL)a3 completionHandler:(id)a4;
-- (void)noteSyncSession:(id)a3 failedWithError:(id)a4;
-- (void)noteSyncSessionSucceeded:(id)a3;
-- (void)openWithCompletionHandler:(id)a3;
-- (void)schedulePersistedSyncSessionIfAvailableWithCompletionHandler:(id)a3;
+- (void)closeAndDeactivate:(BOOL)deactivate completionHandler:(id)handler;
+- (void)noteSyncSession:(id)session failedWithError:(id)error;
+- (void)noteSyncSessionSucceeded:(id)succeeded;
+- (void)openWithCompletionHandler:(id)handler;
+- (void)schedulePersistedSyncSessionIfAvailableWithCompletionHandler:(id)handler;
 - (void)unschedulePersistedSyncSession;
-- (void)unscheduleSyncSession:(id)a3;
+- (void)unscheduleSyncSession:(id)session;
 @end
 
 @implementation CPLBaseScheduler
 
-- (CPLBaseScheduler)initWithAbstractObject:(id)a3
+- (CPLBaseScheduler)initWithAbstractObject:(id)object
 {
   v6.receiver = self;
   v6.super_class = CPLBaseScheduler;
-  v3 = [(CPLBaseScheduler *)&v6 initWithAbstractObject:a3];
+  v3 = [(CPLBaseScheduler *)&v6 initWithAbstractObject:object];
   v4 = v3;
   if (v3)
   {
@@ -46,16 +46,16 @@
   return v3;
 }
 
-- (void)noteSyncSessionSucceeded:(id)a3
+- (void)noteSyncSessionSucceeded:(id)succeeded
 {
-  v4 = a3;
+  succeededCopy = succeeded;
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100182438;
   v10[3] = &unk_1002720E0;
   v10[4] = self;
-  v11 = v4;
+  v11 = succeededCopy;
   v6 = v10;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -63,23 +63,23 @@
   block[3] = &unk_100271E98;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = succeededCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
 
-- (void)noteSyncSession:(id)a3 failedWithError:(id)a4
+- (void)noteSyncSession:(id)session failedWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   queue = self->_queue;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001825D0;
   v14[3] = &unk_1002721A0;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = sessionCopy;
+  v16 = errorCopy;
   v9 = v14;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -87,22 +87,22 @@
   block[3] = &unk_100271E98;
   v18 = v9;
   v10 = queue;
-  v11 = v7;
-  v12 = v6;
+  v11 = errorCopy;
+  v12 = sessionCopy;
   v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v10, v13);
 }
 
-- (void)openWithCompletionHandler:(id)a3
+- (void)openWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001829B8;
   v10[3] = &unk_1002723C8;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v6 = v10;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -110,21 +110,21 @@
   block[3] = &unk_100271E98;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
 
-- (void)schedulePersistedSyncSessionIfAvailableWithCompletionHandler:(id)a3
+- (void)schedulePersistedSyncSessionIfAvailableWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100182B44;
   v10[3] = &unk_1002723C8;
   v10[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v6 = v10;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -132,7 +132,7 @@
   block[3] = &unk_100271E98;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = handlerCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -156,17 +156,17 @@
   dispatch_async(v4, v5);
 }
 
-- (void)closeAndDeactivate:(BOOL)a3 completionHandler:(id)a4
+- (void)closeAndDeactivate:(BOOL)deactivate completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100183418;
   v12[3] = &unk_100275AF0;
-  v14 = a3;
+  deactivateCopy = deactivate;
   v12[4] = self;
-  v13 = v6;
+  v13 = handlerCopy;
   v8 = v12;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -174,19 +174,19 @@
   block[3] = &unk_100271E98;
   v16 = v8;
   v9 = queue;
-  v10 = v6;
+  v10 = handlerCopy;
   v11 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v9, v11);
 }
 
-- (id)scheduleNextSyncSessionAtDate:(id)a3
+- (id)scheduleNextSyncSessionAtDate:(id)date
 {
-  v4 = a3;
-  v5 = [(CPLBaseScheduler *)self abstractObject];
+  dateCopy = date;
+  abstractObject = [(CPLBaseScheduler *)self abstractObject];
   v6 = [CPLSyncSession alloc];
-  v7 = [(CPLBaseScheduler *)self _nextSequenceNumber];
-  v8 = [v5 configuration];
-  v9 = [v6 initWithSequenceNumber:v7 expectedDate:v4 scheduler:v5 configuration:v8 scopeFilter:0];
+  _nextSequenceNumber = [(CPLBaseScheduler *)self _nextSequenceNumber];
+  configuration = [abstractObject configuration];
+  v9 = [v6 initWithSequenceNumber:_nextSequenceNumber expectedDate:dateCopy scheduler:abstractObject configuration:configuration scopeFilter:0];
 
   queue = self->_queue;
   v19[0] = _NSConcreteStackBlock;
@@ -194,7 +194,7 @@
   v19[2] = sub_1001836E0;
   v19[3] = &unk_1002721A0;
   v19[4] = self;
-  v20 = v4;
+  v20 = dateCopy;
   v11 = v9;
   v21 = v11;
   v12 = v19;
@@ -204,7 +204,7 @@
   block[3] = &unk_100271E98;
   v23 = v12;
   v13 = queue;
-  v14 = v4;
+  v14 = dateCopy;
   v15 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v13, v15);
 
@@ -214,16 +214,16 @@
   return v11;
 }
 
-- (void)unscheduleSyncSession:(id)a3
+- (void)unscheduleSyncSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100183ABC;
   v10[3] = &unk_1002720E0;
   v10[4] = self;
-  v11 = v4;
+  v11 = sessionCopy;
   v6 = v10;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -231,7 +231,7 @@
   block[3] = &unk_100271E98;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = sessionCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }

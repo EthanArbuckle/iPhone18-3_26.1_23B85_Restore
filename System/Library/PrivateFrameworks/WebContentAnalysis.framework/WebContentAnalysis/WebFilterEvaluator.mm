@@ -1,19 +1,19 @@
 @interface WebFilterEvaluator
-+ (id)createWithResponse:(id)a3;
++ (id)createWithResponse:(id)response;
 + (id)sharedBloomFilter;
 - ($115C4C562B26FF47E01F9F4EA65B5887)browserAuditToken;
-- (WebFilterEvaluator)initWithCoder:(id)a3;
-- (WebFilterEvaluator)initWithResponse:(id)a3;
-- (id)addData:(id)a3;
-- (id)blockPageForPageWithTitle:(id)a3 origURL:(id)a4;
-- (id)debugPageForPageWithData:(id)a3 forURL:(id)a4 debugString:(id)a5;
+- (WebFilterEvaluator)initWithCoder:(id)coder;
+- (WebFilterEvaluator)initWithResponse:(id)response;
+- (id)addData:(id)data;
+- (id)blockPageForPageWithTitle:(id)title origURL:(id)l;
+- (id)debugPageForPageWithData:(id)data forURL:(id)l debugString:(id)string;
 - (int)filterState;
-- (void)attemptUnblockWithCompletion:(id)a3;
+- (void)attemptUnblockWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)filterState;
-- (void)setBrowserAuditToken:(id *)a3;
-- (void)unblockWithCompletion:(id)a3;
+- (void)setBrowserAuditToken:(id *)token;
+- (void)unblockWithCompletion:(id)completion;
 - (void)userDidCancel;
 - (void)userEnteredCorrectPIN;
 @end
@@ -40,14 +40,14 @@ void __39__WebFilterEvaluator_sharedBloomFilter__block_invoke()
   }
 }
 
-- (id)debugPageForPageWithData:(id)a3 forURL:(id)a4 debugString:(id)a5
+- (id)debugPageForPageWithData:(id)data forURL:(id)l debugString:(id)string
 {
-  v7 = [a4 absoluteString];
+  absoluteString = [l absoluteString];
 
-  return ComposeDebugPageSimple(a3, v7, a5);
+  return ComposeDebugPageSimple(data, absoluteString, string);
 }
 
-- (id)blockPageForPageWithTitle:(id)a3 origURL:(id)a4
+- (id)blockPageForPageWithTitle:(id)title origURL:(id)l
 {
   v7 = NSUserName();
   v8 = [[WFUserSettings alloc] initWithUserName:v7];
@@ -63,12 +63,12 @@ void __39__WebFilterEvaluator_sharedBloomFilter__block_invoke()
     v11 = [[WFBlockPage alloc] initWithUsername:v7 overridesAllowded:[(WFUserSettings *)v8 overridesAllowed]];
 
     [(WFBlockPage *)v11 setFormActionURLString:@"x-apple-content-filter://unblock"];
-    -[WFBlockPage setUserVisibleURLString:](v11, "setUserVisibleURLString:", [a4 absoluteString]);
-    v12 = [(WFBlockPage *)v11 page];
+    -[WFBlockPage setUserVisibleURLString:](v11, "setUserVisibleURLString:", [l absoluteString]);
+    page = [(WFBlockPage *)v11 page];
 
-    if (!v12)
+    if (!page)
     {
-      v12 = @"<html> <head><title>Error composing block page</title></head> <body>Error composing block page</body> </html>";
+      page = @"<html> <head><title>Error composing block page</title></head> <body>Error composing block page</body> </html>";
     }
 
     if (![(WebFilterEvaluator *)self remoteViewController])
@@ -93,14 +93,14 @@ void __39__WebFilterEvaluator_sharedBloomFilter__block_invoke()
       [WebFilterEvaluator blockPageForPageWithTitle:origURL:];
     }
 
-    return [(__CFString *)v12 dataUsingEncoding:4];
+    return [(__CFString *)page dataUsingEncoding:4];
   }
 
   else
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(WebFilterEvaluator *)a3 blockPageForPageWithTitle:a4 origURL:v10];
+      [(WebFilterEvaluator *)title blockPageForPageWithTitle:l origURL:v10];
     }
 
     return 0;
@@ -166,7 +166,7 @@ LABEL_7:
   return (*(*(*(a1 + 32) + 40) + 16))();
 }
 
-+ (id)createWithResponse:(id)a3
++ (id)createWithResponse:(id)response
 {
   if (!_WebFilterIsActive())
   {
@@ -178,12 +178,12 @@ LABEL_7:
     _gWebFilterActivated = 1;
   }
 
-  v4 = [[WebFilterEvaluator alloc] initWithResponse:a3];
+  v4 = [[WebFilterEvaluator alloc] initWithResponse:response];
 
   return v4;
 }
 
-- (WebFilterEvaluator)initWithResponse:(id)a3
+- (WebFilterEvaluator)initWithResponse:(id)response
 {
   v7.receiver = self;
   v7.super_class = WebFilterEvaluator;
@@ -193,7 +193,7 @@ LABEL_7:
   {
     v4->_filterState = 2;
     v4->_buffer = objc_alloc_init(MEMORY[0x277CBEB28]);
-    v5->_url = [a3 URL];
+    v5->_url = [response URL];
     v5->_completion = &__block_literal_global_32;
   }
 
@@ -207,9 +207,9 @@ LABEL_7:
   [(WebFilterEvaluator *)&v3 dealloc];
 }
 
-- (id)addData:(id)a3
+- (id)addData:(id)data
 {
-  if (!a3 || ([(NSMutableData *)self->_buffer appendData:?], [(NSMutableData *)self->_buffer length]>> 15))
+  if (!data || ([(NSMutableData *)self->_buffer appendData:?], [(NSMutableData *)self->_buffer length]>> 15))
   {
     v6 = [(NSMutableData *)self->_buffer length];
     if (v6)
@@ -228,12 +228,12 @@ LABEL_7:
       }
 
       p_url = &self->_url;
-      v11 = [(NSString *)[(NSURL *)self->_url scheme] lowercaseString];
-      v12 = [(NSString *)v11 isEqualToString:@"https"]|| [(NSString *)v11 isEqualToString:@"http"];
-      v13 = [(NSURL *)*p_url absoluteString];
-      v14 = [(WFWebPageDecorator *)WFWebPageToFilterText webPageWithData:buffer URLString:v13];
-      v15 = [v14 pageTitle];
-      if (!v15)
+      lowercaseString = [(NSString *)[(NSURL *)self->_url scheme] lowercaseString];
+      v12 = [(NSString *)lowercaseString isEqualToString:@"https"]|| [(NSString *)lowercaseString isEqualToString:@"http"];
+      absoluteString = [(NSURL *)*p_url absoluteString];
+      v14 = [(WFWebPageDecorator *)WFWebPageToFilterText webPageWithData:buffer URLString:absoluteString];
+      pageTitle = [v14 pageTitle];
+      if (!pageTitle)
       {
         v16 = __WFDefaultLog();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -241,10 +241,10 @@ LABEL_7:
           [WebFilterEvaluator addData:];
         }
 
-        v15 = [(NSURL *)*p_url host];
+        pageTitle = [(NSURL *)*p_url host];
       }
 
-      self->_pageTitle = [(NSString *)v15 copy];
+      self->_pageTitle = [(NSString *)pageTitle copy];
       if (!_WebFilterIsActive())
       {
         self->_filterState = 0;
@@ -257,7 +257,7 @@ LABEL_7:
         return self->_buffer;
       }
 
-      if ([(NSString *)v11 isEqualToString:@"https"]&& [(WFUserSettings *)v8 alwaysAllowHTTPS])
+      if ([(NSString *)lowercaseString isEqualToString:@"https"]&& [(WFUserSettings *)v8 alwaysAllowHTTPS])
       {
         self->_filterState = 0;
         v17 = __WFDefaultLog();
@@ -271,7 +271,7 @@ LABEL_7:
 
       if (v12)
       {
-        if ([(WFUserSettings *)v8 contentFilterOverriddenBlackListContainsURL:v13])
+        if ([(WFUserSettings *)v8 contentFilterOverriddenBlackListContainsURL:absoluteString])
         {
           v18 = WFDebugLevel();
           v19 = *p_url;
@@ -308,7 +308,7 @@ LABEL_7:
             }
           }
 
-          else if (-[WFUserSettings contentFilterOverriddenWhiteListContainsURL:withAppleAllowList:](v8, "contentFilterOverriddenWhiteListContainsURL:withAppleAllowList:", v13, [objc_msgSend(objc_opt_class() "sharedBloomFilter")]))
+          else if (-[WFUserSettings contentFilterOverriddenWhiteListContainsURL:withAppleAllowList:](v8, "contentFilterOverriddenWhiteListContainsURL:withAppleAllowList:", absoluteString, [objc_msgSend(objc_opt_class() "sharedBloomFilter")]))
           {
             v25 = __WFDefaultLog();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -368,7 +368,7 @@ LABEL_7:
 
         if ([(WFUserSettings *)v8 whiteListEnabled])
         {
-          if (![(WFUserSettings *)v8 whiteListContainsURL:v13]&& ![(WFUserSettings *)v8 autoWhitelistContainsURL:*p_url])
+          if (![(WFUserSettings *)v8 whiteListContainsURL:absoluteString]&& ![(WFUserSettings *)v8 autoWhitelistContainsURL:*p_url])
           {
             v31 = WFDebugLevel();
             v32 = *p_url;
@@ -429,13 +429,13 @@ LABEL_7:
   return self->_filterState;
 }
 
-- (void)attemptUnblockWithCompletion:(id)a3
+- (void)attemptUnblockWithCompletion:(id)completion
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __51__WebFilterEvaluator_attemptUnblockWithCompletion___block_invoke;
   v3[3] = &unk_279E7DD20;
-  v3[4] = a3;
+  v3[4] = completion;
   [(WebFilterEvaluator *)self unblockWithCompletion:v3];
 }
 
@@ -453,11 +453,11 @@ uint64_t __51__WebFilterEvaluator_attemptUnblockWithCompletion___block_invoke(ui
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)unblockWithCompletion:(id)a3
+- (void)unblockWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    self->_completion = [a3 copy];
+    self->_completion = [completion copy];
   }
 
   if ([(WebFilterEvaluator *)self wasBlocked])
@@ -621,7 +621,7 @@ uint64_t __44__WebFilterEvaluator_unblockWithCompletion___block_invoke_2(uint64_
   return (*(*(*(a1 + 32) + 40) + 16))();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   filterState = self->_filterState;
   if (filterState <= 3 && filterState != 1)
@@ -630,23 +630,23 @@ uint64_t __44__WebFilterEvaluator_unblockWithCompletion___block_invoke_2(uint64_
     filterState = self->_filterState;
   }
 
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", filterState), @"WebContentFilterStateKey"}];
-  [a3 encodeObject:self->_url forKey:@"WebContentFilterURLKey"];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", filterState), @"WebContentFilterStateKey"}];
+  [coder encodeObject:self->_url forKey:@"WebContentFilterURLKey"];
   pageTitle = self->_pageTitle;
 
-  [a3 encodeObject:pageTitle forKey:@"WebContentFilterPageTitleKey"];
+  [coder encodeObject:pageTitle forKey:@"WebContentFilterPageTitleKey"];
 }
 
-- (WebFilterEvaluator)initWithCoder:(id)a3
+- (WebFilterEvaluator)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WebFilterEvaluator;
   v4 = [(WebFilterEvaluator *)&v6 init];
   if (v4)
   {
-    v4->_filterState = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"WebContentFilterStateKey", "unsignedIntegerValue"}];
-    v4->_url = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"WebContentFilterURLKey"];
-    v4->_pageTitle = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"WebContentFilterPageTitleKey"];
+    v4->_filterState = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"WebContentFilterStateKey", "unsignedIntegerValue"}];
+    v4->_url = [coder decodeObjectOfClass:objc_opt_class() forKey:@"WebContentFilterURLKey"];
+    v4->_pageTitle = [coder decodeObjectOfClass:objc_opt_class() forKey:@"WebContentFilterPageTitleKey"];
   }
 
   return v4;
@@ -654,13 +654,13 @@ uint64_t __44__WebFilterEvaluator_unblockWithCompletion___block_invoke_2(uint64_
 
 - (void)userEnteredCorrectPIN
 {
-  v3 = [(WebFilterEvaluator *)self remoteViewController];
+  remoteViewController = [(WebFilterEvaluator *)self remoteViewController];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __43__WebFilterEvaluator_userEnteredCorrectPIN__block_invoke;
   v4[3] = &unk_279E7DDC0;
   v4[4] = self;
-  [(WFRemotePINEntryViewController *)v3 dismissViewControllerAnimated:1 completion:v4];
+  [(WFRemotePINEntryViewController *)remoteViewController dismissViewControllerAnimated:1 completion:v4];
 }
 
 uint64_t __43__WebFilterEvaluator_userEnteredCorrectPIN__block_invoke(uint64_t a1)
@@ -676,13 +676,13 @@ uint64_t __43__WebFilterEvaluator_userEnteredCorrectPIN__block_invoke(uint64_t a
 
 - (void)userDidCancel
 {
-  v3 = [(WebFilterEvaluator *)self remoteViewController];
+  remoteViewController = [(WebFilterEvaluator *)self remoteViewController];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __35__WebFilterEvaluator_userDidCancel__block_invoke;
   v4[3] = &unk_279E7DDC0;
   v4[4] = self;
-  [(WFRemotePINEntryViewController *)v3 dismissViewControllerAnimated:1 completion:v4];
+  [(WFRemotePINEntryViewController *)remoteViewController dismissViewControllerAnimated:1 completion:v4];
 }
 
 uint64_t __35__WebFilterEvaluator_userDidCancel__block_invoke(uint64_t a1)
@@ -713,10 +713,10 @@ uint64_t __35__WebFilterEvaluator_userDidCancel__block_invoke(uint64_t a1)
   return self;
 }
 
-- (void)setBrowserAuditToken:(id *)a3
+- (void)setBrowserAuditToken:(id *)token
 {
-  v3 = *a3->var0;
-  *&self->_browserAuditToken.val[4] = *&a3->var0[4];
+  v3 = *token->var0;
+  *&self->_browserAuditToken.val[4] = *&token->var0[4];
   *self->_browserAuditToken.val = v3;
 }
 
@@ -914,7 +914,7 @@ void __56__WebFilterEvaluator_blockPageForPageWithTitle_origURL___block_invoke_c
 - (void)filterState
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *(a1 + 8);
+  v7 = *(self + 8);
   OUTLINED_FUNCTION_3();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x16u);
   v6 = *MEMORY[0x277D85DE8];

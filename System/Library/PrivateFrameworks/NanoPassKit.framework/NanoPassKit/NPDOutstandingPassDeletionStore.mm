@@ -1,27 +1,27 @@
 @interface NPDOutstandingPassDeletionStore
-- (BOOL)isDeletionPendingForUniqueID:(id)a3;
-- (NPDOutstandingPassDeletionStore)initWithDomainAccessor:(id)a3;
+- (BOOL)isDeletionPendingForUniqueID:(id)d;
+- (NPDOutstandingPassDeletionStore)initWithDomainAccessor:(id)accessor;
 - (void)_performCleanup;
 - (void)_saveOutstandingRecords;
 - (void)clearStore;
 - (void)dealloc;
-- (void)noteDeletionPendingForUniqueID:(id)a3;
-- (void)noteDeletionSentForUniqueID:(id)a3 messageID:(id)a4;
-- (void)noteDeliveryForMessageID:(id)a3;
+- (void)noteDeletionPendingForUniqueID:(id)d;
+- (void)noteDeletionSentForUniqueID:(id)d messageID:(id)iD;
+- (void)noteDeliveryForMessageID:(id)d;
 - (void)notePassDatabaseReconciled;
 @end
 
 @implementation NPDOutstandingPassDeletionStore
 
-- (NPDOutstandingPassDeletionStore)initWithDomainAccessor:(id)a3
+- (NPDOutstandingPassDeletionStore)initWithDomainAccessor:(id)accessor
 {
-  v4 = a3;
+  accessorCopy = accessor;
   v19.receiver = self;
   v19.super_class = NPDOutstandingPassDeletionStore;
   v5 = [(NPDOutstandingPassDeletionStore *)&v19 init];
   if (v5)
   {
-    v6 = [v4 dictionaryForKey:@"OutstandingDeletions"];
+    v6 = [accessorCopy dictionaryForKey:@"OutstandingDeletions"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -34,7 +34,7 @@
     outstandingMessageRecords = v5->_outstandingMessageRecords;
     v5->_outstandingMessageRecords = v8;
 
-    v10 = [v4 arrayForKey:@"PendingDeletions"];
+    v10 = [accessorCopy arrayForKey:@"PendingDeletions"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -71,9 +71,9 @@
   [(NPDOutstandingPassDeletionStore *)&v3 dealloc];
 }
 
-- (void)noteDeletionPendingForUniqueID:(id)a3
+- (void)noteDeletionPendingForUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -83,21 +83,21 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = dCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notice: Pass deletion store: noting deletion pending for %@", &v9, 0xCu);
     }
   }
 
-  v8 = [(NPDOutstandingPassDeletionStore *)self pendingDeletionUniqueIDs];
-  [v8 addObject:v4];
+  pendingDeletionUniqueIDs = [(NPDOutstandingPassDeletionStore *)self pendingDeletionUniqueIDs];
+  [pendingDeletionUniqueIDs addObject:dCopy];
 
   [(NPDOutstandingPassDeletionStore *)self _saveOutstandingRecords];
 }
 
-- (void)noteDeletionSentForUniqueID:(id)a3 messageID:(id)a4
+- (void)noteDeletionSentForUniqueID:(id)d messageID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -107,9 +107,9 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v17 = v6;
+      v17 = dCopy;
       v18 = 2112;
-      v19 = v7;
+      v19 = iDCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Notice: Pass deletion store: noting deletion sent for unique ID %@ with message ID %@", buf, 0x16u);
     }
   }
@@ -119,15 +119,15 @@
   v15[2] = v11;
   v12 = [NSDictionary dictionaryWithObjects:v15 forKeys:&v14 count:3];
 
-  v13 = [(NPDOutstandingPassDeletionStore *)self outstandingMessageRecords];
-  [v13 setObject:v12 forKey:v7];
+  outstandingMessageRecords = [(NPDOutstandingPassDeletionStore *)self outstandingMessageRecords];
+  [outstandingMessageRecords setObject:v12 forKey:iDCopy];
 
   [(NPDOutstandingPassDeletionStore *)self _saveOutstandingRecords];
 }
 
-- (void)noteDeliveryForMessageID:(id)a3
+- (void)noteDeliveryForMessageID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -137,13 +137,13 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = dCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notice: Pass deletion store: noting delivery for message ID %@", &v9, 0xCu);
     }
   }
 
-  v8 = [(NPDOutstandingPassDeletionStore *)self outstandingMessageRecords];
-  [v8 removeObjectForKey:v4];
+  outstandingMessageRecords = [(NPDOutstandingPassDeletionStore *)self outstandingMessageRecords];
+  [outstandingMessageRecords removeObjectForKey:dCopy];
 
   [(NPDOutstandingPassDeletionStore *)self _saveOutstandingRecords];
 }
@@ -163,29 +163,29 @@
     }
   }
 
-  v6 = [(NPDOutstandingPassDeletionStore *)self pendingDeletionUniqueIDs];
-  [v6 removeAllObjects];
+  pendingDeletionUniqueIDs = [(NPDOutstandingPassDeletionStore *)self pendingDeletionUniqueIDs];
+  [pendingDeletionUniqueIDs removeAllObjects];
 
   [(NPDOutstandingPassDeletionStore *)self _saveOutstandingRecords];
 }
 
-- (BOOL)isDeletionPendingForUniqueID:(id)a3
+- (BOOL)isDeletionPendingForUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v5 = [(NPDOutstandingPassDeletionStore *)self outstandingMessageRecords];
-  v6 = [v5 allValues];
+  outstandingMessageRecords = [(NPDOutstandingPassDeletionStore *)self outstandingMessageRecords];
+  allValues = [outstandingMessageRecords allValues];
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_1000068B4;
   v19 = &unk_100071028;
-  v7 = v4;
+  v7 = dCopy;
   v20 = v7;
   v21 = &v22;
-  [v6 enumerateObjectsUsingBlock:&v16];
+  [allValues enumerateObjectsUsingBlock:&v16];
 
   v8 = *(v23 + 24);
   if ((v8 & 1) == 0)
@@ -203,11 +203,11 @@
         v13 = pk_Payment_log();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [(NPDOutstandingPassDeletionStore *)self pendingDeletionUniqueIDs];
+          pendingDeletionUniqueIDs = [(NPDOutstandingPassDeletionStore *)self pendingDeletionUniqueIDs];
           *buf = 138412546;
           v27 = v7;
           v28 = 2112;
-          v29 = v14;
+          v29 = pendingDeletionUniqueIDs;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Notice: Pass deletion store: deletion for %@ is not pending; Aall unique IDs pending deletion: %@", buf, 0x16u);
         }
       }
@@ -236,12 +236,12 @@
 
 - (void)_saveOutstandingRecords
 {
-  v5 = [(NPDOutstandingPassDeletionStore *)self domainAccessor];
-  v3 = [(NPDOutstandingPassDeletionStore *)self outstandingMessageRecords];
-  [v5 setObject:v3 forKey:@"OutstandingDeletions"];
+  domainAccessor = [(NPDOutstandingPassDeletionStore *)self domainAccessor];
+  outstandingMessageRecords = [(NPDOutstandingPassDeletionStore *)self outstandingMessageRecords];
+  [domainAccessor setObject:outstandingMessageRecords forKey:@"OutstandingDeletions"];
 
-  v4 = [(NPDOutstandingPassDeletionStore *)self pendingDeletionUniqueIDs];
-  [v5 setObject:v4 forKey:@"PendingDeletions"];
+  pendingDeletionUniqueIDs = [(NPDOutstandingPassDeletionStore *)self pendingDeletionUniqueIDs];
+  [domainAccessor setObject:pendingDeletionUniqueIDs forKey:@"PendingDeletions"];
 }
 
 - (void)_performCleanup
@@ -249,7 +249,7 @@
   v3 = +[NSMutableArray array];
   +[NSDate timeIntervalSinceReferenceDate];
   v5 = v4;
-  v6 = [(NPDOutstandingPassDeletionStore *)self outstandingMessageRecords];
+  outstandingMessageRecords = [(NPDOutstandingPassDeletionStore *)self outstandingMessageRecords];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_100006C90;
@@ -257,7 +257,7 @@
   v17 = v5;
   v7 = v3;
   v16 = v7;
-  [v6 enumerateKeysAndObjectsUsingBlock:&v12];
+  [outstandingMessageRecords enumerateKeysAndObjectsUsingBlock:&v12];
 
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);

@@ -1,18 +1,18 @@
 @interface OITSULinkedPointerSetEnumerator
-- (OITSULinkedPointerSetEnumerator)initWithFirstEntry:(id)a3;
+- (OITSULinkedPointerSetEnumerator)initWithFirstEntry:(id)entry;
 - (id)nextObject;
 @end
 
 @implementation OITSULinkedPointerSetEnumerator
 
-- (OITSULinkedPointerSetEnumerator)initWithFirstEntry:(id)a3
+- (OITSULinkedPointerSetEnumerator)initWithFirstEntry:(id)entry
 {
   v5.receiver = self;
   v5.super_class = OITSULinkedPointerSetEnumerator;
   result = [(OITSULinkedPointerSetEnumerator *)&v5 init];
   if (result)
   {
-    result->mHead = a3;
+    result->mHead = entry;
     result->mLastUsed = 0;
   }
 

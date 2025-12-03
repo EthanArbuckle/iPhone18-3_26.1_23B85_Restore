@@ -3,14 +3,14 @@
 - (BOOL)enableProductionMode;
 - (BOOL)enableThrottlingMode;
 - (DTProcessorTraceTapConfig)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int)targetPid;
 - (int64_t)copyImagesMode;
 - (int64_t)recordingMode;
 - (int64_t)target;
-- (void)setCopyImagesMode:(int64_t)a3;
-- (void)setRecordingMode:(int64_t)a3;
-- (void)setTarget:(int64_t)a3;
+- (void)setCopyImagesMode:(int64_t)mode;
+- (void)setRecordingMode:(int64_t)mode;
+- (void)setTarget:(int64_t)target;
 @end
 
 @implementation DTProcessorTraceTapConfig
@@ -32,11 +32,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = DTProcessorTraceTapConfig;
-  v4 = [(DTTapConfig *)&v8 copyWithZone:a3];
+  v4 = [(DTTapConfig *)&v8 copyWithZone:zone];
   v5 = [self->_tapHandler copy];
   v6 = v4[10];
   v4[10] = v5;
@@ -47,75 +47,75 @@
 - (int64_t)target
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"tt"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setTarget:(int64_t)a3
+- (void)setTarget:(int64_t)target
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:target];
   [(DTTapConfig *)self _setSerializableObject:v4 forKey:@"tt"];
 }
 
 - (int)targetPid
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"tp"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (BOOL)enableProductionMode
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"pm"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)enableThrottlingMode
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"tm"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)recordingMode
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"rm"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setRecordingMode:(int64_t)a3
+- (void)setRecordingMode:(int64_t)mode
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
   [(DTTapConfig *)self _setSerializableObject:v4 forKey:@"rm"];
 }
 
 - (int64_t)copyImagesMode
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"ci"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setCopyImagesMode:(int64_t)a3
+- (void)setCopyImagesMode:(int64_t)mode
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
   [(DTTapConfig *)self _setSerializableObject:v4 forKey:@"ci"];
 }
 
 - (BOOL)decodeOnSave
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"de"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

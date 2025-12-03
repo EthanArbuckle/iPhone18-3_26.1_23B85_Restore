@@ -1,33 +1,33 @@
 @interface CSDMessagingLinkSyncRecoverMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPseudonym:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPseudonym:(id)pseudonym;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingLinkSyncRecoverMessage
 
-- (void)addPseudonym:(id)a3
+- (void)addPseudonym:(id)pseudonym
 {
-  v4 = a3;
+  pseudonymCopy = pseudonym;
   pseudonyms = self->_pseudonyms;
-  v8 = v4;
+  v8 = pseudonymCopy;
   if (!pseudonyms)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_pseudonyms;
     self->_pseudonyms = v6;
 
-    v4 = v8;
+    pseudonymCopy = v8;
     pseudonyms = self->_pseudonyms;
   }
 
-  [(NSMutableArray *)pseudonyms addObject:v4];
+  [(NSMutableArray *)pseudonyms addObject:pseudonymCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingLinkSyncRecoverMessage;
   v3 = [(CSDMessagingLinkSyncRecoverMessage *)&v7 description];
-  v4 = [(CSDMessagingLinkSyncRecoverMessage *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingLinkSyncRecoverMessage *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -59,9 +59,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     version = self->_version;
@@ -101,23 +101,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_version;
-    *(v4 + 20) |= 1u;
+    toCopy[4] = self->_version;
+    *(toCopy + 20) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(CSDMessagingLinkSyncRecoverMessage *)self pseudonymsCount])
   {
     [v9 clearPseudonyms];
-    v5 = [(CSDMessagingLinkSyncRecoverMessage *)self pseudonymsCount];
-    if (v5)
+    pseudonymsCount = [(CSDMessagingLinkSyncRecoverMessage *)self pseudonymsCount];
+    if (pseudonymsCount)
     {
-      v6 = v5;
+      v6 = pseudonymsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(CSDMessagingLinkSyncRecoverMessage *)self pseudonymAtIndex:i];
@@ -127,9 +127,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -157,7 +157,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{a3, v14}];
+        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{zone, v14}];
         [v6 addPseudonym:v12];
 
         v11 = v11 + 1;
@@ -173,24 +173,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 20);
+  v5 = *(equalCopy + 20);
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_version != *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_version != *(equalCopy + 4))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_9:
     v7 = 0;
@@ -198,7 +198,7 @@ LABEL_9:
   }
 
   pseudonyms = self->_pseudonyms;
-  if (pseudonyms | *(v4 + 1))
+  if (pseudonyms | *(equalCopy + 1))
   {
     v7 = [(NSMutableArray *)pseudonyms isEqual:?];
   }
@@ -228,13 +228,13 @@ LABEL_10:
   return [(NSMutableArray *)self->_pseudonyms hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 20))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 20))
   {
-    self->_version = *(v4 + 4);
+    self->_version = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -242,7 +242,7 @@ LABEL_10:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {

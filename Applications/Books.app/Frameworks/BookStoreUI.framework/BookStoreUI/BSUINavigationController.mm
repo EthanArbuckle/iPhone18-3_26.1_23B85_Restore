@@ -1,43 +1,43 @@
 @interface BSUINavigationController
 + (NSDictionary)navigationBarFontAttributes;
-+ (id)largeNavigationBarFontAttributesWithTraitCollection:(id)a3;
++ (id)largeNavigationBarFontAttributesWithTraitCollection:(id)collection;
 - (BOOL)accessibilityPerformEscape;
-- (BOOL)bc_analyticsVisibilityOfChild:(id)a3;
+- (BOOL)bc_analyticsVisibilityOfChild:(id)child;
 - (BOOL)bc_analyticsVisibilityOfSelf;
 - (BOOL)useConcentricBarButtons;
-- (BSUINavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (BSUINavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (BSUINavigationController)initWithOptions:(id)a3;
-- (BSUINavigationController)initWithRootViewController:(id)a3;
+- (BSUINavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (BSUINavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (BSUINavigationController)initWithOptions:(id)options;
+- (BSUINavigationController)initWithRootViewController:(id)controller;
 - (UIView)wrapperView;
-- (id)popToRootViewControllerAnimated:(BOOL)a3;
-- (id)popToViewController:(id)a3 animated:(BOOL)a4;
-- (id)popViewControllerAnimated:(BOOL)a3;
+- (id)popToRootViewControllerAnimated:(BOOL)animated;
+- (id)popToViewController:(id)controller animated:(BOOL)animated;
+- (id)popViewControllerAnimated:(BOOL)animated;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_updateLayoutMarginsForViewController:(id)a3 forInteractiveTransition:(BOOL)a4;
-- (void)_updateManualScrollEdgeAppearanceProgressForScrollView:(id)a3 navigationItem:(id)a4;
+- (void)_updateLayoutMarginsForViewController:(id)controller forInteractiveTransition:(BOOL)transition;
+- (void)_updateManualScrollEdgeAppearanceProgressForScrollView:(id)view navigationItem:(id)item;
 - (void)applyThemeBasedOnCurrentUserInterfaceStyle;
 - (void)bc_analyticsVisibilityDidAppear;
 - (void)bc_analyticsVisibilityWillDisappear;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated;
 - (void)updateLayoutMetrics;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation BSUINavigationController
 
-- (BSUINavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (BSUINavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   v8.receiver = self;
   v8.super_class = BSUINavigationController;
-  v4 = [(BSUINavigationController *)&v8 initWithNavigationBarClass:a3 toolbarClass:a4];
+  v4 = [(BSUINavigationController *)&v8 initWithNavigationBarClass:class toolbarClass:toolbarClass];
   if (v4)
   {
     v5 = +[UITraitCollection bc_allAPITraits];
@@ -47,44 +47,44 @@
   return v4;
 }
 
-- (BSUINavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (BSUINavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   v4 = [(BSUINavigationController *)self initWithNavigationBarClass:objc_opt_class() toolbarClass:0];
   v5 = v4;
   if (v4)
   {
-    v6 = [(BSUINavigationController *)v4 navigationBar];
-    [v6 setPrefersLargeTitles:1];
+    navigationBar = [(BSUINavigationController *)v4 navigationBar];
+    [navigationBar setPrefersLargeTitles:1];
   }
 
   return v5;
 }
 
-- (BSUINavigationController)initWithRootViewController:(id)a3
+- (BSUINavigationController)initWithRootViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(BSUINavigationController *)self init];
   v6 = v5;
   if (v5)
   {
-    [(BSUINavigationController *)v5 pushViewController:v4 animated:0];
+    [(BSUINavigationController *)v5 pushViewController:controllerCopy animated:0];
   }
 
   return v6;
 }
 
-- (BSUINavigationController)initWithOptions:(id)a3
+- (BSUINavigationController)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = [(BSUINavigationController *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"prefersLargeTitles"];
+    v6 = [optionsCopy objectForKeyedSubscript:@"prefersLargeTitles"];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v6 BOOLValue];
-      v8 = [(BSUINavigationController *)v5 navigationBar];
-      [v8 setPrefersLargeTitles:v7];
+      bOOLValue = [v6 BOOLValue];
+      navigationBar = [(BSUINavigationController *)v5 navigationBar];
+      [navigationBar setPrefersLargeTitles:bOOLValue];
     }
   }
 
@@ -96,18 +96,18 @@
   wrapperView = self->_wrapperView;
   if (!wrapperView)
   {
-    v4 = [(BSUINavigationController *)self view];
+    view = [(BSUINavigationController *)self view];
     v5 = [UIView alloc];
-    [v4 frame];
+    [view frame];
     v6 = [v5 initWithFrame:?];
     v7 = self->_wrapperView;
     self->_wrapperView = v6;
 
     [(UIView *)self->_wrapperView setAutoresizingMask:18];
     [(UIView *)self->_wrapperView bounds];
-    [v4 setFrame:?];
-    [v4 setAutoresizingMask:18];
-    [(UIView *)self->_wrapperView addSubview:v4];
+    [view setFrame:?];
+    [view setAutoresizingMask:18];
+    [(UIView *)self->_wrapperView addSubview:view];
 
     wrapperView = self->_wrapperView;
   }
@@ -115,27 +115,27 @@
   return wrapperView;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = BSUINavigationController;
-  [(BSUINavigationController *)&v4 viewDidAppear:a3];
+  [(BSUINavigationController *)&v4 viewDidAppear:appear];
   [(BSUINavigationController *)self bc_analyticsVisibilityUpdateSubtree];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = BSUINavigationController;
-  [(BSUINavigationController *)&v4 viewWillDisappear:a3];
+  [(BSUINavigationController *)&v4 viewWillDisappear:disappear];
   [(BSUINavigationController *)self bc_analyticsVisibilitySubtreeWillDisappear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = BSUINavigationController;
-  [(BSUINavigationController *)&v4 viewDidDisappear:a3];
+  [(BSUINavigationController *)&v4 viewDidDisappear:disappear];
   [(BSUINavigationController *)self bc_analyticsVisibilitySubtreeDidDisappear];
 }
 
@@ -144,8 +144,8 @@
   v4.receiver = self;
   v4.super_class = BSUINavigationController;
   [(BSUINavigationController *)&v4 viewDidLoad];
-  v3 = [(BSUINavigationController *)self view];
-  [v3 setAutoresizingMask:0];
+  view = [(BSUINavigationController *)self view];
+  [view setAutoresizingMask:0];
 }
 
 - (void)viewWillLayoutSubviews
@@ -154,8 +154,8 @@
   v4.super_class = BSUINavigationController;
   [(BSUINavigationController *)&v4 viewWillLayoutSubviews];
   [(BSUINavigationController *)self applyThemeBasedOnCurrentUserInterfaceStyle];
-  v3 = [(BSUINavigationController *)self topViewController];
-  [(BSUINavigationController *)self _updateLayoutMarginsForViewController:v3];
+  topViewController = [(BSUINavigationController *)self topViewController];
+  [(BSUINavigationController *)self _updateLayoutMarginsForViewController:topViewController];
 }
 
 - (void)viewSafeAreaInsetsDidChange
@@ -164,7 +164,7 @@
   v5.super_class = BSUINavigationController;
   [(BSUINavigationController *)&v5 viewSafeAreaInsetsDidChange];
   objc_opt_class();
-  v3 = [(BSUINavigationController *)self presentedViewController];
+  presentedViewController = [(BSUINavigationController *)self presentedViewController];
   v4 = BUDynamicCast();
 
   [v4 presentingViewControllerSafeAreaInsetsDidChange:self];
@@ -174,35 +174,35 @@
 {
   if (isPad())
   {
-    v3 = &dword_1C + 2;
+    supportedInterfaceOrientations = &dword_1C + 2;
   }
 
   else
   {
-    v3 = &dword_0 + 2;
+    supportedInterfaceOrientations = &dword_0 + 2;
   }
 
-  v4 = [(BSUINavigationController *)self presentedViewController];
+  presentedViewController = [(BSUINavigationController *)self presentedViewController];
   v5 = objc_opt_new();
-  if (v4)
+  if (presentedViewController)
   {
     do
     {
-      [v5 addObject:v4];
-      v6 = [v4 presentedViewController];
+      [v5 addObject:presentedViewController];
+      v4PresentedViewController = [presentedViewController presentedViewController];
 
-      v4 = v6;
+      presentedViewController = v4PresentedViewController;
     }
 
-    while (v6);
+    while (v4PresentedViewController);
   }
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v5 reverseObjectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  reverseObjectEnumerator = [v5 reverseObjectEnumerator];
+  v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = *v18;
@@ -212,19 +212,19 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
         if ([v11 conformsToProtocol:&OBJC_PROTOCOL___BCOrientationControlling])
         {
-          v3 = [v11 supportedInterfaceOrientations];
+          supportedInterfaceOrientations = [v11 supportedInterfaceOrientations];
           LOBYTE(v8) = 1;
           goto LABEL_16;
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         continue;
@@ -236,34 +236,34 @@
 
 LABEL_16:
 
-  v12 = [(BSUINavigationController *)self topViewController];
-  v13 = v12;
+  topViewController = [(BSUINavigationController *)self topViewController];
+  v13 = topViewController;
   if ((v8 & 1) == 0)
   {
-    if (v12)
+    if (topViewController)
     {
-      v14 = [v12 supportedInterfaceOrientations];
+      supportedInterfaceOrientations2 = [topViewController supportedInterfaceOrientations];
     }
 
     else
     {
       v16.receiver = self;
       v16.super_class = BSUINavigationController;
-      v14 = [(BSUINavigationController *)&v16 supportedInterfaceOrientations];
+      supportedInterfaceOrientations2 = [(BSUINavigationController *)&v16 supportedInterfaceOrientations];
     }
 
-    v3 = v14;
+    supportedInterfaceOrientations = supportedInterfaceOrientations2;
   }
 
-  return v3;
+  return supportedInterfaceOrientations;
 }
 
 - (void)applyThemeBasedOnCurrentUserInterfaceStyle
 {
-  v3 = [(BSUINavigationController *)self view];
-  v4 = [v3 im_isStyleDark];
+  view = [(BSUINavigationController *)self view];
+  im_isStyleDark = [view im_isStyleDark];
 
-  if (v4 && ([(BSUINavigationController *)self _isInPopoverPresentation]& 1) != 0)
+  if (im_isStyleDark && ([(BSUINavigationController *)self _isInPopoverPresentation]& 1) != 0)
   {
     v5 = +[UIColor bc_booksSecondaryBackground];
   }
@@ -274,28 +274,28 @@ LABEL_16:
   }
 
   v23 = v5;
-  v6 = [(BSUINavigationController *)self navigationBar];
-  v7 = [v6 standardAppearance];
-  v8 = [v7 copy];
+  navigationBar = [(BSUINavigationController *)self navigationBar];
+  standardAppearance = [navigationBar standardAppearance];
+  v8 = [standardAppearance copy];
 
   v9 = +[BSUINavigationController navigationBarFontAttributes];
   [v8 setTitleTextAttributes:v9];
 
-  v10 = [(BSUINavigationController *)self traitCollection];
-  v11 = [BSUINavigationController largeNavigationBarFontAttributesWithTraitCollection:v10];
+  traitCollection = [(BSUINavigationController *)self traitCollection];
+  v11 = [BSUINavigationController largeNavigationBarFontAttributesWithTraitCollection:traitCollection];
   [v8 setLargeTitleTextAttributes:v11];
 
-  v12 = [(BSUINavigationController *)self navigationBar];
-  [v12 setStandardAppearance:v8];
+  navigationBar2 = [(BSUINavigationController *)self navigationBar];
+  [navigationBar2 setStandardAppearance:v8];
 
-  v13 = [(BSUINavigationController *)self topViewController];
+  topViewController = [(BSUINavigationController *)self topViewController];
   v14 = BUProtocolCast();
 
-  v15 = [v14 preferredNavigationBarTintColor];
-  v16 = v15;
-  if (v15)
+  preferredNavigationBarTintColor = [v14 preferredNavigationBarTintColor];
+  v16 = preferredNavigationBarTintColor;
+  if (preferredNavigationBarTintColor)
   {
-    v17 = v15;
+    v17 = preferredNavigationBarTintColor;
   }
 
   else
@@ -305,36 +305,36 @@ LABEL_16:
 
   v18 = v17;
 
-  v19 = [(BSUINavigationController *)self navigationBar];
-  [v19 setBarStyle:v4];
+  navigationBar3 = [(BSUINavigationController *)self navigationBar];
+  [navigationBar3 setBarStyle:im_isStyleDark];
 
-  v20 = [(BSUINavigationController *)self navigationBar];
-  [v20 setBarTintColor:v23];
+  navigationBar4 = [(BSUINavigationController *)self navigationBar];
+  [navigationBar4 setBarTintColor:v23];
 
-  v21 = [(BSUINavigationController *)self navigationBar];
-  [v21 setTintColor:v18];
+  navigationBar5 = [(BSUINavigationController *)self navigationBar];
+  [navigationBar5 setTintColor:v18];
 
-  v22 = [(BSUINavigationController *)self toolbar];
-  [v22 setBarStyle:v4];
+  toolbar = [(BSUINavigationController *)self toolbar];
+  [toolbar setBarStyle:im_isStyleDark];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = BSUINavigationController;
-  [(BSUINavigationController *)&v5 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
+  [(BSUINavigationController *)&v5 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
   [(BSUINavigationController *)self applyThemeBasedOnCurrentUserInterfaceStyle];
 }
 
 - (BOOL)useConcentricBarButtons
 {
-  v2 = [(BSUINavigationController *)self presentingViewController];
-  v3 = [v2 presentedViewController];
+  presentingViewController = [(BSUINavigationController *)self presentingViewController];
+  presentedViewController = [presentingViewController presentedViewController];
 
-  v4 = [v3 modalPresentationStyle];
+  modalPresentationStyle = [presentedViewController modalPresentationStyle];
   v5 = _UISolariumEnabled();
-  v6 = (v4 - 1) < 2;
-  if (!v3)
+  v6 = (modalPresentationStyle - 1) < 2;
+  if (!presentedViewController)
   {
     v6 = 0;
   }
@@ -352,10 +352,10 @@ LABEL_16:
   return v7;
 }
 
-- (void)_updateLayoutMarginsForViewController:(id)a3 forInteractiveTransition:(BOOL)a4
+- (void)_updateLayoutMarginsForViewController:(id)controller forInteractiveTransition:(BOOL)transition
 {
-  v4 = a4;
-  v6 = a3;
+  transitionCopy = transition;
+  controllerCopy = controller;
   if (![(BSUINavigationController *)self useConcentricBarButtons])
   {
     v14[0] = _NSConcreteStackBlock;
@@ -363,11 +363,11 @@ LABEL_16:
     v14[2] = sub_2834C;
     v14[3] = &unk_387078;
     v14[4] = self;
-    v15 = v6;
+    v15 = controllerCopy;
     v7 = objc_retainBlock(v14);
-    v8 = [(BSUINavigationController *)self transitionCoordinator];
-    v9 = v8;
-    if (v8 && [v8 isInteractive] == v4)
+    transitionCoordinator = [(BSUINavigationController *)self transitionCoordinator];
+    v9 = transitionCoordinator;
+    if (transitionCoordinator && [transitionCoordinator isInteractive] == transitionCopy)
     {
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
@@ -391,74 +391,74 @@ LABEL_16:
 
 - (void)updateLayoutMetrics
 {
-  v2 = [(BSUINavigationController *)self viewIfLoaded];
-  [v2 setNeedsLayout];
+  viewIfLoaded = [(BSUINavigationController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [(BSUINavigationController *)self _updateLayoutMarginsForViewController:v6];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  [(BSUINavigationController *)self _updateLayoutMarginsForViewController:controllerCopy];
   v7.receiver = self;
   v7.super_class = BSUINavigationController;
-  [(BSUINavigationController *)&v7 pushViewController:v6 animated:v4];
+  [(BSUINavigationController *)&v7 pushViewController:controllerCopy animated:animatedCopy];
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3
+- (id)popViewControllerAnimated:(BOOL)animated
 {
   v7.receiver = self;
   v7.super_class = BSUINavigationController;
-  v4 = [(BSUINavigationController *)&v7 popViewControllerAnimated:a3];
-  v5 = [(BSUINavigationController *)self topViewController];
-  [(BSUINavigationController *)self _updateLayoutMarginsForViewController:v5];
+  v4 = [(BSUINavigationController *)&v7 popViewControllerAnimated:animated];
+  topViewController = [(BSUINavigationController *)self topViewController];
+  [(BSUINavigationController *)self _updateLayoutMarginsForViewController:topViewController];
 
   return v4;
 }
 
-- (id)popToViewController:(id)a3 animated:(BOOL)a4
+- (id)popToViewController:(id)controller animated:(BOOL)animated
 {
   v8.receiver = self;
   v8.super_class = BSUINavigationController;
-  v5 = [(BSUINavigationController *)&v8 popToViewController:a3 animated:a4];
-  v6 = [(BSUINavigationController *)self topViewController];
-  [(BSUINavigationController *)self _updateLayoutMarginsForViewController:v6];
+  v5 = [(BSUINavigationController *)&v8 popToViewController:controller animated:animated];
+  topViewController = [(BSUINavigationController *)self topViewController];
+  [(BSUINavigationController *)self _updateLayoutMarginsForViewController:topViewController];
 
   return v5;
 }
 
-- (id)popToRootViewControllerAnimated:(BOOL)a3
+- (id)popToRootViewControllerAnimated:(BOOL)animated
 {
   v7.receiver = self;
   v7.super_class = BSUINavigationController;
-  v4 = [(BSUINavigationController *)&v7 popToRootViewControllerAnimated:a3];
-  v5 = [(BSUINavigationController *)self topViewController];
-  [(BSUINavigationController *)self _updateLayoutMarginsForViewController:v5];
+  v4 = [(BSUINavigationController *)&v7 popToRootViewControllerAnimated:animated];
+  topViewController = [(BSUINavigationController *)self topViewController];
+  [(BSUINavigationController *)self _updateLayoutMarginsForViewController:topViewController];
 
   return v4;
 }
 
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated
 {
   v6.receiver = self;
   v6.super_class = BSUINavigationController;
-  [(BSUINavigationController *)&v6 setViewControllers:a3 animated:a4];
-  v5 = [(BSUINavigationController *)self topViewController];
-  [(BSUINavigationController *)self _updateLayoutMarginsForViewController:v5];
+  [(BSUINavigationController *)&v6 setViewControllers:controllers animated:animated];
+  topViewController = [(BSUINavigationController *)self topViewController];
+  [(BSUINavigationController *)self _updateLayoutMarginsForViewController:topViewController];
 }
 
-- (BOOL)bc_analyticsVisibilityOfChild:(id)a3
+- (BOOL)bc_analyticsVisibilityOfChild:(id)child
 {
-  v4 = a3;
-  v5 = [(BSUINavigationController *)self topViewController];
+  childCopy = child;
+  topViewController = [(BSUINavigationController *)self topViewController];
 
-  return v5 == v4;
+  return topViewController == childCopy;
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v3 = [(BSUINavigationController *)self viewControllers];
-  v4 = [v3 count];
+  viewControllers = [(BSUINavigationController *)self viewControllers];
+  v4 = [viewControllers count];
 
   if (v4 < 2)
   {
@@ -473,24 +473,24 @@ LABEL_16:
   return 1;
 }
 
-- (void)_updateManualScrollEdgeAppearanceProgressForScrollView:(id)a3 navigationItem:(id)a4
+- (void)_updateManualScrollEdgeAppearanceProgressForScrollView:(id)view navigationItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
+  itemCopy = item;
+  viewCopy = view;
   objc_opt_class();
   v8 = BUDynamicCast();
   [v8 setIsUpdatingManualScrollEdgeAppearanceProgress:1];
   v9.receiver = self;
   v9.super_class = BSUINavigationController;
-  [(BSUINavigationController *)&v9 _updateManualScrollEdgeAppearanceProgressForScrollView:v7 navigationItem:v6];
+  [(BSUINavigationController *)&v9 _updateManualScrollEdgeAppearanceProgressForScrollView:viewCopy navigationItem:itemCopy];
 
   [v8 setIsUpdatingManualScrollEdgeAppearanceProgress:0];
 }
 
 - (BOOL)bc_analyticsVisibilityOfSelf
 {
-  v2 = [(BSUINavigationController *)self visibleViewController];
-  if (v2)
+  visibleViewController = [(BSUINavigationController *)self visibleViewController];
+  if (visibleViewController)
   {
     objc_opt_class();
     v3 = BUDynamicCast();
@@ -525,11 +525,11 @@ LABEL_16:
   [(BSUINavigationController *)&v5 bc_analyticsVisibilityWillDisappear];
   if ([(BSUINavigationController *)self isRoot])
   {
-    v3 = [(BSUINavigationController *)self ba_analyticsTracker];
-    if (v3)
+    ba_analyticsTracker = [(BSUINavigationController *)self ba_analyticsTracker];
+    if (ba_analyticsTracker)
     {
       v4 = +[BAEventReporter sharedReporter];
-      [v4 emitTabViewEventWithTracker:v3 startDate:self->_appearDate];
+      [v4 emitTabViewEventWithTracker:ba_analyticsTracker startDate:self->_appearDate];
     }
   }
 }
@@ -544,10 +544,10 @@ LABEL_16:
   return v2.super.isa;
 }
 
-+ (id)largeNavigationBarFontAttributesWithTraitCollection:(id)a3
++ (id)largeNavigationBarFontAttributesWithTraitCollection:(id)collection
 {
-  v3 = a3;
-  _sSo24BSUINavigationControllerC11BookStoreUIE32largeNavigationBarFontAttributes4withSDySo21NSAttributedStringKeyaypGSo17UITraitCollectionC_tFZ_0(v3);
+  collectionCopy = collection;
+  _sSo24BSUINavigationControllerC11BookStoreUIE32largeNavigationBarFontAttributes4withSDySo21NSAttributedStringKeyaypGSo17UITraitCollectionC_tFZ_0(collectionCopy);
 
   type metadata accessor for Key(0);
   sub_FED08();

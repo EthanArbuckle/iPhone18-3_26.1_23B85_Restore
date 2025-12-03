@@ -1,9 +1,9 @@
 @interface CHWorkoutDetailMapAndWeatherTableViewCell
 - (CHWorkoutDetailAnalyticsHandler)analyticsHandler;
-- (CHWorkoutDetailMapAndWeatherTableViewCell)initWithCoder:(id)a3;
-- (CHWorkoutDetailMapAndWeatherTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CHWorkoutDetailMapAndWeatherTableViewCell)initWithCoder:(id)coder;
+- (CHWorkoutDetailMapAndWeatherTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (CHWorkoutDetailNavigationDelegate)navigationDelegate;
-- (void)configureWithWorkout:(id)a3 workoutActivity:(id)a4 dataCalculator:(id)a5 formattingManager:(id)a6 parent:(id)a7 locationReadings:(id)a8;
+- (void)configureWithWorkout:(id)workout workoutActivity:(id)activity dataCalculator:(id)calculator formattingManager:(id)manager parent:(id)parent locationReadings:(id)readings;
 @end
 
 @implementation CHWorkoutDetailMapAndWeatherTableViewCell
@@ -22,11 +22,11 @@
   return Strong;
 }
 
-- (CHWorkoutDetailMapAndWeatherTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHWorkoutDetailMapAndWeatherTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -35,10 +35,10 @@
     v6 = 0;
   }
 
-  return sub_100522634(a3, a4, v6);
+  return sub_100522634(style, identifier, v6);
 }
 
-- (CHWorkoutDetailMapAndWeatherTableViewCell)initWithCoder:(id)a3
+- (CHWorkoutDetailMapAndWeatherTableViewCell)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR___CHWorkoutDetailMapAndWeatherTableViewCell_mapAndWeatherViewModel) = 0;
   *(self + OBJC_IVAR___CHWorkoutDetailMapAndWeatherTableViewCell_snapshotGenerator) = 0;
@@ -49,16 +49,16 @@
   return result;
 }
 
-- (void)configureWithWorkout:(id)a3 workoutActivity:(id)a4 dataCalculator:(id)a5 formattingManager:(id)a6 parent:(id)a7 locationReadings:(id)a8
+- (void)configureWithWorkout:(id)workout workoutActivity:(id)activity dataCalculator:(id)calculator formattingManager:(id)manager parent:(id)parent locationReadings:(id)readings
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = self;
-  sub_100523720(v14, a4, v17, v19);
+  workoutCopy = workout;
+  activityCopy = activity;
+  calculatorCopy = calculator;
+  managerCopy = manager;
+  parentCopy = parent;
+  readingsCopy = readings;
+  selfCopy = self;
+  sub_100523720(workoutCopy, activity, managerCopy, readingsCopy);
 }
 
 @end

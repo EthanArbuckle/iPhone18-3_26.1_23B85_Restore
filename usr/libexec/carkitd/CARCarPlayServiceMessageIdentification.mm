@@ -1,34 +1,34 @@
 @interface CARCarPlayServiceMessageIdentification
-- (CARCarPlayServiceMessageIdentification)initWithDictionaryRepresentation:(id)a3;
-- (CARCarPlayServiceMessageIdentification)initWithDisplayName:(id)a3 modelName:(id)a4 PPID:(id)a5 authenticationSerialNumber:(id)a6 accessoryProtocols:(id)a7 supportsWiredCarPlay:(BOOL)a8 supportsWiredToWirelessPairing:(BOOL)a9 supportsEnhancedIntegration:(BOOL)a10 supportsThemeAssets:(BOOL)a11;
+- (CARCarPlayServiceMessageIdentification)initWithDictionaryRepresentation:(id)representation;
+- (CARCarPlayServiceMessageIdentification)initWithDisplayName:(id)name modelName:(id)modelName PPID:(id)d authenticationSerialNumber:(id)number accessoryProtocols:(id)protocols supportsWiredCarPlay:(BOOL)play supportsWiredToWirelessPairing:(BOOL)pairing supportsEnhancedIntegration:(BOOL)self0 supportsThemeAssets:(BOOL)self1;
 - (NSString)description;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation CARCarPlayServiceMessageIdentification
 
-- (CARCarPlayServiceMessageIdentification)initWithDisplayName:(id)a3 modelName:(id)a4 PPID:(id)a5 authenticationSerialNumber:(id)a6 accessoryProtocols:(id)a7 supportsWiredCarPlay:(BOOL)a8 supportsWiredToWirelessPairing:(BOOL)a9 supportsEnhancedIntegration:(BOOL)a10 supportsThemeAssets:(BOOL)a11
+- (CARCarPlayServiceMessageIdentification)initWithDisplayName:(id)name modelName:(id)modelName PPID:(id)d authenticationSerialNumber:(id)number accessoryProtocols:(id)protocols supportsWiredCarPlay:(BOOL)play supportsWiredToWirelessPairing:(BOOL)pairing supportsEnhancedIntegration:(BOOL)self0 supportsThemeAssets:(BOOL)self1
 {
-  v18 = a3;
-  v19 = a4;
-  v25 = a5;
-  v24 = a6;
-  v20 = a7;
+  nameCopy = name;
+  modelNameCopy = modelName;
+  dCopy = d;
+  numberCopy = number;
+  protocolsCopy = protocols;
   v26.receiver = self;
   v26.super_class = CARCarPlayServiceMessageIdentification;
   v21 = [(CARCarPlayServiceMessageIdentification *)&v26 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_displayName, a3);
-    objc_storeStrong(&v22->_modelName, a4);
-    objc_storeStrong(&v22->_PPID, a5);
-    objc_storeStrong(&v22->_authenticationSerialNumber, a6);
-    objc_storeStrong(&v22->_accessoryProtocols, a7);
-    v22->_supportsWiredCarPlay = a8;
-    v22->_supportsWiredToWirelessPairing = a9;
-    v22->_supportsEnhancedIntegration = a10;
-    v22->_supportsThemeAssets = a11;
+    objc_storeStrong(&v21->_displayName, name);
+    objc_storeStrong(&v22->_modelName, modelName);
+    objc_storeStrong(&v22->_PPID, d);
+    objc_storeStrong(&v22->_authenticationSerialNumber, number);
+    objc_storeStrong(&v22->_accessoryProtocols, protocols);
+    v22->_supportsWiredCarPlay = play;
+    v22->_supportsWiredToWirelessPairing = pairing;
+    v22->_supportsEnhancedIntegration = integration;
+    v22->_supportsThemeAssets = assets;
   }
 
   return v22;
@@ -39,11 +39,11 @@
   v15.receiver = self;
   v15.super_class = CARCarPlayServiceMessageIdentification;
   v14 = [(CARCarPlayServiceMessageIdentification *)&v15 description];
-  v13 = [(CARCarPlayServiceMessageIdentification *)self displayName];
-  v3 = [(CARCarPlayServiceMessageIdentification *)self modelName];
-  v4 = [(CARCarPlayServiceMessageIdentification *)self PPID];
-  v5 = [(CARCarPlayServiceMessageIdentification *)self authenticationSerialNumber];
-  v6 = [(CARCarPlayServiceMessageIdentification *)self accessoryProtocols];
+  displayName = [(CARCarPlayServiceMessageIdentification *)self displayName];
+  modelName = [(CARCarPlayServiceMessageIdentification *)self modelName];
+  pPID = [(CARCarPlayServiceMessageIdentification *)self PPID];
+  authenticationSerialNumber = [(CARCarPlayServiceMessageIdentification *)self authenticationSerialNumber];
+  accessoryProtocols = [(CARCarPlayServiceMessageIdentification *)self accessoryProtocols];
   if ([(CARCarPlayServiceMessageIdentification *)self supportsWiredCarPlay])
   {
     v7 = @"YES";
@@ -84,18 +84,18 @@
     v10 = @"NO";
   }
 
-  v11 = [NSString stringWithFormat:@"%@ {displayName: %@, modelName: %@, PPID: %@, authSerial: %@, protocols: %@, supportsWired: %@, supportsOOBPairing: %@, supportsEnhancedIntegration: %@, supportsThemeAssets: %@}", v14, v13, v3, v4, v5, v6, v7, v8, v9, v10];
+  v11 = [NSString stringWithFormat:@"%@ {displayName: %@, modelName: %@, PPID: %@, authSerial: %@, protocols: %@, supportsWired: %@, supportsOOBPairing: %@, supportsEnhancedIntegration: %@, supportsThemeAssets: %@}", v14, displayName, modelName, pPID, authenticationSerialNumber, accessoryProtocols, v7, v8, v9, v10];
 
   return v11;
 }
 
-- (CARCarPlayServiceMessageIdentification)initWithDictionaryRepresentation:(id)a3
+- (CARCarPlayServiceMessageIdentification)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  if (v4)
+  representationCopy = representation;
+  if (representationCopy)
   {
     objc_opt_class();
-    v5 = [v4 objectForKey:@"displayName"];
+    v5 = [representationCopy objectForKey:@"displayName"];
     if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v6 = v5;
@@ -109,7 +109,7 @@
     if (v6)
     {
       objc_opt_class();
-      v7 = [v4 objectForKey:@"modelName"];
+      v7 = [representationCopy objectForKey:@"modelName"];
       if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
       {
         v8 = v7;
@@ -123,7 +123,7 @@
       if (v8)
       {
         objc_opt_class();
-        v10 = [v4 objectForKey:@"PPID"];
+        v10 = [representationCopy objectForKey:@"PPID"];
         if (v10 && (objc_opt_isKindOfClass() & 1) != 0)
         {
           v11 = v10;
@@ -137,7 +137,7 @@
         if (v11)
         {
           objc_opt_class();
-          v12 = [v4 objectForKey:@"authSerial"];
+          v12 = [representationCopy objectForKey:@"authSerial"];
           if (v12 && (objc_opt_isKindOfClass() & 1) != 0)
           {
             v13 = v12;
@@ -151,7 +151,7 @@
           if (v13)
           {
             objc_opt_class();
-            v14 = [v4 objectForKey:@"accessoryProtocols"];
+            v14 = [representationCopy objectForKey:@"accessoryProtocols"];
             if (v14 && (objc_opt_isKindOfClass() & 1) != 0)
             {
               v15 = v14;
@@ -191,7 +191,7 @@
                     if ((objc_opt_isKindOfClass() & 1) == 0)
                     {
 
-                      v9 = 0;
+                      selfCopy = 0;
                       v11 = v37;
                       v13 = v39;
                       goto LABEL_68;
@@ -220,7 +220,7 @@
             }
 
             objc_opt_class();
-            v22 = [v4 objectForKey:@"supportsWired"];
+            v22 = [representationCopy objectForKey:@"supportsWired"];
             if (v22 && (objc_opt_isKindOfClass() & 1) != 0)
             {
               v23 = v22;
@@ -232,7 +232,7 @@
             }
 
             objc_opt_class();
-            v24 = [v4 objectForKey:@"supportsOOBPairing"];
+            v24 = [representationCopy objectForKey:@"supportsOOBPairing"];
             if (v24 && (objc_opt_isKindOfClass() & 1) != 0)
             {
               v34 = v24;
@@ -244,7 +244,7 @@
             }
 
             objc_opt_class();
-            v25 = [v4 objectForKey:@"supportsEnhancedIntegration"];
+            v25 = [representationCopy objectForKey:@"supportsEnhancedIntegration"];
             if (v25 && (objc_opt_isKindOfClass() & 1) != 0)
             {
               v26 = v25;
@@ -256,7 +256,7 @@
             }
 
             objc_opt_class();
-            v27 = [v4 objectForKey:@"supportsThemeAssets"];
+            v27 = [representationCopy objectForKey:@"supportsThemeAssets"];
             if (v27 && (objc_opt_isKindOfClass() & 1) != 0)
             {
               v33 = v27;
@@ -267,19 +267,19 @@
               v33 = 0;
             }
 
-            v35 = [v23 BOOLValue];
+            bOOLValue = [v23 BOOLValue];
             v38 = v23;
-            v28 = [v34 BOOLValue];
+            bOOLValue2 = [v34 BOOLValue];
             v29 = v26;
-            v30 = [v26 BOOLValue];
+            bOOLValue3 = [v26 BOOLValue];
             BYTE2(v32) = [v33 BOOLValue];
-            BYTE1(v32) = v30;
-            LOBYTE(v32) = v28;
+            BYTE1(v32) = bOOLValue3;
+            LOBYTE(v32) = bOOLValue2;
             v13 = v39;
-            self = [CARCarPlayServiceMessageIdentification initWithDisplayName:"initWithDisplayName:modelName:PPID:authenticationSerialNumber:accessoryProtocols:supportsWiredCarPlay:supportsWiredToWirelessPairing:supportsEnhancedIntegration:supportsThemeAssets:" modelName:v36 PPID:v8 authenticationSerialNumber:v11 accessoryProtocols:v39 supportsWiredCarPlay:v16 supportsWiredToWirelessPairing:v35 supportsEnhancedIntegration:v32 supportsThemeAssets:?];
+            self = [CARCarPlayServiceMessageIdentification initWithDisplayName:"initWithDisplayName:modelName:PPID:authenticationSerialNumber:accessoryProtocols:supportsWiredCarPlay:supportsWiredToWirelessPairing:supportsEnhancedIntegration:supportsThemeAssets:" modelName:v36 PPID:v8 authenticationSerialNumber:v11 accessoryProtocols:v39 supportsWiredCarPlay:v16 supportsWiredToWirelessPairing:bOOLValue supportsEnhancedIntegration:v32 supportsThemeAssets:?];
 
             v6 = v36;
-            v9 = self;
+            selfCopy = self;
           }
 
           else
@@ -290,7 +290,7 @@
               sub_1000855A8();
             }
 
-            v9 = 0;
+            selfCopy = 0;
           }
 
 LABEL_68:
@@ -304,7 +304,7 @@ LABEL_68:
             sub_10008561C();
           }
 
-          v9 = 0;
+          selfCopy = 0;
         }
       }
 
@@ -316,7 +316,7 @@ LABEL_68:
           sub_100085690();
         }
 
-        v9 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -328,35 +328,35 @@ LABEL_68:
         sub_100085704();
       }
 
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(CARCarPlayServiceMessageIdentification *)self displayName];
-  [v3 cr_setSafeObject:v4 forKey:@"displayName"];
+  displayName = [(CARCarPlayServiceMessageIdentification *)self displayName];
+  [v3 cr_setSafeObject:displayName forKey:@"displayName"];
 
-  v5 = [(CARCarPlayServiceMessageIdentification *)self modelName];
-  [v3 cr_setSafeObject:v5 forKey:@"modelName"];
+  modelName = [(CARCarPlayServiceMessageIdentification *)self modelName];
+  [v3 cr_setSafeObject:modelName forKey:@"modelName"];
 
-  v6 = [(CARCarPlayServiceMessageIdentification *)self PPID];
-  [v3 cr_setSafeObject:v6 forKey:@"PPID"];
+  pPID = [(CARCarPlayServiceMessageIdentification *)self PPID];
+  [v3 cr_setSafeObject:pPID forKey:@"PPID"];
 
-  v7 = [(CARCarPlayServiceMessageIdentification *)self authenticationSerialNumber];
-  [v3 cr_setSafeObject:v7 forKey:@"authSerial"];
+  authenticationSerialNumber = [(CARCarPlayServiceMessageIdentification *)self authenticationSerialNumber];
+  [v3 cr_setSafeObject:authenticationSerialNumber forKey:@"authSerial"];
 
-  v8 = [(CARCarPlayServiceMessageIdentification *)self accessoryProtocols];
-  [v3 cr_setSafeObject:v8 forKey:@"accessoryProtocols"];
+  accessoryProtocols = [(CARCarPlayServiceMessageIdentification *)self accessoryProtocols];
+  [v3 cr_setSafeObject:accessoryProtocols forKey:@"accessoryProtocols"];
 
   v9 = [NSNumber numberWithBool:[(CARCarPlayServiceMessageIdentification *)self supportsWiredCarPlay]];
   [v3 cr_setSafeObject:v9 forKey:@"supportsWired"];

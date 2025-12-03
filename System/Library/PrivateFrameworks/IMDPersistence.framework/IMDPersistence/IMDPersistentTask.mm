@@ -1,87 +1,87 @@
 @interface IMDPersistentTask
-+ (id)_dataForUserInfo:(id)a3;
-+ (id)_decodeUserInfoData:(id)a3;
++ (id)_dataForUserInfo:(id)info;
++ (id)_decodeUserInfoData:(id)data;
 + (id)keyPathsToColumns;
-- (IMDPersistentTask)initWithCoder:(id)a3;
-- (IMDPersistentTask)initWithGUID:(id)a3 flag:(unint64_t)a4 lane:(unint64_t)a5 reason:(int64_t)a6 userInfo:(id)a7 retryCount:(int64_t)a8;
-- (IMDPersistentTask)initWithGUIDForSpotlight:(id)a3 flag:(unint64_t)a4 context:(id)a5;
-- (IMDPersistentTask)initWithRowID:(int64_t)a3 guid:(id)a4 group:(unint64_t)a5 flag:(unint64_t)a6 flagPriority:(int64_t)a7 lane:(unint64_t)a8 reason:(int64_t)a9 reasonPriority:(int64_t)a10 userInfo:(id)a11 retryCount:(int64_t)a12;
-- (IMDPersistentTask)initWithStoreDictionary:(id)a3;
+- (IMDPersistentTask)initWithCoder:(id)coder;
+- (IMDPersistentTask)initWithGUID:(id)d flag:(unint64_t)flag lane:(unint64_t)lane reason:(int64_t)reason userInfo:(id)info retryCount:(int64_t)count;
+- (IMDPersistentTask)initWithGUIDForSpotlight:(id)spotlight flag:(unint64_t)flag context:(id)context;
+- (IMDPersistentTask)initWithRowID:(int64_t)d guid:(id)guid group:(unint64_t)group flag:(unint64_t)flag flagPriority:(int64_t)priority lane:(unint64_t)lane reason:(int64_t)reason reasonPriority:(int64_t)self0 userInfo:(id)self1 retryCount:(int64_t)self2;
+- (IMDPersistentTask)initWithStoreDictionary:(id)dictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMDPersistentTask
 
-- (IMDPersistentTask)initWithRowID:(int64_t)a3 guid:(id)a4 group:(unint64_t)a5 flag:(unint64_t)a6 flagPriority:(int64_t)a7 lane:(unint64_t)a8 reason:(int64_t)a9 reasonPriority:(int64_t)a10 userInfo:(id)a11 retryCount:(int64_t)a12
+- (IMDPersistentTask)initWithRowID:(int64_t)d guid:(id)guid group:(unint64_t)group flag:(unint64_t)flag flagPriority:(int64_t)priority lane:(unint64_t)lane reason:(int64_t)reason reasonPriority:(int64_t)self0 userInfo:(id)self1 retryCount:(int64_t)self2
 {
-  v19 = a4;
-  v20 = a11;
+  guidCopy = guid;
+  infoCopy = info;
   v24.receiver = self;
   v24.super_class = IMDPersistentTask;
   v21 = [(IMDPersistentTask *)&v24 init];
   v22 = v21;
   if (v21)
   {
-    v21->_rowID = a3;
-    objc_storeStrong(&v21->_guid, a4);
-    v22->_group = a5;
-    v22->_flag = a6;
-    v22->_flagPriority = a7;
-    v22->_lane = a8;
-    v22->_reason = a9;
-    v22->_reasonPriority = a10;
-    objc_storeStrong(&v22->_userInfo, a11);
-    v22->_retryCount = a12;
+    v21->_rowID = d;
+    objc_storeStrong(&v21->_guid, guid);
+    v22->_group = group;
+    v22->_flag = flag;
+    v22->_flagPriority = priority;
+    v22->_lane = lane;
+    v22->_reason = reason;
+    v22->_reasonPriority = reasonPriority;
+    objc_storeStrong(&v22->_userInfo, info);
+    v22->_retryCount = count;
   }
 
   return v22;
 }
 
-- (IMDPersistentTask)initWithGUID:(id)a3 flag:(unint64_t)a4 lane:(unint64_t)a5 reason:(int64_t)a6 userInfo:(id)a7 retryCount:(int64_t)a8
+- (IMDPersistentTask)initWithGUID:(id)d flag:(unint64_t)flag lane:(unint64_t)lane reason:(int64_t)reason userInfo:(id)info retryCount:(int64_t)count
 {
-  v14 = a7;
-  v15 = a3;
-  v17 = objc_msgSend_groupForFlag_(IMDPersistentTaskUtilities, v16, a4);
-  v19 = objc_msgSend_priorityForFlag_(IMDPersistentTaskUtilities, v18, a4);
-  v21 = objc_msgSend_priorityForReason_flag_(IMDPersistentTaskUtilities, v20, a6, a4);
-  v23 = objc_msgSend_initWithRowID_guid_group_flag_flagPriority_lane_reason_reasonPriority_userInfo_retryCount_(self, v22, -1, v15, v17, a4, v19, a5, a6, v21, v14, a8);
+  infoCopy = info;
+  dCopy = d;
+  v17 = objc_msgSend_groupForFlag_(IMDPersistentTaskUtilities, v16, flag);
+  v19 = objc_msgSend_priorityForFlag_(IMDPersistentTaskUtilities, v18, flag);
+  v21 = objc_msgSend_priorityForReason_flag_(IMDPersistentTaskUtilities, v20, reason, flag);
+  v23 = objc_msgSend_initWithRowID_guid_group_flag_flagPriority_lane_reason_reasonPriority_userInfo_retryCount_(self, v22, -1, dCopy, v17, flag, v19, lane, reason, v21, infoCopy, count);
 
   return v23;
 }
 
-- (IMDPersistentTask)initWithCoder:(id)a3
+- (IMDPersistentTask)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v28 = objc_msgSend_decodeIntegerForKey_(v3, v4, @"r");
+  coderCopy = coder;
+  v28 = objc_msgSend_decodeIntegerForKey_(coderCopy, v4, @"r");
   v5 = objc_opt_class();
-  v7 = objc_msgSend_decodeObjectOfClass_forKey_(v3, v6, v5, @"g");
-  v27 = objc_msgSend_decodeIntegerForKey_(v3, v8, @"fg");
-  v10 = objc_msgSend_decodeIntegerForKey_(v3, v9, @"f");
-  v12 = objc_msgSend_decodeIntegerForKey_(v3, v11, @"fp");
-  v14 = objc_msgSend_decodeIntegerForKey_(v3, v13, @"l");
-  v16 = objc_msgSend_decodeIntegerForKey_(v3, v15, @"s");
-  v18 = objc_msgSend_decodeIntegerForKey_(v3, v17, @"sp");
+  v7 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"g");
+  v27 = objc_msgSend_decodeIntegerForKey_(coderCopy, v8, @"fg");
+  v10 = objc_msgSend_decodeIntegerForKey_(coderCopy, v9, @"f");
+  v12 = objc_msgSend_decodeIntegerForKey_(coderCopy, v11, @"fp");
+  v14 = objc_msgSend_decodeIntegerForKey_(coderCopy, v13, @"l");
+  v16 = objc_msgSend_decodeIntegerForKey_(coderCopy, v15, @"s");
+  v18 = objc_msgSend_decodeIntegerForKey_(coderCopy, v17, @"sp");
   v19 = IMGetAttributedInfoArrayAllowlistedClasses();
-  v21 = objc_msgSend_decodeObjectOfClasses_forKey_(v3, v20, v19, @"u");
-  v23 = objc_msgSend_decodeIntegerForKey_(v3, v22, @"c");
+  v21 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v20, v19, @"u");
+  v23 = objc_msgSend_decodeIntegerForKey_(coderCopy, v22, @"c");
 
   v25 = objc_msgSend_initWithRowID_guid_group_flag_flagPriority_lane_reason_reasonPriority_userInfo_retryCount_(self, v24, v28, v7, v27, v10, v12, v14, v16, v18, v21, v23);
   return v25;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   rowID = self->_rowID;
-  v17 = v4;
+  v17 = coderCopy;
   if (rowID)
   {
-    objc_msgSend_encodeInteger_forKey_(v4, v5, rowID, @"r");
-    v4 = v17;
+    objc_msgSend_encodeInteger_forKey_(coderCopy, v5, rowID, @"r");
+    coderCopy = v17;
   }
 
-  objc_msgSend_encodeObject_forKey_(v4, v5, self->_guid, @"g");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, self->_guid, @"g");
   group = self->_group;
   if (group)
   {
@@ -132,27 +132,27 @@
   }
 }
 
-- (IMDPersistentTask)initWithStoreDictionary:(id)a3
+- (IMDPersistentTask)initWithStoreDictionary:(id)dictionary
 {
-  v3 = a3;
-  v53 = objc_msgSend_objectForKeyedSubscript_(v3, v4, @"ROWID");
+  dictionaryCopy = dictionary;
+  v53 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v4, @"ROWID");
   v49 = objc_msgSend_integerValue(v53, v5, v6);
-  v47 = objc_msgSend_objectForKeyedSubscript_(v3, v7, @"guid");
-  v52 = objc_msgSend_objectForKeyedSubscript_(v3, v8, @"flag_group");
+  v47 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v7, @"guid");
+  v52 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v8, @"flag_group");
   v46 = objc_msgSend_integerValue(v52, v9, v10);
-  v50 = objc_msgSend_objectForKeyedSubscript_(v3, v11, @"flag");
+  v50 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v11, @"flag");
   v45 = objc_msgSend_integerValue(v50, v12, v13);
-  v48 = objc_msgSend_objectForKeyedSubscript_(v3, v14, @"flag_priority");
+  v48 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v14, @"flag_priority");
   v44 = objc_msgSend_integerValue(v48, v15, v16);
-  v18 = objc_msgSend_objectForKeyedSubscript_(v3, v17, @"lane");
+  v18 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v17, @"lane");
   v21 = objc_msgSend_integerValue(v18, v19, v20);
-  v23 = objc_msgSend_objectForKeyedSubscript_(v3, v22, @"reason");
+  v23 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v22, @"reason");
   v26 = objc_msgSend_integerValue(v23, v24, v25);
-  v28 = objc_msgSend_objectForKeyedSubscript_(v3, v27, @"reason_priority");
+  v28 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v27, @"reason_priority");
   v31 = objc_msgSend_integerValue(v28, v29, v30);
-  v33 = objc_msgSend_objectForKeyedSubscript_(v3, v32, @"user_info");
+  v33 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v32, @"user_info");
   v35 = objc_msgSend__decodeUserInfoData_(IMDPersistentTask, v34, v33);
-  v37 = objc_msgSend_objectForKeyedSubscript_(v3, v36, @"retry_count");
+  v37 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v36, @"retry_count");
 
   v40 = objc_msgSend_integerValue(v37, v38, v39);
   v42 = objc_msgSend_initWithRowID_guid_group_flag_flagPriority_lane_reason_reasonPriority_userInfo_retryCount_(self, v41, v49, v47, v46, v45, v44, v21, v26, v31, v35, v40);
@@ -173,13 +173,13 @@
   return v17;
 }
 
-+ (id)_decodeUserInfoData:(id)a3
++ (id)_decodeUserInfoData:(id)data
 {
-  v3 = a3;
-  if (objc_msgSend_length(v3, v4, v5))
+  dataCopy = data;
+  if (objc_msgSend_length(dataCopy, v4, v5))
   {
     v11 = 0;
-    v7 = objc_msgSend_propertyListWithData_options_format_error_(MEMORY[0x1E696AE40], v6, v3, 0, 0, &v11);
+    v7 = objc_msgSend_propertyListWithData_options_format_error_(MEMORY[0x1E696AE40], v6, dataCopy, 0, 0, &v11);
     v8 = v7;
     v9 = 0;
     if (!v11)
@@ -196,13 +196,13 @@
   return v9;
 }
 
-+ (id)_dataForUserInfo:(id)a3
++ (id)_dataForUserInfo:(id)info
 {
-  v3 = a3;
-  if (objc_msgSend_count(v3, v4, v5))
+  infoCopy = info;
+  if (objc_msgSend_count(infoCopy, v4, v5))
   {
     v12 = 0;
-    v7 = objc_msgSend_dataWithPropertyList_format_options_error_(MEMORY[0x1E696AE40], v6, v3, 200, 0, &v12);
+    v7 = objc_msgSend_dataWithPropertyList_format_options_error_(MEMORY[0x1E696AE40], v6, infoCopy, 200, 0, &v12);
     v8 = v12;
     if (v8)
     {
@@ -241,27 +241,27 @@
   return v3;
 }
 
-- (IMDPersistentTask)initWithGUIDForSpotlight:(id)a3 flag:(unint64_t)a4 context:(id)a5
+- (IMDPersistentTask)initWithGUIDForSpotlight:(id)spotlight flag:(unint64_t)flag context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
-  v12 = objc_msgSend_laneOverride(v8, v10, v11);
+  contextCopy = context;
+  spotlightCopy = spotlight;
+  v12 = objc_msgSend_laneOverride(contextCopy, v10, v11);
 
   if (v12)
   {
-    v15 = objc_msgSend_laneOverride(v8, v13, v14);
+    v15 = objc_msgSend_laneOverride(contextCopy, v13, v14);
     v18 = objc_msgSend_unsignedIntegerValue(v15, v16, v17);
   }
 
   else
   {
-    v21 = objc_msgSend_reason(v8, v13, v14);
-    v18 = objc_msgSend_laneForFlag_reason_(IMDPersistentTaskUtilities, v22, a4, v21);
+    v21 = objc_msgSend_reason(contextCopy, v13, v14);
+    v18 = objc_msgSend_laneForFlag_reason_(IMDPersistentTaskUtilities, v22, flag, v21);
   }
 
-  v23 = objc_msgSend_reason(v8, v19, v20);
-  v26 = objc_msgSend_dictionaryRepresentation(v8, v24, v25);
-  v28 = objc_msgSend_initWithGUID_flag_lane_reason_userInfo_retryCount_(self, v27, v9, a4, v18, v23, v26, 0);
+  v23 = objc_msgSend_reason(contextCopy, v19, v20);
+  v26 = objc_msgSend_dictionaryRepresentation(contextCopy, v24, v25);
+  v28 = objc_msgSend_initWithGUID_flag_lane_reason_userInfo_retryCount_(self, v27, spotlightCopy, flag, v18, v23, v26, 0);
 
   return v28;
 }

@@ -3,13 +3,13 @@
 + (NSSet)componentsForDailyForecasts;
 + (NSSet)componentsForHourlyForecasts;
 - (WFWeatherChannelParserV2)init;
-- (id)parseAirQualityData:(id)a3 location:(id)a4 error:(id *)a5;
-- (id)parseCurrentCondition:(id)a3;
-- (id)parseDailyForecasts:(id)a3;
-- (id)parseForecastData:(id)a3 types:(unint64_t)a4 location:(id)a5 locale:(id)a6 date:(id)a7 error:(id *)a8 rules:(id)a9;
-- (id)parseHourlyForecasts:(id)a3;
-- (unint64_t)_pressureTrendFromWeatherChannelCode:(id)a3;
-- (void)parseCommonComponents:(id)a3 data:(id)a4;
+- (id)parseAirQualityData:(id)data location:(id)location error:(id *)error;
+- (id)parseCurrentCondition:(id)condition;
+- (id)parseDailyForecasts:(id)forecasts;
+- (id)parseForecastData:(id)data types:(unint64_t)types location:(id)location locale:(id)locale date:(id)date error:(id *)error rules:(id)rules;
+- (id)parseHourlyForecasts:(id)forecasts;
+- (unint64_t)_pressureTrendFromWeatherChannelCode:(id)code;
+- (void)parseCommonComponents:(id)components data:(id)data;
 @end
 
 @implementation WFWeatherChannelParserV2
@@ -27,30 +27,30 @@
     v2->_calendar = v4;
 
     v6 = [MEMORY[0x277CBEBB0] timeZoneWithName:@"GMT"];
-    v7 = [(WFWeatherChannelParserV2 *)v2 calendar];
-    [v7 setTimeZone:v6];
+    calendar = [(WFWeatherChannelParserV2 *)v2 calendar];
+    [calendar setTimeZone:v6];
   }
 
   return v2;
 }
 
-- (id)parseForecastData:(id)a3 types:(unint64_t)a4 location:(id)a5 locale:(id)a6 date:(id)a7 error:(id *)a8 rules:(id)a9
+- (id)parseForecastData:(id)data types:(unint64_t)types location:(id)location locale:(id)locale date:(id)date error:(id *)error rules:(id)rules
 {
   v63 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
-  if (!v15)
+  dataCopy = data;
+  locationCopy = location;
+  localeCopy = locale;
+  dateCopy = date;
+  rulesCopy = rules;
+  if (!dataCopy)
   {
     v21 = 0;
     goto LABEL_9;
   }
 
-  v54 = self;
+  selfCopy = self;
   v59 = 0;
-  v20 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v15 options:0 error:&v59];
+  v20 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v59];
   v21 = v59;
   if (!v20)
   {
@@ -72,7 +72,7 @@ LABEL_9:
     v61 = @"Failed to parse JSON forecast data";
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v61 forKeys:&v60 count:1];
     [v26 wf_errorWithCode:1 encapsulatedError:v21 userInfo:v20];
-    *a8 = v23 = 0;
+    *error = v23 = 0;
     goto LABEL_33;
   }
 
@@ -83,21 +83,21 @@ LABEL_9:
   }
 
   v23 = objc_alloc_init(WFParsedForecastData);
-  if (a4 != 1)
+  if (types != 1)
   {
     v47 = v21;
-    v48 = v19;
-    v49 = v18;
-    v50 = v17;
-    v51 = v16;
-    v52 = v15;
-    v53 = [(WFWeatherChannelParserV2 *)v54 parseCurrentCondition:v20];
+    v48 = rulesCopy;
+    v49 = dateCopy;
+    v50 = localeCopy;
+    v51 = locationCopy;
+    v52 = dataCopy;
+    v53 = [(WFWeatherChannelParserV2 *)selfCopy parseCurrentCondition:v20];
     v27 = [v53 valueForComponent:@"WFWeatherForecastDateComponent"];
     v28 = +[WFWeatherConditions calendar];
     v29 = v20;
     v30 = v28;
     v46 = v29;
-    [(WFWeatherChannelParserV2 *)v54 parseDailyForecasts:?];
+    [(WFWeatherChannelParserV2 *)selfCopy parseDailyForecasts:?];
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
@@ -154,9 +154,9 @@ LABEL_16:
         [v53 setValue:v39 forComponent:@"WFWeatherHighTemperatureComponent"];
         v44 = v38;
         [v53 setValue:v38 forComponent:@"WFWeatherLowTemperatureComponent"];
-        v16 = v51;
-        v15 = v52;
-        v17 = v50;
+        locationCopy = v51;
+        dataCopy = v52;
+        localeCopy = v50;
         goto LABEL_31;
       }
     }
@@ -169,10 +169,10 @@ LABEL_22:
       v38 = 0;
     }
 
-    v16 = v51;
-    v15 = v52;
+    locationCopy = v51;
+    dataCopy = v52;
     v41 = WFLogForCategory(7uLL);
-    v17 = v50;
+    localeCopy = v50;
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
       [WFWeatherChannelParserV2 parseForecastData:types:location:locale:date:error:rules:];
@@ -181,24 +181,24 @@ LABEL_22:
     v44 = v38;
 
 LABEL_31:
-    v19 = v48;
+    rulesCopy = v48;
     [(WFParsedForecastData *)v23 setDailyForecasts:v31];
-    v42 = [(WFWeatherChannelParserV2 *)v54 parseHourlyForecasts:v46];
+    v42 = [(WFWeatherChannelParserV2 *)selfCopy parseHourlyForecasts:v46];
     [(WFParsedForecastData *)v23 setHourlyForecasts:v42];
 
     v24 = v53;
     [(WFParsedForecastData *)v23 setCurrentConditions:v53];
-    [(WFParsedForecastData *)v23 setRawData:v15];
+    [(WFParsedForecastData *)v23 setRawData:dataCopy];
 
     v20 = v46;
-    v18 = v49;
+    dateCopy = v49;
     v21 = v47;
     goto LABEL_32;
   }
 
-  if ([WFResponseParsingRules aqiEnabledByRules:v19 forLocation:v16])
+  if ([WFResponseParsingRules aqiEnabledByRules:rulesCopy forLocation:locationCopy])
   {
-    v24 = [(WFWeatherChannelParserV2 *)v54 parseAirQualityData:v15 location:v16 error:a8];
+    v24 = [(WFWeatherChannelParserV2 *)selfCopy parseAirQualityData:dataCopy location:locationCopy error:error];
     [(WFParsedForecastData *)v23 setAirQualityObservations:v24];
 LABEL_32:
   }
@@ -288,9 +288,9 @@ LABEL_34:
   return v4;
 }
 
-- (unint64_t)_pressureTrendFromWeatherChannelCode:(id)a3
+- (unint64_t)_pressureTrendFromWeatherChannelCode:(id)code
 {
-  v3 = [a3 intValue] - 1;
+  v3 = [code intValue] - 1;
   if (v3 > 3)
   {
     return 0;
@@ -302,17 +302,17 @@ LABEL_34:
   }
 }
 
-- (id)parseDailyForecasts:(id)a3
+- (id)parseDailyForecasts:(id)forecasts
 {
   v50 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  forecastsCopy = forecasts;
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v4 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZ"];
   v5 = [MEMORY[0x277CBEBB0] timeZoneWithAbbreviation:@"GMT"];
   [v4 setTimeZone:v5];
 
-  v40 = v3;
-  v6 = [v3 wf_arrayForKeyPath:&unk_2882545B0];
+  v40 = forecastsCopy;
+  v6 = [forecastsCopy wf_arrayForKeyPath:&unk_2882545B0];
   v7 = v6;
   if (v6)
   {
@@ -445,11 +445,11 @@ LABEL_34:
   return v33;
 }
 
-- (id)parseHourlyForecasts:(id)a3
+- (id)parseHourlyForecasts:(id)forecasts
 {
   v41 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v3 = [v31 wf_arrayForKeyPath:&unk_288254700];
+  forecastsCopy = forecasts;
+  v3 = [forecastsCopy wf_arrayForKeyPath:&unk_288254700];
   v4 = v3;
   if (v3)
   {
@@ -493,7 +493,7 @@ LABEL_34:
             v13 = [(WFWeatherConditions *)v10 wf_numberForKeyPath:&unk_288254730];
             v14 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{objc_msgSend(v13, "unsignedIntegerValue")}];
             [(WFWeatherConditions *)v12 setValue:v14 forComponent:@"WFWeatherForecastDateComponent"];
-            v15 = [v31 wf_numberForKeyPath:&unk_288254748];
+            v15 = [forecastsCopy wf_numberForKeyPath:&unk_288254748];
             v16 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{objc_msgSend(v15, "unsignedIntegerValue")}];
             [(WFWeatherConditions *)v12 setValue:v16 forComponent:@"WFWeatherForecastExpirationDateComponent"];
             v17 = [(WFWeatherConditions *)v10 wf_numberForKeyPath:&unk_288254760];
@@ -561,10 +561,10 @@ LABEL_34:
   return v26;
 }
 
-- (id)parseCurrentCondition:(id)a3
+- (id)parseCurrentCondition:(id)condition
 {
-  v4 = a3;
-  v5 = [v4 wf_dictionaryForKeyPath:&unk_2882547A8];
+  conditionCopy = condition;
+  v5 = [conditionCopy wf_dictionaryForKeyPath:&unk_2882547A8];
   v6 = WFLogForCategory(7uLL);
   v7 = v6;
   if (v5)
@@ -578,7 +578,7 @@ LABEL_34:
     v7 = [v5 wf_numberForKeyPath:&unk_2882547D8];
     v32 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{objc_msgSend(v7, "unsignedIntegerValue")}];
     [WFWeatherConditions setValue:v8 forComponent:"setValue:forComponent:"];
-    v31 = [v4 wf_numberForKeyPath:&unk_2882547F0];
+    v31 = [conditionCopy wf_numberForKeyPath:&unk_2882547F0];
     v30 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{objc_msgSend(v31, "unsignedIntegerValue")}];
     [WFWeatherConditions setValue:v8 forComponent:"setValue:forComponent:"];
     v9 = [v5 wf_temperatureWithCelsiusKeyPath:&unk_288254808 fahrenheitKeyPath:&unk_288254820];
@@ -607,9 +607,9 @@ LABEL_34:
       [(WFWeatherConditions *)v8 setValue:v19 forComponent:@"WFWeatherPressureTrendComponent"];
     }
 
-    v33 = self;
-    v34 = v4;
-    v20 = [v4 wf_dictionaryForKeyPath:&unk_288254898];
+    selfCopy = self;
+    v34 = conditionCopy;
+    v20 = [conditionCopy wf_dictionaryForKeyPath:&unk_288254898];
     v21 = [v20 wf_stringForKeyPath:&unk_2882548B0];
     v22 = [v20 wf_stringForKeyPath:&unk_2882548C8];
     v23 = [v20 wf_stringForKeyPath:&unk_2882548E0];
@@ -631,14 +631,14 @@ LABEL_34:
       [(WFWeatherConditions *)v8 setValue:v26 forComponent:@"WFWeatherMobileLinkComponent"];
     }
 
-    [(WFWeatherChannelParserV2 *)v33 parseCommonComponents:v8 data:v5];
+    [(WFWeatherChannelParserV2 *)selfCopy parseCommonComponents:v8 data:v5];
     v27 = WFLogForCategory(7uLL);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
       [WFWeatherChannelParserV2 parseCurrentCondition:];
     }
 
-    v4 = v34;
+    conditionCopy = v34;
   }
 
   else
@@ -654,39 +654,39 @@ LABEL_34:
   return v8;
 }
 
-- (void)parseCommonComponents:(id)a3 data:(id)a4
+- (void)parseCommonComponents:(id)components data:(id)data
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 wf_temperatureWithCelsiusKeyPath:&unk_2882548F8 fahrenheitKeyPath:&unk_288254910];
-  [v6 setValue:v7 forComponent:@"WFWeatherTemperatureComponent"];
+  dataCopy = data;
+  componentsCopy = components;
+  v7 = [dataCopy wf_temperatureWithCelsiusKeyPath:&unk_2882548F8 fahrenheitKeyPath:&unk_288254910];
+  [componentsCopy setValue:v7 forComponent:@"WFWeatherTemperatureComponent"];
 
-  v8 = [v5 wf_numberForKeyPath:&unk_288254928];
-  [v6 setValue:v8 forComponent:@"WFWeatherWindDirectionComponent"];
+  v8 = [dataCopy wf_numberForKeyPath:&unk_288254928];
+  [componentsCopy setValue:v8 forComponent:@"WFWeatherWindDirectionComponent"];
 
-  v9 = [v5 wf_numberForKeyPath:&unk_288254940];
-  [v6 setValue:v9 forComponent:@"WFWeatherWindSpeedComponent"];
+  v9 = [dataCopy wf_numberForKeyPath:&unk_288254940];
+  [componentsCopy setValue:v9 forComponent:@"WFWeatherWindSpeedComponent"];
 
-  v10 = [v5 wf_numberForKeyPath:&unk_288254958];
-  [v6 setValue:v10 forComponent:@"WFWeatherHumidityComponent"];
+  v10 = [dataCopy wf_numberForKeyPath:&unk_288254958];
+  [componentsCopy setValue:v10 forComponent:@"WFWeatherHumidityComponent"];
 
-  v11 = [v5 wf_numberForKeyPath:&unk_288254970];
-  [v6 setValue:v11 forComponent:@"WFWeatherDewpointComponent"];
+  v11 = [dataCopy wf_numberForKeyPath:&unk_288254970];
+  [componentsCopy setValue:v11 forComponent:@"WFWeatherDewpointComponent"];
 
-  v12 = [v5 wf_numberForKeyPath:&unk_288254988];
-  [v6 setValue:v12 forComponent:@"WFWeatherUVIndexComponent"];
+  v12 = [dataCopy wf_numberForKeyPath:&unk_288254988];
+  [componentsCopy setValue:v12 forComponent:@"WFWeatherUVIndexComponent"];
 
-  v13 = [v5 wf_numberForKeyPath:&unk_2882549A0];
+  v13 = [dataCopy wf_numberForKeyPath:&unk_2882549A0];
 
-  [v6 setValue:v13 forComponent:@"WFWeatherVisibilityComponent"];
+  [componentsCopy setValue:v13 forComponent:@"WFWeatherVisibilityComponent"];
 }
 
-- (id)parseAirQualityData:(id)a3 location:(id)a4 error:(id *)a5
+- (id)parseAirQualityData:(id)data location:(id)location error:(id *)error
 {
   v88[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  dataCopy = data;
+  locationCopy = location;
+  if (locationCopy)
   {
     v9 = WFLogForCategory(7uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -695,14 +695,14 @@ LABEL_34:
     }
 
     v85 = 0;
-    v10 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v7 options:4 error:&v85];
+    v10 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:4 error:&v85];
     v11 = v85;
     v12 = v11;
     if (!v10 || v11)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = [MEMORY[0x277CCA9B8] wf_errorWithCode:1 encapsulatedError:v11 userInfo:0];
+        *error = [MEMORY[0x277CCA9B8] wf_errorWithCode:1 encapsulatedError:v11 userInfo:0];
       }
 
       v22 = WFLogForCategory(7uLL);
@@ -715,7 +715,7 @@ LABEL_34:
     }
 
     v13 = [v10 wf_numberForKeyPath:&unk_2882549B8];
-    v14 = [v13 integerValue];
+    integerValue = [v13 integerValue];
 
     v15 = [v10 wf_numberForKeyPath:&unk_2882549D0];
     [v15 doubleValue];
@@ -727,7 +727,7 @@ LABEL_34:
 
     v21 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:v17 longitude:v20];
     v22 = v21;
-    if (v14 == 200)
+    if (integerValue == 200)
     {
       [v21 coordinate];
       if (!CLLocationCoordinate2DIsValid(v90))
@@ -747,7 +747,7 @@ LABEL_34:
 
     else
     {
-      if (v14 == 204)
+      if (integerValue == 204)
       {
         v23 = 10;
       }
@@ -761,7 +761,7 @@ LABEL_34:
       if (v12)
       {
 LABEL_42:
-        if (a5)
+        if (error)
         {
           v67 = WFLogForCategory(7uLL);
           if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
@@ -771,7 +771,7 @@ LABEL_42:
 
           v68 = v12;
           v31 = 0;
-          *a5 = v12;
+          *error = v12;
           goto LABEL_46;
         }
 
@@ -789,25 +789,25 @@ LABEL_46:
     [v34 setTimeZone:v35];
 
     v36 = objc_opt_new();
-    [v36 setLocation:v8];
+    [v36 setLocation:locationCopy];
     v37 = [v10 wf_stringForKeyPath:&unk_288254A00];
     v38 = [v37 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
 
     v39 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v38];
     v40 = [v10 wf_arrayForKeyPath:&unk_288254A18];
-    v41 = [v40 firstObject];
+    firstObject = [v40 firstObject];
 
-    if (!v41)
+    if (!firstObject)
     {
-      v41 = [v10 wf_dictionaryForKeyPath:&unk_288254A30];
+      firstObject = [v10 wf_dictionaryForKeyPath:&unk_288254A30];
     }
 
     v75 = v38;
-    v78 = v8;
-    v79 = v7;
+    v78 = locationCopy;
+    v79 = dataCopy;
     v77 = v10;
     v42 = [v10 wf_numberForKeyPath:&unk_288254A48];
-    [v41 wf_stringForKeyPath:&unk_288254A60];
+    [firstObject wf_stringForKeyPath:&unk_288254A60];
     v71 = v76 = v34;
     v43 = [v34 dateFromString:?];
     [v36 setDate:v43];
@@ -816,21 +816,21 @@ LABEL_46:
     v44 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{objc_msgSend(v42, "unsignedIntegerValue")}];
     [v36 setExpirationDate:v44];
 
-    v45 = [v41 wf_stringForKeyPath:&unk_288254A78];
+    v45 = [firstObject wf_stringForKeyPath:&unk_288254A78];
     [v36 setProvider:v45];
 
     v74 = v39;
     [v36 setLocale:v39];
-    v46 = [v41 wf_numberForKeyPath:&unk_288254A90];
+    v46 = [firstObject wf_numberForKeyPath:&unk_288254A90];
     [v36 setLocalizedAirQualityIndex:{objc_msgSend(v46, "integerValue")}];
 
-    v47 = [v41 wf_stringForKeyPath:&unk_288254AA8];
+    v47 = [firstObject wf_stringForKeyPath:&unk_288254AA8];
     [v36 setAirQualityScale:v47];
 
-    v48 = [v41 wf_stringForKeyPath:&unk_288254AC0];
+    v48 = [firstObject wf_stringForKeyPath:&unk_288254AC0];
     [v36 setLocalizedAirQualityCategory:v48];
 
-    v49 = [v41 wf_numberForKeyPath:&unk_288254AD8];
+    v49 = [firstObject wf_numberForKeyPath:&unk_288254AD8];
     v50 = v49;
     if (v49)
     {
@@ -839,8 +839,8 @@ LABEL_46:
 
     v70 = v50;
     v51 = v36;
-    v73 = v41;
-    v52 = [v41 wf_arrayForKeyPath:&unk_288254AF0];
+    v73 = firstObject;
+    v52 = [firstObject wf_arrayForKeyPath:&unk_288254AF0];
     v53 = objc_opt_new();
     v81 = 0u;
     v82 = 0u;
@@ -874,11 +874,11 @@ LABEL_46:
           [v59 setAmount:?];
 
           v63 = [v58 wf_stringForKeyPath:&unk_288254B50];
-          v64 = [v63 BOOLValue];
+          bOOLValue = [v63 BOOLValue];
 
-          v65 = [v51 primaryPollutant];
+          primaryPollutant = [v51 primaryPollutant];
 
-          if (!v65 && v64)
+          if (!primaryPollutant && bOOLValue)
           {
             [v51 setPrimaryPollutant:v59];
           }
@@ -899,8 +899,8 @@ LABEL_46:
     }
 
     v66 = WFLogForCategory(7uLL);
-    v8 = v78;
-    v7 = v79;
+    locationCopy = v78;
+    dataCopy = v79;
     v22 = v75;
     v12 = v76;
     if (os_log_type_enabled(v66, OS_LOG_TYPE_DEBUG))
@@ -912,9 +912,9 @@ LABEL_46:
     goto LABEL_46;
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x277CCA9B8] wf_errorWithCode:1];
+    *error = [MEMORY[0x277CCA9B8] wf_errorWithCode:1];
   }
 
   v10 = WFLogForCategory(7uLL);

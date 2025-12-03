@@ -1,24 +1,24 @@
 @interface HFAnalyticsTileInteractionEvent
-+ (unint64_t)_numberOfRepresentedHomeKitObjectsForItem:(id)a3;
-- (HFAnalyticsTileInteractionEvent)initWithData:(id)a3;
++ (unint64_t)_numberOfRepresentedHomeKitObjectsForItem:(id)item;
+- (HFAnalyticsTileInteractionEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsTileInteractionEvent
 
-- (HFAnalyticsTileInteractionEvent)initWithData:(id)a3
+- (HFAnalyticsTileInteractionEvent)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"interactionType"];
-  v6 = [v5 integerValue];
+  dataCopy = data;
+  v5 = [dataCopy objectForKeyedSubscript:@"interactionType"];
+  integerValue = [v5 integerValue];
 
-  if (!v6)
+  if (!integerValue)
   {
     NSLog(&cfstr_Hfanalyticstil_0.isa);
   }
 
   objc_opt_class();
-  v7 = [v4 objectForKeyedSubscript:@"item"];
+  v7 = [dataCopy objectForKeyedSubscript:@"item"];
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -37,7 +37,7 @@
   }
 
   objc_opt_class();
-  v10 = [v4 objectForKeyedSubscript:@"tileInteractionArea"];
+  v10 = [dataCopy objectForKeyedSubscript:@"tileInteractionArea"];
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -51,7 +51,7 @@
   v12 = v11;
 
   objc_opt_class();
-  v13 = [v4 objectForKeyedSubscript:@"sourceViewController"];
+  v13 = [dataCopy objectForKeyedSubscript:@"sourceViewController"];
   if (objc_opt_isKindOfClass())
   {
     v14 = v13;
@@ -70,8 +70,8 @@
   v17 = v16;
   if (v16)
   {
-    v16->_interactionType = v6;
-    v18 = [v4 objectForKeyedSubscript:@"room"];
+    v16->_interactionType = integerValue;
+    v18 = [dataCopy objectForKeyedSubscript:@"room"];
     v17->_isRoomDashboard = v18 != 0;
 
     objc_opt_class();
@@ -82,7 +82,7 @@
     objc_opt_class();
     v17->_isStatusItem = objc_opt_isKindOfClass() & 1;
     objc_opt_class();
-    v19 = [v4 objectForKeyedSubscript:@"overrideItemClassName"];
+    v19 = [dataCopy objectForKeyedSubscript:@"overrideItemClassName"];
     if (objc_opt_isKindOfClass())
     {
       v20 = v19;
@@ -109,19 +109,19 @@
     itemClassName = v17->_itemClassName;
     v17->_itemClassName = v22;
 
-    v25 = [v9 latestResults];
-    v26 = [v25 objectForKeyedSubscript:@"state"];
+    latestResults = [v9 latestResults];
+    v26 = [latestResults objectForKeyedSubscript:@"state"];
     v17->_itemPrimaryState = [v26 integerValue];
 
-    v27 = [v9 latestResults];
-    v28 = [v27 objectForKeyedSubscript:@"priority"];
+    latestResults2 = [v9 latestResults];
+    v28 = [latestResults2 objectForKeyedSubscript:@"priority"];
     v17->_itemPriority = [v28 integerValue];
 
     v17->_numberOfRepresentedHomeKitObjects = [objc_opt_class() _numberOfRepresentedHomeKitObjectsForItem:v9];
-    v29 = [MEMORY[0x277CCAC38] processInfo];
-    v30 = [v29 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
     processName = v17->_processName;
-    v17->_processName = v30;
+    v17->_processName = processName;
 
     if (v15)
     {
@@ -141,7 +141,7 @@
 
     objc_storeStrong(&v17->_tileInteractionArea, v11);
     objc_opt_class();
-    v34 = [v4 objectForKeyedSubscript:@"dashboardContextType"];
+    v34 = [dataCopy objectForKeyedSubscript:@"dashboardContextType"];
     if (objc_opt_isKindOfClass())
     {
       v35 = v34;
@@ -162,8 +162,8 @@
 {
   v21.receiver = self;
   v21.super_class = HFAnalyticsTileInteractionEvent;
-  v3 = [(HFAnalyticsEvent *)&v21 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v21 payload];
+  v4 = [payload mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HFAnalyticsTileInteractionEvent interactionType](self, "interactionType")}];
   [v4 setObject:v5 forKeyedSubscript:@"interactionType"];
@@ -183,8 +183,8 @@
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[HFAnalyticsTileInteractionEvent isStatusItem](self, "isStatusItem")}];
   [v4 setObject:v10 forKeyedSubscript:@"isStatusItem"];
 
-  v11 = [(HFAnalyticsTileInteractionEvent *)self itemClassName];
-  [v4 setObject:v11 forKeyedSubscript:@"item"];
+  itemClassName = [(HFAnalyticsTileInteractionEvent *)self itemClassName];
+  [v4 setObject:itemClassName forKeyedSubscript:@"item"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HFAnalyticsTileInteractionEvent numberOfRepresentedHomeKitObjects](self, "numberOfRepresentedHomeKitObjects")}];
   [v4 setObject:v12 forKeyedSubscript:@"numberOfRepresentedHomeKitObjects"];
@@ -195,35 +195,35 @@
   v14 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HFAnalyticsTileInteractionEvent itemPriority](self, "itemPriority")}];
   [v4 setObject:v14 forKeyedSubscript:@"priority"];
 
-  v15 = [(HFAnalyticsTileInteractionEvent *)self processName];
-  [v4 setObject:v15 forKeyedSubscript:@"processName"];
+  processName = [(HFAnalyticsTileInteractionEvent *)self processName];
+  [v4 setObject:processName forKeyedSubscript:@"processName"];
 
-  v16 = [(HFAnalyticsTileInteractionEvent *)self sourceViewControllerClassName];
-  [v4 setObject:v16 forKeyedSubscript:@"sourceViewController"];
+  sourceViewControllerClassName = [(HFAnalyticsTileInteractionEvent *)self sourceViewControllerClassName];
+  [v4 setObject:sourceViewControllerClassName forKeyedSubscript:@"sourceViewController"];
 
-  v17 = [(HFAnalyticsTileInteractionEvent *)self tileIsEditing];
-  [v4 setObject:v17 forKeyedSubscript:@"tileIsEditing"];
+  tileIsEditing = [(HFAnalyticsTileInteractionEvent *)self tileIsEditing];
+  [v4 setObject:tileIsEditing forKeyedSubscript:@"tileIsEditing"];
 
-  v18 = [(HFAnalyticsTileInteractionEvent *)self tileInteractionArea];
-  [v4 setObject:v18 forKeyedSubscript:@"tileInteractionArea"];
+  tileInteractionArea = [(HFAnalyticsTileInteractionEvent *)self tileInteractionArea];
+  [v4 setObject:tileInteractionArea forKeyedSubscript:@"tileInteractionArea"];
 
-  v19 = [(HFAnalyticsTileInteractionEvent *)self contextType];
-  [v4 setObject:v19 forKeyedSubscript:@"dashboardContext"];
+  contextType = [(HFAnalyticsTileInteractionEvent *)self contextType];
+  [v4 setObject:contextType forKeyedSubscript:@"dashboardContext"];
 
   [v4 setObject:&unk_2825248E8 forKeyedSubscript:@"homeAppEventCount"];
 
   return v4;
 }
 
-+ (unint64_t)_numberOfRepresentedHomeKitObjectsForItem:(id)a3
++ (unint64_t)_numberOfRepresentedHomeKitObjectsForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 latestResults];
+    latestResults = [itemCopy latestResults];
 
-    v5 = [v4 objectForKeyedSubscript:@"representedHomeKitObjects"];
+    v5 = [latestResults objectForKeyedSubscript:@"representedHomeKitObjects"];
     v6 = v5;
     if (v5)
     {
@@ -243,7 +243,7 @@
 
   else
   {
-    v8 = [v3 conformsToProtocol:&unk_28252A8F8];
+    v8 = [itemCopy conformsToProtocol:&unk_28252A8F8];
 
     return v8;
   }

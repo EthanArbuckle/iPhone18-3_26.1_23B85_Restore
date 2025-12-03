@@ -1,6 +1,6 @@
 @interface PLVideoStreamingResourceChoiceOptimizer
 - (NSArray)preferredVideoResources;
-- (PLVideoStreamingResourceChoiceOptimizer)initWithVideoResources:(id)a3;
+- (PLVideoStreamingResourceChoiceOptimizer)initWithVideoResources:(id)resources;
 @end
 
 @implementation PLVideoStreamingResourceChoiceOptimizer
@@ -38,16 +38,16 @@ void __66__PLVideoStreamingResourceChoiceOptimizer_preferredVideoResources__bloc
   }
 }
 
-- (PLVideoStreamingResourceChoiceOptimizer)initWithVideoResources:(id)a3
+- (PLVideoStreamingResourceChoiceOptimizer)initWithVideoResources:(id)resources
 {
-  v5 = a3;
+  resourcesCopy = resources;
   v9.receiver = self;
   v9.super_class = PLVideoStreamingResourceChoiceOptimizer;
   v6 = [(PLVideoStreamingResourceChoiceOptimizer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_videoResources, a3);
+    objc_storeStrong(&v6->_videoResources, resources);
   }
 
   return v7;

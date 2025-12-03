@@ -1,8 +1,8 @@
 @interface _PXStoryDisplayAssetsInfo
 - (_PXStoryDisplayAssetsInfo)init;
 - (const)oneUpPlaybackStyles;
-- (id)displayAssetsWithCount:(int64_t)a3;
-- (void)configureWithRange:(_NSRange)a3 resourcesDataSource:(id)a4 timelineStyle:(id)a5 nUpPlaybackStyleMapping:(const int64_t *)a6;
+- (id)displayAssetsWithCount:(int64_t)count;
+- (void)configureWithRange:(_NSRange)range resourcesDataSource:(id)source timelineStyle:(id)style nUpPlaybackStyleMapping:(const int64_t *)mapping;
 - (void)dealloc;
 @end
 
@@ -20,21 +20,21 @@
   return p_oneUpPlaybackStyle;
 }
 
-- (id)displayAssetsWithCount:(int64_t)a3
+- (id)displayAssetsWithCount:(int64_t)count
 {
-  [(_PXStoryDisplayAssetsFetchResult *)self->_displayAssets setCount:a3];
+  [(_PXStoryDisplayAssetsFetchResult *)self->_displayAssets setCount:count];
   displayAssets = self->_displayAssets;
 
   return displayAssets;
 }
 
-- (void)configureWithRange:(_NSRange)a3 resourcesDataSource:(id)a4 timelineStyle:(id)a5 nUpPlaybackStyleMapping:(const int64_t *)a6
+- (void)configureWithRange:(_NSRange)range resourcesDataSource:(id)source timelineStyle:(id)style nUpPlaybackStyleMapping:(const int64_t *)mapping
 {
-  length = a3.length;
-  location = a3.location;
-  v11 = a5;
-  [(_PXStoryDisplayAssetsFetchResult *)self->_displayAssets configureWithRange:location resourcesDataSource:length, a4];
-  objc_storeStrong(&self->_timelineStyle, a5);
+  length = range.length;
+  location = range.location;
+  styleCopy = style;
+  [(_PXStoryDisplayAssetsFetchResult *)self->_displayAssets configureWithRange:location resourcesDataSource:length, source];
+  objc_storeStrong(&self->_timelineStyle, style);
   self->_count = [(_PXStoryDisplayAssetsFetchResult *)self->_displayAssets configuredCount];
   *&v12 = self->_capacity;
   _PXGArrayCapacityResizeToCount();

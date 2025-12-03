@@ -1,34 +1,34 @@
 @interface AXSBDeviceApplicationSceneStatusBarBreadcrumbProviderAccessibility
-+ (BOOL)_shouldAddBreadcrumbToActivatingSceneEntity:(id)a3 sceneHandle:(id)a4 withTransitionContext:(id)a5;
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (BOOL)_shouldAddBreadcrumbToActivatingSceneEntity:(id)entity sceneHandle:(id)handle withTransitionContext:(id)context;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation AXSBDeviceApplicationSceneStatusBarBreadcrumbProviderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBWorkspaceApplicationSceneTransitionContext"];
-  [v3 validateClass:@"SBDeviceApplicationSceneStatusBarBreadcrumbProvider" hasClassMethod:@"_shouldAddBreadcrumbToActivatingSceneEntity:sceneHandle:withTransitionContext:" withFullSignature:{"B", "@", "@", "@", 0}];
-  [v3 validateClass:@"SBWorkspaceApplicationSceneTransitionContext" hasInstanceMethod:@"applicationSceneEntityForLayoutRole:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"SBWorkspaceApplicationSceneTransitionContext" hasInstanceMethod:@"previousApplicationSceneEntityForLayoutRole:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"SBWorkspaceTransitionContext"];
-  [v3 validateClass:@"SBWorkspaceTransitionContext" hasInstanceMethod:@"request" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBMainWorkspaceTransitionRequest"];
-  [v3 validateClass:@"SBMainWorkspaceTransitionRequest" hasInstanceMethod:@"source" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBMainWorkspaceTransitionRequest" hasInstanceMethod:@"isMainWorkspaceTransitionRequest" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBApplicationSceneEntity"];
-  [v3 validateClass:@"SBApplicationSceneEntity" hasInstanceMethod:@"application" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBApplication"];
-  [v3 validateClass:@"SBApplication" hasInstanceMethod:@"bundleIdentifier" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBWorkspaceApplicationSceneTransitionContext"];
+  [validationsCopy validateClass:@"SBDeviceApplicationSceneStatusBarBreadcrumbProvider" hasClassMethod:@"_shouldAddBreadcrumbToActivatingSceneEntity:sceneHandle:withTransitionContext:" withFullSignature:{"B", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"SBWorkspaceApplicationSceneTransitionContext" hasInstanceMethod:@"applicationSceneEntityForLayoutRole:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"SBWorkspaceApplicationSceneTransitionContext" hasInstanceMethod:@"previousApplicationSceneEntityForLayoutRole:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"SBWorkspaceTransitionContext"];
+  [validationsCopy validateClass:@"SBWorkspaceTransitionContext" hasInstanceMethod:@"request" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBMainWorkspaceTransitionRequest"];
+  [validationsCopy validateClass:@"SBMainWorkspaceTransitionRequest" hasInstanceMethod:@"source" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBMainWorkspaceTransitionRequest" hasInstanceMethod:@"isMainWorkspaceTransitionRequest" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBApplicationSceneEntity"];
+  [validationsCopy validateClass:@"SBApplicationSceneEntity" hasInstanceMethod:@"application" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBApplication"];
+  [validationsCopy validateClass:@"SBApplication" hasInstanceMethod:@"bundleIdentifier" withFullSignature:{"@", 0}];
 }
 
-+ (BOOL)_shouldAddBreadcrumbToActivatingSceneEntity:(id)a3 sceneHandle:(id)a4 withTransitionContext:(id)a5
++ (BOOL)_shouldAddBreadcrumbToActivatingSceneEntity:(id)entity sceneHandle:(id)handle withTransitionContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 safeValueForKey:@"application"];
+  entityCopy = entity;
+  handleCopy = handle;
+  contextCopy = context;
+  v11 = [entityCopy safeValueForKey:@"application"];
   v12 = [v11 safeValueForKey:@"bundleIdentifier"];
 
   LOBYTE(v47) = 0;
@@ -40,7 +40,7 @@
     goto LABEL_12;
   }
 
-  v33 = a1;
+  selfCopy = self;
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
@@ -52,7 +52,7 @@
   v43 = __148__AXSBDeviceApplicationSceneStatusBarBreadcrumbProviderAccessibility__shouldAddBreadcrumbToActivatingSceneEntity_sceneHandle_withTransitionContext___block_invoke;
   v44 = &unk_27842BBA8;
   v46 = &v47;
-  v14 = v10;
+  v14 = contextCopy;
   v45 = v14;
   AXPerformSafeBlock();
   v15 = v48[5];
@@ -119,11 +119,11 @@ LABEL_14:
   if (![v19 isEqual:v13] || ((objc_msgSend(v25, "isEqual:", v13) ^ 1) & v30) != 1 || !v29 || v28 != 18)
   {
 
-    a1 = v33;
+    self = selfCopy;
 LABEL_12:
-    v34.receiver = a1;
+    v34.receiver = self;
     v34.super_class = &OBJC_METACLASS___AXSBDeviceApplicationSceneStatusBarBreadcrumbProviderAccessibility;
-    v31 = objc_msgSendSuper2(&v34, sel__shouldAddBreadcrumbToActivatingSceneEntity_sceneHandle_withTransitionContext_, v8, v9, v10, v33);
+    v31 = objc_msgSendSuper2(&v34, sel__shouldAddBreadcrumbToActivatingSceneEntity_sceneHandle_withTransitionContext_, entityCopy, handleCopy, contextCopy, selfCopy);
     goto LABEL_13;
   }
 

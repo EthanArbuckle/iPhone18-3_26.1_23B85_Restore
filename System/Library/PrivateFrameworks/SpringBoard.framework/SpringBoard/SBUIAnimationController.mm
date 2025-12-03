@@ -1,5 +1,5 @@
 @interface SBUIAnimationController
-+ (void)_addAlertItemsPendingReason:(id)a3;
++ (void)_addAlertItemsPendingReason:(id)reason;
 - (BOOL)_willAnimate;
 - (BOOL)isInteractive;
 - (BOOL)transitionSupportsCancelling;
@@ -8,8 +8,8 @@
 - (BOOL)transitionWasRestarted;
 - (SBApplicationSceneEntity)fromApplicationSceneEntity;
 - (SBApplicationSceneEntity)toApplicationSceneEntity;
-- (SBUIAnimationController)initWithTransitionContextProvider:(id)a3;
-- (id)__startTransactionDependencyForEntity:(id)a3;
+- (SBUIAnimationController)initWithTransitionContextProvider:(id)provider;
+- (id)__startTransactionDependencyForEntity:(id)entity;
 - (id)_animationIdentifier;
 - (id)_transitionAnimator;
 - (id)_viewsForAnimationStepping;
@@ -18,38 +18,38 @@
 - (void)__noteAnimationDidTerminate;
 - (void)__reportAnimationCompletion;
 - (void)__startAnimation;
-- (void)_addDebugLogCategory:(id)a3;
+- (void)_addDebugLogCategory:(id)category;
 - (void)_begin;
 - (void)_cleanupEntityObservers;
-- (void)_didInterruptWithReason:(id)a3;
-- (void)_entityObserverProgressDidChange:(id)a3 waitForSceneContentAvailableTransactionBlock:(id)a4;
-- (void)_enumerateCoordinatingAnimationsWithBlock:(id)a3;
-- (void)_enumerateCoordinatingAnimationsWithSchedulingPolicy:(unint64_t)a3 block:(id)a4;
-- (void)_enumerateCoordinatingChildRelationshipsWithBlock:(id)a3;
+- (void)_didInterruptWithReason:(id)reason;
+- (void)_entityObserverProgressDidChange:(id)change waitForSceneContentAvailableTransactionBlock:(id)block;
+- (void)_enumerateCoordinatingAnimationsWithBlock:(id)block;
+- (void)_enumerateCoordinatingAnimationsWithSchedulingPolicy:(unint64_t)policy block:(id)block;
+- (void)_enumerateCoordinatingChildRelationshipsWithBlock:(id)block;
 - (void)_noteAnimationDidFail;
 - (void)_noteAnimationDidFinish;
 - (void)_noteAnimationDidRevealApplication;
 - (void)_notifyObserversOfAnimationCompletion;
-- (void)_processStateDidChange:(id)a3;
+- (void)_processStateDidChange:(id)change;
 - (void)_registerEntityObserversIfNecessary;
 - (void)_startAnimation;
 - (void)_willComplete;
-- (void)addCoordinatingChildTransaction:(id)a3 withSchedulingPolicy:(unint64_t)a4;
-- (void)addObserver:(id)a3;
-- (void)addSteppedCoordinatingChildAnimation:(id)a3;
+- (void)addCoordinatingChildTransaction:(id)transaction withSchedulingPolicy:(unint64_t)policy;
+- (void)addObserver:(id)observer;
+- (void)addSteppedCoordinatingChildAnimation:(id)animation;
 - (void)cancelTransition;
 - (void)dealloc;
-- (void)delayAnimationUntilTransactionFinishes:(id)a3;
-- (void)enableSteppingWithAnimationSettings:(id)a3;
+- (void)delayAnimationUntilTransactionFinishes:(id)finishes;
+- (void)enableSteppingWithAnimationSettings:(id)settings;
 - (void)finishSteppingBackwardToStart;
 - (void)finishSteppingForwardToEnd;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)restartTransition;
-- (void)sceneHandle:(id)a3 didUpdateContentState:(int64_t)a4;
-- (void)setStepPercentage:(double)a3;
-- (void)startInteractiveTransition:(id)a3;
-- (void)stopDelayingAnimationForTransaction:(id)a3;
-- (void)transitionDidFinish:(id)a3;
+- (void)sceneHandle:(id)handle didUpdateContentState:(int64_t)state;
+- (void)setStepPercentage:(double)percentage;
+- (void)startInteractiveTransition:(id)transition;
+- (void)stopDelayingAnimationForTransaction:(id)transaction;
+- (void)transitionDidFinish:(id)finish;
 @end
 
 @implementation SBUIAnimationController
@@ -57,7 +57,7 @@
 - (void)_begin
 {
   OUTLINED_FUNCTION_3_1();
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = _SBUIAnimationStateDescription(*v0);
   [OUTLINED_FUNCTION_0_19(v1 v2];
 }
@@ -209,15 +209,15 @@ void __33__SBUIAnimationController__begin__block_invoke_104(uint64_t a1, void *a
           }
 
           v7 = *(*(&v15 + 1) + 8 * v6);
-          v8 = [MEMORY[0x277CCAB98] defaultCenter];
-          v9 = [v7 application];
-          [v8 addObserver:self selector:sel__processStateDidChange_ name:@"SBApplicationProcessStateDidChange" object:v9];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          application = [v7 application];
+          [defaultCenter addObserver:self selector:sel__processStateDidChange_ name:@"SBApplicationProcessStateDidChange" object:application];
 
-          v10 = [v7 sceneHandle];
-          v11 = v10;
-          if (v10)
+          sceneHandle = [v7 sceneHandle];
+          v11 = sceneHandle;
+          if (sceneHandle)
           {
-            [v10 addObserver:self];
+            [sceneHandle addObserver:self];
             [(NSSet *)v14 addObject:v11];
           }
 
@@ -239,7 +239,7 @@ void __33__SBUIAnimationController__begin__block_invoke_104(uint64_t a1, void *a
 - (void)__startAnimation
 {
   OUTLINED_FUNCTION_3_1();
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = _SBUIAnimationStateDescription(*v0);
   [OUTLINED_FUNCTION_0_19(v1 v2];
 }
@@ -261,10 +261,10 @@ void __33__SBUIAnimationController__begin__block_invoke_104(uint64_t a1, void *a
 
 - (BOOL)isInteractive
 {
-  v2 = [(SBUIAnimationController *)self transition];
-  v3 = [v2 isInteractive];
+  transition = [(SBUIAnimationController *)self transition];
+  isInteractive = [transition isInteractive];
 
-  return v3;
+  return isInteractive;
 }
 
 - (void)_noteAnimationDidFinish
@@ -276,10 +276,10 @@ void __33__SBUIAnimationController__begin__block_invoke_104(uint64_t a1, void *a
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_INFO, "[SBUIAnimationController] noteAnimationDidFinish: Animation succeeded.", v5, 2u);
   }
 
-  v4 = [(SBUIAnimationController *)self transition];
-  if ([v4 isTransitioning])
+  transition = [(SBUIAnimationController *)self transition];
+  if ([transition isTransitioning])
   {
-    [v4 completeTransition:1];
+    [transition completeTransition:1];
   }
 
   else
@@ -298,17 +298,17 @@ void __33__SBUIAnimationController__begin__block_invoke_104(uint64_t a1, void *a
       return;
     }
 
-    v5 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@ or %@)", @"waiting", @"running"];
     v7 = _SBUIAnimationStateDescription(self->_animationState);
-    [v5 handleFailureInMethod:a2 object:self file:@"SBUIAnimationController.m" lineNumber:790 description:{@" %s : unexpected animation state : expected=%@ actual=%@", "-[SBUIAnimationController __noteAnimationDidTerminate]", v6, v7}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBUIAnimationController.m" lineNumber:790 description:{@" %s : unexpected animation state : expected=%@ actual=%@", "-[SBUIAnimationController __noteAnimationDidTerminate]", v6, v7}];
   }
 
-  v8 = [(SBUIAnimationController *)self animationTransactionCompletion];
-  if (v8)
+  animationTransactionCompletion = [(SBUIAnimationController *)self animationTransactionCompletion];
+  if (animationTransactionCompletion)
   {
     [(SBUIAnimationController *)self setAnimationTransactionCompletion:0];
-    v8[2](v8, 1);
+    animationTransactionCompletion[2](animationTransactionCompletion, 1);
   }
 
   else if (([(BSBlockTransaction *)self->_animationTransaction hasStarted]& 1) == 0)
@@ -320,7 +320,7 @@ void __33__SBUIAnimationController__begin__block_invoke_104(uint64_t a1, void *a
 - (void)__reportAnimationCompletion
 {
   OUTLINED_FUNCTION_3_1();
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = _SBUIAnimationStateDescription(*v0);
   [OUTLINED_FUNCTION_0_19(v1 v2];
 }
@@ -328,7 +328,7 @@ void __33__SBUIAnimationController__begin__block_invoke_104(uint64_t a1, void *a
 - (void)_notifyObserversOfAnimationCompletion
 {
   OUTLINED_FUNCTION_3_1();
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@ or %@)", @"finished", @"cleanedUp"];
   v2 = _SBUIAnimationStateDescription(*v0);
   [OUTLINED_FUNCTION_0_19(v2 v3];
@@ -346,7 +346,7 @@ void __64__SBUIAnimationController__notifyObserversOfAnimationCompletion__block_
 - (void)dealloc
 {
   OUTLINED_FUNCTION_3_1();
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@ or %@)", @"none", @"cleanedUp"];
   v2 = _SBUIAnimationStateDescription(*v0);
   [OUTLINED_FUNCTION_0_19(v2 v3];
@@ -385,18 +385,18 @@ void __64__SBUIAnimationController__notifyObserversOfAnimationCompletion__block_
     while (v5);
   }
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 removeObserver:self name:@"SBApplicationProcessStateDidChange" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBApplicationProcessStateDidChange" object:0];
 }
 
 - (void)__cleanupAnimation
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@ or %@)", @"finished", @"cleanedUp"];
-  v10 = _SBUIAnimationStateDescription(*a1);
-  [v8 handleFailureInMethod:a2 object:a3 file:@"SBUIAnimationController.m" lineNumber:815 description:{@" %s : unexpected animation state : expected=%@ actual=%@", "-[SBUIAnimationController __cleanupAnimation]", v9, v10}];
+  v10 = _SBUIAnimationStateDescription(*self);
+  [currentHandler handleFailureInMethod:a2 object:a3 file:@"SBUIAnimationController.m" lineNumber:815 description:{@" %s : unexpected animation state : expected=%@ actual=%@", "-[SBUIAnimationController __cleanupAnimation]", v9, v10}];
 
-  *a4 = *a1;
+  *a4 = *self;
 }
 
 - (void)_willComplete
@@ -425,9 +425,9 @@ void __64__SBUIAnimationController__notifyObserversOfAnimationCompletion__block_
   }
 }
 
-- (SBUIAnimationController)initWithTransitionContextProvider:(id)a3
+- (SBUIAnimationController)initWithTransitionContextProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v33.receiver = self;
   v33.super_class = SBUIAnimationController;
   v6 = [(SBTransaction *)&v33 init];
@@ -438,14 +438,14 @@ void __64__SBUIAnimationController__notifyObserversOfAnimationCompletion__block_
     v6->_transition = v7;
 
     [(SBViewControllerTransitionContext *)v6->_transition setDelegate:v6];
-    objc_storeStrong(&v6->_transitionContextProvider, a3);
-    v9 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v6->_transitionContextProvider, provider);
+    array = [MEMORY[0x277CBEB18] array];
     coordinatingChildRelationships = v6->_coordinatingChildRelationships;
-    v6->_coordinatingChildRelationships = v9;
+    v6->_coordinatingChildRelationships = array;
 
-    v11 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     steppedCoordinatingChildAnimations = v6->_steppedCoordinatingChildAnimations;
-    v6->_steppedCoordinatingChildAnimations = v11;
+    v6->_steppedCoordinatingChildAnimations = array2;
 
     objc_initWeak(&location, v6);
     v13 = objc_alloc(MEMORY[0x277CF0BA8]);
@@ -529,18 +529,18 @@ void __61__SBUIAnimationController_initWithTransitionContextProvider___block_inv
 
 - (SBApplicationSceneEntity)toApplicationSceneEntity
 {
-  v2 = [(SBUIAnimationController *)self toApplicationSceneEntities];
-  v3 = [v2 anyObject];
+  toApplicationSceneEntities = [(SBUIAnimationController *)self toApplicationSceneEntities];
+  anyObject = [toApplicationSceneEntities anyObject];
 
-  return v3;
+  return anyObject;
 }
 
 - (SBApplicationSceneEntity)fromApplicationSceneEntity
 {
-  v2 = [(SBUIAnimationController *)self fromApplicationSceneEntities];
-  v3 = [v2 anyObject];
+  fromApplicationSceneEntities = [(SBUIAnimationController *)self fromApplicationSceneEntities];
+  anyObject = [fromApplicationSceneEntities anyObject];
 
-  return v3;
+  return anyObject;
 }
 
 - (BOOL)transitionSupportsCancelling
@@ -548,10 +548,10 @@ void __61__SBUIAnimationController_initWithTransitionContextProvider___block_inv
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
-  v3 = [(SBUIAnimationController *)self transition];
-  v4 = [v3 supportsCancelling];
+  transition = [(SBUIAnimationController *)self transition];
+  supportsCancelling = [transition supportsCancelling];
 
-  v11 = v4;
+  v11 = supportsCancelling;
   if (*(v9 + 24) == 1)
   {
     v7[0] = MEMORY[0x277D85DD0];
@@ -589,10 +589,10 @@ uint64_t __55__SBUIAnimationController_transitionSupportsCancelling__block_invok
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
-  v3 = [(SBUIAnimationController *)self transition];
-  v4 = [v3 supportsRestarting];
+  transition = [(SBUIAnimationController *)self transition];
+  supportsRestarting = [transition supportsRestarting];
 
-  v11 = v4;
+  v11 = supportsRestarting;
   if (*(v9 + 24) == 1)
   {
     v7[0] = MEMORY[0x277D85DD0];
@@ -627,91 +627,91 @@ uint64_t __55__SBUIAnimationController_transitionSupportsRestarting__block_invok
 
 - (void)cancelTransition
 {
-  v3 = [(SBUIAnimationController *)self transition];
-  [v3 cancelTransition];
+  transition = [(SBUIAnimationController *)self transition];
+  [transition cancelTransition];
 
   [(SBUIAnimationController *)self _enumerateCoordinatingAnimationsWithSchedulingPolicy:0 block:&__block_literal_global_174];
 }
 
 - (void)restartTransition
 {
-  v3 = [(SBUIAnimationController *)self transition];
-  [v3 restartTransition];
+  transition = [(SBUIAnimationController *)self transition];
+  [transition restartTransition];
 
   [(SBUIAnimationController *)self _enumerateCoordinatingAnimationsWithSchedulingPolicy:0 block:&__block_literal_global_67_0];
 }
 
 - (BOOL)transitionWasCancelled
 {
-  v2 = [(SBUIAnimationController *)self transition];
-  v3 = [v2 transitionWasCancelled];
+  transition = [(SBUIAnimationController *)self transition];
+  transitionWasCancelled = [transition transitionWasCancelled];
 
-  return v3;
+  return transitionWasCancelled;
 }
 
 - (BOOL)transitionWasRestarted
 {
-  v2 = [(SBUIAnimationController *)self transition];
-  v3 = [v2 transitionWasRestarted];
+  transition = [(SBUIAnimationController *)self transition];
+  transitionWasRestarted = [transition transitionWasRestarted];
 
-  return v3;
+  return transitionWasRestarted;
 }
 
-- (void)addCoordinatingChildTransaction:(id)a3 withSchedulingPolicy:(unint64_t)a4
+- (void)addCoordinatingChildTransaction:(id)transaction withSchedulingPolicy:(unint64_t)policy
 {
-  v9 = a3;
+  transactionCopy = transaction;
   if ([(SBUIAnimationController *)self hasStarted])
   {
     [SBUIAnimationController addCoordinatingChildTransaction:withSchedulingPolicy:];
   }
 
-  v6 = v9;
-  if (v9)
+  v6 = transactionCopy;
+  if (transactionCopy)
   {
-    if ([v9 hasStarted])
+    if ([transactionCopy hasStarted])
     {
       [SBUIAnimationController addCoordinatingChildTransaction:withSchedulingPolicy:];
     }
 
     coordinatingChildRelationships = self->_coordinatingChildRelationships;
-    v8 = [[_SBUIAnimationControllerCoordinatingChildRelationship alloc] initWithCoordinatingChildTransaction:v9 schedulingPolicy:a4];
+    v8 = [[_SBUIAnimationControllerCoordinatingChildRelationship alloc] initWithCoordinatingChildTransaction:transactionCopy schedulingPolicy:policy];
     [(NSMutableArray *)coordinatingChildRelationships addObject:v8];
 
-    v6 = v9;
+    v6 = transactionCopy;
   }
 }
 
-- (void)addSteppedCoordinatingChildAnimation:(id)a3
+- (void)addSteppedCoordinatingChildAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   if (![(SBUIAnimationController *)self isStepped])
   {
     [SBUIAnimationController addSteppedCoordinatingChildAnimation:];
   }
 
-  if (([v4 isStepped] & 1) == 0)
+  if (([animationCopy isStepped] & 1) == 0)
   {
     [SBUIAnimationController addSteppedCoordinatingChildAnimation:];
   }
 
-  [(SBUIAnimationController *)self addCoordinatingChildTransaction:v4 withSchedulingPolicy:0];
-  [(NSMutableArray *)self->_steppedCoordinatingChildAnimations addObject:v4];
+  [(SBUIAnimationController *)self addCoordinatingChildTransaction:animationCopy withSchedulingPolicy:0];
+  [(NSMutableArray *)self->_steppedCoordinatingChildAnimations addObject:animationCopy];
 }
 
-- (void)delayAnimationUntilTransactionFinishes:(id)a3
+- (void)delayAnimationUntilTransactionFinishes:(id)finishes
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  finishesCopy = finishes;
+  v5 = finishesCopy;
+  if (finishesCopy)
   {
-    v8 = v4;
-    v6 = [v4 hasStarted];
+    v8 = finishesCopy;
+    hasStarted = [finishesCopy hasStarted];
     v5 = v8;
-    if ((v6 & 1) == 0)
+    if ((hasStarted & 1) == 0)
     {
-      v7 = [(BSBlockTransaction *)self->_animationTransaction hasStarted];
+      hasStarted2 = [(BSBlockTransaction *)self->_animationTransaction hasStarted];
       v5 = v8;
-      if ((v7 & 1) == 0)
+      if ((hasStarted2 & 1) == 0)
       {
         [v8 addChildTransaction:self->_animationTransaction withSchedulingPolicy:1];
         v5 = v8;
@@ -720,36 +720,36 @@ uint64_t __55__SBUIAnimationController_transitionSupportsRestarting__block_invok
   }
 }
 
-- (void)stopDelayingAnimationForTransaction:(id)a3
+- (void)stopDelayingAnimationForTransaction:(id)transaction
 {
-  if (a3)
+  if (transaction)
   {
-    [a3 removeChildTransaction:self->_animationTransaction];
+    [transaction removeChildTransaction:self->_animationTransaction];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = SBUIAnimationController;
-  [(SBUIAnimationController *)&v3 addObserver:a3];
+  [(SBUIAnimationController *)&v3 addObserver:observer];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = SBUIAnimationController;
-  [(SBUIAnimationController *)&v3 removeObserver:a3];
+  [(SBUIAnimationController *)&v3 removeObserver:observer];
 }
 
-+ (void)_addAlertItemsPendingReason:(id)a3
++ (void)_addAlertItemsPendingReason:(id)reason
 {
   v3 = _addAlertItemsPendingReason__onceToken;
-  v4 = a3;
-  v6 = v4;
+  reasonCopy = reason;
+  v6 = reasonCopy;
   if (v3 == -1)
   {
-    v5 = v4;
+    v5 = reasonCopy;
   }
 
   else
@@ -775,23 +775,23 @@ void __55__SBUIAnimationController__addAlertItemsPendingReason___block_invoke()
   [(SBUIAnimationController *)self _abortAnimation];
 }
 
-- (void)enableSteppingWithAnimationSettings:(id)a3
+- (void)enableSteppingWithAnimationSettings:(id)settings
 {
   if (!self->_stepper)
   {
-    v4 = a3;
-    v5 = [[SBAnimationStepper alloc] initWithAnimationSettings:v4];
+    settingsCopy = settings;
+    v5 = [[SBAnimationStepper alloc] initWithAnimationSettings:settingsCopy];
 
     stepper = self->_stepper;
     self->_stepper = v5;
   }
 }
 
-- (void)_enumerateCoordinatingChildRelationshipsWithBlock:(id)a3
+- (void)_enumerateCoordinatingChildRelationshipsWithBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v14 = 0;
     v10 = 0u;
@@ -813,7 +813,7 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9), &v14);
+        blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9), &v14);
         if (v14)
         {
           break;
@@ -834,15 +834,15 @@ LABEL_4:
   }
 }
 
-- (void)_enumerateCoordinatingAnimationsWithBlock:(id)a3
+- (void)_enumerateCoordinatingAnimationsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__SBUIAnimationController__enumerateCoordinatingAnimationsWithBlock___block_invoke;
   v6[3] = &unk_2783B6FD0;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(SBUIAnimationController *)self _enumerateCoordinatingChildRelationshipsWithBlock:v6];
 }
 
@@ -891,16 +891,16 @@ LABEL_3:
   }
 }
 
-- (void)_enumerateCoordinatingAnimationsWithSchedulingPolicy:(unint64_t)a3 block:(id)a4
+- (void)_enumerateCoordinatingAnimationsWithSchedulingPolicy:(unint64_t)policy block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __86__SBUIAnimationController__enumerateCoordinatingAnimationsWithSchedulingPolicy_block___block_invoke;
   v8[3] = &unk_2783B6FF8;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
+  v9 = blockCopy;
+  policyCopy = policy;
+  v7 = blockCopy;
   [(SBUIAnimationController *)self _enumerateCoordinatingChildRelationshipsWithBlock:v8];
 }
 
@@ -953,21 +953,21 @@ LABEL_4:
   }
 }
 
-- (void)_didInterruptWithReason:(id)a3
+- (void)_didInterruptWithReason:(id)reason
 {
   v4.receiver = self;
   v4.super_class = SBUIAnimationController;
-  [(SBUIAnimationController *)&v4 _didInterruptWithReason:a3];
+  [(SBUIAnimationController *)&v4 _didInterruptWithReason:reason];
   [(SBUIAnimationController *)self _noteAnimationDidFail];
 }
 
-- (void)_addDebugLogCategory:(id)a3
+- (void)_addDebugLogCategory:(id)category
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  categoryCopy = category;
   v14.receiver = self;
   v14.super_class = SBUIAnimationController;
-  [(SBUIAnimationController *)&v14 _addDebugLogCategory:v4];
+  [(SBUIAnimationController *)&v14 _addDebugLogCategory:categoryCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -988,7 +988,7 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) _addDebugLogCategory:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) _addDebugLogCategory:{categoryCopy, v10}];
       }
 
       while (v7 != v9);
@@ -1010,12 +1010,12 @@ uint64_t __39__SBUIAnimationController__willAnimate__block_invoke(uint64_t a1, v
   return result;
 }
 
-- (id)__startTransactionDependencyForEntity:(id)a3
+- (id)__startTransactionDependencyForEntity:(id)entity
 {
-  v3 = [a3 sceneHandle];
-  if (v3)
+  sceneHandle = [entity sceneHandle];
+  if (sceneHandle)
   {
-    v4 = [[SBWaitForSceneContentAvailableTransaction alloc] initWithSceneHandle:v3 manualListener:1];
+    v4 = [[SBWaitForSceneContentAvailableTransaction alloc] initWithSceneHandle:sceneHandle manualListener:1];
   }
 
   else
@@ -1037,10 +1037,10 @@ uint64_t __39__SBUIAnimationController__willAnimate__block_invoke(uint64_t a1, v
 
 - (id)_viewsForAnimationStepping
 {
-  v2 = [(SBUIAnimationController *)self _getTransitionWindow];
-  if (v2)
+  _getTransitionWindow = [(SBUIAnimationController *)self _getTransitionWindow];
+  if (_getTransitionWindow)
   {
-    [MEMORY[0x277CBEB98] setWithObject:v2];
+    [MEMORY[0x277CBEB98] setWithObject:_getTransitionWindow];
   }
 
   else
@@ -1052,43 +1052,43 @@ uint64_t __39__SBUIAnimationController__willAnimate__block_invoke(uint64_t a1, v
   return v3;
 }
 
-- (void)sceneHandle:(id)a3 didUpdateContentState:(int64_t)a4
+- (void)sceneHandle:(id)handle didUpdateContentState:(int64_t)state
 {
-  v6 = a3;
+  handleCopy = handle;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__SBUIAnimationController_sceneHandle_didUpdateContentState___block_invoke;
   v9[3] = &unk_2783AB2A8;
   v9[4] = self;
-  v10 = v6;
-  v11 = a4;
+  v10 = handleCopy;
+  stateCopy = state;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__SBUIAnimationController_sceneHandle_didUpdateContentState___block_invoke_2;
   v8[3] = &__block_descriptor_40_e51_v16__0__SBWaitForSceneContentAvailableTransaction_8l;
-  v8[4] = a4;
-  v7 = v6;
+  v8[4] = state;
+  v7 = handleCopy;
   [(SBUIAnimationController *)self _entityObserverProgressDidChange:v9 waitForSceneContentAvailableTransactionBlock:v8];
 }
 
-- (void)_processStateDidChange:(id)a3
+- (void)_processStateDidChange:(id)change
 {
-  v4 = [a3 object];
-  v5 = [v4 processState];
+  object = [change object];
+  processState = [object processState];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __50__SBUIAnimationController__processStateDidChange___block_invoke;
   v10[3] = &unk_2783A8ED8;
   v10[4] = self;
-  v11 = v4;
-  v12 = v5;
+  v11 = object;
+  v12 = processState;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__SBUIAnimationController__processStateDidChange___block_invoke_2;
   v8[3] = &unk_2783B7090;
   v9 = v12;
   v6 = v12;
-  v7 = v4;
+  v7 = object;
   [(SBUIAnimationController *)self _entityObserverProgressDidChange:v10 waitForSceneContentAvailableTransactionBlock:v8];
 }
 
@@ -1101,15 +1101,15 @@ void __50__SBUIAnimationController__processStateDidChange___block_invoke_2(uint6
   }
 }
 
-- (void)_entityObserverProgressDidChange:(id)a3 waitForSceneContentAvailableTransactionBlock:(id)a4
+- (void)_entityObserverProgressDidChange:(id)change waitForSceneContentAvailableTransactionBlock:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  blockCopy = block;
   v8 = [(NSSet *)self->_startTransactionDependencies copy];
   if ([(NSSet *)self->_entitiesToObserve count]&& self->_animationState != 3)
   {
-    v6[2](v6);
+    changeCopy[2](changeCopy);
   }
 
   v17 = 0u;
@@ -1136,7 +1136,7 @@ void __50__SBUIAnimationController__processStateDidChange___block_invoke_2(uint6
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v7[2](v7, v14);
+          blockCopy[2](blockCopy, v14);
         }
 
         ++v13;
@@ -1178,10 +1178,10 @@ void __61__SBUIAnimationController__noteAnimationDidRevealApplication__block_inv
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_INFO, "[SBUIAnimationController] noteAnimationDidFail: Animation failed.", v5, 2u);
   }
 
-  v4 = [(SBUIAnimationController *)self transition];
-  if ([v4 isTransitioning])
+  transition = [(SBUIAnimationController *)self transition];
+  if ([transition isTransitioning])
   {
-    [v4 completeTransition:{objc_msgSend(v4, "transitionWasCancelled") ^ 1}];
+    [transition completeTransition:{objc_msgSend(transition, "transitionWasCancelled") ^ 1}];
   }
 
   else
@@ -1190,13 +1190,13 @@ void __61__SBUIAnimationController__noteAnimationDidRevealApplication__block_inv
   }
 }
 
-- (void)setStepPercentage:(double)a3
+- (void)setStepPercentage:(double)percentage
 {
   v16 = *MEMORY[0x277D85DE8];
   if ([(SBUIAnimationController *)self isStepped])
   {
-    v5 = [(SBUIAnimationController *)self transition];
-    [v5 updateInteractiveTransition:a3];
+    transition = [(SBUIAnimationController *)self transition];
+    [transition updateInteractiveTransition:percentage];
 
     v13 = 0u;
     v14 = 0u;
@@ -1218,7 +1218,7 @@ void __61__SBUIAnimationController__noteAnimationDidRevealApplication__block_inv
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v11 + 1) + 8 * v10++) setStepPercentage:{a3, v11}];
+          [*(*(&v11 + 1) + 8 * v10++) setStepPercentage:{percentage, v11}];
         }
 
         while (v8 != v10);
@@ -1235,8 +1235,8 @@ void __61__SBUIAnimationController__noteAnimationDidRevealApplication__block_inv
   v14 = *MEMORY[0x277D85DE8];
   if ([(SBUIAnimationController *)self isStepped])
   {
-    v3 = [(SBUIAnimationController *)self transition];
-    [v3 finishInteractiveTransition];
+    transition = [(SBUIAnimationController *)self transition];
+    [transition finishInteractiveTransition];
 
     v11 = 0u;
     v12 = 0u;
@@ -1275,8 +1275,8 @@ void __61__SBUIAnimationController__noteAnimationDidRevealApplication__block_inv
   v14 = *MEMORY[0x277D85DE8];
   if ([(SBUIAnimationController *)self isStepped])
   {
-    v3 = [(SBUIAnimationController *)self transition];
-    [v3 cancelInteractiveTransition];
+    transition = [(SBUIAnimationController *)self transition];
+    [transition cancelInteractiveTransition];
 
     v11 = 0u;
     v12 = 0u;
@@ -1310,37 +1310,37 @@ void __61__SBUIAnimationController__noteAnimationDidRevealApplication__block_inv
   }
 }
 
-- (void)startInteractiveTransition:(id)a3
+- (void)startInteractiveTransition:(id)transition
 {
-  v4 = a3;
-  v7 = [(SBUIAnimationController *)self transition];
+  transitionCopy = transition;
+  transition = [(SBUIAnimationController *)self transition];
 
-  v5 = v7;
-  if (v7 == v4)
+  v5 = transition;
+  if (transition == transitionCopy)
   {
-    v6 = [v7 animator];
-    [v6 animateTransition:v7];
+    animator = [transition animator];
+    [animator animateTransition:transition];
 
-    v5 = v7;
+    v5 = transition;
   }
 }
 
-- (void)transitionDidFinish:(id)a3
+- (void)transitionDidFinish:(id)finish
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBUIAnimationController *)self transition];
+  finishCopy = finish;
+  transition = [(SBUIAnimationController *)self transition];
 
-  if (v5 == v4)
+  if (transition == finishCopy)
   {
-    if ([v4 transitionWasCancelled])
+    if ([finishCopy transitionWasCancelled])
     {
-      v6 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __47__SBUIAnimationController_transitionDidFinish___block_invoke;
       v31[3] = &unk_2783B7048;
-      v7 = v6;
+      v7 = array;
       v32 = v7;
       [(SBUIAnimationController *)self _enumerateCoordinatingChildRelationshipsWithBlock:v31];
       v29 = 0u;
@@ -1362,13 +1362,13 @@ void __61__SBUIAnimationController__noteAnimationDidRevealApplication__block_inv
             }
 
             v21 = *(*(&v27 + 1) + 8 * i);
-            v22 = [v21 coordinatingChildTransaction];
-            v9 = [v22 coordinatingAnimationControllers];
+            coordinatingChildTransaction = [v21 coordinatingChildTransaction];
+            coordinatingAnimationControllers = [coordinatingChildTransaction coordinatingAnimationControllers];
             v23 = 0u;
             v24 = 0u;
             v25 = 0u;
             v26 = 0u;
-            v10 = [v9 countByEnumeratingWithState:&v23 objects:v33 count:16];
+            v10 = [coordinatingAnimationControllers countByEnumeratingWithState:&v23 objects:v33 count:16];
             if (v10)
             {
               v11 = v10;
@@ -1379,25 +1379,25 @@ void __61__SBUIAnimationController__noteAnimationDidRevealApplication__block_inv
                 {
                   if (*v24 != v12)
                   {
-                    objc_enumerationMutation(v9);
+                    objc_enumerationMutation(coordinatingAnimationControllers);
                   }
 
                   v14 = *(*(&v23 + 1) + 8 * j);
-                  v15 = [v14 notifyObserversTransaction];
-                  [v15 removeChildTransaction:self->_notifyObserversTransaction];
+                  notifyObserversTransaction = [v14 notifyObserversTransaction];
+                  [notifyObserversTransaction removeChildTransaction:self->_notifyObserversTransaction];
 
                   cleanupTransaction = self->_cleanupTransaction;
-                  v17 = [v14 cleanupTransaction];
-                  [(BSBlockTransaction *)cleanupTransaction removeChildTransaction:v17];
+                  cleanupTransaction = [v14 cleanupTransaction];
+                  [(BSBlockTransaction *)cleanupTransaction removeChildTransaction:cleanupTransaction];
                 }
 
-                v11 = [v9 countByEnumeratingWithState:&v23 objects:v33 count:16];
+                v11 = [coordinatingAnimationControllers countByEnumeratingWithState:&v23 objects:v33 count:16];
               }
 
               while (v11);
             }
 
-            [(BSBlockTransaction *)self->_animationTransaction removeChildTransaction:v22];
+            [(BSBlockTransaction *)self->_animationTransaction removeChildTransaction:coordinatingChildTransaction];
             [(NSMutableArray *)self->_coordinatingChildRelationships removeObject:v21];
           }
 

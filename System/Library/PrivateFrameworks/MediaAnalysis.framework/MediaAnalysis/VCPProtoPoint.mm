@@ -1,20 +1,20 @@
 @interface VCPProtoPoint
-+ (VCPProtoPoint)pointWithPoint:(CGPoint)a3;
-- (BOOL)isEqual:(id)a3;
++ (VCPProtoPoint)pointWithPoint:(CGPoint)point;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)pointValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoPoint
 
-+ (VCPProtoPoint)pointWithPoint:(CGPoint)a3
++ (VCPProtoPoint)pointWithPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v5 = objc_alloc_init(VCPProtoPoint);
   [(VCPProtoPoint *)v5 setX:x];
   [(VCPProtoPoint *)v5 setY:y];
@@ -40,43 +40,43 @@
   v8.receiver = self;
   v8.super_class = VCPProtoPoint;
   v4 = [(VCPProtoPoint *)&v8 description];
-  v5 = [(VCPProtoPoint *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoPoint *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_x];
-  [v3 setObject:v4 forKey:@"x"];
+  [dictionary setObject:v4 forKey:@"x"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_y];
-  [v3 setObject:v5 forKey:@"y"];
+  [dictionary setObject:v5 forKey:@"y"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteDoubleField();
   PBDataWriterWriteDoubleField();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 1) = *&self->_x;
   *(result + 2) = *&self->_y;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_x == v4[1] && self->_y == v4[2];
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_x == equalCopy[1] && self->_y == equalCopy[2];
 
   return v5;
 }

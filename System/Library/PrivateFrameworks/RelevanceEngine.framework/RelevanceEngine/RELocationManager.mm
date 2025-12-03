@@ -1,6 +1,6 @@
 @interface RELocationManager
 + (RELocationManager)locationManager;
-+ (RELocationManager)locationManagerWithAuthorizationBundlePath:(id)a3;
++ (RELocationManager)locationManagerWithAuthorizationBundlePath:(id)path;
 + (RELocationManager)simulatedLocationManager;
 @end
 
@@ -34,10 +34,10 @@ uint64_t __45__RELocationManager_simulatedLocationManager__block_invoke()
   return v2;
 }
 
-+ (RELocationManager)locationManagerWithAuthorizationBundlePath:(id)a3
++ (RELocationManager)locationManagerWithAuthorizationBundlePath:(id)path
 {
-  v3 = a3;
-  v4 = [[_RECoreLocationLocationManager alloc] initWithEffectiveBundlePath:v3];
+  pathCopy = path;
+  v4 = [[_RECoreLocationLocationManager alloc] initWithEffectiveBundlePath:pathCopy];
 
   return v4;
 }

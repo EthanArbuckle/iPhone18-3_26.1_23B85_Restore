@@ -1,17 +1,17 @@
 @interface CloudLibraryOptOutOperation
-- (CloudLibraryOptOutOperation)initWithCUID:(id)a3 troveID:(id)a4;
-- (CloudLibraryOptOutOperation)initWithConfiguration:(id)a3 CUID:(id)a4 troveID:(id)a5;
-- (void)_sendOptOutWithCUID:(id)a3 troveID:(id)a4;
+- (CloudLibraryOptOutOperation)initWithCUID:(id)d troveID:(id)iD;
+- (CloudLibraryOptOutOperation)initWithConfiguration:(id)configuration CUID:(id)d troveID:(id)iD;
+- (void)_sendOptOutWithCUID:(id)d troveID:(id)iD;
 - (void)main;
 @end
 
 @implementation CloudLibraryOptOutOperation
 
-- (void)_sendOptOutWithCUID:(id)a3 troveID:(id)a4
+- (void)_sendOptOutWithCUID:(id)d troveID:(id)iD
 {
-  v5 = [(CloudLibraryOptOutOperation *)self cuid:a3];
-  v6 = [(CloudLibraryOptOutOperation *)self troveID];
-  v7 = [NSMutableDictionary dictionaryWithObjectsAndKeys:&off_1001ED7E0, @"min-itunes-match-compatible-version", &off_1001ED7F8, @"itunes-match-protocol-version", v5, @"cuid", v6, @"troveid", 0];
+  v5 = [(CloudLibraryOptOutOperation *)self cuid:d];
+  troveID = [(CloudLibraryOptOutOperation *)self troveID];
+  v7 = [NSMutableDictionary dictionaryWithObjectsAndKeys:&off_1001ED7E0, @"min-itunes-match-compatible-version", &off_1001ED7F8, @"itunes-match-protocol-version", v5, @"cuid", troveID, @"troveid", 0];
 
   v8 = sub_1000A760C(0, @"cloud-library-opt-out-url", 0, v7, 0.0);
   if (v8)
@@ -33,29 +33,29 @@
 
 - (void)main
 {
-  v3 = [(CloudLibraryOptOutOperation *)self cuid];
-  if ([v3 length])
+  cuid = [(CloudLibraryOptOutOperation *)self cuid];
+  if ([cuid length])
   {
-    v4 = [(CloudLibraryOptOutOperation *)self troveID];
-    v5 = [v4 length];
+    troveID = [(CloudLibraryOptOutOperation *)self troveID];
+    v5 = [troveID length];
 
     if (v5)
     {
       v6 = os_log_create("com.apple.amp.itunescloudd", "Accounts");
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(CloudLibraryOptOutOperation *)self cuid];
-        v8 = [(CloudLibraryOptOutOperation *)self troveID];
+        cuid2 = [(CloudLibraryOptOutOperation *)self cuid];
+        troveID2 = [(CloudLibraryOptOutOperation *)self troveID];
         v12 = 138543618;
-        v13 = v7;
+        v13 = cuid2;
         v14 = 2114;
-        v15 = v8;
+        v15 = troveID2;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Sending cloud library opt-out for Cloud CUID: %{public}@ TroveID: %{public}@", &v12, 0x16u);
       }
 
-      v9 = [(CloudLibraryOptOutOperation *)self cuid];
-      v10 = [(CloudLibraryOptOutOperation *)self troveID];
-      [(CloudLibraryOptOutOperation *)self _sendOptOutWithCUID:v9 troveID:v10];
+      cuid3 = [(CloudLibraryOptOutOperation *)self cuid];
+      troveID3 = [(CloudLibraryOptOutOperation *)self troveID];
+      [(CloudLibraryOptOutOperation *)self _sendOptOutWithCUID:cuid3 troveID:troveID3];
 
       return;
     }
@@ -75,20 +75,20 @@
   [(CloudLibraryOperation *)self setStatus:1];
 }
 
-- (CloudLibraryOptOutOperation)initWithConfiguration:(id)a3 CUID:(id)a4 troveID:(id)a5
+- (CloudLibraryOptOutOperation)initWithConfiguration:(id)configuration CUID:(id)d troveID:(id)iD
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  iDCopy = iD;
   v16.receiver = self;
   v16.super_class = CloudLibraryOptOutOperation;
-  v10 = [(CloudLibraryOperation *)&v16 initWithConfiguration:a3];
+  v10 = [(CloudLibraryOperation *)&v16 initWithConfiguration:configuration];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [dCopy copy];
     cuid = v10->_cuid;
     v10->_cuid = v11;
 
-    v13 = [v9 copy];
+    v13 = [iDCopy copy];
     troveID = v10->_troveID;
     v10->_troveID = v13;
   }
@@ -96,12 +96,12 @@
   return v10;
 }
 
-- (CloudLibraryOptOutOperation)initWithCUID:(id)a3 troveID:(id)a4
+- (CloudLibraryOptOutOperation)initWithCUID:(id)d troveID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v8 = objc_opt_new();
-  v9 = [(CloudLibraryOptOutOperation *)self initWithConfiguration:v8 CUID:v7 troveID:v6];
+  v9 = [(CloudLibraryOptOutOperation *)self initWithConfiguration:v8 CUID:dCopy troveID:iDCopy];
 
   return v9;
 }

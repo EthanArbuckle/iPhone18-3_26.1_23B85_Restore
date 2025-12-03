@@ -1,16 +1,16 @@
 @interface SBSUIBuddyMultitaskingFlowOptionView
-- (SBSUIBuddyMultitaskingFlowOptionView)initWithMultitaskingOption:(int64_t)a3;
+- (SBSUIBuddyMultitaskingFlowOptionView)initWithMultitaskingOption:(int64_t)option;
 - (SBSUIBuddyMultitaskingFlowOptionViewDelegate)delegate;
 - (id)_optionDescriptionText;
 - (id)_optionTitleText;
 - (void)_configureView;
-- (void)_userDidTapOnOption:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)_userDidTapOnOption:(id)option;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation SBSUIBuddyMultitaskingFlowOptionView
 
-- (SBSUIBuddyMultitaskingFlowOptionView)initWithMultitaskingOption:(int64_t)a3
+- (SBSUIBuddyMultitaskingFlowOptionView)initWithMultitaskingOption:(int64_t)option
 {
   v7.receiver = self;
   v7.super_class = SBSUIBuddyMultitaskingFlowOptionView;
@@ -18,7 +18,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_multitaskingOption = a3;
+    v4->_multitaskingOption = option;
     [(SBSUIBuddyMultitaskingFlowOptionView *)v4 _configureView];
   }
 
@@ -39,8 +39,8 @@
 
   [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)self->_checkmarkView setTranslatesAutoresizingMaskIntoConstraints:0];
   v10 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v4, v5, v6, v7}];
-  v11 = [(SBSUIBuddyMultitaskingFlowOptionView *)self _optionTitleText];
-  [v10 setText:v11];
+  _optionTitleText = [(SBSUIBuddyMultitaskingFlowOptionView *)self _optionTitleText];
+  [v10 setText:_optionTitleText];
 
   [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v10 setAdjustsFontForContentSizeCategory:1];
@@ -50,8 +50,8 @@
   [v10 setNumberOfLines:0];
   [v10 setTextAlignment:1];
   v13 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v4, v5, v6, v7}];
-  v14 = [(SBSUIBuddyMultitaskingFlowOptionView *)self _optionDescriptionText];
-  [v13 setText:v14];
+  _optionDescriptionText = [(SBSUIBuddyMultitaskingFlowOptionView *)self _optionDescriptionText];
+  [v13 setText:_optionDescriptionText];
 
   [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v13 setAdjustsFontForContentSizeCategory:1];
@@ -60,8 +60,8 @@
 
   [v13 setNumberOfLines:0];
   [v13 setTextAlignment:1];
-  v16 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v13 setTextColor:v16];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v13 setTextColor:secondaryLabelColor];
 
   v17 = objc_alloc(MEMORY[0x1E69DCF90]);
   v44[0] = self->_checkmarkView;
@@ -84,38 +84,38 @@
   [v22 setAlignment:1];
   [v22 setSpacing:1.17549435e-38];
   [(SBSUIBuddyMultitaskingFlowOptionView *)self addSubview:v22];
-  v23 = [MEMORY[0x1E695DF70] array];
-  v24 = [v22 leadingAnchor];
-  v25 = [(SBSUIBuddyMultitaskingFlowOptionView *)self leadingAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
-  [v23 addObject:v26];
+  array = [MEMORY[0x1E695DF70] array];
+  leadingAnchor = [v22 leadingAnchor];
+  leadingAnchor2 = [(SBSUIBuddyMultitaskingFlowOptionView *)self leadingAnchor];
+  v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v26];
 
-  v27 = [v22 trailingAnchor];
-  v28 = [(SBSUIBuddyMultitaskingFlowOptionView *)self trailingAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
-  [v23 addObject:v29];
+  trailingAnchor = [v22 trailingAnchor];
+  trailingAnchor2 = [(SBSUIBuddyMultitaskingFlowOptionView *)self trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v29];
 
-  v30 = [v22 topAnchor];
-  v31 = [(SBSUIBuddyMultitaskingFlowOptionView *)self topAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
-  [v23 addObject:v32];
+  topAnchor = [v22 topAnchor];
+  topAnchor2 = [(SBSUIBuddyMultitaskingFlowOptionView *)self topAnchor];
+  v32 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v32];
 
-  v33 = [v22 bottomAnchor];
-  v34 = [(SBSUIBuddyMultitaskingFlowOptionView *)self bottomAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
-  [v23 addObject:v35];
+  bottomAnchor = [v22 bottomAnchor];
+  bottomAnchor2 = [(SBSUIBuddyMultitaskingFlowOptionView *)self bottomAnchor];
+  v35 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v35];
 
-  v36 = [v22 centerXAnchor];
-  v37 = [(SBSUIBuddyMultitaskingFlowOptionView *)self centerXAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
-  [v23 addObject:v38];
+  centerXAnchor = [v22 centerXAnchor];
+  centerXAnchor2 = [(SBSUIBuddyMultitaskingFlowOptionView *)self centerXAnchor];
+  v38 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [array addObject:v38];
 
-  v39 = [v22 centerYAnchor];
-  v40 = [(SBSUIBuddyMultitaskingFlowOptionView *)self centerYAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
-  [v23 addObject:v41];
+  centerYAnchor = [v22 centerYAnchor];
+  centerYAnchor2 = [(SBSUIBuddyMultitaskingFlowOptionView *)self centerYAnchor];
+  v41 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+  [array addObject:v41];
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v23];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
   v42 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__userDidTapOnOption_];
   [(SBSUIBuddyMultitaskingFlowOptionView *)self addGestureRecognizer:v42];
 }
@@ -170,20 +170,20 @@ LABEL_7:
   return v5;
 }
 
-- (void)_userDidTapOnOption:(id)a3
+- (void)_userDidTapOnOption:(id)option
 {
   if (![(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)self->_checkmarkView isSelected])
   {
-    v4 = [(SBSUIBuddyMultitaskingFlowOptionView *)self delegate];
-    [v4 userDidTapOnMultitaskingOption:self->_multitaskingOption];
+    delegate = [(SBSUIBuddyMultitaskingFlowOptionView *)self delegate];
+    [delegate userDidTapOnMultitaskingOption:self->_multitaskingOption];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     [(SBSUIBuddyMultitaskingFlowOptionCheckmarkView *)self->_checkmarkView setSelected:?];
   }
 }

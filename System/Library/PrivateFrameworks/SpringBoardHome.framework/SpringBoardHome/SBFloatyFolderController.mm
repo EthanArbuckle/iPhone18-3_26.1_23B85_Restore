@@ -1,22 +1,22 @@
 @interface SBFloatyFolderController
-- (BOOL)isDisplayingIcon:(id)a3 inLocation:(id)a4;
-- (BOOL)isDisplayingIconView:(id)a3 inLocation:(id)a4;
+- (BOOL)isDisplayingIcon:(id)icon inLocation:(id)location;
+- (BOOL)isDisplayingIconView:(id)view inLocation:(id)location;
 - (unint64_t)backgroundEffect;
-- (void)folderView:(id)a3 didBeginEditingTitle:(id)a4;
-- (void)folderView:(id)a3 didEndEditingTitle:(id)a4;
-- (void)setBackgroundEffect:(unint64_t)a3;
+- (void)folderView:(id)view didBeginEditingTitle:(id)title;
+- (void)folderView:(id)view didEndEditingTitle:(id)title;
+- (void)setBackgroundEffect:(unint64_t)effect;
 @end
 
 @implementation SBFloatyFolderController
 
-- (BOOL)isDisplayingIcon:(id)a3 inLocation:(id)a4
+- (BOOL)isDisplayingIcon:(id)icon inLocation:(id)location
 {
-  v6 = a3;
-  if ([a4 isEqualToString:@"SBIconLocationFolder"])
+  iconCopy = icon;
+  if ([location isEqualToString:@"SBIconLocationFolder"])
   {
-    v7 = [(SBFolderController *)self currentIconListView];
-    v8 = [v7 model];
-    v9 = [v8 directlyContainsIcon:v6];
+    currentIconListView = [(SBFolderController *)self currentIconListView];
+    model = [currentIconListView model];
+    v9 = [model directlyContainsIcon:iconCopy];
   }
 
   else
@@ -27,13 +27,13 @@
   return v9;
 }
 
-- (BOOL)isDisplayingIconView:(id)a3 inLocation:(id)a4
+- (BOOL)isDisplayingIconView:(id)view inLocation:(id)location
 {
-  v6 = a3;
-  if ([a4 isEqualToString:@"SBIconLocationFolder"])
+  viewCopy = view;
+  if ([location isEqualToString:@"SBIconLocationFolder"])
   {
-    v7 = [(SBFolderController *)self folderView];
-    v8 = [v6 isDescendantOfView:v7];
+    folderView = [(SBFolderController *)self folderView];
+    v8 = [viewCopy isDescendantOfView:folderView];
   }
 
   else
@@ -46,35 +46,35 @@
 
 - (unint64_t)backgroundEffect
 {
-  v2 = [(SBFloatyFolderController *)self floatyFolderView];
-  v3 = [v2 backgroundEffect];
+  floatyFolderView = [(SBFloatyFolderController *)self floatyFolderView];
+  backgroundEffect = [floatyFolderView backgroundEffect];
 
-  return v3;
+  return backgroundEffect;
 }
 
-- (void)setBackgroundEffect:(unint64_t)a3
+- (void)setBackgroundEffect:(unint64_t)effect
 {
-  v4 = [(SBFloatyFolderController *)self floatyFolderView];
-  [v4 setBackgroundEffect:a3];
+  floatyFolderView = [(SBFloatyFolderController *)self floatyFolderView];
+  [floatyFolderView setBackgroundEffect:effect];
 }
 
-- (void)folderView:(id)a3 didBeginEditingTitle:(id)a4
+- (void)folderView:(id)view didBeginEditingTitle:(id)title
 {
-  v6 = a4;
-  v5 = [(SBFolderController *)self folderDelegate];
+  titleCopy = title;
+  folderDelegate = [(SBFolderController *)self folderDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 folderController:self didBeginEditingTitle:v6];
+    [folderDelegate folderController:self didBeginEditingTitle:titleCopy];
   }
 }
 
-- (void)folderView:(id)a3 didEndEditingTitle:(id)a4
+- (void)folderView:(id)view didEndEditingTitle:(id)title
 {
-  v6 = a4;
-  v5 = [(SBFolderController *)self folderDelegate];
+  titleCopy = title;
+  folderDelegate = [(SBFolderController *)self folderDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 folderController:self didEndEditingTitle:v6];
+    [folderDelegate folderController:self didEndEditingTitle:titleCopy];
   }
 }
 

@@ -1,38 +1,38 @@
 @interface DBSAnalytics
-+ (BOOL)checkAndUpdateFirst:(id)a3;
++ (BOOL)checkAndUpdateFirst:(id)first;
 + (BOOL)isChild;
-+ (void)logAutomaticDarkModeEvent:(BOOL)a3;
-+ (void)logBoldTextEvent:(BOOL)a3;
-+ (void)logDarkModeEvent:(BOOL)a3;
-+ (void)logEvent:(id)a3 feature:(id)a4 value:(id)a5;
++ (void)logAutomaticDarkModeEvent:(BOOL)event;
++ (void)logBoldTextEvent:(BOOL)event;
++ (void)logDarkModeEvent:(BOOL)event;
++ (void)logEvent:(id)event feature:(id)feature value:(id)value;
 @end
 
 @implementation DBSAnalytics
 
-+ (void)logDarkModeEvent:(BOOL)a3
++ (void)logDarkModeEvent:(BOOL)event
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
-  [a1 logEvent:@"DarkMode" feature:@"dark_mode" value:v4];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:event];
+  [self logEvent:@"DarkMode" feature:@"dark_mode" value:v4];
 }
 
-+ (void)logAutomaticDarkModeEvent:(BOOL)a3
++ (void)logAutomaticDarkModeEvent:(BOOL)event
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
-  [a1 logEvent:@"AutomaticDarkMode" feature:@"automatic_dark_mode" value:v4];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:event];
+  [self logEvent:@"AutomaticDarkMode" feature:@"automatic_dark_mode" value:v4];
 }
 
-+ (void)logBoldTextEvent:(BOOL)a3
++ (void)logBoldTextEvent:(BOOL)event
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
-  [a1 logEvent:@"BoldText" feature:@"bold_text" value:v4];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:event];
+  [self logEvent:@"BoldText" feature:@"bold_text" value:v4];
 }
 
-+ (void)logEvent:(id)a3 feature:(id)a4 value:(id)a5
++ (void)logEvent:(id)event feature:(id)feature value:(id)value
 {
-  v8 = a4;
-  v9 = a5;
+  featureCopy = feature;
+  valueCopy = value;
   v10 = MEMORY[0x277CBEBD0];
-  v11 = a3;
+  eventCopy = event;
   v12 = [[v10 alloc] initWithSuiteName:@"com.apple.purplebuddy.notbackedup"];
   v13 = [v12 stringForKey:@"AppearanceModeChoice"];
   if (v13)
@@ -45,12 +45,12 @@
     v14 = &stru_2834977A0;
   }
 
-  [a1 checkAndUpdateFirst:v11];
+  [self checkAndUpdateFirst:eventCopy];
 
-  v18 = v8;
-  v19 = v9;
-  v15 = v9;
-  v16 = v8;
+  v18 = featureCopy;
+  v19 = valueCopy;
+  v15 = valueCopy;
+  v16 = featureCopy;
   v17 = v14;
   AnalyticsSendEventLazy();
 }
@@ -82,25 +82,25 @@ id __39__DBSAnalytics_logEvent_feature_value___block_invoke(uint64_t a1)
   if (v3)
   {
     v5 = [v3 objectForKey:@"child"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-+ (BOOL)checkAndUpdateFirst:(id)a3
++ (BOOL)checkAndUpdateFirst:(id)first
 {
-  v3 = [@"DBSSettingsUpdated-" stringByAppendingString:a3];
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = [v4 BOOLForKey:v3];
+  v3 = [@"DBSSettingsUpdated-" stringByAppendingString:first];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v5 = [standardUserDefaults BOOLForKey:v3];
 
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v6 setBool:1 forKey:v3];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults2 setBool:1 forKey:v3];
 
   return v5 ^ 1;
 }

@@ -2,18 +2,18 @@
 - (BOOL)improveHealthAndActivityAllowed;
 - (HRCAnalyticsReporter)init;
 - (id).cxx_construct;
-- (id)_handleAgcOpc:(id)a3 side:(id)a4;
-- (id)_handleAnalyticsSubpacket:(id)a3 data:(id)a4 expectedFields:()vector<hrc_bud_analytics:(std::allocator<hrc_bud_analytics::HRMetricID>> *)a5 :HRMetricID;
-- (id)_handleDriverStats:(id)a3 side:(id)a4;
-- (id)_handlePalMetric:(id)a3 side:(id)a4;
-- (id)_handlePreprocessorFoms:(id)a3 side:(id)a4;
-- (id)_handleScanMitigation:(id)a3 side:(id)a4;
-- (id)_handleSessionMetrics:(id)a3 side:(id)a4;
-- (id)_handleSolisMetric:(id)a3 side:(id)a4;
-- (id)_handleSystemMetrics:(id)a3;
-- (id)_handleWxHealthMerged:(id)a3;
-- (id)_initWithOutputTarget:(id)a3 dispatchQueue:(id)a4 budAnalyticsWaitTime:(duration<long)long;
-- (id)_updateForIHA:(id)a3 side:(id)a4;
+- (id)_handleAgcOpc:(id)opc side:(id)side;
+- (id)_handleAnalyticsSubpacket:(id)subpacket data:(id)data expectedFields:()vector<hrc_bud_analytics:(std::allocator<hrc_bud_analytics::HRMetricID>> *)hrc_bud_analytics :HRMetricID;
+- (id)_handleDriverStats:(id)stats side:(id)side;
+- (id)_handlePalMetric:(id)metric side:(id)side;
+- (id)_handlePreprocessorFoms:(id)foms side:(id)side;
+- (id)_handleScanMitigation:(id)mitigation side:(id)side;
+- (id)_handleSessionMetrics:(id)metrics side:(id)side;
+- (id)_handleSolisMetric:(id)metric side:(id)side;
+- (id)_handleSystemMetrics:(id)metrics;
+- (id)_handleWxHealthMerged:(id)merged;
+- (id)_initWithOutputTarget:(id)target dispatchQueue:(id)queue budAnalyticsWaitTime:(duration<long)long;
+- (id)_updateForIHA:(id)a side:(id)side;
 - (id)defaultAlgsAnalytics;
 - (id)defaultBudAnalytics;
 - (id)defaultHostAnalytics;
@@ -23,65 +23,65 @@
 - (optional<std::chrono::time_point<std::chrono::steady_clock,)bleStreamingStartTime;
 - (optional<std::chrono::time_point<std::chrono::steady_clock,)firstPublishedHeartRateTime;
 - (void)_finalizeComputation;
-- (void)_handleAACPSourceUpdate:(const HRCSourceUpdate *)a3;
-- (void)_handleAlgsAnalytics:(id)a3;
-- (void)_handleB498Analytics:(id)a3;
-- (void)_handleB788Analytics:(id)a3;
-- (void)_handleBLESourceUpdate:(const HRCSourceUpdate *)a3;
-- (void)_handleBudAnalytics:(id)a3 expectedFields:()vector<hrc_bud_analytics:(std::allocator<hrc_bud_analytics::HRMetricID>> *)a4 :HRMetricID;
-- (void)_handleSourceUpdate:(const HRCSourceUpdate *)a3;
-- (void)_handleStreamingModeOnAt:(int64_t)a3;
-- (void)_handleStreamingModeUpdate:(unint64_t)a3 steadyClockDurationCount:(int64_t)a4;
+- (void)_handleAACPSourceUpdate:(const HRCSourceUpdate *)update;
+- (void)_handleAlgsAnalytics:(id)analytics;
+- (void)_handleB498Analytics:(id)analytics;
+- (void)_handleB788Analytics:(id)analytics;
+- (void)_handleBLESourceUpdate:(const HRCSourceUpdate *)update;
+- (void)_handleBudAnalytics:(id)analytics expectedFields:()vector<hrc_bud_analytics:(std::allocator<hrc_bud_analytics::HRMetricID>> *)hrc_bud_analytics :HRMetricID;
+- (void)_handleSourceUpdate:(const HRCSourceUpdate *)update;
+- (void)_handleStreamingModeOnAt:(int64_t)at;
+- (void)_handleStreamingModeUpdate:(unint64_t)update steadyClockDurationCount:(int64_t)count;
 - (void)_handleSysdiagnoseTrigger;
-- (void)_heartRatePublishedFromSource:(unsigned __int8)a3 steadyClockDurationCount:(int64_t)a4;
+- (void)_heartRatePublishedFromSource:(unsigned __int8)source steadyClockDurationCount:(int64_t)count;
 - (void)_resetState;
-- (void)_saveHostAnalyticsAtTimestamp:()time_point<std:(std:()std:(1000000000>>>)a3 :ratio<1 :chrono::duration<long)long :chrono::steady_clock;
-- (void)_sendHostAnalytics:(id)a3 withAlgAnalytics:(id)a4;
-- (void)_updateWorkoutActivityType:(unint64_t)a3 withLocationType:(int64_t)a4;
+- (void)_saveHostAnalyticsAtTimestamp:()time_point<std:(std:()std:(1000000000>>>)std :ratio<1 :chrono::duration<long)long :chrono::steady_clock;
+- (void)_sendHostAnalytics:(id)analytics withAlgAnalytics:(id)algAnalytics;
+- (void)_updateWorkoutActivityType:(unint64_t)type withLocationType:(int64_t)locationType;
 - (void)finalizeComputation;
-- (void)handleAlgsAnalytics:(id)a3;
-- (void)handleAnalyticsReport:(unsigned __int8)a3 data:(id)a4;
-- (void)handleSourceUpdate:(const HRCSourceUpdate *)a3;
-- (void)handleStreamingModeUpdate:(unint64_t)a3 steadyClockDurationCount:(int64_t)a4;
+- (void)handleAlgsAnalytics:(id)analytics;
+- (void)handleAnalyticsReport:(unsigned __int8)report data:(id)data;
+- (void)handleSourceUpdate:(const HRCSourceUpdate *)update;
+- (void)handleStreamingModeUpdate:(unint64_t)update steadyClockDurationCount:(int64_t)count;
 - (void)handleSysdiagnoseTrigger;
-- (void)heartRatePublishedFromSource:(unsigned __int8)a3 steadyClockDurationCount:(int64_t)a4;
-- (void)setImproveHealthAndActivityAllowed:(BOOL)a3;
-- (void)updateWorkoutActivityType:(unint64_t)a3 withLocationType:(int64_t)a4;
+- (void)heartRatePublishedFromSource:(unsigned __int8)source steadyClockDurationCount:(int64_t)count;
+- (void)setImproveHealthAndActivityAllowed:(BOOL)allowed;
+- (void)updateWorkoutActivityType:(unint64_t)type withLocationType:(int64_t)locationType;
 @end
 
 @implementation HRCAnalyticsReporter
 
-- (void)handleAlgsAnalytics:(id)a3
+- (void)handleAlgsAnalytics:(id)analytics
 {
-  v4 = a3;
-  v5 = [(HRCAnalyticsReporter *)self queue];
+  analyticsCopy = analytics;
+  queue = [(HRCAnalyticsReporter *)self queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3321888768;
   v9[2] = sub_100009FEC;
   v9[3] = &unk_100040A78;
-  v6 = self;
-  v7 = v4;
-  v8 = v6;
+  selfCopy = self;
+  v7 = analyticsCopy;
+  v8 = selfCopy;
   v10 = v8;
   v11 = v7;
-  dispatch_async(v5, v9);
+  dispatch_async(queue, v9);
 }
 
-- (void)_handleAlgsAnalytics:(id)a3
+- (void)_handleAlgsAnalytics:(id)analytics
 {
-  v4 = a3;
-  v5 = [(HRCAnalyticsReporter *)self queue];
-  dispatch_assert_queue_V2(v5);
+  analyticsCopy = analytics;
+  queue = [(HRCAnalyticsReporter *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 mutableCopy];
-  v7 = [v6 allKeys];
+  v6 = [analyticsCopy mutableCopy];
+  allKeys = [v6 allKeys];
   if (![(HRCAnalyticsReporter *)self _improveHealthAndActivityAllowed])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = v7;
+    v8 = allKeys;
     v9 = [v8 countByEnumeratingWithState:&v13 objects:v19 count:16];
     if (v9)
     {
@@ -126,20 +126,20 @@
   return v2;
 }
 
-- (void)handleSourceUpdate:(const HRCSourceUpdate *)a3
+- (void)handleSourceUpdate:(const HRCSourceUpdate *)update
 {
-  v5 = [(HRCAnalyticsReporter *)self queue];
+  queue = [(HRCAnalyticsReporter *)self queue];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3321888768;
   v16[2] = sub_10000AC78;
   v16[3] = &unk_100040AA8;
-  v6 = self;
-  v7 = a3->var0;
-  var1 = a3->var1;
-  v9 = a3->var2;
-  v10 = a3->var3;
-  v11 = *&a3->var4;
-  v17 = v6;
+  selfCopy = self;
+  v7 = update->var0;
+  var1 = update->var1;
+  v9 = update->var2;
+  v10 = update->var3;
+  v11 = *&update->var4;
+  v17 = selfCopy;
   v18 = v7;
   v19 = var1;
   v20 = v9;
@@ -148,89 +148,89 @@
   v22 = v11;
   v13 = v9;
   v14 = v7;
-  v15 = v6;
-  dispatch_async(v5, v16);
+  v15 = selfCopy;
+  dispatch_async(queue, v16);
 }
 
-- (void)handleStreamingModeUpdate:(unint64_t)a3 steadyClockDurationCount:(int64_t)a4
+- (void)handleStreamingModeUpdate:(unint64_t)update steadyClockDurationCount:(int64_t)count
 {
-  v7 = [(HRCAnalyticsReporter *)self queue];
+  queue = [(HRCAnalyticsReporter *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3321888768;
   block[2] = sub_10000ADE8;
   block[3] = &unk_100040AD8;
-  v8 = self;
-  v10 = v8;
-  v11 = a3;
-  v12 = a4;
-  dispatch_async(v7, block);
+  selfCopy = self;
+  v10 = selfCopy;
+  updateCopy = update;
+  countCopy = count;
+  dispatch_async(queue, block);
 }
 
-- (void)heartRatePublishedFromSource:(unsigned __int8)a3 steadyClockDurationCount:(int64_t)a4
+- (void)heartRatePublishedFromSource:(unsigned __int8)source steadyClockDurationCount:(int64_t)count
 {
-  v7 = [(HRCAnalyticsReporter *)self queue];
+  queue = [(HRCAnalyticsReporter *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3321888768;
   block[2] = sub_10000AEF4;
   block[3] = &unk_100040B08;
-  v8 = self;
-  v10 = v8;
-  v11 = a3;
-  v12 = a4;
-  dispatch_async(v7, block);
+  selfCopy = self;
+  v10 = selfCopy;
+  sourceCopy = source;
+  countCopy = count;
+  dispatch_async(queue, block);
 }
 
-- (void)updateWorkoutActivityType:(unint64_t)a3 withLocationType:(int64_t)a4
+- (void)updateWorkoutActivityType:(unint64_t)type withLocationType:(int64_t)locationType
 {
-  v7 = [(HRCAnalyticsReporter *)self queue];
+  queue = [(HRCAnalyticsReporter *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3321888768;
   block[2] = sub_10000B000;
   block[3] = &unk_100040B38;
-  v8 = self;
-  v10 = v8;
-  v11 = a3;
-  v12 = a4;
-  dispatch_async(v7, block);
+  selfCopy = self;
+  v10 = selfCopy;
+  typeCopy = type;
+  locationTypeCopy = locationType;
+  dispatch_async(queue, block);
 }
 
 - (void)handleSysdiagnoseTrigger
 {
-  v3 = [(HRCAnalyticsReporter *)self queue];
+  queue = [(HRCAnalyticsReporter *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3321888768;
   block[2] = sub_10000B0F4;
   block[3] = &unk_100040B68;
-  v4 = self;
-  v6 = v4;
-  dispatch_async(v3, block);
+  selfCopy = self;
+  v6 = selfCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_handleSourceUpdate:(const HRCSourceUpdate *)a3
+- (void)_handleSourceUpdate:(const HRCSourceUpdate *)update
 {
-  v5 = [(HRCAnalyticsReporter *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(HRCAnalyticsReporter *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  var4 = a3->var4;
+  var4 = update->var4;
   if (var4 == 1)
   {
 
-    [(HRCAnalyticsReporter *)self _handleAACPSourceUpdate:a3];
+    [(HRCAnalyticsReporter *)self _handleAACPSourceUpdate:update];
   }
 
   else if (var4 == 3)
   {
 
-    [(HRCAnalyticsReporter *)self _handleBLESourceUpdate:a3];
+    [(HRCAnalyticsReporter *)self _handleBLESourceUpdate:update];
   }
 }
 
-- (void)_handleAACPSourceUpdate:(const HRCSourceUpdate *)a3
+- (void)_handleAACPSourceUpdate:(const HRCSourceUpdate *)update
 {
-  v5 = [(HRCAnalyticsReporter *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(HRCAnalyticsReporter *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (!a3->var5)
+  if (!update->var5)
   {
     [(HRCAnalyticsReporter *)self setAacpConnected:0];
     [(HRCAnalyticsReporter *)self aacpStreamingStartTime];
@@ -239,14 +239,14 @@
       return;
     }
 
-    var1 = a3->var1;
-    v11 = [(HRCAnalyticsReporter *)self aacpStreamingStartTime];
+    var1 = update->var1;
+    aacpStreamingStartTime = [(HRCAnalyticsReporter *)self aacpStreamingStartTime];
     if ((v12 & 1) == 0)
     {
       sub_10000BDC8();
     }
 
-    [(HRCAnalyticsReporter *)self setAacpStreamingDuration:[(HRCAnalyticsReporter *)self aacpStreamingDuration]+ var1 - v11];
+    [(HRCAnalyticsReporter *)self setAacpStreamingDuration:[(HRCAnalyticsReporter *)self aacpStreamingDuration]+ var1 - aacpStreamingStartTime];
     v7 = 0;
     v8 = 0;
     goto LABEL_9;
@@ -261,7 +261,7 @@
   [(HRCAnalyticsReporter *)self aacpStreamingStartTime];
   if ((v6 & 1) == 0)
   {
-    v7 = a3->var1;
+    v7 = update->var1;
     v8 = 1;
 LABEL_9:
 
@@ -269,21 +269,21 @@ LABEL_9:
   }
 }
 
-- (void)_handleBLESourceUpdate:(const HRCSourceUpdate *)a3
+- (void)_handleBLESourceUpdate:(const HRCSourceUpdate *)update
 {
-  v5 = [(HRCAnalyticsReporter *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(HRCAnalyticsReporter *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  LODWORD(v5) = a3->var5;
+  LODWORD(queue) = update->var5;
   [(HRCAnalyticsReporter *)self bleStreamingStartTime];
-  if (v5)
+  if (queue)
   {
     if (v6)
     {
       return;
     }
 
-    var1 = a3->var1;
+    var1 = update->var1;
     v8 = 1;
   }
 
@@ -294,14 +294,14 @@ LABEL_9:
       return;
     }
 
-    v9 = a3->var1;
-    v10 = [(HRCAnalyticsReporter *)self bleStreamingStartTime];
+    v9 = update->var1;
+    bleStreamingStartTime = [(HRCAnalyticsReporter *)self bleStreamingStartTime];
     if ((v11 & 1) == 0)
     {
       sub_10000BDC8();
     }
 
-    [(HRCAnalyticsReporter *)self setBleStreamingDuration:[(HRCAnalyticsReporter *)self bleStreamingDuration]+ v9 - v10];
+    [(HRCAnalyticsReporter *)self setBleStreamingDuration:[(HRCAnalyticsReporter *)self bleStreamingDuration]+ v9 - bleStreamingStartTime];
     var1 = 0;
     v8 = 0;
   }
@@ -309,50 +309,50 @@ LABEL_9:
   [(HRCAnalyticsReporter *)self setBleStreamingStartTime:var1, v8];
 }
 
-- (void)_handleStreamingModeUpdate:(unint64_t)a3 steadyClockDurationCount:(int64_t)a4
+- (void)_handleStreamingModeUpdate:(unint64_t)update steadyClockDurationCount:(int64_t)count
 {
-  v7 = [(HRCAnalyticsReporter *)self queue];
-  dispatch_assert_queue_V2(v7);
+  queue = [(HRCAnalyticsReporter *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([(HRCAnalyticsReporter *)self streamingMode]!= a3)
+  if ([(HRCAnalyticsReporter *)self streamingMode]!= update)
   {
     if (![(HRCAnalyticsReporter *)self streamingMode])
     {
-      [(HRCAnalyticsReporter *)self _handleStreamingModeOnAt:a4];
+      [(HRCAnalyticsReporter *)self _handleStreamingModeOnAt:count];
     }
 
-    [(HRCAnalyticsReporter *)self setStreamingMode:a3];
-    if (!a3)
+    [(HRCAnalyticsReporter *)self setStreamingMode:update];
+    if (!update)
     {
 
-      [(HRCAnalyticsReporter *)self _saveHostAnalyticsAtTimestamp:a4];
+      [(HRCAnalyticsReporter *)self _saveHostAnalyticsAtTimestamp:count];
     }
   }
 }
 
-- (void)_handleStreamingModeOnAt:(int64_t)a3
+- (void)_handleStreamingModeOnAt:(int64_t)at
 {
-  v5 = [(HRCAnalyticsReporter *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(HRCAnalyticsReporter *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(HRCAnalyticsReporter *)self setStreamingModeStartTime:a3];
+  [(HRCAnalyticsReporter *)self setStreamingModeStartTime:at];
   [(HRCAnalyticsReporter *)self aacpStreamingStartTime];
-  LOBYTE(a3) = v6;
-  v7 = self;
-  v8 = v7;
-  if (a3)
+  LOBYTE(at) = v6;
+  selfCopy = self;
+  v8 = selfCopy;
+  if (at)
   {
-    v9 = [(HRCAnalyticsReporter *)v7 streamingModeStartTime];
+    streamingModeStartTime = [(HRCAnalyticsReporter *)selfCopy streamingModeStartTime];
     v10 = 1;
   }
 
   else
   {
     v10 = 0;
-    v9 = 0;
+    streamingModeStartTime = 0;
   }
 
-  [(HRCAnalyticsReporter *)v8 setAacpStreamingStartTime:v9, v10];
+  [(HRCAnalyticsReporter *)v8 setAacpStreamingStartTime:streamingModeStartTime, v10];
 
   [(HRCAnalyticsReporter *)v8 bleStreamingStartTime];
   v12 = v11;
@@ -360,59 +360,59 @@ LABEL_9:
   v14 = v13;
   if (v12)
   {
-    v15 = [(HRCAnalyticsReporter *)v13 streamingModeStartTime];
+    streamingModeStartTime2 = [(HRCAnalyticsReporter *)v13 streamingModeStartTime];
     v16 = 1;
   }
 
   else
   {
     v16 = 0;
-    v15 = 0;
+    streamingModeStartTime2 = 0;
   }
 
-  [(HRCAnalyticsReporter *)v14 setBleStreamingStartTime:v15, v16];
+  [(HRCAnalyticsReporter *)v14 setBleStreamingStartTime:streamingModeStartTime2, v16];
 
   [(HRCAnalyticsReporter *)v14 setAacpStreamingDuration:0];
   [(HRCAnalyticsReporter *)v14 setBleStreamingDuration:0];
-  v17 = [(HRCAnalyticsReporter *)v14 aacpConnected];
+  aacpConnected = [(HRCAnalyticsReporter *)v14 aacpConnected];
 
-  [(HRCAnalyticsReporter *)v14 setNumAacpConnects:v17];
+  [(HRCAnalyticsReporter *)v14 setNumAacpConnects:aacpConnected];
 }
 
-- (void)_heartRatePublishedFromSource:(unsigned __int8)a3 steadyClockDurationCount:(int64_t)a4
+- (void)_heartRatePublishedFromSource:(unsigned __int8)source steadyClockDurationCount:(int64_t)count
 {
-  v5 = a3;
-  v7 = [(HRCAnalyticsReporter *)self queue];
-  dispatch_assert_queue_V2(v7);
+  sourceCopy = source;
+  queue = [(HRCAnalyticsReporter *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v5 != 3)
+  if (sourceCopy != 3)
   {
     [(HRCAnalyticsReporter *)self firstPublishedHeartRateTime];
     if ((v8 & 1) == 0)
     {
 
-      [(HRCAnalyticsReporter *)self setFirstPublishedHeartRateTime:a4, 1];
+      [(HRCAnalyticsReporter *)self setFirstPublishedHeartRateTime:count, 1];
     }
   }
 }
 
-- (void)_updateWorkoutActivityType:(unint64_t)a3 withLocationType:(int64_t)a4
+- (void)_updateWorkoutActivityType:(unint64_t)type withLocationType:(int64_t)locationType
 {
-  v7 = [(HRCAnalyticsReporter *)self queue];
-  dispatch_assert_queue_V2(v7);
+  queue = [(HRCAnalyticsReporter *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (a3)
+  if (type)
   {
-    [(HRCAnalyticsReporter *)self setActivityType:a3, 1];
+    [(HRCAnalyticsReporter *)self setActivityType:type, 1];
 
-    [(HRCAnalyticsReporter *)self setLocationType:a4, 1];
+    [(HRCAnalyticsReporter *)self setLocationType:locationType, 1];
   }
 }
 
 - (void)_handleSysdiagnoseTrigger
 {
-  v3 = [(HRCAnalyticsReporter *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HRCAnalyticsReporter *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(HRCAnalyticsReporter *)self streamingMode])
   {
@@ -427,19 +427,19 @@ LABEL_9:
   }
 }
 
-- (void)_saveHostAnalyticsAtTimestamp:()time_point<std:(std:()std:(1000000000>>>)a3 :ratio<1 :chrono::duration<long)long :chrono::steady_clock
+- (void)_saveHostAnalyticsAtTimestamp:()time_point<std:(std:()std:(1000000000>>>)std :ratio<1 :chrono::duration<long)long :chrono::steady_clock
 {
-  v5 = [(HRCAnalyticsReporter *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(HRCAnalyticsReporter *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(HRCAnalyticsReporter *)self pendingHostAnalytics];
+  pendingHostAnalytics = [(HRCAnalyticsReporter *)self pendingHostAnalytics];
 
-  if (v6)
+  if (pendingHostAnalytics)
   {
     v7 = sub_10000132C();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_10000BE14(a3.__d_.__rep_, v7);
+      sub_10000BE14(std.__d_.__rep_, v7);
     }
 
     [(HRCAnalyticsReporter *)self _resetState];
@@ -449,13 +449,13 @@ LABEL_9:
   [(HRCAnalyticsReporter *)self aacpStreamingStartTime];
   if (v8)
   {
-    v9 = [(HRCAnalyticsReporter *)self aacpStreamingStartTime];
+    aacpStreamingStartTime = [(HRCAnalyticsReporter *)self aacpStreamingStartTime];
     if ((v10 & 1) == 0)
     {
       goto LABEL_43;
     }
 
-    [(HRCAnalyticsReporter *)self setAacpStreamingDuration:[(HRCAnalyticsReporter *)self aacpStreamingDuration]+ a3.__d_.__rep_ - v9];
+    [(HRCAnalyticsReporter *)self setAacpStreamingDuration:[(HRCAnalyticsReporter *)self aacpStreamingDuration]+ std.__d_.__rep_ - aacpStreamingStartTime];
   }
 
   [(HRCAnalyticsReporter *)self bleStreamingStartTime];
@@ -464,31 +464,31 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v12 = [(HRCAnalyticsReporter *)self bleStreamingStartTime];
+  bleStreamingStartTime = [(HRCAnalyticsReporter *)self bleStreamingStartTime];
   if ((v13 & 1) == 0)
   {
 LABEL_43:
     sub_10000BDC8();
   }
 
-  [(HRCAnalyticsReporter *)self setBleStreamingDuration:[(HRCAnalyticsReporter *)self bleStreamingDuration]+ a3.__d_.__rep_ - v12];
+  [(HRCAnalyticsReporter *)self setBleStreamingDuration:[(HRCAnalyticsReporter *)self bleStreamingDuration]+ std.__d_.__rep_ - bleStreamingStartTime];
 LABEL_11:
-  v14 = self;
-  [(HRCAnalyticsReporter *)v14 firstPublishedHeartRateTime];
+  selfCopy = self;
+  [(HRCAnalyticsReporter *)selfCopy firstPublishedHeartRateTime];
   if (v15)
   {
-    v16 = [(HRCAnalyticsReporter *)v14 firstPublishedHeartRateTime];
+    firstPublishedHeartRateTime = [(HRCAnalyticsReporter *)selfCopy firstPublishedHeartRateTime];
     if (v17)
     {
-      if (v16 < [(HRCAnalyticsReporter *)v14 streamingModeStartTime])
+      if (firstPublishedHeartRateTime < [(HRCAnalyticsReporter *)selfCopy streamingModeStartTime])
       {
         goto LABEL_14;
       }
 
-      v19 = [(HRCAnalyticsReporter *)v14 firstPublishedHeartRateTime];
+      firstPublishedHeartRateTime2 = [(HRCAnalyticsReporter *)selfCopy firstPublishedHeartRateTime];
       if (v20)
       {
-        v18 = (v19 - [(HRCAnalyticsReporter *)v14 streamingModeStartTime]) / 1000000000;
+        v18 = (firstPublishedHeartRateTime2 - [(HRCAnalyticsReporter *)selfCopy streamingModeStartTime]) / 1000000000;
         goto LABEL_17;
       }
     }
@@ -501,32 +501,32 @@ LABEL_14:
 LABEL_17:
 
   v53[0] = @"duration_streaming_seconds";
-  v45 = [NSNumber numberWithLongLong:(a3.__d_.__rep_ - [(HRCAnalyticsReporter *)v14 streamingModeStartTime]) / 1000000000];
-  v54[0] = v45;
+  1000000000 = [NSNumber numberWithLongLong:(std.__d_.__rep_ - [(HRCAnalyticsReporter *)selfCopy streamingModeStartTime]) / 1000000000];
+  v54[0] = 1000000000;
   v53[1] = @"duration_aacp_streaming_seconds";
-  v44 = [NSNumber numberWithLongLong:[(HRCAnalyticsReporter *)v14 aacpStreamingDuration]/ 1000000000];
-  v54[1] = v44;
+  10000000002 = [NSNumber numberWithLongLong:[(HRCAnalyticsReporter *)selfCopy aacpStreamingDuration]/ 1000000000];
+  v54[1] = 10000000002;
   v53[2] = @"duration_ble_streaming_seconds";
-  v21 = [NSNumber numberWithLongLong:[(HRCAnalyticsReporter *)v14 bleStreamingDuration]/ 1000000000];
-  v54[2] = v21;
+  10000000003 = [NSNumber numberWithLongLong:[(HRCAnalyticsReporter *)selfCopy bleStreamingDuration]/ 1000000000];
+  v54[2] = 10000000003;
   v53[3] = @"num_airpod_connects";
-  v22 = [NSNumber numberWithUnsignedLongLong:[(HRCAnalyticsReporter *)v14 numAacpConnects]];
+  v22 = [NSNumber numberWithUnsignedLongLong:[(HRCAnalyticsReporter *)selfCopy numAacpConnects]];
   v54[3] = v22;
   v53[4] = @"num_secs_first_hr_to_hk";
   v23 = [NSNumber numberWithLongLong:v18];
   v54[4] = v23;
   v53[5] = @"workout_type";
-  [(HRCAnalyticsReporter *)v14 activityType];
+  [(HRCAnalyticsReporter *)selfCopy activityType];
   v25 = v24;
   if (v24)
   {
-    v26 = [(HRCAnalyticsReporter *)v14 activityType];
+    activityType = [(HRCAnalyticsReporter *)selfCopy activityType];
     if ((v27 & 1) == 0)
     {
       sub_10000BDC8();
     }
 
-    v28 = [NSNumber numberWithUnsignedInteger:v26];
+    v28 = [NSNumber numberWithUnsignedInteger:activityType];
   }
 
   else
@@ -536,17 +536,17 @@ LABEL_17:
 
   v54[5] = v28;
   v53[6] = @"location_type";
-  [(HRCAnalyticsReporter *)v14 locationType];
+  [(HRCAnalyticsReporter *)selfCopy locationType];
   v30 = v29;
   if (v29)
   {
-    v31 = [(HRCAnalyticsReporter *)v14 locationType];
+    locationType = [(HRCAnalyticsReporter *)selfCopy locationType];
     if ((v32 & 1) == 0)
     {
       sub_10000BDC8();
     }
 
-    v33 = [NSNumber numberWithInteger:v31];
+    v33 = [NSNumber numberWithInteger:locationType];
   }
 
   else
@@ -556,7 +556,7 @@ LABEL_17:
 
   v54[6] = v33;
   v53[7] = @"sysdiagnose_triggered";
-  v34 = [NSNumber numberWithBool:[(HRCAnalyticsReporter *)v14 sysdiagnoseTriggered]];
+  v34 = [NSNumber numberWithBool:[(HRCAnalyticsReporter *)selfCopy sysdiagnoseTriggered]];
   v54[7] = v34;
   v35 = [NSDictionary dictionaryWithObjects:v54 forKeys:v53 count:8];
 
@@ -568,9 +568,9 @@ LABEL_17:
   {
   }
 
-  [(HRCAnalyticsReporter *)v14 _resetState];
+  [(HRCAnalyticsReporter *)selfCopy _resetState];
   v36 = [v35 mutableCopy];
-  if (![(HRCAnalyticsReporter *)v14 _improveHealthAndActivityAllowed])
+  if (![(HRCAnalyticsReporter *)selfCopy _improveHealthAndActivityAllowed])
   {
     v48 = 0u;
     v49 = 0u;
@@ -614,7 +614,7 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_INFO, "Saving analytics %{sensitive}@", buf, 0xCu);
   }
 
-  [(HRCAnalyticsReporter *)v14 setPendingHostAnalytics:v36];
+  [(HRCAnalyticsReporter *)selfCopy setPendingHostAnalytics:v36];
 }
 
 - (void)_resetState
@@ -658,33 +658,33 @@ LABEL_17:
   return v4;
 }
 
-- (void)handleAnalyticsReport:(unsigned __int8)a3 data:(id)a4
+- (void)handleAnalyticsReport:(unsigned __int8)report data:(id)data
 {
-  v4 = a3;
-  v6 = a4;
-  switch(v4)
+  reportCopy = report;
+  dataCopy = data;
+  switch(reportCopy)
   {
     case 2:
-      v10 = [(HRCAnalyticsReporter *)self queue];
+      queue = [(HRCAnalyticsReporter *)self queue];
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_10000C444;
       v11[3] = &unk_100040BC8;
       v11[4] = self;
-      v12 = v6;
-      dispatch_async(v10, v11);
+      v12 = dataCopy;
+      dispatch_async(queue, v11);
 
       v9 = v12;
       goto LABEL_9;
     case 1:
-      v8 = [(HRCAnalyticsReporter *)self queue];
+      queue2 = [(HRCAnalyticsReporter *)self queue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10000C438;
       block[3] = &unk_100040BC8;
       block[4] = self;
-      v14 = v6;
-      dispatch_async(v8, block);
+      v14 = dataCopy;
+      dispatch_async(queue2, block);
 
       v9 = v14;
 LABEL_9:
@@ -701,9 +701,9 @@ LABEL_9:
   }
 }
 
-- (void)_handleB498Analytics:(id)a3
+- (void)_handleB498Analytics:(id)analytics
 {
-  v4 = a3;
+  analyticsCopy = analytics;
   if ((atomic_load_explicit(&qword_1000488A8, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1000488A8))
   {
     v8 = 67305985;
@@ -720,7 +720,7 @@ LABEL_9:
   v6 = 0;
   v7 = 0;
   sub_10000FCF4(&__p, qword_100048890, qword_100048898, qword_100048898 - qword_100048890);
-  [(HRCAnalyticsReporter *)self _handleBudAnalytics:v4 expectedFields:&__p];
+  [(HRCAnalyticsReporter *)self _handleBudAnalytics:analyticsCopy expectedFields:&__p];
   if (__p)
   {
     v6 = __p;
@@ -728,9 +728,9 @@ LABEL_9:
   }
 }
 
-- (void)_handleB788Analytics:(id)a3
+- (void)_handleB788Analytics:(id)analytics
 {
-  v4 = a3;
+  analyticsCopy = analytics;
   if ((atomic_load_explicit(&qword_1000488C8, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1000488C8))
   {
     v8 = 0x807060504030201;
@@ -747,7 +747,7 @@ LABEL_9:
   v6 = 0;
   v7 = 0;
   sub_10000FCF4(&__p, qword_1000488B0, qword_1000488B8, qword_1000488B8 - qword_1000488B0);
-  [(HRCAnalyticsReporter *)self _handleBudAnalytics:v4 expectedFields:&__p];
+  [(HRCAnalyticsReporter *)self _handleBudAnalytics:analyticsCopy expectedFields:&__p];
   if (__p)
   {
     v6 = __p;
@@ -755,18 +755,18 @@ LABEL_9:
   }
 }
 
-- (void)_handleBudAnalytics:(id)a3 expectedFields:()vector<hrc_bud_analytics:(std::allocator<hrc_bud_analytics::HRMetricID>> *)a4 :HRMetricID
+- (void)_handleBudAnalytics:(id)analytics expectedFields:()vector<hrc_bud_analytics:(std::allocator<hrc_bud_analytics::HRMetricID>> *)hrc_bud_analytics :HRMetricID
 {
-  v7 = a3;
-  v8 = [(HRCAnalyticsReporter *)self queue];
-  dispatch_assert_queue_V2(v8);
+  analyticsCopy = analytics;
+  queue = [(HRCAnalyticsReporter *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v7 length] > 4)
+  if ([analyticsCopy length] > 4)
   {
-    [v7 getBytes:v31 length:5];
+    [analyticsCopy getBytes:v31 length:5];
     if (v31[0] == 1)
     {
-      v26 = [(HRCAnalyticsReporter *)self defaultBudAnalytics];
+      defaultBudAnalytics = [(HRCAnalyticsReporter *)self defaultBudAnalytics];
       v11 = sub_10000132C();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
@@ -782,7 +782,7 @@ LABEL_9:
         while (1)
         {
           v15 = v14 + 4;
-          if ([v7 length] < v14 + 4)
+          if ([analyticsCopy length] < v14 + 4)
           {
             v24 = sub_10000132C();
             if (!os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
@@ -793,14 +793,14 @@ LABEL_9:
             goto LABEL_28;
           }
 
-          [v7 getBytes:&v30 range:{v14, 4}];
-          v16 = [v7 length];
+          [analyticsCopy getBytes:&v30 range:{v14, 4}];
+          v16 = [analyticsCopy length];
           if (v16 < v15 + HIBYTE(v30))
           {
             break;
           }
 
-          v17 = [v7 subdataWithRange:v14 + 4];
+          v17 = [analyticsCopy subdataWithRange:v14 + 4];
           v18 = sub_10000132C();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
           {
@@ -820,7 +820,7 @@ LABEL_9:
           v28 = 0;
           v29 = 0;
           __p = 0;
-          sub_10000FCF4(&__p, a4->var0, a4->var1, a4->var1 - a4->var0);
+          sub_10000FCF4(&__p, hrc_bud_analytics->var0, hrc_bud_analytics->var1, hrc_bud_analytics->var1 - hrc_bud_analytics->var0);
           v4 = v4 & 0xFFFFFFFF00000000 | v20;
           v21 = [(HRCAnalyticsReporter *)self _handleAnalyticsSubpacket:v4 data:v17 expectedFields:&__p];
           if (__p)
@@ -837,7 +837,7 @@ LABEL_9:
             _os_log_debug_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "SubPacket:%{public}@", buf, 0xCu);
           }
 
-          [v26 addEntriesFromDictionary:v21];
+          [defaultBudAnalytics addEntriesFromDictionary:v21];
           v14 = v15 + v19;
           if (++v13 >= v32)
           {
@@ -855,7 +855,7 @@ LABEL_28:
         sub_10000FEE4();
 LABEL_29:
 
-        v9 = v26;
+        v9 = defaultBudAnalytics;
       }
 
       else
@@ -865,12 +865,12 @@ LABEL_22:
         if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
         {
           *buf = 138739971;
-          *v34 = v26;
+          *v34 = defaultBudAnalytics;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "Setting bud analytics %{sensitive}@", buf, 0xCu);
         }
 
-        v9 = v26;
-        [(HRCAnalyticsReporter *)self setPendingBudAnalytics:v26];
+        v9 = defaultBudAnalytics;
+        [(HRCAnalyticsReporter *)self setPendingBudAnalytics:defaultBudAnalytics];
       }
     }
 
@@ -899,12 +899,12 @@ LABEL_21:
   }
 }
 
-- (id)_handleAnalyticsSubpacket:(id)a3 data:(id)a4 expectedFields:()vector<hrc_bud_analytics:(std::allocator<hrc_bud_analytics::HRMetricID>> *)a5 :HRMetricID
+- (id)_handleAnalyticsSubpacket:(id)subpacket data:(id)data expectedFields:()vector<hrc_bud_analytics:(std::allocator<hrc_bud_analytics::HRMetricID>> *)hrc_bud_analytics :HRMetricID
 {
-  v6 = *&a3.var0;
-  v8 = a4;
-  v9 = [(HRCAnalyticsReporter *)self queue];
-  dispatch_assert_queue_V2(v9);
+  v6 = *&subpacket.var0;
+  dataCopy = data;
+  queue = [(HRCAnalyticsReporter *)self queue];
+  dispatch_assert_queue_V2(queue);
   v10 = v6;
   v11 = HIBYTE(v6);
 
@@ -924,15 +924,15 @@ LABEL_21:
     v13 = v12;
   }
 
-  var0 = a5->var0;
-  var1 = a5->var1;
-  if (a5->var0 != var1)
+  var0 = hrc_bud_analytics->var0;
+  var1 = hrc_bud_analytics->var1;
+  if (hrc_bud_analytics->var0 != var1)
   {
     while (*var0 != v10)
     {
       if (++var0 == var1)
       {
-        var0 = a5->var1;
+        var0 = hrc_bud_analytics->var1;
         break;
       }
     }
@@ -964,13 +964,13 @@ LABEL_19:
     {
       if (v10 == 1)
       {
-        v16 = [(HRCAnalyticsReporter *)self _handleSessionMetrics:v8 side:v13];
+        v16 = [(HRCAnalyticsReporter *)self _handleSessionMetrics:dataCopy side:v13];
         goto LABEL_35;
       }
 
       if (v10 == 2)
       {
-        v16 = [(HRCAnalyticsReporter *)self _handleSystemMetrics:v8, v13];
+        v16 = [(HRCAnalyticsReporter *)self _handleSystemMetrics:dataCopy, v13];
         goto LABEL_35;
       }
 
@@ -979,12 +979,12 @@ LABEL_19:
 
     if (v10 == 4)
     {
-      [(HRCAnalyticsReporter *)self _handleWxHealthMerged:v8, v13];
+      [(HRCAnalyticsReporter *)self _handleWxHealthMerged:dataCopy, v13];
     }
 
     else
     {
-      [(HRCAnalyticsReporter *)self _handleAgcOpc:v8 side:v13];
+      [(HRCAnalyticsReporter *)self _handleAgcOpc:dataCopy side:v13];
     }
 
     v16 = LABEL_27:;
@@ -995,12 +995,12 @@ LABEL_19:
   {
     if (v10 == 6)
     {
-      [(HRCAnalyticsReporter *)self _handlePreprocessorFoms:v8 side:v13];
+      [(HRCAnalyticsReporter *)self _handlePreprocessorFoms:dataCopy side:v13];
     }
 
     else
     {
-      [(HRCAnalyticsReporter *)self _handleDriverStats:v8 side:v13];
+      [(HRCAnalyticsReporter *)self _handleDriverStats:dataCopy side:v13];
     }
 
     goto LABEL_27;
@@ -1008,13 +1008,13 @@ LABEL_19:
 
   if (v10 == 8)
   {
-    v16 = [(HRCAnalyticsReporter *)self _handlePalMetric:v8 side:v13];
+    v16 = [(HRCAnalyticsReporter *)self _handlePalMetric:dataCopy side:v13];
     goto LABEL_35;
   }
 
   if (v10 == 9)
   {
-    v16 = [(HRCAnalyticsReporter *)self _handleScanMitigation:v8 side:v13];
+    v16 = [(HRCAnalyticsReporter *)self _handleScanMitigation:dataCopy side:v13];
     goto LABEL_35;
   }
 
@@ -1034,7 +1034,7 @@ LABEL_39:
     goto LABEL_19;
   }
 
-  v16 = [(HRCAnalyticsReporter *)self _handleSolisMetric:v8 side:v13];
+  v16 = [(HRCAnalyticsReporter *)self _handleSolisMetric:dataCopy side:v13];
 LABEL_35:
   v20 = v16;
 LABEL_36:
@@ -1042,13 +1042,13 @@ LABEL_36:
   return v20;
 }
 
-- (id)_handleWxHealthMerged:(id)a3
+- (id)_handleWxHealthMerged:(id)merged
 {
-  v4 = a3;
-  if ([v4 length] >= 0x3E)
+  mergedCopy = merged;
+  if ([mergedCopy length] >= 0x3E)
   {
     v6 = objc_opt_new();
-    [v4 getBytes:v43 length:62];
+    [mergedCopy getBytes:v43 length:62];
     v7 = [NSNumber numberWithInt:v43[0]];
     [v6 setObject:v7 forKeyedSubscript:@"bud_duration_seconds_left"];
 
@@ -1145,9 +1145,9 @@ LABEL_36:
     v38 = [NSNumber numberWithShort:v72];
     [v6 setObject:v38 forKeyedSubscript:@"bud_mean_avg_confidence_diff"];
 
-    if ([v4 length] >= 0x40)
+    if ([mergedCopy length] >= 0x40)
     {
-      [v4 getBytes:v42 length:64];
+      [mergedCopy getBytes:v42 length:64];
       v39 = [NSNumber numberWithChar:v42[62]];
       [v6 setObject:v39 forKeyedSubscript:@"bud_withheld_hrs_percentage_left"];
 
@@ -1166,45 +1166,45 @@ LABEL_36:
   return v5;
 }
 
-- (id)_handleSessionMetrics:(id)a3 side:(id)a4
+- (id)_handleSessionMetrics:(id)metrics side:(id)side
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  metricsCopy = metrics;
+  sideCopy = side;
+  v8 = [metricsCopy length];
   v9 = 0;
-  if (v7 && v8 >= 8)
+  if (sideCopy && v8 >= 8)
   {
     v10 = objc_opt_new();
-    [v6 getBytes:v20 length:8];
+    [metricsCopy getBytes:v20 length:8];
     v11 = [NSNumber numberWithChar:v20[0]];
-    v12 = sub_10000D7DC(@"battery_start_of_session", v7);
+    v12 = sub_10000D7DC(@"battery_start_of_session", sideCopy);
     [v10 setObject:v11 forKeyedSubscript:v12];
 
     v13 = [NSNumber numberWithChar:v20[1]];
-    v14 = sub_10000D7DC(@"battery_end_of_session", v7);
+    v14 = sub_10000D7DC(@"battery_end_of_session", sideCopy);
     [v10 setObject:v13 forKeyedSubscript:v14];
 
     v15 = [NSNumber numberWithShort:v21];
-    v16 = sub_10000D7DC(@"mlb_temp_start_of_session", v7);
+    v16 = sub_10000D7DC(@"mlb_temp_start_of_session", sideCopy);
     [v10 setObject:v15 forKeyedSubscript:v16];
 
     v17 = [NSNumber numberWithUnsignedInt:v22];
-    v18 = sub_10000D7DC(@"bud_mileage", v7);
+    v18 = sub_10000D7DC(@"bud_mileage", sideCopy);
     [v10 setObject:v17 forKeyedSubscript:v18];
 
-    v9 = [(HRCAnalyticsReporter *)self _updateForIHA:v10 side:v7];
+    v9 = [(HRCAnalyticsReporter *)self _updateForIHA:v10 side:sideCopy];
   }
 
   return v9;
 }
 
-- (id)_handleSystemMetrics:(id)a3
+- (id)_handleSystemMetrics:(id)metrics
 {
-  v4 = a3;
-  if ([v4 length] >= 8)
+  metricsCopy = metrics;
+  if ([metricsCopy length] >= 8)
   {
     v6 = objc_opt_new();
-    [v4 getBytes:&v26 length:8];
+    [metricsCopy getBytes:&v26 length:8];
     v7 = [NSNumber numberWithUnsignedShort:v26];
     [v6 setObject:v7 forKeyedSubscript:@"product_id"];
 
@@ -1214,9 +1214,9 @@ LABEL_36:
     v9 = [NSNumber numberWithUnsignedShort:v28];
     [v6 setObject:v9 forKeyedSubscript:@"hw_version"];
 
-    if ([v4 length] >= 0x44)
+    if ([metricsCopy length] >= 0x44)
     {
-      [v4 getBytes:v29 length:68];
+      [metricsCopy getBytes:v29 length:68];
       v23 = v31;
       v25 = 20;
       *v22 = v30;
@@ -1265,55 +1265,55 @@ LABEL_36:
   return v5;
 }
 
-- (id)_handleAgcOpc:(id)a3 side:(id)a4
+- (id)_handleAgcOpc:(id)opc side:(id)side
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  opcCopy = opc;
+  sideCopy = side;
+  v8 = [opcCopy length];
   v9 = 0;
-  if (v7 && v8 >= 5)
+  if (sideCopy && v8 >= 5)
   {
     v10 = objc_opt_new();
-    [v6 getBytes:v18 length:5];
+    [opcCopy getBytes:v18 length:5];
     v11 = [NSNumber numberWithUnsignedShort:v18[0]];
-    v12 = sub_10000D7DC(@"a_agcopc_N_reruns", v7);
+    v12 = sub_10000D7DC(@"a_agcopc_N_reruns", sideCopy);
     [v10 setObject:v11 forKeyedSubscript:v12];
 
     v13 = [NSNumber numberWithUnsignedShort:v18[1]];
-    v14 = sub_10000D7DC(@"a_agcopc_rerun_time_diff_mean", v7);
+    v14 = sub_10000D7DC(@"a_agcopc_rerun_time_diff_mean", sideCopy);
     [v10 setObject:v13 forKeyedSubscript:v14];
 
     v15 = [NSNumber numberWithUnsignedChar:v19];
-    v16 = sub_10000D7DC(@"a_agcopc_N_retries_mean", v7);
+    v16 = sub_10000D7DC(@"a_agcopc_N_retries_mean", sideCopy);
     [v10 setObject:v15 forKeyedSubscript:v16];
 
-    v9 = [(HRCAnalyticsReporter *)self _updateForIHA:v10 side:v7];
+    v9 = [(HRCAnalyticsReporter *)self _updateForIHA:v10 side:sideCopy];
   }
 
   return v9;
 }
 
-- (id)_handleScanMitigation:(id)a3 side:(id)a4
+- (id)_handleScanMitigation:(id)mitigation side:(id)side
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] >= 9)
+  mitigationCopy = mitigation;
+  sideCopy = side;
+  if ([mitigationCopy length] >= 9)
   {
     v9 = objc_opt_new();
-    [v6 getBytes:v17 length:9];
+    [mitigationCopy getBytes:v17 length:9];
     v10 = [NSNumber numberWithUnsignedInt:v17[0]];
-    v11 = sub_10000D7DC(@"a_kdb_timing_coex_error_count", v7);
+    v11 = sub_10000D7DC(@"a_kdb_timing_coex_error_count", sideCopy);
     [v9 setObject:v10 forKeyedSubscript:v11];
 
     v12 = [NSNumber numberWithUnsignedInt:v17[1]];
-    v13 = sub_10000D7DC(@"a_pcontroller_error_count", v7);
+    v13 = sub_10000D7DC(@"a_pcontroller_error_count", sideCopy);
     [v9 setObject:v12 forKeyedSubscript:v13];
 
     v14 = [NSNumber numberWithUnsignedChar:v18];
-    v15 = sub_10000D7DC(@"a_kdb_stop_while_running", v7);
+    v15 = sub_10000D7DC(@"a_kdb_stop_while_running", sideCopy);
     [v9 setObject:v14 forKeyedSubscript:v15];
 
-    v8 = [(HRCAnalyticsReporter *)self _updateForIHA:v9 side:v7];
+    v8 = [(HRCAnalyticsReporter *)self _updateForIHA:v9 side:sideCopy];
   }
 
   else
@@ -1324,358 +1324,358 @@ LABEL_36:
   return v8;
 }
 
-- (id)_handlePreprocessorFoms:(id)a3 side:(id)a4
+- (id)_handlePreprocessorFoms:(id)foms side:(id)side
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  fomsCopy = foms;
+  sideCopy = side;
+  v8 = [fomsCopy length];
   v9 = 0;
-  if (v7 && v8 >= 0x3C)
+  if (sideCopy && v8 >= 0x3C)
   {
     v10 = objc_opt_new();
-    [v6 getBytes:&v54 length:60];
+    [fomsCopy getBytes:&v54 length:60];
     v11 = [NSNumber numberWithUnsignedChar:v54];
-    v12 = sub_10000D7DC(@"a_signal_fom_trigger", v7);
+    v12 = sub_10000D7DC(@"a_signal_fom_trigger", sideCopy);
     [v10 setObject:v11 forKeyedSubscript:v12];
 
     v13 = [NSNumber numberWithUnsignedInt:v55];
-    v14 = sub_10000D7DC(@"a_signal_fom_PI", v7);
+    v14 = sub_10000D7DC(@"a_signal_fom_PI", sideCopy);
     [v10 setObject:v13 forKeyedSubscript:v14];
 
     v15 = [NSNumber numberWithUnsignedShort:v56];
-    v16 = sub_10000D7DC(@"a_signal_fom_session_length_s", v7);
+    v16 = sub_10000D7DC(@"a_signal_fom_session_length_s", sideCopy);
     [v10 setObject:v15 forKeyedSubscript:v16];
 
     v17 = [NSNumber numberWithUnsignedShort:v57];
-    v18 = sub_10000D7DC(@"a_signal_fom_win_start_s", v7);
+    v18 = sub_10000D7DC(@"a_signal_fom_win_start_s", sideCopy);
     [v10 setObject:v17 forKeyedSubscript:v18];
 
     v19 = [NSNumber numberWithUnsignedShort:v58];
-    v20 = sub_10000D7DC(@"a_signal_fom_win_length_s", v7);
+    v20 = sub_10000D7DC(@"a_signal_fom_win_length_s", sideCopy);
     [v10 setObject:v19 forKeyedSubscript:v20];
 
     v21 = [NSNumber numberWithUnsignedChar:v59];
-    v22 = sub_10000D7DC(@"a_signal_fom_iled", v7);
+    v22 = sub_10000D7DC(@"a_signal_fom_iled", sideCopy);
     [v10 setObject:v21 forKeyedSubscript:v22];
 
     v23 = [NSNumber numberWithUnsignedChar:v60];
-    v24 = sub_10000D7DC(@"a_signal_fom_tia", v7);
+    v24 = sub_10000D7DC(@"a_signal_fom_tia", sideCopy);
     [v10 setObject:v23 forKeyedSubscript:v24];
 
     v25 = [NSNumber numberWithUnsignedInt:v61];
-    v26 = sub_10000D7DC(@"a_signal_fom_dac_current", v7);
+    v26 = sub_10000D7DC(@"a_signal_fom_dac_current", sideCopy);
     [v10 setObject:v25 forKeyedSubscript:v26];
 
     v27 = [NSNumber numberWithUnsignedChar:v62];
-    v28 = sub_10000D7DC(@"a_signal_fom_fs", v7);
+    v28 = sub_10000D7DC(@"a_signal_fom_fs", sideCopy);
     [v10 setObject:v27 forKeyedSubscript:v28];
 
     v29 = [NSNumber numberWithUnsignedInt:v63];
-    v30 = sub_10000D7DC(@"a_signal_fom_mav_max", v7);
+    v30 = sub_10000D7DC(@"a_signal_fom_mav_max", sideCopy);
     [v10 setObject:v29 forKeyedSubscript:v30];
 
     v31 = [NSNumber numberWithUnsignedInt:v64];
-    v32 = sub_10000D7DC(@"a_signal_fom_mav_mean", v7);
+    v32 = sub_10000D7DC(@"a_signal_fom_mav_mean", sideCopy);
     [v10 setObject:v31 forKeyedSubscript:v32];
 
     v33 = [NSNumber numberWithUnsignedChar:v65];
-    v34 = sub_10000D7DC(@"a_signal_fom_is_sat", v7);
+    v34 = sub_10000D7DC(@"a_signal_fom_is_sat", sideCopy);
     [v10 setObject:v33 forKeyedSubscript:v34];
 
     v35 = [NSNumber numberWithInt:v66];
-    v36 = sub_10000D7DC(@"a_signal_fom_ACM_idc_mean", v7);
+    v36 = sub_10000D7DC(@"a_signal_fom_ACM_idc_mean", sideCopy);
     [v10 setObject:v35 forKeyedSubscript:v36];
 
     v37 = [NSNumber numberWithUnsignedInt:v67];
-    v38 = sub_10000D7DC(@"a_signal_fom_ACM_idc_rms", v7);
+    v38 = sub_10000D7DC(@"a_signal_fom_ACM_idc_rms", sideCopy);
     [v10 setObject:v37 forKeyedSubscript:v38];
 
     v39 = [NSNumber numberWithUnsignedInt:v68];
-    v40 = sub_10000D7DC(@"a_signal_fom_ACM_idc_max", v7);
+    v40 = sub_10000D7DC(@"a_signal_fom_ACM_idc_max", sideCopy);
     [v10 setObject:v39 forKeyedSubscript:v40];
 
     v41 = [NSNumber numberWithInt:v69];
-    v42 = sub_10000D7DC(@"a_signal_fom_AACM_ambient_mean", v7);
+    v42 = sub_10000D7DC(@"a_signal_fom_AACM_ambient_mean", sideCopy);
     [v10 setObject:v41 forKeyedSubscript:v42];
 
     v43 = [NSNumber numberWithUnsignedInt:v70];
-    v44 = sub_10000D7DC(@"a_signal_fom_AACM_ambient_rms", v7);
+    v44 = sub_10000D7DC(@"a_signal_fom_AACM_ambient_rms", sideCopy);
     [v10 setObject:v43 forKeyedSubscript:v44];
 
     v45 = [NSNumber numberWithUnsignedInt:v71];
-    v46 = sub_10000D7DC(@"a_signal_fom_AACM_ambient_max", v7);
+    v46 = sub_10000D7DC(@"a_signal_fom_AACM_ambient_max", sideCopy);
     [v10 setObject:v45 forKeyedSubscript:v46];
 
     v47 = [NSNumber numberWithInt:v72];
-    v48 = sub_10000D7DC(@"a_signal_fom_ambient_mean", v7);
+    v48 = sub_10000D7DC(@"a_signal_fom_ambient_mean", sideCopy);
     [v10 setObject:v47 forKeyedSubscript:v48];
 
     v49 = [NSNumber numberWithUnsignedInt:v73];
-    v50 = sub_10000D7DC(@"a_signal_fom_ambient_noise", v7);
+    v50 = sub_10000D7DC(@"a_signal_fom_ambient_noise", sideCopy);
     [v10 setObject:v49 forKeyedSubscript:v50];
 
     v51 = [NSNumber numberWithUnsignedChar:v74];
-    v52 = sub_10000D7DC(@"a_signal_fom_session_sat_per", v7);
+    v52 = sub_10000D7DC(@"a_signal_fom_session_sat_per", sideCopy);
     [v10 setObject:v51 forKeyedSubscript:v52];
 
-    v9 = [(HRCAnalyticsReporter *)self _updateForIHA:v10 side:v7];
+    v9 = [(HRCAnalyticsReporter *)self _updateForIHA:v10 side:sideCopy];
   }
 
   return v9;
 }
 
-- (id)_handleDriverStats:(id)a3 side:(id)a4
+- (id)_handleDriverStats:(id)stats side:(id)side
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  statsCopy = stats;
+  sideCopy = side;
+  v8 = [statsCopy length];
   v9 = 0;
-  if (v7 && v8 >= 8)
+  if (sideCopy && v8 >= 8)
   {
     v10 = objc_opt_new();
-    [v6 getBytes:v28 length:8];
+    [statsCopy getBytes:v28 length:8];
     v11 = [NSNumber numberWithUnsignedChar:v28[0]];
-    v12 = sub_10000D7DC(@"a_driver_scan_timeout", v7);
+    v12 = sub_10000D7DC(@"a_driver_scan_timeout", sideCopy);
     [v10 setObject:v11 forKeyedSubscript:v12];
 
     v13 = [NSNumber numberWithUnsignedChar:v28[1]];
-    v14 = sub_10000D7DC(@"a_driver_intracomm_comm_error_count", v7);
+    v14 = sub_10000D7DC(@"a_driver_intracomm_comm_error_count", sideCopy);
     [v10 setObject:v13 forKeyedSubscript:v14];
 
     v15 = [NSNumber numberWithUnsignedChar:v28[2]];
-    v16 = sub_10000D7DC(@"a_driver_hal_queue_overflow_count", v7);
+    v16 = sub_10000D7DC(@"a_driver_hal_queue_overflow_count", sideCopy);
     [v10 setObject:v15 forKeyedSubscript:v16];
 
     v17 = [NSNumber numberWithUnsignedChar:v28[3]];
-    v18 = sub_10000D7DC(@"a_driver_hal_queue_watermark", v7);
+    v18 = sub_10000D7DC(@"a_driver_hal_queue_watermark", sideCopy);
     [v10 setObject:v17 forKeyedSubscript:v18];
 
     v19 = [NSNumber numberWithUnsignedChar:v28[4]];
-    v20 = sub_10000D7DC(@"a_driver_accel_too_old_count", v7);
+    v20 = sub_10000D7DC(@"a_driver_accel_too_old_count", sideCopy);
     [v10 setObject:v19 forKeyedSubscript:v20];
 
     v21 = [NSNumber numberWithUnsignedChar:v28[5]];
-    v22 = sub_10000D7DC(@"a_driver_accel_too_new_count", v7);
+    v22 = sub_10000D7DC(@"a_driver_accel_too_new_count", sideCopy);
     [v10 setObject:v21 forKeyedSubscript:v22];
 
     v23 = [NSNumber numberWithUnsignedChar:v28[6]];
-    v24 = sub_10000D7DC(@"a_driver_accel_interp_error_count", v7);
+    v24 = sub_10000D7DC(@"a_driver_accel_interp_error_count", sideCopy);
     [v10 setObject:v23 forKeyedSubscript:v24];
 
     v25 = [NSNumber numberWithUnsignedChar:v28[7]];
-    v26 = sub_10000D7DC(@"a_driver_stats_reserved", v7);
+    v26 = sub_10000D7DC(@"a_driver_stats_reserved", sideCopy);
     [v10 setObject:v25 forKeyedSubscript:v26];
 
-    v9 = [(HRCAnalyticsReporter *)self _updateForIHA:v10 side:v7];
+    v9 = [(HRCAnalyticsReporter *)self _updateForIHA:v10 side:sideCopy];
   }
 
   return v9;
 }
 
-- (id)_handlePalMetric:(id)a3 side:(id)a4
+- (id)_handlePalMetric:(id)metric side:(id)side
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  metricCopy = metric;
+  sideCopy = side;
+  v8 = [metricCopy length];
   v9 = 0;
-  if (v7 && v8 >= 6)
+  if (sideCopy && v8 >= 6)
   {
     v10 = objc_opt_new();
-    [v6 getBytes:v24 length:6];
+    [metricCopy getBytes:v24 length:6];
     v11 = [NSNumber numberWithUnsignedChar:v24[0]];
-    v12 = sub_10000D7DC(@"a_pal_event_queue_overrun_count", v7);
+    v12 = sub_10000D7DC(@"a_pal_event_queue_overrun_count", sideCopy);
     [v10 setObject:v11 forKeyedSubscript:v12];
 
     v13 = [NSNumber numberWithUnsignedChar:v24[1]];
-    v14 = sub_10000D7DC(@"a_pal_event_queue_watermark", v7);
+    v14 = sub_10000D7DC(@"a_pal_event_queue_watermark", sideCopy);
     [v10 setObject:v13 forKeyedSubscript:v14];
 
     v15 = [NSNumber numberWithUnsignedChar:v24[2]];
-    v16 = sub_10000D7DC(@"a_pal_scm_i2_c_error_count", v7);
+    v16 = sub_10000D7DC(@"a_pal_scm_i2_c_error_count", sideCopy);
     [v10 setObject:v15 forKeyedSubscript:v16];
 
     v17 = [NSNumber numberWithUnsignedChar:v24[3]];
-    v18 = sub_10000D7DC(@"a_pal_scm_error_count", v7);
+    v18 = sub_10000D7DC(@"a_pal_scm_error_count", sideCopy);
     [v10 setObject:v17 forKeyedSubscript:v18];
 
     v19 = [NSNumber numberWithUnsignedChar:v24[4]];
-    v20 = sub_10000D7DC(@"a_pal_scm_reset_count", v7);
+    v20 = sub_10000D7DC(@"a_pal_scm_reset_count", sideCopy);
     [v10 setObject:v19 forKeyedSubscript:v20];
 
     v21 = [NSNumber numberWithUnsignedChar:v24[5]];
-    v22 = sub_10000D7DC(@"a_pal_stats_reserved", v7);
+    v22 = sub_10000D7DC(@"a_pal_stats_reserved", sideCopy);
     [v10 setObject:v21 forKeyedSubscript:v22];
 
-    v9 = [(HRCAnalyticsReporter *)self _updateForIHA:v10 side:v7];
+    v9 = [(HRCAnalyticsReporter *)self _updateForIHA:v10 side:sideCopy];
   }
 
   return v9;
 }
 
-- (id)_handleSolisMetric:(id)a3 side:(id)a4
+- (id)_handleSolisMetric:(id)metric side:(id)side
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  metricCopy = metric;
+  sideCopy = side;
+  v8 = [metricCopy length];
   v9 = 0;
-  if (v7 && v8 >= 0x48)
+  if (sideCopy && v8 >= 0x48)
   {
     v10 = objc_opt_new();
-    [v6 getBytes:v82 length:72];
+    [metricCopy getBytes:v82 length:72];
     v11 = [NSNumber numberWithUnsignedChar:v82[0]];
-    v12 = sub_10000D7DC(@"s_event_queue_watermark", v7);
+    v12 = sub_10000D7DC(@"s_event_queue_watermark", sideCopy);
     [v10 setObject:v11 forKeyedSubscript:v12];
 
     v13 = [NSNumber numberWithUnsignedChar:v82[1]];
-    v14 = sub_10000D7DC(@"s_watchdog_count", v7);
+    v14 = sub_10000D7DC(@"s_watchdog_count", sideCopy);
     [v10 setObject:v13 forKeyedSubscript:v14];
 
     v15 = [NSNumber numberWithUnsignedChar:v82[2]];
-    v16 = sub_10000D7DC(@"s_scm_i2c_error_count", v7);
+    v16 = sub_10000D7DC(@"s_scm_i2c_error_count", sideCopy);
     [v10 setObject:v15 forKeyedSubscript:v16];
 
     v17 = [NSNumber numberWithUnsignedChar:v82[3]];
-    v18 = sub_10000D7DC(@"s_scm_error_count", v7);
+    v18 = sub_10000D7DC(@"s_scm_error_count", sideCopy);
     [v10 setObject:v17 forKeyedSubscript:v18];
 
     v19 = [NSNumber numberWithUnsignedChar:v82[4]];
-    v20 = sub_10000D7DC(@"s_scm_reset_count", v7);
+    v20 = sub_10000D7DC(@"s_scm_reset_count", sideCopy);
     [v10 setObject:v19 forKeyedSubscript:v20];
 
     v21 = [NSNumber numberWithUnsignedChar:v82[5]];
-    v22 = sub_10000D7DC(@"s_preproc_event_queue_watermark", v7);
+    v22 = sub_10000D7DC(@"s_preproc_event_queue_watermark", sideCopy);
     [v10 setObject:v21 forKeyedSubscript:v22];
 
     v23 = [NSNumber numberWithUnsignedChar:v82[6]];
-    v24 = sub_10000D7DC(@"s_hal_queue_watermark", v7);
+    v24 = sub_10000D7DC(@"s_hal_queue_watermark", sideCopy);
     [v10 setObject:v23 forKeyedSubscript:v24];
 
     v25 = [NSNumber numberWithUnsignedChar:v82[7]];
-    v26 = sub_10000D7DC(@"s_accel_too_old_count", v7);
+    v26 = sub_10000D7DC(@"s_accel_too_old_count", sideCopy);
     [v10 setObject:v25 forKeyedSubscript:v26];
 
     v27 = [NSNumber numberWithUnsignedChar:v82[8]];
-    v28 = sub_10000D7DC(@"s_accel_too_new_count", v7);
+    v28 = sub_10000D7DC(@"s_accel_too_new_count", sideCopy);
     [v10 setObject:v27 forKeyedSubscript:v28];
 
     v29 = [NSNumber numberWithUnsignedChar:v82[9]];
-    v30 = sub_10000D7DC(@"s_accel_interp_error_count", v7);
+    v30 = sub_10000D7DC(@"s_accel_interp_error_count", sideCopy);
     [v10 setObject:v29 forKeyedSubscript:v30];
 
     v31 = [NSNumber numberWithUnsignedInt:v83];
-    v32 = sub_10000D7DC(@"s_PI_window", v7);
+    v32 = sub_10000D7DC(@"s_PI_window", sideCopy);
     [v10 setObject:v31 forKeyedSubscript:v32];
 
     v33 = [NSNumber numberWithUnsignedInt:v84];
-    v34 = sub_10000D7DC(@"s_dc_mean_window", v7);
+    v34 = sub_10000D7DC(@"s_dc_mean_window", sideCopy);
     [v10 setObject:v33 forKeyedSubscript:v34];
 
     v35 = [NSNumber numberWithUnsignedShort:v85];
-    v36 = sub_10000D7DC(@"s_time_into_session", v7);
+    v36 = sub_10000D7DC(@"s_time_into_session", sideCopy);
     [v10 setObject:v35 forKeyedSubscript:v36];
 
     v37 = [NSNumber numberWithUnsignedInt:v86];
-    v38 = sub_10000D7DC(@"s_MAV_max_window", v7);
+    v38 = sub_10000D7DC(@"s_MAV_max_window", sideCopy);
     [v10 setObject:v37 forKeyedSubscript:v38];
 
     v39 = [NSNumber numberWithUnsignedInt:v87];
-    v40 = sub_10000D7DC(@"s_MAV_mean_window", v7);
+    v40 = sub_10000D7DC(@"s_MAV_mean_window", sideCopy);
     [v10 setObject:v39 forKeyedSubscript:v40];
 
     v41 = [NSNumber numberWithUnsignedChar:v88];
-    v42 = sub_10000D7DC(@"s_led_current_window", v7);
+    v42 = sub_10000D7DC(@"s_led_current_window", sideCopy);
     [v10 setObject:v41 forKeyedSubscript:v42];
 
     v43 = [NSNumber numberWithUnsignedChar:v89];
-    v44 = sub_10000D7DC(@"s_tia_gain_window", v7);
+    v44 = sub_10000D7DC(@"s_tia_gain_window", sideCopy);
     [v10 setObject:v43 forKeyedSubscript:v44];
 
     v45 = [NSNumber numberWithUnsignedInt:v90];
-    v46 = sub_10000D7DC(@"s_accel_rms_session", v7);
+    v46 = sub_10000D7DC(@"s_accel_rms_session", sideCopy);
     [v10 setObject:v45 forKeyedSubscript:v46];
 
     v47 = [NSNumber numberWithUnsignedInt:v91];
-    v48 = sub_10000D7DC(@"s_dc_mean_session", v7);
+    v48 = sub_10000D7DC(@"s_dc_mean_session", sideCopy);
     [v10 setObject:v47 forKeyedSubscript:v48];
 
     v49 = [NSNumber numberWithUnsignedInt:v92];
-    v50 = sub_10000D7DC(@"s_dc_min_session", v7);
+    v50 = sub_10000D7DC(@"s_dc_min_session", sideCopy);
     [v10 setObject:v49 forKeyedSubscript:v50];
 
     v51 = [NSNumber numberWithUnsignedInt:v93];
-    v52 = sub_10000D7DC(@"s_dc_max_session", v7);
+    v52 = sub_10000D7DC(@"s_dc_max_session", sideCopy);
     [v10 setObject:v51 forKeyedSubscript:v52];
 
     v53 = [NSNumber numberWithUnsignedInt:v94];
-    v54 = sub_10000D7DC(@"s_ambient_mean_session", v7);
+    v54 = sub_10000D7DC(@"s_ambient_mean_session", sideCopy);
     [v10 setObject:v53 forKeyedSubscript:v54];
 
     v55 = [NSNumber numberWithUnsignedInt:v95];
-    v56 = sub_10000D7DC(@"s_ambient_min_session", v7);
+    v56 = sub_10000D7DC(@"s_ambient_min_session", sideCopy);
     [v10 setObject:v55 forKeyedSubscript:v56];
 
     v57 = [NSNumber numberWithUnsignedInt:v96];
-    v58 = sub_10000D7DC(@"s_ambient_max_session", v7);
+    v58 = sub_10000D7DC(@"s_ambient_max_session", sideCopy);
     [v10 setObject:v57 forKeyedSubscript:v58];
 
     v59 = [NSNumber numberWithUnsignedChar:v97];
-    v60 = sub_10000D7DC(@"s_percentage_saturated_session", v7);
+    v60 = sub_10000D7DC(@"s_percentage_saturated_session", sideCopy);
     [v10 setObject:v59 forKeyedSubscript:v60];
 
     v61 = [NSNumber numberWithUnsignedChar:v98];
-    v62 = sub_10000D7DC(@"s_agc_led_current_starting", v7);
+    v62 = sub_10000D7DC(@"s_agc_led_current_starting", sideCopy);
     [v10 setObject:v61 forKeyedSubscript:v62];
 
     v63 = [NSNumber numberWithUnsignedChar:v99];
-    v64 = sub_10000D7DC(@"s_agc_tia_gain_starting", v7);
+    v64 = sub_10000D7DC(@"s_agc_tia_gain_starting", sideCopy);
     [v10 setObject:v63 forKeyedSubscript:v64];
 
     v65 = [NSNumber numberWithUnsignedChar:v100];
-    v66 = sub_10000D7DC(@"s_agc_led_current_most_frequent", v7);
+    v66 = sub_10000D7DC(@"s_agc_led_current_most_frequent", sideCopy);
     [v10 setObject:v65 forKeyedSubscript:v66];
 
     v67 = [NSNumber numberWithUnsignedChar:v101];
-    v68 = sub_10000D7DC(@"s_agc_tia_gain_most_frequent", v7);
+    v68 = sub_10000D7DC(@"s_agc_tia_gain_most_frequent", sideCopy);
     [v10 setObject:v67 forKeyedSubscript:v68];
 
     v69 = [NSNumber numberWithUnsignedChar:v102];
-    v70 = sub_10000D7DC(@"s_agc_led_current_second_most_frequent", v7);
+    v70 = sub_10000D7DC(@"s_agc_led_current_second_most_frequent", sideCopy);
     [v10 setObject:v69 forKeyedSubscript:v70];
 
     v71 = [NSNumber numberWithUnsignedChar:v103];
-    v72 = sub_10000D7DC(@"s_agc_tia_gain_second_most_frequent", v7);
+    v72 = sub_10000D7DC(@"s_agc_tia_gain_second_most_frequent", sideCopy);
     [v10 setObject:v71 forKeyedSubscript:v72];
 
     v73 = [NSNumber numberWithUnsignedChar:v104];
-    v74 = sub_10000D7DC(@"s_agc_led_current_adjustments", v7);
+    v74 = sub_10000D7DC(@"s_agc_led_current_adjustments", sideCopy);
     [v10 setObject:v73 forKeyedSubscript:v74];
 
     v75 = [NSNumber numberWithUnsignedChar:v105];
-    v76 = sub_10000D7DC(@"s_agc_tia_gain_adjustments", v7);
+    v76 = sub_10000D7DC(@"s_agc_tia_gain_adjustments", sideCopy);
     [v10 setObject:v75 forKeyedSubscript:v76];
 
     v77 = [NSNumber numberWithUnsignedChar:v106];
-    v78 = sub_10000D7DC(@"s_agc_fail_safe_triggered", v7);
+    v78 = sub_10000D7DC(@"s_agc_fail_safe_triggered", sideCopy);
     [v10 setObject:v77 forKeyedSubscript:v78];
 
     v79 = [NSNumber numberWithUnsignedInt:v107];
-    v80 = sub_10000D7DC(@"s_reserved", v7);
+    v80 = sub_10000D7DC(@"s_reserved", sideCopy);
     [v10 setObject:v79 forKeyedSubscript:v80];
 
-    v9 = [(HRCAnalyticsReporter *)self _updateForIHA:v10 side:v7];
+    v9 = [(HRCAnalyticsReporter *)self _updateForIHA:v10 side:sideCopy];
   }
 
   return v9;
 }
 
-- (id)_updateForIHA:(id)a3 side:(id)a4
+- (id)_updateForIHA:(id)a side:(id)side
 {
-  v21 = a3;
-  v6 = a4;
+  aCopy = a;
+  sideCopy = side;
   if (![(HRCAnalyticsReporter *)self _improveHealthAndActivityAllowed])
   {
     v7 = &qword_100048860;
-    if (v6)
+    if (sideCopy)
     {
       v7 = &qword_100048868;
     }
@@ -1686,7 +1686,7 @@ LABEL_36:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = v21;
+    v9 = aCopy;
     v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v10)
     {
@@ -1703,14 +1703,14 @@ LABEL_36:
           v13 = *(*(&v23 + 1) + 8 * i);
           v14 = v13;
           v15 = v13;
-          if (v6)
+          if (sideCopy)
           {
-            v16 = [v13 substringToIndex:{objc_msgSend(v13, "length") - objc_msgSend(v6, "length")}];
+            v16 = [v13 substringToIndex:{objc_msgSend(v13, "length") - objc_msgSend(sideCopy, "length")}];
 
             v15 = v16;
           }
 
-          if ([v8 containsObject:{v15, v21}])
+          if ([v8 containsObject:{v15, aCopy}])
           {
             v17 = v15;
             v18 = @"Hidden";
@@ -1741,22 +1741,22 @@ LABEL_36:
     [v9 addEntriesFromDictionary:v22];
   }
 
-  return v21;
+  return aCopy;
 }
 
-- (id)_initWithOutputTarget:(id)a3 dispatchQueue:(id)a4 budAnalyticsWaitTime:(duration<long)long
+- (id)_initWithOutputTarget:(id)target dispatchQueue:(id)queue budAnalyticsWaitTime:(duration<long)long
 {
-  v8 = a3;
-  v9 = a4;
+  targetCopy = target;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = HRCAnalyticsReporter;
   v10 = [(HRCAnalyticsReporter *)&v15 init];
   outputTarget = v10->_outputTarget;
-  v10->_outputTarget = v8;
-  v12 = v8;
+  v10->_outputTarget = targetCopy;
+  v12 = targetCopy;
 
   queue = v10->_queue;
-  v10->_queue = v9;
+  v10->_queue = queueCopy;
 
   v10->_budAnalyticsWaitTime = a5;
   return v10;
@@ -1785,7 +1785,7 @@ LABEL_36:
   dispatch_async(queue, block);
 }
 
-- (void)setImproveHealthAndActivityAllowed:(BOOL)a3
+- (void)setImproveHealthAndActivityAllowed:(BOOL)allowed
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -1793,7 +1793,7 @@ LABEL_36:
   v4[2] = sub_10001ACB4;
   v4[3] = &unk_100040868;
   v4[4] = self;
-  v5 = a3;
+  allowedCopy = allowed;
   dispatch_async(queue, v4);
 }
 
@@ -1853,15 +1853,15 @@ LABEL_36:
     v10 = self->_pendingHostAnalytics;
     if (v10)
     {
-      v11 = v10;
+      defaultHostAnalytics = v10;
     }
 
     else
     {
-      v11 = [(HRCAnalyticsReporter *)self defaultHostAnalytics];
+      defaultHostAnalytics = [(HRCAnalyticsReporter *)self defaultHostAnalytics];
     }
 
-    v12 = v11;
+    v12 = defaultHostAnalytics;
     v13 = self->_pendingAlgsAnalytics;
     if (v13)
     {
@@ -1878,15 +1878,15 @@ LABEL_36:
     if (v13)
     {
 LABEL_14:
-      v15 = v13;
+      defaultAlgsAnalytics = v13;
     }
 
     else
     {
-      v15 = [(HRCAnalyticsReporter *)self defaultAlgsAnalytics];
+      defaultAlgsAnalytics = [(HRCAnalyticsReporter *)self defaultAlgsAnalytics];
     }
 
-    v16 = v15;
+    v16 = defaultAlgsAnalytics;
     v17 = dispatch_time(0, 1000000000 * rep);
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -1907,10 +1907,10 @@ LABEL_14:
   }
 }
 
-- (void)_sendHostAnalytics:(id)a3 withAlgAnalytics:(id)a4
+- (void)_sendHostAnalytics:(id)analytics withAlgAnalytics:(id)algAnalytics
 {
-  v6 = a3;
-  v7 = a4;
+  analyticsCopy = analytics;
+  algAnalyticsCopy = algAnalytics;
   dispatch_assert_queue_V2(self->_queue);
   pendingBudAnalytics = self->_pendingBudAnalytics;
   if (pendingBudAnalytics)
@@ -1919,17 +1919,17 @@ LABEL_14:
     v10 = self->_pendingBudAnalytics;
     self->_pendingBudAnalytics = 0;
 
-    v11 = v9;
+    defaultBudAnalytics = v9;
   }
 
   else
   {
-    v11 = [(HRCAnalyticsReporter *)self defaultBudAnalytics];
+    defaultBudAnalytics = [(HRCAnalyticsReporter *)self defaultBudAnalytics];
   }
 
-  [v11 addEntriesFromDictionary:v6];
-  [v11 addEntriesFromDictionary:v7];
-  [(HRCAnalyticsReporterOutputTarget *)self->_outputTarget reportEventWithName:@"com.apple.hrc.streaming_session.stats" content:v11];
+  [defaultBudAnalytics addEntriesFromDictionary:analyticsCopy];
+  [defaultBudAnalytics addEntriesFromDictionary:algAnalyticsCopy];
+  [(HRCAnalyticsReporterOutputTarget *)self->_outputTarget reportEventWithName:@"com.apple.hrc.streaming_session.stats" content:defaultBudAnalytics];
   self->_analyticsInFlight = 0;
   transaction = self->_transaction;
   self->_transaction = 0;

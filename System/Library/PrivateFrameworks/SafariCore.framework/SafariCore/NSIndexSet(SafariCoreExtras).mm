@@ -15,7 +15,7 @@
   v7[1] = 3221225472;
   v7[2] = __62__NSIndexSet_SafariCoreExtras__safari_intersectsWithIndexSet___block_invoke;
   v7[3] = &unk_1E7CF51E8;
-  v7[4] = a1;
+  v7[4] = self;
   v7[5] = &v8;
   [v4 enumerateRangesUsingBlock:v7];
   v5 = *(v9 + 24);

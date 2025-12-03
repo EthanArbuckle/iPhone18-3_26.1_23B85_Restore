@@ -1,11 +1,11 @@
 @interface CNAuthorization
 + (id)logger;
-- (BOOL)isAccessRestrictedForEntityType:(int64_t)a3;
-- (BOOL)requestAccessForEntityType:(int64_t)a3 error:(id *)a4;
-- (CNAuthorization)initWithAssumedIdentity:(id)a3;
-- (CNAuthorization)initWithAuthorizationContext:(id)a3;
-- (int64_t)authorizationStatusForEntityType:(int64_t)a3;
-- (void)requestAccessForEntityType:(int64_t)a3 completionHandler:(id)a4;
+- (BOOL)isAccessRestrictedForEntityType:(int64_t)type;
+- (BOOL)requestAccessForEntityType:(int64_t)type error:(id *)error;
+- (CNAuthorization)initWithAssumedIdentity:(id)identity;
+- (CNAuthorization)initWithAuthorizationContext:(id)context;
+- (int64_t)authorizationStatusForEntityType:(int64_t)type;
+- (void)requestAccessForEntityType:(int64_t)type completionHandler:(id)handler;
 @end
 
 @implementation CNAuthorization
@@ -31,13 +31,13 @@ void __25__CNAuthorization_logger__block_invoke()
   logger_cn_once_object_0 = v1;
 }
 
-- (CNAuthorization)initWithAssumedIdentity:(id)a3
+- (CNAuthorization)initWithAssumedIdentity:(id)identity
 {
-  if (a3)
+  if (identity)
   {
     v4 = MEMORY[0x1E6996648];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithAuditToken:0 assumedIdentity:v5];
+    identityCopy = identity;
+    v6 = [[v4 alloc] initWithAuditToken:0 assumedIdentity:identityCopy];
   }
 
   else
@@ -50,26 +50,26 @@ void __25__CNAuthorization_logger__block_invoke()
   return v7;
 }
 
-- (CNAuthorization)initWithAuthorizationContext:(id)a3
+- (CNAuthorization)initWithAuthorizationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = CNAuthorization;
   v5 = [(CNAuthorization *)&v10 init];
   if (v5)
   {
-    if (v4)
+    if (contextCopy)
     {
-      v6 = v4;
+      mEMORY[0x1E6996648] = contextCopy;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E6996648] sharedInstance];
+      mEMORY[0x1E6996648] = [MEMORY[0x1E6996648] sharedInstance];
     }
 
     authorizationContext = v5->_authorizationContext;
-    v5->_authorizationContext = v6;
+    v5->_authorizationContext = mEMORY[0x1E6996648];
 
     v8 = v5;
   }
@@ -77,30 +77,30 @@ void __25__CNAuthorization_logger__block_invoke()
   return v5;
 }
 
-- (BOOL)isAccessRestrictedForEntityType:(int64_t)a3
+- (BOOL)isAccessRestrictedForEntityType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
     return 0;
   }
 
-  v4 = [(CNAuthorization *)self authorizationContext];
-  v5 = [v4 isAccessRestricted];
+  authorizationContext = [(CNAuthorization *)self authorizationContext];
+  isAccessRestricted = [authorizationContext isAccessRestricted];
 
-  return v5;
+  return isAccessRestricted;
 }
 
-- (BOOL)requestAccessForEntityType:(int64_t)a3 error:(id *)a4
+- (BOOL)requestAccessForEntityType:(int64_t)type error:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (type)
   {
     return 0;
   }
 
-  v6 = [(CNAuthorization *)self authorizationContext];
+  authorizationContext = [(CNAuthorization *)self authorizationContext];
   v10 = 0;
-  v4 = [v6 requestAccessWithError:&v10];
+  v4 = [authorizationContext requestAccessWithError:&v10];
   v7 = v10;
 
   if ((v4 & 1) == 0)
@@ -117,31 +117,31 @@ void __25__CNAuthorization_logger__block_invoke()
       v8 = 0;
     }
 
-    CNSetError(a4, 100, v8);
+    CNSetError(error, 100, v8);
   }
 
   return v4;
 }
 
-- (void)requestAccessForEntityType:(int64_t)a3 completionHandler:(id)a4
+- (void)requestAccessForEntityType:(int64_t)type completionHandler:(id)handler
 {
-  v6 = a4;
-  if (a3)
+  handlerCopy = handler;
+  if (type)
   {
     v7 = [CNErrorFactory errorWithCode:100 userInfo:0];
-    v6[2](v6, 0, v7);
+    handlerCopy[2](handlerCopy, 0, v7);
   }
 
   else
   {
-    v8 = [(CNAuthorization *)self authorizationContext];
+    authorizationContext = [(CNAuthorization *)self authorizationContext];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __64__CNAuthorization_requestAccessForEntityType_completionHandler___block_invoke;
     v9[3] = &unk_1E7417048;
     v9[4] = self;
-    v10 = v6;
-    [v8 requestAuthorization:1 completionHandler:v9];
+    v10 = handlerCopy;
+    [authorizationContext requestAuthorization:1 completionHandler:v9];
   }
 }
 
@@ -179,9 +179,9 @@ void __64__CNAuthorization_requestAccessForEntityType_completionHandler___block_
   (*(*(a1 + 40) + 16))();
 }
 
-- (int64_t)authorizationStatusForEntityType:(int64_t)a3
+- (int64_t)authorizationStatusForEntityType:(int64_t)type
 {
-  if ([(CNAuthorization *)self isAccessRestrictedForEntityType:a3])
+  if ([(CNAuthorization *)self isAccessRestrictedForEntityType:type])
   {
     return 1;
   }
@@ -192,20 +192,20 @@ void __64__CNAuthorization_requestAccessForEntityType_completionHandler___block_
   }
 
   v5 = authorizationStatusForEntityType__cn_once_object_1;
-  v6 = [(CNAuthorization *)self authorizationContext];
-  v7 = [v6 authorizationStatus];
+  authorizationContext = [(CNAuthorization *)self authorizationContext];
+  authorizationStatus = [authorizationContext authorizationStatus];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:authorizationStatus];
   v9 = [v5 objectForKeyedSubscript:v8];
 
-  v4 = [v9 integerValue];
-  if (v4 == 2)
+  integerValue = [v9 integerValue];
+  if (integerValue == 2)
   {
-    v10 = [objc_opt_class() logger];
-    [v10 accessAuthorizationStatusWasDenied];
+    logger = [objc_opt_class() logger];
+    [logger accessAuthorizationStatusWasDenied];
   }
 
-  return v4;
+  return integerValue;
 }
 
 void __52__CNAuthorization_authorizationStatusForEntityType___block_invoke()

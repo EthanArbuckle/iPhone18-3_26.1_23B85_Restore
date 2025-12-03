@@ -1,33 +1,33 @@
 @interface Bootstrapper
-- (void)afterBootstrapOnQueue:(id)a3 runBootstrapCallbackBlock:(id)a4;
-- (void)startBootstrappingWithWindow:(id)a3 shouldOnboard:(BOOL)a4;
-- (void)startBootstrappingWithWindow:(id)a3 shouldOnboard:(BOOL)a4 shouldCollapseSidebar:(BOOL)a5;
+- (void)afterBootstrapOnQueue:(id)queue runBootstrapCallbackBlock:(id)block;
+- (void)startBootstrappingWithWindow:(id)window shouldOnboard:(BOOL)onboard;
+- (void)startBootstrappingWithWindow:(id)window shouldOnboard:(BOOL)onboard shouldCollapseSidebar:(BOOL)sidebar;
 @end
 
 @implementation Bootstrapper
 
-- (void)startBootstrappingWithWindow:(id)a3 shouldOnboard:(BOOL)a4
+- (void)startBootstrappingWithWindow:(id)window shouldOnboard:(BOOL)onboard
 {
-  v6 = a3;
-  v7 = self;
-  Bootstrapper.startBootstrapping(window:shouldOnboard:)(v6, a4);
+  windowCopy = window;
+  selfCopy = self;
+  Bootstrapper.startBootstrapping(window:shouldOnboard:)(windowCopy, onboard);
 }
 
-- (void)startBootstrappingWithWindow:(id)a3 shouldOnboard:(BOOL)a4 shouldCollapseSidebar:(BOOL)a5
+- (void)startBootstrappingWithWindow:(id)window shouldOnboard:(BOOL)onboard shouldCollapseSidebar:(BOOL)sidebar
 {
-  v8 = a3;
-  v9 = self;
-  Bootstrapper.startBootstrapping(window:shouldOnboard:shouldCollapseSidebar:)(v8, a4, a5);
+  windowCopy = window;
+  selfCopy = self;
+  Bootstrapper.startBootstrapping(window:shouldOnboard:shouldCollapseSidebar:)(windowCopy, onboard, sidebar);
 }
 
-- (void)afterBootstrapOnQueue:(id)a3 runBootstrapCallbackBlock:(id)a4
+- (void)afterBootstrapOnQueue:(id)queue runBootstrapCallbackBlock:(id)block
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(block);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  Bootstrapper.afterBootstrap(on:run:)(v8, sub_1D7F52DBC, v7);
+  queueCopy = queue;
+  selfCopy = self;
+  Bootstrapper.afterBootstrap(on:run:)(queueCopy, sub_1D7F52DBC, v7);
 }
 
 @end

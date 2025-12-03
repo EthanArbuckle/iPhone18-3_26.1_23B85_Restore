@@ -1,13 +1,13 @@
 @interface FBSDisplayLayoutPublisher
-+ (id)publisherWithConfiguration:(id)a3;
++ (id)publisherWithConfiguration:(id)configuration;
 - (FBSDisplayLayoutPublisher)init;
-- (id)_addElement:(id)a3 forKey:(id)a4;
-- (id)_initWithConfiguration:(id)a3;
-- (void)_removeElement:(id)a3 forKey:(id)a4;
-- (void)addObserver:(id)a3;
+- (id)_addElement:(id)element forKey:(id)key;
+- (id)_initWithConfiguration:(id)configuration;
+- (void)_removeElement:(id)element forKey:(id)key;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)invalidate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation FBSDisplayLayoutPublisher
@@ -105,7 +105,7 @@ void __34__FBSDisplayLayoutPublisher_flush__block_invoke(uint64_t a1)
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSDisplayLayoutPublisher.m";
     v16 = 1024;
@@ -119,9 +119,9 @@ void __34__FBSDisplayLayoutPublisher_flush__block_invoke(uint64_t a1)
   _bs_set_crash_log_message();
 }
 
-- (id)_initWithConfiguration:(id)a3
+- (id)_initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = FBSDisplayLayoutPublisher;
   v5 = [(FBSDisplayLayoutPublisher *)&v17 init];
@@ -135,7 +135,7 @@ void __34__FBSDisplayLayoutPublisher_flush__block_invoke(uint64_t a1)
     v16[1] = 3221225472;
     v16[2] = __52__FBSDisplayLayoutPublisher__initWithConfiguration___block_invoke;
     v16[3] = &unk_1E76BF738;
-    v16[4] = v4;
+    v16[4] = configurationCopy;
     v8 = v5;
     v16[5] = v8;
     v9 = [off_1E76BCA40 listenerWithConfigurator:v16];
@@ -178,12 +178,12 @@ void __52__FBSDisplayLayoutPublisher__initWithConfiguration___block_invoke(uint6
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"publisher was not invalidated"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v5 = OUTLINED_FUNCTION_12();
     v6 = NSStringFromClass(v5);
     v7 = 138544642;
-    v8 = a1;
+    selfCopy = self;
     v9 = 2114;
     v10 = v6;
     v11 = 2048;
@@ -201,11 +201,11 @@ void __52__FBSDisplayLayoutPublisher__initWithConfiguration___block_invoke(uint6
   _bs_set_crash_log_message();
 }
 
-+ (id)publisherWithConfiguration:(id)a3
++ (id)publisherWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   NSClassFromString(&cfstr_Fbsdisplaylayo_7.isa);
-  if (!v4)
+  if (!configurationCopy)
   {
     [FBSDisplayLayoutPublisher publisherWithConfiguration:a2];
   }
@@ -215,9 +215,9 @@ void __52__FBSDisplayLayoutPublisher__initWithConfiguration___block_invoke(uint6
     [FBSDisplayLayoutPublisher publisherWithConfiguration:a2];
   }
 
-  v5 = [v4 domainIdentifier];
+  domainIdentifier = [configurationCopy domainIdentifier];
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v5)
+  if (!domainIdentifier)
   {
     [FBSDisplayLayoutPublisher publisherWithConfiguration:a2];
   }
@@ -227,9 +227,9 @@ void __52__FBSDisplayLayoutPublisher__initWithConfiguration___block_invoke(uint6
     [FBSDisplayLayoutPublisher publisherWithConfiguration:a2];
   }
 
-  v6 = [v4 instanceIdentifier];
+  instanceIdentifier = [configurationCopy instanceIdentifier];
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v6)
+  if (!instanceIdentifier)
   {
     [FBSDisplayLayoutPublisher publisherWithConfiguration:a2];
   }
@@ -239,7 +239,7 @@ void __52__FBSDisplayLayoutPublisher__initWithConfiguration___block_invoke(uint6
     [FBSDisplayLayoutPublisher publisherWithConfiguration:a2];
   }
 
-  v7 = [[FBSDisplayLayoutPublisher alloc] _initWithConfiguration:v4];
+  v7 = [[FBSDisplayLayoutPublisher alloc] _initWithConfiguration:configurationCopy];
 
   return v7;
 }
@@ -276,9 +276,9 @@ void __39__FBSDisplayLayoutPublisher_invalidate__block_invoke(uint64_t a1)
   *(v2 + 72) = 0;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     BSDispatchQueueAssertMain();
   }
@@ -286,28 +286,28 @@ void __39__FBSDisplayLayoutPublisher_invalidate__block_invoke(uint64_t a1)
   [FBSDisplayLayoutPublisher addObserver:a2];
 }
 
-- (id)_addElement:(id)a3 forKey:(id)a4
+- (id)_addElement:(id)element forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  keyCopy = key;
   BSDispatchQueueAssertMain();
 }
 
-- (void)_removeElement:(id)a3 forKey:(id)a4
+- (void)_removeElement:(id)element forKey:(id)key
 {
-  a3;
-  v5 = a4;
+  element;
+  keyCopy = key;
   BSDispatchQueueAssertMain();
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 remoteToken];
-  v11 = [v10 hasEntitlement:@"com.apple.frontboardservices.display-layout-monitor"];
+  connectionCopy = connection;
+  contextCopy = context;
+  remoteToken = [connectionCopy remoteToken];
+  v11 = [remoteToken hasEntitlement:@"com.apple.frontboardservices.display-layout-monitor"];
 
-  if (v11 && (v12 = [v9 decodeInt64ForKey:@"qos"], v12 <= 2u))
+  if (v11 && (v12 = [contextCopy decodeInt64ForKey:@"qos"], v12 <= 2u))
   {
     v13 = self->_queuesByQOS[v12 & 3];
     v14[0] = MEMORY[0x1E69E9820];
@@ -316,14 +316,14 @@ void __39__FBSDisplayLayoutPublisher_invalidate__block_invoke(uint64_t a1)
     v14[3] = &unk_1E76BF848;
     v14[4] = self;
     v17 = v12;
-    v15 = v8;
+    v15 = connectionCopy;
     v16 = a2;
     [(BSServiceDispatchQueue *)v13 performAsyncAndWait:v14];
   }
 
   else
   {
-    [v8 invalidate];
+    [connectionCopy invalidate];
   }
 }
 

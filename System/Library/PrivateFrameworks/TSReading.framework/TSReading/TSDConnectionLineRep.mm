@@ -1,9 +1,9 @@
 @interface TSDConnectionLineRep
-+ (BOOL)canConnectToRep:(id)a3;
-+ (id)infosToConnectFromSelection:(id)a3 withInteractiveCanvasController:(id)a4;
-- (BOOL)canConnectToRep:(id)a3;
-- (BOOL)canUseSpecializedHitRegionForKnob:(id)a3;
-- (BOOL)containsPoint:(CGPoint)a3;
++ (BOOL)canConnectToRep:(id)rep;
++ (id)infosToConnectFromSelection:(id)selection withInteractiveCanvasController:(id)controller;
+- (BOOL)canConnectToRep:(id)rep;
+- (BOOL)canUseSpecializedHitRegionForKnob:(id)knob;
+- (BOOL)containsPoint:(CGPoint)point;
 - (BOOL)directlyManagesLayerContent;
 - (BOOL)i_editMenuOverlapsEndKnobs;
 - (BOOL)isDraggable;
@@ -16,7 +16,7 @@
 - (BOOL)shouldShowSmartShapeKnobs;
 - (CGPoint)i_dragOffset;
 - (CGRect)targetRectForEditMenu;
-- (double)shortestDistanceToPoint:(CGPoint)a3 countAsHit:(BOOL *)a4;
+- (double)shortestDistanceToPoint:(CGPoint)point countAsHit:(BOOL *)hit;
 - (id)additionalRepsForDragging;
 - (id)connectionLineLayout;
 - (unint64_t)enabledKnobMask;
@@ -41,20 +41,20 @@
   return TSUDynamicCast();
 }
 
-+ (id)infosToConnectFromSelection:(id)a3 withInteractiveCanvasController:(id)a4
++ (id)infosToConnectFromSelection:(id)selection withInteractiveCanvasController:(id)controller
 {
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [a3 infos];
+  array = [MEMORY[0x277CBEB18] array];
+  infos = [selection infos];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __84__TSDConnectionLineRep_infosToConnectFromSelection_withInteractiveCanvasController___block_invoke;
   v9[3] = &unk_279D491B8;
-  v9[4] = a4;
-  v9[5] = v6;
-  [v7 enumerateObjectsUsingBlock:v9];
-  if ([v6 count] == 2)
+  v9[4] = controller;
+  v9[5] = array;
+  [infos enumerateObjectsUsingBlock:v9];
+  if ([array count] == 2)
   {
-    return v6;
+    return array;
   }
 
   else
@@ -79,22 +79,22 @@ unint64_t __84__TSDConnectionLineRep_infosToConnectFromSelection_withInteractive
   return result;
 }
 
-+ (BOOL)canConnectToRep:(id)a3
++ (BOOL)canConnectToRep:(id)rep
 {
-  v3 = [a3 repForSelecting];
+  repForSelecting = [rep repForSelecting];
   objc_opt_class();
-  [v3 layout];
+  [repForSelecting layout];
   if (([TSUDynamicCast() pathIsLineSegment] & 1) == 0)
   {
-    v4 = [objc_msgSend(v3 "layout")];
+    v4 = [objc_msgSend(repForSelecting "layout")];
     if (!v4)
     {
       return v4;
     }
 
-    if (([objc_msgSend(v3 "info")] & 1) == 0)
+    if (([objc_msgSend(repForSelecting "info")] & 1) == 0)
     {
-      LOBYTE(v4) = [objc_msgSend(v3 "info")] ^ 1;
+      LOBYTE(v4) = [objc_msgSend(repForSelecting "info")] ^ 1;
       return v4;
     }
   }
@@ -103,22 +103,22 @@ unint64_t __84__TSDConnectionLineRep_infosToConnectFromSelection_withInteractive
   return v4;
 }
 
-- (BOOL)canConnectToRep:(id)a3
+- (BOOL)canConnectToRep:(id)rep
 {
-  v4 = [a3 repForSelecting];
-  if (v4 == self)
+  repForSelecting = [rep repForSelecting];
+  if (repForSelecting == self)
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v5 = v4;
-    v6 = [TSDConnectionLineRep canConnectToRep:v4];
+    v5 = repForSelecting;
+    v6 = [TSDConnectionLineRep canConnectToRep:repForSelecting];
     if (v6)
     {
-      v7 = [(TSDAbstractLayout *)[(TSDRep *)v5 layout] parent];
-      LOBYTE(v6) = v7 == [(TSDAbstractLayout *)[(TSDRep *)self layout] parent];
+      parent = [(TSDAbstractLayout *)[(TSDRep *)v5 layout] parent];
+      LOBYTE(v6) = parent == [(TSDAbstractLayout *)[(TSDRep *)self layout] parent];
     }
   }
 
@@ -128,12 +128,12 @@ unint64_t __84__TSDConnectionLineRep_infosToConnectFromSelection_withInteractive
 - (BOOL)shouldShowSmartShapeKnobs
 {
   v3 = [objc_msgSend(-[TSDConnectionLineRep connectionLineLayout](self "connectionLineLayout")];
-  v4 = [(TSDConnectionLineRep *)self shouldCreateKnobs];
-  if (v3 == 1 || !v4)
+  shouldCreateKnobs = [(TSDConnectionLineRep *)self shouldCreateKnobs];
+  if (v3 == 1 || !shouldCreateKnobs)
   {
-    if (!v4)
+    if (!shouldCreateKnobs)
     {
-      return v4;
+      return shouldCreateKnobs;
     }
   }
 
@@ -157,84 +157,84 @@ unint64_t __84__TSDConnectionLineRep_infosToConnectFromSelection_withInteractive
     v14.super_class = TSDConnectionLineRep;
     if (([(TSDShapeRep *)&v14 enabledKnobMask]& 0x800) != 0)
     {
-      LOBYTE(v4) = ![(TSDRep *)self isLocked];
-      return v4;
+      LOBYTE(shouldCreateKnobs) = ![(TSDRep *)self isLocked];
+      return shouldCreateKnobs;
     }
   }
 
 LABEL_11:
-  LOBYTE(v4) = 0;
-  return v4;
+  LOBYTE(shouldCreateKnobs) = 0;
+  return shouldCreateKnobs;
 }
 
 - (BOOL)shouldCreateKnobs
 {
-  v2 = [(TSDConnectionLineRep *)self connectionLineLayout];
-  if ([v2 isInvisible])
+  connectionLineLayout = [(TSDConnectionLineRep *)self connectionLineLayout];
+  if ([connectionLineLayout isInvisible])
   {
     return 0;
   }
 
-  return [v2 validLine];
+  return [connectionLineLayout validLine];
 }
 
 - (BOOL)shouldShowCommentHighlight
 {
-  v3 = [(TSDConnectionLineRep *)self connectionLineLayout];
-  if ([v3 isInvisible])
+  connectionLineLayout = [(TSDConnectionLineRep *)self connectionLineLayout];
+  if ([connectionLineLayout isInvisible])
   {
-    LOBYTE(v4) = 0;
+    LOBYTE(validLine) = 0;
   }
 
   else
   {
-    v4 = [v3 validLine];
-    if (v4)
+    validLine = [connectionLineLayout validLine];
+    if (validLine)
     {
       v6.receiver = self;
       v6.super_class = TSDConnectionLineRep;
-      LOBYTE(v4) = [(TSDRep *)&v6 shouldShowCommentHighlight];
+      LOBYTE(validLine) = [(TSDRep *)&v6 shouldShowCommentHighlight];
     }
   }
 
-  return v4;
+  return validLine;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(TSDConnectionLineRep *)self connectionLineLayout];
-  if ([v6 isInvisible])
+  y = point.y;
+  x = point.x;
+  connectionLineLayout = [(TSDConnectionLineRep *)self connectionLineLayout];
+  if ([connectionLineLayout isInvisible])
   {
-    LOBYTE(v7) = 0;
+    LOBYTE(validLine) = 0;
   }
 
   else
   {
-    v7 = [v6 validLine];
-    if (v7)
+    validLine = [connectionLineLayout validLine];
+    if (validLine)
     {
       v9.receiver = self;
       v9.super_class = TSDConnectionLineRep;
-      LOBYTE(v7) = [(TSDShapeRep *)&v9 containsPoint:x, y];
+      LOBYTE(validLine) = [(TSDShapeRep *)&v9 containsPoint:x, y];
     }
   }
 
-  return v7;
+  return validLine;
 }
 
-- (double)shortestDistanceToPoint:(CGPoint)a3 countAsHit:(BOOL *)a4
+- (double)shortestDistanceToPoint:(CGPoint)point countAsHit:(BOOL *)hit
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(TSDConnectionLineRep *)self connectionLineLayout];
+  y = point.y;
+  x = point.x;
+  connectionLineLayout = [(TSDConnectionLineRep *)self connectionLineLayout];
   v9 = 3.40282347e38;
-  if (([v8 isInvisible] & 1) == 0 && objc_msgSend(v8, "validLine"))
+  if (([connectionLineLayout isInvisible] & 1) == 0 && objc_msgSend(connectionLineLayout, "validLine"))
   {
     v12.receiver = self;
     v12.super_class = TSDConnectionLineRep;
-    [(TSDShapeRep *)&v12 shortestDistanceToPoint:a4 countAsHit:x, y];
+    [(TSDShapeRep *)&v12 shortestDistanceToPoint:hit countAsHit:x, y];
     return v10;
   }
 
@@ -245,17 +245,17 @@ LABEL_11:
 {
   v6.receiver = self;
   v6.super_class = TSDConnectionLineRep;
-  v3 = [(TSDShapeRep *)&v6 enabledKnobMask];
+  enabledKnobMask = [(TSDShapeRep *)&v6 enabledKnobMask];
   v5.receiver = self;
   v5.super_class = TSDConnectionLineRep;
   if ([(TSDRep *)&v5 shouldCreateKnobs])
   {
-    return v3;
+    return enabledKnobMask;
   }
 
   else
   {
-    return v3 & 0xFFFFFFFFFFFFF3FFLL;
+    return enabledKnobMask & 0xFFFFFFFFFFFFF3FFLL;
   }
 }
 
@@ -270,47 +270,47 @@ LABEL_11:
 
   if ([objc_msgSend(-[TSDConnectionLineRep connectionLineLayout](self "connectionLineLayout")] != 1)
   {
-    LOBYTE(v3) = 0;
-    return v3;
+    LOBYTE(connectedTo) = 0;
+    return connectedTo;
   }
 
-  v4 = [(TSDConnectionLineRep *)self connectionLineLayout];
-  if ([v4 connectedFrom] && objc_msgSend(-[TSDCanvas repForLayout:](-[TSDRep canvas](self, "canvas"), "repForLayout:", objc_msgSend(v4, "connectedFrom")), "shouldCreateKnobs") && objc_msgSend(objc_msgSend(v4, "connectedFrom"), "layoutState") == 2)
+  connectionLineLayout = [(TSDConnectionLineRep *)self connectionLineLayout];
+  if ([connectionLineLayout connectedFrom] && objc_msgSend(-[TSDCanvas repForLayout:](-[TSDRep canvas](self, "canvas"), "repForLayout:", objc_msgSend(connectionLineLayout, "connectedFrom")), "shouldCreateKnobs") && objc_msgSend(objc_msgSend(connectionLineLayout, "connectedFrom"), "layoutState") == 2)
   {
 LABEL_2:
-    LOBYTE(v3) = 1;
+    LOBYTE(connectedTo) = 1;
   }
 
   else
   {
-    v3 = [v4 connectedTo];
-    if (v3)
+    connectedTo = [connectionLineLayout connectedTo];
+    if (connectedTo)
     {
-      LODWORD(v3) = [-[TSDCanvas repForLayout:](-[TSDRep canvas](self "canvas")];
-      if (v3)
+      LODWORD(connectedTo) = [-[TSDCanvas repForLayout:](-[TSDRep canvas](self "canvas")];
+      if (connectedTo)
       {
-        LOBYTE(v3) = [objc_msgSend(v4 "connectedTo")] == 2;
+        LOBYTE(connectedTo) = [objc_msgSend(connectionLineLayout "connectedTo")] == 2;
       }
     }
   }
 
-  return v3;
+  return connectedTo;
 }
 
 - (id)additionalRepsForDragging
 {
   if ([(TSDConnectionLineRep *)self p_isConnected])
   {
-    v3 = [(TSDConnectionLineRep *)self connectionLineLayout];
+    connectionLineLayout = [(TSDConnectionLineRep *)self connectionLineLayout];
     v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    if ([v3 connectedFrom])
+    if ([connectionLineLayout connectedFrom])
     {
-      [v4 addObject:{-[TSDCanvas repForLayout:](-[TSDRep canvas](self, "canvas"), "repForLayout:", objc_msgSend(v3, "connectedFrom"))}];
+      [v4 addObject:{-[TSDCanvas repForLayout:](-[TSDRep canvas](self, "canvas"), "repForLayout:", objc_msgSend(connectionLineLayout, "connectedFrom"))}];
     }
 
-    if ([v3 connectedTo])
+    if ([connectionLineLayout connectedTo])
     {
-      [v4 addObject:{-[TSDCanvas repForLayout:](-[TSDRep canvas](self, "canvas"), "repForLayout:", objc_msgSend(v3, "connectedTo"))}];
+      [v4 addObject:{-[TSDCanvas repForLayout:](-[TSDRep canvas](self, "canvas"), "repForLayout:", objc_msgSend(connectionLineLayout, "connectedTo"))}];
     }
 
     return v4;
@@ -326,22 +326,22 @@ LABEL_2:
 
 - (BOOL)isSelectable
 {
-  v2 = [(TSDRep *)self layout];
+  layout = [(TSDRep *)self layout];
 
-  return [(TSDLayout *)v2 isInTopLevelContainerForEditing];
+  return [(TSDLayout *)layout isInTopLevelContainerForEditing];
 }
 
 - (BOOL)isDraggable
 {
   v5.receiver = self;
   v5.super_class = TSDConnectionLineRep;
-  v3 = [(TSDShapeRep *)&v5 isDraggable];
-  if (v3)
+  isDraggable = [(TSDShapeRep *)&v5 isDraggable];
+  if (isDraggable)
   {
-    LOBYTE(v3) = ![(TSDConnectionLineRep *)self p_isConnectedToLockedObjects];
+    LOBYTE(isDraggable) = ![(TSDConnectionLineRep *)self p_isConnectedToLockedObjects];
   }
 
-  return v3;
+  return isDraggable;
 }
 
 - (CGRect)targetRectForEditMenu
@@ -371,16 +371,16 @@ LABEL_2:
   return result;
 }
 
-- (BOOL)canUseSpecializedHitRegionForKnob:(id)a3
+- (BOOL)canUseSpecializedHitRegionForKnob:(id)knob
 {
-  if ([a3 tag] == 12)
+  if ([knob tag] == 12)
   {
     return 0;
   }
 
   v6.receiver = self;
   v6.super_class = TSDConnectionLineRep;
-  return [(TSDShapeRep *)&v6 canUseSpecializedHitRegionForKnob:a3];
+  return [(TSDShapeRep *)&v6 canUseSpecializedHitRegionForKnob:knob];
 }
 
 - (BOOL)directlyManagesLayerContent
@@ -411,9 +411,9 @@ LABEL_2:
 
 - (CGPoint)i_dragOffset
 {
-  v3 = [(TSDConnectionLineRep *)self connectionLineLayout];
-  v4 = [v3 connectedTo] == 0;
-  if ((v4 ^ ([v3 connectedFrom] != 0)))
+  connectionLineLayout = [(TSDConnectionLineRep *)self connectionLineLayout];
+  v4 = [connectionLineLayout connectedTo] == 0;
+  if ((v4 ^ ([connectionLineLayout connectedFrom] != 0)))
   {
     v7.receiver = self;
     v7.super_class = TSDConnectionLineRep;
@@ -422,12 +422,12 @@ LABEL_2:
 
   else
   {
-    if ([v3 isBeingTransformed])
+    if ([connectionLineLayout isBeingTransformed])
     {
-      [v3 pauseDynamicTransformation];
+      [connectionLineLayout pauseDynamicTransformation];
     }
 
-    [v3 i_accumulatedDrag];
+    [connectionLineLayout i_accumulatedDrag];
   }
 
   result.y = v6;
@@ -440,22 +440,22 @@ LABEL_2:
   v3 = [(TSDRep *)self knobForTag:12];
   v4 = [(TSDRep *)self knobForTag:11];
   v5 = [(TSDRep *)self knobForTag:10];
-  v6 = [(TSDRep *)self canvas];
+  canvas = [(TSDRep *)self canvas];
   [v3 position];
   [(TSDRep *)self convertNaturalPointToUnscaledCanvas:?];
-  [(TSDCanvas *)v6 convertUnscaledToBoundsPoint:?];
+  [(TSDCanvas *)canvas convertUnscaledToBoundsPoint:?];
   v8 = v7;
   v10 = v9;
-  v11 = [(TSDRep *)self canvas];
+  canvas2 = [(TSDRep *)self canvas];
   [v4 position];
   [(TSDRep *)self convertNaturalPointToUnscaledCanvas:?];
-  [(TSDCanvas *)v11 convertUnscaledToBoundsPoint:?];
+  [(TSDCanvas *)canvas2 convertUnscaledToBoundsPoint:?];
   v13 = v12;
   v15 = v14;
-  v16 = [(TSDRep *)self canvas];
+  canvas3 = [(TSDRep *)self canvas];
   [v5 position];
   [(TSDRep *)self convertNaturalPointToUnscaledCanvas:?];
-  [(TSDCanvas *)v16 convertUnscaledToBoundsPoint:?];
+  [(TSDCanvas *)canvas3 convertUnscaledToBoundsPoint:?];
   v18 = v17;
   v20 = v19;
   [(TSDCanvas *)[(TSDRep *)self canvas] i_approximateScaledFrameOfEditingMenuAtPoint:v8, v10];
@@ -482,12 +482,12 @@ LABEL_2:
 
 - (BOOL)p_isConnectedToLockedObjects
 {
-  v2 = [(TSDConnectionLineRep *)self connectionLineLayout];
+  connectionLineLayout = [(TSDConnectionLineRep *)self connectionLineLayout];
   objc_opt_class();
-  [objc_msgSend(v2 "connectedFrom")];
+  [objc_msgSend(connectionLineLayout "connectedFrom")];
   v3 = TSUDynamicCast();
   objc_opt_class();
-  [objc_msgSend(v2 "connectedTo")];
+  [objc_msgSend(connectionLineLayout "connectedTo")];
   v4 = TSUDynamicCast();
   if ([v3 isLocked])
   {
@@ -499,24 +499,24 @@ LABEL_2:
 
 - (BOOL)p_controlKnobVisible
 {
-  v3 = [(TSDConnectionLineRep *)self shouldShowSmartShapeKnobs];
-  if (v3)
+  shouldShowSmartShapeKnobs = [(TSDConnectionLineRep *)self shouldShowSmartShapeKnobs];
+  if (shouldShowSmartShapeKnobs)
   {
     v4 = [(TSDRep *)self knobForTag:12];
-    v5 = [(TSDRep *)self canvas];
+    canvas = [(TSDRep *)self canvas];
     [v4 position];
     [(TSDRep *)self convertNaturalPointToUnscaledCanvas:?];
-    [(TSDCanvas *)v5 convertUnscaledToBoundsPoint:?];
+    [(TSDCanvas *)canvas convertUnscaledToBoundsPoint:?];
     v7 = v6;
     v9 = v8;
     [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] visibleBoundsRect];
     v14 = v7;
     v15 = v9;
 
-    LOBYTE(v3) = CGRectContainsPoint(*&v10, *&v14);
+    LOBYTE(shouldShowSmartShapeKnobs) = CGRectContainsPoint(*&v10, *&v14);
   }
 
-  return v3;
+  return shouldShowSmartShapeKnobs;
 }
 
 @end

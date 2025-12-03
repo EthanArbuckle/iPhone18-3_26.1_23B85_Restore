@@ -1,67 +1,67 @@
 @interface _UIContextMenuUIController
-- (BOOL)_needsToAvoidKeyboardForResponder:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)shouldMaintainKeyboardAssertionForFirstResponder:(id)a3;
+- (BOOL)_needsToAvoidKeyboardForResponder:(id)responder;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)shouldMaintainKeyboardAssertionForFirstResponder:(id)responder;
 - (CGSize)previewSize;
 - (UIView)platterContainerView;
 - (UIView)platterTransitionView;
 - (UIViewFloatAnimatableProperty)backgroundViewAnimationProgress;
 - (UIVisualEffectView)backgroundEffectView;
 - (_UIContextMenuLayoutArbiterOutput)currentLayout;
-- (_UIContextMenuUIController)initWithConfiguration:(id)a3 style:(id)a4;
+- (_UIContextMenuUIController)initWithConfiguration:(id)configuration style:(id)style;
 - (_UIContextMenuUIControllerDelegate)delegate;
 - (_UIFlocker)flocker;
 - (_UIMorphPlatterViewBase)contentPlatterView;
-- (id)_layoutWithUpdatedAttachment:(BOOL)a3 concealedMenu:(BOOL)a4;
+- (id)_layoutWithUpdatedAttachment:(BOOL)attachment concealedMenu:(BOOL)menu;
 - (id)_platformMetrics;
-- (id)_primaryPlatterDragPreviewForDragItem:(id)a3 preferringFullSize:(BOOL)a4;
-- (id)contextMenuView:(id)a3 willDisplayMenu:(id)a4;
-- (id)dismissalPreviewForSecondaryItem:(id)a3 style:(unint64_t)a4;
-- (id)dismissalPreviewForStyle:(unint64_t)a3 clientReturnedPreview:(BOOL *)a4;
-- (id)livePreviewForDragItem:(id)a3 preferringFullSize:(BOOL)a4;
-- (id)previewForCancellingDragItem:(id)a3;
+- (id)_primaryPlatterDragPreviewForDragItem:(id)item preferringFullSize:(BOOL)size;
+- (id)contextMenuView:(id)view willDisplayMenu:(id)menu;
+- (id)dismissalPreviewForSecondaryItem:(id)item style:(unint64_t)style;
+- (id)dismissalPreviewForStyle:(unint64_t)style clientReturnedPreview:(BOOL *)preview;
+- (id)livePreviewForDragItem:(id)item preferringFullSize:(BOOL)size;
+- (id)previewForCancellingDragItem:(id)item;
 - (id)windowSceneActivationPreview;
 - (int64_t)_interfaceIdiom;
 - (unint64_t)_preferredSubmenuHierarchyStyle;
-- (void)_adjustViewForKeyboardVisibility:(BOOL)a3 keyboardInfo:(id)a4;
+- (void)_adjustViewForKeyboardVisibility:(BOOL)visibility keyboardInfo:(id)info;
 - (void)_cleanUpDragViews;
 - (void)_concealMenu;
-- (void)_createMenuViewIfNecessaryForMenu:(id)a3;
+- (void)_createMenuViewIfNecessaryForMenu:(id)menu;
 - (void)_didBeginMorphToDragPreview;
 - (void)_didCompleteMorphToDragPreview;
-- (void)_displayMenu:(id)a3 updateType:(unint64_t)a4;
-- (void)_enumeratePlatterViewsWithBlock:(id)a3;
-- (void)_handleActionHandoffGesture:(id)a3;
-- (void)_handleDismissalTapGesture:(id)a3;
-- (void)_handlePlatterActionTapGesture:(id)a3;
-- (void)_installViewsIntoDragContainerView:(id)a3;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
-- (void)_replaceVisibleMenu:(id)a3 withMenu:(id)a4;
-- (void)_sceneWillDeactivate:(id)a3;
+- (void)_displayMenu:(id)menu updateType:(unint64_t)type;
+- (void)_enumeratePlatterViewsWithBlock:(id)block;
+- (void)_handleActionHandoffGesture:(id)gesture;
+- (void)_handleDismissalTapGesture:(id)gesture;
+- (void)_handlePlatterActionTapGesture:(id)gesture;
+- (void)_installViewsIntoDragContainerView:(id)view;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
+- (void)_replaceVisibleMenu:(id)menu withMenu:(id)withMenu;
+- (void)_sceneWillDeactivate:(id)deactivate;
 - (void)_testing_dismissByTappingOutside;
 - (void)_testing_tapAnAction;
-- (void)_updateActionsViewReversesOrderForAttachment:(unint64_t)a3;
-- (void)_updateLayoutAndAttachment:(BOOL)a3;
-- (void)_updatePlatterAndActionViewLayoutForce:(BOOL)a3 updateAttachment:(BOOL)a4 adjustDetent:(BOOL)a5;
+- (void)_updateActionsViewReversesOrderForAttachment:(unint64_t)attachment;
+- (void)_updateLayoutAndAttachment:(BOOL)attachment;
+- (void)_updatePlatterAndActionViewLayoutForce:(BOOL)force updateAttachment:(BOOL)attachment adjustDetent:(BOOL)detent;
 - (void)_updatePlatterContainerViewTraitCollection;
-- (void)contextMenuView:(id)a3 didSelectElement:(id)a4;
+- (void)contextMenuView:(id)view didSelectElement:(id)element;
 - (void)dealloc;
-- (void)didSelectCancelActionInContextMenuView:(id)a3;
+- (void)didSelectCancelActionInContextMenuView:(id)view;
 - (void)dismissalTransitionDidEnd;
 - (void)dismissalTransitionWillBegin;
-- (void)displayMenu:(id)a3 inPlaceOfMenu:(id)a4;
-- (void)dragWillCancelWithAnimator:(id)a3;
+- (void)displayMenu:(id)menu inPlaceOfMenu:(id)ofMenu;
+- (void)dragWillCancelWithAnimator:(id)animator;
 - (void)endSourcePreviewHidingIfNeeded;
-- (void)hideSourcePreview:(id)a3;
-- (void)platterPanControllerDidSwipeDown:(id)a3;
-- (void)platterPanControllerDidTearOff:(id)a3;
-- (void)platterPanInteractionBegan:(id)a3 allowSwipeToDismiss:(BOOL *)a4;
-- (void)platterPanInteractionEnded:(id)a3;
+- (void)hideSourcePreview:(id)preview;
+- (void)platterPanControllerDidSwipeDown:(id)down;
+- (void)platterPanControllerDidTearOff:(id)off;
+- (void)platterPanInteractionBegan:(id)began allowSwipeToDismiss:(BOOL *)dismiss;
+- (void)platterPanInteractionEnded:(id)ended;
 - (void)presentationTransitionWillBegin;
-- (void)previewSizeDidChange:(CGSize)a3;
-- (void)retargetDismissingMenuToPreview:(id)a3;
+- (void)previewSizeDidChange:(CGSize)change;
+- (void)retargetDismissingMenuToPreview:(id)preview;
 - (void)viewTraitCollectionDidChange;
 @end
 
@@ -72,8 +72,8 @@
   platterContainerView = self->_platterContainerView;
   if (!platterContainerView)
   {
-    v4 = [(_UIContextMenuUIController *)self menuStyle];
-    v5 = [v4 _backgroundInteractionStyle] == 2;
+    menuStyle = [(_UIContextMenuUIController *)self menuStyle];
+    v5 = [menuStyle _backgroundInteractionStyle] == 2;
 
     v6 = [_UIContextMenuContainerView alloc];
     v7 = [(_UIContextMenuContainerView *)v6 initWithFrame:v5 allowsBackgroundInteractionAcrossProccesses:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -84,10 +84,10 @@
     v22[3] = &unk_1E7124DE0;
     objc_copyWeak(&v23, &location);
     [(UIView *)v7 setSubtreeTraitPropagationHandler:v22];
-    v8 = [(UIView *)v7 traitCollection];
-    v9 = [v8 userInterfaceIdiom];
+    traitCollection = [(UIView *)v7 traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v9 || (-[_UIContextMenuUIController menuStyle](self, "menuStyle"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 preferredLayout], v10, v11 == 3))
+    if (userInterfaceIdiom || (-[_UIContextMenuUIController menuStyle](self, "menuStyle"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 preferredLayout], v10, v11 == 3))
     {
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
@@ -95,19 +95,19 @@
       v20[3] = &unk_1E70F5A28;
       objc_copyWeak(&v21, &location);
       [(UIView *)v7 setDismissalHandler:v20];
-      v12 = [(_UIContextMenuUIController *)self platterTransitionView];
-      [(UIView *)v7 setContentWrapperView:v12];
+      platterTransitionView = [(_UIContextMenuUIController *)self platterTransitionView];
+      [(UIView *)v7 setContentWrapperView:platterTransitionView];
 
       objc_destroyWeak(&v21);
     }
 
-    v13 = [(_UIContextMenuUIController *)self menuStyle];
-    -[UIView setAllowsDragEventsToPassthrough:](v7, "setAllowsDragEventsToPassthrough:", [v13 preferredLayout] == 3);
+    menuStyle2 = [(_UIContextMenuUIController *)self menuStyle];
+    -[UIView setAllowsDragEventsToPassthrough:](v7, "setAllowsDragEventsToPassthrough:", [menuStyle2 preferredLayout] == 3);
 
-    v14 = [(_UIContextMenuUIController *)self menuStyle];
-    v15 = [v14 ignoresContainerSizeChange];
+    menuStyle3 = [(_UIContextMenuUIController *)self menuStyle];
+    ignoresContainerSizeChange = [menuStyle3 ignoresContainerSizeChange];
 
-    if ((v15 & 1) == 0)
+    if ((ignoresContainerSizeChange & 1) == 0)
     {
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
@@ -152,35 +152,35 @@
 
 - (int64_t)_interfaceIdiom
 {
-  v2 = [(_UIContextMenuUIController *)self menuConfiguration];
-  v3 = [v2 sourcePreview];
-  v4 = [v3 view];
-  v5 = [v4 traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  menuConfiguration = [(_UIContextMenuUIController *)self menuConfiguration];
+  sourcePreview = [menuConfiguration sourcePreview];
+  view = [sourcePreview view];
+  traitCollection = [view traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  return v6;
+  return userInterfaceIdiom;
 }
 
 - (_UIFlocker)flocker
 {
   if (!self->_flocker)
   {
-    v3 = [(_UIContextMenuUIController *)self menuConfiguration];
-    v4 = [v3 isMultiItemMenu];
+    menuConfiguration = [(_UIContextMenuUIController *)self menuConfiguration];
+    isMultiItemMenu = [menuConfiguration isMultiItemMenu];
 
-    if (v4)
+    if (isMultiItemMenu)
     {
       v5 = [_UIFlocker alloc];
-      v6 = [(_UIContextMenuUIController *)self platterTransitionView];
-      v7 = [(_UIFlocker *)v5 initWithContainerView:v6];
+      platterTransitionView = [(_UIContextMenuUIController *)self platterTransitionView];
+      v7 = [(_UIFlocker *)v5 initWithContainerView:platterTransitionView];
       flocker = self->_flocker;
       self->_flocker = v7;
 
-      v9 = [(_UIContextMenuUIController *)self menuConfiguration];
-      -[_UIFlocker setItemCount:](self->_flocker, "setItemCount:", [v9 representedItemCount]);
+      menuConfiguration2 = [(_UIContextMenuUIController *)self menuConfiguration];
+      -[_UIFlocker setItemCount:](self->_flocker, "setItemCount:", [menuConfiguration2 representedItemCount]);
 
-      v10 = [(_UIContextMenuUIController *)self menuConfiguration];
-      -[_UIFlocker setBadgeValue:](self->_flocker, "setBadgeValue:", [v10 badgeCount]);
+      menuConfiguration3 = [(_UIContextMenuUIController *)self menuConfiguration];
+      -[_UIFlocker setBadgeValue:](self->_flocker, "setBadgeValue:", [menuConfiguration3 badgeCount]);
     }
   }
 
@@ -197,153 +197,153 @@
 
 - (void)presentationTransitionWillBegin
 {
-  v3 = [(_UIContextMenuUIController *)self menuStyle];
-  v4 = [v3 containerView];
+  menuStyle = [(_UIContextMenuUIController *)self menuStyle];
+  containerView = [menuStyle containerView];
 
-  if (v4)
+  if (containerView)
   {
-    v5 = [(_UIContextMenuUIController *)self menuStyle];
-    v49 = [v5 containerView];
+    menuStyle2 = [(_UIContextMenuUIController *)self menuStyle];
+    containerView2 = [menuStyle2 containerView];
   }
 
   else
   {
-    v5 = [(_UIContextMenuUIController *)self menuConfiguration];
-    v6 = [v5 sourcePreview];
-    v7 = [v6 view];
-    v49 = [v7 _window];
+    menuStyle2 = [(_UIContextMenuUIController *)self menuConfiguration];
+    sourcePreview = [menuStyle2 sourcePreview];
+    view = [sourcePreview view];
+    containerView2 = [view _window];
   }
 
-  v8 = [(_UIContextMenuUIController *)self _platformMetrics];
-  v9 = [v8 containerViewProviderWithEntity];
+  _platformMetrics = [(_UIContextMenuUIController *)self _platformMetrics];
+  containerViewProviderWithEntity = [_platformMetrics containerViewProviderWithEntity];
 
-  v10 = [(_UIContextMenuUIController *)self _platformMetrics];
-  v11 = [v10 containerViewProvider];
+  _platformMetrics2 = [(_UIContextMenuUIController *)self _platformMetrics];
+  containerViewProvider = [_platformMetrics2 containerViewProvider];
 
-  if (v9)
+  if (containerViewProviderWithEntity)
   {
-    v12 = [(_UIContextMenuUIController *)self menuConfiguration];
-    v13 = [v12 sourcePreview];
-    v14 = [(_UIContextMenuUIController *)self menuConfiguration];
-    v15 = [v14 menu];
-    v16 = (*(v9 + 16))(v9, v49, v13, v15, 0);
+    menuConfiguration = [(_UIContextMenuUIController *)self menuConfiguration];
+    sourcePreview2 = [menuConfiguration sourcePreview];
+    menuConfiguration2 = [(_UIContextMenuUIController *)self menuConfiguration];
+    menu = [menuConfiguration2 menu];
+    v16 = (*(containerViewProviderWithEntity + 16))(containerViewProviderWithEntity, containerView2, sourcePreview2, menu, 0);
   }
 
   else
   {
-    if (!v11)
+    if (!containerViewProvider)
     {
       goto LABEL_9;
     }
 
-    v12 = [(_UIContextMenuUIController *)self menuConfiguration];
-    v13 = [v12 sourcePreview];
-    v14 = [(_UIContextMenuUIController *)self menuConfiguration];
-    v15 = [v14 menu];
-    v16 = (*(v11 + 16))(v11, v49, v13, v15);
+    menuConfiguration = [(_UIContextMenuUIController *)self menuConfiguration];
+    sourcePreview2 = [menuConfiguration sourcePreview];
+    menuConfiguration2 = [(_UIContextMenuUIController *)self menuConfiguration];
+    menu = [menuConfiguration2 menu];
+    v16 = (*(containerViewProvider + 16))(containerViewProvider, containerView2, sourcePreview2, menu);
   }
 
   v17 = v16;
 
-  v49 = v17;
+  containerView2 = v17;
 LABEL_9:
-  v18 = [(_UIContextMenuUIController *)self platterContainerView];
-  [v49 bounds];
-  [v18 setFrame:?];
-  [v18 setAutoresizingMask:18];
-  [v18 setUserInteractionEnabled:1];
-  v19 = [(_UIContextMenuUIController *)self menuStyle];
-  [v18 setPassesBackgroundViewTouchesThrough:{objc_msgSend(v19, "_backgroundInteractionStyle") == 1}];
+  platterContainerView = [(_UIContextMenuUIController *)self platterContainerView];
+  [containerView2 bounds];
+  [platterContainerView setFrame:?];
+  [platterContainerView setAutoresizingMask:18];
+  [platterContainerView setUserInteractionEnabled:1];
+  menuStyle3 = [(_UIContextMenuUIController *)self menuStyle];
+  [platterContainerView setPassesBackgroundViewTouchesThrough:{objc_msgSend(menuStyle3, "_backgroundInteractionStyle") == 1}];
 
-  [v49 addSubview:v18];
-  v20 = [(_UIContextMenuUIController *)self menuConfiguration];
-  v21 = [v20 menu];
+  [containerView2 addSubview:platterContainerView];
+  menuConfiguration3 = [(_UIContextMenuUIController *)self menuConfiguration];
+  menu2 = [menuConfiguration3 menu];
 
-  if (([v21 metadata] & 0x1000000) != 0)
+  if (([menu2 metadata] & 0x1000000) != 0)
   {
-    [(_UIContextMenuUIController *)self _createMenuViewIfNecessaryForMenu:v21];
-    v22 = [(_UIContextMenuUIController *)self menuView];
-    [v22 displayMenu:v21 updateType:0 alongsideAnimations:0];
+    [(_UIContextMenuUIController *)self _createMenuViewIfNecessaryForMenu:menu2];
+    menuView = [(_UIContextMenuUIController *)self menuView];
+    [menuView displayMenu:menu2 updateType:0 alongsideAnimations:0];
   }
 
   v23 = [_UIContextMenuPanController alloc];
-  v24 = [(_UIContextMenuUIController *)self contentPlatterView];
-  v25 = [(_UIContextMenuUIController *)self menuView];
-  v26 = [(_UIContextMenuPanController *)v23 initWithContainerView:v18 platterView:v24 menuView:v25];
+  contentPlatterView = [(_UIContextMenuUIController *)self contentPlatterView];
+  menuView2 = [(_UIContextMenuUIController *)self menuView];
+  v26 = [(_UIContextMenuPanController *)v23 initWithContainerView:platterContainerView platterView:contentPlatterView menuView:menuView2];
   [(_UIContextMenuUIController *)self setPlatterPanController:v26];
 
-  v27 = [(_UIContextMenuUIController *)self platterPanController];
-  [v27 setDelegate:self];
+  platterPanController = [(_UIContextMenuUIController *)self platterPanController];
+  [platterPanController setDelegate:self];
 
   v28 = [[UITapGestureRecognizer alloc] initWithTarget:self action:sel__handleDismissalTapGesture_];
   [(UIGestureRecognizer *)v28 setName:@"com.apple.UIKit.ContextMenuDismissalTap"];
   [(UIGestureRecognizer *)v28 setDelegate:self];
-  [v18 addGestureRecognizer:v28];
+  [platterContainerView addGestureRecognizer:v28];
   [(_UIContextMenuUIController *)self setDismissalTapGestureRecognizer:v28];
-  v29 = [(_UIContextMenuUIController *)self menuView];
-  if ([(_UIContextMenuActionScrubbingHandoffGestureRecognizer *)v29 scrubbingEnabled])
+  menuView3 = [(_UIContextMenuUIController *)self menuView];
+  if ([(_UIContextMenuActionScrubbingHandoffGestureRecognizer *)menuView3 scrubbingEnabled])
   {
-    v30 = [(_UIContextMenuUIController *)self _interfaceIdiom];
+    _interfaceIdiom = [(_UIContextMenuUIController *)self _interfaceIdiom];
 
-    if (v30 == 6)
+    if (_interfaceIdiom == 6)
     {
       goto LABEL_17;
     }
 
-    v29 = [[_UIContextMenuActionScrubbingHandoffGestureRecognizer alloc] initWithTarget:self action:sel__handleActionHandoffGesture_];
-    [(UIGestureRecognizer *)v29 setDelegate:self];
-    v31 = [(_UIContextMenuUIController *)self menuStyle];
-    v32 = [v31 _allowsImmediateSelection];
+    menuView3 = [[_UIContextMenuActionScrubbingHandoffGestureRecognizer alloc] initWithTarget:self action:sel__handleActionHandoffGesture_];
+    [(UIGestureRecognizer *)menuView3 setDelegate:self];
+    menuStyle4 = [(_UIContextMenuUIController *)self menuStyle];
+    _allowsImmediateSelection = [menuStyle4 _allowsImmediateSelection];
 
-    if (v32)
+    if (_allowsImmediateSelection)
     {
-      [(_UIContextMenuActionScrubbingHandoffGestureRecognizer *)v29 setHysteresis:0.0];
+      [(_UIContextMenuActionScrubbingHandoffGestureRecognizer *)menuView3 setHysteresis:0.0];
     }
 
-    [v18 addGestureRecognizer:v29];
-    [(_UIContextMenuUIController *)self setActionScrubbingHandoffGestureRecognizer:v29];
+    [platterContainerView addGestureRecognizer:menuView3];
+    [(_UIContextMenuUIController *)self setActionScrubbingHandoffGestureRecognizer:menuView3];
   }
 
 LABEL_17:
-  v47 = v9;
-  v33 = v11;
+  v47 = containerViewProviderWithEntity;
+  v33 = containerViewProvider;
   [(_UIContextMenuUIController *)self _updatePlatterContainerViewTraitCollection];
   v34 = [_UIContextMenuLayoutArbiter alloc];
-  v35 = [(_UIContextMenuUIController *)self menuStyle];
-  v36 = -[_UIContextMenuLayoutArbiter initWithContainerView:layout:](v34, "initWithContainerView:layout:", v18, [v35 preferredLayout]);
+  menuStyle5 = [(_UIContextMenuUIController *)self menuStyle];
+  v36 = -[_UIContextMenuLayoutArbiter initWithContainerView:layout:](v34, "initWithContainerView:layout:", platterContainerView, [menuStyle5 preferredLayout]);
   [(_UIContextMenuUIController *)self setLayoutArbiter:v36];
 
   [(_UIContextMenuUIController *)self setState:1];
-  v37 = [(_UIContextMenuUIController *)self menuConfiguration];
-  v38 = [v37 sourcePreview];
-  v39 = [v38 target];
-  v40 = [v39 container];
-  v41 = [v40 _window];
+  menuConfiguration4 = [(_UIContextMenuUIController *)self menuConfiguration];
+  sourcePreview3 = [menuConfiguration4 sourcePreview];
+  target = [sourcePreview3 target];
+  container = [target container];
+  _window = [container _window];
 
-  if (([v41 _isTextEffectsWindow] & 1) == 0)
+  if (([_window _isTextEffectsWindow] & 1) == 0)
   {
-    [v41 makeKeyWindow];
+    [_window makeKeyWindow];
   }
 
-  v42 = [v18 _focusSystemSceneComponent];
-  v43 = [(_UIContextMenuUIController *)self menuView];
-  [v42 pushPreferredFocusEnvironmentOverride:v43];
+  _focusSystemSceneComponent = [platterContainerView _focusSystemSceneComponent];
+  menuView4 = [(_UIContextMenuUIController *)self menuView];
+  [_focusSystemSceneComponent pushPreferredFocusEnvironmentOverride:menuView4];
 
   if ([(_UIContextMenuView *)self->_menuView shouldEnableTypeSelect]&& +[_UITypeSelectInteraction isTypeSelectSupported])
   {
-    v44 = [v18 window];
-    v45 = [v44 windowScene];
-    v46 = [v45 _keyboardOverridingSceneComponent];
+    window = [platterContainerView window];
+    windowScene = [window windowScene];
+    _keyboardOverridingSceneComponent = [windowScene _keyboardOverridingSceneComponent];
 
-    [v46 setCommonView:v18];
+    [_keyboardOverridingSceneComponent setCommonView:platterContainerView];
   }
 }
 
 - (id)_platformMetrics
 {
-  v2 = [(_UIContextMenuUIController *)self _interfaceIdiom];
+  _interfaceIdiom = [(_UIContextMenuUIController *)self _interfaceIdiom];
 
-  return _UIContextMenuGetPlatformMetrics(v2);
+  return _UIContextMenuGetPlatformMetrics(_interfaceIdiom);
 }
 
 - (_UIMorphPlatterViewBase)contentPlatterView
@@ -351,29 +351,29 @@ LABEL_17:
   contentPlatterView = self->_contentPlatterView;
   if (!contentPlatterView)
   {
-    v4 = [(_UIContextMenuUIController *)self menuConfiguration];
-    v5 = [(_UIContextMenuUIController *)self menuStyle];
-    v6 = [v4 isMultiItemMenu];
-    if ((v6 & 1) != 0 || [v5 _layoutAllowsPreview])
+    menuConfiguration = [(_UIContextMenuUIController *)self menuConfiguration];
+    menuStyle = [(_UIContextMenuUIController *)self menuStyle];
+    isMultiItemMenu = [menuConfiguration isMultiItemMenu];
+    if ((isMultiItemMenu & 1) != 0 || [menuStyle _layoutAllowsPreview])
     {
       _UIContextMenuMagicMorphAnimationEnabled();
       v7 = objc_opt_new();
       v8 = self->_contentPlatterView;
       self->_contentPlatterView = v7;
 
-      v9 = [(_UIContextMenuUIController *)self platterContainerView];
-      v10 = [v9 traitCollection];
-      v11 = _UIContextMenuGetPlatformMetrics([v10 userInterfaceIdiom]);
+      platterContainerView = [(_UIContextMenuUIController *)self platterContainerView];
+      traitCollection = [platterContainerView traitCollection];
+      v11 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-      if (v6)
+      if (isMultiItemMenu)
       {
         v12 = 1;
       }
 
-      else if ([v5 preferredLayout] == 1)
+      else if ([menuStyle preferredLayout] == 1)
       {
-        v13 = [v4 previewViewController];
-        v12 = v13 == 0;
+        previewViewController = [menuConfiguration previewViewController];
+        v12 = previewViewController == 0;
       }
 
       else
@@ -382,9 +382,9 @@ LABEL_17:
       }
 
       [(_UIMorphPlatterViewBase *)self->_contentPlatterView setAlwaysCompact:v12];
-      -[_UIMorphPlatterViewBase setAllowsUserInteractionInExpandedPreview:](self->_contentPlatterView, "setAllowsUserInteractionInExpandedPreview:", [v5 hasInteractivePreview]);
-      -[_UIMorphPlatterViewBase setPreventPreviewRasterization:](self->_contentPlatterView, "setPreventPreviewRasterization:", [v5 preventPreviewRasterization]);
-      [(_UIMorphPlatterViewBase *)self->_contentPlatterView setWantsEdgeAntialiasing:v6];
+      -[_UIMorphPlatterViewBase setAllowsUserInteractionInExpandedPreview:](self->_contentPlatterView, "setAllowsUserInteractionInExpandedPreview:", [menuStyle hasInteractivePreview]);
+      -[_UIMorphPlatterViewBase setPreventPreviewRasterization:](self->_contentPlatterView, "setPreventPreviewRasterization:", [menuStyle preventPreviewRasterization]);
+      [(_UIMorphPlatterViewBase *)self->_contentPlatterView setWantsEdgeAntialiasing:isMultiItemMenu];
       [(_UIMorphPlatterViewBase *)self->_contentPlatterView setCollapsedShadowStyle:1];
       if (v12)
       {
@@ -397,36 +397,36 @@ LABEL_17:
       }
 
       [(_UIMorphPlatterViewBase *)self->_contentPlatterView setExpandedShadowStyle:v14];
-      v15 = [v11 previewShadowSettings];
-      [(_UIMorphPlatterViewBase *)self->_contentPlatterView setShadowSettings:v15];
+      previewShadowSettings = [v11 previewShadowSettings];
+      [(_UIMorphPlatterViewBase *)self->_contentPlatterView setShadowSettings:previewShadowSettings];
 
-      v16 = [v11 submenuSeparatedOptions];
-      [(_UIMorphPlatterViewBase *)self->_contentPlatterView setSeparatedOptions:v16];
+      submenuSeparatedOptions = [v11 submenuSeparatedOptions];
+      [(_UIMorphPlatterViewBase *)self->_contentPlatterView setSeparatedOptions:submenuSeparatedOptions];
 
-      v17 = [v11 shouldApplyClippingHandler];
-      [(_UIMorphPlatterViewBase *)self->_contentPlatterView setShouldApplyClippingHandler:v17];
+      shouldApplyClippingHandler = [v11 shouldApplyClippingHandler];
+      [(_UIMorphPlatterViewBase *)self->_contentPlatterView setShouldApplyClippingHandler:shouldApplyClippingHandler];
 
-      if ([v5 ignoresDefaultSizingRules])
+      if ([menuStyle ignoresDefaultSizingRules])
       {
         [(_UIMorphPlatterViewBase *)self->_contentPlatterView setPreferredMorphingAxis:1];
       }
 
-      v18 = [v4 previewAction];
+      previewAction = [menuConfiguration previewAction];
 
-      if (v18)
+      if (previewAction)
       {
         v19 = [[UITapGestureRecognizer alloc] initWithTarget:self action:sel__handlePlatterActionTapGesture_];
         [(_UIContextMenuUIController *)self setPlatterActionTapGestureRecognizer:v19];
 
-        v20 = [(_UIContextMenuUIController *)self platterActionTapGestureRecognizer];
-        [v20 setName:@"com.apple.UIKit.ContextMenuPreviewActionTap"];
+        platterActionTapGestureRecognizer = [(_UIContextMenuUIController *)self platterActionTapGestureRecognizer];
+        [platterActionTapGestureRecognizer setName:@"com.apple.UIKit.ContextMenuPreviewActionTap"];
 
-        v21 = [(_UIContextMenuUIController *)self platterActionTapGestureRecognizer];
-        [v21 setDelegate:self];
+        platterActionTapGestureRecognizer2 = [(_UIContextMenuUIController *)self platterActionTapGestureRecognizer];
+        [platterActionTapGestureRecognizer2 setDelegate:self];
 
         v22 = self->_contentPlatterView;
-        v23 = [(_UIContextMenuUIController *)self platterActionTapGestureRecognizer];
-        [(UIView *)v22 addGestureRecognizer:v23];
+        platterActionTapGestureRecognizer3 = [(_UIContextMenuUIController *)self platterActionTapGestureRecognizer];
+        [(UIView *)v22 addGestureRecognizer:platterActionTapGestureRecognizer3];
       }
     }
 
@@ -440,54 +440,54 @@ LABEL_17:
 {
   if ([(_UIContextMenuUIController *)self _interfaceIdiom]!= 6)
   {
-    v3 = [(_UIContextMenuUIController *)self menuStyle];
-    v12 = [v3 _parentTraitEnvironmentForUserInterfaceStyle];
+    menuStyle = [(_UIContextMenuUIController *)self menuStyle];
+    _parentTraitEnvironmentForUserInterfaceStyle = [menuStyle _parentTraitEnvironmentForUserInterfaceStyle];
 
-    v4 = v12;
-    if (v12)
+    v4 = _parentTraitEnvironmentForUserInterfaceStyle;
+    if (_parentTraitEnvironmentForUserInterfaceStyle)
     {
-      v5 = [(_UIContextMenuUIController *)self platterContainerView];
-      v6 = [v12 _traitCollectionForChildEnvironment:v5];
+      platterContainerView = [(_UIContextMenuUIController *)self platterContainerView];
+      v6 = [_parentTraitEnvironmentForUserInterfaceStyle _traitCollectionForChildEnvironment:platterContainerView];
 
-      v7 = [v6 glassUserInterfaceStyle];
-      if (v7 || (v7 = [v6 userInterfaceStyle]) != 0)
+      glassUserInterfaceStyle = [v6 glassUserInterfaceStyle];
+      if (glassUserInterfaceStyle || (glassUserInterfaceStyle = [v6 userInterfaceStyle]) != 0)
       {
-        v8 = v7;
-        v9 = [(_UIContextMenuUIController *)self platterContainerView];
-        v10 = [(UIView *)v9 _internalTraitOverrides];
-        [v10 setUserInterfaceStyle:v8];
+        v8 = glassUserInterfaceStyle;
+        platterContainerView2 = [(_UIContextMenuUIController *)self platterContainerView];
+        _internalTraitOverrides = [(UIView *)platterContainerView2 _internalTraitOverrides];
+        [_internalTraitOverrides setUserInterfaceStyle:v8];
       }
 
       else
       {
-        v9 = [(_UIContextMenuUIController *)self platterContainerView];
-        v10 = [(UIView *)v9 _internalTraitOverrides];
-        [(_UITraitOverrides *)v10 _removeTraitToken:?];
+        platterContainerView2 = [(_UIContextMenuUIController *)self platterContainerView];
+        _internalTraitOverrides = [(UIView *)platterContainerView2 _internalTraitOverrides];
+        [(_UITraitOverrides *)_internalTraitOverrides _removeTraitToken:?];
       }
 
-      v11 = [(_UIContextMenuUIController *)self platterContainerView];
-      [v11 updateTraitsIfNeeded];
+      platterContainerView3 = [(_UIContextMenuUIController *)self platterContainerView];
+      [platterContainerView3 updateTraitsIfNeeded];
 
-      v4 = v12;
+      v4 = _parentTraitEnvironmentForUserInterfaceStyle;
     }
   }
 }
 
 - (unint64_t)_preferredSubmenuHierarchyStyle
 {
-  v3 = [(_UIContextMenuUIController *)self menuStyle];
-  v4 = [v3 prefersStackedHierarchy];
+  menuStyle = [(_UIContextMenuUIController *)self menuStyle];
+  prefersStackedHierarchy = [menuStyle prefersStackedHierarchy];
 
-  if ((v4 & 1) != 0 || ![(_UIContextMenuUIController *)self _interfaceIdiom])
+  if ((prefersStackedHierarchy & 1) != 0 || ![(_UIContextMenuUIController *)self _interfaceIdiom])
   {
     return 1;
   }
 
-  v5 = [(_UIContextMenuUIController *)self platterContainerView];
-  [v5 bounds];
+  platterContainerView = [(_UIContextMenuUIController *)self platterContainerView];
+  [platterContainerView bounds];
   Width = CGRectGetWidth(v11);
-  v7 = [(_UIContextMenuUIController *)self platterContainerView];
-  v8 = _UIContextMenuActionsViewWidth(v7, 0, 0, 0, 0, [(_UIContextMenuUIController *)self _interfaceIdiom]);
+  platterContainerView2 = [(_UIContextMenuUIController *)self platterContainerView];
+  v8 = _UIContextMenuActionsViewWidth(platterContainerView2, 0, 0, 0, 0, [(_UIContextMenuUIController *)self _interfaceIdiom]);
   v9 = v8 + v8;
 
   if (Width <= v9)
@@ -550,12 +550,12 @@ LABEL_17:
         if (byte_1EA95E0FC)
         {
           v10 = +[UIColor magentaColor];
-          v11 = [v10 CGColor];
-          v12 = [(UIView *)self->_platterTransitionView layer];
-          [v12 setBorderColor:v11];
+          cGColor = [v10 CGColor];
+          layer = [(UIView *)self->_platterTransitionView layer];
+          [layer setBorderColor:cGColor];
 
-          v13 = [(UIView *)self->_platterTransitionView layer];
-          [v13 setBorderWidth:6.0];
+          layer2 = [(UIView *)self->_platterTransitionView layer];
+          [layer2 setBorderWidth:6.0];
         }
       }
     }
@@ -574,24 +574,24 @@ LABEL_5:
   return WeakRetained;
 }
 
-- (_UIContextMenuUIController)initWithConfiguration:(id)a3 style:(id)a4
+- (_UIContextMenuUIController)initWithConfiguration:(id)configuration style:(id)style
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  styleCopy = style;
   v8 = [(_UIContextMenuUIController *)self init];
   v9 = v8;
   if (v8)
   {
-    [(_UIContextMenuUIController *)v8 setMenuConfiguration:v6];
-    [(_UIContextMenuUIController *)v9 setMenuStyle:v7];
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v9 selector:sel__keyboardWillShow_ name:@"UIKeyboardWillShowNotification" object:0];
+    [(_UIContextMenuUIController *)v8 setMenuConfiguration:configurationCopy];
+    [(_UIContextMenuUIController *)v9 setMenuStyle:styleCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__keyboardWillShow_ name:@"UIKeyboardWillShowNotification" object:0];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v9 selector:sel__keyboardWillHide_ name:@"UIKeyboardWillHideNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v9 selector:sel__keyboardWillHide_ name:@"UIKeyboardWillHideNotification" object:0];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v9 selector:sel__sceneWillDeactivate_ name:@"UISceneWillDeactivateNotification" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v9 selector:sel__sceneWillDeactivate_ name:@"UISceneWillDeactivateNotification" object:0];
   }
 
   return v9;
@@ -605,12 +605,12 @@ LABEL_5:
     [(_UIContextMenuUIController *)self _cleanUpDragViews];
   }
 
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = @"UIKeyboardWillShowNotification";
   v6[1] = @"UIKeyboardWillHideNotification";
   v6[2] = @"UISceneWillDeactivateNotification";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:3];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   v5.receiver = self;
   v5.super_class = _UIContextMenuUIController;
@@ -619,76 +619,76 @@ LABEL_5:
 
 - (void)dismissalTransitionWillBegin
 {
-  v3 = [(_UIContextMenuUIController *)self platterContainerView];
-  v4 = [v3 _focusSystemSceneComponent];
-  v5 = [(_UIContextMenuUIController *)self menuView];
-  [v4 removePreferredFocusEnvironmentOverride:v5];
+  platterContainerView = [(_UIContextMenuUIController *)self platterContainerView];
+  _focusSystemSceneComponent = [platterContainerView _focusSystemSceneComponent];
+  menuView = [(_UIContextMenuUIController *)self menuView];
+  [_focusSystemSceneComponent removePreferredFocusEnvironmentOverride:menuView];
 
   [(_UIContextMenuUIController *)self setState:0];
   [(_UIContextMenuView *)self->_menuView disableTypeSelectIfNeeded];
-  v6 = [(_UIContextMenuUIController *)self platterContainerView];
-  [v6 setUserInteractionEnabled:0];
+  platterContainerView2 = [(_UIContextMenuUIController *)self platterContainerView];
+  [platterContainerView2 setUserInteractionEnabled:0];
 
-  v7 = [(_UIContextMenuUIController *)self _platformMetrics];
-  v11 = [v7 preDismissalHandler];
+  _platformMetrics = [(_UIContextMenuUIController *)self _platformMetrics];
+  preDismissalHandler = [_platformMetrics preDismissalHandler];
 
-  if (v11)
+  if (preDismissalHandler)
   {
-    v8 = [(_UIContextMenuUIController *)self platterContainerView];
-    v11[2](v11, v8);
+    platterContainerView3 = [(_UIContextMenuUIController *)self platterContainerView];
+    preDismissalHandler[2](preDismissalHandler, platterContainerView3);
   }
 
-  v9 = [(_UIContextMenuUIController *)self platterPanController];
-  [v9 setEnabled:0];
+  platterPanController = [(_UIContextMenuUIController *)self platterPanController];
+  [platterPanController setEnabled:0];
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)dismissalTransitionDidEnd
 {
-  v3 = [(_UIContextMenuUIController *)self _platformMetrics];
-  v5 = [v3 postDismissalHandler];
+  _platformMetrics = [(_UIContextMenuUIController *)self _platformMetrics];
+  postDismissalHandler = [_platformMetrics postDismissalHandler];
 
-  if (v5)
+  if (postDismissalHandler)
   {
-    v4 = [(_UIContextMenuUIController *)self platterContainerView];
-    v5[2](v5, v4);
+    platterContainerView = [(_UIContextMenuUIController *)self platterContainerView];
+    postDismissalHandler[2](postDismissalHandler, platterContainerView);
   }
 }
 
-- (void)platterPanControllerDidTearOff:(id)a3
+- (void)platterPanControllerDidTearOff:(id)off
 {
-  v4 = [a3 panGestureRecognizer];
-  v5 = [v4 _allActiveTouches];
-  v7 = [v5 anyObject];
+  panGestureRecognizer = [off panGestureRecognizer];
+  _allActiveTouches = [panGestureRecognizer _allActiveTouches];
+  anyObject = [_allActiveTouches anyObject];
 
-  v6 = [(_UIContextMenuUIController *)self delegate];
-  [v6 contextMenuUIController:self didBeginDragWithTouch:v7];
+  delegate = [(_UIContextMenuUIController *)self delegate];
+  [delegate contextMenuUIController:self didBeginDragWithTouch:anyObject];
 }
 
-- (void)platterPanControllerDidSwipeDown:(id)a3
+- (void)platterPanControllerDidSwipeDown:(id)down
 {
-  v4 = [(_UIContextMenuUIController *)self delegate];
-  [v4 contextMenuUIController:self didRequestDismissalWithReason:2 alongsideActions:0 completion:0];
+  delegate = [(_UIContextMenuUIController *)self delegate];
+  [delegate contextMenuUIController:self didRequestDismissalWithReason:2 alongsideActions:0 completion:0];
 }
 
-- (void)platterPanInteractionBegan:(id)a3 allowSwipeToDismiss:(BOOL *)a4
+- (void)platterPanInteractionBegan:(id)began allowSwipeToDismiss:(BOOL *)dismiss
 {
-  v6 = [(_UIContextMenuUIController *)self delegate];
-  *a4 = [v6 contextMenuUIControllerShouldAllowSwipeToDismissForBeginningPanInteraction:self];
+  delegate = [(_UIContextMenuUIController *)self delegate];
+  *dismiss = [delegate contextMenuUIControllerShouldAllowSwipeToDismissForBeginningPanInteraction:self];
 }
 
-- (void)platterPanInteractionEnded:(id)a3
+- (void)platterPanInteractionEnded:(id)ended
 {
-  v4 = [(_UIContextMenuUIController *)self delegate];
-  [v4 contextMenuUIControllerDidEndPanInteraction:self];
+  delegate = [(_UIContextMenuUIController *)self delegate];
+  [delegate contextMenuUIControllerDidEndPanInteraction:self];
 }
 
-- (id)livePreviewForDragItem:(id)a3 preferringFullSize:(BOOL)a4
+- (id)livePreviewForDragItem:(id)item preferringFullSize:(BOOL)size
 {
-  v4 = a4;
-  v6 = a3;
+  sizeCopy = size;
+  itemCopy = item;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -708,22 +708,22 @@ LABEL_5:
   v29[2] = __72___UIContextMenuUIController_livePreviewForDragItem_preferringFullSize___block_invoke;
   v29[3] = &unk_1E7124D20;
   v31 = &v42;
-  v7 = v6;
+  v7 = itemCopy;
   v30 = v7;
   v32 = &v38;
   v33 = &v34;
   [(_UIContextMenuUIController *)self _enumeratePlatterViewsWithBlock:v29];
   if (!v43[5])
   {
-    v8 = [(_UIContextMenuUIController *)self flocker];
-    v9 = [v8 secondaryPlatterViews];
-    v10 = [v9 count];
+    flocker = [(_UIContextMenuUIController *)self flocker];
+    secondaryPlatterViews = [flocker secondaryPlatterViews];
+    v10 = [secondaryPlatterViews count];
 
     if (!v10)
     {
-      v11 = [(_UIContextMenuUIController *)self contentPlatterView];
+      contentPlatterView = [(_UIContextMenuUIController *)self contentPlatterView];
       v12 = v43[5];
-      v43[5] = v11;
+      v43[5] = contentPlatterView;
 
       *(v39 + 24) = 1;
       v35[3] = 0;
@@ -735,7 +735,7 @@ LABEL_5:
   {
     if (*(v39 + 24) == 1)
     {
-      v14 = [(_UIContextMenuUIController *)self _primaryPlatterDragPreviewForDragItem:v7 preferringFullSize:v4];
+      v14 = [(_UIContextMenuUIController *)self _primaryPlatterDragPreviewForDragItem:v7 preferringFullSize:sizeCopy];
       objc_initWeak(&location, self);
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
@@ -753,21 +753,21 @@ LABEL_5:
       [v13 transform];
       [v43[5] bounds];
       Width = CGRectGetWidth(v49);
-      v16 = [v43[5] collapsedPreview];
-      [v16 size];
+      collapsedPreview = [v43[5] collapsedPreview];
+      [collapsedPreview size];
       v18 = Width / v17;
 
       v24 = location;
       CGAffineTransformScale(&v25, &v24, v18, v18);
       location = v25;
       v19 = [UIDragPreviewTarget alloc];
-      v20 = [v43[5] superview];
+      superview = [v43[5] superview];
       [v43[5] center];
       v25 = location;
-      v21 = [(UIPreviewTarget *)v19 initWithContainer:v20 center:&v25 transform:?];
+      v21 = [(UIPreviewTarget *)v19 initWithContainer:superview center:&v25 transform:?];
 
-      v22 = [v7 _targetedLiftPreview];
-      v14 = [v22 retargetedPreviewWithTarget:v21];
+      _targetedLiftPreview = [v7 _targetedLiftPreview];
+      v14 = [_targetedLiftPreview retargetedPreviewWithTarget:v21];
 
       [v14 _setApplyTargetTransformToFlock:1];
     }
@@ -787,77 +787,77 @@ LABEL_5:
   return v14;
 }
 
-- (id)_primaryPlatterDragPreviewForDragItem:(id)a3 preferringFullSize:(BOOL)a4
+- (id)_primaryPlatterDragPreviewForDragItem:(id)item preferringFullSize:(BOOL)size
 {
-  v6 = a3;
-  [v6 _setDeferPreviewUpdates:1];
-  v7 = [v6 previewProvider];
+  itemCopy = item;
+  [itemCopy _setDeferPreviewUpdates:1];
+  previewProvider = [itemCopy previewProvider];
 
-  if (!v7)
+  if (!previewProvider)
   {
     v8 = 0;
 LABEL_6:
-    v9 = [v6 _targetedLiftPreview];
-    v10 = [v6 _previewProviderForType:1];
+    _targetedLiftPreview = [itemCopy _targetedLiftPreview];
+    v10 = [itemCopy _previewProviderForType:1];
 
     v8 = v10;
     goto LABEL_7;
   }
 
-  v8 = [v6 _previewProviderForType:2];
+  v8 = [itemCopy _previewProviderForType:2];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_6;
   }
 
-  v9 = [v8 preview];
-  if (!v9)
+  _targetedLiftPreview = [v8 preview];
+  if (!_targetedLiftPreview)
   {
     goto LABEL_6;
   }
 
 LABEL_7:
-  v11 = [(_UIViewAlphaOverrideAssertion *)self->_sourcePreviewAlphaOverrideAssertion sourceView];
-  v12 = [v9 view];
+  sourceView = [(_UIViewAlphaOverrideAssertion *)self->_sourcePreviewAlphaOverrideAssertion sourceView];
+  view = [_targetedLiftPreview view];
 
-  if (v11 == v12)
+  if (sourceView == view)
   {
-    v13 = [v9 view];
-    [v13 alpha];
+    view2 = [_targetedLiftPreview view];
+    [view2 alpha];
     [(_UIViewAlphaOverrideAssertion *)self->_sourcePreviewAlphaOverrideAssertion setAlpha:?];
   }
 
-  [v9 _setPreventAfterScreenUpdatesSnapshot:v11 != v12];
-  v14 = [v8 _duiPreview];
-  v15 = [(_UIContextMenuUIController *)self menuConfiguration];
-  if (([v15 isMultiItemMenu] & 1) != 0 || objc_msgSend(v14, "isOversized"))
+  [_targetedLiftPreview _setPreventAfterScreenUpdatesSnapshot:sourceView != view];
+  _duiPreview = [v8 _duiPreview];
+  menuConfiguration = [(_UIContextMenuUIController *)self menuConfiguration];
+  if (([menuConfiguration isMultiItemMenu] & 1) != 0 || objc_msgSend(_duiPreview, "isOversized"))
   {
 
 LABEL_12:
-    [v14 scaledSize];
+    [_duiPreview scaledSize];
     v17 = v16;
     v19 = v18;
     v20 = 1;
     goto LABEL_13;
   }
 
-  [v14 scaleFactor];
+  [_duiPreview scaleFactor];
   v50 = v49;
 
-  if (v50 < 1.0 && !a4)
+  if (v50 < 1.0 && !size)
   {
     goto LABEL_12;
   }
 
-  [v14 unscaledSize];
+  [_duiPreview unscaledSize];
   v17 = v51;
   v19 = v52;
   v20 = 0;
 LABEL_13:
-  if (v14)
+  if (_duiPreview)
   {
-    [v14 liftTransform];
+    [_duiPreview liftTransform];
     v22 = v58;
     v21 = v59;
     v24 = v60;
@@ -878,9 +878,9 @@ LABEL_13:
   [(_UIContextMenuUIController *)self _installViewsIntoDragContainerView:v26];
   if (v20)
   {
-    [v14 scaledSize];
+    [_duiPreview scaledSize];
     v28 = v27;
-    [v14 unscaledSize];
+    [_duiPreview unscaledSize];
     v30 = v28 / v29 * 33.0;
   }
 
@@ -889,33 +889,33 @@ LABEL_13:
     v30 = 33.0;
   }
 
-  [v14 setAvoidAnimation:{1, v9}];
+  [_duiPreview setAvoidAnimation:{1, _targetedLiftPreview}];
   v31 = objc_opt_new();
   [v31 _setPreviewMode:3];
   v32 = [(UITargetedPreview *)[UITargetedDragPreview alloc] initWithView:v26 parameters:v31];
   [(UITargetedDragPreview *)v32 setLiftAnchorPoint:v25 * 0.5, v30];
 
   v33 = [_UIPlatterView alloc];
-  v34 = [v8 imageComponent];
-  v35 = [(UITargetedPreview *)v32 view];
-  v36 = [(_UIPlatterView *)v33 initWithDUIPreview:v14 imageComponent:v34 sourceView:v35];
+  imageComponent = [v8 imageComponent];
+  view3 = [(UITargetedPreview *)v32 view];
+  v36 = [(_UIPlatterView *)v33 initWithDUIPreview:_duiPreview imageComponent:imageComponent sourceView:view3];
 
   [(_UIPlatterView *)v36 setConstrainSize:v20];
   [(_UIPlatterView *)v36 setLifted:1];
   [(_UIPlatterView *)v36 setTransformAppliedExternally:1];
   [(_UIPlatterView *)v36 setAppliesOriginalRotation:1];
   [(_UIContextMenuUIController *)self set_destinationPlatterView:v36];
-  v37 = [(_UIContextMenuUIController *)self _dragContainerTransitionView];
+  _dragContainerTransitionView = [(_UIContextMenuUIController *)self _dragContainerTransitionView];
 
   v54 = v8;
-  if (v37)
+  if (_dragContainerTransitionView)
   {
-    v38 = [(_UIContextMenuUIController *)self contentPlatterView];
-    [v38 center];
+    contentPlatterView = [(_UIContextMenuUIController *)self contentPlatterView];
+    [contentPlatterView center];
     [(UIView *)v36 setCenter:?];
 
-    v39 = [(_UIContextMenuUIController *)self _dragContainerTransitionView];
-    [v39 addSubview:v36];
+    _dragContainerTransitionView2 = [(_UIContextMenuUIController *)self _dragContainerTransitionView];
+    [_dragContainerTransitionView2 addSubview:v36];
   }
 
   else
@@ -923,46 +923,46 @@ LABEL_13:
     [(_UIPlatterView *)v36 setShadowVisible:0];
   }
 
-  v40 = [(_UIContextMenuUIController *)self platterContainerView];
+  platterContainerView = [(_UIContextMenuUIController *)self platterContainerView];
   v41 = objc_opt_new();
   [v41 setAlpha:0.0];
-  v42 = [(_UIContextMenuUIController *)self platterContainerView];
-  v43 = [v42 window];
-  [v43 insertSubview:v41 atIndex:0];
+  platterContainerView2 = [(_UIContextMenuUIController *)self platterContainerView];
+  window = [platterContainerView2 window];
+  [window insertSubview:v41 atIndex:0];
 
   [(_UIContextMenuUIController *)self set_subterraneanViewContainer:v41];
   v55[0] = MEMORY[0x1E69E9820];
   v55[1] = 3221225472;
   v55[2] = __87___UIContextMenuUIController__primaryPlatterDragPreviewForDragItem_preferringFullSize___block_invoke;
   v55[3] = &unk_1E70F35B8;
-  v56 = v6;
+  v56 = itemCopy;
   v57 = v53;
   v44 = v53;
-  v45 = v6;
+  v45 = itemCopy;
   [(_UIContextMenuUIController *)self set_postMorphDragItemUpdate:v55];
-  v46 = [(_UIContextMenuUIController *)self flocker];
-  v47 = [(UITargetedPreview *)v32 view];
-  [v46 badgeLocationInView:v47];
+  flocker = [(_UIContextMenuUIController *)self flocker];
+  view4 = [(UITargetedPreview *)v32 view];
+  [flocker badgeLocationInView:view4];
   [(UITargetedDragPreview *)v32 _setInitialBadgeLocation:?];
 
   return v32;
 }
 
-- (id)previewForCancellingDragItem:(id)a3
+- (id)previewForCancellingDragItem:(id)item
 {
-  v4 = [(_UIContextMenuUIController *)self _postMorphDragItemUpdate];
+  _postMorphDragItemUpdate = [(_UIContextMenuUIController *)self _postMorphDragItemUpdate];
 
-  if (v4)
+  if (_postMorphDragItemUpdate)
   {
     [(_UIContextMenuUIController *)self set_postMorphDragItemUpdate:0];
     [(_UIContextMenuUIController *)self set_dragWasCanceled:1];
-    v5 = [(_UIContextMenuUIController *)self _subterraneanViewContainer];
-    v6 = [(_UIContextMenuUIController *)self _dragContainerView];
-    [v5 addSubview:v6];
+    _subterraneanViewContainer = [(_UIContextMenuUIController *)self _subterraneanViewContainer];
+    _dragContainerView = [(_UIContextMenuUIController *)self _dragContainerView];
+    [_subterraneanViewContainer addSubview:_dragContainerView];
 
     v7 = [UITargetedDragPreview alloc];
-    v8 = [(_UIContextMenuUIController *)self _dragContainerView];
-    v9 = [(UITargetedDragPreview *)v7 initWithView:v8];
+    _dragContainerView2 = [(_UIContextMenuUIController *)self _dragContainerView];
+    v9 = [(UITargetedDragPreview *)v7 initWithView:_dragContainerView2];
   }
 
   else
@@ -975,33 +975,33 @@ LABEL_13:
 
 - (void)_didBeginMorphToDragPreview
 {
-  v2 = [(_UIContextMenuUIController *)self _dragContainerView];
-  [v2 setAlpha:0.0];
+  _dragContainerView = [(_UIContextMenuUIController *)self _dragContainerView];
+  [_dragContainerView setAlpha:0.0];
 }
 
 - (void)_didCompleteMorphToDragPreview
 {
-  v3 = [(_UIContextMenuUIController *)self platterContainerView];
-  [v3 setAlpha:0.0];
+  platterContainerView = [(_UIContextMenuUIController *)self platterContainerView];
+  [platterContainerView setAlpha:0.0];
 
-  v5 = [(_UIContextMenuUIController *)self _postMorphDragItemUpdate];
+  _postMorphDragItemUpdate = [(_UIContextMenuUIController *)self _postMorphDragItemUpdate];
   [(_UIContextMenuUIController *)self set_postMorphDragItemUpdate:0];
-  v4 = v5;
-  if (v5)
+  v4 = _postMorphDragItemUpdate;
+  if (_postMorphDragItemUpdate)
   {
-    (*(v5 + 16))(v5);
-    v4 = v5;
+    (*(_postMorphDragItemUpdate + 16))(_postMorphDragItemUpdate);
+    v4 = _postMorphDragItemUpdate;
   }
 }
 
-- (void)dragWillCancelWithAnimator:(id)a3
+- (void)dragWillCancelWithAnimator:(id)animator
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuUIController *)self _dragContainerTransitionView];
+  animatorCopy = animator;
+  _dragContainerTransitionView = [(_UIContextMenuUIController *)self _dragContainerTransitionView];
 
-  if (v5)
+  if (_dragContainerTransitionView)
   {
-    v6 = [(_UIContextMenuUIController *)self _destinationPlatterView];
+    _destinationPlatterView = [(_UIContextMenuUIController *)self _destinationPlatterView];
     v7 = v12;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -1010,7 +1010,7 @@ LABEL_13:
 
   else
   {
-    v6 = [(_UIContextMenuUIController *)self contentPlatterView];
+    _destinationPlatterView = [(_UIContextMenuUIController *)self contentPlatterView];
     v7 = v11;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -1019,21 +1019,21 @@ LABEL_13:
 
   v7[2] = v8;
   v7[3] = &unk_1E70F3590;
-  v7[4] = v6;
-  v9 = v6;
-  [v4 addAnimations:v7];
+  v7[4] = _destinationPlatterView;
+  v9 = _destinationPlatterView;
+  [animatorCopy addAnimations:v7];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57___UIContextMenuUIController_dragWillCancelWithAnimator___block_invoke_3;
   v10[3] = &unk_1E70F5DB8;
   v10[4] = self;
-  [v4 addCompletion:v10];
+  [animatorCopy addCompletion:v10];
 }
 
-- (void)_installViewsIntoDragContainerView:(id)a3
+- (void)_installViewsIntoDragContainerView:(id)view
 {
-  v21 = a3;
+  viewCopy = view;
   if (_UIInternalPreferencesRevisionOnce != -1)
   {
     dispatch_once(&_UIInternalPreferencesRevisionOnce, &__block_literal_global_5_11);
@@ -1058,48 +1058,48 @@ LABEL_13:
       if (byte_1EA95E0FC)
       {
         v17 = +[UIColor yellowColor];
-        v18 = [v17 CGColor];
-        v19 = [v21 layer];
-        [v19 setBorderColor:v18];
+        cGColor = [v17 CGColor];
+        layer = [viewCopy layer];
+        [layer setBorderColor:cGColor];
 
-        v20 = [v21 layer];
-        [v20 setBorderWidth:3.0];
+        layer2 = [viewCopy layer];
+        [layer2 setBorderWidth:3.0];
       }
     }
   }
 
 LABEL_4:
-  v5 = [(_UIContextMenuUIController *)self contentPlatterView];
-  [v5 freezeExpandedPreview];
+  contentPlatterView = [(_UIContextMenuUIController *)self contentPlatterView];
+  [contentPlatterView freezeExpandedPreview];
 
-  v6 = [(_UIContextMenuUIController *)self platterTransitionView];
-  v7 = [(_UIContextMenuUIController *)self platterContainerView];
-  [v7 addSubview:v21];
-  v8 = [(_UIContextMenuUIController *)self platterPanController];
-  v9 = [v8 panGestureRecognizer];
-  [v9 locationInView:v7];
-  [v21 setCenter:?];
+  platterTransitionView = [(_UIContextMenuUIController *)self platterTransitionView];
+  platterContainerView = [(_UIContextMenuUIController *)self platterContainerView];
+  [platterContainerView addSubview:viewCopy];
+  platterPanController = [(_UIContextMenuUIController *)self platterPanController];
+  panGestureRecognizer = [platterPanController panGestureRecognizer];
+  [panGestureRecognizer locationInView:platterContainerView];
+  [viewCopy setCenter:?];
 
   if (_UIContextMenuMagicMorphAnimationEnabled())
   {
     v10 = [UIView alloc];
-    [v6 frame];
+    [platterTransitionView frame];
     v11 = [(UIView *)v10 initWithFrame:?];
     [(_UIContextMenuUIController *)self set_dragContainerTransitionView:v11];
-    [v21 addSubview:v11];
-    [v6 center];
-    [v7 convertPoint:v21 toView:?];
+    [viewCopy addSubview:v11];
+    [platterTransitionView center];
+    [platterContainerView convertPoint:viewCopy toView:?];
     [(UIView *)v11 setCenter:?];
   }
 
   else
   {
-    [v6 center];
+    [platterTransitionView center];
     v13 = v12;
     v15 = v14;
-    [v21 addSubview:v6];
-    [v7 convertPoint:v21 toView:{v13, v15}];
-    [v6 setCenter:?];
+    [viewCopy addSubview:platterTransitionView];
+    [platterContainerView convertPoint:viewCopy toView:{v13, v15}];
+    [platterTransitionView setCenter:?];
   }
 }
 
@@ -1107,41 +1107,41 @@ LABEL_4:
 {
   [(UIView *)self->_platterContainerView removeFromSuperview];
   [(UIView *)self->_platterTransitionView removeFromSuperview];
-  v3 = [(_UIContextMenuUIController *)self _subterraneanViewContainer];
-  [v3 removeFromSuperview];
+  _subterraneanViewContainer = [(_UIContextMenuUIController *)self _subterraneanViewContainer];
+  [_subterraneanViewContainer removeFromSuperview];
 }
 
 - (id)windowSceneActivationPreview
 {
-  v2 = [(_UIContextMenuUIController *)self contentPlatterView];
-  v3 = v2;
-  if (v2)
+  contentPlatterView = [(_UIContextMenuUIController *)self contentPlatterView];
+  v3 = contentPlatterView;
+  if (contentPlatterView)
   {
-    if ([v2 alwaysCompact])
+    if ([contentPlatterView alwaysCompact])
     {
-      v4 = [v3 collapsedPreview];
+      collapsedPreview = [v3 collapsedPreview];
     }
 
     else
     {
-      v4 = [v3 expandedPreview];
+      collapsedPreview = [v3 expandedPreview];
       [v3 _continuousCornerRadius];
       v7 = v6;
-      v8 = [v4 view];
-      [v8 _setContinuousCornerRadius:v7];
+      view = [collapsedPreview view];
+      [view _setContinuousCornerRadius:v7];
     }
 
-    v9 = [v3 window];
-    v10 = [v3 superview];
+    window = [v3 window];
+    superview = [v3 superview];
     [v3 center];
-    [v10 convertPoint:v9 toView:?];
+    [superview convertPoint:window toView:?];
     v12 = v11;
     v14 = v13;
 
     v15 = [UIPreviewTarget alloc];
     [v3 transform];
-    v16 = [(UIPreviewTarget *)v15 initWithContainer:v9 center:&v18 transform:v12, v14];
-    v5 = [v4 retargetedPreviewWithTarget:v16];
+    v16 = [(UIPreviewTarget *)v15 initWithContainer:window center:&v18 transform:v12, v14];
+    v5 = [collapsedPreview retargetedPreviewWithTarget:v16];
   }
 
   else
@@ -1152,29 +1152,29 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
   v40 = 1;
-  v5 = [(_UIContextMenuUIController *)self contentPlatterView];
-  v6 = v5;
-  if (v5)
+  contentPlatterView = [(_UIContextMenuUIController *)self contentPlatterView];
+  v6 = contentPlatterView;
+  if (contentPlatterView)
   {
-    if ([v5 allowsUserInteractionInExpandedPreview])
+    if ([contentPlatterView allowsUserInteractionInExpandedPreview])
     {
-      v7 = [(_UIContextMenuUIController *)self dismissalTapGestureRecognizer];
+      dismissalTapGestureRecognizer = [(_UIContextMenuUIController *)self dismissalTapGestureRecognizer];
 
-      if (v7 == v4)
+      if (dismissalTapGestureRecognizer == beginCopy)
       {
         [v6 bounds];
         v9 = v8;
         v11 = v10;
         v13 = v12;
         v15 = v14;
-        [v4 locationInView:v6];
+        [beginCopy locationInView:v6];
         v41.x = v16;
         v41.y = v17;
         v43.origin.x = v9;
@@ -1188,19 +1188,19 @@ LABEL_4:
 
   if (*(v38 + 24) == 1)
   {
-    v18 = [(_UIContextMenuUIController *)self menuView];
-    if (v18)
+    menuView = [(_UIContextMenuUIController *)self menuView];
+    if (menuView)
     {
-      v19 = [(_UIContextMenuUIController *)self dismissalTapGestureRecognizer];
+      dismissalTapGestureRecognizer2 = [(_UIContextMenuUIController *)self dismissalTapGestureRecognizer];
 
-      if (v19 == v4)
+      if (dismissalTapGestureRecognizer2 == beginCopy)
       {
-        [v18 bounds];
+        [menuView bounds];
         v21 = v20;
         v23 = v22;
         v25 = v24;
         v27 = v26;
-        [v4 locationInView:v18];
+        [beginCopy locationInView:menuView];
         v42.x = v28;
         v42.y = v29;
         v44.origin.x = v21;
@@ -1212,107 +1212,107 @@ LABEL_4:
     }
   }
 
-  v30 = [(_UIContextMenuUIController *)self menuConfiguration];
-  v31 = [v30 accessoryViews];
+  menuConfiguration = [(_UIContextMenuUIController *)self menuConfiguration];
+  accessoryViews = [menuConfiguration accessoryViews];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __59___UIContextMenuUIController_gestureRecognizerShouldBegin___block_invoke;
   v34[3] = &unk_1E7124D70;
-  v32 = v4;
+  v32 = beginCopy;
   v35 = v32;
   v36 = &v37;
-  [v31 enumerateObjectsUsingBlock:v34];
+  [accessoryViews enumerateObjectsUsingBlock:v34];
 
-  LOBYTE(v30) = *(v38 + 24);
+  LOBYTE(menuConfiguration) = *(v38 + 24);
   _Block_object_dispose(&v37, 8);
 
-  return v30;
+  return menuConfiguration;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIContextMenuUIController *)self actionScrubbingHandoffGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  actionScrubbingHandoffGestureRecognizer = [(_UIContextMenuUIController *)self actionScrubbingHandoffGestureRecognizer];
 
-  if (v8 == v7)
+  if (actionScrubbingHandoffGestureRecognizer == recognizerCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v9 = [(_UIContextMenuUIController *)self actionScrubbingHandoffGestureRecognizer];
-    v10 = v9 == v6;
+    actionScrubbingHandoffGestureRecognizer2 = [(_UIContextMenuUIController *)self actionScrubbingHandoffGestureRecognizer];
+    v10 = actionScrubbingHandoffGestureRecognizer2 == gestureRecognizerCopy;
   }
 
   return v10;
 }
 
-- (void)_handleDismissalTapGesture:(id)a3
+- (void)_handleDismissalTapGesture:(id)gesture
 {
-  v5 = a3;
-  if (-[_UIContextMenuUIController _isPresented](self, "_isPresented") && [v5 state] == 3)
+  gestureCopy = gesture;
+  if (-[_UIContextMenuUIController _isPresented](self, "_isPresented") && [gestureCopy state] == 3)
   {
-    v4 = [(_UIContextMenuUIController *)self delegate];
-    [v4 contextMenuUIController:self didRequestDismissalWithReason:0 alongsideActions:0 completion:0];
+    delegate = [(_UIContextMenuUIController *)self delegate];
+    [delegate contextMenuUIController:self didRequestDismissalWithReason:0 alongsideActions:0 completion:0];
   }
 }
 
-- (void)_handlePlatterActionTapGesture:(id)a3
+- (void)_handlePlatterActionTapGesture:(id)gesture
 {
-  v7 = a3;
-  if (-[_UIContextMenuUIController _isPresented](self, "_isPresented") && [v7 state] == 3)
+  gestureCopy = gesture;
+  if (-[_UIContextMenuUIController _isPresented](self, "_isPresented") && [gestureCopy state] == 3)
   {
-    v4 = [(_UIContextMenuUIController *)self menuConfiguration];
-    v5 = [v4 previewAction];
-    v6 = [(_UIContextMenuUIController *)self delegate];
-    [v5 performWithSender:v6 target:0];
+    menuConfiguration = [(_UIContextMenuUIController *)self menuConfiguration];
+    previewAction = [menuConfiguration previewAction];
+    delegate = [(_UIContextMenuUIController *)self delegate];
+    [previewAction performWithSender:delegate target:0];
   }
 }
 
-- (void)_handleActionHandoffGesture:(id)a3
+- (void)_handleActionHandoffGesture:(id)gesture
 {
-  v15 = a3;
-  if ([v15 state] >= 1 && objc_msgSend(v15, "state") <= 2)
+  gestureCopy = gesture;
+  if ([gestureCopy state] >= 1 && objc_msgSend(gestureCopy, "state") <= 2)
   {
-    v4 = [(_UIContextMenuUIController *)self menuView];
-    [v4 bounds];
+    menuView = [(_UIContextMenuUIController *)self menuView];
+    [menuView bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    [v15 locationInView:v4];
+    [gestureCopy locationInView:menuView];
     v17.x = v13;
     v17.y = v14;
     v18.origin.x = v6;
     v18.origin.y = v8;
     v18.size.width = v10;
     v18.size.height = v12;
-    if (CGRectContainsPoint(v18, v17) && [v4 kickstartActionScrubbingWithGesture:v15])
+    if (CGRectContainsPoint(v18, v17) && [menuView kickstartActionScrubbingWithGesture:gestureCopy])
     {
-      [v15 setEnabled:0];
-      [v15 setEnabled:1];
+      [gestureCopy setEnabled:0];
+      [gestureCopy setEnabled:1];
     }
   }
 }
 
 - (void)viewTraitCollectionDidChange
 {
-  v3 = [(_UIContextMenuUIController *)self menuStyle];
-  v4 = [v3 _parentTraitEnvironmentForUserInterfaceStyle];
+  menuStyle = [(_UIContextMenuUIController *)self menuStyle];
+  _parentTraitEnvironmentForUserInterfaceStyle = [menuStyle _parentTraitEnvironmentForUserInterfaceStyle];
 
-  if (v4)
+  if (_parentTraitEnvironmentForUserInterfaceStyle)
   {
 
     [(_UIContextMenuUIController *)self _updatePlatterContainerViewTraitCollection];
   }
 }
 
-- (void)previewSizeDidChange:(CGSize)a3
+- (void)previewSizeDidChange:(CGSize)change
 {
-  height = a3.height;
-  width = a3.width;
+  height = change.height;
+  width = change.width;
   [(_UIContextMenuUIController *)self previewSize];
   if (width != v7 || height != v6)
   {
@@ -1323,10 +1323,10 @@ LABEL_4:
   }
 }
 
-- (BOOL)shouldMaintainKeyboardAssertionForFirstResponder:(id)a3
+- (BOOL)shouldMaintainKeyboardAssertionForFirstResponder:(id)responder
 {
-  v4 = a3;
-  if (![v4 _isView])
+  responderCopy = responder;
+  if (![responderCopy _isView])
   {
     goto LABEL_5;
   }
@@ -1335,15 +1335,15 @@ LABEL_4:
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v5 = [(_UIContextMenuUIController *)self menuConfiguration];
-  v6 = [v5 accessoryViews];
+  menuConfiguration = [(_UIContextMenuUIController *)self menuConfiguration];
+  accessoryViews = [menuConfiguration accessoryViews];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __79___UIContextMenuUIController_shouldMaintainKeyboardAssertionForFirstResponder___block_invoke;
   v12 = &unk_1E7124D70;
-  v13 = v4;
+  v13 = responderCopy;
   v14 = &v15;
-  [v6 enumerateObjectsUsingBlock:&v9];
+  [accessoryViews enumerateObjectsUsingBlock:&v9];
 
   if (*(v16 + 24) != 1)
   {
@@ -1364,34 +1364,34 @@ LABEL_6:
   return v7;
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v7 = a3;
+  showCopy = show;
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v5 = [v4 responder];
+  responder = [v4 responder];
 
-  if (v5 && [(_UIContextMenuUIController *)self _needsToAvoidKeyboardForResponder:v5])
+  if (responder && [(_UIContextMenuUIController *)self _needsToAvoidKeyboardForResponder:responder])
   {
-    v6 = [v7 userInfo];
-    [(_UIContextMenuUIController *)self _adjustViewForKeyboardVisibility:1 keyboardInfo:v6];
+    userInfo = [showCopy userInfo];
+    [(_UIContextMenuUIController *)self _adjustViewForKeyboardVisibility:1 keyboardInfo:userInfo];
   }
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
-  v5 = a3;
+  hideCopy = hide;
   if (![(_UIContextMenuUIController *)self _isAnimatingPresentation]&& [(_UIContextMenuUIController *)self didAvoidKeyboard])
   {
-    v4 = [v5 userInfo];
-    [(_UIContextMenuUIController *)self _adjustViewForKeyboardVisibility:0 keyboardInfo:v4];
+    userInfo = [hideCopy userInfo];
+    [(_UIContextMenuUIController *)self _adjustViewForKeyboardVisibility:0 keyboardInfo:userInfo];
   }
 }
 
-- (void)_adjustViewForKeyboardVisibility:(BOOL)a3 keyboardInfo:(id)a4
+- (void)_adjustViewForKeyboardVisibility:(BOOL)visibility keyboardInfo:(id)info
 {
-  v4 = a3;
-  v6 = a4;
-  [(_UIContextMenuUIController *)self setDidAvoidKeyboard:v4];
+  visibilityCopy = visibility;
+  infoCopy = info;
+  [(_UIContextMenuUIController *)self setDidAvoidKeyboard:visibilityCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __76___UIContextMenuUIController__adjustViewForKeyboardVisibility_keyboardInfo___block_invoke;
@@ -1412,12 +1412,12 @@ LABEL_6:
 
   else
   {
-    v10 = [v6 objectForKeyedSubscript:@"UIKeyboardAnimationDurationUserInfoKey"];
+    v10 = [infoCopy objectForKeyedSubscript:@"UIKeyboardAnimationDurationUserInfoKey"];
     [v10 doubleValue];
     v12 = v11;
 
-    v13 = [v6 objectForKeyedSubscript:@"UIKeyboardAnimationCurveUserInfoKey"];
-    v14 = [v13 integerValue];
+    v13 = [infoCopy objectForKeyedSubscript:@"UIKeyboardAnimationCurveUserInfoKey"];
+    integerValue = [v13 integerValue];
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -1425,31 +1425,31 @@ LABEL_6:
     v15[3] = &unk_1E70F0F78;
     v16 = v7;
     v8 = v7;
-    [UIView animateWithDuration:v14 delay:v15 options:0 animations:v12 completion:0.0];
+    [UIView animateWithDuration:integerValue delay:v15 options:0 animations:v12 completion:0.0];
     v9 = v16;
   }
 }
 
-- (BOOL)_needsToAvoidKeyboardForResponder:(id)a3
+- (BOOL)_needsToAvoidKeyboardForResponder:(id)responder
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuUIController *)self menuStyle];
+  responderCopy = responder;
+  menuStyle = [(_UIContextMenuUIController *)self menuStyle];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
   if ([(_UIContextMenuUIController *)self _isPresented])
   {
-    v6 = [(_UIContextMenuUIController *)self menuConfiguration];
-    v7 = [v6 previewViewController];
+    menuConfiguration = [(_UIContextMenuUIController *)self menuConfiguration];
+    previewViewController = [menuConfiguration previewViewController];
 
-    if (v7)
+    if (previewViewController)
     {
-      if ([v5 _layoutAllowsPreview])
+      if ([menuStyle _layoutAllowsPreview])
       {
-        v8 = [v5 hasInteractivePreview];
-        *(v17 + 24) = v8;
-        if (v8)
+        hasInteractivePreview = [menuStyle hasInteractivePreview];
+        *(v17 + 24) = hasInteractivePreview;
+        if (hasInteractivePreview)
         {
           goto LABEL_11;
         }
@@ -1466,17 +1466,17 @@ LABEL_6:
       goto LABEL_11;
     }
 
-    if ([v4 _isView])
+    if ([responderCopy _isView])
     {
-      v9 = [(_UIContextMenuUIController *)self menuConfiguration];
-      v10 = [v9 accessoryViews];
+      menuConfiguration2 = [(_UIContextMenuUIController *)self menuConfiguration];
+      accessoryViews = [menuConfiguration2 accessoryViews];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __64___UIContextMenuUIController__needsToAvoidKeyboardForResponder___block_invoke;
       v13[3] = &unk_1E7124D70;
-      v14 = v4;
+      v14 = responderCopy;
       v15 = &v16;
-      [v10 enumerateObjectsUsingBlock:v13];
+      [accessoryViews enumerateObjectsUsingBlock:v13];
     }
   }
 
@@ -1487,22 +1487,22 @@ LABEL_11:
   return v11;
 }
 
-- (void)_updateLayoutAndAttachment:(BOOL)a3
+- (void)_updateLayoutAndAttachment:(BOOL)attachment
 {
-  v3 = a3;
+  attachmentCopy = attachment;
   v119[2] = *MEMORY[0x1E69E9840];
-  v5 = [(_UIContextMenuUIController *)self platterContainerView];
-  v6 = [(_UIContextMenuUIController *)self menuStyle];
-  v7 = COERCE_DOUBLE([v6 preferredAttachmentEdge]);
+  platterContainerView = [(_UIContextMenuUIController *)self platterContainerView];
+  menuStyle = [(_UIContextMenuUIController *)self menuStyle];
+  v7 = COERCE_DOUBLE([menuStyle preferredAttachmentEdge]);
 
   if (v7 != NAN)
   {
     memset(&v56, 0, 40);
-    v8 = [(_UIContextMenuUIController *)self menuStyle];
-    v9 = v8;
-    if (v8)
+    menuStyle2 = [(_UIContextMenuUIController *)self menuStyle];
+    v9 = menuStyle2;
+    if (menuStyle2)
     {
-      [v8 _preferredAnchor];
+      [menuStyle2 _preferredAnchor];
     }
 
     else
@@ -1514,18 +1514,18 @@ LABEL_11:
     tx = v56.tx;
     v115 = *&v56.a;
     v116 = *&v56.c;
-    v10 = [(_UIContextMenuUIController *)self menuStyle];
+    menuStyle3 = [(_UIContextMenuUIController *)self menuStyle];
     v113[0] = v115;
     v113[1] = v116;
     v114 = tx;
-    [v10 set_preferredAnchor:v113];
+    [menuStyle3 set_preferredAnchor:v113];
   }
 
-  v11 = [(_UIContextMenuUIController *)self _layoutWithUpdatedAttachment:v3 concealedMenu:[(_UIContextMenuUIController *)self menuIsConcealed]];
-  v12 = [(_UIContextMenuUIController *)self menuStyle];
-  v13 = [v12 ignoresDefaultSizingRules];
+  v11 = [(_UIContextMenuUIController *)self _layoutWithUpdatedAttachment:attachmentCopy concealedMenu:[(_UIContextMenuUIController *)self menuIsConcealed]];
+  menuStyle4 = [(_UIContextMenuUIController *)self menuStyle];
+  ignoresDefaultSizingRules = [menuStyle4 ignoresDefaultSizingRules];
 
-  if (v13)
+  if (ignoresDefaultSizingRules)
   {
     [(_UIContextMenuUIController *)self previewSize];
     v15 = v14;
@@ -1583,11 +1583,11 @@ LABEL_11:
     }
 
     CGAffineTransformMakeScale(&v56, v21, v21);
-    v22 = [(_UIContextMenuUIController *)self platterContainerView];
-    UIRoundToViewScale(v22);
+    platterContainerView2 = [(_UIContextMenuUIController *)self platterContainerView];
+    UIRoundToViewScale(platterContainerView2);
     v24 = v23;
-    v25 = [(_UIContextMenuUIController *)self platterContainerView];
-    UIRoundToViewScale(v25);
+    platterContainerView3 = [(_UIContextMenuUIController *)self platterContainerView];
+    UIRoundToViewScale(platterContainerView3);
     [(_UIContextMenuUIController *)self setPreviewSize:v24, v26];
   }
 
@@ -1612,8 +1612,8 @@ LABEL_11:
     v90 = 0u;
   }
 
-  v29 = [(_UIContextMenuUIController *)self menuView];
-  [v29 setAnchorPoint:{v27, v28}];
+  menuView = [(_UIContextMenuUIController *)self menuView];
+  [menuView setAnchorPoint:{v27, v28}];
 
   if (v11)
   {
@@ -1636,16 +1636,16 @@ LABEL_11:
     v82 = 0u;
   }
 
-  v32 = [(_UIContextMenuUIController *)self menuView];
-  [v32 setVisibleContentSize:{v31, v30}];
+  menuView2 = [(_UIContextMenuUIController *)self menuView];
+  [menuView2 setVisibleContentSize:{v31, v30}];
 
   [(_UIContextMenuLayoutArbiterOutput *)v11 maximumMenuHeight];
   v34 = v33;
-  v35 = [(_UIContextMenuUIController *)self menuView];
-  [v35 setMaximumMenuHeight:v34];
+  menuView3 = [(_UIContextMenuUIController *)self menuView];
+  [menuView3 setMaximumMenuHeight:v34];
 
-  v36 = [(_UIContextMenuUIController *)self platterPanController];
-  v37 = v36;
+  platterPanController = [(_UIContextMenuUIController *)self platterPanController];
+  v37 = platterPanController;
   if (v11)
   {
     [(_UIContextMenuLayoutArbiterOutput *)v11 preview];
@@ -1665,7 +1665,7 @@ LABEL_11:
     v76 = 0u;
     v73 = 0u;
     v74 = 0u;
-    [v36 setOriginalPlatterCenter:{0.0, 0.0}];
+    [platterPanController setOriginalPlatterCenter:{0.0, 0.0}];
     v71 = 0u;
     v72 = 0u;
     v69 = 0u;
@@ -1684,17 +1684,17 @@ LABEL_11:
   *&v56.c = v63;
   v56.tx = v64;
   [v37 setMenuAnchor:&v56];
-  v38 = [(_UIContextMenuUIController *)self menuConfiguration];
-  v39 = [v38 accessoryViews];
-  [v37 setAccessoryViews:v39];
+  menuConfiguration = [(_UIContextMenuUIController *)self menuConfiguration];
+  accessoryViews = [menuConfiguration accessoryViews];
+  [v37 setAccessoryViews:accessoryViews];
 
-  v40 = [(_UIContextMenuUIController *)self menuConfiguration];
-  [v37 setPlatterPivotRotationEnabled:{objc_msgSend(v40, "isMultiItemMenu") ^ 1}];
+  menuConfiguration2 = [(_UIContextMenuUIController *)self menuConfiguration];
+  [v37 setPlatterPivotRotationEnabled:{objc_msgSend(menuConfiguration2, "isMultiItemMenu") ^ 1}];
 
-  v41 = [(_UIContextMenuUIController *)self menuStyle];
-  v42 = [v41 preferredLayout];
+  menuStyle5 = [(_UIContextMenuUIController *)self menuStyle];
+  preferredLayout = [menuStyle5 preferredLayout];
 
-  if ((v42 & 0xFFFFFFFFFFFFFFFDLL) != 1)
+  if ((preferredLayout & 0xFFFFFFFFFFFFFFFDLL) != 1)
   {
     if ([(_UIContextMenuUIController *)self _interfaceIdiom]!= 6)
     {
@@ -1762,25 +1762,25 @@ LABEL_11:
   self->_currentLayout = v11;
 }
 
-- (id)_layoutWithUpdatedAttachment:(BOOL)a3 concealedMenu:(BOOL)a4
+- (id)_layoutWithUpdatedAttachment:(BOOL)attachment concealedMenu:(BOOL)menu
 {
-  v76 = a3;
-  v77 = a4;
-  v78 = [(_UIContextMenuUIController *)self layoutArbiter];
-  v5 = [(_UIContextMenuUIController *)self platterContainerView];
-  v6 = [(_UIContextMenuUIController *)self menuStyle];
-  v7 = [v6 preferredAttachmentEdge];
+  attachmentCopy = attachment;
+  menuCopy = menu;
+  layoutArbiter = [(_UIContextMenuUIController *)self layoutArbiter];
+  platterContainerView = [(_UIContextMenuUIController *)self platterContainerView];
+  menuStyle = [(_UIContextMenuUIController *)self menuStyle];
+  preferredAttachmentEdge = [menuStyle preferredAttachmentEdge];
 
-  if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+  if (preferredAttachmentEdge != 0x7FFFFFFFFFFFFFFFLL)
   {
     v97 = 0;
     v95 = 0u;
     v96 = 0u;
-    v8 = [(_UIContextMenuUIController *)self menuStyle];
-    v9 = v8;
-    if (v8)
+    menuStyle2 = [(_UIContextMenuUIController *)self menuStyle];
+    v9 = menuStyle2;
+    if (menuStyle2)
     {
-      [v8 _preferredAnchor];
+      [menuStyle2 _preferredAnchor];
     }
 
     else
@@ -1790,31 +1790,31 @@ LABEL_11:
       v96 = 0u;
     }
 
-    *&v95 = v7;
+    *&v95 = preferredAttachmentEdge;
     v94 = v97;
     v92 = v95;
     v93 = v96;
-    v10 = [(_UIContextMenuUIController *)self menuStyle];
+    menuStyle3 = [(_UIContextMenuUIController *)self menuStyle];
     v90[0] = v92;
     v90[1] = v93;
     v91 = v94;
-    [v10 set_preferredAnchor:v90];
+    [menuStyle3 set_preferredAnchor:v90];
   }
 
   v11 = objc_opt_new();
-  v12 = [(_UIContextMenuUIController *)self menuConfiguration];
-  v13 = [v12 sourcePreview];
-  [v11 setSourcePreview:v13];
+  menuConfiguration = [(_UIContextMenuUIController *)self menuConfiguration];
+  sourcePreview = [menuConfiguration sourcePreview];
+  [v11 setSourcePreview:sourcePreview];
 
-  v14 = [(_UIContextMenuUIController *)self menuStyle];
-  [v14 preferredEdgeInsets];
+  menuStyle4 = [(_UIContextMenuUIController *)self menuStyle];
+  [menuStyle4 preferredEdgeInsets];
   [v11 setPreferredEdgeInsets:?];
 
-  v15 = [(_UIContextMenuUIController *)self menuStyle];
-  v16 = v15;
-  if (v15)
+  menuStyle5 = [(_UIContextMenuUIController *)self menuStyle];
+  v16 = menuStyle5;
+  if (menuStyle5)
   {
-    [v15 _preferredAnchor];
+    [menuStyle5 _preferredAnchor];
   }
 
   else
@@ -1831,20 +1831,20 @@ LABEL_11:
 
   [(_UIContextMenuUIController *)self previewSize];
   [v11 setPreferredPreviewSize:?];
-  v17 = [(_UIContextMenuUIController *)self menuStyle];
-  v18 = [v17 ignoresDefaultSizingRules];
+  menuStyle6 = [(_UIContextMenuUIController *)self menuStyle];
+  ignoresDefaultSizingRules = [menuStyle6 ignoresDefaultSizingRules];
 
-  if (v18)
+  if (ignoresDefaultSizingRules)
   {
     [v11 setPreferredPreviewFittingStrategy:1];
   }
 
-  v19 = [(_UIContextMenuUIController *)self menuView];
-  if ([v19 hierarchyStyle] == 2)
+  menuView = [(_UIContextMenuUIController *)self menuView];
+  if ([menuView hierarchyStyle] == 2)
   {
-    v20 = [(_UIContextMenuUIController *)self menuConfiguration];
-    v21 = [v20 menu];
-    v22 = ([v21 metadata] >> 16) & 1;
+    menuConfiguration2 = [(_UIContextMenuUIController *)self menuConfiguration];
+    menu = [menuConfiguration2 menu];
+    v22 = ([menu metadata] >> 16) & 1;
   }
 
   else
@@ -1852,17 +1852,17 @@ LABEL_11:
     LODWORD(v22) = 0;
   }
 
-  v23 = [(_UIContextMenuUIController *)self menuConfiguration];
-  v24 = [v23 menu];
-  v25 = [v24 metadata];
+  menuConfiguration3 = [(_UIContextMenuUIController *)self menuConfiguration];
+  menu2 = [menuConfiguration3 menu];
+  metadata = [menu2 metadata];
 
-  v26 = [(_UIContextMenuUIController *)self menuConfiguration];
-  v27 = [v26 menu];
-  v28 = [v27 metadata] >> 32;
+  menuConfiguration4 = [(_UIContextMenuUIController *)self menuConfiguration];
+  menu3 = [menuConfiguration4 menu];
+  v28 = [menu3 metadata] >> 32;
 
-  v29 = [(_UIContextMenuUIController *)self menuConfiguration];
-  v30 = [v29 menu];
-  if (([v30 options] & 0x100) != 0)
+  menuConfiguration5 = [(_UIContextMenuUIController *)self menuConfiguration];
+  menu4 = [menuConfiguration5 menu];
+  if (([menu4 options] & 0x100) != 0)
   {
     if (_UIApplicationProcessIsSpringBoard() & 1) != 0 || (_UIApplicationProcessIsUIKitester())
     {
@@ -1880,16 +1880,16 @@ LABEL_11:
     IsOverlayUI = 0;
   }
 
-  v32 = [(_UIContextMenuUIController *)self menuStyle];
-  [v32 preferredMenuWidth];
+  menuStyle7 = [(_UIContextMenuUIController *)self menuStyle];
+  [menuStyle7 preferredMenuWidth];
   v34 = v33;
 
-  v35 = [(_UIContextMenuUIController *)self menuStyle];
-  [v35 _internalPreferredMenuWidth];
+  menuStyle8 = [(_UIContextMenuUIController *)self menuStyle];
+  [menuStyle8 _internalPreferredMenuWidth];
   v37 = v36;
 
-  v38 = _UIContextMenuActionsViewWidth(v5, (v25 >> 8) & 1, v22, v28 & 1, IsOverlayUI, [(_UIContextMenuUIController *)self _interfaceIdiom]);
-  [v5 bounds];
+  v38 = _UIContextMenuActionsViewWidth(platterContainerView, (metadata >> 8) & 1, v22, v28 & 1, IsOverlayUI, [(_UIContextMenuUIController *)self _interfaceIdiom]);
+  [platterContainerView bounds];
   Height = CGRectGetHeight(v99);
   if (v11)
   {
@@ -1917,32 +1917,32 @@ LABEL_11:
     v40 = 1;
   }
 
-  v41 = [(_UIContextMenuUIController *)self menuStyle];
-  v42 = [v41 shouldMenuOverlapSourcePreview];
+  menuStyle9 = [(_UIContextMenuUIController *)self menuStyle];
+  shouldMenuOverlapSourcePreview = [menuStyle9 shouldMenuOverlapSourcePreview];
 
   v43 = 0.0;
-  if ((v25 & 0x100) != 0 && !v40 && (v42 & 1) == 0)
+  if ((metadata & 0x100) != 0 && !v40 && (shouldMenuOverlapSourcePreview & 1) == 0)
   {
-    v44 = [(_UIContextMenuUIController *)self menuStyle];
-    v45 = [v44 preferredLayout];
+    menuStyle10 = [(_UIContextMenuUIController *)self menuStyle];
+    preferredLayout = [menuStyle10 preferredLayout];
 
-    if (v45 == 3)
+    if (preferredLayout == 3)
     {
-      v46 = [(_UIContextMenuUIController *)self platterContainerView];
-      v47 = [v46 traitCollection];
+      platterContainerView2 = [(_UIContextMenuUIController *)self platterContainerView];
+      traitCollection = [platterContainerView2 traitCollection];
 
-      v48 = v47;
+      v48 = traitCollection;
       v49 = _UIContextMenuGetPlatformMetrics([v48 userInterfaceIdiom]);
-      v50 = [v49 titleFont];
-      v51 = [v50 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v48];
+      titleFont = [v49 titleFont];
+      v51 = [titleFont _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v48];
 
       v52 = _UIContextMenuGetPlatformMetrics([v48 userInterfaceIdiom]);
       [v52 leadingIndentationWidth];
       v54 = v53;
 
       [v51 _scaledValueForValue:v54];
-      v55 = [(_UIContextMenuUIController *)self platterContainerView];
-      UIRoundToViewScale(v55);
+      platterContainerView3 = [(_UIContextMenuUIController *)self platterContainerView];
+      UIRoundToViewScale(platterContainerView3);
       v57 = v56;
 
       v43 = -v57;
@@ -1969,51 +1969,51 @@ LABEL_11:
     v59 = v38;
   }
 
-  v60 = [(_UIContextMenuUIController *)self menuView];
-  [v60 preferredContentSizeWithinContainerSize:{v59, Height}];
+  menuView2 = [(_UIContextMenuUIController *)self menuView];
+  [menuView2 preferredContentSizeWithinContainerSize:{v59, Height}];
   [v11 setPreferredMenuSize:?];
 
-  v61 = [(_UIContextMenuUIController *)self menuStyle];
-  [v61 _preferredMenuAttachmentPoint];
+  menuStyle11 = [(_UIContextMenuUIController *)self menuStyle];
+  [menuStyle11 _preferredMenuAttachmentPoint];
   [v11 setPreferredMenuAttachmentPoint:?];
 
-  v62 = [(_UIContextMenuUIController *)self menuConfiguration];
-  v63 = [v62 accessoryViews];
-  [v11 setAccessoryViews:v63];
+  menuConfiguration6 = [(_UIContextMenuUIController *)self menuConfiguration];
+  accessoryViews = [menuConfiguration6 accessoryViews];
+  [v11 setAccessoryViews:accessoryViews];
 
-  [v11 setShouldUpdateAttachment:v76];
+  [v11 setShouldUpdateAttachment:attachmentCopy];
   v64 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
   [v11 setShouldAvoidInputViews:{objc_msgSend(v64, "isOnScreen")}];
 
-  [v11 setShouldConcealMenu:v77];
-  [v11 setShouldMenuOverlapSourcePreview:v42];
+  [v11 setShouldConcealMenu:menuCopy];
+  [v11 setShouldMenuOverlapSourcePreview:shouldMenuOverlapSourcePreview];
   [v11 setAdditionalAlignmentOffset:v43];
-  v65 = [(_UIContextMenuUIController *)self menuStyle];
-  [v65 preferredMaximumMenuHeight];
+  menuStyle12 = [(_UIContextMenuUIController *)self menuStyle];
+  [menuStyle12 preferredMaximumMenuHeight];
   v67 = v66;
-  v68 = [v5 traitCollection];
-  v69 = _UIContextMenuGetPlatformMetrics([v68 userInterfaceIdiom]);
+  traitCollection2 = [platterContainerView traitCollection];
+  v69 = _UIContextMenuGetPlatformMetrics([traitCollection2 userInterfaceIdiom]);
 
   [v69 menuMaximumHeight];
   v71 = v70;
 
   [v11 setMaximumMenuHeight:{fmax(v67, v71)}];
-  v72 = [(_UIContextMenuUIController *)self menuView];
+  menuView3 = [(_UIContextMenuUIController *)self menuView];
   v79[0] = MEMORY[0x1E69E9820];
   v79[1] = 3221225472;
   v79[2] = __73___UIContextMenuUIController__layoutWithUpdatedAttachment_concealedMenu___block_invoke;
   v79[3] = &unk_1E70F6200;
-  v80 = v72;
-  v73 = v72;
+  v80 = menuView3;
+  v73 = menuView3;
   [v11 setComputePreferredScrollTruncationDetentForHeight:v79];
-  v74 = [v78 computedLayoutWithInput:v11];
+  v74 = [layoutArbiter computedLayoutWithInput:v11];
 
   return v74;
 }
 
-- (void)_updateActionsViewReversesOrderForAttachment:(unint64_t)a3
+- (void)_updateActionsViewReversesOrderForAttachment:(unint64_t)attachment
 {
-  if (a3 == 1)
+  if (attachment == 1)
   {
     v5 = 4;
   }
@@ -2023,36 +2023,36 @@ LABEL_11:
     v5 = 1;
   }
 
-  v6 = [(_UIContextMenuUIController *)self menuView];
-  [v6 setAttachmentEdge:v5];
+  menuView = [(_UIContextMenuUIController *)self menuView];
+  [menuView setAttachmentEdge:v5];
 
-  v7 = [(_UIContextMenuUIController *)self menuStyle];
-  v8 = [v7 _orderMenuBasedOnPriority];
+  menuStyle = [(_UIContextMenuUIController *)self menuStyle];
+  _orderMenuBasedOnPriority = [menuStyle _orderMenuBasedOnPriority];
 
-  if (a3 == 1 && v8)
+  if (attachment == 1 && _orderMenuBasedOnPriority)
   {
-    v9 = [(_UIContextMenuUIController *)self menuView];
-    [v9 setReversesActionOrder:1];
+    menuView2 = [(_UIContextMenuUIController *)self menuView];
+    [menuView2 setReversesActionOrder:1];
   }
 }
 
-- (void)_updatePlatterAndActionViewLayoutForce:(BOOL)a3 updateAttachment:(BOOL)a4 adjustDetent:(BOOL)a5
+- (void)_updatePlatterAndActionViewLayoutForce:(BOOL)force updateAttachment:(BOOL)attachment adjustDetent:(BOOL)detent
 {
   if ([(_UIContextMenuUIController *)self _isPresented])
   {
-    v9 = [(_UIContextMenuUIController *)self layoutArbiter];
+    layoutArbiter = [(_UIContextMenuUIController *)self layoutArbiter];
 
-    if (v9)
+    if (layoutArbiter)
     {
-      if (a3 || [(_UIContextMenuUIController *)self previewSizeDidChange])
+      if (force || [(_UIContextMenuUIController *)self previewSizeDidChange])
       {
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __99___UIContextMenuUIController__updatePlatterAndActionViewLayoutForce_updateAttachment_adjustDetent___block_invoke;
         aBlock[3] = &unk_1E70F8A10;
         aBlock[4] = self;
-        v17 = a4;
-        v18 = a5;
+        attachmentCopy = attachment;
+        detentCopy = detent;
         v10 = _Block_copy(aBlock);
         if ([(_UIContextMenuUIController *)self _isAnimatingPresentation]&& +[UIView areAnimationsEnabled](UIView, "areAnimationsEnabled") && !+[UIView _isInRetargetableAnimationBlock])
         {
@@ -2088,9 +2088,9 @@ LABEL_11:
   }
 }
 
-- (void)_createMenuViewIfNecessaryForMenu:(id)a3
+- (void)_createMenuViewIfNecessaryForMenu:(id)menu
 {
-  if (([a3 metadata] & 0x1000000) != 0)
+  if (([menu metadata] & 0x1000000) != 0)
   {
     [(_UIContextMenuUIController *)self setMenuIsConcealed:0];
     v4 = [_UIContextMenuView alloc];
@@ -2100,11 +2100,11 @@ LABEL_11:
 
     [(_UIContextMenuView *)self->_menuView setHierarchyStyle:[(_UIContextMenuUIController *)self _preferredSubmenuHierarchyStyle]];
     [(_UIContextMenuView *)self->_menuView setDelegate:self];
-    v7 = [(_UIContextMenuUIController *)self menuStyle];
-    v8 = v7;
-    if (v7)
+    menuStyle = [(_UIContextMenuUIController *)self menuStyle];
+    v8 = menuStyle;
+    if (menuStyle)
     {
-      [v7 _preferredAnchor];
+      [menuStyle _preferredAnchor];
       if (v11 == 1)
       {
         [(_UIContextMenuUIController *)self _updateActionsViewReversesOrderForAttachment:1];
@@ -2123,27 +2123,27 @@ LABEL_11:
     [(_UIContextMenuView *)self->_menuView setScrubbingEnabled:v9];
     -[_UIContextMenuView setAllowsBackgroundViewInteraction:](self->_menuView, "setAllowsBackgroundViewInteraction:", [v8 _backgroundInteractionStyle] != 0);
     -[_UIContextMenuView setShouldEnableTypeSelect:](self->_menuView, "setShouldEnableTypeSelect:", [v8 _wantsTypeSelect]);
-    v10 = [v8 preferredMenuMaterial];
-    [(_UIContextMenuView *)self->_menuView setPreferredMenuMaterial:v10];
+    preferredMenuMaterial = [v8 preferredMenuMaterial];
+    [(_UIContextMenuView *)self->_menuView setPreferredMenuMaterial:preferredMenuMaterial];
   }
 }
 
-- (void)displayMenu:(id)a3 inPlaceOfMenu:(id)a4
+- (void)displayMenu:(id)menu inPlaceOfMenu:(id)ofMenu
 {
-  if (a4)
+  if (ofMenu)
   {
-    [(_UIContextMenuUIController *)self _replaceVisibleMenu:a4 withMenu:a3];
+    [(_UIContextMenuUIController *)self _replaceVisibleMenu:ofMenu withMenu:menu];
   }
 
   else
   {
-    [(_UIContextMenuUIController *)self _displayMenu:a3 updateType:3];
+    [(_UIContextMenuUIController *)self _displayMenu:menu updateType:3];
   }
 }
 
-- (void)retargetDismissingMenuToPreview:(id)a3
+- (void)retargetDismissingMenuToPreview:(id)preview
 {
-  if (!a3)
+  if (!preview)
   {
     v7[9] = v3;
     v7[10] = v4;
@@ -2157,26 +2157,26 @@ LABEL_11:
   }
 }
 
-- (void)didSelectCancelActionInContextMenuView:(id)a3
+- (void)didSelectCancelActionInContextMenuView:(id)view
 {
-  v4 = [(_UIContextMenuUIController *)self delegate];
-  [v4 contextMenuUIController:self didRequestDismissalWithReason:0 alongsideActions:0 completion:0];
+  delegate = [(_UIContextMenuUIController *)self delegate];
+  [delegate contextMenuUIController:self didRequestDismissalWithReason:0 alongsideActions:0 completion:0];
 }
 
-- (void)contextMenuView:(id)a3 didSelectElement:(id)a4
+- (void)contextMenuView:(id)view didSelectElement:(id)element
 {
-  v5 = a4;
-  v6 = [(_UIContextMenuUIController *)self delegate];
-  if ([v5 _isLeaf])
+  elementCopy = element;
+  delegate = [(_UIContextMenuUIController *)self delegate];
+  if ([elementCopy _isLeaf])
   {
-    v7 = v5;
+    v7 = elementCopy;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __63___UIContextMenuUIController_contextMenuView_didSelectElement___block_invoke;
     aBlock[3] = &unk_1E70F6228;
-    v8 = v6;
+    v8 = delegate;
     v11 = v8;
-    v12 = self;
+    selfCopy = self;
     v13 = v7;
     v9 = _Block_copy(aBlock);
     if ([v7 keepsMenuPresented])
@@ -2192,32 +2192,32 @@ LABEL_11:
 
   else
   {
-    [(_UIContextMenuUIController *)self _displayMenu:v5 updateType:1];
+    [(_UIContextMenuUIController *)self _displayMenu:elementCopy updateType:1];
   }
 }
 
-- (id)contextMenuView:(id)a3 willDisplayMenu:(id)a4
+- (id)contextMenuView:(id)view willDisplayMenu:(id)menu
 {
-  v5 = a4;
-  v6 = [(_UIContextMenuUIController *)self delegate];
-  v7 = [v6 contextMenuUIController:self willDisplayMenu:v5];
+  menuCopy = menu;
+  delegate = [(_UIContextMenuUIController *)self delegate];
+  v7 = [delegate contextMenuUIController:self willDisplayMenu:menuCopy];
 
   return v7;
 }
 
-- (void)_displayMenu:(id)a3 updateType:(unint64_t)a4
+- (void)_displayMenu:(id)menu updateType:(unint64_t)type
 {
-  v6 = a3;
+  menuCopy = menu;
   [(_UIContextMenuUIController *)self setMenuIsConcealed:0];
-  v7 = [(_UIContextMenuUIController *)self menuView];
+  menuView = [(_UIContextMenuUIController *)self menuView];
 
-  if (v7)
+  if (menuView)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
-      v8 = [(_UIContextMenuUIController *)self menuView];
-      v9 = [v8 visibleMenus];
-      v10 = [v9 containsObject:v6] ^ 1;
+      menuView2 = [(_UIContextMenuUIController *)self menuView];
+      visibleMenus = [menuView2 visibleMenus];
+      v10 = [visibleMenus containsObject:menuCopy] ^ 1;
     }
 
     else
@@ -2225,14 +2225,14 @@ LABEL_11:
       v10 = 0;
     }
 
-    v12 = [(_UIContextMenuUIController *)self menuView];
+    menuView3 = [(_UIContextMenuUIController *)self menuView];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __54___UIContextMenuUIController__displayMenu_updateType___block_invoke_4;
     v13[3] = &unk_1E7124DB8;
     v13[4] = self;
     v14 = v10;
-    [v12 displayMenu:v6 updateType:a4 alongsideAnimations:v13];
+    [menuView3 displayMenu:menuCopy updateType:type alongsideAnimations:v13];
   }
 
   else
@@ -2242,7 +2242,7 @@ LABEL_11:
     v16[2] = __54___UIContextMenuUIController__displayMenu_updateType___block_invoke;
     v16[3] = &unk_1E70F35B8;
     v16[4] = self;
-    v17 = v6;
+    v17 = menuCopy;
     [UIView performWithoutAnimation:v16];
     v11 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:1.0 response:0.32];
     v15[0] = MEMORY[0x1E69E9820];
@@ -2252,43 +2252,43 @@ LABEL_11:
     v15[4] = self;
     [UIView _animateUsingSpringBehavior:v11 tracking:0 animations:v15 completion:0];
 
-    v12 = v17;
+    menuView3 = v17;
   }
 }
 
-- (void)_replaceVisibleMenu:(id)a3 withMenu:(id)a4
+- (void)_replaceVisibleMenu:(id)menu withMenu:(id)withMenu
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIContextMenuUIController *)self menuView];
+  menuCopy = menu;
+  withMenuCopy = withMenu;
+  menuView = [(_UIContextMenuUIController *)self menuView];
 
-  if (v8)
+  if (menuView)
   {
-    v9 = [(_UIContextMenuUIController *)self menuView];
+    menuView2 = [(_UIContextMenuUIController *)self menuView];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __59___UIContextMenuUIController__replaceVisibleMenu_withMenu___block_invoke;
     v10[3] = &unk_1E7105EF8;
     v10[4] = self;
-    [v9 replaceVisibleMenu:v6 withMenu:v7 alongsideAnimations:v10];
+    [menuView2 replaceVisibleMenu:menuCopy withMenu:withMenuCopy alongsideAnimations:v10];
   }
 
   else
   {
-    [(_UIContextMenuUIController *)self _displayMenu:v7 updateType:0];
+    [(_UIContextMenuUIController *)self _displayMenu:withMenuCopy updateType:0];
   }
 }
 
 - (void)_concealMenu
 {
-  v3 = [(_UIContextMenuUIController *)self menuConfiguration];
-  v4 = [v3 previewViewController];
+  menuConfiguration = [(_UIContextMenuUIController *)self menuConfiguration];
+  previewViewController = [menuConfiguration previewViewController];
 
-  if (v4)
+  if (previewViewController)
   {
     v5 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:1.0 response:0.32];
-    v6 = [(_UIContextMenuUIController *)self menuView];
-    [v6 setUserInteractionEnabled:0];
+    menuView = [(_UIContextMenuUIController *)self menuView];
+    [menuView setUserInteractionEnabled:0];
     [(_UIContextMenuUIController *)self setMenuIsConcealed:1];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -2300,82 +2300,82 @@ LABEL_11:
     v9[2] = __42___UIContextMenuUIController__concealMenu__block_invoke_3;
     v9[3] = &unk_1E70F4000;
     v9[4] = self;
-    v10 = v6;
-    v7 = v6;
+    v10 = menuView;
+    v7 = menuView;
     [UIView _animateUsingSpringBehavior:v5 tracking:0 animations:v11 completion:v9];
   }
 
   else
   {
-    v8 = [(_UIContextMenuUIController *)self delegate];
-    [v8 contextMenuUIController:self didRequestDismissalWithReason:5 alongsideActions:0 completion:0];
+    delegate = [(_UIContextMenuUIController *)self delegate];
+    [delegate contextMenuUIController:self didRequestDismissalWithReason:5 alongsideActions:0 completion:0];
   }
 }
 
-- (void)hideSourcePreview:(id)a3
+- (void)hideSourcePreview:(id)preview
 {
-  v9 = a3;
-  v4 = [v9 view];
-  v5 = [(_UIViewAlphaOverrideAssertion *)self->_sourcePreviewAlphaOverrideAssertion sourceView];
+  previewCopy = preview;
+  view = [previewCopy view];
+  sourceView = [(_UIViewAlphaOverrideAssertion *)self->_sourcePreviewAlphaOverrideAssertion sourceView];
 
-  if (v4 != v5)
+  if (view != sourceView)
   {
-    v6 = [v9 view];
-    v7 = [v6 _vendAssertionForOverrideAlpha:0.0];
+    view2 = [previewCopy view];
+    v7 = [view2 _vendAssertionForOverrideAlpha:0.0];
     sourcePreviewAlphaOverrideAssertion = self->_sourcePreviewAlphaOverrideAssertion;
     self->_sourcePreviewAlphaOverrideAssertion = v7;
   }
 }
 
-- (id)dismissalPreviewForStyle:(unint64_t)a3 clientReturnedPreview:(BOOL *)a4
+- (id)dismissalPreviewForStyle:(unint64_t)style clientReturnedPreview:(BOOL *)preview
 {
-  v7 = [(_UIContextMenuUIController *)self menuConfiguration];
-  if (a3 == 1)
+  menuConfiguration = [(_UIContextMenuUIController *)self menuConfiguration];
+  if (style == 1)
   {
-    v8 = [(_UIContextMenuUIController *)self _destinationPlatterView];
-    if (v8)
+    _destinationPlatterView = [(_UIContextMenuUIController *)self _destinationPlatterView];
+    if (_destinationPlatterView)
     {
-      v9 = [(_UIContextMenuUIController *)self _dragContainerView];
-      v10 = [v9 superview];
-      [v9 center];
+      _dragContainerView = [(_UIContextMenuUIController *)self _dragContainerView];
+      superview = [_dragContainerView superview];
+      [_dragContainerView center];
       v12 = v11;
       v14 = v13;
-      v15 = [(_UIContextMenuUIController *)self _subterraneanViewContainer];
-      [v10 convertPoint:v15 toView:{v12, v14}];
+      _subterraneanViewContainer = [(_UIContextMenuUIController *)self _subterraneanViewContainer];
+      [superview convertPoint:_subterraneanViewContainer toView:{v12, v14}];
       v17 = v16;
       v19 = v18;
 
-      v20 = [(_UIContextMenuUIController *)self _subterraneanViewContainer];
-      [v20 addSubview:v9];
+      _subterraneanViewContainer2 = [(_UIContextMenuUIController *)self _subterraneanViewContainer];
+      [_subterraneanViewContainer2 addSubview:_dragContainerView];
 
-      [v9 setCenter:{v17, v19}];
+      [_dragContainerView setCenter:{v17, v19}];
       v21 = [UIPreviewTarget alloc];
-      v22 = [v9 superview];
-      [v9 center];
+      superview2 = [_dragContainerView superview];
+      [_dragContainerView center];
       v24 = v23;
       v26 = v25;
-      [v8 targetTransform];
+      [_destinationPlatterView targetTransform];
       CATransform3DGetAffineTransform(&v42, &v41);
-      v27 = [(UIPreviewTarget *)v21 initWithContainer:v22 center:&v42 transform:v24, v26];
+      v27 = [(UIPreviewTarget *)v21 initWithContainer:superview2 center:&v42 transform:v24, v26];
 
       v28 = objc_opt_new();
       v29 = +[UIColor clearColor];
       [v28 setBackgroundColor:v29];
 
-      v30 = [v8 preview];
-      v31 = [v30 outline];
-      [v28 setVisiblePath:v31];
+      preview = [_destinationPlatterView preview];
+      outline = [preview outline];
+      [v28 setVisiblePath:outline];
 
-      v32 = [v8 preview];
-      v33 = [v32 shadowPath];
-      [v28 setShadowPath:v33];
+      preview2 = [_destinationPlatterView preview];
+      shadowPath = [preview2 shadowPath];
+      [v28 setShadowPath:shadowPath];
 
       [v28 setAppliesShadow:1];
-      v34 = [[UITargetedPreview alloc] initWithView:v8 parameters:v28 target:v27];
-      v35 = [v8 preview];
-      v36 = [v35 previewMode];
+      v34 = [[UITargetedPreview alloc] initWithView:_destinationPlatterView parameters:v28 target:v27];
+      preview3 = [_destinationPlatterView preview];
+      previewMode = [preview3 previewMode];
 
-      if (v36 == 4)
+      if (previewMode == 4)
       {
         [(UITargetedPreview *)v34 _setPreviewMode:4];
       }
@@ -2389,78 +2389,78 @@ LABEL_11:
 
   else
   {
-    v37 = [(_UIContextMenuUIController *)self delegate];
-    v38 = [(_UIContextMenuUIController *)self menuConfiguration];
-    v39 = [v38 identifier];
-    v34 = [v37 contextMenuUIController:self dismissalPreviewForItem:v39 clientReturnedPreview:a4];
+    delegate = [(_UIContextMenuUIController *)self delegate];
+    menuConfiguration2 = [(_UIContextMenuUIController *)self menuConfiguration];
+    identifier = [menuConfiguration2 identifier];
+    v34 = [delegate contextMenuUIController:self dismissalPreviewForItem:identifier clientReturnedPreview:preview];
   }
 
   return v34;
 }
 
-- (id)dismissalPreviewForSecondaryItem:(id)a3 style:(unint64_t)a4
+- (id)dismissalPreviewForSecondaryItem:(id)item style:(unint64_t)style
 {
   v9 = 0;
-  v5 = a3;
-  v6 = [(_UIContextMenuUIController *)self delegate];
-  v7 = [v6 contextMenuUIController:self dismissalPreviewForItem:v5 clientReturnedPreview:&v9];
+  itemCopy = item;
+  delegate = [(_UIContextMenuUIController *)self delegate];
+  v7 = [delegate contextMenuUIController:self dismissalPreviewForItem:itemCopy clientReturnedPreview:&v9];
 
   return v7;
 }
 
-- (void)_sceneWillDeactivate:(id)a3
+- (void)_sceneWillDeactivate:(id)deactivate
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuUIController *)self platterContainerView];
-  v12 = [v5 _window];
+  deactivateCopy = deactivate;
+  platterContainerView = [(_UIContextMenuUIController *)self platterContainerView];
+  _window = [platterContainerView _window];
 
-  v6 = [v4 object];
+  object = [deactivateCopy object];
 
-  v7 = [v12 windowScene];
+  windowScene = [_window windowScene];
 
-  v8 = v12;
-  if (v6 == v7)
+  v8 = _window;
+  if (object == windowScene)
   {
     if ([(_UIContextMenuUIController *)self _isPresented])
     {
-      v9 = [(_UIContextMenuUIController *)self _platformMetrics];
-      if ([v9 shouldDismissMenuOnSceneDeactivation])
+      _platformMetrics = [(_UIContextMenuUIController *)self _platformMetrics];
+      if ([_platformMetrics shouldDismissMenuOnSceneDeactivation])
       {
-        v10 = [(_UIContextMenuUIController *)self delegate];
-        [v10 contextMenuUIController:self didRequestDismissalWithReason:3 alongsideActions:0 completion:0];
+        delegate = [(_UIContextMenuUIController *)self delegate];
+        [delegate contextMenuUIController:self didRequestDismissalWithReason:3 alongsideActions:0 completion:0];
       }
     }
 
     else
     {
-      v11 = [(_UIContextMenuUIController *)self platterContainerView];
-      [v11 setHidden:1];
+      platterContainerView2 = [(_UIContextMenuUIController *)self platterContainerView];
+      [platterContainerView2 setHidden:1];
 
-      v9 = [(_UIContextMenuUIController *)self contentPlatterView];
-      [v9 setHidesCollapsedSourceView:0];
+      _platformMetrics = [(_UIContextMenuUIController *)self contentPlatterView];
+      [_platformMetrics setHidesCollapsedSourceView:0];
     }
 
-    v8 = v12;
+    v8 = _window;
   }
 }
 
-- (void)_enumeratePlatterViewsWithBlock:(id)a3
+- (void)_enumeratePlatterViewsWithBlock:(id)block
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v26 = 0;
-  v5 = [(_UIContextMenuUIController *)self contentPlatterView];
+  contentPlatterView = [(_UIContextMenuUIController *)self contentPlatterView];
 
-  if (!v5 || ((-[_UIContextMenuUIController contentPlatterView](self, "contentPlatterView"), v6 = objc_claimAutoreleasedReturnValue(), -[_UIContextMenuUIController flocker](self, "flocker"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 itemCount] - 1, v7, v8 >= 4) ? (v9 = 4) : (v9 = v8), v4[2](v4, v6, v9, 1, &v26), v6, (v26 & 1) == 0))
+  if (!contentPlatterView || ((-[_UIContextMenuUIController contentPlatterView](self, "contentPlatterView"), v6 = objc_claimAutoreleasedReturnValue(), -[_UIContextMenuUIController flocker](self, "flocker"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 itemCount] - 1, v7, v8 >= 4) ? (v9 = 4) : (v9 = v8), blockCopy[2](blockCopy, v6, v9, 1, &v26), v6, (v26 & 1) == 0))
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = [(_UIContextMenuUIController *)self flocker];
-    v11 = [v10 secondaryPlatterViews];
+    flocker = [(_UIContextMenuUIController *)self flocker];
+    secondaryPlatterViews = [flocker secondaryPlatterViews];
 
-    v12 = [v11 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    v12 = [secondaryPlatterViews countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v12)
     {
       v13 = v12;
@@ -2472,18 +2472,18 @@ LABEL_11:
         {
           if (*v23 != v15)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(secondaryPlatterViews);
           }
 
           v17 = *(*(&v22 + 1) + 8 * i);
-          v18 = [v17 view];
-          [v18 alpha];
+          view = [v17 view];
+          [view alpha];
           v20 = fabs(v19);
 
           if (v20 >= 2.22044605e-16)
           {
-            v21 = [v17 view];
-            v4[2](v4, v21, v14, 0, &v26);
+            view2 = [v17 view];
+            blockCopy[2](blockCopy, view2, v14, 0, &v26);
 
             if (v26)
             {
@@ -2494,7 +2494,7 @@ LABEL_11:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v13 = [secondaryPlatterViews countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v13);
@@ -2521,14 +2521,14 @@ LABEL_16:
 
 - (void)_testing_dismissByTappingOutside
 {
-  v3 = [(_UIContextMenuUIController *)self delegate];
-  [v3 contextMenuUIController:self didRequestDismissalWithReason:0 alongsideActions:0 completion:0];
+  delegate = [(_UIContextMenuUIController *)self delegate];
+  [delegate contextMenuUIController:self didRequestDismissalWithReason:0 alongsideActions:0 completion:0];
 }
 
 - (void)_testing_tapAnAction
 {
-  v2 = [(_UIContextMenuUIController *)self menuView];
-  [v2 performSelector:sel__testing_tapAnAction];
+  menuView = [(_UIContextMenuUIController *)self menuView];
+  [menuView performSelector:sel__testing_tapAnAction];
 }
 
 @end

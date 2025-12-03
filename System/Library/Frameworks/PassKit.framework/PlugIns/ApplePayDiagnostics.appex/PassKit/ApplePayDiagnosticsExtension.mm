@@ -1,6 +1,6 @@
 @interface ApplePayDiagnosticsExtension
 - (ApplePayDiagnosticsExtension)init;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation ApplePayDiagnosticsExtension
@@ -12,12 +12,12 @@
   return [(ApplePayDiagnosticsExtension *)&v3 init];
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = a3;
-  v23 = [v3 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
-  v4 = [v3 objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
-  v5 = [v4 BOOLValue];
+  parametersCopy = parameters;
+  v23 = [parametersCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  v4 = [parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
+  bOOLValue = [v4 BOOLValue];
 
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -27,7 +27,7 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ApplePayDiagnosticsExtension: Host Application: %{public}@", &buf, 0xCu);
   }
 
-  if (v5)
+  if (bOOLValue)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -54,7 +54,7 @@
     if (*(*(&buf + 1) + 40))
     {
       v9 = objc_alloc_init(NSMutableArray);
-      v20 = [*(*(&buf + 1) + 40) startAccessingSecurityScopedResource];
+      startAccessingSecurityScopedResource = [*(*(&buf + 1) + 40) startAccessingSecurityScopedResource];
       v10 = +[NSFileManager defaultManager];
       v11 = *(*(&buf + 1) + 40);
       v28 = 0;
@@ -66,9 +66,9 @@
         v12 = v6;
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [*(*(&buf + 1) + 40) path];
+          path = [*(*(&buf + 1) + 40) path];
           *v32 = 138543618;
-          v33 = v13;
+          v33 = path;
           v34 = 2114;
           v35 = v22;
           _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ApplePayDiagnosticsExtension: Error getting contents of %{public}@, error: %{public}@", v32, 0x16u);
@@ -112,7 +112,7 @@
         }
       }
 
-      if (v20)
+      if (startAccessingSecurityScopedResource)
       {
         [*(*(&buf + 1) + 40) stopAccessingSecurityScopedResource];
       }
@@ -120,7 +120,7 @@
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *v32 = 138412546;
-        v33 = v3;
+        v33 = parametersCopy;
         v34 = 2112;
         v35 = v9;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ApplePayDiagnosticsExtension: attachmentsForParameters: %@ %@", v32, 0x16u);

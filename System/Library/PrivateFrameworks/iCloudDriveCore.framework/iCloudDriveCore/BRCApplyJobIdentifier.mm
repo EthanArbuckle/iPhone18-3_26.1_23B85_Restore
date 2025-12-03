@@ -1,5 +1,5 @@
 @interface BRCApplyJobIdentifier
-- (BRCApplyJobIdentifier)initWithItemDBRowID:(int64_t)a3;
+- (BRCApplyJobIdentifier)initWithItemDBRowID:(int64_t)d;
 - (int64_t)rank;
 - (int64_t)rejectedRowID;
 - (int64_t)serverItemRank;
@@ -42,11 +42,11 @@
   return [(BRCItemDBRowIDJobIdentifier *)&v4];
 }
 
-- (BRCApplyJobIdentifier)initWithItemDBRowID:(int64_t)a3
+- (BRCApplyJobIdentifier)initWithItemDBRowID:(int64_t)d
 {
   v4.receiver = self;
   v4.super_class = BRCApplyJobIdentifier;
-  return [(BRCItemDBRowIDJobIdentifier *)&v4 initWithItemDBRowID:a3];
+  return [(BRCItemDBRowIDJobIdentifier *)&v4 initWithItemDBRowID:d];
 }
 
 @end

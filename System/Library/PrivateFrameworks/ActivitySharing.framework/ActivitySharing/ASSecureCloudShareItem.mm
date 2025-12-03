@@ -1,31 +1,31 @@
 @interface ASSecureCloudShareItem
-+ (ASSecureCloudShareItem)shareItemWithCodableShareItem:(id)a3;
-- (ASSecureCloudShareItem)initWithCoder:(id)a3;
-- (ASSecureCloudShareItem)initWithZoneName:(id)a3 shareURL:(id)a4 invitationToken:(id)a5;
++ (ASSecureCloudShareItem)shareItemWithCodableShareItem:(id)item;
+- (ASSecureCloudShareItem)initWithCoder:(id)coder;
+- (ASSecureCloudShareItem)initWithZoneName:(id)name shareURL:(id)l invitationToken:(id)token;
 - (id)codableShareItem;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASSecureCloudShareItem
 
-+ (ASSecureCloudShareItem)shareItemWithCodableShareItem:(id)a3
++ (ASSecureCloudShareItem)shareItemWithCodableShareItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 zoneName];
+  itemCopy = item;
+  zoneName = [itemCopy zoneName];
   v5 = objc_alloc(MEMORY[0x277CBEBC0]);
-  v6 = [v3 shareURL];
-  v7 = [v5 initWithString:v6];
+  shareURL = [itemCopy shareURL];
+  v7 = [v5 initWithString:shareURL];
 
   v8 = objc_opt_class();
-  v9 = [v3 invitationToken];
+  invitationToken = [itemCopy invitationToken];
 
-  v10 = ASSecureUnarchiveClassWithDataAndStrictness(v8, v9, 1);
+  v10 = ASSecureUnarchiveClassWithDataAndStrictness(v8, invitationToken, 1);
 
   v11 = 0;
-  if (v4 && v7 && v10)
+  if (zoneName && v7 && v10)
   {
-    v11 = [[ASSecureCloudShareItem alloc] initWithZoneName:v4 shareURL:v7 invitationToken:v10];
+    v11 = [[ASSecureCloudShareItem alloc] initWithZoneName:zoneName shareURL:v7 invitationToken:v10];
   }
 
   return v11;
@@ -34,17 +34,17 @@
 - (id)codableShareItem
 {
   v3 = objc_alloc_init(ASCodableSecureCloudShareItem);
-  v4 = [(ASSecureCloudShareItem *)self zoneName];
-  [(ASCodableSecureCloudShareItem *)v3 setZoneName:v4];
+  zoneName = [(ASSecureCloudShareItem *)self zoneName];
+  [(ASCodableSecureCloudShareItem *)v3 setZoneName:zoneName];
 
-  v5 = [(ASSecureCloudShareItem *)self shareURL];
-  v6 = [v5 absoluteString];
-  [(ASCodableSecureCloudShareItem *)v3 setShareURL:v6];
+  shareURL = [(ASSecureCloudShareItem *)self shareURL];
+  absoluteString = [shareURL absoluteString];
+  [(ASCodableSecureCloudShareItem *)v3 setShareURL:absoluteString];
 
   v7 = MEMORY[0x277CCAAB0];
-  v8 = [(ASSecureCloudShareItem *)self invitationToken];
+  invitationToken = [(ASSecureCloudShareItem *)self invitationToken];
   v14 = 0;
-  v9 = [v7 archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v14];
+  v9 = [v7 archivedDataWithRootObject:invitationToken requiringSecureCoding:1 error:&v14];
   v10 = v14;
 
   if (!v9 || v10)
@@ -68,51 +68,51 @@
   return v11;
 }
 
-- (ASSecureCloudShareItem)initWithZoneName:(id)a3 shareURL:(id)a4 invitationToken:(id)a5
+- (ASSecureCloudShareItem)initWithZoneName:(id)name shareURL:(id)l invitationToken:(id)token
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  lCopy = l;
+  tokenCopy = token;
   v15.receiver = self;
   v15.super_class = ASSecureCloudShareItem;
   v12 = [(ASSecureCloudShareItem *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_shareURL, a4);
-    objc_storeStrong(&v13->_invitationToken, a5);
-    objc_storeStrong(&v13->_zoneName, a3);
+    objc_storeStrong(&v12->_shareURL, l);
+    objc_storeStrong(&v13->_invitationToken, token);
+    objc_storeStrong(&v13->_zoneName, name);
   }
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   shareURL = self->_shareURL;
-  v5 = a3;
-  [v5 encodeObject:shareURL forKey:@"shareURL"];
-  [v5 encodeObject:self->_invitationToken forKey:@"invitationToken"];
-  [v5 encodeObject:self->_zoneName forKey:@"zoneName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:shareURL forKey:@"shareURL"];
+  [coderCopy encodeObject:self->_invitationToken forKey:@"invitationToken"];
+  [coderCopy encodeObject:self->_zoneName forKey:@"zoneName"];
 }
 
-- (ASSecureCloudShareItem)initWithCoder:(id)a3
+- (ASSecureCloudShareItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ASSecureCloudShareItem;
   v5 = [(ASSecureCloudShareItem *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shareURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shareURL"];
     shareURL = v5->_shareURL;
     v5->_shareURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"invitationToken"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"invitationToken"];
     invitationToken = v5->_invitationToken;
     v5->_invitationToken = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zoneName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zoneName"];
     zoneName = v5->_zoneName;
     v5->_zoneName = v10;
   }
@@ -120,9 +120,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong(v4 + 2, self->_shareURL);
   objc_storeStrong(v4 + 3, self->_invitationToken);
   objc_storeStrong(v4 + 1, self->_zoneName);

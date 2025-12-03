@@ -1,23 +1,23 @@
 @interface MTLLinkedFunctions
-+ (MTLLinkedFunctions)allocWithZone:(_NSZone *)a3;
++ (MTLLinkedFunctions)allocWithZone:(_NSZone *)zone;
 + (MTLLinkedFunctions)linkedFunctions;
 @end
 
 @implementation MTLLinkedFunctions
 
-+ (MTLLinkedFunctions)allocWithZone:(_NSZone *)a3
++ (MTLLinkedFunctions)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [MTLLinkedFunctionsInternal allocWithZone:a3];
+    return [MTLLinkedFunctionsInternal allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___MTLLinkedFunctions;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 

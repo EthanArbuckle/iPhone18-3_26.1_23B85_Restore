@@ -1,10 +1,10 @@
 @interface PKCheckmarkView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKCheckmarkView)init;
 - (void)_updateIconForCurrentTraitCollection;
 - (void)layoutSubviews;
-- (void)showCheckmark:(BOOL)a3 animated:(BOOL)a4;
+- (void)showCheckmark:(BOOL)checkmark animated:(BOOL)animated;
 - (void)tintColorDidChange;
 @end
 
@@ -50,9 +50,9 @@
   [(PKCheckmarkView *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIImage *)self->_iconImage size:a3.width];
+  [(UIImage *)self->_iconImage size:fits.width];
   result.height = v4;
   result.width = v3;
   return result;
@@ -86,15 +86,15 @@
   [(PKCheckmarkView *)self _updateIconForCurrentTraitCollection];
 }
 
-- (void)showCheckmark:(BOOL)a3 animated:(BOOL)a4
+- (void)showCheckmark:(BOOL)checkmark animated:(BOOL)animated
 {
-  if (self->_isShowingCheckmark != !a3)
+  if (self->_isShowingCheckmark != !checkmark)
   {
     return;
   }
 
-  self->_isShowingCheckmark = a3;
-  if (!a3)
+  self->_isShowingCheckmark = checkmark;
+  if (!checkmark)
   {
     v8 = 0;
 LABEL_8:
@@ -103,10 +103,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = a4;
+  animatedCopy = animated;
   v7 = self->_iconImage;
   v8 = v7;
-  if (!v6 || !v7)
+  if (!animatedCopy || !v7)
   {
     goto LABEL_8;
   }
@@ -114,14 +114,14 @@ LABEL_8:
   v15 = v7;
   [(UIImageView *)self->_imageView setImage:v7];
   imageView = self->_imageView;
-  v10 = [MEMORY[0x1E6982260] effect];
-  v11 = [MEMORY[0x1E6982278] options];
-  [(UIImageView *)imageView addSymbolEffect:v10 options:v11 animated:0];
+  effect = [MEMORY[0x1E6982260] effect];
+  options = [MEMORY[0x1E6982278] options];
+  [(UIImageView *)imageView addSymbolEffect:effect options:options animated:0];
 
   v12 = self->_imageView;
-  v13 = [MEMORY[0x1E6982268] effect];
-  v14 = [MEMORY[0x1E6982278] options];
-  [(UIImageView *)v12 addSymbolEffect:v13 options:v14 animated:1];
+  effect2 = [MEMORY[0x1E6982268] effect];
+  options2 = [MEMORY[0x1E6982278] options];
+  [(UIImageView *)v12 addSymbolEffect:effect2 options:options2 animated:1];
 
 LABEL_9:
 }

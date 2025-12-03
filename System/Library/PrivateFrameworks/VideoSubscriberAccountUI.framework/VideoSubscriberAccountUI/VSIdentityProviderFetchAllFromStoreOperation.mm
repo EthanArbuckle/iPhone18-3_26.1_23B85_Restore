@@ -30,15 +30,15 @@
 
 - (void)executionDidBegin
 {
-  v3 = [(VSIdentityProviderFetchAllFromStoreOperation *)self privateQueue];
+  privateQueue = [(VSIdentityProviderFetchAllFromStoreOperation *)self privateQueue];
   v4 = objc_alloc_init(MEMORY[0x277CE21A8]);
   [v4 setRequestType:0];
   [v4 setMethodName:*MEMORY[0x277CE2378]];
-  v5 = [(VSIdentityProviderFetchAllFromStoreOperation *)self auditToken];
-  [v4 setAuditToken:v5];
+  auditToken = [(VSIdentityProviderFetchAllFromStoreOperation *)self auditToken];
+  [v4 setAuditToken:auditToken];
 
   v6 = [objc_alloc(MEMORY[0x277CE21B0]) initWithRequest:v4];
-  [v3 addOperation:v6];
+  [privateQueue addOperation:v6];
   v7 = objc_alloc_init(VSFeaturedIdentityProviderLimitingOperation);
   objc_initWeak(&location, v7);
   objc_initWeak(&from, self);
@@ -51,7 +51,7 @@
   v16 = v9;
   objc_copyWeak(&v18, &location);
   objc_copyWeak(&v19, &from);
-  v10 = v3;
+  v10 = privateQueue;
   v17 = v10;
   v11 = [v8 blockOperationWithBlock:&v12];
   [v11 addDependency:{v9, v12, v13, v14, v15}];
@@ -149,8 +149,8 @@ void __65__VSIdentityProviderFetchAllFromStoreOperation_executionDidBegin__block
   v4.receiver = self;
   v4.super_class = VSIdentityProviderFetchAllFromStoreOperation;
   [(VSAsyncOperation *)&v4 cancel];
-  v3 = [(VSIdentityProviderFetchAllFromStoreOperation *)self privateQueue];
-  [v3 cancelAllOperations];
+  privateQueue = [(VSIdentityProviderFetchAllFromStoreOperation *)self privateQueue];
+  [privateQueue cancelAllOperations];
 }
 
 void __65__VSIdentityProviderFetchAllFromStoreOperation_executionDidBegin__block_invoke_4_cold_1(uint64_t a1, NSObject *a2)

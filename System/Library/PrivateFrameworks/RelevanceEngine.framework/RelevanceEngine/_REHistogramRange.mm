@@ -1,31 +1,31 @@
 @interface _REHistogramRange
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_REHistogramRange)initWithMin:(unint64_t)a3 max:(unint64_t)a4;
-- (_REHistogramRange)initWithValue:(unint64_t)a3 binningSize:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compare:(id)a3;
+- (_REHistogramRange)initWithMin:(unint64_t)min max:(unint64_t)max;
+- (_REHistogramRange)initWithValue:(unint64_t)value binningSize:(unint64_t)size;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compare:(id)compare;
 - (void)dealloc;
 @end
 
 @implementation _REHistogramRange
 
-- (_REHistogramRange)initWithValue:(unint64_t)a3 binningSize:(unint64_t)a4
+- (_REHistogramRange)initWithValue:(unint64_t)value binningSize:(unint64_t)size
 {
-  v7 = REFeatureValueTypeForTaggedPointer(a3);
-  if (v7 != REFeatureValueTypeForTaggedPointer(a4))
+  v7 = REFeatureValueTypeForTaggedPointer(value);
+  if (v7 != REFeatureValueTypeForTaggedPointer(size))
   {
     v20 = *MEMORY[0x277CBE660];
-    v21 = REDescriptionForTaggedPointer(a3);
-    v35 = REDescriptionForTaggedPointer(a4);
+    v21 = REDescriptionForTaggedPointer(value);
+    v35 = REDescriptionForTaggedPointer(size);
     RERaiseInternalException(v20, @"value %@ and binning value %@ must have matching types", v22, v23, v24, v25, v26, v27, v21);
 
 LABEL_17:
-    v32 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
-  v8 = REFeatureValueTypeForTaggedPointer(a3);
+  v8 = REFeatureValueTypeForTaggedPointer(value);
   v16 = 0;
   if (v8 <= 1)
   {
@@ -42,8 +42,8 @@ LABEL_17:
       goto LABEL_13;
     }
 
-    v28 = REIntegerValueForTaggedPointer(a4);
-    v29 = REIntegerValueForTaggedPointer(a3) / v28 * v28;
+    v28 = REIntegerValueForTaggedPointer(size);
+    v29 = REIntegerValueForTaggedPointer(value) / v28 * v28;
     v17 = RECreateIntegerFeatureValueTaggedPointer(v29);
     v30 = RECreateIntegerFeatureValueTaggedPointer(v29 + v28);
 LABEL_12:
@@ -53,8 +53,8 @@ LABEL_12:
 
   if (v8 == 2)
   {
-    REDoubleValueForTaggedPointer(a4, v9);
-    REDoubleValueForTaggedPointer(a3, v31);
+    REDoubleValueForTaggedPointer(size, v9);
+    REDoubleValueForTaggedPointer(value, v31);
     v17 = RECreateDoubleFeatureValueTaggedPointer();
     v30 = RECreateDoubleFeatureValueTaggedPointer();
     goto LABEL_12;
@@ -81,13 +81,13 @@ LABEL_13:
   self = [(_REHistogramRange *)self initWithMin:v17 max:v16];
   REReleaseFeatureValueTaggedPointer(v17);
   REReleaseFeatureValueTaggedPointer(v16);
-  v32 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v32;
+  return selfCopy;
 }
 
-- (_REHistogramRange)initWithMin:(unint64_t)a3 max:(unint64_t)a4
+- (_REHistogramRange)initWithMin:(unint64_t)min max:(unint64_t)max
 {
   v14.receiver = self;
   v14.super_class = _REHistogramRange;
@@ -95,21 +95,21 @@ LABEL_18:
   v7 = v6;
   if (v6)
   {
-    v6->_min = a3;
-    v6->_max = a4;
-    RERetainFeatureValueTaggedPointer(a3);
+    v6->_min = min;
+    v6->_max = max;
+    RERetainFeatureValueTaggedPointer(min);
     RERetainFeatureValueTaggedPointer(v7->_max);
     if (REFeatureValueTypeForTaggedPointer(v7->_min) == 2)
     {
-      REDoubleValueForTaggedPointer(a3, v8);
-      REDoubleValueForTaggedPointer(a4, v9);
+      REDoubleValueForTaggedPointer(min, v8);
+      REDoubleValueForTaggedPointer(max, v9);
       v10 = RECreateDoubleFeatureValueTaggedPointer();
     }
 
     else
     {
-      v11 = REIntegerValueForTaggedPointer(a3);
-      v12 = REIntegerValueForTaggedPointer(a4);
+      v11 = REIntegerValueForTaggedPointer(min);
+      v12 = REIntegerValueForTaggedPointer(max);
       v10 = RECreateIntegerFeatureValueTaggedPointer((v12 + v11) >> 1);
     }
 
@@ -129,10 +129,10 @@ LABEL_18:
   [(_REHistogramRange *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -142,7 +142,7 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       min = self->_min;
       v7 = v5->_min;
       if (min != v7)
@@ -209,22 +209,22 @@ LABEL_15:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   min = self->_min;
   max = self->_max;
 
   return [v4 initWithMin:min max:max];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = compareCopy;
     v6 = RECompareFeatureValues(self->_min, v5[1]);
     if (!v6)
     {

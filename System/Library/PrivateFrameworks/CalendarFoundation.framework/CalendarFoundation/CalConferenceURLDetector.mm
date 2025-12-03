@@ -1,43 +1,43 @@
 @interface CalConferenceURLDetector
-+ (BOOL)_hasDisallowedPathExtension:(id)a3;
-+ (BOOL)_hasValidPath:(id)a3;
-+ (BOOL)_isGoogleMeetURL:(id)a3;
-+ (BOOL)_isValidTelURL:(id)a3;
-+ (BOOL)isPreferredURL:(id)a3;
-+ (BOOL)isTUConversationLink:(id)a3;
++ (BOOL)_hasDisallowedPathExtension:(id)extension;
++ (BOOL)_hasValidPath:(id)path;
++ (BOOL)_isGoogleMeetURL:(id)l;
++ (BOOL)_isValidTelURL:(id)l;
++ (BOOL)isPreferredURL:(id)l;
++ (BOOL)isTUConversationLink:(id)link;
 + (id)_URLDataDetector;
-+ (id)_URLsInSource:(id)a3;
++ (id)_URLsInSource:(id)source;
 + (id)_dataDetector;
-+ (id)_firstPhoneNumberInSource:(id)a3;
++ (id)_firstPhoneNumberInSource:(id)source;
 + (id)_googleMeetSuffix;
-+ (id)_linksInSource:(id)a3;
++ (id)_linksInSource:(id)source;
 + (id)_microsoftSafeLinkPrefix;
 + (id)_phoneNumberDataDetector;
 + (id)_preferredHostSuffixes;
-+ (id)conferenceURLFromSources:(id)a3;
-+ (id)decodeIfSafeLink:(id)a3;
-+ (id)googleMeetURLsAndPhoneNumbersFromSource:(id)a3;
++ (id)conferenceURLFromSources:(id)sources;
++ (id)decodeIfSafeLink:(id)link;
++ (id)googleMeetURLsAndPhoneNumbersFromSource:(id)source;
 + (id)logHandle;
 @end
 
 @implementation CalConferenceURLDetector
 
-+ (id)conferenceURLFromSources:(id)a3
++ (id)conferenceURLFromSources:(id)sources
 {
   v40 = *MEMORY[0x1E69E9840];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  sourcesCopy = sources;
+  v5 = [sourcesCopy countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    phoneURL = 0;
     v8 = 0;
     v9 = *v35;
-    v28 = v4;
+    v28 = sourcesCopy;
     v26 = *v35;
     do
     {
@@ -47,14 +47,14 @@
       {
         if (*v35 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sourcesCopy);
         }
 
         v11 = *(*(&v34 + 1) + 8 * v10);
         if ([v11 length])
         {
-          v29 = v7;
-          v12 = [a1 _URLsInSource:v11];
+          v29 = phoneURL;
+          v12 = [self _URLsInSource:v11];
           v30 = 0u;
           v31 = 0u;
           v32 = 0u;
@@ -78,19 +78,19 @@
                 if ([v18 resultType] == 32)
                 {
                   v19 = [v18 URL];
-                  v20 = [a1 decodeIfSafeLink:v19];
+                  v20 = [self decodeIfSafeLink:v19];
 
                   if ([objc_opt_class() isPreferredURL:v20])
                   {
 
-                    v4 = v28;
-                    v7 = v29;
+                    sourcesCopy = v28;
+                    phoneURL = v29;
                     goto LABEL_36;
                   }
 
                   if (!v8)
                   {
-                    if ([a1 _isValidTelURL:v20])
+                    if ([self _isValidTelURL:v20])
                     {
                       v8 = v20;
                     }
@@ -113,23 +113,23 @@
             }
           }
 
-          v4 = v28;
-          v7 = v29;
+          sourcesCopy = v28;
+          phoneURL = v29;
           v6 = v27;
           if (!(v8 | v29))
           {
-            v21 = [a1 _firstPhoneNumberInSource:v11];
+            v21 = [self _firstPhoneNumberInSource:v11];
             if ([v21 resultType] == 2048)
             {
-              v22 = [v21 phoneNumber];
-              v7 = [v22 phoneURL];
+              phoneNumber = [v21 phoneNumber];
+              phoneURL = [phoneNumber phoneURL];
 
               v6 = v27;
             }
 
             else
             {
-              v7 = 0;
+              phoneURL = 0;
             }
           }
 
@@ -140,7 +140,7 @@
       }
 
       while (v10 != v6);
-      v6 = [v4 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      v6 = [sourcesCopy countByEnumeratingWithState:&v34 objects:v39 count:16];
     }
 
     while (v6);
@@ -148,7 +148,7 @@
 
   else
   {
-    v7 = 0;
+    phoneURL = 0;
     v8 = 0;
   }
 
@@ -159,7 +159,7 @@
 
   else
   {
-    v23 = v7;
+    v23 = phoneURL;
   }
 
   v20 = v23;
@@ -170,12 +170,12 @@ LABEL_36:
   return v20;
 }
 
-+ (id)googleMeetURLsAndPhoneNumbersFromSource:(id)a3
++ (id)googleMeetURLsAndPhoneNumbersFromSource:(id)source
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [a1 _linksInSource:v4];
+  sourceCopy = source;
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = [self _linksInSource:sourceCopy];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -200,7 +200,7 @@ LABEL_36:
           v12 = [v11 URL];
           if ([objc_opt_class() _isGoogleMeetURL:v12])
           {
-            [v5 addObject:v11];
+            [array addObject:v11];
           }
         }
       }
@@ -236,7 +236,7 @@ LABEL_36:
           v19 = [v18 URL];
           if ([objc_opt_class() isPreferredURL:v19] && (objc_msgSend(objc_opt_class(), "_isGoogleMeetURL:", v19) & 1) == 0)
           {
-            [v5 addObject:v18];
+            [array addObject:v18];
           }
         }
       }
@@ -270,20 +270,20 @@ LABEL_36:
         if ([v25 resultType] == 32)
         {
           v26 = [v25 URL];
-          if ([a1 _isValidTelURL:v26])
+          if ([self _isValidTelURL:v26])
           {
-            [v5 addObject:v25];
+            [array addObject:v25];
           }
         }
 
         else if ([v25 resultType] == 2048)
         {
-          v27 = [v25 phoneNumber];
-          v28 = [v27 phoneURL];
+          phoneNumber = [v25 phoneNumber];
+          phoneURL = [phoneNumber phoneURL];
 
-          if (v28)
+          if (phoneURL)
           {
-            [v5 addObject:v25];
+            [array addObject:v25];
           }
         }
       }
@@ -296,43 +296,43 @@ LABEL_36:
 
   v29 = *MEMORY[0x1E69E9840];
 
+  return array;
+}
+
++ (id)_linksInSource:(id)source
+{
+  sourceCopy = source;
+  _dataDetector = [objc_opt_class() _dataDetector];
+  v5 = [_dataDetector matchesInString:sourceCopy options:0 range:{0, objc_msgSend(sourceCopy, "length")}];
+
   return v5;
 }
 
-+ (id)_linksInSource:(id)a3
++ (id)_URLsInSource:(id)source
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _dataDetector];
-  v5 = [v4 matchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
-
-  return v5;
-}
-
-+ (id)_URLsInSource:(id)a3
-{
-  v4 = a3;
+  sourceCopy = source;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__6;
   v21 = __Block_byref_object_dispose__6;
-  v22 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__6;
   v15 = __Block_byref_object_dispose__6;
   v16 = 0;
-  v5 = [objc_opt_class() _URLDataDetector];
-  v6 = [v4 length];
+  _URLDataDetector = [objc_opt_class() _URLDataDetector];
+  v6 = [sourceCopy length];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __42__CalConferenceURLDetector__URLsInSource___block_invoke;
   v10[3] = &unk_1E7EC6C38;
   v10[4] = &v11;
   v10[5] = &v17;
-  v10[6] = a1;
-  [v5 enumerateMatchesInString:v4 options:2 range:0 usingBlock:{v6, v10}];
+  v10[6] = self;
+  [_URLDataDetector enumerateMatchesInString:sourceCopy options:2 range:0 usingBlock:{v6, v10}];
 
   if (v12[5])
   {
@@ -381,29 +381,29 @@ void __42__CalConferenceURLDetector__URLsInSource___block_invoke(uint64_t a1, vo
   }
 }
 
-+ (id)_firstPhoneNumberInSource:(id)a3
++ (id)_firstPhoneNumberInSource:(id)source
 {
-  v4 = a3;
-  v5 = [a1 _phoneNumberDataDetector];
-  v6 = [v5 firstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+  sourceCopy = source;
+  _phoneNumberDataDetector = [self _phoneNumberDataDetector];
+  v6 = [_phoneNumberDataDetector firstMatchInString:sourceCopy options:0 range:{0, objc_msgSend(sourceCopy, "length")}];
 
   return v6;
 }
 
-+ (id)decodeIfSafeLink:(id)a3
++ (id)decodeIfSafeLink:(id)link
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  linkCopy = link;
+  v5 = linkCopy;
+  if (!linkCopy)
   {
     v18 = 0;
     goto LABEL_18;
   }
 
-  v6 = [v4 host];
-  v7 = [a1 _microsoftSafeLinkPrefix];
-  v8 = [v6 containsString:v7];
+  host = [linkCopy host];
+  _microsoftSafeLinkPrefix = [self _microsoftSafeLinkPrefix];
+  v8 = [host containsString:_microsoftSafeLinkPrefix];
 
   if (v8)
   {
@@ -419,8 +419,8 @@ void __42__CalConferenceURLDetector__URLsInSource___block_invoke(uint64_t a1, vo
     v23 = 0u;
     v24 = 0u;
     v22 = v9;
-    v10 = [v9 queryItems];
-    v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    queryItems = [v9 queryItems];
+    v11 = [queryItems countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v11)
     {
       v12 = v11;
@@ -431,23 +431,23 @@ void __42__CalConferenceURLDetector__URLsInSource___block_invoke(uint64_t a1, vo
         {
           if (*v24 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(queryItems);
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
-          v16 = [v15 name];
-          v17 = [v16 isEqualToString:@"url"];
+          name = [v15 name];
+          v17 = [name isEqualToString:@"url"];
 
           if (v17)
           {
-            v19 = [v15 value];
-            v18 = [MEMORY[0x1E695DFF8] URLWithString:v19];
+            value = [v15 value];
+            v18 = [MEMORY[0x1E695DFF8] URLWithString:value];
 
             goto LABEL_17;
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v12 = [queryItems countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v12)
         {
           continue;
@@ -467,19 +467,19 @@ LABEL_18:
   return v18;
 }
 
-+ (BOOL)isPreferredURL:(id)a3
++ (BOOL)isPreferredURL:(id)l
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && ([a1 _hasDisallowedPathExtension:v4] & 1) == 0 && objc_msgSend(a1, "_hasValidPath:", v4))
+  lCopy = l;
+  if (lCopy && ([self _hasDisallowedPathExtension:lCopy] & 1) == 0 && objc_msgSend(self, "_hasValidPath:", lCopy))
   {
-    v5 = [v4 cal_hostAfterGoogleRedirects];
+    cal_hostAfterGoogleRedirects = [lCopy cal_hostAfterGoogleRedirects];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [a1 _preferredHostSuffixes];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    _preferredHostSuffixes = [self _preferredHostSuffixes];
+    v7 = [_preferredHostSuffixes countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -490,10 +490,10 @@ LABEL_18:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(_preferredHostSuffixes);
           }
 
-          if ([v5 hasSuffix:*(*(&v14 + 1) + 8 * i)])
+          if ([cal_hostAfterGoogleRedirects hasSuffix:*(*(&v14 + 1) + 8 * i)])
           {
 
             v11 = 1;
@@ -501,7 +501,7 @@ LABEL_18:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [_preferredHostSuffixes countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           continue;
@@ -511,7 +511,7 @@ LABEL_18:
       }
     }
 
-    v11 = [a1 isTUConversationLink:v4];
+    v11 = [self isTUConversationLink:lCopy];
 LABEL_16:
   }
 
@@ -524,18 +524,18 @@ LABEL_16:
   return v11;
 }
 
-+ (BOOL)isTUConversationLink:(id)a3
++ (BOOL)isTUConversationLink:(id)link
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (link)
   {
-    v3 = [a3 host];
+    host = [link host];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [MEMORY[0x1E69D8B70] baseURLs];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    baseURLs = [MEMORY[0x1E69D8B70] baseURLs];
+    v5 = [baseURLs countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = *v13;
@@ -545,11 +545,11 @@ LABEL_16:
         {
           if (*v13 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(baseURLs);
           }
 
-          v8 = [*(*(&v12 + 1) + 8 * i) host];
-          v9 = [v8 isEqualToString:v3];
+          host2 = [*(*(&v12 + 1) + 8 * i) host];
+          v9 = [host2 isEqualToString:host];
 
           if (v9)
           {
@@ -558,7 +558,7 @@ LABEL_16:
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v5 = [baseURLs countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v5)
         {
           continue;
@@ -580,14 +580,14 @@ LABEL_12:
   return v5;
 }
 
-+ (BOOL)_isGoogleMeetURL:(id)a3
++ (BOOL)_isGoogleMeetURL:(id)l
 {
-  v4 = a3;
-  if (v4 && ([a1 _hasDisallowedPathExtension:v4] & 1) == 0 && objc_msgSend(a1, "_hasValidPath:", v4))
+  lCopy = l;
+  if (lCopy && ([self _hasDisallowedPathExtension:lCopy] & 1) == 0 && objc_msgSend(self, "_hasValidPath:", lCopy))
   {
-    v5 = [v4 cal_hostAfterGoogleRedirects];
-    v6 = [a1 _googleMeetSuffix];
-    v7 = [v5 hasSuffix:v6];
+    cal_hostAfterGoogleRedirects = [lCopy cal_hostAfterGoogleRedirects];
+    _googleMeetSuffix = [self _googleMeetSuffix];
+    v7 = [cal_hostAfterGoogleRedirects hasSuffix:_googleMeetSuffix];
   }
 
   else
@@ -598,13 +598,13 @@ LABEL_12:
   return v7;
 }
 
-+ (BOOL)_isValidTelURL:(id)a3
++ (BOOL)_isValidTelURL:(id)l
 {
-  v3 = a3;
-  if ([v3 cal_hasSchemeTel])
+  lCopy = l;
+  if ([lCopy cal_hasSchemeTel])
   {
-    v4 = [v3 resourceSpecifier];
-    v5 = [v4 stringByReplacingOccurrencesOfString:@"/" withString:&stru_1F379FFA8];
+    resourceSpecifier = [lCopy resourceSpecifier];
+    v5 = [resourceSpecifier stringByReplacingOccurrencesOfString:@"/" withString:&stru_1F379FFA8];
     v6 = [v5 length] != 0;
   }
 
@@ -616,28 +616,28 @@ LABEL_12:
   return v6;
 }
 
-+ (BOOL)_hasValidPath:(id)a3
++ (BOOL)_hasValidPath:(id)path
 {
-  v3 = [a3 path];
-  v4 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  path = [path path];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v5 = [path stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   v6 = [v5 length] && (objc_msgSend(v5, "length") != 1 || (objc_msgSend(v5, "hasPrefix:", @"/") & 1) == 0);
   return v6;
 }
 
-+ (BOOL)_hasDisallowedPathExtension:(id)a3
++ (BOOL)_hasDisallowedPathExtension:(id)extension
 {
-  v3 = a3;
+  extensionCopy = extension;
   if (_hasDisallowedPathExtension__onceToken != -1)
   {
     +[CalConferenceURLDetector _hasDisallowedPathExtension:];
   }
 
-  v4 = [v3 pathExtension];
-  if ([v4 length])
+  pathExtension = [extensionCopy pathExtension];
+  if ([pathExtension length])
   {
-    v5 = [_hasDisallowedPathExtension__disallowedPathExtensions containsObject:v4];
+    v5 = [_hasDisallowedPathExtension__disallowedPathExtensions containsObject:pathExtension];
   }
 
   else
@@ -697,7 +697,7 @@ void __52__CalConferenceURLDetector__microsoftSafeLinkPrefix__block_invoke()
   block[1] = 3221225472;
   block[2] = __50__CalConferenceURLDetector__preferredHostSuffixes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_preferredHostSuffixes_onceToken != -1)
   {
     dispatch_once(&_preferredHostSuffixes_onceToken, block);
@@ -747,7 +747,7 @@ void __50__CalConferenceURLDetector__preferredHostSuffixes__block_invoke(uint64_
   block[1] = 3221225472;
   block[2] = __41__CalConferenceURLDetector__dataDetector__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_dataDetector_onceToken != -1)
   {
     dispatch_once(&_dataDetector_onceToken, block);
@@ -794,7 +794,7 @@ void __41__CalConferenceURLDetector__dataDetector__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __44__CalConferenceURLDetector__URLDataDetector__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_URLDataDetector_onceToken != -1)
   {
     dispatch_once(&_URLDataDetector_onceToken, block);
@@ -841,7 +841,7 @@ void __44__CalConferenceURLDetector__URLDataDetector__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __52__CalConferenceURLDetector__phoneNumberDataDetector__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_phoneNumberDataDetector_onceToken != -1)
   {
     dispatch_once(&_phoneNumberDataDetector_onceToken, block);
@@ -888,7 +888,7 @@ void __52__CalConferenceURLDetector__phoneNumberDataDetector__block_invoke(uint6
   block[1] = 3221225472;
   block[2] = __37__CalConferenceURLDetector_logHandle__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (logHandle_onceToken_1 != -1)
   {
     dispatch_once(&logHandle_onceToken_1, block);

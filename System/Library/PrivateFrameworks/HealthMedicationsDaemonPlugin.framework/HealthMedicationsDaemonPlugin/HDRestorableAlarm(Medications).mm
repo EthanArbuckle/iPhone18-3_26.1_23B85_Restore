@@ -7,16 +7,16 @@
 - (id)medicationNotificationEventWithScheduleItem:()Medications dueDate:isFollowUp:isCritical:medicationsCount:
 {
   v12 = a4;
-  v13 = [a3 identifier];
+  identifier = [a3 identifier];
   v14 = [MEMORY[0x277CCABB0] numberWithBool:a5];
-  v15 = [v14 longValue];
+  longValue = [v14 longValue];
 
   v16 = [MEMORY[0x277CCABB0] numberWithBool:a6];
-  v17 = [v16 longValue];
+  longValue2 = [v16 longValue];
 
-  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@%@%@%@%@%li%@%@%@%li", @"scheduleItemId", @":", v13, @", ", @"isFollowUp", @":", v15, @", ", @"isCritical", @":", v17];
+  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@%@%@%@%@%li%@%@%@%li", @"scheduleItemId", @":", identifier, @", ", @"isFollowUp", @":", longValue, @", ", @"isCritical", @":", longValue2];
 
-  v19 = [a1 eventWithIdentifier:v18 dueDate:v12 eventOptions:0 clientOptions:a7 > 1];
+  v19 = [self eventWithIdentifier:v18 dueDate:v12 eventOptions:0 clientOptions:a7 > 1];
 
   return v19;
 }

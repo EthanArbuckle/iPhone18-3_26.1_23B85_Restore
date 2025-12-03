@@ -1,11 +1,11 @@
 @interface HMLightProfileSettings
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMLightProfileSettings)initWithCoder:(id)a3;
-- (HMLightProfileSettings)initWithSupportedFeatures:(unint64_t)a3 naturalLightingEnabled:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMLightProfileSettings)initWithCoder:(id)coder;
+- (HMLightProfileSettings)initWithSupportedFeatures:(unint64_t)features naturalLightingEnabled:(BOOL)enabled;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMLightProfileSettings
@@ -36,29 +36,29 @@
   return NSStringFromClass(v2);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[HMLightProfileSettings supportedFeatures](self forKey:{"supportedFeatures"), @"hmlp.sf"}];
-  [v4 encodeBool:-[HMLightProfileSettings isNaturalLightingEnabled](self forKey:{"isNaturalLightingEnabled"), @"hmlp.nle"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[HMLightProfileSettings supportedFeatures](self forKey:{"supportedFeatures"), @"hmlp.sf"}];
+  [coderCopy encodeBool:-[HMLightProfileSettings isNaturalLightingEnabled](self forKey:{"isNaturalLightingEnabled"), @"hmlp.nle"}];
 }
 
-- (HMLightProfileSettings)initWithCoder:(id)a3
+- (HMLightProfileSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"hmlp.sf"];
-  v6 = [v4 decodeBoolForKey:@"hmlp.nle"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"hmlp.sf"];
+  v6 = [coderCopy decodeBoolForKey:@"hmlp.nle"];
 
   return [(HMLightProfileSettings *)self initWithSupportedFeatures:v5 naturalLightingEnabled:v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -69,8 +69,8 @@
   v6 = v5;
   if (v6 && (v7 = -[HMLightProfileSettings isNaturalLightingEnabled](self, "isNaturalLightingEnabled"), v7 == [v6 isNaturalLightingEnabled]))
   {
-    v9 = [(HMLightProfileSettings *)self supportedFeatures];
-    v8 = v9 == [v6 supportedFeatures];
+    supportedFeatures = [(HMLightProfileSettings *)self supportedFeatures];
+    v8 = supportedFeatures == [v6 supportedFeatures];
   }
 
   else
@@ -81,15 +81,15 @@
   return v8;
 }
 
-- (HMLightProfileSettings)initWithSupportedFeatures:(unint64_t)a3 naturalLightingEnabled:(BOOL)a4
+- (HMLightProfileSettings)initWithSupportedFeatures:(unint64_t)features naturalLightingEnabled:(BOOL)enabled
 {
   v7.receiver = self;
   v7.super_class = HMLightProfileSettings;
   result = [(HMLightProfileSettings *)&v7 init];
   if (result)
   {
-    result->_naturalLightingEnabled = a4;
-    result->_supportedFeatures = a3;
+    result->_naturalLightingEnabled = enabled;
+    result->_supportedFeatures = features;
   }
 
   return result;

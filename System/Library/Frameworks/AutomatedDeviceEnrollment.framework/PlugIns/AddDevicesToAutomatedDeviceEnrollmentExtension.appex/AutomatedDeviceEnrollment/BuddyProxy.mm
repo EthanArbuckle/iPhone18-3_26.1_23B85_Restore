@@ -1,6 +1,6 @@
 @interface BuddyProxy
 - (_TtC46AddDevicesToAutomatedDeviceEnrollmentExtension10BuddyProxy)init;
-- (void)client:(id)a3 didInterruptWithError:(id)a4;
+- (void)client:(id)client didInterruptWithError:(id)error;
 - (void)clientDidConnect:;
 - (void)clientDidDisconnect:;
 @end
@@ -14,11 +14,11 @@
   return result;
 }
 
-- (void)client:(id)a3 didInterruptWithError:(id)a4
+- (void)client:(id)client didInterruptWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
+  clientCopy = client;
+  selfCopy = self;
+  errorCopy = error;
   sub_100034CFC();
 }
 

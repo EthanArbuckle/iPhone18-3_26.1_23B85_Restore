@@ -1,22 +1,22 @@
 @interface _BGTaskIdentifierRegistry
 + (id)registryWithContentsFromPlist;
-- (BOOL)isIdentifierValidContinuedProcessingBaseNotation:(id)a3;
-- (BOOL)isIdentifierValidContinuedProcessingComposedNotation:(id)a3;
-- (BOOL)isIdentifierValidContinuedProcessingWildcardNotation:(id)a3;
-- (BOOL)isPermissibleFullyComposedIdentifier:(id)a3;
+- (BOOL)isIdentifierValidContinuedProcessingBaseNotation:(id)notation;
+- (BOOL)isIdentifierValidContinuedProcessingComposedNotation:(id)notation;
+- (BOOL)isIdentifierValidContinuedProcessingWildcardNotation:(id)notation;
+- (BOOL)isPermissibleFullyComposedIdentifier:(id)identifier;
 - (NSSet)permittedContinuedProcessingBaseNotationIdentifiers;
 - (_BGTaskIdentifierRegistry)initWithContentsFromPlist;
-- (_BGTaskIdentifierRegistry)initWithPermittedIdentifiers:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_BGTaskIdentifierRegistry)initWithPermittedIdentifiers:(id)identifiers;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _BGTaskIdentifierRegistry
 
 + (id)registryWithContentsFromPlist
 {
-  v2 = [objc_alloc(objc_opt_class()) initWithContentsFromPlist];
+  initWithContentsFromPlist = [objc_alloc(objc_opt_class()) initWithContentsFromPlist];
 
-  return v2;
+  return initWithContentsFromPlist;
 }
 
 - (_BGTaskIdentifierRegistry)initWithContentsFromPlist
@@ -31,9 +31,9 @@
     log = v2->_log;
     v2->_log = v3;
 
-    v5 = [MEMORY[0x1E696AAE8] mainBundle];
-    v6 = [v5 infoDictionary];
-    v7 = [v6 objectForKey:@"BGTaskSchedulerPermittedIdentifiers"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    infoDictionary = [mainBundle infoDictionary];
+    v7 = [infoDictionary objectForKey:@"BGTaskSchedulerPermittedIdentifiers"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -137,8 +137,8 @@ LABEL_17:
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [(_BGTaskIdentifierRegistry *)self permittedIdentifiers];
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    permittedIdentifiers = [(_BGTaskIdentifierRegistry *)self permittedIdentifiers];
+    v7 = [permittedIdentifiers countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
       v8 = v7;
@@ -149,7 +149,7 @@ LABEL_17:
         {
           if (*v18 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(permittedIdentifiers);
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
@@ -160,7 +160,7 @@ LABEL_17:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [permittedIdentifiers countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v8);
@@ -178,15 +178,15 @@ LABEL_17:
   return v3;
 }
 
-- (_BGTaskIdentifierRegistry)initWithPermittedIdentifiers:(id)a3
+- (_BGTaskIdentifierRegistry)initWithPermittedIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v9.receiver = self;
   v9.super_class = _BGTaskIdentifierRegistry;
   v5 = [(_BGTaskIdentifierRegistry *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifiersCopy copy];
     permittedIdentifiers = v5->_permittedIdentifiers;
     v5->_permittedIdentifiers = v6;
   }
@@ -194,22 +194,22 @@ LABEL_17:
   return v5;
 }
 
-- (BOOL)isPermissibleFullyComposedIdentifier:(id)a3
+- (BOOL)isPermissibleFullyComposedIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length] <= 0x80)
+  identifierCopy = identifier;
+  if ([identifierCopy length] <= 0x80)
   {
-    if ([(_BGTaskIdentifierRegistry *)self isIdentifierValidContinuedProcessingWildcardNotation:v4])
+    if ([(_BGTaskIdentifierRegistry *)self isIdentifierValidContinuedProcessingWildcardNotation:identifierCopy])
     {
-      v6 = [(_BGTaskIdentifierRegistry *)self permittedIdentifiers];
-      v5 = [v6 containsObject:v4] ^ 1;
+      permittedIdentifiers = [(_BGTaskIdentifierRegistry *)self permittedIdentifiers];
+      v5 = [permittedIdentifiers containsObject:identifierCopy] ^ 1;
     }
 
     else
     {
-      v7 = [(_BGTaskIdentifierRegistry *)self isIdentifierValidContinuedProcessingComposedNotation:v4];
-      v6 = [(_BGTaskIdentifierRegistry *)self permittedIdentifiers];
-      v5 = [v6 containsObject:v4] | v7;
+      v7 = [(_BGTaskIdentifierRegistry *)self isIdentifierValidContinuedProcessingComposedNotation:identifierCopy];
+      permittedIdentifiers = [(_BGTaskIdentifierRegistry *)self permittedIdentifiers];
+      v5 = [permittedIdentifiers containsObject:identifierCopy] | v7;
     }
   }
 
@@ -221,15 +221,15 @@ LABEL_17:
   return v5 & 1;
 }
 
-- (BOOL)isIdentifierValidContinuedProcessingWildcardNotation:(id)a3
+- (BOOL)isIdentifierValidContinuedProcessingWildcardNotation:(id)notation
 {
-  v3 = a3;
-  if ([v3 containsString:@".*"] && objc_msgSend(v3, "hasSuffix:", @".*") && (objc_msgSend(v3, "componentsSeparatedByString:", @".*"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "count"), v4, v5 <= 2))
+  notationCopy = notation;
+  if ([notationCopy containsString:@".*"] && objc_msgSend(notationCopy, "hasSuffix:", @".*") && (objc_msgSend(notationCopy, "componentsSeparatedByString:", @".*"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "count"), v4, v5 <= 2))
   {
-    v8 = [MEMORY[0x1E696AAE8] mainBundle];
-    v9 = [v8 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v6 = [v3 hasPrefix:v9];
+    v6 = [notationCopy hasPrefix:bundleIdentifier];
   }
 
   else
@@ -240,13 +240,13 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)isIdentifierValidContinuedProcessingBaseNotation:(id)a3
+- (BOOL)isIdentifierValidContinuedProcessingBaseNotation:(id)notation
 {
-  v4 = a3;
-  if ([v4 length] <= 0x80)
+  notationCopy = notation;
+  if ([notationCopy length] <= 0x80)
   {
-    v6 = [(_BGTaskIdentifierRegistry *)self permittedContinuedProcessingBaseNotationIdentifiers];
-    v5 = [v6 containsObject:v4];
+    permittedContinuedProcessingBaseNotationIdentifiers = [(_BGTaskIdentifierRegistry *)self permittedContinuedProcessingBaseNotationIdentifiers];
+    v5 = [permittedContinuedProcessingBaseNotationIdentifiers containsObject:notationCopy];
   }
 
   else
@@ -257,18 +257,18 @@ LABEL_17:
   return v5;
 }
 
-- (BOOL)isIdentifierValidContinuedProcessingComposedNotation:(id)a3
+- (BOOL)isIdentifierValidContinuedProcessingComposedNotation:(id)notation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length] <= 0x80)
+  notationCopy = notation;
+  if ([notationCopy length] <= 0x80)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(_BGTaskIdentifierRegistry *)self permittedContinuedProcessingBaseNotationIdentifiers];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    permittedContinuedProcessingBaseNotationIdentifiers = [(_BGTaskIdentifierRegistry *)self permittedContinuedProcessingBaseNotationIdentifiers];
+    v7 = [permittedContinuedProcessingBaseNotationIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -279,28 +279,28 @@ LABEL_17:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(permittedContinuedProcessingBaseNotationIdentifiers);
           }
 
-          if ([v4 hasPrefix:*(*(&v15 + 1) + 8 * i)])
+          if ([notationCopy hasPrefix:*(*(&v15 + 1) + 8 * i)])
           {
-            v11 = [(_BGTaskIdentifierRegistry *)self permittedIdentifiers];
-            if ([v11 containsObject:v4])
+            permittedIdentifiers = [(_BGTaskIdentifierRegistry *)self permittedIdentifiers];
+            if ([permittedIdentifiers containsObject:notationCopy])
             {
               LOBYTE(v5) = 0;
             }
 
             else
             {
-              v12 = [(_BGTaskIdentifierRegistry *)self permittedContinuedProcessingBaseNotationIdentifiers];
-              v5 = [v12 containsObject:v4] ^ 1;
+              permittedContinuedProcessingBaseNotationIdentifiers2 = [(_BGTaskIdentifierRegistry *)self permittedContinuedProcessingBaseNotationIdentifiers];
+              v5 = [permittedContinuedProcessingBaseNotationIdentifiers2 containsObject:notationCopy] ^ 1;
             }
 
             goto LABEL_16;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [permittedContinuedProcessingBaseNotationIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v8)
         {
           continue;
@@ -323,7 +323,7 @@ LABEL_16:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   permittedIdentifiers = self->_permittedIdentifiers;

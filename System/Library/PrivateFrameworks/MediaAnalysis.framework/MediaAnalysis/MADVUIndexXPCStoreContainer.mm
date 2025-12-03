@@ -1,13 +1,13 @@
 @interface MADVUIndexXPCStoreContainer
-+ (id)sharedContainerWithPhotoLibrary:(id)a3;
-- (MADVUIndexXPCStoreContainer)initWithPhotoLibrary:(id)a3;
++ (id)sharedContainerWithPhotoLibrary:(id)library;
+- (MADVUIndexXPCStoreContainer)initWithPhotoLibrary:(id)library;
 @end
 
 @implementation MADVUIndexXPCStoreContainer
 
-- (MADVUIndexXPCStoreContainer)initWithPhotoLibrary:(id)a3
+- (MADVUIndexXPCStoreContainer)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v30.receiver = self;
   v30.super_class = MADVUIndexXPCStoreContainer;
   v5 = [(MADVUIndexXPCStoreContainer *)&v30 init];
@@ -91,8 +91,8 @@
   v29 = [NSDictionary dictionaryWithObjects:v37 forKeys:v36 count:9];
 
   v12 = objc_alloc_init(NSXPCStoreServerRequestHandlingPolicy);
-  v13 = [v4 vcp_visionCacheStorageDirectoryURL];
-  v14 = [v13 URLByAppendingPathComponent:@"VUIndex.sqlite"];
+  vcp_visionCacheStorageDirectoryURL = [libraryCopy vcp_visionCacheStorageDirectoryURL];
+  v14 = [vcp_visionCacheStorageDirectoryURL URLByAppendingPathComponent:@"VUIndex.sqlite"];
   if (v14)
   {
     v15 = [[NSXPCStoreServer alloc] initForStoreWithURL:v14 usingModelAtURL:v9 options:v29 policy:v12];
@@ -156,19 +156,19 @@ LABEL_30:
   return v27;
 }
 
-+ (id)sharedContainerWithPhotoLibrary:(id)a3
++ (id)sharedContainerWithPhotoLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [v4 photoLibraryURL];
-  v6 = [NSString stringWithFormat:@"MADVUIndexXPCStoreContainer-%@", v5];
+  libraryCopy = library;
+  photoLibraryURL = [libraryCopy photoLibraryURL];
+  v6 = [NSString stringWithFormat:@"MADVUIndexXPCStoreContainer-%@", photoLibraryURL];
 
   v7 = +[VCPSharedInstanceManager sharedManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001B5340;
   v11[3] = &unk_100288800;
-  v13 = a1;
-  v8 = v4;
+  selfCopy = self;
+  v8 = libraryCopy;
   v12 = v8;
   v9 = [v7 sharedInstanceWithIdentifier:v6 andCreationBlock:v11];
 

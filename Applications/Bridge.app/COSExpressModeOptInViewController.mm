@@ -12,12 +12,12 @@
 - (id)suggestedButtonTitle;
 - (id)titleString;
 - (void)_checkLocalPairingStorePathAndReleaseHold;
-- (void)alternateButtonPressed:(id)a3;
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value;
 - (void)didEstablishHold;
-- (void)learnMoreButtonPressed:(id)a3;
-- (void)paymentExpressSetupManager:(id)a3 didUpdateCardArtForSetupAssistantCredential:(id)a4;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)learnMoreButtonPressed:(id)pressed;
+- (void)paymentExpressSetupManager:(id)manager didUpdateCardArtForSetupAssistantCredential:(id)credential;
+- (void)suggestedButtonPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
@@ -25,8 +25,8 @@
 
 - (void)didEstablishHold
 {
-  v3 = [(COSExpressModeOptInViewController *)self _paymentExpressSetupManager];
-  if (v3)
+  _paymentExpressSetupManager = [(COSExpressModeOptInViewController *)self _paymentExpressSetupManager];
+  if (_paymentExpressSetupManager)
   {
     objc_initWeak(&location, self);
     v4[0] = _NSConcreteStackBlock;
@@ -34,7 +34,7 @@
     v4[2] = sub_100016714;
     v4[3] = &unk_100268430;
     objc_copyWeak(&v5, &location);
-    [v3 configureExpressSetupProvisioningContextWithCompletion:v4];
+    [_paymentExpressSetupManager configureExpressSetupProvisioningContextWithCompletion:v4];
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
   }
@@ -54,23 +54,23 @@
   if (v2)
   {
     [(COSExpressModeOptInViewController *)v2 setStyle:26];
-    v4 = [UIApp setupController];
-    objc_storeWeak(&v3->_setupController, v4);
+    setupController = [UIApp setupController];
+    objc_storeWeak(&v3->_setupController, setupController);
 
     v5 = pbb_setupflow_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       WeakRetained = objc_loadWeakRetained(&v3->_setupController);
-      v7 = [WeakRetained expressModeControllers];
+      expressModeControllers = [WeakRetained expressModeControllers];
       *buf = 138412290;
-      v15 = v7;
+      v15 = expressModeControllers;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Express mode controllers: %@", buf, 0xCu);
     }
 
-    v8 = [(COSExpressModeOptInViewController *)v3 _walletExpressSetupEnabled];
+    _walletExpressSetupEnabled = [(COSExpressModeOptInViewController *)v3 _walletExpressSetupEnabled];
     v9 = pbb_setupflow_log();
     v10 = os_log_type_enabled(&v9->super, OS_LOG_TYPE_ERROR);
-    if (v8)
+    if (_walletExpressSetupEnabled)
     {
       if (v10)
       {
@@ -95,10 +95,10 @@
 - (void)_checkLocalPairingStorePathAndReleaseHold
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 activeWatch];
+  activeWatch = [v3 activeWatch];
 
   v5 = NRDevicePropertyLocalPairingDataStorePath;
-  v6 = [v4 valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
+  v6 = [activeWatch valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
   if (v6)
   {
     objc_initWeak(&location, self);
@@ -122,7 +122,7 @@
 
     v12 = v5;
     v8 = [NSArray arrayWithObjects:&v12 count:1];
-    [v4 addPropertyObserver:self forPropertyChanges:v8];
+    [activeWatch addPropertyObserver:self forPropertyChanges:v8];
   }
 }
 
@@ -133,16 +133,16 @@
   [(COSExpressModeOptInViewController *)&v45 viewDidLoad];
   v38 = objc_opt_new();
   WeakRetained = objc_loadWeakRetained(&self->_setupController);
-  v3 = [WeakRetained expressModeDevice];
+  expressModeDevice = [WeakRetained expressModeDevice];
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
   v4 = objc_loadWeakRetained(&self->_setupController);
-  v5 = [v4 expressModeControllers];
+  expressModeControllers = [v4 expressModeControllers];
 
-  v6 = [v5 countByEnumeratingWithState:&v41 objects:v49 count:16];
+  v6 = [expressModeControllers countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v6)
   {
     v7 = *v42;
@@ -152,11 +152,11 @@
       {
         if (*v42 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(expressModeControllers);
         }
 
         v9 = *(*(&v41 + 1) + 8 * i);
-        if ([(objc_class *)v9 skipControllerForExpressMode:v3])
+        if ([(objc_class *)v9 skipControllerForExpressMode:expressModeDevice])
         {
           v10 = pbb_setupflow_log();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -171,7 +171,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v41 objects:v49 count:16];
+      v6 = [expressModeControllers countByEnumeratingWithState:&v41 objects:v49 count:16];
     }
 
     while (v6);
@@ -181,39 +181,39 @@
   [(COSExpressModeOptInViewController *)self setActiveExpressModeControllerClasses:v12];
 
   v13 = [COSExpressSetupDetailView alloc];
-  v14 = [(COSExpressModeOptInViewController *)self _makeDetailSections];
-  v15 = [(COSExpressSetupDetailView *)v13 initWithSections:v14];
+  _makeDetailSections = [(COSExpressModeOptInViewController *)self _makeDetailSections];
+  v15 = [(COSExpressSetupDetailView *)v13 initWithSections:_makeDetailSections];
 
   objc_storeStrong(&self->_detailView, v15);
-  v16 = [(COSExpressModeOptInViewController *)self contentView];
-  [v16 addSubview:v15];
+  contentView = [(COSExpressModeOptInViewController *)self contentView];
+  [contentView addSubview:v15];
 
   [(COSExpressSetupDetailView *)v15 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v17 = [(COSExpressSetupDetailView *)v15 topAnchor];
-  v37 = [(COSExpressModeOptInViewController *)self contentView];
-  v35 = [v37 topAnchor];
-  v34 = [v17 constraintEqualToAnchor:v35];
+  topAnchor = [(COSExpressSetupDetailView *)v15 topAnchor];
+  contentView2 = [(COSExpressModeOptInViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v34 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v46[0] = v34;
-  v32 = [(COSExpressSetupDetailView *)v15 leadingAnchor];
-  v33 = [(COSExpressModeOptInViewController *)self contentView];
-  v31 = [v33 leadingAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  leadingAnchor = [(COSExpressSetupDetailView *)v15 leadingAnchor];
+  contentView3 = [(COSExpressModeOptInViewController *)self contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v46[1] = v30;
-  v28 = [(COSExpressSetupDetailView *)v15 trailingAnchor];
-  v29 = [(COSExpressModeOptInViewController *)self contentView];
-  v18 = [v29 trailingAnchor];
-  v19 = [v28 constraintEqualToAnchor:v18];
+  trailingAnchor = [(COSExpressSetupDetailView *)v15 trailingAnchor];
+  contentView4 = [(COSExpressModeOptInViewController *)self contentView];
+  trailingAnchor2 = [contentView4 trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v46[2] = v19;
-  v20 = [(COSExpressSetupDetailView *)v15 bottomAnchor];
-  v21 = [(COSExpressModeOptInViewController *)self contentView];
-  v22 = [v21 bottomAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  bottomAnchor = [(COSExpressSetupDetailView *)v15 bottomAnchor];
+  contentView5 = [(COSExpressModeOptInViewController *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v46[3] = v23;
   v24 = [NSArray arrayWithObjects:v46 count:4];
   [NSLayoutConstraint activateConstraints:v24];
 
   v25 = objc_alloc_init(AAUIProfilePictureStore);
-  v26 = [v25 profilePictureForAccountOwner];
+  profilePictureForAccountOwner = [v25 profilePictureForAccountOwner];
   objc_initWeak(buf, self);
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
@@ -221,8 +221,8 @@
   v39[3] = &unk_100268480;
   objc_copyWeak(&v40, buf);
   [v25 profilePictureForAccountOwnerWithCompletion:v39];
-  v27 = [(COSExpressModeOptInViewController *)self headerView];
-  [v27 setIcon:v26 accessibilityLabel:0];
+  headerView = [(COSExpressModeOptInViewController *)self headerView];
+  [headerView setIcon:profilePictureForAccountOwner accessibilityLabel:0];
 
   objc_destroyWeak(&v40);
   objc_destroyWeak(buf);
@@ -268,29 +268,29 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v4 = [UIApp setupController];
+  setupController = [UIApp setupController];
   v5 = +[COSBackupManager sharedBackupManager];
-  v6 = [v4 expressModeDevice];
-  v7 = [v4 activePairingDevice];
+  expressModeDevice = [setupController expressModeDevice];
+  activePairingDevice = [setupController activePairingDevice];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100017484;
   v8[3] = &unk_1002684A8;
   v8[4] = self;
-  [v5 restoreFromDevice:v6 toDevice:v7 completionHandler:v8];
+  [v5 restoreFromDevice:expressModeDevice toDevice:activePairingDevice completionHandler:v8];
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
-  v5 = [UIApp setupController];
-  [v5 setExpressMode:0];
-  v4 = [(COSExpressModeOptInViewController *)self delegate];
-  [v4 buddyControllerDone:self nextControllerClass:objc_opt_class()];
+  setupController = [UIApp setupController];
+  [setupController setExpressMode:0];
+  delegate = [(COSExpressModeOptInViewController *)self delegate];
+  [delegate buddyControllerDone:self nextControllerClass:objc_opt_class()];
 }
 
-- (void)learnMoreButtonPressed:(id)a3
+- (void)learnMoreButtonPressed:(id)pressed
 {
   v4 = [OBPrivacyPresenter presenterForPrivacyUnifiedAboutWithIdentifiers:&off_100281708];
   [v4 setPresentingViewController:self];
@@ -300,26 +300,26 @@
 - (id)_makeDetailSections
 {
   v3 = objc_opt_new();
-  v4 = [(COSExpressModeOptInViewController *)self _makeAppsDetailSection];
-  if (v4)
+  _makeAppsDetailSection = [(COSExpressModeOptInViewController *)self _makeAppsDetailSection];
+  if (_makeAppsDetailSection)
   {
-    [v3 addObject:v4];
+    [v3 addObject:_makeAppsDetailSection];
   }
 
-  v5 = [(COSExpressModeOptInViewController *)self _makeSettingsDetailSection];
-  if (v5)
+  _makeSettingsDetailSection = [(COSExpressModeOptInViewController *)self _makeSettingsDetailSection];
+  if (_makeSettingsDetailSection)
   {
-    [v3 addObject:v5];
+    [v3 addObject:_makeSettingsDetailSection];
   }
 
-  v6 = [(COSExpressModeOptInViewController *)self _makeWalletDetailSection];
-  if (v6)
+  _makeWalletDetailSection = [(COSExpressModeOptInViewController *)self _makeWalletDetailSection];
+  if (_makeWalletDetailSection)
   {
-    [v3 addObject:v6];
+    [v3 addObject:_makeWalletDetailSection];
   }
 
   walletDetailSection = self->_walletDetailSection;
-  self->_walletDetailSection = v6;
+  self->_walletDetailSection = _makeWalletDetailSection;
 
   return v3;
 }
@@ -339,22 +339,22 @@
   [v3 setImage:v8];
 
   WeakRetained = objc_loadWeakRetained(&self->_setupController);
-  v10 = [WeakRetained expressModeDevice];
+  expressModeDevice = [WeakRetained expressModeDevice];
 
-  if (v10)
+  if (expressModeDevice)
   {
     v11 = objc_opt_new();
     v12 = objc_loadWeakRetained(&self->_setupController);
-    v13 = [v12 expressModeDevice];
-    v14 = [v13 valueForProperty:NRDevicePropertyName];
+    expressModeDevice2 = [v12 expressModeDevice];
+    v14 = [expressModeDevice2 valueForProperty:NRDevicePropertyName];
     [v11 setTitle:v14];
 
     v15 = [UIImage _systemImageNamed:@"apps.watch.applewatch.case"];
     [v11 setImage:v15];
 
     v16 = objc_loadWeakRetained(&self->_setupController);
-    v17 = [v16 expressModeDevice];
-    v36 = [v17 valueForProperty:NRDevicePropertyProductType];
+    expressModeDevice3 = [v16 expressModeDevice];
+    v36 = [expressModeDevice3 valueForProperty:NRDevicePropertyProductType];
 
     v39[0] = @"COMPACT_VARIANT_ACTIVE_DEVICE";
     v39[1] = @"REGULAR_VARIANT_ACTIVE_DEVICE";
@@ -377,8 +377,8 @@
     v24 = [v23 localizedStringForKey:v22 value:&stru_10026E598 table:@"Pairing"];
 
     v25 = objc_loadWeakRetained(&self->_setupController);
-    v26 = [v25 expressModeDevice];
-    [PBBridgeWatchAttributeController materialFromDevice:v26];
+    expressModeDevice4 = [v25 expressModeDevice];
+    [PBBridgeWatchAttributeController materialFromDevice:expressModeDevice4];
 
     v27 = BPSUnlocalizedNameForMaterial();
     v28 = [v27 stringByAppendingString:@"_ACTIVE_DEVICE"];
@@ -426,18 +426,18 @@
 
   v9 = objc_opt_new();
   WeakRetained = objc_loadWeakRetained(&self->_setupController);
-  v11 = [WeakRetained expressModeDevice];
+  expressModeDevice = [WeakRetained expressModeDevice];
 
-  v82 = self;
-  if (v11)
+  selfCopy = self;
+  if (expressModeDevice)
   {
     v12 = objc_loadWeakRetained(&self->_setupController);
-    v13 = [v12 expressModeDevice];
-    v14 = [v13 valueForProperty:NRDevicePropertyPairingID];
+    expressModeDevice2 = [v12 expressModeDevice];
+    v14 = [expressModeDevice2 valueForProperty:NRDevicePropertyPairingID];
 
     v15 = objc_loadWeakRetained(&self->_setupController);
-    v16 = [v15 expressModeDevice];
-    v17 = [v16 valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
+    expressModeDevice3 = [v15 expressModeDevice];
+    v17 = [expressModeDevice3 valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
 
     v18 = objc_opt_new();
     v19 = +[NSBundle mainBundle];
@@ -448,7 +448,7 @@
     [v18 setImage:v21];
 
     v22 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.assistant.nano" pairingID:v14 pairingDataStore:v17];
-    v23 = [v22 synchronize];
+    synchronize = [v22 synchronize];
     v88[0] = 0;
     v79 = v22;
     LODWORD(v22) = [v22 BOOLForKey:@"Assistant Enabled" keyExistsAndHasValidFormat:v88];
@@ -493,7 +493,7 @@
     [v32 setDetail:v37];
 
     v38 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.nano" pairingID:v14 pairingDataStore:v17];
-    v39 = [v38 synchronize];
+    synchronize2 = [v38 synchronize];
     v88[0] = 0;
     v40 = [v38 BOOLForKey:@"wornOnRightArm" keyExistsAndHasValidFormat:v88];
     if (v88[0] == 1)
@@ -558,7 +558,7 @@
     [v58 setDetail:v63];
 
     [v9 addObject:v58];
-    self = v82;
+    self = selfCopy;
     v64 = v14;
   }
 
@@ -571,8 +571,8 @@
     }
   }
 
-  v65 = [(COSExpressModeOptInViewController *)self activeExpressModeControllerClasses];
-  v66 = [v65 count];
+  activeExpressModeControllerClasses = [(COSExpressModeOptInViewController *)self activeExpressModeControllerClasses];
+  v66 = [activeExpressModeControllerClasses count];
 
   if (v66)
   {
@@ -580,8 +580,8 @@
     v86 = 0u;
     v83 = 0u;
     v84 = 0u;
-    v67 = [(COSExpressModeOptInViewController *)self activeExpressModeControllerClasses];
-    v68 = [v67 countByEnumeratingWithState:&v83 objects:v89 count:16];
+    activeExpressModeControllerClasses2 = [(COSExpressModeOptInViewController *)self activeExpressModeControllerClasses];
+    v68 = [activeExpressModeControllerClasses2 countByEnumeratingWithState:&v83 objects:v89 count:16];
     if (v68)
     {
       v69 = v68;
@@ -593,15 +593,15 @@
         {
           if (*v84 != v70)
           {
-            objc_enumerationMutation(v67);
+            objc_enumerationMutation(activeExpressModeControllerClasses2);
           }
 
           v72 = *(*(&v83 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
             v73 = objc_loadWeakRetained(&self->_setupController);
-            v74 = [v73 expressModeDevice];
-            v75 = [v72 expressModeSettingsItem:v74];
+            expressModeDevice4 = [v73 expressModeDevice];
+            v75 = [v72 expressModeSettingsItem:expressModeDevice4];
 
             if (v75)
             {
@@ -617,7 +617,7 @@
               }
             }
 
-            self = v82;
+            self = selfCopy;
           }
 
           else
@@ -630,7 +630,7 @@
           }
         }
 
-        v69 = [v67 countByEnumeratingWithState:&v83 objects:v89 count:16];
+        v69 = [activeExpressModeControllerClasses2 countByEnumeratingWithState:&v83 objects:v89 count:16];
       }
 
       while (v69);
@@ -646,9 +646,9 @@
 
   else
   {
-    v67 = pbb_setupflow_log();
+    activeExpressModeControllerClasses2 = pbb_setupflow_log();
     v77 = v80;
-    if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(activeExpressModeControllerClasses2, OS_LOG_TYPE_ERROR))
     {
       sub_100186524();
     }
@@ -661,12 +661,12 @@
 
 - (id)_makeWalletDetailSection
 {
-  v2 = [(COSExpressModeOptInViewController *)self _paymentExpressSetupManager];
-  v3 = v2;
-  if (v2)
+  _paymentExpressSetupManager = [(COSExpressModeOptInViewController *)self _paymentExpressSetupManager];
+  v3 = _paymentExpressSetupManager;
+  if (_paymentExpressSetupManager)
   {
-    v4 = [v2 expressWalletPasses];
-    if ([v4 count])
+    expressWalletPasses = [_paymentExpressSetupManager expressWalletPasses];
+    if ([expressWalletPasses count])
     {
       v42 = v3;
       v5 = objc_opt_new();
@@ -683,8 +683,8 @@
       v49 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v39 = v4;
-      v9 = v4;
+      v39 = expressWalletPasses;
+      v9 = expressWalletPasses;
       v10 = [v9 countByEnumeratingWithState:&v48 objects:v54 count:16];
       if (v10)
       {
@@ -699,12 +699,12 @@
               objc_enumerationMutation(v9);
             }
 
-            v14 = [*(*(&v48 + 1) + 8 * i) title];
-            if (v14)
+            title = [*(*(&v48 + 1) + 8 * i) title];
+            if (title)
             {
               v15 = +[NSBundle mainBundle];
               v16 = [v15 localizedStringForKey:@"EXPRESS_MODE_WALLET_ITEM_NAME" value:&stru_10026E598 table:@"Localizable"];
-              v17 = [NSString stringWithFormat:v16, v14];
+              v17 = [NSString stringWithFormat:v16, title];
               [v41 addObject:v17];
             }
           }
@@ -746,19 +746,19 @@
 
             v29 = *(*(&v44 + 1) + 8 * j);
             v30 = objc_opt_new();
-            v31 = [v29 title];
-            [v30 setTitle:v31];
+            title2 = [v29 title];
+            [v30 setTitle:title2];
 
-            v32 = [v29 subtitle];
-            [v30 setDetail:v32];
+            subtitle = [v29 subtitle];
+            [v30 setDetail:subtitle];
 
             v33 = [v42 passSnapshotForCredential:v29];
             [v30 setImage:v33];
 
             [v21 addObject:v30];
             v34 = self->_walletDetailSectionItemsMap;
-            v35 = [v29 uniqueIdentifier];
-            [(NSMutableDictionary *)v34 setObject:v30 forKey:v35];
+            uniqueIdentifier = [v29 uniqueIdentifier];
+            [(NSMutableDictionary *)v34 setObject:v30 forKey:uniqueIdentifier];
           }
 
           v26 = [v24 countByEnumeratingWithState:&v44 objects:v53 count:16];
@@ -772,7 +772,7 @@
 
       v37 = v41;
       v3 = v42;
-      v4 = v39;
+      expressWalletPasses = v39;
     }
 
     else
@@ -790,8 +790,8 @@
 
   else
   {
-    v4 = pbb_setupflow_log();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    expressWalletPasses = pbb_setupflow_log();
+    if (os_log_type_enabled(expressWalletPasses, OS_LOG_TYPE_ERROR))
     {
       sub_100186558();
     }
@@ -802,20 +802,20 @@
   return v36;
 }
 
-- (void)paymentExpressSetupManager:(id)a3 didUpdateCardArtForSetupAssistantCredential:(id)a4
+- (void)paymentExpressSetupManager:(id)manager didUpdateCardArtForSetupAssistantCredential:(id)credential
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  credentialCopy = credential;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100018E00;
   v10[3] = &unk_1002684D0;
   objc_copyWeak(&v13, &location);
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = credentialCopy;
+  v12 = managerCopy;
+  v8 = managerCopy;
+  v9 = credentialCopy;
   dispatch_async(&_dispatch_main_q, v10);
 
   objc_destroyWeak(&v13);
@@ -825,24 +825,24 @@
 - (id)_paymentExpressSetupManager
 {
   WeakRetained = objc_loadWeakRetained(&self->_setupController);
-  v3 = [WeakRetained paymentExpressSetupManager];
+  paymentExpressSetupManager = [WeakRetained paymentExpressSetupManager];
 
-  return v3;
+  return paymentExpressSetupManager;
 }
 
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value
 {
-  v7 = a3;
+  deviceCopy = device;
   v8 = NRDevicePropertyLocalPairingDataStorePath;
-  if ([a4 isEqualToString:NRDevicePropertyLocalPairingDataStorePath])
+  if ([change isEqualToString:NRDevicePropertyLocalPairingDataStorePath])
   {
-    v9 = [v7 valueForProperty:v8];
+    v9 = [deviceCopy valueForProperty:v8];
 
     if (v9)
     {
       v11 = v8;
       v10 = [NSArray arrayWithObjects:&v11 count:1];
-      [v7 removePropertyObserver:self forPropertyChanges:v10];
+      [deviceCopy removePropertyObserver:self forPropertyChanges:v10];
 
       [(COSExpressModeOptInViewController *)self _checkLocalPairingStorePathAndReleaseHold];
     }

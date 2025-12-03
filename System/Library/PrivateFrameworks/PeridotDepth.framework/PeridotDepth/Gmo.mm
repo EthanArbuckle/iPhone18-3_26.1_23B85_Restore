@@ -1,25 +1,25 @@
 @interface Gmo
-- (BOOL)setSessionState:(id)a3;
-- (BOOL)validateFrameBank:(unsigned __int8)a3 fwConfigId:(unsigned int)a4 frameAnchors:(const SpConfig *)a5 internalFwError:(BOOL)a6;
-- (Gmo)initWithUnitInfo:(PeridotUnitInfo *)a3 sessionState:(id)a4;
+- (BOOL)setSessionState:(id)state;
+- (BOOL)validateFrameBank:(unsigned __int8)bank fwConfigId:(unsigned int)id frameAnchors:(const SpConfig *)anchors internalFwError:(BOOL)error;
+- (Gmo)initWithUnitInfo:(PeridotUnitInfo *)info sessionState:(id)state;
 - (id)copySessionState;
-- (int)processFrameWithBank:(const GmoProcessBankInputs *)a3 gmoResult:(GmoResult *)a4;
-- (void)setCfgBits:(unsigned int)a3;
+- (int)processFrameWithBank:(const GmoProcessBankInputs *)bank gmoResult:(GmoResult *)result;
+- (void)setCfgBits:(unsigned int)bits;
 @end
 
 @implementation Gmo
 
-- (BOOL)validateFrameBank:(unsigned __int8)a3 fwConfigId:(unsigned int)a4 frameAnchors:(const SpConfig *)a5 internalFwError:(BOOL)a6
+- (BOOL)validateFrameBank:(unsigned __int8)bank fwConfigId:(unsigned int)id frameAnchors:(const SpConfig *)anchors internalFwError:(BOOL)error
 {
-  if (a6)
+  if (error)
   {
-    v6 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
-    if (v6)
+    newConfigIDAvailable = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
+    if (newConfigIDAvailable)
     {
       *v18 = 0;
       _os_log_impl(&dword_224668000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "PeridotDepthGMO: received invalid frame, internalFwError flag value is: true", v18, 2u);
 LABEL_51:
-      LOBYTE(v6) = 0;
+      LOBYTE(newConfigIDAvailable) = 0;
     }
   }
 
@@ -28,53 +28,53 @@ LABEL_51:
     configRequestObj = self->_configRequestObj;
     if (configRequestObj)
     {
-      v9 = a4;
-      v10 = a3;
-      v11 = a5;
-      v6 = [(PDOnlineConfigRequest *)configRequestObj newConfigIDAvailable];
-      if (!v6)
+      idCopy = id;
+      bankCopy = bank;
+      anchorsCopy = anchors;
+      newConfigIDAvailable = [(PDOnlineConfigRequest *)configRequestObj newConfigIDAvailable];
+      if (!newConfigIDAvailable)
       {
-        return v6;
+        return newConfigIDAvailable;
       }
 
       self->_expectedConfigID = [(PDOnlineConfigRequest *)self->_configRequestObj newConfigID];
       v12 = self->_configRequestObj;
       self->_configRequestObj = 0;
 
-      a5 = v11;
-      *&a3 = v10;
-      a4 = v9;
+      anchors = anchorsCopy;
+      *&bank = bankCopy;
+      id = idCopy;
     }
 
     expectedConfigID = self->_expectedConfigID;
-    if (expectedConfigID > a4)
+    if (expectedConfigID > id)
     {
       goto LABEL_51;
     }
 
     if (expectedConfigID)
     {
-      v14 = self + 42 * a3;
+      v14 = self + 42 * bank;
       v16 = v14[56];
       v15 = (v14 + 56);
-      if (a5->var0[0] != v16 || a5->var1[0] != v15[1] || a5->var2[0] != v15[2] || a5->var0[1] != v15[3] || a5->var1[1] != v15[4] || a5->var2[1] != v15[5] || a5->var0[2] != v15[6] || a5->var1[2] != v15[7] || a5->var2[2] != v15[8] || a5->var0[3] != v15[9] || a5->var1[3] != v15[10] || a5->var2[3] != v15[11] || a5->var0[4] != v15[12] || a5->var1[4] != v15[13] || a5->var2[4] != v15[14] || a5->var0[5] != v15[15] || a5->var1[5] != v15[16] || a5->var2[5] != v15[17] || a5->var0[6] != v15[18] || a5->var1[6] != v15[19] || a5->var2[6] != v15[20] || a5->var0[7] != v15[21] || a5->var1[7] != v15[22] || a5->var2[7] != v15[23] || a5->var0[8] != v15[24] || a5->var1[8] != v15[25] || a5->var2[8] != v15[26] || a5->var0[9] != v15[27] || a5->var1[9] != v15[28] || a5->var2[9] != v15[29] || a5->var0[10] != v15[30] || a5->var1[10] != v15[31] || a5->var2[10] != v15[32] || a5->var0[11] != v15[33] || a5->var1[11] != v15[34] || a5->var2[11] != v15[35] || a5->var0[12] != v15[36] || a5->var1[12] != v15[37] || a5->var2[12] != v15[38] || a5->var0[13] != v15[39] || a5->var1[13] != v15[40])
+      if (anchors->var0[0] != v16 || anchors->var1[0] != v15[1] || anchors->var2[0] != v15[2] || anchors->var0[1] != v15[3] || anchors->var1[1] != v15[4] || anchors->var2[1] != v15[5] || anchors->var0[2] != v15[6] || anchors->var1[2] != v15[7] || anchors->var2[2] != v15[8] || anchors->var0[3] != v15[9] || anchors->var1[3] != v15[10] || anchors->var2[3] != v15[11] || anchors->var0[4] != v15[12] || anchors->var1[4] != v15[13] || anchors->var2[4] != v15[14] || anchors->var0[5] != v15[15] || anchors->var1[5] != v15[16] || anchors->var2[5] != v15[17] || anchors->var0[6] != v15[18] || anchors->var1[6] != v15[19] || anchors->var2[6] != v15[20] || anchors->var0[7] != v15[21] || anchors->var1[7] != v15[22] || anchors->var2[7] != v15[23] || anchors->var0[8] != v15[24] || anchors->var1[8] != v15[25] || anchors->var2[8] != v15[26] || anchors->var0[9] != v15[27] || anchors->var1[9] != v15[28] || anchors->var2[9] != v15[29] || anchors->var0[10] != v15[30] || anchors->var1[10] != v15[31] || anchors->var2[10] != v15[32] || anchors->var0[11] != v15[33] || anchors->var1[11] != v15[34] || anchors->var2[11] != v15[35] || anchors->var0[12] != v15[36] || anchors->var1[12] != v15[37] || anchors->var2[12] != v15[38] || anchors->var0[13] != v15[39] || anchors->var1[13] != v15[40])
       {
         goto LABEL_51;
       }
 
-      LOBYTE(v6) = a5->var2[13] == v15[41];
+      LOBYTE(newConfigIDAvailable) = anchors->var2[13] == v15[41];
     }
 
     else
     {
-      LOBYTE(v6) = 1;
+      LOBYTE(newConfigIDAvailable) = 1;
     }
   }
 
-  return v6;
+  return newConfigIDAvailable;
 }
 
-- (int)processFrameWithBank:(const GmoProcessBankInputs *)a3 gmoResult:(GmoResult *)a4
+- (int)processFrameWithBank:(const GmoProcessBankInputs *)bank gmoResult:(GmoResult *)result
 {
   v21 = *MEMORY[0x277D85DE8];
   if (!self->_gmoConfigDone)
@@ -112,25 +112,25 @@ LABEL_7:
     return -1;
   }
 
-  if (![(Gmo *)self validateFrameBank:LOBYTE(a3->var0) fwConfigId:a3->var6 frameAnchors:&a3->var12.var0.var0[2].var0[3].var0[2].var0[1][1] internalFwError:a3->var9])
+  if (![(Gmo *)self validateFrameBank:LOBYTE(bank->var0) fwConfigId:bank->var6 frameAnchors:&bank->var12.var0.var0[2].var0[3].var0[2].var0[1][1] internalFwError:bank->var9])
   {
     return -1;
   }
 
-  if ([(GmoController *)self->_controller processFrameWithBank:a3 gmoResult:a4])
+  if ([(GmoController *)self->_controller processFrameWithBank:bank gmoResult:result])
   {
     return 2;
   }
 
-  if (a4->var0)
+  if (result->var0)
   {
-    v12 = [(GmoController *)self->_controller gmoCfgBits];
+    gmoCfgBits = [(GmoController *)self->_controller gmoCfgBits];
     v13 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
-    if ((v12 & 2) != 0)
+    if ((gmoCfgBits & 2) != 0)
     {
       if (v13)
       {
-        var1 = a4->var1;
+        var1 = result->var1;
         v17 = 136315394;
         v18 = "[Gmo processFrameWithBank:gmoResult:]";
         v19 = 2048;
@@ -138,7 +138,7 @@ LABEL_7:
         _os_log_impl(&dword_224668000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "GMO: %s: Updating anchors: %zu", &v17, 0x16u);
       }
 
-      memcpy(&self->_setAnchors, a4->var2, sizeof(self->_setAnchors));
+      memcpy(&self->_setAnchors, result->var2, sizeof(self->_setAnchors));
       v15 = [self->_unitInfo->var2 updateAnchors:&self->_setAnchors];
       configRequestObj = self->_configRequestObj;
       self->_configRequestObj = v15;
@@ -152,7 +152,7 @@ LABEL_7:
     }
   }
 
-  return !a4->var0;
+  return !result->var0;
 }
 
 - (id)copySessionState
@@ -198,26 +198,26 @@ LABEL_7:
     v11 = 0u;
   }
 
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  [v4 setObject:v5 forKeyedSubscript:@"gmoSessionState"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:dictionary2 forKeyedSubscript:@"gmoSessionState"];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v10];
-  [v5 setObject:v6 forKeyedSubscript:@"pattern"];
+  [dictionary2 setObject:v6 forKeyedSubscript:@"pattern"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:DWORD1(v10)];
-  [v5 setObject:v7 forKeyedSubscript:@"version"];
+  [dictionary2 setObject:v7 forKeyedSubscript:@"version"];
 
   v8 = [MEMORY[0x277CBEA90] dataWithBytes:&v10 + 8 length:260];
-  [v5 setObject:v8 forKeyedSubscript:@"coreAnalyticsData"];
+  [dictionary2 setObject:v8 forKeyedSubscript:@"coreAnalyticsData"];
 
-  return v4;
+  return dictionary;
 }
 
-- (BOOL)setSessionState:(id)a3
+- (BOOL)setSessionState:(id)state
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  stateCopy = state;
+  v5 = stateCopy;
   memset(v15, 0, 268);
   if (!self->_gmoInitDone)
   {
@@ -231,7 +231,7 @@ LABEL_7:
     __assert_rtn("[Gmo setSessionState:]", "Gmo.mm", 146, "!ERROR: Attempt to configure session data before GMO init");
   }
 
-  v6 = [v4 objectForKeyedSubscript:{@"gmoSessionState", *v15, *&v15[16], *&v15[32], *&v15[48], *&v15[64], *&v15[80], *&v15[96], *&v15[112], *&v15[128], *&v15[144], *&v15[160], *&v15[176], *&v15[192], *&v15[208], *&v15[224], *&v15[240], *&v15[248], *&v15[264]}];
+  v6 = [stateCopy objectForKeyedSubscript:{@"gmoSessionState", *v15, *&v15[16], *&v15[32], *&v15[48], *&v15[64], *&v15[80], *&v15[96], *&v15[112], *&v15[128], *&v15[144], *&v15[160], *&v15[176], *&v15[192], *&v15[208], *&v15[224], *&v15[240], *&v15[248], *&v15[264]}];
 
   if (!v6)
   {
@@ -337,18 +337,18 @@ LABEL_19:
   return v10;
 }
 
-- (void)setCfgBits:(unsigned int)a3
+- (void)setCfgBits:(unsigned int)bits
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
-  if (a3 == 0xFFFF)
+  if (bits == 0xFFFF)
   {
     if (v5)
     {
       v6 = 136315394;
       v7 = "[Gmo setCfgBits:]";
       v8 = 1024;
-      v9 = 7;
+      bitsCopy = 7;
       _os_log_impl(&dword_224668000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "GMO: %s: Setting gmo default config 0x%x", &v6, 0x12u);
     }
 
@@ -362,12 +362,12 @@ LABEL_19:
       v6 = 136315394;
       v7 = "[Gmo setCfgBits:]";
       v8 = 1024;
-      v9 = a3;
+      bitsCopy = bits;
       _os_log_impl(&dword_224668000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "GMO: %s: Setting flow enable bits to 0x%x", &v6, 0x12u);
     }
 
-    [(GmoController *)self->_controller setGmoCfgBits:a3];
-    if ((a3 & 1) == 0)
+    [(GmoController *)self->_controller setGmoCfgBits:bits];
+    if ((bits & 1) == 0)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
@@ -379,28 +379,28 @@ LABEL_19:
       self->_isActive = 0;
     }
 
-    if ((a3 & 2) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+    if ((bits & 2) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v6 = 136315138;
       v7 = "[Gmo setCfgBits:]";
       _os_log_impl(&dword_224668000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "GMO: %s: WARNING: Anchor updates is OFF\n", &v6, 0xCu);
     }
 
-    if ((a3 & 4) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+    if ((bits & 4) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v6 = 136315138;
       v7 = "[Gmo setCfgBits:]";
       _os_log_impl(&dword_224668000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "GMO: %s: WARNING: GlobalEstimation is OFF. Using smoothed spot location instead.\n", &v6, 0xCu);
     }
 
-    if ((a3 & 0x40000000) != 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+    if ((bits & 0x40000000) != 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v6 = 136315138;
       v7 = "[Gmo setCfgBits:]";
       _os_log_impl(&dword_224668000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "GMO: %s: GMO ITP Qual Calc is ON\n", &v6, 0xCu);
     }
 
-    if ((a3 & 0x80000000) != 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+    if ((bits & 0x80000000) != 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v6 = 136315138;
       v7 = "[Gmo setCfgBits:]";
@@ -411,12 +411,12 @@ LABEL_19:
   self->_gmoConfigDone = 1;
 }
 
-- (Gmo)initWithUnitInfo:(PeridotUnitInfo *)a3 sessionState:(id)a4
+- (Gmo)initWithUnitInfo:(PeridotUnitInfo *)info sessionState:(id)state
 {
   v15 = *MEMORY[0x277D85DE8];
   v10.receiver = self;
   v10.super_class = Gmo;
-  v5 = [(Gmo *)&v10 init:a3];
+  v5 = [(Gmo *)&v10 init:info];
   if (v5)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -431,7 +431,7 @@ LABEL_19:
     *&v5->_gmoConfigDone = 0;
     v5->_expectedConfigID = 0;
     v5->_bankCounter = 0;
-    v5->_unitInfo = a3;
+    v5->_unitInfo = info;
     configRequestObj = v5->_configRequestObj;
     v5->_configRequestObj = 0;
 

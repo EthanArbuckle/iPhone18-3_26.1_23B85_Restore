@@ -1,30 +1,30 @@
 @interface _UIKeyboardArbiterDebugEntryDictionaries
-+ (id)entryWithDictionaries:(id)a3;
-- (void)enumerateContents:(id)a3;
++ (id)entryWithDictionaries:(id)dictionaries;
+- (void)enumerateContents:(id)contents;
 @end
 
 @implementation _UIKeyboardArbiterDebugEntryDictionaries
 
-+ (id)entryWithDictionaries:(id)a3
++ (id)entryWithDictionaries:(id)dictionaries
 {
-  v5 = a3;
-  v6 = objc_alloc_init(a1);
+  dictionariesCopy = dictionaries;
+  v6 = objc_alloc_init(self);
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6 + 2, a3);
+    objc_storeStrong(v6 + 2, dictionaries);
   }
 
   return v7;
 }
 
-- (void)enumerateContents:(id)a3
+- (void)enumerateContents:(id)contents
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contentsCopy = contents;
   v15.receiver = self;
   v15.super_class = _UIKeyboardArbiterDebugEntryDictionaries;
-  [(_UIKeyboardArbiterDebugEntry *)&v15 enumerateContents:v4];
+  [(_UIKeyboardArbiterDebugEntry *)&v15 enumerateContents:contentsCopy];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -45,7 +45,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v9++));
+        contentsCopy[2](contentsCopy, *(*(&v11 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);

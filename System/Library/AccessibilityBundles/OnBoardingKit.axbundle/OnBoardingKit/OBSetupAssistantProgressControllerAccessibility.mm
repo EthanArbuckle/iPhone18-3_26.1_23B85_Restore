@@ -1,17 +1,17 @@
 @interface OBSetupAssistantProgressControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation OBSetupAssistantProgressControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"OBSetupAssistantProgressController" isKindOfClass:@"OBWelcomeController"];
-  [v3 validateClass:@"OBSetupAssistantProgressController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"OBWelcomeController" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"OBSetupAssistantProgressController" isKindOfClass:@"OBWelcomeController"];
+  [validationsCopy validateClass:@"OBSetupAssistantProgressController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"OBWelcomeController" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,5 +1,5 @@
 @interface NSUnitEnergy
-+ (id)_measurementWithNaturalScale:(id)a3 system:(unint64_t)a4;
++ (id)_measurementWithNaturalScale:(id)scale system:(unint64_t)system;
 + (void)initialize;
 @end
 
@@ -7,25 +7,25 @@
 
 + (void)initialize
 {
-  if (NSUnitEnergy == a1)
+  if (NSUnitEnergy == self)
   {
     objc_opt_class();
   }
 }
 
-+ (id)_measurementWithNaturalScale:(id)a3 system:(unint64_t)a4
++ (id)_measurementWithNaturalScale:(id)scale system:(unint64_t)system
 {
-  v4 = a3;
-  if (a4 - 1 >= 2)
+  scaleCopy = scale;
+  if (system - 1 >= 2)
   {
-    if (!a4)
+    if (!system)
     {
-      if (([objc_msgSend(a3 "unit")] & 1) == 0)
+      if (([objc_msgSend(scale "unit")] & 1) == 0)
       {
-        v4 = [v4 measurementByConvertingToUnit:{+[NSUnitEnergy baseUnit](NSUnitEnergy, "baseUnit")}];
+        scaleCopy = [scaleCopy measurementByConvertingToUnit:{+[NSUnitEnergy baseUnit](NSUnitEnergy, "baseUnit")}];
       }
 
-      [v4 doubleValue];
+      [scaleCopy doubleValue];
       if (v7 >= 1000.0)
       {
         v6 = +[NSUnitEnergy kilojoules];
@@ -33,24 +33,24 @@
       }
     }
 
-    return v4;
+    return scaleCopy;
   }
 
-  if (([objc_msgSend(a3 "unit")] & 1) == 0)
+  if (([objc_msgSend(scale "unit")] & 1) == 0)
   {
-    v4 = [v4 measurementByConvertingToUnit:{+[NSUnitEnergy calories](NSUnitEnergy, "calories")}];
+    scaleCopy = [scaleCopy measurementByConvertingToUnit:{+[NSUnitEnergy calories](NSUnitEnergy, "calories")}];
   }
 
-  [v4 doubleValue];
+  [scaleCopy doubleValue];
   if (v5 < 1000.0)
   {
-    return v4;
+    return scaleCopy;
   }
 
   v6 = +[NSUnitEnergy kilocalories];
 LABEL_12:
 
-  return [v4 measurementByConvertingToUnit:v6];
+  return [scaleCopy measurementByConvertingToUnit:v6];
 }
 
 @end

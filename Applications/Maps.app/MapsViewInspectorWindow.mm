@@ -1,19 +1,19 @@
 @interface MapsViewInspectorWindow
 + (void)show;
-- (MapsViewInspectorWindow)initWithWindowScene:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (MapsViewInspectorWindow)initWithWindowScene:(id)scene;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_dismiss;
-- (void)dismissAllWindowsNotification:(id)a3;
-- (void)longPressGestureFired:(id)a3;
+- (void)dismissAllWindowsNotification:(id)notification;
+- (void)longPressGestureFired:(id)fired;
 @end
 
 @implementation MapsViewInspectorWindow
 
-- (void)dismissAllWindowsNotification:(id)a3
+- (void)dismissAllWindowsNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
 
-  if (v4 != self)
+  if (object != self)
   {
 
     [(MapsViewInspectorWindow *)self _dismiss];
@@ -27,42 +27,42 @@
   [(MapsViewInspectorWindow *)self setSelfReference:0];
 }
 
-- (void)longPressGestureFired:(id)a3
+- (void)longPressGestureFired:(id)fired
 {
   [(MapsViewInspectorWindow *)self _dismiss];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"kMapsViewInspectorWindowDismissAllWindows" object:self];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if ([v7 type])
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  if ([eventCopy type])
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
     v40.receiver = self;
     v40.super_class = MapsViewInspectorWindow;
-    v9 = [(MapsViewInspectorWindow *)&v40 hitTest:v7 withEvent:x, y];
-    v10 = [(MapsViewInspectorWindow *)self rootViewController];
-    v11 = [v10 presentedViewController];
+    v9 = [(MapsViewInspectorWindow *)&v40 hitTest:eventCopy withEvent:x, y];
+    rootViewController = [(MapsViewInspectorWindow *)self rootViewController];
+    presentedViewController = [rootViewController presentedViewController];
 
-    v12 = v9;
-    if (!v11)
+    selfCopy2 = v9;
+    if (!presentedViewController)
     {
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v13 = [(MapsViewInspectorWindow *)self windowScene];
-      v14 = [v13 windows];
+      windowScene = [(MapsViewInspectorWindow *)self windowScene];
+      windows = [windowScene windows];
 
-      v15 = [v14 countByEnumeratingWithState:&v36 objects:v41 count:16];
+      v15 = [windows countByEnumeratingWithState:&v36 objects:v41 count:16];
       if (v15)
       {
         v16 = v15;
@@ -73,13 +73,13 @@
           {
             if (*v37 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(windows);
             }
 
             v19 = *(*(&v36 + 1) + 8 * i);
             if (v19 != self)
             {
-              v20 = [*(*(&v36 + 1) + 8 * i) hitTest:v7 withEvent:{x, y}];
+              v20 = [*(*(&v36 + 1) + 8 * i) hitTest:eventCopy withEvent:{x, y}];
               v21 = v20;
               if (v20 != v19 && v20 != 0)
               {
@@ -93,27 +93,27 @@
                 v28 = [[MapsViewInspectorContentViewController alloc] initWithView:v21];
                 v29 = [[UINavigationController alloc] initWithRootViewController:v28];
                 [v29 setModalPresentationStyle:7];
-                v30 = [v29 popoverPresentationController];
-                [v30 setSourceView:self];
+                popoverPresentationController = [v29 popoverPresentationController];
+                [popoverPresentationController setSourceView:self];
 
-                v31 = [v29 popoverPresentationController];
-                [v31 setSourceRect:{v25, v27, 0.0, 0.0}];
+                popoverPresentationController2 = [v29 popoverPresentationController];
+                [popoverPresentationController2 setSourceRect:{v25, v27, 0.0, 0.0}];
 
-                v32 = [v29 popoverPresentationController];
-                [v32 setPermittedArrowDirections:15];
+                popoverPresentationController3 = [v29 popoverPresentationController];
+                [popoverPresentationController3 setPermittedArrowDirections:15];
 
-                v33 = [v29 popoverPresentationController];
-                [v33 setDelegate:self];
+                popoverPresentationController4 = [v29 popoverPresentationController];
+                [popoverPresentationController4 setDelegate:self];
 
-                v34 = [(MapsViewInspectorWindow *)self rootViewController];
-                [v34 presentViewController:v29 animated:1 completion:0];
+                rootViewController2 = [(MapsViewInspectorWindow *)self rootViewController];
+                [rootViewController2 presentViewController:v29 animated:1 completion:0];
 
                 goto LABEL_18;
               }
             }
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v36 objects:v41 count:16];
+          v16 = [windows countByEnumeratingWithState:&v36 objects:v41 count:16];
         }
 
         while (v16);
@@ -121,20 +121,20 @@
 
 LABEL_18:
 
-      v12 = self;
+      selfCopy2 = self;
     }
 
-    v8 = v12;
+    selfCopy = selfCopy2;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (MapsViewInspectorWindow)initWithWindowScene:(id)a3
+- (MapsViewInspectorWindow)initWithWindowScene:(id)scene
 {
   v11.receiver = self;
   v11.super_class = MapsViewInspectorWindow;
-  v3 = [(MapsViewInspectorWindow *)&v11 initWithWindowScene:a3];
+  v3 = [(MapsViewInspectorWindow *)&v11 initWithWindowScene:scene];
   v4 = v3;
   if (v3)
   {
@@ -163,9 +163,9 @@ LABEL_18:
   v11 = 0u;
   v12 = 0u;
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 connectedScenes];
+  connectedScenes = [v2 connectedScenes];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [connectedScenes countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -177,7 +177,7 @@ LABEL_18:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -190,7 +190,7 @@ LABEL_18:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [connectedScenes countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);

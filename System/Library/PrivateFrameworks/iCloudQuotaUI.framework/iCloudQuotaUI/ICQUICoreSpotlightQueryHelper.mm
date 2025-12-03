@@ -1,29 +1,29 @@
 @interface ICQUICoreSpotlightQueryHelper
 + (id)defaultFetchedAttributes;
-+ (id)filterItems:(id)a3 usingTrashedItems:(id)a4;
++ (id)filterItems:(id)items usingTrashedItems:(id)trashedItems;
 + (id)thresholdsForLargeFiles;
-+ (id)totalSizeStringForItems:(id)a3;
-+ (void)deleteiCloudDriveItem:(id)a3;
-+ (void)deleteiCloudDriveItems:(id)a3;
-+ (void)fetchTrashedItemsWithResults:(id)a3 minSizeInMegabytes:(id)a4 completion:(id)a5;
-+ (void)fetchiCloudDriveItemsUsingThresholds:(id)a3 shouldCheckTrash:(BOOL)a4 completion:(id)a5;
-+ (void)processFoundResults:(id)a3 minSizeInMegabytes:(id)a4 shouldCheckTrash:(BOOL)a5 completion:(id)a6;
-+ (void)updateThresholdsForLargeFilesWithDictionary:(id)a3;
++ (id)totalSizeStringForItems:(id)items;
++ (void)deleteiCloudDriveItem:(id)item;
++ (void)deleteiCloudDriveItems:(id)items;
++ (void)fetchTrashedItemsWithResults:(id)results minSizeInMegabytes:(id)megabytes completion:(id)completion;
++ (void)fetchiCloudDriveItemsUsingThresholds:(id)thresholds shouldCheckTrash:(BOOL)trash completion:(id)completion;
++ (void)processFoundResults:(id)results minSizeInMegabytes:(id)megabytes shouldCheckTrash:(BOOL)trash completion:(id)completion;
++ (void)updateThresholdsForLargeFilesWithDictionary:(id)dictionary;
 @end
 
 @implementation ICQUICoreSpotlightQueryHelper
 
-+ (void)updateThresholdsForLargeFilesWithDictionary:(id)a3
++ (void)updateThresholdsForLargeFilesWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [a1 thresholdsForLargeFiles];
+  dictionaryCopy = dictionary;
+  thresholdsForLargeFiles = [self thresholdsForLargeFiles];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__ICQUICoreSpotlightQueryHelper_updateThresholdsForLargeFilesWithDictionary___block_invoke;
   v7[3] = &unk_27A65B2D0;
-  v8 = v5;
-  v6 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = thresholdsForLargeFiles;
+  v6 = thresholdsForLargeFiles;
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 + (id)thresholdsForLargeFiles
@@ -52,16 +52,16 @@ void __56__ICQUICoreSpotlightQueryHelper_thresholdsForLargeFiles__block_invoke()
   v7[0] = *MEMORY[0x277CC2A70];
   v7[1] = v2;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:2];
-  v4 = [MEMORY[0x277CC63E8] fp_queryFetchAttributes];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  fp_queryFetchAttributes = [MEMORY[0x277CC63E8] fp_queryFetchAttributes];
+  v5 = [v3 arrayByAddingObjectsFromArray:fp_queryFetchAttributes];
 
   return v5;
 }
 
-+ (void)fetchiCloudDriveItemsUsingThresholds:(id)a3 shouldCheckTrash:(BOOL)a4 completion:(id)a5
++ (void)fetchiCloudDriveItemsUsingThresholds:(id)thresholds shouldCheckTrash:(BOOL)trash completion:(id)completion
 {
-  v8 = a5;
-  v9 = [a3 objectForKeyedSubscript:*MEMORY[0x277CFB110]];
+  completionCopy = completion;
+  v9 = [thresholds objectForKeyedSubscript:*MEMORY[0x277CFB110]];
   v10 = v9;
   v11 = &unk_288479C00;
   if (v9)
@@ -75,19 +75,19 @@ void __56__ICQUICoreSpotlightQueryHelper_thresholdsForLargeFiles__block_invoke()
   [v12 doubleValue];
   v15 = v14;
 
-  v16 = [MEMORY[0x277CCAE18] bytes];
-  v17 = [v13 initWithDoubleValue:v16 unit:v15];
+  bytes = [MEMORY[0x277CCAE18] bytes];
+  v17 = [v13 initWithDoubleValue:bytes unit:v15];
 
   v18 = MEMORY[0x277CCABB0];
-  v19 = [MEMORY[0x277CCAE18] megabytes];
-  v20 = [v17 measurementByConvertingToUnit:v19];
+  megabytes = [MEMORY[0x277CCAE18] megabytes];
+  v20 = [v17 measurementByConvertingToUnit:megabytes];
   [v20 doubleValue];
   v21 = [v18 numberWithDouble:?];
 
-  v22 = [a1 queryForMinimumSizeInMegabytes:v21];
+  v22 = [self queryForMinimumSizeInMegabytes:v21];
   v23 = objc_alloc_init(MEMORY[0x277CC3508]);
-  v24 = [a1 defaultFetchedAttributes];
-  [v23 setFetchAttributes:v24];
+  defaultFetchedAttributes = [self defaultFetchedAttributes];
+  [v23 setFetchAttributes:defaultFetchedAttributes];
 
   [v23 setLowPriority:0];
   v25 = [objc_alloc(MEMORY[0x277CC3500]) initWithQueryString:v22 context:v23];
@@ -108,16 +108,16 @@ void __56__ICQUICoreSpotlightQueryHelper_thresholdsForLargeFiles__block_invoke()
   v38 = &unk_27A65B348;
   v39 = v25;
   v40 = v28;
-  v43 = v8;
-  v44 = a1;
+  v43 = completionCopy;
+  selfCopy = self;
   v41 = v29;
   v42 = v21;
-  v45 = a4;
+  trashCopy = trash;
   v30 = v21;
   v31 = v29;
   v32 = v28;
   v33 = v25;
-  v34 = v8;
+  v34 = completionCopy;
   [v33 setCompletionHandler:&v35];
   [v33 start];
 }
@@ -207,32 +207,32 @@ void __98__ICQUICoreSpotlightQueryHelper_fetchiCloudDriveItemsUsingThresholds_sh
   *(v3 + 40) = v2;
 }
 
-+ (void)fetchTrashedItemsWithResults:(id)a3 minSizeInMegabytes:(id)a4 completion:(id)a5
++ (void)fetchTrashedItemsWithResults:(id)results minSizeInMegabytes:(id)megabytes completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  megabytesCopy = megabytes;
+  completionCopy = completion;
   v9 = MEMORY[0x277CC63E8];
-  v10 = a3;
+  resultsCopy = results;
   v11 = [v9 alloc];
-  v12 = [v10 firstObject];
+  firstObject = [resultsCopy firstObject];
 
-  v13 = [v11 initWithSearchableItem:v12];
-  v14 = [v13 providerDomainID];
+  v13 = [v11 initWithSearchableItem:firstObject];
+  providerDomainID = [v13 providerDomainID];
 
-  if (v14)
+  if (providerDomainID)
   {
     v15 = objc_alloc(MEMORY[0x277CC6400]);
-    v16 = [v13 providerDomainID];
-    v17 = [v15 initWithProviderDomainID:v16 itemIdentifier:*MEMORY[0x277CC6358]];
+    providerDomainID2 = [v13 providerDomainID];
+    v17 = [v15 initWithProviderDomainID:providerDomainID2 itemIdentifier:*MEMORY[0x277CC6358]];
 
-    v18 = [MEMORY[0x277CC6408] defaultManager];
+    defaultManager = [MEMORY[0x277CC6408] defaultManager];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __92__ICQUICoreSpotlightQueryHelper_fetchTrashedItemsWithResults_minSizeInMegabytes_completion___block_invoke;
     v20[3] = &unk_27A65B3C0;
-    v22 = v8;
-    v21 = v7;
-    [v18 fetchURLForItemID:v17 completionHandler:v20];
+    v22 = completionCopy;
+    v21 = megabytesCopy;
+    [defaultManager fetchURLForItemID:v17 completionHandler:v20];
   }
 
   else
@@ -243,7 +243,7 @@ void __98__ICQUICoreSpotlightQueryHelper_fetchiCloudDriveItemsUsingThresholds_sh
       [ICQUICoreSpotlightQueryHelper fetchTrashedItemsWithResults:v19 minSizeInMegabytes:? completion:?];
     }
 
-    (*(v8 + 2))(v8, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -396,39 +396,39 @@ void __92__ICQUICoreSpotlightQueryHelper_fetchTrashedItemsWithResults_minSizeInM
   (*(v1 + 16))(v1, v2);
 }
 
-+ (void)processFoundResults:(id)a3 minSizeInMegabytes:(id)a4 shouldCheckTrash:(BOOL)a5 completion:(id)a6
++ (void)processFoundResults:(id)results minSizeInMegabytes:(id)megabytes shouldCheckTrash:(BOOL)trash completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  resultsCopy = results;
+  megabytesCopy = megabytes;
+  completionCopy = completion;
   v13 = _ICQGetLogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v21 = [v10 count];
+    v21 = [resultsCopy count];
     _os_log_impl(&dword_275623000, v13, OS_LOG_TYPE_DEFAULT, "Found total of %ld iCloud Drive items", buf, 0xCu);
   }
 
-  if (a5)
+  if (trash)
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __100__ICQUICoreSpotlightQueryHelper_processFoundResults_minSizeInMegabytes_shouldCheckTrash_completion___block_invoke;
     v15[3] = &unk_27A65B3E8;
-    v19 = a1;
-    v16 = v10;
-    v18 = v12;
-    v17 = v11;
-    [a1 fetchTrashedItemsWithResults:v16 minSizeInMegabytes:v17 completion:v15];
+    selfCopy = self;
+    v16 = resultsCopy;
+    v18 = completionCopy;
+    v17 = megabytesCopy;
+    [self fetchTrashedItemsWithResults:v16 minSizeInMegabytes:v17 completion:v15];
 
     v14 = v16;
   }
 
   else
   {
-    v14 = [a1 filterItems:v10 usingTrashedItems:0];
-    (*(v12 + 2))(v12, v11, v14, 0);
+    v14 = [self filterItems:resultsCopy usingTrashedItems:0];
+    (*(completionCopy + 2))(completionCopy, megabytesCopy, v14, 0);
   }
 }
 
@@ -438,17 +438,17 @@ void __100__ICQUICoreSpotlightQueryHelper_processFoundResults_minSizeInMegabytes
   (*(*(a1 + 48) + 16))();
 }
 
-+ (id)filterItems:(id)a3 usingTrashedItems:(id)a4
++ (id)filterItems:(id)items usingTrashedItems:(id)trashedItems
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  trashedItemsCopy = trashedItems;
   v7 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v5;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v9)
   {
@@ -487,8 +487,8 @@ void __100__ICQUICoreSpotlightQueryHelper_processFoundResults_minSizeInMegabytes
 
         if ((([v15 isFolder] | v16) & 1) == 0)
         {
-          v17 = [v15 itemIdentifier];
-          v18 = [v6 objectForKey:v17];
+          itemIdentifier = [v15 itemIdentifier];
+          v18 = [trashedItemsCopy objectForKey:itemIdentifier];
 
           if (v18)
           {
@@ -522,36 +522,36 @@ LABEL_16:
   return v20;
 }
 
-+ (void)deleteiCloudDriveItems:(id)a3
++ (void)deleteiCloudDriveItems:(id)items
 {
   v3 = MEMORY[0x277CC6408];
-  v4 = a3;
-  v6 = [v3 defaultManager];
-  v5 = [objc_alloc(MEMORY[0x277CC6470]) initWithItems:v4];
+  itemsCopy = items;
+  defaultManager = [v3 defaultManager];
+  v5 = [objc_alloc(MEMORY[0x277CC6470]) initWithItems:itemsCopy];
 
-  [v6 scheduleAction:v5];
+  [defaultManager scheduleAction:v5];
 }
 
-+ (void)deleteiCloudDriveItem:(id)a3
++ (void)deleteiCloudDriveItem:(id)item
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  itemCopy = item;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v7 count:1];
+  itemCopy2 = item;
+  v6 = [v4 arrayWithObjects:&itemCopy count:1];
 
-  [a1 deleteiCloudDriveItems:{v6, v7, v8}];
+  [self deleteiCloudDriveItems:{v6, itemCopy, v8}];
 }
 
-+ (id)totalSizeStringForItems:(id)a3
++ (id)totalSizeStringForItems:(id)items
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  v4 = [itemsCopy countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v4)
   {
     v5 = v4;
@@ -563,15 +563,15 @@ LABEL_16:
       {
         if (*v32 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
-        v9 = [*(*(&v31 + 1) + 8 * i) documentSize];
-        [v9 doubleValue];
+        documentSize = [*(*(&v31 + 1) + 8 * i) documentSize];
+        [documentSize doubleValue];
         v7 = v7 + v10;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v5 = [itemsCopy countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v5);
@@ -583,16 +583,16 @@ LABEL_16:
   }
 
   v11 = objc_alloc(MEMORY[0x277CCAB10]);
-  v12 = [MEMORY[0x277CCAE18] bytes];
-  v13 = [v11 initWithDoubleValue:v12 unit:v7];
+  bytes = [MEMORY[0x277CCAE18] bytes];
+  v13 = [v11 initWithDoubleValue:bytes unit:v7];
 
   v14 = objc_alloc_init(MEMORY[0x277CCAB18]);
   [v14 setUnitStyle:1];
   v15 = objc_alloc_init(MEMORY[0x277CCABB8]);
   [v15 setMaximumFractionDigits:0];
   v16 = MEMORY[0x277CCABB0];
-  v17 = [MEMORY[0x277CCAE18] megabytes];
-  v18 = [v13 measurementByConvertingToUnit:v17];
+  megabytes = [MEMORY[0x277CCAE18] megabytes];
+  v18 = [v13 measurementByConvertingToUnit:megabytes];
   [v18 doubleValue];
   v19 = [v16 numberWithDouble:?];
 
@@ -600,15 +600,15 @@ LABEL_16:
   if (v20 >= 1000.0)
   {
     v25 = MEMORY[0x277CCABB0];
-    v26 = [MEMORY[0x277CCAE18] gigabytes];
-    v27 = [v13 measurementByConvertingToUnit:v26];
+    gigabytes = [MEMORY[0x277CCAE18] gigabytes];
+    v27 = [v13 measurementByConvertingToUnit:gigabytes];
     [v27 doubleValue];
     v21 = [v25 numberWithDouble:?];
 
     [v15 setMaximumFractionDigits:1];
     v23 = [v15 stringFromNumber:v21];
-    v28 = [MEMORY[0x277CCAE18] gigabytes];
-    v29 = [v14 stringFromUnit:v28];
+    gigabytes2 = [MEMORY[0x277CCAE18] gigabytes];
+    v29 = [v14 stringFromUnit:gigabytes2];
 
     v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v23, v29];
   }
@@ -616,8 +616,8 @@ LABEL_16:
   else
   {
     v21 = [v15 stringFromNumber:v19];
-    v22 = [MEMORY[0x277CCAE18] megabytes];
-    v23 = [v14 stringFromUnit:v22];
+    megabytes2 = [MEMORY[0x277CCAE18] megabytes];
+    v23 = [v14 stringFromUnit:megabytes2];
 
     v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v21, v23];
   }

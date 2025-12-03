@@ -11,25 +11,25 @@
   v6 = a3;
   v7 = a4;
   v24 = v6;
-  v8 = [a1 components:30 fromDate:v6];
-  v9 = [a1 components:30 fromDate:v7];
+  v8 = [self components:30 fromDate:v6];
+  v9 = [self components:30 fromDate:v7];
   v10 = [v8 copy];
   v11 = [v9 copy];
   [v10 setDay:0x7FFFFFFFFFFFFFFFLL];
   [v11 setDay:0x7FFFFFFFFFFFFFFFLL];
-  v12 = [a1 dateFromComponents:v10];
-  v13 = [a1 dateFromComponents:v11];
+  v12 = [self dateFromComponents:v10];
+  v13 = [self dateFromComponents:v11];
   v14 = 4;
-  v15 = [a1 components:4 fromDate:v12 toDate:v13 options:0];
+  v15 = [self components:4 fromDate:v12 toDate:v13 options:0];
   if ([v15 year] <= 0)
   {
     v23 = v11;
     v22 = v10;
     v16 = v7;
-    v17 = [a1 dateFromComponents:v8];
-    [a1 dateFromComponents:v9];
+    v17 = [self dateFromComponents:v8];
+    [self dateFromComponents:v9];
     v19 = v18 = v17;
-    v20 = [a1 components:8208 fromDate:v17 toDate:? options:?];
+    v20 = [self components:8208 fromDate:v17 toDate:? options:?];
     if ([v20 weekOfYear] <= 0)
     {
       if ([v20 day] <= 0)

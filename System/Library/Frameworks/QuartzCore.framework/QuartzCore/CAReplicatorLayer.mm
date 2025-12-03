@@ -1,7 +1,7 @@
 @interface CAReplicatorLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-+ (id)defaultValueForKey:(id)a3;
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
++ (id)defaultValueForKey:(id)key;
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property;
 - (BOOL)preservesDepth;
 - (CAReplicatorLayer)init;
 - (CATransform3D)instanceTransform;
@@ -12,11 +12,11 @@
 - (float)instanceBlueOffset;
 - (float)instanceGreenOffset;
 - (float)instanceRedOffset;
-- (id)implicitAnimationForKeyPath:(id)a3;
-- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)a3;
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5;
-- (void)_renderSublayersInContext:(CGContext *)a3;
-- (void)didChangeValueForKey:(id)a3;
+- (id)implicitAnimationForKeyPath:(id)path;
+- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)flags;
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags;
+- (void)_renderSublayersInContext:(CGContext *)context;
+- (void)didChangeValueForKey:(id)key;
 - (void)setInstanceAlphaOffset:(float)instanceAlphaOffset;
 - (void)setInstanceBlueOffset:(float)instanceBlueOffset;
 - (void)setInstanceColor:(CGColorRef)instanceColor;
@@ -122,17 +122,17 @@
   return v3;
 }
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CAReplicatorLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
 - (void)setInstanceAlphaOffset:(float)instanceAlphaOffset
@@ -191,12 +191,12 @@
   CA::Layer::setter(self->super._attr.layer, 0x1B9, 0xB, &v3);
 }
 
-- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)a3
+- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)flags
 {
   v5 = *MEMORY[0x1E69E9840];
-  if (a3 - 438 < 8)
+  if (flags - 438 < 8)
   {
-    return dword_183E31844[a3 - 438];
+    return dword_183E31844[flags - 438];
   }
 
   v4.receiver = self;
@@ -204,10 +204,10 @@
   return [(CALayer *)&v4 _renderLayerPropertyAnimationFlags:?];
 }
 
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property
 {
   v5 = *MEMORY[0x1E69E9840];
-  if (a3 - 438 < 8)
+  if (property - 438 < 8)
   {
     return 1;
   }
@@ -217,13 +217,13 @@
   return [(CALayer *)&v4 _renderLayerDefinesProperty:?];
 }
 
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags
 {
   v47 = *MEMORY[0x1E69E9840];
   v38.receiver = self;
   v38.super_class = CAReplicatorLayer;
-  v8 = [(CALayer *)&v38 _copyRenderLayer:a3 layerFlags:*&a4 commitFlags:?];
-  if (v8 && (*(a5 + 2) & 1) != 0)
+  v8 = [(CALayer *)&v38 _copyRenderLayer:layer layerFlags:*&flags commitFlags:?];
+  if (v8 && (*(commitFlags + 2) & 1) != 0)
   {
     if (x_malloc_get_zone::once != -1)
     {
@@ -327,11 +327,11 @@ LABEL_8:
         }
       }
 
-      v21 = [(CAReplicatorLayer *)self instanceColor];
-      if (v21)
+      instanceColor = [(CAReplicatorLayer *)self instanceColor];
+      if (instanceColor)
       {
-        v23 = v21;
-        v24 = CA::Context::current_colorspace(a3, v22);
+        v23 = instanceColor;
+        v24 = CA::Context::current_colorspace(layer, v22);
         v39 = 0u;
         v40 = 0u;
         CA_CGColorGetRGBComponents(v23, v24, &v39);
@@ -357,7 +357,7 @@ LABEL_8:
   return v8;
 }
 
-- (void)_renderSublayersInContext:(CGContext *)a3
+- (void)_renderSublayersInContext:(CGContext *)context
 {
   v42 = *MEMORY[0x1E69E9840];
   v5 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
@@ -375,7 +375,7 @@ LABEL_8:
 
   v7 = [(NSArray *)[(CALayer *)self sublayers] copy];
   v8 = [v7 count];
-  v9 = [(CAReplicatorLayer *)self instanceCount];
+  instanceCount = [(CAReplicatorLayer *)self instanceCount];
   v10 = 0uLL;
   v11 = 0uLL;
   v12 = 0uLL;
@@ -416,17 +416,17 @@ LABEL_8:
   v39 = v10;
   v40 = xmmword_183E20E60;
   CA::Transaction::unlock(v5);
-  CGContextSaveGState(a3);
-  if (v9)
+  CGContextSaveGState(context);
+  if (instanceCount)
   {
-    for (i = 0; i != v9; ++i)
+    for (i = 0; i != instanceCount; ++i)
     {
       if (v8)
       {
         for (j = 0; j != v8; ++j)
         {
           v22 = [v7 objectAtIndex:j];
-          CGContextSaveGState(a3);
+          CGContextSaveGState(context);
           v31 = 0u;
           v32 = 0u;
           v29 = 0u;
@@ -438,9 +438,9 @@ LABEL_8:
           *&v25.a = v26[0];
           *&v25.c = v27;
           *&v25.tx = v31;
-          CGContextConcatCTM(a3, &v25);
-          [v22 renderInContext:a3];
-          CGContextRestoreGState(a3);
+          CGContextConcatCTM(context, &v25);
+          [v22 renderInContext:context];
+          CGContextRestoreGState(context);
         }
       }
 
@@ -448,10 +448,10 @@ LABEL_8:
     }
   }
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (id)implicitAnimationForKeyPath:(id)a3
+- (id)implicitAnimationForKeyPath:(id)path
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -459,10 +459,10 @@ LABEL_8:
   result = [(CALayer *)&v12 implicitAnimationForKeyPath:?];
   if (!result)
   {
-    v6 = [a3 rangeOfString:@"."];
+    v6 = [path rangeOfString:@"."];
     if (!v7)
     {
-      v10 = CAInternAtom(a3, 0);
+      v10 = CAInternAtom(path, 0);
       v9 = v10;
       v11 = 0;
       while (v10 != [CAReplicatorLayer implicitAnimationForKeyPath:]::atoms[v11])
@@ -473,14 +473,14 @@ LABEL_8:
         }
       }
 
-      return CALayerCreateImplicitAnimation(self, a3, v9);
+      return CALayerCreateImplicitAnimation(self, path, v9);
     }
 
-    v8 = CAInternAtom([a3 substringToIndex:v6], 0);
+    v8 = CAInternAtom([path substringToIndex:v6], 0);
     v9 = 0;
     if (v8 == 445)
     {
-      return CALayerCreateImplicitAnimation(self, a3, v9);
+      return CALayerCreateImplicitAnimation(self, path, v9);
     }
 
     return 0;
@@ -489,10 +489,10 @@ LABEL_8:
   return result;
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   v6 = v5;
   v7 = 0;
   while (v5 != [CAReplicatorLayer didChangeValueForKey:]::atoms[v7])
@@ -508,9 +508,9 @@ LABEL_8:
 LABEL_6:
   if (v6 == 580)
   {
-    v9 = [(CAReplicatorLayer *)self preservesDepth];
+    preservesDepth = [(CAReplicatorLayer *)self preservesDepth];
     v10 = (self->super._attr.layer + 4);
-    if (v9)
+    if (preservesDepth)
     {
       atomic_fetch_or(v10, 0x10000u);
     }
@@ -523,13 +523,13 @@ LABEL_6:
 
   v11.receiver = self;
   v11.super_class = CAReplicatorLayer;
-  [(CAReplicatorLayer *)&v11 didChangeValueForKey:a3];
+  [(CAReplicatorLayer *)&v11 didChangeValueForKey:key];
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   if (v5 == 440)
   {
     result = +[CAReplicatorLayer defaultValueForKey:]::white;
@@ -550,9 +550,9 @@ LABEL_6:
 
   else
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS___CAReplicatorLayer;
-    return objc_msgSendSuper2(&v9, sel_defaultValueForKey_, a3);
+    return objc_msgSendSuper2(&v9, sel_defaultValueForKey_, key);
   }
 
   return result;

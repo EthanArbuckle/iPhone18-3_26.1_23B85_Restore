@@ -1,15 +1,15 @@
 @interface MailChangeManager
 + (id)sharedChangeManager;
-- (BOOL)addChange:(id)a3 currentAndPendingChangesBlock:(id)a4;
-- (BOOL)mailboxHasSubMailboxes:(id)a3;
+- (BOOL)addChange:(id)change currentAndPendingChangesBlock:(id)block;
+- (BOOL)mailboxHasSubMailboxes:(id)mailboxes;
 - (MailChangeManager)init;
 - (id)copyDiagnosticInformation;
-- (id)displayNameForMailbox:(id)a3;
-- (id)displayNameUsingSpecialNamesForMailbox:(id)a3;
-- (id)genericMailboxUidsSortedForAccount:(id)a3 includingLocals:(BOOL)a4 excludingMailbox:(id)a5;
-- (id)parentForMailbox:(id)a3;
-- (int)levelForMailbox:(id)a3;
-- (void)_modifyMailboxesForMailboxTree:(id)a3 forChange:(id)a4;
+- (id)displayNameForMailbox:(id)mailbox;
+- (id)displayNameUsingSpecialNamesForMailbox:(id)mailbox;
+- (id)genericMailboxUidsSortedForAccount:(id)account includingLocals:(BOOL)locals excludingMailbox:(id)mailbox;
+- (id)parentForMailbox:(id)mailbox;
+- (int)levelForMailbox:(id)mailbox;
+- (void)_modifyMailboxesForMailboxTree:(id)tree forChange:(id)change;
 - (void)pause;
 - (void)processPendingChanges;
 - (void)resume;
@@ -88,19 +88,19 @@
   [(MFConditionLock *)processingLock unlockWithCondition:v3];
 }
 
-- (BOOL)addChange:(id)a3 currentAndPendingChangesBlock:(id)a4
+- (BOOL)addChange:(id)change currentAndPendingChangesBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isFinalized] & 1) == 0)
+  changeCopy = change;
+  blockCopy = block;
+  if (([changeCopy isFinalized] & 1) == 0)
   {
     __assert_rtn("[MailChangeManager addChange:currentAndPendingChangesBlock:]", "MailChangeManager.m", 98, "[change isFinalized]");
   }
 
   [(MFConditionLock *)self->_processingLock lock];
-  v8 = [(MFConditionLock *)self->_processingLock condition];
+  condition = [(MFConditionLock *)self->_processingLock condition];
   [(MFConditionLock *)self->_processingLock unlock];
-  if (!v8)
+  if (!condition)
   {
     __assert_rtn("[MailChangeManager addChange:currentAndPendingChangesBlock:]", "MailChangeManager.m", 104, "isProperlyPaused");
   }
@@ -110,7 +110,7 @@
   pendingChanges = self->_pendingChanges;
   if (pendingChanges)
   {
-    if (!v7)
+    if (!blockCopy)
     {
       goto LABEL_9;
     }
@@ -123,16 +123,16 @@
     self->_pendingChanges = v11;
 
     pendingChanges = self->_pendingChanges;
-    if (!v7)
+    if (!blockCopy)
     {
 LABEL_9:
-      [(NSMutableArray *)pendingChanges addObject:v6];
+      [(NSMutableArray *)pendingChanges addObject:changeCopy];
       v13 = 1;
       goto LABEL_11;
     }
   }
 
-  if (v7[2](v7, self->_currentChange, pendingChanges))
+  if (blockCopy[2](blockCopy, self->_currentChange, pendingChanges))
   {
     pendingChanges = self->_pendingChanges;
     goto LABEL_9;
@@ -144,8 +144,8 @@ LABEL_11:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v14 = [v6 stores];
-  v15 = [v14 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  stores = [changeCopy stores];
+  v15 = [stores countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v15)
   {
     v16 = *v23;
@@ -155,17 +155,17 @@ LABEL_11:
       {
         if (*v23 != v16)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(stores);
         }
 
-        v18 = [*(*(&v22 + 1) + 8 * i) mailbox];
-        if (v18)
+        mailbox = [*(*(&v22 + 1) + 8 * i) mailbox];
+        if (mailbox)
         {
-          [v9 addObject:v18];
+          [v9 addObject:mailbox];
         }
       }
 
-      v15 = [v14 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v15 = [stores countByEnumeratingWithState:&v22 objects:v28 count:16];
     }
 
     while (v15);
@@ -174,7 +174,7 @@ LABEL_11:
   if ([(NSMutableArray *)self->_pendingChanges count]== 1)
   {
     v19 = [MFMonitoredInvocation invocationWithSelector:"processPendingChanges" target:self taskName:@"FLUSH_MBOX_CHANGES" priority:5 canBeCancelled:0];
-    [v6 setInvocation:v19];
+    [changeCopy setInvocation:v19];
     [(MFInvocationQueue *)self->_invocationQueue addInvocation:v19];
   }
 
@@ -182,7 +182,7 @@ LABEL_11:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v27 = v6;
+    v27 = changeCopy;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "#ChangeSetActions Added %@ to changes", buf, 0xCu);
   }
 
@@ -205,7 +205,7 @@ LABEL_11:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v48 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#ChangeSetActions %@ taking power assertion", buf, 0xCu);
   }
 
@@ -228,7 +228,7 @@ LABEL_11:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v48 = v6;
+      selfCopy2 = v6;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#ChangeSetActions Initiating change %@", buf, 0xCu);
     }
 
@@ -238,17 +238,17 @@ LABEL_11:
     }
 
     [(MailChangeManager *)self mf_unlock];
-    v8 = [(MailChangeManager *)v6 commit];
+    commit = [(MailChangeManager *)v6 commit];
     [(MailChangeManager *)self mf_lock];
     v9 = MFLogGeneral();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v48 = v6;
+      selfCopy2 = v6;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#ChangeSetActions Committed change %@", buf, 0xCu);
     }
 
-    if (v8)
+    if (commit)
     {
       committedChanges = self->_committedChanges;
       if (!committedChanges)
@@ -267,7 +267,7 @@ LABEL_11:
         v14 = [(NSMutableArray *)self->_committedChanges count];
         v15 = [(NSMutableArray *)self->_pendingChanges count];
         *buf = 134218240;
-        v48 = v14;
+        selfCopy2 = v14;
         v49 = 2048;
         v50 = v15;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "#ChangeSetActions Committed: %lu\tPending: %lu", buf, 0x16u);
@@ -276,33 +276,33 @@ LABEL_11:
 
     [(MailChangeManager *)v6 setInvocation:0];
     [(MailChangeManager *)self mf_unlock];
-    if ((v8 & 1) == 0)
+    if ((commit & 1) == 0)
     {
-      v16 = [(MailChangeManager *)v6 localizedErrorDescription];
-      v39 = v16;
-      v17 = [(MailChangeManager *)v6 localizedErrorTitle];
-      v38 = v17;
-      if ([v16 length] && objc_msgSend(v17, "length"))
+      localizedErrorDescription = [(MailChangeManager *)v6 localizedErrorDescription];
+      v39 = localizedErrorDescription;
+      localizedErrorTitle = [(MailChangeManager *)v6 localizedErrorTitle];
+      v38 = localizedErrorTitle;
+      if ([localizedErrorDescription length] && objc_msgSend(localizedErrorTitle, "length"))
       {
-        v18 = [MFError errorWithDomain:v37 code:1030 localizedDescription:v16 title:v17 userInfo:&off_1001637B0];
+        v18 = [MFError errorWithDomain:v37 code:1030 localizedDescription:localizedErrorDescription title:localizedErrorTitle userInfo:&off_1001637B0];
         v45[0] = @"MailChangeSetErrorKey";
         v45[1] = @"MailChangeSetAccountKey";
         v46[0] = v18;
-        v19 = [(MailChangeManager *)v6 accounts];
-        v46[1] = v19;
+        accounts = [(MailChangeManager *)v6 accounts];
+        v46[1] = accounts;
         v20 = [NSDictionary dictionaryWithObjects:v46 forKeys:v45 count:2];
 
         v21 = +[NSNotificationCenter defaultCenter];
         [v21 postNotificationName:v36 object:0 userInfo:v20];
 
-        v17 = v38;
+        localizedErrorTitle = v38;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v22 = [(MailChangeManager *)v6 mailboxToMoveOrRename];
-        if (v22)
+        mailboxToMoveOrRename = [(MailChangeManager *)v6 mailboxToMoveOrRename];
+        if (mailboxToMoveOrRename)
         {
           [(MailChangeManager *)self mf_lock];
           v42 = 0u;
@@ -328,8 +328,8 @@ LABEL_11:
                 if (objc_opt_isKindOfClass())
                 {
                   v28 = v27;
-                  v29 = [v28 mailboxToMoveOrRename];
-                  v30 = v22 == v29;
+                  mailboxToMoveOrRename2 = [v28 mailboxToMoveOrRename];
+                  v30 = mailboxToMoveOrRename == mailboxToMoveOrRename2;
 
                   if (v30)
                   {
@@ -351,7 +351,7 @@ LABEL_11:
         v31 = +[NSNotificationCenter defaultCenter];
         [v31 postNotificationName:@"MVMailboxListHasPendingChangesNotification" object:0];
 
-        v17 = v38;
+        localizedErrorTitle = v38;
       }
     }
   }
@@ -367,42 +367,42 @@ LABEL_11:
   if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v48 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "#ChangeSetActions %@ releasing power assertion", buf, 0xCu);
   }
 }
 
-- (void)_modifyMailboxesForMailboxTree:(id)a3 forChange:(id)a4
+- (void)_modifyMailboxesForMailboxTree:(id)tree forChange:(id)change
 {
-  v10 = a3;
-  v5 = a4;
-  v6 = [v5 mailboxToRemove];
-  if (v6)
+  treeCopy = tree;
+  changeCopy = change;
+  mailboxToRemove = [changeCopy mailboxToRemove];
+  if (mailboxToRemove)
   {
-    [v10 removeNodeForMailbox:v6];
+    [treeCopy removeNodeForMailbox:mailboxToRemove];
   }
 
-  v7 = [v5 mailboxToMoveOrRename];
-  if (v7)
+  mailboxToMoveOrRename = [changeCopy mailboxToMoveOrRename];
+  if (mailboxToMoveOrRename)
   {
-    v8 = [v5 modifiedMailboxName];
-    if (v8)
+    modifiedMailboxName = [changeCopy modifiedMailboxName];
+    if (modifiedMailboxName)
     {
-      [v10 setDisplayName:v8 forMailbox:v7];
+      [treeCopy setDisplayName:modifiedMailboxName forMailbox:mailboxToMoveOrRename];
     }
 
-    v9 = [v5 mailboxParentForMove];
-    if (v9)
+    mailboxParentForMove = [changeCopy mailboxParentForMove];
+    if (mailboxParentForMove)
     {
-      [v10 moveMailbox:v7 toParent:v9];
+      [treeCopy moveMailbox:mailboxToMoveOrRename toParent:mailboxParentForMove];
     }
   }
 }
 
-- (id)genericMailboxUidsSortedForAccount:(id)a3 includingLocals:(BOOL)a4 excludingMailbox:(id)a5
+- (id)genericMailboxUidsSortedForAccount:(id)account includingLocals:(BOOL)locals excludingMailbox:(id)mailbox
 {
-  v7 = a5;
-  v8 = [a3 treeOfAllGenericMailboxes];
+  mailboxCopy = mailbox;
+  treeOfAllGenericMailboxes = [account treeOfAllGenericMailboxes];
   pendingChanges = self->_pendingChanges;
   if (pendingChanges && [(NSMutableArray *)pendingChanges count])
   {
@@ -417,7 +417,7 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  [(MailChangeManager *)self _modifyMailboxesForMailboxTree:v8 forChange:?];
+  [(MailChangeManager *)self _modifyMailboxesForMailboxTree:treeOfAllGenericMailboxes forChange:?];
 LABEL_7:
   v18 = 0u;
   v19 = 0u;
@@ -437,7 +437,7 @@ LABEL_7:
           objc_enumerationMutation(v10);
         }
 
-        [(MailChangeManager *)self _modifyMailboxesForMailboxTree:v8 forChange:*(*(&v16 + 1) + 8 * i), v16];
+        [(MailChangeManager *)self _modifyMailboxesForMailboxTree:treeOfAllGenericMailboxes forChange:*(*(&v16 + 1) + 8 * i), v16];
       }
 
       v11 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -447,89 +447,89 @@ LABEL_7:
   }
 
 LABEL_15:
-  if (v7)
+  if (mailboxCopy)
   {
-    [v8 removeNodeForMailbox:v7];
+    [treeOfAllGenericMailboxes removeNodeForMailbox:mailboxCopy];
   }
 
-  v14 = [v8 flattenedMailboxTreeRepresentation];
+  flattenedMailboxTreeRepresentation = [treeOfAllGenericMailboxes flattenedMailboxTreeRepresentation];
 
-  return v14;
+  return flattenedMailboxTreeRepresentation;
 }
 
-- (id)parentForMailbox:(id)a3
+- (id)parentForMailbox:(id)mailbox
 {
-  v4 = a3;
+  mailboxCopy = mailbox;
   lastCalculatedMailboxDictionary = self->_lastCalculatedMailboxDictionary;
-  v6 = [v4 account];
-  v7 = [v6 uniqueID];
-  v8 = [(NSMutableDictionary *)lastCalculatedMailboxDictionary objectForKeyedSubscript:v7];
+  account = [mailboxCopy account];
+  uniqueID = [account uniqueID];
+  v8 = [(NSMutableDictionary *)lastCalculatedMailboxDictionary objectForKeyedSubscript:uniqueID];
 
-  v9 = [v8 parentForMailbox:v4];
-  if (!v9)
+  parent = [v8 parentForMailbox:mailboxCopy];
+  if (!parent)
   {
-    v9 = [v4 parent];
+    parent = [mailboxCopy parent];
   }
 
-  return v9;
+  return parent;
 }
 
-- (int)levelForMailbox:(id)a3
+- (int)levelForMailbox:(id)mailbox
 {
-  v4 = a3;
+  mailboxCopy = mailbox;
   lastCalculatedMailboxDictionary = self->_lastCalculatedMailboxDictionary;
-  v6 = [v4 account];
-  v7 = [v6 uniqueID];
-  v8 = [(NSMutableDictionary *)lastCalculatedMailboxDictionary objectForKeyedSubscript:v7];
+  account = [mailboxCopy account];
+  uniqueID = [account uniqueID];
+  v8 = [(NSMutableDictionary *)lastCalculatedMailboxDictionary objectForKeyedSubscript:uniqueID];
 
-  LODWORD(v6) = [v8 levelForMailbox:v4];
-  return v6;
+  LODWORD(account) = [v8 levelForMailbox:mailboxCopy];
+  return account;
 }
 
-- (id)displayNameForMailbox:(id)a3
+- (id)displayNameForMailbox:(id)mailbox
 {
-  v4 = a3;
+  mailboxCopy = mailbox;
   lastCalculatedMailboxDictionary = self->_lastCalculatedMailboxDictionary;
-  v6 = [v4 account];
-  v7 = [v6 uniqueID];
-  v8 = [(NSMutableDictionary *)lastCalculatedMailboxDictionary objectForKeyedSubscript:v7];
+  account = [mailboxCopy account];
+  uniqueID = [account uniqueID];
+  v8 = [(NSMutableDictionary *)lastCalculatedMailboxDictionary objectForKeyedSubscript:uniqueID];
 
-  v9 = [v8 displayNameForMailbox:v4];
-  if (!v9)
+  displayName = [v8 displayNameForMailbox:mailboxCopy];
+  if (!displayName)
   {
-    v9 = [v4 displayName];
+    displayName = [mailboxCopy displayName];
   }
 
-  return v9;
+  return displayName;
 }
 
-- (id)displayNameUsingSpecialNamesForMailbox:(id)a3
+- (id)displayNameUsingSpecialNamesForMailbox:(id)mailbox
 {
-  v4 = a3;
+  mailboxCopy = mailbox;
   lastCalculatedMailboxDictionary = self->_lastCalculatedMailboxDictionary;
-  v6 = [v4 account];
-  v7 = [v6 uniqueID];
-  v8 = [(NSMutableDictionary *)lastCalculatedMailboxDictionary objectForKeyedSubscript:v7];
+  account = [mailboxCopy account];
+  uniqueID = [account uniqueID];
+  v8 = [(NSMutableDictionary *)lastCalculatedMailboxDictionary objectForKeyedSubscript:uniqueID];
 
-  v9 = [v8 displayNameForMailbox:v4];
-  if (!v9)
+  displayNameUsingSpecialNames = [v8 displayNameForMailbox:mailboxCopy];
+  if (!displayNameUsingSpecialNames)
   {
-    v9 = [v4 displayNameUsingSpecialNames];
+    displayNameUsingSpecialNames = [mailboxCopy displayNameUsingSpecialNames];
   }
 
-  return v9;
+  return displayNameUsingSpecialNames;
 }
 
-- (BOOL)mailboxHasSubMailboxes:(id)a3
+- (BOOL)mailboxHasSubMailboxes:(id)mailboxes
 {
-  v4 = a3;
+  mailboxesCopy = mailboxes;
   lastCalculatedMailboxDictionary = self->_lastCalculatedMailboxDictionary;
-  v6 = [v4 account];
-  v7 = [v6 uniqueID];
-  v8 = [(NSMutableDictionary *)lastCalculatedMailboxDictionary objectForKeyedSubscript:v7];
+  account = [mailboxesCopy account];
+  uniqueID = [account uniqueID];
+  v8 = [(NSMutableDictionary *)lastCalculatedMailboxDictionary objectForKeyedSubscript:uniqueID];
 
-  LOBYTE(v6) = [v8 mailboxHasSubMailboxes:v4];
-  return v6;
+  LOBYTE(account) = [v8 mailboxHasSubMailboxes:mailboxesCopy];
+  return account;
 }
 
 @end

@@ -1,57 +1,57 @@
 @interface _UIStatusBarDisplayItemState
-+ (id)stateForDisplayItemWithIdentifier:(id)a3 statusBar:(id)a4;
-+ (void)setupRelationsBetweenDisplayItemStates:(id)a3 visualProvider:(id)a4;
-- (BOOL)_resolveDependentItemStatesWithBlock:(id)a3;
-- (BOOL)_updatePlacementWithRecursionBlock:(id)a3;
++ (id)stateForDisplayItemWithIdentifier:(id)identifier statusBar:(id)bar;
++ (void)setupRelationsBetweenDisplayItemStates:(id)states visualProvider:(id)provider;
+- (BOOL)_resolveDependentItemStatesWithBlock:(id)block;
+- (BOOL)_updatePlacementWithRecursionBlock:(id)block;
 - (BOOL)_updateToNextPlacementStateIfNeeded;
-- (BOOL)isCurrentPlacement:(id)a3;
+- (BOOL)isCurrentPlacement:(id)placement;
 - (BOOL)isEnabled;
 - (BOOL)isEnabledIgnoringAnimations;
-- (BOOL)prepareAnimation:(id)a3;
+- (BOOL)prepareAnimation:(id)animation;
 - (BOOL)updatePlacement;
 - (NSArray)potentialPlacementRegionIdentifiers;
 - (_UIStatusBar)statusBar;
 - (_UIStatusBarDisplayItem)displayItem;
 - (_UIStatusBarDisplayItemPlacementState)currentPlacementState;
 - (_UIStatusBarItem)item;
-- (id)_animationWithUpdateAnimation:(id)a3;
-- (id)_effectiveStyleAttributesFromStyleAttributes:(id)a3 data:(id)a4 styleAttributesChanged:(BOOL *)a5;
-- (id)_updateForItem:(id)a3 data:(id)a4 styleAttributes:(id)a5;
-- (id)_updateForUpdatedData:(id)a3 updatedStyleAttributes:(id)a4 updatedEnability:(id)a5;
+- (id)_animationWithUpdateAnimation:(id)animation;
+- (id)_effectiveStyleAttributesFromStyleAttributes:(id)attributes data:(id)data styleAttributesChanged:(BOOL *)changed;
+- (id)_updateForItem:(id)item data:(id)data styleAttributes:(id)attributes;
+- (id)_updateForUpdatedData:(id)data updatedStyleAttributes:(id)attributes updatedEnability:(id)enability;
 - (id)description;
-- (id)placementStateForPlacement:(id)a3;
-- (id)updateWithData:(id)a3 styleAttributes:(id)a4;
+- (id)placementStateForPlacement:(id)placement;
+- (id)updateWithData:(id)data styleAttributes:(id)attributes;
 - (int64_t)_animationType;
 - (int64_t)priority;
 - (void)_cancelObsoleteAnimations;
 - (void)_updateStatuses;
-- (void)addPlacement:(id)a3 inRegion:(id)a4;
+- (void)addPlacement:(id)placement inRegion:(id)region;
 - (void)prepareForDataUpdate;
 - (void)updateToNextEnabledPlacement;
 @end
 
 @implementation _UIStatusBarDisplayItemState
 
-+ (id)stateForDisplayItemWithIdentifier:(id)a3 statusBar:(id)a4
++ (id)stateForDisplayItemWithIdentifier:(id)identifier statusBar:(id)bar
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  identifierCopy = identifier;
+  barCopy = bar;
+  v8 = objc_alloc_init(self);
   v9 = *(v8 + 3);
-  *(v8 + 3) = v6;
-  v10 = v6;
+  *(v8 + 3) = identifierCopy;
+  v10 = identifierCopy;
 
-  objc_storeWeak(v8 + 4, v7);
-  v11 = [MEMORY[0x1E695DF70] array];
+  objc_storeWeak(v8 + 4, barCopy);
+  array = [MEMORY[0x1E695DF70] array];
   v12 = *(v8 + 6);
-  *(v8 + 6) = v11;
+  *(v8 + 6) = array;
 
   v13 = [MEMORY[0x1E695DFA8] set];
   v14 = *(v8 + 17);
   *(v8 + 17) = v13;
 
   v15 = [_UIStatusBarItem itemIdentifierForDisplayItemIdentifier:v10];
-  v16 = [v7 itemWithIdentifier:v15];
+  v16 = [barCopy itemWithIdentifier:v15];
 
   objc_storeWeak(v8 + 5, v16);
   WeakRetained = objc_loadWeakRetained(v8 + 5);
@@ -66,8 +66,8 @@
 {
   if (self->_dataUpdateStatus != 2)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemState.m" lineNumber:199 description:{@"%@ should have been updated before checking if it's enabled (instead of %ld)", self, self->_dataUpdateStatus}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemState.m" lineNumber:199 description:{@"%@ should have been updated before checking if it's enabled (instead of %ld)", self, self->_dataUpdateStatus}];
   }
 
   if ([(_UIStatusBarDisplayItemState *)self hasRunningAnimations]|| self->_floating)
@@ -85,17 +85,17 @@
     return 0;
   }
 
-  v3 = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
+  currentPlacementState = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
 
-  if (!v3)
+  if (!currentPlacementState)
   {
     return 0;
   }
 
-  v4 = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
-  v5 = [v4 isEnabled];
+  currentPlacementState2 = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
+  isEnabled = [currentPlacementState2 isEnabled];
 
-  return v5;
+  return isEnabled;
 }
 
 - (_UIStatusBarDisplayItemPlacementState)currentPlacementState
@@ -123,31 +123,31 @@
 
 - (BOOL)_updateToNextPlacementStateIfNeeded
 {
-  v3 = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
-  if (v3)
+  currentPlacementState = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
+  if (currentPlacementState)
   {
-    v4 = v3;
-    v5 = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
-    v6 = [v5 isEnabled];
+    v4 = currentPlacementState;
+    currentPlacementState2 = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
+    isEnabled = [currentPlacementState2 isEnabled];
 
-    if (v6)
+    if (isEnabled)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(currentPlacementState) = 0;
     }
 
     else
     {
       ++self->_currentPlacementStateIndex;
-      LOBYTE(v3) = 1;
+      LOBYTE(currentPlacementState) = 1;
     }
   }
 
-  return v3;
+  return currentPlacementState;
 }
 
-- (void)addPlacement:(id)a3 inRegion:(id)a4
+- (void)addPlacement:(id)placement inRegion:(id)region
 {
-  v6 = [_UIStatusBarDisplayItemPlacementState stateForDisplayItemPlacement:a3 region:a4];
+  v6 = [_UIStatusBarDisplayItemPlacementState stateForDisplayItemPlacement:placement region:region];
   placementStates = self->_placementStates;
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
@@ -164,24 +164,24 @@
   else
   {
     v10 = v9;
-    v11 = [v8 priority];
+    priority = [v8 priority];
     v12 = [(NSMutableArray *)self->_placementStates objectAtIndexedSubscript:v10];
-    v13 = [v12 priority];
+    priority2 = [v12 priority];
 
-    if (v11 == v13)
+    if (priority == priority2)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemState.m" lineNumber:257 description:{@"2 placements have the same priority for display item identifier %@", self->_identifier, v15, v16, v17, v18}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemState.m" lineNumber:257 description:{@"2 placements have the same priority for display item identifier %@", self->_identifier, v15, v16, v17, v18}];
     }
 
     [(NSMutableArray *)self->_placementStates insertObject:v8 atIndex:v10];
   }
 }
 
-- (id)placementStateForPlacement:(id)a3
+- (id)placementStateForPlacement:(id)placement
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  placementCopy = placement;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -201,8 +201,8 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 placement];
-        v11 = [v10 isEqual:v4];
+        placement = [v9 placement];
+        v11 = [placement isEqual:placementCopy];
 
         if (v11)
         {
@@ -226,20 +226,20 @@ LABEL_11:
   return v6;
 }
 
-+ (void)setupRelationsBetweenDisplayItemStates:(id)a3 visualProvider:(id)a4
++ (void)setupRelationsBetweenDisplayItemStates:(id)states visualProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  statesCopy = states;
+  providerCopy = provider;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __86___UIStatusBarDisplayItemState_setupRelationsBetweenDisplayItemStates_visualProvider___block_invoke;
   v11[3] = &unk_1E7121FC8;
   v14 = a2;
-  v15 = a1;
-  v12 = v8;
-  v13 = v7;
-  v9 = v7;
-  v10 = v8;
+  selfCopy = self;
+  v12 = providerCopy;
+  v13 = statesCopy;
+  v9 = statesCopy;
+  v10 = providerCopy;
   [v9 enumerateKeysAndObjectsUsingBlock:v11];
 }
 
@@ -253,14 +253,14 @@ LABEL_11:
 
 - (void)_updateStatuses
 {
-  v3 = [(_UIStatusBarDisplayItemState *)self isEnabledIgnoringAnimations];
-  v4 = v3;
+  isEnabledIgnoringAnimations = [(_UIStatusBarDisplayItemState *)self isEnabledIgnoringAnimations];
+  v4 = isEnabledIgnoringAnimations;
   wasEnabled = self->_wasEnabled;
-  v6 = !v3;
+  v6 = !isEnabledIgnoringAnimations;
   if (wasEnabled || v6)
   {
-    v8 = v3 | ~wasEnabled;
-    v9 = wasEnabled & v3;
+    v8 = isEnabledIgnoringAnimations | ~wasEnabled;
+    v9 = wasEnabled & isEnabledIgnoringAnimations;
     if (v8)
     {
       v7 = v9;
@@ -309,18 +309,18 @@ LABEL_11:
   [(_UIStatusBarDisplayItemState *)self setVisibilityStatus:v15];
 }
 
-- (BOOL)_resolveDependentItemStatesWithBlock:(id)a3
+- (BOOL)_resolveDependentItemStatesWithBlock:(id)block
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
-  v6 = [v5 relations];
+  currentPlacementState = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
+  relations = [currentPlacementState relations];
 
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  v7 = [relations countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -331,7 +331,7 @@ LABEL_11:
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(relations);
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
@@ -339,8 +339,8 @@ LABEL_11:
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v12 = [v11 itemStates];
-        v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        itemStates = [v11 itemStates];
+        v13 = [itemStates countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v13)
         {
           v14 = v13;
@@ -351,10 +351,10 @@ LABEL_11:
             {
               if (*v20 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(itemStates);
               }
 
-              if (!v4[2](v4, *(*(&v19 + 1) + 8 * j)))
+              if (!blockCopy[2](blockCopy, *(*(&v19 + 1) + 8 * j)))
               {
 
                 v17 = 0;
@@ -362,7 +362,7 @@ LABEL_11:
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v14 = [itemStates countByEnumeratingWithState:&v19 objects:v27 count:16];
             if (v14)
             {
               continue;
@@ -373,7 +373,7 @@ LABEL_11:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v8 = [relations countByEnumeratingWithState:&v23 objects:v28 count:16];
       v17 = 1;
     }
 
@@ -390,9 +390,9 @@ LABEL_19:
   return v17;
 }
 
-- (BOOL)_updatePlacementWithRecursionBlock:(id)a3
+- (BOOL)_updatePlacementWithRecursionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_displayItem);
   -[_UIStatusBarDisplayItemState setFloating:](self, "setFloating:", [WeakRetained floating]);
 
@@ -405,30 +405,30 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v6 = [(_UIStatusBarDisplayItemState *)self removingAnimation];
+  removingAnimation = [(_UIStatusBarDisplayItemState *)self removingAnimation];
 
-  if (v6)
+  if (removingAnimation)
   {
     self->_currentPlacementStateIndex = self->_previousPlacementStateIndex;
-    [(_UIStatusBarDisplayItemState *)self _resolveDependentItemStatesWithBlock:v4];
+    [(_UIStatusBarDisplayItemState *)self _resolveDependentItemStatesWithBlock:blockCopy];
     goto LABEL_5;
   }
 
-  v9 = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
+  currentPlacementState = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
 
-  if (!v9)
+  if (!currentPlacementState)
   {
     goto LABEL_5;
   }
 
   while (1)
   {
-    v10 = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
-    v11 = [v10 canBeEnabled];
+    currentPlacementState2 = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
+    canBeEnabled = [currentPlacementState2 canBeEnabled];
 
-    if (v11)
+    if (canBeEnabled)
     {
-      if (![(_UIStatusBarDisplayItemState *)self _resolveDependentItemStatesWithBlock:v4])
+      if (![(_UIStatusBarDisplayItemState *)self _resolveDependentItemStatesWithBlock:blockCopy])
       {
         break;
       }
@@ -450,8 +450,8 @@ LABEL_6:
 {
   if (self->_dataUpdateStatus != 2)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemState.m" lineNumber:425 description:@"The item state should have been data updated before updating its placement"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemState.m" lineNumber:425 description:@"The item state should have been data updated before updating its placement"];
   }
 
   placementUpdateStatus = self->_placementUpdateStatus;
@@ -470,31 +470,31 @@ LABEL_6:
   return [(_UIStatusBarDisplayItemState *)self _updatePlacementWithRecursionBlock:&__block_literal_global_532];
 }
 
-- (id)updateWithData:(id)a3 styleAttributes:(id)a4
+- (id)updateWithData:(id)data styleAttributes:(id)attributes
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  attributesCopy = attributes;
   dataUpdateStatus = self->_dataUpdateStatus;
   if ((dataUpdateStatus & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
-    v41 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v41 handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemState.m" lineNumber:446 description:@"The update status must be needsUpdate or updated"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemState.m" lineNumber:446 description:@"The update status must be needsUpdate or updated"];
 
     dataUpdateStatus = self->_dataUpdateStatus;
   }
 
   if (dataUpdateStatus == 2)
   {
-    v10 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
     goto LABEL_25;
   }
 
   self->_dataUpdateStatus = 1;
-  v11 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   WeakRetained = objc_loadWeakRetained(&self->_displayItem);
-  v13 = [WeakRetained clearPreviousTokenDisablementIfNecessary];
+  clearPreviousTokenDisablementIfNecessary = [WeakRetained clearPreviousTokenDisablementIfNecessary];
 
-  if (v13)
+  if (clearPreviousTokenDisablementIfNecessary)
   {
     [(_UIStatusBarDisplayItemState *)self setWasEnabled:0];
   }
@@ -516,23 +516,23 @@ LABEL_6:
   v42[1] = 3221225472;
   v42[2] = __63___UIStatusBarDisplayItemState_updateWithData_styleAttributes___block_invoke;
   v42[3] = &unk_1E7122010;
-  v17 = v7;
+  v17 = dataCopy;
   v43 = v17;
-  v18 = v8;
+  v18 = attributesCopy;
   v44 = v18;
-  v19 = v11;
+  v19 = array2;
   v45 = v19;
   if ([(_UIStatusBarDisplayItemState *)self _updatePlacementWithRecursionBlock:v42])
   {
     v20 = objc_loadWeakRetained(&self->_item);
     v21 = objc_loadWeakRetained(&self->_displayItem);
     v22 = objc_loadWeakRetained(&self->_statusBar);
-    v23 = [v22 currentAggregatedData];
-    -[_UIStatusBarDisplayItemState setDataEnabled:](self, "setDataEnabled:", [v20 canEnableDisplayItem:v21 fromData:v23]);
+    currentAggregatedData = [v22 currentAggregatedData];
+    -[_UIStatusBarDisplayItemState setDataEnabled:](self, "setDataEnabled:", [v20 canEnableDisplayItem:v21 fromData:currentAggregatedData]);
 
     [(_UIStatusBarDisplayItemState *)self _updateStatuses];
-    v24 = [(_UIStatusBarDisplayItemState *)self enabilityStatus];
-    switch(v24)
+    enabilityStatus = [(_UIStatusBarDisplayItemState *)self enabilityStatus];
+    switch(enabilityStatus)
     {
       case 1:
         v30 = objc_loadWeakRetained(&self->_item);
@@ -554,10 +554,10 @@ LABEL_6:
         goto LABEL_18;
       case 2:
         v25 = objc_loadWeakRetained(&self->_statusBar);
-        v26 = [v25 currentAggregatedData];
+        currentAggregatedData2 = [v25 currentAggregatedData];
         v27 = objc_loadWeakRetained(&self->_statusBar);
-        v28 = [v27 styleAttributes];
-        v29 = [(_UIStatusBarDisplayItemState *)self _updateForUpdatedData:v26 updatedStyleAttributes:v28 updatedEnability:MEMORY[0x1E695E118]];
+        styleAttributes = [v27 styleAttributes];
+        v29 = [(_UIStatusBarDisplayItemState *)self _updateForUpdatedData:currentAggregatedData2 updatedStyleAttributes:styleAttributes updatedEnability:MEMORY[0x1E695E118]];
 
         if (!v29)
         {
@@ -565,10 +565,10 @@ LABEL_6:
         }
 
 LABEL_18:
-        v31 = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
-        v32 = [v31 placement];
-        v33 = [v32 itemInfo];
-        [v29 setPlacementInfo:v33];
+        currentPlacementState = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
+        placement = [currentPlacementState placement];
+        itemInfo = [placement itemInfo];
+        [v29 setPlacementInfo:itemInfo];
 
         v34 = objc_loadWeakRetained(&self->_item);
         v35 = objc_loadWeakRetained(&self->_displayItem);
@@ -584,15 +584,15 @@ LABEL_21:
 
         if (v38)
         {
-          v39 = [(_UIStatusBarDisplayItemState *)self identifier];
-          [v38 setDisplayItemIdentifier:v39];
+          identifier = [(_UIStatusBarDisplayItemState *)self identifier];
+          [v38 setDisplayItemIdentifier:identifier];
 
           [v19 addObject:v38];
         }
 
         *&self->_dataUpdateStatus = xmmword_18A65B690;
         self->_preferredPlacementStateIndex = self->_currentPlacementStateIndex;
-        v10 = v19;
+        array = v19;
 
         goto LABEL_24;
       default:
@@ -605,29 +605,29 @@ LABEL_21:
   }
 
   self->_dataUpdateStatus = 0;
-  v10 = MEMORY[0x1E695E0F0];
+  array = MEMORY[0x1E695E0F0];
 LABEL_24:
 
 LABEL_25:
 
-  return v10;
+  return array;
 }
 
-- (id)_updateForItem:(id)a3 data:(id)a4 styleAttributes:(id)a5
+- (id)_updateForItem:(id)item data:(id)data styleAttributes:(id)attributes
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 needsUpdate];
-  if (v9)
+  itemCopy = item;
+  dataCopy = data;
+  attributesCopy = attributes;
+  needsUpdate = [itemCopy needsUpdate];
+  if (dataCopy)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = [v8 dependentEntryKeys];
-    v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    dependentEntryKeys = [itemCopy dependentEntryKeys];
+    v13 = [dependentEntryKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v13)
     {
       v14 = v13;
@@ -638,10 +638,10 @@ LABEL_4:
       {
         if (*v24 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(dependentEntryKeys);
         }
 
-        v17 = [v9 valueForKey:*(*(&v23 + 1) + 8 * v16)];
+        v17 = [dataCopy valueForKey:*(*(&v23 + 1) + 8 * v16)];
 
         if (v17)
         {
@@ -650,7 +650,7 @@ LABEL_4:
 
         if (v14 == ++v16)
         {
-          v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          v14 = [dependentEntryKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
           if (v14)
           {
             goto LABEL_4;
@@ -660,9 +660,9 @@ LABEL_4:
         }
       }
 
-      v18 = self;
-      v19 = v9;
-      if (!v10)
+      selfCopy3 = self;
+      v19 = dataCopy;
+      if (!attributesCopy)
       {
         goto LABEL_17;
       }
@@ -673,20 +673,20 @@ LABEL_4:
 LABEL_10:
   }
 
-  if (v10)
+  if (attributesCopy)
   {
-    v18 = self;
+    selfCopy3 = self;
     v19 = 0;
 LABEL_14:
-    v20 = v10;
+    v20 = attributesCopy;
 LABEL_18:
-    v21 = [(_UIStatusBarDisplayItemState *)v18 _updateForUpdatedData:v19 updatedStyleAttributes:v20 updatedEnability:0];
+    v21 = [(_UIStatusBarDisplayItemState *)selfCopy3 _updateForUpdatedData:v19 updatedStyleAttributes:v20 updatedEnability:0];
     goto LABEL_19;
   }
 
-  if (v11)
+  if (needsUpdate)
   {
-    v18 = self;
+    selfCopy3 = self;
     v19 = 0;
 LABEL_17:
     v20 = 0;
@@ -699,66 +699,66 @@ LABEL_19:
   return v21;
 }
 
-- (id)_updateForUpdatedData:(id)a3 updatedStyleAttributes:(id)a4 updatedEnability:(id)a5
+- (id)_updateForUpdatedData:(id)data updatedStyleAttributes:(id)attributes updatedEnability:(id)enability
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  enabilityCopy = enability;
   WeakRetained = _UIStatusBarItemUpdate;
-  v11 = a4;
+  attributesCopy = attributes;
   v12 = objc_alloc_init(_UIStatusBarItemUpdate);
-  [(_UIStatusBarItemUpdate *)v12 setDataChanged:v8 != 0];
-  if (v8)
+  [(_UIStatusBarItemUpdate *)v12 setDataChanged:dataCopy != 0];
+  if (dataCopy)
   {
-    [(_UIStatusBarItemUpdate *)v12 setData:v8];
+    [(_UIStatusBarItemUpdate *)v12 setData:dataCopy];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_statusBar);
-    v13 = [(__objc2_class *)WeakRetained currentAggregatedData];
-    [(_UIStatusBarItemUpdate *)v12 setData:v13];
+    currentAggregatedData = [(__objc2_class *)WeakRetained currentAggregatedData];
+    [(_UIStatusBarItemUpdate *)v12 setData:currentAggregatedData];
   }
 
-  v19 = v11 != 0;
-  v14 = v11;
-  if (!v11)
+  v19 = attributesCopy != 0;
+  styleAttributes = attributesCopy;
+  if (!attributesCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_statusBar);
-    v14 = [(__objc2_class *)WeakRetained styleAttributes];
+    styleAttributes = [(__objc2_class *)WeakRetained styleAttributes];
   }
 
-  v15 = [(_UIStatusBarItemUpdate *)v12 data];
-  v16 = [(_UIStatusBarDisplayItemState *)self _effectiveStyleAttributesFromStyleAttributes:v14 data:v15 styleAttributesChanged:&v19];
+  data = [(_UIStatusBarItemUpdate *)v12 data];
+  v16 = [(_UIStatusBarDisplayItemState *)self _effectiveStyleAttributesFromStyleAttributes:styleAttributes data:data styleAttributesChanged:&v19];
 
   [(_UIStatusBarItemUpdate *)v12 setStyleAttributes:v16];
-  if (!v11)
+  if (!attributesCopy)
   {
   }
 
   [(_UIStatusBarItemUpdate *)v12 setStyleAttributesChanged:v19];
-  [(_UIStatusBarItemUpdate *)v12 setEnabilityChanged:v9 != 0];
-  if (v9)
+  [(_UIStatusBarItemUpdate *)v12 setEnabilityChanged:enabilityCopy != 0];
+  if (enabilityCopy)
   {
-    v17 = [v9 BOOLValue];
+    bOOLValue = [enabilityCopy BOOLValue];
   }
 
   else
   {
-    v17 = 1;
+    bOOLValue = 1;
   }
 
-  [(_UIStatusBarItemUpdate *)v12 setEnabled:v17];
+  [(_UIStatusBarItemUpdate *)v12 setEnabled:bOOLValue];
 
   return v12;
 }
 
-- (id)_effectiveStyleAttributesFromStyleAttributes:(id)a3 data:(id)a4 styleAttributesChanged:(BOOL *)a5
+- (id)_effectiveStyleAttributesFromStyleAttributes:(id)attributes data:(id)data styleAttributesChanged:(BOOL *)changed
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
-  v11 = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
-  v12 = [v11 region];
+  attributesCopy = attributes;
+  dataCopy = data;
+  v10 = attributesCopy;
+  currentPlacementState = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
+  region = [currentPlacementState region];
 
   v40 = 0;
   v41 = &v40;
@@ -771,35 +771,35 @@ LABEL_19:
   v37 = __105___UIStatusBarDisplayItemState__effectiveStyleAttributesFromStyleAttributes_data_styleAttributesChanged___block_invoke;
   v38 = &unk_1E7122038;
   v39 = &v40;
-  v13 = [v12 effectiveStyle];
-  if (v13 != 4)
+  effectiveStyle = [region effectiveStyle];
+  if (effectiveStyle != 4)
   {
     WeakRetained = objc_loadWeakRetained(&self->_statusBar);
-    v15 = [WeakRetained styleAttributesForStyle:v13];
+    v15 = [WeakRetained styleAttributesForStyle:effectiveStyle];
     v37(v36, v15);
   }
 
-  v16 = [v12 overriddenStyleAttributes];
-  v37(v36, v16);
+  overriddenStyleAttributes = [region overriddenStyleAttributes];
+  v37(v36, overriddenStyleAttributes);
 
   v17 = objc_loadWeakRetained(&self->_displayItem);
-  v18 = [v17 overriddenStyleAttributes];
-  v37(v36, v18);
+  overriddenStyleAttributes2 = [v17 overriddenStyleAttributes];
+  v37(v36, overriddenStyleAttributes2);
 
   v19 = objc_loadWeakRetained(&self->_item);
-  v20 = [v19 overriddenStyleAttributesForData:v9 identifier:self->_identifier];
+  v20 = [v19 overriddenStyleAttributesForData:dataCopy identifier:self->_identifier];
   v37(v36, v20);
 
   v21 = objc_loadWeakRetained(&self->_statusBar);
-  v22 = [v21 visualProvider];
+  visualProvider = [v21 visualProvider];
   v23 = objc_opt_respondsToSelector();
 
   if (v23)
   {
     v24 = objc_loadWeakRetained(&self->_statusBar);
-    v25 = [v24 visualProvider];
-    v26 = [(_UIStatusBarDisplayItemState *)self identifier];
-    v27 = [v25 overriddenStyleAttributesForDisplayItemWithIdentifier:v26];
+    visualProvider2 = [v24 visualProvider];
+    identifier = [(_UIStatusBarDisplayItemState *)self identifier];
+    v27 = [visualProvider2 overriddenStyleAttributesForDisplayItemWithIdentifier:identifier];
     v37(v36, v27);
   }
 
@@ -826,7 +826,7 @@ LABEL_19:
   {
 LABEL_12:
     objc_storeStrong(p_overriddenStyleAttributes, v41[5]);
-    *a5 = 1;
+    *changed = 1;
   }
 
 LABEL_13:
@@ -871,74 +871,74 @@ LABEL_13:
 
 - (void)_cancelObsoleteAnimations
 {
-  v3 = [(_UIStatusBarDisplayItemState *)self _animationType];
-  if (v3 == 2)
+  _animationType = [(_UIStatusBarDisplayItemState *)self _animationType];
+  if (_animationType == 2)
   {
-    v6 = [(_UIStatusBarDisplayItemState *)self addingAnimation];
+    addingAnimation = [(_UIStatusBarDisplayItemState *)self addingAnimation];
 
-    if (v6)
+    if (addingAnimation)
     {
-      v7 = [(_UIStatusBarDisplayItemState *)self addingAnimation];
-      [v7 cancel];
+      addingAnimation2 = [(_UIStatusBarDisplayItemState *)self addingAnimation];
+      [addingAnimation2 cancel];
 
       [(_UIStatusBarDisplayItemState *)self setAddingAnimation:0];
     }
 
-    v8 = [(_UIStatusBarDisplayItemState *)self animations];
-    v9 = [v8 count];
+    animations = [(_UIStatusBarDisplayItemState *)self animations];
+    v9 = [animations count];
 
     if (v9)
     {
-      v10 = [(_UIStatusBarDisplayItemState *)self animations];
-      v12 = [v10 copy];
+      animations2 = [(_UIStatusBarDisplayItemState *)self animations];
+      v12 = [animations2 copy];
 
       [v12 makeObjectsPerformSelector:sel_cancel];
-      v11 = [(_UIStatusBarDisplayItemState *)self animations];
-      [v11 removeAllObjects];
+      animations3 = [(_UIStatusBarDisplayItemState *)self animations];
+      [animations3 removeAllObjects];
     }
   }
 
-  else if (v3 == 1)
+  else if (_animationType == 1)
   {
-    v4 = [(_UIStatusBarDisplayItemState *)self removingAnimation];
+    removingAnimation = [(_UIStatusBarDisplayItemState *)self removingAnimation];
 
-    if (v4)
+    if (removingAnimation)
     {
-      v5 = [(_UIStatusBarDisplayItemState *)self removingAnimation];
-      [v5 cancel];
+      removingAnimation2 = [(_UIStatusBarDisplayItemState *)self removingAnimation];
+      [removingAnimation2 cancel];
 
       [(_UIStatusBarDisplayItemState *)self setRemovingAnimation:0];
     }
   }
 }
 
-- (id)_animationWithUpdateAnimation:(id)a3
+- (id)_animationWithUpdateAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   WeakRetained = objc_loadWeakRetained(&self->_statusBar);
-  v6 = [WeakRetained areAnimationsEnabled];
+  areAnimationsEnabled = [WeakRetained areAnimationsEnabled];
 
-  if (!v6)
+  if (!areAnimationsEnabled)
   {
     goto LABEL_7;
   }
 
-  v7 = v4;
+  v7 = animationCopy;
   if (v7)
   {
     goto LABEL_8;
   }
 
-  v8 = [(_UIStatusBarDisplayItemState *)self _animationType];
-  if (v8 != 2)
+  _animationType = [(_UIStatusBarDisplayItemState *)self _animationType];
+  if (_animationType != 2)
   {
-    if (v8 == 1)
+    if (_animationType == 1)
     {
       v9 = objc_loadWeakRetained(&self->_item);
       v7 = [v9 additionAnimationForDisplayItemWithIdentifier:self->_identifier];
 
       v10 = objc_loadWeakRetained(&self->_statusBar);
-      v11 = [v10 visualProvider];
+      visualProvider = [v10 visualProvider];
       v12 = objc_opt_respondsToSelector();
 
       if ((v12 & 1) == 0)
@@ -947,8 +947,8 @@ LABEL_13:
       }
 
       v13 = objc_loadWeakRetained(&self->_statusBar);
-      v14 = [v13 visualProvider];
-      v15 = [v14 additionAnimationForDisplayItemWithIdentifier:self->_identifier itemAnimation:v7];
+      visualProvider2 = [v13 visualProvider];
+      v15 = [visualProvider2 additionAnimationForDisplayItemWithIdentifier:self->_identifier itemAnimation:v7];
       goto LABEL_13;
     }
 
@@ -961,7 +961,7 @@ LABEL_7:
   v7 = [v17 removalAnimationForDisplayItemWithIdentifier:self->_identifier];
 
   v18 = objc_loadWeakRetained(&self->_statusBar);
-  v19 = [v18 visualProvider];
+  visualProvider3 = [v18 visualProvider];
   v20 = objc_opt_respondsToSelector();
 
   if ((v20 & 1) == 0)
@@ -970,8 +970,8 @@ LABEL_7:
   }
 
   v13 = objc_loadWeakRetained(&self->_statusBar);
-  v14 = [v13 visualProvider];
-  v15 = [v14 removalAnimationForDisplayItemWithIdentifier:self->_identifier itemAnimation:v7];
+  visualProvider2 = [v13 visualProvider];
+  v15 = [visualProvider2 removalAnimationForDisplayItemWithIdentifier:self->_identifier itemAnimation:v7];
 LABEL_13:
   v21 = v15;
 
@@ -981,55 +981,55 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)prepareAnimation:(id)a3
+- (BOOL)prepareAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   WeakRetained = objc_loadWeakRetained(&self->_statusBar);
-  v6 = [WeakRetained animationContextId];
+  animationContextId = [WeakRetained animationContextId];
 
-  v7 = [(_UIStatusBarDisplayItemState *)self _animationType];
+  _animationType = [(_UIStatusBarDisplayItemState *)self _animationType];
   v8 = 0;
-  if (v7 > 1)
+  if (_animationType > 1)
   {
-    if (v7 == 2)
+    if (_animationType == 2)
     {
-      [v4 setType:2];
+      [animationCopy setType:2];
       v14 = objc_loadWeakRetained(&self->_item);
       v15 = objc_loadWeakRetained(&self->_displayItem);
-      [v14 prepareAnimation:v4 forDisplayItem:v15];
+      [v14 prepareAnimation:animationCopy forDisplayItem:v15];
 
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __49___UIStatusBarDisplayItemState_prepareAnimation___block_invoke_2;
       v24[3] = &unk_1E7122060;
       v24[4] = self;
-      v25 = v6;
-      [v4 addCompletionHandler:v24];
-      [(_UIStatusBarDisplayItemState *)self setRemovingAnimation:v4];
+      v25 = animationContextId;
+      [animationCopy addCompletionHandler:v24];
+      [(_UIStatusBarDisplayItemState *)self setRemovingAnimation:animationCopy];
     }
 
     else
     {
-      if (v7 != 3)
+      if (_animationType != 3)
       {
         goto LABEL_11;
       }
 
-      [v4 setType:3];
+      [animationCopy setType:3];
       v11 = objc_loadWeakRetained(&self->_item);
       v12 = objc_loadWeakRetained(&self->_displayItem);
-      [v11 prepareAnimation:v4 forDisplayItem:v12];
+      [v11 prepareAnimation:animationCopy forDisplayItem:v12];
 
-      objc_initWeak(&location, v4);
+      objc_initWeak(&location, animationCopy);
       v17 = MEMORY[0x1E69E9820];
       v18 = 3221225472;
       v19 = __49___UIStatusBarDisplayItemState_prepareAnimation___block_invoke_3;
       v20 = &unk_1E711B400;
-      v21 = self;
+      selfCopy = self;
       objc_copyWeak(&v22, &location);
-      [v4 addCompletionHandler:&v17];
+      [animationCopy addCompletionHandler:&v17];
       v13 = [(_UIStatusBarDisplayItemState *)self animations:v17];
-      [v13 addObject:v4];
+      [v13 addObject:animationCopy];
 
       objc_destroyWeak(&v22);
       objc_destroyWeak(&location);
@@ -1039,29 +1039,29 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (v7)
+  if (_animationType)
   {
-    if (v7 == 1)
+    if (_animationType == 1)
     {
       v8 = 1;
-      [v4 setType:1];
+      [animationCopy setType:1];
       v9 = objc_loadWeakRetained(&self->_item);
       v10 = objc_loadWeakRetained(&self->_displayItem);
-      [v9 prepareAnimation:v4 forDisplayItem:v10];
+      [v9 prepareAnimation:animationCopy forDisplayItem:v10];
 
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __49___UIStatusBarDisplayItemState_prepareAnimation___block_invoke;
       v26[3] = &unk_1E70F5DB8;
       v26[4] = self;
-      [v4 addCompletionHandler:v26];
-      [(_UIStatusBarDisplayItemState *)self setAddingAnimation:v4];
+      [animationCopy addCompletionHandler:v26];
+      [(_UIStatusBarDisplayItemState *)self setAddingAnimation:animationCopy];
     }
   }
 
   else
   {
-    [v4 cancel];
+    [animationCopy cancel];
     v8 = 0;
   }
 
@@ -1070,22 +1070,22 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)isCurrentPlacement:(id)a3
+- (BOOL)isCurrentPlacement:(id)placement
 {
-  v4 = a3;
-  v5 = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
-  v6 = [v5 placement];
-  v7 = [v6 priority];
-  v8 = [v4 priority];
+  placementCopy = placement;
+  currentPlacementState = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
+  placement = [currentPlacementState placement];
+  priority = [placement priority];
+  priority2 = [placementCopy priority];
 
-  v9 = v7 == v8 && [(_UIStatusBarDisplayItemState *)self isEnabled];
+  v9 = priority == priority2 && [(_UIStatusBarDisplayItemState *)self isEnabled];
   return v9;
 }
 
 - (NSArray)potentialPlacementRegionIdentifiers
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   placementStates = self->_placementStates;
   v5 = _UIStatusBarGetPriorityComparator();
   v6 = [(NSMutableArray *)placementStates sortedArrayUsingComparator:v5];
@@ -1110,14 +1110,14 @@ LABEL_11:
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 region];
-        v14 = [v13 isEnabled];
+        region = [v12 region];
+        isEnabled = [region isEnabled];
 
-        if (v14)
+        if (isEnabled)
         {
-          v15 = [v12 region];
-          v16 = [v15 identifier];
-          [v3 addObject:v16];
+          region2 = [v12 region];
+          identifier = [region2 identifier];
+          [array addObject:identifier];
         }
       }
 
@@ -1127,7 +1127,7 @@ LABEL_11:
     while (v9);
   }
 
-  return v3;
+  return array;
 }
 
 - (int64_t)priority
@@ -1137,18 +1137,18 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
-  v4 = [v3 priority];
+  currentPlacementState = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
+  priority = [currentPlacementState priority];
 
-  return v4;
+  return priority;
 }
 
 - (id)description
 {
   v16[7] = *MEMORY[0x1E69E9840];
   v15[0] = @"identifier";
-  v3 = [(_UIStatusBarDisplayItemState *)self identifier];
-  v16[0] = v3;
+  identifier = [(_UIStatusBarDisplayItemState *)self identifier];
+  v16[0] = identifier;
   v15[1] = @"enabled";
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_UIStatusBarDisplayItemState isEnabled](self, "isEnabled")}];
   v16[1] = v4;
@@ -1159,12 +1159,12 @@ LABEL_11:
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[_UIStatusBarDisplayItemState visibilityStatus](self, "visibilityStatus")}];
   v16[3] = v6;
   v15[4] = @"currentPlacementState";
-  v7 = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
-  v8 = v7;
+  currentPlacementState = [(_UIStatusBarDisplayItemState *)self currentPlacementState];
+  v8 = currentPlacementState;
   v9 = @"none";
-  if (v7)
+  if (currentPlacementState)
   {
-    v9 = v7;
+    v9 = currentPlacementState;
   }
 
   v16[4] = v9;

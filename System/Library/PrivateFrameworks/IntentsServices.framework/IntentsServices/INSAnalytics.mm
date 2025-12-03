@@ -2,11 +2,11 @@
 + (id)sharedAnalytics;
 - (INSAnalyticsDataSource)dataSource;
 - (id)_init;
-- (id)contextDictionaryForCommand:(id)a3;
-- (id)contextDictionaryForError:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)logEventWithType:(int64_t)a3 context:(id)a4 contextNoCopy:(BOOL)a5;
-- (void)removeObserver:(id)a3;
+- (id)contextDictionaryForCommand:(id)command;
+- (id)contextDictionaryForError:(id)error;
+- (void)addObserver:(id)observer;
+- (void)logEventWithType:(int64_t)type context:(id)context contextNoCopy:(BOOL)copy;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation INSAnalytics
@@ -30,37 +30,37 @@
   return WeakRetained;
 }
 
-- (id)contextDictionaryForError:(id)a3
+- (id)contextDictionaryForError:(id)error
 {
-  v4 = a3;
-  v5 = [(INSAnalytics *)self dataSource];
-  v6 = [v5 analytics:self contextDictionaryForError:v4];
+  errorCopy = error;
+  dataSource = [(INSAnalytics *)self dataSource];
+  v6 = [dataSource analytics:self contextDictionaryForError:errorCopy];
 
   return v6;
 }
 
-- (id)contextDictionaryForCommand:(id)a3
+- (id)contextDictionaryForCommand:(id)command
 {
-  v4 = a3;
-  v5 = [(INSAnalytics *)self dataSource];
-  v6 = [v5 analytics:self contextDictionaryForCommand:v4];
+  commandCopy = command;
+  dataSource = [(INSAnalytics *)self dataSource];
+  v6 = [dataSource analytics:self contextDictionaryForCommand:commandCopy];
 
   return v6;
 }
 
-- (void)logEventWithType:(int64_t)a3 context:(id)a4 contextNoCopy:(BOOL)a5
+- (void)logEventWithType:(int64_t)type context:(id)context contextNoCopy:(BOOL)copy
 {
-  v8 = a4;
+  contextCopy = context;
   observerQueue = self->_observerQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__INSAnalytics_logEventWithType_context_contextNoCopy___block_invoke;
   v11[3] = &unk_2797EA950;
-  v12 = v8;
-  v13 = a3;
+  v12 = contextCopy;
+  typeCopy = type;
   v11[4] = self;
-  v14 = a5;
-  v10 = v8;
+  copyCopy = copy;
+  v10 = contextCopy;
   dispatch_async(observerQueue, v11);
 }
 
@@ -100,17 +100,17 @@ void __55__INSAnalytics_logEventWithType_context_contextNoCopy___block_invoke(ui
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__INSAnalytics_removeObserver___block_invoke;
   v7[3] = &unk_2797EABB0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(observerQueue, v7);
 }
 
@@ -120,17 +120,17 @@ void __31__INSAnalytics_removeObserver___block_invoke(uint64_t a1)
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerQueue = self->_observerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__INSAnalytics_addObserver___block_invoke;
   v7[3] = &unk_2797EABB0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(observerQueue, v7);
 }
 
@@ -147,9 +147,9 @@ void __28__INSAnalytics_addObserver___block_invoke(uint64_t a1)
   v2 = [(INSAnalytics *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] hashTableWithWeakObjects];
+    hashTableWithWeakObjects = [MEMORY[0x277CCAA50] hashTableWithWeakObjects];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = hashTableWithWeakObjects;
 
     v5 = dispatch_queue_create("INSAnalyticsObserversQueue", 0);
     observerQueue = v2->_observerQueue;

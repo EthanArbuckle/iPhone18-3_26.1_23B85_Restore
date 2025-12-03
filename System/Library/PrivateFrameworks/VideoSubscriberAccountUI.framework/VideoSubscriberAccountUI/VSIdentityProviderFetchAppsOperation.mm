@@ -1,13 +1,13 @@
 @interface VSIdentityProviderFetchAppsOperation
-- (VSIdentityProviderFetchAppsOperation)initWithProviderIdentifier:(id)a3 andType:(unint64_t)a4;
+- (VSIdentityProviderFetchAppsOperation)initWithProviderIdentifier:(id)identifier andType:(unint64_t)type;
 - (void)executionDidBegin;
 @end
 
 @implementation VSIdentityProviderFetchAppsOperation
 
-- (VSIdentityProviderFetchAppsOperation)initWithProviderIdentifier:(id)a3 andType:(unint64_t)a4
+- (VSIdentityProviderFetchAppsOperation)initWithProviderIdentifier:(id)identifier andType:(unint64_t)type
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = VSIdentityProviderFetchAppsOperation;
   v8 = [(VSIdentityProviderFetchAppsOperation *)&v17 init];
@@ -17,8 +17,8 @@
     v10 = v8->_result;
     v8->_result = v9;
 
-    objc_storeStrong(&v8->_providerIdentifier, a3);
-    v8->_requestType = a4;
+    objc_storeStrong(&v8->_providerIdentifier, identifier);
+    v8->_requestType = type;
     v11 = MEMORY[0x277CCABD8];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
@@ -32,7 +32,7 @@
 
 - (void)executionDidBegin
 {
-  v3 = [(VSIdentityProviderFetchAppsOperation *)self privateQueue];
+  privateQueue = [(VSIdentityProviderFetchAppsOperation *)self privateQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __57__VSIdentityProviderFetchAppsOperation_executionDidBegin__block_invoke;
@@ -42,21 +42,21 @@
   v5 = objc_alloc_init(MEMORY[0x277CE21A8]);
   [v5 setMethodName:*MEMORY[0x277CE2378]];
   [v5 setRequestType:{-[VSIdentityProviderFetchAppsOperation requestType](self, "requestType")}];
-  v6 = [(VSIdentityProviderFetchAppsOperation *)self providerIdentifier];
-  [v5 setProviderIdentifier:v6];
+  providerIdentifier = [(VSIdentityProviderFetchAppsOperation *)self providerIdentifier];
+  [v5 setProviderIdentifier:providerIdentifier];
 
   v7 = [objc_alloc(MEMORY[0x277CE21B0]) initWithRequest:v5];
-  [v3 addOperation:v7];
+  [privateQueue addOperation:v7];
   v8 = MEMORY[0x277CCA8C8];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __57__VSIdentityProviderFetchAppsOperation_executionDidBegin__block_invoke_2;
   v13[3] = &unk_279E19A90;
   v14 = v7;
-  v15 = self;
+  selfCopy = self;
   v16 = v4;
-  v17 = v3;
-  v9 = v3;
+  v17 = privateQueue;
+  v9 = privateQueue;
   v10 = v4;
   v11 = v7;
   v12 = [v8 blockOperationWithBlock:v13];

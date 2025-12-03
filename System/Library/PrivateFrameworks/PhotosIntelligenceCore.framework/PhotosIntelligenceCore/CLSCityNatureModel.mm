@@ -1,9 +1,9 @@
 @interface CLSCityNatureModel
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3;
-+ (void)enumerateModelsAscending:(BOOL)a3 usingBlock:(id)a4;
-- (CLSCityNatureModel)initWithSceneAnalysisVersion:(unint64_t)a3;
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version;
++ (void)enumerateModelsAscending:(BOOL)ascending usingBlock:(id)block;
+- (CLSCityNatureModel)initWithSceneAnalysisVersion:(unint64_t)version;
 - (id)modelInfo;
-- (id)nodeForSignalIdentifier:(unint64_t)a3;
+- (id)nodeForSignalIdentifier:(unint64_t)identifier;
 - (void)setupVersion82;
 - (void)setupVersion85;
 @end
@@ -35,9 +35,9 @@ void __31__CLSCityNatureModel_modelInfo__block_invoke(uint64_t a1, void *a2)
   [v2 addObject:v3];
 }
 
-- (id)nodeForSignalIdentifier:(unint64_t)a3
+- (id)nodeForSignalIdentifier:(unint64_t)identifier
 {
-  switch(a3)
+  switch(identifier)
   {
     case 0x7FFFF7FF:
       cityNatureishNode = self->_cityNatureishNode;
@@ -52,10 +52,10 @@ LABEL_7:
       goto LABEL_8;
   }
 
-  if ([(CLSCityNatureModel *)self isResponsibleForSignalIdentifier:a3])
+  if ([(CLSCityNatureModel *)self isResponsibleForSignalIdentifier:identifier])
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"City Nature - Unknown (%X)", a3];
-    v5 = [[CLSSignalNode alloc] initWithIdentifier:a3 name:v7 operatingPoint:0.0 highPrecisionOperatingPoint:0.0 highRecallOperatingPoint:0.0];
+    identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"City Nature - Unknown (%X)", identifier];
+    v5 = [[CLSSignalNode alloc] initWithIdentifier:identifier name:identifier operatingPoint:0.0 highPrecisionOperatingPoint:0.0 highRecallOperatingPoint:0.0];
   }
 
   else
@@ -104,7 +104,7 @@ LABEL_8:
   MEMORY[0x2821F96F8]();
 }
 
-- (CLSCityNatureModel)initWithSceneAnalysisVersion:(unint64_t)a3
+- (CLSCityNatureModel)initWithSceneAnalysisVersion:(unint64_t)version
 {
   v14 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -113,15 +113,15 @@ LABEL_8:
   v5 = v4;
   if (v4)
   {
-    if (a3 < 0x55)
+    if (version < 0x55)
     {
-      if (a3 < 0x52)
+      if (version < 0x52)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
           v6 = objc_opt_class();
           *buf = 67109378;
-          v11 = a3;
+          versionCopy = version;
           v12 = 2112;
           v13 = v6;
           _os_log_impl(&dword_25E5F0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unsupported version %d in %@", buf, 0x12u);
@@ -146,13 +146,13 @@ LABEL_8:
   return v5;
 }
 
-+ (void)enumerateModelsAscending:(BOOL)a3 usingBlock:(id)a4
++ (void)enumerateModelsAscending:(BOOL)ascending usingBlock:(id)block
 {
-  v4 = a3;
-  v5 = a4;
+  ascendingCopy = ascending;
+  blockCopy = block;
   v9 = [[CLSCityNatureModel alloc] initWithSceneAnalysisVersion:82];
   v6 = [[CLSCityNatureModel alloc] initWithSceneAnalysisVersion:85];
-  if (v4)
+  if (ascendingCopy)
   {
     v7 = v9;
   }
@@ -162,7 +162,7 @@ LABEL_8:
     v7 = v6;
   }
 
-  if (v4)
+  if (ascendingCopy)
   {
     v8 = v6;
   }
@@ -172,19 +172,19 @@ LABEL_8:
     v8 = v9;
   }
 
-  (v5)[2](v5, v7);
-  (v5)[2](v5, v8);
+  (blockCopy)[2](blockCopy, v7);
+  (blockCopy)[2](blockCopy, v8);
 }
 
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version
 {
   v3 = 82;
-  if (a3 < 0x52)
+  if (version < 0x52)
   {
     v3 = 0;
   }
 
-  if (a3 >= 0x55)
+  if (version >= 0x55)
   {
     return 85;
   }

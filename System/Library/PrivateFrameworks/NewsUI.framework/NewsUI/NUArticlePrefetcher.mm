@@ -1,16 +1,16 @@
 @interface NUArticlePrefetcher
 - (NUArticlePrefetcher)init;
-- (NUArticlePrefetcher)initWithArticleFactory:(id)a3 articleDataProviderFactory:(id)a4;
-- (id)_prefetchDataProviderWithArticleID:(id)a3 completion:(id)a4;
-- (id)keyedOperationQueue:(id)a3 performAsyncOperationForKey:(id)a4 completion:(id)a5;
-- (id)prefetchedArticleDataProviderForArticleID:(id)a3;
+- (NUArticlePrefetcher)initWithArticleFactory:(id)factory articleDataProviderFactory:(id)providerFactory;
+- (id)_prefetchDataProviderWithArticleID:(id)d completion:(id)completion;
+- (id)keyedOperationQueue:(id)queue performAsyncOperationForKey:(id)key completion:(id)completion;
+- (id)prefetchedArticleDataProviderForArticleID:(id)d;
 - (void)_didChangeInterestedArticleIDs;
-- (void)_flushDataProviderIfNeededForHeadline:(id)a3;
+- (void)_flushDataProviderIfNeededForHeadline:(id)headline;
 - (void)_flushUnusedDataProvidersIfNeeded;
 - (void)_reprocessInterestedArticleIDs;
-- (void)addPrefetchInterestInArticleID:(id)a3 headline:(id)a4;
-- (void)prefetchArticleID:(id)a3 headline:(id)a4 completion:(id)a5;
-- (void)removePrefetchInterestInArticleID:(id)a3;
+- (void)addPrefetchInterestInArticleID:(id)d headline:(id)headline;
+- (void)prefetchArticleID:(id)d headline:(id)headline completion:(id)completion;
+- (void)removePrefetchInterestInArticleID:(id)d;
 @end
 
 @implementation NUArticlePrefetcher
@@ -30,18 +30,18 @@ void __45__NUArticlePrefetcher__revisitSuspendedState__block_invoke(uint64_t a1)
   }
 }
 
-- (NUArticlePrefetcher)initWithArticleFactory:(id)a3 articleDataProviderFactory:(id)a4
+- (NUArticlePrefetcher)initWithArticleFactory:(id)factory articleDataProviderFactory:(id)providerFactory
 {
-  v7 = a3;
-  v8 = a4;
+  factoryCopy = factory;
+  providerFactoryCopy = providerFactory;
   v29.receiver = self;
   v29.super_class = NUArticlePrefetcher;
   v9 = [(NUArticlePrefetcher *)&v29 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_articleFactory, a3);
-    objc_storeStrong(&v10->_articleDataProviderFactory, a4);
+    objc_storeStrong(&v9->_articleFactory, factory);
+    objc_storeStrong(&v10->_articleDataProviderFactory, providerFactory);
     v11 = [objc_alloc(MEMORY[0x277D310D0]) initWithDelegate:v10 maxConcurrentOperationCount:1];
     prefetchQueue = v10->_prefetchQueue;
     v10->_prefetchQueue = v11;
@@ -73,8 +73,8 @@ void __45__NUArticlePrefetcher__revisitSuspendedState__block_invoke(uint64_t a1)
     interestModificationDates = v10->_interestModificationDates;
     v10->_interestModificationDates = v25;
 
-    v27 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v27 addObserver:v10 selector:sel__revisitSuspendedState name:*MEMORY[0x277CCA5E8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__revisitSuspendedState name:*MEMORY[0x277CCA5E8] object:0];
 
     [(NUArticlePrefetcher *)v10 _revisitSuspendedState];
   }
@@ -108,27 +108,27 @@ void __45__NUArticlePrefetcher__revisitSuspendedState__block_invoke(uint64_t a1)
   objc_exception_throw(v6);
 }
 
-- (void)addPrefetchInterestInArticleID:(id)a3 headline:(id)a4
+- (void)addPrefetchInterestInArticleID:(id)d headline:(id)headline
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  headlineCopy = headline;
   [MEMORY[0x277CCACC8] isMainThread];
-  v8 = [(NUArticlePrefetcher *)self interestedArticleIDs];
-  v9 = [v8 countForObject:v6];
+  interestedArticleIDs = [(NUArticlePrefetcher *)self interestedArticleIDs];
+  v9 = [interestedArticleIDs countForObject:dCopy];
 
-  v10 = [(NUArticlePrefetcher *)self interestedArticleIDs];
-  [v10 addObject:v6];
+  interestedArticleIDs2 = [(NUArticlePrefetcher *)self interestedArticleIDs];
+  [interestedArticleIDs2 addObject:dCopy];
 
-  v11 = [(NUArticlePrefetcher *)self interestModificationDates];
-  v12 = [MEMORY[0x277CBEAA8] date];
-  [v11 setObject:v12 forKey:v6];
+  interestModificationDates = [(NUArticlePrefetcher *)self interestModificationDates];
+  date = [MEMORY[0x277CBEAA8] date];
+  [interestModificationDates setObject:date forKey:dCopy];
 
-  if (v7)
+  if (headlineCopy)
   {
-    [(NUArticlePrefetcher *)self _flushDataProviderIfNeededForHeadline:v7];
-    v13 = [(NUArticlePrefetcher *)self headlinesForArticles];
-    [v13 setObject:v7 forKey:v6];
+    [(NUArticlePrefetcher *)self _flushDataProviderIfNeededForHeadline:headlineCopy];
+    headlinesForArticles = [(NUArticlePrefetcher *)self headlinesForArticles];
+    [headlinesForArticles setObject:headlineCopy forKey:dCopy];
   }
 
   if (!v9)
@@ -137,7 +137,7 @@ void __45__NUArticlePrefetcher__revisitSuspendedState__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543362;
-      v17 = v6;
+      v17 = dCopy;
       _os_log_impl(&dword_25C2D6000, v14, OS_LOG_TYPE_DEFAULT, "added prefetch interest in article ID %{public}@", &v16, 0xCu);
     }
 
@@ -147,23 +147,23 @@ void __45__NUArticlePrefetcher__revisitSuspendedState__block_invoke(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removePrefetchInterestInArticleID:(id)a3
+- (void)removePrefetchInterestInArticleID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   [MEMORY[0x277CCACC8] isMainThread];
-  v5 = [(NUArticlePrefetcher *)self interestedArticleIDs];
-  v6 = [v5 countForObject:v4];
+  interestedArticleIDs = [(NUArticlePrefetcher *)self interestedArticleIDs];
+  v6 = [interestedArticleIDs countForObject:dCopy];
 
-  v7 = [(NUArticlePrefetcher *)self interestedArticleIDs];
-  [v7 removeObject:v4];
+  interestedArticleIDs2 = [(NUArticlePrefetcher *)self interestedArticleIDs];
+  [interestedArticleIDs2 removeObject:dCopy];
 
-  v8 = [(NUArticlePrefetcher *)self interestModificationDates];
-  v9 = [MEMORY[0x277CBEAA8] date];
-  [v8 setObject:v9 forKey:v4];
+  interestModificationDates = [(NUArticlePrefetcher *)self interestModificationDates];
+  date = [MEMORY[0x277CBEAA8] date];
+  [interestModificationDates setObject:date forKey:dCopy];
 
-  v10 = [(NUArticlePrefetcher *)self headlinesForArticles];
-  [v10 removeObjectForKey:v4];
+  headlinesForArticles = [(NUArticlePrefetcher *)self headlinesForArticles];
+  [headlinesForArticles removeObjectForKey:dCopy];
 
   if (v6 == 1)
   {
@@ -171,7 +171,7 @@ void __45__NUArticlePrefetcher__revisitSuspendedState__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543362;
-      v14 = v4;
+      v14 = dCopy;
       _os_log_impl(&dword_25C2D6000, v11, OS_LOG_TYPE_DEFAULT, "removed prefetch interest in article ID %{public}@", &v13, 0xCu);
     }
 
@@ -181,24 +181,24 @@ void __45__NUArticlePrefetcher__revisitSuspendedState__block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prefetchArticleID:(id)a3 headline:(id)a4 completion:(id)a5
+- (void)prefetchArticleID:(id)d headline:(id)headline completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  completionCopy = completion;
   v10 = MEMORY[0x277CCACC8];
-  v11 = a4;
+  headlineCopy = headline;
   [v10 isMainThread];
-  [(NUArticlePrefetcher *)self addPrefetchInterestInArticleID:v8 headline:v11];
+  [(NUArticlePrefetcher *)self addPrefetchInterestInArticleID:dCopy headline:headlineCopy];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __61__NUArticlePrefetcher_prefetchArticleID_headline_completion___block_invoke;
   v15[3] = &unk_2799A4590;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v12 = v9;
-  v13 = v8;
+  v16 = dCopy;
+  selfCopy = self;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = dCopy;
   v14 = [(NUArticlePrefetcher *)self _prefetchDataProviderWithArticleID:v13 completion:v15];
 }
 
@@ -233,12 +233,12 @@ void __61__NUArticlePrefetcher_prefetchArticleID_headline_completion___block_inv
   [WeakRetained removePrefetchInterestInArticleID:*(a1 + 32)];
 }
 
-- (id)prefetchedArticleDataProviderForArticleID:(id)a3
+- (id)prefetchedArticleDataProviderForArticleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [MEMORY[0x277CCACC8] isMainThread];
-  v5 = [(NUArticlePrefetcher *)self failedArticleIDs];
-  v6 = [v5 containsObject:v4];
+  failedArticleIDs = [(NUArticlePrefetcher *)self failedArticleIDs];
+  v6 = [failedArticleIDs containsObject:dCopy];
 
   if (v6)
   {
@@ -247,8 +247,8 @@ void __61__NUArticlePrefetcher_prefetchArticleID_headline_completion___block_inv
 
   else
   {
-    v8 = [(NUArticlePrefetcher *)self articleDataProviderCache];
-    v7 = [v8 objectForKey:v4];
+    articleDataProviderCache = [(NUArticlePrefetcher *)self articleDataProviderCache];
+    v7 = [articleDataProviderCache objectForKey:dCopy];
   }
 
   return v7;
@@ -257,9 +257,9 @@ void __61__NUArticlePrefetcher_prefetchArticleID_headline_completion___block_inv
 - (void)_didChangeInterestedArticleIDs
 {
   [MEMORY[0x277CCACC8] isMainThread];
-  v3 = [(NUArticlePrefetcher *)self reprocessTimer];
+  reprocessTimer = [(NUArticlePrefetcher *)self reprocessTimer];
 
-  if (!v3)
+  if (!reprocessTimer)
   {
     v4 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__reprocessInterestedArticleIDs selector:0 userInfo:0 repeats:0.01];
     [(NUArticlePrefetcher *)self setReprocessTimer:v4];
@@ -269,55 +269,55 @@ void __61__NUArticlePrefetcher_prefetchArticleID_headline_completion___block_inv
 - (void)_reprocessInterestedArticleIDs
 {
   [MEMORY[0x277CCACC8] isMainThread];
-  v3 = [(NUArticlePrefetcher *)self highWaterMark];
-  v4 = [(NUArticlePrefetcher *)self interestedArticleIDs];
-  v5 = [v4 count];
+  highWaterMark = [(NUArticlePrefetcher *)self highWaterMark];
+  interestedArticleIDs = [(NUArticlePrefetcher *)self interestedArticleIDs];
+  v5 = [interestedArticleIDs count];
 
-  if (v3 <= v5)
+  if (highWaterMark <= v5)
   {
     v6 = v5;
   }
 
   else
   {
-    v6 = v3;
+    v6 = highWaterMark;
   }
 
   [(NUArticlePrefetcher *)self setHighWaterMark:v6];
   v7 = MEMORY[0x277CBEB70];
-  v8 = [(NUArticlePrefetcher *)self interestedArticleIDs];
-  v9 = [v8 allObjects];
-  v10 = [v7 orderedSetWithArray:v9];
-  v11 = [(NUArticlePrefetcher *)self prefetchQueue];
-  [v11 setKeyQueue:v10];
+  interestedArticleIDs2 = [(NUArticlePrefetcher *)self interestedArticleIDs];
+  allObjects = [interestedArticleIDs2 allObjects];
+  v10 = [v7 orderedSetWithArray:allObjects];
+  prefetchQueue = [(NUArticlePrefetcher *)self prefetchQueue];
+  [prefetchQueue setKeyQueue:v10];
 
-  v12 = [(NUArticlePrefetcher *)self reprocessTimer];
-  [v12 invalidate];
+  reprocessTimer = [(NUArticlePrefetcher *)self reprocessTimer];
+  [reprocessTimer invalidate];
 
   [(NUArticlePrefetcher *)self setReprocessTimer:0];
 }
 
-- (id)keyedOperationQueue:(id)a3 performAsyncOperationForKey:(id)a4 completion:(id)a5
+- (id)keyedOperationQueue:(id)queue performAsyncOperationForKey:(id)key completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v8 = MEMORY[0x277CCACC8];
-  v9 = a4;
+  keyCopy = key;
   [v8 isMainThread];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __82__NUArticlePrefetcher_keyedOperationQueue_performAsyncOperationForKey_completion___block_invoke;
   v13[3] = &unk_2799A45B8;
-  v14 = v7;
-  v10 = v7;
-  v11 = [(NUArticlePrefetcher *)self _prefetchDataProviderWithArticleID:v9 completion:v13];
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = [(NUArticlePrefetcher *)self _prefetchDataProviderWithArticleID:keyCopy completion:v13];
 
   return v11;
 }
 
-- (id)_prefetchDataProviderWithArticleID:(id)a3 completion:(id)a4
+- (id)_prefetchDataProviderWithArticleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   [MEMORY[0x277CCACC8] isMainThread];
   v8 = [objc_alloc(MEMORY[0x277D311A0]) initWithOptions:1];
   v39[0] = 0;
@@ -328,16 +328,16 @@ void __61__NUArticlePrefetcher_prefetchArticleID_headline_completion___block_inv
   v34[1] = 3221225472;
   v34[2] = __69__NUArticlePrefetcher__prefetchDataProviderWithArticleID_completion___block_invoke;
   v34[3] = &unk_2799A4608;
-  v9 = v6;
+  v9 = dCopy;
   v35 = v9;
   v10 = v8;
   v36 = v10;
-  v11 = v7;
-  v37 = self;
+  v11 = completionCopy;
+  selfCopy = self;
   v38 = v11;
   v12 = MEMORY[0x25F883F30](v34);
-  v13 = [(NUArticlePrefetcher *)self articleDataProviderCache];
-  v14 = [v13 objectForKey:v9];
+  articleDataProviderCache = [(NUArticlePrefetcher *)self articleDataProviderCache];
+  v14 = [articleDataProviderCache objectForKey:v9];
 
   if (v14)
   {
@@ -346,21 +346,21 @@ void __61__NUArticlePrefetcher_prefetchArticleID_headline_completion___block_inv
 
   else
   {
-    v15 = [(NUArticlePrefetcher *)self headlinesForArticles];
-    v16 = [v15 objectForKeyedSubscript:v9];
+    headlinesForArticles = [(NUArticlePrefetcher *)self headlinesForArticles];
+    v16 = [headlinesForArticles objectForKeyedSubscript:v9];
 
-    v17 = [(NUArticlePrefetcher *)self workQueue];
+    workQueue = [(NUArticlePrefetcher *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __69__NUArticlePrefetcher__prefetchDataProviderWithArticleID_completion___block_invoke_3;
     block[3] = &unk_2799A4658;
     v29 = v16;
-    v30 = self;
+    selfCopy2 = self;
     v31 = v9;
     v33 = v39;
     v32 = v12;
     v18 = v16;
-    dispatch_async(v17, block);
+    dispatch_async(workQueue, block);
   }
 
   v19 = MEMORY[0x277D30EA8];
@@ -543,31 +543,31 @@ void __69__NUArticlePrefetcher__prefetchDataProviderWithArticleID_completion___b
   (*(v1 + 16))(v1, 0, 1, v2);
 }
 
-- (void)_flushDataProviderIfNeededForHeadline:(id)a3
+- (void)_flushDataProviderIfNeededForHeadline:(id)headline
 {
-  v14 = a3;
+  headlineCopy = headline;
   [MEMORY[0x277CCACC8] isMainThread];
-  v4 = [(NUArticlePrefetcher *)self articleDataProviderCache];
-  v5 = [v14 identifier];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  articleDataProviderCache = [(NUArticlePrefetcher *)self articleDataProviderCache];
+  identifier = [headlineCopy identifier];
+  v6 = [articleDataProviderCache objectForKeyedSubscript:identifier];
 
   if (v6)
   {
     v7 = v6;
-    if (([v14 isDisplayingAsNativeAd] & 1) == 0)
+    if (([headlineCopy isDisplayingAsNativeAd] & 1) == 0)
     {
-      v8 = [v7 article];
-      v9 = [v8 headline];
+      article = [v7 article];
+      headline = [article headline];
 
-      if (v9 != v14)
+      if (headline != headlineCopy)
       {
-        v10 = [(NUArticlePrefetcher *)self articleDataProviderCache];
-        v11 = [v14 identifier];
-        [v10 removeObjectForKey:v11];
+        articleDataProviderCache2 = [(NUArticlePrefetcher *)self articleDataProviderCache];
+        identifier2 = [headlineCopy identifier];
+        [articleDataProviderCache2 removeObjectForKey:identifier2];
 
-        v12 = [(NUArticlePrefetcher *)self failedArticleIDs];
-        v13 = [v14 identifier];
-        [v12 removeObject:v13];
+        failedArticleIDs = [(NUArticlePrefetcher *)self failedArticleIDs];
+        identifier3 = [headlineCopy identifier];
+        [failedArticleIDs removeObject:identifier3];
       }
     }
   }
@@ -577,19 +577,19 @@ void __69__NUArticlePrefetcher__prefetchDataProviderWithArticleID_completion___b
 {
   v28 = *MEMORY[0x277D85DE8];
   [MEMORY[0x277CCACC8] isMainThread];
-  v3 = [(NUArticlePrefetcher *)self articleDataProviderCache];
-  v4 = [v3 count];
-  v5 = [(NUArticlePrefetcher *)self highWaterMark];
+  articleDataProviderCache = [(NUArticlePrefetcher *)self articleDataProviderCache];
+  v4 = [articleDataProviderCache count];
+  highWaterMark = [(NUArticlePrefetcher *)self highWaterMark];
 
-  if (v4 > v5)
+  if (v4 > highWaterMark)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v7 = [(NUArticlePrefetcher *)self articleDataProviderCache];
-    v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    articleDataProviderCache2 = [(NUArticlePrefetcher *)self articleDataProviderCache];
+    v8 = [articleDataProviderCache2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v8)
     {
       v9 = v8;
@@ -601,23 +601,23 @@ void __69__NUArticlePrefetcher__prefetchDataProviderWithArticleID_completion___b
         {
           if (*v24 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(articleDataProviderCache2);
           }
 
           v12 = *(*(&v23 + 1) + 8 * v11);
-          v13 = [(NUArticlePrefetcher *)self interestedArticleIDs];
-          v14 = [v13 countForObject:v12];
+          interestedArticleIDs = [(NUArticlePrefetcher *)self interestedArticleIDs];
+          v14 = [interestedArticleIDs countForObject:v12];
 
           if (!v14)
           {
-            [v6 addObject:v12];
+            [array addObject:v12];
           }
 
           ++v11;
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v9 = [articleDataProviderCache2 countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v9);
@@ -628,24 +628,24 @@ void __69__NUArticlePrefetcher__prefetchDataProviderWithArticleID_completion___b
     v22[2] = __56__NUArticlePrefetcher__flushUnusedDataProvidersIfNeeded__block_invoke;
     v22[3] = &unk_2799A4680;
     v22[4] = self;
-    [v6 sortUsingComparator:v22];
-    while ([v6 count])
+    [array sortUsingComparator:v22];
+    while ([array count])
     {
-      v15 = [(NUArticlePrefetcher *)self articleDataProviderCache];
-      v16 = [v15 count];
-      v17 = [(NUArticlePrefetcher *)self highWaterMark];
+      articleDataProviderCache3 = [(NUArticlePrefetcher *)self articleDataProviderCache];
+      v16 = [articleDataProviderCache3 count];
+      highWaterMark2 = [(NUArticlePrefetcher *)self highWaterMark];
 
-      if (v16 <= v17)
+      if (v16 <= highWaterMark2)
       {
         break;
       }
 
-      v18 = [v6 fc_popFirstObject];
-      v19 = [(NUArticlePrefetcher *)self articleDataProviderCache];
-      [v19 removeObjectForKey:v18];
+      fc_popFirstObject = [array fc_popFirstObject];
+      articleDataProviderCache4 = [(NUArticlePrefetcher *)self articleDataProviderCache];
+      [articleDataProviderCache4 removeObjectForKey:fc_popFirstObject];
 
-      v20 = [(NUArticlePrefetcher *)self failedArticleIDs];
-      [v20 removeObject:v18];
+      failedArticleIDs = [(NUArticlePrefetcher *)self failedArticleIDs];
+      [failedArticleIDs removeObject:fc_popFirstObject];
     }
   }
 

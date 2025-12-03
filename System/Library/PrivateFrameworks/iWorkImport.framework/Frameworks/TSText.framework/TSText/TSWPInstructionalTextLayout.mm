@@ -1,23 +1,23 @@
 @interface TSWPInstructionalTextLayout
-- (TSWPInstructionalTextLayout)initWithInfo:(id)a3 storage:(id)a4 frame:(CGRect)a5;
+- (TSWPInstructionalTextLayout)initWithInfo:(id)info storage:(id)storage frame:(CGRect)frame;
 @end
 
 @implementation TSWPInstructionalTextLayout
 
-- (TSWPInstructionalTextLayout)initWithInfo:(id)a3 storage:(id)a4 frame:(CGRect)a5
+- (TSWPInstructionalTextLayout)initWithInfo:(id)info storage:(id)storage frame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  storageCopy = storage;
   v16.receiver = self;
   v16.super_class = TSWPInstructionalTextLayout;
-  v13 = [(TSWPLayout *)&v16 initWithInfo:a3 frame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(TSWPLayout *)&v16 initWithInfo:info frame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    objc_storeStrong(&v13->super._storage, a4);
+    objc_storeStrong(&height->super._storage, storage);
   }
 
   return v14;

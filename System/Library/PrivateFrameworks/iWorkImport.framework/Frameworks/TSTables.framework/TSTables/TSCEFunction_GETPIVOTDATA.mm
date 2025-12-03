@@ -1,20 +1,20 @@
 @interface TSCEFunction_GETPIVOTDATA
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_GETPIVOTDATA
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = objc_msgSend_calcEngine(a3, a2, a3, a4, a5);
-  v9 = *(*a5 + 8);
+  v8 = objc_msgSend_calcEngine(context, a2, context, spec, arguments);
+  v9 = *(*arguments + 8);
   if (!objc_msgSend_isReferenceValue(v9, v10, v11, v12, v13))
   {
     v26 = 0;
 LABEL_11:
-    v110 = objc_msgSend_functionName(a4, v14, v15, v16, v17);
+    v110 = objc_msgSend_functionName(spec, v14, v15, v16, v17);
     v111 = objc_msgSend_missingPivotTableErrorForFunctionName_argumentNumber_(TSCEError, v39, v110, 2, v40);
-    v44 = objc_msgSend_raiseErrorOrConvert_(a3, v41, v111, v42, v43);
+    v44 = objc_msgSend_raiseErrorOrConvert_(context, v41, v111, v42, v43);
 LABEL_12:
     v45 = v44;
     v46 = 0;
@@ -33,14 +33,14 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  v27 = *(a5 + 1) - *a5;
+  v27 = *(arguments + 1) - *arguments;
   v28 = v27 >> 3;
   if ((v27 >> 3) >= 3)
   {
     v29 = (v27 >> 3) & 0x7FFFFFFF;
     while (1)
     {
-      v30 = *(*a5 + 8 * v29 - 8);
+      v30 = *(*arguments + 8 * v29 - 8);
       if ((objc_msgSend_isNil(v30, v31, v32, v33, v34) & 1) == 0 && (objc_msgSend_isTokenOrEmptyArg(v30, v35, v36, v37, v38) & 1) == 0)
       {
         break;
@@ -60,21 +60,21 @@ LABEL_18:
 
   if (v28)
   {
-    v110 = objc_msgSend_functionName(a4, v14, v15, v16, v17);
+    v110 = objc_msgSend_functionName(spec, v14, v15, v16, v17);
     v111 = objc_msgSend_invalidArgumentPairingsErrorForFunctionName_hasInitialUnrelatedArgument_(TSCEError, v55, v110, 0, v56);
-    v44 = objc_msgSend_raiseErrorOrConvert_(a3, v57, v111, v58, v59);
+    v44 = objc_msgSend_raiseErrorOrConvert_(context, v57, v111, v58, v59);
     goto LABEL_12;
   }
 
-  v49 = **a5;
+  v49 = **arguments;
   v113 = 0;
   v110 = v49;
-  v111 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v49, v50, a3, a4, 0, &v113);
+  v111 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v49, v50, context, spec, 0, &v113);
   v51 = v113;
   if (v51)
   {
     v46 = v51;
-    v45 = objc_msgSend_raiseErrorOrConvert_(a3, v52, v51, v53, v54);
+    v45 = objc_msgSend_raiseErrorOrConvert_(context, v52, v51, v53, v54);
     goto LABEL_13;
   }
 
@@ -87,14 +87,14 @@ LABEL_18:
   {
 LABEL_29:
     v26 = v105;
-    v47 = objc_msgSend_solveGetPivotData_functionSpec_context_(v105, v63, v109, a4, a3);
+    v47 = objc_msgSend_solveGetPivotData_functionSpec_context_(v105, v63, v109, spec, context);
     v9 = v106;
     v8 = v107;
     if (objc_msgSend_isError(v47, v84, v85, v86, v87) && (MissingDataField = objc_msgSend_firstMissingDataField(v109, v88, v89, v90, v91), v97 = MissingDataField, MissingDataField != 0x7FFFFFFFFFFFFFFFLL))
     {
-      v98 = objc_msgSend_functionName(a4, v93, v94, v95, v96);
+      v98 = objc_msgSend_functionName(spec, v93, v94, v95, v96);
       v101 = objc_msgSend_invalidGroupingColumnErrorForFunctionName_argumentNumber_(TSCEError, v99, v98, (2 * v97 + 3), v100);
-      v45 = objc_msgSend_raiseErrorOrConvert_(a3, v102, v101, v103, v104);
+      v45 = objc_msgSend_raiseErrorOrConvert_(context, v102, v101, v103, v104);
 
       v46 = 0;
     }
@@ -113,20 +113,20 @@ LABEL_29:
     v108 = 2 * (v28 >> 1) - 2;
     while (1)
     {
-      v65 = *(*a5 + 8 * v64 + 16);
+      v65 = *(*arguments + 8 * v64 + 16);
       v112 = 0;
-      v67 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v65, v66, a3, a4, (v64 + 2), &v112);
+      v67 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v65, v66, context, spec, (v64 + 2), &v112);
       v46 = v112;
       if (v46)
       {
         break;
       }
 
-      v71 = *(*a5 + 8 * v64 + 24);
+      v71 = *(*arguments + 8 * v64 + 24);
       if (objc_msgSend_isReferenceValue(v71, v72, v73, v74, v75))
       {
         v80 = objc_msgSend_asReferenceValue(v71, v76, v77, v78, v79);
-        v83 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(v80, v81, a3, 0, v82);
+        v83 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(v80, v81, context, 0, v82);
 
         v71 = v83;
       }
@@ -140,7 +140,7 @@ LABEL_29:
       }
     }
 
-    v45 = objc_msgSend_raiseErrorOrConvert_(a3, v68, v46, v69, v70);
+    v45 = objc_msgSend_raiseErrorOrConvert_(context, v68, v46, v69, v70);
 
     v47 = 0;
     v9 = v106;

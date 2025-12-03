@@ -1,33 +1,33 @@
 @interface SwappableViewControllerImplementationFactory
-+ (id)calendarChooserImplWithRemoteUI:(BOOL)a3 selectionStyle:(int64_t)a4 displayStyle:(int64_t)a5 entityType:(unint64_t)a6 forEvent:(id)a7 eventStore:(id)a8 limitedToSource:(id)a9 showIdentityChooser:(BOOL)a10 showDelegateSetupCell:(BOOL)a11 showAccountStatus:(BOOL)a12;
-+ (id)calendarChooserImplWithSelectionStyle:(int64_t)a3 displayStyle:(int64_t)a4 entityType:(unint64_t)a5 forEvent:(id)a6 eventStore:(id)a7 limitedToSource:(id)a8 showIdentityChooser:(BOOL)a9 showDelegateSetupCell:(BOOL)a10 showAccountStatus:(BOOL)a11;
++ (id)calendarChooserImplWithRemoteUI:(BOOL)i selectionStyle:(int64_t)style displayStyle:(int64_t)displayStyle entityType:(unint64_t)type forEvent:(id)event eventStore:(id)store limitedToSource:(id)source showIdentityChooser:(BOOL)self0 showDelegateSetupCell:(BOOL)self1 showAccountStatus:(BOOL)self2;
++ (id)calendarChooserImplWithSelectionStyle:(int64_t)style displayStyle:(int64_t)displayStyle entityType:(unint64_t)type forEvent:(id)event eventStore:(id)store limitedToSource:(id)source showIdentityChooser:(BOOL)chooser showDelegateSetupCell:(BOOL)self0 showAccountStatus:(BOOL)self1;
 + (id)eventEditViewControllerImpl;
-+ (id)eventEditViewControllerImplWithRemoteUI:(BOOL)a3;
-+ (id)eventViewControllerImplAndIsReminder:(BOOL)a3;
-+ (id)eventViewControllerImplWithRemoteUI:(BOOL)a3 isReminder:(BOOL)a4;
++ (id)eventEditViewControllerImplWithRemoteUI:(BOOL)i;
++ (id)eventViewControllerImplAndIsReminder:(BOOL)reminder;
++ (id)eventViewControllerImplWithRemoteUI:(BOOL)i isReminder:(BOOL)reminder;
 + (id)proposedTimeEventViewControllerImpl;
 @end
 
 @implementation SwappableViewControllerImplementationFactory
 
-+ (id)eventViewControllerImplAndIsReminder:(BOOL)a3
++ (id)eventViewControllerImplAndIsReminder:(BOOL)reminder
 {
-  v3 = a3;
-  v5 = [a1 shouldUseOutOfProcessUI];
+  reminderCopy = reminder;
+  shouldUseOutOfProcessUI = [self shouldUseOutOfProcessUI];
 
-  return [a1 eventViewControllerImplWithRemoteUI:v5 isReminder:v3];
+  return [self eventViewControllerImplWithRemoteUI:shouldUseOutOfProcessUI isReminder:reminderCopy];
 }
 
-+ (id)eventViewControllerImplWithRemoteUI:(BOOL)a3 isReminder:(BOOL)a4
++ (id)eventViewControllerImplWithRemoteUI:(BOOL)i isReminder:(BOOL)reminder
 {
-  if (a3)
+  if (i)
   {
     v4 = EKEventViewControllerOOPWrapperImpl;
   }
 
   else
   {
-    if ([a1 modernDetails] && !a4)
+    if ([self modernDetails] && !reminder)
     {
       v6 = [[EKEventEditViewControllerModernImpl alloc] initForEditing:0];
       goto LABEL_8;
@@ -44,21 +44,21 @@ LABEL_8:
 
 + (id)eventEditViewControllerImpl
 {
-  v3 = [a1 shouldUseOutOfProcessUI];
+  shouldUseOutOfProcessUI = [self shouldUseOutOfProcessUI];
 
-  return [a1 eventEditViewControllerImplWithRemoteUI:v3];
+  return [self eventEditViewControllerImplWithRemoteUI:shouldUseOutOfProcessUI];
 }
 
-+ (id)eventEditViewControllerImplWithRemoteUI:(BOOL)a3
++ (id)eventEditViewControllerImplWithRemoteUI:(BOOL)i
 {
-  if (a3)
+  if (i)
   {
     v3 = EKEventEditViewControllerOOPWrapperImpl;
   }
 
   else
   {
-    if ([a1 modernEditor])
+    if ([self modernEditor])
     {
       v4 = [[EKEventEditViewControllerModernImpl alloc] initForEditing:1];
       goto LABEL_7;
@@ -73,33 +73,33 @@ LABEL_7:
   return v4;
 }
 
-+ (id)calendarChooserImplWithSelectionStyle:(int64_t)a3 displayStyle:(int64_t)a4 entityType:(unint64_t)a5 forEvent:(id)a6 eventStore:(id)a7 limitedToSource:(id)a8 showIdentityChooser:(BOOL)a9 showDelegateSetupCell:(BOOL)a10 showAccountStatus:(BOOL)a11
++ (id)calendarChooserImplWithSelectionStyle:(int64_t)style displayStyle:(int64_t)displayStyle entityType:(unint64_t)type forEvent:(id)event eventStore:(id)store limitedToSource:(id)source showIdentityChooser:(BOOL)chooser showDelegateSetupCell:(BOOL)self0 showAccountStatus:(BOOL)self1
 {
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  BYTE2(v22) = a11;
-  LOWORD(v22) = __PAIR16__(a10, a9);
-  v20 = [a1 calendarChooserImplWithRemoteUI:objc_msgSend(a1 selectionStyle:"shouldUseOutOfProcessUI") displayStyle:a3 entityType:a4 forEvent:a5 eventStore:v19 limitedToSource:v18 showIdentityChooser:v17 showDelegateSetupCell:v22 showAccountStatus:?];
+  sourceCopy = source;
+  storeCopy = store;
+  eventCopy = event;
+  BYTE2(v22) = status;
+  LOWORD(v22) = __PAIR16__(cell, chooser);
+  v20 = [self calendarChooserImplWithRemoteUI:objc_msgSend(self selectionStyle:"shouldUseOutOfProcessUI") displayStyle:style entityType:displayStyle forEvent:type eventStore:eventCopy limitedToSource:storeCopy showIdentityChooser:sourceCopy showDelegateSetupCell:v22 showAccountStatus:?];
 
   return v20;
 }
 
-+ (id)calendarChooserImplWithRemoteUI:(BOOL)a3 selectionStyle:(int64_t)a4 displayStyle:(int64_t)a5 entityType:(unint64_t)a6 forEvent:(id)a7 eventStore:(id)a8 limitedToSource:(id)a9 showIdentityChooser:(BOOL)a10 showDelegateSetupCell:(BOOL)a11 showAccountStatus:(BOOL)a12
++ (id)calendarChooserImplWithRemoteUI:(BOOL)i selectionStyle:(int64_t)style displayStyle:(int64_t)displayStyle entityType:(unint64_t)type forEvent:(id)event eventStore:(id)store limitedToSource:(id)source showIdentityChooser:(BOOL)self0 showDelegateSetupCell:(BOOL)self1 showAccountStatus:(BOOL)self2
 {
   v17 = off_1E843D2C8;
-  if (!a3)
+  if (!i)
   {
     v17 = off_1E843D2C0;
   }
 
   v18 = *v17;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  BYTE2(v24) = a12;
-  LOWORD(v24) = __PAIR16__(a11, a10);
-  v22 = [[v18 alloc] initWithSelectionStyle:a4 displayStyle:a5 entityType:a6 forEvent:v21 eventStore:v20 limitedToSource:v19 showIdentityChooser:v24 showDelegateSetupCell:? showAccountStatus:?];
+  sourceCopy = source;
+  storeCopy = store;
+  eventCopy = event;
+  BYTE2(v24) = status;
+  LOWORD(v24) = __PAIR16__(cell, chooser);
+  v22 = [[v18 alloc] initWithSelectionStyle:style displayStyle:displayStyle entityType:type forEvent:eventCopy eventStore:storeCopy limitedToSource:sourceCopy showIdentityChooser:v24 showDelegateSetupCell:? showAccountStatus:?];
 
   return v22;
 }

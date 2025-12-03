@@ -1,10 +1,10 @@
 @interface PUPhotoEditDiagnosticsManager
-+ (PUPhotoEditDiagnosticsManager)diagnosticsManagerWithActionType:(int64_t)a3 delegate:(id)a4;
++ (PUPhotoEditDiagnosticsManager)diagnosticsManagerWithActionType:(int64_t)type delegate:(id)delegate;
 - (PUPhotoEditDiagnosticsDelegate)delegate;
-- (PUPhotoEditDiagnosticsManager)initWithActionType:(int64_t)a3 delegate:(id)a4;
-- (void)_diagnosticsTimerFired:(id)a3;
-- (void)_fileRadarWithTailspinFile:(id)a3;
-- (void)beginMonitoringForTimeInterval:(double)a3;
+- (PUPhotoEditDiagnosticsManager)initWithActionType:(int64_t)type delegate:(id)delegate;
+- (void)_diagnosticsTimerFired:(id)fired;
+- (void)_fileRadarWithTailspinFile:(id)file;
+- (void)beginMonitoringForTimeInterval:(double)interval;
 - (void)dealloc;
 - (void)endMonitoring;
 @end
@@ -20,30 +20,30 @@
 
 - (void)endMonitoring
 {
-  v3 = [(PUPhotoEditDiagnosticsManager *)self diagnosticsTimer];
-  [v3 invalidate];
+  diagnosticsTimer = [(PUPhotoEditDiagnosticsManager *)self diagnosticsTimer];
+  [diagnosticsTimer invalidate];
 
   [(PUPhotoEditDiagnosticsManager *)self setDiagnosticsTimer:0];
 
   [(PUPhotoEditDiagnosticsManager *)self setTailspinManager:0];
 }
 
-- (void)_fileRadarWithTailspinFile:(id)a3
+- (void)_fileRadarWithTailspinFile:(id)file
 {
-  v4 = a3;
-  v5 = [(PUPhotoEditDiagnosticsManager *)self delegate];
-  [v5 fileRadarAndAttachFile:v4];
+  fileCopy = file;
+  delegate = [(PUPhotoEditDiagnosticsManager *)self delegate];
+  [delegate fileRadarAndAttachFile:fileCopy];
 }
 
-- (void)_diagnosticsTimerFired:(id)a3
+- (void)_diagnosticsTimerFired:(id)fired
 {
-  v4 = [(PUPhotoEditDiagnosticsManager *)self tailspinManager];
+  tailspinManager = [(PUPhotoEditDiagnosticsManager *)self tailspinManager];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __56__PUPhotoEditDiagnosticsManager__diagnosticsTimerFired___block_invoke;
   v5[3] = &unk_1E7B7E170;
   v5[4] = self;
-  [v4 dumpTailspinOutputWithCompletion:v5];
+  [tailspinManager dumpTailspinOutputWithCompletion:v5];
 }
 
 void __56__PUPhotoEditDiagnosticsManager__diagnosticsTimerFired___block_invoke(uint64_t a1, void *a2)
@@ -119,7 +119,7 @@ void __56__PUPhotoEditDiagnosticsManager__diagnosticsTimerFired___block_invoke_4
   [v1 diagnosticsAlertDismissed];
 }
 
-- (void)beginMonitoringForTimeInterval:(double)a3
+- (void)beginMonitoringForTimeInterval:(double)interval
 {
   if (PFOSVariantHasInternalUI())
   {
@@ -131,7 +131,7 @@ void __56__PUPhotoEditDiagnosticsManager__diagnosticsTimerFired___block_invoke_4
     v5 = objc_alloc_init(MEMORY[0x1E69C4328]);
     [(PUPhotoEditDiagnosticsManager *)self setTailspinManager:v5];
 
-    v7 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__diagnosticsTimerFired_ selector:0 userInfo:0 repeats:a3];
+    v7 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__diagnosticsTimerFired_ selector:0 userInfo:0 repeats:interval];
     [(PUPhotoEditDiagnosticsManager *)self setDiagnosticsTimer:v7];
   }
 
@@ -154,22 +154,22 @@ void __56__PUPhotoEditDiagnosticsManager__diagnosticsTimerFired___block_invoke_4
   [(PUPhotoEditDiagnosticsManager *)&v3 dealloc];
 }
 
-- (PUPhotoEditDiagnosticsManager)initWithActionType:(int64_t)a3 delegate:(id)a4
+- (PUPhotoEditDiagnosticsManager)initWithActionType:(int64_t)type delegate:(id)delegate
 {
   v8.receiver = self;
   v8.super_class = PUPhotoEditDiagnosticsManager;
-  v5 = a4;
+  delegateCopy = delegate;
   v6 = [(PUPhotoEditDiagnosticsManager *)&v8 init];
-  [(PUPhotoEditDiagnosticsManager *)v6 setActionType:a3, v8.receiver, v8.super_class];
-  [(PUPhotoEditDiagnosticsManager *)v6 setDelegate:v5];
+  [(PUPhotoEditDiagnosticsManager *)v6 setActionType:type, v8.receiver, v8.super_class];
+  [(PUPhotoEditDiagnosticsManager *)v6 setDelegate:delegateCopy];
 
   return v6;
 }
 
-+ (PUPhotoEditDiagnosticsManager)diagnosticsManagerWithActionType:(int64_t)a3 delegate:(id)a4
++ (PUPhotoEditDiagnosticsManager)diagnosticsManagerWithActionType:(int64_t)type delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithActionType:a3 delegate:v6];
+  delegateCopy = delegate;
+  v7 = [[self alloc] initWithActionType:type delegate:delegateCopy];
 
   return v7;
 }

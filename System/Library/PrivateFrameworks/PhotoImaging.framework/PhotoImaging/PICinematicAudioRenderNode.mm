@@ -1,19 +1,19 @@
 @interface PICinematicAudioRenderNode
 - (BOOL)shouldInvalidateCachedAudioMix;
-- (PICinematicAudioRenderNode)initWithInput:(id)a3 dialogMixBias:(double)a4 renderingStyle:(id)a5;
-- (id)_evaluateAudioMix:(id *)a3;
-- (id)_evaluateVideo:(id *)a3;
-- (id)_evaluateVideoComposition:(id *)a3;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (PICinematicAudioRenderNode)initWithInput:(id)input dialogMixBias:(double)bias renderingStyle:(id)style;
+- (id)_evaluateAudioMix:(id *)mix;
+- (id)_evaluateVideo:(id *)video;
+- (id)_evaluateVideoComposition:(id *)composition;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation PICinematicAudioRenderNode
 
-- (id)_evaluateAudioMix:(id *)a3
+- (id)_evaluateAudioMix:(id *)mix
 {
   v61 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!mix)
   {
     v28 = NUAssertLogger_21731();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -35,8 +35,8 @@
         v36 = dispatch_get_specific(*v30);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v37 callStackSymbols];
+        v40 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v36;
         *&buf[12] = 2114;
@@ -47,8 +47,8 @@
 
     else if (v33)
     {
-      v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v35 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v35;
       _os_log_error_impl(&dword_1C7694000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -59,24 +59,24 @@
   }
 
   v5 = [(NURenderNode *)self inputForKey:*MEMORY[0x1E695FAB0]];
-  v6 = [v5 outputVideo:a3];
+  v6 = [v5 outputVideo:mix];
   if (!v6)
   {
     v15 = 0;
     goto LABEL_21;
   }
 
-  v7 = [v5 videoProperties:a3];
+  v7 = [v5 videoProperties:mix];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 cinematicAudioMixInputParameters];
-    v10 = [v9 mutableCopy];
+    cinematicAudioMixInputParameters = [v7 cinematicAudioMixInputParameters];
+    v10 = [cinematicAudioMixInputParameters mutableCopy];
 
     if (!v10)
     {
       [MEMORY[0x1E69B3A48] missingError:@"Missing cinematic audio mix input parameters" object:v8];
-      *a3 = v15 = 0;
+      *mix = v15 = 0;
 LABEL_19:
 
       goto LABEL_20;
@@ -93,7 +93,7 @@ LABEL_19:
     *buf = v54;
     *&buf[16] = v12;
     [v10 setRenderingStyle:buf atTime:v13];
-    v14 = [v5 outputAudioMix:a3];
+    v14 = [v5 outputAudioMix:mix];
     v15 = [v14 mutableCopy];
     if (!v14)
     {
@@ -105,19 +105,19 @@ LABEL_19:
       v16 = *MEMORY[0x1E69B3D80];
       if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_INFO))
       {
-        v17 = *a3;
+        v17 = *mix;
         *buf = 138412290;
         *&buf[4] = v17;
         _os_log_impl(&dword_1C7694000, v16, OS_LOG_TYPE_INFO, "Input has no audio mix (%@), creating a new one..", buf, 0xCu);
       }
 
-      v18 = [MEMORY[0x1E6988038] audioMix];
+      audioMix = [MEMORY[0x1E6988038] audioMix];
 
-      v15 = v18;
+      v15 = audioMix;
     }
 
-    v19 = [v15 inputParameters];
-    v20 = [v19 count];
+    inputParameters = [v15 inputParameters];
+    v20 = [inputParameters count];
 
     if (!v20)
     {
@@ -131,18 +131,18 @@ LABEL_19:
     if (v21)
     {
       v22 = v21;
-      v23 = [MEMORY[0x1E695DF70] array];
-      v24 = [v15 inputParameters];
+      array = [MEMORY[0x1E695DF70] array];
+      inputParameters2 = [v15 inputParameters];
       v55[0] = MEMORY[0x1E69E9820];
       v55[1] = 3221225472;
       v55[2] = __48__PICinematicAudioRenderNode__evaluateAudioMix___block_invoke;
       v55[3] = &unk_1E82ABBA8;
       v56 = v22;
-      v57 = self;
-      v58 = v23;
-      v25 = v23;
+      selfCopy = self;
+      v58 = array;
+      v25 = array;
       v26 = v22;
-      [v24 enumerateObjectsUsingBlock:v55];
+      [inputParameters2 enumerateObjectsUsingBlock:v55];
 
       [v15 setInputParameters:v25];
 LABEL_18:
@@ -175,8 +175,8 @@ LABEL_32:
         v49 = dispatch_get_specific(*v43);
         v50 = MEMORY[0x1E696AF00];
         v51 = v49;
-        v52 = [v50 callStackSymbols];
-        v53 = [v52 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v50 callStackSymbols];
+        v53 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v49;
         *&buf[12] = 2114;
@@ -187,8 +187,8 @@ LABEL_32:
 
     else if (v46)
     {
-      v47 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v48 = [v47 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v48 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v48;
       _os_log_error_impl(&dword_1C7694000, v45, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -240,45 +240,45 @@ void __48__PICinematicAudioRenderNode__evaluateAudioMix___block_invoke(id *a1, v
   v4 = v3;
   [(PICinematicAudioRenderNode *)self cachedDialogMixBias];
   v6 = vabdd_f64(v4, v5);
-  v7 = [(PICinematicAudioRenderNode *)self renderingStyle];
-  v8 = [(PICinematicAudioRenderNode *)self cachedRenderingStyle];
-  return v6 > 0.01 || v7 != v8;
+  renderingStyle = [(PICinematicAudioRenderNode *)self renderingStyle];
+  cachedRenderingStyle = [(PICinematicAudioRenderNode *)self cachedRenderingStyle];
+  return v6 > 0.01 || renderingStyle != cachedRenderingStyle;
 }
 
-- (id)_evaluateVideoComposition:(id *)a3
+- (id)_evaluateVideoComposition:(id *)composition
 {
   v4 = [(NURenderNode *)self inputForKey:*MEMORY[0x1E695FAB0]];
-  v5 = [v4 outputVideoComposition:a3];
+  v5 = [v4 outputVideoComposition:composition];
 
   return v5;
 }
 
-- (id)_evaluateVideo:(id *)a3
+- (id)_evaluateVideo:(id *)video
 {
   v4 = [(NURenderNode *)self inputForKey:*MEMORY[0x1E695FAB0]];
-  v5 = [v4 outputVideo:a3];
+  v5 = [v4 outputVideo:video];
 
   return v5;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = PICinematicAudioRenderNode;
-  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
 
   return v6;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  if ([v8 evaluationMode] == 2)
+  stateCopy = state;
+  cacheCopy = cache;
+  if ([stateCopy evaluationMode] == 2)
   {
     v13.receiver = self;
     v13.super_class = PICinematicAudioRenderNode;
-    v10 = [(NURenderNode *)&v13 nodeByReplayingAgainstCache:v9 pipelineState:v8 error:a5];
+    v10 = [(NURenderNode *)&v13 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
 
     [(PICinematicAudioRenderNode *)self dialogMixBias];
     [v10 setDialogMixBias:?];
@@ -289,19 +289,19 @@ void __48__PICinematicAudioRenderNode__evaluateAudioMix___block_invoke(id *a1, v
   {
     v12.receiver = self;
     v12.super_class = PICinematicAudioRenderNode;
-    v10 = [(NURenderNode *)&v12 nodeByReplayingAgainstCache:v9 pipelineState:v8 error:a5];
+    v10 = [(NURenderNode *)&v12 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
   }
 
   return v10;
 }
 
-- (PICinematicAudioRenderNode)initWithInput:(id)a3 dialogMixBias:(double)a4 renderingStyle:(id)a5
+- (PICinematicAudioRenderNode)initWithInput:(id)input dialogMixBias:(double)bias renderingStyle:(id)style
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  inputCopy = input;
+  styleCopy = style;
   v18 = *MEMORY[0x1E695FAB0];
-  v19 = v8;
+  v19 = inputCopy;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   v17.receiver = self;
   v17.super_class = PICinematicAudioRenderNode;
@@ -309,8 +309,8 @@ void __48__PICinematicAudioRenderNode__evaluateAudioMix___block_invoke(id *a1, v
   v12 = v11;
   if (v11)
   {
-    [(PICinematicAudioRenderNode *)v11 setDialogMixBias:a4];
-    v13 = v9;
+    [(PICinematicAudioRenderNode *)v11 setDialogMixBias:bias];
+    v13 = styleCopy;
     if (([v13 isEqualToString:@"original"] & 1) == 0)
     {
       if ([v13 isEqualToString:@"voice"])

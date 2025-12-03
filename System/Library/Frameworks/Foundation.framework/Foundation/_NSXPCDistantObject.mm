@@ -1,20 +1,20 @@
 @interface _NSXPCDistantObject
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (_NSXPCDistantObject)initWithCoder:(id)a3;
-- (id)_initWithConnection:(id)a3 exportedObject:(id)a4 interface:(id)a5;
-- (id)_initWithConnection:(id)a3 proxyNumber:(unint64_t)a4 generationCount:(unint64_t)a5 interface:(id)a6 options:(unint64_t)a7 error:(id)a8;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (_NSXPCDistantObject)initWithCoder:(id)coder;
+- (id)_initWithConnection:(id)connection exportedObject:(id)object interface:(id)interface;
+- (id)_initWithConnection:(id)connection proxyNumber:(unint64_t)number generationCount:(unint64_t)count interface:(id)interface options:(unint64_t)options error:(id)error;
 - (id)_unboostingRemoteObjectProxy;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)remoteObjectProxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)remoteObjectProxyWithTimeout:(double)a3 errorHandler:(id)a4;
-- (id)remoteObjectProxyWithUserInfo:(id)a3 errorHandler:(id)a4;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (void)_forwardStackInvocation:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)remoteObjectProxyWithTimeout:(double)timeout errorHandler:(id)handler;
+- (id)remoteObjectProxyWithUserInfo:(id)info errorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (void)_forwardStackInvocation:(id)invocation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)forwardInvocation:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation _NSXPCDistantObject
@@ -52,19 +52,19 @@
   return v2;
 }
 
-- (id)_initWithConnection:(id)a3 proxyNumber:(unint64_t)a4 generationCount:(unint64_t)a5 interface:(id)a6 options:(unint64_t)a7 error:(id)a8
+- (id)_initWithConnection:(id)connection proxyNumber:(unint64_t)number generationCount:(unint64_t)count interface:(id)interface options:(unint64_t)options error:(id)error
 {
   v14 = [(_NSXPCDistantObject *)self init];
   if (v14)
   {
-    v14->_connection = a3;
-    v14->_proxyNumber = a4;
-    v14->_generationCount = a5;
-    v14->_remoteInterface = a6;
-    v14->_flags = a7;
-    if (a8)
+    v14->_connection = connection;
+    v14->_proxyNumber = number;
+    v14->_generationCount = count;
+    v14->_remoteInterface = interface;
+    v14->_flags = options;
+    if (error)
     {
-      v14->_errorBlock = _Block_copy(a8);
+      v14->_errorBlock = _Block_copy(error);
     }
 
     connection = v14->_connection;
@@ -77,26 +77,26 @@
   return v14;
 }
 
-- (id)_initWithConnection:(id)a3 exportedObject:(id)a4 interface:(id)a5
+- (id)_initWithConnection:(id)connection exportedObject:(id)object interface:(id)interface
 {
   v8 = [(_NSXPCDistantObject *)self init];
   if (v8)
   {
-    v9 = a3;
-    v8->_connection = v9;
-    if (v9)
+    connectionCopy = connection;
+    v8->_connection = connectionCopy;
+    if (connectionCopy)
     {
-      v9 = v9->_exportInfo;
+      connectionCopy = connectionCopy->_exportInfo;
     }
 
-    v8->_proxyNumber = [(_NSXPCConnectionExportedObjectTable *)v9 proxyNumberForExportedObject:a4 interface:a5];
+    v8->_proxyNumber = [(_NSXPCConnectionExportedObjectTable *)connectionCopy proxyNumberForExportedObject:object interface:interface];
     v8->_flags = 1;
   }
 
   return v8;
 }
 
-- (_NSXPCDistantObject)initWithCoder:(id)a3
+- (_NSXPCDistantObject)initWithCoder:(id)coder
 {
   v5 = [(_NSXPCDistantObject *)self init];
   if (!v5)
@@ -110,18 +110,18 @@
     objc_exception_throw(v11);
   }
 
-  v5->_proxyNumber = [a3 decodeInt64ForKey:@"pn"];
-  v6 = [a3 decodeBoolForKey:@"ex"];
-  v7 = [a3 connection];
-  v5->_connection = v7;
+  v5->_proxyNumber = [coder decodeInt64ForKey:@"pn"];
+  v6 = [coder decodeBoolForKey:@"ex"];
+  connection = [coder connection];
+  v5->_connection = connection;
   if (v6)
   {
-    if (v7)
+    if (connection)
     {
-      v5->_generationCount = *(*(v7 + 9) + 8);
+      v5->_generationCount = *(*(connection + 9) + 8);
       if (v5->_proxyNumber != 1)
       {
-        [(_NSXPCConnectionImportInfo *)*(v7 + 9) addProxy:v5];
+        [(_NSXPCConnectionImportInfo *)*(connection + 9) addProxy:v5];
       }
     }
 
@@ -134,13 +134,13 @@
   }
 
   v5->_flags |= 1uLL;
-  v8 = [a3 connection];
-  if (v8)
+  connection2 = [coder connection];
+  if (connection2)
   {
-    v8 = v8[7];
+    connection2 = connection2[7];
   }
 
-  v9 = [(_NSXPCConnectionExportedObjectTable *)v8 exportedObjectForProxyNumber:?];
+  v9 = [(_NSXPCConnectionExportedObjectTable *)connection2 exportedObjectForProxyNumber:?];
   if (!v9)
   {
     return v5;
@@ -151,7 +151,7 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -160,20 +160,20 @@
   }
 
   connection = self->_connection;
-  if (connection != [a3 connection])
+  if (connection != [coder connection])
   {
     v8 = [NSString stringWithFormat:@"%@: This proxy object may only be sent over the connection on which it was received.", _NSMethodExceptionProem(self, a2)];
 LABEL_8:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v8 userInfo:0]);
   }
 
-  [a3 encodeInt64:self->_proxyNumber forKey:@"pn"];
+  [coder encodeInt64:self->_proxyNumber forKey:@"pn"];
   v7 = self->_flags & 1;
 
-  [a3 encodeBool:v7 forKey:@"ex"];
+  [coder encodeBool:v7 forKey:@"ex"];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -193,10 +193,10 @@ LABEL_8:
     Property = 0;
   }
 
-  return protocol_conformsToProtocol([Property protocol], a3);
+  return protocol_conformsToProtocol([Property protocol], protocol);
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v7 = *MEMORY[0x1E69E9840];
   result = [(NSXPCInterface *)self->_remoteInterface _methodSignatureForRemoteSelector:?];
@@ -204,13 +204,13 @@ LABEL_8:
   {
     v6.receiver = self;
     v6.super_class = _NSXPCDistantObject;
-    return [(_NSXPCDistantObject *)&v6 methodSignatureForSelector:a3];
+    return [(_NSXPCDistantObject *)&v6 methodSignatureForSelector:selector];
   }
 
   return result;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v8 = *MEMORY[0x1E69E9840];
   v5 = [(NSXPCInterface *)self->_remoteInterface _respondsToRemoteSelector:?];
@@ -226,59 +226,59 @@ LABEL_8:
 
   v7.receiver = self;
   v7.super_class = _NSXPCDistantObject;
-  return [(_NSXPCDistantObject *)&v7 respondsToSelector:a3];
+  return [(_NSXPCDistantObject *)&v7 respondsToSelector:selector];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   connection = self->_connection;
   if (connection)
   {
-    v6 = [a3 methodSignature];
-    v7 = [a3 selector];
+    methodSignature = [invocation methodSignature];
+    selector = [invocation selector];
 
-    [(NSXPCConnection *)connection _sendInvocation:a3 orArguments:0 count:0 methodSignature:v6 selector:v7 withProxy:self];
+    [(NSXPCConnection *)connection _sendInvocation:invocation orArguments:0 count:0 methodSignature:methodSignature selector:selector withProxy:self];
   }
 }
 
-- (void)_forwardStackInvocation:(id)a3
+- (void)_forwardStackInvocation:(id)invocation
 {
   connection = self->_connection;
   if (connection)
   {
-    v6 = [a3 methodSignature];
-    v7 = [a3 selector];
+    methodSignature = [invocation methodSignature];
+    selector = [invocation selector];
 
-    [(NSXPCConnection *)connection _sendInvocation:a3 orArguments:0 count:0 methodSignature:v6 selector:v7 withProxy:self];
+    [(NSXPCConnection *)connection _sendInvocation:invocation orArguments:0 count:0 methodSignature:methodSignature selector:selector withProxy:self];
   }
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
   v3 = [objc_alloc(-[NSXPCInterface _customSubclass](self->_remoteInterface "_customSubclass"))];
 
   return v3;
 }
 
-- (id)remoteObjectProxyWithUserInfo:(id)a3 errorHandler:(id)a4
+- (id)remoteObjectProxyWithUserInfo:(id)info errorHandler:(id)handler
 {
   v5 = [objc_alloc(-[NSXPCInterface _customSubclass](self->_remoteInterface "_customSubclass"))];
-  [v5 set_userInfo:a3];
+  [v5 set_userInfo:info];
   return v5;
 }
 
-- (id)remoteObjectProxyWithTimeout:(double)a3 errorHandler:(id)a4
+- (id)remoteObjectProxyWithTimeout:(double)timeout errorHandler:(id)handler
 {
   result = [objc_alloc(-[NSXPCInterface _customSubclass](self->_remoteInterface "_customSubclass"))];
   if (result)
   {
-    *(result + 8) = a3;
+    *(result + 8) = timeout;
   }
 
   return result;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
   v3 = [objc_alloc(-[NSXPCInterface _customSubclass](self->_remoteInterface "_customSubclass"))];
 

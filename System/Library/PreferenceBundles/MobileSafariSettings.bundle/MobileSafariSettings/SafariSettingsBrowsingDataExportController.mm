@@ -1,44 +1,44 @@
 @interface SafariSettingsBrowsingDataExportController
 - (unint64_t)_numberOfBookmarksToBeExported;
-- (unint64_t)_numberOfDescendantsInBookmarkFolder:(id)a3 collection:(id)a4;
+- (unint64_t)_numberOfDescendantsInBookmarkFolder:(id)folder collection:(id)collection;
 - (unint64_t)_numberOfExtensionsToBeExported;
-- (void)_exportExtensionsToDirectoryWithURL:(id)a3 completionHandler:(id)a4;
-- (void)_exportHistoryToDirectoryWithURL:(id)a3 completionHandler:(id)a4;
-- (void)_numberOfHistorySitesToBeExportedWithCompletionHandler:(id)a3;
+- (void)_exportExtensionsToDirectoryWithURL:(id)l completionHandler:(id)handler;
+- (void)_exportHistoryToDirectoryWithURL:(id)l completionHandler:(id)handler;
+- (void)_numberOfHistorySitesToBeExportedWithCompletionHandler:(id)handler;
 @end
 
 @implementation SafariSettingsBrowsingDataExportController
 
-- (void)_exportHistoryToDirectoryWithURL:(id)a3 completionHandler:(id)a4
+- (void)_exportHistoryToDirectoryWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(SafariSettingsBrowsingDataExportController *)self profileIdentifiersToExportFrom];
+  handlerCopy = handler;
+  lCopy = l;
+  profileIdentifiersToExportFrom = [(SafariSettingsBrowsingDataExportController *)self profileIdentifiersToExportFrom];
   v8 = +[SafariSettingsController tabGroupManager];
-  [SFSafariSettingsBrowsingDataExportController exportHistoryToDirectoryWithURL:v7 profileIdentifiersToExportFrom:v9 tabGroupManager:v8 completionHandler:v6];
+  [SFSafariSettingsBrowsingDataExportController exportHistoryToDirectoryWithURL:lCopy profileIdentifiersToExportFrom:profileIdentifiersToExportFrom tabGroupManager:v8 completionHandler:handlerCopy];
 }
 
-- (void)_exportExtensionsToDirectoryWithURL:(id)a3 completionHandler:(id)a4
+- (void)_exportExtensionsToDirectoryWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(SafariSettingsBrowsingDataExportController *)self profileIdentifiersToExportFrom];
+  handlerCopy = handler;
+  lCopy = l;
+  profileIdentifiersToExportFrom = [(SafariSettingsBrowsingDataExportController *)self profileIdentifiersToExportFrom];
   v8 = +[SafariSettingsController tabGroupManager];
-  [SFSafariSettingsBrowsingDataExportController exportExtensionsToDirectoryWithURL:v7 profileIdentifiersToExportFrom:v9 tabGroupManager:v8 completionHandler:v6];
+  [SFSafariSettingsBrowsingDataExportController exportExtensionsToDirectoryWithURL:lCopy profileIdentifiersToExportFrom:profileIdentifiersToExportFrom tabGroupManager:v8 completionHandler:handlerCopy];
 }
 
-- (void)_numberOfHistorySitesToBeExportedWithCompletionHandler:(id)a3
+- (void)_numberOfHistorySitesToBeExportedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(WebBookmarksSettingsGateway);
-  v6 = [(SafariSettingsBrowsingDataExportController *)self profileIdentifiersToExportFrom];
+  profileIdentifiersToExportFrom = [(SafariSettingsBrowsingDataExportController *)self profileIdentifiersToExportFrom];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __101__SafariSettingsBrowsingDataExportController__numberOfHistorySitesToBeExportedWithCompletionHandler___block_invoke;
   v8[3] = &unk_89808;
-  v9 = v4;
-  v7 = v4;
-  [v5 numberOfHistorySitesToBeExportedWithProfileIdentifiers:v6 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [v5 numberOfHistorySitesToBeExportedWithProfileIdentifiers:profileIdentifiersToExportFrom completionHandler:v8];
 }
 
 void __101__SafariSettingsBrowsingDataExportController__numberOfHistorySitesToBeExportedWithCompletionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -86,14 +86,14 @@ void __101__SafariSettingsBrowsingDataExportController__numberOfHistorySitesToBe
         v7 = *(*(&v36 + 1) + 8 * v6);
         v8 = +[SafariSettingsController tabGroupManager];
         v9 = [v8 profileWithIdentifier:v7];
-        v10 = [v9 serverID];
+        serverID = [v9 serverID];
 
-        v11 = [v28 profileServerIDToContentBlockerManagers];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        profileServerIDToContentBlockerManagers = [v28 profileServerIDToContentBlockerManagers];
+        v12 = [profileServerIDToContentBlockerManagers objectForKeyedSubscript:serverID];
         v41[0] = v12;
-        v13 = [v28 profileServerIDToWebExtensionsControllers];
-        v30 = v10;
-        v14 = [v13 objectForKeyedSubscript:v10];
+        profileServerIDToWebExtensionsControllers = [v28 profileServerIDToWebExtensionsControllers];
+        v30 = serverID;
+        v14 = [profileServerIDToWebExtensionsControllers objectForKeyedSubscript:serverID];
         v41[1] = v14;
         v15 = [NSArray arrayWithObjects:v41 count:2];
 
@@ -117,8 +117,8 @@ void __101__SafariSettingsBrowsingDataExportController__numberOfHistorySitesToBe
                 objc_enumerationMutation(v16);
               }
 
-              v21 = [*(*(&v32 + 1) + 8 * v20) extensionsDataForExport];
-              v22 = [v21 safari_mapObjectsUsingBlock:&__block_literal_global];
+              extensionsDataForExport = [*(*(&v32 + 1) + 8 * v20) extensionsDataForExport];
+              v22 = [extensionsDataForExport safari_mapObjectsUsingBlock:&__block_literal_global];
               v23 = [NSSet setWithArray:v22];
               [v3 unionSet:v23];
 
@@ -149,22 +149,22 @@ void __101__SafariSettingsBrowsingDataExportController__numberOfHistorySitesToBe
 - (unint64_t)_numberOfBookmarksToBeExported
 {
   v3 = +[WebBookmarkCollection safariBookmarkCollection];
-  v4 = [v3 rootBookmark];
-  v5 = [(SafariSettingsBrowsingDataExportController *)self _numberOfDescendantsInBookmarkFolder:v4 collection:v3];
+  rootBookmark = [v3 rootBookmark];
+  v5 = [(SafariSettingsBrowsingDataExportController *)self _numberOfDescendantsInBookmarkFolder:rootBookmark collection:v3];
 
   return v5;
 }
 
-- (unint64_t)_numberOfDescendantsInBookmarkFolder:(id)a3 collection:(id)a4
+- (unint64_t)_numberOfDescendantsInBookmarkFolder:(id)folder collection:(id)collection
 {
-  v6 = a4;
-  v7 = [v6 listWithID:objc_msgSend(a3 skipOffset:"identifier") includeHidden:{0, 1}];
+  collectionCopy = collection;
+  v7 = [collectionCopy listWithID:objc_msgSend(folder skipOffset:"identifier") includeHidden:{0, 1}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v7 bookmarkArray];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  bookmarkArray = [v7 bookmarkArray];
+  v9 = [bookmarkArray countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -176,7 +176,7 @@ void __101__SafariSettingsBrowsingDataExportController__numberOfHistorySitesToBe
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(bookmarkArray);
         }
 
         v14 = *(*(&v16 + 1) + 8 * i);
@@ -184,14 +184,14 @@ void __101__SafariSettingsBrowsingDataExportController__numberOfHistorySitesToBe
         {
           if ([v14 isFolder])
           {
-            v11 += [(SafariSettingsBrowsingDataExportController *)self _numberOfDescendantsInBookmarkFolder:v14 collection:v6];
+            v11 += [(SafariSettingsBrowsingDataExportController *)self _numberOfDescendantsInBookmarkFolder:v14 collection:collectionCopy];
           }
 
           ++v11;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [bookmarkArray countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);

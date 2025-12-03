@@ -3,15 +3,15 @@
 - (_TtC15HealthRecordsUI23MedicalRecordChartPoint)init;
 - (id)allYValues;
 - (id)maxYValue;
-- (id)yValueForKey:(id)a3;
+- (id)yValueForKey:(id)key;
 @end
 
 @implementation MedicalRecordChartPoint
 
-- (id)yValueForKey:(id)a3
+- (id)yValueForKey:(id)key
 {
   sub_1D139016C();
-  v4 = self;
+  selfCopy = self;
   sub_1D120940C(v13);
 
   v5 = v14;
@@ -38,7 +38,7 @@
 - (id)allYValues
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC15HealthRecordsUI23MedicalRecordChartPoint_sortedYValues);
-  v3 = self;
+  selfCopy = self;
   sub_1D110B3FC(v2);
 
   v4 = sub_1D139044C();
@@ -63,7 +63,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D1209920();
 
   v3 = sub_1D139012C();

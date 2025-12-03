@@ -1,20 +1,20 @@
 @interface PXFeedLayoutGenerator
-- (BOOL)scanTile:(PXTileInfo *)a3 ofType:(int64_t)a4;
-- (BOOL)scanTile:(PXTileInfo *)a3 passingTest:(id)a4;
-- (BOOL)scanTile:(PXTileInfo *)a3 type:(int64_t *)a4;
-- (CGSize)captionSizeForTileAtIndex:(int64_t)a3 proposedSize:(CGSize)a4;
-- (CGSize)commentSizeForTileAtIndex:(int64_t)a3 commentIndex:(int64_t)a4 proposedSize:(CGSize)a5;
+- (BOOL)scanTile:(PXTileInfo *)tile ofType:(int64_t)type;
+- (BOOL)scanTile:(PXTileInfo *)tile passingTest:(id)test;
+- (BOOL)scanTile:(PXTileInfo *)tile type:(int64_t *)type;
+- (CGSize)captionSizeForTileAtIndex:(int64_t)index proposedSize:(CGSize)size;
+- (CGSize)commentSizeForTileAtIndex:(int64_t)index commentIndex:(int64_t)commentIndex proposedSize:(CGSize)size;
 - (CGSize)interTileSpacing;
-- (CGSize)likesSizeForTileAtIndex:(int64_t)a3 proposedSize:(CGSize)a4;
+- (CGSize)likesSizeForTileAtIndex:(int64_t)index proposedSize:(CGSize)size;
 - (CGSize)noCaptionSpacing;
 - (PXFeedLayoutGenerator)init;
 - (PXFeedLayoutGeneratorScanState)scanState;
 - (UIEdgeInsets)captionPadding;
-- (double)valueByRounding:(double)a3 usingMagneticGuidelines:(BOOL)a4;
-- (void)enumerateFramesWithBlock:(id)a3;
+- (double)valueByRounding:(double)rounding usingMagneticGuidelines:(BOOL)guidelines;
+- (void)enumerateFramesWithBlock:(id)block;
 - (void)parseTiles;
-- (void)parsedFrame:(CGRect)a3 type:(int64_t)a4 forTileAtIndex:(int64_t)a5;
-- (void)setScanState:(id)a3;
+- (void)parsedFrame:(CGRect)frame type:(int64_t)type forTileAtIndex:(int64_t)index;
+- (void)setScanState:(id)state;
 - (void)willParseTiles;
 @end
 
@@ -51,33 +51,33 @@
   return result;
 }
 
-- (double)valueByRounding:(double)a3 usingMagneticGuidelines:(BOOL)a4
+- (double)valueByRounding:(double)rounding usingMagneticGuidelines:(BOOL)guidelines
 {
-  if (a4 && [(PXFeedLayoutGenerator *)self numberOfMagneticGuidelines]>= 1)
+  if (guidelines && [(PXFeedLayoutGenerator *)self numberOfMagneticGuidelines]>= 1)
   {
     [(PXFeedLayoutGenerator *)self referenceDistanceForMagneticGuidelines];
     v7 = v6;
     v8 = [(PXFeedLayoutGenerator *)self numberOfMagneticGuidelines]+ 1;
-    a3 = v7 / v8 * round(a3 / (v7 / v8));
+    rounding = v7 / v8 * round(rounding / (v7 / v8));
   }
 
   [(PXFeedLayoutGenerator *)self roundingScale];
-  return round(a3 * v9) / v9;
+  return round(rounding * v9) / v9;
 }
 
-- (void)parsedFrame:(CGRect)a3 type:(int64_t)a4 forTileAtIndex:(int64_t)a5
+- (void)parsedFrame:(CGRect)frame type:(int64_t)type forTileAtIndex:(int64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = [(PXFeedLayoutGenerator *)self parsedFrameBlock];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  parsedFrameBlock = [(PXFeedLayoutGenerator *)self parsedFrameBlock];
 
-  if (v12)
+  if (parsedFrameBlock)
   {
     v14 = 0;
-    v13 = [(PXFeedLayoutGenerator *)self parsedFrameBlock];
-    (v13)[2](v13, a5, a4, &v14, x, y, width, height);
+    parsedFrameBlock2 = [(PXFeedLayoutGenerator *)self parsedFrameBlock];
+    (parsedFrameBlock2)[2](parsedFrameBlock2, index, type, &v14, x, y, width, height);
 
     if (v14 == 1)
     {
@@ -86,16 +86,16 @@
   }
 }
 
-- (CGSize)commentSizeForTileAtIndex:(int64_t)a3 commentIndex:(int64_t)a4 proposedSize:(CGSize)a5
+- (CGSize)commentSizeForTileAtIndex:(int64_t)index commentIndex:(int64_t)commentIndex proposedSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = [(PXFeedLayoutGenerator *)self tileCommentSizeBlock];
+  height = size.height;
+  width = size.width;
+  tileCommentSizeBlock = [(PXFeedLayoutGenerator *)self tileCommentSizeBlock];
 
-  if (v10)
+  if (tileCommentSizeBlock)
   {
-    v11 = [(PXFeedLayoutGenerator *)self tileCommentSizeBlock];
-    width = v11[2](v11, a3, a4, width, height);
+    tileCommentSizeBlock2 = [(PXFeedLayoutGenerator *)self tileCommentSizeBlock];
+    width = tileCommentSizeBlock2[2](tileCommentSizeBlock2, index, commentIndex, width, height);
     height = v12;
   }
 
@@ -106,16 +106,16 @@
   return result;
 }
 
-- (CGSize)likesSizeForTileAtIndex:(int64_t)a3 proposedSize:(CGSize)a4
+- (CGSize)likesSizeForTileAtIndex:(int64_t)index proposedSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = [(PXFeedLayoutGenerator *)self tileLikesSizeBlock];
+  height = size.height;
+  width = size.width;
+  tileLikesSizeBlock = [(PXFeedLayoutGenerator *)self tileLikesSizeBlock];
 
-  if (v8)
+  if (tileLikesSizeBlock)
   {
-    v9 = [(PXFeedLayoutGenerator *)self tileLikesSizeBlock];
-    width = v9[2](v9, a3, width, height);
+    tileLikesSizeBlock2 = [(PXFeedLayoutGenerator *)self tileLikesSizeBlock];
+    width = tileLikesSizeBlock2[2](tileLikesSizeBlock2, index, width, height);
     height = v10;
   }
 
@@ -126,16 +126,16 @@
   return result;
 }
 
-- (CGSize)captionSizeForTileAtIndex:(int64_t)a3 proposedSize:(CGSize)a4
+- (CGSize)captionSizeForTileAtIndex:(int64_t)index proposedSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = [(PXFeedLayoutGenerator *)self tileCaptionSizeBlock];
+  height = size.height;
+  width = size.width;
+  tileCaptionSizeBlock = [(PXFeedLayoutGenerator *)self tileCaptionSizeBlock];
 
-  if (v8)
+  if (tileCaptionSizeBlock)
   {
-    v9 = [(PXFeedLayoutGenerator *)self tileCaptionSizeBlock];
-    width = v9[2](v9, a3, width, height);
+    tileCaptionSizeBlock2 = [(PXFeedLayoutGenerator *)self tileCaptionSizeBlock];
+    width = tileCaptionSizeBlock2[2](tileCaptionSizeBlock2, index, width, height);
     height = v10;
   }
 
@@ -146,14 +146,14 @@
   return result;
 }
 
-- (BOOL)scanTile:(PXTileInfo *)a3 ofType:(int64_t)a4
+- (BOOL)scanTile:(PXTileInfo *)tile ofType:(int64_t)type
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __41__PXFeedLayoutGenerator_scanTile_ofType___block_invoke;
   v5[3] = &__block_descriptor_40_e47_B72__0_PXTileInfo_q_CGSize_dd__CGSize_dd_BBqB_8l;
-  v5[4] = a4;
-  return [(PXFeedLayoutGenerator *)self scanTile:a3 passingTest:v5];
+  v5[4] = type;
+  return [(PXFeedLayoutGenerator *)self scanTile:tile passingTest:v5];
 }
 
 BOOL __41__PXFeedLayoutGenerator_scanTile_ofType___block_invoke(uint64_t a1, uint64_t a2)
@@ -189,7 +189,7 @@ BOOL __41__PXFeedLayoutGenerator_scanTile_ofType___block_invoke(uint64_t a1, uin
   return v3 == *(a1 + 32);
 }
 
-- (BOOL)scanTile:(PXTileInfo *)a3 type:(int64_t *)a4
+- (BOOL)scanTile:(PXTileInfo *)tile type:(int64_t *)type
 {
   v8 = 0;
   v9 = &v8;
@@ -200,10 +200,10 @@ BOOL __41__PXFeedLayoutGenerator_scanTile_ofType___block_invoke(uint64_t a1, uin
   v7[2] = __39__PXFeedLayoutGenerator_scanTile_type___block_invoke;
   v7[3] = &unk_1E77348E8;
   v7[4] = &v8;
-  v5 = [(PXFeedLayoutGenerator *)self scanTile:a3 passingTest:v7];
-  if (a4)
+  v5 = [(PXFeedLayoutGenerator *)self scanTile:tile passingTest:v7];
+  if (type)
   {
-    *a4 = v9[3];
+    *type = v9[3];
   }
 
   _Block_object_dispose(&v8, 8);
@@ -244,9 +244,9 @@ uint64_t __39__PXFeedLayoutGenerator_scanTile_type___block_invoke(uint64_t a1, u
   return 1;
 }
 
-- (BOOL)scanTile:(PXTileInfo *)a3 passingTest:(id)a4
+- (BOOL)scanTile:(PXTileInfo *)tile passingTest:(id)test
 {
-  v6 = a4;
+  testCopy = test;
   if ([(PXFeedLayoutGenerator *)self isAtEnd])
   {
     LOBYTE(v7) = 0;
@@ -254,26 +254,26 @@ uint64_t __39__PXFeedLayoutGenerator_scanTile_type___block_invoke(uint64_t a1, u
 
   else
   {
-    v8 = [(PXFeedLayoutGenerator *)self scanLocation];
-    v43 = [(PXFeedLayoutGenerator *)self scannedBatchID];
+    scanLocation = [(PXFeedLayoutGenerator *)self scanLocation];
+    scannedBatchID = [(PXFeedLayoutGenerator *)self scannedBatchID];
     v54 = 0;
     v55 = 0;
     v53[0] = 0;
     *(v53 + 3) = 0;
-    v9 = v8 % 20;
-    v41 = a3;
-    if (v8 < self->_cacheTailLocation || v8 >= self->_cacheHeadLocation)
+    v9 = scanLocation % 20;
+    tileCopy = tile;
+    if (scanLocation < self->_cacheTailLocation || scanLocation >= self->_cacheHeadLocation)
     {
-      v42 = v8 % 20;
-      v20 = [(PXFeedLayoutGenerator *)self tileImageSizeBlock];
-      v12 = v20[2](v20, v8);
+      v42 = scanLocation % 20;
+      tileImageSizeBlock = [(PXFeedLayoutGenerator *)self tileImageSizeBlock];
+      v12 = tileImageSizeBlock[2](tileImageSizeBlock, scanLocation);
       v13 = v21;
 
-      v22 = [(PXFeedLayoutGenerator *)self tileMinimumSizeBlock];
-      if (v22)
+      tileMinimumSizeBlock = [(PXFeedLayoutGenerator *)self tileMinimumSizeBlock];
+      if (tileMinimumSizeBlock)
       {
-        v23 = [(PXFeedLayoutGenerator *)self tileMinimumSizeBlock];
-        v14 = v23[2](v23, v8);
+        tileMinimumSizeBlock2 = [(PXFeedLayoutGenerator *)self tileMinimumSizeBlock];
+        v14 = tileMinimumSizeBlock2[2](tileMinimumSizeBlock2, scanLocation);
         v15 = v24;
       }
 
@@ -283,11 +283,11 @@ uint64_t __39__PXFeedLayoutGenerator_scanTile_type___block_invoke(uint64_t a1, u
         v15 = *(MEMORY[0x1E695F060] + 8);
       }
 
-      v25 = [(PXFeedLayoutGenerator *)self tileHasCaptionBlock];
-      if (v25)
+      tileHasCaptionBlock = [(PXFeedLayoutGenerator *)self tileHasCaptionBlock];
+      if (tileHasCaptionBlock)
       {
-        v26 = [(PXFeedLayoutGenerator *)self tileHasCaptionBlock];
-        v16 = v26[2](v26, v8);
+        tileHasCaptionBlock2 = [(PXFeedLayoutGenerator *)self tileHasCaptionBlock];
+        v16 = tileHasCaptionBlock2[2](tileHasCaptionBlock2, scanLocation);
       }
 
       else
@@ -295,11 +295,11 @@ uint64_t __39__PXFeedLayoutGenerator_scanTile_type___block_invoke(uint64_t a1, u
         v16 = 0;
       }
 
-      v27 = [(PXFeedLayoutGenerator *)self tileHasLikesBlock];
-      if (v27)
+      tileHasLikesBlock = [(PXFeedLayoutGenerator *)self tileHasLikesBlock];
+      if (tileHasLikesBlock)
       {
-        v28 = [(PXFeedLayoutGenerator *)self tileHasLikesBlock];
-        v29 = v28[2](v28, v8);
+        tileHasLikesBlock2 = [(PXFeedLayoutGenerator *)self tileHasLikesBlock];
+        v29 = tileHasLikesBlock2[2](tileHasLikesBlock2, scanLocation);
       }
 
       else
@@ -309,11 +309,11 @@ uint64_t __39__PXFeedLayoutGenerator_scanTile_type___block_invoke(uint64_t a1, u
 
       v30 = v29;
 
-      v31 = [(PXFeedLayoutGenerator *)self tileCommentCountBlock];
-      if (v31)
+      tileCommentCountBlock = [(PXFeedLayoutGenerator *)self tileCommentCountBlock];
+      if (tileCommentCountBlock)
       {
-        v32 = [(PXFeedLayoutGenerator *)self tileCommentCountBlock];
-        v44 = v32[2](v32, v8);
+        tileCommentCountBlock2 = [(PXFeedLayoutGenerator *)self tileCommentCountBlock];
+        v44 = tileCommentCountBlock2[2](tileCommentCountBlock2, scanLocation);
       }
 
       else
@@ -321,11 +321,11 @@ uint64_t __39__PXFeedLayoutGenerator_scanTile_type___block_invoke(uint64_t a1, u
         v44 = 0;
       }
 
-      v33 = [(PXFeedLayoutGenerator *)self tileBatchIDBlock];
-      if (v33)
+      tileBatchIDBlock = [(PXFeedLayoutGenerator *)self tileBatchIDBlock];
+      if (tileBatchIDBlock)
       {
-        v34 = [(PXFeedLayoutGenerator *)self tileBatchIDBlock];
-        v19 = v34[2](v34, v8);
+        tileBatchIDBlock2 = [(PXFeedLayoutGenerator *)self tileBatchIDBlock];
+        v19 = tileBatchIDBlock2[2](tileBatchIDBlock2, scanLocation);
       }
 
       else
@@ -333,17 +333,17 @@ uint64_t __39__PXFeedLayoutGenerator_scanTile_type___block_invoke(uint64_t a1, u
         v19 = 0;
       }
 
-      if (v8)
+      if (scanLocation)
       {
         v17 = v30;
-        if (v43 == v19)
+        if (scannedBatchID == v19)
         {
           v18 = 0;
         }
 
         else
         {
-          v18 = [v43 isEqual:v19] ^ 1;
+          v18 = [scannedBatchID isEqual:v19] ^ 1;
         }
       }
 
@@ -354,7 +354,7 @@ uint64_t __39__PXFeedLayoutGenerator_scanTile_type___block_invoke(uint64_t a1, u
       }
 
       v35 = self + 64 * v42;
-      *(v35 + 3) = v8;
+      *(v35 + 3) = scanLocation;
       *(v35 + 4) = v12;
       *(v35 + 5) = v13;
       *(v35 + 6) = v14;
@@ -368,13 +368,13 @@ uint64_t __39__PXFeedLayoutGenerator_scanTile_type___block_invoke(uint64_t a1, u
       *(v35 + 81) = 0;
       *(v35 + 21) = 0;
       objc_storeStrong(&self->_cachedBatchID[v42], v19);
-      self->_cacheHeadLocation = v8 + 1;
+      self->_cacheHeadLocation = scanLocation + 1;
       cacheTailLocation = self->_cacheTailLocation;
-      if (v8 >= cacheTailLocation)
+      if (scanLocation >= cacheTailLocation)
       {
-        if (cacheTailLocation <= v8 - 19)
+        if (cacheTailLocation <= scanLocation - 19)
         {
-          cacheTailLocation = v8 - 19;
+          cacheTailLocation = scanLocation - 19;
         }
 
         self->_cacheTailLocation = cacheTailLocation;
@@ -382,10 +382,10 @@ uint64_t __39__PXFeedLayoutGenerator_scanTile_type___block_invoke(uint64_t a1, u
 
       else
       {
-        self->_cacheTailLocation = v8;
+        self->_cacheTailLocation = scanLocation;
       }
 
-      v11 = v8;
+      v11 = scanLocation;
     }
 
     else
@@ -407,7 +407,7 @@ uint64_t __39__PXFeedLayoutGenerator_scanTile_type___block_invoke(uint64_t a1, u
       v19 = self->_cachedBatchID[v9];
     }
 
-    v37 = v6[2];
+    v37 = testCopy[2];
     v45[0] = v11;
     *&v45[1] = v12;
     *&v45[2] = v13;
@@ -423,27 +423,27 @@ uint64_t __39__PXFeedLayoutGenerator_scanTile_type___block_invoke(uint64_t a1, u
     v51 = v18;
     *v52 = v53[0];
     *&v52[3] = *(v53 + 3);
-    v7 = v37(v6, v45);
+    v7 = v37(testCopy, v45);
     if (v7)
     {
-      if (v41)
+      if (tileCopy)
       {
-        v41->index = v11;
-        v41->imageSize.width = v12;
-        v41->imageSize.height = v13;
-        v41->minimumSize.width = v14;
-        v41->minimumSize.height = v15;
-        v41->hasCaption = v38;
-        v41->hasLikes = v39;
-        *(&v41->hasLikes + 1) = v54;
-        *(&v41->hasLikes + 5) = v55;
-        v41->commentCount = v44;
-        v41->isBatchStart = v18;
-        *(&v41->isBatchStart + 1) = v53[0];
-        *(&v41->isBatchStart + 1) = *(v53 + 3);
+        tileCopy->index = v11;
+        tileCopy->imageSize.width = v12;
+        tileCopy->imageSize.height = v13;
+        tileCopy->minimumSize.width = v14;
+        tileCopy->minimumSize.height = v15;
+        tileCopy->hasCaption = v38;
+        tileCopy->hasLikes = v39;
+        *(&tileCopy->hasLikes + 1) = v54;
+        *(&tileCopy->hasLikes + 5) = v55;
+        tileCopy->commentCount = v44;
+        tileCopy->isBatchStart = v18;
+        *(&tileCopy->isBatchStart + 1) = v53[0];
+        *(&tileCopy->isBatchStart + 1) = *(v53 + 3);
       }
 
-      [(PXFeedLayoutGenerator *)self setScanLocation:v8 + 1, v41];
+      [(PXFeedLayoutGenerator *)self setScanLocation:scanLocation + 1, tileCopy];
       [(PXFeedLayoutGenerator *)self setScannedBatchID:v19];
       if (v38 || (v18 & 1) != 0)
       {
@@ -455,25 +455,25 @@ uint64_t __39__PXFeedLayoutGenerator_scanTile_type___block_invoke(uint64_t a1, u
   return v7;
 }
 
-- (void)setScanState:(id)a3
+- (void)setScanState:(id)state
 {
-  v4 = a3;
-  -[PXFeedLayoutGenerator setScanLocation:](self, "setScanLocation:", [v4 scanLocation]);
-  v5 = [v4 scannedBatchID];
-  [(PXFeedLayoutGenerator *)self setScannedBatchID:v5];
+  stateCopy = state;
+  -[PXFeedLayoutGenerator setScanLocation:](self, "setScanLocation:", [stateCopy scanLocation]);
+  scannedBatchID = [stateCopy scannedBatchID];
+  [(PXFeedLayoutGenerator *)self setScannedBatchID:scannedBatchID];
 
-  -[PXFeedLayoutGenerator setScannedBatchHasCaption:](self, "setScannedBatchHasCaption:", [v4 scannedBatchHasCaption]);
-  v6 = [v4 scanSpecialSequenceCount];
+  -[PXFeedLayoutGenerator setScannedBatchHasCaption:](self, "setScannedBatchHasCaption:", [stateCopy scannedBatchHasCaption]);
+  scanSpecialSequenceCount = [stateCopy scanSpecialSequenceCount];
 
-  [(PXFeedLayoutGenerator *)self setScanSpecialSequenceCount:v6];
+  [(PXFeedLayoutGenerator *)self setScanSpecialSequenceCount:scanSpecialSequenceCount];
 }
 
 - (PXFeedLayoutGeneratorScanState)scanState
 {
   v3 = objc_alloc_init(PXFeedLayoutGeneratorScanState);
   [(PXFeedLayoutGeneratorScanState *)v3 setScanLocation:[(PXFeedLayoutGenerator *)self scanLocation]];
-  v4 = [(PXFeedLayoutGenerator *)self scannedBatchID];
-  [(PXFeedLayoutGeneratorScanState *)v3 setScannedBatchID:v4];
+  scannedBatchID = [(PXFeedLayoutGenerator *)self scannedBatchID];
+  [(PXFeedLayoutGeneratorScanState *)v3 setScannedBatchID:scannedBatchID];
 
   [(PXFeedLayoutGeneratorScanState *)v3 setScannedBatchHasCaption:[(PXFeedLayoutGenerator *)self scannedBatchHasCaption]];
   [(PXFeedLayoutGeneratorScanState *)v3 setScanSpecialSequenceCount:[(PXFeedLayoutGenerator *)self scanSpecialSequenceCount]];
@@ -497,9 +497,9 @@ uint64_t __39__PXFeedLayoutGenerator_scanTile_type___block_invoke(uint64_t a1, u
   }
 }
 
-- (void)enumerateFramesWithBlock:(id)a3
+- (void)enumerateFramesWithBlock:(id)block
 {
-  [(PXFeedLayoutGenerator *)self setParsedFrameBlock:a3];
+  [(PXFeedLayoutGenerator *)self setParsedFrameBlock:block];
   [(PXFeedLayoutGenerator *)self willParseTiles];
   [(PXFeedLayoutGenerator *)self parseTiles];
   [(PXFeedLayoutGenerator *)self didParseTiles];

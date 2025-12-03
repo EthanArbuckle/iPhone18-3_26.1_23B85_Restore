@@ -1,6 +1,6 @@
 @interface WFPlayMediaIntentPodcastObject
-- (BOOL)isEqual:(id)a3;
-- (WFPlayMediaIntentPodcastObject)initWithIntent:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WFPlayMediaIntentPodcastObject)initWithIntent:(id)intent;
 - (unint64_t)hash;
 @end
 
@@ -11,24 +11,24 @@
   v7.receiver = self;
   v7.super_class = WFPlayMediaIntentPodcastObject;
   v3 = [(MTLModel *)&v7 hash];
-  v4 = [(WFPlayMediaIntentPodcastObject *)self intent];
-  v5 = [v4 hash];
+  intent = [(WFPlayMediaIntentPodcastObject *)self intent];
+  v5 = [intent hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = WFPlayMediaIntentPodcastObject;
-  if ([(MTLModel *)&v13 isEqual:v4])
+  if ([(MTLModel *)&v13 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(WFPlayMediaIntentPodcastObject *)self intent];
-    v7 = [v5 intent];
-    v8 = v6;
-    v9 = v7;
+    v5 = equalCopy;
+    intent = [(WFPlayMediaIntentPodcastObject *)self intent];
+    intent2 = [v5 intent];
+    v8 = intent;
+    v9 = intent2;
     v10 = v9;
     if (v8 == v9)
     {
@@ -53,66 +53,66 @@
   return v11;
 }
 
-- (WFPlayMediaIntentPodcastObject)initWithIntent:(id)a3
+- (WFPlayMediaIntentPodcastObject)initWithIntent:(id)intent
 {
-  v5 = a3;
-  v6 = [v5 mediaItems];
-  v7 = [v6 firstObject];
-  if (v7)
+  intentCopy = intent;
+  mediaItems = [intentCopy mediaItems];
+  firstObject = [mediaItems firstObject];
+  if (firstObject)
   {
-    v8 = v7;
+    mediaContainer = firstObject;
   }
 
   else
   {
-    v8 = [v5 mediaContainer];
+    mediaContainer = [intentCopy mediaContainer];
 
-    if (!v8)
+    if (!mediaContainer)
     {
-      v22 = 0;
+      selfCopy2 = 0;
       goto LABEL_11;
     }
   }
 
   v9 = MEMORY[0x1E696AF20];
-  v10 = [v8 identifier];
-  v11 = [v9 componentsWithString:v10];
+  identifier = [mediaContainer identifier];
+  v11 = [v9 componentsWithString:identifier];
 
-  v12 = [v11 queryItems];
-  v13 = [v12 objectMatchingKey:@"name" value:@"storeCollectionId"];
+  queryItems = [v11 queryItems];
+  v13 = [queryItems objectMatchingKey:@"name" value:@"storeCollectionId"];
 
-  v14 = [v11 queryItems];
-  v15 = [v14 objectMatchingKey:@"name" value:@"uuid"];
+  queryItems2 = [v11 queryItems];
+  v15 = [queryItems2 objectMatchingKey:@"name" value:@"uuid"];
 
-  v16 = [v5 mediaContainer];
-  v17 = [v16 title];
-  v18 = v17;
-  if (!v17)
+  mediaContainer2 = [intentCopy mediaContainer];
+  title = [mediaContainer2 title];
+  title2 = title;
+  if (!title)
   {
-    v18 = [v8 title];
+    title2 = [mediaContainer title];
   }
 
   v25 = v13;
-  v19 = [v13 value];
-  v20 = [v15 value];
+  value = [v13 value];
+  value2 = [v15 value];
   v26.receiver = self;
   v26.super_class = WFPlayMediaIntentPodcastObject;
-  self = [(WFiTunesPodcastObject *)&v26 initWithName:v18 identifier:v19 podcastUUID:v20 feedURL:0 kind:@"podcast"];
+  self = [(WFiTunesPodcastObject *)&v26 initWithName:title2 identifier:value podcastUUID:value2 feedURL:0 kind:@"podcast"];
 
-  if (!v17)
+  if (!title)
   {
   }
 
   if (self)
   {
     objc_storeStrong(&self->_intent, obj);
-    v21 = self;
+    selfCopy = self;
   }
 
-  v22 = self;
+  selfCopy2 = self;
 LABEL_11:
 
-  return v22;
+  return selfCopy2;
 }
 
 id __55__WFPlayMediaIntentPodcastObject_intentJSONTransformer__block_invoke_2(uint64_t a1, void *a2)

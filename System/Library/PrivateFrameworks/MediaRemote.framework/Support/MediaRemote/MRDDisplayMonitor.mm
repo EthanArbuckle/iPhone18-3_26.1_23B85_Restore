@@ -17,12 +17,12 @@
 - (NSSet)presentedBundleIdentifiers;
 - (NSString)primaryUIApplicationBundleIdentifier;
 - (void)dealloc;
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5;
-- (void)scheduleLayoutChangeForReason:(id)a3;
-- (void)setDisplayOn:(BOOL)a3;
-- (void)setLockScreenForegrounded:(BOOL)a3;
-- (void)setPresentedBundleIdentifiers:(id)a3;
-- (void)setPrimaryUIApplicationBundleIdentifier:(id)a3;
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context;
+- (void)scheduleLayoutChangeForReason:(id)reason;
+- (void)setDisplayOn:(BOOL)on;
+- (void)setLockScreenForegrounded:(BOOL)foregrounded;
+- (void)setPresentedBundleIdentifiers:(id)identifiers;
+- (void)setPrimaryUIApplicationBundleIdentifier:(id)identifier;
 @end
 
 @implementation MRDDisplayMonitor
@@ -129,13 +129,13 @@
   [(MRDDisplayMonitor *)&v3 dealloc];
 }
 
-- (void)setDisplayOn:(BOOL)a3
+- (void)setDisplayOn:(BOOL)on
 {
-  v3 = a3;
+  onCopy = on;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (self->_displayOn != v3)
+  if (self->_displayOn != onCopy)
   {
-    self->_displayOn = v3;
+    self->_displayOn = onCopy;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100184388;
@@ -166,13 +166,13 @@
   return lockScreenForegrounded;
 }
 
-- (void)setLockScreenForegrounded:(BOOL)a3
+- (void)setLockScreenForegrounded:(BOOL)foregrounded
 {
-  v3 = a3;
+  foregroundedCopy = foregrounded;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (self->_lockScreenForegrounded != v3)
+  if (self->_lockScreenForegrounded != foregroundedCopy)
   {
-    self->_lockScreenForegrounded = v3;
+    self->_lockScreenForegrounded = foregroundedCopy;
     v5 = [NSString alloc];
     if (self->_lockScreenForegrounded)
     {
@@ -229,25 +229,25 @@
   return routePickerForegrounded;
 }
 
-- (void)setPresentedBundleIdentifiers:(id)a3
+- (void)setPresentedBundleIdentifiers:(id)identifiers
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (([v6 isEqual:self->_presentedBundleIdentifiers] & 1) == 0)
+  if (([identifiersCopy isEqual:self->_presentedBundleIdentifiers] & 1) == 0)
   {
-    objc_storeStrong(&self->_presentedBundleIdentifiers, a3);
+    objc_storeStrong(&self->_presentedBundleIdentifiers, identifiers);
     v5 = [[NSString alloc] initWithFormat:@"PresentedBundleIdentifiersChanged"];
     [(MRDDisplayMonitor *)self scheduleLayoutChangeForReason:v5];
   }
 }
 
-- (void)setPrimaryUIApplicationBundleIdentifier:(id)a3
+- (void)setPrimaryUIApplicationBundleIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (([v6 isEqual:self->_primaryBundleIdentifier] & 1) == 0)
+  if (([identifierCopy isEqual:self->_primaryBundleIdentifier] & 1) == 0)
   {
-    objc_storeStrong(&self->_primaryBundleIdentifier, a3);
+    objc_storeStrong(&self->_primaryBundleIdentifier, identifier);
     v5 = [[NSString alloc] initWithFormat:@"PrimaryUIApplicationBundleIdentifierChanged"];
     [(MRDDisplayMonitor *)self scheduleLayoutChangeForReason:v5];
   }
@@ -277,18 +277,18 @@
   return v3;
 }
 
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context
 {
-  v53 = a3;
-  v7 = a4;
-  v51 = a5;
+  monitorCopy = monitor;
+  layoutCopy = layout;
+  contextCopy = context;
   v56 = +[NSMutableSet set];
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v52 = v7;
-  obj = [v7 elements];
+  v52 = layoutCopy;
+  obj = [layoutCopy elements];
   v64 = [obj countByEnumeratingWithState:&v68 objects:v72 count:16];
   if (v64)
   {
@@ -313,57 +313,57 @@
         }
 
         v13 = *(*(&v68 + 1) + 8 * i);
-        v14 = [v13 bundleIdentifier];
+        bundleIdentifier = [v13 bundleIdentifier];
 
-        if (v14)
+        if (bundleIdentifier)
         {
-          v15 = [v13 layoutRole];
-          v16 = [v13 layoutRole];
-          if (v15 == 1 && [v13 isUIApplicationElement])
+          layoutRole = [v13 layoutRole];
+          layoutRole2 = [v13 layoutRole];
+          if (layoutRole == 1 && [v13 isUIApplicationElement])
           {
-            v17 = [v13 bundleIdentifier];
+            bundleIdentifier2 = [v13 bundleIdentifier];
 
-            v55 = v17;
+            v55 = bundleIdentifier2;
           }
 
-          if (v16 != 5)
+          if (layoutRole2 != 5)
           {
-            v18 = [v13 bundleIdentifier];
-            [v56 addObject:v18];
+            bundleIdentifier3 = [v13 bundleIdentifier];
+            [v56 addObject:bundleIdentifier3];
           }
         }
 
-        v19 = [v13 identifier];
-        HIDWORD(v65) = [v19 isEqualToString:v62];
+        identifier = [v13 identifier];
+        HIDWORD(v65) = [identifier isEqualToString:v62];
 
-        v20 = [v13 identifier];
-        LODWORD(v65) = [v20 isEqualToString:v61];
+        identifier2 = [v13 identifier];
+        LODWORD(v65) = [identifier2 isEqualToString:v61];
 
-        v21 = [v13 identifier];
-        v22 = [v21 isEqualToString:v60];
+        identifier3 = [v13 identifier];
+        v22 = [identifier3 isEqualToString:v60];
 
-        v23 = [v13 identifier];
-        v24 = [v23 isEqualToString:v59];
+        identifier4 = [v13 identifier];
+        v24 = [identifier4 isEqualToString:v59];
 
-        v25 = [v13 identifier];
-        v26 = [v25 isEqualToString:@"SBAmbientTransientOverlayViewController"];
+        identifier5 = [v13 identifier];
+        v26 = [identifier5 isEqualToString:@"SBAmbientTransientOverlayViewController"];
 
-        v27 = [v13 identifier];
-        if ([v27 isEqualToString:@"com.apple.MusicUIService"])
+        identifier6 = [v13 identifier];
+        if ([identifier6 isEqualToString:@"com.apple.MusicUIService"])
         {
           v8 = 1;
         }
 
         else
         {
-          v28 = [v13 identifier];
+          identifier7 = [v13 identifier];
           v58 = v26;
           v29 = v24;
           v30 = v22;
           v31 = v10;
           v32 = v11;
           v33 = v9;
-          v34 = [v28 isEqualToString:@"com.apple.MediaRemoteUIService"];
+          v34 = [identifier7 isEqualToString:@"com.apple.MediaRemoteUIService"];
 
           v8 |= v34;
           v9 = v33;
@@ -448,7 +448,7 @@
   {
     v47 = @"LockScreen%@Visible";
 LABEL_35:
-    v45 = v53;
+    v45 = monitorCopy;
     goto LABEL_36;
   }
 
@@ -473,8 +473,8 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  v45 = v53;
-  v46 = self;
+  v45 = monitorCopy;
+  selfCopy2 = self;
   if (v66 == routePickerForegrounded)
   {
     goto LABEL_39;
@@ -491,22 +491,22 @@ LABEL_36:
   }
 
   v50 = [v48 initWithFormat:v47, v49];
-  v46 = self;
+  selfCopy2 = self;
   [(MRDDisplayMonitor *)self scheduleLayoutChangeForReason:v50];
 
 LABEL_39:
-  os_unfair_lock_unlock(&v46->_lock);
+  os_unfair_lock_unlock(&selfCopy2->_lock);
 }
 
-- (void)scheduleLayoutChangeForReason:(id)a3
+- (void)scheduleLayoutChangeForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   os_unfair_lock_assert_owner(&self->_lock);
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = v4;
+    v9 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MRDDisplayMonitor] Layout Changed %@", buf, 0xCu);
   }
 

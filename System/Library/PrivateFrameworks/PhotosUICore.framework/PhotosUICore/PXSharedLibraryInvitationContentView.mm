@@ -1,30 +1,30 @@
 @interface PXSharedLibraryInvitationContentView
-- (PXSharedLibraryInvitationContentView)initWithFrame:(CGRect)a3;
-- (id)_createCombinedImage:(id)a3 displayScale:(double)a4 isRTL:(BOOL)a5;
-- (void)_updateImageViewWithImage:(id)a3 owner:(id)a4;
+- (PXSharedLibraryInvitationContentView)initWithFrame:(CGRect)frame;
+- (id)_createCombinedImage:(id)image displayScale:(double)scale isRTL:(BOOL)l;
+- (void)_updateImageViewWithImage:(id)image owner:(id)owner;
 - (void)_updateTextLabel;
 - (void)_updateTitleLabel;
-- (void)setOwner:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setOwner:(id)owner;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PXSharedLibraryInvitationContentView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PXSharedLibraryInvitationContentView;
-  [(PXSharedLibraryInvitationContentView *)&v4 traitCollectionDidChange:a3];
+  [(PXSharedLibraryInvitationContentView *)&v4 traitCollectionDidChange:change];
   [(PXSharedLibraryInvitationContentView *)self _updateTitleLabel];
   [(PXSharedLibraryInvitationContentView *)self _updateTextLabel];
 }
 
-- (void)setOwner:(id)a3
+- (void)setOwner:(id)owner
 {
-  v5 = a3;
-  if (self->_owner != v5)
+  ownerCopy = owner;
+  if (self->_owner != ownerCopy)
   {
-    objc_storeStrong(&self->_owner, a3);
+    objc_storeStrong(&self->_owner, owner);
     [(PXSharedLibraryInvitationContentView *)self _updateTextLabel];
     objc_initWeak(&location, self);
     PXSizeMakeSquare();
@@ -41,36 +41,36 @@ void __49__PXSharedLibraryInvitationContentView_setOwner___block_invoke(uint64_t
   [v5 _updateImageViewWithImage:v6 owner:*(a1 + 32)];
 }
 
-- (id)_createCombinedImage:(id)a3 displayScale:(double)a4 isRTL:(BOOL)a5
+- (id)_createCombinedImage:(id)image displayScale:(double)scale isRTL:(BOOL)l
 {
-  v5 = a5;
-  v7 = a4 * 60.0;
-  v8 = a4 * 22.0;
-  v9 = a4 * 6.0;
-  v10 = a3;
+  lCopy = l;
+  v7 = scale * 60.0;
+  v8 = scale * 22.0;
+  v9 = scale * 6.0;
+  imageCopy = image;
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v12 = CGBitmapContextCreate(0, v7, v7, 8uLL, 0, DeviceRGB, 1u);
   CGColorSpaceRelease(DeviceRGB);
-  v13 = [v10 CGImage];
+  cGImage = [imageCopy CGImage];
 
   v21.origin.x = 0.0;
   v21.origin.y = 0.0;
   v21.size.width = v7;
   v21.size.height = v7;
-  CGContextDrawImage(v12, v21, v13);
+  CGContextDrawImage(v12, v21, cGImage);
   CGContextResetClip(v12);
-  v14 = [MEMORY[0x1E69DC888] clearColor];
-  CGContextSetFillColorWithColor(v12, [v14 CGColor]);
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  CGContextSetFillColorWithColor(v12, [clearColor CGColor]);
 
   CGContextSetBlendMode(v12, kCGBlendModeDestinationIn);
   v15 = 40.0;
-  if (v5)
+  if (lCopy)
   {
     v15 = -2.0;
   }
 
-  v22.origin.x = v15 * a4;
-  v22.origin.y = a4 * -2.0;
+  v22.origin.x = v15 * scale;
+  v22.origin.y = scale * -2.0;
   v22.size.width = v8;
   v22.size.height = v8;
   v16 = CGPathCreateWithRoundedRect(v22, v9, v9, 0);
@@ -80,7 +80,7 @@ void __49__PXSharedLibraryInvitationContentView_setOwner___block_invoke(uint64_t
   CGPathRelease(v16);
   Image = CGBitmapContextCreateImage(v12);
   CGContextRelease(v12);
-  v18 = [MEMORY[0x1E69DCAB8] imageWithCGImage:Image scale:0 orientation:a4];
+  v18 = [MEMORY[0x1E69DCAB8] imageWithCGImage:Image scale:0 orientation:scale];
   CGImageRelease(Image);
 
   return v18;
@@ -89,49 +89,49 @@ void __49__PXSharedLibraryInvitationContentView_setOwner___block_invoke(uint64_t
 - (void)_updateTextLabel
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXSharedLibraryInvitationContentView *)self owner];
-  v4 = PXSharedLibraryFullNameForParticipant(v3);
+  owner = [(PXSharedLibraryInvitationContentView *)self owner];
+  v4 = PXSharedLibraryFullNameForParticipant(owner);
 
   v5 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
   v9 = *MEMORY[0x1E69DB648];
   v10[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v7 = PXSharedLibraryInvitationTitleForParticipantName(v4, v6);
-  v8 = [(PXSharedLibraryInvitationContentView *)self textLabel];
-  [v8 setAttributedText:v7];
+  textLabel = [(PXSharedLibraryInvitationContentView *)self textLabel];
+  [textLabel setAttributedText:v7];
 }
 
 - (void)_updateTitleLabel
 {
   v4 = [MEMORY[0x1E69DB878] px_preferredFontForTextStyle:*MEMORY[0x1E69DDD10] withSymbolicTraits:2 options:0];
-  v3 = [(PXSharedLibraryInvitationContentView *)self titleLabel];
-  [v3 setFont:v4];
+  titleLabel = [(PXSharedLibraryInvitationContentView *)self titleLabel];
+  [titleLabel setFont:v4];
 }
 
-- (void)_updateImageViewWithImage:(id)a3 owner:(id)a4
+- (void)_updateImageViewWithImage:(id)image owner:(id)owner
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9)
+  imageCopy = image;
+  ownerCopy = owner;
+  if (imageCopy)
   {
-    v7 = [(PXSharedLibraryInvitationContentView *)self owner];
+    owner = [(PXSharedLibraryInvitationContentView *)self owner];
 
-    if (v7 == v6)
+    if (owner == ownerCopy)
     {
-      v8 = [(PXSharedLibraryInvitationContentView *)self imageView];
-      [v8 setImage:v9];
+      imageView = [(PXSharedLibraryInvitationContentView *)self imageView];
+      [imageView setImage:imageCopy];
 
       [(PXSharedLibraryInvitationContentView *)self setNeedsLayout];
     }
   }
 }
 
-- (PXSharedLibraryInvitationContentView)initWithFrame:(CGRect)a3
+- (PXSharedLibraryInvitationContentView)initWithFrame:(CGRect)frame
 {
   v97[2] = *MEMORY[0x1E69E9840];
   v95.receiver = self;
   v95.super_class = PXSharedLibraryInvitationContentView;
-  v3 = [(PXSharedLibraryInvitationContentView *)&v95 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXSharedLibraryInvitationContentView *)&v95 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v94 = PXSharedLibraryPlaceholderParticipantImageWithPointSize();
@@ -166,11 +166,11 @@ void __49__PXSharedLibraryInvitationContentView_setOwner___block_invoke(uint64_t
     [(UILabel *)v3->_titleLabel setFont:v12];
 
     v13 = PXLocalizedSharedLibraryString(@"PXSharedLibrary_InvitationTitle");
-    v14 = [v13 localizedUppercaseString];
-    [(UILabel *)v3->_titleLabel setText:v14];
+    localizedUppercaseString = [v13 localizedUppercaseString];
+    [(UILabel *)v3->_titleLabel setText:localizedUppercaseString];
 
-    v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v3->_titleLabel setTextColor:v15];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v3->_titleLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)v3->_titleLabel setLineBreakMode:0];
     [(UILabel *)v3->_titleLabel setNumberOfLines:0];
@@ -202,96 +202,96 @@ void __49__PXSharedLibraryInvitationContentView_setOwner___block_invoke(uint64_t
     [v25 setAxis:1];
     v26 = v25;
     [(PXSharedLibraryInvitationContentView *)v3 addSubview:v25];
-    v27 = [(UIImageView *)v3->_imageView topAnchor];
-    v28 = [(PXSharedLibraryInvitationContentView *)v3 topAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28 constant:20.0];
+    topAnchor = [(UIImageView *)v3->_imageView topAnchor];
+    topAnchor2 = [(PXSharedLibraryInvitationContentView *)v3 topAnchor];
+    v29 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
 
     v88 = v29;
     LODWORD(v30) = 1132068864;
     [v29 setPriority:v30];
-    v31 = [(PXSharedLibraryInvitationContentView *)v3 bottomAnchor];
-    v32 = [(UIImageView *)v3->_imageView bottomAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32 constant:20.0];
+    bottomAnchor = [(PXSharedLibraryInvitationContentView *)v3 bottomAnchor];
+    bottomAnchor2 = [(UIImageView *)v3->_imageView bottomAnchor];
+    v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:20.0];
 
     v82 = v33;
     LODWORD(v34) = 1132068864;
     [v33 setPriority:v34];
-    v35 = [(UIImageView *)v3->_imageView topAnchor];
-    v36 = [(PXSharedLibraryInvitationContentView *)v3 topAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36 constant:5.0];
+    topAnchor3 = [(UIImageView *)v3->_imageView topAnchor];
+    topAnchor4 = [(PXSharedLibraryInvitationContentView *)v3 topAnchor];
+    v37 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:5.0];
 
     v69 = v37;
     LODWORD(v38) = 1132068864;
     [v37 setPriority:v38];
-    v39 = [(PXSharedLibraryInvitationContentView *)v3 bottomAnchor];
-    v40 = [(UIImageView *)v3->_imageView bottomAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40 constant:5.0];
+    bottomAnchor3 = [(PXSharedLibraryInvitationContentView *)v3 bottomAnchor];
+    bottomAnchor4 = [(UIImageView *)v3->_imageView bottomAnchor];
+    v41 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:5.0];
 
     v64 = v41;
     LODWORD(v42) = 1132068864;
     [v41 setPriority:v42];
     v74 = MEMORY[0x1E696ACD8];
-    v92 = [(UIImageView *)v3->_imageView widthAnchor];
-    v91 = [v92 constraintEqualToConstant:60.0];
+    widthAnchor = [(UIImageView *)v3->_imageView widthAnchor];
+    v91 = [widthAnchor constraintEqualToConstant:60.0];
     v96[0] = v91;
-    v90 = [(UIImageView *)v3->_imageView heightAnchor];
-    v89 = [v90 constraintEqualToConstant:60.0];
+    heightAnchor = [(UIImageView *)v3->_imageView heightAnchor];
+    v89 = [heightAnchor constraintEqualToConstant:60.0];
     v96[1] = v89;
-    v87 = [(UIImageView *)v3->_imageView leadingAnchor];
-    v86 = [(PXSharedLibraryInvitationContentView *)v3 leadingAnchor];
-    v85 = [v87 constraintEqualToAnchor:v86 constant:20.0];
+    leadingAnchor = [(UIImageView *)v3->_imageView leadingAnchor];
+    leadingAnchor2 = [(PXSharedLibraryInvitationContentView *)v3 leadingAnchor];
+    v85 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
     v96[2] = v85;
-    v84 = [(UIImageView *)v3->_imageView topAnchor];
-    v83 = [(PXSharedLibraryInvitationContentView *)v3 topAnchor];
-    v81 = [v84 constraintGreaterThanOrEqualToAnchor:v83 constant:20.0];
+    topAnchor5 = [(UIImageView *)v3->_imageView topAnchor];
+    topAnchor6 = [(PXSharedLibraryInvitationContentView *)v3 topAnchor];
+    v81 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:topAnchor6 constant:20.0];
     v96[3] = v81;
     v96[4] = v29;
-    v80 = [(PXSharedLibraryInvitationContentView *)v3 centerYAnchor];
-    v79 = [(UIImageView *)v3->_imageView centerYAnchor];
-    v78 = [v80 constraintEqualToAnchor:v79];
+    centerYAnchor = [(PXSharedLibraryInvitationContentView *)v3 centerYAnchor];
+    centerYAnchor2 = [(UIImageView *)v3->_imageView centerYAnchor];
+    v78 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v96[5] = v78;
-    v77 = [(PXSharedLibraryInvitationContentView *)v3 bottomAnchor];
-    v76 = [(UIImageView *)v3->_imageView bottomAnchor];
-    v75 = [v77 constraintGreaterThanOrEqualToAnchor:v76 constant:20.0];
+    bottomAnchor5 = [(PXSharedLibraryInvitationContentView *)v3 bottomAnchor];
+    bottomAnchor6 = [(UIImageView *)v3->_imageView bottomAnchor];
+    v75 = [bottomAnchor5 constraintGreaterThanOrEqualToAnchor:bottomAnchor6 constant:20.0];
     v96[6] = v75;
     v96[7] = v33;
-    v73 = [(UIImageView *)v3->_badgeView widthAnchor];
-    v72 = [v73 constraintEqualToConstant:24.0];
+    widthAnchor2 = [(UIImageView *)v3->_badgeView widthAnchor];
+    v72 = [widthAnchor2 constraintEqualToConstant:24.0];
     v96[8] = v72;
-    v71 = [(UIImageView *)v3->_badgeView heightAnchor];
-    v70 = [v71 constraintEqualToConstant:24.0];
+    heightAnchor2 = [(UIImageView *)v3->_badgeView heightAnchor];
+    v70 = [heightAnchor2 constraintEqualToConstant:24.0];
     v96[9] = v70;
-    v68 = [(UIImageView *)v3->_badgeView trailingAnchor];
-    v67 = [(UIImageView *)v3->_imageView trailingAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67 constant:4.0];
+    trailingAnchor = [(UIImageView *)v3->_badgeView trailingAnchor];
+    trailingAnchor2 = [(UIImageView *)v3->_imageView trailingAnchor];
+    v66 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:4.0];
     v96[10] = v66;
-    v63 = [(UIImageView *)v3->_badgeView bottomAnchor];
-    v62 = [(UIImageView *)v3->_imageView bottomAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62 constant:4.0];
+    bottomAnchor7 = [(UIImageView *)v3->_badgeView bottomAnchor];
+    bottomAnchor8 = [(UIImageView *)v3->_imageView bottomAnchor];
+    v61 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8 constant:4.0];
     v96[11] = v61;
-    v60 = [v26 leadingAnchor];
-    v59 = [(UIImageView *)v3->_imageView trailingAnchor];
-    v58 = [v60 constraintEqualToAnchor:v59 constant:12.0];
+    leadingAnchor3 = [v26 leadingAnchor];
+    trailingAnchor3 = [(UIImageView *)v3->_imageView trailingAnchor];
+    v58 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3 constant:12.0];
     v96[12] = v58;
-    v57 = [v26 topAnchor];
-    v56 = [(PXSharedLibraryInvitationContentView *)v3 topAnchor];
-    v55 = [v57 constraintGreaterThanOrEqualToAnchor:v56 constant:5.0];
+    topAnchor7 = [v26 topAnchor];
+    topAnchor8 = [(PXSharedLibraryInvitationContentView *)v3 topAnchor];
+    v55 = [topAnchor7 constraintGreaterThanOrEqualToAnchor:topAnchor8 constant:5.0];
     v96[13] = v55;
     v96[14] = v37;
-    v54 = [(PXSharedLibraryInvitationContentView *)v3 centerYAnchor];
+    centerYAnchor3 = [(PXSharedLibraryInvitationContentView *)v3 centerYAnchor];
     v43 = v26;
-    v44 = [v26 centerYAnchor];
-    v45 = [v54 constraintEqualToAnchor:v44];
+    centerYAnchor4 = [v26 centerYAnchor];
+    v45 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v96[15] = v45;
-    v46 = [(PXSharedLibraryInvitationContentView *)v3 bottomAnchor];
+    bottomAnchor9 = [(PXSharedLibraryInvitationContentView *)v3 bottomAnchor];
     v65 = v43;
-    v47 = [v43 bottomAnchor];
-    v48 = [v46 constraintGreaterThanOrEqualToAnchor:v47 constant:5.0];
+    bottomAnchor10 = [v43 bottomAnchor];
+    v48 = [bottomAnchor9 constraintGreaterThanOrEqualToAnchor:bottomAnchor10 constant:5.0];
     v96[16] = v48;
     v96[17] = v41;
-    v49 = [(PXSharedLibraryInvitationContentView *)v3 trailingAnchor];
-    v50 = [v43 trailingAnchor];
-    v51 = [v49 constraintGreaterThanOrEqualToAnchor:v50];
+    trailingAnchor4 = [(PXSharedLibraryInvitationContentView *)v3 trailingAnchor];
+    trailingAnchor5 = [v43 trailingAnchor];
+    v51 = [trailingAnchor4 constraintGreaterThanOrEqualToAnchor:trailingAnchor5];
     v96[18] = v51;
     v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v96 count:19];
     [v74 activateConstraints:v52];

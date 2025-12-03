@@ -1,8 +1,8 @@
 @interface DOCApplication
-- (BOOL)runTest:(id)a3 options:(id)a4;
+- (BOOL)runTest:(id)test options:(id)options;
 - (_TtC5Files14DOCApplication)init;
 - (id)_extendLaunchTest;
-- (void)tabbedBrowserViewController:(id)a3 didFinishInitialLoad:(BOOL)a4 ofTab:(unint64_t)a5;
+- (void)tabbedBrowserViewController:(id)controller didFinishInitialLoad:(BOOL)load ofTab:(unint64_t)tab;
 @end
 
 @implementation DOCApplication
@@ -27,22 +27,22 @@
   return v2;
 }
 
-- (void)tabbedBrowserViewController:(id)a3 didFinishInitialLoad:(BOOL)a4 ofTab:(unint64_t)a5
+- (void)tabbedBrowserViewController:(id)controller didFinishInitialLoad:(BOOL)load ofTab:(unint64_t)tab
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = self;
-  sub_10000A2AC(v6, a5);
+  loadCopy = load;
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_10000A2AC(loadCopy, tab);
 }
 
-- (BOOL)runTest:(id)a3 options:(id)a4
+- (BOOL)runTest:(id)test options:(id)options
 {
-  v4 = a4;
-  if (!a3)
+  optionsCopy = options;
+  if (!test)
   {
     v6 = 0;
     v8 = 0;
-    if (!a4)
+    if (!options)
     {
       goto LABEL_4;
     }
@@ -52,15 +52,15 @@
 
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  if (v4)
+  if (optionsCopy)
   {
 LABEL_3:
-    v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    optionsCopy = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
 LABEL_4:
-  v9 = self;
-  v10 = sub_1000216B4(v6, v8, v4);
+  selfCopy = self;
+  v10 = sub_1000216B4(v6, v8, optionsCopy);
 
   return v10 & 1;
 }

@@ -1,19 +1,19 @@
 @interface _UICollectionLayoutFramesQueryResultElementIndexKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation _UICollectionLayoutFramesQueryResultElementIndexKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (a3 && self->_index == *(a3 + 2))
+  if (equal && self->_index == *(equal + 2))
   {
-    return [(NSString *)self->_element isEqualToString:*(a3 + 1)];
+    return [(NSString *)self->_element isEqualToString:*(equal + 1)];
   }
 
   return 0;

@@ -1,7 +1,7 @@
 @interface ExtragalacticBannerLayer
 - (_TtC19ExtragalacticPoster24ExtragalacticBannerLayer)init;
-- (_TtC19ExtragalacticPoster24ExtragalacticBannerLayer)initWithCoder:(id)a3;
-- (_TtC19ExtragalacticPoster24ExtragalacticBannerLayer)initWithLayer:(id)a3;
+- (_TtC19ExtragalacticPoster24ExtragalacticBannerLayer)initWithCoder:(id)coder;
+- (_TtC19ExtragalacticPoster24ExtragalacticBannerLayer)initWithLayer:(id)layer;
 @end
 
 @implementation ExtragalacticBannerLayer
@@ -13,7 +13,7 @@
   return [(BannerLayer *)&v3 init];
 }
 
-- (_TtC19ExtragalacticPoster24ExtragalacticBannerLayer)initWithLayer:(id)a3
+- (_TtC19ExtragalacticPoster24ExtragalacticBannerLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_100013AA8();
@@ -28,12 +28,12 @@
   return v5;
 }
 
-- (_TtC19ExtragalacticPoster24ExtragalacticBannerLayer)initWithCoder:(id)a3
+- (_TtC19ExtragalacticPoster24ExtragalacticBannerLayer)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ExtragalacticBannerLayer();
-  v4 = a3;
-  v5 = [(BannerLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(BannerLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

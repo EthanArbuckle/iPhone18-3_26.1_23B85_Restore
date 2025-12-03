@@ -1,6 +1,6 @@
 @interface BWStillImageProcessorControllerConfiguration
 - (void)dealloc;
-- (void)setPostponeProcessorSetup:(BOOL)a3;
+- (void)setPostponeProcessorSetup:(BOOL)setup;
 @end
 
 @implementation BWStillImageProcessorControllerConfiguration
@@ -12,16 +12,16 @@
   [(BWStillImageProcessorControllerConfiguration *)&v3 dealloc];
 }
 
-- (void)setPostponeProcessorSetup:(BOOL)a3
+- (void)setPostponeProcessorSetup:(BOOL)setup
 {
-  if (self->_postponeProcessorSetup != a3)
+  if (self->_postponeProcessorSetup != setup)
   {
-    if (a3 && ![(BWStillImageProcessorControllerConfiguration *)self postponedProcessorSetupSupported])
+    if (setup && ![(BWStillImageProcessorControllerConfiguration *)self postponedProcessorSetupSupported])
     {
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Not supported - use -postponedProcessorSetupSupported." userInfo:0]);
     }
 
-    self->_postponeProcessorSetup = a3;
+    self->_postponeProcessorSetup = setup;
   }
 }
 

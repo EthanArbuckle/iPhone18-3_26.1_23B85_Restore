@@ -1,6 +1,6 @@
 @interface SCROVirtualIOElement
 + (id)systemElement;
-- (id)_initWithToken:(int)a3;
+- (id)_initWithToken:(int)token;
 @end
 
 @implementation SCROVirtualIOElement
@@ -26,14 +26,14 @@ uint64_t __37__SCROVirtualIOElement_systemElement__block_invoke()
   return MEMORY[0x2821F96F8](v1);
 }
 
-- (id)_initWithToken:(int)a3
+- (id)_initWithToken:(int)token
 {
   v5.receiver = self;
   v5.super_class = SCROVirtualIOElement;
   result = [(SCROVirtualIOElement *)&v5 init];
   if (result)
   {
-    *(result + 2) = a3;
+    *(result + 2) = token;
   }
 
   return result;

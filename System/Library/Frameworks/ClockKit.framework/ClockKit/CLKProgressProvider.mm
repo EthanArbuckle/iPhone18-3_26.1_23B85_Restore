@@ -1,19 +1,19 @@
 @interface CLKProgressProvider
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CLKProgressProvider)init;
-- (CLKProgressProvider)initWithCoder:(id)a3;
+- (CLKProgressProvider)initWithCoder:(id)coder;
 - (id)JSONObjectRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)startUpdatesWithHandler:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)startUpdatesWithHandler:(id)handler;
 - (int64_t)timeTravelUpdateFrequency;
 - (unint64_t)hash;
 - (void)_commonInit;
 - (void)_maybeStartOrStopUpdates;
 - (void)_update;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)stopUpdatesForToken:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPaused:(BOOL)paused;
+- (void)stopUpdatesForToken:(id)token;
 @end
 
 @implementation CLKProgressProvider
@@ -56,23 +56,23 @@
   [(CLKProgressProvider *)&v4 dealloc];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    self->_paused = a3;
+    self->_paused = paused;
     [(CLKProgressProvider *)self _maybeStartOrStopUpdates];
   }
 }
 
-- (id)startUpdatesWithHandler:(id)a3
+- (id)startUpdatesWithHandler:(id)handler
 {
   v4 = MEMORY[0x277CCABB0];
   nextUpdateToken = self->_nextUpdateToken;
-  v6 = a3;
+  handlerCopy = handler;
   v7 = [v4 numberWithUnsignedInteger:nextUpdateToken];
   ++self->_nextUpdateToken;
-  v8 = [v6 copy];
+  v8 = [handlerCopy copy];
 
   v9 = MEMORY[0x2383C4AF0](v8);
   [(NSMutableDictionary *)self->_updateHandlersByToken setObject:v9 forKeyedSubscript:v7];
@@ -82,9 +82,9 @@
   return v7;
 }
 
-- (void)stopUpdatesForToken:(id)a3
+- (void)stopUpdatesForToken:(id)token
 {
-  [(NSMutableDictionary *)self->_updateHandlersByToken removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_updateHandlersByToken removeObjectForKey:token];
 
   [(CLKProgressProvider *)self _maybeStartOrStopUpdates];
 }
@@ -162,7 +162,7 @@ id __47__CLKProgressProvider__maybeStartOrStopUpdates__block_invoke_5(uint64_t a
   [(CLKProgressProvider *)self _maybeStartOrStopUpdates];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_finalized)
   {
@@ -172,25 +172,25 @@ id __47__CLKProgressProvider__maybeStartOrStopUpdates__block_invoke_5(uint64_t a
 
   else
   {
-    v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+    v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
     [v5 setTintColor:self->_tintColor];
     [v5 setBackgroundRingAlpha:self->_backgroundRingAlpha];
     return v5;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     tintColor = self->_tintColor;
-    v6 = [v4 tintColor];
-    if (CLKEqualObjects(tintColor, v6))
+    tintColor = [equalCopy tintColor];
+    if (CLKEqualObjects(tintColor, tintColor))
     {
       backgroundRingAlpha = self->_backgroundRingAlpha;
-      [v4 backgroundRingAlpha];
+      [equalCopy backgroundRingAlpha];
       v9 = CLKFloatEqualsFloat(backgroundRingAlpha, v8);
     }
 
@@ -217,18 +217,18 @@ id __47__CLKProgressProvider__maybeStartOrStopUpdates__block_invoke_5(uint64_t a
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   tintColor = self->_tintColor;
-  v5 = a3;
-  [v5 encodeObject:tintColor forKey:@"TintColor"];
+  coderCopy = coder;
+  [coderCopy encodeObject:tintColor forKey:@"TintColor"];
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_backgroundRingAlpha];
-  [v5 encodeObject:v6 forKey:@"BackgroundRingAlpha"];
+  [coderCopy encodeObject:v6 forKey:@"BackgroundRingAlpha"];
 }
 
-- (CLKProgressProvider)initWithCoder:(id)a3
+- (CLKProgressProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CLKProgressProvider;
   v5 = [(CLKProgressProvider *)&v12 init];
@@ -236,11 +236,11 @@ id __47__CLKProgressProvider__maybeStartOrStopUpdates__block_invoke_5(uint64_t a
   if (v5)
   {
     [(CLKProgressProvider *)v5 _commonInit];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TintColor"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TintColor"];
     tintColor = v6->_tintColor;
     v6->_tintColor = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BackgroundRingAlpha"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BackgroundRingAlpha"];
     [v9 floatValue];
     v6->_backgroundRingAlpha = v10;
   }
@@ -253,8 +253,8 @@ id __47__CLKProgressProvider__maybeStartOrStopUpdates__block_invoke_5(uint64_t a
   v3 = objc_opt_new();
   v4 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v3];
 
-  v5 = [(UIColor *)self->_tintColor JSONObjectRepresentation];
-  [v4 setObject:v5 forKeyedSubscript:@"tintColor"];
+  jSONObjectRepresentation = [(UIColor *)self->_tintColor JSONObjectRepresentation];
+  [v4 setObject:jSONObjectRepresentation forKeyedSubscript:@"tintColor"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_backgroundRingAlpha];
   [v4 setObject:v6 forKeyedSubscript:@"backgroundAlpha"];

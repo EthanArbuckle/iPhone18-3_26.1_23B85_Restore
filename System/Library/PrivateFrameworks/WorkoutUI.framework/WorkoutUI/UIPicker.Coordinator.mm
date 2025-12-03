@@ -1,30 +1,30 @@
 @interface UIPicker.Coordinator
 - (_TtCV9WorkoutUIP33_2CF2A6943750EC02257617BB8FECEA7D8UIPicker11Coordinator)init;
-- (id)pickerView:(id)a3 accessibilityLabelForComponent:(int64_t)a4;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (id)pickerView:(id)view accessibilityLabelForComponent:(int64_t)component;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 @end
 
 @implementation UIPicker.Coordinator
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  if (a4 < 0)
+  if (component < 0)
   {
     __break(1u);
     goto LABEL_6;
   }
 
   v4 = *(self + OBJC_IVAR____TtCV9WorkoutUIP33_2CF2A6943750EC02257617BB8FECEA7D8UIPicker11Coordinator_components);
-  if (*(v4 + 16) <= a4)
+  if (*(v4 + 16) <= component)
   {
 LABEL_6:
     __break(1u);
     goto LABEL_7;
   }
 
-  v5 = v4 + 56 * a4;
+  v5 = v4 + 56 * component;
   v7 = *(v5 + 56);
   v6 = *(v5 + 64);
   self = v6 - v7;
@@ -37,11 +37,11 @@ LABEL_7:
   return self;
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v8 = a3;
-  v9 = self;
-  v10 = specialized UIPicker.Coordinator.pickerView(_:titleForRow:forComponent:)(a4, a5);
+  viewCopy = view;
+  selfCopy = self;
+  v10 = specialized UIPicker.Coordinator.pickerView(_:titleForRow:forComponent:)(row, component);
   v12 = v11;
 
   if (v12)
@@ -57,30 +57,30 @@ LABEL_7:
   return v13;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v8 = a3;
-  v9 = self;
-  specialized UIPicker.Coordinator.pickerView(_:didSelectRow:inComponent:)(a4, a5);
+  viewCopy = view;
+  selfCopy = self;
+  specialized UIPicker.Coordinator.pickerView(_:didSelectRow:inComponent:)(row, component);
 }
 
-- (id)pickerView:(id)a3 accessibilityLabelForComponent:(int64_t)a4
+- (id)pickerView:(id)view accessibilityLabelForComponent:(int64_t)component
 {
-  if (a4 < 0)
+  if (component < 0)
   {
     __break(1u);
     goto LABEL_10;
   }
 
   v5 = *(self + OBJC_IVAR____TtCV9WorkoutUIP33_2CF2A6943750EC02257617BB8FECEA7D8UIPicker11Coordinator_components);
-  if (*(v5 + 16) <= a4)
+  if (*(v5 + 16) <= component)
   {
 LABEL_10:
     __break(1u);
     return self;
   }
 
-  v6 = v5 + 56 * a4;
+  v6 = v5 + 56 * component;
   v7 = *(v6 + 80);
   if (v7)
   {

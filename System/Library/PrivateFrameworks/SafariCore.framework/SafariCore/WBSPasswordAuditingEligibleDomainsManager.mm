@@ -1,18 +1,18 @@
 @interface WBSPasswordAuditingEligibleDomainsManager
-- (WBSPasswordAuditingEligibleDomainsManager)initWithDomainsIneligibleForPasswordAuditing:(id)a3;
+- (WBSPasswordAuditingEligibleDomainsManager)initWithDomainsIneligibleForPasswordAuditing:(id)auditing;
 @end
 
 @implementation WBSPasswordAuditingEligibleDomainsManager
 
-- (WBSPasswordAuditingEligibleDomainsManager)initWithDomainsIneligibleForPasswordAuditing:(id)a3
+- (WBSPasswordAuditingEligibleDomainsManager)initWithDomainsIneligibleForPasswordAuditing:(id)auditing
 {
-  v4 = a3;
+  auditingCopy = auditing;
   v10.receiver = self;
   v10.super_class = WBSPasswordAuditingEligibleDomainsManager;
   v5 = [(WBSPasswordAuditingEligibleDomainsManager *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [auditingCopy copy];
     domainsIneligibleForPasswordAuditing = v5->_domainsIneligibleForPasswordAuditing;
     v5->_domainsIneligibleForPasswordAuditing = v6;
 

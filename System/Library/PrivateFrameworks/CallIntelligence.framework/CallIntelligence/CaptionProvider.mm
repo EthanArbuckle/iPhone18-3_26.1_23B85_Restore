@@ -1,11 +1,11 @@
 @interface CaptionProvider
 - (_TtC16CallIntelligence15CaptionProvider)init;
-- (void)captionsClient:(id)a3 didDisableCaptions:(BOOL)a4 error:(id)a5;
-- (void)captionsClient:(id)a3 didEnableCaptions:(BOOL)a4 error:(id)a5;
-- (void)captionsClient:(id)a3 didProduceLanguageHypothesis:(id)a4;
-- (void)captionsClient:(id)a3 didStopLanguageDetectorWithError:(id)a4;
-- (void)captionsClient:(id)a3 didUpdateCaptions:(id)a4 source:(int)a5;
-- (void)captionsServerDidDie:(id)a3;
+- (void)captionsClient:(id)client didDisableCaptions:(BOOL)captions error:(id)error;
+- (void)captionsClient:(id)client didEnableCaptions:(BOOL)captions error:(id)error;
+- (void)captionsClient:(id)client didProduceLanguageHypothesis:(id)hypothesis;
+- (void)captionsClient:(id)client didStopLanguageDetectorWithError:(id)error;
+- (void)captionsClient:(id)client didUpdateCaptions:(id)captions source:(int)source;
+- (void)captionsServerDidDie:(id)die;
 @end
 
 @implementation CaptionProvider
@@ -17,62 +17,62 @@
   return result;
 }
 
-- (void)captionsServerDidDie:(id)a3
+- (void)captionsServerDidDie:(id)die
 {
-  v4 = a3;
-  v5 = self;
+  dieCopy = die;
+  selfCopy = self;
   sub_1D2E86560();
 }
 
-- (void)captionsClient:(id)a3 didProduceLanguageHypothesis:(id)a4
+- (void)captionsClient:(id)client didProduceLanguageHypothesis:(id)hypothesis
 {
   v6 = type metadata accessor for LanguageDetectorResult(0);
   v7 = v6 - 8;
   v8 = *(*(v6 - 8) + 64);
   MEMORY[0x1EEE9AC00](v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = a4;
-  v12 = self;
-  v13 = [v11 dominantLocale];
+  hypothesisCopy = hypothesis;
+  selfCopy = self;
+  dominantLocale = [hypothesisCopy dominantLocale];
   sub_1D2EE3F28();
 
-  [v11 dominantLocaleConfidence];
+  [hypothesisCopy dominantLocaleConfidence];
   *&v10[*(v7 + 28)] = v14;
   sub_1D2E83890(v10);
 
   sub_1D2E87884(v10);
 }
 
-- (void)captionsClient:(id)a3 didEnableCaptions:(BOOL)a4 error:(id)a5
+- (void)captionsClient:(id)client didEnableCaptions:(BOOL)captions error:(id)error
 {
-  v8 = a3;
-  v9 = self;
-  v10 = a5;
-  sub_1D2E86CEC(a4, a5);
+  clientCopy = client;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1D2E86CEC(captions, error);
 }
 
-- (void)captionsClient:(id)a3 didDisableCaptions:(BOOL)a4 error:(id)a5
+- (void)captionsClient:(id)client didDisableCaptions:(BOOL)captions error:(id)error
 {
-  v8 = a3;
-  v9 = self;
-  v10 = a5;
-  sub_1D2E86EFC(a4, a5);
+  clientCopy = client;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1D2E86EFC(captions, error);
 }
 
-- (void)captionsClient:(id)a3 didUpdateCaptions:(id)a4 source:(int)a5
+- (void)captionsClient:(id)client didUpdateCaptions:(id)captions source:(int)source
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_1D2E8710C(v8);
+  clientCopy = client;
+  captionsCopy = captions;
+  selfCopy = self;
+  sub_1D2E8710C(captionsCopy);
 }
 
-- (void)captionsClient:(id)a3 didStopLanguageDetectorWithError:(id)a4
+- (void)captionsClient:(id)client didStopLanguageDetectorWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_1D2E87384(a4);
+  clientCopy = client;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1D2E87384(error);
 }
 
 @end

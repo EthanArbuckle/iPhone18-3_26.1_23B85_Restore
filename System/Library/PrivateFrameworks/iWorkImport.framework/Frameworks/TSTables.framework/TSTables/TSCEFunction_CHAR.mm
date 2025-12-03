@@ -1,19 +1,19 @@
 @interface TSCEFunction_CHAR
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_CHAR
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
   v73 = *MEMORY[0x277D85DE8];
-  v7 = **a5;
+  v7 = **arguments;
   v71 = 0;
-  v9 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v7, v8, a3, a4, 0, &v71);
+  v9 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v7, v8, context, spec, 0, &v71);
   v14 = v71;
   if (v14)
   {
-    v15 = objc_msgSend_raiseErrorOrConvert_(a3, v10, v14, v12, v13);
+    v15 = objc_msgSend_raiseErrorOrConvert_(context, v10, v14, v12, v13);
     goto LABEL_30;
   }
 
@@ -24,16 +24,16 @@
   if (v21 != 10.0 && v21 < 32.0 && v21 != 9.0)
   {
     v23 = objc_msgSend_charInputOutOfBoundsError(TSCEError, v17, v18, v19, v20);
-    v15 = objc_msgSend_raiseErrorOrConvert_(a3, v24, v23, v25, v26);
+    v15 = objc_msgSend_raiseErrorOrConvert_(context, v24, v23, v25, v26);
 
     goto LABEL_30;
   }
 
   if (v21 == 127.0)
   {
-    v27 = objc_msgSend_functionName(a4, v17, v18, v19, v20);
+    v27 = objc_msgSend_functionName(spec, v17, v18, v19, v20);
     v31 = objc_msgSend_numberErrorForFunctionName_(TSCEError, v28, v27, v29, v30);
-    v15 = objc_msgSend_raiseErrorOrConvert_(a3, v32, v31, v33, v34);
+    v15 = objc_msgSend_raiseErrorOrConvert_(context, v32, v31, v33, v34);
 
     goto LABEL_30;
   }
@@ -84,7 +84,7 @@
 LABEL_25:
     if (v7)
     {
-      objc_msgSend_formatWithContext_(v7, v39, a3, v41, v42);
+      objc_msgSend_formatWithContext_(v7, v39, context, v41, v42);
     }
 
     else
@@ -97,9 +97,9 @@ LABEL_25:
   }
 
 LABEL_24:
-  v61 = objc_msgSend_functionName(a4, v39, v53, v41, v42);
+  v61 = objc_msgSend_functionName(spec, v39, v53, v41, v42);
   v65 = objc_msgSend_numberErrorForFunctionName_(TSCEError, v62, v61, v63, v64);
-  v15 = objc_msgSend_raiseErrorOrConvert_(a3, v66, v65, v67, v68);
+  v15 = objc_msgSend_raiseErrorOrConvert_(context, v66, v65, v67, v68);
 
 LABEL_29:
 LABEL_30:

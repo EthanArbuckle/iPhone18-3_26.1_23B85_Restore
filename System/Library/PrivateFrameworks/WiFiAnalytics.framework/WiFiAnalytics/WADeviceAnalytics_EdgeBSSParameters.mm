@@ -1,5 +1,5 @@
 @interface WADeviceAnalytics_EdgeBSSParameters
-- (WADeviceAnalytics_EdgeBSSParameters)initWithBSS:(id)a3;
+- (WADeviceAnalytics_EdgeBSSParameters)initWithBSS:(id)s;
 - (id)description;
 @end
 
@@ -20,32 +20,32 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"Edge Parameters for BSSID %@: isEdge:%@, autoLeaveRssi:%hd, manualLeaveCount:%hd", self->_bssid, v2, self->_autoLeaveRssi, self->_manualLeaveCount];
 }
 
-- (WADeviceAnalytics_EdgeBSSParameters)initWithBSS:(id)a3
+- (WADeviceAnalytics_EdgeBSSParameters)initWithBSS:(id)s
 {
-  v4 = a3;
-  if (v4)
+  sCopy = s;
+  if (sCopy)
   {
     v9.receiver = self;
     v9.super_class = WADeviceAnalytics_EdgeBSSParameters;
     v5 = [(WADeviceAnalytics_EdgeBSSParameters *)&v9 init];
     if (v5)
     {
-      v6 = [v4 bssid];
-      [(WADeviceAnalytics_EdgeBSSParameters *)v5 setBssid:v6];
+      bssid = [sCopy bssid];
+      [(WADeviceAnalytics_EdgeBSSParameters *)v5 setBssid:bssid];
 
-      -[WADeviceAnalytics_EdgeBSSParameters setIsEdge:](v5, "setIsEdge:", [v4 isEdgeForLeave]);
-      if ([v4 isEdgeForLeave])
+      -[WADeviceAnalytics_EdgeBSSParameters setIsEdge:](v5, "setIsEdge:", [sCopy isEdgeForLeave]);
+      if ([sCopy isEdgeForLeave])
       {
-        v7 = [v4 autoLeaveRssi];
+        autoLeaveRssi = [sCopy autoLeaveRssi];
       }
 
       else
       {
-        v7 = 0;
+        autoLeaveRssi = 0;
       }
 
-      [(WADeviceAnalytics_EdgeBSSParameters *)v5 setAutoLeaveRssi:v7];
-      -[WADeviceAnalytics_EdgeBSSParameters setManualLeaveCount:](v5, "setManualLeaveCount:", [v4 disUsrForcedInWeakRssiCount]);
+      [(WADeviceAnalytics_EdgeBSSParameters *)v5 setAutoLeaveRssi:autoLeaveRssi];
+      -[WADeviceAnalytics_EdgeBSSParameters setManualLeaveCount:](v5, "setManualLeaveCount:", [sCopy disUsrForcedInWeakRssiCount]);
     }
   }
 

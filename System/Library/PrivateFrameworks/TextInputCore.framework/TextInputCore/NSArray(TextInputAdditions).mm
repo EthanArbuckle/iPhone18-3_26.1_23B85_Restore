@@ -8,7 +8,7 @@
 - (id)_readingStringWithin:()TextInputAdditions
 {
   v7 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v8 = [a1 subarrayWithRange:{a3, a4}];
+  v8 = [self subarrayWithRange:{a3, a4}];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __52__NSArray_TextInputAdditions___readingStringWithin___block_invoke;
@@ -25,7 +25,7 @@
 - (id)_surfaceStringWithin:()TextInputAdditions
 {
   v7 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v8 = [a1 subarrayWithRange:{a3, a4}];
+  v8 = [self subarrayWithRange:{a3, a4}];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __52__NSArray_TextInputAdditions___surfaceStringWithin___block_invoke;

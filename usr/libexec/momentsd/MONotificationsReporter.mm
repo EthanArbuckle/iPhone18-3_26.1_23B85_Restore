@@ -1,20 +1,20 @@
 @interface MONotificationsReporter
 - (id)fetchNotificationsReporterIdentification;
-- (id)init:(id)a3;
+- (id)init:(id)init;
 - (void)convertNSDateValuesToString;
 - (void)freshenNotificationsReporterIdentification;
 - (void)resetReport;
-- (void)setOnboardingStatesFromDictionary:(id)a3;
-- (void)unpackDowntimeDictionary:(id)a3;
-- (void)unpackPredictions:(id)a3;
-- (void)writeReportWithMessage:(id)a3;
+- (void)setOnboardingStatesFromDictionary:(id)dictionary;
+- (void)unpackDowntimeDictionary:(id)dictionary;
+- (void)unpackPredictions:(id)predictions;
+- (void)writeReportWithMessage:(id)message;
 @end
 
 @implementation MONotificationsReporter
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v5 = a3;
+  initCopy = init;
   v12.receiver = self;
   v12.super_class = MONotificationsReporter;
   v6 = [(MONotificationsReporter *)&v12 init];
@@ -24,7 +24,7 @@
     report = v6->_report;
     v6->_report = v7;
 
-    objc_storeStrong(&v6->_defaultsManager, a3);
+    objc_storeStrong(&v6->_defaultsManager, init);
     v9 = objc_alloc_init(NSDateFormatter);
     [(NSDateFormatter *)v9 setDateFormat:@"yyyy-MM-dd HH:mm"];
     dateFormatter = v6->_dateFormatter;
@@ -34,49 +34,49 @@
   return v6;
 }
 
-- (void)setOnboardingStatesFromDictionary:(id)a3
+- (void)setOnboardingStatesFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"settingBroaderSwitchLocation"];
-  v6 = [(MONotificationsReporter *)self report];
-  [v6 setObject:v5 forKeyedSubscript:@"isSignificantLocationEnabled"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"settingBroaderSwitchLocation"];
+  report = [(MONotificationsReporter *)self report];
+  [report setObject:v5 forKeyedSubscript:@"isSignificantLocationEnabled"];
 
-  v7 = [v4 objectForKeyedSubscript:@"systemNotificationsEnabled"];
-  v8 = [(MONotificationsReporter *)self report];
-  [v8 setObject:v7 forKeyedSubscript:@"isSystemNotificationsEnabled"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"systemNotificationsEnabled"];
+  report2 = [(MONotificationsReporter *)self report];
+  [report2 setObject:v7 forKeyedSubscript:@"isSystemNotificationsEnabled"];
 
-  v9 = [v4 objectForKeyedSubscript:@"appNotificationsEnabled"];
-  v10 = [(MONotificationsReporter *)self report];
-  [v10 setObject:v9 forKeyedSubscript:@"isAppNotificationsEnabled"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"appNotificationsEnabled"];
+  report3 = [(MONotificationsReporter *)self report];
+  [report3 setObject:v9 forKeyedSubscript:@"isAppNotificationsEnabled"];
 
-  v12 = [v4 objectForKeyedSubscript:@"screenTimeState"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"screenTimeState"];
 
-  v11 = [(MONotificationsReporter *)self report];
-  [v11 setObject:v12 forKeyedSubscript:@"screenTimeState"];
+  report4 = [(MONotificationsReporter *)self report];
+  [report4 setObject:v12 forKeyedSubscript:@"screenTimeState"];
 }
 
 - (void)freshenNotificationsReporterIdentification
 {
   v3 = +[NSUUID UUID];
-  v4 = [v3 UUIDString];
+  uUIDString = [v3 UUIDString];
 
-  [(NSMutableDictionary *)self->_report setObject:v4 forKeyedSubscript:@"reporterUUID"];
-  v5 = [(MONotificationsReporter *)self defaultsManager];
-  [v5 setObject:v4 forKey:@"NotificationReporterIdentification"];
+  [(NSMutableDictionary *)self->_report setObject:uUIDString forKeyedSubscript:@"reporterUUID"];
+  defaultsManager = [(MONotificationsReporter *)self defaultsManager];
+  [defaultsManager setObject:uUIDString forKey:@"NotificationReporterIdentification"];
 
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityNotificationReporter);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = uUIDString;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "generated new reporter identification and wrote to defaults:%@", &v7, 0xCu);
   }
 }
 
 - (id)fetchNotificationsReporterIdentification
 {
-  v2 = [(MONotificationsReporter *)self defaultsManager];
-  v3 = [v2 objectForKey:@"NotificationReporterIdentification"];
+  defaultsManager = [(MONotificationsReporter *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"NotificationReporterIdentification"];
 
   v4 = _mo_log_facility_get_os_log(&MOLogFacilityNotificationReporter);
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
@@ -104,10 +104,10 @@
   return v3;
 }
 
-- (void)unpackPredictions:(id)a3
+- (void)unpackPredictions:(id)predictions
 {
-  v56 = a3;
-  v4 = [v56 count];
+  predictionsCopy = predictions;
+  v4 = [predictionsCopy count];
   v5 = 24;
   if (v4 < 0x18)
   {
@@ -121,7 +121,7 @@
     v7 = @"locationFilterProbability";
     do
     {
-      v8 = [v56 objectAtIndexedSubscript:v6];
+      v8 = [predictionsCopy objectAtIndexedSubscript:v6];
       v9 = [NSString stringWithFormat:@"%02ld", ++v6];
       v10 = [v8 objectForKeyedSubscript:@"predictionDate"];
       v11 = v10;
@@ -131,8 +131,8 @@
         [(MONotificationsReporter *)self dateFormatter];
         v14 = v13 = v9;
         v15 = [v14 stringFromDate:v10];
-        v16 = [(MONotificationsReporter *)self report];
-        [v16 setObject:v15 forKeyedSubscript:v12];
+        report = [(MONotificationsReporter *)self report];
+        [report setObject:v15 forKeyedSubscript:v12];
 
         v10 = v11;
         v9 = v13;
@@ -146,8 +146,8 @@
         v20 = v19 * 1000.0;
         v21 = [@"availabilityProbability" stringByAppendingString:v9];
         v22 = [NSNumber numberWithDouble:v20];
-        v23 = [(MONotificationsReporter *)self report];
-        [v23 setObject:v22 forKeyedSubscript:v21];
+        report2 = [(MONotificationsReporter *)self report];
+        [report2 setObject:v22 forKeyedSubscript:v21];
 
         v10 = v11;
       }
@@ -187,7 +187,7 @@
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v36 = v56;
+  v36 = predictionsCopy;
   v37 = [v36 countByEnumeratingWithState:&v58 objects:v62 count:16];
   if (v37)
   {
@@ -235,21 +235,21 @@
   }
 
   v50 = [NSNumber numberWithDouble:v49];
-  v51 = [(MONotificationsReporter *)self report];
-  [v51 setObject:v50 forKeyedSubscript:@"maxAvailabilityProbability"];
+  report3 = [(MONotificationsReporter *)self report];
+  [report3 setObject:v50 forKeyedSubscript:@"maxAvailabilityProbability"];
 
   if (v39)
   {
-    v52 = [(MONotificationsReporter *)self dateFormatter];
-    v53 = [v52 stringFromDate:v39];
-    v54 = [(MONotificationsReporter *)self report];
-    [v54 setObject:v53 forKeyedSubscript:@"maxAvailabilityProbabilityDate"];
+    dateFormatter = [(MONotificationsReporter *)self dateFormatter];
+    v53 = [dateFormatter stringFromDate:v39];
+    report4 = [(MONotificationsReporter *)self report];
+    [report4 setObject:v53 forKeyedSubscript:@"maxAvailabilityProbabilityDate"];
   }
 }
 
-- (void)unpackDowntimeDictionary:(id)a3
+- (void)unpackDowntimeDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18[0] = @"downtimeWindowStartHourRecent";
   v18[1] = @"downtimeWindowLengthRecent";
   v18[2] = @"downtimeDetectionErrorRecent";
@@ -279,11 +279,11 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v4 objectForKeyedSubscript:{v10, v13}];
+        v11 = [dictionaryCopy objectForKeyedSubscript:{v10, v13}];
         if (v11)
         {
-          v12 = [(MONotificationsReporter *)self report];
-          [v12 setObject:v11 forKeyedSubscript:v10];
+          report = [(MONotificationsReporter *)self report];
+          [report setObject:v11 forKeyedSubscript:v10];
         }
       }
 
@@ -327,8 +327,8 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v10 = [(MONotificationsReporter *)self dateFormatter];
-            v11 = [v10 stringFromDate:v9];
+            dateFormatter = [(MONotificationsReporter *)self dateFormatter];
+            v11 = [dateFormatter stringFromDate:v9];
             [(NSMutableDictionary *)self->_report setObject:v11 forKeyedSubscript:v8];
           }
         }
@@ -341,30 +341,30 @@
   }
 }
 
-- (void)writeReportWithMessage:(id)a3
+- (void)writeReportWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[NSDate now];
   [(NSMutableDictionary *)self->_report setObject:v5 forKeyedSubscript:@"reporterWritingDate"];
 
-  [(NSMutableDictionary *)self->_report setObject:v4 forKeyedSubscript:@"reporterLoggingMessage"];
+  [(NSMutableDictionary *)self->_report setObject:messageCopy forKeyedSubscript:@"reporterLoggingMessage"];
   [(MONotificationsReporter *)self convertNSDateValuesToString];
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityNotificationReporter);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(MONotificationsReporter *)self report];
+    report = [(MONotificationsReporter *)self report];
     *buf = 138412546;
-    v16 = v4;
+    v16 = messageCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = report;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%@: %@", buf, 0x16u);
   }
 
-  v8 = [(MONotificationsReporter *)self report];
+  report2 = [(MONotificationsReporter *)self report];
   AnalyticsSendEvent();
 
-  v9 = [(MONotificationsReporter *)self report];
-  v10 = [v9 copy];
+  report3 = [(MONotificationsReporter *)self report];
+  v10 = [report3 copy];
   v14 = 0;
   v11 = [MONotificationsBiomeDonation donateNotificationReport:v10 error:&v14];
   v12 = v14;

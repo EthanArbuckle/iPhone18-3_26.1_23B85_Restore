@@ -1,27 +1,27 @@
 @interface CNSharingProfileAvatarItemProvider
-+ (id)animojiItemWithRecord:(id)a3 stickerConfiguration:(id)a4 backgroundColor:(id)a5;
-+ (id)compositeImageForImage:(id)a3 backgroundImage:(id)a4;
-+ (id)contactImageItemWithContact:(id)a3 renderer:(id)a4 logger:(id)a5 type:(int64_t)a6;
++ (id)animojiItemWithRecord:(id)record stickerConfiguration:(id)configuration backgroundColor:(id)color;
++ (id)compositeImageForImage:(id)image backgroundImage:(id)backgroundImage;
++ (id)contactImageItemWithContact:(id)contact renderer:(id)renderer logger:(id)logger type:(int64_t)type;
 + (id)descriptorForRequiredKeys;
-+ (id)monogramImageItemWithContact:(id)a3 monogramColor:(id)a4 renderer:(id)a5 RTL:(BOOL)a6;
-+ (id)originalAnimojiImageForRecord:(id)a3 stickerConfiguration:(id)a4 size:(CGSize)a5;
-+ (id)silhouetteImageItemWithRenderer:(id)a3;
-+ (id)unposedImageForAvatarRecord:(id)a3;
-- (BOOL)contactHasImageOfPhotoType:(id)a3;
++ (id)monogramImageItemWithContact:(id)contact monogramColor:(id)color renderer:(id)renderer RTL:(BOOL)l;
++ (id)originalAnimojiImageForRecord:(id)record stickerConfiguration:(id)configuration size:(CGSize)size;
++ (id)silhouetteImageItemWithRenderer:(id)renderer;
++ (id)unposedImageForAvatarRecord:(id)record;
+- (BOOL)contactHasImageOfPhotoType:(id)type;
 - (CNSharingProfileAvatarItem)animojiItem;
 - (CNSharingProfileAvatarItem)monogramItem;
 - (CNSharingProfileAvatarItem)photoItem;
 - (CNSharingProfileAvatarItem)silhouetteItem;
-- (CNSharingProfileAvatarItemProvider)initWithContact:(id)a3 avatarRecord:(id)a4 logger:(id)a5;
+- (CNSharingProfileAvatarItemProvider)initWithContact:(id)contact avatarRecord:(id)record logger:(id)logger;
 - (NSArray)avatarItems;
 - (void)buildItems;
 - (void)clearCachedItems;
 - (void)pickRandomColors;
-- (void)setAnimojiColor:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setMemojiMetadata:(id)a3;
-- (void)setMonogramColor:(id)a3;
-- (void)updateWithContact:(id)a3 fromFullPhotoPicker:(BOOL)a4;
+- (void)setAnimojiColor:(id)color;
+- (void)setConfiguration:(id)configuration;
+- (void)setMemojiMetadata:(id)metadata;
+- (void)setMonogramColor:(id)color;
+- (void)updateWithContact:(id)contact fromFullPhotoPicker:(BOOL)picker;
 @end
 
 @implementation CNSharingProfileAvatarItemProvider
@@ -124,69 +124,69 @@
   return silhouetteItem;
 }
 
-- (void)setMemojiMetadata:(id)a3
+- (void)setMemojiMetadata:(id)metadata
 {
-  v6 = a3;
-  v4 = [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration memojiMetadata];
-  v5 = [v4 isEqual:v6];
+  metadataCopy = metadata;
+  memojiMetadata = [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration memojiMetadata];
+  v5 = [memojiMetadata isEqual:metadataCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration setMemojiMetadata:v6];
+    [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration setMemojiMetadata:metadataCopy];
   }
 }
 
-- (void)setAnimojiColor:(id)a3
+- (void)setAnimojiColor:(id)color
 {
-  v6 = a3;
-  v4 = [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration animojiColor];
+  colorCopy = color;
+  animojiColor = [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration animojiColor];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = colorCopy;
+  if (animojiColor != colorCopy)
   {
-    [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration setAnimojiColor:v6];
-    v5 = v6;
+    [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration setAnimojiColor:colorCopy];
+    v5 = colorCopy;
   }
 }
 
-- (void)setMonogramColor:(id)a3
+- (void)setMonogramColor:(id)color
 {
-  v6 = a3;
-  v4 = [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration monogramColor];
+  colorCopy = color;
+  monogramColor = [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration monogramColor];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = colorCopy;
+  if (monogramColor != colorCopy)
   {
-    [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration setMonogramColor:v6];
-    v5 = v6;
+    [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration setMonogramColor:colorCopy];
+    v5 = colorCopy;
   }
 }
 
-- (void)updateWithContact:(id)a3 fromFullPhotoPicker:(BOOL)a4
+- (void)updateWithContact:(id)contact fromFullPhotoPicker:(BOOL)picker
 {
-  v7 = a3;
+  contactCopy = contact;
   p_contact = &self->_contact;
   contact = self->_contact;
-  self->_contactIsFromFullPhotoPicker = a4;
-  if (contact != v7)
+  self->_contactIsFromFullPhotoPicker = picker;
+  if (contact != contactCopy)
   {
-    v10 = v7;
-    objc_storeStrong(p_contact, a3);
+    v10 = contactCopy;
+    objc_storeStrong(p_contact, contact);
     p_contact = [(CNSharingProfileAvatarItemProvider *)self clearCachedItems];
-    v7 = v10;
+    contactCopy = v10;
   }
 
-  MEMORY[0x1EEE66BB8](p_contact, v7);
+  MEMORY[0x1EEE66BB8](p_contact, contactCopy);
 }
 
 - (void)buildItems
 {
-  v50 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self->_shouldIncludeSilhouette)
   {
     if (self->_silhouetteItem || ([objc_opt_class() silhouetteImageItemWithRenderer:self->_renderer], v3 = objc_claimAutoreleasedReturnValue(), silhouetteItem = self->_silhouetteItem, self->_silhouetteItem = v3, silhouetteItem, self->_silhouetteItem))
     {
-      [v50 addObject:?];
+      [array addObject:?];
     }
   }
 
@@ -195,10 +195,10 @@
     if (self->_animojiItem)
     {
 LABEL_16:
-      v21 = [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration memojiMetadata];
-      [(CNSharingProfileAvatarItem *)self->_animojiItem setMemojiMetadata:v21];
+      memojiMetadata = [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration memojiMetadata];
+      [(CNSharingProfileAvatarItem *)self->_animojiItem setMemojiMetadata:memojiMetadata];
 
-      [v50 addObject:self->_animojiItem];
+      [array addObject:self->_animojiItem];
       animojiItem = self->_animojiItem;
       if (self->_previousAnimojiItem != animojiItem)
       {
@@ -213,8 +213,8 @@ LABEL_16:
       v5 = objc_opt_class();
       contact = self->_contact;
       renderer = self->_renderer;
-      v8 = [(CNSharingProfileAvatarItemProvider *)self logger];
-      v9 = [v5 contactImageItemWithContact:contact renderer:renderer logger:v8 type:3];
+      logger = [(CNSharingProfileAvatarItemProvider *)self logger];
+      v9 = [v5 contactImageItemWithContact:contact renderer:renderer logger:logger type:3];
 
       [(CNSharingProfileAvatarItem *)v9 setWasSetFromFullPhotoPicker:self->_contactIsFromFullPhotoPicker];
       v10 = self->_animojiItem;
@@ -241,13 +241,13 @@ LABEL_16:
         v10 = [CNPhotoPickerVariantsManager sharingProfileAvatarPoseConfigurationForAvatarRecord:?];
         v13 = objc_opt_class();
         avatarRecord = self->_avatarRecord;
-        v15 = [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration animojiColor];
-        v16 = [v15 color];
-        v17 = [v13 animojiItemWithRecord:avatarRecord stickerConfiguration:v10 backgroundColor:v16];
+        animojiColor = [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration animojiColor];
+        color = [animojiColor color];
+        v17 = [v13 animojiItemWithRecord:avatarRecord stickerConfiguration:v10 backgroundColor:color];
 
-        v18 = [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration animojiColor];
-        v19 = [v18 colorName];
-        [(CNSharingProfileAvatarItem *)v17 setVariantIdentifier:v19];
+        animojiColor2 = [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration animojiColor];
+        colorName = [animojiColor2 colorName];
+        [(CNSharingProfileAvatarItem *)v17 setVariantIdentifier:colorName];
 
         v20 = self->_animojiItem;
         self->_animojiItem = v17;
@@ -276,11 +276,11 @@ LABEL_18:
       v23 = objc_opt_class();
       v24 = self->_contact;
       v25 = self->_renderer;
-      v26 = [(CNSharingProfileAvatarItemProvider *)self logger];
+      logger2 = [(CNSharingProfileAvatarItemProvider *)self logger];
       v27 = v23;
       v28 = v24;
       v29 = v25;
-      v30 = v26;
+      v30 = logger2;
       v31 = 4;
     }
 
@@ -311,11 +311,11 @@ LABEL_25:
       v32 = objc_opt_class();
       v33 = self->_contact;
       v34 = self->_renderer;
-      v26 = [(CNSharingProfileAvatarItemProvider *)self logger];
+      logger2 = [(CNSharingProfileAvatarItemProvider *)self logger];
       v27 = v32;
       v28 = v33;
       v29 = v34;
-      v30 = v26;
+      v30 = logger2;
       v31 = 5;
     }
 
@@ -326,7 +326,7 @@ LABEL_25:
   }
 
 LABEL_27:
-  [v50 addObject:?];
+  [array addObject:?];
   v37 = self->_photoItem;
   if (self->_previousPhotoItem != v37)
   {
@@ -341,8 +341,8 @@ LABEL_29:
     {
       v39 = objc_opt_class();
       v40 = self->_contact;
-      v41 = [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration monogramColor];
-      v42 = [v39 monogramImageItemWithContact:v40 monogramColor:v41 renderer:self->_renderer RTL:0];
+      monogramColor = [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration monogramColor];
+      v42 = [v39 monogramImageItemWithContact:v40 monogramColor:monogramColor renderer:self->_renderer RTL:0];
 
       if ([(CNContact *)self->_contact rawImageType]== 2)
       {
@@ -350,9 +350,9 @@ LABEL_29:
         [(CNSharingProfileAvatarItem *)v42 setWasSetFromFullPhotoPicker:v43];
       }
 
-      v45 = [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration monogramColor];
-      v46 = [v45 colorName];
-      [(CNSharingProfileAvatarItem *)v42 setVariantIdentifier:v46];
+      monogramColor2 = [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration monogramColor];
+      colorName2 = [monogramColor2 colorName];
+      [(CNSharingProfileAvatarItem *)v42 setVariantIdentifier:colorName2];
 
       v47 = self->_monogramItem;
       self->_monogramItem = v42;
@@ -360,20 +360,20 @@ LABEL_29:
       monogramItem = self->_monogramItem;
     }
 
-    [v50 addObject:monogramItem];
+    [array addObject:monogramItem];
   }
 
-  v48 = [v50 copy];
+  v48 = [array copy];
   items = self->_items;
   self->_items = v48;
 }
 
-- (BOOL)contactHasImageOfPhotoType:(id)a3
+- (BOOL)contactHasImageOfPhotoType:(id)type
 {
-  v3 = a3;
-  if ([v3 imageDataAvailable])
+  typeCopy = type;
+  if ([typeCopy imageDataAvailable])
   {
-    v4 = [v3 rawImageType] == 1 || objc_msgSend(v3, "rawImageType") == 0;
+    v4 = [typeCopy rawImageType] == 1 || objc_msgSend(typeCopy, "rawImageType") == 0;
   }
 
   else
@@ -392,18 +392,18 @@ LABEL_29:
   return items;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (v5)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
     configuration = self->_configuration;
     p_configuration = &self->_configuration;
-    if (configuration != v5)
+    if (configuration != configurationCopy)
     {
-      v8 = v5;
-      objc_storeStrong(p_configuration, a3);
-      v5 = v8;
+      v8 = configurationCopy;
+      objc_storeStrong(p_configuration, configuration);
+      configurationCopy = v8;
     }
   }
 }
@@ -420,33 +420,33 @@ LABEL_29:
     variantsManager = self->_variantsManager;
   }
 
-  v6 = [(CNPhotoPickerVariantsManager *)variantsManager avatarBackgrounds];
-  v7 = [v6 count];
+  avatarBackgrounds = [(CNPhotoPickerVariantsManager *)variantsManager avatarBackgrounds];
+  v7 = [avatarBackgrounds count];
 
   v8 = arc4random_uniform(v7 - 1);
-  v9 = [(CNPhotoPickerVariantsManager *)self->_variantsManager avatarBackgrounds];
-  v10 = [v9 objectAtIndexedSubscript:v8 + 1];
+  avatarBackgrounds2 = [(CNPhotoPickerVariantsManager *)self->_variantsManager avatarBackgrounds];
+  v10 = [avatarBackgrounds2 objectAtIndexedSubscript:v8 + 1];
   [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration setAnimojiColor:v10];
 
-  v12 = [MEMORY[0x1E69BDC50] availableColors];
-  v11 = [v12 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v12, "count") - 1) + 1}];
+  availableColors = [MEMORY[0x1E69BDC50] availableColors];
+  v11 = [availableColors objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(availableColors, "count") - 1) + 1}];
   [(CNSharingProfileAvatarItemProviderConfiguration *)self->_configuration setMonogramColor:v11];
 }
 
-- (CNSharingProfileAvatarItemProvider)initWithContact:(id)a3 avatarRecord:(id)a4 logger:(id)a5
+- (CNSharingProfileAvatarItemProvider)initWithContact:(id)contact avatarRecord:(id)record logger:(id)logger
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contactCopy = contact;
+  recordCopy = record;
+  loggerCopy = logger;
   v21.receiver = self;
   v21.super_class = CNSharingProfileAvatarItemProvider;
   v12 = [(CNSharingProfileAvatarItemProvider *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_contact, a3);
-    objc_storeStrong(&v13->_avatarRecord, a4);
-    objc_storeStrong(&v13->_logger, a5);
+    objc_storeStrong(&v12->_contact, contact);
+    objc_storeStrong(&v13->_avatarRecord, record);
+    objc_storeStrong(&v13->_logger, logger);
     v14 = +[CNAvatarImageRendererSettings defaultSettings];
     v15 = [[CNAvatarImageRenderer alloc] initWithSettings:v14];
     renderer = v13->_renderer;
@@ -466,32 +466,32 @@ LABEL_29:
   return v13;
 }
 
-+ (id)compositeImageForImage:(id)a3 backgroundImage:(id)a4
++ (id)compositeImageForImage:(id)image backgroundImage:(id)backgroundImage
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 size];
+  backgroundImageCopy = backgroundImage;
+  imageCopy = image;
+  [imageCopy size];
   v8 = v7;
-  [v6 size];
+  [imageCopy size];
   v10 = v9;
-  [v6 scale];
+  [imageCopy scale];
   v12 = v11;
   v17.width = v8;
   v17.height = v10;
   UIGraphicsBeginImageContextWithOptions(v17, 0, v12);
   v13 = UIGraphicsGetImageFromCurrentImageContext();
-  [v5 drawInRect:{0.0, 0.0, v8, v10}];
+  [backgroundImageCopy drawInRect:{0.0, 0.0, v8, v10}];
 
-  [v6 drawInRect:{0.0, 0.0, v8, v10}];
+  [imageCopy drawInRect:{0.0, 0.0, v8, v10}];
   v14 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
   return v14;
 }
 
-+ (id)unposedImageForAvatarRecord:(id)a3
++ (id)unposedImageForAvatarRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2050000000;
@@ -529,36 +529,36 @@ LABEL_29:
 
   v8 = v7;
   _Block_object_dispose(&v17, 8);
-  v9 = [v7 largeThumbnailScope];
-  v10 = [v6 imageForRecord:v3 scope:v9];
+  largeThumbnailScope = [v7 largeThumbnailScope];
+  v10 = [v6 imageForRecord:recordCopy scope:largeThumbnailScope];
 
   return v10;
 }
 
-+ (id)animojiItemWithRecord:(id)a3 stickerConfiguration:(id)a4 backgroundColor:(id)a5
++ (id)animojiItemWithRecord:(id)record stickerConfiguration:(id)configuration backgroundColor:(id)color
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  configurationCopy = configuration;
+  colorCopy = color;
   v11 = [CNSharingProfileAvatarItem alloc];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __97__CNSharingProfileAvatarItemProvider_animojiItemWithRecord_stickerConfiguration_backgroundColor___block_invoke;
   v21[3] = &unk_1E74E4388;
-  v25 = a1;
-  v22 = v8;
-  v23 = v9;
-  v24 = v10;
+  selfCopy = self;
+  v22 = recordCopy;
+  v23 = configurationCopy;
+  v24 = colorCopy;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __97__CNSharingProfileAvatarItemProvider_animojiItemWithRecord_stickerConfiguration_backgroundColor___block_invoke_2;
   v17[3] = &unk_1E74E43B0;
   v19 = v23;
-  v20 = a1;
+  selfCopy2 = self;
   v18 = v22;
   v12 = v23;
   v13 = v22;
-  v14 = v10;
+  v14 = colorCopy;
   v15 = [(CNSharingProfileAvatarItem *)v11 initWithImageProvider:v21 originalImageProvider:v17 type:2];
 
   return v15;
@@ -573,18 +573,18 @@ id __97__CNSharingProfileAvatarItemProvider_animojiItemWithRecord_stickerConfigu
   return v4;
 }
 
-+ (id)originalAnimojiImageForRecord:(id)a3 stickerConfiguration:(id)a4 size:(CGSize)a5
++ (id)originalAnimojiImageForRecord:(id)record stickerConfiguration:(id)configuration size:(CGSize)size
 {
-  width = a5.width;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v9)
+  width = size.width;
+  recordCopy = record;
+  configurationCopy = configuration;
+  v10 = configurationCopy;
+  if (configurationCopy)
   {
-    [v9 loadIfNeeded];
-    v11 = [[CNAvatarStickerGeneratorProvider alloc] initWithAvatarRecord:v8];
-    v12 = [(CNAvatarStickerGeneratorProvider *)v11 generator];
-    [v12 setAsync:0];
+    [configurationCopy loadIfNeeded];
+    v11 = [[CNAvatarStickerGeneratorProvider alloc] initWithAvatarRecord:recordCopy];
+    generator = [(CNAvatarStickerGeneratorProvider *)v11 generator];
+    [generator setAsync:0];
     v26 = 0;
     v27 = &v26;
     v28 = 0x2050000000;
@@ -617,14 +617,14 @@ id __97__CNSharingProfileAvatarItemProvider_animojiItemWithRecord_stickerConfigu
     v19[2] = __94__CNSharingProfileAvatarItemProvider_originalAnimojiImageForRecord_stickerConfiguration_size___block_invoke;
     v19[3] = &unk_1E74E4360;
     v19[4] = &v20;
-    [v12 stickerImageWithConfiguration:v10 options:v15 completionHandler:v19];
+    [generator stickerImageWithConfiguration:v10 options:v15 completionHandler:v19];
     v17 = *(v21 + 40);
     _Block_object_dispose(&v20, 8);
   }
 
   else
   {
-    v17 = [a1 unposedImageForAvatarRecord:v8];
+    v17 = [self unposedImageForAvatarRecord:recordCopy];
   }
 
   return v17;
@@ -640,15 +640,15 @@ uint64_t __94__CNSharingProfileAvatarItemProvider_originalAnimojiImageForRecord_
   return MEMORY[0x1EEE66BB8](v3, v5);
 }
 
-+ (id)monogramImageItemWithContact:(id)a3 monogramColor:(id)a4 renderer:(id)a5 RTL:(BOOL)a6
++ (id)monogramImageItemWithContact:(id)contact monogramColor:(id)color renderer:(id)renderer RTL:(BOOL)l
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
+  contactCopy = contact;
+  colorCopy = color;
+  rendererCopy = renderer;
+  v12 = contactCopy;
   if (![v12 imageDataAvailable])
   {
-    v13 = v10;
+    v13 = colorCopy;
     v14 = 0;
     goto LABEL_5;
   }
@@ -664,7 +664,7 @@ LABEL_5:
 
   v15 = [v12 mutableCopy];
   [v15 removePhoto];
-  v13 = v10;
+  v13 = colorCopy;
 
   v14 = 0;
 LABEL_7:
@@ -673,13 +673,13 @@ LABEL_7:
   v23 = 3221225472;
   v24 = __94__CNSharingProfileAvatarItemProvider_monogramImageItemWithContact_monogramColor_renderer_RTL___block_invoke;
   v25 = &unk_1E74E4338;
-  v29 = a6;
+  lCopy = l;
   v30 = v14;
   v26 = v13;
-  v27 = v11;
+  v27 = rendererCopy;
   v28 = v15;
   v17 = v15;
-  v18 = v11;
+  v18 = rendererCopy;
   v19 = v13;
   v20 = [(CNSharingProfileAvatarItem *)v16 initWithImageProvider:&v22 type:1];
   [(CNSharingProfileAvatarItem *)v20 setWasSetFromFullPhotoPicker:v14, v22, v23, v24, v25];
@@ -710,20 +710,20 @@ id __94__CNSharingProfileAvatarItemProvider_monogramImageItemWithContact_monogra
   return v11;
 }
 
-+ (id)contactImageItemWithContact:(id)a3 renderer:(id)a4 logger:(id)a5 type:(int64_t)a6
++ (id)contactImageItemWithContact:(id)contact renderer:(id)renderer logger:(id)logger type:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  contactCopy = contact;
+  rendererCopy = renderer;
   v10 = [CNSharingProfileAvatarItem alloc];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __87__CNSharingProfileAvatarItemProvider_contactImageItemWithContact_renderer_logger_type___block_invoke;
   v15[3] = &unk_1E74E4310;
-  v16 = v9;
-  v17 = v8;
-  v11 = v8;
-  v12 = v9;
-  v13 = [(CNSharingProfileAvatarItem *)v10 initWithImageProvider:v15 type:a6];
+  v16 = rendererCopy;
+  v17 = contactCopy;
+  v11 = contactCopy;
+  v12 = rendererCopy;
+  v13 = [(CNSharingProfileAvatarItem *)v10 initWithImageProvider:v15 type:type];
 
   return v13;
 }
@@ -743,16 +743,16 @@ id __87__CNSharingProfileAvatarItemProvider_contactImageItemWithContact_renderer
   return v11;
 }
 
-+ (id)silhouetteImageItemWithRenderer:(id)a3
++ (id)silhouetteImageItemWithRenderer:(id)renderer
 {
-  v3 = a3;
+  rendererCopy = renderer;
   v4 = [CNSharingProfileAvatarItem alloc];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__CNSharingProfileAvatarItemProvider_silhouetteImageItemWithRenderer___block_invoke;
   v8[3] = &unk_1E74E42E8;
-  v9 = v3;
-  v5 = v3;
+  v9 = rendererCopy;
+  v5 = rendererCopy;
   v6 = [(CNSharingProfileAvatarItem *)v4 initWithImageProvider:v8 type:0];
 
   return v6;

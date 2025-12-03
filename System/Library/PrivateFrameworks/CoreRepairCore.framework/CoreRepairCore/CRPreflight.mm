@@ -1,31 +1,31 @@
 @interface CRPreflight
-- (BOOL)verify:(id)a3 signature:(id)a4 keyBlob:(id)a5;
-- (id)_getVersionInfo:(id)a3;
-- (id)_sendBAARequest:(id)a3 proxySettings:(id)a4 withError:(id *)a5;
-- (id)componentsWithPrimaryKeys:(id)a3;
-- (id)requestBAACertificates:(id)a3 apticket:(id)a4 proxySettings:(id)a5 withError:(id *)a6;
-- (id)sha256Data:(id)a3;
-- (id)sign:(id)a3 keyBlob:(id)a4;
-- (void)challengeStrongComponents:(id)a3 withReply:(id)a4;
-- (void)issueRepairCert:(id)a3 withReply:(id)a4;
-- (void)queryRepairDeltaWithReply:(id)a3;
+- (BOOL)verify:(id)verify signature:(id)signature keyBlob:(id)blob;
+- (id)_getVersionInfo:(id)info;
+- (id)_sendBAARequest:(id)request proxySettings:(id)settings withError:(id *)error;
+- (id)componentsWithPrimaryKeys:(id)keys;
+- (id)requestBAACertificates:(id)certificates apticket:(id)apticket proxySettings:(id)settings withError:(id *)error;
+- (id)sha256Data:(id)data;
+- (id)sign:(id)sign keyBlob:(id)blob;
+- (void)challengeStrongComponents:(id)components withReply:(id)reply;
+- (void)issueRepairCert:(id)cert withReply:(id)reply;
+- (void)queryRepairDeltaWithReply:(id)reply;
 @end
 
 @implementation CRPreflight
 
-- (id)componentsWithPrimaryKeys:(id)a3
+- (id)componentsWithPrimaryKeys:(id)keys
 {
   v57 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  keysCopy = keys;
   v4 = +[CRFDRDeviceController sharedSingleton];
-  v36 = [v4 getHandlerForDevice];
+  getHandlerForDevice = [v4 getHandlerForDevice];
 
-  v5 = [v3 mutableCopy];
+  v5 = [keysCopy mutableCopy];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v6 = v3;
+  v6 = keysCopy;
   v7 = [v6 countByEnumeratingWithState:&v47 objects:v56 count:16];
   v8 = v6;
   if (!v7)
@@ -75,7 +75,7 @@ LABEL_33:
                 objc_enumerationMutation(obj);
               }
 
-              v15 = [v36 spcWithComponent:v12 withIdentifier:*(*(&v43 + 1) + 8 * i)];
+              v15 = [getHandlerForDevice spcWithComponent:v12 withIdentifier:*(*(&v43 + 1) + 8 * i)];
               v16 = [CRDeviceMap getKeysWithSPC:v15];
               v39 = 0u;
               v40 = 0u;
@@ -173,10 +173,10 @@ LABEL_34:
   return v5;
 }
 
-- (void)queryRepairDeltaWithReply:(id)a3
+- (void)queryRepairDeltaWithReply:(id)reply
 {
   v67 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v5 = objc_opt_new();
   v54 = 0;
   v6 = [CRFDRUtils findUnsealedDataWithError:&v54];
@@ -229,7 +229,7 @@ LABEL_34:
     *&v19 = 136315650;
     v39 = v19;
     v44 = v8;
-    v45 = v4;
+    v45 = replyCopy;
     v43 = v10;
     v40 = *v51;
     while (1)
@@ -308,7 +308,7 @@ LABEL_34:
                 v10 = v43;
                 v8 = v44;
                 v6 = v43;
-                v4 = v45;
+                replyCopy = v45;
                 goto LABEL_46;
               }
 
@@ -367,7 +367,7 @@ LABEL_35:
 
         v21 = v42 + 1;
         v8 = v44;
-        v4 = v45;
+        replyCopy = v45;
         v10 = v43;
         v20 = v40;
       }
@@ -394,19 +394,19 @@ LABEL_45:
   v17 = 1;
 LABEL_46:
 
-  if (v4)
+  if (replyCopy)
   {
-    v4[2](v4, v17, v5, v8);
+    replyCopy[2](replyCopy, v17, v5, v8);
   }
 
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (void)issueRepairCert:(id)a3 withReply:(id)a4
+- (void)issueRepairCert:(id)cert withReply:(id)reply
 {
   v82 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  certCopy = cert;
+  replyCopy = reply;
   v63 = 0;
   v8 = handleForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -414,33 +414,33 @@ LABEL_46:
     *buf = 136315394;
     v79 = "[CRPreflight issueRepairCert:withReply:]";
     v80 = 2112;
-    v81 = v6;
+    v81 = certCopy;
     _os_log_impl(&dword_1CEDC5000, v8, OS_LOG_TYPE_DEFAULT, "%s parameters: %@", buf, 0x16u);
   }
 
-  if (!v6)
+  if (!certCopy)
   {
     v20 = 0;
     v19 = 0;
     goto LABEL_19;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"miniPreflight"];
-  if (v9 && (v10 = v9, [v6 objectForKeyedSubscript:@"miniPreflight"], v11 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v11, v10, (isKindOfClass & 1) != 0))
+  v9 = [certCopy objectForKeyedSubscript:@"miniPreflight"];
+  if (v9 && (v10 = v9, [certCopy objectForKeyedSubscript:@"miniPreflight"], v11 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v11, v10, (isKindOfClass & 1) != 0))
   {
-    v13 = [v6 objectForKeyedSubscript:@"miniPreflight"];
-    v14 = [v13 BOOLValue];
+    v13 = [certCopy objectForKeyedSubscript:@"miniPreflight"];
+    bOOLValue = [v13 BOOLValue];
   }
 
   else
   {
-    v14 = 0;
+    bOOLValue = 0;
   }
 
-  v15 = [v6 objectForKeyedSubscript:@"socksHost"];
-  if (v15 && (v16 = v15, [v6 objectForKeyedSubscript:@"socksHost"], v17 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v18 = objc_opt_isKindOfClass(), v17, v16, (v18 & 1) != 0))
+  v15 = [certCopy objectForKeyedSubscript:@"socksHost"];
+  if (v15 && (v16 = v15, [certCopy objectForKeyedSubscript:@"socksHost"], v17 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v18 = objc_opt_isKindOfClass(), v17, v16, (v18 & 1) != 0))
   {
-    v19 = [v6 objectForKeyedSubscript:@"socksHost"];
+    v19 = [certCopy objectForKeyedSubscript:@"socksHost"];
   }
 
   else
@@ -448,12 +448,12 @@ LABEL_46:
     v19 = 0;
   }
 
-  v20 = [v6 objectForKeyedSubscript:@"socksPort"];
+  v20 = [certCopy objectForKeyedSubscript:@"socksPort"];
   if (!v20)
   {
 LABEL_18:
     v23 = 0;
-    if (v14)
+    if (bOOLValue)
     {
       goto LABEL_36;
     }
@@ -539,7 +539,7 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  v21 = [v6 objectForKeyedSubscript:@"socksPort"];
+  v21 = [certCopy objectForKeyedSubscript:@"socksPort"];
   objc_opt_class();
   v22 = objc_opt_isKindOfClass();
 
@@ -549,8 +549,8 @@ LABEL_42:
     goto LABEL_18;
   }
 
-  v20 = [v6 objectForKeyedSubscript:@"socksPort"];
-  if ((v14 & 1) == 0)
+  v20 = [certCopy objectForKeyedSubscript:@"socksPort"];
+  if ((bOOLValue & 1) == 0)
   {
     goto LABEL_19;
   }
@@ -592,7 +592,7 @@ LABEL_36:
   {
     v34 = 0;
     v46 = 1;
-    if (!v7)
+    if (!replyCopy)
     {
       goto LABEL_45;
     }
@@ -602,15 +602,15 @@ LABEL_36:
 
   if (v45)
   {
-    v51 = [v45 domain];
-    v52 = [v51 isEqual:@"com.apple.corerepair"];
+    domain = [v45 domain];
+    v52 = [domain isEqual:@"com.apple.corerepair"];
 
     if (v52)
     {
       v34 = v43;
       v46 = 0;
       v43 = v34;
-      if (!v7)
+      if (!replyCopy)
       {
         goto LABEL_45;
       }
@@ -628,11 +628,11 @@ LABEL_36:
 
 LABEL_43:
   v46 = 0;
-  if (v7)
+  if (replyCopy)
   {
 LABEL_44:
-    v49 = [(CRRIK *)v38 keyBlob];
-    v7[2](v7, v46, v49, v39, v34);
+    keyBlob = [(CRRIK *)v38 keyBlob];
+    replyCopy[2](replyCopy, v46, keyBlob, v39, v34);
   }
 
 LABEL_45:
@@ -641,25 +641,25 @@ LABEL_45:
   v50 = *MEMORY[0x1E69E9840];
 }
 
-- (void)challengeStrongComponents:(id)a3 withReply:(id)a4
+- (void)challengeStrongComponents:(id)components withReply:(id)reply
 {
   v74[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  componentsCopy = components;
+  replyCopy = reply;
   v7 = objc_opt_new();
   v53 = +[CRComponentSigning sharedInstance];
-  if (v5)
+  if (componentsCopy)
   {
-    v8 = [v5 objectForKeyedSubscript:@"challenges"];
+    v8 = [componentsCopy objectForKeyedSubscript:@"challenges"];
     if (v8)
     {
-      v9 = [v5 objectForKeyedSubscript:@"challenges"];
+      v9 = [componentsCopy objectForKeyedSubscript:@"challenges"];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v8 = [v5 objectForKeyedSubscript:@"challenges"];
+        v8 = [componentsCopy objectForKeyedSubscript:@"challenges"];
       }
 
       else
@@ -668,10 +668,10 @@ LABEL_45:
       }
     }
 
-    v12 = [v5 objectForKeyedSubscript:@"socksHost"];
-    if (v12 && (v13 = v12, [v5 objectForKeyedSubscript:@"socksHost"], v14 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v15 = objc_opt_isKindOfClass(), v14, v13, (v15 & 1) != 0))
+    v12 = [componentsCopy objectForKeyedSubscript:@"socksHost"];
+    if (v12 && (v13 = v12, [componentsCopy objectForKeyedSubscript:@"socksHost"], v14 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v15 = objc_opt_isKindOfClass(), v14, v13, (v15 & 1) != 0))
     {
-      v16 = [v5 objectForKeyedSubscript:@"socksHost"];
+      v16 = [componentsCopy objectForKeyedSubscript:@"socksHost"];
     }
 
     else
@@ -679,17 +679,17 @@ LABEL_45:
       v16 = 0;
     }
 
-    v11 = [v5 objectForKeyedSubscript:@"socksPort"];
+    v11 = [componentsCopy objectForKeyedSubscript:@"socksPort"];
     v51 = v16;
     if (v11)
     {
-      v17 = [v5 objectForKeyedSubscript:@"socksPort"];
+      v17 = [componentsCopy objectForKeyedSubscript:@"socksPort"];
       objc_opt_class();
       v18 = objc_opt_isKindOfClass();
 
       if (v18)
       {
-        v19 = [v5 objectForKeyedSubscript:@"socksPort"];
+        v19 = [componentsCopy objectForKeyedSubscript:@"socksPort"];
         v11 = v19;
         if (v16 && v19)
         {
@@ -734,8 +734,8 @@ LABEL_45:
 
   v23 = v22;
   v48 = v11;
-  v49 = v6;
-  v50 = v5;
+  v49 = replyCopy;
+  v50 = componentsCopy;
   v24 = *v61;
 LABEL_19:
   v25 = 0;
@@ -895,8 +895,8 @@ LABEL_55:
       {
         v41 = 0;
         v42 = 1;
-        v6 = v49;
-        v5 = v50;
+        replyCopy = v49;
+        componentsCopy = v50;
         v43 = v51;
         goto LABEL_68;
       }
@@ -908,7 +908,7 @@ LABEL_55:
   CFRelease(v33);
   v35 = v58;
 LABEL_65:
-  v5 = v50;
+  componentsCopy = v50;
   v43 = v51;
   if (v35)
   {
@@ -923,32 +923,32 @@ LABEL_65:
   v41 = [v44 errorWithDomain:@"com.apple.corerepair" code:-42 userInfo:v46];
 
   v42 = 0;
-  v6 = v49;
+  replyCopy = v49;
 LABEL_68:
   v11 = v48;
 LABEL_69:
 
-  if (v6)
+  if (replyCopy)
   {
-    v6[2](v6, v42, v7, v41);
+    replyCopy[2](replyCopy, v42, v7, v41);
   }
 
   v47 = *MEMORY[0x1E69E9840];
 }
 
-- (id)sign:(id)a3 keyBlob:(id)a4
+- (id)sign:(id)sign keyBlob:(id)blob
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  signCopy = sign;
+  blobCopy = blob;
+  if (blobCopy)
   {
-    if (v6)
+    if (signCopy)
     {
-      v8 = [[CRRIK alloc] initWithKeyBlob:v7];
+      v8 = [[CRRIK alloc] initWithKeyBlob:blobCopy];
       if (v8)
       {
         p_super = &v8->super;
-        v10 = [(CRPreflight *)self sha256Data:v6];
+        v10 = [(CRPreflight *)self sha256Data:signCopy];
         if (v10)
         {
           v11 = v10;
@@ -999,12 +999,12 @@ LABEL_16:
   return v12;
 }
 
-- (BOOL)verify:(id)a3 signature:(id)a4 keyBlob:(id)a5
+- (BOOL)verify:(id)verify signature:(id)signature keyBlob:(id)blob
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  verifyCopy = verify;
+  signatureCopy = signature;
+  blobCopy = blob;
+  if (!blobCopy)
   {
     p_super = handleForCategory(0);
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
@@ -1015,7 +1015,7 @@ LABEL_16:
     goto LABEL_12;
   }
 
-  v11 = [[CRRIK alloc] initWithKeyBlob:v10];
+  v11 = [[CRRIK alloc] initWithKeyBlob:blobCopy];
   if (!v11)
   {
     p_super = handleForCategory(0);
@@ -1028,7 +1028,7 @@ LABEL_16:
   }
 
   p_super = &v11->super;
-  v13 = [(CRPreflight *)self sha256Data:v8];
+  v13 = [(CRPreflight *)self sha256Data:verifyCopy];
   if (!v13)
   {
     v16 = handleForCategory(0);
@@ -1043,17 +1043,17 @@ LABEL_12:
   }
 
   v14 = v13;
-  v15 = [p_super verify:v13 signature:v9];
+  v15 = [p_super verify:v13 signature:signatureCopy];
 
 LABEL_13:
   return v15;
 }
 
-- (id)sha256Data:(id)a3
+- (id)sha256Data:(id)data
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 length];
+  dataCopy = data;
+  v4 = [dataCopy length];
   if ((v4 - 1) > 0xFFFFFFFD)
   {
     v5 = 0;
@@ -1061,7 +1061,7 @@ LABEL_13:
 
   else
   {
-    CC_SHA256([v3 bytes], v4, &v8);
+    CC_SHA256([dataCopy bytes], v4, &v8);
     v5 = [MEMORY[0x1E695DEF0] dataWithBytes:&v8 length:32];
   }
 
@@ -1070,15 +1070,15 @@ LABEL_13:
   return v5;
 }
 
-- (id)requestBAACertificates:(id)a3 apticket:(id)a4 proxySettings:(id)a5 withError:(id *)a6
+- (id)requestBAACertificates:(id)certificates apticket:(id)apticket proxySettings:(id)settings withError:(id *)error
 {
   v59 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v54 = a5;
+  certificatesCopy = certificates;
+  apticketCopy = apticket;
+  settingsCopy = settings;
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v53 = v11;
-  if (!v10)
+  v53 = apticketCopy;
+  if (!certificatesCopy)
   {
     v31 = handleForCategory(0);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1089,8 +1089,8 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  v13 = [v10 attestationBlob];
-  if (!v13)
+  attestationBlob = [certificatesCopy attestationBlob];
+  if (!attestationBlob)
   {
     v31 = handleForCategory(0);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1111,9 +1111,9 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v14 = v13;
-  v15 = [v10 pubKeyBlob];
-  if (!v15)
+  v14 = attestationBlob;
+  pubKeyBlob = [certificatesCopy pubKeyBlob];
+  if (!pubKeyBlob)
   {
     v36 = handleForCategory(0);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -1128,20 +1128,20 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v16 = v15;
-  v52 = self;
-  if (v11)
+  v16 = pubKeyBlob;
+  selfCopy = self;
+  if (apticketCopy)
   {
     v17 = handleForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v11 base64EncodedStringWithOptions:0];
+      v18 = [apticketCopy base64EncodedStringWithOptions:0];
       *buf = 138477827;
       v58 = v18;
       _os_log_impl(&dword_1CEDC5000, v17, OS_LOG_TYPE_DEFAULT, "repairticket: %{private}@", buf, 0xCu);
     }
 
-    [v12 setObject:v11 forKeyedSubscript:*MEMORY[0x1E6999EC0]];
+    [v12 setObject:apticketCopy forKeyedSubscript:*MEMORY[0x1E6999EC0]];
   }
 
   [v12 setObject:v14 forKeyedSubscript:*MEMORY[0x1E6999E88]];
@@ -1175,7 +1175,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v51 = a6;
+  errorCopy = error;
   v25 = MGGetBoolAnswer();
   v26 = @"corerepaird-SB";
   if (v25)
@@ -1184,8 +1184,8 @@ LABEL_19:
   }
 
   v27 = v26;
-  v28 = v52;
-  v29 = [(CRPreflight *)v52 _getVersionInfo:v22];
+  v28 = selfCopy;
+  v29 = [(CRPreflight *)selfCopy _getVersionInfo:v22];
   if (v29)
   {
     v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - %@", v29, v27];
@@ -1217,15 +1217,15 @@ LABEL_19:
 
     if ([(CRUserDefaults *)v44 BOOLForKey:@"DumpAttestationPayload"])
     {
-      v48 = [v22 HTTPBody];
-      [v48 writeToFile:@"/tmp/baa_request" atomically:1];
+      hTTPBody = [v22 HTTPBody];
+      [hTTPBody writeToFile:@"/tmp/baa_request" atomically:1];
     }
 
-    v28 = v52;
+    v28 = selfCopy;
   }
 
   v55[0] = 0;
-  v32 = [(CRPreflight *)v28 _sendBAARequest:v22 proxySettings:v54 withError:v55];
+  v32 = [(CRPreflight *)v28 _sendBAARequest:v22 proxySettings:settingsCopy withError:v55];
   v49 = v55[0];
   v24 = v49;
   if (v32 && !v49)
@@ -1235,7 +1235,7 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  if (!v51)
+  if (!errorCopy)
   {
 LABEL_20:
     v33 = 0;
@@ -1244,7 +1244,7 @@ LABEL_20:
 
   v50 = v49;
   v33 = 0;
-  *v51 = v24;
+  *errorCopy = v24;
 LABEL_21:
 
   v34 = *MEMORY[0x1E69E9840];
@@ -1252,11 +1252,11 @@ LABEL_21:
   return v33;
 }
 
-- (id)_sendBAARequest:(id)a3 proxySettings:(id)a4 withError:(id *)a5
+- (id)_sendBAARequest:(id)request proxySettings:(id)settings withError:(id *)error
 {
   v61[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  settingsCopy = settings;
   v52 = 0;
   v53 = &v52;
   v54 = 0x3032000000;
@@ -1274,25 +1274,25 @@ LABEL_21:
   v44 = 0x2020000000;
   v45 = 0;
   v9 = objc_opt_new();
-  if (v7)
+  if (requestCopy)
   {
-    if (v8)
+    if (settingsCopy)
     {
-      v10 = [v8 objectForKeyedSubscript:@"socksHost"];
+      v10 = [settingsCopy objectForKeyedSubscript:@"socksHost"];
       v11 = v10 == 0;
 
       if (!v11)
       {
-        v12 = [v8 objectForKeyedSubscript:@"socksHost"];
+        v12 = [settingsCopy objectForKeyedSubscript:@"socksHost"];
         [v9 setObject:v12 forKeyedSubscript:@"SOCKSProxy"];
       }
 
-      v13 = [v8 objectForKeyedSubscript:@"socksPort"];
+      v13 = [settingsCopy objectForKeyedSubscript:@"socksPort"];
       v14 = v13 == 0;
 
       if (!v14)
       {
-        v15 = [v8 objectForKeyedSubscript:@"socksPort"];
+        v15 = [settingsCopy objectForKeyedSubscript:@"socksPort"];
         [v9 setObject:v15 forKeyedSubscript:@"SOCKSPort"];
       }
     }
@@ -1323,11 +1323,11 @@ LABEL_21:
     v34 = v22;
     v23 = v16;
     v35 = v23;
-    [v21 sendBAARequest:v7 options:v9 withReply:v33];
+    [v21 sendBAARequest:requestCopy options:v9 withReply:v33];
 
     objc_autoreleasePoolPop(v19);
     dispatch_semaphore_wait(v22, 0xFFFFFFFFFFFFFFFFLL);
-    if (a5)
+    if (error)
     {
       v24 = v47[5];
       if (v24 || *(v43 + 6) != 200)
@@ -1351,7 +1351,7 @@ LABEL_21:
           v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
           [v27 errorWithDomain:@"com.apple.corerepair" code:-76 userInfo:v29];
         }
-        *a5 = ;
+        *error = ;
       }
     }
 
@@ -1414,19 +1414,19 @@ void __55__CRPreflight__sendBAARequest_proxySettings_withError___block_invoke_2(
   [*(a1 + 40) invalidate];
 }
 
-- (id)_getVersionInfo:(id)a3
+- (id)_getVersionInfo:(id)info
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [a3 allHTTPHeaderFields];
+  allHTTPHeaderFields = [info allHTTPHeaderFields];
   v4 = handleForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v3;
+    v25 = allHTTPHeaderFields;
     _os_log_impl(&dword_1CEDC5000, v4, OS_LOG_TYPE_DEFAULT, "Original Headers: %@", buf, 0xCu);
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"User-Agent"];
+  v5 = [allHTTPHeaderFields objectForKeyedSubscript:@"User-Agent"];
   if (v5)
   {
     v23 = 0;
@@ -1448,8 +1448,8 @@ void __55__CRPreflight__sendBAARequest_proxySettings_withError___block_invoke_2(
       v10 = v9;
       if (v9)
       {
-        v11 = [v9 range];
-        v13 = [v5 substringWithRange:{v11, v12}];
+        range = [v9 range];
+        v13 = [v5 substringWithRange:{range, v12}];
 LABEL_17:
 
         goto LABEL_18;

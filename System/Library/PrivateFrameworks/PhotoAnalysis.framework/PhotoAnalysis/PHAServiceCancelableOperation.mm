@@ -1,17 +1,17 @@
 @interface PHAServiceCancelableOperation
-+ (id)operationNotFoundError:(int64_t)a3;
++ (id)operationNotFoundError:(int64_t)error;
 - (BOOL)cancel;
 - (BOOL)isCancelled;
-- (PHAServiceCancelableOperation)initWithOperationId:(int64_t)a3 invocation:(id)a4;
+- (PHAServiceCancelableOperation)initWithOperationId:(int64_t)id invocation:(id)invocation;
 - (PHAServiceOperationListener)delegate;
 - (id)description;
-- (id)operationCanceledError:(BOOL)a3;
+- (id)operationCanceledError:(BOOL)error;
 - (id)progressBlock;
 - (void)_startWork;
-- (void)addCompletionBlock:(id)a3;
-- (void)enqueueOnQueue:(id)a3;
-- (void)setCancellationBlock:(id)a3;
-- (void)setProgressBlock:(id)a3;
+- (void)addCompletionBlock:(id)block;
+- (void)enqueueOnQueue:(id)queue;
+- (void)setCancellationBlock:(id)block;
+- (void)setProgressBlock:(id)block;
 @end
 
 @implementation PHAServiceCancelableOperation
@@ -25,25 +25,25 @@
 
 - (id)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cancelRequested = v2->_cancelRequested;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cancelRequested = selfCopy->_cancelRequested;
+  objc_sync_exit(selfCopy);
 
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:v2->_operationId];
-  v8 = NSStringFromSelector([(NSInvocation *)v2->_invocation selector]);
-  v9 = [v4 stringWithFormat:@"<%@ %p>: operationId %@ canceled=%d SEL=%@", v6, v2, v7, cancelRequested, v8];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:selfCopy->_operationId];
+  v8 = NSStringFromSelector([(NSInvocation *)selfCopy->_invocation selector]);
+  v9 = [v4 stringWithFormat:@"<%@ %p>: operationId %@ canceled=%d SEL=%@", v6, selfCopy, v7, cancelRequested, v8];
 
   return v9;
 }
 
-- (id)operationCanceledError:(BOOL)a3
+- (id)operationCanceledError:(BOOL)error
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (error)
   {
     v3 = 16;
   }
@@ -63,16 +63,16 @@
   return v7;
 }
 
-- (void)enqueueOnQueue:(id)a3
+- (void)enqueueOnQueue:(id)queue
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__PHAServiceCancelableOperation_enqueueOnQueue___block_invoke;
   block[3] = &unk_2788B2E78;
   block[4] = self;
-  v3 = a3;
+  queueCopy = queue;
   v4 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
-  dispatch_async(v3, v4);
+  dispatch_async(queueCopy, v4);
 }
 
 - (void)_startWork
@@ -103,33 +103,33 @@
 
 - (BOOL)isCancelled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cancelRequested = v2->_cancelRequested;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cancelRequested = selfCopy->_cancelRequested;
+  objc_sync_exit(selfCopy);
 
   return cancelRequested;
 }
 
 - (BOOL)cancel
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cancelRequested = v2->_cancelRequested;
-  if (v2->_cancelRequested)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cancelRequested = selfCopy->_cancelRequested;
+  if (selfCopy->_cancelRequested)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = _Block_copy(v2->_cancellationBlock);
-    cancellationBlock = v2->_cancellationBlock;
-    v2->_cancellationBlock = 0;
+    v4 = _Block_copy(selfCopy->_cancellationBlock);
+    cancellationBlock = selfCopy->_cancellationBlock;
+    selfCopy->_cancellationBlock = 0;
   }
 
-  v2->_cancelRequested = 1;
-  objc_sync_exit(v2);
+  selfCopy->_cancelRequested = 1;
+  objc_sync_exit(selfCopy);
 
   if (v4)
   {
@@ -139,12 +139,12 @@
   return !cancelRequested;
 }
 
-- (void)setProgressBlock:(id)a3
+- (void)setProgressBlock:(id)block
 {
   obj = self;
-  v4 = a3;
+  blockCopy = block;
   objc_sync_enter(obj);
-  v5 = _Block_copy(v4);
+  v5 = _Block_copy(blockCopy);
 
   progressBlock = obj->_progressBlock;
   obj->_progressBlock = v5;
@@ -154,22 +154,22 @@
 
 - (id)progressBlock
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = _Block_copy(v2->_progressBlock);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = _Block_copy(selfCopy->_progressBlock);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setCancellationBlock:(id)a3
+- (void)setCancellationBlock:(id)block
 {
-  aBlock = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_cancelRequested)
+  aBlock = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_cancelRequested)
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     aBlock[2]();
   }
@@ -177,31 +177,31 @@
   else
   {
     v5 = _Block_copy(aBlock);
-    cancellationBlock = v4->_cancellationBlock;
-    v4->_cancellationBlock = v5;
+    cancellationBlock = selfCopy->_cancellationBlock;
+    selfCopy->_cancellationBlock = v5;
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)addCompletionBlock:(id)a3
+- (void)addCompletionBlock:(id)block
 {
   completionGroup = self->_completionGroup;
   v5 = dispatch_get_global_queue(17, 0);
-  dispatch_group_notify(completionGroup, v5, a3);
+  dispatch_group_notify(completionGroup, v5, block);
 }
 
-- (PHAServiceCancelableOperation)initWithOperationId:(int64_t)a3 invocation:(id)a4
+- (PHAServiceCancelableOperation)initWithOperationId:(int64_t)id invocation:(id)invocation
 {
-  v7 = a4;
+  invocationCopy = invocation;
   v13.receiver = self;
   v13.super_class = PHAServiceCancelableOperation;
   v8 = [(PHAServiceCancelableOperation *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_invocation, a4);
-    v9->_operationId = a3;
+    objc_storeStrong(&v8->_invocation, invocation);
+    v9->_operationId = id;
     v10 = dispatch_group_create();
     completionGroup = v9->_completionGroup;
     v9->_completionGroup = v10;
@@ -212,12 +212,12 @@
   return v9;
 }
 
-+ (id)operationNotFoundError:(int64_t)a3
++ (id)operationNotFoundError:(int64_t)error
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCA9B8];
   v8 = @"operationId";
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:error];
   v9[0] = v4;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v6 = [v3 pl_analysisErrorWithCode:19 userInfo:v5];

@@ -1,18 +1,18 @@
 @interface VKRadarUtilities
-+ (void)createRadarWithTitle:(id)a3 description:(id)a4 componentName:(id)a5 componentVersion:(id)a6 componentID:(id)a7 keywordIDs:(id)a8 attachmentURLs:(id)a9 includeSysdiagnose:(BOOL)a10;
-+ (void)promptUserToFileBugWithAlertMessage:(id)a3 bugTitle:(id)a4 bugDescription:(id)a5;
++ (void)createRadarWithTitle:(id)title description:(id)description componentName:(id)name componentVersion:(id)version componentID:(id)d keywordIDs:(id)ds attachmentURLs:(id)ls includeSysdiagnose:(BOOL)self0;
++ (void)promptUserToFileBugWithAlertMessage:(id)message bugTitle:(id)title bugDescription:(id)description;
 @end
 
 @implementation VKRadarUtilities
 
-+ (void)promptUserToFileBugWithAlertMessage:(id)a3 bugTitle:(id)a4 bugDescription:(id)a5
++ (void)promptUserToFileBugWithAlertMessage:(id)message bugTitle:(id)title bugDescription:(id)description
 {
   v25[5] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v12 = [v11 BOOLForKey:@"DisableAssertAlert"];
+  messageCopy = message;
+  titleCopy = title;
+  descriptionCopy = description;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v12 = [standardUserDefaults BOOLForKey:@"DisableAssertAlert"];
 
   if (v12)
   {
@@ -28,16 +28,16 @@
     v14 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      [VKRadarUtilities promptUserToFileBugWithAlertMessage:v8 bugTitle:v14 bugDescription:?];
+      [VKRadarUtilities promptUserToFileBugWithAlertMessage:messageCopy bugTitle:v14 bugDescription:?];
     }
 
     v15 = *MEMORY[0x1E695EE60];
     v24[0] = *MEMORY[0x1E695EE58];
     v24[1] = v15;
     v16 = &stru_1F2C04538;
-    if (v8)
+    if (messageCopy)
     {
-      v16 = v8;
+      v16 = messageCopy;
     }
 
     v25[0] = @"Internal Notes Bug";
@@ -55,9 +55,9 @@
     block[2] = __80__VKRadarUtilities_promptUserToFileBugWithAlertMessage_bugTitle_bugDescription___block_invoke;
     block[3] = &unk_1E7BE5CD8;
     v20 = v18;
-    v23 = a1;
-    v21 = v9;
-    v22 = v10;
+    selfCopy = self;
+    v21 = titleCopy;
+    v22 = descriptionCopy;
     v13 = v18;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
@@ -108,33 +108,33 @@ void __80__VKRadarUtilities_promptUserToFileBugWithAlertMessage_bugTitle_bugDesc
   }
 }
 
-+ (void)createRadarWithTitle:(id)a3 description:(id)a4 componentName:(id)a5 componentVersion:(id)a6 componentID:(id)a7 keywordIDs:(id)a8 attachmentURLs:(id)a9 includeSysdiagnose:(BOOL)a10
++ (void)createRadarWithTitle:(id)title description:(id)description componentName:(id)name componentVersion:(id)version componentID:(id)d keywordIDs:(id)ds attachmentURLs:(id)ls includeSysdiagnose:(BOOL)self0
 {
   v68 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v62 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v60 = a9;
+  titleCopy = title;
+  descriptionCopy = description;
+  nameCopy = name;
+  versionCopy = version;
+  dCopy = d;
+  dsCopy = ds;
+  lsCopy = ls;
   v20 = objc_alloc_init(MEMORY[0x1E696AF20]);
   [v20 setScheme:@"tap-to-radar"];
   v58 = v20;
   [v20 setHost:@"new"];
-  v21 = [MEMORY[0x1E695DF70] array];
-  v22 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"ComponentName" value:v16];
-  [v21 addObject:v22];
+  array = [MEMORY[0x1E695DF70] array];
+  v22 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"ComponentName" value:nameCopy];
+  [array addObject:v22];
 
-  v23 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"ComponentVersion" value:v17];
-  [v21 addObject:v23];
+  v23 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"ComponentVersion" value:versionCopy];
+  [array addObject:v23];
 
-  v61 = v18;
-  v24 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"ComponentID" value:v18];
-  [v21 addObject:v24];
+  v61 = dCopy;
+  v24 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"ComponentID" value:dCopy];
+  [array addObject:v24];
 
   v25 = objc_alloc(MEMORY[0x1E696AF60]);
-  if (a10)
+  if (sysdiagnose)
   {
     v26 = @"sysdiagnose-only";
   }
@@ -145,51 +145,51 @@ void __80__VKRadarUtilities_promptUserToFileBugWithAlertMessage_bugTitle_bugDesc
   }
 
   v27 = [v25 initWithName:@"AutoDiagnostics" value:v26];
-  [v21 addObject:v27];
+  [array addObject:v27];
 
   v28 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Classification" value:@"Serious Bug"];
-  [v21 addObject:v28];
+  [array addObject:v28];
 
   v29 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Reproducibility" value:@"Not Applicable"];
-  [v21 addObject:v29];
+  [array addObject:v29];
 
-  if ([v15 length])
+  if ([titleCopy length])
   {
-    v30 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Title" value:v15];
-    [v21 addObject:v30];
+    v30 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Title" value:titleCopy];
+    [array addObject:v30];
   }
 
-  v31 = v15;
-  v32 = v17;
-  v33 = v16;
-  v34 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Description" value:v62];
-  [v21 addObject:v34];
+  v31 = titleCopy;
+  v32 = versionCopy;
+  v33 = nameCopy;
+  v34 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Description" value:descriptionCopy];
+  [array addObject:v34];
 
-  if ([v19 count])
+  if ([dsCopy count])
   {
     v35 = objc_alloc(MEMORY[0x1E696AF60]);
-    [v19 componentsJoinedByString:{@", "}];
-    v37 = v36 = v19;
+    [dsCopy componentsJoinedByString:{@", "}];
+    v37 = v36 = dsCopy;
     v38 = [v35 initWithName:@"Keywords" value:v37];
-    [v21 addObject:v38];
+    [array addObject:v38];
 
-    v19 = v36;
+    dsCopy = v36;
   }
 
-  v39 = v60;
+  v39 = lsCopy;
   v41 = v61;
-  v40 = v62;
+  v40 = descriptionCopy;
   v59 = v31;
-  if ([v60 count])
+  if ([lsCopy count])
   {
-    v56 = v19;
+    v56 = dsCopy;
     v57 = v33;
-    v42 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v60, "count")}];
+    v42 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(lsCopy, "count")}];
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v43 = v60;
+    v43 = lsCopy;
     v44 = [v43 countByEnumeratingWithState:&v63 objects:v67 count:16];
     if (v44)
     {
@@ -204,9 +204,9 @@ void __80__VKRadarUtilities_promptUserToFileBugWithAlertMessage_bugTitle_bugDesc
             objc_enumerationMutation(v43);
           }
 
-          v48 = [*(*(&v63 + 1) + 8 * i) path];
-          v49 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-          v50 = [v48 stringByAddingPercentEncodingWithAllowedCharacters:v49];
+          path = [*(*(&v63 + 1) + 8 * i) path];
+          uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+          v50 = [path stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
           [v42 addObject:v50];
         }
 
@@ -218,22 +218,22 @@ void __80__VKRadarUtilities_promptUserToFileBugWithAlertMessage_bugTitle_bugDesc
 
     v51 = [v42 componentsJoinedByString:{@", "}];
     v52 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"Attachments" value:v51];
-    [v21 addObject:v52];
+    [array addObject:v52];
 
     v53 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"DeleteOnAttach" value:@"1"];
-    [v21 addObject:v53];
+    [array addObject:v53];
 
     v41 = v61;
-    v40 = v62;
+    v40 = descriptionCopy;
     v33 = v57;
-    v19 = v56;
-    v39 = v60;
+    dsCopy = v56;
+    v39 = lsCopy;
   }
 
-  [v58 setQueryItems:v21];
-  v54 = [MEMORY[0x1E6963608] defaultWorkspace];
+  [v58 setQueryItems:array];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v55 = [v58 URL];
-  [v54 openURL:v55 configuration:0 completionHandler:0];
+  [defaultWorkspace openURL:v55 configuration:0 completionHandler:0];
 }
 
 + (void)promptUserToFileBugWithAlertMessage:(uint64_t)a1 bugTitle:(NSObject *)a2 bugDescription:.cold.1(uint64_t a1, NSObject *a2)

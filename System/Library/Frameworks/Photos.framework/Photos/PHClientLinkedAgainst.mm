@@ -1,26 +1,26 @@
 @interface PHClientLinkedAgainst
 - (PHClientLinkedAgainst)init;
-- (PHClientLinkedAgainst)initWithXPCDict:(id)a3;
-- (void)encodeToXPCDict:(id)a3;
+- (PHClientLinkedAgainst)initWithXPCDict:(id)dict;
+- (void)encodeToXPCDict:(id)dict;
 @end
 
 @implementation PHClientLinkedAgainst
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  xdict = a3;
+  xdict = dict;
   xpc_dictionary_set_BOOL(xdict, "PHLinkedOnOrAfterFall2023OSVersionsKey", [(PHClientLinkedAgainst *)self clientLinkedOnOrAfterFall2023OSVersions]);
 }
 
-- (PHClientLinkedAgainst)initWithXPCDict:(id)a3
+- (PHClientLinkedAgainst)initWithXPCDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v7.receiver = self;
   v7.super_class = PHClientLinkedAgainst;
   v5 = [(PHClientLinkedAgainst *)&v7 init];
   if (v5)
   {
-    v5->_clientLinkedOnOrAfterFall2023OSVersions = xpc_dictionary_get_BOOL(v4, "PHLinkedOnOrAfterFall2023OSVersionsKey");
+    v5->_clientLinkedOnOrAfterFall2023OSVersions = xpc_dictionary_get_BOOL(dictCopy, "PHLinkedOnOrAfterFall2023OSVersionsKey");
   }
 
   return v5;

@@ -1,42 +1,42 @@
 @interface MISDBManager
-- (BOOL)authorizeEntryWithProfileUUID:(id)a3 cdHash:(id)a4 gracePeriod:(int)a5 currentMonotonicTime:(int64_t)a6 currentResetCount:(int64_t)a7 error:(id *)a8;
-- (BOOL)banCDHash:(id)a3 error:(id *)a4;
-- (BOOL)banProfileUUID:(id)a3 error:(id *)a4;
-- (BOOL)createOnlineAuthEntry:(id)a3 error:(id *)a4;
-- (BOOL)createTrustedTeamIDEntryWithProfileUUID:(id)a3 signature:(id)a4 error:(id *)a5;
-- (BOOL)createTrustedTeamIDEntryWithTeamID:(id)a3 signature:(id)a4 error:(id *)a5;
-- (BOOL)deleteOnlineAuthEntryWithCdHash:(id)a3 error:(id *)a4;
-- (BOOL)deleteOnlineAuthEntryWithProfileUUID:(id)a3 cdHash:(id)a4 error:(id *)a5;
-- (BOOL)deleteTrustedWithProfileUUID:(id)a3 error:(id *)a4;
-- (BOOL)deleteTrustedWithTeamID:(id)a3 error:(id *)a4;
+- (BOOL)authorizeEntryWithProfileUUID:(id)d cdHash:(id)hash gracePeriod:(int)period currentMonotonicTime:(int64_t)time currentResetCount:(int64_t)count error:(id *)error;
+- (BOOL)banCDHash:(id)hash error:(id *)error;
+- (BOOL)banProfileUUID:(id)d error:(id *)error;
+- (BOOL)createOnlineAuthEntry:(id)entry error:(id *)error;
+- (BOOL)createTrustedTeamIDEntryWithProfileUUID:(id)d signature:(id)signature error:(id *)error;
+- (BOOL)createTrustedTeamIDEntryWithTeamID:(id)d signature:(id)signature error:(id *)error;
+- (BOOL)deleteOnlineAuthEntryWithCdHash:(id)hash error:(id *)error;
+- (BOOL)deleteOnlineAuthEntryWithProfileUUID:(id)d cdHash:(id)hash error:(id *)error;
+- (BOOL)deleteTrustedWithProfileUUID:(id)d error:(id *)error;
+- (BOOL)deleteTrustedWithTeamID:(id)d error:(id *)error;
 - (BOOL)migrate;
-- (BOOL)recordIndeterminateEntryWithProfileUUID:(id)a3 cdHash:(id)a4 onConflictDoNothing:(BOOL)a5 error:(id *)a6;
-- (BOOL)rejectEntryWithProfileUUID:(id)a3 cdHash:(id)a4 isRejectedByWholeProfile:(BOOL)a5 error:(id *)a6;
-- (BOOL)removeProfileWithUuid:(id)a3 error:(id *)a4;
-- (BOOL)setGracePeriodWithProfileUUID:(id)a3 gracePeriod:(int)a4 error:(id *)a5;
+- (BOOL)recordIndeterminateEntryWithProfileUUID:(id)d cdHash:(id)hash onConflictDoNothing:(BOOL)nothing error:(id *)error;
+- (BOOL)rejectEntryWithProfileUUID:(id)d cdHash:(id)hash isRejectedByWholeProfile:(BOOL)profile error:(id *)error;
+- (BOOL)removeProfileWithUuid:(id)uuid error:(id *)error;
+- (BOOL)setGracePeriodWithProfileUUID:(id)d gracePeriod:(int)period error:(id *)error;
 - (BOOL)setupSchema;
 - (id)allCMSBlobs;
 - (id)allProfiles;
-- (id)findProfilesMatchingEntitlements:(id)a3 withCertificate:(id)a4;
-- (id)findProfilesMatchingPredicates:(id)a3 withCertificate:(id)a4;
-- (id)findProfilesWithCertificate:(id)a3;
+- (id)findProfilesMatchingEntitlements:(id)entitlements withCertificate:(id)certificate;
+- (id)findProfilesMatchingPredicates:(id)predicates withCertificate:(id)certificate;
+- (id)findProfilesWithCertificate:(id)certificate;
 - (id)getOnlineAuthEntriesNoThrow;
-- (id)getOnlineAuthEntryNoThrowWithProfileUUID:(id)a3 cdHash:(id)a4;
-- (id)getTeamIDForProfileUUID:(id)a3 error:(id *)a4;
-- (int)insertProfile:(void *)a3;
-- (int64_t)countCDHashesRejectedByProfileNoThrowWithProfileUUID:(id)a3;
-- (void)deleteOnlineAuthEntryNoThrowWithCdHash:(id)a3;
-- (void)deleteOnlineAuthEntryNoThrowWithProfileUUID:(id)a3 cdHash:(id)a4;
-- (void)recordIndeterminateEntryNoThrowWithProfileUUID:(id)a3 cdHash:(id)a4 onConflictDoNothing:(BOOL)a5;
+- (id)getOnlineAuthEntryNoThrowWithProfileUUID:(id)d cdHash:(id)hash;
+- (id)getTeamIDForProfileUUID:(id)d error:(id *)error;
+- (int)insertProfile:(void *)profile;
+- (int64_t)countCDHashesRejectedByProfileNoThrowWithProfileUUID:(id)d;
+- (void)deleteOnlineAuthEntryNoThrowWithCdHash:(id)hash;
+- (void)deleteOnlineAuthEntryNoThrowWithProfileUUID:(id)d cdHash:(id)hash;
+- (void)recordIndeterminateEntryNoThrowWithProfileUUID:(id)d cdHash:(id)hash onConflictDoNothing:(BOOL)nothing;
 @end
 
 @implementation MISDBManager
 
-- (id)getTeamIDForProfileUUID:(id)a3 error:(id *)a4
+- (id)getTeamIDForProfileUUID:(id)d error:(id *)error
 {
   v5 = sub_1B9DD2998();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   sub_1B9D9A188(v5, v7);
 
   v9 = sub_1B9DD2968();
@@ -44,24 +44,24 @@
   return v9;
 }
 
-- (BOOL)removeProfileWithUuid:(id)a3 error:(id *)a4
+- (BOOL)removeProfileWithUuid:(id)uuid error:(id *)error
 {
   sub_1B9DD2998();
-  v5 = self;
+  selfCopy = self;
   sub_1B9DB3874(sub_1B9D9BB00);
 
   return 1;
 }
 
-- (BOOL)createTrustedTeamIDEntryWithTeamID:(id)a3 signature:(id)a4 error:(id *)a5
+- (BOOL)createTrustedTeamIDEntryWithTeamID:(id)d signature:(id)signature error:(id *)error
 {
-  v5 = a4;
-  if (a4)
+  signatureCopy = signature;
+  if (signature)
   {
-    v8 = a3;
-    v9 = self;
-    v10 = v5;
-    v5 = sub_1B9DD2798();
+    dCopy = d;
+    selfCopy = self;
+    v10 = signatureCopy;
+    signatureCopy = sub_1B9DD2798();
     v12 = v11;
 
     v13 = sub_1B9DD2778();
@@ -69,29 +69,29 @@
 
   else
   {
-    v14 = a3;
-    v15 = self;
+    dCopy2 = d;
+    selfCopy2 = self;
     v13 = 0;
     v12 = 0xF000000000000000;
   }
 
-  v16 = [objc_allocWithZone(MISTrustedTeamIDEntry) initWithTeamID:a3 signature:v13];
+  v16 = [objc_allocWithZone(MISTrustedTeamIDEntry) initWithTeamID:d signature:v13];
 
   MEMORY[0x1EEE9AC00]();
   sub_1B9DB3874(sub_1B9D9DE64);
 
-  sub_1B9D9D520(v5, v12);
+  sub_1B9D9D520(signatureCopy, v12);
   return 1;
 }
 
-- (BOOL)createTrustedTeamIDEntryWithProfileUUID:(id)a3 signature:(id)a4 error:(id *)a5
+- (BOOL)createTrustedTeamIDEntryWithProfileUUID:(id)d signature:(id)signature error:(id *)error
 {
   sub_1B9DD2998();
-  v7 = self;
-  if (a4)
+  selfCopy = self;
+  if (signature)
   {
-    v8 = a4;
-    a4 = sub_1B9DD2798();
+    signatureCopy = signature;
+    signature = sub_1B9DD2798();
     v10 = v9;
   }
 
@@ -103,65 +103,65 @@
   MEMORY[0x1EEE9AC00]();
   sub_1B9DB3874(sub_1B9D9DE4C);
 
-  sub_1B9D9D520(a4, v10);
+  sub_1B9D9D520(signature, v10);
 
   return 1;
 }
 
-- (BOOL)deleteTrustedWithTeamID:(id)a3 error:(id *)a4
+- (BOOL)deleteTrustedWithTeamID:(id)d error:(id *)error
 {
   v5 = sub_1B9DD2998();
   v7 = v6;
   v8 = swift_allocObject();
   *(v8 + 16) = v5;
   *(v8 + 24) = v7;
-  v9 = self;
+  selfCopy = self;
   sub_1B9DB3518(0xD00000000000002FLL, 0x80000001B9DDD440, sub_1B9D9BB18, v8, 0, 0);
 
   return 1;
 }
 
-- (BOOL)deleteTrustedWithProfileUUID:(id)a3 error:(id *)a4
+- (BOOL)deleteTrustedWithProfileUUID:(id)d error:(id *)error
 {
   v5 = sub_1B9DD2998();
   v7 = v6;
   v8 = swift_allocObject();
   *(v8 + 16) = v5;
   *(v8 + 24) = v7;
-  v9 = self;
+  selfCopy = self;
   sub_1B9DB3518(0xD000000000000090, 0x80000001B9DDD470, sub_1B9D9BB18, v8, 0, 0);
 
   return 1;
 }
 
-- (BOOL)createOnlineAuthEntry:(id)a3 error:(id *)a4
+- (BOOL)createOnlineAuthEntry:(id)entry error:(id *)error
 {
   v6 = swift_allocObject();
-  *(v6 + 16) = a3;
-  v7 = a3;
-  v8 = self;
+  *(v6 + 16) = entry;
+  entryCopy = entry;
+  selfCopy = self;
   sub_1B9DB3518(0xD00000000000019CLL, 0x80000001B9DDDF60, sub_1B9DB2D48, v6, 0, 0);
 
   return 1;
 }
 
-- (BOOL)authorizeEntryWithProfileUUID:(id)a3 cdHash:(id)a4 gracePeriod:(int)a5 currentMonotonicTime:(int64_t)a6 currentResetCount:(int64_t)a7 error:(id *)a8
+- (BOOL)authorizeEntryWithProfileUUID:(id)d cdHash:(id)hash gracePeriod:(int)period currentMonotonicTime:(int64_t)time currentResetCount:(int64_t)count error:(id *)error
 {
   v13 = sub_1B9DD2998();
   v15 = v14;
-  v16 = a4;
-  v17 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v18 = sub_1B9DD2798();
   v20 = v19;
 
   v21 = swift_allocObject();
-  *(v21 + 16) = a6;
-  *(v21 + 24) = a7;
+  *(v21 + 16) = time;
+  *(v21 + 24) = count;
   *(v21 + 32) = v13;
   *(v21 + 40) = v15;
   *(v21 + 48) = v18;
   *(v21 + 56) = v20;
-  *(v21 + 64) = a5;
+  *(v21 + 64) = period;
   sub_1B9D9DB90(v18, v20);
   sub_1B9DB3518(0xD000000000000198, 0x80000001B9DDE100, sub_1B9DB2D14, v21, 0, 0);
 
@@ -169,55 +169,55 @@
   return 1;
 }
 
-- (BOOL)recordIndeterminateEntryWithProfileUUID:(id)a3 cdHash:(id)a4 onConflictDoNothing:(BOOL)a5 error:(id *)a6
+- (BOOL)recordIndeterminateEntryWithProfileUUID:(id)d cdHash:(id)hash onConflictDoNothing:(BOOL)nothing error:(id *)error
 {
   v9 = sub_1B9DD2998();
   v11 = v10;
-  v12 = a4;
-  v13 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v14 = sub_1B9DD2798();
   v16 = v15;
 
-  sub_1B9DAF118(v9, v11, v14, v16, a5);
+  sub_1B9DAF118(v9, v11, v14, v16, nothing);
   sub_1B9D9D534(v14, v16);
 
   return 1;
 }
 
-- (void)recordIndeterminateEntryNoThrowWithProfileUUID:(id)a3 cdHash:(id)a4 onConflictDoNothing:(BOOL)a5
+- (void)recordIndeterminateEntryNoThrowWithProfileUUID:(id)d cdHash:(id)hash onConflictDoNothing:(BOOL)nothing
 {
-  v5 = a5;
+  nothingCopy = nothing;
   v8 = sub_1B9DD2998();
   v10 = v9;
-  v11 = a4;
-  v12 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v13 = sub_1B9DD2798();
   v15 = v14;
 
-  sub_1B9DAF36C(v8, v10, v13, v15, v5);
+  sub_1B9DAF36C(v8, v10, v13, v15, nothingCopy);
   sub_1B9D9D534(v13, v15);
 }
 
-- (BOOL)setGracePeriodWithProfileUUID:(id)a3 gracePeriod:(int)a4 error:(id *)a5
+- (BOOL)setGracePeriodWithProfileUUID:(id)d gracePeriod:(int)period error:(id *)error
 {
   v7 = sub_1B9DD2998();
   v9 = v8;
   v10 = swift_allocObject();
   *(v10 + 16) = v7;
   *(v10 + 24) = v9;
-  *(v10 + 32) = a4;
-  v11 = self;
+  *(v10 + 32) = period;
+  selfCopy = self;
   sub_1B9DB3518(0xD000000000000038, 0x80000001B9DDE440, sub_1B9DB2D10, v10, 0, 0);
 
   return 1;
 }
 
-- (BOOL)rejectEntryWithProfileUUID:(id)a3 cdHash:(id)a4 isRejectedByWholeProfile:(BOOL)a5 error:(id *)a6
+- (BOOL)rejectEntryWithProfileUUID:(id)d cdHash:(id)hash isRejectedByWholeProfile:(BOOL)profile error:(id *)error
 {
   v9 = sub_1B9DD2998();
   v11 = v10;
-  v12 = a4;
-  v13 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v14 = sub_1B9DD2798();
   v16 = v15;
 
@@ -226,7 +226,7 @@
   *(v17 + 24) = v11;
   *(v17 + 32) = v14;
   *(v17 + 40) = v16;
-  *(v17 + 48) = a5;
+  *(v17 + 48) = profile;
   sub_1B9D9DB90(v14, v16);
   sub_1B9DB3518(0xD000000000000139, 0x80000001B9DDE480, sub_1B9DB2D0C, v17, 0, 0);
 
@@ -234,23 +234,23 @@
   return 1;
 }
 
-- (BOOL)banProfileUUID:(id)a3 error:(id *)a4
+- (BOOL)banProfileUUID:(id)d error:(id *)error
 {
   v5 = sub_1B9DD2998();
   v7 = v6;
   v8 = swift_allocObject();
   *(v8 + 16) = v5;
   *(v8 + 24) = v7;
-  v9 = self;
+  selfCopy = self;
   sub_1B9DB3518(0xD00000000000004ALL, 0x80000001B9DDE5C0, sub_1B9D9BB18, v8, 0, 0);
 
   return 1;
 }
 
-- (BOOL)banCDHash:(id)a3 error:(id *)a4
+- (BOOL)banCDHash:(id)hash error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v7 = sub_1B9DD2798();
   v9 = v8;
 
@@ -264,12 +264,12 @@
   return 1;
 }
 
-- (id)getOnlineAuthEntryNoThrowWithProfileUUID:(id)a3 cdHash:(id)a4
+- (id)getOnlineAuthEntryNoThrowWithProfileUUID:(id)d cdHash:(id)hash
 {
   v6 = sub_1B9DD2998();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v11 = sub_1B9DD2798();
   v13 = v12;
 
@@ -281,7 +281,7 @@
 
 - (id)getOnlineAuthEntriesNoThrow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B9DB08E8();
 
   sub_1B9DB2AE4();
@@ -290,22 +290,22 @@
   return v3;
 }
 
-- (int64_t)countCDHashesRejectedByProfileNoThrowWithProfileUUID:(id)a3
+- (int64_t)countCDHashesRejectedByProfileNoThrowWithProfileUUID:(id)d
 {
   v4 = sub_1B9DD2998();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1B9DB1338(v4, v6);
 
   return v8;
 }
 
-- (BOOL)deleteOnlineAuthEntryWithProfileUUID:(id)a3 cdHash:(id)a4 error:(id *)a5
+- (BOOL)deleteOnlineAuthEntryWithProfileUUID:(id)d cdHash:(id)hash error:(id *)error
 {
   v7 = sub_1B9DD2998();
   v9 = v8;
-  v10 = a4;
-  v11 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v12 = sub_1B9DD2798();
   v14 = v13;
 
@@ -321,12 +321,12 @@
   return 1;
 }
 
-- (void)deleteOnlineAuthEntryNoThrowWithProfileUUID:(id)a3 cdHash:(id)a4
+- (void)deleteOnlineAuthEntryNoThrowWithProfileUUID:(id)d cdHash:(id)hash
 {
   v6 = sub_1B9DD2998();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v11 = sub_1B9DD2798();
   v13 = v12;
 
@@ -334,10 +334,10 @@
   sub_1B9D9D534(v11, v13);
 }
 
-- (BOOL)deleteOnlineAuthEntryWithCdHash:(id)a3 error:(id *)a4
+- (BOOL)deleteOnlineAuthEntryWithCdHash:(id)hash error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v7 = sub_1B9DD2798();
   v9 = v8;
 
@@ -351,10 +351,10 @@
   return 1;
 }
 
-- (void)deleteOnlineAuthEntryNoThrowWithCdHash:(id)a3
+- (void)deleteOnlineAuthEntryNoThrowWithCdHash:(id)hash
 {
-  v4 = a3;
-  v8 = self;
+  hashCopy = hash;
+  selfCopy = self;
   v5 = sub_1B9DD2798();
   v7 = v6;
 
@@ -362,12 +362,12 @@
   sub_1B9D9D534(v5, v7);
 }
 
-- (id)findProfilesWithCertificate:(id)a3
+- (id)findProfilesWithCertificate:(id)certificate
 {
-  v4 = a3;
+  certificateCopy = certificate;
   v7 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], v5, 2);
   v8 = @"SELECT uuid FROM certificate_provisioning_cache JOIN certificates ON certificates.pk = leaf_pk WHERE certificates.leaf = @cert";
-  if (!v4)
+  if (!certificateCopy)
   {
     v8 = @"SELECT uuid FROM profiles";
   }
@@ -377,14 +377,14 @@
   v18[1] = 3221225472;
   v18[2] = sub_1B9DBF3C4;
   v18[3] = &unk_1E7ED8548;
-  v19 = v4;
+  v19 = certificateCopy;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = sub_1B9DBF44C;
   v16[3] = &unk_1E7ED8308;
   v10 = v7;
   v17 = v10;
-  v11 = v4;
+  v11 = certificateCopy;
   objc_msgSend_executeQuery_withBind_withResults_(self, v12, v9, v18, v16);
 
   v13 = v17;
@@ -393,12 +393,12 @@
   return v10;
 }
 
-- (id)findProfilesMatchingPredicates:(id)a3 withCertificate:(id)a4
+- (id)findProfilesMatchingPredicates:(id)predicates withCertificate:(id)certificate
 {
-  v6 = a3;
-  v7 = a4;
+  predicatesCopy = predicates;
+  certificateCopy = certificate;
   v10 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], v8, 2);
-  if (v7)
+  if (certificateCopy)
   {
     v11 = @"SELECT uuid FROM certificate_provisioning_cache JOIN certificates ON certificates.pk = leaf_pk WHERE certificates.leaf = @cert";
   }
@@ -415,22 +415,22 @@
   v29[3] = &unk_1E7ED83F8;
   v30 = v12;
   v13 = v12;
-  objc_msgSend_enumerateObjectsUsingBlock_(v6, v14, v29);
+  objc_msgSend_enumerateObjectsUsingBlock_(predicatesCopy, v14, v29);
   v16 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v15, @"WITH predicates(idx, predicate) AS (VALUES %@), filteredProfileUUIDs(uuid) AS (%@) SELECT * FROM (SELECT profiles.uuid, profiles.team_id, profiles.name, profiles.expires, profiles.is_for_all_devices, profiles.is_apple_internal, profiles.is_local, profiles.is_beta, profiles.is_der, COUNT(DISTINCT predicates.idx) as matchCount FROM filteredProfileUUIDs JOIN profiles ON profiles.uuid = filteredProfileUUIDs.uuid JOIN entitlements_provisioning_cache ON entitlements_provisioning_cache.uuid = filteredProfileUUIDs.uuid CROSS JOIN predicates WHERE profiles.is_apple_internal OR ((entitlements_provisioning_cache.wildcard = 0 AND entitlements_provisioning_cache.predicate = predicates.predicate) OR (entitlements_provisioning_cache.wildcard = 1 AND glob(entitlements_provisioning_cache.predicate, predicates.predicate))) GROUP BY profiles.uuid, profiles.is_apple_internal) AS aggregated WHERE aggregated.matchCount = @totalPredicates OR aggregated.is_apple_internal ORDER BY  aggregated.is_der DESC, aggregated.is_local ASC, aggregated.is_for_all_devices ASC", v13, v11);
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = sub_1B9DBF708;
   v26[3] = &unk_1E7ED8598;
-  v27 = v7;
-  v28 = v6;
+  v27 = certificateCopy;
+  v28 = predicatesCopy;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = sub_1B9DBF890;
   v24[3] = &unk_1E7ED8308;
   v17 = v10;
   v25 = v17;
-  v18 = v6;
-  v19 = v7;
+  v18 = predicatesCopy;
+  v19 = certificateCopy;
   objc_msgSend_executeQuery_withBind_withResults_(self, v20, v16, v26, v24);
 
   v21 = v25;
@@ -439,11 +439,11 @@
   return v17;
 }
 
-- (id)findProfilesMatchingEntitlements:(id)a3 withCertificate:(id)a4
+- (id)findProfilesMatchingEntitlements:(id)entitlements withCertificate:(id)certificate
 {
   v6 = MEMORY[0x1E695DF70];
-  v7 = a4;
-  v8 = a3;
+  certificateCopy = certificate;
+  entitlementsCopy = entitlements;
   v10 = objc_msgSend_arrayWithCapacity_(v6, v9, 10);
   v13 = objc_msgSend_Entitlements(self, v11, v12);
   v19[0] = MEMORY[0x1E69E9820];
@@ -452,9 +452,9 @@
   v19[3] = &unk_1E7ED83D0;
   v20 = v10;
   v14 = v10;
-  objc_msgSend_emitEntitlementPredicates_predicateHandler_(v13, v15, v8, v19);
+  objc_msgSend_emitEntitlementPredicates_predicateHandler_(v13, v15, entitlementsCopy, v19);
 
-  v17 = objc_msgSend_findProfilesMatchingPredicates_withCertificate_(self, v16, v14, v7);
+  v17 = objc_msgSend_findProfilesMatchingPredicates_withCertificate_(self, v16, v14, certificateCopy);
 
   return v17;
 }
@@ -496,7 +496,7 @@
   return v6;
 }
 
-- (int)insertProfile:(void *)a3
+- (int)insertProfile:(void *)profile
 {
   v6 = 0;
   v7 = &v6;
@@ -507,7 +507,7 @@
   v5[2] = sub_1B9DBFE44;
   v5[3] = &unk_1E7ED83A8;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = profile;
   v5[4] = self;
   objc_msgSend_transaction_(self, a2, v5);
   v3 = *(v7 + 6);
@@ -569,13 +569,13 @@
 
   v15.receiver = self;
   v15.super_class = MISDBManager;
-  v11 = [(SQLDB *)&v15 setupSchema];
-  if (v11)
+  setupSchema = [(SQLDB *)&v15 setupSchema];
+  if (setupSchema)
   {
-    LOBYTE(v11) = objc_msgSend_migrate(self, v12, v13);
+    LOBYTE(setupSchema) = objc_msgSend_migrate(self, v12, v13);
   }
 
-  return v11;
+  return setupSchema;
 }
 
 @end

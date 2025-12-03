@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 + (void)_registerElements;
 - (VUIMLFactory)init;
-- (id)URLForResource:(id)a3;
-- (id)_URLForResource:(id)a3 inBundle:(id)a4;
-- (id)imageForResource:(id)a3;
+- (id)URLForResource:(id)resource;
+- (id)_URLForResource:(id)resource inBundle:(id)bundle;
+- (id)imageForResource:(id)resource;
 @end
 
 @implementation VUIMLFactory
@@ -53,17 +53,17 @@ void __30__VUIMLFactory_sharedInstance__block_invoke()
   [v2 registerIKClass:v3 forElementName:@"event" elementType:4021 dependent:0];
 }
 
-- (id)URLForResource:(id)a3
+- (id)URLForResource:(id)resource
 {
-  v4 = a3;
-  if ([v4 length])
+  resourceCopy = resource;
+  if ([resourceCopy length])
   {
-    v5 = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
-    v6 = [(VUIMLFactory *)self _URLForResource:v4 inBundle:v5];
+    vui_videosUIBundle = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
+    v6 = [(VUIMLFactory *)self _URLForResource:resourceCopy inBundle:vui_videosUIBundle];
     if (!v6)
     {
-      v7 = [MEMORY[0x1E696AAE8] mainBundle];
-      v6 = [(VUIMLFactory *)self _URLForResource:v4 inBundle:v7];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      v6 = [(VUIMLFactory *)self _URLForResource:resourceCopy inBundle:mainBundle];
     }
   }
 
@@ -75,28 +75,28 @@ void __30__VUIMLFactory_sharedInstance__block_invoke()
   return v6;
 }
 
-- (id)imageForResource:(id)a3
+- (id)imageForResource:(id)resource
 {
-  v3 = a3;
-  if (![v3 length])
+  resourceCopy = resource;
+  if (![resourceCopy length])
   {
     v6 = 0;
     goto LABEL_7;
   }
 
-  v4 = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
-  v5 = [MEMORY[0x1E69DCAB8] imageNamed:v3 inBundle:v4];
+  vui_videosUIBundle = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
+  v5 = [MEMORY[0x1E69DCAB8] imageNamed:resourceCopy inBundle:vui_videosUIBundle];
   if (!v5)
   {
-    v7 = [MEMORY[0x1E696AAE8] mainBundle];
-    v6 = [MEMORY[0x1E69DCAB8] imageNamed:v3 inBundle:v7];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    v6 = [MEMORY[0x1E69DCAB8] imageNamed:resourceCopy inBundle:mainBundle];
 
     if (v6)
     {
       goto LABEL_6;
     }
 
-    v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:v3];
+    v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:resourceCopy];
   }
 
   v6 = v5;
@@ -107,14 +107,14 @@ LABEL_7:
   return v6;
 }
 
-- (id)_URLForResource:(id)a3 inBundle:(id)a4
+- (id)_URLForResource:(id)resource inBundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 pathForResource:v5 ofType:@"png"];
+  resourceCopy = resource;
+  bundleCopy = bundle;
+  v7 = [bundleCopy pathForResource:resourceCopy ofType:@"png"];
   if (!v7)
   {
-    v7 = [v6 pathForResource:v5 ofType:@"jpeg"];
+    v7 = [bundleCopy pathForResource:resourceCopy ofType:@"jpeg"];
   }
 
   if ([v7 length])

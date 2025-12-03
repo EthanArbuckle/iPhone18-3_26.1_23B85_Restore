@@ -8,7 +8,7 @@
 
 - (_EXExtensionIdentity)exIdentity
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_26162B3FC();
 
   return v3;
@@ -16,7 +16,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_26161D304();
 
   v3 = sub_26162B89C();

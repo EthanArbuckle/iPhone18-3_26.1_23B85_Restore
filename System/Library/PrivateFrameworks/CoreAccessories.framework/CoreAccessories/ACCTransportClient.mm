@@ -2,57 +2,57 @@
 + (id)sharedClient;
 - (ACCTransportClient)init;
 - (ACCTransportClientDelegate)delegate;
-- (BOOL)addToDictionaryProperty:(id)a3 values:(id)a4 forConnectionWithUUID:(id)a5;
-- (BOOL)addToDictionaryProperty:(id)a3 values:(id)a4 forEndpointWithUUID:(id)a5;
-- (BOOL)appendToArrayProperty:(id)a3 values:(id)a4 forConnectionWithUUID:(id)a5;
-- (BOOL)appendToArrayProperty:(id)a3 values:(id)a4 forEndpointWithUUID:(id)a5;
-- (BOOL)destroyConnectionWithUUID:(id)a3;
-- (BOOL)destroyEndpointWithUUID:(id)a3;
-- (BOOL)isConnectionAuthenticated:(id)a3;
-- (BOOL)processIncomingData:(id)a3 forEndpointWithUUID:(id)a4;
-- (BOOL)publishConnectionWithUUID:(id)a3;
-- (BOOL)removeProperty:(id)a3 forConnectionWithUUID:(id)a4;
-- (BOOL)removeProperty:(id)a3 forEndpointWithUUID:(id)a4;
-- (BOOL)setAccessoryInfo:(id)a3 forEndpointWithUUID:(id)a4;
-- (BOOL)setProperties:(id)a3 forConnectionWithUUID:(id)a4;
-- (BOOL)setProperties:(id)a3 forEndpointWithUUID:(id)a4;
-- (BOOL)setProperty:(id)a3 value:(id)a4 forConnectionWithUUID:(id)a5;
-- (BOOL)setProperty:(id)a3 value:(id)a4 forEndpointWithUUID:(id)a5;
+- (BOOL)addToDictionaryProperty:(id)property values:(id)values forConnectionWithUUID:(id)d;
+- (BOOL)addToDictionaryProperty:(id)property values:(id)values forEndpointWithUUID:(id)d;
+- (BOOL)appendToArrayProperty:(id)property values:(id)values forConnectionWithUUID:(id)d;
+- (BOOL)appendToArrayProperty:(id)property values:(id)values forEndpointWithUUID:(id)d;
+- (BOOL)destroyConnectionWithUUID:(id)d;
+- (BOOL)destroyEndpointWithUUID:(id)d;
+- (BOOL)isConnectionAuthenticated:(id)authenticated;
+- (BOOL)processIncomingData:(id)data forEndpointWithUUID:(id)d;
+- (BOOL)publishConnectionWithUUID:(id)d;
+- (BOOL)removeProperty:(id)property forConnectionWithUUID:(id)d;
+- (BOOL)removeProperty:(id)property forEndpointWithUUID:(id)d;
+- (BOOL)setAccessoryInfo:(id)info forEndpointWithUUID:(id)d;
+- (BOOL)setProperties:(id)properties forConnectionWithUUID:(id)d;
+- (BOOL)setProperties:(id)properties forEndpointWithUUID:(id)d;
+- (BOOL)setProperty:(id)property value:(id)value forConnectionWithUUID:(id)d;
+- (BOOL)setProperty:(id)property value:(id)value forEndpointWithUUID:(id)d;
 - (NSXPCConnection)serverConnection;
 - (id)_init;
-- (id)accessoryInfoForConnectionWithUUID:(id)a3;
-- (id)accessoryInfoForEndpointWithUUID:(id)a3;
-- (id)connectionUUIDForEndpointWithUUID:(id)a3;
-- (id)endpointUUIDsForConnectionWithUUID:(id)a3;
-- (id)identifierForConnectionWithUUID:(id)a3;
-- (id)identifierForEndpointWithUUID:(id)a3;
-- (id)propertiesForConnectionWithUUID:(id)a3;
-- (id)propertiesForEndpointWithUUID:(id)a3;
+- (id)accessoryInfoForConnectionWithUUID:(id)d;
+- (id)accessoryInfoForEndpointWithUUID:(id)d;
+- (id)connectionUUIDForEndpointWithUUID:(id)d;
+- (id)endpointUUIDsForConnectionWithUUID:(id)d;
+- (id)identifierForConnectionWithUUID:(id)d;
+- (id)identifierForEndpointWithUUID:(id)d;
+- (id)propertiesForConnectionWithUUID:(id)d;
+- (id)propertiesForEndpointWithUUID:(id)d;
 - (void)_init;
 - (void)dealloc;
 - (void)launchServer;
-- (void)propertiesDidChange:(id)a3 forConnectionWithUUID:(id)a4 previousProperties:(id)a5;
-- (void)propertiesDidChange:(id)a3 forEndpointWithUUID:(id)a4 previousProperties:(id)a5 connectionUUID:(id)a6;
-- (void)receivedSecureTunnelData:(id)a3 forEndpoint:(id)a4;
-- (void)sendOutgoingData:(id)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5 withReply:(id)a6;
+- (void)propertiesDidChange:(id)change forConnectionWithUUID:(id)d previousProperties:(id)properties;
+- (void)propertiesDidChange:(id)change forEndpointWithUUID:(id)d previousProperties:(id)properties connectionUUID:(id)iD;
+- (void)receivedSecureTunnelData:(id)data forEndpoint:(id)endpoint;
+- (void)sendOutgoingData:(id)data forEndpointWithUUID:(id)d connectionUUID:(id)iD withReply:(id)reply;
 - (void)serverConnection;
-- (void)setHandler:(id)a3 forConnectionProperty:(id)a4;
-- (void)setHandler:(id)a3 forEndpointProperty:(id)a4;
-- (void)setSecureTunnelDataReceiveHandler:(id)a3 forEndpoint:(id)a4;
-- (void)setServerConnection:(id)a3;
+- (void)setHandler:(id)handler forConnectionProperty:(id)property;
+- (void)setHandler:(id)handler forEndpointProperty:(id)property;
+- (void)setSecureTunnelDataReceiveHandler:(id)handler forEndpoint:(id)endpoint;
+- (void)setServerConnection:(id)connection;
 @end
 
 @implementation ACCTransportClient
 
 - (NSXPCConnection)serverConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_serverConnection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_serverConnection;
   if (v3)
   {
     v4 = v3;
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -121,7 +121,7 @@
       v11 = MEMORY[0x277D86220];
     }
 
-    v12 = os_signpost_id_make_with_pointer(v10, v2);
+    v12 = os_signpost_id_make_with_pointer(v10, selfCopy);
 
     if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
     {
@@ -136,8 +136,8 @@
     v15 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_283535418];
     [v13 setExportedInterface:v15];
 
-    [v13 setExportedObject:v2];
-    objc_initWeak(buf, v2);
+    [v13 setExportedObject:selfCopy];
+    objc_initWeak(buf, selfCopy);
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __38__ACCTransportClient_serverConnection__block_invoke;
@@ -145,7 +145,7 @@
     objc_copyWeak(&v25, buf);
     v4 = v13;
     v23 = v4;
-    v24 = v2;
+    v24 = selfCopy;
     [(NSXPCConnection *)v4 setInvalidationHandler:v22];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
@@ -153,12 +153,12 @@
     v20 = &unk_278486298;
     objc_copyWeak(&v21, buf);
     [(NSXPCConnection *)v4 setInterruptionHandler:&v17];
-    objc_storeStrong(&v2->_serverConnection, v13);
+    objc_storeStrong(&selfCopy->_serverConnection, v13);
     objc_destroyWeak(&v21);
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(buf);
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
     [(NSXPCConnection *)v4 resume:v17];
   }
@@ -172,7 +172,7 @@
   block[1] = 3221225472;
   block[2] = __34__ACCTransportClient_sharedClient__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedClient_once != -1)
   {
     dispatch_once(&sharedClient_once, block);
@@ -598,14 +598,14 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
   }
 }
 
-- (void)setServerConnection:(id)a3
+- (void)setServerConnection:(id)connection
 {
-  v7 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = v5->_serverConnection;
-  objc_storeStrong(&v5->_serverConnection, a3);
-  objc_sync_exit(v5);
+  connectionCopy = connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = selfCopy->_serverConnection;
+  objc_storeStrong(&selfCopy->_serverConnection, connection);
+  objc_sync_exit(selfCopy);
 
   if (v6)
   {
@@ -613,35 +613,35 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
   }
 }
 
-- (void)sendOutgoingData:(id)a3 forEndpointWithUUID:(id)a4 connectionUUID:(id)a5 withReply:(id)a6
+- (void)sendOutgoingData:(id)data forEndpointWithUUID:(id)d connectionUUID:(id)iD withReply:(id)reply
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(ACCTransportClient *)self endpointDataOutHandlers];
-  objc_sync_enter(v13);
-  v14 = [(ACCTransportClient *)self endpointDataOutHandlers];
-  v15 = [v14 objectForKey:v10];
+  dataCopy = data;
+  dCopy = d;
+  iDCopy = iD;
+  replyCopy = reply;
+  endpointDataOutHandlers = [(ACCTransportClient *)self endpointDataOutHandlers];
+  objc_sync_enter(endpointDataOutHandlers);
+  endpointDataOutHandlers2 = [(ACCTransportClient *)self endpointDataOutHandlers];
+  v15 = [endpointDataOutHandlers2 objectForKey:dCopy];
 
   if (v15)
   {
-    (v15)[2](v15, v11, v10, v16);
+    (v15)[2](v15, iDCopy, dCopy, dataCopy);
   }
 
-  objc_sync_exit(v13);
-  if (v12)
+  objc_sync_exit(endpointDataOutHandlers);
+  if (replyCopy)
   {
-    v12[2](v12, v15 != 0);
+    replyCopy[2](replyCopy, v15 != 0);
   }
 }
 
-- (void)propertiesDidChange:(id)a3 forConnectionWithUUID:(id)a4 previousProperties:(id)a5
+- (void)propertiesDidChange:(id)change forConnectionWithUUID:(id)d previousProperties:(id)properties
 {
   v61 = *MEMORY[0x277D85DE8];
-  v45 = a3;
-  v42 = a4;
-  v44 = a5;
+  changeCopy = change;
+  dCopy = d;
+  propertiesCopy = properties;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 1;
@@ -671,7 +671,7 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v52 = v42;
+    v52 = dCopy;
     _os_log_impl(&dword_221CB0000, v9, OS_LOG_TYPE_DEFAULT, "Connection properties did change! (connectionUUID: %@)", buf, 0xCu);
   }
 
@@ -694,9 +694,9 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v52 = v45;
+    v52 = changeCopy;
     v53 = 2112;
-    v54 = v44;
+    v54 = propertiesCopy;
     _os_log_impl(&dword_221CB0000, v10, OS_LOG_TYPE_INFO, "properties: %@, previousProperties: %@", buf, 0x16u);
   }
 
@@ -736,33 +736,33 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
 
   if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
-    v17 = [v45 count];
-    v18 = [v45 allKeys];
-    v19 = [v44 count];
-    v20 = [v44 allKeys];
+    v17 = [changeCopy count];
+    allKeys = [changeCopy allKeys];
+    v19 = [propertiesCopy count];
+    allKeys2 = [propertiesCopy allKeys];
     *buf = 138413314;
-    v52 = v42;
+    v52 = dCopy;
     v53 = 2048;
     v54 = v17;
     v55 = 2112;
-    v56 = v18;
+    v56 = allKeys;
     v57 = 2048;
     v58 = v19;
     v59 = 2112;
-    v60 = v20;
+    v60 = allKeys2;
     _os_signpost_emit_with_name_impl(&dword_221CB0000, v12, OS_SIGNPOST_EVENT, v16, "Endpoint PROPERTY", "Connection PropertiesDidChange! %@, %lu properties: %@, previous %lu properties: %@", buf, 0x34u);
   }
 
-  v21 = [(ACCTransportClient *)self delegate];
-  if (v21)
+  delegate = [(ACCTransportClient *)self delegate];
+  if (delegate)
   {
-    v22 = [(ACCTransportClient *)self delegate];
+    delegate2 = [(ACCTransportClient *)self delegate];
     v23 = objc_opt_respondsToSelector();
 
     if (v23)
     {
-      v24 = [(ACCTransportClient *)self delegate];
-      [v24 transportClient:self propertiesDidChange:v45 forConnectionWithUUID:v42 previousProperties:v44];
+      delegate3 = [(ACCTransportClient *)self delegate];
+      [delegate3 transportClient:self propertiesDidChange:changeCopy forConnectionWithUUID:dCopy previousProperties:propertiesCopy];
     }
   }
 
@@ -772,10 +772,10 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v25 = [(ACCTransportClient *)self connectionPropertyChangeHandlers];
-  v26 = [v25 allKeys];
+  connectionPropertyChangeHandlers = [(ACCTransportClient *)self connectionPropertyChangeHandlers];
+  allKeys3 = [connectionPropertyChangeHandlers allKeys];
 
-  v27 = [v26 countByEnumeratingWithState:&v46 objects:v50 count:16];
+  v27 = [allKeys3 countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v27)
   {
     v28 = *v47;
@@ -786,12 +786,12 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
       {
         if (*v47 != v28)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(allKeys3);
         }
 
         v31 = *(*(&v46 + 1) + 8 * i);
-        v32 = [v45 objectForKey:v31];
-        v33 = [v44 objectForKey:v31];
+        v32 = [changeCopy objectForKey:v31];
+        v33 = [propertiesCopy objectForKey:v31];
         if ((isNSObjectEqual(v32, v33) & 1) == 0)
         {
           v34 = gLogObjects;
@@ -827,17 +827,17 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
             _os_log_debug_impl(&dword_221CB0000, v36, OS_LOG_TYPE_DEBUG, "Calling connection property did change handler for property: %@ (newValue: %@, oldValue: %@)", buf, 0x20u);
           }
 
-          v38 = [(ACCTransportClient *)self connectionPropertyChangeHandlers];
-          v39 = [v38 objectForKey:v31];
+          connectionPropertyChangeHandlers2 = [(ACCTransportClient *)self connectionPropertyChangeHandlers];
+          v39 = [connectionPropertyChangeHandlers2 objectForKey:v31];
 
           if (v39)
           {
-            (v39)[2](v39, v42, v31, v32, v33);
+            (v39)[2](v39, dCopy, v31, v32, v33);
           }
         }
       }
 
-      v27 = [v26 countByEnumeratingWithState:&v46 objects:v50 count:16];
+      v27 = [allKeys3 countByEnumeratingWithState:&v46 objects:v50 count:16];
     }
 
     while (v27);
@@ -847,13 +847,13 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)propertiesDidChange:(id)a3 forEndpointWithUUID:(id)a4 previousProperties:(id)a5 connectionUUID:(id)a6
+- (void)propertiesDidChange:(id)change forEndpointWithUUID:(id)d previousProperties:(id)properties connectionUUID:(id)iD
 {
   v73 = *MEMORY[0x277D85DE8];
-  v50 = a3;
-  v47 = a4;
-  v49 = a5;
-  v46 = a6;
+  changeCopy = change;
+  dCopy = d;
+  propertiesCopy = properties;
+  iDCopy = iD;
   if (gLogObjects)
   {
     v9 = gNumLogObjects < 1;
@@ -883,9 +883,9 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v64 = v47;
+    v64 = dCopy;
     v65 = 2112;
-    v66 = v46;
+    v66 = iDCopy;
     _os_log_impl(&dword_221CB0000, v11, OS_LOG_TYPE_DEFAULT, "Endpoint properties did change! (endpointUUID: %@, connectionUUID: %@)", buf, 0x16u);
   }
 
@@ -908,9 +908,9 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v64 = v50;
+    v64 = changeCopy;
     v65 = 2112;
-    v66 = v49;
+    v66 = propertiesCopy;
     _os_log_impl(&dword_221CB0000, v12, OS_LOG_TYPE_INFO, "properties: %@, previousProperties: %@", buf, 0x16u);
   }
 
@@ -950,33 +950,33 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
 
   if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
   {
-    v19 = [v50 count];
-    v20 = [v50 allKeys];
-    v21 = [v49 count];
-    v22 = [v49 allKeys];
+    v19 = [changeCopy count];
+    allKeys = [changeCopy allKeys];
+    v21 = [propertiesCopy count];
+    allKeys2 = [propertiesCopy allKeys];
     *buf = 138413314;
-    v64 = v47;
+    v64 = dCopy;
     v65 = 2048;
     v66 = v19;
     v67 = 2112;
-    v68 = v20;
+    v68 = allKeys;
     v69 = 2048;
     v70 = v21;
     v71 = 2112;
-    v72 = v22;
+    v72 = allKeys2;
     _os_signpost_emit_with_name_impl(&dword_221CB0000, v14, OS_SIGNPOST_EVENT, v18, "Endpoint PROPERTY", "Endpoint PropertiesDidChange! %@, %lu properties: %@, previous %lu properties: %@", buf, 0x34u);
   }
 
-  v23 = [(ACCTransportClient *)self delegate];
-  if (v23)
+  delegate = [(ACCTransportClient *)self delegate];
+  if (delegate)
   {
-    v24 = [(ACCTransportClient *)self delegate];
+    delegate2 = [(ACCTransportClient *)self delegate];
     v25 = objc_opt_respondsToSelector();
 
     if (v25)
     {
-      v26 = [(ACCTransportClient *)self delegate];
-      [v26 transportClient:self propertiesDidChange:v50 forEndpointWithUUID:v47 previousProperties:v49 connectionUUID:v46];
+      delegate3 = [(ACCTransportClient *)self delegate];
+      [delegate3 transportClient:self propertiesDidChange:changeCopy forEndpointWithUUID:dCopy previousProperties:propertiesCopy connectionUUID:iDCopy];
     }
   }
 
@@ -986,10 +986,10 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v27 = [(ACCTransportClient *)self endpointPropertyChangeHandlers];
-  v28 = [v27 allKeys];
+  endpointPropertyChangeHandlers = [(ACCTransportClient *)self endpointPropertyChangeHandlers];
+  allKeys3 = [endpointPropertyChangeHandlers allKeys];
 
-  v29 = [v28 countByEnumeratingWithState:&v58 objects:v62 count:16];
+  v29 = [allKeys3 countByEnumeratingWithState:&v58 objects:v62 count:16];
   if (v29)
   {
     v30 = *v59;
@@ -999,12 +999,12 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
       {
         if (*v59 != v30)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(allKeys3);
         }
 
         v32 = *(*(&v58 + 1) + 8 * i);
-        v33 = [v50 objectForKey:v32];
-        v34 = [v49 objectForKey:v32];
+        v33 = [changeCopy objectForKey:v32];
+        v34 = [propertiesCopy objectForKey:v32];
         if ((isNSObjectEqual(v33, v34) & 1) == 0)
         {
           v35 = gLogObjects;
@@ -1016,7 +1016,7 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
 
           else
           {
-            v38 = v28;
+            v38 = allKeys3;
             v39 = MEMORY[0x277D86220];
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
@@ -1029,7 +1029,7 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
 
             v40 = v39;
             v37 = v39;
-            v28 = v38;
+            allKeys3 = v38;
           }
 
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
@@ -1043,8 +1043,8 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
             _os_log_debug_impl(&dword_221CB0000, v37, OS_LOG_TYPE_DEBUG, "Calling endpoint property did change handler for property: %@ (newValue: %@, oldValue: %@)", buf, 0x20u);
           }
 
-          v41 = [(ACCTransportClient *)self endpointPropertyChangeHandlers];
-          v42 = [v41 objectForKey:v32];
+          endpointPropertyChangeHandlers2 = [(ACCTransportClient *)self endpointPropertyChangeHandlers];
+          v42 = [endpointPropertyChangeHandlers2 objectForKey:v32];
 
           if (v42)
           {
@@ -1054,17 +1054,17 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
             block[2] = __96__ACCTransportClient_propertiesDidChange_forEndpointWithUUID_previousProperties_connectionUUID___block_invoke;
             block[3] = &unk_278487148;
             v57 = v42;
-            v52 = v47;
+            v52 = dCopy;
             v53 = v32;
             v54 = v33;
             v55 = v34;
-            v56 = v46;
+            v56 = iDCopy;
             dispatch_async(endpointEventHandlerQueue, block);
           }
         }
       }
 
-      v29 = [v28 countByEnumeratingWithState:&v58 objects:v62 count:16];
+      v29 = [allKeys3 countByEnumeratingWithState:&v58 objects:v62 count:16];
     }
 
     while (v29);
@@ -1074,11 +1074,11 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedSecureTunnelData:(id)a3 forEndpoint:(id)a4
+- (void)receivedSecureTunnelData:(id)data forEndpoint:(id)endpoint
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  endpointCopy = endpoint;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 3;
@@ -1110,10 +1110,10 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
     [ACCTransportClient receivedSecureTunnelData:forEndpoint:];
   }
 
-  v11 = [(ACCTransportClient *)self endpointSecureTunnelDataHandlers];
-  objc_sync_enter(v11);
-  v12 = [(ACCTransportClient *)self endpointSecureTunnelDataHandlers];
-  v13 = [v12 objectForKey:v7];
+  endpointSecureTunnelDataHandlers = [(ACCTransportClient *)self endpointSecureTunnelDataHandlers];
+  objc_sync_enter(endpointSecureTunnelDataHandlers);
+  endpointSecureTunnelDataHandlers2 = [(ACCTransportClient *)self endpointSecureTunnelDataHandlers];
+  v13 = [endpointSecureTunnelDataHandlers2 objectForKey:endpointCopy];
 
   if (gLogObjects)
   {
@@ -1147,13 +1147,13 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138412546;
-      v22 = v7;
+      v22 = endpointCopy;
       v23 = 2112;
-      v24 = v6;
+      v24 = dataCopy;
       _os_log_impl(&dword_221CB0000, v16, OS_LOG_TYPE_DEFAULT, "SecureTunnelData: call dataInHandler, endpoint: %@, data:%@", &v21, 0x16u);
     }
 
-    (v13)[2](v13, v7, v6);
+    (v13)[2](v13, endpointCopy, dataCopy);
   }
 
   else
@@ -1177,28 +1177,28 @@ void __38__ACCTransportClient_serverConnection__block_invoke_127(uint64_t a1)
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138412546;
-      v22 = v7;
+      v22 = endpointCopy;
       v23 = 2112;
-      v24 = v6;
+      v24 = dataCopy;
       _os_log_impl(&dword_221CB0000, v17, OS_LOG_TYPE_DEFAULT, "SecureTunnelData: No dataInHandler! endpoint: %@, data:%@", &v21, 0x16u);
     }
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(endpointSecureTunnelDataHandlers);
   v20 = *MEMORY[0x277D85DE8];
 }
 
 - (void)launchServer
 {
   kdebug_trace();
-  v3 = [(ACCTransportClient *)self serverConnection];
-  if (v3)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  if (serverConnection)
   {
-    v5 = v3;
-    v4 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_5];
+    v5 = serverConnection;
+    v4 = [serverConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_5];
     [v4 launchServer];
 
-    v3 = v5;
+    serverConnection = v5;
   }
 }
 
@@ -1318,11 +1318,11 @@ void __61__ACCTransportClient_createConnectionWithType_andIdentifier___block_inv
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setProperties:(id)a3 forConnectionWithUUID:(id)a4
+- (BOOL)setProperties:(id)properties forConnectionWithUUID:(id)d
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  dCopy = d;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -1356,7 +1356,7 @@ void __61__ACCTransportClient_createConnectionWithType_andIdentifier___block_inv
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v40 = v7;
+    v40 = dCopy;
     _os_log_impl(&dword_221CB0000, v10, OS_LOG_TYPE_DEFAULT, "Setting properties for connection: %@", buf, 0xCu);
   }
 
@@ -1379,7 +1379,7 @@ void __61__ACCTransportClient_createConnectionWithType_andIdentifier___block_inv
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v40 = v6;
+    v40 = propertiesCopy;
     _os_log_impl(&dword_221CB0000, v11, OS_LOG_TYPE_INFO, "properties: %@", buf, 0xCu);
   }
 
@@ -1419,36 +1419,36 @@ void __61__ACCTransportClient_createConnectionWithType_andIdentifier___block_inv
 
   if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
-    v18 = [v6 count];
-    v19 = [v6 allKeys];
+    v18 = [propertiesCopy count];
+    allKeys = [propertiesCopy allKeys];
     *buf = 138412802;
-    v40 = v7;
+    v40 = dCopy;
     v41 = 2048;
     v42 = v18;
     v43 = 2112;
-    v44 = v19;
+    v44 = allKeys;
     _os_signpost_emit_with_name_impl(&dword_221CB0000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v17, "Connection PROPERTY", "Connection SetProperties! %@, %lu properties: %@", buf, 0x20u);
   }
 
-  v20 = [(ACCTransportClient *)self serverConnection];
-  if (v20)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  if (serverConnection)
   {
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __58__ACCTransportClient_setProperties_forConnectionWithUUID___block_invoke;
     v32[3] = &unk_278487198;
     v32[4] = self;
-    v21 = v7;
+    v21 = dCopy;
     v33 = v21;
-    v22 = v6;
+    v22 = propertiesCopy;
     v34 = v22;
-    v23 = [v20 synchronousRemoteObjectProxyWithErrorHandler:v32];
+    v23 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:v32];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __58__ACCTransportClient_setProperties_forConnectionWithUUID___block_invoke_139;
     v27[3] = &unk_2784871C0;
     v28 = v21;
-    v29 = self;
+    selfCopy = self;
     v30 = v22;
     v31 = &v35;
     [v23 setProperties:v30 forConnectionWithUUID:v28 withReply:v27];
@@ -1641,28 +1641,28 @@ void __58__ACCTransportClient_setProperties_forConnectionWithUUID___block_invoke
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setProperty:(id)a3 value:(id)a4 forConnectionWithUUID:(id)a5
+- (BOOL)setProperty:(id)property value:(id)value forConnectionWithUUID:(id)d
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16[0] = a4;
+  propertyCopy = property;
+  v16[0] = value;
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 dictionaryWithObjects:v16 forKeys:&v15 count:1];
+  dCopy = d;
+  valueCopy = value;
+  propertyCopy2 = property;
+  v12 = [v8 dictionaryWithObjects:v16 forKeys:&propertyCopy count:1];
 
-  LOBYTE(v10) = [(ACCTransportClient *)self setProperties:v12 forConnectionWithUUID:v9];
+  LOBYTE(valueCopy) = [(ACCTransportClient *)self setProperties:v12 forConnectionWithUUID:dCopy];
   v13 = *MEMORY[0x277D85DE8];
-  return v10;
+  return valueCopy;
 }
 
-- (BOOL)appendToArrayProperty:(id)a3 values:(id)a4 forConnectionWithUUID:(id)a5
+- (BOOL)appendToArrayProperty:(id)property values:(id)values forConnectionWithUUID:(id)d
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertyCopy = property;
+  valuesCopy = values;
+  dCopy = d;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -1696,9 +1696,9 @@ void __58__ACCTransportClient_setProperties_forConnectionWithUUID___block_invoke
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v42 = v8;
+    v42 = propertyCopy;
     v43 = 2112;
-    v44 = v10;
+    v44 = dCopy;
     _os_log_impl(&dword_221CB0000, v13, OS_LOG_TYPE_DEFAULT, "Appending to property %@ for connection: %@", buf, 0x16u);
   }
 
@@ -1721,7 +1721,7 @@ void __58__ACCTransportClient_setProperties_forConnectionWithUUID___block_invoke
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v42 = v9;
+    v42 = valuesCopy;
     _os_log_impl(&dword_221CB0000, v14, OS_LOG_TYPE_INFO, "values: %@", buf, 0xCu);
   }
 
@@ -1761,38 +1761,38 @@ void __58__ACCTransportClient_setProperties_forConnectionWithUUID___block_invoke
 
   if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
-    v21 = [v9 count];
+    v21 = [valuesCopy count];
     *buf = 138412802;
-    v42 = v10;
+    v42 = dCopy;
     v43 = 2048;
     v44 = v21;
     v45 = 2112;
-    v46 = v9;
+    v46 = valuesCopy;
     _os_signpost_emit_with_name_impl(&dword_221CB0000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v20, "Endpoint PROPERTY", "Connection appendToArrayProperty! %@, %lu values: %@", buf, 0x20u);
   }
 
-  v22 = [(ACCTransportClient *)self serverConnection];
-  if (v22)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  if (serverConnection)
   {
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __73__ACCTransportClient_appendToArrayProperty_values_forConnectionWithUUID___block_invoke;
     v34[3] = &unk_278487198;
     v34[4] = self;
-    v23 = v10;
+    v23 = dCopy;
     v35 = v23;
-    v24 = v9;
+    v24 = valuesCopy;
     v36 = v24;
-    v25 = [v22 synchronousRemoteObjectProxyWithErrorHandler:v34];
+    v25 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:v34];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __73__ACCTransportClient_appendToArrayProperty_values_forConnectionWithUUID___block_invoke_142;
     v29[3] = &unk_2784871C0;
     v30 = v23;
-    v31 = self;
+    selfCopy = self;
     v32 = v24;
     v33 = &v37;
-    [v25 appendToArrayProperty:v8 values:v32 forConnectionWithUUID:v30 withReply:v29];
+    [v25 appendToArrayProperty:propertyCopy values:v32 forConnectionWithUUID:v30 withReply:v29];
   }
 
   v26 = *(v38 + 24);
@@ -1976,12 +1976,12 @@ void __73__ACCTransportClient_appendToArrayProperty_values_forConnectionWithUUID
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addToDictionaryProperty:(id)a3 values:(id)a4 forConnectionWithUUID:(id)a5
+- (BOOL)addToDictionaryProperty:(id)property values:(id)values forConnectionWithUUID:(id)d
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertyCopy = property;
+  valuesCopy = values;
+  dCopy = d;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -2015,9 +2015,9 @@ void __73__ACCTransportClient_appendToArrayProperty_values_forConnectionWithUUID
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v42 = v8;
+    v42 = propertyCopy;
     v43 = 2112;
-    v44 = v10;
+    v44 = dCopy;
     _os_log_impl(&dword_221CB0000, v13, OS_LOG_TYPE_DEFAULT, "Add to property %@ for connection: %@", buf, 0x16u);
   }
 
@@ -2040,7 +2040,7 @@ void __73__ACCTransportClient_appendToArrayProperty_values_forConnectionWithUUID
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v42 = v9;
+    v42 = valuesCopy;
     _os_log_impl(&dword_221CB0000, v14, OS_LOG_TYPE_INFO, "values: %@", buf, 0xCu);
   }
 
@@ -2080,38 +2080,38 @@ void __73__ACCTransportClient_appendToArrayProperty_values_forConnectionWithUUID
 
   if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
-    v21 = [v9 count];
+    v21 = [valuesCopy count];
     *buf = 138412802;
-    v42 = v10;
+    v42 = dCopy;
     v43 = 2048;
     v44 = v21;
     v45 = 2112;
-    v46 = v9;
+    v46 = valuesCopy;
     _os_signpost_emit_with_name_impl(&dword_221CB0000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v20, "Endpoint PROPERTY", "Connection addToDictionaryProperty! %@, %lu values: %@", buf, 0x20u);
   }
 
-  v22 = [(ACCTransportClient *)self serverConnection];
-  if (v22)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  if (serverConnection)
   {
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __75__ACCTransportClient_addToDictionaryProperty_values_forConnectionWithUUID___block_invoke;
     v34[3] = &unk_278487198;
     v34[4] = self;
-    v23 = v10;
+    v23 = dCopy;
     v35 = v23;
-    v24 = v9;
+    v24 = valuesCopy;
     v36 = v24;
-    v25 = [v22 synchronousRemoteObjectProxyWithErrorHandler:v34];
+    v25 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:v34];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __75__ACCTransportClient_addToDictionaryProperty_values_forConnectionWithUUID___block_invoke_143;
     v29[3] = &unk_2784871C0;
     v30 = v23;
-    v31 = self;
+    selfCopy = self;
     v32 = v24;
     v33 = &v37;
-    [v25 addToDictionaryProperty:v8 values:v32 forConnectionWithUUID:v30 withReply:v29];
+    [v25 addToDictionaryProperty:propertyCopy values:v32 forConnectionWithUUID:v30 withReply:v29];
   }
 
   v26 = *(v38 + 24);
@@ -2301,26 +2301,26 @@ void __75__ACCTransportClient_addToDictionaryProperty_values_forConnectionWithUU
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeProperty:(id)a3 forConnectionWithUUID:(id)a4
+- (BOOL)removeProperty:(id)property forConnectionWithUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v8 = [(ACCTransportClient *)self serverConnection];
-  v9 = v8;
-  if (v8)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  v9 = serverConnection;
+  if (serverConnection)
   {
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_145];
+    v10 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_145];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __59__ACCTransportClient_removeProperty_forConnectionWithUUID___block_invoke_146;
     v13[3] = &unk_2784871E8;
-    v14 = v7;
+    v14 = dCopy;
     v15 = &v16;
-    [v10 removeProperty:v6 forConnectionWithUUID:v14 withReply:v13];
+    [v10 removeProperty:propertyCopy forConnectionWithUUID:v14 withReply:v13];
   }
 
   v11 = *(v17 + 24);
@@ -2491,26 +2491,26 @@ void __138__ACCTransportClient_createEndpointWithTransportType_andProtocol_andId
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setAccessoryInfo:(id)a3 forEndpointWithUUID:(id)a4
+- (BOOL)setAccessoryInfo:(id)info forEndpointWithUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v8 = [(ACCTransportClient *)self serverConnection];
-  v9 = v8;
-  if (v8)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  v9 = serverConnection;
+  if (serverConnection)
   {
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_153];
+    v10 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_153];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __59__ACCTransportClient_setAccessoryInfo_forEndpointWithUUID___block_invoke_154;
     v13[3] = &unk_2784871E8;
-    v14 = v7;
+    v14 = dCopy;
     v15 = &v16;
-    [v10 setAccessoryInfo:v6 forEndpointWithUUID:v14 withReply:v13];
+    [v10 setAccessoryInfo:infoCopy forEndpointWithUUID:v14 withReply:v13];
   }
 
   v11 = *(v17 + 24);
@@ -2597,11 +2597,11 @@ void __59__ACCTransportClient_setAccessoryInfo_forEndpointWithUUID___block_invok
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setProperties:(id)a3 forEndpointWithUUID:(id)a4
+- (BOOL)setProperties:(id)properties forEndpointWithUUID:(id)d
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  dCopy = d;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -2635,7 +2635,7 @@ void __59__ACCTransportClient_setAccessoryInfo_forEndpointWithUUID___block_invok
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v40 = v7;
+    v40 = dCopy;
     _os_log_impl(&dword_221CB0000, v10, OS_LOG_TYPE_DEFAULT, "Setting properties for endpoint: %@", buf, 0xCu);
   }
 
@@ -2658,7 +2658,7 @@ void __59__ACCTransportClient_setAccessoryInfo_forEndpointWithUUID___block_invok
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v40 = v6;
+    v40 = propertiesCopy;
     _os_log_impl(&dword_221CB0000, v11, OS_LOG_TYPE_INFO, "properties: %@", buf, 0xCu);
   }
 
@@ -2698,36 +2698,36 @@ void __59__ACCTransportClient_setAccessoryInfo_forEndpointWithUUID___block_invok
 
   if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
-    v18 = [v6 count];
-    v19 = [v6 allKeys];
+    v18 = [propertiesCopy count];
+    allKeys = [propertiesCopy allKeys];
     *buf = 138412802;
-    v40 = v7;
+    v40 = dCopy;
     v41 = 2048;
     v42 = v18;
     v43 = 2112;
-    v44 = v19;
+    v44 = allKeys;
     _os_signpost_emit_with_name_impl(&dword_221CB0000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v17, "Endpoint PROPERTY", "Endpoint SetProperties! %@, %lu properties: %@", buf, 0x20u);
   }
 
-  v20 = [(ACCTransportClient *)self serverConnection];
-  if (v20)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  if (serverConnection)
   {
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __56__ACCTransportClient_setProperties_forEndpointWithUUID___block_invoke;
     v32[3] = &unk_278487198;
     v32[4] = self;
-    v21 = v7;
+    v21 = dCopy;
     v33 = v21;
-    v22 = v6;
+    v22 = propertiesCopy;
     v34 = v22;
-    v23 = [v20 synchronousRemoteObjectProxyWithErrorHandler:v32];
+    v23 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:v32];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __56__ACCTransportClient_setProperties_forEndpointWithUUID___block_invoke_155;
     v27[3] = &unk_2784871C0;
     v28 = v21;
-    v29 = self;
+    selfCopy = self;
     v30 = v22;
     v31 = &v35;
     [v23 setProperties:v30 forEndpointWithUUID:v28 withReply:v27];
@@ -2920,28 +2920,28 @@ void __56__ACCTransportClient_setProperties_forEndpointWithUUID___block_invoke_1
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setProperty:(id)a3 value:(id)a4 forEndpointWithUUID:(id)a5
+- (BOOL)setProperty:(id)property value:(id)value forEndpointWithUUID:(id)d
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16[0] = a4;
+  propertyCopy = property;
+  v16[0] = value;
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 dictionaryWithObjects:v16 forKeys:&v15 count:1];
+  dCopy = d;
+  valueCopy = value;
+  propertyCopy2 = property;
+  v12 = [v8 dictionaryWithObjects:v16 forKeys:&propertyCopy count:1];
 
-  LOBYTE(v10) = [(ACCTransportClient *)self setProperties:v12 forEndpointWithUUID:v9];
+  LOBYTE(valueCopy) = [(ACCTransportClient *)self setProperties:v12 forEndpointWithUUID:dCopy];
   v13 = *MEMORY[0x277D85DE8];
-  return v10;
+  return valueCopy;
 }
 
-- (BOOL)appendToArrayProperty:(id)a3 values:(id)a4 forEndpointWithUUID:(id)a5
+- (BOOL)appendToArrayProperty:(id)property values:(id)values forEndpointWithUUID:(id)d
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertyCopy = property;
+  valuesCopy = values;
+  dCopy = d;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -2975,9 +2975,9 @@ void __56__ACCTransportClient_setProperties_forEndpointWithUUID___block_invoke_1
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v42 = v8;
+    v42 = propertyCopy;
     v43 = 2112;
-    v44 = v10;
+    v44 = dCopy;
     _os_log_impl(&dword_221CB0000, v13, OS_LOG_TYPE_DEFAULT, "Appending to property %@ for endpoint: %@", buf, 0x16u);
   }
 
@@ -3000,7 +3000,7 @@ void __56__ACCTransportClient_setProperties_forEndpointWithUUID___block_invoke_1
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v42 = v9;
+    v42 = valuesCopy;
     _os_log_impl(&dword_221CB0000, v14, OS_LOG_TYPE_INFO, "values: %@", buf, 0xCu);
   }
 
@@ -3040,38 +3040,38 @@ void __56__ACCTransportClient_setProperties_forEndpointWithUUID___block_invoke_1
 
   if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
-    v21 = [v9 count];
+    v21 = [valuesCopy count];
     *buf = 138412802;
-    v42 = v10;
+    v42 = dCopy;
     v43 = 2048;
     v44 = v21;
     v45 = 2112;
-    v46 = v9;
+    v46 = valuesCopy;
     _os_signpost_emit_with_name_impl(&dword_221CB0000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v20, "Endpoint PROPERTY", "Endpoint appendToArrayProperty! %@, %lu values: %@", buf, 0x20u);
   }
 
-  v22 = [(ACCTransportClient *)self serverConnection];
-  if (v22)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  if (serverConnection)
   {
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __71__ACCTransportClient_appendToArrayProperty_values_forEndpointWithUUID___block_invoke;
     v34[3] = &unk_278487198;
     v34[4] = self;
-    v23 = v10;
+    v23 = dCopy;
     v35 = v23;
-    v24 = v9;
+    v24 = valuesCopy;
     v36 = v24;
-    v25 = [v22 synchronousRemoteObjectProxyWithErrorHandler:v34];
+    v25 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:v34];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __71__ACCTransportClient_appendToArrayProperty_values_forEndpointWithUUID___block_invoke_156;
     v29[3] = &unk_2784871C0;
     v30 = v23;
-    v31 = self;
+    selfCopy = self;
     v32 = v24;
     v33 = &v37;
-    [v25 appendToArrayProperty:v8 values:v32 forEndpointWithUUID:v30 withReply:v29];
+    [v25 appendToArrayProperty:propertyCopy values:v32 forEndpointWithUUID:v30 withReply:v29];
   }
 
   v26 = *(v38 + 24);
@@ -3255,12 +3255,12 @@ void __71__ACCTransportClient_appendToArrayProperty_values_forEndpointWithUUID__
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addToDictionaryProperty:(id)a3 values:(id)a4 forEndpointWithUUID:(id)a5
+- (BOOL)addToDictionaryProperty:(id)property values:(id)values forEndpointWithUUID:(id)d
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertyCopy = property;
+  valuesCopy = values;
+  dCopy = d;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -3294,9 +3294,9 @@ void __71__ACCTransportClient_appendToArrayProperty_values_forEndpointWithUUID__
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v42 = v8;
+    v42 = propertyCopy;
     v43 = 2112;
-    v44 = v10;
+    v44 = dCopy;
     _os_log_impl(&dword_221CB0000, v13, OS_LOG_TYPE_DEFAULT, "Add to property %@ for endpoint: %@", buf, 0x16u);
   }
 
@@ -3319,7 +3319,7 @@ void __71__ACCTransportClient_appendToArrayProperty_values_forEndpointWithUUID__
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v42 = v9;
+    v42 = valuesCopy;
     _os_log_impl(&dword_221CB0000, v14, OS_LOG_TYPE_INFO, "values: %@", buf, 0xCu);
   }
 
@@ -3359,38 +3359,38 @@ void __71__ACCTransportClient_appendToArrayProperty_values_forEndpointWithUUID__
 
   if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
-    v21 = [v9 count];
+    v21 = [valuesCopy count];
     *buf = 138412802;
-    v42 = v10;
+    v42 = dCopy;
     v43 = 2048;
     v44 = v21;
     v45 = 2112;
-    v46 = v9;
+    v46 = valuesCopy;
     _os_signpost_emit_with_name_impl(&dword_221CB0000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v20, "Endpoint PROPERTY", "Endpoint addToDictionaryProperty! %@, %lu values: %@", buf, 0x20u);
   }
 
-  v22 = [(ACCTransportClient *)self serverConnection];
-  if (v22)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  if (serverConnection)
   {
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __73__ACCTransportClient_addToDictionaryProperty_values_forEndpointWithUUID___block_invoke;
     v34[3] = &unk_278487198;
     v34[4] = self;
-    v23 = v10;
+    v23 = dCopy;
     v35 = v23;
-    v24 = v9;
+    v24 = valuesCopy;
     v36 = v24;
-    v25 = [v22 synchronousRemoteObjectProxyWithErrorHandler:v34];
+    v25 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:v34];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __73__ACCTransportClient_addToDictionaryProperty_values_forEndpointWithUUID___block_invoke_157;
     v29[3] = &unk_2784871C0;
     v30 = v23;
-    v31 = self;
+    selfCopy = self;
     v32 = v24;
     v33 = &v37;
-    [v25 addToDictionaryProperty:v8 values:v32 forEndpointWithUUID:v30 withReply:v29];
+    [v25 addToDictionaryProperty:propertyCopy values:v32 forEndpointWithUUID:v30 withReply:v29];
   }
 
   v26 = *(v38 + 24);
@@ -3580,26 +3580,26 @@ void __73__ACCTransportClient_addToDictionaryProperty_values_forEndpointWithUUID
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeProperty:(id)a3 forEndpointWithUUID:(id)a4
+- (BOOL)removeProperty:(id)property forEndpointWithUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v8 = [(ACCTransportClient *)self serverConnection];
-  v9 = v8;
-  if (v8)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  v9 = serverConnection;
+  if (serverConnection)
   {
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_159];
+    v10 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_159];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __57__ACCTransportClient_removeProperty_forEndpointWithUUID___block_invoke_160;
     v13[3] = &unk_2784871E8;
-    v14 = v7;
+    v14 = dCopy;
     v15 = &v16;
-    [v10 removeProperty:v6 forEndpointWithUUID:v14 withReply:v13];
+    [v10 removeProperty:propertyCopy forEndpointWithUUID:v14 withReply:v13];
   }
 
   v11 = *(v17 + 24);
@@ -3686,10 +3686,10 @@ void __57__ACCTransportClient_removeProperty_forEndpointWithUUID___block_invoke_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)publishConnectionWithUUID:(id)a3
+- (BOOL)publishConnectionWithUUID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -3723,20 +3723,20 @@ void __57__ACCTransportClient_removeProperty_forEndpointWithUUID___block_invoke_
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v4;
+    v22 = dCopy;
     _os_log_impl(&dword_221CB0000, v7, OS_LOG_TYPE_DEFAULT, "Publishing connection... (connectionUUID: %@)", buf, 0xCu);
   }
 
-  v8 = [(ACCTransportClient *)self serverConnection];
-  v9 = v8;
-  if (v8)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  v9 = serverConnection;
+  if (serverConnection)
   {
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_162];
+    v10 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_162];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __48__ACCTransportClient_publishConnectionWithUUID___block_invoke_163;
     v14[3] = &unk_2784871E8;
-    v15 = v4;
+    v15 = dCopy;
     v16 = &v17;
     [v10 publishConnectionWithUUID:v15 withReply:v14];
   }
@@ -3826,10 +3826,10 @@ void __48__ACCTransportClient_publishConnectionWithUUID___block_invoke_163(uint6
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)destroyEndpointWithUUID:(id)a3
+- (BOOL)destroyEndpointWithUUID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -3863,35 +3863,35 @@ void __48__ACCTransportClient_publishConnectionWithUUID___block_invoke_163(uint6
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v4;
+    v26 = dCopy;
     _os_log_impl(&dword_221CB0000, v7, OS_LOG_TYPE_DEFAULT, "Destroying endpoint... (endpointUUID: %@)", buf, 0xCu);
   }
 
-  v8 = [(ACCTransportClient *)self serverConnection];
-  v9 = v8;
-  if (v8)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  v9 = serverConnection;
+  if (serverConnection)
   {
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_165];
+    v10 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_165];
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __46__ACCTransportClient_destroyEndpointWithUUID___block_invoke_166;
     v18 = &unk_2784871E8;
-    v19 = v4;
+    v19 = dCopy;
     v20 = &v21;
     [v10 destroyEndpointWithUUID:v19 withReply:&v15];
   }
 
   v11 = [(ACCTransportClient *)self endpointDataOutHandlers:v15];
   objc_sync_enter(v11);
-  v12 = [(ACCTransportClient *)self endpointDataOutHandlers];
-  [v12 removeObjectForKey:v4];
+  endpointDataOutHandlers = [(ACCTransportClient *)self endpointDataOutHandlers];
+  [endpointDataOutHandlers removeObjectForKey:dCopy];
 
   objc_sync_exit(v11);
-  LOBYTE(v12) = *(v22 + 24);
+  LOBYTE(endpointDataOutHandlers) = *(v22 + 24);
 
   _Block_object_dispose(&v21, 8);
   v13 = *MEMORY[0x277D85DE8];
-  return v12 & 1;
+  return endpointDataOutHandlers & 1;
 }
 
 void __46__ACCTransportClient_destroyEndpointWithUUID___block_invoke(uint64_t a1, void *a2)
@@ -3972,10 +3972,10 @@ void __46__ACCTransportClient_destroyEndpointWithUUID___block_invoke_166(uint64_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)destroyConnectionWithUUID:(id)a3
+- (BOOL)destroyConnectionWithUUID:(id)d
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -4009,30 +4009,30 @@ void __46__ACCTransportClient_destroyEndpointWithUUID___block_invoke_166(uint64_
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v4;
+    v29 = dCopy;
     _os_log_impl(&dword_221CB0000, v7, OS_LOG_TYPE_DEFAULT, "Destroying connection... (connectionUUID: %@)", buf, 0xCu);
   }
 
-  if (v4)
+  if (dCopy)
   {
-    v8 = [(ACCTransportClient *)self serverConnection];
-    if (v8)
+    serverConnection = [(ACCTransportClient *)self serverConnection];
+    if (serverConnection)
     {
-      v9 = [(ACCTransportClient *)self endpointUUIDsForConnectionWithUUID:v4];
-      v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_168];
+      v9 = [(ACCTransportClient *)self endpointUUIDsForConnectionWithUUID:dCopy];
+      v10 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_168];
       v18 = MEMORY[0x277D85DD0];
       v19 = 3221225472;
       v20 = __48__ACCTransportClient_destroyConnectionWithUUID___block_invoke_169;
       v21 = &unk_2784871E8;
-      v22 = v4;
+      v22 = dCopy;
       v23 = &v24;
       [v10 destroyConnectionWithUUID:v22 withReply:&v18];
 
       v11 = [(ACCTransportClient *)self endpointDataOutHandlers:v18];
       objc_sync_enter(v11);
-      v12 = [(ACCTransportClient *)self endpointDataOutHandlers];
-      v13 = [v9 allObjects];
-      [v12 removeObjectsForKeys:v13];
+      endpointDataOutHandlers = [(ACCTransportClient *)self endpointDataOutHandlers];
+      allObjects = [v9 allObjects];
+      [endpointDataOutHandlers removeObjectsForKeys:allObjects];
 
       objc_sync_exit(v11);
     }
@@ -4042,7 +4042,7 @@ void __46__ACCTransportClient_destroyEndpointWithUUID___block_invoke_166(uint64_
   {
     if (gLogObjects && gNumLogObjects >= 1)
     {
-      v8 = *gLogObjects;
+      serverConnection = *gLogObjects;
     }
 
     else
@@ -4052,13 +4052,13 @@ void __46__ACCTransportClient_destroyEndpointWithUUID___block_invoke_166(uint64_
         [ACCTransportClient serverConnection];
       }
 
-      v8 = MEMORY[0x277D86220];
+      serverConnection = MEMORY[0x277D86220];
       v14 = MEMORY[0x277D86220];
     }
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    if (os_log_type_enabled(serverConnection, OS_LOG_TYPE_FAULT))
     {
-      [ACCTransportClient destroyConnectionWithUUID:v8];
+      [ACCTransportClient destroyConnectionWithUUID:serverConnection];
     }
   }
 
@@ -4147,26 +4147,26 @@ void __48__ACCTransportClient_destroyConnectionWithUUID___block_invoke_169(uint6
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)connectionUUIDForEndpointWithUUID:(id)a3
+- (id)connectionUUIDForEndpointWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__1;
   v15 = __Block_byref_object_dispose__1;
   v16 = 0;
-  v5 = [(ACCTransportClient *)self serverConnection];
-  v6 = v5;
-  if (v5)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  v6 = serverConnection;
+  if (serverConnection)
   {
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_171];
+    v7 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_171];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __56__ACCTransportClient_connectionUUIDForEndpointWithUUID___block_invoke_172;
     v10[3] = &unk_278487238;
     v10[4] = &v11;
-    [v7 connectionUUIDForEndpointWithUUID:v4 withReply:v10];
+    [v7 connectionUUIDForEndpointWithUUID:dCopy withReply:v10];
   }
 
   v8 = v12[5];
@@ -4211,26 +4211,26 @@ void __56__ACCTransportClient_connectionUUIDForEndpointWithUUID___block_invoke(u
   }
 }
 
-- (id)endpointUUIDsForConnectionWithUUID:(id)a3
+- (id)endpointUUIDsForConnectionWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__1;
   v15 = __Block_byref_object_dispose__1;
   v16 = 0;
-  v5 = [(ACCTransportClient *)self serverConnection];
-  v6 = v5;
-  if (v5)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  v6 = serverConnection;
+  if (serverConnection)
   {
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_175];
+    v7 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_175];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __57__ACCTransportClient_endpointUUIDsForConnectionWithUUID___block_invoke_176;
     v10[3] = &unk_278487260;
     v10[4] = &v11;
-    [v7 endpointUUIDsForConnectionWithUUID:v4 withReply:v10];
+    [v7 endpointUUIDsForConnectionWithUUID:dCopy withReply:v10];
   }
 
   v8 = v12[5];
@@ -4320,24 +4320,24 @@ void __63__ACCTransportClient_authStatusForConnectionWithUUID_authType___block_i
   }
 }
 
-- (BOOL)isConnectionAuthenticated:(id)a3
+- (BOOL)isConnectionAuthenticated:(id)authenticated
 {
-  v4 = a3;
+  authenticatedCopy = authenticated;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(ACCTransportClient *)self serverConnection];
-  v6 = v5;
-  if (v5)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  v6 = serverConnection;
+  if (serverConnection)
   {
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_184];
+    v7 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_184];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __48__ACCTransportClient_isConnectionAuthenticated___block_invoke_185;
     v10[3] = &unk_2784872B0;
     v10[4] = &v11;
-    [v7 isConnectionAuthenticatedForUUID:v4 withReply:v10];
+    [v7 isConnectionAuthenticatedForUUID:authenticatedCopy withReply:v10];
   }
 
   v8 = *(v12 + 24);
@@ -4416,26 +4416,26 @@ void __55__ACCTransportClient_setConnectionAuthenticated_state___block_invoke(ui
   }
 }
 
-- (id)accessoryInfoForConnectionWithUUID:(id)a3
+- (id)accessoryInfoForConnectionWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__1;
   v15 = __Block_byref_object_dispose__1;
   v16 = 0;
-  v5 = [(ACCTransportClient *)self serverConnection];
-  v6 = v5;
-  if (v5)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  v6 = serverConnection;
+  if (serverConnection)
   {
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_189];
+    v7 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_189];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __57__ACCTransportClient_accessoryInfoForConnectionWithUUID___block_invoke_190;
     v10[3] = &unk_2784872D8;
     v10[4] = &v11;
-    [v7 accessoryInfoForConnectionWithUUID:v4 withReply:v10];
+    [v7 accessoryInfoForConnectionWithUUID:dCopy withReply:v10];
   }
 
   v8 = v12[5];
@@ -4480,26 +4480,26 @@ void __57__ACCTransportClient_accessoryInfoForConnectionWithUUID___block_invoke(
   }
 }
 
-- (id)accessoryInfoForEndpointWithUUID:(id)a3
+- (id)accessoryInfoForEndpointWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__1;
   v15 = __Block_byref_object_dispose__1;
   v16 = 0;
-  v5 = [(ACCTransportClient *)self serverConnection];
-  v6 = v5;
-  if (v5)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  v6 = serverConnection;
+  if (serverConnection)
   {
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_193];
+    v7 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_193];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __55__ACCTransportClient_accessoryInfoForEndpointWithUUID___block_invoke_194;
     v10[3] = &unk_2784872D8;
     v10[4] = &v11;
-    [v7 accessoryInfoForEndpointWithUUID:v4 withReply:v10];
+    [v7 accessoryInfoForEndpointWithUUID:dCopy withReply:v10];
   }
 
   v8 = v12[5];
@@ -4544,26 +4544,26 @@ void __55__ACCTransportClient_accessoryInfoForEndpointWithUUID___block_invoke(ui
   }
 }
 
-- (id)propertiesForConnectionWithUUID:(id)a3
+- (id)propertiesForConnectionWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__1;
   v15 = __Block_byref_object_dispose__1;
   v16 = 0;
-  v5 = [(ACCTransportClient *)self serverConnection];
-  v6 = v5;
-  if (v5)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  v6 = serverConnection;
+  if (serverConnection)
   {
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_196];
+    v7 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_196];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __54__ACCTransportClient_propertiesForConnectionWithUUID___block_invoke_197;
     v10[3] = &unk_2784872D8;
     v10[4] = &v11;
-    [v7 propertiesForConnectionWithUUID:v4 withReply:v10];
+    [v7 propertiesForConnectionWithUUID:dCopy withReply:v10];
   }
 
   v8 = v12[5];
@@ -4608,26 +4608,26 @@ void __54__ACCTransportClient_propertiesForConnectionWithUUID___block_invoke(uin
   }
 }
 
-- (id)propertiesForEndpointWithUUID:(id)a3
+- (id)propertiesForEndpointWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__1;
   v15 = __Block_byref_object_dispose__1;
   v16 = 0;
-  v5 = [(ACCTransportClient *)self serverConnection];
-  v6 = v5;
-  if (v5)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  v6 = serverConnection;
+  if (serverConnection)
   {
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_199];
+    v7 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_199];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __52__ACCTransportClient_propertiesForEndpointWithUUID___block_invoke_200;
     v10[3] = &unk_2784872D8;
     v10[4] = &v11;
-    [v7 propertiesForEndpointWithUUID:v4 withReply:v10];
+    [v7 propertiesForEndpointWithUUID:dCopy withReply:v10];
   }
 
   v8 = v12[5];
@@ -4672,26 +4672,26 @@ void __52__ACCTransportClient_propertiesForEndpointWithUUID___block_invoke(uint6
   }
 }
 
-- (id)identifierForConnectionWithUUID:(id)a3
+- (id)identifierForConnectionWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__1;
   v15 = __Block_byref_object_dispose__1;
   v16 = 0;
-  v5 = [(ACCTransportClient *)self serverConnection];
-  v6 = v5;
-  if (v5)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  v6 = serverConnection;
+  if (serverConnection)
   {
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_202];
+    v7 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_202];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __54__ACCTransportClient_identifierForConnectionWithUUID___block_invoke_203;
     v10[3] = &unk_278487238;
     v10[4] = &v11;
-    [v7 identifierForConnectionWithUUID:v4 withReply:v10];
+    [v7 identifierForConnectionWithUUID:dCopy withReply:v10];
   }
 
   v8 = v12[5];
@@ -4736,26 +4736,26 @@ void __54__ACCTransportClient_identifierForConnectionWithUUID___block_invoke(uin
   }
 }
 
-- (id)identifierForEndpointWithUUID:(id)a3
+- (id)identifierForEndpointWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__1;
   v15 = __Block_byref_object_dispose__1;
   v16 = 0;
-  v5 = [(ACCTransportClient *)self serverConnection];
-  v6 = v5;
-  if (v5)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  v6 = serverConnection;
+  if (serverConnection)
   {
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_205_0];
+    v7 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_205_0];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __52__ACCTransportClient_identifierForEndpointWithUUID___block_invoke_206;
     v10[3] = &unk_278487238;
     v10[4] = &v11;
-    [v7 identifierForEndpointWithUUID:v4 withReply:v10];
+    [v7 identifierForEndpointWithUUID:dCopy withReply:v10];
   }
 
   v8 = v12[5];
@@ -4800,35 +4800,35 @@ void __52__ACCTransportClient_identifierForEndpointWithUUID___block_invoke(uint6
   }
 }
 
-- (void)setHandler:(id)a3 forConnectionProperty:(id)a4
+- (void)setHandler:(id)handler forConnectionProperty:(id)property
 {
-  aBlock = a3;
-  v6 = a4;
-  if (v6)
+  aBlock = handler;
+  propertyCopy = property;
+  if (propertyCopy)
   {
-    v7 = [(ACCTransportClient *)self connectionPropertyChangeHandlers];
-    objc_sync_enter(v7);
-    v8 = [(ACCTransportClient *)self connectionPropertyChangeHandlers];
+    connectionPropertyChangeHandlers = [(ACCTransportClient *)self connectionPropertyChangeHandlers];
+    objc_sync_enter(connectionPropertyChangeHandlers);
+    connectionPropertyChangeHandlers2 = [(ACCTransportClient *)self connectionPropertyChangeHandlers];
     if (aBlock)
     {
       v9 = _Block_copy(aBlock);
-      [v8 setObject:v9 forKey:v6];
+      [connectionPropertyChangeHandlers2 setObject:v9 forKey:propertyCopy];
     }
 
     else
     {
-      [v8 removeObjectForKey:v6];
+      [connectionPropertyChangeHandlers2 removeObjectForKey:propertyCopy];
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(connectionPropertyChangeHandlers);
   }
 }
 
-- (void)setHandler:(id)a3 forEndpointProperty:(id)a4
+- (void)setHandler:(id)handler forEndpointProperty:(id)property
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  propertyCopy = property;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 1;
@@ -4860,7 +4860,7 @@ void __52__ACCTransportClient_identifierForEndpointWithUUID___block_invoke(uint6
     v11 = "set";
     v17 = "[ACCTransportClient setHandler:forEndpointProperty:]";
     v16 = 136315650;
-    if (!v6)
+    if (!handlerCopy)
     {
       v11 = "reset";
     }
@@ -4868,37 +4868,37 @@ void __52__ACCTransportClient_identifierForEndpointWithUUID___block_invoke(uint6
     v18 = 2080;
     v19 = v11;
     v20 = 2112;
-    v21 = v7;
+    v21 = propertyCopy;
     _os_log_impl(&dword_221CB0000, v10, OS_LOG_TYPE_DEFAULT, "%s: %s eventHandler for property %@", &v16, 0x20u);
   }
 
-  if (v7)
+  if (propertyCopy)
   {
-    v12 = [(ACCTransportClient *)self endpointPropertyChangeHandlers];
-    objc_sync_enter(v12);
-    v13 = [(ACCTransportClient *)self endpointPropertyChangeHandlers];
-    if (v6)
+    endpointPropertyChangeHandlers = [(ACCTransportClient *)self endpointPropertyChangeHandlers];
+    objc_sync_enter(endpointPropertyChangeHandlers);
+    endpointPropertyChangeHandlers2 = [(ACCTransportClient *)self endpointPropertyChangeHandlers];
+    if (handlerCopy)
     {
-      v14 = _Block_copy(v6);
-      [v13 setObject:v14 forKey:v7];
+      v14 = _Block_copy(handlerCopy);
+      [endpointPropertyChangeHandlers2 setObject:v14 forKey:propertyCopy];
     }
 
     else
     {
-      [v13 removeObjectForKey:v7];
+      [endpointPropertyChangeHandlers2 removeObjectForKey:propertyCopy];
     }
 
-    objc_sync_exit(v12);
+    objc_sync_exit(endpointPropertyChangeHandlers);
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSecureTunnelDataReceiveHandler:(id)a3 forEndpoint:(id)a4
+- (void)setSecureTunnelDataReceiveHandler:(id)handler forEndpoint:(id)endpoint
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  endpointCopy = endpoint;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 1;
@@ -4930,7 +4930,7 @@ void __52__ACCTransportClient_identifierForEndpointWithUUID___block_invoke(uint6
     v11 = "set";
     v20 = "[ACCTransportClient setSecureTunnelDataReceiveHandler:forEndpoint:]";
     v19 = 136315650;
-    if (!v6)
+    if (!handlerCopy)
     {
       v11 = "reset";
     }
@@ -4938,33 +4938,33 @@ void __52__ACCTransportClient_identifierForEndpointWithUUID___block_invoke(uint6
     v21 = 2080;
     v22 = v11;
     v23 = 2112;
-    v24 = v7;
+    v24 = endpointCopy;
     _os_log_impl(&dword_221CB0000, v10, OS_LOG_TYPE_DEFAULT, "%s: %s eventHandler for endpoint %@", &v19, 0x20u);
   }
 
-  if (v7)
+  if (endpointCopy)
   {
-    v12 = [(ACCTransportClient *)self endpointSecureTunnelDataHandlers];
-    objc_sync_enter(v12);
-    v13 = [(ACCTransportClient *)self endpointSecureTunnelDataHandlers];
-    if (v6)
+    endpointSecureTunnelDataHandlers = [(ACCTransportClient *)self endpointSecureTunnelDataHandlers];
+    objc_sync_enter(endpointSecureTunnelDataHandlers);
+    endpointSecureTunnelDataHandlers2 = [(ACCTransportClient *)self endpointSecureTunnelDataHandlers];
+    if (handlerCopy)
     {
-      v14 = _Block_copy(v6);
-      [v13 setObject:v14 forKey:v7];
+      v14 = _Block_copy(handlerCopy);
+      [endpointSecureTunnelDataHandlers2 setObject:v14 forKey:endpointCopy];
     }
 
     else
     {
-      [v13 removeObjectForKey:v7];
+      [endpointSecureTunnelDataHandlers2 removeObjectForKey:endpointCopy];
     }
 
-    objc_sync_exit(v12);
-    v15 = [(ACCTransportClient *)self serverConnection];
-    v16 = v15;
-    if (v15)
+    objc_sync_exit(endpointSecureTunnelDataHandlers);
+    serverConnection = [(ACCTransportClient *)self serverConnection];
+    v16 = serverConnection;
+    if (serverConnection)
     {
-      v17 = [v15 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_210];
-      [v17 enableSecureTunnelDataReceiveHandlerForEndpoint:v7];
+      v17 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_210];
+      [v17 enableSecureTunnelDataReceiveHandlerForEndpoint:endpointCopy];
     }
   }
 
@@ -5077,27 +5077,27 @@ void __74__ACCTransportClient_processOutgoingSecureTunnelData_forEndpoint_forTyp
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (BOOL)processIncomingData:(id)a3 forEndpointWithUUID:(id)a4
+- (BOOL)processIncomingData:(id)data forEndpointWithUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
   kdebug_trace();
-  v8 = [(ACCTransportClient *)self serverConnection];
-  v9 = v8;
-  if (v8)
+  serverConnection = [(ACCTransportClient *)self serverConnection];
+  v9 = serverConnection;
+  if (serverConnection)
   {
-    v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_215_0];
+    v10 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_215_0];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __62__ACCTransportClient_processIncomingData_forEndpointWithUUID___block_invoke_216;
     v13[3] = &unk_2784871E8;
-    v14 = v7;
+    v14 = dCopy;
     v15 = &v16;
-    [v10 processIncomingData:v6 forEndpointWithUUID:v14 withReply:v13];
+    [v10 processIncomingData:dataCopy forEndpointWithUUID:v14 withReply:v13];
   }
 
   v11 = *(v17 + 24);

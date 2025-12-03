@@ -1,16 +1,16 @@
 @interface DNDMutableScheduleTimePeriod
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setEndTime:(id)a3;
-- (void)setStartTime:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setEndTime:(id)time;
+- (void)setStartTime:(id)time;
 @end
 
 @implementation DNDMutableScheduleTimePeriod
 
-- (void)setStartTime:(id)a3
+- (void)setStartTime:(id)time
 {
-  if (a3)
+  if (time)
   {
-    v4 = [a3 copy];
+    v4 = [time copy];
   }
 
   else
@@ -24,11 +24,11 @@
   MEMORY[0x2821F96F8](v4, startTime);
 }
 
-- (void)setEndTime:(id)a3
+- (void)setEndTime:(id)time
 {
-  if (a3)
+  if (time)
   {
-    v4 = [a3 copy];
+    v4 = [time copy];
   }
 
   else
@@ -42,7 +42,7 @@
   MEMORY[0x2821F96F8](v4, endTime);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [DNDScheduleTimePeriod alloc];
 

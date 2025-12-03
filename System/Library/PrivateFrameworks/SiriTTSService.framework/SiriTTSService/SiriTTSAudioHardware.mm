@@ -1,7 +1,7 @@
 @interface SiriTTSAudioHardware
 + (id)defaultOutput;
 - (void)fetchHardwareInfo;
-- (void)setDuckOthers:(BOOL)a3;
+- (void)setDuckOthers:(BOOL)others;
 @end
 
 @implementation SiriTTSAudioHardware
@@ -17,8 +17,8 @@
 - (void)fetchHardwareInfo
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-  v4 = [v3 attributeForKey:*MEMORY[0x1E69AEB00]];
+  mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
+  v4 = [mEMORY[0x1E69AED10] attributeForKey:*MEMORY[0x1E69AEB00]];
   v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69AEB90]];
   routeType = self->_routeType;
   self->_routeType = v5;
@@ -40,16 +40,16 @@
   v9 = [v8 componentsSeparatedByString:{@", "}];
   if ([v9 count] == 2)
   {
-    v10 = [v9 firstObject];
-    v11 = [v10 length];
+    firstObject = [v9 firstObject];
+    v11 = [firstObject length];
     if (v11 - 1 >= 0)
     {
       v12 = v11;
       v13 = 1;
       do
       {
-        v14 = [v10 characterAtIndex:--v12];
-        if ([v10 characterAtIndex:v12] - 48 > 9)
+        v14 = [firstObject characterAtIndex:--v12];
+        if ([firstObject characterAtIndex:v12] - 48 > 9)
         {
           break;
         }
@@ -61,13 +61,13 @@
       while (v12 > 0);
     }
 
-    v15 = [v9 lastObject];
-    self->_productId = strtol([v15 UTF8String], 0, 10);
+    lastObject = [v9 lastObject];
+    self->_productId = strtol([lastObject UTF8String], 0, 10);
 
     self->_isAppleProduct = self->_vendorId == 76;
 LABEL_10:
     v18 = 0.0;
-    if ([v3 getActiveCategoryVolume:&v18 andName:0])
+    if ([mEMORY[0x1E69AED10] getActiveCategoryVolume:&v18 andName:0])
     {
       self->_volume = v18;
     }
@@ -87,7 +87,7 @@ LABEL_15:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDuckOthers:(BOOL)a3
+- (void)setDuckOthers:(BOOL)others
 {
   v3 = TTSGetServiceLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))

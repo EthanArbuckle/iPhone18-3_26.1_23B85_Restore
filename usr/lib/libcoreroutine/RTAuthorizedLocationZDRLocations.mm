@@ -1,24 +1,24 @@
 @interface RTAuthorizedLocationZDRLocations
-+ (id)createWithAuthorizedZDRLocationMO:(id)a3;
-+ (id)createWithManagedObject:(id)a3;
-- (RTAuthorizedLocationZDRLocations)initWithCoder:(id)a3;
-- (RTAuthorizedLocationZDRLocations)initWithZDRLocation:(id)a3 zdrLocationDbEntryTimeCfatSec:(id)a4 zdrLocationType:(unint64_t)a5 zdrLocationLatitudeDeg:(double)a6 zdrLocationLongitudeDeg:(double)a7 zdrLocationLastSeenTimeCfatSec:(id)a8;
-- (id)managedObjectWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)createWithAuthorizedZDRLocationMO:(id)o;
++ (id)createWithManagedObject:(id)object;
+- (RTAuthorizedLocationZDRLocations)initWithCoder:(id)coder;
+- (RTAuthorizedLocationZDRLocations)initWithZDRLocation:(id)location zdrLocationDbEntryTimeCfatSec:(id)sec zdrLocationType:(unint64_t)type zdrLocationLatitudeDeg:(double)deg zdrLocationLongitudeDeg:(double)longitudeDeg zdrLocationLastSeenTimeCfatSec:(id)cfatSec;
+- (id)managedObjectWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTAuthorizedLocationZDRLocations
 
-+ (id)createWithManagedObject:(id)a3
++ (id)createWithManagedObject:(id)object
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = objectCopy;
       v6 = [objc_opt_class() createWithAuthorizedZDRLocationMO:v5];
 
       goto LABEL_8;
@@ -32,7 +32,7 @@
       v11 = v9;
       v12 = 2112;
       v14 = 2080;
-      v13 = v4;
+      v13 = objectCopy;
       v15 = "+[RTAuthorizedLocationZDRLocations(RTCoreDataTransformable) createWithManagedObject:]";
       v16 = 1024;
       v17 = 31;
@@ -46,29 +46,29 @@ LABEL_8:
   return v6;
 }
 
-+ (id)createWithAuthorizedZDRLocationMO:(id)a3
++ (id)createWithAuthorizedZDRLocationMO:(id)o
 {
-  v3 = a3;
+  oCopy = o;
   v4 = [RTAuthorizedLocationZDRLocations alloc];
-  v5 = [v3 zdrLocationUUID];
-  v6 = [v3 zdrLocationDbEntryTimeCfatSec];
-  v7 = [v3 zdrLocationType];
-  [v3 zdrLocationLatitudeDeg];
+  zdrLocationUUID = [oCopy zdrLocationUUID];
+  zdrLocationDbEntryTimeCfatSec = [oCopy zdrLocationDbEntryTimeCfatSec];
+  zdrLocationType = [oCopy zdrLocationType];
+  [oCopy zdrLocationLatitudeDeg];
   v9 = v8;
-  [v3 zdrLocationLongitudeDeg];
+  [oCopy zdrLocationLongitudeDeg];
   v11 = v10;
-  v12 = [v3 zdrLocationLastSeenTimeCfatSec];
+  zdrLocationLastSeenTimeCfatSec = [oCopy zdrLocationLastSeenTimeCfatSec];
 
-  v13 = [(RTAuthorizedLocationZDRLocations *)v4 initWithZDRLocation:v5 zdrLocationDbEntryTimeCfatSec:v6 zdrLocationType:v7 zdrLocationLatitudeDeg:v12 zdrLocationLongitudeDeg:v9 zdrLocationLastSeenTimeCfatSec:v11];
+  v13 = [(RTAuthorizedLocationZDRLocations *)v4 initWithZDRLocation:zdrLocationUUID zdrLocationDbEntryTimeCfatSec:zdrLocationDbEntryTimeCfatSec zdrLocationType:zdrLocationType zdrLocationLatitudeDeg:zdrLocationLastSeenTimeCfatSec zdrLocationLongitudeDeg:v9 zdrLocationLastSeenTimeCfatSec:v11];
 
   return v13;
 }
 
-- (id)managedObjectWithContext:(id)a3
+- (id)managedObjectWithContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  contextCopy = context;
+  if (contextCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -81,11 +81,11 @@ LABEL_8:
       v15 = 2112;
       v16 = v9;
       v17 = 2112;
-      v18 = v5;
+      v18 = contextCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@,%@", &v13, 0x20u);
     }
 
-    v10 = [RTAuthorizedLocationZDRLocationsMO managedObjectWithAuthorizedZDRLocation:self inManagedObjectContext:v5];
+    v10 = [RTAuthorizedLocationZDRLocationsMO managedObjectWithAuthorizedZDRLocation:self inManagedObjectContext:contextCopy];
   }
 
   else
@@ -103,51 +103,51 @@ LABEL_8:
   return v10;
 }
 
-- (RTAuthorizedLocationZDRLocations)initWithZDRLocation:(id)a3 zdrLocationDbEntryTimeCfatSec:(id)a4 zdrLocationType:(unint64_t)a5 zdrLocationLatitudeDeg:(double)a6 zdrLocationLongitudeDeg:(double)a7 zdrLocationLastSeenTimeCfatSec:(id)a8
+- (RTAuthorizedLocationZDRLocations)initWithZDRLocation:(id)location zdrLocationDbEntryTimeCfatSec:(id)sec zdrLocationType:(unint64_t)type zdrLocationLatitudeDeg:(double)deg zdrLocationLongitudeDeg:(double)longitudeDeg zdrLocationLastSeenTimeCfatSec:(id)cfatSec
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
+  locationCopy = location;
+  secCopy = sec;
+  cfatSecCopy = cfatSec;
   v21.receiver = self;
   v21.super_class = RTAuthorizedLocationZDRLocations;
   v18 = [(RTAuthorizedLocationZDRLocations *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_zdrLocationUUID, a3);
-    objc_storeStrong(&v19->_zdrLocationDbEntryTimeCfatSec, a4);
-    v19->_zdrLocationType = a5;
-    v19->_zdrLocationLatitudeDeg = a6;
-    v19->_zdrLocationLongitudeDeg = a7;
-    objc_storeStrong(&v19->_zdrLocationLastSeenTimeCfatSec, a8);
+    objc_storeStrong(&v18->_zdrLocationUUID, location);
+    objc_storeStrong(&v19->_zdrLocationDbEntryTimeCfatSec, sec);
+    v19->_zdrLocationType = type;
+    v19->_zdrLocationLatitudeDeg = deg;
+    v19->_zdrLocationLongitudeDeg = longitudeDeg;
+    objc_storeStrong(&v19->_zdrLocationLastSeenTimeCfatSec, cfatSec);
   }
 
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   zdrLocationUUID = self->_zdrLocationUUID;
-  v5 = a3;
-  [v5 encodeObject:zdrLocationUUID forKey:@"zdrLocationUUIDIdentifier"];
-  [v5 encodeObject:self->_zdrLocationDbEntryTimeCfatSec forKey:@"zdrLocationEntryTimeCfatSecIdentifier"];
-  [v5 encodeInteger:self->_zdrLocationType forKey:@"zdrLocationTypeIdentifier"];
-  [v5 encodeDouble:@"zdrLocationLatitudeIdentifier" forKey:self->_zdrLocationLatitudeDeg];
-  [v5 encodeDouble:@"zdrLocationLongitudeIdentifier" forKey:self->_zdrLocationLongitudeDeg];
-  [v5 encodeObject:self->_zdrLocationLastSeenTimeCfatSec forKey:@"zdrLocationLastSeenTimeCfatSecIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:zdrLocationUUID forKey:@"zdrLocationUUIDIdentifier"];
+  [coderCopy encodeObject:self->_zdrLocationDbEntryTimeCfatSec forKey:@"zdrLocationEntryTimeCfatSecIdentifier"];
+  [coderCopy encodeInteger:self->_zdrLocationType forKey:@"zdrLocationTypeIdentifier"];
+  [coderCopy encodeDouble:@"zdrLocationLatitudeIdentifier" forKey:self->_zdrLocationLatitudeDeg];
+  [coderCopy encodeDouble:@"zdrLocationLongitudeIdentifier" forKey:self->_zdrLocationLongitudeDeg];
+  [coderCopy encodeObject:self->_zdrLocationLastSeenTimeCfatSec forKey:@"zdrLocationLastSeenTimeCfatSecIdentifier"];
 }
 
-- (RTAuthorizedLocationZDRLocations)initWithCoder:(id)a3
+- (RTAuthorizedLocationZDRLocations)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zdrLocationUUIDIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zdrLocationEntryTimeCfatSecIdentifier"];
-  v7 = [v4 decodeIntegerForKey:@"zdrLocationTypeIdentifier"];
-  [v4 decodeDoubleForKey:@"zdrLocationLatitudeIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zdrLocationUUIDIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zdrLocationEntryTimeCfatSecIdentifier"];
+  v7 = [coderCopy decodeIntegerForKey:@"zdrLocationTypeIdentifier"];
+  [coderCopy decodeDoubleForKey:@"zdrLocationLatitudeIdentifier"];
   v9 = v8;
-  [v4 decodeDoubleForKey:@"zdrLocationLongitudeIdentifier"];
+  [coderCopy decodeDoubleForKey:@"zdrLocationLongitudeIdentifier"];
   v11 = v10;
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zdrLocationLastSeenTimeCfatSecIdentifier"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zdrLocationLastSeenTimeCfatSecIdentifier"];
 
   v13 = [(RTAuthorizedLocationZDRLocations *)self initWithZDRLocation:v5 zdrLocationDbEntryTimeCfatSec:v6 zdrLocationType:v7 zdrLocationLatitudeDeg:v12 zdrLocationLongitudeDeg:v9 zdrLocationLastSeenTimeCfatSec:v11];
   return v13;

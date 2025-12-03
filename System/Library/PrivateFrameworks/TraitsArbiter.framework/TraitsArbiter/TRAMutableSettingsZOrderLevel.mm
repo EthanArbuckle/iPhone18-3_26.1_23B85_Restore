@@ -1,20 +1,20 @@
 @interface TRAMutableSettingsZOrderLevel
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TRAMutableSettingsZOrderLevel
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TRASettingsZOrderLevel allocWithZone:a3];
+  v4 = [TRASettingsZOrderLevel allocWithZone:zone];
 
   return [(TRASettingsZOrderLevel *)v4 initWithZOrderLevelSettings:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithZOrderLevelSettings:self];
 }

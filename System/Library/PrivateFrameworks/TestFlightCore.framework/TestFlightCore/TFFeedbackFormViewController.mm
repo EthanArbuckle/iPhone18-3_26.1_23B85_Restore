@@ -1,35 +1,35 @@
 @interface TFFeedbackFormViewController
-- (TFFeedbackFormViewController)initWithPresenter:(id)a3;
-- (void)adjustContentOffsetForKeyboardNotification:(id)a3;
+- (TFFeedbackFormViewController)initWithPresenter:(id)presenter;
+- (void)adjustContentOffsetForKeyboardNotification:(id)notification;
 - (void)loadView;
-- (void)prepareForEntryType:(unint64_t)a3;
+- (void)prepareForEntryType:(unint64_t)type;
 - (void)registerNotifications;
-- (void)reloadEntriesAtIndexPaths:(id)a3;
-- (void)reloadEntryGroupsAtIndices:(id)a3;
-- (void)setNavigationItemTitle:(id)a3;
-- (void)showErrorAlertWithTitle:(id)a3 message:(id)a4;
-- (void)showSubmitButtonForSubmissionPendingState:(BOOL)a3;
-- (void)submitButtonPressed:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)reloadEntriesAtIndexPaths:(id)paths;
+- (void)reloadEntryGroupsAtIndices:(id)indices;
+- (void)setNavigationItemTitle:(id)title;
+- (void)showErrorAlertWithTitle:(id)title message:(id)message;
+- (void)showSubmitButtonForSubmissionPendingState:(BOOL)state;
+- (void)submitButtonPressed:(id)pressed;
+- (void)traitCollectionDidChange:(id)change;
 - (void)unregisterNotifications;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation TFFeedbackFormViewController
 
-- (TFFeedbackFormViewController)initWithPresenter:(id)a3
+- (TFFeedbackFormViewController)initWithPresenter:(id)presenter
 {
-  v5 = a3;
+  presenterCopy = presenter;
   v19.receiver = self;
   v19.super_class = TFFeedbackFormViewController;
   v6 = [(TFFeedbackFormViewController *)&v19 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_presenter, a3);
+    objc_storeStrong(&v6->_presenter, presenter);
     v8 = [[TFFeedbackFormViewDataSource alloc] initWithPresenter:v7->_presenter];
     viewDataSource = v7->_viewDataSource;
     v7->_viewDataSource = v8;
@@ -65,33 +65,33 @@
   v9 = [objc_alloc(MEMORY[0x277D75B40]) initWithFrame:1 style:{v4, v5, v6, v7}];
   [(TFFeedbackFormViewController *)self setTableView:v9];
 
-  v10 = [(TFFeedbackFormViewController *)self tableView];
-  [v10 setAutoresizingMask:18];
+  tableView = [(TFFeedbackFormViewController *)self tableView];
+  [tableView setAutoresizingMask:18];
 
-  v11 = [(TFFeedbackFormViewController *)self viewDataSource];
-  v12 = [(TFFeedbackFormViewController *)self tableView];
-  [v12 setDataSource:v11];
+  viewDataSource = [(TFFeedbackFormViewController *)self viewDataSource];
+  tableView2 = [(TFFeedbackFormViewController *)self tableView];
+  [tableView2 setDataSource:viewDataSource];
 
-  v13 = [(TFFeedbackFormViewController *)self viewDataSource];
-  v14 = [(TFFeedbackFormViewController *)self tableView];
-  [v14 setDelegate:v13];
+  viewDataSource2 = [(TFFeedbackFormViewController *)self viewDataSource];
+  tableView3 = [(TFFeedbackFormViewController *)self tableView];
+  [tableView3 setDelegate:viewDataSource2];
 
-  v15 = [(TFFeedbackFormViewController *)self tableView];
-  [v15 setKeyboardDismissMode:2];
+  tableView4 = [(TFFeedbackFormViewController *)self tableView];
+  [tableView4 setKeyboardDismissMode:2];
 
-  v16 = [(TFFeedbackFormViewController *)self tableView];
-  [v16 setSeparatorStyle:0];
+  tableView5 = [(TFFeedbackFormViewController *)self tableView];
+  [tableView5 setSeparatorStyle:0];
 
-  v17 = [(TFFeedbackFormViewController *)self tableView];
-  [v17 setContentInset:{0.0, 0.0, 50.0, 0.0}];
+  tableView6 = [(TFFeedbackFormViewController *)self tableView];
+  [tableView6 setContentInset:{0.0, 0.0, 50.0, 0.0}];
 
-  v18 = [(TFFeedbackFormViewController *)self view];
-  v19 = [(TFFeedbackFormViewController *)self tableView];
-  [v18 addSubview:v19];
+  view = [(TFFeedbackFormViewController *)self view];
+  tableView7 = [(TFFeedbackFormViewController *)self tableView];
+  [view addSubview:tableView7];
 
-  v20 = [(TFFeedbackFormViewController *)self viewDataSource];
-  v21 = [(TFFeedbackFormViewController *)self tableView];
-  [v20 prepareTableViewForDataSource:v21];
+  viewDataSource3 = [(TFFeedbackFormViewController *)self viewDataSource];
+  tableView8 = [(TFFeedbackFormViewController *)self tableView];
+  [viewDataSource3 prepareTableViewForDataSource:tableView8];
 
   [(TFFeedbackFormViewController *)self showSubmitButtonForSubmissionPendingState:0];
 }
@@ -101,123 +101,123 @@
   v4.receiver = self;
   v4.super_class = TFFeedbackFormViewController;
   [(TFFeedbackFormViewController *)&v4 viewDidLoad];
-  v3 = [(TFFeedbackFormViewController *)self presenter];
-  [v3 prepareViewForForm];
+  presenter = [(TFFeedbackFormViewController *)self presenter];
+  [presenter prepareViewForForm];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = TFFeedbackFormViewController;
-  [(TFFeedbackFormViewController *)&v4 viewWillAppear:a3];
+  [(TFFeedbackFormViewController *)&v4 viewWillAppear:appear];
   [(TFFeedbackFormViewController *)self registerNotifications];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = TFFeedbackFormViewController;
-  [(TFFeedbackFormViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(TFFeedbackFormViewController *)self tableView];
-  [v4 endEditing:1];
+  [(TFFeedbackFormViewController *)&v5 viewWillDisappear:disappear];
+  tableView = [(TFFeedbackFormViewController *)self tableView];
+  [tableView endEditing:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = TFFeedbackFormViewController;
-  [(TFFeedbackFormViewController *)&v4 viewDidDisappear:a3];
+  [(TFFeedbackFormViewController *)&v4 viewDidDisappear:disappear];
   [(TFFeedbackFormViewController *)self unregisterNotifications];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = TFFeedbackFormViewController;
-  [(TFFeedbackFormViewController *)&v5 traitCollectionDidChange:a3];
-  v4 = [(TFFeedbackFormViewController *)self tableView];
-  [v4 reloadData];
+  [(TFFeedbackFormViewController *)&v5 traitCollectionDidChange:change];
+  tableView = [(TFFeedbackFormViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)registerNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_adjustContentOffsetForKeyboardNotification_ name:*MEMORY[0x277D76BA8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_adjustContentOffsetForKeyboardNotification_ name:*MEMORY[0x277D76BA8] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_adjustContentOffsetForKeyboardNotification_ name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_adjustContentOffsetForKeyboardNotification_ name:*MEMORY[0x277D76C50] object:0];
 }
 
 - (void)unregisterNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76BA8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76BA8] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
 }
 
-- (void)setNavigationItemTitle:(id)a3
+- (void)setNavigationItemTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(TFFeedbackFormViewController *)self navigationItem];
-  [v5 setTitle:v4];
+  titleCopy = title;
+  navigationItem = [(TFFeedbackFormViewController *)self navigationItem];
+  [navigationItem setTitle:titleCopy];
 }
 
-- (void)prepareForEntryType:(unint64_t)a3
+- (void)prepareForEntryType:(unint64_t)type
 {
-  v6 = [(TFFeedbackFormViewController *)self tableView];
-  v4 = [TFFeedbackEntryTypeCellProvider cellClassForEntryType:a3];
-  v5 = [TFFeedbackEntryTypeCellProvider reuseIdentifierForEntryType:a3];
-  [v6 registerClass:v4 forCellReuseIdentifier:v5];
+  tableView = [(TFFeedbackFormViewController *)self tableView];
+  v4 = [TFFeedbackEntryTypeCellProvider cellClassForEntryType:type];
+  v5 = [TFFeedbackEntryTypeCellProvider reuseIdentifierForEntryType:type];
+  [tableView registerClass:v4 forCellReuseIdentifier:v5];
 }
 
-- (void)reloadEntryGroupsAtIndices:(id)a3
+- (void)reloadEntryGroupsAtIndices:(id)indices
 {
-  v5 = a3;
-  if ([v5 count])
+  indicesCopy = indices;
+  if ([indicesCopy count])
   {
-    v4 = [(TFFeedbackFormViewController *)self tableView];
-    [v4 reloadSections:v5 withRowAnimation:100];
+    tableView = [(TFFeedbackFormViewController *)self tableView];
+    [tableView reloadSections:indicesCopy withRowAnimation:100];
   }
 }
 
-- (void)reloadEntriesAtIndexPaths:(id)a3
+- (void)reloadEntriesAtIndexPaths:(id)paths
 {
-  v5 = a3;
-  if ([v5 count])
+  pathsCopy = paths;
+  if ([pathsCopy count])
   {
-    v4 = [(TFFeedbackFormViewController *)self tableView];
-    [v4 reloadRowsAtIndexPaths:v5 withRowAnimation:100];
+    tableView = [(TFFeedbackFormViewController *)self tableView];
+    [tableView reloadRowsAtIndexPaths:pathsCopy withRowAnimation:100];
   }
 }
 
-- (void)showSubmitButtonForSubmissionPendingState:(BOOL)a3
+- (void)showSubmitButtonForSubmissionPendingState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(TFFeedbackFormViewController *)self activityIndicatorView];
-  v6 = v5;
-  if (v3)
+  stateCopy = state;
+  activityIndicatorView = [(TFFeedbackFormViewController *)self activityIndicatorView];
+  v6 = activityIndicatorView;
+  if (stateCopy)
   {
-    [v5 startAnimating];
+    [activityIndicatorView startAnimating];
 
     [(TFFeedbackFormViewController *)self activityItem];
   }
 
   else
   {
-    [v5 stopAnimating];
+    [activityIndicatorView stopAnimating];
 
     [(TFFeedbackFormViewController *)self submitButtonItem];
   }
   v8 = ;
-  v7 = [(TFFeedbackFormViewController *)self navigationItem];
-  [v7 setRightBarButtonItem:v8];
+  navigationItem = [(TFFeedbackFormViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v8];
 }
 
-- (void)showErrorAlertWithTitle:(id)a3 message:(id)a4
+- (void)showErrorAlertWithTitle:(id)title message:(id)message
 {
-  v8 = [MEMORY[0x277D75110] alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  v8 = [MEMORY[0x277D75110] alertControllerWithTitle:title message:message preferredStyle:1];
   v5 = MEMORY[0x277D750F8];
   v6 = TFLocalizedString(@"ALERT_DISMISS_ACTION_TITLE");
   v7 = [v5 actionWithTitle:v6 style:0 handler:&__block_literal_global_0];
@@ -226,16 +226,16 @@
   [(TFFeedbackFormViewController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)adjustContentOffsetForKeyboardNotification:(id)a3
+- (void)adjustContentOffsetForKeyboardNotification:(id)notification
 {
-  v12 = a3;
-  v4 = [v12 name];
-  v5 = [v4 isEqualToString:*MEMORY[0x277D76BA8]];
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  v5 = [name isEqualToString:*MEMORY[0x277D76BA8]];
 
   if (v5)
   {
-    v6 = [v12 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x277D76BB8]];
+    userInfo = [notificationCopy userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
     [v7 CGRectValue];
     v9 = v8;
 
@@ -247,17 +247,17 @@
     v10 = 50.0;
   }
 
-  v11 = [(TFFeedbackFormViewController *)self tableView];
-  [v11 setContentInset:{0.0, 0.0, v10, 0.0}];
+  tableView = [(TFFeedbackFormViewController *)self tableView];
+  [tableView setContentInset:{0.0, 0.0, v10, 0.0}];
 }
 
-- (void)submitButtonPressed:(id)a3
+- (void)submitButtonPressed:(id)pressed
 {
-  v4 = [(TFFeedbackFormViewController *)self tableView];
-  [v4 endEditing:1];
+  tableView = [(TFFeedbackFormViewController *)self tableView];
+  [tableView endEditing:1];
 
-  v5 = [(TFFeedbackFormViewController *)self presenter];
-  [v5 presenterViewDidInitiateFeedbackSubmission:self];
+  presenter = [(TFFeedbackFormViewController *)self presenter];
+  [presenter presenterViewDidInitiateFeedbackSubmission:self];
 }
 
 @end

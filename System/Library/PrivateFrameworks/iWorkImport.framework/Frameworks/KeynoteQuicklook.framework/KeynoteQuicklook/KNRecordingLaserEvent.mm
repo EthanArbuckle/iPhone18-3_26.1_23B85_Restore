@@ -1,23 +1,23 @@
 @interface KNRecordingLaserEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)unitLocation;
-- (KNRecordingLaserEvent)initWithStartTime:(double)a3 unitLocation:(CGPoint)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (KNRecordingLaserEvent)initWithStartTime:(double)time unitLocation:(CGPoint)location;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)loadFromMessage:(const void *)a3 unarchiver:(id)a4 parentEventTrack:(id)a5;
-- (void)saveToMessage:(void *)a3 archiver:(id)a4;
+- (void)loadFromMessage:(const void *)message unarchiver:(id)unarchiver parentEventTrack:(id)track;
+- (void)saveToMessage:(void *)message archiver:(id)archiver;
 @end
 
 @implementation KNRecordingLaserEvent
 
-- (KNRecordingLaserEvent)initWithStartTime:(double)a3 unitLocation:(CGPoint)a4
+- (KNRecordingLaserEvent)initWithStartTime:(double)time unitLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v7.receiver = self;
   v7.super_class = KNRecordingLaserEvent;
-  result = [(KNRecordingEvent *)&v7 initWithStartTime:a3];
+  result = [(KNRecordingEvent *)&v7 initWithStartTime:time];
   if (result)
   {
     result->_unitLocation.x = x;
@@ -27,9 +27,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(KNRecordingLaserEvent, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(KNRecordingLaserEvent, a2, zone);
   objc_msgSend_startTime(self, v5, v6);
   objc_msgSend_unitLocation(self, v7, v8);
 
@@ -50,12 +50,12 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v18.receiver = self;
   v18.super_class = KNRecordingLaserEvent;
-  if ([(KNRecordingEvent *)&v18 isEqual:v4])
+  if ([(KNRecordingEvent *)&v18 isEqual:equalCopy])
   {
     objc_opt_class();
     v7 = TSUDynamicCast();
@@ -103,12 +103,12 @@
   return result;
 }
 
-- (void)loadFromMessage:(const void *)a3 unarchiver:(id)a4 parentEventTrack:(id)a5
+- (void)loadFromMessage:(const void *)message unarchiver:(id)unarchiver parentEventTrack:(id)track
 {
   v9.receiver = self;
   v9.super_class = KNRecordingLaserEvent;
-  [(KNRecordingEvent *)&v9 loadFromMessage:a3 unarchiver:a4 parentEventTrack:a5];
-  v7 = *(a3 + 4);
+  [(KNRecordingEvent *)&v9 loadFromMessage:message unarchiver:unarchiver parentEventTrack:track];
+  v7 = *(message + 4);
   if (!v7)
   {
     v7 = &qword_2812EBA08;
@@ -127,24 +127,24 @@
   self->_unitLocation = v8;
 }
 
-- (void)saveToMessage:(void *)a3 archiver:(id)a4
+- (void)saveToMessage:(void *)message archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v19.receiver = self;
   v19.super_class = KNRecordingLaserEvent;
-  [(KNRecordingEvent *)&v19 saveToMessage:a3 archiver:v6];
-  *(a3 + 4) |= 2u;
-  v9 = *(a3 + 4);
+  [(KNRecordingEvent *)&v19 saveToMessage:message archiver:archiverCopy];
+  *(message + 4) |= 2u;
+  v9 = *(message + 4);
   if (!v9)
   {
-    v10 = *(a3 + 1);
+    v10 = *(message + 1);
     if (v10)
     {
       v10 = *(v10 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v9 = sub_275E20F30(v10);
-    *(a3 + 4) = v9;
+    *(message + 4) = v9;
   }
 
   objc_msgSend_unitLocation(self, v7, v8);

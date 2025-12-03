@@ -1,31 +1,31 @@
 @interface NTKPhotoImageView
-- (NTKPhotoImageView)initWithFrame:(CGRect)a3 forDevice:(id)a4;
+- (NTKPhotoImageView)initWithFrame:(CGRect)frame forDevice:(id)device;
 - (NTKPhotoImageViewDelegate)delegate;
 - (void)_loadMediaAssetView;
 - (void)_unloadMediaAssetView;
-- (void)mediaAssetViewDidBeginPlaying:(id)a3;
-- (void)mediaAssetViewDidEndPlaying:(id)a3;
+- (void)mediaAssetViewDidBeginPlaying:(id)playing;
+- (void)mediaAssetViewDidEndPlaying:(id)playing;
 - (void)reset;
-- (void)setPhoto:(id)a3 allowIris:(BOOL)a4;
+- (void)setPhoto:(id)photo allowIris:(BOOL)iris;
 @end
 
 @implementation NTKPhotoImageView
 
-- (NTKPhotoImageView)initWithFrame:(CGRect)a3 forDevice:(id)a4
+- (NTKPhotoImageView)initWithFrame:(CGRect)frame forDevice:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = NTKPhotoImageView;
-  v11 = [(NTKPhotoImageView *)&v14 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(NTKPhotoImageView *)&v14 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    [(NTKPhotoImageView *)v11 setClipsToBounds:1];
-    objc_storeStrong(&v12->_device, a4);
+    [(NTKPhotoImageView *)height setClipsToBounds:1];
+    objc_storeStrong(&v12->_device, device);
     [(NTKPhotoImageView *)v12 _loadMediaAssetView];
   }
 
@@ -67,23 +67,23 @@
   [(NTKPhotoImageView *)self _loadMediaAssetView];
 }
 
-- (void)setPhoto:(id)a3 allowIris:(BOOL)a4
+- (void)setPhoto:(id)photo allowIris:(BOOL)iris
 {
-  v4 = a4;
-  v7 = a3;
-  if (v7)
+  irisCopy = iris;
+  photoCopy = photo;
+  if (photoCopy)
   {
-    v61 = v7;
-    v8 = [v7 photo];
+    v61 = photoCopy;
+    photo = [photoCopy photo];
 
-    v7 = v61;
-    if (v8)
+    photoCopy = v61;
+    if (photo)
     {
-      v9 = [v61 image];
-      [v9 scale];
+      image = [v61 image];
+      [image scale];
       v11 = v10;
-      [v9 size];
-      if (!v9)
+      [image size];
+      if (!image)
       {
         goto LABEL_26;
       }
@@ -107,39 +107,39 @@
       }
 
       v19 = v16;
-      v20 = [v61 photo];
+      photo2 = [v61 photo];
       photo = self->_photo;
-      self->_photo = v20;
+      self->_photo = photo2;
 
-      objc_storeStrong(&self->_cachedPhoto, a3);
-      v22 = 0;
+      objc_storeStrong(&self->_cachedPhoto, photo);
+      irisVideoURL = 0;
       v23 = 0.0;
       v24 = 0.0;
-      if ([(NTKPhoto *)self->_photo isIris]&& v4)
+      if ([(NTKPhoto *)self->_photo isIris]&& irisCopy)
       {
-        v22 = [(NTKPhoto *)self->_photo irisVideoURL];
+        irisVideoURL = [(NTKPhoto *)self->_photo irisVideoURL];
         [(NTKPhoto *)self->_photo irisDuration];
         v24 = v25;
         [(NTKPhoto *)self->_photo irisStillDisplayTime];
         v23 = v26;
       }
 
-      v27 = [(CLKMediaAssetView *)self->_mediaAssetView mediaAsset];
-      v28 = [v27 image];
-      v29 = [v61 image];
-      v30 = v29;
-      if (v28 == v29)
+      mediaAsset = [(CLKMediaAssetView *)self->_mediaAssetView mediaAsset];
+      image2 = [mediaAsset image];
+      image3 = [v61 image];
+      v30 = image3;
+      if (image2 == image3)
       {
-        v31 = [(CLKMediaAssetView *)self->_mediaAssetView mediaAsset];
-        v32 = [v31 video];
-        v33 = [v32 url];
+        mediaAsset2 = [(CLKMediaAssetView *)self->_mediaAssetView mediaAsset];
+        video = [mediaAsset2 video];
+        v33 = [video url];
 
-        if (v33 == v22)
+        if (v33 == irisVideoURL)
         {
 LABEL_25:
 
 LABEL_26:
-          v7 = v61;
+          photoCopy = v61;
           goto LABEL_27;
         }
       }
@@ -149,26 +149,26 @@ LABEL_26:
       }
 
       v34 = MEMORY[0x277CBBB48];
-      if (v22)
+      if (irisVideoURL)
       {
         v35 = MEMORY[0x277CBBBC0];
-        v36 = [v61 photo];
-        v37 = [v36 localIdentifier];
-        v38 = [v35 videoWithName:v37 forDevice:self->_device url:v22];
-        v39 = [v61 image];
-        v40 = [v34 mediaAssetWithVideo:v38 image:v39 videoDuration:self->_device stillDisplayTime:v24 forDevice:v23];
+        photo3 = [v61 photo];
+        localIdentifier = [photo3 localIdentifier];
+        v38 = [v35 videoWithName:localIdentifier forDevice:self->_device url:irisVideoURL];
+        image4 = [v61 image];
+        v40 = [v34 mediaAssetWithVideo:v38 image:image4 videoDuration:self->_device stillDisplayTime:v24 forDevice:v23];
       }
 
       else
       {
-        v36 = [v61 image];
-        v40 = [v34 mediaAssetWithImage:v36 forDevice:self->_device];
+        photo3 = [v61 image];
+        v40 = [v34 mediaAssetWithImage:photo3 forDevice:self->_device];
       }
 
       [(CLKMediaAssetView *)self->_mediaAssetView changeMediaAsset:v40];
-      v41 = [(CLKMediaAssetView *)self->_mediaAssetView mediaAsset];
-      v42 = [v41 image];
-      [v42 scale];
+      mediaAsset3 = [(CLKMediaAssetView *)self->_mediaAssetView mediaAsset];
+      image5 = [mediaAsset3 image];
+      [image5 scale];
       v44 = v43;
 
       [(CLKDevice *)self->_device screenScale];
@@ -182,9 +182,9 @@ LABEL_26:
         v46 = 1.0;
       }
 
-      v47 = [(CLKMediaAssetView *)self->_mediaAssetView mediaAsset];
-      v48 = [v47 image];
-      [v48 size];
+      mediaAsset4 = [(CLKMediaAssetView *)self->_mediaAssetView mediaAsset];
+      image6 = [mediaAsset4 image];
+      [image6 size];
       v50 = v49;
       v52 = v51;
 
@@ -211,16 +211,16 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)mediaAssetViewDidBeginPlaying:(id)a3
+- (void)mediaAssetViewDidBeginPlaying:(id)playing
 {
-  v4 = [(NTKPhotoImageView *)self delegate];
-  [v4 imageViewDidBeginPlaying:self];
+  delegate = [(NTKPhotoImageView *)self delegate];
+  [delegate imageViewDidBeginPlaying:self];
 }
 
-- (void)mediaAssetViewDidEndPlaying:(id)a3
+- (void)mediaAssetViewDidEndPlaying:(id)playing
 {
-  v4 = [(NTKPhotoImageView *)self delegate];
-  [v4 imageViewDidEndPlaying:self];
+  delegate = [(NTKPhotoImageView *)self delegate];
+  [delegate imageViewDidEndPlaying:self];
 }
 
 - (NTKPhotoImageViewDelegate)delegate

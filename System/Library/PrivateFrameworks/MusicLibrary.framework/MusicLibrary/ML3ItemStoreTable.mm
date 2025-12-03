@@ -10,7 +10,7 @@
   columns = self->_columns;
   if (!columns)
   {
-    v53 = self;
+    selfCopy = self;
     v68 = [ML3DatabaseColumn columnWithName:@"item_pid" datatype:2 constraints:1 defaultValue:0];
     v69[0] = v68;
     v67 = [ML3DatabaseColumn columnWithName:@"store_item_id" datatype:2 constraints:16 defaultValue:&unk_2840C9440];
@@ -134,10 +134,10 @@
     v12 = [ML3DatabaseColumn columnWithName:@"immersive_deep_link_url" datatype:4 constraints:16 defaultValue:&stru_28408B690];
     v69[60] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v69 count:61];
-    v14 = v53->_columns;
-    v53->_columns = v13;
+    v14 = selfCopy->_columns;
+    selfCopy->_columns = v13;
 
-    columns = v53->_columns;
+    columns = selfCopy->_columns;
   }
 
   return columns;

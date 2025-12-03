@@ -1,14 +1,14 @@
 @interface PKTileController
-- (id)initWithPixelSize:(int)a3 actualSize:(int)a4 pixelFormat:(int)a5 sixChannelBlending:(void *)a6 transparentBlending:(double)a7 wantsExtendedDynamicRangeContent:(double)a8 metalConfig:(double)a9;
-- (void)callbackAfterTileGeneration:(uint64_t)a1;
-- (void)renderStrokes:(void *)a3 additionalStrokes:(void *)a4 intoTile:(void *)a5 completionBlock:;
-- (void)renderTilesIntoTiles:(void *)a3 completion:;
+- (id)initWithPixelSize:(int)size actualSize:(int)actualSize pixelFormat:(int)format sixChannelBlending:(void *)blending transparentBlending:(double)transparentBlending wantsExtendedDynamicRangeContent:(double)content metalConfig:(double)config;
+- (void)callbackAfterTileGeneration:(uint64_t)generation;
+- (void)renderStrokes:(void *)strokes additionalStrokes:(void *)additionalStrokes intoTile:(void *)tile completionBlock:;
+- (void)renderTilesIntoTiles:(void *)tiles completion:;
 - (void)resumePreviews;
 - (void)runTasks;
-- (void)setContentZoomScale:(uint64_t)a1;
-- (void)setSixChannelBlending:(uint64_t)a1;
-- (void)setTransparentBlending:(uint64_t)a1;
-- (void)setWantsExtendedDynamicRangeContent:(uint64_t)a1;
+- (void)setContentZoomScale:(uint64_t)scale;
+- (void)setSixChannelBlending:(uint64_t)blending;
+- (void)setTransparentBlending:(uint64_t)blending;
+- (void)setWantsExtendedDynamicRangeContent:(uint64_t)content;
 - (void)suspendPreviews;
 - (void)teardown;
 @end
@@ -17,7 +17,7 @@
 
 - (void)resumePreviews
 {
-  if (a1)
+  if (self)
   {
     v2 = os_log_create("com.apple.pencilkit", "Tiles");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -26,20 +26,20 @@
       _os_log_debug_impl(&dword_1C7CCA000, v2, OS_LOG_TYPE_DEBUG, "resume tile previews", v3, 2u);
     }
 
-    if (*(a1 + 11) == 1)
+    if (*(self + 11) == 1)
     {
-      dispatch_resume(*(a1 + 48));
-      *(a1 + 11) = 0;
+      dispatch_resume(*(self + 48));
+      *(self + 11) = 0;
     }
   }
 }
 
-- (id)initWithPixelSize:(int)a3 actualSize:(int)a4 pixelFormat:(int)a5 sixChannelBlending:(void *)a6 transparentBlending:(double)a7 wantsExtendedDynamicRangeContent:(double)a8 metalConfig:(double)a9
+- (id)initWithPixelSize:(int)size actualSize:(int)actualSize pixelFormat:(int)format sixChannelBlending:(void *)blending transparentBlending:(double)transparentBlending wantsExtendedDynamicRangeContent:(double)content metalConfig:(double)config
 {
-  v19 = a6;
-  if (a1 && +[PKMetalUtility isMetalAvailable])
+  blendingCopy = blending;
+  if (self && +[PKMetalUtility isMetalAvailable])
   {
-    v36.receiver = a1;
+    v36.receiver = self;
     v36.super_class = PKTileController;
     v20 = objc_msgSendSuper2(&v36, sel_init);
     if (v20)
@@ -52,8 +52,8 @@
       v24 = v20[5];
       v20[5] = v23;
 
-      *(v20 + 9) = a3;
-      *(v20 + 10) = a4;
+      *(v20 + 9) = size;
+      *(v20 + 10) = actualSize;
       v20[2] = 0x3FF0000000000000;
       v25 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v26 = dispatch_queue_attr_make_with_qos_class(v25, QOS_CLASS_USER_INTERACTIVE, 0);
@@ -64,12 +64,12 @@
 
       v29 = [PKMetalRendererController alloc];
       v30 = 4;
-      if (a3 ^ 1 | a4)
+      if (size ^ 1 | actualSize)
       {
         v30 = 0;
       }
 
-      if ((a3 & a4) != 0)
+      if ((size & actualSize) != 0)
       {
         v31 = 5;
       }
@@ -79,32 +79,32 @@
         v31 = v30;
       }
 
-      v32 = [(PKMetalRendererController *)v29 initWithPixelSize:a2 actualSize:v31 pixelFormat:a5 sixChannelBlendingMode:v19 wantsExtendedDynamicRangeContent:a7 metalConfig:a8, a9, a10];
+      v32 = [(PKMetalRendererController *)v29 initWithPixelSize:a2 actualSize:v31 pixelFormat:format sixChannelBlendingMode:blendingCopy wantsExtendedDynamicRangeContent:transparentBlending metalConfig:content, config, a10];
       v33 = v20[3];
       v20[3] = v32;
 
       [(PKMetalRendererController *)v20[3] setup];
     }
 
-    a1 = v20;
-    v34 = a1;
+    self = v20;
+    selfCopy = self;
   }
 
   else
   {
-    v34 = 0;
+    selfCopy = 0;
   }
 
-  return v34;
+  return selfCopy;
 }
 
 - (void)teardown
 {
-  if (a1)
+  if (self)
   {
-    [(PKMetalRendererController *)*(a1 + 24) cancelAllRendering];
-    [(PKTileController *)a1 resumePreviews];
-    v2 = *(a1 + 24);
+    [(PKMetalRendererController *)*(self + 24) cancelAllRendering];
+    [(PKTileController *)self resumePreviews];
+    v2 = *(self + 24);
 
     [(PKMetalRendererController *)v2 teardown];
   }
@@ -112,7 +112,7 @@
 
 - (void)suspendPreviews
 {
-  if (a1)
+  if (self)
   {
     v2 = os_log_create("com.apple.pencilkit", "Tiles");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -121,20 +121,20 @@
       _os_log_debug_impl(&dword_1C7CCA000, v2, OS_LOG_TYPE_DEBUG, "suspend tile previews", v3, 2u);
     }
 
-    if ((*(a1 + 11) & 1) == 0)
+    if ((*(self + 11) & 1) == 0)
     {
-      dispatch_suspend(*(a1 + 48));
-      *(a1 + 11) = 1;
+      dispatch_suspend(*(self + 48));
+      *(self + 11) = 1;
     }
   }
 }
 
-- (void)setSixChannelBlending:(uint64_t)a1
+- (void)setSixChannelBlending:(uint64_t)blending
 {
-  if (a1 && *(a1 + 9) != a2)
+  if (blending && *(blending + 9) != a2)
   {
-    *(a1 + 9) = a2;
-    v2 = *(a1 + 10);
+    *(blending + 9) = a2;
+    v2 = *(blending + 10);
     v3 = 4;
     if (v2 & 1 | ((a2 & 1) == 0))
     {
@@ -151,16 +151,16 @@
       v4 = v3;
     }
 
-    [(PKMetalRendererController *)*(a1 + 24) setSixChannelBlendingMode:v4];
+    [(PKMetalRendererController *)*(blending + 24) setSixChannelBlendingMode:v4];
   }
 }
 
-- (void)setTransparentBlending:(uint64_t)a1
+- (void)setTransparentBlending:(uint64_t)blending
 {
-  if (a1 && *(a1 + 10) != a2)
+  if (blending && *(blending + 10) != a2)
   {
-    *(a1 + 10) = a2;
-    v2 = *(a1 + 9);
+    *(blending + 10) = a2;
+    v2 = *(blending + 9);
     v3 = 4;
     if (a2 & 1 | ((v2 & 1) == 0))
     {
@@ -177,44 +177,44 @@
       v4 = v3;
     }
 
-    [(PKMetalRendererController *)*(a1 + 24) setSixChannelBlendingMode:v4];
+    [(PKMetalRendererController *)*(blending + 24) setSixChannelBlendingMode:v4];
   }
 }
 
-- (void)setWantsExtendedDynamicRangeContent:(uint64_t)a1
+- (void)setWantsExtendedDynamicRangeContent:(uint64_t)content
 {
-  if (a1)
+  if (content)
   {
-    [(PKMetalRendererController *)*(a1 + 24) setWantsExtendedDynamicRangeContent:a2];
+    [(PKMetalRendererController *)*(content + 24) setWantsExtendedDynamicRangeContent:a2];
   }
 }
 
-- (void)setContentZoomScale:(uint64_t)a1
+- (void)setContentZoomScale:(uint64_t)scale
 {
-  if (a1)
+  if (scale)
   {
-    if (*(a1 + 16) != a2)
+    if (*(scale + 16) != a2)
     {
-      *(a1 + 16) = a2;
-      [(PKMetalRendererController *)*(a1 + 24) setContentZoomScale:a2];
+      *(scale + 16) = a2;
+      [(PKMetalRendererController *)*(scale + 24) setContentZoomScale:a2];
     }
   }
 }
 
-- (void)renderTilesIntoTiles:(void *)a3 completion:
+- (void)renderTilesIntoTiles:(void *)tiles completion:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  tilesCopy = tiles;
+  if (self)
   {
-    v7 = *(a1 + 48);
+    v7 = *(self + 48);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __52__PKTileController_renderTilesIntoTiles_completion___block_invoke;
     block[3] = &unk_1E82D7930;
-    block[4] = a1;
+    block[4] = self;
     v9 = v5;
-    v10 = v6;
+    v10 = tilesCopy;
     dispatch_async(v7, block);
   }
 }
@@ -227,9 +227,9 @@ uint64_t __52__PKTileController_renderTilesIntoTiles_completion___block_invoke(u
   return v2();
 }
 
-- (void)callbackAfterTileGeneration:(uint64_t)a1
+- (void)callbackAfterTileGeneration:(uint64_t)generation
 {
-  if (a1)
+  if (generation)
   {
     v3 = a2;
     v4 = os_log_create("com.apple.pencilkit", "Tiles");
@@ -239,36 +239,36 @@ uint64_t __52__PKTileController_renderTilesIntoTiles_completion___block_invoke(u
       _os_log_debug_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEBUG, "queue tile completion", v7, 2u);
     }
 
-    v5 = *(a1 + 40);
+    v5 = *(generation + 40);
     v6 = _Block_copy(v3);
 
     [v5 addObject:v6];
-    [(PKTileController *)a1 runTasks];
+    [(PKTileController *)generation runTasks];
   }
 }
 
 - (void)runTasks
 {
-  v1 = *(a1 + 48);
+  v1 = *(self + 48);
   v2[0] = MEMORY[0x1E69E9820];
   v2[1] = 3221225472;
   v2[2] = __28__PKTileController_runTasks__block_invoke;
   v2[3] = &unk_1E82D90B8;
-  v2[4] = a1;
+  v2[4] = self;
   v3 = 0;
   dispatch_async(v1, v2);
 }
 
-- (void)renderStrokes:(void *)a3 additionalStrokes:(void *)a4 intoTile:(void *)a5 completionBlock:
+- (void)renderStrokes:(void *)strokes additionalStrokes:(void *)additionalStrokes intoTile:(void *)tile completionBlock:
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v9 = a5;
-    v10 = a4;
-    v11 = a3;
+    tileCopy = tile;
+    additionalStrokesCopy = additionalStrokes;
+    strokesCopy = strokes;
     v12 = a2;
-    v13 = [[PKTileTask alloc] initWithStrokes:v12 additionalStrokes:v11 intoTile:v10 completionBlock:v9];
+    v13 = [[PKTileTask alloc] initWithStrokes:v12 additionalStrokes:strokesCopy intoTile:additionalStrokesCopy completionBlock:tileCopy];
 
     v14 = os_log_create("com.apple.pencilkit", "Tiles");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -279,9 +279,9 @@ uint64_t __52__PKTileController_renderTilesIntoTiles_completion___block_invoke(u
     }
 
     os_unfair_lock_lock(&tasks_lock);
-    [*(a1 + 32) addObject:v13];
+    [*(self + 32) addObject:v13];
     os_unfair_lock_unlock(&tasks_lock);
-    [(PKTileController *)a1 runTasks];
+    [(PKTileController *)self runTasks];
   }
 }
 

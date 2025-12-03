@@ -1,18 +1,18 @@
 @interface SpeechIntentHandler
-- (void)handleStartSpeakScreen:(id)a3 completion:(id)a4;
+- (void)handleStartSpeakScreen:(id)screen completion:(id)completion;
 @end
 
 @implementation SpeechIntentHandler
 
-- (void)handleStartSpeakScreen:(id)a3 completion:(id)a4
+- (void)handleStartSpeakScreen:(id)screen completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  screenCopy = screen;
+  completionCopy = completion;
   v7 = AXLogSiriShortcuts();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v10 = 138412290;
-    v11 = v5;
+    v11 = screenCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "SpeakScreenIntentHandler: Handling intent %@", &v10, 0xCu);
   }
 
@@ -21,7 +21,7 @@
   [v8 speakThisWithOptions:12 errorHandler:0];
 
   v9 = [[AXStartSpeakScreenIntentResponse alloc] initWithCode:4 userActivity:0];
-  v6[2](v6, v9);
+  completionCopy[2](completionCopy, v9);
 }
 
 @end

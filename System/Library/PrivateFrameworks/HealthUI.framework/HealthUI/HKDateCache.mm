@@ -1,14 +1,14 @@
 @interface HKDateCache
-- (BOOL)isDateInThisCalendarMonth:(id)a3;
-- (BOOL)isDateInThisCalendarYear:(id)a3;
-- (BOOL)isDateInToday:(id)a3;
-- (BOOL)isDateInTomorrow:(id)a3;
-- (BOOL)isDateInYesterday:(id)a3;
-- (BOOL)isDateWithinLastRollingMonth:(id)a3;
-- (BOOL)isDateWithinLastRollingYear:(id)a3;
-- (BOOL)isDayOfWeekNumberOnWeekend:(id)a3;
+- (BOOL)isDateInThisCalendarMonth:(id)month;
+- (BOOL)isDateInThisCalendarYear:(id)year;
+- (BOOL)isDateInToday:(id)today;
+- (BOOL)isDateInTomorrow:(id)tomorrow;
+- (BOOL)isDateInYesterday:(id)yesterday;
+- (BOOL)isDateWithinLastRollingMonth:(id)month;
+- (BOOL)isDateWithinLastRollingYear:(id)year;
+- (BOOL)isDayOfWeekNumberOnWeekend:(id)weekend;
 - (HKDateCache)init;
-- (HKDateCache)initWithCalendar:(id)a3;
+- (HKDateCache)initWithCalendar:(id)calendar;
 - (NSDate)endOfDayMidnight;
 - (NSDate)endOfRollingMonthMidnight;
 - (NSDate)endOfRollingWeekMidnight;
@@ -23,18 +23,18 @@
 - (NSDate)startOfTomorrowMidnight;
 - (NSDate)startOfYesterdayMidnight;
 - (id)_currentDate;
-- (id)endOfRollingDay:(id)a3;
-- (id)endOfRollingMonth:(id)a3;
-- (id)endOfRollingWeek:(id)a3;
-- (id)endOfRollingYear:(id)a3;
-- (id)startOfRollingDay:(id)a3;
-- (id)startOfRollingMonth:(id)a3;
-- (id)startOfRollingWeek:(id)a3;
-- (id)startOfRollingYear:(id)a3;
+- (id)endOfRollingDay:(id)day;
+- (id)endOfRollingMonth:(id)month;
+- (id)endOfRollingWeek:(id)week;
+- (id)endOfRollingYear:(id)year;
+- (id)startOfRollingDay:(id)day;
+- (id)startOfRollingMonth:(id)month;
+- (id)startOfRollingWeek:(id)week;
+- (id)startOfRollingYear:(id)year;
 - (id)weekendDays;
-- (void)_flushCacheAndNotifyObservers:(id)a3;
-- (void)_notifyObserversDidUpdateOnNotification:(id)a3;
-- (void)_setCurrentDate:(id)a3;
+- (void)_flushCacheAndNotifyObservers:(id)observers;
+- (void)_notifyObserversDidUpdateOnNotification:(id)notification;
+- (void)_setCurrentDate:(id)date;
 - (void)dealloc;
 - (void)flushCache;
 @end
@@ -47,8 +47,8 @@
   if (!startOfDayMidnight)
   {
     calendar = self->_calendar;
-    v5 = [(HKDateCache *)self _currentDate];
-    v6 = [(NSCalendar *)calendar startOfDayForDate:v5];
+    _currentDate = [(HKDateCache *)self _currentDate];
+    v6 = [(NSCalendar *)calendar startOfDayForDate:_currentDate];
     v7 = self->_startOfDayMidnight;
     self->_startOfDayMidnight = v6;
 
@@ -63,15 +63,15 @@
   currentDate = self->_currentDate;
   if (currentDate)
   {
-    v3 = currentDate;
+    date = currentDate;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  return v3;
+  return date;
 }
 
 - (NSDate)startOfTomorrowMidnight
@@ -80,8 +80,8 @@
   if (!startOfTomorrowMidnight)
   {
     calendar = self->_calendar;
-    v5 = [(HKDateCache *)self _currentDate];
-    v6 = [(NSCalendar *)calendar dateByAddingUnit:16 value:1 toDate:v5 options:0];
+    _currentDate = [(HKDateCache *)self _currentDate];
+    v6 = [(NSCalendar *)calendar dateByAddingUnit:16 value:1 toDate:_currentDate options:0];
 
     v7 = [(NSCalendar *)self->_calendar startOfDayForDate:v6];
     v8 = self->_startOfTomorrowMidnight;
@@ -93,27 +93,27 @@
   return startOfTomorrowMidnight;
 }
 
-- (HKDateCache)initWithCalendar:(id)a3
+- (HKDateCache)initWithCalendar:(id)calendar
 {
-  v5 = a3;
+  calendarCopy = calendar;
   v13.receiver = self;
   v13.super_class = HKDateCache;
   v6 = [(HKDateCache *)&v13 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v6->_observers;
-    v6->_observers = v7;
+    v6->_observers = weakObjectsHashTable;
 
-    objc_storeStrong(&v6->_calendar, a3);
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v6 selector:sel__flushCacheAndNotifyObservers_ name:*MEMORY[0x1E69DDB88] object:0];
+    objc_storeStrong(&v6->_calendar, calendar);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__flushCacheAndNotifyObservers_ name:*MEMORY[0x1E69DDB88] object:0];
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v6 selector:sel__flushCacheAndNotifyObservers_ name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__flushCacheAndNotifyObservers_ name:*MEMORY[0x1E695D8F0] object:0];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v6 selector:sel__flushCacheAndNotifyObservers_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v6 selector:sel__flushCacheAndNotifyObservers_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v6;
@@ -131,19 +131,19 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDB88] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDB88] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
   v4.receiver = self;
   v4.super_class = HKDateCache;
   [(HKDateCache *)&v4 dealloc];
 }
 
-- (void)_setCurrentDate:(id)a3
+- (void)_setCurrentDate:(id)date
 {
-  objc_storeStrong(&self->_currentDate, a3);
+  objc_storeStrong(&self->_currentDate, date);
 
   [(HKDateCache *)self _flushCacheAndNotifyObservers:0];
 }
@@ -154,8 +154,8 @@
   if (!startOfYesterdayMidnight)
   {
     calendar = self->_calendar;
-    v5 = [(HKDateCache *)self _currentDate];
-    v6 = [(NSCalendar *)calendar dateByAddingUnit:16 value:-1 toDate:v5 options:0];
+    _currentDate = [(HKDateCache *)self _currentDate];
+    v6 = [(NSCalendar *)calendar dateByAddingUnit:16 value:-1 toDate:_currentDate options:0];
 
     v7 = [(NSCalendar *)self->_calendar startOfDayForDate:v6];
     v8 = self->_startOfYesterdayMidnight;
@@ -173,8 +173,8 @@
   if (!endOfDayMidnight)
   {
     calendar = self->_calendar;
-    v5 = [(HKDateCache *)self startOfDayMidnight];
-    v6 = [(NSCalendar *)calendar dateByAddingUnit:16 value:1 toDate:v5 options:0];
+    startOfDayMidnight = [(HKDateCache *)self startOfDayMidnight];
+    v6 = [(NSCalendar *)calendar dateByAddingUnit:16 value:1 toDate:startOfDayMidnight options:0];
     v7 = self->_endOfDayMidnight;
     self->_endOfDayMidnight = v6;
 
@@ -190,8 +190,8 @@
   if (!oneMinuteBeforeEndOfDayMidnight)
   {
     calendar = self->_calendar;
-    v5 = [(HKDateCache *)self endOfDayMidnight];
-    v6 = [(NSCalendar *)calendar dateByAddingUnit:64 value:-1 toDate:v5 options:0];
+    endOfDayMidnight = [(HKDateCache *)self endOfDayMidnight];
+    v6 = [(NSCalendar *)calendar dateByAddingUnit:64 value:-1 toDate:endOfDayMidnight options:0];
     v7 = self->_oneMinuteBeforeEndOfDayMidnight;
     self->_oneMinuteBeforeEndOfDayMidnight = v6;
 
@@ -207,8 +207,8 @@
   if (!oneSecondBeforeEndOfDayMidnight)
   {
     calendar = self->_calendar;
-    v5 = [(HKDateCache *)self endOfDayMidnight];
-    v6 = [(NSCalendar *)calendar dateByAddingUnit:128 value:-1 toDate:v5 options:0];
+    endOfDayMidnight = [(HKDateCache *)self endOfDayMidnight];
+    v6 = [(NSCalendar *)calendar dateByAddingUnit:128 value:-1 toDate:endOfDayMidnight options:0];
     v7 = self->_oneSecondBeforeEndOfDayMidnight;
     self->_oneSecondBeforeEndOfDayMidnight = v6;
 
@@ -224,8 +224,8 @@
   if (!endOfTomorrowMidnight)
   {
     calendar = self->_calendar;
-    v5 = [(HKDateCache *)self startOfTomorrowMidnight];
-    v6 = [(NSCalendar *)calendar dateByAddingUnit:16 value:1 toDate:v5 options:0];
+    startOfTomorrowMidnight = [(HKDateCache *)self startOfTomorrowMidnight];
+    v6 = [(NSCalendar *)calendar dateByAddingUnit:16 value:1 toDate:startOfTomorrowMidnight options:0];
     v7 = self->_endOfTomorrowMidnight;
     self->_endOfTomorrowMidnight = v6;
 
@@ -240,9 +240,9 @@
   startOfRollingWeekMidnight = self->_startOfRollingWeekMidnight;
   if (!startOfRollingWeekMidnight)
   {
-    v4 = [(HKDateCache *)self _currentDate];
+    _currentDate = [(HKDateCache *)self _currentDate];
     v5 = HKCalendarDateTransformNone();
-    v6 = HKStartOfRollingWeekForDate(v4, v5);
+    v6 = HKStartOfRollingWeekForDate(_currentDate, v5);
     v7 = self->_startOfRollingWeekMidnight;
     self->_startOfRollingWeekMidnight = v6;
 
@@ -257,8 +257,8 @@
   endOfRollingWeekMidnight = self->_endOfRollingWeekMidnight;
   if (!endOfRollingWeekMidnight)
   {
-    v4 = [(HKDateCache *)self startOfRollingWeekMidnight];
-    v5 = HKEndOfRollingWeekWithStart(v4);
+    startOfRollingWeekMidnight = [(HKDateCache *)self startOfRollingWeekMidnight];
+    v5 = HKEndOfRollingWeekWithStart(startOfRollingWeekMidnight);
     v6 = self->_endOfRollingWeekMidnight;
     self->_endOfRollingWeekMidnight = v5;
 
@@ -273,9 +273,9 @@
   startOfRollingMonthMidnight = self->_startOfRollingMonthMidnight;
   if (!startOfRollingMonthMidnight)
   {
-    v4 = [(HKDateCache *)self _currentDate];
+    _currentDate = [(HKDateCache *)self _currentDate];
     v5 = HKCalendarDateTransformNone();
-    v6 = HKStartOfRollingMonthForDate(v4, v5);
+    v6 = HKStartOfRollingMonthForDate(_currentDate, v5);
     v7 = self->_startOfRollingMonthMidnight;
     self->_startOfRollingMonthMidnight = v6;
 
@@ -290,8 +290,8 @@
   endOfRollingMonthMidnight = self->_endOfRollingMonthMidnight;
   if (!endOfRollingMonthMidnight)
   {
-    v4 = [(HKDateCache *)self startOfRollingMonthMidnight];
-    v5 = HKEndOfRollingMonthWithStart(v4);
+    startOfRollingMonthMidnight = [(HKDateCache *)self startOfRollingMonthMidnight];
+    v5 = HKEndOfRollingMonthWithStart(startOfRollingMonthMidnight);
     v6 = self->_endOfRollingMonthMidnight;
     self->_endOfRollingMonthMidnight = v5;
 
@@ -306,9 +306,9 @@
   startOfRollingYear = self->_startOfRollingYear;
   if (!startOfRollingYear)
   {
-    v4 = [(HKDateCache *)self _currentDate];
+    _currentDate = [(HKDateCache *)self _currentDate];
     v5 = HKCalendarDateTransformNone();
-    v6 = HKStartOfRollingYearForDate(v4, v5);
+    v6 = HKStartOfRollingYearForDate(_currentDate, v5);
     v7 = self->_startOfRollingYear;
     self->_startOfRollingYear = v6;
 
@@ -323,8 +323,8 @@
   endOfRollingYear = self->_endOfRollingYear;
   if (!endOfRollingYear)
   {
-    v4 = [(HKDateCache *)self startOfRollingYearMidnight];
-    v5 = HKEndOfRollingYearWithStart(v4);
+    startOfRollingYearMidnight = [(HKDateCache *)self startOfRollingYearMidnight];
+    v5 = HKEndOfRollingYearWithStart(startOfRollingYearMidnight);
     v6 = self->_endOfRollingYear;
     self->_endOfRollingYear = v5;
 
@@ -334,90 +334,90 @@
   return endOfRollingYear;
 }
 
-- (id)startOfRollingDay:(id)a3
+- (id)startOfRollingDay:(id)day
 {
   calendar = self->_calendar;
-  v6 = a3;
-  v7 = [(HKDateCache *)self startOfDayMidnight];
-  v8 = (*(a3 + 2))(v6, calendar, v7);
+  dayCopy = day;
+  startOfDayMidnight = [(HKDateCache *)self startOfDayMidnight];
+  v8 = (*(day + 2))(dayCopy, calendar, startOfDayMidnight);
 
   return v8;
 }
 
-- (id)endOfRollingDay:(id)a3
+- (id)endOfRollingDay:(id)day
 {
   calendar = self->_calendar;
-  v6 = a3;
-  v7 = [(HKDateCache *)self endOfDayMidnight];
-  v8 = (*(a3 + 2))(v6, calendar, v7);
+  dayCopy = day;
+  endOfDayMidnight = [(HKDateCache *)self endOfDayMidnight];
+  v8 = (*(day + 2))(dayCopy, calendar, endOfDayMidnight);
 
   return v8;
 }
 
-- (id)startOfRollingWeek:(id)a3
+- (id)startOfRollingWeek:(id)week
 {
   calendar = self->_calendar;
-  v6 = a3;
-  v7 = [(HKDateCache *)self startOfRollingWeekMidnight];
-  v8 = (*(a3 + 2))(v6, calendar, v7);
+  weekCopy = week;
+  startOfRollingWeekMidnight = [(HKDateCache *)self startOfRollingWeekMidnight];
+  v8 = (*(week + 2))(weekCopy, calendar, startOfRollingWeekMidnight);
 
   return v8;
 }
 
-- (id)endOfRollingWeek:(id)a3
+- (id)endOfRollingWeek:(id)week
 {
   calendar = self->_calendar;
-  v6 = a3;
-  v7 = [(HKDateCache *)self endOfRollingWeekMidnight];
-  v8 = (*(a3 + 2))(v6, calendar, v7);
+  weekCopy = week;
+  endOfRollingWeekMidnight = [(HKDateCache *)self endOfRollingWeekMidnight];
+  v8 = (*(week + 2))(weekCopy, calendar, endOfRollingWeekMidnight);
 
   return v8;
 }
 
-- (id)startOfRollingMonth:(id)a3
+- (id)startOfRollingMonth:(id)month
 {
   calendar = self->_calendar;
-  v6 = a3;
-  v7 = [(HKDateCache *)self startOfRollingMonthMidnight];
-  v8 = (*(a3 + 2))(v6, calendar, v7);
+  monthCopy = month;
+  startOfRollingMonthMidnight = [(HKDateCache *)self startOfRollingMonthMidnight];
+  v8 = (*(month + 2))(monthCopy, calendar, startOfRollingMonthMidnight);
 
   return v8;
 }
 
-- (id)endOfRollingMonth:(id)a3
+- (id)endOfRollingMonth:(id)month
 {
   calendar = self->_calendar;
-  v6 = a3;
-  v7 = [(HKDateCache *)self endOfRollingMonthMidnight];
-  v8 = (*(a3 + 2))(v6, calendar, v7);
+  monthCopy = month;
+  endOfRollingMonthMidnight = [(HKDateCache *)self endOfRollingMonthMidnight];
+  v8 = (*(month + 2))(monthCopy, calendar, endOfRollingMonthMidnight);
 
   return v8;
 }
 
-- (id)startOfRollingYear:(id)a3
+- (id)startOfRollingYear:(id)year
 {
   calendar = self->_calendar;
-  v6 = a3;
-  v7 = [(HKDateCache *)self startOfRollingYearMidnight];
-  v8 = (*(a3 + 2))(v6, calendar, v7);
+  yearCopy = year;
+  startOfRollingYearMidnight = [(HKDateCache *)self startOfRollingYearMidnight];
+  v8 = (*(year + 2))(yearCopy, calendar, startOfRollingYearMidnight);
 
   return v8;
 }
 
-- (id)endOfRollingYear:(id)a3
+- (id)endOfRollingYear:(id)year
 {
   calendar = self->_calendar;
-  v6 = a3;
-  v7 = [(HKDateCache *)self endOfRollingYearMidnight];
-  v8 = (*(a3 + 2))(v6, calendar, v7);
+  yearCopy = year;
+  endOfRollingYearMidnight = [(HKDateCache *)self endOfRollingYearMidnight];
+  v8 = (*(year + 2))(yearCopy, calendar, endOfRollingYearMidnight);
 
   return v8;
 }
 
-- (void)_notifyObserversDidUpdateOnNotification:(id)a3
+- (void)_notifyObserversDidUpdateOnNotification:(id)notification
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -438,7 +438,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) dateCacheDidUpdate:self onNotification:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) dateCacheDidUpdate:self onNotification:{notificationCopy, v10}];
       }
 
       while (v7 != v9);
@@ -454,9 +454,9 @@
   weekendDays = self->_weekendDays;
   if (!weekendDays)
   {
-    v4 = [(NSCalendar *)self->_calendar hk_weekendDays];
+    hk_weekendDays = [(NSCalendar *)self->_calendar hk_weekendDays];
     v5 = self->_weekendDays;
-    self->_weekendDays = v4;
+    self->_weekendDays = hk_weekendDays;
 
     weekendDays = self->_weekendDays;
   }
@@ -464,14 +464,14 @@
   return weekendDays;
 }
 
-- (BOOL)isDateInYesterday:(id)a3
+- (BOOL)isDateInYesterday:(id)yesterday
 {
-  v4 = a3;
-  v5 = [(HKDateCache *)self startOfYesterdayMidnight];
-  if (HKUIObjectIsLargerOrEqual(v4, v5))
+  yesterdayCopy = yesterday;
+  startOfYesterdayMidnight = [(HKDateCache *)self startOfYesterdayMidnight];
+  if (HKUIObjectIsLargerOrEqual(yesterdayCopy, startOfYesterdayMidnight))
   {
-    v6 = [(HKDateCache *)self startOfDayMidnight];
-    IsSmaller = HKUIObjectIsSmaller(v4, v6);
+    startOfDayMidnight = [(HKDateCache *)self startOfDayMidnight];
+    IsSmaller = HKUIObjectIsSmaller(yesterdayCopy, startOfDayMidnight);
   }
 
   else
@@ -482,14 +482,14 @@
   return IsSmaller;
 }
 
-- (BOOL)isDateInToday:(id)a3
+- (BOOL)isDateInToday:(id)today
 {
-  v4 = a3;
-  v5 = [(HKDateCache *)self startOfDayMidnight];
-  if (HKUIObjectIsLargerOrEqual(v4, v5))
+  todayCopy = today;
+  startOfDayMidnight = [(HKDateCache *)self startOfDayMidnight];
+  if (HKUIObjectIsLargerOrEqual(todayCopy, startOfDayMidnight))
   {
-    v6 = [(HKDateCache *)self startOfTomorrowMidnight];
-    IsSmaller = HKUIObjectIsSmaller(v4, v6);
+    startOfTomorrowMidnight = [(HKDateCache *)self startOfTomorrowMidnight];
+    IsSmaller = HKUIObjectIsSmaller(todayCopy, startOfTomorrowMidnight);
   }
 
   else
@@ -500,14 +500,14 @@
   return IsSmaller;
 }
 
-- (BOOL)isDateInTomorrow:(id)a3
+- (BOOL)isDateInTomorrow:(id)tomorrow
 {
-  v4 = a3;
-  v5 = [(HKDateCache *)self startOfTomorrowMidnight];
-  if (HKUIObjectIsLargerOrEqual(v4, v5))
+  tomorrowCopy = tomorrow;
+  startOfTomorrowMidnight = [(HKDateCache *)self startOfTomorrowMidnight];
+  if (HKUIObjectIsLargerOrEqual(tomorrowCopy, startOfTomorrowMidnight))
   {
-    v6 = [(HKDateCache *)self endOfTomorrowMidnight];
-    IsSmaller = HKUIObjectIsSmaller(v4, v6);
+    endOfTomorrowMidnight = [(HKDateCache *)self endOfTomorrowMidnight];
+    IsSmaller = HKUIObjectIsSmaller(tomorrowCopy, endOfTomorrowMidnight);
   }
 
   else
@@ -518,34 +518,34 @@
   return IsSmaller;
 }
 
-- (BOOL)isDateInThisCalendarMonth:(id)a3
+- (BOOL)isDateInThisCalendarMonth:(id)month
 {
   calendar = self->_calendar;
-  v5 = a3;
-  v6 = [(HKDateCache *)self _currentDate];
-  v7 = [(NSCalendar *)calendar compareDate:v5 toDate:v6 toUnitGranularity:8];
+  monthCopy = month;
+  _currentDate = [(HKDateCache *)self _currentDate];
+  v7 = [(NSCalendar *)calendar compareDate:monthCopy toDate:_currentDate toUnitGranularity:8];
 
   return v7 == 0;
 }
 
-- (BOOL)isDateInThisCalendarYear:(id)a3
+- (BOOL)isDateInThisCalendarYear:(id)year
 {
   calendar = self->_calendar;
-  v5 = a3;
-  v6 = [(HKDateCache *)self _currentDate];
-  v7 = [(NSCalendar *)calendar compareDate:v5 toDate:v6 toUnitGranularity:4];
+  yearCopy = year;
+  _currentDate = [(HKDateCache *)self _currentDate];
+  v7 = [(NSCalendar *)calendar compareDate:yearCopy toDate:_currentDate toUnitGranularity:4];
 
   return v7 == 0;
 }
 
-- (BOOL)isDateWithinLastRollingMonth:(id)a3
+- (BOOL)isDateWithinLastRollingMonth:(id)month
 {
-  v4 = a3;
-  v5 = [(HKDateCache *)self startOfRollingMonthMidnight];
-  if (HKUIObjectIsLargerOrEqual(v4, v5))
+  monthCopy = month;
+  startOfRollingMonthMidnight = [(HKDateCache *)self startOfRollingMonthMidnight];
+  if (HKUIObjectIsLargerOrEqual(monthCopy, startOfRollingMonthMidnight))
   {
-    v6 = [(HKDateCache *)self endOfRollingMonthMidnight];
-    IsSmaller = HKUIObjectIsSmaller(v4, v6);
+    endOfRollingMonthMidnight = [(HKDateCache *)self endOfRollingMonthMidnight];
+    IsSmaller = HKUIObjectIsSmaller(monthCopy, endOfRollingMonthMidnight);
   }
 
   else
@@ -556,14 +556,14 @@
   return IsSmaller;
 }
 
-- (BOOL)isDateWithinLastRollingYear:(id)a3
+- (BOOL)isDateWithinLastRollingYear:(id)year
 {
-  v4 = a3;
-  v5 = [(HKDateCache *)self startOfRollingYearMidnight];
-  if (HKUIObjectIsLargerOrEqual(v4, v5))
+  yearCopy = year;
+  startOfRollingYearMidnight = [(HKDateCache *)self startOfRollingYearMidnight];
+  if (HKUIObjectIsLargerOrEqual(yearCopy, startOfRollingYearMidnight))
   {
-    v6 = [(HKDateCache *)self endOfRollingYearMidnight];
-    IsSmaller = HKUIObjectIsSmaller(v4, v6);
+    endOfRollingYearMidnight = [(HKDateCache *)self endOfRollingYearMidnight];
+    IsSmaller = HKUIObjectIsSmaller(yearCopy, endOfRollingYearMidnight);
   }
 
   else
@@ -574,11 +574,11 @@
   return IsSmaller;
 }
 
-- (BOOL)isDayOfWeekNumberOnWeekend:(id)a3
+- (BOOL)isDayOfWeekNumberOnWeekend:(id)weekend
 {
-  v4 = a3;
-  v5 = [(HKDateCache *)self weekendDays];
-  v6 = [v5 containsObject:v4];
+  weekendCopy = weekend;
+  weekendDays = [(HKDateCache *)self weekendDays];
+  v6 = [weekendDays containsObject:weekendCopy];
 
   return v6;
 }
@@ -628,16 +628,16 @@
   self->_weekendDays = 0;
 }
 
-- (void)_flushCacheAndNotifyObservers:(id)a3
+- (void)_flushCacheAndNotifyObservers:(id)observers
 {
-  v4 = a3;
+  observersCopy = observers;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__HKDateCache__flushCacheAndNotifyObservers___block_invoke;
   v6[3] = &unk_1E81B5AD0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observersCopy;
+  v5 = observersCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 

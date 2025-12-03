@@ -1,20 +1,20 @@
 @interface HDCodableClinicalAccount
 - (id)clinicalSharingStatusForNewAccountFromSync;
-- (void)updateWithPropertiesFromOtherAccount:(id)a3;
+- (void)updateWithPropertiesFromOtherAccount:(id)account;
 @end
 
 @implementation HDCodableClinicalAccount
 
-- (void)updateWithPropertiesFromOtherAccount:(id)a3
+- (void)updateWithPropertiesFromOtherAccount:(id)account
 {
-  v36 = a3;
+  accountCopy = account;
   [(HDCodableClinicalAccount *)self modificationDate];
   v5 = v4;
-  [v36 modificationDate];
+  [accountCopy modificationDate];
   v7 = v6;
   [(HDCodableClinicalAccount *)self creationDate];
   v9 = v8;
-  [v36 creationDate];
+  [accountCopy creationDate];
   if (v9 < v10)
   {
     v10 = v9;
@@ -23,18 +23,18 @@
   [(HDCodableClinicalAccount *)self setCreationDate:v10];
   [(HDCodableClinicalAccount *)self modificationDate];
   v12 = v11;
-  [v36 modificationDate];
+  [accountCopy modificationDate];
   if (v12 >= v13)
   {
     v13 = v12;
   }
 
   [(HDCodableClinicalAccount *)self setModificationDate:v13];
-  if ([v36 hasLastFetchDate])
+  if ([accountCopy hasLastFetchDate])
   {
     [(HDCodableClinicalAccount *)self lastFetchDate];
     v15 = v14;
-    [v36 lastFetchDate];
+    [accountCopy lastFetchDate];
     if (v15 >= v16)
     {
       v16 = v15;
@@ -43,11 +43,11 @@
     [(HDCodableClinicalAccount *)self setLastFetchDate:v16];
   }
 
-  if ([v36 hasLastFullFetchDate])
+  if ([accountCopy hasLastFullFetchDate])
   {
     [(HDCodableClinicalAccount *)self lastFullFetchDate];
     v18 = v17;
-    [v36 lastFullFetchDate];
+    [accountCopy lastFullFetchDate];
     if (v18 >= v19)
     {
       v19 = v18;
@@ -56,22 +56,22 @@
     [(HDCodableClinicalAccount *)self setLastFullFetchDate:v19];
   }
 
-  if ([v36 hasFailedFetchAttemptsCount])
+  if ([accountCopy hasFailedFetchAttemptsCount])
   {
     [(HDCodableClinicalAccount *)self lastFailedFetchDate];
     v21 = v20;
-    [v36 lastFailedFetchDate];
+    [accountCopy lastFailedFetchDate];
     if (v21 < v22)
     {
-      -[HDCodableClinicalAccount setFailedFetchAttemptsCount:](self, "setFailedFetchAttemptsCount:", [v36 failedFetchAttemptsCount]);
+      -[HDCodableClinicalAccount setFailedFetchAttemptsCount:](self, "setFailedFetchAttemptsCount:", [accountCopy failedFetchAttemptsCount]);
     }
   }
 
-  if ([v36 hasLastFailedFetchDate])
+  if ([accountCopy hasLastFailedFetchDate])
   {
     [(HDCodableClinicalAccount *)self lastFailedFetchDate];
     v24 = v23;
-    [v36 lastFailedFetchDate];
+    [accountCopy lastFailedFetchDate];
     if (v24 >= v25)
     {
       v25 = v24;
@@ -80,17 +80,17 @@
     [(HDCodableClinicalAccount *)self setLastFailedFetchDate:v25];
   }
 
-  v26 = v36;
+  v26 = accountCopy;
   if (v5 < v7)
   {
-    v27 = [v36 hasPatientHash];
-    v26 = v36;
-    if (v27)
+    hasPatientHash = [accountCopy hasPatientHash];
+    v26 = accountCopy;
+    if (hasPatientHash)
     {
-      v28 = [v36 patientHash];
-      [(HDCodableClinicalAccount *)self setPatientHash:v28];
+      patientHash = [accountCopy patientHash];
+      [(HDCodableClinicalAccount *)self setPatientHash:patientHash];
 
-      v26 = v36;
+      v26 = accountCopy;
     }
   }
 
@@ -100,7 +100,7 @@
     {
       [(HDCodableClinicalAccount *)self clinicalSharingFirstSharedDate];
       v30 = v29;
-      [v36 clinicalSharingFirstSharedDate];
+      [accountCopy clinicalSharingFirstSharedDate];
       if (v30 < v31)
       {
         v31 = v30;
@@ -109,19 +109,19 @@
 
     else
     {
-      [v36 clinicalSharingFirstSharedDate];
+      [accountCopy clinicalSharingFirstSharedDate];
     }
 
     [(HDCodableClinicalAccount *)self setClinicalSharingFirstSharedDate:v31];
   }
 
-  if ([v36 hasClinicalSharingLastSharedDate])
+  if ([accountCopy hasClinicalSharingLastSharedDate])
   {
     if ([(HDCodableClinicalAccount *)self hasClinicalSharingLastSharedDate])
     {
       [(HDCodableClinicalAccount *)self clinicalSharingLastSharedDate];
       v33 = v32;
-      [v36 clinicalSharingLastSharedDate];
+      [accountCopy clinicalSharingLastSharedDate];
       if (v33 >= v34)
       {
         v34 = v33;
@@ -130,7 +130,7 @@
 
     else
     {
-      [v36 clinicalSharingLastSharedDate];
+      [accountCopy clinicalSharingLastSharedDate];
     }
 
     [(HDCodableClinicalAccount *)self setClinicalSharingLastSharedDate:v34];
@@ -138,9 +138,9 @@
 
   if (v5 < v7)
   {
-    -[HDCodableClinicalAccount setClinicalSharingUserStatus:](self, "setClinicalSharingUserStatus:", [v36 clinicalSharingUserStatus]);
-    v35 = [v36 clinicalSharingPrimaryDeviceName];
-    [(HDCodableClinicalAccount *)self setClinicalSharingPrimaryDeviceName:v35];
+    -[HDCodableClinicalAccount setClinicalSharingUserStatus:](self, "setClinicalSharingUserStatus:", [accountCopy clinicalSharingUserStatus]);
+    clinicalSharingPrimaryDeviceName = [accountCopy clinicalSharingPrimaryDeviceName];
+    [(HDCodableClinicalAccount *)self setClinicalSharingPrimaryDeviceName:clinicalSharingPrimaryDeviceName];
   }
 }
 
@@ -169,9 +169,9 @@
   }
 
   v5 = [HKClinicalSharingStatus alloc];
-  v6 = [(HDCodableClinicalAccount *)self clinicalSharingUserStatus];
-  v7 = [(HDCodableClinicalAccount *)self clinicalSharingPrimaryDeviceName];
-  v8 = [v5 initWithFirstSharedDate:v3 lastSharedDate:v4 featureStatus:0 userStatus:v6 multiDeviceStatus:0 primaryDeviceName:v7];
+  clinicalSharingUserStatus = [(HDCodableClinicalAccount *)self clinicalSharingUserStatus];
+  clinicalSharingPrimaryDeviceName = [(HDCodableClinicalAccount *)self clinicalSharingPrimaryDeviceName];
+  v8 = [v5 initWithFirstSharedDate:v3 lastSharedDate:v4 featureStatus:0 userStatus:clinicalSharingUserStatus multiDeviceStatus:0 primaryDeviceName:clinicalSharingPrimaryDeviceName];
 
   return v8;
 }

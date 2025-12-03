@@ -1,24 +1,24 @@
 @interface HAPPairingUtilities
-+ (BOOL)parseAddPairingResponse:(id)a3 error:(id *)a4;
-+ (BOOL)parseRemovePairingResponse:(id)a3 error:(id *)a4;
-+ (id)createAddPairingRequestForPairingIdentity:(id)a3 error:(id *)a4;
-+ (id)createListPairingsRequest:(id *)a3;
-+ (id)createRemovePairingRequestForPairingIdentity:(id)a3 error:(id *)a4;
-+ (id)parseListPairingsResponse:(id)a3 error:(id *)a4;
++ (BOOL)parseAddPairingResponse:(id)response error:(id *)error;
++ (BOOL)parseRemovePairingResponse:(id)response error:(id *)error;
++ (id)createAddPairingRequestForPairingIdentity:(id)identity error:(id *)error;
++ (id)createListPairingsRequest:(id *)request;
++ (id)createRemovePairingRequestForPairingIdentity:(id)identity error:(id *)error;
++ (id)parseListPairingsResponse:(id)response error:(id *)error;
 @end
 
 @implementation HAPPairingUtilities
 
-+ (id)parseListPairingsResponse:(id)a3 error:(id *)a4
++ (id)parseListPairingsResponse:(id)response error:(id *)error
 {
-  v5 = a3;
-  [v5 bytes];
-  [v5 length];
+  responseCopy = response;
+  [responseCopy bytes];
+  [responseCopy length];
   v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:16];
-  v7 = verifyResponseStateAndError(v5);
+  v7 = verifyResponseStateAndError(responseCopy);
   if (v7)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -83,19 +83,19 @@
       }
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
   }
 
-  *a4 = [MEMORY[0x277CCA9B8] errorWithOSStatus:v7];
+  *error = [MEMORY[0x277CCA9B8] errorWithOSStatus:v7];
 LABEL_14:
 
   return 0;
 }
 
-+ (id)createListPairingsRequest:(id *)a3
++ (id)createListPairingsRequest:(id *)request
 {
   v9 = *MEMORY[0x277D85DE8];
   TLV8BufferInit();
@@ -114,10 +114,10 @@ LABEL_14:
   }
 
   TLV8BufferFree();
-  if (a3)
+  if (request)
   {
     [MEMORY[0x277CCA9B8] errorWithOSStatus:appended];
-    *a3 = v5 = 0;
+    *request = v5 = 0;
   }
 
   else
@@ -131,22 +131,22 @@ LABEL_7:
   return v5;
 }
 
-+ (BOOL)parseRemovePairingResponse:(id)a3 error:(id *)a4
++ (BOOL)parseRemovePairingResponse:(id)response error:(id *)error
 {
-  v5 = verifyResponseStateAndError(a3);
+  v5 = verifyResponseStateAndError(response);
   v6 = v5;
-  if (a4 && v5)
+  if (error && v5)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithOSStatus:v5];
+    *error = [MEMORY[0x277CCA9B8] errorWithOSStatus:v5];
   }
 
   return v6 == 0;
 }
 
-+ (id)createRemovePairingRequestForPairingIdentity:(id)a3 error:(id *)a4
++ (id)createRemovePairingRequestForPairingIdentity:(id)identity error:(id *)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identityCopy = identity;
   TLV8BufferInit();
   appended = appendRequestMethodAndState();
   if (appended)
@@ -154,8 +154,8 @@ LABEL_7:
     goto LABEL_2;
   }
 
-  v8 = [v5 identifier];
-  v9 = [v8 dataUsingEncoding:4];
+  identifier = [identityCopy identifier];
+  v9 = [identifier dataUsingEncoding:4];
 
   if (!v9)
   {
@@ -185,10 +185,10 @@ LABEL_14:
   appended = 4294960568;
 LABEL_2:
   TLV8BufferFree();
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithOSStatus:appended];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else
@@ -203,22 +203,22 @@ LABEL_9:
   return v7;
 }
 
-+ (BOOL)parseAddPairingResponse:(id)a3 error:(id *)a4
++ (BOOL)parseAddPairingResponse:(id)response error:(id *)error
 {
-  v5 = verifyResponseStateAndError(a3);
+  v5 = verifyResponseStateAndError(response);
   v6 = v5;
-  if (a4 && v5)
+  if (error && v5)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithOSStatus:v5];
+    *error = [MEMORY[0x277CCA9B8] errorWithOSStatus:v5];
   }
 
   return v6 == 0;
 }
 
-+ (id)createAddPairingRequestForPairingIdentity:(id)a3 error:(id *)a4
++ (id)createAddPairingRequestForPairingIdentity:(id)identity error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identityCopy = identity;
   TLV8BufferInit();
   appended = appendRequestMethodAndState();
   if (appended)
@@ -226,8 +226,8 @@ LABEL_9:
     goto LABEL_2;
   }
 
-  v8 = [v5 identifier];
-  v9 = [v8 dataUsingEncoding:4];
+  identifier = [identityCopy identifier];
+  v9 = [identifier dataUsingEncoding:4];
 
   if (!v9)
   {
@@ -246,16 +246,16 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v11 = [v5 publicKey];
-  v12 = [v11 data];
-  [v12 bytes];
-  v13 = [v11 data];
-  [v13 length];
+  publicKey = [identityCopy publicKey];
+  data = [publicKey data];
+  [data bytes];
+  data2 = [publicKey data];
+  [data2 length];
   v7 = TLV8BufferAppend();
 
   if (!v7)
   {
-    [v5 permissions];
+    [identityCopy permissions];
     appended = TLV8BufferAppendUInt64();
     if (appended)
     {
@@ -277,10 +277,10 @@ LABEL_2:
 
 LABEL_6:
   TLV8BufferFree();
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithOSStatus:v7];
-    *a4 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else

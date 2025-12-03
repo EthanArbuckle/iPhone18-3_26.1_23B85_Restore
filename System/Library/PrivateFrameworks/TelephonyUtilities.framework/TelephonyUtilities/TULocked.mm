@@ -1,10 +1,10 @@
 @interface TULocked
-- (TULocked)initWithObject:(id)a3;
+- (TULocked)initWithObject:(id)object;
 - (id)debugDescription;
 - (id)description;
 - (id)object;
-- (void)performWhileLocked:(id)a3;
-- (void)setObject:(id)a3;
+- (void)performWhileLocked:(id)locked;
+- (void)setObject:(id)object;
 @end
 
 @implementation TULocked
@@ -30,9 +30,9 @@
   return v6;
 }
 
-- (TULocked)initWithObject:(id)a3
+- (TULocked)initWithObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = TULocked;
   v6 = [(TULocked *)&v9 init];
@@ -40,7 +40,7 @@
   if (v6)
   {
     v6->_lock = 0;
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, object);
   }
 
   return v7;
@@ -58,20 +58,20 @@
   return v6;
 }
 
-- (void)performWhileLocked:(id)a3
+- (void)performWhileLocked:(id)locked
 {
-  v4 = a3;
+  lockedCopy = locked;
   os_unfair_recursive_lock_lock_with_options();
-  v4[2](v4, self->_object);
+  lockedCopy[2](lockedCopy, self->_object);
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setObject:(id)a3
+- (void)setObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_recursive_lock_lock_with_options();
   object = self->_object;
-  self->_object = v4;
+  self->_object = objectCopy;
 
   os_unfair_recursive_lock_unlock();
 }

@@ -1,7 +1,7 @@
 @interface CorrectionsProfilesSyncHandler
 - (void)_loadCorrectionProfiles;
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 count:(int64_t)a5 forKey:(id)a6 beginInfo:(id)a7;
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4;
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity count:(int64_t)count forKey:(id)key beginInfo:(id)info;
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info;
 - (void)syncDidEnd;
 @end
 
@@ -10,9 +10,9 @@
 - (void)_loadCorrectionProfiles
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CFFE70] defaultSynchedKnowledgeStore];
+  defaultSynchedKnowledgeStore = [MEMORY[0x277CFFE70] defaultSynchedKnowledgeStore];
   v34 = 0;
-  v29 = [v3 dictionaryRepresentationAndReturnError:&v34];
+  v29 = [defaultSynchedKnowledgeStore dictionaryRepresentationAndReturnError:&v34];
   v4 = v34;
   v5 = *MEMORY[0x277CEF0D0];
   if (os_log_type_enabled(*MEMORY[0x277CEF0D0], OS_LOG_TYPE_DEBUG))
@@ -35,13 +35,13 @@ LABEL_3:
     if (os_log_type_enabled(*MEMORY[0x277CEF0D0], OS_LOG_TYPE_ERROR))
     {
       v24 = v6;
-      v25 = [v3 name];
+      name = [defaultSynchedKnowledgeStore name];
       *buf = 136315650;
       v36 = "[CorrectionsProfilesSyncHandler _loadCorrectionProfiles]";
       v37 = 2112;
       v38 = v4;
       v39 = 2112;
-      v40 = v25;
+      v40 = name;
       _os_log_error_impl(&dword_2334CB000, v24, OS_LOG_TYPE_ERROR, "%s Failed to load corrections profiles %@ for name %@", buf, 0x20u);
     }
 
@@ -49,15 +49,15 @@ LABEL_3:
     goto LABEL_21;
   }
 
-  v26 = self;
-  v27 = v3;
+  selfCopy = self;
+  v27 = defaultSynchedKnowledgeStore;
   v28 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v29, "count")}];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = [v29 allKeys];
-  v9 = [v8 countByEnumeratingWithState:&v30 objects:v43 count:16];
+  allKeys = [v29 allKeys];
+  v9 = [allKeys countByEnumeratingWithState:&v30 objects:v43 count:16];
   if (v9)
   {
     v10 = v9;
@@ -69,13 +69,13 @@ LABEL_3:
       {
         if (*v31 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v30 + 1) + 8 * v12);
         v14 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v13];
-        v15 = [v14 scheme];
-        v16 = [v15 isEqualToString:@"Correction"];
+        scheme = [v14 scheme];
+        v16 = [scheme isEqualToString:@"Correction"];
 
         if (v16)
         {
@@ -111,14 +111,14 @@ LABEL_3:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v30 objects:v43 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v30 objects:v43 count:16];
     }
 
     while (v10);
   }
 
-  self = v26;
-  v3 = v27;
+  self = selfCopy;
+  defaultSynchedKnowledgeStore = v27;
   v7 = v28;
 LABEL_21:
   correctionProfiles = self->_correctionProfiles;
@@ -137,48 +137,48 @@ LABEL_21:
   self->_correctionProfileKeysToSync = 0;
 }
 
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info
 {
-  v22 = a4;
+  infoCopy = info;
   p_correctionProfileKeysToSync = &self->_correctionProfileKeysToSync;
   correctionProfileKeysToSync = self->_correctionProfileKeysToSync;
-  v8 = a3;
+  anchorCopy = anchor;
   v9 = [(NSMutableArray *)correctionProfileKeysToSync count];
   p_correctionProfileKeysToDelete = &self->_correctionProfileKeysToDelete;
   if (v9 + [(NSMutableArray *)self->_correctionProfileKeysToDelete count])
   {
-    v11 = [v8 componentsSeparatedByString:@"Correction"];
+    v11 = [anchorCopy componentsSeparatedByString:@"Correction"];
 
-    v12 = [v11 lastObject];
-    v13 = [(CorrectionsProfilesLastState *)self->_lastState digest];
-    if (v13 && ([v12 isEqualToString:v13] & 1) != 0 || !objc_msgSend(v12, "length"))
+    lastObject = [v11 lastObject];
+    digest = [(CorrectionsProfilesLastState *)self->_lastState digest];
+    if (digest && ([lastObject isEqualToString:digest] & 1) != 0 || !objc_msgSend(lastObject, "length"))
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = [v12 integerValue] + 1;
+      v14 = [lastObject integerValue] + 1;
     }
 
-    v15 = [(NSMutableArray *)*p_correctionProfileKeysToSync lastObject];
-    if (v15)
+    lastObject2 = [(NSMutableArray *)*p_correctionProfileKeysToSync lastObject];
+    if (lastObject2)
     {
-      v16 = [(NSDictionary *)self->_correctionProfiles objectForKey:v15];
+      lastObject3 = [(NSDictionary *)self->_correctionProfiles objectForKey:lastObject2];
       v17 = objc_alloc_init(MEMORY[0x277D47130]);
-      [v17 setIdentifier:v15];
-      [v17 setCorrectionEntryData:v16];
-      [v22 setObject:v17];
+      [v17 setIdentifier:lastObject2];
+      [v17 setCorrectionEntryData:lastObject3];
+      [infoCopy setObject:v17];
       v18 = &self->_correctionProfileKeysToSync;
     }
 
     else
     {
-      v16 = [(NSMutableArray *)*p_correctionProfileKeysToDelete lastObject];
+      lastObject3 = [(NSMutableArray *)*p_correctionProfileKeysToDelete lastObject];
       v17 = objc_alloc_init(MEMORY[0x277D47130]);
-      [v17 setIdentifier:v16];
-      [v22 setObject:v17];
-      [v22 setIsDelete:1];
+      [v17 setIdentifier:lastObject3];
+      [infoCopy setObject:v17];
+      [infoCopy setIsDelete:1];
       v18 = &self->_correctionProfileKeysToDelete;
     }
 
@@ -187,8 +187,8 @@ LABEL_21:
     if ([(NSMutableArray *)*p_correctionProfileKeysToSync count]|| [(NSMutableArray *)*p_correctionProfileKeysToDelete count])
     {
       v19 = objc_alloc(MEMORY[0x277CCACA8]);
-      v20 = [v11 firstObject];
-      v21 = [v19 initWithFormat:@"%@%@%tu", v20, @"Correction", v14];
+      firstObject = [v11 firstObject];
+      v21 = [v19 initWithFormat:@"%@%@%tu", firstObject, @"Correction", v14];
     }
 
     else
@@ -196,27 +196,27 @@ LABEL_21:
       v21 = CorrectionsProfilesDigest(self->_correctionProfiles);
     }
 
-    [v22 setPostAnchor:v21];
+    [infoCopy setPostAnchor:v21];
   }
 
   else
   {
-    [v22 setPostAnchor:v8];
+    [infoCopy setPostAnchor:anchorCopy];
 
-    [v22 setObject:0];
+    [infoCopy setObject:0];
   }
 }
 
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 count:(int64_t)a5 forKey:(id)a6 beginInfo:(id)a7
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity count:(int64_t)count forKey:(id)key beginInfo:(id)info
 {
   v46 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  anchorCopy = anchor;
+  validityCopy = validity;
+  keyCopy = key;
+  infoCopy = info;
   if (self->_lastState)
   {
-    v16 = 1;
+    loadLastState = 1;
   }
 
   else
@@ -225,20 +225,20 @@ LABEL_21:
     lastState = self->_lastState;
     self->_lastState = v17;
 
-    v16 = [(CorrectionsProfilesLastState *)self->_lastState loadLastState];
+    loadLastState = [(CorrectionsProfilesLastState *)self->_lastState loadLastState];
   }
 
   [(CorrectionsProfilesSyncHandler *)self _loadCorrectionProfiles];
-  v19 = a5 <= 0 && [(NSDictionary *)self->_correctionProfiles count]== 0;
-  if (([v13 isEqualToString:@"CorrectionsProfiles-2.0"] & v16) != 1 || -[CorrectionsProfilesLastState count](self->_lastState, "count") != a5)
+  v19 = count <= 0 && [(NSDictionary *)self->_correctionProfiles count]== 0;
+  if (([validityCopy isEqualToString:@"CorrectionsProfiles-2.0"] & loadLastState) != 1 || -[CorrectionsProfilesLastState count](self->_lastState, "count") != count)
   {
     goto LABEL_14;
   }
 
-  v20 = [(CorrectionsProfilesLastState *)self->_lastState digest];
-  if (([v20 isEqualToString:v12] | v19))
+  digest = [(CorrectionsProfilesLastState *)self->_lastState digest];
+  if (([digest isEqualToString:anchorCopy] | v19))
   {
-    if (a5 <= 0)
+    if (count <= 0)
     {
     }
 
@@ -264,10 +264,10 @@ LABEL_21:
     [(NSDictionary *)correctionProfiles enumerateKeysAndObjectsUsingBlock:v36];
     correctionProfileKeysToSync = self->_correctionProfileKeysToSync;
     self->_correctionProfileKeysToSync = v30;
-    v24 = v30;
+    allKeys = v30;
 
-    v32 = [(CorrectionsProfilesLastState *)self->_lastState correctionKeys];
-    v33 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v32, "count")}];
+    correctionKeys = [(CorrectionsProfilesLastState *)self->_lastState correctionKeys];
+    v33 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(correctionKeys, "count")}];
     correctionProfileKeysToDelete = self->_correctionProfileKeysToDelete;
     self->_correctionProfileKeysToDelete = v33;
 
@@ -276,7 +276,7 @@ LABEL_21:
     v35[2] = sub_2334CC8D8;
     v35[3] = &unk_2789D9898;
     v35[4] = self;
-    [v32 enumerateObjectsUsingBlock:v35];
+    [correctionKeys enumerateObjectsUsingBlock:v35];
 
     v26 = v37;
     goto LABEL_17;
@@ -290,17 +290,17 @@ LABEL_14:
     *buf = 136315906;
     v39 = "[CorrectionsProfilesSyncHandler beginSyncWithAnchor:validity:count:forKey:beginInfo:]";
     v40 = 2112;
-    v41 = v13;
+    v41 = validityCopy;
     v42 = 2112;
     v43 = v23;
     v44 = 1024;
-    v45 = v16;
+    v45 = loadLastState;
     _os_log_impl(&dword_2334CB000, v22, OS_LOG_TYPE_INFO, "%s Reset sync for validity %@, last state: %@, loaded last state? %d", buf, 0x26u);
   }
 
-  [v15 resetWithValidity:@"CorrectionsProfiles-2.0"];
-  v24 = [(NSDictionary *)self->_correctionProfiles allKeys];
-  v25 = [(NSMutableArray *)v24 mutableCopy];
+  [infoCopy resetWithValidity:@"CorrectionsProfiles-2.0"];
+  allKeys = [(NSDictionary *)self->_correctionProfiles allKeys];
+  v25 = [(NSMutableArray *)allKeys mutableCopy];
   v26 = self->_correctionProfileKeysToSync;
   self->_correctionProfileKeysToSync = v25;
 LABEL_17:

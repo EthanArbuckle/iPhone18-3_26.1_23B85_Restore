@@ -1,121 +1,121 @@
 @interface SUCoreDDMDeclaration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInstallOverdue;
-- (BOOL)isValidDeclarationWithReason:(id *)a3;
-- (SUCoreDDMDeclaration)initWithCoder:(id)a3;
-- (SUCoreDDMDeclaration)initWithDeclarationKeys:(id)a3;
-- (id)_dateFromString:(id)a3;
-- (id)_stringFromDate:(id)a3;
+- (BOOL)isValidDeclarationWithReason:(id *)reason;
+- (SUCoreDDMDeclaration)initWithCoder:(id)coder;
+- (SUCoreDDMDeclaration)initWithDeclarationKeys:(id)keys;
+- (id)_dateFromString:(id)string;
+- (id)_stringFromDate:(id)date;
 - (id)copy;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUCoreDDMDeclaration
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(SUCoreDDMDeclaration *)self enforcedInstallDate];
-  if (!v5)
+  compareCopy = compare;
+  enforcedInstallDate = [(SUCoreDDMDeclaration *)self enforcedInstallDate];
+  if (!enforcedInstallDate)
   {
     goto LABEL_14;
   }
 
-  v6 = v5;
-  v7 = [v4 enforcedInstallDate];
+  v6 = enforcedInstallDate;
+  enforcedInstallDate2 = [compareCopy enforcedInstallDate];
 
-  if (!v7 || (-[SUCoreDDMDeclaration enforcedInstallDate](self, "enforcedInstallDate"), v8 = objc_claimAutoreleasedReturnValue(), [v4 enforcedInstallDate], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "compare:", v9), v9, v8, !v10))
+  if (!enforcedInstallDate2 || (-[SUCoreDDMDeclaration enforcedInstallDate](self, "enforcedInstallDate"), v8 = objc_claimAutoreleasedReturnValue(), [compareCopy enforcedInstallDate], v9 = objc_claimAutoreleasedReturnValue(), buildVersionString = objc_msgSend(v8, "compare:", v9), v9, v8, !buildVersionString))
   {
 LABEL_14:
-    v11 = [(SUCoreDDMDeclaration *)self versionString];
-    if (!v11)
+    versionString = [(SUCoreDDMDeclaration *)self versionString];
+    if (!versionString)
     {
       goto LABEL_7;
     }
 
-    v12 = v11;
-    v13 = [v4 versionString];
+    v12 = versionString;
+    versionString2 = [compareCopy versionString];
 
-    if (!v13 || (-[SUCoreDDMDeclaration versionString](self, "versionString"), v14 = objc_claimAutoreleasedReturnValue(), [v4 versionString], v15 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v14, "compare:options:", v15, 64), v15, v14, !v10))
+    if (!versionString2 || (-[SUCoreDDMDeclaration versionString](self, "versionString"), v14 = objc_claimAutoreleasedReturnValue(), [compareCopy versionString], v15 = objc_claimAutoreleasedReturnValue(), buildVersionString = objc_msgSend(v14, "compare:options:", v15, 64), v15, v14, !buildVersionString))
     {
 LABEL_7:
-      v10 = [(SUCoreDDMDeclaration *)self buildVersionString];
-      if (v10)
+      buildVersionString = [(SUCoreDDMDeclaration *)self buildVersionString];
+      if (buildVersionString)
       {
-        v16 = [v4 buildVersionString];
+        buildVersionString2 = [compareCopy buildVersionString];
 
-        if (v16)
+        if (buildVersionString2)
         {
-          v17 = [(SUCoreDDMDeclaration *)self buildVersionString];
-          v18 = [v4 buildVersionString];
-          v10 = [v17 compare:v18 options:64];
+          buildVersionString3 = [(SUCoreDDMDeclaration *)self buildVersionString];
+          buildVersionString4 = [compareCopy buildVersionString];
+          buildVersionString = [buildVersionString3 compare:buildVersionString4 options:64];
         }
 
         else
         {
-          v10 = 0;
+          buildVersionString = 0;
         }
       }
     }
   }
 
-  return v10;
+  return buildVersionString;
 }
 
-- (SUCoreDDMDeclaration)initWithDeclarationKeys:(id)a3
+- (SUCoreDDMDeclaration)initWithDeclarationKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v24.receiver = self;
   v24.super_class = SUCoreDDMDeclaration;
   v5 = [(SUCoreDDMDeclaration *)&v24 init];
   if (v5)
   {
-    v6 = [v4 safeStringForKey:@"RMStoreDeclarationKey"];
+    v6 = [keysCopy safeStringForKey:@"RMStoreDeclarationKey"];
     declarationKey = v5->_declarationKey;
     v5->_declarationKey = v6;
 
-    v8 = [v4 safeStringForKey:@"TargetLocalDateTime"];
+    v8 = [keysCopy safeStringForKey:@"TargetLocalDateTime"];
     v9 = [(SUCoreDDMDeclaration *)v5 _dateFromString:v8];
     enforcedInstallDate = v5->_enforcedInstallDate;
     v5->_enforcedInstallDate = v9;
 
-    v11 = [v4 safeStringForKey:@"TargetOSVersion"];
+    v11 = [keysCopy safeStringForKey:@"TargetOSVersion"];
     versionString = v5->_versionString;
     v5->_versionString = v11;
 
-    v13 = [v4 safeStringForKey:@"TargetBuildVersion"];
+    v13 = [keysCopy safeStringForKey:@"TargetBuildVersion"];
     buildVersionString = v5->_buildVersionString;
     v5->_buildVersionString = v13;
 
     v5->_enableNotifications = 1;
-    v15 = [v4 safeStringForKey:@"DetailsURL"];
+    v15 = [keysCopy safeStringForKey:@"DetailsURL"];
     detailsURL = v5->_detailsURL;
     v5->_detailsURL = v15;
 
-    v17 = [v4 safeStringForKey:@"CompanyName"];
+    v17 = [keysCopy safeStringForKey:@"CompanyName"];
     companyName = v5->_companyName;
     v5->_companyName = v17;
 
-    v19 = [v4 safeDictionaryForKey:@"AdditionalOptions"];
+    v19 = [keysCopy safeDictionaryForKey:@"AdditionalOptions"];
     additionalOptions = v5->_additionalOptions;
     v5->_additionalOptions = v19;
 
-    v21 = [MEMORY[0x277D64418] sharedDevice];
+    mEMORY[0x277D64418] = [MEMORY[0x277D64418] sharedDevice];
     device = v5->_device;
-    v5->_device = v21;
+    v5->_device = mEMORY[0x277D64418];
   }
 
   return v5;
 }
 
-- (SUCoreDDMDeclaration)initWithCoder:(id)a3
+- (SUCoreDDMDeclaration)initWithCoder:(id)coder
 {
   v12[14] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v12[0] = objc_opt_class();
   v12[1] = objc_opt_class();
   v12[2] = objc_opt_class();
@@ -133,18 +133,18 @@ LABEL_7:
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:14];
   v7 = [v4 setWithArray:v6];
 
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"ddmDeclaration"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"ddmDeclaration"];
 
   v9 = [(SUCoreDDMDeclaration *)self initWithDeclarationKeys:v8];
   v10 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SUCoreDDMDeclaration *)self dictionaryRepresentation];
-  [v4 encodeObject:v5 forKey:@"ddmDeclaration"];
+  coderCopy = coder;
+  dictionaryRepresentation = [(SUCoreDDMDeclaration *)self dictionaryRepresentation];
+  [coderCopy encodeObject:dictionaryRepresentation forKey:@"ddmDeclaration"];
 }
 
 - (id)copy
@@ -155,28 +155,28 @@ LABEL_7:
   return v3;
 }
 
-- (id)_dateFromString:(id)a3
+- (id)_dateFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277CBEBB0] localTimeZone];
-  [v4 setTimeZone:v5];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  [v4 setTimeZone:localTimeZone];
 
   [v4 setFormatOptions:819];
-  v6 = [v4 dateFromString:v3];
+  v6 = [v4 dateFromString:stringCopy];
 
   return v6;
 }
 
-- (id)_stringFromDate:(id)a3
+- (id)_stringFromDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277CBEBB0] localTimeZone];
-  [v4 setTimeZone:v5];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  [v4 setTimeZone:localTimeZone];
 
   [v4 setFormatOptions:819];
-  v6 = [v4 stringFromDate:v3];
+  v6 = [v4 stringFromDate:dateCopy];
 
   return v6;
 }
@@ -184,76 +184,76 @@ LABEL_7:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SUCoreDDMDeclaration *)self declarationKey];
-  v5 = [(SUCoreDDMDeclaration *)self enforcedInstallDate];
-  v6 = [(SUCoreDDMDeclaration *)self _stringFromDate:v5];
-  v7 = [(SUCoreDDMDeclaration *)self versionString];
-  v8 = [(SUCoreDDMDeclaration *)self buildVersionString];
-  v9 = [(SUCoreDDMDeclaration *)self detailsURL];
-  v10 = [(SUCoreDDMDeclaration *)self companyName];
-  v11 = [(SUCoreDDMDeclaration *)self enableNotifications];
+  declarationKey = [(SUCoreDDMDeclaration *)self declarationKey];
+  enforcedInstallDate = [(SUCoreDDMDeclaration *)self enforcedInstallDate];
+  v6 = [(SUCoreDDMDeclaration *)self _stringFromDate:enforcedInstallDate];
+  versionString = [(SUCoreDDMDeclaration *)self versionString];
+  buildVersionString = [(SUCoreDDMDeclaration *)self buildVersionString];
+  detailsURL = [(SUCoreDDMDeclaration *)self detailsURL];
+  companyName = [(SUCoreDDMDeclaration *)self companyName];
+  enableNotifications = [(SUCoreDDMDeclaration *)self enableNotifications];
   v12 = @"NO";
-  if (v11)
+  if (enableNotifications)
   {
     v12 = @"YES";
   }
 
-  v13 = [v3 stringWithFormat:@"SUCoreDDMDeclaration (DeclarationKey:%@|EnforcedInstallDate:%@|VersionString:%@|BuildVersionString:%@|DetailsURL:%@|companyName:%@|NotificationsEnabled:%@)", v4, v6, v7, v8, v9, v10, v12];
+  v13 = [v3 stringWithFormat:@"SUCoreDDMDeclaration (DeclarationKey:%@|EnforcedInstallDate:%@|VersionString:%@|BuildVersionString:%@|DetailsURL:%@|companyName:%@|NotificationsEnabled:%@)", declarationKey, v6, versionString, buildVersionString, detailsURL, companyName, v12];
 
   return v13;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(SUCoreDDMDeclaration *)self declarationKey];
-  [v3 setSafeObject:v4 forKey:@"RMStoreDeclarationKey"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  declarationKey = [(SUCoreDDMDeclaration *)self declarationKey];
+  [dictionary setSafeObject:declarationKey forKey:@"RMStoreDeclarationKey"];
 
-  v5 = [(SUCoreDDMDeclaration *)self enforcedInstallDate];
-  v6 = [(SUCoreDDMDeclaration *)self _stringFromDate:v5];
-  [v3 setSafeObject:v6 forKey:@"TargetLocalDateTime"];
+  enforcedInstallDate = [(SUCoreDDMDeclaration *)self enforcedInstallDate];
+  v6 = [(SUCoreDDMDeclaration *)self _stringFromDate:enforcedInstallDate];
+  [dictionary setSafeObject:v6 forKey:@"TargetLocalDateTime"];
 
-  v7 = [(SUCoreDDMDeclaration *)self versionString];
-  [v3 setSafeObject:v7 forKey:@"TargetOSVersion"];
+  versionString = [(SUCoreDDMDeclaration *)self versionString];
+  [dictionary setSafeObject:versionString forKey:@"TargetOSVersion"];
 
-  v8 = [(SUCoreDDMDeclaration *)self buildVersionString];
-  [v3 setSafeObject:v8 forKey:@"TargetBuildVersion"];
+  buildVersionString = [(SUCoreDDMDeclaration *)self buildVersionString];
+  [dictionary setSafeObject:buildVersionString forKey:@"TargetBuildVersion"];
 
-  v9 = [(SUCoreDDMDeclaration *)self companyName];
-  [v3 setSafeObject:v9 forKey:@"CompanyName"];
+  companyName = [(SUCoreDDMDeclaration *)self companyName];
+  [dictionary setSafeObject:companyName forKey:@"CompanyName"];
 
-  v10 = [(SUCoreDDMDeclaration *)self additionalOptions];
-  [v3 setSafeObject:v10 forKey:@"AdditionalOptions"];
+  additionalOptions = [(SUCoreDDMDeclaration *)self additionalOptions];
+  [dictionary setSafeObject:additionalOptions forKey:@"AdditionalOptions"];
 
-  v11 = [(SUCoreDDMDeclaration *)self detailsURL];
-  [v3 setSafeObject:v11 forKey:@"DetailsURL"];
+  detailsURL = [(SUCoreDDMDeclaration *)self detailsURL];
+  [dictionary setSafeObject:detailsURL forKey:@"DetailsURL"];
 
-  v12 = [v3 copy];
+  v12 = [dictionary copy];
 
   return v12;
 }
 
 - (BOOL)isInstallOverdue
 {
-  v2 = [(SUCoreDDMDeclaration *)self enforcedInstallDate];
+  enforcedInstallDate = [(SUCoreDDMDeclaration *)self enforcedInstallDate];
   v3 = [MEMORY[0x277CBEAA8] now];
-  v4 = [v2 compare:v3] == -1;
+  v4 = [enforcedInstallDate compare:v3] == -1;
 
   return v4;
 }
 
-- (BOOL)isValidDeclarationWithReason:(id *)a3
+- (BOOL)isValidDeclarationWithReason:(id *)reason
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = [(SUCoreDDMDeclaration *)self declarationKey];
+  declarationKey = [(SUCoreDDMDeclaration *)self declarationKey];
 
-  if (!v5)
+  if (!declarationKey)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid declaration: invalid declaration key"];
+    device = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid declaration: invalid declaration key"];
     v9 = +[SUCoreDDMUtilities sharedLogger];
-    v10 = [v9 oslog];
+    oslog = [v9 oslog];
 
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_9;
     }
@@ -261,15 +261,15 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v6 = [(SUCoreDDMDeclaration *)self enforcedInstallDate];
+  enforcedInstallDate = [(SUCoreDDMDeclaration *)self enforcedInstallDate];
 
-  if (!v6)
+  if (!enforcedInstallDate)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid declaration: invalid enforced install date"];
+    device = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid declaration: invalid enforced install date"];
     v11 = +[SUCoreDDMUtilities sharedLogger];
-    v10 = [v11 oslog];
+    oslog = [v11 oslog];
 
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_9;
     }
@@ -277,28 +277,28 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [(SUCoreDDMDeclaration *)self versionString];
-  if (v7)
+  versionString = [(SUCoreDDMDeclaration *)self versionString];
+  if (versionString)
   {
 
 LABEL_13:
-    v8 = [(SUCoreDDMDeclaration *)self device];
-    if (!v8)
+    device = [(SUCoreDDMDeclaration *)self device];
+    if (!device)
     {
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Internal error: failed to get a core device"];
+      versionString2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Internal error: failed to get a core device"];
       v22 = +[SUCoreDDMUtilities sharedLogger];
-      v23 = [v22 oslog];
+      oslog2 = [v22 oslog];
 
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
       {
         [SUCoreDDMDeclaration isValidDeclarationWithReason:];
       }
 
-      if (a3)
+      if (reason)
       {
-        v24 = v15;
+        v24 = versionString2;
         v13 = 0;
-        *a3 = v15;
+        *reason = versionString2;
       }
 
       else
@@ -309,23 +309,23 @@ LABEL_13:
       goto LABEL_43;
     }
 
-    v15 = [(SUCoreDDMDeclaration *)self versionString];
-    v16 = [v8 productVersion];
-    v17 = [(SUCoreDDMDeclaration *)self buildVersionString];
-    v18 = [(SUCoreDDMDeclaration *)self versionString];
+    versionString2 = [(SUCoreDDMDeclaration *)self versionString];
+    productVersion = [device productVersion];
+    buildVersionString = [(SUCoreDDMDeclaration *)self buildVersionString];
+    versionString3 = [(SUCoreDDMDeclaration *)self versionString];
 
-    if (!v18)
+    if (!versionString3)
     {
       goto LABEL_23;
     }
 
-    if (([v8 isCorrectlyFormattedProductVersion:v15] & 1) == 0)
+    if (([device isCorrectlyFormattedProductVersion:versionString2] & 1) == 0)
     {
-      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid declaration: target OS version (%@) has an invalid format", v15];
+      oslog5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid declaration: target OS version (%@) has an invalid format", versionString2];
       v31 = +[SUCoreDDMUtilities sharedLogger];
-      v21 = [v31 oslog];
+      oslog3 = [v31 oslog];
 
-      if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled(oslog3, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_39;
       }
@@ -333,13 +333,13 @@ LABEL_13:
       goto LABEL_38;
     }
 
-    if ([v16 compare:v15 options:64] == 1)
+    if ([productVersion compare:versionString2 options:64] == 1)
     {
-      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid declaration: target OS version (%@) is older than current version (%@)", v15, v16];
+      oslog5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid declaration: target OS version (%@) is older than current version (%@)", versionString2, productVersion];
       v20 = +[SUCoreDDMUtilities sharedLogger];
-      v21 = [v20 oslog];
+      oslog3 = [v20 oslog];
 
-      if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled(oslog3, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_39;
       }
@@ -348,56 +348,56 @@ LABEL_13:
     else
     {
 LABEL_23:
-      v25 = [(SUCoreDDMDeclaration *)self buildVersionString];
+      buildVersionString2 = [(SUCoreDDMDeclaration *)self buildVersionString];
 
-      if (!v25 || ([v8 isCorrectlyFormattedBuildVersion:v17] & 1) != 0)
+      if (!buildVersionString2 || ([device isCorrectlyFormattedBuildVersion:buildVersionString] & 1) != 0)
       {
         if ([(SUCoreDDMDeclaration *)self isInstallOverdue])
         {
           v26 = +[SUCoreDDMUtilities sharedLogger];
-          v27 = [v26 oslog];
+          oslog4 = [v26 oslog];
 
-          if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
           {
-            v28 = [(SUCoreDDMDeclaration *)self enforcedInstallDate];
-            v29 = [(SUCoreDDMDeclaration *)self _stringFromDate:v28];
+            enforcedInstallDate2 = [(SUCoreDDMDeclaration *)self enforcedInstallDate];
+            v29 = [(SUCoreDDMDeclaration *)self _stringFromDate:enforcedInstallDate2];
             *buf = 136315394;
             v38 = "[SUCoreDDMDeclaration isValidDeclarationWithReason:]";
             v39 = 2112;
-            v40 = v29;
-            _os_log_impl(&dword_23193C000, v27, OS_LOG_TYPE_DEFAULT, "%s: Past-due declaration: enforced install date is in the past (%@)", buf, 0x16u);
+            selfCopy = v29;
+            _os_log_impl(&dword_23193C000, oslog4, OS_LOG_TYPE_DEFAULT, "%s: Past-due declaration: enforced install date is in the past (%@)", buf, 0x16u);
           }
         }
 
         v30 = +[SUCoreDDMUtilities sharedLogger];
-        v19 = [v30 oslog];
+        oslog5 = [v30 oslog];
 
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog5, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 136315394;
           v38 = "[SUCoreDDMDeclaration isValidDeclarationWithReason:]";
           v39 = 2112;
-          v40 = self;
-          _os_log_impl(&dword_23193C000, v19, OS_LOG_TYPE_DEFAULT, "%s: %@ is (likely) good to go!", buf, 0x16u);
+          selfCopy = self;
+          _os_log_impl(&dword_23193C000, oslog5, OS_LOG_TYPE_DEFAULT, "%s: %@ is (likely) good to go!", buf, 0x16u);
         }
 
         v13 = 1;
         goto LABEL_42;
       }
 
-      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid declaration: target build version (%@) has an invalid format", v17];
+      oslog5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid declaration: target build version (%@) has an invalid format", buildVersionString];
       v33 = +[SUCoreDDMUtilities sharedLogger];
-      v21 = [v33 oslog];
+      oslog3 = [v33 oslog];
 
-      if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled(oslog3, OS_LOG_TYPE_ERROR))
       {
 LABEL_39:
 
-        if (a3)
+        if (reason)
         {
-          v34 = v19;
+          v34 = oslog5;
           v13 = 0;
-          *a3 = v19;
+          *reason = oslog5;
         }
 
         else
@@ -417,18 +417,18 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  v14 = [(SUCoreDDMDeclaration *)self buildVersionString];
+  buildVersionString3 = [(SUCoreDDMDeclaration *)self buildVersionString];
 
-  if (v14)
+  if (buildVersionString3)
   {
     goto LABEL_13;
   }
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid declaration: no target version set"];
+  device = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid declaration: no target version set"];
   v32 = +[SUCoreDDMUtilities sharedLogger];
-  v10 = [v32 oslog];
+  oslog = [v32 oslog];
 
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
   {
 LABEL_8:
     [SUCoreDDMDeclaration isValidDeclarationWithReason:];
@@ -436,11 +436,11 @@ LABEL_8:
 
 LABEL_9:
 
-  if (a3)
+  if (reason)
   {
-    v12 = v8;
+    v12 = device;
     v13 = 0;
-    *a3 = v8;
+    *reason = device;
   }
 
   else
@@ -454,10 +454,10 @@ LABEL_44:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v22 = 1;
   }
@@ -467,37 +467,37 @@ LABEL_44:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = MEMORY[0x277D643F8];
-      v7 = [(SUCoreDDMDeclaration *)self enforcedInstallDate];
-      v8 = [(SUCoreDDMDeclaration *)v5 enforcedInstallDate];
-      if ([v6 dateIsEqual:v7 to:v8])
+      enforcedInstallDate = [(SUCoreDDMDeclaration *)self enforcedInstallDate];
+      enforcedInstallDate2 = [(SUCoreDDMDeclaration *)v5 enforcedInstallDate];
+      if ([v6 dateIsEqual:enforcedInstallDate to:enforcedInstallDate2])
       {
         v9 = MEMORY[0x277D643F8];
-        v10 = [(SUCoreDDMDeclaration *)self versionString];
-        v11 = [(SUCoreDDMDeclaration *)v5 versionString];
-        if ([v9 stringIsEqual:v10 to:v11])
+        versionString = [(SUCoreDDMDeclaration *)self versionString];
+        versionString2 = [(SUCoreDDMDeclaration *)v5 versionString];
+        if ([v9 stringIsEqual:versionString to:versionString2])
         {
           v12 = MEMORY[0x277D643F8];
-          v13 = [(SUCoreDDMDeclaration *)self buildVersionString];
-          v14 = [(SUCoreDDMDeclaration *)v5 buildVersionString];
-          v28 = v13;
-          v15 = v13;
-          v16 = v14;
-          if ([v12 stringIsEqual:v15 to:v14])
+          buildVersionString = [(SUCoreDDMDeclaration *)self buildVersionString];
+          buildVersionString2 = [(SUCoreDDMDeclaration *)v5 buildVersionString];
+          v28 = buildVersionString;
+          v15 = buildVersionString;
+          v16 = buildVersionString2;
+          if ([v12 stringIsEqual:v15 to:buildVersionString2])
           {
             v26 = MEMORY[0x277D643F8];
-            v17 = [(SUCoreDDMDeclaration *)self detailsURL];
-            v18 = [(SUCoreDDMDeclaration *)v5 detailsURL];
+            detailsURL = [(SUCoreDDMDeclaration *)self detailsURL];
+            detailsURL2 = [(SUCoreDDMDeclaration *)v5 detailsURL];
             v19 = v26;
-            v25 = v18;
-            v27 = v17;
-            if ([v19 stringIsEqual:v17 to:?])
+            v25 = detailsURL2;
+            v27 = detailsURL;
+            if ([v19 stringIsEqual:detailsURL to:?])
             {
               v24 = MEMORY[0x277D643F8];
-              v20 = [(SUCoreDDMDeclaration *)self companyName];
-              v21 = [(SUCoreDDMDeclaration *)v5 companyName];
-              v22 = [v24 stringIsEqual:v20 to:v21];
+              companyName = [(SUCoreDDMDeclaration *)self companyName];
+              companyName2 = [(SUCoreDDMDeclaration *)v5 companyName];
+              v22 = [v24 stringIsEqual:companyName to:companyName2];
             }
 
             else

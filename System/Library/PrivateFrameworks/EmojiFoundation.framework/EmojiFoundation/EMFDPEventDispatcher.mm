@@ -1,20 +1,20 @@
 @interface EMFDPEventDispatcher
-- (EMFDPEventDispatcher)initWithReportingDelegate:(id)a3;
-- (void)didUseEmoji:(id)a3 usageSource:(unint64_t)a4 replacementContext:(id)a5 searchQuery:(id)a6 resultPosition:(id)a7 numberSearchQueriesRun:(id)a8 wasPositiveEngagement:(BOOL)a9 completionHandler:(id)a10;
+- (EMFDPEventDispatcher)initWithReportingDelegate:(id)delegate;
+- (void)didUseEmoji:(id)emoji usageSource:(unint64_t)source replacementContext:(id)context searchQuery:(id)query resultPosition:(id)position numberSearchQueriesRun:(id)run wasPositiveEngagement:(BOOL)engagement completionHandler:(id)self0;
 @end
 
 @implementation EMFDPEventDispatcher
 
-- (EMFDPEventDispatcher)initWithReportingDelegate:(id)a3
+- (EMFDPEventDispatcher)initWithReportingDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = EMFDPEventDispatcher;
   v6 = [(EMFDPEventDispatcher *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reportingDelegate, a3);
+    objc_storeStrong(&v6->_reportingDelegate, delegate);
     v8 = dispatch_queue_create("com.apple.EmojiFoundation.DifferentialPrivacyRecording", 0);
     reportingBackgroundQueue = v7->_reportingBackgroundQueue;
     v7->_reportingBackgroundQueue = v8;
@@ -23,14 +23,14 @@
   return v7;
 }
 
-- (void)didUseEmoji:(id)a3 usageSource:(unint64_t)a4 replacementContext:(id)a5 searchQuery:(id)a6 resultPosition:(id)a7 numberSearchQueriesRun:(id)a8 wasPositiveEngagement:(BOOL)a9 completionHandler:(id)a10
+- (void)didUseEmoji:(id)emoji usageSource:(unint64_t)source replacementContext:(id)context searchQuery:(id)query resultPosition:(id)position numberSearchQueriesRun:(id)run wasPositiveEngagement:(BOOL)engagement completionHandler:(id)self0
 {
-  v14 = a3;
-  v35 = a5;
-  v34 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = a10;
+  emojiCopy = emoji;
+  contextCopy = context;
+  queryCopy = query;
+  positionCopy = position;
+  runCopy = run;
+  handlerCopy = handler;
   v18 = SecTaskCreateFromSelf(*MEMORY[0x1E695E480]);
   v19 = v18;
   error[1] = v18;
@@ -91,8 +91,8 @@ LABEL_16:
   CFRelease(v19);
   if (v21)
   {
-    LOBYTE(v31) = a9;
-    v27 = [[EMFBiomeEmojiUsageRecorder alloc] initWithEmoji:v14 usageSource:a4 replacementContext:v35 searchQuery:v34 resultPosition:v15 numberSearchQueriesRun:v16 wasPositiveEngagement:v31];
+    LOBYTE(v31) = engagement;
+    v27 = [[EMFBiomeEmojiUsageRecorder alloc] initWithEmoji:emojiCopy usageSource:source replacementContext:contextCopy searchQuery:queryCopy resultPosition:positionCopy numberSearchQueriesRun:runCopy wasPositiveEngagement:v31];
     v28 = v27;
     if (self->_reportingDelegate)
     {
@@ -105,8 +105,8 @@ LABEL_16:
     block[2] = __157__EMFDPEventDispatcher_didUseEmoji_usageSource_replacementContext_searchQuery_resultPosition_numberSearchQueriesRun_wasPositiveEngagement_completionHandler___block_invoke;
     block[3] = &unk_1E7A5F5E0;
     v37 = v28;
-    v39 = v17;
-    v38 = v14;
+    v39 = handlerCopy;
+    v38 = emojiCopy;
     v30 = v28;
     dispatch_async(reportingBackgroundQueue, block);
   }

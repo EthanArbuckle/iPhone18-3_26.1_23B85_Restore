@@ -1,44 +1,44 @@
 @interface OBPrivacyFlow
-+ (OBPrivacyFlow)flowWithBundle:(id)a3;
-+ (id)_modelSpecificLocalizedStringKeyForKey:(id)a3 preferredDeviceType:(unint64_t)a4;
-+ (id)_splashPlistFromBundle:(id)a3 forContentName:(id)a4;
-- (BOOL)_conformsToRequirement:(id)a3;
-- (BOOL)_conformsToRequirements:(id)a3;
-- (BOOL)_showInCombinedListWithDeviceClass:(id)a3;
-- (BOOL)_supportsPlatform:(id)a3;
++ (OBPrivacyFlow)flowWithBundle:(id)bundle;
++ (id)_modelSpecificLocalizedStringKeyForKey:(id)key preferredDeviceType:(unint64_t)type;
++ (id)_splashPlistFromBundle:(id)bundle forContentName:(id)name;
+- (BOOL)_conformsToRequirement:(id)requirement;
+- (BOOL)_conformsToRequirements:(id)requirements;
+- (BOOL)_showInCombinedListWithDeviceClass:(id)class;
+- (BOOL)_supportsPlatform:(id)platform;
 - (BOOL)enablesGroupingInCombinedList;
 - (BOOL)isPersonallyIdentifiable;
-- (BOOL)showInCombinedListForPreferredDeviceType:(unint64_t)a3;
-- (BOOL)supportsPlatformForPreferredDeviceType:(unint64_t)a3;
+- (BOOL)showInCombinedListForPreferredDeviceType:(unint64_t)type;
+- (BOOL)supportsPlatformForPreferredDeviceType:(unint64_t)type;
 - (OBImage)buttonIcon;
-- (OBPrivacyFlow)initWithBundle:(id)a3;
-- (OBPrivacyFlow)initWithSplashContent:(id)a3;
+- (OBPrivacyFlow)initWithBundle:(id)bundle;
+- (OBPrivacyFlow)initWithSplashContent:(id)content;
 - (id)_SKU;
-- (id)_bestStringConsideringGenerativeForKeyWithPrefix:(id)a3 language:(id)a4 preferredDeviceType:(unint64_t)a5;
-- (id)_bundleImageNamed:(id)a3;
+- (id)_bestStringConsideringGenerativeForKeyWithPrefix:(id)prefix language:(id)language preferredDeviceType:(unint64_t)type;
+- (id)_bundleImageNamed:(id)named;
 - (id)_deviceClass;
 - (id)_iconSymbolName;
-- (id)_legacyLocalizedContentListForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4;
-- (id)_platformOfPreferredDeviceType:(unint64_t)a3;
-- (id)_splashLocalizedStringForKey:(id)a3 language:(id)a4 preferredDeviceType:(unint64_t)a5;
-- (id)_splashLocalizedStringForKey:(id)a3 language:(id)a4 table:(id)a5 preferredDeviceType:(unint64_t)a6;
-- (id)_stringForPlaceholderBundleWithString:(id)a3;
-- (id)_stringKeyWithCapabilitiesFromPrefix:(id)a3 withNetwork:(BOOL)a4 withGenerative:(BOOL)a5 withGMEChinaSuffix:(BOOL)a6;
-- (id)_textForConditionalItem:(id)a3 language:(id)a4 preferredDeviceType:(unint64_t)a5;
-- (id)_verifiedSplashLocalizedStringForKey:(id)a3 language:(id)a4 preferredDeviceType:(unint64_t)a5;
-- (id)localizedButtonCaptionForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4;
-- (id)localizedButtonCaptionSymbolNameForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4;
-- (id)localizedButtonTitleForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4;
-- (id)localizedCombinedFooterComponentsForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4;
-- (id)localizedCombinedFooterForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4;
-- (id)localizedCombinedHeaderForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4;
-- (id)localizedContentListForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4;
-- (id)localizedShortTitleForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4;
-- (id)localizedTitleForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4;
+- (id)_legacyLocalizedContentListForLanguage:(id)language preferredDeviceType:(unint64_t)type;
+- (id)_platformOfPreferredDeviceType:(unint64_t)type;
+- (id)_splashLocalizedStringForKey:(id)key language:(id)language preferredDeviceType:(unint64_t)type;
+- (id)_splashLocalizedStringForKey:(id)key language:(id)language table:(id)table preferredDeviceType:(unint64_t)type;
+- (id)_stringForPlaceholderBundleWithString:(id)string;
+- (id)_stringKeyWithCapabilitiesFromPrefix:(id)prefix withNetwork:(BOOL)network withGenerative:(BOOL)generative withGMEChinaSuffix:(BOOL)suffix;
+- (id)_textForConditionalItem:(id)item language:(id)language preferredDeviceType:(unint64_t)type;
+- (id)_verifiedSplashLocalizedStringForKey:(id)key language:(id)language preferredDeviceType:(unint64_t)type;
+- (id)localizedButtonCaptionForLanguage:(id)language preferredDeviceType:(unint64_t)type;
+- (id)localizedButtonCaptionSymbolNameForLanguage:(id)language preferredDeviceType:(unint64_t)type;
+- (id)localizedButtonTitleForLanguage:(id)language preferredDeviceType:(unint64_t)type;
+- (id)localizedCombinedFooterComponentsForLanguage:(id)language preferredDeviceType:(unint64_t)type;
+- (id)localizedCombinedFooterForLanguage:(id)language preferredDeviceType:(unint64_t)type;
+- (id)localizedCombinedHeaderForLanguage:(id)language preferredDeviceType:(unint64_t)type;
+- (id)localizedContentListForLanguage:(id)language preferredDeviceType:(unint64_t)type;
+- (id)localizedShortTitleForLanguage:(id)language preferredDeviceType:(unint64_t)type;
+- (id)localizedTitleForLanguage:(id)language preferredDeviceType:(unint64_t)type;
 - (id)replaceeIdentifierSets;
 - (id)replacementPrecondition;
 - (unint64_t)contentVersion;
-- (void)setButtonIcon:(id)a3;
+- (void)setButtonIcon:(id)icon;
 @end
 
 @implementation OBPrivacyFlow
@@ -109,29 +109,29 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-+ (OBPrivacyFlow)flowWithBundle:(id)a3
++ (OBPrivacyFlow)flowWithBundle:(id)bundle
 {
-  v3 = a3;
-  v4 = [[OBPrivacyFlow alloc] initWithBundle:v3];
+  bundleCopy = bundle;
+  v4 = [[OBPrivacyFlow alloc] initWithBundle:bundleCopy];
 
   return v4;
 }
 
-- (OBPrivacyFlow)initWithBundle:(id)a3
+- (OBPrivacyFlow)initWithBundle:(id)bundle
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  bundleCopy = bundle;
   v26.receiver = self;
   v26.super_class = OBPrivacyFlow;
   v6 = [(OBPrivacyFlow *)&v26 init];
@@ -143,18 +143,18 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  objc_storeStrong(&v6->_bundle, a3);
-  v8 = [(OBBundle *)v7->_bundle underlyingBundle];
-  v9 = [v8 infoDictionary];
+  objc_storeStrong(&v6->_bundle, bundle);
+  underlyingBundle = [(OBBundle *)v7->_bundle underlyingBundle];
+  infoDictionary = [underlyingBundle infoDictionary];
 
-  v10 = [v9 objectForKeyedSubscript:@"GDPRSplash"];
+  v10 = [infoDictionary objectForKeyedSubscript:@"GDPRSplash"];
   splashContentName = v7->_splashContentName;
   v7->_splashContentName = v10;
 
   if (v7->_splashContentName)
   {
-    v12 = [(OBBundle *)v7->_bundle underlyingBundle];
-    v13 = [OBPrivacyFlow _splashPlistFromBundle:v12 forContentName:v7->_splashContentName];
+    underlyingBundle2 = [(OBBundle *)v7->_bundle underlyingBundle];
+    v13 = [OBPrivacyFlow _splashPlistFromBundle:underlyingBundle2 forContentName:v7->_splashContentName];
     splashPlist = v7->_splashPlist;
     v7->_splashPlist = v13;
 
@@ -209,9 +209,9 @@ LABEL_21:
     v17 = _OBLoggingFacility();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v5 identifier];
+      identifier = [bundleCopy identifier];
       *buf = 138412290;
-      v28 = v18;
+      v28 = identifier;
       _os_log_impl(&dword_1B4FB6000, v17, OS_LOG_TYPE_DEFAULT, "No GDPRSplash for bundle %@", buf, 0xCu);
     }
   }
@@ -223,90 +223,90 @@ LABEL_22:
   return v19;
 }
 
-- (OBPrivacyFlow)initWithSplashContent:(id)a3
+- (OBPrivacyFlow)initWithSplashContent:(id)content
 {
-  v5 = a3;
+  contentCopy = content;
   v9.receiver = self;
   v9.super_class = OBPrivacyFlow;
   v6 = [(OBPrivacyFlow *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_splashPlist, a3);
+    objc_storeStrong(&v6->_splashPlist, content);
   }
 
   return v7;
 }
 
-- (id)_platformOfPreferredDeviceType:(unint64_t)a3
+- (id)_platformOfPreferredDeviceType:(unint64_t)type
 {
   v5 = @"iOS";
-  if (a3 <= 4)
+  if (type <= 4)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 4)
+      if (type == 4)
       {
-        v6 = @"macOS";
+        _currentPlatform = @"macOS";
       }
 
       else
       {
-        v6 = @"iOS";
+        _currentPlatform = @"iOS";
       }
     }
 
     else
     {
-      v6 = [(OBPrivacyFlow *)self _currentPlatform];
+      _currentPlatform = [(OBPrivacyFlow *)self _currentPlatform];
     }
   }
 
   else
   {
-    if (a3 == 8)
+    if (type == 8)
     {
       v5 = @"xrOS";
     }
 
-    if (a3 == 7)
+    if (type == 7)
     {
       v5 = @"watchOS";
     }
 
-    if (a3 - 5 >= 2)
+    if (type - 5 >= 2)
     {
-      v6 = v5;
+      _currentPlatform = v5;
     }
 
     else
     {
-      v6 = @"tvOS";
+      _currentPlatform = @"tvOS";
     }
   }
 
-  return v6;
+  return _currentPlatform;
 }
 
-- (BOOL)supportsPlatformForPreferredDeviceType:(unint64_t)a3
+- (BOOL)supportsPlatformForPreferredDeviceType:(unint64_t)type
 {
-  v3 = self;
-  v4 = [(OBPrivacyFlow *)self _platformOfPreferredDeviceType:a3];
-  LOBYTE(v3) = [(OBPrivacyFlow *)v3 _supportsPlatform:v4];
+  selfCopy = self;
+  v4 = [(OBPrivacyFlow *)self _platformOfPreferredDeviceType:type];
+  LOBYTE(selfCopy) = [(OBPrivacyFlow *)selfCopy _supportsPlatform:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)_supportsPlatform:(id)a3
+- (BOOL)_supportsPlatform:(id)platform
 {
-  v4 = a3;
+  platformCopy = platform;
   v5 = [(NSDictionary *)self->_splashPlist objectForKeyedSubscript:@"SupportedPlatforms"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __35__OBPrivacyFlow__supportsPlatform___block_invoke;
   v9[3] = &unk_1E7C15778;
-  v10 = v4;
-  v6 = v4;
+  v10 = platformCopy;
+  v6 = platformCopy;
   v7 = [v5 indexOfObjectPassingTest:v9] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v7;
@@ -331,10 +331,10 @@ uint64_t __35__OBPrivacyFlow__supportsPlatform___block_invoke(uint64_t a1, void 
   return v6;
 }
 
-+ (id)_splashPlistFromBundle:(id)a3 forContentName:(id)a4
++ (id)_splashPlistFromBundle:(id)bundle forContentName:(id)name
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = [a3 pathForResource:a4 ofType:@"plist"];
+  v4 = [bundle pathForResource:name ofType:@"plist"];
   v5 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:v4];
   if (!v5)
   {
@@ -352,12 +352,12 @@ uint64_t __35__OBPrivacyFlow__supportsPlatform___block_invoke(uint64_t a1, void 
   return v5;
 }
 
-- (id)_verifiedSplashLocalizedStringForKey:(id)a3 language:(id)a4 preferredDeviceType:(unint64_t)a5
+- (id)_verifiedSplashLocalizedStringForKey:(id)key language:(id)language preferredDeviceType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = [(OBPrivacyFlow *)self _splashLocalizedStringForKey:v8 language:a4 preferredDeviceType:a5];
+  keyCopy = key;
+  v9 = [(OBPrivacyFlow *)self _splashLocalizedStringForKey:keyCopy language:language preferredDeviceType:type];
   v10 = v9;
-  if (v9 && ([v9 isEqualToString:v8] & 1) == 0)
+  if (v9 && ([v9 isEqualToString:keyCopy] & 1) == 0)
   {
     v11 = v10;
   }
@@ -370,11 +370,11 @@ uint64_t __35__OBPrivacyFlow__supportsPlatform___block_invoke(uint64_t a1, void 
   return v11;
 }
 
-- (id)_splashLocalizedStringForKey:(id)a3 language:(id)a4 preferredDeviceType:(unint64_t)a5
+- (id)_splashLocalizedStringForKey:(id)key language:(id)language preferredDeviceType:(unint64_t)type
 {
-  v8 = a3;
+  keyCopy = key;
   v9 = self->_splashContentName;
-  v10 = [(OBPrivacyFlow *)self _splashLocalizedStringForKey:v8 language:a4 table:v9 preferredDeviceType:a5];
+  v10 = [(OBPrivacyFlow *)self _splashLocalizedStringForKey:keyCopy language:language table:v9 preferredDeviceType:type];
   if (v10)
   {
     v11 = v10;
@@ -388,40 +388,40 @@ uint64_t __35__OBPrivacyFlow__supportsPlatform___block_invoke(uint64_t a1, void 
 
   else
   {
-    v11 = v8;
+    v11 = keyCopy;
   }
 
   return v11;
 }
 
-- (id)_stringForPlaceholderBundleWithString:(id)a3
+- (id)_stringForPlaceholderBundleWithString:(id)string
 {
   bundle = self->_bundle;
-  v4 = a3;
-  v5 = [(OBBundle *)bundle identifier];
-  v6 = [v4 stringByReplacingOccurrencesOfString:@"%@" withString:v5];
+  stringCopy = string;
+  identifier = [(OBBundle *)bundle identifier];
+  v6 = [stringCopy stringByReplacingOccurrencesOfString:@"%@" withString:identifier];
 
   return v6;
 }
 
-- (id)_splashLocalizedStringForKey:(id)a3 language:(id)a4 table:(id)a5 preferredDeviceType:(unint64_t)a6
+- (id)_splashLocalizedStringForKey:(id)key language:(id)language table:(id)table preferredDeviceType:(unint64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [OBPrivacyFlow _modelSpecificLocalizedStringKeyForKey:v10 preferredDeviceType:a6];
-  v14 = [(OBBundle *)self->_bundle underlyingBundle];
-  v15 = [OBUtilities localizedString:v13 forTable:v12 inBundle:v14 forLanguage:v11];
+  keyCopy = key;
+  languageCopy = language;
+  tableCopy = table;
+  v13 = [OBPrivacyFlow _modelSpecificLocalizedStringKeyForKey:keyCopy preferredDeviceType:type];
+  underlyingBundle = [(OBBundle *)self->_bundle underlyingBundle];
+  v15 = [OBUtilities localizedString:v13 forTable:tableCopy inBundle:underlyingBundle forLanguage:languageCopy];
 
   if (![(__CFString *)v15 length]|| [(__CFString *)v15 isEqualToString:v13])
   {
-    v16 = [(OBBundle *)self->_bundle underlyingBundle];
-    v17 = [OBUtilities localizedString:v10 forTable:v12 inBundle:v16 forLanguage:v11];
+    underlyingBundle2 = [(OBBundle *)self->_bundle underlyingBundle];
+    v17 = [OBUtilities localizedString:keyCopy forTable:tableCopy inBundle:underlyingBundle2 forLanguage:languageCopy];
 
     v15 = v17;
   }
 
-  if ([(__CFString *)v15 length]&& ([(__CFString *)v15 isEqualToString:v10]& 1) == 0)
+  if ([(__CFString *)v15 length]&& ([(__CFString *)v15 isEqualToString:keyCopy]& 1) == 0)
   {
     v19 = CFPreferencesCopyValue(@"OBShowFakeText", *MEMORY[0x1E695E890], *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
     if (v19)
@@ -448,77 +448,77 @@ uint64_t __35__OBPrivacyFlow__supportsPlatform___block_invoke(uint64_t a1, void 
   return v18;
 }
 
-+ (id)_modelSpecificLocalizedStringKeyForKey:(id)a3 preferredDeviceType:(unint64_t)a4
++ (id)_modelSpecificLocalizedStringKeyForKey:(id)key preferredDeviceType:(unint64_t)type
 {
-  v6 = a3;
-  if (a4 > 4)
+  keyCopy = key;
+  if (type > 4)
   {
-    if (a4 > 6)
+    if (type > 6)
     {
-      if (a4 == 7)
+      if (type == 7)
       {
-        [OBUtilities stringWithFormat:@"%@_APPLEWATCH", v6];
+        [OBUtilities stringWithFormat:@"%@_APPLEWATCH", keyCopy];
         goto LABEL_18;
       }
 
-      if (a4 == 8)
+      if (type == 8)
       {
-        [OBUtilities stringWithFormat:@"%@_APPLEVISION", v6];
+        [OBUtilities stringWithFormat:@"%@_APPLEVISION", keyCopy];
         goto LABEL_18;
       }
 
       goto LABEL_21;
     }
 
-    if (a4 == 5)
+    if (type == 5)
     {
-      [OBUtilities stringWithFormat:@"%@_APPLETV", v6];
+      [OBUtilities stringWithFormat:@"%@_APPLETV", keyCopy];
     }
 
     else
     {
-      [OBUtilities stringWithFormat:@"%@_HOMEPOD", v6];
+      [OBUtilities stringWithFormat:@"%@_HOMEPOD", keyCopy];
     }
   }
 
   else
   {
-    if (a4 <= 2)
+    if (type <= 2)
     {
-      if (a4 == 1)
+      if (type == 1)
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_IPHONE", v6];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_IPHONE", keyCopy];
         goto LABEL_18;
       }
 
-      if (a4 == 2)
+      if (type == 2)
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_IPAD", v6];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_IPAD", keyCopy];
         goto LABEL_18;
       }
 
 LABEL_21:
       if (_CFMZEnabled())
       {
-        [a1 _modelSpecificLocalizedStringKeyForKey:v6 preferredDeviceType:4];
+        [self _modelSpecificLocalizedStringKeyForKey:keyCopy preferredDeviceType:4];
       }
 
       else
       {
-        [MEMORY[0x1E69DC938] modelSpecificLocalizedStringKeyForKey:v6];
+        [MEMORY[0x1E69DC938] modelSpecificLocalizedStringKeyForKey:keyCopy];
       }
 
       goto LABEL_18;
     }
 
-    if (a4 == 3)
+    if (type == 3)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_IPOD", v6];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_IPOD", keyCopy];
     }
 
     else
     {
-      [OBUtilities stringWithFormat:@"%@_MAC", v6];
+      [OBUtilities stringWithFormat:@"%@_MAC", keyCopy];
     }
   }
 
@@ -527,21 +527,21 @@ LABEL_21:
   return v7;
 }
 
-- (id)_bundleImageNamed:(id)a3
+- (id)_bundleImageNamed:(id)named
 {
   bundle = self->_bundle;
-  v4 = a3;
-  v5 = [(OBBundle *)bundle underlyingBundle];
-  v6 = [OBImage imageNamed:v4 inBundle:v5];
+  namedCopy = named;
+  underlyingBundle = [(OBBundle *)bundle underlyingBundle];
+  v6 = [OBImage imageNamed:namedCopy inBundle:underlyingBundle];
 
   return v6;
 }
 
 - (BOOL)isPersonallyIdentifiable
 {
-  v2 = [(OBPrivacyFlow *)self _iconType];
-  v3 = [v2 lowercaseString];
-  v4 = [v3 isEqualToString:@"pii"];
+  _iconType = [(OBPrivacyFlow *)self _iconType];
+  lowercaseString = [_iconType lowercaseString];
+  v4 = [lowercaseString isEqualToString:@"pii"];
 
   return v4;
 }
@@ -576,58 +576,58 @@ LABEL_21:
   return buttonIcon;
 }
 
-- (void)setButtonIcon:(id)a3
+- (void)setButtonIcon:(id)icon
 {
-  v5 = a3;
-  if (self->_buttonIcon != v5)
+  iconCopy = icon;
+  if (self->_buttonIcon != iconCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_buttonIcon, a3);
-    v5 = v6;
+    v6 = iconCopy;
+    objc_storeStrong(&self->_buttonIcon, icon);
+    iconCopy = v6;
   }
 
   self->_buttonIconLoaded = 1;
 }
 
-- (BOOL)showInCombinedListForPreferredDeviceType:(unint64_t)a3
+- (BOOL)showInCombinedListForPreferredDeviceType:(unint64_t)type
 {
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 > 1)
+    if (type > 1)
     {
       v10 = @"iPod";
-      if (a3 != 3)
+      if (type != 3)
       {
         v10 = 0;
       }
 
-      if (a3 == 2)
+      if (type == 2)
       {
-        v9 = @"iPad";
+        _deviceClass = @"iPad";
       }
 
       else
       {
-        v9 = v10;
+        _deviceClass = v10;
       }
     }
 
-    else if (a3)
+    else if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
-        v9 = @"iPhone";
+        _deviceClass = @"iPhone";
       }
 
       else
       {
-        v9 = 0;
+        _deviceClass = 0;
       }
     }
 
     else
     {
-      v9 = [(OBPrivacyFlow *)self _deviceClass];
+      _deviceClass = [(OBPrivacyFlow *)self _deviceClass];
     }
   }
 
@@ -636,52 +636,52 @@ LABEL_21:
     v4 = @"AudioAccessory";
     v5 = @"Watch";
     v6 = @"RealityDevice";
-    if (a3 != 8)
+    if (type != 8)
     {
       v6 = 0;
     }
 
-    if (a3 != 7)
+    if (type != 7)
     {
       v5 = v6;
     }
 
-    if (a3 != 6)
+    if (type != 6)
     {
       v4 = v5;
     }
 
     v7 = @"Mac";
     v8 = @"AppleTV";
-    if (a3 != 5)
+    if (type != 5)
     {
       v8 = 0;
     }
 
-    if (a3 != 4)
+    if (type != 4)
     {
       v7 = v8;
     }
 
-    if (a3 <= 5)
+    if (type <= 5)
     {
-      v9 = v7;
+      _deviceClass = v7;
     }
 
     else
     {
-      v9 = v4;
+      _deviceClass = v4;
     }
   }
 
-  v11 = [(OBPrivacyFlow *)self _showInCombinedListWithDeviceClass:v9];
+  v11 = [(OBPrivacyFlow *)self _showInCombinedListWithDeviceClass:_deviceClass];
 
   return v11;
 }
 
-- (BOOL)_showInCombinedListWithDeviceClass:(id)a3
+- (BOOL)_showInCombinedListWithDeviceClass:(id)class
 {
-  v4 = a3;
+  classCopy = class;
   v5 = [(NSDictionary *)self->_splashPlist objectForKeyedSubscript:@"HideFromCombinedList"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -706,8 +706,8 @@ LABEL_21:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(OBPrivacyFlow *)self _SKU];
-    v9 = [v7 containsObject:v8];
+    _SKU = [(OBPrivacyFlow *)self _SKU];
+    v9 = [v7 containsObject:_SKU];
 
     if (v9)
     {
@@ -734,7 +734,7 @@ LABEL_10:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v12 containsObject:v4];
+    v10 = [v12 containsObject:classCopy];
   }
 
   else
@@ -762,7 +762,7 @@ LABEL_24:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
@@ -777,10 +777,10 @@ LABEL_24:
       }
     }
 
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)_deviceClass
@@ -797,34 +797,34 @@ LABEL_24:
   return v2;
 }
 
-- (id)_bestStringConsideringGenerativeForKeyWithPrefix:(id)a3 language:(id)a4 preferredDeviceType:(unint64_t)a5
+- (id)_bestStringConsideringGenerativeForKeyWithPrefix:(id)prefix language:(id)language preferredDeviceType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  prefixCopy = prefix;
+  languageCopy = language;
   v10 = +[OBCapabilities sharedCapabilities];
-  v11 = [v10 deviceSupportsGenerativeModels];
+  deviceSupportsGenerativeModels = [v10 deviceSupportsGenerativeModels];
 
-  if (!v11 || ([(OBPrivacyFlow *)self _bestStringConsideringCMEChinaForKeyWithPrefix:v8 language:v9 preferredDeviceType:a5 withGenerativeSuffix:1], (v12 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!deviceSupportsGenerativeModels || ([(OBPrivacyFlow *)self _bestStringConsideringCMEChinaForKeyWithPrefix:prefixCopy language:languageCopy preferredDeviceType:type withGenerativeSuffix:1], (v12 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v12 = [(OBPrivacyFlow *)self _bestStringConsideringCMEChinaForKeyWithPrefix:v8 language:v9 preferredDeviceType:a5 withGenerativeSuffix:0];
+    v12 = [(OBPrivacyFlow *)self _bestStringConsideringCMEChinaForKeyWithPrefix:prefixCopy language:languageCopy preferredDeviceType:type withGenerativeSuffix:0];
   }
 
   return v12;
 }
 
-- (id)_stringKeyWithCapabilitiesFromPrefix:(id)a3 withNetwork:(BOOL)a4 withGenerative:(BOOL)a5 withGMEChinaSuffix:(BOOL)a6
+- (id)_stringKeyWithCapabilitiesFromPrefix:(id)prefix withNetwork:(BOOL)network withGenerative:(BOOL)generative withGMEChinaSuffix:(BOOL)suffix
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = v9;
-  if (v8)
+  suffixCopy = suffix;
+  generativeCopy = generative;
+  networkCopy = network;
+  prefixCopy = prefix;
+  v10 = prefixCopy;
+  if (networkCopy)
   {
     v13 = +[OBCapabilities sharedCapabilities];
-    v14 = [v13 isWAPI];
+    isWAPI = [v13 isWAPI];
 
-    if (v14)
+    if (isWAPI)
     {
       v15 = @"_WLAN";
     }
@@ -834,12 +834,12 @@ LABEL_24:
       v15 = @"_WIFI";
     }
 
-    v10 = [v9 stringByAppendingString:v15];
+    v10 = [prefixCopy stringByAppendingString:v15];
 
-    if (!v6)
+    if (!suffixCopy)
     {
 LABEL_3:
-      if (!v7)
+      if (!generativeCopy)
       {
         goto LABEL_5;
       }
@@ -848,7 +848,7 @@ LABEL_3:
     }
   }
 
-  else if (!v6)
+  else if (!suffixCopy)
   {
     goto LABEL_3;
   }
@@ -856,7 +856,7 @@ LABEL_3:
   v16 = [v10 stringByAppendingString:@"_GMECHINA"];
 
   v10 = v16;
-  if (v7)
+  if (generativeCopy)
   {
 LABEL_4:
     v11 = [v10 stringByAppendingString:@"_GENERATIVE"];
@@ -869,17 +869,17 @@ LABEL_5:
   return v10;
 }
 
-- (BOOL)_conformsToRequirement:(id)a3
+- (BOOL)_conformsToRequirement:(id)requirement
 {
-  v3 = [a3 lowercaseString];
+  lowercaseString = [requirement lowercaseString];
   v7 = 0;
-  if (([v3 isEqualToString:@"wifi"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"wlan"))
+  if (([lowercaseString isEqualToString:@"wifi"] & 1) != 0 || objc_msgSend(lowercaseString, "isEqualToString:", @"wlan"))
   {
     v4 = +[OBCapabilities sharedCapabilities];
-    v5 = [v4 isWAPI];
+    isWAPI = [v4 isWAPI];
 
-    v6 = (v5 & 1) != 0 ? @"wlan" : @"wifi";
-    if ([v3 isEqualToString:v6])
+    v6 = (isWAPI & 1) != 0 ? @"wlan" : @"wifi";
+    if ([lowercaseString isEqualToString:v6])
     {
       v7 = 1;
     }
@@ -888,14 +888,14 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)_conformsToRequirements:(id)a3
+- (BOOL)_conformsToRequirements:(id)requirements
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requirementsCopy = requirements;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    LOBYTE(v5) = [(OBPrivacyFlow *)self _conformsToRequirement:v4];
+    LOBYTE(v5) = [(OBPrivacyFlow *)self _conformsToRequirement:requirementsCopy];
   }
 
   else
@@ -907,7 +907,7 @@ LABEL_5:
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v6 = v4;
+      v6 = requirementsCopy;
       v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
@@ -953,31 +953,31 @@ LABEL_5:
   return v5 & 1;
 }
 
-- (id)_textForConditionalItem:(id)a3 language:(id)a4 preferredDeviceType:(unint64_t)a5
+- (id)_textForConditionalItem:(id)item language:(id)language preferredDeviceType:(unint64_t)type
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  languageCopy = language;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [(OBPrivacyFlow *)self _splashLocalizedStringForKey:v8 language:v9 preferredDeviceType:a5];
-    if (![v10 length] || objc_msgSend(v10, "isEqualToString:", v8))
+    v10 = [(OBPrivacyFlow *)self _splashLocalizedStringForKey:itemCopy language:languageCopy preferredDeviceType:type];
+    if (![v10 length] || objc_msgSend(v10, "isEqualToString:", itemCopy))
     {
       v11 = +[OBCapabilities sharedCapabilities];
-      v12 = [v11 isWAPI];
+      isWAPI = [v11 isWAPI];
 
-      if (v12)
+      if (isWAPI)
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_WLAN", v8];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_WLAN", itemCopy];
       }
 
       else
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_WIFI", v8];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_WIFI", itemCopy];
       }
       v23 = ;
-      v24 = [(OBPrivacyFlow *)self _splashLocalizedStringForKey:v23 language:v9 preferredDeviceType:a5];
+      v24 = [(OBPrivacyFlow *)self _splashLocalizedStringForKey:v23 language:languageCopy preferredDeviceType:type];
 
       v10 = v24;
     }
@@ -992,14 +992,14 @@ LABEL_5:
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v13 = v8;
+      v13 = itemCopy;
       v14 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (v14)
       {
         v15 = v14;
-        v29 = v8;
-        v27 = a5;
-        v28 = v9;
+        v29 = itemCopy;
+        typeCopy = type;
+        v28 = languageCopy;
         v16 = *v31;
         while (2)
         {
@@ -1024,10 +1024,10 @@ LABEL_5:
 
                 if (v22)
                 {
-                  v9 = v28;
-                  v10 = [(OBPrivacyFlow *)self _splashLocalizedStringForKey:v20 language:v28 preferredDeviceType:v27];
+                  languageCopy = v28;
+                  v10 = [(OBPrivacyFlow *)self _splashLocalizedStringForKey:v20 language:v28 preferredDeviceType:typeCopy];
 
-                  v8 = v29;
+                  itemCopy = v29;
                   goto LABEL_24;
                 }
               }
@@ -1044,8 +1044,8 @@ LABEL_5:
         }
 
         v10 = 0;
-        v9 = v28;
-        v8 = v29;
+        languageCopy = v28;
+        itemCopy = v29;
       }
 
       else
@@ -1067,9 +1067,9 @@ LABEL_24:
   return v10;
 }
 
-- (id)localizedButtonCaptionSymbolNameForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4
+- (id)localizedButtonCaptionSymbolNameForLanguage:(id)language preferredDeviceType:(unint64_t)type
 {
-  if (self->_splashPListContainsLegacyStringKeys || ([(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"BUTTON_CAPTION_SYMBOL_NAME" language:a3 preferredDeviceType:a4], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (self->_splashPListContainsLegacyStringKeys || ([(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"BUTTON_CAPTION_SYMBOL_NAME" language:language preferredDeviceType:type], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v6 = 0;
   }
@@ -1083,18 +1083,18 @@ LABEL_24:
   return v6;
 }
 
-- (id)localizedButtonTitleForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4
+- (id)localizedButtonTitleForLanguage:(id)language preferredDeviceType:(unint64_t)type
 {
-  v6 = a3;
+  languageCopy = language;
   v7 = +[OBCapabilities sharedCapabilities];
-  v8 = [v7 additionalDisplayLanguageForDisplayLanguage:v6];
+  v8 = [v7 additionalDisplayLanguageForDisplayLanguage:languageCopy];
 
   if (v8)
   {
     if (self->_splashPListContainsLegacyStringKeys)
     {
       v9 = [(NSDictionary *)self->_splashPlist objectForKeyedSubscript:@"ButtonTitleForLanguageAddition"];
-      v10 = [(OBPrivacyFlow *)self _textForConditionalItem:v9 language:v6 preferredDeviceType:a4];
+      v10 = [(OBPrivacyFlow *)self _textForConditionalItem:v9 language:languageCopy preferredDeviceType:type];
 
       if (v10)
       {
@@ -1102,12 +1102,12 @@ LABEL_4:
         if (self->_splashPListContainsLegacyStringKeys)
         {
           v11 = [(NSDictionary *)self->_splashPlist objectForKeyedSubscript:@"ButtonTitle"];
-          v12 = [(OBPrivacyFlow *)self _textForConditionalItem:v11 language:v8 preferredDeviceType:a4];
+          v12 = [(OBPrivacyFlow *)self _textForConditionalItem:v11 language:v8 preferredDeviceType:type];
         }
 
         else
         {
-          v12 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"BUTTON_TITLE" language:v8 preferredDeviceType:a4];
+          v12 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"BUTTON_TITLE" language:v8 preferredDeviceType:type];
         }
 
         v13 = [v10 stringByReplacingOccurrencesOfString:@"%@" withString:v12];
@@ -1118,7 +1118,7 @@ LABEL_4:
 
     else
     {
-      v10 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"BUTTON_TITLE_FOR_LANGUAGE_ADDITION" language:v6 preferredDeviceType:a4];
+      v10 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"BUTTON_TITLE_FOR_LANGUAGE_ADDITION" language:languageCopy preferredDeviceType:type];
       if (v10)
       {
         goto LABEL_4;
@@ -1128,12 +1128,12 @@ LABEL_4:
 
   if (!self->_splashPListContainsLegacyStringKeys)
   {
-    v13 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"BUTTON_TITLE" language:v6 preferredDeviceType:a4];
+    v13 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"BUTTON_TITLE" language:languageCopy preferredDeviceType:type];
     goto LABEL_13;
   }
 
   v10 = [(NSDictionary *)self->_splashPlist objectForKeyedSubscript:@"ButtonTitle"];
-  v13 = [(OBPrivacyFlow *)self _textForConditionalItem:v10 language:v6 preferredDeviceType:a4];
+  v13 = [(OBPrivacyFlow *)self _textForConditionalItem:v10 language:languageCopy preferredDeviceType:type];
 LABEL_12:
 
 LABEL_13:
@@ -1141,18 +1141,18 @@ LABEL_13:
   return v13;
 }
 
-- (id)localizedButtonCaptionForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4
+- (id)localizedButtonCaptionForLanguage:(id)language preferredDeviceType:(unint64_t)type
 {
-  v6 = a3;
+  languageCopy = language;
   v7 = +[OBCapabilities sharedCapabilities];
-  v8 = [v7 additionalDisplayLanguageForDisplayLanguage:v6];
+  v8 = [v7 additionalDisplayLanguageForDisplayLanguage:languageCopy];
 
   if (v8)
   {
     if (self->_splashPListContainsLegacyStringKeys)
     {
       v9 = [(NSDictionary *)self->_splashPlist objectForKeyedSubscript:@"ButtonCaptionForLanguageAddition"];
-      v10 = [(OBPrivacyFlow *)self _textForConditionalItem:v9 language:v6 preferredDeviceType:a4];
+      v10 = [(OBPrivacyFlow *)self _textForConditionalItem:v9 language:languageCopy preferredDeviceType:type];
 
       if (v10)
       {
@@ -1160,12 +1160,12 @@ LABEL_4:
         if (self->_splashPListContainsLegacyStringKeys)
         {
           v11 = [(NSDictionary *)self->_splashPlist objectForKeyedSubscript:@"ButtonCaption"];
-          v12 = [(OBPrivacyFlow *)self _textForConditionalItem:v11 language:v8 preferredDeviceType:a4];
+          v12 = [(OBPrivacyFlow *)self _textForConditionalItem:v11 language:v8 preferredDeviceType:type];
         }
 
         else
         {
-          v12 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"BUTTON_CAPTION" language:v8 preferredDeviceType:a4];
+          v12 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"BUTTON_CAPTION" language:v8 preferredDeviceType:type];
         }
 
         v13 = [v10 stringByReplacingOccurrencesOfString:@"%@" withString:v12];
@@ -1176,7 +1176,7 @@ LABEL_4:
 
     else
     {
-      v10 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"BUTTON_CAPTION_FOR_LANGUAGE_ADDITION" language:@"en" preferredDeviceType:a4];
+      v10 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"BUTTON_CAPTION_FOR_LANGUAGE_ADDITION" language:@"en" preferredDeviceType:type];
       if (v10)
       {
         goto LABEL_4;
@@ -1186,12 +1186,12 @@ LABEL_4:
 
   if (!self->_splashPListContainsLegacyStringKeys)
   {
-    v13 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"BUTTON_CAPTION" language:v6 preferredDeviceType:a4];
+    v13 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"BUTTON_CAPTION" language:languageCopy preferredDeviceType:type];
     goto LABEL_13;
   }
 
   v10 = [(NSDictionary *)self->_splashPlist objectForKeyedSubscript:@"ButtonCaption"];
-  v13 = [(OBPrivacyFlow *)self _textForConditionalItem:v10 language:v6 preferredDeviceType:a4];
+  v13 = [(OBPrivacyFlow *)self _textForConditionalItem:v10 language:languageCopy preferredDeviceType:type];
 LABEL_12:
 
 LABEL_13:
@@ -1199,98 +1199,98 @@ LABEL_13:
   return v13;
 }
 
-- (id)localizedTitleForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4
+- (id)localizedTitleForLanguage:(id)language preferredDeviceType:(unint64_t)type
 {
   if (self->_splashPListContainsLegacyStringKeys)
   {
     splashPlist = self->_splashPlist;
-    v7 = a3;
-    v8 = [(NSDictionary *)splashPlist objectForKeyedSubscript:@"Title"];
-    v9 = [(OBPrivacyFlow *)self _textForConditionalItem:v8 language:v7 preferredDeviceType:a4];
+    languageCopy = language;
+    languageCopy2 = [(NSDictionary *)splashPlist objectForKeyedSubscript:@"Title"];
+    v9 = [(OBPrivacyFlow *)self _textForConditionalItem:languageCopy2 language:languageCopy preferredDeviceType:type];
   }
 
   else
   {
-    v8 = a3;
-    v9 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"SPLASH_TITLE" language:v8 preferredDeviceType:a4];
+    languageCopy2 = language;
+    v9 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"SPLASH_TITLE" language:languageCopy2 preferredDeviceType:type];
   }
 
   return v9;
 }
 
-- (id)localizedShortTitleForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4
+- (id)localizedShortTitleForLanguage:(id)language preferredDeviceType:(unint64_t)type
 {
   if (self->_splashPListContainsLegacyStringKeys)
   {
     splashPlist = self->_splashPlist;
-    v7 = a3;
-    v8 = [(NSDictionary *)splashPlist objectForKeyedSubscript:@"ShortTitle"];
-    v9 = [(OBPrivacyFlow *)self _textForConditionalItem:v8 language:v7 preferredDeviceType:a4];
+    languageCopy = language;
+    languageCopy2 = [(NSDictionary *)splashPlist objectForKeyedSubscript:@"ShortTitle"];
+    v9 = [(OBPrivacyFlow *)self _textForConditionalItem:languageCopy2 language:languageCopy preferredDeviceType:type];
   }
 
   else
   {
-    v8 = a3;
-    v9 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"SPLASH_SHORT_TITLE" language:v8 preferredDeviceType:a4];
+    languageCopy2 = language;
+    v9 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"SPLASH_SHORT_TITLE" language:languageCopy2 preferredDeviceType:type];
   }
 
   return v9;
 }
 
-- (id)localizedCombinedHeaderForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4
+- (id)localizedCombinedHeaderForLanguage:(id)language preferredDeviceType:(unint64_t)type
 {
   if (self->_splashPListContainsLegacyStringKeys)
   {
     splashPlist = self->_splashPlist;
-    v7 = a3;
-    v8 = [(NSDictionary *)splashPlist objectForKeyedSubscript:@"CombinedHeader"];
-    v9 = [(OBPrivacyFlow *)self _textForConditionalItem:v8 language:v7 preferredDeviceType:a4];
+    languageCopy = language;
+    languageCopy2 = [(NSDictionary *)splashPlist objectForKeyedSubscript:@"CombinedHeader"];
+    v9 = [(OBPrivacyFlow *)self _textForConditionalItem:languageCopy2 language:languageCopy preferredDeviceType:type];
   }
 
   else
   {
-    v8 = a3;
-    v9 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"COMBINED_HEADER" language:v8 preferredDeviceType:a4];
+    languageCopy2 = language;
+    v9 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"COMBINED_HEADER" language:languageCopy2 preferredDeviceType:type];
   }
 
   return v9;
 }
 
-- (id)localizedCombinedFooterForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4
+- (id)localizedCombinedFooterForLanguage:(id)language preferredDeviceType:(unint64_t)type
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = [(OBPrivacyFlow *)self localizedCombinedFooterComponentsForLanguage:a3 preferredDeviceType:a4];
-  v5 = [v4 text];
+  v4 = [(OBPrivacyFlow *)self localizedCombinedFooterComponentsForLanguage:language preferredDeviceType:type];
+  text = [v4 text];
 
-  if (v5)
+  if (text)
   {
     v6 = objc_alloc(MEMORY[0x1E696AD40]);
-    v7 = [v4 text];
-    v5 = [v6 initWithString:v7];
+    text2 = [v4 text];
+    text = [v6 initWithString:text2];
 
-    v8 = [v4 linkText];
-    if (v8)
+    linkText = [v4 linkText];
+    if (linkText)
     {
-      v9 = v8;
-      v10 = [v4 linkURLString];
+      v9 = linkText;
+      linkURLString = [v4 linkURLString];
 
-      if (v10)
+      if (linkURLString)
       {
         v11 = objc_alloc(MEMORY[0x1E696AAB0]);
-        v12 = [v4 linkText];
+        linkText2 = [v4 linkText];
         v22 = *MEMORY[0x1E69DB670];
-        v13 = [v4 linkURLString];
-        v23[0] = v13;
+        linkURLString2 = [v4 linkURLString];
+        v23[0] = linkURLString2;
         v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-        v15 = [v11 initWithString:v12 attributes:v14];
+        v15 = [v11 initWithString:linkText2 attributes:v14];
 
-        v16 = [v4 text];
-        v17 = [v16 rangeOfString:@"%@"];
+        text3 = [v4 text];
+        v17 = [text3 rangeOfString:@"%@"];
         v19 = v18;
 
         if (v19)
         {
-          [v5 replaceCharactersInRange:v17 withAttributedString:{v19, v15}];
+          [text replaceCharactersInRange:v17 withAttributedString:{v19, v15}];
         }
       }
     }
@@ -1298,37 +1298,37 @@ LABEL_13:
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return text;
 }
 
-- (id)localizedCombinedFooterComponentsForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4
+- (id)localizedCombinedFooterComponentsForLanguage:(id)language preferredDeviceType:(unint64_t)type
 {
-  v6 = a3;
+  languageCopy = language;
   v7 = objc_alloc_init(OBPrivacyCombinedFooterComponents);
   if (self->_splashPListContainsLegacyStringKeys)
   {
     v8 = [(NSDictionary *)self->_splashPlist objectForKeyedSubscript:@"CombinedFooter"];
-    v9 = [(OBPrivacyFlow *)self _textForConditionalItem:v8 language:v6 preferredDeviceType:a4];
+    v9 = [(OBPrivacyFlow *)self _textForConditionalItem:v8 language:languageCopy preferredDeviceType:type];
     [(OBPrivacyCombinedFooterComponents *)v7 setText:v9];
   }
 
   else
   {
-    v8 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"COMBINED_FOOTER" language:v6 preferredDeviceType:a4];
+    v8 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"COMBINED_FOOTER" language:languageCopy preferredDeviceType:type];
     [(OBPrivacyCombinedFooterComponents *)v7 setText:v8];
   }
 
-  v10 = [(OBPrivacyCombinedFooterComponents *)v7 text];
+  text = [(OBPrivacyCombinedFooterComponents *)v7 text];
 
-  if (v10)
+  if (text)
   {
     if (self->_splashPListContainsLegacyStringKeys)
     {
       v11 = [(NSDictionary *)self->_splashPlist objectForKeyedSubscript:@"CombinedFooterButton"];
-      v12 = [(OBPrivacyFlow *)self _textForConditionalItem:v11 language:v6 preferredDeviceType:a4];
+      v12 = [(OBPrivacyFlow *)self _textForConditionalItem:v11 language:languageCopy preferredDeviceType:type];
 
       v13 = [(NSDictionary *)self->_splashPlist objectForKeyedSubscript:@"CombinedFooterButtonURL"];
-      v14 = [(OBPrivacyFlow *)self _textForConditionalItem:v13 language:v6 preferredDeviceType:a4];
+      v14 = [(OBPrivacyFlow *)self _textForConditionalItem:v13 language:languageCopy preferredDeviceType:type];
 
       if (!v12)
       {
@@ -1338,8 +1338,8 @@ LABEL_13:
 
     else
     {
-      v12 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"COMBINED_FOOTER_BUTTON" language:v6 preferredDeviceType:a4];
-      v14 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"COMBINED_FOOTER_BUTTON_URL" language:v6 preferredDeviceType:a4];
+      v12 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"COMBINED_FOOTER_BUTTON" language:languageCopy preferredDeviceType:type];
+      v14 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"COMBINED_FOOTER_BUTTON_URL" language:languageCopy preferredDeviceType:type];
       if (!v12)
       {
 LABEL_11:
@@ -1362,19 +1362,19 @@ LABEL_12:
   return v7;
 }
 
-- (id)localizedContentListForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4
+- (id)localizedContentListForLanguage:(id)language preferredDeviceType:(unint64_t)type
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  languageCopy = language;
   if (self->_splashPListContainsLegacyStringKeys)
   {
-    v7 = [(OBPrivacyFlow *)self _legacyLocalizedContentListForLanguage:v6 preferredDeviceType:a4];
+    v7 = [(OBPrivacyFlow *)self _legacyLocalizedContentListForLanguage:languageCopy preferredDeviceType:type];
   }
 
   else
   {
     v8 = objc_opt_new();
-    v9 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"SPLASH_SUMMARY" language:v6 preferredDeviceType:a4];
+    v9 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"SPLASH_SUMMARY" language:languageCopy preferredDeviceType:type];
     if (v9)
     {
       v10 = objc_opt_new();
@@ -1404,7 +1404,7 @@ LABEL_12:
           }
 
           v16 = [*(*(&v28 + 1) + 8 * i) stringByAppendingString:{@"_BULLET", v25}];
-          v17 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:v16 language:v6 preferredDeviceType:a4];
+          v17 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:v16 language:languageCopy preferredDeviceType:type];
           if (!v17)
           {
 
@@ -1436,7 +1436,7 @@ LABEL_15:
       [v27 addObject:v20];
     }
 
-    v21 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"FOOTER_TEXT" language:v6 preferredDeviceType:a4];
+    v21 = [(OBPrivacyFlow *)self _bestStringForKeyWithPrefix:@"FOOTER_TEXT" language:languageCopy preferredDeviceType:type];
     if (v21)
     {
       v22 = objc_opt_new();
@@ -1450,10 +1450,10 @@ LABEL_15:
   return v7;
 }
 
-- (id)_legacyLocalizedContentListForLanguage:(id)a3 preferredDeviceType:(unint64_t)a4
+- (id)_legacyLocalizedContentListForLanguage:(id)language preferredDeviceType:(unint64_t)type
 {
   v76 = *MEMORY[0x1E69E9840];
-  v60 = a3;
+  languageCopy = language;
   v55 = objc_opt_new();
   v5 = [(NSDictionary *)self->_splashPlist objectForKeyedSubscript:@"Content"];
   objc_opt_class();
@@ -1474,7 +1474,7 @@ LABEL_15:
     v51 = v5;
     v9 = 0x1E695D000uLL;
     v10 = *v69;
-    v61 = self;
+    selfCopy = self;
     v52 = *v69;
     v53 = v6;
     while (1)
@@ -1513,7 +1513,7 @@ LABEL_15:
           if (isKindOfClass)
           {
             v20 = [v14 objectForKeyedSubscript:@"Text"];
-            v21 = [(OBPrivacyFlow *)self _splashLocalizedStringForKey:v20 language:v60 preferredDeviceType:a4];
+            v21 = [(OBPrivacyFlow *)self _splashLocalizedStringForKey:v20 language:languageCopy preferredDeviceType:type];
             [v17 setText:v21];
 
             goto LABEL_41;
@@ -1564,17 +1564,17 @@ LABEL_15:
                   if (objc_opt_isKindOfClass())
                   {
                     v36 = [v33 objectForKeyedSubscript:@"Requirements"];
-                    v37 = [(OBPrivacyFlow *)v61 _conformsToRequirements:v36];
+                    v37 = [(OBPrivacyFlow *)selfCopy _conformsToRequirements:v36];
 
                     if (v37)
                     {
-                      v38 = [(OBPrivacyFlow *)v61 _splashLocalizedStringForKey:v34 language:v60 preferredDeviceType:a4];
+                      v38 = [(OBPrivacyFlow *)selfCopy _splashLocalizedStringForKey:v34 language:languageCopy preferredDeviceType:type];
                       [v32 setText:v38];
 
                       objc_opt_class();
                       if (objc_opt_isKindOfClass())
                       {
-                        v39 = [(OBPrivacyFlow *)v61 _bundleImageNamed:v35];
+                        v39 = [(OBPrivacyFlow *)selfCopy _bundleImageNamed:v35];
                         [v32 setIcon:v39];
                         goto LABEL_33;
                       }
@@ -1637,7 +1637,7 @@ LABEL_38:
                   [v25 setBullets:v58];
                 }
 
-                self = v61;
+                self = selfCopy;
                 v17 = v62;
                 v10 = v52;
                 v6 = v53;
@@ -1667,18 +1667,18 @@ LABEL_42:
           }
 
 LABEL_43:
-          v45 = [v17 text];
-          if (v45)
+          text = [v17 text];
+          if (text)
           {
 
             v14 = v56;
             goto LABEL_46;
           }
 
-          v46 = [v17 bullets];
+          bullets = [v17 bullets];
 
           v14 = v56;
-          if (v46)
+          if (bullets)
           {
 LABEL_46:
             [v55 addObject:v17];

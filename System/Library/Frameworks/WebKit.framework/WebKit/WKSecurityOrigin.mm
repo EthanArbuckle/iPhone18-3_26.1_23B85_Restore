@@ -1,6 +1,6 @@
 @interface WKSecurityOrigin
-- (BOOL)isSameSiteAsOrigin:(id)a3;
-- (BOOL)isSameSiteAsURL:(id)a3;
+- (BOOL)isSameSiteAsOrigin:(id)origin;
+- (BOOL)isSameSiteAsURL:(id)l;
 - (NSInteger)port;
 - (NSString)description;
 - (NSString)host;
@@ -146,10 +146,10 @@ LABEL_9:
   return 0;
 }
 
-- (BOOL)isSameSiteAsOrigin:(id)a3
+- (BOOL)isSameSiteAsOrigin:(id)origin
 {
   WebCore::SecurityOriginData::securityOrigin(&v10, &self->_securityOrigin.m_storage.data[16]);
-  WebCore::SecurityOriginData::securityOrigin(&v9, (a3 + 24));
+  WebCore::SecurityOriginData::securityOrigin(&v9, (origin + 24));
   isSameSiteAs = WebCore::SecurityOrigin::isSameSiteAs(v10, v9);
   v6 = v9;
   v9 = 0;
@@ -168,10 +168,10 @@ LABEL_9:
   return isSameSiteAs;
 }
 
-- (BOOL)isSameSiteAsURL:(id)a3
+- (BOOL)isSameSiteAsURL:(id)l
 {
   WebCore::SecurityOriginData::securityOrigin(&v14, &self->_securityOrigin.m_storage.data[16]);
-  MEMORY[0x19EB01DE0](v12, a3);
+  MEMORY[0x19EB01DE0](v12, l);
   WebCore::SecurityOrigin::create(&v13, v12, v4);
   v6 = v12[0];
   v12[0] = 0;

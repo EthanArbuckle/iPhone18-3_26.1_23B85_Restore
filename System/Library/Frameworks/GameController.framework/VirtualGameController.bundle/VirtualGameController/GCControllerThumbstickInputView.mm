@@ -1,15 +1,15 @@
 @interface GCControllerThumbstickInputView
 - (GCControllerThumbstickInputView)init;
-- (GCControllerThumbstickInputView)initWithCoder:(id)a3;
+- (GCControllerThumbstickInputView)initWithCoder:(id)coder;
 - (uint64_t)valueChangedHandler;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)initButtons;
-- (void)processTouch:(id)a3;
-- (void)setThumbstickPos:(CGPoint)a3 center:(CGPoint)a4;
-- (void)setValueChangedHandler:(void *)a1;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)processTouch:(id)touch;
+- (void)setThumbstickPos:(CGPoint)pos center:(CGPoint)center;
+- (void)setValueChangedHandler:(void *)handler;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation GCControllerThumbstickInputView
@@ -29,19 +29,19 @@
   return v3;
 }
 
-- (GCControllerThumbstickInputView)initWithCoder:(id)a3
+- (GCControllerThumbstickInputView)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = GCControllerThumbstickInputView;
-  v5 = [(GCControllerThumbstickInputView *)&v11 initWithCoder:v4];
+  v5 = [(GCControllerThumbstickInputView *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"background"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"background"];
     background = v5->_background;
     v5->_background = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"touchTarget"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"touchTarget"];
     touchTarget = v5->_touchTarget;
     v5->_touchTarget = v8;
 
@@ -51,27 +51,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GCControllerThumbstickInputView;
-  v4 = a3;
-  [(GCControllerThumbstickInputView *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_background forKey:{@"background", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_touchTarget forKey:@"touchTarget"];
+  coderCopy = coder;
+  [(GCControllerThumbstickInputView *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_background forKey:{@"background", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_touchTarget forKey:@"touchTarget"];
 }
 
-- (void)processTouch:(id)a3
+- (void)processTouch:(id)touch
 {
-  [a3 locationInView:self->_background];
+  [touch locationInView:self->_background];
   v5 = v4;
   v7 = v6;
   background = self->_background;
   [(UIVisualEffectView *)background center];
   v10 = v9;
   v12 = v11;
-  v13 = [(UIVisualEffectView *)self->_background superview];
-  [(UIVisualEffectView *)background convertPoint:v13 fromView:v10, v12];
+  superview = [(UIVisualEffectView *)self->_background superview];
+  [(UIVisualEffectView *)background convertPoint:superview fromView:v10, v12];
   v15 = v14;
   v17 = v16;
 
@@ -121,18 +121,18 @@
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v10 = a3;
-  if ([v10 count] == &dword_0 + 1)
+  beganCopy = began;
+  if ([beganCopy count] == &dword_0 + 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_currentTouch);
 
     if (!WeakRetained)
     {
-      v6 = [v10 anyObject];
-      objc_storeWeak(&self->_currentTouch, v6);
-      [v6 locationInView:self->_background];
+      anyObject = [beganCopy anyObject];
+      objc_storeWeak(&self->_currentTouch, anyObject);
+      [anyObject locationInView:self->_background];
       self->_touchStartPos.x = v7;
       self->_touchStartPos.y = v8;
       self->_touchPrevPos = self->_touchStartPos;
@@ -140,41 +140,41 @@
       v9 = +[GCControllerViewFeedback sharedInstance];
       [v9 buttonDown];
 
-      [(GCControllerThumbstickInputView *)self processTouch:v6];
+      [(GCControllerThumbstickInputView *)self processTouch:anyObject];
     }
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v9 = a3;
-  v5 = [v9 count] == &dword_0 + 1;
-  v6 = v9;
+  movedCopy = moved;
+  v5 = [movedCopy count] == &dword_0 + 1;
+  v6 = movedCopy;
   if (v5)
   {
-    v7 = [v9 anyObject];
+    anyObject = [movedCopy anyObject];
     WeakRetained = objc_loadWeakRetained(&self->_currentTouch);
 
-    if (WeakRetained == v7)
+    if (WeakRetained == anyObject)
     {
-      [(GCControllerThumbstickInputView *)self processTouch:v7];
+      [(GCControllerThumbstickInputView *)self processTouch:anyObject];
     }
 
-    v6 = v9;
+    v6 = movedCopy;
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v20 = a3;
-  v5 = [v20 count] == &dword_0 + 1;
-  v6 = v20;
+  endedCopy = ended;
+  v5 = [endedCopy count] == &dword_0 + 1;
+  v6 = endedCopy;
   if (v5)
   {
-    v7 = [v20 anyObject];
+    anyObject = [endedCopy anyObject];
     WeakRetained = objc_loadWeakRetained(&self->_currentTouch);
 
-    if (WeakRetained == v7)
+    if (WeakRetained == anyObject)
     {
       objc_storeWeak(&self->_currentTouch, 0);
       v9 = +[GCControllerViewFeedback sharedInstance];
@@ -184,24 +184,24 @@
       [(UIVisualEffectView *)background center];
       v12 = v11;
       v14 = v13;
-      v15 = [(UIVisualEffectView *)self->_background superview];
-      [(UIVisualEffectView *)background convertPoint:v15 fromView:v12, v14];
+      superview = [(UIVisualEffectView *)self->_background superview];
+      [(UIVisualEffectView *)background convertPoint:superview fromView:v12, v14];
       v17 = v16;
       v19 = v18;
 
       [(GCControllerThumbstickInputView *)self setThumbstickPos:v17 center:v19, v17, v19];
     }
 
-    v6 = v20;
+    v6 = endedCopy;
   }
 }
 
-- (void)setThumbstickPos:(CGPoint)a3 center:(CGPoint)a4
+- (void)setThumbstickPos:(CGPoint)pos center:(CGPoint)center
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = center.y;
+  x = center.x;
+  v6 = pos.y;
+  v7 = pos.x;
   [(UIVisualEffectView *)self->_touchTarget setCenter:?];
   v10 = (v7 - x) / 50.0;
   v13.n128_f64[0] = (v6 - y) / -50.0;
@@ -268,11 +268,11 @@
   [(UIVisualEffectView *)self->_background setFrame:?];
   [(UIVisualEffectView *)self->_background frame];
   v6 = v5 * 0.5;
-  v7 = [(UIVisualEffectView *)self->_background layer];
-  [v7 setCornerRadius:v6];
+  layer = [(UIVisualEffectView *)self->_background layer];
+  [layer setCornerRadius:v6];
 
-  v8 = [(UIVisualEffectView *)self->_background layer];
-  [v8 setMasksToBounds:1];
+  layer2 = [(UIVisualEffectView *)self->_background layer];
+  [layer2 setMasksToBounds:1];
 
   [(GCControllerThumbstickInputView *)self addSubview:self->_background];
   [(GCControllerThumbstickInputView *)self frame];
@@ -288,12 +288,12 @@
   [(UIVisualEffectView *)v15 center];
   v17 = v16;
   v19 = v18;
-  v20 = [(UIVisualEffectView *)self->_background superview];
-  [(UIVisualEffectView *)v15 convertPoint:v20 fromView:v17, v19];
+  superview = [(UIVisualEffectView *)self->_background superview];
+  [(UIVisualEffectView *)v15 convertPoint:superview fromView:v17, v19];
   [(UIVisualEffectView *)self->_touchTarget setCenter:?];
 
-  v21 = [(UIVisualEffectView *)self->_touchTarget layer];
-  [v21 setMasksToBounds:1];
+  layer3 = [(UIVisualEffectView *)self->_touchTarget layer];
+  [layer3 setMasksToBounds:1];
 
   [(UIVisualEffectView *)self->_touchTarget setHidden:0];
   v29 = [[UIView alloc] initWithFrame:{v10, v12, 50.0, 50.0}];
@@ -302,17 +302,17 @@
 
   [(UIVisualEffectView *)self->_touchTarget frame];
   v24 = v23 * 0.5;
-  v25 = [v29 layer];
-  [v25 setCornerRadius:v24];
+  layer4 = [v29 layer];
+  [layer4 setCornerRadius:v24];
 
-  v26 = [v29 layer];
-  [v26 setMasksToBounds:1];
+  layer5 = [v29 layer];
+  [layer5 setMasksToBounds:1];
 
-  v27 = [(UIVisualEffectView *)self->_touchTarget contentView];
-  [v27 addSubview:v29];
+  contentView = [(UIVisualEffectView *)self->_touchTarget contentView];
+  [contentView addSubview:v29];
 
-  v28 = [(UIVisualEffectView *)self->_background contentView];
-  [v28 addSubview:self->_touchTarget];
+  contentView2 = [(UIVisualEffectView *)self->_background contentView];
+  [contentView2 addSubview:self->_touchTarget];
 }
 
 - (uint64_t)valueChangedHandler
@@ -325,11 +325,11 @@
   return result;
 }
 
-- (void)setValueChangedHandler:(void *)a1
+- (void)setValueChangedHandler:(void *)handler
 {
-  if (a1)
+  if (handler)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 72);
+    objc_setProperty_nonatomic_copy(handler, newValue, newValue, 72);
   }
 }
 

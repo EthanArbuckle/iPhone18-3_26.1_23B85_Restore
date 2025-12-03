@@ -1,5 +1,5 @@
 @interface CNAutocompleteNetworkActivityThrottlingPolicy
-- (CNAutocompleteNetworkActivityThrottlingPolicy)initWithString:(id)a3;
+- (CNAutocompleteNetworkActivityThrottlingPolicy)initWithString:(id)string;
 - (double)delayBeforeBeginningNetworkActivity;
 @end
 
@@ -17,13 +17,13 @@
   return result;
 }
 
-- (CNAutocompleteNetworkActivityThrottlingPolicy)initWithString:(id)a3
+- (CNAutocompleteNetworkActivityThrottlingPolicy)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [(CNAutocompleteNetworkActivityThrottlingPolicy *)self init];
   if (v5)
   {
-    v5->_lengthOfString = [v4 length];
+    v5->_lengthOfString = [stringCopy length];
     v6 = v5;
   }
 

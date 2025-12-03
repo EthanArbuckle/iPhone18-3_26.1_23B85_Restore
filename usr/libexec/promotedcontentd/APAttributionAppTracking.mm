@@ -1,22 +1,22 @@
 @interface APAttributionAppTracking
-+ (BOOL)appTrackingStatus:(id *)a3;
++ (BOOL)appTrackingStatus:(id *)status;
 @end
 
 @implementation APAttributionAppTracking
 
-+ (BOOL)appTrackingStatus:(id *)a3
++ (BOOL)appTrackingStatus:(id *)status
 {
   v4 = objc_alloc_init(ADTrackingTransparency);
-  v5 = [v4 crossAppTrackingAllowedSwitchEnabled];
-  v6 = *&a3->var0[4];
-  *v12 = *a3->var0;
+  crossAppTrackingAllowedSwitchEnabled = [v4 crossAppTrackingAllowedSwitchEnabled];
+  v6 = *&status->var0[4];
+  *v12 = *status->var0;
   *&v12[16] = v6;
   v7 = [APAttributionAppTracking isAppTrackingAuthorizedByUser:v12];
   v8 = APLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v9 = @"NO";
-    if (v5)
+    if (crossAppTrackingAllowedSwitchEnabled)
     {
       v10 = @"YES";
     }
@@ -38,7 +38,7 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "isATTSwitchedEnabled (%{public}@), isAppAuthorizedByUser (%{public}@)", v12, 0x16u);
   }
 
-  return v5 & v7;
+  return crossAppTrackingAllowedSwitchEnabled & v7;
 }
 
 @end

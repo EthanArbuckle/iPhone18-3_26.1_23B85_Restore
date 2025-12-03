@@ -1,8 +1,8 @@
 @interface SiriMailScene
 - (UIWindow)window;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)setWindow:(id)window;
 @end
 
 @implementation SiriMailScene
@@ -16,34 +16,34 @@
   return v4;
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
-  _objc_retain(a3);
+  _objc_retain(window);
   _objc_retain(self);
-  sub_10045892C(a3);
+  sub_10045892C(window);
   _objc_release(self);
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  _objc_retain(a3);
-  _objc_retain(a4);
-  _objc_retain(a5);
+  _objc_retain(scene);
+  _objc_retain(session);
+  _objc_retain(options);
   _objc_retain(self);
-  sub_100458B64(a3, a4, a5);
+  sub_100458B64(scene, session, options);
   _objc_release(self);
-  _objc_release(a5);
-  _objc_release(a4);
-  _objc_release(a3);
+  _objc_release(options);
+  _objc_release(session);
+  _objc_release(scene);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  _objc_retain(a3);
+  _objc_retain(disconnect);
   _objc_retain(self);
-  sub_1004592B8(a3);
+  sub_1004592B8(disconnect);
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(disconnect);
 }
 
 @end

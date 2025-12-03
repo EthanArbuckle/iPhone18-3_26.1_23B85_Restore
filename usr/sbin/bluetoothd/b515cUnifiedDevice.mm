@@ -1,13 +1,13 @@
 @interface b515cUnifiedDevice
-- (b515cUnifiedDevice)initWithBluetoothAddress:(unint64_t)a3;
-- (void)configureUSBCSpatialOnDevice:(BOOL)a3;
+- (b515cUnifiedDevice)initWithBluetoothAddress:(unint64_t)address;
+- (void)configureUSBCSpatialOnDevice:(BOOL)device;
 - (void)usbcRequestSensorDataOnDevice;
 - (void)usbcStopSensorDataOnDevice;
 @end
 
 @implementation b515cUnifiedDevice
 
-- (b515cUnifiedDevice)initWithBluetoothAddress:(unint64_t)a3
+- (b515cUnifiedDevice)initWithBluetoothAddress:(unint64_t)address
 {
   v7.receiver = self;
   v7.super_class = b515cUnifiedDevice;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    [(b515cUnifiedDevice *)v4 setBtAddress:a3];
+    [(b515cUnifiedDevice *)v4 setBtAddress:address];
     [(b515cUnifiedDevice *)v5 setAudioStarted:0];
     [(b515cUnifiedDevice *)v5 setIsTimerRunning:0];
     [(b515cUnifiedDevice *)v5 setUsbcTimer:0];
@@ -24,9 +24,9 @@
   return v5;
 }
 
-- (void)configureUSBCSpatialOnDevice:(BOOL)a3
+- (void)configureUSBCSpatialOnDevice:(BOOL)device
 {
-  v3 = a3;
+  deviceCopy = device;
   [(b515cUnifiedDevice *)self setAudioStarted:?];
   if (qword_100B50930 != -1)
   {
@@ -49,7 +49,7 @@
       v19 = v8;
       v20 = WORD2(v8);
       v9 = sub_10000C7D0();
-      if (v3)
+      if (deviceCopy)
       {
         (*(*v9 + 56))(v9, v8 & 0xFFFFFFFFFFFFLL, 16, 2, 1, 1, 1, 0);
         v10 = *sub_10000C7D0();
@@ -128,9 +128,9 @@
     {
       v5 = v4;
       [(b515cUnifiedDevice *)self setUsbcTimer:dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v3)];
-      v6 = [(b515cUnifiedDevice *)self usbcTimer];
+      usbcTimer = [(b515cUnifiedDevice *)self usbcTimer];
       v7 = dispatch_time(0, 0);
-      dispatch_source_set_timer(v6, v7, 0x1312D00uLL, 0);
+      dispatch_source_set_timer(usbcTimer, v7, 0x1312D00uLL, 0);
       handler[0] = _NSConcreteStackBlock;
       handler[1] = 3221225472;
       handler[2] = sub_1000F21E0;

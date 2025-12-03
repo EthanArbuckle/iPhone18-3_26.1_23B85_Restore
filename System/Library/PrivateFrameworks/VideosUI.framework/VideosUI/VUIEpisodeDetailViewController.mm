@@ -1,33 +1,33 @@
 @interface VUIEpisodeDetailViewController
-- (VUIEpisodeDetailViewController)initWithMediaItem:(id)a3;
+- (VUIEpisodeDetailViewController)initWithMediaItem:(id)item;
 - (VUIEpisodeDetailViewControllerDelegate)delegate;
 - (void)_configureNavigationBar;
 - (void)_handleNetworkChanges;
 - (void)dealloc;
 - (void)didTapPlay;
 - (void)dismissPopover;
-- (void)dismissTapped:(id)a3;
+- (void)dismissTapped:(id)tapped;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation VUIEpisodeDetailViewController
 
-- (VUIEpisodeDetailViewController)initWithMediaItem:(id)a3
+- (VUIEpisodeDetailViewController)initWithMediaItem:(id)item
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemCopy = item;
   v18.receiver = self;
   v18.super_class = VUIEpisodeDetailViewController;
   v6 = [(VUIEpisodeDetailViewController *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaItem, a3);
+    objc_storeStrong(&v6->_mediaItem, item);
     v8 = objc_alloc_init(VUIViewControllerContentPresenter);
     contentPresenter = v7->_contentPresenter;
     v7->_contentPresenter = v8;
@@ -51,8 +51,8 @@
       v12 = @"networkReachabilityDidChange";
     }
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v7 selector:sel__handleNetworkChanges name:v12 object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__handleNetworkChanges name:v12 object:0];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -84,8 +84,8 @@ void __52__VUIEpisodeDetailViewController_initWithMediaItem___block_invoke(uint6
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIEpisodeDetailViewController;
@@ -98,36 +98,36 @@ void __52__VUIEpisodeDetailViewController_initWithMediaItem___block_invoke(uint6
   v16.super_class = VUIEpisodeDetailViewController;
   [(VUIEpisodeDetailViewController *)&v16 viewDidLoad];
   [(VUIEpisodeDetailViewController *)self _configureNavigationBar];
-  v3 = [(VUIEpisodeDetailViewController *)self navigationItem];
-  [v3 setLargeTitleDisplayMode:2];
+  navigationItem = [(VUIEpisodeDetailViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
   v4 = [VUIEpisodeDetailView alloc];
   v5 = [(VUIEpisodeDetailView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   detailView = self->_detailView;
   self->_detailView = v5;
 
   [(VUIEpisodeDetailView *)self->_detailView setEpisodeViewDelegate:self];
-  v7 = [(VUIEpisodeDetailViewController *)self contentPresenter];
-  [v7 setContentView:self->_detailView];
+  contentPresenter = [(VUIEpisodeDetailViewController *)self contentPresenter];
+  [contentPresenter setContentView:self->_detailView];
 
-  v8 = [(VUIEpisodeDetailViewController *)self view];
-  [v8 bounds];
+  view = [(VUIEpisodeDetailViewController *)self view];
+  [view bounds];
   v10 = v9;
   v12 = v11;
 
   [VUIEpisodeDetailView configureEpisodeDetailView:self->_detailView withMedia:self->_mediaItem viewSize:v10, v12];
-  v13 = [(VUIEpisodeDetailViewController *)self contentPresenter];
-  [v13 setCurrentContentViewType:3];
+  contentPresenter2 = [(VUIEpisodeDetailViewController *)self contentPresenter];
+  [contentPresenter2 setCurrentContentViewType:3];
 
-  v14 = [(VUIEpisodeDetailViewController *)self view];
+  view2 = [(VUIEpisodeDetailViewController *)self view];
   v15 = [MEMORY[0x1E69DF678] makeAccessibilityIdentifierString:*MEMORY[0x1E69DF7C8] additionalString:@"Library.id=EpisodeDetail"];
-  [v14 setAccessibilityIdentifier:v15];
+  [view2 setAccessibilityIdentifier:v15];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = VUIEpisodeDetailViewController;
-  [(VUIEpisodeDetailViewController *)&v8 viewDidAppear:a3];
+  [(VUIEpisodeDetailViewController *)&v8 viewDidAppear:appear];
   if (!self->_tapGestureRecognizer)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_dismissTapped_];
@@ -137,44 +137,44 @@ void __52__VUIEpisodeDetailViewController_initWithMediaItem___block_invoke(uint6
     [(UITapGestureRecognizer *)self->_tapGestureRecognizer setNumberOfTapsRequired:1];
     [(UITapGestureRecognizer *)self->_tapGestureRecognizer setCancelsTouchesInView:0];
     [(UITapGestureRecognizer *)self->_tapGestureRecognizer setDelegate:self];
-    v6 = [(VUIEpisodeDetailViewController *)self view];
-    v7 = [v6 window];
-    [v7 addGestureRecognizer:self->_tapGestureRecognizer];
+    view = [(VUIEpisodeDetailViewController *)self view];
+    window = [view window];
+    [window addGestureRecognizer:self->_tapGestureRecognizer];
   }
 
   [(VUIEpisodeDetailViewController *)self reportMetricsPageEvent];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = VUIEpisodeDetailViewController;
-  [(VUIEpisodeDetailViewController *)&v7 viewWillDisappear:a3];
+  [(VUIEpisodeDetailViewController *)&v7 viewWillDisappear:disappear];
   if (self->_tapGestureRecognizer)
   {
-    v4 = [(VUIEpisodeDetailViewController *)self view];
-    v5 = [v4 window];
-    [v5 removeGestureRecognizer:self->_tapGestureRecognizer];
+    view = [(VUIEpisodeDetailViewController *)self view];
+    window = [view window];
+    [window removeGestureRecognizer:self->_tapGestureRecognizer];
 
     tapGestureRecognizer = self->_tapGestureRecognizer;
     self->_tapGestureRecognizer = 0;
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = VUIEpisodeDetailViewController;
-  v7 = a4;
-  [(VUIEpisodeDetailViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(VUIEpisodeDetailViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __85__VUIEpisodeDetailViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E872E788;
   v8[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v8];
 }
 
 - (void)loadView
@@ -182,8 +182,8 @@ void __52__VUIEpisodeDetailViewController_initWithMediaItem___block_invoke(uint6
   v4.receiver = self;
   v4.super_class = VUIEpisodeDetailViewController;
   [(VUIEpisodeDetailViewController *)&v4 loadView];
-  v3 = [(VUIEpisodeDetailViewController *)self contentPresenter];
-  [v3 setRootViewForViewController:self];
+  contentPresenter = [(VUIEpisodeDetailViewController *)self contentPresenter];
+  [contentPresenter setRootViewForViewController:self];
 }
 
 - (void)viewWillLayoutSubviews
@@ -191,25 +191,25 @@ void __52__VUIEpisodeDetailViewController_initWithMediaItem___block_invoke(uint6
   v5.receiver = self;
   v5.super_class = VUIEpisodeDetailViewController;
   [(VUIEpisodeDetailViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(VUIEpisodeDetailViewController *)self contentPresenter];
-  v4 = [(VUIEpisodeDetailViewController *)self view];
-  [v4 bounds];
-  [v3 configureCurrentViewFrameForBounds:?];
+  contentPresenter = [(VUIEpisodeDetailViewController *)self contentPresenter];
+  view = [(VUIEpisodeDetailViewController *)self view];
+  [view bounds];
+  [contentPresenter configureCurrentViewFrameForBounds:?];
 }
 
-- (void)dismissTapped:(id)a3
+- (void)dismissTapped:(id)tapped
 {
-  v19 = a3;
-  if ([v19 state] == 3)
+  tappedCopy = tapped;
+  if ([tappedCopy state] == 3)
   {
-    v4 = [(VUIEpisodeDetailViewController *)self view];
-    [v4 bounds];
+    view = [(VUIEpisodeDetailViewController *)self view];
+    [view bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(VUIEpisodeDetailViewController *)self view];
-    [v19 locationInView:v13];
+    view2 = [(VUIEpisodeDetailViewController *)self view];
+    [tappedCopy locationInView:view2];
     v21.x = v14;
     v21.y = v15;
     v22.origin.x = v6;
@@ -220,9 +220,9 @@ void __52__VUIEpisodeDetailViewController_initWithMediaItem___block_invoke(uint6
 
     if (!v16)
     {
-      v17 = [(VUIEpisodeDetailViewController *)self view];
-      v18 = [v17 window];
-      [v18 removeGestureRecognizer:v19];
+      view3 = [(VUIEpisodeDetailViewController *)self view];
+      window = [view3 window];
+      [window removeGestureRecognizer:tappedCopy];
 
       [(VUIEpisodeDetailViewController *)self dismissPopover];
     }
@@ -239,9 +239,9 @@ void __52__VUIEpisodeDetailViewController_initWithMediaItem___block_invoke(uint6
   v4 = v3;
   v10 = v4;
   v5 = _Block_copy(aBlock);
-  v6 = [(VUIEpisodeDetailViewController *)self presentingViewController];
+  presentingViewController = [(VUIEpisodeDetailViewController *)self presentingViewController];
 
-  if (v6)
+  if (presentingViewController)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -318,14 +318,14 @@ LABEL_12:
 
 - (void)dismissPopover
 {
-  v3 = [(VUIEpisodeDetailViewController *)self delegate];
+  delegate = [(VUIEpisodeDetailViewController *)self delegate];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __48__VUIEpisodeDetailViewController_dismissPopover__block_invoke;
   v5[3] = &unk_1E872D990;
-  v6 = v3;
-  v7 = self;
-  v4 = v3;
+  v6 = delegate;
+  selfCopy = self;
+  v4 = delegate;
   [(VUIEpisodeDetailViewController *)self dismissViewControllerAnimated:1 completion:v5];
 }
 
@@ -348,31 +348,31 @@ uint64_t __48__VUIEpisodeDetailViewController_dismissPopover__block_invoke(uint6
   v3 = +[VUIUtilities isIpadInterface];
   if (!v3)
   {
-    v4 = [(VUIEpisodeDetailViewController *)self traitCollection];
-    v5 = [v4 userInterfaceIdiom];
+    traitCollection = [(VUIEpisodeDetailViewController *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v5 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v6 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_dismissPopover];
-      v7 = [(VUIEpisodeDetailViewController *)self navigationItem];
-      [v7 setRightBarButtonItem:v6];
+      navigationItem = [(VUIEpisodeDetailViewController *)self navigationItem];
+      [navigationItem setRightBarButtonItem:v6];
     }
   }
 
-  v8 = [(VUIEpisodeDetailViewController *)self navigationController];
-  [v8 setNavigationBarHidden:v3];
+  navigationController = [(VUIEpisodeDetailViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:v3];
 }
 
 - (void)_handleNetworkChanges
 {
   if (!+[VUITVAppLauncher isRemoteServerConnected])
   {
-    v3 = [(VUIEpisodeDetailViewController *)self presentingViewController];
+    presentingViewController = [(VUIEpisodeDetailViewController *)self presentingViewController];
 
-    if (v3)
+    if (presentingViewController)
     {
-      v4 = [(VUIEpisodeDetailViewController *)self presentingViewController];
-      [v4 dismissViewControllerAnimated:1 completion:0];
+      presentingViewController2 = [(VUIEpisodeDetailViewController *)self presentingViewController];
+      [presentingViewController2 dismissViewControllerAnimated:1 completion:0];
     }
   }
 }

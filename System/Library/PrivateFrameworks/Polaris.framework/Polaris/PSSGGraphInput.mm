@@ -1,36 +1,36 @@
 @interface PSSGGraphInput
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PSSGGraphInput)init;
-- (PSSGGraphInput)initWithResource:(id)a3 type:(int64_t)a4;
-- (id)copyWithZone:(void *)a3;
+- (PSSGGraphInput)initWithResource:(id)resource type:(int64_t)type;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)setResource:(id)a3;
+- (void)setResource:(id)resource;
 @end
 
 @implementation PSSGGraphInput
 
-- (void)setResource:(id)a3
+- (void)setResource:(id)resource
 {
   v4 = *(&self->super.isa + OBJC_IVAR___PSSGGraphInput_resource);
-  *(&self->super.isa + OBJC_IVAR___PSSGGraphInput_resource) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___PSSGGraphInput_resource) = resource;
+  resourceCopy = resource;
 }
 
-- (PSSGGraphInput)initWithResource:(id)a3 type:(int64_t)a4
+- (PSSGGraphInput)initWithResource:(id)resource type:(int64_t)type
 {
-  *(&self->super.isa + OBJC_IVAR___PSSGGraphInput_resource) = a3;
-  *(&self->super.isa + OBJC_IVAR___PSSGGraphInput_type) = a4;
+  *(&self->super.isa + OBJC_IVAR___PSSGGraphInput_resource) = resource;
+  *(&self->super.isa + OBJC_IVAR___PSSGGraphInput_type) = type;
   v6.receiver = self;
   v6.super_class = PSSGGraphInput;
-  v4 = a3;
+  resourceCopy = resource;
   return [(PSSGGraphInput *)&v6 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_25EB6E548();
     swift_unknownObjectRelease();
@@ -39,7 +39,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = PSSGGraphInput.isEqual(_:)(v8);
@@ -50,19 +50,19 @@
 
 - (int64_t)hash
 {
-  v2 = self;
-  v3 = [(PSSGGraphInput *)v2 resource];
-  v4 = [(PSSGResourceID *)v3 hash];
+  selfCopy = self;
+  resource = [(PSSGGraphInput *)selfCopy resource];
+  v4 = [(PSSGResourceID *)resource hash];
 
-  v5 = [(PSSGGraphInput *)v2 type];
-  return v5 ^ v4;
+  type = [(PSSGGraphInput *)selfCopy type];
+  return type ^ v4;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
-  v4 = [(PSSGGraphInput *)v3 resource];
-  v5 = [objc_allocWithZone(PSSGGraphInput) initWithResource:v4 type:{-[PSSGGraphInput type](v3, sel_type)}];
+  selfCopy = self;
+  resource = [(PSSGGraphInput *)selfCopy resource];
+  v5 = [objc_allocWithZone(PSSGGraphInput) initWithResource:resource type:{-[PSSGGraphInput type](selfCopy, sel_type)}];
 
   return v5;
 }

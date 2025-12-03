@@ -1,18 +1,18 @@
 @interface IDSRegistrationKeyManager
 + (BOOL)setupKeys;
 + (id)sharedInstance;
-- (BOOL)_generateUnregisteredIdentityWithExistingLegacyIdentity:(id)a3 existingNGMIdentity:(id)a4;
-- (BOOL)_isSecurelyStoringIdentity:(id)a3 withExpectedProtectionClass:(int64_t)a4;
+- (BOOL)_generateUnregisteredIdentityWithExistingLegacyIdentity:(id)identity existingNGMIdentity:(id)mIdentity;
+- (BOOL)_isSecurelyStoringIdentity:(id)identity withExpectedProtectionClass:(int64_t)class;
 - (BOOL)_isUnderFirstDataProtectionLock;
-- (BOOL)_loadClassAIdentityIfNeeded:(id *)a3;
-- (BOOL)_loadClassCIdentityIfNeeded:(id *)a3;
-- (BOOL)_loadClassDIdentityIfNeeded:(id *)a3;
-- (BOOL)_migrateIdentity:(id)a3 toProtectionClass:(int64_t)a4;
+- (BOOL)_loadClassAIdentityIfNeeded:(id *)needed;
+- (BOOL)_loadClassCIdentityIfNeeded:(id *)needed;
+- (BOOL)_loadClassDIdentityIfNeeded:(id *)needed;
+- (BOOL)_migrateIdentity:(id)identity toProtectionClass:(int64_t)class;
 - (BOOL)_migrateRegisteredIdentityFromClassDtoClassCIfNeeded;
 - (BOOL)_save;
-- (BOOL)_serializeAndPersistApplicationKeyIdentitiesDeleteIfNull:(BOOL)a3;
-- (BOOL)_serializeAndPersistIdentityContainer:(id)a3 identityIdentifier:(int64_t)a4 deleteIfNull:(BOOL)a5;
-- (BOOL)_serializeAndPersistKTRegistrationDataDeleteIfNull:(BOOL)a3;
+- (BOOL)_serializeAndPersistApplicationKeyIdentitiesDeleteIfNull:(BOOL)null;
+- (BOOL)_serializeAndPersistIdentityContainer:(id)container identityIdentifier:(int64_t)identifier deleteIfNull:(BOOL)null;
+- (BOOL)_serializeAndPersistKTRegistrationDataDeleteIfNull:(BOOL)null;
 - (BOOL)_shouldCheckUnregisteredKTData;
 - (BOOL)_shouldRegenerateRegisteredIdentity;
 - (BOOL)isMigratedKeyPairSignature;
@@ -20,15 +20,15 @@
 - (BOOL)isUsingSecureStorageForClassC;
 - (BOOL)migrateToSecureStorageForClassA;
 - (BOOL)migrateToSecureStorageForClassC;
-- (BOOL)needsPublicDataUpdatedForKeyIndex:(unsigned __int16)a3 ktRegistrationKeyIndex:(unsigned __int16)a4;
+- (BOOL)needsPublicDataUpdatedForKeyIndex:(unsigned __int16)index ktRegistrationKeyIndex:(unsigned __int16)keyIndex;
 - (BOOL)registrationNeedsKTDataUpdated;
 - (IDSRegistrationKeyManager)init;
-- (IDSRegistrationKeyManager)initWithSystemMonitor:(id)a3 keychainWrapper:(id)a4 loadingRateLimiter:(id)a5 identityDataSource:(id)a6 allowPairingIdentities:(BOOL)a7 allowRegenerateRegisteredIdentity:(BOOL)a8 keyPairProvider:(id)a9 ktRegistrationDataManager:(id)a10;
+- (IDSRegistrationKeyManager)initWithSystemMonitor:(id)monitor keychainWrapper:(id)wrapper loadingRateLimiter:(id)limiter identityDataSource:(id)source allowPairingIdentities:(BOOL)identities allowRegenerateRegisteredIdentity:(BOOL)identity keyPairProvider:(id)provider ktRegistrationDataManager:(id)self0;
 - (_SecMPFullIdentity)copyMessageProtectionIdentity;
 - (_SecMPFullIdentity)copyPreviousMessageProtectionIdentity;
-- (_SecMPFullIdentity)latestCopyMessageProtectionIdentityForDataProtectionClass:(unsigned int)a3;
-- (__SecKey)copyPublicIdentityDataToRegisterForKeyIndex:(unsigned __int16)a3 withError:(id *)a4;
-- (__SecKey)fullIdentityForKeyIndex:(unsigned __int16)a3;
+- (_SecMPFullIdentity)latestCopyMessageProtectionIdentityForDataProtectionClass:(unsigned int)class;
+- (__SecKey)copyPublicIdentityDataToRegisterForKeyIndex:(unsigned __int16)index withError:(id *)error;
+- (__SecKey)fullIdentityForKeyIndex:(unsigned __int16)index;
 - (__SecKey)identityPrivateKey;
 - (__SecKey)identityPublicKey;
 - (double)_generationRetryDelay;
@@ -36,34 +36,34 @@
 - (double)_notifyKTReregisterDelay;
 - (double)_purgePreviousIdentityDelay;
 - (double)_randomizedIdentityRegenerationInterval;
-- (id)_generateIdentityWithExistingIdentity:(id)a3 identifier:(int64_t)a4 dataProtectionClass:(int64_t)a5;
-- (id)_getPublicMessageProtectionDataForIdentity:(id)a3;
-- (id)_loadAndDeserializeBuildOfIdentityGenerationForItemName:(id)a3;
-- (id)copyKTRegistrationDataToRegisterForKeyIndex:(unsigned __int16)a3 withError:(id *)a4;
-- (id)createKTRegistrationDataForServiceTypes:(id)a3 withPublicIdentity:(id)a4;
+- (id)_generateIdentityWithExistingIdentity:(id)identity identifier:(int64_t)identifier dataProtectionClass:(int64_t)class;
+- (id)_getPublicMessageProtectionDataForIdentity:(id)identity;
+- (id)_loadAndDeserializeBuildOfIdentityGenerationForItemName:(id)name;
+- (id)copyKTRegistrationDataToRegisterForKeyIndex:(unsigned __int16)index withError:(id *)error;
+- (id)createKTRegistrationDataForServiceTypes:(id)types withPublicIdentity:(id)identity;
 - (id)fetchRegistrationStatusProvider;
-- (id)fullDeviceIdentityContainerUsableForKeyType:(unint64_t)a3;
+- (id)fullDeviceIdentityContainerUsableForKeyType:(unint64_t)type;
 - (id)fullMessageProtectionIdentity;
-- (id)fullMessageProtectionIdentityForDataProtectionClass:(unsigned int)a3;
-- (id)generateCSRForUserID:(id)a3;
+- (id)fullMessageProtectionIdentityForDataProtectionClass:(unsigned int)class;
+- (id)generateCSRForUserID:(id)d;
 - (id)keyPairSignature;
 - (id)kvsTrustedDevices;
-- (id)latestMessageProtectionFullIdentityForDataProtectionClass:(unsigned int)a3;
+- (id)latestMessageProtectionFullIdentityForDataProtectionClass:(unsigned int)class;
 - (id)previousFullDeviceIdentityContainer;
 - (id)previousFullMessageProtectionIdentity;
 - (id)publicMessageProtectionData;
 - (id)publicMessageProtectionDataToRegisterForClassA;
 - (id)publicMessageProtectionDataToRegisterForClassC;
 - (id)publicMessageProtectionDataToRegisterForClassD;
-- (id)publicMessageProtectionDeviceIdentityContainerToRegister:(id *)a3;
-- (id)publicMessageProtectionIdentityDataToRegisterWithError:(id *)a3;
-- (void)_ensureIdentity:(id *)a3 savedIndentity:(id *)a4 protectionClass:(int64_t)a5 didSaveIdentity:(BOOL *)a6;
-- (void)_generateKTRegistrationData:(id)a3;
-- (void)_handleKVSUpdateResponseForTrustedDevices:(id)a3 withSuccessfulKVSSync:(BOOL)a4;
-- (void)_handleTransparencySignatureResponse:(id)a3 error:(id)a4;
-- (void)_handleTransparencySignatureResponseForRegistration:(id)a3 error:(id)a4;
-- (void)_ktDataNeedsUpdate:(id)a3;
-- (void)_loadIfNeeded:(BOOL)a3;
+- (id)publicMessageProtectionDeviceIdentityContainerToRegister:(id *)register;
+- (id)publicMessageProtectionIdentityDataToRegisterWithError:(id *)error;
+- (void)_ensureIdentity:(id *)identity savedIndentity:(id *)indentity protectionClass:(int64_t)class didSaveIdentity:(BOOL *)saveIdentity;
+- (void)_generateKTRegistrationData:(id)data;
+- (void)_handleKVSUpdateResponseForTrustedDevices:(id)devices withSuccessfulKVSSync:(BOOL)sync;
+- (void)_handleTransparencySignatureResponse:(id)response error:(id)error;
+- (void)_handleTransparencySignatureResponseForRegistration:(id)registration error:(id)error;
+- (void)_ktDataNeedsUpdate:(id)update;
+- (void)_loadIfNeeded:(BOOL)needed;
 - (void)_notifyUnregisteredIdentityRegenerated;
 - (void)_notifyUnregisteredKTData;
 - (void)_purgePreviousIdentityFromMemoryAndKeychain;
@@ -73,24 +73,24 @@
 - (void)_regenerateIdentityTimerFiredOnMain;
 - (void)_retryGenerationAfterDelay;
 - (void)_retryGenerationIfNeeded;
-- (void)_saveClassXIdentity:(id *)a3 savedIdentity:(id *)a4 protectionClass:(int64_t)a5 savedUnsavedIdentity:(BOOL *)a6;
-- (void)_schedulePurgeOfPreviousIdentityAfterDelay:(double)a3;
-- (void)_scheduleRegenerationOfRegisteredIdentityAfterDelay:(double)a3;
-- (void)_serializeAndPersistBuildOfIdentityGeneration:(id)a3 itemName:(id)a4;
+- (void)_saveClassXIdentity:(id *)identity savedIdentity:(id *)savedIdentity protectionClass:(int64_t)class savedUnsavedIdentity:(BOOL *)unsavedIdentity;
+- (void)_schedulePurgeOfPreviousIdentityAfterDelay:(double)delay;
+- (void)_scheduleRegenerationOfRegisteredIdentityAfterDelay:(double)delay;
+- (void)_serializeAndPersistBuildOfIdentityGeneration:(id)generation itemName:(id)name;
 - (void)_subscribeForTimeChangeNotification;
 - (void)_unsubscribeForTimeChangeNotification;
 - (void)dealloc;
-- (void)fetchKTSignatureDataForServiceTypes:(id)a3 publicIdentityData:(id)a4 registerID:(id)a5 withCompletion:(id)a6;
-- (void)loadPairingIdentities:(BOOL)a3;
+- (void)fetchKTSignatureDataForServiceTypes:(id)types publicIdentityData:(id)data registerID:(id)d withCompletion:(id)completion;
+- (void)loadPairingIdentities:(BOOL)identities;
 - (void)noteBuddyFinishTime;
-- (void)noteDidRegisterKTData:(id)a3 forKeyIndex:(unsigned __int16)a4;
+- (void)noteDidRegisterKTData:(id)data forKeyIndex:(unsigned __int16)index;
 - (void)noteManateeAvailableTime;
-- (void)notePublicIdentityDidRegisterLegacyData:(id)a3 ngmIdentityData:(id)a4 ngmPrekeyData:(id)a5 keyIndexToIdentityData:(id)a6;
+- (void)notePublicIdentityDidRegisterLegacyData:(id)data ngmIdentityData:(id)identityData ngmPrekeyData:(id)prekeyData keyIndexToIdentityData:(id)toIdentityData;
 - (void)noteiCloudSignInTime;
 - (void)purgeMessageProtectionIdentity;
-- (void)regeneratePairingIdentitiesIncludingClassD:(BOOL)a3;
+- (void)regeneratePairingIdentitiesIncludingClassD:(BOOL)d;
 - (void)regenerateRegisteredIdentity;
-- (void)setForceRoll:(BOOL)a3;
+- (void)setForceRoll:(BOOL)roll;
 - (void)systemDidLeaveDataProtectionLock;
 - (void)systemDidLeaveFirstDataProtectionLock;
 - (void)systemRestoreStateDidChange;
@@ -120,14 +120,14 @@
 
 - (BOOL)_migrateRegisteredIdentityFromClassDtoClassCIfNeeded
 {
-  v3 = [(IDSRegistrationKeyManager *)self config];
-  v4 = [v3 registeredIdentityContainer];
-  v5 = [v4 legacyFullIdentity];
+  config = [(IDSRegistrationKeyManager *)self config];
+  registeredIdentityContainer = [config registeredIdentityContainer];
+  legacyFullIdentity = [registeredIdentityContainer legacyFullIdentity];
 
-  LODWORD(v4) = [(IDSRegistrationKeyManager *)self _isSecurelyStoringIdentity:v5 withExpectedProtectionClass:0];
+  LODWORD(registeredIdentityContainer) = [(IDSRegistrationKeyManager *)self _isSecurelyStoringIdentity:legacyFullIdentity withExpectedProtectionClass:0];
   v6 = +[IMRGLog registration];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (registeredIdentityContainer)
   {
     if (v7)
     {
@@ -146,7 +146,7 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Moving internet messsage protection identity from class D to class C", &v11, 2u);
     }
 
-    LODWORD(v6) = [(IDSRegistrationKeyManager *)self _migrateIdentity:v5 toProtectionClass:0];
+    LODWORD(v6) = [(IDSRegistrationKeyManager *)self _migrateIdentity:legacyFullIdentity toProtectionClass:0];
     v8 = +[IMRGLog registration];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -186,19 +186,19 @@
 - (__SecKey)identityPrivateKey
 {
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:0];
-  v3 = [(IDSRegistrationKeyManager *)self config];
-  v4 = [v3 privateKey];
+  config = [(IDSRegistrationKeyManager *)self config];
+  privateKey = [config privateKey];
 
-  return v4;
+  return privateKey;
 }
 
 - (__SecKey)identityPublicKey
 {
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:0];
-  v3 = [(IDSRegistrationKeyManager *)self config];
-  v4 = [v3 publicKey];
+  config = [(IDSRegistrationKeyManager *)self config];
+  publicKey = [config publicKey];
 
-  return v4;
+  return publicKey;
 }
 
 + (BOOL)setupKeys
@@ -211,10 +211,10 @@
 
 - (BOOL)_isUnderFirstDataProtectionLock
 {
-  v2 = [(IDSRegistrationKeyManager *)self systemMonitor];
-  v3 = [v2 isUnderFirstDataProtectionLock];
+  systemMonitor = [(IDSRegistrationKeyManager *)self systemMonitor];
+  isUnderFirstDataProtectionLock = [systemMonitor isUnderFirstDataProtectionLock];
 
-  return v3;
+  return isUnderFirstDataProtectionLock;
 }
 
 - (void)systemDidLeaveFirstDataProtectionLock
@@ -236,9 +236,9 @@
 - (void)systemRestoreStateDidChange
 {
   v3 = +[IMSystemMonitor sharedInstance];
-  v4 = [v3 isSetup];
+  isSetup = [v3 isSetup];
 
-  if ((v4 & 1) == 0)
+  if ((isSetup & 1) == 0)
   {
     [(NSRecursiveLock *)self->_lock lock];
     [(IDSRegistrationKeyManager *)self noteBuddyFinishTime];
@@ -248,7 +248,7 @@
   }
 }
 
-- (void)_saveClassXIdentity:(id *)a3 savedIdentity:(id *)a4 protectionClass:(int64_t)a5 savedUnsavedIdentity:(BOOL *)a6
+- (void)_saveClassXIdentity:(id *)identity savedIdentity:(id *)savedIdentity protectionClass:(int64_t)class savedUnsavedIdentity:(BOOL *)unsavedIdentity
 {
   [(NSRecursiveLock *)self->_lock lock];
   if (self->_detectedMigrationNeeded)
@@ -264,36 +264,36 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (a5 > 2)
+  if (class > 2)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = qword_1009AB588[a5];
+    v12 = qword_1009AB588[class];
   }
 
-  v13 = *a4;
-  if (*a4 || (v13 = *a3) != 0)
+  v13 = *savedIdentity;
+  if (*savedIdentity || (v13 = *identity) != 0)
   {
     v14 = v13;
-    v15 = [(IDSRegistrationKeyManager *)self identityDataSource];
+    identityDataSource = [(IDSRegistrationKeyManager *)self identityDataSource];
     v27 = 0;
-    v16 = [v15 saveLegacyIdentity:v14 withIdentifier:v12 dataProtectionClass:a5 error:&v27];
+    v16 = [identityDataSource saveLegacyIdentity:v14 withIdentifier:v12 dataProtectionClass:class error:&v27];
     v17 = v27;
 
     if (v16)
     {
-      if (*a3)
+      if (*identity)
       {
-        objc_storeStrong(a4, *a3);
-        v18 = *a3;
-        *a3 = 0;
+        objc_storeStrong(savedIdentity, *identity);
+        v18 = *identity;
+        *identity = 0;
 
-        if (a6)
+        if (unsavedIdentity)
         {
-          *a6 = 1;
+          *unsavedIdentity = 1;
         }
       }
 
@@ -314,9 +314,9 @@ LABEL_25:
         sub_1009157DC();
       }
 
-      v21 = [(IDSRegistrationKeyManager *)self identityDataSource];
+      identityDataSource2 = [(IDSRegistrationKeyManager *)self identityDataSource];
       v26 = v17;
-      v22 = [v21 removeLegacyIdentity:0 withIdentifier:v12 dataProtectionClass:a5 error:&v26];
+      v22 = [identityDataSource2 removeLegacyIdentity:0 withIdentifier:v12 dataProtectionClass:class error:&v26];
       v11 = v26;
 
       v23 = +[IMRGLog registration];
@@ -325,7 +325,7 @@ LABEL_25:
       {
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [IDSKeychainWrapper shortDescriptionForDataProtectionClass:a5];
+          v25 = [IDSKeychainWrapper shortDescriptionForDataProtectionClass:class];
           *buf = 138543618;
           v29 = v25;
           v30 = 2114;
@@ -336,7 +336,7 @@ LABEL_25:
 
       else if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        sub_100915810(a5);
+        sub_100915810(class);
       }
     }
 
@@ -353,15 +353,15 @@ LABEL_26:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v33 = 138412290;
-    v34 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Saving key manager state {self: %@}", &v33, 0xCu);
   }
 
   [(NSRecursiveLock *)self->_lock lock];
   if (self->_detectedMigrationNeeded)
   {
-    v4 = +[IMRGLog registration];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    config5 = +[IMRGLog registration];
+    if (os_log_type_enabled(config5, OS_LOG_TYPE_ERROR))
     {
       sub_100915900();
     }
@@ -371,39 +371,39 @@ LABEL_26:
 
   else
   {
-    v6 = [(IDSRegistrationKeyManager *)self config];
-    v7 = [v6 registeredIdentityContainer];
-    v8 = [(IDSRegistrationKeyManager *)self _serializeAndPersistIdentityContainer:v7 identityIdentifier:2 deleteIfNull:1];
+    config = [(IDSRegistrationKeyManager *)self config];
+    registeredIdentityContainer = [config registeredIdentityContainer];
+    v8 = [(IDSRegistrationKeyManager *)self _serializeAndPersistIdentityContainer:registeredIdentityContainer identityIdentifier:2 deleteIfNull:1];
 
-    v9 = [(IDSRegistrationKeyManager *)self config];
-    v10 = [v9 unregisteredIdentityContainer];
-    v11 = [(IDSRegistrationKeyManager *)self _serializeAndPersistIdentityContainer:v10 identityIdentifier:1 deleteIfNull:1];
+    config2 = [(IDSRegistrationKeyManager *)self config];
+    unregisteredIdentityContainer = [config2 unregisteredIdentityContainer];
+    v11 = [(IDSRegistrationKeyManager *)self _serializeAndPersistIdentityContainer:unregisteredIdentityContainer identityIdentifier:1 deleteIfNull:1];
 
-    v12 = [(IDSRegistrationKeyManager *)self config];
-    v13 = [v12 previousRegisteredIdentityContainer];
-    v14 = [(IDSRegistrationKeyManager *)self _serializeAndPersistIdentityContainer:v13 identityIdentifier:3 deleteIfNull:1];
+    config3 = [(IDSRegistrationKeyManager *)self config];
+    previousRegisteredIdentityContainer = [config3 previousRegisteredIdentityContainer];
+    v14 = [(IDSRegistrationKeyManager *)self _serializeAndPersistIdentityContainer:previousRegisteredIdentityContainer identityIdentifier:3 deleteIfNull:1];
 
-    LODWORD(v12) = [(IDSRegistrationKeyManager *)self _serializeAndPersistApplicationKeyIdentitiesDeleteIfNull:1];
-    v5 = [(IDSRegistrationKeyManager *)self _serializeAndPersistKTRegistrationDataDeleteIfNull:1]& v12 & v14 & v11 & v8;
-    v15 = [(IDSRegistrationKeyManager *)self config];
-    v16 = [v15 buildOfIdentityGeneration];
-    [(IDSRegistrationKeyManager *)self _serializeAndPersistBuildOfIdentityGeneration:v16 itemName:@"build-of-identity-generation"];
+    LODWORD(config3) = [(IDSRegistrationKeyManager *)self _serializeAndPersistApplicationKeyIdentitiesDeleteIfNull:1];
+    v5 = [(IDSRegistrationKeyManager *)self _serializeAndPersistKTRegistrationDataDeleteIfNull:1]& config3 & v14 & v11 & v8;
+    config4 = [(IDSRegistrationKeyManager *)self config];
+    buildOfIdentityGeneration = [config4 buildOfIdentityGeneration];
+    [(IDSRegistrationKeyManager *)self _serializeAndPersistBuildOfIdentityGeneration:buildOfIdentityGeneration itemName:@"build-of-identity-generation"];
 
-    v4 = [(IDSRegistrationKeyManager *)self config];
-    v17 = [v4 buildOfUnregisteredIdentityGeneration];
-    [(IDSRegistrationKeyManager *)self _serializeAndPersistBuildOfIdentityGeneration:v17 itemName:@"build-of-unregistered-identity-generation"];
+    config5 = [(IDSRegistrationKeyManager *)self config];
+    buildOfUnregisteredIdentityGeneration = [config5 buildOfUnregisteredIdentityGeneration];
+    [(IDSRegistrationKeyManager *)self _serializeAndPersistBuildOfIdentityGeneration:buildOfUnregisteredIdentityGeneration itemName:@"build-of-unregistered-identity-generation"];
   }
 
   v18 = +[IMUserDefaults sharedDefaults];
-  v19 = [(IDSRegistrationKeyManager *)self config];
-  v20 = [v19 registeredIdentityContainer];
-  v21 = [NSNumber numberWithInt:v20 != 0];
+  config6 = [(IDSRegistrationKeyManager *)self config];
+  registeredIdentityContainer2 = [config6 registeredIdentityContainer];
+  v21 = [NSNumber numberWithInt:registeredIdentityContainer2 != 0];
   [v18 setAppValue:v21 forKey:@"hasRegIdentityContainer"];
 
   v22 = +[IMUserDefaults sharedDefaults];
-  v23 = [(IDSRegistrationKeyManager *)self config];
-  v24 = [v23 unregisteredIdentityContainer];
-  v25 = [NSNumber numberWithInt:v24 != 0];
+  config7 = [(IDSRegistrationKeyManager *)self config];
+  unregisteredIdentityContainer2 = [config7 unregisteredIdentityContainer];
+  v25 = [NSNumber numberWithInt:unregisteredIdentityContainer2 != 0];
   [v22 setAppValue:v25 forKey:@"hasUnregIdentityContainer"];
 
   if (!v5)
@@ -419,14 +419,14 @@ LABEL_26:
       }
 
       self->_identityLoaded = 0;
-      v29 = [(IDSRegistrationKeyManager *)self config];
-      [v29 setRegisteredIdentityContainer:0];
+      config8 = [(IDSRegistrationKeyManager *)self config];
+      [config8 setRegisteredIdentityContainer:0];
 
-      v30 = [(IDSRegistrationKeyManager *)self config];
-      [v30 setUnregisteredIdentityContainer:0];
+      config9 = [(IDSRegistrationKeyManager *)self config];
+      [config9 setUnregisteredIdentityContainer:0];
 
-      v31 = [(IDSRegistrationKeyManager *)self config];
-      [v31 setPreviousRegisteredIdentityContainer:0];
+      config10 = [(IDSRegistrationKeyManager *)self config];
+      [config10 setPreviousRegisteredIdentityContainer:0];
 
       [(IDSPerServiceApplicationKeyManager *)self->_applicationKeyManager clearIdentities];
     }
@@ -444,52 +444,52 @@ LABEL_26:
   return v5;
 }
 
-- (BOOL)_serializeAndPersistApplicationKeyIdentitiesDeleteIfNull:(BOOL)a3
+- (BOOL)_serializeAndPersistApplicationKeyIdentitiesDeleteIfNull:(BOOL)null
 {
-  v3 = a3;
+  nullCopy = null;
   [(NSRecursiveLock *)self->_lock lock];
-  LOBYTE(v3) = [(IDSPerServiceApplicationKeyManager *)self->_applicationKeyManager serializeAndPersistIdentitiesDeleteIfNull:v3];
+  LOBYTE(nullCopy) = [(IDSPerServiceApplicationKeyManager *)self->_applicationKeyManager serializeAndPersistIdentitiesDeleteIfNull:nullCopy];
   [(NSRecursiveLock *)self->_lock unlock];
-  return v3;
+  return nullCopy;
 }
 
-- (BOOL)_serializeAndPersistKTRegistrationDataDeleteIfNull:(BOOL)a3
+- (BOOL)_serializeAndPersistKTRegistrationDataDeleteIfNull:(BOOL)null
 {
-  v3 = a3;
+  nullCopy = null;
   [(NSRecursiveLock *)self->_lock lock];
-  LOBYTE(v3) = [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager serializeAndPersistKTDatasDeleteIfNull:v3];
+  LOBYTE(nullCopy) = [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager serializeAndPersistKTDatasDeleteIfNull:nullCopy];
   [(NSRecursiveLock *)self->_lock unlock];
-  return v3;
+  return nullCopy;
 }
 
-- (BOOL)_serializeAndPersistIdentityContainer:(id)a3 identityIdentifier:(int64_t)a4 deleteIfNull:(BOOL)a5
+- (BOOL)_serializeAndPersistIdentityContainer:(id)container identityIdentifier:(int64_t)identifier deleteIfNull:(BOOL)null
 {
-  v5 = a5;
-  v8 = a3;
+  nullCopy = null;
+  containerCopy = container;
   [(NSRecursiveLock *)self->_lock lock];
   v9 = +[IMRGLog registration];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"NO";
     *buf = 134218499;
-    v30 = a4;
-    if (v5)
+    identifierCopy7 = identifier;
+    if (nullCopy)
     {
       v10 = @"YES";
     }
 
     v31 = 2113;
-    v32 = v8;
+    identifierCopy5 = containerCopy;
     v33 = 2114;
     v34 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Persisting message protection identity container {identityIdentifier: %ld, identityContainer: %{private}@, deleteIfNull: %{public}@}", buf, 0x20u);
   }
 
-  if (v8)
+  if (containerCopy)
   {
-    v11 = [(IDSRegistrationKeyManager *)self identityDataSource];
+    identityDataSource = [(IDSRegistrationKeyManager *)self identityDataSource];
     v28 = 0;
-    v12 = [v11 saveIdentityContainer:v8 withIdentifier:a4 dataProtectionClass:0 error:&v28];
+    v12 = [identityDataSource saveIdentityContainer:containerCopy withIdentifier:identifier dataProtectionClass:0 error:&v28];
     v13 = v28;
 
     v14 = +[IMRGLog registration];
@@ -500,9 +500,9 @@ LABEL_26:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         *buf = 134218243;
-        v30 = a4;
+        identifierCopy7 = identifier;
         v31 = 2113;
-        v32 = v8;
+        identifierCopy5 = containerCopy;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Persisted identity {identityIdentifier: %ld, identityContainer: %{private}@}", buf, 0x16u);
       }
     }
@@ -512,17 +512,17 @@ LABEL_26:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543875;
-        v30 = v13;
+        identifierCopy7 = v13;
         v31 = 2048;
-        v32 = a4;
+        identifierCopy5 = identifier;
         v33 = 2113;
-        v34 = v8;
+        v34 = containerCopy;
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Failed to save identity, possibly corrupted -- removing reference from keychain {error: %{public}@, identityIdentifier: %ld, identityContainer: %{private}@}", buf, 0x20u);
       }
 
-      v21 = [(IDSRegistrationKeyManager *)self identityDataSource];
+      identityDataSource2 = [(IDSRegistrationKeyManager *)self identityDataSource];
       v27 = v13;
-      v22 = [v21 removeIdentityContainer:v8 withIdentifier:a4 dataProtectionClass:0 error:&v27];
+      v22 = [identityDataSource2 removeIdentityContainer:containerCopy withIdentifier:identifier dataProtectionClass:0 error:&v27];
       v23 = v27;
 
       v24 = +[IMRGLog registration];
@@ -532,9 +532,9 @@ LABEL_26:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218243;
-          v30 = a4;
+          identifierCopy7 = identifier;
           v31 = 2113;
-          v32 = v8;
+          identifierCopy5 = containerCopy;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Removed identity reference from keychain {identityIdentifier: %ld, identityContainer: %{private}@}", buf, 0x16u);
         }
       }
@@ -542,11 +542,11 @@ LABEL_26:
       else if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
       {
         *buf = 138543875;
-        v30 = v23;
+        identifierCopy7 = v23;
         v31 = 2048;
-        v32 = a4;
+        identifierCopy5 = identifier;
         v33 = 2113;
-        v34 = v8;
+        v34 = containerCopy;
         _os_log_fault_impl(&_mh_execute_header, v15, OS_LOG_TYPE_FAULT, "Failed to remove corrupt identity reference from keychain {error: %{public}@, identityIdentifier: %ld, identityContainer: %{private}@}", buf, 0x20u);
       }
 
@@ -559,21 +559,21 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (v5)
+  if (nullCopy)
   {
     v17 = +[IMRGLog registration];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218243;
-      v30 = a4;
+      identifierCopy7 = identifier;
       v31 = 2113;
-      v32 = 0;
+      identifierCopy5 = 0;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Removing identity from keychain because deleteIfNull == YES, {identityIdentifier: %ld, identityContainer: %{private}@}", buf, 0x16u);
     }
 
-    v18 = [(IDSRegistrationKeyManager *)self identityDataSource];
+    identityDataSource3 = [(IDSRegistrationKeyManager *)self identityDataSource];
     v26 = 0;
-    v19 = [v18 removeIdentityContainer:0 withIdentifier:a4 dataProtectionClass:0 error:&v26];
+    v19 = [identityDataSource3 removeIdentityContainer:0 withIdentifier:identifier dataProtectionClass:0 error:&v26];
     v13 = v26;
 
     v20 = +[IMRGLog registration];
@@ -583,9 +583,9 @@ LABEL_27:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218243;
-        v30 = a4;
+        identifierCopy7 = identifier;
         v31 = 2113;
-        v32 = 0;
+        identifierCopy5 = 0;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Purged identity and removed it from keychain {identityIdentifier: %ld, identityContainer: %{private}@}", buf, 0x16u);
       }
     }
@@ -607,27 +607,27 @@ LABEL_28:
   return v16;
 }
 
-- (void)_serializeAndPersistBuildOfIdentityGeneration:(id)a3 itemName:(id)a4
+- (void)_serializeAndPersistBuildOfIdentityGeneration:(id)generation itemName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  generationCopy = generation;
+  nameCopy = name;
   [(NSRecursiveLock *)self->_lock lock];
   v8 = +[IMRGLog registration];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v19 = v7;
+    v19 = nameCopy;
     v20 = 2112;
-    v21 = v6;
+    v21 = generationCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Persisting build of identity generation {itemName: %@, buildOfIdentityGeneration: %@}", buf, 0x16u);
   }
 
-  if (v6)
+  if (generationCopy)
   {
-    v9 = [v6 dataUsingEncoding:4];
-    v10 = [(IDSRegistrationKeyManager *)self keychainWrapper];
+    v9 = [generationCopy dataUsingEncoding:4];
+    keychainWrapper = [(IDSRegistrationKeyManager *)self keychainWrapper];
     v17 = 0;
-    v11 = [v10 saveData:v9 forIdentifier:v7 allowSync:0 dataProtectionClass:2 error:&v17];
+    v11 = [keychainWrapper saveData:v9 forIdentifier:nameCopy allowSync:0 dataProtectionClass:2 error:&v17];
     v12 = v17;
 
     if ((v11 & 1) == 0)
@@ -644,9 +644,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v14 = [(IDSRegistrationKeyManager *)self keychainWrapper];
+  keychainWrapper2 = [(IDSRegistrationKeyManager *)self keychainWrapper];
   v16 = 0;
-  v15 = [v14 removeDataForIdentifier:v7 dataProtectionClass:2 error:&v16];
+  v15 = [keychainWrapper2 removeDataForIdentifier:nameCopy dataProtectionClass:2 error:&v16];
   v12 = v16;
 
   if ((v15 & 1) == 0)
@@ -664,13 +664,13 @@ LABEL_12:
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (id)_loadAndDeserializeBuildOfIdentityGenerationForItemName:(id)a3
+- (id)_loadAndDeserializeBuildOfIdentityGenerationForItemName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   [(NSRecursiveLock *)self->_lock lock];
-  v5 = [(IDSRegistrationKeyManager *)self keychainWrapper];
+  keychainWrapper = [(IDSRegistrationKeyManager *)self keychainWrapper];
   v14 = 0;
-  v6 = [v5 dataForIdentifier:v4 error:&v14];
+  v6 = [keychainWrapper dataForIdentifier:nameCopy error:&v14];
   v7 = v14;
 
   if (v6)
@@ -685,7 +685,7 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v16 = v4;
+      v16 = nameCopy;
       v17 = 2114;
       v18 = v6;
       v10 = "Unable to deserialize build of identity generation {itemName: %{public}@, serializedBuildOfIdentityGeneration: %{public}@}";
@@ -717,35 +717,35 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)_loadClassAIdentityIfNeeded:(id *)a3
+- (BOOL)_loadClassAIdentityIfNeeded:(id *)needed
 {
-  v5 = [(IDSRegistrationKeyManager *)self allowPairingIdentities];
-  if (v5)
+  allowPairingIdentities = [(IDSRegistrationKeyManager *)self allowPairingIdentities];
+  if (allowPairingIdentities)
   {
     [(NSRecursiveLock *)self->_lock lock];
-    v6 = [(IDSRegistrationKeyManager *)self config];
-    v7 = [v6 identityClassA];
+    config = [(IDSRegistrationKeyManager *)self config];
+    identityClassA = [config identityClassA];
 
-    if (!v7)
+    if (!identityClassA)
     {
       v24 = 0;
-      v10 = [(IDSRegistrationKeyManager *)self identityDataSource];
-      v11 = [v10 loadLegacyIdentityWithIdentifier:4 serializationDidChange:&v24 error:a3];
-      v12 = [(IDSRegistrationKeyManager *)self config];
-      [v12 setIdentityClassA:v11];
+      identityDataSource = [(IDSRegistrationKeyManager *)self identityDataSource];
+      v11 = [identityDataSource loadLegacyIdentityWithIdentifier:4 serializationDidChange:&v24 error:needed];
+      config2 = [(IDSRegistrationKeyManager *)self config];
+      [config2 setIdentityClassA:v11];
 
-      v13 = [(IDSRegistrationKeyManager *)self config];
-      v14 = [v13 identityClassA];
+      config3 = [(IDSRegistrationKeyManager *)self config];
+      identityClassA2 = [config3 identityClassA];
 
       v15 = +[IMRGLog registration];
       v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-      if (v14)
+      if (identityClassA2)
       {
         if (v16)
         {
-          v17 = [(IDSRegistrationKeyManager *)self config];
-          v18 = [v17 identityClassA];
-          v19 = v18;
+          config4 = [(IDSRegistrationKeyManager *)self config];
+          identityClassA3 = [config4 identityClassA];
+          v19 = identityClassA3;
           v20 = @"NO";
           if (v24)
           {
@@ -753,7 +753,7 @@ LABEL_9:
           }
 
           *buf = 138478083;
-          *&buf[4] = v18;
+          *&buf[4] = identityClassA3;
           v26 = 2114;
           v27 = v20;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Loaded class A message protection identity {identity: %{private}@, serializationDidChange: %{public}@}", buf, 0x16u);
@@ -761,8 +761,8 @@ LABEL_9:
 
         if (v24 == 1)
         {
-          v21 = [(IDSRegistrationKeyManager *)self config];
-          *buf = [v21 identityClassA];
+          config5 = [(IDSRegistrationKeyManager *)self config];
+          *buf = [config5 identityClassA];
 
           v23 = 0;
           [(IDSRegistrationKeyManager *)self _saveClassXIdentity:buf savedIdentity:&v23 protectionClass:1 savedUnsavedIdentity:0];
@@ -773,9 +773,9 @@ LABEL_9:
       {
         if (v16)
         {
-          if (a3)
+          if (needed)
           {
-            v22 = *a3;
+            v22 = *needed;
           }
 
           else
@@ -803,38 +803,38 @@ LABEL_9:
     }
   }
 
-  return v5;
+  return allowPairingIdentities;
 }
 
-- (BOOL)_loadClassCIdentityIfNeeded:(id *)a3
+- (BOOL)_loadClassCIdentityIfNeeded:(id *)needed
 {
-  v5 = [(IDSRegistrationKeyManager *)self allowPairingIdentities];
-  if (v5)
+  allowPairingIdentities = [(IDSRegistrationKeyManager *)self allowPairingIdentities];
+  if (allowPairingIdentities)
   {
     [(NSRecursiveLock *)self->_lock lock];
-    v6 = [(IDSRegistrationKeyManager *)self config];
-    v7 = [v6 identityClassC];
+    config = [(IDSRegistrationKeyManager *)self config];
+    identityClassC = [config identityClassC];
 
-    if (!v7)
+    if (!identityClassC)
     {
       v24 = 0;
-      v10 = [(IDSRegistrationKeyManager *)self identityDataSource];
-      v11 = [v10 loadLegacyIdentityWithIdentifier:5 serializationDidChange:&v24 error:a3];
-      v12 = [(IDSRegistrationKeyManager *)self config];
-      [v12 setIdentityClassC:v11];
+      identityDataSource = [(IDSRegistrationKeyManager *)self identityDataSource];
+      v11 = [identityDataSource loadLegacyIdentityWithIdentifier:5 serializationDidChange:&v24 error:needed];
+      config2 = [(IDSRegistrationKeyManager *)self config];
+      [config2 setIdentityClassC:v11];
 
-      v13 = [(IDSRegistrationKeyManager *)self config];
-      v14 = [v13 identityClassC];
+      config3 = [(IDSRegistrationKeyManager *)self config];
+      identityClassC2 = [config3 identityClassC];
 
       v15 = +[IMRGLog registration];
       v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-      if (v14)
+      if (identityClassC2)
       {
         if (v16)
         {
-          v17 = [(IDSRegistrationKeyManager *)self config];
-          v18 = [v17 identityClassC];
-          v19 = v18;
+          config4 = [(IDSRegistrationKeyManager *)self config];
+          identityClassC3 = [config4 identityClassC];
+          v19 = identityClassC3;
           v20 = @"NO";
           if (v24)
           {
@@ -842,7 +842,7 @@ LABEL_9:
           }
 
           *buf = 138478083;
-          *&buf[4] = v18;
+          *&buf[4] = identityClassC3;
           v26 = 2114;
           v27 = v20;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Loaded class C message protection identity {identity: %{private}@, serializationDidChange: %{public}@}", buf, 0x16u);
@@ -850,8 +850,8 @@ LABEL_9:
 
         if (v24 == 1)
         {
-          v21 = [(IDSRegistrationKeyManager *)self config];
-          *buf = [v21 identityClassC];
+          config5 = [(IDSRegistrationKeyManager *)self config];
+          *buf = [config5 identityClassC];
 
           v23 = 0;
           [(IDSRegistrationKeyManager *)self _saveClassXIdentity:buf savedIdentity:&v23 protectionClass:0 savedUnsavedIdentity:0];
@@ -862,9 +862,9 @@ LABEL_9:
       {
         if (v16)
         {
-          if (a3)
+          if (needed)
           {
-            v22 = *a3;
+            v22 = *needed;
           }
 
           else
@@ -892,38 +892,38 @@ LABEL_9:
     }
   }
 
-  return v5;
+  return allowPairingIdentities;
 }
 
-- (BOOL)_loadClassDIdentityIfNeeded:(id *)a3
+- (BOOL)_loadClassDIdentityIfNeeded:(id *)needed
 {
-  v5 = [(IDSRegistrationKeyManager *)self allowPairingIdentities];
-  if (v5)
+  allowPairingIdentities = [(IDSRegistrationKeyManager *)self allowPairingIdentities];
+  if (allowPairingIdentities)
   {
     [(NSRecursiveLock *)self->_lock lock];
-    v6 = [(IDSRegistrationKeyManager *)self config];
-    v7 = [v6 identityClassD];
+    config = [(IDSRegistrationKeyManager *)self config];
+    identityClassD = [config identityClassD];
 
-    if (!v7)
+    if (!identityClassD)
     {
       v24 = 0;
-      v10 = [(IDSRegistrationKeyManager *)self identityDataSource];
-      v11 = [v10 loadLegacyIdentityWithIdentifier:6 serializationDidChange:&v24 error:a3];
-      v12 = [(IDSRegistrationKeyManager *)self config];
-      [v12 setIdentityClassD:v11];
+      identityDataSource = [(IDSRegistrationKeyManager *)self identityDataSource];
+      v11 = [identityDataSource loadLegacyIdentityWithIdentifier:6 serializationDidChange:&v24 error:needed];
+      config2 = [(IDSRegistrationKeyManager *)self config];
+      [config2 setIdentityClassD:v11];
 
-      v13 = [(IDSRegistrationKeyManager *)self config];
-      v14 = [v13 identityClassD];
+      config3 = [(IDSRegistrationKeyManager *)self config];
+      identityClassD2 = [config3 identityClassD];
 
       v15 = +[IMRGLog registration];
       v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-      if (v14)
+      if (identityClassD2)
       {
         if (v16)
         {
-          v17 = [(IDSRegistrationKeyManager *)self config];
-          v18 = [v17 identityClassD];
-          v19 = v18;
+          config4 = [(IDSRegistrationKeyManager *)self config];
+          identityClassD3 = [config4 identityClassD];
+          v19 = identityClassD3;
           v20 = @"NO";
           if (v24)
           {
@@ -931,7 +931,7 @@ LABEL_9:
           }
 
           *buf = 138478083;
-          *&buf[4] = v18;
+          *&buf[4] = identityClassD3;
           v26 = 2114;
           v27 = v20;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Loaded class D message protection identity {identity: %{private}@, serializationDidChange: %{public}@}", buf, 0x16u);
@@ -939,8 +939,8 @@ LABEL_9:
 
         if (v24 == 1)
         {
-          v21 = [(IDSRegistrationKeyManager *)self config];
-          *buf = [v21 identityClassD];
+          config5 = [(IDSRegistrationKeyManager *)self config];
+          *buf = [config5 identityClassD];
 
           v23 = 0;
           [(IDSRegistrationKeyManager *)self _saveClassXIdentity:buf savedIdentity:&v23 protectionClass:2 savedUnsavedIdentity:0];
@@ -951,9 +951,9 @@ LABEL_9:
       {
         if (v16)
         {
-          if (a3)
+          if (needed)
           {
-            v22 = *a3;
+            v22 = *needed;
           }
 
           else
@@ -981,22 +981,22 @@ LABEL_9:
     }
   }
 
-  return v5;
+  return allowPairingIdentities;
 }
 
-- (void)_loadIfNeeded:(BOOL)a3
+- (void)_loadIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v4 = self;
+  neededCopy = needed;
+  selfCopy = self;
   v238 = 0;
   v239 = &v238;
   v240 = 0x2020000000;
   v241 = 0;
   v237 = 0;
   [(NSRecursiveLock *)self->_lock lock];
-  if (!v4->_loaded)
+  if (!selfCopy->_loaded)
   {
-    v4->_loaded = 1;
+    selfCopy->_loaded = 1;
     v5 = +[IMRGLog registration];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -1006,25 +1006,25 @@ LABEL_9:
 
     v242[0] = 0;
     memset(v236, 0, 10);
-    v6 = [(IDSRegistrationKeyManager *)v4 keyPairProvider];
+    keyPairProvider = [(IDSRegistrationKeyManager *)selfCopy keyPairProvider];
     v235 = 0;
-    [v6 copyRegistrationKeyPairForIdentifier:0 publicKey:v242 privateKey:&v236[1] keyPairSignature:&v235 isMigratedSignature:v236 + 1 isUpgradePending:v236];
+    [keyPairProvider copyRegistrationKeyPairForIdentifier:0 publicKey:v242 privateKey:&v236[1] keyPairSignature:&v235 isMigratedSignature:v236 + 1 isUpgradePending:v236];
     v7 = v235;
 
     v8 = v242[0];
-    v9 = [(IDSRegistrationKeyManager *)v4 config];
-    [v9 setPublicKey:v8];
+    config = [(IDSRegistrationKeyManager *)selfCopy config];
+    [config setPublicKey:v8];
 
     v10 = *&v236[1];
-    v11 = [(IDSRegistrationKeyManager *)v4 config];
-    [v11 setPrivateKey:v10];
+    config2 = [(IDSRegistrationKeyManager *)selfCopy config];
+    [config2 setPrivateKey:v10];
 
-    v12 = [(IDSRegistrationKeyManager *)v4 config];
-    [v12 setSignature:v7];
+    config3 = [(IDSRegistrationKeyManager *)selfCopy config];
+    [config3 setSignature:v7];
 
     v13 = HIBYTE(v236[0]);
-    v14 = [(IDSRegistrationKeyManager *)v4 config];
-    [v14 setIsMigratedSignature:v13];
+    config4 = [(IDSRegistrationKeyManager *)selfCopy config];
+    [config4 setIsMigratedSignature:v13];
 
     if (v242[0])
     {
@@ -1042,8 +1042,8 @@ LABEL_9:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v7;
-      v220 = [(IDSRegistrationKeyManager *)v4 config];
-      if ([v220 publicKey])
+      config5 = [(IDSRegistrationKeyManager *)selfCopy config];
+      if ([config5 publicKey])
       {
         v17 = @"YES";
       }
@@ -1053,8 +1053,8 @@ LABEL_9:
         v17 = @"NO";
       }
 
-      v18 = [(IDSRegistrationKeyManager *)v4 config];
-      if ([v18 privateKey])
+      config6 = [(IDSRegistrationKeyManager *)selfCopy config];
+      if ([config6 privateKey])
       {
         v19 = @"YES";
       }
@@ -1074,8 +1074,8 @@ LABEL_9:
         v20 = @"NO";
       }
 
-      v21 = [(IDSRegistrationKeyManager *)v4 config];
-      if ([v21 isMigratedSignature])
+      config7 = [(IDSRegistrationKeyManager *)selfCopy config];
+      if ([config7 isMigratedSignature])
       {
         v22 = @"YES";
       }
@@ -1110,7 +1110,7 @@ LABEL_9:
       v7 = v16;
     }
 
-    if (LOBYTE(v236[0]) == 1 && [(IDSRegistrationKeyManager *)v4 _isUnderFirstDataProtectionLock])
+    if (LOBYTE(v236[0]) == 1 && [(IDSRegistrationKeyManager *)selfCopy _isUnderFirstDataProtectionLock])
     {
       v24 = +[IMRGLog registration];
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -1119,11 +1119,11 @@ LABEL_9:
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Unable to load registration key pair; we're under lock, and this requires migration -- we need to migrate", buf, 2u);
       }
 
-      v4->_detectedMigrationNeeded = 1;
-      v25 = [(IDSRegistrationKeyManager *)v4 systemMonitor];
-      [v25 _addEarlyListener:v4];
+      selfCopy->_detectedMigrationNeeded = 1;
+      systemMonitor = [(IDSRegistrationKeyManager *)selfCopy systemMonitor];
+      [systemMonitor _addEarlyListener:selfCopy];
 
-      v4->_loaded = 0;
+      selfCopy->_loaded = 0;
     }
 
     if (v236[0])
@@ -1131,15 +1131,15 @@ LABEL_9:
       goto LABEL_49;
     }
 
-    v26 = [(IDSRegistrationKeyManager *)v4 config];
-    v27 = [v26 signature];
-    if (v27)
+    config8 = [(IDSRegistrationKeyManager *)selfCopy config];
+    signature = [config8 signature];
+    if (signature)
     {
-      v28 = [(IDSRegistrationKeyManager *)v4 config];
-      if ([v28 publicKey])
+      config9 = [(IDSRegistrationKeyManager *)selfCopy config];
+      if ([config9 publicKey])
       {
-        v29 = [(IDSRegistrationKeyManager *)v4 config];
-        v30 = [v29 privateKey] == 0;
+        config10 = [(IDSRegistrationKeyManager *)selfCopy config];
+        v30 = [config10 privateKey] == 0;
 
         if (!v30)
         {
@@ -1153,12 +1153,12 @@ LABEL_37:
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
           v218 = v7;
-          v32 = v4;
-          v33 = v3;
+          v32 = selfCopy;
+          v33 = neededCopy;
           v34 = v32;
-          v221 = [(IDSRegistrationKeyManager *)v32 config];
-          v35 = [v221 signature];
-          if (v35)
+          config11 = [(IDSRegistrationKeyManager *)v32 config];
+          signature2 = [config11 signature];
+          if (signature2)
           {
             v36 = @"YES";
           }
@@ -1168,8 +1168,8 @@ LABEL_37:
             v36 = @"NO";
           }
 
-          v37 = [(IDSRegistrationKeyManager *)v34 config];
-          if ([v37 publicKey])
+          config12 = [(IDSRegistrationKeyManager *)v34 config];
+          if ([config12 publicKey])
           {
             v38 = @"YES";
           }
@@ -1179,8 +1179,8 @@ LABEL_37:
             v38 = @"NO";
           }
 
-          v39 = [(IDSRegistrationKeyManager *)v34 config];
-          if ([v39 privateKey])
+          config13 = [(IDSRegistrationKeyManager *)v34 config];
+          if ([config13 privateKey])
           {
             v40 = @"YES";
           }
@@ -1198,12 +1198,12 @@ LABEL_37:
           v248 = v40;
           _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Unable to load a registration key pair {signature: %@, publicKey: %@, privateKey: %@}", buf, 0x20u);
 
-          v3 = v33;
-          v4 = v34;
+          neededCopy = v33;
+          selfCopy = v34;
           v7 = v218;
         }
 
-        v4->_loaded = 0;
+        selfCopy->_loaded = 0;
         goto LABEL_49;
       }
     }
@@ -1212,9 +1212,9 @@ LABEL_37:
   }
 
 LABEL_50:
-  if (v3 && !v4->_identityLoaded)
+  if (neededCopy && !selfCopy->_identityLoaded)
   {
-    if ([(IDSRegistrationKeyManager *)v4 _isUnderFirstDataProtectionLock])
+    if ([(IDSRegistrationKeyManager *)selfCopy _isUnderFirstDataProtectionLock])
     {
       v41 = +[IMRGLog registration];
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
@@ -1223,65 +1223,65 @@ LABEL_50:
         _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "We are under first data protection lock, we can not load our identity now", buf, 2u);
       }
 
-      v4->_identityLoaded = 0;
-      v42 = [(IDSRegistrationKeyManager *)v4 systemMonitor];
-      [v42 _addEarlyListener:v4];
+      selfCopy->_identityLoaded = 0;
+      systemMonitor2 = [(IDSRegistrationKeyManager *)selfCopy systemMonitor];
+      [systemMonitor2 _addEarlyListener:selfCopy];
 
-      if (!v4->_detectedMigrationNeeded)
+      if (!selfCopy->_detectedMigrationNeeded)
       {
-        [(IDSRegistrationKeyManager *)v4 loadPairingIdentities:1];
+        [(IDSRegistrationKeyManager *)selfCopy loadPairingIdentities:1];
       }
 
       goto LABEL_180;
     }
 
-    [(IDSRateLimiter *)v4->_loadingRateLimiter noteItem:@"registrationKeyManagerRateLimit"];
-    v4->_identityLoaded = 1;
+    [(IDSRateLimiter *)selfCopy->_loadingRateLimiter noteItem:@"registrationKeyManagerRateLimit"];
+    selfCopy->_identityLoaded = 1;
     v43 = objc_alloc_init(IDSNGMKeyLoadingErrorContainer);
-    recentKeyLoadingErrors = v4->_recentKeyLoadingErrors;
-    v4->_recentKeyLoadingErrors = v43;
+    recentKeyLoadingErrors = selfCopy->_recentKeyLoadingErrors;
+    selfCopy->_recentKeyLoadingErrors = v43;
 
     v45 = +[IMUserDefaults sharedDefaults];
     v46 = [v45 appValueForKey:@"hasRegIdentityContainer"];
-    [(IDSNGMKeyLoadingErrorContainer *)v4->_recentKeyLoadingErrors setShouldHaveRegisteredIdentity:v46];
+    [(IDSNGMKeyLoadingErrorContainer *)selfCopy->_recentKeyLoadingErrors setShouldHaveRegisteredIdentity:v46];
 
     v47 = +[IMUserDefaults sharedDefaults];
     v48 = [v47 appValueForKey:@"hasUnregIdentityContainer"];
-    [(IDSNGMKeyLoadingErrorContainer *)v4->_recentKeyLoadingErrors setShouldHaveUnregisteredIdentity:v48];
+    [(IDSNGMKeyLoadingErrorContainer *)selfCopy->_recentKeyLoadingErrors setShouldHaveUnregisteredIdentity:v48];
 
     v49 = +[IMUserDefaults sharedDefaults];
-    v4->_failedToGeneratedPublicDataForNGMIdentity = [v49 appBoolForKey:@"failedToGeneratedPublicDataForNGMIdentity"];
+    selfCopy->_failedToGeneratedPublicDataForNGMIdentity = [v49 appBoolForKey:@"failedToGeneratedPublicDataForNGMIdentity"];
 
-    v50 = [(IDSRegistrationKeyManager *)v4 identityDataSource];
+    identityDataSource = [(IDSRegistrationKeyManager *)selfCopy identityDataSource];
     v233 = 0;
     v234 = 0;
-    v51 = [v50 loadIdentityContainerWithIdentifier:2 withLegacyFallback:1 serializationDidChange:v239 + 3 deserializationDidFail:&v237 + 1 needsEncryptionIdentityRoll:&v237 nonLegacyError:&v234 error:&v233];
+    v51 = [identityDataSource loadIdentityContainerWithIdentifier:2 withLegacyFallback:1 serializationDidChange:v239 + 3 deserializationDidFail:&v237 + 1 needsEncryptionIdentityRoll:&v237 nonLegacyError:&v234 error:&v233];
     v219 = v234;
     v222 = v233;
-    v52 = [(IDSRegistrationKeyManager *)v4 config];
-    [v52 setRegisteredIdentityContainer:v51];
+    config14 = [(IDSRegistrationKeyManager *)selfCopy config];
+    [config14 setRegisteredIdentityContainer:v51];
 
-    v53 = [(IDSRegistrationKeyManager *)v4 config];
-    v54 = [v53 registeredIdentityContainer];
+    config15 = [(IDSRegistrationKeyManager *)selfCopy config];
+    registeredIdentityContainer = [config15 registeredIdentityContainer];
 
-    if (v54)
+    if (registeredIdentityContainer)
     {
-      v55 = [(IDSRegistrationKeyManager *)v4 _loadAndDeserializeBuildOfIdentityGenerationForItemName:@"build-of-identity-generation"];
-      v56 = [(IDSRegistrationKeyManager *)v4 config];
-      [v56 setBuildOfIdentityGeneration:v55];
+      v55 = [(IDSRegistrationKeyManager *)selfCopy _loadAndDeserializeBuildOfIdentityGenerationForItemName:@"build-of-identity-generation"];
+      config16 = [(IDSRegistrationKeyManager *)selfCopy config];
+      [config16 setBuildOfIdentityGeneration:v55];
 
-      v57 = +[IMRGLog registration];
-      if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
+      systemMonitor3 = +[IMRGLog registration];
+      if (os_log_type_enabled(systemMonitor3, OS_LOG_TYPE_DEFAULT))
       {
-        v58 = [(IDSRegistrationKeyManager *)v4 config];
-        v59 = [v58 registeredIdentityContainer];
-        v60 = [(IDSRegistrationKeyManager *)v4 config];
-        v61 = [v60 buildOfIdentityGeneration];
+        config17 = [(IDSRegistrationKeyManager *)selfCopy config];
+        registeredIdentityContainer2 = [config17 registeredIdentityContainer];
+        config18 = [(IDSRegistrationKeyManager *)selfCopy config];
+        buildOfIdentityGeneration = [config18 buildOfIdentityGeneration];
         *buf = 138478083;
-        v244 = v59;
+        v244 = registeredIdentityContainer2;
         v245 = 2112;
-        v246 = v61;
-        _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "Successfully loaded message protection identity from keychain {_config.registeredIdentityContainer: %{private}@, buildOfGeneration: %@}", buf, 0x16u);
+        v246 = buildOfIdentityGeneration;
+        _os_log_impl(&_mh_execute_header, systemMonitor3, OS_LOG_TYPE_DEFAULT, "Successfully loaded message protection identity from keychain {_config.registeredIdentityContainer: %{private}@, buildOfGeneration: %@}", buf, 0x16u);
       }
     }
 
@@ -1303,10 +1303,10 @@ LABEL_50:
         _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEFAULT, "Unable to load message protection identity from keychain {error: %{public}@, deserializationDidFail: %{public}@}", buf, 0x16u);
       }
 
-      if (![IDSKeychainWrapper isUpgradePendingError:v222]|| ![(IDSRegistrationKeyManager *)v4 _isUnderFirstDataProtectionLock])
+      if (![IDSKeychainWrapper isUpgradePendingError:v222]|| ![(IDSRegistrationKeyManager *)selfCopy _isUnderFirstDataProtectionLock])
       {
 LABEL_70:
-        v65 = v4->_recentKeyLoadingErrors;
+        v65 = selfCopy->_recentKeyLoadingErrors;
         if ((v237 & 0x100) != 0)
         {
           [(IDSNGMKeyLoadingErrorContainer *)v65 setRegisteredDeserializationError:v219];
@@ -1317,7 +1317,7 @@ LABEL_70:
           [(IDSNGMKeyLoadingErrorContainer *)v65 setRegisteredKeychainError:v219];
         }
 
-        if (v4->_detectedMigrationNeeded)
+        if (selfCopy->_detectedMigrationNeeded)
         {
           v66 = +[IMRGLog registration];
           if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
@@ -1326,67 +1326,67 @@ LABEL_70:
             _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_DEFAULT, "We're under first lock, and this requires migration -- not doing anything here", buf, 2u);
           }
 
-          v4->_identityLoaded = 0;
+          selfCopy->_identityLoaded = 0;
 LABEL_179:
 
 LABEL_180:
-          v172 = [(IDSRegistrationKeyManager *)v4 config];
-          v173 = [v172 registeredIdentityContainer];
-          v174 = [v173 legacyFullIdentity];
-          v175 = [(IDSRegistrationKeyManager *)v4 _getPublicMessageProtectionDataForIdentity:v174];
+          config19 = [(IDSRegistrationKeyManager *)selfCopy config];
+          registeredIdentityContainer3 = [config19 registeredIdentityContainer];
+          legacyFullIdentity = [registeredIdentityContainer3 legacyFullIdentity];
+          v175 = [(IDSRegistrationKeyManager *)selfCopy _getPublicMessageProtectionDataForIdentity:legacyFullIdentity];
 
-          v176 = [(IDSRegistrationKeyManager *)v4 config];
-          v177 = [v176 unregisteredIdentityContainer];
-          v178 = [v177 legacyFullIdentity];
-          v179 = [(IDSRegistrationKeyManager *)v4 _getPublicMessageProtectionDataForIdentity:v178];
+          config20 = [(IDSRegistrationKeyManager *)selfCopy config];
+          unregisteredIdentityContainer = [config20 unregisteredIdentityContainer];
+          legacyFullIdentity2 = [unregisteredIdentityContainer legacyFullIdentity];
+          v179 = [(IDSRegistrationKeyManager *)selfCopy _getPublicMessageProtectionDataForIdentity:legacyFullIdentity2];
 
-          v180 = [(IDSRegistrationKeyManager *)v4 config];
-          v181 = [v180 identityClassA];
-          v182 = [(IDSRegistrationKeyManager *)v4 _getPublicMessageProtectionDataForIdentity:v181];
+          config21 = [(IDSRegistrationKeyManager *)selfCopy config];
+          identityClassA = [config21 identityClassA];
+          v182 = [(IDSRegistrationKeyManager *)selfCopy _getPublicMessageProtectionDataForIdentity:identityClassA];
 
-          v183 = [(IDSRegistrationKeyManager *)v4 config];
-          v184 = [v183 identityClassC];
-          v185 = [(IDSRegistrationKeyManager *)v4 _getPublicMessageProtectionDataForIdentity:v184];
+          config22 = [(IDSRegistrationKeyManager *)selfCopy config];
+          identityClassC = [config22 identityClassC];
+          v185 = [(IDSRegistrationKeyManager *)selfCopy _getPublicMessageProtectionDataForIdentity:identityClassC];
 
-          v186 = [(IDSRegistrationKeyManager *)v4 config];
-          v187 = [v186 identityClassD];
-          v188 = [(IDSRegistrationKeyManager *)v4 _getPublicMessageProtectionDataForIdentity:v187];
+          config23 = [(IDSRegistrationKeyManager *)selfCopy config];
+          identityClassD = [config23 identityClassD];
+          v188 = [(IDSRegistrationKeyManager *)selfCopy _getPublicMessageProtectionDataForIdentity:identityClassD];
 
           goto LABEL_181;
         }
 
         *(v236 + 1) = 0;
-        v67 = [(IDSRegistrationKeyManager *)v4 identityDataSource];
+        identityDataSource2 = [(IDSRegistrationKeyManager *)selfCopy identityDataSource];
         v231 = v222;
         v232 = 0;
-        v68 = [v67 loadIdentityContainerWithIdentifier:1 withLegacyFallback:0 serializationDidChange:v239 + 3 deserializationDidFail:&v236[1] needsEncryptionIdentityRoll:v236 + 1 nonLegacyError:&v232 error:&v231];
+        v68 = [identityDataSource2 loadIdentityContainerWithIdentifier:1 withLegacyFallback:0 serializationDidChange:v239 + 3 deserializationDidFail:&v236[1] needsEncryptionIdentityRoll:v236 + 1 nonLegacyError:&v232 error:&v231];
         v217 = v232;
         v69 = v231;
 
-        v70 = [(IDSRegistrationKeyManager *)v4 config];
-        [v70 setUnregisteredIdentityContainer:v68];
+        config24 = [(IDSRegistrationKeyManager *)selfCopy config];
+        [config24 setUnregisteredIdentityContainer:v68];
 
         v237 = (v237 | *(v236 + 1)) & 0x101;
-        v71 = [(IDSRegistrationKeyManager *)v4 config];
-        v72 = [v71 unregisteredIdentityContainer];
+        config25 = [(IDSRegistrationKeyManager *)selfCopy config];
+        unregisteredIdentityContainer2 = [config25 unregisteredIdentityContainer];
 
-        if (v72)
+        if (unregisteredIdentityContainer2)
         {
-          v73 = [(IDSRegistrationKeyManager *)v4 _loadAndDeserializeBuildOfIdentityGenerationForItemName:@"build-of-unregistered-identity-generation"];
-          v74 = [(IDSRegistrationKeyManager *)v4 config];
-          [v74 setBuildOfUnregisteredIdentityGeneration:v73];
+          v73 = [(IDSRegistrationKeyManager *)selfCopy _loadAndDeserializeBuildOfIdentityGenerationForItemName:@"build-of-unregistered-identity-generation"];
+          config26 = [(IDSRegistrationKeyManager *)selfCopy config];
+          [config26 setBuildOfUnregisteredIdentityGeneration:v73];
 
           v75 = +[IMRGLog registration];
           if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
           {
-            v76 = [(IDSRegistrationKeyManager *)v4 config];
-            v77 = [v76 unregisteredIdentityContainer];
-            v78 = [(IDSRegistrationKeyManager *)v4 config];
-            v79 = [v78 buildOfUnregisteredIdentityGeneration];
+            config27 = [(IDSRegistrationKeyManager *)selfCopy config];
+            unregisteredIdentityContainer3 = [config27 unregisteredIdentityContainer];
+            config28 = [(IDSRegistrationKeyManager *)selfCopy config];
+            buildOfUnregisteredIdentityGeneration = [config28 buildOfUnregisteredIdentityGeneration];
             *buf = 138478083;
-            v244 = v77;
+            v244 = unregisteredIdentityContainer3;
             v245 = 2112;
-            v246 = v79;
+            v246 = buildOfUnregisteredIdentityGeneration;
             _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_DEFAULT, "Successfully loaded unregistered message protection identity from keychain {_config.unregisteredIdentity: %{private}@, buildOfGeneration: %@}", buf, 0x16u);
           }
         }
@@ -1410,7 +1410,7 @@ LABEL_180:
           }
         }
 
-        v81 = v4->_recentKeyLoadingErrors;
+        v81 = selfCopy->_recentKeyLoadingErrors;
         if (v236[1])
         {
           [(IDSNGMKeyLoadingErrorContainer *)v81 setUnregisteredDeserializationError:v217];
@@ -1423,26 +1423,26 @@ LABEL_180:
 
         LOBYTE(v236[0]) = 0;
         v230 = 0;
-        v82 = [(IDSRegistrationKeyManager *)v4 identityDataSource];
+        identityDataSource3 = [(IDSRegistrationKeyManager *)selfCopy identityDataSource];
         v229 = v69;
-        v83 = [v82 loadIdentityContainerWithIdentifier:3 withLegacyFallback:1 serializationDidChange:v239 + 3 deserializationDidFail:v236 needsEncryptionIdentityRoll:&v230 nonLegacyError:0 error:&v229];
+        v83 = [identityDataSource3 loadIdentityContainerWithIdentifier:3 withLegacyFallback:1 serializationDidChange:v239 + 3 deserializationDidFail:v236 needsEncryptionIdentityRoll:&v230 nonLegacyError:0 error:&v229];
         v222 = v229;
 
-        v84 = [(IDSRegistrationKeyManager *)v4 config];
-        [v84 setPreviousRegisteredIdentityContainer:v83];
+        config29 = [(IDSRegistrationKeyManager *)selfCopy config];
+        [config29 setPreviousRegisteredIdentityContainer:v83];
 
-        v85 = [(IDSRegistrationKeyManager *)v4 config];
-        v86 = [v85 previousRegisteredIdentityContainer];
+        config30 = [(IDSRegistrationKeyManager *)selfCopy config];
+        previousRegisteredIdentityContainer = [config30 previousRegisteredIdentityContainer];
 
-        if (v86)
+        if (previousRegisteredIdentityContainer)
         {
           v87 = +[IMRGLog registration];
           if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
           {
-            v88 = [(IDSRegistrationKeyManager *)v4 config];
-            v89 = [v88 previousRegisteredIdentityContainer];
+            config31 = [(IDSRegistrationKeyManager *)selfCopy config];
+            previousRegisteredIdentityContainer2 = [config31 previousRegisteredIdentityContainer];
             *buf = 138477827;
-            v244 = v89;
+            v244 = previousRegisteredIdentityContainer2;
             _os_log_impl(&_mh_execute_header, v87, OS_LOG_TYPE_DEFAULT, "Successfully loaded previous message protection identity from keychain {previousMessageProtectionKey: %{private}@}", buf, 0xCu);
           }
         }
@@ -1466,22 +1466,22 @@ LABEL_180:
           }
         }
 
-        v91 = [(IDSRegistrationKeyManager *)v4 config];
-        v92 = [v91 previousRegisteredIdentityContainer];
+        config32 = [(IDSRegistrationKeyManager *)selfCopy config];
+        previousRegisteredIdentityContainer3 = [config32 previousRegisteredIdentityContainer];
 
-        if (v92)
+        if (previousRegisteredIdentityContainer3)
         {
-          [(IDSRegistrationKeyManager *)v4 _purgePreviousIdentityDelay];
-          [(IDSRegistrationKeyManager *)v4 _schedulePurgeOfPreviousIdentityAfterDelay:?];
+          [(IDSRegistrationKeyManager *)selfCopy _purgePreviousIdentityDelay];
+          [(IDSRegistrationKeyManager *)selfCopy _schedulePurgeOfPreviousIdentityAfterDelay:?];
         }
 
-        [(IDSRegistrationKeyManager *)v4 loadPairingIdentities:1];
+        [(IDSRegistrationKeyManager *)selfCopy loadPairingIdentities:1];
         v93 = +[IMRGLog registration];
         if (os_log_type_enabled(v93, OS_LOG_TYPE_DEFAULT))
         {
-          v215 = [(IDSRegistrationKeyManager *)v4 config];
-          v213 = [v215 registeredIdentityContainer];
-          if (v213)
+          config33 = [(IDSRegistrationKeyManager *)selfCopy config];
+          registeredIdentityContainer4 = [config33 registeredIdentityContainer];
+          if (registeredIdentityContainer4)
           {
             v94 = @"YES";
           }
@@ -1492,9 +1492,9 @@ LABEL_180:
           }
 
           v205 = v94;
-          v212 = [(IDSRegistrationKeyManager *)v4 config];
-          v211 = [v212 registeredIdentityContainer];
-          if ([v211 hasNGMIdentity])
+          config34 = [(IDSRegistrationKeyManager *)selfCopy config];
+          registeredIdentityContainer5 = [config34 registeredIdentityContainer];
+          if ([registeredIdentityContainer5 hasNGMIdentity])
           {
             v95 = @"YES";
           }
@@ -1505,9 +1505,9 @@ LABEL_180:
           }
 
           v204 = v95;
-          v210 = [(IDSRegistrationKeyManager *)v4 config];
-          v209 = [v210 unregisteredIdentityContainer];
-          if (v209)
+          config35 = [(IDSRegistrationKeyManager *)selfCopy config];
+          unregisteredIdentityContainer4 = [config35 unregisteredIdentityContainer];
+          if (unregisteredIdentityContainer4)
           {
             v96 = @"YES";
           }
@@ -1518,9 +1518,9 @@ LABEL_180:
           }
 
           v203 = v96;
-          v208 = [(IDSRegistrationKeyManager *)v4 config];
-          v207 = [v208 unregisteredIdentityContainer];
-          if ([v207 hasNGMIdentity])
+          config36 = [(IDSRegistrationKeyManager *)selfCopy config];
+          unregisteredIdentityContainer5 = [config36 unregisteredIdentityContainer];
+          if ([unregisteredIdentityContainer5 hasNGMIdentity])
           {
             v97 = @"YES";
           }
@@ -1530,14 +1530,14 @@ LABEL_180:
             v97 = @"NO";
           }
 
-          v206 = [(IDSRegistrationKeyManager *)v4 config];
-          v98 = [v206 registeredIdentityContainer];
-          v99 = [v98 ngmVersion];
-          v100 = [(IDSRegistrationKeyManager *)v4 config];
-          v101 = [v100 unregisteredIdentityContainer];
-          v102 = [v101 ngmVersion];
-          v103 = [(IDSRegistrationKeyManager *)v4 identityDataSource];
-          v104 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v103 ngmVersion]);
+          config37 = [(IDSRegistrationKeyManager *)selfCopy config];
+          registeredIdentityContainer6 = [config37 registeredIdentityContainer];
+          ngmVersion = [registeredIdentityContainer6 ngmVersion];
+          config38 = [(IDSRegistrationKeyManager *)selfCopy config];
+          unregisteredIdentityContainer6 = [config38 unregisteredIdentityContainer];
+          ngmVersion2 = [unregisteredIdentityContainer6 ngmVersion];
+          identityDataSource4 = [(IDSRegistrationKeyManager *)selfCopy identityDataSource];
+          v104 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [identityDataSource4 ngmVersion]);
           *buf = 138413826;
           v244 = v205;
           v245 = 2112;
@@ -1547,9 +1547,9 @@ LABEL_180:
           v249 = 2112;
           v250 = v97;
           v251 = 2112;
-          v252 = v99;
+          v252 = ngmVersion;
           v253 = 2112;
-          v254 = v102;
+          v254 = ngmVersion2;
           v255 = 2112;
           v256 = v104;
           _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_DEFAULT, "Considering regeneration {registeredIdentity: %@, registeredNGM: %@, unregisteredIdentity: %@, unregisteredNGM: %@, registeredVersion: %@, unregisteredVersion: %@, currentVersion: %@}", buf, 0x48u);
@@ -1557,9 +1557,9 @@ LABEL_180:
 
         if (LOBYTE(v236[1]) == 1)
         {
-          v105 = [(IDSRegistrationKeyManager *)v4 config];
-          v106 = [v105 unregisteredIdentityContainer];
-          v216 = v106 == 0;
+          config39 = [(IDSRegistrationKeyManager *)selfCopy config];
+          unregisteredIdentityContainer7 = [config39 unregisteredIdentityContainer];
+          v216 = unregisteredIdentityContainer7 == 0;
         }
 
         else
@@ -1567,19 +1567,19 @@ LABEL_180:
           v216 = 0;
         }
 
-        v107 = [(IDSRegistrationKeyManager *)v4 config];
-        v108 = [v107 registeredIdentityContainer];
+        config40 = [(IDSRegistrationKeyManager *)selfCopy config];
+        registeredIdentityContainer7 = [config40 registeredIdentityContainer];
 
-        v109 = [(IDSRegistrationKeyManager *)v4 config];
-        v110 = [v109 registeredIdentityContainer];
-        if ([v110 hasNGMIdentity])
+        config41 = [(IDSRegistrationKeyManager *)selfCopy config];
+        registeredIdentityContainer8 = [config41 registeredIdentityContainer];
+        if ([registeredIdentityContainer8 hasNGMIdentity])
         {
-          v111 = [(IDSRegistrationKeyManager *)v4 config];
-          v112 = [v111 registeredIdentityContainer];
-          v113 = [v112 ngmVersion];
-          v114 = [(IDSRegistrationKeyManager *)v4 identityDataSource];
-          v115 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v114 ngmVersion]);
-          v116 = [v113 isEqualToNumber:v115];
+          config42 = [(IDSRegistrationKeyManager *)selfCopy config];
+          registeredIdentityContainer9 = [config42 registeredIdentityContainer];
+          ngmVersion3 = [registeredIdentityContainer9 ngmVersion];
+          identityDataSource5 = [(IDSRegistrationKeyManager *)selfCopy identityDataSource];
+          v115 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [identityDataSource5 ngmVersion]);
+          v116 = [ngmVersion3 isEqualToNumber:v115];
 
           v117 = v116 ^ 1;
         }
@@ -1591,16 +1591,16 @@ LABEL_180:
 
         v214 = v117;
 
-        v118 = [(IDSRegistrationKeyManager *)v4 config];
-        v119 = [v118 unregisteredIdentityContainer];
-        if ([v119 hasNGMIdentity])
+        config43 = [(IDSRegistrationKeyManager *)selfCopy config];
+        unregisteredIdentityContainer8 = [config43 unregisteredIdentityContainer];
+        if ([unregisteredIdentityContainer8 hasNGMIdentity])
         {
-          v120 = [(IDSRegistrationKeyManager *)v4 config];
-          v121 = [v120 unregisteredIdentityContainer];
-          v122 = [v121 ngmVersion];
-          v123 = [(IDSRegistrationKeyManager *)v4 identityDataSource];
-          v124 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v123 ngmVersion]);
-          v125 = [v122 isEqualToNumber:v124];
+          config44 = [(IDSRegistrationKeyManager *)selfCopy config];
+          unregisteredIdentityContainer9 = [config44 unregisteredIdentityContainer];
+          ngmVersion4 = [unregisteredIdentityContainer9 ngmVersion];
+          identityDataSource6 = [(IDSRegistrationKeyManager *)selfCopy identityDataSource];
+          v124 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [identityDataSource6 ngmVersion]);
+          v125 = [ngmVersion4 isEqualToNumber:v124];
 
           v126 = v125 ^ 1;
         }
@@ -1610,51 +1610,51 @@ LABEL_180:
           v126 = 1;
         }
 
-        v127 = [(IDSRegistrationKeyManager *)v4 config];
-        v128 = [v127 unregisteredIdentityContainer];
-        v129 = v128 != 0;
-        if (!((v128 == 0) | v126 & 1))
+        config45 = [(IDSRegistrationKeyManager *)selfCopy config];
+        unregisteredIdentityContainer10 = [config45 unregisteredIdentityContainer];
+        v129 = unregisteredIdentityContainer10 != 0;
+        if (!((unregisteredIdentityContainer10 == 0) | v126 & 1))
         {
-          v130 = [(IDSRegistrationKeyManager *)v4 config];
-          v131 = [v130 unregisteredIdentityContainer];
-          v132 = [v131 legacyFullIdentity];
-          v129 = v132 == 0;
+          config46 = [(IDSRegistrationKeyManager *)selfCopy config];
+          unregisteredIdentityContainer11 = [config46 unregisteredIdentityContainer];
+          legacyFullIdentity3 = [unregisteredIdentityContainer11 legacyFullIdentity];
+          v129 = legacyFullIdentity3 == 0;
         }
 
-        if ((v216 | v214) & 1 | (v108 == 0) | v129)
+        if ((v216 | v214) & 1 | (registeredIdentityContainer7 == 0) | v129)
         {
-          if ((v126 & 1) != 0 || (-[IDSRegistrationKeyManager config](v4, "config"), v133 = objc_claimAutoreleasedReturnValue(), [v133 unregisteredIdentityContainer], v134 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v134, "legacyFullIdentity"), v135 = objc_claimAutoreleasedReturnValue(), v136 = v135 == 0, v135, v134, v133, v136))
+          if ((v126 & 1) != 0 || (-[IDSRegistrationKeyManager config](selfCopy, "config"), v133 = objc_claimAutoreleasedReturnValue(), [v133 unregisteredIdentityContainer], v134 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v134, "legacyFullIdentity"), v135 = objc_claimAutoreleasedReturnValue(), v136 = v135 == 0, v135, v134, v133, v136))
           {
             v142 = +[IMRGLog registration];
             if (os_log_type_enabled(v142, OS_LOG_TYPE_DEFAULT))
             {
-              v143 = [(IDSRegistrationKeyManager *)v4 config];
-              v144 = [v143 registeredIdentityContainer];
-              v145 = [(IDSRegistrationKeyManager *)v4 config];
-              v146 = [v145 unregisteredIdentityContainer];
-              v147 = [(IDSRegistrationKeyManager *)v4 identityDataSource];
-              v148 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v147 ngmVersion]);
+              config47 = [(IDSRegistrationKeyManager *)selfCopy config];
+              registeredIdentityContainer10 = [config47 registeredIdentityContainer];
+              config48 = [(IDSRegistrationKeyManager *)selfCopy config];
+              unregisteredIdentityContainer12 = [config48 unregisteredIdentityContainer];
+              identityDataSource7 = [(IDSRegistrationKeyManager *)selfCopy identityDataSource];
+              v148 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [identityDataSource7 ngmVersion]);
               *buf = 138412802;
-              v244 = v144;
+              v244 = registeredIdentityContainer10;
               v245 = 2112;
-              v246 = v146;
+              v246 = unregisteredIdentityContainer12;
               v247 = 2112;
               v248 = v148;
               _os_log_impl(&_mh_execute_header, v142, OS_LOG_TYPE_DEFAULT, "We have no registered or unregistered identity loaded -- generating a new message protection identity {registeredIdentityContainer: %@, unregisteredIdentityContainer: %@, identityDataSource.ngmVersion: %@}", buf, 0x20u);
             }
 
-            v149 = [(IDSNGMKeyLoadingErrorContainer *)v4->_recentKeyLoadingErrors shouldHaveUnregisteredIdentity];
+            shouldHaveUnregisteredIdentity = [(IDSNGMKeyLoadingErrorContainer *)selfCopy->_recentKeyLoadingErrors shouldHaveUnregisteredIdentity];
 
-            if (v149)
+            if (shouldHaveUnregisteredIdentity)
             {
-              v150 = [(IDSNGMKeyLoadingErrorContainer *)v4->_recentKeyLoadingErrors unregisteredDeserializationError];
+              unregisteredDeserializationError = [(IDSNGMKeyLoadingErrorContainer *)selfCopy->_recentKeyLoadingErrors unregisteredDeserializationError];
 
-              if (v150)
+              if (unregisteredDeserializationError)
               {
                 v151 = +[IMRGLog registration];
                 if (os_log_type_enabled(v151, OS_LOG_TYPE_FAULT))
                 {
-                  [(IDSNGMKeyLoadingErrorContainer *)v4->_recentKeyLoadingErrors registeredDeserializationError];
+                  [(IDSNGMKeyLoadingErrorContainer *)selfCopy->_recentKeyLoadingErrors registeredDeserializationError];
                   objc_claimAutoreleasedReturnValue();
                   sub_100915BE0();
                 }
@@ -1662,14 +1662,14 @@ LABEL_180:
 
               else
               {
-                v156 = [(IDSNGMKeyLoadingErrorContainer *)v4->_recentKeyLoadingErrors unregisteredKeychainError];
+                unregisteredKeychainError = [(IDSNGMKeyLoadingErrorContainer *)selfCopy->_recentKeyLoadingErrors unregisteredKeychainError];
 
-                if (v156)
+                if (unregisteredKeychainError)
                 {
                   v151 = +[IMRGLog registration];
                   if (os_log_type_enabled(v151, OS_LOG_TYPE_FAULT))
                   {
-                    [(IDSNGMKeyLoadingErrorContainer *)v4->_recentKeyLoadingErrors registeredKeychainError];
+                    [(IDSNGMKeyLoadingErrorContainer *)selfCopy->_recentKeyLoadingErrors registeredKeychainError];
                     objc_claimAutoreleasedReturnValue();
                     sub_100915C2C();
                   }
@@ -1686,18 +1686,18 @@ LABEL_180:
               }
             }
 
-            v158 = [(IDSNGMKeyLoadingErrorContainer *)v4->_recentKeyLoadingErrors shouldHaveRegisteredIdentity];
+            shouldHaveRegisteredIdentity = [(IDSNGMKeyLoadingErrorContainer *)selfCopy->_recentKeyLoadingErrors shouldHaveRegisteredIdentity];
 
-            if (v158)
+            if (shouldHaveRegisteredIdentity)
             {
-              v159 = [(IDSNGMKeyLoadingErrorContainer *)v4->_recentKeyLoadingErrors registeredDeserializationError];
+              registeredDeserializationError = [(IDSNGMKeyLoadingErrorContainer *)selfCopy->_recentKeyLoadingErrors registeredDeserializationError];
 
-              if (v159)
+              if (registeredDeserializationError)
               {
                 v160 = +[IMRGLog registration];
                 if (os_log_type_enabled(v160, OS_LOG_TYPE_FAULT))
                 {
-                  [(IDSNGMKeyLoadingErrorContainer *)v4->_recentKeyLoadingErrors registeredDeserializationError];
+                  [(IDSNGMKeyLoadingErrorContainer *)selfCopy->_recentKeyLoadingErrors registeredDeserializationError];
                   objc_claimAutoreleasedReturnValue();
                   sub_100915B0C();
                 }
@@ -1705,14 +1705,14 @@ LABEL_180:
 
               else
               {
-                v161 = [(IDSNGMKeyLoadingErrorContainer *)v4->_recentKeyLoadingErrors registeredKeychainError];
+                registeredKeychainError = [(IDSNGMKeyLoadingErrorContainer *)selfCopy->_recentKeyLoadingErrors registeredKeychainError];
 
-                if (v161)
+                if (registeredKeychainError)
                 {
                   v160 = +[IMRGLog registration];
                   if (os_log_type_enabled(v160, OS_LOG_TYPE_FAULT))
                   {
-                    [(IDSNGMKeyLoadingErrorContainer *)v4->_recentKeyLoadingErrors registeredKeychainError];
+                    [(IDSNGMKeyLoadingErrorContainer *)selfCopy->_recentKeyLoadingErrors registeredKeychainError];
                     objc_claimAutoreleasedReturnValue();
                     sub_100915B58();
                   }
@@ -1729,26 +1729,26 @@ LABEL_180:
               }
             }
 
-            v162 = [(IDSRegistrationKeyManager *)v4 config];
-            v163 = [v162 unregisteredIdentityContainer];
-            v164 = [(IDSRegistrationKeyManager *)v4 config];
-            if (v163)
+            config49 = [(IDSRegistrationKeyManager *)selfCopy config];
+            unregisteredIdentityContainer13 = [config49 unregisteredIdentityContainer];
+            config50 = [(IDSRegistrationKeyManager *)selfCopy config];
+            if (unregisteredIdentityContainer13)
             {
-              [v164 unregisteredIdentityContainer];
+              [config50 unregisteredIdentityContainer];
             }
 
             else
             {
-              [v164 registeredIdentityContainer];
+              [config50 registeredIdentityContainer];
             }
             v137 = ;
 
-            v165 = [v137 legacyFullIdentity];
-            v166 = [(IDSRegistrationKeyManager *)v4 _generateUnregisteredIdentityWithExistingLegacyIdentity:v165 existingNGMIdentity:0];
+            legacyFullIdentity4 = [v137 legacyFullIdentity];
+            v166 = [(IDSRegistrationKeyManager *)selfCopy _generateUnregisteredIdentityWithExistingLegacyIdentity:legacyFullIdentity4 existingNGMIdentity:0];
 
             if (v166)
             {
-              [(IDSRegistrationKeyManager *)v4 _notifyUnregisteredIdentityRegenerated];
+              [(IDSRegistrationKeyManager *)selfCopy _notifyUnregisteredIdentityRegenerated];
             }
           }
 
@@ -1765,7 +1765,7 @@ LABEL_180:
 
         else
         {
-          if ([(IDSRegistrationKeyManager *)v4 _shouldRegenerateRegisteredIdentity])
+          if ([(IDSRegistrationKeyManager *)selfCopy _shouldRegenerateRegisteredIdentity])
           {
             v138 = +[IMRGLog registration];
             if (os_log_type_enabled(v138, OS_LOG_TYPE_DEFAULT))
@@ -1774,18 +1774,18 @@ LABEL_180:
               _os_log_impl(&_mh_execute_header, v138, OS_LOG_TYPE_DEFAULT, "We need to regenerate the registered identity", buf, 2u);
             }
 
-            v139 = [(IDSNGMKeyLoadingErrorContainer *)v4->_recentKeyLoadingErrors shouldHaveRegisteredIdentity];
+            shouldHaveRegisteredIdentity2 = [(IDSNGMKeyLoadingErrorContainer *)selfCopy->_recentKeyLoadingErrors shouldHaveRegisteredIdentity];
 
-            if (v139)
+            if (shouldHaveRegisteredIdentity2)
             {
-              v140 = [(IDSNGMKeyLoadingErrorContainer *)v4->_recentKeyLoadingErrors registeredDeserializationError];
+              registeredDeserializationError2 = [(IDSNGMKeyLoadingErrorContainer *)selfCopy->_recentKeyLoadingErrors registeredDeserializationError];
 
-              if (v140)
+              if (registeredDeserializationError2)
               {
                 v141 = +[IMRGLog registration];
                 if (os_log_type_enabled(v141, OS_LOG_TYPE_FAULT))
                 {
-                  [(IDSNGMKeyLoadingErrorContainer *)v4->_recentKeyLoadingErrors registeredDeserializationError];
+                  [(IDSNGMKeyLoadingErrorContainer *)selfCopy->_recentKeyLoadingErrors registeredDeserializationError];
                   objc_claimAutoreleasedReturnValue();
                   sub_100915B0C();
                 }
@@ -1793,14 +1793,14 @@ LABEL_180:
 
               else
               {
-                v157 = [(IDSNGMKeyLoadingErrorContainer *)v4->_recentKeyLoadingErrors registeredKeychainError];
+                registeredKeychainError2 = [(IDSNGMKeyLoadingErrorContainer *)selfCopy->_recentKeyLoadingErrors registeredKeychainError];
 
-                if (v157)
+                if (registeredKeychainError2)
                 {
                   v141 = +[IMRGLog registration];
                   if (os_log_type_enabled(v141, OS_LOG_TYPE_FAULT))
                   {
-                    [(IDSNGMKeyLoadingErrorContainer *)v4->_recentKeyLoadingErrors registeredKeychainError];
+                    [(IDSNGMKeyLoadingErrorContainer *)selfCopy->_recentKeyLoadingErrors registeredKeychainError];
                     objc_claimAutoreleasedReturnValue();
                     sub_100915B58();
                   }
@@ -1817,49 +1817,49 @@ LABEL_180:
               }
             }
 
-            [(IDSRegistrationKeyManager *)v4 _identityRegenerationDelay];
-            [(IDSRegistrationKeyManager *)v4 _scheduleRegenerationOfRegisteredIdentityAfterDelay:?];
+            [(IDSRegistrationKeyManager *)selfCopy _identityRegenerationDelay];
+            [(IDSRegistrationKeyManager *)selfCopy _scheduleRegenerationOfRegisteredIdentityAfterDelay:?];
             goto LABEL_170;
           }
 
           v137 = +[IMRGLog registration];
           if (os_log_type_enabled(v137, OS_LOG_TYPE_DEFAULT))
           {
-            v152 = [(IDSRegistrationKeyManager *)v4 config];
-            v153 = [v152 registeredIdentityContainer];
-            v154 = [(IDSRegistrationKeyManager *)v4 config];
-            v155 = [v154 unregisteredIdentityContainer];
+            config51 = [(IDSRegistrationKeyManager *)selfCopy config];
+            registeredIdentityContainer11 = [config51 registeredIdentityContainer];
+            config52 = [(IDSRegistrationKeyManager *)selfCopy config];
+            unregisteredIdentityContainer14 = [config52 unregisteredIdentityContainer];
             *buf = 138412546;
-            v244 = v153;
+            v244 = registeredIdentityContainer11;
             v245 = 2112;
-            v246 = v155;
+            v246 = unregisteredIdentityContainer14;
             _os_log_impl(&_mh_execute_header, v137, OS_LOG_TYPE_DEFAULT, "No need to regenerate message protection identity {identity: %@, unregisteredIdentity: %@}", buf, 0x16u);
           }
         }
 
 LABEL_170:
         v228 = 0;
-        [(IDSPerServiceApplicationKeyManager *)v4->_applicationKeyManager loadIdentitiesWithSerializationDidChange:v239 + 3 deserializationDidFail:&v237 + 1 identityGenerated:&v228];
+        [(IDSPerServiceApplicationKeyManager *)selfCopy->_applicationKeyManager loadIdentitiesWithSerializationDidChange:v239 + 3 deserializationDidFail:&v237 + 1 identityGenerated:&v228];
         if (v228 == 1)
         {
-          [(IDSRegistrationKeyManager *)v4 _notifyUnregisteredIdentityRegenerated];
+          [(IDSRegistrationKeyManager *)selfCopy _notifyUnregisteredIdentityRegenerated];
         }
 
         if (+[IDSKeyTransparencyVerifier isKeyTransparencyEnabled])
         {
           v227 = 0;
-          [(IDSKTRegistrationDataManager *)v4->_ktRegistrationDataManager loadKTRegistrationDatasWithShouldGenerateKTData:&v227];
+          [(IDSKTRegistrationDataManager *)selfCopy->_ktRegistrationDataManager loadKTRegistrationDatasWithShouldGenerateKTData:&v227];
           if (v227 == 1)
           {
             v226 = 0;
-            v167 = [(IDSRegistrationKeyManager *)v4 publicMessageProtectionIdentityDataToRegisterWithError:&v226];
+            v167 = [(IDSRegistrationKeyManager *)selfCopy publicMessageProtectionIdentityDataToRegisterWithError:&v226];
             v168 = v226;
             v169 = im_primary_queue();
             block[0] = _NSConcreteStackBlock;
             block[1] = 3221225472;
             block[2] = sub_1003347F4;
             block[3] = &unk_100BD6E40;
-            block[4] = v4;
+            block[4] = selfCopy;
             v170 = v167;
             v225 = v170;
             dispatch_async(v169, block);
@@ -1885,16 +1885,16 @@ LABEL_170:
         _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "We're under lock, and this requires migration -- we need to migrate", buf, 2u);
       }
 
-      v4->_detectedMigrationNeeded = 1;
-      v57 = [(IDSRegistrationKeyManager *)v4 systemMonitor];
-      [v57 _addEarlyListener:v4];
+      selfCopy->_detectedMigrationNeeded = 1;
+      systemMonitor3 = [(IDSRegistrationKeyManager *)selfCopy systemMonitor];
+      [systemMonitor3 _addEarlyListener:selfCopy];
     }
 
     goto LABEL_70;
   }
 
 LABEL_181:
-  [(NSRecursiveLock *)v4->_lock unlock];
+  [(NSRecursiveLock *)selfCopy->_lock unlock];
   if (IMGetAppBoolForKey())
   {
     IMSetAppBoolForKey();
@@ -1933,7 +1933,7 @@ LABEL_181:
 
   if ((v239[3] & 1) != 0 || HIBYTE(v237) == 1)
   {
-    if (![(IDSRegistrationKeyManager *)v4 _save])
+    if (![(IDSRegistrationKeyManager *)selfCopy _save])
     {
       goto LABEL_219;
     }
@@ -1961,7 +1961,7 @@ LABEL_181:
         _os_log_impl(&_mh_execute_header, v195, OS_LOG_TYPE_DEFAULT, " ********************************************************************", &v236[1], 2u);
       }
 
-      v4->_needsReRegister = 1;
+      selfCopy->_needsReRegister = 1;
     }
   }
 
@@ -1989,7 +1989,7 @@ LABEL_181:
     }
 
     v199 = +[NSNotificationCenter defaultCenter];
-    [v199 __mainThreadPostNotificationName:@"__kIDSRegistrationKeyManagerPrivateIdentityRebuiltNotification" object:v4];
+    [v199 __mainThreadPostNotificationName:@"__kIDSRegistrationKeyManagerPrivateIdentityRebuiltNotification" object:selfCopy];
 LABEL_218:
 
     goto LABEL_219;
@@ -2019,7 +2019,7 @@ LABEL_218:
     }
 
     v199 = +[NSNotificationCenter defaultCenter];
-    [v199 __mainThreadPostNotificationName:@"__kIDSRegistrationKeyManagerEncryptionIdentityNeedsRollNotification" object:v4];
+    [v199 __mainThreadPostNotificationName:@"__kIDSRegistrationKeyManagerEncryptionIdentityNeedsRollNotification" object:selfCopy];
     goto LABEL_218;
   }
 
@@ -2027,24 +2027,24 @@ LABEL_219:
   _Block_object_dispose(&v238, 8);
 }
 
-- (IDSRegistrationKeyManager)initWithSystemMonitor:(id)a3 keychainWrapper:(id)a4 loadingRateLimiter:(id)a5 identityDataSource:(id)a6 allowPairingIdentities:(BOOL)a7 allowRegenerateRegisteredIdentity:(BOOL)a8 keyPairProvider:(id)a9 ktRegistrationDataManager:(id)a10
+- (IDSRegistrationKeyManager)initWithSystemMonitor:(id)monitor keychainWrapper:(id)wrapper loadingRateLimiter:(id)limiter identityDataSource:(id)source allowPairingIdentities:(BOOL)identities allowRegenerateRegisteredIdentity:(BOOL)identity keyPairProvider:(id)provider ktRegistrationDataManager:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v36 = a5;
-  v17 = a6;
-  v35 = a9;
-  v34 = a10;
-  v37 = v15;
-  if (!v15)
+  monitorCopy = monitor;
+  wrapperCopy = wrapper;
+  limiterCopy = limiter;
+  sourceCopy = source;
+  providerCopy = provider;
+  managerCopy = manager;
+  v37 = monitorCopy;
+  if (!monitorCopy)
   {
     sub_100915CE8(a2, self);
   }
 
-  v18 = v16;
-  if (v16)
+  v18 = wrapperCopy;
+  if (wrapperCopy)
   {
-    if (v17)
+    if (sourceCopy)
     {
       goto LABEL_5;
     }
@@ -2053,7 +2053,7 @@ LABEL_219:
   else
   {
     sub_100915D64(a2, self);
-    if (v17)
+    if (sourceCopy)
     {
       goto LABEL_5;
     }
@@ -2067,25 +2067,25 @@ LABEL_5:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_systemMonitor, a3);
+    objc_storeStrong(&v19->_systemMonitor, monitor);
     [(IMSystemMonitor *)v20->_systemMonitor addListener:v20];
     [(IMSystemMonitor *)v20->_systemMonitor setActive:1];
     [(IMSystemMonitor *)v20->_systemMonitor setWatchesDataProtectionLockState:1];
-    objc_storeStrong(&v20->_keychainWrapper, a4);
-    objc_storeStrong(&v20->_loadingRateLimiter, a5);
-    objc_storeStrong(&v20->_identityDataSource, a6);
-    v21 = [[IDSPerServiceApplicationKeyManager alloc] initWithIdentityDataSource:v17];
+    objc_storeStrong(&v20->_keychainWrapper, wrapper);
+    objc_storeStrong(&v20->_loadingRateLimiter, limiter);
+    objc_storeStrong(&v20->_identityDataSource, source);
+    v21 = [[IDSPerServiceApplicationKeyManager alloc] initWithIdentityDataSource:sourceCopy];
     applicationKeyManager = v20->_applicationKeyManager;
     v20->_applicationKeyManager = v21;
 
-    v20->_allowPairingIdentities = a7;
-    v20->_allowRegenerateRegisteredIdentity = a8;
-    objc_storeStrong(&v20->_keyPairProvider, a9);
+    v20->_allowPairingIdentities = identities;
+    v20->_allowRegenerateRegisteredIdentity = identity;
+    objc_storeStrong(&v20->_keyPairProvider, provider);
     v23 = objc_alloc_init(IDSNGMKeyLoadingErrorContainer);
     recentKeyLoadingErrors = v20->_recentKeyLoadingErrors;
     v20->_recentKeyLoadingErrors = v23;
 
-    objc_storeStrong(&v20->_ktRegistrationDataManager, a10);
+    objc_storeStrong(&v20->_ktRegistrationDataManager, manager);
     v25 = objc_alloc_init(IDSRegistrationKeyConfig);
     config = v20->_config;
     v20->_config = v25;
@@ -2120,11 +2120,11 @@ LABEL_5:
 
 - (void)dealloc
 {
-  v3 = [(IDSRegistrationKeyManager *)self systemMonitor];
-  [v3 _removeEarlyListener:self];
+  systemMonitor = [(IDSRegistrationKeyManager *)self systemMonitor];
+  [systemMonitor _removeEarlyListener:self];
 
-  v4 = [(IDSRegistrationKeyManager *)self systemMonitor];
-  [v4 removeListener:self];
+  systemMonitor2 = [(IDSRegistrationKeyManager *)self systemMonitor];
+  [systemMonitor2 removeListener:self];
 
   [(IDSRegistrationKeyManager *)self _unsubscribeForTimeChangeNotification];
   v5.receiver = self;
@@ -2132,17 +2132,17 @@ LABEL_5:
   [(IDSRegistrationKeyManager *)&v5 dealloc];
 }
 
-- (void)setForceRoll:(BOOL)a3
+- (void)setForceRoll:(BOOL)roll
 {
-  if (self->_forceRoll != a3)
+  if (self->_forceRoll != roll)
   {
     v12 = v3;
     v13 = v4;
-    v5 = a3;
-    self->_forceRoll = a3;
+    rollCopy = roll;
+    self->_forceRoll = roll;
     v6 = +[IMRGLog registration];
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (rollCopy)
     {
       if (v7)
       {
@@ -2164,35 +2164,35 @@ LABEL_7:
   }
 }
 
-- (id)generateCSRForUserID:(id)a3
+- (id)generateCSRForUserID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:0];
-  if (v4)
+  if (dCopy)
   {
-    v5 = [(IDSRegistrationKeyManager *)self config];
-    if ([v5 privateKey])
+    config = [(IDSRegistrationKeyManager *)self config];
+    if ([config privateKey])
     {
-      v6 = [(IDSRegistrationKeyManager *)self config];
-      v7 = [v6 publicKey];
+      config2 = [(IDSRegistrationKeyManager *)self config];
+      publicKey = [config2 publicKey];
 
-      if (v7)
+      if (publicKey)
       {
-        v8 = [v4 dataUsingEncoding:4];
-        v9 = [v8 SHA1HexString];
+        v8 = [dCopy dataUsingEncoding:4];
+        sHA1HexString = [v8 SHA1HexString];
 
         v21[0] = kSecOidCommonName;
-        v21[1] = v9;
+        v21[1] = sHA1HexString;
         v10 = [NSArray arrayWithObjects:v21 count:2];
         v22 = v10;
         v11 = [NSArray arrayWithObjects:&v22 count:1];
         v23 = v11;
         v12 = [NSArray arrayWithObjects:&v23 count:1];
 
-        v13 = [(IDSRegistrationKeyManager *)self config];
-        [v13 publicKey];
-        v14 = [(IDSRegistrationKeyManager *)self config];
-        [v14 privateKey];
+        config3 = [(IDSRegistrationKeyManager *)self config];
+        [config3 publicKey];
+        config4 = [(IDSRegistrationKeyManager *)self config];
+        [config4 privateKey];
         CertificateRequest = SecGenerateCertificateRequest();
 
         v16 = +[IMRGLog registration];
@@ -2212,19 +2212,19 @@ LABEL_7:
     }
   }
 
-  v9 = +[IMRGLog registration];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  sHA1HexString = +[IMRGLog registration];
+  if (os_log_type_enabled(sHA1HexString, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(IDSRegistrationKeyManager *)self config];
-    v18 = [v17 privateKey];
-    v19 = [(IDSRegistrationKeyManager *)self config];
+    config5 = [(IDSRegistrationKeyManager *)self config];
+    privateKey = [config5 privateKey];
+    config6 = [(IDSRegistrationKeyManager *)self config];
     *buf = 138412802;
-    v25 = v4;
+    v25 = dCopy;
     v26 = 2048;
-    v27 = v18;
+    v27 = privateKey;
     v28 = 2112;
-    v29 = [v19 publicKey];
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Failed generating CSR due to insufficient context {userID: %@, privateKey: %p, publicKey: %@}", buf, 0x20u);
+    publicKey2 = [config6 publicKey];
+    _os_log_impl(&_mh_execute_header, sHA1HexString, OS_LOG_TYPE_DEFAULT, "Failed generating CSR due to insufficient context {userID: %@, privateKey: %p, publicKey: %@}", buf, 0x20u);
   }
 
   CertificateRequest = 0;
@@ -2233,37 +2233,37 @@ LABEL_11:
   return CertificateRequest;
 }
 
-- (__SecKey)fullIdentityForKeyIndex:(unsigned __int16)a3
+- (__SecKey)fullIdentityForKeyIndex:(unsigned __int16)index
 {
-  v3 = a3;
+  indexCopy = index;
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
-  v5 = [(IDSPerServiceApplicationKeyManager *)self->_applicationKeyManager fullIdentityForKeyIndex:v3];
+  v5 = [(IDSPerServiceApplicationKeyManager *)self->_applicationKeyManager fullIdentityForKeyIndex:indexCopy];
   [(NSRecursiveLock *)self->_lock unlock];
   return v5;
 }
 
-- (id)fullDeviceIdentityContainerUsableForKeyType:(unint64_t)a3
+- (id)fullDeviceIdentityContainerUsableForKeyType:(unint64_t)type
 {
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
-  if (a3 >= 2 && (a3 != 2 || self->_failedToGeneratedPublicDataForNGMIdentity))
+  if (type >= 2 && (type != 2 || self->_failedToGeneratedPublicDataForNGMIdentity))
   {
     goto LABEL_9;
   }
 
-  v5 = [(IDSRegistrationKeyManager *)self config];
-  v6 = [v5 unregisteredIdentityContainer];
-  v7 = [(IDSRegistrationKeyManager *)self config];
-  v8 = v7;
-  if (v6)
+  config = [(IDSRegistrationKeyManager *)self config];
+  unregisteredIdentityContainer = [config unregisteredIdentityContainer];
+  config2 = [(IDSRegistrationKeyManager *)self config];
+  v8 = config2;
+  if (unregisteredIdentityContainer)
   {
-    [v7 unregisteredIdentityContainer];
+    [config2 unregisteredIdentityContainer];
   }
 
   else
   {
-    [v7 registeredIdentityContainer];
+    [config2 registeredIdentityContainer];
   }
   v9 = ;
 
@@ -2288,10 +2288,10 @@ LABEL_9:
 {
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
-  v3 = [(IDSRegistrationKeyManager *)self config];
-  v4 = [v3 previousRegisteredIdentityContainer];
+  config = [(IDSRegistrationKeyManager *)self config];
+  previousRegisteredIdentityContainer = [config previousRegisteredIdentityContainer];
 
-  if (!v4)
+  if (!previousRegisteredIdentityContainer)
   {
     v5 = +[IMRGLog registration];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -2302,33 +2302,33 @@ LABEL_9:
 
   [(NSRecursiveLock *)self->_lock unlock];
 
-  return v4;
+  return previousRegisteredIdentityContainer;
 }
 
-- (__SecKey)copyPublicIdentityDataToRegisterForKeyIndex:(unsigned __int16)a3 withError:(id *)a4
+- (__SecKey)copyPublicIdentityDataToRegisterForKeyIndex:(unsigned __int16)index withError:(id *)error
 {
-  v5 = a3;
+  indexCopy = index;
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
-  v7 = [(IDSPerServiceApplicationKeyManager *)self->_applicationKeyManager copyPublicIdentityDataToRegisterForKeyIndex:v5 withError:a4];
+  v7 = [(IDSPerServiceApplicationKeyManager *)self->_applicationKeyManager copyPublicIdentityDataToRegisterForKeyIndex:indexCopy withError:error];
   [(NSRecursiveLock *)self->_lock unlock];
   return v7;
 }
 
-- (id)copyKTRegistrationDataToRegisterForKeyIndex:(unsigned __int16)a3 withError:(id *)a4
+- (id)copyKTRegistrationDataToRegisterForKeyIndex:(unsigned __int16)index withError:(id *)error
 {
-  v4 = a3;
-  [(NSRecursiveLock *)self->_lock lock:a3];
+  indexCopy = index;
+  [(NSRecursiveLock *)self->_lock lock:index];
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
   ktRegistrationDataManager = self->_ktRegistrationDataManager;
   v12 = 0;
-  v7 = [(IDSKTRegistrationDataManager *)ktRegistrationDataManager copyKTRegistrationDataToRegisterForKeyIndex:v4 isRegistered:0 withError:&v12];
+  v7 = [(IDSKTRegistrationDataManager *)ktRegistrationDataManager copyKTRegistrationDataToRegisterForKeyIndex:indexCopy isRegistered:0 withError:&v12];
   v8 = v12;
   if (!v7)
   {
     v9 = self->_ktRegistrationDataManager;
     v11 = 0;
-    v7 = [(IDSKTRegistrationDataManager *)v9 copyKTRegistrationDataToRegisterForKeyIndex:v4 isRegistered:1 withError:&v11];
+    v7 = [(IDSKTRegistrationDataManager *)v9 copyKTRegistrationDataToRegisterForKeyIndex:indexCopy isRegistered:1 withError:&v11];
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
@@ -2340,19 +2340,19 @@ LABEL_9:
 {
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
-  v3 = [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager createRegistrationStatusProvider];
+  createRegistrationStatusProvider = [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager createRegistrationStatusProvider];
   [(NSRecursiveLock *)self->_lock unlock];
 
-  return v3;
+  return createRegistrationStatusProvider;
 }
 
-- (void)_handleTransparencySignatureResponse:(id)a3 error:(id)a4
+- (void)_handleTransparencySignatureResponse:(id)response error:(id)error
 {
   lock = self->_lock;
-  v7 = a4;
-  v8 = a3;
+  errorCopy = error;
+  responseCopy = response;
   [(NSRecursiveLock *)lock lock];
-  LODWORD(lock) = [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager handleTransparencySignatureResponse:v8 error:v7];
+  LODWORD(lock) = [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager handleTransparencySignatureResponse:responseCopy error:errorCopy];
 
   if (lock)
   {
@@ -2364,35 +2364,35 @@ LABEL_9:
   [(NSRecursiveLock *)v9 unlock];
 }
 
-- (void)_handleTransparencySignatureResponseForRegistration:(id)a3 error:(id)a4
+- (void)_handleTransparencySignatureResponseForRegistration:(id)registration error:(id)error
 {
   lock = self->_lock;
-  v7 = a4;
-  v8 = a3;
+  errorCopy = error;
+  registrationCopy = registration;
   [(NSRecursiveLock *)lock lock];
-  [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager handleTransparencySignatureResponse:v8 error:v7];
+  [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager handleTransparencySignatureResponse:registrationCopy error:errorCopy];
 
   v9 = self->_lock;
 
   [(NSRecursiveLock *)v9 unlock];
 }
 
-- (id)publicMessageProtectionIdentityDataToRegisterWithError:(id *)a3
+- (id)publicMessageProtectionIdentityDataToRegisterWithError:(id *)error
 {
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
-  v5 = [(IDSRegistrationKeyManager *)self config];
-  v6 = [v5 unregisteredIdentityContainer];
-  v7 = [(IDSRegistrationKeyManager *)self config];
-  v8 = v7;
-  if (v6)
+  config = [(IDSRegistrationKeyManager *)self config];
+  unregisteredIdentityContainer = [config unregisteredIdentityContainer];
+  config2 = [(IDSRegistrationKeyManager *)self config];
+  v8 = config2;
+  if (unregisteredIdentityContainer)
   {
-    [v7 unregisteredIdentityContainer];
+    [config2 unregisteredIdentityContainer];
   }
 
   else
   {
-    [v7 registeredIdentityContainer];
+    [config2 registeredIdentityContainer];
   }
   v9 = ;
 
@@ -2405,23 +2405,23 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Asked for public identity, but missing NGM identity. Attempting to repair", buf, 2u);
     }
 
-    v12 = [v9 legacyFullIdentity];
-    v13 = [(IDSRegistrationKeyManager *)self _generateUnregisteredIdentityWithExistingLegacyIdentity:v12 existingNGMIdentity:0];
+    legacyFullIdentity = [v9 legacyFullIdentity];
+    v13 = [(IDSRegistrationKeyManager *)self _generateUnregisteredIdentityWithExistingLegacyIdentity:legacyFullIdentity existingNGMIdentity:0];
 
     if (v13)
     {
-      v14 = [(IDSRegistrationKeyManager *)self config];
-      v15 = [v14 unregisteredIdentityContainer];
-      v16 = [(IDSRegistrationKeyManager *)self config];
-      v17 = v16;
-      if (v15)
+      config3 = [(IDSRegistrationKeyManager *)self config];
+      unregisteredIdentityContainer2 = [config3 unregisteredIdentityContainer];
+      config4 = [(IDSRegistrationKeyManager *)self config];
+      v17 = config4;
+      if (unregisteredIdentityContainer2)
       {
-        [v16 unregisteredIdentityContainer];
+        [config4 unregisteredIdentityContainer];
       }
 
       else
       {
-        [v16 registeredIdentityContainer];
+        [config4 registeredIdentityContainer];
       }
       v18 = ;
 
@@ -2429,37 +2429,37 @@ LABEL_9:
     }
   }
 
-  v19 = [(IDSRegistrationKeyManager *)self config];
-  v20 = [v19 unregisteredIdentityContainer];
-  [(IDSNGMKeyLoadingErrorContainer *)self->_recentKeyLoadingErrors setHasUnregisteredContainer:v20 != 0];
+  config5 = [(IDSRegistrationKeyManager *)self config];
+  unregisteredIdentityContainer3 = [config5 unregisteredIdentityContainer];
+  [(IDSNGMKeyLoadingErrorContainer *)self->_recentKeyLoadingErrors setHasUnregisteredContainer:unregisteredIdentityContainer3 != 0];
 
-  v21 = [(IDSRegistrationKeyManager *)self config];
-  v22 = [v21 registeredIdentityContainer];
-  [(IDSNGMKeyLoadingErrorContainer *)self->_recentKeyLoadingErrors setHasRegisteredContainer:v22 != 0];
+  config6 = [(IDSRegistrationKeyManager *)self config];
+  registeredIdentityContainer = [config6 registeredIdentityContainer];
+  [(IDSNGMKeyLoadingErrorContainer *)self->_recentKeyLoadingErrors setHasRegisteredContainer:registeredIdentityContainer != 0];
 
   if (v9)
   {
-    v23 = [v9 publicIdentityWithError:a3];
+    v23 = [v9 publicIdentityWithError:error];
     if (!v23)
     {
       v30 = +[IMRGLog registration];
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        sub_10091609C(a3, self);
+        sub_10091609C(error, self);
       }
 
-      v26 = 0;
+      ngmVersion = 0;
       v27 = 0;
-      v28 = 0;
+      identityData2 = 0;
       v29 = 0;
       goto LABEL_70;
     }
 
     if (([v9 shouldRollNGMEncryptionIdentity] & 1) == 0)
     {
-      v24 = [(IDSRegistrationKeyManager *)self config];
-      v25 = [v24 unappliedRollingTicket];
-      if (v25)
+      config7 = [(IDSRegistrationKeyManager *)self config];
+      unappliedRollingTicket = [config7 unappliedRollingTicket];
+      if (unappliedRollingTicket)
       {
       }
 
@@ -2469,21 +2469,21 @@ LABEL_9:
 
         if (!forceRoll)
         {
-          v28 = 0;
+          identityData2 = 0;
           v27 = 0;
           v30 = 0;
 LABEL_57:
-          v48 = [v23 ngmPublicDeviceIdentity];
-          v49 = [v48 identityData];
+          ngmPublicDeviceIdentity = [v23 ngmPublicDeviceIdentity];
+          identityData = [ngmPublicDeviceIdentity identityData];
 
-          v50 = [v23 ngmPublicDeviceIdentity];
-          v51 = [v50 prekeyData];
+          ngmPublicDeviceIdentity2 = [v23 ngmPublicDeviceIdentity];
+          prekeyData = [ngmPublicDeviceIdentity2 prekeyData];
 
-          v27 = v51;
-          v28 = v49;
+          v27 = prekeyData;
+          identityData2 = identityData;
 LABEL_58:
           failedToGeneratedPublicDataForNGMIdentity = self->_failedToGeneratedPublicDataForNGMIdentity;
-          if (v28 && v27)
+          if (identityData2 && v27)
           {
             v53 = 0;
           }
@@ -2493,11 +2493,11 @@ LABEL_58:
             v54 = +[IMRGLog registration];
             if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
             {
-              v66 = [v23 ngmPublicDeviceIdentity];
-              v61 = [v66 debugDescription];
+              ngmPublicDeviceIdentity3 = [v23 ngmPublicDeviceIdentity];
+              v61 = [ngmPublicDeviceIdentity3 debugDescription];
               v62 = v61;
               v63 = @"NO";
-              if (v28)
+              if (identityData2)
               {
                 v64 = @"YES";
               }
@@ -2531,19 +2531,19 @@ LABEL_58:
             [v55 setAppBool:self->_failedToGeneratedPublicDataForNGMIdentity forKey:@"failedToGeneratedPublicDataForNGMIdentity"];
           }
 
-          v56 = [v23 legacyPublicIdentity];
-          v29 = [v56 dataRepresentationWithError:a3];
+          legacyPublicIdentity = [v23 legacyPublicIdentity];
+          v29 = [legacyPublicIdentity dataRepresentationWithError:error];
 
           if (!v29)
           {
             v57 = +[IMRGLog registration];
             if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
             {
-              sub_100915FE4(a3, v23);
+              sub_100915FE4(error, v23);
             }
           }
 
-          v26 = [v23 ngmVersion];
+          ngmVersion = [v23 ngmVersion];
 LABEL_70:
 
           goto LABEL_71;
@@ -2551,10 +2551,10 @@ LABEL_70:
       }
     }
 
-    v32 = [(IDSRegistrationKeyManager *)self config];
-    v33 = [v32 unappliedRollingTicket];
+    config8 = [(IDSRegistrationKeyManager *)self config];
+    unappliedRollingTicket2 = [config8 unappliedRollingTicket];
 
-    if (v33)
+    if (unappliedRollingTicket2)
     {
       v30 = 0;
     }
@@ -2562,11 +2562,11 @@ LABEL_70:
     else
     {
       v67 = 0;
-      v33 = [v9 ngmKeyRollingTicketWithError:&v67];
+      unappliedRollingTicket2 = [v9 ngmKeyRollingTicketWithError:&v67];
       v30 = v67;
       if (IMGetAppBoolForKey())
       {
-        if (v33)
+        if (unappliedRollingTicket2)
         {
           v34 = @"Rolling key";
         }
@@ -2579,7 +2579,7 @@ LABEL_70:
         sub_100450174(1, @"NGM Key Rolling", v34, 1109);
       }
 
-      if (!v33)
+      if (!unappliedRollingTicket2)
       {
         v42 = +[IMRGLog registration];
         if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -2587,42 +2587,42 @@ LABEL_70:
           sub_100915F74();
         }
 
-        v33 = 0;
+        unappliedRollingTicket2 = 0;
         v27 = 0;
-        v28 = 0;
+        identityData2 = 0;
         goto LABEL_48;
       }
     }
 
-    v35 = [(IDSRegistrationKeyManager *)self config];
-    [v35 setUnappliedRollingTicket:v33];
+    config9 = [(IDSRegistrationKeyManager *)self config];
+    [config9 setUnappliedRollingTicket:unappliedRollingTicket2];
 
-    v36 = [(IDSRegistrationKeyManager *)self config];
-    v37 = [v36 unregisteredIdentityContainer];
+    config10 = [(IDSRegistrationKeyManager *)self config];
+    unregisteredIdentityContainer4 = [config10 unregisteredIdentityContainer];
 
-    if (!v37)
+    if (!unregisteredIdentityContainer4)
     {
-      v38 = [(IDSRegistrationKeyManager *)self config];
-      v39 = [v38 registeredIdentityContainer];
-      v40 = [(IDSRegistrationKeyManager *)self config];
-      [v40 setUnregisteredIdentityContainer:v39];
+      config11 = [(IDSRegistrationKeyManager *)self config];
+      registeredIdentityContainer2 = [config11 registeredIdentityContainer];
+      config12 = [(IDSRegistrationKeyManager *)self config];
+      [config12 setUnregisteredIdentityContainer:registeredIdentityContainer2];
 
       if (![(IDSRegistrationKeyManager *)self _save])
       {
         [(NSRecursiveLock *)self->_lock unlock];
 
-        v26 = 0;
+        ngmVersion = 0;
         v27 = 0;
-        v28 = 0;
+        identityData2 = 0;
         v29 = 0;
         goto LABEL_76;
       }
     }
 
-    v28 = [v33 identityData];
-    v41 = [v33 prekeyData];
-    v27 = v41;
-    if (v28 && v41)
+    identityData2 = [unappliedRollingTicket2 identityData];
+    prekeyData2 = [unappliedRollingTicket2 prekeyData];
+    v27 = prekeyData2;
+    if (identityData2 && prekeyData2)
     {
 LABEL_49:
       if (self->_forceRoll)
@@ -2637,7 +2637,7 @@ LABEL_49:
 
       [(IDSNGMKeyLoadingErrorContainer *)self->_recentKeyLoadingErrors setRollingError:v30];
 
-      if (v28 && v27)
+      if (identityData2 && v27)
       {
         goto LABEL_58;
       }
@@ -2648,13 +2648,13 @@ LABEL_49:
     v42 = +[IMRGLog registration];
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
-      v65 = [v23 ngmPublicDeviceIdentity];
-      v43 = [v65 debugDescription];
+      ngmPublicDeviceIdentity4 = [v23 ngmPublicDeviceIdentity];
+      v43 = [ngmPublicDeviceIdentity4 debugDescription];
       v44 = v43;
       v45 = @"NO";
       *buf = 138413058;
-      v69 = v33;
-      if (v28)
+      v69 = unappliedRollingTicket2;
+      if (identityData2)
       {
         v46 = @"YES";
       }
@@ -2689,15 +2689,15 @@ LABEL_48:
     sub_100916184(self);
   }
 
-  v26 = 0;
+  ngmVersion = 0;
   v27 = 0;
-  v28 = 0;
+  identityData2 = 0;
   v29 = 0;
 LABEL_71:
 
-  if (a3)
+  if (error)
   {
-    v58 = *a3;
+    v58 = *error;
   }
 
   else
@@ -2709,7 +2709,7 @@ LABEL_71:
   [(NSRecursiveLock *)self->_lock unlock];
   if (v29)
   {
-    v59 = [[IDSPublicIdentityData alloc] initWithPublicLegacyIdentityData:v29 publicNGMIdentityData:v28 publicNGMPrekeyData:v27 NGMVersion:v26];
+    v59 = [[IDSPublicIdentityData alloc] initWithPublicLegacyIdentityData:v29 publicNGMIdentityData:identityData2 publicNGMPrekeyData:v27 NGMVersion:ngmVersion];
     goto LABEL_77;
   }
 
@@ -2720,22 +2720,22 @@ LABEL_77:
   return v59;
 }
 
-- (id)publicMessageProtectionDeviceIdentityContainerToRegister:(id *)a3
+- (id)publicMessageProtectionDeviceIdentityContainerToRegister:(id *)register
 {
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
-  v5 = [(IDSRegistrationKeyManager *)self config];
-  v6 = [v5 unregisteredIdentityContainer];
-  v7 = [(IDSRegistrationKeyManager *)self config];
-  v8 = v7;
-  if (v6)
+  config = [(IDSRegistrationKeyManager *)self config];
+  unregisteredIdentityContainer = [config unregisteredIdentityContainer];
+  config2 = [(IDSRegistrationKeyManager *)self config];
+  v8 = config2;
+  if (unregisteredIdentityContainer)
   {
-    [v7 unregisteredIdentityContainer];
+    [config2 unregisteredIdentityContainer];
   }
 
   else
   {
-    [v7 registeredIdentityContainer];
+    [config2 registeredIdentityContainer];
   }
   v9 = ;
 
@@ -2750,14 +2750,14 @@ LABEL_77:
     goto LABEL_12;
   }
 
-  v10 = [v9 publicIdentityWithError:a3];
+  v10 = [v9 publicIdentityWithError:register];
   v11 = +[IMRGLog registration];
   v12 = v11;
   if (!v10)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_10091609C(a3, self);
+      sub_10091609C(register, self);
     }
 
 LABEL_12:
@@ -2767,16 +2767,16 @@ LABEL_12:
 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(IDSRegistrationKeyManager *)self config];
-    v14 = [v13 unregisteredIdentityContainer];
-    v15 = [(IDSRegistrationKeyManager *)self config];
-    v16 = [v15 registeredIdentityContainer];
+    config3 = [(IDSRegistrationKeyManager *)self config];
+    unregisteredIdentityContainer2 = [config3 unregisteredIdentityContainer];
+    config4 = [(IDSRegistrationKeyManager *)self config];
+    registeredIdentityContainer = [config4 registeredIdentityContainer];
     v18 = 138478339;
     v19 = v10;
     v20 = 2113;
-    v21 = v14;
+    v21 = unregisteredIdentityContainer2;
     v22 = 2113;
-    v23 = v16;
+    v23 = registeredIdentityContainer;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Returning publicIdentity to register {publicIdentityContainer: %{private}@, unregisteredContainer: %{private}@, registeredContainer: %{private}@}", &v18, 0x20u);
   }
 
@@ -2787,27 +2787,27 @@ LABEL_13:
   return v10;
 }
 
-- (id)_generateIdentityWithExistingIdentity:(id)a3 identifier:(int64_t)a4 dataProtectionClass:(int64_t)a5
+- (id)_generateIdentityWithExistingIdentity:(id)identity identifier:(int64_t)identifier dataProtectionClass:(int64_t)class
 {
-  v8 = a3;
-  if (v8)
+  identityCopy = identity;
+  if (identityCopy)
   {
     v9 = +[IMRGLog registration];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v8;
+      v19 = identityCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Immediately returning existing message protection identity {identity: %@}", buf, 0xCu);
     }
 
-    v10 = v8;
+    v10 = identityCopy;
   }
 
   else
   {
-    v11 = [(IDSRegistrationKeyManager *)self identityDataSource];
+    identityDataSource = [(IDSRegistrationKeyManager *)self identityDataSource];
     v17 = 0;
-    v12 = [v11 generateLegacyIdentityWithIdentifier:a4 dataProtectionClass:a5 error:&v17];
+    v12 = [identityDataSource generateLegacyIdentityWithIdentifier:identifier dataProtectionClass:class error:&v17];
     v13 = v17;
 
     v14 = +[IMRGLog registration];
@@ -2819,7 +2819,7 @@ LABEL_13:
         *buf = 138412802;
         v19 = v13;
         v20 = 2048;
-        v21 = a5;
+        classCopy = class;
         v22 = 2112;
         v23 = v12;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Created new message protection identity {error: %@, protectionClass: %ld, identity: %@}", buf, 0x20u);
@@ -2837,14 +2837,14 @@ LABEL_13:
   return v10;
 }
 
-- (id)_getPublicMessageProtectionDataForIdentity:(id)a3
+- (id)_getPublicMessageProtectionDataForIdentity:(id)identity
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  identityCopy = identity;
+  v4 = identityCopy;
+  if (identityCopy)
   {
     v14 = 0;
-    v5 = [v3 publicIdentityWithError:&v14];
+    v5 = [identityCopy publicIdentityWithError:&v14];
     v6 = v14;
     v7 = v6;
     if (v5)
@@ -2905,15 +2905,15 @@ LABEL_13:
 {
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
-  v3 = [(IDSRegistrationKeyManager *)self config];
-  v4 = [v3 registeredIdentityContainer];
-  v5 = [v4 legacyFullIdentity];
+  config = [(IDSRegistrationKeyManager *)self config];
+  registeredIdentityContainer = [config registeredIdentityContainer];
+  legacyFullIdentity = [registeredIdentityContainer legacyFullIdentity];
 
-  v6 = [v5 fullIdentity];
-  v7 = v6;
-  if (v6)
+  fullIdentity = [legacyFullIdentity fullIdentity];
+  v7 = fullIdentity;
+  if (fullIdentity)
   {
-    CFRetain(v6);
+    CFRetain(fullIdentity);
   }
 
   else
@@ -2932,14 +2932,14 @@ LABEL_13:
   return v7;
 }
 
-- (_SecMPFullIdentity)latestCopyMessageProtectionIdentityForDataProtectionClass:(unsigned int)a3
+- (_SecMPFullIdentity)latestCopyMessageProtectionIdentityForDataProtectionClass:(unsigned int)class
 {
-  v3 = [(IDSRegistrationKeyManager *)self latestMessageProtectionFullIdentityForDataProtectionClass:*&a3];
-  v4 = [v3 fullIdentity];
-  v5 = v4;
-  if (v4)
+  v3 = [(IDSRegistrationKeyManager *)self latestMessageProtectionFullIdentityForDataProtectionClass:*&class];
+  fullIdentity = [v3 fullIdentity];
+  v5 = fullIdentity;
+  if (fullIdentity)
   {
-    CFRetain(v4);
+    CFRetain(fullIdentity);
   }
 
   else
@@ -2960,15 +2960,15 @@ LABEL_13:
 {
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
-  v3 = [(IDSRegistrationKeyManager *)self config];
-  v4 = [v3 previousRegisteredIdentityContainer];
-  v5 = [v4 legacyFullIdentity];
+  config = [(IDSRegistrationKeyManager *)self config];
+  previousRegisteredIdentityContainer = [config previousRegisteredIdentityContainer];
+  legacyFullIdentity = [previousRegisteredIdentityContainer legacyFullIdentity];
 
-  v6 = [v5 fullIdentity];
-  v7 = v6;
-  if (v6)
+  fullIdentity = [legacyFullIdentity fullIdentity];
+  v7 = fullIdentity;
+  if (fullIdentity)
   {
-    CFRetain(v6);
+    CFRetain(fullIdentity);
   }
 
   else
@@ -2986,19 +2986,19 @@ LABEL_13:
   return v7;
 }
 
-- (id)latestMessageProtectionFullIdentityForDataProtectionClass:(unsigned int)a3
+- (id)latestMessageProtectionFullIdentityForDataProtectionClass:(unsigned int)class
 {
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
-  if (a3)
+  if (class)
   {
-    if (a3 == 1)
+    if (class == 1)
     {
       v13 = 0;
       [(IDSRegistrationKeyManager *)self _loadClassAIdentityIfNeeded:&v13];
       v5 = v13;
-      v6 = [(IDSRegistrationKeyManager *)self config];
-      v7 = [v6 identityClassA];
+      config = [(IDSRegistrationKeyManager *)self config];
+      identityClassA = [config identityClassA];
     }
 
     else
@@ -3006,8 +3006,8 @@ LABEL_13:
       v11 = 0;
       [(IDSRegistrationKeyManager *)self _loadClassDIdentityIfNeeded:&v11];
       v5 = v11;
-      v6 = [(IDSRegistrationKeyManager *)self config];
-      v7 = [v6 identityClassD];
+      config = [(IDSRegistrationKeyManager *)self config];
+      identityClassA = [config identityClassD];
     }
   }
 
@@ -3016,11 +3016,11 @@ LABEL_13:
     v12 = 0;
     [(IDSRegistrationKeyManager *)self _loadClassCIdentityIfNeeded:&v12];
     v5 = v12;
-    v6 = [(IDSRegistrationKeyManager *)self config];
-    v7 = [v6 identityClassC];
+    config = [(IDSRegistrationKeyManager *)self config];
+    identityClassA = [config identityClassC];
   }
 
-  v8 = v7;
+  v8 = identityClassA;
 
   if (!v8)
   {
@@ -3071,46 +3071,46 @@ LABEL_13:
 - (id)publicMessageProtectionData
 {
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
-  v3 = [(IDSRegistrationKeyManager *)self config];
-  v4 = [v3 registeredIdentityContainer];
-  v5 = [v4 legacyFullIdentity];
-  v6 = [(IDSRegistrationKeyManager *)self _getPublicMessageProtectionDataForIdentity:v5];
+  config = [(IDSRegistrationKeyManager *)self config];
+  registeredIdentityContainer = [config registeredIdentityContainer];
+  legacyFullIdentity = [registeredIdentityContainer legacyFullIdentity];
+  v6 = [(IDSRegistrationKeyManager *)self _getPublicMessageProtectionDataForIdentity:legacyFullIdentity];
 
   return v6;
 }
 
-- (void)_ensureIdentity:(id *)a3 savedIndentity:(id *)a4 protectionClass:(int64_t)a5 didSaveIdentity:(BOOL *)a6
+- (void)_ensureIdentity:(id *)identity savedIndentity:(id *)indentity protectionClass:(int64_t)class didSaveIdentity:(BOOL *)saveIdentity
 {
-  if (*a4)
+  if (*indentity)
   {
     goto LABEL_2;
   }
 
-  if (!*a3)
+  if (!*identity)
   {
-    if (a5 > 2)
+    if (class > 2)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = qword_1009AB588[a5];
+      v11 = qword_1009AB588[class];
     }
 
-    v12 = [(IDSRegistrationKeyManager *)self _generateIdentityWithExistingIdentity:0 identifier:v11 dataProtectionClass:a5];
-    v13 = *a3;
-    *a3 = v12;
+    v12 = [(IDSRegistrationKeyManager *)self _generateIdentityWithExistingIdentity:0 identifier:v11 dataProtectionClass:class];
+    v13 = *identity;
+    *identity = v12;
 
     [(IDSRegistrationKeyManager *)self _save];
 LABEL_2:
-    if (!*a3)
+    if (!*identity)
     {
       return;
     }
   }
 
-  [(IDSRegistrationKeyManager *)self _saveClassXIdentity:a3 savedIdentity:a4 protectionClass:a5 savedUnsavedIdentity:a6];
+  [(IDSRegistrationKeyManager *)self _saveClassXIdentity:identity savedIdentity:indentity protectionClass:class savedUnsavedIdentity:saveIdentity];
 }
 
 - (void)_subscribeForTimeChangeNotification
@@ -3133,18 +3133,18 @@ LABEL_2:
   {
     [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
     [(NSRecursiveLock *)self->_lock lock];
-    v3 = [(IDSRegistrationKeyManager *)self config];
-    v4 = [v3 unregisteredIdentityContainer];
-    v5 = [(IDSRegistrationKeyManager *)self config];
-    v6 = v5;
-    if (v4)
+    config = [(IDSRegistrationKeyManager *)self config];
+    unregisteredIdentityContainer = [config unregisteredIdentityContainer];
+    config2 = [(IDSRegistrationKeyManager *)self config];
+    v6 = config2;
+    if (unregisteredIdentityContainer)
     {
-      [v5 unregisteredIdentityContainer];
+      [config2 unregisteredIdentityContainer];
     }
 
     else
     {
-      [v5 registeredIdentityContainer];
+      [config2 registeredIdentityContainer];
     }
     v7 = ;
 
@@ -3157,8 +3157,8 @@ LABEL_2:
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Retrying generation due to missing NGM component.", v12, 2u);
       }
 
-      v10 = [v7 legacyFullIdentity];
-      v11 = [(IDSRegistrationKeyManager *)self _generateUnregisteredIdentityWithExistingLegacyIdentity:v10 existingNGMIdentity:0];
+      legacyFullIdentity = [v7 legacyFullIdentity];
+      v11 = [(IDSRegistrationKeyManager *)self _generateUnregisteredIdentityWithExistingLegacyIdentity:legacyFullIdentity existingNGMIdentity:0];
 
       if (v11)
       {
@@ -3183,14 +3183,14 @@ LABEL_2:
   dispatch_after(v4, v5, block);
 }
 
-- (BOOL)_generateUnregisteredIdentityWithExistingLegacyIdentity:(id)a3 existingNGMIdentity:(id)a4
+- (BOOL)_generateUnregisteredIdentityWithExistingLegacyIdentity:(id)identity existingNGMIdentity:(id)mIdentity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IDSRegistrationKeyManager *)self config];
-  v9 = [v8 unregisteredIdentityContainer];
-  v54 = self;
-  if (([v9 hasNGMIdentity] & 1) == 0)
+  identityCopy = identity;
+  mIdentityCopy = mIdentity;
+  config = [(IDSRegistrationKeyManager *)self config];
+  unregisteredIdentityContainer = [config unregisteredIdentityContainer];
+  selfCopy = self;
+  if (([unregisteredIdentityContainer hasNGMIdentity] & 1) == 0)
   {
 
 LABEL_7:
@@ -3206,29 +3206,29 @@ LABEL_7:
       sub_100450174(1, @"Key Rolling", @"Generating new identity", 1109);
     }
 
-    v23 = [(IDSRegistrationKeyManager *)v54 identityDataSource];
+    identityDataSource = [(IDSRegistrationKeyManager *)selfCopy identityDataSource];
     v55 = 0;
     v56 = 0;
-    v24 = [v23 generateIdentityContainerWithIdentifier:1 existingLegacyIdentity:v6 existingNGMIdentity:v7 dataProtectionClass:0 nonLegacyError:&v56 error:&v55];
+    v24 = [identityDataSource generateIdentityContainerWithIdentifier:1 existingLegacyIdentity:identityCopy existingNGMIdentity:mIdentityCopy dataProtectionClass:0 nonLegacyError:&v56 error:&v55];
     v25 = v56;
     v18 = v55;
 
-    [(IDSNGMKeyLoadingErrorContainer *)v54->_recentKeyLoadingErrors setGenerationError:v25];
-    v26 = [(IDSRegistrationKeyManager *)v54 config];
-    v27 = [v26 registeredIdentityContainer];
-    v28 = [v24 isEqual:v27];
+    [(IDSNGMKeyLoadingErrorContainer *)selfCopy->_recentKeyLoadingErrors setGenerationError:v25];
+    config2 = [(IDSRegistrationKeyManager *)selfCopy config];
+    registeredIdentityContainer = [config2 registeredIdentityContainer];
+    v28 = [v24 isEqual:registeredIdentityContainer];
 
     if (v28)
     {
       v29 = +[IMRGLog registration];
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = [(IDSRegistrationKeyManager *)v54 config];
-        v31 = [v30 registeredIdentityContainer];
+        config3 = [(IDSRegistrationKeyManager *)selfCopy config];
+        registeredIdentityContainer2 = [config3 registeredIdentityContainer];
         *buf = 138412546;
         v58 = v24;
         v59 = 2112;
-        v60 = v31;
+        v60 = registeredIdentityContainer2;
         v32 = "generatedIdentityContainer isEqual to registeredIdentityContainer -- no changes {generatedIdentityContainer: %@, registeredIdentityContainer: %@}";
 LABEL_17:
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, v32, buf, 0x16u);
@@ -3239,9 +3239,9 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v33 = [(IDSRegistrationKeyManager *)v54 config];
-    v34 = [v33 unregisteredIdentityContainer];
-    v35 = [v24 isEqual:v34];
+    config4 = [(IDSRegistrationKeyManager *)selfCopy config];
+    unregisteredIdentityContainer2 = [config4 unregisteredIdentityContainer];
+    v35 = [v24 isEqual:unregisteredIdentityContainer2];
 
     v29 = +[IMRGLog registration];
     v36 = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
@@ -3249,12 +3249,12 @@ LABEL_17:
     {
       if (v36)
       {
-        v30 = [(IDSRegistrationKeyManager *)v54 config];
-        v31 = [v30 unregisteredIdentityContainer];
+        config3 = [(IDSRegistrationKeyManager *)selfCopy config];
+        registeredIdentityContainer2 = [config3 unregisteredIdentityContainer];
         *buf = 138412546;
         v58 = v24;
         v59 = 2112;
-        v60 = v31;
+        v60 = registeredIdentityContainer2;
         v32 = "generatedIdentityContainer isEqual unregisteredIdentityContainer -- no changes {generatedIdentityContainer: %@, unregisteredIdentityContainer: %@}";
         goto LABEL_17;
       }
@@ -3274,26 +3274,26 @@ LABEL_35:
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "generatedIdentityContainer is different from the registered and unregistered container -- has changes -- Updating unregistered container {generatedIdentityContainer: %@}", buf, 0xCu);
     }
 
-    v37 = [(IDSRegistrationKeyManager *)v54 config];
-    [v37 setUnregisteredIdentityContainer:v24];
+    config5 = [(IDSRegistrationKeyManager *)selfCopy config];
+    [config5 setUnregisteredIdentityContainer:v24];
 
-    v38 = [(IDSRegistrationKeyManager *)v54 config];
-    v39 = [v38 unregisteredIdentityContainer];
+    config6 = [(IDSRegistrationKeyManager *)selfCopy config];
+    unregisteredIdentityContainer3 = [config6 unregisteredIdentityContainer];
 
-    if (v39)
+    if (unregisteredIdentityContainer3)
     {
       v40 = +[FTDeviceSupport sharedInstance];
-      v41 = [v40 productBuildVersion];
-      v42 = [(IDSRegistrationKeyManager *)v54 config];
-      [v42 setBuildOfUnregisteredIdentityGeneration:v41];
+      productBuildVersion = [v40 productBuildVersion];
+      config7 = [(IDSRegistrationKeyManager *)selfCopy config];
+      [config7 setBuildOfUnregisteredIdentityGeneration:productBuildVersion];
 
       v43 = +[IMRGLog registration];
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
-        v44 = [(IDSRegistrationKeyManager *)v54 config];
-        v45 = [v44 buildOfUnregisteredIdentityGeneration];
+        config8 = [(IDSRegistrationKeyManager *)selfCopy config];
+        buildOfUnregisteredIdentityGeneration = [config8 buildOfUnregisteredIdentityGeneration];
         *buf = 138412290;
-        v58 = v45;
+        v58 = buildOfUnregisteredIdentityGeneration;
         _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "Generated a new unregistered identity {build: %@}", buf, 0xCu);
       }
     }
@@ -3313,21 +3313,21 @@ LABEL_35:
     }
 
     +[IDSMessageMetricReporter noteKeyGenerationForMetric];
-    v47 = [(IDSRegistrationKeyManager *)v54 config];
-    v48 = [v47 unregisteredIdentityContainer];
-    if ([v48 hasNGMIdentity])
+    config9 = [(IDSRegistrationKeyManager *)selfCopy config];
+    unregisteredIdentityContainer4 = [config9 unregisteredIdentityContainer];
+    if ([unregisteredIdentityContainer4 hasNGMIdentity])
     {
-      v49 = [(IDSRegistrationKeyManager *)v54 config];
-      v50 = [v49 unregisteredIdentityContainer];
-      v51 = [v50 ngmVersion];
+      config10 = [(IDSRegistrationKeyManager *)selfCopy config];
+      unregisteredIdentityContainer5 = [config10 unregisteredIdentityContainer];
+      ngmVersion = [unregisteredIdentityContainer5 ngmVersion];
 
-      if (v51)
+      if (ngmVersion)
       {
-        v54->_generationRetryCount = 0;
+        selfCopy->_generationRetryCount = 0;
 LABEL_34:
-        [(IDSRegistrationKeyManager *)v54 _save];
+        [(IDSRegistrationKeyManager *)selfCopy _save];
         v21 = 1;
-        v6 = v53;
+        identityCopy = v53;
         goto LABEL_35;
       }
     }
@@ -3336,22 +3336,22 @@ LABEL_34:
     {
     }
 
-    ++v54->_generationRetryCount;
-    [(IDSRegistrationKeyManager *)v54 _retryGenerationAfterDelay];
+    ++selfCopy->_generationRetryCount;
+    [(IDSRegistrationKeyManager *)selfCopy _retryGenerationAfterDelay];
     goto LABEL_34;
   }
 
-  v10 = [(IDSRegistrationKeyManager *)self config];
-  v11 = [v10 unregisteredIdentityContainer];
-  v12 = [v11 ngmVersion];
+  config11 = [(IDSRegistrationKeyManager *)self config];
+  unregisteredIdentityContainer6 = [config11 unregisteredIdentityContainer];
+  ngmVersion2 = [unregisteredIdentityContainer6 ngmVersion];
   [(IDSRegistrationKeyManager *)self identityDataSource];
-  v13 = v7;
-  v15 = v14 = v6;
+  v13 = mIdentityCopy;
+  v15 = v14 = identityCopy;
   v16 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v15 ngmVersion]);
-  v17 = [v12 isEqualToNumber:v16];
+  v17 = [ngmVersion2 isEqualToNumber:v16];
 
-  v6 = v14;
-  v7 = v13;
+  identityCopy = v14;
+  mIdentityCopy = v13;
 
   if ((v17 & 1) == 0)
   {
@@ -3361,10 +3361,10 @@ LABEL_34:
   v18 = +[IMRGLog registration];
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [(IDSRegistrationKeyManager *)v54 config];
-    v20 = [v19 unregisteredIdentityContainer];
+    config12 = [(IDSRegistrationKeyManager *)selfCopy config];
+    unregisteredIdentityContainer7 = [config12 unregisteredIdentityContainer];
     *buf = 138412290;
-    v58 = v20;
+    v58 = unregisteredIdentityContainer7;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Called _generateUnregisteredIdentityWithExistingLegacyIdentity but we have a valid unregisteredIdentity -- no changed {unregisteredIdentityContainer: %@}", buf, 0xCu);
   }
 
@@ -3376,17 +3376,17 @@ LABEL_36:
 
 - (void)_notifyUnregisteredIdentityRegenerated
 {
-  v3 = [(IDSRegistrationKeyManager *)self config];
-  v4 = [v3 unregisteredIdentityContainer];
-  if (v4)
+  config = [(IDSRegistrationKeyManager *)self config];
+  unregisteredIdentityContainer = [config unregisteredIdentityContainer];
+  if (unregisteredIdentityContainer)
   {
   }
 
   else
   {
-    v5 = [(IDSPerServiceApplicationKeyManager *)self->_applicationKeyManager hasUnregisteredIdentity];
+    hasUnregisteredIdentity = [(IDSPerServiceApplicationKeyManager *)self->_applicationKeyManager hasUnregisteredIdentity];
 
-    if ((v5 & 1) == 0)
+    if ((hasUnregisteredIdentity & 1) == 0)
     {
       return;
     }
@@ -3416,9 +3416,9 @@ LABEL_36:
 - (BOOL)registrationNeedsKTDataUpdated
 {
   [(NSRecursiveLock *)self->_lock lock];
-  v3 = [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager registrationNeedKTDataUpdated];
+  registrationNeedKTDataUpdated = [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager registrationNeedKTDataUpdated];
   [(NSRecursiveLock *)self->_lock unlock];
-  return v3;
+  return registrationNeedKTDataUpdated;
 }
 
 - (void)_notifyUnregisteredKTData
@@ -3451,31 +3451,31 @@ LABEL_36:
 {
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
-  v3 = [(IDSRegistrationKeyManager *)self config];
-  v4 = [v3 registeredIdentityContainer];
-  v5 = [v4 legacyFullIdentity];
+  config = [(IDSRegistrationKeyManager *)self config];
+  registeredIdentityContainer = [config registeredIdentityContainer];
+  legacyFullIdentity = [registeredIdentityContainer legacyFullIdentity];
 
   [(NSRecursiveLock *)self->_lock unlock];
 
-  return v5;
+  return legacyFullIdentity;
 }
 
 - (id)previousFullMessageProtectionIdentity
 {
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
-  v3 = [(IDSRegistrationKeyManager *)self config];
-  v4 = [v3 previousRegisteredIdentityContainer];
-  v5 = [v4 legacyFullIdentity];
+  config = [(IDSRegistrationKeyManager *)self config];
+  previousRegisteredIdentityContainer = [config previousRegisteredIdentityContainer];
+  legacyFullIdentity = [previousRegisteredIdentityContainer legacyFullIdentity];
 
   [(NSRecursiveLock *)self->_lock unlock];
 
-  return v5;
+  return legacyFullIdentity;
 }
 
-- (id)fullMessageProtectionIdentityForDataProtectionClass:(unsigned int)a3
+- (id)fullMessageProtectionIdentityForDataProtectionClass:(unsigned int)class
 {
-  v3 = [(IDSRegistrationKeyManager *)self latestCopyMessageProtectionIdentityForDataProtectionClass:*&a3];
+  v3 = [(IDSRegistrationKeyManager *)self latestCopyMessageProtectionIdentityForDataProtectionClass:*&class];
   if (v3)
   {
     v4 = v3;
@@ -3491,46 +3491,46 @@ LABEL_36:
   return v5;
 }
 
-- (void)notePublicIdentityDidRegisterLegacyData:(id)a3 ngmIdentityData:(id)a4 ngmPrekeyData:(id)a5 keyIndexToIdentityData:(id)a6
+- (void)notePublicIdentityDidRegisterLegacyData:(id)data ngmIdentityData:(id)identityData ngmPrekeyData:(id)prekeyData keyIndexToIdentityData:(id)toIdentityData
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  identityDataCopy = identityData;
+  prekeyDataCopy = prekeyData;
+  toIdentityDataCopy = toIdentityData;
   [(NSRecursiveLock *)self->_lock lock];
   v14 = +[IMRGLog registration];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v154 = v10;
+    v154 = dataCopy;
     v155 = 2112;
-    v156 = v11;
+    v156 = identityDataCopy;
     v157 = 2112;
-    v158 = v12;
+    v158 = prekeyDataCopy;
     v159 = 2112;
-    v160 = v13;
+    v160 = toIdentityDataCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Registration key manager noting registration of keys { legacyData: %@, ngmIdentityData: %@, ngmPrekeyData: %@, keyIndexToIdentityData: %@ }", buf, 0x2Au);
   }
 
-  v15 = [(IDSRegistrationKeyManager *)self config];
-  v16 = [v15 unregisteredIdentityContainer];
+  config = [(IDSRegistrationKeyManager *)self config];
+  unregisteredIdentityContainer = [config unregisteredIdentityContainer];
 
-  v129 = v11;
-  v130 = v12;
-  if (v16)
+  v129 = identityDataCopy;
+  v130 = prekeyDataCopy;
+  if (unregisteredIdentityContainer)
   {
-    v135 = v13;
-    v17 = [(IDSRegistrationKeyManager *)self config];
-    v18 = [v17 unregisteredIdentityContainer];
+    v135 = toIdentityDataCopy;
+    config2 = [(IDSRegistrationKeyManager *)self config];
+    unregisteredIdentityContainer2 = [config2 unregisteredIdentityContainer];
     v151 = 0;
-    v19 = [v18 publicIdentityWithError:&v151];
+    v19 = [unregisteredIdentityContainer2 publicIdentityWithError:&v151];
     v20 = v151;
 
     if (v19)
     {
-      v21 = [v19 legacyPublicIdentity];
+      legacyPublicIdentity = [v19 legacyPublicIdentity];
       v150 = v20;
-      v22 = [v21 dataRepresentationWithError:&v150];
+      v22 = [legacyPublicIdentity dataRepresentationWithError:&v150];
       v23 = v150;
 
       v137 = v22;
@@ -3543,41 +3543,41 @@ LABEL_36:
         }
       }
 
-      v25 = [(IDSRegistrationKeyManager *)self config];
-      v26 = [v25 unappliedRollingTicket];
+      config3 = [(IDSRegistrationKeyManager *)self config];
+      unappliedRollingTicket = [config3 unappliedRollingTicket];
 
-      if (v26)
+      if (unappliedRollingTicket)
       {
-        v27 = [(IDSRegistrationKeyManager *)self config];
-        v28 = [v27 unappliedRollingTicket];
-        v29 = [v28 identityData];
+        config4 = [(IDSRegistrationKeyManager *)self config];
+        unappliedRollingTicket2 = [config4 unappliedRollingTicket];
+        identityData = [unappliedRollingTicket2 identityData];
 
-        v30 = [(IDSRegistrationKeyManager *)self config];
-        v31 = [v30 unappliedRollingTicket];
-        v32 = [v31 prekeyData];
+        config5 = [(IDSRegistrationKeyManager *)self config];
+        unappliedRollingTicket3 = [config5 unappliedRollingTicket];
+        prekeyData = [unappliedRollingTicket3 prekeyData];
       }
 
       else
       {
-        v34 = [v19 ngmPublicDeviceIdentity];
-        v29 = [v34 identityData];
+        ngmPublicDeviceIdentity = [v19 ngmPublicDeviceIdentity];
+        identityData = [ngmPublicDeviceIdentity identityData];
 
-        v30 = [v19 ngmPublicDeviceIdentity];
-        v32 = [v30 prekeyData];
+        config5 = [v19 ngmPublicDeviceIdentity];
+        prekeyData = [config5 prekeyData];
       }
 
-      if (v29 && v32)
+      if (identityData && prekeyData)
       {
 LABEL_19:
 
-        v35 = [(IDSRegistrationKeyManager *)self config];
-        v36 = [v35 unregisteredIdentityContainer];
-        v37 = [v36 legacyFullIdentity];
-        v38 = [(IDSRegistrationKeyManager *)self _getPublicMessageProtectionDataForIdentity:v37];
+        config6 = [(IDSRegistrationKeyManager *)self config];
+        unregisteredIdentityContainer3 = [config6 unregisteredIdentityContainer];
+        legacyFullIdentity = [unregisteredIdentityContainer3 legacyFullIdentity];
+        v38 = [(IDSRegistrationKeyManager *)self _getPublicMessageProtectionDataForIdentity:legacyFullIdentity];
 
-        if (v10)
+        if (dataCopy)
         {
-          v39 = [v137 isEqualToData:v10];
+          v39 = [v137 isEqualToData:dataCopy];
         }
 
         else
@@ -3585,14 +3585,14 @@ LABEL_19:
           v39 = 0;
         }
 
-        if (v29 == v11)
+        if (identityData == identityDataCopy)
         {
           v40 = 1;
         }
 
-        else if (v11)
+        else if (identityDataCopy)
         {
-          v40 = [v29 isEqualToData:v11];
+          v40 = [identityData isEqualToData:identityDataCopy];
         }
 
         else
@@ -3600,39 +3600,39 @@ LABEL_19:
           v40 = 0;
         }
 
-        if (v32 == v130)
+        if (prekeyData == v130)
         {
-          v41 = 1;
+          config9 = 1;
         }
 
         else
         {
           if (!v130)
           {
-            LODWORD(v41) = 0;
+            LODWORD(config9) = 0;
             goto LABEL_40;
           }
 
-          v41 = [v32 isEqualToData:v130];
+          config9 = [prekeyData isEqualToData:v130];
         }
 
-        if ((v39 & v40) == 1 && v41)
+        if ((v39 & v40) == 1 && config9)
         {
-          v42 = [(IDSRegistrationKeyManager *)self config];
-          v43 = [v42 unappliedRollingTicket];
+          config7 = [(IDSRegistrationKeyManager *)self config];
+          unappliedRollingTicket4 = [config7 unappliedRollingTicket];
 
-          if (v43)
+          if (unappliedRollingTicket4)
           {
-            v44 = [(IDSRegistrationKeyManager *)self config];
-            v45 = [v44 unregisteredIdentityContainer];
-            v41 = [(IDSRegistrationKeyManager *)self config];
-            v46 = [v41 unappliedRollingTicket];
+            config8 = [(IDSRegistrationKeyManager *)self config];
+            unregisteredIdentityContainer4 = [config8 unregisteredIdentityContainer];
+            config9 = [(IDSRegistrationKeyManager *)self config];
+            unappliedRollingTicket5 = [config9 unappliedRollingTicket];
             v149 = 0;
-            v47 = [v45 updateNGMIdentityWithRegisteredTicket:v46 error:&v149];
+            v47 = [unregisteredIdentityContainer4 updateNGMIdentityWithRegisteredTicket:unappliedRollingTicket5 error:&v149];
             v48 = v149;
 
-            v49 = [(IDSRegistrationKeyManager *)self config];
-            [v49 setUnappliedRollingTicket:0];
+            config10 = [(IDSRegistrationKeyManager *)self config];
+            [config10 setUnappliedRollingTicket:0];
 
             if (IMGetAppBoolForKey())
             {
@@ -3655,7 +3655,7 @@ LABEL_19:
             {
 LABEL_55:
               v76 = +[IMRGLog registration];
-              v13 = v135;
+              toIdentityDataCopy = v135;
               if (os_log_type_enabled(v76, OS_LOG_TYPE_FAULT))
               {
                 sub_100916678(self, v48, v76);
@@ -3673,58 +3673,58 @@ LABEL_59:
             v48 = 0;
           }
 
-          v53 = [(IDSRegistrationKeyManager *)self config];
-          v54 = [v53 registeredIdentityContainer];
-          v55 = [(IDSRegistrationKeyManager *)self config];
-          [v55 setPreviousRegisteredIdentityContainer:v54];
+          config11 = [(IDSRegistrationKeyManager *)self config];
+          registeredIdentityContainer = [config11 registeredIdentityContainer];
+          config12 = [(IDSRegistrationKeyManager *)self config];
+          [config12 setPreviousRegisteredIdentityContainer:registeredIdentityContainer];
 
-          v56 = [(IDSRegistrationKeyManager *)self config];
-          v57 = [v56 unregisteredIdentityContainer];
-          v58 = [(IDSRegistrationKeyManager *)self config];
-          [v58 setRegisteredIdentityContainer:v57];
+          config13 = [(IDSRegistrationKeyManager *)self config];
+          unregisteredIdentityContainer5 = [config13 unregisteredIdentityContainer];
+          config14 = [(IDSRegistrationKeyManager *)self config];
+          [config14 setRegisteredIdentityContainer:unregisteredIdentityContainer5];
 
-          v59 = [(IDSRegistrationKeyManager *)self config];
-          [v59 setUnregisteredIdentityContainer:0];
+          config15 = [(IDSRegistrationKeyManager *)self config];
+          [config15 setUnregisteredIdentityContainer:0];
 
-          v60 = [(IDSRegistrationKeyManager *)self config];
-          v61 = [v60 buildOfUnregisteredIdentityGeneration];
-          v62 = v61;
-          if (!v61)
+          config16 = [(IDSRegistrationKeyManager *)self config];
+          buildOfUnregisteredIdentityGeneration = [config16 buildOfUnregisteredIdentityGeneration];
+          buildOfIdentityGeneration = buildOfUnregisteredIdentityGeneration;
+          if (!buildOfUnregisteredIdentityGeneration)
           {
-            v41 = [(IDSRegistrationKeyManager *)self config];
-            v62 = [v41 buildOfIdentityGeneration];
+            config9 = [(IDSRegistrationKeyManager *)self config];
+            buildOfIdentityGeneration = [config9 buildOfIdentityGeneration];
           }
 
-          v63 = [(IDSRegistrationKeyManager *)self config];
-          [v63 setBuildOfIdentityGeneration:v62];
+          config17 = [(IDSRegistrationKeyManager *)self config];
+          [config17 setBuildOfIdentityGeneration:buildOfIdentityGeneration];
 
-          if (!v61)
+          if (!buildOfUnregisteredIdentityGeneration)
           {
           }
 
-          v64 = [(IDSRegistrationKeyManager *)self config];
-          [v64 setBuildOfUnregisteredIdentityGeneration:0];
+          config18 = [(IDSRegistrationKeyManager *)self config];
+          [config18 setBuildOfUnregisteredIdentityGeneration:0];
 
           v65 = +[IMRGLog registration];
           if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
           {
-            v131 = [(IDSRegistrationKeyManager *)self config];
-            v66 = [v131 previousRegisteredIdentityContainer];
-            v67 = [(IDSRegistrationKeyManager *)self config];
-            v68 = [v67 registeredIdentityContainer];
+            config19 = [(IDSRegistrationKeyManager *)self config];
+            previousRegisteredIdentityContainer = [config19 previousRegisteredIdentityContainer];
+            config20 = [(IDSRegistrationKeyManager *)self config];
+            registeredIdentityContainer2 = [config20 registeredIdentityContainer];
             [(IDSRegistrationKeyManager *)self config];
             v69 = v133 = v48;
             [v69 buildOfIdentityGeneration];
-            v71 = v70 = v10;
+            v71 = v70 = dataCopy;
             *buf = 138412802;
-            v154 = v66;
+            v154 = previousRegisteredIdentityContainer;
             v155 = 2112;
-            v156 = v68;
+            v156 = registeredIdentityContainer2;
             v157 = 2112;
             v158 = v71;
             _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_DEFAULT, "Completed registration of previously unregistered identity {previousIdentity: %@, identity: %@, buildOfIdentityGeneration: %@}", buf, 0x20u);
 
-            v10 = v70;
+            dataCopy = v70;
             v48 = v133;
           }
 
@@ -3734,11 +3734,11 @@ LABEL_59:
           }
 
           [(IDSRegistrationKeyManager *)self _save];
-          v72 = [(IDSRegistrationKeyManager *)self config];
-          v73 = [v72 previousRegisteredIdentityContainer];
+          config21 = [(IDSRegistrationKeyManager *)self config];
+          previousRegisteredIdentityContainer2 = [config21 previousRegisteredIdentityContainer];
 
-          v13 = v135;
-          if (v73)
+          toIdentityDataCopy = v135;
+          if (previousRegisteredIdentityContainer2)
           {
             +[NSDate timeIntervalSinceReferenceDate];
             v75 = [NSNumber numberWithDouble:v74 + 3196800.0];
@@ -3779,7 +3779,7 @@ LABEL_40:
           v154 = v120;
           v155 = 2112;
           v156 = v121;
-          if (v41)
+          if (config9)
           {
             v119 = @"YES";
           }
@@ -3789,7 +3789,7 @@ LABEL_40:
           _os_log_fault_impl(&_mh_execute_header, v52, OS_LOG_TYPE_FAULT, "Completed registration of public identity, but it's not the identity we expected {legacyDataMatches: %@, ngmIdentityDataMatches: %@, ngmPrekeyDataMatches: %@}", buf, 0x20u);
         }
 
-        v13 = v135;
+        toIdentityDataCopy = v135;
         if (IMGetAppBoolForKey())
         {
           sub_100450174(1, @"Key Rolling", @"Failed to compare registered identity", 1109);
@@ -3801,14 +3801,14 @@ LABEL_40:
       v33 = +[IMRGLog registration];
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
-        v122 = [(IDSRegistrationKeyManager *)self config];
-        v123 = [v122 unappliedRollingTicket];
-        v124 = v123;
+        config22 = [(IDSRegistrationKeyManager *)self config];
+        unappliedRollingTicket6 = [config22 unappliedRollingTicket];
+        v124 = unappliedRollingTicket6;
         v125 = @"NO";
         *buf = 138544387;
         v154 = v23;
         v155 = 2112;
-        if (v29)
+        if (identityData)
         {
           v126 = @"YES";
         }
@@ -3818,8 +3818,8 @@ LABEL_40:
           v126 = @"NO";
         }
 
-        v156 = v123;
-        if (v32)
+        v156 = unappliedRollingTicket6;
+        if (prekeyData)
         {
           v125 = @"YES";
         }
@@ -3842,8 +3842,8 @@ LABEL_40:
         sub_1009165D4();
       }
 
-      v32 = 0;
-      v29 = 0;
+      prekeyData = 0;
+      identityData = 0;
       v137 = 0;
       v23 = v20;
     }
@@ -3856,9 +3856,9 @@ LABEL_60:
   v77 = [(IDSRegistrationKeyManager *)self publicMessageProtectionDeviceIdentityContainerToRegister:&v148];
   v78 = v148;
   v138 = v77;
-  v79 = [v77 legacyPublicIdentity];
+  legacyPublicIdentity2 = [v77 legacyPublicIdentity];
   v147 = v78;
-  v80 = [v79 dataRepresentationWithError:&v147];
+  v80 = [legacyPublicIdentity2 dataRepresentationWithError:&v147];
   v81 = v147;
 
   v82 = +[IMRGLog registration];
@@ -3884,9 +3884,9 @@ LABEL_60:
     _os_log_impl(&_mh_execute_header, v83, OS_LOG_TYPE_DEFAULT, "Saving public legacy message protection data {identifier: %@, data: %@}", buf, 0x16u);
   }
 
-  v84 = [(IDSRegistrationKeyManager *)self keychainWrapper];
+  keychainWrapper = [(IDSRegistrationKeyManager *)self keychainWrapper];
   v146 = v81;
-  v85 = [v84 saveData:v80 forIdentifier:@"message-protection-public-data-registered" allowSync:0 dataProtectionClass:0 error:&v146];
+  v85 = [keychainWrapper saveData:v80 forIdentifier:@"message-protection-public-data-registered" allowSync:0 dataProtectionClass:0 error:&v146];
   v86 = v146;
 
   if ((v85 & 1) == 0)
@@ -3904,17 +3904,17 @@ LABEL_60:
 LABEL_69:
   }
 
-  v87 = [v138 ngmPublicDeviceIdentity];
-  v88 = [v87 identityData];
+  ngmPublicDeviceIdentity2 = [v138 ngmPublicDeviceIdentity];
+  identityData2 = [ngmPublicDeviceIdentity2 identityData];
 
-  v89 = [v138 ngmPublicDeviceIdentity];
-  v90 = [v89 prekeyData];
+  ngmPublicDeviceIdentity3 = [v138 ngmPublicDeviceIdentity];
+  prekeyData2 = [ngmPublicDeviceIdentity3 prekeyData];
 
   v91 = +[IMRGLog registration];
   v92 = v91;
-  v132 = v90;
-  v134 = v88;
-  if (!v88 || !v90)
+  v132 = prekeyData2;
+  v134 = identityData2;
+  if (!identityData2 || !prekeyData2)
   {
     if (os_log_type_enabled(v91, OS_LOG_TYPE_ERROR))
     {
@@ -3929,13 +3929,13 @@ LABEL_69:
     *buf = 138412546;
     v154 = @"ngm-message-protection-public-data-registered";
     v155 = 2112;
-    v156 = v88;
+    v156 = identityData2;
     _os_log_impl(&_mh_execute_header, v92, OS_LOG_TYPE_DEFAULT, "Saving public ngm message protection identity data {identifier: %@, data: %@}", buf, 0x16u);
   }
 
-  v93 = [(IDSRegistrationKeyManager *)self keychainWrapper];
+  keychainWrapper2 = [(IDSRegistrationKeyManager *)self keychainWrapper];
   v145 = v86;
-  v94 = [v93 saveData:v88 forIdentifier:@"ngm-message-protection-public-data-registered" allowSync:0 dataProtectionClass:0 error:&v145];
+  v94 = [keychainWrapper2 saveData:identityData2 forIdentifier:@"ngm-message-protection-public-data-registered" allowSync:0 dataProtectionClass:0 error:&v145];
   v95 = v145;
 
   if ((v94 & 1) == 0)
@@ -3961,9 +3961,9 @@ LABEL_69:
     _os_log_impl(&_mh_execute_header, v97, OS_LOG_TYPE_DEFAULT, "Saving public ngm message protection prekey data {identifier: %@, data: %@}", buf, 0x16u);
   }
 
-  v98 = [(IDSRegistrationKeyManager *)self keychainWrapper];
+  keychainWrapper3 = [(IDSRegistrationKeyManager *)self keychainWrapper];
   v144 = v95;
-  v99 = [v98 saveData:v132 forIdentifier:@"ngm-message-protection-public-prekey-data-registered" allowSync:0 dataProtectionClass:0 error:&v144];
+  v99 = [keychainWrapper3 saveData:v132 forIdentifier:@"ngm-message-protection-public-prekey-data-registered" allowSync:0 dataProtectionClass:0 error:&v144];
   v86 = v144;
 
   if ((v99 & 1) == 0)
@@ -3981,11 +3981,11 @@ LABEL_69:
 LABEL_85:
   }
 
-  v100 = [v138 ngmVersion];
-  if (v100)
+  ngmVersion = [v138 ngmVersion];
+  if (ngmVersion)
   {
-    v101 = [(IDSRegistrationKeyManager *)self identityDataSource];
-    v102 = [v101 dataRepresentationForNGMVersion:{objc_msgSend(v100, "unsignedIntValue")}];
+    identityDataSource = [(IDSRegistrationKeyManager *)self identityDataSource];
+    v102 = [identityDataSource dataRepresentationForNGMVersion:{objc_msgSend(ngmVersion, "unsignedIntValue")}];
 
     v103 = +[IMRGLog registration];
     if (os_log_type_enabled(v103, OS_LOG_TYPE_DEFAULT))
@@ -3993,28 +3993,28 @@ LABEL_85:
       *buf = 138543874;
       v154 = @"ngm-message-protection-public-data-registered-version";
       v155 = 2114;
-      v156 = v100;
+      v156 = ngmVersion;
       v157 = 2114;
       v158 = v102;
       _os_log_impl(&_mh_execute_header, v103, OS_LOG_TYPE_DEFAULT, "Saving public ngm version data {identifier: %{public}@, ngmVersion: %{public}@, ngmVersionData: %{public}@}", buf, 0x20u);
     }
 
-    v104 = v100;
+    v104 = ngmVersion;
 
-    v105 = [(IDSRegistrationKeyManager *)self keychainWrapper];
+    keychainWrapper4 = [(IDSRegistrationKeyManager *)self keychainWrapper];
     v143 = v86;
-    v106 = [v105 saveData:v102 forIdentifier:@"ngm-message-protection-public-data-registered-version" allowSync:0 dataProtectionClass:0 error:&v143];
+    v106 = [keychainWrapper4 saveData:v102 forIdentifier:@"ngm-message-protection-public-data-registered-version" allowSync:0 dataProtectionClass:0 error:&v143];
     v107 = v143;
 
     if (v106)
     {
-      v100 = v104;
+      ngmVersion = v104;
     }
 
     else
     {
       v108 = +[IMRGLog registration];
-      v100 = v104;
+      ngmVersion = v104;
       if (os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
@@ -4045,13 +4045,13 @@ LABEL_85:
   v142 = 0u;
   v139 = 0u;
   v140 = 0u;
-  v109 = v13;
+  v109 = toIdentityDataCopy;
   v110 = [(__CFString *)v109 countByEnumeratingWithState:&v139 objects:v152 count:16];
   if (v110)
   {
     v111 = v110;
-    v127 = v100;
-    v112 = v10;
+    v127 = ngmVersion;
+    v112 = dataCopy;
     v113 = 0;
     v114 = *v140;
     do
@@ -4076,8 +4076,8 @@ LABEL_85:
 
     while (v111);
 
-    v10 = v112;
-    v100 = v127;
+    dataCopy = v112;
+    ngmVersion = v127;
     if (v113)
     {
       [(IDSRegistrationKeyManager *)self _save];
@@ -4103,16 +4103,16 @@ LABEL_85:
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (void)noteDidRegisterKTData:(id)a3 forKeyIndex:(unsigned __int16)a4
+- (void)noteDidRegisterKTData:(id)data forKeyIndex:(unsigned __int16)index
 {
-  v4 = a4;
-  v6 = a3;
+  indexCopy = index;
+  dataCopy = data;
   [(NSRecursiveLock *)self->_lock lock];
   if (+[IDSKeyTransparencyVerifier isKeyTransparencyEnabled])
   {
-    if (v6)
+    if (dataCopy)
     {
-      [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager notePublicIdentityDidRegisterKTData:v6 forKeyIndex:v4];
+      [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager notePublicIdentityDidRegisterKTData:dataCopy forKeyIndex:indexCopy];
     }
   }
 
@@ -4140,20 +4140,20 @@ LABEL_85:
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
   [(NSRecursiveLock *)self->_lock lock];
   *&self->_loaded = 0;
-  v4 = [(IDSRegistrationKeyManager *)self config];
-  [v4 setPrivateKey:0];
+  config = [(IDSRegistrationKeyManager *)self config];
+  [config setPrivateKey:0];
 
-  v5 = [(IDSRegistrationKeyManager *)self config];
-  [v5 setPublicKey:0];
+  config2 = [(IDSRegistrationKeyManager *)self config];
+  [config2 setPublicKey:0];
 
-  v6 = [(IDSRegistrationKeyManager *)self config];
-  [v6 setSignature:0];
+  config3 = [(IDSRegistrationKeyManager *)self config];
+  [config3 setSignature:0];
 
-  v7 = [(IDSRegistrationKeyManager *)self identityDataSource];
-  v8 = [(IDSRegistrationKeyManager *)self config];
-  v9 = [v8 registeredIdentityContainer];
+  identityDataSource = [(IDSRegistrationKeyManager *)self identityDataSource];
+  config4 = [(IDSRegistrationKeyManager *)self config];
+  registeredIdentityContainer = [config4 registeredIdentityContainer];
   v30 = 0;
-  v10 = [v7 removeIdentityContainer:v9 withIdentifier:2 dataProtectionClass:0 error:&v30];
+  v10 = [identityDataSource removeIdentityContainer:registeredIdentityContainer withIdentifier:2 dataProtectionClass:0 error:&v30];
   v11 = v30;
 
   if ((v10 & 1) == 0)
@@ -4165,11 +4165,11 @@ LABEL_85:
     }
   }
 
-  v13 = [(IDSRegistrationKeyManager *)self identityDataSource];
-  v14 = [(IDSRegistrationKeyManager *)self config];
-  v15 = [v14 unregisteredIdentityContainer];
+  identityDataSource2 = [(IDSRegistrationKeyManager *)self identityDataSource];
+  config5 = [(IDSRegistrationKeyManager *)self config];
+  unregisteredIdentityContainer = [config5 unregisteredIdentityContainer];
   v29 = v11;
-  v16 = [v13 removeIdentityContainer:v15 withIdentifier:1 dataProtectionClass:0 error:&v29];
+  v16 = [identityDataSource2 removeIdentityContainer:unregisteredIdentityContainer withIdentifier:1 dataProtectionClass:0 error:&v29];
   v17 = v29;
 
   if ((v16 & 1) == 0)
@@ -4181,11 +4181,11 @@ LABEL_85:
     }
   }
 
-  v19 = [(IDSRegistrationKeyManager *)self identityDataSource];
-  v20 = [(IDSRegistrationKeyManager *)self config];
-  v21 = [v20 previousRegisteredIdentityContainer];
+  identityDataSource3 = [(IDSRegistrationKeyManager *)self identityDataSource];
+  config6 = [(IDSRegistrationKeyManager *)self config];
+  previousRegisteredIdentityContainer = [config6 previousRegisteredIdentityContainer];
   v28 = v17;
-  v22 = [v19 removeIdentityContainer:v21 withIdentifier:3 dataProtectionClass:0 error:&v28];
+  v22 = [identityDataSource3 removeIdentityContainer:previousRegisteredIdentityContainer withIdentifier:3 dataProtectionClass:0 error:&v28];
   v23 = v28;
 
   if ((v22 & 1) == 0)
@@ -4197,14 +4197,14 @@ LABEL_85:
     }
   }
 
-  v25 = [(IDSRegistrationKeyManager *)self config];
-  [v25 setRegisteredIdentityContainer:0];
+  config7 = [(IDSRegistrationKeyManager *)self config];
+  [config7 setRegisteredIdentityContainer:0];
 
-  v26 = [(IDSRegistrationKeyManager *)self config];
-  [v26 setUnregisteredIdentityContainer:0];
+  config8 = [(IDSRegistrationKeyManager *)self config];
+  [config8 setUnregisteredIdentityContainer:0];
 
-  v27 = [(IDSRegistrationKeyManager *)self config];
-  [v27 setPreviousRegisteredIdentityContainer:0];
+  config9 = [(IDSRegistrationKeyManager *)self config];
+  [config9 setPreviousRegisteredIdentityContainer:0];
 
   [(NSRecursiveLock *)self->_lock unlock];
 }
@@ -4219,23 +4219,23 @@ LABEL_85:
   }
 
   [(NSRecursiveLock *)self->_lock lock];
-  v4 = [(IDSRegistrationKeyManager *)self config];
-  v5 = [v4 previousRegisteredIdentityContainer];
-  if (v5)
+  config = [(IDSRegistrationKeyManager *)self config];
+  previousRegisteredIdentityContainer = [config previousRegisteredIdentityContainer];
+  if (previousRegisteredIdentityContainer)
   {
-    v6 = v5;
-    v7 = [(IDSRegistrationKeyManager *)self config];
-    v8 = [v7 previousRegisteredIdentityContainer];
-    v9 = [(IDSRegistrationKeyManager *)self config];
-    v10 = [v9 registeredIdentityContainer];
+    v6 = previousRegisteredIdentityContainer;
+    config2 = [(IDSRegistrationKeyManager *)self config];
+    previousRegisteredIdentityContainer2 = [config2 previousRegisteredIdentityContainer];
+    config3 = [(IDSRegistrationKeyManager *)self config];
+    registeredIdentityContainer = [config3 registeredIdentityContainer];
 
-    if (v8 != v10)
+    if (previousRegisteredIdentityContainer2 != registeredIdentityContainer)
     {
-      v11 = [(IDSRegistrationKeyManager *)self identityDataSource];
-      v12 = [(IDSRegistrationKeyManager *)self config];
-      v13 = [v12 previousRegisteredIdentityContainer];
+      identityDataSource = [(IDSRegistrationKeyManager *)self identityDataSource];
+      config4 = [(IDSRegistrationKeyManager *)self config];
+      previousRegisteredIdentityContainer3 = [config4 previousRegisteredIdentityContainer];
       v26 = 0;
-      v14 = [v11 removeIdentityContainer:v13 withIdentifier:3 dataProtectionClass:0 error:&v26];
+      v14 = [identityDataSource removeIdentityContainer:previousRegisteredIdentityContainer3 withIdentifier:3 dataProtectionClass:0 error:&v26];
       v15 = v26;
 
       v16 = +[IMRGLog registration];
@@ -4244,15 +4244,15 @@ LABEL_85:
       {
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [(IDSRegistrationKeyManager *)self config];
-          v19 = [v18 previousRegisteredIdentityContainer];
+          config5 = [(IDSRegistrationKeyManager *)self config];
+          previousRegisteredIdentityContainer4 = [config5 previousRegisteredIdentityContainer];
           *buf = 138477827;
-          v28 = v19;
+          v28 = previousRegisteredIdentityContainer4;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Removed previous identity from memory and keychain {previousIdentity: %{private}@}", buf, 0xCu);
         }
 
-        v20 = [(IDSRegistrationKeyManager *)self config];
-        [v20 setPreviousRegisteredIdentityContainer:0];
+        config6 = [(IDSRegistrationKeyManager *)self config];
+        [config6 setPreviousRegisteredIdentityContainer:0];
 
         if ((IMGetAppBoolForKey() & 1) == 0)
         {
@@ -4291,14 +4291,14 @@ LABEL_18:
   v15 = +[IMRGLog registration];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [(IDSRegistrationKeyManager *)self config];
-    v23 = [v22 previousRegisteredIdentityContainer];
-    v24 = [(IDSRegistrationKeyManager *)self config];
-    v25 = [v24 registeredIdentityContainer];
+    config7 = [(IDSRegistrationKeyManager *)self config];
+    previousRegisteredIdentityContainer5 = [config7 previousRegisteredIdentityContainer];
+    config8 = [(IDSRegistrationKeyManager *)self config];
+    registeredIdentityContainer2 = [config8 registeredIdentityContainer];
     *buf = 138412546;
-    v28 = v23;
+    v28 = previousRegisteredIdentityContainer5;
     v29 = 2112;
-    v30 = v25;
+    v30 = registeredIdentityContainer2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "No previous identity to purge -- ignoring request {previousIdentity: %@, identity: %@}", buf, 0x16u);
   }
 
@@ -4307,7 +4307,7 @@ LABEL_19:
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (void)_ktDataNeedsUpdate:(id)a3
+- (void)_ktDataNeedsUpdate:(id)update
 {
   v4 = +[IDSKeyTransparencyVerifier isKeyTransparencyEnabled];
   v5 = +[IMRGLog registration];
@@ -4340,50 +4340,50 @@ LABEL_19:
   }
 }
 
-- (void)_generateKTRegistrationData:(id)a3
+- (void)_generateKTRegistrationData:(id)data
 {
   lock = self->_lock;
-  v5 = a3;
+  dataCopy = data;
   [(NSRecursiveLock *)lock lock];
-  [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager requestGenerationOfUnregisteredKTRegDataWithPublicIdentityData:v5 applicationKeyManager:self->_applicationKeyManager];
+  [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager requestGenerationOfUnregisteredKTRegDataWithPublicIdentityData:dataCopy applicationKeyManager:self->_applicationKeyManager];
 
   v6 = self->_lock;
 
   [(NSRecursiveLock *)v6 unlock];
 }
 
-- (void)fetchKTSignatureDataForServiceTypes:(id)a3 publicIdentityData:(id)a4 registerID:(id)a5 withCompletion:(id)a6
+- (void)fetchKTSignatureDataForServiceTypes:(id)types publicIdentityData:(id)data registerID:(id)d withCompletion:(id)completion
 {
   lock = self->_lock;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  completionCopy = completion;
+  dCopy = d;
+  dataCopy = data;
+  typesCopy = types;
   [(NSRecursiveLock *)lock lock];
-  [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager fetchKTSignatureDataForServiceTypes:v14 publicIdentityData:v13 registerID:v12 applicationKeyManager:self->_applicationKeyManager withCompletion:v11];
+  [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager fetchKTSignatureDataForServiceTypes:typesCopy publicIdentityData:dataCopy registerID:dCopy applicationKeyManager:self->_applicationKeyManager withCompletion:completionCopy];
 
   v15 = self->_lock;
 
   [(NSRecursiveLock *)v15 unlock];
 }
 
-- (void)_handleKVSUpdateResponseForTrustedDevices:(id)a3 withSuccessfulKVSSync:(BOOL)a4
+- (void)_handleKVSUpdateResponseForTrustedDevices:(id)devices withSuccessfulKVSSync:(BOOL)sync
 {
-  v4 = a4;
-  v6 = a3;
+  syncCopy = sync;
+  devicesCopy = devices;
   [(NSRecursiveLock *)self->_lock lock];
   v7 = +[IMRGLog registration];
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (syncCopy)
   {
     if (v8)
     {
       v9 = 138412290;
-      v10 = v6;
+      v10 = devicesCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Successfully synced KVS with trusted devices. { trustedDevices: %@ }", &v9, 0xCu);
     }
 
-    [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager noteSuccessfulKVSSyncOfTrustedDevices:v6];
+    [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager noteSuccessfulKVSSyncOfTrustedDevices:devicesCopy];
   }
 
   else
@@ -4391,7 +4391,7 @@ LABEL_19:
     if (v8)
     {
       v9 = 138412290;
-      v10 = v6;
+      v10 = devicesCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Failed to sync trusted devices to KVS. Scheduling next sync attempt. { trustedDevices: %@ }", &v9, 0xCu);
     }
 
@@ -4470,40 +4470,40 @@ LABEL_19:
   [(NSRecursiveLock *)lock unlock];
 }
 
-- (void)loadPairingIdentities:(BOOL)a3
+- (void)loadPairingIdentities:(BOOL)identities
 {
-  v3 = a3;
+  identitiesCopy = identities;
   if ([(IDSRegistrationKeyManager *)self allowPairingIdentities])
   {
     [(NSRecursiveLock *)self->_lock lock];
     v55 = 0;
     [(IDSRegistrationKeyManager *)self _loadClassAIdentityIfNeeded:&v55];
     v5 = v55;
-    v6 = [(IDSRegistrationKeyManager *)self config];
-    v7 = [v6 identityClassA];
-    v8 = [(IDSRegistrationKeyManager *)self _getPublicMessageProtectionDataForIdentity:v7];
+    config = [(IDSRegistrationKeyManager *)self config];
+    identityClassA = [config identityClassA];
+    v8 = [(IDSRegistrationKeyManager *)self _getPublicMessageProtectionDataForIdentity:identityClassA];
 
     v54 = 0;
     [(IDSRegistrationKeyManager *)self _loadClassCIdentityIfNeeded:&v54];
     v9 = v54;
-    v10 = [(IDSRegistrationKeyManager *)self config];
-    v11 = [v10 identityClassC];
-    v12 = [(IDSRegistrationKeyManager *)self _getPublicMessageProtectionDataForIdentity:v11];
+    config2 = [(IDSRegistrationKeyManager *)self config];
+    identityClassC = [config2 identityClassC];
+    v12 = [(IDSRegistrationKeyManager *)self _getPublicMessageProtectionDataForIdentity:identityClassC];
 
     v53 = 0;
     [(IDSRegistrationKeyManager *)self _loadClassDIdentityIfNeeded:&v53];
     v13 = v53;
-    v14 = [(IDSRegistrationKeyManager *)self config];
-    v15 = [v14 identityClassD];
-    v16 = [(IDSRegistrationKeyManager *)self _getPublicMessageProtectionDataForIdentity:v15];
+    config3 = [(IDSRegistrationKeyManager *)self config];
+    identityClassD = [config3 identityClassD];
+    v16 = [(IDSRegistrationKeyManager *)self _getPublicMessageProtectionDataForIdentity:identityClassD];
 
-    if (v3)
+    if (identitiesCopy)
     {
       v52 = 0;
       v51 = 0;
-      v17 = [(IDSRegistrationKeyManager *)self config];
-      v18 = [v17 identityClassA];
-      if (v18)
+      config4 = [(IDSRegistrationKeyManager *)self config];
+      identityClassA2 = [config4 identityClassA];
+      if (identityClassA2)
       {
       }
 
@@ -4513,26 +4513,26 @@ LABEL_19:
 
         if ((v19 & 1) == 0)
         {
-          v20 = [(IDSRegistrationKeyManager *)self config];
-          *buf = [v20 unSavedidentityClassA];
+          config5 = [(IDSRegistrationKeyManager *)self config];
+          *buf = [config5 unSavedidentityClassA];
 
-          v21 = [(IDSRegistrationKeyManager *)self config];
-          v49 = [v21 identityClassA];
+          config6 = [(IDSRegistrationKeyManager *)self config];
+          identityClassA3 = [config6 identityClassA];
 
-          [(IDSRegistrationKeyManager *)self _ensureIdentity:buf savedIndentity:&v49 protectionClass:1 didSaveIdentity:&v52 + 1];
+          [(IDSRegistrationKeyManager *)self _ensureIdentity:buf savedIndentity:&identityClassA3 protectionClass:1 didSaveIdentity:&v52 + 1];
           v22 = *buf;
-          v23 = [(IDSRegistrationKeyManager *)self config];
-          [v23 setUnSavedidentityClassA:v22];
+          config7 = [(IDSRegistrationKeyManager *)self config];
+          [config7 setUnSavedidentityClassA:v22];
 
-          v24 = v49;
-          v25 = [(IDSRegistrationKeyManager *)self config];
-          [v25 setIdentityClassA:v24];
+          v24 = identityClassA3;
+          config8 = [(IDSRegistrationKeyManager *)self config];
+          [config8 setIdentityClassA:v24];
         }
       }
 
-      v26 = [(IDSRegistrationKeyManager *)self config];
-      v27 = [v26 identityClassC];
-      if (v27)
+      config9 = [(IDSRegistrationKeyManager *)self config];
+      identityClassC2 = [config9 identityClassC];
+      if (identityClassC2)
       {
       }
 
@@ -4542,26 +4542,26 @@ LABEL_19:
 
         if ((v28 & 1) == 0)
         {
-          v29 = [(IDSRegistrationKeyManager *)self config];
-          *buf = [v29 unSavedidentityClassC];
+          config10 = [(IDSRegistrationKeyManager *)self config];
+          *buf = [config10 unSavedidentityClassC];
 
-          v30 = [(IDSRegistrationKeyManager *)self config];
-          v49 = [v30 identityClassC];
+          config11 = [(IDSRegistrationKeyManager *)self config];
+          identityClassA3 = [config11 identityClassC];
 
-          [(IDSRegistrationKeyManager *)self _ensureIdentity:buf savedIndentity:&v49 protectionClass:0 didSaveIdentity:&v52];
+          [(IDSRegistrationKeyManager *)self _ensureIdentity:buf savedIndentity:&identityClassA3 protectionClass:0 didSaveIdentity:&v52];
           v31 = *buf;
-          v32 = [(IDSRegistrationKeyManager *)self config];
-          [v32 setUnSavedidentityClassC:v31];
+          config12 = [(IDSRegistrationKeyManager *)self config];
+          [config12 setUnSavedidentityClassC:v31];
 
-          v33 = v49;
-          v34 = [(IDSRegistrationKeyManager *)self config];
-          [v34 setIdentityClassC:v33];
+          v33 = identityClassA3;
+          config13 = [(IDSRegistrationKeyManager *)self config];
+          [config13 setIdentityClassC:v33];
         }
       }
 
-      v35 = [(IDSRegistrationKeyManager *)self config];
-      v36 = [v35 identityClassD];
-      if (v36)
+      config14 = [(IDSRegistrationKeyManager *)self config];
+      identityClassD2 = [config14 identityClassD];
+      if (identityClassD2)
       {
       }
 
@@ -4571,20 +4571,20 @@ LABEL_19:
 
         if ((v37 & 1) == 0)
         {
-          v38 = [(IDSRegistrationKeyManager *)self config];
-          *buf = [v38 unSavedidentityClassD];
+          config15 = [(IDSRegistrationKeyManager *)self config];
+          *buf = [config15 unSavedidentityClassD];
 
-          v39 = [(IDSRegistrationKeyManager *)self config];
-          v49 = [v39 identityClassD];
+          config16 = [(IDSRegistrationKeyManager *)self config];
+          identityClassA3 = [config16 identityClassD];
 
-          [(IDSRegistrationKeyManager *)self _ensureIdentity:buf savedIndentity:&v49 protectionClass:2 didSaveIdentity:&v51];
+          [(IDSRegistrationKeyManager *)self _ensureIdentity:buf savedIndentity:&identityClassA3 protectionClass:2 didSaveIdentity:&v51];
           v40 = *buf;
-          v41 = [(IDSRegistrationKeyManager *)self config];
-          [v41 setUnSavedidentityClassD:v40];
+          config17 = [(IDSRegistrationKeyManager *)self config];
+          [config17 setUnSavedidentityClassD:v40];
 
-          v42 = v49;
-          v43 = [(IDSRegistrationKeyManager *)self config];
-          [v43 setIdentityClassD:v42];
+          v42 = identityClassA3;
+          config18 = [(IDSRegistrationKeyManager *)self config];
+          [config18 setIdentityClassD:v42];
         }
       }
 
@@ -4614,26 +4614,26 @@ LABEL_19:
   }
 }
 
-- (void)regeneratePairingIdentitiesIncludingClassD:(BOOL)a3
+- (void)regeneratePairingIdentitiesIncludingClassD:(BOOL)d
 {
-  v3 = a3;
+  dCopy = d;
   [(NSRecursiveLock *)self->_lock lock];
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
-  v5 = [(IDSRegistrationKeyManager *)self systemMonitor];
-  v6 = [v5 isUnderDataProtectionLock];
+  systemMonitor = [(IDSRegistrationKeyManager *)self systemMonitor];
+  isUnderDataProtectionLock = [systemMonitor isUnderDataProtectionLock];
 
-  if (v6)
+  if (isUnderDataProtectionLock)
   {
     self->_pendingIdentityRegeneration = 1;
   }
 
   else
   {
-    v7 = [(IDSRegistrationKeyManager *)self identityDataSource];
-    v8 = [(IDSRegistrationKeyManager *)self config];
-    v9 = [v8 identityClassA];
+    identityDataSource = [(IDSRegistrationKeyManager *)self identityDataSource];
+    config = [(IDSRegistrationKeyManager *)self config];
+    identityClassA = [config identityClassA];
     v44 = 0;
-    v10 = [v7 removeLegacyIdentity:v9 withIdentifier:4 dataProtectionClass:1 error:&v44];
+    v10 = [identityDataSource removeLegacyIdentity:identityClassA withIdentifier:4 dataProtectionClass:1 error:&v44];
     v11 = v44;
 
     if ((v10 & 1) == 0)
@@ -4645,23 +4645,23 @@ LABEL_19:
       }
     }
 
-    v13 = [(IDSRegistrationKeyManager *)self config];
-    [v13 setIdentityClassA:0];
+    config2 = [(IDSRegistrationKeyManager *)self config];
+    [config2 setIdentityClassA:0];
 
-    v14 = [(IDSRegistrationKeyManager *)self config];
-    v15 = [v14 unSavedidentityClassA];
+    config3 = [(IDSRegistrationKeyManager *)self config];
+    unSavedidentityClassA = [config3 unSavedidentityClassA];
     v43 = v11;
-    [v15 purgeFromKeychain:&v43];
+    [unSavedidentityClassA purgeFromKeychain:&v43];
     v16 = v43;
 
-    v17 = [(IDSRegistrationKeyManager *)self config];
-    [v17 setUnSavedidentityClassA:0];
+    config4 = [(IDSRegistrationKeyManager *)self config];
+    [config4 setUnSavedidentityClassA:0];
 
-    v18 = [(IDSRegistrationKeyManager *)self identityDataSource];
-    v19 = [(IDSRegistrationKeyManager *)self config];
-    v20 = [v19 identityClassC];
+    identityDataSource2 = [(IDSRegistrationKeyManager *)self identityDataSource];
+    config5 = [(IDSRegistrationKeyManager *)self config];
+    identityClassC = [config5 identityClassC];
     v42 = v16;
-    v21 = [v18 removeLegacyIdentity:v20 withIdentifier:5 dataProtectionClass:0 error:&v42];
+    v21 = [identityDataSource2 removeLegacyIdentity:identityClassC withIdentifier:5 dataProtectionClass:0 error:&v42];
     v22 = v42;
 
     if ((v21 & 1) == 0)
@@ -4673,25 +4673,25 @@ LABEL_19:
       }
     }
 
-    v24 = [(IDSRegistrationKeyManager *)self config];
-    [v24 setIdentityClassC:0];
+    config6 = [(IDSRegistrationKeyManager *)self config];
+    [config6 setIdentityClassC:0];
 
-    v25 = [(IDSRegistrationKeyManager *)self config];
-    v26 = [v25 unSavedidentityClassC];
+    config7 = [(IDSRegistrationKeyManager *)self config];
+    unSavedidentityClassC = [config7 unSavedidentityClassC];
     v41 = v22;
-    [v26 purgeFromKeychain:&v41];
+    [unSavedidentityClassC purgeFromKeychain:&v41];
     v27 = v41;
 
-    v28 = [(IDSRegistrationKeyManager *)self config];
-    [v28 setUnSavedidentityClassC:0];
+    config8 = [(IDSRegistrationKeyManager *)self config];
+    [config8 setUnSavedidentityClassC:0];
 
-    if (v3)
+    if (dCopy)
     {
-      v29 = [(IDSRegistrationKeyManager *)self identityDataSource];
-      v30 = [(IDSRegistrationKeyManager *)self config];
-      v31 = [v30 identityClassD];
+      identityDataSource3 = [(IDSRegistrationKeyManager *)self identityDataSource];
+      config9 = [(IDSRegistrationKeyManager *)self config];
+      identityClassD = [config9 identityClassD];
       v40 = v27;
-      v32 = [v29 removeLegacyIdentity:v31 withIdentifier:6 dataProtectionClass:2 error:&v40];
+      v32 = [identityDataSource3 removeLegacyIdentity:identityClassD withIdentifier:6 dataProtectionClass:2 error:&v40];
       v33 = v40;
 
       if ((v32 & 1) == 0)
@@ -4703,17 +4703,17 @@ LABEL_19:
         }
       }
 
-      v35 = [(IDSRegistrationKeyManager *)self config];
-      [v35 setIdentityClassD:0];
+      config10 = [(IDSRegistrationKeyManager *)self config];
+      [config10 setIdentityClassD:0];
 
-      v36 = [(IDSRegistrationKeyManager *)self config];
-      v37 = [v36 unSavedidentityClassD];
+      config11 = [(IDSRegistrationKeyManager *)self config];
+      unSavedidentityClassD = [config11 unSavedidentityClassD];
       v39 = v33;
-      [v37 purgeFromKeychain:&v39];
+      [unSavedidentityClassD purgeFromKeychain:&v39];
       v27 = v39;
 
-      v38 = [(IDSRegistrationKeyManager *)self config];
-      [v38 setUnSavedidentityClassD:0];
+      config12 = [(IDSRegistrationKeyManager *)self config];
+      [config12 setUnSavedidentityClassD:0];
     }
 
     [(IDSRegistrationKeyManager *)self loadPairingIdentities:1];
@@ -4726,22 +4726,22 @@ LABEL_19:
 - (id)keyPairSignature
 {
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:0];
-  v3 = [(IDSRegistrationKeyManager *)self config];
-  v4 = [v3 signature];
+  config = [(IDSRegistrationKeyManager *)self config];
+  signature = [config signature];
 
-  return v4;
+  return signature;
 }
 
-- (BOOL)needsPublicDataUpdatedForKeyIndex:(unsigned __int16)a3 ktRegistrationKeyIndex:(unsigned __int16)a4
+- (BOOL)needsPublicDataUpdatedForKeyIndex:(unsigned __int16)index ktRegistrationKeyIndex:(unsigned __int16)keyIndex
 {
-  v4 = a4;
-  v5 = a3;
+  keyIndexCopy = keyIndex;
+  indexCopy = index;
   v61 = 0;
   v7 = [(IDSRegistrationKeyManager *)self publicMessageProtectionDeviceIdentityContainerToRegister:&v61];
   v8 = v61;
-  v9 = [v7 legacyPublicIdentity];
+  legacyPublicIdentity = [v7 legacyPublicIdentity];
   v60 = v8;
-  v10 = [v9 dataRepresentationWithError:&v60];
+  v10 = [legacyPublicIdentity dataRepresentationWithError:&v60];
   v11 = v60;
 
   if (![(IDSRegistrationKeyManager *)self requiresKeychainMigration])
@@ -4764,9 +4764,9 @@ LABEL_19:
       goto LABEL_58;
     }
 
-    v14 = [(IDSRegistrationKeyManager *)self keychainWrapper];
+    keychainWrapper = [(IDSRegistrationKeyManager *)self keychainWrapper];
     v59 = v11;
-    v13 = [v14 dataForIdentifier:@"message-protection-public-data-registered" error:&v59];
+    v13 = [keychainWrapper dataForIdentifier:@"message-protection-public-data-registered" error:&v59];
     v54 = v59;
 
     if ([v13 length])
@@ -4775,13 +4775,13 @@ LABEL_19:
       {
         v12 = 0;
 LABEL_17:
-        v17 = [v7 ngmPublicDeviceIdentity];
-        v18 = [v17 identityData];
+        ngmPublicDeviceIdentity = [v7 ngmPublicDeviceIdentity];
+        identityData = [ngmPublicDeviceIdentity identityData];
 
-        v19 = [v7 ngmPublicDeviceIdentity];
-        v55 = [v19 prekeyData];
+        ngmPublicDeviceIdentity2 = [v7 ngmPublicDeviceIdentity];
+        prekeyData = [ngmPublicDeviceIdentity2 prekeyData];
 
-        if (![v18 length] || !objc_msgSend(v55, "length"))
+        if (![identityData length] || !objc_msgSend(prekeyData, "length"))
         {
           v20 = +[IMRGLog registration];
           if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
@@ -4789,7 +4789,7 @@ LABEL_17:
             v45 = @"YES";
             *buf = 138544131;
             v63 = v54;
-            if (v18)
+            if (identityData)
             {
               v46 = @"YES";
             }
@@ -4799,7 +4799,7 @@ LABEL_17:
               v46 = @"NO";
             }
 
-            if (!v55)
+            if (!prekeyData)
             {
               v45 = @"NO";
             }
@@ -4814,10 +4814,10 @@ LABEL_17:
           }
         }
 
-        v21 = [v7 ngmVersion];
-        v22 = v21;
-        v53 = v18;
-        if (!v21)
+        ngmVersion = [v7 ngmVersion];
+        v22 = ngmVersion;
+        v53 = identityData;
+        if (!ngmVersion)
         {
           v32 = +[IMRGLog registration];
           if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
@@ -4828,22 +4828,22 @@ LABEL_17:
           goto LABEL_47;
         }
 
-        if (!v18 || !v55)
+        if (!identityData || !prekeyData)
         {
           goto LABEL_48;
         }
 
         v48 = v13;
-        v52 = v21;
-        v23 = [(IDSRegistrationKeyManager *)self keychainWrapper];
+        v52 = ngmVersion;
+        keychainWrapper2 = [(IDSRegistrationKeyManager *)self keychainWrapper];
         v58 = v54;
-        v24 = [v23 dataForIdentifier:@"ngm-message-protection-public-data-registered" error:&v58];
+        v24 = [keychainWrapper2 dataForIdentifier:@"ngm-message-protection-public-data-registered" error:&v58];
         v25 = v58;
 
         v26 = v24;
-        v27 = [(IDSRegistrationKeyManager *)self keychainWrapper];
+        keychainWrapper3 = [(IDSRegistrationKeyManager *)self keychainWrapper];
         v57 = v25;
-        v28 = [v27 dataForIdentifier:@"ngm-message-protection-public-prekey-data-registered" error:&v57];
+        v28 = [keychainWrapper3 dataForIdentifier:@"ngm-message-protection-public-prekey-data-registered" error:&v57];
         v51 = v57;
 
         v50 = v28;
@@ -4851,7 +4851,7 @@ LABEL_17:
         {
           if (([v26 isEqualToData:v53]& 1) != 0)
           {
-            v29 = [v28 isEqualToData:v55];
+            v29 = [v28 isEqualToData:prekeyData];
             v30 = v52;
             v13 = v48;
             if (v29)
@@ -4865,7 +4865,7 @@ LABEL_17:
               *buf = 138478083;
               v63 = v50;
               v64 = 2113;
-              v65 = v55;
+              v65 = prekeyData;
               _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Registered ngm prekey data doesn't match current data -- returning YES {registeredNGMPrekeyData: %{private}@, publicNGMPrekeyData: %{private}@}", buf, 0x16u);
             }
 
@@ -4873,14 +4873,14 @@ LABEL_37:
 
             v12 = 1;
 LABEL_38:
-            v47 = v4;
+            v47 = keyIndexCopy;
             v49 = v26;
-            v34 = [(IDSRegistrationKeyManager *)self identityDataSource];
-            v35 = [v34 dataRepresentationForNGMVersion:{objc_msgSend(v30, "unsignedIntValue")}];
+            identityDataSource = [(IDSRegistrationKeyManager *)self identityDataSource];
+            v35 = [identityDataSource dataRepresentationForNGMVersion:{objc_msgSend(v30, "unsignedIntValue")}];
 
-            v36 = [(IDSRegistrationKeyManager *)self keychainWrapper];
+            keychainWrapper4 = [(IDSRegistrationKeyManager *)self keychainWrapper];
             v56 = v51;
-            v37 = [v36 dataForIdentifier:@"ngm-message-protection-public-data-registered-version" error:&v56];
+            v37 = [keychainWrapper4 dataForIdentifier:@"ngm-message-protection-public-data-registered-version" error:&v56];
             v54 = v56;
 
             v38 = v37;
@@ -4888,7 +4888,7 @@ LABEL_38:
             {
               v39 = [v37 isEqual:v35];
               v22 = v52;
-              v4 = v47;
+              keyIndexCopy = v47;
               if (v39)
               {
 LABEL_46:
@@ -4899,7 +4899,7 @@ LABEL_47:
 LABEL_48:
                 v11 = v54;
                 [(NSRecursiveLock *)self->_lock lock];
-                if ([(IDSPerServiceApplicationKeyManager *)self->_applicationKeyManager needsPublicDataUpdatedForKeyIndex:v5])
+                if ([(IDSPerServiceApplicationKeyManager *)self->_applicationKeyManager needsPublicDataUpdatedForKeyIndex:indexCopy])
                 {
                   v42 = +[IMRGLog registration];
                   if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
@@ -4911,7 +4911,7 @@ LABEL_48:
                   v12 = 1;
                 }
 
-                if ([(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager needsPublicDataUpdatedForKeyIndex:v4])
+                if ([(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager needsPublicDataUpdatedForKeyIndex:keyIndexCopy])
                 {
                   v43 = +[IMRGLog registration];
                   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
@@ -4945,16 +4945,16 @@ LABEL_57:
               v40 = +[IMRGLog registration];
               if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
               {
-                v41 = [(IDSRegistrationKeyManager *)self config];
+                config = [(IDSRegistrationKeyManager *)self config];
                 *buf = 138543619;
                 v63 = v54;
                 v64 = 2113;
-                v65 = v41;
+                v65 = config;
                 _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Registered ngm data version is empty -- returning YES {error: %{public}@, config: %{private}@}", buf, 0x16u);
               }
 
               v22 = v52;
-              v4 = v47;
+              keyIndexCopy = v47;
             }
 
             v12 = 1;
@@ -4977,11 +4977,11 @@ LABEL_57:
           v31 = +[IMRGLog registration];
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
-            v33 = [(IDSRegistrationKeyManager *)self config];
+            config2 = [(IDSRegistrationKeyManager *)self config];
             *buf = 138543619;
             v63 = v51;
             v64 = 2113;
-            v65 = v33;
+            v65 = config2;
             _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Registered ngm data is empty -- returning YES { error: %{public}@, config: %{private}@}", buf, 0x16u);
           }
         }
@@ -5007,11 +5007,11 @@ LABEL_57:
       v15 = +[IMRGLog registration];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(IDSRegistrationKeyManager *)self config];
+        config3 = [(IDSRegistrationKeyManager *)self config];
         *buf = 138543619;
         v63 = v54;
         v64 = 2113;
-        v65 = v16;
+        v65 = config3;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Registered legacy data is empty -- returning YES {error: %{public}@, config: %{private}@}", buf, 0x16u);
       }
     }
@@ -5026,13 +5026,13 @@ LABEL_58:
   return v12;
 }
 
-- (id)createKTRegistrationDataForServiceTypes:(id)a3 withPublicIdentity:(id)a4
+- (id)createKTRegistrationDataForServiceTypes:(id)types withPublicIdentity:(id)identity
 {
   lock = self->_lock;
-  v7 = a4;
-  v8 = a3;
+  identityCopy = identity;
+  typesCopy = types;
   [(NSRecursiveLock *)lock lock];
-  v9 = [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager createKTRegistrationDataForServiceTypes:v8 usingPublicIdentityData:v7 withApplicationKeyManager:self->_applicationKeyManager];
+  v9 = [(IDSKTRegistrationDataManager *)self->_ktRegistrationDataManager createKTRegistrationDataForServiceTypes:typesCopy usingPublicIdentityData:identityCopy withApplicationKeyManager:self->_applicationKeyManager];
 
   [(NSRecursiveLock *)self->_lock unlock];
 
@@ -5042,19 +5042,19 @@ LABEL_58:
 - (BOOL)isMigratedKeyPairSignature
 {
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:0];
-  v3 = [(IDSRegistrationKeyManager *)self config];
-  v4 = [v3 isMigratedSignature];
+  config = [(IDSRegistrationKeyManager *)self config];
+  isMigratedSignature = [config isMigratedSignature];
 
-  return v4;
+  return isMigratedSignature;
 }
 
 - (BOOL)isUsingSecureStorageForClassA
 {
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
   [(NSRecursiveLock *)self->_lock lock];
-  v3 = [(IDSRegistrationKeyManager *)self config];
-  v4 = [v3 identityClassA];
-  v5 = [(IDSRegistrationKeyManager *)self _isSecurelyStoringIdentity:v4 withExpectedProtectionClass:1];
+  config = [(IDSRegistrationKeyManager *)self config];
+  identityClassA = [config identityClassA];
+  v5 = [(IDSRegistrationKeyManager *)self _isSecurelyStoringIdentity:identityClassA withExpectedProtectionClass:1];
 
   [(NSRecursiveLock *)self->_lock unlock];
   return v5;
@@ -5064,22 +5064,22 @@ LABEL_58:
 {
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
   [(NSRecursiveLock *)self->_lock lock];
-  v3 = [(IDSRegistrationKeyManager *)self config];
-  v4 = [v3 identityClassC];
-  v5 = [(IDSRegistrationKeyManager *)self _isSecurelyStoringIdentity:v4 withExpectedProtectionClass:0];
+  config = [(IDSRegistrationKeyManager *)self config];
+  identityClassC = [config identityClassC];
+  v5 = [(IDSRegistrationKeyManager *)self _isSecurelyStoringIdentity:identityClassC withExpectedProtectionClass:0];
 
   [(NSRecursiveLock *)self->_lock unlock];
   return v5;
 }
 
-- (BOOL)_isSecurelyStoringIdentity:(id)a3 withExpectedProtectionClass:(int64_t)a4
+- (BOOL)_isSecurelyStoringIdentity:(id)identity withExpectedProtectionClass:(int64_t)class
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  identityCopy = identity;
+  v6 = identityCopy;
+  if (identityCopy)
   {
     v13 = 0;
-    v7 = [v5 dataProtectionClassWithError:&v13];
+    v7 = [identityCopy dataProtectionClassWithError:&v13];
     v8 = v13;
     v9 = [IDSKeychainWrapper idsKeychainWrapperDataProtectionClassFromIMDataProtectionClass:v7];
     if (v8)
@@ -5088,7 +5088,7 @@ LABEL_58:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218499;
-        v15 = a4;
+        classCopy = class;
         v16 = 2114;
         v17 = v8;
         v18 = 2113;
@@ -5101,7 +5101,7 @@ LABEL_58:
 
     else
     {
-      v11 = v9 == a4;
+      v11 = v9 == class;
     }
   }
 
@@ -5117,9 +5117,9 @@ LABEL_58:
 {
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
   [(NSRecursiveLock *)self->_lock lock];
-  v3 = [(IDSRegistrationKeyManager *)self config];
-  v4 = [v3 identityClassA];
-  v5 = [(IDSRegistrationKeyManager *)self _migrateIdentity:v4 toProtectionClass:1];
+  config = [(IDSRegistrationKeyManager *)self config];
+  identityClassA = [config identityClassA];
+  v5 = [(IDSRegistrationKeyManager *)self _migrateIdentity:identityClassA toProtectionClass:1];
 
   [(NSRecursiveLock *)self->_lock unlock];
   return v5;
@@ -5129,21 +5129,21 @@ LABEL_58:
 {
   [(IDSRegistrationKeyManager *)self _loadIfNeeded:1];
   [(NSRecursiveLock *)self->_lock lock];
-  v3 = [(IDSRegistrationKeyManager *)self config];
-  v4 = [v3 identityClassC];
-  v5 = [(IDSRegistrationKeyManager *)self _migrateIdentity:v4 toProtectionClass:0];
+  config = [(IDSRegistrationKeyManager *)self config];
+  identityClassC = [config identityClassC];
+  v5 = [(IDSRegistrationKeyManager *)self _migrateIdentity:identityClassC toProtectionClass:0];
 
   [(NSRecursiveLock *)self->_lock unlock];
   return v5;
 }
 
-- (BOOL)_migrateIdentity:(id)a3 toProtectionClass:(int64_t)a4
+- (BOOL)_migrateIdentity:(id)identity toProtectionClass:(int64_t)class
 {
-  v5 = a3;
-  if (v5)
+  identityCopy = identity;
+  if (identityCopy)
   {
     v10 = 0;
-    v6 = [v5 updateIdentityToDataProtectionClass:+[IDSKeychainWrapper imDataProtectionClassFromDataProtectionClass:](IDSKeychainWrapper error:{"imDataProtectionClassFromDataProtectionClass:", a4), &v10}];
+    v6 = [identityCopy updateIdentityToDataProtectionClass:+[IDSKeychainWrapper imDataProtectionClassFromDataProtectionClass:](IDSKeychainWrapper error:{"imDataProtectionClassFromDataProtectionClass:", class), &v10}];
     v7 = v10;
     if ((v6 & 1) == 0)
     {
@@ -5153,9 +5153,9 @@ LABEL_58:
         *buf = 138543875;
         v12 = v7;
         v13 = 2113;
-        v14 = v5;
+        v14 = identityCopy;
         v15 = 2048;
-        v16 = a4;
+        classCopy = class;
         _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Failed to migrate identity data protection class {error: %{public}@, identity: %{private}@, protectionClass: %ld}", buf, 0x20u);
       }
     }
@@ -5172,12 +5172,12 @@ LABEL_58:
 - (void)regenerateRegisteredIdentity
 {
   [(NSRecursiveLock *)self->_lock lock];
-  v3 = [(IDSRegistrationKeyManager *)self config];
-  v4 = [v3 unregisteredIdentityContainer];
+  config = [(IDSRegistrationKeyManager *)self config];
+  unregisteredIdentityContainer = [config unregisteredIdentityContainer];
 
   v5 = +[IMRGLog registration];
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (unregisteredIdentityContainer)
   {
     if (v6)
     {
@@ -5194,10 +5194,10 @@ LABEL_58:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Requesting roll of encryption portion of registered identity", buf, 2u);
     }
 
-    v7 = [(IDSRegistrationKeyManager *)self config];
-    v8 = [v7 registeredIdentityContainer];
-    v9 = [v8 ngmFullDeviceIdentity];
-    [(IDSRegistrationKeyManager *)self _generateUnregisteredIdentityWithExistingLegacyIdentity:0 existingNGMIdentity:v9];
+    config2 = [(IDSRegistrationKeyManager *)self config];
+    registeredIdentityContainer = [config2 registeredIdentityContainer];
+    ngmFullDeviceIdentity = [registeredIdentityContainer ngmFullDeviceIdentity];
+    [(IDSRegistrationKeyManager *)self _generateUnregisteredIdentityWithExistingLegacyIdentity:0 existingNGMIdentity:ngmFullDeviceIdentity];
 
     [(IDSRegistrationKeyManager *)self _notifyUnregisteredIdentityRegenerated];
   }
@@ -5210,11 +5210,11 @@ LABEL_58:
   if ([(IDSRegistrationKeyManager *)self allowRegenerateRegisteredIdentity])
   {
     [(NSRecursiveLock *)self->_lock lock];
-    v3 = [(IDSRegistrationKeyManager *)self config];
-    v4 = [v3 buildOfIdentityGeneration];
+    config = [(IDSRegistrationKeyManager *)self config];
+    buildOfIdentityGeneration = [config buildOfIdentityGeneration];
 
     [(NSRecursiveLock *)self->_lock unlock];
-    v5 = v4 == 0;
+    v5 = buildOfIdentityGeneration == 0;
   }
 
   else
@@ -5248,10 +5248,10 @@ LABEL_58:
   }
 
   v6 = +[IMLockdownManager sharedInstance];
-  v7 = [v6 isInternalInstall];
+  isInternalInstall = [v6 isInternalInstall];
 
   v8 = v3 + v5;
-  if (v7)
+  if (isInternalInstall)
   {
     v9 = 1800;
   }
@@ -5264,7 +5264,7 @@ LABEL_58:
   return v8 + arc4random_uniform(v9);
 }
 
-- (void)_schedulePurgeOfPreviousIdentityAfterDelay:(double)a3
+- (void)_schedulePurgeOfPreviousIdentityAfterDelay:(double)delay
 {
   v5 = im_primary_queue();
   v6[0] = _NSConcreteStackBlock;
@@ -5272,7 +5272,7 @@ LABEL_58:
   v6[2] = sub_10033B414;
   v6[3] = &unk_100BD7978;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = delay;
   dispatch_async(v5, v6);
 }
 
@@ -5308,7 +5308,7 @@ LABEL_58:
   IMRemoveAppValueForKey();
 }
 
-- (void)_scheduleRegenerationOfRegisteredIdentityAfterDelay:(double)a3
+- (void)_scheduleRegenerationOfRegisteredIdentityAfterDelay:(double)delay
 {
   v5 = im_primary_queue();
   v6[0] = _NSConcreteStackBlock;
@@ -5316,7 +5316,7 @@ LABEL_58:
   v6[2] = sub_10033B7D8;
   v6[3] = &unk_100BD7978;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = delay;
   dispatch_async(v5, v6);
 }
 
@@ -5490,15 +5490,15 @@ LABEL_58:
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

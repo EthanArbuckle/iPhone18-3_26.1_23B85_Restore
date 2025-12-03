@@ -1,56 +1,56 @@
 @interface EFSQLCaseExpression
-- (EFSQLCaseExpression)initWithBaseExpression:(id)a3;
+- (EFSQLCaseExpression)initWithBaseExpression:(id)expression;
 - (NSString)ef_SQLExpression;
-- (id)objectForKeyedSubscript:(id)a3;
-- (void)ef_renderSQLExpressionInto:(id)a3;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (void)ef_renderSQLExpressionInto:(id)into;
 @end
 
 @implementation EFSQLCaseExpression
 
-- (EFSQLCaseExpression)initWithBaseExpression:(id)a3
+- (EFSQLCaseExpression)initWithBaseExpression:(id)expression
 {
-  v5 = a3;
+  expressionCopy = expression;
   v11.receiver = self;
   v11.super_class = EFSQLCaseExpression;
   v6 = [(EFSQLCaseExpression *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseExpression, a3);
-    v8 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    objc_storeStrong(&v6->_baseExpression, expression);
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     whenExpressions = v7->_whenExpressions;
-    v7->_whenExpressions = v8;
+    v7->_whenExpressions = strongToStrongObjectsMapTable;
   }
 
   return v7;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v3 = [(NSMapTable *)self->_whenExpressions objectForKey:a3];
+  v3 = [(NSMapTable *)self->_whenExpressions objectForKey:subscript];
 
   return v3;
 }
 
 - (NSString)ef_SQLExpression
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [(EFSQLCaseExpression *)self ef_renderSQLExpressionInto:v3];
+  string = [MEMORY[0x1E696AD60] string];
+  [(EFSQLCaseExpression *)self ef_renderSQLExpressionInto:string];
 
-  return v3;
+  return string;
 }
 
-- (void)ef_renderSQLExpressionInto:(id)a3
+- (void)ef_renderSQLExpressionInto:(id)into
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 appendString:@"CASE"];
-  v17 = [(EFSQLCaseExpression *)self baseExpression];
-  if (v17)
+  intoCopy = into;
+  [intoCopy appendString:@"CASE"];
+  baseExpression = [(EFSQLCaseExpression *)self baseExpression];
+  if (baseExpression)
   {
-    [v4 appendString:@" "];
-    v5 = [v17 ef_SQLIsolatedExpression];
-    [v5 ef_renderSQLExpressionInto:v4];
+    [intoCopy appendString:@" "];
+    ef_SQLIsolatedExpression = [baseExpression ef_SQLIsolatedExpression];
+    [ef_SQLIsolatedExpression ef_renderSQLExpressionInto:intoCopy];
   }
 
   [(EFSQLCaseExpression *)self whenExpressions];
@@ -73,13 +73,13 @@
 
         v10 = *(*(&v18 + 1) + 8 * i);
         v11 = [v6 objectForKey:v10];
-        [v4 appendString:@" WHEN "];
-        v12 = [v10 ef_SQLIsolatedExpression];
-        [v12 ef_renderSQLExpressionInto:v4];
+        [intoCopy appendString:@" WHEN "];
+        ef_SQLIsolatedExpression2 = [v10 ef_SQLIsolatedExpression];
+        [ef_SQLIsolatedExpression2 ef_renderSQLExpressionInto:intoCopy];
 
-        [v4 appendString:@" THEN "];
-        v13 = [v11 ef_SQLIsolatedExpression];
-        [v13 ef_renderSQLExpressionInto:v4];
+        [intoCopy appendString:@" THEN "];
+        ef_SQLIsolatedExpression3 = [v11 ef_SQLIsolatedExpression];
+        [ef_SQLIsolatedExpression3 ef_renderSQLExpressionInto:intoCopy];
       }
 
       v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -88,15 +88,15 @@
     while (v7);
   }
 
-  v14 = [(EFSQLCaseExpression *)self elseExpression];
-  if (v14)
+  elseExpression = [(EFSQLCaseExpression *)self elseExpression];
+  if (elseExpression)
   {
-    [v4 appendString:@" ELSE "];
-    v15 = [v14 ef_SQLIsolatedExpression];
-    [v15 ef_renderSQLExpressionInto:v4];
+    [intoCopy appendString:@" ELSE "];
+    ef_SQLIsolatedExpression4 = [elseExpression ef_SQLIsolatedExpression];
+    [ef_SQLIsolatedExpression4 ef_renderSQLExpressionInto:intoCopy];
   }
 
-  [v4 appendString:@" END"];
+  [intoCopy appendString:@" END"];
 
   v16 = *MEMORY[0x1E69E9840];
 }

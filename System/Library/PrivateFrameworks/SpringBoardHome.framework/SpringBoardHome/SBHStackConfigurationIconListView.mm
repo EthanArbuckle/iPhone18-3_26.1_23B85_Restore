@@ -1,51 +1,51 @@
 @interface SBHStackConfigurationIconListView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (SBIconViewDelegate)iconViewDelegate;
-- (void)_setupCustomBackgroundConfigurationForIconView:(id)a3;
-- (void)configureIconView:(id)a3 forIcon:(id)a4;
+- (void)_setupCustomBackgroundConfigurationForIconView:(id)view;
+- (void)configureIconView:(id)view forIcon:(id)icon;
 @end
 
 @implementation SBHStackConfigurationIconListView
 
-- (void)configureIconView:(id)a3 forIcon:(id)a4
+- (void)configureIconView:(id)view forIcon:(id)icon
 {
-  v6 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = SBHStackConfigurationIconListView;
-  [(SBIconListView *)&v8 configureIconView:v6 forIcon:a4];
-  v7 = [(SBHStackConfigurationIconListView *)self iconViewDelegate];
-  [v6 setDelegate:v7];
+  [(SBIconListView *)&v8 configureIconView:viewCopy forIcon:icon];
+  iconViewDelegate = [(SBHStackConfigurationIconListView *)self iconViewDelegate];
+  [viewCopy setDelegate:iconViewDelegate];
 
-  [v6 setIconContentScalingEnabled:1];
-  [v6 setAllowsResizeHandle:0];
-  [v6 _updateAccessoryViewAnimated:0];
-  [v6 setStartsDragMoreQuickly:1];
-  [(SBHStackConfigurationIconListView *)self _setupCustomBackgroundConfigurationForIconView:v6];
+  [viewCopy setIconContentScalingEnabled:1];
+  [viewCopy setAllowsResizeHandle:0];
+  [viewCopy _updateAccessoryViewAnimated:0];
+  [viewCopy setStartsDragMoreQuickly:1];
+  [(SBHStackConfigurationIconListView *)self _setupCustomBackgroundConfigurationForIconView:viewCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SBIconListView *)self addLayoutObserver:v6];
+    [(SBIconListView *)self addLayoutObserver:viewCopy];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v6.receiver = self;
   v6.super_class = SBHStackConfigurationIconListView;
-  [(SBIconListView *)&v6 sizeThatFits:a3.width, a3.height];
+  [(SBIconListView *)&v6 sizeThatFits:fits.width, fits.height];
   v4 = SBHSizeCeiling(v3);
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (void)_setupCustomBackgroundConfigurationForIconView:(id)a3
+- (void)_setupCustomBackgroundConfigurationForIconView:(id)view
 {
-  v3 = [a3 customIconImageViewController];
+  customIconImageViewController = [view customIconImageViewController];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 backgroundViewProvider];
-    v5 = [v4 copy];
+    backgroundViewProvider = [customIconImageViewController backgroundViewProvider];
+    v5 = [backgroundViewProvider copy];
 
     if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
     {
@@ -55,11 +55,11 @@
       v10[3] = &unk_1E80899C8;
       v5 = v5;
       v11 = v5;
-      [v3 setBackgroundViewProvider:v10];
+      [customIconImageViewController setBackgroundViewProvider:v10];
       if (objc_opt_respondsToSelector())
       {
-        v6 = [v3 backgroundViewConfigurator];
-        v7 = [v6 copy];
+        backgroundViewConfigurator = [customIconImageViewController backgroundViewConfigurator];
+        v7 = [backgroundViewConfigurator copy];
 
         if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
         {
@@ -69,7 +69,7 @@
           v8[3] = &unk_1E80899F0;
           v7 = v7;
           v9 = v7;
-          [v3 setBackgroundViewConfigurator:v8];
+          [customIconImageViewController setBackgroundViewConfigurator:v8];
         }
       }
 

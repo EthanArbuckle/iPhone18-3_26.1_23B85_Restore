@@ -1,12 +1,12 @@
 @interface MapsSuggestionsFlightUpdater
-- (BOOL)_updateGateIfNeededForEntry:(void *)a3 handler:;
-- (MapsSuggestionsFlightUpdater)initWithFlightRequester:(id)a3 networkRequester:(id)a4;
-- (char)updateFlightsForEntry:(id)a3 handler:(id)a4;
+- (BOOL)_updateGateIfNeededForEntry:(void *)entry handler:;
+- (MapsSuggestionsFlightUpdater)initWithFlightRequester:(id)requester networkRequester:(id)networkRequester;
+- (char)updateFlightsForEntry:(id)entry handler:(id)handler;
 - (id).cxx_construct;
-- (id)initFromResourceDepot:(id)a3;
-- (uint64_t)_getGateMapItemForFlightEntry:(void *)a3 handler:;
-- (uint64_t)_getTerminalMapItemForFlightEntry:(void *)a3 handler:;
-- (void)_updateFlightsForEntry:(void *)a3 handler:;
+- (id)initFromResourceDepot:(id)depot;
+- (uint64_t)_getGateMapItemForFlightEntry:(void *)entry handler:;
+- (uint64_t)_getTerminalMapItemForFlightEntry:(void *)entry handler:;
+- (void)_updateFlightsForEntry:(void *)entry handler:;
 @end
 
 @implementation MapsSuggestionsFlightUpdater
@@ -18,18 +18,18 @@
   return self;
 }
 
-- (MapsSuggestionsFlightUpdater)initWithFlightRequester:(id)a3 networkRequester:(id)a4
+- (MapsSuggestionsFlightUpdater)initWithFlightRequester:(id)requester networkRequester:(id)networkRequester
 {
-  v7 = a3;
-  v8 = a4;
+  requesterCopy = requester;
+  networkRequesterCopy = networkRequester;
   v19.receiver = self;
   v19.super_class = MapsSuggestionsFlightUpdater;
   v9 = [(MapsSuggestionsFlightUpdater *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_flightRequester, a3);
-    objc_storeStrong(&v10->_networkRequester, a4);
+    objc_storeStrong(&v9->_flightRequester, requester);
+    objc_storeStrong(&v10->_networkRequester, networkRequester);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     MSg::Queue::Queue(&v17, @"MapsSuggestionsFlightQueue", v11);
     v12 = v17;
@@ -46,12 +46,12 @@
   return v10;
 }
 
-- (id)initFromResourceDepot:(id)a3
+- (id)initFromResourceDepot:(id)depot
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  depotCopy = depot;
+  v5 = depotCopy;
+  if (!depotCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -70,9 +70,9 @@
     goto LABEL_13;
   }
 
-  v6 = [v4 oneFlightRequester];
+  oneFlightRequester = [depotCopy oneFlightRequester];
 
-  if (!v6)
+  if (!oneFlightRequester)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -91,9 +91,9 @@
     goto LABEL_13;
   }
 
-  v7 = [v5 oneNetworkRequester];
+  oneNetworkRequester = [v5 oneNetworkRequester];
 
-  if (!v7)
+  if (!oneNetworkRequester)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -111,26 +111,26 @@
 
 LABEL_13:
 
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
-  v8 = [v5 oneFlightRequester];
-  v9 = [v5 oneNetworkRequester];
-  self = [(MapsSuggestionsFlightUpdater *)self initWithFlightRequester:v8 networkRequester:v9];
+  oneFlightRequester2 = [v5 oneFlightRequester];
+  oneNetworkRequester2 = [v5 oneNetworkRequester];
+  self = [(MapsSuggestionsFlightUpdater *)self initWithFlightRequester:oneFlightRequester2 networkRequester:oneNetworkRequester2];
 
-  v10 = self;
+  selfCopy = self;
 LABEL_14:
 
-  return v10;
+  return selfCopy;
 }
 
-- (uint64_t)_getTerminalMapItemForFlightEntry:(void *)a3 handler:
+- (uint64_t)_getTerminalMapItemForFlightEntry:(void *)entry handler:
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  entryCopy = entry;
+  if (!self)
   {
     v12 = 0;
     goto LABEL_19;
@@ -147,7 +147,7 @@ LABEL_14:
     }
   }
 
-  if (v6)
+  if (entryCopy)
   {
     if (v5)
     {
@@ -162,7 +162,7 @@ LABEL_14:
           _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_DEBUG, "terminalSearchString='%@'", buf, 0xCu);
         }
 
-        v10 = *(a1 + 16);
+        v10 = *(self + 16);
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __74__MapsSuggestionsFlightUpdater__getTerminalMapItemForFlightEntry_handler___block_invoke;
@@ -170,7 +170,7 @@ LABEL_14:
         v11 = v8;
         v15 = v11;
         v16 = v5;
-        v17 = v6;
+        v17 = entryCopy;
         v12 = MapsSuggestionsSearchTerminal(v11, v16, v10, v14);
       }
 
@@ -315,12 +315,12 @@ LABEL_4:
 LABEL_5:
 }
 
-- (uint64_t)_getGateMapItemForFlightEntry:(void *)a3 handler:
+- (uint64_t)_getGateMapItemForFlightEntry:(void *)entry handler:
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  entryCopy = entry;
+  if (self)
   {
     if (MapsSuggestionsLoggingIsVerbose())
     {
@@ -333,7 +333,7 @@ LABEL_5:
       }
     }
 
-    if (v6)
+    if (entryCopy)
     {
       if (v5)
       {
@@ -346,7 +346,7 @@ LABEL_5:
           _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_DEBUG, "gateSearchString='%@'", buf, 0xCu);
         }
 
-        a1 = a1[2];
+        self = self[2];
         v12[0] = MEMORY[0x1E69E9820];
         v12[1] = 3221225472;
         v12[2] = __70__MapsSuggestionsFlightUpdater__getGateMapItemForFlightEntry_handler___block_invoke;
@@ -354,8 +354,8 @@ LABEL_5:
         v10 = v8;
         v13 = v10;
         v14 = v5;
-        v15 = v6;
-        LOBYTE(a1) = MapsSuggestionsSearchGate(v10, v14, a1, v12);
+        v15 = entryCopy;
+        LOBYTE(self) = MapsSuggestionsSearchGate(v10, v14, self, v12);
 
         goto LABEL_14;
       }
@@ -373,11 +373,11 @@ LABEL_5:
     }
 
     v10 = *buf;
-    LOBYTE(a1) = v16;
+    LOBYTE(self) = v16;
 LABEL_14:
   }
 
-  return a1;
+  return self;
 }
 
 void __70__MapsSuggestionsFlightUpdater__getGateMapItemForFlightEntry_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -485,29 +485,29 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)_updateFlightsForEntry:(void *)a3 handler:
+- (void)_updateFlightsForEntry:(void *)entry handler:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  entryCopy = entry;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 24));
+    dispatch_assert_queue_V2(*(self + 24));
     v7 = [v5 dateForKey:@"MapsSuggestionsFlightDepartureTimeKey"];
     v8 = MapsSuggestionsSecondsTo(v7);
     GEOConfigGetDouble();
     if (v8 <= v9)
     {
       v11 = [v5 stringForKey:@"MapsSuggestionsFullFlightNumberKey"];
-      objc_initWeak(buf, a1);
+      objc_initWeak(buf, self);
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __63__MapsSuggestionsFlightUpdater__updateFlightsForEntry_handler___block_invoke;
       aBlock[3] = &unk_1E81F5770;
       objc_copyWeak(&v23, buf);
-      v12 = v6;
+      v12 = entryCopy;
       v22 = v12;
       v13 = _Block_copy(aBlock);
-      v14 = *(a1 + 8);
+      v14 = *(self + 8);
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __63__MapsSuggestionsFlightUpdater__updateFlightsForEntry_handler___block_invoke_178;
@@ -533,7 +533,7 @@ LABEL_5:
         _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "Too early to do flight updates. Skipping update", buf, 2u);
       }
 
-      (*(v6 + 2))(v6, v5, 0);
+      (*(entryCopy + 2))(entryCopy, v5, 0);
     }
   }
 }
@@ -580,11 +580,11 @@ void __63__MapsSuggestionsFlightUpdater__updateFlightsForEntry_handler___block_i
   }
 }
 
-- (BOOL)_updateGateIfNeededForEntry:(void *)a3 handler:
+- (BOOL)_updateGateIfNeededForEntry:(void *)entry handler:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  entryCopy = entry;
+  if (self)
   {
     if ([v5 containsKey:@"MapsSuggestionsFlightDepartureGateKey"] && objc_msgSend(v5, "BOOLeanForKey:", @"MapsSuggestionsAlreadyThereKey"))
     {
@@ -592,17 +592,17 @@ void __63__MapsSuggestionsFlightUpdater__updateFlightsForEntry_handler___block_i
       v8[1] = 3221225472;
       v8[2] = __68__MapsSuggestionsFlightUpdater__updateGateIfNeededForEntry_handler___block_invoke;
       v8[3] = &unk_1E81F5798;
-      v9 = v6;
-      a1 = [(MapsSuggestionsFlightUpdater *)a1 _getGateMapItemForFlightEntry:v5 handler:v8]== 1;
+      v9 = entryCopy;
+      self = [(MapsSuggestionsFlightUpdater *)self _getGateMapItemForFlightEntry:v5 handler:v8]== 1;
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __63__MapsSuggestionsFlightUpdater__updateFlightsForEntry_handler___block_invoke_178(id *a1, void *a2, void *a3)
@@ -815,13 +815,13 @@ void __68__MapsSuggestionsFlightUpdater__updateGateIfNeededForEntry_handler___bl
   (*(*(a1 + 32) + 16))();
 }
 
-- (char)updateFlightsForEntry:(id)a3 handler:(id)a4
+- (char)updateFlightsForEntry:(id)entry handler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  entryCopy = entry;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (!entryCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -840,7 +840,7 @@ void __68__MapsSuggestionsFlightUpdater__updateGateIfNeededForEntry_handler___bl
     goto LABEL_13;
   }
 
-  if (!v7)
+  if (!handlerCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -859,7 +859,7 @@ void __68__MapsSuggestionsFlightUpdater__updateGateIfNeededForEntry_handler___bl
     goto LABEL_13;
   }
 
-  if ([v6 type] != 15)
+  if ([entryCopy type] != 15)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -886,7 +886,7 @@ LABEL_13:
   block[2] = __62__MapsSuggestionsFlightUpdater_updateFlightsForEntry_handler___block_invoke;
   block[3] = &unk_1E81F5810;
   block[4] = self;
-  v13 = v6;
+  v13 = entryCopy;
   v14 = v8;
   dispatch_sync(self->_queue._innerQueue, block);
 

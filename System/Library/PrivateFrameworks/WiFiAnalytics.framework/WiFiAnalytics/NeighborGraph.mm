@@ -1,20 +1,20 @@
 @interface NeighborGraph
-- (BOOL)doesPathExist:(id)a3 target:(id)a4;
-- (NeighborGraph)initWithBssidArray:(id)a3 ssid:(id)a4 persistentContainer:(id)a5;
-- (id)copyNeighborGraphAsDictionaryOnMoc:(id)a3;
+- (BOOL)doesPathExist:(id)exist target:(id)target;
+- (NeighborGraph)initWithBssidArray:(id)array ssid:(id)ssid persistentContainer:(id)container;
+- (id)copyNeighborGraphAsDictionaryOnMoc:(id)moc;
 - (unint64_t)graphDensity;
-- (void)setNeighborsForBssid:(id)a3 dwellTime:(unint64_t)a4 neighborInfoArray:(id)a5;
-- (void)setNeighborsForBssid:(id)a3 neighbors:(id)a4;
+- (void)setNeighborsForBssid:(id)bssid dwellTime:(unint64_t)time neighborInfoArray:(id)array;
+- (void)setNeighborsForBssid:(id)bssid neighbors:(id)neighbors;
 @end
 
 @implementation NeighborGraph
 
-- (NeighborGraph)initWithBssidArray:(id)a3 ssid:(id)a4 persistentContainer:(id)a5
+- (NeighborGraph)initWithBssidArray:(id)array ssid:(id)ssid persistentContainer:(id)container
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  arrayCopy = array;
+  ssidCopy = ssid;
+  containerCopy = container;
   v32.receiver = self;
   v32.super_class = NeighborGraph;
   v11 = [(NeighborGraph *)&v32 init];
@@ -23,7 +23,7 @@
     goto LABEL_31;
   }
 
-  if (!v8)
+  if (!arrayCopy)
   {
     v28 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -41,7 +41,7 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (![v8 count])
+  if (![arrayCopy count])
   {
     v28 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -57,7 +57,7 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  if (!v10)
+  if (!containerCopy)
   {
     v28 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -73,8 +73,8 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  objc_storeStrong(&v11->_persistentContainer, a5);
-  v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  objc_storeStrong(&v11->_persistentContainer, container);
+  v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   graph = v11->_graph;
   v11->_graph = v12;
 
@@ -94,26 +94,26 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  if ([v8 count])
+  if ([arrayCopy count])
   {
     v14 = 0;
     do
     {
       v15 = v11->_graph;
-      v16 = [MEMORY[0x1E695DF70] array];
-      [(NSMutableArray *)v15 addObject:v16];
+      array = [MEMORY[0x1E695DF70] array];
+      [(NSMutableArray *)v15 addObject:array];
 
       ++v14;
     }
 
-    while (v14 < [v8 count]);
+    while (v14 < [arrayCopy count]);
   }
 
-  v17 = [v9 copy];
+  v17 = [ssidCopy copy];
   ssid = v11->_ssid;
   v11->_ssid = v17;
 
-  v19 = [MEMORY[0x1E695DEC8] arrayWithArray:v8];
+  v19 = [MEMORY[0x1E695DEC8] arrayWithArray:arrayCopy];
   bssids = v11->_bssids;
   v11->_bssids = v19;
 
@@ -133,9 +133,9 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v21 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   bssidsDwellTimes = v11->_bssidsDwellTimes;
-  v11->_bssidsDwellTimes = v21;
+  v11->_bssidsDwellTimes = array2;
 
   if (!v11->_bssidsDwellTimes)
   {
@@ -157,7 +157,7 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if ([v8 count])
+  if ([arrayCopy count])
   {
     v23 = 0;
     do
@@ -166,7 +166,7 @@ LABEL_31:
       ++v23;
     }
 
-    while (v23 < [v8 count]);
+    while (v23 < [arrayCopy count]);
   }
 
   v24 = WALogCategoryDeviceStoreHandle();
@@ -192,13 +192,13 @@ LABEL_32:
   return v27;
 }
 
-- (void)setNeighborsForBssid:(id)a3 neighbors:(id)a4
+- (void)setNeighborsForBssid:(id)bssid neighbors:(id)neighbors
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  bssidCopy = bssid;
+  neighborsCopy = neighbors;
+  v8 = neighborsCopy;
+  if (!bssidCopy)
   {
     v13 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -214,7 +214,7 @@ LABEL_32:
     goto LABEL_28;
   }
 
-  if (!v7)
+  if (!neighborsCopy)
   {
     v13 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -230,7 +230,7 @@ LABEL_32:
     goto LABEL_28;
   }
 
-  if (![v7 count])
+  if (![neighborsCopy count])
   {
     v13 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -249,8 +249,8 @@ LABEL_28:
     goto LABEL_31;
   }
 
-  v9 = [(NeighborGraph *)self bssids];
-  v10 = [v9 indexOfObject:v6];
+  bssids = [(NeighborGraph *)self bssids];
+  v10 = [bssids indexOfObject:bssidCopy];
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -265,7 +265,7 @@ LABEL_28:
     v45 = 1024;
     v46 = 77;
     v47 = 2112;
-    v48 = v6;
+    v48 = bssidCopy;
     v32 = "%{public}s::%d:bssid %@ not found";
     v33 = v13;
     v34 = 28;
@@ -275,13 +275,13 @@ LABEL_31:
   }
 
   v35 = v10;
-  v36 = v6;
+  v36 = bssidCopy;
   v11 = MEMORY[0x1E695DF70];
-  v12 = [(NeighborGraph *)self bssids];
-  v13 = [v11 arrayWithCapacity:{objc_msgSend(v12, "count")}];
+  bssids2 = [(NeighborGraph *)self bssids];
+  v13 = [v11 arrayWithCapacity:{objc_msgSend(bssids2, "count")}];
 
-  v14 = [(NeighborGraph *)self bssids];
-  v15 = [v14 count];
+  bssids3 = [(NeighborGraph *)self bssids];
+  v15 = [bssids3 count];
 
   if (v15)
   {
@@ -292,8 +292,8 @@ LABEL_31:
       [v13 addObject:v17];
 
       ++v16;
-      v18 = [(NeighborGraph *)self bssids];
-      v19 = [v18 count];
+      bssids4 = [(NeighborGraph *)self bssids];
+      v19 = [bssids4 count];
     }
 
     while (v16 < v19);
@@ -320,8 +320,8 @@ LABEL_31:
         }
 
         v25 = *(*(&v38 + 1) + 8 * i);
-        v26 = [(NeighborGraph *)self bssids];
-        v27 = [v26 indexOfObject:v25];
+        bssids5 = [(NeighborGraph *)self bssids];
+        v27 = [bssids5 indexOfObject:v25];
 
         if (v27 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -356,23 +356,23 @@ LABEL_31:
     }
   }
 
-  v29 = [(NeighborGraph *)self graph];
-  [v29 insertObject:v13 atIndex:v35];
+  graph = [(NeighborGraph *)self graph];
+  [graph insertObject:v13 atIndex:v35];
 
 LABEL_20:
-  v6 = v36;
+  bssidCopy = v36;
 LABEL_21:
 
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)doesPathExist:(id)a3 target:(id)a4
+- (BOOL)doesPathExist:(id)exist target:(id)target
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  existCopy = exist;
+  targetCopy = target;
+  v8 = targetCopy;
+  if (!existCopy)
   {
     v18 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -390,7 +390,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v7)
+  if (!targetCopy)
   {
     v18 = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -406,11 +406,11 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v9 = [(NeighborGraph *)self bssids];
-  v10 = [v9 indexOfObject:v6];
+  bssids = [(NeighborGraph *)self bssids];
+  v10 = [bssids indexOfObject:existCopy];
 
-  v11 = [(NeighborGraph *)self bssids];
-  v12 = [v11 indexOfObject:v8];
+  bssids2 = [(NeighborGraph *)self bssids];
+  v12 = [bssids2 indexOfObject:v8];
 
   if (v12 == v10)
   {
@@ -433,8 +433,8 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v13 = [(NeighborGraph *)self graph];
-  v14 = [v13 objectAtIndex:v10];
+  graph = [(NeighborGraph *)self graph];
+  v14 = [graph objectAtIndex:v10];
 
   if (!v14 || ![v14 count])
   {
@@ -442,9 +442,9 @@ LABEL_20:
   }
 
   v15 = [v14 objectAtIndex:v12];
-  v16 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v15 == v16)
+  if (v15 == null)
   {
     isKindOfClass = 0;
   }
@@ -472,11 +472,11 @@ LABEL_21:
 - (unint64_t)graphDensity
 {
   v46 = *MEMORY[0x1E69E9840];
-  v3 = [(NeighborGraph *)self bssids];
-  v22 = [v3 count];
+  bssids = [(NeighborGraph *)self bssids];
+  v22 = [bssids count];
 
-  v4 = [(NeighborGraph *)self bssids];
-  v5 = [v4 mutableCopy];
+  bssids2 = [(NeighborGraph *)self bssids];
+  v5 = [bssids2 mutableCopy];
 
   v30 = 0u;
   v31 = 0u;
@@ -564,13 +564,13 @@ LABEL_21:
   return (v9 / v18 * 100.0);
 }
 
-- (void)setNeighborsForBssid:(id)a3 dwellTime:(unint64_t)a4 neighborInfoArray:(id)a5
+- (void)setNeighborsForBssid:(id)bssid dwellTime:(unint64_t)time neighborInfoArray:(id)array
 {
   v83 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (!v7)
+  bssidCopy = bssid;
+  arrayCopy = array;
+  v9 = arrayCopy;
+  if (!bssidCopy)
   {
     log = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
@@ -586,7 +586,7 @@ LABEL_21:
     goto LABEL_33;
   }
 
-  if (!v8)
+  if (!arrayCopy)
   {
     log = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
@@ -602,7 +602,7 @@ LABEL_21:
     goto LABEL_33;
   }
 
-  if (![v8 count])
+  if (![arrayCopy count])
   {
     log = WALogCategoryDeviceStoreHandle();
     if (!os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
@@ -621,8 +621,8 @@ LABEL_33:
     goto LABEL_36;
   }
 
-  v10 = [(NeighborGraph *)self bssids];
-  v11 = [v10 indexOfObject:v7];
+  bssids = [(NeighborGraph *)self bssids];
+  v11 = [bssids indexOfObject:bssidCopy];
 
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -637,7 +637,7 @@ LABEL_33:
     v71 = 1024;
     v72 = 158;
     v73 = 2112;
-    v74 = v7;
+    v74 = bssidCopy;
     v54 = "%{public}s::%d:bssid %@ not found";
     v55 = log;
     v56 = 28;
@@ -646,16 +646,16 @@ LABEL_36:
     goto LABEL_26;
   }
 
-  v12 = [(NeighborGraph *)self bssidsDwellTimes];
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  bssidsDwellTimes = [(NeighborGraph *)self bssidsDwellTimes];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:time];
   v59 = v11;
-  [v12 insertObject:v13 atIndex:v11];
+  [bssidsDwellTimes insertObject:v13 atIndex:v11];
 
   v14 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     v15 = [v9 count];
-    v16 = [(NeighborGraph *)self bssids];
+    bssids2 = [(NeighborGraph *)self bssids];
     *buf = 136447746;
     v70 = "[NeighborGraph setNeighborsForBssid:dwellTime:neighborInfoArray:]";
     v71 = 1024;
@@ -663,33 +663,33 @@ LABEL_36:
     v73 = 2048;
     v74 = (v11 + 1);
     v75 = 2112;
-    v76 = v7;
+    v76 = bssidCopy;
     v77 = 2048;
-    v78 = a4;
+    timeCopy = time;
     v79 = 2048;
     v80 = v15;
     v81 = 2048;
-    v82 = [v16 count];
+    v82 = [bssids2 count];
     _os_log_impl(&dword_1C8460000, v14, OS_LOG_TYPE_DEBUG, "%{public}s::%d:(%lu) BSSID: %@ dwell:%lu has %lu neighbors. BssidsCount:%lu", buf, 0x44u);
   }
 
-  v58 = v7;
+  v58 = bssidCopy;
 
   log = [MEMORY[0x1E695DF70] array];
-  v17 = [(NeighborGraph *)self bssids];
-  v18 = [v17 count];
+  bssids3 = [(NeighborGraph *)self bssids];
+  v18 = [bssids3 count];
 
   if (v18)
   {
     v19 = 0;
     do
     {
-      v20 = [MEMORY[0x1E695DF70] array];
-      [log addObject:v20];
+      array = [MEMORY[0x1E695DF70] array];
+      [log addObject:array];
 
       ++v19;
-      v21 = [(NeighborGraph *)self bssids];
-      v22 = [v21 count];
+      bssids4 = [(NeighborGraph *)self bssids];
+      v22 = [bssids4 count];
     }
 
     while (v19 < v22);
@@ -718,8 +718,8 @@ LABEL_36:
 
         v27 = *(*(&v64 + 1) + 8 * i);
         v28 = [v27 valueForKey:@"NeighborBssid"];
-        v29 = [(NeighborGraph *)self bssids];
-        v30 = [v29 indexOfObject:v28];
+        bssids5 = [(NeighborGraph *)self bssids];
+        v30 = [bssids5 indexOfObject:v28];
 
         v31 = WALogCategoryDeviceStoreHandle();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -733,14 +733,14 @@ LABEL_36:
           v75 = 2048;
           v76 = v30;
           v77 = 2048;
-          v78 = v25 + 1;
+          timeCopy = v25 + 1;
           _os_log_impl(&dword_1C8460000, v31, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Neighbor: %@ has index %lu at iteration:%lu", buf, 0x30u);
         }
 
         if (v30 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v32 = WALogCategoryDeviceStoreHandle();
-          if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+          dictionary = WALogCategoryDeviceStoreHandle();
+          if (os_log_type_enabled(dictionary, OS_LOG_TYPE_ERROR))
           {
             *buf = 136446978;
             v70 = "[NeighborGraph setNeighborsForBssid:dwellTime:neighborInfoArray:]";
@@ -750,65 +750,65 @@ LABEL_36:
             v74 = v28;
             v75 = 2048;
             v76 = v25 + 1;
-            _os_log_impl(&dword_1C8460000, v32, OS_LOG_TYPE_ERROR, "%{public}s::%d:Couldnt find Neighbor: %@ in iteration:%lu", buf, 0x26u);
+            _os_log_impl(&dword_1C8460000, dictionary, OS_LOG_TYPE_ERROR, "%{public}s::%d:Couldnt find Neighbor: %@ in iteration:%lu", buf, 0x26u);
           }
         }
 
         else
         {
-          v32 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
           v33 = [v27 objectForKeyedSubscript:@"NeighborBssNumRoamCacheRssiHigh"];
-          [v32 setObject:v33 forKeyedSubscript:@"NeighborBssNumRoamCacheRssiHigh"];
+          [dictionary setObject:v33 forKeyedSubscript:@"NeighborBssNumRoamCacheRssiHigh"];
 
           v34 = [v27 objectForKeyedSubscript:@"NeighborBssNumRoamCacheRssiMid"];
-          [v32 setObject:v34 forKeyedSubscript:@"NeighborBssNumRoamCacheRssiMid"];
+          [dictionary setObject:v34 forKeyedSubscript:@"NeighborBssNumRoamCacheRssiMid"];
 
           v35 = [v27 objectForKeyedSubscript:@"NeighborBssNumRoamCacheRssiUpperMid"];
-          [v32 setObject:v35 forKeyedSubscript:@"NeighborBssNumRoamCacheRssiUpperMid"];
+          [dictionary setObject:v35 forKeyedSubscript:@"NeighborBssNumRoamCacheRssiUpperMid"];
 
           v36 = [v27 objectForKeyedSubscript:@"NeighborBssNumRoamCacheRssiLow"];
-          [v32 setObject:v36 forKeyedSubscript:@"NeighborBssNumRoamCacheRssiLow"];
+          [dictionary setObject:v36 forKeyedSubscript:@"NeighborBssNumRoamCacheRssiLow"];
 
           v37 = [v27 objectForKeyedSubscript:@"NeighborBssNumRoamCacheRssiReallyLow"];
-          [v32 setObject:v37 forKeyedSubscript:@"NeighborBssNumRoamCacheRssiReallyLow"];
+          [dictionary setObject:v37 forKeyedSubscript:@"NeighborBssNumRoamCacheRssiReallyLow"];
 
           v38 = [v27 objectForKeyedSubscript:@"NeighborBssNumRoamOriginRssiHigh"];
-          [v32 setObject:v38 forKeyedSubscript:@"NeighborBssNumRoamOriginRssiHigh"];
+          [dictionary setObject:v38 forKeyedSubscript:@"NeighborBssNumRoamOriginRssiHigh"];
 
           v39 = [v27 objectForKeyedSubscript:@"NeighborBssNumRoamOriginRssiUpperHigh"];
-          [v32 setObject:v39 forKeyedSubscript:@"NeighborBssNumRoamOriginRssiUpperHigh"];
+          [dictionary setObject:v39 forKeyedSubscript:@"NeighborBssNumRoamOriginRssiUpperHigh"];
 
           v40 = [v27 objectForKeyedSubscript:@"NeighborBssNumRoamOriginRssiOptimum"];
-          [v32 setObject:v40 forKeyedSubscript:@"NeighborBssNumRoamOriginRssiOptimum"];
+          [dictionary setObject:v40 forKeyedSubscript:@"NeighborBssNumRoamOriginRssiOptimum"];
 
           v41 = [v27 objectForKeyedSubscript:@"NeighborBssNumRoamOriginRssiUpperOptimum"];
-          [v32 setObject:v41 forKeyedSubscript:@"NeighborBssNumRoamOriginRssiUpperOptimum"];
+          [dictionary setObject:v41 forKeyedSubscript:@"NeighborBssNumRoamOriginRssiUpperOptimum"];
 
           v42 = [v27 objectForKeyedSubscript:@"NeighborBssNumRoamOriginRssiMid"];
-          [v32 setObject:v42 forKeyedSubscript:@"NeighborBssNumRoamOriginRssiMid"];
+          [dictionary setObject:v42 forKeyedSubscript:@"NeighborBssNumRoamOriginRssiMid"];
 
           v43 = [v27 objectForKeyedSubscript:@"NeighborBssNumRoamOriginRssiUpperMid"];
-          [v32 setObject:v43 forKeyedSubscript:@"NeighborBssNumRoamOriginRssiUpperMid"];
+          [dictionary setObject:v43 forKeyedSubscript:@"NeighborBssNumRoamOriginRssiUpperMid"];
 
           v44 = [v27 objectForKeyedSubscript:@"NeighborBssNumRoamOriginRssiLow"];
-          [v32 setObject:v44 forKeyedSubscript:@"NeighborBssNumRoamOriginRssiLow"];
+          [dictionary setObject:v44 forKeyedSubscript:@"NeighborBssNumRoamOriginRssiLow"];
 
           v45 = [v27 objectForKeyedSubscript:@"NeighborBssNumLazyRoamOriginRssiHigh"];
-          [v32 setObject:v45 forKeyedSubscript:@"NeighborBssNumLazyRoamOriginRssiHigh"];
+          [dictionary setObject:v45 forKeyedSubscript:@"NeighborBssNumLazyRoamOriginRssiHigh"];
 
           v46 = [v27 objectForKeyedSubscript:@"NeighborBssNumLazyRoamOriginRssiUpperHigh"];
-          [v32 setObject:v46 forKeyedSubscript:@"NeighborBssNumLazyRoamOriginRssiUpperHigh"];
+          [dictionary setObject:v46 forKeyedSubscript:@"NeighborBssNumLazyRoamOriginRssiUpperHigh"];
 
           v47 = [v27 objectForKeyedSubscript:@"NeighborBssNumLazyRoamOriginRssiOptimum"];
-          [v32 setObject:v47 forKeyedSubscript:@"NeighborBssNumLazyRoamOriginRssiOptimum"];
+          [dictionary setObject:v47 forKeyedSubscript:@"NeighborBssNumLazyRoamOriginRssiOptimum"];
 
           v48 = [v27 objectForKeyedSubscript:@"NeighborBssNumLazyRoamOriginRssiUpperOptimum"];
-          [v32 setObject:v48 forKeyedSubscript:@"NeighborBssNumLazyRoamOriginRssiUpperOptimum"];
+          [dictionary setObject:v48 forKeyedSubscript:@"NeighborBssNumLazyRoamOriginRssiUpperOptimum"];
 
           v49 = [v27 objectForKeyedSubscript:@"NeighborBssNumLazyRoamOriginRssiMid"];
-          [v32 setObject:v49 forKeyedSubscript:@"NeighborBssNumLazyRoamOriginRssiMid"];
+          [dictionary setObject:v49 forKeyedSubscript:@"NeighborBssNumLazyRoamOriginRssiMid"];
 
-          [log replaceObjectAtIndex:v30 withObject:v32];
+          [log replaceObjectAtIndex:v30 withObject:dictionary];
           ++v25;
         }
       }
@@ -820,7 +820,7 @@ LABEL_36:
   }
 
   v50 = WALogCategoryDeviceStoreHandle();
-  v7 = v58;
+  bssidCopy = v58;
   if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
   {
     v51 = [log count];
@@ -833,12 +833,12 @@ LABEL_36:
     v75 = 2048;
     v76 = v59;
     v77 = 2048;
-    v78 = v51;
+    timeCopy = v51;
     _os_log_impl(&dword_1C8460000, v50, OS_LOG_TYPE_DEBUG, "%{public}s::%d:BSSID %@ at %lu has Neighbor count: %lu", buf, 0x30u);
   }
 
-  v52 = [(NeighborGraph *)self graph];
-  [v52 insertObject:log atIndex:v59];
+  graph = [(NeighborGraph *)self graph];
+  [graph insertObject:log atIndex:v59];
 
   v9 = v57;
 LABEL_26:
@@ -846,32 +846,32 @@ LABEL_26:
   v53 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyNeighborGraphAsDictionaryOnMoc:(id)a3
+- (id)copyNeighborGraphAsDictionaryOnMoc:(id)moc
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mocCopy = moc;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__3;
   v28 = __Block_byref_object_dispose__3;
-  v29 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__3;
   v22 = __Block_byref_object_dispose__3;
-  v23 = [MEMORY[0x1E695DF70] array];
-  v5 = [(NeighborGraph *)self bssidsDwellTimes];
-  v6 = [v5 valueForKeyPath:@"@sum.self"];
+  array2 = [MEMORY[0x1E695DF70] array];
+  bssidsDwellTimes = [(NeighborGraph *)self bssidsDwellTimes];
+  v6 = [bssidsDwellTimes valueForKeyPath:@"@sum.self"];
 
-  v7 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
   v8 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(NeighborGraph *)self bssids];
-    v10 = [v9 count];
-    v11 = [(NeighborGraph *)self bssids];
+    bssids = [(NeighborGraph *)self bssids];
+    v10 = [bssids count];
+    bssids2 = [(NeighborGraph *)self bssids];
     *buf = 136447234;
     v31 = "[NeighborGraph copyNeighborGraphAsDictionaryOnMoc:]";
     v32 = 1024;
@@ -879,13 +879,13 @@ LABEL_26:
     v34 = 2048;
     v35 = v10;
     v36 = 2048;
-    v37 = v7;
+    v37 = unsignedIntegerValue;
     v38 = 2112;
-    v39 = v11;
+    v39 = bssids2;
     _os_log_impl(&dword_1C8460000, v8, OS_LOG_TYPE_DEBUG, "%{public}s::%d:bssidCount:%lu totalDwell:%lu BSSIDs:%@", buf, 0x30u);
   }
 
-  v12 = [(NeighborGraph *)self bssids];
+  bssids3 = [(NeighborGraph *)self bssids];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __52__NeighborGraph_copyNeighborGraphAsDictionaryOnMoc___block_invoke;
@@ -893,13 +893,13 @@ LABEL_26:
   v17[4] = self;
   v17[5] = &v24;
   v17[6] = &v18;
-  v17[7] = v7;
-  [v12 enumerateObjectsUsingBlock:v17];
+  v17[7] = unsignedIntegerValue;
+  [bssids3 enumerateObjectsUsingBlock:v17];
 
-  v13 = [MEMORY[0x1E695DF90] dictionary];
-  [v13 setObject:v25[5] forKey:@"nodes"];
-  [v13 setObject:v19[5] forKey:@"links"];
-  v14 = [v13 copy];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:v25[5] forKey:@"nodes"];
+  [dictionary setObject:v19[5] forKey:@"links"];
+  v14 = [dictionary copy];
 
   _Block_object_dispose(&v18, 8);
   _Block_object_dispose(&v24, 8);

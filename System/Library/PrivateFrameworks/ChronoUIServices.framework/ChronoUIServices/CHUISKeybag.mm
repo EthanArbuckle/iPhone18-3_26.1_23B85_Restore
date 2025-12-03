@@ -1,11 +1,11 @@
 @interface CHUISKeybag
 + (id)sharedInstance;
-- (BOOL)isEffectivelyLocked:(int64_t)a3;
+- (BOOL)isEffectivelyLocked:(int64_t)locked;
 - (CHUISKeybag)init;
 - (void)_queue_evaluateState;
 - (void)_queue_handleKeybagStatusChanged;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation CHUISKeybag
@@ -18,12 +18,12 @@
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
   v4 = MKBGetDeviceLockStateInfo();
   v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69B1A40]];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  v7 = v6 < 7;
-  v8 = v7 & (0x46u >> v6);
+  v7 = integerValue < 7;
+  v8 = v7 & (0x46u >> integerValue);
   queue_isEffectivelyLocked = self->_queue_isEffectivelyLocked;
-  v10 = v7 & (6u >> v6);
+  v10 = v7 & (6u >> integerValue);
   if (!BSEqualBools() || (queue_isEffectivelyLockedAuthentic = self->_queue_isEffectivelyLockedAuthentic, (BSEqualBools() & 1) == 0))
   {
     self->_queue_isEffectivelyLocked = v8;
@@ -129,7 +129,7 @@ void __29__CHUISKeybag_sharedInstance__block_invoke()
     v6[2] = __47__CHUISKeybag__queue_handleKeybagStatusChanged__block_invoke;
     v6[3] = &unk_1E8575520;
     v7 = v4;
-    v8 = self;
+    selfCopy = self;
     dispatch_async(calloutQueue, v6);
   }
 }
@@ -143,7 +143,7 @@ void __19__CHUISKeybag_init__block_invoke(uint64_t a1, int a2)
   }
 }
 
-- (BOOL)isEffectivelyLocked:(int64_t)a3
+- (BOOL)isEffectivelyLocked:(int64_t)locked
 {
   v7 = 0;
   v8 = &v7;
@@ -155,7 +155,7 @@ void __19__CHUISKeybag_init__block_invoke(uint64_t a1, int a2)
   block[2] = __35__CHUISKeybag_isEffectivelyLocked___block_invoke;
   block[3] = &unk_1E85754F8;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = locked;
   block[4] = self;
   dispatch_sync(queue, block);
   v4 = *(v8 + 24);
@@ -175,13 +175,13 @@ void *__35__CHUISKeybag_isEffectivelyLocked___block_invoke(void *result)
   return result;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  if (!v5)
+  observerCopy = observer;
+  if (!observerCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"CHUISKeybag.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CHUISKeybag.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
   }
 
   queue = self->_queue;
@@ -192,8 +192,8 @@ void *__35__CHUISKeybag_isEffectivelyLocked___block_invoke(void *result)
   block[2] = __27__CHUISKeybag_addObserver___block_invoke;
   block[3] = &unk_1E8575520;
   block[4] = self;
-  v11 = v5;
-  v8 = v5;
+  v11 = observerCopy;
+  v8 = observerCopy;
   dispatch_sync(v7, block);
 }
 
@@ -215,13 +215,13 @@ uint64_t __27__CHUISKeybag_addObserver___block_invoke(uint64_t a1)
   return [v2 addObject:v6];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  if (!v5)
+  observerCopy = observer;
+  if (!observerCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"CHUISKeybag.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CHUISKeybag.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
   }
 
   queue = self->_queue;
@@ -232,8 +232,8 @@ uint64_t __27__CHUISKeybag_addObserver___block_invoke(uint64_t a1)
   block[2] = __30__CHUISKeybag_removeObserver___block_invoke;
   block[3] = &unk_1E8575520;
   block[4] = self;
-  v11 = v5;
-  v8 = v5;
+  v11 = observerCopy;
+  v8 = observerCopy;
   dispatch_sync(v7, block);
 }
 

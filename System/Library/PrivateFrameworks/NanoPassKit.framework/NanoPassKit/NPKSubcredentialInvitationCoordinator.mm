@@ -1,62 +1,62 @@
 @interface NPKSubcredentialInvitationCoordinator
-+ (BOOL)canAddSecureElementPassWithConfiguration:(id)a3 outError:(id *)a4;
-+ (BOOL)canAddSecureElementPassWithInvitation:(id)a3;
-- (BOOL)_isInvitationUniqueForPairedReaderIdentifier:(id)a3;
++ (BOOL)canAddSecureElementPassWithConfiguration:(id)configuration outError:(id *)error;
++ (BOOL)canAddSecureElementPassWithInvitation:(id)invitation;
+- (BOOL)_isInvitationUniqueForPairedReaderIdentifier:(id)identifier;
 - (NPKStandaloneFirstUnlockCoordinator)firstUnlockCoordinator;
-- (NPKSubcredentialInvitationCoordinator)initWithCallbackQueue:(id)a3;
+- (NPKSubcredentialInvitationCoordinator)initWithCallbackQueue:(id)queue;
 - (NPKWatchSubcredentialProvisioningService)subcredentialProvisioningService;
 - (PKPaymentService)paymentService;
-- (id)_errorWithCode:(int64_t)a3 message:(id)a4;
-- (void)_endProvisioningWithPassForInvitation:(id)a3 error:(id)a4;
-- (void)_fetchInvitationMatchingInvitation:(id)a3 completion:(id)a4;
-- (void)_fetchInvitationWithIdentifier:(id)a3 completion:(id)a4;
-- (void)_handleProvisioningAttemptForConfiguration:(id)a3 error:(id)a4;
-- (void)_invokeCompletionWithPassForInvitation:(id)a3 error:(id)a4;
-- (void)_makeConfigurationForInvitation:(id)a3 session:(id)a4 metadata:(id)a5 paymentWebService:(id)a6 completion:(id)a7;
-- (void)_performBlockFollowingFirstUnlockWithBlock:(id)a3;
-- (void)_queue_accountAttestationAnonymizationSaltWithCompletion:(id)a3;
-- (void)_queue_canAcceptInvitation:(id)a3 completion:(id)a4;
-- (void)_queue_declineRelatedInvitationsIfNecessaryForInvitation:(id)a3 completion:(id)a4;
-- (void)_queue_deviceContainsInvitationMatchingInvitation:(id)a3 withTimeout:(unint64_t)a4 completion:(id)a5;
-- (void)_queue_fetchOrInitializeAccountAttestationAnonymizationSaltIfNecessaryWithCompletion:(id)a3;
-- (void)_queue_listSubcredentialInvitationsWithCompletion:(id)a3;
-- (void)_queue_registerCredentialsWithIdentifiers:(id)a3 completion:(id)a4;
-- (void)_queue_removeSharingInvitation:(id)a3 completion:(id)a4;
-- (void)_queue_requestSubcredentialInvitation:(id)a3 fromIDSHandle:(id)a4 completion:(id)a5;
-- (void)_queue_revokeCredentialsWithIdentifiers:(id)a3 completion:(id)a4;
-- (void)_queue_setAccountAttestationAnonymizationSalt:(id)a3 completion:(id)a4;
-- (void)_queue_updateSubcredentialMetadataOnPass:(id)a3 withCredential:(id)a4 completion:(id)a5;
-- (void)_setUpSharingSessionWithSubcredentialProvisioningController:(id)a3 forInvitation:(id)a4;
+- (id)_errorWithCode:(int64_t)code message:(id)message;
+- (void)_endProvisioningWithPassForInvitation:(id)invitation error:(id)error;
+- (void)_fetchInvitationMatchingInvitation:(id)invitation completion:(id)completion;
+- (void)_fetchInvitationWithIdentifier:(id)identifier completion:(id)completion;
+- (void)_handleProvisioningAttemptForConfiguration:(id)configuration error:(id)error;
+- (void)_invokeCompletionWithPassForInvitation:(id)invitation error:(id)error;
+- (void)_makeConfigurationForInvitation:(id)invitation session:(id)session metadata:(id)metadata paymentWebService:(id)service completion:(id)completion;
+- (void)_performBlockFollowingFirstUnlockWithBlock:(id)block;
+- (void)_queue_accountAttestationAnonymizationSaltWithCompletion:(id)completion;
+- (void)_queue_canAcceptInvitation:(id)invitation completion:(id)completion;
+- (void)_queue_declineRelatedInvitationsIfNecessaryForInvitation:(id)invitation completion:(id)completion;
+- (void)_queue_deviceContainsInvitationMatchingInvitation:(id)invitation withTimeout:(unint64_t)timeout completion:(id)completion;
+- (void)_queue_fetchOrInitializeAccountAttestationAnonymizationSaltIfNecessaryWithCompletion:(id)completion;
+- (void)_queue_listSubcredentialInvitationsWithCompletion:(id)completion;
+- (void)_queue_registerCredentialsWithIdentifiers:(id)identifiers completion:(id)completion;
+- (void)_queue_removeSharingInvitation:(id)invitation completion:(id)completion;
+- (void)_queue_requestSubcredentialInvitation:(id)invitation fromIDSHandle:(id)handle completion:(id)completion;
+- (void)_queue_revokeCredentialsWithIdentifiers:(id)identifiers completion:(id)completion;
+- (void)_queue_setAccountAttestationAnonymizationSalt:(id)salt completion:(id)completion;
+- (void)_queue_updateSubcredentialMetadataOnPass:(id)pass withCredential:(id)credential completion:(id)completion;
+- (void)_setUpSharingSessionWithSubcredentialProvisioningController:(id)controller forInvitation:(id)invitation;
 - (void)_setUpSubcredentialProvisioningController;
-- (void)_startProvisioningForProvisioningController:(id)a3 withConfiguration:(id)a4;
-- (void)accountAttestationAnonymizationSaltWithCompletion:(id)a3;
-- (void)canAcceptInvitation:(id)a3 completion:(id)a4;
-- (void)canAcceptInvitationOnRemoteDeviceForInvitation:(id)a3 completion:(id)a4;
-- (void)declineRelatedInvitationsIfNecessaryForInvitation:(id)a3 completion:(id)a4;
-- (void)deviceContainsInvitationMatchingInvitation:(id)a3 withTimeout:(unint64_t)a4 completion:(id)a5;
-- (void)fetchOrInitializeAccountAttestationAnonymizationSaltIfNecessaryWithCompletion:(id)a3;
-- (void)listSubcredentialInvitationsWithCompletion:(id)a3;
-- (void)registerCredentialsWithIdentifiers:(id)a3 completion:(id)a4;
-- (void)removeSharingInvitation:(id)a3 completion:(id)a4;
-- (void)requestSubcredentialInvitation:(id)a3 completion:(id)a4;
-- (void)revokeCredentialsWithIdentifiers:(id)a3 completion:(id)a4;
-- (void)setAccountAttestationAnonymizationSalt:(id)a3 completion:(id)a4;
-- (void)startProvisioningWithInvitation:(id)a3 metadata:(id)a4 completion:(id)a5;
-- (void)startProvisioningWithInvitationIdentifier:(id)a3 metadata:(id)a4 completion:(id)a5;
-- (void)startProvisioningWithMailboxAddress:(id)a3 activationCode:(id)a4 completion:(id)a5;
-- (void)startSubcredentialProvisioningOnLocalDeviceMatchingInvitation:(id)a3 shouldFetchAnonymizationSaltFromRemoteDevice:(BOOL)a4 completion:(id)a5;
-- (void)startSubcredentialProvisioningOnRemoteDeviceForInvitation:(id)a3;
-- (void)startSubcredentialProvisioningOnRemoteDeviceForMailboxAddress:(id)a3 activationCode:(id)a4;
-- (void)subcredentialProvisioningController:(id)a3 didFinishWithError:(id)a4 inState:(int64_t)a5;
-- (void)subcredentialProvisioningController:(id)a3 didFinishWithPass:(id)a4;
-- (void)updateSubcredentialMetadataOnPass:(id)a3 withCredential:(id)a4 completion:(id)a5;
+- (void)_startProvisioningForProvisioningController:(id)controller withConfiguration:(id)configuration;
+- (void)accountAttestationAnonymizationSaltWithCompletion:(id)completion;
+- (void)canAcceptInvitation:(id)invitation completion:(id)completion;
+- (void)canAcceptInvitationOnRemoteDeviceForInvitation:(id)invitation completion:(id)completion;
+- (void)declineRelatedInvitationsIfNecessaryForInvitation:(id)invitation completion:(id)completion;
+- (void)deviceContainsInvitationMatchingInvitation:(id)invitation withTimeout:(unint64_t)timeout completion:(id)completion;
+- (void)fetchOrInitializeAccountAttestationAnonymizationSaltIfNecessaryWithCompletion:(id)completion;
+- (void)listSubcredentialInvitationsWithCompletion:(id)completion;
+- (void)registerCredentialsWithIdentifiers:(id)identifiers completion:(id)completion;
+- (void)removeSharingInvitation:(id)invitation completion:(id)completion;
+- (void)requestSubcredentialInvitation:(id)invitation completion:(id)completion;
+- (void)revokeCredentialsWithIdentifiers:(id)identifiers completion:(id)completion;
+- (void)setAccountAttestationAnonymizationSalt:(id)salt completion:(id)completion;
+- (void)startProvisioningWithInvitation:(id)invitation metadata:(id)metadata completion:(id)completion;
+- (void)startProvisioningWithInvitationIdentifier:(id)identifier metadata:(id)metadata completion:(id)completion;
+- (void)startProvisioningWithMailboxAddress:(id)address activationCode:(id)code completion:(id)completion;
+- (void)startSubcredentialProvisioningOnLocalDeviceMatchingInvitation:(id)invitation shouldFetchAnonymizationSaltFromRemoteDevice:(BOOL)device completion:(id)completion;
+- (void)startSubcredentialProvisioningOnRemoteDeviceForInvitation:(id)invitation;
+- (void)startSubcredentialProvisioningOnRemoteDeviceForMailboxAddress:(id)address activationCode:(id)code;
+- (void)subcredentialProvisioningController:(id)controller didFinishWithError:(id)error inState:(int64_t)state;
+- (void)subcredentialProvisioningController:(id)controller didFinishWithPass:(id)pass;
+- (void)updateSubcredentialMetadataOnPass:(id)pass withCredential:(id)credential completion:(id)completion;
 @end
 
 @implementation NPKSubcredentialInvitationCoordinator
 
-- (NPKSubcredentialInvitationCoordinator)initWithCallbackQueue:(id)a3
+- (NPKSubcredentialInvitationCoordinator)initWithCallbackQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = NPKSubcredentialInvitationCoordinator;
   v5 = [(NPKSubcredentialInvitationCoordinator *)&v13 init];
@@ -66,9 +66,9 @@
     internalQueue = v5->_internalQueue;
     v5->_internalQueue = v6;
 
-    if (v4)
+    if (queueCopy)
     {
-      v8 = v4;
+      v8 = queueCopy;
       callbackQueue = v5->_callbackQueue;
       v5->_callbackQueue = v8;
     }
@@ -106,8 +106,8 @@
   if (!firstUnlockCoordinator)
   {
     v4 = [NPKStandaloneFirstUnlockCoordinator alloc];
-    v5 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-    v6 = [(NPKStandaloneFirstUnlockCoordinator *)v4 initWithQueue:v5];
+    internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+    v6 = [(NPKStandaloneFirstUnlockCoordinator *)v4 initWithQueue:internalQueue];
     v7 = self->_firstUnlockCoordinator;
     self->_firstUnlockCoordinator = v6;
 
@@ -132,31 +132,31 @@
   return subcredentialProvisioningService;
 }
 
-+ (BOOL)canAddSecureElementPassWithInvitation:(id)a3
++ (BOOL)canAddSecureElementPassWithInvitation:(id)invitation
 {
   v4 = MEMORY[0x277D37CF0];
-  v5 = a3;
+  invitationCopy = invitation;
   v6 = objc_alloc_init(v4);
-  [v6 setSupportedRadioTechnologies:{objc_msgSend(v5, "supportedRadioTechnologies")}];
-  v7 = [v5 manufacturerIdentifier];
-  [v6 setManufacturerIdentifier:v7];
+  [v6 setSupportedRadioTechnologies:{objc_msgSend(invitationCopy, "supportedRadioTechnologies")}];
+  manufacturerIdentifier = [invitationCopy manufacturerIdentifier];
+  [v6 setManufacturerIdentifier:manufacturerIdentifier];
 
-  v8 = [v5 brandIdentifier];
+  brandIdentifier = [invitationCopy brandIdentifier];
 
-  [v6 setIssuerIdentifier:v8];
-  LOBYTE(a1) = [a1 canAddSecureElementPassWithConfiguration:v6 outError:0];
+  [v6 setIssuerIdentifier:brandIdentifier];
+  LOBYTE(self) = [self canAddSecureElementPassWithConfiguration:v6 outError:0];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)canAddSecureElementPassWithConfiguration:(id)a3 outError:(id *)a4
++ (BOOL)canAddSecureElementPassWithConfiguration:(id)configuration outError:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
     v6 = objc_alloc_init(MEMORY[0x277D37FC0]);
-    v7 = [v6 canAddSecureElementPassWithConfiguration:v5 outError:a4];
+    v7 = [v6 canAddSecureElementPassWithConfiguration:configurationCopy outError:error];
   }
 
   else
@@ -186,22 +186,22 @@
   return v7;
 }
 
-- (void)canAcceptInvitation:(id)a3 completion:(id)a4
+- (void)canAcceptInvitation:(id)invitation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  invitationCopy = invitation;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__NPKSubcredentialInvitationCoordinator_canAcceptInvitation_completion___block_invoke;
   v11[3] = &unk_279945A98;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = invitationCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = invitationCopy;
+  dispatch_async(internalQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -291,19 +291,19 @@ uint64_t __72__NPKSubcredentialInvitationCoordinator_canAcceptInvitation_complet
   return result;
 }
 
-- (void)listSubcredentialInvitationsWithCompletion:(id)a3
+- (void)listSubcredentialInvitationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__NPKSubcredentialInvitationCoordinator_listSubcredentialInvitationsWithCompletion___block_invoke;
   block[3] = &unk_279945468;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(internalQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -387,25 +387,25 @@ uint64_t __84__NPKSubcredentialInvitationCoordinator_listSubcredentialInvitation
   return result;
 }
 
-- (void)startProvisioningWithInvitationIdentifier:(id)a3 metadata:(id)a4 completion:(id)a5
+- (void)startProvisioningWithInvitationIdentifier:(id)identifier metadata:(id)metadata completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __103__NPKSubcredentialInvitationCoordinator_startProvisioningWithInvitationIdentifier_metadata_completion___block_invoke;
   aBlock[3] = &unk_279945B60;
   objc_copyWeak(&v24, &location);
-  v11 = v8;
+  v11 = identifierCopy;
   v21 = v11;
-  v12 = v9;
+  v12 = metadataCopy;
   v22 = v12;
-  v13 = v10;
+  v13 = completionCopy;
   v23 = v13;
   v14 = _Block_copy(aBlock);
-  v15 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __103__NPKSubcredentialInvitationCoordinator_startProvisioningWithInvitationIdentifier_metadata_completion___block_invoke_5;
@@ -413,7 +413,7 @@ uint64_t __84__NPKSubcredentialInvitationCoordinator_listSubcredentialInvitation
   objc_copyWeak(&v19, &location);
   v18 = v14;
   v16 = v14;
-  dispatch_async(v15, block);
+  dispatch_async(internalQueue, block);
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&v24);
@@ -543,25 +543,25 @@ void __103__NPKSubcredentialInvitationCoordinator_startProvisioningWithInvitatio
   [WeakRetained _performBlockFollowingFirstUnlockWithBlock:*(a1 + 32)];
 }
 
-- (void)startProvisioningWithInvitation:(id)a3 metadata:(id)a4 completion:(id)a5
+- (void)startProvisioningWithInvitation:(id)invitation metadata:(id)metadata completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  invitationCopy = invitation;
+  metadataCopy = metadata;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __93__NPKSubcredentialInvitationCoordinator_startProvisioningWithInvitation_metadata_completion___block_invoke;
   aBlock[3] = &unk_279945B60;
   objc_copyWeak(&v24, &location);
-  v11 = v8;
+  v11 = invitationCopy;
   v21 = v11;
-  v12 = v9;
+  v12 = metadataCopy;
   v22 = v12;
-  v13 = v10;
+  v13 = completionCopy;
   v23 = v13;
   v14 = _Block_copy(aBlock);
-  v15 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __93__NPKSubcredentialInvitationCoordinator_startProvisioningWithInvitation_metadata_completion___block_invoke_4;
@@ -569,7 +569,7 @@ void __103__NPKSubcredentialInvitationCoordinator_startProvisioningWithInvitatio
   objc_copyWeak(&v19, &location);
   v18 = v14;
   v16 = v14;
-  dispatch_async(v15, block);
+  dispatch_async(internalQueue, block);
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&v24);
@@ -694,23 +694,23 @@ void __93__NPKSubcredentialInvitationCoordinator_startProvisioningWithInvitation
   [WeakRetained _performBlockFollowingFirstUnlockWithBlock:*(a1 + 32)];
 }
 
-- (void)deviceContainsInvitationMatchingInvitation:(id)a3 withTimeout:(unint64_t)a4 completion:(id)a5
+- (void)deviceContainsInvitationMatchingInvitation:(id)invitation withTimeout:(unint64_t)timeout completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  invitationCopy = invitation;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v10 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __107__NPKSubcredentialInvitationCoordinator_deviceContainsInvitationMatchingInvitation_withTimeout_completion___block_invoke;
   block[3] = &unk_279945C00;
   objc_copyWeak(v16, &location);
-  v16[1] = a4;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, block);
+  v16[1] = timeout;
+  v14 = invitationCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = invitationCopy;
+  dispatch_async(internalQueue, block);
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
@@ -810,19 +810,19 @@ uint64_t __107__NPKSubcredentialInvitationCoordinator_deviceContainsInvitationMa
   return result;
 }
 
-- (void)accountAttestationAnonymizationSaltWithCompletion:(id)a3
+- (void)accountAttestationAnonymizationSaltWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __91__NPKSubcredentialInvitationCoordinator_accountAttestationAnonymizationSaltWithCompletion___block_invoke;
   block[3] = &unk_279945468;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(internalQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -913,22 +913,22 @@ uint64_t __91__NPKSubcredentialInvitationCoordinator_accountAttestationAnonymiza
   return result;
 }
 
-- (void)setAccountAttestationAnonymizationSalt:(id)a3 completion:(id)a4
+- (void)setAccountAttestationAnonymizationSalt:(id)salt completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  saltCopy = salt;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __91__NPKSubcredentialInvitationCoordinator_setAccountAttestationAnonymizationSalt_completion___block_invoke;
   v11[3] = &unk_279945A98;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = saltCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = saltCopy;
+  dispatch_async(internalQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1015,22 +1015,22 @@ uint64_t __91__NPKSubcredentialInvitationCoordinator_setAccountAttestationAnonym
   return result;
 }
 
-- (void)requestSubcredentialInvitation:(id)a3 completion:(id)a4
+- (void)requestSubcredentialInvitation:(id)invitation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  invitationCopy = invitation;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __83__NPKSubcredentialInvitationCoordinator_requestSubcredentialInvitation_completion___block_invoke;
   v11[3] = &unk_279945A98;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = invitationCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = invitationCopy;
+  dispatch_async(internalQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1124,25 +1124,25 @@ uint64_t __83__NPKSubcredentialInvitationCoordinator_requestSubcredentialInvitat
   return result;
 }
 
-- (void)updateSubcredentialMetadataOnPass:(id)a3 withCredential:(id)a4 completion:(id)a5
+- (void)updateSubcredentialMetadataOnPass:(id)pass withCredential:(id)credential completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  passCopy = pass;
+  credentialCopy = credential;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v11 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __101__NPKSubcredentialInvitationCoordinator_updateSubcredentialMetadataOnPass_withCredential_completion___block_invoke;
   block[3] = &unk_279945B60;
   objc_copyWeak(&v19, &location);
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, block);
+  v16 = passCopy;
+  v17 = credentialCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = credentialCopy;
+  v14 = passCopy;
+  dispatch_async(internalQueue, block);
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -1235,22 +1235,22 @@ uint64_t __101__NPKSubcredentialInvitationCoordinator_updateSubcredentialMetadat
   return result;
 }
 
-- (void)registerCredentialsWithIdentifiers:(id)a3 completion:(id)a4
+- (void)registerCredentialsWithIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __87__NPKSubcredentialInvitationCoordinator_registerCredentialsWithIdentifiers_completion___block_invoke;
   v11[3] = &unk_279945A98;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = identifiersCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifiersCopy;
+  dispatch_async(internalQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1347,22 +1347,22 @@ uint64_t __87__NPKSubcredentialInvitationCoordinator_registerCredentialsWithIden
   return result;
 }
 
-- (void)revokeCredentialsWithIdentifiers:(id)a3 completion:(id)a4
+- (void)revokeCredentialsWithIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __85__NPKSubcredentialInvitationCoordinator_revokeCredentialsWithIdentifiers_completion___block_invoke;
   v11[3] = &unk_279945A98;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = identifiersCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifiersCopy;
+  dispatch_async(internalQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1456,22 +1456,22 @@ uint64_t __85__NPKSubcredentialInvitationCoordinator_revokeCredentialsWithIdenti
   return result;
 }
 
-- (void)removeSharingInvitation:(id)a3 completion:(id)a4
+- (void)removeSharingInvitation:(id)invitation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  invitationCopy = invitation;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __76__NPKSubcredentialInvitationCoordinator_removeSharingInvitation_completion___block_invoke;
   v11[3] = &unk_279945A98;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = invitationCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = invitationCopy;
+  dispatch_async(internalQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1565,22 +1565,22 @@ uint64_t __76__NPKSubcredentialInvitationCoordinator_removeSharingInvitation_com
   return result;
 }
 
-- (void)declineRelatedInvitationsIfNecessaryForInvitation:(id)a3 completion:(id)a4
+- (void)declineRelatedInvitationsIfNecessaryForInvitation:(id)invitation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  invitationCopy = invitation;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __102__NPKSubcredentialInvitationCoordinator_declineRelatedInvitationsIfNecessaryForInvitation_completion___block_invoke;
   v11[3] = &unk_279945A98;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = invitationCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = invitationCopy;
+  dispatch_async(internalQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -1674,19 +1674,19 @@ uint64_t __102__NPKSubcredentialInvitationCoordinator_declineRelatedInvitationsI
   return result;
 }
 
-- (void)fetchOrInitializeAccountAttestationAnonymizationSaltIfNecessaryWithCompletion:(id)a3
+- (void)fetchOrInitializeAccountAttestationAnonymizationSaltIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __119__NPKSubcredentialInvitationCoordinator_fetchOrInitializeAccountAttestationAnonymizationSaltIfNecessaryWithCompletion___block_invoke;
   block[3] = &unk_279945468;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(internalQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1780,11 +1780,11 @@ uint64_t __119__NPKSubcredentialInvitationCoordinator_fetchOrInitializeAccountAt
   return result;
 }
 
-- (void)canAcceptInvitationOnRemoteDeviceForInvitation:(id)a3 completion:(id)a4
+- (void)canAcceptInvitationOnRemoteDeviceForInvitation:(id)invitation completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  invitationCopy = invitation;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -1798,27 +1798,27 @@ uint64_t __119__NPKSubcredentialInvitationCoordinator_fetchOrInitializeAccountAt
       v15 = 138543618;
       v16 = v12;
       v17 = 2112;
-      v18 = v6;
+      v18 = invitationCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: Sending can accept invitation on remote device request for invitation: %@", &v15, 0x16u);
     }
   }
 
-  v13 = [(NPKSubcredentialInvitationCoordinator *)self subcredentialProvisioningService];
-  [v13 sendCanAcceptInvitationOnRemoteDeviceRequestForInvitation:v6 completion:v7];
+  subcredentialProvisioningService = [(NPKSubcredentialInvitationCoordinator *)self subcredentialProvisioningService];
+  [subcredentialProvisioningService sendCanAcceptInvitationOnRemoteDeviceRequestForInvitation:invitationCopy completion:completionCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startSubcredentialProvisioningOnRemoteDeviceForInvitation:(id)a3
+- (void)startSubcredentialProvisioningOnRemoteDeviceForInvitation:(id)invitation
 {
-  v4 = a3;
+  invitationCopy = invitation;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __99__NPKSubcredentialInvitationCoordinator_startSubcredentialProvisioningOnRemoteDeviceForInvitation___block_invoke;
   v6[3] = &unk_279945D40;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = invitationCopy;
   v7 = v5;
   [(NPKSubcredentialInvitationCoordinator *)self accountAttestationAnonymizationSaltWithCompletion:v6];
 
@@ -1898,26 +1898,26 @@ LABEL_13:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startProvisioningWithMailboxAddress:(id)a3 activationCode:(id)a4 completion:(id)a5
+- (void)startProvisioningWithMailboxAddress:(id)address activationCode:(id)code completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  addressCopy = address;
+  codeCopy = code;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __103__NPKSubcredentialInvitationCoordinator_startProvisioningWithMailboxAddress_activationCode_completion___block_invoke;
   aBlock[3] = &unk_279945D90;
   objc_copyWeak(&v25, &location);
-  v11 = v8;
+  v11 = addressCopy;
   v21 = v11;
-  v12 = v9;
+  v12 = codeCopy;
   v22 = v12;
-  v13 = v10;
-  v23 = self;
+  v13 = completionCopy;
+  selfCopy = self;
   v24 = v13;
   v14 = _Block_copy(aBlock);
-  v15 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __103__NPKSubcredentialInvitationCoordinator_startProvisioningWithMailboxAddress_activationCode_completion___block_invoke_98;
@@ -1925,7 +1925,7 @@ LABEL_13:
   objc_copyWeak(&v19, &location);
   v18 = v14;
   v16 = v14;
-  dispatch_async(v15, v17);
+  dispatch_async(internalQueue, v17);
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&v25);
@@ -2038,15 +2038,15 @@ void __103__NPKSubcredentialInvitationCoordinator_startProvisioningWithMailboxAd
   [WeakRetained _performBlockFollowingFirstUnlockWithBlock:*(a1 + 32)];
 }
 
-- (void)startSubcredentialProvisioningOnRemoteDeviceForMailboxAddress:(id)a3 activationCode:(id)a4
+- (void)startSubcredentialProvisioningOnRemoteDeviceForMailboxAddress:(id)address activationCode:(id)code
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  addressCopy = address;
+  codeCopy = code;
+  if ([addressCopy length])
   {
-    v8 = [(NPKSubcredentialInvitationCoordinator *)self subcredentialProvisioningService];
-    [v8 sendAcceptSubcredentialProvisioningRequestForMailboxAddress:v6 activationCode:v7];
+    subcredentialProvisioningService = [(NPKSubcredentialInvitationCoordinator *)self subcredentialProvisioningService];
+    [subcredentialProvisioningService sendAcceptSubcredentialProvisioningRequestForMailboxAddress:addressCopy activationCode:codeCopy];
   }
 
   else
@@ -2071,12 +2071,12 @@ void __103__NPKSubcredentialInvitationCoordinator_startProvisioningWithMailboxAd
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startSubcredentialProvisioningOnLocalDeviceMatchingInvitation:(id)a3 shouldFetchAnonymizationSaltFromRemoteDevice:(BOOL)a4 completion:(id)a5
+- (void)startSubcredentialProvisioningOnLocalDeviceMatchingInvitation:(id)invitation shouldFetchAnonymizationSaltFromRemoteDevice:(BOOL)device completion:(id)completion
 {
-  v6 = a4;
+  deviceCopy = device;
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  invitationCopy = invitation;
+  completionCopy = completion;
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -2090,9 +2090,9 @@ void __103__NPKSubcredentialInvitationCoordinator_startProvisioningWithMailboxAd
       *buf = 138543874;
       v47 = v14;
       v48 = 2112;
-      v49 = v8;
+      v49 = invitationCopy;
       v50 = 2048;
-      v51 = [v8 type];
+      type = [invitationCopy type];
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: Start local device provisioning with invitation: %@ of type %lu", buf, 0x20u);
     }
   }
@@ -2103,18 +2103,18 @@ void __103__NPKSubcredentialInvitationCoordinator_startProvisioningWithMailboxAd
   aBlock[2] = __159__NPKSubcredentialInvitationCoordinator_startSubcredentialProvisioningOnLocalDeviceMatchingInvitation_shouldFetchAnonymizationSaltFromRemoteDevice_completion___block_invoke;
   aBlock[3] = &unk_279945DE0;
   objc_copyWeak(&v42, &location);
-  v15 = v8;
+  v15 = invitationCopy;
   v39 = v15;
-  v16 = v9;
-  v40 = self;
+  v16 = completionCopy;
+  selfCopy = self;
   v41 = v16;
   v17 = _Block_copy(aBlock);
-  if (v6)
+  if (deviceCopy)
   {
-    v18 = [(NPKSubcredentialInvitationCoordinator *)self subcredentialProvisioningService];
-    v19 = [v18 isPairedDeviceConnected];
+    subcredentialProvisioningService = [(NPKSubcredentialInvitationCoordinator *)self subcredentialProvisioningService];
+    isPairedDeviceConnected = [subcredentialProvisioningService isPairedDeviceConnected];
 
-    if (v19)
+    if (isPairedDeviceConnected)
     {
       v20 = pk_General_log();
       v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
@@ -2132,8 +2132,8 @@ void __103__NPKSubcredentialInvitationCoordinator_startProvisioningWithMailboxAd
         }
       }
 
-      v25 = [(NPKSubcredentialInvitationCoordinator *)self subcredentialProvisioningService];
-      [v25 fetchAccountAttestationAnonymizationSaltOnRemoteDeviceWithCompletion:v17];
+      subcredentialProvisioningService2 = [(NPKSubcredentialInvitationCoordinator *)self subcredentialProvisioningService];
+      [subcredentialProvisioningService2 fetchAccountAttestationAnonymizationSaltOnRemoteDeviceWithCompletion:v17];
     }
 
     else
@@ -2158,10 +2158,10 @@ void __103__NPKSubcredentialInvitationCoordinator_startProvisioningWithMailboxAd
       v32 = [v31 localizedStringForKey:@"COMPANION_UNREACHABLE_ALERT_TITLE" value:&stru_286C934F8 table:@"NanoPassKit"];
       v33 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v34 = [v33 localizedStringForKey:@"COMPANION_UNREACHABLE_ALERT_MESSAGE" value:&stru_286C934F8 table:@"NanoPassKit"];
-      v25 = PKDisplayableErrorCustom();
+      subcredentialProvisioningService2 = PKDisplayableErrorCustom();
 
       v44 = *MEMORY[0x277CCA7E8];
-      v45 = v25;
+      v45 = subcredentialProvisioningService2;
       v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
       v36 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D389E0] code:19 userInfo:v35];
       v17[2](v17, 0, v36);
@@ -2245,23 +2245,23 @@ void __159__NPKSubcredentialInvitationCoordinator_startSubcredentialProvisioning
   }
 }
 
-- (void)subcredentialProvisioningController:(id)a3 didFinishWithError:(id)a4 inState:(int64_t)a5
+- (void)subcredentialProvisioningController:(id)controller didFinishWithError:(id)error inState:(int64_t)state
 {
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   objc_initWeak(&location, self);
-  v10 = [(NPKSubcredentialInvitationCoordinator *)self callbackQueue];
+  callbackQueue = [(NPKSubcredentialInvitationCoordinator *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __104__NPKSubcredentialInvitationCoordinator_subcredentialProvisioningController_didFinishWithError_inState___block_invoke;
   block[3] = &unk_279945E08;
   objc_copyWeak(v16, &location);
-  v14 = v8;
-  v15 = v9;
-  v16[1] = a5;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, block);
+  v14 = controllerCopy;
+  v15 = errorCopy;
+  v16[1] = state;
+  v11 = errorCopy;
+  v12 = controllerCopy;
+  dispatch_async(callbackQueue, block);
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
@@ -2301,22 +2301,22 @@ void __104__NPKSubcredentialInvitationCoordinator_subcredentialProvisioningContr
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subcredentialProvisioningController:(id)a3 didFinishWithPass:(id)a4
+- (void)subcredentialProvisioningController:(id)controller didFinishWithPass:(id)pass
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  passCopy = pass;
   objc_initWeak(&location, self);
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self callbackQueue];
+  callbackQueue = [(NPKSubcredentialInvitationCoordinator *)self callbackQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __95__NPKSubcredentialInvitationCoordinator_subcredentialProvisioningController_didFinishWithPass___block_invoke;
   v11[3] = &unk_279945290;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = controllerCopy;
+  v13 = passCopy;
+  v9 = passCopy;
+  v10 = controllerCopy;
+  dispatch_async(callbackQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -2353,21 +2353,21 @@ void __95__NPKSubcredentialInvitationCoordinator_subcredentialProvisioningContro
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_canAcceptInvitation:(id)a3 completion:(id)a4
+- (void)_queue_canAcceptInvitation:(id)invitation completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-  dispatch_assert_queue_V2(v8);
+  invitationCopy = invitation;
+  completionCopy = completion;
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v9 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
-  v10 = [v9 targetDevice];
+  _paymentWebService = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
+  targetDevice = [_paymentWebService targetDevice];
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
-    [v10 paymentWebService:v11 canAcceptInvitation:v6 withCompletionV2:v7];
+    _paymentWebService2 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
+    [targetDevice paymentWebService:_paymentWebService2 canAcceptInvitation:invitationCopy withCompletionV2:completionCopy];
 LABEL_9:
 
     goto LABEL_10;
@@ -2389,10 +2389,10 @@ LABEL_9:
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v11 = [(NPKSubcredentialInvitationCoordinator *)self _errorWithCode:1 message:@"Unable to attempt to accept invitation"];
-    v7[2](v7, v11);
+    _paymentWebService2 = [(NPKSubcredentialInvitationCoordinator *)self _errorWithCode:1 message:@"Unable to attempt to accept invitation"];
+    completionCopy[2](completionCopy, _paymentWebService2);
     goto LABEL_9;
   }
 
@@ -2401,20 +2401,20 @@ LABEL_10:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_listSubcredentialInvitationsWithCompletion:(id)a3
+- (void)_queue_listSubcredentialInvitationsWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v6 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
-  v7 = [v6 targetDevice];
+  _paymentWebService = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
+  targetDevice = [_paymentWebService targetDevice];
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
-    [v7 paymentWebService:v8 subcredentialInvitationsWithCompletion:v4];
+    _paymentWebService2 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
+    [targetDevice paymentWebService:_paymentWebService2 subcredentialInvitationsWithCompletion:completionCopy];
   }
 
   else
@@ -2435,30 +2435,30 @@ LABEL_10:
       }
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_deviceContainsInvitationMatchingInvitation:(id)a3 withTimeout:(unint64_t)a4 completion:(id)a5
+- (void)_queue_deviceContainsInvitationMatchingInvitation:(id)invitation withTimeout:(unint64_t)timeout completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-  dispatch_assert_queue_V2(v10);
+  invitationCopy = invitation;
+  completionCopy = completion;
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v11 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
-  v12 = [v11 targetDevice];
+  _paymentWebService = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
+  targetDevice = [_paymentWebService targetDevice];
 
   if (objc_opt_respondsToSelector())
   {
-    v13 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
-    [v12 paymentWebService:v13 matchingInvitationOnDevice:v8 withTimeout:a4 completion:v9];
+    _paymentWebService2 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
+    [targetDevice paymentWebService:_paymentWebService2 matchingInvitationOnDevice:invitationCopy withTimeout:timeout completion:completionCopy];
 LABEL_9:
 
     goto LABEL_10;
@@ -2480,10 +2480,10 @@ LABEL_9:
     }
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v13 = [(NPKSubcredentialInvitationCoordinator *)self _errorWithCode:2 message:@"Unable to check whether device has matching invitation"];
-    v9[2](v9, 0, v13);
+    _paymentWebService2 = [(NPKSubcredentialInvitationCoordinator *)self _errorWithCode:2 message:@"Unable to check whether device has matching invitation"];
+    completionCopy[2](completionCopy, 0, _paymentWebService2);
     goto LABEL_9;
   }
 
@@ -2492,20 +2492,20 @@ LABEL_10:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_accountAttestationAnonymizationSaltWithCompletion:(id)a3
+- (void)_queue_accountAttestationAnonymizationSaltWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v6 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
-  v7 = [v6 targetDevice];
+  _paymentWebService = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
+  targetDevice = [_paymentWebService targetDevice];
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
-    [v7 paymentWebService:v8 accountAttestationAnonymizationSaltWithCompletion:v4];
+    _paymentWebService2 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
+    [targetDevice paymentWebService:_paymentWebService2 accountAttestationAnonymizationSaltWithCompletion:completionCopy];
 LABEL_9:
 
     goto LABEL_10;
@@ -2527,10 +2527,10 @@ LABEL_9:
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v8 = [(NPKSubcredentialInvitationCoordinator *)self _errorWithCode:3 message:@"Unable to fetch account attestation"];
-    v4[2](v4, 0, v8);
+    _paymentWebService2 = [(NPKSubcredentialInvitationCoordinator *)self _errorWithCode:3 message:@"Unable to fetch account attestation"];
+    completionCopy[2](completionCopy, 0, _paymentWebService2);
     goto LABEL_9;
   }
 
@@ -2539,21 +2539,21 @@ LABEL_10:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_setAccountAttestationAnonymizationSalt:(id)a3 completion:(id)a4
+- (void)_queue_setAccountAttestationAnonymizationSalt:(id)salt completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-  dispatch_assert_queue_V2(v8);
+  saltCopy = salt;
+  completionCopy = completion;
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v9 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
-  v10 = [v9 targetDevice];
+  _paymentWebService = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
+  targetDevice = [_paymentWebService targetDevice];
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
-    [v10 paymentWebService:v11 setAccountAttestationAnonymizationSalt:v6 withCompletion:v7];
+    _paymentWebService2 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
+    [targetDevice paymentWebService:_paymentWebService2 setAccountAttestationAnonymizationSalt:saltCopy withCompletion:completionCopy];
 LABEL_9:
 
     goto LABEL_10;
@@ -2575,10 +2575,10 @@ LABEL_9:
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v11 = [(NPKSubcredentialInvitationCoordinator *)self _errorWithCode:0 message:@"Unable to set anonymiztion salt for account attestaion"];
-    v7[2](v7, v11);
+    _paymentWebService2 = [(NPKSubcredentialInvitationCoordinator *)self _errorWithCode:0 message:@"Unable to set anonymiztion salt for account attestaion"];
+    completionCopy[2](completionCopy, _paymentWebService2);
     goto LABEL_9;
   }
 
@@ -2587,21 +2587,21 @@ LABEL_10:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_requestSubcredentialInvitation:(id)a3 fromIDSHandle:(id)a4 completion:(id)a5
+- (void)_queue_requestSubcredentialInvitation:(id)invitation fromIDSHandle:(id)handle completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-  dispatch_assert_queue_V2(v9);
+  invitationCopy = invitation;
+  completionCopy = completion;
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v10 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
-  v11 = [v10 targetDevice];
+  _paymentWebService = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
+  targetDevice = [_paymentWebService targetDevice];
 
   if (objc_opt_respondsToSelector())
   {
-    v12 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
-    [v11 paymentWebService:v12 requestSubcredentialInvitation:v7 completion:v8];
+    _paymentWebService2 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
+    [targetDevice paymentWebService:_paymentWebService2 requestSubcredentialInvitation:invitationCopy completion:completionCopy];
 LABEL_9:
 
     goto LABEL_10;
@@ -2623,10 +2623,10 @@ LABEL_9:
     }
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v12 = [(NPKSubcredentialInvitationCoordinator *)self _errorWithCode:2 message:@"Unable to request new invitation"];
-    v8[2](v8, v12);
+    _paymentWebService2 = [(NPKSubcredentialInvitationCoordinator *)self _errorWithCode:2 message:@"Unable to request new invitation"];
+    completionCopy[2](completionCopy, _paymentWebService2);
     goto LABEL_9;
   }
 
@@ -2635,22 +2635,22 @@ LABEL_10:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_updateSubcredentialMetadataOnPass:(id)a3 withCredential:(id)a4 completion:(id)a5
+- (void)_queue_updateSubcredentialMetadataOnPass:(id)pass withCredential:(id)credential completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-  dispatch_assert_queue_V2(v11);
+  passCopy = pass;
+  credentialCopy = credential;
+  completionCopy = completion;
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v12 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
-  v13 = [v12 targetDevice];
+  _paymentWebService = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
+  targetDevice = [_paymentWebService targetDevice];
 
   if (objc_opt_respondsToSelector())
   {
-    v14 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
-    [v13 paymentWebService:v14 updateMetadataOnPass:v8 withCredential:v9 completion:v10];
+    _paymentWebService2 = [(NPKSubcredentialInvitationCoordinator *)self _paymentWebService];
+    [targetDevice paymentWebService:_paymentWebService2 updateMetadataOnPass:passCopy withCredential:credentialCopy completion:completionCopy];
   }
 
   else
@@ -2671,64 +2671,64 @@ LABEL_10:
       }
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_registerCredentialsWithIdentifiers:(id)a3 completion:(id)a4
+- (void)_queue_registerCredentialsWithIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-  dispatch_assert_queue_V2(v8);
+  completionCopy = completion;
+  identifiersCopy = identifiers;
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v9 = [(NPKSubcredentialInvitationCoordinator *)self paymentService];
-  [v9 registerCredentialsWithIdentifiers:v7 completion:v6];
+  paymentService = [(NPKSubcredentialInvitationCoordinator *)self paymentService];
+  [paymentService registerCredentialsWithIdentifiers:identifiersCopy completion:completionCopy];
 }
 
-- (void)_queue_revokeCredentialsWithIdentifiers:(id)a3 completion:(id)a4
+- (void)_queue_revokeCredentialsWithIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-  dispatch_assert_queue_V2(v8);
+  completionCopy = completion;
+  identifiersCopy = identifiers;
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v9 = [(NPKSubcredentialInvitationCoordinator *)self paymentService];
-  [v9 revokeCredentialsWithIdentifiers:v7 completion:v6];
+  paymentService = [(NPKSubcredentialInvitationCoordinator *)self paymentService];
+  [paymentService revokeCredentialsWithIdentifiers:identifiersCopy completion:completionCopy];
 }
 
-- (void)_queue_removeSharingInvitation:(id)a3 completion:(id)a4
+- (void)_queue_removeSharingInvitation:(id)invitation completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-  dispatch_assert_queue_V2(v8);
+  completionCopy = completion;
+  invitationCopy = invitation;
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v9 = [(NPKSubcredentialInvitationCoordinator *)self paymentService];
-  [v9 removeSharingInvitation:v7 withCompletion:v6];
+  paymentService = [(NPKSubcredentialInvitationCoordinator *)self paymentService];
+  [paymentService removeSharingInvitation:invitationCopy withCompletion:completionCopy];
 }
 
-- (void)_queue_declineRelatedInvitationsIfNecessaryForInvitation:(id)a3 completion:(id)a4
+- (void)_queue_declineRelatedInvitationsIfNecessaryForInvitation:(id)invitation completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-  dispatch_assert_queue_V2(v8);
+  completionCopy = completion;
+  invitationCopy = invitation;
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v9 = [(NPKSubcredentialInvitationCoordinator *)self paymentService];
-  [v9 declineRelatedSharingInvitationsIfNecessary:v7 withCompletion:v6];
+  paymentService = [(NPKSubcredentialInvitationCoordinator *)self paymentService];
+  [paymentService declineRelatedSharingInvitationsIfNecessary:invitationCopy withCompletion:completionCopy];
 }
 
-- (void)_queue_fetchOrInitializeAccountAttestationAnonymizationSaltIfNecessaryWithCompletion:(id)a3
+- (void)_queue_fetchOrInitializeAccountAttestationAnonymizationSaltIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x277D85DD0];
@@ -2736,7 +2736,7 @@ LABEL_10:
   v7[2] = __126__NPKSubcredentialInvitationCoordinator__queue_fetchOrInitializeAccountAttestationAnonymizationSaltIfNecessaryWithCompletion___block_invoke;
   v7[3] = &unk_279945C28;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [(NPKSubcredentialInvitationCoordinator *)self _queue_accountAttestationAnonymizationSaltWithCompletion:v7];
 
@@ -2870,34 +2870,34 @@ void __126__NPKSubcredentialInvitationCoordinator__queue_fetchOrInitializeAccoun
 
 - (void)_setUpSubcredentialProvisioningController
 {
-  v3 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v4 = objc_alloc_init(MEMORY[0x277D382E0]);
   [(NPKSubcredentialInvitationCoordinator *)self setSubcredentialProvisioningController:v4];
 
-  v5 = [(NPKSubcredentialInvitationCoordinator *)self subcredentialProvisioningController];
-  [v5 setDelegate:self];
+  subcredentialProvisioningController = [(NPKSubcredentialInvitationCoordinator *)self subcredentialProvisioningController];
+  [subcredentialProvisioningController setDelegate:self];
 }
 
-- (void)_setUpSharingSessionWithSubcredentialProvisioningController:(id)a3 forInvitation:(id)a4
+- (void)_setUpSharingSessionWithSubcredentialProvisioningController:(id)controller forInvitation:(id)invitation
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-  dispatch_assert_queue_V2(v8);
+  controllerCopy = controller;
+  invitationCopy = invitation;
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  if (v6 && v7)
+  if (controllerCopy && invitationCopy)
   {
-    if ([v7 type] == 1)
+    if ([invitationCopy type] == 1)
     {
-      [MEMORY[0x277D37D70] createPendingSessionWithDelegate:v6];
+      [MEMORY[0x277D37D70] createPendingSessionWithDelegate:controllerCopy];
     }
 
     else
     {
-      [MEMORY[0x277D37D70] createSessionWithDelegate:v6];
+      [MEMORY[0x277D37D70] createSessionWithDelegate:controllerCopy];
     }
     v11 = ;
     [(NPKSubcredentialInvitationCoordinator *)self setSharingSession:v11];
@@ -2919,7 +2919,7 @@ LABEL_10:
       v15 = 138543618;
       v16 = v13;
       v17 = 2112;
-      v18 = v6;
+      v18 = controllerCopy;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Warning: %{public}@: Expected to find a subcredential provisioning controller, but instead found nil!: %@", &v15, 0x16u);
     }
 
@@ -2931,17 +2931,17 @@ LABEL_11:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isInvitationUniqueForPairedReaderIdentifier:(id)a3
+- (BOOL)_isInvitationUniqueForPairedReaderIdentifier:(id)identifier
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(MEMORY[0x277D37FC0]);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v5 = [v4 passes];
-  v6 = [v5 countByEnumeratingWithState:&v35 objects:v47 count:16];
+  passes = [v4 passes];
+  v6 = [passes countByEnumeratingWithState:&v35 objects:v47 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2952,13 +2952,13 @@ LABEL_11:
       {
         if (*v36 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(passes);
         }
 
-        v10 = [*(*(&v35 + 1) + 8 * i) paymentPass];
-        v11 = [v10 pairedTerminalIdentifier];
-        v12 = v11;
-        if (v11 && ![(__CFString *)v11 caseInsensitiveCompare:v3])
+        paymentPass = [*(*(&v35 + 1) + 8 * i) paymentPass];
+        pairedTerminalIdentifier = [paymentPass pairedTerminalIdentifier];
+        v12 = pairedTerminalIdentifier;
+        if (pairedTerminalIdentifier && ![(__CFString *)pairedTerminalIdentifier caseInsensitiveCompare:identifierCopy])
         {
           v14 = pk_General_log();
           v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
@@ -2970,24 +2970,24 @@ LABEL_11:
             {
               v17 = objc_opt_class();
               v18 = NSStringFromClass(v17);
-              v19 = [v10 uniqueID];
+              uniqueID = [paymentPass uniqueID];
               *buf = 138544130;
               v40 = v18;
               v41 = 2112;
-              v42 = v3;
+              v42 = identifierCopy;
               v43 = 2112;
               v44 = v12;
               v45 = 2112;
-              v46 = v19;
+              v46 = uniqueID;
               _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: The invitation's paired reader identifier (%@) matches the paired reader identifier (%@) of pass with unique ID %@", buf, 0x2Au);
             }
           }
 
-          v20 = [v10 devicePrimaryPaymentApplication];
-          [v20 state];
+          devicePrimaryPaymentApplication = [paymentPass devicePrimaryPaymentApplication];
+          [devicePrimaryPaymentApplication state];
           IsPersonalized = PKPaymentApplicationStateIsPersonalized();
 
-          v22 = [v10 effectiveContactlessPaymentApplicationState];
+          effectiveContactlessPaymentApplicationState = [paymentPass effectiveContactlessPaymentApplicationState];
           v23 = pk_General_log();
           v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
 
@@ -2998,8 +2998,8 @@ LABEL_11:
             {
               v26 = objc_opt_class();
               v27 = NSStringFromClass(v26);
-              v28 = [v10 uniqueID];
-              v29 = v28;
+              uniqueID2 = [paymentPass uniqueID];
+              v29 = uniqueID2;
               v30 = @"YES";
               *buf = 138544130;
               v40 = v27;
@@ -3013,13 +3013,13 @@ LABEL_11:
                 v31 = @"NO";
               }
 
-              if (v22 != 2)
+              if (effectiveContactlessPaymentApplicationState != 2)
               {
                 v30 = @"NO";
               }
 
               v41 = 2112;
-              v42 = v28;
+              v42 = uniqueID2;
               v43 = 2112;
               v44 = v31;
               v45 = 2112;
@@ -3035,7 +3035,7 @@ LABEL_11:
 
           else
           {
-            v32 = v22 == 2;
+            v32 = effectiveContactlessPaymentApplicationState == 2;
           }
 
           v13 = !v32;
@@ -3044,7 +3044,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v35 objects:v47 count:16];
+      v7 = [passes countByEnumeratingWithState:&v35 objects:v47 count:16];
       if (v7)
       {
         continue;
@@ -3061,22 +3061,22 @@ LABEL_31:
   return v13;
 }
 
-- (void)_fetchInvitationWithIdentifier:(id)a3 completion:(id)a4
+- (void)_fetchInvitationWithIdentifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-  dispatch_assert_queue_V2(v8);
+  identifierCopy = identifier;
+  completionCopy = completion;
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  if (v7)
+  if (completionCopy)
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __83__NPKSubcredentialInvitationCoordinator__fetchInvitationWithIdentifier_completion___block_invoke;
     v15[3] = &unk_279945E58;
-    v16 = v6;
-    v17 = v7;
+    v16 = identifierCopy;
+    v17 = completionCopy;
     [(NPKSubcredentialInvitationCoordinator *)self listSubcredentialInvitationsWithCompletion:v15];
 
     v9 = v16;
@@ -3143,22 +3143,22 @@ void __83__NPKSubcredentialInvitationCoordinator__fetchInvitationWithIdentifier_
   }
 }
 
-- (void)_fetchInvitationMatchingInvitation:(id)a3 completion:(id)a4
+- (void)_fetchInvitationMatchingInvitation:(id)invitation completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-  dispatch_assert_queue_V2(v8);
+  invitationCopy = invitation;
+  completionCopy = completion;
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  if (v7)
+  if (completionCopy)
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __87__NPKSubcredentialInvitationCoordinator__fetchInvitationMatchingInvitation_completion___block_invoke;
     v15[3] = &unk_279945E58;
-    v16 = v6;
-    v17 = v7;
+    v16 = invitationCopy;
+    v17 = completionCopy;
     [(NPKSubcredentialInvitationCoordinator *)self listSubcredentialInvitationsWithCompletion:v15];
 
     v9 = v16;
@@ -3222,31 +3222,31 @@ void __87__NPKSubcredentialInvitationCoordinator__fetchInvitationMatchingInvitat
   }
 }
 
-- (void)_makeConfigurationForInvitation:(id)a3 session:(id)a4 metadata:(id)a5 paymentWebService:(id)a6 completion:(id)a7
+- (void)_makeConfigurationForInvitation:(id)invitation session:(id)session metadata:(id)metadata paymentWebService:(id)service completion:(id)completion
 {
   v46 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-  dispatch_assert_queue_V2(v17);
+  invitationCopy = invitation;
+  sessionCopy = session;
+  metadataCopy = metadata;
+  serviceCopy = service;
+  completionCopy = completion;
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  if (v16)
+  if (completionCopy)
   {
-    if (v12 && v13 && v15)
+    if (invitationCopy && sessionCopy && serviceCopy)
     {
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __119__NPKSubcredentialInvitationCoordinator__makeConfigurationForInvitation_session_metadata_paymentWebService_completion___block_invoke;
       v29[3] = &unk_279945E80;
-      v30 = v13;
-      v31 = v12;
-      v32 = v14;
-      v33 = v15;
-      v34 = self;
-      v35 = v16;
+      v30 = sessionCopy;
+      v31 = invitationCopy;
+      v32 = metadataCopy;
+      v33 = serviceCopy;
+      selfCopy = self;
+      v35 = completionCopy;
       [(NPKSubcredentialInvitationCoordinator *)self canAcceptInvitation:v31 completion:v29];
 
       v18 = v30;
@@ -3267,19 +3267,19 @@ void __87__NPKSubcredentialInvitationCoordinator__fetchInvitationMatchingInvitat
           *buf = 138544386;
           v37 = v27;
           v38 = 2112;
-          v39 = v13;
+          v39 = sessionCopy;
           v40 = 2112;
-          v41 = v12;
+          v41 = invitationCopy;
           v42 = 2112;
-          v43 = v14;
+          v43 = metadataCopy;
           v44 = 2112;
-          v45 = v15;
+          v45 = serviceCopy;
           _os_log_impl(&dword_25B300000, v25, OS_LOG_TYPE_DEFAULT, "Warning: %{public}@: Expected to make accept invitation configuration with a non-nil sharing session, invitation, and paymentWebService! sharingSession: %@ invitation: %@ metadata: %@ paymentWebService: %@", buf, 0x34u);
         }
       }
 
       v18 = [(NPKSubcredentialInvitationCoordinator *)self _errorWithCode:0 message:@"Unable to make invitation configuration - insufficient information"];
-      (*(v16 + 2))(v16, 0, v18);
+      (*(completionCopy + 2))(completionCopy, 0, v18);
     }
 
 LABEL_14:
@@ -3352,14 +3352,14 @@ void __119__NPKSubcredentialInvitationCoordinator__makeConfigurationForInvitatio
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleProvisioningAttemptForConfiguration:(id)a3 error:(id)a4
+- (void)_handleProvisioningAttemptForConfiguration:(id)configuration error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  errorCopy = error;
   objc_initWeak(&location, self);
-  if (v7)
+  if (errorCopy)
   {
-    v8 = [(NPKSubcredentialInvitationCoordinator *)self callbackQueue];
+    callbackQueue = [(NPKSubcredentialInvitationCoordinator *)self callbackQueue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __90__NPKSubcredentialInvitationCoordinator__handleProvisioningAttemptForConfiguration_error___block_invoke_2;
@@ -3367,13 +3367,13 @@ void __119__NPKSubcredentialInvitationCoordinator__makeConfigurationForInvitatio
     v9 = &v14;
     objc_copyWeak(&v14, &location);
     v10 = &v13;
-    v13 = v7;
+    v13 = errorCopy;
     v11 = v12;
   }
 
   else
   {
-    v8 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+    callbackQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __90__NPKSubcredentialInvitationCoordinator__handleProvisioningAttemptForConfiguration_error___block_invoke;
@@ -3381,11 +3381,11 @@ void __119__NPKSubcredentialInvitationCoordinator__makeConfigurationForInvitatio
     v9 = &v17;
     objc_copyWeak(&v17, &location);
     v10 = &v16;
-    v16 = v6;
+    v16 = configurationCopy;
     v11 = block;
   }
 
-  dispatch_async(v8, v11);
+  dispatch_async(callbackQueue, v11);
 
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);
@@ -3404,45 +3404,45 @@ void __90__NPKSubcredentialInvitationCoordinator__handleProvisioningAttemptForCo
   [WeakRetained _endProvisioningWithPassForInvitation:0 error:*(a1 + 32)];
 }
 
-- (void)_performBlockFollowingFirstUnlockWithBlock:(id)a3
+- (void)_performBlockFollowingFirstUnlockWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (NPKProtectedDataAvailable())
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 
   else
   {
-    v5 = [(NPKSubcredentialInvitationCoordinator *)self firstUnlockCoordinator];
+    firstUnlockCoordinator = [(NPKSubcredentialInvitationCoordinator *)self firstUnlockCoordinator];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __84__NPKSubcredentialInvitationCoordinator__performBlockFollowingFirstUnlockWithBlock___block_invoke;
     v6[3] = &unk_279945198;
-    v7 = v4;
-    [v5 performSubjectToFirstUnlock:v6];
+    v7 = blockCopy;
+    [firstUnlockCoordinator performSubjectToFirstUnlock:v6];
   }
 }
 
-- (id)_errorWithCode:(int64_t)a3 message:(id)a4
+- (id)_errorWithCode:(int64_t)code message:(id)message
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  if ((a3 - 1) > 3)
+  if ((code - 1) > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = qword_25B59A8F0[a3 - 1];
+    v4 = qword_25B59A8F0[code - 1];
   }
 
   v5 = MEMORY[0x277CCA9B8];
   v6 = *MEMORY[0x277D389E0];
   v13 = *MEMORY[0x277CCA470];
-  v14[0] = a4;
+  v14[0] = message;
   v7 = MEMORY[0x277CBEAC0];
-  v8 = a4;
+  messageCopy = message;
   v9 = [v7 dictionaryWithObjects:v14 forKeys:&v13 count:1];
   v10 = [v5 errorWithDomain:v6 code:v4 userInfo:v9];
 
@@ -3451,13 +3451,13 @@ void __90__NPKSubcredentialInvitationCoordinator__handleProvisioningAttemptForCo
   return v10;
 }
 
-- (void)_startProvisioningForProvisioningController:(id)a3 withConfiguration:(id)a4
+- (void)_startProvisioningForProvisioningController:(id)controller withConfiguration:(id)configuration
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
-  dispatch_assert_queue_V2(v8);
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  internalQueue = [(NPKSubcredentialInvitationCoordinator *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v9 = pk_General_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -3472,30 +3472,30 @@ void __90__NPKSubcredentialInvitationCoordinator__handleProvisioningAttemptForCo
       *buf = 138543874;
       v21 = v13;
       v22 = 2112;
-      v23 = v6;
+      v23 = controllerCopy;
       v24 = 2112;
-      v25 = v7;
+      v25 = configurationCopy;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: Starting provisioning for provisioning controller: %@ with configuration: %@", buf, 0x20u);
     }
   }
 
-  if (v6 && v7)
+  if (controllerCopy && configurationCopy)
   {
-    [v6 startProvisioningWithConfiguration:v7];
+    [controllerCopy startProvisioningWithConfiguration:configurationCopy];
   }
 
   else
   {
     objc_initWeak(buf, self);
-    v14 = [(NPKSubcredentialInvitationCoordinator *)self callbackQueue];
+    callbackQueue = [(NPKSubcredentialInvitationCoordinator *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __103__NPKSubcredentialInvitationCoordinator__startProvisioningForProvisioningController_withConfiguration___block_invoke;
     block[3] = &unk_279945290;
     objc_copyWeak(&v19, buf);
-    v17 = v6;
-    v18 = v7;
-    dispatch_async(v14, block);
+    v17 = controllerCopy;
+    v18 = configurationCopy;
+    dispatch_async(callbackQueue, block);
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(buf);
@@ -3536,13 +3536,13 @@ void __103__NPKSubcredentialInvitationCoordinator__startProvisioningForProvision
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_endProvisioningWithPassForInvitation:(id)a3 error:(id)a4
+- (void)_endProvisioningWithPassForInvitation:(id)invitation error:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self callbackQueue];
-  dispatch_assert_queue_V2(v8);
+  invitationCopy = invitation;
+  errorCopy = error;
+  callbackQueue = [(NPKSubcredentialInvitationCoordinator *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   v9 = pk_General_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -3557,17 +3557,17 @@ void __103__NPKSubcredentialInvitationCoordinator__startProvisioningForProvision
       v16 = 138543874;
       v17 = v13;
       v18 = 2112;
-      v19 = v6;
+      v19 = invitationCopy;
       v20 = 2112;
-      v21 = v7;
+      v21 = errorCopy;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: End provisioning with pass: %@ error: %@", &v16, 0x20u);
     }
   }
 
-  [(NPKSubcredentialInvitationCoordinator *)self _invokeCompletionWithPassForInvitation:v6 error:v7];
+  [(NPKSubcredentialInvitationCoordinator *)self _invokeCompletionWithPassForInvitation:invitationCopy error:errorCopy];
   [(NPKSubcredentialInvitationCoordinator *)self setSubcredentialProvisioningController:0];
-  v14 = [(NPKSubcredentialInvitationCoordinator *)self sharingSession];
-  [v14 endSession];
+  sharingSession = [(NPKSubcredentialInvitationCoordinator *)self sharingSession];
+  [sharingSession endSession];
 
   [(NPKSubcredentialInvitationCoordinator *)self setSharingSession:0];
   [(NPKSubcredentialInvitationCoordinator *)self setFirstUnlockCoordinator:0];
@@ -3575,19 +3575,19 @@ void __103__NPKSubcredentialInvitationCoordinator__startProvisioningForProvision
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invokeCompletionWithPassForInvitation:(id)a3 error:(id)a4
+- (void)_invokeCompletionWithPassForInvitation:(id)invitation error:(id)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPKSubcredentialInvitationCoordinator *)self callbackQueue];
-  dispatch_assert_queue_V2(v8);
+  invitationCopy = invitation;
+  errorCopy = error;
+  callbackQueue = [(NPKSubcredentialInvitationCoordinator *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
-  v9 = [(NPKSubcredentialInvitationCoordinator *)self completion];
+  completion = [(NPKSubcredentialInvitationCoordinator *)self completion];
   [(NPKSubcredentialInvitationCoordinator *)self setCompletion:0];
-  if (v9)
+  if (completion)
   {
-    (v9)[2](v9, v6, v7);
+    (completion)[2](completion, invitationCopy, errorCopy);
   }
 
   else

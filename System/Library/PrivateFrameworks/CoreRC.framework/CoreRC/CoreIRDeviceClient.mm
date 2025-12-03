@@ -1,21 +1,21 @@
 @interface CoreIRDeviceClient
-- (BOOL)changeButtonCombination:(id)a3 delay:(double)a4 enabled:(BOOL)a5 error:(id *)a6;
-- (BOOL)clearAllStoredCommands:(id *)a3;
-- (BOOL)disableButtonCombination:(id)a3 delay:(double)a4 error:(id *)a5;
-- (BOOL)enableButtonCombination:(id)a3 delay:(double)a4 error:(id *)a5;
-- (BOOL)sendCommand:(id)a3 error:(id *)a4;
-- (BOOL)setCommand:(unint64_t)a3 target:(id)a4 forButtonCombination:(id)a5 delay:(double)a6 error:(id *)a7;
-- (BOOL)setOSDName:(id)a3 error:(id *)a4;
-- (BOOL)updateMappingWithSession:(id)a3 error:(id *)a4;
-- (id)startLearningSessionWithReason:(unint64_t)a3 error:(id *)a4;
+- (BOOL)changeButtonCombination:(id)combination delay:(double)delay enabled:(BOOL)enabled error:(id *)error;
+- (BOOL)clearAllStoredCommands:(id *)commands;
+- (BOOL)disableButtonCombination:(id)combination delay:(double)delay error:(id *)error;
+- (BOOL)enableButtonCombination:(id)combination delay:(double)delay error:(id *)error;
+- (BOOL)sendCommand:(id)command error:(id *)error;
+- (BOOL)setCommand:(unint64_t)command target:(id)target forButtonCombination:(id)combination delay:(double)delay error:(id *)error;
+- (BOOL)setOSDName:(id)name error:(id *)error;
+- (BOOL)updateMappingWithSession:(id)session error:(id *)error;
+- (id)startLearningSessionWithReason:(unint64_t)reason error:(id *)error;
 @end
 
 @implementation CoreIRDeviceClient
 
-- (BOOL)sendCommand:(id)a3 error:(id *)a4
+- (BOOL)sendCommand:(id)command error:(id *)error
 {
-  v7 = [(CoreRCDevice *)self manager];
-  if (!v7)
+  manager = [(CoreRCDevice *)self manager];
+  if (!manager)
   {
     [CoreIRDeviceClient sendCommand:error:];
   }
@@ -29,16 +29,16 @@
   v9[1] = 3221225472;
   v9[2] = __40__CoreIRDeviceClient_sendCommand_error___block_invoke;
   v9[3] = &unk_278EA2910;
-  v9[4] = v7;
-  v9[5] = a3;
+  v9[4] = manager;
+  v9[5] = command;
   v9[6] = self;
-  return CoreRCWaitForAsyncOperation(a4, v9);
+  return CoreRCWaitForAsyncOperation(error, v9);
 }
 
-- (BOOL)clearAllStoredCommands:(id *)a3
+- (BOOL)clearAllStoredCommands:(id *)commands
 {
-  v5 = [(CoreRCDevice *)self manager];
-  if (!v5)
+  manager = [(CoreRCDevice *)self manager];
+  if (!manager)
   {
     [CoreIRDeviceClient clearAllStoredCommands:];
   }
@@ -52,9 +52,9 @@
   v7[1] = 3221225472;
   v7[2] = __45__CoreIRDeviceClient_clearAllStoredCommands___block_invoke;
   v7[3] = &unk_278EA32B8;
-  v7[4] = v5;
+  v7[4] = manager;
   v7[5] = self;
-  return CoreRCWaitForAsyncOperation(a3, v7);
+  return CoreRCWaitForAsyncOperation(commands, v7);
 }
 
 uint64_t __45__CoreIRDeviceClient_clearAllStoredCommands___block_invoke(uint64_t a1, uint64_t a2)
@@ -81,10 +81,10 @@ uint64_t __45__CoreIRDeviceClient_clearAllStoredCommands___block_invoke_2(uint64
   return v4();
 }
 
-- (BOOL)setCommand:(unint64_t)a3 target:(id)a4 forButtonCombination:(id)a5 delay:(double)a6 error:(id *)a7
+- (BOOL)setCommand:(unint64_t)command target:(id)target forButtonCombination:(id)combination delay:(double)delay error:(id *)error
 {
-  v13 = [(CoreRCDevice *)self manager];
-  if (!v13)
+  manager = [(CoreRCDevice *)self manager];
+  if (!manager)
   {
     [CoreIRDeviceClient setCommand:target:forButtonCombination:delay:error:];
   }
@@ -98,13 +98,13 @@ uint64_t __45__CoreIRDeviceClient_clearAllStoredCommands___block_invoke_2(uint64
   v15[1] = 3221225472;
   v15[2] = __73__CoreIRDeviceClient_setCommand_target_forButtonCombination_delay_error___block_invoke;
   v15[3] = &unk_278EA32E0;
-  v15[7] = a5;
-  v15[8] = a3;
-  v15[4] = v13;
-  v15[5] = a4;
+  v15[7] = combination;
+  v15[8] = command;
+  v15[4] = manager;
+  v15[5] = target;
   v15[6] = self;
-  *&v15[9] = a6;
-  return CoreRCWaitForAsyncOperation(a7, v15);
+  *&v15[9] = delay;
+  return CoreRCWaitForAsyncOperation(error, v15);
 }
 
 uint64_t __73__CoreIRDeviceClient_setCommand_target_forButtonCombination_delay_error___block_invoke(double *a1, uint64_t a2)
@@ -135,30 +135,30 @@ uint64_t __73__CoreIRDeviceClient_setCommand_target_forButtonCombination_delay_e
   return v4();
 }
 
-- (BOOL)enableButtonCombination:(id)a3 delay:(double)a4 error:(id *)a5
+- (BOOL)enableButtonCombination:(id)combination delay:(double)delay error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 50 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
     [CoreIRDeviceClient enableButtonCombination:delay:error:];
   }
 
-  return [(CoreIRDeviceClient *)self changeButtonCombination:a3 delay:1 enabled:a5 error:a4];
+  return [(CoreIRDeviceClient *)self changeButtonCombination:combination delay:1 enabled:error error:delay];
 }
 
-- (BOOL)disableButtonCombination:(id)a3 delay:(double)a4 error:(id *)a5
+- (BOOL)disableButtonCombination:(id)combination delay:(double)delay error:(id *)error
 {
   if (gLogCategory_CoreRCDevice <= 50 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
     [CoreIRDeviceClient disableButtonCombination:delay:error:];
   }
 
-  return [(CoreIRDeviceClient *)self changeButtonCombination:a3 delay:0 enabled:a5 error:a4];
+  return [(CoreIRDeviceClient *)self changeButtonCombination:combination delay:0 enabled:error error:delay];
 }
 
-- (BOOL)changeButtonCombination:(id)a3 delay:(double)a4 enabled:(BOOL)a5 error:(id *)a6
+- (BOOL)changeButtonCombination:(id)combination delay:(double)delay enabled:(BOOL)enabled error:(id *)error
 {
-  v11 = [(CoreRCDevice *)self manager];
-  if (!v11)
+  manager = [(CoreRCDevice *)self manager];
+  if (!manager)
   {
     [CoreIRDeviceClient changeButtonCombination:delay:enabled:error:];
   }
@@ -167,12 +167,12 @@ uint64_t __73__CoreIRDeviceClient_setCommand_target_forButtonCombination_delay_e
   v13[1] = 3221225472;
   v13[2] = __66__CoreIRDeviceClient_changeButtonCombination_delay_enabled_error___block_invoke;
   v13[3] = &unk_278EA3308;
-  v13[4] = v11;
-  v13[5] = a3;
-  *&v13[7] = a4;
-  v14 = a5;
+  v13[4] = manager;
+  v13[5] = combination;
+  *&v13[7] = delay;
+  enabledCopy = enabled;
   v13[6] = self;
-  return CoreRCWaitForAsyncOperation(a6, v13);
+  return CoreRCWaitForAsyncOperation(error, v13);
 }
 
 uint64_t __66__CoreIRDeviceClient_changeButtonCombination_delay_enabled_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -202,16 +202,16 @@ uint64_t __66__CoreIRDeviceClient_changeButtonCombination_delay_enabled_error___
   return v4();
 }
 
-- (id)startLearningSessionWithReason:(unint64_t)a3 error:(id *)a4
+- (id)startLearningSessionWithReason:(unint64_t)reason error:(id *)error
 {
-  v8 = [(CoreRCDevice *)self manager];
+  manager = [(CoreRCDevice *)self manager];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3052000000;
   v16 = __Block_byref_object_copy__1;
   v17 = __Block_byref_object_dispose__1;
   v18 = 0;
-  if (!v8)
+  if (!manager)
   {
     [objc_msgSend(MEMORY[0x277CCA890] "currentHandler")];
   }
@@ -225,14 +225,14 @@ uint64_t __66__CoreIRDeviceClient_changeButtonCombination_delay_enabled_error___
   v12[1] = 3221225472;
   v12[2] = __59__CoreIRDeviceClient_startLearningSessionWithReason_error___block_invoke;
   v12[3] = &unk_278EA3358;
-  v12[4] = v8;
+  v12[4] = manager;
   v12[5] = self;
   v12[6] = &v13;
-  v12[7] = a3;
-  if (CoreRCWaitForAsyncOperation(a4, v12))
+  v12[7] = reason;
+  if (CoreRCWaitForAsyncOperation(error, v12))
   {
-    v9 = [(CoreRCDevice *)self manager];
-    [v14[5] setManager:v9];
+    manager2 = [(CoreRCDevice *)self manager];
+    [v14[5] setManager:manager2];
     [(CoreIRDevice *)self setLearningSession:v14[5]];
   }
 
@@ -276,10 +276,10 @@ uint64_t __59__CoreIRDeviceClient_startLearningSessionWithReason_error___block_i
   return v4();
 }
 
-- (BOOL)updateMappingWithSession:(id)a3 error:(id *)a4
+- (BOOL)updateMappingWithSession:(id)session error:(id *)error
 {
-  v7 = [(CoreRCDevice *)self manager];
-  if (!v7)
+  manager = [(CoreRCDevice *)self manager];
+  if (!manager)
   {
     [CoreIRDeviceClient updateMappingWithSession:error:];
   }
@@ -293,10 +293,10 @@ uint64_t __59__CoreIRDeviceClient_startLearningSessionWithReason_error___block_i
   v9[1] = 3221225472;
   v9[2] = __53__CoreIRDeviceClient_updateMappingWithSession_error___block_invoke;
   v9[3] = &unk_278EA2910;
-  v9[4] = v7;
-  v9[5] = a3;
+  v9[4] = manager;
+  v9[5] = session;
   v9[6] = self;
-  return CoreRCWaitForAsyncOperation(a4, v9);
+  return CoreRCWaitForAsyncOperation(error, v9);
 }
 
 uint64_t __53__CoreIRDeviceClient_updateMappingWithSession_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -324,10 +324,10 @@ uint64_t __53__CoreIRDeviceClient_updateMappingWithSession_error___block_invoke_
   return v4();
 }
 
-- (BOOL)setOSDName:(id)a3 error:(id *)a4
+- (BOOL)setOSDName:(id)name error:(id *)error
 {
-  v8 = [(CoreRCDevice *)self manager];
-  if (!v8)
+  manager = [(CoreRCDevice *)self manager];
+  if (!manager)
   {
     [objc_msgSend(MEMORY[0x277CCA890] "currentHandler")];
   }
@@ -342,10 +342,10 @@ uint64_t __53__CoreIRDeviceClient_updateMappingWithSession_error___block_invoke_
   v13[1] = 3221225472;
   v13[2] = __39__CoreIRDeviceClient_setOSDName_error___block_invoke;
   v13[3] = &unk_278EA2910;
-  v13[4] = v8;
-  v13[5] = a3;
+  v13[4] = manager;
+  v13[5] = name;
   v13[6] = self;
-  v9 = CoreRCWaitForAsyncOperation(a4, v13);
+  v9 = CoreRCWaitForAsyncOperation(error, v13);
   if (v9)
   {
     OUTLINED_FUNCTION_0_6();

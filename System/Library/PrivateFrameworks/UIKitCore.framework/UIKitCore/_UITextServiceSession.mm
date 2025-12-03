@@ -1,14 +1,14 @@
 @interface _UITextServiceSession
 + (BOOL)_canShowTextServices;
-+ (BOOL)shouldPresentServiceInSameWindowAsView:(id)a3;
++ (BOOL)shouldPresentServiceInSameWindowAsView:(id)view;
 + (BOOL)textServiceIsDisplaying;
-+ (id)showServiceForText:(id)a3 type:(int64_t)a4 fromRect:(CGRect)a5 inView:(id)a6;
-+ (id)showServiceForType:(int64_t)a3 withContext:(id)a4;
-+ (id)textServiceSessionForType:(int64_t)a3;
++ (id)showServiceForText:(id)text type:(int64_t)type fromRect:(CGRect)rect inView:(id)view;
++ (id)showServiceForType:(int64_t)type withContext:(id)context;
++ (id)textServiceSessionForType:(int64_t)type;
 + (int64_t)availableTextServices;
-- (_UITextServiceSession)initWithType:(int64_t)a3;
+- (_UITextServiceSession)initWithType:(int64_t)type;
 - (void)_endSession;
-- (void)dismissTextServiceAnimated:(BOOL)a3;
+- (void)dismissTextServiceAnimated:(BOOL)animated;
 - (void)sessionDidDismiss;
 @end
 
@@ -27,13 +27,13 @@
 
 + (int64_t)availableTextServices
 {
-  if (![a1 _canShowTextServices])
+  if (![self _canShowTextServices])
   {
     return 0;
   }
 
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  if ([v2 isDefinitionLookupAllowed])
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  if ([mEMORY[0x1E69ADFB8] isDefinitionLookupAllowed])
   {
     v3 = 18;
   }
@@ -43,17 +43,17 @@
     v3 = 0;
   }
 
-  if ([v2 isSelectedTextSharingAllowed])
+  if ([mEMORY[0x1E69ADFB8] isSelectedTextSharingAllowed])
   {
     v3 |= 8uLL;
   }
 
-  if ([v2 isSpellCheckAllowed])
+  if ([mEMORY[0x1E69ADFB8] isSpellCheckAllowed])
   {
     v3 |= 4uLL;
   }
 
-  if ([v2 isTranslationLookupAllowed])
+  if ([mEMORY[0x1E69ADFB8] isTranslationLookupAllowed])
   {
     v3 |= 0x20uLL;
   }
@@ -66,10 +66,10 @@
   return v3;
 }
 
-+ (BOOL)shouldPresentServiceInSameWindowAsView:(id)a3
++ (BOOL)shouldPresentServiceInSameWindowAsView:(id)view
 {
-  v3 = [a3 _window];
-  if ([v3 _isTextEffectsWindow])
+  _window = [view _window];
+  if ([_window _isTextEffectsWindow])
   {
     v4 = 0;
   }
@@ -82,19 +82,19 @@
   return v4;
 }
 
-+ (id)showServiceForType:(int64_t)a3 withContext:(id)a4
++ (id)showServiceForType:(int64_t)type withContext:(id)context
 {
   v109[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (![a1 _canShowTextServiceForType:a3])
+  contextCopy = context;
+  if (![self _canShowTextServiceForType:type])
   {
     v9 = 0;
     goto LABEL_78;
   }
 
-  v7 = [v6 textWithContext];
-  v75 = [v6 rvItemWithContext];
-  if (a3 == 16 && !v7 && !v75)
+  textWithContext = [contextCopy textWithContext];
+  rvItemWithContext = [contextCopy rvItemWithContext];
+  if (type == 16 && !textWithContext && !rvItemWithContext)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -125,33 +125,33 @@
     dispatch_once(&qword_1ED4A23E8, &__block_literal_global_632);
   }
 
-  v10 = [v6 selectedRange];
+  selectedRange = [contextCopy selectedRange];
   v12 = v11;
-  v74 = [v7 substringWithRange:{v10, v11}];
-  v13 = [v6 view];
-  v14 = v13;
-  if (v13)
+  v74 = [textWithContext substringWithRange:{selectedRange, v11}];
+  view = [contextCopy view];
+  v14 = view;
+  if (view)
   {
-    v15 = v13;
+    textInputView = view;
   }
 
   else
   {
-    v16 = [v6 textInput];
-    v15 = [v16 textInputView];
+    textInput = [contextCopy textInput];
+    textInputView = [textInput textInputView];
   }
 
-  [v6 presentationRect];
+  [contextCopy presentationRect];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [[a1 alloc] initWithType:a3];
-  objc_storeStrong((v25 + 24), v15);
+  v25 = [[self alloc] initWithType:type];
+  objc_storeStrong((v25 + 24), textInputView);
   v9 = 0;
-  if (a3 <= 7)
+  if (type <= 7)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v26 = [[UIReferenceLibraryViewController alloc] initWithTerm:v74];
       v97[0] = MEMORY[0x1E69E9820];
@@ -164,7 +164,7 @@
 
     else
     {
-      if (a3 != 4)
+      if (type != 4)
       {
         goto LABEL_76;
       }
@@ -174,9 +174,9 @@
       {
         v26 = [[UINavigationController alloc] initWithRootViewController:v34];
         v35 = +[UIDevice currentDevice];
-        v36 = [v35 userInterfaceIdiom];
+        userInterfaceIdiom = [v35 userInterfaceIdiom];
 
-        if ((v36 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+        if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
         {
           v37 = 7;
         }
@@ -204,7 +204,7 @@
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 8:
         v38 = objc_alloc(MEMORY[0x1E69CD9F8]);
@@ -229,9 +229,9 @@
         objc_destroyWeak(buf);
         break;
       case 16:
-        if (!v75 || (v41 = [objc_alloc(DataDetectorsUIGetClass(@"DDParsecCollectionViewController")) initWithRVItem:v75]) == 0)
+        if (!rvItemWithContext || (v41 = [objc_alloc(DataDetectorsUIGetClass(@"DDParsecCollectionViewController")) initWithRVItem:rvItemWithContext]) == 0)
         {
-          v41 = [objc_alloc(DataDetectorsUIGetClass(@"DDParsecCollectionViewController")) initWithString:v7 range:{v10, v12}];
+          v41 = [objc_alloc(DataDetectorsUIGetClass(@"DDParsecCollectionViewController")) initWithString:textWithContext range:{selectedRange, v12}];
         }
 
         v90[0] = MEMORY[0x1E69E9820];
@@ -250,14 +250,14 @@
         [(UIReferenceLibraryViewController *)v26 setText:v27];
 
         [(UIReferenceLibraryViewController *)v26 setIsSourceEditable:0];
-        v28 = [v6 textInput];
-        if (v28 && (v29 = [v15 isEditable], v28, v29))
+        textInput2 = [contextCopy textInput];
+        if (textInput2 && (v29 = [textInputView isEditable], textInput2, v29))
         {
-          v30 = [v6 textInput];
-          v31 = [v30 selectedTextRange];
+          textInput3 = [contextCopy textInput];
+          selectedTextRange = [textInput3 selectedTextRange];
 
-          v32 = [v6 textInput];
-          objc_initWeak(buf, v32);
+          textInput4 = [contextCopy textInput];
+          objc_initWeak(buf, textInput4);
 
           [(UIReferenceLibraryViewController *)v26 setIsSourceEditable:1];
           v87[0] = MEMORY[0x1E69E9820];
@@ -265,7 +265,7 @@
           v87[2] = __56___UITextServiceSession_showServiceForType_withContext___block_invoke_6;
           v87[3] = &unk_1E71277E0;
           objc_copyWeak(&v89, buf);
-          v33 = v31;
+          v33 = selectedTextRange;
           v88 = v33;
           [(UIReferenceLibraryViewController *)v26 setReplacementHandler:v87];
 
@@ -273,12 +273,12 @@
           objc_destroyWeak(buf);
         }
 
-        else if ([v15 conformsToProtocolCached:&unk_1F016C810])
+        else if ([textInputView conformsToProtocolCached:&unk_1F016C810])
         {
-          v42 = objc_initWeak(buf, v15);
-          v43 = [v15 isReplaceAllowed];
+          v42 = objc_initWeak(buf, textInputView);
+          isReplaceAllowed = [textInputView isReplaceAllowed];
 
-          if (v43)
+          if (isReplaceAllowed)
           {
             [(UIReferenceLibraryViewController *)v26 setIsSourceEditable:1];
             v84[0] = MEMORY[0x1E69E9820];
@@ -295,12 +295,12 @@
           objc_destroyWeak(buf);
         }
 
-        else if ([v15 conformsToProtocol:&unk_1F016C7B0])
+        else if ([textInputView conformsToProtocol:&unk_1F016C7B0])
         {
-          v44 = objc_initWeak(buf, v15);
-          v45 = [v15 isReplaceAllowed];
+          v44 = objc_initWeak(buf, textInputView);
+          isReplaceAllowed2 = [textInputView isReplaceAllowed];
 
-          if (v45)
+          if (isReplaceAllowed2)
           {
             [(UIReferenceLibraryViewController *)v26 setIsSourceEditable:1];
             v81[0] = MEMORY[0x1E69E9820];
@@ -317,12 +317,12 @@
           objc_destroyWeak(buf);
         }
 
-        else if ([v15 conformsToProtocol:&unk_1F016CC30])
+        else if ([textInputView conformsToProtocol:&unk_1F016CC30])
         {
-          v46 = objc_initWeak(buf, v15);
-          v47 = [v15 isReplaceAllowed];
+          v46 = objc_initWeak(buf, textInputView);
+          isReplaceAllowed3 = [textInputView isReplaceAllowed];
 
-          if (v47)
+          if (isReplaceAllowed3)
           {
             [(UIReferenceLibraryViewController *)v26 setIsSourceEditable:1];
             v78[0] = MEMORY[0x1E69E9820];
@@ -339,16 +339,16 @@
           objc_destroyWeak(buf);
         }
 
-        v48 = [v6 textInput];
-        v49 = v48;
-        if (v48)
+        textInput5 = [contextCopy textInput];
+        v49 = textInput5;
+        if (textInput5)
         {
-          v50 = v48;
+          v50 = textInput5;
         }
 
         else
         {
-          v50 = v15;
+          v50 = textInputView;
         }
 
         v51 = v50;
@@ -393,68 +393,68 @@
 
   if (v26)
   {
-    v55 = [v15 _window];
-    if ([v55 _isTextEffectsWindow])
+    _window = [textInputView _window];
+    if ([_window _isTextEffectsWindow])
     {
-      v56 = (a3 < 0x21) & (0x100010010uLL >> a3);
-      if (a3 == 8)
+      v56 = (type < 0x21) & (0x100010010uLL >> type);
+      if (type == 8)
       {
         v57 = 1;
       }
 
       else
       {
-        v57 = (a3 < 0x21) & (0x100010010uLL >> a3);
+        v57 = (type < 0x21) & (0x100010010uLL >> type);
       }
 
       if (!v57)
       {
 LABEL_67:
-        v64 = [(UIViewController *)v26 presentationController];
-        [v64 setDelegate:v25];
+        presentationController = [(UIViewController *)v26 presentationController];
+        [presentationController setDelegate:v25];
 
-        v65 = [(UIViewController *)v26 popoverPresentationController];
-        [v65 setSourceView:v15];
+        popoverPresentationController = [(UIViewController *)v26 popoverPresentationController];
+        [popoverPresentationController setSourceView:textInputView];
 
-        v66 = [(UIViewController *)v26 popoverPresentationController];
-        [v66 setSourceRect:{v18, v20, v22, v24}];
+        popoverPresentationController2 = [(UIViewController *)v26 popoverPresentationController];
+        [popoverPresentationController2 setSourceRect:{v18, v20, v22, v24}];
 
         objc_storeStrong((v25 + 16), v26);
-        if ([a1 shouldPresentServiceInSameWindowAsView:v15])
+        if ([self shouldPresentServiceInSameWindowAsView:textInputView])
         {
-          v67 = [v15 _viewControllerForAncestor];
-          v68 = [(UIViewController *)v67 presentedViewController];
+          _viewControllerForAncestor = [textInputView _viewControllerForAncestor];
+          presentedViewController = [(UIViewController *)_viewControllerForAncestor presentedViewController];
 
-          if (v68)
+          if (presentedViewController)
           {
             do
             {
-              v69 = [(UIViewController *)v67 presentedViewController];
+              presentedViewController2 = [(UIViewController *)_viewControllerForAncestor presentedViewController];
 
-              v70 = [(UIViewController *)v69 presentedViewController];
+              v69PresentedViewController = [(UIViewController *)presentedViewController2 presentedViewController];
 
-              v67 = v69;
+              _viewControllerForAncestor = presentedViewController2;
             }
 
-            while (v70);
+            while (v69PresentedViewController);
           }
 
           else
           {
-            v69 = v67;
+            presentedViewController2 = _viewControllerForAncestor;
           }
 
-          [(UIViewController *)v69 presentViewController:v26 animated:1 completion:0];
+          [(UIViewController *)presentedViewController2 presentViewController:v26 animated:1 completion:0];
         }
 
         else
         {
-          v69 = objc_alloc_init(_UIFallbackPresentationViewController);
-          [(UIApplicationRotationFollowingController *)v69 setSizesWindowToScene:1];
-          v71 = [(UIViewController *)v26 popoverPresentationController];
-          [v71 _setAllowsSourceViewInDifferentWindowThanInitialPresentationViewController:1];
+          presentedViewController2 = objc_alloc_init(_UIFallbackPresentationViewController);
+          [(UIApplicationRotationFollowingController *)presentedViewController2 setSizesWindowToScene:1];
+          popoverPresentationController3 = [(UIViewController *)v26 popoverPresentationController];
+          [popoverPresentationController3 _setAllowsSourceViewInDifferentWindowThanInitialPresentationViewController:1];
 
-          [(_UIFallbackPresentationViewController *)v69 _presentViewController:v26 sendingView:v15 animated:1];
+          [(_UIFallbackPresentationViewController *)presentedViewController2 _presentViewController:v26 sendingView:textInputView animated:1];
         }
 
         [_MergedGlobals_1336 addObject:v25];
@@ -465,21 +465,21 @@ LABEL_67:
 
       if (v56)
       {
-        v58 = [v15 keyboardSceneDelegate];
+        keyboardSceneDelegate = [textInputView keyboardSceneDelegate];
         v59 = *(v25 + 40);
-        *(v25 + 40) = v58;
+        *(v25 + 40) = keyboardSceneDelegate;
 
-        v60 = [(UIViewController *)v26 view];
+        view2 = [(UIViewController *)v26 view];
         v61 = *(v25 + 32);
-        *(v25 + 32) = v60;
+        *(v25 + 32) = view2;
 
         [*(v25 + 40) _beginPinningInputViewsOnBehalfOfResponder:*(v25 + 32)];
       }
 
-      v55 = [v15 keyboardSceneDelegate];
-      v62 = [v55 passthroughViews];
-      v63 = [(UIViewController *)v26 popoverPresentationController];
-      [v63 setPassthroughViews:v62];
+      _window = [textInputView keyboardSceneDelegate];
+      passthroughViews = [_window passthroughViews];
+      popoverPresentationController4 = [(UIViewController *)v26 popoverPresentationController];
+      [popoverPresentationController4 setPassthroughViews:passthroughViews];
     }
 
     goto LABEL_67;
@@ -494,33 +494,33 @@ LABEL_78:
   return v9;
 }
 
-+ (id)showServiceForText:(id)a3 type:(int64_t)a4 fromRect:(CGRect)a5 inView:(id)a6
++ (id)showServiceForText:(id)text type:(int64_t)type fromRect:(CGRect)rect inView:(id)view
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a6;
-  v13 = a3;
-  v14 = +[_UITextServiceSession showServiceForText:selectedTextRange:type:fromRect:inView:](_UITextServiceSession, "showServiceForText:selectedTextRange:type:fromRect:inView:", v13, 0, [v13 length], a4, v12, x, y, width, height);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  textCopy = text;
+  v14 = +[_UITextServiceSession showServiceForText:selectedTextRange:type:fromRect:inView:](_UITextServiceSession, "showServiceForText:selectedTextRange:type:fromRect:inView:", textCopy, 0, [textCopy length], type, viewCopy, x, y, width, height);
 
   return v14;
 }
 
-- (_UITextServiceSession)initWithType:(int64_t)a3
+- (_UITextServiceSession)initWithType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = _UITextServiceSession;
   result = [(_UITextServiceSession *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
 }
 
-+ (id)textServiceSessionForType:(int64_t)a3
++ (id)textServiceSessionForType:(int64_t)type
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -543,7 +543,7 @@ LABEL_78:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 type] == a3)
+        if ([v9 type] == type)
         {
           v10 = v9;
           goto LABEL_11;
@@ -609,7 +609,7 @@ LABEL_11:
   return v3;
 }
 
-- (void)dismissTextServiceAnimated:(BOOL)a3
+- (void)dismissTextServiceAnimated:(BOOL)animated
 {
   type = self->_type;
   if (type <= 7)
@@ -632,8 +632,8 @@ LABEL_11:
   else if (type == 8 || type == 16)
   {
     v8 = self->_modalViewController;
-    v6 = [(UIViewController *)v8 dismissCompletionHandler];
-    [(UIViewController *)v8 dismissViewControllerAnimated:1 completion:v6];
+    dismissCompletionHandler = [(UIViewController *)v8 dismissCompletionHandler];
+    [(UIViewController *)v8 dismissViewControllerAnimated:1 completion:dismissCompletionHandler];
 
     [(UIViewController *)v8 setDismissCompletionHandler:0];
   }

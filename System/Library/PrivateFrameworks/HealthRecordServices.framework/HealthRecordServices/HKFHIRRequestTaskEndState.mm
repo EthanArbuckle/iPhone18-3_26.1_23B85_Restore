@@ -1,14 +1,14 @@
 @interface HKFHIRRequestTaskEndState
-+ (id)endStateForCanceledRequestAtURL:(id)a3 resourceType:(id)a4 interactionType:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)endStateForCanceledRequestAtURL:(id)l resourceType:(id)type interactionType:(int64_t)interactionType;
+- (BOOL)isEqual:(id)equal;
 - (HKFHIRRequestTaskEndState)init;
-- (HKFHIRRequestTaskEndState)initWithCoder:(id)a3;
-- (HKFHIRRequestTaskEndState)initWithRequestedURL:(id)a3 resourceType:(id)a4 interactionType:(int64_t)a5 responseStatusCode:(int64_t)a6 requestEndTime:(id)a7 requestDuration:(double)a8 hadError:(BOOL)a9 errorCode:(id)a10;
+- (HKFHIRRequestTaskEndState)initWithCoder:(id)coder;
+- (HKFHIRRequestTaskEndState)initWithRequestedURL:(id)l resourceType:(id)type interactionType:(int64_t)interactionType responseStatusCode:(int64_t)code requestEndTime:(id)time requestDuration:(double)duration hadError:(BOOL)error errorCode:(id)self0;
 - (NSString)eventLoggingDescription;
-- (id)asErrorEndStateWithErrorCode:(id)a3;
+- (id)asErrorEndStateWithErrorCode:(id)code;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKFHIRRequestTaskEndState
@@ -23,15 +23,15 @@
   return 0;
 }
 
-- (HKFHIRRequestTaskEndState)initWithRequestedURL:(id)a3 resourceType:(id)a4 interactionType:(int64_t)a5 responseStatusCode:(int64_t)a6 requestEndTime:(id)a7 requestDuration:(double)a8 hadError:(BOOL)a9 errorCode:(id)a10
+- (HKFHIRRequestTaskEndState)initWithRequestedURL:(id)l resourceType:(id)type interactionType:(int64_t)interactionType responseStatusCode:(int64_t)code requestEndTime:(id)time requestDuration:(double)duration hadError:(BOOL)error errorCode:(id)self0
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a7;
-  v21 = a10;
-  if (v18)
+  lCopy = l;
+  typeCopy = type;
+  timeCopy = time;
+  errorCodeCopy = errorCode;
+  if (lCopy)
   {
-    if (v20)
+    if (timeCopy)
     {
       goto LABEL_3;
     }
@@ -40,7 +40,7 @@
   else
   {
     [HKFHIRRequestTaskEndState initWithRequestedURL:a2 resourceType:self interactionType:? responseStatusCode:? requestEndTime:? requestDuration:? hadError:? errorCode:?];
-    if (v20)
+    if (timeCopy)
     {
       goto LABEL_3;
     }
@@ -53,23 +53,23 @@ LABEL_3:
   v22 = [(HKFHIRRequestTaskEndState *)&v32 init];
   if (v22)
   {
-    v23 = [v18 copy];
+    v23 = [lCopy copy];
     requestedURL = v22->_requestedURL;
     v22->_requestedURL = v23;
 
-    v25 = [v19 copy];
+    v25 = [typeCopy copy];
     resourceType = v22->_resourceType;
     v22->_resourceType = v25;
 
-    v22->_interactionType = a5;
-    v22->_responseStatusCode = a6;
-    v27 = [v20 copy];
+    v22->_interactionType = interactionType;
+    v22->_responseStatusCode = code;
+    v27 = [timeCopy copy];
     requestEndTime = v22->_requestEndTime;
     v22->_requestEndTime = v27;
 
-    v22->_requestDuration = a8;
-    v22->_hadError = a9;
-    v29 = [v21 copy];
+    v22->_requestDuration = duration;
+    v22->_hadError = error;
+    v29 = [errorCodeCopy copy];
     errorCode = v22->_errorCode;
     v22->_errorCode = v29;
   }
@@ -77,13 +77,13 @@ LABEL_3:
   return v22;
 }
 
-+ (id)endStateForCanceledRequestAtURL:(id)a3 resourceType:(id)a4 interactionType:(int64_t)a5
++ (id)endStateForCanceledRequestAtURL:(id)l resourceType:(id)type interactionType:(int64_t)interactionType
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a1 alloc];
+  typeCopy = type;
+  lCopy = l;
+  v10 = [self alloc];
   v11 = [MEMORY[0x277CBEAA8] now];
-  v12 = [v10 initWithRequestedURL:v9 resourceType:v8 interactionType:a5 responseStatusCode:0 requestEndTime:v11 requestDuration:1 hadError:0.0 errorCode:0];
+  v12 = [v10 initWithRequestedURL:lCopy resourceType:typeCopy interactionType:interactionType responseStatusCode:0 requestEndTime:v11 requestDuration:1 hadError:0.0 errorCode:0];
 
   return v12;
 }
@@ -102,10 +102,10 @@ LABEL_3:
   return v10;
 }
 
-- (id)asErrorEndStateWithErrorCode:(id)a3
+- (id)asErrorEndStateWithErrorCode:(id)code
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithRequestedURL:self->_requestedURL resourceType:self->_resourceType interactionType:self->_interactionType responseStatusCode:self->_responseStatusCode requestEndTime:self->_requestEndTime requestDuration:1 hadError:self->_requestDuration errorCode:v4];
+  codeCopy = code;
+  v5 = [objc_alloc(objc_opt_class()) initWithRequestedURL:self->_requestedURL resourceType:self->_resourceType interactionType:self->_interactionType responseStatusCode:self->_responseStatusCode requestEndTime:self->_requestEndTime requestDuration:1 hadError:self->_requestDuration errorCode:codeCopy];
 
   return v5;
 }
@@ -132,13 +132,13 @@ LABEL_3:
   return v6 ^ [(NSString *)self->_errorCode hash]^ self->_hadError ^ requestDuration;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  v7 = v6;
-  if (self != v6)
+  equalCopy = equal;
+  v7 = equalCopy;
+  if (self != equalCopy)
   {
-    v8 = v6;
+    v8 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -149,20 +149,20 @@ LABEL_31:
     }
 
     requestedURL = self->_requestedURL;
-    v10 = [(HKFHIRRequestTaskEndState *)v8 requestedURL];
-    if (requestedURL != v10)
+    requestedURL = [(HKFHIRRequestTaskEndState *)v8 requestedURL];
+    if (requestedURL != requestedURL)
     {
-      v11 = [(HKFHIRRequestTaskEndState *)v8 requestedURL];
-      if (!v11)
+      requestedURL2 = [(HKFHIRRequestTaskEndState *)v8 requestedURL];
+      if (!requestedURL2)
       {
         v14 = 0;
         goto LABEL_30;
       }
 
-      v3 = v11;
+      v3 = requestedURL2;
       v12 = self->_requestedURL;
-      v13 = [(HKFHIRRequestTaskEndState *)v8 requestedURL];
-      if (![(NSURL *)v12 isEqual:v13])
+      requestedURL3 = [(HKFHIRRequestTaskEndState *)v8 requestedURL];
+      if (![(NSURL *)v12 isEqual:requestedURL3])
       {
         v14 = 0;
 LABEL_29:
@@ -170,25 +170,25 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v50 = v13;
+      v50 = requestedURL3;
     }
 
     resourceType = self->_resourceType;
-    v16 = [(HKFHIRRequestTaskEndState *)v8 resourceType];
-    if (resourceType != v16)
+    resourceType = [(HKFHIRRequestTaskEndState *)v8 resourceType];
+    if (resourceType != resourceType)
     {
-      v17 = [(HKFHIRRequestTaskEndState *)v8 resourceType];
-      if (!v17)
+      resourceType2 = [(HKFHIRRequestTaskEndState *)v8 resourceType];
+      if (!resourceType2)
       {
         goto LABEL_27;
       }
 
-      v4 = v17;
+      v4 = resourceType2;
       v18 = self->_resourceType;
-      v19 = [(HKFHIRRequestTaskEndState *)v8 resourceType];
+      resourceType3 = [(HKFHIRRequestTaskEndState *)v8 resourceType];
       v20 = v18;
-      v21 = v19;
-      if (![(NSString *)v20 isEqualToString:v19])
+      v21 = resourceType3;
+      if (![(NSString *)v20 isEqualToString:resourceType3])
       {
 
 LABEL_26:
@@ -203,7 +203,7 @@ LABEL_26:
     {
       v14 = 0;
       v32 = v49;
-      if (resourceType == v16)
+      if (resourceType == resourceType)
       {
 LABEL_23:
 
@@ -216,8 +216,8 @@ LABEL_22:
     }
 
     requestEndTime = self->_requestEndTime;
-    v48 = [(HKFHIRRequestTaskEndState *)v8 requestEndTime];
-    if (requestEndTime == v48)
+    requestEndTime = [(HKFHIRRequestTaskEndState *)v8 requestEndTime];
+    if (requestEndTime == requestEndTime)
     {
       v47 = requestEndTime;
       requestDuration = self->_requestDuration;
@@ -230,16 +230,16 @@ LABEL_22:
 
     else
     {
-      v25 = [(HKFHIRRequestTaskEndState *)v8 requestEndTime];
-      if (v25)
+      requestEndTime2 = [(HKFHIRRequestTaskEndState *)v8 requestEndTime];
+      if (requestEndTime2)
       {
-        v46 = v25;
+        v46 = requestEndTime2;
         v47 = requestEndTime;
         v26 = self->_requestEndTime;
-        v27 = [(HKFHIRRequestTaskEndState *)v8 requestEndTime];
+        requestEndTime3 = [(HKFHIRRequestTaskEndState *)v8 requestEndTime];
         v28 = v26;
-        v29 = v27;
-        if ([(NSDate *)v28 isEqualToDate:v27])
+        v29 = requestEndTime3;
+        if ([(NSDate *)v28 isEqualToDate:requestEndTime3])
         {
           v44 = v29;
           v30 = self->_requestDuration;
@@ -253,11 +253,11 @@ LABEL_22:
 
 LABEL_34:
           errorCode = self->_errorCode;
-          v45 = [(HKFHIRRequestTaskEndState *)v8 errorCode];
-          if (errorCode != v45)
+          errorCode = [(HKFHIRRequestTaskEndState *)v8 errorCode];
+          if (errorCode != errorCode)
           {
-            v37 = [(HKFHIRRequestTaskEndState *)v8 errorCode];
-            if (!v37)
+            errorCode2 = [(HKFHIRRequestTaskEndState *)v8 errorCode];
+            if (!errorCode2)
             {
 
               v14 = 0;
@@ -265,10 +265,10 @@ LABEL_34:
             }
 
             v42 = self->_errorCode;
-            v43 = v37;
-            v38 = [(HKFHIRRequestTaskEndState *)v8 errorCode];
+            v43 = errorCode2;
+            errorCode3 = [(HKFHIRRequestTaskEndState *)v8 errorCode];
             v39 = v42;
-            v41 = v38;
+            v41 = errorCode3;
             if (![(NSString *)v39 isEqualToString:?])
             {
               v14 = 0;
@@ -278,12 +278,12 @@ LABEL_34:
 
           hadError = self->_hadError;
           v14 = hadError == [(HKFHIRRequestTaskEndState *)v8 hadError];
-          if (errorCode != v45)
+          if (errorCode != errorCode)
           {
 LABEL_42:
             v32 = v49;
 
-            if (v47 == v48)
+            if (v47 == requestEndTime)
             {
               goto LABEL_44;
             }
@@ -293,11 +293,11 @@ LABEL_42:
 
 LABEL_48:
           v32 = v49;
-          if (v47 == v48)
+          if (v47 == requestEndTime)
           {
 LABEL_44:
 
-            if (resourceType == v16)
+            if (resourceType == resourceType)
             {
               goto LABEL_23;
             }
@@ -310,7 +310,7 @@ LABEL_43:
           goto LABEL_44;
         }
 
-        if (resourceType != v16)
+        if (resourceType != resourceType)
         {
 
           goto LABEL_26;
@@ -320,8 +320,8 @@ LABEL_27:
 
         v14 = 0;
 LABEL_28:
-        v13 = v50;
-        if (requestedURL != v10)
+        requestedURL3 = v50;
+        if (requestedURL != requestedURL)
         {
           goto LABEL_29;
         }
@@ -343,46 +343,46 @@ LABEL_32:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   requestedURL = self->_requestedURL;
-  v5 = a3;
-  [v5 encodeObject:requestedURL forKey:@"requestedURL"];
-  [v5 encodeObject:self->_resourceType forKey:@"resourceType"];
-  [v5 encodeInteger:self->_interactionType forKey:@"interactionType"];
-  [v5 encodeInteger:self->_responseStatusCode forKey:@"responseStatusCode"];
-  [v5 encodeObject:self->_requestEndTime forKey:@"requestEndTime"];
-  [v5 encodeDouble:@"requestDuration" forKey:self->_requestDuration];
-  [v5 encodeBool:self->_hadError forKey:@"hadError"];
-  [v5 encodeObject:self->_errorCode forKey:@"errorCode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:requestedURL forKey:@"requestedURL"];
+  [coderCopy encodeObject:self->_resourceType forKey:@"resourceType"];
+  [coderCopy encodeInteger:self->_interactionType forKey:@"interactionType"];
+  [coderCopy encodeInteger:self->_responseStatusCode forKey:@"responseStatusCode"];
+  [coderCopy encodeObject:self->_requestEndTime forKey:@"requestEndTime"];
+  [coderCopy encodeDouble:@"requestDuration" forKey:self->_requestDuration];
+  [coderCopy encodeBool:self->_hadError forKey:@"hadError"];
+  [coderCopy encodeObject:self->_errorCode forKey:@"errorCode"];
 }
 
-- (HKFHIRRequestTaskEndState)initWithCoder:(id)a3
+- (HKFHIRRequestTaskEndState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestedURL"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestEndTime"];
-  if (v5 && [v4 containsValueForKey:@"interactionType"] && objc_msgSend(v4, "containsValueForKey:", @"responseStatusCode") && v6 && objc_msgSend(v4, "containsValueForKey:", @"requestDuration") && (objc_msgSend(v4, "containsValueForKey:", @"hadError") & 1) != 0)
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestedURL"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestEndTime"];
+  if (v5 && [coderCopy containsValueForKey:@"interactionType"] && objc_msgSend(coderCopy, "containsValueForKey:", @"responseStatusCode") && v6 && objc_msgSend(coderCopy, "containsValueForKey:", @"requestDuration") && (objc_msgSend(coderCopy, "containsValueForKey:", @"hadError") & 1) != 0)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resourceType"];
-    v8 = [v4 decodeIntegerForKey:@"interactionType"];
-    v9 = [v4 decodeIntegerForKey:@"responseStatusCode"];
-    [v4 decodeDoubleForKey:@"requestDuration"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resourceType"];
+    v8 = [coderCopy decodeIntegerForKey:@"interactionType"];
+    v9 = [coderCopy decodeIntegerForKey:@"responseStatusCode"];
+    [coderCopy decodeDoubleForKey:@"requestDuration"];
     v11 = v10;
-    v12 = [v4 decodeBoolForKey:@"hadError"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"errorCode"];
+    v12 = [coderCopy decodeBoolForKey:@"hadError"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"errorCode"];
     self = [(HKFHIRRequestTaskEndState *)self initWithRequestedURL:v5 resourceType:v7 interactionType:v8 responseStatusCode:v9 requestEndTime:v6 requestDuration:v12 hadError:v11 errorCode:v13];
 
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v14 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (void)initWithRequestedURL:(uint64_t)a1 resourceType:(uint64_t)a2 interactionType:responseStatusCode:requestEndTime:requestDuration:hadError:errorCode:.cold.1(uint64_t a1, uint64_t a2)

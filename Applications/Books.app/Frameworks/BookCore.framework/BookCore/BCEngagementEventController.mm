@@ -1,8 +1,8 @@
 @interface BCEngagementEventController
 - (BCEngagementEventController)init;
 - (BCEngagementEventDataProvider)dataProvider;
-- (void)setDataProvider:(id)a3;
-- (void)submitEvent:(id)a3 :(id)a4;
+- (void)setDataProvider:(id)provider;
+- (void)submitEvent:(id)event :(id)a4;
 @end
 
 @implementation BCEngagementEventController
@@ -15,11 +15,11 @@
   return v2;
 }
 
-- (void)setDataProvider:(id)a3
+- (void)setDataProvider:(id)provider
 {
   v5 = OBJC_IVAR___BCEngagementEventController_dataProvider;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = provider;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -32,7 +32,7 @@
   return [(BCEngagementEventController *)&v3 init];
 }
 
-- (void)submitEvent:(id)a3 :(id)a4
+- (void)submitEvent:(id)event :(id)a4
 {
   v6 = sub_1EEF04();
   v8 = v7;
@@ -41,7 +41,7 @@
     a4 = sub_1EEE54();
   }
 
-  v9 = self;
+  selfCopy = self;
   sub_1C4B80(v6, v8, a4);
 }
 

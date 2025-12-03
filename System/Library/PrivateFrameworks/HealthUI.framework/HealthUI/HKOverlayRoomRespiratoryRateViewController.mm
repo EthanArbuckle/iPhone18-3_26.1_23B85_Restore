@@ -1,40 +1,40 @@
 @interface HKOverlayRoomRespiratoryRateViewController
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11;
-- (HKOverlayRoomRespiratoryRateViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 mode:(int64_t)a5 preferredOverlay:(int64_t)a6 trendModel:(id)a7 factorDisplayTypes:(id)a8;
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1;
+- (HKOverlayRoomRespiratoryRateViewController)initWithDisplayDate:(id)date applicationItems:(id)items mode:(int64_t)mode preferredOverlay:(int64_t)overlay trendModel:(id)model factorDisplayTypes:(id)types;
 - (id)_buildGranularAverageDataSourceTitleFromTimeScope;
-- (id)_buildRespiratoryRateAverageDataSourceWithUnitController:(id)a3 displayType:(id)a4 healthStore:(id)a5;
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5;
-- (id)controllerTitleWithApplicationItems:(id)a3;
+- (id)_buildRespiratoryRateAverageDataSourceWithUnitController:(id)controller displayType:(id)type healthStore:(id)store;
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller;
+- (id)controllerTitleWithApplicationItems:(id)items;
 - (id)createChartOverlayViewController;
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5;
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3;
-- (int64_t)_initialPillForPreference:(int64_t)a3;
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items;
+- (id)primaryDisplayTypeWithApplicationItems:(id)items;
+- (int64_t)_initialPillForPreference:(int64_t)preference;
 @end
 
 @implementation HKOverlayRoomRespiratoryRateViewController
 
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1
 {
-  v16 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a6;
-  v20 = a5;
-  v21 = [[a1 alloc] initWithDisplayDate:v19 applicationItems:v20 mode:1 preferredOverlay:a7 trendModel:v17 factorDisplayTypes:v16];
+  typesCopy = types;
+  modelCopy = model;
+  activityCopy = activity;
+  dateCopy = date;
+  itemsCopy = items;
+  v21 = [[self alloc] initWithDisplayDate:dateCopy applicationItems:itemsCopy mode:1 preferredOverlay:overlay trendModel:modelCopy factorDisplayTypes:typesCopy];
 
-  [v21 setRestorationUserActivity:v18];
-  [v21 setAdditionalChartOptions:a11];
+  [v21 setRestorationUserActivity:activityCopy];
+  [v21 setAdditionalChartOptions:options];
 
   return v21;
 }
 
-- (HKOverlayRoomRespiratoryRateViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 mode:(int64_t)a5 preferredOverlay:(int64_t)a6 trendModel:(id)a7 factorDisplayTypes:(id)a8
+- (HKOverlayRoomRespiratoryRateViewController)initWithDisplayDate:(id)date applicationItems:(id)items mode:(int64_t)mode preferredOverlay:(int64_t)overlay trendModel:(id)model factorDisplayTypes:(id)types
 {
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
-  v17 = a4;
-  v18 = [HKOverlayRoomTrendContext findInitialDateFromTrendModel:v15];
+  dateCopy = date;
+  modelCopy = model;
+  typesCopy = types;
+  itemsCopy = items;
+  v18 = [HKOverlayRoomTrendContext findInitialDateFromTrendModel:modelCopy];
   v19 = v18;
   if (v18)
   {
@@ -43,18 +43,18 @@
 
   else
   {
-    v20 = v14;
+    v20 = dateCopy;
   }
 
   v21 = v20;
 
   v31.receiver = self;
   v31.super_class = HKOverlayRoomRespiratoryRateViewController;
-  v22 = [(HKOverlayRoomViewController *)&v31 initWithDisplayDate:v21 applicationItems:v17 factorDisplayTypes:v16 mode:a5];
+  v22 = [(HKOverlayRoomViewController *)&v31 initWithDisplayDate:v21 applicationItems:itemsCopy factorDisplayTypes:typesCopy mode:mode];
 
   if (v22)
   {
-    v22->_preferredOverlay = a6;
+    v22->_preferredOverlay = overlay;
     preferredOverlayIndex = v22->_preferredOverlayIndex;
     v22->_preferredOverlayIndex = 0;
 
@@ -62,18 +62,18 @@
     contextDelegates = v22->_contextDelegates;
     v22->_contextDelegates = v24;
 
-    objc_storeStrong(&v22->_trendModel, a7);
-    if (a5 == 3)
+    objc_storeStrong(&v22->_trendModel, model);
+    if (mode == 3)
     {
       v26 = 0;
     }
 
     else
     {
-      v27 = [v15 selectTrendInitially];
-      if (a5)
+      selectTrendInitially = [modelCopy selectTrendInitially];
+      if (mode)
       {
-        v28 = a6 == 0;
+        v28 = overlay == 0;
       }
 
       else
@@ -82,7 +82,7 @@
       }
 
       v29 = !v28;
-      v26 = v29 | v27;
+      v26 = v29 | selectTrendInitially;
     }
 
     [(HKOverlayRoomViewController *)v22 setShouldSelectInitialOverlay:v26 & 1];
@@ -91,7 +91,7 @@
   return v22;
 }
 
-- (id)controllerTitleWithApplicationItems:(id)a3
+- (id)controllerTitleWithApplicationItems:(id)items
 {
   v3 = HKHealthKitFrameworkBundle();
   v4 = [v3 localizedStringForKey:@"RESPIRATORY_RATE" value:&stru_1F42FFBE0 table:*MEMORY[0x1E696B910]];
@@ -99,34 +99,34 @@
   return v4;
 }
 
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3
+- (id)primaryDisplayTypeWithApplicationItems:(id)items
 {
   v3 = MEMORY[0x1E696C2E0];
   v4 = *MEMORY[0x1E696BD70];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [v3 quantityTypeForIdentifier:v4];
-  v7 = [v5 displayTypeController];
+  displayTypeController = [itemsCopy displayTypeController];
 
-  v8 = [v7 displayTypeForObjectType:v6];
+  v8 = [displayTypeController displayTypeForObjectType:v6];
 
   return v8;
 }
 
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller
 {
   v83[4] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HKOverlayRoomRespiratoryRateViewController *)self primaryDisplayTypeWithApplicationItems:v8];
+  itemsCopy = items;
+  controllerCopy = controller;
+  v10 = [(HKOverlayRoomRespiratoryRateViewController *)self primaryDisplayTypeWithApplicationItems:itemsCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __118__HKOverlayRoomRespiratoryRateViewController_contextSectionContainersForMode_applicationItems_overlayChartController___block_invoke_2;
   aBlock[3] = &unk_1E81B6178;
-  v11 = v9;
+  v11 = controllerCopy;
   v75 = v11;
-  v12 = v8;
+  v12 = itemsCopy;
   v76 = v12;
-  v77 = a3;
+  modeCopy = mode;
   v13 = _Block_copy(aBlock);
   v70[0] = MEMORY[0x1E69E9820];
   v70[1] = 3221225472;
@@ -136,7 +136,7 @@
   v71 = v14;
   v15 = v12;
   v72 = v15;
-  v73 = a3;
+  modeCopy2 = mode;
   v16 = _Block_copy(v70);
   v65[0] = MEMORY[0x1E69E9820];
   v65[1] = 3221225472;
@@ -149,8 +149,8 @@
   v67 = v18;
   v19 = v14;
   v68 = v19;
-  v69 = a3;
-  v60 = a3;
+  modeCopy3 = mode;
+  modeCopy4 = mode;
   v20 = _Block_copy(v65);
   v63 = v16;
   v21 = (*(v16 + 2))(v16);
@@ -165,21 +165,21 @@
   v83[3] = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:4];
 
-  v26 = [(HKOverlayRoomRespiratoryRateViewController *)self trendModel];
+  trendModel = [(HKOverlayRoomRespiratoryRateViewController *)self trendModel];
 
   v62 = v19;
-  if (v26)
+  if (trendModel)
   {
     v27 = [HKOverlayRoomTrendContext alloc];
-    v28 = [(HKOverlayRoomRespiratoryRateViewController *)self trendModel];
+    trendModel2 = [(HKOverlayRoomRespiratoryRateViewController *)self trendModel];
     v29 = v18;
     v30 = v18;
     v31 = v17;
-    v32 = v60;
-    v33 = [(HKOverlayRoomTrendContext *)v27 initWithBaseDisplayType:v30 trendModel:v28 overlayChartController:v19 applicationItems:v17 overlayMode:v60];
+    v32 = modeCopy4;
+    v33 = [(HKOverlayRoomTrendContext *)v27 initWithBaseDisplayType:v30 trendModel:trendModel2 overlayChartController:v19 applicationItems:v17 overlayMode:modeCopy4];
 
-    v34 = [(HKOverlayRoomViewController *)self chartController];
-    [v34 setTrendAccessibilityDelegate:v33];
+    chartController = [(HKOverlayRoomViewController *)self chartController];
+    [chartController setTrendAccessibilityDelegate:v33];
 
     v35 = [v25 arrayByAddingObject:v33];
 
@@ -191,7 +191,7 @@
     v29 = v18;
     v31 = v17;
     v33 = 0;
-    v32 = v60;
+    v32 = modeCopy4;
   }
 
   v36 = [(HKOverlayRoomRespiratoryRateViewController *)self _initialPillForPreference:[(HKOverlayRoomRespiratoryRateViewController *)self preferredOverlay]];
@@ -335,54 +335,54 @@ id __118__HKOverlayRoomRespiratoryRateViewController_contextSectionContainersFor
 {
   if ([(HKOverlayRoomViewController *)self controllerMode]!= 3)
   {
-    v3 = [(HKOverlayRoomRespiratoryRateViewController *)self trendModel];
-    v4 = [HKOverlayRoomTrendContext findStartingTimeScopeFromTrendModel:v3];
+    trendModel = [(HKOverlayRoomRespiratoryRateViewController *)self trendModel];
+    v4 = [HKOverlayRoomTrendContext findStartingTimeScopeFromTrendModel:trendModel];
 
     if (v4 != 8)
     {
-      v5 = [(HKOverlayRoomViewController *)self applicationItems];
-      v6 = [v5 timeScopeController];
-      [v6 setSelectedTimeScope:v4];
+      applicationItems = [(HKOverlayRoomViewController *)self applicationItems];
+      timeScopeController = [applicationItems timeScopeController];
+      [timeScopeController setSelectedTimeScope:v4];
     }
   }
 
   v9.receiver = self;
   v9.super_class = HKOverlayRoomRespiratoryRateViewController;
-  v7 = [(HKOverlayRoomViewController *)&v9 createChartOverlayViewController];
+  createChartOverlayViewController = [(HKOverlayRoomViewController *)&v9 createChartOverlayViewController];
 
-  return v7;
+  return createChartOverlayViewController;
 }
 
-- (int64_t)_initialPillForPreference:(int64_t)a3
+- (int64_t)_initialPillForPreference:(int64_t)preference
 {
-  v5 = [(HKOverlayRoomRespiratoryRateViewController *)self trendModel];
-  if (v5)
+  trendModel = [(HKOverlayRoomRespiratoryRateViewController *)self trendModel];
+  if (trendModel)
   {
-    v6 = v5;
-    v7 = [(HKOverlayRoomRespiratoryRateViewController *)self trendModel];
-    v8 = [v7 selectTrendInitially];
+    v6 = trendModel;
+    trendModel2 = [(HKOverlayRoomRespiratoryRateViewController *)self trendModel];
+    selectTrendInitially = [trendModel2 selectTrendInitially];
 
-    if (v8)
+    if (selectTrendInitially)
     {
       return 2;
     }
   }
 
   result = 0;
-  if (a3)
+  if (preference)
   {
-    if (a3 == 9)
+    if (preference == 9)
     {
       return 1;
     }
 
-    else if (a3 != 11)
+    else if (preference != 11)
     {
       _HKInitializeLogging();
       v10 = *MEMORY[0x1E696B940];
       if (os_log_type_enabled(*MEMORY[0x1E696B940], OS_LOG_TYPE_ERROR))
       {
-        [(HKOverlayRoomRespiratoryRateViewController *)a3 _initialPillForPreference:v10];
+        [(HKOverlayRoomRespiratoryRateViewController *)preference _initialPillForPreference:v10];
       }
 
       return 0;
@@ -392,36 +392,36 @@ id __118__HKOverlayRoomRespiratoryRateViewController_contextSectionContainersFor
   return result;
 }
 
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items
 {
-  v8 = a5;
-  v9 = a4;
+  itemsCopy = items;
+  dateCopy = date;
   v10 = [HKOverlayRoomRespiratoryRateViewController alloc];
-  v11 = [(HKOverlayRoomRespiratoryRateViewController *)self preferredOverlay];
-  v12 = [(HKOverlayRoomRespiratoryRateViewController *)self trendModel];
-  v13 = [(HKOverlayRoomViewController *)self factorDisplayTypes];
-  v14 = [(HKOverlayRoomRespiratoryRateViewController *)v10 initWithDisplayDate:v9 applicationItems:v8 mode:a3 preferredOverlay:v11 trendModel:v12 factorDisplayTypes:v13];
+  preferredOverlay = [(HKOverlayRoomRespiratoryRateViewController *)self preferredOverlay];
+  trendModel = [(HKOverlayRoomRespiratoryRateViewController *)self trendModel];
+  factorDisplayTypes = [(HKOverlayRoomViewController *)self factorDisplayTypes];
+  v14 = [(HKOverlayRoomRespiratoryRateViewController *)v10 initWithDisplayDate:dateCopy applicationItems:itemsCopy mode:mode preferredOverlay:preferredOverlay trendModel:trendModel factorDisplayTypes:factorDisplayTypes];
 
-  [(HKOverlayRoomViewController *)v14 setAdditionalChartOptions:[(HKOverlayRoomViewController *)self filteredInteractiveChartOptionsForMode:a3]];
+  [(HKOverlayRoomViewController *)v14 setAdditionalChartOptions:[(HKOverlayRoomViewController *)self filteredInteractiveChartOptionsForMode:mode]];
 
   return v14;
 }
 
-- (id)_buildRespiratoryRateAverageDataSourceWithUnitController:(id)a3 displayType:(id)a4 healthStore:(id)a5
+- (id)_buildRespiratoryRateAverageDataSourceWithUnitController:(id)controller displayType:(id)type healthStore:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[HKQuantityTypeDataSource alloc] initWithUnitController:v8 options:2 displayType:v9 healthStore:v10];
+  controllerCopy = controller;
+  typeCopy = type;
+  storeCopy = store;
+  v11 = [[HKQuantityTypeDataSource alloc] initWithUnitController:controllerCopy options:2 displayType:typeCopy healthStore:storeCopy];
 
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __127__HKOverlayRoomRespiratoryRateViewController__buildRespiratoryRateAverageDataSourceWithUnitController_displayType_healthStore___block_invoke;
   v20 = &unk_1E81B6288;
-  v21 = v8;
-  v22 = v9;
-  v12 = v9;
-  v13 = v8;
+  v21 = controllerCopy;
+  v22 = typeCopy;
+  v12 = typeCopy;
+  v13 = controllerCopy;
   [(HKQuantityTypeDataSource *)v11 setUserInfoCreationBlock:&v17];
   v14 = [(HKOverlayRoomRespiratoryRateViewController *)self _buildGranularAverageDataSourceTitleFromTimeScope:v17];
   v15 = [[HKInteractiveChartOverlayNamedDataSource alloc] initWithDataSource:v11 named:@"HKOverlayRoomNamedChartCacheDataSource_RespiratoryRate" withContextTitleForTimeScope:v14];

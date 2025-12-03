@@ -2,15 +2,15 @@
 + (id)sharedSession;
 - (BOOL)isPresented;
 - (BOOL)isPresenting;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 - (void)cancel;
-- (void)dimmingViewWasTapped:(id)a3;
-- (void)firstResponderDidChange:(id)a3;
-- (void)hideForResponder:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)showForResponder:(id)a3 sender:(id)a4;
+- (void)dimmingViewWasTapped:(id)tapped;
+- (void)firstResponderDidChange:(id)change;
+- (void)hideForResponder:(id)responder;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)showForResponder:(id)responder sender:(id)sender;
 - (void)updateUserInterfaceStyle;
 @end
 
@@ -18,7 +18,7 @@
 
 - (void)cancel
 {
-  v1 = a1;
+  selfCopy = self;
   sub_18912DD44();
 }
 
@@ -52,12 +52,12 @@
   return v2;
 }
 
-- (void)showForResponder:(id)a3 sender:(id)a4
+- (void)showForResponder:(id)responder sender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = a3;
-    v7 = self;
+    responderCopy = responder;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
     swift_unknownObjectRelease();
@@ -66,8 +66,8 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a3;
-    v9 = self;
+    responderCopy2 = responder;
+    selfCopy2 = self;
   }
 
   sub_18912D960();
@@ -75,17 +75,17 @@
   sub_188A553EC(v10);
 }
 
-- (void)hideForResponder:(id)a3
+- (void)hideForResponder:(id)responder
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v6 = Strong;
-    v7 = a3;
-    v9 = self;
-    v8 = [v6 isEqual_];
+    responderCopy = responder;
+    selfCopy = self;
+    isEqual_ = [v6 isEqual_];
 
-    if (v8)
+    if (isEqual_)
     {
       sub_18912DD44();
     }
@@ -94,27 +94,27 @@
 
 - (void)updateUserInterfaceStyle
 {
-  v2 = self;
+  selfCopy = self;
   sub_18912E2A8();
 }
 
-- (void)firstResponderDidChange:(id)a3
+- (void)firstResponderDidChange:(id)change
 {
   v4 = sub_18A4A2458();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18A4A2418();
-  v8 = self;
+  selfCopy = self;
   sub_18912E5A0();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   v5 = qword_1EA931F08;
-  v6 = self;
+  selfCopy = self;
   if (v5 != -1)
   {
     swift_once();
@@ -122,7 +122,7 @@
 
   if (byte_1EA93DCB0 == 1)
   {
-    v7 = *(&v6->super.isa + OBJC_IVAR___UISubstituteKeyboardSession_animationController);
+    v7 = *(&selfCopy->super.isa + OBJC_IVAR___UISubstituteKeyboardSession_animationController);
     swift_unknownObjectRetain();
   }
 
@@ -134,10 +134,10 @@
   return v7;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   v3 = qword_1EA931F08;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();
@@ -145,7 +145,7 @@
 
   if (byte_1EA93DCB0 == 1)
   {
-    v5 = *(&v4->super.isa + OBJC_IVAR___UISubstituteKeyboardSession_animationController);
+    v5 = *(&selfCopy->super.isa + OBJC_IVAR___UISubstituteKeyboardSession_animationController);
     swift_unknownObjectRetain();
   }
 
@@ -157,29 +157,29 @@
   return v5;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_1891351D0(v8, a4);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  sourceViewControllerCopy = sourceViewController;
+  selfCopy = self;
+  v12 = sub_1891351D0(controllerCopy, viewController);
   v13 = v12;
 
   return v12;
 }
 
-- (void)dimmingViewWasTapped:(id)a3
+- (void)dimmingViewWasTapped:(id)tapped
 {
-  v3 = self;
+  selfCopy = self;
   sub_18912DD44();
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
-  sub_18912F374(v4);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  sub_18912F374(dismissCopy);
 }
 
 @end

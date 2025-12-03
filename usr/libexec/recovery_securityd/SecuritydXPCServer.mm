@@ -1,36 +1,36 @@
 @interface SecuritydXPCServer
 - (NSXPCConnection)connection;
-- (SecuritydXPCServer)initWithConnection:(id)a3;
-- (SecuritydXPCServer)initWithSecurityClient:(SecurityClient *)a3;
-- (void)SecItemAddAndNotifyOnSync:(id)a3 syncCallback:(id)a4 complete:(id)a5;
+- (SecuritydXPCServer)initWithConnection:(id)connection;
+- (SecuritydXPCServer)initWithSecurityClient:(SecurityClient *)client;
+- (void)SecItemAddAndNotifyOnSync:(id)sync syncCallback:(id)callback complete:(id)complete;
 - (void)dealloc;
-- (void)findItemPersistentRefByUUID:(id)a3 extraLoggingString:(id)a4 client:(SecurityClient *)a5 complete:(id)a6;
-- (void)secItemDeleteForAppClipApplicationIdentifier:(id)a3 completion:(id)a4;
-- (void)secItemDigest:(id)a3 accessGroup:(id)a4 complete:(id)a5;
-- (void)secItemFetchCurrentItemAcrossAllDevices:(id)a3 identifier:(id)a4 viewHint:(id)a5 fetchCloudValue:(BOOL)a6 complete:(id)a7;
-- (void)secItemFetchCurrentItemOutOfBand:(id)a3 forceFetch:(BOOL)a4 complete:(id)a5;
-- (void)secItemFetchPCSIdentityByKeyOutOfBand:(id)a3 forceFetch:(BOOL)a4 complete:(id)a5;
-- (void)secItemPersistKeychainWritesAtHighPerformanceCost:(id)a3;
-- (void)secItemPromoteItemsForAppClip:(id)a3 toParentApp:(id)a4 completion:(id)a5;
-- (void)secItemSetCurrentItemAcrossAllDevices:(id)a3 newCurrentItemHash:(id)a4 accessGroup:(id)a5 identifier:(id)a6 viewHint:(id)a7 oldCurrentItemReference:(id)a8 oldCurrentItemHash:(id)a9 complete:(id)a10;
-- (void)secItemUnsetCurrentItemsAcrossAllDevices:(id)a3 identifiers:(id)a4 viewHint:(id)a5 complete:(id)a6;
-- (void)secKeychainCopyDatabasePath:(id)a3;
-- (void)secKeychainDeleteMultiuser:(id)a3 complete:(id)a4;
-- (void)secKeychainForceUpgradeIfNeeded:(id)a3;
+- (void)findItemPersistentRefByUUID:(id)d extraLoggingString:(id)string client:(SecurityClient *)client complete:(id)complete;
+- (void)secItemDeleteForAppClipApplicationIdentifier:(id)identifier completion:(id)completion;
+- (void)secItemDigest:(id)digest accessGroup:(id)group complete:(id)complete;
+- (void)secItemFetchCurrentItemAcrossAllDevices:(id)devices identifier:(id)identifier viewHint:(id)hint fetchCloudValue:(BOOL)value complete:(id)complete;
+- (void)secItemFetchCurrentItemOutOfBand:(id)band forceFetch:(BOOL)fetch complete:(id)complete;
+- (void)secItemFetchPCSIdentityByKeyOutOfBand:(id)band forceFetch:(BOOL)fetch complete:(id)complete;
+- (void)secItemPersistKeychainWritesAtHighPerformanceCost:(id)cost;
+- (void)secItemPromoteItemsForAppClip:(id)clip toParentApp:(id)app completion:(id)completion;
+- (void)secItemSetCurrentItemAcrossAllDevices:(id)devices newCurrentItemHash:(id)hash accessGroup:(id)group identifier:(id)identifier viewHint:(id)hint oldCurrentItemReference:(id)reference oldCurrentItemHash:(id)itemHash complete:(id)self0;
+- (void)secItemUnsetCurrentItemsAcrossAllDevices:(id)devices identifiers:(id)identifiers viewHint:(id)hint complete:(id)complete;
+- (void)secKeychainCopyDatabasePath:(id)path;
+- (void)secKeychainDeleteMultiuser:(id)multiuser complete:(id)complete;
+- (void)secKeychainForceUpgradeIfNeeded:(id)needed;
 @end
 
 @implementation SecuritydXPCServer
 
-- (void)SecItemAddAndNotifyOnSync:(id)a3 syncCallback:(id)a4 complete:(id)a5
+- (void)SecItemAddAndNotifyOnSync:(id)sync syncCallback:(id)callback complete:(id)complete
 {
-  v8 = a3;
-  v9 = a4;
+  syncCopy = sync;
+  callbackCopy = callback;
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
   v47[2] = sub_1000263F0;
   v47[3] = &unk_1000632D8;
-  v10 = a5;
-  v48 = v10;
+  completeCopy = complete;
+  v48 = completeCopy;
   v11 = objc_retainBlock(v47);
   cf = 0;
   if ([(SecuritydXPCServer *)self clientHasBooleanEntitlement:@"com.apple.private.keychain.deny"])
@@ -39,14 +39,14 @@
     goto LABEL_20;
   }
 
-  v12 = [v8 objectForKeyedSubscript:kSecAttrDeriveSyncIDFromItemAttributes];
-  if (v12 || ([v8 objectForKeyedSubscript:kSecAttrPCSPlaintextServiceIdentifier], (v12 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v8, "objectForKeyedSubscript:", kSecAttrPCSPlaintextPublicKey), (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+  v12 = [syncCopy objectForKeyedSubscript:kSecAttrDeriveSyncIDFromItemAttributes];
+  if (v12 || ([syncCopy objectForKeyedSubscript:kSecAttrPCSPlaintextServiceIdentifier], (v12 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(syncCopy, "objectForKeyedSubscript:", kSecAttrPCSPlaintextPublicKey), (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v28 = [v8 objectForKeyedSubscript:kSecAttrPCSPlaintextPublicIdentity];
+    v28 = [syncCopy objectForKeyedSubscript:kSecAttrPCSPlaintextPublicIdentity];
 
     if (!v28)
     {
@@ -63,14 +63,14 @@
   }
 
 LABEL_8:
-  v13 = [v8 objectForKeyedSubscript:kSecDataInetExtraNotes];
+  v13 = [syncCopy objectForKeyedSubscript:kSecDataInetExtraNotes];
   if (v13)
   {
     goto LABEL_13;
   }
 
-  v13 = [v8 objectForKeyedSubscript:kSecDataInetExtraHistory];
-  if (v13 || ([v8 objectForKeyedSubscript:kSecDataInetExtraClientDefined0], (v13 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v8, "objectForKeyedSubscript:", kSecDataInetExtraClientDefined1), (v13 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v8, "objectForKeyedSubscript:", kSecDataInetExtraClientDefined2), (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+  v13 = [syncCopy objectForKeyedSubscript:kSecDataInetExtraHistory];
+  if (v13 || ([syncCopy objectForKeyedSubscript:kSecDataInetExtraClientDefined0], (v13 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(syncCopy, "objectForKeyedSubscript:", kSecDataInetExtraClientDefined1), (v13 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(syncCopy, "objectForKeyedSubscript:", kSecDataInetExtraClientDefined2), (v13 = objc_claimAutoreleasedReturnValue()) != 0))
   {
 LABEL_13:
 
@@ -97,7 +97,7 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  v35 = [v8 objectForKeyedSubscript:kSecDataInetExtraClientDefined3];
+  v35 = [syncCopy objectForKeyedSubscript:kSecDataInetExtraClientDefined3];
 
   if (v35)
   {
@@ -106,7 +106,7 @@ LABEL_20:
 
 LABEL_15:
   v45 = 0;
-  v14 = [v8 mutableCopy];
+  v14 = [syncCopy mutableCopy];
   v15 = [SecOSTransactionHolder alloc];
   v16 = os_transaction_create();
   v17 = [(SecOSTransactionHolder *)v15 init:v16];
@@ -115,7 +115,7 @@ LABEL_15:
   v42[1] = 3221225472;
   v42[2] = sub_100026400;
   v42[3] = &unk_100063300;
-  v43 = v9;
+  v43 = callbackCopy;
   v18 = v17;
   v44 = v18;
   v19 = objc_retainBlock(v42);
@@ -216,66 +216,66 @@ LABEL_33:
 LABEL_22:
 }
 
-- (void)secItemSetCurrentItemAcrossAllDevices:(id)a3 newCurrentItemHash:(id)a4 accessGroup:(id)a5 identifier:(id)a6 viewHint:(id)a7 oldCurrentItemReference:(id)a8 oldCurrentItemHash:(id)a9 complete:(id)a10
+- (void)secItemSetCurrentItemAcrossAllDevices:(id)devices newCurrentItemHash:(id)hash accessGroup:(id)group identifier:(id)identifier viewHint:(id)hint oldCurrentItemReference:(id)reference oldCurrentItemHash:(id)itemHash complete:(id)self0
 {
   v13 = NSLocalizedDescriptionKey;
   v14 = @"SecItemSetCurrentItemAcrossAllDevices not implemented on this platform";
-  v10 = a10;
+  completeCopy = complete;
   v11 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
   v12 = [NSError errorWithDomain:@"securityd" code:-50 userInfo:v11];
-  (*(a10 + 2))(v10, v12);
+  (*(complete + 2))(completeCopy, v12);
 }
 
-- (void)secItemUnsetCurrentItemsAcrossAllDevices:(id)a3 identifiers:(id)a4 viewHint:(id)a5 complete:(id)a6
+- (void)secItemUnsetCurrentItemsAcrossAllDevices:(id)devices identifiers:(id)identifiers viewHint:(id)hint complete:(id)complete
 {
   v10 = NSLocalizedDescriptionKey;
   v11 = @"SecItemUnsetCurrentItemsAcrossAllDevices not implemented on this platform";
-  v7 = a6;
+  completeCopy = complete;
   v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v9 = [NSError errorWithDomain:@"securityd" code:-50 userInfo:v8];
-  (*(a6 + 2))(v7, v9);
+  (*(complete + 2))(completeCopy, v9);
 }
 
-- (void)secItemFetchCurrentItemAcrossAllDevices:(id)a3 identifier:(id)a4 viewHint:(id)a5 fetchCloudValue:(BOOL)a6 complete:(id)a7
+- (void)secItemFetchCurrentItemAcrossAllDevices:(id)devices identifier:(id)identifier viewHint:(id)hint fetchCloudValue:(BOOL)value complete:(id)complete
 {
   v11 = NSLocalizedDescriptionKey;
   v12 = @"SecItemFetchCurrentItemAcrossAllDevices not implemented on this platform";
-  v8 = a7;
+  completeCopy = complete;
   v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   v10 = [NSError errorWithDomain:@"securityd" code:-50 userInfo:v9];
-  (*(a7 + 2))(v8, 0, 0, v10);
+  (*(complete + 2))(completeCopy, 0, 0, v10);
 }
 
-- (void)secItemFetchCurrentItemOutOfBand:(id)a3 forceFetch:(BOOL)a4 complete:(id)a5
+- (void)secItemFetchCurrentItemOutOfBand:(id)band forceFetch:(BOOL)fetch complete:(id)complete
 {
   v9 = NSLocalizedDescriptionKey;
   v10 = @"secItemFetchCurrentItemOutOfBand not implemented on this platform";
-  v6 = a5;
+  completeCopy = complete;
   v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v8 = [NSError errorWithDomain:@"securityd" code:-50 userInfo:v7];
-  (*(a5 + 2))(v6, 0, v8);
+  (*(complete + 2))(completeCopy, 0, v8);
 }
 
-- (void)secItemFetchPCSIdentityByKeyOutOfBand:(id)a3 forceFetch:(BOOL)a4 complete:(id)a5
+- (void)secItemFetchPCSIdentityByKeyOutOfBand:(id)band forceFetch:(BOOL)fetch complete:(id)complete
 {
   v9 = NSLocalizedDescriptionKey;
   v10 = @"secItemFetchPCSIdentityByKeyOutOfBand not implemented on this platform";
-  v6 = a5;
+  completeCopy = complete;
   v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v8 = [NSError errorWithDomain:@"securityd" code:-50 userInfo:v7];
-  (*(a5 + 2))(v6, 0, v8);
+  (*(complete + 2))(completeCopy, 0, v8);
 }
 
-- (void)findItemPersistentRefByUUID:(id)a3 extraLoggingString:(id)a4 client:(SecurityClient *)a5 complete:(id)a6
+- (void)findItemPersistentRefByUUID:(id)d extraLoggingString:(id)string client:(SecurityClient *)client complete:(id)complete
 {
-  v24 = a3;
-  v22 = a4;
+  dCopy = d;
+  stringCopy = string;
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_100026BE8;
   v27[3] = &unk_100063328;
-  v23 = a6;
-  v28 = v23;
+  completeCopy = complete;
+  v28 = completeCopy;
   v21 = objc_retainBlock(v27);
   v25 = 0;
   cf = 0;
@@ -308,11 +308,11 @@ LABEL_22:
     v37[1] = kSecAttrSynchronizable;
     v37[2] = kSecMatchLimit;
     v38[2] = kSecMatchLimitOne;
-    v38[3] = v24;
+    v38[3] = dCopy;
     v37[3] = v11;
     v37[4] = kSecReturnPersistentRef;
     v38[4] = &__kCFBooleanTrue;
-    sub_10001AD28([NSDictionary dictionaryWithObjects:v38 forKeys:v37 count:5], a5, &v25, &cf);
+    sub_10001AD28([NSDictionary dictionaryWithObjects:v38 forKeys:v37 count:5], client, &v25, &cf);
     if (cf)
     {
       break;
@@ -346,14 +346,14 @@ LABEL_14:
     v17 = secLogObjForScope("ckkscurrent");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v18 = v22;
-      sub_100040B80(v22, v24, v17);
+      v18 = stringCopy;
+      sub_100040B80(stringCopy, dCopy, v17);
     }
 
     else
     {
 LABEL_17:
-      v18 = v22;
+      v18 = stringCopy;
     }
 
     goto LABEL_18;
@@ -367,10 +367,10 @@ LABEL_12:
   }
 
   *buf = 138413058;
-  v18 = v22;
-  v30 = v22;
+  v18 = stringCopy;
+  v30 = stringCopy;
   v31 = 2112;
-  v32 = v24;
+  v32 = dCopy;
   v33 = 2112;
   v34 = v25;
   v35 = 2112;
@@ -394,11 +394,11 @@ LABEL_18:
   }
 }
 
-- (void)secItemDigest:(id)a3 accessGroup:(id)a4 complete:(id)a5
+- (void)secItemDigest:(id)digest accessGroup:(id)group complete:(id)complete
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  digestCopy = digest;
+  groupCopy = group;
+  completeCopy = complete;
   p_client = &self->_client;
   accessGroups = self->_client.accessGroups;
   v37 = 0;
@@ -409,10 +409,10 @@ LABEL_18:
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
-  if (!v8 || !v9)
+  if (!digestCopy || !groupCopy)
   {
     SecError(-50, &v40, @"parameter missing: %@", p_client->task);
-    v10[2](v10, 0, v38[3]);
+    completeCopy[2](completeCopy, 0, v38[3]);
     v17 = v38[3];
     if (!v17)
     {
@@ -425,10 +425,10 @@ LABEL_16:
     goto LABEL_35;
   }
 
-  if (([v8 isEqualToString:@"inet"] & 1) == 0 && (objc_msgSend(v8, "isEqualToString:", @"genp") & 1) == 0)
+  if (([digestCopy isEqualToString:@"inet"] & 1) == 0 && (objc_msgSend(digestCopy, "isEqualToString:", @"genp") & 1) == 0)
   {
-    SecError(-50, v38 + 3, @"class %@ is not supported: %@", v8, p_client->task);
-    v10[2](v10, 0, v38[3]);
+    SecError(-50, v38 + 3, @"class %@ is not supported: %@", digestCopy, p_client->task);
+    completeCopy[2](completeCopy, 0, v38[3]);
     v17 = v38[3];
     if (!v17)
     {
@@ -438,10 +438,10 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if ((sub_1000189C8(accessGroups, v9, p_client) & 1) == 0)
+  if ((sub_1000189C8(accessGroups, groupCopy, p_client) & 1) == 0)
   {
-    SecError(-34018, v38 + 3, @"Client is missing access-group %@: %@", v9, p_client->task);
-    v10[2](v10, 0, v38[3]);
+    SecError(-34018, v38 + 3, @"Client is missing access-group %@: %@", groupCopy, p_client->task);
+    completeCopy[2](completeCopy, 0, v38[3]);
     v17 = v38[3];
     if (!v17)
     {
@@ -467,8 +467,8 @@ LABEL_16:
   {
     v43[0] = kSecClass;
     v43[1] = kSecAttrAccessGroup;
-    v44[0] = v8;
-    v44[1] = v9;
+    v44[0] = digestCopy;
+    v44[1] = groupCopy;
     v43[2] = kSecAttrSynchronizable;
     v43[3] = kSecReturnPersistentRef;
     v44[2] = kSecAttrSynchronizableAny;
@@ -482,8 +482,8 @@ LABEL_16:
   {
     v41[0] = kSecClass;
     v41[1] = kSecAttrAccessGroup;
-    v42[0] = v8;
-    v42[1] = v9;
+    v42[0] = digestCopy;
+    v42[1] = groupCopy;
     v41[2] = kSecAttrSynchronizable;
     v42[2] = kSecAttrSynchronizableAny;
     v14 = v41;
@@ -524,7 +524,7 @@ LABEL_16:
     v28[4] = &v33;
     v28[5] = &v37;
     sub_10001992C(0, 0, (v38 + 3), v28);
-    v10[2](v10, v34[3], v38[3]);
+    completeCopy[2](completeCopy, v34[3], v38[3]);
     sub_100029F58(v22, v38 + 3);
     v23 = v34[3];
     if (v23)
@@ -554,7 +554,7 @@ LABEL_16:
   else
   {
     SecError(-50, v38 + 3, @"failed to build query: %@", v29);
-    v10[2](v10, 0, v38[3]);
+    completeCopy[2](completeCopy, 0, v38[3]);
     v26 = v38[3];
     if (v26)
     {
@@ -578,10 +578,10 @@ LABEL_35:
   _Block_object_dispose(&v37, 8);
 }
 
-- (void)secKeychainDeleteMultiuser:(id)a3 complete:(id)a4
+- (void)secKeychainDeleteMultiuser:(id)multiuser complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  multiuserCopy = multiuser;
+  completeCopy = complete;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -589,7 +589,7 @@ LABEL_35:
   if ([(SecuritydXPCServer *)self clientHasBooleanEntitlement:@"com.apple.keychain.multiuser-admin"])
   {
     SecError(-25291, v17 + 3, @"secKeychainDeleteMultiuser: %@ need entitlement %@", self->_client.task, @"com.apple.keychain.multiuser-admin");
-    v7[2](v7, 0, v17[3]);
+    completeCopy[2](completeCopy, 0, v17[3]);
     v8 = v17[3];
     if (v8)
     {
@@ -599,7 +599,7 @@ LABEL_35:
 
   else
   {
-    v9 = [v6 length];
+    v9 = [multiuserCopy length];
     v10 = v17;
     if (v9 == 16)
     {
@@ -607,10 +607,10 @@ LABEL_35:
       v13[1] = 3221225472;
       v13[2] = sub_100027340;
       v13[3] = &unk_100063378;
-      v14 = v6;
+      v14 = multiuserCopy;
       v15 = &v16;
       v11 = sub_10001992C(1, 0, (v10 + 3), v13);
-      v7[2](v7, v11, v17[3]);
+      completeCopy[2](completeCopy, v11, v17[3]);
       v12 = v17[3];
       if (v12)
       {
@@ -621,8 +621,8 @@ LABEL_35:
 
     else
     {
-      SecError(-25291, v17 + 3, @"secKeychainDeleteMultiuser: %@ uuid have wrong length: %d", self->_client.task, [v6 length]);
-      v7[2](v7, 0, v17[3]);
+      SecError(-25291, v17 + 3, @"secKeychainDeleteMultiuser: %@ uuid have wrong length: %d", self->_client.task, [multiuserCopy length]);
+      completeCopy[2](completeCopy, 0, v17[3]);
       v8 = v17[3];
       if (v8)
       {
@@ -636,13 +636,13 @@ LABEL_9:
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)secItemDeleteForAppClipApplicationIdentifier:(id)a3 completion:(id)a4
+- (void)secItemDeleteForAppClipApplicationIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(SecuritydXPCServer *)self clientHasBooleanEntitlement:@"com.apple.private.keychain.appclipdeletion"])
   {
-    v7 = sub_10000D2A0(v8);
+    v7 = sub_10000D2A0(identifierCopy);
   }
 
   else
@@ -650,12 +650,12 @@ LABEL_9:
     v7 = 4294933278;
   }
 
-  v6[2](v6, v7);
+  completionCopy[2](completionCopy, v7);
 }
 
-- (void)secItemPersistKeychainWritesAtHighPerformanceCost:(id)a3
+- (void)secItemPersistKeychainWritesAtHighPerformanceCost:(id)cost
 {
-  v4 = a3;
+  costCopy = cost;
   if ([(SecuritydXPCServer *)self clientHasBooleanEntitlement:@"com.apple.private.keychain.performance_impacting_api"])
   {
     v12 = 0;
@@ -700,7 +700,7 @@ LABEL_9:
       v7 = 4294941020;
     }
 
-    v4[2](v4, v7, v13[3]);
+    costCopy[2](costCopy, v7, v13[3]);
     v10 = v13[3];
     if (v10)
     {
@@ -714,18 +714,18 @@ LABEL_9:
   else
   {
     v8 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-34018 userInfo:0];
-    (v4)[2](v4, 4294933278, v8);
+    (costCopy)[2](costCopy, 4294933278, v8);
   }
 }
 
-- (void)secItemPromoteItemsForAppClip:(id)a3 toParentApp:(id)a4 completion:(id)a5
+- (void)secItemPromoteItemsForAppClip:(id)clip toParentApp:(id)app completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  clipCopy = clip;
+  appCopy = app;
+  completionCopy = completion;
   if ([(SecuritydXPCServer *)self clientHasBooleanEntitlement:@"com.apple.private.keychain.appclipdeletion"])
   {
-    v10 = sub_10000D6D8(v11, v8);
+    v10 = sub_10000D6D8(clipCopy, appCopy);
   }
 
   else
@@ -733,13 +733,13 @@ LABEL_9:
     v10 = 4294933278;
   }
 
-  v9[2](v9, v10);
+  completionCopy[2](completionCopy, v10);
 }
 
-- (void)secKeychainForceUpgradeIfNeeded:(id)a3
+- (void)secKeychainForceUpgradeIfNeeded:(id)needed
 {
   v7 = 0;
-  v3 = a3;
+  neededCopy = needed;
   v4 = secLogObjForScope("secKeychainForceUpgradeIfNeeded");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -772,12 +772,12 @@ LABEL_9:
     v6 = 4294941020;
   }
 
-  v3[2](v3, v6);
+  neededCopy[2](neededCopy, v6);
 }
 
-- (void)secKeychainCopyDatabasePath:(id)a3
+- (void)secKeychainCopyDatabasePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(SecuritydXPCServer *)self clientHasBooleanEntitlement:@"com.apple.private.keychain.databasepath"])
   {
     v5 = sub_100018AE8();
@@ -787,7 +787,7 @@ LABEL_9:
       sub_100040C08(v5, v6);
     }
 
-    v4[2](v4, 0, v5);
+    pathCopy[2](pathCopy, 0, v5);
   }
 
   else
@@ -802,15 +802,15 @@ LABEL_9:
     v10 = NSLocalizedDescriptionKey;
     v5 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
     v8 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-34018 userInfo:v5];
-    v4[2](v4, v8, 0);
+    pathCopy[2](pathCopy, v8, 0);
 
-    v4 = v8;
+    pathCopy = v8;
   }
 }
 
-- (SecuritydXPCServer)initWithConnection:(id)a3
+- (SecuritydXPCServer)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = SecuritydXPCServer;
   v5 = [(SecuritydXPCServer *)&v11 init];
@@ -820,11 +820,11 @@ LABEL_9:
     goto LABEL_6;
   }
 
-  objc_storeWeak(&v5->_connection, v4);
-  v7 = [v4 effectiveUserIdentifier];
-  if (v4)
+  objc_storeWeak(&v5->_connection, connectionCopy);
+  effectiveUserIdentifier = [connectionCopy effectiveUserIdentifier];
+  if (connectionCopy)
   {
-    [v4 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -832,7 +832,7 @@ LABEL_9:
     memset(v10, 0, sizeof(v10));
   }
 
-  if (!sub_100024EA0(&v6->_client, v7, v10))
+  if (!sub_100024EA0(&v6->_client, effectiveUserIdentifier, v10))
   {
     v8 = 0;
   }
@@ -846,10 +846,10 @@ LABEL_6:
   return v8;
 }
 
-- (SecuritydXPCServer)initWithSecurityClient:(SecurityClient *)a3
+- (SecuritydXPCServer)initWithSecurityClient:(SecurityClient *)client
 {
-  v3 = a3;
-  if (a3)
+  selfCopy = client;
+  if (client)
   {
     v12.receiver = self;
     v12.super_class = SecuritydXPCServer;
@@ -858,49 +858,49 @@ LABEL_6:
     if (v4)
     {
       objc_storeWeak(&v4->_connection, 0);
-      v6 = *v3;
-      if (*v3)
+      v6 = *selfCopy;
+      if (*selfCopy)
       {
-        CFRetain(*v3);
+        CFRetain(*selfCopy);
       }
 
       v5->_client.task = v6;
-      v7 = *(v3 + 1);
+      v7 = *(selfCopy + 1);
       if (v7)
       {
-        CFRetain(*(v3 + 1));
+        CFRetain(*(selfCopy + 1));
       }
 
       v5->_client.accessGroups = v7;
-      v8 = *(v3 + 5);
-      *&v5->_client.allowSystemKeychain = *(v3 + 4);
+      v8 = *(selfCopy + 5);
+      *&v5->_client.allowSystemKeychain = *(selfCopy + 4);
       v5->_client.uid = v8;
-      v9 = *(v3 + 3);
+      v9 = *(selfCopy + 3);
       if (v9)
       {
-        CFRetain(*(v3 + 3));
+        CFRetain(*(selfCopy + 3));
       }
 
       v5->_client.musr = v9;
-      v5->_client.keybag = *(v3 + 8);
-      v5->_client.inEduMode = *(v3 + 36);
-      v5->_client.activeUser = *(v3 + 10);
-      v10 = *(v3 + 6);
+      v5->_client.keybag = *(selfCopy + 8);
+      v5->_client.inEduMode = *(selfCopy + 36);
+      v5->_client.activeUser = *(selfCopy + 10);
+      v10 = *(selfCopy + 6);
       if (v10)
       {
-        CFRetain(*(v3 + 6));
+        CFRetain(*(selfCopy + 6));
       }
 
       v5->_client.applicationIdentifier = v10;
-      v5->_client.isAppClip = *(v3 + 44);
-      v5->_client.allowKeychainSharing = *(v3 + 57);
+      v5->_client.isAppClip = *(selfCopy + 44);
+      v5->_client.allowKeychainSharing = *(selfCopy + 57);
     }
 
     self = v5;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)dealloc

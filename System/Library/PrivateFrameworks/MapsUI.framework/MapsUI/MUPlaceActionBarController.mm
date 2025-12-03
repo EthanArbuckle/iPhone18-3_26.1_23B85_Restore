@@ -1,10 +1,10 @@
 @interface MUPlaceActionBarController
 - (_TtC6MapsUI23MUPlaceActionDispatcher)actionDispatcher;
 - (_TtC6MapsUI26MUPlaceActionBarController)init;
-- (_TtC6MapsUI26MUPlaceActionBarController)initWithActionDispatcher:(id)a3 delegate:(id)a4;
+- (_TtC6MapsUI26MUPlaceActionBarController)initWithActionDispatcher:(id)dispatcher delegate:(id)delegate;
 - (_TtP6MapsUI34MUPlaceActionBarControllerDelegate_)delegate;
-- (void)setActionDispatcher:(id)a3;
-- (void)updateWithLeadingItem:(id)a3 trailingItems:(id)a4 menuItems:(id)a5;
+- (void)setActionDispatcher:(id)dispatcher;
+- (void)updateWithLeadingItem:(id)item trailingItems:(id)items menuItems:(id)menuItems;
 @end
 
 @implementation MUPlaceActionBarController
@@ -16,13 +16,13 @@
   return *(self + v3);
 }
 
-- (void)setActionDispatcher:(id)a3
+- (void)setActionDispatcher:(id)dispatcher
 {
   v5 = OBJC_IVAR____TtC6MapsUI26MUPlaceActionBarController_actionDispatcher;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = dispatcher;
+  dispatcherCopy = dispatcher;
 }
 
 - (_TtP6MapsUI34MUPlaceActionBarControllerDelegate_)delegate
@@ -33,37 +33,37 @@
   return Strong;
 }
 
-- (_TtC6MapsUI26MUPlaceActionBarController)initWithActionDispatcher:(id)a3 delegate:(id)a4
+- (_TtC6MapsUI26MUPlaceActionBarController)initWithActionDispatcher:(id)dispatcher delegate:(id)delegate
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();
-  *(self + OBJC_IVAR____TtC6MapsUI26MUPlaceActionBarController_actionDispatcher) = a3;
+  *(self + OBJC_IVAR____TtC6MapsUI26MUPlaceActionBarController_actionDispatcher) = dispatcher;
   swift_beginAccess();
   swift_unknownObjectWeakAssign();
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v7 = a3;
+  dispatcherCopy = dispatcher;
   return [(MUPlaceActionBarController *)&v9 init];
 }
 
-- (void)updateWithLeadingItem:(id)a3 trailingItems:(id)a4 menuItems:(id)a5
+- (void)updateWithLeadingItem:(id)item trailingItems:(id)items menuItems:(id)menuItems
 {
-  v6 = a4;
-  if (a4)
+  itemsCopy = items;
+  if (items)
   {
     type metadata accessor for MUPlaceActionBarItem();
-    v6 = sub_1C584F770();
+    itemsCopy = sub_1C584F770();
   }
 
-  if (a5)
+  if (menuItems)
   {
     type metadata accessor for MUPlaceActionBarItem();
-    a5 = sub_1C584F770();
+    menuItems = sub_1C584F770();
   }
 
-  v9 = a3;
-  v10 = self;
-  MUPlaceActionBarController.update(leadingItem:trailingItems:menuItems:)(a3, v6, a5);
+  itemCopy = item;
+  selfCopy = self;
+  MUPlaceActionBarController.update(leadingItem:trailingItems:menuItems:)(item, itemsCopy, menuItems);
 }
 
 - (_TtC6MapsUI26MUPlaceActionBarController)init

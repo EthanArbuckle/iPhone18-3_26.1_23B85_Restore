@@ -1,9 +1,9 @@
 @interface SVSBaseViewController
-- (SVSBaseViewController)initWithMainController:(id)a3;
-- (void)cancelProxCardDraggingWithCompletion:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (SVSBaseViewController)initWithMainController:(id)controller;
+- (void)cancelProxCardDraggingWithCompletion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SVSBaseViewController
@@ -17,69 +17,69 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = SVSBaseViewController;
-  [(SVSBaseViewController *)&v12 viewDidAppear:a3];
-  v4 = [(SVSBaseViewController *)self navigationController];
-  if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  [(SVSBaseViewController *)&v12 viewDidAppear:appear];
+  navigationController = [(SVSBaseViewController *)self navigationController];
+  if (!navigationController || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = navigationController;
     objc_initWeak(&location, self);
     [(SVSCardContainerView *)self->_containerView setNeedsLayout];
     [(SVSCardContainerView *)self->_containerView layoutIfNeeded];
     containerView = self->_containerView;
-    v7 = [v5 dimmingView];
+    dimmingView = [v5 dimmingView];
     bottomMarginConstraint = self->_bottomMarginConstraint;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1001258A4;
     v9[3] = &unk_100195730;
     objc_copyWeak(&v10, &location);
-    [(SVSCardContainerView *)containerView activateWithDimmingView:v7 bottomMarginConstraint:bottomMarginConstraint dismissHandler:v9];
+    [(SVSCardContainerView *)containerView activateWithDimmingView:dimmingView bottomMarginConstraint:bottomMarginConstraint dismissHandler:v9];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SVSBaseViewController;
-  [(SVSBaseViewController *)&v5 viewWillAppear:a3];
-  v4 = [(SVSBaseViewController *)self navigationController];
-  if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  [(SVSBaseViewController *)&v5 viewWillAppear:appear];
+  navigationController = [(SVSBaseViewController *)self navigationController];
+  if (!navigationController || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     [(SVSBaseViewController *)self setOverrideUserInterfaceStyle:1];
   }
 }
 
-- (void)cancelProxCardDraggingWithCompletion:(id)a3
+- (void)cancelProxCardDraggingWithCompletion:(id)completion
 {
   containerView = self->_containerView;
   if (containerView)
   {
-    [(SVSCardContainerView *)containerView cancelProxCardDraggingWithCompletion:a3];
+    [(SVSCardContainerView *)containerView cancelProxCardDraggingWithCompletion:completion];
   }
 
   else
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 
-- (SVSBaseViewController)initWithMainController:(id)a3
+- (SVSBaseViewController)initWithMainController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = SVSBaseViewController;
   v5 = [(SVSBaseViewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(SVSBaseViewController *)v5 setMainController:v4];
+    [(SVSBaseViewController *)v5 setMainController:controllerCopy];
   }
 
   return v6;

@@ -1,36 +1,36 @@
 @interface SFUJsonScanner
-- (BOOL)parseConstantString:(const char *)a3;
-- (SFUJsonScanner)initWithString:(id)a3;
-- (id)parseArrayWithMaxDepth:(int)a3;
-- (id)parseDictionaryWithMaxDepth:(int)a3;
+- (BOOL)parseConstantString:(const char *)string;
+- (SFUJsonScanner)initWithString:(id)string;
+- (id)parseArrayWithMaxDepth:(int)depth;
+- (id)parseDictionaryWithMaxDepth:(int)depth;
 - (id)parseFalse;
 - (id)parseHexCharacter;
 - (id)parseNull;
 - (id)parseNumber;
-- (id)parseObjectWithMaxDepth:(int)a3;
+- (id)parseObjectWithMaxDepth:(int)depth;
 - (id)parseString;
 - (id)parseTrue;
 - (unsigned)nextCharacter;
-- (void)appendCharactersInRange:(_NSRange)a3 toString:(id)a4;
+- (void)appendCharactersInRange:(_NSRange)range toString:(id)string;
 - (void)dealloc;
 - (void)skipWhitespace;
 @end
 
 @implementation SFUJsonScanner
 
-- (SFUJsonScanner)initWithString:(id)a3
+- (SFUJsonScanner)initWithString:(id)string
 {
   v8.receiver = self;
   v8.super_class = SFUJsonScanner;
   v4 = [(SFUJsonScanner *)&v8 init];
   if (v4)
   {
-    v4->mString = a3;
-    v5 = [a3 length];
+    v4->mString = string;
+    v5 = [string length];
     v4->mLength = v5;
     v6 = malloc_type_malloc(2 * v5, 0x1000040BDFB0063uLL);
     v4->mCharacters = v6;
-    [a3 getCharacters:v6];
+    [string getCharacters:v6];
     v4->mWhitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
     v4->mDecimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
   }
@@ -91,9 +91,9 @@
   v4 = 4;
   while (1)
   {
-    v5 = [(SFUJsonScanner *)self nextCharacter];
-    v6 = v5 - 48;
-    if ((v5 - 48) >= 0xA)
+    nextCharacter = [(SFUJsonScanner *)self nextCharacter];
+    v6 = nextCharacter - 48;
+    if ((nextCharacter - 48) >= 0xA)
     {
       break;
     }
@@ -107,27 +107,27 @@ LABEL_7:
     }
   }
 
-  if ((v5 - 97) <= 5)
+  if ((nextCharacter - 97) <= 5)
   {
-    v6 = v5 - 87;
+    v6 = nextCharacter - 87;
     goto LABEL_7;
   }
 
-  if ((v5 - 65) <= 5)
+  if ((nextCharacter - 65) <= 5)
   {
-    v6 = v5 - 55;
+    v6 = nextCharacter - 55;
     goto LABEL_7;
   }
 
   return 0;
 }
 
-- (void)appendCharactersInRange:(_NSRange)a3 toString:(id)a4
+- (void)appendCharactersInRange:(_NSRange)range toString:(id)string
 {
-  if (a3.length)
+  if (range.length)
   {
-    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCharactersNoCopy:&self->mCharacters[a3.location] length:a3.length freeWhenDone:0];
-    [a4 appendString:v5];
+    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCharactersNoCopy:&self->mCharacters[range.location] length:range.length freeWhenDone:0];
+    [string appendString:v5];
   }
 }
 
@@ -139,21 +139,21 @@ LABEL_7:
   }
 
   mOffset = self->mOffset;
-  v4 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   while (2)
   {
     v5 = 0;
     while (1)
     {
-      v6 = [(SFUJsonScanner *)self nextCharacter];
-      if (v6 == 34)
+      nextCharacter = [(SFUJsonScanner *)self nextCharacter];
+      if (nextCharacter == 34)
       {
-        [(SFUJsonScanner *)self appendCharactersInRange:mOffset toString:v5, v4];
-        return v4;
+        [(SFUJsonScanner *)self appendCharactersInRange:mOffset toString:v5, string];
+        return string;
       }
 
-      v7 = v6;
-      if (v6 == 92)
+      v7 = nextCharacter;
+      if (nextCharacter == 92)
       {
         break;
       }
@@ -171,21 +171,21 @@ LABEL_7:
       return result;
     }
 
-    [(SFUJsonScanner *)self appendCharactersInRange:mOffset toString:v5, v4];
-    v9 = [(SFUJsonScanner *)self nextCharacter];
+    [(SFUJsonScanner *)self appendCharactersInRange:mOffset toString:v5, string];
+    nextCharacter2 = [(SFUJsonScanner *)self nextCharacter];
     result = 0;
-    if (v9 <= 101)
+    if (nextCharacter2 <= 101)
     {
-      if (v9 > 91)
+      if (nextCharacter2 > 91)
       {
-        if (v9 == 92)
+        if (nextCharacter2 == 92)
         {
           v10 = @"\\"";
         }
 
         else
         {
-          if (v9 != 98)
+          if (nextCharacter2 != 98)
           {
             return result;
           }
@@ -197,9 +197,9 @@ LABEL_7:
       else
       {
         v10 = @"";
-        if (v9 != 34)
+        if (nextCharacter2 != 34)
         {
-          if (v9 != 47)
+          if (nextCharacter2 != 47)
           {
             return result;
           }
@@ -211,16 +211,16 @@ LABEL_7:
       goto LABEL_30;
     }
 
-    if (v9 <= 113)
+    if (nextCharacter2 <= 113)
     {
-      if (v9 == 102)
+      if (nextCharacter2 == 102)
       {
         v10 = @"\f";
       }
 
       else
       {
-        if (v9 != 110)
+        if (nextCharacter2 != 110)
         {
           return result;
         }
@@ -231,7 +231,7 @@ LABEL_7:
       goto LABEL_30;
     }
 
-    switch(v9)
+    switch(nextCharacter2)
     {
       case 'r':
         v10 = @"\r";
@@ -239,7 +239,7 @@ LABEL_7:
       case 't':
         v10 = @"\t";
 LABEL_30:
-        [v4 appendString:v10];
+        [string appendString:v10];
         mOffset = self->mOffset;
         continue;
       case 'u':
@@ -257,13 +257,13 @@ LABEL_30:
   }
 }
 
-- (id)parseDictionaryWithMaxDepth:(int)a3
+- (id)parseDictionaryWithMaxDepth:(int)depth
 {
-  v5 = [(SFUJsonScanner *)self nextCharacter];
+  nextCharacter = [(SFUJsonScanner *)self nextCharacter];
   result = 0;
-  v7 = __OFSUB__(a3, 1);
-  v8 = (a3 - 1);
-  if (v8 < 0 == v7 && v5 == 123)
+  v7 = __OFSUB__(depth, 1);
+  v8 = (depth - 1);
+  if (v8 < 0 == v7 && nextCharacter == 123)
   {
     [(SFUJsonScanner *)self skipWhitespace];
     mOffset = self->mOffset;
@@ -277,7 +277,7 @@ LABEL_30:
 
     else
     {
-      v11 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       result = [(SFUJsonScanner *)self parseString];
       if (result)
       {
@@ -297,10 +297,10 @@ LABEL_30:
             return result;
           }
 
-          [v11 setObject:result forKey:v12];
+          [dictionary setObject:result forKey:v12];
           [(SFUJsonScanner *)self skipWhitespace];
-          v13 = [(SFUJsonScanner *)self nextCharacter];
-          if (v13 != 44)
+          nextCharacter2 = [(SFUJsonScanner *)self nextCharacter];
+          if (nextCharacter2 != 44)
           {
             break;
           }
@@ -314,9 +314,9 @@ LABEL_30:
           }
         }
 
-        if (v13 == 125)
+        if (nextCharacter2 == 125)
         {
-          return v11;
+          return dictionary;
         }
 
         else
@@ -330,13 +330,13 @@ LABEL_30:
   return result;
 }
 
-- (id)parseArrayWithMaxDepth:(int)a3
+- (id)parseArrayWithMaxDepth:(int)depth
 {
-  v5 = [(SFUJsonScanner *)self nextCharacter];
+  nextCharacter = [(SFUJsonScanner *)self nextCharacter];
   result = 0;
-  v7 = __OFSUB__(a3, 1);
-  v8 = (a3 - 1);
-  if (v8 < 0 == v7 && v5 == 91)
+  v7 = __OFSUB__(depth, 1);
+  v8 = (depth - 1);
+  if (v8 < 0 == v7 && nextCharacter == 91)
   {
     [(SFUJsonScanner *)self skipWhitespace];
     mOffset = self->mOffset;
@@ -350,17 +350,17 @@ LABEL_30:
 
     else
     {
-      v11 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       result = [(SFUJsonScanner *)self parseObjectWithMaxDepth:v8];
       if (result)
       {
         v12 = result;
         while (1)
         {
-          [v11 addObject:v12];
+          [array addObject:v12];
           [(SFUJsonScanner *)self skipWhitespace];
-          v13 = [(SFUJsonScanner *)self nextCharacter];
-          if (v13 != 44)
+          nextCharacter2 = [(SFUJsonScanner *)self nextCharacter];
+          if (nextCharacter2 != 44)
           {
             break;
           }
@@ -374,9 +374,9 @@ LABEL_30:
           }
         }
 
-        if (v13 == 93)
+        if (nextCharacter2 == 93)
         {
-          return v11;
+          return array;
         }
 
         else
@@ -390,14 +390,14 @@ LABEL_30:
   return result;
 }
 
-- (BOOL)parseConstantString:(const char *)a3
+- (BOOL)parseConstantString:(const char *)string
 {
-  if (!*a3)
+  if (!*string)
   {
     return 1;
   }
 
-  v4 = a3 + 1;
+  v4 = string + 1;
   do
   {
     result = [(SFUJsonScanner *)self nextCharacter]== *(v4 - 1);
@@ -450,26 +450,26 @@ LABEL_30:
 - (id)parseNumber
 {
   mOffset = self->mOffset;
-  v4 = [(SFUJsonScanner *)self nextCharacter];
-  if (v4 == 45)
+  nextCharacter = [(SFUJsonScanner *)self nextCharacter];
+  if (nextCharacter == 45)
   {
-    v4 = [(SFUJsonScanner *)self nextCharacter];
+    nextCharacter = [(SFUJsonScanner *)self nextCharacter];
   }
 
-  if ([(NSCharacterSet *)self->mDecimalDigitCharacterSet characterIsMember:v4])
+  if ([(NSCharacterSet *)self->mDecimalDigitCharacterSet characterIsMember:nextCharacter])
   {
     do
     {
-      v5 = [(SFUJsonScanner *)self nextCharacter];
-      if (!v5)
+      nextCharacter2 = [(SFUJsonScanner *)self nextCharacter];
+      if (!nextCharacter2)
       {
         goto LABEL_17;
       }
 
-      v6 = v5;
+      v6 = nextCharacter2;
     }
 
-    while ([(NSCharacterSet *)self->mDecimalDigitCharacterSet characterIsMember:v5]);
+    while ([(NSCharacterSet *)self->mDecimalDigitCharacterSet characterIsMember:nextCharacter2]);
     if (v6 == 46)
     {
       if (![(NSCharacterSet *)self->mDecimalDigitCharacterSet characterIsMember:[(SFUJsonScanner *)self nextCharacter]])
@@ -479,16 +479,16 @@ LABEL_30:
 
       do
       {
-        v7 = [(SFUJsonScanner *)self nextCharacter];
-        if (!v7)
+        nextCharacter3 = [(SFUJsonScanner *)self nextCharacter];
+        if (!nextCharacter3)
         {
           goto LABEL_17;
         }
 
-        v6 = v7;
+        v6 = nextCharacter3;
       }
 
-      while ([(NSCharacterSet *)self->mDecimalDigitCharacterSet characterIsMember:v7]);
+      while ([(NSCharacterSet *)self->mDecimalDigitCharacterSet characterIsMember:nextCharacter3]);
     }
 
     if ((v6 & 0xFFFFFFDF) != 0x45)
@@ -501,20 +501,20 @@ LABEL_17:
       return v12;
     }
 
-    v8 = [(SFUJsonScanner *)self nextCharacter];
-    if (v8 == 45 || (v9 = v8, v8 == 43))
+    nextCharacter4 = [(SFUJsonScanner *)self nextCharacter];
+    if (nextCharacter4 == 45 || (nextCharacter5 = nextCharacter4, nextCharacter4 == 43))
     {
-      v9 = [(SFUJsonScanner *)self nextCharacter];
+      nextCharacter5 = [(SFUJsonScanner *)self nextCharacter];
     }
 
-    if ([(NSCharacterSet *)self->mDecimalDigitCharacterSet characterIsMember:v9])
+    if ([(NSCharacterSet *)self->mDecimalDigitCharacterSet characterIsMember:nextCharacter5])
     {
       do
       {
-        v10 = [(SFUJsonScanner *)self nextCharacter];
+        nextCharacter6 = [(SFUJsonScanner *)self nextCharacter];
       }
 
-      while (v10 && [(NSCharacterSet *)self->mDecimalDigitCharacterSet characterIsMember:v10]);
+      while (nextCharacter6 && [(NSCharacterSet *)self->mDecimalDigitCharacterSet characterIsMember:nextCharacter6]);
       goto LABEL_17;
     }
   }
@@ -522,11 +522,11 @@ LABEL_17:
   return 0;
 }
 
-- (id)parseObjectWithMaxDepth:(int)a3
+- (id)parseObjectWithMaxDepth:(int)depth
 {
   [(SFUJsonScanner *)self skipWhitespace];
-  v5 = (a3 - 1);
-  if (a3 < 1)
+  v5 = (depth - 1);
+  if (depth < 1)
   {
     return 0;
   }

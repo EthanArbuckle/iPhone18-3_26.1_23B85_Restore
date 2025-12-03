@@ -1,65 +1,65 @@
 @interface RMStoreController
 + (RMStoreController)sharedController;
 + (void)start;
-- (RMStoreController)initWithPersistentContainer:(id)a3 context:(id)a4;
-- (id)_activeConfigurationsForConfigurationTypes:(id)a3 storeIdentifier:(id)a4 includeAssets:(BOOL)a5 error:(id *)a6;
-- (id)_activeConfigurationsForStoreIdentifier:(id)a3 error:(id *)a4;
-- (id)_allManagementSourcesReturningError:(id *)a3;
-- (id)_buildFlattenedConfigurations:(id)a3 includeAssets:(BOOL)a4 error:(id *)a5;
-- (id)_clientForIdentifier:(id)a3;
-- (id)_configurationsWithVisibleUIForConfigurationTypes:(id)a3 managementSource:(id)a4 error:(id *)a5;
-- (id)_declarationsForStoreIdentifier:(id)a3 declarationTypes:(id)a4 identifier:(id)a5 error:(id *)a6;
-- (id)_declarationsOfClass:(Class)a3 managementSource:(id)a4 declarationTypes:(id)a5 identifier:(id)a6 error:(id *)a7;
-- (id)_makeClientWithManagementSourceObjectID:(id)a3 storeIdentifier:(id)a4 persistentContainer:(id)a5;
-- (id)_managementSourceWithIdentifier:(id)a3 error:(id *)a4;
-- (id)_newPayloadWithDeclaration:(id)a3 managementSource:(id)a4 error:(id *)a5;
-- (id)_observerStoreWithIdentifier:(id)a3 error:(id *)a4;
-- (id)_payloadsForDeclarationIdentifier:(id)a3 managementSource:(id)a4 error:(id *)a5;
-- (id)_payloadsForPayloadClass:(Class)a3 identifier:(id)a4 managementSource:(id)a5 error:(id *)a6;
-- (id)_providerStoreWithIdentifier:(id)a3 error:(id *)a4;
-- (id)_startClientForSourceIdentifier:(id)a3 objectID:(id)a4;
-- (id)_subscriberStoreWithIdentifier:(id)a3 error:(id *)a4;
-- (unint64_t)_checkActiveDeclarations:(id)a3 mustBeValid:(BOOL)a4 storeIdentifier:(id)a5 error:(id *)a6;
-- (void)_addOptionsToManagementSource:(id)a3 options:(id)a4;
+- (RMStoreController)initWithPersistentContainer:(id)container context:(id)context;
+- (id)_activeConfigurationsForConfigurationTypes:(id)types storeIdentifier:(id)identifier includeAssets:(BOOL)assets error:(id *)error;
+- (id)_activeConfigurationsForStoreIdentifier:(id)identifier error:(id *)error;
+- (id)_allManagementSourcesReturningError:(id *)error;
+- (id)_buildFlattenedConfigurations:(id)configurations includeAssets:(BOOL)assets error:(id *)error;
+- (id)_clientForIdentifier:(id)identifier;
+- (id)_configurationsWithVisibleUIForConfigurationTypes:(id)types managementSource:(id)source error:(id *)error;
+- (id)_declarationsForStoreIdentifier:(id)identifier declarationTypes:(id)types identifier:(id)a5 error:(id *)error;
+- (id)_declarationsOfClass:(Class)class managementSource:(id)source declarationTypes:(id)types identifier:(id)identifier error:(id *)error;
+- (id)_makeClientWithManagementSourceObjectID:(id)d storeIdentifier:(id)identifier persistentContainer:(id)container;
+- (id)_managementSourceWithIdentifier:(id)identifier error:(id *)error;
+- (id)_newPayloadWithDeclaration:(id)declaration managementSource:(id)source error:(id *)error;
+- (id)_observerStoreWithIdentifier:(id)identifier error:(id *)error;
+- (id)_payloadsForDeclarationIdentifier:(id)identifier managementSource:(id)source error:(id *)error;
+- (id)_payloadsForPayloadClass:(Class)class identifier:(id)identifier managementSource:(id)source error:(id *)error;
+- (id)_providerStoreWithIdentifier:(id)identifier error:(id *)error;
+- (id)_startClientForSourceIdentifier:(id)identifier objectID:(id)d;
+- (id)_subscriberStoreWithIdentifier:(id)identifier error:(id *)error;
+- (unint64_t)_checkActiveDeclarations:(id)declarations mustBeValid:(BOOL)valid storeIdentifier:(id)identifier error:(id *)error;
+- (void)_addOptionsToManagementSource:(id)source options:(id)options;
 - (void)_observerStoresDidChange;
 - (void)_start;
-- (void)_stopClientForIdentifier:(id)a3;
-- (void)_waitForDeclarations:(id)a3 mustBeValid:(BOOL)a4 timeout:(double)a5 storeIdentifier:(id)a6 completionHandler:(id)a7;
-- (void)applyChangesForStoreIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)certificatePersistentRefForAssetKey:(id)a3 storeIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)certificateStatusWithStoreIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)configurationUIsForStoreIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)createStoreWithType:(int64_t)a3 defaultToInteractive:(BOOL)a4 dataSeparated:(BOOL)a5 options:(id)a6 completionHandler:(id)a7;
-- (void)declarationManifestForStoreIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)_stopClientForIdentifier:(id)identifier;
+- (void)_waitForDeclarations:(id)declarations mustBeValid:(BOOL)valid timeout:(double)timeout storeIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)applyChangesForStoreIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)certificatePersistentRefForAssetKey:(id)key storeIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)certificateStatusWithStoreIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)configurationUIsForStoreIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)createStoreWithType:(int64_t)type defaultToInteractive:(BOOL)interactive dataSeparated:(BOOL)separated options:(id)options completionHandler:(id)handler;
+- (void)declarationManifestForStoreIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)declarationStatusDidChange;
-- (void)declarationWithIdentifier:(id)a3 storeIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)declarationsForStoreIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)declarationsWithTypes:(id)a3 storeIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)deleteDeclarationWithIdentifier:(id)a3 storeIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)displayableProfileConfigurationsForStoreIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)fetchDataAtURL:(id)a3 storeIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)linkStoreIdentifier:(id)a3 profileIdentifier:(id)a4 accountIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)metadataForStoreIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)metadataValueForKey:(id)a3 storeIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)observerStoreWithIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)declarationWithIdentifier:(id)identifier storeIdentifier:(id)storeIdentifier completionHandler:(id)handler;
+- (void)declarationsForStoreIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)declarationsWithTypes:(id)types storeIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)deleteDeclarationWithIdentifier:(id)identifier storeIdentifier:(id)storeIdentifier completionHandler:(id)handler;
+- (void)displayableProfileConfigurationsForStoreIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)fetchDataAtURL:(id)l storeIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)linkStoreIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier accountIdentifier:(id)accountIdentifier completionHandler:(id)handler;
+- (void)metadataForStoreIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)metadataValueForKey:(id)key storeIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)observerStoreWithIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)observerStoresDidChange;
-- (void)observerStoresWithCompletionHandler:(id)a3;
-- (void)providerStoreWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)providerStoresWithCompletionHandler:(id)a3;
-- (void)removeStoreWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)resolveAsset:(id)a3 storeIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)saveDeclaration:(id)a3 storeIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)setConfigurationUIWithStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 declarationServerToken:(id)a5 visible:(BOOL)a6 ui:(id)a7 completionHandler:(id)a8;
-- (void)setMetadataValue:(id)a3 forKey:(id)a4 storeIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)setShouldInstallConfiguration:(id)a3 shouldInstall:(BOOL)a4 storeIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)subscribedDeclarationsWithTypes:(id)a3 storeIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)subscribedStoreConfigurationsVisibleUIWithTypes:(id)a3 completionHandler:(id)a4;
-- (void)subscribedStoreDeclarationsWithTypes:(id)a3 completionHandler:(id)a4;
-- (void)subscriberStoreWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)subscriberStoresWithCompletionHandler:(id)a3;
-- (void)unassignAssets:(id)a3 completionHandler:(id)a4;
-- (void)waitForActiveAndValidDeclarations:(id)a3 timeout:(double)a4 storeIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)waitForProcessingOfDeclarations:(id)a3 timeout:(double)a4 storeIdentifier:(id)a5 completionHandler:(id)a6;
+- (void)observerStoresWithCompletionHandler:(id)handler;
+- (void)providerStoreWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)providerStoresWithCompletionHandler:(id)handler;
+- (void)removeStoreWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)resolveAsset:(id)asset storeIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)saveDeclaration:(id)declaration storeIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)setConfigurationUIWithStoreIdentifier:(id)identifier declarationIdentifier:(id)declarationIdentifier declarationServerToken:(id)token visible:(BOOL)visible ui:(id)ui completionHandler:(id)handler;
+- (void)setMetadataValue:(id)value forKey:(id)key storeIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)setShouldInstallConfiguration:(id)configuration shouldInstall:(BOOL)install storeIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)subscribedDeclarationsWithTypes:(id)types storeIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)subscribedStoreConfigurationsVisibleUIWithTypes:(id)types completionHandler:(id)handler;
+- (void)subscribedStoreDeclarationsWithTypes:(id)types completionHandler:(id)handler;
+- (void)subscriberStoreWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)subscriberStoresWithCompletionHandler:(id)handler;
+- (void)unassignAssets:(id)assets completionHandler:(id)handler;
+- (void)waitForActiveAndValidDeclarations:(id)declarations timeout:(double)timeout storeIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)waitForProcessingOfDeclarations:(id)declarations timeout:(double)timeout storeIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation RMStoreController
@@ -76,18 +76,18 @@
   return v3;
 }
 
-- (RMStoreController)initWithPersistentContainer:(id)a3 context:(id)a4
+- (RMStoreController)initWithPersistentContainer:(id)container context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  containerCopy = container;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = RMStoreController;
   v9 = [(RMStoreController *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_persistentContainer, a3);
-    objc_storeStrong(&v10->_context, a4);
+    objc_storeStrong(&v9->_persistentContainer, container);
+    objc_storeStrong(&v10->_context, context);
     v11 = objc_opt_new();
     clientByIdentifier = v10->_clientByIdentifier;
     v10->_clientByIdentifier = v11;
@@ -112,7 +112,7 @@
   block[1] = 3221225472;
   block[2] = sub_10007425C;
   block[3] = &unk_1000D12D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000E6B50 != -1)
   {
     dispatch_once(&qword_1000E6B50, block);
@@ -121,7 +121,7 @@
 
 - (void)_start
 {
-  v3 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -150,7 +150,7 @@
   v13 = v9;
   v10 = v5;
   v14 = v10;
-  [v3 performBlockAndWait:v12];
+  [context performBlockAndWait:v12];
   if (!v17[5])
   {
     [(RMStoreController *)self _cleanManagedKeychain:v10];
@@ -165,69 +165,69 @@
   _Block_object_dispose(&v16, 8);
 }
 
-- (id)_startClientForSourceIdentifier:(id)a3 objectID:(id)a4
+- (id)_startClientForSourceIdentifier:(id)identifier objectID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RMStoreController *)self persistentContainer];
-  v9 = [(RMStoreController *)self _makeClientWithManagementSourceObjectID:v6 storeIdentifier:v7 persistentContainer:v8];
+  dCopy = d;
+  identifierCopy = identifier;
+  persistentContainer = [(RMStoreController *)self persistentContainer];
+  v9 = [(RMStoreController *)self _makeClientWithManagementSourceObjectID:dCopy storeIdentifier:identifierCopy persistentContainer:persistentContainer];
 
-  v10 = [(RMStoreController *)self clientByIdentifier];
-  [v10 setObject:v9 forKeyedSubscript:v7];
+  clientByIdentifier = [(RMStoreController *)self clientByIdentifier];
+  [clientByIdentifier setObject:v9 forKeyedSubscript:identifierCopy];
 
   [v9 start];
 
   return v9;
 }
 
-- (id)_makeClientWithManagementSourceObjectID:(id)a3 storeIdentifier:(id)a4 persistentContainer:(id)a5
+- (id)_makeClientWithManagementSourceObjectID:(id)d storeIdentifier:(id)identifier persistentContainer:(id)container
 {
-  v7 = a4;
-  v8 = a3;
+  identifierCopy = identifier;
+  dCopy = d;
   v9 = [RMStoreClient alloc];
   v10 = objc_opt_new();
-  v11 = [(RMStoreController *)self persistentContainer];
-  v12 = [(RMStoreClient *)v9 initWithManagementSourceObjectID:v8 storeIdentifier:v7 statusQuerier:v10 persistentContainer:v11];
+  persistentContainer = [(RMStoreController *)self persistentContainer];
+  v12 = [(RMStoreClient *)v9 initWithManagementSourceObjectID:dCopy storeIdentifier:identifierCopy statusQuerier:v10 persistentContainer:persistentContainer];
 
   return v12;
 }
 
-- (void)_stopClientForIdentifier:(id)a3
+- (void)_stopClientForIdentifier:(id)identifier
 {
-  v7 = a3;
-  v4 = [(RMStoreController *)self clientByIdentifier];
-  v5 = [v4 objectForKeyedSubscript:v7];
+  identifierCopy = identifier;
+  clientByIdentifier = [(RMStoreController *)self clientByIdentifier];
+  v5 = [clientByIdentifier objectForKeyedSubscript:identifierCopy];
 
   if (v5)
   {
     [v5 remove];
-    v6 = [(RMStoreController *)self clientByIdentifier];
-    [v6 removeObjectForKey:v7];
+    clientByIdentifier2 = [(RMStoreController *)self clientByIdentifier];
+    [clientByIdentifier2 removeObjectForKey:identifierCopy];
   }
 }
 
-- (id)_clientForIdentifier:(id)a3
+- (id)_clientForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(RMStoreController *)self clientByIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  clientByIdentifier = [(RMStoreController *)self clientByIdentifier];
+  v6 = [clientByIdentifier objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (void)observerStoreWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)observerStoreWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = +[RMLog storeController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "ObserverStoreWithIdentifier with %{public}@...", &buf, 0xCu);
   }
 
-  v9 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v22 = 0x3032000000;
@@ -246,27 +246,27 @@
   v11[3] = &unk_1000D2DD8;
   v13 = &v15;
   v11[4] = self;
-  v10 = v6;
+  v10 = identifierCopy;
   v12 = v10;
   p_buf = &buf;
-  [v9 performBlockAndWait:v11];
+  [context performBlockAndWait:v11];
   if (*(*(&buf + 1) + 40))
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v7[2](v7, v16[5]);
+    handlerCopy[2](handlerCopy, v16[5]);
   }
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)observerStoresWithCompletionHandler:(id)a3
+- (void)observerStoresWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[RMLog storeController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -274,7 +274,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ObserverStoresWithCompletionHandler...", buf, 2u);
   }
 
-  v6 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *buf = 0;
   v15 = buf;
   v16 = 0x3032000000;
@@ -294,15 +294,15 @@
   v7[4] = self;
   v7[5] = buf;
   v7[6] = &v8;
-  [v6 performBlockAndWait:v7];
+  [context performBlockAndWait:v7];
   if (*(v15 + 5))
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v4[2](v4, v9[5]);
+    handlerCopy[2](handlerCopy, v9[5]);
   }
 
   _Block_object_dispose(&v8, 8);
@@ -310,20 +310,20 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)declarationWithIdentifier:(id)a3 storeIdentifier:(id)a4 completionHandler:(id)a5
+- (void)declarationWithIdentifier:(id)identifier storeIdentifier:(id)storeIdentifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  storeIdentifierCopy = storeIdentifier;
+  handlerCopy = handler;
   v11 = +[RMLog storeController];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "DeclarationWithIdentifier with %{public}@...", &buf, 0xCu);
   }
 
-  v12 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v28 = 0x3032000000;
@@ -342,15 +342,15 @@
   v16[3] = &unk_1000D2E00;
   v19 = &v21;
   v16[4] = self;
-  v13 = v9;
+  v13 = storeIdentifierCopy;
   v17 = v13;
-  v14 = v8;
+  v14 = identifierCopy;
   v18 = v14;
   p_buf = &buf;
-  [v12 performBlockAndWait:v16];
+  [context performBlockAndWait:v16];
   if (*(*(&buf + 1) + 40))
   {
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -358,13 +358,13 @@
     if ([v22[5] count])
     {
       v15 = [v22[5] objectAtIndexedSubscript:0];
-      (v10[2])(v10, v15, 0);
+      (handlerCopy[2])(handlerCopy, v15, 0);
     }
 
     else
     {
       v15 = [RMErrorUtilities createDeclarationNotFoundErrorWithIdentifier:v14];
-      (v10[2])(v10, 0, v15);
+      (handlerCopy[2])(handlerCopy, 0, v15);
     }
   }
 
@@ -372,19 +372,19 @@
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)declarationsForStoreIdentifier:(id)a3 completionHandler:(id)a4
+- (void)declarationsForStoreIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = +[RMLog storeController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "DeclarationsForStoreIdentifier with %{public}@...", &buf, 0xCu);
   }
 
-  v9 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v22 = 0x3032000000;
@@ -403,38 +403,38 @@
   v11[3] = &unk_1000D2DD8;
   v13 = &v15;
   v11[4] = self;
-  v10 = v6;
+  v10 = identifierCopy;
   v12 = v10;
   p_buf = &buf;
-  [v9 performBlockAndWait:v11];
+  [context performBlockAndWait:v11];
   if (*(*(&buf + 1) + 40))
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v7[2](v7, v16[5]);
+    handlerCopy[2](handlerCopy, v16[5]);
   }
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)declarationsWithTypes:(id)a3 storeIdentifier:(id)a4 completionHandler:(id)a5
+- (void)declarationsWithTypes:(id)types storeIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typesCopy = types;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = +[RMLog storeController];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = typesCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "DeclarationsWithTypes with %{public}@...", &buf, 0xCu);
   }
 
-  v12 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v27 = 0x3032000000;
@@ -453,39 +453,39 @@
   v15[3] = &unk_1000D2E00;
   v18 = &v20;
   v15[4] = self;
-  v13 = v9;
+  v13 = identifierCopy;
   v16 = v13;
-  v14 = v8;
+  v14 = typesCopy;
   v17 = v14;
   p_buf = &buf;
-  [v12 performBlockAndWait:v15];
+  [context performBlockAndWait:v15];
   if (*(*(&buf + 1) + 40))
   {
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v10[2](v10, v21[5]);
+    handlerCopy[2](handlerCopy, v21[5]);
   }
 
   _Block_object_dispose(&v20, 8);
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)declarationManifestForStoreIdentifier:(id)a3 completionHandler:(id)a4
+- (void)declarationManifestForStoreIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = +[RMLog storeController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "DeclarationManifestForStoreIdentifier with %{public}@...", &buf, 0xCu);
   }
 
-  v9 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v27 = 0x3032000000;
@@ -503,40 +503,40 @@
   v14 = sub_100075DC4;
   v15 = &unk_1000D2DD8;
   v18 = &v20;
-  v16 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = identifierCopy;
   v17 = v10;
   p_buf = &buf;
-  [v9 performBlockAndWait:&v12];
+  [context performBlockAndWait:&v12];
   if (*(*(&buf + 1) + 40))
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v11 = [RMDeclarationManifest declarationManifestWithDeclarations:v21[5], v12, v13, v14, v15, v16];
-    (v7[2])(v7, v11, 0);
+    selfCopy = [RMDeclarationManifest declarationManifestWithDeclarations:v21[5], v12, v13, v14, v15, selfCopy];
+    (handlerCopy[2])(handlerCopy, selfCopy, 0);
   }
 
   _Block_object_dispose(&v20, 8);
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)configurationUIsForStoreIdentifier:(id)a3 completionHandler:(id)a4
+- (void)configurationUIsForStoreIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = +[RMLog storeController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "ConfigurationUIsForStoreIdentifier with %{public}@...", &buf, 0xCu);
   }
 
   +[RMConfigurationPublisher fetchVisibleConfigurationUIs];
-  v9 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v22 = 0x3032000000;
@@ -553,29 +553,29 @@
   v11[1] = 3221225472;
   v11[2] = sub_1000760BC;
   v11[3] = &unk_1000D18B8;
-  v10 = v6;
+  v10 = identifierCopy;
   v12 = v10;
   p_buf = &buf;
   v14 = &v15;
-  [v9 performBlockAndWait:v11];
+  [context performBlockAndWait:v11];
   if (*(*(&buf + 1) + 40))
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v7[2](v7, v16[5]);
+    handlerCopy[2](handlerCopy, v16[5]);
   }
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)displayableProfileConfigurationsForStoreIdentifier:(id)a3 completionHandler:(id)a4
+- (void)displayableProfileConfigurationsForStoreIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v20 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v7 = +[RMLog storeController];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -588,7 +588,7 @@
   v8 = [NSArray arrayWithObjects:v45 count:2];
   v9 = [NSSet setWithArray:v8];
 
-  v21 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *buf = 0;
   v39 = buf;
   v40 = 0x3032000000;
@@ -609,10 +609,10 @@
   v27[4] = self;
   v19 = v9;
   v28 = v19;
-  v10 = v6;
+  v10 = identifierCopy;
   v29 = v10;
   v31 = buf;
-  [v21 performBlockAndWait:v27];
+  [context performBlockAndWait:v27];
   v22 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
@@ -633,9 +633,9 @@
         }
 
         v15 = *(*(&v23 + 1) + 8 * i);
-        v16 = [v15 declarationIdentifier];
-        v17 = [v15 declarationServerToken];
-        v18 = [RMConfigurationStatusArchiver validStatusForStoreIdentifier:v10 declarationIdentifier:v16 serverToken:v17];
+        declarationIdentifier = [v15 declarationIdentifier];
+        declarationServerToken = [v15 declarationServerToken];
+        v18 = [RMConfigurationStatusArchiver validStatusForStoreIdentifier:v10 declarationIdentifier:declarationIdentifier serverToken:declarationServerToken];
 
         if (v18)
         {
@@ -649,43 +649,43 @@
     while (v12);
   }
 
-  v20[2]();
+  handlerCopy[2]();
   _Block_object_dispose(&v32, 8);
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)setShouldInstallConfiguration:(id)a3 shouldInstall:(BOOL)a4 storeIdentifier:(id)a5 completionHandler:(id)a6
+- (void)setShouldInstallConfiguration:(id)configuration shouldInstall:(BOOL)install storeIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a6;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v9 = +[RMLog storeController];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 declarationIdentifier];
+    declarationIdentifier = [configurationCopy declarationIdentifier];
     v12 = 138543362;
-    v13 = v10;
+    v13 = declarationIdentifier;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "SetShouldInstallConfiguration with %{public}@...", &v12, 0xCu);
   }
 
   v11 = [RMErrorUtilities createNotImplementedErrorForFeature:@"SetShouldInstallConfiguration"];
-  v8[2](v8, v11);
+  handlerCopy[2](handlerCopy, v11);
 }
 
-- (void)fetchDataAtURL:(id)a3 storeIdentifier:(id)a4 completionHandler:(id)a5
+- (void)fetchDataAtURL:(id)l storeIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = +[RMLog storeController];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v9;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "fetchDataAtURL with %{public}@...", &buf, 0xCu);
   }
 
-  v12 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v28 = 0x3032000000;
@@ -701,14 +701,14 @@
   v19[2] = sub_100076CAC;
   v19[3] = &unk_1000D15B0;
   v19[4] = self;
-  v13 = v9;
+  v13 = identifierCopy;
   v20 = v13;
   p_buf = &buf;
   v22 = &v23;
-  [v12 performBlockAndWait:v19];
+  [context performBlockAndWait:v19];
   if (*(*(&buf + 1) + 40))
   {
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -719,8 +719,8 @@
     v16[1] = 3221225472;
     v16[2] = sub_100076D64;
     v16[3] = &unk_1000D2E28;
-    v17 = v8;
-    v18 = v10;
+    v17 = lCopy;
+    v18 = handlerCopy;
     [v14 fetchDataAtURL:v17 useDDM:v15 completionHandler:v16];
   }
 
@@ -730,8 +730,8 @@
 
 - (void)observerStoresDidChange
 {
-  v2 = [(RMStoreController *)self debouncer];
-  [v2 trigger];
+  debouncer = [(RMStoreController *)self debouncer];
+  [debouncer trigger];
 }
 
 - (void)_observerStoresDidChange
@@ -746,10 +746,10 @@
   [v3 postNotificationName:RMObserverStoreStoreDidChangeNotification object:0 userInfo:0 options:3];
 }
 
-- (void)createStoreWithType:(int64_t)a3 defaultToInteractive:(BOOL)a4 dataSeparated:(BOOL)a5 options:(id)a6 completionHandler:(id)a7
+- (void)createStoreWithType:(int64_t)type defaultToInteractive:(BOOL)interactive dataSeparated:(BOOL)separated options:(id)options completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a7;
+  optionsCopy = options;
+  handlerCopy = handler;
   v12 = +[RMLog storeController];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -786,12 +786,12 @@
   v18 = 3221225472;
   v19 = sub_10007721C;
   v20 = &unk_1000D2E50;
-  v13 = v28 = a3;
+  v13 = v28 = type;
   v21 = v13;
   v24 = &v29;
-  v14 = v10;
+  v14 = optionsCopy;
   v22 = v14;
-  v23 = self;
+  selfCopy = self;
   v25 = buf;
   v26 = &v41;
   v27 = &v35;
@@ -805,7 +805,7 @@
   v16 = [RMClientController sharedController:v17];
   [v16 managementChannelsChanged];
 
-  v11[2](v11, *(v48 + 5), v30[5]);
+  handlerCopy[2](handlerCopy, *(v48 + 5), v30[5]);
   _Block_object_dispose(&v29, 8);
 
   _Block_object_dispose(&v35, 8);
@@ -814,38 +814,38 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)removeStoreWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)removeStoreWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = +[RMLog storeController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "RemoveStoreWithIdentifier with %{public}@...", &buf, 0xCu);
   }
 
-  [(RMStoreController *)self _stopClientForIdentifier:v6];
+  [(RMStoreController *)self _stopClientForIdentifier:identifierCopy];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v23 = 0x3032000000;
   v24 = sub_1000744D0;
   v25 = sub_1000744E0;
   v26 = 0;
-  v9 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_10007778C;
   v17 = &unk_1000D2E78;
-  v18 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = identifierCopy;
   v19 = v10;
   p_buf = &buf;
-  v11 = v9;
+  v11 = context;
   v20 = v11;
   [v11 performBlockAndWait:&v14];
-  [RMConfigurationStatusArchiver removeAllStatusForStoreIdentifier:v10 error:0, v14, v15, v16, v17, v18];
+  [RMConfigurationStatusArchiver removeAllStatusForStoreIdentifier:v10 error:0, v14, v15, v16, v17, selfCopy];
   v12 = +[RMExternalStatusPublisher sharedPublisher];
   [v12 listenToNotificationsForAllKeyPaths];
 
@@ -853,23 +853,23 @@
   v13 = +[RMClientController sharedController];
   [v13 managementChannelsChanged];
 
-  v7[2](v7, *(*(&buf + 1) + 40));
+  handlerCopy[2](handlerCopy, *(*(&buf + 1) + 40));
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)providerStoreWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)providerStoreWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = +[RMLog storeController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "ProviderStoreWithIdentifier with %{public}@...", &buf, 0xCu);
   }
 
-  v9 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v22 = 0x3032000000;
@@ -888,27 +888,27 @@
   v11[3] = &unk_1000D2DD8;
   v13 = &v15;
   v11[4] = self;
-  v10 = v6;
+  v10 = identifierCopy;
   v12 = v10;
   p_buf = &buf;
-  [v9 performBlockAndWait:v11];
+  [context performBlockAndWait:v11];
   if (*(*(&buf + 1) + 40))
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v7[2](v7, v16[5]);
+    handlerCopy[2](handlerCopy, v16[5]);
   }
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)providerStoresWithCompletionHandler:(id)a3
+- (void)providerStoresWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[RMLog storeController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -916,7 +916,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ProviderStoresWithCompletionHandler...", buf, 2u);
   }
 
-  v6 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *buf = 0;
   v15 = buf;
   v16 = 0x3032000000;
@@ -936,15 +936,15 @@
   v7[4] = self;
   v7[5] = buf;
   v7[6] = &v8;
-  [v6 performBlockAndWait:v7];
+  [context performBlockAndWait:v7];
   if (*(v15 + 5))
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v4[2](v4, v9[5]);
+    handlerCopy[2](handlerCopy, v9[5]);
   }
 
   _Block_object_dispose(&v8, 8);
@@ -952,21 +952,21 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)saveDeclaration:(id)a3 storeIdentifier:(id)a4 completionHandler:(id)a5
+- (void)saveDeclaration:(id)declaration storeIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  declarationCopy = declaration;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = +[RMLog storeController];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 declarationIdentifier];
+    declarationIdentifier = [declarationCopy declarationIdentifier];
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v12;
+    *(&buf + 4) = declarationIdentifier;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "SaveDeclaration with %{public}@...", &buf, 0xCu);
   }
 
-  v13 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v23 = 0x3032000000;
@@ -978,33 +978,33 @@
   v17[2] = sub_100078174;
   v17[3] = &unk_1000D2EA0;
   v17[4] = self;
-  v14 = v9;
+  v14 = identifierCopy;
   v18 = v14;
   p_buf = &buf;
-  v15 = v8;
+  v15 = declarationCopy;
   v19 = v15;
-  v16 = v13;
+  v16 = context;
   v20 = v16;
   [v16 performBlockAndWait:v17];
-  v10[2](v10, *(*(&buf + 1) + 40));
+  handlerCopy[2](handlerCopy, *(*(&buf + 1) + 40));
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)deleteDeclarationWithIdentifier:(id)a3 storeIdentifier:(id)a4 completionHandler:(id)a5
+- (void)deleteDeclarationWithIdentifier:(id)identifier storeIdentifier:(id)storeIdentifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  storeIdentifierCopy = storeIdentifier;
+  handlerCopy = handler;
   v11 = +[RMLog storeController];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "DeleteDeclarationWithIdentifier with %{public}@...", &buf, 0xCu);
   }
 
-  v12 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v22 = 0x3032000000;
@@ -1016,70 +1016,70 @@
   v16[2] = sub_100078844;
   v16[3] = &unk_1000D2EA0;
   v16[4] = self;
-  v13 = v9;
+  v13 = storeIdentifierCopy;
   v17 = v13;
   p_buf = &buf;
-  v14 = v8;
+  v14 = identifierCopy;
   v18 = v14;
-  v15 = v12;
+  v15 = context;
   v19 = v15;
   [v15 performBlockAndWait:v16];
-  v10[2](v10, *(*(&buf + 1) + 40));
+  handlerCopy[2](handlerCopy, *(*(&buf + 1) + 40));
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)applyChangesForStoreIdentifier:(id)a3 completionHandler:(id)a4
+- (void)applyChangesForStoreIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = +[RMLog storeController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = v6;
+    v13 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "ApplyChangesForStoreIdentifier with %{public}@...", &v12, 0xCu);
   }
 
-  v9 = [(RMStoreController *)self _clientForIdentifier:v6];
+  v9 = [(RMStoreController *)self _clientForIdentifier:identifierCopy];
   v10 = v9;
   if (v9)
   {
-    [v9 syncWithCompletionHandler:v7];
+    [v9 syncWithCompletionHandler:handlerCopy];
   }
 
   else
   {
     v11 = +[RMClientController sharedController];
-    [v11 applyNowWithIdentifier:v6 completionHandler:v7];
+    [v11 applyNowWithIdentifier:identifierCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)linkStoreIdentifier:(id)a3 profileIdentifier:(id)a4 accountIdentifier:(id)a5 completionHandler:(id)a6
+- (void)linkStoreIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier accountIdentifier:(id)accountIdentifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  profileIdentifierCopy = profileIdentifier;
+  accountIdentifierCopy = accountIdentifier;
+  handlerCopy = handler;
   v14 = +[RMLog storeController];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v10;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "LinkStoreIdentifier with %{public}@...", &buf, 0xCu);
   }
 
-  v15 = [(RMStoreController *)self clientByIdentifier];
-  v16 = [v15 objectForKeyedSubscript:v10];
+  clientByIdentifier = [(RMStoreController *)self clientByIdentifier];
+  v16 = [clientByIdentifier objectForKeyedSubscript:identifierCopy];
   v17 = v16 == 0;
 
   if (!v17)
   {
-    v18 = [(RMStoreController *)self clientByIdentifier];
-    [v18 removeObjectForKey:v10];
+    clientByIdentifier2 = [(RMStoreController *)self clientByIdentifier];
+    [clientByIdentifier2 removeObjectForKey:identifierCopy];
   }
 
-  v19 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v36 = 0x3032000000;
@@ -1090,69 +1090,69 @@
   v26 = 3221225472;
   v27 = sub_100078F68;
   v28 = &unk_1000D2EC8;
-  v29 = self;
-  v20 = v10;
+  selfCopy = self;
+  v20 = identifierCopy;
   v30 = v20;
   p_buf = &buf;
-  v21 = v11;
+  v21 = profileIdentifierCopy;
   v31 = v21;
-  v22 = v12;
+  v22 = accountIdentifierCopy;
   v32 = v22;
-  v23 = v19;
+  v23 = context;
   v33 = v23;
   [v23 performBlockAndWait:&v25];
   if (*(*(&buf + 1) + 40))
   {
-    v13[2](v13);
+    handlerCopy[2](handlerCopy);
   }
 
   else
   {
     [RMMDMHelper setActive:1 scope:[RMStoreHelper storeScope:v25]];
     v24 = +[RMClientController sharedController];
-    [v24 takeOwnershipOfMDMStoreWithIdentifier:v20 completionHandler:v13];
+    [v24 takeOwnershipOfMDMStoreWithIdentifier:v20 completionHandler:handlerCopy];
   }
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)waitForActiveAndValidDeclarations:(id)a3 timeout:(double)a4 storeIdentifier:(id)a5 completionHandler:(id)a6
+- (void)waitForActiveAndValidDeclarations:(id)declarations timeout:(double)timeout storeIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  declarationsCopy = declarations;
   v13 = +[RMLog storeController];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543362;
-    v15 = v10;
+    v15 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "WaitForActiveAndValidDeclarations with %{public}@...", &v14, 0xCu);
   }
 
-  [(RMStoreController *)self _waitForDeclarations:v12 mustBeValid:1 timeout:v10 storeIdentifier:v11 completionHandler:a4];
+  [(RMStoreController *)self _waitForDeclarations:declarationsCopy mustBeValid:1 timeout:identifierCopy storeIdentifier:handlerCopy completionHandler:timeout];
 }
 
-- (void)waitForProcessingOfDeclarations:(id)a3 timeout:(double)a4 storeIdentifier:(id)a5 completionHandler:(id)a6
+- (void)waitForProcessingOfDeclarations:(id)declarations timeout:(double)timeout storeIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  declarationsCopy = declarations;
   v13 = +[RMLog storeController];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543362;
-    v15 = v10;
+    v15 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "WaitForProcessingOfDeclarations with %{public}@...", &v14, 0xCu);
   }
 
-  [(RMStoreController *)self _waitForDeclarations:v12 mustBeValid:0 timeout:v10 storeIdentifier:v11 completionHandler:a4];
+  [(RMStoreController *)self _waitForDeclarations:declarationsCopy mustBeValid:0 timeout:identifierCopy storeIdentifier:handlerCopy completionHandler:timeout];
 }
 
-- (void)_waitForDeclarations:(id)a3 mustBeValid:(BOOL)a4 timeout:(double)a5 storeIdentifier:(id)a6 completionHandler:(id)a7
+- (void)_waitForDeclarations:(id)declarations mustBeValid:(BOOL)valid timeout:(double)timeout storeIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  declarationsCopy = declarations;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v15 = self->_waitLock;
   objc_sync_enter(v15);
   if ([(RMStoreController *)self waitingForDeclarationStatusChanges])
@@ -1164,7 +1164,7 @@
     }
 
     v17 = +[RMErrorUtilities createInternalError];
-    v14[2](v14, v17);
+    handlerCopy[2](handlerCopy, v17);
 
     objc_sync_exit(v15);
   }
@@ -1180,11 +1180,11 @@
     v18[2] = sub_1000794B8;
     v18[3] = &unk_1000D2F18;
     v18[4] = self;
-    v19 = v12;
-    v23 = a4;
-    v20 = v13;
-    v21 = v14;
-    v22 = a5;
+    v19 = declarationsCopy;
+    validCopy = valid;
+    v20 = identifierCopy;
+    v21 = handlerCopy;
+    timeoutCopy = timeout;
     dispatch_async(v15, v18);
   }
 }
@@ -1198,14 +1198,14 @@
   }
 }
 
-- (unint64_t)_checkActiveDeclarations:(id)a3 mustBeValid:(BOOL)a4 storeIdentifier:(id)a5 error:(id *)a6
+- (unint64_t)_checkActiveDeclarations:(id)declarations mustBeValid:(BOOL)valid storeIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = a5;
+  validCopy = valid;
+  declarationsCopy = declarations;
+  identifierCopy = identifier;
   v11 = +[RMInternalStatusPublisher sharedPublisher];
   v75 = 0;
-  v12 = [v11 queryForDeclarationStatusWithManagementSourceIdentifier:v10 error:&v75];
+  v12 = [v11 queryForDeclarationStatusWithManagementSourceIdentifier:identifierCopy error:&v75];
   v13 = v75;
   if (v12)
   {
@@ -1215,14 +1215,14 @@
 
     if (v14)
     {
-      v50 = v8;
+      v50 = validCopy;
       v51 = v15;
-      v53 = a6;
+      errorCopy = error;
       v54 = v12;
       v55 = v11;
-      v56 = v10;
-      v57 = v9;
-      v16 = [v9 mutableCopy];
+      v56 = identifierCopy;
+      v57 = declarationsCopy;
+      v16 = [declarationsCopy mutableCopy];
       v65 = objc_opt_new();
       v64 = objc_opt_new();
       v63 = objc_opt_new();
@@ -1230,13 +1230,13 @@
       v71 = 0u;
       v72 = 0u;
       v73 = 0u;
-      v17 = [v14 statusActivations];
-      v77[0] = v17;
-      v18 = [v14 statusConfigurations];
-      v77[1] = v18;
+      statusActivations = [v14 statusActivations];
+      v77[0] = statusActivations;
+      statusConfigurations = [v14 statusConfigurations];
+      v77[1] = statusConfigurations;
       v52 = v14;
-      v19 = [v14 statusAssets];
-      v77[2] = v19;
+      statusAssets = [v14 statusAssets];
+      v77[2] = statusAssets;
       v20 = [NSArray arrayWithObjects:v77 count:3];
 
       obj = v20;
@@ -1278,29 +1278,29 @@
                   }
 
                   v29 = *(*(&v66 + 1) + 8 * i);
-                  v30 = [v29 statusIdentifier];
-                  if ([v16 containsObject:v30])
+                  statusIdentifier = [v29 statusIdentifier];
+                  if ([v16 containsObject:statusIdentifier])
                   {
-                    v31 = [v29 statusIdentifier];
-                    [v16 removeObject:v31];
+                    statusIdentifier2 = [v29 statusIdentifier];
+                    [v16 removeObject:statusIdentifier2];
 
-                    v32 = [v29 statusActive];
-                    v33 = [v32 BOOLValue];
+                    statusActive = [v29 statusActive];
+                    bOOLValue = [statusActive BOOLValue];
 
                     v34 = v65;
-                    if (!v33)
+                    if (!bOOLValue)
                     {
                       goto LABEL_17;
                     }
 
-                    v35 = [v29 statusValid];
-                    v36 = [v35 isEqualToString:v21];
+                    statusValid = [v29 statusValid];
+                    v36 = [statusValid isEqualToString:v21];
 
                     v34 = v64;
                     if ((v36 & 1) != 0 || ([v29 statusValid], v37 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend(v37, "isEqualToString:", v62), v37, v34 = v63, v38))
                     {
 LABEL_17:
-                      [v34 addObject:v30];
+                      [v34 addObject:statusIdentifier];
                     }
                   }
                 }
@@ -1327,7 +1327,7 @@ LABEL_17:
 
         v39 = +[RMLog storeController];
         v11 = v55;
-        v10 = v56;
+        identifierCopy = v56;
         v12 = v54;
         v14 = v52;
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -1336,18 +1336,18 @@ LABEL_17:
         }
 
         v40 = 0;
-        if (v53 && v15)
+        if (errorCopy && v15)
         {
           v41 = v15;
           v40 = 0;
-          *v53 = v15;
+          *errorCopy = v15;
         }
       }
 
       else
       {
         v11 = v55;
-        v10 = v56;
+        identifierCopy = v56;
         v12 = v54;
         v15 = v51;
         v14 = v52;
@@ -1362,11 +1362,11 @@ LABEL_17:
           }
 
           v40 = 0;
-          if (v53 && v46)
+          if (errorCopy && v46)
           {
             v48 = v46;
             v40 = 0;
-            *v53 = v46;
+            *errorCopy = v46;
           }
 
           v15 = v46;
@@ -1388,7 +1388,7 @@ LABEL_17:
         }
       }
 
-      v9 = v57;
+      declarationsCopy = v57;
     }
 
     else
@@ -1400,11 +1400,11 @@ LABEL_17:
       }
 
       v40 = 0;
-      if (a6 && v15)
+      if (error && v15)
       {
         v45 = v15;
         v40 = 0;
-        *a6 = v15;
+        *error = v15;
       }
     }
 
@@ -1420,30 +1420,30 @@ LABEL_17:
     }
 
     v40 = 0;
-    if (a6 && v13)
+    if (error && v13)
     {
       v43 = v13;
       v40 = 0;
-      *a6 = v13;
+      *error = v13;
     }
   }
 
   return v40;
 }
 
-- (void)subscriberStoreWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)subscriberStoreWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = +[RMLog storeController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "SubscriberStoreWithIdentifier with %{public}@...", &buf, 0xCu);
   }
 
-  v9 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v22 = 0x3032000000;
@@ -1462,27 +1462,27 @@ LABEL_17:
   v11[3] = &unk_1000D2DD8;
   v13 = &v15;
   v11[4] = self;
-  v10 = v6;
+  v10 = identifierCopy;
   v12 = v10;
   p_buf = &buf;
-  [v9 performBlockAndWait:v11];
+  [context performBlockAndWait:v11];
   if (*(*(&buf + 1) + 40))
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v7[2](v7, v16[5]);
+    handlerCopy[2](handlerCopy, v16[5]);
   }
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)subscriberStoresWithCompletionHandler:(id)a3
+- (void)subscriberStoresWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[RMLog storeController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1490,7 +1490,7 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "SubscriberStoresWithCompletionHandler...", buf, 2u);
   }
 
-  v6 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *buf = 0;
   v15 = buf;
   v16 = 0x3032000000;
@@ -1510,15 +1510,15 @@ LABEL_17:
   v7[4] = self;
   v7[5] = buf;
   v7[6] = &v8;
-  [v6 performBlockAndWait:v7];
+  [context performBlockAndWait:v7];
   if (*(v15 + 5))
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v4[2](v4, v9[5]);
+    handlerCopy[2](handlerCopy, v9[5]);
   }
 
   _Block_object_dispose(&v8, 8);
@@ -1526,10 +1526,10 @@ LABEL_17:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)subscribedStoreDeclarationsWithTypes:(id)a3 completionHandler:(id)a4
+- (void)subscribedStoreDeclarationsWithTypes:(id)types completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  handlerCopy = handler;
   v8 = +[RMLog storeController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1537,7 +1537,7 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "SubscribedStoreDeclarationsWithTypes...", buf, 2u);
   }
 
-  v9 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *buf = 0;
   v29 = buf;
   v30 = 0x3032000000;
@@ -1564,17 +1564,17 @@ LABEL_17:
   v13 = buf;
   v14 = &v22;
   v15 = &v16;
-  v10 = v6;
+  v10 = typesCopy;
   v12 = v10;
-  [v9 performBlockAndWait:v11];
+  [context performBlockAndWait:v11];
   if (*(v29 + 5))
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   else
   {
-    (*(v7 + 2))(v7, v23[5], v17[5]);
+    (*(handlerCopy + 2))(handlerCopy, v23[5], v17[5]);
   }
 
   _Block_object_dispose(&v16, 8);
@@ -1583,20 +1583,20 @@ LABEL_17:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)subscribedDeclarationsWithTypes:(id)a3 storeIdentifier:(id)a4 completionHandler:(id)a5
+- (void)subscribedDeclarationsWithTypes:(id)types storeIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typesCopy = types;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = +[RMLog storeController];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v9;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "SubscribedDeclarationsWithTypes with %{public}@...", &buf, 0xCu);
   }
 
-  v12 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v27 = 0x3032000000;
@@ -1615,30 +1615,30 @@ LABEL_17:
   v15[3] = &unk_1000D2E00;
   v18 = &v20;
   v15[4] = self;
-  v13 = v8;
+  v13 = typesCopy;
   v16 = v13;
-  v14 = v9;
+  v14 = identifierCopy;
   v17 = v14;
   p_buf = &buf;
-  [v12 performBlockAndWait:v15];
+  [context performBlockAndWait:v15];
   if (*(*(&buf + 1) + 40))
   {
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v10[2](v10, v21[5]);
+    handlerCopy[2](handlerCopy, v21[5]);
   }
 
   _Block_object_dispose(&v20, 8);
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)subscribedStoreConfigurationsVisibleUIWithTypes:(id)a3 completionHandler:(id)a4
+- (void)subscribedStoreConfigurationsVisibleUIWithTypes:(id)types completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  handlerCopy = handler;
   v8 = +[RMLog storeController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1646,7 +1646,7 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "SubscribedStoreConfigurationsVisibleUIWithTypes...", buf, 2u);
   }
 
-  v9 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *buf = 0;
   v29 = buf;
   v30 = 0x3032000000;
@@ -1673,17 +1673,17 @@ LABEL_17:
   v13 = buf;
   v14 = &v22;
   v15 = &v16;
-  v10 = v6;
+  v10 = typesCopy;
   v12 = v10;
-  [v9 performBlockAndWait:v11];
+  [context performBlockAndWait:v11];
   if (*(v29 + 5))
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   else
   {
-    (*(v7 + 2))(v7, v23[5], v17[5]);
+    (*(handlerCopy + 2))(handlerCopy, v23[5], v17[5]);
   }
 
   _Block_object_dispose(&v16, 8);
@@ -1692,20 +1692,20 @@ LABEL_17:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)resolveAsset:(id)a3 storeIdentifier:(id)a4 completionHandler:(id)a5
+- (void)resolveAsset:(id)asset storeIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = +[RMLog storeController];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v9;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "ResolveAsset with %{public}@...", &buf, 0xCu);
   }
 
-  v12 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v51 = 0x3032000000;
@@ -1737,19 +1737,19 @@ LABEL_17:
   v22[2] = sub_10007B6FC;
   v22[3] = &unk_1000D2F68;
   v22[4] = self;
-  v13 = v9;
+  v13 = identifierCopy;
   v23 = v13;
-  v14 = v8;
+  v14 = assetCopy;
   v24 = v14;
   p_buf = &buf;
   v26 = &v44;
   v27 = &v38;
   v28 = &v34;
   v29 = &v30;
-  [v12 performBlockAndWait:v22];
+  [context performBlockAndWait:v22];
   if (*(*(&buf + 1) + 40))
   {
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -1763,7 +1763,7 @@ LABEL_17:
     v19[2] = sub_10007B9D4;
     v19[3] = &unk_1000D2B88;
     v20 = v14;
-    v21 = v10;
+    v21 = handlerCopy;
     [RMStoreAssetResolver resolveAsset:v15 storeIdentifier:v13 unresolvedAsset:v20 personaID:v16 isDDM:v17 enrollmentType:v18 completionHandler:v19];
   }
 
@@ -1775,11 +1775,11 @@ LABEL_17:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)unassignAssets:(id)a3 completionHandler:(id)a4
+- (void)unassignAssets:(id)assets completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RMStoreController *)self context];
+  assetsCopy = assets;
+  handlerCopy = handler;
+  context = [(RMStoreController *)self context];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1791,10 +1791,10 @@ LABEL_17:
   v16[2] = sub_10007BC6C;
   v16[3] = &unk_1000D0E38;
   v16[4] = self;
-  v9 = v6;
+  v9 = assetsCopy;
   v17 = v9;
   v18 = &v19;
-  [v8 performBlockAndWait:v16];
+  [context performBlockAndWait:v16];
   v10 = v20[5];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -1802,29 +1802,29 @@ LABEL_17:
   v13[3] = &unk_1000D10B0;
   v11 = v9;
   v14 = v11;
-  v12 = v7;
+  v12 = handlerCopy;
   v15 = v12;
   [RMStoreAssetResolver unassignAssets:v11 personaID:v10 completionHandler:v13];
 
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)setConfigurationUIWithStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 declarationServerToken:(id)a5 visible:(BOOL)a6 ui:(id)a7 completionHandler:(id)a8
+- (void)setConfigurationUIWithStoreIdentifier:(id)identifier declarationIdentifier:(id)declarationIdentifier declarationServerToken:(id)token visible:(BOOL)visible ui:(id)ui completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  identifierCopy = identifier;
+  declarationIdentifierCopy = declarationIdentifier;
+  tokenCopy = token;
+  uiCopy = ui;
+  handlerCopy = handler;
   v19 = +[RMLog storeController];
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v14;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "SetConfigurationUIWithStoreIdentifier with %{public}@...", &buf, 0xCu);
   }
 
-  v20 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v41 = 0x3032000000;
@@ -1840,18 +1840,18 @@ LABEL_17:
   v27[2] = sub_10007C078;
   v27[3] = &unk_1000D2F90;
   v27[4] = self;
-  v21 = v14;
+  v21 = identifierCopy;
   v28 = v21;
   p_buf = &buf;
-  v22 = v15;
+  v22 = declarationIdentifierCopy;
   v29 = v22;
-  v23 = v16;
+  v23 = tokenCopy;
   v30 = v23;
-  v35 = a6;
-  v24 = v17;
+  visibleCopy = visible;
+  v24 = uiCopy;
   v31 = v24;
   v34 = &v36;
-  v25 = v20;
+  v25 = context;
   v32 = v25;
   [v25 performBlockAndWait:v27];
   v26 = *(&buf + 1);
@@ -1861,18 +1861,18 @@ LABEL_17:
     v26 = *(&buf + 1);
   }
 
-  v18[2](v18, *(v26 + 40));
+  handlerCopy[2](handlerCopy, *(v26 + 40));
 
   _Block_object_dispose(&v36, 8);
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)certificatePersistentRefForAssetKey:(id)a3 storeIdentifier:(id)a4 completionHandler:(id)a5
+- (void)certificatePersistentRefForAssetKey:(id)key storeIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RMStoreController *)self context];
+  keyCopy = key;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  context = [(RMStoreController *)self context];
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -1890,14 +1890,14 @@ LABEL_17:
   v18[2] = sub_10007CC58;
   v18[3] = &unk_1000D15B0;
   v18[4] = self;
-  v12 = v9;
+  v12 = identifierCopy;
   v19 = v12;
   v20 = &v28;
   v21 = &v22;
-  [v11 performBlockAndWait:v18];
+  [context performBlockAndWait:v18];
   if (v29[5])
   {
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -1905,20 +1905,20 @@ LABEL_17:
     v13 = +[RMStoreHelper storeScope];
     v14 = [RMManagedKeychainController newManagedKeychainControllerForScope:v13 personaID:v23[5]];
     v17 = 0;
-    v15 = [v14 certificatePersistentRefForAssetKey:v8 error:&v17];
+    v15 = [v14 certificatePersistentRefForAssetKey:keyCopy error:&v17];
     v16 = v17;
-    (v10[2])(v10, v15, v16);
+    (handlerCopy[2])(handlerCopy, v15, v16);
   }
 
   _Block_object_dispose(&v22, 8);
   _Block_object_dispose(&v28, 8);
 }
 
-- (void)certificateStatusWithStoreIdentifier:(id)a3 completionHandler:(id)a4
+- (void)certificateStatusWithStoreIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v33 = a4;
-  v34 = [(RMStoreController *)self context];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  context = [(RMStoreController *)self context];
   v58 = 0;
   v59 = &v58;
   v60 = 0x3032000000;
@@ -1936,14 +1936,14 @@ LABEL_17:
   v48[2] = sub_10007D2B0;
   v48[3] = &unk_1000D15B0;
   v48[4] = self;
-  v7 = v6;
+  v7 = identifierCopy;
   v49 = v7;
   v50 = &v58;
   v51 = &v52;
-  [v34 performBlockAndWait:v48];
+  [context performBlockAndWait:v48];
   if (v59[5])
   {
-    v33[2](v33, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -1957,7 +1957,7 @@ LABEL_17:
     if (v10)
     {
       v11 = v10;
-      (v33[2])(v33, 0, v10);
+      (handlerCopy[2])(handlerCopy, 0, v10);
     }
 
     else
@@ -1968,7 +1968,7 @@ LABEL_17:
       if (v12)
       {
         v11 = v12;
-        (v33[2])(v33, 0, v12);
+        (handlerCopy[2])(handlerCopy, 0, v12);
       }
 
       else
@@ -1995,8 +1995,8 @@ LABEL_17:
 
               v17 = *(*(&v42 + 1) + 8 * i);
               v18 = [RMStoreDeclarationKey newDeclarationKey:v17];
-              v19 = [v18 storeIdentifier];
-              v20 = [v19 isEqualToString:v7];
+              storeIdentifier = [v18 storeIdentifier];
+              v20 = [storeIdentifier isEqualToString:v7];
 
               if (v20)
               {
@@ -2017,7 +2017,7 @@ LABEL_17:
           v11 = v41;
           if (v11)
           {
-            (v33[2])(v33, 0, v11);
+            (handlerCopy[2])(handlerCopy, 0, v11);
           }
 
           else
@@ -2053,13 +2053,13 @@ LABEL_17:
               while (v23);
             }
 
-            (v33[2])(v33, v21, 0);
+            (handlerCopy[2])(handlerCopy, v21, 0);
           }
         }
 
         else
         {
-          (v33[2])(v33, &__NSDictionary0__struct, 0);
+          (handlerCopy[2])(handlerCopy, &__NSDictionary0__struct, 0);
           v11 = 0;
         }
       }
@@ -2070,19 +2070,19 @@ LABEL_17:
   _Block_object_dispose(&v58, 8);
 }
 
-- (void)metadataForStoreIdentifier:(id)a3 completionHandler:(id)a4
+- (void)metadataForStoreIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = +[RMLog storeController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "MetadataForStoreIdentifier in store %{public}@...", &buf, 0xCu);
   }
 
-  v9 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v22 = 0x3032000000;
@@ -2100,33 +2100,33 @@ LABEL_17:
   v11[2] = sub_10007D588;
   v11[3] = &unk_1000D15B0;
   v11[4] = self;
-  v10 = v6;
+  v10 = identifierCopy;
   v12 = v10;
   p_buf = &buf;
   v14 = &v15;
-  [v9 performBlockAndWait:v11];
-  v7[2](v7, v16[5], *(*(&buf + 1) + 40));
+  [context performBlockAndWait:v11];
+  handlerCopy[2](handlerCopy, v16[5], *(*(&buf + 1) + 40));
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)metadataValueForKey:(id)a3 storeIdentifier:(id)a4 completionHandler:(id)a5
+- (void)metadataValueForKey:(id)key storeIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = +[RMLog storeController];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    *&buf[4] = v8;
+    *&buf[4] = keyCopy;
     *&buf[12] = 2114;
-    *&buf[14] = v9;
+    *&buf[14] = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "MetadataValueForKey with key %{public}@ in store %{public}@...", buf, 0x16u);
   }
 
-  v12 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -2144,36 +2144,36 @@ LABEL_17:
   v15[2] = sub_10007DAB4;
   v15[3] = &unk_1000D2FB8;
   v15[4] = self;
-  v13 = v9;
+  v13 = identifierCopy;
   v16 = v13;
   v18 = buf;
-  v14 = v8;
+  v14 = keyCopy;
   v17 = v14;
   v19 = &v20;
-  [v12 performBlockAndWait:v15];
-  v10[2](v10, v21[5], *(*&buf[8] + 40));
+  [context performBlockAndWait:v15];
+  handlerCopy[2](handlerCopy, v21[5], *(*&buf[8] + 40));
 
   _Block_object_dispose(&v20, 8);
   _Block_object_dispose(buf, 8);
 }
 
-- (void)setMetadataValue:(id)a3 forKey:(id)a4 storeIdentifier:(id)a5 completionHandler:(id)a6
+- (void)setMetadataValue:(id)value forKey:(id)key storeIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  valueCopy = value;
+  keyCopy = key;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v14 = +[RMLog storeController];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    *&buf[4] = v11;
+    *&buf[4] = keyCopy;
     *&buf[12] = 2114;
-    *&buf[14] = v12;
+    *&buf[14] = identifierCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "SetMetadataValue with key %{public}@ in store %{public}@...", buf, 0x16u);
   }
 
-  v15 = [(RMStoreController *)self context];
+  context = [(RMStoreController *)self context];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -2185,25 +2185,25 @@ LABEL_17:
   v20[2] = sub_10007DF3C;
   v20[3] = &unk_1000D2EC8;
   v20[4] = self;
-  v16 = v12;
+  v16 = identifierCopy;
   v21 = v16;
   v25 = buf;
-  v17 = v11;
+  v17 = keyCopy;
   v22 = v17;
-  v18 = v10;
+  v18 = valueCopy;
   v23 = v18;
-  v19 = v15;
+  v19 = context;
   v24 = v19;
   [v19 performBlockAndWait:v20];
-  v13[2](v13, *(*&buf[8] + 40));
+  handlerCopy[2](handlerCopy, *(*&buf[8] + 40));
 
   _Block_object_dispose(buf, 8);
 }
 
-- (id)_observerStoreWithIdentifier:(id)a3 error:(id *)a4
+- (id)_observerStoreWithIdentifier:(id)identifier error:(id *)error
 {
   v11 = 0;
-  v5 = [(RMStoreController *)self _managementSourceWithIdentifier:a3 error:&v11];
+  v5 = [(RMStoreController *)self _managementSourceWithIdentifier:identifier error:&v11];
   v6 = v11;
   v7 = v6;
   if (v5)
@@ -2214,21 +2214,21 @@ LABEL_17:
   else
   {
     v8 = 0;
-    if (a4 && v6)
+    if (error && v6)
     {
       v9 = v6;
       v8 = 0;
-      *a4 = v7;
+      *error = v7;
     }
   }
 
   return v8;
 }
 
-- (id)_providerStoreWithIdentifier:(id)a3 error:(id *)a4
+- (id)_providerStoreWithIdentifier:(id)identifier error:(id *)error
 {
   v11 = 0;
-  v5 = [(RMStoreController *)self _managementSourceWithIdentifier:a3 error:&v11];
+  v5 = [(RMStoreController *)self _managementSourceWithIdentifier:identifier error:&v11];
   v6 = v11;
   v7 = v6;
   if (v5)
@@ -2239,21 +2239,21 @@ LABEL_17:
   else
   {
     v8 = 0;
-    if (a4 && v6)
+    if (error && v6)
     {
       v9 = v6;
       v8 = 0;
-      *a4 = v7;
+      *error = v7;
     }
   }
 
   return v8;
 }
 
-- (id)_subscriberStoreWithIdentifier:(id)a3 error:(id *)a4
+- (id)_subscriberStoreWithIdentifier:(id)identifier error:(id *)error
 {
   v11 = 0;
-  v5 = [(RMStoreController *)self _managementSourceWithIdentifier:a3 error:&v11];
+  v5 = [(RMStoreController *)self _managementSourceWithIdentifier:identifier error:&v11];
   v6 = v11;
   v7 = v6;
   if (v5)
@@ -2264,21 +2264,21 @@ LABEL_17:
   else
   {
     v8 = 0;
-    if (a4 && v6)
+    if (error && v6)
     {
       v9 = v6;
       v8 = 0;
-      *a4 = v7;
+      *error = v7;
     }
   }
 
   return v8;
 }
 
-- (id)_managementSourceWithIdentifier:(id)a3 error:(id *)a4
+- (id)_managementSourceWithIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
-  v6 = [RMManagementSource fetchRequestWithIdentifier:v5];
+  identifierCopy = identifier;
+  v6 = [RMManagementSource fetchRequestWithIdentifier:identifierCopy];
   v15 = 0;
   v7 = [v6 execute:&v15];
   v8 = v15;
@@ -2297,13 +2297,13 @@ LABEL_17:
         sub_100081650();
       }
 
-      if (a4)
+      if (error)
       {
-        v13 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:v5];
+        v13 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:identifierCopy];
         if (v13)
         {
           v13 = v13;
-          *a4 = v13;
+          *error = v13;
         }
       }
 
@@ -2320,18 +2320,18 @@ LABEL_17:
     }
 
     v9 = 0;
-    if (a4 && v8)
+    if (error && v8)
     {
       v11 = v8;
       v9 = 0;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
   return v9;
 }
 
-- (id)_allManagementSourcesReturningError:(id *)a3
+- (id)_allManagementSourcesReturningError:(id *)error
 {
   v4 = +[RMManagementSource fetchRequest];
   v20 = 0;
@@ -2378,47 +2378,47 @@ LABEL_17:
     }
 
     v7 = 0;
-    if (a3 && v6)
+    if (error && v6)
     {
       v14 = v6;
       v7 = 0;
-      *a3 = v6;
+      *error = v6;
     }
   }
 
   return v7;
 }
 
-- (void)_addOptionsToManagementSource:(id)a3 options:(id)a4
+- (void)_addOptionsToManagementSource:(id)source options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:RMStoreOptionName];
-  [v5 setName:v7];
+  sourceCopy = source;
+  optionsCopy = options;
+  v7 = [optionsCopy objectForKeyedSubscript:RMStoreOptionName];
+  [sourceCopy setName:v7];
 
-  v8 = [v6 objectForKeyedSubscript:RMStoreOptionDescription];
-  [v5 setStoreDescription:v8];
+  v8 = [optionsCopy objectForKeyedSubscript:RMStoreOptionDescription];
+  [sourceCopy setStoreDescription:v8];
 
   v9 = RMStoreOptionEnrollmentURL;
-  v10 = [v6 objectForKeyedSubscript:RMStoreOptionEnrollmentURL];
+  v10 = [optionsCopy objectForKeyedSubscript:RMStoreOptionEnrollmentURL];
 
   if (v10)
   {
-    v11 = [v6 objectForKeyedSubscript:v9];
+    v11 = [optionsCopy objectForKeyedSubscript:v9];
     v12 = [NSURL URLWithString:v11];
-    [v5 setBootstrapURI:v12];
+    [sourceCopy setBootstrapURI:v12];
   }
 
   v13 = RMStoreOptionMetaData;
-  v14 = [v6 objectForKeyedSubscript:RMStoreOptionMetaData];
+  v14 = [optionsCopy objectForKeyedSubscript:RMStoreOptionMetaData];
 
   if (v14)
   {
-    v15 = [v6 objectForKeyedSubscript:v13];
+    v15 = [optionsCopy objectForKeyedSubscript:v13];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [v5 managedObjectContext];
+      managedObjectContext = [sourceCopy managedObjectContext];
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
@@ -2441,12 +2441,12 @@ LABEL_17:
             }
 
             v22 = *(*(&v28 + 1) + 8 * v21);
-            v23 = [[RMManagementSourceMetadata alloc] initWithContext:v16];
+            v23 = [[RMManagementSourceMetadata alloc] initWithContext:managedObjectContext];
             [(RMManagementSourceMetadata *)v23 setKey:v22];
             v24 = [v17 objectForKeyedSubscript:v22];
             [(RMManagementSourceMetadata *)v23 setValue:v24];
 
-            [(RMManagementSourceMetadata *)v23 setManagementSource:v5];
+            [(RMManagementSourceMetadata *)v23 setManagementSource:sourceCopy];
             v21 = v21 + 1;
           }
 
@@ -2462,27 +2462,27 @@ LABEL_17:
 
     else
     {
-      v16 = +[RMLog storeController];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      managedObjectContext = +[RMLog storeController];
+      if (os_log_type_enabled(managedObjectContext, OS_LOG_TYPE_ERROR))
       {
         sub_100081720();
       }
     }
   }
 
-  v25 = [v6 objectForKeyedSubscript:RMStoreOptionAccountIdentifier];
-  [v5 setAccountIdentifier:v25];
+  v25 = [optionsCopy objectForKeyedSubscript:RMStoreOptionAccountIdentifier];
+  [sourceCopy setAccountIdentifier:v25];
 
-  v26 = [v6 objectForKeyedSubscript:RMStoreOptionPersonaIdentifier];
-  [v5 setPersonaIdentifier:v26];
+  v26 = [optionsCopy objectForKeyedSubscript:RMStoreOptionPersonaIdentifier];
+  [sourceCopy setPersonaIdentifier:v26];
 }
 
-- (id)_declarationsForStoreIdentifier:(id)a3 declarationTypes:(id)a4 identifier:(id)a5 error:(id *)a6
+- (id)_declarationsForStoreIdentifier:(id)identifier declarationTypes:(id)types identifier:(id)a5 error:(id *)error
 {
-  v28 = a4;
+  typesCopy = types;
   v27 = a5;
   v34 = 0;
-  v10 = [(RMStoreController *)self _managementSourceWithIdentifier:a3 error:&v34];
+  v10 = [(RMStoreController *)self _managementSourceWithIdentifier:identifier error:&v34];
   v11 = v34;
   v12 = v11;
   if (v10)
@@ -2501,7 +2501,7 @@ LABEL_17:
     if (v15)
     {
       v16 = v15;
-      v26 = a6;
+      errorCopy = error;
       v17 = *v31;
       while (2)
       {
@@ -2516,22 +2516,22 @@ LABEL_17:
 
           v20 = *(*(&v30 + 1) + 8 * v18);
           v29 = v19;
-          v21 = [(RMStoreController *)self _declarationsOfClass:v20 managementSource:v10 declarationTypes:v28 identifier:v27 error:&v29, v26];
+          errorCopy = [(RMStoreController *)self _declarationsOfClass:v20 managementSource:v10 declarationTypes:typesCopy identifier:v27 error:&v29, errorCopy];
           v12 = v29;
 
-          if (!v21)
+          if (!errorCopy)
           {
-            if (v26 && v12)
+            if (errorCopy && v12)
             {
               v23 = v12;
-              *v26 = v12;
+              *errorCopy = v12;
             }
 
             v22 = 0;
             goto LABEL_15;
           }
 
-          [v13 addObjectsFromArray:v21];
+          [v13 addObjectsFromArray:errorCopy];
 
           v18 = v18 + 1;
           v19 = v12;
@@ -2555,56 +2555,56 @@ LABEL_15:
   else
   {
     v22 = 0;
-    if (a6 && v11)
+    if (error && v11)
     {
       v24 = v11;
       v22 = 0;
-      *a6 = v12;
+      *error = v12;
     }
   }
 
   return v22;
 }
 
-- (id)_declarationsOfClass:(Class)a3 managementSource:(id)a4 declarationTypes:(id)a5 identifier:(id)a6 error:(id *)a7
+- (id)_declarationsOfClass:(Class)class managementSource:(id)source declarationTypes:(id)types identifier:(id)identifier error:(id *)error
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0 || ([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0 || ([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0 || ([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  sourceCopy = source;
+  typesCopy = types;
+  identifierCopy = identifier;
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0 || ([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0 || ([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0 || ([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
-    v14 = [(objc_class *)a3 fetchRequest];
-    if (v12)
+    fetchRequest = [(objc_class *)class fetchRequest];
+    if (typesCopy)
     {
       v37 = @"declarationType";
-      v39 = v12;
+      v39 = typesCopy;
       v15 = @"(%K == %@) && ((%K == %d) || (%K == %d)) && (%K in %@)";
     }
 
     else
     {
-      if (!v13)
+      if (!identifierCopy)
       {
-        [NSPredicate predicateWithFormat:@"(%K == %@) && ((%K == %d) || (%K == %d))", @"managementSource", v11, @"loadState", 1, @"loadState", 4, v36, v38];
+        [NSPredicate predicateWithFormat:@"(%K == %@) && ((%K == %d) || (%K == %d))", @"managementSource", sourceCopy, @"loadState", 1, @"loadState", 4, v36, v38];
         goto LABEL_10;
       }
 
       v37 = @"identifier";
-      v39 = v13;
+      v39 = identifierCopy;
       v15 = @"(%K == %@) && ((%K == %d) || (%K == %d)) && (%K == %@)";
     }
 
-    [NSPredicate predicateWithFormat:v15, @"managementSource", v11, @"loadState", 1, @"loadState", 4, v37, v39];
+    [NSPredicate predicateWithFormat:v15, @"managementSource", sourceCopy, @"loadState", 1, @"loadState", 4, v37, v39];
     v16 = LABEL_10:;
-    [v14 setPredicate:v16];
+    [fetchRequest setPredicate:v16];
 
     v50 = 0;
-    v17 = [v14 execute:&v50];
+    v17 = [fetchRequest execute:&v50];
     v18 = v50;
     if (v17)
     {
-      v42 = v13;
-      v43 = v12;
+      v42 = identifierCopy;
+      v43 = typesCopy;
       v19 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v17 count]);
       v46 = 0u;
       v47 = 0u;
@@ -2616,7 +2616,7 @@ LABEL_15:
       if (v20)
       {
         v21 = v20;
-        v40 = a7;
+        errorCopy = error;
         v22 = *v47;
         while (2)
         {
@@ -2629,9 +2629,9 @@ LABEL_15:
               objc_enumerationMutation(obj);
             }
 
-            v25 = [*(*(&v46 + 1) + 8 * v23) payload];
+            payload = [*(*(&v46 + 1) + 8 * v23) payload];
             v45 = v24;
-            v26 = [RMModelDeclarationBase loadData:v25 serializationType:0 error:&v45];
+            v26 = [RMModelDeclarationBase loadData:payload serializationType:0 error:&v45];
             v18 = v45;
 
             if (!v26)
@@ -2642,13 +2642,13 @@ LABEL_15:
                 sub_100081814();
               }
 
-              v13 = v42;
-              v12 = v43;
+              identifierCopy = v42;
+              typesCopy = v43;
               v17 = v41;
-              if (v40 && v18)
+              if (errorCopy && v18)
               {
                 v29 = v18;
-                *v40 = v18;
+                *errorCopy = v18;
               }
 
               v27 = 0;
@@ -2673,8 +2673,8 @@ LABEL_15:
       }
 
       v27 = v19;
-      v12 = v43;
-      v13 = v42;
+      typesCopy = v43;
+      identifierCopy = v42;
       v17 = v41;
 LABEL_26:
     }
@@ -2688,11 +2688,11 @@ LABEL_26:
       }
 
       v27 = 0;
-      if (a7 && v18)
+      if (error && v18)
       {
         v31 = v18;
         v27 = 0;
-        *a7 = v18;
+        *error = v18;
       }
     }
 
@@ -2702,18 +2702,18 @@ LABEL_26:
   v33 = +[RMLog storeController];
   if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
   {
-    sub_100081788(a3);
+    sub_100081788(class);
   }
 
-  if (a7)
+  if (error)
   {
     v34 = +[RMErrorUtilities createInternalError];
-    v14 = v34;
+    fetchRequest = v34;
     if (v34)
     {
       v35 = v34;
       v27 = 0;
-      *a7 = v14;
+      *error = fetchRequest;
     }
 
     else
@@ -2732,34 +2732,34 @@ LABEL_34:
   return v27;
 }
 
-- (id)_activeConfigurationsForConfigurationTypes:(id)a3 storeIdentifier:(id)a4 includeAssets:(BOOL)a5 error:(id *)a6
+- (id)_activeConfigurationsForConfigurationTypes:(id)types storeIdentifier:(id)identifier includeAssets:(BOOL)assets error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
+  assetsCopy = assets;
+  typesCopy = types;
   v36 = 0;
-  v11 = [(RMStoreController *)self _managementSourceWithIdentifier:a4 error:&v36];
+  v11 = [(RMStoreController *)self _managementSourceWithIdentifier:identifier error:&v36];
   v12 = v36;
   v13 = v12;
   if (v11)
   {
-    v30 = v7;
+    v30 = assetsCopy;
     v14 = [RMConfigurationQuerier alloc];
-    v15 = [(RMStoreController *)self persistentContainer];
-    v16 = [(RMConfigurationQuerier *)v14 initWithPersistentContainer:v15];
+    persistentContainer = [(RMStoreController *)self persistentContainer];
+    v16 = [(RMConfigurationQuerier *)v14 initWithPersistentContainer:persistentContainer];
 
-    v31 = v10;
-    v17 = [v10 allObjects];
-    v18 = [v11 identifier];
+    v31 = typesCopy;
+    allObjects = [typesCopy allObjects];
+    identifier = [v11 identifier];
     v29 = v16;
-    v19 = [(RMConfigurationQuerier *)v16 activeConfigurationsByTypeForTypes:v17 managementSourceIdentifier:v18 error:a6];
+    v19 = [(RMConfigurationQuerier *)v16 activeConfigurationsByTypeForTypes:allObjects managementSourceIdentifier:identifier error:error];
 
     v20 = objc_opt_new();
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v21 = [v19 allValues];
-    v22 = [v21 countByEnumeratingWithState:&v32 objects:v37 count:16];
+    allValues = [v19 allValues];
+    v22 = [allValues countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v22)
     {
       v23 = v22;
@@ -2770,85 +2770,85 @@ LABEL_34:
         {
           if (*v33 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(allValues);
           }
 
           [v20 addObjectsFromArray:*(*(&v32 + 1) + 8 * i)];
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v32 objects:v37 count:16];
+        v23 = [allValues countByEnumeratingWithState:&v32 objects:v37 count:16];
       }
 
       while (v23);
     }
 
-    v26 = [(RMStoreController *)self _buildFlattenedConfigurations:v20 includeAssets:v30 error:a6];
+    v26 = [(RMStoreController *)self _buildFlattenedConfigurations:v20 includeAssets:v30 error:error];
 
-    v10 = v31;
+    typesCopy = v31;
   }
 
   else
   {
     v26 = 0;
-    if (a6 && v12)
+    if (error && v12)
     {
       v27 = v12;
       v26 = 0;
-      *a6 = v13;
+      *error = v13;
     }
   }
 
   return v26;
 }
 
-- (id)_activeConfigurationsForStoreIdentifier:(id)a3 error:(id *)a4
+- (id)_activeConfigurationsForStoreIdentifier:(id)identifier error:(id *)error
 {
   v17 = 0;
-  v6 = [(RMStoreController *)self _managementSourceWithIdentifier:a3 error:&v17];
+  v6 = [(RMStoreController *)self _managementSourceWithIdentifier:identifier error:&v17];
   v7 = v17;
   v8 = v7;
   if (v6)
   {
     v9 = [RMConfigurationQuerier alloc];
-    v10 = [(RMStoreController *)self persistentContainer];
-    v11 = [(RMConfigurationQuerier *)v9 initWithPersistentContainer:v10];
+    persistentContainer = [(RMStoreController *)self persistentContainer];
+    v11 = [(RMConfigurationQuerier *)v9 initWithPersistentContainer:persistentContainer];
 
-    v12 = [v6 identifier];
-    v13 = [(RMConfigurationQuerier *)v11 activeConfigurationsForManagementSourceIdentifier:v12 error:a4];
+    identifier = [v6 identifier];
+    v13 = [(RMConfigurationQuerier *)v11 activeConfigurationsForManagementSourceIdentifier:identifier error:error];
 
-    v14 = [(RMStoreController *)self _buildFlattenedConfigurations:v13 includeAssets:0 error:a4];
+    v14 = [(RMStoreController *)self _buildFlattenedConfigurations:v13 includeAssets:0 error:error];
   }
 
   else
   {
     v14 = 0;
-    if (a4 && v7)
+    if (error && v7)
     {
       v15 = v7;
       v14 = 0;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
   return v14;
 }
 
-- (id)_configurationsWithVisibleUIForConfigurationTypes:(id)a3 managementSource:(id)a4 error:(id *)a5
+- (id)_configurationsWithVisibleUIForConfigurationTypes:(id)types managementSource:(id)source error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  typesCopy = types;
+  sourceCopy = source;
   v10 = [RMConfigurationQuerier alloc];
-  v33 = self;
-  v11 = [(RMStoreController *)self persistentContainer];
-  v12 = [(RMConfigurationQuerier *)v10 initWithPersistentContainer:v11];
+  selfCopy = self;
+  persistentContainer = [(RMStoreController *)self persistentContainer];
+  v12 = [(RMConfigurationQuerier *)v10 initWithPersistentContainer:persistentContainer];
 
-  v36 = v8;
-  v13 = [v8 allObjects];
-  v35 = v9;
-  v14 = [v9 identifier];
+  v36 = typesCopy;
+  allObjects = [typesCopy allObjects];
+  v35 = sourceCopy;
+  identifier = [sourceCopy identifier];
   v32 = v12;
-  v34 = a5;
-  v15 = [(RMConfigurationQuerier *)v12 configurationUIsByTypeForTypes:v13 managementSourceIdentifier:v14 error:a5];
+  errorCopy = error;
+  v15 = [(RMConfigurationQuerier *)v12 configurationUIsByTypeForTypes:allObjects managementSourceIdentifier:identifier error:error];
 
   v41 = objc_opt_new();
   v46 = 0u;
@@ -2893,11 +2893,11 @@ LABEL_34:
               }
 
               v23 = *(*(&v42 + 1) + 8 * i);
-              v24 = [v23 channel];
-              v25 = [v24 identifier];
-              v26 = [v23 identifier];
-              v27 = [v23 serverToken];
-              v28 = [RMConfigurationStatusArchiver validStatusForStoreIdentifier:v25 declarationIdentifier:v26 serverToken:v27];
+              channel = [v23 channel];
+              identifier2 = [channel identifier];
+              identifier3 = [v23 identifier];
+              serverToken = [v23 serverToken];
+              v28 = [RMConfigurationStatusArchiver validStatusForStoreIdentifier:identifier2 declarationIdentifier:identifier3 serverToken:serverToken];
 
               if (v28)
               {
@@ -2921,23 +2921,23 @@ LABEL_34:
     while (v39);
   }
 
-  v29 = [(RMStoreController *)v33 _buildFlattenedConfigurations:v41 includeAssets:1 error:v34];
+  v29 = [(RMStoreController *)selfCopy _buildFlattenedConfigurations:v41 includeAssets:1 error:errorCopy];
 
   return v29;
 }
 
-- (id)_buildFlattenedConfigurations:(id)a3 includeAssets:(BOOL)a4 error:(id *)a5
+- (id)_buildFlattenedConfigurations:(id)configurations includeAssets:(BOOL)assets error:(id *)error
 {
-  v5 = a4;
-  v6 = a3;
+  assetsCopy = assets;
+  configurationsCopy = configurations;
   v7 = objc_opt_new();
-  if (v5)
+  if (assetsCopy)
   {
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v8 = v6;
+    v8 = configurationsCopy;
     v9 = [v8 countByEnumeratingWithState:&v53 objects:v59 count:16];
     if (v9)
     {
@@ -2952,12 +2952,12 @@ LABEL_34:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v53 + 1) + 8 * i) assetByIdentifier];
-          v14 = v13;
-          if (v13)
+          assetByIdentifier = [*(*(&v53 + 1) + 8 * i) assetByIdentifier];
+          v14 = assetByIdentifier;
+          if (assetByIdentifier)
           {
-            v15 = [v13 allValues];
-            [v7 addObjectsFromArray:v15];
+            allValues = [assetByIdentifier allValues];
+            [v7 addObjectsFromArray:allValues];
           }
         }
 
@@ -2968,12 +2968,12 @@ LABEL_34:
     }
   }
 
-  v42 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count] + objc_msgSend(v7, "count"));
+  v42 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [configurationsCopy count] + objc_msgSend(v7, "count"));
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v16 = v6;
+  v16 = configurationsCopy;
   v17 = [v16 countByEnumeratingWithState:&v49 objects:v58 count:16];
   obj = v16;
   if (v17)
@@ -2992,9 +2992,9 @@ LABEL_34:
           objc_enumerationMutation(obj);
         }
 
-        v23 = [*(*(&v49 + 1) + 8 * v21) content];
+        content = [*(*(&v49 + 1) + 8 * v21) content];
         v48 = v22;
-        v24 = [RMModelDeclarationBase loadData:v23 serializationType:0 error:&v48];
+        v24 = [RMModelDeclarationBase loadData:content serializationType:0 error:&v48];
         v19 = v48;
 
         if (!v24)
@@ -3006,10 +3006,10 @@ LABEL_34:
           }
 
           v26 = obj;
-          if (a5 && v19)
+          if (error && v19)
           {
             v27 = v19;
-            *a5 = v19;
+            *error = v19;
           }
 
 LABEL_43:
@@ -3061,9 +3061,9 @@ LABEL_43:
           objc_enumerationMutation(v40);
         }
 
-        v33 = [*(*(&v44 + 1) + 8 * v31) content];
+        content2 = [*(*(&v44 + 1) + 8 * v31) content];
         v43 = v32;
-        v34 = [RMModelDeclarationBase loadData:v33 serializationType:0 error:&v43];
+        v34 = [RMModelDeclarationBase loadData:content2 serializationType:0 error:&v43];
         v19 = v43;
 
         if (!v34)
@@ -3075,10 +3075,10 @@ LABEL_43:
           }
 
           v26 = obj;
-          if (a5 && v19)
+          if (error && v19)
           {
             v37 = v19;
-            *a5 = v19;
+            *error = v19;
           }
 
           goto LABEL_43;
@@ -3108,10 +3108,10 @@ LABEL_44:
   return v35;
 }
 
-- (id)_payloadsForDeclarationIdentifier:(id)a3 managementSource:(id)a4 error:(id *)a5
+- (id)_payloadsForDeclarationIdentifier:(id)identifier managementSource:(id)source error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  sourceCopy = source;
   v10 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
@@ -3126,7 +3126,7 @@ LABEL_44:
   if (v11)
   {
     v12 = v11;
-    v22 = a5;
+    errorCopy = error;
     v13 = 0;
     v14 = *v26;
     while (2)
@@ -3142,15 +3142,15 @@ LABEL_44:
 
         v17 = *(*(&v25 + 1) + 8 * v15);
         v24 = v16;
-        v18 = [(RMStoreController *)self _payloadsForPayloadClass:v17 identifier:v8 managementSource:v9 error:&v24];
+        v18 = [(RMStoreController *)self _payloadsForPayloadClass:v17 identifier:identifierCopy managementSource:sourceCopy error:&v24];
         v13 = v24;
 
         if (!v18)
         {
-          if (v22 && v13)
+          if (errorCopy && v13)
           {
             v19 = v13;
-            *v22 = v13;
+            *errorCopy = v13;
           }
 
           v20 = 0;
@@ -3185,22 +3185,22 @@ LABEL_16:
   return v20;
 }
 
-- (id)_payloadsForPayloadClass:(Class)a3 identifier:(id)a4 managementSource:(id)a5 error:(id *)a6
+- (id)_payloadsForPayloadClass:(Class)class identifier:(id)identifier managementSource:(id)source error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
-  if (([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0 || ([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0 || ([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0 || ([(objc_class *)a3 isEqual:objc_opt_class()]& 1) != 0)
+  identifierCopy = identifier;
+  sourceCopy = source;
+  if (([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0 || ([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0 || ([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0 || ([(objc_class *)class isEqual:objc_opt_class()]& 1) != 0)
   {
-    v11 = [(objc_class *)a3 fetchRequest];
-    v12 = [NSPredicate predicateWithFormat:@"(%K == %@) && (%K == %@)", @"managementSource", v10, @"identifier", v9];
-    [v11 setPredicate:v12];
+    fetchRequest = [(objc_class *)class fetchRequest];
+    identifierCopy = [NSPredicate predicateWithFormat:@"(%K == %@) && (%K == %@)", @"managementSource", sourceCopy, @"identifier", identifierCopy];
+    [fetchRequest setPredicate:identifierCopy];
 
     v24 = @"declarationType";
     v13 = [NSArray arrayWithObjects:&v24 count:1];
-    [v11 setPropertiesToFetch:v13];
+    [fetchRequest setPropertiesToFetch:v13];
 
     v23 = 0;
-    v14 = [v11 execute:&v23];
+    v14 = [fetchRequest execute:&v23];
     v15 = v23;
     if (v14)
     {
@@ -3215,10 +3215,10 @@ LABEL_16:
         sub_100081540();
       }
 
-      if (a6 && v15)
+      if (error && v15)
       {
         v18 = v15;
-        *a6 = v15;
+        *error = v15;
       }
     }
 
@@ -3228,18 +3228,18 @@ LABEL_16:
   v20 = +[RMLog storeController];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
-    sub_100081788(a3);
+    sub_100081788(class);
   }
 
-  if (a6)
+  if (error)
   {
     v21 = +[RMErrorUtilities createInternalError];
-    v11 = v21;
+    fetchRequest = v21;
     if (v21)
     {
       v22 = v21;
       v14 = 0;
-      *a6 = v11;
+      *error = fetchRequest;
     }
 
     else
@@ -3258,15 +3258,15 @@ LABEL_14:
   return v14;
 }
 
-- (id)_newPayloadWithDeclaration:(id)a3 managementSource:(id)a4 error:(id *)a5
+- (id)_newPayloadWithDeclaration:(id)declaration managementSource:(id)source error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  declarationCopy = declaration;
+  sourceCopy = source;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_4:
-    v12 = [v8 managedObjectContext];
+    managedObjectContext = [sourceCopy managedObjectContext];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -3300,13 +3300,13 @@ LABEL_4:
               sub_100081A38();
             }
 
-            if (a5)
+            if (error)
             {
               v23 = +[RMErrorUtilities createInternalError];
               if (v23)
               {
                 v23 = v23;
-                *a5 = v23;
+                *error = v23;
               }
             }
 
@@ -3321,16 +3321,16 @@ LABEL_4:
       }
     }
 
-    v16 = [objc_alloc(*v13) initWithContext:v12];
-    [v16 setManagementSource:v8];
-    v17 = [v7 declarationIdentifier];
-    [v16 setIdentifier:v17];
+    v16 = [objc_alloc(*v13) initWithContext:managedObjectContext];
+    [v16 setManagementSource:sourceCopy];
+    declarationIdentifier = [declarationCopy declarationIdentifier];
+    [v16 setIdentifier:declarationIdentifier];
 
-    v18 = [v7 declarationServerToken];
-    [v16 setServerToken:v18];
+    declarationServerToken = [declarationCopy declarationServerToken];
+    [v16 setServerToken:declarationServerToken];
 
     v25 = 0;
-    v19 = [v16 loadPayload:v7 error:&v25];
+    v19 = [v16 loadPayload:declarationCopy error:&v25];
     v9 = v25;
     if (v19)
     {
@@ -3347,11 +3347,11 @@ LABEL_4:
       }
 
       v14 = 0;
-      if (a5 && v9)
+      if (error && v9)
       {
         v21 = v9;
         v14 = 0;
-        *a5 = v9;
+        *error = v9;
       }
     }
 
@@ -3360,7 +3360,7 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v9 = [v7 serializeWithType:0];
+  v9 = [declarationCopy serializeWithType:0];
   v26 = 0;
   v10 = [RMModelDeclarationBase load:v9 serializationType:0 error:&v26];
   v11 = v26;
@@ -3368,19 +3368,19 @@ LABEL_30:
   if (v10)
   {
 
-    v7 = v10;
+    declarationCopy = v10;
     goto LABEL_4;
   }
 
   v14 = 0;
-  if (a5 && v11)
+  if (error && v11)
   {
     v15 = v11;
     v14 = 0;
-    *a5 = v11;
+    *error = v11;
   }
 
-  v7 = v11;
+  declarationCopy = v11;
 LABEL_31:
 
   return v14;

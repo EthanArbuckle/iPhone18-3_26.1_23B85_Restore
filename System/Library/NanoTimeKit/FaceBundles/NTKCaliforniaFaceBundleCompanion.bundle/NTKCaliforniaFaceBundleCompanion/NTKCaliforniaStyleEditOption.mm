@@ -1,8 +1,8 @@
 @interface NTKCaliforniaStyleEditOption
-+ (BOOL)_valueIsValid:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_orderedIndicNumeralsEditOptionsForDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (BOOL)_valueIsValid:(unint64_t)valid forDevice:(id)device;
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device;
++ (id)_orderedIndicNumeralsEditOptionsForDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 + (unint64_t)resolvedAutomaticStyleForCurrentLocale;
 + (unint64_t)resolvedNumeralSystemOfFirstLanguage;
 - (id)_valueToFaceBundleStringDict;
@@ -45,23 +45,23 @@
   }
 }
 
-+ (BOOL)_valueIsValid:(unint64_t)a3 forDevice:(id)a4
++ (BOOL)_valueIsValid:(unint64_t)valid forDevice:(id)device
 {
-  if (a3 == -1)
+  if (valid == -1)
   {
     return 1;
   }
 
   v8 = v4;
   v9 = v5;
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___NTKCaliforniaStyleEditOption;
-  return objc_msgSendSuper2(&v7, "_valueIsValid:forDevice:", a3, a4);
+  return objc_msgSendSuper2(&v7, "_valueIsValid:forDevice:", valid, device);
 }
 
-+ (id)_orderedIndicNumeralsEditOptionsForDevice:(id)a3
++ (id)_orderedIndicNumeralsEditOptionsForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = objc_alloc_init(NSMutableDictionary);
   v5 = _EnumValueRange();
   v27 = 0u;
@@ -83,7 +83,7 @@
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
-        v11 = +[NTKCaliforniaStyleEditOption _localizedNameForValue:forDevice:](NTKCaliforniaStyleEditOption, "_localizedNameForValue:forDevice:", [v10 unsignedIntegerValue], v3);
+        v11 = +[NTKCaliforniaStyleEditOption _localizedNameForValue:forDevice:](NTKCaliforniaStyleEditOption, "_localizedNameForValue:forDevice:", [v10 unsignedIntegerValue], deviceCopy);
         [v4 setObject:v10 forKey:v11];
       }
 
@@ -93,8 +93,8 @@
     while (v7);
   }
 
-  v12 = [v4 allKeys];
-  v13 = [v12 sortedArrayUsingSelector:"localizedCaseInsensitiveCompare:"];
+  allKeys = [v4 allKeys];
+  v13 = [allKeys sortedArrayUsingSelector:"localizedCaseInsensitiveCompare:"];
 
   v14 = objc_alloc_init(NSMutableArray);
   v23 = 0u;
@@ -134,38 +134,38 @@
   return v21;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 + 1 > 0x13)
+  if (value + 1 > 0x13)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1C560 + a3 + 1);
+    return *(&off_1C560 + value + 1);
   }
 }
 
 - (id)localizedName
 {
-  v3 = [(NTKCaliforniaStyleEditOption *)self style];
-  v4 = [(NTKCaliforniaStyleEditOption *)self device];
-  v5 = [NTKCaliforniaStyleEditOption _localizedNameForValue:v3 forDevice:v4];
+  style = [(NTKCaliforniaStyleEditOption *)self style];
+  device = [(NTKCaliforniaStyleEditOption *)self device];
+  v5 = [NTKCaliforniaStyleEditOption _localizedNameForValue:style forDevice:device];
 
   return v5;
 }
 
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = _os_feature_enabled_impl();
   if (v6)
   {
-    v6 = [v5 supportsPDRCapability:270936181];
+    v6 = [deviceCopy supportsPDRCapability:270936181];
   }
 
-  switch(a3)
+  switch(value)
   {
     case 0uLL:
       v7 = @"EDIT_OPTION_LABEL_CALIFORNIA_STYLE_PILLS";

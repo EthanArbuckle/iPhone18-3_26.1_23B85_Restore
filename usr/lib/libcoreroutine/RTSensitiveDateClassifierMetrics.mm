@@ -1,11 +1,11 @@
 @interface RTSensitiveDateClassifierMetrics
 - (RTSensitiveDateClassifierMetrics)init;
-- (id)collectMetricsWithLookbackWindowDate:(id)a3;
-- (void)addCurrentLocation:(id)a3 fromSource:(int64_t)a4;
-- (void)processSignal:(int64_t)a3 date:(id)a4;
+- (id)collectMetricsWithLookbackWindowDate:(id)date;
+- (void)addCurrentLocation:(id)location fromSource:(int64_t)source;
+- (void)processSignal:(int64_t)signal date:(id)date;
 - (void)setup;
-- (void)submitMetricsWithLookbackWindowDate:(id)a3;
-- (void)updateWifiAccessPointCount:(unint64_t)a3;
+- (void)submitMetricsWithLookbackWindowDate:(id)date;
+- (void)updateWifiAccessPointCount:(unint64_t)count;
 @end
 
 @implementation RTSensitiveDateClassifierMetrics
@@ -36,29 +36,29 @@
   *&self->_parkedCarSignalAvailability = xmmword_230AFE2A0;
 }
 
-- (void)processSignal:(int64_t)a3 date:(id)a4
+- (void)processSignal:(int64_t)signal date:(id)date
 {
-  v8 = a4;
-  if (a3 == 4)
+  dateCopy = date;
+  if (signal == 4)
   {
     [(RTSensitiveDateClassifierMetrics *)self setParkedCarSignalAvailability:1];
   }
 
   gatingSignalDate = self->_gatingSignalDate;
-  if (!gatingSignalDate || [(NSDate *)gatingSignalDate compare:v8]== NSOrderedAscending)
+  if (!gatingSignalDate || [(NSDate *)gatingSignalDate compare:dateCopy]== NSOrderedAscending)
   {
-    objc_storeStrong(&self->_gatingSignalDate, a4);
-    self->_lookbackWindowCategory = a3;
+    objc_storeStrong(&self->_gatingSignalDate, date);
+    self->_lookbackWindowCategory = signal;
   }
 }
 
-- (void)addCurrentLocation:(id)a3 fromSource:(int64_t)a4
+- (void)addCurrentLocation:(id)location fromSource:(int64_t)source
 {
-  v6 = a3;
-  if (v6)
+  locationCopy = location;
+  if (locationCopy)
   {
-    [(RTSensitiveDateClassifierMetrics *)self setCurrentLocationAvailability:a4];
-    -[RTSensitiveDateClassifierMetrics setCurrentLocationSignalEnvironmentType:](self, "setCurrentLocationSignalEnvironmentType:", [v6 signalEnvironmentType]);
+    [(RTSensitiveDateClassifierMetrics *)self setCurrentLocationAvailability:source];
+    -[RTSensitiveDateClassifierMetrics setCurrentLocationSignalEnvironmentType:](self, "setCurrentLocationSignalEnvironmentType:", [locationCopy signalEnvironmentType]);
   }
 
   else
@@ -72,23 +72,23 @@
   }
 }
 
-- (void)updateWifiAccessPointCount:(unint64_t)a3
+- (void)updateWifiAccessPointCount:(unint64_t)count
 {
-  v4 = [(RTSensitiveDateClassifierMetrics *)self wifiAPCount]+ a3;
+  v4 = [(RTSensitiveDateClassifierMetrics *)self wifiAPCount]+ count;
 
   [(RTSensitiveDateClassifierMetrics *)self setWifiAPCount:v4];
 }
 
-- (id)collectMetricsWithLookbackWindowDate:(id)a3
+- (id)collectMetricsWithLookbackWindowDate:(id)date
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 date];
-  [v6 timeIntervalSinceDate:self->_startDate];
+  dateCopy = date;
+  date = [v4 date];
+  [date timeIntervalSinceDate:self->_startDate];
   v8 = v7;
 
-  v9 = [MEMORY[0x277CBEAA8] date];
-  [v9 timeIntervalSinceDate:v5];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  [date2 timeIntervalSinceDate:dateCopy];
   v11 = v10;
 
   v12 = objc_opt_new();
@@ -116,9 +116,9 @@
   return v12;
 }
 
-- (void)submitMetricsWithLookbackWindowDate:(id)a3
+- (void)submitMetricsWithLookbackWindowDate:(id)date
 {
-  v6 = [(RTSensitiveDateClassifierMetrics *)self collectMetricsWithLookbackWindowDate:a3];
+  v6 = [(RTSensitiveDateClassifierMetrics *)self collectMetricsWithLookbackWindowDate:date];
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = [v3 initWithCString:RTAnalyticsEventSensitiveDateClassifierMetrics encoding:1];
   log_analytics_submission(v4, v6);

@@ -1,56 +1,56 @@
 @interface OpusMarimbaProducer_MPAssetKeyDelegate
-- (CGSize)resolutionForAssetKey:(id)a3;
-- (id)absolutePathForAssetKey:(id)a3;
-- (id)absolutePathForAssetKey:(id)a3 andSize:(CGSize)a4;
-- (id)absolutePathForStillAssetAtPath:(id)a3 andSize:(CGSize)a4;
-- (id)mediaItemForAssetPath:(id)a3;
-- (id)updatedAssetPathForAssetPath:(id)a3;
-- (id)urlForAssetKey:(id)a3;
+- (CGSize)resolutionForAssetKey:(id)key;
+- (id)absolutePathForAssetKey:(id)key;
+- (id)absolutePathForAssetKey:(id)key andSize:(CGSize)size;
+- (id)absolutePathForStillAssetAtPath:(id)path andSize:(CGSize)size;
+- (id)mediaItemForAssetPath:(id)path;
+- (id)updatedAssetPathForAssetPath:(id)path;
+- (id)urlForAssetKey:(id)key;
 @end
 
 @implementation OpusMarimbaProducer_MPAssetKeyDelegate
 
-- (id)absolutePathForAssetKey:(id)a3
+- (id)absolutePathForAssetKey:(id)key
 {
   if (OFLoggerLevel >= 4)
   {
-    [OFLogger logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKitPlugins/OpusProducers/OpusMarimbaProducer/OpusMarimbaProducer.m" line:965 andFormat:@"OpusMarimbaProducer_MPAssetKeyDelegate: absolutePathForAssetKey:%@", a3];
+    [OFLogger logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKitPlugins/OpusProducers/OpusMarimbaProducer/OpusMarimbaProducer.m" line:965 andFormat:@"OpusMarimbaProducer_MPAssetKeyDelegate: absolutePathForAssetKey:%@", key];
   }
 
-  v5 = [(OpusMarimbaProducer_MPAssetKeyDelegate *)self mediaItemForAssetPath:a3];
+  v5 = [(OpusMarimbaProducer_MPAssetKeyDelegate *)self mediaItemForAssetPath:key];
   if (!v5)
   {
-    return a3;
+    return key;
   }
 
-  v6 = [v5 resourceURL];
+  resourceURL = [v5 resourceURL];
 
-  return [v6 path];
+  return [resourceURL path];
 }
 
-- (id)absolutePathForAssetKey:(id)a3 andSize:(CGSize)a4
+- (id)absolutePathForAssetKey:(id)key andSize:(CGSize)size
 {
   if (OFLoggerLevel >= 4)
   {
-    [OFLogger logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKitPlugins/OpusProducers/OpusMarimbaProducer/OpusMarimbaProducer.m" line:976 andFormat:@"OpusMarimbaProducer_MPAssetKeyDelegate: absolutePathForAssetKey:%@ andSize:%@", a3, NSStringFromCGSize(a4)];
+    [OFLogger logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKitPlugins/OpusProducers/OpusMarimbaProducer/OpusMarimbaProducer.m" line:976 andFormat:@"OpusMarimbaProducer_MPAssetKeyDelegate: absolutePathForAssetKey:%@ andSize:%@", key, NSStringFromCGSize(size)];
   }
 
-  return [(OpusMarimbaProducer_MPAssetKeyDelegate *)self absolutePathForAssetKey:a3];
+  return [(OpusMarimbaProducer_MPAssetKeyDelegate *)self absolutePathForAssetKey:key];
 }
 
-- (id)absolutePathForStillAssetAtPath:(id)a3 andSize:(CGSize)a4
+- (id)absolutePathForStillAssetAtPath:(id)path andSize:(CGSize)size
 {
   if (OFLoggerLevel >= 4)
   {
-    [OFLogger logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKitPlugins/OpusProducers/OpusMarimbaProducer/OpusMarimbaProducer.m" line:982 andFormat:@"OpusMarimbaProducer_MPAssetKeyDelegate: absolutePathForStillAssetAtPath:%@ andSize:@", a3, NSStringFromCGSize(a4)];
+    [OFLogger logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKitPlugins/OpusProducers/OpusMarimbaProducer/OpusMarimbaProducer.m" line:982 andFormat:@"OpusMarimbaProducer_MPAssetKeyDelegate: absolutePathForStillAssetAtPath:%@ andSize:@", path, NSStringFromCGSize(size)];
   }
 
-  return [(OpusMarimbaProducer_MPAssetKeyDelegate *)self absolutePathForAssetKey:a3];
+  return [(OpusMarimbaProducer_MPAssetKeyDelegate *)self absolutePathForAssetKey:path];
 }
 
-- (CGSize)resolutionForAssetKey:(id)a3
+- (CGSize)resolutionForAssetKey:(id)key
 {
-  v3 = [(OpusMarimbaProducer_MPAssetKeyDelegate *)self mediaItemForAssetPath:a3];
+  v3 = [(OpusMarimbaProducer_MPAssetKeyDelegate *)self mediaItemForAssetPath:key];
   if (v3)
   {
     [objc_msgSend(v3 "metadata")];
@@ -67,27 +67,27 @@
   return result;
 }
 
-- (id)updatedAssetPathForAssetPath:(id)a3
+- (id)updatedAssetPathForAssetPath:(id)path
 {
   v4 = [(OpusMarimbaProducer_MPAssetKeyDelegate *)self mediaItemForAssetPath:?];
   if (!v4)
   {
-    return a3;
+    return path;
   }
 
-  v5 = [v4 uniqueURL];
+  uniqueURL = [v4 uniqueURL];
 
-  return [v5 absoluteString];
+  return [uniqueURL absoluteString];
 }
 
-- (id)mediaItemForAssetPath:(id)a3
+- (id)mediaItemForAssetPath:(id)path
 {
-  if ([a3 isAbsolutePath])
+  if ([path isAbsolutePath])
   {
     return 0;
   }
 
-  result = [(OKPresentationLookupDelegate *)self->_lookupDelegate mediaItemForURL:[(OpusMarimbaProducer_MPAssetKeyDelegate *)self urlForAssetKey:a3]];
+  result = [(OKPresentationLookupDelegate *)self->_lookupDelegate mediaItemForURL:[(OpusMarimbaProducer_MPAssetKeyDelegate *)self urlForAssetKey:path]];
   if (!result)
   {
     return 0;
@@ -96,22 +96,22 @@
   return result;
 }
 
-- (id)urlForAssetKey:(id)a3
+- (id)urlForAssetKey:(id)key
 {
-  if ([a3 hasPrefix:@"iphoto://"])
+  if ([key hasPrefix:@"iphoto://"])
   {
     v4 = objc_alloc_init(NSURLComponents);
     v5 = v4;
     v6 = @"iphoto";
 LABEL_5:
     [v4 setScheme:v6];
-    [v5 setHost:{objc_msgSend(a3, "lastPathComponent")}];
+    [v5 setHost:{objc_msgSend(key, "lastPathComponent")}];
     v7 = [v5 URL];
 
     return v7;
   }
 
-  if ([a3 hasPrefix:@"aperture://"])
+  if ([key hasPrefix:@"aperture://"])
   {
     v4 = objc_alloc_init(NSURLComponents);
     v5 = v4;
@@ -119,7 +119,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  return [NSURL URLWithString:a3];
+  return [NSURL URLWithString:key];
 }
 
 @end

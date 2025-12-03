@@ -1,12 +1,12 @@
 @interface IMActionCalendar
 - (IMActionCalendar)init;
-- (IMActionCalendar)initWithStartTime:(id)a3 endTime:(id)a4 title:(id)a5 calDescription:(id)a6 fallbackUrl:(id)a7;
+- (IMActionCalendar)initWithStartTime:(id)time endTime:(id)endTime title:(id)title calDescription:(id)description fallbackUrl:(id)url;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation IMActionCalendar
 
-- (IMActionCalendar)initWithStartTime:(id)a3 endTime:(id)a4 title:(id)a5 calDescription:(id)a6 fallbackUrl:(id)a7
+- (IMActionCalendar)initWithStartTime:(id)time endTime:(id)endTime title:(id)title calDescription:(id)description fallbackUrl:(id)url
 {
   v10 = sub_1A88C82E8();
   v12 = v11;
@@ -14,10 +14,10 @@
   v15 = v14;
   v16 = sub_1A88C82E8();
   v18 = v17;
-  if (!a6)
+  if (!description)
   {
     v20 = 0;
-    if (a7)
+    if (url)
     {
       goto LABEL_3;
     }
@@ -28,9 +28,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  a6 = sub_1A88C82E8();
+  description = sub_1A88C82E8();
   v20 = v19;
-  if (!a7)
+  if (!url)
   {
     goto LABEL_5;
   }
@@ -48,7 +48,7 @@ LABEL_6:
   *v25 = v16;
   v25[1] = v18;
   v26 = (self + OBJC_IVAR___IMActionCalendar_calDescription);
-  *v26 = a6;
+  *v26 = description;
   v26[1] = v20;
   v27 = (self + OBJC_IVAR___IMActionCalendar_fallbackUrl);
   *v27 = v21;
@@ -60,7 +60,7 @@ LABEL_6:
 
 - (id)dictionaryRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A87576D8();
 
   v3 = sub_1A88C8188();

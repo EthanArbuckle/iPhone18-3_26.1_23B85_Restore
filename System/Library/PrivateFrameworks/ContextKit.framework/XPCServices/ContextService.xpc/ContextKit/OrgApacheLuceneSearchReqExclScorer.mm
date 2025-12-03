@@ -19,9 +19,9 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(OrgApacheLuceneSearchDocIdSetIterator *)reqApproximation nextDoc];
+  nextDoc = [(OrgApacheLuceneSearchDocIdSetIterator *)reqApproximation nextDoc];
 
-  return sub_1000B0F74(self, v4);
+  return sub_1000B0F74(self, nextDoc);
 }
 
 - (int)docID

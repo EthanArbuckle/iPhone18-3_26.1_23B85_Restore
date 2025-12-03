@@ -1,25 +1,25 @@
 @interface AVCenterTapGestureRecognizer
-- (BOOL)shouldReceiveEvent:(id)a3;
+- (BOOL)shouldReceiveEvent:(id)event;
 @end
 
 @implementation AVCenterTapGestureRecognizer
 
-- (BOOL)shouldReceiveEvent:(id)a3
+- (BOOL)shouldReceiveEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(AVCenterTapGestureRecognizer *)self view];
-  if (v5 && (v23.receiver = self, v23.super_class = AVCenterTapGestureRecognizer, [(AVCenterTapGestureRecognizer *)&v23 shouldReceiveEvent:v4]))
+  eventCopy = event;
+  view = [(AVCenterTapGestureRecognizer *)self view];
+  if (view && (v23.receiver = self, v23.super_class = AVCenterTapGestureRecognizer, [(AVCenterTapGestureRecognizer *)&v23 shouldReceiveEvent:eventCopy]))
   {
-    v6 = [v4 allTouches];
-    v7 = [v6 anyObject];
+    allTouches = [eventCopy allTouches];
+    anyObject = [allTouches anyObject];
 
-    [v5 bounds];
+    [view bounds];
     v9 = v8;
     v11 = v10;
-    [v5 center];
+    [view center];
     v13 = v12;
     v15 = v14;
-    [v7 locationInView:v5];
+    [anyObject locationInView:view];
     if (v11 >= v9)
     {
       v18 = v9;

@@ -1,33 +1,33 @@
 @interface FCPurchaseLookupFetchOperationResult
-- (FCPurchaseLookupFetchOperationResult)initWithChannelIDsByPurchaseID:(id)a3 bundleChannelIDsByPurchaseID:(id)a4 bundleChannelIDsVersion:(id)a5 error:(id)a6;
+- (FCPurchaseLookupFetchOperationResult)initWithChannelIDsByPurchaseID:(id)d bundleChannelIDsByPurchaseID:(id)iD bundleChannelIDsVersion:(id)version error:(id)error;
 @end
 
 @implementation FCPurchaseLookupFetchOperationResult
 
-- (FCPurchaseLookupFetchOperationResult)initWithChannelIDsByPurchaseID:(id)a3 bundleChannelIDsByPurchaseID:(id)a4 bundleChannelIDsVersion:(id)a5 error:(id)a6
+- (FCPurchaseLookupFetchOperationResult)initWithChannelIDsByPurchaseID:(id)d bundleChannelIDsByPurchaseID:(id)iD bundleChannelIDsVersion:(id)version error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  versionCopy = version;
+  errorCopy = error;
   v24.receiver = self;
   v24.super_class = FCPurchaseLookupFetchOperationResult;
   v14 = [(FCPurchaseLookupFetchOperationResult *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [dCopy copy];
     channelIDsByPurchaseID = v14->_channelIDsByPurchaseID;
     v14->_channelIDsByPurchaseID = v15;
 
-    v17 = [v11 copy];
+    v17 = [iDCopy copy];
     bundleChannelIDsByPurchaseID = v14->_bundleChannelIDsByPurchaseID;
     v14->_bundleChannelIDsByPurchaseID = v17;
 
-    v19 = [v12 copy];
+    v19 = [versionCopy copy];
     bundleChannelIDsVersion = v14->_bundleChannelIDsVersion;
     v14->_bundleChannelIDsVersion = v19;
 
-    v21 = [v13 copy];
+    v21 = [errorCopy copy];
     error = v14->_error;
     v14->_error = v21;
   }

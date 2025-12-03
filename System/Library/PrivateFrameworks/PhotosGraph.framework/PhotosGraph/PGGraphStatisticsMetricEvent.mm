@@ -1,151 +1,151 @@
 @interface PGGraphStatisticsMetricEvent
-- (PGGraphStatisticsMetricEvent)initWithGraphManager:(id)a3;
+- (PGGraphStatisticsMetricEvent)initWithGraphManager:(id)manager;
 - (id)payload;
-- (void)_fillBusinessStatisticsWithGraph:(id)a3 progressReporter:(id)a4;
-- (void)_fillFrequentLocationsStatisticsWithGraph:(id)a3 progressReporter:(id)a4;
-- (void)_fillGenericStatisticsWithGraph:(id)a3;
-- (void)_fillHolidaysStatisticsWithGraph:(id)a3 progressReporter:(id)a4;
-- (void)_fillHomeWorkStatisticsWithGraph:(id)a3;
-- (void)_fillMeaningfulEventsStatisticsWithGraph:(id)a3 progressReporter:(id)a4;
-- (void)_fillMomentStatisticsWithGraph:(id)a3 progressReporter:(id)a4;
-- (void)_fillPeopleStatisticsWithGraph:(id)a3 progressReporter:(id)a4;
-- (void)_fillPetStatisticsWithGraph:(id)a3;
-- (void)_fillPublicEventStatisticsWithGraph:(id)a3 progressReporter:(id)a4;
-- (void)_fillTripStatisticsWithGraph:(id)a3 progressReporter:(id)a4;
-- (void)_saveKey:(id)a3 doubleValue:(double)a4 payload:(id)a5;
-- (void)_saveKey:(id)a3 integerValue:(unint64_t)a4 payload:(id)a5;
-- (void)gatherMetricsWithProgressBlock:(id)a3;
+- (void)_fillBusinessStatisticsWithGraph:(id)graph progressReporter:(id)reporter;
+- (void)_fillFrequentLocationsStatisticsWithGraph:(id)graph progressReporter:(id)reporter;
+- (void)_fillGenericStatisticsWithGraph:(id)graph;
+- (void)_fillHolidaysStatisticsWithGraph:(id)graph progressReporter:(id)reporter;
+- (void)_fillHomeWorkStatisticsWithGraph:(id)graph;
+- (void)_fillMeaningfulEventsStatisticsWithGraph:(id)graph progressReporter:(id)reporter;
+- (void)_fillMomentStatisticsWithGraph:(id)graph progressReporter:(id)reporter;
+- (void)_fillPeopleStatisticsWithGraph:(id)graph progressReporter:(id)reporter;
+- (void)_fillPetStatisticsWithGraph:(id)graph;
+- (void)_fillPublicEventStatisticsWithGraph:(id)graph progressReporter:(id)reporter;
+- (void)_fillTripStatisticsWithGraph:(id)graph progressReporter:(id)reporter;
+- (void)_saveKey:(id)key doubleValue:(double)value payload:(id)payload;
+- (void)_saveKey:(id)key integerValue:(unint64_t)value payload:(id)payload;
+- (void)gatherMetricsWithProgressBlock:(id)block;
 @end
 
 @implementation PGGraphStatisticsMetricEvent
 
-- (void)_saveKey:(id)a3 integerValue:(unint64_t)a4 payload:(id)a5
+- (void)_saveKey:(id)key integerValue:(unint64_t)value payload:(id)payload
 {
-  if (PGMetricsUnavailableIntegerValue != a4)
+  if (PGMetricsUnavailableIntegerValue != value)
   {
     v8 = MEMORY[0x277CCABB0];
-    v9 = a5;
-    v10 = a3;
-    v11 = [v8 numberWithUnsignedInteger:a4];
-    [v9 setObject:v11 forKeyedSubscript:v10];
+    payloadCopy = payload;
+    keyCopy = key;
+    v11 = [v8 numberWithUnsignedInteger:value];
+    [payloadCopy setObject:v11 forKeyedSubscript:keyCopy];
   }
 }
 
-- (void)_saveKey:(id)a3 doubleValue:(double)a4 payload:(id)a5
+- (void)_saveKey:(id)key doubleValue:(double)value payload:(id)payload
 {
-  if (*&PGMetricsUnavailableDoubleValue != a4)
+  if (*&PGMetricsUnavailableDoubleValue != value)
   {
     v7 = MEMORY[0x277CCABB0];
-    v8 = a5;
-    v9 = a3;
-    v10 = [v7 numberWithDouble:a4];
-    [v8 setObject:v10 forKeyedSubscript:v9];
+    payloadCopy = payload;
+    keyCopy = key;
+    v10 = [v7 numberWithDouble:value];
+    [payloadCopy setObject:v10 forKeyedSubscript:keyCopy];
   }
 }
 
 - (id)payload
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"librarySize" integerValue:self->_librarySize payload:v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"librarySize" integerValue:self->_librarySize payload:dictionary];
   v4 = [PGCuratedLibraryIntelligenceMetricEvent librarySizeRangeDescriptionForLibrarySizeRange:self->_librarySizeRange];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"librarySizeRange" stringValue:v4 payload:v3];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"librarySizeRange" stringValue:v4 payload:dictionary];
 
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfSelfies" integerValue:self->_numberOfSelfies payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfSelfies" doubleValue:v3 payload:self->_ratioOfSelfies];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMoments" integerValue:self->_numberOfMoments payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfBusinessNodes" integerValue:self->_numberOfBusinessNodes payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMomentsLinkedToABusinessNode" integerValue:self->_numberOfMomentsLinkedToABusinessNode payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfMomentsLinkedToABusinessNode" doubleValue:v3 payload:self->_ratioOfMomentsLinkedToABusinessNode];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMoments" integerValue:self->_numberOfMeaningfulMoments payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfMeaningfulMoments" doubleValue:v3 payload:self->_ratioOfMeaningfulMoments];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsGathering" integerValue:self->_numberOfMeaningfulMomentsGathering payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsActivity" integerValue:self->_numberOfMeaningfulMomentsActivity payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsActivityBeach" integerValue:self->_numberOfMeaningfulMomentsActivityBeach payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsActivityDiving" integerValue:self->_numberOfMeaningfulMomentsActivityDiving payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsActivityHiking" integerValue:self->_numberOfMeaningfulMomentsActivityHiking payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsActivityClimbing" integerValue:self->_numberOfMeaningfulMomentsActivityClimbing payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsActivityWinterSport" integerValue:self->_numberOfMeaningfulMomentsActivityWinterSport payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainment" integerValue:self->_numberOfMeaningfulMomentsEntertainment payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainmentAmusementPark" integerValue:self->_numberOfMeaningfulMomentsEntertainmentAmusementPark payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainmentNightOut" integerValue:self->_numberOfMeaningfulMomentsEntertainmentNightOut payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainmentPerformance" integerValue:self->_numberOfMeaningfulMomentsEntertainmentPerformance payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainmentConcert" integerValue:self->_numberOfMeaningfulMomentsEntertainmentConcert payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainmentFestival" integerValue:self->_numberOfMeaningfulMomentsEntertainmentFestival payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainmentTheater" integerValue:self->_numberOfMeaningfulMomentsEntertainmentTheater payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainmentDance" integerValue:self->_numberOfMeaningfulMomentsEntertainmentDance payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainmentMuseum" integerValue:self->_numberOfMeaningfulMomentsEntertainmentMuseum payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainmentSportEvent" integerValue:self->_numberOfMeaningfulMomentsEntertainmentSportEvent payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsCelebration" integerValue:self->_numberOfMeaningfulMomentsCelebration payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsCelebrationAnniversary" integerValue:self->_numberOfMeaningfulMomentsCelebrationAnniversary payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsCelebrationBirthday" integerValue:self->_numberOfMeaningfulMomentsCelebrationBirthday payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsCelebrationHolidayEvent" integerValue:self->_numberOfMeaningfulMomentsCelebrationHolidayEvent payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsCelebrationWedding" integerValue:self->_numberOfMeaningfulMomentsCelebrationWedding payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsRestaurant" integerValue:self->_numberOfMeaningfulMomentsRestaurant payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsRestaurantBreakfast" integerValue:self->_numberOfMeaningfulMomentsRestaurantBreakfast payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsRestaurantLunch" integerValue:self->_numberOfMeaningfulMomentsRestaurantLunch payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsRestaurantDinner" integerValue:self->_numberOfMeaningfulMomentsRestaurantDinner payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEvents" integerValue:self->_numberOfPublicEvents payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryMusicConcerts" integerValue:self->_numberOfPublicEventsCategoryMusicConcerts payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryNightLife" integerValue:self->_numberOfPublicEventsCategoryNightLife payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryTheater" integerValue:self->_numberOfPublicEventsCategoryTheater payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryDance" integerValue:self->_numberOfPublicEventsCategoryDance payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryFestivalsAndFairs" integerValue:self->_numberOfPublicEventsCategoryFestivalsAndFairs payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryArtsAndMuseums" integerValue:self->_numberOfPublicEventsCategoryArtsAndMuseums payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategorySports" integerValue:self->_numberOfPublicEventsCategorySports payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryBusinessAndTechnology" integerValue:self->_numberOfPublicEventsCategoryBusinessAndTechnology payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryCommunity" integerValue:self->_numberOfPublicEventsCategoryCommunity payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryEducational" integerValue:self->_numberOfPublicEventsCategoryEducational payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryFamilyEvents" integerValue:self->_numberOfPublicEventsCategoryFamilyEvents payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryTours" integerValue:self->_numberOfPublicEventsCategoryTours payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryAppleEvents" integerValue:self->_numberOfPublicEventsCategoryAppleEvents payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMomentsLinkedToAPublicEvent" integerValue:self->_numberOfMomentsLinkedToAPublicEvent payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfMomentsLinkedToAPublicEvent" doubleValue:v3 payload:self->_ratioOfMomentsLinkedToAPublicEvent];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"hasMeNode" BOOLValue:self->_hasMeNode payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"hasNamedMeNode" BOOLValue:self->_hasNamedMeNode payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPeople" integerValue:self->_numberOfPeople payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfPeopleLinkedToContact" doubleValue:v3 payload:self->_ratioOfPeopleLinkedToContact];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfPeopleNotLinkedToContact" doubleValue:v3 payload:self->_ratioOfPeopleNotLinkedToContact];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfPeopleNotLinkedToContactWithHighConfidenceContactSuggestion" doubleValue:v3 payload:self->_ratioOfPeopleNotLinkedToContactWithHighConfidenceContactSuggestion];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfFavoritedPeople" doubleValue:v3 payload:self->_ratioOfFavoritedPeople];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfPeopleWithExplicitBirthdayDate" doubleValue:v3 payload:self->_ratioOfPeopleWithExplicitBirthdayDate];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfPeopleWithInferredBirthdayDate" doubleValue:v3 payload:self->_ratioOfPeopleWithInferredBirthdayDate];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfSocialGroups" integerValue:self->_numberOfSocialGroups payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfPeoplePartOfASocialGroup" doubleValue:v3 payload:self->_ratioOfPeoplePartOfASocialGroup];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfTwoPeopleSocialGroup" doubleValue:v3 payload:self->_ratioOfTwoPeopleSocialGroup];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"averageSocialGroupSize" doubleValue:v3 payload:self->_averageSocialGroupSize];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"maximumSocialGroupSize" integerValue:self->_maximumSocialGroupSize payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"hasMusicData" BOOLValue:self->_hasMusicData payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMusicSessions" integerValue:self->_numberOfMusicSessions payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"maximumMusicSessionSize" integerValue:self->_maximumMusicSessionSize payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"averageMusicSessionSize" doubleValue:v3 payload:self->_averageMusicSessionSize];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"hasMeHomeNode" BOOLValue:self->_hasMeHomeNode payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"hasMeWorkNode" BOOLValue:self->_hasMeWorkNode payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMomentsAtMyHome" integerValue:self->_numberOfMomentsAtMyHome payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMomentsAtMyWork" integerValue:self->_numberOfMomentsAtMyWork payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfMomentsAtMyHome" doubleValue:v3 payload:self->_ratioOfMomentsAtMyHome];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfMomentsAtMyWork" doubleValue:v3 payload:self->_ratioOfMomentsAtMyWork];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfMomentsAtAFrequentLocation" doubleValue:v3 payload:self->_ratioOfMomentsAtAFrequentLocation];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfFrequentLocations" integerValue:self->_numberOfFrequentLocations payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfFrequentLocationsCities" integerValue:self->_numberOfFrequentLocationsCities payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfFrequentLocationsCountries" integerValue:self->_numberOfFrequentLocationsCountries payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPetNodes" integerValue:self->_numberOfPetNodes payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfCelebratedHolidays" integerValue:self->_numberOfCelebratedHolidays payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMomentsCelebratingAHoliday" integerValue:self->_numberOfMomentsCelebratingAHoliday payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfMomentsCelebratingAHoliday" doubleValue:v3 payload:self->_ratioOfMomentsCelebratingAHoliday];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfShortTrips" integerValue:self->_numberOfShortTrips payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfLongTrips" integerValue:self->_numberOfLongTrips payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMomentsInTrip" integerValue:self->_numberOfMomentsInTrip payload:v3];
-  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfMomentsInTrip" doubleValue:v3 payload:self->_ratioOfMomentsInTrip];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfSelfies" integerValue:self->_numberOfSelfies payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfSelfies" doubleValue:dictionary payload:self->_ratioOfSelfies];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMoments" integerValue:self->_numberOfMoments payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfBusinessNodes" integerValue:self->_numberOfBusinessNodes payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMomentsLinkedToABusinessNode" integerValue:self->_numberOfMomentsLinkedToABusinessNode payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfMomentsLinkedToABusinessNode" doubleValue:dictionary payload:self->_ratioOfMomentsLinkedToABusinessNode];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMoments" integerValue:self->_numberOfMeaningfulMoments payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfMeaningfulMoments" doubleValue:dictionary payload:self->_ratioOfMeaningfulMoments];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsGathering" integerValue:self->_numberOfMeaningfulMomentsGathering payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsActivity" integerValue:self->_numberOfMeaningfulMomentsActivity payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsActivityBeach" integerValue:self->_numberOfMeaningfulMomentsActivityBeach payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsActivityDiving" integerValue:self->_numberOfMeaningfulMomentsActivityDiving payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsActivityHiking" integerValue:self->_numberOfMeaningfulMomentsActivityHiking payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsActivityClimbing" integerValue:self->_numberOfMeaningfulMomentsActivityClimbing payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsActivityWinterSport" integerValue:self->_numberOfMeaningfulMomentsActivityWinterSport payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainment" integerValue:self->_numberOfMeaningfulMomentsEntertainment payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainmentAmusementPark" integerValue:self->_numberOfMeaningfulMomentsEntertainmentAmusementPark payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainmentNightOut" integerValue:self->_numberOfMeaningfulMomentsEntertainmentNightOut payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainmentPerformance" integerValue:self->_numberOfMeaningfulMomentsEntertainmentPerformance payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainmentConcert" integerValue:self->_numberOfMeaningfulMomentsEntertainmentConcert payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainmentFestival" integerValue:self->_numberOfMeaningfulMomentsEntertainmentFestival payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainmentTheater" integerValue:self->_numberOfMeaningfulMomentsEntertainmentTheater payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainmentDance" integerValue:self->_numberOfMeaningfulMomentsEntertainmentDance payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainmentMuseum" integerValue:self->_numberOfMeaningfulMomentsEntertainmentMuseum payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsEntertainmentSportEvent" integerValue:self->_numberOfMeaningfulMomentsEntertainmentSportEvent payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsCelebration" integerValue:self->_numberOfMeaningfulMomentsCelebration payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsCelebrationAnniversary" integerValue:self->_numberOfMeaningfulMomentsCelebrationAnniversary payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsCelebrationBirthday" integerValue:self->_numberOfMeaningfulMomentsCelebrationBirthday payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsCelebrationHolidayEvent" integerValue:self->_numberOfMeaningfulMomentsCelebrationHolidayEvent payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsCelebrationWedding" integerValue:self->_numberOfMeaningfulMomentsCelebrationWedding payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsRestaurant" integerValue:self->_numberOfMeaningfulMomentsRestaurant payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsRestaurantBreakfast" integerValue:self->_numberOfMeaningfulMomentsRestaurantBreakfast payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsRestaurantLunch" integerValue:self->_numberOfMeaningfulMomentsRestaurantLunch payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMeaningfulMomentsRestaurantDinner" integerValue:self->_numberOfMeaningfulMomentsRestaurantDinner payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEvents" integerValue:self->_numberOfPublicEvents payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryMusicConcerts" integerValue:self->_numberOfPublicEventsCategoryMusicConcerts payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryNightLife" integerValue:self->_numberOfPublicEventsCategoryNightLife payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryTheater" integerValue:self->_numberOfPublicEventsCategoryTheater payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryDance" integerValue:self->_numberOfPublicEventsCategoryDance payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryFestivalsAndFairs" integerValue:self->_numberOfPublicEventsCategoryFestivalsAndFairs payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryArtsAndMuseums" integerValue:self->_numberOfPublicEventsCategoryArtsAndMuseums payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategorySports" integerValue:self->_numberOfPublicEventsCategorySports payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryBusinessAndTechnology" integerValue:self->_numberOfPublicEventsCategoryBusinessAndTechnology payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryCommunity" integerValue:self->_numberOfPublicEventsCategoryCommunity payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryEducational" integerValue:self->_numberOfPublicEventsCategoryEducational payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryFamilyEvents" integerValue:self->_numberOfPublicEventsCategoryFamilyEvents payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryTours" integerValue:self->_numberOfPublicEventsCategoryTours payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPublicEventsCategoryAppleEvents" integerValue:self->_numberOfPublicEventsCategoryAppleEvents payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMomentsLinkedToAPublicEvent" integerValue:self->_numberOfMomentsLinkedToAPublicEvent payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfMomentsLinkedToAPublicEvent" doubleValue:dictionary payload:self->_ratioOfMomentsLinkedToAPublicEvent];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"hasMeNode" BOOLValue:self->_hasMeNode payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"hasNamedMeNode" BOOLValue:self->_hasNamedMeNode payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPeople" integerValue:self->_numberOfPeople payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfPeopleLinkedToContact" doubleValue:dictionary payload:self->_ratioOfPeopleLinkedToContact];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfPeopleNotLinkedToContact" doubleValue:dictionary payload:self->_ratioOfPeopleNotLinkedToContact];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfPeopleNotLinkedToContactWithHighConfidenceContactSuggestion" doubleValue:dictionary payload:self->_ratioOfPeopleNotLinkedToContactWithHighConfidenceContactSuggestion];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfFavoritedPeople" doubleValue:dictionary payload:self->_ratioOfFavoritedPeople];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfPeopleWithExplicitBirthdayDate" doubleValue:dictionary payload:self->_ratioOfPeopleWithExplicitBirthdayDate];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfPeopleWithInferredBirthdayDate" doubleValue:dictionary payload:self->_ratioOfPeopleWithInferredBirthdayDate];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfSocialGroups" integerValue:self->_numberOfSocialGroups payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfPeoplePartOfASocialGroup" doubleValue:dictionary payload:self->_ratioOfPeoplePartOfASocialGroup];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfTwoPeopleSocialGroup" doubleValue:dictionary payload:self->_ratioOfTwoPeopleSocialGroup];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"averageSocialGroupSize" doubleValue:dictionary payload:self->_averageSocialGroupSize];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"maximumSocialGroupSize" integerValue:self->_maximumSocialGroupSize payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"hasMusicData" BOOLValue:self->_hasMusicData payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMusicSessions" integerValue:self->_numberOfMusicSessions payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"maximumMusicSessionSize" integerValue:self->_maximumMusicSessionSize payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"averageMusicSessionSize" doubleValue:dictionary payload:self->_averageMusicSessionSize];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"hasMeHomeNode" BOOLValue:self->_hasMeHomeNode payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"hasMeWorkNode" BOOLValue:self->_hasMeWorkNode payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMomentsAtMyHome" integerValue:self->_numberOfMomentsAtMyHome payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMomentsAtMyWork" integerValue:self->_numberOfMomentsAtMyWork payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfMomentsAtMyHome" doubleValue:dictionary payload:self->_ratioOfMomentsAtMyHome];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfMomentsAtMyWork" doubleValue:dictionary payload:self->_ratioOfMomentsAtMyWork];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfMomentsAtAFrequentLocation" doubleValue:dictionary payload:self->_ratioOfMomentsAtAFrequentLocation];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfFrequentLocations" integerValue:self->_numberOfFrequentLocations payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfFrequentLocationsCities" integerValue:self->_numberOfFrequentLocationsCities payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfFrequentLocationsCountries" integerValue:self->_numberOfFrequentLocationsCountries payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfPetNodes" integerValue:self->_numberOfPetNodes payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfCelebratedHolidays" integerValue:self->_numberOfCelebratedHolidays payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMomentsCelebratingAHoliday" integerValue:self->_numberOfMomentsCelebratingAHoliday payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfMomentsCelebratingAHoliday" doubleValue:dictionary payload:self->_ratioOfMomentsCelebratingAHoliday];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfShortTrips" integerValue:self->_numberOfShortTrips payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfLongTrips" integerValue:self->_numberOfLongTrips payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"numberOfMomentsInTrip" integerValue:self->_numberOfMomentsInTrip payload:dictionary];
+  [(PGGraphStatisticsMetricEvent *)self _saveKey:@"ratioOfMomentsInTrip" doubleValue:dictionary payload:self->_ratioOfMomentsInTrip];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)_fillTripStatisticsWithGraph:(id)a3 progressReporter:(id)a4
+- (void)_fillTripStatisticsWithGraph:(id)graph progressReporter:(id)reporter
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isCancelledWithProgress:0.0])
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -161,10 +161,10 @@ LABEL_10:
 
   else
   {
-    v9 = [v6 longTripNodes];
-    self->_numberOfLongTrips = [v9 count];
+    longTripNodes = [graphCopy longTripNodes];
+    self->_numberOfLongTrips = [longTripNodes count];
 
-    if ([v7 isCancelledWithProgress:0.5])
+    if ([reporterCopy isCancelledWithProgress:0.5])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -179,10 +179,10 @@ LABEL_10:
 
     else
     {
-      v10 = [v6 shortTripNodes];
-      self->_numberOfShortTrips = [v10 count];
+      shortTripNodes = [graphCopy shortTripNodes];
+      self->_numberOfShortTrips = [shortTripNodes count];
 
-      if ([v7 isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
+      if ([reporterCopy isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v12 = 67109378;
         v13 = 589;
@@ -197,12 +197,12 @@ LABEL_10:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fillFrequentLocationsStatisticsWithGraph:(id)a3 progressReporter:(id)a4
+- (void)_fillFrequentLocationsStatisticsWithGraph:(id)graph progressReporter:(id)reporter
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isCancelledWithProgress:0.0])
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -218,10 +218,10 @@ LABEL_13:
 
   else
   {
-    v9 = [v6 supersets];
-    self->_numberOfFrequentLocations = [v9 count];
+    supersets = [graphCopy supersets];
+    self->_numberOfFrequentLocations = [supersets count];
 
-    if ([v7 isCancelledWithProgress:0.3])
+    if ([reporterCopy isCancelledWithProgress:0.3])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -236,10 +236,10 @@ LABEL_13:
 
     else
     {
-      v10 = [v6 supersetCityNodes];
-      self->_numberOfFrequentLocationsCities = [v10 count];
+      supersetCityNodes = [graphCopy supersetCityNodes];
+      self->_numberOfFrequentLocationsCities = [supersetCityNodes count];
 
-      if ([v7 isCancelledWithProgress:0.6])
+      if ([reporterCopy isCancelledWithProgress:0.6])
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -254,10 +254,10 @@ LABEL_13:
 
       else
       {
-        v11 = [v6 supersetCountryNodes];
-        self->_numberOfFrequentLocationsCountries = [v11 count];
+        supersetCountryNodes = [graphCopy supersetCountryNodes];
+        self->_numberOfFrequentLocationsCountries = [supersetCountryNodes count];
 
-        if ([v7 isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
+        if ([reporterCopy isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v13 = 67109378;
           v14 = 579;
@@ -273,32 +273,32 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fillHomeWorkStatisticsWithGraph:(id)a3
+- (void)_fillHomeWorkStatisticsWithGraph:(id)graph
 {
-  v4 = a3;
-  v5 = [v4 meNodeCollection];
-  v6 = [v5 homeNodes];
-  self->_hasMeHomeNode = [v6 count] != 0;
+  graphCopy = graph;
+  meNodeCollection = [graphCopy meNodeCollection];
+  homeNodes = [meNodeCollection homeNodes];
+  self->_hasMeHomeNode = [homeNodes count] != 0;
 
-  v8 = [v4 meNodeCollection];
+  meNodeCollection2 = [graphCopy meNodeCollection];
 
-  v7 = [v8 workNodes];
-  self->_hasMeWorkNode = [v7 count] != 0;
+  workNodes = [meNodeCollection2 workNodes];
+  self->_hasMeWorkNode = [workNodes count] != 0;
 }
 
-- (void)_fillPetStatisticsWithGraph:(id)a3
+- (void)_fillPetStatisticsWithGraph:(id)graph
 {
-  v4 = [(PGGraphNodeCollection *)PGGraphPetNodeCollection nodesInGraph:a3];
+  v4 = [(PGGraphNodeCollection *)PGGraphPetNodeCollection nodesInGraph:graph];
   self->_numberOfPetNodes = [v4 count];
 }
 
-- (void)_fillHolidaysStatisticsWithGraph:(id)a3 progressReporter:(id)a4
+- (void)_fillHolidaysStatisticsWithGraph:(id)graph progressReporter:(id)reporter
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  graphCopy = graph;
+  reporterCopy = reporter;
   v8 = objc_autoreleasePoolPush();
-  v9 = v7;
+  v9 = reporterCopy;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -307,14 +307,14 @@ LABEL_13:
   *(v34 + 24) = v10;
   if (!v10)
   {
-    v11 = [v6 celebratedHolidayNodes];
-    self->_numberOfCelebratedHolidays = [v11 count];
+    celebratedHolidayNodes = [graphCopy celebratedHolidayNodes];
+    self->_numberOfCelebratedHolidays = [celebratedHolidayNodes count];
     v24 = [MEMORY[0x277CBEB58] set];
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    obj = v11;
+    obj = celebratedHolidayNodes;
     v12 = [obj countByEnumeratingWithState:&v29 objects:v37 count:16];
     if (v12)
     {
@@ -450,28 +450,28 @@ uint64_t __82__PGGraphStatisticsMetricEvent__fillHolidaysStatisticsWithGraph_pro
   return result;
 }
 
-- (void)_fillPeopleStatisticsWithGraph:(id)a3 progressReporter:(id)a4
+- (void)_fillPeopleStatisticsWithGraph:(id)graph progressReporter:(id)reporter
 {
   v84 = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  v6 = a4;
+  graphCopy = graph;
+  reporterCopy = reporter;
   context = objc_autoreleasePoolPush();
   v75 = 0;
   v76 = &v75;
   v77 = 0x2020000000;
   v78 = 0;
-  v61 = v6;
+  v61 = reporterCopy;
   v7 = [v61 isCancelledWithProgress:0.0];
   *(v76 + 24) = v7;
   if (!v7)
   {
-    v56 = self;
-    v53 = [v57 meNode];
-    self->_hasMeNode = v53 != 0;
-    v8 = [v53 contactIdentifier];
-    self->_hasNamedMeNode = [v8 length] != 0;
+    selfCopy = self;
+    meNode = [graphCopy meNode];
+    self->_hasMeNode = meNode != 0;
+    contactIdentifier = [meNode contactIdentifier];
+    self->_hasNamedMeNode = [contactIdentifier length] != 0;
 
-    v9 = [v57 personNodesIncludingMe:0];
+    v9 = [graphCopy personNodesIncludingMe:0];
     v52 = 456;
     self->_numberOfPeople = [v9 count];
     v71 = 0u;
@@ -499,9 +499,9 @@ uint64_t __82__PGGraphStatisticsMetricEvent__fillHolidaysStatisticsWithGraph_pro
           }
 
           v16 = *(*(&v71 + 1) + 8 * i);
-          v17 = [v16 isFavorite];
-          v18 = [v16 contactIdentifier];
-          v19 = [v18 length] == 0;
+          isFavorite = [v16 isFavorite];
+          contactIdentifier2 = [v16 contactIdentifier];
+          v19 = [contactIdentifier2 length] == 0;
 
           if (v19)
           {
@@ -525,15 +525,15 @@ uint64_t __82__PGGraphStatisticsMetricEvent__fillHolidaysStatisticsWithGraph_pro
 
           else
           {
-            v20 = [v16 birthdayDate];
+            birthdayDate = [v16 birthdayDate];
 
-            v21 = [v16 potentialBirthdayDate];
-            if (v20)
+            potentialBirthdayDate = [v16 potentialBirthdayDate];
+            if (birthdayDate)
             {
               ++v12;
             }
 
-            v22 = v21 != 0;
+            v22 = potentialBirthdayDate != 0;
 
             ++v13;
             v10 += v22;
@@ -562,7 +562,7 @@ LABEL_36:
             goto LABEL_36;
           }
 
-          v14 += v17;
+          v14 += isFavorite;
         }
 
         v11 = [obj countByEnumeratingWithState:&v71 objects:v83 count:16];
@@ -588,24 +588,24 @@ LABEL_36:
     }
 
     v28 = [obj count];
-    *(&v56->super.super.isa + v52) = v28;
+    *(&selfCopy->super.super.isa + v52) = v28;
     if (v28)
     {
       v29 = v13 / v28;
-      v56->_ratioOfPeopleLinkedToContact = v29;
-      v56->_ratioOfPeopleNotLinkedToContact = 1.0 - v29;
-      v56->_ratioOfFavoritedPeople = v25 / v28;
-      v56->_ratioOfPeopleWithExplicitBirthdayDate = v26 / v28;
-      v56->_ratioOfPeopleWithInferredBirthdayDate = (v10 / v28);
-      v56->_ratioOfPeopleNotLinkedToContactWithHighConfidenceContactSuggestion = v27 / (v28 - v13);
-      v30 = [v57 socialGroupNodesSortedByImportance];
-      v56->_numberOfSocialGroups = [v30 count];
+      selfCopy->_ratioOfPeopleLinkedToContact = v29;
+      selfCopy->_ratioOfPeopleNotLinkedToContact = 1.0 - v29;
+      selfCopy->_ratioOfFavoritedPeople = v25 / v28;
+      selfCopy->_ratioOfPeopleWithExplicitBirthdayDate = v26 / v28;
+      selfCopy->_ratioOfPeopleWithInferredBirthdayDate = (v10 / v28);
+      selfCopy->_ratioOfPeopleNotLinkedToContactWithHighConfidenceContactSuggestion = v27 / (v28 - v13);
+      socialGroupNodesSortedByImportance = [graphCopy socialGroupNodesSortedByImportance];
+      selfCopy->_numberOfSocialGroups = [socialGroupNodesSortedByImportance count];
       v31 = [MEMORY[0x277CBEB58] set];
       v64 = 0u;
       v65 = 0u;
       v62 = 0u;
       v63 = 0u;
-      v32 = v30;
+      v32 = socialGroupNodesSortedByImportance;
       v33 = [v32 countByEnumeratingWithState:&v62 objects:v79 count:16];
       if (v33)
       {
@@ -622,9 +622,9 @@ LABEL_36:
               objc_enumerationMutation(v32);
             }
 
-            v39 = [*(*(&v62 + 1) + 8 * j) personNodes];
-            [v31 unionSet:v39];
-            v40 = [v39 count];
+            personNodes = [*(*(&v62 + 1) + 8 * j) personNodes];
+            [v31 unionSet:personNodes];
+            v40 = [personNodes count];
             v41 = v40;
             if (v40 == 1)
             {
@@ -681,41 +681,41 @@ LABEL_46:
         v37 = 0.0;
       }
 
-      v56->_ratioOfPeoplePartOfASocialGroup = [v31 count] / *(&v56->super.super.isa + v52);
-      numberOfSocialGroups = v56->_numberOfSocialGroups;
+      selfCopy->_ratioOfPeoplePartOfASocialGroup = [v31 count] / *(&selfCopy->super.super.isa + v52);
+      numberOfSocialGroups = selfCopy->_numberOfSocialGroups;
       if (numberOfSocialGroups)
       {
-        v56->_ratioOfTwoPeopleSocialGroup = v43 / numberOfSocialGroups;
-        v56->_averageSocialGroupSize = v37 / numberOfSocialGroups;
+        selfCopy->_ratioOfTwoPeopleSocialGroup = v43 / numberOfSocialGroups;
+        selfCopy->_averageSocialGroupSize = v37 / numberOfSocialGroups;
       }
 
       else
       {
         v50 = PGMetricsUnavailableDoubleValue;
-        *&v56->_ratioOfTwoPeopleSocialGroup = PGMetricsUnavailableDoubleValue;
-        *&v56->_averageSocialGroupSize = v50;
+        *&selfCopy->_ratioOfTwoPeopleSocialGroup = PGMetricsUnavailableDoubleValue;
+        *&selfCopy->_averageSocialGroupSize = v50;
         v35 = PGMetricsUnavailableIntegerValue;
       }
 
-      v56->_maximumSocialGroupSize = v35;
+      selfCopy->_maximumSocialGroupSize = v35;
     }
 
     else
     {
       v45 = PGMetricsUnavailableDoubleValue;
-      *&v56->_ratioOfPeopleLinkedToContact = PGMetricsUnavailableDoubleValue;
-      *&v56->_ratioOfPeopleNotLinkedToContact = v45;
+      *&selfCopy->_ratioOfPeopleLinkedToContact = PGMetricsUnavailableDoubleValue;
+      *&selfCopy->_ratioOfPeopleNotLinkedToContact = v45;
       v46 = PGMetricsUnavailableDoubleValue;
-      *&v56->_ratioOfFavoritedPeople = PGMetricsUnavailableDoubleValue;
-      *&v56->_ratioOfPeopleWithExplicitBirthdayDate = v46;
+      *&selfCopy->_ratioOfFavoritedPeople = PGMetricsUnavailableDoubleValue;
+      *&selfCopy->_ratioOfPeopleWithExplicitBirthdayDate = v46;
       v47 = PGMetricsUnavailableDoubleValue;
-      *&v56->_ratioOfPeopleWithInferredBirthdayDate = PGMetricsUnavailableDoubleValue;
-      *&v56->_ratioOfPeopleNotLinkedToContactWithHighConfidenceContactSuggestion = v47;
+      *&selfCopy->_ratioOfPeopleWithInferredBirthdayDate = PGMetricsUnavailableDoubleValue;
+      *&selfCopy->_ratioOfPeopleNotLinkedToContactWithHighConfidenceContactSuggestion = v47;
       v48 = PGMetricsUnavailableDoubleValue;
-      *&v56->_ratioOfPeoplePartOfASocialGroup = PGMetricsUnavailableDoubleValue;
-      *&v56->_ratioOfTwoPeopleSocialGroup = v48;
-      *&v56->_averageSocialGroupSize = PGMetricsUnavailableDoubleValue;
-      v56->_maximumSocialGroupSize = PGMetricsUnavailableIntegerValue;
+      *&selfCopy->_ratioOfPeoplePartOfASocialGroup = PGMetricsUnavailableDoubleValue;
+      *&selfCopy->_ratioOfTwoPeopleSocialGroup = v48;
+      *&selfCopy->_averageSocialGroupSize = PGMetricsUnavailableDoubleValue;
+      selfCopy->_maximumSocialGroupSize = PGMetricsUnavailableIntegerValue;
     }
 
     if (v76[3])
@@ -780,13 +780,13 @@ uint64_t __80__PGGraphStatisticsMetricEvent__fillPeopleStatisticsWithGraph_progr
   return result;
 }
 
-- (void)_fillPublicEventStatisticsWithGraph:(id)a3 progressReporter:(id)a4
+- (void)_fillPublicEventStatisticsWithGraph:(id)graph progressReporter:(id)reporter
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  graphCopy = graph;
+  reporterCopy = reporter;
   v8 = objc_autoreleasePoolPush();
-  v9 = v7;
+  v9 = reporterCopy;
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
@@ -813,7 +813,7 @@ uint64_t __80__PGGraphStatisticsMetricEvent__fillPeopleStatisticsWithGraph_progr
     v36 = v14;
     v15 = v11;
     v37 = v15;
-    [v6 enumeratePublicEventNodesUsingBlock:v34];
+    [graphCopy enumeratePublicEventNodesUsingBlock:v34];
     self->_numberOfPublicEvents = *(v49 + 24);
     v16 = [v15 count];
     self->_numberOfMomentsLinkedToAPublicEvent = v16;
@@ -829,44 +829,44 @@ uint64_t __80__PGGraphStatisticsMetricEvent__fillPeopleStatisticsWithGraph_progr
     }
 
     self->_ratioOfMomentsLinkedToAPublicEvent = v18;
-    v19 = [MEMORY[0x277D27780] musicConcerts];
-    self->_numberOfPublicEventsCategoryMusicConcerts = [v13 countForObject:v19];
+    musicConcerts = [MEMORY[0x277D27780] musicConcerts];
+    self->_numberOfPublicEventsCategoryMusicConcerts = [v13 countForObject:musicConcerts];
 
-    v20 = [MEMORY[0x277D27780] nightLife];
-    self->_numberOfPublicEventsCategoryNightLife = [v13 countForObject:v20];
+    nightLife = [MEMORY[0x277D27780] nightLife];
+    self->_numberOfPublicEventsCategoryNightLife = [v13 countForObject:nightLife];
 
-    v21 = [MEMORY[0x277D27780] theater];
-    self->_numberOfPublicEventsCategoryTheater = [v13 countForObject:v21];
+    theater = [MEMORY[0x277D27780] theater];
+    self->_numberOfPublicEventsCategoryTheater = [v13 countForObject:theater];
 
-    v22 = [MEMORY[0x277D27780] dance];
-    self->_numberOfPublicEventsCategoryDance = [v13 countForObject:v22];
+    dance = [MEMORY[0x277D27780] dance];
+    self->_numberOfPublicEventsCategoryDance = [v13 countForObject:dance];
 
-    v23 = [MEMORY[0x277D27780] festivalsAndFairs];
-    self->_numberOfPublicEventsCategoryFestivalsAndFairs = [v13 countForObject:v23];
+    festivalsAndFairs = [MEMORY[0x277D27780] festivalsAndFairs];
+    self->_numberOfPublicEventsCategoryFestivalsAndFairs = [v13 countForObject:festivalsAndFairs];
 
-    v24 = [MEMORY[0x277D27780] artsAndMuseums];
-    self->_numberOfPublicEventsCategoryArtsAndMuseums = [v13 countForObject:v24];
+    artsAndMuseums = [MEMORY[0x277D27780] artsAndMuseums];
+    self->_numberOfPublicEventsCategoryArtsAndMuseums = [v13 countForObject:artsAndMuseums];
 
-    v25 = [MEMORY[0x277D27780] sports];
-    self->_numberOfPublicEventsCategorySports = [v13 countForObject:v25];
+    sports = [MEMORY[0x277D27780] sports];
+    self->_numberOfPublicEventsCategorySports = [v13 countForObject:sports];
 
-    v26 = [MEMORY[0x277D27780] businessAndTechnology];
-    self->_numberOfPublicEventsCategoryBusinessAndTechnology = [v13 countForObject:v26];
+    businessAndTechnology = [MEMORY[0x277D27780] businessAndTechnology];
+    self->_numberOfPublicEventsCategoryBusinessAndTechnology = [v13 countForObject:businessAndTechnology];
 
-    v27 = [MEMORY[0x277D27780] community];
-    self->_numberOfPublicEventsCategoryCommunity = [v13 countForObject:v27];
+    community = [MEMORY[0x277D27780] community];
+    self->_numberOfPublicEventsCategoryCommunity = [v13 countForObject:community];
 
-    v28 = [MEMORY[0x277D27780] educational];
-    self->_numberOfPublicEventsCategoryEducational = [v13 countForObject:v28];
+    educational = [MEMORY[0x277D27780] educational];
+    self->_numberOfPublicEventsCategoryEducational = [v13 countForObject:educational];
 
-    v29 = [MEMORY[0x277D27780] familyEvents];
-    self->_numberOfPublicEventsCategoryFamilyEvents = [v13 countForObject:v29];
+    familyEvents = [MEMORY[0x277D27780] familyEvents];
+    self->_numberOfPublicEventsCategoryFamilyEvents = [v13 countForObject:familyEvents];
 
-    v30 = [MEMORY[0x277D27780] tours];
-    self->_numberOfPublicEventsCategoryTours = [v13 countForObject:v30];
+    tours = [MEMORY[0x277D27780] tours];
+    self->_numberOfPublicEventsCategoryTours = [v13 countForObject:tours];
 
-    v31 = [MEMORY[0x277D27780] appleEvents];
-    self->_numberOfPublicEventsCategoryAppleEvents = [v13 countForObject:v31];
+    appleEvents = [MEMORY[0x277D27780] appleEvents];
+    self->_numberOfPublicEventsCategoryAppleEvents = [v13 countForObject:appleEvents];
 
     if (v41[3])
     {
@@ -998,13 +998,13 @@ uint64_t __85__PGGraphStatisticsMetricEvent__fillPublicEventStatisticsWithGraph_
   return result;
 }
 
-- (void)_fillBusinessStatisticsWithGraph:(id)a3 progressReporter:(id)a4
+- (void)_fillBusinessStatisticsWithGraph:(id)graph progressReporter:(id)reporter
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  graphCopy = graph;
+  reporterCopy = reporter;
   v8 = objc_autoreleasePoolPush();
-  v9 = v7;
+  v9 = reporterCopy;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -1017,18 +1017,18 @@ uint64_t __85__PGGraphStatisticsMetricEvent__fillPublicEventStatisticsWithGraph_
     *&v36 = buf;
     *(&v36 + 1) = 0x2020000000;
     v37 = 0;
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v19 = MEMORY[0x277D85DD0];
     v20 = 3221225472;
     v21 = __82__PGGraphStatisticsMetricEvent__fillBusinessStatisticsWithGraph_progressReporter___block_invoke;
     v22 = &unk_27888B3E0;
     v25 = buf;
-    v12 = v11;
+    v12 = array;
     v23 = v12;
     v26 = &v27;
     v13 = v9;
     v24 = v13;
-    [v6 enumerateBusinessNodesUsingBlock:&v19];
+    [graphCopy enumerateBusinessNodesUsingBlock:&v19];
     self->_numberOfBusinessNodes = *(v36 + 24);
     v14 = [v12 count];
     self->_numberOfMomentsLinkedToABusinessNode = v14;
@@ -1140,16 +1140,16 @@ uint64_t __82__PGGraphStatisticsMetricEvent__fillBusinessStatisticsWithGraph_pro
   return result;
 }
 
-- (void)_fillMeaningfulEventsStatisticsWithGraph:(id)a3 progressReporter:(id)a4
+- (void)_fillMeaningfulEventsStatisticsWithGraph:(id)graph progressReporter:(id)reporter
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  graphCopy = graph;
+  reporterCopy = reporter;
   v8 = objc_autoreleasePoolPush();
-  v9 = v7;
+  v9 = reporterCopy;
   if (![v9 isCancelledWithProgress:0.0])
   {
-    v10 = [v6 meaningfulEvents];
+    meaningfulEvents = [graphCopy meaningfulEvents];
     if ([v9 isCancelledWithProgress:0.3])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1165,7 +1165,7 @@ uint64_t __82__PGGraphStatisticsMetricEvent__fillBusinessStatisticsWithGraph_pro
     }
 
     v11 = objc_alloc_init(MEMORY[0x277CCA940]);
-    v12 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithSet:v10 graph:v6];
+    v12 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithSet:meaningfulEvents graph:graphCopy];
     if ([v9 isCancelledWithProgress:0.5])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1182,9 +1182,9 @@ LABEL_19:
 
     else
     {
-      v14 = [(PGGraphMomentNodeCollection *)v12 meaningNodes];
-      v15 = [v14 meaningLabels];
-      [v11 unionSet:v15];
+      meaningNodes = [(PGGraphMomentNodeCollection *)v12 meaningNodes];
+      meaningLabels = [meaningNodes meaningLabels];
+      [v11 unionSet:meaningLabels];
 
       if (![v9 isCancelledWithProgress:0.8])
       {
@@ -1213,7 +1213,7 @@ LABEL_19:
         self->_numberOfMeaningfulMomentsRestaurantBreakfast = [v11 countForObject:@"Breakfast"];
         self->_numberOfMeaningfulMomentsRestaurantLunch = [v11 countForObject:@"Lunch"];
         self->_numberOfMeaningfulMomentsRestaurantDinner = [v11 countForObject:@"Dinner"];
-        v16 = [v10 count];
+        v16 = [meaningfulEvents count];
         self->_numberOfMeaningfulMoments = v16;
         numberOfMoments = self->_numberOfMoments;
         if (numberOfMoments)
@@ -1272,17 +1272,17 @@ LABEL_22:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fillMomentStatisticsWithGraph:(id)a3 progressReporter:(id)a4
+- (void)_fillMomentStatisticsWithGraph:(id)graph progressReporter:(id)reporter
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  graphCopy = graph;
+  reporterCopy = reporter;
   v8 = objc_autoreleasePoolPush();
-  v9 = v7;
+  v9 = reporterCopy;
   if (![v9 isCancelledWithProgress:0.0])
   {
-    v10 = [v6 momentNodes];
-    self->_numberOfMoments = [v10 count];
+    momentNodes = [graphCopy momentNodes];
+    self->_numberOfMoments = [momentNodes count];
     if ([v9 isCancelledWithProgress:0.2])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1297,7 +1297,7 @@ LABEL_22:
       goto LABEL_18;
     }
 
-    v11 = [v6 meNodeCollection];
+    meNodeCollection = [graphCopy meNodeCollection];
     if ([v9 isCancelledWithProgress:0.4])
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1319,33 +1319,33 @@ LABEL_18:
     {
       if (self->_numberOfMoments)
       {
-        v13 = [v11 homeNodes];
-        v14 = [v13 addressNodes];
-        v15 = [v14 momentNodes];
-        self->_numberOfMomentsAtMyHome = [v15 count];
+        homeNodes = [meNodeCollection homeNodes];
+        addressNodes = [homeNodes addressNodes];
+        momentNodes2 = [addressNodes momentNodes];
+        self->_numberOfMomentsAtMyHome = [momentNodes2 count];
 
-        v16 = [v11 workNodes];
-        v17 = [v16 addressNodes];
-        v18 = [v17 momentNodes];
+        workNodes = [meNodeCollection workNodes];
+        addressNodes2 = [workNodes addressNodes];
+        momentNodes3 = [addressNodes2 momentNodes];
         v30 = 584;
-        self->_numberOfMomentsAtMyWork = [v18 count];
+        self->_numberOfMomentsAtMyWork = [momentNodes3 count];
 
-        v31 = [PGGraphHighlightTypeNodeCollection concludedTripTypeNodesInGraph:v6];
-        v19 = [v31 highlightGroupNodes];
-        v20 = [v19 highlightNodes];
-        [v20 momentNodes];
-        v21 = v32 = v11;
+        v31 = [PGGraphHighlightTypeNodeCollection concludedTripTypeNodesInGraph:graphCopy];
+        highlightGroupNodes = [v31 highlightGroupNodes];
+        highlightNodes = [highlightGroupNodes highlightNodes];
+        [highlightNodes momentNodes];
+        v21 = v32 = meNodeCollection;
         self->_numberOfMomentsInTrip = [v21 count];
 
-        v22 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:v6];
-        v23 = [v22 momentNodes];
-        v24 = [v23 count];
+        v22 = [(PGGraphNodeCollection *)PGGraphFrequentLocationNodeCollection nodesInGraph:graphCopy];
+        momentNodes4 = [v22 momentNodes];
+        v24 = [momentNodes4 count];
 
         numberOfMoments = self->_numberOfMoments;
         self->_ratioOfMomentsAtMyHome = self->_numberOfMomentsAtMyHome / numberOfMoments;
         self->_ratioOfMomentsAtMyWork = self->_numberOfMomentsAtMyWork / numberOfMoments;
         v26 = v24;
-        v11 = v32;
+        meNodeCollection = v32;
         self->_ratioOfMomentsAtAFrequentLocation = v26 / numberOfMoments;
         self->_ratioOfMomentsInTrip = self->_numberOfMomentsInTrip / numberOfMoments;
       }
@@ -1391,20 +1391,20 @@ LABEL_19:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fillGenericStatisticsWithGraph:(id)a3
+- (void)_fillGenericStatisticsWithGraph:(id)graph
 {
-  v4 = a3;
-  v9 = [v4 infoNode];
-  self->_librarySize = [v9 numberOfAssets];
-  v5 = [v4 librarySizeRange];
+  graphCopy = graph;
+  infoNode = [graphCopy infoNode];
+  self->_librarySize = [infoNode numberOfAssets];
+  librarySizeRange = [graphCopy librarySizeRange];
 
-  self->_librarySizeRange = v5;
-  v6 = [v9 numberOfSelfies];
-  self->_numberOfSelfies = v6;
+  self->_librarySizeRange = librarySizeRange;
+  numberOfSelfies = [infoNode numberOfSelfies];
+  self->_numberOfSelfies = numberOfSelfies;
   librarySize = self->_librarySize;
   if (librarySize)
   {
-    v8 = v6 / librarySize;
+    v8 = numberOfSelfies / librarySize;
   }
 
   else
@@ -1415,20 +1415,20 @@ LABEL_19:
   self->_ratioOfSelfies = v8;
 }
 
-- (void)gatherMetricsWithProgressBlock:(id)a3
+- (void)gatherMetricsWithProgressBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PGManager *)self->_manager enrichmentLoggingConnection];
+  blockCopy = block;
+  enrichmentLoggingConnection = [(PGManager *)self->_manager enrichmentLoggingConnection];
   manager = self->_manager;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__PGGraphStatisticsMetricEvent_gatherMetricsWithProgressBlock___block_invoke;
   v9[3] = &unk_27888B2F8;
-  v11 = self;
-  v12 = v4;
-  v10 = v5;
-  v7 = v5;
-  v8 = v4;
+  selfCopy = self;
+  v12 = blockCopy;
+  v10 = enrichmentLoggingConnection;
+  v7 = enrichmentLoggingConnection;
+  v8 = blockCopy;
   [(PGManager *)manager performSynchronousConcurrentGraphReadUsingBlock:v9];
 }
 
@@ -1686,16 +1686,16 @@ LABEL_56:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (PGGraphStatisticsMetricEvent)initWithGraphManager:(id)a3
+- (PGGraphStatisticsMetricEvent)initWithGraphManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = PGGraphStatisticsMetricEvent;
   v6 = [(PGGraphStatisticsMetricEvent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_manager, a3);
+    objc_storeStrong(&v6->_manager, manager);
   }
 
   return v7;

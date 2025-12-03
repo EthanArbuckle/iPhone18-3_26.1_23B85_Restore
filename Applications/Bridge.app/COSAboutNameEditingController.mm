@@ -1,9 +1,9 @@
 @interface COSAboutNameEditingController
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)suspend;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation COSAboutNameEditingController
@@ -57,33 +57,33 @@
 
 - (void)suspend
 {
-  v3 = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
-  [v3 resignFirstResponder];
+  firstResponder = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
+  [firstResponder resignFirstResponder];
 
   v4.receiver = self;
   v4.super_class = COSAboutNameEditingController;
   [(COSAboutNameEditingController *)&v4 suspend];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = COSAboutNameEditingController;
-  [(COSAboutNameEditingController *)&v16 viewWillAppear:a3];
+  [(COSAboutNameEditingController *)&v16 viewWillAppear:appear];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = [_NSLocalizedStringResource alloc];
   v6 = +[NSLocale currentLocale];
-  v7 = [v5 initWithKey:@"NAME" table:@"About" locale:v6 bundleURL:v4];
+  v7 = [v5 initWithKey:@"NAME" table:@"About" locale:v6 bundleURL:bundleURL];
 
   v8 = [_NSLocalizedStringResource alloc];
   v9 = +[NSLocale currentLocale];
-  v10 = [v8 initWithKey:@"ABOUT" table:@"General" locale:v9 bundleURL:v4];
+  v10 = [v8 initWithKey:@"ABOUT" table:@"General" locale:v9 bundleURL:bundleURL];
 
   v11 = [_NSLocalizedStringResource alloc];
   v12 = +[NSLocale currentLocale];
-  v13 = [v11 initWithKey:@"GENERAL" table:@"Settings" locale:v12 bundleURL:v4];
+  v13 = [v11 initWithKey:@"GENERAL" table:@"Settings" locale:v12 bundleURL:bundleURL];
 
   v17[0] = v13;
   v17[1] = v10;
@@ -92,32 +92,32 @@
   [BPSWatchSettingsNavigationDonation emitNavigationEventForSystemSettingWithIconSpecifierIdentifier:@"GENERAL_LINK" title:v7 localizedNavigationComponents:v14 deepLink:v15];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
-  [v5 resignFirstResponder];
+  disappearCopy = disappear;
+  firstResponder = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
+  [firstResponder resignFirstResponder];
 
   v6 = +[COSAboutDataSource sharedInstance];
   [v6 performUpdatesAnimated:0 usingBlock:&stru_10026B8A8];
 
   v7.receiver = self;
   v7.super_class = COSAboutNameEditingController;
-  [(COSAboutNameEditingController *)&v7 viewWillDisappear:v3];
+  [(COSAboutNameEditingController *)&v7 viewWillDisappear:disappearCopy];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = COSAboutNameEditingController;
-  v5 = [(COSAboutNameEditingController *)&v8 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [v5 editableTextField];
-  [v6 setAutocapitalizationType:2];
-  [v6 setAutocorrectionType:1];
-  [v6 setAdjustsFontSizeToFitWidth:1];
-  [v6 setTextAlignment:0];
-  [v6 setReturnKeyType:9];
-  [v6 setClearButtonMode:3];
+  v5 = [(COSAboutNameEditingController *)&v8 tableView:view cellForRowAtIndexPath:path];
+  editableTextField = [v5 editableTextField];
+  [editableTextField setAutocapitalizationType:2];
+  [editableTextField setAutocorrectionType:1];
+  [editableTextField setAdjustsFontSizeToFitWidth:1];
+  [editableTextField setTextAlignment:0];
+  [editableTextField setReturnKeyType:9];
+  [editableTextField setClearButtonMode:3];
   [v5 setControllerDelegate:self];
 
   return v5;

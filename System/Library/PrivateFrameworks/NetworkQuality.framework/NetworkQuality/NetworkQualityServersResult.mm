@@ -1,15 +1,15 @@
 @interface NetworkQualityServersResult
 - (NetworkQualityServersResult)init;
-- (NetworkQualityServersResult)initWithCoder:(id)a3;
+- (NetworkQualityServersResult)initWithCoder:(id)coder;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NetworkQualityServersResult
 
-- (NetworkQualityServersResult)initWithCoder:(id)a3
+- (NetworkQualityServersResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = NetworkQualityServersResult;
   v5 = [(NetworkQualityServersResult *)&v12 init];
@@ -18,7 +18,7 @@
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_servers"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_servers"];
     servers = v5->_servers;
     v5->_servers = v9;
   }
@@ -51,11 +51,11 @@
   return v2;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(NetworkQualityServersResult);
-  v5 = [(NetworkQualityServersResult *)self servers];
-  v6 = [v5 copy];
+  servers = [(NetworkQualityServersResult *)self servers];
+  v6 = [servers copy];
   [(NetworkQualityServersResult *)v4 setServers:v6];
 
   return v4;

@@ -1,6 +1,6 @@
 @interface CDPUIDeviceToDeviceEncryptionUpgradeMessageViewModel
-- (id)_stringWithFeatureIfNeeded:(id)a3;
-- (id)_stringWithFeatureSubstituted:(id)a3;
+- (id)_stringWithFeatureIfNeeded:(id)needed;
+- (id)_stringWithFeatureSubstituted:(id)substituted;
 - (id)cancelTitle;
 - (id)continueTitle;
 - (id)message;
@@ -11,10 +11,10 @@
 
 - (id)title
 {
-  v3 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self context];
-  v4 = [v3 deviceToDeviceEncryptionUpgradeType];
+  context = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self context];
+  deviceToDeviceEncryptionUpgradeType = [context deviceToDeviceEncryptionUpgradeType];
 
-  if (v4 == 1)
+  if (deviceToDeviceEncryptionUpgradeType == 1)
   {
     goto LABEL_7;
   }
@@ -25,10 +25,10 @@
     {
       v5 = @"D2DENCRYPTION_UPGRADE_TITLE_ONLY_MISSING_SECRET";
 LABEL_8:
-      v6 = [(CDPUIDeviceToDeviceEncryptionUpgradeMessageViewModel *)self _stringWithFeatureIfNeeded:v5];
-      v7 = [MEMORY[0x277CFD508] builderForKey:v6];
-      v8 = [v7 localizedString];
-      v9 = [(CDPUIDeviceToDeviceEncryptionUpgradeMessageViewModel *)self _stringWithFeatureSubstituted:v8];
+      localizedString2 = [(CDPUIDeviceToDeviceEncryptionUpgradeMessageViewModel *)self _stringWithFeatureIfNeeded:v5];
+      v7 = [MEMORY[0x277CFD508] builderForKey:localizedString2];
+      localizedString = [v7 localizedString];
+      v9 = [(CDPUIDeviceToDeviceEncryptionUpgradeMessageViewModel *)self _stringWithFeatureSubstituted:localizedString];
 
       goto LABEL_9;
     }
@@ -40,13 +40,13 @@ LABEL_7:
 
   v11 = [(CDPUIDeviceToDeviceEncryptionUpgradeMessageViewModel *)self _stringWithFeatureIfNeeded:@"D2DENCRYPTION_UPGRADE_TITLE_UPGRADE_MISSING_SECRET"];
   v12 = [MEMORY[0x277CFD508] builderForKey:v11];
-  v13 = [MEMORY[0x277CFD4F8] sharedInstance];
-  v14 = [v13 deviceClass];
-  v15 = [v12 addDeviceClass:v14];
+  mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+  deviceClass = [mEMORY[0x277CFD4F8] deviceClass];
+  v15 = [v12 addDeviceClass:deviceClass];
   v16 = [v15 addSecretType:{-[CDPUIDeviceToDeviceEncryptionUpgradeMessageViewModel _localSecretType](self, "_localSecretType")}];
-  v6 = [v16 localizedString];
+  localizedString2 = [v16 localizedString];
 
-  v9 = [(CDPUIDeviceToDeviceEncryptionUpgradeMessageViewModel *)self _stringWithFeatureSubstituted:v6];
+  v9 = [(CDPUIDeviceToDeviceEncryptionUpgradeMessageViewModel *)self _stringWithFeatureSubstituted:localizedString2];
 LABEL_9:
 
   return v9;
@@ -54,35 +54,35 @@ LABEL_9:
 
 - (id)message
 {
-  v3 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self context];
-  v4 = [v3 deviceToDeviceEncryptionUpgradeType];
+  context = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self context];
+  deviceToDeviceEncryptionUpgradeType = [context deviceToDeviceEncryptionUpgradeType];
 
-  if (v4 == 1)
+  if (deviceToDeviceEncryptionUpgradeType == 1)
   {
-    v5 = [MEMORY[0x277CFD508] builderForKey:@"D2DENCRYPTION_UPGRADE_MESSAGE"];
-    v6 = [v5 localizedString];
+    localizedString2 = [MEMORY[0x277CFD508] builderForKey:@"D2DENCRYPTION_UPGRADE_MESSAGE"];
+    localizedString = [localizedString2 localizedString];
     goto LABEL_12;
   }
 
   if ([(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self is2FA]&& ![(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self hasLocalSecret])
   {
-    v5 = [MEMORY[0x277CFD508] builderForKey:@"D2DENCRYPTION_UPGRADE_MESSAGE_NO_UPGRADE_MISSING_SECRET"];
-    v7 = [MEMORY[0x277CFD4F8] sharedInstance];
-    v8 = [v7 deviceClass];
-    v9 = [v5 addDeviceClass:v8];
+    localizedString2 = [MEMORY[0x277CFD508] builderForKey:@"D2DENCRYPTION_UPGRADE_MESSAGE_NO_UPGRADE_MISSING_SECRET"];
+    mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+    deviceClass = [mEMORY[0x277CFD4F8] deviceClass];
+    v9 = [localizedString2 addDeviceClass:deviceClass];
     v15 = [v9 addSecretType:{-[CDPUIDeviceToDeviceEncryptionUpgradeMessageViewModel _localSecretType](self, "_localSecretType")}];
-    v6 = [v15 localizedString];
+    localizedString = [v15 localizedString];
 
     goto LABEL_10;
   }
 
   if ([(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self is2FA]&& [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self hasLocalSecret])
   {
-    v5 = [MEMORY[0x277CFD508] builderForKey:@"D2DENCRYPTION_UPGRADE_MESSAGE_ONLY_MISSING_SECRET_REBRAND"];
-    v7 = [MEMORY[0x277CFD4F8] sharedInstance];
-    v8 = [v7 deviceClass];
-    v9 = [v5 addDeviceClass:v8];
-    v6 = [v9 localizedString];
+    localizedString2 = [MEMORY[0x277CFD508] builderForKey:@"D2DENCRYPTION_UPGRADE_MESSAGE_ONLY_MISSING_SECRET_REBRAND"];
+    mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+    deviceClass = [mEMORY[0x277CFD4F8] deviceClass];
+    v9 = [localizedString2 addDeviceClass:deviceClass];
+    localizedString = [v9 localizedString];
 LABEL_10:
 
     goto LABEL_11;
@@ -90,50 +90,50 @@ LABEL_10:
 
   v10 = [MEMORY[0x277CFD508] builderForKey:@"D2DENCRYPTION_UPGRADE_MESSAGE_UPGRADE_MISSING_SECRET"];
   v11 = [v10 addSecretType:{-[CDPUIDeviceToDeviceEncryptionUpgradeMessageViewModel _localSecretType](self, "_localSecretType")}];
-  v12 = [MEMORY[0x277CFD4F8] sharedInstance];
-  v13 = [v12 deviceClass];
-  v14 = [v11 addDeviceClass:v13];
-  v5 = [v14 localizedString];
+  mEMORY[0x277CFD4F8]2 = [MEMORY[0x277CFD4F8] sharedInstance];
+  deviceClass2 = [mEMORY[0x277CFD4F8]2 deviceClass];
+  v14 = [v11 addDeviceClass:deviceClass2];
+  localizedString2 = [v14 localizedString];
 
-  v7 = [MEMORY[0x277CFD508] builderForKey:v5];
-  v6 = [v7 localizedString];
+  mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD508] builderForKey:localizedString2];
+  localizedString = [mEMORY[0x277CFD4F8] localizedString];
 LABEL_11:
 
 LABEL_12:
 
-  return v6;
+  return localizedString;
 }
 
 - (id)continueTitle
 {
   v2 = [MEMORY[0x277CFD508] builderForKey:@"D2DENCRYPTION_CONTINUE"];
-  v3 = [v2 localizedString];
+  localizedString = [v2 localizedString];
 
-  return v3;
+  return localizedString;
 }
 
 - (id)cancelTitle
 {
   v2 = [MEMORY[0x277CFD508] builderForKey:@"D2DENCRYPTION_CANCEL"];
-  v3 = [v2 localizedString];
+  localizedString = [v2 localizedString];
 
-  return v3;
+  return localizedString;
 }
 
-- (id)_stringWithFeatureIfNeeded:(id)a3
+- (id)_stringWithFeatureIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self context];
-  v6 = [v5 featureName];
+  neededCopy = needed;
+  context = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self context];
+  featureName = [context featureName];
 
-  if (v6)
+  if (featureName)
   {
-    v7 = [v4 stringByAppendingString:@"_WITH_FEATURE"];
+    v7 = [neededCopy stringByAppendingString:@"_WITH_FEATURE"];
   }
 
   else
   {
-    v7 = v4;
+    v7 = neededCopy;
   }
 
   v8 = v7;
@@ -141,23 +141,23 @@ LABEL_12:
   return v8;
 }
 
-- (id)_stringWithFeatureSubstituted:(id)a3
+- (id)_stringWithFeatureSubstituted:(id)substituted
 {
-  v4 = a3;
-  v5 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self context];
-  v6 = [v5 featureName];
+  substitutedCopy = substituted;
+  context = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self context];
+  featureName = [context featureName];
 
-  if (v6)
+  if (featureName)
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self context];
-    v9 = [v8 featureName];
-    v10 = [v7 stringWithValidatedFormat:v4 validFormatSpecifiers:@"%@" error:0, v9];
+    context2 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self context];
+    featureName2 = [context2 featureName];
+    v10 = [v7 stringWithValidatedFormat:substitutedCopy validFormatSpecifiers:@"%@" error:0, featureName2];
   }
 
   else
   {
-    v10 = v4;
+    v10 = substitutedCopy;
   }
 
   return v10;

@@ -1,20 +1,20 @@
 @interface _CATObserverManager
-- (_CATObserverManager)initWithOperation:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)notifyObserversOperationDidProgress:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)operationDidFinish:(id)a3;
-- (void)operationDidProgress:(id)a3;
-- (void)operationDidStart:(id)a3;
-- (void)removeObserver:(id)a3;
+- (_CATObserverManager)initWithOperation:(id)operation;
+- (void)addObserver:(id)observer;
+- (void)notifyObserversOperationDidProgress:(id)progress;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)operationDidFinish:(id)finish;
+- (void)operationDidProgress:(id)progress;
+- (void)operationDidStart:(id)start;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation _CATObserverManager
 
-- (_CATObserverManager)initWithOperation:(id)a3
+- (_CATObserverManager)initWithOperation:(id)operation
 {
-  v4 = a3;
-  if (!v4)
+  operationCopy = operation;
+  if (!operationCopy)
   {
     [_CATObserverManager initWithOperation:];
   }
@@ -25,18 +25,18 @@
   v6 = v5;
   if (v5)
   {
-    v5->mOperation = v4;
+    v5->mOperation = operationCopy;
     v7 = MEMORY[0x277CCACA8];
     v8 = objc_opt_class();
-    v9 = [(CATOperation *)v4 UUID];
-    v10 = [v9 UUIDString];
-    v11 = [v7 stringWithFormat:@"%@.%@", v8, v10];
+    uUID = [(CATOperation *)operationCopy UUID];
+    uUIDString = [uUID UUIDString];
+    v11 = [v7 stringWithFormat:@"%@.%@", v8, uUIDString];
     v12 = dispatch_queue_create([v11 UTF8String], 0);
     mQueue = v6->mQueue;
     v6->mQueue = v12;
 
     objc_initWeak(&location, v6);
-    objc_initWeak(&from, v4);
+    objc_initWeak(&from, operationCopy);
     v14 = dispatch_source_create(MEMORY[0x277D85CE8], 0, 0, v6->mQueue);
     mProgressSource = v6->mProgressSource;
     v6->mProgressSource = v14;
@@ -59,10 +59,10 @@
   return v6;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [_CATObserverManager addObserver:];
   }
@@ -73,8 +73,8 @@
   v11[1] = 3221225472;
   v11[2] = __35___CATObserverManager_addObserver___block_invoke;
   v11[3] = &unk_278DA7280;
-  v12 = v4;
-  v13 = self;
+  v12 = observerCopy;
+  selfCopy = self;
   v14 = v5;
   v7 = v11;
   block[0] = MEMORY[0x277D85DD0];
@@ -84,13 +84,13 @@
   v16 = v7;
   v8 = mQueue;
   v9 = v5;
-  v10 = v4;
+  v10 = observerCopy;
   dispatch_async(v8, block);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   mQueue = self->mQueue;
   v9[0] = MEMORY[0x277D85DD0];
@@ -98,7 +98,7 @@
   v9[2] = __38___CATObserverManager_removeObserver___block_invoke;
   v9[3] = &unk_278DA7530;
   objc_copyWeak(&v11, &location);
-  v10 = v4;
+  v10 = observerCopy;
   v6 = v9;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -106,29 +106,29 @@
   block[3] = &unk_278DA7208;
   v14 = v6;
   v7 = mQueue;
-  v8 = v4;
+  v8 = observerCopy;
   dispatch_async(v7, block);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)operationDidStart:(id)a3
+- (void)operationDidStart:(id)start
 {
-  v5 = a3;
-  if (self->mOperation != v5)
+  startCopy = start;
+  if (self->mOperation != startCopy)
   {
-    [(_CATObserverManager *)a2 operationDidStart:v5];
+    [(_CATObserverManager *)a2 operationDidStart:startCopy];
   }
 
-  [(CATOperation *)v5 addObserver:self forKeyPath:@"completedUnitCount" options:7 context:@"_CATOperationCompletedUnitCountObservationContext"];
+  [(CATOperation *)startCopy addObserver:self forKeyPath:@"completedUnitCount" options:7 context:@"_CATOperationCompletedUnitCountObservationContext"];
   mQueue = self->mQueue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __41___CATObserverManager_operationDidStart___block_invoke;
   v10[3] = &unk_278DA7470;
   v10[4] = self;
-  v11 = v5;
+  v11 = startCopy;
   v7 = v10;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -136,15 +136,15 @@
   block[3] = &unk_278DA7208;
   v13 = v7;
   v8 = mQueue;
-  v9 = v5;
+  v9 = startCopy;
   dispatch_async(v8, block);
 }
 
-- (void)operationDidProgress:(id)a3
+- (void)operationDidProgress:(id)progress
 {
-  if (self->mOperation != a3)
+  if (self->mOperation != progress)
   {
-    [(_CATObserverManager *)a3 operationDidProgress:a2, self];
+    [(_CATObserverManager *)progress operationDidProgress:a2, self];
   }
 
   mQueue = self->mQueue;
@@ -163,18 +163,18 @@
   dispatch_async(v6, block);
 }
 
-- (void)notifyObserversOperationDidProgress:(id)a3
+- (void)notifyObserversOperationDidProgress:(id)progress
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4 && (self->mState - 5) >= 0xFFFFFFFE)
+  progressCopy = progress;
+  if (progressCopy && (self->mState - 5) >= 0xFFFFFFFE)
   {
-    v5 = [(NSMutableSet *)self->mObservers allObjects];
+    allObjects = [(NSMutableSet *)self->mObservers allObjects];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v6 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -186,20 +186,20 @@
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allObjects);
           }
 
           v10 = *(*(&v12 + 1) + 8 * v9);
           if (objc_opt_respondsToSelector())
           {
-            [v10 operationDidProgress:v4];
+            [v10 operationDidProgress:progressCopy];
           }
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -209,12 +209,12 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)operationDidFinish:(id)a3
+- (void)operationDidFinish:(id)finish
 {
-  v5 = a3;
-  if (self->mOperation != v5)
+  finishCopy = finish;
+  if (self->mOperation != finishCopy)
   {
-    [(_CATObserverManager *)a2 operationDidFinish:v5];
+    [(_CATObserverManager *)a2 operationDidFinish:finishCopy];
   }
 
   mQueue = self->mQueue;
@@ -223,7 +223,7 @@
   v10[2] = __42___CATObserverManager_operationDidFinish___block_invoke;
   v10[3] = &unk_278DA7470;
   v10[4] = self;
-  v11 = v5;
+  v11 = finishCopy;
   v7 = v10;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -231,32 +231,32 @@
   block[3] = &unk_278DA7208;
   v13 = v7;
   v8 = mQueue;
-  v9 = v5;
+  v9 = finishCopy;
   dispatch_async(v8, block);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a4;
-  if (a6 == @"_CATOperationCompletedUnitCountObservationContext")
+  objectCopy = object;
+  if (context == @"_CATOperationCompletedUnitCountObservationContext")
   {
     v12 = *MEMORY[0x277CCA300];
-    v13 = a5;
-    v14 = [v13 objectForKeyedSubscript:v12];
-    v15 = [v14 integerValue];
+    changeCopy = change;
+    v14 = [changeCopy objectForKeyedSubscript:v12];
+    integerValue = [v14 integerValue];
 
-    v16 = [v13 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v16 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
 
-    v17 = [v16 integerValue];
-    if (v15 == v17)
+    integerValue2 = [v16 integerValue];
+    if (integerValue == integerValue2)
     {
       goto LABEL_4;
     }
 
-    v11 = v10;
-    if (v17 < [v11 totalUnitCount])
+    changeCopy2 = objectCopy;
+    if (integerValue2 < [changeCopy2 totalUnitCount])
     {
-      [(_CATObserverManager *)self operationDidProgress:v11];
+      [(_CATObserverManager *)self operationDidProgress:changeCopy2];
     }
   }
 
@@ -264,8 +264,8 @@
   {
     v18.receiver = self;
     v18.super_class = _CATObserverManager;
-    v11 = a5;
-    [(_CATObserverManager *)&v18 observeValueForKeyPath:a3 ofObject:v10 change:v11 context:a6];
+    changeCopy2 = change;
+    [(_CATObserverManager *)&v18 observeValueForKeyPath:path ofObject:objectCopy change:changeCopy2 context:context];
   }
 
 LABEL_4:

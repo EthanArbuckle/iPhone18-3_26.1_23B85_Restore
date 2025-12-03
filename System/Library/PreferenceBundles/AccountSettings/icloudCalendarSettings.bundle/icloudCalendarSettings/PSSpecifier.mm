@@ -32,9 +32,9 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 isEditing];
+    isEditing = [v3 isEditing];
     v6 = [(PSSpecifier *)self propertyForKey:PSControlKey];
-    if (v5)
+    if (isEditing)
     {
       [v4 setEditingAccessoryView:v6];
     }

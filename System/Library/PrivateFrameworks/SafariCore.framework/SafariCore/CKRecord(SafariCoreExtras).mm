@@ -18,7 +18,7 @@
 
 - (_WBSCKRecordSystemEncoder)safari_systemFieldsEncoder
 {
-  v1 = [[_WBSCKRecordSystemEncoder alloc] initWithRecord:a1];
+  v1 = [[_WBSCKRecordSystemEncoder alloc] initWithRecord:self];
 
   return v1;
 }
@@ -41,48 +41,48 @@
       }
     }
 
-    a1 = [a1 initWithCoder:v5];
+    self = [self initWithCoder:v5];
 
-    v8 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v8;
+  return selfCopy;
 }
 
 - (id)safari_encodedSystemFieldsData
 {
   v2 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
-  [a1 encodeSystemFieldsWithCoder:v2];
-  v3 = [v2 encodedData];
+  [self encodeSystemFieldsWithCoder:v2];
+  encodedData = [v2 encodedData];
 
-  return v3;
+  return encodedData;
 }
 
 - (BOOL)safari_hasAtLeastOneChangedField
 {
-  v1 = [a1 changedKeys];
-  v2 = [v1 count] != 0;
+  changedKeys = [self changedKeys];
+  v2 = [changedKeys count] != 0;
 
   return v2;
 }
 
 - (uint64_t)safari_BOOLForKey:()SafariCoreExtras
 {
-  v1 = [a1 safari_numberForKey:?];
-  v2 = [v1 BOOLValue];
+  v1 = [self safari_numberForKey:?];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)safari_stringForKey:()SafariCoreExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -101,7 +101,7 @@
 
 - (void)safari_numberForKey:()SafariCoreExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -120,7 +120,7 @@
 
 - (void)safari_dataForKey:()SafariCoreExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -139,7 +139,7 @@
 
 - (void)safari_dateForKey:()SafariCoreExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -158,7 +158,7 @@
 
 - (void)safari_arrayForKey:()SafariCoreExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -178,15 +178,15 @@
 - (id)safari_encryptedDataForKey:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 safari_encryptedValues];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  safari_encryptedValues = [self safari_encryptedValues];
+  v6 = [safari_encryptedValues objectForKeyedSubscript:v4];
 
   return v6;
 }
 
 - (void)safari_referenceForKey:()SafariCoreExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -205,10 +205,10 @@
 
 - (uint64_t)safari_isInPrivateDatabase
 {
-  v1 = [a1 recordID];
-  v2 = [v1 safari_isInPrivateDatabase];
+  recordID = [self recordID];
+  safari_isInPrivateDatabase = [recordID safari_isInPrivateDatabase];
 
-  return v2;
+  return safari_isInPrivateDatabase;
 }
 
 - (void)safari_initWithEncodedRecordData:()SafariCoreExtras .cold.1(void *a1, void *a2)

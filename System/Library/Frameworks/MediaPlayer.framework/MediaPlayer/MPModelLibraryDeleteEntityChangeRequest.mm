@@ -1,29 +1,29 @@
 @interface MPModelLibraryDeleteEntityChangeRequest
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
-- (void)performWithResponseHandler:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
+- (void)performWithResponseHandler:(id)handler;
 @end
 
 @implementation MPModelLibraryDeleteEntityChangeRequest
 
-- (void)performWithResponseHandler:(id)a3
+- (void)performWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[MPModelLibraryTransientStateController sharedDeviceLibraryController];
-  [v5 performDeleteEntityChangeRequest:self withRelatedModelObjects:0 completion:v4];
+  [v5 performDeleteEntityChangeRequest:self withRelatedModelObjects:0 completion:handlerCopy];
 }
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(MPModelLibraryDeleteEntityChangeRequestOperation);
   [(MPModelLibraryDeleteEntityChangeRequestOperation *)v5 setRequest:self];
-  [(MPModelLibraryDeleteEntityChangeRequestOperation *)v5 setResponseHandler:v4];
+  [(MPModelLibraryDeleteEntityChangeRequestOperation *)v5 setResponseHandler:handlerCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;

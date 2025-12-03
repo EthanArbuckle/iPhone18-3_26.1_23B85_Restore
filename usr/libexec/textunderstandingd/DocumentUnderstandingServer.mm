@@ -1,12 +1,12 @@
 @interface DocumentUnderstandingServer
-- (void)triggerSpotlightFileUpdateWithItems:(id)a3 bundleID:(id)a4 completion:(id)a5;
+- (void)triggerSpotlightFileUpdateWithItems:(id)items bundleID:(id)d completion:(id)completion;
 @end
 
 @implementation DocumentUnderstandingServer
 
-- (void)triggerSpotlightFileUpdateWithItems:(id)a3 bundleID:(id)a4 completion:(id)a5
+- (void)triggerSpotlightFileUpdateWithItems:(id)items bundleID:(id)d completion:(id)completion
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(completion);
   sub_100001C9C(0, &qword_1000086B8, CSSearchableItem_ptr);
   sub_100001E10();
   sub_100001E00();

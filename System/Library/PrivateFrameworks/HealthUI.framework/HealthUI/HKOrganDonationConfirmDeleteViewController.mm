@@ -1,25 +1,25 @@
 @interface HKOrganDonationConfirmDeleteViewController
-- (HKOrganDonationConfirmDeleteViewController)initWithConnectionManager:(id)a3 medicalIDData:(id)a4;
+- (HKOrganDonationConfirmDeleteViewController)initWithConnectionManager:(id)manager medicalIDData:(id)data;
 - (id)bodyString;
 - (id)bottomAnchoredButtons;
 - (id)titleImage;
 - (id)titleString;
-- (void)buttonAtIndexTapped:(int64_t)a3;
-- (void)deleteButtonTapped:(id)a3;
+- (void)buttonAtIndexTapped:(int64_t)tapped;
+- (void)deleteButtonTapped:(id)tapped;
 @end
 
 @implementation HKOrganDonationConfirmDeleteViewController
 
-- (HKOrganDonationConfirmDeleteViewController)initWithConnectionManager:(id)a3 medicalIDData:(id)a4
+- (HKOrganDonationConfirmDeleteViewController)initWithConnectionManager:(id)manager medicalIDData:(id)data
 {
-  v7 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = HKOrganDonationConfirmDeleteViewController;
-  v8 = [(HKOrganDonationBaseViewController *)&v11 initWithMedicalIDData:a4];
+  v8 = [(HKOrganDonationBaseViewController *)&v11 initWithMedicalIDData:data];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_connectionManager, a3);
+    objc_storeStrong(&v8->_connectionManager, manager);
   }
 
   return v9;
@@ -61,26 +61,26 @@
   return v4;
 }
 
-- (void)buttonAtIndexTapped:(int64_t)a3
+- (void)buttonAtIndexTapped:(int64_t)tapped
 {
-  if (!a3)
+  if (!tapped)
   {
     [(HKOrganDonationConfirmDeleteViewController *)self deleteButtonTapped:?];
   }
 }
 
-- (void)deleteButtonTapped:(id)a3
+- (void)deleteButtonTapped:(id)tapped
 {
-  v4 = a3;
-  [v4 setEnabled:0];
-  v5 = [(HKOrganDonationConfirmDeleteViewController *)self navigationItem];
-  [v5 setHidesBackButton:1 animated:1];
+  tappedCopy = tapped;
+  [tappedCopy setEnabled:0];
+  navigationItem = [(HKOrganDonationConfirmDeleteViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:1];
 
-  v6 = [(HKTitledBuddyViewController *)self loadingIndicator];
-  [v6 startAnimating];
+  loadingIndicator = [(HKTitledBuddyViewController *)self loadingIndicator];
+  [loadingIndicator startAnimating];
 
-  v7 = [(HKTitledBuddyViewController *)self loadingIndicatorBarButtonItem];
-  [v7 setHidden:0];
+  loadingIndicatorBarButtonItem = [(HKTitledBuddyViewController *)self loadingIndicatorBarButtonItem];
+  [loadingIndicatorBarButtonItem setHidden:0];
 
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -88,7 +88,7 @@
   aBlock[2] = __65__HKOrganDonationConfirmDeleteViewController_deleteButtonTapped___block_invoke;
   aBlock[3] = &unk_1E81B6070;
   objc_copyWeak(&v12, &location);
-  v8 = v4;
+  v8 = tappedCopy;
   v11 = v8;
   v9 = _Block_copy(aBlock);
   [(HKOrganDonationConnectionManager *)self->_connectionManager deleteRegistrantWithCompletion:v9];

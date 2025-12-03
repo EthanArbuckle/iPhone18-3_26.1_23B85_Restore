@@ -2,25 +2,25 @@
 - (CGRect)clippingRect;
 - (PXPeopleBadgeViewDelegate)badgeViewDelegate;
 - (id)_checkmarkConfiguration;
-- (id)_createHeartBadgeWithDisplayScale:(double)a3 isFavorite:(BOOL)a4;
+- (id)_createHeartBadgeWithDisplayScale:(double)scale isFavorite:(BOOL)favorite;
 - (id)_currentTintColor;
 - (id)_favoriteConfiguration;
 - (id)_largeConfiguration;
 - (id)_smallConfiguration;
 - (id)_unfavoriteConfiguration;
-- (void)_createCheckmarkBadgeWithDisplayScale:(double)a3;
-- (void)_createFavoriteBadgeWithDisplayScale:(double)a3;
-- (void)_createLegacyDisabledFavoriteBadgeWithDisplayScale:(double)a3;
-- (void)_createLegacyDisabledUnfavoriteBadgeWithDisplayScale:(double)a3;
-- (void)_createLegacyEnabledFavoriteBadgeWithDisplayScale:(double)a3;
-- (void)_createLegacyEnabledUnfavoriteBadgeWithDisplayScale:(double)a3;
-- (void)_createUnfavoriteBadgeWithDisplayScale:(double)a3;
+- (void)_createCheckmarkBadgeWithDisplayScale:(double)scale;
+- (void)_createFavoriteBadgeWithDisplayScale:(double)scale;
+- (void)_createLegacyDisabledFavoriteBadgeWithDisplayScale:(double)scale;
+- (void)_createLegacyDisabledUnfavoriteBadgeWithDisplayScale:(double)scale;
+- (void)_createLegacyEnabledFavoriteBadgeWithDisplayScale:(double)scale;
+- (void)_createLegacyEnabledUnfavoriteBadgeWithDisplayScale:(double)scale;
+- (void)_createUnfavoriteBadgeWithDisplayScale:(double)scale;
 - (void)_hideAllViews;
-- (void)favoriteTapped:(id)a3;
+- (void)favoriteTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setClippingRect:(CGRect)a3;
-- (void)setUserData:(id)a3;
-- (void)unfavoriteTapped:(id)a3;
+- (void)setClippingRect:(CGRect)rect;
+- (void)setUserData:(id)data;
+- (void)unfavoriteTapped:(id)tapped;
 @end
 
 @implementation PXPeopleBadgeView
@@ -52,15 +52,15 @@
   if (!checkmarkConfiguration)
   {
     v4 = MEMORY[0x1E69DCAD8];
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
-    v13[0] = v5;
-    v6 = [(PXPeopleBadgeView *)self _currentTintColor];
-    v13[1] = v6;
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v13[0] = whiteColor;
+    _currentTintColor = [(PXPeopleBadgeView *)self _currentTintColor];
+    v13[1] = _currentTintColor;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
     v8 = [v4 configurationWithPaletteColors:v7];
 
-    v9 = [(PXPeopleBadgeView *)self _largeConfiguration];
-    v10 = [v9 configurationByApplyingConfiguration:v8];
+    _largeConfiguration = [(PXPeopleBadgeView *)self _largeConfiguration];
+    v10 = [_largeConfiguration configurationByApplyingConfiguration:v8];
     v11 = self->_checkmarkConfiguration;
     self->_checkmarkConfiguration = v10;
 
@@ -77,15 +77,15 @@
   if (!unfavoriteConfiguration)
   {
     v4 = MEMORY[0x1E69DCAD8];
-    v5 = [MEMORY[0x1E69DC888] systemGray2Color];
-    v13[0] = v5;
-    v6 = [MEMORY[0x1E69DC888] tertiarySystemGroupedBackgroundColor];
-    v13[1] = v6;
+    systemGray2Color = [MEMORY[0x1E69DC888] systemGray2Color];
+    v13[0] = systemGray2Color;
+    tertiarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemGroupedBackgroundColor];
+    v13[1] = tertiarySystemGroupedBackgroundColor;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
     v8 = [v4 configurationWithPaletteColors:v7];
 
-    v9 = [(PXPeopleBadgeView *)self _smallConfiguration];
-    v10 = [v9 configurationByApplyingConfiguration:v8];
+    _smallConfiguration = [(PXPeopleBadgeView *)self _smallConfiguration];
+    v10 = [_smallConfiguration configurationByApplyingConfiguration:v8];
     v11 = self->_unfavoriteConfiguration;
     self->_unfavoriteConfiguration = v10;
 
@@ -102,15 +102,15 @@
   if (!favoriteConfiguration)
   {
     v4 = MEMORY[0x1E69DCAD8];
-    v5 = [(PXPeopleBadgeView *)self _currentTintColor];
-    v13[0] = v5;
-    v6 = [MEMORY[0x1E69DC888] tertiarySystemGroupedBackgroundColor];
-    v13[1] = v6;
+    _currentTintColor = [(PXPeopleBadgeView *)self _currentTintColor];
+    v13[0] = _currentTintColor;
+    tertiarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemGroupedBackgroundColor];
+    v13[1] = tertiarySystemGroupedBackgroundColor;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
     v8 = [v4 configurationWithPaletteColors:v7];
 
-    v9 = [(PXPeopleBadgeView *)self _largeConfiguration];
-    v10 = [v9 configurationByApplyingConfiguration:v8];
+    _largeConfiguration = [(PXPeopleBadgeView *)self _largeConfiguration];
+    v10 = [_largeConfiguration configurationByApplyingConfiguration:v8];
     v11 = self->_favoriteConfiguration;
     self->_favoriteConfiguration = v10;
 
@@ -182,95 +182,95 @@ id __38__PXPeopleBadgeView__currentTintColor__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setClippingRect:(CGRect)a3
+- (void)setClippingRect:(CGRect)rect
 {
-  if (!CGRectEqualToRect(a3, *MEMORY[0x1E695F040]))
+  if (!CGRectEqualToRect(rect, *MEMORY[0x1E695F040]))
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXPeopleBadgeView.m" lineNumber:221 description:@"Clipping isn't supported"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleBadgeView.m" lineNumber:221 description:@"Clipping isn't supported"];
   }
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v10 = a3;
+  dataCopy = data;
   v5 = self->_userData;
   v6 = v5;
-  if (v5 == v10)
+  if (v5 == dataCopy)
   {
   }
 
   else
   {
-    v7 = [(PXPeopleBadgeViewConfiguration *)v5 isEqual:v10];
+    v7 = [(PXPeopleBadgeViewConfiguration *)v5 isEqual:dataCopy];
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_userData, a3);
-      v8 = [(PXPeopleBadgeViewConfiguration *)v10 badgeViewDelegate];
-      [(PXPeopleBadgeView *)self setBadgeViewDelegate:v8];
+      objc_storeStrong(&self->_userData, data);
+      badgeViewDelegate = [(PXPeopleBadgeViewConfiguration *)dataCopy badgeViewDelegate];
+      [(PXPeopleBadgeView *)self setBadgeViewDelegate:badgeViewDelegate];
 
       [(PXPeopleBadgeView *)self _hideAllViews];
-      v9 = [(PXPeopleBadgeViewConfiguration *)v10 state];
-      if (v9 <= 3)
+      state = [(PXPeopleBadgeViewConfiguration *)dataCopy state];
+      if (state <= 3)
       {
-        switch(v9)
+        switch(state)
         {
           case 1:
-            [(PXPeopleBadgeViewConfiguration *)v10 displayScale];
+            [(PXPeopleBadgeViewConfiguration *)dataCopy displayScale];
             [(PXPeopleBadgeView *)self _createLegacyEnabledFavoriteBadgeWithDisplayScale:?];
             break;
           case 2:
-            [(PXPeopleBadgeViewConfiguration *)v10 displayScale];
+            [(PXPeopleBadgeViewConfiguration *)dataCopy displayScale];
             [(PXPeopleBadgeView *)self _createLegacyDisabledFavoriteBadgeWithDisplayScale:?];
             break;
           case 3:
-            [(PXPeopleBadgeViewConfiguration *)v10 displayScale];
+            [(PXPeopleBadgeViewConfiguration *)dataCopy displayScale];
             [(PXPeopleBadgeView *)self _createLegacyEnabledUnfavoriteBadgeWithDisplayScale:?];
             break;
         }
       }
 
-      else if (v9 > 5)
+      else if (state > 5)
       {
-        if (v9 == 6)
+        if (state == 6)
         {
-          [(PXPeopleBadgeViewConfiguration *)v10 displayScale];
+          [(PXPeopleBadgeViewConfiguration *)dataCopy displayScale];
           [(PXPeopleBadgeView *)self _createFavoriteBadgeWithDisplayScale:?];
         }
 
-        else if (v9 == 7)
+        else if (state == 7)
         {
-          [(PXPeopleBadgeViewConfiguration *)v10 displayScale];
+          [(PXPeopleBadgeViewConfiguration *)dataCopy displayScale];
           [(PXPeopleBadgeView *)self _createUnfavoriteBadgeWithDisplayScale:?];
         }
       }
 
-      else if (v9 == 4)
+      else if (state == 4)
       {
-        [(PXPeopleBadgeViewConfiguration *)v10 displayScale];
+        [(PXPeopleBadgeViewConfiguration *)dataCopy displayScale];
         [(PXPeopleBadgeView *)self _createLegacyDisabledUnfavoriteBadgeWithDisplayScale:?];
       }
 
       else
       {
-        [(PXPeopleBadgeViewConfiguration *)v10 displayScale];
+        [(PXPeopleBadgeViewConfiguration *)dataCopy displayScale];
         [(PXPeopleBadgeView *)self _createCheckmarkBadgeWithDisplayScale:?];
       }
     }
   }
 }
 
-- (void)unfavoriteTapped:(id)a3
+- (void)unfavoriteTapped:(id)tapped
 {
-  v4 = [(PXPeopleBadgeView *)self badgeViewDelegate];
-  [v4 unfavoriteTappedForBadgeView:self];
+  badgeViewDelegate = [(PXPeopleBadgeView *)self badgeViewDelegate];
+  [badgeViewDelegate unfavoriteTappedForBadgeView:self];
 }
 
-- (void)favoriteTapped:(id)a3
+- (void)favoriteTapped:(id)tapped
 {
-  v4 = [(PXPeopleBadgeView *)self badgeViewDelegate];
-  [v4 favoriteTappedForBadgeView:self];
+  badgeViewDelegate = [(PXPeopleBadgeView *)self badgeViewDelegate];
+  [badgeViewDelegate favoriteTappedForBadgeView:self];
 }
 
 - (void)layoutSubviews
@@ -314,10 +314,10 @@ id __38__PXPeopleBadgeView__currentTintColor__block_invoke(uint64_t a1)
   [(UIButton *)unfavoriteButton setHidden:1];
 }
 
-- (id)_createHeartBadgeWithDisplayScale:(double)a3 isFavorite:(BOOL)a4
+- (id)_createHeartBadgeWithDisplayScale:(double)scale isFavorite:(BOOL)favorite
 {
-  v6 = !a4;
-  if (a4)
+  v6 = !favorite;
+  if (favorite)
   {
     v7 = @"heart.fill";
   }
@@ -338,26 +338,26 @@ id __38__PXPeopleBadgeView__currentTintColor__block_invoke(uint64_t a1)
   v11 = [MEMORY[0x1E69DCAB8] systemImageNamed:v7];
   v12 = [v10 systemButtonWithImage:v11 target:self action:v9];
 
-  v13 = [(PXPeopleBadgeView *)self _smallConfiguration];
-  [v12 setPreferredSymbolConfiguration:v13 forImageInState:0];
+  _smallConfiguration = [(PXPeopleBadgeView *)self _smallConfiguration];
+  [v12 setPreferredSymbolConfiguration:_smallConfiguration forImageInState:0];
 
-  v14 = [MEMORY[0x1E69DC888] whiteColor];
-  [v12 setTintColor:v14];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v12 setTintColor:whiteColor];
 
   [v12 setContentHorizontalAlignment:5];
   [v12 setContentVerticalAlignment:1];
-  v15 = [v12 layer];
-  [v15 setRasterizationScale:a3];
+  layer = [v12 layer];
+  [layer setRasterizationScale:scale];
 
   return v12;
 }
 
-- (void)_createUnfavoriteBadgeWithDisplayScale:(double)a3
+- (void)_createUnfavoriteBadgeWithDisplayScale:(double)scale
 {
   unfavoriteButton = self->_unfavoriteButton;
   if (!unfavoriteButton)
   {
-    v5 = [(PXPeopleBadgeView *)self _createHeartBadgeWithDisplayScale:0 isFavorite:a3];
+    v5 = [(PXPeopleBadgeView *)self _createHeartBadgeWithDisplayScale:0 isFavorite:scale];
     v6 = self->_unfavoriteButton;
     self->_unfavoriteButton = v5;
 
@@ -365,18 +365,18 @@ id __38__PXPeopleBadgeView__currentTintColor__block_invoke(uint64_t a1)
     unfavoriteButton = self->_unfavoriteButton;
   }
 
-  [(UIButton *)unfavoriteButton setHidden:0, a3];
+  [(UIButton *)unfavoriteButton setHidden:0, scale];
   v7 = self->_unfavoriteButton;
 
   [(UIButton *)v7 setUserInteractionEnabled:1];
 }
 
-- (void)_createFavoriteBadgeWithDisplayScale:(double)a3
+- (void)_createFavoriteBadgeWithDisplayScale:(double)scale
 {
   favoriteButton = self->_favoriteButton;
   if (!favoriteButton)
   {
-    v5 = [(PXPeopleBadgeView *)self _createHeartBadgeWithDisplayScale:1 isFavorite:a3];
+    v5 = [(PXPeopleBadgeView *)self _createHeartBadgeWithDisplayScale:1 isFavorite:scale];
     v6 = self->_favoriteButton;
     self->_favoriteButton = v5;
 
@@ -384,13 +384,13 @@ id __38__PXPeopleBadgeView__currentTintColor__block_invoke(uint64_t a1)
     favoriteButton = self->_favoriteButton;
   }
 
-  [(UIButton *)favoriteButton setHidden:0, a3];
+  [(UIButton *)favoriteButton setHidden:0, scale];
   v7 = self->_favoriteButton;
 
   [(UIButton *)v7 setUserInteractionEnabled:1];
 }
 
-- (void)_createCheckmarkBadgeWithDisplayScale:(double)a3
+- (void)_createCheckmarkBadgeWithDisplayScale:(double)scale
 {
   if (!self->_checkmarkView)
   {
@@ -401,52 +401,52 @@ id __38__PXPeopleBadgeView__currentTintColor__block_invoke(uint64_t a1)
     self->_checkmarkView = v7;
 
     v9 = self->_checkmarkView;
-    v10 = [(PXPeopleBadgeView *)self _checkmarkConfiguration];
-    [(UIButton *)v9 setPreferredSymbolConfiguration:v10 forImageInState:0];
+    _checkmarkConfiguration = [(PXPeopleBadgeView *)self _checkmarkConfiguration];
+    [(UIButton *)v9 setPreferredSymbolConfiguration:_checkmarkConfiguration forImageInState:0];
 
-    v11 = [(UIButton *)self->_checkmarkView layer];
+    layer = [(UIButton *)self->_checkmarkView layer];
     LODWORD(v12) = 1045220557;
-    [v11 setShadowOpacity:v12];
-    [v11 setShadowOffset:{0.0, 1.0}];
-    [v11 setShadowRadius:3.0];
-    [v11 setShouldRasterize:1];
-    [v11 setRasterizationScale:a3];
+    [layer setShadowOpacity:v12];
+    [layer setShadowOffset:{0.0, 1.0}];
+    [layer setShadowRadius:3.0];
+    [layer setShouldRasterize:1];
+    [layer setRasterizationScale:scale];
     [(PXPeopleBadgeView *)self addSubview:self->_checkmarkView];
   }
 
   if (!self->_checkmarkCircle)
   {
     v13 = MEMORY[0x1E69DC738];
-    v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"circle", a3}];
+    v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"circle", scale}];
     v15 = [v13 systemButtonWithImage:v14 target:0 action:0];
     checkmarkCircle = self->_checkmarkCircle;
     self->_checkmarkCircle = v15;
 
     v17 = self->_checkmarkCircle;
-    v18 = [(PXPeopleBadgeView *)self _largeConfiguration];
-    [(UIButton *)v17 setPreferredSymbolConfiguration:v18 forImageInState:0];
+    _largeConfiguration = [(PXPeopleBadgeView *)self _largeConfiguration];
+    [(UIButton *)v17 setPreferredSymbolConfiguration:_largeConfiguration forImageInState:0];
 
-    v19 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIButton *)self->_checkmarkCircle setTintColor:v19];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIButton *)self->_checkmarkCircle setTintColor:whiteColor];
 
     [(PXPeopleBadgeView *)self addSubview:self->_checkmarkCircle];
   }
 
-  [(UIButton *)self->_checkmarkView setHidden:0, a3];
+  [(UIButton *)self->_checkmarkView setHidden:0, scale];
   v20 = self->_checkmarkCircle;
 
   [(UIButton *)v20 setHidden:0];
 }
 
-- (void)_createLegacyDisabledUnfavoriteBadgeWithDisplayScale:(double)a3
+- (void)_createLegacyDisabledUnfavoriteBadgeWithDisplayScale:(double)scale
 {
-  [(PXPeopleBadgeView *)self _createLegacyEnabledUnfavoriteBadgeWithDisplayScale:a3];
+  [(PXPeopleBadgeView *)self _createLegacyEnabledUnfavoriteBadgeWithDisplayScale:scale];
   legacyUnfavoriteButton = self->_legacyUnfavoriteButton;
 
   [(UIButton *)legacyUnfavoriteButton setUserInteractionEnabled:0];
 }
 
-- (void)_createLegacyEnabledUnfavoriteBadgeWithDisplayScale:(double)a3
+- (void)_createLegacyEnabledUnfavoriteBadgeWithDisplayScale:(double)scale
 {
   legacyUnfavoriteButton = self->_legacyUnfavoriteButton;
   if (!legacyUnfavoriteButton)
@@ -458,37 +458,37 @@ id __38__PXPeopleBadgeView__currentTintColor__block_invoke(uint64_t a1)
     self->_legacyUnfavoriteButton = v8;
 
     v10 = self->_legacyUnfavoriteButton;
-    v11 = [(PXPeopleBadgeView *)self _unfavoriteConfiguration];
-    [(UIButton *)v10 setPreferredSymbolConfiguration:v11 forImageInState:0];
+    _unfavoriteConfiguration = [(PXPeopleBadgeView *)self _unfavoriteConfiguration];
+    [(UIButton *)v10 setPreferredSymbolConfiguration:_unfavoriteConfiguration forImageInState:0];
 
-    v12 = [(UIButton *)self->_legacyUnfavoriteButton layer];
+    layer = [(UIButton *)self->_legacyUnfavoriteButton layer];
     LODWORD(v13) = 1045220557;
-    [v12 setShadowOpacity:v13];
-    [v12 setShadowOffset:{0.0, 1.0}];
-    [v12 setShadowRadius:3.0];
-    [v12 setShouldRasterize:1];
-    [v12 setRasterizationScale:a3];
+    [layer setShadowOpacity:v13];
+    [layer setShadowOffset:{0.0, 1.0}];
+    [layer setShadowRadius:3.0];
+    [layer setShouldRasterize:1];
+    [layer setRasterizationScale:scale];
     [(PXPeopleBadgeView *)self addSubview:self->_legacyUnfavoriteButton];
 
     legacyUnfavoriteButton = self->_legacyUnfavoriteButton;
   }
 
-  [(UIButton *)legacyUnfavoriteButton setHidden:0, a3];
+  [(UIButton *)legacyUnfavoriteButton setHidden:0, scale];
   v14 = self->_legacyUnfavoriteButton;
 
   [(UIButton *)v14 setUserInteractionEnabled:1];
 }
 
-- (void)_createLegacyDisabledFavoriteBadgeWithDisplayScale:(double)a3
+- (void)_createLegacyDisabledFavoriteBadgeWithDisplayScale:(double)scale
 {
-  [(PXPeopleBadgeView *)self _createLegacyEnabledFavoriteBadgeWithDisplayScale:a3];
+  [(PXPeopleBadgeView *)self _createLegacyEnabledFavoriteBadgeWithDisplayScale:scale];
   [(UIButton *)self->_legacyFavoriteButton setAlpha:0.4];
   legacyFavoriteButton = self->_legacyFavoriteButton;
 
   [(UIButton *)legacyFavoriteButton setUserInteractionEnabled:0];
 }
 
-- (void)_createLegacyEnabledFavoriteBadgeWithDisplayScale:(double)a3
+- (void)_createLegacyEnabledFavoriteBadgeWithDisplayScale:(double)scale
 {
   if (!self->_legacyFavoriteBackground)
   {
@@ -499,11 +499,11 @@ id __38__PXPeopleBadgeView__currentTintColor__block_invoke(uint64_t a1)
     self->_legacyFavoriteBackground = v7;
 
     v9 = self->_legacyFavoriteBackground;
-    v10 = [(PXPeopleBadgeView *)self _largeConfiguration];
-    [(UIButton *)v9 setPreferredSymbolConfiguration:v10 forImageInState:0];
+    _largeConfiguration = [(PXPeopleBadgeView *)self _largeConfiguration];
+    [(UIButton *)v9 setPreferredSymbolConfiguration:_largeConfiguration forImageInState:0];
 
-    v11 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(UIButton *)self->_legacyFavoriteBackground setTintColor:v11];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(UIButton *)self->_legacyFavoriteBackground setTintColor:systemBackgroundColor];
 
     [(PXPeopleBadgeView *)self addSubview:self->_legacyFavoriteBackground];
   }
@@ -517,16 +517,16 @@ id __38__PXPeopleBadgeView__currentTintColor__block_invoke(uint64_t a1)
     self->_legacyFavoriteButton = v14;
 
     v16 = self->_legacyFavoriteButton;
-    v17 = [(PXPeopleBadgeView *)self _favoriteConfiguration];
-    [(UIButton *)v16 setPreferredSymbolConfiguration:v17 forImageInState:0];
+    _favoriteConfiguration = [(PXPeopleBadgeView *)self _favoriteConfiguration];
+    [(UIButton *)v16 setPreferredSymbolConfiguration:_favoriteConfiguration forImageInState:0];
 
-    v18 = [(UIButton *)self->_legacyFavoriteButton layer];
+    layer = [(UIButton *)self->_legacyFavoriteButton layer];
     LODWORD(v19) = 1045220557;
-    [v18 setShadowOpacity:v19];
-    [v18 setShadowOffset:{0.0, 1.0}];
-    [v18 setShadowRadius:3.0];
-    [v18 setShouldRasterize:1];
-    [v18 setRasterizationScale:a3];
+    [layer setShadowOpacity:v19];
+    [layer setShadowOffset:{0.0, 1.0}];
+    [layer setShadowRadius:3.0];
+    [layer setShouldRasterize:1];
+    [layer setRasterizationScale:scale];
     [(PXPeopleBadgeView *)self addSubview:self->_legacyFavoriteButton];
   }
 

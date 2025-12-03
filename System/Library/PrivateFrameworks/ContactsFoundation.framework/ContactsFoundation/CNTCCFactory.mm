@@ -1,15 +1,15 @@
 @interface CNTCCFactory
-+ (Class)defaultClassForType:(int64_t)a3;
-+ (id)defaultTCCForType:(int64_t)a3;
++ (Class)defaultClassForType:(int64_t)type;
++ (id)defaultTCCForType:(int64_t)type;
 @end
 
 @implementation CNTCCFactory
 
-+ (id)defaultTCCForType:(int64_t)a3
++ (id)defaultTCCForType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"unrecognized CNTCCType" userInfo:0];
       objc_exception_throw(v6);
@@ -28,11 +28,11 @@
   return v4;
 }
 
-+ (Class)defaultClassForType:(int64_t)a3
++ (Class)defaultClassForType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"unrecognized CNTCCType" userInfo:0];
       objc_exception_throw(v7);

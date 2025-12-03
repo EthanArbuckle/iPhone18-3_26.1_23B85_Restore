@@ -1,10 +1,10 @@
 @interface MetricDetailViewModel
-- (void)checLoadingStateWithNotification:(id)a3;
+- (void)checLoadingStateWithNotification:(id)notification;
 @end
 
 @implementation MetricDetailViewModel
 
-- (void)checLoadingStateWithNotification:(id)a3
+- (void)checLoadingStateWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);

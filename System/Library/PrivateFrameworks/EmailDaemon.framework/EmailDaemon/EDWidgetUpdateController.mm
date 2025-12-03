@@ -1,17 +1,17 @@
 @interface EDWidgetUpdateController
 + (OS_os_log)log;
-- (EDWidgetUpdateController)initWithWidgetBundleIdentifier:(id)a3 widgetKindIdentifiers:(id)a4 hookRegistry:(id)a5;
+- (EDWidgetUpdateController)initWithWidgetBundleIdentifier:(id)identifier widgetKindIdentifiers:(id)identifiers hookRegistry:(id)registry;
 - (int64_t)_activityDelay;
-- (void)_hasUserConfiguredMailWidget:(id)a3;
-- (void)_refreshTimelinesWithReason:(id)a3;
+- (void)_hasUserConfiguredMailWidget:(id)widget;
+- (void)_refreshTimelinesWithReason:(id)reason;
 - (void)_restoreFromUserDefaults;
 - (void)_runActivity;
-- (void)_scheduleActivityWithReason:(id)a3;
+- (void)_scheduleActivityWithReason:(id)reason;
 - (void)_updateLastUpdateInformation;
 - (void)_writeUserDefaults;
 - (void)dealloc;
-- (void)persistenceDidAddMessages:(id)a3 generationWindow:(id)a4;
-- (void)persistenceDidChangeFlags:(id)a3 messages:(id)a4 generationWindow:(id)a5;
+- (void)persistenceDidAddMessages:(id)messages generationWindow:(id)window;
+- (void)persistenceDidChangeFlags:(id)flags messages:(id)messages generationWindow:(id)window;
 @end
 
 @implementation EDWidgetUpdateController
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __31__EDWidgetUpdateController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_112 != -1)
   {
     dispatch_once(&log_onceToken_112, block);
@@ -41,11 +41,11 @@ void __31__EDWidgetUpdateController_log__block_invoke(uint64_t a1)
   log_log_112 = v1;
 }
 
-- (EDWidgetUpdateController)initWithWidgetBundleIdentifier:(id)a3 widgetKindIdentifiers:(id)a4 hookRegistry:(id)a5
+- (EDWidgetUpdateController)initWithWidgetBundleIdentifier:(id)identifier widgetKindIdentifiers:(id)identifiers hookRegistry:(id)registry
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  registryCopy = registry;
   v24.receiver = self;
   v24.super_class = EDWidgetUpdateController;
   v11 = [(EDWidgetUpdateController *)&v24 init];
@@ -58,7 +58,7 @@ void __31__EDWidgetUpdateController_log__block_invoke(uint64_t a1)
       _os_log_impl(&dword_1C61EF000, v12, OS_LOG_TYPE_DEFAULT, "Waiting for updates", buf, 2u);
     }
 
-    v13 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v9];
+    v13 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:identifiersCopy];
     identifiers = v11->_identifiers;
     v11->_identifiers = v13;
 
@@ -66,8 +66,8 @@ void __31__EDWidgetUpdateController_log__block_invoke(uint64_t a1)
     v22[1] = 3221225472;
     v22[2] = __94__EDWidgetUpdateController_initWithWidgetBundleIdentifier_widgetKindIdentifiers_hookRegistry___block_invoke;
     v22[3] = &unk_1E8256328;
-    v23 = v8;
-    v15 = [v9 ef_map:v22];
+    v23 = identifierCopy;
+    v15 = [identifiersCopy ef_map:v22];
     timelineControllers = v11->_timelineControllers;
     v11->_timelineControllers = v15;
 
@@ -93,7 +93,7 @@ void __31__EDWidgetUpdateController_log__block_invoke(uint64_t a1)
     reader = v11->_reader;
     v11->_reader = v19;
 
-    [v10 registerMessageChangeHookResponder:v11];
+    [registryCopy registerMessageChangeHookResponder:v11];
     [(EDWidgetUpdateController *)v11 _restoreFromUserDefaults];
     [(EDWidgetUpdateController *)v11 _runActivity];
   }
@@ -135,19 +135,19 @@ id __94__EDWidgetUpdateController_initWithWidgetBundleIdentifier_widgetKindIdent
   [(EDWidgetUpdateController *)&v3 dealloc];
 }
 
-- (void)_hasUserConfiguredMailWidget:(id)a3
+- (void)_hasUserConfiguredMailWidget:(id)widget
 {
-  v4 = a3;
+  widgetCopy = widget;
   objc_initWeak(&location, self);
-  v5 = [(EDWidgetUpdateController *)self reader];
+  reader = [(EDWidgetUpdateController *)self reader];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__EDWidgetUpdateController__hasUserConfiguredMailWidget___block_invoke;
   v7[3] = &unk_1E82593D0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = widgetCopy;
   v8 = v6;
-  [v5 allConfiguredWidgetsWithCompletion:v7];
+  [reader allConfiguredWidgetsWithCompletion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -269,9 +269,9 @@ LABEL_23:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_scheduleActivityWithReason:(id)a3
+- (void)_scheduleActivityWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -279,8 +279,8 @@ LABEL_23:
   v6[3] = &unk_1E8259418;
   v6[4] = self;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = reasonCopy;
+  v5 = reasonCopy;
   [(EDWidgetUpdateController *)self _hasUserConfiguredMailWidget:v6];
 
   objc_destroyWeak(&v8);
@@ -377,11 +377,11 @@ void __40__EDWidgetUpdateController__runActivity__block_invoke(uint64_t a1)
 - (int64_t)_activityDelay
 {
   v2 = *MEMORY[0x1E69E9CD0];
-  v3 = [(EDWidgetUpdateController *)self lastUpdate];
-  if (v3)
+  lastUpdate = [(EDWidgetUpdateController *)self lastUpdate];
+  if (lastUpdate)
   {
-    v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v5 = [v4 dateByAddingUnit:64 value:10 toDate:v3 options:0];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v5 = [currentCalendar dateByAddingUnit:64 value:10 toDate:lastUpdate options:0];
     v6 = v5;
     if (v5)
     {
@@ -395,8 +395,8 @@ void __40__EDWidgetUpdateController__runActivity__block_invoke(uint64_t a1)
 
     v8 = v7;
 
-    v9 = [MEMORY[0x1E695DF00] date];
-    v10 = [v9 ef_isEarlierThanDate:v8];
+    date = [MEMORY[0x1E695DF00] date];
+    v10 = [date ef_isEarlierThanDate:v8];
 
     if (v10)
     {
@@ -407,17 +407,17 @@ void __40__EDWidgetUpdateController__runActivity__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)_refreshTimelinesWithReason:(id)a3
+- (void)_refreshTimelinesWithReason:(id)reason
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(EDWidgetUpdateController *)self timelineControllers];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  timelineControllers = [(EDWidgetUpdateController *)self timelineControllers];
+  v7 = [timelineControllers countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -427,14 +427,14 @@ void __40__EDWidgetUpdateController__runActivity__block_invoke(uint64_t a1)
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(timelineControllers);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) reloadTimelineWithReason:v4];
+        v10 = [*(*(&v14 + 1) + 8 * i) reloadTimelineWithReason:reasonCopy];
         [v5 ef_addOptionalObject:v10];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v7 = [timelineControllers countByEnumeratingWithState:&v14 objects:v20 count:16];
     }
 
     while (v7);
@@ -455,9 +455,9 @@ void __40__EDWidgetUpdateController__runActivity__block_invoke(uint64_t a1)
     v11 = +[EDWidgetUpdateController log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(EDWidgetUpdateController *)self numberOfUpdates];
+      numberOfUpdates = [(EDWidgetUpdateController *)self numberOfUpdates];
       *buf = 134217984;
-      v19 = v12;
+      v19 = numberOfUpdates;
       _os_log_impl(&dword_1C61EF000, v11, OS_LOG_TYPE_DEFAULT, "Successfully updated widget (%ld)", buf, 0xCu);
     }
   }
@@ -467,10 +467,10 @@ void __40__EDWidgetUpdateController__runActivity__block_invoke(uint64_t a1)
 
 - (void)_updateLastUpdateInformation
 {
-  v6 = [MEMORY[0x1E695DF00] date];
-  v3 = [(EDWidgetUpdateController *)self lastUpdate];
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-  if ([v4 isDateInToday:v3] && objc_msgSend(v4, "isDateInToday:", v6))
+  date = [MEMORY[0x1E695DF00] date];
+  lastUpdate = [(EDWidgetUpdateController *)self lastUpdate];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  if ([currentCalendar isDateInToday:lastUpdate] && objc_msgSend(currentCalendar, "isDateInToday:", date))
   {
     v5 = [(EDWidgetUpdateController *)self numberOfUpdates]+ 1;
   }
@@ -481,13 +481,13 @@ void __40__EDWidgetUpdateController__runActivity__block_invoke(uint64_t a1)
   }
 
   [(EDWidgetUpdateController *)self setNumberOfUpdates:v5];
-  [(EDWidgetUpdateController *)self setLastUpdate:v6];
+  [(EDWidgetUpdateController *)self setLastUpdate:date];
   [(EDWidgetUpdateController *)self _writeUserDefaults];
 }
 
-- (void)persistenceDidAddMessages:(id)a3 generationWindow:(id)a4
+- (void)persistenceDidAddMessages:(id)messages generationWindow:(id)window
 {
-  v5 = [EDWidgetUpdateController log:a3];
+  v5 = [EDWidgetUpdateController log:messages];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
@@ -497,18 +497,18 @@ void __40__EDWidgetUpdateController__runActivity__block_invoke(uint64_t a1)
   [(EDWidgetUpdateController *)self _scheduleActivityWithReason:@"messageAdded"];
 }
 
-- (void)persistenceDidChangeFlags:(id)a3 messages:(id)a4 generationWindow:(id)a5
+- (void)persistenceDidChangeFlags:(id)flags messages:(id)messages generationWindow:(id)window
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 hasChanges] && ((objc_msgSend(v6, "readChanged") & 1) != 0 || objc_msgSend(v6, "deletedChanged")))
+  flagsCopy = flags;
+  if ([flagsCopy hasChanges] && ((objc_msgSend(flagsCopy, "readChanged") & 1) != 0 || objc_msgSend(flagsCopy, "deletedChanged")))
   {
     v7 = +[EDWidgetUpdateController log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 ef_publicDescription];
+      ef_publicDescription = [flagsCopy ef_publicDescription];
       v12 = 138543362;
-      v13 = v8;
+      v13 = ef_publicDescription;
       _os_log_impl(&dword_1C61EF000, v7, OS_LOG_TYPE_DEFAULT, "Persistence did change flags: %{public}@", &v12, 0xCu);
     }
 
@@ -520,8 +520,8 @@ void __40__EDWidgetUpdateController__runActivity__block_invoke(uint64_t a1)
     v9 = +[EDWidgetUpdateController log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [v6 ef_publicDescription];
-      [EDWidgetUpdateController persistenceDidChangeFlags:v10 messages:&v12 generationWindow:v9];
+      ef_publicDescription2 = [flagsCopy ef_publicDescription];
+      [EDWidgetUpdateController persistenceDidChangeFlags:ef_publicDescription2 messages:&v12 generationWindow:v9];
     }
   }
 
@@ -530,26 +530,26 @@ void __40__EDWidgetUpdateController__runActivity__block_invoke(uint64_t a1)
 
 - (void)_restoreFromUserDefaults
 {
-  v9 = [MEMORY[0x1E695E000] em_userDefaults];
-  v3 = [v9 objectForKey:@"kLastWidgetUpdateDefaultsKey"];
-  v4 = v3;
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v3 = [em_userDefaults objectForKey:@"kLastWidgetUpdateDefaultsKey"];
+  distantPast = v3;
   if (!v3)
   {
-    v4 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
   }
 
-  [(EDWidgetUpdateController *)self setLastUpdate:v4];
+  [(EDWidgetUpdateController *)self setLastUpdate:distantPast];
   if (!v3)
   {
   }
 
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [(EDWidgetUpdateController *)self lastUpdate];
-  v7 = [v5 isDateInToday:v6];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  lastUpdate = [(EDWidgetUpdateController *)self lastUpdate];
+  v7 = [currentCalendar isDateInToday:lastUpdate];
 
   if (v7)
   {
-    v8 = [v9 objectForKey:@"kNumberOfWidgetUpdatesDefaultsKey"];
+    v8 = [em_userDefaults objectForKey:@"kNumberOfWidgetUpdatesDefaultsKey"];
     -[EDWidgetUpdateController setNumberOfUpdates:](self, "setNumberOfUpdates:", [v8 integerValue]);
   }
 
@@ -561,12 +561,12 @@ void __40__EDWidgetUpdateController__runActivity__block_invoke(uint64_t a1)
 
 - (void)_writeUserDefaults
 {
-  v5 = [MEMORY[0x1E695E000] em_userDefaults];
-  v3 = [(EDWidgetUpdateController *)self lastUpdate];
-  [v5 setObject:v3 forKey:@"kLastWidgetUpdateDefaultsKey"];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  lastUpdate = [(EDWidgetUpdateController *)self lastUpdate];
+  [em_userDefaults setObject:lastUpdate forKey:@"kLastWidgetUpdateDefaultsKey"];
 
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{-[EDWidgetUpdateController numberOfUpdates](self, "numberOfUpdates")}];
-  [v5 setObject:v4 forKey:@"kNumberOfWidgetUpdatesDefaultsKey"];
+  [em_userDefaults setObject:v4 forKey:@"kNumberOfWidgetUpdatesDefaultsKey"];
 }
 
 void __57__EDWidgetUpdateController__hasUserConfiguredMailWidget___block_invoke_2_cold_1(void *a1, uint8_t *buf, os_log_t log)

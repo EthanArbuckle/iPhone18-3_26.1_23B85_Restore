@@ -1,17 +1,17 @@
 @interface IMInvocationForwardingProxy
-- (BOOL)respondsToSelector:(SEL)a3;
-- (IMInvocationForwardingProxy)initWithProtocol:(id)a3 forwardingHandler:(id)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (IMInvocationForwardingProxy)initWithProtocol:(id)protocol forwardingHandler:(id)handler;
+- (id)methodSignatureForSelector:(SEL)selector;
 @end
 
 @implementation IMInvocationForwardingProxy
 
-- (IMInvocationForwardingProxy)initWithProtocol:(id)a3 forwardingHandler:(id)a4
+- (IMInvocationForwardingProxy)initWithProtocol:(id)protocol forwardingHandler:(id)handler
 {
-  objc_storeStrong(&self->_protocol, a3);
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 copy];
+  objc_storeStrong(&self->_protocol, protocol);
+  protocolCopy = protocol;
+  handlerCopy = handler;
+  v9 = [handlerCopy copy];
 
   forwardingHandler = self->_forwardingHandler;
   self->_forwardingHandler = v9;
@@ -19,26 +19,26 @@
   return self;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v3 = [(IMInvocationForwardingProxy *)self methodSignatureForSelector:a3];
+  v3 = [(IMInvocationForwardingProxy *)self methodSignatureForSelector:selector];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  MethodDescription = protocol_getMethodDescription(self->_protocol, a3, 1, 1);
+  MethodDescription = protocol_getMethodDescription(self->_protocol, selector, 1, 1);
   types = MethodDescription.types;
-  if (MethodDescription.name || (v7 = protocol_getMethodDescription(self->_protocol, a3, 0, 1), types = v7.types, v7.name) || (sel_respondsToSelector_ != a3 ? (v8 = sel_conformsToProtocol_ == a3) : (v8 = 1), !v8))
+  if (MethodDescription.name || (v7 = protocol_getMethodDescription(self->_protocol, selector, 0, 1), types = v7.types, v7.name) || (sel_respondsToSelector_ != selector ? (v8 = sel_conformsToProtocol_ == selector) : (v8 = 1), !v8))
   {
     v9 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:types];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69E58C0] methodSignatureForSelector:a3];
+    v9 = [MEMORY[0x1E69E58C0] methodSignatureForSelector:selector];
   }
 
   return v9;

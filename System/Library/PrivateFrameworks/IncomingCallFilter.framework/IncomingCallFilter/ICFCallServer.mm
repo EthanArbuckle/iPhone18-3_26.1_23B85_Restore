@@ -2,13 +2,13 @@
 + (id)sharedInstance;
 - (ICFCallServer)init;
 - (void)_cleanup;
-- (void)_cleanupClient:(id)a3;
+- (void)_cleanupClient:(id)client;
 - (void)_clientConnected;
-- (void)_configureWithClient:(id)a3;
-- (void)_requestCallGrantForIdentifier:(id)a3 forProviderIdentifier:(id)a4 waitForResponse:(BOOL)a5 completionBlock:(id)a6;
+- (void)_configureWithClient:(id)client;
+- (void)_requestCallGrantForIdentifier:(id)identifier forProviderIdentifier:(id)providerIdentifier waitForResponse:(BOOL)response completionBlock:(id)block;
 - (void)dealloc;
 - (void)init;
-- (void)shouldAllowIncomingCallForNumber:(id)a3 forProviderIdentifier:(id)a4 response:(id)a5;
+- (void)shouldAllowIncomingCallForNumber:(id)number forProviderIdentifier:(id)identifier response:(id)response;
 @end
 
 @implementation ICFCallServer
@@ -135,31 +135,31 @@ LABEL_9:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_requestCallGrantForIdentifier:(id)a3 forProviderIdentifier:(id)a4 waitForResponse:(BOOL)a5 completionBlock:(id)a6
+- (void)_requestCallGrantForIdentifier:(id)identifier forProviderIdentifier:(id)providerIdentifier waitForResponse:(BOOL)response completionBlock:(id)block
 {
-  v35 = a5;
+  responseCopy = response;
   v69 = *MEMORY[0x277D85DE8];
   v7 = ICFDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"NO";
     *buf = 138413058;
-    *&buf[4] = a3;
-    if (v35)
+    *&buf[4] = identifier;
+    if (responseCopy)
     {
       v8 = @"YES";
     }
 
     *&buf[12] = 2112;
-    *&buf[14] = a4;
+    *&buf[14] = providerIdentifier;
     *&buf[22] = 2112;
     v66 = v8;
     v67 = 2112;
-    v68 = a6;
+    blockCopy = block;
     _os_log_impl(&dword_254B1F000, v7, OS_LOG_TYPE_DEFAULT, "Requesting call grant for identifier %@ providerIdentifier %@ waitForResponse %@ completionBlock %@", buf, 0x2Au);
   }
 
-  v9 = [a6 copy];
+  v9 = [block copy];
   v10 = CMFItemCreateWithEmailAddress();
   v11 = IMPhoneNumberRefCopyForPhoneNumber();
   v12 = CMFItemCreateWithPhoneNumber();
@@ -202,7 +202,7 @@ LABEL_10:
     }
 
     *buf = 138412546;
-    *&buf[4] = a3;
+    *&buf[4] = identifier;
     *&buf[12] = 2112;
     *&buf[14] = v15;
     _os_log_impl(&dword_254B1F000, v14, OS_LOG_TYPE_DEFAULT, "%@ returning %@", buf, 0x16u);
@@ -266,14 +266,14 @@ LABEL_10:
           if (v24)
           {
             IMInsertNSStringsToXPCDictionary();
-            v32 = a4;
+            providerIdentifierCopy = providerIdentifier;
             v33 = 0;
             IMInsertNSStringsToXPCDictionary();
             handler[0] = MEMORY[0x277D85DD0];
             handler[1] = 3221225472;
             v41 = __102__ICFCallServer__requestCallGrantForIdentifier_forProviderIdentifier_waitForResponse_completionBlock___block_invoke_33;
             v42 = &unk_2797A94E8;
-            v43 = self;
+            selfCopy = self;
             v44 = v16;
             v45 = v17;
             v46 = buf;
@@ -287,7 +287,7 @@ LABEL_10:
               _os_log_impl(&dword_254B1F000, v25, OS_LOG_TYPE_DEFAULT, "Asking peer %p if we should allow the call", v62, 0xCu);
             }
 
-            if (v35)
+            if (responseCopy)
             {
               v26 = xpc_connection_send_message_with_reply_sync(v23, v24);
               if (v26)
@@ -371,9 +371,9 @@ LABEL_10:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *&buf[4] = a3;
+      *&buf[4] = identifier;
       *&buf[12] = 2112;
-      *&buf[14] = a4;
+      *&buf[14] = providerIdentifier;
       _os_log_impl(&dword_254B1F000, v28, OS_LOG_TYPE_DEFAULT, "No client, but we're asking for %@ on %@", buf, 0x16u);
     }
 
@@ -598,20 +598,20 @@ void *__25__ICFCallServer__cleanup__block_invoke()
   return result;
 }
 
-- (void)_cleanupClient:(id)a3
+- (void)_cleanupClient:(id)client
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (client)
   {
     v5 = ICFDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 67109120;
-      pid = xpc_connection_get_pid(a3);
+      pid = xpc_connection_get_pid(client);
       _os_log_impl(&dword_254B1F000, v5, OS_LOG_TYPE_DEFAULT, "Removing client %d", &v9, 8u);
     }
 
-    [(NSMutableArray *)self->_clients removeObject:a3];
+    [(NSMutableArray *)self->_clients removeObject:client];
     v6 = ICFDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -632,18 +632,18 @@ void *__25__ICFCallServer__cleanup__block_invoke()
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_configureWithClient:(id)a3
+- (void)_configureWithClient:(id)client
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = ICFDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = a3;
+    clientCopy = client;
     _os_log_impl(&dword_254B1F000, v5, OS_LOG_TYPE_DEFAULT, "Configuring with client: %@", &v9, 0xCu);
   }
 
-  if (a3 && ([(NSMutableArray *)self->_clients containsObject:a3]& 1) == 0)
+  if (client && ([(NSMutableArray *)self->_clients containsObject:client]& 1) == 0)
   {
     if (!self->_clients)
     {
@@ -653,41 +653,41 @@ void *__25__ICFCallServer__cleanup__block_invoke()
     v6 = ICFDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      pid = xpc_connection_get_pid(a3);
+      pid = xpc_connection_get_pid(client);
       v9 = 67109120;
-      LODWORD(v10) = pid;
+      LODWORD(clientCopy) = pid;
       _os_log_impl(&dword_254B1F000, v6, OS_LOG_TYPE_DEFAULT, "Adding client %d", &v9, 8u);
     }
 
-    [(NSMutableArray *)self->_clients addObject:a3];
+    [(NSMutableArray *)self->_clients addObject:client];
     [(ICFCallServer *)self _clientConnected];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)shouldAllowIncomingCallForNumber:(id)a3 forProviderIdentifier:(id)a4 response:(id)a5
+- (void)shouldAllowIncomingCallForNumber:(id)number forProviderIdentifier:(id)identifier response:(id)response
 {
   v17 = *MEMORY[0x277D85DE8];
   v9 = ICFDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v14 = a3;
+    numberCopy = number;
     v15 = 2112;
-    v16 = a4;
+    identifierCopy = identifier;
     _os_log_impl(&dword_254B1F000, v9, OS_LOG_TYPE_DEFAULT, "Should allow incoming call for number %@ providerIdentifier %@", buf, 0x16u);
   }
 
-  if (a5)
+  if (response)
   {
-    v10 = [a5 copy];
+    v10 = [response copy];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __81__ICFCallServer_shouldAllowIncomingCallForNumber_forProviderIdentifier_response___block_invoke;
     v12[3] = &unk_2797A9588;
     v12[4] = v10;
-    [(ICFCallServer *)self _requestCallGrantForIdentifier:a3 forProviderIdentifier:a4 waitForResponse:0 completionBlock:v12];
+    [(ICFCallServer *)self _requestCallGrantForIdentifier:number forProviderIdentifier:identifier waitForResponse:0 completionBlock:v12];
   }
 
   v11 = *MEMORY[0x277D85DE8];

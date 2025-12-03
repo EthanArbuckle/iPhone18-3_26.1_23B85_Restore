@@ -1,22 +1,22 @@
 @interface ICSelectNotesActivity
-- (ICSelectNotesActivity)initWithPresentingViewController:(id)a3;
+- (ICSelectNotesActivity)initWithPresentingViewController:(id)controller;
 - (UIViewController)presentingViewController;
 - (id)activityTitle;
-- (void)performActivityWithCompletion:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICSelectNotesActivity
 
-- (ICSelectNotesActivity)initWithPresentingViewController:(id)a3
+- (ICSelectNotesActivity)initWithPresentingViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = ICSelectNotesActivity;
   v5 = [(ICSelectNotesActivity *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_presentingViewController, v4);
+    objc_storeWeak(&v5->_presentingViewController, controllerCopy);
   }
 
   return v6;
@@ -30,18 +30,18 @@
   return v3;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v9 = a3;
-  v4 = [(ICSelectNotesActivity *)self presentingViewController];
+  completionCopy = completion;
+  presentingViewController = [(ICSelectNotesActivity *)self presentingViewController];
 
-  v5 = self;
-  if (v4)
+  selfCopy2 = self;
+  if (presentingViewController)
   {
-    v6 = [(ICSelectNotesActivity *)self presentingViewController];
-    [v6 setEditing:1 animated:1];
+    presentingViewController2 = [(ICSelectNotesActivity *)self presentingViewController];
+    [presentingViewController2 setEditing:1 animated:1];
 
-    v5 = self;
+    selfCopy2 = self;
     v7 = 1;
   }
 
@@ -50,11 +50,11 @@
     v7 = 0;
   }
 
-  [(ICSelectNotesActivity *)v5 activityDidFinish:v7];
-  if (v9)
+  [(ICSelectNotesActivity *)selfCopy2 activityDidFinish:v7];
+  if (completionCopy)
   {
-    v8 = [(ICSelectNotesActivity *)self activityType];
-    v9[2](v9, v4 != 0, v8);
+    activityType = [(ICSelectNotesActivity *)self activityType];
+    completionCopy[2](completionCopy, presentingViewController != 0, activityType);
   }
 }
 

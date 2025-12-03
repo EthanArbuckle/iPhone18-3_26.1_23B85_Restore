@@ -1,33 +1,33 @@
 @interface _CDErrorUtilities
-+ (BOOL)isCoreDataFatalError:(id)a3;
-+ (BOOL)isCoreDataTemporaryError:(id)a3;
-+ (id)transformErrorForNSSecureCoding:(id)a3;
-+ (void)simulateCrashWithDescription:(id)a3;
++ (BOOL)isCoreDataFatalError:(id)error;
++ (BOOL)isCoreDataTemporaryError:(id)error;
++ (id)transformErrorForNSSecureCoding:(id)coding;
++ (void)simulateCrashWithDescription:(id)description;
 @end
 
 @implementation _CDErrorUtilities
 
-+ (id)transformErrorForNSSecureCoding:(id)a3
++ (id)transformErrorForNSSecureCoding:(id)coding
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  codingCopy = coding;
+  v4 = codingCopy;
+  if (codingCopy)
   {
-    v5 = [v3 userInfo];
-    v6 = [v5 count];
+    userInfo = [codingCopy userInfo];
+    v6 = [userInfo count];
 
     if (v6)
     {
       v7 = MEMORY[0x1E696ABC0];
-      v8 = [v4 domain];
-      v9 = [v4 code];
+      domain = [v4 domain];
+      code = [v4 code];
       v16 = *MEMORY[0x1E696A578];
-      v10 = [v4 userInfo];
-      v11 = [v10 description];
+      userInfo2 = [v4 userInfo];
+      v11 = [userInfo2 description];
       v17[0] = v11;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-      v13 = [v7 errorWithDomain:v8 code:v9 userInfo:v12];
+      v13 = [v7 errorWithDomain:domain code:code userInfo:v12];
     }
 
     else
@@ -46,29 +46,29 @@
   return v13;
 }
 
-+ (BOOL)isCoreDataFatalError:(id)a3
++ (BOOL)isCoreDataFatalError:(id)error
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKey:*MEMORY[0x1E695D488]];
+  userInfo = [error userInfo];
+  v4 = [userInfo objectForKey:*MEMORY[0x1E695D488]];
 
-  LOBYTE(v3) = [&unk_1F05EF680 containsObject:v4];
-  return v3;
+  LOBYTE(userInfo) = [&unk_1F05EF680 containsObject:v4];
+  return userInfo;
 }
 
-+ (BOOL)isCoreDataTemporaryError:(id)a3
++ (BOOL)isCoreDataTemporaryError:(id)error
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKey:*MEMORY[0x1E695D488]];
+  userInfo = [error userInfo];
+  v4 = [userInfo objectForKey:*MEMORY[0x1E695D488]];
 
-  LOBYTE(v3) = [&unk_1F05EF698 containsObject:v4];
-  return v3;
+  LOBYTE(userInfo) = [&unk_1F05EF698 containsObject:v4];
+  return userInfo;
 }
 
-+ (void)simulateCrashWithDescription:(id)a3
++ (void)simulateCrashWithDescription:(id)description
 {
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    [_CDErrorUtilities simulateCrashWithDescription:a3];
+    [_CDErrorUtilities simulateCrashWithDescription:description];
   }
 }
 

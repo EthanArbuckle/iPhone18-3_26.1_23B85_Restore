@@ -6,17 +6,17 @@
 
 - (id)_mapkit_accessoryControlToExtendWithCallout
 {
-  if (([a1 buttonType] - 2) > 2)
+  if (([self buttonType] - 2) > 2)
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

@@ -7,49 +7,49 @@
 - (void)main
 {
   v84 = *MEMORY[0x1E69E9840];
-  v4 = [(MSVArtworkServiceOperation *)self request];
+  request = [(MSVArtworkServiceOperation *)self request];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v63 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v63 handleFailureInMethod:a2 object:self file:@"MSVArtworkServiceResizeOperation.m" lineNumber:21 description:@"MSVArtworkServiceResizeOperation only supports requests of type MSVArtworkServiceResizeRequest"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVArtworkServiceResizeOperation.m" lineNumber:21 description:@"MSVArtworkServiceResizeOperation only supports requests of type MSVArtworkServiceResizeRequest"];
   }
 
-  v6 = [(MSVArtworkServiceOperation *)self request];
-  [v6 consumeSandboxExtensions];
+  request2 = [(MSVArtworkServiceOperation *)self request];
+  [request2 consumeSandboxExtensions];
   v7 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v79[0] = MEMORY[0x1E69E9820];
   v79[1] = 3221225472;
   v79[2] = __40__MSVArtworkServiceResizeOperation_main__block_invoke;
   v79[3] = &unk_1E7981958;
   v9 = v7;
   v80 = v9;
-  v10 = v8;
+  v10 = array;
   v81 = v10;
-  [v6 enumerateDestinationsUsingBlock:v79];
+  [request2 enumerateDestinationsUsingBlock:v79];
   if (![v10 count])
   {
     [(MSVArtworkServiceOperation *)self setDebugMessage:@"No resizing needed, all destinations already exist on disk."];
     goto LABEL_58;
   }
 
-  v11 = [v6 sourceURL];
-  ImageSource = MSVImageUtilitiesCreateImageSource(v11);
+  sourceURL = [request2 sourceURL];
+  ImageSource = MSVImageUtilitiesCreateImageSource(sourceURL);
 
   if (!ImageSource)
   {
     v13 = MEMORY[0x1E696ABC0];
-    v14 = [v6 sourceURL];
-    v15 = [v13 msv_errorWithDomain:@"MSVArtworkServiceErrorDomain" code:1 debugDescription:{@"Invalid source image URL=%@", v14}];
+    sourceURL2 = [request2 sourceURL];
+    v15 = [v13 msv_errorWithDomain:@"MSVArtworkServiceErrorDomain" code:1 debugDescription:{@"Invalid source image URL=%@", sourceURL2}];
     [(MSVArtworkServiceOperation *)self setOperationError:v15];
   }
 
-  v16 = [(MSVArtworkServiceOperation *)self operationError];
+  operationError = [(MSVArtworkServiceOperation *)self operationError];
 
-  if (!v16)
+  if (!operationError)
   {
     v77 = 0u;
     v78 = 0u;
@@ -62,7 +62,7 @@
     {
       v19 = v18;
       v20 = *v76;
-      v65 = v6;
+      v65 = request2;
       while (2)
       {
         for (i = 0; i != v19; ++i)
@@ -72,25 +72,25 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v75 + 1) + 8 * i) destinationURL];
-          v23 = [v22 URLByDeletingLastPathComponent];
+          destinationURL = [*(*(&v75 + 1) + 8 * i) destinationURL];
+          uRLByDeletingLastPathComponent = [destinationURL URLByDeletingLastPathComponent];
 
-          v24 = [v23 path];
-          v25 = [v9 fileExistsAtPath:v24];
+          path = [uRLByDeletingLastPathComponent path];
+          v25 = [v9 fileExistsAtPath:path];
 
           if (v25)
           {
-            v26 = [v23 path];
-            v27 = [v9 isWritableFileAtPath:v26];
+            path2 = [uRLByDeletingLastPathComponent path];
+            v27 = [v9 isWritableFileAtPath:path2];
 
             if ((v27 & 1) == 0)
             {
-              v29 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MSVArtworkServiceErrorDomain" code:1 debugDescription:{@"Destination directory isn't writable URL=%@", v23}];
+              v29 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MSVArtworkServiceErrorDomain" code:1 debugDescription:{@"Destination directory isn't writable URL=%@", uRLByDeletingLastPathComponent}];
 LABEL_21:
               v30 = v29;
               [(MSVArtworkServiceOperation *)self setOperationError:v29];
 
-              v6 = v65;
+              request2 = v65;
               goto LABEL_22;
             }
           }
@@ -98,20 +98,20 @@ LABEL_21:
           else
           {
             v74 = 0;
-            [v9 createDirectoryAtURL:v23 withIntermediateDirectories:1 attributes:0 error:&v74];
+            [v9 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v74];
             v29 = v74;
             if (v29)
             {
               goto LABEL_21;
             }
 
-            v28 = [v23 path];
-            MSVEnableDirStatsForDirectory(v28);
+            path3 = [uRLByDeletingLastPathComponent path];
+            MSVEnableDirStatsForDirectory(path3);
           }
         }
 
         v19 = [v17 countByEnumeratingWithState:&v75 objects:v83 count:16];
-        v6 = v65;
+        request2 = v65;
         if (v19)
         {
           continue;
@@ -126,9 +126,9 @@ LABEL_22:
     v10 = v67;
   }
 
-  v31 = [(MSVArtworkServiceOperation *)self operationError];
+  operationError2 = [(MSVArtworkServiceOperation *)self operationError];
 
-  if (v31)
+  if (operationError2)
   {
     goto LABEL_56;
   }
@@ -150,7 +150,7 @@ LABEL_22:
   }
 
   v37 = v36;
-  v66 = v6;
+  v66 = request2;
   v68 = v10;
   v69 = 0;
   v38 = Width;
@@ -177,9 +177,9 @@ LABEL_22:
         }
       }
 
-      v45 = [v42 format];
-      v46 = [v42 destinationURL];
-      FileImageDestination = MSVImageUtilitiesCreateFileImageDestination(v45, v46, 1uLL);
+      format = [v42 format];
+      destinationURL2 = [v42 destinationURL];
+      FileImageDestination = MSVImageUtilitiesCreateFileImageDestination(format, destinationURL2, 1uLL);
 
       if (!FileImageDestination)
       {
@@ -191,7 +191,7 @@ LABEL_22:
 
       if ([v42 format])
       {
-        v48 = [v42 format];
+        format2 = [v42 format];
         [v42 size];
         v50 = v49;
         [v42 size];
@@ -205,7 +205,7 @@ LABEL_22:
           v52 = v51;
         }
 
-        if (MSVImageUtilitiesResizeSourceImageToDestination(ImageSource, 0, v48, FileImageDestination, v52))
+        if (MSVImageUtilitiesResizeSourceImageToDestination(ImageSource, 0, format2, FileImageDestination, v52))
         {
           goto LABEL_41;
         }
@@ -238,9 +238,9 @@ LABEL_41:
 
 LABEL_43:
       CFRelease(FileImageDestination);
-      v59 = [(MSVArtworkServiceOperation *)self operationError];
+      operationError3 = [(MSVArtworkServiceOperation *)self operationError];
 
-      if (v59)
+      if (operationError3)
       {
         goto LABEL_51;
       }
@@ -257,7 +257,7 @@ LABEL_43:
 
 LABEL_51:
 
-  v6 = v66;
+  request2 = v66;
   v10 = v68;
   v60 = cf;
   if (v69)
@@ -279,7 +279,7 @@ LABEL_56:
   }
 
 LABEL_58:
-  [v6 releaseSandboxExtensions];
+  [request2 releaseSandboxExtensions];
 
   v62 = *MEMORY[0x1E69E9840];
 }

@@ -1,13 +1,13 @@
 @interface ML3SetCloudIDImportOperation
-- (BOOL)_importPlaylistsUsingImportSession:(void *)a3;
-- (BOOL)_importTracksUsingImportSession:(void *)a3;
-- (BOOL)_performImportWithTransaction:(id)a3;
+- (BOOL)_importPlaylistsUsingImportSession:(void *)session;
+- (BOOL)_importTracksUsingImportSession:(void *)session;
+- (BOOL)_performImportWithTransaction:(id)transaction;
 - (void)main;
 @end
 
 @implementation ML3SetCloudIDImportOperation
 
-- (BOOL)_importPlaylistsUsingImportSession:(void *)a3
+- (BOOL)_importPlaylistsUsingImportSession:(void *)session
 {
   v9 = *MEMORY[0x277D85DE8];
   if ([(NSArray *)self->_playlistInfo count])
@@ -33,7 +33,7 @@
   return 1;
 }
 
-- (BOOL)_importTracksUsingImportSession:(void *)a3
+- (BOOL)_importTracksUsingImportSession:(void *)session
 {
   v9 = *MEMORY[0x277D85DE8];
   if ([(NSArray *)self->_trackInfo count])
@@ -59,14 +59,14 @@
   return 1;
 }
 
-- (BOOL)_performImportWithTransaction:(id)a3
+- (BOOL)_performImportWithTransaction:(id)transaction
 {
   v44 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v38 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(ML3ImportOperation *)self import];
-  v5 = [v4 trackData];
-  v6 = [v5 length];
+  transactionCopy = transaction;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  import = [(ML3ImportOperation *)self import];
+  trackData = [import trackData];
+  v6 = [trackData length];
 
   if (!v6)
   {
@@ -75,9 +75,9 @@
   }
 
   v7 = objc_alloc(MEMORY[0x277CCACA8]);
-  v8 = [(ML3ImportOperation *)self import];
-  v9 = [v8 trackData];
-  v10 = [v7 initWithData:v9 encoding:4];
+  import2 = [(ML3ImportOperation *)self import];
+  trackData2 = [import2 trackData];
+  v10 = [v7 initWithData:trackData2 encoding:4];
 
   if (!v10)
   {
@@ -86,24 +86,24 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v11 = [v38 attributesOfItemAtPath:v10 error:0];
-  v12 = [v11 fileSize];
+  v11 = [defaultManager attributesOfItemAtPath:v10 error:0];
+  fileSize = [v11 fileSize];
 
-  v13 = v12 != 0;
+  v13 = fileSize != 0;
   v14 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v41 = v12;
+    v41 = fileSize;
     v42 = 2112;
     v43 = v10;
     _os_log_impl(&dword_22D2FA000, v14, OS_LOG_TYPE_DEFAULT, "Importing %llu bytes of track data from: %@", buf, 0x16u);
   }
 
 LABEL_8:
-  v15 = [(ML3ImportOperation *)self import];
-  v16 = [v15 playlistData];
-  v17 = [v16 length] == 0;
+  import3 = [(ML3ImportOperation *)self import];
+  playlistData = [import3 playlistData];
+  v17 = [playlistData length] == 0;
 
   if (v17 || (v18 = objc_alloc(MEMORY[0x277CCACA8]), -[ML3ImportOperation import](self, "import"), v19 = objc_claimAutoreleasedReturnValue(), [v19 playlistData], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v18, "initWithData:encoding:", v20, 4), v20, v19, !v21))
   {
@@ -113,15 +113,15 @@ LABEL_8:
 
   else
   {
-    v22 = [v38 attributesOfItemAtPath:v21 error:0];
-    v23 = [v22 fileSize];
+    v22 = [defaultManager attributesOfItemAtPath:v21 error:0];
+    fileSize2 = [v22 fileSize];
 
-    v24 = v23 != 0;
+    v24 = fileSize2 != 0;
     v25 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v41 = v23;
+      v41 = fileSize2;
       v42 = 2112;
       v43 = v21;
       _os_log_impl(&dword_22D2FA000, v25, OS_LOG_TYPE_DEFAULT, "Importing %llu bytes of playlist data from: %@", buf, 0x16u);
@@ -179,9 +179,9 @@ LABEL_8:
     }
 
     [(ML3ImportOperation *)self import];
-    v34 = [objc_claimAutoreleasedReturnValue() library];
-    v35 = [v37 connection];
-    ML3ImportSession::ML3ImportSession(buf, v34, v35, 0, 1);
+    library = [objc_claimAutoreleasedReturnValue() library];
+    connection = [transactionCopy connection];
+    ML3ImportSession::ML3ImportSession(buf, library, connection, 0, 1);
   }
 
   v28 = os_log_create("com.apple.amp.medialibrary", "Import");
@@ -220,11 +220,11 @@ LABEL_32:
   v5 = os_log_create("com.apple.amp.medialibrary", "Import");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(ML3SetCloudIDImportOperation *)self isCancelled];
+    isCancelled = [(ML3SetCloudIDImportOperation *)self isCancelled];
     v7 = *(v12 + 24);
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     *buf = 67109632;
-    v16 = v6;
+    v16 = isCancelled;
     v17 = 1024;
     v18 = v7;
     v19 = 2048;

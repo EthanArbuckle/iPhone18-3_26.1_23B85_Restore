@@ -1,61 +1,61 @@
 @interface _KSCloudKitManager
-+ (id)prepareContainerForID:(id)a3;
++ (id)prepareContainerForID:(id)d;
 - (BOOL)isAccountAvailable;
-- (_KSCloudKitManager)initWithContainer:(id)a3 recordZoneName:(id)a4;
+- (_KSCloudKitManager)initWithContainer:(id)container recordZoneName:(id)name;
 - (_KSCloudKitManagerDelegate)delegate;
-- (id)recordIDForName:(id)a3;
-- (id)recordWithName:(id)a3 type:(id)a4 attributes:(id)a5 encryptedFields:(id)a6;
-- (id)recordWithName:(id)a3 type:(id)a4 cloudData:(id)a5 attributes:(id)a6 encryptedFields:(id)a7;
-- (id)resolveConflicts:(id)a3;
-- (void)_checkAccountStatusWithCompletionHandler:(id)a3 withRetryCount:(unint64_t)a4;
-- (void)_ckDeleteRecordZoneWithID:(id)a3 completionHandler:(id)a4;
-- (void)_ckFetchRecordZoneWithID:(id)a3 completionHandler:(id)a4;
-- (void)_ckSaveRecordZone:(id)a3 completionHandler:(id)a4;
-- (void)_inconvenientOperation:(id)a3;
-- (void)_submitFetchRecordsOperation:(id)a3 withPriority:(unint64_t)a4 changeToken:(id)a5 completionHandler:(id)a6 retryCount:(unint64_t)a7;
-- (void)accountStatusDidChange:(id)a3;
-- (void)addOperation:(id)a3 priority:(unint64_t)a4;
-- (void)copyFieldsFromRecord:(id)a3 toRecord:(id)a4;
+- (id)recordIDForName:(id)name;
+- (id)recordWithName:(id)name type:(id)type attributes:(id)attributes encryptedFields:(id)fields;
+- (id)recordWithName:(id)name type:(id)type cloudData:(id)data attributes:(id)attributes encryptedFields:(id)fields;
+- (id)resolveConflicts:(id)conflicts;
+- (void)_checkAccountStatusWithCompletionHandler:(id)handler withRetryCount:(unint64_t)count;
+- (void)_ckDeleteRecordZoneWithID:(id)d completionHandler:(id)handler;
+- (void)_ckFetchRecordZoneWithID:(id)d completionHandler:(id)handler;
+- (void)_ckSaveRecordZone:(id)zone completionHandler:(id)handler;
+- (void)_inconvenientOperation:(id)operation;
+- (void)_submitFetchRecordsOperation:(id)operation withPriority:(unint64_t)priority changeToken:(id)token completionHandler:(id)handler retryCount:(unint64_t)count;
+- (void)accountStatusDidChange:(id)change;
+- (void)addOperation:(id)operation priority:(unint64_t)priority;
+- (void)copyFieldsFromRecord:(id)record toRecord:(id)toRecord;
 - (void)dealloc;
-- (void)fetchPublicRecordsWithNames:(id)a3 completionHandler:(id)a4;
-- (void)fetchRecordsWithPriority:(unint64_t)a3 changeToken:(id)a4 completionHandler:(id)a5 retryCount:(unint64_t)a6;
-- (void)identityUpdated:(id)a3;
+- (void)fetchPublicRecordsWithNames:(id)names completionHandler:(id)handler;
+- (void)fetchRecordsWithPriority:(unint64_t)priority changeToken:(id)token completionHandler:(id)handler retryCount:(unint64_t)count;
+- (void)identityUpdated:(id)updated;
 - (void)isAccountAvailable;
-- (void)queryAccountStatusWithCompletionHandler:(id)a3;
-- (void)resetZoneWithDelete:(unint64_t)a3 withCompletionHandler:(id)a4;
-- (void)setupAccountDidChange:(BOOL)a3;
-- (void)setupRecordZoneWithCompletionHandler:(id)a3 ignoreDefaults:(BOOL)a4;
+- (void)queryAccountStatusWithCompletionHandler:(id)handler;
+- (void)resetZoneWithDelete:(unint64_t)delete withCompletionHandler:(id)handler;
+- (void)setupAccountDidChange:(BOOL)change;
+- (void)setupRecordZoneWithCompletionHandler:(id)handler ignoreDefaults:(BOOL)defaults;
 - (void)setupSubscription;
-- (void)shouldDetectAccountChangeWithResponse:(id)a3;
-- (void)updateRecords:(id)a3 deleteRecordIDs:(id)a4 withPriority:(unint64_t)a5 completionHandler:(id)a6;
-- (void)updateRecords:(id)a3 deleteRecordIDs:(id)a4 withPriority:(unint64_t)a5 completionHandler:(id)a6 retryCount:(unint64_t)a7;
-- (void)userIdentityWithResponse:(id)a3;
+- (void)shouldDetectAccountChangeWithResponse:(id)response;
+- (void)updateRecords:(id)records deleteRecordIDs:(id)ds withPriority:(unint64_t)priority completionHandler:(id)handler;
+- (void)updateRecords:(id)records deleteRecordIDs:(id)ds withPriority:(unint64_t)priority completionHandler:(id)handler retryCount:(unint64_t)count;
+- (void)userIdentityWithResponse:(id)response;
 @end
 
 @implementation _KSCloudKitManager
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _KSCloudKitManager;
   [(_KSCloudKitManager *)&v4 dealloc];
 }
 
-+ (id)prepareContainerForID:(id)a3
++ (id)prepareContainerForID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [objc_alloc(MEMORY[0x277CBC218]) initWithContainerID:v3];
+    v4 = [objc_alloc(MEMORY[0x277CBC218]) initWithContainerID:dCopy];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBC218] containerWithIdentifier:v3];
+    v4 = [MEMORY[0x277CBC218] containerWithIdentifier:dCopy];
   }
 
   v5 = v4;
@@ -63,74 +63,74 @@
   return v5;
 }
 
-- (_KSCloudKitManager)initWithContainer:(id)a3 recordZoneName:(id)a4
+- (_KSCloudKitManager)initWithContainer:(id)container recordZoneName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  containerCopy = container;
+  nameCopy = name;
   v51.receiver = self;
   v51.super_class = _KSCloudKitManager;
   v8 = [(_KSCloudKitManager *)&v51 init];
   if (v8)
   {
-    v9 = [objc_opt_class() prepareContainerForID:v6];
+    v9 = [objc_opt_class() prepareContainerForID:containerCopy];
     cloudKitContainer = v8->_cloudKitContainer;
     v8->_cloudKitContainer = v9;
 
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v11 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    if (![v12 length])
+    if (![bundleIdentifier length])
     {
-      v13 = [MEMORY[0x277CCA8D8] mainBundle];
-      v14 = [v13 executablePath];
-      v15 = [v14 lastPathComponent];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      executablePath = [mainBundle2 executablePath];
+      lastPathComponent = [executablePath lastPathComponent];
 
-      v12 = v15;
+      bundleIdentifier = lastPathComponent;
     }
 
-    [(CKContainer *)v8->_cloudKitContainer setSourceApplicationBundleIdentifier:v12];
-    v16 = [(CKContainer *)v8->_cloudKitContainer privateCloudDatabase];
+    [(CKContainer *)v8->_cloudKitContainer setSourceApplicationBundleIdentifier:bundleIdentifier];
+    privateCloudDatabase = [(CKContainer *)v8->_cloudKitContainer privateCloudDatabase];
     cloudKitDatabase = v8->_cloudKitDatabase;
-    v8->_cloudKitDatabase = v16;
+    v8->_cloudKitDatabase = privateCloudDatabase;
 
-    v18 = [(CKContainer *)v8->_cloudKitContainer publicCloudDatabase];
+    publicCloudDatabase = [(CKContainer *)v8->_cloudKitContainer publicCloudDatabase];
     publicDatabase = v8->_publicDatabase;
-    v8->_publicDatabase = v18;
+    v8->_publicDatabase = publicCloudDatabase;
 
-    if (v7)
+    if (nameCopy)
     {
-      v20 = [objc_alloc(MEMORY[0x277CBC5E8]) initWithZoneName:v7];
+      defaultRecordZone = [objc_alloc(MEMORY[0x277CBC5E8]) initWithZoneName:nameCopy];
     }
 
     else
     {
-      v20 = [MEMORY[0x277CBC5E8] defaultRecordZone];
+      defaultRecordZone = [MEMORY[0x277CBC5E8] defaultRecordZone];
     }
 
     recordZone = v8->_recordZone;
-    v8->_recordZone = v20;
+    v8->_recordZone = defaultRecordZone;
 
     v22 = MEMORY[0x277CCACA8];
-    v23 = [(_KSCloudKitManager *)v8 recordZone];
-    v24 = [v23 zoneID];
-    v25 = [v24 zoneName];
-    v26 = [v22 stringWithFormat:@"%@-%@", @"KSCKDidSetupRecordZoneProd", v25];
+    recordZone = [(_KSCloudKitManager *)v8 recordZone];
+    zoneID = [recordZone zoneID];
+    zoneName = [zoneID zoneName];
+    v26 = [v22 stringWithFormat:@"%@-%@", @"KSCKDidSetupRecordZoneProd", zoneName];
     recordZoneKey = v8->_recordZoneKey;
     v8->_recordZoneKey = v26;
 
     v28 = MEMORY[0x277CCACA8];
-    v29 = [(_KSCloudKitManager *)v8 recordZone];
-    v30 = [v29 zoneID];
-    v31 = [v30 zoneName];
-    v32 = [v28 stringWithFormat:@"%@-%@", @"KSCKSubscriptionProd", v31];
+    recordZone2 = [(_KSCloudKitManager *)v8 recordZone];
+    zoneID2 = [recordZone2 zoneID];
+    zoneName2 = [zoneID2 zoneName];
+    v32 = [v28 stringWithFormat:@"%@-%@", @"KSCKSubscriptionProd", zoneName2];
     subscriptionKey = v8->_subscriptionKey;
     v8->_subscriptionKey = v32;
 
     v34 = MEMORY[0x277CCACA8];
-    v35 = [(_KSCloudKitManager *)v8 recordZone];
-    v36 = [v35 zoneID];
-    v37 = [v36 zoneName];
-    v38 = [v34 stringWithFormat:@"%@-%@", @"KSLastKnownUserID", v37];
+    recordZone3 = [(_KSCloudKitManager *)v8 recordZone];
+    zoneID3 = [recordZone3 zoneID];
+    zoneName3 = [zoneID3 zoneName];
+    v38 = [v34 stringWithFormat:@"%@-%@", @"KSLastKnownUserID", zoneName3];
     lastKnownUserKey = v8->_lastKnownUserKey;
     v8->_lastKnownUserKey = v38;
 
@@ -139,13 +139,13 @@
     ckWorkQueue = v8->_ckWorkQueue;
     v8->_ckWorkQueue = v41;
 
-    v43 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v43 addObserver:v8 selector:sel_accountStatusDidChange_ name:*MEMORY[0x277CBBF00] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_accountStatusDidChange_ name:*MEMORY[0x277CBBF00] object:0];
 
     if ([(_KSCloudKitManager *)v8 needsDeviceToDevice])
     {
-      v44 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v44 addObserver:v8 selector:sel_identityUpdated_ name:*MEMORY[0x277CBBF90] object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:v8 selector:sel_identityUpdated_ name:*MEMORY[0x277CBBF90] object:0];
     }
 
     [(_KSCloudKitManager *)v8 setupAccountDidChange:0];
@@ -168,23 +168,23 @@
   return v49;
 }
 
-- (void)userIdentityWithResponse:(id)a3
+- (void)userIdentityWithResponse:(id)response
 {
-  v4 = a3;
-  if (v4)
+  responseCopy = response;
+  if (responseCopy)
   {
-    v5 = [(_KSCloudKitManager *)self cloudKitContainer];
+    cloudKitContainer = [(_KSCloudKitManager *)self cloudKitContainer];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __47___KSCloudKitManager_userIdentityWithResponse___block_invoke;
     v6[3] = &unk_2797F6548;
     v6[4] = self;
-    v7 = v4;
-    [v5 fetchUserRecordIDWithCompletionHandler:v6];
+    v7 = responseCopy;
+    [cloudKitContainer fetchUserRecordIDWithCompletionHandler:v6];
   }
 }
 
-- (void)setupAccountDidChange:(BOOL)a3
+- (void)setupAccountDidChange:(BOOL)change
 {
   ckWorkQueue = self->_ckWorkQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -192,11 +192,11 @@
   v4[2] = __44___KSCloudKitManager_setupAccountDidChange___block_invoke;
   v4[3] = &unk_2797F65E8;
   v4[4] = self;
-  v5 = a3;
+  changeCopy = change;
   dispatch_async(ckWorkQueue, v4);
 }
 
-- (void)accountStatusDidChange:(id)a3
+- (void)accountStatusDidChange:(id)change
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = KSCategory();
@@ -217,36 +217,36 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)identityUpdated:(id)a3
+- (void)identityUpdated:(id)updated
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"KSCloudKitIdentitiesDidChange" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"KSCloudKitIdentitiesDidChange" object:self];
 }
 
-- (void)shouldDetectAccountChangeWithResponse:(id)a3
+- (void)shouldDetectAccountChangeWithResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60___KSCloudKitManager_shouldDetectAccountChangeWithResponse___block_invoke;
   v6[3] = &unk_2797F6638;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = responseCopy;
+  v5 = responseCopy;
   [(_KSCloudKitManager *)self userIdentityWithResponse:v6];
 }
 
-- (void)queryAccountStatusWithCompletionHandler:(id)a3
+- (void)queryAccountStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   ckWorkQueue = self->_ckWorkQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62___KSCloudKitManager_queryAccountStatusWithCompletionHandler___block_invoke;
   v7[3] = &unk_2797F66D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(ckWorkQueue, v7);
 }
 
@@ -319,33 +319,33 @@
   return v17 & 1;
 }
 
-- (void)_checkAccountStatusWithCompletionHandler:(id)a3 withRetryCount:(unint64_t)a4
+- (void)_checkAccountStatusWithCompletionHandler:(id)handler withRetryCount:(unint64_t)count
 {
-  v6 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_ckWorkQueue);
-  v7 = [(_KSCloudKitManager *)self cloudKitContainer];
+  cloudKitContainer = [(_KSCloudKitManager *)self cloudKitContainer];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __78___KSCloudKitManager__checkAccountStatusWithCompletionHandler_withRetryCount___block_invoke;
   v9[3] = &unk_2797F67A0;
-  v10 = v6;
-  v11 = a4;
+  v10 = handlerCopy;
+  countCopy = count;
   v9[4] = self;
-  v8 = v6;
-  [v7 accountInfoWithCompletionHandler:v9];
+  v8 = handlerCopy;
+  [cloudKitContainer accountInfoWithCompletionHandler:v9];
 }
 
-- (void)setupRecordZoneWithCompletionHandler:(id)a3 ignoreDefaults:(BOOL)a4
+- (void)setupRecordZoneWithCompletionHandler:(id)handler ignoreDefaults:(BOOL)defaults
 {
-  v6 = a3;
+  handlerCopy = handler;
   v7 = objc_alloc(MEMORY[0x277CBEBD0]);
   v8 = +[_KSUtilities userDefaultsSuiteName];
   v9 = [v7 initWithSuiteName:v8];
 
-  v10 = [(_KSCloudKitManager *)self recordZoneKey];
-  v11 = [v9 BOOLForKey:v10];
+  recordZoneKey = [(_KSCloudKitManager *)self recordZoneKey];
+  v11 = [v9 BOOLForKey:recordZoneKey];
 
-  if (a4 || !v11)
+  if (defaults || !v11)
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -353,7 +353,7 @@
     v19[3] = &unk_2797F67F0;
     v19[4] = self;
     v20 = v9;
-    v12 = v6;
+    v12 = handlerCopy;
     v21 = v12;
     v13 = MEMORY[0x259C41CB0](v19);
     ckWorkQueue = self->_ckWorkQueue;
@@ -370,13 +370,13 @@
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)resetZoneWithDelete:(unint64_t)a3 withCompletionHandler:(id)a4
+- (void)resetZoneWithDelete:(unint64_t)delete withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = objc_alloc(MEMORY[0x277CBEBD0]);
   v8 = +[_KSUtilities userDefaultsSuiteName];
   v9 = [v7 initWithSuiteName:v8];
@@ -388,22 +388,22 @@
   v13[3] = &unk_2797F68B8;
   v13[4] = self;
   v14 = v9;
-  v15 = v6;
-  v16 = a3;
-  v11 = v6;
+  v15 = handlerCopy;
+  deleteCopy = delete;
+  v11 = handlerCopy;
   v12 = v9;
   dispatch_async(ckWorkQueue, v13);
 }
 
-- (id)recordWithName:(id)a3 type:(id)a4 cloudData:(id)a5 attributes:(id)a6 encryptedFields:(id)a7
+- (id)recordWithName:(id)name type:(id)type cloudData:(id)data attributes:(id)attributes encryptedFields:(id)fields
 {
   v26 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v13 error:0];
+  nameCopy = name;
+  typeCopy = type;
+  dataCopy = data;
+  attributesCopy = attributes;
+  fieldsCopy = fields;
+  v16 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:dataCopy error:0];
   v17 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithCoder:v16];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -411,72 +411,72 @@
   v24[3] = &unk_2797F68E0;
   v18 = v17;
   v25 = v18;
-  [v14 enumerateKeysAndObjectsUsingBlock:v24];
+  [attributesCopy enumerateKeysAndObjectsUsingBlock:v24];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __79___KSCloudKitManager_recordWithName_type_cloudData_attributes_encryptedFields___block_invoke_2;
   v22[3] = &unk_2797F68E0;
   v19 = v18;
   v23 = v19;
-  [v15 enumerateKeysAndObjectsUsingBlock:v22];
+  [fieldsCopy enumerateKeysAndObjectsUsingBlock:v22];
 
   v20 = *MEMORY[0x277D85DE8];
 
   return v19;
 }
 
-- (id)recordWithName:(id)a3 type:(id)a4 attributes:(id)a5 encryptedFields:(id)a6
+- (id)recordWithName:(id)name type:(id)type attributes:(id)attributes encryptedFields:(id)fields
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  typeCopy = type;
+  attributesCopy = attributes;
+  fieldsCopy = fields;
   v14 = objc_alloc(MEMORY[0x277CBC5D0]);
-  v15 = [(_KSCloudKitManager *)self recordZone];
-  v16 = [v15 zoneID];
-  v17 = [v14 initWithRecordName:v10 zoneID:v16];
+  recordZone = [(_KSCloudKitManager *)self recordZone];
+  zoneID = [recordZone zoneID];
+  v17 = [v14 initWithRecordName:nameCopy zoneID:zoneID];
 
-  v18 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:v11 recordID:v17];
+  v18 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:typeCopy recordID:v17];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __69___KSCloudKitManager_recordWithName_type_attributes_encryptedFields___block_invoke;
   v25[3] = &unk_2797F68E0;
   v19 = v18;
   v26 = v19;
-  [v12 enumerateKeysAndObjectsUsingBlock:v25];
+  [attributesCopy enumerateKeysAndObjectsUsingBlock:v25];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __69___KSCloudKitManager_recordWithName_type_attributes_encryptedFields___block_invoke_2;
   v23[3] = &unk_2797F68E0;
   v20 = v19;
   v24 = v20;
-  [v13 enumerateKeysAndObjectsUsingBlock:v23];
+  [fieldsCopy enumerateKeysAndObjectsUsingBlock:v23];
 
   v21 = *MEMORY[0x277D85DE8];
 
   return v20;
 }
 
-- (id)recordIDForName:(id)a3
+- (id)recordIDForName:(id)name
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc(MEMORY[0x277CBC5D0]);
-  v6 = [(_KSCloudKitManager *)self recordZone];
-  v7 = [v6 zoneID];
-  v8 = [v5 initWithRecordName:v4 zoneID:v7];
+  recordZone = [(_KSCloudKitManager *)self recordZone];
+  zoneID = [recordZone zoneID];
+  v8 = [v5 initWithRecordName:nameCopy zoneID:zoneID];
 
   v9 = *MEMORY[0x277D85DE8];
 
   return v8;
 }
 
-- (void)addOperation:(id)a3 priority:(unint64_t)a4
+- (void)addOperation:(id)operation priority:(unint64_t)priority
 {
-  v6 = a3;
-  v10 = v6;
-  if (a4)
+  operationCopy = operation;
+  v10 = operationCopy;
+  if (priority)
   {
     if (qos_class_self() <= QOS_CLASS_BACKGROUND)
     {
@@ -489,7 +489,7 @@
     }
 
     [v10 setQualityOfService:v7];
-    if (a4 != 2 || qos_class_self() < 0x16)
+    if (priority != 2 || qos_class_self() < 0x16)
     {
       goto LABEL_10;
     }
@@ -497,15 +497,15 @@
 
   else
   {
-    [v6 setQualityOfService:17];
+    [operationCopy setQualityOfService:17];
   }
 
-  v8 = [v10 configuration];
-  [v8 setDiscretionaryNetworkBehavior:0];
+  configuration = [v10 configuration];
+  [configuration setDiscretionaryNetworkBehavior:0];
 
 LABEL_10:
-  v9 = [(_KSCloudKitManager *)self cloudKitDatabase];
-  [v9 addOperation:v10];
+  cloudKitDatabase = [(_KSCloudKitManager *)self cloudKitDatabase];
+  [cloudKitDatabase addOperation:v10];
 }
 
 - (void)setupSubscription
@@ -515,8 +515,8 @@ LABEL_10:
   v4 = +[_KSUtilities userDefaultsSuiteName];
   v5 = [v3 initWithSuiteName:v4];
 
-  v6 = [(_KSCloudKitManager *)self subscriptionKey];
-  v7 = [v5 BOOLForKey:v6];
+  subscriptionKey = [(_KSCloudKitManager *)self subscriptionKey];
+  v7 = [v5 BOOLForKey:subscriptionKey];
 
   if (v7)
   {
@@ -545,35 +545,35 @@ LABEL_10:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateRecords:(id)a3 deleteRecordIDs:(id)a4 withPriority:(unint64_t)a5 completionHandler:(id)a6
+- (void)updateRecords:(id)records deleteRecordIDs:(id)ds withPriority:(unint64_t)priority completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  recordsCopy = records;
+  dsCopy = ds;
+  handlerCopy = handler;
   ckWorkQueue = self->_ckWorkQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83___KSCloudKitManager_updateRecords_deleteRecordIDs_withPriority_completionHandler___block_invoke;
   block[3] = &unk_2797F6958;
   block[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a5;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = recordsCopy;
+  v20 = handlerCopy;
+  priorityCopy = priority;
+  v19 = dsCopy;
+  v14 = handlerCopy;
+  v15 = dsCopy;
+  v16 = recordsCopy;
   dispatch_async(ckWorkQueue, block);
 }
 
-- (void)updateRecords:(id)a3 deleteRecordIDs:(id)a4 withPriority:(unint64_t)a5 completionHandler:(id)a6 retryCount:(unint64_t)a7
+- (void)updateRecords:(id)records deleteRecordIDs:(id)ds withPriority:(unint64_t)priority completionHandler:(id)handler retryCount:(unint64_t)count
 {
   v36 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  recordsCopy = records;
+  dsCopy = ds;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_ckWorkQueue);
-  if (a7 == 2)
+  if (count == 2)
   {
     v15 = KSCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -584,22 +584,22 @@ LABEL_10:
     }
 
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:KSCKErrorDomain code:1 userInfo:0];
-    v14[2](v14, 0, v12, v16);
+    handlerCopy[2](handlerCopy, 0, recordsCopy, v16);
   }
 
   else
   {
-    v16 = [objc_alloc(MEMORY[0x277CBC4A0]) initWithRecordsToSave:v12 recordIDsToDelete:v13];
+    v16 = [objc_alloc(MEMORY[0x277CBC4A0]) initWithRecordsToSave:recordsCopy recordIDsToDelete:dsCopy];
     [v16 setSavePolicy:0];
-    v17 = [MEMORY[0x277CBEB18] array];
-    v18 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __94___KSCloudKitManager_updateRecords_deleteRecordIDs_withPriority_completionHandler_retryCount___block_invoke;
     v31[3] = &unk_2797F6980;
-    v19 = v17;
+    v19 = array;
     v32 = v19;
-    v20 = v18;
+    v20 = array2;
     v33 = v20;
     [v16 setPerRecordCompletionBlock:v31];
     v24[0] = MEMORY[0x277D85DD0];
@@ -607,31 +607,31 @@ LABEL_10:
     v24[2] = __94___KSCloudKitManager_updateRecords_deleteRecordIDs_withPriority_completionHandler_retryCount___block_invoke_127;
     v24[3] = &unk_2797F6A20;
     v24[4] = self;
-    v25 = v12;
-    v29 = a5;
+    v25 = recordsCopy;
+    priorityCopy = priority;
     v27 = v19;
-    v28 = v14;
-    v30 = a7;
+    v28 = handlerCopy;
+    countCopy = count;
     v26 = v20;
     v21 = v19;
     v22 = v20;
     [v16 setModifyRecordsCompletionBlock:v24];
-    [(_KSCloudKitManager *)self addOperation:v16 priority:a5];
+    [(_KSCloudKitManager *)self addOperation:v16 priority:priority];
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)resolveConflicts:(id)a3
+- (id)resolveConflicts:(id)conflicts
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v21 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  conflictsCopy = conflicts;
+  v21 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(conflictsCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v3;
+  obj = conflictsCopy;
   v4 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v4)
   {
@@ -677,19 +677,19 @@ LABEL_10:
   return v21;
 }
 
-- (void)copyFieldsFromRecord:(id)a3 toRecord:(id)a4
+- (void)copyFieldsFromRecord:(id)record toRecord:(id)toRecord
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  recordCopy = record;
+  toRecordCopy = toRecord;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v7 = [v5 valuesByKey];
-  v8 = [v7 allKeys];
+  valuesByKey = [recordCopy valuesByKey];
+  allKeys = [valuesByKey allKeys];
 
-  v9 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  v9 = [allKeys countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v9)
   {
     v10 = *v31;
@@ -700,20 +700,20 @@ LABEL_10:
       {
         if (*v31 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v30 + 1) + 8 * v11);
-        v13 = [v5 valuesByKey];
-        v14 = [v13 objectForKeyedSubscript:v12];
-        v15 = [v6 valuesByKey];
-        [v15 setObject:v14 forKeyedSubscript:v12];
+        valuesByKey2 = [recordCopy valuesByKey];
+        v14 = [valuesByKey2 objectForKeyedSubscript:v12];
+        valuesByKey3 = [toRecordCopy valuesByKey];
+        [valuesByKey3 setObject:v14 forKeyedSubscript:v12];
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v9);
@@ -723,10 +723,10 @@ LABEL_10:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v16 = [v5 encryptedValuesByKey];
-  v17 = [v16 allKeys];
+  encryptedValuesByKey = [recordCopy encryptedValuesByKey];
+  allKeys2 = [encryptedValuesByKey allKeys];
 
-  v18 = [v17 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  v18 = [allKeys2 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v18)
   {
     v19 = *v27;
@@ -737,20 +737,20 @@ LABEL_10:
       {
         if (*v27 != v19)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(allKeys2);
         }
 
         v21 = *(*(&v26 + 1) + 8 * v20);
-        v22 = [v5 encryptedValuesByKey];
-        v23 = [v22 objectForKeyedSubscript:v21];
-        v24 = [v6 encryptedValuesByKey];
-        [v24 setObject:v23 forKeyedSubscript:v21];
+        encryptedValuesByKey2 = [recordCopy encryptedValuesByKey];
+        v23 = [encryptedValuesByKey2 objectForKeyedSubscript:v21];
+        encryptedValuesByKey3 = [toRecordCopy encryptedValuesByKey];
+        [encryptedValuesByKey3 setObject:v23 forKeyedSubscript:v21];
 
         ++v20;
       }
 
       while (v18 != v20);
-      v18 = [v17 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v18 = [allKeys2 countByEnumeratingWithState:&v26 objects:v34 count:16];
     }
 
     while (v18);
@@ -759,20 +759,20 @@ LABEL_10:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchRecordsWithPriority:(unint64_t)a3 changeToken:(id)a4 completionHandler:(id)a5 retryCount:(unint64_t)a6
+- (void)fetchRecordsWithPriority:(unint64_t)priority changeToken:(id)token completionHandler:(id)handler retryCount:(unint64_t)count
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v29 = v10;
-  v30 = a6;
-  v27 = a5;
-  v28 = a3;
-  if (!v10)
+  tokenCopy = token;
+  v29 = tokenCopy;
+  countCopy = count;
+  handlerCopy = handler;
+  priorityCopy = priority;
+  if (!tokenCopy)
   {
     goto LABEL_5;
   }
 
-  v11 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v10 error:0];
+  v11 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:tokenCopy error:0];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -787,13 +787,13 @@ LABEL_6:
   v13 = objc_alloc_init(MEMORY[0x277CBC3C8]);
   [v13 setPreviousServerChangeToken:v12];
   v14 = objc_alloc(MEMORY[0x277CBC3B8]);
-  v15 = [(_KSCloudKitManager *)self recordZone];
-  v16 = [v15 zoneID];
-  v39[0] = v16;
+  recordZone = [(_KSCloudKitManager *)self recordZone];
+  zoneID = [recordZone zoneID];
+  v39[0] = zoneID;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
-  v18 = [(_KSCloudKitManager *)self recordZone];
-  v19 = [v18 zoneID];
-  v37 = v19;
+  recordZone2 = [(_KSCloudKitManager *)self recordZone];
+  zoneID2 = [recordZone2 zoneID];
+  v37 = zoneID2;
   v38 = v13;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
   v21 = [v14 initWithRecordZoneIDs:v17 optionsByRecordZoneID:v20];
@@ -806,10 +806,10 @@ LABEL_6:
   block[4] = self;
   v32 = v21;
   v33 = v29;
-  v34 = v27;
-  v35 = v28;
-  v36 = v30;
-  v23 = v27;
+  v34 = handlerCopy;
+  v35 = priorityCopy;
+  v36 = countCopy;
+  v23 = handlerCopy;
   v24 = v29;
   v25 = v21;
   dispatch_async(ckWorkQueue, block);
@@ -817,35 +817,35 @@ LABEL_6:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_submitFetchRecordsOperation:(id)a3 withPriority:(unint64_t)a4 changeToken:(id)a5 completionHandler:(id)a6 retryCount:(unint64_t)a7
+- (void)_submitFetchRecordsOperation:(id)operation withPriority:(unint64_t)priority changeToken:(id)token completionHandler:(id)handler retryCount:(unint64_t)count
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  operationCopy = operation;
+  tokenCopy = token;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_ckWorkQueue);
-  v15 = [MEMORY[0x277CBEB18] array];
-  v16 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v42[0] = 0;
   v42[1] = v42;
   v42[2] = 0x3032000000;
   v42[3] = __Block_byref_object_copy_;
   v42[4] = __Block_byref_object_dispose_;
-  v17 = v13;
+  v17 = tokenCopy;
   v43 = v17;
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __105___KSCloudKitManager__submitFetchRecordsOperation_withPriority_changeToken_completionHandler_retryCount___block_invoke;
   v40[3] = &unk_2797F6A48;
-  v18 = v15;
+  v18 = array;
   v41 = v18;
-  [v12 setRecordChangedBlock:v40];
+  [operationCopy setRecordChangedBlock:v40];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __105___KSCloudKitManager__submitFetchRecordsOperation_withPriority_changeToken_completionHandler_retryCount___block_invoke_2;
   v38[3] = &unk_2797F6A70;
-  v19 = v16;
+  v19 = array2;
   v39 = v19;
-  [v12 setRecordWithIDWasDeletedBlock:v38];
+  [operationCopy setRecordWithIDWasDeletedBlock:v38];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __105___KSCloudKitManager__submitFetchRecordsOperation_withPriority_changeToken_completionHandler_retryCount___block_invoke_3;
@@ -856,77 +856,77 @@ LABEL_6:
   v34 = v20;
   v21 = v19;
   v35 = v21;
-  v22 = v14;
+  v22 = handlerCopy;
   v36 = v22;
-  [v12 setRecordZoneChangeTokensUpdatedBlock:v33];
+  [operationCopy setRecordZoneChangeTokensUpdatedBlock:v33];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __105___KSCloudKitManager__submitFetchRecordsOperation_withPriority_changeToken_completionHandler_retryCount___block_invoke_2_139;
   v26[3] = &unk_2797F6BD8;
   v26[4] = self;
   v30 = v42;
-  v31 = a7;
-  v32 = a4;
+  countCopy = count;
+  priorityCopy = priority;
   v23 = v22;
   v29 = v23;
   v24 = v20;
   v27 = v24;
   v25 = v21;
   v28 = v25;
-  [v12 setRecordZoneFetchCompletionBlock:v26];
-  [(_KSCloudKitManager *)self addOperation:v12 priority:a4];
+  [operationCopy setRecordZoneFetchCompletionBlock:v26];
+  [(_KSCloudKitManager *)self addOperation:operationCopy priority:priority];
 
   _Block_object_dispose(v42, 8);
 }
 
-- (void)fetchPublicRecordsWithNames:(id)a3 completionHandler:(id)a4
+- (void)fetchPublicRecordsWithNames:(id)names completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  namesCopy = names;
+  handlerCopy = handler;
   ckWorkQueue = self->_ckWorkQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68___KSCloudKitManager_fetchPublicRecordsWithNames_completionHandler___block_invoke;
   block[3] = &unk_2797F6C28;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = namesCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = namesCopy;
   dispatch_async(ckWorkQueue, block);
 }
 
-- (void)_inconvenientOperation:(id)a3
+- (void)_inconvenientOperation:(id)operation
 {
-  v4 = a3;
-  [v4 setQueuePriority:-4];
-  [(_KSCloudKitManager *)self addOperation:v4 priority:0];
+  operationCopy = operation;
+  [operationCopy setQueuePriority:-4];
+  [(_KSCloudKitManager *)self addOperation:operationCopy priority:0];
 }
 
-- (void)_ckFetchRecordZoneWithID:(id)a3 completionHandler:(id)a4
+- (void)_ckFetchRecordZoneWithID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   fetchZoneThrottle = self->_fetchZoneThrottle;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __65___KSCloudKitManager__ckFetchRecordZoneWithID_completionHandler___block_invoke;
   v11[3] = &unk_2797F6C78;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = dCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
   [(_KSRequestThrottle *)fetchZoneThrottle postRequest:v11];
 }
 
-- (void)_ckSaveRecordZone:(id)a3 completionHandler:(id)a4
+- (void)_ckSaveRecordZone:(id)zone completionHandler:(id)handler
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  zoneCopy = zone;
+  handlerCopy = handler;
   v8 = objc_alloc(MEMORY[0x277CBC490]);
-  v20[0] = v6;
+  v20[0] = zoneCopy;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
   v10 = [v8 initWithRecordZonesToSave:v9 recordZoneIDsToDelete:0];
 
@@ -934,23 +934,23 @@ LABEL_6:
   v15 = 3221225472;
   v16 = __58___KSCloudKitManager__ckSaveRecordZone_completionHandler___block_invoke;
   v17 = &unk_2797F6CA0;
-  v18 = v6;
-  v19 = v7;
-  v11 = v6;
-  v12 = v7;
+  v18 = zoneCopy;
+  v19 = handlerCopy;
+  v11 = zoneCopy;
+  v12 = handlerCopy;
   [v10 setModifyRecordZonesCompletionBlock:&v14];
   [(_KSCloudKitManager *)self _inconvenientOperation:v10, v14, v15, v16, v17];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_ckDeleteRecordZoneWithID:(id)a3 completionHandler:(id)a4
+- (void)_ckDeleteRecordZoneWithID:(id)d completionHandler:(id)handler
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = objc_alloc(MEMORY[0x277CBC490]);
-  v20[0] = v6;
+  v20[0] = dCopy;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
   v10 = [v8 initWithRecordZonesToSave:0 recordZoneIDsToDelete:v9];
 
@@ -958,10 +958,10 @@ LABEL_6:
   v15 = 3221225472;
   v16 = __66___KSCloudKitManager__ckDeleteRecordZoneWithID_completionHandler___block_invoke;
   v17 = &unk_2797F6CA0;
-  v18 = v6;
-  v19 = v7;
-  v11 = v6;
-  v12 = v7;
+  v18 = dCopy;
+  v19 = handlerCopy;
+  v11 = dCopy;
+  v12 = handlerCopy;
   [v10 setModifyRecordZonesCompletionBlock:&v14];
   [(_KSCloudKitManager *)self _inconvenientOperation:v10, v14, v15, v16, v17];
 
@@ -978,7 +978,7 @@ LABEL_6:
 - (void)isAccountAvailable
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_3(&dword_2557E2000, a1, a3, "%s  Failed to get account status", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_3(&dword_2557E2000, self, a3, "%s  Failed to get account status", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

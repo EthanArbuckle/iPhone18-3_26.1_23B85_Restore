@@ -1,37 +1,37 @@
 @interface WFWorkflowContentItem
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 + (id)stringConversionBehavior;
-- (BOOL)getListSubtitle:(id)a3;
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4;
+- (BOOL)getListSubtitle:(id)subtitle;
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size;
 - (WFWorkflowReference)workflowReference;
 - (id)actionCount;
 - (id)folderName;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
 - (id)workflowIcon;
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5;
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type;
 @end
 
 @implementation WFWorkflowContentItem
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Shortcuts (plural)", @"Shortcuts");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Shortcut (singular)", @"Shortcut");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -72,7 +72,7 @@
 + (id)stringConversionBehavior
 {
   v2 = MEMORY[0x1E6996D70];
-  v3 = [a1 propertyForName:@"Name"];
+  v3 = [self propertyForName:@"Name"];
   v4 = [v2 accessingProperty:v3];
 
   return v4;
@@ -108,101 +108,101 @@
   return v15;
 }
 
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size
 {
-  if (a3)
+  if (thumbnail)
   {
-    height = a4.height;
-    width = a4.width;
+    height = size.height;
+    width = size.width;
     v8 = MEMORY[0x1E69E0E08];
-    v9 = a3;
-    v10 = [(WFWorkflowContentItem *)self workflowReference];
-    v11 = [v10 icon];
-    v12 = [v8 imageWithIcon:v11 size:{width, height}];
-    (*(a3 + 2))(v9, v12, 0);
+    thumbnailCopy = thumbnail;
+    workflowReference = [(WFWorkflowContentItem *)self workflowReference];
+    icon = [workflowReference icon];
+    v12 = [v8 imageWithIcon:icon size:{width, height}];
+    (*(thumbnail + 2))(thumbnailCopy, v12, 0);
   }
 
   return 1;
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  if (a3)
+  if (subtitle)
   {
-    v5 = a3;
-    v6 = [(WFWorkflowContentItem *)self workflowReference];
-    v7 = [v6 subtitle];
-    (*(a3 + 2))(v5, v7);
+    subtitleCopy = subtitle;
+    workflowReference = [(WFWorkflowContentItem *)self workflowReference];
+    subtitle = [workflowReference subtitle];
+    (*(subtitle + 2))(subtitleCopy, subtitle);
   }
 
   return 1;
 }
 
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type
 {
-  v7 = a3;
-  v8 = a5;
+  representationCopy = representation;
+  typeCopy = type;
   v9 = [MEMORY[0x1E6996ED0] typeWithClass:objc_opt_class()];
   v26 = 0;
   v10 = [(WFWorkflowContentItem *)self getRepresentationsForType:v9 error:&v26];
   v11 = v26;
-  v12 = [v10 firstObject];
-  v13 = [v12 object];
+  firstObject = [v10 firstObject];
+  object = [firstObject object];
 
-  if (!v13)
+  if (!object)
   {
-    v7[2](v7, 0, v11);
+    representationCopy[2](representationCopy, 0, v11);
     goto LABEL_15;
   }
 
-  if (![v8 conformsToString:@"com.apple.shortcut"])
+  if (![typeCopy conformsToString:@"com.apple.shortcut"])
   {
-    if ([v8 conformsToString:@"com.apple.shortcuts.workflow-file"])
+    if ([typeCopy conformsToString:@"com.apple.shortcuts.workflow-file"])
     {
-      v15 = [v13 fileRepresentation];
+      fileRepresentation = [object fileRepresentation];
       v22 = 0;
-      v16 = [v15 writeToDiskWithFormat:100 error:&v22];
+      v16 = [fileRepresentation writeToDiskWithFormat:100 error:&v22];
       v17 = v22;
 
-      (v7)[2](v7, v16, v17);
+      (representationCopy)[2](representationCopy, v16, v17);
     }
 
     else
     {
-      if (![v8 conformsToString:*MEMORY[0x1E6997150]])
+      if (![typeCopy conformsToString:*MEMORY[0x1E6997150]])
       {
-        v14 = [objc_opt_class() badCoercionErrorForType:v8];
-        v7[2](v7, 0, v14);
+        v14 = [objc_opt_class() badCoercionErrorForType:typeCopy];
+        representationCopy[2](representationCopy, 0, v14);
         goto LABEL_4;
       }
 
-      v18 = [v13 fileRepresentation];
+      fileRepresentation2 = [object fileRepresentation];
       v21 = 0;
-      v19 = [v18 fileDataWithFormat:100 error:&v21];
+      v19 = [fileRepresentation2 fileDataWithFormat:100 error:&v21];
       v16 = v21;
 
       if (v19)
       {
-        v20 = [MEMORY[0x1E6996E20] fileWithData:v19 ofType:v8 proposedFilename:0];
-        (v7)[2](v7, v20, v16);
+        v20 = [MEMORY[0x1E6996E20] fileWithData:v19 ofType:typeCopy proposedFilename:0];
+        (representationCopy)[2](representationCopy, v20, v16);
       }
 
       else
       {
-        v7[2](v7, 0, v16);
+        representationCopy[2](representationCopy, 0, v16);
       }
     }
 
     goto LABEL_15;
   }
 
-  v14 = [(WFShortcutExporter *)[WFP2PSignedShortcutFileExporter alloc] initWithWorkflowRecord:v13];
+  v14 = [(WFShortcutExporter *)[WFP2PSignedShortcutFileExporter alloc] initWithWorkflowRecord:object];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __68__WFWorkflowContentItem_generateFileRepresentation_options_forType___block_invoke;
   v23[3] = &unk_1E837DCC8;
-  v25 = v7;
-  v24 = v13;
+  v25 = representationCopy;
+  v24 = object;
   [(WFP2PSignedShortcutFileExporter *)v14 exportWorkflowWithCompletion:v23];
 
 LABEL_4:
@@ -232,33 +232,33 @@ void __68__WFWorkflowContentItem_generateFileRepresentation_options_forType___bl
   }
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
   v74[1] = *MEMORY[0x1E69E9840];
-  v59 = a4;
-  if (objc_opt_class() == a3)
+  optionsCopy = options;
+  if (objc_opt_class() == class)
   {
     v25 = MEMORY[0x1E6996EC8];
-    v26 = [(WFWorkflowContentItem *)self workflowIcon];
-    v27 = [(WFWorkflowContentItem *)self name];
-    v28 = [v25 object:v26 named:v27];
+    workflowIcon = [(WFWorkflowContentItem *)self workflowIcon];
+    name = [(WFWorkflowContentItem *)self name];
+    v28 = [v25 object:workflowIcon named:name];
     goto LABEL_9;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v29 = [(WFWorkflowContentItem *)self workflowReference];
+    workflowReference = [(WFWorkflowContentItem *)self workflowReference];
     v30 = +[WFDatabaseProxy defaultDatabase];
-    v31 = [v30 workflowRecordForDescriptor:v29 error:a5];
+    v31 = [v30 workflowRecordForDescriptor:workflowReference error:error];
 
     v24 = [MEMORY[0x1E6996EC8] object:v31];
 
     goto LABEL_14;
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v32 = [(WFWorkflowContentItem *)self internalRepresentation];
+    internalRepresentation = [(WFWorkflowContentItem *)self internalRepresentation];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -269,42 +269,42 @@ void __68__WFWorkflowContentItem_generateFileRepresentation_options_forType___bl
 
     v34 = [MEMORY[0x1E6996ED0] typeWithClass:objc_opt_class()];
     v35 = [(WFWorkflowContentItem *)self getRepresentationsForType:v34 error:0];
-    v36 = [v35 firstObject];
-    v26 = [v36 object];
+    firstObject = [v35 firstObject];
+    workflowIcon = [firstObject object];
 
     v55 = [WFWorkflowReference alloc];
-    v56 = [v26 name];
-    v58 = [v26 icon];
-    v54 = [v58 backgroundColorValue];
-    v57 = [v26 icon];
-    v52 = [v57 glyphCharacter];
-    v53 = [v26 associatedAppBundleIdentifier];
-    v51 = [v26 searchAttributionAppBundleIdentifier];
-    v37 = [v26 workflowSubtitle];
-    v50 = [v26 actionsDescription];
-    v38 = [v26 actions];
-    v49 = [v38 count];
-    v39 = [v26 syncHash];
-    v40 = [v26 creationDate];
-    v41 = [v26 modificationDate];
-    v42 = [v26 remoteQuarantineHash];
-    LOBYTE(v36) = [v26 disabledOnLockScreen];
-    v43 = [v26 source];
+    name2 = [workflowIcon name];
+    icon = [workflowIcon icon];
+    backgroundColorValue = [icon backgroundColorValue];
+    icon2 = [workflowIcon icon];
+    glyphCharacter = [icon2 glyphCharacter];
+    associatedAppBundleIdentifier = [workflowIcon associatedAppBundleIdentifier];
+    searchAttributionAppBundleIdentifier = [workflowIcon searchAttributionAppBundleIdentifier];
+    workflowSubtitle = [workflowIcon workflowSubtitle];
+    actionsDescription = [workflowIcon actionsDescription];
+    actions = [workflowIcon actions];
+    v49 = [actions count];
+    syncHash = [workflowIcon syncHash];
+    creationDate = [workflowIcon creationDate];
+    modificationDate = [workflowIcon modificationDate];
+    remoteQuarantineHash = [workflowIcon remoteQuarantineHash];
+    LOBYTE(firstObject) = [workflowIcon disabledOnLockScreen];
+    source = [workflowIcon source];
     LOBYTE(v48) = 0;
-    BYTE3(v47) = v36;
+    BYTE3(v47) = firstObject;
     BYTE2(v47) = 0;
     LOWORD(v47) = 0;
     LOWORD(v46) = 0;
-    v27 = [WFWorkflowReference initWithIdentifier:v55 name:"initWithIdentifier:name:color:glyphCharacter:associatedAppBundleIdentifier:searchAttributionAppBundleIdentifier:subtitle:actionsDescription:actionCount:syncHash:isDeleted:hiddenFromLibraryAndSync:creationDate:modificationDate:lastRunDate:remoteQuarantineStatus:remoteQuarantineHash:showInSearch:receivesInputFromSearch:hasShortcutInputVariables:disabledOnLockScreen:source:runEventsCount:hasOutputAction:" color:@"soup" glyphCharacter:v56 associatedAppBundleIdentifier:v54 searchAttributionAppBundleIdentifier:v52 subtitle:v53 actionsDescription:v51 actionCount:v37 syncHash:v50 isDeleted:v49 hiddenFromLibraryAndSync:v39 creationDate:v46 modificationDate:v40 lastRunDate:v41 remoteQuarantineStatus:0 remoteQuarantineHash:0 showInSearch:v42 receivesInputFromSearch:v47 hasShortcutInputVariables:v43 disabledOnLockScreen:0 source:v48 runEventsCount:? hasOutputAction:?];
+    name = [WFWorkflowReference initWithIdentifier:v55 name:"initWithIdentifier:name:color:glyphCharacter:associatedAppBundleIdentifier:searchAttributionAppBundleIdentifier:subtitle:actionsDescription:actionCount:syncHash:isDeleted:hiddenFromLibraryAndSync:creationDate:modificationDate:lastRunDate:remoteQuarantineStatus:remoteQuarantineHash:showInSearch:receivesInputFromSearch:hasShortcutInputVariables:disabledOnLockScreen:source:runEventsCount:hasOutputAction:" color:@"soup" glyphCharacter:name2 associatedAppBundleIdentifier:backgroundColorValue searchAttributionAppBundleIdentifier:glyphCharacter subtitle:associatedAppBundleIdentifier actionsDescription:searchAttributionAppBundleIdentifier actionCount:workflowSubtitle syncHash:actionsDescription isDeleted:v49 hiddenFromLibraryAndSync:syncHash creationDate:v46 modificationDate:creationDate lastRunDate:modificationDate remoteQuarantineStatus:0 remoteQuarantineHash:0 showInSearch:remoteQuarantineHash receivesInputFromSearch:v47 hasShortcutInputVariables:source disabledOnLockScreen:0 source:v48 runEventsCount:? hasOutputAction:?];
 
-    v28 = [MEMORY[0x1E6996EC8] object:v27];
+    v28 = [MEMORY[0x1E6996EC8] object:name];
 LABEL_9:
     v24 = v28;
 
     goto LABEL_14;
   }
 
-  if (objc_opt_class() != a3)
+  if (objc_opt_class() != class)
   {
 LABEL_13:
     v24 = 0;
@@ -314,22 +314,22 @@ LABEL_13:
   v8 = getWFAppIntentsLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(WFWorkflowContentItem *)self workflowReference];
-    v10 = [v9 identifier];
+    workflowReference2 = [(WFWorkflowContentItem *)self workflowReference];
+    identifier = [workflowReference2 identifier];
     *buf = 136315394;
     *&buf[4] = "[WFWorkflowContentItem generateObjectRepresentationForClass:options:error:]";
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = identifier;
     _os_log_impl(&dword_1CA256000, v8, OS_LOG_TYPE_DEFAULT, "%s Creating LNEntity for asset: %@", buf, 0x16u);
   }
 
   v11 = objc_alloc(MEMORY[0x1E69ACE40]);
   v12 = [v11 initWithBundleIdentifier:*MEMORY[0x1E69E0F60]];
   v13 = objc_alloc(MEMORY[0x1E69AC7D8]);
-  v14 = [(WFWorkflowContentItem *)self workflowReference];
-  v15 = [v14 identifier];
+  workflowReference3 = [(WFWorkflowContentItem *)self workflowReference];
+  identifier2 = [workflowReference3 identifier];
   v16 = *MEMORY[0x1E69970F0];
-  v17 = [v13 initWithValue:v15 typeName:*MEMORY[0x1E69970F0]];
+  v17 = [v13 initWithValue:identifier2 typeName:*MEMORY[0x1E69970F0]];
 
   v18 = objc_alloc(MEMORY[0x1E69ACFB0]);
   v74[0] = v17;
@@ -456,19 +456,19 @@ void __76__WFWorkflowContentItem_generateObjectRepresentationForClass_options_er
 - (id)folderName
 {
   v3 = +[WFDatabaseProxy defaultDatabase];
-  v4 = [(WFWorkflowContentItem *)self workflowReference];
-  v5 = [v3 folderForWorkflowReference:v4 error:0];
+  workflowReference = [(WFWorkflowContentItem *)self workflowReference];
+  v5 = [v3 folderForWorkflowReference:workflowReference error:0];
 
-  v6 = [v5 name];
+  name = [v5 name];
 
-  return v6;
+  return name;
 }
 
 - (id)actionCount
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(WFWorkflowContentItem *)self workflowReference];
-  v4 = [v2 numberWithUnsignedInteger:{objc_msgSend(v3, "actionCount")}];
+  workflowReference = [(WFWorkflowContentItem *)self workflowReference];
+  v4 = [v2 numberWithUnsignedInteger:{objc_msgSend(workflowReference, "actionCount")}];
 
   return v4;
 }
@@ -476,9 +476,9 @@ void __76__WFWorkflowContentItem_generateObjectRepresentationForClass_options_er
 - (id)workflowIcon
 {
   v2 = MEMORY[0x1E69E0E08];
-  v3 = [(WFWorkflowContentItem *)self workflowReference];
-  v4 = [v3 icon];
-  v5 = [v2 imageWithIcon:v4 size:{512.0, 512.0}];
+  workflowReference = [(WFWorkflowContentItem *)self workflowReference];
+  icon = [workflowReference icon];
+  v5 = [v2 imageWithIcon:icon size:{512.0, 512.0}];
 
   return v5;
 }
@@ -487,10 +487,10 @@ void __76__WFWorkflowContentItem_generateObjectRepresentationForClass_options_er
 {
   v3 = [MEMORY[0x1E6996ED0] typeWithClass:objc_opt_class()];
   v4 = [(WFWorkflowContentItem *)self getRepresentationsForType:v3 error:0];
-  v5 = [v4 firstObject];
-  v6 = [v5 object];
+  firstObject = [v4 firstObject];
+  object = [firstObject object];
 
-  return v6;
+  return object;
 }
 
 @end

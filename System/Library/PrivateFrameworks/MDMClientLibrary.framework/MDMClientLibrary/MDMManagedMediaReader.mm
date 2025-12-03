@@ -1,5 +1,5 @@
 @interface MDMManagedMediaReader
-+ (id)_metadataByBundleIDExcludeDDMApps:(BOOL)a3;
++ (id)_metadataByBundleIDExcludeDDMApps:(BOOL)apps;
 + (id)managedBooks;
 @end
 
@@ -94,13 +94,13 @@
   return v2;
 }
 
-+ (id)_metadataByBundleIDExcludeDDMApps:(BOOL)a3
++ (id)_metadataByBundleIDExcludeDDMApps:(BOOL)apps
 {
-  v3 = a3;
+  appsCopy = apps;
   v35 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v5 = MDMAppManagementFilePath();
-  v6 = [v4 fileExistsAtPath:v5];
+  v6 = [defaultManager fileExistsAtPath:v5];
 
   if (!v6)
   {
@@ -131,14 +131,14 @@
     v14 = [v11 objectForKey:@"metadataByBundleID"];
     v15 = [v14 mutableCopy];
 
-    if (v3)
+    if (appsCopy)
     {
-      v16 = [v15 allKeys];
+      allKeys = [v15 allKeys];
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v17 = [v16 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v17 = [allKeys countByEnumeratingWithState:&v27 objects:v32 count:16];
       if (v17)
       {
         v18 = v17;
@@ -149,7 +149,7 @@
           {
             if (*v28 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(allKeys);
             }
 
             v21 = *(*(&v27 + 1) + 8 * i);
@@ -162,7 +162,7 @@
             }
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v27 objects:v32 count:16];
+          v18 = [allKeys countByEnumeratingWithState:&v27 objects:v32 count:16];
         }
 
         while (v18);

@@ -1,10 +1,10 @@
 @interface HIDAnalyticsHistogramEventField
-- (HIDAnalyticsHistogramEventField)initWithAttributes:(id)a3 segments:(_HIDAnalyticsHistogramSegmentConfig *)a4 count:(int64_t)a5;
+- (HIDAnalyticsHistogramEventField)initWithAttributes:(id)attributes segments:(_HIDAnalyticsHistogramSegmentConfig *)segments count:(int64_t)count;
 - (id)value;
-- (void)createBuckets:(_HIDAnalyticsHistogramSegmentConfig *)a3 count:(int64_t)a4;
+- (void)createBuckets:(_HIDAnalyticsHistogramSegmentConfig *)buckets count:(int64_t)count;
 - (void)dealloc;
-- (void)setIntegerValue:(unint64_t)a3;
-- (void)setValue:(id)a3;
+- (void)setIntegerValue:(unint64_t)value;
+- (void)setValue:(id)value;
 @end
 
 @implementation HIDAnalyticsHistogramEventField
@@ -79,26 +79,26 @@ LABEL_9:
   return v4;
 }
 
-- (HIDAnalyticsHistogramEventField)initWithAttributes:(id)a3 segments:(_HIDAnalyticsHistogramSegmentConfig *)a4 count:(int64_t)a5
+- (HIDAnalyticsHistogramEventField)initWithAttributes:(id)attributes segments:(_HIDAnalyticsHistogramSegmentConfig *)segments count:(int64_t)count
 {
-  v9 = a3;
+  attributesCopy = attributes;
   v14.receiver = self;
   v14.super_class = HIDAnalyticsHistogramEventField;
   v10 = [(HIDAnalyticsHistogramEventField *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_fieldName, a3);
-    [(HIDAnalyticsHistogramEventField *)v11 createBuckets:a4 count:a5];
+    objc_storeStrong(&v10->_fieldName, attributes);
+    [(HIDAnalyticsHistogramEventField *)v11 createBuckets:segments count:count];
     v12 = v11;
   }
 
   return v11;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = [a3 unsignedIntegerValue];
+  unsignedIntegerValue = [value unsignedIntegerValue];
   segmentCount = self->_segmentCount;
   if (self->_segmentCount)
   {
@@ -128,69 +128,69 @@ LABEL_9:
           v23 = vmovn_s64(vcgeq_u64(v14, v15));
           if (vuzp1_s8(vuzp1_s16(v23, 14), 14).u8[0])
           {
-            *(v13 - 48) = v4;
+            *(v13 - 48) = unsignedIntegerValue;
           }
 
           if (vuzp1_s8(vuzp1_s16(v23, 14), 14).i8[1])
           {
-            *(v13 - 42) = v4;
+            *(v13 - 42) = unsignedIntegerValue;
           }
 
           if (vuzp1_s8(vuzp1_s16(14, vmovn_s64(vcgeq_u64(v14, *&v16))), 14).i8[2])
           {
-            *(v13 - 36) = v4;
-            *(v13 - 30) = v4;
+            *(v13 - 36) = unsignedIntegerValue;
+            *(v13 - 30) = unsignedIntegerValue;
           }
 
           v24 = vmovn_s64(vcgeq_u64(v14, v17));
           if (vuzp1_s8(14, vuzp1_s16(v24, 14)).i32[1])
           {
-            *(v13 - 24) = v4;
+            *(v13 - 24) = unsignedIntegerValue;
           }
 
           if (vuzp1_s8(14, vuzp1_s16(v24, 14)).i8[5])
           {
-            *(v13 - 18) = v4;
+            *(v13 - 18) = unsignedIntegerValue;
           }
 
           if (vuzp1_s8(14, vuzp1_s16(14, vmovn_s64(vcgeq_u64(v14, *&v18)))).i8[6])
           {
-            *(v13 - 12) = v4;
-            *(v13 - 6) = v4;
+            *(v13 - 12) = unsignedIntegerValue;
+            *(v13 - 6) = unsignedIntegerValue;
           }
 
           v25 = vmovn_s64(vcgeq_u64(v14, v19));
           if (vuzp1_s8(vuzp1_s16(v25, 14), 14).u8[0])
           {
-            *v13 = v4;
+            *v13 = unsignedIntegerValue;
           }
 
           if (vuzp1_s8(vuzp1_s16(v25, 14), 14).i8[1])
           {
-            v13[6] = v4;
+            v13[6] = unsignedIntegerValue;
           }
 
           if (vuzp1_s8(vuzp1_s16(14, vmovn_s64(vcgeq_u64(v14, *&v20))), 14).i8[2])
           {
-            v13[12] = v4;
-            v13[18] = v4;
+            v13[12] = unsignedIntegerValue;
+            v13[18] = unsignedIntegerValue;
           }
 
           v26 = vmovn_s64(vcgeq_u64(v14, v21));
           if (vuzp1_s8(14, vuzp1_s16(v26, 14)).i32[1])
           {
-            v13[24] = v4;
+            v13[24] = unsignedIntegerValue;
           }
 
           if (vuzp1_s8(14, vuzp1_s16(v26, 14)).i8[5])
           {
-            v13[30] = v4;
+            v13[30] = unsignedIntegerValue;
           }
 
           if (vuzp1_s8(14, vuzp1_s16(14, vmovn_s64(vcgeq_u64(v14, *&v22)))).i8[6])
           {
-            v13[36] = v4;
-            v13[42] = v4;
+            v13[36] = unsignedIntegerValue;
+            v13[42] = unsignedIntegerValue;
           }
 
           v17 = vaddq_s64(v17, v7);
@@ -216,20 +216,20 @@ LABEL_9:
   }
 }
 
-- (void)createBuckets:(_HIDAnalyticsHistogramSegmentConfig *)a3 count:(int64_t)a4
+- (void)createBuckets:(_HIDAnalyticsHistogramSegmentConfig *)buckets count:(int64_t)count
 {
   v24 = *MEMORY[0x277D85DE8];
-  self->_segmentCount = a4;
-  v7 = malloc_type_malloc(16 * a4, 0x10200408CB94CA5uLL);
+  self->_segmentCount = count;
+  v7 = malloc_type_malloc(16 * count, 0x10200408CB94CA5uLL);
   self->_segments = v7;
   bzero(v7, 16 * self->_segmentCount);
-  if (a4 >= 1)
+  if (count >= 1)
   {
     v8 = 0;
     v9 = MEMORY[0x277D86220];
     do
     {
-      v10 = &a3[v8];
+      v10 = &buckets[v8];
       var3 = v10->var3;
       if (var3 <= 1)
       {
@@ -276,13 +276,13 @@ LABEL_9:
       ++v8;
     }
 
-    while (v8 != a4);
+    while (v8 != count);
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setIntegerValue:(unint64_t)a3
+- (void)setIntegerValue:(unint64_t)value
 {
   segmentCount = self->_segmentCount;
   if (self->_segmentCount)
@@ -311,14 +311,14 @@ LABEL_15:
     v11 = 6 * var0;
     while (1)
     {
-      if (v8 || (v12 = v6->var1, a3 > *v12))
+      if (v8 || (v12 = v6->var1, value > *v12))
       {
         if (v10 != v8)
         {
           var1 = v6->var1;
 LABEL_11:
           v12 = (var1 + v8);
-          if (a3 <= *(var1 + v8) || a3 > *(v12 + 1))
+          if (value <= *(var1 + v8) || value > *(v12 + 1))
           {
             goto LABEL_14;
           }
@@ -328,7 +328,7 @@ LABEL_11:
 
         var1 = v6->var1;
         v12 = (var1 + 6 * v9);
-        if (a3 <= *(v12 + 1))
+        if (value <= *(v12 + 1))
         {
           goto LABEL_11;
         }

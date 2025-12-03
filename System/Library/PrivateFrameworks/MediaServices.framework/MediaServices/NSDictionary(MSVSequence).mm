@@ -41,7 +41,7 @@
   v14 = &v15;
   v9 = v7;
   v13 = v9;
-  [a1 enumerateKeysAndObjectsUsingBlock:v12];
+  [self enumerateKeysAndObjectsUsingBlock:v12];
   v10 = v16[5];
 
   _Block_object_dispose(&v15, 8);
@@ -63,7 +63,7 @@
   v12 = &v13;
   v7 = v6;
   v11 = v7;
-  [a1 enumerateKeysAndObjectsUsingBlock:v10];
+  [self enumerateKeysAndObjectsUsingBlock:v10];
   v8 = v14[3];
 
   _Block_object_dispose(&v13, 8);
@@ -84,7 +84,7 @@
   v12 = &v13;
   v7 = v6;
   v11 = v7;
-  [a1 enumerateKeysAndObjectsUsingBlock:v10];
+  [self enumerateKeysAndObjectsUsingBlock:v10];
   v8 = *(v14 + 6);
 
   _Block_object_dispose(&v13, 8);
@@ -105,7 +105,7 @@
   v12 = &v13;
   v7 = v6;
   v11 = v7;
-  [a1 enumerateKeysAndObjectsUsingBlock:v10];
+  [self enumerateKeysAndObjectsUsingBlock:v10];
   v8 = v14[3];
 
   _Block_object_dispose(&v13, 8);
@@ -126,7 +126,7 @@
   v12 = &v13;
   v7 = v6;
   v11 = v7;
-  [a1 enumerateKeysAndObjectsUsingBlock:v10];
+  [self enumerateKeysAndObjectsUsingBlock:v10];
   v8 = v14[3];
 
   _Block_object_dispose(&v13, 8);
@@ -147,7 +147,7 @@
   v12 = &v13;
   v7 = v6;
   v11 = v7;
-  [a1 enumerateKeysAndObjectsUsingBlock:v10];
+  [self enumerateKeysAndObjectsUsingBlock:v10];
   v8 = *(v14 + 6);
 
   _Block_object_dispose(&v13, 8);
@@ -168,7 +168,7 @@
   v12 = &v13;
   v7 = v6;
   v11 = v7;
-  [a1 enumerateKeysAndObjectsUsingBlock:v10];
+  [self enumerateKeysAndObjectsUsingBlock:v10];
   v8 = v14[3];
 
   _Block_object_dispose(&v13, 8);
@@ -189,7 +189,7 @@
   v12 = &v13;
   v7 = v6;
   v11 = v7;
-  [a1 enumerateKeysAndObjectsUsingBlock:v10];
+  [self enumerateKeysAndObjectsUsingBlock:v10];
   v8 = v14[3];
 
   _Block_object_dispose(&v13, 8);
@@ -210,7 +210,7 @@
   v12 = &v13;
   v7 = v6;
   v11 = v7;
-  [a1 enumerateKeysAndObjectsUsingBlock:v10];
+  [self enumerateKeysAndObjectsUsingBlock:v10];
   v8 = v14[3];
 
   _Block_object_dispose(&v13, 8);
@@ -231,7 +231,7 @@
   v12 = &v13;
   v7 = v6;
   v11 = v7;
-  [a1 enumerateKeysAndObjectsUsingBlock:v10];
+  [self enumerateKeysAndObjectsUsingBlock:v10];
   v8 = v14[6];
 
   _Block_object_dispose(&v13, 8);
@@ -252,7 +252,7 @@
   v12 = &v13;
   v7 = v6;
   v11 = v7;
-  [a1 enumerateKeysAndObjectsUsingBlock:v10];
+  [self enumerateKeysAndObjectsUsingBlock:v10];
   v8 = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
@@ -262,7 +262,7 @@
 - (id)msv_flatMap:()MSVSequence
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __41__NSDictionary_MSVSequence__msv_flatMap___block_invoke;
@@ -271,7 +271,7 @@
   v15 = v4;
   v6 = v5;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v10];
+  [self enumerateKeysAndObjectsUsingBlock:&v10];
   v8 = [v6 copy];
 
   return v8;
@@ -293,7 +293,7 @@
   v5 = v4;
   v9 = v5;
   v10 = &v11;
-  [a1 enumerateKeysAndObjectsUsingBlock:v8];
+  [self enumerateKeysAndObjectsUsingBlock:v8];
   v6 = v12[5];
 
   _Block_object_dispose(&v11, 8);
@@ -304,7 +304,7 @@
 - (id)msv_filter:()MSVSequence
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __40__NSDictionary_MSVSequence__msv_filter___block_invoke;
@@ -313,7 +313,7 @@
   v15 = v4;
   v6 = v5;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v10];
+  [self enumerateKeysAndObjectsUsingBlock:&v10];
   v8 = [v6 copy];
 
   return v8;
@@ -322,7 +322,7 @@
 - (id)msv_compactMapValues:()MSVSequence
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __50__NSDictionary_MSVSequence__msv_compactMapValues___block_invoke;
@@ -331,7 +331,7 @@
   v15 = v4;
   v6 = v4;
   v7 = v5;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v10];
+  [self enumerateKeysAndObjectsUsingBlock:&v10];
   v8 = [v7 copy];
 
   return v8;
@@ -340,7 +340,7 @@
 - (id)msv_compactMapKeysAndValues:()MSVSequence
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __57__NSDictionary_MSVSequence__msv_compactMapKeysAndValues___block_invoke;
@@ -349,7 +349,7 @@
   v15 = v4;
   v6 = v5;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v10];
+  [self enumerateKeysAndObjectsUsingBlock:&v10];
   v8 = [v6 copy];
 
   return v8;
@@ -358,7 +358,7 @@
 - (id)msv_compactMap:()MSVSequence
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __44__NSDictionary_MSVSequence__msv_compactMap___block_invoke;
@@ -367,7 +367,7 @@
   v15 = v4;
   v6 = v5;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v10];
+  [self enumerateKeysAndObjectsUsingBlock:&v10];
   v8 = [v6 copy];
 
   return v8;
@@ -376,7 +376,7 @@
 - (id)msv_mapValues:()MSVSequence
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __43__NSDictionary_MSVSequence__msv_mapValues___block_invoke;
@@ -385,7 +385,7 @@
   v15 = v4;
   v6 = v4;
   v7 = v5;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v10];
+  [self enumerateKeysAndObjectsUsingBlock:&v10];
   v8 = [v7 copy];
 
   return v8;
@@ -394,7 +394,7 @@
 - (id)msv_mapKeysAndValues:()MSVSequence
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __50__NSDictionary_MSVSequence__msv_mapKeysAndValues___block_invoke;
@@ -403,7 +403,7 @@
   v15 = v4;
   v6 = v5;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v10];
+  [self enumerateKeysAndObjectsUsingBlock:&v10];
   v8 = [v6 copy];
 
   return v8;
@@ -412,7 +412,7 @@
 - (id)msv_map:()MSVSequence
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __37__NSDictionary_MSVSequence__msv_map___block_invoke;
@@ -421,7 +421,7 @@
   v15 = v4;
   v6 = v4;
   v7 = v5;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v10];
+  [self enumerateKeysAndObjectsUsingBlock:&v10];
   v8 = [v7 copy];
 
   return v8;

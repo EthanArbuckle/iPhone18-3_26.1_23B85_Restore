@@ -1,29 +1,29 @@
 @interface CRLImageFillCachedImage
-+ (id)cachedImageWithHandler:(id)a3;
++ (id)cachedImageWithHandler:(id)handler;
 - (CRLImage)image;
-- (CRLImageFillCachedImage)initWithHandler:(id)a3;
+- (CRLImageFillCachedImage)initWithHandler:(id)handler;
 - (void)flush;
 @end
 
 @implementation CRLImageFillCachedImage
 
-+ (id)cachedImageWithHandler:(id)a3
++ (id)cachedImageWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithHandler:v4];
+  handlerCopy = handler;
+  v5 = [[self alloc] initWithHandler:handlerCopy];
 
   return v5;
 }
 
-- (CRLImageFillCachedImage)initWithHandler:(id)a3
+- (CRLImageFillCachedImage)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = CRLImageFillCachedImage;
   v5 = [(CRLImageFillCachedImage *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlerCopy copy];
     mHandler = v5->mHandler;
     v5->mHandler = v6;
 

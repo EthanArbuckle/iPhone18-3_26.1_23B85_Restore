@@ -1,8 +1,8 @@
 @interface MCAssetVideo
 - (NSSet)slides;
-- (void)addSlide:(id)a3;
+- (void)addSlide:(id)slide;
 - (void)demolish;
-- (void)removeSlide:(id)a3;
+- (void)removeSlide:(id)slide;
 @end
 
 @implementation MCAssetVideo
@@ -40,7 +40,7 @@
   return v3;
 }
 
-- (void)addSlide:(id)a3
+- (void)addSlide:(id)slide
 {
   objc_sync_enter(self);
   mSlides = self->mSlides;
@@ -50,15 +50,15 @@
     self->mSlides = mSlides;
   }
 
-  [(NSMutableArray *)mSlides addObject:a3];
+  [(NSMutableArray *)mSlides addObject:slide];
 
   objc_sync_exit(self);
 }
 
-- (void)removeSlide:(id)a3
+- (void)removeSlide:(id)slide
 {
   objc_sync_enter(self);
-  [(NSMutableArray *)self->mSlides removeObjectAtIndex:[(NSMutableArray *)self->mSlides indexOfObject:a3]];
+  [(NSMutableArray *)self->mSlides removeObjectAtIndex:[(NSMutableArray *)self->mSlides indexOfObject:slide]];
   if (![(NSMutableArray *)self->mSlides count])
   {
 

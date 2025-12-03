@@ -1,45 +1,45 @@
 @interface SBKRequest
-+ (id)_contentEncodingTypeStringForBodyContentEncodingType:(int64_t)a3;
-+ (id)_contentTypeStringForBodyContentType:(int64_t)a3;
-+ (id)_methodStringForMethod:(int64_t)a3;
-+ (id)requestWithRequestURL:(id)a3;
++ (id)_contentEncodingTypeStringForBodyContentEncodingType:(int64_t)type;
++ (id)_contentTypeStringForBodyContentType:(int64_t)type;
++ (id)_methodStringForMethod:(int64_t)method;
++ (id)requestWithRequestURL:(id)l;
 + (int64_t)bodyContentEncodingType;
 + (int64_t)bodyContentType;
-- (SBKRequest)initWithRequestURL:(id)a3;
+- (SBKRequest)initWithRequestURL:(id)l;
 - (id)_defaultHeaderFields;
 - (id)copyRequestProperties;
 - (id)description;
 - (id)descriptionWithoutHeaderFields;
-- (void)setBodyData:(id)a3;
-- (void)setBodyDataWithPropertyList:(id)a3;
-- (void)setValue:(id)a3 forArgument:(id)a4;
+- (void)setBodyData:(id)data;
+- (void)setBodyDataWithPropertyList:(id)list;
+- (void)setValue:(id)value forArgument:(id)argument;
 @end
 
 @implementation SBKRequest
 
 - (id)_defaultHeaderFields
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(SBKRequest *)self acceptsGzipEncoding])
   {
-    [v3 setObject:@"gzip" forKey:@"Accept-Encoding"];
+    [dictionary setObject:@"gzip" forKey:@"Accept-Encoding"];
   }
 
   v4 = objc_opt_class();
   v5 = [v4 _contentEncodingTypeStringForBodyContentEncodingType:{objc_msgSend(objc_opt_class(), "bodyContentEncodingType")}];
   if (v5)
   {
-    [v3 setObject:v5 forKey:@"Content-Encoding"];
+    [dictionary setObject:v5 forKey:@"Content-Encoding"];
   }
 
   v6 = objc_opt_class();
   v7 = [v6 _contentTypeStringForBodyContentType:{objc_msgSend(objc_opt_class(), "bodyContentType")}];
   if (v7)
   {
-    [v3 setObject:v7 forKey:@"Content-Type"];
+    [dictionary setObject:v7 forKey:@"Content-Type"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)copyRequestProperties
@@ -66,9 +66,9 @@
   [(NSDictionary *)arguments enumerateKeysAndObjectsUsingBlock:&v14];
   if ([(SBKRequest *)self includeDeviceGUID:v14])
   {
-    v9 = [MEMORY[0x277D7FCE0] sharedInstance];
-    v10 = [v9 guid];
-    [v8 setValue:v10 forRequestParameter:@"guid"];
+    mEMORY[0x277D7FCE0] = [MEMORY[0x277D7FCE0] sharedInstance];
+    guid = [mEMORY[0x277D7FCE0] guid];
+    [v8 setValue:guid forRequestParameter:@"guid"];
   }
 
   [v8 setHTTPBody:self->_bodyData];
@@ -80,27 +80,27 @@
   return v12;
 }
 
-- (void)setBodyDataWithPropertyList:(id)a3
+- (void)setBodyDataWithPropertyList:(id)list
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [objc_opt_class() bodyContentType];
-  if (v6 == 2)
+  listCopy = list;
+  bodyContentType = [objc_opt_class() bodyContentType];
+  if (bodyContentType == 2)
   {
     v7 = MEMORY[0x277CCAC58];
     v18 = 0;
     v8 = &v18;
     v9 = &v18;
-    v10 = v5;
+    v10 = listCopy;
     v11 = 100;
   }
 
   else
   {
-    if (v6 != 3)
+    if (bodyContentType != 3)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"SBKRequest.m" lineNumber:119 description:@"Invalid bodyContentType requested for propertyList"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBKRequest.m" lineNumber:119 description:@"Invalid bodyContentType requested for propertyList"];
 
       v12 = 0;
       goto LABEL_10;
@@ -110,7 +110,7 @@
     v19 = 0;
     v8 = &v19;
     v9 = &v19;
-    v10 = v5;
+    v10 = listCopy;
     v11 = 200;
   }
 
@@ -136,24 +136,24 @@ LABEL_11:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setBodyData:(id)a3
+- (void)setBodyData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ([objc_opt_class() bodyContentEncodingType] == 1)
   {
-    v5 = [(NSData *)v4 SBKDataByDeflatingWithGZip];
+    sBKDataByDeflatingWithGZip = [(NSData *)dataCopy SBKDataByDeflatingWithGZip];
 
-    v4 = v5;
+    dataCopy = sBKDataByDeflatingWithGZip;
   }
 
   bodyData = self->_bodyData;
-  self->_bodyData = v4;
+  self->_bodyData = dataCopy;
 }
 
-- (void)setValue:(id)a3 forArgument:(id)a4
+- (void)setValue:(id)value forArgument:(id)argument
 {
-  v10 = a3;
-  v6 = a4;
+  valueCopy = value;
+  argumentCopy = argument;
   arguments = self->_arguments;
   if (!arguments)
   {
@@ -164,7 +164,7 @@ LABEL_11:
     arguments = self->_arguments;
   }
 
-  [(NSDictionary *)arguments setObject:v10 forKey:v6];
+  [(NSDictionary *)arguments setObject:valueCopy forKey:argumentCopy];
 }
 
 - (id)descriptionWithoutHeaderFields
@@ -191,22 +191,22 @@ LABEL_11:
   return v7;
 }
 
-- (SBKRequest)initWithRequestURL:(id)a3
+- (SBKRequest)initWithRequestURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = SBKRequest;
   v6 = [(SBKRequest *)&v15 init];
   if (v6)
   {
-    v7 = [v5 absoluteString];
-    v8 = [v7 lastPathComponent];
+    absoluteString = [lCopy absoluteString];
+    lastPathComponent = [absoluteString lastPathComponent];
     action = v6->_action;
-    v6->_action = v8;
+    v6->_action = lastPathComponent;
 
-    objc_storeStrong(&v6->_requestURL, a3);
-    v10 = [(SBKRequest *)v6 _defaultHeaderFields];
-    v11 = [v10 mutableCopy];
+    objc_storeStrong(&v6->_requestURL, l);
+    _defaultHeaderFields = [(SBKRequest *)v6 _defaultHeaderFields];
+    v11 = [_defaultHeaderFields mutableCopy];
     headers = v6->_headers;
     v6->_headers = v11;
 
@@ -220,15 +220,15 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_contentTypeStringForBodyContentType:(int64_t)a3
++ (id)_contentTypeStringForBodyContentType:(int64_t)type
 {
   v3 = @"text/plain; charset=UTF-8";
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = @"text/xml; charset=UTF-8";
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     return @"application/x-plist";
   }
@@ -239,9 +239,9 @@ LABEL_11:
   }
 }
 
-+ (id)_contentEncodingTypeStringForBodyContentEncodingType:(int64_t)a3
++ (id)_contentEncodingTypeStringForBodyContentEncodingType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"gzip";
   }
@@ -252,9 +252,9 @@ LABEL_11:
   }
 }
 
-+ (id)_methodStringForMethod:(int64_t)a3
++ (id)_methodStringForMethod:(int64_t)method
 {
-  if (a3 == 1)
+  if (method == 1)
   {
     return @"POST";
   }
@@ -267,16 +267,16 @@ LABEL_11:
 
 + (int64_t)bodyContentEncodingType
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"SBKRequestBodyContentType-EncodeGzip"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"SBKRequestBodyContentType-EncodeGzip"];
 
   return v3;
 }
 
 + (int64_t)bodyContentType
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"SBKRequestBodyContentType-TextXML"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"SBKRequestBodyContentType-TextXML"];
 
   if (v3)
   {
@@ -289,16 +289,16 @@ LABEL_11:
   }
 }
 
-+ (id)requestWithRequestURL:(id)a3
++ (id)requestWithRequestURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_opt_class();
   if (v4 == objc_opt_class())
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"subclass must implement"];
   }
 
-  v5 = [objc_alloc(objc_opt_class()) initWithRequestURL:v3];
+  v5 = [objc_alloc(objc_opt_class()) initWithRequestURL:lCopy];
 
   return v5;
 }

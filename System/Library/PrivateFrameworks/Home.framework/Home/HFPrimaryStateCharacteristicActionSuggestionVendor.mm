@@ -1,58 +1,58 @@
 @interface HFPrimaryStateCharacteristicActionSuggestionVendor
-- (HFPrimaryStateCharacteristicActionSuggestionVendor)initWithCharacteristicType:(id)a3 normalStateValue:(id)a4 bucketingPolicy:(unint64_t)a5;
-- (id)_bucketingValueForAction:(id)a3;
-- (id)suggestedActionForCharacteristic:(id)a3 candidateActions:(id)a4;
+- (HFPrimaryStateCharacteristicActionSuggestionVendor)initWithCharacteristicType:(id)type normalStateValue:(id)value bucketingPolicy:(unint64_t)policy;
+- (id)_bucketingValueForAction:(id)action;
+- (id)suggestedActionForCharacteristic:(id)characteristic candidateActions:(id)actions;
 @end
 
 @implementation HFPrimaryStateCharacteristicActionSuggestionVendor
 
-- (HFPrimaryStateCharacteristicActionSuggestionVendor)initWithCharacteristicType:(id)a3 normalStateValue:(id)a4 bucketingPolicy:(unint64_t)a5
+- (HFPrimaryStateCharacteristicActionSuggestionVendor)initWithCharacteristicType:(id)type normalStateValue:(id)value bucketingPolicy:(unint64_t)policy
 {
-  v9 = a3;
-  v10 = a4;
+  typeCopy = type;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = HFPrimaryStateCharacteristicActionSuggestionVendor;
   v11 = [(HFPrimaryStateCharacteristicActionSuggestionVendor *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_characteristicType, a3);
-    objc_storeStrong(&v12->_normalStateValue, a4);
-    v12->_bucketingPolicy = a5;
+    objc_storeStrong(&v11->_characteristicType, type);
+    objc_storeStrong(&v12->_normalStateValue, value);
+    v12->_bucketingPolicy = policy;
   }
 
   return v12;
 }
 
-- (id)suggestedActionForCharacteristic:(id)a3 candidateActions:(id)a4
+- (id)suggestedActionForCharacteristic:(id)characteristic candidateActions:(id)actions
 {
-  v6 = a3;
-  v7 = a4;
+  characteristicCopy = characteristic;
+  actionsCopy = actions;
   v8 = objc_alloc(MEMORY[0x277CCA940]);
-  v9 = [v7 allObjects];
+  allObjects = [actionsCopy allObjects];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __104__HFPrimaryStateCharacteristicActionSuggestionVendor_suggestedActionForCharacteristic_candidateActions___block_invoke;
   v39[3] = &unk_277DFF380;
   v39[4] = self;
-  v10 = [v9 na_map:v39];
+  v10 = [allObjects na_map:v39];
   v11 = [v8 initWithArray:v10];
 
-  v12 = [v11 allObjects];
+  allObjects2 = [v11 allObjects];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __104__HFPrimaryStateCharacteristicActionSuggestionVendor_suggestedActionForCharacteristic_candidateActions___block_invoke_2;
   v37[3] = &unk_277DF3EC0;
   v13 = v11;
   v38 = v13;
-  v14 = [v12 sortedArrayUsingComparator:v37];
+  v14 = [allObjects2 sortedArrayUsingComparator:v37];
 
-  v15 = [v14 firstObject];
+  firstObject = [v14 firstObject];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __104__HFPrimaryStateCharacteristicActionSuggestionVendor_suggestedActionForCharacteristic_candidateActions___block_invoke_3;
   v33[3] = &unk_277DFF3A8;
-  v16 = v15;
+  v16 = firstObject;
   v34 = v16;
   v17 = v13;
   v35 = v17;
@@ -66,8 +66,8 @@
     v30[3] = &unk_277DFF3D0;
     v19 = v16;
     v31 = v19;
-    v32 = self;
-    v20 = [v7 na_filter:v30];
+    selfCopy = self;
+    v20 = [actionsCopy na_filter:v30];
     if ([v20 count])
     {
       v25[0] = MEMORY[0x277D85DD0];
@@ -76,12 +76,12 @@
       v25[3] = &unk_277DFF3F8;
       v21 = v19;
       v26 = v21;
-      v27 = self;
-      v28 = v6;
+      selfCopy2 = self;
+      v28 = characteristicCopy;
       v29 = v20;
       v22 = __104__HFPrimaryStateCharacteristicActionSuggestionVendor_suggestedActionForCharacteristic_candidateActions___block_invoke_5(v25);
-      v23 = [(HFPrimaryStateCharacteristicActionSuggestionVendor *)self normalStateValue];
-      [v22 setIsMutuallyExclusiveAction:{objc_msgSend(v21, "isEqual:", v23)}];
+      normalStateValue = [(HFPrimaryStateCharacteristicActionSuggestionVendor *)self normalStateValue];
+      [v22 setIsMutuallyExclusiveAction:{objc_msgSend(v21, "isEqual:", normalStateValue)}];
     }
 
     else
@@ -163,32 +163,32 @@ HFCustomCharacteristicActionSuggestionResult *__104__HFPrimaryStateCharacteristi
   return v4;
 }
 
-- (id)_bucketingValueForAction:(id)a3
+- (id)_bucketingValueForAction:(id)action
 {
-  v5 = a3;
-  v6 = [(HFPrimaryStateCharacteristicActionSuggestionVendor *)self bucketingPolicy];
-  if (v6 == 1)
+  actionCopy = action;
+  bucketingPolicy = [(HFPrimaryStateCharacteristicActionSuggestionVendor *)self bucketingPolicy];
+  if (bucketingPolicy == 1)
   {
-    v7 = [v5 targetValue];
-    v8 = [(HFPrimaryStateCharacteristicActionSuggestionVendor *)self normalStateValue];
-    if ([v7 isEqual:v8])
+    targetValue = [actionCopy targetValue];
+    normalStateValue = [(HFPrimaryStateCharacteristicActionSuggestionVendor *)self normalStateValue];
+    if ([targetValue isEqual:normalStateValue])
     {
-      [v5 targetValue];
+      [actionCopy targetValue];
     }
 
     else
     {
       [MEMORY[0x277CBEB68] null];
     }
-    v3 = ;
+    targetValue2 = ;
   }
 
-  else if (!v6)
+  else if (!bucketingPolicy)
   {
-    v3 = [v5 targetValue];
+    targetValue2 = [actionCopy targetValue];
   }
 
-  return v3;
+  return targetValue2;
 }
 
 @end

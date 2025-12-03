@@ -1,22 +1,22 @@
 @interface TSDMoviePosterImageGenerator
-- (CGImage)copyCGImageAtTime:(id *)a3 error:(id *)a4;
+- (CGImage)copyCGImageAtTime:(id *)time error:(id *)error;
 - (CGSize)maximumSize;
-- (TSDMoviePosterImageGenerator)initWithAsset:(id)a3;
-- (void)generateCGImageAsynchronouslyForTime:(id *)a3 completionHandler:(id)a4;
+- (TSDMoviePosterImageGenerator)initWithAsset:(id)asset;
+- (void)generateCGImageAsynchronouslyForTime:(id *)time completionHandler:(id)handler;
 @end
 
 @implementation TSDMoviePosterImageGenerator
 
-- (TSDMoviePosterImageGenerator)initWithAsset:(id)a3
+- (TSDMoviePosterImageGenerator)initWithAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v21.receiver = self;
   v21.super_class = TSDMoviePosterImageGenerator;
   v5 = [(TSDMoviePosterImageGenerator *)&v21 init];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CE6408]);
-    v8 = objc_msgSend_initWithAsset_(v6, v7, v4);
+    v8 = objc_msgSend_initWithAsset_(v6, v7, assetCopy);
     v9 = *(v5 + 1);
     *(v5 + 1) = v8;
 
@@ -38,7 +38,7 @@
   return v5;
 }
 
-- (CGImage)copyCGImageAtTime:(id *)a3 error:(id *)a4
+- (CGImage)copyCGImageAtTime:(id *)time error:(id *)error
 {
   assetImageGenerator = self->_assetImageGenerator;
   if (!assetImageGenerator)
@@ -52,17 +52,17 @@
     assetImageGenerator = self->_assetImageGenerator;
   }
 
-  objc_msgSend_setMaximumSize_(assetImageGenerator, a2, a3, self->_maximumSize.width, self->_maximumSize.height);
+  objc_msgSend_setMaximumSize_(assetImageGenerator, a2, time, self->_maximumSize.width, self->_maximumSize.height);
   v15 = self->_assetImageGenerator;
-  v18 = *&a3->var0;
-  var3 = a3->var3;
-  return objc_msgSend_copyCGImageAtTime_actualTime_error_(v15, v16, &v18, 0, a4);
+  v18 = *&time->var0;
+  var3 = time->var3;
+  return objc_msgSend_copyCGImageAtTime_actualTime_error_(v15, v16, &v18, 0, error);
 }
 
-- (void)generateCGImageAsynchronouslyForTime:(id *)a3 completionHandler:(id)a4
+- (void)generateCGImageAsynchronouslyForTime:(id *)time completionHandler:(id)handler
 {
-  v7 = a4;
-  if (v7)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v8 = dispatch_get_global_queue(25, 0);
     block[0] = MEMORY[0x277D85DD0];
@@ -70,9 +70,9 @@
     block[2] = sub_27671CCB4;
     block[3] = &unk_27A6CD578;
     block[4] = self;
-    v18 = *&a3->var0;
-    var3 = a3->var3;
-    v17 = v7;
+    v18 = *&time->var0;
+    var3 = time->var3;
+    v17 = handlerCopy;
     dispatch_async(v8, block);
   }
 

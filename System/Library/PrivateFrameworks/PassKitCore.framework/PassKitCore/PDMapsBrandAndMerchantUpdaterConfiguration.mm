@@ -1,23 +1,23 @@
 @interface PDMapsBrandAndMerchantUpdaterConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CLLocationCoordinate2D)coordinate;
-- (PDMapsBrandAndMerchantUpdaterConfiguration)initWithMUID:(unint64_t)a3 resultProviderID:(int)a4 coordinate:(CLLocationCoordinate2D)a5;
+- (PDMapsBrandAndMerchantUpdaterConfiguration)initWithMUID:(unint64_t)d resultProviderID:(int)iD coordinate:(CLLocationCoordinate2D)coordinate;
 - (id)description;
 @end
 
 @implementation PDMapsBrandAndMerchantUpdaterConfiguration
 
-- (PDMapsBrandAndMerchantUpdaterConfiguration)initWithMUID:(unint64_t)a3 resultProviderID:(int)a4 coordinate:(CLLocationCoordinate2D)a5
+- (PDMapsBrandAndMerchantUpdaterConfiguration)initWithMUID:(unint64_t)d resultProviderID:(int)iD coordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a5.longitude;
-  latitude = a5.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v10.receiver = self;
   v10.super_class = PDMapsBrandAndMerchantUpdaterConfiguration;
   result = [(PDMapsBrandAndMerchantUpdaterConfiguration *)&v10 init];
   if (result)
   {
-    result->_muid = a3;
-    result->_resultProviderID = a4;
+    result->_muid = d;
+    result->_resultProviderID = iD;
     result->_coordinate.latitude = latitude;
     result->_coordinate.longitude = longitude;
   }
@@ -25,16 +25,16 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(PDMapsBrandAndMerchantUpdaterConfiguration *)self isEqualToConfiguration:v5];
   }

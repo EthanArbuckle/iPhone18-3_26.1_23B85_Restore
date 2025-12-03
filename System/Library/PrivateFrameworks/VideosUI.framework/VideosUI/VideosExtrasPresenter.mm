@@ -1,117 +1,117 @@
 @interface VideosExtrasPresenter
 - (CGRect)extrasMenuBarFrame;
-- (VideosExtrasPresenter)initWithExtrasContext:(id)a3 extrasMenuBarFrame:(CGRect)a4;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (void)dismissExtrasAnimated:(BOOL)a3 completion:(id)a4;
-- (void)presentExtrasWith:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (VideosExtrasPresenter)initWithExtrasContext:(id)context extrasMenuBarFrame:(CGRect)frame;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (void)dismissExtrasAnimated:(BOOL)animated completion:(id)completion;
+- (void)presentExtrasWith:(id)with animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation VideosExtrasPresenter
 
-- (VideosExtrasPresenter)initWithExtrasContext:(id)a3 extrasMenuBarFrame:(CGRect)a4
+- (VideosExtrasPresenter)initWithExtrasContext:(id)context extrasMenuBarFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = VideosExtrasPresenter;
   v11 = [(VideosExtrasPresenter *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_extrasContext, a3);
+    objc_storeStrong(&v11->_extrasContext, context);
     v12->_extrasMenuBarFrame.origin.x = x;
     v12->_extrasMenuBarFrame.origin.y = y;
     v12->_extrasMenuBarFrame.size.width = width;
     v12->_extrasMenuBarFrame.size.height = height;
-    v13 = [v10 extrasRootViewController];
-    [v13 setModalPresentationStyle:4];
+    extrasRootViewController = [contextCopy extrasRootViewController];
+    [extrasRootViewController setModalPresentationStyle:4];
 
-    v14 = [v10 extrasRootViewController];
-    [v14 setTransitioningDelegate:v12];
+    extrasRootViewController2 = [contextCopy extrasRootViewController];
+    [extrasRootViewController2 setTransitioningDelegate:v12];
   }
 
   return v12;
 }
 
-- (void)presentExtrasWith:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentExtrasWith:(id)with animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v15 = a3;
-  v8 = a5;
-  if (v15)
+  animatedCopy = animated;
+  withCopy = with;
+  completionCopy = completion;
+  if (withCopy)
   {
-    v9 = [MEMORY[0x1E69DC938] currentDevice];
-    v10 = [v9 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (!v10)
+    if (!userInterfaceIdiom)
     {
-      v11 = [(VideosExtrasPresenter *)self extrasContext];
-      v12 = [v11 extrasRootViewController];
-      [v12 _setIgnoreAppSupportedOrientations:1];
+      extrasContext = [(VideosExtrasPresenter *)self extrasContext];
+      extrasRootViewController = [extrasContext extrasRootViewController];
+      [extrasRootViewController _setIgnoreAppSupportedOrientations:1];
     }
 
-    v13 = [(VideosExtrasPresenter *)self extrasContext];
-    v14 = [v13 extrasRootViewController];
-    [v15 presentViewController:v14 animated:v6 completion:v8];
+    extrasContext2 = [(VideosExtrasPresenter *)self extrasContext];
+    extrasRootViewController2 = [extrasContext2 extrasRootViewController];
+    [withCopy presentViewController:extrasRootViewController2 animated:animatedCopy completion:completionCopy];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)dismissExtrasAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissExtrasAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v12 = a4;
-  v6 = [(VideosExtrasPresenter *)self extrasContext];
-  v7 = [v6 extrasRootViewController];
-  v8 = [v7 presentingViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  extrasContext = [(VideosExtrasPresenter *)self extrasContext];
+  extrasRootViewController = [extrasContext extrasRootViewController];
+  presentingViewController = [extrasRootViewController presentingViewController];
 
-  if (v8)
+  if (presentingViewController)
   {
-    v9 = [(VideosExtrasPresenter *)self extrasContext];
-    v10 = [v9 extrasRootViewController];
-    v11 = [v10 presentingViewController];
-    [v11 dismissViewControllerAnimated:v4 completion:v12];
+    extrasContext2 = [(VideosExtrasPresenter *)self extrasContext];
+    extrasRootViewController2 = [extrasContext2 extrasRootViewController];
+    presentingViewController2 = [extrasRootViewController2 presentingViewController];
+    [presentingViewController2 dismissViewControllerAnimated:animatedCopy completion:completionCopy];
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
-    v12[2]();
+    completionCopy[2]();
   }
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   v5 = [[VideosTransitionFadeAnimator alloc] initWithTransitionType:0 andDuration:0.3];
 
   return v5;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   v3 = [[VideosTransitionFadeAnimator alloc] initWithTransitionType:1 andDuration:0.3];
 
   return v3;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v7 = a4;
-  v8 = a3;
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
   v9 = [VideosExtrasPresentationController alloc];
-  v10 = [(VideosExtrasPresenter *)self extrasContext];
-  v11 = [v10 extrasRootViewController];
-  v12 = [v11 extrasMenuBarView];
+  extrasContext = [(VideosExtrasPresenter *)self extrasContext];
+  extrasRootViewController = [extrasContext extrasRootViewController];
+  extrasMenuBarView = [extrasRootViewController extrasMenuBarView];
   [(VideosExtrasPresenter *)self extrasMenuBarFrame];
-  v13 = [(VideosExtrasPresentationController *)v9 initWithPresentedViewController:v8 presentingViewController:v7 extrasMenuBarView:v12 extrasmenuBarFrame:?];
+  v13 = [(VideosExtrasPresentationController *)v9 initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy extrasMenuBarView:extrasMenuBarView extrasmenuBarFrame:?];
 
   return v13;
 }

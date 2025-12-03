@@ -1,6 +1,6 @@
 @interface HMIFaceQualityEntropyOfLaplacian
 - (HMIFaceQualityEntropyOfLaplacian)init;
-- (float)computeJunkScoreForPixelBuffer:(__CVBuffer *)a3;
+- (float)computeJunkScoreForPixelBuffer:(__CVBuffer *)buffer;
 - (id).cxx_construct;
 @end
 
@@ -26,24 +26,24 @@
   return v3;
 }
 
-- (float)computeJunkScoreForPixelBuffer:(__CVBuffer *)a3
+- (float)computeJunkScoreForPixelBuffer:(__CVBuffer *)buffer
 {
-  Size = HMICVPixelBufferGetSize(a3);
+  Size = HMICVPixelBufferGetSize(buffer);
   v7 = v6;
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
+  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
   v9 = Size;
   v10 = malloc_type_malloc(3 * Size * v7, 0xDDD15EACuLL);
   v70.data = BaseAddressOfPlane;
   v70.height = v7;
   v70.width = Size;
-  v70.rowBytes = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
+  v70.rowBytes = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
   v69.data = v10;
   v69.height = v7;
   v69.width = Size;
   v69.rowBytes = 3 * Size;
   vImageConvert_RGBA8888toRGB888(&v70, &v69, 0);
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
   v58 = v7;
   v59 = Size;
   v60 = v10;

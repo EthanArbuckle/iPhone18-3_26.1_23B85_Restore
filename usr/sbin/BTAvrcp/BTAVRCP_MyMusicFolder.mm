@@ -1,23 +1,23 @@
 @interface BTAVRCP_MyMusicFolder
-- (BTAVRCP_MyMusicFolder)initWithName:(id)a3 uid:(unint64_t)a4;
-- (id)folderNameForUid:(unint64_t)a3;
-- (id)replyAttributesForUid:(unint64_t)a3 attributeIDs:(id)a4;
-- (id)replyItemAtIndex:(unint64_t)a3 attributeIDs:(id)a4;
+- (BTAVRCP_MyMusicFolder)initWithName:(id)name uid:(unint64_t)uid;
+- (id)folderNameForUid:(unint64_t)uid;
+- (id)replyAttributesForUid:(unint64_t)uid attributeIDs:(id)ds;
+- (id)replyItemAtIndex:(unint64_t)index attributeIDs:(id)ds;
 - (unint64_t)childrenCount;
-- (unsigned)createFolderWithUid:(unint64_t)a3 folder:(id *)a4;
-- (unsigned)folderTypeForUid:(unint64_t)a3;
-- (unsigned)playItemWithUid:(unint64_t)a3;
+- (unsigned)createFolderWithUid:(unint64_t)uid folder:(id *)folder;
+- (unsigned)folderTypeForUid:(unint64_t)uid;
+- (unsigned)playItemWithUid:(unint64_t)uid;
 - (void)dealloc;
 - (void)refreshActiveCategories;
 @end
 
 @implementation BTAVRCP_MyMusicFolder
 
-- (BTAVRCP_MyMusicFolder)initWithName:(id)a3 uid:(unint64_t)a4
+- (BTAVRCP_MyMusicFolder)initWithName:(id)name uid:(unint64_t)uid
 {
   v8.receiver = self;
   v8.super_class = BTAVRCP_MyMusicFolder;
-  v4 = [(BTAVRCP_VFSFolder *)&v8 initWithName:a3 uid:a4];
+  v4 = [(BTAVRCP_VFSFolder *)&v8 initWithName:name uid:uid];
   if (v4)
   {
     v5 = +[NSNotificationCenter defaultCenter];
@@ -53,17 +53,17 @@
       {
         case 4:
           v4 = +[MPMediaLibrary defaultMediaLibrary];
-          v5 = [v4 hasGenres];
+          hasGenres = [v4 hasGenres];
           break;
         case 5:
           v4 = +[MPMediaLibrary defaultMediaLibrary];
-          v5 = [v4 hasComposers];
+          hasGenres = [v4 hasComposers];
           break;
         case 6:
           v6 = +[MPMediaLibrary defaultMediaLibrary];
-          v7 = [v6 hasCompilations];
+          hasCompilations = [v6 hasCompilations];
 
-          if ((v7 & 1) == 0)
+          if ((hasCompilations & 1) == 0)
           {
             goto LABEL_20;
           }
@@ -78,7 +78,7 @@ LABEL_18:
       }
 
 LABEL_17:
-      v10 = v5;
+      v10 = hasGenres;
 
       if ((v10 & 1) == 0)
       {
@@ -93,7 +93,7 @@ LABEL_17:
       if (i == 2)
       {
         v4 = +[MPMediaLibrary defaultMediaLibrary];
-        v5 = [v4 hasAlbums];
+        hasGenres = [v4 hasAlbums];
       }
 
       else
@@ -104,16 +104,16 @@ LABEL_17:
         }
 
         v4 = +[MPMediaLibrary defaultMediaLibrary];
-        v5 = [v4 hasSongs];
+        hasGenres = [v4 hasSongs];
       }
 
       goto LABEL_17;
     }
 
     v8 = +[MPMediaLibrary defaultMediaLibrary];
-    v9 = [v8 hasArtists];
+    hasArtists = [v8 hasArtists];
 
-    if (v9)
+    if (hasArtists)
     {
       goto LABEL_18;
     }
@@ -123,14 +123,14 @@ LABEL_20:
   [(BTAVRCP_MyMusicFolder *)self setActiveCategories:v12];
 }
 
-- (id)folderNameForUid:(unint64_t)a3
+- (id)folderNameForUid:(unint64_t)uid
 {
   v4 = +[NSBundle mobileBluetoothBundle];
   v5 = v4;
   v6 = 0;
-  if (a3 > 3)
+  if (uid > 3)
   {
-    switch(a3)
+    switch(uid)
     {
       case 4uLL:
         v7 = @"GENRES";
@@ -151,7 +151,7 @@ LABEL_20:
 
   else
   {
-    switch(a3)
+    switch(uid)
     {
       case 1uLL:
         v7 = @"ARTISTS";
@@ -176,10 +176,10 @@ LABEL_15:
   return v6;
 }
 
-- (unsigned)folderTypeForUid:(unint64_t)a3
+- (unsigned)folderTypeForUid:(unint64_t)uid
 {
-  v3 = 0x2030401020300uLL >> (8 * a3);
-  if (a3 >= 7)
+  v3 = 0x2030401020300uLL >> (8 * uid);
+  if (uid >= 7)
   {
     LOBYTE(v3) = 0;
   }
@@ -189,17 +189,17 @@ LABEL_15:
 
 - (unint64_t)childrenCount
 {
-  v2 = [(BTAVRCP_MyMusicFolder *)self activeCategories];
-  v3 = [v2 count];
+  activeCategories = [(BTAVRCP_MyMusicFolder *)self activeCategories];
+  v3 = [activeCategories count];
 
   return v3;
 }
 
-- (unsigned)createFolderWithUid:(unint64_t)a3 folder:(id *)a4
+- (unsigned)createFolderWithUid:(unint64_t)uid folder:(id *)folder
 {
-  v7 = [(BTAVRCP_MyMusicFolder *)self activeCategories];
-  v8 = [NSNumber numberWithUnsignedLongLong:a3];
-  v9 = [v7 containsObject:v8];
+  activeCategories = [(BTAVRCP_MyMusicFolder *)self activeCategories];
+  v8 = [NSNumber numberWithUnsignedLongLong:uid];
+  v9 = [activeCategories containsObject:v8];
 
   if (!v9)
   {
@@ -207,9 +207,9 @@ LABEL_15:
   }
 
   result = 4;
-  if (a3 <= 3)
+  if (uid <= 3)
   {
-    switch(a3)
+    switch(uid)
     {
       case 1uLL:
         v19 = [BTAVRCP_ArtistsFolder alloc];
@@ -239,7 +239,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (a3 == 4)
+  if (uid == 4)
   {
     v20 = [BTAVRCP_GenresFolder alloc];
     v12 = [(BTAVRCP_MyMusicFolder *)self folderNameForUid:4];
@@ -247,11 +247,11 @@ LABEL_15:
     v14 = v12;
     v15 = 4;
 LABEL_16:
-    *a4 = [v13 initWithName:v14 uid:v15];
+    *folder = [v13 initWithName:v14 uid:v15];
     goto LABEL_17;
   }
 
-  if (a3 == 5)
+  if (uid == 5)
   {
     v22 = [BTAVRCP_ComposersFolder alloc];
     v12 = [(BTAVRCP_MyMusicFolder *)self folderNameForUid:5];
@@ -261,16 +261,16 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (a3 != 6)
+  if (uid != 6)
   {
     return result;
   }
 
   v16 = [BTAVRCP_AlbumsFolder alloc];
   v17 = [(BTAVRCP_MyMusicFolder *)self folderNameForUid:6];
-  *a4 = [(BTAVRCP_AlbumsFolder *)v16 initWithName:v17 uid:6];
+  *folder = [(BTAVRCP_AlbumsFolder *)v16 initWithName:v17 uid:6];
 
-  v18 = *a4;
+  v18 = *folder;
   v12 = [MPMediaPropertyPredicate predicateWithValue:&__kCFBooleanTrue forProperty:MPMediaItemPropertyIsCompilation];
   [v18 storePredicate:v12];
 LABEL_17:
@@ -278,35 +278,35 @@ LABEL_17:
   return 4;
 }
 
-- (id)replyItemAtIndex:(unint64_t)a3 attributeIDs:(id)a4
+- (id)replyItemAtIndex:(unint64_t)index attributeIDs:(id)ds
 {
-  v6 = [(BTAVRCP_MyMusicFolder *)self activeCategories:a3];
+  v6 = [(BTAVRCP_MyMusicFolder *)self activeCategories:index];
   v7 = [v6 count];
 
-  if (v7 <= a3)
+  if (v7 <= index)
   {
     v14 = 0;
   }
 
   else
   {
-    v8 = [(BTAVRCP_MyMusicFolder *)self activeCategories];
-    v9 = [v8 objectAtIndexedSubscript:a3];
-    v10 = [v9 unsignedLongLongValue];
+    activeCategories = [(BTAVRCP_MyMusicFolder *)self activeCategories];
+    v9 = [activeCategories objectAtIndexedSubscript:index];
+    unsignedLongLongValue = [v9 unsignedLongLongValue];
 
-    v11 = [(BTAVRCP_MyMusicFolder *)self folderTypeForUid:v10];
-    v12 = [NSNumber numberWithUnsignedLongLong:v10];
-    v13 = [(BTAVRCP_MyMusicFolder *)self folderNameForUid:v10];
+    v11 = [(BTAVRCP_MyMusicFolder *)self folderTypeForUid:unsignedLongLongValue];
+    v12 = [NSNumber numberWithUnsignedLongLong:unsignedLongLongValue];
+    v13 = [(BTAVRCP_MyMusicFolder *)self folderNameForUid:unsignedLongLongValue];
     v14 = [(BTAVRCP_VFSFolder *)self replyFolderWithType:v11 uid:v12 name:v13];
   }
 
   return v14;
 }
 
-- (id)replyAttributesForUid:(unint64_t)a3 attributeIDs:(id)a4
+- (id)replyAttributesForUid:(unint64_t)uid attributeIDs:(id)ds
 {
-  v5 = [(BTAVRCP_MyMusicFolder *)self activeCategories:a3];
-  v6 = [NSNumber numberWithUnsignedLongLong:a3];
+  v5 = [(BTAVRCP_MyMusicFolder *)self activeCategories:uid];
+  v6 = [NSNumber numberWithUnsignedLongLong:uid];
   v7 = [v5 containsObject:v6];
 
   if (v7)
@@ -320,11 +320,11 @@ LABEL_17:
   }
 }
 
-- (unsigned)playItemWithUid:(unint64_t)a3
+- (unsigned)playItemWithUid:(unint64_t)uid
 {
-  v4 = [(BTAVRCP_MyMusicFolder *)self activeCategories];
-  v5 = [NSNumber numberWithUnsignedLongLong:a3];
-  v6 = [v4 containsObject:v5];
+  activeCategories = [(BTAVRCP_MyMusicFolder *)self activeCategories];
+  v5 = [NSNumber numberWithUnsignedLongLong:uid];
+  v6 = [activeCategories containsObject:v5];
 
   if (v6)
   {

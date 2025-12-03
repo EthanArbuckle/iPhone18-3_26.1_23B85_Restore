@@ -1,8 +1,8 @@
 @interface AMLRawSignalsDonation
 - (AMLRawSignalsConfiguration)rawSignalsConfiguration;
-- (id)donateRawSignals:(id)a3 metadata:(id)a4 completionBlock:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)setRawSignalsConfiguration:(id)a3;
+- (id)donateRawSignals:(id)signals metadata:(id)metadata completionBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
+- (void)setRawSignalsConfiguration:(id)configuration;
 @end
 
 @implementation AMLRawSignalsDonation
@@ -14,23 +14,23 @@
   return v2;
 }
 
-- (void)setRawSignalsConfiguration:(id)a3
+- (void)setRawSignalsConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  sub_21AF022E0(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_21AF022E0(configurationCopy);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AMLRawSignalsDonation.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AMLRawSignalsDonation.encode(with:)(coderCopy);
 }
 
-- (id)donateRawSignals:(id)a3 metadata:(id)a4 completionBlock:(id)a5
+- (id)donateRawSignals:(id)signals metadata:(id)metadata completionBlock:(id)block
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(block);
   if (v8)
   {
     *(swift_allocObject() + 16) = v8;
@@ -38,9 +38,9 @@
   }
 
   swift_unknownObjectRetain();
-  v9 = a4;
-  v10 = self;
-  v11 = sub_21AF02C44(a3);
+  metadataCopy = metadata;
+  selfCopy = self;
+  v11 = sub_21AF02C44(signals);
   sub_21AE9678C(v8);
   swift_unknownObjectRelease();
 

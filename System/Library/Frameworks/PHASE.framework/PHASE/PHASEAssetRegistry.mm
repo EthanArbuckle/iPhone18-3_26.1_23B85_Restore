@@ -1,59 +1,59 @@
 @interface PHASEAssetRegistry
-- (BOOL)addAssetInternal:(id)a3 stringPool:()unique_ptr<Phase:(std:(id *)a5 :default_delete<Phase::StringPool>>)a4 :StringPool outError:;
-- (BOOL)removeAssetInternal:(id)a3;
+- (BOOL)addAssetInternal:(id)internal stringPool:()unique_ptr<Phase:(std:(id *)phase :default_delete<Phase::StringPool>>)a4 :StringPool outError:;
+- (BOOL)removeAssetInternal:(id)internal;
 - (NSDictionary)globalMetaParameters;
 - (PHASEAsset)assetForIdentifier:(NSString *)identifier;
 - (PHASEAssetRegistry)init;
-- (PHASEAssetRegistry)initWithEngine:(id)a3;
+- (PHASEAssetRegistry)initWithEngine:(id)engine;
 - (PHASEGlobalMetaParameterAsset)registerGlobalMetaParameter:(PHASEMetaParameterDefinition *)metaParameterDefinition error:(NSError *)error;
 - (PHASESoundAsset)registerSoundAssetAtURL:(NSURL *)url identifier:(NSString *)identifier assetType:(PHASEAssetType)assetType channelLayout:(AVAudioChannelLayout *)channelLayout normalizationMode:(PHASENormalizationMode)normalizationMode error:(NSError *)error;
 - (PHASESoundAsset)registerSoundAssetWithData:(NSData *)data identifier:(NSString *)identifier format:(AVAudioFormat *)format normalizationMode:(PHASENormalizationMode)normalizationMode error:(NSError *)error;
 - (PHASESoundEventNodeAsset)registerSoundEventAssetWithRootNode:(PHASESoundEventNodeDefinition *)rootNode identifier:(NSString *)identifier error:(NSError *)error;
-- (const)getActionTree:(unint64_t)a3;
-- (const)getChannelMapping:(unint64_t)a3;
-- (const)getSoundAssetInfo:(unint64_t)a3;
+- (const)getActionTree:(unint64_t)tree;
+- (const)getChannelMapping:(unint64_t)mapping;
+- (const)getSoundAssetInfo:(unint64_t)info;
 - (id).cxx_construct;
-- (id)assetInfoString:(int64_t)a3;
-- (id)getAssetForUID:(id)a3;
-- (id)getGlobalMetaParameter:(unint64_t)a3;
+- (id)assetInfoString:(int64_t)string;
+- (id)getAssetForUID:(id)d;
+- (id)getGlobalMetaParameter:(unint64_t)parameter;
 - (id)getUniqueIdentifier;
-- (id)makeMetaParameterFromDefinition:(id)a3;
-- (id)mixerInformationForActionTreeWithIdentifier:(id)a3;
-- (id)registerActionTreeWithRootNode:(id)a3 uid:(id)a4 outError:(id *)a5;
-- (id)registerJSONDataBundleWithURL:(id)a3 assetBaseURL:(id)a4 identifier:(id)a5 error:(id *)a6;
-- (id)registerJSONDataBundleWithURL:(id)a3 assetBaseURL:(id)a4 uid:(id)a5 outError:(id *)a6;
-- (id)registerSoundAssetAtURL:(id)a3 identifier:(id)a4 assetType:(int64_t)a5 channelLayout:(id)a6 normalizationMode:(int64_t)a7 ownerTask:(unsigned int)a8 error:(id *)a9;
-- (id)registerSoundAssetAtURL:(id)a3 identifier:(id)a4 assetType:(int64_t)a5 channelLayout:(id)a6 normalizationMode:(int64_t)a7 targetLKFS:(id)a8 ownerTask:(unsigned int)a9 error:(id *)a10;
-- (id)registerSoundAssetWithAudioFileData:(id)a3 identifier:(id)a4 assetType:(int64_t)a5 fileTypeHint:(unsigned int)a6 channelLayout:(id)a7 error:(id *)a8;
-- (id)registerSoundAssetWithAudioFileData:(id)a3 identifier:(id)a4 assetType:(int64_t)a5 fileTypeHint:(unsigned int)a6 channelLayout:(id)a7 normalizationMode:(int64_t)a8 error:(id *)a9;
-- (id)registerSoundAssetWithAudioFileData:(id)a3 identifier:(id)a4 assetType:(int64_t)a5 fileTypeHint:(unsigned int)a6 channelLayout:(id)a7 normalizationMode:(int64_t)a8 ownerTask:(unsigned int)a9 error:(id *)a10;
-- (id)registerSoundAssetWithAudioFileData:(id)a3 identifier:(id)a4 assetType:(int64_t)a5 fileTypeHint:(unsigned int)a6 channelLayout:(id)a7 normalizationMode:(int64_t)a8 targetLKFS:(id)a9 ownerTask:(unsigned int)a10 error:(id *)a11;
-- (id)registerSoundAssetWithAudioFileData:(id)a3 uid:(id)a4 assetType:(int64_t)a5 fileTypeHint:(unsigned int)a6 channelLayout:(id)a7 referenceGainDBSPL:(double)a8 outError:(id *)a9;
-- (id)registerSoundAssetWithData:(id)a3 identifier:(id)a4 format:(id)a5 normalizationMode:(int64_t)a6 ownerTask:(unsigned int)a7 error:(id *)a8;
-- (id)registerSoundAssetWithData:(id)a3 identifier:(id)a4 format:(id)a5 normalizationMode:(int64_t)a6 targetLKFS:(id)a7 ownerTask:(unsigned int)a8 error:(id *)a9;
-- (id)registerSoundAssetWithData:(id)a3 uid:(id)a4 format:(id)a5 referenceGainDBSPL:(double)a6 outError:(id *)a7;
-- (id)registerSoundAssetWithURL:(id)a3 uid:(id)a4 assetType:(int64_t)a5 channelLayout:(id)a6 referenceGainDBSPL:(double)a7 outError:(id *)a8;
-- (id)registerSoundEventAssetWithRootNode:(id)a3 uid:(id)a4 error:(id *)a5;
+- (id)makeMetaParameterFromDefinition:(id)definition;
+- (id)mixerInformationForActionTreeWithIdentifier:(id)identifier;
+- (id)registerActionTreeWithRootNode:(id)node uid:(id)uid outError:(id *)error;
+- (id)registerJSONDataBundleWithURL:(id)l assetBaseURL:(id)rL identifier:(id)identifier error:(id *)error;
+- (id)registerJSONDataBundleWithURL:(id)l assetBaseURL:(id)rL uid:(id)uid outError:(id *)error;
+- (id)registerSoundAssetAtURL:(id)l identifier:(id)identifier assetType:(int64_t)type channelLayout:(id)layout normalizationMode:(int64_t)mode ownerTask:(unsigned int)task error:(id *)error;
+- (id)registerSoundAssetAtURL:(id)l identifier:(id)identifier assetType:(int64_t)type channelLayout:(id)layout normalizationMode:(int64_t)mode targetLKFS:(id)s ownerTask:(unsigned int)task error:(id *)self0;
+- (id)registerSoundAssetWithAudioFileData:(id)data identifier:(id)identifier assetType:(int64_t)type fileTypeHint:(unsigned int)hint channelLayout:(id)layout error:(id *)error;
+- (id)registerSoundAssetWithAudioFileData:(id)data identifier:(id)identifier assetType:(int64_t)type fileTypeHint:(unsigned int)hint channelLayout:(id)layout normalizationMode:(int64_t)mode error:(id *)error;
+- (id)registerSoundAssetWithAudioFileData:(id)data identifier:(id)identifier assetType:(int64_t)type fileTypeHint:(unsigned int)hint channelLayout:(id)layout normalizationMode:(int64_t)mode ownerTask:(unsigned int)task error:(id *)self0;
+- (id)registerSoundAssetWithAudioFileData:(id)data identifier:(id)identifier assetType:(int64_t)type fileTypeHint:(unsigned int)hint channelLayout:(id)layout normalizationMode:(int64_t)mode targetLKFS:(id)s ownerTask:(unsigned int)self0 error:(id *)self1;
+- (id)registerSoundAssetWithAudioFileData:(id)data uid:(id)uid assetType:(int64_t)type fileTypeHint:(unsigned int)hint channelLayout:(id)layout referenceGainDBSPL:(double)l outError:(id *)error;
+- (id)registerSoundAssetWithData:(id)data identifier:(id)identifier format:(id)format normalizationMode:(int64_t)mode ownerTask:(unsigned int)task error:(id *)error;
+- (id)registerSoundAssetWithData:(id)data identifier:(id)identifier format:(id)format normalizationMode:(int64_t)mode targetLKFS:(id)s ownerTask:(unsigned int)task error:(id *)error;
+- (id)registerSoundAssetWithData:(id)data uid:(id)uid format:(id)format referenceGainDBSPL:(double)l outError:(id *)error;
+- (id)registerSoundAssetWithURL:(id)l uid:(id)uid assetType:(int64_t)type channelLayout:(id)layout referenceGainDBSPL:(double)pL outError:(id *)error;
+- (id)registerSoundEventAssetWithRootNode:(id)node uid:(id)uid error:(id *)error;
 - (unint64_t)sizeInBytes;
-- (unique_ptr<Phase::Controller::SoundAssetInfo,)makeSoundAssetInfoWithURL:(id)a3 assetString:(const char *)a4 assetType:(int64_t)a5 channelLayout:(id)a6 normalizationMode:(int64_t)a7 targetLKFS:(double)a8 ownerTask:(unsigned int)a9 outError:(id *)a10;
-- (unique_ptr<Phase::StringPool,)makeStringPoolForSingleAsset:(id)a3 outError:(id *)a4;
-- (void)logAddAsset:(id)a3;
-- (void)logRemoveAsset:(id)a3;
+- (unique_ptr<Phase::Controller::SoundAssetInfo,)makeSoundAssetInfoWithURL:(id)l assetString:(const char *)string assetType:(int64_t)type channelLayout:(id)layout normalizationMode:(int64_t)mode targetLKFS:(double)s ownerTask:(unsigned int)task outError:(id *)self0;
+- (unique_ptr<Phase::StringPool,)makeStringPoolForSingleAsset:(id)asset outError:(id *)error;
+- (void)logAddAsset:(id)asset;
+- (void)logRemoveAsset:(id)asset;
 - (void)removeAll;
-- (void)setMetaParameter:(id)a3 value:(double)a4 withTimeInterval:(double)a5;
-- (void)setMetaParameter:(id)a3 value:(id)a4;
+- (void)setMetaParameter:(id)parameter value:(double)value withTimeInterval:(double)interval;
+- (void)setMetaParameter:(id)parameter value:(id)value;
 - (void)unregisterAssetWithIdentifier:(NSString *)identifier completion:(void *)handler;
-- (void)unregisterAssetWithIdentifier:(uint64_t)a1 completion:;
+- (void)unregisterAssetWithIdentifier:(uint64_t)identifier completion:;
 @end
 
 @implementation PHASEAssetRegistry
 
 - (NSDictionary)globalMetaParameters
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v2->_metaParameterDictionary];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:selfCopy->_metaParameterDictionary];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -84,16 +84,16 @@
   return v3;
 }
 
-- (PHASEAssetRegistry)initWithEngine:(id)a3
+- (PHASEAssetRegistry)initWithEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v10.receiver = self;
   v10.super_class = PHASEAssetRegistry;
   v5 = [(PHASEAssetRegistry *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_engine, v4);
+    objc_storeWeak(&v5->_engine, engineCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     metaParameterDictionary = v6->_metaParameterDictionary;
     v6->_metaParameterDictionary = v7;
@@ -102,37 +102,37 @@
   return v6;
 }
 
-- (id)registerJSONDataBundleWithURL:(id)a3 assetBaseURL:(id)a4 uid:(id)a5 outError:(id *)a6
+- (id)registerJSONDataBundleWithURL:(id)l assetBaseURL:(id)rL uid:(id)uid outError:(id *)error
 {
-  v6 = [(PHASEAssetRegistry *)self registerJSONDataBundleWithURL:a3 assetBaseURL:a4 identifier:a5 error:a6];
+  v6 = [(PHASEAssetRegistry *)self registerJSONDataBundleWithURL:l assetBaseURL:rL identifier:uid error:error];
 
   return v6;
 }
 
-- (id)registerJSONDataBundleWithURL:(id)a3 assetBaseURL:(id)a4 identifier:(id)a5 error:(id *)a6
+- (id)registerJSONDataBundleWithURL:(id)l assetBaseURL:(id)rL identifier:(id)identifier error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v17 = a4;
-  v10 = a5;
-  if (a6)
+  lCopy = l;
+  rLCopy = rL;
+  identifierCopy = identifier;
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_engine);
   if (WeakRetained && [WeakRetained implementation])
   {
-    if (!v10)
+    if (!identifierCopy)
     {
-      v10 = [(PHASEAssetRegistry *)self getUniqueIdentifier];
+      identifierCopy = [(PHASEAssetRegistry *)self getUniqueIdentifier];
     }
 
-    v16 = v10;
-    StringHashId = Phase::GetStringHashId(v10, v11);
-    v12 = self;
-    objc_sync_enter(v12);
-    v13 = std::__hash_table<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::__unordered_map_hasher<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::hash<PHASETapType>,std::equal_to<PHASETapType>,true>,std::__unordered_map_equal<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::equal_to<PHASETapType>,std::hash<PHASETapType>,true>,std::allocator<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>>>::find<PHASETapType>(&v12->_assetLookup.__table_.__bucket_list_.__ptr_, StringHashId);
+    v16 = identifierCopy;
+    StringHashId = Phase::GetStringHashId(identifierCopy, v11);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v13 = std::__hash_table<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::__unordered_map_hasher<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::hash<PHASETapType>,std::equal_to<PHASETapType>,true>,std::__unordered_map_equal<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::equal_to<PHASETapType>,std::hash<PHASETapType>,true>,std::allocator<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>>>::find<PHASETapType>(&selfCopy->_assetLookup.__table_.__bucket_list_.__ptr_, StringHashId);
     if (v13)
     {
       v14 = **Phase::Logger::GetInstance(v13);
@@ -143,27 +143,27 @@
         *&buf[12] = 1024;
         *&buf[14] = 548;
         *&buf[18] = 2080;
-        *&buf[20] = [(Phase *)v10 UTF8String];
+        *&buf[20] = [(Phase *)identifierCopy UTF8String];
         *&buf[28] = 2080;
-        *&buf[30] = [(Phase *)v10 UTF8String];
+        *&buf[30] = [(Phase *)identifierCopy UTF8String];
         _os_log_impl(&dword_23A302000, v14, OS_LOG_TYPE_ERROR, "%25s:%-5d Asset %s already exists. Not loading databundle %s", buf, 0x26u);
       }
 
-      if (a6)
+      if (error)
       {
-        *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346920804 userInfo:0];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346920804 userInfo:0];
       }
 
-      objc_sync_exit(v12);
+      objc_sync_exit(selfCopy);
     }
 
     else
     {
-      objc_sync_exit(v12);
+      objc_sync_exit(selfCopy);
 
       memset(buf, 0, 32);
       *&buf[32] = 1065353216;
-      Phase::MakeDataBundleFromJSONFile([(Phase *)v10 UTF8String], v18, a6, &v20);
+      Phase::MakeDataBundleFromJSONFile([(Phase *)identifierCopy UTF8String], lCopy, error, &v20);
       if (v20)
       {
         Phase::BuildStringPool();
@@ -176,36 +176,36 @@
 
   else
   {
-    v16 = v10;
-    if (a6)
+    v16 = identifierCopy;
+    if (error)
     {
-      *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346920802 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346920802 userInfo:0];
     }
   }
 
   return 0;
 }
 
-- (unique_ptr<Phase::Controller::SoundAssetInfo,)makeSoundAssetInfoWithURL:(id)a3 assetString:(const char *)a4 assetType:(int64_t)a5 channelLayout:(id)a6 normalizationMode:(int64_t)a7 targetLKFS:(double)a8 ownerTask:(unsigned int)a9 outError:(id *)a10
+- (unique_ptr<Phase::Controller::SoundAssetInfo,)makeSoundAssetInfoWithURL:(id)l assetString:(const char *)string assetType:(int64_t)type channelLayout:(id)layout normalizationMode:(int64_t)mode targetLKFS:(double)s ownerTask:(unsigned int)task outError:(id *)self0
 {
   v15 = v10;
-  v16 = a3;
-  v17 = a6;
-  if (a10)
+  lCopy = l;
+  layoutCopy = layout;
+  if (error)
   {
-    *a10 = 0;
+    *error = 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_engine);
   v19 = WeakRetained;
   if (WeakRetained && [WeakRetained implementation])
   {
-    if (a4)
+    if (string)
     {
-      v20 = *a4;
-      if (*a4)
+      v20 = *string;
+      if (*string)
       {
-        v21 = a4 + 1;
+        v21 = string + 1;
         v22 = 0xCBF29CE484222325;
         do
         {
@@ -218,25 +218,25 @@
       }
     }
 
-    if (a5 == 1)
+    if (type == 1)
     {
       operator new();
     }
 
-    if (!a5)
+    if (!type)
     {
       operator new();
     }
 
-    [MEMORY[0x277CBEAD8] raise:@"API Misuse" format:{@"Unhandled Asset Type: %lu", a5}];
+    [MEMORY[0x277CBEAD8] raise:@"API Misuse" format:{@"Unhandled Asset Type: %lu", type}];
     *v15 = 0;
   }
 
   else
   {
-    if (a10)
+    if (error)
     {
-      *a10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346920802 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346920802 userInfo:0];
     }
 
     *v15 = 0;
@@ -245,14 +245,14 @@
   return v24;
 }
 
-- (id)registerSoundAssetWithURL:(id)a3 uid:(id)a4 assetType:(int64_t)a5 channelLayout:(id)a6 referenceGainDBSPL:(double)a7 outError:(id *)a8
+- (id)registerSoundAssetWithURL:(id)l uid:(id)uid assetType:(int64_t)type channelLayout:(id)layout referenceGainDBSPL:(double)pL outError:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
+  lCopy = l;
+  uidCopy = uid;
+  layoutCopy = layout;
   v16 = [MEMORY[0x277CCABB0] numberWithDouble:-12.0];
   LODWORD(v19) = *MEMORY[0x277D85F48];
-  v17 = [(PHASEAssetRegistry *)self registerSoundAssetAtURL:v13 identifier:v14 assetType:a5 channelLayout:v15 normalizationMode:1 targetLKFS:v16 ownerTask:v19 error:a8];
+  v17 = [(PHASEAssetRegistry *)self registerSoundAssetAtURL:lCopy identifier:uidCopy assetType:type channelLayout:layoutCopy normalizationMode:1 targetLKFS:v16 ownerTask:v19 error:error];
 
   return v17;
 }
@@ -269,49 +269,49 @@
   return v18;
 }
 
-- (id)registerSoundAssetAtURL:(id)a3 identifier:(id)a4 assetType:(int64_t)a5 channelLayout:(id)a6 normalizationMode:(int64_t)a7 ownerTask:(unsigned int)a8 error:(id *)a9
+- (id)registerSoundAssetAtURL:(id)l identifier:(id)identifier assetType:(int64_t)type channelLayout:(id)layout normalizationMode:(int64_t)mode ownerTask:(unsigned int)task error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
+  lCopy = l;
+  identifierCopy = identifier;
+  layoutCopy = layout;
   v18 = [MEMORY[0x277CCABB0] numberWithDouble:-12.0];
-  LODWORD(v21) = a8;
-  v19 = [(PHASEAssetRegistry *)self registerSoundAssetAtURL:v15 identifier:v16 assetType:a5 channelLayout:v17 normalizationMode:a7 targetLKFS:v18 ownerTask:v21 error:a9];
+  LODWORD(v21) = task;
+  v19 = [(PHASEAssetRegistry *)self registerSoundAssetAtURL:lCopy identifier:identifierCopy assetType:type channelLayout:layoutCopy normalizationMode:mode targetLKFS:v18 ownerTask:v21 error:error];
 
   return v19;
 }
 
-- (id)registerSoundAssetAtURL:(id)a3 identifier:(id)a4 assetType:(int64_t)a5 channelLayout:(id)a6 normalizationMode:(int64_t)a7 targetLKFS:(id)a8 ownerTask:(unsigned int)a9 error:(id *)a10
+- (id)registerSoundAssetAtURL:(id)l identifier:(id)identifier assetType:(int64_t)type channelLayout:(id)layout normalizationMode:(int64_t)mode targetLKFS:(id)s ownerTask:(unsigned int)task error:(id *)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v34 = a6;
-  v19 = a8;
-  if (a10)
+  lCopy = l;
+  identifierCopy = identifier;
+  layoutCopy = layout;
+  sCopy = s;
+  if (error)
   {
-    *a10 = 0;
+    *error = 0;
   }
 
   v20 = objc_opt_class();
   v21 = NSStringFromClass(v20);
   v22 = NSStringFromSelector(a2);
-  [v19 doubleValue];
+  [sCopy doubleValue];
   v24 = PHASEGetPropertyBounded<double>(v21, v22, v23, -100.0, 0.0);
 
-  if (!v18)
+  if (!identifierCopy)
   {
-    v18 = [(PHASEAssetRegistry *)self getUniqueIdentifier];
+    identifierCopy = [(PHASEAssetRegistry *)self getUniqueIdentifier];
   }
 
-  -[PHASEAssetRegistry makeSoundAssetInfoWithURL:assetString:assetType:channelLayout:normalizationMode:targetLKFS:ownerTask:outError:](self, "makeSoundAssetInfoWithURL:assetString:assetType:channelLayout:normalizationMode:targetLKFS:ownerTask:outError:", v17, [v18 UTF8String], a5, v34, a7, a9, v24, a10);
+  -[PHASEAssetRegistry makeSoundAssetInfoWithURL:assetString:assetType:channelLayout:normalizationMode:targetLKFS:ownerTask:outError:](self, "makeSoundAssetInfoWithURL:assetString:assetType:channelLayout:normalizationMode:targetLKFS:ownerTask:outError:", lCopy, [identifierCopy UTF8String], type, layoutCopy, mode, task, v24, error);
   if (v38)
   {
-    [(PHASEAssetRegistry *)self makeStringPoolForSingleAsset:v18 outError:a10];
+    [(PHASEAssetRegistry *)self makeStringPoolForSingleAsset:identifierCopy outError:error];
     v25 = [PHASESoundAsset alloc];
     v26 = v38;
     v38 = 0;
     v36 = v26;
-    v27 = [(PHASESoundAsset *)v25 initWithURL:v17 uid:v18 assetType:a5 normalizationMode:a7 soundAssetInfo:&v36 assetRegistry:self weakStringPoolReference:v37];
+    v27 = [(PHASESoundAsset *)v25 initWithURL:lCopy uid:identifierCopy assetType:type normalizationMode:mode soundAssetInfo:&v36 assetRegistry:self weakStringPoolReference:v37];
     v28 = v36;
     v36 = 0;
     if (v28)
@@ -319,7 +319,7 @@
       (*(*v28 + 8))(v28);
     }
 
-    if (v27 && (v29 = v37, v37 = 0, v35 = v29, v30 = -[PHASEAssetRegistry addAssetInternal:stringPool:outError:](self, "addAssetInternal:stringPool:outError:", v27, &v35, a10), std::unique_ptr<Phase::StringPool>::~unique_ptr[abi:ne200100](&v35), v30))
+    if (v27 && (v29 = v37, v37 = 0, v35 = v29, v30 = -[PHASEAssetRegistry addAssetInternal:stringPool:outError:](self, "addAssetInternal:stringPool:outError:", v27, &v35, error), std::unique_ptr<Phase::StringPool>::~unique_ptr[abi:ne200100](&v35), v30))
     {
       v31 = v27;
     }
@@ -346,13 +346,13 @@
   return v31;
 }
 
-- (id)registerSoundAssetWithData:(id)a3 uid:(id)a4 format:(id)a5 referenceGainDBSPL:(double)a6 outError:(id *)a7
+- (id)registerSoundAssetWithData:(id)data uid:(id)uid format:(id)format referenceGainDBSPL:(double)l outError:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dataCopy = data;
+  uidCopy = uid;
+  formatCopy = format;
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:-12.0];
-  v15 = [(PHASEAssetRegistry *)self registerSoundAssetWithData:v11 identifier:v12 format:v13 normalizationMode:1 targetLKFS:v14 ownerTask:*MEMORY[0x277D85F48] error:a7];
+  v15 = [(PHASEAssetRegistry *)self registerSoundAssetWithData:dataCopy identifier:uidCopy format:formatCopy normalizationMode:1 targetLKFS:v14 ownerTask:*MEMORY[0x277D85F48] error:error];
 
   return v15;
 }
@@ -368,35 +368,35 @@
   return v16;
 }
 
-- (id)registerSoundAssetWithData:(id)a3 identifier:(id)a4 format:(id)a5 normalizationMode:(int64_t)a6 ownerTask:(unsigned int)a7 error:(id *)a8
+- (id)registerSoundAssetWithData:(id)data identifier:(id)identifier format:(id)format normalizationMode:(int64_t)mode ownerTask:(unsigned int)task error:(id *)error
 {
-  v9 = *&a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  v9 = *&task;
+  dataCopy = data;
+  identifierCopy = identifier;
+  formatCopy = format;
   v17 = [MEMORY[0x277CCABB0] numberWithDouble:-12.0];
-  v18 = [(PHASEAssetRegistry *)self registerSoundAssetWithData:v14 identifier:v15 format:v16 normalizationMode:a6 targetLKFS:v17 ownerTask:v9 error:a8];
+  v18 = [(PHASEAssetRegistry *)self registerSoundAssetWithData:dataCopy identifier:identifierCopy format:formatCopy normalizationMode:mode targetLKFS:v17 ownerTask:v9 error:error];
 
   return v18;
 }
 
-- (id)registerSoundAssetWithData:(id)a3 identifier:(id)a4 format:(id)a5 normalizationMode:(int64_t)a6 targetLKFS:(id)a7 ownerTask:(unsigned int)a8 error:(id *)a9
+- (id)registerSoundAssetWithData:(id)data identifier:(id)identifier format:(id)format normalizationMode:(int64_t)mode targetLKFS:(id)s ownerTask:(unsigned int)task error:(id *)error
 {
-  v25 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  if (a9)
+  dataCopy = data;
+  identifierCopy = identifier;
+  formatCopy = format;
+  sCopy = s;
+  if (error)
   {
-    *a9 = 0;
-    if (!v15)
+    *error = 0;
+    if (!formatCopy)
     {
-      *a9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346920803 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346920803 userInfo:0];
       goto LABEL_14;
     }
   }
 
-  else if (!v15)
+  else if (!formatCopy)
   {
     goto LABEL_14;
   }
@@ -405,24 +405,24 @@
   v18 = WeakRetained;
   if (WeakRetained && [WeakRetained implementation])
   {
-    if (!v14)
+    if (!identifierCopy)
     {
-      v14 = [(PHASEAssetRegistry *)self getUniqueIdentifier];
+      identifierCopy = [(PHASEAssetRegistry *)self getUniqueIdentifier];
     }
 
-    Phase::GetStringHashId(v14, v19);
+    Phase::GetStringHashId(identifierCopy, v19);
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
     v22 = NSStringFromSelector(a2);
-    [v16 doubleValue];
+    [sCopy doubleValue];
     PHASEGetPropertyBounded<double>(v21, v22, v23, -100.0, 0.0);
 
     operator new();
   }
 
-  if (a9)
+  if (error)
   {
-    *a9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346920802 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346920802 userInfo:0];
   }
 
 LABEL_14:
@@ -430,108 +430,108 @@ LABEL_14:
   return 0;
 }
 
-- (id)registerSoundAssetWithAudioFileData:(id)a3 identifier:(id)a4 assetType:(int64_t)a5 fileTypeHint:(unsigned int)a6 channelLayout:(id)a7 error:(id *)a8
+- (id)registerSoundAssetWithAudioFileData:(id)data identifier:(id)identifier assetType:(int64_t)type fileTypeHint:(unsigned int)hint channelLayout:(id)layout error:(id *)error
 {
-  v10 = *&a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
+  v10 = *&hint;
+  dataCopy = data;
+  identifierCopy = identifier;
+  layoutCopy = layout;
   v17 = [MEMORY[0x277CCABB0] numberWithDouble:-12.0];
   LODWORD(v20) = *MEMORY[0x277D85F48];
-  v18 = [(PHASEAssetRegistry *)self registerSoundAssetWithAudioFileData:v14 identifier:v15 assetType:a5 fileTypeHint:v10 channelLayout:v16 normalizationMode:0 targetLKFS:v17 ownerTask:v20 error:a8];
+  v18 = [(PHASEAssetRegistry *)self registerSoundAssetWithAudioFileData:dataCopy identifier:identifierCopy assetType:type fileTypeHint:v10 channelLayout:layoutCopy normalizationMode:0 targetLKFS:v17 ownerTask:v20 error:error];
 
   return v18;
 }
 
-- (id)registerSoundAssetWithAudioFileData:(id)a3 uid:(id)a4 assetType:(int64_t)a5 fileTypeHint:(unsigned int)a6 channelLayout:(id)a7 referenceGainDBSPL:(double)a8 outError:(id *)a9
+- (id)registerSoundAssetWithAudioFileData:(id)data uid:(id)uid assetType:(int64_t)type fileTypeHint:(unsigned int)hint channelLayout:(id)layout referenceGainDBSPL:(double)l outError:(id *)error
 {
-  v11 = *&a6;
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
+  v11 = *&hint;
+  dataCopy = data;
+  uidCopy = uid;
+  layoutCopy = layout;
   v18 = [MEMORY[0x277CCABB0] numberWithDouble:-12.0];
   LODWORD(v21) = *MEMORY[0x277D85F48];
-  v19 = [(PHASEAssetRegistry *)self registerSoundAssetWithAudioFileData:v15 identifier:v16 assetType:a5 fileTypeHint:v11 channelLayout:v17 normalizationMode:1 targetLKFS:v18 ownerTask:v21 error:a9];
+  v19 = [(PHASEAssetRegistry *)self registerSoundAssetWithAudioFileData:dataCopy identifier:uidCopy assetType:type fileTypeHint:v11 channelLayout:layoutCopy normalizationMode:1 targetLKFS:v18 ownerTask:v21 error:error];
 
   return v19;
 }
 
-- (id)registerSoundAssetWithAudioFileData:(id)a3 identifier:(id)a4 assetType:(int64_t)a5 fileTypeHint:(unsigned int)a6 channelLayout:(id)a7 normalizationMode:(int64_t)a8 error:(id *)a9
+- (id)registerSoundAssetWithAudioFileData:(id)data identifier:(id)identifier assetType:(int64_t)type fileTypeHint:(unsigned int)hint channelLayout:(id)layout normalizationMode:(int64_t)mode error:(id *)error
 {
-  v11 = *&a6;
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
+  v11 = *&hint;
+  dataCopy = data;
+  identifierCopy = identifier;
+  layoutCopy = layout;
   v18 = [MEMORY[0x277CCABB0] numberWithDouble:-12.0];
   LODWORD(v21) = *MEMORY[0x277D85F48];
-  v19 = [(PHASEAssetRegistry *)self registerSoundAssetWithAudioFileData:v15 identifier:v16 assetType:a5 fileTypeHint:v11 channelLayout:v17 normalizationMode:a8 targetLKFS:v18 ownerTask:v21 error:a9];
+  v19 = [(PHASEAssetRegistry *)self registerSoundAssetWithAudioFileData:dataCopy identifier:identifierCopy assetType:type fileTypeHint:v11 channelLayout:layoutCopy normalizationMode:mode targetLKFS:v18 ownerTask:v21 error:error];
 
   return v19;
 }
 
-- (id)registerSoundAssetWithAudioFileData:(id)a3 identifier:(id)a4 assetType:(int64_t)a5 fileTypeHint:(unsigned int)a6 channelLayout:(id)a7 normalizationMode:(int64_t)a8 ownerTask:(unsigned int)a9 error:(id *)a10
+- (id)registerSoundAssetWithAudioFileData:(id)data identifier:(id)identifier assetType:(int64_t)type fileTypeHint:(unsigned int)hint channelLayout:(id)layout normalizationMode:(int64_t)mode ownerTask:(unsigned int)task error:(id *)self0
 {
-  v12 = *&a6;
-  v16 = a3;
-  v17 = a4;
-  v18 = a7;
+  v12 = *&hint;
+  dataCopy = data;
+  identifierCopy = identifier;
+  layoutCopy = layout;
   v19 = [MEMORY[0x277CCABB0] numberWithDouble:-12.0];
-  LODWORD(v22) = a9;
-  v20 = [(PHASEAssetRegistry *)self registerSoundAssetWithAudioFileData:v16 identifier:v17 assetType:a5 fileTypeHint:v12 channelLayout:v18 normalizationMode:a8 targetLKFS:v19 ownerTask:v22 error:a10];
+  LODWORD(v22) = task;
+  v20 = [(PHASEAssetRegistry *)self registerSoundAssetWithAudioFileData:dataCopy identifier:identifierCopy assetType:type fileTypeHint:v12 channelLayout:layoutCopy normalizationMode:mode targetLKFS:v19 ownerTask:v22 error:error];
 
   return v20;
 }
 
-- (id)registerSoundAssetWithAudioFileData:(id)a3 identifier:(id)a4 assetType:(int64_t)a5 fileTypeHint:(unsigned int)a6 channelLayout:(id)a7 normalizationMode:(int64_t)a8 targetLKFS:(id)a9 ownerTask:(unsigned int)a10 error:(id *)a11
+- (id)registerSoundAssetWithAudioFileData:(id)data identifier:(id)identifier assetType:(int64_t)type fileTypeHint:(unsigned int)hint channelLayout:(id)layout normalizationMode:(int64_t)mode targetLKFS:(id)s ownerTask:(unsigned int)self0 error:(id *)self1
 {
   v37[6] = *MEMORY[0x277D85DE8];
-  v34 = a3;
-  v17 = a4;
-  v32 = a7;
-  v33 = a9;
-  if (a11)
+  dataCopy = data;
+  identifierCopy = identifier;
+  layoutCopy = layout;
+  sCopy = s;
+  if (error)
   {
-    *a11 = 0;
+    *error = 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_engine);
   v19 = WeakRetained;
   if (!WeakRetained || ![WeakRetained implementation])
   {
-    if (a11)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346920802 userInfo:0];
-      *a11 = v25 = 0;
+      *error = v25 = 0;
       goto LABEL_25;
     }
 
     goto LABEL_20;
   }
 
-  if (!v17)
+  if (!identifierCopy)
   {
-    v17 = [(PHASEAssetRegistry *)self getUniqueIdentifier];
+    identifierCopy = [(PHASEAssetRegistry *)self getUniqueIdentifier];
   }
 
-  Phase::GetStringHashId(v17, v20);
+  Phase::GetStringHashId(identifierCopy, v20);
   v21 = objc_opt_class();
   v22 = NSStringFromClass(v21);
   v23 = NSStringFromSelector(a2);
-  [v33 doubleValue];
+  [sCopy doubleValue];
   PHASEGetPropertyBounded<double>(v22, v23, v24, -100.0, 0.0);
 
-  if (!a5)
+  if (!type)
   {
     operator new();
   }
 
-  if (a5 == 1)
+  if (type == 1)
   {
     operator new();
   }
 
-  [MEMORY[0x277CBEAD8] raise:@"API Misuse" format:{@"Unhandled Asset Type: %lu", a5}];
-  [(PHASEAssetRegistry *)self makeStringPoolForSingleAsset:v17 outError:a11];
+  [MEMORY[0x277CBEAD8] raise:@"API Misuse" format:{@"Unhandled Asset Type: %lu", type}];
+  [(PHASEAssetRegistry *)self makeStringPoolForSingleAsset:identifierCopy outError:error];
   if (!v37[0])
   {
     std::unique_ptr<Phase::StringPool>::~unique_ptr[abi:ne200100](v37);
@@ -542,7 +542,7 @@ LABEL_20:
 
   v26 = [PHASESoundAsset alloc];
   v36[0] = 0;
-  v27 = [(PHASESoundAsset *)v26 initWithData:v34 uid:v17 normalizationMode:a8 soundAssetInfo:v36 assetRegistry:self weakStringPoolReference:v37[0]];
+  v27 = [(PHASESoundAsset *)v26 initWithData:dataCopy uid:identifierCopy normalizationMode:mode soundAssetInfo:v36 assetRegistry:self weakStringPoolReference:v37[0]];
   v28 = v36[0];
   v36[0] = 0;
   if (v28)
@@ -552,10 +552,10 @@ LABEL_20:
 
   if (!v27)
   {
-    if (a11)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346920806 userInfo:0];
-      *a11 = v25 = 0;
+      *error = v25 = 0;
       goto LABEL_24;
     }
 
@@ -567,7 +567,7 @@ LABEL_23:
   v29 = v37[0];
   v37[0] = 0;
   v35 = v29;
-  v30 = [(PHASEAssetRegistry *)self addAssetInternal:v27 stringPool:&v35 outError:a11];
+  v30 = [(PHASEAssetRegistry *)self addAssetInternal:v27 stringPool:&v35 outError:error];
   std::unique_ptr<Phase::StringPool>::~unique_ptr[abi:ne200100](&v35);
   if (!v30)
   {
@@ -583,22 +583,22 @@ LABEL_25:
   return v25;
 }
 
-- (id)makeMetaParameterFromDefinition:(id)a3
+- (id)makeMetaParameterFromDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = definitionCopy;
     v6 = [PHASENumberMetaParameter alloc];
-    v7 = [v5 identifier];
-    v8 = [v5 value];
-    [v8 doubleValue];
+    identifier = [v5 identifier];
+    value = [v5 value];
+    [value doubleValue];
     v10 = v9;
     [v5 minimum];
     v12 = v11;
     [v5 maximum];
-    v14 = [(PHASENumberMetaParameter *)v6 initWithUID:v7 value:self rangeMin:v10 rangeMax:v12 delegate:v13];
+    v14 = [(PHASENumberMetaParameter *)v6 initWithUID:identifier value:self rangeMin:v10 rangeMax:v12 delegate:v13];
 LABEL_5:
     v17 = v14;
 
@@ -608,11 +608,11 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = v4;
+    v15 = definitionCopy;
     v16 = [PHASEStringMetaParameter alloc];
-    v7 = [v15 identifier];
-    v8 = [v15 value];
-    v14 = [(PHASEStringMetaParameter *)v16 initWithUID:v7 value:v8 delegate:self];
+    identifier = [v15 identifier];
+    value = [v15 value];
+    v14 = [(PHASEStringMetaParameter *)v16 initWithUID:identifier value:value delegate:self];
     goto LABEL_5;
   }
 
@@ -630,13 +630,13 @@ LABEL_7:
     *error = 0;
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8 = [MEMORY[0x277CBEA60] arrayWithObject:v6];
-  v9 = [(NSMutableDictionary *)v7->_metaParameterDictionary allKeys];
-  v10 = [PHASEActionTreeBuilder getParamArray:v8 globalParamUIDs:v9 outError:error];
+  allKeys = [(NSMutableDictionary *)selfCopy->_metaParameterDictionary allKeys];
+  v10 = [PHASEActionTreeBuilder getParamArray:v8 globalParamUIDs:allKeys outError:error];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
   if (v10)
   {
     memset(v13, 0, sizeof(v13));
@@ -653,16 +653,16 @@ LABEL_7:
   return 0;
 }
 
-- (id)registerActionTreeWithRootNode:(id)a3 uid:(id)a4 outError:(id *)a5
+- (id)registerActionTreeWithRootNode:(id)node uid:(id)uid outError:(id *)error
 {
-  v5 = [(PHASEAssetRegistry *)self registerSoundEventAssetWithRootNode:a3 uid:a4 error:a5];
+  v5 = [(PHASEAssetRegistry *)self registerSoundEventAssetWithRootNode:node uid:uid error:error];
 
   return v5;
 }
 
-- (id)registerSoundEventAssetWithRootNode:(id)a3 uid:(id)a4 error:(id *)a5
+- (id)registerSoundEventAssetWithRootNode:(id)node uid:(id)uid error:(id *)error
 {
-  v5 = [(PHASEAssetRegistry *)self registerSoundEventAssetWithRootNode:a3 identifier:a4 error:a5];
+  v5 = [(PHASEAssetRegistry *)self registerSoundEventAssetWithRootNode:node identifier:uid error:error];
 
   return v5;
 }
@@ -670,7 +670,7 @@ LABEL_7:
 - (PHASESoundEventNodeAsset)registerSoundEventAssetWithRootNode:(PHASESoundEventNodeDefinition *)rootNode identifier:(NSString *)identifier error:(NSError *)error
 {
   v8 = rootNode;
-  v9 = identifier;
+  getUniqueIdentifier = identifier;
   if (error)
   {
     *error = 0;
@@ -680,19 +680,19 @@ LABEL_7:
   v11 = WeakRetained;
   if (WeakRetained && [WeakRetained implementation])
   {
-    if (!v9)
+    if (!getUniqueIdentifier)
     {
-      v9 = [(PHASEAssetRegistry *)self getUniqueIdentifier];
+      getUniqueIdentifier = [(PHASEAssetRegistry *)self getUniqueIdentifier];
     }
 
     v12 = objc_alloc_init(PHASEActionTreeBuilder);
-    v13 = self;
-    objc_sync_enter(v13);
-    v14 = [(NSMutableDictionary *)v13->_metaParameterDictionary allKeys];
-    objc_sync_exit(v13);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    allKeys = [(NSMutableDictionary *)selfCopy->_metaParameterDictionary allKeys];
+    objc_sync_exit(selfCopy);
 
     v15 = [MEMORY[0x277CBEA60] arrayWithObject:v8];
-    v16 = [(PHASEActionTreeBuilder *)v12 createParseableDictionaryWithUID:v9 rootNodes:v15 globalParamUIDs:v14 assetRegistry:v13 outError:error];
+    v16 = [(PHASEActionTreeBuilder *)v12 createParseableDictionaryWithUID:getUniqueIdentifier rootNodes:v15 globalParamUIDs:allKeys assetRegistry:selfCopy outError:error];
 
     if (v16)
     {
@@ -712,26 +712,26 @@ LABEL_7:
 
 - (id)getUniqueIdentifier
 {
-  v2 = [MEMORY[0x277CCAD78] UUID];
-  v3 = [v2 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)setMetaParameter:(id)a3 value:(id)a4
+- (void)setMetaParameter:(id)parameter value:(id)value
 {
-  v20 = a3;
-  v6 = a4;
+  parameterCopy = parameter;
+  valueCopy = value;
   WeakRetained = objc_loadWeakRetained(&self->_engine);
   v8 = WeakRetained;
   if (WeakRetained && [WeakRetained implementation])
   {
     v9 = Phase::Controller::TaskManager::GetService<Phase::GlobalMetaParameterManager>(([v8 implementation] + 48), 6);
-    v10 = [v6 UTF8String];
-    if (v10 && (v11 = *v10, *v10))
+    uTF8String = [valueCopy UTF8String];
+    if (uTF8String && (v11 = *uTF8String, *uTF8String))
     {
       v12 = 0xCBF29CE484222325;
-      v13 = v10 + 1;
+      v13 = uTF8String + 1;
       do
       {
         v12 = 0x100000001B3 * (v12 ^ v11);
@@ -747,11 +747,11 @@ LABEL_7:
       v12 = 0;
     }
 
-    v15 = [v20 UTF8String];
-    if (v15 && (v16 = *v15, *v15))
+    uTF8String2 = [parameterCopy UTF8String];
+    if (uTF8String2 && (v16 = *uTF8String2, *uTF8String2))
     {
       v17 = 0xCBF29CE484222325;
-      v18 = v15 + 1;
+      v18 = uTF8String2 + 1;
       do
       {
         v17 = 0x100000001B3 * (v17 ^ v16);
@@ -771,18 +771,18 @@ LABEL_7:
   }
 }
 
-- (void)setMetaParameter:(id)a3 value:(double)a4 withTimeInterval:(double)a5
+- (void)setMetaParameter:(id)parameter value:(double)value withTimeInterval:(double)interval
 {
-  v16 = a3;
+  parameterCopy = parameter;
   WeakRetained = objc_loadWeakRetained(&self->_engine);
   v9 = WeakRetained;
   if (WeakRetained && [WeakRetained implementation])
   {
     v10 = Phase::Controller::TaskManager::GetService<Phase::GlobalMetaParameterManager>(([v9 implementation] + 48), 6);
-    v11 = [v16 UTF8String];
-    if (v11 && (v12 = *v11, *v11))
+    uTF8String = [parameterCopy UTF8String];
+    if (uTF8String && (v12 = *uTF8String, *uTF8String))
     {
-      v13 = v11 + 1;
+      v13 = uTF8String + 1;
       v14 = 0xCBF29CE484222325;
       do
       {
@@ -799,13 +799,13 @@ LABEL_7:
       v14 = 0;
     }
 
-    Phase::Commandable<128,Phase::LockFreeQueueMPSC>::CallAsync<Phase::GlobalMetaParameterManager,BOOL,unsigned long long,Phase::InputMetaParamType,Phase::MetaParamValue,double>(v10, v14, 1, *&a4, a5);
+    Phase::Commandable<128,Phase::LockFreeQueueMPSC>::CallAsync<Phase::GlobalMetaParameterManager,BOOL,unsigned long long,Phase::InputMetaParamType,Phase::MetaParamValue,double>(v10, v14, 1, *&value, interval);
   }
 }
 
-- (id)getAssetForUID:(id)a3
+- (id)getAssetForUID:(id)d
 {
-  v3 = [(PHASEAssetRegistry *)self assetForIdentifier:a3];
+  v3 = [(PHASEAssetRegistry *)self assetForIdentifier:d];
 
   return v3;
 }
@@ -813,10 +813,10 @@ LABEL_7:
 - (PHASEAsset)assetForIdentifier:(NSString *)identifier
 {
   v4 = identifier;
-  v5 = self;
-  objc_sync_enter(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   StringHashId = Phase::GetStringHashId(v4, v6);
-  v8 = std::__hash_table<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::__unordered_map_hasher<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::hash<PHASETapType>,std::equal_to<PHASETapType>,true>,std::__unordered_map_equal<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::equal_to<PHASETapType>,std::hash<PHASETapType>,true>,std::allocator<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>>>::find<PHASETapType>(&v5->_assetLookup.__table_.__bucket_list_.__ptr_, StringHashId);
+  v8 = std::__hash_table<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::__unordered_map_hasher<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::hash<PHASETapType>,std::equal_to<PHASETapType>,true>,std::__unordered_map_equal<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::equal_to<PHASETapType>,std::hash<PHASETapType>,true>,std::allocator<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>>>::find<PHASETapType>(&selfCopy->_assetLookup.__table_.__bucket_list_.__ptr_, StringHashId);
   if (v8)
   {
     v9 = v8[3];
@@ -827,7 +827,7 @@ LABEL_7:
     v9 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
@@ -925,14 +925,14 @@ LABEL_15:
   }
 }
 
-- (id)mixerInformationForActionTreeWithIdentifier:(id)a3
+- (id)mixerInformationForActionTreeWithIdentifier:(id)identifier
 {
-  v15 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(PHASEAssetRegistry *)self assetForIdentifier:v15];
-  v6 = [v5 getActionTree];
-  v7 = v6;
-  if (v6 && *(v6 + 96))
+  v5 = [(PHASEAssetRegistry *)self assetForIdentifier:identifierCopy];
+  getActionTree = [v5 getActionTree];
+  v7 = getActionTree;
+  if (getActionTree && *(getActionTree + 96))
   {
     v8 = 0;
     v9 = 0;
@@ -959,22 +959,22 @@ LABEL_15:
   return v4;
 }
 
-- (unique_ptr<Phase::StringPool,)makeStringPoolForSingleAsset:(id)a3 outError:(id *)a4
+- (unique_ptr<Phase::StringPool,)makeStringPoolForSingleAsset:(id)asset outError:(id *)error
 {
   LODWORD(v4) = 1065353216;
-  [a3 UTF8String];
+  [asset UTF8String];
   operator new();
 }
 
-- (void)logAddAsset:(id)a3
+- (void)logAddAsset:(id)asset
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = **Phase::Logger::GetInstance(v4);
+  assetCopy = asset;
+  v5 = **Phase::Logger::GetInstance(assetCopy);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(Phase::Logger *)v4 identifier];
-    v7 = [v6 UTF8String];
+    identifier = [(Phase::Logger *)assetCopy identifier];
+    uTF8String = [identifier UTF8String];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v10 = 136316418;
@@ -982,70 +982,70 @@ LABEL_15:
     v12 = 1024;
     v13 = 1796;
     v14 = 2080;
-    v15 = v7;
+    v15 = uTF8String;
     v16 = 2080;
-    v17 = [v9 UTF8String];
+    uTF8String2 = [v9 UTF8String];
     v18 = 2048;
-    v19 = ([(Phase::Logger *)v4 sizeInBytes]/ 1000000.0);
+    v19 = ([(Phase::Logger *)assetCopy sizeInBytes]/ 1000000.0);
     v20 = 2048;
     v21 = ([(PHASEAssetRegistry *)self sizeInBytes]/ 1000000.0);
     _os_log_impl(&dword_23A302000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Added Asset with name: %s, type: %s, size: %1.3f MB (total size: %1.3f MB)", &v10, 0x3Au);
   }
 }
 
-- (void)logRemoveAsset:(id)a3
+- (void)logRemoveAsset:(id)asset
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v4 sizeInBytes];
-  v8 = **Phase::Logger::GetInstance(v7);
+  sizeInBytes = [assetCopy sizeInBytes];
+  v8 = **Phase::Logger::GetInstance(sizeInBytes);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v4 identifier];
+    identifier = [assetCopy identifier];
     v10 = 136316418;
     v11 = "PHASEAssetRegistry.mm";
     v12 = 1024;
     v13 = 1808;
     v14 = 2080;
-    v15 = [v9 UTF8String];
+    uTF8String = [identifier UTF8String];
     v16 = 2080;
-    v17 = [v6 UTF8String];
+    uTF8String2 = [v6 UTF8String];
     v18 = 2048;
-    v19 = (v7 / 1000000.0);
+    v19 = (sizeInBytes / 1000000.0);
     v20 = 2048;
     v21 = ([(PHASEAssetRegistry *)self sizeInBytes]/ 1000000.0);
     _os_log_impl(&dword_23A302000, v8, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Removed Asset with name: %s, type: %s, size: %1.3f MB (total size: %1.3f MB)", &v10, 0x3Au);
   }
 }
 
-- (BOOL)addAssetInternal:(id)a3 stringPool:()unique_ptr<Phase:(std:(id *)a5 :default_delete<Phase::StringPool>>)a4 :StringPool outError:
+- (BOOL)addAssetInternal:(id)internal stringPool:()unique_ptr<Phase:(std:(id *)phase :default_delete<Phase::StringPool>>)a4 :StringPool outError:
 {
-  v8 = a3;
-  v9 = v8;
-  if (a5)
+  internalCopy = internal;
+  v9 = internalCopy;
+  if (phase)
   {
-    *a5 = 0;
+    *phase = 0;
   }
 
-  v10 = [v8 identifier];
-  StringHashId = Phase::GetStringHashId(v10, v11);
+  identifier = [internalCopy identifier];
+  StringHashId = Phase::GetStringHashId(identifier, v11);
 
-  v13 = self;
-  objc_sync_enter(v13);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v14 = *a4.var0;
   *a4.var0 = 0;
   v24 = v14;
-  v15 = std::__hash_table<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>>>::__emplace_unique_key_args<unsigned long long,std::pair<unsigned long long,std::unique_ptr<Phase::StringPool>>>(&v13->_stringPools.__table_.__bucket_list_.__ptr_, StringHashId);
+  v15 = std::__hash_table<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>>>::__emplace_unique_key_args<unsigned long long,std::pair<unsigned long long,std::unique_ptr<Phase::StringPool>>>(&selfCopy->_stringPools.__table_.__bucket_list_.__ptr_, StringHashId);
   std::unique_ptr<Phase::StringPool>::~unique_ptr[abi:ne200100](&v24);
-  if (a5 && (v15 & 1) == 0)
+  if (phase && (v15 & 1) == 0)
   {
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346920804 userInfo:0];
+    *phase = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346920804 userInfo:0];
   }
 
   v16 = v9;
-  size = v13->_assetLookup.__table_.__bucket_list_.__deleter_.__size_;
+  size = selfCopy->_assetLookup.__table_.__bucket_list_.__deleter_.__size_;
   if (!*&size)
   {
     goto LABEL_23;
@@ -1067,7 +1067,7 @@ LABEL_15:
     v19 = (*&size - 1) & StringHashId;
   }
 
-  v20 = v13->_assetLookup.__table_.__bucket_list_.__ptr_[v19];
+  v20 = selfCopy->_assetLookup.__table_.__bucket_list_.__ptr_[v19];
   if (!v20 || (v21 = *v20) == 0)
   {
 LABEL_23:
@@ -1113,49 +1113,49 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  std::__hash_table<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>>>::__erase_unique<unsigned long long>(&v13->_stringPools, StringHashId);
-  if (a5)
+  std::__hash_table<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>>>::__erase_unique<unsigned long long>(&selfCopy->_stringPools, StringHashId);
+  if (phase)
   {
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346920804 userInfo:0];
+    *phase = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346920804 userInfo:0];
   }
 
-  objc_sync_exit(v13);
+  objc_sync_exit(selfCopy);
 
   return 0;
 }
 
-- (BOOL)removeAssetInternal:(id)a3
+- (BOOL)removeAssetInternal:(id)internal
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  internalCopy = internal;
+  v5 = internalCopy;
+  if (internalCopy)
   {
-    v6 = [v4 owningDataBundleIdentifier];
+    owningDataBundleIdentifier = [internalCopy owningDataBundleIdentifier];
 
-    if (v6)
+    if (owningDataBundleIdentifier)
     {
-      v8 = **(Phase::Logger::GetInstance(v7) + 448);
-      if (os_log_type_enabled(&v8->super, OS_LOG_TYPE_ERROR))
+      selfCopy = **(Phase::Logger::GetInstance(v7) + 448);
+      if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
       {
-        v9 = [v5 identifier];
-        v10 = [v5 owningDataBundleIdentifier];
+        identifier = [v5 identifier];
+        owningDataBundleIdentifier2 = [v5 owningDataBundleIdentifier];
         v35 = 136315906;
         v36 = "PHASEAssetRegistry.mm";
         v37 = 1024;
         v38 = 1886;
         v39 = 2112;
-        v40 = v9;
+        v40 = identifier;
         v41 = 2112;
-        v42 = v10;
-        _os_log_impl(&dword_23A302000, &v8->super, OS_LOG_TYPE_ERROR, "%25s:%-5d Error: Trying to remove asset %@ that is owned by a data bundle %@.  Remove the data bundle to remove the asset.  Ignoring.", &v35, 0x26u);
+        v42 = owningDataBundleIdentifier2;
+        _os_log_impl(&dword_23A302000, &selfCopy->super, OS_LOG_TYPE_ERROR, "%25s:%-5d Error: Trying to remove asset %@ that is owned by a data bundle %@.  Remove the data bundle to remove the asset.  Ignoring.", &v35, 0x26u);
       }
 
       goto LABEL_5;
     }
 
-    v8 = self;
-    objc_sync_enter(v8);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1164,20 +1164,20 @@ LABEL_22:
         std::terminate();
       }
 
-      next = v8->_assetLookup.__table_.__first_node_.__next_;
+      next = selfCopy->_assetLookup.__table_.__first_node_.__next_;
       while (next)
       {
-        v13 = [next[3] owningDataBundleIdentifier];
-        v14 = [v5 identifier];
-        v15 = v13 == v14;
+        owningDataBundleIdentifier3 = [next[3] owningDataBundleIdentifier];
+        identifier2 = [v5 identifier];
+        v15 = owningDataBundleIdentifier3 == identifier2;
 
         if (v15)
         {
           v16 = next[3];
           v17 = *next;
-          std::__hash_table<std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>,std::__unordered_map_hasher<Phase::UniqueObjectId,std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>,std::hash<Phase::UniqueObjectId>,std::equal_to<Phase::UniqueObjectId>,true>,std::__unordered_map_equal<Phase::UniqueObjectId,std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>,std::equal_to<Phase::UniqueObjectId>,std::hash<Phase::UniqueObjectId>,true>,std::allocator<std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>>>::remove(&v35, &v8->_assetLookup.__table_.__bucket_list_.__ptr_, next);
+          std::__hash_table<std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>,std::__unordered_map_hasher<Phase::UniqueObjectId,std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>,std::hash<Phase::UniqueObjectId>,std::equal_to<Phase::UniqueObjectId>,true>,std::__unordered_map_equal<Phase::UniqueObjectId,std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>,std::equal_to<Phase::UniqueObjectId>,std::hash<Phase::UniqueObjectId>,true>,std::allocator<std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>>>::remove(&v35, &selfCopy->_assetLookup.__table_.__bucket_list_.__ptr_, next);
           std::unique_ptr<std::__hash_node<std::__hash_value_type<unsigned long long,void({block_pointer} {__strong})(NSUUID *,NSUUID *,BOOL)>,void *>,std::__hash_node_destructor<std::allocator<std::__hash_node<std::__hash_value_type<unsigned long long,void({block_pointer} {__strong})(NSUUID *,NSUUID *,BOOL)>,void *>>>>::~unique_ptr[abi:ne200100](&v35);
-          [(PHASEAssetRegistry *)v8 logRemoveAsset:v16];
+          [(PHASEAssetRegistry *)selfCopy logRemoveAsset:v16];
 
           next = v17;
         }
@@ -1188,43 +1188,43 @@ LABEL_22:
         }
       }
 
-      v27 = [v5 identifier];
-      StringHashId = Phase::GetStringHashId(v27, v28);
+      identifier3 = [v5 identifier];
+      StringHashId = Phase::GetStringHashId(identifier3, v28);
 
-      std::__hash_table<std::__hash_value_type<unsigned long long,PHASEAsset * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PHASEAsset * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PHASEAsset * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PHASEAsset * {__strong}>>>::__erase_unique<unsigned long long>(&v8->_assetLookup.__table_.__bucket_list_.__ptr_, StringHashId);
-      std::__hash_table<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>>>::__erase_unique<unsigned long long>(&v8->_stringPools, StringHashId);
-      [(PHASEAssetRegistry *)v8 logRemoveAsset:v5];
+      std::__hash_table<std::__hash_value_type<unsigned long long,PHASEAsset * {__strong}>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,PHASEAsset * {__strong}>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,PHASEAsset * {__strong}>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,PHASEAsset * {__strong}>>>::__erase_unique<unsigned long long>(&selfCopy->_assetLookup.__table_.__bucket_list_.__ptr_, StringHashId);
+      std::__hash_table<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>>>::__erase_unique<unsigned long long>(&selfCopy->_stringPools, StringHashId);
+      [(PHASEAssetRegistry *)selfCopy logRemoveAsset:v5];
       goto LABEL_22;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      metaParameterDictionary = v8->_metaParameterDictionary;
-      v19 = [v5 identifier];
-      v20 = [(NSMutableDictionary *)metaParameterDictionary objectForKeyedSubscript:v19];
+      metaParameterDictionary = selfCopy->_metaParameterDictionary;
+      identifier4 = [v5 identifier];
+      v20 = [(NSMutableDictionary *)metaParameterDictionary objectForKeyedSubscript:identifier4];
 
       if (v20)
       {
         [v20 setDelegate:0];
-        v21 = v8->_metaParameterDictionary;
-        v22 = [v5 identifier];
-        [(NSMutableDictionary *)v21 removeObjectForKey:v22];
+        v21 = selfCopy->_metaParameterDictionary;
+        identifier5 = [v5 identifier];
+        [(NSMutableDictionary *)v21 removeObjectForKey:identifier5];
       }
 
-      v23 = [v5 identifier];
-      v25 = Phase::GetStringHashId(v23, v24);
+      identifier6 = [v5 identifier];
+      v25 = Phase::GetStringHashId(identifier6, v24);
 
-      v26 = std::__hash_table<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::__unordered_map_hasher<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::hash<PHASETapType>,std::equal_to<PHASETapType>,true>,std::__unordered_map_equal<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::equal_to<PHASETapType>,std::hash<PHASETapType>,true>,std::allocator<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>>>::find<PHASETapType>(&v8->_assetLookup.__table_.__bucket_list_.__ptr_, v25);
+      v26 = std::__hash_table<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::__unordered_map_hasher<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::hash<PHASETapType>,std::equal_to<PHASETapType>,true>,std::__unordered_map_equal<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::equal_to<PHASETapType>,std::hash<PHASETapType>,true>,std::allocator<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>>>::find<PHASETapType>(&selfCopy->_assetLookup.__table_.__bucket_list_.__ptr_, v25);
       if (v26)
       {
-        std::__hash_table<std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>,std::__unordered_map_hasher<Phase::UniqueObjectId,std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>,std::hash<Phase::UniqueObjectId>,std::equal_to<Phase::UniqueObjectId>,true>,std::__unordered_map_equal<Phase::UniqueObjectId,std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>,std::equal_to<Phase::UniqueObjectId>,std::hash<Phase::UniqueObjectId>,true>,std::allocator<std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>>>::remove(&v35, &v8->_assetLookup.__table_.__bucket_list_.__ptr_, v26);
+        std::__hash_table<std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>,std::__unordered_map_hasher<Phase::UniqueObjectId,std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>,std::hash<Phase::UniqueObjectId>,std::equal_to<Phase::UniqueObjectId>,true>,std::__unordered_map_equal<Phase::UniqueObjectId,std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>,std::equal_to<Phase::UniqueObjectId>,std::hash<Phase::UniqueObjectId>,true>,std::allocator<std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>>>::remove(&v35, &selfCopy->_assetLookup.__table_.__bucket_list_.__ptr_, v26);
         std::unique_ptr<std::__hash_node<std::__hash_value_type<unsigned long long,void({block_pointer} {__strong})(NSUUID *,NSUUID *,BOOL)>,void *>,std::__hash_node_destructor<std::allocator<std::__hash_node<std::__hash_value_type<unsigned long long,void({block_pointer} {__strong})(NSUUID *,NSUUID *,BOOL)>,void *>>>>::~unique_ptr[abi:ne200100](&v35);
-        std::__hash_table<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>>>::__erase_unique<unsigned long long>(&v8->_stringPools, v25);
-        [(PHASEAssetRegistry *)v8 logRemoveAsset:v5];
+        std::__hash_table<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>>>::__erase_unique<unsigned long long>(&selfCopy->_stringPools, v25);
+        [(PHASEAssetRegistry *)selfCopy logRemoveAsset:v5];
 
 LABEL_22:
-        objc_sync_exit(v8);
+        objc_sync_exit(selfCopy);
         v11 = 1;
         goto LABEL_23;
       }
@@ -1232,21 +1232,21 @@ LABEL_22:
 
     else
     {
-      v30 = [v5 identifier];
-      v32 = Phase::GetStringHashId(v30, v31);
+      identifier7 = [v5 identifier];
+      v32 = Phase::GetStringHashId(identifier7, v31);
 
-      v33 = std::__hash_table<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::__unordered_map_hasher<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::hash<PHASETapType>,std::equal_to<PHASETapType>,true>,std::__unordered_map_equal<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::equal_to<PHASETapType>,std::hash<PHASETapType>,true>,std::allocator<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>>>::find<PHASETapType>(&v8->_assetLookup.__table_.__bucket_list_.__ptr_, v32);
+      v33 = std::__hash_table<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::__unordered_map_hasher<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::hash<PHASETapType>,std::equal_to<PHASETapType>,true>,std::__unordered_map_equal<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::equal_to<PHASETapType>,std::hash<PHASETapType>,true>,std::allocator<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>>>::find<PHASETapType>(&selfCopy->_assetLookup.__table_.__bucket_list_.__ptr_, v32);
       if (v33)
       {
-        std::__hash_table<std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>,std::__unordered_map_hasher<Phase::UniqueObjectId,std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>,std::hash<Phase::UniqueObjectId>,std::equal_to<Phase::UniqueObjectId>,true>,std::__unordered_map_equal<Phase::UniqueObjectId,std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>,std::equal_to<Phase::UniqueObjectId>,std::hash<Phase::UniqueObjectId>,true>,std::allocator<std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>>>::remove(&v35, &v8->_assetLookup.__table_.__bucket_list_.__ptr_, v33);
+        std::__hash_table<std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>,std::__unordered_map_hasher<Phase::UniqueObjectId,std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>,std::hash<Phase::UniqueObjectId>,std::equal_to<Phase::UniqueObjectId>,true>,std::__unordered_map_equal<Phase::UniqueObjectId,std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>,std::equal_to<Phase::UniqueObjectId>,std::hash<Phase::UniqueObjectId>,true>,std::allocator<std::__hash_value_type<Phase::UniqueObjectId,std::pair<std::unique_ptr<Phase::Controller::SpatialQueryInstance>,std::vector<Phase::Controller::SpatialModelerInstance::SubmixHandleInfo>>>>>::remove(&v35, &selfCopy->_assetLookup.__table_.__bucket_list_.__ptr_, v33);
         std::unique_ptr<std::__hash_node<std::__hash_value_type<unsigned long long,void({block_pointer} {__strong})(NSUUID *,NSUUID *,BOOL)>,void *>,std::__hash_node_destructor<std::allocator<std::__hash_node<std::__hash_value_type<unsigned long long,void({block_pointer} {__strong})(NSUUID *,NSUUID *,BOOL)>,void *>>>>::~unique_ptr[abi:ne200100](&v35);
-        std::__hash_table<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>>>::__erase_unique<unsigned long long>(&v8->_stringPools, v32);
-        [(PHASEAssetRegistry *)v8 logRemoveAsset:v5];
+        std::__hash_table<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,std::unique_ptr<Phase::StringPool>>>>::__erase_unique<unsigned long long>(&selfCopy->_stringPools, v32);
+        [(PHASEAssetRegistry *)selfCopy logRemoveAsset:v5];
         goto LABEL_22;
       }
     }
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
 LABEL_5:
     v11 = 0;
 LABEL_23:
@@ -1327,16 +1327,16 @@ LABEL_9:
   }
 }
 
-- (id)assetInfoString:(int64_t)a3
+- (id)assetInfoString:(int64_t)string
 {
   v29[1] = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   for (i = self->_assetLookup.__table_.__first_node_.__next_; i; i = *i)
   {
     v7 = objc_alloc_init(AssetInfo);
-    v8 = [i[3] identifier];
+    identifier = [i[3] identifier];
     identifier = v7->identifier;
-    v7->identifier = v8;
+    v7->identifier = identifier;
 
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
@@ -1347,7 +1347,7 @@ LABEL_9:
     [v5 addObject:v7];
   }
 
-  if (a3 == 1935753580)
+  if (string == 1935753580)
   {
     v13 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"identifier" ascending:1 selector:sel_caseInsensitiveCompare_];
     v29[0] = v13;
@@ -1357,7 +1357,7 @@ LABEL_9:
 
   else
   {
-    if (a3 != 1935758451)
+    if (string != 1935758451)
     {
       goto LABEL_8;
     }
@@ -1406,80 +1406,80 @@ LABEL_8:
   return v16;
 }
 
-- (const)getSoundAssetInfo:(unint64_t)a3
+- (const)getSoundAssetInfo:(unint64_t)info
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = std::__hash_table<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::__unordered_map_hasher<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::hash<PHASETapType>,std::equal_to<PHASETapType>,true>,std::__unordered_map_equal<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::equal_to<PHASETapType>,std::hash<PHASETapType>,true>,std::allocator<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>>>::find<PHASETapType>(&v4->_assetLookup.__table_.__bucket_list_.__ptr_, a3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = std::__hash_table<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::__unordered_map_hasher<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::hash<PHASETapType>,std::equal_to<PHASETapType>,true>,std::__unordered_map_equal<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::equal_to<PHASETapType>,std::hash<PHASETapType>,true>,std::allocator<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>>>::find<PHASETapType>(&selfCopy->_assetLookup.__table_.__bucket_list_.__ptr_, info);
   if (v5)
   {
     v6 = v5[3];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 getAssetInfo];
+      getAssetInfo = [v6 getAssetInfo];
     }
 
     else
     {
-      v7 = 0;
+      getAssetInfo = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    getAssetInfo = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return getAssetInfo;
 }
 
-- (const)getActionTree:(unint64_t)a3
+- (const)getActionTree:(unint64_t)tree
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = std::__hash_table<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::__unordered_map_hasher<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::hash<PHASETapType>,std::equal_to<PHASETapType>,true>,std::__unordered_map_equal<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::equal_to<PHASETapType>,std::hash<PHASETapType>,true>,std::allocator<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>>>::find<PHASETapType>(&v4->_assetLookup.__table_.__bucket_list_.__ptr_, a3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = std::__hash_table<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::__unordered_map_hasher<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::hash<PHASETapType>,std::equal_to<PHASETapType>,true>,std::__unordered_map_equal<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::equal_to<PHASETapType>,std::hash<PHASETapType>,true>,std::allocator<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>>>::find<PHASETapType>(&selfCopy->_assetLookup.__table_.__bucket_list_.__ptr_, tree);
   if (v5)
   {
     v6 = v5[3];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 getActionTree];
+      getActionTree = [v6 getActionTree];
     }
 
     else
     {
-      v7 = 0;
+      getActionTree = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    getActionTree = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return getActionTree;
 }
 
-- (const)getChannelMapping:(unint64_t)a3
+- (const)getChannelMapping:(unint64_t)mapping
 {
-  v3 = self;
-  objc_sync_enter(v3);
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_sync_exit(selfCopy);
 
   return 0;
 }
 
-- (id)getGlobalMetaParameter:(unint64_t)a3
+- (id)getGlobalMetaParameter:(unint64_t)parameter
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = std::__hash_table<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::__unordered_map_hasher<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::hash<PHASETapType>,std::equal_to<PHASETapType>,true>,std::__unordered_map_equal<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::equal_to<PHASETapType>,std::hash<PHASETapType>,true>,std::allocator<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>>>::find<PHASETapType>(&v4->_assetLookup.__table_.__bucket_list_.__ptr_, a3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = std::__hash_table<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::__unordered_map_hasher<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::hash<PHASETapType>,std::equal_to<PHASETapType>,true>,std::__unordered_map_equal<PHASETapType,std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>,std::equal_to<PHASETapType>,std::hash<PHASETapType>,true>,std::allocator<std::__hash_value_type<PHASETapType,std::unique_ptr<Phase::TapSourceRegistry::TapSourceInfo>>>>::find<PHASETapType>(&selfCopy->_assetLookup.__table_.__bucket_list_.__ptr_, parameter);
   if (v5)
   {
     v6 = v5[3];
@@ -1500,7 +1500,7 @@ LABEL_8:
     v7 = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
@@ -1516,7 +1516,7 @@ LABEL_8:
   return self;
 }
 
-- (void)unregisterAssetWithIdentifier:(uint64_t)a1 completion:
+- (void)unregisterAssetWithIdentifier:(uint64_t)identifier completion:
 {
 
   JUMPOUT(0x23EE864A0);

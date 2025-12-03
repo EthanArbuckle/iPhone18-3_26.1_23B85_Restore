@@ -1,60 +1,60 @@
 @interface PXSharedLibrarySuggestionsSettingsViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (PXSharedLibrarySuggestionsSettingsViewController)initWithSharedLibraryStatusProvider:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_addSectionWithConfigurationHandler:(id)a3;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (PXSharedLibrarySuggestionsSettingsViewController)initWithSharedLibraryStatusProvider:(id)provider;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_addSectionWithConfigurationHandler:(id)handler;
 - (void)_update;
-- (void)_updateCollectionViewCell:(id)a3 forRulePerson:(id)a4;
+- (void)_updateCollectionViewCell:(id)cell forRulePerson:(id)person;
 - (void)_updateSections;
-- (void)addOtherPeople:(id)a3;
+- (void)addOtherPeople:(id)people;
 - (void)loadView;
-- (void)picker:(id)a3 didFinishPicking:(id)a4;
-- (void)removePerson:(id)a3;
-- (void)sharedLibraryRulePeopleControllerDidChangeCurrentSnapshot:(id)a3;
-- (void)suggestionsEnabledChanged:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)picker:(id)picker didFinishPicking:(id)picking;
+- (void)removePerson:(id)person;
+- (void)sharedLibraryRulePeopleControllerDidChangeCurrentSnapshot:(id)snapshot;
+- (void)suggestionsEnabledChanged:(id)changed;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PXSharedLibrarySuggestionsSettingsViewController
 
-- (void)sharedLibraryRulePeopleControllerDidChangeCurrentSnapshot:(id)a3
+- (void)sharedLibraryRulePeopleControllerDidChangeCurrentSnapshot:(id)snapshot
 {
   peopleCollectionViewDataSource = self->_peopleCollectionViewDataSource;
-  v5 = a3;
-  v6 = [(UICollectionViewDiffableDataSource *)peopleCollectionViewDataSource snapshot];
-  v7 = [v6 numberOfItems] > 0;
+  snapshotCopy = snapshot;
+  snapshot = [(UICollectionViewDiffableDataSource *)peopleCollectionViewDataSource snapshot];
+  v7 = [snapshot numberOfItems] > 0;
 
   v8 = self->_peopleCollectionViewDataSource;
-  v9 = [v5 currentSnapshot];
+  currentSnapshot = [snapshotCopy currentSnapshot];
 
-  [(UICollectionViewDiffableDataSource *)v8 applySnapshot:v9 animatingDifferences:1];
-  v10 = [(UICollectionViewDiffableDataSource *)self->_peopleCollectionViewDataSource snapshot];
-  v11 = [v10 numberOfItems];
+  [(UICollectionViewDiffableDataSource *)v8 applySnapshot:currentSnapshot animatingDifferences:1];
+  snapshot2 = [(UICollectionViewDiffableDataSource *)self->_peopleCollectionViewDataSource snapshot];
+  numberOfItems = [snapshot2 numberOfItems];
 
-  if (((v7 ^ (v11 < 1)) & 1) == 0)
+  if (((v7 ^ (numberOfItems < 1)) & 1) == 0)
   {
 
     [(PXSharedLibrarySuggestionsSettingsViewController *)self _update];
   }
 }
 
-- (void)picker:(id)a3 didFinishPicking:(id)a4
+- (void)picker:(id)picker didFinishPicking:(id)picking
 {
-  v5 = a4;
+  pickingCopy = picking;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__PXSharedLibrarySuggestionsSettingsViewController_picker_didFinishPicking___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = pickingCopy;
+  v6 = pickingCopy;
   [(PXSharedLibrarySuggestionsSettingsViewController *)self dismissViewControllerAnimated:1 completion:v7];
 }
 
@@ -88,37 +88,37 @@ id __76__PXSharedLibrarySuggestionsSettingsViewController_picker_didFinishPickin
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v6 = a4;
-  [v13 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [(PXSharedLibrarySuggestionsSettingsViewController *)self sections];
-  v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
-  v9 = [v8 items];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v6, "item")}];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  sections = [(PXSharedLibrarySuggestionsSettingsViewController *)self sections];
+  v8 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  items = [v8 items];
+  v10 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
   if ([v10 action])
   {
-    v11 = [v13 cellForRowAtIndexPath:v6];
-    v12 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v12 sendAction:objc_msgSend(v10 to:"action") from:self forEvent:{v11, 0}];
+    v11 = [viewCopy cellForRowAtIndexPath:pathCopy];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] sendAction:objc_msgSend(v10 to:"action") from:self forEvent:{v11, 0}];
   }
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
-  v7 = [(PXSharedLibrarySuggestionsSettingsViewController *)self sections];
-  v8 = [v7 count] - 1;
+  pathCopy = path;
+  section = [pathCopy section];
+  sections = [(PXSharedLibrarySuggestionsSettingsViewController *)self sections];
+  v8 = [sections count] - 1;
 
-  if (v6 <= v8)
+  if (section <= v8)
   {
-    v10 = [(PXSharedLibrarySuggestionsSettingsViewController *)self sections];
-    v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
-    v12 = [v11 items];
-    v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v5, "item")}];
+    sections2 = [(PXSharedLibrarySuggestionsSettingsViewController *)self sections];
+    v11 = [sections2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+    items = [v11 items];
+    v13 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
     if ([v13 refusesSelection])
     {
@@ -127,7 +127,7 @@ id __76__PXSharedLibrarySuggestionsSettingsViewController_picker_didFinishPickin
 
     else
     {
-      v14 = v5;
+      v14 = pathCopy;
     }
 
     v9 = v14;
@@ -141,52 +141,52 @@ id __76__PXSharedLibrarySuggestionsSettingsViewController_picker_didFinishPickin
   return v9;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(PXSharedLibrarySuggestionsSettingsViewController *)self sections];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
-  v8 = [v7 items];
-  v9 = [v5 item];
+  pathCopy = path;
+  sections = [(PXSharedLibrarySuggestionsSettingsViewController *)self sections];
+  v7 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  items = [v7 items];
+  item = [pathCopy item];
 
-  v10 = [v8 objectAtIndexedSubscript:v9];
+  v10 = [items objectAtIndexedSubscript:item];
 
-  LOBYTE(v6) = [v10 refusesSelection];
-  return v6 ^ 1;
+  LOBYTE(sections) = [v10 refusesSelection];
+  return sections ^ 1;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(PXSharedLibrarySuggestionsSettingsViewController *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  sections = [(PXSharedLibrarySuggestionsSettingsViewController *)self sections];
+  v6 = [sections objectAtIndexedSubscript:section];
 
-  v7 = [v6 caption];
+  caption = [v6 caption];
 
-  return v7;
+  return caption;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(PXSharedLibrarySuggestionsSettingsViewController *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  sections = [(PXSharedLibrarySuggestionsSettingsViewController *)self sections];
+  v6 = [sections objectAtIndexedSubscript:section];
 
-  v7 = [v6 title];
+  title = [v6 title];
 
-  return v7;
+  return title;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v44[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXSharedLibrarySuggestionsSettingsViewController *)self sections];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
-  v10 = [v9 items];
-  v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
+  viewCopy = view;
+  pathCopy = path;
+  sections = [(PXSharedLibrarySuggestionsSettingsViewController *)self sections];
+  v9 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  items = [v9 items];
+  v11 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-  v12 = [v11 customView];
-  if (v12)
+  customView = [v11 customView];
+  if (customView)
   {
     v13 = @"CustomCell";
   }
@@ -196,112 +196,112 @@ id __76__PXSharedLibrarySuggestionsSettingsViewController_picker_didFinishPickin
     v13 = @"DefaultCell";
   }
 
-  v14 = [v6 dequeueReusableCellWithIdentifier:v13 forIndexPath:v7];
+  v14 = [viewCopy dequeueReusableCellWithIdentifier:v13 forIndexPath:pathCopy];
 
-  if (v12)
+  if (customView)
   {
     v15 = [v14 viewWithTag:999];
-    if (v15 != v12)
+    if (v15 != customView)
     {
       v43 = v15;
       [v15 removeFromSuperview];
-      [v12 setTag:999];
-      v16 = [v14 contentView];
-      [v16 addSubview:v12];
+      [customView setTag:999];
+      contentView = [v14 contentView];
+      [contentView addSubview:customView];
 
       v34 = MEMORY[0x1E696ACD8];
-      v41 = [v14 contentView];
-      v40 = [v41 leadingAnchor];
-      v39 = [v12 leadingAnchor];
-      v38 = [v40 constraintEqualToAnchor:v39];
+      contentView2 = [v14 contentView];
+      leadingAnchor = [contentView2 leadingAnchor];
+      leadingAnchor2 = [customView leadingAnchor];
+      v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v44[0] = v38;
-      v37 = [v14 contentView];
-      v36 = [v37 topAnchor];
-      v35 = [v12 topAnchor];
-      v33 = [v36 constraintEqualToAnchor:v35];
+      contentView3 = [v14 contentView];
+      topAnchor = [contentView3 topAnchor];
+      topAnchor2 = [customView topAnchor];
+      v33 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v44[1] = v33;
-      v32 = [v14 contentView];
-      v31 = [v32 trailingAnchor];
-      v17 = [v12 trailingAnchor];
-      v18 = [v31 constraintEqualToAnchor:v17];
+      contentView4 = [v14 contentView];
+      trailingAnchor = [contentView4 trailingAnchor];
+      trailingAnchor2 = [customView trailingAnchor];
+      v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v44[2] = v18;
       [v14 contentView];
-      v19 = v42 = v6;
-      v20 = [v19 bottomAnchor];
-      v21 = [v12 bottomAnchor];
-      v22 = [v20 constraintEqualToAnchor:v21];
+      v19 = v42 = viewCopy;
+      bottomAnchor = [v19 bottomAnchor];
+      bottomAnchor2 = [customView bottomAnchor];
+      v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v44[3] = v22;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:4];
       [v34 activateConstraints:v23];
 
-      v6 = v42;
+      viewCopy = v42;
       v15 = v43;
     }
   }
 
   else
   {
-    v24 = [v14 defaultContentConfiguration];
-    v25 = [v11 image];
-    [v24 setImage:v25];
+    defaultContentConfiguration = [v14 defaultContentConfiguration];
+    image = [v11 image];
+    [defaultContentConfiguration setImage:image];
 
-    v26 = [v11 title];
-    [v24 setText:v26];
+    title = [v11 title];
+    [defaultContentConfiguration setText:title];
 
     if ([v11 action])
     {
-      v27 = [v6 tintColor];
-      v28 = [v24 textProperties];
-      [v28 setColor:v27];
+      tintColor = [viewCopy tintColor];
+      textProperties = [defaultContentConfiguration textProperties];
+      [textProperties setColor:tintColor];
     }
 
-    [v14 setContentConfiguration:v24];
-    v29 = [v11 accessoryView];
-    [v14 setAccessoryView:v29];
+    [v14 setContentConfiguration:defaultContentConfiguration];
+    accessoryView = [v11 accessoryView];
+    [v14 setAccessoryView:accessoryView];
   }
 
   return v14;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PXSharedLibrarySuggestionsSettingsViewController *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
-  v7 = [v6 items];
-  v8 = [v7 count];
+  sections = [(PXSharedLibrarySuggestionsSettingsViewController *)self sections];
+  v6 = [sections objectAtIndexedSubscript:section];
+  items = [v6 items];
+  v8 = [items count];
 
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(PXSharedLibrarySuggestionsSettingsViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(PXSharedLibrarySuggestionsSettingsViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = PXSharedLibrarySuggestionsSettingsViewController;
-  [(PXSharedLibrarySuggestionsSettingsViewController *)&v9 viewWillAppear:a3];
-  v4 = [(PXSharedLibrarySuggestionsSettingsViewController *)self navigationController];
-  v5 = [v4 viewControllers];
-  v6 = [v5 firstObject];
-  if (v6 == self)
+  [(PXSharedLibrarySuggestionsSettingsViewController *)&v9 viewWillAppear:appear];
+  navigationController = [(PXSharedLibrarySuggestionsSettingsViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  firstObject = [viewControllers firstObject];
+  if (firstObject == self)
   {
-    v7 = [v4 presentingViewController];
-    v8 = [v7 presentedViewController];
+    presentingViewController = [navigationController presentingViewController];
+    presentedViewController = [presentingViewController presentedViewController];
 
-    if (v8 != v4)
+    if (presentedViewController != navigationController)
     {
       goto LABEL_4;
     }
 
-    v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__handleDoneAction_];
-    v6 = [(PXSharedLibrarySuggestionsSettingsViewController *)self navigationItem];
-    [(PXSharedLibrarySuggestionsSettingsViewController *)v6 setRightBarButtonItem:v5];
+    viewControllers = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__handleDoneAction_];
+    firstObject = [(PXSharedLibrarySuggestionsSettingsViewController *)self navigationItem];
+    [(PXSharedLibrarySuggestionsSettingsViewController *)firstObject setRightBarButtonItem:viewControllers];
   }
 
 LABEL_4:
@@ -318,8 +318,8 @@ LABEL_4:
 
   [(PXSharedLibraryRulePeopleDataManager *)self->_peopleDataManager setDelegate:self];
   peopleCollectionViewDataSource = self->_peopleCollectionViewDataSource;
-  v6 = [(PXSharedLibraryRulePeopleDataManager *)self->_peopleDataManager currentSnapshot];
-  [(UICollectionViewDiffableDataSource *)peopleCollectionViewDataSource applySnapshot:v6 animatingDifferences:0];
+  currentSnapshot = [(PXSharedLibraryRulePeopleDataManager *)self->_peopleDataManager currentSnapshot];
+  [(UICollectionViewDiffableDataSource *)peopleCollectionViewDataSource applySnapshot:currentSnapshot animatingDifferences:0];
 
   [(PXSharedLibrarySuggestionsSettingsViewController *)self _update];
 }
@@ -343,23 +343,23 @@ LABEL_4:
   [(PXSharedLibrarySuggestionsSettingsViewController *)self setView:v6];
 }
 
-- (void)_updateCollectionViewCell:(id)a3 forRulePerson:(id)a4
+- (void)_updateCollectionViewCell:(id)cell forRulePerson:(id)person
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 minusButton];
-  [v8 setHidden:0];
+  personCopy = person;
+  cellCopy = cell;
+  minusButton = [cellCopy minusButton];
+  [minusButton setHidden:0];
 
-  [v7 setRemoveTarget:self];
-  [v7 setRemoveAction:sel_removePerson_];
-  v9 = [v6 person];
-  [v7 setImagePerson:v9];
+  [cellCopy setRemoveTarget:self];
+  [cellCopy setRemoveAction:sel_removePerson_];
+  person = [personCopy person];
+  [cellCopy setImagePerson:person];
 
-  v11 = [v6 displayName];
+  displayName = [personCopy displayName];
 
-  v10 = [v7 nameLabel];
+  nameLabel = [cellCopy nameLabel];
 
-  [v10 setText:v11];
+  [nameLabel setText:displayName];
 }
 
 - (void)_update
@@ -486,25 +486,25 @@ void __67__PXSharedLibrarySuggestionsSettingsViewController__updateSections__blo
   [v4 setRefusesSelection:1];
 }
 
-- (void)_addSectionWithConfigurationHandler:(id)a3
+- (void)_addSectionWithConfigurationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_opt_new();
-  v4[2](v4, v5);
+  handlerCopy[2](handlerCopy, v5);
 
   [(NSMutableArray *)self->_sections addObject:v5];
 }
 
-- (void)addOtherPeople:(id)a3
+- (void)addOtherPeople:(id)people
 {
   self->_addingOthers = 1;
   v10 = objc_alloc_init(MEMORY[0x1E6979160]);
-  v4 = [(PXSharedLibraryRulePeopleDataManager *)self->_peopleDataManager currentPersonIdentifiers];
-  [v10 setDisabledIdentifiers:v4];
+  currentPersonIdentifiers = [(PXSharedLibraryRulePeopleDataManager *)self->_peopleDataManager currentPersonIdentifiers];
+  [v10 setDisabledIdentifiers:currentPersonIdentifiers];
 
   v5 = objc_alloc(MEMORY[0x1E69790E0]);
-  v6 = [(PXSharedLibraryStatusProvider *)self->_sharedLibraryStatusProvider photoLibrary];
-  v7 = [v5 initWithPhotoLibrary:v6];
+  photoLibrary = [(PXSharedLibraryStatusProvider *)self->_sharedLibraryStatusProvider photoLibrary];
+  v7 = [v5 initWithPhotoLibrary:photoLibrary];
 
   [v7 setSelectionLimit:0];
   v8 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_PeopleSelection_PickerTitle_AddOthers");
@@ -517,11 +517,11 @@ void __67__PXSharedLibrarySuggestionsSettingsViewController__updateSections__blo
   [(PXSharedLibrarySuggestionsSettingsViewController *)self presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)removePerson:(id)a3
+- (void)removePerson:(id)person
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  personCopy = person;
+  if (personCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -529,37 +529,37 @@ void __67__PXSharedLibrarySuggestionsSettingsViewController__updateSections__blo
       goto LABEL_3;
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = objc_opt_class();
     v14 = NSStringFromClass(v15);
-    v16 = [v5 px_descriptionForAssertionMessage];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySuggestionsSettingsViewController.m" lineNumber:164 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"sender", v14, v16}];
+    px_descriptionForAssertionMessage = [personCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySuggestionsSettingsViewController.m" lineNumber:164 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"sender", v14, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    [v12 handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySuggestionsSettingsViewController.m" lineNumber:164 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"sender", v14}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySuggestionsSettingsViewController.m" lineNumber:164 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"sender", v14}];
   }
 
 LABEL_3:
-  v6 = [(UICollectionView *)self->_peopleCollectionView indexPathForCell:v5];
+  v6 = [(UICollectionView *)self->_peopleCollectionView indexPathForCell:personCopy];
   v7 = [(UICollectionViewDiffableDataSource *)self->_peopleCollectionViewDataSource itemIdentifierForIndexPath:v6];
-  v8 = [v7 person];
-  if (v8)
+  person = [v7 person];
+  if (person)
   {
-    v9 = [(PXSharedLibraryStatusProvider *)self->_sharedLibraryStatusProvider sharedLibrary];
-    v10 = [v8 uuid];
-    v18[0] = v10;
+    sharedLibrary = [(PXSharedLibraryStatusProvider *)self->_sharedLibraryStatusProvider sharedLibrary];
+    uuid = [person uuid];
+    v18[0] = uuid;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __65__PXSharedLibrarySuggestionsSettingsViewController_removePerson___block_invoke;
     v17[3] = &unk_1E774C5C0;
     v17[4] = self;
-    [v9 removePersonUUIDsFromPersonCondition:v11 completion:v17];
+    [sharedLibrary removePersonUUIDsFromPersonCondition:v11 completion:v17];
   }
 }
 
@@ -584,13 +584,13 @@ void __65__PXSharedLibrarySuggestionsSettingsViewController_removePerson___block
   }
 }
 
-- (void)suggestionsEnabledChanged:(id)a3
+- (void)suggestionsEnabledChanged:(id)changed
 {
   addingOthers = self->_addingOthers;
-  v5 = [(UISwitch *)self->_suggestionsEnabledSwitch isOn];
+  isOn = [(UISwitch *)self->_suggestionsEnabledSwitch isOn];
   if (addingOthers)
   {
-    v6 = !v5;
+    v6 = !isOn;
     suggestionsEnabledSwitch = self->_suggestionsEnabledSwitch;
 
     [(UISwitch *)suggestionsEnabledSwitch setOn:v6];
@@ -604,14 +604,14 @@ void __65__PXSharedLibrarySuggestionsSettingsViewController_removePerson___block
   }
 }
 
-- (PXSharedLibrarySuggestionsSettingsViewController)initWithSharedLibraryStatusProvider:(id)a3
+- (PXSharedLibrarySuggestionsSettingsViewController)initWithSharedLibraryStatusProvider:(id)provider
 {
   location[1] = *MEMORY[0x1E69E9840];
-  v39 = a3;
-  if (!v39)
+  providerCopy = provider;
+  if (!providerCopy)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySuggestionsSettingsViewController.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"sharedLibraryStatusProvider"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySuggestionsSettingsViewController.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"sharedLibraryStatusProvider"}];
   }
 
   v44.receiver = self;
@@ -620,7 +620,7 @@ void __65__PXSharedLibrarySuggestionsSettingsViewController_removePerson___block
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sharedLibraryStatusProvider, a3);
+    objc_storeStrong(&v6->_sharedLibraryStatusProvider, provider);
     v8 = objc_opt_new();
     sections = v7->_sections;
     v7->_sections = v8;
@@ -655,12 +655,12 @@ void __65__PXSharedLibrarySuggestionsSettingsViewController_removePerson___block
     v7->_peopleCollectionView = v23;
 
     [(UICollectionView *)v7->_peopleCollectionView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v25 = [MEMORY[0x1E69DC888] clearColor];
-    [(UICollectionView *)v7->_peopleCollectionView setBackgroundColor:v25];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UICollectionView *)v7->_peopleCollectionView setBackgroundColor:clearColor];
 
     [(UICollectionView *)v7->_peopleCollectionView setDelegate:v7];
-    v26 = [(UICollectionView *)v7->_peopleCollectionView heightAnchor];
-    v27 = [v26 constraintEqualToConstant:150.0];
+    heightAnchor = [(UICollectionView *)v7->_peopleCollectionView heightAnchor];
+    v27 = [heightAnchor constraintEqualToConstant:150.0];
     [v27 setActive:1];
 
     objc_initWeak(location, v7);

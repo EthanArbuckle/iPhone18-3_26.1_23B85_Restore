@@ -1,8 +1,8 @@
 @interface _UIBarButtonItemData
-+ (id)decodeFromCoder:(id)a3 prefix:(id)a4;
++ (id)decodeFromCoder:(id)coder prefix:(id)prefix;
 + (id)standardBackButtonData;
-+ (id)standardItemDataForStyle:(int64_t)a3;
-- (BOOL)checkEqualTo:(id)a3;
++ (id)standardItemDataForStyle:(int64_t)style;
+- (BOOL)checkEqualTo:(id)to;
 - (UIImage)backIndicatorImage;
 - (UIImage)backIndicatorTransitionMaskImage;
 - (UIImage)compactBackIndicatorImage;
@@ -12,35 +12,35 @@
 - (UIImageSymbolConfiguration)compactBackIndicatorTransitionMaskSymbolConfiguration;
 - (UIImageSymbolConfiguration)compactImageSymbolConfiguration;
 - (UIImageSymbolConfiguration)imageSymbolConfiguration;
-- (UIOffset)backgroundImagePositionAdjustmentForState:(int64_t)a3;
-- (UIOffset)backgroundImagePositionAdjustmentForState:(int64_t)a3 style:(int64_t)a4;
-- (UIOffset)titlePositionAdjustmentForState:(int64_t)a3;
-- (UIOffset)titlePositionAdjustmentForState:(int64_t)a3 style:(int64_t)a4;
-- (_UIBarButtonItemData)dataWithNewFallback:(id)a3;
-- (_UIBarButtonItemData)initWithStyle:(int64_t)a3;
-- (id)__backIndicatorConfigurationForConfig:(uint64_t)a3 withScale:;
-- (id)_fallbackColorForState:(int64_t)a3;
-- (id)_fallbackFontForState:(int64_t)a3;
-- (id)backgroundImageForState:(int64_t)a3;
-- (id)backgroundImageForState:(int64_t)a3 style:(int64_t)a4;
-- (id)colorForState:(int64_t)a3 style:(int64_t)a4;
-- (id)copyAsBackButtonDataWithIndicatorsAndFallbackFrom:(id)a3;
-- (id)fontForState:(int64_t)a3 style:(int64_t)a4;
+- (UIOffset)backgroundImagePositionAdjustmentForState:(int64_t)state;
+- (UIOffset)backgroundImagePositionAdjustmentForState:(int64_t)state style:(int64_t)style;
+- (UIOffset)titlePositionAdjustmentForState:(int64_t)state;
+- (UIOffset)titlePositionAdjustmentForState:(int64_t)state style:(int64_t)style;
+- (_UIBarButtonItemData)dataWithNewFallback:(id)fallback;
+- (_UIBarButtonItemData)initWithStyle:(int64_t)style;
+- (id)__backIndicatorConfigurationForConfig:(uint64_t)config withScale:;
+- (id)_fallbackColorForState:(int64_t)state;
+- (id)_fallbackFontForState:(int64_t)state;
+- (id)backgroundImageForState:(int64_t)state;
+- (id)backgroundImageForState:(int64_t)state style:(int64_t)style;
+- (id)colorForState:(int64_t)state style:(int64_t)style;
+- (id)copyAsBackButtonDataWithIndicatorsAndFallbackFrom:(id)from;
+- (id)fontForState:(int64_t)state style:(int64_t)style;
 - (id)replicate;
-- (id)titleTextAttributesForState:(int64_t)a3;
-- (int64_t)hashInto:(int64_t)a3;
-- (void)_decodeBackgroundImagesFromCoder:(id)a3 prefix:(id)a4;
-- (void)_decodeBackgroundPositionAdjustmentsFromCoder:(id)a3 prefix:(id)a4;
-- (void)_decodeTitlePositionAdjustmentsFromCoder:(id)a3 prefix:(id)a4;
-- (void)_decodeTitleTextAttributesFromCoder:(id)a3 prefix:(id)a4;
-- (void)describeInto:(id)a3;
-- (void)encodeToCoder:(id)a3 prefix:(id)a4;
+- (id)titleTextAttributesForState:(int64_t)state;
+- (int64_t)hashInto:(int64_t)into;
+- (void)_decodeBackgroundImagesFromCoder:(id)coder prefix:(id)prefix;
+- (void)_decodeBackgroundPositionAdjustmentsFromCoder:(id)coder prefix:(id)prefix;
+- (void)_decodeTitlePositionAdjustmentsFromCoder:(id)coder prefix:(id)prefix;
+- (void)_decodeTitleTextAttributesFromCoder:(id)coder prefix:(id)prefix;
+- (void)describeInto:(id)into;
+- (void)encodeToCoder:(id)coder prefix:(id)prefix;
 - (void)resetBackIndicatorImages;
-- (void)setBackIndicatorImage:(id)a3 transitionMaskImage:(id)a4;
-- (void)setBackgroundImage:(id)a3 forState:(int64_t)a4;
-- (void)setBackgroundImagePositionAdjustment:(UIOffset)a3 forState:(int64_t)a4;
-- (void)setTitlePositionAdjustment:(UIOffset)a3 forState:(int64_t)a4;
-- (void)setTitleTextAttributes:(id)a3 forState:(int64_t)a4;
+- (void)setBackIndicatorImage:(id)image transitionMaskImage:(id)maskImage;
+- (void)setBackgroundImage:(id)image forState:(int64_t)state;
+- (void)setBackgroundImagePositionAdjustment:(UIOffset)adjustment forState:(int64_t)state;
+- (void)setTitlePositionAdjustment:(UIOffset)adjustment forState:(int64_t)state;
+- (void)setTitleTextAttributes:(id)attributes forState:(int64_t)state;
 @end
 
 @implementation _UIBarButtonItemData
@@ -56,7 +56,7 @@
 
     v5 = qword_1ED49A368;
     *(qword_1ED49A368 + 296) |= 1u;
-    v6 = [v5 markReadOnly];
+    markReadOnly = [v5 markReadOnly];
     v2 = qword_1ED49A368;
   }
 
@@ -67,54 +67,54 @@
 {
   v22.receiver = self;
   v22.super_class = _UIBarButtonItemData;
-  v3 = [(_UIBarAppearanceData *)&v22 replicate];
-  *(v3 + 304) = self->_style;
-  *(v3 + 296) = *&self->_dataFlags;
-  objc_storeStrong((v3 + 256), self->_fallback);
+  replicate = [(_UIBarAppearanceData *)&v22 replicate];
+  *(replicate + 304) = self->_style;
+  *(replicate + 296) = *&self->_dataFlags;
+  objc_storeStrong((replicate + 256), self->_fallback);
   v4 = [(UIImage *)self->_backIndicatorImage copy];
-  v5 = *(v3 + 224);
-  *(v3 + 224) = v4;
+  v5 = *(replicate + 224);
+  *(replicate + 224) = v4;
 
   v6 = [(UIImage *)self->_backIndicatorTransitionMaskImage copy];
-  v7 = *(v3 + 232);
-  *(v3 + 232) = v6;
+  v7 = *(replicate + 232);
+  *(replicate + 232) = v6;
 
   v8 = [(UIImageSymbolConfiguration *)self->_imageSymbolConfiguration copy];
-  v9 = *(v3 + 208);
-  *(v3 + 208) = v8;
+  v9 = *(replicate + 208);
+  *(replicate + 208) = v8;
 
   v10 = [(UIImageSymbolConfiguration *)self->_compactImageSymbolConfiguration copy];
-  v11 = *(v3 + 216);
-  *(v3 + 216) = v10;
+  v11 = *(replicate + 216);
+  *(replicate + 216) = v10;
 
   v12 = [(UIImageSymbolConfiguration *)self->_backIndicatorSymbolConfiguration copy];
-  v13 = *(v3 + 240);
-  *(v3 + 240) = v12;
+  v13 = *(replicate + 240);
+  *(replicate + 240) = v12;
 
   v14 = [(UIImageSymbolConfiguration *)self->_compactBackIndicatorSymbolConfiguration copy];
-  v15 = *(v3 + 248);
-  *(v3 + 248) = v14;
+  v15 = *(replicate + 248);
+  *(replicate + 248) = v14;
 
   v16 = 0;
   v17 = 0;
-  v18 = v3 + 16;
+  v18 = replicate + 16;
   do
   {
     v19 = [(NSDictionary *)self->_titleTextAttributes[v17 / 2] copy];
     v20 = *(v18 + v17 * 4);
     *(v18 + v17 * 4) = v19;
 
-    *(v3 + 80 + v16 * 16) = self->_titlePositionAdjustment[v16];
-    objc_storeStrong((v3 + v17 * 4 + 48), self->_backgroundImage[v17 / 2]);
-    *(v3 + 144 + v16 * 16) = self->_backgroundImagePositionAdjustment[v16];
-    *(v3 + 264 + v17 * 4) = *&self->_stateFlags[v17];
+    *(replicate + 80 + v16 * 16) = self->_titlePositionAdjustment[v16];
+    objc_storeStrong((replicate + v17 * 4 + 48), self->_backgroundImage[v17 / 2]);
+    *(replicate + 144 + v16 * 16) = self->_backgroundImagePositionAdjustment[v16];
+    *(replicate + 264 + v17 * 4) = *&self->_stateFlags[v17];
     v17 += 2;
     ++v16;
   }
 
   while (v17 != 8);
 
-  return v3;
+  return replicate;
 }
 
 - (UIImageSymbolConfiguration)imageSymbolConfiguration
@@ -124,26 +124,26 @@
   {
     if (*self->_stateFlags)
     {
-      v4 = [(_UIBarButtonItemData *)self titleTextAttributesForState:0];
-      v5 = [v4 objectForKeyedSubscript:*off_1E70EC918];
+      textStyleForSymbolConfiguration2 = [(_UIBarButtonItemData *)self titleTextAttributesForState:0];
+      v5 = [textStyleForSymbolConfiguration2 objectForKeyedSubscript:*off_1E70EC918];
     }
 
     else
     {
       if (!_UISolariumEnabled())
       {
-        v6 = [(_UIBarButtonItemData *)self textStyleForSymbolConfiguration];
-        v7 = [UIImageSymbolConfiguration configurationWithTextStyle:v6 scale:3];
+        textStyleForSymbolConfiguration = [(_UIBarButtonItemData *)self textStyleForSymbolConfiguration];
+        v7 = [UIImageSymbolConfiguration configurationWithTextStyle:textStyleForSymbolConfiguration scale:3];
         goto LABEL_8;
       }
 
-      v4 = [(_UIBarButtonItemData *)self textStyleForSymbolConfiguration];
-      v5 = [off_1E70ECC18 _preferredFontForTextStyle:v4 weight:*off_1E70ECD20];
+      textStyleForSymbolConfiguration2 = [(_UIBarButtonItemData *)self textStyleForSymbolConfiguration];
+      v5 = [off_1E70ECC18 _preferredFontForTextStyle:textStyleForSymbolConfiguration2 weight:*off_1E70ECD20];
     }
 
-    v6 = v5;
+    textStyleForSymbolConfiguration = v5;
 
-    v7 = [UIImageSymbolConfiguration configurationWithFont:v6 scale:3];
+    v7 = [UIImageSymbolConfiguration configurationWithFont:textStyleForSymbolConfiguration scale:3];
 LABEL_8:
     v8 = self->_imageSymbolConfiguration;
     self->_imageSymbolConfiguration = v7;
@@ -293,11 +293,11 @@ LABEL_10:
   return v3;
 }
 
-+ (id)standardItemDataForStyle:(int64_t)a3
++ (id)standardItemDataForStyle:(int64_t)style
 {
-  if (a3 && a3 != 7)
+  if (style && style != 7)
   {
-    if (a3 == 2)
+    if (style == 2)
     {
       v4 = &_MergedGlobals_3_17;
       v5 = _MergedGlobals_3_17;
@@ -312,8 +312,8 @@ LABEL_10:
 
     if (dyld_program_sdk_at_least())
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:a1 file:@"_UIBarButtonItemData.m" lineNumber:136 description:{@"Unsupported style: %li", a3}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIBarButtonItemData.m" lineNumber:136 description:{@"Unsupported style: %li", style}];
     }
   }
 
@@ -330,29 +330,29 @@ LABEL_10:
   v10 = *v4;
   *v4 = v9;
 
-  v11 = [*v4 markReadOnly];
+  markReadOnly = [*v4 markReadOnly];
   v5 = *v4;
 LABEL_11:
 
   return v5;
 }
 
-- (_UIBarButtonItemData)initWithStyle:(int64_t)a3
+- (_UIBarButtonItemData)initWithStyle:(int64_t)style
 {
-  if (a3 == 7)
+  if (style == 7)
   {
-    v4 = 0;
+    styleCopy = 0;
   }
 
   else
   {
-    v4 = a3;
+    styleCopy = style;
   }
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if ((styleCopy & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIBarButtonItemData.m" lineNumber:167 description:{@"Unknown or unsupported UIBarButtonItemStyle style %li", v4}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIBarButtonItemData.m" lineNumber:167 description:{@"Unknown or unsupported UIBarButtonItemStyle style %li", styleCopy}];
   }
 
   v12.receiver = self;
@@ -361,7 +361,7 @@ LABEL_11:
   v6 = v5;
   if (v5)
   {
-    v5->_style = v4;
+    v5->_style = styleCopy;
     v7 = +[_UIBarButtonItemDataBaseFallback fallback];
     fallback = v6->_fallback;
     v6->_fallback = v7;
@@ -370,28 +370,28 @@ LABEL_11:
   return v6;
 }
 
-- (_UIBarButtonItemData)dataWithNewFallback:(id)a3
+- (_UIBarButtonItemData)dataWithNewFallback:(id)fallback
 {
-  v4 = a3;
-  v5 = [(_UIBarAppearanceData *)self writableInstance];
-  v6 = v4;
-  if (!v4)
+  fallbackCopy = fallback;
+  writableInstance = [(_UIBarAppearanceData *)self writableInstance];
+  v6 = fallbackCopy;
+  if (!fallbackCopy)
   {
     v6 = +[_UIBarButtonItemDataBaseFallback fallback];
   }
 
-  objc_storeStrong(v5 + 32, v6);
-  if (!v4)
+  objc_storeStrong(writableInstance + 32, v6);
+  if (!fallbackCopy)
   {
   }
 
-  return v5;
+  return writableInstance;
 }
 
-- (id)copyAsBackButtonDataWithIndicatorsAndFallbackFrom:(id)a3
+- (id)copyAsBackButtonDataWithIndicatorsAndFallbackFrom:(id)from
 {
-  v4 = a3;
-  if (!v4)
+  fromCopy = from;
+  if (!fromCopy)
   {
     if (*&self->_dataFlags)
     {
@@ -413,15 +413,15 @@ LABEL_11:
   }
 
 LABEL_2:
-  v5 = [(_UIBarButtonItemData *)self replicate];
-  v6 = v5;
-  *(v5 + 304) = 0;
-  *(v5 + 296) |= 1u;
-  if (v4)
+  replicate = [(_UIBarButtonItemData *)self replicate];
+  v6 = replicate;
+  *(replicate + 304) = 0;
+  *(replicate + 296) |= 1u;
+  if (fromCopy)
   {
-    objc_storeStrong((v5 + 256), v4[32]);
-    objc_storeStrong(v6 + 28, v4[28]);
-    objc_storeStrong(v6 + 29, v4[29]);
+    objc_storeStrong((replicate + 256), fromCopy[32]);
+    objc_storeStrong(v6 + 28, fromCopy[28]);
+    objc_storeStrong(v6 + 29, fromCopy[29]);
   }
 
 LABEL_13:
@@ -429,19 +429,19 @@ LABEL_13:
   return v6;
 }
 
-- (void)_decodeTitleTextAttributesFromCoder:(id)a3 prefix:(id)a4
+- (void)_decodeTitleTextAttributesFromCoder:(id)coder prefix:(id)prefix
 {
-  v33 = a3;
-  v6 = a4;
-  if (v6)
+  coderCopy = coder;
+  prefixCopy = prefix;
+  if (prefixCopy)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Normal.TitleTextAttributes"];
-    v8 = [v33 _ui_decodeTextAttributesForKey:v7];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Normal.TitleTextAttributes"];
+    v8 = [coderCopy _ui_decodeTextAttributesForKey:v7];
   }
 
   else
   {
-    v8 = [v33 _ui_decodeTextAttributesForKey:@"Normal.TitleTextAttributes"];
+    v8 = [coderCopy _ui_decodeTextAttributesForKey:@"Normal.TitleTextAttributes"];
   }
 
   titleTextAttributes = self->_titleTextAttributes;
@@ -461,15 +461,15 @@ LABEL_13:
   v15 = [v8 objectForKeyedSubscript:*off_1E70EC920];
   *stateFlags = *stateFlags & 0xFD | (2 * (v15 != 0));
 
-  if (v6)
+  if (prefixCopy)
   {
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Highlighted.TitleTextAttributes"];
-    v17 = [v33 _ui_decodeTextAttributesForKey:v16];
+    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Highlighted.TitleTextAttributes"];
+    v17 = [coderCopy _ui_decodeTextAttributesForKey:v16];
   }
 
   else
   {
-    v17 = [v33 _ui_decodeTextAttributesForKey:@"Highlighted.TitleTextAttributes"];
+    v17 = [coderCopy _ui_decodeTextAttributesForKey:@"Highlighted.TitleTextAttributes"];
   }
 
   objc_storeStrong(titleTextAttributes + 1, v17);
@@ -485,15 +485,15 @@ LABEL_13:
   v20 = [v17 objectForKeyedSubscript:v14];
   *&stateFlags[2] = *&stateFlags[2] & 0xFD | (2 * (v20 != 0));
 
-  if (v6)
+  if (prefixCopy)
   {
-    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Disabled.TitleTextAttributes"];
-    v22 = [v33 _ui_decodeTextAttributesForKey:v21];
+    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Disabled.TitleTextAttributes"];
+    v22 = [coderCopy _ui_decodeTextAttributesForKey:v21];
   }
 
   else
   {
-    v22 = [v33 _ui_decodeTextAttributesForKey:@"Disabled.TitleTextAttributes"];
+    v22 = [coderCopy _ui_decodeTextAttributesForKey:@"Disabled.TitleTextAttributes"];
   }
 
   objc_storeStrong(titleTextAttributes + 2, v22);
@@ -509,15 +509,15 @@ LABEL_13:
   v25 = [v22 objectForKeyedSubscript:v14];
   *&stateFlags[4] = *&stateFlags[4] & 0xFD | (2 * (v25 != 0));
 
-  if (v6)
+  if (prefixCopy)
   {
-    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Focused.TitleTextAttributes"];
-    v27 = [v33 _ui_decodeTextAttributesForKey:v26];
+    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Focused.TitleTextAttributes"];
+    v27 = [coderCopy _ui_decodeTextAttributesForKey:v26];
   }
 
   else
   {
-    v27 = [v33 _ui_decodeTextAttributesForKey:@"Focused.TitleTextAttributes"];
+    v27 = [coderCopy _ui_decodeTextAttributesForKey:@"Focused.TitleTextAttributes"];
   }
 
   v28 = titleTextAttributes[3];
@@ -538,20 +538,20 @@ LABEL_13:
   *&stateFlags[6] = *&stateFlags[6] & 0xFD | (2 * (v32 != 0));
 }
 
-- (void)_decodeBackgroundImagesFromCoder:(id)a3 prefix:(id)a4
+- (void)_decodeBackgroundImagesFromCoder:(id)coder prefix:(id)prefix
 {
-  v24 = a3;
-  v6 = a4;
+  coderCopy = coder;
+  prefixCopy = prefix;
   v7 = objc_opt_class();
-  if (v6)
+  if (prefixCopy)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Normal.BackgroundImage"];
-    v9 = [v24 decodeObjectOfClass:v7 forKey:v8];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Normal.BackgroundImage"];
+    v9 = [coderCopy decodeObjectOfClass:v7 forKey:v8];
   }
 
   else
   {
-    v9 = [v24 decodeObjectOfClass:v7 forKey:@"Normal.BackgroundImage"];
+    v9 = [coderCopy decodeObjectOfClass:v7 forKey:@"Normal.BackgroundImage"];
   }
 
   backgroundImage = self->_backgroundImage;
@@ -559,15 +559,15 @@ LABEL_13:
   stateFlags = self->_stateFlags;
   *self->_stateFlags = *self->_stateFlags & 0xF7 | (8 * (v9 != 0));
   v12 = objc_opt_class();
-  if (v6)
+  if (prefixCopy)
   {
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Highlighted.BackgroundImage"];
-    v14 = [v24 decodeObjectOfClass:v12 forKey:v13];
+    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Highlighted.BackgroundImage"];
+    v14 = [coderCopy decodeObjectOfClass:v12 forKey:v13];
   }
 
   else
   {
-    v14 = [v24 decodeObjectOfClass:v12 forKey:@"Highlighted.BackgroundImage"];
+    v14 = [coderCopy decodeObjectOfClass:v12 forKey:@"Highlighted.BackgroundImage"];
   }
 
   if (v14)
@@ -583,15 +583,15 @@ LABEL_13:
   objc_storeStrong(backgroundImage + 1, v15);
   *&stateFlags[2] = *&stateFlags[2] & 0xF7 | (8 * (v14 != 0));
   v16 = objc_opt_class();
-  if (v6)
+  if (prefixCopy)
   {
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Disabled.BackgroundImage"];
-    v18 = [v24 decodeObjectOfClass:v16 forKey:v17];
+    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Disabled.BackgroundImage"];
+    v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
   }
 
   else
   {
-    v18 = [v24 decodeObjectOfClass:v16 forKey:@"Disabled.BackgroundImage"];
+    v18 = [coderCopy decodeObjectOfClass:v16 forKey:@"Disabled.BackgroundImage"];
   }
 
   if (v18)
@@ -607,15 +607,15 @@ LABEL_13:
   objc_storeStrong(backgroundImage + 2, v19);
   *&stateFlags[4] = *&stateFlags[4] & 0xF7 | (8 * (v18 != 0));
   v20 = objc_opt_class();
-  if (v6)
+  if (prefixCopy)
   {
-    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Focused.BackgroundImage"];
-    v22 = [v24 decodeObjectOfClass:v20 forKey:v21];
+    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Focused.BackgroundImage"];
+    v22 = [coderCopy decodeObjectOfClass:v20 forKey:v21];
   }
 
   else
   {
-    v22 = [v24 decodeObjectOfClass:v20 forKey:@"Focused.BackgroundImage"];
+    v22 = [coderCopy decodeObjectOfClass:v20 forKey:@"Focused.BackgroundImage"];
   }
 
   if (v22)
@@ -632,17 +632,17 @@ LABEL_13:
   *&stateFlags[6] = *&stateFlags[6] & 0xF7 | (8 * (v22 != 0));
 }
 
-- (void)_decodeTitlePositionAdjustmentsFromCoder:(id)a3 prefix:(id)a4
+- (void)_decodeTitlePositionAdjustmentsFromCoder:(id)coder prefix:(id)prefix
 {
-  v6 = a3;
-  v7 = a4;
+  coderCopy = coder;
+  prefixCopy = prefix;
   v8 = @"Normal.TitlePosition";
-  if (v7)
+  if (prefixCopy)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Normal.TitlePosition"];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Normal.TitlePosition"];
   }
 
-  v9 = v6;
+  v9 = coderCopy;
   v10 = v8;
   if ([v9 containsValueForKey:v10])
   {
@@ -661,13 +661,13 @@ LABEL_13:
 
   stateFlags = self->_stateFlags;
   *self->_stateFlags = *self->_stateFlags & 0xFB | v15;
-  if (v7)
+  if (prefixCopy)
   {
 
     titlePositionAdjustment = self->_titlePositionAdjustment;
     self->_titlePositionAdjustment[0].horizontal = v12;
     self->_titlePositionAdjustment[0].vertical = v14;
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Highlighted.TitlePosition"];
+    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Highlighted.TitlePosition"];
   }
 
   else
@@ -696,12 +696,12 @@ LABEL_13:
   }
 
   *&stateFlags[2] = *&stateFlags[2] & 0xFB | v25;
-  if (v7)
+  if (prefixCopy)
   {
 
     titlePositionAdjustment[1].horizontal = v22;
     titlePositionAdjustment[1].vertical = v24;
-    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Disabled.TitlePosition"];
+    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Disabled.TitlePosition"];
   }
 
   else
@@ -727,12 +727,12 @@ LABEL_13:
   }
 
   *&stateFlags[4] = *&stateFlags[4] & 0xFB | v31;
-  if (v7)
+  if (prefixCopy)
   {
 
     titlePositionAdjustment[2].horizontal = v12;
     titlePositionAdjustment[2].vertical = v14;
-    v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Focused.TitlePosition"];
+    v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Focused.TitlePosition"];
   }
 
   else
@@ -758,7 +758,7 @@ LABEL_13:
   }
 
   *&stateFlags[6] = *&stateFlags[6] & 0xFB | v36;
-  if (v7)
+  if (prefixCopy)
   {
   }
 
@@ -766,17 +766,17 @@ LABEL_13:
   titlePositionAdjustment[3].vertical = v24;
 }
 
-- (void)_decodeBackgroundPositionAdjustmentsFromCoder:(id)a3 prefix:(id)a4
+- (void)_decodeBackgroundPositionAdjustmentsFromCoder:(id)coder prefix:(id)prefix
 {
-  v6 = a3;
-  v7 = a4;
+  coderCopy = coder;
+  prefixCopy = prefix;
   v8 = @"Normal.BackgroundImagePosition";
-  if (v7)
+  if (prefixCopy)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Normal.BackgroundImagePosition"];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Normal.BackgroundImagePosition"];
   }
 
-  v9 = v6;
+  v9 = coderCopy;
   v10 = v8;
   if ([v9 containsValueForKey:v10])
   {
@@ -795,13 +795,13 @@ LABEL_13:
 
   stateFlags = self->_stateFlags;
   *self->_stateFlags = *self->_stateFlags & 0xEF | v15;
-  if (v7)
+  if (prefixCopy)
   {
 
     backgroundImagePositionAdjustment = self->_backgroundImagePositionAdjustment;
     self->_backgroundImagePositionAdjustment[0].horizontal = v12;
     self->_backgroundImagePositionAdjustment[0].vertical = v14;
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Highlighted.BackgroundImagePosition"];
+    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Highlighted.BackgroundImagePosition"];
   }
 
   else
@@ -830,12 +830,12 @@ LABEL_13:
   }
 
   *&stateFlags[2] = *&stateFlags[2] & 0xEF | v25;
-  if (v7)
+  if (prefixCopy)
   {
 
     backgroundImagePositionAdjustment[1].horizontal = v22;
     backgroundImagePositionAdjustment[1].vertical = v24;
-    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Disabled.BackgroundImagePosition"];
+    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Disabled.BackgroundImagePosition"];
   }
 
   else
@@ -861,12 +861,12 @@ LABEL_13:
   }
 
   *&stateFlags[4] = *&stateFlags[4] & 0xEF | v31;
-  if (v7)
+  if (prefixCopy)
   {
 
     backgroundImagePositionAdjustment[2].horizontal = v12;
     backgroundImagePositionAdjustment[2].vertical = v14;
-    v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Focused.BackgroundImagePosition"];
+    v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Focused.BackgroundImagePosition"];
   }
 
   else
@@ -892,7 +892,7 @@ LABEL_13:
   }
 
   *&stateFlags[6] = *&stateFlags[6] & 0xEF | v36;
-  if (v7)
+  if (prefixCopy)
   {
   }
 
@@ -900,49 +900,49 @@ LABEL_13:
   backgroundImagePositionAdjustment[3].vertical = v24;
 }
 
-+ (id)decodeFromCoder:(id)a3 prefix:(id)a4
++ (id)decodeFromCoder:(id)coder prefix:(id)prefix
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  coderCopy = coder;
+  prefixCopy = prefix;
+  if (prefixCopy)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v8, @"IsBackButton"];
-    v10 = [v7 decodeBoolForKey:v9];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"IsBackButton"];
+    v10 = [coderCopy decodeBoolForKey:v9];
 
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v8, @"DefaultStyle"];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"DefaultStyle"];
   }
 
   else
   {
-    v10 = [v7 decodeBoolForKey:@"IsBackButton"];
+    v10 = [coderCopy decodeBoolForKey:@"IsBackButton"];
     v11 = @"DefaultStyle";
   }
 
-  if ([v7 containsValueForKey:v11])
+  if ([coderCopy containsValueForKey:v11])
   {
     if (v10)
     {
-      [a1 standardBackButtonData];
+      [self standardBackButtonData];
     }
 
     else
     {
-      [a1 standardItemDataForStyle:{objc_msgSend(v7, "decodeIntegerForKey:", v11)}];
+      [self standardItemDataForStyle:{objc_msgSend(coderCopy, "decodeIntegerForKey:", v11)}];
     }
     v12 = ;
     goto LABEL_22;
   }
 
   v12 = objc_opt_new();
-  if (v8)
+  if (prefixCopy)
   {
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v8, @"CustomizedStyle"];
-    *(v12 + 304) = [v7 decodeIntegerForKey:v13];
+    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"CustomizedStyle"];
+    *(v12 + 304) = [coderCopy decodeIntegerForKey:v13];
   }
 
   else
   {
-    *(v12 + 304) = [v7 decodeIntegerForKey:@"CustomizedStyle"];
+    *(v12 + 304) = [coderCopy decodeIntegerForKey:@"CustomizedStyle"];
   }
 
   *(v12 + 296) = *(v12 + 296) & 0xFE | v10;
@@ -950,10 +950,10 @@ LABEL_13:
   v15 = *(v12 + 256);
   *(v12 + 256) = v14;
 
-  [v12 _decodeTitleTextAttributesFromCoder:v7 prefix:v8];
-  [v12 _decodeBackgroundImagesFromCoder:v7 prefix:v8];
-  [v12 _decodeTitlePositionAdjustmentsFromCoder:v7 prefix:v8];
-  [v12 _decodeBackgroundPositionAdjustmentsFromCoder:v7 prefix:v8];
+  [v12 _decodeTitleTextAttributesFromCoder:coderCopy prefix:prefixCopy];
+  [v12 _decodeBackgroundImagesFromCoder:coderCopy prefix:prefixCopy];
+  [v12 _decodeTitlePositionAdjustmentsFromCoder:coderCopy prefix:prefixCopy];
+  [v12 _decodeBackgroundPositionAdjustmentsFromCoder:coderCopy prefix:prefixCopy];
   if (!v10)
   {
     goto LABEL_22;
@@ -961,20 +961,20 @@ LABEL_13:
 
   v16 = objc_opt_class();
   v17 = @"BackIndicator";
-  if (v8)
+  if (prefixCopy)
   {
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v8, @"BackIndicator"];
+    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"BackIndicator"];
   }
 
-  v18 = [v7 decodeObjectOfClass:v16 forKey:v17];
+  v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
   v19 = *(v12 + 224);
   *(v12 + 224) = v18;
 
-  if (v8)
+  if (prefixCopy)
   {
 
     v20 = objc_opt_class();
-    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v8, @"BackIndicatorTransitionMask"];
+    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"BackIndicatorTransitionMask"];
   }
 
   else
@@ -983,11 +983,11 @@ LABEL_13:
     v21 = @"BackIndicatorTransitionMask";
   }
 
-  v22 = [v7 decodeObjectOfClass:v20 forKey:v21];
+  v22 = [coderCopy decodeObjectOfClass:v20 forKey:v21];
   v23 = *(v12 + 232);
   *(v12 + 232) = v22;
 
-  if (v8)
+  if (prefixCopy)
   {
   }
 
@@ -1005,26 +1005,26 @@ LABEL_13:
     goto LABEL_22;
   }
 
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:a1 file:@"_UIBarButtonItemData.m" lineNumber:352 description:{@"Invalid BackButton Appearance archive - must either contain both a back indicator image and a back indicator transition mask image, or contain neither image"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIBarButtonItemData.m" lineNumber:352 description:{@"Invalid BackButton Appearance archive - must either contain both a back indicator image and a back indicator transition mask image, or contain neither image"}];
 
 LABEL_22:
 
   return v12;
 }
 
-- (void)encodeToCoder:(id)a3 prefix:(id)a4
+- (void)encodeToCoder:(id)coder prefix:(id)prefix
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  coderCopy = coder;
+  prefixCopy = prefix;
+  v8 = prefixCopy;
   if (qword_1ED49A360 == self)
   {
-    if (v7)
+    if (prefixCopy)
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"DefaultStyle"];
-      v11 = v6;
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"DefaultStyle"];
+      v11 = coderCopy;
       v12 = 0;
 LABEL_11:
       [v11 encodeInteger:v12 forKey:v10];
@@ -1033,7 +1033,7 @@ LABEL_12:
       goto LABEL_53;
     }
 
-    v14 = v6;
+    v14 = coderCopy;
     v15 = 0;
 LABEL_20:
     [v14 encodeInteger:v15 forKey:@"DefaultStyle"];
@@ -1042,76 +1042,76 @@ LABEL_20:
 
   if (_MergedGlobals_3_17 == self)
   {
-    if (v7)
+    if (prefixCopy)
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"DefaultStyle"];
-      v11 = v6;
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"DefaultStyle"];
+      v11 = coderCopy;
       v12 = 2;
       goto LABEL_11;
     }
 
-    v14 = v6;
+    v14 = coderCopy;
     v15 = 2;
     goto LABEL_20;
   }
 
   if (qword_1ED49A368 == self)
   {
-    if (!v7)
+    if (!prefixCopy)
     {
-      [v6 encodeInteger:0 forKey:@"DefaultStyle"];
-      [v6 encodeBool:1 forKey:@"IsBackButton"];
+      [coderCopy encodeInteger:0 forKey:@"DefaultStyle"];
+      [coderCopy encodeBool:1 forKey:@"IsBackButton"];
       goto LABEL_53;
     }
 
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"DefaultStyle"];
-    [v6 encodeInteger:0 forKey:v13];
+    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"DefaultStyle"];
+    [coderCopy encodeInteger:0 forKey:v13];
 
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v8, @"IsBackButton"];
-    [v6 encodeBool:1 forKey:v10];
+    [coderCopy encodeBool:1 forKey:v10];
     goto LABEL_12;
   }
 
-  v39 = v7;
+  v39 = prefixCopy;
   if (*&self->_dataFlags)
   {
-    if (!v7)
+    if (!prefixCopy)
     {
       v40 = 1;
-      [v6 encodeBool:1 forKey:@"IsBackButton"];
-      [v6 encodeObject:self->_backIndicatorImage forKey:@"BackIndicator"];
-      [v6 encodeObject:self->_backIndicatorTransitionMaskImage forKey:@"BackIndicatorTransitionMask"];
-      [v6 encodeInteger:self->_style forKey:@"CustomizedStyle"];
+      [coderCopy encodeBool:1 forKey:@"IsBackButton"];
+      [coderCopy encodeObject:self->_backIndicatorImage forKey:@"BackIndicator"];
+      [coderCopy encodeObject:self->_backIndicatorTransitionMaskImage forKey:@"BackIndicatorTransitionMask"];
+      [coderCopy encodeInteger:self->_style forKey:@"CustomizedStyle"];
       goto LABEL_23;
     }
 
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"IsBackButton"];
-    [v6 encodeBool:1 forKey:v16];
+    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"IsBackButton"];
+    [coderCopy encodeBool:1 forKey:v16];
 
     backIndicatorImage = self->_backIndicatorImage;
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v8, @"BackIndicator"];
-    [v6 encodeObject:backIndicatorImage forKey:v18];
+    [coderCopy encodeObject:backIndicatorImage forKey:v18];
 
     backIndicatorTransitionMaskImage = self->_backIndicatorTransitionMaskImage;
     v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v8, @"BackIndicatorTransitionMask"];
-    [v6 encodeObject:backIndicatorTransitionMaskImage forKey:v20];
+    [coderCopy encodeObject:backIndicatorTransitionMaskImage forKey:v20];
 
     style = self->_style;
     goto LABEL_18;
   }
 
   style = self->_style;
-  if (v7)
+  if (prefixCopy)
   {
 LABEL_18:
     v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v8, @"CustomizedStyle"];
-    [v6 encodeInteger:style forKey:v21];
+    [coderCopy encodeInteger:style forKey:v21];
 
     v40 = 0;
     goto LABEL_23;
   }
 
-  [v6 encodeInteger:self->_style forKey:@"CustomizedStyle"];
+  [coderCopy encodeInteger:self->_style forKey:@"CustomizedStyle"];
   v40 = 1;
 LABEL_23:
   v22 = 0;
@@ -1137,12 +1137,12 @@ LABEL_23:
       if (v24)
       {
         v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v24, @"TitleTextAttributes"];
-        [v6 _ui_encodeTextAttributes:v26 forKey:v27];
+        [coderCopy _ui_encodeTextAttributes:v26 forKey:v27];
       }
 
       else
       {
-        [v6 _ui_encodeTextAttributes:self->_titleTextAttributes[v22 / 8] forKey:@"TitleTextAttributes"];
+        [coderCopy _ui_encodeTextAttributes:self->_titleTextAttributes[v22 / 8] forKey:@"TitleTextAttributes"];
       }
     }
 
@@ -1153,7 +1153,7 @@ LABEL_23:
       v30 = self->_backgroundImage[v22 / 8];
       if (!v25)
       {
-        [v6 encodeObject:self->_backgroundImage[v22 / 8] forKey:@"BackgroundImage"];
+        [coderCopy encodeObject:self->_backgroundImage[v22 / 8] forKey:@"BackgroundImage"];
         if ((*&stateFlags[v22 / 4] & 4) == 0)
         {
           if ((*&stateFlags[v22 / 4] & 0x10) == 0)
@@ -1168,7 +1168,7 @@ LABEL_23:
       }
 
       v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v25, @"BackgroundImage"];
-      [v6 encodeObject:v30 forKey:v31];
+      [coderCopy encodeObject:v30 forKey:v31];
 
       v29 = stateFlags[v22 / 4];
     }
@@ -1190,7 +1190,7 @@ LABEL_40:
     v32 = 1;
     v33 = @"TitlePosition";
 LABEL_41:
-    [v6 encodeUIOffset:v33 forKey:{p_immutable[9], p_immutable[10]}];
+    [coderCopy encodeUIOffset:v33 forKey:{p_immutable[9], p_immutable[10]}];
     if ((v32 & 1) == 0)
     {
     }
@@ -1213,7 +1213,7 @@ LABEL_46:
     v34 = 1;
     v35 = @"BackgroundImagePosition";
 LABEL_47:
-    [v6 encodeUIOffset:v35 forKey:{p_immutable[17], p_immutable[18]}];
+    [coderCopy encodeUIOffset:v35 forKey:{p_immutable[17], p_immutable[18]}];
     if ((v34 & 1) == 0)
     {
     }
@@ -1233,14 +1233,14 @@ LABEL_49:
 LABEL_53:
 }
 
-- (void)describeInto:(id)a3
+- (void)describeInto:(id)into
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  intoCopy = into;
   v17.receiver = self;
   v17.super_class = _UIBarButtonItemData;
-  [(_UIBarAppearanceData *)&v17 describeInto:v4];
-  [v4 appendString:@" baseStyle="];
+  [(_UIBarAppearanceData *)&v17 describeInto:intoCopy];
+  [intoCopy appendString:@" baseStyle="];
   if ((*&self->_dataFlags & 1) == 0)
   {
     style = self->_style;
@@ -1253,7 +1253,7 @@ LABEL_53:
     {
       if (style)
       {
-        [v4 appendFormat:@"unknown(%li)", self->_style, v16];
+        [intoCopy appendFormat:@"unknown(%li)", self->_style, v16];
         goto LABEL_11;
       }
 
@@ -1263,16 +1263,16 @@ LABEL_53:
     goto LABEL_9;
   }
 
-  [v4 appendString:@"backButton"];
+  [intoCopy appendString:@"backButton"];
   if (!self->_backIndicatorImage)
   {
     v6 = @" backIndicator=default mask=default";
 LABEL_9:
-    [v4 appendString:v6];
+    [intoCopy appendString:v6];
     goto LABEL_11;
   }
 
-  [v4 appendFormat:@" backIndicator=%@ mask=%@", self->_backIndicatorImage, self->_backIndicatorTransitionMaskImage];
+  [intoCopy appendFormat:@" backIndicator=%@ mask=%@", self->_backIndicatorImage, self->_backIndicatorTransitionMaskImage];
 LABEL_11:
   v7 = 0;
   v8 = 1;
@@ -1280,29 +1280,29 @@ LABEL_11:
   v18[1] = *&off_1E711FCC0;
   do
   {
-    objc_msgSend(v4, "appendFormat:", @" %@=(titleTextAttributes="), *(v18 + v7);
-    _UIBADPrettyPrintTextAttributes(v4, self->_titleTextAttributes[v7 / 8]);
+    objc_msgSend(intoCopy, "appendFormat:", @" %@=(titleTextAttributes="), *(v18 + v7);
+    _UIBADPrettyPrintTextAttributes(intoCopy, self->_titleTextAttributes[v7 / 8]);
     stateFlags = self->_stateFlags;
     v10 = self->_stateFlags[v7 / 4];
     if ((v10 & 4) != 0)
     {
       v11 = NSStringFromUIOffset(*&self->_backgroundImage[v8 + 3]);
-      [v4 appendFormat:@", titlePositionAdjustment=%@", v11];
+      [intoCopy appendFormat:@", titlePositionAdjustment=%@", v11];
 
       v10 = stateFlags[v7 / 4];
     }
 
     if ((v10 & 8) != 0)
     {
-      [v4 appendFormat:@", backgroundImage=%@", self->_backgroundImage[v7 / 8]];
+      [intoCopy appendFormat:@", backgroundImage=%@", self->_backgroundImage[v7 / 8]];
       if ((*&stateFlags[v7 / 4] & 0x10) != 0)
       {
         v12 = NSStringFromUIOffset(*(&self->_titlePositionAdjustment[3].vertical + v8 * 8));
-        [v4 appendFormat:@", backgroundImagePositionAdjustment=%@", v12];
+        [intoCopy appendFormat:@", backgroundImagePositionAdjustment=%@", v12];
       }
     }
 
-    [v4 appendString:@""]);
+    [intoCopy appendString:@""]);
     v8 += 2;
     v7 += 8;
   }
@@ -1313,7 +1313,7 @@ LABEL_11:
 
   if (fallback != v14)
   {
-    [v4 appendFormat:@" basedOn=%p", self->_fallback];
+    [intoCopy appendFormat:@" basedOn=%p", self->_fallback];
   }
 
   for (i = 24; i != -8; i -= 8)
@@ -1321,11 +1321,11 @@ LABEL_11:
   }
 }
 
-- (int64_t)hashInto:(int64_t)a3
+- (int64_t)hashInto:(int64_t)into
 {
   v12.receiver = self;
   v12.super_class = _UIBarButtonItemData;
-  v4 = [(_UIBarAppearanceData *)&v12 hashInto:a3];
+  v4 = [(_UIBarAppearanceData *)&v12 hashInto:into];
   v5 = self->_titleTextAttributes[0];
   if (v5)
   {
@@ -1358,17 +1358,17 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)checkEqualTo:(id)a3
+- (BOOL)checkEqualTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v30.receiver = self;
   v30.super_class = _UIBarButtonItemData;
-  if (![(_UIBarAppearanceData *)&v30 checkEqualTo:v4]|| self->_style != v4[38] || ((*(v4 + 296) ^ *&self->_dataFlags) & 1) != 0)
+  if (![(_UIBarAppearanceData *)&v30 checkEqualTo:toCopy]|| self->_style != toCopy[38] || ((*(toCopy + 296) ^ *&self->_dataFlags) & 1) != 0)
   {
     goto LABEL_46;
   }
 
-  v5 = v4[32];
+  v5 = toCopy[32];
   v6 = self->_fallback;
   v7 = v5;
   v8 = v7;
@@ -1401,7 +1401,7 @@ LABEL_11:
     }
   }
 
-  v11 = v4[28];
+  v11 = toCopy[28];
   v6 = self->_backIndicatorImage;
   v12 = v11;
   v8 = v12;
@@ -1424,7 +1424,7 @@ LABEL_11:
     }
   }
 
-  v14 = v4[29];
+  v14 = toCopy[29];
   v6 = self->_backIndicatorTransitionMaskImage;
   v15 = v14;
   v8 = v15;
@@ -1451,19 +1451,19 @@ LABEL_24:
   v17 = 0;
   while (1)
   {
-    v18 = vmovn_s64(vceqq_f64(self->_titlePositionAdjustment[v17], *&v4[2 * v17 + 10]));
+    v18 = vmovn_s64(vceqq_f64(self->_titlePositionAdjustment[v17], *&toCopy[2 * v17 + 10]));
     if ((v18.i32[0] & v18.i32[1] & 1) == 0)
     {
       break;
     }
 
-    v19 = vmovn_s64(vceqq_f64(self->_backgroundImagePositionAdjustment[v17], *&v4[2 * v17 + 18]));
+    v19 = vmovn_s64(vceqq_f64(self->_backgroundImagePositionAdjustment[v17], *&toCopy[2 * v17 + 18]));
     if ((v19.i32[0] & v19.i32[1] & 1) == 0)
     {
       break;
     }
 
-    v20 = v4[v17 + 6];
+    v20 = toCopy[v17 + 6];
     v6 = self->_backgroundImage[v17];
     v21 = v20;
     v8 = v21;
@@ -1496,7 +1496,7 @@ LABEL_24:
       }
     }
 
-    v24 = v4[v17 + 2];
+    v24 = toCopy[v17 + 2];
     v6 = self->_titleTextAttributes[v17];
     v25 = v24;
     v8 = v25;
@@ -1544,9 +1544,9 @@ LABEL_47:
   return v28;
 }
 
-- (id)_fallbackFontForState:(int64_t)a3
+- (id)_fallbackFontForState:(int64_t)state
 {
-  if (a3 == 3 && (*&self->_stateFlags[2] & 1) != 0)
+  if (state == 3 && (*&self->_stateFlags[2] & 1) != 0)
   {
     v4 = self->_titleTextAttributes[1];
   }
@@ -1568,9 +1568,9 @@ LABEL_8:
   return v3;
 }
 
-- (id)_fallbackColorForState:(int64_t)a3
+- (id)_fallbackColorForState:(int64_t)state
 {
-  if (a3 == 3 && (*&self->_stateFlags[2] & 2) != 0)
+  if (state == 3 && (*&self->_stateFlags[2] & 2) != 0)
   {
     v4 = [(NSDictionary *)self->_titleTextAttributes[1] objectForKeyedSubscript:*off_1E70EC920];
     goto LABEL_8;
@@ -1578,14 +1578,14 @@ LABEL_8:
 
   if ((*self->_stateFlags & 2) == 0)
   {
-    v4 = [(_UIBarButtonItemDataFallback *)self->_fallback colorForState:a3 style:self->_style];
+    v4 = [(_UIBarButtonItemDataFallback *)self->_fallback colorForState:state style:self->_style];
 LABEL_8:
     v5 = v4;
     goto LABEL_9;
   }
 
   v5 = [(NSDictionary *)self->_titleTextAttributes[0] objectForKeyedSubscript:*off_1E70EC920];
-  if (a3 == 2)
+  if (state == 2)
   {
     v6 = [UIColor _disabledColorForColor:v5];
 
@@ -1597,9 +1597,9 @@ LABEL_9:
   return v5;
 }
 
-- (id)titleTextAttributesForState:(int64_t)a3
+- (id)titleTextAttributesForState:(int64_t)state
 {
-  v5 = &self->_stateFlags[2 * a3];
+  v5 = &self->_stateFlags[2 * state];
   if (*v5)
   {
     v6 = 0;
@@ -1611,7 +1611,7 @@ LABEL_9:
 
   else
   {
-    v6 = [(_UIBarButtonItemData *)self _fallbackFontForState:a3];
+    v6 = [(_UIBarButtonItemData *)self _fallbackFontForState:state];
     if ((*v5 & 2) != 0)
     {
 LABEL_3:
@@ -1620,24 +1620,24 @@ LABEL_3:
     }
   }
 
-  v7 = [(_UIBarButtonItemData *)self _fallbackColorForState:a3];
+  v7 = [(_UIBarButtonItemData *)self _fallbackColorForState:state];
 LABEL_6:
-  v8 = self->_titleTextAttributes[a3];
+  v8 = self->_titleTextAttributes[state];
   if (v6 | v7)
   {
     v9 = [(NSDictionary *)v8 mutableCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = v9;
+      dictionary = v9;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v12 = v11;
+    v12 = dictionary;
 
     if (v6)
     {
@@ -1658,40 +1658,40 @@ LABEL_6:
   return v12;
 }
 
-- (void)setTitleTextAttributes:(id)a3 forState:(int64_t)a4
+- (void)setTitleTextAttributes:(id)attributes forState:(int64_t)state
 {
-  v7 = a3;
+  attributesCopy = attributes;
   [(_UIBarAppearanceData *)self assertMutable:a2];
-  v8 = [v7 objectForKeyedSubscript:*off_1E70EC918];
+  v8 = [attributesCopy objectForKeyedSubscript:*off_1E70EC918];
   stateFlags = self->_stateFlags;
-  v10 = *&self->_stateFlags[2 * a4] & 0xFE;
+  v10 = *&self->_stateFlags[2 * state] & 0xFE;
   if (v8)
   {
     ++v10;
   }
 
-  *&stateFlags[2 * a4] = v10;
+  *&stateFlags[2 * state] = v10;
 
-  v11 = [v7 objectForKeyedSubscript:*off_1E70EC920];
-  *&stateFlags[2 * a4] = *&stateFlags[2 * a4] & 0xFD | (2 * (v11 != 0));
+  v11 = [attributesCopy objectForKeyedSubscript:*off_1E70EC920];
+  *&stateFlags[2 * state] = *&stateFlags[2 * state] & 0xFD | (2 * (v11 != 0));
 
-  v12 = [v7 copy];
-  v13 = self->_titleTextAttributes[a4];
-  self->_titleTextAttributes[a4] = v12;
+  v12 = [attributesCopy copy];
+  v13 = self->_titleTextAttributes[state];
+  self->_titleTextAttributes[state] = v12;
 }
 
-- (UIOffset)titlePositionAdjustmentForState:(int64_t)a3
+- (UIOffset)titlePositionAdjustmentForState:(int64_t)state
 {
-  if ((*&self->_stateFlags[2 * a3] & 4) != 0)
+  if ((*&self->_stateFlags[2 * state] & 4) != 0)
   {
-    titlePositionAdjustment = &self->_titlePositionAdjustment[a3];
+    titlePositionAdjustment = &self->_titlePositionAdjustment[state];
 LABEL_8:
     horizontal = titlePositionAdjustment->horizontal;
     vertical = titlePositionAdjustment->vertical;
     goto LABEL_10;
   }
 
-  if (a3 == 3 && (*&self->_stateFlags[2] & 4) != 0)
+  if (state == 3 && (*&self->_stateFlags[2] & 4) != 0)
   {
     horizontal = self->_titlePositionAdjustment[1].horizontal;
     vertical = self->_titlePositionAdjustment[1].vertical;
@@ -1711,22 +1711,22 @@ LABEL_10:
   return result;
 }
 
-- (void)setTitlePositionAdjustment:(UIOffset)a3 forState:(int64_t)a4
+- (void)setTitlePositionAdjustment:(UIOffset)adjustment forState:(int64_t)state
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = adjustment.vertical;
+  horizontal = adjustment.horizontal;
   [(_UIBarAppearanceData *)self assertMutable:a2];
-  v8 = &self->_titlePositionAdjustment[a4];
+  v8 = &self->_titlePositionAdjustment[state];
   v8->horizontal = horizontal;
   v8->vertical = vertical;
-  *&self->_stateFlags[2 * a4] |= 4u;
+  *&self->_stateFlags[2 * state] |= 4u;
 }
 
-- (id)backgroundImageForState:(int64_t)a3
+- (id)backgroundImageForState:(int64_t)state
 {
-  if ((*&self->_stateFlags[2 * a3] & 8) != 0)
+  if ((*&self->_stateFlags[2 * state] & 8) != 0)
   {
-    v3 = self->_backgroundImage[a3];
+    v3 = self->_backgroundImage[state];
   }
 
   else
@@ -1737,28 +1737,28 @@ LABEL_10:
   return v3;
 }
 
-- (void)setBackgroundImage:(id)a3 forState:(int64_t)a4
+- (void)setBackgroundImage:(id)image forState:(int64_t)state
 {
-  v7 = a3;
+  imageCopy = image;
   [(_UIBarAppearanceData *)self assertMutable:a2];
-  v8 = self->_backgroundImage[a4];
-  self->_backgroundImage[a4] = v7;
+  v8 = self->_backgroundImage[state];
+  self->_backgroundImage[state] = imageCopy;
 
-  *&self->_stateFlags[2 * a4] = *&self->_stateFlags[2 * a4] & 0xF7 | (8 * (v7 != 0));
+  *&self->_stateFlags[2 * state] = *&self->_stateFlags[2 * state] & 0xF7 | (8 * (imageCopy != 0));
 }
 
-- (UIOffset)backgroundImagePositionAdjustmentForState:(int64_t)a3
+- (UIOffset)backgroundImagePositionAdjustmentForState:(int64_t)state
 {
-  if ((*&self->_stateFlags[2 * a3] & 0x10) != 0)
+  if ((*&self->_stateFlags[2 * state] & 0x10) != 0)
   {
-    backgroundImagePositionAdjustment = &self->_backgroundImagePositionAdjustment[a3];
+    backgroundImagePositionAdjustment = &self->_backgroundImagePositionAdjustment[state];
 LABEL_8:
     horizontal = backgroundImagePositionAdjustment->horizontal;
     vertical = backgroundImagePositionAdjustment->vertical;
     goto LABEL_10;
   }
 
-  if (a3 == 3 && (*&self->_stateFlags[2] & 0x10) != 0)
+  if (state == 3 && (*&self->_stateFlags[2] & 0x10) != 0)
   {
     horizontal = self->_backgroundImagePositionAdjustment[1].horizontal;
     vertical = self->_backgroundImagePositionAdjustment[1].vertical;
@@ -1778,15 +1778,15 @@ LABEL_10:
   return result;
 }
 
-- (void)setBackgroundImagePositionAdjustment:(UIOffset)a3 forState:(int64_t)a4
+- (void)setBackgroundImagePositionAdjustment:(UIOffset)adjustment forState:(int64_t)state
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = adjustment.vertical;
+  horizontal = adjustment.horizontal;
   [(_UIBarAppearanceData *)self assertMutable:a2];
-  v8 = &self->_backgroundImagePositionAdjustment[a4];
+  v8 = &self->_backgroundImagePositionAdjustment[state];
   v8->horizontal = horizontal;
   v8->vertical = vertical;
-  *&self->_stateFlags[2 * a4] |= 0x10u;
+  *&self->_stateFlags[2 * state] |= 0x10u;
 }
 
 - (UIImageSymbolConfiguration)compactImageSymbolConfiguration
@@ -1797,15 +1797,15 @@ LABEL_10:
     if (*self->_stateFlags)
     {
       v6 = [(_UIBarButtonItemData *)self titleTextAttributesForState:0];
-      v4 = [v6 objectForKeyedSubscript:*off_1E70EC918];
+      textStyleForSymbolConfiguration = [v6 objectForKeyedSubscript:*off_1E70EC918];
 
-      [UIImageSymbolConfiguration configurationWithFont:v4 scale:2];
+      [UIImageSymbolConfiguration configurationWithFont:textStyleForSymbolConfiguration scale:2];
     }
 
     else
     {
-      v4 = [(_UIBarButtonItemData *)self textStyleForSymbolConfiguration];
-      [UIImageSymbolConfiguration configurationWithTextStyle:v4 scale:2];
+      textStyleForSymbolConfiguration = [(_UIBarButtonItemData *)self textStyleForSymbolConfiguration];
+      [UIImageSymbolConfiguration configurationWithTextStyle:textStyleForSymbolConfiguration scale:2];
     }
     v5 = ;
     v7 = self->_compactImageSymbolConfiguration;
@@ -1817,15 +1817,15 @@ LABEL_10:
   return compactImageSymbolConfiguration;
 }
 
-- (void)setBackIndicatorImage:(id)a3 transitionMaskImage:(id)a4
+- (void)setBackIndicatorImage:(id)image transitionMaskImage:(id)maskImage
 {
-  v9 = a3;
-  v8 = a4;
+  imageCopy = image;
+  maskImageCopy = maskImage;
   if (*&self->_dataFlags)
   {
     [(_UIBarAppearanceData *)self assertMutable:a2];
-    objc_storeStrong(&self->_backIndicatorImage, a3);
-    objc_storeStrong(&self->_backIndicatorTransitionMaskImage, a4);
+    objc_storeStrong(&self->_backIndicatorImage, image);
+    objc_storeStrong(&self->_backIndicatorTransitionMaskImage, maskImage);
   }
 }
 
@@ -1876,12 +1876,12 @@ LABEL_10:
   return v3;
 }
 
-- (id)__backIndicatorConfigurationForConfig:(uint64_t)a3 withScale:
+- (id)__backIndicatorConfigurationForConfig:(uint64_t)config withScale:
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     if (v5)
     {
@@ -1889,14 +1889,14 @@ LABEL_10:
       goto LABEL_13;
     }
 
-    if (a1[264])
+    if (self[264])
     {
-      v10 = [a1 titleTextAttributesForState:0];
-      v11 = [v10 objectForKeyedSubscript:*off_1E70EC918];
+      v10 = [self titleTextAttributesForState:0];
+      backIndicatorTextStyleForSymbolConfiguration2 = [v10 objectForKeyedSubscript:*off_1E70EC918];
 
       v12 = _UISolariumEnabled();
-      v13 = [v11 fontDescriptor];
-      v14 = v13;
+      fontDescriptor = [backIndicatorTextStyleForSymbolConfiguration2 fontDescriptor];
+      v14 = fontDescriptor;
       if (v12)
       {
         v23 = *off_1E70ECCC0;
@@ -1911,27 +1911,27 @@ LABEL_10:
 
       else
       {
-        v18 = [v13 fontDescriptorWithSymbolicTraits:2];
+        v18 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
       }
 
       v19 = [off_1E70ECC18 fontWithDescriptor:v18 size:0.0];
-      v7 = [UIImageSymbolConfiguration configurationWithFont:v19 scale:a3];
+      v7 = [UIImageSymbolConfiguration configurationWithFont:v19 scale:config];
     }
 
     else
     {
       if (_UISolariumEnabled())
       {
-        v8 = [a1 backIndicatorTextStyleForSymbolConfiguration];
-        v9 = [off_1E70ECC18 _preferredFontForTextStyle:v8 weight:*off_1E70ECD30];
+        backIndicatorTextStyleForSymbolConfiguration = [self backIndicatorTextStyleForSymbolConfiguration];
+        v9 = [off_1E70ECC18 _preferredFontForTextStyle:backIndicatorTextStyleForSymbolConfiguration weight:*off_1E70ECD30];
 
-        v7 = [UIImageSymbolConfiguration configurationWithFont:v9 scale:a3];
+        v7 = [UIImageSymbolConfiguration configurationWithFont:v9 scale:config];
 
         goto LABEL_13;
       }
 
-      v11 = [a1 backIndicatorTextStyleForSymbolConfiguration];
-      v7 = [UIImageSymbolConfiguration configurationWithTextStyle:v11 scale:a3];
+      backIndicatorTextStyleForSymbolConfiguration2 = [self backIndicatorTextStyleForSymbolConfiguration];
+      v7 = [UIImageSymbolConfiguration configurationWithTextStyle:backIndicatorTextStyleForSymbolConfiguration2 scale:config];
     }
   }
 
@@ -2007,11 +2007,11 @@ LABEL_10:
   return v3;
 }
 
-- (id)fontForState:(int64_t)a3 style:(int64_t)a4
+- (id)fontForState:(int64_t)state style:(int64_t)style
 {
-  if (*&self->_stateFlags[2 * a3])
+  if (*&self->_stateFlags[2 * state])
   {
-    [(NSDictionary *)self->_titleTextAttributes[a3] objectForKeyedSubscript:*off_1E70EC918, a4];
+    [(NSDictionary *)self->_titleTextAttributes[state] objectForKeyedSubscript:*off_1E70EC918, style];
   }
 
   else
@@ -2023,11 +2023,11 @@ LABEL_10:
   return v4;
 }
 
-- (id)colorForState:(int64_t)a3 style:(int64_t)a4
+- (id)colorForState:(int64_t)state style:(int64_t)style
 {
-  if ((*&self->_stateFlags[2 * a3] & 2) != 0)
+  if ((*&self->_stateFlags[2 * state] & 2) != 0)
   {
-    [(NSDictionary *)self->_titleTextAttributes[a3] objectForKeyedSubscript:*off_1E70EC920, a4];
+    [(NSDictionary *)self->_titleTextAttributes[state] objectForKeyedSubscript:*off_1E70EC920, style];
   }
 
   else
@@ -2039,18 +2039,18 @@ LABEL_10:
   return v4;
 }
 
-- (UIOffset)titlePositionAdjustmentForState:(int64_t)a3 style:(int64_t)a4
+- (UIOffset)titlePositionAdjustmentForState:(int64_t)state style:(int64_t)style
 {
-  if ((*&self->_stateFlags[2 * a3] & 4) != 0)
+  if ((*&self->_stateFlags[2 * state] & 4) != 0)
   {
-    v6 = &self->_titlePositionAdjustment[a3];
+    v6 = &self->_titlePositionAdjustment[state];
     horizontal = v6->horizontal;
     vertical = v6->vertical;
   }
 
   else
   {
-    [(_UIBarButtonItemDataFallback *)self->_fallback titlePositionAdjustmentForState:a3 style:a3];
+    [(_UIBarButtonItemDataFallback *)self->_fallback titlePositionAdjustmentForState:state style:state];
   }
 
   result.vertical = vertical;
@@ -2058,11 +2058,11 @@ LABEL_10:
   return result;
 }
 
-- (id)backgroundImageForState:(int64_t)a3 style:(int64_t)a4
+- (id)backgroundImageForState:(int64_t)state style:(int64_t)style
 {
-  if ((*&self->_stateFlags[2 * a3] & 8) != 0)
+  if ((*&self->_stateFlags[2 * state] & 8) != 0)
   {
-    v4 = self->_backgroundImage[a3];
+    v4 = self->_backgroundImage[state];
   }
 
   else
@@ -2073,11 +2073,11 @@ LABEL_10:
   return v4;
 }
 
-- (UIOffset)backgroundImagePositionAdjustmentForState:(int64_t)a3 style:(int64_t)a4
+- (UIOffset)backgroundImagePositionAdjustmentForState:(int64_t)state style:(int64_t)style
 {
-  if ((*&self->_stateFlags[2 * a3] & 0x10) != 0)
+  if ((*&self->_stateFlags[2 * state] & 0x10) != 0)
   {
-    v6 = &self->_backgroundImagePositionAdjustment[a3];
+    v6 = &self->_backgroundImagePositionAdjustment[state];
     horizontal = v6->horizontal;
     vertical = v6->vertical;
   }

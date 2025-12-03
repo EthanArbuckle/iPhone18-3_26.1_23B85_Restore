@@ -21,8 +21,8 @@
   v3 = [(PUContainedDataSourceInfo *)&v8 description];
   v10.location = [(PUContainedDataSourceInfo *)self externalSections];
   v4 = NSStringFromRange(v10);
-  v5 = [(PUContainedDataSourceInfo *)self assetsDataSource];
-  v6 = [v3 stringByAppendingFormat:@" externalSections:%@ assetsDataSource:%@", v4, v5];
+  assetsDataSource = [(PUContainedDataSourceInfo *)self assetsDataSource];
+  v6 = [v3 stringByAppendingFormat:@" externalSections:%@ assetsDataSource:%@", v4, assetsDataSource];
 
   return v6;
 }

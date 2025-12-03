@@ -1,37 +1,37 @@
 @interface CRLShapeLibraryHelper
-+ (BOOL)shouldAddBaseShapeNameAndKeywordsForLocale:(id)a3;
-+ (id)keywordByCapitalizingLowercasedKeyword:(id)a3 locale:(id)a4;
-+ (id)keywordsByCapitalizingLowercasedKeywords:(id)a3 locale:(id)a4;
++ (BOOL)shouldAddBaseShapeNameAndKeywordsForLocale:(id)locale;
++ (id)keywordByCapitalizingLowercasedKeyword:(id)keyword locale:(id)locale;
++ (id)keywordsByCapitalizingLowercasedKeywords:(id)keywords locale:(id)locale;
 @end
 
 @implementation CRLShapeLibraryHelper
 
-+ (id)keywordsByCapitalizingLowercasedKeywords:(id)a3 locale:(id)a4
++ (id)keywordsByCapitalizingLowercasedKeywords:(id)keywords locale:(id)locale
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100176BB0;
   v9[3] = &unk_101841F20;
-  v10 = a4;
-  v11 = a1;
-  v6 = v10;
-  v7 = [a3 crl_arrayByMappingObjectsUsingBlock:v9];
+  localeCopy = locale;
+  selfCopy = self;
+  v6 = localeCopy;
+  v7 = [keywords crl_arrayByMappingObjectsUsingBlock:v9];
 
   return v7;
 }
 
-+ (id)keywordByCapitalizingLowercasedKeyword:(id)a3 locale:(id)a4
++ (id)keywordByCapitalizingLowercasedKeyword:(id)keyword locale:(id)locale
 {
-  v5 = a3;
-  v6 = a4;
+  keywordCopy = keyword;
+  localeCopy = locale;
   if (qword_101A346D8 != -1)
   {
     sub_1013232A0();
   }
 
-  v7 = [v6 locale];
-  v8 = [v5 lowercaseStringWithLocale:v7];
-  v9 = [v8 isEqualToString:v5];
+  locale = [localeCopy locale];
+  v8 = [keywordCopy lowercaseStringWithLocale:locale];
+  v9 = [v8 isEqualToString:keywordCopy];
 
   if (v9)
   {
@@ -40,19 +40,19 @@
     v21 = 0x3032000000;
     v22 = sub_100176DFC;
     v23 = sub_100176E0C;
-    v24 = [qword_101A346E0 objectForKey:v5];
+    v24 = [qword_101A346E0 objectForKey:keywordCopy];
     v10 = v20[5];
     if (!v10)
     {
-      v11 = [v5 length];
+      v11 = [keywordCopy length];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_100176E14;
       v15[3] = &unk_101841F68;
       v18 = &v19;
-      v12 = v5;
+      v12 = keywordCopy;
       v16 = v12;
-      v17 = v6;
+      v17 = localeCopy;
       [v12 enumerateSubstringsInRange:0 options:v11 usingBlock:{3, v15}];
       [qword_101A346E0 setObject:v20[5] forKey:v12];
 
@@ -62,18 +62,18 @@
     v13 = v10;
 
     _Block_object_dispose(&v19, 8);
-    v5 = v13;
+    keywordCopy = v13;
   }
 
-  return v5;
+  return keywordCopy;
 }
 
-+ (BOOL)shouldAddBaseShapeNameAndKeywordsForLocale:(id)a3
++ (BOOL)shouldAddBaseShapeNameAndKeywordsForLocale:(id)locale
 {
-  v3 = [a3 locale];
-  v4 = [v3 localeIdentifier];
+  locale = [locale locale];
+  localeIdentifier = [locale localeIdentifier];
 
-  if ([v4 hasPrefix:@"en"])
+  if ([localeIdentifier hasPrefix:@"en"])
   {
     v5 = 0;
   }
@@ -84,7 +84,7 @@
     v7[1] = 3221225472;
     v7[2] = sub_100176F98;
     v7[3] = &unk_101841F90;
-    v8 = v4;
+    v8 = localeIdentifier;
     v5 = [&off_1018E1128 crl_containsObjectPassingTest:v7];
   }
 

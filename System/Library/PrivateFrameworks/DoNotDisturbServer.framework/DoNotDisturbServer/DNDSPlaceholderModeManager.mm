@@ -1,40 +1,40 @@
 @interface DNDSPlaceholderModeManager
-- (DNDSPlaceholderModeManager)initWithBackingStore:(id)a3;
-- (id)_readPlaceholderModesReturningError:(id *)a3;
-- (id)placeholderModeIgnoringExcludedPlatformsForSemanticType:(int64_t)a3;
-- (id)placeholderModesWithError:(id *)a3;
+- (DNDSPlaceholderModeManager)initWithBackingStore:(id)store;
+- (id)_readPlaceholderModesReturningError:(id *)error;
+- (id)placeholderModeIgnoringExcludedPlatformsForSemanticType:(int64_t)type;
+- (id)placeholderModesWithError:(id *)error;
 @end
 
 @implementation DNDSPlaceholderModeManager
 
-- (DNDSPlaceholderModeManager)initWithBackingStore:(id)a3
+- (DNDSPlaceholderModeManager)initWithBackingStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = DNDSPlaceholderModeManager;
   v6 = [(DNDSPlaceholderModeManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backingStore, a3);
+    objc_storeStrong(&v6->_backingStore, store);
   }
 
   return v7;
 }
 
-- (id)placeholderModesWithError:(id *)a3
+- (id)placeholderModesWithError:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(DNDSPlaceholderModeManager *)self _readPlaceholderModesReturningError:a3];
-  v4 = [MEMORY[0x277CBEB18] array];
+  v3 = [(DNDSPlaceholderModeManager *)self _readPlaceholderModesReturningError:error];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = currentDevicePlatformString();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v17 = v3;
-  v6 = [v3 placeholderModes];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  placeholderModes = [v3 placeholderModes];
+  v7 = [placeholderModes countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -45,24 +45,24 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(placeholderModes);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 placeholderExcludedPlatforms];
-        v13 = [v12 containsObject:v5];
+        placeholderExcludedPlatforms = [v11 placeholderExcludedPlatforms];
+        v13 = [placeholderExcludedPlatforms containsObject:v5];
 
         if ((v13 & 1) == 0)
         {
           v14 = [MEMORY[0x277D05930] modeForRecord:v11];
           if ([v14 semanticType] != 9 || (_os_feature_enabled_impl() & 1) != 0 || !+[DNDSPlatformEligibility isIntelligenceAvailable](DNDSPlatformEligibility, "isIntelligenceAvailable"))
           {
-            [v4 addObject:v14];
+            [array addObject:v14];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [placeholderModes countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
@@ -70,10 +70,10 @@
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
-- (id)placeholderModeIgnoringExcludedPlatformsForSemanticType:(int64_t)a3
+- (id)placeholderModeIgnoringExcludedPlatformsForSemanticType:(int64_t)type
 {
   v19 = *MEMORY[0x277D85DE8];
   v4 = [(DNDSPlaceholderModeManager *)self _readPlaceholderModesReturningError:0];
@@ -81,8 +81,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 placeholderModes];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  placeholderModes = [v4 placeholderModes];
+  v6 = [placeholderModes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -93,18 +93,18 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(placeholderModes);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        if ([v10 semanticType] == a3)
+        if ([v10 semanticType] == type)
         {
           v11 = [MEMORY[0x277D05930] modeForRecord:v10];
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [placeholderModes countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -122,7 +122,7 @@ LABEL_11:
   return v11;
 }
 
-- (id)_readPlaceholderModesReturningError:(id *)a3
+- (id)_readPlaceholderModesReturningError:(id *)error
 {
   backingStore = self->_backingStore;
   v11 = 0;
@@ -131,10 +131,10 @@ LABEL_11:
   v7 = v6;
   if (v6)
   {
-    if (a3)
+    if (error)
     {
       v8 = v6;
-      *a3 = v7;
+      *error = v7;
     }
 
     v9 = DNDSLogGeneral;

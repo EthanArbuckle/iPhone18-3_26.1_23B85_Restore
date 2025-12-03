@@ -5,17 +5,17 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setContent:(id)a3;
-- (void)setTargetNote:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setContent:(id)content;
+- (void)setTargetNote:(id)note;
 @end
 
 @implementation INAppendToNoteIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INAppendToNoteIntent *)self _typedBackingStore:a3];
+  v6 = [(INAppendToNoteIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -24,29 +24,29 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"targetNote";
-  v3 = [(INAppendToNoteIntent *)self targetNote];
-  v4 = v3;
-  if (!v3)
+  targetNote = [(INAppendToNoteIntent *)self targetNote];
+  null = targetNote;
+  if (!targetNote)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"content";
-  v11[0] = v4;
-  v5 = [(INAppendToNoteIntent *)self content];
-  v6 = v5;
-  if (!v5)
+  v11[0] = null;
+  content = [(INAppendToNoteIntent *)self content];
+  null2 = content;
+  if (!content)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!content)
   {
   }
 
-  if (!v3)
+  if (!targetNote)
   {
   }
 
@@ -55,38 +55,38 @@
   return v7;
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v4 = a3;
-  v6 = [(INAppendToNoteIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToNoteContent(v4);
+  contentCopy = content;
+  _typedBackingStore = [(INAppendToNoteIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToNoteContent(contentCopy);
 
-  [v6 setContent:v5];
+  [_typedBackingStore setContent:v5];
 }
 
 - (INNoteContent)content
 {
-  v2 = [(INAppendToNoteIntent *)self _typedBackingStore];
-  v3 = [v2 content];
-  v4 = INIntentSlotValueTransformFromNoteContent(v3);
+  _typedBackingStore = [(INAppendToNoteIntent *)self _typedBackingStore];
+  content = [_typedBackingStore content];
+  v4 = INIntentSlotValueTransformFromNoteContent(content);
 
   return v4;
 }
 
-- (void)setTargetNote:(id)a3
+- (void)setTargetNote:(id)note
 {
-  v4 = a3;
-  v6 = [(INAppendToNoteIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToNote(v4);
+  noteCopy = note;
+  _typedBackingStore = [(INAppendToNoteIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToNote(noteCopy);
 
-  [v6 setTargetNote:v5];
+  [_typedBackingStore setTargetNote:v5];
 }
 
 - (INNote)targetNote
 {
-  v2 = [(INAppendToNoteIntent *)self _typedBackingStore];
-  v3 = [v2 targetNote];
-  v4 = INIntentSlotValueTransformFromNote(v3);
+  _typedBackingStore = [(INAppendToNoteIntent *)self _typedBackingStore];
+  targetNote = [_typedBackingStore targetNote];
+  v4 = INIntentSlotValueTransformFromNote(targetNote);
 
   return v4;
 }
@@ -108,28 +108,28 @@
   return v9;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INAppendToNoteIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INAppendToNoteIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INAppendToNoteIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INAppendToNoteIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

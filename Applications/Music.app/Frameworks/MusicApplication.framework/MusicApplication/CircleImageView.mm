@@ -1,5 +1,5 @@
 @interface CircleImageView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -7,14 +7,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CircleImageView.layoutSubviews()();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication15CircleImageView_layoutKind))
   {
     v5 = 160.0;
@@ -25,7 +25,7 @@
     v5 = 116.0;
   }
 
-  [*(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication15CircleImageView_textStackView) sizeThatFits:{fmin(a3.width, 290.0), a3.height}];
+  [*(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication15CircleImageView_textStackView) sizeThatFits:{fmin(fits.width, 290.0), fits.height}];
   if (height >= v5 + v6)
   {
     v7 = v5 + v6;

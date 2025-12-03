@@ -1,12 +1,12 @@
 @interface BYDaemonMigrationSourceController
 - (BYDaemonMigrationSourceController)init;
-- (void)addDelegate:(id)a3;
+- (void)addDelegate:(id)delegate;
 - (void)cancel;
-- (void)deviceMigrationManager:(id)a3 didCompleteWithError:(id)a4;
+- (void)deviceMigrationManager:(id)manager didCompleteWithError:(id)error;
 - (void)launchSetupForMigration;
-- (void)removeDelegate:(id)a3;
+- (void)removeDelegate:(id)delegate;
 - (void)start;
-- (void)waitForMigrationToCompleteWithTimeout:(double)a3 completionBlock:(id)a4;
+- (void)waitForMigrationToCompleteWithTimeout:(double)timeout completionBlock:(id)block;
 @end
 
 @implementation BYDaemonMigrationSourceController
@@ -28,49 +28,49 @@
 
 - (void)start
 {
-  v3 = [(BYDaemonMigrationSourceController *)self migrationManager];
+  migrationManager = [(BYDaemonMigrationSourceController *)self migrationManager];
 
-  if (v3)
+  if (migrationManager)
   {
-    v4 = [(BYDaemonMigrationSourceController *)self migrationManager];
-    [v4 cancelWithCause:8];
+    migrationManager2 = [(BYDaemonMigrationSourceController *)self migrationManager];
+    [migrationManager2 cancelWithCause:8];
   }
 
   v5 = [BYSourceDeviceMigration alloc];
-  v6 = [(BYDaemonMigrationSourceController *)self fileTransferSessionTemplate];
-  v7 = [v5 initWithFileTranferSession:v6];
+  fileTransferSessionTemplate = [(BYDaemonMigrationSourceController *)self fileTransferSessionTemplate];
+  v7 = [v5 initWithFileTranferSession:fileTransferSessionTemplate];
   [(BYDaemonMigrationSourceController *)self setMigrationManager:v7];
 
-  v8 = [(BYDaemonMigrationSourceController *)self migrationManager];
-  [v8 addDelegate:self];
+  migrationManager3 = [(BYDaemonMigrationSourceController *)self migrationManager];
+  [migrationManager3 addDelegate:self];
 
-  v9 = [(BYDaemonMigrationSourceController *)self migrationManager];
-  [v9 start];
+  migrationManager4 = [(BYDaemonMigrationSourceController *)self migrationManager];
+  [migrationManager4 start];
 }
 
 - (void)cancel
 {
-  v3 = [(BYDaemonMigrationSourceController *)self migrationManager];
-  [v3 cancelWithCause:1];
+  migrationManager = [(BYDaemonMigrationSourceController *)self migrationManager];
+  [migrationManager cancelWithCause:1];
 
-  v4 = [(BYDaemonMigrationSourceController *)self migrationManager];
-  [v4 removeDelegate:self];
+  migrationManager2 = [(BYDaemonMigrationSourceController *)self migrationManager];
+  [migrationManager2 removeDelegate:self];
 
   [(BYDaemonMigrationSourceController *)self setMigrationManager:0];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(BYDaemonMigrationSourceController *)self migrationManager];
-  [v5 addDelegate:v4];
+  delegateCopy = delegate;
+  migrationManager = [(BYDaemonMigrationSourceController *)self migrationManager];
+  [migrationManager addDelegate:delegateCopy];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(BYDaemonMigrationSourceController *)self migrationManager];
-  [v5 removeDelegate:v4];
+  delegateCopy = delegate;
+  migrationManager = [(BYDaemonMigrationSourceController *)self migrationManager];
+  [migrationManager removeDelegate:delegateCopy];
 }
 
 - (void)launchSetupForMigration
@@ -81,24 +81,24 @@
   CFNotificationCenterPostNotification(DarwinNotifyCenter, v3, 0, 0, 1u);
 }
 
-- (void)waitForMigrationToCompleteWithTimeout:(double)a3 completionBlock:(id)a4
+- (void)waitForMigrationToCompleteWithTimeout:(double)timeout completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(BYDaemonMigrationSourceController *)self migrationCompleteQueue];
+  blockCopy = block;
+  migrationCompleteQueue = [(BYDaemonMigrationSourceController *)self migrationCompleteQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000F808;
   block[3] = &unk_100020E38;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = blockCopy;
+  timeoutCopy = timeout;
+  v8 = blockCopy;
+  dispatch_async(migrationCompleteQueue, block);
 }
 
-- (void)deviceMigrationManager:(id)a3 didCompleteWithError:(id)a4
+- (void)deviceMigrationManager:(id)manager didCompleteWithError:(id)error
 {
-  v5 = [(BYDaemonMigrationSourceController *)self migrationCompleteQueue:a3];
+  v5 = [(BYDaemonMigrationSourceController *)self migrationCompleteQueue:manager];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000FA4C;

@@ -1,24 +1,24 @@
 @interface STCommunicationSafetyAnalyticsTipGroupSpecifierProvider
-+ (id)providerWithCoordinator:(id)a3 rootViewController:(id)a4;
++ (id)providerWithCoordinator:(id)coordinator rootViewController:(id)controller;
 - (BOOL)_shouldShowAnalyticsTip;
 - (STCommunicationSafetyAnalyticsTipGroupSpecifierProvider)init;
 - (UIViewController)rootViewController;
 - (void)_acknowledgeTip;
 - (void)_setCommunicationSafetyAnalyticsTip;
 - (void)_showCommunicationSafetyAnalyticsTipIfNeeded;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCoordinator:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCoordinator:(id)coordinator;
 @end
 
 @implementation STCommunicationSafetyAnalyticsTipGroupSpecifierProvider
 
-+ (id)providerWithCoordinator:(id)a3 rootViewController:(id)a4
++ (id)providerWithCoordinator:(id)coordinator rootViewController:(id)controller
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___STCommunicationSafetyAnalyticsTipGroupSpecifierProvider;
-  v5 = a4;
-  v6 = objc_msgSendSuper2(&v8, sel_providerWithCoordinator_, a3);
-  [v6 setRootViewController:{v5, v8.receiver, v8.super_class}];
+  controllerCopy = controller;
+  v6 = objc_msgSendSuper2(&v8, sel_providerWithCoordinator_, coordinator);
+  [v6 setRootViewController:{controllerCopy, v8.receiver, v8.super_class}];
 
   return v6;
 }
@@ -31,33 +31,33 @@
   [(STGroupSpecifierProvider *)v2 setIsHidden:1];
   v3 = MEMORY[0x277D3FAD8];
   v4 = objc_opt_new();
-  v5 = [v4 UUIDString];
-  v6 = [v3 groupSpecifierWithID:v5];
+  uUIDString = [v4 UUIDString];
+  v6 = [v3 groupSpecifierWithID:uUIDString];
 
   [(STGroupSpecifierProvider *)v2 setGroupSpecifier:v6];
   return v2;
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyReceivingRestricted" context:"STCommunicationSafetyAnalyticsTipGroupSpecifierProviderObservationContext"];
-  [v5 removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetySendingRestricted" context:"STCommunicationSafetyAnalyticsTipGroupSpecifierProviderObservationContext"];
-  [v5 removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyAnalyticsEnabled" context:"STCommunicationSafetyAnalyticsTipGroupSpecifierProviderObservationContext"];
-  [v5 removeObserver:self forKeyPath:@"viewModel.me.hasPasscode"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyReceivingRestricted" context:"STCommunicationSafetyAnalyticsTipGroupSpecifierProviderObservationContext"];
+  [coordinator removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetySendingRestricted" context:"STCommunicationSafetyAnalyticsTipGroupSpecifierProviderObservationContext"];
+  [coordinator removeObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyAnalyticsEnabled" context:"STCommunicationSafetyAnalyticsTipGroupSpecifierProviderObservationContext"];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.me.hasPasscode"];
   v6.receiver = self;
   v6.super_class = STCommunicationSafetyAnalyticsTipGroupSpecifierProvider;
-  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  if (v4)
+  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  if (coordinatorCopy)
   {
     [(STCommunicationSafetyAnalyticsTipGroupSpecifierProvider *)self _setCommunicationSafetyAnalyticsTip];
   }
 
-  [v4 addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetySendingRestricted" options:5 context:"STCommunicationSafetyAnalyticsTipGroupSpecifierProviderObservationContext"];
-  [v4 addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyReceivingRestricted" options:5 context:"STCommunicationSafetyAnalyticsTipGroupSpecifierProviderObservationContext"];
-  [v4 addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyAnalyticsEnabled" options:5 context:"STCommunicationSafetyAnalyticsTipGroupSpecifierProviderObservationContext"];
-  [v4 addObserver:self forKeyPath:@"viewModel.me.hasPasscode" options:5 context:"STCommunicationSafetyAnalyticsTipGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetySendingRestricted" options:5 context:"STCommunicationSafetyAnalyticsTipGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyReceivingRestricted" options:5 context:"STCommunicationSafetyAnalyticsTipGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"communicationSafetyCoordinator.viewModel.isCommunicationSafetyAnalyticsEnabled" options:5 context:"STCommunicationSafetyAnalyticsTipGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.me.hasPasscode" options:5 context:"STCommunicationSafetyAnalyticsTipGroupSpecifierProviderObservationContext"];
 }
 
 - (void)_setCommunicationSafetyAnalyticsTip
@@ -68,8 +68,8 @@
 
   [(PSSpecifier *)self->_communicationSafetyAnalyticsTipSpecifer setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
   v5 = [STCommunicationSafetyOnboardingController alloc];
-  v6 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v7 = [(STCommunicationSafetyOnboardingController *)v5 initWithCoordinator:v6];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  v7 = [(STCommunicationSafetyOnboardingController *)v5 initWithCoordinator:coordinator];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -154,12 +154,12 @@ void __94__STCommunicationSafetyAnalyticsTipGroupSpecifierProvider__setCommunica
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == "STCommunicationSafetyAnalyticsTipGroupSpecifierProviderObservationContext")
+  if (context == "STCommunicationSafetyAnalyticsTipGroupSpecifierProviderObservationContext")
   {
 
-    [(STCommunicationSafetyAnalyticsTipGroupSpecifierProvider *)self _showCommunicationSafetyAnalyticsTipIfNeeded:a3];
+    [(STCommunicationSafetyAnalyticsTipGroupSpecifierProvider *)self _showCommunicationSafetyAnalyticsTipIfNeeded:path];
   }
 
   else
@@ -168,18 +168,18 @@ void __94__STCommunicationSafetyAnalyticsTipGroupSpecifierProvider__setCommunica
     v10 = v7;
     v8.receiver = self;
     v8.super_class = STCommunicationSafetyAnalyticsTipGroupSpecifierProvider;
-    [(STCommunicationSafetyAnalyticsTipGroupSpecifierProvider *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(STCommunicationSafetyAnalyticsTipGroupSpecifierProvider *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
 - (void)_showCommunicationSafetyAnalyticsTipIfNeeded
 {
-  v3 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v4 = [v3 communicationSafetyCoordinator];
-  v5 = [v4 viewModel];
-  v6 = [v5 isCommunicationSafetyAnalyticsEnabled];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  communicationSafetyCoordinator = [coordinator communicationSafetyCoordinator];
+  viewModel = [communicationSafetyCoordinator viewModel];
+  isCommunicationSafetyAnalyticsEnabled = [viewModel isCommunicationSafetyAnalyticsEnabled];
 
-  if (v6)
+  if (isCommunicationSafetyAnalyticsEnabled)
   {
 
     [(STCommunicationSafetyAnalyticsTipGroupSpecifierProvider *)self _acknowledgeTip];
@@ -190,25 +190,25 @@ void __94__STCommunicationSafetyAnalyticsTipGroupSpecifierProvider__setCommunica
     if ([(STCommunicationSafetyAnalyticsTipGroupSpecifierProvider *)self _shouldShowAnalyticsTip])
     {
       [(STGroupSpecifierProvider *)self setIsHidden:0];
-      v7 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
-      v8 = [(STCommunicationSafetyAnalyticsTipGroupSpecifierProvider *)self communicationSafetyAnalyticsTipSpecifer];
-      v9 = [v7 containsObject:v8];
+      mutableSpecifiers = [(STGroupSpecifierProvider *)self mutableSpecifiers];
+      communicationSafetyAnalyticsTipSpecifer = [(STCommunicationSafetyAnalyticsTipGroupSpecifierProvider *)self communicationSafetyAnalyticsTipSpecifer];
+      v9 = [mutableSpecifiers containsObject:communicationSafetyAnalyticsTipSpecifer];
 
       if (v9)
       {
         return;
       }
 
-      v14 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
-      v10 = [(STCommunicationSafetyAnalyticsTipGroupSpecifierProvider *)self communicationSafetyAnalyticsTipSpecifer];
-      [v14 addObject:v10];
+      mutableSpecifiers2 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
+      communicationSafetyAnalyticsTipSpecifer2 = [(STCommunicationSafetyAnalyticsTipGroupSpecifierProvider *)self communicationSafetyAnalyticsTipSpecifer];
+      [mutableSpecifiers2 addObject:communicationSafetyAnalyticsTipSpecifer2];
     }
 
     else
     {
-      v11 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
-      v12 = [(STCommunicationSafetyAnalyticsTipGroupSpecifierProvider *)self communicationSafetyAnalyticsTipSpecifer];
-      v13 = [v11 containsObject:v12];
+      mutableSpecifiers3 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
+      communicationSafetyAnalyticsTipSpecifer3 = [(STCommunicationSafetyAnalyticsTipGroupSpecifierProvider *)self communicationSafetyAnalyticsTipSpecifer];
+      v13 = [mutableSpecifiers3 containsObject:communicationSafetyAnalyticsTipSpecifer3];
 
       if (!v13)
       {
@@ -216,38 +216,38 @@ void __94__STCommunicationSafetyAnalyticsTipGroupSpecifierProvider__setCommunica
       }
 
       [(STGroupSpecifierProvider *)self setIsHidden:1];
-      v14 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
-      v10 = [(STCommunicationSafetyAnalyticsTipGroupSpecifierProvider *)self communicationSafetyAnalyticsTipSpecifer];
-      [v14 removeObject:v10];
+      mutableSpecifiers2 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
+      communicationSafetyAnalyticsTipSpecifer2 = [(STCommunicationSafetyAnalyticsTipGroupSpecifierProvider *)self communicationSafetyAnalyticsTipSpecifer];
+      [mutableSpecifiers2 removeObject:communicationSafetyAnalyticsTipSpecifer2];
     }
   }
 }
 
 - (BOOL)_shouldShowAnalyticsTip
 {
-  v2 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v3 = [v2 communicationSafetyCoordinator];
-  v4 = [v3 viewModel];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  communicationSafetyCoordinator = [coordinator communicationSafetyCoordinator];
+  viewModel = [communicationSafetyCoordinator viewModel];
 
-  v5 = [v2 viewModel];
-  if ([v4 isCommunicationSafetySendingRestricted])
+  viewModel2 = [coordinator viewModel];
+  if ([viewModel isCommunicationSafetySendingRestricted])
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v4 isCommunicationSafetyReceivingRestricted] ^ 1;
+    v6 = [viewModel isCommunicationSafetyReceivingRestricted] ^ 1;
   }
 
-  v7 = [v4 isCommunicationSafetyAnalyticsEnabled];
+  isCommunicationSafetyAnalyticsEnabled = [viewModel isCommunicationSafetyAnalyticsEnabled];
   v8 = 0;
-  if ((v6 & 1) == 0 && (v7 & 1) == 0)
+  if ((v6 & 1) == 0 && (isCommunicationSafetyAnalyticsEnabled & 1) == 0)
   {
-    v9 = [v5 me];
-    v10 = [v9 dsid];
-    v11 = [v10 stringValue];
-    v12 = [STCommunicationSafetyAnalyticsTipCell didAcknowledgeTipViewForDSID:v11];
+    v9 = [viewModel2 me];
+    dsid = [v9 dsid];
+    stringValue = [dsid stringValue];
+    v12 = [STCommunicationSafetyAnalyticsTipCell didAcknowledgeTipViewForDSID:stringValue];
 
     if (v12)
     {
@@ -256,10 +256,10 @@ void __94__STCommunicationSafetyAnalyticsTipGroupSpecifierProvider__setCommunica
 
     else
     {
-      v13 = [MEMORY[0x277CF0130] sharedInstance];
-      v14 = [v13 shieldSignInOrCreateFlows];
+      mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+      shieldSignInOrCreateFlows = [mEMORY[0x277CF0130] shieldSignInOrCreateFlows];
 
-      v8 = v14 ^ 1;
+      v8 = shieldSignInOrCreateFlows ^ 1;
     }
   }
 
@@ -269,14 +269,14 @@ void __94__STCommunicationSafetyAnalyticsTipGroupSpecifierProvider__setCommunica
 - (void)_acknowledgeTip
 {
   [(STGroupSpecifierProvider *)self setIsHidden:1];
-  v3 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v7 = [v3 viewModel];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
 
-  v4 = [v7 me];
-  v5 = [v4 dsid];
-  v6 = [v5 stringValue];
+  v4 = [viewModel me];
+  dsid = [v4 dsid];
+  stringValue = [dsid stringValue];
 
-  [STCommunicationSafetyAnalyticsTipCell acknowledgeTipViewForDSID:v6];
+  [STCommunicationSafetyAnalyticsTipCell acknowledgeTipViewForDSID:stringValue];
 }
 
 - (UIViewController)rootViewController

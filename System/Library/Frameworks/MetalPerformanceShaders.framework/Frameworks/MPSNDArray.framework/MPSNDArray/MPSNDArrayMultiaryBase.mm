@@ -1,40 +1,40 @@
 @interface MPSNDArrayMultiaryBase
-- (BOOL)getDestContiguousFunctionConstant:(id)a3;
+- (BOOL)getDestContiguousFunctionConstant:(id)constant;
 - (MPSImageEdgeMode)edgeModeAtSourceIndex:(NSUInteger)sourceIndex;
 - (MPSNDArrayDescriptor)destinationArrayDescriptorForSourceArrays:(NSArray *)sources sourceState:(MPSState *)state;
 - (MPSNDArrayMultiaryBase)copyWithZone:(NSZone *)zone device:(id)device;
 - (MPSNDArrayMultiaryBase)initWithCoder:(NSCoder *)coder device:(id)device;
 - (MPSNDArrayMultiaryBase)initWithDevice:(id)device sourceCount:(NSUInteger)count;
-- (MPSNDArrayOffsets)offsetsAtSourceIndex:(SEL)a3;
-- (MPSNDArrayOffsets)stridesForSourceIndex:(SEL)a3;
-- (MPSNDArraySizes)dilationRatesForSourceIndex:(SEL)a3;
-- (MPSNDArraySizes)kernelSizesForSourceIndex:(SEL)a3;
+- (MPSNDArrayOffsets)offsetsAtSourceIndex:(SEL)index;
+- (MPSNDArrayOffsets)stridesForSourceIndex:(SEL)index;
+- (MPSNDArraySizes)dilationRatesForSourceIndex:(SEL)index;
+- (MPSNDArraySizes)kernelSizesForSourceIndex:(SEL)index;
 - (MPSState)resultStateForSourceArrays:(NSArray *)sourceArrays sourceStates:(NSArray *)sourceStates destinationArray:(MPSNDArray *)destinationArray;
 - (__n128)destinationStrides;
-- (__n128)stridesAtSourceIndex:(__n128 *)a1@<X8>;
-- (id)reshapeFitToTileToCommandBuffer:(id)a3 currentSource:(id)a4 kernelDimension:(unint64_t)a5 dimensionsToBeRetained:;
-- (id)temporaryResultStateForCommandBuffer:(id)a3 sourceArrays:(id)a4 sourceStates:(id)a5 destinationArray:(id)a6;
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 kernel:(id)a5 kernelDAGObject:(id)a6 sourceState:(id)a7;
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 sourceState:(id)a5;
-- (id)workloadStatisticsForSourceArrays:(id)a3 sourceState:(id)a4;
-- (unint64_t)maxSupportedArraySizeForIsDestination:(BOOL)a3;
-- (void)copyToGradientState:(id)a3 sourceArrays:(id)a4 sourceStates:(id)a5 destinationArray:(id)a6;
+- (__n128)stridesAtSourceIndex:(__n128 *)index@<X8>;
+- (id)reshapeFitToTileToCommandBuffer:(id)buffer currentSource:(id)source kernelDimension:(unint64_t)dimension dimensionsToBeRetained:;
+- (id)temporaryResultStateForCommandBuffer:(id)buffer sourceArrays:(id)arrays sourceStates:(id)states destinationArray:(id)array;
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays kernel:(id)kernel kernelDAGObject:(id)object sourceState:(id)state;
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays sourceState:(id)state;
+- (id)workloadStatisticsForSourceArrays:(id)arrays sourceState:(id)state;
+- (unint64_t)maxSupportedArraySizeForIsDestination:(BOOL)destination;
+- (void)copyToGradientState:(id)state sourceArrays:(id)arrays sourceStates:(id)states destinationArray:(id)array;
 - (void)dealloc;
 - (void)encodeWithCoder:(NSCoder *)coder;
-- (void)kernelDAGObjectSetup:(id *)a3 sourceArrays:(id)a4 sourceGradient:(id)a5 destination:(id)a6;
-- (void)setIndexingArithmaticTypeMask:(id *)a3 sourceArrays:(id)a4 sourceGradient:(id)a5 destination:(id)a6 tileDimensions:(unint64_t)a7;
+- (void)kernelDAGObjectSetup:(id *)setup sourceArrays:(id)arrays sourceGradient:(id)gradient destination:(id)destination;
+- (void)setIndexingArithmaticTypeMask:(id *)mask sourceArrays:(id)arrays sourceGradient:(id)gradient destination:(id)destination tileDimensions:(unint64_t)dimensions;
 @end
 
 @implementation MPSNDArrayMultiaryBase
 
-- (__n128)stridesAtSourceIndex:(__n128 *)a1@<X8>
+- (__n128)stridesAtSourceIndex:(__n128 *)index@<X8>
 {
   result.n128_u64[0] = 0x100000001;
   result.n128_u64[1] = 0x100000001;
-  a1[2] = result;
-  a1[3] = result;
-  *a1 = result;
-  a1[1] = result;
+  index[2] = result;
+  index[3] = result;
+  *index = result;
+  index[1] = result;
   return result;
 }
 
@@ -42,10 +42,10 @@
 {
   result.n128_u64[0] = 0x100000001;
   result.n128_u64[1] = 0x100000001;
-  a1[2] = result;
-  a1[3] = result;
-  *a1 = result;
-  a1[1] = result;
+  self[2] = result;
+  self[3] = result;
+  *self = result;
+  self[1] = result;
   return result;
 }
 
@@ -90,9 +90,9 @@ LABEL_11:
     result->_encodeData = result;
     result->_encodeGradient = 0;
     v9 = result;
-    v10 = [MEMORY[0x277CD72B8] defaultAllocator];
+    defaultAllocator = [MEMORY[0x277CD72B8] defaultAllocator];
     result = v9;
-    v9->_destinationArrayAllocator = v10;
+    v9->_destinationArrayAllocator = defaultAllocator;
     v9->_defaultKernelDAG = 0;
     v9->_defaultGradientDAG = 0;
   }
@@ -100,10 +100,10 @@ LABEL_11:
   return result;
 }
 
-- (void)copyToGradientState:(id)a3 sourceArrays:(id)a4 sourceStates:(id)a5 destinationArray:(id)a6
+- (void)copyToGradientState:(id)state sourceArrays:(id)arrays sourceStates:(id)states destinationArray:(id)array
 {
-  *(a3 + 16) = 123928;
-  if ([a4 count])
+  *(state + 16) = 123928;
+  if ([arrays count])
   {
     if (self)
     {
@@ -116,16 +116,16 @@ LABEL_11:
         v13 = v19;
         v12 = v20;
         v14 = v22;
-        v15 = (*(a3 + 7) + v9);
+        v15 = (*(state + 7) + v9);
         v15[2] = v21;
         v15[3] = v14;
         *v15 = v13;
         v15[1] = v12;
-        *(*(a3 + 7) + v9 + 64) = *([a4 objectAtIndexedSubscript:v10++] + *v11);
+        *(*(state + 7) + v9 + 64) = *([arrays objectAtIndexedSubscript:v10++] + *v11);
         v9 += 80;
       }
 
-      while (v10 < [a4 count]);
+      while (v10 < [arrays count]);
     }
 
     else
@@ -134,17 +134,17 @@ LABEL_11:
       v17 = MEMORY[0x277CD73F8];
       do
       {
-        v18 = (*(a3 + 7) + v16);
+        v18 = (*(state + 7) + v16);
         v18[2] = 0u;
         v18[3] = 0u;
         *v18 = 0u;
         v18[1] = 0u;
-        *(*(a3 + 7) + v16 + 64) = *([a4 objectAtIndexedSubscript:self] + *v17);
+        *(*(state + 7) + v16 + 64) = *([arrays objectAtIndexedSubscript:self] + *v17);
         self = (self + 1);
         v16 += 80;
       }
 
-      while (self < [a4 count]);
+      while (self < [arrays count]);
     }
   }
 }
@@ -172,12 +172,12 @@ LABEL_11:
   return &v9->super;
 }
 
-- (id)temporaryResultStateForCommandBuffer:(id)a3 sourceArrays:(id)a4 sourceStates:(id)a5 destinationArray:(id)a6
+- (id)temporaryResultStateForCommandBuffer:(id)buffer sourceArrays:(id)arrays sourceStates:(id)states destinationArray:(id)array
 {
-  v10 = -[MPSNDArrayGradientState initWithSourceCount:]([MPSNDArrayGradientState alloc], "initWithSourceCount:", [a4 count]);
+  v10 = -[MPSNDArrayGradientState initWithSourceCount:]([MPSNDArrayGradientState alloc], "initWithSourceCount:", [arrays count]);
   if (v10)
   {
-    [(MPSNDArrayMultiaryBase *)self copyToGradientState:v10 sourceArrays:a4 sourceStates:a5 destinationArray:a6];
+    [(MPSNDArrayMultiaryBase *)self copyToGradientState:v10 sourceArrays:arrays sourceStates:states destinationArray:array];
     if ((*(&self->super.super.isa + *MEMORY[0x277CD7378]) & 0x10) != 0)
     {
       v11 = MEMORY[0x277CCACA8];
@@ -189,7 +189,7 @@ LABEL_11:
   return v10;
 }
 
-- (unint64_t)maxSupportedArraySizeForIsDestination:(BOOL)a3
+- (unint64_t)maxSupportedArraySizeForIsDestination:(BOOL)destination
 {
   v4 = objc_opt_class();
   v5 = *MEMORY[0x277CD7350];
@@ -244,8 +244,8 @@ LABEL_11:
                 v14 = v13;
                 if (!&unk_284CD1AA8 || ([(objc_class *)v13 conformsToProtocol:&unk_284CD1AA8]& 1) != 0)
                 {
-                  v15 = [(NSCoder *)coder decodeObjectOfClass:v14 forKey:@"MultiaryNDArrayBase.oc"];
-                  if (v15)
+                  defaultAllocator = [(NSCoder *)coder decodeObjectOfClass:v14 forKey:@"MultiaryNDArrayBase.oc"];
+                  if (defaultAllocator)
                   {
                     goto LABEL_18;
                   }
@@ -261,9 +261,9 @@ LABEL_11:
           }
         }
 
-        v15 = [MEMORY[0x277CD72B8] defaultAllocator];
+        defaultAllocator = [MEMORY[0x277CD72B8] defaultAllocator];
 LABEL_18:
-        [(MPSNDArrayMultiaryBase *)v7 setDestinationArrayAllocator:v15];
+        [(MPSNDArrayMultiaryBase *)v7 setDestinationArrayAllocator:defaultAllocator];
         v7->_encodeData = v7;
         v7->_encodeGradient = 0;
         v7->_defaultKernelDAG = 0;
@@ -334,11 +334,11 @@ LABEL_18:
   return result;
 }
 
-- (MPSNDArrayOffsets)offsetsAtSourceIndex:(SEL)a3
+- (MPSNDArrayOffsets)offsetsAtSourceIndex:(SEL)index
 {
   if ((*(self->dimensions + *MEMORY[0x277CD7378]) & 1) == 0 && self->dimensions[11] <= sourceIndex)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = retstr;
     self = MTLReportFailureTypeEnabled();
     retstr = v5;
@@ -346,8 +346,8 @@ LABEL_18:
     {
       v7 = objc_opt_class();
       NSStringFromClass(v7);
-      NSStringFromSelector(a3);
-      v8 = v4->dimensions[11];
+      NSStringFromSelector(index);
+      v8 = selfCopy->dimensions[11];
       self = MTLReportFailure();
       retstr = v5;
     }
@@ -378,11 +378,11 @@ LABEL_18:
   return 0;
 }
 
-- (MPSNDArrayOffsets)stridesForSourceIndex:(SEL)a3
+- (MPSNDArrayOffsets)stridesForSourceIndex:(SEL)index
 {
   if ((*(self->dimensions + *MEMORY[0x277CD7378]) & 1) == 0 && self->dimensions[11] <= sourceIndex)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = retstr;
     self = MTLReportFailureTypeEnabled();
     retstr = v5;
@@ -390,8 +390,8 @@ LABEL_18:
     {
       v7 = objc_opt_class();
       NSStringFromClass(v7);
-      NSStringFromSelector(a3);
-      v8 = v4->dimensions[11];
+      NSStringFromSelector(index);
+      v8 = selfCopy->dimensions[11];
       self = MTLReportFailure();
       retstr = v5;
     }
@@ -408,11 +408,11 @@ LABEL_18:
   return self;
 }
 
-- (MPSNDArraySizes)dilationRatesForSourceIndex:(SEL)a3
+- (MPSNDArraySizes)dilationRatesForSourceIndex:(SEL)index
 {
   if ((*(self->dimensions + *MEMORY[0x277CD7378]) & 1) == 0 && self->dimensions[11] <= sourceIndex)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = retstr;
     self = MTLReportFailureTypeEnabled();
     retstr = v5;
@@ -420,8 +420,8 @@ LABEL_18:
     {
       v7 = objc_opt_class();
       NSStringFromClass(v7);
-      NSStringFromSelector(a3);
-      v8 = v4->dimensions[11];
+      NSStringFromSelector(index);
+      v8 = selfCopy->dimensions[11];
       self = MTLReportFailure();
       retstr = v5;
     }
@@ -438,11 +438,11 @@ LABEL_18:
   return self;
 }
 
-- (MPSNDArraySizes)kernelSizesForSourceIndex:(SEL)a3
+- (MPSNDArraySizes)kernelSizesForSourceIndex:(SEL)index
 {
   if ((*(self->dimensions + *MEMORY[0x277CD7378]) & 1) == 0 && self->dimensions[11] <= sourceIndex)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = retstr;
     self = MTLReportFailureTypeEnabled();
     retstr = v5;
@@ -450,8 +450,8 @@ LABEL_18:
     {
       v7 = objc_opt_class();
       NSStringFromClass(v7);
-      NSStringFromSelector(a3);
-      v8 = v4->dimensions[11];
+      NSStringFromSelector(index);
+      v8 = selfCopy->dimensions[11];
       self = MTLReportFailure();
       retstr = v5;
     }
@@ -710,26 +710,26 @@ LABEL_26:
   return v37;
 }
 
-- (id)workloadStatisticsForSourceArrays:(id)a3 sourceState:(id)a4
+- (id)workloadStatisticsForSourceArrays:(id)arrays sourceState:(id)state
 {
   v4 = objc_opt_new();
 
   return v4;
 }
 
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 kernel:(id)a5 kernelDAGObject:(id)a6 sourceState:(id)a7
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays kernel:(id)kernel kernelDAGObject:(id)object sourceState:(id)state
 {
-  v8 = [(MPSNDArrayMultiaryBase *)self workloadStatisticsForSourceArrays:a3 destArrays:a4 sourceState:a7, a6];
-  MPSKernel_LogInfo(a5, v9, "Logging Unimplemented\n");
-  return v8;
+  object = [(MPSNDArrayMultiaryBase *)self workloadStatisticsForSourceArrays:arrays destArrays:destArrays sourceState:state, object];
+  MPSKernel_LogInfo(kernel, v9, "Logging Unimplemented\n");
+  return object;
 }
 
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 sourceState:(id)a5
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays sourceState:(id)state
 {
   v7 = objc_opt_new();
   [v7 setDeviceMemoryBytesRead:0.0];
   [v7 setDeviceMemoryBytesWrite:0.0];
-  v8 = [a3 count];
+  v8 = [arrays count];
   v9 = MEMORY[0x277CD7410];
   v10 = MEMORY[0x277CD73C8];
   if (v8)
@@ -737,7 +737,7 @@ LABEL_26:
     v11 = 0;
     do
     {
-      v15 = [objc_msgSend(a3 objectAtIndexedSubscript:{v11), "numberOfDimensions"}];
+      v15 = [objc_msgSend(arrays objectAtIndexedSubscript:{v11), "numberOfDimensions"}];
       if (v15)
       {
         v16 = v15;
@@ -745,7 +745,7 @@ LABEL_26:
         v12 = 1;
         do
         {
-          v12 *= *([a3 objectAtIndexedSubscript:v11] + *v9 + 4 * (v17++ & 0xF));
+          v12 *= *([arrays objectAtIndexedSubscript:v11] + *v9 + 4 * (v17++ & 0xF));
         }
 
         while (v16 != v17);
@@ -756,20 +756,20 @@ LABEL_26:
         v12 = 1;
       }
 
-      v13 = v12 * (*([a3 objectAtIndexedSubscript:v11] + *v10) >> 3);
+      v13 = v12 * (*([arrays objectAtIndexedSubscript:v11] + *v10) >> 3);
       [v7 deviceMemoryBytesRead];
       [v7 setDeviceMemoryBytesRead:v14 + v13];
       ++v11;
     }
 
-    while (v11 < [a3 count]);
+    while (v11 < [arrays count]);
   }
 
-  v18 = [a4 numberOfDimensions];
-  if (v18)
+  numberOfDimensions = [destArrays numberOfDimensions];
+  if (numberOfDimensions)
   {
     v19 = 0;
-    v20 = (a4 + *v9);
+    v20 = (destArrays + *v9);
     v22 = v20[2];
     v21 = v20[3];
     v24 = *v20;
@@ -784,7 +784,7 @@ LABEL_26:
       v25 *= *(&v29 + (v19++ & 0xF));
     }
 
-    while (v18 != v19);
+    while (numberOfDimensions != v19);
   }
 
   else
@@ -792,19 +792,19 @@ LABEL_26:
     v25 = 1;
   }
 
-  v26 = v25 * (*(a4 + *v10) >> 3);
+  v26 = v25 * (*(destArrays + *v10) >> 3);
   [v7 deviceMemoryBytesWrite];
   [v7 setDeviceMemoryBytesWrite:v27 + v26];
   return v7;
 }
 
-- (id)reshapeFitToTileToCommandBuffer:(id)a3 currentSource:(id)a4 kernelDimension:(unint64_t)a5 dimensionsToBeRetained:
+- (id)reshapeFitToTileToCommandBuffer:(id)buffer currentSource:(id)source kernelDimension:(unint64_t)dimension dimensionsToBeRetained:
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a5 + 1;
-  if (a5 + 1 <= 0xF)
+  v9 = dimension + 1;
+  if (dimension + 1 <= 0xF)
   {
-    v10 = a5 + 2;
+    v10 = dimension + 2;
     do
     {
       v34 = v5;
@@ -819,9 +819,9 @@ LABEL_26:
     while (v10 != 17);
   }
 
-  v12 = [a4 descriptor];
-  v13 = v12;
-  v14 = (a4 + *MEMORY[0x277CD7410]);
+  descriptor = [source descriptor];
+  v13 = descriptor;
+  v14 = (source + *MEMORY[0x277CD7410]);
   v16 = v14[2];
   v15 = v14[3];
   v18 = *v14;
@@ -834,13 +834,13 @@ LABEL_26:
   v35[1] = unk_239B14670;
   v35[2] = xmmword_239B14680;
   v35[3] = unk_239B14690;
-  v19 = a5 - 1;
-  if (a5 >= 17)
+  v19 = dimension - 1;
+  if (dimension >= 17)
   {
     *&v35[0] = 1;
 LABEL_24:
     v24 = 0;
-    v25 = *&v12[*MEMORY[0x277CD7438]];
+    v25 = *&descriptor[*MEMORY[0x277CD7438]];
     do
     {
       v29 = v25;
@@ -895,35 +895,35 @@ LABEL_24:
     }
   }
 
-  while (v20-- >= a5);
+  while (v20-- >= dimension);
   *&v35[0] = v22;
-  if (a5 != 1)
+  if (dimension != 1)
   {
     goto LABEL_24;
   }
 
 LABEL_26:
-  [v12 reshapeWithDimensionCount:v9 dimensionSizes:v35];
-  result = [a4 arrayViewWithCommandBuffer:a3 descriptor:v13 aliasing:0];
+  [descriptor reshapeWithDimensionCount:v9 dimensionSizes:v35];
+  result = [source arrayViewWithCommandBuffer:buffer descriptor:v13 aliasing:0];
   v27 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (BOOL)getDestContiguousFunctionConstant:(id)a3
+- (BOOL)getDestContiguousFunctionConstant:(id)constant
 {
   v4 = [(MPSNDArrayMultiaryBase *)self usesVectorFunctionsOnOutput:?];
   if (v4)
   {
-    LOBYTE(v4) = *(a3 + *MEMORY[0x277CD73D8]) == 0;
+    LOBYTE(v4) = *(constant + *MEMORY[0x277CD73D8]) == 0;
   }
 
   return v4;
 }
 
-- (void)setIndexingArithmaticTypeMask:(id *)a3 sourceArrays:(id)a4 sourceGradient:(id)a5 destination:(id)a6 tileDimensions:(unint64_t)a7
+- (void)setIndexingArithmaticTypeMask:(id *)mask sourceArrays:(id)arrays sourceGradient:(id)gradient destination:(id)destination tileDimensions:(unint64_t)dimensions
 {
-  [*a3 graph];
-  if (!((4 * [a4 count] + 9) >> 62))
+  [*mask graph];
+  if (!((4 * [arrays count] + 9) >> 62))
   {
     operator new();
   }
@@ -931,17 +931,17 @@ LABEL_26:
   std::vector<long>::__throw_length_error[abi:ne200100]();
 }
 
-- (void)kernelDAGObjectSetup:(id *)a3 sourceArrays:(id)a4 sourceGradient:(id)a5 destination:(id)a6
+- (void)kernelDAGObjectSetup:(id *)setup sourceArrays:(id)arrays sourceGradient:(id)gradient destination:(id)destination
 {
-  v8 = self;
+  selfCopy = self;
   v130 = *MEMORY[0x277D85DE8];
   srcCount = self->_srcCount;
-  if (a5)
+  if (gradient)
   {
     ++srcCount;
-    v124 = [a4 count] + 1;
-    v125 = a6;
-    if (*a3)
+    v124 = [arrays count] + 1;
+    destinationCopy2 = destination;
+    if (*setup)
     {
       goto LABEL_41;
     }
@@ -949,32 +949,32 @@ LABEL_26:
 
   else
   {
-    v124 = [a4 count];
-    v125 = a6;
-    if (*a3)
+    v124 = [arrays count];
+    destinationCopy2 = destination;
+    if (*setup)
     {
       goto LABEL_41;
     }
   }
 
   v10 = 3;
-  if (!a5)
+  if (!gradient)
   {
     v10 = 2;
   }
 
   v11 = OBJC_IVAR___MPSNDArrayMultiaryMultiDestinationBase__srcCount[v10];
   v120 = v11;
-  v121 = v8;
-  v12 = *(&v8->super.super.isa + v11);
+  v121 = selfCopy;
+  v12 = *(&selfCopy->super.super.isa + v11);
   if (!v12)
   {
 LABEL_40:
     operator new();
   }
 
-  v119 = *(&v8->super.super.isa + v11);
-  v13 = [v12 graph];
+  v119 = *(&selfCopy->super.super.isa + v11);
+  graph = [v12 graph];
   v14 = MEMORY[0x277CD73F0];
   v15 = MEMORY[0x277CD7410];
   v16 = MEMORY[0x277CD73D8];
@@ -983,15 +983,15 @@ LABEL_40:
     goto LABEL_26;
   }
 
-  v17 = v13;
+  v17 = graph;
   v18 = 0;
   for (i = 0; i != srcCount; ++i)
   {
-    v20 = [a4 count];
-    v21 = a5;
+    v20 = [arrays count];
+    gradientCopy = gradient;
     if (v20 > i)
     {
-      v21 = [a4 objectAtIndexedSubscript:i];
+      gradientCopy = [arrays objectAtIndexedSubscript:i];
     }
 
     v22 = **(v17 + 64);
@@ -1009,7 +1009,7 @@ LABEL_130:
     }
 
     v25 = *v23;
-    v26 = *&v21[*v14];
+    v26 = *&gradientCopy[*v14];
     v27 = *(v25 + 16);
     v28 = (v27[1] - *v27) >> 3;
     if (v26 <= v28)
@@ -1022,9 +1022,9 @@ LABEL_130:
 
     else
     {
-      v29 = v21;
+      v29 = gradientCopy;
       std::vector<long>::__append(*(v25 + 16), v26 - v28);
-      v21 = v29;
+      gradientCopy = v29;
       v26 = *&v29[*v14];
     }
 
@@ -1035,10 +1035,10 @@ LABEL_130:
       v32 = (v27[1] - *v27) >> 3;
       while (v32 != v30)
       {
-        v33 = &v21[*v15];
-        v128 = *&v21[*v16];
+        v33 = &gradientCopy[*v15];
+        v128 = *&gradientCopy[*v16];
         *(v31 + 8 * v30) = *&v33[4 * (*(&v128 | v30 & 0xF) & 0xF)];
-        if (++v30 >= *&v21[*v14])
+        if (++v30 >= *&gradientCopy[*v14])
         {
           goto LABEL_22;
         }
@@ -1063,23 +1063,23 @@ LABEL_22:
     }
 
     v37 = *(*v35 + 8);
-    v18 |= v37 != [v21 dataType];
+    v18 |= v37 != [gradientCopy dataType];
   }
 
-  a6 = v125;
+  destination = destinationCopy2;
   if (v18)
   {
 LABEL_39:
 
-    v8 = v121;
+    selfCopy = v121;
     *(&v121->super.super.isa + v120) = 0;
-    if (!*a3)
+    if (!*setup)
     {
       goto LABEL_40;
     }
 
 LABEL_41:
-    if (*(&v8->super.super.isa + *MEMORY[0x277CD7378]))
+    if (*(&selfCopy->super.super.isa + *MEMORY[0x277CD7378]))
     {
       goto LABEL_115;
     }
@@ -1088,15 +1088,15 @@ LABEL_41:
   }
 
 LABEL_26:
-  v38 = [v119 finalOp];
-  v39 = **(v38 + 24);
-  if (*(*(v38 + 24) + 8) == v39)
+  finalOp = [v119 finalOp];
+  v39 = **(finalOp + 24);
+  if (*(*(finalOp + 24) + 8) == v39)
   {
     goto LABEL_129;
   }
 
   v40 = *v39;
-  v41 = *(a6 + *v14);
+  v41 = *(destination + *v14);
   v42 = *(v40 + 16);
   v43 = (v42[1] - *v42) >> 3;
   if (v41 <= v43)
@@ -1110,7 +1110,7 @@ LABEL_26:
   else
   {
     std::vector<long>::__append(*(v40 + 16), v41 - v43);
-    v41 = *(a6 + *v14);
+    v41 = *(destination + *v14);
   }
 
   if (v41)
@@ -1120,10 +1120,10 @@ LABEL_26:
     v46 = (v42[1] - *v42) >> 3;
     while (v46 != v44)
     {
-      v47 = a6 + *v15;
-      v127 = *(a6 + *v16);
+      v47 = destination + *v15;
+      v127 = *(destination + *v16);
       *(v45 + 8 * v44) = *&v47[4 * (*(&v127 | v44 & 0xF) & 0xF)];
-      if (++v44 >= *(a6 + *v14))
+      if (++v44 >= *(destination + *v14))
       {
         goto LABEL_35;
       }
@@ -1133,35 +1133,35 @@ LABEL_26:
   }
 
 LABEL_35:
-  v48 = [v119 finalOp];
-  v49 = **(v48 + 24);
-  if (*(*(v48 + 24) + 8) == v49)
+  finalOp2 = [v119 finalOp];
+  v49 = **(finalOp2 + 24);
+  if (*(*(finalOp2 + 24) + 8) == v49)
   {
 LABEL_129:
     std::vector<MPSDAGKernelOp *>::__throw_out_of_range[abi:ne200100]();
   }
 
   v50 = *(*v49 + 8);
-  if (v50 != [a6 dataType])
+  if (v50 != [destination dataType])
   {
     goto LABEL_39;
   }
 
-  *a3 = v119;
+  *setup = v119;
   if (*(&v121->super.super.isa + *MEMORY[0x277CD7378]))
   {
     goto LABEL_115;
   }
 
 LABEL_42:
-  v51 = [*a3 graph];
-  if (*(*(v51 + 56) + 8) - **(v51 + 56) != 8 && MTLReportFailureTypeEnabled())
+  graph2 = [*setup graph];
+  if (*(*(graph2 + 56) + 8) - **(graph2 + 56) != 8 && MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }
 
-  v52 = **(v51 + 56);
-  if (*(*(v51 + 56) + 8) == v52)
+  v52 = **(graph2 + 56);
+  if (*(*(graph2 + 56) + 8) == v52)
   {
     std::vector<MPSDAGKernelOp *>::__throw_out_of_range[abi:ne200100]();
   }
@@ -1172,7 +1172,7 @@ LABEL_42:
   }
 
   v53 = v124;
-  if (v124 != (*(*(v51 + 64) + 8) - **(v51 + 64)) >> 3)
+  if (v124 != (*(*(graph2 + 64) + 8) - **(graph2 + 64)) >> 3)
   {
     v116 = MTLReportFailureTypeEnabled();
     v53 = v124;
@@ -1189,15 +1189,15 @@ LABEL_42:
     v122 = vdupq_n_s64(1uLL);
     while (1)
     {
-      v55 = a5;
-      if ([a4 count] > v54)
+      gradientCopy2 = gradient;
+      if ([arrays count] > v54)
       {
-        v55 = [a4 objectAtIndexedSubscript:v54];
+        gradientCopy2 = [arrays objectAtIndexedSubscript:v54];
       }
 
-      [objc_msgSend(v55 "descriptor")];
-      v56 = **(v51 + 64);
-      if (v54 >= (*(*(v51 + 64) + 8) - v56) >> 3)
+      [objc_msgSend(gradientCopy2 "descriptor")];
+      v56 = **(graph2 + 64);
+      if (v54 >= (*(*(graph2 + 64) + 8) - v56) >> 3)
       {
 LABEL_128:
         std::vector<MPSDAGKernelOp *>::__throw_out_of_range[abi:ne200100]();
@@ -1220,20 +1220,20 @@ LABEL_128:
       }
 
 LABEL_76:
-      v85 = [v55 dataType];
-      a6 = v125;
-      if (v85 == -2147483640)
+      dataType = [gradientCopy2 dataType];
+      destination = destinationCopy2;
+      if (dataType == -2147483640)
       {
         v86 = 536870920;
       }
 
       else
       {
-        v86 = v85;
+        v86 = dataType;
       }
 
-      v87 = **(v51 + 64);
-      if (v54 >= (*(*(v51 + 64) + 8) - v87) >> 3)
+      v87 = **(graph2 + 64);
+      if (v54 >= (*(*(graph2 + 64) + 8) - v87) >> 3)
       {
         goto LABEL_128;
       }
@@ -1247,9 +1247,9 @@ LABEL_76:
 
       if (v86 != *(*v88 + 8))
       {
-        [v55 dataType];
-        v90 = **(v51 + 64);
-        if (v54 >= (*(*(v51 + 64) + 8) - v90) >> 3)
+        [gradientCopy2 dataType];
+        v90 = **(graph2 + 64);
+        if (v54 >= (*(*(graph2 + 64) + 8) - v90) >> 3)
         {
           goto LABEL_128;
         }
@@ -1261,19 +1261,19 @@ LABEL_127:
         }
       }
 
-      v91 = [v55 dataType];
-      if (v91 == -2147483640)
+      dataType2 = [gradientCopy2 dataType];
+      if (dataType2 == -2147483640)
       {
         v92 = 536870920;
       }
 
       else
       {
-        v92 = v91;
+        v92 = dataType2;
       }
 
-      v93 = **(v51 + 64);
-      if (v54 >= (*(*(v51 + 64) + 8) - v93) >> 3)
+      v93 = **(graph2 + 64);
+      if (v54 >= (*(*(graph2 + 64) + 8) - v93) >> 3)
       {
         goto LABEL_128;
       }
@@ -1287,9 +1287,9 @@ LABEL_127:
 
       if (v92 != *(*v94 + 8))
       {
-        v96 = [v55 dataType];
-        v97 = **(v51 + 64);
-        if (v54 >= (*(*(v51 + 64) + 8) - v97) >> 3)
+        dataType3 = [gradientCopy2 dataType];
+        v97 = **(graph2 + 64);
+        if (v54 >= (*(*(graph2 + 64) + 8) - v97) >> 3)
         {
           goto LABEL_128;
         }
@@ -1301,7 +1301,7 @@ LABEL_127:
           goto LABEL_127;
         }
 
-        if (v96 != *(*v98 + 8) && MTLReportFailureTypeEnabled())
+        if (dataType3 != *(*v98 + 8) && MTLReportFailureTypeEnabled())
         {
           v117 = v54;
           MTLReportFailure();
@@ -1437,12 +1437,12 @@ LABEL_75:
   }
 
 LABEL_98:
-  [objc_msgSend(a6 descriptor];
+  [objc_msgSend(destination descriptor];
   v102 = *v129;
   v103 = *(v129 + 8);
-  v104 = [*a3 finalOp];
-  v105 = **(v104 + 24);
-  if (*(*(v104 + 24) + 8) == v105)
+  finalOp3 = [*setup finalOp];
+  v105 = **(finalOp3 + 24);
+  if (*(*(finalOp3 + 24) + 8) == v105)
   {
     std::vector<MPSDAGKernelOp *>::__throw_out_of_range[abi:ne200100]();
   }
@@ -1452,42 +1452,42 @@ LABEL_98:
     MTLReportFailure();
   }
 
-  v106 = [*a3 finalOp];
-  v107 = **(v106 + 24);
-  if (*(*(v106 + 24) + 8) == v107)
+  finalOp4 = [*setup finalOp];
+  v107 = **(finalOp4 + 24);
+  if (*(*(finalOp4 + 24) + 8) == v107)
   {
     std::vector<MPSDAGKernelOp *>::__throw_out_of_range[abi:ne200100]();
   }
 
   v108 = *(*v107 + 8);
-  v109 = [a6 dataType];
-  if (v109 == -2147483640)
+  dataType4 = [destination dataType];
+  if (dataType4 == -2147483640)
   {
     v110 = 536870920;
   }
 
   else
   {
-    v110 = v109;
+    v110 = dataType4;
   }
 
   if (v110 != v108)
   {
-    [a6 dataType];
+    [destination dataType];
   }
 
-  v111 = [a6 dataType];
-  if (v111 == -2147483640)
+  dataType5 = [destination dataType];
+  if (dataType5 == -2147483640)
   {
     v112 = 536870920;
   }
 
   else
   {
-    v112 = v111;
+    v112 = dataType5;
   }
 
-  if (v112 != v108 && [a6 dataType] != v108 && MTLReportFailureTypeEnabled())
+  if (v112 != v108 && [destination dataType] != v108 && MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }

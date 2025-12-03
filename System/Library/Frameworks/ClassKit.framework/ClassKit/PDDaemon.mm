@@ -1,47 +1,47 @@
 @interface PDDaemon
 - (BOOL)canEnableNoUserMode;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSDictionary)statusReport;
-- (PDDaemon)initWithMachServiceName:(id)a3;
+- (PDDaemon)initWithMachServiceName:(id)name;
 - (PDDatabase)studentDevDatabase;
 - (PDDatabase)teacherDevDatabase;
 - (id)_databaseInstance;
-- (id)appIdentifierForConnection:(id)a3 withEntitlements:(id)a4;
+- (id)appIdentifierForConnection:(id)connection withEntitlements:(id)entitlements;
 - (id)miniStatusReport;
-- (id)setupSignal:(int)a3 handler:(id)a4;
+- (id)setupSignal:(int)signal handler:(id)handler;
 - (id)statusReportCurrentUser;
 - (void)_cleanupSavedResponseDirectory;
 - (void)_initializeSubsystemsIfNeeded;
 - (void)_invalidateAndDeleteManagers;
 - (void)_reinitializeManagers;
-- (void)_updateBiomeClientWithDatabase:(id)a3;
+- (void)_updateBiomeClientWithDatabase:(id)database;
 - (void)dealloc;
-- (void)exitClean:(BOOL)a3 reason:(id)a4;
+- (void)exitClean:(BOOL)clean reason:(id)reason;
 - (void)handleAccountChange;
-- (void)handleSignal:(int)a3;
-- (void)iCloudDriveInitialSyncStatusDidChange:(id)a3;
-- (void)invalidateServer:(id)a3;
+- (void)handleSignal:(int)signal;
+- (void)iCloudDriveInitialSyncStatusDidChange:(id)change;
+- (void)invalidateServer:(id)server;
 - (void)loadConfig;
 - (void)memoryPressureStatusChanged;
-- (void)recreateDatabaseAndReinitialize:(BOOL)a3;
+- (void)recreateDatabaseAndReinitialize:(BOOL)reinitialize;
 - (void)recreateDevelopmentDatabases;
-- (void)registerDashboardAppIfNeeded:(id)a3;
+- (void)registerDashboardAppIfNeeded:(id)needed;
 - (void)saveUpdatedConfig;
-- (void)serverInitialSyncStatusDidChange:(id)a3;
-- (void)setMode:(int)a3;
+- (void)serverInitialSyncStatusDidChange:(id)change;
+- (void)setMode:(int)mode;
 - (void)setupLocaleChangeHandler;
 - (void)setupMemoryPressureHandlers;
 - (void)setupSignalHandlers;
 - (void)start;
-- (void)terminateClean:(BOOL)a3 reason:(id)a4;
-- (void)terminateCleanAfterRecreatingDatabase:(BOOL)a3;
+- (void)terminateClean:(BOOL)clean reason:(id)reason;
+- (void)terminateCleanAfterRecreatingDatabase:(BOOL)database;
 @end
 
 @implementation PDDaemon
 
-- (PDDaemon)initWithMachServiceName:(id)a3
+- (PDDaemon)initWithMachServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v47.receiver = self;
   v47.super_class = PDDaemon;
   v5 = [(PDDaemon *)&v47 init];
@@ -76,9 +76,9 @@
     queue = v5->_queue;
     v5->_queue = v29;
 
-    if ([v4 length])
+    if ([nameCopy length])
     {
-      v31 = [[NSXPCListener alloc] initWithMachServiceName:v4];
+      v31 = [[NSXPCListener alloc] initWithMachServiceName:nameCopy];
       listener = v5->_listener;
       v5->_listener = v31;
 
@@ -131,13 +131,13 @@
   [(PDDaemon *)&v4 dealloc];
 }
 
-- (void)iCloudDriveInitialSyncStatusDidChange:(id)a3
+- (void)iCloudDriveInitialSyncStatusDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:CLSiCloudDriveInitialSyncStatusKey];
-  v6 = [v5 BOOLValue];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:CLSiCloudDriveInitialSyncStatusKey];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 objectForKey:CLSiCloudDriveInitialSyncErrorKey];
+  v7 = [userInfo objectForKey:CLSiCloudDriveInitialSyncErrorKey];
   CLSInitLog();
   v8 = CLSLogNotifications;
   if (v7)
@@ -145,7 +145,7 @@
     if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_ERROR))
     {
       v9 = "NO";
-      if (v6)
+      if (bOOLValue)
       {
         v9 = "YES";
       }
@@ -161,7 +161,7 @@
   else if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_INFO))
   {
     v10 = "NO";
-    if (v6)
+    if (bOOLValue)
     {
       v10 = "YES";
     }
@@ -171,10 +171,10 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Received iCloud Drive initial sync state changed notification. iCloudDrive initial sync done: %s", &v13, 0xCu);
   }
 
-  v11 = [(PDDaemon *)self database];
-  if (v6 != sub_1000508B0(v11))
+  database = [(PDDaemon *)self database];
+  if (bOOLValue != sub_1000508B0(database))
   {
-    sub_100169F38(v11, v6, @"initialiCloudDriveSyncComplete");
+    sub_100169F38(database, bOOLValue, @"initialiCloudDriveSyncComplete");
     CLSInitLog();
     v12 = CLSLogNotifications;
     if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_INFO))
@@ -187,7 +187,7 @@
   }
 }
 
-- (void)serverInitialSyncStatusDidChange:(id)a3
+- (void)serverInitialSyncStatusDidChange:(id)change
 {
   CLSInitLog();
   v4 = CLSLogNotifications;
@@ -235,15 +235,15 @@
   if (v6)
   {
     v9 = [v6 objectForKeyedSubscript:@"mode"];
-    v10 = [v9 integerValue];
+    integerValue = [v9 integerValue];
 
-    if (v10 == 2)
+    if (integerValue == 2)
     {
       v11 = 2;
       goto LABEL_10;
     }
 
-    if (v10 == 1)
+    if (integerValue == 1)
     {
       v11 = 1;
 LABEL_10:
@@ -259,9 +259,9 @@ LABEL_10:
     if (os_log_type_enabled(CLSLogDatabase, OS_LOG_TYPE_ERROR))
     {
       v13 = v12;
-      v14 = [v5 path];
+      path = [v5 path];
       *buf = 138412546;
-      v17 = v14;
+      v17 = path;
       v18 = 2112;
       v19 = v8;
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to init config dictionary from file at '%@'. Error: '%@'.", buf, 0x16u);
@@ -291,17 +291,17 @@ LABEL_11:
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)setMode:(int)a3
+- (void)setMode:(int)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
+    self->_mode = mode;
     [(PDDaemon *)self saveUpdatedConfig];
     [CLSUtil postNotification:"com.apple.progressd.devModeChanged"];
     v5 = sub_1000B51E4();
     if (v5)
     {
-      v5[8] = a3 != 0;
+      v5[8] = mode != 0;
     }
   }
 }
@@ -373,18 +373,18 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (id)setupSignal:(int)a3 handler:(id)a4
+- (id)setupSignal:(int)signal handler:(id)handler
 {
-  v6 = a4;
-  v7 = dispatch_source_create(&_dispatch_source_type_signal, a3, 0, self->_queue);
+  handlerCopy = handler;
+  v7 = dispatch_source_create(&_dispatch_source_type_signal, signal, 0, self->_queue);
   if (v7)
   {
-    signal(a3, 1);
+    signal(signal, 1);
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_1000D98C8;
     handler[3] = &unk_100204A28;
-    v13 = v6;
+    v13 = handlerCopy;
     dispatch_source_set_event_handler(v7, handler);
     dispatch_resume(v7);
   }
@@ -396,7 +396,7 @@ LABEL_11:
     if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_INFO))
     {
       v9 = v8;
-      v10 = sub_1000D98D8(a3);
+      v10 = sub_1000D98D8(signal);
       *buf = 138412290;
       v15 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Could not set up signal handler for '%@'", buf, 0xCu);
@@ -406,10 +406,10 @@ LABEL_11:
   return v7;
 }
 
-- (void)handleSignal:(int)a3
+- (void)handleSignal:(int)signal
 {
-  v5 = sub_1000D98D8(a3);
-  if (a3 != 29)
+  v5 = sub_1000D98D8(signal);
+  if (signal != 29)
   {
     v8 = [NSString stringWithFormat:@"Received signal '%@'", v5];
     [(PDDaemon *)self exitClean:0 reason:v8];
@@ -430,9 +430,9 @@ LABEL_11:
   if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [(PDDaemon *)self miniStatusReport];
+    miniStatusReport = [(PDDaemon *)self miniStatusReport];
     *buf = 138412290;
-    v11 = v9;
+    v11 = miniStatusReport;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Mini Status Report: %@", buf, 0xCu);
 
 LABEL_7:
@@ -528,18 +528,18 @@ LABEL_7:
   [v3 addObserver:self selector:"handleLocaleChange" name:NSCurrentLocaleDidChangeNotification object:0];
 }
 
-- (void)exitClean:(BOOL)a3 reason:(id)a4
+- (void)exitClean:(BOOL)clean reason:(id)reason
 {
-  v4 = a3;
-  v6 = a4;
+  cleanCopy = clean;
+  reasonCopy = reason;
   CLSInitLog();
   v7 = CLSLogDefault;
-  if (v4)
+  if (cleanCopy)
   {
     if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543362;
-      v12 = v6;
+      v12 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Clean exit with reason: %{public}@", &v11, 0xCu);
     }
 
@@ -550,18 +550,18 @@ LABEL_7:
   else if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_ERROR))
   {
     v11 = 138543362;
-    v12 = v6;
+    v12 = reasonCopy;
     _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Dirty exit with reason: %{public}@", &v11, 0xCu);
   }
 
-  v9 = [(PDDaemon *)self operationsManager];
-  sub_100121140(v9);
+  operationsManager = [(PDDaemon *)self operationsManager];
+  sub_100121140(operationsManager);
 
   [(PDBiomeClient *)self->_biomeClient cancelSubscription];
   v10 = +[NSNotificationCenter defaultCenter];
   [v10 removeObserver:self name:NSCurrentLocaleDidChangeNotification object:0];
 
-  if (!v4)
+  if (!cleanCopy)
   {
     exit(0);
   }
@@ -569,25 +569,25 @@ LABEL_7:
   xpc_transaction_exit_clean();
 }
 
-- (void)terminateClean:(BOOL)a3 reason:(id)a4
+- (void)terminateClean:(BOOL)clean reason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000DA23C;
   block[3] = &unk_100203028;
-  v11 = a3;
+  cleanCopy = clean;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = reasonCopy;
+  v8 = reasonCopy;
   dispatch_sync(queue, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   sub_1000D9310(self);
   v14 = 0;
   v15 = &v14;
@@ -599,7 +599,7 @@ LABEL_7:
   block[2] = sub_1000DA858;
   block[3] = &unk_100203410;
   block[4] = self;
-  v9 = v7;
+  v9 = connectionCopy;
   v12 = v9;
   v13 = &v14;
   dispatch_sync(queue, block);
@@ -610,42 +610,42 @@ LABEL_7:
   return self;
 }
 
-- (id)appIdentifierForConnection:(id)a3 withEntitlements:(id)a4
+- (id)appIdentifierForConnection:(id)connection withEntitlements:(id)entitlements
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 cls_signingIdentifier];
-  if (![v7 length])
+  connectionCopy = connection;
+  entitlementsCopy = entitlements;
+  cls_signingIdentifier = [connectionCopy cls_signingIdentifier];
+  if (![cls_signingIdentifier length])
   {
-    v8 = [v6 applicationBundleIdentifier];
+    applicationBundleIdentifier = [entitlementsCopy applicationBundleIdentifier];
 
-    v7 = v8;
+    cls_signingIdentifier = applicationBundleIdentifier;
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = [LSBundleRecord bundleRecordWithBundleIdentifier:v7 allowPlaceholder:0 error:0];
+  v10 = [LSBundleRecord bundleRecordWithBundleIdentifier:cls_signingIdentifier allowPlaceholder:0 error:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v10 containingBundleRecord];
-    v12 = v11;
-    if (v11)
+    containingBundleRecord = [v10 containingBundleRecord];
+    v12 = containingBundleRecord;
+    if (containingBundleRecord)
     {
-      v13 = [v11 bundleIdentifier];
+      bundleIdentifier = [containingBundleRecord bundleIdentifier];
 
-      v7 = v13;
+      cls_signingIdentifier = bundleIdentifier;
     }
   }
 
   objc_autoreleasePoolPop(v9);
 
-  return v7;
+  return cls_signingIdentifier;
 }
 
-- (void)invalidateServer:(id)a3
+- (void)invalidateServer:(id)server
 {
-  v4 = a3;
-  [v4 invalidate];
+  serverCopy = server;
+  [serverCopy invalidate];
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -653,8 +653,8 @@ LABEL_7:
   block[2] = sub_1000DB67C;
   block[3] = &unk_1002029C0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = serverCopy;
+  v6 = serverCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -672,9 +672,9 @@ LABEL_7:
   }
 
   v4 = +[PDUserDefaults sharedDefaults];
-  v5 = [v4 enableVerboseLogging];
+  enableVerboseLogging = [v4 enableVerboseLogging];
 
-  if (v5)
+  if (enableVerboseLogging)
   {
     CLSLogDebugCurrentPersona();
   }
@@ -843,9 +843,9 @@ LABEL_7:
       self->_database = 0;
     }
 
-    v8 = [(PDDaemon *)self _databaseInstance];
+    _databaseInstance = [(PDDaemon *)self _databaseInstance];
     v9 = self->_database;
-    self->_database = v8;
+    self->_database = _databaseInstance;
 
     if ((sub_10010B858(self->_database) & 1) == 0)
     {
@@ -882,8 +882,8 @@ LABEL_7:
           }
         }
 
-        v16 = [(PDDaemon *)self listener];
-        [v16 invalidate];
+        listener = [(PDDaemon *)self listener];
+        [listener invalidate];
 
         [(PDDaemon *)self exitClean:0 reason:@"Terminating..."];
       }
@@ -1028,17 +1028,17 @@ LABEL_47:
   return sub_1000B2988();
 }
 
-- (void)_updateBiomeClientWithDatabase:(id)a3
+- (void)_updateBiomeClientWithDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = dispatch_get_global_queue(33, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DC6EC;
   v7[3] = &unk_1002029E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = databaseCopy;
+  v6 = databaseCopy;
   dispatch_async(v5, v7);
 }
 
@@ -1046,17 +1046,17 @@ LABEL_47:
 {
   [(PDDaemon *)self _cleanupSavedResponseDirectory];
   v3 = sub_1000DC5E0(self);
-  v4 = [(PDDaemon *)self canEnableNoUserMode];
+  canEnableNoUserMode = [(PDDaemon *)self canEnableNoUserMode];
   v5 = +[PDUserDefaults sharedDefaults];
-  v6 = [v5 enableVerboseLogging];
+  enableVerboseLogging = [v5 enableVerboseLogging];
 
-  if (v6)
+  if (enableVerboseLogging)
   {
     CLSInitLog();
     v7 = CLSLogDefault;
     if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_DEFAULT))
     {
-      if ((v4 & v3) != 0)
+      if ((canEnableNoUserMode & v3) != 0)
       {
         v8 = @"no user";
       }
@@ -1078,8 +1078,8 @@ LABEL_47:
   self->_operationsManager = v9;
 
   sub_100121684(self->_operationsManager, self->_queue);
-  v11 = [(PDDaemon *)self database];
-  sub_1000F5988(v11);
+  database = [(PDDaemon *)self database];
+  sub_1000F5988(database);
 
   if (!v3)
   {
@@ -1104,27 +1104,27 @@ LABEL_47:
     self->_userNotificationManager = v16;
 
     [(PDUserNotificationManager *)self->_userNotificationManager registerForNotifications];
-    v18 = [(PDDaemon *)self mode];
-    if (v18 == 2)
+    mode = [(PDDaemon *)self mode];
+    if (mode == 2)
     {
-      v19 = [(PDDaemon *)self teacherDevDatabase];
+      teacherDevDatabase = [(PDDaemon *)self teacherDevDatabase];
     }
 
-    else if (v18 == 1)
+    else if (mode == 1)
     {
-      v19 = [(PDDaemon *)self studentDevDatabase];
+      teacherDevDatabase = [(PDDaemon *)self studentDevDatabase];
     }
 
     else
     {
-      if (v18)
+      if (mode)
       {
         v20 = 0;
 LABEL_21:
         v21 = sub_1000DA28C(self, v20);
 
-        v22 = [v21 isStudent];
-        if (v22)
+        isStudent = [v21 isStudent];
+        if (isStudent)
         {
           [(PDDaemon *)self _updateBiomeClientWithDatabase:self->_database];
         }
@@ -1132,10 +1132,10 @@ LABEL_21:
         goto LABEL_23;
       }
 
-      v19 = [(PDDaemon *)self database];
+      teacherDevDatabase = [(PDDaemon *)self database];
     }
 
-    v20 = v19;
+    v20 = teacherDevDatabase;
     goto LABEL_21;
   }
 
@@ -1186,23 +1186,23 @@ LABEL_23:
   }
 }
 
-- (void)registerDashboardAppIfNeeded:(id)a3
+- (void)registerDashboardAppIfNeeded:(id)needed
 {
-  v4 = a3;
-  if (sub_100145440(self->_database, v4))
+  neededCopy = needed;
+  if (sub_100145440(self->_database, neededCopy))
   {
     CLSInitLog();
     v5 = CLSLogDefault;
     if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_DEBUG))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = neededCopy;
       _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Queue register operation for dashboard app: %@.", &v8, 0xCu);
     }
 
     v6 = [(PDURLRequestOperation *)[PDDashboardAppRegisterOperation alloc] initWithDatabase:self->_database];
-    v7 = [(PDDaemon *)self operationsManager];
-    sub_100123A84(v7, v6);
+    operationsManager = [(PDDaemon *)self operationsManager];
+    sub_100123A84(operationsManager, v6);
   }
 }
 
@@ -1267,10 +1267,10 @@ LABEL_23:
 - (id)statusReportCurrentUser
 {
   v3 = sub_10003E1B4();
-  v4 = [(PDDaemon *)self database];
-  v5 = sub_1000711FC(v4);
-  v6 = sub_1000717E8(v4);
-  v46 = sub_100071704(v4);
+  database = [(PDDaemon *)self database];
+  v5 = sub_1000711FC(database);
+  v6 = sub_1000717E8(database);
+  v46 = sub_100071704(database);
   if (v3)
   {
     if ([*(v3 + 24) aa_isManagedAppleID])
@@ -1298,22 +1298,22 @@ LABEL_23:
   if (v5)
   {
     v8 = objc_opt_class();
-    v9 = [v5 objectID];
-    v79 = v9;
+    objectID = [v5 objectID];
+    v79 = objectID;
     v10 = [NSArray arrayWithObjects:&v79 count:1];
     v47[0] = _NSConcreteStackBlock;
     v47[1] = 3221225472;
     v47[2] = sub_1000DD488;
     v47[3] = &unk_100204AC8;
-    v48 = v4;
+    v48 = database;
     v49 = &v50;
     [v48 selectAll:v8 where:@"personID = ?" bindings:v10 block:v47];
 
     v60[0] = @"orgID";
-    v45 = [v5 orgID];
-    v11 = v45;
+    orgID = [v5 orgID];
+    v11 = orgID;
     v12 = v46;
-    if (!v45)
+    if (!orgID)
     {
       v11 = &stru_100206880;
     }
@@ -1327,18 +1327,18 @@ LABEL_23:
     v69[1] = v12;
     v60[1] = @"organizationName";
     v60[2] = @"objectID";
-    v44 = [v5 objectID];
-    v13 = v44;
-    if (!v44)
+    objectID2 = [v5 objectID];
+    v13 = objectID2;
+    if (!objectID2)
     {
       v13 = &stru_100206880;
     }
 
     v69[2] = v13;
     v60[3] = @"name";
-    v43 = [v5 displayName];
-    v14 = v43;
-    if (!v43)
+    displayName = [v5 displayName];
+    v14 = displayName;
+    if (!displayName)
     {
       v14 = &stru_100206880;
     }
@@ -1477,11 +1477,11 @@ LABEL_23:
     }
 
     v29 = v28;
-    v30 = [v29 absoluteString];
-    v31 = v30;
-    if (v30)
+    absoluteString = [v29 absoluteString];
+    v31 = absoluteString;
+    if (absoluteString)
     {
-      v32 = v30;
+      v32 = absoluteString;
     }
 
     else
@@ -1548,12 +1548,12 @@ LABEL_23:
 - (id)miniStatusReport
 {
   v3 = objc_opt_new();
-  v4 = [(PDDaemon *)self statusReportCurrentUser];
-  [v3 setObject:v4 forKeyedSubscript:@"current user"];
+  statusReportCurrentUser = [(PDDaemon *)self statusReportCurrentUser];
+  [v3 setObject:statusReportCurrentUser forKeyedSubscript:@"current user"];
 
   v5 = +[PDUserDefaults sharedDefaults];
-  v6 = [v5 dictionaryRepresentation];
-  [v3 setObject:v6 forKeyedSubscript:@"userDefaults"];
+  dictionaryRepresentation = [v5 dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"userDefaults"];
 
   return v3;
 }
@@ -1634,10 +1634,10 @@ LABEL_23:
   }
 
   v14 = +[NSBundle mainBundle];
-  v63 = [v14 infoDictionary];
+  infoDictionary = [v14 infoDictionary];
 
-  v15 = [v63 objectForKeyedSubscript:@"CFBundleShortVersionString"];
-  v16 = [v63 objectForKeyedSubscript:@"CFBundleVersion"];
+  v15 = [infoDictionary objectForKeyedSubscript:@"CFBundleShortVersionString"];
+  v16 = [infoDictionary objectForKeyedSubscript:@"CFBundleVersion"];
   v17 = [NSString stringWithFormat:@"%@ (%@)", v15, v16];
   [v3 setObject:v17 forKeyedSubscript:@"version"];
 
@@ -1645,17 +1645,17 @@ LABEL_23:
   v19 = NSStringFromDevMode();
   [v3 setObject:v19 forKeyedSubscript:@"Dev Mode"];
 
-  v20 = [(PDDaemon *)self database];
-  v21 = [(PDDaemon *)self statusReportCurrentUser];
-  [v3 setObject:v21 forKeyedSubscript:@"current user"];
+  database = [(PDDaemon *)self database];
+  statusReportCurrentUser = [(PDDaemon *)self statusReportCurrentUser];
+  [v3 setObject:statusReportCurrentUser forKeyedSubscript:@"current user"];
 
-  v22 = sub_100043B24(v20);
-  v23 = [v22 dictionaryRepresentation];
-  [v3 setObject:v23 forKeyedSubscript:@"service config (orion)"];
+  v22 = sub_100043B24(database);
+  dictionaryRepresentation = [v22 dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"service config (orion)"];
 
-  v24 = sub_1000BA854(v20);
-  v25 = [v24 dictionaryRepresentation];
-  [v3 setObject:v25 forKeyedSubscript:@"service config (asm)"];
+  v24 = sub_1000BA854(database);
+  dictionaryRepresentation2 = [v24 dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation2 forKeyedSubscript:@"service config (asm)"];
 
   v26 = objc_opt_new();
   v27 = objc_opt_class();
@@ -1665,7 +1665,7 @@ LABEL_23:
   v73[3] = &unk_100204B38;
   v61 = v26;
   v74 = v61;
-  [v20 selectAll:v27 block:v73];
+  [database selectAll:v27 block:v73];
   [v3 setObject:v61 forKeyedSubscript:@"blocked apps"];
   v28 = objc_opt_new();
   [(PDDaemon *)self lock];
@@ -1687,8 +1687,8 @@ LABEL_23:
           objc_enumerationMutation(v29);
         }
 
-        v33 = [*(*(&v69 + 1) + 8 * i) statusReport];
-        [v28 addObject:v33];
+        statusReport = [*(*(&v69 + 1) + 8 * i) statusReport];
+        [v28 addObject:statusReport];
       }
 
       v30 = [(NSMutableSet *)v29 countByEnumeratingWithState:&v69 objects:v87 count:16];
@@ -1701,8 +1701,8 @@ LABEL_23:
   v60 = [[NSString alloc] initWithFormat:@"%ld connected clients", objc_msgSend(v28, "count")];
   [v3 setObject:v28 forKeyedSubscript:v60];
   v34 = +[PDUserDefaults sharedDefaults];
-  v35 = [v34 dictionaryRepresentation];
-  [v3 setObject:v35 forKeyedSubscript:@"userDefaults"];
+  dictionaryRepresentation3 = [v34 dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation3 forKeyedSubscript:@"userDefaults"];
 
   v67[0] = _NSConcreteStackBlock;
   v67[1] = 3221225472;
@@ -1711,11 +1711,11 @@ LABEL_23:
   v59 = objc_opt_new();
   v68 = v59;
   v62 = objc_retainBlock(v67);
-  [v20 selectAll:objc_opt_class() block:v62];
-  [v20 selectAll:objc_opt_class() block:v62];
+  [database selectAll:objc_opt_class() block:v62];
+  [database selectAll:objc_opt_class() block:v62];
   [v3 setObject:v59 forKeyedSubscript:@"Pending sync items"];
-  v36 = [(PDDaemon *)self operationsManager];
-  v37 = sub_100126240(v36);
+  operationsManager = [(PDDaemon *)self operationsManager];
+  v37 = sub_100126240(operationsManager);
   [v3 setObject:v37 forKeyedSubscript:@"Operations report"];
 
   v38 = objc_opt_new();
@@ -1726,18 +1726,18 @@ LABEL_23:
   v65[3] = &unk_100204B88;
   v40 = v38;
   v66 = v40;
-  [v20 selectAll:v39 block:v65];
+  [database selectAll:v39 block:v65];
   [v3 setObject:v40 forKeyedSubscript:@"endpoints"];
   v41 = objc_opt_new();
   v42 = [PDURLRequestOperation setAppleInternalHeadersForRequest:v41];
   if (!v42)
   {
-    v43 = [v41 allHTTPHeaderFields];
-    [v3 setObject:v43 forKeyedSubscript:@"anisetteHeader"];
+    allHTTPHeaderFields = [v41 allHTTPHeaderFields];
+    [v3 setObject:allHTTPHeaderFields forKeyedSubscript:@"anisetteHeader"];
   }
 
-  v44 = [(PDDaemon *)self operationsManager];
-  v45 = sub_100125AF0(v44);
+  operationsManager2 = [(PDDaemon *)self operationsManager];
+  v45 = sub_100125AF0(operationsManager2);
   v46 = @"opportunistic";
   if (v45)
   {
@@ -1748,11 +1748,11 @@ LABEL_23:
 
   [v3 setObject:v47 forKeyedSubscript:@"Push Type"];
   v48 = +[PDUserDefaults sharedDefaults];
-  v49 = [v48 dictionaryRepresentation];
-  [v3 setObject:v49 forKeyedSubscript:@"userDefaults"];
+  dictionaryRepresentation4 = [v48 dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation4 forKeyedSubscript:@"userDefaults"];
 
   v85[0] = @"ASM sync";
-  if (sub_1000507D8(v20))
+  if (sub_1000507D8(database))
   {
     v50 = @"YES";
   }
@@ -1764,7 +1764,7 @@ LABEL_23:
 
   v86[0] = v50;
   v85[1] = @"Orion sync";
-  if (sub_100050844(v20))
+  if (sub_100050844(database))
   {
     v51 = @"YES";
   }
@@ -1776,7 +1776,7 @@ LABEL_23:
 
   v86[1] = v51;
   v85[2] = @"iCloud Drive initial sync";
-  if (sub_1000508B0(v20))
+  if (sub_1000508B0(database))
   {
     v52 = @"YES";
   }
@@ -1821,16 +1821,16 @@ LABEL_23:
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "recreating dev databases", v6, 2u);
   }
 
-  v4 = [(PDDaemon *)self teacherDevDatabase];
-  sub_10010B658(v4);
+  teacherDevDatabase = [(PDDaemon *)self teacherDevDatabase];
+  sub_10010B658(teacherDevDatabase);
 
-  v5 = [(PDDaemon *)self studentDevDatabase];
-  sub_10010B658(v5);
+  studentDevDatabase = [(PDDaemon *)self studentDevDatabase];
+  sub_10010B658(studentDevDatabase);
 }
 
-- (void)recreateDatabaseAndReinitialize:(BOOL)a3
+- (void)recreateDatabaseAndReinitialize:(BOOL)reinitialize
 {
-  v3 = a3;
+  reinitializeCopy = reinitialize;
   v5 = +[PDUserDefaults sharedDefaults];
   [v5 resetUserDefaultsIfAllowed];
 
@@ -1843,16 +1843,16 @@ LABEL_23:
   }
 
   sub_10010B658(self->_database);
-  if (v3)
+  if (reinitializeCopy)
   {
     [(PDDaemon *)self _invalidateAndDeleteManagers];
     [(PDDaemon *)self _reinitializeManagers];
   }
 }
 
-- (void)terminateCleanAfterRecreatingDatabase:(BOOL)a3
+- (void)terminateCleanAfterRecreatingDatabase:(BOOL)database
 {
-  if (a3)
+  if (database)
   {
     [(PDDaemon *)self recreateDatabaseAndReinitialize:0];
   }

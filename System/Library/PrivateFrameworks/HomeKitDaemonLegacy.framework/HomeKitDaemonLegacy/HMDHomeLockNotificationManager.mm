@@ -1,21 +1,21 @@
 @interface HMDHomeLockNotificationManager
 + (id)logCategory;
 - (BOOL)hasReachablePrimaryResidentSupportingLockNotificationContext;
-- (BOOL)shouldResolveNotificationContextForCharacteristic:(id)a3;
+- (BOOL)shouldResolveNotificationContextForCharacteristic:(id)characteristic;
 - (HMDHome)home;
-- (HMDHomeLockNotificationManager)initWithUUID:(id)a3 workQueue:(id)a4;
-- (HMDHomeLockNotificationManager)initWithUUID:(id)a3 workQueue:(id)a4 dataSource:(id)a5;
-- (id)contextResolutionResultFromAccessCode:(id)a3;
-- (id)contextResolutionResultFromHAPContextId:(id)a3;
-- (id)contextResolutionResultFromNFCContextId:(id)a3;
-- (id)displayNameForNotificationContextResolutionResult:(id)a3;
+- (HMDHomeLockNotificationManager)initWithUUID:(id)d workQueue:(id)queue;
+- (HMDHomeLockNotificationManager)initWithUUID:(id)d workQueue:(id)queue dataSource:(id)source;
+- (id)contextResolutionResultFromAccessCode:(id)code;
+- (id)contextResolutionResultFromHAPContextId:(id)id;
+- (id)contextResolutionResultFromNFCContextId:(id)id;
+- (id)displayNameForNotificationContextResolutionResult:(id)result;
 - (id)logIdentifier;
-- (void)_resolveKeypadContextIdentifier:(id)a3 accessoryUUID:(id)a4 completion:(id)a5;
-- (void)_sendResolveLockNotificationContextIdentifierMessage:(id)a3 accessoryUUID:(id)a4 withCompletion:(id)a5;
-- (void)configureWithHome:(id)a3;
-- (void)handleResolveNotificationContextIdentifierMessage:(id)a3;
-- (void)resolveEncodedCharacteristicNotificationContext:(id)a3 accessoryUUID:(id)a4 completion:(id)a5;
-- (void)resolveKeypadContextIdentifier:(id)a3 accessoryUUID:(id)a4 withCompletion:(id)a5;
+- (void)_resolveKeypadContextIdentifier:(id)identifier accessoryUUID:(id)d completion:(id)completion;
+- (void)_sendResolveLockNotificationContextIdentifierMessage:(id)message accessoryUUID:(id)d withCompletion:(id)completion;
+- (void)configureWithHome:(id)home;
+- (void)handleResolveNotificationContextIdentifierMessage:(id)message;
+- (void)resolveEncodedCharacteristicNotificationContext:(id)context accessoryUUID:(id)d completion:(id)completion;
+- (void)resolveKeypadContextIdentifier:(id)identifier accessoryUUID:(id)d withCompletion:(id)completion;
 @end
 
 @implementation HMDHomeLockNotificationManager
@@ -29,40 +29,40 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHomeLockNotificationManager *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(HMDHomeLockNotificationManager *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (id)contextResolutionResultFromNFCContextId:(id)a3
+- (id)contextResolutionResultFromNFCContextId:(id)id
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeLockNotificationManager *)self home];
-  v6 = v5;
-  if (v5)
+  idCopy = id;
+  home = [(HMDHomeLockNotificationManager *)self home];
+  v6 = home;
+  if (home)
   {
-    v7 = [v5 users];
+    users = [home users];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __74__HMDHomeLockNotificationManager_contextResolutionResultFromNFCContextId___block_invoke;
     v23[3] = &unk_27972E540;
-    v8 = v4;
+    v8 = idCopy;
     v24 = v8;
-    v9 = [v7 na_firstObjectPassingTest:v23];
+    v9 = [users na_firstObjectPassingTest:v23];
 
     if (v9)
     {
       v10 = [HMDHomeLockNotificationContextResolutionResult alloc];
-      v11 = [v9 uuid];
-      v12 = [(HMDHomeLockNotificationContextResolutionResult *)v10 initWithUserUUID:v11 label:0 labelIdentifier:0];
+      uuid = [v9 uuid];
+      v12 = [(HMDHomeLockNotificationContextResolutionResult *)v10 initWithUserUUID:uuid label:0 labelIdentifier:0];
     }
 
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
@@ -82,7 +82,7 @@
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -109,34 +109,34 @@ uint64_t __74__HMDHomeLockNotificationManager_contextResolutionResultFromNFCCont
   return v4;
 }
 
-- (id)contextResolutionResultFromHAPContextId:(id)a3
+- (id)contextResolutionResultFromHAPContextId:(id)id
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeLockNotificationManager *)self home];
-  v6 = v5;
-  if (v5)
+  idCopy = id;
+  home = [(HMDHomeLockNotificationManager *)self home];
+  v6 = home;
+  if (home)
   {
-    v7 = [v5 users];
+    users = [home users];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __74__HMDHomeLockNotificationManager_contextResolutionResultFromHAPContextId___block_invoke;
     v23[3] = &unk_27972E540;
-    v8 = v4;
+    v8 = idCopy;
     v24 = v8;
-    v9 = [v7 na_firstObjectPassingTest:v23];
+    v9 = [users na_firstObjectPassingTest:v23];
 
     if (v9)
     {
       v10 = [HMDHomeLockNotificationContextResolutionResult alloc];
-      v11 = [v9 uuid];
-      v12 = [(HMDHomeLockNotificationContextResolutionResult *)v10 initWithUserUUID:v11 label:0 labelIdentifier:0];
+      uuid = [v9 uuid];
+      v12 = [(HMDHomeLockNotificationContextResolutionResult *)v10 initWithUserUUID:uuid label:0 labelIdentifier:0];
     }
 
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
@@ -156,7 +156,7 @@ uint64_t __74__HMDHomeLockNotificationManager_contextResolutionResultFromNFCCont
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -183,44 +183,44 @@ uint64_t __74__HMDHomeLockNotificationManager_contextResolutionResultFromHAPCont
   return v4;
 }
 
-- (id)contextResolutionResultFromAccessCode:(id)a3
+- (id)contextResolutionResultFromAccessCode:(id)code
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeLockNotificationManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  codeCopy = code;
+  workQueue = [(HMDHomeLockNotificationManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDHomeLockNotificationManager *)self home];
-  v7 = v6;
-  if (v6)
+  home = [(HMDHomeLockNotificationManager *)self home];
+  v7 = home;
+  if (home)
   {
-    v8 = [v6 users];
+    users = [home users];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __72__HMDHomeLockNotificationManager_contextResolutionResultFromAccessCode___block_invoke;
     v28[3] = &unk_27972E540;
-    v9 = v4;
+    v9 = codeCopy;
     v29 = v9;
-    v10 = [v8 na_firstObjectPassingTest:v28];
+    v10 = [users na_firstObjectPassingTest:v28];
 
     if (v10)
     {
       v11 = [HMDHomeLockNotificationContextResolutionResult alloc];
-      v12 = [v10 uuid];
+      uuid = [v10 uuid];
       v13 = v11;
-      v14 = v12;
+      v14 = uuid;
       v15 = 0;
     }
 
     else
     {
-      v21 = [v7 labelsByAccessCode];
-      v12 = [v21 objectForKeyedSubscript:v9];
+      labelsByAccessCode = [v7 labelsByAccessCode];
+      uuid = [labelsByAccessCode objectForKeyedSubscript:v9];
 
-      if (!v12)
+      if (!uuid)
       {
         v24 = objc_autoreleasePoolPush();
-        v25 = self;
+        selfCopy = self;
         v26 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
@@ -231,14 +231,14 @@ uint64_t __74__HMDHomeLockNotificationManager_contextResolutionResultFromHAPCont
         }
 
         objc_autoreleasePoolPop(v24);
-        v12 = 0;
+        uuid = 0;
         v20 = 0;
         goto LABEL_10;
       }
 
       v13 = [HMDHomeLockNotificationContextResolutionResult alloc];
       v14 = 0;
-      v15 = v12;
+      v15 = uuid;
     }
 
     v20 = [(HMDHomeLockNotificationContextResolutionResult *)v13 initWithUserUUID:v14 label:v15 labelIdentifier:0];
@@ -248,7 +248,7 @@ LABEL_10:
   }
 
   v16 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy2 = self;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
@@ -275,33 +275,33 @@ uint64_t __72__HMDHomeLockNotificationManager_contextResolutionResultFromAccessC
   return v4;
 }
 
-- (void)_resolveKeypadContextIdentifier:(id)a3 accessoryUUID:(id)a4 completion:(id)a5
+- (void)_resolveKeypadContextIdentifier:(id)identifier accessoryUUID:(id)d completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDHomeLockNotificationManager *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  identifierCopy = identifier;
+  dCopy = d;
+  completionCopy = completion;
+  workQueue = [(HMDHomeLockNotificationManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v12 = [(HMDHomeLockNotificationManager *)self home];
-  v13 = [v12 accessCodeManager];
-  if (v13)
+  home = [(HMDHomeLockNotificationManager *)self home];
+  accessCodeManager = [home accessCodeManager];
+  if (accessCodeManager)
   {
-    v14 = [MEMORY[0x277D0F7B8] untrackedPlaceholderFlow];
+    untrackedPlaceholderFlow = [MEMORY[0x277D0F7B8] untrackedPlaceholderFlow];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __91__HMDHomeLockNotificationManager__resolveKeypadContextIdentifier_accessoryUUID_completion___block_invoke;
     v21[3] = &unk_279728A58;
     v21[4] = self;
-    v22 = v10;
-    [v13 fetchAccessCodeForIdentifier:v8 accessoryUUID:v9 flow:v14 completion:v21];
+    v22 = completionCopy;
+    [accessCodeManager fetchAccessCodeForIdentifier:identifierCopy accessoryUUID:dCopy flow:untrackedPlaceholderFlow completion:v21];
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -313,7 +313,7 @@ uint64_t __72__HMDHomeLockNotificationManager_contextResolutionResultFromAccessC
 
     objc_autoreleasePoolPop(v15);
     v19 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    (*(v10 + 2))(v10, 0, v19);
+    (*(completionCopy + 2))(completionCopy, 0, v19);
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -327,32 +327,32 @@ void __91__HMDHomeLockNotificationManager__resolveKeypadContextIdentifier_access
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_sendResolveLockNotificationContextIdentifierMessage:(id)a3 accessoryUUID:(id)a4 withCompletion:(id)a5
+- (void)_sendResolveLockNotificationContextIdentifierMessage:(id)message accessoryUUID:(id)d withCompletion:(id)completion
 {
   v48[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDHomeLockNotificationManager *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  messageCopy = message;
+  dCopy = d;
+  completionCopy = completion;
+  workQueue = [(HMDHomeLockNotificationManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v12 = [(HMDHomeLockNotificationManager *)self home];
-  v13 = [v12 residentDeviceManager];
-  v14 = [v13 primaryResidentDevice];
+  home = [(HMDHomeLockNotificationManager *)self home];
+  residentDeviceManager = [home residentDeviceManager];
+  primaryResidentDevice = [residentDeviceManager primaryResidentDevice];
 
-  if (v14)
+  if (primaryResidentDevice)
   {
     v15 = [HMDRemoteDeviceMessageDestination alloc];
-    v16 = [(HMDHomeLockNotificationManager *)self messageTargetUUID];
-    v17 = [v14 device];
-    v18 = [(HMDRemoteDeviceMessageDestination *)v15 initWithTarget:v16 device:v17];
+    messageTargetUUID = [(HMDHomeLockNotificationManager *)self messageTargetUUID];
+    device = [primaryResidentDevice device];
+    v18 = [(HMDRemoteDeviceMessageDestination *)v15 initWithTarget:messageTargetUUID device:device];
 
-    v48[0] = v8;
+    v48[0] = messageCopy;
     v47[0] = @"HMDHomeResolveLockNotificationContextIdentifierMessageAccessCodeIdentifierKey";
     v47[1] = @"HMDHomeResolveLockNotificationContextIdentifierMessage";
-    v35 = v9;
-    v19 = [v9 UUIDString];
-    v48[1] = v19;
+    v35 = dCopy;
+    uUIDString = [dCopy UUIDString];
+    v48[1] = uUIDString;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:2];
 
     v21 = [[HMDRemoteMessage alloc] initWithName:@"HMDHomeResolveLockNotificationContextIdentifierMessage" destination:v18 payload:v20 type:0 timeout:1 secure:0.0];
@@ -361,14 +361,14 @@ void __91__HMDHomeLockNotificationManager__resolveKeypadContextIdentifier_access
     v36[2] = __116__HMDHomeLockNotificationManager__sendResolveLockNotificationContextIdentifierMessage_accessoryUUID_withCompletion___block_invoke;
     v36[3] = &unk_279732AE8;
     v36[4] = self;
-    v34 = v10;
-    v38 = v10;
-    v22 = v8;
-    v23 = v8;
+    v34 = completionCopy;
+    v38 = completionCopy;
+    v22 = messageCopy;
+    v23 = messageCopy;
     v37 = v23;
     [(HMDRemoteMessage *)v21 setResponseHandler:v36];
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
@@ -378,25 +378,25 @@ void __91__HMDHomeLockNotificationManager__resolveKeypadContextIdentifier_access
       v41 = 2112;
       v42 = v21;
       v43 = 2112;
-      v44 = v14;
+      v44 = primaryResidentDevice;
       v45 = 2112;
       v46 = v23;
       _os_log_impl(&dword_2531F8000, v26, OS_LOG_TYPE_INFO, "%{public}@Sending message: %@ to primary resident: %@ to resolve notification context identifier: %@ ", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v24);
-    v28 = [(HMDHomeLockNotificationManager *)v25 msgDispatcher];
-    [v28 sendMessage:v21];
+    msgDispatcher = [(HMDHomeLockNotificationManager *)selfCopy msgDispatcher];
+    [msgDispatcher sendMessage:v21];
 
-    v8 = v22;
-    v10 = v34;
-    v9 = v35;
+    messageCopy = v22;
+    completionCopy = v34;
+    dCopy = v35;
   }
 
   else
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy2 = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
@@ -408,7 +408,7 @@ void __91__HMDHomeLockNotificationManager__resolveKeypadContextIdentifier_access
 
     objc_autoreleasePoolPop(v29);
     v18 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    (*(v10 + 2))(v10, 0, v18);
+    (*(completionCopy + 2))(completionCopy, 0, v18);
   }
 
   v33 = *MEMORY[0x277D85DE8];
@@ -551,30 +551,30 @@ void __116__HMDHomeLockNotificationManager__sendResolveLockNotificationContextId
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)resolveKeypadContextIdentifier:(id)a3 accessoryUUID:(id)a4 withCompletion:(id)a5
+- (void)resolveKeypadContextIdentifier:(id)identifier accessoryUUID:(id)d withCompletion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  completionCopy = completion;
   if ([(HMDHomeLockNotificationManager *)self hasReachablePrimaryResidentSupportingLockNotificationContext])
   {
-    v11 = [(HMDHomeLockNotificationManager *)self workQueue];
+    workQueue = [(HMDHomeLockNotificationManager *)self workQueue];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __94__HMDHomeLockNotificationManager_resolveKeypadContextIdentifier_accessoryUUID_withCompletion___block_invoke;
     v18[3] = &unk_279734578;
     v18[4] = self;
-    v21 = v10;
-    v19 = v8;
-    v20 = v9;
-    dispatch_async(v11, v18);
+    v21 = completionCopy;
+    v19 = identifierCopy;
+    v20 = dCopy;
+    dispatch_async(workQueue, v18);
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -586,7 +586,7 @@ void __116__HMDHomeLockNotificationManager__sendResolveLockNotificationContextId
 
     objc_autoreleasePoolPop(v12);
     v16 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-    (*(v10 + 2))(v10, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -685,15 +685,15 @@ void __94__HMDHomeLockNotificationManager_resolveKeypadContextIdentifier_accesso
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)displayNameForNotificationContextResolutionResult:(id)a3
+- (id)displayNameForNotificationContextResolutionResult:(id)result
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeLockNotificationManager *)self home];
-  if (!v5)
+  resultCopy = result;
+  home = [(HMDHomeLockNotificationManager *)self home];
+  if (!home)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy3 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -711,14 +711,14 @@ LABEL_11:
 LABEL_12:
 
     objc_autoreleasePoolPop(v10);
-    v9 = 0;
+    displayName = 0;
     goto LABEL_13;
   }
 
   if (![(HMDHomeLockNotificationManager *)self hasReachablePrimaryResidentSupportingLockNotificationContext])
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy3 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -732,21 +732,21 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v6 = [v4 userUUID];
+  userUUID = [resultCopy userUUID];
 
-  if (v6)
+  if (userUUID)
   {
-    v7 = [v5 users];
+    users = [home users];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __84__HMDHomeLockNotificationManager_displayNameForNotificationContextResolutionResult___block_invoke;
     v20[3] = &unk_27972E540;
-    v21 = v4;
-    v8 = [v7 na_firstObjectPassingTest:v20];
+    v21 = resultCopy;
+    v8 = [users na_firstObjectPassingTest:v20];
 
     if (v8)
     {
-      v9 = [v8 displayName];
+      displayName = [v8 displayName];
 
       goto LABEL_13;
     }
@@ -754,13 +754,13 @@ LABEL_12:
     goto LABEL_19;
   }
 
-  v19 = [v4 label];
+  label = [resultCopy label];
 
-  if (!v19)
+  if (!label)
   {
 LABEL_19:
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy3 = self;
     v12 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -771,19 +771,19 @@ LABEL_19:
     *buf = 138543618;
     v23 = v13;
     v24 = 2112;
-    v25 = v4;
+    v25 = resultCopy;
     v14 = "%{public}@Did not find display name for notification context result: %@";
     v15 = v12;
     v16 = 22;
     goto LABEL_11;
   }
 
-  v9 = [v4 label];
+  displayName = [resultCopy label];
 LABEL_13:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return displayName;
 }
 
 uint64_t __84__HMDHomeLockNotificationManager_displayNameForNotificationContextResolutionResult___block_invoke(uint64_t a1, void *a2)
@@ -795,51 +795,51 @@ uint64_t __84__HMDHomeLockNotificationManager_displayNameForNotificationContextR
   return v5;
 }
 
-- (void)resolveEncodedCharacteristicNotificationContext:(id)a3 accessoryUUID:(id)a4 completion:(id)a5
+- (void)resolveEncodedCharacteristicNotificationContext:(id)context accessoryUUID:(id)d completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  dCopy = d;
+  completionCopy = completion;
   v33 = 0;
-  v11 = [MEMORY[0x277CFEA88] parsedFromData:v8 error:&v33];
+  v11 = [MEMORY[0x277CFEA88] parsedFromData:contextCopy error:&v33];
   v12 = v33;
   if (v11)
   {
-    v13 = [v11 contextIdentifier];
-    v14 = [v13 value];
+    contextIdentifier = [v11 contextIdentifier];
+    value = [contextIdentifier value];
 
-    if (v14)
+    if (value)
     {
-      v15 = [v11 source];
-      v16 = [v15 value];
+      source = [v11 source];
+      value2 = [source value];
 
-      switch(v16)
+      switch(value2)
       {
         case 1:
           v31[0] = MEMORY[0x277D85DD0];
           v31[1] = 3221225472;
           v31[2] = __107__HMDHomeLockNotificationManager_resolveEncodedCharacteristicNotificationContext_accessoryUUID_completion___block_invoke;
           v31[3] = &unk_279728A30;
-          v32 = v10;
-          [(HMDHomeLockNotificationManager *)self resolveKeypadContextIdentifier:v14 accessoryUUID:v9 withCompletion:v31];
+          v32 = completionCopy;
+          [(HMDHomeLockNotificationManager *)self resolveKeypadContextIdentifier:value accessoryUUID:dCopy withCompletion:v31];
           v26 = v32;
           goto LABEL_20;
         case 2:
-          v17 = [(HMDHomeLockNotificationManager *)self contextResolutionResultFromNFCContextId:v14];
+          v17 = [(HMDHomeLockNotificationManager *)self contextResolutionResultFromNFCContextId:value];
           goto LABEL_14;
         case 3:
-          v17 = [(HMDHomeLockNotificationManager *)self contextResolutionResultFromHAPContextId:v14];
+          v17 = [(HMDHomeLockNotificationManager *)self contextResolutionResultFromHAPContextId:value];
 LABEL_14:
           v26 = v17;
-          (*(v10 + 2))(v10, v17, 0);
+          (*(completionCopy + 2))(completionCopy, v17, 0);
 LABEL_20:
 
           goto LABEL_21;
       }
 
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy2 = self;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
@@ -848,7 +848,7 @@ LABEL_20:
         *buf = 138543618;
         v35 = v28;
         v36 = 2048;
-        v37 = v16;
+        v37 = value2;
         _os_log_impl(&dword_2531F8000, v27, OS_LOG_TYPE_INFO, "%{public}@Invalid source %ld present in notification context", buf, 0x16u);
 
         v22 = v30;
@@ -858,7 +858,7 @@ LABEL_20:
     else
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy2 = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
@@ -866,19 +866,19 @@ LABEL_20:
         *buf = 138543618;
         v35 = v25;
         v36 = 2112;
-        v37 = v8;
+        v37 = contextCopy;
         _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_INFO, "%{public}@Failed to decode notification context identifier from data:%@", buf, 0x16u);
       }
     }
 
     objc_autoreleasePoolPop(v22);
     v26 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    (*(v10 + 2))(v10, 0, v26);
+    (*(completionCopy + 2))(completionCopy, 0, v26);
     goto LABEL_20;
   }
 
   v18 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy3 = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
@@ -886,29 +886,29 @@ LABEL_20:
     *buf = 138543874;
     v35 = v21;
     v36 = 2112;
-    v37 = v8;
+    v37 = contextCopy;
     v38 = 2112;
     v39 = v12;
     _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_ERROR, "%{public}@Failed to parse notification context TLV from context:%@ error:%@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v18);
-  v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-  (*(v10 + 2))(v10, 0, v14);
+  value = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
+  (*(completionCopy + 2))(completionCopy, 0, value);
 LABEL_21:
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleResolveNotificationContextIdentifierMessage:(id)a3
+- (void)handleResolveNotificationContextIdentifierMessage:(id)message
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeLockNotificationManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDHomeLockNotificationManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -916,13 +916,13 @@ LABEL_21:
     *buf = 138543618;
     v23 = v9;
     v24 = 2112;
-    v25 = v4;
+    v25 = messageCopy;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Handling message: %@ to resolve notification context identifier", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [v4 numberForKey:@"HMDHomeResolveLockNotificationContextIdentifierMessageAccessCodeIdentifierKey"];
-  v11 = [v4 uuidForKey:@"HMDHomeResolveLockNotificationContextIdentifierMessage"];
+  v10 = [messageCopy numberForKey:@"HMDHomeResolveLockNotificationContextIdentifierMessageAccessCodeIdentifierKey"];
+  v11 = [messageCopy uuidForKey:@"HMDHomeResolveLockNotificationContextIdentifierMessage"];
   v12 = v11;
   if (v10 && v11)
   {
@@ -930,16 +930,16 @@ LABEL_21:
     v19[1] = 3221225472;
     v19[2] = __84__HMDHomeLockNotificationManager_handleResolveNotificationContextIdentifierMessage___block_invoke;
     v19[3] = &unk_279728A08;
-    v19[4] = v7;
+    v19[4] = selfCopy;
     v20 = v10;
-    v21 = v4;
-    [(HMDHomeLockNotificationManager *)v7 _resolveKeypadContextIdentifier:v20 accessoryUUID:v12 completion:v19];
+    v21 = messageCopy;
+    [(HMDHomeLockNotificationManager *)selfCopy _resolveKeypadContextIdentifier:v20 accessoryUUID:v12 completion:v19];
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = v7;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -955,7 +955,7 @@ LABEL_21:
 
     objc_autoreleasePoolPop(v13);
     v17 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3 userInfo:0];
-    [v4 respondWithError:v17];
+    [messageCopy respondWithError:v17];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -1064,16 +1064,16 @@ void __84__HMDHomeLockNotificationManager_handleResolveNotificationContextIdenti
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldResolveNotificationContextForCharacteristic:(id)a3
+- (BOOL)shouldResolveNotificationContextForCharacteristic:(id)characteristic
 {
-  v3 = a3;
-  v4 = [v3 type];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CCF838]];
+  characteristicCopy = characteristic;
+  type = [characteristicCopy type];
+  v5 = [type isEqualToString:*MEMORY[0x277CCF838]];
 
-  if (v5 && ([v3 value], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "integerValue"), v6, v7 <= 1) && objc_msgSend(v3, "supportsNotificationContext"))
+  if (v5 && ([characteristicCopy value], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "integerValue"), v6, v7 <= 1) && objc_msgSend(characteristicCopy, "supportsNotificationContext"))
   {
-    v8 = [v3 notificationContext];
-    v9 = v8 != 0;
+    notificationContext = [characteristicCopy notificationContext];
+    v9 = notificationContext != 0;
   }
 
   else
@@ -1087,28 +1087,28 @@ void __84__HMDHomeLockNotificationManager_handleResolveNotificationContextIdenti
 - (BOOL)hasReachablePrimaryResidentSupportingLockNotificationContext
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeLockNotificationManager *)self home];
-  v4 = [v3 residentDeviceManager];
-  v5 = [v4 primaryResidentDevice];
+  home = [(HMDHomeLockNotificationManager *)self home];
+  residentDeviceManager = [home residentDeviceManager];
+  primaryResidentDevice = [residentDeviceManager primaryResidentDevice];
 
-  if (v5)
+  if (primaryResidentDevice)
   {
-    v6 = [v5 capabilities];
-    if ([v6 supportsLockNotificationContext])
+    capabilities = [primaryResidentDevice capabilities];
+    if ([capabilities supportsLockNotificationContext])
     {
-      v7 = [v5 isReachable];
+      isReachable = [primaryResidentDevice isReachable];
     }
 
     else
     {
-      v7 = 0;
+      isReachable = 0;
     }
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -1119,19 +1119,19 @@ void __84__HMDHomeLockNotificationManager_handleResolveNotificationContextIdenti
     }
 
     objc_autoreleasePoolPop(v8);
-    v7 = 0;
+    isReachable = 0;
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v7;
+  return isReachable;
 }
 
-- (void)configureWithHome:(id)a3
+- (void)configureWithHome:(id)home
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1139,22 +1139,22 @@ void __84__HMDHomeLockNotificationManager_handleResolveNotificationContextIdenti
     *buf = 138543618;
     v23 = v8;
     v24 = 2112;
-    v25 = v4;
+    v25 = homeCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Configuring with home: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDHomeLockNotificationManager *)v6 setHome:v4];
-  v9 = [v4 msgDispatcher];
-  [(HMDHomeLockNotificationManager *)v6 setMsgDispatcher:v9];
+  [(HMDHomeLockNotificationManager *)selfCopy setHome:homeCopy];
+  msgDispatcher = [homeCopy msgDispatcher];
+  [(HMDHomeLockNotificationManager *)selfCopy setMsgDispatcher:msgDispatcher];
 
-  v10 = [(HMDHomeLockNotificationManager *)v6 dataSource];
-  v11 = [v10 isResidentCapable];
+  dataSource = [(HMDHomeLockNotificationManager *)selfCopy dataSource];
+  isResidentCapable = [dataSource isResidentCapable];
 
-  if (v11)
+  if (isResidentCapable)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v6;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -1167,44 +1167,44 @@ void __84__HMDHomeLockNotificationManager_handleResolveNotificationContextIdenti
     objc_autoreleasePoolPop(v12);
     v16 = +[(HMDRemoteMessagePolicy *)HMDMutableRemoteMessagePolicy];
     [v16 setRoles:{objc_msgSend(v16, "roles") | 4}];
-    v17 = [HMDUserMessagePolicy userMessagePolicyWithHome:v4 userPrivilege:0 remoteAccessRequired:0];
-    v18 = [(HMDHomeLockNotificationManager *)v13 msgDispatcher];
+    v17 = [HMDUserMessagePolicy userMessagePolicyWithHome:homeCopy userPrivilege:0 remoteAccessRequired:0];
+    msgDispatcher2 = [(HMDHomeLockNotificationManager *)v13 msgDispatcher];
     v21[0] = v17;
     v21[1] = v16;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
-    [v18 registerForMessage:@"HMDHomeResolveLockNotificationContextIdentifierMessage" receiver:v13 policies:v19 selector:sel_handleResolveNotificationContextIdentifierMessage_];
+    [msgDispatcher2 registerForMessage:@"HMDHomeResolveLockNotificationContextIdentifierMessage" receiver:v13 policies:v19 selector:sel_handleResolveNotificationContextIdentifierMessage_];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDHomeLockNotificationManager)initWithUUID:(id)a3 workQueue:(id)a4 dataSource:(id)a5
+- (HMDHomeLockNotificationManager)initWithUUID:(id)d workQueue:(id)queue dataSource:(id)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  queueCopy = queue;
+  sourceCopy = source;
   v15.receiver = self;
   v15.super_class = HMDHomeLockNotificationManager;
   v11 = [(HMDHomeLockNotificationManager *)&v15 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     uuid = v11->_uuid;
     v11->_uuid = v12;
 
-    objc_storeStrong(&v11->_workQueue, a4);
-    objc_storeStrong(&v11->_dataSource, a5);
+    objc_storeStrong(&v11->_workQueue, queue);
+    objc_storeStrong(&v11->_dataSource, source);
   }
 
   return v11;
 }
 
-- (HMDHomeLockNotificationManager)initWithUUID:(id)a3 workQueue:(id)a4
+- (HMDHomeLockNotificationManager)initWithUUID:(id)d workQueue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
+  queueCopy = queue;
+  dCopy = d;
   v8 = objc_alloc_init(HMDHomeLockNotificationManagerDataSource);
-  v9 = [(HMDHomeLockNotificationManager *)self initWithUUID:v7 workQueue:v6 dataSource:v8];
+  v9 = [(HMDHomeLockNotificationManager *)self initWithUUID:dCopy workQueue:queueCopy dataSource:v8];
 
   return v9;
 }

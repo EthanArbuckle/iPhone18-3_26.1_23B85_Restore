@@ -1,12 +1,12 @@
 @interface NotesImporter
 - (NotesImporter)init;
-- (void)archiveEvernoteNotesFromFileURL:(id)a3 completionBlock:(id)a4;
-- (void)cleanupArchiveId:(id)a3 completionBlock:(id)a4;
-- (void)countEvernoteNotesFromFileURL:(id)a3 completionBlock:(id)a4;
-- (void)parseHTMLStringFromEvernoteContentString:(id)a3 completionBlock:(id)a4;
-- (void)parseTitleFromHTMLString:(id)a3 completionBlock:(id)a4;
-- (void)unarchiveEvernoteNoteFromArchiveId:(id)a3 noteArchiveId:(id)a4 completionBlock:(id)a5;
-- (void)unarchiveEvernoteResourceFromArchiveId:(id)a3 resourceArchiveId:(id)a4 completionBlock:(id)a5;
+- (void)archiveEvernoteNotesFromFileURL:(id)l completionBlock:(id)block;
+- (void)cleanupArchiveId:(id)id completionBlock:(id)block;
+- (void)countEvernoteNotesFromFileURL:(id)l completionBlock:(id)block;
+- (void)parseHTMLStringFromEvernoteContentString:(id)string completionBlock:(id)block;
+- (void)parseTitleFromHTMLString:(id)string completionBlock:(id)block;
+- (void)unarchiveEvernoteNoteFromArchiveId:(id)id noteArchiveId:(id)archiveId completionBlock:(id)block;
+- (void)unarchiveEvernoteResourceFromArchiveId:(id)id resourceArchiveId:(id)archiveId completionBlock:(id)block;
 @end
 
 @implementation NotesImporter
@@ -30,102 +30,102 @@
   return v2;
 }
 
-- (void)parseHTMLStringFromEvernoteContentString:(id)a3 completionBlock:(id)a4
+- (void)parseHTMLStringFromEvernoteContentString:(id)string completionBlock:(id)block
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(NotesImporter *)self evernoteContentParser];
-  v8 = [v7 htmlStringFromEvernoteContentString:v6];
+  blockCopy = block;
+  stringCopy = string;
+  evernoteContentParser = [(NotesImporter *)self evernoteContentParser];
+  v8 = [evernoteContentParser htmlStringFromEvernoteContentString:stringCopy];
 
-  if (v9)
+  if (blockCopy)
   {
-    v9[2](v9, v8);
+    blockCopy[2](blockCopy, v8);
   }
 }
 
-- (void)countEvernoteNotesFromFileURL:(id)a3 completionBlock:(id)a4
+- (void)countEvernoteNotesFromFileURL:(id)l completionBlock:(id)block
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [(NotesImporter *)self evernoteNoteParser];
-  v8 = [v7 countEvernoteNotesFromFileURL:v6];
+  blockCopy = block;
+  lCopy = l;
+  evernoteNoteParser = [(NotesImporter *)self evernoteNoteParser];
+  v8 = [evernoteNoteParser countEvernoteNotesFromFileURL:lCopy];
 
-  v9 = v10;
-  if (v10)
+  v9 = blockCopy;
+  if (blockCopy)
   {
-    (*(v10 + 2))(v10, v8);
-    v9 = v10;
+    (*(blockCopy + 2))(blockCopy, v8);
+    v9 = blockCopy;
   }
 }
 
-- (void)parseTitleFromHTMLString:(id)a3 completionBlock:(id)a4
+- (void)parseTitleFromHTMLString:(id)string completionBlock:(id)block
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(NotesImporter *)self evernoteContentParser];
-  v8 = [v7 titleFromHTMLString:v6];
+  blockCopy = block;
+  stringCopy = string;
+  evernoteContentParser = [(NotesImporter *)self evernoteContentParser];
+  v8 = [evernoteContentParser titleFromHTMLString:stringCopy];
 
-  if (v9)
+  if (blockCopy)
   {
-    v9[2](v9, v8);
+    blockCopy[2](blockCopy, v8);
   }
 }
 
-- (void)archiveEvernoteNotesFromFileURL:(id)a3 completionBlock:(id)a4
+- (void)archiveEvernoteNotesFromFileURL:(id)l completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NotesImporter *)self evernoteNoteParser];
+  blockCopy = block;
+  lCopy = l;
+  evernoteNoteParser = [(NotesImporter *)self evernoteNoteParser];
   v11 = 0;
-  v9 = [v8 archiveItemsFromFileURL:v7 error:&v11];
+  v9 = [evernoteNoteParser archiveItemsFromFileURL:lCopy error:&v11];
 
   v10 = v11;
-  if (v6)
+  if (blockCopy)
   {
-    v6[2](v6, v9, v10);
+    blockCopy[2](blockCopy, v9, v10);
   }
 }
 
-- (void)unarchiveEvernoteNoteFromArchiveId:(id)a3 noteArchiveId:(id)a4 completionBlock:(id)a5
+- (void)unarchiveEvernoteNoteFromArchiveId:(id)id noteArchiveId:(id)archiveId completionBlock:(id)block
 {
-  v12 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(NotesImporter *)self evernoteNoteParser];
-  v11 = [v10 unarchiveEvernoteNoteFromArchiveId:v9 noteArchiveId:v8];
+  blockCopy = block;
+  archiveIdCopy = archiveId;
+  idCopy = id;
+  evernoteNoteParser = [(NotesImporter *)self evernoteNoteParser];
+  v11 = [evernoteNoteParser unarchiveEvernoteNoteFromArchiveId:idCopy noteArchiveId:archiveIdCopy];
 
-  if (v12)
+  if (blockCopy)
   {
-    v12[2](v12, v11);
+    blockCopy[2](blockCopy, v11);
   }
 }
 
-- (void)unarchiveEvernoteResourceFromArchiveId:(id)a3 resourceArchiveId:(id)a4 completionBlock:(id)a5
+- (void)unarchiveEvernoteResourceFromArchiveId:(id)id resourceArchiveId:(id)archiveId completionBlock:(id)block
 {
-  v12 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(NotesImporter *)self evernoteNoteParser];
-  v11 = [v10 unarchiveEvernoteResourceFromArchiveId:v9 resourceArchiveId:v8];
+  blockCopy = block;
+  archiveIdCopy = archiveId;
+  idCopy = id;
+  evernoteNoteParser = [(NotesImporter *)self evernoteNoteParser];
+  v11 = [evernoteNoteParser unarchiveEvernoteResourceFromArchiveId:idCopy resourceArchiveId:archiveIdCopy];
 
-  if (v12)
+  if (blockCopy)
   {
-    v12[2](v12, v11);
+    blockCopy[2](blockCopy, v11);
   }
 }
 
-- (void)cleanupArchiveId:(id)a3 completionBlock:(id)a4
+- (void)cleanupArchiveId:(id)id completionBlock:(id)block
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(NotesImporter *)self evernoteNoteParser];
-  [v7 cleanupArchiveId:v6];
+  blockCopy = block;
+  idCopy = id;
+  evernoteNoteParser = [(NotesImporter *)self evernoteNoteParser];
+  [evernoteNoteParser cleanupArchiveId:idCopy];
 
-  v8 = v9;
-  if (v9)
+  v8 = blockCopy;
+  if (blockCopy)
   {
-    (*(v9 + 2))(v9);
-    v8 = v9;
+    (*(blockCopy + 2))(blockCopy);
+    v8 = blockCopy;
   }
 }
 

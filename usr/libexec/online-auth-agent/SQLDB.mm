@@ -1,34 +1,34 @@
 @interface SQLDB
-+ (id)databaseWithURL:(id)a3;
++ (id)databaseWithURL:(id)l;
 - (BOOL)setupSchema;
 - (NSURL)shmURL;
 - (NSURL)walURL;
-- (SQLDB)initWithDatabaseURL:(id)a3 asReadOnly:(BOOL)a4;
+- (SQLDB)initWithDatabaseURL:(id)l asReadOnly:(BOOL)only;
 - (id)lastInsertRowID;
-- (id)readSetting:(id)a3;
-- (int)executeQuery:(id)a3 withBind:(id)a4 withCancellableResults:(id)a5;
-- (int)executeQuery:(id)a3 withBind:(id)a4 withResults:(id)a5;
-- (int)transaction:(id)a3 immediate:(BOOL)a4;
-- (unint64_t)tableRowCount:(id)a3;
+- (id)readSetting:(id)setting;
+- (int)executeQuery:(id)query withBind:(id)bind withCancellableResults:(id)results;
+- (int)executeQuery:(id)query withBind:(id)bind withResults:(id)results;
+- (int)transaction:(id)transaction immediate:(BOOL)immediate;
+- (unint64_t)tableRowCount:(id)count;
 - (void)dealloc;
-- (void)deleteSetting:(id)a3;
-- (void)setSetting:(id)a3 toValue:(id)a4;
+- (void)deleteSetting:(id)setting;
+- (void)setSetting:(id)setting toValue:(id)value;
 - (void)setupPermissions;
 @end
 
 @implementation SQLDB
 
-- (SQLDB)initWithDatabaseURL:(id)a3 asReadOnly:(BOOL)a4
+- (SQLDB)initWithDatabaseURL:(id)l asReadOnly:(BOOL)only
 {
-  v4 = a4;
-  v7 = a3;
+  onlyCopy = only;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = SQLDB;
   v8 = [(SQLDB *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_url, a3);
+    objc_storeStrong(&v8->_url, l);
     v10 = dispatch_semaphore_create(1);
     transactionSemaphore = v9->_transactionSemaphore;
     v9->_transactionSemaphore = v10;
@@ -38,14 +38,14 @@
       goto LABEL_9;
     }
 
-    db = sub_100003090(v9->_url, v4);
+    db = sub_100003090(v9->_url, onlyCopy);
     v9->_db = db;
     if (!db)
     {
       goto LABEL_9;
     }
 
-    if (v4)
+    if (onlyCopy)
     {
       v13 = 1;
     }
@@ -75,32 +75,32 @@ LABEL_9:
   return v9;
 }
 
-+ (id)databaseWithURL:(id)a3
++ (id)databaseWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = sub_100006750();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = lCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "DB being loaded from %{public}@", &v8, 0xCu);
   }
 
-  v6 = [[a1 alloc] initWithDatabaseURL:v4];
+  v6 = [[self alloc] initWithDatabaseURL:lCopy];
 
   return v6;
 }
 
 - (NSURL)walURL
 {
-  v3 = [(NSURL *)self->_url path];
-  v4 = [v3 stringByDeletingLastPathComponent];
+  path = [(NSURL *)self->_url path];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
 
-  v5 = [(NSURL *)self->_url path];
-  v6 = [v5 lastPathComponent];
+  path2 = [(NSURL *)self->_url path];
+  lastPathComponent = [path2 lastPathComponent];
 
-  v7 = [NSString stringWithFormat:@"%@-wal", v6];
-  v8 = [v4 stringByAppendingPathComponent:v7];
+  v7 = [NSString stringWithFormat:@"%@-wal", lastPathComponent];
+  v8 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v7];
   v9 = [NSURL fileURLWithPath:v8 isDirectory:0];
 
   return v9;
@@ -108,14 +108,14 @@ LABEL_9:
 
 - (NSURL)shmURL
 {
-  v3 = [(NSURL *)self->_url path];
-  v4 = [v3 stringByDeletingLastPathComponent];
+  path = [(NSURL *)self->_url path];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
 
-  v5 = [(NSURL *)self->_url path];
-  v6 = [v5 lastPathComponent];
+  path2 = [(NSURL *)self->_url path];
+  lastPathComponent = [path2 lastPathComponent];
 
-  v7 = [NSString stringWithFormat:@"%@-shm", v6];
-  v8 = [v4 stringByAppendingPathComponent:v7];
+  v7 = [NSString stringWithFormat:@"%@-shm", lastPathComponent];
+  v8 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v7];
   v9 = [NSURL fileURLWithPath:v8 isDirectory:0];
 
   return v9;
@@ -138,17 +138,17 @@ LABEL_9:
 
 - (void)setupPermissions
 {
-  v3 = [(SQLDB *)self dbURL];
-  v4 = [v3 path];
-  sub_100003284([v4 UTF8String]);
+  dbURL = [(SQLDB *)self dbURL];
+  path = [dbURL path];
+  sub_100003284([path UTF8String]);
 
-  v5 = [(SQLDB *)self shmURL];
-  v6 = [v5 path];
-  sub_100003284([v6 UTF8String]);
+  shmURL = [(SQLDB *)self shmURL];
+  path2 = [shmURL path];
+  sub_100003284([path2 UTF8String]);
 
-  v8 = [(SQLDB *)self walURL];
-  v7 = [v8 path];
-  sub_100003284([v7 UTF8String]);
+  walURL = [(SQLDB *)self walURL];
+  path3 = [walURL path];
+  sub_100003284([path3 UTF8String]);
 }
 
 - (void)dealloc
@@ -164,28 +164,28 @@ LABEL_9:
   [(SQLDB *)&v4 dealloc];
 }
 
-- (int)executeQuery:(id)a3 withBind:(id)a4 withResults:(id)a5
+- (int)executeQuery:(id)query withBind:(id)bind withResults:(id)results
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100002240;
   v10[3] = &unk_10005D858;
-  v11 = a5;
-  v8 = v11;
-  LODWORD(a4) = [(SQLDB *)self executeQuery:a3 withBind:a4 withCancellableResults:v10];
+  resultsCopy = results;
+  v8 = resultsCopy;
+  LODWORD(bind) = [(SQLDB *)self executeQuery:query withBind:bind withCancellableResults:v10];
 
-  return a4;
+  return bind;
 }
 
-- (int)executeQuery:(id)a3 withBind:(id)a4 withCancellableResults:(id)a5
+- (int)executeQuery:(id)query withBind:(id)bind withCancellableResults:(id)results
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queryCopy = query;
+  bindCopy = bind;
+  resultsCopy = results;
   ppStmt = 0;
   db = self->_db;
   p_db = &self->_db;
-  v13 = sqlite3_prepare_v2(db, [v8 UTF8String], -1, &ppStmt, 0);
+  v13 = sqlite3_prepare_v2(db, [queryCopy UTF8String], -1, &ppStmt, 0);
   if (v13)
   {
     v14 = v13;
@@ -207,19 +207,19 @@ LABEL_40:
 
   else
   {
-    if (v9)
+    if (bindCopy)
     {
-      v9[2](v9, ppStmt);
+      bindCopy[2](bindCopy, ppStmt);
     }
 
-    if (v10 && (v18 = ppStmt, (v19 = sqlite3_column_count(ppStmt)) != 0))
+    if (resultsCopy && (v18 = ppStmt, (v19 = sqlite3_column_count(ppStmt)) != 0))
     {
       v20 = v19;
       v17 = [NSMutableDictionary dictionaryWithCapacity:2 * v19];
       if (v20 >= 1)
       {
-        v42 = v9;
-        v43 = v8;
+        v42 = bindCopy;
+        v43 = queryCopy;
         v21 = 0;
         do
         {
@@ -252,8 +252,8 @@ LABEL_40:
         }
 
         while (v20 != v21);
-        v9 = v42;
-        v8 = v43;
+        bindCopy = v42;
+        queryCopy = v43;
       }
     }
 
@@ -286,7 +286,7 @@ LABEL_40:
           *buf = 67109378;
           *v46 = v14;
           *&v46[4] = 2114;
-          *&v46[6] = v8;
+          *&v46[6] = queryCopy;
           _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Step error (%d) on query: %{public}@", buf, 0x12u);
         }
 
@@ -295,9 +295,9 @@ LABEL_40:
 
       v32 = v31 == 100;
       v33 = 1;
-      if (v10 && v14 == 100)
+      if (resultsCopy && v14 == 100)
       {
-        v33 = v10[2](v10, ppStmt, v17);
+        v33 = resultsCopy[2](resultsCopy, ppStmt, v17);
         v32 = 1;
       }
     }
@@ -359,12 +359,12 @@ LABEL_40:
   return v35;
 }
 
-- (int)transaction:(id)a3 immediate:(BOOL)a4
+- (int)transaction:(id)transaction immediate:(BOOL)immediate
 {
-  v4 = a4;
-  v6 = a3;
+  immediateCopy = immediate;
+  transactionCopy = transaction;
   dispatch_semaphore_wait(self->_transactionSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  if (v4)
+  if (immediateCopy)
   {
     v7 = @"begin immediate transaction";
   }
@@ -377,7 +377,7 @@ LABEL_40:
   v8 = [(SQLDB *)self executeQuery:v7 withBind:0 withResults:0];
   if (!v8)
   {
-    if (v6[2](v6) && ![(SQLDB *)self executeQuery:@"end transaction" withBind:0 withResults:0])
+    if (transactionCopy[2](transactionCopy) && ![(SQLDB *)self executeQuery:@"end transaction" withBind:0 withResults:0])
     {
       v8 = 0;
     }
@@ -393,7 +393,7 @@ LABEL_40:
   return v8;
 }
 
-- (id)readSetting:(id)a3
+- (id)readSetting:(id)setting
 {
   v10 = 0;
   v11 = &v10;
@@ -405,8 +405,8 @@ LABEL_40:
   v8[1] = 3221225472;
   v8[2] = sub_1000029C4;
   v8[3] = &unk_10005D880;
-  v4 = a3;
-  v9 = v4;
+  settingCopy = setting;
+  v9 = settingCopy;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100002A14;
@@ -420,68 +420,68 @@ LABEL_40:
   return v5;
 }
 
-- (void)setSetting:(id)a3 toValue:(id)a4
+- (void)setSetting:(id)setting toValue:(id)value
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100002B2C;
   v8[3] = &unk_10005D8D0;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  settingCopy = setting;
+  valueCopy = value;
+  v6 = valueCopy;
+  v7 = settingCopy;
   [(SQLDB *)self executeQuery:@"INSERT OR REPLACE INTO settings (name withBind:value) VALUES (?1 withResults:?2)", v8, 0];
 }
 
-- (void)deleteSetting:(id)a3
+- (void)deleteSetting:(id)setting
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100002C44;
   v5[3] = &unk_10005D880;
-  v6 = a3;
-  v4 = v6;
+  settingCopy = setting;
+  v4 = settingCopy;
   [(SQLDB *)self executeQuery:@"DELETE FROM settings WHERE name = ?1" withBind:v5 withResults:0];
 }
 
-- (unint64_t)tableRowCount:(id)a3
+- (unint64_t)tableRowCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_1000029AC;
   v16 = sub_1000029BC;
   v17 = 0;
-  v5 = [NSString stringWithFormat:@"SELECT COUNT(*) FROM %@", v4];
+  countCopy = [NSString stringWithFormat:@"SELECT COUNT(*) FROM %@", countCopy];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100002E14;
   v11[3] = &unk_10005D8A8;
   v11[4] = &v12;
-  v6 = [(SQLDB *)self executeQuery:v5 withBind:0 withResults:v11];
+  v6 = [(SQLDB *)self executeQuery:countCopy withBind:0 withResults:v11];
   if (v6)
   {
     v7 = sub_100006750();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_10003FC4C(v4, v6, v7);
+      sub_10003FC4C(countCopy, v6, v7);
     }
   }
 
   v8 = v13[5];
   if (v8)
   {
-    v9 = [v8 unsignedIntegerValue];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
   }
 
   else
   {
-    v9 = 0;
+    unsignedIntegerValue = 0;
   }
 
   _Block_object_dispose(&v12, 8);
-  return v9;
+  return unsignedIntegerValue;
 }
 
 - (id)lastInsertRowID

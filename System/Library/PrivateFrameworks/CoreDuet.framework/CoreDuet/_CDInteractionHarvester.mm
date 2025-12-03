@@ -1,22 +1,22 @@
 @interface _CDInteractionHarvester
-- (id)harvestInteractionsBetweenStartDate:(id)a3 endDate:(id)a4;
+- (id)harvestInteractionsBetweenStartDate:(id)date endDate:(id)endDate;
 @end
 
 @implementation _CDInteractionHarvester
 
-- (id)harvestInteractionsBetweenStartDate:(id)a3 endDate:(id)a4
+- (id)harvestInteractionsBetweenStartDate:(id)date endDate:(id)endDate
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   context = objc_autoreleasePoolPush();
   v7 = +[_CDLogging interactionChannel];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [_CDInteractionHarvester harvestInteractionsBetweenStartDate:v5 endDate:v6];
+    [_CDInteractionHarvester harvestInteractionsBetweenStartDate:dateCopy endDate:endDateCopy];
   }
 
-  v8 = [_CDSpotlightItemUtils querySpotlightItemsWithStartDate:v5 endDate:v6 getMail:1 getMessages:1];
+  v8 = [_CDSpotlightItemUtils querySpotlightItemsWithStartDate:dateCopy endDate:endDateCopy getMail:1 getMessages:1];
   v9 = +[_CDLogging interactionChannel];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {

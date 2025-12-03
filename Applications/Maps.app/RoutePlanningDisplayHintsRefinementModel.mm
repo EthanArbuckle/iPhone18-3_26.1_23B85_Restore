@@ -1,17 +1,17 @@
 @interface RoutePlanningDisplayHintsRefinementModel
-+ (id)requirementFieldsForDisplayHints:(id)a3;
++ (id)requirementFieldsForDisplayHints:(id)hints;
 - (BOOL)shouldShowHighlighted;
-- (RoutePlanningDisplayHintsRefinementModel)initWithDelegate:(id)a3 transitPreferences:(id)a4 displayHints:(id)a5 refinementField:(unint64_t)a6;
+- (RoutePlanningDisplayHintsRefinementModel)initWithDelegate:(id)delegate transitPreferences:(id)preferences displayHints:(id)hints refinementField:(unint64_t)field;
 - (id)_localizedCashFaresLabel;
 - (id)_localizedICFaresLabel;
-- (id)_localizedNameForPrioritizationOption:(int)a3;
+- (id)_localizedNameForPrioritizationOption:(int)option;
 - (id)identifier;
 - (id)menuOptions;
 - (id)titleText;
 - (id)value;
 - (int)menuPressUsageAction;
 - (void)_assertValidValue;
-- (void)setValue:(id)a3;
+- (void)setValue:(id)value;
 @end
 
 @implementation RoutePlanningDisplayHintsRefinementModel
@@ -32,16 +32,16 @@
   return v3;
 }
 
-- (id)_localizedNameForPrioritizationOption:(int)a3
+- (id)_localizedNameForPrioritizationOption:(int)option
 {
-  if (a3 > 3)
+  if (option > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_1016506D8[a3];
+    v3 = off_1016506D8[option];
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:v3 value:@"localized string not found" table:0];
   }
@@ -66,57 +66,57 @@
 
 - (id)menuOptions
 {
-  v2 = self;
+  selfCopy = self;
   menuOptions = self->super._menuOptions;
   if (!menuOptions)
   {
     v4 = objc_opt_new();
-    refinementField = v2->_refinementField;
+    refinementField = selfCopy->_refinementField;
     switch(refinementField)
     {
       case 2uLL:
-        v33 = [(GEORouteDisplayHints *)v2->_displayHints surchargeOptions];
-        v34 = [v33 selectedSurchargeType];
-        v35 = [v34 value];
+        surchargeOptions = [(GEORouteDisplayHints *)selfCopy->_displayHints surchargeOptions];
+        selectedSurchargeType = [surchargeOptions selectedSurchargeType];
+        value = [selectedSurchargeType value];
 
-        v36 = [(RoutePlanningDisplayHintsRefinementModel *)v2 preferences];
-        v37 = [v36 surchargeOption];
+        preferences = [(RoutePlanningDisplayHintsRefinementModel *)selfCopy preferences];
+        surchargeOption = [preferences surchargeOption];
 
-        v60 = v2;
-        if (v37)
+        v60 = selfCopy;
+        if (surchargeOption)
         {
-          v38 = [(RoutePlanningDisplayHintsRefinementModel *)v2 preferences];
-          v39 = [v38 surchargeOption];
-          v35 = [v39 intValue];
+          preferences2 = [(RoutePlanningDisplayHintsRefinementModel *)selfCopy preferences];
+          surchargeOption2 = [preferences2 surchargeOption];
+          value = [surchargeOption2 intValue];
         }
 
         v61 = v4;
-        v40 = [v33 surchargeTypes];
-        v41 = [v40 count];
+        surchargeTypes = [surchargeOptions surchargeTypes];
+        v41 = [surchargeTypes count];
 
         if (v41)
         {
           v42 = 0;
-          obja = v33;
+          obja = surchargeOptions;
           do
           {
-            v43 = [v33 surchargeTypes];
-            v44 = [v43 objectAtIndexedSubscript:v42];
+            surchargeTypes2 = [surchargeOptions surchargeTypes];
+            v44 = [surchargeTypes2 objectAtIndexedSubscript:v42];
 
-            v45 = [v44 value];
-            v46 = [NSNumber numberWithInt:v45];
-            v47 = [v44 formattedName];
-            v48 = [NSString _navigation_stringForServerFormattedString:v47];
+            value2 = [v44 value];
+            v46 = [NSNumber numberWithInt:value2];
+            formattedName = [v44 formattedName];
+            v48 = [NSString _navigation_stringForServerFormattedString:formattedName];
 
             v49 = [[NSAttributedString alloc] initWithString:v48];
             v50 = v41;
             v51 = [RoutePlanningMenuOptionModel alloc];
-            v52 = [v46 stringValue];
-            v53 = [(RoutePlanningMenuOptionModel *)v51 initWithIdentifier:v52 title:v49 selected:v45 == v35];
+            stringValue = [v46 stringValue];
+            v53 = [(RoutePlanningMenuOptionModel *)v51 initWithIdentifier:stringValue title:v49 selected:value2 == value];
             [(NSArray *)v61 addObject:v53];
 
             v41 = v50;
-            v33 = obja;
+            surchargeOptions = obja;
 
             ++v42;
           }
@@ -124,32 +124,32 @@
           while (v41 != v42);
         }
 
-        v2 = v60;
+        selfCopy = v60;
         v4 = v61;
         break;
       case 1uLL:
         v21 = [NSAttributedString alloc];
-        v22 = [(RoutePlanningDisplayHintsRefinementModel *)v2 _localizedICFaresLabel];
-        v23 = [v21 initWithString:v22];
+        _localizedICFaresLabel = [(RoutePlanningDisplayHintsRefinementModel *)selfCopy _localizedICFaresLabel];
+        v23 = [v21 initWithString:_localizedICFaresLabel];
 
         v24 = [RoutePlanningMenuOptionModel alloc];
-        v25 = [(RoutePlanningDisplayHintsRefinementModel *)v2 preferences];
-        v26 = -[RoutePlanningMenuOptionModel initWithIdentifier:title:selected:](v24, "initWithIdentifier:title:selected:", @"EnableIC", v23, [v25 showICFares]);
+        preferences3 = [(RoutePlanningDisplayHintsRefinementModel *)selfCopy preferences];
+        v26 = -[RoutePlanningMenuOptionModel initWithIdentifier:title:selected:](v24, "initWithIdentifier:title:selected:", @"EnableIC", v23, [preferences3 showICFares]);
         [(NSArray *)v4 addObject:v26];
 
         v27 = [NSAttributedString alloc];
-        v28 = [(RoutePlanningDisplayHintsRefinementModel *)v2 _localizedCashFaresLabel];
-        v29 = [v27 initWithString:v28];
+        _localizedCashFaresLabel = [(RoutePlanningDisplayHintsRefinementModel *)selfCopy _localizedCashFaresLabel];
+        v29 = [v27 initWithString:_localizedCashFaresLabel];
 
         v30 = [RoutePlanningMenuOptionModel alloc];
-        v31 = [(RoutePlanningDisplayHintsRefinementModel *)v2 preferences];
-        v32 = -[RoutePlanningMenuOptionModel initWithIdentifier:title:selected:](v30, "initWithIdentifier:title:selected:", @"DisableIC", v29, [v31 showICFares] ^ 1);
+        preferences4 = [(RoutePlanningDisplayHintsRefinementModel *)selfCopy preferences];
+        v32 = -[RoutePlanningMenuOptionModel initWithIdentifier:title:selected:](v30, "initWithIdentifier:title:selected:", @"DisableIC", v29, [preferences4 showICFares] ^ 1);
         [(NSArray *)v4 addObject:v32];
 
         break;
       case 0uLL:
-        v6 = [(GEORouteDisplayHints *)v2->_displayHints prioritizationOptions];
-        if (![v6 count])
+        prioritizationOptions = [(GEORouteDisplayHints *)selfCopy->_displayHints prioritizationOptions];
+        if (![prioritizationOptions count])
         {
           v56 = sub_10006D178();
           if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
@@ -185,7 +185,7 @@
         v67 = 0u;
         v64 = 0u;
         v65 = 0u;
-        obj = v6;
+        obj = prioritizationOptions;
         v7 = [obj countByEnumeratingWithState:&v64 objects:v68 count:16];
         if (v7)
         {
@@ -201,29 +201,29 @@
                 objc_enumerationMutation(obj);
               }
 
-              v12 = [*(*(&v64 + 1) + 8 * i) intValue];
+              intValue = [*(*(&v64 + 1) + 8 * i) intValue];
               v13 = [NSAttributedString alloc];
-              v14 = [(RoutePlanningDisplayHintsRefinementModel *)v2 _localizedNameForPrioritizationOption:v12];
+              v14 = [(RoutePlanningDisplayHintsRefinementModel *)selfCopy _localizedNameForPrioritizationOption:intValue];
               v15 = [v13 initWithString:v14];
 
               v16 = [RoutePlanningMenuOptionModel alloc];
-              if (v12 >= 4)
+              if (intValue >= 4)
               {
-                v17 = [NSString stringWithFormat:@"(unknown: %i)", v12];
+                v17 = [NSString stringWithFormat:@"(unknown: %i)", intValue];
               }
 
               else
               {
-                v17 = off_1016506B8[v12];
+                v17 = off_1016506B8[intValue];
               }
 
-              [(RoutePlanningDisplayHintsRefinementModel *)v2 preferences];
-              v19 = v18 = v2;
-              v20 = -[RoutePlanningMenuOptionModel initWithIdentifier:title:selected:](v16, "initWithIdentifier:title:selected:", v17, v15, [v19 sortOption] == v12);
+              [(RoutePlanningDisplayHintsRefinementModel *)selfCopy preferences];
+              v19 = v18 = selfCopy;
+              v20 = -[RoutePlanningMenuOptionModel initWithIdentifier:title:selected:](v16, "initWithIdentifier:title:selected:", v17, v15, [v19 sortOption] == intValue);
               v4 = v11;
               [(NSArray *)v11 addObject:v20];
 
-              v2 = v18;
+              selfCopy = v18;
             }
 
             v8 = [obj countByEnumeratingWithState:&v64 objects:v68 count:16];
@@ -235,10 +235,10 @@
         break;
     }
 
-    v54 = v2->super._menuOptions;
-    v2->super._menuOptions = v4;
+    v54 = selfCopy->super._menuOptions;
+    selfCopy->super._menuOptions = v4;
 
-    menuOptions = v2->super._menuOptions;
+    menuOptions = selfCopy->super._menuOptions;
   }
 
   return menuOptions;
@@ -269,15 +269,15 @@
   refinementField = self->_refinementField;
   if (refinementField == 2)
   {
-    v3 = [(RoutePlanningDisplayHintsRefinementModel *)self preferences];
-    v5 = [v3 surchargeOption];
-    LOBYTE(v4) = v5 != 0;
+    preferences = [(RoutePlanningDisplayHintsRefinementModel *)self preferences];
+    surchargeOption = [preferences surchargeOption];
+    LOBYTE(v4) = surchargeOption != 0;
   }
 
   else if (refinementField == 1)
   {
-    v3 = [(RoutePlanningDisplayHintsRefinementModel *)self preferences];
-    v4 = [v3 showICFares] ^ 1;
+    preferences = [(RoutePlanningDisplayHintsRefinementModel *)self preferences];
+    v4 = [preferences showICFares] ^ 1;
   }
 
   else
@@ -288,20 +288,20 @@
       return v4;
     }
 
-    v3 = [(RoutePlanningDisplayHintsRefinementModel *)self preferences];
-    LOBYTE(v4) = [v3 sortOption] != 0;
+    preferences = [(RoutePlanningDisplayHintsRefinementModel *)self preferences];
+    LOBYTE(v4) = [preferences sortOption] != 0;
   }
 
   return v4;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = valueCopy;
   }
 
   else
@@ -328,7 +328,7 @@
 
 - (void)_assertValidValue
 {
-  v3 = [(RoutePlanningDisplayHintsRefinementModel *)self value];
+  value = [(RoutePlanningDisplayHintsRefinementModel *)self value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -337,7 +337,7 @@
     v5 = sub_10006D178();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(RoutePlanningDisplayHintsRefinementModel *)self value];
+      value2 = [(RoutePlanningDisplayHintsRefinementModel *)self value];
       v7 = [NSString stringWithFormat:@"Tried to set bad object for value: %@", objc_opt_class()];
       *buf = 136316162;
       v11 = "[RoutePlanningDisplayHintsRefinementModel _assertValidValue]";
@@ -372,26 +372,26 @@
   switch(refinementField)
   {
     case 2uLL:
-      v4 = [(GEORouteDisplayHints *)self->_displayHints surchargeOptions];
-      v8 = [v4 selectedSurchargeType];
-      v9 = [v8 value];
+      surchargeOptions = [(GEORouteDisplayHints *)self->_displayHints surchargeOptions];
+      selectedSurchargeType = [surchargeOptions selectedSurchargeType];
+      value = [selectedSurchargeType value];
 
-      v10 = [(RoutePlanningDisplayHintsRefinementModel *)self preferences];
-      v11 = [v10 surchargeOption];
+      preferences = [(RoutePlanningDisplayHintsRefinementModel *)self preferences];
+      surchargeOption = [preferences surchargeOption];
 
-      if (v11)
+      if (surchargeOption)
       {
-        v12 = [(RoutePlanningDisplayHintsRefinementModel *)self preferences];
-        v13 = [v12 surchargeOption];
-        v9 = [v13 intValue];
+        preferences2 = [(RoutePlanningDisplayHintsRefinementModel *)self preferences];
+        surchargeOption2 = [preferences2 surchargeOption];
+        value = [surchargeOption2 intValue];
       }
 
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v14 = [v4 surchargeTypes];
-      v15 = [v14 countByEnumeratingWithState:&v25 objects:v35 count:16];
+      surchargeTypes = [surchargeOptions surchargeTypes];
+      v15 = [surchargeTypes countByEnumeratingWithState:&v25 objects:v35 count:16];
       if (v15)
       {
         v16 = v15;
@@ -402,20 +402,20 @@
           {
             if (*v26 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(surchargeTypes);
             }
 
             v19 = *(*(&v25 + 1) + 8 * i);
-            if ([v19 value] == v9)
+            if ([v19 value] == value)
             {
-              v23 = [v19 formattedName];
-              v5 = [NSString _navigation_stringForServerFormattedString:v23];
+              formattedName = [v19 formattedName];
+              v5 = [NSString _navigation_stringForServerFormattedString:formattedName];
 
               goto LABEL_26;
             }
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v25 objects:v35 count:16];
+          v16 = [surchargeTypes countByEnumeratingWithState:&v25 objects:v35 count:16];
           if (v16)
           {
             continue;
@@ -425,16 +425,16 @@
         }
       }
 
-      v14 = +[NSBundle mainBundle];
-      v5 = [v14 localizedStringForKey:@"[Transit Filter Picker] Surcharge" value:@"localized string not found" table:0];
+      surchargeTypes = +[NSBundle mainBundle];
+      v5 = [surchargeTypes localizedStringForKey:@"[Transit Filter Picker] Surcharge" value:@"localized string not found" table:0];
 LABEL_26:
 
       goto LABEL_27;
     case 1uLL:
-      v6 = [(RoutePlanningDisplayHintsRefinementModel *)self preferences];
-      v7 = [v6 showICFares];
+      preferences3 = [(RoutePlanningDisplayHintsRefinementModel *)self preferences];
+      showICFares = [preferences3 showICFares];
 
-      if (v7)
+      if (showICFares)
       {
         [(RoutePlanningDisplayHintsRefinementModel *)self _localizedICFaresLabel];
       }
@@ -446,8 +446,8 @@ LABEL_26:
       v5 = ;
       goto LABEL_30;
     case 0uLL:
-      v4 = [(RoutePlanningDisplayHintsRefinementModel *)self preferences];
-      v5 = -[RoutePlanningDisplayHintsRefinementModel _localizedNameForPrioritizationOption:](self, "_localizedNameForPrioritizationOption:", [v4 sortOption]);
+      surchargeOptions = [(RoutePlanningDisplayHintsRefinementModel *)self preferences];
+      v5 = -[RoutePlanningDisplayHintsRefinementModel _localizedNameForPrioritizationOption:](self, "_localizedNameForPrioritizationOption:", [surchargeOptions sortOption]);
 LABEL_27:
 
       goto LABEL_30;
@@ -483,49 +483,49 @@ LABEL_30:
   return v5;
 }
 
-- (RoutePlanningDisplayHintsRefinementModel)initWithDelegate:(id)a3 transitPreferences:(id)a4 displayHints:(id)a5 refinementField:(unint64_t)a6
+- (RoutePlanningDisplayHintsRefinementModel)initWithDelegate:(id)delegate transitPreferences:(id)preferences displayHints:(id)hints refinementField:(unint64_t)field
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [a4 mutableCopy];
+  delegateCopy = delegate;
+  hintsCopy = hints;
+  v12 = [preferences mutableCopy];
   v26.receiver = self;
   v26.super_class = RoutePlanningDisplayHintsRefinementModel;
-  v13 = [(RoutePlanningRefinementModel *)&v26 initWithDelegate:v10 value:v12];
+  v13 = [(RoutePlanningRefinementModel *)&v26 initWithDelegate:delegateCopy value:v12];
 
   if (!v13)
   {
     goto LABEL_17;
   }
 
-  v13->_refinementField = a6;
-  objc_storeStrong(&v13->_displayHints, a5);
-  if (!a6)
+  v13->_refinementField = field;
+  objc_storeStrong(&v13->_displayHints, hints);
+  if (!field)
   {
-    v19 = [v11 prioritizationOptions];
-    v20 = [(RoutePlanningDisplayHintsRefinementModel *)v13 preferences];
-    v21 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v20 sortOption]);
-    v22 = [v19 containsObject:v21];
+    prioritizationOptions = [hintsCopy prioritizationOptions];
+    preferences = [(RoutePlanningDisplayHintsRefinementModel *)v13 preferences];
+    v21 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [preferences sortOption]);
+    v22 = [prioritizationOptions containsObject:v21];
 
     if (v22)
     {
       goto LABEL_17;
     }
 
-    v17 = [v11 prioritizationOptions];
-    v18 = [v17 firstObject];
-    v23 = [v18 integerValue];
-    v24 = [(RoutePlanningDisplayHintsRefinementModel *)v13 preferences];
-    [v24 setSortOption:v23];
+    prioritizationOptions2 = [hintsCopy prioritizationOptions];
+    firstObject = [prioritizationOptions2 firstObject];
+    integerValue = [firstObject integerValue];
+    preferences2 = [(RoutePlanningDisplayHintsRefinementModel *)v13 preferences];
+    [preferences2 setSortOption:integerValue];
 
     goto LABEL_15;
   }
 
-  if (a6 != 1)
+  if (field != 1)
   {
     goto LABEL_17;
   }
 
-  if (![v11 availablePaymentTypesCount])
+  if (![hintsCopy availablePaymentTypesCount])
   {
 LABEL_8:
     v15 = sub_10006D178();
@@ -550,27 +550,27 @@ LABEL_8:
       goto LABEL_17;
     }
 
-    v17 = sub_10006D178();
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    prioritizationOptions2 = sub_10006D178();
+    if (!os_log_type_enabled(prioritizationOptions2, OS_LOG_TYPE_ERROR))
     {
 LABEL_16:
 
       goto LABEL_17;
     }
 
-    v18 = +[NSThread callStackSymbols];
+    firstObject = +[NSThread callStackSymbols];
     *buf = 138412290;
-    v28 = v18;
-    _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
+    v28 = firstObject;
+    _os_log_impl(&_mh_execute_header, prioritizationOptions2, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
 LABEL_15:
 
     goto LABEL_16;
   }
 
   v14 = 0;
-  while ([v11 availablePaymentTypeAtIndex:v14] != 1)
+  while ([hintsCopy availablePaymentTypeAtIndex:v14] != 1)
   {
-    if (++v14 >= [v11 availablePaymentTypesCount])
+    if (++v14 >= [hintsCopy availablePaymentTypesCount])
     {
       goto LABEL_8;
     }
@@ -581,25 +581,25 @@ LABEL_17:
   return v13;
 }
 
-+ (id)requirementFieldsForDisplayHints:(id)a3
++ (id)requirementFieldsForDisplayHints:(id)hints
 {
-  v3 = a3;
+  hintsCopy = hints;
   v4 = objc_alloc_init(NSMutableIndexSet);
-  v5 = [v3 surchargeOptions];
-  v6 = [v5 surchargeTypes];
-  v7 = [v6 count];
+  surchargeOptions = [hintsCopy surchargeOptions];
+  surchargeTypes = [surchargeOptions surchargeTypes];
+  v7 = [surchargeTypes count];
 
   if (v7)
   {
     [v4 addIndex:2];
   }
 
-  if ([v3 availablePaymentTypesCount] && objc_msgSend(v3, "availablePaymentTypesCount"))
+  if ([hintsCopy availablePaymentTypesCount] && objc_msgSend(hintsCopy, "availablePaymentTypesCount"))
   {
     v8 = 0;
-    while ([v3 availablePaymentTypeAtIndex:v8] != 1)
+    while ([hintsCopy availablePaymentTypeAtIndex:v8] != 1)
     {
-      if (++v8 >= [v3 availablePaymentTypesCount])
+      if (++v8 >= [hintsCopy availablePaymentTypesCount])
       {
         goto LABEL_10;
       }
@@ -609,7 +609,7 @@ LABEL_17:
   }
 
 LABEL_10:
-  if ([v3 availablePrioritizationsCount])
+  if ([hintsCopy availablePrioritizationsCount])
   {
     [v4 addIndex:0];
   }

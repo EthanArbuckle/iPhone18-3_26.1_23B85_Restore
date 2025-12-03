@@ -1,7 +1,7 @@
 @interface LiveActivitiesAutoLaunchModel
-- (void)dataSourceDidUpdate:(id)a3;
+- (void)dataSourceDidUpdate:(id)update;
 - (void)dealloc;
-- (void)twoWaySyncSettingDidUpdate:(id)a3;
+- (void)twoWaySyncSettingDidUpdate:(id)update;
 @end
 
 @implementation LiveActivitiesAutoLaunchModel
@@ -9,7 +9,7 @@
 - (void)dealloc
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC27CompanionAutoLaunchSettings29LiveActivitiesAutoLaunchModel_remoteInstalledAppDataSource);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     [v3 invalidate];
@@ -20,22 +20,22 @@
   [(LiveActivitiesAutoLaunchModel *)&v5 dealloc];
 }
 
-- (void)dataSourceDidUpdate:(id)a3
+- (void)dataSourceDidUpdate:(id)update
 {
   v3 = *&stru_108.segname[(swift_isaMask & self->super.isa) + 16];
-  v6 = self;
+  selfCopy = self;
   v4 = v3();
-  v5 = [v4 globalSettings];
+  globalSettings = [v4 globalSettings];
 
-  sub_83EC(v5);
+  sub_83EC(globalSettings);
   swift_unknownObjectRelease();
 }
 
-- (void)twoWaySyncSettingDidUpdate:(id)a3
+- (void)twoWaySyncSettingDidUpdate:(id)update
 {
   type metadata accessor for LiveActivitiesAutoLaunchModel();
   sub_B4F0(&qword_3B5F0, v4, type metadata accessor for LiveActivitiesAutoLaunchModel);
-  v5 = self;
+  selfCopy = self;
   sub_26194();
   sub_261A4();
 }

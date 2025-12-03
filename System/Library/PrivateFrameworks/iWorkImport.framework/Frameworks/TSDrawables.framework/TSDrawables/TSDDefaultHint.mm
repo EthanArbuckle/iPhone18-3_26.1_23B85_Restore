@@ -1,19 +1,19 @@
 @interface TSDDefaultHint
 + (Class)archivedHintClass;
-- (BOOL)isLastPartitionHorizontally:(BOOL)a3;
+- (BOOL)isLastPartitionHorizontally:(BOOL)horizontally;
 - (CGRect)bounds;
-- (TSDDefaultHint)initWithBounds:(CGRect)a3 edges:(unint64_t)a4;
+- (TSDDefaultHint)initWithBounds:(CGRect)bounds edges:(unint64_t)edges;
 - (id)copyForArchiving;
 @end
 
 @implementation TSDDefaultHint
 
-- (TSDDefaultHint)initWithBounds:(CGRect)a3 edges:(unint64_t)a4
+- (TSDDefaultHint)initWithBounds:(CGRect)bounds edges:(unint64_t)edges
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v10.receiver = self;
   v10.super_class = TSDDefaultHint;
   result = [(TSDDefaultHint *)&v10 init];
@@ -23,7 +23,7 @@
     result->mBounds.origin.y = y;
     result->mBounds.size.width = width;
     result->mBounds.size.height = height;
-    result->mEdges = a4;
+    result->mEdges = edges;
   }
 
   return result;
@@ -47,12 +47,12 @@
   return objc_msgSend_initWithBounds_edges_(v10, v11, mEdges, x, y, width, height);
 }
 
-- (BOOL)isLastPartitionHorizontally:(BOOL)a3
+- (BOOL)isLastPartitionHorizontally:(BOOL)horizontally
 {
-  v3 = a3;
-  v4 = objc_msgSend_edges(self, a2, a3);
+  horizontallyCopy = horizontally;
+  v4 = objc_msgSend_edges(self, a2, horizontally);
   v5 = 4;
-  if (v3)
+  if (horizontallyCopy)
   {
     v5 = 8;
   }

@@ -1,30 +1,30 @@
 @interface CAMVideoConfigurationStatusIndicatorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_togglesFramerateForTouchAtLocation:(CGPoint)a3;
-- (BOOL)_togglesResolutionForTouchAtLocation:(CGPoint)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_togglesFramerateForTouchAtLocation:(CGPoint)location;
+- (BOOL)_togglesResolutionForTouchAtLocation:(CGPoint)location;
 - (id)_axVC;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_handleTouchAtLocation:(CGPoint)a3;
+- (void)_handleTouchAtLocation:(CGPoint)location;
 - (void)layoutSubviews;
 @end
 
 @implementation CAMVideoConfigurationStatusIndicatorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMVideoConfigurationStatusIndicator" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CAMVideoConfigurationStatusIndicator" hasInstanceMethod:@"_togglesResolutionForTouchAtLocation:" withFullSignature:{"B", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"CAMVideoConfigurationStatusIndicator" hasInstanceMethod:@"_togglesFramerateForTouchAtLocation:" withFullSignature:{"B", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"CAMVideoConfigurationStatusIndicator" hasInstanceMethod:@"_handleTouchAtLocation:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"CAMVideoConfigurationStatusIndicator" hasInstanceMethod:@"_resolutionString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMVideoConfigurationStatusIndicator" hasInstanceMethod:@"_framerateString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMVideoConfigurationStatusIndicator" hasInstanceMethod:@"_resolutionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMVideoConfigurationStatusIndicator" hasInstanceMethod:@"_framerateLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMVideoConfigurationStatusIndicator" hasInstanceMethod:@"_separatorLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController"];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentDevicePosition" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMVideoConfigurationStatusIndicator" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CAMVideoConfigurationStatusIndicator" hasInstanceMethod:@"_togglesResolutionForTouchAtLocation:" withFullSignature:{"B", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"CAMVideoConfigurationStatusIndicator" hasInstanceMethod:@"_togglesFramerateForTouchAtLocation:" withFullSignature:{"B", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"CAMVideoConfigurationStatusIndicator" hasInstanceMethod:@"_handleTouchAtLocation:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"CAMVideoConfigurationStatusIndicator" hasInstanceMethod:@"_resolutionString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMVideoConfigurationStatusIndicator" hasInstanceMethod:@"_framerateString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMVideoConfigurationStatusIndicator" hasInstanceMethod:@"_resolutionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMVideoConfigurationStatusIndicator" hasInstanceMethod:@"_framerateLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMVideoConfigurationStatusIndicator" hasInstanceMethod:@"_separatorLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController"];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentDevicePosition" withFullSignature:{"q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -33,24 +33,24 @@
   v10.receiver = self;
   v10.super_class = CAMVideoConfigurationStatusIndicatorAccessibility;
   [(CAMVideoConfigurationStatusIndicatorAccessibility *)&v10 _accessibilityLoadAccessibilityInformation];
-  v3 = [(CAMVideoConfigurationStatusIndicatorAccessibility *)self _axSeparatorLabel];
-  [v3 _setIsAccessibilityElementBlock:&__block_literal_global_17];
-  v4 = [(CAMVideoConfigurationStatusIndicatorAccessibility *)self _axResolutionLabel];
-  [v4 _setAccessibilityLabelBlock:&__block_literal_global_523];
-  v5 = [(CAMVideoConfigurationStatusIndicatorAccessibility *)self _axFramerateLabel];
-  [v5 _setAccessibilityLabelBlock:&__block_literal_global_528];
+  _axSeparatorLabel = [(CAMVideoConfigurationStatusIndicatorAccessibility *)self _axSeparatorLabel];
+  [_axSeparatorLabel _setIsAccessibilityElementBlock:&__block_literal_global_17];
+  _axResolutionLabel = [(CAMVideoConfigurationStatusIndicatorAccessibility *)self _axResolutionLabel];
+  [_axResolutionLabel _setAccessibilityLabelBlock:&__block_literal_global_523];
+  _axFramerateLabel = [(CAMVideoConfigurationStatusIndicatorAccessibility *)self _axFramerateLabel];
+  [_axFramerateLabel _setAccessibilityLabelBlock:&__block_literal_global_528];
   v8[0] = MEMORY[0x29EDCA5F8];
   v8[1] = 3221225472;
   v8[2] = __95__CAMVideoConfigurationStatusIndicatorAccessibility__accessibilityLoadAccessibilityInformation__block_invoke_4;
   v8[3] = &unk_29F2AD1D0;
   objc_copyWeak(&v9, &location);
-  [v4 _setAccessibilityValueBlock:v8];
+  [_axResolutionLabel _setAccessibilityValueBlock:v8];
   v6[0] = MEMORY[0x29EDCA5F8];
   v6[1] = 3221225472;
   v6[2] = __95__CAMVideoConfigurationStatusIndicatorAccessibility__accessibilityLoadAccessibilityInformation__block_invoke_5;
   v6[3] = &unk_29F2AD1D0;
   objc_copyWeak(&v7, &location);
-  [v5 _setAccessibilityValueBlock:v6];
+  [_axFramerateLabel _setAccessibilityValueBlock:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&v9);
 
@@ -79,9 +79,9 @@ id __95__CAMVideoConfigurationStatusIndicatorAccessibility__accessibilityLoadAcc
 - (id)_axVC
 {
   v2 = [(CAMVideoConfigurationStatusIndicatorAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_538 startWithSelf:1];
-  v3 = [v2 _accessibilityViewController];
+  _accessibilityViewController = [v2 _accessibilityViewController];
 
-  return v3;
+  return _accessibilityViewController;
 }
 
 uint64_t __58__CAMVideoConfigurationStatusIndicatorAccessibility__axVC__block_invoke(uint64_t a1, void *a2)
@@ -101,28 +101,28 @@ uint64_t __58__CAMVideoConfigurationStatusIndicatorAccessibility__axVC__block_in
   [(CAMVideoConfigurationStatusIndicatorAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (BOOL)_togglesResolutionForTouchAtLocation:(CGPoint)a3
+- (BOOL)_togglesResolutionForTouchAtLocation:(CGPoint)location
 {
   v6.receiver = self;
   v6.super_class = CAMVideoConfigurationStatusIndicatorAccessibility;
-  v4 = [(CAMVideoConfigurationStatusIndicatorAccessibility *)&v6 _togglesResolutionForTouchAtLocation:a3.x, a3.y];
+  v4 = [(CAMVideoConfigurationStatusIndicatorAccessibility *)&v6 _togglesResolutionForTouchAtLocation:location.x, location.y];
   [(CAMVideoConfigurationStatusIndicatorAccessibility *)self _axSetResolutionTapped:v4];
   return v4;
 }
 
-- (BOOL)_togglesFramerateForTouchAtLocation:(CGPoint)a3
+- (BOOL)_togglesFramerateForTouchAtLocation:(CGPoint)location
 {
   v6.receiver = self;
   v6.super_class = CAMVideoConfigurationStatusIndicatorAccessibility;
-  v4 = [(CAMVideoConfigurationStatusIndicatorAccessibility *)&v6 _togglesFramerateForTouchAtLocation:a3.x, a3.y];
+  v4 = [(CAMVideoConfigurationStatusIndicatorAccessibility *)&v6 _togglesFramerateForTouchAtLocation:location.x, location.y];
   [(CAMVideoConfigurationStatusIndicatorAccessibility *)self _axSetFramerateTapped:v4];
   return v4;
 }
 
-- (void)_handleTouchAtLocation:(CGPoint)a3
+- (void)_handleTouchAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   [(CAMVideoConfigurationStatusIndicatorAccessibility *)self _axSetResolutionTapped:0];
   [(CAMVideoConfigurationStatusIndicatorAccessibility *)self _axSetFramerateTapped:0];
   v15.receiver = self;

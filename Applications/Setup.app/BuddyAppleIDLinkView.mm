@@ -1,19 +1,19 @@
 @interface BuddyAppleIDLinkView
-- (BuddyAppleIDLinkView)initWithFrame:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BuddyAppleIDLinkView)initWithFrame:(CGRect)frame;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
 @implementation BuddyAppleIDLinkView
 
-- (BuddyAppleIDLinkView)initWithFrame:(CGRect)a3
+- (BuddyAppleIDLinkView)initWithFrame:(CGRect)frame
 {
-  v14 = a3;
+  frameCopy = frame;
   v12 = a2;
   location = 0;
   v11.receiver = self;
   v11.super_class = BuddyAppleIDLinkView;
-  location = [(BuddyAppleIDLinkView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  location = [(BuddyAppleIDLinkView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_storeStrong(&location, location);
   if (location)
   {
@@ -22,14 +22,14 @@
     *(location + 1) = v3;
 
     v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    v6 = [*(location + 1) titleLabel];
-    [v6 setFont:v5];
+    titleLabel = [*(location + 1) titleLabel];
+    [titleLabel setFont:v5];
 
-    v7 = [*(location + 1) titleLabel];
-    [v7 setNumberOfLines:0];
+    titleLabel2 = [*(location + 1) titleLabel];
+    [titleLabel2 setNumberOfLines:0];
 
-    v8 = [*(location + 1) titleLabel];
-    [v8 setTextAlignment:1];
+    titleLabel3 = [*(location + 1) titleLabel];
+    [titleLabel3 setTextAlignment:1];
 
     [location addSubview:*(location + 1)];
   }
@@ -42,9 +42,9 @@
 - (void)layoutSubviews
 {
   [(BuddyAppleIDLinkView *)self bounds];
-  v2 = [(UIButton *)self->_linkButton titleLabel];
+  titleLabel = [(UIButton *)self->_linkButton titleLabel];
   sub_1001B50D8();
-  [(UILabel *)v2 sizeThatFits:v3, v4];
+  [(UILabel *)titleLabel sizeThatFits:v3, v4];
   v8 = v5;
   v9 = v6;
 
@@ -53,11 +53,11 @@
   [(UIButton *)self->_linkButton setFrame:v7, self->_buttonTopPadding, v8, v9, *&v7, *&self->_buttonTopPadding, *&v8, *&v9, *&v7, *&self->_buttonTopPadding, *&v8, *&v9, *&v7, *&self->_buttonTopPadding];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(UIButton *)self->_linkButton titleLabel];
+  titleLabel = [(UIButton *)self->_linkButton titleLabel];
   sub_1001B50D8();
-  [(UILabel *)v3 sizeThatFits:v4, v5, *&v4, *&v5];
+  [(UILabel *)titleLabel sizeThatFits:v4, v5, *&v4, *&v5];
   v11 = v6;
   v12 = v7;
 

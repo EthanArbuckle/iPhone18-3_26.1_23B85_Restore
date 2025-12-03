@@ -1,5 +1,5 @@
 @interface SKUICrossFadingTabBarButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (_NSRange)accessibilityRowRange;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,14 +7,14 @@
 
 @implementation SKUICrossFadingTabBarButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUICrossFadingTabBarButton" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SKUICrossFadingTabBarButton" hasInstanceVariable:@"_standardTitleLabel" withType:"UILabel"];
-  [v3 validateClass:@"SKUICrossFadingTabBarButton" hasInstanceVariable:@"_selectedTitleLabel" withType:"UILabel"];
-  [v3 validateClass:@"SKUICrossFadingTabBar"];
-  [v3 validateClass:@"SKUICrossFadingTabBar" hasInstanceMethod:@"tabBarButtons" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUICrossFadingTabBarButton" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SKUICrossFadingTabBarButton" hasInstanceVariable:@"_standardTitleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SKUICrossFadingTabBarButton" hasInstanceVariable:@"_selectedTitleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SKUICrossFadingTabBar"];
+  [validationsCopy validateClass:@"SKUICrossFadingTabBar" hasInstanceMethod:@"tabBarButtons" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -23,9 +23,9 @@
   v3 = [(SKUICrossFadingTabBarButtonAccessibility *)self safeValueForKey:@"_standardTitleLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
@@ -60,8 +60,8 @@
   objc_opt_class();
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 superview];
-  v5 = [v4 safeValueForKey:@"tabBarButtons"];
+  superview = [v3 superview];
+  v5 = [superview safeValueForKey:@"tabBarButtons"];
   v6 = __UIAccessibilityCastAsClass();
 
   v7 = [v6 indexOfObject:self];

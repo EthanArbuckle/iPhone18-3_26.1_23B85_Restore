@@ -8,16 +8,16 @@
 
 - (id)outputDevices
 {
-  v1 = [a1 outputContext];
-  v2 = [v1 outputDevices];
+  outputContext = [self outputContext];
+  outputDevices = [outputContext outputDevices];
 
-  return v2;
+  return outputDevices;
 }
 
 - (APKKeyValueObserver)beginObserveringExternalPlaybackChangeWithChangeHandler:()AirPlayKit
 {
   v4 = a3;
-  v5 = [[APKKeyValueObserver alloc] initWithObservedObject:a1 keyPath:@"externalPlaybackActive" options:1 changeHandler:v4];
+  v5 = [[APKKeyValueObserver alloc] initWithObservedObject:self keyPath:@"externalPlaybackActive" options:1 changeHandler:v4];
 
   return v5;
 }
@@ -25,7 +25,7 @@
 - (APKKeyValueObserver)beginObserveringTimeControlStatusWithChangeHandler:()AirPlayKit
 {
   v4 = a3;
-  v5 = [[APKKeyValueObserver alloc] initWithObservedObject:a1 keyPath:@"timeControlStatus" options:1 changeHandler:v4];
+  v5 = [[APKKeyValueObserver alloc] initWithObservedObject:self keyPath:@"timeControlStatus" options:1 changeHandler:v4];
 
   return v5;
 }

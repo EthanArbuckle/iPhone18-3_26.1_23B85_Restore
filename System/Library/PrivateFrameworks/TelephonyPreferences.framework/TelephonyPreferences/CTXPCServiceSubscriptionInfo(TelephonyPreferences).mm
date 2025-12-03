@@ -7,10 +7,10 @@
 
 - (id)tps_activeSubscriptionSet
 {
-  v1 = [a1 subscriptionsInUse];
-  if (v1)
+  subscriptionsInUse = [self subscriptionsInUse];
+  if (subscriptionsInUse)
   {
-    v2 = [MEMORY[0x277CBEB70] orderedSetWithArray:v1];
+    v2 = [MEMORY[0x277CBEB70] orderedSetWithArray:subscriptionsInUse];
   }
 
   else
@@ -23,10 +23,10 @@
 
 - (id)tps_subscriptionSet
 {
-  v1 = [a1 subscriptions];
-  if (v1)
+  subscriptions = [self subscriptions];
+  if (subscriptions)
   {
-    v2 = [MEMORY[0x277CBEB70] orderedSetWithArray:v1];
+    v2 = [MEMORY[0x277CBEB70] orderedSetWithArray:subscriptions];
   }
 
   else

@@ -1,51 +1,51 @@
 @interface ICCloudAddReferral
-+ (id)referralWithAlbumAdamID:(int64_t)a3;
-+ (id)referralWithPlaylistGlobalID:(id)a3;
-- (ICCloudAddReferral)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)referralWithAlbumAdamID:(int64_t)d;
++ (id)referralWithPlaylistGlobalID:(id)d;
+- (ICCloudAddReferral)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICCloudAddReferral
 
-- (ICCloudAddReferral)initWithCoder:(id)a3
+- (ICCloudAddReferral)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ICCloudAddReferral;
   v5 = [(ICCloudAddReferral *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playlistGlobalID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playlistGlobalID"];
     playlistGlobalID = v5->_playlistGlobalID;
     v5->_playlistGlobalID = v6;
 
-    v5->_albumAdamID = [v4 decodeInt64ForKey:@"albumAdamID"];
+    v5->_albumAdamID = [coderCopy decodeInt64ForKey:@"albumAdamID"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   playlistGlobalID = self->_playlistGlobalID;
-  v5 = a3;
-  [v5 encodeObject:playlistGlobalID forKey:@"playlistGlobalID"];
-  [v5 encodeInt64:self->_albumAdamID forKey:@"albumAdamID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:playlistGlobalID forKey:@"playlistGlobalID"];
+  [coderCopy encodeInt64:self->_albumAdamID forKey:@"albumAdamID"];
 }
 
-+ (id)referralWithAlbumAdamID:(int64_t)a3
++ (id)referralWithAlbumAdamID:(int64_t)d
 {
   v4 = objc_alloc_init(ICCloudAddReferral);
-  v4->_albumAdamID = a3;
+  v4->_albumAdamID = d;
 
   return v4;
 }
 
-+ (id)referralWithPlaylistGlobalID:(id)a3
++ (id)referralWithPlaylistGlobalID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(ICCloudAddReferral);
-  v5 = [v3 copy];
+  v5 = [dCopy copy];
 
   playlistGlobalID = v4->_playlistGlobalID;
   v4->_playlistGlobalID = v5;

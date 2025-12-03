@@ -1,11 +1,11 @@
 @interface _UIOverlayDaemonAppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 @end
 
 @implementation _UIOverlayDaemonAppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   v4 = UIOLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -18,27 +18,27 @@
   return 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a5;
-  v6 = [v5 _specification];
-  v7 = [v6 overlayAppSceneConfigurationName];
+  optionsCopy = options;
+  _specification = [optionsCopy _specification];
+  overlayAppSceneConfigurationName = [_specification overlayAppSceneConfigurationName];
 
-  if (!v7)
+  if (!overlayAppSceneConfigurationName)
   {
-    v7 = UIOOverlayScenePersistenceIdentifier;
-    v8 = [v5 _fbsScene];
-    v9 = [v8 identifier];
+    overlayAppSceneConfigurationName = UIOOverlayScenePersistenceIdentifier;
+    _fbsScene = [optionsCopy _fbsScene];
+    identifier = [_fbsScene identifier];
 
-    if ([v9 containsString:@"Subterranean"])
+    if ([identifier containsString:@"Subterranean"])
     {
       v10 = UIOSubterraneanScenePersistenceIdentifier;
 
-      v7 = v10;
+      overlayAppSceneConfigurationName = v10;
     }
   }
 
-  v11 = [[UISceneConfiguration alloc] initWithName:v7 sessionRole:UIWindowSceneSessionRoleApplication];
+  v11 = [[UISceneConfiguration alloc] initWithName:overlayAppSceneConfigurationName sessionRole:UIWindowSceneSessionRoleApplication];
 
   return v11;
 }

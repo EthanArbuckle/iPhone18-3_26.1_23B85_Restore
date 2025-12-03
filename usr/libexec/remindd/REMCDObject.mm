@@ -1,33 +1,33 @@
 @interface REMCDObject
 + (BOOL)isAbstract;
-+ (BOOL)needsToReFetchServerRecordValue:(id)a3;
++ (BOOL)needsToReFetchServerRecordValue:(id)value;
 + (NSString)cdEntityName;
-+ (REMCDObject)objectWithRecordID:(id)a3 accountID:(id)a4 context:(id)a5;
-+ (id)allCloudObjectIDsInContext:(id)a3;
-+ (id)allCloudObjectsInContext:(id)a3;
++ (REMCDObject)objectWithRecordID:(id)d accountID:(id)iD context:(id)context;
++ (id)allCloudObjectIDsInContext:(id)context;
++ (id)allCloudObjectsInContext:(id)context;
 + (id)allCloudObjectsPredicate;
-+ (id)allDirtyCloudObjectIDsInContext:(id)a3;
-+ (id)assetForData:(id)a3;
-+ (id)ckIdentifierFromRecordName:(id)a3;
++ (id)allDirtyCloudObjectIDsInContext:(id)context;
++ (id)assetForData:(id)data;
++ (id)ckIdentifierFromRecordName:(id)name;
 + (id)entity;
 + (id)failedToSyncCountsByCKIdentifier;
 + (id)failureCountQueue;
 + (id)fetchRequest;
-+ (id)getResolutionTokenMapFromRecord:(id)a3;
-+ (id)ic_objectsFromObjectIDs:(id)a3 propertiesToFetch:(id)a4 relationshipKeyPathsForPrefetching:(id)a5 context:(id)a6;
-+ (id)ic_resultsMatchingPredicate:(id)a3 sortDescriptors:(id)a4 resultType:(unint64_t)a5 fetchBatchSize:(unint64_t)a6 propertiesToFetch:(id)a7 relationshipKeyPathsForPrefetching:(id)a8 context:(id)a9;
++ (id)getResolutionTokenMapFromRecord:(id)record;
++ (id)ic_objectsFromObjectIDs:(id)ds propertiesToFetch:(id)fetch relationshipKeyPathsForPrefetching:(id)prefetching context:(id)context;
++ (id)ic_resultsMatchingPredicate:(id)predicate sortDescriptors:(id)descriptors resultType:(unint64_t)type fetchBatchSize:(unint64_t)size propertiesToFetch:(id)fetch relationshipKeyPathsForPrefetching:(id)prefetching context:(id)context;
 + (id)keyPathsForValuesAffectingEffectiveMinimumSupportedVersion;
-+ (id)newCloudObjectForRecord:(id)a3 accountID:(id)a4 context:(id)a5;
++ (id)newCloudObjectForRecord:(id)record accountID:(id)d context:(id)context;
 + (id)newObjectID;
-+ (id)newObjectWithCKIdentifier:(id)a3 context:(id)a4 account:(id)a5;
-+ (id)newObjectWithCKRecordName:(id)a3 context:(id)a4 account:(id)a5;
-+ (id)newPlaceholderObjectForRecordID:(id)a3 account:(id)a4 context:(id)a5;
++ (id)newObjectWithCKIdentifier:(id)identifier context:(id)context account:(id)account;
++ (id)newObjectWithCKRecordName:(id)name context:(id)context account:(id)account;
++ (id)newPlaceholderObjectForRecordID:(id)d account:(id)account context:(id)context;
 + (id)numberOfPushAttemptsToWaitByCKIdentifier;
-+ (id)objectCkZoneOwnerNameFromCKRecordZoneID:(id)a3;
-+ (id)objectIDWithUUID:(id)a3;
++ (id)objectCkZoneOwnerNameFromCKRecordZoneID:(id)d;
++ (id)objectIDWithUUID:(id)d;
 + (id)recordSystemFieldsTransformer;
 + (id)recordTypes;
-+ (id)relationshipsEligibleForEffectiveMinimumSupportedVersionPropagationWithEntity:(id)a3;
++ (id)relationshipsEligibleForEffectiveMinimumSupportedVersionPropagationWithEntity:(id)entity;
 + (id)shareSystemFieldsTransformer;
 + (id)subclassNamesOfREMCDObjectRepresentingRootCoreDataEntities;
 + (id)subclassesOfREMCDObjectRepresentingRootCoreDataEntities;
@@ -36,17 +36,17 @@
 + (id)versionsByOperationQueue;
 + (id)versionsByRecordIDByOperation;
 + (void)deleteAllTemporaryAssetFilesForAllObjects;
-+ (void)deleteTemporaryAssetFilesForOperation:(id)a3;
-+ (void)deleteTemporaryFilesForAsset:(id)a3;
-+ (void)mergeSystemPropertiesIntoCDObject:(id)a3 fromCKRecord:(id)a4;
++ (void)deleteTemporaryAssetFilesForOperation:(id)operation;
++ (void)deleteTemporaryFilesForAsset:(id)asset;
++ (void)mergeSystemPropertiesIntoCDObject:(id)object fromCKRecord:(id)record;
 - (BOOL)_allowsObjectSupportedVersion;
 - (BOOL)_isInICloudAccount;
-- (BOOL)_validateZoneOwnerNamesWithLogPrefix:(id)a3 error:(id *)a4;
+- (BOOL)_validateZoneOwnerNamesWithLogPrefix:(id)prefix error:(id *)error;
 - (BOOL)canBeSharedViaICloud;
 - (BOOL)hasAllMandatoryFields;
 - (BOOL)hasSuccessfullyPushedLatestVersionToCloud;
 - (BOOL)isConcealed;
-- (BOOL)isConnectedToAccountObject:(id)a3;
+- (BOOL)isConnectedToAccountObject:(id)object;
 - (BOOL)isInCloud;
 - (BOOL)isInICloudAccount;
 - (BOOL)isMergeableWithLocalObject;
@@ -60,12 +60,12 @@
 - (BOOL)needsToBeDeletedFromCloud;
 - (BOOL)needsToBePushedToCloud;
 - (BOOL)needsToDeleteShare;
-- (BOOL)needsToFetchAfterServerRecordChanged:(id)a3;
+- (BOOL)needsToFetchAfterServerRecordChanged:(id)changed;
 - (BOOL)shouldBeDeletedFromLocalDatabase;
 - (BOOL)shouldBeIgnoredForSync;
-- (BOOL)validateEffectiveMinimumSupportedVersionApplyingChange:(BOOL)a3;
-- (BOOL)validateForInsert:(id *)a3;
-- (BOOL)validateForUpdate:(id *)a3;
+- (BOOL)validateEffectiveMinimumSupportedVersionApplyingChange:(BOOL)change;
+- (BOOL)validateForInsert:(id *)insert;
+- (BOOL)validateForUpdate:(id *)update;
 - (CKRecord)ckServerRecord;
 - (CKShare)ckServerShare;
 - (NSData)resolutionTokenMapData;
@@ -75,28 +75,28 @@
 - (REMObjectID)remObjectID;
 - (REMResolutionTokenMap)resolutionTokenMap;
 - (id)allChildObjects;
-- (id)ckIdentifierFromRecordName:(id)a3;
+- (id)ckIdentifierFromRecordName:(id)name;
 - (id)cloudAccount;
-- (id)cloudKitReferenceWithRecordIDAndValidateAction:(id)a3;
+- (id)cloudKitReferenceWithRecordIDAndValidateAction:(id)action;
 - (id)createResolutionTokenMapIfNecessary;
 - (id)currentUserShareParticipantID;
 - (id)ic_loggingValues;
-- (id)jsonDataFromResolutionTokenMap:(id)a3;
+- (id)jsonDataFromResolutionTokenMap:(id)map;
 - (id)newlyCreatedRecord;
 - (id)recordID;
 - (id)recordName;
 - (id)recordType;
 - (id)recordZoneName;
-- (id)remObjectIDWithError:(id *)a3;
-- (id)resolutionTokenMapFromJsonData:(id)a3;
+- (id)remObjectIDWithError:(id *)error;
+- (id)resolutionTokenMapFromJsonData:(id)data;
 - (id)serverShareCheckingParent;
 - (id)shortLoggingDescription;
 - (int64_t)failedToSyncCount;
-- (int64_t)isPushingSameOrLaterThanVersion:(int64_t)a3;
+- (int64_t)isPushingSameOrLaterThanVersion:(int64_t)version;
 - (int64_t)numberOfPushAttemptsToWaitCount;
 - (int64_t)parentEffectiveMinimumSupportedVersion;
 - (int64_t)rd_ckDatabaseScope;
-- (int64_t)versionForOperation:(id)a3;
+- (int64_t)versionForOperation:(id)operation;
 - (void)_markDirtyForEffectiveMinimumSupportedVersionValidation;
 - (void)_setCKIdentifierIfNecessary;
 - (void)awakeFromFetch;
@@ -108,51 +108,51 @@
 - (void)deleteAllChildrenFromLocalDatabase;
 - (void)deleteChangeTokensAndReSync;
 - (void)deleteFromLocalDatabase;
-- (void)didAcceptShare:(id)a3;
-- (void)didChangeValueForKey:(id)a3;
+- (void)didAcceptShare:(id)share;
+- (void)didChangeValueForKey:(id)key;
 - (void)didSave;
 - (void)didTurnIntoFault;
-- (void)fixValueBeforeMarkingForDeletionForKey:(id)a3;
-- (void)fixValueBeforeUnmarkingForDeletionForKey:(id)a3;
-- (void)fixValuesOfKeysWithUniqueConstraintBeforeSettingMarkedForDeletion:(BOOL)a3;
+- (void)fixValueBeforeMarkingForDeletionForKey:(id)key;
+- (void)fixValueBeforeUnmarkingForDeletionForKey:(id)key;
+- (void)fixValuesOfKeysWithUniqueConstraintBeforeSettingMarkedForDeletion:(BOOL)deletion;
 - (void)forcePushToCloud;
-- (void)generateReolutionTokenMapForTestingWithKeys:(id)a3;
+- (void)generateReolutionTokenMapForTestingWithKeys:(id)keys;
 - (void)incrementFailureCounts;
 - (void)insertCloudStateIfNeededOnAwakeFromFetch;
 - (void)insertCloudStateOnAwakeFromInsert;
 - (void)markForDeletion;
 - (void)markObjectDirtyAfterMarkedForDeletion;
-- (void)mergeDataFromRecord:(id)a3 accountID:(id)a4;
-- (void)objectFailedToBePushedToCloudWithOperation:(id)a3 recordID:(id)a4 error:(id)a5;
+- (void)mergeDataFromRecord:(id)record accountID:(id)d;
+- (void)objectFailedToBePushedToCloudWithOperation:(id)operation recordID:(id)d error:(id)error;
 - (void)objectWasDeletedFromCloudByAnotherDevice;
 - (void)objectWasFetchedButDoesNotExistInCloud;
-- (void)objectWasFetchedFromCloudWithRecord:(id)a3 accountID:(id)a4;
-- (void)objectWasPushedToCloudWithOperation:(id)a3 serverRecord:(id)a4;
-- (void)objectWillBePushedToCloudWithOperation:(id)a3;
+- (void)objectWasFetchedFromCloudWithRecord:(id)record accountID:(id)d;
+- (void)objectWasPushedToCloudWithOperation:(id)operation serverRecord:(id)record;
+- (void)objectWillBePushedToCloudWithOperation:(id)operation;
 - (void)prepareForDeletion;
-- (void)recursiveMarkForDeletion:(BOOL)a3 usingVisitedMap:(id)a4;
-- (void)recursivelyFixCrossZoneRelationshipWithVisitedMap:(id)a3 perObjectHandler:(id)a4;
+- (void)recursiveMarkForDeletion:(BOOL)deletion usingVisitedMap:(id)map;
+- (void)recursivelyFixCrossZoneRelationshipWithVisitedMap:(id)map perObjectHandler:(id)handler;
 - (void)resetFailureCounts;
-- (void)setAccount:(id)a3;
-- (void)setCkServerRecord:(id)a3;
-- (void)setCkServerShare:(id)a3;
-- (void)setEffectiveMinimumSupportedVersion:(int64_t)a3;
-- (void)setFailedToSyncCount:(int64_t)a3;
-- (void)setMinimumSupportedVersion:(int64_t)a3;
-- (void)setNumberOfPushAttemptsToWaitCount:(int64_t)a3;
-- (void)setResolutionTokenMap:(id)a3;
-- (void)setResolutionTokenMapData:(id)a3;
-- (void)setServerShareIfNewer:(id)a3;
+- (void)setAccount:(id)account;
+- (void)setCkServerRecord:(id)record;
+- (void)setCkServerShare:(id)share;
+- (void)setEffectiveMinimumSupportedVersion:(int64_t)version;
+- (void)setFailedToSyncCount:(int64_t)count;
+- (void)setMinimumSupportedVersion:(int64_t)version;
+- (void)setNumberOfPushAttemptsToWaitCount:(int64_t)count;
+- (void)setResolutionTokenMap:(id)map;
+- (void)setResolutionTokenMapData:(id)data;
+- (void)setServerShareIfNewer:(id)newer;
 - (void)setShouldSyncUpDeleteIfNeeded;
-- (void)setVersion:(int64_t)a3 forOperation:(id)a4;
-- (void)traverseObjectTreeUsingVisitedMap:(id)a3 handler:(id)a4;
+- (void)setVersion:(int64_t)version forOperation:(id)operation;
+- (void)traverseObjectTreeUsingVisitedMap:(id)map handler:(id)handler;
 - (void)unmarkForDeletion;
 - (void)updateChangeCount;
-- (void)updateDeletedFlagAccordingToOrphanState:(id)a3;
-- (void)updateObjectWithShare:(id)a3;
+- (void)updateDeletedFlagAccordingToOrphanState:(id)state;
+- (void)updateObjectWithShare:(id)share;
 - (void)updateParentReferenceIfNecessary;
-- (void)updateSharedObjectOwnerName:(id)a3;
-- (void)willChangeValueForKey:(id)a3;
+- (void)updateSharedObjectOwnerName:(id)name;
+- (void)willChangeValueForKey:(id)key;
 - (void)willSave;
 @end
 
@@ -162,7 +162,7 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = NSStringFromClass(a1);
+  v5 = NSStringFromClass(self);
   v6 = [v4 isEqualToString:v5];
 
   if (v6)
@@ -172,7 +172,7 @@
 
   else
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS___REMCDObject;
     v7 = objc_msgSendSuper2(&v9, "entity");
   }
@@ -185,39 +185,39 @@
   v19.receiver = self;
   v19.super_class = REMCDObject;
   [(REMCDObject *)&v19 willSave];
-  v3 = [(REMCDObject *)self hack_resolutionTokenMapCopy];
-  if (v3)
+  hack_resolutionTokenMapCopy = [(REMCDObject *)self hack_resolutionTokenMapCopy];
+  if (hack_resolutionTokenMapCopy)
   {
-    v4 = v3;
-    v5 = [(REMCDObject *)self hack_willSaveHandled];
+    v4 = hack_resolutionTokenMapCopy;
+    hack_willSaveHandled = [(REMCDObject *)self hack_willSaveHandled];
 
-    if ((v5 & 1) == 0)
+    if ((hack_willSaveHandled & 1) == 0)
     {
       [(REMCDObject *)self setHack_willSaveHandled:1];
-      v6 = [(REMCDObject *)self hack_resolutionTokenMapCopy];
-      [(REMCDObject *)self setResolutionTokenMap:v6];
+      hack_resolutionTokenMapCopy2 = [(REMCDObject *)self hack_resolutionTokenMapCopy];
+      [(REMCDObject *)self setResolutionTokenMap:hack_resolutionTokenMapCopy2];
       [(REMCDObject *)self setHack_resolutionTokenMapCopy:0];
       [(REMCDObject *)self setCached_CDResolutionMap:0];
     }
   }
 
-  v7 = [(REMCDObject *)self storeControllerManagedObjectContext];
-  if (v7)
+  storeControllerManagedObjectContext = [(REMCDObject *)self storeControllerManagedObjectContext];
+  if (storeControllerManagedObjectContext)
   {
-    v8 = v7;
-    v9 = [(REMCDObject *)self storeControllerManagedObjectContext];
-    v10 = [v9 storeController];
-    if (!v10)
+    allKeys = storeControllerManagedObjectContext;
+    storeControllerManagedObjectContext2 = [(REMCDObject *)self storeControllerManagedObjectContext];
+    storeController = [storeControllerManagedObjectContext2 storeController];
+    if (!storeController)
     {
 LABEL_9:
 
       goto LABEL_10;
     }
 
-    v11 = v10;
-    v12 = [(REMCDObject *)self storeControllerManagedObjectContext];
-    v13 = [v12 storeController];
-    if (![v13 supportsCoreSpotlightIndexing] || -[REMCDObject spotlightIndexCountUpdated](self, "spotlightIndexCountUpdated"))
+    v11 = storeController;
+    storeControllerManagedObjectContext3 = [(REMCDObject *)self storeControllerManagedObjectContext];
+    storeController2 = [storeControllerManagedObjectContext3 storeController];
+    if (![storeController2 supportsCoreSpotlightIndexing] || -[REMCDObject spotlightIndexCountUpdated](self, "spotlightIndexCountUpdated"))
     {
 
       goto LABEL_9;
@@ -227,14 +227,14 @@ LABEL_9:
 
     if (v16)
     {
-      v17 = [(REMCDObject *)self changedValues];
-      v8 = [v17 allKeys];
+      changedValues = [(REMCDObject *)self changedValues];
+      allKeys = [changedValues allKeys];
 
-      v9 = [NSMutableSet setWithArray:v8];
-      v18 = [objc_opt_class() propertiesThatShouldTriggerReindexing];
-      [v9 intersectSet:v18];
+      storeControllerManagedObjectContext2 = [NSMutableSet setWithArray:allKeys];
+      propertiesThatShouldTriggerReindexing = [objc_opt_class() propertiesThatShouldTriggerReindexing];
+      [storeControllerManagedObjectContext2 intersectSet:propertiesThatShouldTriggerReindexing];
 
-      if ([v9 count])
+      if ([storeControllerManagedObjectContext2 count])
       {
         [-[REMCDObject performSelector:](self performSelector:{"spotlightObjectToReindex"), "incrementSpotlightIndexCount"}];
         [(REMCDObject *)self setSpotlightIndexCountUpdated:1];
@@ -256,9 +256,9 @@ LABEL_10:
     [(REMCDObject *)self willSave_Swift];
   }
 
-  v14 = [(REMCDObject *)self identifier];
+  identifier = [(REMCDObject *)self identifier];
 
-  if (!v14)
+  if (!identifier)
   {
     v15 = +[REMLogStore write];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -271,7 +271,7 @@ LABEL_10:
 - (RDStoreControllerManagedObjectContext)storeControllerManagedObjectContext
 {
   objc_opt_class();
-  v3 = [(REMCDObject *)self managedObjectContext];
+  managedObjectContext = [(REMCDObject *)self managedObjectContext];
   v4 = REMDynamicCast();
 
   return v4;
@@ -285,9 +285,9 @@ LABEL_10:
     {
       if ([(REMCDObject *)self markedForDeletion])
       {
-        v3 = [(REMCDObject *)self managedObjectContext];
-        v4 = [v3 transactionAuthor];
-        v5 = [v4 hasPrefix:RDStoreControllerICCloudContextAuthor];
+        managedObjectContext = [(REMCDObject *)self managedObjectContext];
+        transactionAuthor = [managedObjectContext transactionAuthor];
+        v5 = [transactionAuthor hasPrefix:RDStoreControllerICCloudContextAuthor];
 
         if ((v5 & 1) == 0)
         {
@@ -333,28 +333,28 @@ LABEL_10:
   v3 = ;
   if ([v3 debugSyncDisabled])
   {
-    v4 = 0;
+    isCloudKit = 0;
   }
 
   else
   {
-    v5 = [v3 accountTypeHost];
-    v4 = [v5 isCloudKit];
+    accountTypeHost = [v3 accountTypeHost];
+    isCloudKit = [accountTypeHost isCloudKit];
   }
 
-  return v4;
+  return isCloudKit;
 }
 
 - (REMObjectID)remObjectID
 {
-  v3 = [(REMCDObject *)self identifier];
-  v4 = [(REMCDObject *)self entity];
-  v5 = [v4 name];
+  identifier = [(REMCDObject *)self identifier];
+  entity = [(REMCDObject *)self entity];
+  name = [entity name];
 
   v6 = 0;
-  if (v3 && v5)
+  if (identifier && name)
   {
-    v6 = [REMObjectID objectIDWithUUID:v3 entityName:v5];
+    v6 = [REMObjectID objectIDWithUUID:identifier entityName:name];
   }
 
   return v6;
@@ -373,28 +373,28 @@ LABEL_10:
 
 - (void)insertCloudStateIfNeededOnAwakeFromFetch
 {
-  v3 = [(REMCDObject *)self ckCloudState];
+  ckCloudState = [(REMCDObject *)self ckCloudState];
 
-  if (!v3)
+  if (!ckCloudState)
   {
     v4 = +[REMLog cloudkit];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(REMCDObject *)self shortLoggingDescription];
+      shortLoggingDescription = [(REMCDObject *)self shortLoggingDescription];
       v10 = 138543362;
-      v11 = v5;
+      v11 = shortLoggingDescription;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Nil cloud state for %{public}@. Sorry. Fixing now.", &v10, 0xCu);
     }
 
-    v6 = [(REMCDObject *)self managedObjectContext];
-    if (!v6)
+    managedObjectContext = [(REMCDObject *)self managedObjectContext];
+    if (!managedObjectContext)
     {
       sub_100767AD8();
     }
 
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [NSEntityDescription insertNewObjectForEntityForName:v8 inManagedObjectContext:v6];
+    v9 = [NSEntityDescription insertNewObjectForEntityForName:v8 inManagedObjectContext:managedObjectContext];
 
     [(REMCDObject *)self setCkCloudState:v9];
   }
@@ -425,68 +425,68 @@ LABEL_10:
 
 - (BOOL)isPlaceholder
 {
-  v3 = [(REMCDObject *)self isInICloudAccount];
-  if (v3)
+  isInICloudAccount = [(REMCDObject *)self isInICloudAccount];
+  if (isInICloudAccount)
   {
 
-    LOBYTE(v3) = [(REMCDObject *)self ckNeedsInitialFetchFromCloud];
+    LOBYTE(isInICloudAccount) = [(REMCDObject *)self ckNeedsInitialFetchFromCloud];
   }
 
-  return v3;
+  return isInICloudAccount;
 }
 
 - (BOOL)isInICloudAccount
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(REMCDObject *)self managedObjectContext];
+  managedObjectContext = [(REMCDObject *)self managedObjectContext];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10002AAF8;
   v5[3] = &unk_1008D9A28;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (id)currentUserShareParticipantID
 {
-  v2 = [(REMCDObject *)self serverShareCheckingParent];
-  v3 = [v2 currentUserParticipant];
-  v4 = [v3 participantID];
-  v5 = [v4 uppercaseString];
+  serverShareCheckingParent = [(REMCDObject *)self serverShareCheckingParent];
+  currentUserParticipant = [serverShareCheckingParent currentUserParticipant];
+  participantID = [currentUserParticipant participantID];
+  uppercaseString = [participantID uppercaseString];
 
-  return v5;
+  return uppercaseString;
 }
 
 - (id)serverShareCheckingParent
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
     do
     {
-      v3 = v2;
-      v4 = [(REMCDObject *)v2 ckServerShare];
-      v2 = [(REMCDObject *)v2 parentCloudObject];
+      v3 = selfCopy;
+      ckServerShare = [(REMCDObject *)selfCopy ckServerShare];
+      selfCopy = [(REMCDObject *)selfCopy parentCloudObject];
     }
 
-    while (!v4 && v2);
+    while (!ckServerShare && selfCopy);
   }
 
   else
   {
-    v4 = 0;
+    ckServerShare = 0;
   }
 
-  return v4;
+  return ckServerShare;
 }
 
 - (CKShare)ckServerShare
@@ -494,11 +494,11 @@ LABEL_10:
   ckServerShare = self->_ckServerShare;
   if (!ckServerShare)
   {
-    v4 = [(REMCDObject *)self ckServerShareData];
-    if (v4)
+    ckServerShareData = [(REMCDObject *)self ckServerShareData];
+    if (ckServerShareData)
     {
-      v5 = [objc_opt_class() shareSystemFieldsTransformer];
-      v6 = [v5 reverseTransformedValue:v4];
+      shareSystemFieldsTransformer = [objc_opt_class() shareSystemFieldsTransformer];
+      v6 = [shareSystemFieldsTransformer reverseTransformedValue:ckServerShareData];
       v7 = self->_ckServerShare;
       self->_ckServerShare = v6;
     }
@@ -526,22 +526,22 @@ LABEL_10:
   self->_ckServerShare = 0;
 }
 
-+ (id)ic_objectsFromObjectIDs:(id)a3 propertiesToFetch:(id)a4 relationshipKeyPathsForPrefetching:(id)a5 context:(id)a6
++ (id)ic_objectsFromObjectIDs:(id)ds propertiesToFetch:(id)fetch relationshipKeyPathsForPrefetching:(id)prefetching context:(id)context
 {
-  v40 = a4;
-  v39 = a5;
-  v10 = a6;
-  v11 = [v10 reduceIntoDictionaryByRootEntityNamesWithManagedObjectIDs:a3];
+  fetchCopy = fetch;
+  prefetchingCopy = prefetching;
+  contextCopy = context;
+  v11 = [contextCopy reduceIntoDictionaryByRootEntityNamesWithManagedObjectIDs:ds];
   if ([v11 count])
   {
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v14 = NSStringFromClass(a1);
+    v14 = NSStringFromClass(self);
     v15 = [v13 isEqualToString:v14];
 
     if (v15)
     {
-      v34 = [a1 subclassesOfREMCDObjectRepresentingRootCoreDataEntities];
+      subclassesOfREMCDObjectRepresentingRootCoreDataEntities = [self subclassesOfREMCDObjectRepresentingRootCoreDataEntities];
       v38 = +[NSMutableArray array];
       v45 = 0u;
       v46 = 0u;
@@ -570,7 +570,7 @@ LABEL_10:
             v42 = 0u;
             v43 = 0u;
             v44 = 0u;
-            v19 = v34;
+            v19 = subclassesOfREMCDObjectRepresentingRootCoreDataEntities;
             v20 = [v19 countByEnumeratingWithState:&v41 objects:v49 count:16];
             if (v20)
             {
@@ -586,12 +586,12 @@ LABEL_10:
                   }
 
                   v24 = *(*(&v41 + 1) + 8 * i);
-                  v25 = [v24 cdEntityName];
-                  v26 = [v25 isEqualToString:v17];
+                  cdEntityName = [v24 cdEntityName];
+                  v26 = [cdEntityName isEqualToString:v17];
 
                   if (v26)
                   {
-                    v27 = [v24 _ic_objectsFromObjectIDs:v18 propertiesToFetch:v40 relationshipKeyPathsForPrefetching:v39 context:v10];
+                    v27 = [v24 _ic_objectsFromObjectIDs:v18 propertiesToFetch:fetchCopy relationshipKeyPathsForPrefetching:prefetchingCopy context:contextCopy];
                     if (v27)
                     {
                       [v38 addObjectsFromArray:v27];
@@ -620,15 +620,15 @@ LABEL_10:
 
     else
     {
-      v28 = [a1 cdEntityName];
-      v29 = [v10 rootEntityNameWithEntityName:v28];
+      cdEntityName2 = [self cdEntityName];
+      v29 = [contextCopy rootEntityNameWithEntityName:cdEntityName2];
 
       if ([v29 length])
       {
         v30 = [v11 objectForKeyedSubscript:v29];
         if ([v30 count])
         {
-          v38 = [a1 _ic_objectsFromObjectIDs:v30 propertiesToFetch:v40 relationshipKeyPathsForPrefetching:v39 context:v10];
+          v38 = [self _ic_objectsFromObjectIDs:v30 propertiesToFetch:fetchCopy relationshipKeyPathsForPrefetching:prefetchingCopy context:contextCopy];
         }
 
         else
@@ -652,32 +652,32 @@ LABEL_10:
   return v38;
 }
 
-+ (id)ic_resultsMatchingPredicate:(id)a3 sortDescriptors:(id)a4 resultType:(unint64_t)a5 fetchBatchSize:(unint64_t)a6 propertiesToFetch:(id)a7 relationshipKeyPathsForPrefetching:(id)a8 context:(id)a9
++ (id)ic_resultsMatchingPredicate:(id)predicate sortDescriptors:(id)descriptors resultType:(unint64_t)type fetchBatchSize:(unint64_t)size propertiesToFetch:(id)fetch relationshipKeyPathsForPrefetching:(id)prefetching context:(id)context
 {
-  v37 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
-  v17 = a1;
-  v18 = a9;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  fetchCopy = fetch;
+  prefetchingCopy = prefetching;
+  selfCopy = self;
+  contextCopy = context;
   v19 = objc_opt_class();
   v20 = NSStringFromClass(v19);
-  v21 = NSStringFromClass(v17);
+  v21 = NSStringFromClass(selfCopy);
   v22 = [v20 isEqualToString:v21];
 
   if (v22)
   {
-    v41 = v16;
-    v23 = v14;
-    v24 = v37;
+    v41 = prefetchingCopy;
+    v23 = descriptorsCopy;
+    v24 = predicateCopy;
     v40 = +[NSMutableArray array];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    obj = [(objc_class *)v17 subclassesOfREMCDObjectRepresentingRootCoreDataEntities];
+    obj = [(objc_class *)selfCopy subclassesOfREMCDObjectRepresentingRootCoreDataEntities];
     v25 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
-    v26 = a6;
+    sizeCopy = size;
     if (v25)
     {
       v27 = v25;
@@ -692,21 +692,21 @@ LABEL_10:
             objc_enumerationMutation(obj);
           }
 
-          v30 = v18;
-          v36 = v18;
-          v31 = a5;
-          v32 = a5;
-          v33 = v26;
-          v34 = [*(*(&v42 + 1) + 8 * v29) _ic_resultsMatchingPredicate:v37 sortDescriptors:v23 resultType:v32 fetchBatchSize:v26 propertiesToFetch:v15 relationshipKeyPathsForPrefetching:v41 context:v36];
+          v30 = contextCopy;
+          v36 = contextCopy;
+          typeCopy = type;
+          typeCopy2 = type;
+          v33 = sizeCopy;
+          v34 = [*(*(&v42 + 1) + 8 * v29) _ic_resultsMatchingPredicate:predicateCopy sortDescriptors:v23 resultType:typeCopy2 fetchBatchSize:sizeCopy propertiesToFetch:fetchCopy relationshipKeyPathsForPrefetching:v41 context:v36];
           if (v34)
           {
             [v40 addObjectsFromArray:v34];
           }
 
           v29 = v29 + 1;
-          v26 = v33;
-          a5 = v31;
-          v18 = v30;
+          sizeCopy = v33;
+          type = typeCopy;
+          contextCopy = v30;
         }
 
         while (v27 != v29);
@@ -716,14 +716,14 @@ LABEL_10:
       while (v27);
     }
 
-    v14 = v23;
-    v16 = v41;
+    descriptorsCopy = v23;
+    prefetchingCopy = v41;
   }
 
   else
   {
-    v24 = v37;
-    v40 = [(objc_class *)v17 _ic_resultsMatchingPredicate:v37 sortDescriptors:v14 resultType:a5 fetchBatchSize:a6 propertiesToFetch:v15 relationshipKeyPathsForPrefetching:v16 context:v18];
+    v24 = predicateCopy;
+    v40 = [(objc_class *)selfCopy _ic_resultsMatchingPredicate:predicateCopy sortDescriptors:descriptorsCopy resultType:type fetchBatchSize:size propertiesToFetch:fetchCopy relationshipKeyPathsForPrefetching:prefetchingCopy context:contextCopy];
   }
 
   return v40;
@@ -761,39 +761,39 @@ LABEL_10:
   }
 }
 
-- (void)willChangeValueForKey:(id)a3
+- (void)willChangeValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5.receiver = self;
   v5.super_class = REMCDObject;
-  [(REMCDObject *)&v5 willChangeValueForKey:v4];
+  [(REMCDObject *)&v5 willChangeValueForKey:keyCopy];
   if (objc_opt_respondsToSelector())
   {
-    [(REMCDObject *)self willChangeValueForKey_Swfit:v4];
+    [(REMCDObject *)self willChangeValueForKey_Swfit:keyCopy];
   }
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v9.receiver = self;
   v9.super_class = REMCDObject;
-  [(REMCDObject *)&v9 didChangeValueForKey:v4];
+  [(REMCDObject *)&v9 didChangeValueForKey:keyCopy];
   if ([(REMCDObject *)self _allowsObjectSupportedVersion])
   {
-    v5 = [objc_opt_class() keyPathsForValuesAffectingEffectiveMinimumSupportedVersion];
-    v6 = [v5 containsObject:v4];
+    keyPathsForValuesAffectingEffectiveMinimumSupportedVersion = [objc_opt_class() keyPathsForValuesAffectingEffectiveMinimumSupportedVersion];
+    v6 = [keyPathsForValuesAffectingEffectiveMinimumSupportedVersion containsObject:keyCopy];
 
     if (v6)
     {
       v7 = +[REMLogStore write];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [(REMCDObject *)self remObjectID];
+        remObjectID = [(REMCDObject *)self remObjectID];
         *buf = 138543618;
-        v11 = v4;
+        v11 = keyCopy;
         v12 = 2114;
-        v13 = v8;
+        v13 = remObjectID;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "REMSupportedVersionUpdating: didChangeValueForKey:[%{public}@] calling _markObjectDirtyForSupportedVersionValidation on {remObjectID: %{public}@}", buf, 0x16u);
       }
 
@@ -803,13 +803,13 @@ LABEL_10:
 
   if (objc_opt_respondsToSelector())
   {
-    [(REMCDObject *)self didChangeValueForKey_Swfit:v4];
+    [(REMCDObject *)self didChangeValueForKey_Swfit:keyCopy];
   }
 }
 
-- (void)setResolutionTokenMap:(id)a3
+- (void)setResolutionTokenMap:(id)map
 {
-  v5 = a3;
+  mapCopy = map;
   if (objc_opt_respondsToSelector() & 1) != 0 && (([(REMCDObject *)self methodForSelector:"shouldUseResolutionTokenMapForMergingData"])(self, "shouldUseResolutionTokenMapForMergingData"))
   {
     v6 = +[REMLogStore write];
@@ -828,58 +828,58 @@ LABEL_10:
     }
   }
 
-  v7 = [(REMCDObject *)self cached_CDResolutionMap];
-  if (!v7)
+  cached_CDResolutionMap = [(REMCDObject *)self cached_CDResolutionMap];
+  if (!cached_CDResolutionMap)
   {
     v8 = [(REMCDObject *)self primitiveValueForKey:@"resolutionTokenMap_v3_JSONData"];
-    v7 = [(REMCDObject *)self resolutionTokenMapFromJsonData:v8];
+    cached_CDResolutionMap = [(REMCDObject *)self resolutionTokenMapFromJsonData:v8];
   }
 
-  if (([v7 isEqual:v5] & 1) == 0)
+  if (([cached_CDResolutionMap isEqual:mapCopy] & 1) == 0)
   {
-    v9 = [(REMCDObject *)self jsonDataFromResolutionTokenMap:v5];
+    v9 = [(REMCDObject *)self jsonDataFromResolutionTokenMap:mapCopy];
     [(REMCDObject *)self setResolutionTokenMapData:v9];
   }
 
-  v10 = [v5 copy];
+  v10 = [mapCopy copy];
   [(REMCDObject *)self setCached_CDResolutionMap:v10];
 
-  [(REMCDObject *)self setHack_resolutionTokenMapCopy:v5];
+  [(REMCDObject *)self setHack_resolutionTokenMapCopy:mapCopy];
 }
 
 - (REMResolutionTokenMap)resolutionTokenMap
 {
   [(REMCDObject *)self willAccessValueForKey:@"resolutionTokenMap"];
   [(REMCDObject *)self willAccessValueForKey:@"resolutionTokenMap_v3_JSONData"];
-  v3 = [(REMCDObject *)self hack_resolutionTokenMapCopy];
+  hack_resolutionTokenMapCopy = [(REMCDObject *)self hack_resolutionTokenMapCopy];
 
-  if (!v3)
+  if (!hack_resolutionTokenMapCopy)
   {
     v4 = [(REMCDObject *)self primitiveValueForKey:@"resolutionTokenMap_v3_JSONData"];
     v5 = [(REMCDObject *)self resolutionTokenMapFromJsonData:v4];
     [(REMCDObject *)self setHack_resolutionTokenMapCopy:v5];
 
-    v6 = [(REMCDObject *)self hack_resolutionTokenMapCopy];
-    v7 = [v6 copy];
+    hack_resolutionTokenMapCopy2 = [(REMCDObject *)self hack_resolutionTokenMapCopy];
+    v7 = [hack_resolutionTokenMapCopy2 copy];
     [(REMCDObject *)self setCached_CDResolutionMap:v7];
   }
 
-  v8 = [(REMCDObject *)self hack_resolutionTokenMapCopy];
+  hack_resolutionTokenMapCopy3 = [(REMCDObject *)self hack_resolutionTokenMapCopy];
   [(REMCDObject *)self didAccessValueForKey:@"resolutionTokenMap_v3_JSONData"];
   [(REMCDObject *)self didAccessValueForKey:@"resolutionTokenMap"];
 
-  return v8;
+  return hack_resolutionTokenMapCopy3;
 }
 
-- (void)setResolutionTokenMapData:(id)a3
+- (void)setResolutionTokenMapData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v4 = [(REMCDObject *)self primitiveValueForKey:@"resolutionTokenMap_v3_JSONData"];
-  if (v4 != v5 && (!v5 || ([v4 isEqualToData:v5] & 1) == 0))
+  if (v4 != dataCopy && (!dataCopy || ([v4 isEqualToData:dataCopy] & 1) == 0))
   {
     [(REMCDObject *)self willChangeValueForKey:@"resolutionTokenMapData"];
     [(REMCDObject *)self willChangeValueForKey:@"resolutionTokenMap_v3_JSONData"];
-    [(REMCDObject *)self setPrimitiveValue:v5 forKey:@"resolutionTokenMap_v3_JSONData"];
+    [(REMCDObject *)self setPrimitiveValue:dataCopy forKey:@"resolutionTokenMap_v3_JSONData"];
     [(REMCDObject *)self didChangeValueForKey:@"resolutionTokenMap_v3_JSONData"];
     [(REMCDObject *)self didChangeValueForKey:@"resolutionTokenMap"];
     [(REMCDObject *)self setHack_resolutionTokenMapCopy:0];
@@ -887,13 +887,13 @@ LABEL_10:
   }
 }
 
-- (id)jsonDataFromResolutionTokenMap:(id)a3
+- (id)jsonDataFromResolutionTokenMap:(id)map
 {
-  v3 = [a3 objc_toJSONString];
-  v4 = v3;
-  if (v3)
+  objc_toJSONString = [map objc_toJSONString];
+  v4 = objc_toJSONString;
+  if (objc_toJSONString)
   {
-    v5 = [v3 dataUsingEncoding:4];
+    v5 = [objc_toJSONString dataUsingEncoding:4];
   }
 
   else
@@ -904,12 +904,12 @@ LABEL_10:
   return v5;
 }
 
-- (id)resolutionTokenMapFromJsonData:(id)a3
+- (id)resolutionTokenMapFromJsonData:(id)data
 {
-  v3 = a3;
-  if ([v3 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
-    v4 = [[NSString alloc] initWithData:v3 encoding:4];
+    v4 = [[NSString alloc] initWithData:dataCopy encoding:4];
     if (v4)
     {
       v5 = [REMResolutionTokenMap objc_newObjectFromJSONString:v4];
@@ -933,7 +933,7 @@ LABEL_10:
 {
   v3 = objc_autoreleasePoolPush();
   objc_opt_class();
-  v4 = [(REMCDObject *)self resolutionTokenMap];
+  resolutionTokenMap = [(REMCDObject *)self resolutionTokenMap];
   v5 = REMDynamicCast();
 
   objc_autoreleasePoolPop(v3);
@@ -946,14 +946,14 @@ LABEL_10:
   return v5;
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = [(REMCDObject *)self primitiveValueForKey:@"account"];
   [(REMCDObject *)self setPreviousAccount:v5];
 
   [(REMCDObject *)self willChangeValueForKey:@"account"];
-  [(REMCDObject *)self setPrimitiveValue:v4 forKey:@"account"];
+  [(REMCDObject *)self setPrimitiveValue:accountCopy forKey:@"account"];
 
   [(REMCDObject *)self didChangeValueForKey:@"account"];
 }
@@ -969,7 +969,7 @@ LABEL_10:
   }
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v15.receiver = self;
   v15.super_class = REMCDObject;
@@ -988,9 +988,9 @@ LABEL_10:
 
   else
   {
-    v13 = [(REMCDObject *)self account];
+    account = [(REMCDObject *)self account];
 
-    if (v13)
+    if (account)
     {
       goto LABEL_6;
     }
@@ -1003,13 +1003,13 @@ LABEL_10:
   }
 
 LABEL_6:
-  v7 = [(REMCDObject *)self _validateZoneOwnerNamesWithLogPrefix:@"Inserting" error:a3];
+  v7 = [(REMCDObject *)self _validateZoneOwnerNamesWithLogPrefix:@"Inserting" error:insert];
 LABEL_8:
   if (![(REMCDObject *)self validateForInsertion_handledJournalEntries]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v8 = self;
+    selfCopy = self;
     v14 = 0;
-    v9 = [(REMCDObject *)v8 validateForInsert_Swift:&v14];
+    v9 = [(REMCDObject *)selfCopy validateForInsert_Swift:&v14];
     v10 = v14;
     if ((v9 & 1) == 0)
     {
@@ -1020,14 +1020,14 @@ LABEL_8:
       }
     }
 
-    [(REMCDObject *)v8 setValidateForInsertion_handledJournalEntries:1];
+    [(REMCDObject *)selfCopy setValidateForInsertion_handledJournalEntries:1];
     v7 &= v9;
   }
 
   return v7;
 }
 
-- (BOOL)validateForUpdate:(id *)a3
+- (BOOL)validateForUpdate:(id *)update
 {
   v24.receiver = self;
   v24.super_class = REMCDObject;
@@ -1036,29 +1036,29 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v5 = [(REMCDObject *)self previousAccount];
-  if (!v5)
+  previousAccount = [(REMCDObject *)self previousAccount];
+  if (!previousAccount)
   {
     goto LABEL_11;
   }
 
-  v6 = v5;
-  v7 = [(REMCDObject *)self account];
-  if (!v7)
+  v6 = previousAccount;
+  account = [(REMCDObject *)self account];
+  if (!account)
   {
 
     goto LABEL_11;
   }
 
-  v8 = v7;
-  v9 = [(REMCDObject *)self previousAccount];
-  v10 = [(REMCDObject *)self account];
-  v11 = [v9 isEqual:v10];
+  v8 = account;
+  previousAccount2 = [(REMCDObject *)self previousAccount];
+  account2 = [(REMCDObject *)self account];
+  v11 = [previousAccount2 isEqual:account2];
 
   if (v11)
   {
 LABEL_11:
-    LOBYTE(a3) = [(REMCDObject *)self _validateZoneOwnerNamesWithLogPrefix:@"Updating" error:a3];
+    LOBYTE(update) = [(REMCDObject *)self _validateZoneOwnerNamesWithLogPrefix:@"Updating" error:update];
     goto LABEL_12;
   }
 
@@ -1068,25 +1068,25 @@ LABEL_11:
     sub_100766DF0(self, v12);
   }
 
-  if (a3)
+  if (update)
   {
-    v13 = [(REMCDObject *)self previousAccount];
-    v14 = [v13 remObjectID];
-    v15 = [(REMCDObject *)self account];
-    v16 = [v15 remObjectID];
-    v17 = [(REMCDObject *)self remObjectID];
-    *a3 = [REMError validationErrorMoveFromAccount:v14 toAccount:v16 objectID:v17];
+    previousAccount3 = [(REMCDObject *)self previousAccount];
+    remObjectID = [previousAccount3 remObjectID];
+    account3 = [(REMCDObject *)self account];
+    remObjectID2 = [account3 remObjectID];
+    remObjectID3 = [(REMCDObject *)self remObjectID];
+    *update = [REMError validationErrorMoveFromAccount:remObjectID toAccount:remObjectID2 objectID:remObjectID3];
 
 LABEL_9:
-    LOBYTE(a3) = 0;
+    LOBYTE(update) = 0;
   }
 
 LABEL_12:
   if (![(REMCDObject *)self validateForUpdate_handledJournalEntries]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v18 = self;
+    selfCopy = self;
     v23 = 0;
-    v19 = [(REMCDObject *)v18 validateForUpdate_Swift:&v23];
+    v19 = [(REMCDObject *)selfCopy validateForUpdate_Swift:&v23];
     v20 = v23;
     if ((v19 & 1) == 0)
     {
@@ -1097,68 +1097,68 @@ LABEL_12:
       }
     }
 
-    [(REMCDObject *)v18 setValidateForUpdate_handledJournalEntries:1];
-    LOBYTE(a3) = a3 & v19;
+    [(REMCDObject *)selfCopy setValidateForUpdate_handledJournalEntries:1];
+    LOBYTE(update) = update & v19;
   }
 
-  return a3;
+  return update;
 }
 
-- (BOOL)_validateZoneOwnerNamesWithLogPrefix:(id)a3 error:(id *)a4
+- (BOOL)_validateZoneOwnerNamesWithLogPrefix:(id)prefix error:(id *)error
 {
-  v6 = a3;
-  v7 = [(REMCDObject *)self parentCloudObject];
-  if (v7)
+  prefixCopy = prefix;
+  parentCloudObject = [(REMCDObject *)self parentCloudObject];
+  if (parentCloudObject)
   {
-    v8 = [(REMCDObject *)self ckZoneOwnerName];
-    if (!v8)
+    ckZoneOwnerName = [(REMCDObject *)self ckZoneOwnerName];
+    if (!ckZoneOwnerName)
     {
-      v8 = CKCurrentUserDefaultName;
+      ckZoneOwnerName = CKCurrentUserDefaultName;
     }
 
-    v9 = [v7 ckZoneOwnerName];
-    if (!v9)
+    ckZoneOwnerName2 = [parentCloudObject ckZoneOwnerName];
+    if (!ckZoneOwnerName2)
     {
-      v9 = CKCurrentUserDefaultName;
+      ckZoneOwnerName2 = CKCurrentUserDefaultName;
     }
 
-    v10 = [(NSString *)v8 isEqual:v9];
+    v10 = [(NSString *)ckZoneOwnerName isEqual:ckZoneOwnerName2];
     if ((v10 & 1) == 0)
     {
-      v11 = [v7 _parentZoneMismatchErrorDebugDescription];
+      _parentZoneMismatchErrorDebugDescription = [parentCloudObject _parentZoneMismatchErrorDebugDescription];
       v12 = +[REMLogStore write];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
         v18 = objc_opt_class();
         v20 = v18;
-        v21 = [(REMCDObject *)self remObjectID];
+        remObjectID = [(REMCDObject *)self remObjectID];
         v16 = objc_opt_class();
         v19 = v16;
-        [v7 remObjectID];
+        [parentCloudObject remObjectID];
         *buf = 138545154;
-        v23 = v6;
+        v23 = prefixCopy;
         v24 = 2114;
         v25 = v18;
         v26 = 2114;
-        v27 = v21;
+        v27 = remObjectID;
         v28 = 2114;
-        v29 = v8;
+        v29 = ckZoneOwnerName;
         v30 = 2114;
         v31 = v16;
         v33 = v32 = 2114;
         v17 = v33;
         v34 = 2114;
-        v35 = v9;
+        v35 = ckZoneOwnerName2;
         v36 = 2114;
-        v37 = v11;
+        v37 = _parentZoneMismatchErrorDebugDescription;
         _os_log_fault_impl(&_mh_execute_header, v12, OS_LOG_TYPE_FAULT, "Validation Failure: %{public}@ {%{public}@, %{public}@, %{public}@} and its parent {%{public}@, %{public}@, %{public}@, %{public}@} have different zones", buf, 0x52u);
       }
 
-      if (a4)
+      if (error)
       {
-        v13 = [(REMCDObject *)self remObjectID];
-        v14 = [v7 remObjectID];
-        *a4 = [REMError validationErrorDifferentZoneObjectID:v13 zoneOwnerName:v8 parentObjectID:v14 parentZoneOwnerName:v9];
+        remObjectID2 = [(REMCDObject *)self remObjectID];
+        remObjectID3 = [parentCloudObject remObjectID];
+        *error = [REMError validationErrorDifferentZoneObjectID:remObjectID2 zoneOwnerName:ckZoneOwnerName parentObjectID:remObjectID3 parentZoneOwnerName:ckZoneOwnerName2];
       }
     }
   }
@@ -1171,19 +1171,19 @@ LABEL_12:
   return v10;
 }
 
-- (void)updateDeletedFlagAccordingToOrphanState:(id)a3
+- (void)updateDeletedFlagAccordingToOrphanState:(id)state
 {
-  v4 = [(REMCDObject *)self isConnectedToAccountObject:a3];
+  v4 = [(REMCDObject *)self isConnectedToAccountObject:state];
   if (v4 != [(REMCDObject *)self markedForDeletion])
   {
-    v5 = [(REMCDObject *)self changedValues];
-    v6 = [v5 allKeys];
-    v7 = [v6 containsObject:@"markedForDeletion"];
+    changedValues = [(REMCDObject *)self changedValues];
+    allKeys = [changedValues allKeys];
+    v7 = [allKeys containsObject:@"markedForDeletion"];
 
     if (!v7)
     {
-      v11 = +[REMLogStore write];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+      managedObjectContext = +[REMLogStore write];
+      if (os_log_type_enabled(managedObjectContext, OS_LOG_TYPE_DEBUG))
       {
         sub_100766F48(self);
       }
@@ -1198,19 +1198,19 @@ LABEL_12:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = [NSNumber numberWithBool:0];
-      v10 = [(REMCDObject *)self remObjectID];
+      remObjectID = [(REMCDObject *)self remObjectID];
       v21 = 138543618;
       v22 = v9;
       v23 = 2114;
-      v24 = v10;
+      v24 = remObjectID;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Begin recursiveMarkForDeletion:%{public}@ from %{public}@", &v21, 0x16u);
     }
 
-    v11 = +[NSMutableSet set];
-    v12 = self;
+    managedObjectContext = +[NSMutableSet set];
+    selfCopy2 = self;
     v13 = 0;
 LABEL_13:
-    [(REMCDObject *)v12 recursiveMarkForDeletion:v13 usingVisitedMap:v11];
+    [(REMCDObject *)selfCopy2 recursiveMarkForDeletion:v13 usingVisitedMap:managedObjectContext];
 LABEL_19:
 
     return;
@@ -1221,14 +1221,14 @@ LABEL_19:
     v17 = +[REMLogStore write];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [(REMCDObject *)self remObjectID];
+      remObjectID2 = [(REMCDObject *)self remObjectID];
       v21 = 138543362;
-      v22 = v18;
+      v22 = remObjectID2;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Deleting orphan object %{public}@ permanently from local database", &v21, 0xCu);
     }
 
-    v11 = [(REMCDObject *)self managedObjectContext];
-    [v11 deleteObject:self];
+    managedObjectContext = [(REMCDObject *)self managedObjectContext];
+    [managedObjectContext deleteObject:self];
     goto LABEL_19;
   }
 
@@ -1238,16 +1238,16 @@ LABEL_19:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v15 = [NSNumber numberWithBool:1];
-      v16 = [(REMCDObject *)self remObjectID];
+      remObjectID3 = [(REMCDObject *)self remObjectID];
       v21 = 138543618;
       v22 = v15;
       v23 = 2114;
-      v24 = v16;
+      v24 = remObjectID3;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Begin recursiveMarkForDeletion:%{public}@ from %{public}@", &v21, 0x16u);
     }
 
-    v11 = +[NSMutableSet set];
-    v12 = self;
+    managedObjectContext = +[NSMutableSet set];
+    selfCopy2 = self;
     v13 = 1;
     goto LABEL_13;
   }
@@ -1255,9 +1255,9 @@ LABEL_19:
   v19 = +[REMLogStore write];
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
-    v20 = [(REMCDObject *)self remObjectID];
+    remObjectID4 = [(REMCDObject *)self remObjectID];
     v21 = 138543362;
-    v22 = v20;
+    v22 = remObjectID4;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Mark shared-to-me root %{public}@ for deletion and recursively deleted all child objects from local database", &v21, 0xCu);
   }
 
@@ -1265,12 +1265,12 @@ LABEL_19:
   [(REMCDObject *)self deleteAllChildrenFromLocalDatabase];
 }
 
-- (void)traverseObjectTreeUsingVisitedMap:(id)a3 handler:(id)a4
+- (void)traverseObjectTreeUsingVisitedMap:(id)map handler:(id)handler
 {
-  v40 = a3;
-  v39 = a4;
-  v6 = [(REMCDObject *)self remObjectID];
-  if (!v6)
+  mapCopy = map;
+  handlerCopy = handler;
+  remObjectID = [(REMCDObject *)self remObjectID];
+  if (!remObjectID)
   {
     obj = +[REMLogStore write];
     if (os_log_type_enabled(obj, OS_LOG_TYPE_FAULT))
@@ -1281,7 +1281,7 @@ LABEL_19:
     goto LABEL_34;
   }
 
-  if ([v40 containsObject:v6])
+  if ([mapCopy containsObject:remObjectID])
   {
     obj = +[REMLogStore write];
     if (os_log_type_enabled(obj, OS_LOG_TYPE_FAULT))
@@ -1294,26 +1294,26 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  v7 = v39[2](v39, self);
-  [v40 addObject:v6];
+  v7 = handlerCopy[2](handlerCopy, self);
+  [mapCopy addObject:remObjectID];
   if (v7)
   {
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v8 = [(REMCDObject *)self entity];
-    v9 = [v8 relationshipsByName];
+    entity = [(REMCDObject *)self entity];
+    relationshipsByName = [entity relationshipsByName];
 
-    obj = v9;
-    v10 = [v9 countByEnumeratingWithState:&v47 objects:v56 count:16];
+    obj = relationshipsByName;
+    v10 = [relationshipsByName countByEnumeratingWithState:&v47 objects:v56 count:16];
     if (!v10)
     {
       goto LABEL_34;
     }
 
     v11 = v10;
-    v32 = v6;
+    v32 = remObjectID;
     v12 = *v48;
     v33 = *v48;
     while (1)
@@ -1328,9 +1328,9 @@ LABEL_34:
         }
 
         v14 = *(*(&v47 + 1) + 8 * v13);
-        v15 = [(REMCDObject *)self entity];
-        v16 = [v15 relationshipsByName];
-        v17 = [v16 objectForKeyedSubscript:v14];
+        entity2 = [(REMCDObject *)self entity];
+        relationshipsByName2 = [entity2 relationshipsByName];
+        v17 = [relationshipsByName2 objectForKeyedSubscript:v14];
 
         v41 = v17;
         if ([v17 deleteRule] == 2)
@@ -1360,9 +1360,9 @@ LABEL_34:
               }
 
               v23 = *(*(&v43 + 1) + 8 * i);
-              v24 = [(REMCDObject *)self managedObjectContext];
+              managedObjectContext = [(REMCDObject *)self managedObjectContext];
               v42 = 0;
-              v25 = [v24 existingObjectWithID:v23 error:&v42];
+              v25 = [managedObjectContext existingObjectWithID:v23 error:&v42];
               v26 = v42;
 
               if (v26)
@@ -1373,12 +1373,12 @@ LABEL_34:
                   goto LABEL_28;
                 }
 
-                v28 = [(REMCDObject *)self entity];
-                v29 = [v28 name];
+                entity3 = [(REMCDObject *)self entity];
+                name = [entity3 name];
                 *buf = 138543618;
                 v52 = v38;
                 v53 = 2114;
-                v54 = v29;
+                v54 = name;
                 _os_log_fault_impl(&_mh_execute_header, v27, OS_LOG_TYPE_FAULT, "Failed to fetch objects in {relationship: %{public}@} of object {type: %{public}@}", buf, 0x16u);
               }
 
@@ -1388,21 +1388,21 @@ LABEL_34:
                 v27 = REMDynamicCast();
                 if (v27 && [(REMCDObject *)self shouldCascadeMarkAsDeleteInto:v27 forRelationship:v41])
                 {
-                  [v27 traverseObjectTreeUsingVisitedMap:v40 handler:v39];
+                  [v27 traverseObjectTreeUsingVisitedMap:mapCopy handler:handlerCopy];
                   goto LABEL_28;
                 }
 
-                v28 = +[REMLogStore write];
-                if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
+                entity3 = +[REMLogStore write];
+                if (os_log_type_enabled(entity3, OS_LOG_TYPE_DEBUG))
                 {
-                  v37 = [v27 remObjectID];
-                  v30 = [v25 objectID];
+                  remObjectID2 = [v27 remObjectID];
+                  objectID = [v25 objectID];
                   *buf = 138412546;
-                  v52 = v37;
+                  v52 = remObjectID2;
                   v53 = 2112;
-                  v54 = v30;
-                  v31 = v30;
-                  _os_log_debug_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "Skipped traverseObjectTreeUsingVisitedMap for {remObjectID: %@, managedObjectID: %@}", buf, 0x16u);
+                  v54 = objectID;
+                  v31 = objectID;
+                  _os_log_debug_impl(&_mh_execute_header, entity3, OS_LOG_TYPE_DEBUG, "Skipped traverseObjectTreeUsingVisitedMap for {remObjectID: %@, managedObjectID: %@}", buf, 0x16u);
                 }
               }
 
@@ -1429,7 +1429,7 @@ LABEL_30:
       v11 = [obj countByEnumeratingWithState:&v47 objects:v56 count:16];
       if (!v11)
       {
-        v6 = v32;
+        remObjectID = v32;
         goto LABEL_34;
       }
     }
@@ -1438,15 +1438,15 @@ LABEL_30:
 LABEL_35:
 }
 
-- (void)recursiveMarkForDeletion:(BOOL)a3 usingVisitedMap:(id)a4
+- (void)recursiveMarkForDeletion:(BOOL)deletion usingVisitedMap:(id)map
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000AABF4;
   v4[3] = &unk_1008DB808;
-  v5 = a3;
+  deletionCopy = deletion;
   v4[4] = self;
-  [(REMCDObject *)self traverseObjectTreeUsingVisitedMap:a4 handler:v4];
+  [(REMCDObject *)self traverseObjectTreeUsingVisitedMap:map handler:v4];
 }
 
 - (void)deleteAllChildrenFromLocalDatabase
@@ -1479,53 +1479,53 @@ LABEL_35:
   return v5;
 }
 
-- (void)fixValueBeforeMarkingForDeletionForKey:(id)a3
+- (void)fixValueBeforeMarkingForDeletionForKey:(id)key
 {
-  v4 = a3;
-  if (([v4 isEqualToString:@"identifier"] & 1) == 0)
+  keyCopy = key;
+  if (([keyCopy isEqualToString:@"identifier"] & 1) == 0)
   {
-    if ([v4 isEqualToString:@"externalIdentifier"])
+    if ([keyCopy isEqualToString:@"externalIdentifier"])
     {
-      v5 = [(REMCDObject *)self externalIdentifier];
-      v6 = [REMExternalSyncMetadataUtils encodeExternalIdentifierForMarkedForDeletionObject:v5];
+      externalIdentifier = [(REMCDObject *)self externalIdentifier];
+      v6 = [REMExternalSyncMetadataUtils encodeExternalIdentifierForMarkedForDeletionObject:externalIdentifier];
 
-      [(REMCDObject *)self setValue:v6 forKey:v4];
+      [(REMCDObject *)self setValue:v6 forKey:keyCopy];
 LABEL_8:
 
       goto LABEL_9;
     }
 
-    v7 = [(REMCDObject *)self entity];
-    v8 = [v7 attributesByName];
-    v9 = [v8 objectForKeyedSubscript:v4];
-    v10 = [v9 attributeType];
+    entity = [(REMCDObject *)self entity];
+    attributesByName = [entity attributesByName];
+    v9 = [attributesByName objectForKeyedSubscript:keyCopy];
+    attributeType = [v9 attributeType];
 
-    if (v10 != 700)
+    if (attributeType != 700)
     {
       v6 = +[REMLogStore write];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
       {
-        sub_1007671E4(v4, self);
+        sub_1007671E4(keyCopy, self);
       }
 
       goto LABEL_8;
     }
 
-    [(REMCDObject *)self setValue:0 forKey:v4];
+    [(REMCDObject *)self setValue:0 forKey:keyCopy];
   }
 
 LABEL_9:
 }
 
-- (void)fixValueBeforeUnmarkingForDeletionForKey:(id)a3
+- (void)fixValueBeforeUnmarkingForDeletionForKey:(id)key
 {
-  v6 = a3;
-  if ([v6 isEqualToString:@"externalIdentifier"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"externalIdentifier"])
   {
-    v4 = [(REMCDObject *)self externalIdentifier];
-    v5 = [REMExternalSyncMetadataUtils decodeExternalIdentifierForMarkedForDeletionObject:v4];
+    externalIdentifier = [(REMCDObject *)self externalIdentifier];
+    v5 = [REMExternalSyncMetadataUtils decodeExternalIdentifierForMarkedForDeletionObject:externalIdentifier];
 
-    [(REMCDObject *)self setValue:v5 forKey:v6];
+    [(REMCDObject *)self setValue:v5 forKey:keyCopy];
   }
 }
 
@@ -1536,9 +1536,9 @@ LABEL_9:
     return 1;
   }
 
-  v3 = [objc_opt_class() cdEntityName];
+  cdEntityName = [objc_opt_class() cdEntityName];
   v4 = +[REMCDAccount cdEntityName];
-  v5 = [v3 isEqual:v4];
+  v5 = [cdEntityName isEqual:v4];
 
   return v5;
 }
@@ -1550,35 +1550,35 @@ LABEL_9:
   return rem_isUnsupportedVersionByRuntime();
 }
 
-- (void)setMinimumSupportedVersion:(int64_t)a3
+- (void)setMinimumSupportedVersion:(int64_t)version
 {
   if ([(REMCDObject *)self _allowsObjectSupportedVersion])
   {
-    v5 = [(REMCDObject *)self minimumSupportedAppVersion];
+    minimumSupportedAppVersion = [(REMCDObject *)self minimumSupportedAppVersion];
     v6 = +[REMLogStore write];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [NSNumber numberWithInteger:a3];
-      v8 = [NSNumber numberWithInteger:v5];
-      v9 = [(REMCDObject *)self remObjectID];
+      v7 = [NSNumber numberWithInteger:version];
+      v8 = [NSNumber numberWithInteger:minimumSupportedAppVersion];
+      remObjectID = [(REMCDObject *)self remObjectID];
       v13 = 138543874;
       v14 = v7;
       v15 = 2114;
       v16 = v8;
       v17 = 2114;
-      v18 = v9;
+      v18 = remObjectID;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "REMSupportedVersionUpdating: setMinimumSupportedVersion {newValue: %{public}@, oldValue: %{public}@, remObjectID: %{public}@}", &v13, 0x20u);
     }
 
-    if (v5 != a3)
+    if (minimumSupportedAppVersion != version)
     {
-      [(REMCDObject *)self setMinimumSupportedAppVersion:a3];
+      [(REMCDObject *)self setMinimumSupportedAppVersion:version];
       v10 = +[REMLogStore write];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [(REMCDObject *)self remObjectID];
+        remObjectID2 = [(REMCDObject *)self remObjectID];
         v13 = 138543362;
-        v14 = v11;
+        v14 = remObjectID2;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "REMSupportedVersionUpdating: setMinimumSupportedVersion: calling _markObjectDirtyForSupportedVersionValidation on {remObjectID: %{public}@}", &v13, 0xCu);
       }
 
@@ -1596,12 +1596,12 @@ LABEL_9:
   }
 }
 
-- (void)setEffectiveMinimumSupportedVersion:(int64_t)a3
+- (void)setEffectiveMinimumSupportedVersion:(int64_t)version
 {
   if ([(REMCDObject *)self _allowsObjectSupportedVersion])
   {
 
-    [(REMCDObject *)self setEffectiveMinimumSupportedAppVersion:a3];
+    [(REMCDObject *)self setEffectiveMinimumSupportedAppVersion:version];
   }
 
   else
@@ -1642,40 +1642,40 @@ LABEL_9:
 {
   if (![(REMCDObject *)self isDeleted])
   {
-    v5 = [(REMCDObject *)self storeControllerManagedObjectContext];
-    v3 = [v5 managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion];
+    storeControllerManagedObjectContext = [(REMCDObject *)self storeControllerManagedObjectContext];
+    managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion = [storeControllerManagedObjectContext managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion];
 
-    if (!v3)
+    if (!managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion)
     {
       sub_100767550(self);
     }
 
-    v4 = [(REMCDObject *)self ic_permanentObjectID];
-    [v3 addObject:v4];
+    ic_permanentObjectID = [(REMCDObject *)self ic_permanentObjectID];
+    [managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion addObject:ic_permanentObjectID];
     goto LABEL_7;
   }
 
-  v3 = +[REMLogStore write];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion = +[REMLogStore write];
+  if (os_log_type_enabled(managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(REMCDObject *)self ic_loggingIdentifier];
+    ic_permanentObjectID = [(REMCDObject *)self ic_loggingIdentifier];
     v6 = 138543362;
-    v7 = v4;
-    _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "REMSupportedVersionUpdating: Not actually adding dirty object to managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion because this CoreData object is being deleted {ic_loggingIdentifier: %{public}@}", &v6, 0xCu);
+    v7 = ic_permanentObjectID;
+    _os_log_impl(&_mh_execute_header, managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion, OS_LOG_TYPE_DEFAULT, "REMSupportedVersionUpdating: Not actually adding dirty object to managedObjectIDsHavingDirtyEffectiveMinimumSupportedVersion because this CoreData object is being deleted {ic_loggingIdentifier: %{public}@}", &v6, 0xCu);
 LABEL_7:
   }
 }
 
-+ (id)relationshipsEligibleForEffectiveMinimumSupportedVersionPropagationWithEntity:(id)a3
++ (id)relationshipsEligibleForEffectiveMinimumSupportedVersionPropagationWithEntity:(id)entity
 {
-  v3 = a3;
+  entityCopy = entity;
   v16 = +[NSMutableArray array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v3 relationshipsByName];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  relationshipsByName = [entityCopy relationshipsByName];
+  v5 = [relationshipsByName countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1686,16 +1686,16 @@ LABEL_7:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(relationshipsByName);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v3 relationshipsByName];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        relationshipsByName2 = [entityCopy relationshipsByName];
+        v11 = [relationshipsByName2 objectForKeyedSubscript:v9];
 
-        v12 = [v11 destinationEntity];
-        v13 = [v12 name];
-        v14 = [v13 rem_hasPrefixCaseInsensitive:@"REMCD"];
+        destinationEntity = [v11 destinationEntity];
+        name = [destinationEntity name];
+        v14 = [name rem_hasPrefixCaseInsensitive:@"REMCD"];
 
         if (v14 && [v11 deleteRule] == 2)
         {
@@ -1703,7 +1703,7 @@ LABEL_7:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [relationshipsByName countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -1712,11 +1712,11 @@ LABEL_7:
   return v16;
 }
 
-- (BOOL)validateEffectiveMinimumSupportedVersionApplyingChange:(BOOL)a3
+- (BOOL)validateEffectiveMinimumSupportedVersionApplyingChange:(BOOL)change
 {
-  v3 = a3;
-  v5 = [(REMCDObject *)self _allowsObjectSupportedVersion];
-  if (!v5)
+  changeCopy = change;
+  _allowsObjectSupportedVersion = [(REMCDObject *)self _allowsObjectSupportedVersion];
+  if (!_allowsObjectSupportedVersion)
   {
     v10 = +[REMLogStore write];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1727,23 +1727,23 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  v6 = [(REMCDObject *)self minimumSupportedVersion];
-  v7 = [(REMCDObject *)self parentEffectiveMinimumSupportedVersion];
-  v8 = [(REMCDObject *)self effectiveMinimumSupportedVersion];
-  if (v7 <= v6)
+  minimumSupportedVersion = [(REMCDObject *)self minimumSupportedVersion];
+  parentEffectiveMinimumSupportedVersion = [(REMCDObject *)self parentEffectiveMinimumSupportedVersion];
+  effectiveMinimumSupportedVersion = [(REMCDObject *)self effectiveMinimumSupportedVersion];
+  if (parentEffectiveMinimumSupportedVersion <= minimumSupportedVersion)
   {
-    v9 = v6;
+    v9 = minimumSupportedVersion;
   }
 
   else
   {
-    v9 = v7;
+    v9 = parentEffectiveMinimumSupportedVersion;
   }
 
-  if (v8 != v9)
+  if (effectiveMinimumSupportedVersion != v9)
   {
-    v11 = v8;
-    if (v3)
+    v11 = effectiveMinimumSupportedVersion;
+    if (changeCopy)
     {
       [(REMCDObject *)self setEffectiveMinimumSupportedVersion:?];
     }
@@ -1751,33 +1751,33 @@ LABEL_7:
     v10 = +[REMLogStore write];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v12 = [(REMCDObject *)self remObjectID];
+      remObjectID = [(REMCDObject *)self remObjectID];
       v14 = 134218754;
-      v15 = v6;
+      v15 = minimumSupportedVersion;
       v16 = 2048;
-      v17 = v7;
+      v17 = parentEffectiveMinimumSupportedVersion;
       v18 = 2048;
       v19 = v11;
       v20 = 2114;
-      v21 = v12;
+      v21 = remObjectID;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "REMSupportedVersionUpdating: validateEffectiveMinimumSupportedVersion indicates that my descendants should also be validated since my effective version changed {myVersion: %lld, parentEffectiveVersion: %lld, oldValue: %lld, remObjectID: %{public}@}", &v14, 0x2Au);
     }
 
 LABEL_13:
 
-    return v5;
+    return _allowsObjectSupportedVersion;
   }
 
   return 0;
 }
 
-- (id)remObjectIDWithError:(id *)a3
+- (id)remObjectIDWithError:(id *)error
 {
-  v4 = [(REMCDObject *)self remObjectID];
-  v5 = v4;
-  if (a3 && !v4)
+  remObjectID = [(REMCDObject *)self remObjectID];
+  v5 = remObjectID;
+  if (error && !remObjectID)
   {
-    *a3 = [REMError internalErrorWithDebugDescription:@"Failed to create REMObjectID: REMCDObject.identifier or REMCDObject.entity.name is nil."];
+    *error = [REMError internalErrorWithDebugDescription:@"Failed to create REMObjectID: REMCDObject.identifier or REMCDObject.entity.name is nil."];
   }
 
   return v5;
@@ -1786,16 +1786,16 @@ LABEL_13:
 + (id)newObjectID
 {
   v3 = +[NSUUID UUID];
-  v4 = [a1 objectIDWithUUID:v3];
+  v4 = [self objectIDWithUUID:v3];
 
   return v4;
 }
 
-+ (id)objectIDWithUUID:(id)a3
++ (id)objectIDWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 cdEntityName];
-  v6 = [REMObjectID objectIDWithUUID:v4 entityName:v5];
+  dCopy = d;
+  cdEntityName = [self cdEntityName];
+  v6 = [REMObjectID objectIDWithUUID:dCopy entityName:cdEntityName];
 
   return v6;
 }
@@ -1822,25 +1822,25 @@ LABEL_13:
 
 - (void)insertCloudStateOnAwakeFromInsert
 {
-  v3 = [(REMCDObject *)self managedObjectContext];
-  if (!v3)
+  managedObjectContext = [(REMCDObject *)self managedObjectContext];
+  if (!managedObjectContext)
   {
     sub_100767AD8();
   }
 
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [NSEntityDescription insertNewObjectForEntityForName:v5 inManagedObjectContext:v3];
+  v6 = [NSEntityDescription insertNewObjectForEntityForName:v5 inManagedObjectContext:managedObjectContext];
 
   [(REMCDObject *)self setCkCloudState:v6];
 }
 
 - (id)cloudAccount
 {
-  v2 = [(REMCDObject *)self parentCloudObject];
-  v3 = [v2 cloudAccount];
+  parentCloudObject = [(REMCDObject *)self parentCloudObject];
+  cloudAccount = [parentCloudObject cloudAccount];
 
-  if (!v3)
+  if (!cloudAccount)
   {
     v4 = +[REMLog cloudkit];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1849,7 +1849,7 @@ LABEL_13:
     }
   }
 
-  return v3;
+  return cloudAccount;
 }
 
 - (NSString)accountCKIdentifier
@@ -1858,28 +1858,28 @@ LABEL_13:
   v3 = REMDynamicCast();
   if (v3)
   {
-    v4 = [(REMCDObject *)self ckIdentifier];
+    ckIdentifier = [(REMCDObject *)self ckIdentifier];
   }
 
   else
   {
-    v5 = [(REMCDObject *)self account];
-    v4 = [v5 ckIdentifier];
+    account = [(REMCDObject *)self account];
+    ckIdentifier = [account ckIdentifier];
   }
 
-  return v4;
+  return ckIdentifier;
 }
 
 - (void)_setCKIdentifierIfNecessary
 {
-  v3 = [(REMCDObject *)self ckIdentifier];
+  ckIdentifier = [(REMCDObject *)self ckIdentifier];
 
-  if (!v3)
+  if (!ckIdentifier)
   {
-    v4 = [(REMCDObject *)self identifier];
-    v5 = [v4 UUIDString];
+    identifier = [(REMCDObject *)self identifier];
+    uUIDString = [identifier UUIDString];
 
-    if (!v5)
+    if (!uUIDString)
     {
       v6 = +[REMLog cloudkit];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -1888,12 +1888,12 @@ LABEL_13:
       }
     }
 
-    [(REMCDObject *)self setCkIdentifier:v5];
+    [(REMCDObject *)self setCkIdentifier:uUIDString];
   }
 
-  v7 = [(REMCDObject *)self ckIdentifier];
+  ckIdentifier2 = [(REMCDObject *)self ckIdentifier];
 
-  if (!v7)
+  if (!ckIdentifier2)
   {
     v8 = +[REMLog cloudkit];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -1907,56 +1907,56 @@ LABEL_13:
 {
   if ([(REMCDObject *)self _isInICloudAccount])
   {
-    v3 = [(REMCDObject *)self managedObjectContext];
+    managedObjectContext = [(REMCDObject *)self managedObjectContext];
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = sub_1000AEEAC;
     v4[3] = &unk_1008D9990;
     v4[4] = self;
-    [v3 performBlockAndWait:v4];
+    [managedObjectContext performBlockAndWait:v4];
   }
 }
 
 - (void)clearChangeCount
 {
-  v3 = [(REMCDObject *)self ckCloudState];
-  [v3 setCurrentLocalVersion:0];
+  ckCloudState = [(REMCDObject *)self ckCloudState];
+  [ckCloudState setCurrentLocalVersion:0];
 
-  v4 = [(REMCDObject *)self ckCloudState];
-  [v4 setLatestVersionSyncedToCloud:0];
+  ckCloudState2 = [(REMCDObject *)self ckCloudState];
+  [ckCloudState2 setLatestVersionSyncedToCloud:0];
 
-  v5 = [(REMCDObject *)self ckCloudState];
-  [v5 setLocalVersionDate:0];
+  ckCloudState3 = [(REMCDObject *)self ckCloudState];
+  [ckCloudState3 setLocalVersionDate:0];
 }
 
-+ (id)ckIdentifierFromRecordName:(id)a3
++ (id)ckIdentifierFromRecordName:(id)name
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"/"];
-  v5 = v3;
+  nameCopy = name;
+  v4 = [nameCopy rangeOfString:@"/"];
+  v5 = nameCopy;
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [v3 substringFromIndex:v4 + 1];
+    v5 = [nameCopy substringFromIndex:v4 + 1];
   }
 
   return v5;
 }
 
-- (id)ckIdentifierFromRecordName:(id)a3
+- (id)ckIdentifierFromRecordName:(id)name
 {
-  v3 = a3;
-  v4 = [objc_opt_class() ckIdentifierFromRecordName:v3];
+  nameCopy = name;
+  v4 = [objc_opt_class() ckIdentifierFromRecordName:nameCopy];
 
   return v4;
 }
 
-+ (REMCDObject)objectWithRecordID:(id)a3 accountID:(id)a4 context:(id)a5
++ (REMCDObject)objectWithRecordID:(id)d accountID:(id)iD context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 recordName];
-  v12 = [a1 ckIdentifierFromRecordName:v11];
+  dCopy = d;
+  iDCopy = iD;
+  contextCopy = context;
+  recordName = [dCopy recordName];
+  v12 = [self ckIdentifierFromRecordName:recordName];
 
   if (!v12)
   {
@@ -1965,18 +1965,18 @@ LABEL_13:
 
   objc_opt_class();
   v13 = REMDynamicCast();
-  v14 = [v13 batchFetchHelper];
-  v15 = v14;
-  if (!v14)
+  batchFetchHelper = [v13 batchFetchHelper];
+  v15 = batchFetchHelper;
+  if (!batchFetchHelper)
   {
 LABEL_14:
     v20 = [NSPredicate predicateWithFormat:@"ckIdentifier == %@", v12];
-    v21 = [a1 ic_objectsMatchingPredicate:v20 context:v10];
+    v21 = [self ic_objectsMatchingPredicate:v20 context:contextCopy];
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_1000AF614;
     v37[3] = &unk_1008DB9D0;
-    v38 = v9;
+    v38 = iDCopy;
     v16 = [v21 ic_objectPassingTest:v37];
 
     if (!v16)
@@ -1987,7 +1987,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v14 isMissingCKIdentifier:v12 accountIdentifier:v9])
+  if ([batchFetchHelper isMissingCKIdentifier:v12 accountIdentifier:iDCopy])
   {
     v16 = +[REMLog cloudkit];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -1995,14 +1995,14 @@ LABEL_14:
       *buf = 138543618;
       v40 = v12;
       v41 = 2114;
-      v42 = v9;
+      v42 = iDCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "(object.ckIdentifier: %{public}@, accountID: %{public}@) is in batchFetchHelper missing cache", buf, 0x16u);
     }
 
     goto LABEL_9;
   }
 
-  v17 = [v15 cachedManagedObjectForCKIdentifier:v12 accountIdentifier:v9];
+  v17 = [v15 cachedManagedObjectForCKIdentifier:v12 accountIdentifier:iDCopy];
   if (!v17)
   {
     v19 = +[REMLog cloudkit];
@@ -2011,7 +2011,7 @@ LABEL_14:
       *buf = 138543618;
       v40 = v12;
       v41 = 2114;
-      v42 = v9;
+      v42 = iDCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "(object.ckIdentifier: %{public}@, accountID: %{public}@) does not correspond to a batchFetchHelper cachedManagedObject", buf, 0x16u);
     }
 
@@ -2037,9 +2037,9 @@ LABEL_10:
   }
 
 LABEL_15:
-  v22 = [v16 account];
+  account = [v16 account];
 
-  if (!v22)
+  if (!account)
   {
     v23 = +[REMLog cloudkit];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -2047,15 +2047,15 @@ LABEL_15:
       *buf = 138543618;
       v40 = v12;
       v41 = 2114;
-      v42 = v9;
+      v42 = iDCopy;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "objectWithRecordID: (object.ckIdentifier: %{public}@, accountID: %{public}@) with nil account", buf, 0x16u);
     }
 
-    v24 = [REMCDAccount accountWithCKIdentifier:v9 context:v10];
+    v24 = [REMCDAccount accountWithCKIdentifier:iDCopy context:contextCopy];
     [v16 setAccount:v24];
-    v25 = [v16 account];
+    account2 = [v16 account];
 
-    if (!v25)
+    if (!account2)
     {
       v26 = +[REMLog cloudkit];
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -2065,32 +2065,32 @@ LABEL_15:
     }
   }
 
-  v27 = [v8 zoneID];
-  v28 = [v27 ownerName];
+  zoneID = [dCopy zoneID];
+  ownerName = [zoneID ownerName];
 
-  v29 = [v16 ckZoneOwnerName];
-  v30 = v29;
+  ckZoneOwnerName = [v16 ckZoneOwnerName];
+  v30 = ckZoneOwnerName;
   v31 = CKCurrentUserDefaultName;
-  if (v29)
+  if (ckZoneOwnerName)
   {
-    v31 = v29;
+    v31 = ckZoneOwnerName;
   }
 
   v32 = v31;
 
-  if (([v28 isEqualToString:v32] & 1) == 0)
+  if (([ownerName isEqualToString:v32] & 1) == 0)
   {
     v33 = +[REMLog cloudkit];
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
-      v35 = [v8 recordName];
-      v36 = [v16 ckZoneOwnerName];
+      recordName2 = [dCopy recordName];
+      ckZoneOwnerName2 = [v16 ckZoneOwnerName];
       *buf = 138543874;
-      v40 = v35;
+      v40 = recordName2;
       v41 = 2114;
-      v42 = v28;
+      v42 = ownerName;
       v43 = 2114;
-      v44 = v36;
+      v44 = ckZoneOwnerName2;
       _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "objectWithCKIdentifier zone mismatched: { recordName: %{public}@, zoneOwner: %{public}@ }, but found zoneOwner: %{public}@", buf, 0x20u);
     }
   }
@@ -2130,30 +2130,30 @@ LABEL_30:
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [objc_opt_class() failureCountQueue];
+  failureCountQueue = [objc_opt_class() failureCountQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000AF878;
   v6[3] = &unk_1008DBA38;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(failureCountQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (void)setFailedToSyncCount:(int64_t)a3
+- (void)setFailedToSyncCount:(int64_t)count
 {
-  v5 = [objc_opt_class() failureCountQueue];
+  failureCountQueue = [objc_opt_class() failureCountQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000AF9C4;
   v6[3] = &unk_1008DB318;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = count;
+  dispatch_sync(failureCountQueue, v6);
 }
 
 + (id)numberOfPushAttemptsToWaitByCKIdentifier
@@ -2174,30 +2174,30 @@ LABEL_30:
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [objc_opt_class() failureCountQueue];
+  failureCountQueue = [objc_opt_class() failureCountQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000AFBE4;
   v6[3] = &unk_1008DBA38;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(failureCountQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (void)setNumberOfPushAttemptsToWaitCount:(int64_t)a3
+- (void)setNumberOfPushAttemptsToWaitCount:(int64_t)count
 {
-  v5 = [objc_opt_class() failureCountQueue];
+  failureCountQueue = [objc_opt_class() failureCountQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000AFD30;
   v6[3] = &unk_1008DB318;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = count;
+  dispatch_sync(failureCountQueue, v6);
 }
 
 - (void)incrementFailureCounts
@@ -2213,21 +2213,21 @@ LABEL_30:
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [(REMCDObject *)self failedToSyncCount];
-    v7 = [(REMCDObject *)self failedToSyncCount];
-    v8 = [(REMCDObject *)self loggingDescription];
+    failedToSyncCount = [(REMCDObject *)self failedToSyncCount];
+    failedToSyncCount2 = [(REMCDObject *)self failedToSyncCount];
+    loggingDescription = [(REMCDObject *)self loggingDescription];
     v9 = 138413570;
     v10 = v5;
     v11 = 1024;
-    v12 = v6;
+    v12 = failedToSyncCount;
     v13 = 1024;
     v14 = 3;
     v15 = 1024;
-    v16 = v7;
+    v16 = failedToSyncCount2;
     v17 = 1024;
     v18 = 6;
     v19 = 2112;
-    v20 = v8;
+    v20 = loggingDescription;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ failed to be pushed. Incrementing failedToSyncCount, failure (%d/%d) before being temporarily ignored. (%d/%d) before deleting change tokens and full re-sync. %@", &v9, 0x2Eu);
   }
 
@@ -2250,14 +2250,14 @@ LABEL_30:
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [(REMCDObject *)self numberOfPushAttemptsToWaitCount];
-    v7 = [(REMCDObject *)self loggingDescription];
+    numberOfPushAttemptsToWaitCount = [(REMCDObject *)self numberOfPushAttemptsToWaitCount];
+    loggingDescription = [(REMCDObject *)self loggingDescription];
     v8 = 138412802;
     v9 = v5;
     v10 = 1024;
-    v11 = v6;
+    v11 = numberOfPushAttemptsToWaitCount;
     v12 = 2112;
-    v13 = v7;
+    v13 = loggingDescription;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Decrementing failure counts for %@, %d push attempts before it is retried. %@", &v8, 0x1Cu);
   }
 }
@@ -2270,13 +2270,13 @@ LABEL_30:
     sub_100767F08();
   }
 
-  v4 = [objc_opt_class() failureCountQueue];
+  failureCountQueue = [objc_opt_class() failureCountQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000B015C;
   block[3] = &unk_1008D9990;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(failureCountQueue, block);
 }
 
 - (void)resetFailureCounts
@@ -2298,19 +2298,19 @@ LABEL_30:
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [(REMCDObject *)self failedToSyncCount];
-    v7 = [(REMCDObject *)self numberOfPushAttemptsToWaitCount];
-    v8 = [(REMCDObject *)self loggingDescription];
+    failedToSyncCount = [(REMCDObject *)self failedToSyncCount];
+    numberOfPushAttemptsToWaitCount = [(REMCDObject *)self numberOfPushAttemptsToWaitCount];
+    loggingDescription = [(REMCDObject *)self loggingDescription];
     v10 = 138413314;
     v11 = v5;
     v12 = 1024;
-    v13 = v6;
+    v13 = failedToSyncCount;
     v14 = 1024;
     v15 = 3;
     v16 = 1024;
-    v17 = v7;
+    v17 = numberOfPushAttemptsToWaitCount;
     v18 = 2112;
-    v19 = v8;
+    v19 = loggingDescription;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ failed to be pushed %d times. Max number of retries is %d. It will now be ignored for %d push attempts. %@", &v10, 0x28u);
   }
 
@@ -2320,13 +2320,13 @@ LABEL_30:
 - (id)recordName
 {
   [(REMCDObject *)self _setCKIdentifierIfNecessary];
-  v3 = [(REMCDObject *)self ckIdentifier];
+  ckIdentifier = [(REMCDObject *)self ckIdentifier];
 
-  if (v3)
+  if (ckIdentifier)
   {
-    v4 = [(REMCDObject *)self recordType];
-    v5 = [(REMCDObject *)self ckIdentifier];
-    v6 = [NSString stringWithFormat:@"%@/%@", v4, v5];
+    recordType = [(REMCDObject *)self recordType];
+    ckIdentifier2 = [(REMCDObject *)self ckIdentifier];
+    v6 = [NSString stringWithFormat:@"%@/%@", recordType, ckIdentifier2];
   }
 
   else
@@ -2355,31 +2355,31 @@ LABEL_30:
 - (NSString)ckZoneOwnerName
 {
   [(REMCDObject *)self willAccessValueForKey:@"ckZoneOwnerName"];
-  v3 = [(REMCDObject *)self primitiveCkZoneOwnerName];
+  primitiveCkZoneOwnerName = [(REMCDObject *)self primitiveCkZoneOwnerName];
   [(REMCDObject *)self didAccessValueForKey:@"ckZoneOwnerName"];
-  if (!v3)
+  if (!primitiveCkZoneOwnerName)
   {
-    v4 = [(REMCDObject *)self parentCloudObject];
-    v5 = v4;
-    if (v4)
+    parentCloudObject = [(REMCDObject *)self parentCloudObject];
+    v5 = parentCloudObject;
+    if (parentCloudObject)
     {
-      v3 = [v4 ckZoneOwnerName];
+      primitiveCkZoneOwnerName = [parentCloudObject ckZoneOwnerName];
     }
 
     else
     {
-      v3 = 0;
+      primitiveCkZoneOwnerName = 0;
     }
   }
 
-  return v3;
+  return primitiveCkZoneOwnerName;
 }
 
 - (id)recordID
 {
-  v3 = [(REMCDObject *)self managedObjectContext];
+  managedObjectContext = [(REMCDObject *)self managedObjectContext];
 
-  if (!v3)
+  if (!managedObjectContext)
   {
     v7 = +[REMLog cloudkit];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -2390,9 +2390,9 @@ LABEL_30:
     goto LABEL_16;
   }
 
-  v4 = [(REMCDObject *)self recordName];
+  recordName = [(REMCDObject *)self recordName];
 
-  if (!v4)
+  if (!recordName)
   {
     v7 = +[REMLog cloudkit];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -2403,8 +2403,8 @@ LABEL_30:
     goto LABEL_16;
   }
 
-  v5 = [(REMCDObject *)self recordName];
-  v6 = [v5 isEqualToString:&stru_1008FE8A0];
+  recordName2 = [(REMCDObject *)self recordName];
+  v6 = [recordName2 isEqualToString:&stru_1008FE8A0];
 
   if (v6)
   {
@@ -2420,9 +2420,9 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v8 = [(REMCDObject *)self recordZoneName];
+  recordZoneName = [(REMCDObject *)self recordZoneName];
 
-  if (!v8)
+  if (!recordZoneName)
   {
     v7 = +[REMLog cloudkit];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -2433,19 +2433,19 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v9 = [(REMCDObject *)self ckZoneOwnerName];
-  if (!v9)
+  ckZoneOwnerName = [(REMCDObject *)self ckZoneOwnerName];
+  if (!ckZoneOwnerName)
   {
-    v9 = CKCurrentUserDefaultName;
+    ckZoneOwnerName = CKCurrentUserDefaultName;
   }
 
-  v10 = [CKRecordZoneID ic_defaultDatabaseScopeForOwnerName:v9];
+  v10 = [CKRecordZoneID ic_defaultDatabaseScopeForOwnerName:ckZoneOwnerName];
   v11 = [CKRecordZoneID alloc];
-  v12 = [(REMCDObject *)self recordZoneName];
-  v13 = [v11 initWithZoneName:v12 ownerName:v9 databaseScope:v10];
+  recordZoneName2 = [(REMCDObject *)self recordZoneName];
+  v13 = [v11 initWithZoneName:recordZoneName2 ownerName:ckZoneOwnerName databaseScope:v10];
 
-  v14 = [(REMCDObject *)self recordName];
-  v15 = [[CKRecordID alloc] initWithRecordName:v14 zoneID:v13];
+  recordName3 = [(REMCDObject *)self recordName];
+  v15 = [[CKRecordID alloc] initWithRecordName:recordName3 zoneID:v13];
 
 LABEL_17:
 
@@ -2454,10 +2454,10 @@ LABEL_17:
 
 - (int64_t)rd_ckDatabaseScope
 {
-  v2 = [(REMCDObject *)self recordID];
-  v3 = [v2 rd_ckDatabaseScope];
+  recordID = [(REMCDObject *)self recordID];
+  rd_ckDatabaseScope = [recordID rd_ckDatabaseScope];
 
-  return v3;
+  return rd_ckDatabaseScope;
 }
 
 - (id)recordType
@@ -2481,34 +2481,34 @@ LABEL_17:
 
 - (BOOL)isValidObject
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(REMCDObject *)self managedObjectContext];
+  managedObjectContext = [(REMCDObject *)self managedObjectContext];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000B09C0;
   v5[3] = &unk_1008D9A28;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-+ (id)newCloudObjectForRecord:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)newCloudObjectForRecord:(id)record accountID:(id)d context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [REMCDAccount cloudKitAccountWithCKIdentifier:v9 context:v10];
+  recordCopy = record;
+  dCopy = d;
+  contextCopy = context;
+  v11 = [REMCDAccount cloudKitAccountWithCKIdentifier:dCopy context:contextCopy];
   if (v11)
   {
-    v12 = [a1 newCloudObjectForRecord:v8 account:v11 context:v10];
+    v12 = [self newCloudObjectForRecord:recordCopy account:v11 context:contextCopy];
   }
 
   else
@@ -2516,14 +2516,14 @@ LABEL_17:
     v13 = +[REMLog cloudkit];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
-      v15 = [v8 recordID];
-      v16 = [v15 recordName];
+      recordID = [recordCopy recordID];
+      recordName = [recordID recordName];
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
       v19 = 138543874;
-      v20 = v16;
+      v20 = recordName;
       v21 = 2114;
-      v22 = v9;
+      v22 = dCopy;
       v23 = 2114;
       v24 = v18;
       _os_log_fault_impl(&_mh_execute_header, v13, OS_LOG_TYPE_FAULT, "Cannot get CK account for newCloudObjectForRecord {record: %{public}@, accountID: %{public}@, class: %{public}@}", &v19, 0x20u);
@@ -2535,25 +2535,25 @@ LABEL_17:
   return v12;
 }
 
-+ (id)newObjectWithCKRecordName:(id)a3 context:(id)a4 account:(id)a5
++ (id)newObjectWithCKRecordName:(id)name context:(id)context account:(id)account
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a1 ckIdentifierFromRecordName:a3];
-  v11 = [a1 newObjectWithCKIdentifier:v10 context:v9 account:v8];
+  accountCopy = account;
+  contextCopy = context;
+  v10 = [self ckIdentifierFromRecordName:name];
+  v11 = [self newObjectWithCKIdentifier:v10 context:contextCopy account:accountCopy];
 
   return v11;
 }
 
-+ (id)newObjectWithCKIdentifier:(id)a3 context:(id)a4 account:(id)a5
++ (id)newObjectWithCKIdentifier:(id)identifier context:(id)context account:(id)account
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![a1 isAbstract])
+  identifierCopy = identifier;
+  contextCopy = context;
+  accountCopy = account;
+  if (![self isAbstract])
   {
-    v11 = [a1 cdEntityName];
-    if (!v11)
+    cdEntityName = [self cdEntityName];
+    if (!cdEntityName)
     {
       v13 = +[REMLog cloudkit];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -2566,7 +2566,7 @@ LABEL_17:
       *&buf[16] = 0x3032000000;
       v41 = sub_1000B1204;
       *v42 = sub_1000B1214;
-      *&v42[8] = [a1 entity];
+      *&v42[8] = [self entity];
       v14 = *(*&buf[8] + 40);
       if (!v14)
       {
@@ -2575,13 +2575,13 @@ LABEL_17:
         v39[2] = sub_1000B121C;
         v39[3] = &unk_1008DB948;
         v39[4] = buf;
-        v39[5] = a1;
-        [v9 performBlockAndWait:v39];
+        v39[5] = self;
+        [contextCopy performBlockAndWait:v39];
         v14 = *(*&buf[8] + 40);
       }
 
-      v11 = [v14 name];
-      if (!v11)
+      cdEntityName = [v14 name];
+      if (!cdEntityName)
       {
         v33 = +[REMLog cloudkit];
         sub_100768370(v33);
@@ -2591,7 +2591,7 @@ LABEL_17:
     }
 
     v15 = +[REMCDAccount cdEntityName];
-    v16 = [v11 isEqual:v15];
+    v16 = [cdEntityName isEqual:v15];
 
     if (v16)
     {
@@ -2602,24 +2602,24 @@ LABEL_17:
       }
     }
 
-    else if (v10)
+    else if (accountCopy)
     {
-      v18 = [v10 ckIdentifier];
-      v19 = v18 == 0;
+      ckIdentifier = [accountCopy ckIdentifier];
+      v19 = ckIdentifier == 0;
 
       if (!v19)
       {
-        v12 = [NSEntityDescription insertNewObjectForEntityForName:v11 inManagedObjectContext:v9];
+        v12 = [NSEntityDescription insertNewObjectForEntityForName:cdEntityName inManagedObjectContext:contextCopy];
         if (!v12)
         {
-          sub_1007683C4(v11, v8, v10);
+          sub_1007683C4(cdEntityName, identifierCopy, accountCopy);
         }
 
-        v20 = [[NSUUID alloc] initWithUUIDString:v8];
+        v20 = [[NSUUID alloc] initWithUUIDString:identifierCopy];
         [v12 setIdentifier:v20];
 
-        v21 = [v12 identifier];
-        LODWORD(v20) = v21 == 0;
+        identifier = [v12 identifier];
+        LODWORD(v20) = identifier == 0;
 
         if (v20)
         {
@@ -2633,20 +2633,20 @@ LABEL_17:
           [v12 setIdentifier:v23];
         }
 
-        [v12 setCkIdentifier:v8];
-        [v12 setAccount:v10];
+        [v12 setCkIdentifier:identifierCopy];
+        [v12 setAccount:accountCopy];
         objc_opt_class();
         v17 = REMDynamicCast();
-        v38 = [v17 batchFetchHelper];
-        if (!v38)
+        batchFetchHelper = [v17 batchFetchHelper];
+        if (!batchFetchHelper)
         {
           sub_100768504();
         }
 
-        if (v8 && v12)
+        if (identifierCopy && v12)
         {
-          v24 = [v12 accountCKIdentifier];
-          [v38 setCachedManagedObject:v12 forCKIdentifier:v8 accountIdentifier:v24];
+          accountCKIdentifier = [v12 accountCKIdentifier];
+          [batchFetchHelper setCachedManagedObject:v12 forCKIdentifier:identifierCopy accountIdentifier:accountCKIdentifier];
         }
 
         objc_opt_class();
@@ -2654,30 +2654,30 @@ LABEL_17:
         v26 = v25;
         if (v25)
         {
-          v27 = [v25 identifier];
-          v28 = [v27 UUIDString];
-          [v26 setDaCalendarItemUniqueIdentifier:v28];
+          identifier2 = [v25 identifier];
+          uUIDString = [identifier2 UUIDString];
+          [v26 setDaCalendarItemUniqueIdentifier:uUIDString];
         }
 
         v29 = +[REMLog cloudkit];
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
-          v37 = [v12 shortLoggingDescription];
-          v36 = [v12 identifier];
-          v35 = [v12 ckIdentifier];
-          v34 = [v26 daCalendarItemUniqueIdentifier];
-          v30 = [v10 ckIdentifier];
+          shortLoggingDescription = [v12 shortLoggingDescription];
+          identifier3 = [v12 identifier];
+          ckIdentifier2 = [v12 ckIdentifier];
+          daCalendarItemUniqueIdentifier = [v26 daCalendarItemUniqueIdentifier];
+          ckIdentifier3 = [accountCopy ckIdentifier];
           v31 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v12 isPlaceholder]);
           *buf = 138544642;
-          *&buf[4] = v37;
+          *&buf[4] = shortLoggingDescription;
           *&buf[12] = 2114;
-          *&buf[14] = v36;
+          *&buf[14] = identifier3;
           *&buf[22] = 2114;
-          v41 = v35;
+          v41 = ckIdentifier2;
           *v42 = 2114;
-          *&v42[2] = v34;
+          *&v42[2] = daCalendarItemUniqueIdentifier;
           *&v42[10] = 2114;
-          *&v42[12] = v30;
+          *&v42[12] = ckIdentifier3;
           v43 = 2114;
           v44 = v31;
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Creating REMCDObject for CloudKit: %{public}@ .identifier=%{public}@ .ckIdentifier=%{public}@ .daCalendarItemUniqueIdentifier=%{public}@ .account.ckIdentifier=%{public}@, isPlaceholder=%{public}@", buf, 0x3Eu);
@@ -2689,7 +2689,7 @@ LABEL_17:
       v17 = +[REMLog cloudkit];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
       {
-        sub_100768568(a1);
+        sub_100768568(self);
       }
     }
 
@@ -2698,7 +2698,7 @@ LABEL_17:
       v17 = +[REMLog cloudkit];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
       {
-        sub_100768608(a1);
+        sub_100768608(self);
       }
     }
 
@@ -2708,10 +2708,10 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  v11 = +[REMLog cloudkit];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  cdEntityName = +[REMLog cloudkit];
+  if (os_log_type_enabled(cdEntityName, OS_LOG_TYPE_ERROR))
   {
-    sub_100768718(a1);
+    sub_100768718(self);
   }
 
   v12 = 0;
@@ -2720,23 +2720,23 @@ LABEL_40:
   return v12;
 }
 
-+ (id)newPlaceholderObjectForRecordID:(id)a3 account:(id)a4 context:(id)a5
++ (id)newPlaceholderObjectForRecordID:(id)d account:(id)account context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 recordName];
-  v12 = [a1 ckIdentifierFromRecordName:v11];
+  contextCopy = context;
+  accountCopy = account;
+  dCopy = d;
+  recordName = [dCopy recordName];
+  v12 = [self ckIdentifierFromRecordName:recordName];
 
-  v13 = [v10 zoneID];
+  zoneID = [dCopy zoneID];
 
-  v14 = [a1 newObjectWithCKIdentifier:v12 context:v8 account:v9];
+  v14 = [self newObjectWithCKIdentifier:v12 context:contextCopy account:accountCopy];
   [v14 setCkNeedsInitialFetchFromCloud:1];
   [v14 setInCloud:1];
-  v15 = [a1 objectCkZoneOwnerNameFromCKRecordZoneID:v13];
+  v15 = [self objectCkZoneOwnerNameFromCKRecordZoneID:zoneID];
   [v14 setCkZoneOwnerName:v15];
 
-  [v14 setAccount:v9];
+  [v14 setAccount:accountCopy];
   return v14;
 }
 
@@ -2744,7 +2744,7 @@ LABEL_40:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = NSStringFromClass(a1);
+  v5 = NSStringFromClass(self);
   v6 = [v4 isEqualToString:v5];
 
   if (v6)
@@ -2762,63 +2762,63 @@ LABEL_40:
   return [REMCDAccount predicateForCloudKitAccountsWithKeyPathPrefix:@"account"];
 }
 
-+ (id)allCloudObjectsInContext:(id)a3
++ (id)allCloudObjectsInContext:(id)context
 {
-  v4 = a3;
-  v5 = [a1 allCloudObjectsPredicate];
+  contextCopy = context;
+  allCloudObjectsPredicate = [self allCloudObjectsPredicate];
   v6 = NSStringFromSelector("ckCloudState");
   v10 = v6;
   v7 = [NSArray arrayWithObjects:&v10 count:1];
-  v8 = [a1 ic_objectsMatchingPredicate:v5 sortDescriptors:0 propertiesToFetch:0 relationshipKeyPathsForPrefetching:v7 context:v4];
+  v8 = [self ic_objectsMatchingPredicate:allCloudObjectsPredicate sortDescriptors:0 propertiesToFetch:0 relationshipKeyPathsForPrefetching:v7 context:contextCopy];
 
   return v8;
 }
 
-+ (id)allCloudObjectIDsInContext:(id)a3
++ (id)allCloudObjectIDsInContext:(id)context
 {
-  v4 = a3;
-  v5 = [a1 allCloudObjectsPredicate];
-  v6 = [a1 ic_objectIDsMatchingPredicate:v5 context:v4];
+  contextCopy = context;
+  allCloudObjectsPredicate = [self allCloudObjectsPredicate];
+  v6 = [self ic_objectIDsMatchingPredicate:allCloudObjectsPredicate context:contextCopy];
 
   return v6;
 }
 
-+ (id)allDirtyCloudObjectIDsInContext:(id)a3
++ (id)allDirtyCloudObjectIDsInContext:(id)context
 {
-  v4 = a3;
-  v5 = [a1 allDirtyCloudObjectsPredicate];
-  v6 = [a1 ic_objectIDsMatchingPredicate:v5 context:v4];
+  contextCopy = context;
+  allDirtyCloudObjectsPredicate = [self allDirtyCloudObjectsPredicate];
+  v6 = [self ic_objectIDsMatchingPredicate:allDirtyCloudObjectsPredicate context:contextCopy];
 
   return v6;
 }
 
-- (void)recursivelyFixCrossZoneRelationshipWithVisitedMap:(id)a3 perObjectHandler:(id)a4
+- (void)recursivelyFixCrossZoneRelationshipWithVisitedMap:(id)map perObjectHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000B16FC;
   v9[3] = &unk_1008DBA80;
-  v10 = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = v10;
-  [(REMCDObject *)v8 traverseObjectTreeUsingVisitedMap:a3 handler:v9];
+  selfCopy = self;
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = selfCopy;
+  [(REMCDObject *)v8 traverseObjectTreeUsingVisitedMap:map handler:v9];
 }
 
 - (id)newlyCreatedRecord
 {
-  v3 = [(REMCDObject *)self ckServerRecord];
-  v4 = [v3 copy];
+  ckServerRecord = [(REMCDObject *)self ckServerRecord];
+  v4 = [ckServerRecord copy];
 
   if (!v4)
   {
-    v5 = [(REMCDObject *)self recordID];
-    if (v5)
+    recordID = [(REMCDObject *)self recordID];
+    if (recordID)
     {
       v6 = [CKRecord alloc];
-      v7 = [(REMCDObject *)self recordType];
-      v4 = [v6 initWithRecordType:v7 recordID:v5];
+      recordType = [(REMCDObject *)self recordType];
+      v4 = [v6 initWithRecordType:recordType recordID:recordID];
     }
 
     else
@@ -2833,15 +2833,15 @@ LABEL_40:
     }
   }
 
-  v9 = [(REMCDObject *)self parentCloudObject];
-  v10 = [v9 recordID];
-  v11 = v10;
-  if (v10)
+  parentCloudObject = [(REMCDObject *)self parentCloudObject];
+  recordID2 = [parentCloudObject recordID];
+  v11 = recordID2;
+  if (recordID2)
   {
-    v12 = [v10 zoneID];
-    v13 = [v4 recordID];
-    v14 = [v13 zoneID];
-    v15 = [v12 isEqual:v14];
+    zoneID = [recordID2 zoneID];
+    recordID3 = [v4 recordID];
+    zoneID2 = [recordID3 zoneID];
+    v15 = [zoneID isEqual:zoneID2];
 
     if (v15)
     {
@@ -2857,19 +2857,19 @@ LABEL_40:
       {
         v27 = objc_opt_class();
         v33 = v27;
-        v28 = [v4 recordID];
-        v29 = [v28 ic_loggingDescription];
+        recordID4 = [v4 recordID];
+        ic_loggingDescription = [recordID4 ic_loggingDescription];
         v30 = objc_opt_class();
         v32 = v30;
-        v31 = [v11 ic_loggingDescription];
+        ic_loggingDescription2 = [v11 ic_loggingDescription];
         *buf = 138544130;
         v35 = v27;
         v36 = 2114;
-        v37 = v29;
+        v37 = ic_loggingDescription;
         v38 = 2114;
         v39 = v30;
         v40 = 2114;
-        v41 = v31;
+        v41 = ic_loggingDescription2;
         _os_log_fault_impl(&_mh_execute_header, v16, OS_LOG_TYPE_FAULT, "Not creating cross-zone parent record relationship from %{public}@ %{public}@ to parent %{public}@ %{public}@", buf, 0x2Au);
       }
     }
@@ -2887,8 +2887,8 @@ LABEL_40:
   }
 
   v18 = +[REMCDObject ckRecordKeyForMinimumSupportedVersion];
-  v19 = [(REMCDObject *)self minimumSupportedVersion];
-  if (v19 == kREMSupportedVersionUnset)
+  minimumSupportedVersion = [(REMCDObject *)self minimumSupportedVersion];
+  if (minimumSupportedVersion == kREMSupportedVersionUnset)
   {
     [v4 setObject:0 forKeyedSubscript:v18];
   }
@@ -2901,15 +2901,15 @@ LABEL_40:
 
   v21 = objc_autoreleasePoolPush();
   objc_opt_class();
-  v22 = [(REMCDObject *)self resolutionTokenMap];
+  resolutionTokenMap = [(REMCDObject *)self resolutionTokenMap];
   v23 = REMDynamicCast();
 
   if (v23)
   {
-    v24 = [v23 objc_toJSONString];
-    if (v24)
+    objc_toJSONString = [v23 objc_toJSONString];
+    if (objc_toJSONString)
     {
-      [v4 setObject:v24 forKeyedSubscript:@"ResolutionTokenMap"];
+      [v4 setObject:objc_toJSONString forKeyedSubscript:@"ResolutionTokenMap"];
     }
 
     else
@@ -2928,70 +2928,70 @@ LABEL_40:
   return v4;
 }
 
-- (void)mergeDataFromRecord:(id)a3 accountID:(id)a4
+- (void)mergeDataFromRecord:(id)record accountID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 recordType];
-  v9 = [(REMCDObject *)self recordType];
-  v10 = [v8 isEqual:v9];
+  recordCopy = record;
+  dCopy = d;
+  recordType = [recordCopy recordType];
+  recordType2 = [(REMCDObject *)self recordType];
+  v10 = [recordType isEqual:recordType2];
 
   if ((v10 & 1) == 0)
   {
-    sub_100768944(v6);
+    sub_100768944(recordCopy);
   }
 
   self->_shouldPerformCloudSchemaCatchUpSync = 0;
   objc_opt_class();
-  v11 = [(REMCDObject *)self managedObjectContext];
+  managedObjectContext = [(REMCDObject *)self managedObjectContext];
   v12 = REMDynamicCast();
 
-  v13 = [v12 cloudSchemaCatchUpSyncContextsByAccountIdentifier];
-  v14 = [v13 objectForKey:v7];
+  cloudSchemaCatchUpSyncContextsByAccountIdentifier = [v12 cloudSchemaCatchUpSyncContextsByAccountIdentifier];
+  v14 = [cloudSchemaCatchUpSyncContextsByAccountIdentifier objectForKey:dCopy];
 
   if ([v14 shouldPerformCloudSchemaCatchUpSync])
   {
     self->_shouldPerformCloudSchemaCatchUpSync = 1;
   }
 
-  v15 = [v14 isCloudSchemaCatchUpSyncNeeded];
-  v16 = [(REMCDObject *)self hasSuccessfullyPushedLatestVersionToCloud];
+  isCloudSchemaCatchUpSyncNeeded = [v14 isCloudSchemaCatchUpSyncNeeded];
+  hasSuccessfullyPushedLatestVersionToCloud = [(REMCDObject *)self hasSuccessfullyPushedLatestVersionToCloud];
   self->_mergeDataRefusedToMergeMarkedForDeletion = 0;
   self->_mergeDataRevertedLocallyMarkedForDeletion = 0;
-  v17 = [v6 objectForKeyedSubscript:@"Deleted"];
+  v17 = [recordCopy objectForKeyedSubscript:@"Deleted"];
 
   v18 = REMCRMergeableOrderedSet_ptr;
   if (v17)
   {
-    v19 = [v6 objectForKeyedSubscript:@"Deleted"];
-    v20 = [v19 BOOLValue];
+    v19 = [recordCopy objectForKeyedSubscript:@"Deleted"];
+    bOOLValue = [v19 BOOLValue];
 
-    v31 = [(REMCDObject *)self markedForDeletion];
-    if (v20 != [(REMCDObject *)self markedForDeletion])
+    markedForDeletion = [(REMCDObject *)self markedForDeletion];
+    if (bOOLValue != [(REMCDObject *)self markedForDeletion])
     {
-      v21 = v16 | ~v20;
+      v21 = hasSuccessfullyPushedLatestVersionToCloud | ~bOOLValue;
       v22 = +[REMLog cloudkit];
       v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
       if (v21)
       {
         if (v23)
         {
-          v24 = [(REMCDObject *)self shortLoggingDescription];
+          shortLoggingDescription = [(REMCDObject *)self shortLoggingDescription];
           *buf = 138543362;
-          v33 = v24;
+          v33 = shortLoggingDescription;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Setting %{public}@ marked for deletion when merging data from record", buf, 0xCu);
         }
 
-        [(REMCDObject *)self setMarkedForDeletion:v20];
+        [(REMCDObject *)self setMarkedForDeletion:bOOLValue];
       }
 
       else
       {
         if (v23)
         {
-          v25 = [(REMCDObject *)self shortLoggingDescription];
+          shortLoggingDescription2 = [(REMCDObject *)self shortLoggingDescription];
           *buf = 138543362;
-          v33 = v25;
+          v33 = shortLoggingDescription2;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Setting mergeDataRefusedToMergeMarkedForDeletion=YES for %{public}@ when merging data from record", buf, 0xCu);
         }
 
@@ -3000,15 +3000,15 @@ LABEL_40:
     }
 
     v18 = REMCRMergeableOrderedSet_ptr;
-    if (((v15 | v20) & 1) == 0 && ((v31 ^ 1) & 1) == 0)
+    if (((isCloudSchemaCatchUpSyncNeeded | bOOLValue) & 1) == 0 && ((markedForDeletion ^ 1) & 1) == 0)
     {
       [(REMCDObject *)self unmarkForDeletion];
       v26 = +[REMLog cloudkit];
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [(REMCDObject *)self shortLoggingDescription];
+        shortLoggingDescription3 = [(REMCDObject *)self shortLoggingDescription];
         *buf = 138543362;
-        v33 = v27;
+        v33 = shortLoggingDescription3;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Setting mergeDataRevertedLocallyMarkedForDeletion=YES for %{public}@ when merging data from record", buf, 0xCu);
       }
 
@@ -3018,20 +3018,20 @@ LABEL_40:
 
   objc_opt_class();
   v28 = objc_opt_respondsToSelector();
-  v29 = [v18[50] cloudkit];
-  v30 = v29;
+  cloudkit = [v18[50] cloudkit];
+  selfCopy = cloudkit;
   if (v28)
   {
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(cloudkit, OS_LOG_TYPE_DEBUG))
     {
       sub_100768AB8();
     }
 
-    v30 = self;
-    [objc_opt_class() mergeSystemPropertiesIntoCDObject:v30 fromCKRecord:v6];
+    selfCopy = self;
+    [objc_opt_class() mergeSystemPropertiesIntoCDObject:selfCopy fromCKRecord:recordCopy];
   }
 
-  else if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
+  else if (os_log_type_enabled(cloudkit, OS_LOG_TYPE_FAULT))
   {
     sub_100768A10();
   }
@@ -3054,18 +3054,18 @@ LABEL_40:
     goto LABEL_6;
   }
 
-  v3 = [(REMCDObject *)self ckCloudState];
-  v4 = [v3 latestVersionSyncedToCloud];
-  v5 = [(REMCDObject *)self ckCloudState];
-  v6 = [v5 currentLocalVersion];
+  ckCloudState = [(REMCDObject *)self ckCloudState];
+  latestVersionSyncedToCloud = [ckCloudState latestVersionSyncedToCloud];
+  ckCloudState2 = [(REMCDObject *)self ckCloudState];
+  currentLocalVersion = [ckCloudState2 currentLocalVersion];
 
-  if (v4 >= v6)
+  if (latestVersionSyncedToCloud >= currentLocalVersion)
   {
     goto LABEL_6;
   }
 
-  v7 = [(REMCDObject *)self ckCloudState];
-  v8 = -[REMCDObject isPushingSameOrLaterThanVersion:](self, "isPushingSameOrLaterThanVersion:", [v7 currentLocalVersion]);
+  ckCloudState3 = [(REMCDObject *)self ckCloudState];
+  v8 = -[REMCDObject isPushingSameOrLaterThanVersion:](self, "isPushingSameOrLaterThanVersion:", [ckCloudState3 currentLocalVersion]);
 
   if (v8 || [(REMCDObject *)self markedForDeletion]&& ![(REMCDObject *)self isInCloud])
   {
@@ -3075,25 +3075,25 @@ LABEL_40:
   if ([(REMCDObject *)self isSharedReadOnly])
   {
 LABEL_6:
-    v9 = 0;
+    isInCloud = 0;
   }
 
   else
   {
-    v11 = [(REMCDObject *)self parentCloudObject];
-    if ([v11 ckNeedsInitialFetchFromCloud])
+    parentCloudObject = [(REMCDObject *)self parentCloudObject];
+    if ([parentCloudObject ckNeedsInitialFetchFromCloud])
     {
-      v12 = [(REMCDObject *)self parentCloudObject];
-      v9 = [v12 isInCloud];
+      parentCloudObject2 = [(REMCDObject *)self parentCloudObject];
+      isInCloud = [parentCloudObject2 isInCloud];
     }
 
     else
     {
-      v9 = 1;
+      isInCloud = 1;
     }
   }
 
-  return v9 & 1;
+  return isInCloud & 1;
 }
 
 - (void)forcePushToCloud
@@ -3101,8 +3101,8 @@ LABEL_6:
   if ([(REMCDObject *)self isPlaceholder])
   {
     v3 = objc_opt_class();
-    v4 = [(REMCDObject *)self ckIdentifier];
-    v5 = [NSString stringWithFormat:@"Placeholder %@ { %@ } forcePushToCloud", v3, v4];
+    ckIdentifier = [(REMCDObject *)self ckIdentifier];
+    v5 = [NSString stringWithFormat:@"Placeholder %@ { %@ } forcePushToCloud", v3, ckIdentifier];
 
     [objc_opt_class() faultAndPromptToFileRadarWithICTap2RadarType:4 title:@"Placeholder forcePushToCloud" description:&stru_1008FE8A0 logMessage:v5];
   }
@@ -3122,23 +3122,23 @@ LABEL_6:
 
 - (BOOL)hasSuccessfullyPushedLatestVersionToCloud
 {
-  v3 = [(REMCDObject *)self ckCloudState];
-  v4 = [v3 latestVersionSyncedToCloud];
-  v5 = [(REMCDObject *)self ckCloudState];
-  LOBYTE(v4) = v4 >= [v5 currentLocalVersion];
+  ckCloudState = [(REMCDObject *)self ckCloudState];
+  latestVersionSyncedToCloud = [ckCloudState latestVersionSyncedToCloud];
+  ckCloudState2 = [(REMCDObject *)self ckCloudState];
+  LOBYTE(latestVersionSyncedToCloud) = latestVersionSyncedToCloud >= [ckCloudState2 currentLocalVersion];
 
-  return v4;
+  return latestVersionSyncedToCloud;
 }
 
-- (BOOL)needsToFetchAfterServerRecordChanged:(id)a3
+- (BOOL)needsToFetchAfterServerRecordChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [changedCopy allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3149,10 +3149,10 @@ LABEL_6:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
-        v9 = [v3 objectForKeyedSubscript:*(*(&v13 + 1) + 8 * i)];
+        v9 = [changedCopy objectForKeyedSubscript:*(*(&v13 + 1) + 8 * i)];
         v10 = [objc_opt_class() needsToReFetchServerRecordValue:v9];
 
         if (v10)
@@ -3162,7 +3162,7 @@ LABEL_6:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -3178,14 +3178,14 @@ LABEL_11:
   return v11;
 }
 
-+ (BOOL)needsToReFetchServerRecordValue:(id)a3
++ (BOOL)needsToReFetchServerRecordValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 fileURL];
-    v6 = v5 == 0;
+    fileURL = [valueCopy fileURL];
+    v6 = fileURL == 0;
   }
 
   else
@@ -3197,7 +3197,7 @@ LABEL_11:
       v14 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v7 = v4;
+      v7 = valueCopy;
       v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v8)
       {
@@ -3212,7 +3212,7 @@ LABEL_11:
               objc_enumerationMutation(v7);
             }
 
-            if ([a1 needsToReFetchServerRecordValue:{*(*(&v13 + 1) + 8 * i), v13}])
+            if ([self needsToReFetchServerRecordValue:{*(*(&v13 + 1) + 8 * i), v13}])
             {
 
               v6 = 1;
@@ -3247,9 +3247,9 @@ LABEL_15:
     v5 = +[REMLog cloudkit];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(REMCDObject *)self shortLoggingDescription];
+      shortLoggingDescription = [(REMCDObject *)self shortLoggingDescription];
       v7 = 138543362;
-      v8 = v6;
+      v8 = shortLoggingDescription;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Shared object was deleted %{public}@", &v7, 0xCu);
     }
 
@@ -3262,9 +3262,9 @@ LABEL_15:
     v3 = +[REMLog cloudkit];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(REMCDObject *)self shortLoggingDescription];
+      shortLoggingDescription2 = [(REMCDObject *)self shortLoggingDescription];
       v7 = 138543362;
-      v8 = v4;
+      v8 = shortLoggingDescription2;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Marking %{public}@ for deletion after being deleted from cloud by another device", &v7, 0xCu);
     }
 
@@ -3277,41 +3277,41 @@ LABEL_11:
   }
 }
 
-- (void)objectWillBePushedToCloudWithOperation:(id)a3
+- (void)objectWillBePushedToCloudWithOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(REMCDObject *)self ckCloudState];
-  -[REMCDObject setVersion:forOperation:](self, "setVersion:forOperation:", [v5 currentLocalVersion], v4);
+  operationCopy = operation;
+  ckCloudState = [(REMCDObject *)self ckCloudState];
+  -[REMCDObject setVersion:forOperation:](self, "setVersion:forOperation:", [ckCloudState currentLocalVersion], operationCopy);
 }
 
-- (void)objectFailedToBePushedToCloudWithOperation:(id)a3 recordID:(id)a4 error:(id)a5
+- (void)objectFailedToBePushedToCloudWithOperation:(id)operation recordID:(id)d error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 database];
-  v12 = [v11 container];
-  v13 = [v12 options];
-  v14 = [v13 accountOverrideInfo];
-  v15 = [v14 accountID];
+  operationCopy = operation;
+  dCopy = d;
+  errorCopy = error;
+  database = [operationCopy database];
+  container = [database container];
+  options = [container options];
+  accountOverrideInfo = [options accountOverrideInfo];
+  accountID = [accountOverrideInfo accountID];
 
-  if (![v15 length])
+  if (![accountID length])
   {
     v16 = +[REMLog cloudkit];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
-      sub_100768B64(v8);
+      sub_100768B64(operationCopy);
     }
   }
 
-  v17 = [v10 code];
-  if (v17 > 19)
+  code = [errorCopy code];
+  if (code > 19)
   {
-    if (v17 > 25)
+    if (code > 25)
     {
-      if (v17 != 26)
+      if (code != 26)
       {
-        if (v17 != 31)
+        if (code != 31)
         {
           goto LABEL_26;
         }
@@ -3319,16 +3319,16 @@ LABEL_11:
         v25 = +[REMLog cloudkit];
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
-          v35 = [v9 ic_loggingDescription];
-          v36 = [v8 ic_loggingDescription];
+          ic_loggingDescription = [dCopy ic_loggingDescription];
+          ic_loggingDescription2 = [operationCopy ic_loggingDescription];
           *buf = 138544130;
-          v42 = v15;
+          v42 = accountID;
           v43 = 2112;
-          v44 = v35;
+          v44 = ic_loggingDescription;
           v45 = 2114;
-          v46 = v36;
+          v46 = ic_loggingDescription2;
           v47 = 2114;
-          v48 = v10;
+          v48 = errorCopy;
           _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "Reference violation for server record in account ID %{public}@: %@ %{public}@: %{public}@", buf, 0x2Au);
         }
 
@@ -3336,20 +3336,20 @@ LABEL_11:
       }
     }
 
-    else if (v17 != 20 && v17 != 22)
+    else if (code != 20 && code != 22)
     {
       goto LABEL_26;
     }
   }
 
-  else if ((v17 - 6) >= 2)
+  else if ((code - 6) >= 2)
   {
-    if (v17 != 11)
+    if (code != 11)
     {
-      if (v17 == 14)
+      if (code == 14)
       {
-        v18 = [v10 userInfo];
-        v19 = [v18 objectForKeyedSubscript:CKRecordChangedErrorServerRecordKey];
+        userInfo = [errorCopy userInfo];
+        v19 = [userInfo objectForKeyedSubscript:CKRecordChangedErrorServerRecordKey];
 
         if (v19)
         {
@@ -3360,34 +3360,34 @@ LABEL_11:
           {
             if (v22)
             {
-              v29 = [v19 ic_loggingDescription];
-              v30 = [v8 ic_loggingDescription];
+              ic_loggingDescription3 = [v19 ic_loggingDescription];
+              ic_loggingDescription4 = [operationCopy ic_loggingDescription];
               *buf = 138544130;
-              v42 = v15;
+              v42 = accountID;
               v43 = 2112;
-              v44 = v29;
+              v44 = ic_loggingDescription3;
               v45 = 2114;
-              v46 = v30;
+              v46 = ic_loggingDescription4;
               v47 = 2112;
-              v48 = v10;
+              v48 = errorCopy;
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Server record changed in account ID %{public}@: %@ %{public}@: %@", buf, 0x2Au);
             }
 
-            if (v15)
+            if (accountID)
             {
-              v40 = [(REMCDObject *)self ckServerRecord];
-              v31 = [v40 recordID];
-              v32 = [v31 zoneID];
-              v33 = [v19 recordID];
-              v34 = [v33 zoneID];
-              v39 = [v32 isEqual:v34];
+              ckServerRecord = [(REMCDObject *)self ckServerRecord];
+              recordID = [ckServerRecord recordID];
+              zoneID = [recordID zoneID];
+              recordID2 = [v19 recordID];
+              zoneID2 = [recordID2 zoneID];
+              v39 = [zoneID isEqual:zoneID2];
 
               if ((v39 & 1) == 0)
               {
                 [(REMCDObject *)self setCkServerRecord:0];
               }
 
-              [(REMCDObject *)self objectWasFetchedFromCloudWithRecord:v19 accountID:v15];
+              [(REMCDObject *)self objectWasFetchedFromCloudWithRecord:v19 accountID:accountID];
             }
 
             goto LABEL_36;
@@ -3403,16 +3403,16 @@ LABEL_36:
             goto LABEL_37;
           }
 
-          v23 = [v19 ic_loggingDescription];
-          v24 = [v8 ic_loggingDescription];
+          ic_loggingDescription5 = [v19 ic_loggingDescription];
+          ic_loggingDescription6 = [operationCopy ic_loggingDescription];
           *buf = 138544130;
-          v42 = v15;
+          v42 = accountID;
           v43 = 2112;
-          v44 = v23;
+          v44 = ic_loggingDescription5;
           v45 = 2112;
-          v46 = v24;
+          v46 = ic_loggingDescription6;
           v47 = 2112;
-          v48 = v10;
+          v48 = errorCopy;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Server record changed (needs refetch) in account ID %{public}@: %@ %@: %@", buf, 0x2Au);
         }
 
@@ -3424,16 +3424,16 @@ LABEL_36:
             goto LABEL_29;
           }
 
-          v23 = [(REMCDObject *)self shortLoggingDescription];
-          v24 = [v8 ic_loggingDescription];
+          ic_loggingDescription5 = [(REMCDObject *)self shortLoggingDescription];
+          ic_loggingDescription6 = [operationCopy ic_loggingDescription];
           *buf = 138544130;
-          v42 = v15;
+          v42 = accountID;
           v43 = 2114;
-          v44 = v23;
+          v44 = ic_loggingDescription5;
           v45 = 2114;
-          v46 = v24;
+          v46 = ic_loggingDescription6;
           v47 = 2112;
-          v48 = v10;
+          v48 = errorCopy;
           _os_log_fault_impl(&_mh_execute_header, v21, OS_LOG_TYPE_FAULT, "Server record changed with no server record in the error in account ID %{public}@: %{public}@ %{public}@: %@", buf, 0x2Au);
         }
 
@@ -3444,16 +3444,16 @@ LABEL_26:
       v19 = +[REMLog cloudkit];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v27 = [v9 ic_loggingDescription];
-        v28 = [v8 ic_loggingDescription];
+        ic_loggingDescription7 = [dCopy ic_loggingDescription];
+        ic_loggingDescription8 = [operationCopy ic_loggingDescription];
         *buf = 138544130;
-        v42 = v15;
+        v42 = accountID;
         v43 = 2112;
-        v44 = v27;
+        v44 = ic_loggingDescription7;
         v45 = 2114;
-        v46 = v28;
+        v46 = ic_loggingDescription8;
         v47 = 2112;
-        v48 = v10;
+        v48 = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Error pushing in account ID %{public}@: %@ %{public}@: %@", buf, 0x2Au);
       }
 
@@ -3463,16 +3463,16 @@ LABEL_26:
     v26 = +[REMLog cloudkit];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v37 = [v9 ic_loggingDescription];
-      v38 = [v8 ic_loggingDescription];
+      ic_loggingDescription9 = [dCopy ic_loggingDescription];
+      ic_loggingDescription10 = [operationCopy ic_loggingDescription];
       *buf = 138544130;
-      v42 = v15;
+      v42 = accountID;
       v43 = 2112;
-      v44 = v37;
+      v44 = ic_loggingDescription9;
       v45 = 2114;
-      v46 = v38;
+      v46 = ic_loggingDescription10;
       v47 = 2112;
-      v48 = v10;
+      v48 = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "Invalid cached server record in account ID %{public}@: %@ %{public}@: %@", buf, 0x2Au);
     }
 
@@ -3480,66 +3480,66 @@ LABEL_26:
   }
 
 LABEL_37:
-  [objc_opt_class() deleteTemporaryAssetFilesForOperation:v8];
+  [objc_opt_class() deleteTemporaryAssetFilesForOperation:operationCopy];
 }
 
-- (void)objectWasPushedToCloudWithOperation:(id)a3 serverRecord:(id)a4
+- (void)objectWasPushedToCloudWithOperation:(id)operation serverRecord:(id)record
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REMCDObject *)self versionForOperation:v7];
-  v9 = [(REMCDObject *)self ckCloudState];
-  v10 = [v9 latestVersionSyncedToCloud];
+  recordCopy = record;
+  operationCopy = operation;
+  v8 = [(REMCDObject *)self versionForOperation:operationCopy];
+  ckCloudState = [(REMCDObject *)self ckCloudState];
+  latestVersionSyncedToCloud = [ckCloudState latestVersionSyncedToCloud];
 
-  if (v8 > v10)
+  if (v8 > latestVersionSyncedToCloud)
   {
-    v11 = [(REMCDObject *)self ckCloudState];
-    [v11 setLatestVersionSyncedToCloud:v8];
+    ckCloudState2 = [(REMCDObject *)self ckCloudState];
+    [ckCloudState2 setLatestVersionSyncedToCloud:v8];
   }
 
-  [objc_opt_class() deleteTemporaryAssetFilesForOperation:v7];
+  [objc_opt_class() deleteTemporaryAssetFilesForOperation:operationCopy];
 
   [(REMCDObject *)self resetFailureCounts];
   [(REMCDObject *)self setInCloud:1];
   [(REMCDObject *)self setCkDirtyFlags:[(REMCDObject *)self ckDirtyFlags]& 0xFFFFFFFD];
-  v12 = [(REMCDObject *)self ckServerRecord];
-  if (!v12)
+  ckServerRecord = [(REMCDObject *)self ckServerRecord];
+  if (!ckServerRecord)
   {
     goto LABEL_8;
   }
 
-  v13 = v12;
-  v14 = [(REMCDObject *)self ckServerRecord];
-  v15 = [v14 modificationDate];
-  v16 = [v6 modificationDate];
-  v17 = [v15 ic_isLaterThanDate:v16];
+  v13 = ckServerRecord;
+  ckServerRecord2 = [(REMCDObject *)self ckServerRecord];
+  modificationDate = [ckServerRecord2 modificationDate];
+  modificationDate2 = [recordCopy modificationDate];
+  v17 = [modificationDate ic_isLaterThanDate:modificationDate2];
 
   if (v17)
   {
     v18 = +[REMLog cloudkit];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
-      sub_100768C00(v6);
+      sub_100768C00(recordCopy);
     }
   }
 
   else
   {
 LABEL_8:
-    [(REMCDObject *)self setCkServerRecord:v6];
+    [(REMCDObject *)self setCkServerRecord:recordCopy];
   }
 }
 
-- (void)objectWasFetchedFromCloudWithRecord:(id)a3 accountID:(id)a4
+- (void)objectWasFetchedFromCloudWithRecord:(id)record accountID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"Deleted"];
+  recordCopy = record;
+  dCopy = d;
+  v8 = [recordCopy objectForKeyedSubscript:@"Deleted"];
   if ([v8 BOOLValue])
   {
-    v9 = [(REMCDObject *)self markedForDeletion];
+    markedForDeletion = [(REMCDObject *)self markedForDeletion];
 
-    if (v9)
+    if (markedForDeletion)
     {
       v10 = 0;
       goto LABEL_9;
@@ -3551,11 +3551,11 @@ LABEL_8:
   }
 
   objc_opt_class();
-  v11 = [(REMCDObject *)self managedObjectContext];
+  managedObjectContext = [(REMCDObject *)self managedObjectContext];
   v12 = REMDynamicCast();
 
-  v13 = [v12 cloudSchemaCatchUpSyncContextsByAccountIdentifier];
-  v14 = [v13 objectForKey:v7];
+  cloudSchemaCatchUpSyncContextsByAccountIdentifier = [v12 cloudSchemaCatchUpSyncContextsByAccountIdentifier];
+  v14 = [cloudSchemaCatchUpSyncContextsByAccountIdentifier objectForKey:dCopy];
 
   if ([v14 shouldPerformCloudSchemaCatchUpSync])
   {
@@ -3568,12 +3568,12 @@ LABEL_8:
   }
 
 LABEL_9:
-  v15 = [v6 recordChangeTag];
-  if (v15)
+  recordChangeTag = [recordCopy recordChangeTag];
+  if (recordChangeTag)
   {
-    v16 = [(REMCDObject *)self ckServerRecord];
-    v17 = [v16 recordChangeTag];
-    v18 = [v17 isEqualToString:v15] ^ 1;
+    ckServerRecord = [(REMCDObject *)self ckServerRecord];
+    recordChangeTag2 = [ckServerRecord recordChangeTag];
+    v18 = [recordChangeTag2 isEqualToString:recordChangeTag] ^ 1;
   }
 
   else
@@ -3588,61 +3588,61 @@ LABEL_9:
       v19 = +[REMLog cloudkit];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(REMCDObject *)self remObjectID];
+        remObjectID = [(REMCDObject *)self remObjectID];
         v35 = 138543618;
-        v36 = v7;
+        v36 = dCopy;
         v37 = 2114;
-        v38 = v20;
+        v38 = remObjectID;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Object fetched from cloud and is an entity that should perform CloudSchemaCatchUpSync, force merging data from CKRecord {accountID: %{public}@, remObjectID: %{public}@}", &v35, 0x16u);
       }
     }
 
-    [(REMCDObject *)self mergeDataFromRecord:v6 accountID:v7];
-    v21 = [(REMCDObject *)self ckServerRecord];
-    if (!v21)
+    [(REMCDObject *)self mergeDataFromRecord:recordCopy accountID:dCopy];
+    ckServerRecord2 = [(REMCDObject *)self ckServerRecord];
+    if (!ckServerRecord2)
     {
       goto LABEL_25;
     }
 
-    v22 = v21;
-    v23 = [(REMCDObject *)self ckServerRecord];
-    v24 = [v23 modificationDate];
-    v25 = [v6 modificationDate];
-    v26 = [v24 ic_isLaterThanDate:v25];
+    v22 = ckServerRecord2;
+    ckServerRecord3 = [(REMCDObject *)self ckServerRecord];
+    modificationDate = [ckServerRecord3 modificationDate];
+    modificationDate2 = [recordCopy modificationDate];
+    v26 = [modificationDate ic_isLaterThanDate:modificationDate2];
 
     if (v26)
     {
       v27 = +[REMLog cloudkit];
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
-        sub_100768CA4(v6);
+        sub_100768CA4(recordCopy);
       }
     }
 
     else
     {
 LABEL_25:
-      [(REMCDObject *)self setCkServerRecord:v6];
+      [(REMCDObject *)self setCkServerRecord:recordCopy];
     }
 
-    v30 = [v6 share];
-    if (v30)
+    share = [recordCopy share];
+    if (share)
     {
     }
 
     else
     {
-      v31 = [(REMCDObject *)self ckServerShare];
+      ckServerShare = [(REMCDObject *)self ckServerShare];
 
-      if (v31)
+      if (ckServerShare)
       {
         v32 = +[REMLog cloudkit];
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
-          v33 = [(REMCDObject *)self ckServerShare];
-          v34 = [v33 ic_loggingDescription];
+          ckServerShare2 = [(REMCDObject *)self ckServerShare];
+          ic_loggingDescription = [ckServerShare2 ic_loggingDescription];
           v35 = 138412290;
-          v36 = v34;
+          v36 = ic_loggingDescription;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Object fetched does not have a share removing our severShare: %@", &v35, 0xCu);
         }
 
@@ -3665,9 +3665,9 @@ LABEL_25:
     v28 = +[REMLog cloudkit];
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
-      v29 = [v6 ic_loggingDescription];
+      ic_loggingDescription2 = [recordCopy ic_loggingDescription];
       v35 = 138412290;
-      v36 = v29;
+      v36 = ic_loggingDescription2;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "Not merging fetched record with same change tag %@", &v35, 0xCu);
     }
   }
@@ -3677,10 +3677,10 @@ LABEL_25:
 
 - (void)objectWasFetchedButDoesNotExistInCloud
 {
-  v3 = [(REMCDObject *)self recordID];
-  v4 = [v3 ic_isOwnedByCurrentUser];
+  recordID = [(REMCDObject *)self recordID];
+  ic_isOwnedByCurrentUser = [recordID ic_isOwnedByCurrentUser];
 
-  if (v4)
+  if (ic_isOwnedByCurrentUser)
   {
     [(REMCDObject *)self setCkServerRecord:0];
     [(REMCDObject *)self setCkNeedsInitialFetchFromCloud:0];
@@ -3694,9 +3694,9 @@ LABEL_25:
     v5 = +[REMLog cloudkit];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(REMCDObject *)self shortLoggingDescription];
+      shortLoggingDescription = [(REMCDObject *)self shortLoggingDescription];
       v7 = 138543362;
-      v8 = v6;
+      v8 = shortLoggingDescription;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Deleting shared %{public}@ because it no longer exists in cloud", &v7, 0xCu);
     }
 
@@ -3716,22 +3716,22 @@ LABEL_25:
   return v3;
 }
 
-+ (id)assetForData:(id)a3
++ (id)assetForData:(id)data
 {
-  v4 = a3;
-  if (!v4)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v12 = 0;
     goto LABEL_11;
   }
 
-  v5 = [a1 temporaryAssets];
-  objc_sync_enter(v5);
+  temporaryAssets = [self temporaryAssets];
+  objc_sync_enter(temporaryAssets);
   v6 = +[NSUUID UUID];
-  v7 = [v6 UUIDString];
+  uUIDString = [v6 UUIDString];
 
-  v8 = [a1 temporaryAssetDirectoryURL];
-  v9 = [v8 URLByAppendingPathComponent:v7 isDirectory:0];
+  temporaryAssetDirectoryURL = [self temporaryAssetDirectoryURL];
+  v9 = [temporaryAssetDirectoryURL URLByAppendingPathComponent:uUIDString isDirectory:0];
 
   if (!v9)
   {
@@ -3740,13 +3740,13 @@ LABEL_25:
   }
 
   v15 = 0;
-  v10 = [v4 writeToURL:v9 options:0 error:&v15];
+  v10 = [dataCopy writeToURL:v9 options:0 error:&v15];
   v11 = v15;
   if (!v10)
   {
 LABEL_7:
-    v13 = +[REMLog cloudkit];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    temporaryAssets2 = +[REMLog cloudkit];
+    if (os_log_type_enabled(temporaryAssets2, OS_LOG_TYPE_ERROR))
     {
       sub_100768D48();
     }
@@ -3756,11 +3756,11 @@ LABEL_7:
   }
 
   v12 = [[CKAsset alloc] initWithFileURL:v9];
-  v13 = [a1 temporaryAssets];
-  [v13 addObject:v12];
+  temporaryAssets2 = [self temporaryAssets];
+  [temporaryAssets2 addObject:v12];
 LABEL_10:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(temporaryAssets);
 LABEL_11:
 
   return v12;
@@ -3773,8 +3773,8 @@ LABEL_11:
   {
     v3 = +[NSFileManager defaultManager];
     v4 = +[NSBundle mainBundle];
-    v5 = [v4 bundleIdentifier];
-    v6 = [NSString stringWithFormat:@"%@-%@", v5, @"TemporaryAssetFiles"];
+    bundleIdentifier = [v4 bundleIdentifier];
+    v6 = [NSString stringWithFormat:@"%@-%@", bundleIdentifier, @"TemporaryAssetFiles"];
 
     v18 = 0;
     v7 = [v3 rem_createProtectedTemporaryDirectoryIfNeededWithError:&v18];
@@ -3801,9 +3801,9 @@ LABEL_11:
       v14 = +[REMLog cloudkit];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = [qword_100952A70 absoluteString];
+        absoluteString = [qword_100952A70 absoluteString];
         *buf = 138412290;
-        v20 = v15;
+        v20 = absoluteString;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "REMCDObject.temporaryAssetDirectoryURL: %@", buf, 0xCu);
       }
 
@@ -3825,15 +3825,15 @@ LABEL_11:
   return v2;
 }
 
-+ (void)deleteTemporaryAssetFilesForOperation:(id)a3
++ (void)deleteTemporaryAssetFilesForOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [a1 temporaryAssets];
-  objc_sync_enter(v5);
-  v6 = [a1 temporaryAssets];
-  v7 = [v6 count];
+  operationCopy = operation;
+  temporaryAssets = [self temporaryAssets];
+  objc_sync_enter(temporaryAssets);
+  temporaryAssets2 = [self temporaryAssets];
+  v7 = [temporaryAssets2 count];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(temporaryAssets);
   if (v7)
   {
     v8 = dispatch_get_global_queue(-2, 0);
@@ -3841,28 +3841,28 @@ LABEL_11:
     v9[1] = 3221225472;
     v9[2] = sub_1000B3C30;
     v9[3] = &unk_1008DB318;
-    v11 = a1;
-    v10 = v4;
+    selfCopy = self;
+    v10 = operationCopy;
     dispatch_async(v8, v9);
   }
 }
 
-+ (void)deleteTemporaryFilesForAsset:(id)a3
++ (void)deleteTemporaryFilesForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [a1 temporaryAssets];
-  objc_sync_enter(v5);
-  v6 = [a1 temporaryAssets];
-  [v6 removeObject:v4];
+  assetCopy = asset;
+  temporaryAssets = [self temporaryAssets];
+  objc_sync_enter(temporaryAssets);
+  temporaryAssets2 = [self temporaryAssets];
+  [temporaryAssets2 removeObject:assetCopy];
 
-  v7 = [v4 fileURL];
+  fileURL = [assetCopy fileURL];
 
-  if (v7)
+  if (fileURL)
   {
-    v8 = [v4 fileURL];
+    fileURL2 = [assetCopy fileURL];
     v9 = +[NSFileManager defaultManager];
     v13 = 0;
-    v10 = [v9 removeItemAtURL:v8 error:&v13];
+    v10 = [v9 removeItemAtURL:fileURL2 error:&v13];
     v11 = v13;
 
     if ((v10 & 1) == 0)
@@ -3875,14 +3875,14 @@ LABEL_11:
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(temporaryAssets);
 }
 
 + (void)deleteAllTemporaryAssetFilesForAllObjects
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [a1 temporaryAssetDirectoryURL];
-  v5 = [v3 enumeratorAtURL:v4 includingPropertiesForKeys:0 options:0 errorHandler:&stru_1008DBAE0];
+  temporaryAssetDirectoryURL = [self temporaryAssetDirectoryURL];
+  v5 = [v3 enumeratorAtURL:temporaryAssetDirectoryURL includingPropertiesForKeys:0 options:0 errorHandler:&stru_1008DBAE0];
 
   v21 = 0u;
   v22 = 0u;
@@ -3945,8 +3945,8 @@ LABEL_11:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(REMCDObject *)self objectsToBeDeletedBeforeThisObject];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectsToBeDeletedBeforeThisObject = [(REMCDObject *)self objectsToBeDeletedBeforeThisObject];
+  v4 = [objectsToBeDeletedBeforeThisObject countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3957,7 +3957,7 @@ LABEL_11:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectsToBeDeletedBeforeThisObject);
         }
 
         if (![*(*(&v10 + 1) + 8 * i) shouldBeDeletedFromLocalDatabase])
@@ -3967,7 +3967,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [objectsToBeDeletedBeforeThisObject countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -3999,22 +3999,22 @@ LABEL_17:
 
   else
   {
-    v6 = [(REMCDObject *)self managedObjectContext];
-    [v6 deleteObject:self];
+    managedObjectContext = [(REMCDObject *)self managedObjectContext];
+    [managedObjectContext deleteObject:self];
   }
 }
 
-- (void)fixValuesOfKeysWithUniqueConstraintBeforeSettingMarkedForDeletion:(BOOL)a3
+- (void)fixValuesOfKeysWithUniqueConstraintBeforeSettingMarkedForDeletion:(BOOL)deletion
 {
-  v3 = a3;
-  v5 = [(REMCDObject *)self entity];
-  v6 = [v5 uniquenessConstraints];
+  deletionCopy = deletion;
+  entity = [(REMCDObject *)self entity];
+  uniquenessConstraints = [entity uniquenessConstraints];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v6;
+  obj = uniquenessConstraints;
   v7 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v7)
   {
@@ -4054,7 +4054,7 @@ LABEL_17:
               v17 = REMDynamicCast();
               if (v17)
               {
-                if (v3)
+                if (deletionCopy)
                 {
                   [(REMCDObject *)self fixValueBeforeMarkingForDeletionForKey:v17];
                 }
@@ -4087,9 +4087,9 @@ LABEL_17:
     v3 = +[REMLog cloudkit];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(REMCDObject *)self shortLoggingDescription];
+      shortLoggingDescription = [(REMCDObject *)self shortLoggingDescription];
       v5 = 138543362;
-      v6 = v4;
+      v6 = shortLoggingDescription;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Marking %{public}@ for deletion", &v5, 0xCu);
     }
 
@@ -4122,9 +4122,9 @@ LABEL_17:
     v3 = +[REMLog cloudkit];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(REMCDObject *)self shortLoggingDescription];
+      shortLoggingDescription = [(REMCDObject *)self shortLoggingDescription];
       v5 = 138543362;
-      v6 = v4;
+      v6 = shortLoggingDescription;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Unmarking %{public}@ for deletion", &v5, 0xCu);
     }
 
@@ -4143,16 +4143,16 @@ LABEL_17:
 
 - (void)updateParentReferenceIfNecessary
 {
-  v3 = [(REMCDObject *)self ckServerRecord];
+  ckServerRecord = [(REMCDObject *)self ckServerRecord];
 
-  if (v3)
+  if (ckServerRecord)
   {
-    v4 = [(REMCDObject *)self parentCloudObject];
-    v5 = [v4 recordID];
+    parentCloudObject = [(REMCDObject *)self parentCloudObject];
+    recordID = [parentCloudObject recordID];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v7 = isKindOfClass;
-    if (v4 && (isKindOfClass & 1) == 0 && !v5)
+    if (parentCloudObject && (isKindOfClass & 1) == 0 && !recordID)
     {
       v8 = +[REMLog cloudkit];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -4163,12 +4163,12 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v9 = [(REMCDObject *)self recordID];
-    v10 = [v9 zoneID];
-    v11 = [v10 ownerName];
-    v12 = [v5 zoneID];
-    v13 = [v12 ownerName];
-    v14 = [v11 isEqualToString:v13];
+    recordID2 = [(REMCDObject *)self recordID];
+    zoneID = [recordID2 zoneID];
+    ownerName = [zoneID ownerName];
+    zoneID2 = [recordID zoneID];
+    ownerName2 = [zoneID2 ownerName];
+    v14 = [ownerName isEqualToString:ownerName2];
 
     if (!v14)
     {
@@ -4177,20 +4177,20 @@ LABEL_18:
       return;
     }
 
-    v15 = [(REMCDObject *)self ckServerRecord];
-    v16 = [v15 parent];
+    ckServerRecord2 = [(REMCDObject *)self ckServerRecord];
+    parent = [ckServerRecord2 parent];
 
-    if (v16)
+    if (parent)
     {
       if (v7)
       {
         goto LABEL_18;
       }
 
-      v17 = [(REMCDObject *)self ckServerRecord];
-      v18 = [v17 parent];
-      v19 = [v18 recordID];
-      v20 = [v19 isEqual:v5];
+      ckServerRecord3 = [(REMCDObject *)self ckServerRecord];
+      parent2 = [ckServerRecord3 parent];
+      recordID3 = [parent2 recordID];
+      v20 = [recordID3 isEqual:recordID];
 
       if (v20)
       {
@@ -4203,18 +4203,18 @@ LABEL_18:
         goto LABEL_17;
       }
 
-      v22 = [(REMCDObject *)self shortLoggingDescription];
-      v23 = [(REMCDObject *)self ckServerRecord];
-      v24 = [v23 parent];
-      v25 = [v24 recordID];
-      v26 = [v25 ic_loggingDescription];
-      v27 = [v5 ic_loggingDescription];
+      shortLoggingDescription = [(REMCDObject *)self shortLoggingDescription];
+      ckServerRecord4 = [(REMCDObject *)self ckServerRecord];
+      parent3 = [ckServerRecord4 parent];
+      recordID4 = [parent3 recordID];
+      ic_loggingDescription = [recordID4 ic_loggingDescription];
+      ic_loggingDescription2 = [recordID ic_loggingDescription];
       v28 = 138543874;
-      v29 = v22;
+      v29 = shortLoggingDescription;
       v30 = 2112;
-      v31 = v26;
+      v31 = ic_loggingDescription;
       v32 = 2112;
-      v33 = v27;
+      v33 = ic_loggingDescription2;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Server record for %{public}@ parent %@ is different from expected parent %@. Re-saving record.", &v28, 0x20u);
     }
 
@@ -4229,9 +4229,9 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v22 = [(REMCDObject *)self shortLoggingDescription];
+      shortLoggingDescription = [(REMCDObject *)self shortLoggingDescription];
       v28 = 138543362;
-      v29 = v22;
+      v29 = shortLoggingDescription;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Server record for %{public}@ has no parent, but expects one. Re-saving record.", &v28, 0xCu);
     }
 
@@ -4246,47 +4246,47 @@ LABEL_17:
     return 0;
   }
 
-  v3 = [(REMCDObject *)self ckServerShare];
-  v4 = v3 != 0;
+  ckServerShare = [(REMCDObject *)self ckServerShare];
+  v4 = ckServerShare != 0;
 
   return v4;
 }
 
 - (BOOL)canBeSharedViaICloud
 {
-  v2 = [(REMCDObject *)self cloudAccount];
-  v3 = [v2 accountTypeHost];
-  v4 = [v3 isCloudKit];
+  cloudAccount = [(REMCDObject *)self cloudAccount];
+  accountTypeHost = [cloudAccount accountTypeHost];
+  isCloudKit = [accountTypeHost isCloudKit];
 
-  return v4;
+  return isCloudKit;
 }
 
 - (BOOL)isSharedViaICloud
 {
-  v3 = [(REMCDObject *)self ckServerShare];
+  ckServerShare = [(REMCDObject *)self ckServerShare];
 
-  if (v3)
+  if (ckServerShare)
   {
     return 1;
   }
 
-  v4 = [(REMCDObject *)self ckServerRecord];
-  v5 = [v4 share];
+  ckServerRecord = [(REMCDObject *)self ckServerRecord];
+  share = [ckServerRecord share];
 
-  if (v5)
+  if (share)
   {
     return 1;
   }
 
-  v8 = [(REMCDObject *)self ckZoneOwnerName];
-  if (!v8)
+  ckZoneOwnerName = [(REMCDObject *)self ckZoneOwnerName];
+  if (!ckZoneOwnerName)
   {
     goto LABEL_7;
   }
 
-  v9 = v8;
-  v10 = [(REMCDObject *)self ckZoneOwnerName];
-  v11 = [v10 isEqualToString:CKCurrentUserDefaultName];
+  v9 = ckZoneOwnerName;
+  ckZoneOwnerName2 = [(REMCDObject *)self ckZoneOwnerName];
+  v11 = [ckZoneOwnerName2 isEqualToString:CKCurrentUserDefaultName];
 
   if (!v11)
   {
@@ -4294,53 +4294,53 @@ LABEL_17:
   }
 
 LABEL_7:
-  v12 = [(REMCDObject *)self parentCloudObject];
-  v13 = v12;
-  if (v12)
+  parentCloudObject = [(REMCDObject *)self parentCloudObject];
+  v13 = parentCloudObject;
+  if (parentCloudObject)
   {
-    v6 = [v12 isSharedViaICloud];
+    isSharedViaICloud = [parentCloudObject isSharedViaICloud];
   }
 
   else
   {
-    v6 = 0;
+    isSharedViaICloud = 0;
   }
 
-  return v6;
+  return isSharedViaICloud;
 }
 
 - (BOOL)isOwnedByCurrentUser
 {
-  v2 = [(REMCDObject *)self recordID];
-  v3 = [v2 ic_isOwnedByCurrentUser];
+  recordID = [(REMCDObject *)self recordID];
+  ic_isOwnedByCurrentUser = [recordID ic_isOwnedByCurrentUser];
 
-  return v3;
+  return ic_isOwnedByCurrentUser;
 }
 
 - (BOOL)isSharedRootObject
 {
-  v3 = [(REMCDObject *)self ckServerRecord];
-  v4 = [v3 share];
+  ckServerRecord = [(REMCDObject *)self ckServerRecord];
+  share = [ckServerRecord share];
 
-  if (v4)
+  if (share)
   {
     return 1;
   }
 
-  v6 = [(REMCDObject *)self ckServerShare];
-  v5 = v6 != 0;
+  ckServerShare = [(REMCDObject *)self ckServerShare];
+  v5 = ckServerShare != 0;
 
   return v5;
 }
 
 - (BOOL)isSharedReadOnly
 {
-  v2 = [(REMCDObject *)self serverShareCheckingParent];
-  v3 = v2;
-  if (v2)
+  serverShareCheckingParent = [(REMCDObject *)self serverShareCheckingParent];
+  v3 = serverShareCheckingParent;
+  if (serverShareCheckingParent)
   {
-    v4 = [v2 currentUserParticipant];
-    v5 = [v4 permission] == 2;
+    currentUserParticipant = [serverShareCheckingParent currentUserParticipant];
+    v5 = [currentUserParticipant permission] == 2;
   }
 
   else
@@ -4351,7 +4351,7 @@ LABEL_7:
   return v5;
 }
 
-- (void)updateObjectWithShare:(id)a3
+- (void)updateObjectWithShare:(id)share
 {
   v4 = +[REMLog cloudkitCollaboration];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -4360,23 +4360,23 @@ LABEL_7:
   }
 }
 
-- (void)setServerShareIfNewer:(id)a3
+- (void)setServerShareIfNewer:(id)newer
 {
-  v4 = a3;
-  v5 = [v4 recordChangeTag];
-  v6 = [(REMCDObject *)self ckServerShare];
+  newerCopy = newer;
+  recordChangeTag = [newerCopy recordChangeTag];
+  ckServerShare = [(REMCDObject *)self ckServerShare];
 
-  if (!v6)
+  if (!ckServerShare)
   {
     v12 = +[REMLog cloudkitCollaboration];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(REMCDObject *)self shortLoggingDescription];
-      v24 = [v4 ic_loggingDescription];
+      shortLoggingDescription = [(REMCDObject *)self shortLoggingDescription];
+      ic_loggingDescription = [newerCopy ic_loggingDescription];
       v28 = 138543618;
-      v29 = v23;
+      v29 = shortLoggingDescription;
       v30 = 2112;
-      v31 = v24;
+      v31 = ic_loggingDescription;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "No server share for %{public}@, setting to %@", &v28, 0x16u);
 
 LABEL_15:
@@ -4384,33 +4384,33 @@ LABEL_15:
 
 LABEL_16:
 
-    [(REMCDObject *)self setCkServerShare:v4];
+    [(REMCDObject *)self setCkServerShare:newerCopy];
     goto LABEL_17;
   }
 
-  v7 = [v4 recordChangeTag];
-  if (v7)
+  recordChangeTag2 = [newerCopy recordChangeTag];
+  if (recordChangeTag2)
   {
-    v8 = v7;
-    v9 = [(REMCDObject *)self ckServerShare];
-    v10 = [v9 recordChangeTag];
-    v11 = [v10 isEqualToString:v5];
+    v8 = recordChangeTag2;
+    ckServerShare2 = [(REMCDObject *)self ckServerShare];
+    recordChangeTag3 = [ckServerShare2 recordChangeTag];
+    v11 = [recordChangeTag3 isEqualToString:recordChangeTag];
 
     if (v11)
     {
       v12 = +[REMLog cloudkitCollaboration];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(REMCDObject *)self shortLoggingDescription];
-        v14 = [(REMCDObject *)self ckServerShare];
-        v15 = [v14 ic_loggingDescription];
-        v16 = [v4 ic_loggingDescription];
+        shortLoggingDescription2 = [(REMCDObject *)self shortLoggingDescription];
+        ckServerShare3 = [(REMCDObject *)self ckServerShare];
+        ic_loggingDescription2 = [ckServerShare3 ic_loggingDescription];
+        ic_loggingDescription3 = [newerCopy ic_loggingDescription];
         v28 = 138543874;
-        v29 = v13;
+        v29 = shortLoggingDescription2;
         v30 = 2112;
-        v31 = v15;
+        v31 = ic_loggingDescription2;
         v32 = 2112;
-        v33 = v16;
+        v33 = ic_loggingDescription3;
         v17 = "Existing server share for %{public}@ %@ has the same change tag as %@";
 LABEL_9:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, v17, &v28, 0x20u);
@@ -4422,10 +4422,10 @@ LABEL_9:
     }
   }
 
-  v18 = [(REMCDObject *)self ckServerShare];
-  v19 = [v18 modificationDate];
-  v20 = [v4 modificationDate];
-  v21 = [v19 ic_isLaterThanDate:v20];
+  ckServerShare4 = [(REMCDObject *)self ckServerShare];
+  modificationDate = [ckServerShare4 modificationDate];
+  modificationDate2 = [newerCopy modificationDate];
+  v21 = [modificationDate ic_isLaterThanDate:modificationDate2];
 
   v12 = +[REMLog cloudkitCollaboration];
   v22 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -4433,16 +4433,16 @@ LABEL_9:
   {
     if (v22)
     {
-      v23 = [(REMCDObject *)self shortLoggingDescription];
-      v25 = [(REMCDObject *)self ckServerShare];
-      v26 = [v25 ic_loggingDescription];
-      v27 = [v4 ic_loggingDescription];
+      shortLoggingDescription = [(REMCDObject *)self shortLoggingDescription];
+      ckServerShare5 = [(REMCDObject *)self ckServerShare];
+      ic_loggingDescription4 = [ckServerShare5 ic_loggingDescription];
+      ic_loggingDescription5 = [newerCopy ic_loggingDescription];
       v28 = 138543874;
-      v29 = v23;
+      v29 = shortLoggingDescription;
       v30 = 2112;
-      v31 = v26;
+      v31 = ic_loggingDescription4;
       v32 = 2112;
-      v33 = v27;
+      v33 = ic_loggingDescription5;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Replacing old server share for %{public}@ %@ with %@", &v28, 0x20u);
 
       goto LABEL_15;
@@ -4453,16 +4453,16 @@ LABEL_9:
 
   if (v22)
   {
-    v13 = [(REMCDObject *)self shortLoggingDescription];
-    v14 = [(REMCDObject *)self ckServerShare];
-    v15 = [v14 ic_loggingDescription];
-    v16 = [v4 ic_loggingDescription];
+    shortLoggingDescription2 = [(REMCDObject *)self shortLoggingDescription];
+    ckServerShare3 = [(REMCDObject *)self ckServerShare];
+    ic_loggingDescription2 = [ckServerShare3 ic_loggingDescription];
+    ic_loggingDescription3 = [newerCopy ic_loggingDescription];
     v28 = 138543874;
-    v29 = v13;
+    v29 = shortLoggingDescription2;
     v30 = 2112;
-    v31 = v15;
+    v31 = ic_loggingDescription2;
     v32 = 2112;
-    v33 = v16;
+    v33 = ic_loggingDescription3;
     v17 = "Existing server share for %{public}@ %@ is newer than %@";
     goto LABEL_9;
   }
@@ -4472,26 +4472,26 @@ LABEL_10:
 LABEL_17:
 }
 
-- (void)didAcceptShare:(id)a3
+- (void)didAcceptShare:(id)share
 {
-  v4 = a3;
-  v5 = [(REMCDObject *)self ckServerShare];
+  shareCopy = share;
+  ckServerShare = [(REMCDObject *)self ckServerShare];
 
-  if (!v5)
+  if (!ckServerShare)
   {
     v6 = +[REMLog cloudkitCollaboration];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(REMCDObject *)self shortLoggingDescription];
-      v8 = [v4 ic_loggingDescription];
+      shortLoggingDescription = [(REMCDObject *)self shortLoggingDescription];
+      ic_loggingDescription = [shareCopy ic_loggingDescription];
       v11 = 138543618;
-      v12 = v7;
+      v12 = shortLoggingDescription;
       v13 = 2112;
-      v14 = v8;
+      v14 = ic_loggingDescription;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "No server share for %{public}@, setting to %@", &v11, 0x16u);
     }
 
-    [(REMCDObject *)self setCkServerShare:v4];
+    [(REMCDObject *)self setCkServerShare:shareCopy];
   }
 
   if ([(REMCDObject *)self markedForDeletion])
@@ -4499,9 +4499,9 @@ LABEL_17:
     v9 = +[REMLog cloudkitCollaboration];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(REMCDObject *)self shortLoggingDescription];
+      shortLoggingDescription2 = [(REMCDObject *)self shortLoggingDescription];
       v11 = 138543362;
-      v12 = v10;
+      v12 = shortLoggingDescription2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Undeleting shared %{public}@", &v11, 0xCu);
     }
 
@@ -4534,59 +4534,59 @@ LABEL_17:
   return v3;
 }
 
-- (int64_t)versionForOperation:(id)a3
+- (int64_t)versionForOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [objc_opt_class() versionsByOperationQueue];
+  versionsByOperationQueue = [objc_opt_class() versionsByOperationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000B5930;
   block[3] = &unk_1008D9EE0;
   block[4] = self;
-  v10 = v4;
+  v10 = operationCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = operationCopy;
+  dispatch_sync(versionsByOperationQueue, block);
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);
   return v7;
 }
 
-- (void)setVersion:(int64_t)a3 forOperation:(id)a4
+- (void)setVersion:(int64_t)version forOperation:(id)operation
 {
-  v6 = a4;
-  v7 = [objc_opt_class() versionsByOperationQueue];
+  operationCopy = operation;
+  versionsByOperationQueue = [objc_opt_class() versionsByOperationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000B5A9C;
   block[3] = &unk_1008DBB48;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  v10 = operationCopy;
+  versionCopy = version;
+  v8 = operationCopy;
+  dispatch_sync(versionsByOperationQueue, block);
 }
 
-- (int64_t)isPushingSameOrLaterThanVersion:(int64_t)a3
+- (int64_t)isPushingSameOrLaterThanVersion:(int64_t)version
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [objc_opt_class() versionsByOperationQueue];
+  versionsByOperationQueue = [objc_opt_class() versionsByOperationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000B5C5C;
   block[3] = &unk_1008DBB70;
   block[4] = self;
   block[5] = &v9;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = version;
+  dispatch_sync(versionsByOperationQueue, block);
 
   v6 = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
@@ -4595,10 +4595,10 @@ LABEL_17:
 
 - (BOOL)isInCloud
 {
-  v2 = [(REMCDObject *)self ckCloudState];
-  v3 = [v2 isInCloud];
+  ckCloudState = [(REMCDObject *)self ckCloudState];
+  isInCloud = [ckCloudState isInCloud];
 
-  return v3;
+  return isInCloud;
 }
 
 + (id)recordSystemFieldsTransformer
@@ -4625,22 +4625,22 @@ LABEL_17:
   return v3;
 }
 
-- (void)setCkServerRecord:(id)a3
+- (void)setCkServerRecord:(id)record
 {
-  v5 = a3;
-  if (([(CKRecord *)self->_ckServerRecord isEqual:v5]& 1) == 0)
+  recordCopy = record;
+  if (([(CKRecord *)self->_ckServerRecord isEqual:recordCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_ckServerRecord, a3);
-    if (v5)
+    objc_storeStrong(&self->_ckServerRecord, record);
+    if (recordCopy)
     {
-      v6 = [objc_opt_class() recordSystemFieldsTransformer];
-      v7 = [v6 transformedValue:v5];
+      recordSystemFieldsTransformer = [objc_opt_class() recordSystemFieldsTransformer];
+      v7 = [recordSystemFieldsTransformer transformedValue:recordCopy];
       [(REMCDObject *)self setCkServerRecordData:v7];
 
-      v8 = [v5 recordID];
-      v9 = [v8 zoneID];
+      recordID = [recordCopy recordID];
+      zoneID = [recordID zoneID];
 
-      v10 = [objc_opt_class() objectCkZoneOwnerNameFromCKRecordZoneID:v9];
+      v10 = [objc_opt_class() objectCkZoneOwnerNameFromCKRecordZoneID:zoneID];
       [(REMCDObject *)self setCkZoneOwnerName:v10];
     }
 
@@ -4650,9 +4650,9 @@ LABEL_17:
       v11 = +[REMLog cloudkit];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [(REMCDObject *)self shortLoggingDescription];
+        shortLoggingDescription = [(REMCDObject *)self shortLoggingDescription];
         v13 = 138543362;
-        v14 = v12;
+        v14 = shortLoggingDescription;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "setCkServerRecord: Clearing serverRecord for: %{public}@", &v13, 0xCu);
       }
     }
@@ -4664,11 +4664,11 @@ LABEL_17:
   ckServerRecord = self->_ckServerRecord;
   if (!ckServerRecord)
   {
-    v4 = [(REMCDObject *)self ckServerRecordData];
-    if (v4)
+    ckServerRecordData = [(REMCDObject *)self ckServerRecordData];
+    if (ckServerRecordData)
     {
-      v5 = [objc_opt_class() recordSystemFieldsTransformer];
-      v6 = [v5 reverseTransformedValue:v4];
+      recordSystemFieldsTransformer = [objc_opt_class() recordSystemFieldsTransformer];
+      v6 = [recordSystemFieldsTransformer reverseTransformedValue:ckServerRecordData];
       v7 = self->_ckServerRecord;
       self->_ckServerRecord = v6;
     }
@@ -4679,73 +4679,73 @@ LABEL_17:
   return ckServerRecord;
 }
 
-- (void)updateSharedObjectOwnerName:(id)a3
+- (void)updateSharedObjectOwnerName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[REMLog cloudkit];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v25 = objc_opt_class();
     v26 = 2112;
-    v27 = v4;
+    v27 = nameCopy;
     v6 = v25;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Update shared object's owner names {class: %@, ownerName: %@}", buf, 0x16u);
   }
 
-  v7 = [(REMCDObject *)self managedObjectContext];
-  if (v7)
+  managedObjectContext = [(REMCDObject *)self managedObjectContext];
+  if (managedObjectContext)
   {
-    v8 = [(REMCDObject *)self account];
-    v9 = v8;
-    if (v8)
+    account = [(REMCDObject *)self account];
+    v9 = account;
+    if (account)
     {
-      v10 = [v8 ckIdentifier];
-      if (v10)
+      ckIdentifier = [account ckIdentifier];
+      if (ckIdentifier)
       {
-        if (v4)
+        if (nameCopy)
         {
           v11 = objc_opt_class();
           v12 = NSStringFromClass(v11);
-          v13 = [NSEntityDescription insertNewObjectForEntityForName:v12 inManagedObjectContext:v7];
+          v13 = [NSEntityDescription insertNewObjectForEntityForName:v12 inManagedObjectContext:managedObjectContext];
           objc_opt_class();
           v14 = REMCheckedDynamicCast();
-          v15 = [(REMCDObject *)self ckIdentifier];
-          [v14 setObjectIdentifier:v15];
+          ckIdentifier2 = [(REMCDObject *)self ckIdentifier];
+          [v14 setObjectIdentifier:ckIdentifier2];
 
-          [v14 setOwnerName:v4];
+          [v14 setOwnerName:nameCopy];
           [v14 setAccount:v9];
-          v16 = [(REMCDObject *)self ckIdentifier];
+          ckIdentifier3 = [(REMCDObject *)self ckIdentifier];
 
-          if (v16 && v14)
+          if (ckIdentifier3 && v14)
           {
             objc_opt_class();
             v17 = REMDynamicCast();
-            v18 = [v17 batchFetchHelper];
-            if (!v18)
+            batchFetchHelper = [v17 batchFetchHelper];
+            if (!batchFetchHelper)
             {
               sub_100768504();
             }
 
-            v19 = [(REMCDObject *)self ckIdentifier];
-            [v18 setCachedManagedObject:v14 forCKIdentifier:v19 accountIdentifier:v10];
+            ckIdentifier4 = [(REMCDObject *)self ckIdentifier];
+            [batchFetchHelper setCachedManagedObject:v14 forCKIdentifier:ckIdentifier4 accountIdentifier:ckIdentifier];
           }
         }
 
         else
         {
-          v21 = [(REMCDObject *)self ckIdentifier];
-          v12 = [NSPredicate predicateWithFormat:@"objectIdentifier == %@", v21];
+          ckIdentifier5 = [(REMCDObject *)self ckIdentifier];
+          v12 = [NSPredicate predicateWithFormat:@"objectIdentifier == %@", ckIdentifier5];
 
           objc_opt_class();
-          v22 = [REMCKSharedObjectOwnerName ic_objectsMatchingPredicate:v12 context:v7];
-          v23 = [v22 firstObject];
+          v22 = [REMCKSharedObjectOwnerName ic_objectsMatchingPredicate:v12 context:managedObjectContext];
+          firstObject = [v22 firstObject];
           v13 = REMDynamicCast();
 
           if (v13)
           {
             [v9 removeCkSharedObjectOwnerNamesObject:v13];
-            [v7 deleteObject:v13];
+            [managedObjectContext deleteObject:v13];
           }
         }
 
@@ -4764,8 +4764,8 @@ LABEL_17:
 
     else
     {
-      v10 = +[REMLog cloudkit];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+      ckIdentifier = +[REMLog cloudkit];
+      if (os_log_type_enabled(ckIdentifier, OS_LOG_TYPE_FAULT))
       {
         sub_100769288();
       }
@@ -4782,17 +4782,17 @@ LABEL_17:
   }
 }
 
-- (void)setCkServerShare:(id)a3
+- (void)setCkServerShare:(id)share
 {
-  v7 = a3;
+  shareCopy = share;
   if (([(CKShare *)self->_ckServerShare isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_ckServerShare, a3);
-    [(REMCDObject *)self updateObjectWithShare:v7];
-    if (v7)
+    objc_storeStrong(&self->_ckServerShare, share);
+    [(REMCDObject *)self updateObjectWithShare:shareCopy];
+    if (shareCopy)
     {
-      v5 = [objc_opt_class() shareSystemFieldsTransformer];
-      v6 = [v5 transformedValue:v7];
+      shareSystemFieldsTransformer = [objc_opt_class() shareSystemFieldsTransformer];
+      v6 = [shareSystemFieldsTransformer transformedValue:shareCopy];
       [(REMCDObject *)self setCkServerShareData:v6];
     }
 
@@ -4803,17 +4803,17 @@ LABEL_17:
   }
 }
 
-+ (id)objectCkZoneOwnerNameFromCKRecordZoneID:(id)a3
++ (id)objectCkZoneOwnerNameFromCKRecordZoneID:(id)d
 {
-  v3 = [a3 ownerName];
-  if ([v3 isEqualToString:CKCurrentUserDefaultName])
+  ownerName = [d ownerName];
+  if ([ownerName isEqualToString:CKCurrentUserDefaultName])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = v3;
+    v4 = ownerName;
   }
 
   v5 = v4;
@@ -4823,8 +4823,8 @@ LABEL_17:
 
 - (BOOL)hasAllMandatoryFields
 {
-  v2 = [(REMCDObject *)self ckIdentifier];
-  v3 = [v2 length] != 0;
+  ckIdentifier = [(REMCDObject *)self ckIdentifier];
+  v3 = [ckIdentifier length] != 0;
 
   return v3;
 }
@@ -4832,8 +4832,8 @@ LABEL_17:
 - (id)shortLoggingDescription
 {
   v3 = objc_opt_class();
-  v4 = [(REMCDObject *)self ckIdentifier];
-  v5 = [NSString stringWithFormat:@"<%@ %@>", v3, v4];
+  ckIdentifier = [(REMCDObject *)self ckIdentifier];
+  v5 = [NSString stringWithFormat:@"<%@ %@>", v3, ckIdentifier];
 
   return v5;
 }
@@ -4841,27 +4841,27 @@ LABEL_17:
 - (id)ic_loggingValues
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(REMCDObject *)self managedObjectContext];
+  managedObjectContext = [(REMCDObject *)self managedObjectContext];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000B67C8;
   v8[3] = &unk_1008D9B98;
   v5 = v3;
   v9 = v5;
-  v10 = self;
-  [v4 performBlockAndWait:v8];
+  selfCopy = self;
+  [managedObjectContext performBlockAndWait:v8];
 
   v6 = v5;
   return v5;
 }
 
-- (id)cloudKitReferenceWithRecordIDAndValidateAction:(id)a3
+- (id)cloudKitReferenceWithRecordIDAndValidateAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
     v4 = [CKReference alloc];
-    v5 = [v4 initWithRecordID:v3 action:CKReferenceActionValidate];
+    v5 = [v4 initWithRecordID:actionCopy action:CKReferenceActionValidate];
   }
 
   else
@@ -4872,9 +4872,9 @@ LABEL_17:
   return v5;
 }
 
-+ (id)getResolutionTokenMapFromRecord:(id)a3
++ (id)getResolutionTokenMapFromRecord:(id)record
 {
-  v3 = [a3 objectForKeyedSubscript:@"ResolutionTokenMap"];
+  v3 = [record objectForKeyedSubscript:@"ResolutionTokenMap"];
   if (v3)
   {
     v4 = [REMResolutionTokenMap objc_newObjectFromJSONString:v3];
@@ -4896,15 +4896,15 @@ LABEL_17:
   return v4;
 }
 
-- (void)generateReolutionTokenMapForTestingWithKeys:(id)a3
+- (void)generateReolutionTokenMapForTestingWithKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(REMCDObject *)self createResolutionTokenMapIfNecessary];
+  keysCopy = keys;
+  createResolutionTokenMapIfNecessary = [(REMCDObject *)self createResolutionTokenMapIfNecessary];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v4;
+  v6 = keysCopy;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -4920,7 +4920,7 @@ LABEL_17:
           objc_enumerationMutation(v6);
         }
 
-        [v5 updateForKey:{*(*(&v11 + 1) + 8 * v10), v11}];
+        [createResolutionTokenMapIfNecessary updateForKey:{*(*(&v11 + 1) + 8 * v10), v11}];
         v10 = v10 + 1;
       }
 
@@ -4936,15 +4936,15 @@ LABEL_17:
 {
   if (![objc_opt_class() shouldAttemptLocalObjectMerge] || (-[REMCDObject isDeleted](self, "isDeleted") & 1) != 0 || -[REMCDObject isConcealed](self, "isConcealed"))
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(isInCloud) = 0;
   }
 
   else
   {
-    v3 = [(REMCDObject *)self isInCloud];
+    isInCloud = [(REMCDObject *)self isInCloud];
     v5 = +[REMLog cloudkit];
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-    if (v3)
+    if (isInCloud)
     {
       if (v6)
       {
@@ -4958,17 +4958,17 @@ LABEL_17:
     }
   }
 
-  return v3;
+  return isInCloud;
 }
 
-- (BOOL)isConnectedToAccountObject:(id)a3
+- (BOOL)isConnectedToAccountObject:(id)object
 {
   v4 = +[REMLogStore write];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(REMCDObject *)self objectID];
+    objectID = [(REMCDObject *)self objectID];
     v7 = 138412290;
-    v8 = v5;
+    v8 = objectID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Warning: Calling super (REMCDObject's) -isConnectedToAccountObject:, make sure this model class implements proper connection to the account to avoid being auto marked as deleted {self: %@}.", &v7, 0xCu);
   }
 
@@ -4979,7 +4979,7 @@ LABEL_17:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = NSStringFromClass(a1);
+  v5 = NSStringFromClass(self);
   v6 = [v4 isEqualToString:v5];
 
   if (v6)
@@ -4995,7 +4995,7 @@ LABEL_17:
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___REMCDObject;
     v8 = objc_msgSendSuper2(&v10, "fetchRequest");
   }
@@ -5015,22 +5015,22 @@ LABEL_17:
   return v3;
 }
 
-+ (void)mergeSystemPropertiesIntoCDObject:(id)a3 fromCKRecord:(id)a4
++ (void)mergeSystemPropertiesIntoCDObject:(id)object fromCKRecord:(id)record
 {
-  v5 = a3;
-  v7 = a4;
-  if ([v5 respondsToSelector:"shouldUseResolutionTokenMapForMergingData"])
+  objectCopy = object;
+  recordCopy = record;
+  if ([objectCopy respondsToSelector:"shouldUseResolutionTokenMapForMergingData"])
   {
-    [v5 mergeDataRevertedLocallyMarkedForDeletion];
-    [v5 mergeDataRefusedToMergeMarkedForDeletion];
-    v6 = v5;
-    v5 = v7;
-    sub_1004E8C90(v5, v6, v6, v5);
+    [objectCopy mergeDataRevertedLocallyMarkedForDeletion];
+    [objectCopy mergeDataRefusedToMergeMarkedForDeletion];
+    v6 = objectCopy;
+    objectCopy = recordCopy;
+    sub_1004E8C90(objectCopy, v6, v6, objectCopy);
   }
 
   else
   {
-    sub_1004E83E0(v5, v7);
+    sub_1004E83E0(objectCopy, recordCopy);
   }
 }
 

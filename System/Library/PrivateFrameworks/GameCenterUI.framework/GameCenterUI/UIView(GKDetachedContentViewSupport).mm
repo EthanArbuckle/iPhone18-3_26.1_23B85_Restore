@@ -6,10 +6,10 @@
 
 - (void)_gkSetNeedsRender
 {
-  v4 = a1;
+  selfCopy = self;
   objc_opt_class();
-  v1 = v4;
-  if (v4)
+  v1 = selfCopy;
+  if (selfCopy)
   {
     while (1)
     {
@@ -19,17 +19,17 @@
         break;
       }
 
-      v2 = [v5 superview];
+      superview = [v5 superview];
 
-      v1 = v2;
-      if (!v2)
+      v1 = superview;
+      if (!superview)
       {
         return;
       }
     }
 
-    v3 = [v5 renderView];
-    [v3 setNeedsDisplay];
+    renderView = [v5 renderView];
+    [renderView setNeedsDisplay];
   }
 }
 

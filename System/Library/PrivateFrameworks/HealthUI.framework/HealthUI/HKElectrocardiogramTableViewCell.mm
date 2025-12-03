@@ -1,61 +1,61 @@
 @interface HKElectrocardiogramTableViewCell
 + (id)defaultReuseIdentifier;
 - (HKElectrocardiogram)sample;
-- (HKElectrocardiogramTableViewCell)initWithSample:(id)a3 dateCache:(id)a4 onboarding:(BOOL)a5 activeAlgorithmVersion:(int64_t)a6;
+- (HKElectrocardiogramTableViewCell)initWithSample:(id)sample dateCache:(id)cache onboarding:(BOOL)onboarding activeAlgorithmVersion:(int64_t)version;
 - (void)_setupConstraints;
-- (void)_setupUIWithSample:(id)a3 dateCache:(id)a4 onboarding:(BOOL)a5 activeAlgorithmVersion:(int64_t)a6;
+- (void)_setupUIWithSample:(id)sample dateCache:(id)cache onboarding:(BOOL)onboarding activeAlgorithmVersion:(int64_t)version;
 - (void)prepareForReuse;
-- (void)setActiveAlgorithmVersion:(int64_t)a3;
-- (void)setBottomPaddingDisabled:(BOOL)a3;
-- (void)setSample:(id)a3;
+- (void)setActiveAlgorithmVersion:(int64_t)version;
+- (void)setBottomPaddingDisabled:(BOOL)disabled;
+- (void)setSample:(id)sample;
 @end
 
 @implementation HKElectrocardiogramTableViewCell
 
-- (HKElectrocardiogramTableViewCell)initWithSample:(id)a3 dateCache:(id)a4 onboarding:(BOOL)a5 activeAlgorithmVersion:(int64_t)a6
+- (HKElectrocardiogramTableViewCell)initWithSample:(id)sample dateCache:(id)cache onboarding:(BOOL)onboarding activeAlgorithmVersion:(int64_t)version
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = [objc_opt_class() defaultReuseIdentifier];
+  onboardingCopy = onboarding;
+  sampleCopy = sample;
+  cacheCopy = cache;
+  defaultReuseIdentifier = [objc_opt_class() defaultReuseIdentifier];
   v15.receiver = self;
   v15.super_class = HKElectrocardiogramTableViewCell;
-  v13 = [(HKElectrocardiogramTableViewCell *)&v15 initWithStyle:0 reuseIdentifier:v12];
+  v13 = [(HKElectrocardiogramTableViewCell *)&v15 initWithStyle:0 reuseIdentifier:defaultReuseIdentifier];
 
   if (v13)
   {
-    [(HKElectrocardiogramTableViewCell *)v13 _setupUIWithSample:v10 dateCache:v11 onboarding:v7 activeAlgorithmVersion:a6];
+    [(HKElectrocardiogramTableViewCell *)v13 _setupUIWithSample:sampleCopy dateCache:cacheCopy onboarding:onboardingCopy activeAlgorithmVersion:version];
     [(HKElectrocardiogramTableViewCell *)v13 _setupConstraints];
   }
 
   return v13;
 }
 
-- (void)setActiveAlgorithmVersion:(int64_t)a3
+- (void)setActiveAlgorithmVersion:(int64_t)version
 {
-  v4 = [(HKElectrocardiogramTableViewCell *)self cardView];
-  [v4 setActiveAlgorithmVersion:a3];
+  cardView = [(HKElectrocardiogramTableViewCell *)self cardView];
+  [cardView setActiveAlgorithmVersion:version];
 }
 
-- (void)setSample:(id)a3
+- (void)setSample:(id)sample
 {
-  v4 = a3;
-  v5 = [(HKElectrocardiogramTableViewCell *)self cardView];
-  [v5 setSample:v4];
+  sampleCopy = sample;
+  cardView = [(HKElectrocardiogramTableViewCell *)self cardView];
+  [cardView setSample:sampleCopy];
 }
 
 - (HKElectrocardiogram)sample
 {
-  v2 = [(HKElectrocardiogramTableViewCell *)self cardView];
-  v3 = [v2 sample];
+  cardView = [(HKElectrocardiogramTableViewCell *)self cardView];
+  sample = [cardView sample];
 
-  return v3;
+  return sample;
 }
 
-- (void)setBottomPaddingDisabled:(BOOL)a3
+- (void)setBottomPaddingDisabled:(BOOL)disabled
 {
-  self->_bottomPaddingDisabled = a3;
-  if (a3)
+  self->_bottomPaddingDisabled = disabled;
+  if (disabled)
   {
     v3 = 0.0;
   }
@@ -65,8 +65,8 @@
     v3 = 16.0;
   }
 
-  v4 = [(HKElectrocardiogramTableViewCell *)self bottomPaddingConstraint];
-  [v4 setConstant:v3];
+  bottomPaddingConstraint = [(HKElectrocardiogramTableViewCell *)self bottomPaddingConstraint];
+  [bottomPaddingConstraint setConstant:v3];
 }
 
 + (id)defaultReuseIdentifier
@@ -81,54 +81,54 @@
   v4.receiver = self;
   v4.super_class = HKElectrocardiogramTableViewCell;
   [(HKElectrocardiogramTableViewCell *)&v4 prepareForReuse];
-  v3 = [(HKElectrocardiogramTableViewCell *)self cardView];
-  [v3 setSample:0];
+  cardView = [(HKElectrocardiogramTableViewCell *)self cardView];
+  [cardView setSample:0];
 }
 
-- (void)_setupUIWithSample:(id)a3 dateCache:(id)a4 onboarding:(BOOL)a5 activeAlgorithmVersion:(int64_t)a6
+- (void)_setupUIWithSample:(id)sample dateCache:(id)cache onboarding:(BOOL)onboarding activeAlgorithmVersion:(int64_t)version
 {
-  v7 = a5;
+  onboardingCopy = onboarding;
   v10 = MEMORY[0x1E69DC888];
-  v11 = a4;
-  v12 = a3;
-  v13 = [v10 clearColor];
-  [(HKElectrocardiogramTableViewCell *)self setBackgroundColor:v13];
+  cacheCopy = cache;
+  sampleCopy = sample;
+  clearColor = [v10 clearColor];
+  [(HKElectrocardiogramTableViewCell *)self setBackgroundColor:clearColor];
 
-  v14 = [[HKElectrocardiogramCardView alloc] initWithSample:v12 dateCache:v11 onboarding:v7 activeAlgorithmVersion:a6 isSampleInteractive:1];
+  v14 = [[HKElectrocardiogramCardView alloc] initWithSample:sampleCopy dateCache:cacheCopy onboarding:onboardingCopy activeAlgorithmVersion:version isSampleInteractive:1];
   [(HKElectrocardiogramTableViewCell *)self setCardView:v14];
 
-  v15 = [(HKElectrocardiogramTableViewCell *)self cardView];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  cardView = [(HKElectrocardiogramTableViewCell *)self cardView];
+  [cardView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(HKElectrocardiogramTableViewCell *)self contentView];
-  v17 = [(HKElectrocardiogramTableViewCell *)self cardView];
-  [v16 addSubview:v17];
+  contentView = [(HKElectrocardiogramTableViewCell *)self contentView];
+  cardView2 = [(HKElectrocardiogramTableViewCell *)self cardView];
+  [contentView addSubview:cardView2];
 
   [(HKElectrocardiogramTableViewCell *)self setSelectionStyle:0];
 }
 
 - (void)_setupConstraints
 {
-  v3 = [(HKElectrocardiogramTableViewCell *)self cardView];
-  v4 = [(HKElectrocardiogramTableViewCell *)self contentView];
-  [v3 hk_alignHorizontalConstraintsWithView:v4 margin:0.0];
+  cardView = [(HKElectrocardiogramTableViewCell *)self cardView];
+  contentView = [(HKElectrocardiogramTableViewCell *)self contentView];
+  [cardView hk_alignHorizontalConstraintsWithView:contentView margin:0.0];
 
-  v5 = [(HKElectrocardiogramTableViewCell *)self cardView];
-  v6 = [v5 topAnchor];
-  v7 = [(HKElectrocardiogramTableViewCell *)self contentView];
-  v8 = [v7 topAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  cardView2 = [(HKElectrocardiogramTableViewCell *)self cardView];
+  topAnchor = [cardView2 topAnchor];
+  contentView2 = [(HKElectrocardiogramTableViewCell *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v9 setActive:1];
 
-  v10 = [(HKElectrocardiogramTableViewCell *)self contentView];
-  v11 = [v10 bottomAnchor];
-  v12 = [(HKElectrocardiogramTableViewCell *)self cardView];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:16.0];
+  contentView3 = [(HKElectrocardiogramTableViewCell *)self contentView];
+  bottomAnchor = [contentView3 bottomAnchor];
+  cardView3 = [(HKElectrocardiogramTableViewCell *)self cardView];
+  bottomAnchor2 = [cardView3 bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:16.0];
   [(HKElectrocardiogramTableViewCell *)self setBottomPaddingConstraint:v14];
 
-  v15 = [(HKElectrocardiogramTableViewCell *)self bottomPaddingConstraint];
-  [v15 setActive:1];
+  bottomPaddingConstraint = [(HKElectrocardiogramTableViewCell *)self bottomPaddingConstraint];
+  [bottomPaddingConstraint setActive:1];
 }
 
 @end

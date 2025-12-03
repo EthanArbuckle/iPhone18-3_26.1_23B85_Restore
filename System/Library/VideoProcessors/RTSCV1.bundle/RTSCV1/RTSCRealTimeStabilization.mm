@@ -1,29 +1,29 @@
 @interface RTSCRealTimeStabilization
-- (RTSCRealTimeStabilization)initWithCameraExtrinsics:(double)a3 faceReframingSettings:(double)a4;
-- (__n128)_applySmoothingToCameraModel:(uint64_t)a3@<X8> filterPole:(float)a4@<S0>;
-- (__n128)_findCameraModelWithinBoundingCorners:(__n128 *)a3@<X3> boundingEllipse:(__n128 *)a4@<X4> outsideBoundsModel:(__n128 *)a5@<X8> insideBoundsModel:(float32x4_t)a6@<Q0> outsideBoundsMargin:(__n128)a7@<Q1> insideBoundsMargin:(__n128)a8@<Q2> inputPose:(__n128)a9@<Q3> oisOffset:(__n128)a10@<Q4> cameraMetadata:(__n128)a11@<Q5>;
+- (RTSCRealTimeStabilization)initWithCameraExtrinsics:(double)extrinsics faceReframingSettings:(double)settings;
+- (__n128)_applySmoothingToCameraModel:(uint64_t)model@<X8> filterPole:(float)pole@<S0>;
+- (__n128)_findCameraModelWithinBoundingCorners:(__n128 *)corners@<X3> boundingEllipse:(__n128 *)ellipse@<X4> outsideBoundsModel:(__n128 *)model@<X8> insideBoundsModel:(float32x4_t)boundsModel@<Q0> outsideBoundsMargin:(__n128)margin@<Q1> insideBoundsMargin:(__n128)boundsMargin@<Q2> inputPose:(__n128)pose@<Q3> oisOffset:(__n128)self0@<Q4> cameraMetadata:(__n128)self1@<Q5>;
 - (__n128)stabilizationHomography;
-- (double)_computeHomographyForStabilizedCamera:(float32x2_t)a3 inputPose:(float32x4_t)a4 oisOffset:(float32x4_t)a5 cameraMetadata:(float32x4_t)a6 rollingShutterTransform:(uint64_t)a7;
-- (double)_computeHomographyFromRotation:(simd_float3)a3 focalLength:(simd_float3)a4 inputOpticalCenter:(float)a5 outputOpticalCenter:(float32x4_t)a6;
+- (double)_computeHomographyForStabilizedCamera:(float32x2_t)camera inputPose:(float32x4_t)pose oisOffset:(float32x4_t)offset cameraMetadata:(float32x4_t)metadata rollingShutterTransform:(uint64_t)transform;
+- (double)_computeHomographyFromRotation:(simd_float3)rotation focalLength:(simd_float3)length inputOpticalCenter:(float)center outputOpticalCenter:(float32x4_t)opticalCenter;
 - (float32x2_t)nominalFaceFramingOffset;
-- (float32x4_t)_applyFinalAdjustmentsToStabilizedCameraForInputPose:(float32x4_t *)a3@<X8> cameraMetadata:(float32x4_t)a4@<Q0>;
-- (float32x4_t)_constructCameraModel:(float32x4_t)result@<Q0> focalLength:(int32x2_t)a4@<D1> staticOpticalCenter:(float32x2_t)a5@<D2> oisOffset:(int32x4_t)a6@<Q3> sagOffset:(float32x2_t)a7@<D4>;
-- (id)_computeClampedRollingShutterTransformForBoundingRect:(double)a3;
-- (id)_setDefaultParametersWithCameraExtrinsics:(int32x4_t)a3;
-- (int)_extractMetadataAndMotionDataFromDictionary:(RTSCRealTimeStabilization *)self calibration:(SEL)a2 cameraMetadata:(__CFDictionary *)a3 cameraPose:(id)a4 oisOffset:(RTSCameraMetadata *)a5 sagOffset:(id *)a6;
-- (int)_getAllMetadataFromDictionary:(__CFDictionary *)a3 cameraMetadata:(RTSCameraMetadata *)a4;
-- (int)_getCalibrationDataFromDictionary:(id)a3 cameraMetadata:(RTSCameraMetadata *)a4;
-- (int)updateStabilizationHomographyUsingMetadata:(id)a3 inputCalibration:(id)a4 pixelBufferDimensions:(id)a5 outputFOVRect:(CGRect)a6;
-- (uint64_t)_updateRollingShutterModelWithMotionSample:(double)a3 cameraMetadata:(uint64_t)a4 currentPort:(uint64_t)a5 atTime:(int)a6;
-- (void)_clampStabilizedCamera:(double)a3 ToBoundingCorners:(int32x2_t)a4 boundingEllipse:(double)a5 currentBoundingMargin:(float)a6 inputPose:(float32x4_t)a7 oisOffset:(float32x2_t)a8 cameraMetadata:(uint64_t)a9;
+- (float32x4_t)_applyFinalAdjustmentsToStabilizedCameraForInputPose:(float32x4_t *)pose@<X8> cameraMetadata:(float32x4_t)metadata@<Q0>;
+- (float32x4_t)_constructCameraModel:(float32x4_t)result@<Q0> focalLength:(int32x2_t)length@<D1> staticOpticalCenter:(float32x2_t)center@<D2> oisOffset:(int32x4_t)offset@<Q3> sagOffset:(float32x2_t)sagOffset@<D4>;
+- (id)_computeClampedRollingShutterTransformForBoundingRect:(double)rect;
+- (id)_setDefaultParametersWithCameraExtrinsics:(int32x4_t)extrinsics;
+- (int)_extractMetadataAndMotionDataFromDictionary:(RTSCRealTimeStabilization *)self calibration:(SEL)calibration cameraMetadata:(__CFDictionary *)metadata cameraPose:(id)pose oisOffset:(RTSCameraMetadata *)offset sagOffset:(id *)sagOffset;
+- (int)_getAllMetadataFromDictionary:(__CFDictionary *)dictionary cameraMetadata:(RTSCameraMetadata *)metadata;
+- (int)_getCalibrationDataFromDictionary:(id)dictionary cameraMetadata:(RTSCameraMetadata *)metadata;
+- (int)updateStabilizationHomographyUsingMetadata:(id)metadata inputCalibration:(id)calibration pixelBufferDimensions:(id)dimensions outputFOVRect:(CGRect)rect;
+- (uint64_t)_updateRollingShutterModelWithMotionSample:(double)sample cameraMetadata:(uint64_t)metadata currentPort:(uint64_t)port atTime:(int)time;
+- (void)_clampStabilizedCamera:(double)camera ToBoundingCorners:(int32x2_t)corners boundingEllipse:(double)ellipse currentBoundingMargin:(float)margin inputPose:(float32x4_t)pose oisOffset:(float32x2_t)offset cameraMetadata:(uint64_t)metadata;
 - (void)dealloc;
 @end
 
 @implementation RTSCRealTimeStabilization
 
-- (RTSCRealTimeStabilization)initWithCameraExtrinsics:(double)a3 faceReframingSettings:(double)a4
+- (RTSCRealTimeStabilization)initWithCameraExtrinsics:(double)extrinsics faceReframingSettings:(double)settings
 {
-  v36.receiver = a1;
+  v36.receiver = self;
   v36.super_class = RTSCRealTimeStabilization;
   v7 = [(RTSCRealTimeStabilization *)&v36 init];
   if (!v7)
@@ -86,7 +86,7 @@ LABEL_12:
   }
 
 LABEL_10:
-  [(RTSCRealTimeStabilization *)v7 _setDefaultParametersWithCameraExtrinsics:a2, a3, a4];
+  [(RTSCRealTimeStabilization *)v7 _setDefaultParametersWithCameraExtrinsics:a2, extrinsics, settings];
 LABEL_11:
   v31 = v7;
 LABEL_13:
@@ -119,12 +119,12 @@ LABEL_13:
   [(RTSCRealTimeStabilization *)&v9 dealloc];
 }
 
-- (id)_setDefaultParametersWithCameraExtrinsics:(int32x4_t)a3
+- (id)_setDefaultParametersWithCameraExtrinsics:(int32x4_t)extrinsics
 {
-  v5 = a1 + 26760;
-  *(a1 + 10266) = 257;
-  *(a1 + 26760) = 1;
-  v6 = a4.n128_f32[2] + (*a2.i32 + *&a3.i32[1]);
+  v5 = self + 26760;
+  *(self + 10266) = 257;
+  *(self + 26760) = 1;
+  v6 = a4.n128_f32[2] + (*a2.i32 + *&extrinsics.i32[1]);
   if (v6 >= 0.0)
   {
     v14 = sqrtf(v6 + 1.0);
@@ -132,39 +132,39 @@ LABEL_13:
     v16 = vrecpe_f32(COERCE_UNSIGNED_INT(v14 + v14));
     v17 = vmul_f32(v16, vrecps_f32(COERCE_UNSIGNED_INT(v14 + v14), v16));
     v17.i32[0] = vmul_f32(v17, vrecps_f32(COERCE_UNSIGNED_INT(v14 + v14), v17)).u32[0];
-    *&v28 = vmul_n_f32(vsub_f32(vzip1_s32(*&vextq_s8(a3, a3, 8uLL), a4.n128_u64[0]), vext_s8(a4.n128_u64[0], *&vextq_s8(a2, a2, 8uLL), 4uLL)), v17.f32[0]);
-    v18.f32[0] = *&a2.i32[1] - *a3.i32;
+    *&v28 = vmul_n_f32(vsub_f32(vzip1_s32(*&vextq_s8(extrinsics, extrinsics, 8uLL), a4.n128_u64[0]), vext_s8(a4.n128_u64[0], *&vextq_s8(a2, a2, 8uLL), 4uLL)), v17.f32[0]);
+    v18.f32[0] = *&a2.i32[1] - *extrinsics.i32;
     v18.f32[1] = v15;
     v17.i32[1] = 0.25;
     v30 = vmul_f32(v18, v17);
   }
 
-  else if (*a2.i32 < *&a3.i32[1] || *a2.i32 < a4.n128_f32[2])
+  else if (*a2.i32 < *&extrinsics.i32[1] || *a2.i32 < a4.n128_f32[2])
   {
     v8 = 1.0 - *a2.i32;
-    if (*&a3.i32[1] >= a4.n128_f32[2])
+    if (*&extrinsics.i32[1] >= a4.n128_f32[2])
     {
-      v31 = sqrtf(*&a3.i32[1] + (v8 - a4.n128_f32[2]));
+      v31 = sqrtf(*&extrinsics.i32[1] + (v8 - a4.n128_f32[2]));
       *&v32 = v31 + v31;
       v33 = vrecpe_f32(v32);
       v34 = vmul_f32(v33, vrecps_f32(v32, v33));
       v35.i32[0] = vmul_f32(v34, vrecps_f32(v32, v34)).u32[0];
-      v34.f32[0] = *&a2.i32[1] + *a3.i32;
+      v34.f32[0] = *&a2.i32[1] + *extrinsics.i32;
       v34.i32[1] = v32;
-      v30 = vmul_n_f32(vext_s8(vadd_f32(a4.n128_u64[0], vdup_laneq_s32(a3, 2)), vsub_f32(a4.n128_u64[0], *&vextq_s8(a2, a2, 8uLL)), 4uLL), v35.f32[0]);
+      v30 = vmul_n_f32(vext_s8(vadd_f32(a4.n128_u64[0], vdup_laneq_s32(extrinsics, 2)), vsub_f32(a4.n128_u64[0], *&vextq_s8(a2, a2, 8uLL)), 4uLL), v35.f32[0]);
       v35.i32[1] = 0.25;
       *&v28 = vmul_f32(v34, v35);
     }
 
     else
     {
-      v9 = sqrtf(a4.n128_f32[2] + (v8 - *&a3.i32[1]));
+      v9 = sqrtf(a4.n128_f32[2] + (v8 - *&extrinsics.i32[1]));
       v10.f32[0] = v9 + v9;
       v11 = vrecpe_f32(COERCE_UNSIGNED_INT(v9 + v9));
       v12 = vmul_f32(v11, vrecps_f32(COERCE_UNSIGNED_INT(v9 + v9), v11));
       v12.i32[0] = vmul_f32(v12, vrecps_f32(COERCE_UNSIGNED_INT(v9 + v9), v12)).u32[0];
-      *&v28 = vmul_n_f32(vadd_f32(vzip1_s32(*&vextq_s8(a2, a2, 8uLL), *&vextq_s8(a3, a3, 8uLL)), a4.n128_u64[0]), v12.f32[0]);
-      v10.f32[1] = *&a2.i32[1] - *a3.i32;
+      *&v28 = vmul_n_f32(vadd_f32(vzip1_s32(*&vextq_s8(a2, a2, 8uLL), *&vextq_s8(extrinsics, extrinsics, 8uLL)), a4.n128_u64[0]), v12.f32[0]);
+      v10.f32[1] = *&a2.i32[1] - *extrinsics.i32;
       __asm { FMOV            V0.2S, #0.25 }
 
       _D0.i32[1] = v12.i32[0];
@@ -174,75 +174,75 @@ LABEL_13:
 
   else
   {
-    v19 = sqrtf(*a2.i32 + ((1.0 - *&a3.i32[1]) - a4.n128_f32[2]));
+    v19 = sqrtf(*a2.i32 + ((1.0 - *&extrinsics.i32[1]) - a4.n128_f32[2]));
     v20.f32[0] = v19 + v19;
     v21 = vrecpe_f32(v20.u32[0]);
     v22 = vmul_f32(v21, vrecps_f32(v20.u32[0], v21));
     LODWORD(v23) = vmul_f32(v22, vrecps_f32(v20.u32[0], v22)).u32[0];
-    v20.f32[1] = *&a2.i32[1] + *a3.i32;
+    v20.f32[1] = *&a2.i32[1] + *extrinsics.i32;
     __asm { FMOV            V5.2S, #0.25 }
 
     _D5.f32[1] = v23;
     *&v28 = vmul_f32(v20, _D5);
     v29.i32[0] = vadd_f32(*&vextq_s8(a2, a2, 8uLL), a4.n128_u64[0]).u32[0];
-    v29.i32[1] = vsub_f32(vdup_laneq_s32(a3, 2), *&a4).i32[1];
+    v29.i32[1] = vsub_f32(vdup_laneq_s32(extrinsics, 2), *&a4).i32[1];
     v30 = vmul_n_f32(v29, v23);
   }
 
   *(&v28 + 1) = v30;
-  *(a1 + 26768) = v28;
-  *(a1 + 10256) = 0x3F589374BC6A7EFALL;
-  *(a1 + 26800) = xmmword_11B30;
-  *(a1 + 26832) = xmmword_11B30;
-  *(a1 + 26864) = xmmword_11B30;
-  *(a1 + 26896) = xmmword_11B30;
-  *(a1 + 27096) = 0;
-  *(a1 + 27088) = 1065353216;
-  *(a1 + 27112) = 0;
-  *(a1 + 27104) = 0x3F80000000000000;
-  *(a1 + 27128) = 1065353216;
-  *(a1 + 27120) = 0;
-  [*(a1 + 26960) setScale:COERCE_DOUBLE(COERCE_UNSIGNED_INT(1.5))];
+  *(self + 26768) = v28;
+  *(self + 10256) = 0x3F589374BC6A7EFALL;
+  *(self + 26800) = xmmword_11B30;
+  *(self + 26832) = xmmword_11B30;
+  *(self + 26864) = xmmword_11B30;
+  *(self + 26896) = xmmword_11B30;
+  *(self + 27096) = 0;
+  *(self + 27088) = 1065353216;
+  *(self + 27112) = 0;
+  *(self + 27104) = 0x3F80000000000000;
+  *(self + 27128) = 1065353216;
+  *(self + 27120) = 0;
+  [*(self + 26960) setScale:COERCE_DOUBLE(COERCE_UNSIGNED_INT(1.5))];
   *(v5 + 324) = 0;
-  [*(a1 + 27032) reset];
-  [*(a1 + 27040) reset];
-  [*(a1 + 27024) reset];
-  [*(a1 + 27072) reset];
-  v36 = *(a1 + 26960);
+  [*(self + 27032) reset];
+  [*(self + 27040) reset];
+  [*(self + 27024) reset];
+  [*(self + 27072) reset];
+  v36 = *(self + 26960);
 
   return [v36 reset];
 }
 
-- (int)_getAllMetadataFromDictionary:(__CFDictionary *)a3 cameraMetadata:(RTSCameraMetadata *)a4
+- (int)_getAllMetadataFromDictionary:(__CFDictionary *)dictionary cameraMetadata:(RTSCameraMetadata *)metadata
 {
-  if (a3)
+  if (dictionary)
   {
-    if (a4)
+    if (metadata)
     {
       size = CGRectZero.size;
-      a4->var7.size = CGRectZero.origin;
-      *&a4[1].var0 = size;
+      metadata->var7.size = CGRectZero.origin;
+      *&metadata[1].var0 = size;
       FigCFDictionaryGetCGRectIfPresent();
       v15.origin.x = CGRectZero.origin.x;
       v15.origin.y = CGRectZero.origin.y;
       v15.size.width = CGRectZero.size.width;
       v15.size.height = CGRectZero.size.height;
-      if (CGRectEqualToRect(*&a4->var7.size.width, v15))
+      if (CGRectEqualToRect(*&metadata->var7.size.width, v15))
       {
         v8 = *&self->_bufferWidth;
         v9.i64[0] = v8;
         v9.i64[1] = SHIDWORD(v8);
-        a4->var7.size.width = 0.0;
-        a4->var7.size.height = 0.0;
-        *&a4[1].var0 = vcvtq_f64_s64(v9);
+        metadata->var7.size.width = 0.0;
+        metadata->var7.size.height = 0.0;
+        *&metadata[1].var0 = vcvtq_f64_s64(v9);
       }
 
-      a4[1].var3 = *self->_imageCenter;
-      a4[1].var4 = 0.0;
+      metadata[1].var3 = *self->_imageCenter;
+      metadata[1].var4 = 0.0;
       v10 = kFigCaptureSampleBufferMetadata_ImageCircle;
-      if (CFDictionaryContainsKey(a3, kFigCaptureSampleBufferMetadata_ImageCircle))
+      if (CFDictionaryContainsKey(dictionary, kFigCaptureSampleBufferMetadata_ImageCircle))
       {
-        if (!CFDictionaryGetValue(a3, v10))
+        if (!CFDictionaryGetValue(dictionary, v10))
         {
           [RTSCRealTimeStabilization _getAllMetadataFromDictionary:? cameraMetadata:?];
           return time.value;
@@ -252,17 +252,17 @@ LABEL_13:
         *&time.timescale = 0;
         if (FigCFDictionaryGetCGPointIfPresent())
         {
-          *&a4[1].var3 = vcvt_f32_f64(*&time.value);
+          *&metadata[1].var3 = vcvt_f32_f64(*&time.value);
         }
 
         v14 = 0uLL;
         if (FigCFDictionaryGetCGSizeIfPresent())
         {
-          *&a4[1].var4 = vcvt_f32_f64(v14);
+          *&metadata[1].var4 = vcvt_f32_f64(v14);
         }
       }
 
-      a4->var2 = CFDictionaryContainsKey(a3, kFigCaptureStreamMetadata_SphereMode) != 0;
+      metadata->var2 = CFDictionaryContainsKey(dictionary, kFigCaptureStreamMetadata_SphereMode) != 0;
       v13 = 0;
       FigCFDictionaryGetFloatIfPresent();
       [RTSCRealTimeStabilization _getAllMetadataFromDictionary:? cameraMetadata:?];
@@ -282,15 +282,15 @@ LABEL_13:
   return time.value;
 }
 
-- (uint64_t)_updateRollingShutterModelWithMotionSample:(double)a3 cameraMetadata:(uint64_t)a4 currentPort:(uint64_t)a5 atTime:(int)a6
+- (uint64_t)_updateRollingShutterModelWithMotionSample:(double)sample cameraMetadata:(uint64_t)metadata currentPort:(uint64_t)port atTime:(int)time
 {
   v8 = a2.n128_f64[0];
-  v10 = *(a5 + 40);
-  if (*(a5 + 8) == 1)
+  v10 = *(port + 40);
+  if (*(port + 8) == 1)
   {
     v15 = a2;
     v16 = 0;
-    v11 = FigMotionComputeLensMovementForTimeStamp(a1 + 10272, &v16, a6, a3, *(a5 + 4));
+    v11 = FigMotionComputeLensMovementForTimeStamp(self + 10272, &v16, time, sample, *(port + 4));
     if (v11)
     {
       v13 = v11;
@@ -302,15 +302,15 @@ LABEL_13:
     v8 = v15.n128_f64[0];
   }
 
-  v12 = (a3 - *(a5 + 24)) / (*(a5 + 32) - *(a5 + 24)) * (*(a5 + 88) + -1.0);
+  v12 = (sample - *(port + 24)) / (*(port + 32) - *(port + 24)) * (*(port + 88) + -1.0);
   *&v12 = v12;
-  [*(a1 + 26968) updateModelAtRow:v12 withPose:v8 principalPoint:{*&v10, *&v15}];
+  [*(self + 26968) updateModelAtRow:v12 withPose:v8 principalPoint:{*&v10, *&v15}];
   return 0;
 }
 
-- (int)_extractMetadataAndMotionDataFromDictionary:(RTSCRealTimeStabilization *)self calibration:(SEL)a2 cameraMetadata:(__CFDictionary *)a3 cameraPose:(id)a4 oisOffset:(RTSCameraMetadata *)a5 sagOffset:(id *)a6
+- (int)_extractMetadataAndMotionDataFromDictionary:(RTSCRealTimeStabilization *)self calibration:(SEL)calibration cameraMetadata:(__CFDictionary *)metadata cameraPose:(id)pose oisOffset:(RTSCameraMetadata *)offset sagOffset:(id *)sagOffset
 {
-  v6 = __chkstk_darwin(self, a2, a3, a4, a5, a6);
+  v6 = __chkstk_darwin(self, calibration, metadata, pose, offset, sagOffset);
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -675,22 +675,22 @@ LABEL_44:
   return v118;
 }
 
-- (id)_computeClampedRollingShutterTransformForBoundingRect:(double)a3
+- (id)_computeClampedRollingShutterTransformForBoundingRect:(double)rect
 {
-  v7 = COERCE_DOUBLE(vcvt_f32_s32(*(a1 + 26712)));
-  LODWORD(a3) = 1.0;
-  result = [*(a1 + 26968) fitNormalizedBackwardsTransformForBufferSize:v7 limitFactor:a3];
-  v12 = vcvt_f32_s32(*(a1 + 26712));
-  v13 = *(a1 + 26728);
-  v14 = *(a1 + 26736);
+  v7 = COERCE_DOUBLE(vcvt_f32_s32(*(self + 26712)));
+  LODWORD(rect) = 1.0;
+  result = [*(self + 26968) fitNormalizedBackwardsTransformForBufferSize:v7 limitFactor:rect];
+  v12 = vcvt_f32_s32(*(self + 26712));
+  v13 = *(self + 26728);
+  v14 = *(self + 26736);
   *&v13 = v13;
-  v15 = *(a1 + 26744);
+  v15 = *(self + 26744);
   v16.i32[0] = 0;
   v17.i32[0] = 0;
   v17.f32[1] = v15;
   *v18.i8 = vadd_f32(vdup_lane_s32(*&v13, 0), v17);
   *&v14 = v14;
-  v19 = *(a1 + 26752);
+  v19 = *(self + 26752);
   v20.i32[0] = 0;
   v20.f32[1] = v19;
   *v21.i8 = vadd_f32(vdup_lane_s32(*&v14, 0), v20);
@@ -756,19 +756,19 @@ LABEL_44:
       }
     }
 
-    return [*(a1 + 26968) fitNormalizedBackwardsTransformForBufferSize:v7 limitFactor:{v43, *&v44, *&v45, *&v46}];
+    return [*(self + 26968) fitNormalizedBackwardsTransformForBufferSize:v7 limitFactor:{v43, *&v44, *&v45, *&v46}];
   }
 
   return result;
 }
 
-- (__n128)_applySmoothingToCameraModel:(uint64_t)a3@<X8> filterPole:(float)a4@<S0>
+- (__n128)_applySmoothingToCameraModel:(uint64_t)model@<X8> filterPole:(float)pole@<S0>
 {
-  if ((*(a1 + 26761) & 1) != 0 || *(a1 + 27085) == 1)
+  if ((*(self + 26761) & 1) != 0 || *(self + 27085) == 1)
   {
     for (i = 0; i != 128; i += 32)
     {
-      v7 = (a1 + 26800 + i);
+      v7 = (self + 26800 + i);
       v8 = a2[1];
       *v7 = *a2;
       v7[1] = v8;
@@ -781,7 +781,7 @@ LABEL_44:
     v11 = a2[1];
     v22 = *a2;
     v23 = v11;
-    v12 = a1 + 26896;
+    v12 = self + 26896;
     do
     {
       v13 = (v12 + v10);
@@ -790,7 +790,7 @@ LABEL_44:
       v14 = *(v12 + v10 + 16);
       v19[0] = *(v12 + v10);
       v19[1] = v14;
-      rts_interpolateCameraModel(v20, v19, v21, a4);
+      rts_interpolateCameraModel(v20, v19, v21, pole);
       v15 = v21[1];
       *v13 = v21[0];
       v13[1] = v15;
@@ -803,24 +803,24 @@ LABEL_44:
     while (v10 != -128);
   }
 
-  result = *(a1 + 26800);
-  v18 = *(a1 + 26816);
-  *a3 = result;
-  *(a3 + 16) = v18;
+  result = *(self + 26800);
+  v18 = *(self + 26816);
+  *model = result;
+  *(model + 16) = v18;
   return result;
 }
 
-- (float32x4_t)_constructCameraModel:(float32x4_t)result@<Q0> focalLength:(int32x2_t)a4@<D1> staticOpticalCenter:(float32x2_t)a5@<D2> oisOffset:(int32x4_t)a6@<Q3> sagOffset:(float32x2_t)a7@<D4>
+- (float32x4_t)_constructCameraModel:(float32x4_t)result@<Q0> focalLength:(int32x2_t)length@<D1> staticOpticalCenter:(float32x2_t)center@<D2> oisOffset:(int32x4_t)offset@<Q3> sagOffset:(float32x2_t)sagOffset@<D4>
 {
   *(a2 + 24) = 0;
   *a2 = result;
-  v8 = vdup_lane_s32(a4, 0);
-  *(a2 + 16) = vdiv_f32(vsub_f32(a5, a1[3340]), v8);
-  v9 = a1[3348].i32[0];
+  v8 = vdup_lane_s32(length, 0);
+  *(a2 + 16) = vdiv_f32(vsub_f32(center, self[3340]), v8);
+  v9 = self[3348].i32[0];
   if (v9 == 2)
   {
     v21 = result;
-    v10 = vdivq_f32(vrev64q_s32(a6).u64[0], vdupq_lane_s32(a4, 0));
+    v10 = vdivq_f32(vrev64q_s32(offset).u64[0], vdupq_lane_s32(length, 0));
     v10.i32[3] = 0;
     v12 = _simd_atan_f4(v10);
     result = vmulq_f32(v12, v12);
@@ -846,19 +846,19 @@ LABEL_44:
 
   else if (v9 == 1)
   {
-    *result.f32 = vdiv_f32(a7, v8);
+    *result.f32 = vdiv_f32(sagOffset, v8);
     *(a2 + 24) = result.i64[0];
   }
 
   return result;
 }
 
-- (float32x4_t)_applyFinalAdjustmentsToStabilizedCameraForInputPose:(float32x4_t *)a3@<X8> cameraMetadata:(float32x4_t)a4@<Q0>
+- (float32x4_t)_applyFinalAdjustmentsToStabilizedCameraForInputPose:(float32x4_t *)pose@<X8> cameraMetadata:(float32x4_t)metadata@<Q0>
 {
-  v7 = a1 + 24576;
-  v8 = (a1 + 26800);
-  v151 = *(a1 + 26800);
-  v9 = vmulq_f32(a4, xmmword_11B60);
+  v7 = self + 24576;
+  v8 = (self + 26800);
+  v151 = *(self + 26800);
+  v9 = vmulq_f32(metadata, xmmword_11B60);
   v10 = vnegq_f32(v151);
   v11 = vtrn2q_s32(v151, vtrn1q_s32(v151, v10));
   v12 = vmlaq_n_f32(vmulq_lane_f32(vextq_s8(v151, v10, 8uLL), *v9.f32, 1), vextq_s8(v11, v11, 8uLL), v9.f32[0]);
@@ -866,12 +866,12 @@ LABEL_44:
   v13.i32[0] = v10.i32[1];
   v13.i32[3] = v10.i32[2];
   v152 = vaddq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v151, v9, 3), v13, v9, 2), v12);
-  if (*(a1 + 27072))
+  if (*(self + 27072))
   {
     v13.i32[0] = *a2;
     v153 = *a2;
     v14 = *(a2 + 40);
-    v15 = (a1 + 27080);
+    v15 = (self + 27080);
     v16 = *(a2 + 64);
     *&v16.f64[0] = vsub_f32(vcvt_f32_f64(v16), v14);
     v17 = vadd_f32(*&v16.f64[0], vcvt_f32_f64(*(a2 + 80)));
@@ -901,7 +901,7 @@ LABEL_44:
     {
       v34 = *a2;
       v35 = *(v7 + 2504);
-      v36 = vcvt_f32_s32(*(a1 + 26712));
+      v36 = vcvt_f32_s32(*(self + 26712));
       v37 = vmul_f32(v32, v36);
       if (v37.f32[0] < 0.00000011921)
       {
@@ -918,8 +918,8 @@ LABEL_44:
     }
 
     v41 = simd_matrix3x3(vmulq_f32(v152, xmmword_11B60));
-    [*(a1 + 27072) updateFaceCorrectionAfterStabilization:v41 viewPort:v42 boundingRect:v43 boundingCircle:{*(a1 + 26728), *(a1 + 26736), *(a1 + 26744), *(a1 + 26752), *&v28, *&v29, *&v30, *&v31, v154}];
-    [*(a1 + 27072) faceCorrection];
+    [*(self + 27072) updateFaceCorrectionAfterStabilization:v41 viewPort:v42 boundingRect:v43 boundingCircle:{*(self + 26728), *(self + 26736), *(self + 26744), *(self + 26752), *&v28, *&v29, *&v30, *&v31, v154}];
+    [*(self + 27072) faceCorrection];
     v45 = vnegq_f32(v44);
     v46 = vtrn2q_s32(v44, vtrn1q_s32(v44, v45));
     v47 = vmlaq_f32(vmulq_f32(vextq_s8(v44, v45, 8uLL), 0), 0, vextq_s8(v46, v46, 8uLL));
@@ -955,7 +955,7 @@ LABEL_44:
     v156 = v49;
     v146 = v55;
     v56 = vaddq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v49, v151, 3), v55, v151, 2), vmlaq_n_f32(vmulq_lane_f32(v145, *v151.f32, 1), x, v151.f32[0]));
-    v57 = vmulq_f32(*(a1 + 26944), xmmword_11B60);
+    v57 = vmulq_f32(*(self + 26944), xmmword_11B60);
     v58 = vnegq_f32(v56);
     v59 = vtrn2q_s32(v56, vtrn1q_s32(v56, v58));
     v60 = vmlaq_n_f32(vmulq_lane_f32(vextq_s8(v56, v58, 8uLL), *v57.f32, 1), vextq_s8(v59, v59, 8uLL), v57.f32[0]);
@@ -982,7 +982,7 @@ LABEL_44:
     *v68.f32 = vrecpe_f32(*v69.i8);
     *v68.f32 = vmul_f32(*v68.f32, vrecps_f32(v69.u32[0], *v68.f32));
     v74 = vmul_n_f32(*v73.f32, *a2 * vmul_f32(*v68.f32, vrecps_f32(v69.u32[0], *v68.f32)).f32[0]);
-    [*(a1 + 26960) filteredBlurVector];
+    [*(self + 26960) filteredBlurVector];
     v76 = vaddv_f32(vmul_f32(v74, v74));
     if (v76 > 0.0)
     {
@@ -1074,11 +1074,11 @@ LABEL_44:
       v122 = 0;
       v123 = vnegq_f32(v115);
       v124 = vtrn2q_s32(v115, vtrn1q_s32(v115, v123));
-      v125 = vmlaq_n_f32(vmulq_lane_f32(vextq_s8(v115, v123, 8uLL), *a4.f32, 1), vextq_s8(v124, v124, 8uLL), a4.f32[0]);
+      v125 = vmlaq_n_f32(vmulq_lane_f32(vextq_s8(v115, v123, 8uLL), *metadata.f32, 1), vextq_s8(v124, v124, 8uLL), metadata.f32[0]);
       v126 = vrev64q_s32(v115);
       v126.i32[0] = v123.i32[1];
       v126.i32[3] = v123.i32[2];
-      v127 = vaddq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v115, a4, 3), v126, a4, 2), v125);
+      v127 = vaddq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v115, metadata, 3), v126, metadata, 2), v125);
       v128 = vnegq_f32(v152);
       v129 = vtrn2q_s32(v152, vtrn1q_s32(v152, v128));
       v130 = vrev64q_s32(v152);
@@ -1116,45 +1116,45 @@ LABEL_44:
   }
 
   v143 = v8[1];
-  *a3 = *v8;
-  a3[1] = v143;
-  result = vaddq_f32(vmlaq_n_f32(vmulq_lane_f32(v53, *a3->f32, 1), v52, COERCE_FLOAT(*a3)), vmlaq_laneq_f32(vmulq_laneq_f32(v49, *a3, 3), v54, *a3, 2));
-  *a3 = result;
+  *pose = *v8;
+  pose[1] = v143;
+  result = vaddq_f32(vmlaq_n_f32(vmulq_lane_f32(v53, *pose->f32, 1), v52, COERCE_FLOAT(*pose)), vmlaq_laneq_f32(vmulq_laneq_f32(v49, *pose, 3), v54, *pose, 2));
+  *pose = result;
   return result;
 }
 
-- (double)_computeHomographyFromRotation:(simd_float3)a3 focalLength:(simd_float3)a4 inputOpticalCenter:(float)a5 outputOpticalCenter:(float32x4_t)a6
+- (double)_computeHomographyFromRotation:(simd_float3)rotation focalLength:(simd_float3)length inputOpticalCenter:(float)center outputOpticalCenter:(float32x4_t)opticalCenter
 {
   v9 = 0;
-  *v10.f32 = vcvt_f32_s32(*(a1 + 26712));
+  *v10.f32 = vcvt_f32_s32(*(self + 26712));
   v10.i64[1] = 1065353216;
   v11 = vrecpeq_f32(v10);
   v12 = vmulq_f32(v11, vrecpsq_f32(v10, v11));
   v13 = vmulq_f32(v12, vrecpsq_f32(v10, v12));
-  v10.i64[0] = vmulq_n_f32(v13, a5).u64[0];
+  v10.i64[0] = vmulq_n_f32(v13, center).u64[0];
   v14 = v10.u32[0];
   v15.i32[0] = 0;
   v15.i64[1] = 0;
   v15.i32[1] = v10.i32[1];
-  a6.i32[2] = 1.0;
-  *v10.f32 = vcvt_f32_f64(*(a1 + 26744));
+  opticalCenter.i32[2] = 1.0;
+  *v10.f32 = vcvt_f32_f64(*(self + 26744));
   v19.columns[0].i64[1] = 1065353216;
   v19.columns[1] = vrecpeq_f32(v19.columns[0]);
   v19.columns[1] = vmulq_f32(v19.columns[1], vrecpsq_f32(v19.columns[0], v19.columns[1]));
   v16 = vmulq_f32(v19.columns[1], vrecpsq_f32(v19.columns[0], v19.columns[1]));
-  v17 = vmulq_n_f32(v16, a5).u64[0];
+  v17 = vmulq_n_f32(v16, center).u64[0];
   v19.columns[0].i32[1] = 0;
   v19.columns[0].i32[2] = 0;
   v19.columns[0].i32[0] = v17;
   v19.columns[1].i32[0] = 0;
   v19.columns[1].i32[2] = 0;
   v19.columns[1].i32[1] = HIDWORD(v17);
-  *a7.f32 = vsub_f32(*a7.f32, vcvt_f32_f64(*(a1 + 26728)));
+  *a7.f32 = vsub_f32(*a7.f32, vcvt_f32_f64(*(self + 26728)));
   a7.i32[2] = 1.0;
   v25.columns[0] = a2;
-  v25.columns[1] = a3;
-  v18 = vmulq_f32(a6, v13);
-  v25.columns[2] = a4;
+  v25.columns[1] = rotation;
+  v18 = vmulq_f32(opticalCenter, v13);
+  v25.columns[2] = length;
   v19.columns[2] = vmulq_f32(v16, a7);
   v26 = 0u;
   v27 = 0u;
@@ -1187,7 +1187,7 @@ LABEL_44:
   return *v26.i64;
 }
 
-- (double)_computeHomographyForStabilizedCamera:(float32x2_t)a3 inputPose:(float32x4_t)a4 oisOffset:(float32x4_t)a5 cameraMetadata:(float32x4_t)a6 rollingShutterTransform:(uint64_t)a7
+- (double)_computeHomographyForStabilizedCamera:(float32x2_t)camera inputPose:(float32x4_t)pose oisOffset:(float32x4_t)offset cameraMetadata:(float32x4_t)metadata rollingShutterTransform:(uint64_t)transform
 {
   v13 = vmulq_f32(a2, xmmword_11B60);
   v14 = vnegq_f32(*a8);
@@ -1197,12 +1197,12 @@ LABEL_44:
   v17.i32[0] = v14.i32[1];
   v17.i32[3] = v14.i32[2];
   v18 = vaddq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(*a8, v13, 3), v17, v13, 2), v16);
-  *(a1 + 26928) = v18;
+  *(self + 26928) = v18;
   v19 = simd_matrix3x3(v18);
   v20 = *(a8 + 16);
   v21 = vadd_f32(*&v20, *(a8 + 24));
   LODWORD(v20) = a9->i32[0];
-  [a1 _computeHomographyFromRotation:v19 focalLength:v22 inputOpticalCenter:v23 outputOpticalCenter:{v20, COERCE_DOUBLE(vadd_f32(a9[5], a3)), COERCE_DOUBLE(vmla_n_f32(*(a1 + 26720), v21, a9->f32[0]))}];
+  [self _computeHomographyFromRotation:v19 focalLength:v22 inputOpticalCenter:v23 outputOpticalCenter:{v20, COERCE_DOUBLE(vadd_f32(a9[5], camera)), COERCE_DOUBLE(vmla_n_f32(*(self + 26720), v21, a9->f32[0]))}];
   v24 = 0;
   HIDWORD(v25) = 0;
   HIDWORD(v26) = 0;
@@ -1213,7 +1213,7 @@ LABEL_44:
   memset(v33, 0, sizeof(v33));
   do
   {
-    v33[v24] = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a4, COERCE_FLOAT(v32[v24])), a5, *&v32[v24], 1), a6, v32[v24], 2);
+    v33[v24] = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(pose, COERCE_FLOAT(v32[v24])), offset, *&v32[v24], 1), metadata, v32[v24], 2);
     ++v24;
   }
 
@@ -1221,15 +1221,15 @@ LABEL_44:
   return *v33;
 }
 
-- (__n128)_findCameraModelWithinBoundingCorners:(__n128 *)a3@<X3> boundingEllipse:(__n128 *)a4@<X4> outsideBoundsModel:(__n128 *)a5@<X8> insideBoundsModel:(float32x4_t)a6@<Q0> outsideBoundsMargin:(__n128)a7@<Q1> insideBoundsMargin:(__n128)a8@<Q2> inputPose:(__n128)a9@<Q3> oisOffset:(__n128)a10@<Q4> cameraMetadata:(__n128)a11@<Q5>
+- (__n128)_findCameraModelWithinBoundingCorners:(__n128 *)corners@<X3> boundingEllipse:(__n128 *)ellipse@<X4> outsideBoundsModel:(__n128 *)model@<X8> insideBoundsModel:(float32x4_t)boundsModel@<Q0> outsideBoundsMargin:(__n128)margin@<Q1> insideBoundsMargin:(__n128)boundsMargin@<Q2> inputPose:(__n128)pose@<Q3> oisOffset:(__n128)self0@<Q4> cameraMetadata:(__n128)self1@<Q5>
 {
-  v53 = a7.n128_f64[0];
+  v53 = margin.n128_f64[0];
   v54 = a12.n128_f64[0];
-  v17 = a11.n128_f32[0];
-  v18 = a10.n128_f32[0];
-  v19 = a9.n128_f64[0];
-  v20 = a8.n128_u64[0];
-  v48 = fmaxf(a6.f32[2] - a6.f32[0], a7.n128_f32[2] - a7.n128_f32[0]) * -0.0001;
+  v17 = metadata.n128_f32[0];
+  v18 = offset.n128_f32[0];
+  v19 = pose.n128_f64[0];
+  v20 = boundsMargin.n128_u64[0];
+  v48 = fmaxf(boundsModel.f32[2] - boundsModel.f32[0], margin.n128_f32[2] - margin.n128_f32[0]) * -0.0001;
   v23 = matrix_identity_float3x3.columns[0];
   v50 = matrix_identity_float3x3.columns[1];
   v51 = matrix_identity_float3x3.columns[0];
@@ -1240,25 +1240,25 @@ LABEL_44:
   {
     v57 = v24;
     v59 = a12.n128_u32[3];
-    v61 = a8.n128_u32[3];
-    v63 = a10.n128_u32[3];
-    v67 = a9.n128_u32[3];
-    v69 = a11.n128_u32[3];
+    v61 = boundsMargin.n128_u32[3];
+    v63 = offset.n128_u32[3];
+    v67 = pose.n128_u32[3];
+    v69 = metadata.n128_u32[3];
     v65 = v23.i32[3];
     v80 = 0u;
     v81 = 0u;
-    v26 = a3[1];
-    v71 = *a3;
+    v26 = corners[1];
+    v71 = *corners;
     v72 = v26;
     v27 = a2[1];
     v78 = *a2;
     v79 = v27;
     rts_interpolateCameraModel(&v71, &v78, &v80, v24);
-    v28 = vmulq_n_f32(*(a1 + 26976), v57);
+    v28 = vmulq_n_f32(*(self + 26976), v57);
     v28.i32[3] = v59;
-    v29 = vmulq_n_f32(*(a1 + 26992), v57);
+    v29 = vmulq_n_f32(*(self + 26992), v57);
     v29.i32[3] = v61;
-    v30 = vmulq_n_f32(*(a1 + 27008), v57);
+    v30 = vmulq_n_f32(*(self + 27008), v57);
     v30.i32[3] = v63;
     v31 = vmulq_n_f32(v51, 1.0 - v57);
     v31.i32[3] = v65;
@@ -1277,33 +1277,33 @@ LABEL_44:
     v29.i64[0] = vaddq_f32(v30, v33).u64[0];
     v78 = v80;
     v79 = v81;
-    v34 = a4[5];
-    v75 = a4[4];
+    v34 = ellipse[5];
+    v75 = ellipse[4];
     v76 = v34;
-    v77 = a4[6];
-    v35 = a4[1];
-    v71 = *a4;
+    v77 = ellipse[6];
+    v35 = ellipse[1];
+    v71 = *ellipse;
     v72 = v35;
-    v36 = a4[3];
-    v73 = a4[2];
+    v36 = ellipse[3];
+    v73 = ellipse[2];
     v74 = v36;
-    [a1 _computeHomographyForStabilizedCamera:&v78 inputPose:&v71 oisOffset:v54 cameraMetadata:a13 rollingShutterTransform:{*v31.i64, *v28.i64, *v29.i64}];
+    [self _computeHomographyForStabilizedCamera:&v78 inputPose:&v71 oisOffset:v54 cameraMetadata:a13 rollingShutterTransform:{*v31.i64, *v28.i64, *v29.i64}];
     v37.i32[3] = 0;
     v38.i32[3] = 0;
     v39.i32[3] = 0;
     v56 = v38;
     v58 = v37;
     v55 = v39;
-    *v40.i64 = rts_computeBoundingMarginsForHomography(v37, v38, v39, a6, v53, v20, v19);
+    *v40.i64 = rts_computeBoundingMarginsForHomography(v37, v38, v39, boundsModel, v53, v20, v19);
     v43 = vmaxvq_f32(vmaxnmq_f32(vmaxnmq_f32(v40, v41), v42));
     if (v43 <= 0.0)
     {
       v45 = v81;
-      *a3 = v80;
-      a3[1] = v45;
-      *(a1 + 27088) = v58;
-      *(a1 + 27104) = v56;
-      *(a1 + 27120) = v55;
+      *corners = v80;
+      corners[1] = v45;
+      *(self + 27088) = v58;
+      *(self + 27104) = v56;
+      *(self + 27120) = v55;
       v17 = v43;
       if (v43 > v48)
       {
@@ -1323,31 +1323,31 @@ LABEL_44:
     --v25;
     v23.i32[3] = v68;
     a12.n128_u32[3] = v70;
-    a9.n128_u32[3] = v64;
-    a8.n128_u32[3] = v66;
-    a11.n128_u32[3] = v60;
-    a10.n128_u32[3] = v62;
+    pose.n128_u32[3] = v64;
+    boundsMargin.n128_u32[3] = v66;
+    metadata.n128_u32[3] = v60;
+    offset.n128_u32[3] = v62;
   }
 
   while (v25);
-  result = *a3;
-  v47 = a3[1];
-  *a5 = *a3;
-  a5[1] = v47;
+  result = *corners;
+  v47 = corners[1];
+  *model = *corners;
+  model[1] = v47;
   return result;
 }
 
-- (void)_clampStabilizedCamera:(double)a3 ToBoundingCorners:(int32x2_t)a4 boundingEllipse:(double)a5 currentBoundingMargin:(float)a6 inputPose:(float32x4_t)a7 oisOffset:(float32x2_t)a8 cameraMetadata:(uint64_t)a9
+- (void)_clampStabilizedCamera:(double)camera ToBoundingCorners:(int32x2_t)corners boundingEllipse:(double)ellipse currentBoundingMargin:(float)margin inputPose:(float32x4_t)pose oisOffset:(float32x2_t)offset cameraMetadata:(uint64_t)metadata
 {
   v17 = vld1_dup_f32(a11);
-  v18 = *(a1 + 26720);
-  v19 = vadd_f32(*(a11 + 40), a8);
+  v18 = *(self + 26720);
+  v19 = vadd_f32(*(a11 + 40), offset);
   v20 = *(a10 + 24);
-  v82 = a7;
+  poseCopy = pose;
   v21 = vsub_f32(vdiv_f32(vsub_f32(v19, v18), v17), v20);
   *&v83 = v21;
   *(&v83 + 1) = v20;
-  v22 = a1 + 27088;
+  v22 = self + 27088;
   v23 = a11[3];
   v24 = a11[5];
   v25 = a11[6];
@@ -1359,24 +1359,24 @@ LABEL_44:
   v76 = v26;
   v77 = a11[2];
   v78 = v23;
-  [a1 _computeHomographyForStabilizedCamera:&v82 inputPose:&v75 oisOffset:*a7.i64 cameraMetadata:*&a8 rollingShutterTransform:{*matrix_identity_float3x3.columns[0].i64, *matrix_identity_float3x3.columns[1].i64, *matrix_identity_float3x3.columns[2].i64}];
+  [self _computeHomographyForStabilizedCamera:&poseCopy inputPose:&v75 oisOffset:*pose.i64 cameraMetadata:*&offset rollingShutterTransform:{*matrix_identity_float3x3.columns[0].i64, *matrix_identity_float3x3.columns[1].i64, *matrix_identity_float3x3.columns[2].i64}];
   *(v22 + 8) = v27;
-  *(a1 + 27088) = v28;
-  *(a1 + 27112) = v29;
-  *(a1 + 27104) = v30;
-  *(a1 + 27128) = v31;
-  *(a1 + 27120) = v32;
-  *v33.i64 = rts_computeBoundingMarginsForHomography(*(a1 + 27088), *(a1 + 27104), *(a1 + 27120), a2, a3, a4, a5);
+  *(self + 27088) = v28;
+  *(self + 27112) = v29;
+  *(self + 27104) = v30;
+  *(self + 27128) = v31;
+  *(self + 27120) = v32;
+  *v33.i64 = rts_computeBoundingMarginsForHomography(*(self + 27088), *(self + 27104), *(self + 27120), a2, camera, corners, ellipse);
   v37 = vmaxnmq_f32(v33, v36);
   if (vmaxvq_f32(vmaxnmq_f32(v37, v38)) <= 0.0)
   {
     *&v35 = vmaxvq_f32(v37);
-    v82 = 0u;
+    poseCopy = 0u;
     v83 = 0u;
     v39 = *(a10 + 16);
     v74[0] = *a10;
     v74[1] = v39;
-    v71 = a7;
+    poseCopy2 = pose;
     v72 = v21;
     v73 = v20;
     v40 = a11[5];
@@ -1389,10 +1389,10 @@ LABEL_44:
     v42 = a11[3];
     v77 = a11[2];
     v78 = v42;
-    *&v34 = a6;
-    [a1 _findCameraModelWithinBoundingCorners:v74 boundingEllipse:&v71 outsideBoundsModel:&v75 insideBoundsModel:*a2.i64 outsideBoundsMargin:a3 insideBoundsMargin:*&a4 inputPose:a5 oisOffset:v34 cameraMetadata:v35];
+    *&v34 = margin;
+    [self _findCameraModelWithinBoundingCorners:v74 boundingEllipse:&poseCopy2 outsideBoundsModel:&v75 insideBoundsModel:*a2.i64 outsideBoundsMargin:camera insideBoundsMargin:*&corners inputPose:ellipse oisOffset:v34 cameraMetadata:v35];
     v43 = vmulq_f32(*a10, xmmword_11B60);
-    v44 = *(a1 + 26800);
+    v44 = *(self + 26800);
     v45 = vnegq_f32(v44);
     v46 = vtrn2q_s32(v44, vtrn1q_s32(v44, v45));
     v47 = vrev64q_s32(v44);
@@ -1402,11 +1402,11 @@ LABEL_44:
     v49 = vmulq_f32(v44, xmmword_11B60);
     v50 = vnegq_f32(v48);
     v51 = vtrn2q_s32(v48, vtrn1q_s32(v48, v50));
-    v52 = vmlaq_n_f32(vmulq_lane_f32(vextq_s8(v48, v50, 8uLL), *v82.f32, 1), vextq_s8(v51, v51, 8uLL), v82.f32[0]);
+    v52 = vmlaq_n_f32(vmulq_lane_f32(vextq_s8(v48, v50, 8uLL), *poseCopy.f32, 1), vextq_s8(v51, v51, 8uLL), poseCopy.f32[0]);
     v53 = vrev64q_s32(v48);
     v53.i32[0] = v50.i32[1];
     v53.i32[3] = v50.i32[2];
-    v54 = vaddq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v48, v82, 3), v53, v82, 2), v52);
+    v54 = vaddq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v48, poseCopy, 3), v53, poseCopy, 2), v52);
     v55 = vnegq_f32(v54);
     v56 = vtrn2q_s32(v54, vtrn1q_s32(v54, v55));
     v57 = vmlaq_n_f32(vmulq_lane_f32(vextq_s8(v54, v55, 8uLL), *v49.f32, 1), vextq_s8(v56, v56, 8uLL), v49.f32[0]);
@@ -1422,7 +1422,7 @@ LABEL_44:
     v65.i32[0] = v61.i32[1];
     v64 = vextq_s8(v59, v61, 8uLL);
     v65.i32[3] = v61.i32[2];
-    v66 = (a1 + 26816);
+    v66 = (self + 26816);
     v67 = 4;
     do
     {
@@ -1436,29 +1436,29 @@ LABEL_44:
   }
 }
 
-- (int)updateStabilizationHomographyUsingMetadata:(id)a3 inputCalibration:(id)a4 pixelBufferDimensions:(id)a5 outputFOVRect:(CGRect)a6
+- (int)updateStabilizationHomographyUsingMetadata:(id)metadata inputCalibration:(id)calibration pixelBufferDimensions:(id)dimensions outputFOVRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a3;
-  v14 = a4;
-  if (!v13)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  metadataCopy = metadata;
+  calibrationCopy = calibration;
+  if (!metadataCopy)
   {
     [RTSCRealTimeStabilization updateStabilizationHomographyUsingMetadata:? inputCalibration:? pixelBufferDimensions:? outputFOVRect:?];
     v75 = v84.i32[0];
     goto LABEL_23;
   }
 
-  *&self->_bufferWidth = a5;
-  *&v15 = vcvts_n_f32_s32(a5.var0, 1uLL);
-  HIDWORD(v15) = vcvts_n_f32_s32(a5.var1, 1uLL);
+  *&self->_bufferWidth = dimensions;
+  *&v15 = vcvts_n_f32_s32(dimensions.var0, 1uLL);
+  HIDWORD(v15) = vcvts_n_f32_s32(dimensions.var1, 1uLL);
   *self->_imageCenter = v15;
-  self->_outputCropRect.origin.x = x * a5.var0;
-  self->_outputCropRect.origin.y = y * a5.var1;
-  self->_outputCropRect.size.width = width * a5.var0;
-  self->_outputCropRect.size.height = height * a5.var1;
+  self->_outputCropRect.origin.x = x * dimensions.var0;
+  self->_outputCropRect.origin.y = y * dimensions.var1;
+  self->_outputCropRect.size.width = width * dimensions.var0;
+  self->_outputCropRect.size.height = height * dimensions.var1;
   v104 = 0uLL;
   v102 = 0.0;
   v103 = 0.0;
@@ -1469,7 +1469,7 @@ LABEL_44:
   v99 = 0u;
   v100 = 0u;
   v101 = 0u;
-  v16 = [(RTSCRealTimeStabilization *)self _extractMetadataAndMotionDataFromDictionary:v13 calibration:v14 cameraMetadata:&v95 cameraPose:&v104 oisOffset:&v103 sagOffset:&v102];
+  v16 = [(RTSCRealTimeStabilization *)self _extractMetadataAndMotionDataFromDictionary:metadataCopy calibration:calibrationCopy cameraMetadata:&v95 cameraPose:&v104 oisOffset:&v103 sagOffset:&v102];
   if (v16)
   {
     v75 = v16;
@@ -1528,7 +1528,7 @@ LABEL_12:
       v77 = COERCE_DOUBLE(vadd_f32(*(&v97 + 8), *&v103));
       v37 = COERCE_DOUBLE(vcvt_f32_s32(*&self->_bufferWidth));
       v38 = simd_matrix3x3(vaddq_f32(v29, vmlaq_laneq_f32(vmulq_laneq_f32(v26, v25, 3), v30, v25, 2)));
-      [(RTSCFaceReframingV1 *)faceReframing updateFacesWithMetadata:v13 bufferSize:v37 cameraMatrix:v80 rotationFromPrevFrame:v78 atTime:v77, v38, v39, v40, *&v96];
+      [(RTSCFaceReframingV1 *)faceReframing updateFacesWithMetadata:metadataCopy bufferSize:v37 cameraMatrix:v80 rotationFromPrevFrame:v78 atTime:v77, v38, v39, v40, *&v96];
       *self->_anon_69b0 = v104;
     }
 
@@ -1657,11 +1657,11 @@ LABEL_23:
 
 - (float32x2_t)nominalFaceFramingOffset
 {
-  v2 = a1[3384];
+  v2 = self[3384];
   if (v2)
   {
     [v2 nominalFaceFramingOffset];
-    v3 = vcvt_f32_s32(a1[3339]);
+    v3 = vcvt_f32_s32(self[3339]);
     v4 = vrecpe_f32(v3);
     v5 = vmul_f32(v4, vrecps_f32(v3, v4));
     return vmul_f32(v6, vmul_f32(v5, vrecps_f32(v3, v5)));
@@ -1675,26 +1675,26 @@ LABEL_23:
 
 - (__n128)stabilizationHomography
 {
-  result = *(a1 + 27088);
-  v2 = *(a1 + 27104);
-  v3 = *(a1 + 27120);
+  result = *(self + 27088);
+  v2 = *(self + 27104);
+  v3 = *(self + 27120);
   return result;
 }
 
-- (int)_getCalibrationDataFromDictionary:(id)a3 cameraMetadata:(RTSCameraMetadata *)a4
+- (int)_getCalibrationDataFromDictionary:(id)dictionary cameraMetadata:(RTSCameraMetadata *)metadata
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && a4)
+  dictionaryCopy = dictionary;
+  v6 = dictionaryCopy;
+  if (dictionaryCopy && metadata)
   {
-    a4->var1 = 1.0;
-    v7 = [v5 objectForKeyedSubscript:kFigCameraCalibrationDataMetadataAttachmentKey_PixelSize];
+    metadata->var1 = 1.0;
+    v7 = [dictionaryCopy objectForKeyedSubscript:kFigCameraCalibrationDataMetadataAttachmentKey_PixelSize];
     [v7 floatValue];
     v9 = v8;
 
     if (v9 > 0.0)
     {
-      a4->var1 = 0.001 / v9;
+      metadata->var1 = 0.001 / v9;
     }
 
     v15 = 0u;
@@ -1706,7 +1706,7 @@ LABEL_23:
       [v10 getBytes:v14 length:48];
 
       v12 = 0;
-      *&a4->var6 = v15;
+      *&metadata->var6 = v15;
     }
 
     else

@@ -2,14 +2,14 @@
 - (CNAutocompleteCoreAnalyticsUsageMonitorProbe)init;
 - (id)bundleIdentifierOfCurrentProcess;
 - (id)makeBundleIdentifierOfCurrentProcess;
-- (id)sourceKeysForSourceType:(unint64_t)a3;
-- (void)recordUserIgnoredPredictionAfterDelay:(double)a3;
-- (void)recordUserIgnoredPrefixedResultAfterDelay:(double)a3 batch:(unint64_t)a4;
-- (void)recordUserSawResultsConsideredSuggestion:(unint64_t)a3;
-- (void)recordUserSelectedIndex:(unint64_t)a3;
-- (void)recordUserSelectedPredictionAtIndex:(unint64_t)a3;
-- (void)recordUserSelectedResultWithSourceType:(unint64_t)a3;
-- (void)recordUserTypedInNumberOfCharacters:(unint64_t)a3;
+- (id)sourceKeysForSourceType:(unint64_t)type;
+- (void)recordUserIgnoredPredictionAfterDelay:(double)delay;
+- (void)recordUserIgnoredPrefixedResultAfterDelay:(double)delay batch:(unint64_t)batch;
+- (void)recordUserSawResultsConsideredSuggestion:(unint64_t)suggestion;
+- (void)recordUserSelectedIndex:(unint64_t)index;
+- (void)recordUserSelectedPredictionAtIndex:(unint64_t)index;
+- (void)recordUserSelectedResultWithSourceType:(unint64_t)type;
+- (void)recordUserTypedInNumberOfCharacters:(unint64_t)characters;
 - (void)sendData;
 @end
 
@@ -22,25 +22,25 @@
   v2 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     coreAnalyticsDictionary = v2->_coreAnalyticsDictionary;
-    v2->_coreAnalyticsDictionary = v3;
+    v2->_coreAnalyticsDictionary = dictionary;
   }
 
   return v2;
 }
 
-- (id)sourceKeysForSourceType:(unint64_t)a3
+- (id)sourceKeysForSourceType:(unint64_t)type
 {
   v4 = [MEMORY[0x277CBEB58] set];
   v5 = v4;
-  if ((a3 & 0x40) != 0)
+  if ((type & 0x40) != 0)
   {
     [v4 addObject:@"calendarServer"];
-    if ((a3 & 2) == 0)
+    if ((type & 2) == 0)
     {
 LABEL_3:
-      if ((a3 & 8) == 0)
+      if ((type & 8) == 0)
       {
         goto LABEL_4;
       }
@@ -49,16 +49,16 @@ LABEL_3:
     }
   }
 
-  else if ((a3 & 2) == 0)
+  else if ((type & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [v5 addObject:@"contacts"];
-  if ((a3 & 8) == 0)
+  if ((type & 8) == 0)
   {
 LABEL_4:
-    if ((a3 & 1) == 0)
+    if ((type & 1) == 0)
     {
       goto LABEL_6;
     }
@@ -68,35 +68,35 @@ LABEL_4:
 
 LABEL_10:
   [v5 addObject:@"directoryServer"];
-  if (a3)
+  if (type)
   {
 LABEL_5:
     [v5 addObject:@"recents"];
   }
 
 LABEL_6:
-  if ([CNAutocompleteResult isSourceTypeConsideredSuggestion:a3])
+  if ([CNAutocompleteResult isSourceTypeConsideredSuggestion:type])
   {
     v6 = CNAutocompleteProbeSourceTypeKeyPureSuggestion;
   }
 
   else
   {
-    if ((a3 & 4) == 0)
+    if ((type & 4) == 0)
     {
-      if ((a3 & 0x20) != 0)
+      if ((type & 0x20) != 0)
       {
         goto LABEL_22;
       }
 
 LABEL_14:
-      if ((a3 & 0x10) != 0)
+      if ((type & 0x10) != 0)
       {
         goto LABEL_23;
       }
 
 LABEL_15:
-      if ((a3 & 0x200) == 0)
+      if ((type & 0x200) == 0)
       {
         goto LABEL_17;
       }
@@ -108,21 +108,21 @@ LABEL_15:
   }
 
   [v5 addObject:*v6];
-  if ((a3 & 0x20) == 0)
+  if ((type & 0x20) == 0)
   {
     goto LABEL_14;
   }
 
 LABEL_22:
   [v5 addObject:@"supplemental"];
-  if ((a3 & 0x10) == 0)
+  if ((type & 0x10) == 0)
   {
     goto LABEL_15;
   }
 
 LABEL_23:
   [v5 addObject:@"duetPromoted"];
-  if ((a3 & 0x200) != 0)
+  if ((type & 0x200) != 0)
   {
 LABEL_16:
     [v5 addObject:@"stewie"];
@@ -134,115 +134,115 @@ LABEL_17:
   return v7;
 }
 
-- (void)recordUserSawResultsConsideredSuggestion:(unint64_t)a3
+- (void)recordUserSawResultsConsideredSuggestion:(unint64_t)suggestion
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v4 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)self coreAnalyticsDictionary];
-  [v4 setObject:v5 forKeyedSubscript:@"prefixedPureSuggestionResultCount"];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:suggestion];
+  coreAnalyticsDictionary = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)self coreAnalyticsDictionary];
+  [coreAnalyticsDictionary setObject:v5 forKeyedSubscript:@"prefixedPureSuggestionResultCount"];
 }
 
-- (void)recordUserSelectedIndex:(unint64_t)a3
+- (void)recordUserSelectedIndex:(unint64_t)index
 {
-  if (a3 > 0x7FFFFFFFFFFFFFFELL)
+  if (index > 0x7FFFFFFFFFFFFFFELL)
   {
-    v4 = -1;
+    indexCopy = -1;
   }
 
   else
   {
-    v4 = a3;
+    indexCopy = index;
   }
 
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:v4];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:indexCopy];
   [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)self setSelectedIndex:v5];
 }
 
-- (void)recordUserTypedInNumberOfCharacters:(unint64_t)a3
+- (void)recordUserTypedInNumberOfCharacters:(unint64_t)characters
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:characters];
   [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)self setLengthOfSearchString:v4];
 }
 
-- (void)recordUserSelectedPredictionAtIndex:(unint64_t)a3
+- (void)recordUserSelectedPredictionAtIndex:(unint64_t)index
 {
-  if (a3 > 0x7FFFFFFFFFFFFFFELL)
+  if (index > 0x7FFFFFFFFFFFFFFELL)
   {
-    v4 = -1;
+    indexCopy = -1;
   }
 
   else
   {
-    v4 = a3;
+    indexCopy = index;
   }
 
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:v4];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:indexCopy];
   [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)self setSelectedPredictionIndex:v5];
 }
 
-- (void)recordUserSelectedResultWithSourceType:(unint64_t)a3
+- (void)recordUserSelectedResultWithSourceType:(unint64_t)type
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)self setSourceType:v4];
 }
 
-- (void)recordUserIgnoredPredictionAfterDelay:(double)a3
+- (void)recordUserIgnoredPredictionAfterDelay:(double)delay
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v4 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)self coreAnalyticsDictionary];
-  [v4 setObject:v5 forKeyedSubscript:@"predictionUserIgnoreDelay"];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:delay];
+  coreAnalyticsDictionary = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)self coreAnalyticsDictionary];
+  [coreAnalyticsDictionary setObject:v5 forKeyedSubscript:@"predictionUserIgnoreDelay"];
 }
 
-- (void)recordUserIgnoredPrefixedResultAfterDelay:(double)a3 batch:(unint64_t)a4
+- (void)recordUserIgnoredPrefixedResultAfterDelay:(double)delay batch:(unint64_t)batch
 {
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v7 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)self coreAnalyticsDictionary];
-  [v7 setObject:v6 forKeyedSubscript:@"prefixedUserIgnoreDelay"];
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:delay];
+  coreAnalyticsDictionary = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)self coreAnalyticsDictionary];
+  [coreAnalyticsDictionary setObject:v6 forKeyedSubscript:@"prefixedUserIgnoreDelay"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-  v8 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)self coreAnalyticsDictionary];
-  [v8 setObject:v9 forKeyedSubscript:@"prefixedUserIgnoreDelayBatch"];
+  v9 = [MEMORY[0x277CCABB0] numberWithDouble:batch];
+  coreAnalyticsDictionary2 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)self coreAnalyticsDictionary];
+  [coreAnalyticsDictionary2 setObject:v9 forKeyedSubscript:@"prefixedUserIgnoreDelayBatch"];
 }
 
 - (void)sendData
 {
-  v2 = self;
+  selfCopy = self;
   v43 = *MEMORY[0x277D85DE8];
-  v3 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)self selectedIndex];
-  if (v3)
+  selectedIndex = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)self selectedIndex];
+  if (selectedIndex)
   {
-    v4 = v3;
-    v5 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v2 sourceType];
-    if (v5)
+    v4 = selectedIndex;
+    sourceType = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)selfCopy sourceType];
+    if (sourceType)
     {
-      v6 = v5;
-      v7 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v2 lengthOfSearchString];
+      v6 = sourceType;
+      lengthOfSearchString = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)selfCopy lengthOfSearchString];
 
-      if (v7)
+      if (lengthOfSearchString)
       {
-        v8 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v2 sourceType];
-        v9 = [v8 unsignedIntegerValue];
+        sourceType2 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)selfCopy sourceType];
+        unsignedIntegerValue = [sourceType2 unsignedIntegerValue];
 
-        if (v9)
+        if (unsignedIntegerValue)
         {
-          v10 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v2 selectedIndex];
-          v11 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v2 coreAnalyticsDictionary];
-          [v11 setObject:v10 forKeyedSubscript:@"selectedIndex"];
+          selectedIndex2 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)selfCopy selectedIndex];
+          coreAnalyticsDictionary = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)selfCopy coreAnalyticsDictionary];
+          [coreAnalyticsDictionary setObject:selectedIndex2 forKeyedSubscript:@"selectedIndex"];
         }
 
         else
         {
-          v10 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v2 coreAnalyticsDictionary];
-          [v10 setObject:&unk_282793640 forKeyedSubscript:@"selectedIndex"];
+          selectedIndex2 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)selfCopy coreAnalyticsDictionary];
+          [selectedIndex2 setObject:&unk_282793640 forKeyedSubscript:@"selectedIndex"];
         }
 
-        v18 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v2 lengthOfSearchString];
-        v19 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v2 coreAnalyticsDictionary];
-        [v19 setObject:v18 forKeyedSubscript:@"stringLength"];
+        lengthOfSearchString2 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)selfCopy lengthOfSearchString];
+        coreAnalyticsDictionary2 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)selfCopy coreAnalyticsDictionary];
+        [coreAnalyticsDictionary2 setObject:lengthOfSearchString2 forKeyedSubscript:@"stringLength"];
 
-        v20 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v2 sourceType];
-        v21 = -[CNAutocompleteCoreAnalyticsUsageMonitorProbe sourceKeysForSourceType:](v2, "sourceKeysForSourceType:", [v20 unsignedIntegerValue]);
+        sourceType3 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)selfCopy sourceType];
+        v21 = -[CNAutocompleteCoreAnalyticsUsageMonitorProbe sourceKeysForSourceType:](selfCopy, "sourceKeysForSourceType:", [sourceType3 unsignedIntegerValue]);
 
-        v22 = v2;
+        v22 = selfCopy;
         if (![v21 count])
         {
           v23 = [MEMORY[0x277CBEB98] setWithObject:@"unknown"];
@@ -270,8 +270,8 @@ LABEL_17:
               }
 
               v28 = [*(*(&v38 + 1) + 8 * i) isEqual:@"duetPromoted"];
-              v29 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v22 coreAnalyticsDictionary];
-              v30 = v29;
+              coreAnalyticsDictionary3 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v22 coreAnalyticsDictionary];
+              v30 = coreAnalyticsDictionary3;
               if (v28)
               {
                 v31 = &unk_282793658;
@@ -282,7 +282,7 @@ LABEL_17:
                 v31 = &unk_282793670;
               }
 
-              [v29 setObject:v31 forKeyedSubscript:@"promotedByDuet"];
+              [coreAnalyticsDictionary3 setObject:v31 forKeyedSubscript:@"promotedByDuet"];
             }
 
             v25 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
@@ -291,10 +291,10 @@ LABEL_17:
           while (v25);
         }
 
-        v2 = v22;
-        v32 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v22 bundleIdentifierOfCurrentProcess];
-        v33 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v22 coreAnalyticsDictionary];
-        [v33 setObject:v32 forKeyedSubscript:@"bundleId"];
+        selfCopy = v22;
+        bundleIdentifierOfCurrentProcess = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v22 bundleIdentifierOfCurrentProcess];
+        coreAnalyticsDictionary4 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v22 coreAnalyticsDictionary];
+        [coreAnalyticsDictionary4 setObject:bundleIdentifierOfCurrentProcess forKeyedSubscript:@"bundleId"];
 
         goto LABEL_23;
       }
@@ -305,25 +305,25 @@ LABEL_17:
     }
   }
 
-  v12 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v2 selectedPredictionIndex];
+  selectedPredictionIndex = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)selfCopy selectedPredictionIndex];
 
-  if (v12)
+  if (selectedPredictionIndex)
   {
-    v13 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v2 selectedPredictionIndex];
-    v14 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v2 coreAnalyticsDictionary];
-    [v14 setObject:v13 forKeyedSubscript:@"selectedPredictionIndex"];
+    selectedPredictionIndex2 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)selfCopy selectedPredictionIndex];
+    coreAnalyticsDictionary5 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)selfCopy coreAnalyticsDictionary];
+    [coreAnalyticsDictionary5 setObject:selectedPredictionIndex2 forKeyedSubscript:@"selectedPredictionIndex"];
 
-    v15 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v2 coreAnalyticsDictionary];
-    [v15 setObject:&unk_282793658 forKeyedSubscript:@"promotedByDuet"];
+    coreAnalyticsDictionary6 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)selfCopy coreAnalyticsDictionary];
+    [coreAnalyticsDictionary6 setObject:&unk_282793658 forKeyedSubscript:@"promotedByDuet"];
 
-    v16 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v2 bundleIdentifierOfCurrentProcess];
-    v17 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v2 coreAnalyticsDictionary];
-    [v17 setObject:v16 forKeyedSubscript:@"bundleId"];
+    bundleIdentifierOfCurrentProcess2 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)selfCopy bundleIdentifierOfCurrentProcess];
+    coreAnalyticsDictionary7 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)selfCopy coreAnalyticsDictionary];
+    [coreAnalyticsDictionary7 setObject:bundleIdentifierOfCurrentProcess2 forKeyedSubscript:@"bundleId"];
   }
 
 LABEL_23:
-  v34 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)v2 coreAnalyticsDictionary];
-  v35 = [v34 count];
+  coreAnalyticsDictionary8 = [(CNAutocompleteCoreAnalyticsUsageMonitorProbe *)selfCopy coreAnalyticsDictionary];
+  v35 = [coreAnalyticsDictionary8 count];
 
   if (v35)
   {
@@ -358,19 +358,19 @@ void __80__CNAutocompleteCoreAnalyticsUsageMonitorProbe_bundleIdentifierOfCurren
 
 - (id)makeBundleIdentifierOfCurrentProcess
 {
-  v2 = [MEMORY[0x277CC1E88] bundleProxyForCurrentProcess];
+  bundleProxyForCurrentProcess = [MEMORY[0x277CC1E88] bundleProxyForCurrentProcess];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 bundleIdentifier];
+    bundleIdentifier = [bundleProxyForCurrentProcess bundleIdentifier];
   }
 
   else
   {
-    v3 = 0;
+    bundleIdentifier = 0;
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
 @end

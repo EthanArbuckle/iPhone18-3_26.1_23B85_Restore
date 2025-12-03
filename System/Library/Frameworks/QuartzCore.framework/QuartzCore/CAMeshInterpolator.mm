@@ -1,14 +1,14 @@
 @interface CAMeshInterpolator
-- (id)meshTransformForLayer:(id)a3;
+- (id)meshTransformForLayer:(id)layer;
 - (void)dealloc;
 @end
 
 @implementation CAMeshInterpolator
 
-- (id)meshTransformForLayer:(id)a3
+- (id)meshTransformForLayer:(id)layer
 {
   v18 = *MEMORY[0x1E69E9840];
-  [a3 bounds];
+  [layer bounds];
   v15.f64[0] = v5;
   v15.f64[1] = v6;
   v16 = v7;
@@ -32,16 +32,16 @@
   }
 
   v10 = v9;
-  v11 = [[CAMeshTransform alloc] _init];
+  _init = [[CAMeshTransform alloc] _init];
   v12 = *(v10 + 24);
   v13 = *(v10 + 25);
-  v11[1] = v10;
-  v11[2] = v12;
-  v11[3] = v13;
-  *(v11 + 32) = *(v10 + 108);
-  *(v11 + 33) = *(v10 + 109);
+  _init[1] = v10;
+  _init[2] = v12;
+  _init[3] = v13;
+  *(_init + 32) = *(v10 + 108);
+  *(_init + 33) = *(v10 + 109);
 
-  return v11;
+  return _init;
 }
 
 - (void)dealloc

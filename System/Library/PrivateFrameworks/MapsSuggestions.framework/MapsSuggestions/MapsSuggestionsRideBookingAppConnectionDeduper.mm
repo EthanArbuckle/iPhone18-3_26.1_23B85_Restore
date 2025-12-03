@@ -1,16 +1,16 @@
 @interface MapsSuggestionsRideBookingAppConnectionDeduper
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4;
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry;
 @end
 
 @implementation MapsSuggestionsRideBookingAppConnectionDeduper
 
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  entryCopy = entry;
+  withEntryCopy = withEntry;
+  v7 = withEntryCopy;
+  if (!entryCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -33,7 +33,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v6)
+  if (!withEntryCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -53,19 +53,19 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!MapsSuggestionsEntriesShouldBeOfOneOfEachType(12, 9, v5, v6))
+  if (!MapsSuggestionsEntriesShouldBeOfOneOfEachType(12, 9, entryCopy, withEntryCopy))
   {
 LABEL_14:
     LOBYTE(v10) = 0;
     goto LABEL_15;
   }
 
-  v8 = [v5 stringForKey:@"MapsSuggestionsOriginBundleIDKey"];
+  v8 = [entryCopy stringForKey:@"MapsSuggestionsOriginBundleIDKey"];
   v9 = [v7 stringForKey:@"MapsSuggestionsOriginBundleIDKey"];
   v10 = [v8 isEqualToString:v9];
-  if (v10 && [v5 type] == 12)
+  if (v10 && [entryCopy type] == 12)
   {
-    [v5 replaceByEntry:v7];
+    [entryCopy replaceByEntry:v7];
   }
 
 LABEL_15:

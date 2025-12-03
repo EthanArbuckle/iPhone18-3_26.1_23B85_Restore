@@ -1,66 +1,66 @@
 @interface AAAFollowUpAnalyticsInfo
-- (AAAFollowUpAnalyticsInfo)initWithCoder:(id)a3;
+- (AAAFollowUpAnalyticsInfo)initWithCoder:(id)coder;
 - (id)cfuReasonAnalyticsEvent;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AAAFollowUpAnalyticsInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   eventName = self->_eventName;
-  v5 = a3;
-  [v5 encodeObject:eventName forKey:@"_eventName"];
-  [v5 encodeObject:self->_cfuType forKey:@"_cfuType"];
-  [v5 encodeObject:self->_flowID forKey:@"_flowID"];
-  [v5 encodeObject:self->_proxiedBundleID forKey:@"_proxiedBundleID"];
-  [v5 encodeObject:self->_deviceSessionID forKey:@"_deviceSessionID"];
-  [v5 encodeObject:self->_client forKey:@"_client"];
-  [v5 encodeObject:self->_hasProxiedDevice forKey:@"_hasProxiedDevice"];
-  [v5 encodeObject:self->_postedReasonError forKey:@"_postedReasonError"];
-  [v5 encodeObject:self->_didSucceed forKey:@"_didSucceed"];
+  coderCopy = coder;
+  [coderCopy encodeObject:eventName forKey:@"_eventName"];
+  [coderCopy encodeObject:self->_cfuType forKey:@"_cfuType"];
+  [coderCopy encodeObject:self->_flowID forKey:@"_flowID"];
+  [coderCopy encodeObject:self->_proxiedBundleID forKey:@"_proxiedBundleID"];
+  [coderCopy encodeObject:self->_deviceSessionID forKey:@"_deviceSessionID"];
+  [coderCopy encodeObject:self->_client forKey:@"_client"];
+  [coderCopy encodeObject:self->_hasProxiedDevice forKey:@"_hasProxiedDevice"];
+  [coderCopy encodeObject:self->_postedReasonError forKey:@"_postedReasonError"];
+  [coderCopy encodeObject:self->_didSucceed forKey:@"_didSucceed"];
 }
 
-- (AAAFollowUpAnalyticsInfo)initWithCoder:(id)a3
+- (AAAFollowUpAnalyticsInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AAAFollowUpAnalyticsInfo *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_eventName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_eventName"];
     eventName = v5->_eventName;
     v5->_eventName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_cfuType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_cfuType"];
     cfuType = v5->_cfuType;
     v5->_cfuType = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_flowID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_flowID"];
     flowID = v5->_flowID;
     v5->_flowID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_proxiedBundleID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_proxiedBundleID"];
     proxiedBundleID = v5->_proxiedBundleID;
     v5->_proxiedBundleID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_deviceSessionID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_deviceSessionID"];
     deviceSessionID = v5->_deviceSessionID;
     v5->_deviceSessionID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_client"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_client"];
     client = v5->_client;
     v5->_client = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_hasProxiedDevice"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_hasProxiedDevice"];
     hasProxiedDevice = v5->_hasProxiedDevice;
     v5->_hasProxiedDevice = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_postedReasonError"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_postedReasonError"];
     postedReasonError = v5->_postedReasonError;
     v5->_postedReasonError = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_didSucceed"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_didSucceed"];
     didSucceed = v5->_didSucceed;
     v5->_didSucceed = v22;
   }
@@ -68,7 +68,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AAAFollowUpAnalyticsInfo);
   objc_storeStrong(&v4->_eventName, self->_eventName);

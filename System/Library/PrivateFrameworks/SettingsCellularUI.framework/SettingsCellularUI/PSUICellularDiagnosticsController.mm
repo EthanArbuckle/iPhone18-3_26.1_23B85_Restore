@@ -1,7 +1,7 @@
 @interface PSUICellularDiagnosticsController
 - (PSUICellularDiagnosticsController)init;
-- (id)getAppViewSpecifier:(id)a3 diagSubCode:(id)a4;
-- (id)initAppInstallViewSpecifier:(id)a3;
+- (id)getAppViewSpecifier:(id)specifier diagSubCode:(id)code;
+- (id)initAppInstallViewSpecifier:(id)specifier;
 - (id)specifiers;
 - (void)learnMoreLinkTapped;
 @end
@@ -24,9 +24,9 @@
   return v3;
 }
 
-- (id)initAppInstallViewSpecifier:(id)a3
+- (id)initAppInstallViewSpecifier:(id)specifier
 {
-  v5 = a3;
+  specifierCopy = specifier;
   v9.receiver = self;
   v9.super_class = PSUICellularDiagnosticsController;
   v6 = [(PSUICellularDiagnosticsController *)&v9 init];
@@ -34,23 +34,23 @@
   if (v6)
   {
     [(PSUICellularDiagnosticsController *)v6 set_appLockupViewNotAvailable:1];
-    objc_storeStrong(p_isa + 182, a3);
+    objc_storeStrong(p_isa + 182, specifier);
   }
 
   return p_isa;
 }
 
-- (id)getAppViewSpecifier:(id)a3 diagSubCode:(id)a4
+- (id)getAppViewSpecifier:(id)specifier diagSubCode:(id)code
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSUICellularDiagnosticsController *)self getLogger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  specifierCopy = specifier;
+  codeCopy = code;
+  getLogger = [(PSUICellularDiagnosticsController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v22 = "[PSUICellularDiagnosticsController getAppViewSpecifier:diagSubCode:]";
-    _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
   appViewSpecifier = self->_appViewSpecifier;
@@ -61,35 +61,35 @@
 
   else
   {
-    v11 = self;
-    objc_sync_enter(v11);
-    v12 = [(PSUICellularDiagnosticsController *)v11 _appLockupViewNotAvailable];
-    objc_sync_exit(v11);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    _appLockupViewNotAvailable = [(PSUICellularDiagnosticsController *)selfCopy _appLockupViewNotAvailable];
+    objc_sync_exit(selfCopy);
 
-    if (v12)
+    if (_appLockupViewNotAvailable)
     {
       v10 = 0;
     }
 
     else
     {
-      v13 = [(PSUICellularDiagnosticsController *)v11 getLogger];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      getLogger2 = [(PSUICellularDiagnosticsController *)selfCopy getLogger];
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315138;
         v22 = "[PSUICellularDiagnosticsController getAppViewSpecifier:diagSubCode:]";
-        _os_log_impl(&dword_2658DE000, v13, OS_LOG_TYPE_DEFAULT, "%s create new app view", buf, 0xCu);
+        _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s create new app view", buf, 0xCu);
       }
 
-      objc_initWeak(buf, v11);
+      objc_initWeak(buf, selfCopy);
       v14 = [PSUIAppInstallLockupViewSpecifier alloc];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __69__PSUICellularDiagnosticsController_getAppViewSpecifier_diagSubCode___block_invoke;
       v19[3] = &unk_279BA9F40;
       objc_copyWeak(&v20, buf);
-      v19[4] = v11;
-      v15 = [(PSUIAppInstallLockupViewSpecifier *)v14 initWithFailureHandler:v19 diagCode:v6 diagSubCode:v7 OpenAppURL:@"applesupport://getsupport.apple.com/?caller=settings.cellular" appId:@"1130498044" AnalyticsEventForApp:0x2877399D8];
+      v19[4] = selfCopy;
+      v15 = [(PSUIAppInstallLockupViewSpecifier *)v14 initWithFailureHandler:v19 diagCode:specifierCopy diagSubCode:codeCopy OpenAppURL:@"applesupport://getsupport.apple.com/?caller=settings.cellular" appId:@"1130498044" AnalyticsEventForApp:0x2877399D8];
       v16 = self->_appViewSpecifier;
       self->_appViewSpecifier = v15;
 
@@ -158,14 +158,14 @@ void __69__PSUICellularDiagnosticsController_getAppViewSpecifier_diagSubCode___b
     v4 = MEMORY[0x277CBEB18];
     v53.receiver = self;
     v53.super_class = PSUICellularDiagnosticsController;
-    v5 = [(PSUICellularDiagnosticsController *)&v53 specifiers];
-    v6 = [v4 arrayWithArray:v5];
+    specifiers = [(PSUICellularDiagnosticsController *)&v53 specifiers];
+    v6 = [v4 arrayWithArray:specifiers];
 
     v7 = *(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]);
     v52 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"CELLULAR_DIAGNOSTICS_RESULT_GROUP"];
     [v6 addObject:?];
     v8 = +[PSUIDeviceWiFiState sharedInstance];
-    v9 = [v8 isConnectedOverWiFi];
+    isConnectedOverWiFi = [v8 isConnectedOverWiFi];
 
     v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "getDiagnosticsDetailsCode")}];
     [(PSUICellularDiagnosticsController *)self set_diagCode:v10];
@@ -174,37 +174,37 @@ void __69__PSUICellularDiagnosticsController_getAppViewSpecifier_diagSubCode___b
     [(PSUICellularDiagnosticsController *)self set_diagSubCode:v11];
 
     v50 = v7;
-    if (v9)
+    if (isConnectedOverWiFi)
     {
-      v12 = [(PSUICellularDiagnosticsController *)self _diagCode];
-      v13 = [(PSUICellularDiagnosticsController *)self _diagSubCode];
-      v14 = [(PSUICellularDiagnosticsController *)self getAppViewSpecifier:v12 diagSubCode:v13];
+      _diagCode = [(PSUICellularDiagnosticsController *)self _diagCode];
+      _diagSubCode = [(PSUICellularDiagnosticsController *)self _diagSubCode];
+      v14 = [(PSUICellularDiagnosticsController *)self getAppViewSpecifier:_diagCode diagSubCode:_diagSubCode];
 
       if (v14)
       {
         v15 = MEMORY[0x277CCACA8];
-        v16 = [v7 getDiagnosticsStatusDescription];
+        getDiagnosticsStatusDescription = [v7 getDiagnosticsStatusDescription];
         v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v18 = [v17 localizedStringForKey:@"CELLULAR_DIAGNOSTICS_RECOMMEND_RUN_DIAGNOSTICS" value:&stru_287733598 table:@"Cellular"];
-        v19 = [v15 stringWithFormat:@"%@ %@", v16, v18];
+        getDiagnosticsStatusDescription2 = [v15 stringWithFormat:@"%@ %@", getDiagnosticsStatusDescription, v18];
       }
 
       else
       {
-        v19 = [v7 getDiagnosticsStatusDescription];
+        getDiagnosticsStatusDescription2 = [v7 getDiagnosticsStatusDescription];
       }
     }
 
     else
     {
-      v20 = [MEMORY[0x277D75418] currentDevice];
-      v21 = [v20 sf_isChinaRegionCellularDevice];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      sf_isChinaRegionCellularDevice = [currentDevice sf_isChinaRegionCellularDevice];
 
       v22 = MEMORY[0x277CCACA8];
-      v23 = [v7 getDiagnosticsStatusDescription];
+      getDiagnosticsStatusDescription3 = [v7 getDiagnosticsStatusDescription];
       v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v25 = v24;
-      if (v21)
+      if (sf_isChinaRegionCellularDevice)
       {
         v26 = @"CELLULAR_DIAGNOSTICS_RECOMMEND_NO_WLAN";
       }
@@ -215,7 +215,7 @@ void __69__PSUICellularDiagnosticsController_getAppViewSpecifier_diagSubCode___b
       }
 
       v27 = [v24 localizedStringForKey:v26 value:&stru_287733598 table:@"Cellular"];
-      v19 = [v22 stringWithFormat:@"%@\n%@", v23, v27];
+      getDiagnosticsStatusDescription2 = [v22 stringWithFormat:@"%@\n%@", getDiagnosticsStatusDescription3, v27];
 
       v14 = 0;
     }
@@ -226,14 +226,14 @@ void __69__PSUICellularDiagnosticsController_getAppViewSpecifier_diagSubCode___b
     v30 = [v29 localizedStringForKey:@"CELLULAR_DIAGNOSTICS_MESSAGE_TITLE" value:&stru_287733598 table:@"Cellular"];
     [v28 setProperty:v30 forKey:0x287736958];
 
-    [v28 setProperty:v19 forKey:0x287736978];
+    [v28 setProperty:getDiagnosticsStatusDescription2 forKey:0x287736978];
     [v6 ps_addSpecifier:v28 toGroup:v52];
-    v31 = [(PSUICellularDiagnosticsController *)self getLogger];
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUICellularDiagnosticsController *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       v32 = "No";
       v55 = "[PSUICellularDiagnosticsController specifiers]";
-      if (v9)
+      if (isConnectedOverWiFi)
       {
         v33 = "Yes";
       }
@@ -253,7 +253,7 @@ void __69__PSUICellularDiagnosticsController_getAppViewSpecifier_diagSubCode___b
 
       v58 = 2080;
       v59 = v32;
-      _os_log_impl(&dword_2658DE000, v31, OS_LOG_TYPE_DEFAULT, "%s Wifi: %s, AppView: %s", buf, 0x20u);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s Wifi: %s, AppView: %s", buf, 0x20u);
     }
 
     v34 = MEMORY[0x277D3FAD8];
@@ -309,11 +309,11 @@ void __69__PSUICellularDiagnosticsController_getAppViewSpecifier_diagSubCode___b
   v21[0] = @"OpenMoreLink";
   v20[0] = 0x2877399F8;
   v20[1] = 0x287739A18;
-  v3 = [(PSUICellularDiagnosticsController *)self _diagCode];
-  v21[1] = v3;
+  _diagCode = [(PSUICellularDiagnosticsController *)self _diagCode];
+  v21[1] = _diagCode;
   v20[2] = 0x287739A38;
-  v4 = [(PSUICellularDiagnosticsController *)self _diagSubCode];
-  v21[2] = v4;
+  _diagSubCode = [(PSUICellularDiagnosticsController *)self _diagSubCode];
+  v21[2] = _diagSubCode;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:3];
   v6 = @"com.apple.Preferences.TelephonyCellularDiagnostics";
   v7 = v5;

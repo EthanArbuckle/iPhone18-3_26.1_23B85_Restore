@@ -17,8 +17,8 @@
     [CNContactStore(TUSearchUtilities) contactForIdentifier:];
   }
 
-  v6 = [MEMORY[0x1E695CD58] keysToFetchForFaceTime];
-  v7 = [a1 contactForIdentifier:v5 keysToFetch:v6 usingCache:contactForIdentifier__identifierToContactCache];
+  keysToFetchForFaceTime = [MEMORY[0x1E695CD58] keysToFetchForFaceTime];
+  v7 = [self contactForIdentifier:v5 keysToFetch:keysToFetchForFaceTime usingCache:contactForIdentifier__identifierToContactCache];
 
   return v7;
 }
@@ -31,7 +31,7 @@
   v11 = [v10 objectForKey:v8];
   if (!v11)
   {
-    v11 = [a1 contactForIdentifier:v8 keysToFetch:v9];
+    v11 = [self contactForIdentifier:v8 keysToFetch:v9];
     if (v11)
     {
       [v10 setObject:v11 forKey:v8];
@@ -49,7 +49,7 @@
   if (v6)
   {
     v13 = 0;
-    v8 = [a1 unifiedContactWithIdentifier:v6 keysToFetch:v7 error:&v13];
+    v8 = [self unifiedContactWithIdentifier:v6 keysToFetch:v7 error:&v13];
     v9 = v13;
     if (v9)
     {
@@ -87,8 +87,8 @@
   v5 = [contactForDestinationId__destinationIDToContactCache objectForKey:v4];
   if (!v5)
   {
-    v6 = [MEMORY[0x1E695CD58] keysToFetchForFaceTime];
-    v5 = [a1 contactForDestinationId:v4 keysToFetch:v6];
+    keysToFetchForFaceTime = [MEMORY[0x1E695CD58] keysToFetchForFaceTime];
+    v5 = [self contactForDestinationId:v4 keysToFetch:keysToFetchForFaceTime];
 
     if (v5)
     {
@@ -105,13 +105,13 @@
   v6 = a3;
   v7 = a4;
   v8 = [TUHandle normalizedHandleWithDestinationID:v6];
-  v9 = [v8 value];
+  value = [v8 value];
 
-  if (v9)
+  if (value)
   {
     if ([v6 _appearsToBePhoneNumber])
     {
-      v10 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v9];
+      v10 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:value];
       if (v10)
       {
         v11 = [MEMORY[0x1E695CD58] predicateForContactsMatchingPhoneNumber:v10];
@@ -125,7 +125,7 @@
 
         v13 = [v7 arrayByAddingObject:*MEMORY[0x1E695C330]];
         v26 = 0;
-        v14 = [a1 unifiedContactsMatchingPredicate:v11 keysToFetch:v13 error:&v26];
+        v14 = [self unifiedContactsMatchingPredicate:v11 keysToFetch:v13 error:&v26];
         v15 = v26;
 
         if (v14 && [v14 count])
@@ -138,7 +138,7 @@
             _os_log_impl(&dword_1956FD000, v16, OS_LOG_TYPE_DEFAULT, "Found matching contacts %@, using first object", buf, 0xCu);
           }
 
-          v17 = [v14 firstObject];
+          firstObject = [v14 firstObject];
         }
 
         else
@@ -149,7 +149,7 @@
             [CNContactStore(TUSearchUtilities) contactForDestinationId:keysToFetch:];
           }
 
-          v17 = 0;
+          firstObject = 0;
         }
 
         goto LABEL_32;
@@ -158,7 +158,7 @@
       v11 = TUDefaultLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [CNContactStore(TUSearchUtilities) contactForDestinationId:v9 keysToFetch:v11];
+        [CNContactStore(TUSearchUtilities) contactForDestinationId:value keysToFetch:v11];
       }
 
       v15 = 0;
@@ -166,7 +166,7 @@
 
     else
     {
-      v10 = [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:v9];
+      v10 = [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:value];
       v18 = TUDefaultLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
@@ -177,7 +177,7 @@
 
       v19 = [v7 arrayByAddingObject:*MEMORY[0x1E695C208]];
       v25 = 0;
-      v11 = [a1 unifiedContactsMatchingPredicate:v10 keysToFetch:v19 error:&v25];
+      v11 = [self unifiedContactsMatchingPredicate:v10 keysToFetch:v19 error:&v25];
       v15 = v25;
 
       if (v11 && [v11 count])
@@ -190,7 +190,7 @@
           _os_log_impl(&dword_1956FD000, v20, OS_LOG_TYPE_DEFAULT, "Found matching contacts %@, using first object", buf, 0xCu);
         }
 
-        v17 = [v11 firstObject];
+        firstObject = [v11 firstObject];
         goto LABEL_32;
       }
 
@@ -201,7 +201,7 @@
       }
     }
 
-    v17 = 0;
+    firstObject = 0;
 LABEL_32:
 
     goto LABEL_33;
@@ -214,12 +214,12 @@ LABEL_32:
   }
 
   v15 = 0;
-  v17 = 0;
+  firstObject = 0;
 LABEL_33:
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v17;
+  return firstObject;
 }
 
 - (void)contactForDestinationId:()TUSearchUtilities keysToFetch:.cold.1()

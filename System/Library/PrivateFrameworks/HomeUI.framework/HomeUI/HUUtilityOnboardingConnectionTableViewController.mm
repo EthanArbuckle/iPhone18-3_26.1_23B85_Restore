@@ -1,34 +1,34 @@
 @interface HUUtilityOnboardingConnectionTableViewController
-- (HUUtilityOnboardingConnectionTableViewController)initWithData:(id)a3 withItemManager:(id)a4 tableViewStyle:(int64_t)a5;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
+- (HUUtilityOnboardingConnectionTableViewController)initWithData:(id)data withItemManager:(id)manager tableViewStyle:(int64_t)style;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
 @end
 
 @implementation HUUtilityOnboardingConnectionTableViewController
 
-- (HUUtilityOnboardingConnectionTableViewController)initWithData:(id)a3 withItemManager:(id)a4 tableViewStyle:(int64_t)a5
+- (HUUtilityOnboardingConnectionTableViewController)initWithData:(id)data withItemManager:(id)manager tableViewStyle:(int64_t)style
 {
   v6.receiver = self;
   v6.super_class = HUUtilityOnboardingConnectionTableViewController;
-  return [(HUItemTableViewController *)&v6 initWithItemManager:a4 tableViewStyle:a5];
+  return [(HUItemTableViewController *)&v6 initWithItemManager:manager tableViewStyle:style];
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v8 = a3;
+  cellCopy = cell;
   v14.receiver = self;
   v14.super_class = HUUtilityOnboardingConnectionTableViewController;
-  v9 = a4;
-  [(HUItemTableViewController *)&v14 setupCell:v8 forItem:v9 indexPath:a5];
-  v10 = v8;
-  v11 = [v9 latestResults];
+  itemCopy = item;
+  [(HUItemTableViewController *)&v14 setupCell:cellCopy forItem:itemCopy indexPath:path];
+  v10 = cellCopy;
+  latestResults = [itemCopy latestResults];
 
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+  v12 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E20]];
   [v10 setValueText:v12];
 
   [v10 setHideIcon:1];
   [v10 setAccessibilityIdentifier:@"Home.OnboardingView.Utility.SubscriptionInfoCell"];
-  v13 = [MEMORY[0x277D75348] tertiarySystemFillColor];
-  [v10 setBackgroundColor:v13];
+  tertiarySystemFillColor = [MEMORY[0x277D75348] tertiarySystemFillColor];
+  [v10 setBackgroundColor:tertiarySystemFillColor];
 }
 
 @end

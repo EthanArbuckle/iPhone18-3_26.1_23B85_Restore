@@ -6,8 +6,8 @@
 
 - (uint64_t)wf_sourceType
 {
-  v1 = [a1 bundleIdentifier];
-  v2 = [v1 hasPrefix:@"com.apple.health"];
+  bundleIdentifier = [self bundleIdentifier];
+  v2 = [bundleIdentifier hasPrefix:@"com.apple.health"];
 
   return v2 ^ 1u;
 }

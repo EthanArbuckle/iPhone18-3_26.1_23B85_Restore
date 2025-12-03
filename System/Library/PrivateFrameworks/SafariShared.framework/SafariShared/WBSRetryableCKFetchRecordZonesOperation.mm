@@ -3,10 +3,10 @@
 - (id)_makeOperation;
 - (id)fetchRecordZonesCompletionBlock;
 - (id)perRecordZoneCompletionBlock;
-- (void)_setUpOperation:(id)a3;
-- (void)setFetchRecordZonesCompletionBlock:(id)a3;
-- (void)setPerRecordZoneCompletionBlock:(id)a3;
-- (void)setRecordZoneIDs:(id)a3;
+- (void)_setUpOperation:(id)operation;
+- (void)setFetchRecordZonesCompletionBlock:(id)block;
+- (void)setPerRecordZoneCompletionBlock:(id)block;
+- (void)setRecordZoneIDs:(id)ds;
 @end
 
 @implementation WBSRetryableCKFetchRecordZonesOperation
@@ -20,11 +20,11 @@
   return v3;
 }
 
-- (void)setRecordZoneIDs:(id)a3
+- (void)setRecordZoneIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [dsCopy copy];
 
   recordZoneIDs = self->_recordZoneIDs;
   self->_recordZoneIDs = v5;
@@ -43,11 +43,11 @@
   return v3;
 }
 
-- (void)setPerRecordZoneCompletionBlock:(id)a3
+- (void)setPerRecordZoneCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   perRecordZoneCompletionBlock = self->_perRecordZoneCompletionBlock;
   self->_perRecordZoneCompletionBlock = v5;
@@ -66,11 +66,11 @@
   return v3;
 }
 
-- (void)setFetchRecordZonesCompletionBlock:(id)a3
+- (void)setFetchRecordZonesCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   fetchRecordZonesCompletionBlock = self->_fetchRecordZonesCompletionBlock;
   self->_fetchRecordZonesCompletionBlock = v5;
@@ -87,15 +87,15 @@
   return v2;
 }
 
-- (void)_setUpOperation:(id)a3
+- (void)_setUpOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v10.receiver = self;
   v10.super_class = WBSRetryableCKFetchRecordZonesOperation;
-  [(WBSRetryableCKDatabaseOperation *)&v10 _setUpOperation:v4];
+  [(WBSRetryableCKDatabaseOperation *)&v10 _setUpOperation:operationCopy];
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"recordZoneIDs"])
   {
-    [v4 setRecordZoneIDs:self->_recordZoneIDs];
+    [operationCopy setRecordZoneIDs:self->_recordZoneIDs];
   }
 
   if (self->_perRecordZoneCompletionBlock)
@@ -106,7 +106,7 @@
     v7[2] = __59__WBSRetryableCKFetchRecordZonesOperation__setUpOperation___block_invoke;
     v7[3] = &unk_1E7FC9FF0;
     objc_copyWeak(&v8, &location);
-    [v4 setPerRecordZoneCompletionBlock:v7];
+    [operationCopy setPerRecordZoneCompletionBlock:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
@@ -117,7 +117,7 @@
   v5[2] = __59__WBSRetryableCKFetchRecordZonesOperation__setUpOperation___block_invoke_3;
   v5[3] = &unk_1E7FC9F00;
   objc_copyWeak(&v6, &location);
-  [v4 setFetchRecordZonesCompletionBlock:v5];
+  [operationCopy setFetchRecordZonesCompletionBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }

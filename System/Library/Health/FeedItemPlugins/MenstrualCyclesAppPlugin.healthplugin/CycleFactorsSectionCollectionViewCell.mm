@@ -1,7 +1,7 @@
 @interface CycleFactorsSectionCollectionViewCell
 - (BOOL)isHighlighted;
-- (_TtC24MenstrualCyclesAppPlugin37CycleFactorsSectionCollectionViewCell)initWithCoder:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (_TtC24MenstrualCyclesAppPlugin37CycleFactorsSectionCollectionViewCell)initWithCoder:(id)coder;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation CycleFactorsSectionCollectionViewCell
@@ -13,17 +13,17 @@
   return [(CycleFactorsSectionCollectionViewCell *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(CycleFactorsSectionCollectionViewCell *)&v5 setHighlighted:v3];
+  [(CycleFactorsSectionCollectionViewCell *)&v5 setHighlighted:highlightedCopy];
   sub_29E0F8488();
 }
 
-- (_TtC24MenstrualCyclesAppPlugin37CycleFactorsSectionCollectionViewCell)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin37CycleFactorsSectionCollectionViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin37CycleFactorsSectionCollectionViewCell____lazy_storage___healthStore) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin37CycleFactorsSectionCollectionViewCell____lazy_storage___hostView) = 0;

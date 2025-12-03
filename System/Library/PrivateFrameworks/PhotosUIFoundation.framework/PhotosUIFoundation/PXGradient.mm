@@ -1,19 +1,19 @@
 @interface PXGradient
-+ (id)colorValuesForSmoothDescendingGradientWithBaseColor:(id)a3;
++ (id)colorValuesForSmoothDescendingGradientWithBaseColor:(id)color;
 @end
 
 @implementation PXGradient
 
-+ (id)colorValuesForSmoothDescendingGradientWithBaseColor:(id)a3
++ (id)colorValuesForSmoothDescendingGradientWithBaseColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = +[PXGradient opacityValuesForSmoothDescendingGradient];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __66__PXGradient_colorValuesForSmoothDescendingGradientWithBaseColor___block_invoke;
   v8[3] = &unk_1E7BB5790;
-  v9 = v3;
-  v5 = v3;
+  v9 = colorCopy;
+  v5 = colorCopy;
   v6 = PXMap(v4, v8);
 
   return v6;

@@ -1,80 +1,80 @@
 @interface UITableViewCellLayoutManager
-+ (id)layoutManagerForTableViewCellStyle:(int64_t)a3;
++ (id)layoutManagerForTableViewCellStyle:(int64_t)style;
 + (id)sharedLayoutManager;
 + (void)initialize;
-- (BOOL)accessoryShouldAppearForCell:(id)a3;
-- (BOOL)accessoryShouldFadeForCell:(id)a3;
-- (BOOL)editControlShouldAppearForCell:(id)a3;
-- (BOOL)editingAccessoryShouldAppearForCell:(id)a3;
-- (BOOL)editingAccessoryShouldFadeForCell:(id)a3;
-- (BOOL)reorderControlShouldAppearForCell:(id)a3;
-- (BOOL)reorderControlShouldFadeForCell:(id)a3;
-- (BOOL)reorderSeparatorShouldAppearForCell:(id)a3;
-- (BOOL)reorderSeparatorShouldFadeForCell:(id)a3;
-- (BOOL)shouldApplyAccessibilityLargeTextLayoutForCell:(id)a3;
-- (BOOL)shouldIncreaseMarginForImageViewInCell:(id)a3;
-- (BOOL)shouldStackAccessoryViewVerticallyForCell:(id)a3 editing:(BOOL)a4;
-- (CGRect)_accessoryRectForCell:(id)a3 offscreen:(BOOL)a4;
-- (CGRect)_accessoryRectForCell:(id)a3 offscreen:(BOOL)a4 rowWidth:(double)a5;
-- (CGRect)_adjustedBackgroundContentRectForCell:(id)a3;
-- (CGRect)_adjustedBackgroundContentRectForCell:(id)a3 rowWidth:(double)a4;
-- (CGRect)_adjustedBackgroundRectForCell:(id)a3;
-- (CGRect)_adjustedBackgroundRectForCell:(id)a3 rowWidth:(double)a4;
-- (CGRect)_backgroundRectForCell:(id)a3;
-- (CGRect)_backgroundRectForCell:(id)a3 rowWidth:(double)a4;
-- (CGRect)_contentRectForCell:(id)a3 forEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5;
-- (CGRect)_contentRectForCell:(id)a3 forEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5 rowWidth:(double)a6;
-- (CGRect)_editControlRectForCell:(id)a3 offscreen:(BOOL)a4;
-- (CGRect)_editingAccessoryRectForCell:(id)a3 offscreen:(BOOL)a4;
-- (CGRect)_legacy_contentRectForCell:(id)a3 forEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5 rowWidth:(double)a6;
-- (CGRect)_reorderControlRectForCell:(id)a3 offscreen:(BOOL)a4;
-- (CGRect)_reorderSeparatorRectForCell:(id)a3 offscreen:(BOOL)a4;
-- (CGRect)accessoryEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5;
-- (CGRect)accessoryStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5;
-- (CGRect)contentEndingRectForCell:(id)a3 forDisplayOfDeleteConfirmation:(BOOL)a4;
-- (CGRect)contentEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4;
-- (CGRect)contentRectForCell:(id)a3 forState:(unint64_t)a4;
-- (CGRect)contentRectForCell:(id)a3 forState:(unint64_t)a4 rowWidth:(double)a5;
-- (CGRect)contentStartingRectForCell:(id)a3 forDisplayOfDeleteConfirmation:(BOOL)a4;
-- (CGRect)contentStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4;
-- (CGRect)editControlEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4;
-- (CGRect)editingAccessoryEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5;
-- (CGRect)editingAccessoryStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5;
-- (CGRect)reorderControlEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5;
-- (CGRect)reorderControlStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5;
-- (CGRect)reorderSeparatorEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5;
-- (CGRect)reorderSeparatorStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5;
-- (CGRect)selectedBackgroundEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4;
-- (CGRect)standardLayoutImageViewFrameForCell:(id)a3 forSizing:(BOOL)a4;
-- (CGRect)textRectForCell:(id)a3;
-- (CGRect)textRectForCell:(id)a3 rowWidth:(double)a4;
-- (CGRect)textRectForCell:(id)a3 rowWidth:(double)a4 forSizing:(BOOL)a5;
-- (CGSize)intrinsicContentSizeForCell:(id)a3 rowWidth:(double)a4;
-- (CGSize)optimumSizeForLabel:(id)a3 inTotalTextRect:(CGRect)a4 minimizeWidthOnVerticalOverflow:(BOOL)a5 preferSingleLineWidth:(BOOL)a6;
-- (double)_contentRectLeadingOffsetForCell:(id)a3 editingState:(BOOL)a4 rowWidth:(double)a5;
-- (double)contentIndentationForCell:(id)a3;
-- (double)defaultTextLabelFontSizeForCell:(id)a3;
-- (double)requiredIndentationForFirstLineOfCell:(id)a3 rowWidth:(double)a4 forSizing:(BOOL)a5;
-- (id)customAccessoryViewForCell:(id)a3 editing:(BOOL)a4;
-- (id)defaultBadgeForCell:(id)a3;
-- (id)defaultEditableTextFieldForCell:(id)a3;
-- (id)defaultImageViewForCell:(id)a3;
-- (id)defaultLabelForCell:(id)a3;
-- (id)defaultLabelForCell:(id)a3 ofClass:(Class)a4;
-- (id)defaultTextLabelFontForCell:(id)a3;
-- (void)_layoutFocusGuidesForCell:(id)a3;
-- (void)_legacy_cell:(id)a3 didTransitionToState:(unint64_t)a4;
-- (void)_legacy_cell:(id)a3 willTransitionToState:(unint64_t)a4;
-- (void)_legacy_layoutSubviewsOfCell:(id)a3;
-- (void)_modern_cell:(id)a3 didTransitionToState:(unint64_t)a4;
-- (void)_modern_layoutSubviewsOfCell:(id)a3;
-- (void)_reconfigureCell:(id)a3;
-- (void)_resetTextLabelDefaultFontInCell:(id)a3;
-- (void)_updateFocusGuidesForCell:(id)a3 editing:(BOOL)a4;
-- (void)cell:(id)a3 didTransitionToState:(unint64_t)a4;
-- (void)cell:(id)a3 willTransitionToState:(unint64_t)a4;
-- (void)getTextLabelRect:(CGRect *)a3 detailTextLabelRect:(CGRect *)a4 forCell:(id)a5 rowWidth:(double)a6 forSizing:(BOOL)a7;
-- (void)layoutSubviewsOfCell:(id)a3;
+- (BOOL)accessoryShouldAppearForCell:(id)cell;
+- (BOOL)accessoryShouldFadeForCell:(id)cell;
+- (BOOL)editControlShouldAppearForCell:(id)cell;
+- (BOOL)editingAccessoryShouldAppearForCell:(id)cell;
+- (BOOL)editingAccessoryShouldFadeForCell:(id)cell;
+- (BOOL)reorderControlShouldAppearForCell:(id)cell;
+- (BOOL)reorderControlShouldFadeForCell:(id)cell;
+- (BOOL)reorderSeparatorShouldAppearForCell:(id)cell;
+- (BOOL)reorderSeparatorShouldFadeForCell:(id)cell;
+- (BOOL)shouldApplyAccessibilityLargeTextLayoutForCell:(id)cell;
+- (BOOL)shouldIncreaseMarginForImageViewInCell:(id)cell;
+- (BOOL)shouldStackAccessoryViewVerticallyForCell:(id)cell editing:(BOOL)editing;
+- (CGRect)_accessoryRectForCell:(id)cell offscreen:(BOOL)offscreen;
+- (CGRect)_accessoryRectForCell:(id)cell offscreen:(BOOL)offscreen rowWidth:(double)width;
+- (CGRect)_adjustedBackgroundContentRectForCell:(id)cell;
+- (CGRect)_adjustedBackgroundContentRectForCell:(id)cell rowWidth:(double)width;
+- (CGRect)_adjustedBackgroundRectForCell:(id)cell;
+- (CGRect)_adjustedBackgroundRectForCell:(id)cell rowWidth:(double)width;
+- (CGRect)_backgroundRectForCell:(id)cell;
+- (CGRect)_backgroundRectForCell:(id)cell rowWidth:(double)width;
+- (CGRect)_contentRectForCell:(id)cell forEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)_contentRectForCell:(id)cell forEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation rowWidth:(double)width;
+- (CGRect)_editControlRectForCell:(id)cell offscreen:(BOOL)offscreen;
+- (CGRect)_editingAccessoryRectForCell:(id)cell offscreen:(BOOL)offscreen;
+- (CGRect)_legacy_contentRectForCell:(id)cell forEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation rowWidth:(double)width;
+- (CGRect)_reorderControlRectForCell:(id)cell offscreen:(BOOL)offscreen;
+- (CGRect)_reorderSeparatorRectForCell:(id)cell offscreen:(BOOL)offscreen;
+- (CGRect)accessoryEndingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)accessoryStartingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)contentEndingRectForCell:(id)cell forDisplayOfDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)contentEndingRectForCell:(id)cell forNewEditingState:(BOOL)state;
+- (CGRect)contentRectForCell:(id)cell forState:(unint64_t)state;
+- (CGRect)contentRectForCell:(id)cell forState:(unint64_t)state rowWidth:(double)width;
+- (CGRect)contentStartingRectForCell:(id)cell forDisplayOfDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)contentStartingRectForCell:(id)cell forNewEditingState:(BOOL)state;
+- (CGRect)editControlEndingRectForCell:(id)cell forNewEditingState:(BOOL)state;
+- (CGRect)editingAccessoryEndingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)editingAccessoryStartingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)reorderControlEndingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)reorderControlStartingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)reorderSeparatorEndingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)reorderSeparatorStartingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)selectedBackgroundEndingRectForCell:(id)cell forNewEditingState:(BOOL)state;
+- (CGRect)standardLayoutImageViewFrameForCell:(id)cell forSizing:(BOOL)sizing;
+- (CGRect)textRectForCell:(id)cell;
+- (CGRect)textRectForCell:(id)cell rowWidth:(double)width;
+- (CGRect)textRectForCell:(id)cell rowWidth:(double)width forSizing:(BOOL)sizing;
+- (CGSize)intrinsicContentSizeForCell:(id)cell rowWidth:(double)width;
+- (CGSize)optimumSizeForLabel:(id)label inTotalTextRect:(CGRect)rect minimizeWidthOnVerticalOverflow:(BOOL)overflow preferSingleLineWidth:(BOOL)width;
+- (double)_contentRectLeadingOffsetForCell:(id)cell editingState:(BOOL)state rowWidth:(double)width;
+- (double)contentIndentationForCell:(id)cell;
+- (double)defaultTextLabelFontSizeForCell:(id)cell;
+- (double)requiredIndentationForFirstLineOfCell:(id)cell rowWidth:(double)width forSizing:(BOOL)sizing;
+- (id)customAccessoryViewForCell:(id)cell editing:(BOOL)editing;
+- (id)defaultBadgeForCell:(id)cell;
+- (id)defaultEditableTextFieldForCell:(id)cell;
+- (id)defaultImageViewForCell:(id)cell;
+- (id)defaultLabelForCell:(id)cell;
+- (id)defaultLabelForCell:(id)cell ofClass:(Class)class;
+- (id)defaultTextLabelFontForCell:(id)cell;
+- (void)_layoutFocusGuidesForCell:(id)cell;
+- (void)_legacy_cell:(id)_legacy_cell didTransitionToState:(unint64_t)state;
+- (void)_legacy_cell:(id)_legacy_cell willTransitionToState:(unint64_t)state;
+- (void)_legacy_layoutSubviewsOfCell:(id)cell;
+- (void)_modern_cell:(id)_modern_cell didTransitionToState:(unint64_t)state;
+- (void)_modern_layoutSubviewsOfCell:(id)cell;
+- (void)_reconfigureCell:(id)cell;
+- (void)_resetTextLabelDefaultFontInCell:(id)cell;
+- (void)_updateFocusGuidesForCell:(id)cell editing:(BOOL)editing;
+- (void)cell:(id)cell didTransitionToState:(unint64_t)state;
+- (void)cell:(id)cell willTransitionToState:(unint64_t)state;
+- (void)getTextLabelRect:(CGRect *)rect detailTextLabelRect:(CGRect *)labelRect forCell:(id)cell rowWidth:(double)width forSizing:(BOOL)sizing;
+- (void)layoutSubviewsOfCell:(id)cell;
 @end
 
 @implementation UITableViewCellLayoutManager
@@ -83,7 +83,7 @@
 {
   v18[20] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_class();
-  if (([a1 requiresLegacyLayout] & 1) == 0 && v3 != a1)
+  if (([self requiresLegacyLayout] & 1) == 0 && v3 != self)
   {
     v5 = 0;
     v18[0] = sel_editControlShouldAppearForCell_;
@@ -111,8 +111,8 @@
     do
     {
       v6 = v18[v5];
-      v7 = [a1 instanceMethodForSelector:{v6, v13}];
-      if (v7 != [objc_msgSend(a1 "superclass")])
+      v7 = [self instanceMethodForSelector:{v6, v13}];
+      if (v7 != [objc_msgSend(self "superclass")])
       {
         v8 = *(__UILogGetCategoryCachedImpl("UITableViewCellLayoutManager", &initialize___s_category_0) + 8);
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -151,11 +151,11 @@
   return v2;
 }
 
-- (CGRect)_backgroundRectForCell:(id)a3
+- (CGRect)_backgroundRectForCell:(id)cell
 {
-  v4 = a3;
-  [v4 bounds];
-  [(UITableViewCellLayoutManager *)self _backgroundRectForCell:v4 rowWidth:CGRectGetWidth(v17)];
+  cellCopy = cell;
+  [cellCopy bounds];
+  [(UITableViewCellLayoutManager *)self _backgroundRectForCell:cellCopy rowWidth:CGRectGetWidth(v17)];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -172,34 +172,34 @@
   return result;
 }
 
-- (CGRect)_backgroundRectForCell:(id)a3 rowWidth:(double)a4
+- (CGRect)_backgroundRectForCell:(id)cell rowWidth:(double)width
 {
-  v5 = a3;
-  [v5 bounds];
+  cellCopy = cell;
+  [cellCopy bounds];
   v7 = v6;
   v9 = v8;
-  if (([v5 _insetsBackground] & 1) == 0 && objc_msgSend(v5, "separatorStyle"))
+  if (([cellCopy _insetsBackground] & 1) == 0 && objc_msgSend(cellCopy, "separatorStyle"))
   {
-    [v5 _separatorHeight];
+    [cellCopy _separatorHeight];
     v9 = v9 - v10;
   }
 
   v11 = 0.0;
   v12 = v7;
-  v13 = a4;
+  widthCopy = width;
   v14 = v9;
   result.size.height = v14;
-  result.size.width = v13;
+  result.size.width = widthCopy;
   result.origin.y = v12;
   result.origin.x = v11;
   return result;
 }
 
-- (CGRect)_adjustedBackgroundRectForCell:(id)a3
+- (CGRect)_adjustedBackgroundRectForCell:(id)cell
 {
-  v4 = a3;
-  [v4 bounds];
-  [(UITableViewCellLayoutManager *)self _adjustedBackgroundRectForCell:v4 rowWidth:CGRectGetWidth(v17)];
+  cellCopy = cell;
+  [cellCopy bounds];
+  [(UITableViewCellLayoutManager *)self _adjustedBackgroundRectForCell:cellCopy rowWidth:CGRectGetWidth(v17)];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -216,24 +216,24 @@
   return result;
 }
 
-- (CGRect)_adjustedBackgroundRectForCell:(id)a3 rowWidth:(double)a4
+- (CGRect)_adjustedBackgroundRectForCell:(id)cell rowWidth:(double)width
 {
-  v6 = a3;
-  [(UITableViewCellLayoutManager *)self _backgroundRectForCell:v6 rowWidth:a4];
+  cellCopy = cell;
+  [(UITableViewCellLayoutManager *)self _backgroundRectForCell:cellCopy rowWidth:width];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v6 _tableView];
-  if ([v15 _isShowingIndex])
+  _tableView = [cellCopy _tableView];
+  if ([_tableView _isShowingIndex])
   {
-    v16 = [v6 traitCollection];
-    v17 = [v16 userInterfaceIdiom];
+    traitCollection = [cellCopy traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v17 != 3)
+    if (userInterfaceIdiom != 3)
     {
-      [v15 _indexFrame];
-      v18 = v6[13];
+      [_tableView _indexFrame];
+      v18 = cellCopy[13];
       v20 = v8 + v12 - v19;
       v22 = v19 + v21;
       if ((v18 & 0x400000) != 0)
@@ -264,12 +264,12 @@
   return result;
 }
 
-- (CGRect)_adjustedBackgroundContentRectForCell:(id)a3
+- (CGRect)_adjustedBackgroundContentRectForCell:(id)cell
 {
-  [a3 bounds];
+  [cell bounds];
   Width = CGRectGetWidth(v11);
 
-  [(UITableViewCellLayoutManager *)self _adjustedBackgroundContentRectForCell:a3 rowWidth:Width];
+  [(UITableViewCellLayoutManager *)self _adjustedBackgroundContentRectForCell:cell rowWidth:Width];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -277,36 +277,36 @@
   return result;
 }
 
-- (CGRect)_adjustedBackgroundContentRectForCell:(id)a3 rowWidth:(double)a4
+- (CGRect)_adjustedBackgroundContentRectForCell:(id)cell rowWidth:(double)width
 {
-  [(UITableViewCellLayoutManager *)self _adjustedBackgroundRectForCell:a4 rowWidth:?];
+  [(UITableViewCellLayoutManager *)self _adjustedBackgroundRectForCell:width rowWidth:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = *(a3 + 13);
-  v14 = [a3 _tableView];
-  v15 = [a3 sectionLocation];
+  v13 = *(cell + 13);
+  _tableView = [cell _tableView];
+  sectionLocation = [cell sectionLocation];
   v16 = 0.0;
   v17 = 0.0;
-  if ([a3 separatorStyle])
+  if ([cell separatorStyle])
   {
-    v18 = [v14 _tableStyle];
-    if (v18 <= 0x10 && ((1 << v18) & 0x10006) != 0 && [a3 _insetsBackground])
+    _tableStyle = [_tableView _tableStyle];
+    if (_tableStyle <= 0x10 && ((1 << _tableStyle) & 0x10006) != 0 && [cell _insetsBackground])
     {
-      [a3 _separatorHeight];
+      [cell _separatorHeight];
       v17 = v19;
     }
   }
 
   v20 = 0.0;
-  if (v14)
+  if (_tableView)
   {
-    [v14 _sectionContentInset];
+    [_tableView _sectionContentInset];
     v16 = v21 + 0.0;
   }
 
-  if (((1 << v15) & 0x15) != 0)
+  if (((1 << sectionLocation) & 0x15) != 0)
   {
     v22 = v16;
   }
@@ -316,18 +316,18 @@
     v22 = 0.0;
   }
 
-  if (v15 > 4)
+  if (sectionLocation > 4)
   {
     v22 = 0.0;
   }
 
   v23 = v17 + v20;
-  if (((1 << v15) & 0x19) == 0)
+  if (((1 << sectionLocation) & 0x19) == 0)
   {
     v23 = v17;
   }
 
-  if (v15 > 4)
+  if (sectionLocation > 4)
   {
     v23 = v17;
   }
@@ -356,31 +356,31 @@
   return result;
 }
 
-- (CGRect)_editControlRectForCell:(id)a3 offscreen:(BOOL)a4
+- (CGRect)_editControlRectForCell:(id)cell offscreen:(BOOL)offscreen
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 _constants];
-  v8 = [v6 _tableView];
-  [v7 defaultEditControlSizeForCell:v6 inTableView:v8];
+  offscreenCopy = offscreen;
+  cellCopy = cell;
+  _constants = [cellCopy _constants];
+  _tableView = [cellCopy _tableView];
+  [_constants defaultEditControlSizeForCell:cellCopy inTableView:_tableView];
   v10 = v9;
 
-  [v6 bounds];
+  [cellCopy bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [v6 _constants];
-  v18 = [v6 _tableView];
-  [v17 defaultEditControlPaddingForCell:v6 inTableView:v18];
+  _constants2 = [cellCopy _constants];
+  _tableView2 = [cellCopy _tableView];
+  [_constants2 defaultEditControlPaddingForCell:cellCopy inTableView:_tableView2];
   v20 = v10 + v19;
-  v21 = v6[13];
-  v22 = [(UITableViewCellLayoutManager *)self _editControlOnSameSideAsReorderControlForCell:v6];
+  v21 = cellCopy[13];
+  v22 = [(UITableViewCellLayoutManager *)self _editControlOnSameSideAsReorderControlForCell:cellCopy];
   v23 = v22 ^ ((v21 & 0x400000) == 0);
-  if (!v4)
+  if (!offscreenCopy)
   {
     if (v23)
     {
-      [v6 _effectiveSafeAreaInsets];
+      [cellCopy _effectiveSafeAreaInsets];
       v27 = v12 + v28;
       if (!v22)
       {
@@ -390,7 +390,7 @@
 
     else
     {
-      [v6 _effectiveSafeAreaInsets];
+      [cellCopy _effectiveSafeAreaInsets];
       v27 = v12 + v14 - v20 - v38;
       if (!v22)
       {
@@ -399,18 +399,18 @@
     }
 
 LABEL_13:
-    if ([(UITableViewCellLayoutManager *)self reorderControlShouldAppearForCell:v6])
+    if ([(UITableViewCellLayoutManager *)self reorderControlShouldAppearForCell:cellCopy])
     {
-      [(UITableViewCellLayoutManager *)self _reorderControlRectForCell:v6 offscreen:v4];
+      [(UITableViewCellLayoutManager *)self _reorderControlRectForCell:cellCopy offscreen:offscreenCopy];
       Width = CGRectGetWidth(v49);
-      [v17 defaultSpaceBetweenEditAndReorderControlsForCell:v6 inTableView:v18];
+      [_constants2 defaultSpaceBetweenEditAndReorderControlsForCell:cellCopy inTableView:_tableView2];
       v27 = v27 - (Width + v40);
     }
 
     goto LABEL_16;
   }
 
-  [v17 defaultContentEditPaddingForCell:v6 inTableView:v18];
+  [_constants2 defaultContentEditPaddingForCell:cellCopy inTableView:_tableView2];
   v25 = v12 + v14 - v24;
   v26 = v12 - v20 + v24;
   if (v23)
@@ -429,7 +429,7 @@ LABEL_13:
   }
 
 LABEL_9:
-  if (!v4)
+  if (!offscreenCopy)
   {
     v29 = v10 + 20.0;
     v30 = 0;
@@ -439,18 +439,18 @@ LABEL_9:
     if ((v21 & 0x400000) != 0)
     {
       MaxX = CGRectGetMaxX(*&v31);
-      [v6 directionalLayoutMargins];
+      [cellCopy directionalLayoutMargins];
       v43 = v42;
-      [v17 defaultEditControlPaddingForCell:v6 inTableView:v18];
+      [_constants2 defaultEditControlPaddingForCell:cellCopy inTableView:_tableView2];
       v27 = fmin(MaxX, v14 - (v43 - (v29 + v44 * 0.5))) - v20;
     }
 
     else
     {
       MinX = CGRectGetMinX(*&v31);
-      [v6 directionalLayoutMargins];
+      [cellCopy directionalLayoutMargins];
       v36 = v35;
-      [v17 defaultEditControlPaddingForCell:v6 inTableView:v18];
+      [_constants2 defaultEditControlPaddingForCell:cellCopy inTableView:_tableView2];
       v27 = fmax(MinX, v36 - (v29 + v37 * 0.5));
     }
   }
@@ -468,25 +468,25 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)_reorderControlRectForCell:(id)a3 offscreen:(BOOL)a4
+- (CGRect)_reorderControlRectForCell:(id)cell offscreen:(BOOL)offscreen
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 _constants];
-  v8 = [v6 _tableView];
-  v9 = [v6 _constants];
-  v10 = [v8 _accessoryBaseColor];
-  [v9 defaultReorderControlSizeForCell:v6 withAccessoryBaseColor:v10];
+  offscreenCopy = offscreen;
+  cellCopy = cell;
+  _constants = [cellCopy _constants];
+  _tableView = [cellCopy _tableView];
+  _constants2 = [cellCopy _constants];
+  _accessoryBaseColor = [_tableView _accessoryBaseColor];
+  [_constants2 defaultReorderControlSizeForCell:cellCopy withAccessoryBaseColor:_accessoryBaseColor];
   v12 = v11;
 
-  [v6 bounds];
+  [cellCopy bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = v6[13];
-  if ([v6 _usesRoundedGroups])
+  v19 = cellCopy[13];
+  if ([cellCopy _usesRoundedGroups])
   {
-    [(UITableViewCellLayoutManager *)self _adjustedBackgroundContentRectForCell:v6];
+    [(UITableViewCellLayoutManager *)self _adjustedBackgroundContentRectForCell:cellCopy];
     if ((v19 & 0x400000) == 0)
     {
       v14 = v20 + v21 - v12 + -1.0;
@@ -495,37 +495,37 @@ LABEL_16:
 
     v14 = v20 + 1.0;
 LABEL_31:
-    [v8 _isShowingIndex];
+    [_tableView _isShowingIndex];
     goto LABEL_32;
   }
 
-  if (!v4)
+  if (!offscreenCopy)
   {
-    if ([v6 layoutMarginsFollowReadableWidth])
+    if ([cellCopy layoutMarginsFollowReadableWidth])
     {
-      v25 = [v6 _tableView];
-      v26 = [v25 _scrollView];
-      v27 = [v26 _safeAreaWidthExceedsReadableWidth];
+      _tableView2 = [cellCopy _tableView];
+      _scrollView = [_tableView2 _scrollView];
+      _safeAreaWidthExceedsReadableWidth = [_scrollView _safeAreaWidthExceedsReadableWidth];
 
       if ((v19 & 0x400000) == 0)
       {
         v28 = v14 + v16 - v12;
-        if (v27)
+        if (_safeAreaWidthExceedsReadableWidth)
         {
-          [v6 directionalLayoutMargins];
+          [cellCopy directionalLayoutMargins];
 LABEL_18:
           v14 = v28 - v29;
           goto LABEL_27;
         }
 
 LABEL_17:
-        [v6 _effectiveSafeAreaInsets];
+        [cellCopy _effectiveSafeAreaInsets];
         goto LABEL_18;
       }
 
-      if (v27)
+      if (_safeAreaWidthExceedsReadableWidth)
       {
-        [v6 directionalLayoutMargins];
+        [cellCopy directionalLayoutMargins];
         v14 = v14 + v31;
         goto LABEL_31;
       }
@@ -537,12 +537,12 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    [v6 _effectiveSafeAreaInsets];
+    [cellCopy _effectiveSafeAreaInsets];
     v14 = v14 + v32;
     goto LABEL_31;
   }
 
-  if ([(UITableViewCellLayoutManager *)self accessoryShouldAppearForCell:v6]&& ![(UITableViewCellLayoutManager *)self editingAccessoryShouldAppearForCell:v6])
+  if ([(UITableViewCellLayoutManager *)self accessoryShouldAppearForCell:cellCopy]&& ![(UITableViewCellLayoutManager *)self editingAccessoryShouldAppearForCell:cellCopy])
   {
     if ((v19 & 0x400000) == 0)
     {
@@ -553,18 +553,18 @@ LABEL_17:
     goto LABEL_31;
   }
 
-  v22 = [(UITableViewCellLayoutManager *)self reorderSeparatorShouldAppearForCell:v6];
+  v22 = [(UITableViewCellLayoutManager *)self reorderSeparatorShouldAppearForCell:cellCopy];
   if ((v19 & 0x400000) != 0)
   {
     if (v22)
     {
-      [(UITableViewCellLayoutManager *)self _reorderSeparatorRectForCell:v6 offscreen:1];
+      [(UITableViewCellLayoutManager *)self _reorderSeparatorRectForCell:cellCopy offscreen:1];
       v14 = v30 - v12;
     }
 
     else
     {
-      [v7 defaultContentReorderPaddingForCell:v6 inTableView:v8];
+      [_constants defaultContentReorderPaddingForCell:cellCopy inTableView:_tableView];
       v14 = v14 - v12 + v35;
     }
 
@@ -573,20 +573,20 @@ LABEL_17:
 
   if (v22)
   {
-    [(UITableViewCellLayoutManager *)self _reorderSeparatorRectForCell:v6 offscreen:1];
+    [(UITableViewCellLayoutManager *)self _reorderSeparatorRectForCell:cellCopy offscreen:1];
     v14 = v23 + v24;
   }
 
   else
   {
-    [v7 defaultContentReorderPaddingForCell:v6 inTableView:v8];
+    [_constants defaultContentReorderPaddingForCell:cellCopy inTableView:_tableView];
     v14 = v14 + v16 - v33;
   }
 
 LABEL_27:
-  if ([v8 _isShowingIndex] && (v19 & 0x400000) == 0)
+  if ([_tableView _isShowingIndex] && (v19 & 0x400000) == 0)
   {
-    [v8 _indexFrame];
+    [_tableView _indexFrame];
     v14 = v14 - (v12 + v14 - v34);
   }
 
@@ -603,31 +603,31 @@ LABEL_32:
   return result;
 }
 
-- (CGRect)_reorderSeparatorRectForCell:(id)a3 offscreen:(BOOL)a4
+- (CGRect)_reorderSeparatorRectForCell:(id)cell offscreen:(BOOL)offscreen
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 bounds];
+  offscreenCopy = offscreen;
+  cellCopy = cell;
+  [cellCopy bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v6 _currentScreenScale];
-  v13 = v6[13];
+  [cellCopy _currentScreenScale];
+  v13 = cellCopy[13];
   v15 = 1.0 / v14;
-  if ([v6 _usesRoundedGroups])
+  if ([cellCopy _usesRoundedGroups])
   {
-    [(UITableViewCellLayoutManager *)self _adjustedBackgroundRectForCell:v6];
+    [(UITableViewCellLayoutManager *)self _adjustedBackgroundRectForCell:cellCopy];
     v17 = v16;
     v19 = v18;
-    [(UITableViewCellLayoutManager *)self _reorderControlRectForCell:v6 offscreen:v4];
+    [(UITableViewCellLayoutManager *)self _reorderControlRectForCell:cellCopy offscreen:offscreenCopy];
     v21 = v17 + v20 + 1.0;
     v22 = v17 + v19 - v20 - v15 + -1.0;
     goto LABEL_7;
   }
 
-  if (v4)
+  if (offscreenCopy)
   {
-    if (![(UITableViewCellLayoutManager *)self editingAccessoryShouldAppearForCell:v6]|| [(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:v6 editing:1])
+    if (![(UITableViewCellLayoutManager *)self editingAccessoryShouldAppearForCell:cellCopy]|| [(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:cellCopy editing:1])
     {
       v21 = v8 - v15;
       v22 = v8 + v10;
@@ -645,14 +645,14 @@ LABEL_7:
       goto LABEL_14;
     }
 
-    [(UITableViewCellLayoutManager *)self _editingAccessoryRectForCell:v6 offscreen:0];
+    [(UITableViewCellLayoutManager *)self _editingAccessoryRectForCell:cellCopy offscreen:0];
     v26 = v32 - v15;
     v27 = v32 + v33;
   }
 
   else
   {
-    [(UITableViewCellLayoutManager *)self _reorderControlRectForCell:v6 offscreen:0];
+    [(UITableViewCellLayoutManager *)self _reorderControlRectForCell:cellCopy offscreen:0];
     v26 = v15 + v24 + v25;
     v27 = v24 - v15;
   }
@@ -680,29 +680,29 @@ LABEL_14:
   return result;
 }
 
-- (id)customAccessoryViewForCell:(id)a3 editing:(BOOL)a4
+- (id)customAccessoryViewForCell:(id)cell editing:(BOOL)editing
 {
-  if (a4)
+  if (editing)
   {
-    [a3 _customEditingAccessoryView:1];
+    [cell _customEditingAccessoryView:1];
   }
 
   else
   {
-    [a3 _customAccessoryView:1];
+    [cell _customAccessoryView:1];
   }
   v4 = ;
 
   return v4;
 }
 
-- (BOOL)shouldStackAccessoryViewVerticallyForCell:(id)a3 editing:(BOOL)a4
+- (BOOL)shouldStackAccessoryViewVerticallyForCell:(id)cell editing:(BOOL)editing
 {
-  v4 = a4;
-  v6 = a3;
-  if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:v6])
+  editingCopy = editing;
+  cellCopy = cell;
+  if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cellCopy])
   {
-    v7 = [(UITableViewCellLayoutManager *)self customAccessoryViewForCell:v6 editing:v4];
+    v7 = [(UITableViewCellLayoutManager *)self customAccessoryViewForCell:cellCopy editing:editingCopy];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -715,33 +715,33 @@ LABEL_14:
   return isKindOfClass & 1;
 }
 
-- (CGRect)_accessoryRectForCell:(id)a3 offscreen:(BOOL)a4 rowWidth:(double)a5
+- (CGRect)_accessoryRectForCell:(id)cell offscreen:(BOOL)offscreen rowWidth:(double)width
 {
-  v6 = a4;
-  v8 = a3;
+  offscreenCopy = offscreen;
+  cellCopy = cell;
   v9 = MEMORY[0x1E695F058];
   v10 = *MEMORY[0x1E695F058];
-  v11 = [v8 _customAccessoryView:1];
-  v12 = [v8 _accessoryView:v11 == 0];
+  v11 = [cellCopy _customAccessoryView:1];
+  v12 = [cellCopy _accessoryView:v11 == 0];
   v13 = v12;
-  v14 = v8[13];
+  v14 = cellCopy[13];
   if (v11)
   {
-    if ([(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:v8 editing:0])
+    if ([(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:cellCopy editing:0])
     {
-      [(UITableViewCellLayoutManager *)self _adjustedBackgroundContentRectForCell:v8 rowWidth:a5];
+      [(UITableViewCellLayoutManager *)self _adjustedBackgroundContentRectForCell:cellCopy rowWidth:width];
       v16 = v15;
       v18 = v17;
       [v11 bounds];
       v132 = v19;
       v21 = v20;
-      v22 = [v8 _textLabel:0];
+      v22 = [cellCopy _textLabel:0];
       [v22 frame];
       v24 = v23;
       v26 = v25;
       v28 = v27;
       v30 = v29;
-      v31 = [v8 _detailTextLabel:0];
+      v31 = [cellCopy _detailTextLabel:0];
       [v31 frame];
       v154.origin.x = v32;
       v154.origin.y = v33;
@@ -754,13 +754,13 @@ LABEL_14:
       v135 = CGRectUnion(v134, v154);
       MaxY = CGRectGetMaxY(v135);
 
-      [v8 _marginWidth];
+      [cellCopy _marginWidth];
       v38 = v37;
-      [(UITableViewCellLayoutManager *)self contentIndentationForCell:v8];
+      [(UITableViewCellLayoutManager *)self contentIndentationForCell:cellCopy];
       v40 = fmax(v38 + v39, 15.0);
-      v41 = [v8 _imageView:0];
-      v42 = [v41 image];
-      if (v42 && (v43 = v42, v44 = [(UITableViewCellLayoutManager *)self shouldIncreaseMarginForImageViewInCell:v8], v43, v44))
+      v41 = [cellCopy _imageView:0];
+      image = [v41 image];
+      if (image && (v43 = image, v44 = [(UITableViewCellLayoutManager *)self shouldIncreaseMarginForImageViewInCell:cellCopy], v43, v44))
       {
         rect = v18;
         [v41 frame];
@@ -768,8 +768,8 @@ LABEL_14:
         v48 = v47;
         v50 = v49;
         v52 = v51;
-        [v8 bounds];
-        [(UITableViewCellLayoutManager *)self _contentRectLeadingOffsetForCell:v8 editingState:v6 rowWidth:CGRectGetWidth(v136)];
+        [cellCopy bounds];
+        [(UITableViewCellLayoutManager *)self _contentRectLeadingOffsetForCell:cellCopy editingState:offscreenCopy rowWidth:CGRectGetWidth(v136)];
         v54 = v46 + v53;
         if ((v14 & 0x400000) != 0)
         {
@@ -792,14 +792,14 @@ LABEL_14:
         if ((v14 & 0x400000) != 0)
         {
           v78 = v132;
-          [v8 bounds];
-          [(UITableViewCellLayoutManager *)self _contentRectLeadingOffsetForCell:v8 editingState:v6 rowWidth:CGRectGetWidth(v142)];
+          [cellCopy bounds];
+          [(UITableViewCellLayoutManager *)self _contentRectLeadingOffsetForCell:cellCopy editingState:offscreenCopy rowWidth:CGRectGetWidth(v142)];
           v10 = v16 + v18 - v132 - v40 - v89;
           goto LABEL_53;
         }
 
-        [v8 bounds];
-        [(UITableViewCellLayoutManager *)self _contentRectLeadingOffsetForCell:v8 editingState:v6 rowWidth:CGRectGetWidth(v137)];
+        [cellCopy bounds];
+        [(UITableViewCellLayoutManager *)self _contentRectLeadingOffsetForCell:cellCopy editingState:offscreenCopy rowWidth:CGRectGetWidth(v137)];
         v10 = v16 + v40 + v77;
       }
 
@@ -818,22 +818,22 @@ LABEL_53:
     goto LABEL_54;
   }
 
-  [(UITableViewCellLayoutManager *)self _adjustedBackgroundContentRectForCell:v8 rowWidth:a5];
+  [(UITableViewCellLayoutManager *)self _adjustedBackgroundContentRectForCell:cellCopy rowWidth:width];
   v59 = v58;
   v61 = v60;
   v63 = v62;
   v65 = v64;
   v66 = v64;
   v67 = v60;
-  if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:v8])
+  if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cellCopy])
   {
-    v68 = [v8 _textLabel:0];
+    v68 = [cellCopy _textLabel:0];
     [v68 frame];
     v70 = v69;
     [v68 _capOffsetFromBoundsTop];
     v67 = v61 + v71 + v70;
-    v72 = [v68 font];
-    [v72 capHeight];
+    font = [v68 font];
+    [font capHeight];
     v66 = v73;
   }
 
@@ -854,14 +854,14 @@ LABEL_53:
   }
 
   MaxY = round(v67 + (v66 - v21) * 0.5);
-  if (!v6)
+  if (!offscreenCopy)
   {
-    v86 = [(UITableViewCellLayoutManager *)self reorderControlShouldAppearForCell:v8];
+    v86 = [(UITableViewCellLayoutManager *)self reorderControlShouldAppearForCell:cellCopy];
     if ((v14 & 0x400000) != 0)
     {
       if (v86)
       {
-        [(UITableViewCellLayoutManager *)self _reorderControlRectForCell:v8 offscreen:0];
+        [(UITableViewCellLayoutManager *)self _reorderControlRectForCell:cellCopy offscreen:0];
         MaxX = CGRectGetMaxX(v141);
       }
 
@@ -878,11 +878,11 @@ LABEL_53:
       v78 = v133;
       if (dyld_program_sdk_at_least())
       {
-        [v8 _effectiveSafeAreaInsets];
+        [cellCopy _effectiveSafeAreaInsets];
         v110 = v109;
-        [v8 _defaultTrailingCellMarginWidth];
+        [cellCopy _defaultTrailingCellMarginWidth];
         v112 = fmax(v110, v111);
-        [v8 directionalLayoutMargins];
+        [cellCopy directionalLayoutMargins];
         v10 = v102 + fmax(v113, v112);
         goto LABEL_54;
       }
@@ -892,7 +892,7 @@ LABEL_53:
     {
       if (v86)
       {
-        [(UITableViewCellLayoutManager *)self _reorderControlRectForCell:v8 offscreen:0];
+        [(UITableViewCellLayoutManager *)self _reorderControlRectForCell:cellCopy offscreen:0];
         MinX = CGRectGetMinX(v140);
       }
 
@@ -914,11 +914,11 @@ LABEL_53:
       v102 = v101 - CGRectGetWidth(v150);
       if (dyld_program_sdk_at_least())
       {
-        [v8 _effectiveSafeAreaInsets];
+        [cellCopy _effectiveSafeAreaInsets];
         v104 = v103;
-        [v8 _defaultTrailingCellMarginWidth];
+        [cellCopy _defaultTrailingCellMarginWidth];
         v106 = fmax(v104, v105);
-        [v8 directionalLayoutMargins];
+        [cellCopy directionalLayoutMargins];
         v108 = fmax(v107, v106);
 LABEL_47:
         v10 = v102 - v108;
@@ -926,16 +926,16 @@ LABEL_47:
       }
     }
 
-    [v8 _defaultTrailingCellMarginWidth];
+    [cellCopy _defaultTrailingCellMarginWidth];
     goto LABEL_47;
   }
 
-  if ([v8 _hasEditingAccessoryView])
+  if ([cellCopy _hasEditingAccessoryView])
   {
-    v83 = [(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:v8 editing:1];
-    if (v83 == [(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:v8 editing:0])
+    v83 = [(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:cellCopy editing:1];
+    if (v83 == [(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:cellCopy editing:0])
     {
-      [(UITableViewCellLayoutManager *)self _editingAccessoryRectForCell:v8 offscreen:1];
+      [(UITableViewCellLayoutManager *)self _editingAccessoryRectForCell:cellCopy offscreen:1];
       x = v145.origin.x;
       v95 = MaxY;
       recta = MaxY;
@@ -963,7 +963,7 @@ LABEL_47:
     }
   }
 
-  if ([v8 _usesRoundedGroups])
+  if ([cellCopy _usesRoundedGroups])
   {
     if ((v14 & 0x400000) == 0)
     {
@@ -980,7 +980,7 @@ LABEL_21:
       v139.size.height = v21;
       v85 = v84 - CGRectGetWidth(v139);
 LABEL_32:
-      v91 = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:v8];
+      v91 = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cellCopy];
       v92 = -(MaxY - v61);
       v93 = -10.0;
       if (MaxY - v61 >= 10.0)
@@ -1017,7 +1017,7 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if ([(UITableViewCellLayoutManager *)self reorderControlShouldAppearForCell:v8])
+  if ([(UITableViewCellLayoutManager *)self reorderControlShouldAppearForCell:cellCopy])
   {
     if ((v14 & 0x400000) == 0)
     {
@@ -1042,8 +1042,8 @@ LABEL_31:
     v10 = v127 - CGRectGetWidth(v152);
     if (!v11)
     {
-      v128 = [v8 _constants];
-      [v128 defaultContentAccessoryPadding];
+      _constants = [cellCopy _constants];
+      [_constants defaultContentAccessoryPadding];
       v10 = v10 + v129;
     }
   }
@@ -1053,8 +1053,8 @@ LABEL_31:
     v10 = CGRectGetMaxX(*&v114);
     if (!v11)
     {
-      v118 = [v8 _constants];
-      [v118 defaultContentAccessoryPadding];
+      _constants2 = [cellCopy _constants];
+      [_constants2 defaultContentAccessoryPadding];
       v10 = v10 - v119;
     }
 
@@ -1074,12 +1074,12 @@ LABEL_54:
   return result;
 }
 
-- (CGRect)_accessoryRectForCell:(id)a3 offscreen:(BOOL)a4
+- (CGRect)_accessoryRectForCell:(id)cell offscreen:(BOOL)offscreen
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 bounds];
-  [(UITableViewCellLayoutManager *)self _accessoryRectForCell:v6 offscreen:v4 rowWidth:CGRectGetWidth(v19)];
+  offscreenCopy = offscreen;
+  cellCopy = cell;
+  [cellCopy bounds];
+  [(UITableViewCellLayoutManager *)self _accessoryRectForCell:cellCopy offscreen:offscreenCopy rowWidth:CGRectGetWidth(v19)];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -1096,16 +1096,16 @@ LABEL_54:
   return result;
 }
 
-- (CGRect)_editingAccessoryRectForCell:(id)a3 offscreen:(BOOL)a4
+- (CGRect)_editingAccessoryRectForCell:(id)cell offscreen:(BOOL)offscreen
 {
-  v4 = a4;
-  v6 = a3;
+  offscreenCopy = offscreen;
+  cellCopy = cell;
   v7 = MEMORY[0x1E695F058];
   v8 = *MEMORY[0x1E695F058];
-  v9 = [v6 _customEditingAccessoryView:1];
-  v10 = [v6 _editingAccessoryView:v9 == 0];
+  v9 = [cellCopy _customEditingAccessoryView:1];
+  v10 = [cellCopy _editingAccessoryView:v9 == 0];
   v11 = v10;
-  v12 = v6[13];
+  v12 = cellCopy[13];
   if (!v9)
   {
     if (!v10)
@@ -1117,22 +1117,22 @@ LABEL_54:
     }
 
 LABEL_8:
-    [(UITableViewCellLayoutManager *)self _adjustedBackgroundContentRectForCell:v6];
+    [(UITableViewCellLayoutManager *)self _adjustedBackgroundContentRectForCell:cellCopy];
     v53 = v52;
     v55 = v54;
     v57 = v56;
     v59 = v58;
     v60 = v58;
     v61 = v54;
-    if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:v6])
+    if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cellCopy])
     {
-      v62 = [v6 _textLabel:0];
+      v62 = [cellCopy _textLabel:0];
       [v62 frame];
       v64 = v63;
       [v62 _capOffsetFromBoundsTop];
       v61 = v55 + v65 + v64;
-      v66 = [v62 font];
-      [v66 capHeight];
+      font = [v62 font];
+      [font capHeight];
       v60 = v67;
     }
 
@@ -1153,11 +1153,11 @@ LABEL_8:
 
     rect = v68;
     MaxY = round(v61 + (v60 - v68) * 0.5);
-    if (v4)
+    if (offscreenCopy)
     {
-      if ([(UITableViewCellLayoutManager *)self reorderSeparatorShouldAppearForCell:v6])
+      if ([(UITableViewCellLayoutManager *)self reorderSeparatorShouldAppearForCell:cellCopy])
       {
-        [(UITableViewCellLayoutManager *)self _reorderSeparatorRectForCell:v6 offscreen:0];
+        [(UITableViewCellLayoutManager *)self _reorderSeparatorRectForCell:cellCopy offscreen:0];
         if ((v12 & 0x400000) == 0)
         {
           MinX = CGRectGetMinX(*&v76);
@@ -1193,12 +1193,12 @@ LABEL_28:
 LABEL_37:
       if (dyld_program_sdk_at_least())
       {
-        [v6 _effectiveSafeAreaInsets];
+        [cellCopy _effectiveSafeAreaInsets];
         v107 = v106;
         v109 = v108;
-        [v6 _defaultTrailingCellMarginWidth];
+        [cellCopy _defaultTrailingCellMarginWidth];
         v111 = v110;
-        [v6 directionalLayoutMargins];
+        [cellCopy directionalLayoutMargins];
         if ((v12 & 0x400000) != 0)
         {
           v113 = v107;
@@ -1218,7 +1218,7 @@ LABEL_37:
 
       else
       {
-        v115 = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:v6];
+        v115 = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cellCopy];
         v116 = -(MaxY - v55);
         if (MaxY - v55 >= 10.0)
         {
@@ -1235,7 +1235,7 @@ LABEL_37:
           v117 = v116;
         }
 
-        [v6 _effectiveSafeAreaInsets];
+        [cellCopy _effectiveSafeAreaInsets];
         if ((v12 & 0x400000) != 0)
         {
           v114 = v118 - v117;
@@ -1252,12 +1252,12 @@ LABEL_73:
       goto LABEL_74;
     }
 
-    if ([v6 _hasAccessoryView])
+    if ([cellCopy _hasAccessoryView])
     {
-      v81 = [(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:v6 editing:1];
-      if (v81 == [(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:v6 editing:0])
+      v81 = [(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:cellCopy editing:1];
+      if (v81 == [(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:cellCopy editing:0])
       {
-        [(UITableViewCellLayoutManager *)self _accessoryRectForCell:v6 offscreen:0];
+        [(UITableViewCellLayoutManager *)self _accessoryRectForCell:cellCopy offscreen:0];
         x = v146.origin.x;
         y = v146.origin.y;
         width = v146.size.width;
@@ -1282,7 +1282,7 @@ LABEL_73:
       }
     }
 
-    if (![v6 _usesRoundedGroups])
+    if (![cellCopy _usesRoundedGroups])
     {
       v93 = v53;
       v94 = v55;
@@ -1301,8 +1301,8 @@ LABEL_73:
           goto LABEL_63;
         }
 
-        v97 = [v6 _constants];
-        [v97 defaultContentAccessoryPadding];
+        _constants = [cellCopy _constants];
+        [_constants defaultContentAccessoryPadding];
         v92 = v92 + v126;
       }
 
@@ -1314,7 +1314,7 @@ LABEL_73:
 LABEL_63:
           if (dyld_program_sdk_at_least())
           {
-            [v6 _effectiveSafeAreaInsets];
+            [cellCopy _effectiveSafeAreaInsets];
             if ((v12 & 0x400000) != 0)
             {
               v130 = v128;
@@ -1325,15 +1325,15 @@ LABEL_63:
               v130 = v129;
             }
 
-            [v6 _defaultTrailingCellMarginWidth];
+            [cellCopy _defaultTrailingCellMarginWidth];
             v132 = fmax(v130, v131);
-            [v6 directionalLayoutMargins];
+            [cellCopy directionalLayoutMargins];
             v114 = -fmax(v133, v132);
           }
 
           else
           {
-            v134 = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:v6];
+            v134 = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cellCopy];
             v114 = -10.0;
             if (!v134)
             {
@@ -1353,17 +1353,17 @@ LABEL_63:
           goto LABEL_73;
         }
 
-        v97 = [v6 _constants];
-        [v97 defaultContentAccessoryPadding];
+        _constants = [cellCopy _constants];
+        [_constants defaultContentAccessoryPadding];
         v92 = v92 - v98;
       }
 
       goto LABEL_63;
     }
 
-    if ([(UITableViewCellLayoutManager *)self reorderSeparatorShouldAppearForCell:v6])
+    if ([(UITableViewCellLayoutManager *)self reorderSeparatorShouldAppearForCell:cellCopy])
     {
-      [(UITableViewCellLayoutManager *)self _reorderSeparatorRectForCell:v6 offscreen:0];
+      [(UITableViewCellLayoutManager *)self _reorderSeparatorRectForCell:cellCopy offscreen:0];
       if ((v12 & 0x400000) == 0)
       {
         v86 = CGRectGetMinX(*&v82);
@@ -1399,24 +1399,24 @@ LABEL_54:
     goto LABEL_63;
   }
 
-  if (![(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:v6 editing:1])
+  if (![(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:cellCopy editing:1])
   {
     goto LABEL_8;
   }
 
-  [(UITableViewCellLayoutManager *)self _adjustedBackgroundContentRectForCell:v6];
+  [(UITableViewCellLayoutManager *)self _adjustedBackgroundContentRectForCell:cellCopy];
   v14 = v13;
   v16 = v15;
   [v9 bounds];
   v18 = v17;
   rect = v19;
-  v20 = [v6 _textLabel:0];
+  v20 = [cellCopy _textLabel:0];
   [v20 frame];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [v6 _detailTextLabel:0];
+  v29 = [cellCopy _detailTextLabel:0];
   [v29 frame];
   v154.origin.x = v30;
   v154.origin.y = v31;
@@ -1429,21 +1429,21 @@ LABEL_54:
   v141 = CGRectUnion(v140, v154);
   MaxY = CGRectGetMaxY(v141);
 
-  [v6 _marginWidth];
+  [cellCopy _marginWidth];
   v36 = v35;
-  [(UITableViewCellLayoutManager *)self contentIndentationForCell:v6];
+  [(UITableViewCellLayoutManager *)self contentIndentationForCell:cellCopy];
   v38 = fmax(v36 + v37, 15.0);
-  v39 = [v6 _imageView:0];
-  v40 = [v39 image];
-  if (v40 && (v41 = v40, v42 = [(UITableViewCellLayoutManager *)self shouldIncreaseMarginForImageViewInCell:v6], v41, v42))
+  v39 = [cellCopy _imageView:0];
+  image = [v39 image];
+  if (image && (v41 = image, v42 = [(UITableViewCellLayoutManager *)self shouldIncreaseMarginForImageViewInCell:cellCopy], v41, v42))
   {
     [v39 frame];
     v44 = v43;
     v46 = v45;
     v48 = v47;
     v50 = v49;
-    [v6 bounds];
-    [(UITableViewCellLayoutManager *)self _contentRectLeadingOffsetForCell:v6 editingState:v4 rowWidth:CGRectGetWidth(v142)];
+    [cellCopy bounds];
+    [(UITableViewCellLayoutManager *)self _contentRectLeadingOffsetForCell:cellCopy editingState:offscreenCopy rowWidth:CGRectGetWidth(v142)];
     if ((v12 & 0x400000) != 0)
     {
       v152.origin.x = v44 - v51;
@@ -1465,8 +1465,8 @@ LABEL_54:
 
   else
   {
-    [v6 bounds];
-    [(UITableViewCellLayoutManager *)self _contentRectLeadingOffsetForCell:v6 editingState:v4 rowWidth:CGRectGetWidth(v144)];
+    [cellCopy bounds];
+    [(UITableViewCellLayoutManager *)self _contentRectLeadingOffsetForCell:cellCopy editingState:offscreenCopy rowWidth:CGRectGetWidth(v144)];
     if ((v12 & 0x400000) != 0)
     {
       v8 = v14 + v16 - v18 - v38 - v71;
@@ -1490,26 +1490,26 @@ LABEL_74:
   return result;
 }
 
-- (double)_contentRectLeadingOffsetForCell:(id)a3 editingState:(BOOL)a4 rowWidth:(double)a5
+- (double)_contentRectLeadingOffsetForCell:(id)cell editingState:(BOOL)state rowWidth:(double)width
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [v8 _constants];
-  v10 = [v8 _tableView];
-  v11 = (v8[13] & 0x400000) == 0;
-  v12 = [(UITableViewCellLayoutManager *)self _editControlOnSameSideAsReorderControlForCell:v8];
-  [(UITableViewCellLayoutManager *)self _adjustedBackgroundContentRectForCell:v8 rowWidth:a5];
+  stateCopy = state;
+  cellCopy = cell;
+  _constants = [cellCopy _constants];
+  _tableView = [cellCopy _tableView];
+  v11 = (cellCopy[13] & 0x400000) == 0;
+  v12 = [(UITableViewCellLayoutManager *)self _editControlOnSameSideAsReorderControlForCell:cellCopy];
+  [(UITableViewCellLayoutManager *)self _adjustedBackgroundContentRectForCell:cellCopy rowWidth:width];
   v17 = 0.0;
-  if (v6)
+  if (stateCopy)
   {
     v18 = v13;
     v19 = v14;
     v20 = v15;
     v21 = v16;
-    if ([(UITableViewCellLayoutManager *)self editControlShouldAppearForCell:v8])
+    if ([(UITableViewCellLayoutManager *)self editControlShouldAppearForCell:cellCopy])
     {
       v22 = v12 ^ v11;
-      [(UITableViewCellLayoutManager *)self _editControlRectForCell:v8 offscreen:0];
+      [(UITableViewCellLayoutManager *)self _editControlRectForCell:cellCopy offscreen:0];
       if (v22)
       {
         v27 = v23;
@@ -1568,7 +1568,7 @@ LABEL_74:
       v36.size.width = v20;
       v36.size.height = v21;
       v32 = MaxX - CGRectGetMinX(v36);
-      [v9 defaultContentEditPaddingForCell:v8 inTableView:v10];
+      [_constants defaultContentEditPaddingForCell:cellCopy inTableView:_tableView];
       v17 = v32 - v33;
     }
   }
@@ -1576,14 +1576,14 @@ LABEL_74:
   return v17;
 }
 
-- (CGRect)_contentRectForCell:(id)a3 forEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5
+- (CGRect)_contentRectForCell:(id)cell forEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation
 {
-  v5 = a5;
-  v6 = a4;
-  [a3 bounds];
+  confirmationCopy = confirmation;
+  stateCopy = state;
+  [cell bounds];
   Width = CGRectGetWidth(v15);
 
-  [(UITableViewCellLayoutManager *)self _contentRectForCell:a3 forEditingState:v6 showingDeleteConfirmation:v5 rowWidth:Width];
+  [(UITableViewCellLayoutManager *)self _contentRectForCell:cell forEditingState:stateCopy showingDeleteConfirmation:confirmationCopy rowWidth:Width];
   result.size.height = v13;
   result.size.width = v12;
   result.origin.y = v11;
@@ -1591,12 +1591,12 @@ LABEL_74:
   return result;
 }
 
-- (CGRect)_contentRectForCell:(id)a3 forEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5 rowWidth:(double)a6
+- (CGRect)_contentRectForCell:(id)cell forEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation rowWidth:(double)width
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  if ([v10 _usesModernAccessoriesLayout])
+  confirmationCopy = confirmation;
+  stateCopy = state;
+  cellCopy = cell;
+  if ([cellCopy _usesModernAccessoriesLayout])
   {
     v33 = 0;
     v34 = &v33;
@@ -1607,11 +1607,11 @@ LABEL_74:
     v28 = MEMORY[0x1E69E9820];
     v29 = __139__UITableViewCellLayoutManager_UITableViewCellLayoutManagerStatic___contentRectForCell_forEditingState_showingDeleteConfirmation_rowWidth___block_invoke;
     v30 = &unk_1E70FE3F8;
-    v11 = v10;
+    v11 = cellCopy;
     v31 = v11;
     v32 = &v33;
     [v11 frame];
-    if (v13 == a6)
+    if (v13 == width)
     {
       v29(&v28);
     }
@@ -1619,8 +1619,8 @@ LABEL_74:
     else
     {
       v22 = v12;
-      v23 = [v11 _accessoryManager];
-      [v23 performWithEnforcedContainerSize:&v28 block:{a6, v22}];
+      _accessoryManager = [v11 _accessoryManager];
+      [_accessoryManager performWithEnforcedContainerSize:&v28 block:{width, v22}];
     }
 
     v15 = v34[4];
@@ -1633,7 +1633,7 @@ LABEL_74:
 
   else
   {
-    [(UITableViewCellLayoutManager *)self _legacy_contentRectForCell:v10 forEditingState:v8 showingDeleteConfirmation:v7 rowWidth:a6];
+    [(UITableViewCellLayoutManager *)self _legacy_contentRectForCell:cellCopy forEditingState:stateCopy showingDeleteConfirmation:confirmationCopy rowWidth:width];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -1666,20 +1666,20 @@ void __139__UITableViewCellLayoutManager_UITableViewCellLayoutManagerStatic___co
   v3[7] = v7;
 }
 
-- (CGRect)_legacy_contentRectForCell:(id)a3 forEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5 rowWidth:(double)a6
+- (CGRect)_legacy_contentRectForCell:(id)cell forEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation rowWidth:(double)width
 {
-  v7 = a4;
-  v9 = a3;
-  v10 = [v9 _tableView];
-  v11 = [v9 _constants];
-  [(UITableViewCellLayoutManager *)self _adjustedBackgroundContentRectForCell:v9 rowWidth:a6];
+  stateCopy = state;
+  cellCopy = cell;
+  _tableView = [cellCopy _tableView];
+  _constants = [cellCopy _constants];
+  [(UITableViewCellLayoutManager *)self _adjustedBackgroundContentRectForCell:cellCopy rowWidth:width];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   rect = v18;
-  v19 = v9[13];
-  v20 = [(UITableViewCellLayoutManager *)self _editControlOnSameSideAsReorderControlForCell:v9]^ ((v19 & 0x400000) == 0);
-  [(UITableViewCellLayoutManager *)self _contentRectLeadingOffsetForCell:v9 editingState:v7 rowWidth:a6];
+  v19 = cellCopy[13];
+  v20 = [(UITableViewCellLayoutManager *)self _editControlOnSameSideAsReorderControlForCell:cellCopy]^ ((v19 & 0x400000) == 0);
+  [(UITableViewCellLayoutManager *)self _contentRectLeadingOffsetForCell:cellCopy editingState:stateCopy rowWidth:width];
   if (v20)
   {
     v22 = v13 + v21;
@@ -1691,22 +1691,22 @@ void __139__UITableViewCellLayoutManager_UITableViewCellLayoutManagerStatic___co
   }
 
   v23 = v17 - v21;
-  v117 = a6;
-  if (!v7 && ![v9 _allowsReorderingWhenNotEditing])
+  widthCopy = width;
+  if (!stateCopy && ![cellCopy _allowsReorderingWhenNotEditing])
   {
-    if (![(UITableViewCellLayoutManager *)self accessoryShouldAppearForCell:v9])
+    if (![(UITableViewCellLayoutManager *)self accessoryShouldAppearForCell:cellCopy])
     {
       v33 = v22;
       v34 = v15;
       goto LABEL_100;
     }
 
-    [(UITableViewCellLayoutManager *)self _accessoryRectForCell:v9 offscreen:0 rowWidth:a6];
+    [(UITableViewCellLayoutManager *)self _accessoryRectForCell:cellCopy offscreen:0 rowWidth:width];
     v64 = v63;
     v66 = v65;
     v68 = v67;
     v51 = v69;
-    if (![(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:v9 editing:0])
+    if (![(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:cellCopy editing:0])
     {
       if ((v19 & 0x400000) != 0)
       {
@@ -1794,7 +1794,7 @@ void __139__UITableViewCellLayoutManager_UITableViewCellLayoutManagerStatic___co
       v126.size.width = v90;
       v126.size.height = v51;
       v61 = MaxX - CGRectGetMinX(v126);
-      v62 = [v9 _customAccessoryView:1];
+      v62 = [cellCopy _customAccessoryView:1];
       goto LABEL_96;
     }
 
@@ -1805,9 +1805,9 @@ LABEL_68:
     goto LABEL_100;
   }
 
-  if ([(UITableViewCellLayoutManager *)self reorderSeparatorShouldAppearForCell:v9])
+  if ([(UITableViewCellLayoutManager *)self reorderSeparatorShouldAppearForCell:cellCopy])
   {
-    [(UITableViewCellLayoutManager *)self _reorderSeparatorRectForCell:v9 offscreen:0];
+    [(UITableViewCellLayoutManager *)self _reorderSeparatorRectForCell:cellCopy offscreen:0];
     if ((v19 & 0x400000) != 0)
     {
       v28 = v24;
@@ -1909,27 +1909,27 @@ LABEL_68:
 
   else
   {
-    if (![(UITableViewCellLayoutManager *)self reorderControlShouldAppearForCell:v9]|| [(UITableViewCellLayoutManager *)self _editControlOnSameSideAsReorderControlForCell:v9])
+    if (![(UITableViewCellLayoutManager *)self reorderControlShouldAppearForCell:cellCopy]|| [(UITableViewCellLayoutManager *)self _editControlOnSameSideAsReorderControlForCell:cellCopy])
     {
       v33 = v22;
       v34 = v15;
-      if (!v7)
+      if (!stateCopy)
       {
         goto LABEL_100;
       }
 
 LABEL_39:
-      if (![(UITableViewCellLayoutManager *)self editingAccessoryShouldAppearForCell:v9])
+      if (![(UITableViewCellLayoutManager *)self editingAccessoryShouldAppearForCell:cellCopy])
       {
         goto LABEL_100;
       }
 
-      [(UITableViewCellLayoutManager *)self _editingAccessoryRectForCell:v9 offscreen:1];
+      [(UITableViewCellLayoutManager *)self _editingAccessoryRectForCell:cellCopy offscreen:1];
       v45 = v44;
       v47 = v46;
       v49 = v48;
       v51 = v50;
-      if (![(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:v9 editing:1])
+      if (![(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:cellCopy editing:1])
       {
         if ((v19 & 0x400000) != 0)
         {
@@ -2014,13 +2014,13 @@ LABEL_39:
         v123.size.width = v59;
         v123.size.height = v51;
         v61 = v60 - CGRectGetMinX(v123);
-        v62 = [v9 _customEditingAccessoryView:1];
+        v62 = [cellCopy _customEditingAccessoryView:1];
 LABEL_96:
         v92 = v62;
 
         if (!v92)
         {
-          [v11 defaultContentAccessoryPadding];
+          [_constants defaultContentAccessoryPadding];
           v61 = v61 + v93;
         }
 
@@ -2036,7 +2036,7 @@ LABEL_96:
       goto LABEL_68;
     }
 
-    [(UITableViewCellLayoutManager *)self _reorderControlRectForCell:v9 offscreen:0];
+    [(UITableViewCellLayoutManager *)self _reorderControlRectForCell:cellCopy offscreen:0];
     v74 = v70;
     v75 = v71;
     v76 = v72;
@@ -2046,7 +2046,7 @@ LABEL_96:
       v33 = v22;
       v34 = v15;
       v112 = CGRectGetMaxX(*&v70);
-      [v11 defaultContentReorderPaddingForCell:v9 inTableView:v10];
+      [_constants defaultContentReorderPaddingForCell:cellCopy inTableView:_tableView];
       v81 = v112 + v113;
     }
 
@@ -2064,7 +2064,7 @@ LABEL_96:
       v125.size.width = v76;
       v125.size.height = v77;
       v79 = v78 - CGRectGetMinX(v125);
-      [v11 defaultContentReorderPaddingForCell:v9 inTableView:v10];
+      [_constants defaultContentReorderPaddingForCell:cellCopy inTableView:_tableView];
       v81 = v79 - v80;
     }
 
@@ -2078,17 +2078,17 @@ LABEL_96:
     v33 = v43;
   }
 
-  if (v7)
+  if (stateCopy)
   {
     goto LABEL_39;
   }
 
 LABEL_100:
   v119 = v23;
-  [v9 _effectiveSafeAreaInsets];
+  [cellCopy _effectiveSafeAreaInsets];
   v115 = v94;
   v116 = v95;
-  [v9 bounds];
+  [cellCopy bounds];
   v97 = v96;
   v99 = v98;
   v101 = v100;
@@ -2101,14 +2101,14 @@ LABEL_100:
   v103 = CGRectGetMinX(v127);
   v128.origin.x = v97;
   v128.origin.y = v99;
-  v128.size.width = v117;
+  v128.size.width = widthCopy;
   v128.size.height = v101;
   v104 = CGRectGetMinX(v128);
   v129.size.height = v114;
   v105 = fmax(v115 - fmax(v103 - v104, 0.0), 0.0);
   v129.origin.x = v97;
   v129.origin.y = v99;
-  v129.size.width = v117;
+  v129.size.width = widthCopy;
   v106 = CGRectGetMaxX(v129);
   v130.origin.x = v102;
   v130.origin.y = v34;
@@ -2127,12 +2127,12 @@ LABEL_100:
   return result;
 }
 
-+ (id)layoutManagerForTableViewCellStyle:(int64_t)a3
++ (id)layoutManagerForTableViewCellStyle:(int64_t)style
 {
   v3 = 0;
-  if (a3 > 1)
+  if (style > 1)
   {
-    switch(a3)
+    switch(style)
     {
       case 2:
         v4 = qword_1ED49B138;
@@ -2179,9 +2179,9 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (a3)
+  if (style)
   {
-    if (a3 != 1)
+    if (style != 1)
     {
       goto LABEL_16;
     }
@@ -2205,23 +2205,23 @@ LABEL_16:
   return v3;
 }
 
-- (void)_reconfigureCell:(id)a3
+- (void)_reconfigureCell:(id)cell
 {
-  v5 = a3;
-  v4 = [v5 _usesModernAccessoriesLayout];
-  [v5 setLayoutManager:self];
-  if (v4)
+  cellCopy = cell;
+  _usesModernAccessoriesLayout = [cellCopy _usesModernAccessoriesLayout];
+  [cellCopy setLayoutManager:self];
+  if (_usesModernAccessoriesLayout)
   {
-    [v5 _setUsesModernAccessoriesLayout:1];
+    [cellCopy _setUsesModernAccessoriesLayout:1];
   }
 
-  [(UITableViewCellLayoutManager *)self _resetTextLabelDefaultFontInCell:v5];
+  [(UITableViewCellLayoutManager *)self _resetTextLabelDefaultFontInCell:cellCopy];
 }
 
-- (void)_resetTextLabelDefaultFontInCell:(id)a3
+- (void)_resetTextLabelDefaultFontInCell:(id)cell
 {
-  v7 = a3;
-  v4 = [v7 _textLabel:0];
+  cellCopy = cell;
+  v4 = [cellCopy _textLabel:0];
   if (v4)
   {
     objc_opt_class();
@@ -2230,62 +2230,62 @@ LABEL_16:
       v5 = v4;
       if ([v5 usingDefaultFont])
       {
-        v6 = [(UITableViewCellLayoutManager *)self defaultTextLabelFontForCell:v7];
+        v6 = [(UITableViewCellLayoutManager *)self defaultTextLabelFontForCell:cellCopy];
         [v5 _setDefaultFont:v6];
       }
     }
   }
 }
 
-- (double)defaultTextLabelFontSizeForCell:(id)a3
+- (double)defaultTextLabelFontSizeForCell:(id)cell
 {
-  v3 = a3;
-  v4 = [v3 _constants];
-  v5 = [v3 _cellStyle];
+  cellCopy = cell;
+  _constants = [cellCopy _constants];
+  _cellStyle = [cellCopy _cellStyle];
 
-  [v4 defaultTextLabelFontSizeForCellStyle:v5];
+  [_constants defaultTextLabelFontSizeForCellStyle:_cellStyle];
   v7 = v6;
 
   return v7;
 }
 
-- (id)defaultImageViewForCell:(id)a3
+- (id)defaultImageViewForCell:(id)cell
 {
   v3 = objc_alloc_init(objc_opt_class());
 
   return v3;
 }
 
-- (id)defaultTextLabelFontForCell:(id)a3
+- (id)defaultTextLabelFontForCell:(id)cell
 {
-  v3 = a3;
-  v4 = [v3 _constants];
-  v5 = [v3 _cellStyle];
+  cellCopy = cell;
+  _constants = [cellCopy _constants];
+  _cellStyle = [cellCopy _cellStyle];
 
-  v6 = [v4 defaultTextLabelFontForCellStyle:v5];
+  v6 = [_constants defaultTextLabelFontForCellStyle:_cellStyle];
 
   return v6;
 }
 
-- (id)defaultLabelForCell:(id)a3 ofClass:(Class)a4
+- (id)defaultLabelForCell:(id)cell ofClass:(Class)class
 {
-  v6 = a3;
-  v7 = objc_alloc_init(a4);
+  cellCopy = cell;
+  v7 = objc_alloc_init(class);
   v8 = +[UIColor clearColor];
-  if ([v6 _changesOpaqueStateOfSubviews])
+  if ([cellCopy _changesOpaqueStateOfSubviews])
   {
-    v9 = [v6 _contentBackgroundColor];
-    [v9 alphaComponent];
+    _contentBackgroundColor = [cellCopy _contentBackgroundColor];
+    [_contentBackgroundColor alphaComponent];
     if (v10 == 1.0)
     {
-      v11 = v9;
+      v11 = _contentBackgroundColor;
 
       v8 = v11;
     }
   }
 
   [v7 setBackgroundColor:v8];
-  v12 = [(UITableViewCellLayoutManager *)self defaultTextLabelFontForCell:v6];
+  v12 = [(UITableViewCellLayoutManager *)self defaultTextLabelFontForCell:cellCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2298,20 +2298,20 @@ LABEL_16:
   }
 
   [v7 setAdjustsFontForContentSizeCategory:dyld_program_sdk_at_least()];
-  v13 = [v6 _constants];
-  v14 = [v6 _cellStyle];
-  v15 = [v6 traitCollection];
-  v16 = [v6 _inheritedInteractionTintColor];
+  _constants = [cellCopy _constants];
+  _cellStyle = [cellCopy _cellStyle];
+  traitCollection = [cellCopy traitCollection];
+  _inheritedInteractionTintColor = [cellCopy _inheritedInteractionTintColor];
   v17 = [UICellConfigurationState _readonlyCellState:?];
-  v18 = [v13 defaultTextColorForCellStyle:v14 traitCollection:v15 tintColor:v16 state:v17];
+  v18 = [_constants defaultTextColorForCellStyle:_cellStyle traitCollection:traitCollection tintColor:_inheritedInteractionTintColor state:v17];
 
   [v7 setTextColor:v18];
-  v19 = [v6 _constants];
-  v20 = [v6 _cellStyle];
-  v21 = [v6 traitCollection];
-  v22 = [v6 _inheritedInteractionTintColor];
+  _constants2 = [cellCopy _constants];
+  _cellStyle2 = [cellCopy _cellStyle];
+  traitCollection2 = [cellCopy traitCollection];
+  _inheritedInteractionTintColor2 = [cellCopy _inheritedInteractionTintColor];
   v23 = [UICellConfigurationState _readonlyCellStateFromViewConfigurationState:?];
-  v24 = [v19 defaultTextColorForCellStyle:v20 traitCollection:v21 tintColor:v22 state:v23];
+  v24 = [_constants2 defaultTextColorForCellStyle:_cellStyle2 traitCollection:traitCollection2 tintColor:_inheritedInteractionTintColor2 state:v23];
 
   if (v24)
   {
@@ -2343,57 +2343,57 @@ LABEL_16:
 
 LABEL_16:
 
-  [v7 setHighlighted:{objc_msgSend(v6, "_isHighlighted")}];
-  [v7 setEnabled:{objc_msgSend(v6, "isUserInteractionEnabled")}];
+  [v7 setHighlighted:{objc_msgSend(cellCopy, "_isHighlighted")}];
+  [v7 setEnabled:{objc_msgSend(cellCopy, "isUserInteractionEnabled")}];
   [v7 setOpaque:{objc_msgSend(v7, "isHighlighted") ^ 1}];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 setTableCell:v6];
+    [v7 setTableCell:cellCopy];
   }
 
   return v7;
 }
 
-- (id)defaultLabelForCell:(id)a3
+- (id)defaultLabelForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(UITableViewCellLayoutManager *)self defaultLabelForCell:v4 ofClass:objc_opt_class()];
+  cellCopy = cell;
+  v5 = [(UITableViewCellLayoutManager *)self defaultLabelForCell:cellCopy ofClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)defaultEditableTextFieldForCell:(id)a3
+- (id)defaultEditableTextFieldForCell:(id)cell
 {
-  v3 = a3;
+  cellCopy = cell;
   v4 = objc_alloc_init(UITextField);
   v5 = +[UIColor clearColor];
-  if ([v3 _changesOpaqueStateOfSubviews])
+  if ([cellCopy _changesOpaqueStateOfSubviews])
   {
-    v6 = [v3 _contentBackgroundColor];
-    [v6 alphaComponent];
+    _contentBackgroundColor = [cellCopy _contentBackgroundColor];
+    [_contentBackgroundColor alphaComponent];
     if (v7 == 1.0)
     {
-      v8 = v6;
+      v8 = _contentBackgroundColor;
 
       v5 = v8;
     }
   }
 
   [(UITextField *)v4 setBackgroundColor:v5];
-  v9 = [v3 _constants];
-  v10 = [v9 defaultTextLabelFontForCellStyle:{objc_msgSend(v3, "_cellStyle")}];
+  _constants = [cellCopy _constants];
+  v10 = [_constants defaultTextLabelFontForCellStyle:{objc_msgSend(cellCopy, "_cellStyle")}];
   [(UITextField *)v4 setFont:v10];
 
   [(UITextField *)v4 setAdjustsFontForContentSizeCategory:dyld_program_sdk_at_least()];
-  -[UITextField setHighlighted:](v4, "setHighlighted:", [v3 _isHighlighted]);
-  -[UITextField setEnabled:](v4, "setEnabled:", [v3 isUserInteractionEnabled]);
+  -[UITextField setHighlighted:](v4, "setHighlighted:", [cellCopy _isHighlighted]);
+  -[UITextField setEnabled:](v4, "setEnabled:", [cellCopy isUserInteractionEnabled]);
   [(UIView *)v4 setOpaque:[(UIControl *)v4 isHighlighted]^ 1];
 
   return v4;
 }
 
-- (id)defaultBadgeForCell:(id)a3
+- (id)defaultBadgeForCell:(id)cell
 {
   v3 = [_UITableViewCellBadge alloc];
   v4 = [(_UITableViewCellBadge *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -2401,27 +2401,27 @@ LABEL_16:
   return v4;
 }
 
-- (double)contentIndentationForCell:(id)a3
+- (double)contentIndentationForCell:(id)cell
 {
-  v3 = a3;
-  v4 = [v3 indentationLevel];
-  [v3 indentationWidth];
+  cellCopy = cell;
+  indentationLevel = [cellCopy indentationLevel];
+  [cellCopy indentationWidth];
   v6 = v5;
 
-  return v6 * v4;
+  return v6 * indentationLevel;
 }
 
-- (CGRect)standardLayoutImageViewFrameForCell:(id)a3 forSizing:(BOOL)a4
+- (CGRect)standardLayoutImageViewFrameForCell:(id)cell forSizing:(BOOL)sizing
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 _imageView:0];
+  sizingCopy = sizing;
+  cellCopy = cell;
+  v7 = [cellCopy _imageView:0];
   v8 = v7;
   if (v7 && ([v7 image], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
-    v10 = v6[13];
-    v11 = [v6 contentView];
-    [v11 bounds];
+    v10 = cellCopy[13];
+    contentView = [cellCopy contentView];
+    [contentView bounds];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -2434,14 +2434,14 @@ LABEL_16:
       v89.size.width = v17;
       v89.size.height = v19;
       MaxX = CGRectGetMaxX(v89);
-      [(UITableViewCellLayoutManager *)self contentIndentationForCell:v6];
+      [(UITableViewCellLayoutManager *)self contentIndentationForCell:cellCopy];
       v22 = MaxX - v27;
     }
 
     else
     {
       v20 = *MEMORY[0x1E695F058];
-      [(UITableViewCellLayoutManager *)self contentIndentationForCell:v6];
+      [(UITableViewCellLayoutManager *)self contentIndentationForCell:cellCopy];
       v22 = v20 + v21;
     }
 
@@ -2469,7 +2469,7 @@ LABEL_16:
       }
     }
 
-    if (height <= v19 || v4)
+    if (height <= v19 || sizingCopy)
     {
       v35 = 1.0;
     }
@@ -2479,10 +2479,10 @@ LABEL_16:
       v35 = v19 / height;
     }
 
-    v36 = [v8 _currentImage];
+    _currentImage = [v8 _currentImage];
     v87 = v15;
     v85 = v17;
-    _UITableCellLineHeightCenteredImageInRect(v36, v35, v13, v15, v17, v19);
+    _UITableCellLineHeightCenteredImageInRect(_currentImage, v35, v13, v15, v17, v19);
     v23 = v37;
     v39 = v38;
     v41 = v40;
@@ -2495,15 +2495,15 @@ LABEL_16:
 
     if (dyld_program_sdk_at_least())
     {
-      v42 = [v6 _constants];
-      v43 = [v6 traitCollection];
-      [v42 defaultImageViewSymbolImageAndAccessoryLayoutWidthForSidebar:0 traitCollection:v43];
+      _constants = [cellCopy _constants];
+      traitCollection = [cellCopy traitCollection];
+      [_constants defaultImageViewSymbolImageAndAccessoryLayoutWidthForSidebar:0 traitCollection:traitCollection];
       v45 = v44;
 
-      v46 = [v8 image];
-      v47 = [v6 traitCollection];
+      image = [v8 image];
+      traitCollection2 = [cellCopy traitCollection];
       v48 = 0.0;
-      if (_UITableCellShouldCenterImageHorizontallyForTraitCollection(v46, v47))
+      if (_UITableCellShouldCenterImageHorizontallyForTraitCollection(image, traitCollection2))
       {
         v92.origin.x = v22;
         v92.origin.y = v23;
@@ -2524,37 +2524,37 @@ LABEL_16:
         v94.size.width = width;
         v94.size.height = height;
         v73 = v72 - CGRectGetWidth(v94);
-        v50 = [v6 contentView];
-        [v50 layoutMargins];
+        contentView2 = [cellCopy contentView];
+        [contentView2 layoutMargins];
         v22 = v73 - v74 - v48;
       }
 
       else
       {
-        v50 = [v6 contentView];
-        [v50 layoutMargins];
+        contentView2 = [cellCopy contentView];
+        [contentView2 layoutMargins];
         v22 = v48 + v51;
       }
     }
 
     else if (dyld_program_sdk_at_least())
     {
-      v52 = [v6 _constants];
-      v53 = [v6 _tableView];
-      v54 = [v52 imageViewOffsetByLayoutMarginsForCell:v6 inTableView:v53];
+      _constants2 = [cellCopy _constants];
+      _tableView = [cellCopy _tableView];
+      v54 = [_constants2 imageViewOffsetByLayoutMarginsForCell:cellCopy inTableView:_tableView];
 
       if (v54)
       {
-        [v6 bounds];
+        [cellCopy bounds];
         v55 = CGRectGetWidth(v93);
-        -[UITableViewCellLayoutManager contentRectForCell:forState:rowWidth:](self, "contentRectForCell:forState:rowWidth:", v6, [v6 currentStateMask], v55);
+        -[UITableViewCellLayoutManager contentRectForCell:forState:rowWidth:](self, "contentRectForCell:forState:rowWidth:", cellCopy, [cellCopy currentStateMask], v55);
         v57 = v56;
         v82 = v58;
         v83 = v59;
         recta = v60;
-        [v6 directionalLayoutMargins];
+        [cellCopy directionalLayoutMargins];
         v62 = v61;
-        [v6 _defaultLeadingMarginWidth];
+        [cellCopy _defaultLeadingMarginWidth];
         v64 = fmax(v62, v63);
         v65 = v57;
         v66 = v82;
@@ -2584,7 +2584,7 @@ LABEL_16:
 
     else
     {
-      [v6 _defaultLeadingMarginWidth];
+      [cellCopy _defaultLeadingMarginWidth];
       v22 = v75;
     }
   }
@@ -2608,101 +2608,101 @@ LABEL_16:
   return result;
 }
 
-- (void)layoutSubviewsOfCell:(id)a3
+- (void)layoutSubviewsOfCell:(id)cell
 {
-  if ([a3 _usesModernAccessoriesLayout])
+  if ([cell _usesModernAccessoriesLayout])
   {
 
-    [(UITableViewCellLayoutManager *)self _modern_layoutSubviewsOfCell:a3];
+    [(UITableViewCellLayoutManager *)self _modern_layoutSubviewsOfCell:cell];
   }
 
   else
   {
 
-    [(UITableViewCellLayoutManager *)self _legacy_layoutSubviewsOfCell:a3];
+    [(UITableViewCellLayoutManager *)self _legacy_layoutSubviewsOfCell:cell];
   }
 }
 
-- (void)_modern_layoutSubviewsOfCell:(id)a3
+- (void)_modern_layoutSubviewsOfCell:(id)cell
 {
-  [a3 _updateAccessoriesIfNeeded];
-  v5 = [a3 _accessoryManager];
-  [v5 layoutIfNeeded];
+  [cell _updateAccessoriesIfNeeded];
+  _accessoryManager = [cell _accessoryManager];
+  [_accessoryManager layoutIfNeeded];
 
-  v6 = [a3 _accessoryManager];
-  [v6 contentFrame];
+  _accessoryManager2 = [cell _accessoryManager];
+  [_accessoryManager2 contentFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [a3 contentView];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  contentView = [cell contentView];
+  [contentView setFrame:{v8, v10, v12, v14}];
 
   if (_UITableViewCellUsesLayoutMarginBasedContentPadding())
   {
-    v16 = [a3 _accessoryManager];
-    v17 = [v16 currentConfiguration];
+    _accessoryManager3 = [cell _accessoryManager];
+    currentConfiguration = [_accessoryManager3 currentConfiguration];
 
-    v18 = [v17 leadingAccessories];
-    v19 = [v18 count];
+    leadingAccessories = [currentConfiguration leadingAccessories];
+    v19 = [leadingAccessories count];
 
     v20 = 0.0;
     v21 = 0.0;
     if (v19)
     {
-      v22 = [a3 _constants];
-      [v22 defaultCellContentLeadingPaddingForSidebar:0];
+      _constants = [cell _constants];
+      [_constants defaultCellContentLeadingPaddingForSidebar:0];
       v21 = v23;
     }
 
-    v24 = [v17 trailingAccessories];
-    v25 = [v24 count];
+    trailingAccessories = [currentConfiguration trailingAccessories];
+    v25 = [trailingAccessories count];
 
     if (v25)
     {
-      v26 = [a3 _constants];
-      [v26 defaultCellContentTrailingPadding];
+      _constants2 = [cell _constants];
+      [_constants2 defaultCellContentTrailingPadding];
       v20 = v27;
     }
 
-    [a3 _setOverriddenDefaultContentViewLayoutMargins:{0.0, v21, 0.0, v20}];
+    [cell _setOverriddenDefaultContentViewLayoutMargins:{0.0, v21, 0.0, v20}];
   }
 
-  v28 = [a3 currentStateMask];
-  v29 = [a3 _badge:0];
-  [(UITableViewCellLayoutManager *)self backgroundEndingRectForCell:a3 forNewEditingState:v28 & 1];
+  currentStateMask = [cell currentStateMask];
+  v29 = [cell _badge:0];
+  [(UITableViewCellLayoutManager *)self backgroundEndingRectForCell:cell forNewEditingState:currentStateMask & 1];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
-  v38 = [a3 _backgroundView:1];
+  v38 = [cell _backgroundView:1];
   [v38 setFrame:{v31, v33, v35, v37}];
-  v39 = [v38 layer];
-  [v39 setContentsRect:{0.0, 0.0, 1.0, 1.0}];
+  layer = [v38 layer];
+  [layer setContentsRect:{0.0, 0.0, 1.0, 1.0}];
 
-  [(UITableViewCellLayoutManager *)self selectedBackgroundEndingRectForCell:a3 forNewEditingState:v28 & 1];
+  [(UITableViewCellLayoutManager *)self selectedBackgroundEndingRectForCell:cell forNewEditingState:currentStateMask & 1];
   v41 = v40;
   v43 = v42;
   v45 = v44;
   v47 = v46;
-  v48 = [a3 _selectedBackgroundView:0];
+  v48 = [cell _selectedBackgroundView:0];
   [v48 setFrame:{v41, v43, v45, v47}];
 
-  v49 = [a3 _imageView:0];
+  v49 = [cell _imageView:0];
   v50 = v49;
   if (v49)
   {
-    v51 = [v49 image];
+    image = [v49 image];
 
-    if (v51)
+    if (image)
     {
-      v52 = [v50 superview];
+      superview = [v50 superview];
 
-      if (!v52)
+      if (!superview)
       {
-        v53 = [a3 contentView];
-        [v53 addSubview:v50];
+        contentView2 = [cell contentView];
+        [contentView2 addSubview:v50];
       }
     }
 
@@ -2711,11 +2711,11 @@ LABEL_16:
       [v50 removeFromSuperview];
     }
 
-    v54 = [v50 superview];
+    superview2 = [v50 superview];
 
-    if (v54)
+    if (superview2)
     {
-      [(UITableViewCellLayoutManager *)self standardLayoutImageViewFrameForCell:a3 forSizing:0];
+      [(UITableViewCellLayoutManager *)self standardLayoutImageViewFrameForCell:cell forSizing:0];
       v56 = v55;
       v58 = v57;
       v60 = v59;
@@ -2733,35 +2733,35 @@ LABEL_16:
       [v50 setFrame:{v56, v58, v60, v62}];
       if (!v67)
       {
-        [a3 _updateSeparatorContent:1];
+        [cell _updateSeparatorContent:1];
       }
     }
   }
 
-  v68 = [a3 _textLabel:0];
+  v68 = [cell _textLabel:0];
   v69 = v68;
   if (v68)
   {
-    v70 = [v68 font];
-    [v70 pointSize];
+    font = [v68 font];
+    [font pointSize];
     v72 = v71;
 
     if (v72 == 0.0)
     {
-      v73 = [(UITableViewCellLayoutManager *)self defaultTextLabelFontForCell:a3];
+      v73 = [(UITableViewCellLayoutManager *)self defaultTextLabelFontForCell:cell];
       [v69 setFont:v73];
     }
 
-    v74 = [v69 text];
-    v75 = v74;
-    if (v74 && [v74 length])
+    text = [v69 text];
+    v75 = text;
+    if (text && [text length])
     {
-      v76 = [v69 superview];
+      superview3 = [v69 superview];
 
-      if (!v76)
+      if (!superview3)
       {
-        v77 = [a3 contentView];
-        [v77 addSubview:v69];
+        contentView3 = [cell contentView];
+        [contentView3 addSubview:v69];
       }
     }
 
@@ -2774,50 +2774,50 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v78 = [(UITableViewCellLayoutManager *)self shouldIncreaseMarginForImageViewInCell:a3];
+    v78 = [(UITableViewCellLayoutManager *)self shouldIncreaseMarginForImageViewInCell:cell];
     v79 = 0.0;
     if (!v78)
     {
-      [a3 bounds];
-      [(UITableViewCellLayoutManager *)self requiredIndentationForFirstLineOfCell:a3 rowWidth:CGRectGetWidth(v92)];
+      [cell bounds];
+      [(UITableViewCellLayoutManager *)self requiredIndentationForFirstLineOfCell:cell rowWidth:CGRectGetWidth(v92)];
     }
 
     [v69 _setFirstParagraphFirstLineHeadIndent:v79];
   }
 
-  v80 = [a3 _detailTextLabel:0];
+  v80 = [cell _detailTextLabel:0];
   if (v69 | v80)
   {
     v89 = 0u;
     v90 = 0u;
     v87 = 0u;
     v88 = 0u;
-    [a3 bounds];
-    [(UITableViewCellLayoutManager *)self getTextLabelRect:&v89 detailTextLabelRect:&v87 forCell:a3 rowWidth:0 forSizing:CGRectGetWidth(v93)];
+    [cell bounds];
+    [(UITableViewCellLayoutManager *)self getTextLabelRect:&v89 detailTextLabelRect:&v87 forCell:cell rowWidth:0 forSizing:CGRectGetWidth(v93)];
     [v69 setFrame:{v89, v90}];
     [v80 setFrame:{v87, v88}];
   }
 
-  if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:a3])
+  if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cell])
   {
     [v69 frame];
     [v69 _capOffsetFromBoundsTop];
-    v81 = [v69 font];
-    [v81 capHeight];
+    font2 = [v69 font];
+    [font2 capHeight];
   }
 
-  v82 = [v50 superview];
-  if (v82)
+  superview4 = [v50 superview];
+  if (superview4)
   {
-    v83 = v82;
-    v84 = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:a3];
+    v83 = superview4;
+    v84 = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cell];
 
     if (v84)
     {
-      if (![(UITableViewCellLayoutManager *)self shouldIncreaseMarginForImageViewInCell:a3])
+      if (![(UITableViewCellLayoutManager *)self shouldIncreaseMarginForImageViewInCell:cell])
       {
-        v85 = [a3 contentView];
-        [v85 bringSubviewToFront:v50];
+        contentView4 = [cell contentView];
+        [contentView4 bringSubviewToFront:v50];
       }
 
       [v50 frame];
@@ -2825,51 +2825,51 @@ LABEL_16:
     }
   }
 
-  if (![a3 style])
+  if (![cell style])
   {
-    v86 = [a3 _detailTextLabel:0];
+    v86 = [cell _detailTextLabel:0];
     [v86 removeFromSuperview];
   }
 
-  [(UITableViewCellLayoutManager *)self _layoutFocusGuidesForCell:a3];
+  [(UITableViewCellLayoutManager *)self _layoutFocusGuidesForCell:cell];
 }
 
-- (void)_legacy_layoutSubviewsOfCell:(id)a3
+- (void)_legacy_layoutSubviewsOfCell:(id)cell
 {
-  v5 = [a3 currentStateMask];
-  v6 = [a3 showingDeleteConfirmation];
-  v7 = [a3 _badge:0];
-  v8 = *(a3 + 13);
-  v9 = [a3 editingData:v5 & 1];
-  [(UITableViewCellLayoutManager *)self backgroundEndingRectForCell:a3 forNewEditingState:v5 & 1];
+  currentStateMask = [cell currentStateMask];
+  showingDeleteConfirmation = [cell showingDeleteConfirmation];
+  v7 = [cell _badge:0];
+  v8 = *(cell + 13);
+  v9 = [cell editingData:currentStateMask & 1];
+  [(UITableViewCellLayoutManager *)self backgroundEndingRectForCell:cell forNewEditingState:currentStateMask & 1];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [a3 _backgroundView:1];
+  v18 = [cell _backgroundView:1];
   [v18 setFrame:{v11, v13, v15, v17}];
   v151 = v18;
-  v19 = [v18 layer];
-  [v19 setContentsRect:{0.0, 0.0, 1.0, 1.0}];
+  layer = [v18 layer];
+  [layer setContentsRect:{0.0, 0.0, 1.0, 1.0}];
 
-  [(UITableViewCellLayoutManager *)self selectedBackgroundEndingRectForCell:a3 forNewEditingState:v5 & 1];
+  [(UITableViewCellLayoutManager *)self selectedBackgroundEndingRectForCell:cell forNewEditingState:currentStateMask & 1];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
-  v28 = [a3 _selectedBackgroundView:0];
+  v28 = [cell _selectedBackgroundView:0];
   [v28 setFrame:{v21, v23, v25, v27}];
 
-  v29 = [v9 editControl:v5 & 1];
+  v29 = [v9 editControl:currentStateMask & 1];
   if (v29)
   {
-    [(UITableViewCellLayoutManager *)self editControlEndingRectForCell:a3 forNewEditingState:v5 & 1];
+    [(UITableViewCellLayoutManager *)self editControlEndingRectForCell:cell forNewEditingState:currentStateMask & 1];
     [v29 setFrame:?];
   }
 
   v30 = +[UIView _isInAnimationBlock];
   v156 = v29;
-  if (v5)
+  if (currentStateMask)
   {
     v171[0] = MEMORY[0x1E69E9820];
     v171[1] = 3221225472;
@@ -2882,7 +2882,7 @@ LABEL_16:
 
   else
   {
-    if ([(UITableViewCellLayoutManager *)self editControlShouldFadeForCell:a3])
+    if ([(UITableViewCellLayoutManager *)self editControlShouldFadeForCell:cell])
     {
       v169[0] = MEMORY[0x1E69E9820];
       v169[1] = 3221225472;
@@ -2895,13 +2895,13 @@ LABEL_16:
     [v29 setRotated:0 animated:1];
   }
 
-  v31 = [(UITableViewCellLayoutManager *)self reorderControlShouldAppearForCell:a3];
+  v31 = [(UITableViewCellLayoutManager *)self reorderControlShouldAppearForCell:cell];
   v32 = [v9 reorderControl:v31];
   if (v32)
   {
-    [(UITableViewCellLayoutManager *)self reorderControlEndingRectForCell:a3 forNewEditingState:v5 & 1 showingDeleteConfirmation:v6];
+    [(UITableViewCellLayoutManager *)self reorderControlEndingRectForCell:cell forNewEditingState:currentStateMask & 1 showingDeleteConfirmation:showingDeleteConfirmation];
     [v32 setFrame:?];
-    if ((v5 & 1) != 0 || [a3 _allowsReorderingWhenNotEditing])
+    if ((currentStateMask & 1) != 0 || [cell _allowsReorderingWhenNotEditing])
     {
       v33 = 0.0;
       if (v31)
@@ -2912,9 +2912,9 @@ LABEL_16:
       goto LABEL_13;
     }
 
-    if (([a3 _allowsReorderingWhenNotEditing] & 1) == 0)
+    if (([cell _allowsReorderingWhenNotEditing] & 1) == 0)
     {
-      v148 = [(UITableViewCellLayoutManager *)self reorderControlShouldFadeForCell:a3];
+      v148 = [(UITableViewCellLayoutManager *)self reorderControlShouldFadeForCell:cell];
       v33 = 0.0;
       if (v148)
       {
@@ -2924,16 +2924,16 @@ LABEL_13:
     }
   }
 
-  v34 = [(UITableViewCellLayoutManager *)self reorderSeparatorShouldAppearForCell:a3];
+  v34 = [(UITableViewCellLayoutManager *)self reorderSeparatorShouldAppearForCell:cell];
   v154 = [v9 reorderSeparatorView:v34];
   if (!v154)
   {
     goto LABEL_21;
   }
 
-  [(UITableViewCellLayoutManager *)self reorderSeparatorEndingRectForCell:a3 forNewEditingState:v5 & 1 showingDeleteConfirmation:v6];
+  [(UITableViewCellLayoutManager *)self reorderSeparatorEndingRectForCell:cell forNewEditingState:currentStateMask & 1 showingDeleteConfirmation:showingDeleteConfirmation];
   [v154 setFrame:?];
-  if (v5)
+  if (currentStateMask)
   {
     v35 = 0.0;
     if (v34)
@@ -2944,7 +2944,7 @@ LABEL_13:
 
   else
   {
-    v36 = [(UITableViewCellLayoutManager *)self reorderSeparatorShouldFadeForCell:a3];
+    v36 = [(UITableViewCellLayoutManager *)self reorderSeparatorShouldFadeForCell:cell];
     v35 = 0.0;
     if (!v36)
     {
@@ -2954,36 +2954,36 @@ LABEL_13:
 
   [v154 setAlpha:v35];
 LABEL_21:
-  v153 = [a3 _accessoryView:{(v5 & 1) == 0, v35}];
-  v155 = [a3 _editingAccessoryView:v5 & 1];
-  [(UITableViewCellLayoutManager *)self contentEndingRectForCell:a3 forNewEditingState:v5 & 1];
+  v153 = [cell _accessoryView:{(currentStateMask & 1) == 0, v35}];
+  v155 = [cell _editingAccessoryView:currentStateMask & 1];
+  [(UITableViewCellLayoutManager *)self contentEndingRectForCell:cell forNewEditingState:currentStateMask & 1];
   v38 = v37;
   v40 = v39;
   v42 = v41;
   v44 = v43;
-  v45 = [a3 contentView];
-  [v45 setFrame:{v38, v40, v42, v44}];
+  contentView = [cell contentView];
+  [contentView setFrame:{v38, v40, v42, v44}];
 
   if ((v8 & 0x400000) != 0)
   {
-    v46 = [a3 contentView];
-    [v46 frame];
+    contentView2 = [cell contentView];
+    [contentView2 frame];
     CGRectGetWidth(v174);
   }
 
-  [(UITableViewCellLayoutManager *)self contentIndentationForCell:a3];
+  [(UITableViewCellLayoutManager *)self contentIndentationForCell:cell];
   if (v7)
   {
-    v47 = [(_UITableViewCellBadge *)v7 text];
-    v48 = [v47 length];
+    text = [(_UITableViewCellBadge *)v7 text];
+    v48 = [text length];
 
     if (v48)
     {
-      v49 = [v7 superview];
+      superview = [v7 superview];
 
-      if (!v49)
+      if (!superview)
       {
-        [a3 addSubview:v7];
+        [cell addSubview:v7];
       }
     }
 
@@ -2992,12 +2992,12 @@ LABEL_21:
       [v7 removeFromSuperview];
     }
 
-    v50 = [v7 superview];
+    superview2 = [v7 superview];
 
-    if (v50)
+    if (superview2)
     {
-      v51 = [a3 contentView];
-      [v51 frame];
+      contentView3 = [cell contentView];
+      [contentView3 frame];
       v53 = v52;
       v55 = v54;
       v57 = v56;
@@ -3024,25 +3024,25 @@ LABEL_21:
       }
 
       [v7 setFrame:{v62, v63}];
-      v65 = [a3 contentView];
-      [v65 setFrame:{v53, v55, v64, v59}];
+      contentView4 = [cell contentView];
+      [contentView4 setFrame:{v53, v55, v64, v59}];
     }
   }
 
-  v66 = [a3 _imageView:0];
+  v66 = [cell _imageView:0];
   v67 = v66;
   if (v66)
   {
-    v68 = [v66 image];
+    image = [v66 image];
 
-    if (v68)
+    if (image)
     {
-      v69 = [v67 superview];
+      superview3 = [v67 superview];
 
-      if (!v69)
+      if (!superview3)
       {
-        v70 = [a3 contentView];
-        [v70 addSubview:v67];
+        contentView5 = [cell contentView];
+        [contentView5 addSubview:v67];
       }
     }
 
@@ -3051,11 +3051,11 @@ LABEL_21:
       [v67 removeFromSuperview];
     }
 
-    v71 = [v67 superview];
+    superview4 = [v67 superview];
 
-    if (v71)
+    if (superview4)
     {
-      [(UITableViewCellLayoutManager *)self standardLayoutImageViewFrameForCell:a3 forSizing:0];
+      [(UITableViewCellLayoutManager *)self standardLayoutImageViewFrameForCell:cell forSizing:0];
       v73 = v72;
       v75 = v74;
       v77 = v76;
@@ -3073,36 +3073,36 @@ LABEL_21:
       [v67 setFrame:{v73, v75, v77, v79}];
       if (!v84)
       {
-        [a3 _updateSeparatorContent:1];
+        [cell _updateSeparatorContent:1];
       }
     }
   }
 
   v152 = v7;
-  v85 = [a3 _textLabel:0];
+  v85 = [cell _textLabel:0];
   v86 = v85;
   if (v85)
   {
-    v87 = [v85 font];
-    [v87 pointSize];
+    font = [v85 font];
+    [font pointSize];
     v89 = v88;
 
     if (v89 == 0.0)
     {
-      v90 = [(UITableViewCellLayoutManager *)self defaultTextLabelFontForCell:a3];
+      v90 = [(UITableViewCellLayoutManager *)self defaultTextLabelFontForCell:cell];
       [v86 setFont:v90];
     }
 
-    v91 = [v86 text];
-    v92 = v91;
-    if (v91 && [v91 length])
+    text2 = [v86 text];
+    v92 = text2;
+    if (text2 && [text2 length])
     {
-      v93 = [v86 superview];
+      superview5 = [v86 superview];
 
-      if (!v93)
+      if (!superview5)
       {
-        v94 = [a3 contentView];
-        [v94 addSubview:v86];
+        contentView6 = [cell contentView];
+        [contentView6 addSubview:v86];
       }
     }
 
@@ -3115,49 +3115,49 @@ LABEL_21:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v95 = [(UITableViewCellLayoutManager *)self shouldIncreaseMarginForImageViewInCell:a3];
+    v95 = [(UITableViewCellLayoutManager *)self shouldIncreaseMarginForImageViewInCell:cell];
     v96 = 0.0;
     if (!v95)
     {
-      [a3 bounds];
-      [(UITableViewCellLayoutManager *)self requiredIndentationForFirstLineOfCell:a3 rowWidth:CGRectGetWidth(v176)];
+      [cell bounds];
+      [(UITableViewCellLayoutManager *)self requiredIndentationForFirstLineOfCell:cell rowWidth:CGRectGetWidth(v176)];
     }
 
     [v86 _setFirstParagraphFirstLineHeadIndent:v96];
   }
 
-  v150 = v6;
+  v150 = showingDeleteConfirmation;
   v97 = v9;
-  v98 = [a3 _detailTextLabel:0];
+  v98 = [cell _detailTextLabel:0];
   v167 = 0u;
   v168 = 0u;
   v165 = 0u;
   v166 = 0u;
-  [a3 bounds];
-  [(UITableViewCellLayoutManager *)self getTextLabelRect:&v167 detailTextLabelRect:&v165 forCell:a3 rowWidth:0 forSizing:CGRectGetWidth(v177)];
+  [cell bounds];
+  [(UITableViewCellLayoutManager *)self getTextLabelRect:&v167 detailTextLabelRect:&v165 forCell:cell rowWidth:0 forSizing:CGRectGetWidth(v177)];
   [v86 setFrame:{v167, v168}];
   v149 = v98;
   [v98 setFrame:{v165, v166}];
-  if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:a3])
+  if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cell])
   {
     [v86 frame];
     [v86 _capOffsetFromBoundsTop];
-    v99 = [v86 font];
-    [v99 capHeight];
+    font2 = [v86 font];
+    [font2 capHeight];
   }
 
-  v100 = [v67 superview];
-  if (v100)
+  superview6 = [v67 superview];
+  if (superview6)
   {
-    v101 = v100;
-    v102 = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:a3];
+    v101 = superview6;
+    v102 = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cell];
 
     if (v102)
     {
-      if (![(UITableViewCellLayoutManager *)self shouldIncreaseMarginForImageViewInCell:a3])
+      if (![(UITableViewCellLayoutManager *)self shouldIncreaseMarginForImageViewInCell:cell])
       {
-        v103 = [a3 contentView];
-        [v103 bringSubviewToFront:v67];
+        contentView7 = [cell contentView];
+        [contentView7 bringSubviewToFront:v67];
       }
 
       [v67 frame];
@@ -3165,12 +3165,12 @@ LABEL_21:
     }
   }
 
-  v104 = [v156 superview];
+  superview7 = [v156 superview];
   v105 = MEMORY[0x1E695F050];
-  if (v104 && (v106 = v104, v107 = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:a3], v106, v107))
+  if (superview7 && (v106 = superview7, v107 = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cell], v106, v107))
   {
     [v156 frame];
-    [a3 convertRect:v156 toView:?];
+    [cell convertRect:v156 toView:?];
   }
 
   else
@@ -3182,11 +3182,11 @@ LABEL_21:
   }
 
   [v156 adjustLayoutForFocalRect:{v108, v109, v110, v111}];
-  v112 = [v32 superview];
-  if (v112 && (v113 = v112, v114 = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:a3], v113, v114))
+  superview8 = [v32 superview];
+  if (superview8 && (v113 = superview8, v114 = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cell], v113, v114))
   {
     [v32 frame];
-    [a3 convertRect:v32 toView:?];
+    [cell convertRect:v32 toView:?];
   }
 
   else
@@ -3214,17 +3214,17 @@ LABEL_76:
       goto LABEL_93;
     }
 
-    [(UITableViewCellLayoutManager *)self editingAccessoryEndingRectForCell:a3 forNewEditingState:v5 & 1 showingDeleteConfirmation:v150];
+    [(UITableViewCellLayoutManager *)self editingAccessoryEndingRectForCell:cell forNewEditingState:currentStateMask & 1 showingDeleteConfirmation:v150];
     v131 = v130;
     v133 = v132;
     v135 = v134;
     v137 = v136;
-    if (v5)
+    if (currentStateMask)
     {
-      if ([(UITableViewCellLayoutManager *)self editingAccessoryShouldAppearForCell:a3])
+      if ([(UITableViewCellLayoutManager *)self editingAccessoryShouldAppearForCell:cell])
       {
-        v138 = [v155 superview];
-        if (!v138)
+        superview9 = [v155 superview];
+        if (!superview9)
         {
           v139 = +[UIView areAnimationsEnabled];
           [UIView setAnimationsEnabled:0];
@@ -3235,9 +3235,9 @@ LABEL_76:
         }
 
         [v155 _setHiddenForReuse:0];
-        if (v138 != a3)
+        if (superview9 != cell)
         {
-          [a3 addSubview:v155];
+          [cell addSubview:v155];
         }
       }
 
@@ -3250,7 +3250,7 @@ LABEL_92:
 
 LABEL_91:
     [v155 setFrame:{v131, v133, v135, v137}];
-    v146 = [(UITableViewCellLayoutManager *)self editingAccessoryShouldFadeForCell:a3];
+    v146 = [(UITableViewCellLayoutManager *)self editingAccessoryShouldFadeForCell:cell];
     v120 = 0.0;
     if (!v146)
     {
@@ -3260,15 +3260,15 @@ LABEL_91:
     goto LABEL_92;
   }
 
-  [(UITableViewCellLayoutManager *)self accessoryEndingRectForCell:a3 forNewEditingState:v5 & 1 showingDeleteConfirmation:v150];
+  [(UITableViewCellLayoutManager *)self accessoryEndingRectForCell:cell forNewEditingState:currentStateMask & 1 showingDeleteConfirmation:v150];
   v126 = v122;
   v127 = v123;
   v128 = v124;
   v129 = v125;
-  if (v5)
+  if (currentStateMask)
   {
     [v153 setFrame:{v122, v123, v124, v125}];
-    if ([(UITableViewCellLayoutManager *)self accessoryShouldFadeForCell:a3])
+    if ([(UITableViewCellLayoutManager *)self accessoryShouldFadeForCell:cell])
     {
       [v153 setAlpha:0.0];
     }
@@ -3276,8 +3276,8 @@ LABEL_91:
     goto LABEL_76;
   }
 
-  v141 = [v153 superview];
-  if (!v141)
+  superview10 = [v153 superview];
+  if (!superview10)
   {
     v157[0] = MEMORY[0x1E69E9820];
     v157[1] = 3221225472;
@@ -3293,16 +3293,16 @@ LABEL_91:
   }
 
   [v121 _setHiddenForReuse:0];
-  if (v141 != a3)
+  if (superview10 != cell)
   {
-    [a3 addSubview:v121];
+    [cell addSubview:v121];
   }
 
   [v121 setFrame:{v126, v127, v128, v129}];
   [v121 setAlpha:1.0];
   if (v155)
   {
-    [(UITableViewCellLayoutManager *)self editingAccessoryEndingRectForCell:a3 forNewEditingState:0 showingDeleteConfirmation:v150];
+    [(UITableViewCellLayoutManager *)self editingAccessoryEndingRectForCell:cell forNewEditingState:0 showingDeleteConfirmation:v150];
     v131 = v142;
     v133 = v143;
     v135 = v144;
@@ -3311,15 +3311,15 @@ LABEL_91:
   }
 
 LABEL_93:
-  if (![a3 style])
+  if (![cell style])
   {
-    v147 = [a3 _detailTextLabel:0];
+    v147 = [cell _detailTextLabel:0];
     [v147 removeFromSuperview];
 
     v121 = v153;
   }
 
-  [(UITableViewCellLayoutManager *)self _layoutFocusGuidesForCell:a3];
+  [(UITableViewCellLayoutManager *)self _layoutFocusGuidesForCell:cell];
 }
 
 uint64_t __61__UITableViewCellLayoutManager__legacy_layoutSubviewsOfCell___block_invoke_2(uint64_t a1)
@@ -3333,26 +3333,26 @@ uint64_t __61__UITableViewCellLayoutManager__legacy_layoutSubviewsOfCell___block
   return [*(a1 + 32) setAlpha:v1];
 }
 
-- (void)cell:(id)a3 willTransitionToState:(unint64_t)a4
+- (void)cell:(id)cell willTransitionToState:(unint64_t)state
 {
-  v6 = a3;
-  if (([v6 _usesModernAccessoriesLayout] & 1) == 0)
+  cellCopy = cell;
+  if (([cellCopy _usesModernAccessoriesLayout] & 1) == 0)
   {
-    [(UITableViewCellLayoutManager *)self _legacy_cell:v6 willTransitionToState:a4];
+    [(UITableViewCellLayoutManager *)self _legacy_cell:cellCopy willTransitionToState:state];
   }
 }
 
-- (void)_legacy_cell:(id)a3 willTransitionToState:(unint64_t)a4
+- (void)_legacy_cell:(id)_legacy_cell willTransitionToState:(unint64_t)state
 {
-  v6 = a3;
+  _legacy_cellCopy = _legacy_cell;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67__UITableViewCellLayoutManager__legacy_cell_willTransitionToState___block_invoke;
   v8[3] = &unk_1E70F36D0;
-  v10 = self;
-  v11 = a4;
-  v9 = v6;
-  v7 = v6;
+  selfCopy = self;
+  stateCopy = state;
+  v9 = _legacy_cellCopy;
+  v7 = _legacy_cellCopy;
   [UIView performWithoutAnimation:v8];
 }
 
@@ -3440,54 +3440,54 @@ LABEL_21:
   }
 }
 
-- (void)cell:(id)a3 didTransitionToState:(unint64_t)a4
+- (void)cell:(id)cell didTransitionToState:(unint64_t)state
 {
-  v6 = a3;
-  if ([v6 _usesModernAccessoriesLayout])
+  cellCopy = cell;
+  if ([cellCopy _usesModernAccessoriesLayout])
   {
-    [(UITableViewCellLayoutManager *)self _modern_cell:v6 didTransitionToState:a4];
+    [(UITableViewCellLayoutManager *)self _modern_cell:cellCopy didTransitionToState:state];
   }
 
   else
   {
-    [(UITableViewCellLayoutManager *)self _legacy_cell:v6 didTransitionToState:a4];
+    [(UITableViewCellLayoutManager *)self _legacy_cell:cellCopy didTransitionToState:state];
   }
 }
 
-- (void)_modern_cell:(id)a3 didTransitionToState:(unint64_t)a4
+- (void)_modern_cell:(id)_modern_cell didTransitionToState:(unint64_t)state
 {
-  v4 = a4;
-  v7 = a3;
-  if ((v4 & 1) == 0 && ([v7 isEditing] & 1) == 0 && (objc_msgSend(v7, "_allowsReorderingWhenNotEditing") & 1) == 0)
+  stateCopy = state;
+  _modern_cellCopy = _modern_cell;
+  if ((stateCopy & 1) == 0 && ([_modern_cellCopy isEditing] & 1) == 0 && (objc_msgSend(_modern_cellCopy, "_allowsReorderingWhenNotEditing") & 1) == 0)
   {
-    [v7 removeEditingData];
+    [_modern_cellCopy removeEditingData];
   }
 
-  v6 = [v7 _focusSystem];
+  _focusSystem = [_modern_cellCopy _focusSystem];
 
-  if (v6)
+  if (_focusSystem)
   {
-    [(UITableViewCellLayoutManager *)self _updateFocusGuidesForCell:v7 editing:v4 & 1];
+    [(UITableViewCellLayoutManager *)self _updateFocusGuidesForCell:_modern_cellCopy editing:stateCopy & 1];
   }
 }
 
-- (void)_legacy_cell:(id)a3 didTransitionToState:(unint64_t)a4
+- (void)_legacy_cell:(id)_legacy_cell didTransitionToState:(unint64_t)state
 {
-  v4 = a4;
-  v19 = a3;
+  stateCopy = state;
+  _legacy_cellCopy = _legacy_cell;
   v6 = +[UIView areAnimationsEnabled];
   [UIView setAnimationsEnabled:0];
-  v7 = [v19 isEditing];
-  if (v4)
+  isEditing = [_legacy_cellCopy isEditing];
+  if (stateCopy)
   {
-    if (v7)
+    if (isEditing)
     {
-      v8 = [v19 _accessoryView:1];
-      v9 = [v19 _editingAccessoryView:1];
+      v8 = [_legacy_cellCopy _accessoryView:1];
+      v9 = [_legacy_cellCopy _editingAccessoryView:1];
 
       if (v8 != v9)
       {
-        v10 = [v19 _accessoryView:0];
+        v10 = [_legacy_cellCopy _accessoryView:0];
 LABEL_9:
         v13 = v10;
         [v10 removeFromSuperview];
@@ -3495,106 +3495,106 @@ LABEL_9:
     }
   }
 
-  else if ((v7 & 1) == 0 && ([v19 _allowsReorderingWhenNotEditing] & 1) == 0)
+  else if ((isEditing & 1) == 0 && ([_legacy_cellCopy _allowsReorderingWhenNotEditing] & 1) == 0)
   {
-    [v19 removeEditingData];
-    v11 = [v19 _accessoryView:1];
-    v12 = [v19 _editingAccessoryView:1];
+    [_legacy_cellCopy removeEditingData];
+    v11 = [_legacy_cellCopy _accessoryView:1];
+    v12 = [_legacy_cellCopy _editingAccessoryView:1];
 
     if (v11 != v12)
     {
-      v10 = [v19 _editingAccessoryView:0];
+      v10 = [_legacy_cellCopy _editingAccessoryView:0];
       goto LABEL_9;
     }
   }
 
-  v14 = [v19 _focusSystem];
+  _focusSystem = [_legacy_cellCopy _focusSystem];
 
-  if (v14)
+  if (_focusSystem)
   {
-    [(UITableViewCellLayoutManager *)self _updateFocusGuidesForCell:v19 editing:v4 & 1];
+    [(UITableViewCellLayoutManager *)self _updateFocusGuidesForCell:_legacy_cellCopy editing:stateCopy & 1];
   }
 
-  v15 = [v19 _accessoryView:0];
+  v15 = [_legacy_cellCopy _accessoryView:0];
   v16 = v15;
   if (v15)
   {
-    v17 = [v15 superview];
+    superview = [v15 superview];
 
-    if (!v17)
+    if (!superview)
     {
-      v18 = [v16 layer];
-      [v18 clearHasBeenCommitted];
+      layer = [v16 layer];
+      [layer clearHasBeenCommitted];
     }
   }
 
   [UIView setAnimationsEnabled:v6];
 }
 
-- (void)_layoutFocusGuidesForCell:(id)a3
+- (void)_layoutFocusGuidesForCell:(id)cell
 {
-  v4 = a3;
-  v3 = [v4 _editingControlsFocusGuide];
-  if (v3)
+  cellCopy = cell;
+  _editingControlsFocusGuide = [cellCopy _editingControlsFocusGuide];
+  if (_editingControlsFocusGuide)
   {
-    [v4 bounds];
-    [v3 _setManualLayoutFrame:?];
+    [cellCopy bounds];
+    [_editingControlsFocusGuide _setManualLayoutFrame:?];
   }
 }
 
-- (void)_updateFocusGuidesForCell:(id)a3 editing:(BOOL)a4
+- (void)_updateFocusGuidesForCell:(id)cell editing:(BOOL)editing
 {
-  v4 = a4;
-  v15 = a3;
-  v6 = [v15 _focusSystem];
+  editingCopy = editing;
+  cellCopy = cell;
+  _focusSystem = [cellCopy _focusSystem];
 
-  if (v6 && v4)
+  if (_focusSystem && editingCopy)
   {
-    v7 = [v15 _editingControlsFocusGuide];
+    _editingControlsFocusGuide = [cellCopy _editingControlsFocusGuide];
 
-    if (!v7)
+    if (!_editingControlsFocusGuide)
     {
       v8 = objc_alloc_init(UIFocusContainerGuide);
-      [v15 _setEditingControlsFocusGuide:v8];
+      [cellCopy _setEditingControlsFocusGuide:v8];
 
-      v9 = [v15 _editingControlsFocusGuide];
-      [v9 setIdentifier:@"UITableViewCellEditingFocusGuide"];
+      _editingControlsFocusGuide2 = [cellCopy _editingControlsFocusGuide];
+      [_editingControlsFocusGuide2 setIdentifier:@"UITableViewCellEditingFocusGuide"];
 
-      v10 = [v15 _editingControlsFocusGuide];
-      [v15 addLayoutGuide:v10];
+      _editingControlsFocusGuide3 = [cellCopy _editingControlsFocusGuide];
+      [cellCopy addLayoutGuide:_editingControlsFocusGuide3];
     }
 
-    [(UITableViewCellLayoutManager *)self _layoutFocusGuidesForCell:v15];
+    [(UITableViewCellLayoutManager *)self _layoutFocusGuidesForCell:cellCopy];
   }
 
   else
   {
-    v11 = [v15 _focusSystem];
-    v12 = v11;
-    if (v11 && v4)
+    _focusSystem2 = [cellCopy _focusSystem];
+    v12 = _focusSystem2;
+    if (_focusSystem2 && editingCopy)
     {
     }
 
     else
     {
-      v13 = [v15 _editingControlsFocusGuide];
+      _editingControlsFocusGuide4 = [cellCopy _editingControlsFocusGuide];
 
-      if (v13)
+      if (_editingControlsFocusGuide4)
       {
-        v14 = [v15 _editingControlsFocusGuide];
-        [v15 removeLayoutGuide:v14];
+        _editingControlsFocusGuide5 = [cellCopy _editingControlsFocusGuide];
+        [cellCopy removeLayoutGuide:_editingControlsFocusGuide5];
 
-        [v15 _setEditingControlsFocusGuide:0];
+        [cellCopy _setEditingControlsFocusGuide:0];
       }
     }
   }
 }
 
-- (CGRect)contentRectForCell:(id)a3 forState:(unint64_t)a4
+- (CGRect)contentRectForCell:(id)cell forState:(unint64_t)state
 {
-  v6 = a3;
-  [v6 bounds];
-  [(UITableViewCellLayoutManager *)self contentRectForCell:v6 forState:a4 rowWidth:CGRectGetWidth(v19)];
+  cellCopy = cell;
+  [cellCopy bounds];
+  [(UITableViewCellLayoutManager *)self contentRectForCell:cellCopy forState:state rowWidth:CGRectGetWidth(v19)];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -3611,9 +3611,9 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)contentRectForCell:(id)a3 forState:(unint64_t)a4 rowWidth:(double)a5
+- (CGRect)contentRectForCell:(id)cell forState:(unint64_t)state rowWidth:(double)width
 {
-  [(UITableViewCellLayoutManager *)self _contentRectForCell:a3 forEditingState:a4 & 1 showingDeleteConfirmation:0 rowWidth:a5];
+  [(UITableViewCellLayoutManager *)self _contentRectForCell:cell forEditingState:state & 1 showingDeleteConfirmation:0 rowWidth:width];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -3621,30 +3621,30 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)editControlShouldAppearForCell:(id)a3
+- (BOOL)editControlShouldAppearForCell:(id)cell
 {
-  v3 = a3;
-  if ([v3 wasSwiped])
+  cellCopy = cell;
+  if ([cellCopy wasSwiped])
   {
-    v4 = 0;
+    shouldIndentWhileEditing = 0;
   }
 
-  else if ([v3 editingStyle])
+  else if ([cellCopy editingStyle])
   {
-    v4 = 1;
+    shouldIndentWhileEditing = 1;
   }
 
   else
   {
-    v4 = [v3 shouldIndentWhileEditing];
+    shouldIndentWhileEditing = [cellCopy shouldIndentWhileEditing];
   }
 
-  return v4;
+  return shouldIndentWhileEditing;
 }
 
-- (CGRect)editControlEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4
+- (CGRect)editControlEndingRectForCell:(id)cell forNewEditingState:(BOOL)state
 {
-  [(UITableViewCellLayoutManager *)self _editControlRectForCell:a3 offscreen:!a4];
+  [(UITableViewCellLayoutManager *)self _editControlRectForCell:cell offscreen:!state];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -3652,25 +3652,25 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)reorderControlShouldAppearForCell:(id)a3
+- (BOOL)reorderControlShouldAppearForCell:(id)cell
 {
-  v3 = a3;
-  if ([v3 wasSwiped] && !objc_msgSend(v3, "_allowsReorderingWhenNotEditing"))
+  cellCopy = cell;
+  if ([cellCopy wasSwiped] && !objc_msgSend(cellCopy, "_allowsReorderingWhenNotEditing"))
   {
-    v4 = 0;
+    showsReorderControl = 0;
   }
 
   else
   {
-    v4 = [v3 showsReorderControl];
+    showsReorderControl = [cellCopy showsReorderControl];
   }
 
-  return v4;
+  return showsReorderControl;
 }
 
-- (CGRect)reorderControlStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5
+- (CGRect)reorderControlStartingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation
 {
-  [(UITableViewCellLayoutManager *)self _reorderControlRectForCell:a3 offscreen:a4 & ~a5];
+  [(UITableViewCellLayoutManager *)self _reorderControlRectForCell:cell offscreen:state & ~confirmation];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -3678,17 +3678,17 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)reorderControlEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5
+- (CGRect)reorderControlEndingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [v8 showsReorderControl] ^ 1;
-  if ((v9 & 1) == 0 && !a4)
+  confirmationCopy = confirmation;
+  cellCopy = cell;
+  v9 = [cellCopy showsReorderControl] ^ 1;
+  if ((v9 & 1) == 0 && !state)
   {
-    v9 = ([v8 _allowsReorderingWhenNotEditing] | v5) ^ 1;
+    v9 = ([cellCopy _allowsReorderingWhenNotEditing] | confirmationCopy) ^ 1;
   }
 
-  [(UITableViewCellLayoutManager *)self _reorderControlRectForCell:v8 offscreen:v9];
+  [(UITableViewCellLayoutManager *)self _reorderControlRectForCell:cellCopy offscreen:v9];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -3705,29 +3705,29 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)reorderControlShouldFadeForCell:(id)a3
+- (BOOL)reorderControlShouldFadeForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [v4 _tableView];
-  v6 = [v5 _isShowingIndex];
+  cellCopy = cell;
+  _tableView = [cellCopy _tableView];
+  _isShowingIndex = [_tableView _isShowingIndex];
 
-  v7 = (v6 & 1) != 0 || [(UITableViewCellLayoutManager *)self accessoryShouldAppearForCell:v4]&& ![(UITableViewCellLayoutManager *)self editingAccessoryShouldAppearForCell:v4];
+  v7 = (_isShowingIndex & 1) != 0 || [(UITableViewCellLayoutManager *)self accessoryShouldAppearForCell:cellCopy]&& ![(UITableViewCellLayoutManager *)self editingAccessoryShouldAppearForCell:cellCopy];
   return v7;
 }
 
-- (BOOL)reorderSeparatorShouldAppearForCell:(id)a3
+- (BOOL)reorderSeparatorShouldAppearForCell:(id)cell
 {
-  v4 = a3;
-  if (-[UITableViewCellLayoutManager reorderControlShouldAppearForCell:](self, "reorderControlShouldAppearForCell:", v4) && ([v4 _allowsReorderingWhenNotEditing] & 1) == 0)
+  cellCopy = cell;
+  if (-[UITableViewCellLayoutManager reorderControlShouldAppearForCell:](self, "reorderControlShouldAppearForCell:", cellCopy) && ([cellCopy _allowsReorderingWhenNotEditing] & 1) == 0)
   {
-    if ([v4 editingAccessoryType])
+    if ([cellCopy editingAccessoryType])
     {
       v5 = 1;
     }
 
     else
     {
-      v7 = [v4 _editingAccessoryView:1];
+      v7 = [cellCopy _editingAccessoryView:1];
       v5 = v7 != 0;
     }
   }
@@ -3740,9 +3740,9 @@ LABEL_9:
   return v5;
 }
 
-- (CGRect)reorderSeparatorStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5
+- (CGRect)reorderSeparatorStartingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation
 {
-  [(UITableViewCellLayoutManager *)self _reorderSeparatorRectForCell:a3 offscreen:a4 & ~a5];
+  [(UITableViewCellLayoutManager *)self _reorderSeparatorRectForCell:cell offscreen:state & ~confirmation];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -3750,9 +3750,9 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)reorderSeparatorEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5
+- (CGRect)reorderSeparatorEndingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation
 {
-  [(UITableViewCellLayoutManager *)self _reorderSeparatorRectForCell:a3 offscreen:!a4 && !a5];
+  [(UITableViewCellLayoutManager *)self _reorderSeparatorRectForCell:cell offscreen:!state && !confirmation];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -3760,25 +3760,25 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)reorderSeparatorShouldFadeForCell:(id)a3
+- (BOOL)reorderSeparatorShouldFadeForCell:(id)cell
 {
-  v3 = [a3 _tableView];
-  v4 = [v3 _isShowingIndex];
+  _tableView = [cell _tableView];
+  _isShowingIndex = [_tableView _isShowingIndex];
 
-  return v4;
+  return _isShowingIndex;
 }
 
-- (BOOL)accessoryShouldAppearForCell:(id)a3
+- (BOOL)accessoryShouldAppearForCell:(id)cell
 {
-  v3 = [a3 _accessoryView:1];
+  v3 = [cell _accessoryView:1];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (CGRect)accessoryStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5
+- (CGRect)accessoryStartingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation
 {
-  [(UITableViewCellLayoutManager *)self _accessoryRectForCell:a3 offscreen:!a4 && !a5];
+  [(UITableViewCellLayoutManager *)self _accessoryRectForCell:cell offscreen:!state && !confirmation];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -3786,26 +3786,26 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)accessoryEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5
+- (CGRect)accessoryEndingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = v8;
-  if (v6 && a5)
+  stateCopy = state;
+  cellCopy = cell;
+  v9 = cellCopy;
+  if (stateCopy && confirmation)
   {
-    v10 = [v8 _tableView];
-    -[UITableViewCellLayoutManager _accessoryRectForCell:offscreen:](self, "_accessoryRectForCell:offscreen:", v9, [v10 _isEditingForSwipeDeletion] ^ 1);
+    _tableView = [cellCopy _tableView];
+    -[UITableViewCellLayoutManager _accessoryRectForCell:offscreen:](self, "_accessoryRectForCell:offscreen:", v9, [_tableView _isEditingForSwipeDeletion] ^ 1);
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
 
-    v9 = v10;
+    v9 = _tableView;
   }
 
   else
   {
-    [(UITableViewCellLayoutManager *)self _accessoryRectForCell:v8 offscreen:v6];
+    [(UITableViewCellLayoutManager *)self _accessoryRectForCell:cellCopy offscreen:stateCopy];
     v12 = v19;
     v14 = v20;
     v16 = v21;
@@ -3823,13 +3823,13 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)accessoryShouldFadeForCell:(id)a3
+- (BOOL)accessoryShouldFadeForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [v4 _customAccessoryView:0];
-  v6 = [v4 _customEditingAccessoryView:0];
-  v7 = [v4 accessoryType];
-  v8 = [v4 editingAccessoryType];
+  cellCopy = cell;
+  v5 = [cellCopy _customAccessoryView:0];
+  v6 = [cellCopy _customEditingAccessoryView:0];
+  accessoryType = [cellCopy accessoryType];
+  editingAccessoryType = [cellCopy editingAccessoryType];
   if (v5 && v6)
   {
     if (v5 == v6)
@@ -3842,16 +3842,16 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (v5 || v6 || !v7 || !v8)
+  if (v5 || v6 || !accessoryType || !editingAccessoryType)
   {
-    v10 = v5 | v7;
-    v11 = (v5 | v7) != 0;
-    if ((!v10 || !(v6 | v8)) && (v11 & [(UITableViewCellLayoutManager *)self reorderControlShouldAppearForCell:v4]& 1) == 0)
+    v10 = v5 | accessoryType;
+    v11 = (v5 | accessoryType) != 0;
+    if ((!v10 || !(v6 | editingAccessoryType)) && (v11 & [(UITableViewCellLayoutManager *)self reorderControlShouldAppearForCell:cellCopy]& 1) == 0)
     {
-      v12 = [v4 _tableView];
-      v13 = [v12 _isShowingIndex];
+      _tableView = [cellCopy _tableView];
+      _isShowingIndex = [_tableView _isShowingIndex];
 
-      if ((v13 & 1) == 0)
+      if ((_isShowingIndex & 1) == 0)
       {
         goto LABEL_10;
       }
@@ -3860,7 +3860,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (v7 != v8)
+  if (accessoryType != editingAccessoryType)
   {
     goto LABEL_15;
   }
@@ -3872,13 +3872,13 @@ LABEL_16:
   return v9;
 }
 
-- (BOOL)editingAccessoryShouldAppearForCell:(id)a3
+- (BOOL)editingAccessoryShouldAppearForCell:(id)cell
 {
-  v3 = a3;
-  v4 = [v3 _editingAccessoryView:1];
+  cellCopy = cell;
+  v4 = [cellCopy _editingAccessoryView:1];
   if (v4)
   {
-    v5 = [v3 showingDeleteConfirmation] ^ 1;
+    v5 = [cellCopy showingDeleteConfirmation] ^ 1;
   }
 
   else
@@ -3889,9 +3889,9 @@ LABEL_16:
   return v5;
 }
 
-- (CGRect)editingAccessoryStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5
+- (CGRect)editingAccessoryStartingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation
 {
-  [(UITableViewCellLayoutManager *)self _editingAccessoryRectForCell:a3 offscreen:!a4 && !a5];
+  [(UITableViewCellLayoutManager *)self _editingAccessoryRectForCell:cell offscreen:!state && !confirmation];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -3899,9 +3899,9 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)editingAccessoryEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5
+- (CGRect)editingAccessoryEndingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation
 {
-  [(UITableViewCellLayoutManager *)self _editingAccessoryRectForCell:a3 offscreen:a4 | a5];
+  [(UITableViewCellLayoutManager *)self _editingAccessoryRectForCell:cell offscreen:state | confirmation];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -3909,13 +3909,13 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)editingAccessoryShouldFadeForCell:(id)a3
+- (BOOL)editingAccessoryShouldFadeForCell:(id)cell
 {
-  v3 = a3;
-  v4 = [v3 _customAccessoryView:0];
-  v5 = [v3 _customEditingAccessoryView:0];
-  v6 = [v3 accessoryType];
-  v7 = [v3 editingAccessoryType];
+  cellCopy = cell;
+  v4 = [cellCopy _customAccessoryView:0];
+  v5 = [cellCopy _customEditingAccessoryView:0];
+  accessoryType = [cellCopy accessoryType];
+  editingAccessoryType = [cellCopy editingAccessoryType];
   if (v4 && v5)
   {
     if (v4 == v5)
@@ -3926,21 +3926,21 @@ LABEL_15:
     }
   }
 
-  else if (v4 || v5 || !v6 || !v7)
+  else if (v4 || v5 || !accessoryType || !editingAccessoryType)
   {
-    if (!(v4 | v6) || !(v5 | v7))
+    if (!(v4 | accessoryType) || !(v5 | editingAccessoryType))
     {
-      v8 = [v3 _tableView];
-      v9 = [v8 _isShowingIndex];
+      _tableView = [cellCopy _tableView];
+      _isShowingIndex = [_tableView _isShowingIndex];
 
-      if ((v9 & 1) == 0)
+      if ((_isShowingIndex & 1) == 0)
       {
         goto LABEL_15;
       }
     }
   }
 
-  else if (v6 == v7)
+  else if (accessoryType == editingAccessoryType)
   {
     goto LABEL_15;
   }
@@ -3951,25 +3951,25 @@ LABEL_16:
   return v10;
 }
 
-- (CGRect)selectedBackgroundEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4
+- (CGRect)selectedBackgroundEndingRectForCell:(id)cell forNewEditingState:(BOOL)state
 {
-  v4 = a4;
-  v6 = a3;
-  [(UITableViewCellLayoutManager *)self backgroundEndingRectForCell:v6 forNewEditingState:v4];
+  stateCopy = state;
+  cellCopy = cell;
+  [(UITableViewCellLayoutManager *)self backgroundEndingRectForCell:cellCopy forNewEditingState:stateCopy];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  if (([v6 _isUsingOldStyleMultiselection] & 1) == 0)
+  if (([cellCopy _isUsingOldStyleMultiselection] & 1) == 0)
   {
-    v15 = [v6 multipleSelectionBackgroundView];
-    if (v15)
+    multipleSelectionBackgroundView = [cellCopy multipleSelectionBackgroundView];
+    if (multipleSelectionBackgroundView)
     {
     }
 
-    else if (([v6 _insetsBackground] & 1) == 0)
+    else if (([cellCopy _insetsBackground] & 1) == 0)
     {
-      [v6 _separatorHeight];
+      [cellCopy _separatorHeight];
       v10 = v10 - v16;
       v14 = v14 + v16 + v16;
     }
@@ -3986,11 +3986,11 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)contentStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4
+- (CGRect)contentStartingRectForCell:(id)cell forNewEditingState:(BOOL)state
 {
-  v4 = a4;
-  v6 = a3;
-  -[UITableViewCellLayoutManager _contentRectForCell:forEditingState:showingDeleteConfirmation:](self, "_contentRectForCell:forEditingState:showingDeleteConfirmation:", v6, !v4, [v6 showingDeleteConfirmation]);
+  stateCopy = state;
+  cellCopy = cell;
+  -[UITableViewCellLayoutManager _contentRectForCell:forEditingState:showingDeleteConfirmation:](self, "_contentRectForCell:forEditingState:showingDeleteConfirmation:", cellCopy, !stateCopy, [cellCopy showingDeleteConfirmation]);
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -4007,11 +4007,11 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)contentEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4
+- (CGRect)contentEndingRectForCell:(id)cell forNewEditingState:(BOOL)state
 {
-  v4 = a4;
-  v6 = a3;
-  -[UITableViewCellLayoutManager _contentRectForCell:forEditingState:showingDeleteConfirmation:](self, "_contentRectForCell:forEditingState:showingDeleteConfirmation:", v6, v4, [v6 showingDeleteConfirmation]);
+  stateCopy = state;
+  cellCopy = cell;
+  -[UITableViewCellLayoutManager _contentRectForCell:forEditingState:showingDeleteConfirmation:](self, "_contentRectForCell:forEditingState:showingDeleteConfirmation:", cellCopy, stateCopy, [cellCopy showingDeleteConfirmation]);
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -4028,11 +4028,11 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)contentStartingRectForCell:(id)a3 forDisplayOfDeleteConfirmation:(BOOL)a4
+- (CGRect)contentStartingRectForCell:(id)cell forDisplayOfDeleteConfirmation:(BOOL)confirmation
 {
-  v4 = a4;
-  v6 = a3;
-  -[UITableViewCellLayoutManager _contentRectForCell:forEditingState:showingDeleteConfirmation:](self, "_contentRectForCell:forEditingState:showingDeleteConfirmation:", v6, [v6 currentStateMask] & 1, !v4);
+  confirmationCopy = confirmation;
+  cellCopy = cell;
+  -[UITableViewCellLayoutManager _contentRectForCell:forEditingState:showingDeleteConfirmation:](self, "_contentRectForCell:forEditingState:showingDeleteConfirmation:", cellCopy, [cellCopy currentStateMask] & 1, !confirmationCopy);
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -4049,11 +4049,11 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)contentEndingRectForCell:(id)a3 forDisplayOfDeleteConfirmation:(BOOL)a4
+- (CGRect)contentEndingRectForCell:(id)cell forDisplayOfDeleteConfirmation:(BOOL)confirmation
 {
-  v4 = a4;
-  v6 = a3;
-  -[UITableViewCellLayoutManager _contentRectForCell:forEditingState:showingDeleteConfirmation:](self, "_contentRectForCell:forEditingState:showingDeleteConfirmation:", v6, [v6 currentStateMask] & 1, v4);
+  confirmationCopy = confirmation;
+  cellCopy = cell;
+  -[UITableViewCellLayoutManager _contentRectForCell:forEditingState:showingDeleteConfirmation:](self, "_contentRectForCell:forEditingState:showingDeleteConfirmation:", cellCopy, [cellCopy currentStateMask] & 1, confirmationCopy);
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -4070,11 +4070,11 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)textRectForCell:(id)a3
+- (CGRect)textRectForCell:(id)cell
 {
-  v4 = a3;
-  [v4 bounds];
-  [(UITableViewCellLayoutManager *)self textRectForCell:v4 rowWidth:0 forSizing:CGRectGetWidth(v17)];
+  cellCopy = cell;
+  [cellCopy bounds];
+  [(UITableViewCellLayoutManager *)self textRectForCell:cellCopy rowWidth:0 forSizing:CGRectGetWidth(v17)];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -4091,15 +4091,15 @@ LABEL_16:
   return result;
 }
 
-- (double)requiredIndentationForFirstLineOfCell:(id)a3 rowWidth:(double)a4 forSizing:(BOOL)a5
+- (double)requiredIndentationForFirstLineOfCell:(id)cell rowWidth:(double)width forSizing:(BOOL)sizing
 {
-  v5 = a5;
-  v7 = a3;
+  sizingCopy = sizing;
+  cellCopy = cell;
   v8 = 0.0;
-  if (![(UITableViewCellLayoutManager *)self shouldIncreaseMarginForImageViewInCell:v7])
+  if (![(UITableViewCellLayoutManager *)self shouldIncreaseMarginForImageViewInCell:cellCopy])
   {
-    v9 = v7[13];
-    [v7 _effectiveSafeAreaInsets];
+    v9 = cellCopy[13];
+    [cellCopy _effectiveSafeAreaInsets];
     if ((v9 & 0x400000) != 0)
     {
       v12 = v11;
@@ -4110,45 +4110,45 @@ LABEL_16:
       v12 = v10;
     }
 
-    [(UITableViewCellLayoutManager *)self contentIndentationForCell:v7];
+    [(UITableViewCellLayoutManager *)self contentIndentationForCell:cellCopy];
     v14 = v13;
-    [v7 _marginWidth];
+    [cellCopy _marginWidth];
     v16 = v15;
-    v17 = [v7 _imageView:0];
-    v18 = [v17 image];
+    v17 = [cellCopy _imageView:0];
+    image = [v17 image];
 
-    if (v18)
+    if (image)
     {
       v19 = fmax(v14 + v16 - v12, 15.0);
-      v20 = [v7 _constants];
-      v21 = [v7 traitCollection];
-      [v20 defaultImageViewSymbolImageAndAccessoryLayoutWidthForSidebar:0 traitCollection:v21];
+      _constants = [cellCopy _constants];
+      traitCollection = [cellCopy traitCollection];
+      [_constants defaultImageViewSymbolImageAndAccessoryLayoutWidthForSidebar:0 traitCollection:traitCollection];
       v23 = v22;
 
-      [(UITableViewCellLayoutManager *)self standardLayoutImageViewFrameForCell:v7 forSizing:v5];
+      [(UITableViewCellLayoutManager *)self standardLayoutImageViewFrameForCell:cellCopy forSizing:sizingCopy];
       v25 = v24;
-      v26 = [v17 image];
-      v27 = [v7 traitCollection];
-      if (_UITableCellShouldCenterImageHorizontallyForTraitCollection(v26, v27))
+      image2 = [v17 image];
+      traitCollection2 = [cellCopy traitCollection];
+      if (_UITableCellShouldCenterImageHorizontallyForTraitCollection(image2, traitCollection2))
       {
         v25 = v23;
       }
 
-      v28 = [v7 _constants];
-      v29 = [v7 _tableView];
-      v30 = [v28 imageViewOffsetByLayoutMarginsForCell:v7 inTableView:v29];
+      _constants2 = [cellCopy _constants];
+      _tableView = [cellCopy _tableView];
+      v30 = [_constants2 imageViewOffsetByLayoutMarginsForCell:cellCopy inTableView:_tableView];
 
       if (v30)
       {
-        [v7 directionalLayoutMargins];
+        [cellCopy directionalLayoutMargins];
         v32 = v31;
-        [v7 _defaultLeadingMarginWidth];
+        [cellCopy _defaultLeadingMarginWidth];
         v34 = fmax(v32, v33) - v12;
       }
 
       else
       {
-        [(UITableViewCellLayoutManager *)self contentIndentationForCell:v7];
+        [(UITableViewCellLayoutManager *)self contentIndentationForCell:cellCopy];
       }
 
       v8 = fmax(v19, v25 + v34 + 15.0) - v19;
@@ -4163,9 +4163,9 @@ LABEL_16:
   return v8;
 }
 
-- (CGRect)textRectForCell:(id)a3 rowWidth:(double)a4
+- (CGRect)textRectForCell:(id)cell rowWidth:(double)width
 {
-  [(UITableViewCellLayoutManager *)self textRectForCell:a3 rowWidth:0 forSizing:a4];
+  [(UITableViewCellLayoutManager *)self textRectForCell:cell rowWidth:0 forSizing:width];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -4173,22 +4173,22 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)textRectForCell:(id)a3 rowWidth:(double)a4 forSizing:(BOOL)a5
+- (CGRect)textRectForCell:(id)cell rowWidth:(double)width forSizing:(BOOL)sizing
 {
-  v5 = a5;
-  v8 = a3;
-  -[UITableViewCellLayoutManager contentRectForCell:forState:rowWidth:](self, "contentRectForCell:forState:rowWidth:", v8, [v8 currentStateMask], a4);
+  sizingCopy = sizing;
+  cellCopy = cell;
+  -[UITableViewCellLayoutManager contentRectForCell:forState:rowWidth:](self, "contentRectForCell:forState:rowWidth:", cellCopy, [cellCopy currentStateMask], width);
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [v8 contentView];
-  [v17 directionalLayoutMargins];
+  contentView = [cellCopy contentView];
+  [contentView directionalLayoutMargins];
   v19 = v18;
   v104 = v20;
 
-  v21 = v8[13];
-  [v8 _effectiveSafeAreaInsets];
+  v21 = cellCopy[13];
+  [cellCopy _effectiveSafeAreaInsets];
   v102 = v12;
   v103 = v10;
   if ((v21 & 0x400000) != 0)
@@ -4198,7 +4198,7 @@ LABEL_16:
     v106.origin.y = v12;
     v106.size.width = v14;
     v106.size.height = v16;
-    MinX = a4 - CGRectGetMaxX(v106);
+    MinX = width - CGRectGetMaxX(v106);
     v24 = v26;
   }
 
@@ -4212,9 +4212,9 @@ LABEL_16:
     MinX = CGRectGetMinX(v105);
   }
 
-  [(UITableViewCellLayoutManager *)self contentIndentationForCell:v8];
+  [(UITableViewCellLayoutManager *)self contentIndentationForCell:cellCopy];
   v28 = v27;
-  [v8 _marginWidth];
+  [cellCopy _marginWidth];
   v30 = v28 + v29 - fmax(v24, MinX);
   v31 = _UITableViewCellTextLabelUsesLeadingLayoutMargin();
   v32 = 15.0;
@@ -4224,21 +4224,21 @@ LABEL_16:
   }
 
   v33 = fmax(v30, v32);
-  v34 = [v8 _imageView:0];
-  v35 = [v34 image];
+  v34 = [cellCopy _imageView:0];
+  image = [v34 image];
 
-  if (!v35 || ![(UITableViewCellLayoutManager *)self shouldIncreaseMarginForImageViewInCell:v8])
+  if (!image || ![(UITableViewCellLayoutManager *)self shouldIncreaseMarginForImageViewInCell:cellCopy])
   {
     goto LABEL_13;
   }
 
-  [(UITableViewCellLayoutManager *)self standardLayoutImageViewFrameForCell:v8 forSizing:v5];
+  [(UITableViewCellLayoutManager *)self standardLayoutImageViewFrameForCell:cellCopy forSizing:sizingCopy];
   v37 = v36;
   v39 = v38;
   v41 = v40;
   v43 = v42;
-  v44 = [v8 traitCollection];
-  if ([v44 userInterfaceIdiom] == 3)
+  traitCollection = [cellCopy traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 3)
   {
     v45 = 8.0;
   }
@@ -4282,20 +4282,20 @@ LABEL_14:
     goto LABEL_61;
   }
 
-  v48 = [v8 isEditing];
-  v49 = [v8 showingDeleteConfirmation];
-  if (v48)
+  isEditing = [cellCopy isEditing];
+  showingDeleteConfirmation = [cellCopy showingDeleteConfirmation];
+  if (isEditing)
   {
-    v50 = [(UITableViewCellLayoutManager *)self editingAccessoryShouldAppearForCell:v8];
+    v50 = [(UITableViewCellLayoutManager *)self editingAccessoryShouldAppearForCell:cellCopy];
   }
 
   else
   {
-    v50 = [(UITableViewCellLayoutManager *)self accessoryShouldAppearForCell:v8];
+    v50 = [(UITableViewCellLayoutManager *)self accessoryShouldAppearForCell:cellCopy];
   }
 
   v51 = v50;
-  [(UITableViewCellLayoutManager *)self _adjustedBackgroundRectForCell:v8];
+  [(UITableViewCellLayoutManager *)self _adjustedBackgroundRectForCell:cellCopy];
   v56 = v52;
   v57 = v53;
   v58 = v54;
@@ -4313,7 +4313,7 @@ LABEL_14:
     v110.size.width = v58;
     v110.size.height = v59;
     v70 = CGRectGetMinX(v110);
-    [v8 _effectiveSafeAreaInsets];
+    [cellCopy _effectiveSafeAreaInsets];
     v72 = v70 + v71;
     v63 = v102;
     v64 = v69 - v72;
@@ -4342,7 +4342,7 @@ LABEL_55:
   else
   {
     MaxX = CGRectGetMaxX(*&v52);
-    [v8 _effectiveSafeAreaInsets];
+    [cellCopy _effectiveSafeAreaInsets];
     v108.origin.x = v46;
     v62 = MaxX - v61;
     v63 = v102;
@@ -4356,17 +4356,17 @@ LABEL_55:
     }
   }
 
-  if (![(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:v8 editing:v48])
+  if (![(UITableViewCellLayoutManager *)self shouldStackAccessoryViewVerticallyForCell:cellCopy editing:isEditing])
   {
     v101 = v64;
-    if (v48)
+    if (isEditing)
     {
-      [(UITableViewCellLayoutManager *)self editingAccessoryEndingRectForCell:v8 forNewEditingState:1 showingDeleteConfirmation:v49];
+      [(UITableViewCellLayoutManager *)self editingAccessoryEndingRectForCell:cellCopy forNewEditingState:1 showingDeleteConfirmation:showingDeleteConfirmation];
     }
 
     else
     {
-      [(UITableViewCellLayoutManager *)self accessoryEndingRectForCell:v8 forNewEditingState:0 showingDeleteConfirmation:v49];
+      [(UITableViewCellLayoutManager *)self accessoryEndingRectForCell:cellCopy forNewEditingState:0 showingDeleteConfirmation:showingDeleteConfirmation];
     }
 
     if ((v21 & 0x400000) != 0)
@@ -4469,9 +4469,9 @@ LABEL_55:
   v73 = fmax(v104, 15.0);
   v67 = 0.0;
 LABEL_56:
-  v91 = v51 | ~[(UITableViewCellLayoutManager *)self _editControlOnSameSideAsReorderControlForCell:v8];
+  v91 = v51 | ~[(UITableViewCellLayoutManager *)self _editControlOnSameSideAsReorderControlForCell:cellCopy];
   v92 = fmax(v73, v67);
-  if ((v48 ^ 1))
+  if ((isEditing ^ 1))
   {
     v92 = v73;
   }
@@ -4506,19 +4506,19 @@ LABEL_61:
   return result;
 }
 
-- (void)getTextLabelRect:(CGRect *)a3 detailTextLabelRect:(CGRect *)a4 forCell:(id)a5 rowWidth:(double)a6 forSizing:(BOOL)a7
+- (void)getTextLabelRect:(CGRect *)rect detailTextLabelRect:(CGRect *)labelRect forCell:(id)cell rowWidth:(double)width forSizing:(BOOL)sizing
 {
-  v7 = a7;
-  v28 = a5;
-  v12 = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:v28];
-  [(UITableViewCellLayoutManager *)self textRectForCell:v28 rowWidth:v7 forSizing:a6];
+  sizingCopy = sizing;
+  cellCopy = cell;
+  v12 = [(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cellCopy];
+  [(UITableViewCellLayoutManager *)self textRectForCell:cellCopy rowWidth:sizingCopy forSizing:width];
   x = v13;
   y = v15;
   width = v17;
   height = v19;
   if (v12)
   {
-    v21 = [v28 _textLabel:0];
+    v21 = [cellCopy _textLabel:0];
     if (v21)
     {
       [(UITableViewCellLayoutManager *)self optimumSizeForLabel:v21 inTotalTextRect:0 minimizeWidthOnVerticalOverflow:0 preferSingleLineWidth:x, y, width, height];
@@ -4533,7 +4533,7 @@ LABEL_61:
     }
 
     v26 = ceil((height - v25) * 0.5);
-    if ((v28[106] & 0x40) != 0)
+    if ((cellCopy[106] & 0x40) != 0)
     {
       v30.origin.x = x;
       v30.origin.y = y;
@@ -4553,40 +4553,40 @@ LABEL_61:
     height = v32.size.height;
   }
 
-  if (a3)
+  if (rect)
   {
-    a3->origin.x = x;
-    a3->origin.y = y;
-    a3->size.width = width;
-    a3->size.height = height;
+    rect->origin.x = x;
+    rect->origin.y = y;
+    rect->size.width = width;
+    rect->size.height = height;
   }
 
-  if (a4)
+  if (labelRect)
   {
     v27 = *(MEMORY[0x1E695F058] + 16);
-    a4->origin = *MEMORY[0x1E695F058];
-    a4->size = v27;
+    labelRect->origin = *MEMORY[0x1E695F058];
+    labelRect->size = v27;
   }
 }
 
-- (CGSize)intrinsicContentSizeForCell:(id)a3 rowWidth:(double)a4
+- (CGSize)intrinsicContentSizeForCell:(id)cell rowWidth:(double)width
 {
-  v6 = a3;
-  v7 = [v6 _textLabel:0];
-  v8 = [v7 font];
-  [v8 pointSize];
+  cellCopy = cell;
+  v7 = [cellCopy _textLabel:0];
+  font = [v7 font];
+  [font pointSize];
   v10 = v9;
 
   if (v10 == 0.0)
   {
-    v11 = [(UITableViewCellLayoutManager *)self defaultTextLabelFontForCell:v6];
+    v11 = [(UITableViewCellLayoutManager *)self defaultTextLabelFontForCell:cellCopy];
     [v7 setFont:v11];
   }
 
-  [v6 frame];
+  [cellCopy frame];
   v13 = v12;
-  v14 = [v6 textLabel];
-  v15 = [v14 numberOfLines];
+  textLabel = [cellCopy textLabel];
+  numberOfLines = [textLabel numberOfLines];
 
   if (v7)
   {
@@ -4595,23 +4595,23 @@ LABEL_61:
 
   else
   {
-    [(UITableViewCellLayoutManager *)self defaultTextLabelFontForCell:v6];
+    [(UITableViewCellLayoutManager *)self defaultTextLabelFontForCell:cellCopy];
   }
   v16 = ;
-  v17 = [v6 _detailTextLabel:0];
-  v18 = [v17 text];
-  v19 = [v18 length];
+  v17 = [cellCopy _detailTextLabel:0];
+  text = [v17 text];
+  v19 = [text length];
 
-  if (v15 == 1)
+  if (numberOfLines == 1)
   {
-    v20 = [v6 traitCollection];
-    v21 = [v20 userInterfaceIdiom];
+    traitCollection = [cellCopy traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v21 == 5)
+    if (userInterfaceIdiom == 5)
     {
-      v22 = [v6 _constants];
-      v23 = [v6 _tableView];
-      [v22 defaultRowHeightForTableView:v23 cellStyle:objc_msgSend(v6 hasDetailText:{"_cellStyle"), v19 != 0}];
+      _constants = [cellCopy _constants];
+      _tableView = [cellCopy _tableView];
+      [_constants defaultRowHeightForTableView:_tableView cellStyle:objc_msgSend(cellCopy hasDetailText:{"_cellStyle"), v19 != 0}];
       v25 = v24;
     }
 
@@ -4629,9 +4629,9 @@ LABEL_61:
 
   else
   {
-    v26 = [v6 imageView];
-    v27 = [v26 image];
-    [v27 size];
+    imageView = [cellCopy imageView];
+    image = [imageView image];
+    [image size];
     v29 = v28;
 
     v30 = 0.0;
@@ -4639,9 +4639,9 @@ LABEL_61:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (![(UITableViewCellLayoutManager *)self shouldIncreaseMarginForImageViewInCell:v6])
+      if (![(UITableViewCellLayoutManager *)self shouldIncreaseMarginForImageViewInCell:cellCopy])
       {
-        [(UITableViewCellLayoutManager *)self requiredIndentationForFirstLineOfCell:v6 rowWidth:1 forSizing:a4];
+        [(UITableViewCellLayoutManager *)self requiredIndentationForFirstLineOfCell:cellCopy rowWidth:1 forSizing:width];
         v30 = v32;
       }
 
@@ -4650,11 +4650,11 @@ LABEL_61:
 
     v47 = 0u;
     v48 = 0u;
-    [(UITableViewCellLayoutManager *)self getTextLabelRect:&v47 detailTextLabelRect:0 forCell:v6 rowWidth:1 forSizing:a4];
+    [(UITableViewCellLayoutManager *)self getTextLabelRect:&v47 detailTextLabelRect:0 forCell:cellCopy rowWidth:1 forSizing:width];
     v47 = *MEMORY[0x1E695EFF8];
     *(&v48 + 1) = 0x7FEFFFFFFFFFFFFFLL;
-    v33 = [v6 textLabel];
-    [v33 textRectForBounds:v15 limitedToNumberOfLines:{v47, v48}];
+    textLabel2 = [cellCopy textLabel];
+    [textLabel2 textRectForBounds:numberOfLines limitedToNumberOfLines:{v47, v48}];
     v35 = v34;
 
     if (v35 <= v31)
@@ -4666,24 +4666,24 @@ LABEL_61:
     v25 = v36 + v35;
   }
 
-  if ([v6 separatorStyle])
+  if ([cellCopy separatorStyle])
   {
-    [v6 _separatorFrame];
+    [cellCopy _separatorFrame];
     v25 = v25 + CGRectGetHeight(v50);
   }
 
 LABEL_20:
-  if (-[UITableViewCellLayoutManager shouldStackAccessoryViewVerticallyForCell:editing:](self, "shouldStackAccessoryViewVerticallyForCell:editing:", v6, [v6 isEditing]))
+  if (-[UITableViewCellLayoutManager shouldStackAccessoryViewVerticallyForCell:editing:](self, "shouldStackAccessoryViewVerticallyForCell:editing:", cellCopy, [cellCopy isEditing]))
   {
-    v38 = -[UITableViewCellLayoutManager customAccessoryViewForCell:editing:](self, "customAccessoryViewForCell:editing:", v6, [v6 isEditing]);
+    v38 = -[UITableViewCellLayoutManager customAccessoryViewForCell:editing:](self, "customAccessoryViewForCell:editing:", cellCopy, [cellCopy isEditing]);
     [v38 frame];
     v25 = v25 + v39;
   }
 
   v40 = v19 != 0;
-  v41 = [v6 _constants];
-  v42 = [v6 _tableView];
-  [v41 defaultRowHeightForTableView:v42 cellStyle:objc_msgSend(v6 hasDetailText:{"_cellStyle"), v40}];
+  _constants2 = [cellCopy _constants];
+  _tableView2 = [cellCopy _tableView];
+  [_constants2 defaultRowHeightForTableView:_tableView2 cellStyle:objc_msgSend(cellCopy hasDetailText:{"_cellStyle"), v40}];
   v44 = ceil(fmax(v43, v25));
 
   v45 = v13;
@@ -4693,20 +4693,20 @@ LABEL_20:
   return result;
 }
 
-- (BOOL)shouldApplyAccessibilityLargeTextLayoutForCell:(id)a3
+- (BOOL)shouldApplyAccessibilityLargeTextLayoutForCell:(id)cell
 {
-  v3 = a3;
-  v4 = [v3 _textLabel:0];
+  cellCopy = cell;
+  v4 = [cellCopy _textLabel:0];
   if (v4)
   {
-    v5 = [UIApp preferredContentSizeCategory];
-    if (UIContentSizeCategoryIsAccessibilityCategory(v5) && dyld_program_sdk_at_least())
+    preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+    if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory) && dyld_program_sdk_at_least())
     {
-      v6 = [v4 text];
-      if ([v6 length])
+      text = [v4 text];
+      if ([text length])
       {
-        v7 = [v3 traitCollection];
-        v8 = [v7 userInterfaceIdiom] != 3;
+        traitCollection = [cellCopy traitCollection];
+        v8 = [traitCollection userInterfaceIdiom] != 3;
       }
 
       else
@@ -4729,42 +4729,42 @@ LABEL_20:
   return v8;
 }
 
-- (BOOL)shouldIncreaseMarginForImageViewInCell:(id)a3
+- (BOOL)shouldIncreaseMarginForImageViewInCell:(id)cell
 {
-  v4 = a3;
-  v5 = [v4 _imageView:0];
-  v6 = [v4 _textLabel:0];
-  v7 = [v5 image];
+  cellCopy = cell;
+  v5 = [cellCopy _imageView:0];
+  v6 = [cellCopy _textLabel:0];
+  image = [v5 image];
 
   v8 = 1;
-  if (v7)
+  if (image)
   {
     if (v6)
     {
-      if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:v4])
+      if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cellCopy])
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 textAlignment] != 1)
         {
-          v9 = [v4 _imageView:0];
-          v10 = [v9 image];
-          [v10 size];
+          v9 = [cellCopy _imageView:0];
+          image2 = [v9 image];
+          [image2 size];
           v12 = v11;
 
-          v13 = [v4 _textLabel:0];
-          v14 = [v13 font];
+          v13 = [cellCopy _textLabel:0];
+          font = [v13 font];
 
           v15 = v12 * 0.5;
-          [v14 capHeight];
+          [font capHeight];
           v17 = v16 * 0.5;
-          [v14 ascender];
+          [font ascender];
           v19 = v18;
-          [v14 capHeight];
+          [font capHeight];
           if (v15 <= v17 + v19 - v20)
           {
-            [v14 capHeight];
+            [font capHeight];
             v22 = v21 * 0.5;
-            [v14 descender];
+            [font descender];
             v8 = v15 > v22 - v23;
           }
 
@@ -4780,53 +4780,53 @@ LABEL_20:
   return v8;
 }
 
-- (CGSize)optimumSizeForLabel:(id)a3 inTotalTextRect:(CGRect)a4 minimizeWidthOnVerticalOverflow:(BOOL)a5 preferSingleLineWidth:(BOOL)a6
+- (CGSize)optimumSizeForLabel:(id)label inTotalTextRect:(CGRect)rect minimizeWidthOnVerticalOverflow:(BOOL)overflow preferSingleLineWidth:(BOOL)width
 {
-  v7 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  v10 = a3;
-  v11 = [v10 numberOfLines];
+  overflowCopy = overflow;
+  height = rect.size.height;
+  width = rect.size.width;
+  labelCopy = label;
+  numberOfLines = [labelCopy numberOfLines];
   if (dyld_program_sdk_at_least())
   {
-    [v10 sizeThatFits:{width, height}];
+    [labelCopy sizeThatFits:{width, height}];
     v14 = v13;
-    if (v7 && v12 < width)
+    if (overflowCopy && widthCopy2 < width)
     {
-      v15 = v12;
+      widthCopy = widthCopy2;
     }
 
     else
     {
-      v15 = width;
+      widthCopy = width;
     }
 
-    if (width < v12)
+    if (width < widthCopy2)
     {
-      v12 = width;
+      widthCopy2 = width;
     }
 
     if (v14 <= height)
     {
-      width = v12;
+      width = widthCopy2;
     }
 
     else
     {
-      width = v15;
+      width = widthCopy;
     }
   }
 
   else
   {
-    [v10 setNumberOfLines:1];
-    [v10 sizeThatFits:{width, height}];
+    [labelCopy setNumberOfLines:1];
+    [labelCopy sizeThatFits:{width, height}];
     v17 = v16;
     v19 = v18;
-    [v10 setNumberOfLines:0];
-    [v10 sizeThatFits:{width, height}];
-    v22 = v19 * v11;
-    if (v11 <= 0)
+    [labelCopy setNumberOfLines:0];
+    [labelCopy sizeThatFits:{width, height}];
+    v22 = v19 * numberOfLines;
+    if (numberOfLines <= 0)
     {
       v22 = 3.40282347e38;
     }
@@ -4845,37 +4845,37 @@ LABEL_20:
     {
       if (width >= v17)
       {
-        v20 = v17;
+        widthCopy3 = v17;
       }
 
       else
       {
-        v20 = width;
+        widthCopy3 = width;
       }
 
-      if (v7)
+      if (overflowCopy)
       {
-        width = v20;
+        width = widthCopy3;
       }
     }
 
-    else if (v11 == 1 && a6)
+    else if (numberOfLines == 1 && width)
     {
       width = v17;
     }
 
     else
     {
-      width = v20;
+      width = widthCopy3;
     }
 
-    [v10 setNumberOfLines:{v11, v20}];
+    [labelCopy setNumberOfLines:{numberOfLines, widthCopy3}];
   }
 
-  v24 = width;
+  widthCopy4 = width;
   v25 = v14;
   result.height = v25;
-  result.width = v24;
+  result.width = widthCopy4;
   return result;
 }
 

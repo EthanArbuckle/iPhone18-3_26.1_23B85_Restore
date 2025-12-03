@@ -157,7 +157,7 @@
   inputCenter2 = self->inputCenter2;
   [(NSNumber *)self->inputContrast floatValue];
   v42 = [CIVector vectorWithX:v50 Y:v41 Z:v51];
-  v43 = [(CIPortraitLightingFront *)self _dualLightKernel];
+  _dualLightKernel = [(CIPortraitLightingFront *)self _dualLightKernel];
   [(CIImage *)self->inputImage extent];
   v52[0] = self->inputImage;
   v52[1] = inputCenter1;
@@ -165,7 +165,7 @@
   v52[3] = inputCenter2;
   v52[4] = v39;
   v52[5] = v42;
-  return [v43 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v52, 6), v44, v45, v46, v47}];
+  return [_dualLightKernel applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v52, 6), v44, v45, v46, v47}];
 }
 
 @end

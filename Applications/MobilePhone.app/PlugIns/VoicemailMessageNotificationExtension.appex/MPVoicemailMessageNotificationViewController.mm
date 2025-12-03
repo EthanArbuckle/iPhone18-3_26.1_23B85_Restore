@@ -1,16 +1,16 @@
 @interface MPVoicemailMessageNotificationViewController
 - (CGRect)mediaPlayPauseButtonFrame;
 - (MPVoicemailMessageNotificationViewController)init;
-- (id)listenForVoicemailChangesWithBlock:(id)a3;
+- (id)listenForVoicemailChangesWithBlock:(id)block;
 - (id)playerControlsView;
 - (void)dealloc;
-- (void)didReceiveNotification:(id)a3;
-- (void)didReceiveNotificationResponse:(id)a3 completionHandler:(id)a4;
+- (void)didReceiveNotification:(id)notification;
+- (void)didReceiveNotificationResponse:(id)response completionHandler:(id)handler;
 - (void)mediaPause;
 - (void)mediaPlay;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)playerController:(id)a3 didChangeToCurrentTime:(float)a4;
-- (void)setPlaybackMessageWithID:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)playerController:(id)controller didChangeToCurrentTime:(float)time;
+- (void)setPlaybackMessageWithID:(id)d;
 - (void)viewDidLoad;
 @end
 
@@ -38,55 +38,55 @@
 
 - (id)playerControlsView
 {
-  v2 = [(VMMessageViewController *)self playerControlsViewController];
-  v3 = [v2 playerControlsView];
+  playerControlsViewController = [(VMMessageViewController *)self playerControlsViewController];
+  playerControlsView = [playerControlsViewController playerControlsView];
 
-  return v3;
+  return playerControlsView;
 }
 
 - (void)dealloc
 {
-  v3 = [(VMMessageViewController *)self playerControlsViewController];
-  v4 = [v3 playerControlsView];
+  playerControlsViewController = [(VMMessageViewController *)self playerControlsViewController];
+  playerControlsView = [playerControlsViewController playerControlsView];
 
   v5 = NSStringFromSelector("state");
-  [v4 removeObserver:self forKeyPath:v5 context:&off_1000897A8];
+  [playerControlsView removeObserver:self forKeyPath:v5 context:&off_1000897A8];
 
   v6.receiver = self;
   v6.super_class = MPVoicemailMessageNotificationViewController;
   [(VMMessageViewController *)&v6 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
+  pathCopy = path;
+  objectCopy = object;
   v11 = PHDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v21 = 138412546;
-    v22 = v9;
+    v22 = pathCopy;
     v23 = 2112;
-    v24 = v10;
+    v24 = objectCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Received a key-value observing notification for key path (%@) object (%@).", &v21, 0x16u);
   }
 
-  if (v9)
+  if (pathCopy)
   {
-    if (a6 == &off_1000897A8)
+    if (context == &off_1000897A8)
     {
-      v12 = [v9 length];
-      if (v10)
+      v12 = [pathCopy length];
+      if (objectCopy)
       {
         if (v12)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v13 = v10;
-            v14 = [(VMMessageViewController *)self playerControlsViewController];
-            v15 = [v14 playerControlsView];
-            v16 = [v13 isEqual:v15];
+            v13 = objectCopy;
+            playerControlsViewController = [(VMMessageViewController *)self playerControlsViewController];
+            playerControlsView = [playerControlsViewController playerControlsView];
+            v16 = [v13 isEqual:playerControlsView];
 
             if (!v16)
             {
@@ -94,24 +94,24 @@
             }
 
             v17 = NSStringFromSelector("state");
-            v18 = [v9 isEqualToString:v17];
+            v18 = [pathCopy isEqualToString:v17];
 
             if (!v18)
             {
               goto LABEL_16;
             }
 
-            v19 = [v13 state];
-            if (v19 != 2)
+            state = [v13 state];
+            if (state != 2)
             {
-              if (v19 == 1)
+              if (state == 1)
               {
-                v20 = [(MPVoicemailMessageNotificationViewController *)self extensionContext];
-                [v20 mediaPlayingStarted];
+                extensionContext = [(MPVoicemailMessageNotificationViewController *)self extensionContext];
+                [extensionContext mediaPlayingStarted];
                 goto LABEL_15;
               }
 
-              if (v19)
+              if (state)
               {
 LABEL_16:
 
@@ -119,8 +119,8 @@ LABEL_16:
               }
             }
 
-            v20 = [(MPVoicemailMessageNotificationViewController *)self extensionContext];
-            [v20 mediaPlayingPaused];
+            extensionContext = [(MPVoicemailMessageNotificationViewController *)self extensionContext];
+            [extensionContext mediaPlayingPaused];
 LABEL_15:
 
             goto LABEL_16;
@@ -138,63 +138,63 @@ LABEL_17:
   v9.receiver = self;
   v9.super_class = MPVoicemailMessageNotificationViewController;
   [(VMMessageViewController *)&v9 viewDidLoad];
-  v3 = [(VMMessageViewController *)self playerControlsViewController];
-  v4 = [v3 playerControlsView];
+  playerControlsViewController = [(VMMessageViewController *)self playerControlsViewController];
+  playerControlsView = [playerControlsViewController playerControlsView];
 
-  v5 = [(VMMessageViewController *)self playerControlsViewController];
-  v6 = [v5 playerController];
-  [v6 setDelegate:self];
+  playerControlsViewController2 = [(VMMessageViewController *)self playerControlsViewController];
+  playerController = [playerControlsViewController2 playerController];
+  [playerController setDelegate:self];
 
-  [v4 setStyle:1];
-  v7 = [v4 playPauseButton];
-  [v7 setHidden:1];
+  [playerControlsView setStyle:1];
+  playPauseButton = [playerControlsView playPauseButton];
+  [playPauseButton setHidden:1];
 
   v8 = NSStringFromSelector("state");
-  [v4 addObserver:self forKeyPath:v8 options:0 context:&off_1000897A8];
+  [playerControlsView addObserver:self forKeyPath:v8 options:0 context:&off_1000897A8];
 }
 
-- (void)playerController:(id)a3 didChangeToCurrentTime:(float)a4
+- (void)playerController:(id)controller didChangeToCurrentTime:(float)time
 {
-  v6 = [(MPVoicemailMessageNotificationViewController *)self playerControlsView];
-  v7 = a4;
-  [v6 setElapsedTime:1 animated:v7];
+  playerControlsView = [(MPVoicemailMessageNotificationViewController *)self playerControlsView];
+  timeCopy = time;
+  [playerControlsView setElapsedTime:1 animated:timeCopy];
 
-  v8 = [(VMMessageViewController *)self voicemailMessage];
-  if ([v8 shouldMarkAsReadForPlaybackCurrentTime:v7])
+  voicemailMessage = [(VMMessageViewController *)self voicemailMessage];
+  if ([voicemailMessage shouldMarkAsReadForPlaybackCurrentTime:timeCopy])
   {
     v9 = PHDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v8;
+      v15 = voicemailMessage;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Marking current voicemail as read %@", buf, 0xCu);
     }
 
     v10 = +[NotificationApplicationServices shared];
-    v11 = [v10 voicemailManager];
-    v13 = v8;
+    voicemailManager = [v10 voicemailManager];
+    v13 = voicemailMessage;
     v12 = [NSArray arrayWithObjects:&v13 count:1];
-    [v11 markVoicemailsAsRead:v12];
+    [voicemailManager markVoicemailsAsRead:v12];
   }
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received notification (%@).", &v16, 0xCu);
   }
 
-  v6 = [(MPMessageID *)v4 request];
-  v7 = [v6 content];
-  v8 = [v7 userInfo];
+  request = [(MPMessageID *)notificationCopy request];
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v9 = [v8 objectForKeyedSubscript:@"VMVoicemailIdentifier"];
-  v10 = [v8 objectForKeyedSubscript:@"voicemailRecordUUID"];
+  v9 = [userInfo objectForKeyedSubscript:@"VMVoicemailIdentifier"];
+  v10 = [userInfo objectForKeyedSubscript:@"voicemailRecordUUID"];
   v11 = PHDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -219,11 +219,11 @@ LABEL_17:
     v14 = PHDefaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(VMMessageViewController *)self voicemailManager];
+      voicemailManager = [(VMMessageViewController *)self voicemailManager];
       v16 = 138412546;
       v17 = v13;
       v18 = 2112;
-      v19 = v15;
+      v19 = voicemailManager;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Fetching voicemail for messageID (%@) using manager %@.", &v16, 0x16u);
     }
 
@@ -231,39 +231,39 @@ LABEL_17:
   }
 }
 
-- (void)setPlaybackMessageWithID:(id)a3
+- (void)setPlaybackMessageWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   objc_initWeak(&location, self);
-  v5 = [(VMMessageViewController *)self voicemailManager];
+  voicemailManager = [(VMMessageViewController *)self voicemailManager];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100004D4C;
   v7[3] = &unk_100089808;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v8 = v6;
-  [v5 voicemailWithIdentifier:v6 completion:v7];
+  [voicemailManager voicemailWithIdentifier:v6 completion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)didReceiveNotificationResponse:(id)a3 completionHandler:(id)a4
+- (void)didReceiveNotificationResponse:(id)response completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  handlerCopy = handler;
   v8 = PHDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v32 = v6;
+    v32 = responseCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Received notification response (%@).", buf, 0xCu);
   }
 
-  v9 = [v6 actionIdentifier];
-  v10 = [v9 length];
+  actionIdentifier = [responseCopy actionIdentifier];
+  v10 = [actionIdentifier length];
   v11 = PHDefaultLog();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
   if (v10)
@@ -271,18 +271,18 @@ LABEL_17:
     if (v12)
     {
       *buf = 138412290;
-      v32 = v9;
+      v32 = actionIdentifier;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Executing action matching the specified identifier (%@).", buf, 0xCu);
     }
 
-    if ([v9 isEqualToString:@"MPCallBulletinBoardActionIdentifier"])
+    if ([actionIdentifier isEqualToString:@"MPCallBulletinBoardActionIdentifier"])
     {
-      v13 = [v6 notification];
-      v14 = [v13 request];
-      v15 = [v14 content];
-      v16 = [v15 userInfo];
+      notification = [responseCopy notification];
+      request = [notification request];
+      content = [request content];
+      userInfo = [content userInfo];
 
-      v17 = [v16 objectForKeyedSubscript:@"TUDialRequestURL"];
+      v17 = [userInfo objectForKeyedSubscript:@"TUDialRequestURL"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -307,13 +307,13 @@ LABEL_17:
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Initiating outgoing call with the specified URL (%@).", buf, 0xCu);
           }
 
-          v23 = [(MPVoicemailMessageNotificationViewController *)self extensionContext];
+          extensionContext = [(MPVoicemailMessageNotificationViewController *)self extensionContext];
           v28[0] = _NSConcreteStackBlock;
           v28[1] = 3221225472;
           v28[2] = sub_10000557C;
           v28[3] = &unk_100089830;
-          v29 = v7;
-          [v23 openURL:v20 completionHandler:v28];
+          v29 = handlerCopy;
+          [extensionContext openURL:v20 completionHandler:v28];
 
           v22 = v29;
         }
@@ -337,24 +337,24 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    if ([v9 isEqualToString:@"MPVoicemailDeleteMessageBulletinBoardActionIdentifier"])
+    if ([actionIdentifier isEqualToString:@"MPVoicemailDeleteMessageBulletinBoardActionIdentifier"])
     {
-      v16 = [(VMMessageViewController *)self voicemailMessage];
+      userInfo = [(VMMessageViewController *)self voicemailMessage];
       v24 = PHDefaultLog();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
-        v25 = [v16 identifier];
+        identifier = [userInfo identifier];
         *buf = 134217984;
-        v32 = v25;
+        v32 = identifier;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Trashing voicemail message matching the specified identifier (%lu).", buf, 0xCu);
       }
 
-      v26 = [(VMMessageViewController *)self voicemailManager];
-      v30 = v16;
+      voicemailManager = [(VMMessageViewController *)self voicemailManager];
+      v30 = userInfo;
       v27 = [NSArray arrayWithObjects:&v30 count:1];
-      [v26 trashVoicemails:v27];
+      [voicemailManager trashVoicemails:v27];
 
-      (*(v7 + 2))(v7, 1);
+      (*(handlerCopy + 2))(handlerCopy, 1);
       goto LABEL_27;
     }
   }
@@ -364,11 +364,11 @@ LABEL_27:
     if (v12)
     {
       *buf = 138412290;
-      v32 = v9;
+      v32 = actionIdentifier;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Received notification response contains an empty or nil action identifier (%@).", buf, 0xCu);
     }
 
-    (*(v7 + 2))(v7, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 
 LABEL_28:
@@ -376,16 +376,16 @@ LABEL_28:
 
 - (CGRect)mediaPlayPauseButtonFrame
 {
-  v3 = [(VMMessageViewController *)self playerControlsViewController];
-  v4 = [v3 playerControlsView];
-  v5 = [v4 playPauseButton];
+  playerControlsViewController = [(VMMessageViewController *)self playerControlsViewController];
+  playerControlsView = [playerControlsViewController playerControlsView];
+  playPauseButton = [playerControlsView playPauseButton];
 
-  if (v5)
+  if (playPauseButton)
   {
-    v6 = [(MPVoicemailMessageNotificationViewController *)self view];
-    v7 = [v5 imageView];
-    [v7 frame];
-    [v6 convertRect:v5 fromView:?];
+    view = [(MPVoicemailMessageNotificationViewController *)self view];
+    imageView = [playPauseButton imageView];
+    [imageView frame];
+    [view convertRect:playPauseButton fromView:?];
     x = v8;
     y = v10;
     width = v12;
@@ -419,22 +419,22 @@ LABEL_28:
 
 - (void)mediaPlay
 {
-  v2 = [(VMMessageViewController *)self playerControlsViewController];
-  [v2 play];
+  playerControlsViewController = [(VMMessageViewController *)self playerControlsViewController];
+  [playerControlsViewController play];
 }
 
 - (void)mediaPause
 {
-  v2 = [(VMMessageViewController *)self playerControlsViewController];
-  [v2 pause];
+  playerControlsViewController = [(VMMessageViewController *)self playerControlsViewController];
+  [playerControlsViewController pause];
 }
 
-- (id)listenForVoicemailChangesWithBlock:(id)a3
+- (id)listenForVoicemailChangesWithBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1000371F8(sub_1000374E8, v5, v14);
 
   v7 = v15;

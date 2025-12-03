@@ -1,13 +1,13 @@
 @interface MCKeyboardState
-- (MCKeyboardState)initWithUserInterfaceIdiom:(int64_t)a3 isSplitKeyboard:(BOOL)a4 isFloatingKeyboard:(BOOL)a5 isHardwareKeyboard:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MCKeyboardState)initWithUserInterfaceIdiom:(int64_t)idiom isSplitKeyboard:(BOOL)keyboard isFloatingKeyboard:(BOOL)floatingKeyboard isHardwareKeyboard:(BOOL)hardwareKeyboard;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MCKeyboardState
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (result)
   {
     *(result + 2) = self->_userInterfaceIdiom;
@@ -19,17 +19,17 @@
   return result;
 }
 
-- (MCKeyboardState)initWithUserInterfaceIdiom:(int64_t)a3 isSplitKeyboard:(BOOL)a4 isFloatingKeyboard:(BOOL)a5 isHardwareKeyboard:(BOOL)a6
+- (MCKeyboardState)initWithUserInterfaceIdiom:(int64_t)idiom isSplitKeyboard:(BOOL)keyboard isFloatingKeyboard:(BOOL)floatingKeyboard isHardwareKeyboard:(BOOL)hardwareKeyboard
 {
   v11.receiver = self;
   v11.super_class = MCKeyboardState;
   result = [(MCKeyboardState *)&v11 init];
   if (result)
   {
-    result->_userInterfaceIdiom = a3;
-    result->_isSplitKeyboard = a4;
-    result->_isFloatingKeyboard = a5;
-    result->_isHardwareKeyboard = a6;
+    result->_userInterfaceIdiom = idiom;
+    result->_isSplitKeyboard = keyboard;
+    result->_isFloatingKeyboard = floatingKeyboard;
+    result->_isHardwareKeyboard = hardwareKeyboard;
   }
 
   return result;

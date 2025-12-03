@@ -3,11 +3,11 @@
 - (NSString)emptyPlaceholderSubtitle;
 - (NSString)emptyPlaceholderTitle;
 - (PUBrowsingSessionImageWellThumbnailProvider)imageWellThumbnailProvider;
-- (PUImportBrowsingSession)initWithDataSourceManager:(id)a3 actionManager:(id)a4 mediaProvider:(id)a5 photosDetailsContext:(id)a6 lowMemoryMode:(BOOL)a7 importStatusManager:(id)a8 privacyController:(id)a9;
+- (PUImportBrowsingSession)initWithDataSourceManager:(id)manager actionManager:(id)actionManager mediaProvider:(id)provider photosDetailsContext:(id)context lowMemoryMode:(BOOL)mode importStatusManager:(id)statusManager privacyController:(id)controller;
 - (PXImportController)importController;
-- (void)importController:(id)a3 addedImportSource:(id)a4;
-- (void)importController:(id)a3 failedToAddImportSource:(id)a4 exceptions:(id)a5;
-- (void)setImportController:(id)a3;
+- (void)importController:(id)controller addedImportSource:(id)source;
+- (void)importController:(id)controller failedToAddImportSource:(id)source exceptions:(id)exceptions;
+- (void)setImportController:(id)controller;
 @end
 
 @implementation PUImportBrowsingSession
@@ -21,7 +21,7 @@
 
 - (NSString)emptyPlaceholderTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B37C0A14();
   v4 = v3;
 
@@ -52,11 +52,11 @@
   return v2;
 }
 
-- (void)setImportController:(id)a3
+- (void)setImportController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B37C0BAC(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1B37C0BAC(controller);
 }
 
 - (PUBrowsingSessionImageWellThumbnailProvider)imageWellThumbnailProvider
@@ -66,29 +66,29 @@
   return v2;
 }
 
-- (void)importController:(id)a3 addedImportSource:(id)a4
+- (void)importController:(id)controller addedImportSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1B37C0D00(v8, v7);
+  controllerCopy = controller;
+  sourceCopy = source;
+  selfCopy = self;
+  sub_1B37C0D00(selfCopy, sourceCopy);
 }
 
-- (void)importController:(id)a3 failedToAddImportSource:(id)a4 exceptions:(id)a5
+- (void)importController:(id)controller failedToAddImportSource:(id)source exceptions:(id)exceptions
 {
   sub_1B3710718(0, &qword_1EB8546C8);
   sub_1B3C9C788();
 }
 
-- (PUImportBrowsingSession)initWithDataSourceManager:(id)a3 actionManager:(id)a4 mediaProvider:(id)a5 photosDetailsContext:(id)a6 lowMemoryMode:(BOOL)a7 importStatusManager:(id)a8 privacyController:(id)a9
+- (PUImportBrowsingSession)initWithDataSourceManager:(id)manager actionManager:(id)actionManager mediaProvider:(id)provider photosDetailsContext:(id)context lowMemoryMode:(BOOL)mode importStatusManager:(id)statusManager privacyController:(id)controller
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  managerCopy = manager;
+  actionManagerCopy = actionManager;
+  providerCopy = provider;
+  contextCopy = context;
   swift_unknownObjectRetain();
-  v19 = a9;
-  return ImportBrowsingSession.init(dataSourceManager:actionManager:mediaProvider:photosDetailsContext:lowMemoryMode:importStatusManager:privacyController:)(a3, a4, a5, a6, a7, a8, a9);
+  controllerCopy = controller;
+  return ImportBrowsingSession.init(dataSourceManager:actionManager:mediaProvider:photosDetailsContext:lowMemoryMode:importStatusManager:privacyController:)(manager, actionManager, provider, context, mode, statusManager, controller);
 }
 
 @end

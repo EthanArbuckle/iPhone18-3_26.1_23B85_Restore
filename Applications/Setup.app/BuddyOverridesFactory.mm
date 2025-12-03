@@ -1,17 +1,17 @@
 @interface BuddyOverridesFactory
-+ (id)dependentViewPresenterWithParentViewController:(id)a3;
-+ (id)proximitySessionWithOverrideClient:(id)a3;
-+ (id)proximityTargetClientWithDelegate:(id)a3;
++ (id)dependentViewPresenterWithParentViewController:(id)controller;
++ (id)proximitySessionWithOverrideClient:(id)client;
++ (id)proximityTargetClientWithDelegate:(id)delegate;
 @end
 
 @implementation BuddyOverridesFactory
 
-+ (id)proximitySessionWithOverrideClient:(id)a3
++ (id)proximitySessionWithOverrideClient:(id)client
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, client);
   if (([BuddyOverrideUtilities useOverridesFor:2]& 1) != 0)
   {
     v5 = objc_alloc_init(BuddyProximitySessionOverride);
@@ -37,12 +37,12 @@
   return v3;
 }
 
-+ (id)proximityTargetClientWithDelegate:(id)a3
++ (id)proximityTargetClientWithDelegate:(id)delegate
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, delegate);
   if (([BuddyOverrideUtilities useOverridesFor:2]& 1) != 0)
   {
     v7 = objc_alloc_init(BuddyDaemonProximityTargetClientOverride);
@@ -67,12 +67,12 @@
   return v3;
 }
 
-+ (id)dependentViewPresenterWithParentViewController:(id)a3
++ (id)dependentViewPresenterWithParentViewController:(id)controller
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   if (([BuddyOverrideUtilities useOverridesFor:2]& 1) != 0)
   {
     v3 = [BuddyDependentViewPresenterOverride alloc];

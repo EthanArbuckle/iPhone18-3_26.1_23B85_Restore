@@ -1,61 +1,61 @@
 @interface MailSettingsPlugin
 + (id)appsLocalizedTitle;
-+ (id)localizedStringForSpecifierID:(id)a3;
++ (id)localizedStringForSpecifierID:(id)d;
 + (id)rootLocalizedTitle;
-+ (void)emitNavigationEventForSpecifier:(id)a3 viewController:(id)a4;
++ (void)emitNavigationEventForSpecifier:(id)specifier viewController:(id)controller;
 - (BOOL)_shouldShowDefaultAccountButton;
 - (MailSettingsPlugin)init;
 - (id)_deleteOrMoveMessageActionTitles;
 - (id)_markAsReadBehaviorTitles;
-- (id)accountTitlesForSpecifier:(id)a3;
-- (id)accountValuesForSpecifier:(id)a3;
-- (id)addLinkPreviews:(id)a3;
-- (id)blockedSenderOptions:(id)a3;
-- (id)ccSelf:(id)a3;
-- (id)collapseReadMessages:(id)a3;
-- (id)confirmDelete:(id)a3;
-- (id)conversationViewShowsNewestAtTop:(id)a3;
-- (id)currentQuoteLevel:(id)a3;
-- (id)defaultSendingAccount:(id)a3;
-- (id)deleteOrMoveMessageAction:(id)a3;
-- (id)enableAutomaticMessageSummarization:(id)a3;
-- (id)enableFollowUp:(id)a3;
-- (id)enableThreading:(id)a3;
-- (id)extensionsEnablement:(id)a3;
-- (id)getCurrentSignatureAsynchronously:(id)a3;
-- (id)getCurrentSignatureSynchronously:(id)a3;
-- (id)getHasHighlightingSafeDomains:(id)a3;
-- (id)includeAttachments:(id)a3;
-- (id)includeRelatedMessages:(id)a3;
-- (id)linesOfPreview:(id)a3;
+- (id)accountTitlesForSpecifier:(id)specifier;
+- (id)accountValuesForSpecifier:(id)specifier;
+- (id)addLinkPreviews:(id)previews;
+- (id)blockedSenderOptions:(id)options;
+- (id)ccSelf:(id)self;
+- (id)collapseReadMessages:(id)messages;
+- (id)confirmDelete:(id)delete;
+- (id)conversationViewShowsNewestAtTop:(id)top;
+- (id)currentQuoteLevel:(id)level;
+- (id)defaultSendingAccount:(id)account;
+- (id)deleteOrMoveMessageAction:(id)action;
+- (id)enableAutomaticMessageSummarization:(id)summarization;
+- (id)enableFollowUp:(id)up;
+- (id)enableThreading:(id)threading;
+- (id)extensionsEnablement:(id)enablement;
+- (id)getCurrentSignatureAsynchronously:(id)asynchronously;
+- (id)getCurrentSignatureSynchronously:(id)synchronously;
+- (id)getHasHighlightingSafeDomains:(id)domains;
+- (id)includeAttachments:(id)attachments;
+- (id)includeRelatedMessages:(id)messages;
+- (id)linesOfPreview:(id)preview;
 - (id)linesOfPreviewTitles;
-- (id)loadRemoteImages:(id)a3;
-- (id)markAsReadBehavior:(id)a3;
-- (id)mutedThreadAction:(id)a3;
-- (id)selectSpecifier:(id)a3;
-- (id)showMessageListAvatar:(id)a3;
-- (id)showToCC:(id)a3;
+- (id)loadRemoteImages:(id)images;
+- (id)markAsReadBehavior:(id)behavior;
+- (id)mutedThreadAction:(id)action;
+- (id)selectSpecifier:(id)specifier;
+- (id)showMessageListAvatar:(id)avatar;
+- (id)showToCC:(id)c;
 - (id)specifiers;
-- (id)undoSendDelayTime:(id)a3;
+- (id)undoSendDelayTime:(id)time;
 - (void)_mailAccountsDidChange;
 - (void)_refreshAccounts;
 - (void)_reloadMailAccounts;
 - (void)dealloc;
 - (void)emitNavigationEventForRootController;
-- (void)setAddLinkPreviews:(id)a3 withSpecifier:(id)a4;
-- (void)setCollapseReadMessages:(id)a3 withSpecifier:(id)a4;
-- (void)setConfirmDelete:(id)a3 withSpecifier:(id)a4;
-- (void)setConversationViewShowsNewestAtTop:(id)a3 withSpecifier:(id)a4;
-- (void)setDefaultSendingAccount:(id)a3 withSpecifier:(id)a4;
-- (void)setEnableAutomaticMessageSummarization:(id)a3 withSpecifier:(id)a4;
-- (void)setEnableFollowUp:(id)a3 withSpecifier:(id)a4;
-- (void)setEnableThreading:(id)a3 withSpecifier:(id)a4;
-- (void)setIncludeRelatedMessages:(id)a3 withSpecifier:(id)a4;
-- (void)setLoadRemoteImages:(id)a3 withSpecifier:(id)a4;
-- (void)setMutedThreadAction:(id)a3 withSpecifier:(id)a4;
-- (void)setShowMessageListAvatar:(id)a3 withSpecifier:(id)a4;
-- (void)setShowToCC:(id)a3 withSpecifier:(id)a4;
-- (void)signatureDidChange:(id)a3;
+- (void)setAddLinkPreviews:(id)previews withSpecifier:(id)specifier;
+- (void)setCollapseReadMessages:(id)messages withSpecifier:(id)specifier;
+- (void)setConfirmDelete:(id)delete withSpecifier:(id)specifier;
+- (void)setConversationViewShowsNewestAtTop:(id)top withSpecifier:(id)specifier;
+- (void)setDefaultSendingAccount:(id)account withSpecifier:(id)specifier;
+- (void)setEnableAutomaticMessageSummarization:(id)summarization withSpecifier:(id)specifier;
+- (void)setEnableFollowUp:(id)up withSpecifier:(id)specifier;
+- (void)setEnableThreading:(id)threading withSpecifier:(id)specifier;
+- (void)setIncludeRelatedMessages:(id)messages withSpecifier:(id)specifier;
+- (void)setLoadRemoteImages:(id)images withSpecifier:(id)specifier;
+- (void)setMutedThreadAction:(id)action withSpecifier:(id)specifier;
+- (void)setShowMessageListAvatar:(id)avatar withSpecifier:(id)specifier;
+- (void)setShowToCC:(id)c withSpecifier:(id)specifier;
+- (void)signatureDidChange:(id)change;
 @end
 
 @implementation MailSettingsPlugin
@@ -106,7 +106,7 @@
   return v2;
 }
 
-- (void)signatureDidChange:(id)a3
+- (void)signatureDidChange:(id)change
 {
   [(NSConditionLock *)self->_signatureLock lock];
   signatureLock = self->_signatureLock;
@@ -122,13 +122,13 @@
   [(MailSettingsPlugin *)&v3 dealloc];
 }
 
-- (id)selectSpecifier:(id)a3
+- (id)selectSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v7.receiver = self;
   v7.super_class = MailSettingsPlugin;
-  v5 = [(MailSettingsPlugin *)&v7 selectSpecifier:v4];
-  [MailSettingsPlugin emitNavigationEventForSpecifier:v4 viewController:v5];
+  v5 = [(MailSettingsPlugin *)&v7 selectSpecifier:specifierCopy];
+  [MailSettingsPlugin emitNavigationEventForSpecifier:specifierCopy viewController:v5];
 
   return v5;
 }
@@ -195,10 +195,10 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "%@: reloading mail accounts", &v8, 0xCu);
   }
 
-  v6 = [(MailSettingsPlugin *)self specifiers];
+  specifiers = [(MailSettingsPlugin *)self specifiers];
   [(MailSettingsPlugin *)self _reloadMailAccounts];
-  v7 = [(MailSettingsPlugin *)self specifiers];
-  [(MailSettingsPlugin *)self replaceContiguousSpecifiers:v6 withSpecifiers:v7 animated:0];
+  specifiers2 = [(MailSettingsPlugin *)self specifiers];
+  [(MailSettingsPlugin *)self replaceContiguousSpecifiers:specifiers withSpecifiers:specifiers2 animated:0];
 }
 
 - (id)linesOfPreviewTitles
@@ -251,28 +251,28 @@
     [(MailSettingsPlugin *)self _reloadMailAccounts];
   }
 
-  v3 = [(MailSettingsPlugin *)self appPolicy];
+  appPolicy = [(MailSettingsPlugin *)self appPolicy];
 
-  if (!v3)
+  if (!appPolicy)
   {
     v4 = [PSSystemPolicyForApp alloc];
     v5 = [v4 initWithBundleIdentifier:kMFMobileMailBundleIdentifier];
     [(MailSettingsPlugin *)self setAppPolicy:v5];
 
-    v6 = [(MailSettingsPlugin *)self appPolicy];
-    [v6 setDelegate:self];
+    appPolicy2 = [(MailSettingsPlugin *)self appPolicy];
+    [appPolicy2 setDelegate:self];
   }
 
-  v7 = [(MailSettingsPlugin *)self traitCollection];
-  v8 = [v7 pe_isSettingsFeatureDescriptionCellSupported];
+  traitCollection = [(MailSettingsPlugin *)self traitCollection];
+  pe_isSettingsFeatureDescriptionCellSupported = [traitCollection pe_isSettingsFeatureDescriptionCellSupported];
 
-  if (v8)
+  if (pe_isSettingsFeatureDescriptionCellSupported)
   {
-    v9 = [(MailSettingsPlugin *)self appPolicy];
-    v172 = [v9 specifiersForPolicyOptions:1115717633 force:0];
+    appPolicy3 = [(MailSettingsPlugin *)self appPolicy];
+    v172 = [appPolicy3 specifiersForPolicyOptions:1115717633 force:0];
 
     v10 = [NSBundle bundleForClass:objc_opt_class()];
-    v11 = [v10 localizedStringForKey:@"MAIL" value:0 table:@"Preferences"];
+    appPolicy5 = [v10 localizedStringForKey:@"MAIL" value:0 table:@"Preferences"];
 
     v12 = [NSBundle bundleForClass:objc_opt_class()];
     v13 = [v12 localizedStringForKey:@"MOBILE_MAIL_SETTINGS_SUBTITLE" value:0 table:@"Preferences"];
@@ -280,14 +280,14 @@
     v14 = +[PSSpecifier emptyGroupSpecifier];
     [v14 setIdentifier:@"PLACARD_GROUP"];
     [v173 addObject:v14];
-    v15 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:0 get:0 detail:0 cell:-1 edit:0];
-    [v15 setIdentifier:v11];
+    v15 = [PSSpecifier preferenceSpecifierNamed:appPolicy5 target:self set:0 get:0 detail:0 cell:-1 edit:0];
+    [v15 setIdentifier:appPolicy5];
     [v15 setProperty:objc_opt_class() forKey:PSCellClassKey];
     [v15 setProperty:v13 forKey:PSTableCellSubtitleTextKey];
     [v15 setProperty:kMFMobileMailBundleIdentifier forKey:PSLazyIconAppID];
     [v173 addObject:v15];
-    v16 = [(MailSettingsPlugin *)self appPolicy];
-    v17 = [v16 specifiersForPolicyOptions:0x8000000 force:0];
+    appPolicy4 = [(MailSettingsPlugin *)self appPolicy];
+    v17 = [appPolicy4 specifiersForPolicyOptions:0x8000000 force:0];
 
     v18 = [v17 specifierForID:@"ACCOUNTS"];
     if (v18)
@@ -312,8 +312,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v11 = [(MailSettingsPlugin *)self appPolicy];
-  v172 = [v11 specifiersForPolicyOptions:1216380929 force:0];
+  appPolicy5 = [(MailSettingsPlugin *)self appPolicy];
+  v172 = [appPolicy5 specifiersForPolicyOptions:1216380929 force:0];
 LABEL_12:
 
   [v173 addObjectsFromArray:v172];
@@ -347,24 +347,24 @@ LABEL_12:
   v31 = [NSBundle bundleForClass:objc_opt_class()];
   v32 = [v31 localizedStringForKey:@"LINES_OF_PREVIEW" value:&stru_3D2B0 table:@"Preferences"];
   v33 = objc_opt_class();
-  v34 = [(MailSettingsPlugin *)self linesOfPreviewTitles];
-  v35 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v34, @"titles", 0];
+  linesOfPreviewTitles = [(MailSettingsPlugin *)self linesOfPreviewTitles];
+  v35 = [NSMutableDictionary dictionaryWithObjectsAndKeys:linesOfPreviewTitles, @"titles", 0];
   v36 = _ConfigurePSSpecifier(v173, v32, self, "setLinesOfPreview:withSpecifier:", "linesOfPreview:", 0, 0, v33, 2, 0, v35, 0, &off_3FA68);
 
   v155 = v36;
   [v36 setIdentifier:@"LINES_OF_PREVIEW"];
   v37 = _EFLocalizedString();
   v38 = objc_opt_class();
-  v39 = [(MailSettingsPlugin *)self _deleteOrMoveMessageActionTitles];
-  v40 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v39, @"titles", 0];
+  _deleteOrMoveMessageActionTitles = [(MailSettingsPlugin *)self _deleteOrMoveMessageActionTitles];
+  v40 = [NSMutableDictionary dictionaryWithObjectsAndKeys:_deleteOrMoveMessageActionTitles, @"titles", 0];
   v41 = _ConfigurePSSpecifier(v173, v37, self, "setDeleteOrMoveMessageAction:withSpecifier:", "deleteOrMoveMessageAction:", 0, 0, v38, 2, 0, v40, 0, &off_3FA80);
 
   v154 = v41;
   [v41 setIdentifier:@"DELETE_OR_MOVE_MESSAGE_ACTION"];
   v42 = _EFLocalizedString();
   v43 = objc_opt_class();
-  v44 = [(MailSettingsPlugin *)self _markAsReadBehaviorTitles];
-  v45 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v44, @"titles", 0];
+  _markAsReadBehaviorTitles = [(MailSettingsPlugin *)self _markAsReadBehaviorTitles];
+  v45 = [NSMutableDictionary dictionaryWithObjectsAndKeys:_markAsReadBehaviorTitles, @"titles", 0];
   v46 = _ConfigurePSSpecifier(v173, v42, self, "setMarkAsReadBehavior:withSpecifier:", "markAsReadBehavior:", 0, 0, v43, 2, 0, v45, 0, &off_3FA98);
 
   v47 = [NSBundle bundleForClass:objc_opt_class()];
@@ -653,9 +653,9 @@ LABEL_13:
   return v8;
 }
 
-- (id)accountValuesForSpecifier:(id)a3
+- (id)accountValuesForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   if (!self->_allMailAccounts)
   {
     [(MailSettingsPlugin *)self _reloadMailAccounts];
@@ -683,8 +683,8 @@ LABEL_13:
         v10 = *(*(&v13 + 1) + 8 * i);
         if ([v10 isActive] && (objc_msgSend(v10, "restrictedFromSendingExternally") & 1) == 0)
         {
-          v11 = [v10 uniqueID];
-          [v5 addObject:v11];
+          uniqueID = [v10 uniqueID];
+          [v5 addObject:uniqueID];
         }
       }
 
@@ -697,9 +697,9 @@ LABEL_13:
   return v5;
 }
 
-- (id)accountTitlesForSpecifier:(id)a3
+- (id)accountTitlesForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   if (!self->_allMailAccounts)
   {
     [(MailSettingsPlugin *)self _reloadMailAccounts];
@@ -727,8 +727,8 @@ LABEL_13:
         v10 = *(*(&v13 + 1) + 8 * i);
         if ([v10 isActive] && (objc_msgSend(v10, "restrictedFromSendingExternally") & 1) == 0)
         {
-          v11 = [v10 displayName];
-          [v5 addObject:v11];
+          displayName = [v10 displayName];
+          [v5 addObject:displayName];
         }
       }
 
@@ -741,7 +741,7 @@ LABEL_13:
   return v5;
 }
 
-- (id)linesOfPreview:(id)a3
+- (id)linesOfPreview:(id)preview
 {
   v3 = getMailPreferenceValue(EMUserDefaultLinesOfPreviewKey);
   if (!v3)
@@ -752,7 +752,7 @@ LABEL_13:
   return v3;
 }
 
-- (id)deleteOrMoveMessageAction:(id)a3
+- (id)deleteOrMoveMessageAction:(id)action
 {
   v3 = getMailPreferenceValueWithDefault(EMUserDefaultDeleteOrMoveMessageAction, &off_3F858);
 
@@ -770,7 +770,7 @@ LABEL_13:
   return v4;
 }
 
-- (id)markAsReadBehavior:(id)a3
+- (id)markAsReadBehavior:(id)behavior
 {
   v3 = getMailPreferenceValueWithDefault(EMUserDefaultMarkAsReadBehavior, &off_3F858);
 
@@ -790,38 +790,38 @@ LABEL_13:
   return v5;
 }
 
-- (id)ccSelf:(id)a3
+- (id)ccSelf:(id)self
 {
   v3 = [NSNumber numberWithBool:getEmailPreferenceBoolValue(EMUserDefaultAlwaysBCCSelf)];
 
   return v3;
 }
 
-- (void)setConfirmDelete:(id)a3 withSpecifier:(id)a4
+- (void)setConfirmDelete:(id)delete withSpecifier:(id)specifier
 {
-  v5 = a3;
-  sub_E9B4(@"ShowMessageDeleteConfirmation", [v5 BOOLValue]);
+  deleteCopy = delete;
+  sub_E9B4(@"ShowMessageDeleteConfirmation", [deleteCopy BOOLValue]);
   v4 = +[MFNanoBridgeSettingsManager sharedInstance];
   [v4 notifyMobileMailAskBeforeDeletingChanged];
 }
 
-- (id)confirmDelete:(id)a3
+- (id)confirmDelete:(id)delete
 {
   v3 = [NSNumber numberWithBool:getMailBoolPreferenceValue(@"ShowMessageDeleteConfirmation")];
 
   return v3;
 }
 
-- (id)blockedSenderOptions:(id)a3
+- (id)blockedSenderOptions:(id)options
 {
   if (getMailBoolPreferenceValueWithDefault(EMUserDefaultBlockedSenderEnabled, 1))
   {
     v3 = +[NSUserDefaults em_userDefaults];
     v4 = [v3 valueForKey:EMUserDefaultBlockedSenderAction];
 
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & (v5 != &dword_0 + 1)) != 0)
+    if ((objc_opt_isKindOfClass() & (integerValue != &dword_0 + 1)) != 0)
     {
       v6 = [NSBundle bundleForClass:objc_opt_class()];
       [v6 localizedStringForKey:@"BLOCKED_SENDER_OPTIONS_MARK_AS_BLOCKED" value:&stru_3D2B0 table:@"Preferences"];
@@ -844,130 +844,130 @@ LABEL_13:
   return v7;
 }
 
-- (id)includeAttachments:(id)a3
+- (id)includeAttachments:(id)attachments
 {
   v3 = getMailPreferenceValueWithDefault(@"IncludeAttachmentReplies", @"IncludeAttachmentRepliesWhenAdding");
 
   return v3;
 }
 
-- (id)undoSendDelayTime:(id)a3
+- (id)undoSendDelayTime:(id)time
 {
   v3 = getMailPreferenceValueWithDefault(EMUserDefaultUndoSendDelayTime, &off_3F8B8);
 
   return v3;
 }
 
-- (void)setEnableThreading:(id)a3 withSpecifier:(id)a4
+- (void)setEnableThreading:(id)threading withSpecifier:(id)specifier
 {
-  v5 = a3;
-  sub_E9B4(@"DisableThreading", [v5 BOOLValue] ^ 1);
+  threadingCopy = threading;
+  sub_E9B4(@"DisableThreading", [threadingCopy BOOLValue] ^ 1);
   v4 = +[MFNanoBridgeSettingsManager sharedInstance];
   [v4 notifyMobileMailOrganizeByThreadChanged];
 }
 
-- (id)enableThreading:(id)a3
+- (id)enableThreading:(id)threading
 {
   v3 = [NSNumber numberWithBool:getMailBoolPreferenceValue(@"DisableThreading") ^ 1];
 
   return v3;
 }
 
-- (void)setCollapseReadMessages:(id)a3 withSpecifier:(id)a4
+- (void)setCollapseReadMessages:(id)messages withSpecifier:(id)specifier
 {
-  v4 = a3;
-  sub_E9B4(@"CollapseReadConversationMessages", [v4 BOOLValue]);
+  messagesCopy = messages;
+  sub_E9B4(@"CollapseReadConversationMessages", [messagesCopy BOOLValue]);
 }
 
-- (id)collapseReadMessages:(id)a3
+- (id)collapseReadMessages:(id)messages
 {
   v3 = [NSNumber numberWithBool:getMailBoolPreferenceValueWithDefault(@"CollapseReadConversationMessages", 1)];
 
   return v3;
 }
 
-- (void)setConversationViewShowsNewestAtTop:(id)a3 withSpecifier:(id)a4
+- (void)setConversationViewShowsNewestAtTop:(id)top withSpecifier:(id)specifier
 {
-  v4 = a3;
-  sub_E9B4(@"ConversationViewShowsNewestAtTop", [v4 BOOLValue]);
+  topCopy = top;
+  sub_E9B4(@"ConversationViewShowsNewestAtTop", [topCopy BOOLValue]);
 }
 
-- (id)conversationViewShowsNewestAtTop:(id)a3
+- (id)conversationViewShowsNewestAtTop:(id)top
 {
   v3 = [NSNumber numberWithBool:getMailBoolPreferenceValue(@"ConversationViewShowsNewestAtTop")];
 
   return v3;
 }
 
-- (void)setIncludeRelatedMessages:(id)a3 withSpecifier:(id)a4
+- (void)setIncludeRelatedMessages:(id)messages withSpecifier:(id)specifier
 {
-  v4 = a3;
-  sub_E9B4(@"ConversationViewExcludesRelatedMessages", [v4 BOOLValue] ^ 1);
+  messagesCopy = messages;
+  sub_E9B4(@"ConversationViewExcludesRelatedMessages", [messagesCopy BOOLValue] ^ 1);
 }
 
-- (id)includeRelatedMessages:(id)a3
+- (id)includeRelatedMessages:(id)messages
 {
   v3 = [NSNumber numberWithBool:getMailBoolPreferenceValue(@"ConversationViewExcludesRelatedMessages") ^ 1];
 
   return v3;
 }
 
-- (void)setShowMessageListAvatar:(id)a3 withSpecifier:(id)a4
+- (void)setShowMessageListAvatar:(id)avatar withSpecifier:(id)specifier
 {
-  v5 = a3;
-  v4 = [v5 BOOLValue];
-  sub_E9B4(EMUserDefaultHideMessageListAvatar, v4 ^ 1);
+  avatarCopy = avatar;
+  bOOLValue = [avatarCopy BOOLValue];
+  sub_E9B4(EMUserDefaultHideMessageListAvatar, bOOLValue ^ 1);
 }
 
-- (id)showMessageListAvatar:(id)a3
+- (id)showMessageListAvatar:(id)avatar
 {
   v3 = [NSNumber numberWithBool:getMailBoolPreferenceValue(EMUserDefaultHideMessageListAvatar) ^ 1];
 
   return v3;
 }
 
-- (void)setShowToCC:(id)a3 withSpecifier:(id)a4
+- (void)setShowToCC:(id)c withSpecifier:(id)specifier
 {
-  v4 = a3;
-  sub_E9B4(@"ShowToCCIndicators", [v4 BOOLValue]);
+  cCopy = c;
+  sub_E9B4(@"ShowToCCIndicators", [cCopy BOOLValue]);
 }
 
-- (id)showToCC:(id)a3
+- (id)showToCC:(id)c
 {
   v3 = [NSNumber numberWithBool:getMailBoolPreferenceValue(@"ShowToCCIndicators")];
 
   return v3;
 }
 
-- (void)setEnableFollowUp:(id)a3 withSpecifier:(id)a4
+- (void)setEnableFollowUp:(id)up withSpecifier:(id)specifier
 {
-  v5 = a3;
-  v4 = [v5 BOOLValue];
-  sub_E9B4(EMUserDefaultDisableFollowUp, v4 ^ 1);
+  upCopy = up;
+  bOOLValue = [upCopy BOOLValue];
+  sub_E9B4(EMUserDefaultDisableFollowUp, bOOLValue ^ 1);
 }
 
-- (id)enableFollowUp:(id)a3
+- (id)enableFollowUp:(id)up
 {
   v3 = [NSNumber numberWithBool:getMailBoolPreferenceValue(EMUserDefaultDisableFollowUp) ^ 1];
 
   return v3;
 }
 
-- (void)setEnableAutomaticMessageSummarization:(id)a3 withSpecifier:(id)a4
+- (void)setEnableAutomaticMessageSummarization:(id)summarization withSpecifier:(id)specifier
 {
-  v5 = a3;
-  v4 = [v5 BOOLValue];
-  sub_E9B4(EMUserDefaultDisableAutomaticMessageSummarization, v4 ^ 1);
+  summarizationCopy = summarization;
+  bOOLValue = [summarizationCopy BOOLValue];
+  sub_E9B4(EMUserDefaultDisableAutomaticMessageSummarization, bOOLValue ^ 1);
 }
 
-- (id)enableAutomaticMessageSummarization:(id)a3
+- (id)enableAutomaticMessageSummarization:(id)summarization
 {
   v3 = [NSNumber numberWithBool:getMailBoolPreferenceValue(EMUserDefaultDisableAutomaticMessageSummarization) ^ 1];
 
   return v3;
 }
 
-- (id)currentQuoteLevel:(id)a3
+- (id)currentQuoteLevel:(id)level
 {
   MailBoolPreferenceValue = getMailBoolPreferenceValue(@"DisableQuoteIncrease");
   v4 = [NSBundle bundleForClass:objc_opt_class()];
@@ -986,21 +986,21 @@ LABEL_13:
   return v6;
 }
 
-- (id)getCurrentSignatureAsynchronously:(id)a3
+- (id)getCurrentSignatureAsynchronously:(id)asynchronously
 {
-  v4 = a3;
+  asynchronouslyCopy = asynchronously;
   [(NSConditionLock *)self->_signatureLock lock];
-  v5 = [(NSConditionLock *)self->_signatureLock condition];
-  if (v5)
+  condition = [(NSConditionLock *)self->_signatureLock condition];
+  if (condition)
   {
-    if (v5 == 1)
+    if (condition == 1)
     {
       [(NSConditionLock *)self->_signatureLock unlock];
       v6 = 0;
       goto LABEL_8;
     }
 
-    if (v5 == 2)
+    if (condition == 2)
     {
       v6 = [(NSString *)self->_signatureValue copy];
       [(NSConditionLock *)self->_signatureLock unlock];
@@ -1015,11 +1015,11 @@ LABEL_13:
     v10 = 3221225472;
     v11 = sub_F598;
     v12 = &unk_3CD68;
-    v13 = self;
-    v14 = v4;
+    selfCopy = self;
+    v14 = asynchronouslyCopy;
     dispatch_async(v7, &v9);
 
-    [(NSConditionLock *)self->_signatureLock unlockWithCondition:1, v9, v10, v11, v12, v13];
+    [(NSConditionLock *)self->_signatureLock unlockWithCondition:1, v9, v10, v11, v12, selfCopy];
   }
 
   v6 = 0;
@@ -1028,9 +1028,9 @@ LABEL_8:
   return v6;
 }
 
-- (id)getCurrentSignatureSynchronously:(id)a3
+- (id)getCurrentSignatureSynchronously:(id)synchronously
 {
-  v5 = a3;
+  synchronouslyCopy = synchronously;
   if (pthread_main_np())
   {
     v24 = +[NSAssertionHandler currentHandler];
@@ -1038,9 +1038,9 @@ LABEL_8:
   }
 
   v6 = +[MFSignatures sharedInstance];
-  v7 = [v6 useAccountSignatures];
+  useAccountSignatures = [v6 useAccountSignatures];
 
-  if (!v7)
+  if (!useAccountSignatures)
   {
     goto LABEL_23;
   }
@@ -1058,10 +1058,10 @@ LABEL_23:
     v10 = 0;
 LABEL_24:
     v20 = +[MFSignatures sharedInstance];
-    v19 = [v20 signature];
+    signature = [v20 signature];
 
 LABEL_25:
-    v21 = [MFHTMLParser plainTextFromHTMLSnippet:v19];
+    v21 = [MFHTMLParser plainTextFromHTMLSnippet:signature];
 
     v22 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
     v18 = [v21 stringByTrimmingCharactersInSet:v22];
@@ -1113,8 +1113,8 @@ LABEL_25:
   {
     if (v10)
     {
-      v19 = [v10 customSignature];
-      if (v19)
+      signature = [v10 customSignature];
+      if (signature)
       {
         goto LABEL_25;
       }
@@ -1128,7 +1128,7 @@ LABEL_26:
   return v18;
 }
 
-- (id)getHasHighlightingSafeDomains:(id)a3
+- (id)getHasHighlightingSafeDomains:(id)domains
 {
   v3 = +[MCProfileConnection sharedConnection];
   v4 = [v3 effectiveValuesForIntersectionSetting:MCFeatureManagedEmailDomains];
@@ -1148,10 +1148,10 @@ LABEL_26:
   return v6;
 }
 
-- (void)setDefaultSendingAccount:(id)a3 withSpecifier:(id)a4
+- (void)setDefaultSendingAccount:(id)account withSpecifier:(id)specifier
 {
-  v6 = a3;
-  sub_E52C(MailDefaultSendingAccountKey, v6);
+  accountCopy = account;
+  sub_E52C(MailDefaultSendingAccountKey, accountCopy);
   v4 = +[MFNanoBridgeSettingsManager sharedInstance];
   [v4 notifyMobileMailDefaultAccountUidChanged];
 
@@ -1159,23 +1159,23 @@ LABEL_26:
   CFNotificationCenterPostNotification(DarwinNotifyCenter, MFMailDefaultSendingAccountDidChange, 0, 0, 1u);
 }
 
-- (id)defaultSendingAccount:(id)a3
+- (id)defaultSendingAccount:(id)account
 {
   v3 = +[MailAccount defaultMailAccountForDelivery];
-  v4 = [v3 uniqueID];
+  uniqueID = [v3 uniqueID];
 
-  return v4;
+  return uniqueID;
 }
 
-- (void)setMutedThreadAction:(id)a3 withSpecifier:(id)a4
+- (void)setMutedThreadAction:(id)action withSpecifier:(id)specifier
 {
-  v5 = a3;
-  sub_E52C(EMUserDefaultMutedThreadActionKey, v5);
+  actionCopy = action;
+  sub_E52C(EMUserDefaultMutedThreadActionKey, actionCopy);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, EMUserDefaultMutedThreadActionDidChangeNotification, 0, 0, 1u);
 }
 
-- (id)mutedThreadAction:(id)a3
+- (id)mutedThreadAction:(id)action
 {
   v3 = getMailPreferenceValue(EMUserDefaultMutedThreadActionKey);
   v4 = v3;
@@ -1194,35 +1194,35 @@ LABEL_26:
   return v5;
 }
 
-- (id)addLinkPreviews:(id)a3
+- (id)addLinkPreviews:(id)previews
 {
   v3 = [NSNumber numberWithInt:getMailBoolPreferenceValue(EMUserDefaultDisableAddLinkPreviews) ^ 1];
 
   return v3;
 }
 
-- (void)setAddLinkPreviews:(id)a3 withSpecifier:(id)a4
+- (void)setAddLinkPreviews:(id)previews withSpecifier:(id)specifier
 {
-  v5 = a3;
-  v4 = [v5 BOOLValue];
-  sub_E9B4(EMUserDefaultDisableAddLinkPreviews, v4 ^ 1);
+  previewsCopy = previews;
+  bOOLValue = [previewsCopy BOOLValue];
+  sub_E9B4(EMUserDefaultDisableAddLinkPreviews, bOOLValue ^ 1);
 }
 
-- (id)loadRemoteImages:(id)a3
+- (id)loadRemoteImages:(id)images
 {
   v3 = [NSNumber numberWithInt:getMailBoolPreferenceValue(EMUserDefaultLoadRemoteContentKey) ^ 1];
 
   return v3;
 }
 
-- (void)setLoadRemoteImages:(id)a3 withSpecifier:(id)a4
+- (void)setLoadRemoteImages:(id)images withSpecifier:(id)specifier
 {
-  v5 = a3;
-  v4 = [v5 BOOLValue];
-  sub_E9B4(EMUserDefaultLoadRemoteContentKey, v4 ^ 1);
+  imagesCopy = images;
+  bOOLValue = [imagesCopy BOOLValue];
+  sub_E9B4(EMUserDefaultLoadRemoteContentKey, bOOLValue ^ 1);
 }
 
-- (id)extensionsEnablement:(id)a3
+- (id)extensionsEnablement:(id)enablement
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"EXTENSIONS_ENABLED" value:&stru_3D2B0 table:@"Preferences"];
@@ -1254,25 +1254,25 @@ LABEL_26:
   }
 }
 
-+ (void)emitNavigationEventForSpecifier:(id)a3 viewController:(id)a4
++ (void)emitNavigationEventForSpecifier:(id)specifier viewController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
+  specifierCopy = specifier;
+  controllerCopy = controller;
   v7 = objc_opt_class();
   if ([v7 isSubclassOfClass:objc_opt_class()])
   {
-    v8 = v6;
-    v9 = [v5 identifier];
-    if (v9)
+    v8 = controllerCopy;
+    identifier = [specifierCopy identifier];
+    if (identifier)
     {
       v10 = +[MailSettingsPlugin appsLocalizedTitle];
       v11 = +[MailSettingsPlugin rootLocalizedTitle];
-      v12 = [MailSettingsPlugin localizedStringForSpecifierID:v9];
+      v12 = [MailSettingsPlugin localizedStringForSpecifierID:identifier];
       v13 = v12;
       if (v10 && v12 && v11)
       {
         v14 = +[MailSettingsPlugin rootDeepLinkURL];
-        v15 = [v14 URLByAppendingPathComponent:v9];
+        v15 = [v14 URLByAppendingPathComponent:identifier];
 
         v17[0] = v10;
         v17[1] = v11;
@@ -1283,16 +1283,16 @@ LABEL_26:
   }
 }
 
-+ (id)localizedStringForSpecifierID:(id)a3
++ (id)localizedStringForSpecifierID:(id)d
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dCopy = d;
+  v4 = dCopy;
+  if (dCopy)
   {
-    if ([v3 isEqualToString:@"SIRI_AND_SEARCH"])
+    if ([dCopy isEqualToString:@"SIRI_AND_SEARCH"])
     {
       v5 = [NSBundle bundleForClass:objc_opt_class()];
-      v6 = [v5 bundleURL];
+      bundleURL = [v5 bundleURL];
 
       v7 = @"AssistantShared";
       v8 = @"ASSISTANT_AND_SEARCH";
@@ -1313,7 +1313,7 @@ LABEL_26:
       if (v11)
       {
         v12 = [NSBundle bundleForClass:objc_opt_class()];
-        v6 = [v12 bundleURL];
+        bundleURL = [v12 bundleURL];
 
         v8 = v11;
         v7 = @"Localizable";
@@ -1334,7 +1334,7 @@ LABEL_26:
         if (v14)
         {
           v15 = [NSBundle bundleForClass:objc_opt_class()];
-          v6 = [v15 bundleURL];
+          bundleURL = [v15 bundleURL];
 
           v8 = v14;
           v7 = @"PSSystemPolicy";
@@ -1387,7 +1387,7 @@ LABEL_26:
           if (v8)
           {
             v17 = [NSBundle bundleForClass:objc_opt_class()];
-            v6 = [v17 bundleURL];
+            bundleURL = [v17 bundleURL];
 
             v18 = v8;
             v7 = @"Preferences";
@@ -1396,18 +1396,18 @@ LABEL_26:
           else
           {
             v7 = 0;
-            v6 = 0;
+            bundleURL = 0;
           }
         }
       }
     }
 
     v9 = 0;
-    if (v7 && v6 && v8)
+    if (v7 && bundleURL && v8)
     {
       v19 = [_NSLocalizedStringResource alloc];
       v20 = +[NSLocale currentLocale];
-      v9 = [v19 initWithKey:v8 table:v7 locale:v20 bundleURL:v6];
+      v9 = [v19 initWithKey:v8 table:v7 locale:v20 bundleURL:bundleURL];
     }
   }
 
@@ -1424,8 +1424,8 @@ LABEL_26:
   v2 = [_NSLocalizedStringResource alloc];
   v3 = +[NSLocale currentLocale];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
-  v5 = [v4 bundleURL];
-  v6 = [v2 initWithKey:@"APPS" table:@"Preferences" locale:v3 bundleURL:v5];
+  bundleURL = [v4 bundleURL];
+  v6 = [v2 initWithKey:@"APPS" table:@"Preferences" locale:v3 bundleURL:bundleURL];
 
   return v6;
 }
@@ -1435,8 +1435,8 @@ LABEL_26:
   v2 = [_NSLocalizedStringResource alloc];
   v3 = +[NSLocale currentLocale];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
-  v5 = [v4 bundleURL];
-  v6 = [v2 initWithKey:@"MAIL" table:@"Preferences" locale:v3 bundleURL:v5];
+  bundleURL = [v4 bundleURL];
+  v6 = [v2 initWithKey:@"MAIL" table:@"Preferences" locale:v3 bundleURL:bundleURL];
 
   return v6;
 }

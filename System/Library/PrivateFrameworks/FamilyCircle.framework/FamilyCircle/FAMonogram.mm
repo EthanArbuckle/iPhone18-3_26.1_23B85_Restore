@@ -1,39 +1,39 @@
 @interface FAMonogram
-+ (id)monogramForContact:(id)a3 diameter:(double)a4 scale:(double)a5;
-+ (id)monogramWithFirstName:(id)a3 lastName:(id)a4 diameter:(double)a5 scale:(double)a6;
-+ (id)silhouetteMonogramWithDiameter:(double)a3 scale:(double)a4;
++ (id)monogramForContact:(id)contact diameter:(double)diameter scale:(double)scale;
++ (id)monogramWithFirstName:(id)name lastName:(id)lastName diameter:(double)diameter scale:(double)scale;
++ (id)silhouetteMonogramWithDiameter:(double)diameter scale:(double)scale;
 @end
 
 @implementation FAMonogram
 
-+ (id)monogramForContact:(id)a3 diameter:(double)a4 scale:(double)a5
++ (id)monogramForContact:(id)contact diameter:(double)diameter scale:(double)scale
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  contactCopy = contact;
   v8 = objc_alloc_init(MEMORY[0x1E695CF18]);
-  [v8 setContactType:{objc_msgSend(v7, "contactType")}];
-  v9 = [v7 givenName];
-  [v8 setGivenName:v9];
+  [v8 setContactType:{objc_msgSend(contactCopy, "contactType")}];
+  givenName = [contactCopy givenName];
+  [v8 setGivenName:givenName];
 
-  v10 = [v7 middleName];
-  [v8 setMiddleName:v10];
+  middleName = [contactCopy middleName];
+  [v8 setMiddleName:middleName];
 
-  v11 = [v7 familyName];
-  [v8 setFamilyName:v11];
+  familyName = [contactCopy familyName];
+  [v8 setFamilyName:familyName];
 
-  v12 = [v7 namePrefix];
-  [v8 setNamePrefix:v12];
+  namePrefix = [contactCopy namePrefix];
+  [v8 setNamePrefix:namePrefix];
 
-  v13 = [v7 nameSuffix];
-  [v8 setNameSuffix:v13];
+  nameSuffix = [contactCopy nameSuffix];
+  [v8 setNameSuffix:nameSuffix];
 
-  v14 = [v7 nickname];
-  [v8 setNickname:v14];
+  nickname = [contactCopy nickname];
+  [v8 setNickname:nickname];
 
   v15 = MEMORY[0x1E695DF58];
-  v16 = [MEMORY[0x1E695DF58] currentLocale];
-  v17 = [v16 languageCode];
-  v18 = [v15 characterDirectionForLanguage:v17];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  languageCode = [currentLocale languageCode];
+  v18 = [v15 characterDirectionForLanguage:languageCode];
 
   v29 = 0;
   v30 = &v29;
@@ -53,7 +53,7 @@
 
   v20 = v19;
   _Block_object_dispose(&v29, 8);
-  v21 = [v19 scopeWithPointSize:v18 == 2 scale:0 rightToLeft:a4 style:{a4, a5}];
+  v21 = [v19 scopeWithPointSize:v18 == 2 scale:0 rightToLeft:diameter style:{diameter, scale}];
   v22 = objc_alloc_init(getCNAvatarImageRendererClass());
   v33[0] = v8;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
@@ -65,27 +65,27 @@
   return v25;
 }
 
-+ (id)silhouetteMonogramWithDiameter:(double)a3 scale:(double)a4
++ (id)silhouetteMonogramWithDiameter:(double)diameter scale:(double)scale
 {
   v6 = objc_alloc_init(getCNAvatarImageRendererClass());
-  v7 = [v6 placeholderImageProvider];
-  v8 = [v7 imageForSize:a3 scale:{a3, a4}];
+  placeholderImageProvider = [v6 placeholderImageProvider];
+  v8 = [placeholderImageProvider imageForSize:diameter scale:{diameter, scale}];
   v9 = _weakUIImagePNGRepresentation(v8);
 
   return v9;
 }
 
-+ (id)monogramWithFirstName:(id)a3 lastName:(id)a4 diameter:(double)a5 scale:(double)a6
++ (id)monogramWithFirstName:(id)name lastName:(id)lastName diameter:(double)diameter scale:(double)scale
 {
   v10 = MEMORY[0x1E695CF18];
-  v11 = a4;
-  v12 = a3;
+  lastNameCopy = lastName;
+  nameCopy = name;
   v13 = objc_alloc_init(v10);
   [v13 setContactType:0];
-  [v13 setGivenName:v12];
+  [v13 setGivenName:nameCopy];
 
-  [v13 setFamilyName:v11];
-  v14 = [a1 monogramForContact:v13 diameter:a5 scale:a6];
+  [v13 setFamilyName:lastNameCopy];
+  v14 = [self monogramForContact:v13 diameter:diameter scale:scale];
 
   return v14;
 }

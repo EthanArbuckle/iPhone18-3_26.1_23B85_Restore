@@ -1,14 +1,14 @@
 @interface SKUIMediaSocialProfileCoordinator
 + (id)sharedCoordinator;
 - (SKUIMediaSocialProfileCoordinator)init;
-- (void)_accountStoreChangeNotification:(id)a3;
-- (void)_authenticateOnCompletion:(id)a3;
-- (void)_fireProfileBlocksWithProfile:(id)a3 isFinal:(BOOL)a4 error:(id)a5;
-- (void)_handleOperationResponseWithProfile:(id)a3 error:(id)a4;
-- (void)_queueProfileBlock:(id)a3;
+- (void)_accountStoreChangeNotification:(id)notification;
+- (void)_authenticateOnCompletion:(id)completion;
+- (void)_fireProfileBlocksWithProfile:(id)profile isFinal:(BOOL)final error:(id)error;
+- (void)_handleOperationResponseWithProfile:(id)profile error:(id)error;
+- (void)_queueProfileBlock:(id)block;
 - (void)_requestProfile;
 - (void)dealloc;
-- (void)getProfileWithOptions:(id)a3 profileBlock:(id)a4;
+- (void)getProfileWithOptions:(id)options profileBlock:(id)block;
 - (void)init;
 - (void)reset;
 @end
@@ -35,10 +35,10 @@
     dispatchQueue = v3->_dispatchQueue;
     v3->_dispatchQueue = v6;
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v9 = *MEMORY[0x277D69D70];
-    v10 = [MEMORY[0x277D69A20] defaultStore];
-    [v8 addObserver:v3 selector:sel__accountStoreChangeNotification_ name:v9 object:v10];
+    defaultStore = [MEMORY[0x277D69A20] defaultStore];
+    [defaultCenter addObserver:v3 selector:sel__accountStoreChangeNotification_ name:v9 object:defaultStore];
   }
 
   return v3;
@@ -47,10 +47,10 @@
 - (void)dealloc
 {
   [(NSOperationQueue *)self->_operationQueue cancelAllOperations];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = *MEMORY[0x277D69D70];
-  v5 = [MEMORY[0x277D69A20] defaultStore];
-  [v3 removeObserver:self name:v4 object:v5];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  [defaultCenter removeObserver:self name:v4 object:defaultStore];
 
   v6.receiver = self;
   v6.super_class = SKUIMediaSocialProfileCoordinator;
@@ -63,7 +63,7 @@
   block[1] = 3221225472;
   block[2] = __54__SKUIMediaSocialProfileCoordinator_sharedCoordinator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCoordinator_sOnce_0 != -1)
   {
     dispatch_once(&sharedCoordinator_sOnce_0, block);
@@ -83,20 +83,20 @@ uint64_t __54__SKUIMediaSocialProfileCoordinator_sharedCoordinator__block_invoke
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (void)getProfileWithOptions:(id)a3 profileBlock:(id)a4
+- (void)getProfileWithOptions:(id)options profileBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__SKUIMediaSocialProfileCoordinator_getProfileWithOptions_profileBlock___block_invoke;
   block[3] = &unk_278200B10;
-  v12 = v6;
-  v13 = v7;
+  v12 = optionsCopy;
+  v13 = blockCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = optionsCopy;
+  v10 = blockCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -177,12 +177,12 @@ void __42__SKUIMediaSocialProfileCoordinator_reset__block_invoke(uint64_t a1)
   *(v4 + 32) = 0;
 }
 
-- (void)_accountStoreChangeNotification:(id)a3
+- (void)_accountStoreChangeNotification:(id)notification
 {
-  v4 = [MEMORY[0x277D69A20] defaultStore];
-  v9 = [v4 activeAccount];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  if (v9)
+  if (activeAccount)
   {
     if (!self->_waitingForAuthentication)
     {
@@ -202,37 +202,37 @@ void __42__SKUIMediaSocialProfileCoordinator_reset__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_authenticateOnCompletion:(id)a3
+- (void)_authenticateOnCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   self->_waitingForAuthentication = 1;
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   lastAuthenticationAttempt = self->_lastAuthenticationAttempt;
-  self->_lastAuthenticationAttempt = v5;
+  self->_lastAuthenticationAttempt = date;
 
-  v7 = [MEMORY[0x277D69A20] defaultStore];
-  v8 = [v7 activeAccount];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  if (v8)
+  if (activeAccount)
   {
-    v9 = [objc_alloc(MEMORY[0x277D69BC8]) initWithAccount:v8];
-    [v9 setPromptStyle:1];
-    [v9 setShouldCreateNewSession:1];
+    contextForSignIn = [objc_alloc(MEMORY[0x277D69BC8]) initWithAccount:activeAccount];
+    [contextForSignIn setPromptStyle:1];
+    [contextForSignIn setShouldCreateNewSession:1];
   }
 
   else
   {
-    v9 = [MEMORY[0x277D69BC8] contextForSignIn];
+    contextForSignIn = [MEMORY[0x277D69BC8] contextForSignIn];
   }
 
-  v10 = [objc_alloc(MEMORY[0x277D69A50]) initWithAuthenticationContext:v9];
+  v10 = [objc_alloc(MEMORY[0x277D69A50]) initWithAuthenticationContext:contextForSignIn];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__SKUIMediaSocialProfileCoordinator__authenticateOnCompletion___block_invoke;
   v12[3] = &unk_278200B38;
   v12[4] = self;
-  v13 = v4;
-  v11 = v4;
+  v13 = completionCopy;
+  v11 = completionCopy;
   [v10 startWithAuthenticateResponseBlock:v12];
 }
 
@@ -270,26 +270,26 @@ uint64_t __63__SKUIMediaSocialProfileCoordinator__authenticateOnCompletion___blo
   return MEMORY[0x2821F96F8](v4, v6);
 }
 
-- (void)_queueProfileBlock:(id)a3
+- (void)_queueProfileBlock:(id)block
 {
-  v4 = a3;
-  v9 = v4;
+  blockCopy = block;
+  v9 = blockCopy;
   if (!self->_profileBlocks)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     profileBlocks = self->_profileBlocks;
     self->_profileBlocks = v5;
 
-    v4 = v9;
+    blockCopy = v9;
   }
 
-  if (v4)
+  if (blockCopy)
   {
     v7 = self->_profileBlocks;
     v8 = [v9 copy];
     [(NSMutableArray *)v7 addObject:v8];
 
-    v4 = v9;
+    blockCopy = v9;
   }
 }
 
@@ -333,19 +333,19 @@ void __52__SKUIMediaSocialProfileCoordinator__requestProfile__block_invoke(uint6
   [WeakRetained _handleOperationResponseWithProfile:v6 error:v5];
 }
 
-- (void)_fireProfileBlocksWithProfile:(id)a3 isFinal:(BOOL)a4 error:(id)a5
+- (void)_fireProfileBlocksWithProfile:(id)profile isFinal:(BOOL)final error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  profileCopy = profile;
+  errorCopy = error;
+  if (profileCopy)
   {
-    v10 = [v8 copy];
+    v10 = [profileCopy copy];
     lastKnownProfile = self->_lastKnownProfile;
     self->_lastKnownProfile = v10;
 
-    v12 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     lastRequestDate = self->_lastRequestDate;
-    self->_lastRequestDate = v12;
+    self->_lastRequestDate = date;
   }
 
   v14 = [(NSMutableArray *)self->_profileBlocks copy];
@@ -358,9 +358,9 @@ void __52__SKUIMediaSocialProfileCoordinator__requestProfile__block_invoke(uint6
     v16[2] = __81__SKUIMediaSocialProfileCoordinator__fireProfileBlocksWithProfile_isFinal_error___block_invoke;
     v16[3] = &unk_278200AB8;
     v17 = v14;
-    v18 = v8;
-    v20 = a4;
-    v19 = v9;
+    v18 = profileCopy;
+    finalCopy = final;
+    v19 = errorCopy;
     dispatch_async(callbackQueue, v16);
   }
 }
@@ -400,20 +400,20 @@ void __81__SKUIMediaSocialProfileCoordinator__fireProfileBlocksWithProfile_isFin
   }
 }
 
-- (void)_handleOperationResponseWithProfile:(id)a3 error:(id)a4
+- (void)_handleOperationResponseWithProfile:(id)profile error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__SKUIMediaSocialProfileCoordinator__handleOperationResponseWithProfile_error___block_invoke;
   block[3] = &unk_2781F8680;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = errorCopy;
+  selfCopy = self;
+  v14 = profileCopy;
+  v9 = profileCopy;
+  v10 = errorCopy;
   dispatch_async(dispatchQueue, block);
 }
 

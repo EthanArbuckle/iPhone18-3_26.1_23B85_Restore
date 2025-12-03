@@ -1,12 +1,12 @@
 @interface StreamingUnzipServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation StreamingUnzipServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  __chkstk_darwin(self, a2, a3, a4);
+  __chkstk_darwin(self, a2, listener, connection);
   v5 = v4;
   v7 = v6;
   v8 = v5;
@@ -14,9 +14,9 @@
   if (v9)
   {
     v10 = [v8 valueForEntitlement:v9];
-    v11 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
 
-    if ((v11 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       [v8 invalidate];
       v17 = 0;
@@ -24,18 +24,18 @@
     }
   }
 
-  v12 = [v8 processIdentifier];
-  v13 = proc_pidpath(v12, &buffer, 0x1000u);
+  processIdentifier = [v8 processIdentifier];
+  v13 = proc_pidpath(processIdentifier, &buffer, 0x1000u);
   if (v13 < 1)
   {
-    v16 = [NSString stringWithFormat:@"Unknown Process Name (pid %d)", v12];
+    v16 = [NSString stringWithFormat:@"Unknown Process Name (pid %d)", processIdentifier];
   }
 
   else
   {
     v14 = [[NSString alloc] initWithBytes:&buffer length:v13 encoding:4];
-    v15 = [v14 lastPathComponent];
-    v16 = [NSString stringWithFormat:@"%@ (pid %d)", v15, v12];
+    lastPathComponent = [v14 lastPathComponent];
+    v16 = [NSString stringWithFormat:@"%@ (pid %d)", lastPathComponent, processIdentifier];
   }
 
   v18 = sub_10000126C();

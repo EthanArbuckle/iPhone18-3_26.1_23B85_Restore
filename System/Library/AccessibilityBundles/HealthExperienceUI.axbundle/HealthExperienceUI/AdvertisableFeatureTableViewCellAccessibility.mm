@@ -9,16 +9,16 @@
 
 - (id)accessibilityValue
 {
-  v2 = [(AdvertisableFeatureTableViewCellAccessibility *)self _axFeatureSwitch];
-  v3 = [v2 accessibilityValue];
+  _axFeatureSwitch = [(AdvertisableFeatureTableViewCellAccessibility *)self _axFeatureSwitch];
+  accessibilityValue = [_axFeatureSwitch accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = [(AdvertisableFeatureTableViewCellAccessibility *)self _axFeatureSwitch];
-  [v2 accessibilityActivationPoint];
+  _axFeatureSwitch = [(AdvertisableFeatureTableViewCellAccessibility *)self _axFeatureSwitch];
+  [_axFeatureSwitch accessibilityActivationPoint];
   v4 = v3;
   v6 = v5;
 
@@ -31,10 +31,10 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(AdvertisableFeatureTableViewCellAccessibility *)self _axFeatureSwitch];
-  v3 = [v2 accessibilityTraits];
+  _axFeatureSwitch = [(AdvertisableFeatureTableViewCellAccessibility *)self _axFeatureSwitch];
+  accessibilityTraits = [_axFeatureSwitch accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)_axFeatureSwitch

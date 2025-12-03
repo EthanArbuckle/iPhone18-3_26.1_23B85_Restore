@@ -16,12 +16,12 @@
     if ((objc_opt_respondsToSelector() & 1) != 0 && ([v9 cmsCoded], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v8 = v7;
-      [a1 setObject:v7 forKey:v6];
+      [self setObject:v7 forKey:v6];
     }
 
     else
     {
-      [a1 removeObjectForKey:v6];
+      [self removeObjectForKey:v6];
     }
   }
 }
@@ -32,13 +32,13 @@
   v6 = a4;
   if (v9)
   {
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ([v9 cmsCoded], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ([v9 cmsCoded], (null = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v7 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v8 = v7;
-    [a1 setObject:v7 forKey:v6];
+    v8 = null;
+    [self setObject:null forKey:v6];
   }
 }
 
@@ -46,12 +46,12 @@
 {
   if (a3)
   {
-    return [a1 setObject:? forKey:?];
+    return [self setObject:? forKey:?];
   }
 
   else
   {
-    return [a1 removeObjectForKey:a4];
+    return [self removeObjectForKey:a4];
   }
 }
 
@@ -59,16 +59,16 @@
 {
   if (a3)
   {
-    v8 = a4;
-    [a1 setObject:a3 forKey:?];
+    null = a4;
+    [self setObject:a3 forKey:?];
   }
 
   else
   {
     v6 = MEMORY[0x277CBEB68];
     v7 = a4;
-    v8 = [v6 null];
-    [a1 setObject:? forKey:?];
+    null = [v6 null];
+    [self setObject:? forKey:?];
   }
 }
 

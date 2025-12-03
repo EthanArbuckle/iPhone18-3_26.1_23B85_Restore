@@ -1,12 +1,12 @@
 @interface SFOpenCoreSpotlightItemCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFOpenCoreSpotlightItemCommand)initWithCoder:(id)a3;
-- (SFOpenCoreSpotlightItemCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFOpenCoreSpotlightItemCommand)initWithCoder:(id)coder;
+- (SFOpenCoreSpotlightItemCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFOpenCoreSpotlightItemCommand
@@ -16,36 +16,36 @@
   v11.receiver = self;
   v11.super_class = SFOpenCoreSpotlightItemCommand;
   v3 = [(SFCommand *)&v11 hash];
-  v4 = [(SFOpenCoreSpotlightItemCommand *)self coreSpotlightIdentifier];
-  v5 = [v4 hash];
-  v6 = [(SFOpenCoreSpotlightItemCommand *)self applicationBundleIdentifier];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(SFOpenCoreSpotlightItemCommand *)self actionIdentifier];
-  v9 = v7 ^ [v8 hash];
+  coreSpotlightIdentifier = [(SFOpenCoreSpotlightItemCommand *)self coreSpotlightIdentifier];
+  v5 = [coreSpotlightIdentifier hash];
+  applicationBundleIdentifier = [(SFOpenCoreSpotlightItemCommand *)self applicationBundleIdentifier];
+  v7 = v5 ^ [applicationBundleIdentifier hash];
+  actionIdentifier = [(SFOpenCoreSpotlightItemCommand *)self actionIdentifier];
+  v9 = v7 ^ [actionIdentifier hash];
 
   return v9 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFOpenCoreSpotlightItemCommand *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFOpenCoreSpotlightItemCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v32.receiver = self;
       v32.super_class = SFOpenCoreSpotlightItemCommand;
-      if ([(SFCommand *)&v32 isEqual:v5])
+      if ([(SFCommand *)&v32 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFOpenCoreSpotlightItemCommand *)self coreSpotlightIdentifier];
-        v8 = [(SFOpenCoreSpotlightItemCommand *)v6 coreSpotlightIdentifier];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        coreSpotlightIdentifier = [(SFOpenCoreSpotlightItemCommand *)self coreSpotlightIdentifier];
+        coreSpotlightIdentifier2 = [(SFOpenCoreSpotlightItemCommand *)v6 coreSpotlightIdentifier];
+        if ((coreSpotlightIdentifier != 0) == (coreSpotlightIdentifier2 == 0))
         {
           v11 = 0;
 LABEL_31:
@@ -53,63 +53,63 @@ LABEL_31:
           goto LABEL_32;
         }
 
-        v9 = [(SFOpenCoreSpotlightItemCommand *)self coreSpotlightIdentifier];
-        if (v9)
+        coreSpotlightIdentifier3 = [(SFOpenCoreSpotlightItemCommand *)self coreSpotlightIdentifier];
+        if (coreSpotlightIdentifier3)
         {
-          v3 = [(SFOpenCoreSpotlightItemCommand *)self coreSpotlightIdentifier];
-          v10 = [(SFOpenCoreSpotlightItemCommand *)v6 coreSpotlightIdentifier];
-          if (![v3 isEqual:v10])
+          coreSpotlightIdentifier4 = [(SFOpenCoreSpotlightItemCommand *)self coreSpotlightIdentifier];
+          coreSpotlightIdentifier5 = [(SFOpenCoreSpotlightItemCommand *)v6 coreSpotlightIdentifier];
+          if (![coreSpotlightIdentifier4 isEqual:coreSpotlightIdentifier5])
           {
             v11 = 0;
             goto LABEL_29;
           }
 
-          v31 = v10;
+          v31 = coreSpotlightIdentifier5;
         }
 
-        v12 = [(SFOpenCoreSpotlightItemCommand *)self applicationBundleIdentifier];
-        v13 = [(SFOpenCoreSpotlightItemCommand *)v6 applicationBundleIdentifier];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        applicationBundleIdentifier = [(SFOpenCoreSpotlightItemCommand *)self applicationBundleIdentifier];
+        applicationBundleIdentifier2 = [(SFOpenCoreSpotlightItemCommand *)v6 applicationBundleIdentifier];
+        v14 = applicationBundleIdentifier2;
+        if ((applicationBundleIdentifier != 0) == (applicationBundleIdentifier2 == 0))
         {
 
           v11 = 0;
           goto LABEL_28;
         }
 
-        v15 = [(SFOpenCoreSpotlightItemCommand *)self applicationBundleIdentifier];
-        if (v15)
+        applicationBundleIdentifier3 = [(SFOpenCoreSpotlightItemCommand *)self applicationBundleIdentifier];
+        if (applicationBundleIdentifier3)
         {
-          v25 = v12;
-          v16 = [(SFOpenCoreSpotlightItemCommand *)self applicationBundleIdentifier];
-          v27 = [(SFOpenCoreSpotlightItemCommand *)v6 applicationBundleIdentifier];
-          v28 = v16;
-          if (![v16 isEqual:?])
+          v25 = applicationBundleIdentifier;
+          applicationBundleIdentifier4 = [(SFOpenCoreSpotlightItemCommand *)self applicationBundleIdentifier];
+          applicationBundleIdentifier5 = [(SFOpenCoreSpotlightItemCommand *)v6 applicationBundleIdentifier];
+          v28 = applicationBundleIdentifier4;
+          if (![applicationBundleIdentifier4 isEqual:?])
           {
             v11 = 0;
-            v12 = v25;
+            applicationBundleIdentifier = v25;
             goto LABEL_26;
           }
 
-          v29 = v15;
-          v30 = v3;
-          v12 = v25;
+          v29 = applicationBundleIdentifier3;
+          v30 = coreSpotlightIdentifier4;
+          applicationBundleIdentifier = v25;
         }
 
         else
         {
           v29 = 0;
-          v30 = v3;
+          v30 = coreSpotlightIdentifier4;
         }
 
-        v17 = [(SFOpenCoreSpotlightItemCommand *)self actionIdentifier];
-        v18 = [(SFOpenCoreSpotlightItemCommand *)v6 actionIdentifier];
-        if ((v17 != 0) == (v18 == 0))
+        actionIdentifier = [(SFOpenCoreSpotlightItemCommand *)self actionIdentifier];
+        actionIdentifier2 = [(SFOpenCoreSpotlightItemCommand *)v6 actionIdentifier];
+        if ((actionIdentifier != 0) == (actionIdentifier2 == 0))
         {
 
           v11 = 0;
-          v15 = v29;
-          v3 = v30;
+          applicationBundleIdentifier3 = v29;
+          coreSpotlightIdentifier4 = v30;
           if (!v29)
           {
             goto LABEL_27;
@@ -118,16 +118,16 @@ LABEL_31:
 
         else
         {
-          v24 = v17;
-          v26 = v18;
-          v19 = [(SFOpenCoreSpotlightItemCommand *)self actionIdentifier];
-          v15 = v29;
-          if (v19)
+          v24 = actionIdentifier;
+          v26 = actionIdentifier2;
+          actionIdentifier3 = [(SFOpenCoreSpotlightItemCommand *)self actionIdentifier];
+          applicationBundleIdentifier3 = v29;
+          if (actionIdentifier3)
           {
-            v23 = v19;
-            v22 = [(SFOpenCoreSpotlightItemCommand *)self actionIdentifier];
-            v20 = [(SFOpenCoreSpotlightItemCommand *)v6 actionIdentifier];
-            v11 = [v22 isEqual:?];
+            v23 = actionIdentifier3;
+            actionIdentifier4 = [(SFOpenCoreSpotlightItemCommand *)self actionIdentifier];
+            actionIdentifier5 = [(SFOpenCoreSpotlightItemCommand *)v6 actionIdentifier];
+            v11 = [actionIdentifier4 isEqual:?];
           }
 
           else
@@ -136,7 +136,7 @@ LABEL_31:
             v11 = 1;
           }
 
-          v3 = v30;
+          coreSpotlightIdentifier4 = v30;
           if (!v29)
           {
             goto LABEL_27;
@@ -147,8 +147,8 @@ LABEL_26:
 
 LABEL_27:
 LABEL_28:
-        v10 = v31;
-        if (!v9)
+        coreSpotlightIdentifier5 = v31;
+        if (!coreSpotlightIdentifier3)
         {
 LABEL_30:
 
@@ -169,21 +169,21 @@ LABEL_32:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = SFOpenCoreSpotlightItemCommand;
-  v4 = [(SFCommand *)&v12 copyWithZone:a3];
-  v5 = [(SFOpenCoreSpotlightItemCommand *)self coreSpotlightIdentifier];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v12 copyWithZone:zone];
+  coreSpotlightIdentifier = [(SFOpenCoreSpotlightItemCommand *)self coreSpotlightIdentifier];
+  v6 = [coreSpotlightIdentifier copy];
   [v4 setCoreSpotlightIdentifier:v6];
 
-  v7 = [(SFOpenCoreSpotlightItemCommand *)self applicationBundleIdentifier];
-  v8 = [v7 copy];
+  applicationBundleIdentifier = [(SFOpenCoreSpotlightItemCommand *)self applicationBundleIdentifier];
+  v8 = [applicationBundleIdentifier copy];
   [v4 setApplicationBundleIdentifier:v8];
 
-  v9 = [(SFOpenCoreSpotlightItemCommand *)self actionIdentifier];
-  v10 = [v9 copy];
+  actionIdentifier = [(SFOpenCoreSpotlightItemCommand *)self actionIdentifier];
+  v10 = [actionIdentifier copy];
   [v4 setActionIdentifier:v10];
 
   return v4;
@@ -192,92 +192,92 @@ LABEL_32:
 - (NSData)jsonData
 {
   v2 = [[_SFPBOpenCoreSpotlightItemCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBOpenCoreSpotlightItemCommand *)v2 jsonData];
+  jsonData = [(_SFPBOpenCoreSpotlightItemCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBOpenCoreSpotlightItemCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBOpenCoreSpotlightItemCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBOpenCoreSpotlightItemCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFOpenCoreSpotlightItemCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFOpenCoreSpotlightItemCommand)initWithCoder:(id)a3
+- (SFOpenCoreSpotlightItemCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFOpenCoreSpotlightItemCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 coreSpotlightIdentifier];
-    [(SFOpenCoreSpotlightItemCommand *)v5 setCoreSpotlightIdentifier:v9];
+    coreSpotlightIdentifier = [(SFCommand *)v8 coreSpotlightIdentifier];
+    [(SFOpenCoreSpotlightItemCommand *)v5 setCoreSpotlightIdentifier:coreSpotlightIdentifier];
 
-    v10 = [(SFCommand *)v8 applicationBundleIdentifier];
-    [(SFOpenCoreSpotlightItemCommand *)v5 setApplicationBundleIdentifier:v10];
+    applicationBundleIdentifier = [(SFCommand *)v8 applicationBundleIdentifier];
+    [(SFOpenCoreSpotlightItemCommand *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier];
 
-    v11 = [(SFCommand *)v8 actionIdentifier];
-    [(SFOpenCoreSpotlightItemCommand *)v5 setActionIdentifier:v11];
+    actionIdentifier = [(SFCommand *)v8 actionIdentifier];
+    [(SFOpenCoreSpotlightItemCommand *)v5 setActionIdentifier:actionIdentifier];
 
-    v12 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v12];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v13 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v13];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v14 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v14];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v15 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v15];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;
 }
 
-- (SFOpenCoreSpotlightItemCommand)initWithProtobuf:(id)a3
+- (SFOpenCoreSpotlightItemCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v14.receiver = self;
   v14.super_class = SFOpenCoreSpotlightItemCommand;
   v5 = [(SFOpenCoreSpotlightItemCommand *)&v14 init];
   if (v5)
   {
-    v6 = [v4 coreSpotlightIdentifier];
+    coreSpotlightIdentifier = [protobufCopy coreSpotlightIdentifier];
 
-    if (v6)
+    if (coreSpotlightIdentifier)
     {
-      v7 = [v4 coreSpotlightIdentifier];
-      [(SFOpenCoreSpotlightItemCommand *)v5 setCoreSpotlightIdentifier:v7];
+      coreSpotlightIdentifier2 = [protobufCopy coreSpotlightIdentifier];
+      [(SFOpenCoreSpotlightItemCommand *)v5 setCoreSpotlightIdentifier:coreSpotlightIdentifier2];
     }
 
-    v8 = [v4 applicationBundleIdentifier];
+    applicationBundleIdentifier = [protobufCopy applicationBundleIdentifier];
 
-    if (v8)
+    if (applicationBundleIdentifier)
     {
-      v9 = [v4 applicationBundleIdentifier];
-      [(SFOpenCoreSpotlightItemCommand *)v5 setApplicationBundleIdentifier:v9];
+      applicationBundleIdentifier2 = [protobufCopy applicationBundleIdentifier];
+      [(SFOpenCoreSpotlightItemCommand *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier2];
     }
 
-    v10 = [v4 actionIdentifier];
+    actionIdentifier = [protobufCopy actionIdentifier];
 
-    if (v10)
+    if (actionIdentifier)
     {
-      v11 = [v4 actionIdentifier];
-      [(SFOpenCoreSpotlightItemCommand *)v5 setActionIdentifier:v11];
+      actionIdentifier2 = [protobufCopy actionIdentifier];
+      [(SFOpenCoreSpotlightItemCommand *)v5 setActionIdentifier:actionIdentifier2];
     }
 
     v12 = v5;

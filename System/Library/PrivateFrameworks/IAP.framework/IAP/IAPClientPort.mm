@@ -1,11 +1,11 @@
 @interface IAPClientPort
-- (IAPClientPort)initWithUUID:(id)a3 queue:(id)a4 sendHandler:(id)a5;
+- (IAPClientPort)initWithUUID:(id)d queue:(id)queue sendHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation IAPClientPort
 
-- (IAPClientPort)initWithUUID:(id)a3 queue:(id)a4 sendHandler:(id)a5
+- (IAPClientPort)initWithUUID:(id)d queue:(id)queue sendHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
@@ -32,12 +32,12 @@
     v18 = v10;
     *__str = v10;
     v16 = v10;
-    v8->_uuid = a3;
-    v11 = a3;
-    v9->_sendDataHandlerQueue = a4;
-    dispatch_retain(a4);
-    v9->_sendDataHandler = _Block_copy(a5);
-    snprintf(__str, 0x100uLL, "com.apple.IAPClientPort.%s.event_queue", [a3 UTF8String]);
+    v8->_uuid = d;
+    dCopy = d;
+    v9->_sendDataHandlerQueue = queue;
+    dispatch_retain(queue);
+    v9->_sendDataHandler = _Block_copy(handler);
+    snprintf(__str, 0x100uLL, "com.apple.IAPClientPort.%s.event_queue", [d UTF8String]);
     v9->_clientPortEventQueue = dispatch_queue_create(__str, 0);
   }
 

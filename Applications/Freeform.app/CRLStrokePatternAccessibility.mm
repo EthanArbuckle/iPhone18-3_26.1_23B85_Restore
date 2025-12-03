@@ -1,30 +1,30 @@
 @interface CRLStrokePatternAccessibility
-+ (id)crlaxCastFrom:(id)a3;
-- (id)_crlaxLocalizedDescriptionForPattern:(id)a3 omittingStroke:(BOOL)a4;
++ (id)crlaxCastFrom:(id)from;
+- (id)_crlaxLocalizedDescriptionForPattern:(id)pattern omittingStroke:(BOOL)stroke;
 - (id)_crlaxStrokePatternName;
-- (id)_crlaxStyleInfoDescription:(BOOL)a3;
+- (id)_crlaxStyleInfoDescription:(BOOL)description;
 - (int64_t)_crlaxStrokePattern;
 @end
 
 @implementation CRLStrokePatternAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
-- (id)_crlaxStyleInfoDescription:(BOOL)a3
+- (id)_crlaxStyleInfoDescription:(BOOL)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   if ([(CRLStrokePatternAccessibility *)self crlaxIsDefaultStroke])
   {
     v5 = +[NSBundle mainBundle];
-    v6 = v5;
-    if (v3)
+    _crlaxStrokePatternName = v5;
+    if (descriptionCopy)
     {
       v7 = @"Default";
     }
@@ -38,10 +38,10 @@
     goto LABEL_8;
   }
 
-  v6 = [(CRLStrokePatternAccessibility *)self _crlaxStrokePatternName];
-  if (v6)
+  _crlaxStrokePatternName = [(CRLStrokePatternAccessibility *)self _crlaxStrokePatternName];
+  if (_crlaxStrokePatternName)
   {
-    v8 = [(CRLStrokePatternAccessibility *)self _crlaxLocalizedDescriptionForPattern:v6 omittingStroke:v3];
+    v8 = [(CRLStrokePatternAccessibility *)self _crlaxLocalizedDescriptionForPattern:_crlaxStrokePatternName omittingStroke:descriptionCopy];
 LABEL_8:
     v9 = v8;
     goto LABEL_9;
@@ -109,10 +109,10 @@ LABEL_9:
   }
 }
 
-- (id)_crlaxLocalizedDescriptionForPattern:(id)a3 omittingStroke:(BOOL)a4
+- (id)_crlaxLocalizedDescriptionForPattern:(id)pattern omittingStroke:(BOOL)stroke
 {
-  v4 = a4;
-  v5 = a3;
+  strokeCopy = stroke;
+  patternCopy = pattern;
   if (qword_101A353B0)
   {
     v6 = 1;
@@ -120,7 +120,7 @@ LABEL_9:
 
   else
   {
-    v6 = !v4;
+    v6 = !strokeCopy;
   }
 
   if (!v6)
@@ -154,7 +154,7 @@ LABEL_9:
     qword_101A353B0 = v15;
   }
 
-  if (!qword_101A353A8 && !v4)
+  if (!qword_101A353A8 && !strokeCopy)
   {
     v44[0] = @"solidPattern";
     v43 = +[NSBundle mainBundle];
@@ -186,18 +186,18 @@ LABEL_9:
   }
 
   v27 = &qword_101A353B0;
-  if (!v4)
+  if (!strokeCopy)
   {
     v27 = &qword_101A353A8;
   }
 
-  v28 = [*v27 objectForKeyedSubscript:v5];
+  v28 = [*v27 objectForKeyedSubscript:patternCopy];
   if (CRLAccessibilityShouldPerformValidationChecks())
   {
     if (![v28 length])
     {
       ShouldCrashOnValidationErrorAfterLaunch = CRLAccessibilityShouldCrashOnValidationErrorAfterLaunch();
-      if (__CRLAccessibilityHandleValidationErrorWithDescription(ShouldCrashOnValidationErrorAfterLaunch, 0, @"Unrecognized pattern %@, could not get localization key", v30, v31, v32, v33, v34, v5))
+      if (__CRLAccessibilityHandleValidationErrorWithDescription(ShouldCrashOnValidationErrorAfterLaunch, 0, @"Unrecognized pattern %@, could not get localization key", v30, v31, v32, v33, v34, patternCopy))
       {
         abort();
       }
@@ -209,10 +209,10 @@ LABEL_9:
 
 - (int64_t)_crlaxStrokePattern
 {
-  v2 = [(CRLStrokePatternAccessibility *)self crlaxTarget];
-  v3 = [v2 patternType];
+  crlaxTarget = [(CRLStrokePatternAccessibility *)self crlaxTarget];
+  patternType = [crlaxTarget patternType];
 
-  return v3;
+  return patternType;
 }
 
 @end

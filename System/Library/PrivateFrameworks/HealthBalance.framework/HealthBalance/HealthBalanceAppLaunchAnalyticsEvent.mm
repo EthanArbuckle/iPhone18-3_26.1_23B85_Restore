@@ -1,7 +1,7 @@
 @interface HealthBalanceAppLaunchAnalyticsEvent
 - (NSString)eventName;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error;
 @end
 
 @implementation HealthBalanceAppLaunchAnalyticsEvent
@@ -13,14 +13,14 @@
   return v2;
 }
 
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error
 {
-  v5 = a3;
+  sourceCopy = source;
 
-  v6 = [v5 environmentDataSource];
+  environmentDataSource = [sourceCopy environmentDataSource];
   v7 = self->needsOnboarding[0];
   v11 = self->source[0];
-  v8 = sub_1CFE0497C(v6, v7, &v11);
+  v8 = sub_1CFE0497C(environmentDataSource, v7, &v11);
 
   sub_1CFE025C4(v8);
 
@@ -29,11 +29,11 @@
   return v9;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
-  v4 = a3;
+  sourceCopy = source;
 
-  sub_1CFE05364(v4);
+  sub_1CFE05364(sourceCopy);
 
   v5 = sub_1CFE30804();
 

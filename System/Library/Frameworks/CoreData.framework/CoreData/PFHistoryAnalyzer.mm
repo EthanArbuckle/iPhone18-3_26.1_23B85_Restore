@@ -1,22 +1,22 @@
 @interface PFHistoryAnalyzer
-- (PFHistoryAnalyzer)initWithOptions:(id)a3;
-- (id)instantiateNewAnalyzerContextForChangesInStore:(id)a3;
-- (uint64_t)streamProcessedChangesForStore:(void *)a3 inContext:(uint64_t)a4 sinceLastHistoryToken:(uint64_t)a5 contextHandler:(void *)a6 error:;
+- (PFHistoryAnalyzer)initWithOptions:(id)options;
+- (id)instantiateNewAnalyzerContextForChangesInStore:(id)store;
+- (uint64_t)streamProcessedChangesForStore:(void *)store inContext:(uint64_t)context sinceLastHistoryToken:(uint64_t)token contextHandler:(void *)handler error:;
 - (void)dealloc;
 @end
 
 @implementation PFHistoryAnalyzer
 
-- (PFHistoryAnalyzer)initWithOptions:(id)a3
+- (PFHistoryAnalyzer)initWithOptions:(id)options
 {
   v7.receiver = self;
   v7.super_class = PFHistoryAnalyzer;
   v4 = [(PFHistoryAnalyzer *)&v7 init];
   if (v4)
   {
-    if (a3)
+    if (options)
     {
-      v5 = [a3 copy];
+      v5 = [options copy];
     }
 
     else
@@ -38,7 +38,7 @@
   [(PFHistoryAnalyzer *)&v3 dealloc];
 }
 
-- (id)instantiateNewAnalyzerContextForChangesInStore:(id)a3
+- (id)instantiateNewAnalyzerContextForChangesInStore:(id)store
 {
   v4 = [PFHistoryAnalyzerContext alloc];
   options = self->_options;
@@ -46,10 +46,10 @@
   return [(PFHistoryAnalyzerContext *)v4 initWithOptions:options];
 }
 
-- (uint64_t)streamProcessedChangesForStore:(void *)a3 inContext:(uint64_t)a4 sinceLastHistoryToken:(uint64_t)a5 contextHandler:(void *)a6 error:
+- (uint64_t)streamProcessedChangesForStore:(void *)store inContext:(uint64_t)context sinceLastHistoryToken:(uint64_t)token contextHandler:(void *)handler error:
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v25 = 0;
     v26 = &v25;
@@ -71,15 +71,15 @@
     v14[1] = 3221225472;
     v14[2] = __105__PFHistoryAnalyzer_streamProcessedChangesForStore_inContext_sinceLastHistoryToken_contextHandler_error___block_invoke;
     v14[3] = &unk_1E6EC5850;
-    v14[4] = a1;
-    v14[5] = a4;
+    v14[4] = self;
+    v14[5] = context;
     v14[6] = a2;
-    v14[7] = a3;
-    v14[8] = a5;
+    v14[7] = store;
+    v14[8] = token;
     v14[9] = &v25;
     v14[10] = &v21;
     v14[11] = &v15;
-    [a3 performBlockAndWait:v14];
+    [store performBlockAndWait:v14];
     if ((v22[3] & 1) == 0)
     {
       v10 = v16[5];
@@ -91,9 +91,9 @@
       v11 = v26[5];
       if (v11)
       {
-        if (a6)
+        if (handler)
         {
-          *a6 = v11;
+          *handler = v11;
         }
       }
 

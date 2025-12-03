@@ -1,16 +1,16 @@
 @interface ServiceDelegate
-- (BOOL)isConnectionEntitled:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)isConnectionEntitled:(id)entitled;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = TULockdownModeEnabled();
-  v9 = [(ServiceDelegate *)self isConnectionEntitled:v7];
+  v9 = [(ServiceDelegate *)self isConnectionEntitled:connectionCopy];
   v10 = FTDefaultLog();
   v11 = v10;
   v12 = v9 ^ 1 | v8;
@@ -18,10 +18,10 @@
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_1000381D0(v7, v8 & 1, v11);
+      sub_1000381D0(connectionCopy, v8 & 1, v11);
     }
 
-    [v7 invalidate];
+    [connectionCopy invalidate];
   }
 
   else
@@ -29,24 +29,24 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v7;
+      *(&buf + 4) = connectionCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Accepting the connection since it is entitled %@", &buf, 0xCu);
     }
 
     v13 = +[TUMomentsControllerXPCClient momentsControllerClientXPCInterface];
-    [v7 setRemoteObjectInterface:v13];
+    [connectionCopy setRemoteObjectInterface:v13];
 
     v14 = +[TUMomentsControllerXPCClient momentsControllerServerXPCInterface];
-    [v7 setExportedInterface:v14];
+    [connectionCopy setExportedInterface:v14];
 
     v15 = objc_alloc_init(FTMomentsController);
     [(FTMomentsController *)v15 setup];
-    [v7 setExportedObject:v15];
-    v16 = [(FTMomentsController *)v15 queue];
-    [v7 _setQueue:v16];
+    [connectionCopy setExportedObject:v15];
+    queue = [(FTMomentsController *)v15 queue];
+    [connectionCopy _setQueue:queue];
 
-    v17 = [v7 remoteObjectProxy];
-    [(FTMomentsController *)v15 setClientObject:v17];
+    remoteObjectProxy = [connectionCopy remoteObjectProxy];
+    [(FTMomentsController *)v15 setClientObject:remoteObjectProxy];
 
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -59,26 +59,26 @@
     v20[2] = sub_1000024E4;
     v20[3] = &unk_100050F68;
     v20[4] = &buf;
-    [v7 setInvalidationHandler:v20];
+    [connectionCopy setInvalidationHandler:v20];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100002530;
     v19[3] = &unk_100050F68;
     v19[4] = &buf;
-    [v7 setInterruptionHandler:v19];
+    [connectionCopy setInterruptionHandler:v19];
     _Block_object_dispose(&buf, 8);
     objc_destroyWeak(v25);
 
-    [v7 resume];
+    [connectionCopy resume];
   }
 
   return (v12 ^ 1) & 1;
 }
 
-- (BOOL)isConnectionEntitled:(id)a3
+- (BOOL)isConnectionEntitled:(id)entitled
 {
-  v3 = a3;
-  v4 = [v3 valueForEntitlement:@"com.apple.FTLivePhotoService"];
+  entitledCopy = entitled;
+  v4 = [entitledCopy valueForEntitlement:@"com.apple.FTLivePhotoService"];
   if (!v4)
   {
 LABEL_7:
@@ -93,7 +93,7 @@ LABEL_7:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
-      v10 = [v3 processName];
+      processName = [entitledCopy processName];
       v11 = 138413058;
       v12 = @"com.apple.FTLivePhotoService";
       v13 = 2112;
@@ -101,7 +101,7 @@ LABEL_7:
       v15 = 2112;
       v16 = v4;
       v17 = 2112;
-      v18 = v10;
+      v18 = processName;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Entitlement for key '%@' is non-nil but is of class %@ rather than an NSArray (%@), so assuming process %@ has no entitlements", &v11, 0x2Au);
     }
 

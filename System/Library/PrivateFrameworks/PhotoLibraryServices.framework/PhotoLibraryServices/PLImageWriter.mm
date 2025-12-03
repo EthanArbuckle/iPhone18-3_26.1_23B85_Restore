@@ -1,99 +1,99 @@
 @interface PLImageWriter
-+ (BOOL)_hasPrimaryAssetAndAdjustmentsFilesWithType:(signed __int16)a3 inIncomingFilenames:(id)a4 forAssetUUID:(id)a5;
-+ (BOOL)_requiresIndicatorFileForJobType:(id)a3;
-+ (BOOL)isDeferredPhotoPreviewURL:(id)a3;
-+ (BOOL)isSpatialOverCaptureURL:(id)a3;
-+ (BOOL)setAdjustmentsForNewPhoto:(id)a3 mainFileMetadata:(id)a4 cameraAdjustmentData:(id)a5 adjustmentDataPath:(id)a6 filteredImagePath:(id)a7 cameraMetadata:(id)a8 finalAssetSize:(CGSize)a9 isSubstandardRender:(BOOL)a10;
-+ (id)_assetAdjustmentsFromCameraAdjustmentData:(id)a3 cameraMetadata:(id)a4 exportProperties:(id)a5 assetType:(signed __int16)a6 applySemanticEnhance:(BOOL)a7 sourceURL:(id)a8;
-+ (id)_assetAdjustmentsFromCameraAdjustments:(id)a3 cameraMetadata:(id)a4 exportProperties:(id)a5 assetType:(signed __int16)a6 applySemanticEnhance:(BOOL)a7 sourceURL:(id)a8;
-+ (id)_assetUUIDFromIncomingFilename:(id)a3;
-+ (id)_fetchPhotoAssetForUUID:(id)a3 moc:(id)a4;
-+ (id)_pathsByAssetUUIDFromIncomingCrashRecoveryPaths:(id)a3;
-+ (id)assetAdjustmentsFromCameraAdjustmentsFileAtPath:(id)a3 exportProperties:(id)a4 cameraMetadata:(id)a5;
-+ (id)assetAdjustmentsFromCameraFilters:(id)a3 portraitMetadata:(id)a4 exportProperties:(id)a5 cameraMetadata:(id)a6;
-+ (id)assetAdjustmentsFromCompositionController:(id)a3 exportProperties:(id)a4;
-+ (id)cameraMetadataURLForPrimaryAssetURL:(id)a3 photoLibrary:(id)a4;
-+ (id)finalizedAssetURLForDeferredPhotoPreviewURL:(id)a3 extension:(id)a4;
-+ (id)semanticEnhancePreviewDestinationURLForPrimaryAssetURL:(id)a3;
-+ (void)_signalBackgroundProcessingNeededForAsset:(id)a3 reason:(id)a4;
-+ (void)photoIrisPairingDidSucceed:(BOOL)a3 fileIndicatorPath:(id)a4 photoAsset:(id)a5 photoLibrary:(id)a6;
-+ (void)setAdjustmentsForNewVideo:(id)a3 mainFileMetadata:(id)a4 withAdjustmentsDictionary:(id)a5 cameraAdjustments:(id)a6 renderedContentPath:(id)a7 renderedPosterFramePreviewPath:(id)a8 finalAssetSize:(CGSize)a9;
++ (BOOL)_hasPrimaryAssetAndAdjustmentsFilesWithType:(signed __int16)type inIncomingFilenames:(id)filenames forAssetUUID:(id)d;
++ (BOOL)_requiresIndicatorFileForJobType:(id)type;
++ (BOOL)isDeferredPhotoPreviewURL:(id)l;
++ (BOOL)isSpatialOverCaptureURL:(id)l;
++ (BOOL)setAdjustmentsForNewPhoto:(id)photo mainFileMetadata:(id)metadata cameraAdjustmentData:(id)data adjustmentDataPath:(id)path filteredImagePath:(id)imagePath cameraMetadata:(id)cameraMetadata finalAssetSize:(CGSize)size isSubstandardRender:(BOOL)self0;
++ (id)_assetAdjustmentsFromCameraAdjustmentData:(id)data cameraMetadata:(id)metadata exportProperties:(id)properties assetType:(signed __int16)type applySemanticEnhance:(BOOL)enhance sourceURL:(id)l;
++ (id)_assetAdjustmentsFromCameraAdjustments:(id)adjustments cameraMetadata:(id)metadata exportProperties:(id)properties assetType:(signed __int16)type applySemanticEnhance:(BOOL)enhance sourceURL:(id)l;
++ (id)_assetUUIDFromIncomingFilename:(id)filename;
++ (id)_fetchPhotoAssetForUUID:(id)d moc:(id)moc;
++ (id)_pathsByAssetUUIDFromIncomingCrashRecoveryPaths:(id)paths;
++ (id)assetAdjustmentsFromCameraAdjustmentsFileAtPath:(id)path exportProperties:(id)properties cameraMetadata:(id)metadata;
++ (id)assetAdjustmentsFromCameraFilters:(id)filters portraitMetadata:(id)metadata exportProperties:(id)properties cameraMetadata:(id)cameraMetadata;
++ (id)assetAdjustmentsFromCompositionController:(id)controller exportProperties:(id)properties;
++ (id)cameraMetadataURLForPrimaryAssetURL:(id)l photoLibrary:(id)library;
++ (id)finalizedAssetURLForDeferredPhotoPreviewURL:(id)l extension:(id)extension;
++ (id)semanticEnhancePreviewDestinationURLForPrimaryAssetURL:(id)l;
++ (void)_signalBackgroundProcessingNeededForAsset:(id)asset reason:(id)reason;
++ (void)photoIrisPairingDidSucceed:(BOOL)succeed fileIndicatorPath:(id)path photoAsset:(id)asset photoLibrary:(id)library;
++ (void)setAdjustmentsForNewVideo:(id)video mainFileMetadata:(id)metadata withAdjustmentsDictionary:(id)dictionary cameraAdjustments:(id)adjustments renderedContentPath:(id)path renderedPosterFramePreviewPath:(id)previewPath finalAssetSize:(CGSize)size;
 - (BOOL)_hasNonCrashRecoveryJobsEnqueued;
-- (BOOL)_isHighPriorityJob:(id)a3;
-- (BOOL)_retryPairedVideoJob:(id)a3 pairingType:(id)a4 pairingIdentifier:(id)a5 retryMax:(unint64_t)a6;
-- (BOOL)_transferVideoFromIncomingPath:(id)a3 toDestinationPath:(id)a4 shouldRemoveIncoming:(BOOL *)a5 error:(id *)a6;
-- (BOOL)_writeOutCameraMetadata:(id)a3 destinationURL:(id)a4 error:(id *)a5;
-- (BOOL)enqueueJob:(id)a3;
-- (BOOL)imageWriterJob:(id)a3 hasValidPathsWithConnection:(id)a4;
+- (BOOL)_isHighPriorityJob:(id)job;
+- (BOOL)_retryPairedVideoJob:(id)job pairingType:(id)type pairingIdentifier:(id)identifier retryMax:(unint64_t)max;
+- (BOOL)_transferVideoFromIncomingPath:(id)path toDestinationPath:(id)destinationPath shouldRemoveIncoming:(BOOL *)incoming error:(id *)error;
+- (BOOL)_writeOutCameraMetadata:(id)metadata destinationURL:(id)l error:(id *)error;
+- (BOOL)enqueueJob:(id)job;
+- (BOOL)imageWriterJob:(id)job hasValidPathsWithConnection:(id)connection;
 - (PLImageWriter)init;
-- (PLImageWriter)initWithLibraryServicesManager:(id)a3;
-- (id)_newShortLivedLibraryWithName:(const char *)a3;
-- (id)_pathForNewAssetWithPath:(id)a3 withExtension:(id)a4;
-- (id)_processLimitedLibraryAdditionIfNeededWithAssetUUID:(id)a3 clientBundleIdentifier:(id)a4 clientAuthorization:(id)a5 library:(id)a6;
-- (id)cameraAssetPathForNewAssetWithExtension:(id)a3 assetUUID:(id)a4;
+- (PLImageWriter)initWithLibraryServicesManager:(id)manager;
+- (id)_newShortLivedLibraryWithName:(const char *)name;
+- (id)_pathForNewAssetWithPath:(id)path withExtension:(id)extension;
+- (id)_processLimitedLibraryAdditionIfNeededWithAssetUUID:(id)d clientBundleIdentifier:(id)identifier clientAuthorization:(id)authorization library:(id)library;
+- (id)cameraAssetPathForNewAssetWithExtension:(id)extension assetUUID:(id)d;
 - (id)iTunesSyncedAssetsDCIMDirectory;
 - (id)indicatorFileCoordinator;
-- (id)pathForNewAssetPathAtAlbumDirectoryPath:(id)a3 assetType:(unsigned int)a4 extension:(id)a5;
-- (id)pathForNewAssetWithDirectoryPath:(id)a3 fileName:(id)a4 extension:(id)a5;
-- (id)writeFilteredPreviewWithImageData:(id)a3 orImage:(id)a4 toPathWithBaseName:(id)a5;
-- (void)_copyJobContentsToHoldingDirectoryWithUUID:(id)a3 incomingPath:(id)a4 job:(id)a5;
-- (void)_decrementJobCount:(id)a3;
-- (void)_enablePhotoStreamJob:(id)a3 completion:(id)a4;
-- (void)_handleAvalancheCrashRecovery:(id)a3;
-- (void)_handleCameraAdjustments:(id)a3 fullsizeRenders:(id)a4 largeThumbnails:(id)a5;
-- (void)_handleCameraMetadataCrashRecovery:(id)a3;
-- (void)_handlePhotoIrisCrashRecoveryForPhotoIndicatorFiles:(id)a3;
-- (void)_handlePhotoIrisCrashRecoveryForVideos:(id)a3;
-- (void)_incrementJobCount:(id)a3;
-- (void)_linkDiagnosticFileWithSourcePath:(id)a3 forPhotoDestinationURL:(id)a4;
-- (void)_processAutodeleteEmptyAlbumJob:(id)a3 completion:(id)a4;
-- (void)_processAvalancheJob:(id)a3 completion:(id)a4;
-- (void)_processAvalanchesValidationJob:(id)a3 completion:(id)a4;
-- (void)_processBatchImageJob:(id)a3 inLibrary:(id)a4 completion:(id)a5;
-- (void)_processCrashRecoveryJob:(id)a3 completion:(id)a4;
-- (void)_processDaemonJob:(id)a3 completion:(id)a4;
-- (void)_processDeletePhotoStreamDataJob:(id)a3 withReason:(id)a4 completion:(id)a5;
-- (void)_processImageJob:(id)a3 inLibrary:(id)a4 completion:(id)a5;
-- (void)_processJob:(id)a3;
-- (void)_processSyncClientSaveJobsJob:(id)a3 completion:(id)a4;
-- (void)_processSyncedVideoSaveJob:(id)a3 completion:(id)a4;
-- (void)_processVideoJob:(id)a3 completion:(id)a4;
-- (void)_processVideoSaveJob:(id)a3 completion:(id)a4;
-- (void)_processXPCDaemonJob:(id)a3 completion:(id)a4;
-- (void)_removeInProgressExtendedAttributesForFileAtURL:(id)a3;
-- (void)_removeTransientKeys:(id)a3;
+- (id)pathForNewAssetPathAtAlbumDirectoryPath:(id)path assetType:(unsigned int)type extension:(id)extension;
+- (id)pathForNewAssetWithDirectoryPath:(id)path fileName:(id)name extension:(id)extension;
+- (id)writeFilteredPreviewWithImageData:(id)data orImage:(id)image toPathWithBaseName:(id)name;
+- (void)_copyJobContentsToHoldingDirectoryWithUUID:(id)d incomingPath:(id)path job:(id)job;
+- (void)_decrementJobCount:(id)count;
+- (void)_enablePhotoStreamJob:(id)job completion:(id)completion;
+- (void)_handleAvalancheCrashRecovery:(id)recovery;
+- (void)_handleCameraAdjustments:(id)adjustments fullsizeRenders:(id)renders largeThumbnails:(id)thumbnails;
+- (void)_handleCameraMetadataCrashRecovery:(id)recovery;
+- (void)_handlePhotoIrisCrashRecoveryForPhotoIndicatorFiles:(id)files;
+- (void)_handlePhotoIrisCrashRecoveryForVideos:(id)videos;
+- (void)_incrementJobCount:(id)count;
+- (void)_linkDiagnosticFileWithSourcePath:(id)path forPhotoDestinationURL:(id)l;
+- (void)_processAutodeleteEmptyAlbumJob:(id)job completion:(id)completion;
+- (void)_processAvalancheJob:(id)job completion:(id)completion;
+- (void)_processAvalanchesValidationJob:(id)job completion:(id)completion;
+- (void)_processBatchImageJob:(id)job inLibrary:(id)library completion:(id)completion;
+- (void)_processCrashRecoveryJob:(id)job completion:(id)completion;
+- (void)_processDaemonJob:(id)job completion:(id)completion;
+- (void)_processDeletePhotoStreamDataJob:(id)job withReason:(id)reason completion:(id)completion;
+- (void)_processImageJob:(id)job inLibrary:(id)library completion:(id)completion;
+- (void)_processJob:(id)job;
+- (void)_processSyncClientSaveJobsJob:(id)job completion:(id)completion;
+- (void)_processSyncedVideoSaveJob:(id)job completion:(id)completion;
+- (void)_processVideoJob:(id)job completion:(id)completion;
+- (void)_processVideoSaveJob:(id)job completion:(id)completion;
+- (void)_processXPCDaemonJob:(id)job completion:(id)completion;
+- (void)_removeInProgressExtendedAttributesForFileAtURL:(id)l;
+- (void)_removeTransientKeys:(id)keys;
 - (void)_resetSyncedAssetsDCIMDirectory;
-- (void)cleanupFilesInLibrary:(id)a3 afteriTunesSyncBeforeDate:(id)a4;
-- (void)delayJob:(id)a3 delay:(int64_t)a4;
-- (void)enqueueAutoDeleteEmptyAlbumJobWithAlbumID:(id)a3;
-- (void)processSyncSaveJob:(id)a3 library:(id)a4 albumMap:(id)a5;
-- (void)saveAssetJob:(id)a3 imageSurface:(id)a4 previewImageSurface:(id)a5 completionHandler:(id)a6;
+- (void)cleanupFilesInLibrary:(id)library afteriTunesSyncBeforeDate:(id)date;
+- (void)delayJob:(id)job delay:(int64_t)delay;
+- (void)enqueueAutoDeleteEmptyAlbumJobWithAlbumID:(id)d;
+- (void)processSyncSaveJob:(id)job library:(id)library albumMap:(id)map;
+- (void)saveAssetJob:(id)job imageSurface:(id)surface previewImageSurface:(id)imageSurface completionHandler:(id)handler;
 @end
 
 @implementation PLImageWriter
 
-- (void)_copyJobContentsToHoldingDirectoryWithUUID:(id)a3 incomingPath:(id)a4 job:(id)a5
+- (void)_copyJobContentsToHoldingDirectoryWithUUID:(id)d incomingPath:(id)path job:(id)job
 {
   v67 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v51 = v8;
-  v11 = [v8 stringByDeletingLastPathComponent];
+  dCopy = d;
+  pathCopy = path;
+  jobCopy = job;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v51 = pathCopy;
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
   v58 = 0;
-  v12 = [v10 contentsOfDirectoryAtPath:v11 error:&v58];
+  v12 = [defaultManager contentsOfDirectoryAtPath:stringByDeletingLastPathComponent error:&v58];
   v13 = v58;
 
   v14 = NSTemporaryDirectory();
-  v15 = [objc_opt_class() pathComponentForIncomingHoldingDirectory];
-  v16 = [v14 stringByAppendingPathComponent:v15];
-  v17 = [v16 stringByAppendingPathComponent:v7];
+  pathComponentForIncomingHoldingDirectory = [objc_opt_class() pathComponentForIncomingHoldingDirectory];
+  v16 = [v14 stringByAppendingPathComponent:pathComponentForIncomingHoldingDirectory];
+  v17 = [v16 stringByAppendingPathComponent:dCopy];
 
   if (v12)
   {
     v57 = 0;
-    v18 = [v10 createDirectoryIfNeededAtPath:v17 error:&v57];
+    v18 = [defaultManager createDirectoryIfNeededAtPath:v17 error:&v57];
     v19 = v57;
     v20 = v19;
     if (v18)
@@ -101,9 +101,9 @@
       v45 = v19;
       v46 = v12;
       v47 = v13;
-      v48 = v10;
-      v49 = v9;
-      v50 = v7;
+      v48 = defaultManager;
+      v49 = jobCopy;
+      v50 = dCopy;
       v55 = 0u;
       v56 = 0u;
       v53 = 0u;
@@ -127,29 +127,29 @@
           }
 
           v26 = *(*(&v53 + 1) + 8 * i);
-          v27 = [v26 pathExtension];
-          if ([v27 isEqualToString:@"irs"])
+          pathExtension = [v26 pathExtension];
+          if ([pathExtension isEqualToString:@"irs"])
           {
             goto LABEL_18;
           }
 
-          v28 = [v26 pathExtension];
-          v29 = [v28 isEqualToString:@"avalanche"];
+          pathExtension2 = [v26 pathExtension];
+          v29 = [pathExtension2 isEqualToString:@"avalanche"];
 
           if (v29)
           {
             continue;
           }
 
-          v30 = [v26 lastPathComponent];
-          v31 = [v17 stringByAppendingPathComponent:v30];
+          lastPathComponent = [v26 lastPathComponent];
+          v31 = [v17 stringByAppendingPathComponent:lastPathComponent];
 
-          v32 = [v51 stringByDeletingLastPathComponent];
-          v33 = [v32 stringByAppendingPathComponent:v26];
+          stringByDeletingLastPathComponent2 = [v51 stringByDeletingLastPathComponent];
+          v33 = [stringByDeletingLastPathComponent2 stringByAppendingPathComponent:v26];
 
           if (!v33)
           {
-            v27 = 0;
+            pathExtension = 0;
 LABEL_14:
             v35 = PLAssetImportGetLog();
             if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -159,7 +159,7 @@ LABEL_14:
               v62 = 2112;
               v63 = v31;
               v64 = 2112;
-              v65 = v27;
+              v65 = pathExtension;
               _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_ERROR, "Error copying item from %@ to %@: %@", buf, 0x20u);
             }
 
@@ -168,7 +168,7 @@ LABEL_14:
 
           v52 = 0;
           v34 = [MEMORY[0x1E69BF238] cloneFileAtPath:v33 toPath:v31 error:&v52];
-          v27 = v52;
+          pathExtension = v52;
           if ((v34 & 1) == 0)
           {
             goto LABEL_14;
@@ -184,10 +184,10 @@ LABEL_18:
         {
 LABEL_21:
 
-          v9 = v49;
-          v7 = v50;
+          jobCopy = v49;
+          dCopy = v50;
           v13 = v47;
-          v10 = v48;
+          defaultManager = v48;
           v20 = v45;
           v12 = v46;
           goto LABEL_27;
@@ -219,13 +219,13 @@ LABEL_21:
 
 LABEL_27:
 
-  if (v9)
+  if (jobCopy)
   {
-    v37 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
+    v37 = [jobCopy objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
     v38 = [v17 stringByAppendingPathComponent:v37];
     v39 = [v38 stringByAppendingPathExtension:@"plist"];
 
-    v40 = [v9 mutableCopy];
+    v40 = [jobCopy mutableCopy];
     v41 = *MEMORY[0x1E69C0548];
     v59[0] = @"completionBlock";
     v59[1] = v41;
@@ -261,14 +261,14 @@ LABEL_27:
   }
 }
 
-- (void)enqueueAutoDeleteEmptyAlbumJobWithAlbumID:(id)a3
+- (void)enqueueAutoDeleteEmptyAlbumJobWithAlbumID:(id)d
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dCopy = d;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v7 = *MEMORY[0x1E69C0418];
-  [v6 setObject:*MEMORY[0x1E69C0418] forKey:*MEMORY[0x1E69C0410]];
-  [v6 setObject:v5 forKey:@"EmptyAlbumToDelete"];
+  [dictionary setObject:*MEMORY[0x1E69C0418] forKey:*MEMORY[0x1E69C0410]];
+  [dictionary setObject:dCopy forKey:@"EmptyAlbumToDelete"];
   v8 = PLAssetImportGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -278,65 +278,65 @@ LABEL_27:
     v12 = 2112;
     v13 = v7;
     v14 = 2112;
-    v15 = v5;
+    v15 = dCopy;
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "[%@] enqueing job %@ with albumID %@", &v10, 0x20u);
   }
 
-  [(PLImageWriter *)self enqueueJob:v6];
+  [(PLImageWriter *)self enqueueJob:dictionary];
 }
 
-- (void)saveAssetJob:(id)a3 imageSurface:(id)a4 previewImageSurface:(id)a5 completionHandler:(id)a6
+- (void)saveAssetJob:(id)job imageSurface:(id)surface previewImageSurface:(id)imageSurface completionHandler:(id)handler
 {
   v80[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  jobCopy = job;
+  surfaceCopy = surface;
+  imageSurfaceCopy = imageSurface;
+  handlerCopy = handler;
   v14 = *MEMORY[0x1E69C0550];
-  v15 = [v10 objectForKey:*MEMORY[0x1E69C0550]];
+  v15 = [jobCopy objectForKey:*MEMORY[0x1E69C0550]];
 
-  if (v15 && ([v10 objectForKey:v14], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "BOOLValue"), v16, !v17) || -[PLImageWriter canEnqueueJob:](self, "canEnqueueJob:", v10))
+  if (v15 && ([jobCopy objectForKey:v14], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "BOOLValue"), v16, !v17) || -[PLImageWriter canEnqueueJob:](self, "canEnqueueJob:", jobCopy))
   {
     v18 = *MEMORY[0x1E69C0390];
-    v19 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69C0390]];
-    if (!v19)
+    uUIDString = [jobCopy objectForKeyedSubscript:*MEMORY[0x1E69C0390]];
+    if (!uUIDString)
     {
-      v19 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69C03B8]];
+      uUIDString = [jobCopy objectForKeyedSubscript:*MEMORY[0x1E69C03B8]];
     }
 
-    v20 = [v10 objectForKey:*MEMORY[0x1E69C0410]];
-    if (!v19)
+    v20 = [jobCopy objectForKey:*MEMORY[0x1E69C0410]];
+    if (!uUIDString)
     {
       if ([objc_opt_class() _requiresAssetUUIDForJobType:v20])
       {
-        v21 = [MEMORY[0x1E696AFB0] UUID];
-        v19 = [v21 UUIDString];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
 
-        [v10 setObject:v19 forKeyedSubscript:v18];
+        [jobCopy setObject:uUIDString forKeyedSubscript:v18];
         v22 = PLAssetImportGetLog();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           *buf = 138543618;
           v70 = v20;
           v71 = 2114;
-          v72 = v19;
+          v72 = uUIDString;
           _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_INFO, "Job %{public}@ missing required assetUUID, assigning %{public}@ ", buf, 0x16u);
         }
       }
 
       else
       {
-        v19 = 0;
+        uUIDString = 0;
       }
     }
 
-    v29 = [v10 objectForKey:*MEMORY[0x1E69C03D0]];
+    v29 = [jobCopy objectForKey:*MEMORY[0x1E69C03D0]];
     v60 = v29;
-    v55 = v19;
+    v55 = uUIDString;
     if ([v20 isEqualToString:*MEMORY[0x1E69C0458]])
     {
       v30 = *MEMORY[0x1E69C04C8];
-      v31 = [v10 objectForKey:*MEMORY[0x1E69C04C8]];
+      v31 = [jobCopy objectForKey:*MEMORY[0x1E69C04C8]];
       if (![v31 length])
       {
         if (![v29 length])
@@ -348,22 +348,22 @@ LABEL_27:
           v60 = v37;
         }
 
-        v38 = [v10 objectForKey:*MEMORY[0x1E69C0388]];
+        v38 = [jobCopy objectForKey:*MEMORY[0x1E69C0388]];
 
         if (!v38)
         {
-          v39 = [(PLImageWriter *)self cameraAssetPathForNewAssetWithExtension:v60 assetUUID:v19];
+          v39 = [(PLImageWriter *)self cameraAssetPathForNewAssetWithExtension:v60 assetUUID:uUIDString];
 
           v31 = v39;
         }
 
         if (v31)
         {
-          [v10 setObject:v31 forKey:v30];
+          [jobCopy setObject:v31 forKey:v30];
         }
 
         v32 = @"generated image";
-        if (!v11)
+        if (!surfaceCopy)
         {
           goto LABEL_51;
         }
@@ -379,8 +379,8 @@ LABEL_27:
     {
       if ([v20 isEqualToString:*MEMORY[0x1E69C0480]])
       {
-        v31 = [(PLImageWriter *)self cameraAssetPathForNewAssetWithExtension:@"MOV" assetUUID:v19];
-        [v10 setObject:v31 forKey:*MEMORY[0x1E69C0588]];
+        v31 = [(PLImageWriter *)self cameraAssetPathForNewAssetWithExtension:@"MOV" assetUUID:uUIDString];
+        [jobCopy setObject:v31 forKey:*MEMORY[0x1E69C0588]];
       }
 
       else
@@ -390,10 +390,10 @@ LABEL_27:
 
 LABEL_18:
       v32 = @"provided image";
-      if (!v11)
+      if (!surfaceCopy)
       {
 LABEL_51:
-        if (v12)
+        if (imageSurfaceCopy)
         {
           if ([v20 isEqualToString:*MEMORY[0x1E69C0480]])
           {
@@ -401,7 +401,7 @@ LABEL_51:
             if (v44)
             {
               v45 = v44;
-              [v10 setObject:v44 forKey:*MEMORY[0x1E69C0598]];
+              [jobCopy setObject:v44 forKey:*MEMORY[0x1E69C0598]];
               CFRelease(v45);
             }
           }
@@ -410,13 +410,13 @@ LABEL_51:
           if (v46)
           {
             v47 = v46;
-            [v10 setObject:v46 forKey:*MEMORY[0x1E69C0548]];
+            [jobCopy setObject:v46 forKey:*MEMORY[0x1E69C0548]];
             CFRelease(v47);
           }
         }
 
-        v58 = v11;
-        v59 = v12;
+        v58 = surfaceCopy;
+        v59 = imageSurfaceCopy;
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __81__PLImageWriter_saveAssetJob_imageSurface_previewImageSurface_completionHandler___block_invoke;
@@ -429,7 +429,7 @@ LABEL_51:
         v65 = v32;
         v49 = v31;
         v66 = v49;
-        v67 = v13;
+        v67 = handlerCopy;
         v50 = _Block_copy(aBlock);
         v51 = PLAssetImportGetLog();
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
@@ -450,31 +450,31 @@ LABEL_51:
 
         v53 = [v50 copy];
         v54 = _Block_copy(v53);
-        [v10 setObject:v54 forKey:@"completionBlock"];
+        [jobCopy setObject:v54 forKey:@"completionBlock"];
 
-        [(PLImageWriter *)self enqueueJob:v10];
-        v11 = v58;
-        v12 = v59;
+        [(PLImageWriter *)self enqueueJob:jobCopy];
+        surfaceCopy = v58;
+        imageSurfaceCopy = v59;
         goto LABEL_60;
       }
 
 LABEL_48:
-      v42 = [v10 objectForKey:*MEMORY[0x1E69C02D0]];
+      v42 = [jobCopy objectForKey:*MEMORY[0x1E69C02D0]];
       if (v42)
       {
-        v43 = [objc_alloc(MEMORY[0x1E69BF250]) initWithIOSurface:v11 length:{objc_msgSend(v42, "unsignedIntegerValue")}];
-        [v10 setObject:v43 forKey:*MEMORY[0x1E69C03F8]];
+        v43 = [objc_alloc(MEMORY[0x1E69BF250]) initWithIOSurface:surfaceCopy length:{objc_msgSend(v42, "unsignedIntegerValue")}];
+        [jobCopy setObject:v43 forKey:*MEMORY[0x1E69C03F8]];
       }
 
       goto LABEL_51;
     }
 
     v34 = *MEMORY[0x1E69C0588];
-    v31 = [v10 objectForKey:*MEMORY[0x1E69C0588]];
+    v31 = [jobCopy objectForKey:*MEMORY[0x1E69C0588]];
     if ([v31 length])
     {
       v32 = @"provided video";
-      if (!v11)
+      if (!surfaceCopy)
       {
         goto LABEL_51;
       }
@@ -491,19 +491,19 @@ LABEL_48:
 
     if (([v20 isEqualToString:v33] & 1) != 0 || objc_msgSend(v20, "isEqualToString:", *MEMORY[0x1E69C0470]))
     {
-      v40 = [v10 objectForKey:*MEMORY[0x1E69C05A0]];
-      [v10 setObject:v40 forKey:*MEMORY[0x1E69C0590]];
+      v40 = [jobCopy objectForKey:*MEMORY[0x1E69C05A0]];
+      [jobCopy setObject:v40 forKey:*MEMORY[0x1E69C0590]];
 
-      v41 = [v10 objectForKey:*MEMORY[0x1E69C04E0]];
+      v41 = [jobCopy objectForKey:*MEMORY[0x1E69C04E0]];
       if (v41)
       {
-        [v10 removeObjectForKey:v34];
+        [jobCopy removeObjectForKey:v34];
         v57 = 0;
       }
 
       else
       {
-        v57 = [(PLImageWriter *)self cameraAssetPathForNewAssetWithExtension:@"MOV" assetUUID:v19];
+        v57 = [(PLImageWriter *)self cameraAssetPathForNewAssetWithExtension:@"MOV" assetUUID:uUIDString];
       }
     }
 
@@ -514,11 +514,11 @@ LABEL_48:
 LABEL_45:
         if (v31)
         {
-          [v10 setObject:v31 forKey:v34];
+          [jobCopy setObject:v31 forKey:v34];
         }
 
         v32 = @"generated video";
-        if (!v11)
+        if (!surfaceCopy)
         {
           goto LABEL_51;
         }
@@ -526,10 +526,10 @@ LABEL_45:
         goto LABEL_48;
       }
 
-      v57 = [(PLImageWriter *)self cameraAssetPathForNewAssetWithExtension:v60 assetUUID:v19];
+      v57 = [(PLImageWriter *)self cameraAssetPathForNewAssetWithExtension:v60 assetUUID:uUIDString];
 
-      v41 = [MEMORY[0x1E69BF178] uniqueIncomingPathForAssetWithUUID:v19 andExtension:v60 isPhotoStream:0];
-      [v10 setObject:v41 forKey:*MEMORY[0x1E69C0590]];
+      v41 = [MEMORY[0x1E69BF178] uniqueIncomingPathForAssetWithUUID:uUIDString andExtension:v60 isPhotoStream:0];
+      [jobCopy setObject:v41 forKey:*MEMORY[0x1E69C0590]];
     }
 
     v31 = v57;
@@ -543,7 +543,7 @@ LABEL_45:
     *buf = 138543618;
     v70 = v24;
     v71 = 2112;
-    v72 = v10;
+    v72 = jobCopy;
     _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "[%{public}@] job queue full, failed to enqueue job %@", buf, 0x16u);
   }
 
@@ -554,9 +554,9 @@ LABEL_45:
   v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v80 forKeys:&v79 count:1];
   v28 = [v25 errorWithDomain:v26 code:41001 userInfo:v27];
 
-  if (v13)
+  if (handlerCopy)
   {
-    (*(v13 + 2))(v13, 0, 0, 1, v28);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 1, v28);
   }
 
 LABEL_60:
@@ -595,15 +595,15 @@ void __81__PLImageWriter_saveAssetJob_imageSurface_previewImageSurface_completio
   }
 }
 
-- (BOOL)imageWriterJob:(id)a3 hasValidPathsWithConnection:(id)a4
+- (BOOL)imageWriterJob:(id)job hasValidPathsWithConnection:(id)connection
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v39 = a4;
+  jobCopy = job;
+  connectionCopy = connection;
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v8 = [WeakRetained pathManager];
+  pathManager = [WeakRetained pathManager];
   v9 = 1;
-  v10 = [v8 photoDirectoryWithType:1];
+  v10 = [pathManager photoDirectoryWithType:1];
 
   v11 = NSHomeDirectory();
   v38 = [v11 stringByAppendingPathComponent:@"Library/ReplayKit"];
@@ -617,7 +617,7 @@ void __81__PLImageWriter_saveAssetJob_imageSurface_previewImageSurface_completio
   while (1)
   {
     v15 = v9;
-    v16 = [v6 objectForKey:*v14];
+    v16 = [jobCopy objectForKey:*v14];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && ([MEMORY[0x1E69BF238] filePath:v16 hasPrefix:v10] & 1) == 0)
     {
@@ -670,12 +670,12 @@ LABEL_9:
           objc_enumerationMutation(v21);
         }
 
-        v26 = [v6 objectForKey:{*(*(&v40 + 1) + 8 * i), v35}];
+        v26 = [jobCopy objectForKey:{*(*(&v40 + 1) + 8 * i), fileSystemRepresentation}];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && ([MEMORY[0x1E69BF238] filePath:v26 hasPrefix:v10] & 1) == 0 && (objc_msgSend(MEMORY[0x1E69BF238], "filePath:hasPrefix:", v26, v18) & 1) == 0 && (objc_msgSend(MEMORY[0x1E69BF238], "filePath:hasPrefix:", v26, v13) & 1) == 0)
         {
           v27 = v10;
-          v28 = v39;
+          v28 = connectionCopy;
           v29 = [MEMORY[0x1E69BF238] realPathForPath:v26 error:0];
           if (!v29)
           {
@@ -702,7 +702,7 @@ LABEL_27:
           }
 
           v30 = v29;
-          if (v39)
+          if (connectionCopy)
           {
             [v28 auditToken];
           }
@@ -712,7 +712,7 @@ LABEL_27:
             memset(buf, 0, sizeof(buf));
           }
 
-          v35 = [v30 fileSystemRepresentation];
+          fileSystemRepresentation = [v30 fileSystemRepresentation];
           v31 = sandbox_check_by_audit_token();
 
           v10 = v27;
@@ -746,21 +746,21 @@ LABEL_30:
   return v17;
 }
 
-- (void)_processJob:(id)a3
+- (void)_processJob:(id)job
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  jobCopy = job;
   v6 = objc_autoreleasePoolPush();
-  v7 = [v5 objectForKey:*MEMORY[0x1E69C0410]];
+  v7 = [jobCopy objectForKey:*MEMORY[0x1E69C0410]];
   v8 = PLImageWriterGetLog();
   v9 = os_signpost_id_generate(v8);
   aBlock = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __29__PLImageWriter__processJob___block_invoke;
   v21 = &unk_1E7573520;
-  v10 = v5;
+  v10 = jobCopy;
   v22 = v10;
-  v23 = self;
+  selfCopy = self;
   v11 = v8;
   v24 = v11;
   v26 = v9;
@@ -786,14 +786,14 @@ LABEL_30:
 
   if ([v12 isEqualToString:*MEMORY[0x1E69C0458]])
   {
-    v17 = [(PLImageWriter *)self _newShortLivedLibraryWithName:"[PLImageWriter _processJob:]"];
-    [(PLImageWriter *)self _processImageJob:v10 inLibrary:v17 completion:v13];
+    currentHandler = [(PLImageWriter *)self _newShortLivedLibraryWithName:"[PLImageWriter _processJob:]"];
+    [(PLImageWriter *)self _processImageJob:v10 inLibrary:currentHandler completion:v13];
   }
 
   else if ([v12 isEqualToString:*MEMORY[0x1E69C0430]])
   {
-    v17 = [(PLImageWriter *)self _newShortLivedLibraryWithName:"[PLImageWriter _processJob:] (BatchImage)"];
-    [(PLImageWriter *)self _processBatchImageJob:v10 inLibrary:v17 completion:v13];
+    currentHandler = [(PLImageWriter *)self _newShortLivedLibraryWithName:"[PLImageWriter _processJob:] (BatchImage)"];
+    [(PLImageWriter *)self _processBatchImageJob:v10 inLibrary:currentHandler completion:v13];
   }
 
   else
@@ -830,8 +830,8 @@ LABEL_30:
 
     if ([v12 isEqualToString:*MEMORY[0x1E69C0448]])
     {
-      v17 = [PLAssetTransactionReason transactionReason:@"[_processJob][_processDeletePhotoStreamDataJob]Deleting PhotoStream data."];
-      [(PLImageWriter *)self _processDeletePhotoStreamDataJob:v10 withReason:v17 completion:v13];
+      currentHandler = [PLAssetTransactionReason transactionReason:@"[_processJob][_processDeletePhotoStreamDataJob]Deleting PhotoStream data."];
+      [(PLImageWriter *)self _processDeletePhotoStreamDataJob:v10 withReason:currentHandler completion:v13];
     }
 
     else
@@ -872,8 +872,8 @@ LABEL_30:
         goto LABEL_11;
       }
 
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:a2 object:self file:@"PLImageWriter.m" lineNumber:3993 description:{@"JobType unknown %@", v12, aBlock, v19, v20, v21, v22, v23, v24}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLImageWriter.m" lineNumber:3993 description:{@"JobType unknown %@", v12, aBlock, v19, v20, v21, v22, selfCopy, v24}];
     }
   }
 
@@ -949,26 +949,26 @@ uint64_t __29__PLImageWriter__processJob___block_invoke_2(uint64_t a1)
   return [*(a1 + 56) _decrementJobCount:*(a1 + 32)];
 }
 
-- (void)_processSyncedVideoSaveJob:(id)a3 completion:(id)a4
+- (void)_processSyncedVideoSaveJob:(id)job completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  jobCopy = job;
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v9 = [WeakRetained pathManager];
-  v11 = [v9 iTunesSyncedAssetsDirectory];
+  pathManager = [WeakRetained pathManager];
+  iTunesSyncedAssetsDirectory = [pathManager iTunesSyncedAssetsDirectory];
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  [v10 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager createDirectoryAtPath:iTunesSyncedAssetsDirectory withIntermediateDirectories:1 attributes:0 error:0];
 
-  [(PLImageWriter *)self _processVideoSaveJob:v7 completion:v6];
+  [(PLImageWriter *)self _processVideoSaveJob:jobCopy completion:completionCopy];
 }
 
-- (void)_processVideoSaveJob:(id)a3 completion:(id)a4
+- (void)_processVideoSaveJob:(id)job completion:(id)completion
 {
   v49 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 objectForKey:@"callStack"];
+  jobCopy = job;
+  completionCopy = completion;
+  v9 = [jobCopy objectForKey:@"callStack"];
   if (v9)
   {
     v10 = PLAssetImportGetLog();
@@ -987,43 +987,43 @@ uint64_t __29__PLImageWriter__processJob___block_invoke_2(uint64_t a1)
   }
 
   v36 = *MEMORY[0x1E69C05A0];
-  v13 = [v7 objectForKey:?];
-  v14 = [v7 objectForKey:*MEMORY[0x1E69C0590]];
-  v15 = [v7 objectForKey:*MEMORY[0x1E69C0580]];
-  v16 = [v15 BOOLValue];
+  v13 = [jobCopy objectForKey:?];
+  v14 = [jobCopy objectForKey:*MEMORY[0x1E69C0590]];
+  v15 = [jobCopy objectForKey:*MEMORY[0x1E69C0580]];
+  bOOLValue = [v15 BOOLValue];
 
   v17 = [MEMORY[0x1E695DFF8] fileURLWithPath:v13 isDirectory:0];
-  v18 = [v17 path];
-  LODWORD(v15) = [PLPhotoLibrary canSaveVideoToLibrary:v18];
+  path = [v17 path];
+  LODWORD(v15) = [PLPhotoLibrary canSaveVideoToLibrary:path];
 
   if (!v15)
   {
-    v27 = [v7 objectForKey:@"Error"];
+    v27 = [jobCopy objectForKey:@"Error"];
 
     if (v27)
     {
       v21 = 0;
 LABEL_23:
-      v8[2](v8);
+      completionCopy[2](completionCopy);
       goto LABEL_24;
     }
 
     v20 = PLServicesLocalizedFrameworkString();
-    SetErrorForJob(v7, 0xDu, v20);
+    SetErrorForJob(jobCopy, 0xDu, v20);
     v21 = 0;
 LABEL_22:
 
     goto LABEL_23;
   }
 
-  v34 = self;
+  selfCopy = self;
   v35 = v9;
-  v19 = [MEMORY[0x1E696AC08] defaultManager];
-  v20 = v19;
-  if (v16)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v20 = defaultManager;
+  if (bOOLValue)
   {
     v40 = 0;
-    v33 = [v19 copyItemAtPath:v13 toPath:v14 error:&v40];
+    v33 = [defaultManager copyItemAtPath:v13 toPath:v14 error:&v40];
     v21 = v40;
     v43 = *MEMORY[0x1E696A3A0];
     v44 = *MEMORY[0x1E696A388];
@@ -1049,7 +1049,7 @@ LABEL_22:
     {
 LABEL_12:
       v26 = PLServicesLocalizedFrameworkString();
-      SetErrorForJob(v7, 0xFu, v26);
+      SetErrorForJob(jobCopy, 0xFu, v26);
 
       v9 = v35;
       goto LABEL_22;
@@ -1088,19 +1088,19 @@ LABEL_12:
     }
   }
 
-  [v7 setObject:v14 forKey:v36];
-  [(PLImageWriter *)v34 _processVideoJob:v7 completion:v8];
+  [jobCopy setObject:v14 forKey:v36];
+  [(PLImageWriter *)selfCopy _processVideoJob:jobCopy completion:completionCopy];
 
   v9 = v35;
 LABEL_24:
 }
 
-- (void)_processVideoJob:(id)a3 completion:(id)a4
+- (void)_processVideoJob:(id)job completion:(id)completion
 {
   v112 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 objectForKey:@"callStack"];
+  jobCopy = job;
+  completionCopy = completion;
+  v9 = [jobCopy objectForKey:@"callStack"];
   if (v9)
   {
     v10 = PLAssetImportGetLog();
@@ -1119,19 +1119,19 @@ LABEL_24:
   }
 
   v44 = [(PLImageWriter *)self _newShortLivedLibraryWithName:"[PLImageWriter _processVideoJob:completion:]"];
-  v46 = [v7 objectForKey:*MEMORY[0x1E69C0590]];
+  v46 = [jobCopy objectForKey:*MEMORY[0x1E69C0590]];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
   v109 = __Block_byref_object_copy__5211;
   v110 = __Block_byref_object_dispose__5212;
   v13 = *MEMORY[0x1E69C0588];
-  v111 = [v7 objectForKey:*MEMORY[0x1E69C0588]];
-  v43 = [v7 objectForKey:*MEMORY[0x1E69C04D8]];
-  v14 = [v7 objectForKeyedSubscript:@"_kPLImageWriterDidTransferVideoToDestinationPath"];
-  v15 = [v14 BOOLValue];
+  v111 = [jobCopy objectForKey:*MEMORY[0x1E69C0588]];
+  v43 = [jobCopy objectForKey:*MEMORY[0x1E69C04D8]];
+  v14 = [jobCopy objectForKeyedSubscript:@"_kPLImageWriterDidTransferVideoToDestinationPath"];
+  bOOLValue = [v14 BOOLValue];
 
-  v45 = [v7 objectForKey:*MEMORY[0x1E69C0378]];
+  v45 = [jobCopy objectForKey:*MEMORY[0x1E69C0378]];
   if (v45)
   {
     v16 = [[PLIngestJobCameraMetadata alloc] initWithCameraMetadataPath:v45];
@@ -1144,13 +1144,13 @@ LABEL_24:
   }
 
   v42 = v16;
-  v17 = [v7 objectForKey:*MEMORY[0x1E69C0410]];
+  v17 = [jobCopy objectForKey:*MEMORY[0x1E69C0410]];
   v18 = [v17 isEqualToString:*MEMORY[0x1E69C0470]];
   v47 = v17;
   v19 = MEMORY[0x1E69C0390];
   if (v18)
   {
-    v20 = [v7 objectForKey:*MEMORY[0x1E69C0390]];
+    v20 = [jobCopy objectForKey:*MEMORY[0x1E69C0390]];
     if ([v20 length])
     {
       v102 = 0;
@@ -1168,10 +1168,10 @@ LABEL_24:
       v101 = &v102;
       [v100 performBlockAndWait:v98];
       v21 = v103[5];
-      if (!((v21 == 0) | v15 & 1))
+      if (!((v21 == 0) | bOOLValue & 1))
       {
         objc_storeStrong((*&buf[8] + 40), v21);
-        [v7 setObject:*(*&buf[8] + 40) forKey:v13];
+        [jobCopy setObject:*(*&buf[8] + 40) forKey:v13];
       }
 
       _Block_object_dispose(&v102, 8);
@@ -1186,18 +1186,18 @@ LABEL_24:
   v92 = 0;
   v93 = &v92;
   v94 = 0x2020000000;
-  v95 = v15;
-  if ((v15 & 1) != 0 || (v22 = *(*&buf[8] + 40), v91 = 0, v23 = [(PLImageWriter *)self _transferVideoFromIncomingPath:v46 toDestinationPath:v22 shouldRemoveIncoming:v97 error:&v91], v24 = v91, *(v93 + 24) = v23, v41 = v24, v23))
+  v95 = bOOLValue;
+  if ((bOOLValue & 1) != 0 || (v22 = *(*&buf[8] + 40), v91 = 0, v23 = [(PLImageWriter *)self _transferVideoFromIncomingPath:v46 toDestinationPath:v22 shouldRemoveIncoming:v97 error:&v91], v24 = v91, *(v93 + 24) = v23, v41 = v24, v23))
   {
-    [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"_kPLImageWriterDidTransferVideoToDestinationPath"];
+    [jobCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"_kPLImageWriterDidTransferVideoToDestinationPath"];
   }
 
   else
   {
     if (v24)
     {
-      [(PLImageWriter *)self _removeTransientKeys:v7];
-      v8[2](v8);
+      [(PLImageWriter *)self _removeTransientKeys:jobCopy];
+      completionCopy[2](completionCopy);
       goto LABEL_27;
     }
 
@@ -1220,31 +1220,31 @@ LABEL_24:
   v87[3] = __Block_byref_object_copy__5211;
   v87[4] = __Block_byref_object_dispose__5212;
   v88 = 0;
-  v38 = [v7 objectForKey:*MEMORY[0x1E69C03C8]];
+  v38 = [jobCopy objectForKey:*MEMORY[0x1E69C03C8]];
   v25 = [v38 objectForKey:*MEMORY[0x1E69C0370]];
-  v26 = [v7 objectForKey:*MEMORY[0x1E69C0320]];
-  v39 = [v7 objectForKey:*MEMORY[0x1E69C0318]];
+  v26 = [jobCopy objectForKey:*MEMORY[0x1E69C0320]];
+  v39 = [jobCopy objectForKey:*MEMORY[0x1E69C0318]];
   v81 = 0;
   v82 = &v81;
   v83 = 0x3032000000;
   v84 = __Block_byref_object_copy__5211;
   v85 = __Block_byref_object_dispose__5212;
-  v86 = [v7 objectForKey:*v19];
+  v86 = [jobCopy objectForKey:*v19];
   v27 = [v47 isEqualToString:*MEMORY[0x1E69C0480]];
   v28 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.mobileslideshow"];
   if ([v28 BOOLForKey:@"PLImageWriterStashCameraJob"])
   {
-    v29 = [v7 objectForKeyedSubscript:@"kPLImageWriterReplayedCameraJob"];
+    v29 = [jobCopy objectForKeyedSubscript:@"kPLImageWriterReplayedCameraJob"];
     v30 = v29 == 0;
 
     if (v30)
     {
       v31 = *MEMORY[0x1E69C04E0];
-      v32 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69C04E0]];
+      v32 = [jobCopy objectForKeyedSubscript:*MEMORY[0x1E69C04E0]];
 
       if (v32)
       {
-        v33 = [v7 objectForKeyedSubscript:v31];
+        v33 = [jobCopy objectForKeyedSubscript:v31];
       }
 
       else
@@ -1253,23 +1253,23 @@ LABEL_24:
       }
 
       v34 = v33;
-      [(PLImageWriter *)self _copyJobContentsToHoldingDirectoryWithUUID:v33 incomingPath:v46 job:v7];
+      [(PLImageWriter *)self _copyJobContentsToHoldingDirectoryWithUUID:v33 incomingPath:v46 job:jobCopy];
     }
   }
 
-  [(PLImageWriter *)self _incrementJobCount:v7];
+  [(PLImageWriter *)self _incrementJobCount:jobCopy];
   v61[0] = MEMORY[0x1E69E9820];
   v61[1] = 3221225472;
   v61[2] = __45__PLImageWriter__processVideoJob_completion___block_invoke_2;
   v61[3] = &unk_1E7565CB8;
-  v62 = v7;
+  v62 = jobCopy;
   v80 = v27;
   v36 = v26;
   v63 = v36;
   v73 = &v81;
   v64 = v44;
   v65 = v47;
-  v66 = self;
+  selfCopy = self;
   v74 = buf;
   v67 = v46;
   v37 = v28;
@@ -1292,7 +1292,7 @@ LABEL_24:
   v56 = v96;
   v49 = v67;
   v50 = v9;
-  v51 = self;
+  selfCopy2 = self;
   v57 = buf;
   v58 = &v102;
   v59 = v87;
@@ -1300,7 +1300,7 @@ LABEL_24:
   v60 = v89;
   v53 = v62;
   v54 = v69;
-  v55 = v8;
+  v55 = completionCopy;
   [v64 performTransaction:v61 completionHandler:v48 withPriority:1];
 
   _Block_object_dispose(&v81, 8);
@@ -2357,94 +2357,94 @@ void __45__PLImageWriter__processVideoJob_completion___block_invoke_415(uint64_t
   }
 }
 
-- (BOOL)_retryPairedVideoJob:(id)a3 pairingType:(id)a4 pairingIdentifier:(id)a5 retryMax:(unint64_t)a6
+- (BOOL)_retryPairedVideoJob:(id)job pairingType:(id)type pairingIdentifier:(id)identifier retryMax:(unint64_t)max
 {
   *(&v37[1] + 6) = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 objectForKey:*MEMORY[0x1E69C0590]];
+  jobCopy = job;
+  typeCopy = type;
+  identifierCopy = identifier;
+  v13 = [jobCopy objectForKey:*MEMORY[0x1E69C0590]];
   v14 = PLAssetImportGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
+    v15 = [jobCopy objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
     v16 = [MEMORY[0x1E69BF220] descriptionWithPath:v13];
     *buf = 138544130;
-    *v34 = v11;
+    *v34 = typeCopy;
     *&v34[8] = 2114;
     *v35 = v15;
     *&v35[8] = 2112;
     *v36 = v16;
     *&v36[8] = 2114;
-    v37[0] = v12;
+    v37[0] = identifierCopy;
     _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ paired video job %{public}@: %@ did not find asset with uuid %{public}@", buf, 0x2Au);
   }
 
-  v17 = [v10 objectForKeyedSubscript:@"kPLImageWriterPairedVideoJobRetryKey"];
-  v18 = [v17 integerValue];
+  v17 = [jobCopy objectForKeyedSubscript:@"kPLImageWriterPairedVideoJobRetryKey"];
+  integerValue = [v17 integerValue];
 
-  if (v18 >= a6)
+  if (integerValue >= max)
   {
     v24 = PLAssetImportGetLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      [v10 objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
-      v26 = v25 = v12;
+      [jobCopy objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
+      v26 = v25 = identifierCopy;
       v27 = [MEMORY[0x1E69BF220] descriptionWithPath:v13];
       *buf = 67110146;
-      *v34 = v18;
+      *v34 = integerValue;
       *&v34[4] = 1024;
-      *&v34[6] = a6;
+      *&v34[6] = max;
       *v35 = 2114;
-      *&v35[2] = v11;
+      *&v35[2] = typeCopy;
       *v36 = 2114;
       *&v36[2] = v26;
       LOWORD(v37[0]) = 2112;
       *(v37 + 2) = v27;
       _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_ERROR, "Too many retries (%d/%d) for %{public}@ paired video job %{public}@: %@ will save as standalone video asset", buf, 0x2Cu);
 
-      v12 = v25;
+      identifierCopy = v25;
     }
   }
 
   else
   {
-    v29 = v12;
-    v19 = _kPLImageWriterPairedVideoJobRetryDelays[v18];
+    v29 = identifierCopy;
+    v19 = _kPLImageWriterPairedVideoJobRetryDelays[integerValue];
     v20 = PLAssetImportGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
+      v21 = [jobCopy objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
       v22 = [MEMORY[0x1E69BF220] descriptionWithPath:v13];
       *buf = 138544386;
-      *v34 = v11;
+      *v34 = typeCopy;
       *&v34[8] = 2114;
       *v35 = v21;
       *&v35[8] = 2112;
       *v36 = v22;
       *&v36[8] = 1024;
-      LODWORD(v37[0]) = v18 + 1;
+      LODWORD(v37[0]) = integerValue + 1;
       WORD2(v37[0]) = 1024;
-      *(v37 + 6) = a6;
+      *(v37 + 6) = max;
       _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ paired video job %{public}@: %@ will retry (%d/%d)", buf, 0x2Cu);
     }
 
-    v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v18 + 1];
-    [v10 setObject:v23 forKeyedSubscript:@"kPLImageWriterPairedVideoJobRetryKey"];
+    v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:integerValue + 1];
+    [jobCopy setObject:v23 forKeyedSubscript:@"kPLImageWriterPairedVideoJobRetryKey"];
 
-    [v10 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"kPLImageWriterVideoJobWillRetryKey"];
-    [(PLImageWriter *)self _incrementJobCount:v10];
+    [jobCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"kPLImageWriterVideoJobWillRetryKey"];
+    [(PLImageWriter *)self _incrementJobCount:jobCopy];
     dispatch_time(0, (v19 * 1000000000.0));
-    v30 = v11;
-    v31 = v10;
+    v30 = typeCopy;
+    v31 = jobCopy;
     v32 = v29;
-    v12 = v29;
+    identifierCopy = v29;
     pl_dispatch_after();
 
     v24 = v30;
   }
 
-  return v18 < a6;
+  return integerValue < max;
 }
 
 uint64_t __77__PLImageWriter__retryPairedVideoJob_pairingType_pairingIdentifier_retryMax___block_invoke(uint64_t a1)
@@ -2472,19 +2472,19 @@ uint64_t __77__PLImageWriter__retryPairedVideoJob_pairingType_pairingIdentifier_
   return [*(a1 + 56) _decrementJobCount:*(a1 + 40)];
 }
 
-- (BOOL)_transferVideoFromIncomingPath:(id)a3 toDestinationPath:(id)a4 shouldRemoveIncoming:(BOOL *)a5 error:(id *)a6
+- (BOOL)_transferVideoFromIncomingPath:(id)path toDestinationPath:(id)destinationPath shouldRemoveIncoming:(BOOL *)incoming error:(id *)error
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
+  pathCopy = path;
+  destinationPathCopy = destinationPath;
+  v11 = destinationPathCopy;
   v12 = 0;
   v13 = 0;
   v14 = 0;
-  if (!v9 || !v10)
+  if (!pathCopy || !destinationPathCopy)
   {
 LABEL_5:
-    if (!a5)
+    if (!incoming)
     {
       goto LABEL_7;
     }
@@ -2492,7 +2492,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (([v9 isEqualToString:v10]& 1) != 0)
+  if (([pathCopy isEqualToString:destinationPathCopy]& 1) != 0)
   {
     v13 = 0;
     v14 = 0;
@@ -2502,13 +2502,13 @@ LABEL_5:
 
   v17 = MEMORY[0x1E69BF230];
   v18 = *MEMORY[0x1E69BFDB0];
-  v19 = [MEMORY[0x1E695DFF8] fileURLWithPath:v9 isDirectory:0];
+  v19 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
   [v17 persistString:v11 forKey:v18 fileURL:v19];
 
-  v20 = [MEMORY[0x1E696AC08] defaultManager];
-  v21 = [v11 stringByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  stringByDeletingLastPathComponent = [v11 stringByDeletingLastPathComponent];
   v41 = 0;
-  LODWORD(v19) = [v20 createDirectoryIfNeededAtPath:v21 error:&v41];
+  LODWORD(v19) = [defaultManager createDirectoryIfNeededAtPath:stringByDeletingLastPathComponent error:&v41];
   v22 = v41;
   if (v19)
   {
@@ -2516,7 +2516,7 @@ LABEL_5:
     v49[0] = *MEMORY[0x1E696A388];
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:&v48 count:1];
     v40 = 0;
-    v24 = [v20 setAttributes:v23 ofItemAtPath:v9 error:&v40];
+    v24 = [defaultManager setAttributes:v23 ofItemAtPath:pathCopy error:&v40];
     v25 = v40;
 
     if ((v24 & 1) == 0)
@@ -2525,15 +2525,15 @@ LABEL_5:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v43 = v9;
+        v43 = pathCopy;
         v44 = 2112;
         v45 = v25;
         _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_ERROR, "Unable to assign data protection to %@: %@", buf, 0x16u);
       }
     }
 
-    v37 = v21;
-    v38 = v20;
+    v37 = stringByDeletingLastPathComponent;
+    v38 = defaultManager;
     v27 = PLAssetImportGetLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
@@ -2543,7 +2543,7 @@ LABEL_5:
     }
 
     v28 = MEMORY[0x1E69BF238];
-    v29 = [MEMORY[0x1E695DFF8] fileURLWithPath:v9 isDirectory:0];
+    v29 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
     v30 = [MEMORY[0x1E695DFF8] fileURLWithPath:v11 isDirectory:0];
     v39 = v22;
     v14 = [v28 copyItemAtURL:v29 toURL:v30 error:&v39];
@@ -2553,8 +2553,8 @@ LABEL_5:
     v32 = v31;
     if (v14)
     {
-      v21 = v37;
-      v20 = v38;
+      stringByDeletingLastPathComponent = v37;
+      defaultManager = v38;
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
@@ -2570,12 +2570,12 @@ LABEL_25:
 
     else
     {
-      v21 = v37;
-      v20 = v38;
+      stringByDeletingLastPathComponent = v37;
+      defaultManager = v38;
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v43 = v9;
+        v43 = pathCopy;
         v44 = 2112;
         v45 = v11;
         v46 = 2112;
@@ -2595,7 +2595,7 @@ LABEL_25:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v43 = v21;
+    v43 = stringByDeletingLastPathComponent;
     v44 = 2112;
     v45 = v22;
     _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_ERROR, "Failed to create directory at %@: %@", buf, 0x16u);
@@ -2606,36 +2606,36 @@ LABEL_25:
 LABEL_27:
 
   v13 = 1;
-  if (a5)
+  if (incoming)
   {
 LABEL_6:
-    *a5 = v13;
+    *incoming = v13;
   }
 
 LABEL_7:
-  if (a6)
+  if (error)
   {
     v15 = v12;
-    *a6 = v12;
+    *error = v12;
   }
 
   return v14;
 }
 
-- (void)_processXPCDaemonJob:(id)a3 completion:(id)a4
+- (void)_processXPCDaemonJob:(id)job completion:(id)completion
 {
-  v5 = a4;
-  v6 = [a3 objectForKey:@"kPLImageWriterDaemonJobEventKey"];
+  completionCopy = completion;
+  v6 = [job objectForKey:@"kPLImageWriterDaemonJobEventKey"];
   [v6 runDaemonSide];
-  v5[2](v5);
+  completionCopy[2](completionCopy);
 }
 
-- (void)_processDaemonJob:(id)a3 completion:(id)a4
+- (void)_processDaemonJob:(id)job completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"kPLImageWriterDaemonJobEventKey"];
+  jobCopy = job;
+  completionCopy = completion;
+  v8 = [jobCopy objectForKey:@"kPLImageWriterDaemonJobEventKey"];
   if (v8)
   {
     WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
@@ -2644,7 +2644,7 @@ LABEL_7:
 
   else
   {
-    v10 = [v6 objectForKey:@"kPLImageWriterDaemonJobRecoveredEventsKey"];
+    v10 = [jobCopy objectForKey:@"kPLImageWriterDaemonJobRecoveredEventsKey"];
     v11 = v10;
     if (v10)
     {
@@ -2658,8 +2658,8 @@ LABEL_7:
       {
         v14 = v13;
         v20 = v11;
-        v21 = v7;
-        v22 = v6;
+        v21 = completionCopy;
+        v22 = jobCopy;
         v15 = *v24;
         do
         {
@@ -2682,8 +2682,8 @@ LABEL_7:
         }
 
         while (v14);
-        v7 = v21;
-        v6 = v22;
+        completionCopy = v21;
+        jobCopy = v22;
         v11 = v20;
       }
     }
@@ -2694,40 +2694,40 @@ LABEL_7:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v28 = v6;
+        v28 = jobCopy;
         _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "##### missing event(s) for PLDaemonJob %@", buf, 0xCu);
       }
     }
   }
 
-  v7[2](v7);
+  completionCopy[2](completionCopy);
 }
 
-- (void)_processCrashRecoveryJob:(id)a3 completion:(id)a4
+- (void)_processCrashRecoveryJob:(id)job completion:(id)completion
 {
   v183 = *MEMORY[0x1E69E9840];
-  v124 = a3;
-  v121 = a4;
-  v134 = self;
+  jobCopy = job;
+  completionCopy = completion;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v122 = [WeakRetained crashRecoverySupport];
+  crashRecoverySupport = [WeakRetained crashRecoverySupport];
 
   v8 = +[PLPhotoLibrary areOpportunisticTasksDisabled];
-  v9 = [v122 isSafeToRecoverAfterCrash];
-  v10 = [(PLImageWriter *)self _hasNonCrashRecoveryJobsEnqueued];
+  isSafeToRecoverAfterCrash = [crashRecoverySupport isSafeToRecoverAfterCrash];
+  _hasNonCrashRecoveryJobsEnqueued = [(PLImageWriter *)self _hasNonCrashRecoveryJobsEnqueued];
   v11 = +[PLAssetsdCrashRecoverySupport trackingPerformChangesRequestInProgressCount];
-  v12 = v9 & ~v8 & ~v10 & (v11 < 1);
-  if (v12 != 1 || ![(PLImageWriter *)v134 _enterAtomicCrashRecoveryJobProcessing])
+  v12 = isSafeToRecoverAfterCrash & ~v8 & ~_hasNonCrashRecoveryJobsEnqueued & (v11 < 1);
+  if (v12 != 1 || ![(PLImageWriter *)selfCopy _enterAtomicCrashRecoveryJobProcessing])
   {
-    v15 = [MEMORY[0x1E695DF70] array];
-    v16 = v15;
+    array = [MEMORY[0x1E695DF70] array];
+    v16 = array;
     if (v8)
     {
-      [v15 addObject:@"opportunistic tasks are disabled"];
-      if (v9)
+      [array addObject:@"opportunistic tasks are disabled"];
+      if (isSafeToRecoverAfterCrash)
       {
 LABEL_9:
-        if ((v10 & 1) == 0)
+        if ((_hasNonCrashRecoveryJobsEnqueued & 1) == 0)
         {
 LABEL_11:
           if (v11 >= 1)
@@ -2744,7 +2744,7 @@ LABEL_11:
           v18 = PLAssetImportGetLog();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [v124 objectForKeyedSubscript:*MEMORY[0x1E69C0408]];
+            v19 = [jobCopy objectForKeyedSubscript:*MEMORY[0x1E69C0408]];
             v20 = [v16 componentsJoinedByString:{@", "}];
             *buf = 138543618;
             v176 = v19;
@@ -2753,7 +2753,7 @@ LABEL_11:
             _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "##### RECOVER: delaying crash recovery job (%{public}@) because: %{public}@", buf, 0x16u);
           }
 
-          v21 = [v124 mutableCopy];
+          v21 = [jobCopy mutableCopy];
           dispatch_time(0, 3000000000);
           v166 = MEMORY[0x1E69E9820];
           v167 = 3221225472;
@@ -2761,10 +2761,10 @@ LABEL_11:
           v169 = &unk_1E75782F8;
           v172 = a2;
           v170 = v21;
-          v171 = v134;
+          v171 = selfCopy;
           v22 = v21;
           pl_dispatch_after();
-          v121[2]();
+          completionCopy[2]();
 
           goto LABEL_132;
         }
@@ -2775,13 +2775,13 @@ LABEL_10:
       }
     }
 
-    else if (v9)
+    else if (isSafeToRecoverAfterCrash)
     {
       goto LABEL_9;
     }
 
     [v16 addObject:@"open camera transaction"];
-    if ((v10 & 1) == 0)
+    if ((_hasNonCrashRecoveryJobsEnqueued & 1) == 0)
     {
       goto LABEL_11;
     }
@@ -2796,50 +2796,50 @@ LABEL_10:
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "##### RECOVER: entered crash recovery job processing", buf, 2u);
   }
 
-  v138 = [MEMORY[0x1E696AC08] defaultManager];
-  v14 = [v124 objectForKey:@"CrashRecoveryFilenamesKey"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v14 = [jobCopy objectForKey:@"CrashRecoveryFilenamesKey"];
   if (v14)
   {
-    v137 = [MEMORY[0x1E69BF178] incomingDirectoryPath];
+    incomingDirectoryPath = [MEMORY[0x1E69BF178] incomingDirectoryPath];
   }
 
   else
   {
-    v137 = 0;
+    incomingDirectoryPath = 0;
   }
 
   v23 = PLAssetImportGetLog();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [v124 objectForKeyedSubscript:*MEMORY[0x1E69C0408]];
-    v25 = [v124 objectForKeyedSubscript:@"CrashRecoveryJobCreationDateKey"];
+    v24 = [jobCopy objectForKeyedSubscript:*MEMORY[0x1E69C0408]];
+    v25 = [jobCopy objectForKeyedSubscript:@"CrashRecoveryJobCreationDateKey"];
     *buf = 138544130;
     v176 = v24;
     v177 = 2114;
     v178 = v25;
     v179 = 2114;
-    v180 = v137;
+    v180 = incomingDirectoryPath;
     v181 = 2114;
     v182 = v14;
     _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_DEFAULT, "##### RECOVER: Initiating recovery job (#%{public}@) of incoming files (requested at %{public}@) from %{public}@: %{public}@", buf, 0x2Au);
   }
 
-  v26 = objc_loadWeakRetained(&v134->_libraryServicesManager);
-  v114 = [v26 pathManager];
+  v26 = objc_loadWeakRetained(&selfCopy->_libraryServicesManager);
+  pathManager = [v26 pathManager];
 
-  v116 = [MEMORY[0x1E695DF70] array];
-  v113 = [MEMORY[0x1E695DF90] dictionary];
-  v111 = [MEMORY[0x1E695DF90] dictionary];
-  v126 = [MEMORY[0x1E695DF70] array];
-  v112 = [MEMORY[0x1E695DF70] array];
-  v119 = [MEMORY[0x1E695DF70] array];
-  v131 = [MEMORY[0x1E695DF70] array];
-  v130 = [MEMORY[0x1E695DF70] array];
-  v123 = [MEMORY[0x1E695DF70] array];
-  v129 = [MEMORY[0x1E695DF70] array];
-  v117 = [MEMORY[0x1E695DF70] array];
-  v128 = [MEMORY[0x1E695DF70] array];
-  v103 = [v114 privateDirectoryWithSubType:8 createIfNeeded:1 error:0];
+  array2 = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
+  array5 = [MEMORY[0x1E695DF70] array];
+  array6 = [MEMORY[0x1E695DF70] array];
+  array7 = [MEMORY[0x1E695DF70] array];
+  array8 = [MEMORY[0x1E695DF70] array];
+  array9 = [MEMORY[0x1E695DF70] array];
+  array10 = [MEMORY[0x1E695DF70] array];
+  array11 = [MEMORY[0x1E695DF70] array];
+  v103 = [pathManager privateDirectoryWithSubType:8 createIfNeeded:1 error:0];
   v164 = 0u;
   v165 = 0u;
   v162 = 0u;
@@ -2870,44 +2870,44 @@ LABEL_10:
 
         v29 = *(*(&v162 + 1) + 8 * v28);
         v30 = objc_autoreleasePoolPush();
-        v31 = [v137 stringByAppendingPathComponent:v29];
-        v32 = [v29 pathExtension];
+        v31 = [incomingDirectoryPath stringByAppendingPathComponent:v29];
+        pathExtension = [v29 pathExtension];
         v161 = 0;
-        if ([v138 fileExistsAtPath:v31 isDirectory:&v161] && (v161 & 1) == 0)
+        if ([defaultManager fileExistsAtPath:v31 isDirectory:&v161] && (v161 & 1) == 0)
         {
-          if ([PLPhotoLibrary isVideoFileExtension:v32])
+          if ([PLPhotoLibrary isVideoFileExtension:pathExtension])
           {
             v33 = PFVideoComplementMetadataForVideoAtPath();
-            v34 = [v33 pairingIdentifier];
+            pairingIdentifier = [v33 pairingIdentifier];
           }
 
           else
           {
-            v34 = 0;
+            pairingIdentifier = 0;
           }
 
-          v35 = [v29 stringByDeletingPathExtension];
-          v36 = [v35 pathExtension];
+          stringByDeletingPathExtension = [v29 stringByDeletingPathExtension];
+          pathExtension2 = [stringByDeletingPathExtension pathExtension];
 
-          v37 = [v36 isEqualToString:v132];
+          v37 = [pathExtension2 isEqualToString:v132];
           if (v37)
           {
             v38 = [objc_opt_class() _assetUUIDFromIncomingFilename:v29];
             if ([objc_opt_class() _hasPrimaryAssetAndAdjustmentsFilesWithType:0 inIncomingFilenames:obj forAssetUUID:v38])
             {
-              [v129 addObject:v31];
+              [array9 addObject:v31];
               goto LABEL_39;
             }
           }
 
-          v39 = v131;
-          if (v34 || (v40 = [v32 isEqualToString:@"irs"], v39 = v130, (v40 & 1) != 0) || (v41 = objc_msgSend(v32, "isEqualToString:", v127), v39 = v128, (v41 & 1) != 0) || (v42 = objc_msgSend(v32, "isEqualToString:", v125), v39 = v126, (v42 & 1) != 0) || (v43 = objc_msgSend(v32, "isEqualToString:", v120), v39 = v123, (v43 & 1) != 0) || (v44 = objc_msgSend(v32, "isEqualToString:", v118), v39 = v119, (v44 & 1) != 0) || (v45 = objc_msgSend(v32, "isEqualToString:", v115), v39 = v117, v45))
+          v39 = array6;
+          if (pairingIdentifier || (v40 = [pathExtension isEqualToString:@"irs"], v39 = array7, (v40 & 1) != 0) || (v41 = objc_msgSend(pathExtension, "isEqualToString:", v127), v39 = array11, (v41 & 1) != 0) || (v42 = objc_msgSend(pathExtension, "isEqualToString:", v125), v39 = array3, (v42 & 1) != 0) || (v43 = objc_msgSend(pathExtension, "isEqualToString:", v120), v39 = array8, (v43 & 1) != 0) || (v44 = objc_msgSend(pathExtension, "isEqualToString:", v118), v39 = array5, (v44 & 1) != 0) || (v45 = objc_msgSend(pathExtension, "isEqualToString:", v115), v39 = array10, v45))
           {
             [v39 addObject:v31];
             goto LABEL_49;
           }
 
-          if ([v32 isEqualToString:@"plist"])
+          if ([pathExtension isEqualToString:@"plist"])
           {
             goto LABEL_49;
           }
@@ -2916,7 +2916,7 @@ LABEL_10:
           if (v38)
           {
             v104 = [MEMORY[0x1E695DFF8] fileURLWithPath:v31 isDirectory:0];
-            v105 = [PLManagedAsset uniformTypeIdentifierFromPathExtension:v32 assetType:3];
+            v105 = [PLManagedAsset uniformTypeIdentifierFromPathExtension:pathExtension assetType:3];
             v100 = [PLManagedAsset assetTypeFromUniformTypeIdentifier:v105];
 
             if (v100 == 1)
@@ -2935,10 +2935,10 @@ LABEL_10:
             {
               if (v37)
               {
-                v46 = [MEMORY[0x1E696AFB0] UUID];
-                v102 = [v46 UUIDString];
+                uUID = [MEMORY[0x1E696AFB0] UUID];
+                uUIDString = [uUID UUIDString];
 
-                v47 = v102;
+                v47 = uUIDString;
               }
 
               else
@@ -2971,38 +2971,38 @@ LABEL_10:
 
             if (v106)
             {
-              [v111 setObject:v106 forKeyedSubscript:v38];
+              [dictionary2 setObject:v106 forKeyedSubscript:v38];
               v50 = v106;
               goto LABEL_85;
             }
 
-            v51 = [(PLImageWriter *)v134 cameraAssetPathForNewAssetWithExtension:v32 assetUUID:v101];
-            [v111 setObject:v51 forKeyedSubscript:v38];
-            if ([PLPhotoLibrary isImageFileExtension:v32])
+            v51 = [(PLImageWriter *)selfCopy cameraAssetPathForNewAssetWithExtension:pathExtension assetUUID:v101];
+            [dictionary2 setObject:v51 forKeyedSubscript:v38];
+            if ([PLPhotoLibrary isImageFileExtension:pathExtension])
             {
               v89 = v51;
               v95 = objc_alloc(MEMORY[0x1E69C0718]);
-              v107 = objc_loadWeakRetained(&v134->_libraryServicesManager);
-              v86 = [v107 libraryBundle];
-              v52 = [v86 timeZoneLookup];
-              v96 = [v95 initWithImageURL:v104 contentType:0 timeZoneLookup:v52];
+              v107 = objc_loadWeakRetained(&selfCopy->_libraryServicesManager);
+              libraryBundle = [v107 libraryBundle];
+              timeZoneLookup = [libraryBundle timeZoneLookup];
+              v96 = [v95 initWithImageURL:v104 contentType:0 timeZoneLookup:timeZoneLookup];
 
               if ([v96 isDeferredPhotoProxy] && (objc_msgSend(v96, "deferredPhotoProcessingIdentifier"), (v87 = objc_claimAutoreleasedReturnValue()) != 0))
               {
                 v108 = [MEMORY[0x1E695DFF8] fileURLWithPath:v89 isDirectory:0];
                 v53 = [PLPhotoLibrary deferredPhotoPreviewDestinationURLForPrimaryAssetURL:v108];
-                v83 = [v53 path];
+                path = [v53 path];
 
                 v54 = PLAssetImportGetLog();
                 if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138543362;
-                  v176 = v83;
+                  v176 = path;
                   _os_log_impl(&dword_19BF1F000, v54, OS_LOG_TYPE_DEFAULT, "##### RECOVER: assigning deferred path %{public}@", buf, 0xCu);
                 }
 
                 v55 = 0;
-                v89 = v83;
+                v89 = path;
               }
 
               else
@@ -3017,23 +3017,23 @@ LABEL_10:
               {
                 v84 = [MEMORY[0x1E695DFF8] fileURLWithPath:v89 isDirectory:0];
                 v56 = [PLImageWriter semanticEnhancePreviewDestinationURLForPrimaryAssetURL:v84];
-                v109 = [v56 path];
+                path2 = [v56 path];
 
                 v57 = PLAssetImportGetLog();
                 if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138543362;
-                  v176 = v109;
+                  v176 = path2;
                   _os_log_impl(&dword_19BF1F000, v57, OS_LOG_TYPE_DEFAULT, "##### RECOVER: assigning SemDev deferred path %{public}@", buf, 0xCu);
                 }
               }
 
               else
               {
-                v109 = v89;
+                path2 = v89;
               }
 
-              v51 = v109;
+              v51 = path2;
             }
 
             if (v51)
@@ -3059,16 +3059,16 @@ LABEL_85:
 
               v110 = v50;
 
-              if ([v138 fileExistsAtPath:v50])
+              if ([defaultManager fileExistsAtPath:v50])
               {
 LABEL_94:
-                v61 = [v31 stringByDeletingPathExtension];
-                v97 = [v61 stringByAppendingPathExtension:v125];
+                stringByDeletingPathExtension2 = [v31 stringByDeletingPathExtension];
+                v97 = [stringByDeletingPathExtension2 stringByAppendingPathExtension:v125];
 
-                if ([v138 fileExistsAtPath:v97])
+                if ([defaultManager fileExistsAtPath:v97])
                 {
-                  v90 = [v31 lastPathComponent];
-                  v62 = [v103 stringByAppendingPathComponent:v90];
+                  lastPathComponent = [v31 lastPathComponent];
+                  v62 = [v103 stringByAppendingPathComponent:lastPathComponent];
                   if (v97 && v62)
                   {
                     v88 = v62;
@@ -3079,18 +3079,18 @@ LABEL_94:
                     LOBYTE(v63) = [v63 copyItemAtURL:v85 toURL:v64 error:&v158];
                     v82 = v158;
 
-                    if ((v63 & 1) == 0 && ([v138 fileExistsAtPath:v88] & 1) == 0)
+                    if ((v63 & 1) == 0 && ([defaultManager fileExistsAtPath:v88] & 1) == 0)
                     {
                       v65 = PLAssetImportGetLog();
                       if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
                       {
-                        v66 = [v82 localizedDescription];
+                        localizedDescription = [v82 localizedDescription];
                         *buf = 138543874;
                         v176 = v97;
                         v177 = 2114;
                         v178 = v88;
                         v179 = 2114;
-                        v180 = v66;
+                        v180 = localizedDescription;
                         _os_log_impl(&dword_19BF1F000, v65, OS_LOG_TYPE_ERROR, "Failed to copy %{public}@ to %{public}@: %{public}@", buf, 0x20u);
                       }
                     }
@@ -3099,8 +3099,8 @@ LABEL_94:
                   }
                 }
 
-                [v113 setObject:v104 forKey:v99];
-                [v116 addObject:v99];
+                [dictionary setObject:v104 forKey:v99];
+                [array2 addObject:v99];
               }
 
               else
@@ -3168,12 +3168,12 @@ LABEL_49:
           goto LABEL_50;
         }
 
-        v34 = PLAssetImportGetLog();
-        if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
+        pairingIdentifier = PLAssetImportGetLog();
+        if (os_log_type_enabled(pairingIdentifier, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
           v176 = v31;
-          _os_log_impl(&dword_19BF1F000, v34, OS_LOG_TYPE_DEFAULT, "##### RECOVER: Skipping missing file %{public}@", buf, 0xCu);
+          _os_log_impl(&dword_19BF1F000, pairingIdentifier, OS_LOG_TYPE_DEFAULT, "##### RECOVER: Skipping missing file %{public}@", buf, 0xCu);
         }
 
 LABEL_50:
@@ -3190,46 +3190,46 @@ LABEL_50:
     while (v69);
   }
 
-  v133 = [v116 count];
+  v133 = [array2 count];
   if (v133)
   {
-    [(PLImageWriter *)v134 _incrementJobCount:v124];
-    v70 = objc_loadWeakRetained(&v134->_libraryServicesManager);
-    v71 = [v70 modelMigrator];
+    [(PLImageWriter *)selfCopy _incrementJobCount:jobCopy];
+    v70 = objc_loadWeakRetained(&selfCopy->_libraryServicesManager);
+    modelMigrator = [v70 modelMigrator];
     v144[0] = MEMORY[0x1E69E9820];
     v144[1] = 3221225472;
     v144[2] = __53__PLImageWriter__processCrashRecoveryJob_completion___block_invoke_362;
     v144[3] = &unk_1E7565C70;
-    v145 = v113;
-    v146 = v138;
-    v147 = v134;
-    v148 = v112;
-    v149 = v119;
-    v150 = v130;
-    v151 = v131;
-    v152 = v123;
-    v153 = v129;
-    v154 = v128;
-    v155 = v117;
-    v157 = v121;
-    v156 = v124;
-    [v71 importAfterCrash:v116 completionBlock:v144];
+    v145 = dictionary;
+    v146 = defaultManager;
+    v147 = selfCopy;
+    v148 = array4;
+    v149 = array5;
+    v150 = array7;
+    v151 = array6;
+    v152 = array8;
+    v153 = array9;
+    v154 = array11;
+    v155 = array10;
+    v157 = completionCopy;
+    v156 = jobCopy;
+    [modelMigrator importAfterCrash:array2 completionBlock:v144];
   }
 
   else
   {
-    [(PLImageWriter *)v134 _handleAvalancheCrashRecovery:v119];
-    [(PLImageWriter *)v134 _handlePhotoIrisCrashRecoveryForPhotoIndicatorFiles:v130];
-    [(PLImageWriter *)v134 _handlePhotoIrisCrashRecoveryForVideos:v131];
-    [(PLImageWriter *)v134 _handleCameraAdjustments:v123 fullsizeRenders:v129 largeThumbnails:v128];
-    [(PLImageWriter *)v134 _handleCameraMetadataCrashRecovery:v117];
+    [(PLImageWriter *)selfCopy _handleAvalancheCrashRecovery:array5];
+    [(PLImageWriter *)selfCopy _handlePhotoIrisCrashRecoveryForPhotoIndicatorFiles:array7];
+    [(PLImageWriter *)selfCopy _handlePhotoIrisCrashRecoveryForVideos:array6];
+    [(PLImageWriter *)selfCopy _handleCameraAdjustments:array8 fullsizeRenders:array9 largeThumbnails:array11];
+    [(PLImageWriter *)selfCopy _handleCameraMetadataCrashRecovery:array10];
   }
 
   v142 = 0u;
   v143 = 0u;
   v140 = 0u;
   v141 = 0u;
-  v72 = v126;
+  v72 = array3;
   v73 = [v72 countByEnumeratingWithState:&v140 objects:v173 count:16];
   if (v73)
   {
@@ -3245,18 +3245,18 @@ LABEL_50:
 
         v76 = *(*(&v140 + 1) + 8 * i);
         v139 = 0;
-        v77 = [v138 removeItemAtPath:v76 error:&v139];
+        v77 = [defaultManager removeItemAtPath:v76 error:&v139];
         v78 = v139;
         if ((v77 & 1) == 0)
         {
           v79 = PLAssetImportGetLog();
           if (os_log_type_enabled(v79, OS_LOG_TYPE_ERROR))
           {
-            v80 = [v78 localizedDescription];
+            localizedDescription2 = [v78 localizedDescription];
             *buf = 138543618;
             v176 = v76;
             v177 = 2114;
-            v178 = v80;
+            v178 = localizedDescription2;
             _os_log_impl(&dword_19BF1F000, v79, OS_LOG_TYPE_ERROR, "Failed to unlink file at path %{public}@: %{public}@", buf, 0x16u);
           }
         }
@@ -3270,10 +3270,10 @@ LABEL_50:
 
   if (!v133)
   {
-    v121[2]();
+    completionCopy[2]();
   }
 
-  [(PLImageWriter *)v134 _exitAtomicCrashRecoveryJobProcessing];
+  [(PLImageWriter *)selfCopy _exitAtomicCrashRecoveryJobProcessing];
   v81 = PLAssetImportGetLog();
   if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
   {
@@ -3478,17 +3478,17 @@ void __53__PLImageWriter__processCrashRecoveryJob_completion___block_invoke_363(
   [v13 removeItemAtURL:v15 error:0];
 }
 
-- (void)_handlePhotoIrisCrashRecoveryForPhotoIndicatorFiles:(id)a3
+- (void)_handlePhotoIrisCrashRecoveryForPhotoIndicatorFiles:(id)files
 {
-  v4 = a3;
-  if ([v4 count])
+  filesCopy = files;
+  if ([filesCopy count])
   {
     v5 = [(PLImageWriter *)self _newShortLivedLibraryWithName:"[PLImageWriter _handlePhotoIrisCrashRecoveryForPhotoIndicatorFiles:]"];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __69__PLImageWriter__handlePhotoIrisCrashRecoveryForPhotoIndicatorFiles___block_invoke;
     v7[3] = &unk_1E7578848;
-    v8 = v4;
+    v8 = filesCopy;
     v9 = v5;
     v6 = v5;
     [v6 performTransactionAndWait:v7];
@@ -3529,48 +3529,48 @@ void __69__PLImageWriter__handlePhotoIrisCrashRecoveryForPhotoIndicatorFiles___b
   }
 }
 
-- (BOOL)_writeOutCameraMetadata:(id)a3 destinationURL:(id)a4 error:(id *)a5
+- (BOOL)_writeOutCameraMetadata:(id)metadata destinationURL:(id)l error:(id *)error
 {
-  v7 = a4;
+  lCopy = l;
   v8 = MEMORY[0x1E696ACC8];
-  v9 = [a3 cameraMetadata];
+  cameraMetadata = [metadata cameraMetadata];
   v16 = 0;
-  v10 = [v8 archivedDataWithRootObject:v9 requiringSecureCoding:1 error:&v16];
+  v10 = [v8 archivedDataWithRootObject:cameraMetadata requiringSecureCoding:1 error:&v16];
   v11 = v16;
 
   v15 = v11;
-  LOBYTE(v9) = [v10 writeToURL:v7 options:1 error:&v15];
+  LOBYTE(cameraMetadata) = [v10 writeToURL:lCopy options:1 error:&v15];
   v12 = v15;
 
-  if ((v9 & 1) == 0)
+  if ((cameraMetadata & 1) == 0)
   {
 
-    v7 = 0;
+    lCopy = 0;
   }
 
-  if (a5 && v12)
+  if (error && v12)
   {
     v13 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v12 == 0;
 }
 
-- (void)_handleCameraAdjustments:(id)a3 fullsizeRenders:(id)a4 largeThumbnails:(id)a5
+- (void)_handleCameraAdjustments:(id)adjustments fullsizeRenders:(id)renders largeThumbnails:(id)thumbnails
 {
   v74 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_opt_class() _pathsByAssetUUIDFromIncomingCrashRecoveryPaths:v8];
-  v45 = v9;
-  v12 = [objc_opt_class() _pathsByAssetUUIDFromIncomingCrashRecoveryPaths:v9];
-  v13 = [objc_opt_class() _pathsByAssetUUIDFromIncomingCrashRecoveryPaths:v10];
-  v46 = v8;
-  v14 = [MEMORY[0x1E695DFA8] setWithArray:v8];
-  v44 = v10;
-  v15 = [MEMORY[0x1E695DFA8] setWithArray:v10];
+  adjustmentsCopy = adjustments;
+  rendersCopy = renders;
+  thumbnailsCopy = thumbnails;
+  v11 = [objc_opt_class() _pathsByAssetUUIDFromIncomingCrashRecoveryPaths:adjustmentsCopy];
+  v45 = rendersCopy;
+  v12 = [objc_opt_class() _pathsByAssetUUIDFromIncomingCrashRecoveryPaths:rendersCopy];
+  v13 = [objc_opt_class() _pathsByAssetUUIDFromIncomingCrashRecoveryPaths:thumbnailsCopy];
+  v46 = adjustmentsCopy;
+  v14 = [MEMORY[0x1E695DFA8] setWithArray:adjustmentsCopy];
+  v44 = thumbnailsCopy;
+  v15 = [MEMORY[0x1E695DFA8] setWithArray:thumbnailsCopy];
   v16 = [(PLImageWriter *)self _newShortLivedLibraryWithName:"[PLImageWriter _handleCameraAdjustments:fullsizeRenders:largeThumbnails:]"];
   v58[0] = MEMORY[0x1E69E9820];
   v58[1] = 3221225472;
@@ -3587,10 +3587,10 @@ void __69__PLImageWriter__handlePhotoIrisCrashRecoveryForPhotoIndicatorFiles___b
   v17 = v14;
   v63 = v17;
   v64 = v16;
-  v65 = self;
+  selfCopy = self;
   v40 = v64;
   [v64 performTransactionAndWait:v58];
-  v18 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
@@ -3625,7 +3625,7 @@ void __69__PLImageWriter__handlePhotoIrisCrashRecoveryForPhotoIndicatorFiles___b
         }
 
         v53 = v24;
-        v27 = [v18 removeItemAtPath:v25 error:{&v53, v39}];
+        v27 = [defaultManager removeItemAtPath:v25 error:{&v53, v39}];
         v21 = v53;
 
         if ((v27 & 1) == 0)
@@ -3692,7 +3692,7 @@ void __69__PLImageWriter__handlePhotoIrisCrashRecoveryForPhotoIndicatorFiles___b
         }
 
         v48 = v34;
-        v37 = [v18 removeItemAtPath:v35 error:&v48];
+        v37 = [defaultManager removeItemAtPath:v35 error:&v48];
         v21 = v48;
 
         if ((v37 & 1) == 0)
@@ -3838,23 +3838,23 @@ LABEL_10:
   }
 }
 
-- (void)_handlePhotoIrisCrashRecoveryForVideos:(id)a3
+- (void)_handlePhotoIrisCrashRecoveryForVideos:(id)videos
 {
-  v5 = a3;
-  if ([v5 count])
+  videosCopy = videos;
+  if ([videosCopy count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = [(PLImageWriter *)self _newShortLivedLibraryWithName:"[PLImageWriter _handlePhotoIrisCrashRecoveryForVideos:]"];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __56__PLImageWriter__handlePhotoIrisCrashRecoveryForVideos___block_invoke;
     v14[3] = &unk_1E7573520;
-    v15 = v5;
+    v15 = videosCopy;
     v8 = v7;
     v16 = v8;
-    v17 = self;
+    selfCopy = self;
     v19 = a2;
-    v9 = v6;
+    v9 = array;
     v18 = v9;
     [v8 performBlockAndWait:v14];
     if ([v9 count])
@@ -3863,7 +3863,7 @@ LABEL_10:
       v10[1] = 3221225472;
       v10[2] = __56__PLImageWriter__handlePhotoIrisCrashRecoveryForVideos___block_invoke_318;
       v10[3] = &unk_1E75782F8;
-      v12 = self;
+      selfCopy2 = self;
       v13 = a2;
       v11 = v9;
       [v8 performBlockAndWait:v10];
@@ -4076,18 +4076,18 @@ void __56__PLImageWriter__handlePhotoIrisCrashRecoveryForVideos___block_invoke_3
   }
 }
 
-- (void)_handleCameraMetadataCrashRecovery:(id)a3
+- (void)_handleCameraMetadataCrashRecovery:(id)recovery
 {
-  v4 = a3;
-  if ([v4 count])
+  recoveryCopy = recovery;
+  if ([recoveryCopy count])
   {
     v5 = [(PLImageWriter *)self _newShortLivedLibraryWithName:"[PLImageWriter _handleCameraMetadataCrashRecovery:]"];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __52__PLImageWriter__handleCameraMetadataCrashRecovery___block_invoke;
     v7[3] = &unk_1E75761B8;
-    v8 = v4;
-    v9 = self;
+    v8 = recoveryCopy;
+    selfCopy = self;
     v10 = v5;
     v6 = v5;
     [v6 performTransactionAndWait:v7];
@@ -4198,17 +4198,17 @@ void __52__PLImageWriter__handleCameraMetadataCrashRecovery___block_invoke(uint6
   }
 }
 
-- (void)_handleAvalancheCrashRecovery:(id)a3
+- (void)_handleAvalancheCrashRecovery:(id)recovery
 {
-  v4 = a3;
-  if ([v4 count])
+  recoveryCopy = recovery;
+  if ([recoveryCopy count])
   {
     v5 = [(PLImageWriter *)self _newShortLivedLibraryWithName:"[PLImageWriter _handleAvalancheCrashRecovery:]"];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __47__PLImageWriter__handleAvalancheCrashRecovery___block_invoke;
     v7[3] = &unk_1E7578848;
-    v8 = v4;
+    v8 = recoveryCopy;
     v9 = v5;
     v6 = v5;
     [v6 performTransactionAndWait:v7];
@@ -4286,25 +4286,25 @@ void __47__PLImageWriter__handleAvalancheCrashRecovery___block_invoke(uint64_t a
   }
 }
 
-- (void)_processSyncClientSaveJobsJob:(id)a3 completion:(id)a4
+- (void)_processSyncClientSaveJobsJob:(id)job completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  jobCopy = job;
+  completionCopy = completion;
   v8 = MEMORY[0x1E695DFF8];
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v10 = [WeakRetained pathManager];
-  v11 = [v10 iTunesSyncedAssetsDirectory];
-  v12 = [v8 fileURLWithPath:v11 isDirectory:1];
+  pathManager = [WeakRetained pathManager];
+  iTunesSyncedAssetsDirectory = [pathManager iTunesSyncedAssetsDirectory];
+  v12 = [v8 fileURLWithPath:iTunesSyncedAssetsDirectory isDirectory:1];
 
   v34 = 0;
-  LOBYTE(v10) = [v12 getResourceValue:&v34 forKey:*MEMORY[0x1E695DB20] error:0];
+  LOBYTE(pathManager) = [v12 getResourceValue:&v34 forKey:*MEMORY[0x1E695DB20] error:0];
   v13 = v34;
-  if ((v10 & 1) == 0)
+  if ((pathManager & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v33 = 0;
-    v15 = [v14 createDirectoryAtURL:v12 withIntermediateDirectories:1 attributes:0 error:&v33];
+    v15 = [defaultManager createDirectoryAtURL:v12 withIntermediateDirectories:1 attributes:0 error:&v33];
     v16 = v33;
 
     if ((v15 & 1) == 0)
@@ -4319,7 +4319,7 @@ void __47__PLImageWriter__handleAvalancheCrashRecovery___block_invoke(uint64_t a
     }
   }
 
-  v18 = [v6 objectForKey:@"SyncClientJobsData"];
+  v18 = [jobCopy objectForKey:@"SyncClientJobsData"];
   v19 = PLSyncGetLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
@@ -4330,23 +4330,23 @@ void __47__PLImageWriter__handleAvalancheCrashRecovery___block_invoke(uint64_t a
   }
 
   v21 = [(PLImageWriter *)self _newShortLivedLibraryWithName:"[PLImageWriter _processSyncClientSaveJobsJob:completion:]"];
-  [(PLImageWriter *)self _incrementJobCount:v6];
+  [(PLImageWriter *)self _incrementJobCount:jobCopy];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __58__PLImageWriter__processSyncClientSaveJobsJob_completion___block_invoke;
   v29[3] = &unk_1E75761B8;
   v30 = v18;
-  v31 = self;
+  selfCopy = self;
   v32 = v21;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __58__PLImageWriter__processSyncClientSaveJobsJob_completion___block_invoke_2;
   v26[3] = &unk_1E7576F38;
-  v27 = v6;
-  v28 = v7;
+  v27 = jobCopy;
+  v28 = completionCopy;
   v26[4] = self;
-  v22 = v6;
-  v23 = v7;
+  v22 = jobCopy;
+  v23 = completionCopy;
   v24 = v21;
   v25 = v18;
   [v24 performTransaction:v29 completionHandler:v26];
@@ -4433,16 +4433,16 @@ uint64_t __58__PLImageWriter__processSyncClientSaveJobsJob_completion___block_in
   return [v2 _decrementJobCount:v3];
 }
 
-- (void)cleanupFilesInLibrary:(id)a3 afteriTunesSyncBeforeDate:(id)a4
+- (void)cleanupFilesInLibrary:(id)library afteriTunesSyncBeforeDate:(id)date
 {
   v115 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v76 = a4;
-  v71 = v5;
-  v6 = [v5 globalValues];
-  LODWORD(v5) = [v6 didImportFileSystemAssets];
+  libraryCopy = library;
+  dateCopy = date;
+  v71 = libraryCopy;
+  globalValues = [libraryCopy globalValues];
+  LODWORD(libraryCopy) = [globalValues didImportFileSystemAssets];
 
-  if (v5)
+  if (libraryCopy)
   {
     v7 = MEMORY[0x1E695D5E0];
     v8 = +[PLManagedAsset entityName];
@@ -4456,13 +4456,13 @@ uint64_t __58__PLImageWriter__processSyncClientSaveJobsJob_completion___block_in
     v102 = &v101;
     v103 = 0x2020000000;
     v104 = 0x7FFFFFFFFFFFFFFFLL;
-    v11 = [v71 managedObjectContext];
+    managedObjectContext = [v71 managedObjectContext];
     v97[0] = MEMORY[0x1E69E9820];
     v97[1] = 3221225472;
     v97[2] = __65__PLImageWriter_cleanupFilesInLibrary_afteriTunesSyncBeforeDate___block_invoke;
     v97[3] = &unk_1E7578820;
     v100 = &v101;
-    v98 = v11;
+    v98 = managedObjectContext;
     v68 = v9;
     v69 = v98;
     v99 = v68;
@@ -4471,15 +4471,15 @@ uint64_t __58__PLImageWriter__processSyncClientSaveJobsJob_completion___block_in
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v109 = v76;
+      v109 = dateCopy;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "Cleaning up iTunes sync thumb files (before date %{public}@)", buf, 0xCu);
     }
 
     v77 = objc_alloc_init(MEMORY[0x1E696AC08]);
     WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-    v14 = [WeakRetained pathManager];
-    v15 = [v14 iTunesPhotosDirectory];
-    v75 = [v15 stringByAppendingPathComponent:@"Thumbs"];
+    pathManager = [WeakRetained pathManager];
+    iTunesPhotosDirectory = [pathManager iTunesPhotosDirectory];
+    v75 = [iTunesPhotosDirectory stringByAppendingPathComponent:@"Thumbs"];
 
     [v77 contentsOfDirectoryAtPath:v75 error:0];
     v95 = 0u;
@@ -4503,7 +4503,7 @@ uint64_t __58__PLImageWriter__processSyncClientSaveJobsJob_completion___block_in
           v19 = objc_autoreleasePoolPush();
           v20 = [v75 stringByAppendingPathComponent:v18];
           v21 = v20;
-          if (!v76)
+          if (!dateCopy)
           {
             v24 = 0;
             goto LABEL_25;
@@ -4534,9 +4534,9 @@ uint64_t __58__PLImageWriter__processSyncClientSaveJobsJob_completion___block_in
           v26 = v25;
           if (v25)
           {
-            v27 = [v25 fileModificationDate];
-            v28 = [v27 earlierDate:v76];
-            v29 = v28 == v27;
+            fileModificationDate = [v25 fileModificationDate];
+            v28 = [fileModificationDate earlierDate:dateCopy];
+            v29 = v28 == fileModificationDate;
 
             if (v29)
             {
@@ -4546,9 +4546,9 @@ uint64_t __58__PLImageWriter__processSyncClientSaveJobsJob_completion___block_in
                 *buf = 138412802;
                 v109 = v21;
                 v110 = 2112;
-                v111 = v27;
+                v111 = fileModificationDate;
                 v112 = 2112;
-                v113 = v76;
+                v113 = dateCopy;
                 _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_DEBUG, "File: %@ date: %@ was earlier than date: %@", buf, 0x20u);
               }
             }
@@ -4627,10 +4627,10 @@ LABEL_33:
       while (v16);
     }
 
-    if (!v76 && !v102[3])
+    if (!dateCopy && !v102[3])
     {
       v36 = objc_loadWeakRetained(&self->_libraryServicesManager);
-      v37 = [v36 pathManager];
+      pathManager2 = [v36 pathManager];
 
       v38 = PLSyncGetLog();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -4639,8 +4639,8 @@ LABEL_33:
         _os_log_impl(&dword_19BF1F000, v38, OS_LOG_TYPE_DEFAULT, "There are no sync'd assets left; cleaning up filesystem", buf, 2u);
       }
 
-      v39 = [v37 iTunesSyncedAssetsDirectory];
-      v40 = [v77 contentsOfDirectoryAtPath:v39 error:0];
+      iTunesSyncedAssetsDirectory = [pathManager2 iTunesSyncedAssetsDirectory];
+      v40 = [v77 contentsOfDirectoryAtPath:iTunesSyncedAssetsDirectory error:0];
 
       v88 = 0u;
       v89 = 0u;
@@ -4661,8 +4661,8 @@ LABEL_33:
             }
 
             v44 = *(*(&v86 + 1) + 8 * j);
-            v45 = [v37 iTunesSyncedAssetsDirectory];
-            v46 = [v45 stringByAppendingPathComponent:v44];
+            iTunesSyncedAssetsDirectory2 = [pathManager2 iTunesSyncedAssetsDirectory];
+            v46 = [iTunesSyncedAssetsDirectory2 stringByAppendingPathComponent:v44];
             [v77 removeItemAtPath:v46 error:0];
           }
 
@@ -4672,8 +4672,8 @@ LABEL_33:
         while (v41);
       }
 
-      v47 = [v37 iTunesSyncedAssetMetadataThumbnailsDirectory];
-      v48 = [v77 contentsOfDirectoryAtPath:v47 error:0];
+      iTunesSyncedAssetMetadataThumbnailsDirectory = [pathManager2 iTunesSyncedAssetMetadataThumbnailsDirectory];
+      v48 = [v77 contentsOfDirectoryAtPath:iTunesSyncedAssetMetadataThumbnailsDirectory error:0];
 
       v84 = 0u;
       v85 = 0u;
@@ -4694,8 +4694,8 @@ LABEL_33:
             }
 
             v53 = *(*(&v82 + 1) + 8 * k);
-            v54 = [v37 iTunesSyncedAssetMetadataThumbnailsDirectory];
-            v55 = [v54 stringByAppendingPathComponent:v53];
+            iTunesSyncedAssetMetadataThumbnailsDirectory2 = [pathManager2 iTunesSyncedAssetMetadataThumbnailsDirectory];
+            v55 = [iTunesSyncedAssetMetadataThumbnailsDirectory2 stringByAppendingPathComponent:v53];
             [v77 removeItemAtPath:v55 error:0];
           }
 
@@ -4705,8 +4705,8 @@ LABEL_33:
         while (v50);
       }
 
-      v56 = [v37 iTunesSyncedAssetSmallThumbnailsDirectory];
-      v57 = [v77 contentsOfDirectoryAtPath:v56 error:0];
+      iTunesSyncedAssetSmallThumbnailsDirectory = [pathManager2 iTunesSyncedAssetSmallThumbnailsDirectory];
+      v57 = [v77 contentsOfDirectoryAtPath:iTunesSyncedAssetSmallThumbnailsDirectory error:0];
 
       v80 = 0u;
       v81 = 0u;
@@ -4727,12 +4727,12 @@ LABEL_33:
             }
 
             v62 = *(*(&v78 + 1) + 8 * m);
-            v63 = [v37 iTunesSyncedAssetSmallThumbnailsDirectory];
-            v64 = [v63 stringByAppendingPathComponent:v62];
+            iTunesSyncedAssetSmallThumbnailsDirectory2 = [pathManager2 iTunesSyncedAssetSmallThumbnailsDirectory];
+            v64 = [iTunesSyncedAssetSmallThumbnailsDirectory2 stringByAppendingPathComponent:v62];
             NSLog(&stru_1F0F0DEC0.isa, v64);
 
-            v65 = [v37 iTunesSyncedAssetSmallThumbnailsDirectory];
-            v66 = [v65 stringByAppendingPathComponent:v62];
+            iTunesSyncedAssetSmallThumbnailsDirectory3 = [pathManager2 iTunesSyncedAssetSmallThumbnailsDirectory];
+            v66 = [iTunesSyncedAssetSmallThumbnailsDirectory3 stringByAppendingPathComponent:v62];
             [v77 removeItemAtPath:v66 error:0];
           }
 
@@ -4763,13 +4763,13 @@ uint64_t __65__PLImageWriter_cleanupFilesInLibrary_afteriTunesSyncBeforeDate___b
   return result;
 }
 
-- (void)processSyncSaveJob:(id)a3 library:(id)a4 albumMap:(id)a5
+- (void)processSyncSaveJob:(id)job library:(id)library albumMap:(id)map
 {
   v274[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  jobCopy = job;
+  libraryCopy = library;
+  mapCopy = map;
+  if (!jobCopy)
   {
     goto LABEL_28;
   }
@@ -4778,12 +4778,12 @@ uint64_t __65__PLImageWriter_cleanupFilesInLibrary_afteriTunesSyncBeforeDate___b
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *&buf[4] = v8;
+    *&buf[4] = jobCopy;
     _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Process sync save job %{public}@", buf, 0xCu);
   }
 
   +[PLDelayedFiledSystemDeletions waitForAllDelayedDeletionsToFinish];
-  if ([v8 cleanupSyncState])
+  if ([jobCopy cleanupSyncState])
   {
     v12 = PLSyncGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -4793,14 +4793,14 @@ uint64_t __65__PLImageWriter_cleanupFilesInLibrary_afteriTunesSyncBeforeDate___b
     }
 
     v13 = objc_autoreleasePoolPush();
-    v14 = [v8 cleanupBeforeDate];
-    [(PLImageWriter *)self cleanupFilesInLibrary:v9 afteriTunesSyncBeforeDate:v14];
+    cleanupBeforeDate = [jobCopy cleanupBeforeDate];
+    [(PLImageWriter *)self cleanupFilesInLibrary:libraryCopy afteriTunesSyncBeforeDate:cleanupBeforeDate];
 
     objc_autoreleasePoolPop(v13);
     goto LABEL_28;
   }
 
-  if ([v8 isSyncComplete])
+  if ([jobCopy isSyncComplete])
   {
     v15 = PLSyncGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -4809,22 +4809,22 @@ uint64_t __65__PLImageWriter_cleanupFilesInLibrary_afteriTunesSyncBeforeDate___b
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "Process sync completion", buf, 2u);
     }
 
-    v16 = [v8 originalAssetURL];
-    v17 = [v16 path];
+    originalAssetURL = [jobCopy originalAssetURL];
+    path = [originalAssetURL path];
 
-    v18 = [MEMORY[0x1E696AC08] defaultManager];
-    v19 = [v18 fileExistsAtPath:v17];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v19 = [defaultManager fileExistsAtPath:path];
 
-    if (v17 && v19)
+    if (path && v19)
     {
-      v20 = v10;
-      v21 = [v17 stringByAppendingPathExtension:@"lastsynced"];
-      v22 = [MEMORY[0x1E696AC08] defaultManager];
+      v20 = mapCopy;
+      v21 = [path stringByAppendingPathExtension:@"lastsynced"];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
       v273 = *MEMORY[0x1E696A3A0];
       v274[0] = *MEMORY[0x1E696A388];
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v274 forKeys:&v273 count:1];
       v261 = 0;
-      v24 = [v22 setAttributes:v23 ofItemAtPath:v17 error:&v261];
+      v24 = [defaultManager2 setAttributes:v23 ofItemAtPath:path error:&v261];
       v25 = v261;
 
       if ((v24 & 1) == 0)
@@ -4833,16 +4833,16 @@ uint64_t __65__PLImageWriter_cleanupFilesInLibrary_afteriTunesSyncBeforeDate___b
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          *&buf[4] = v17;
+          *&buf[4] = path;
           *&buf[12] = 2112;
           *&buf[14] = v25;
           _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_DEFAULT, "Unable to assign data protection to sync metadata %@: %@", buf, 0x16u);
         }
       }
 
-      [v22 removeItemAtPath:v21 error:0];
+      [defaultManager2 removeItemAtPath:v21 error:0];
       v260 = v25;
-      v27 = [v22 moveItemAtPath:v17 toPath:v21 error:&v260];
+      v27 = [defaultManager2 moveItemAtPath:path toPath:v21 error:&v260];
       v28 = v260;
 
       if ((v27 & 1) == 0)
@@ -4858,112 +4858,112 @@ uint64_t __65__PLImageWriter_cleanupFilesInLibrary_afteriTunesSyncBeforeDate___b
         }
       }
 
-      v10 = v20;
+      mapCopy = v20;
     }
 
     +[PLManagedAlbum clearAssetOrderByAlbumUUIDs];
-    v30 = [v9 managedObjectContext];
-    _PLPhotoLibraryAggregateSyncedContent(v30, 0, @"com.apple.mobileslideshow.syncedPhotoCount");
-    _PLPhotoLibraryAggregateSyncedContent(v30, 1, @"com.apple.mobileslideshow.syncedVideoCount");
+    managedObjectContext = [libraryCopy managedObjectContext];
+    _PLPhotoLibraryAggregateSyncedContent(managedObjectContext, 0, @"com.apple.mobileslideshow.syncedPhotoCount");
+    _PLPhotoLibraryAggregateSyncedContent(managedObjectContext, 1, @"com.apple.mobileslideshow.syncedVideoCount");
 
     goto LABEL_28;
   }
 
-  v31 = [v8 uuid];
-  v32 = [PLManagedAsset assetWithUUID:v31 inLibrary:v9];
+  uuid = [jobCopy uuid];
+  v32 = [PLManagedAsset assetWithUUID:uuid inLibrary:libraryCopy];
 
-  v223 = v10;
+  v223 = mapCopy;
   if (v32)
   {
     v33 = PLSyncGetLog();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
     {
-      v34 = [v32 uuid];
+      uuid2 = [v32 uuid];
       *buf = 138543362;
-      *&buf[4] = v34;
+      *&buf[4] = uuid2;
       _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_FAULT, "Attempting to sync an asset that is already in the library (UUID: %{public}@)", buf, 0xCu);
     }
 
     v35 = 0;
 LABEL_27:
 
-    v10 = v223;
+    mapCopy = v223;
     goto LABEL_28;
   }
 
-  v222 = v8;
-  v228 = v9;
-  if ([v8 isVideo])
+  v222 = jobCopy;
+  v228 = libraryCopy;
+  if ([jobCopy isVideo])
   {
-    v36 = [v8 originalAssetURL];
-    v37 = [v36 pathExtension];
+    originalAssetURL2 = [jobCopy originalAssetURL];
+    pathExtension = [originalAssetURL2 pathExtension];
 
-    v38 = [(PLImageWriter *)self iTunesSyncedAssetsDCIMDirectory];
-    v39 = v37;
-    v40 = [v38 nextAvailableFileURLWithExtension:v37];
+    iTunesSyncedAssetsDCIMDirectory = [(PLImageWriter *)self iTunesSyncedAssetsDCIMDirectory];
+    v39 = pathExtension;
+    v40 = [iTunesSyncedAssetsDCIMDirectory nextAvailableFileURLWithExtension:pathExtension];
 
-    v41 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
     v271 = *MEMORY[0x1E696A3A0];
     v272 = *MEMORY[0x1E696A388];
     v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v272 forKeys:&v271 count:1];
-    v43 = [v8 originalAssetURL];
-    v44 = [v43 path];
+    originalAssetURL3 = [jobCopy originalAssetURL];
+    path2 = [originalAssetURL3 path];
     v259 = 0;
-    obj = v41;
-    LOBYTE(v41) = [v41 setAttributes:v42 ofItemAtPath:v44 error:&v259];
+    obj = defaultManager3;
+    LOBYTE(defaultManager3) = [defaultManager3 setAttributes:v42 ofItemAtPath:path2 error:&v259];
     v45 = v259;
 
-    if ((v41 & 1) == 0)
+    if ((defaultManager3 & 1) == 0)
     {
       v46 = PLSyncGetLog();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
       {
-        v47 = [v8 originalAssetURL];
-        v48 = [v47 path];
+        originalAssetURL4 = [jobCopy originalAssetURL];
+        path3 = [originalAssetURL4 path];
         *buf = 138412546;
-        *&buf[4] = v48;
+        *&buf[4] = path3;
         *&buf[12] = 2112;
         *&buf[14] = v45;
         _os_log_impl(&dword_19BF1F000, v46, OS_LOG_TYPE_ERROR, "Unable to assign data protection to video %@: %@", buf, 0x16u);
       }
     }
 
-    v49 = [v8 originalAssetURL];
-    v50 = [v49 path];
+    originalAssetURL5 = [jobCopy originalAssetURL];
+    path4 = [originalAssetURL5 path];
 
     v51 = PLSyncGetLog();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
     {
-      v52 = [v8 uuid];
-      v53 = [v40 path];
+      uuid3 = [jobCopy uuid];
+      path5 = [v40 path];
       *buf = 138543874;
-      *&buf[4] = v52;
+      *&buf[4] = uuid3;
       *&buf[12] = 2112;
-      *&buf[14] = v50;
+      *&buf[14] = path4;
       *&buf[22] = 2112;
-      v270 = v53;
+      v270 = path5;
       _os_log_impl(&dword_19BF1F000, v51, OS_LOG_TYPE_DEFAULT, "Importing iTunes sync video asset %{public}@ %@ -> %@", buf, 0x20u);
     }
 
-    v54 = [v8 originalAssetURL];
+    originalAssetURL6 = [jobCopy originalAssetURL];
     v258 = v45;
-    v55 = [obj moveItemAtURL:v54 toURL:v40 error:&v258];
+    v55 = [obj moveItemAtURL:originalAssetURL6 toURL:v40 error:&v258];
     v56 = v258;
 
-    v226 = v50;
+    v226 = path4;
     if (v55)
     {
       v224 = v56;
-      v57 = [MEMORY[0x1E69BF328] savedAssetTypeForFinderSyncedAsset];
-      v58 = [v8 uuid];
-      v35 = [PLManagedAsset insertAssetIntoPhotoLibrary:v228 mainFileURL:v40 savedAssetType:v57 bundleScope:0 uuid:v58 replacementUUID:0 imageSource:0 imageData:0];
+      savedAssetTypeForFinderSyncedAsset = [MEMORY[0x1E69BF328] savedAssetTypeForFinderSyncedAsset];
+      uuid4 = [jobCopy uuid];
+      v35 = [PLManagedAsset insertAssetIntoPhotoLibrary:v228 mainFileURL:v40 savedAssetType:savedAssetTypeForFinderSyncedAsset bundleScope:0 uuid:uuid4 replacementUUID:0 imageSource:0 imageData:0];
 
       if (v35)
       {
-        v59 = [v40 path];
+        path6 = [v40 path];
         v256 = 0;
         v257 = 0;
-        PLPreviewImageAndDurationForVideoAtPathWithPreferredTime(0, v59, &v257, &v256, 0);
+        PLPreviewImageAndDurationForVideoAtPathWithPreferredTime(0, path6, &v257, &v256, 0);
         v60 = v257;
         v61 = v256;
 
@@ -4990,19 +4990,19 @@ LABEL_27:
         v60 = PLSyncGetLog();
         if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
         {
-          v142 = [v222 uuid];
-          v143 = [v40 path];
+          uuid5 = [v222 uuid];
+          path7 = [v40 path];
           *buf = 138543618;
-          *&buf[4] = v142;
+          *&buf[4] = uuid5;
           *&buf[12] = 2114;
-          *&buf[14] = v143;
+          *&buf[14] = path7;
           _os_log_impl(&dword_19BF1F000, v60, OS_LOG_TYPE_ERROR, "Failed to import iTunes sync video %{public}@, unable to insert asset %{public}@", buf, 0x16u);
         }
 
         v35 = 0;
       }
 
-      v9 = v228;
+      libraryCopy = v228;
       v56 = v224;
     }
 
@@ -5014,7 +5014,7 @@ LABEL_27:
         [v40 path];
         v130 = v129 = v56;
         *buf = 138412802;
-        *&buf[4] = v50;
+        *&buf[4] = path4;
         *&buf[12] = 2112;
         *&buf[14] = v130;
         *&buf[22] = 2112;
@@ -5025,19 +5025,19 @@ LABEL_27:
       }
 
       v60 = PLSyncGetLog();
-      v9 = v228;
+      libraryCopy = v228;
       if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
       {
-        v131 = [v222 uuid];
+        uuid6 = [v222 uuid];
         *buf = 138543362;
-        *&buf[4] = v131;
+        *&buf[4] = uuid6;
         _os_log_impl(&dword_19BF1F000, v60, OS_LOG_TYPE_ERROR, "Sync save job failed for video %{public}@", buf, 0xCu);
       }
 
       v35 = 0;
     }
 
-    v8 = v222;
+    jobCopy = v222;
     if (v55)
     {
       goto LABEL_153;
@@ -5047,44 +5047,44 @@ LABEL_27:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v66 = [WeakRetained pathManager];
-  v67 = [v66 iTunesSyncedAssetsDirectory];
+  pathManager = [WeakRetained pathManager];
+  iTunesSyncedAssetsDirectory = [pathManager iTunesSyncedAssetsDirectory];
 
   obja = [MEMORY[0x1E696AC08] defaultManager];
-  v227 = v67;
-  [obja createDirectoryAtPath:v67 withIntermediateDirectories:1 attributes:0 error:0];
-  v68 = [v8 originalAssetURL];
-  v69 = [v68 path];
+  v227 = iTunesSyncedAssetsDirectory;
+  [obja createDirectoryAtPath:iTunesSyncedAssetsDirectory withIntermediateDirectories:1 attributes:0 error:0];
+  originalAssetURL7 = [jobCopy originalAssetURL];
+  path8 = [originalAssetURL7 path];
 
   v70 = PLSyncGetLog();
   if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
   {
-    v71 = [v8 uuid];
+    uuid7 = [jobCopy uuid];
     *buf = 138543618;
-    *&buf[4] = v71;
+    *&buf[4] = uuid7;
     *&buf[12] = 2112;
-    *&buf[14] = v69;
+    *&buf[14] = path8;
     _os_log_impl(&dword_19BF1F000, v70, OS_LOG_TYPE_DEFAULT, "Processing iTunes sync asset %{public}@ %@", buf, 0x16u);
   }
 
-  v225 = v69;
-  if (v69)
+  v225 = path8;
+  if (path8)
   {
     v72 = MEMORY[0x1E6982C40];
-    v73 = [v69 pathExtension];
-    v74 = [v72 typeWithFilenameExtension:v73];
+    pathExtension2 = [path8 pathExtension];
+    v74 = [v72 typeWithFilenameExtension:pathExtension2];
     v75 = [v74 conformsToType:*MEMORY[0x1E6983138]];
 
     v254 = 0;
     if (v75)
     {
-      v76 = v69;
+      v76 = path8;
       v218 = 1;
       goto LABEL_76;
     }
   }
 
-  v77 = SyncedAssetCreateWithFileAtPath([v69 fileSystemRepresentation]);
+  v77 = SyncedAssetCreateWithFileAtPath([path8 fileSystemRepresentation]);
   v254 = v77;
   if (!v77)
   {
@@ -5092,16 +5092,16 @@ LABEL_27:
     if (os_log_type_enabled(v134, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      *&buf[4] = v69;
+      *&buf[4] = path8;
       _os_log_impl(&dword_19BF1F000, v134, OS_LOG_TYPE_ERROR, "Failed to create SyncedAsset from path: %@", buf, 0xCu);
     }
 
     v135 = PLSyncGetLog();
     if (os_log_type_enabled(v135, OS_LOG_TYPE_ERROR))
     {
-      v136 = [v8 uuid];
+      uuid8 = [jobCopy uuid];
       *buf = 138543362;
-      *&buf[4] = v136;
+      *&buf[4] = uuid8;
       _os_log_impl(&dword_19BF1F000, v135, OS_LOG_TYPE_ERROR, "Sync save job failed for asset %{public}@", buf, 0xCu);
     }
 
@@ -5130,9 +5130,9 @@ LABEL_98:
     v132 = PLSyncGetLog();
     if (os_log_type_enabled(v132, OS_LOG_TYPE_ERROR))
     {
-      v133 = [v222 uuid];
+      uuid9 = [v222 uuid];
       *buf = 138543618;
-      *&buf[4] = v133;
+      *&buf[4] = uuid9;
       *&buf[12] = 2112;
       *&buf[14] = v222;
       _os_log_impl(&dword_19BF1F000, v132, OS_LOG_TYPE_ERROR, "Failed to import iTunes sync photo asset %{public}@, unable to resolve path from job %@", buf, 0x16u);
@@ -5166,21 +5166,21 @@ LABEL_151:
       v85 = v90;
       if (v87 != 901 || ThumbnailData == 0 || v89 == 0 || v90 == 0)
       {
-        v9 = v228;
+        libraryCopy = v228;
       }
 
       else
       {
         v94 = objc_loadWeakRetained(&self->_libraryServicesManager);
-        v95 = [v94 pathManager];
-        v86 = [v95 iTunesSyncedFaceAlbumThumbnailsDirectory];
+        pathManager2 = [v94 pathManager];
+        iTunesSyncedFaceAlbumThumbnailsDirectory = [pathManager2 iTunesSyncedFaceAlbumThumbnailsDirectory];
 
-        [obja createDirectoryAtPath:v86 withIntermediateDirectories:1 attributes:0 error:0];
-        v96 = [v86 stringByAppendingPathComponent:v85];
+        [obja createDirectoryAtPath:iTunesSyncedFaceAlbumThumbnailsDirectory withIntermediateDirectories:1 attributes:0 error:0];
+        v96 = [iTunesSyncedFaceAlbumThumbnailsDirectory stringByAppendingPathComponent:v85];
         v97 = [v96 stringByAppendingPathExtension:@"JPG"];
 
         PLWriteThumbnailDataToPath(ThumbnailData, v89, 901, v97);
-        v9 = v228;
+        libraryCopy = v228;
 LABEL_71:
       }
 
@@ -5194,7 +5194,7 @@ LABEL_71:
       {
         v85 = [MEMORY[0x1E696AEC0] stringWithUTF8String:FilePath];
         [v227 stringByAppendingPathComponent:v85];
-        v76 = v86 = v76;
+        v76 = iTunesSyncedFaceAlbumThumbnailsDirectory = v76;
         goto LABEL_71;
       }
     }
@@ -5212,9 +5212,9 @@ LABEL_73:
   v218 = 0;
 LABEL_76:
   v98 = [MEMORY[0x1E695DFF8] fileURLWithPath:v76 isDirectory:0];
-  v99 = [(PLImageWriter *)self iTunesSyncedAssetsDCIMDirectory];
-  v100 = [v76 pathExtension];
-  v220 = [v99 nextAvailableFileURLWithExtension:v100];
+  iTunesSyncedAssetsDCIMDirectory2 = [(PLImageWriter *)self iTunesSyncedAssetsDCIMDirectory];
+  pathExtension3 = [v76 pathExtension];
+  v220 = [iTunesSyncedAssetsDCIMDirectory2 nextAvailableFileURLWithExtension:pathExtension3];
 
   v101 = *MEMORY[0x1E696A3A0];
   v267 = *MEMORY[0x1E696A3A0];
@@ -5222,10 +5222,10 @@ LABEL_76:
   v268 = *MEMORY[0x1E696A388];
   v103 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v268 forKeys:&v267 count:1];
   v253 = 0;
-  LOBYTE(v100) = [obja setAttributes:v103 ofItemAtPath:v76 error:&v253];
+  LOBYTE(pathExtension3) = [obja setAttributes:v103 ofItemAtPath:v76 error:&v253];
   v104 = v253;
 
-  if ((v100 & 1) == 0)
+  if ((pathExtension3 & 1) == 0)
   {
     v105 = PLSyncGetLog();
     if (os_log_type_enabled(v105, OS_LOG_TYPE_ERROR))
@@ -5241,11 +5241,11 @@ LABEL_76:
   v106 = PLSyncGetLog();
   if (os_log_type_enabled(v106, OS_LOG_TYPE_DEFAULT))
   {
-    v107 = [v222 uuid];
+    uuid10 = [v222 uuid];
     [v220 path];
     v109 = v108 = v98;
     *buf = 138543874;
-    *&buf[4] = v107;
+    *&buf[4] = uuid10;
     *&buf[12] = 2112;
     *&buf[14] = v76;
     *&buf[22] = 2112;
@@ -5265,10 +5265,10 @@ LABEL_76:
     v214 = v98;
     v215 = v112;
     v251 = 0;
-    v113 = [MEMORY[0x1E69BF328] savedAssetTypeForFinderSyncedAsset];
-    v114 = [v222 uuid];
+    savedAssetTypeForFinderSyncedAsset2 = [MEMORY[0x1E69BF328] savedAssetTypeForFinderSyncedAsset];
+    uuid11 = [v222 uuid];
     v250 = 0;
-    v35 = [PLManagedAsset insertAssetIntoPhotoLibrary:v228 mainFileURL:v220 savedAssetType:v113 bundleScope:0 uuid:v114 replacementUUID:0 imageSource:&v251 imageData:&v250];
+    v35 = [PLManagedAsset insertAssetIntoPhotoLibrary:v228 mainFileURL:v220 savedAssetType:savedAssetTypeForFinderSyncedAsset2 bundleScope:0 uuid:uuid11 replacementUUID:0 imageSource:&v251 imageData:&v250];
     v213 = v250;
 
     if (v35)
@@ -5276,20 +5276,20 @@ LABEL_76:
       if ([v222 hasVideoComplement])
       {
         v115 = v101;
-        v116 = [v222 videoComplementURL];
-        v117 = [v116 path];
+        videoComplementURL = [v222 videoComplementURL];
+        path9 = [videoComplementURL path];
 
         v118 = v214;
-        if (v117 && [obja fileExistsAtPath:v117])
+        if (path9 && [obja fileExistsAtPath:path9])
         {
           v265 = v115;
           v266 = v102;
           v119 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v266 forKeys:&v265 count:1];
           v249 = v112;
-          v120 = [obja setAttributes:v119 ofItemAtPath:v117 error:&v249];
+          v120 = [obja setAttributes:v119 ofItemAtPath:path9 error:&v249];
           v211 = v249;
 
-          v9 = v228;
+          libraryCopy = v228;
           v121 = v213;
           if ((v120 & 1) == 0)
           {
@@ -5297,7 +5297,7 @@ LABEL_76:
             if (os_log_type_enabled(v122, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412546;
-              *&buf[4] = v117;
+              *&buf[4] = path9;
               *&buf[12] = 2112;
               *&buf[14] = v211;
               _os_log_impl(&dword_19BF1F000, v122, OS_LOG_TYPE_ERROR, "Unable to assign data protection to %@: %@", buf, 0x16u);
@@ -5305,11 +5305,11 @@ LABEL_76:
           }
 
           v123 = objc_alloc(MEMORY[0x1E69C0918]);
-          v124 = [v220 path];
-          v125 = [v123 initWithPathToVideo:v117 pathToImage:v124];
+          path10 = [v220 path];
+          v125 = [v123 initWithPathToVideo:path9 pathToImage:path10];
 
           v126 = v125;
-          v127 = [v125 pairingIdentifier];
+          pairingIdentifier = [v125 pairingIdentifier];
           memset(buf, 0, sizeof(buf));
           if (v126)
           {
@@ -5325,31 +5325,31 @@ LABEL_76:
             v248 = 0;
           }
 
-          v216 = v127;
+          v216 = pairingIdentifier;
           v212 = v126;
-          if (v127 && (BYTE12(v247) & 1) != 0)
+          if (pairingIdentifier && (BYTE12(v247) & 1) != 0)
           {
-            v150 = [v222 videoComplementURL];
+            videoComplementURL2 = [v222 videoComplementURL];
             *v264 = v247;
             *&v264[16] = v248;
             v245 = *buf;
             v246 = *&buf[16];
-            [v35 becomePhotoIrisWithMediaGroupUUID:v216 mainFileMetadata:0 videoURL:v150 videoDuration:v264 stillDisplayTime:&v245 options:0];
+            [v35 becomePhotoIrisWithMediaGroupUUID:v216 mainFileMetadata:0 videoURL:videoComplementURL2 videoDuration:v264 stillDisplayTime:&v245 options:0];
           }
 
           else
           {
-            v150 = PLSyncGetLog();
-            if (os_log_type_enabled(v150, OS_LOG_TYPE_ERROR))
+            videoComplementURL2 = PLSyncGetLog();
+            if (os_log_type_enabled(videoComplementURL2, OS_LOG_TYPE_ERROR))
             {
               *v264 = 138412290;
-              *&v264[4] = v117;
-              _os_log_impl(&dword_19BF1F000, v150, OS_LOG_TYPE_ERROR, "Failed to extract Iris properties from %@", v264, 0xCu);
+              *&v264[4] = path9;
+              _os_log_impl(&dword_19BF1F000, videoComplementURL2, OS_LOG_TYPE_ERROR, "Failed to extract Iris properties from %@", v264, 0xCu);
             }
           }
 
-          v151 = [v35 pathForVideoComplementFile];
-          v152 = [v117 isEqualToString:v151];
+          pathForVideoComplementFile = [v35 pathForVideoComplementFile];
+          v152 = [path9 isEqualToString:pathForVideoComplementFile];
 
           if ((v152 & 1) == 0)
           {
@@ -5357,12 +5357,12 @@ LABEL_76:
             if (os_log_type_enabled(v153, OS_LOG_TYPE_DEBUG))
             {
               *v264 = 138412290;
-              *&v264[4] = v117;
+              *&v264[4] = path9;
               _os_log_impl(&dword_19BF1F000, v153, OS_LOG_TYPE_DEBUG, "Removing sync file at path: %@", v264, 0xCu);
             }
 
             v244 = 0;
-            v154 = [obja removeItemAtPath:v117 error:&v244];
+            v154 = [obja removeItemAtPath:path9 error:&v244];
             v155 = v244;
             if ((v154 & 1) == 0)
             {
@@ -5370,7 +5370,7 @@ LABEL_76:
               if (os_log_type_enabled(v156, OS_LOG_TYPE_DEFAULT))
               {
                 *v264 = 138412546;
-                *&v264[4] = v117;
+                *&v264[4] = path9;
                 *&v264[12] = 2112;
                 *&v264[14] = v155;
                 _os_log_impl(&dword_19BF1F000, v156, OS_LOG_TYPE_DEFAULT, "Error removing file at path: %@, %@", v264, 0x16u);
@@ -5390,11 +5390,11 @@ LABEL_76:
           if (os_log_type_enabled(v148, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            *&buf[4] = v117;
+            *&buf[4] = path9;
             _os_log_impl(&dword_19BF1F000, v148, OS_LOG_TYPE_ERROR, "Missing video complement file at %@", buf, 0xCu);
           }
 
-          v9 = v228;
+          libraryCopy = v228;
           v147 = v220;
           v121 = v213;
         }
@@ -5404,7 +5404,7 @@ LABEL_76:
 
       else
       {
-        v9 = v228;
+        libraryCopy = v228;
         v121 = v213;
         v118 = v214;
         v147 = v220;
@@ -5433,22 +5433,22 @@ LABEL_76:
       v144 = PLSyncGetLog();
       if (os_log_type_enabled(v144, OS_LOG_TYPE_ERROR))
       {
-        v145 = [v222 uuid];
-        v146 = [v220 path];
+        uuid12 = [v222 uuid];
+        path11 = [v220 path];
         *buf = 138543618;
-        *&buf[4] = v145;
+        *&buf[4] = uuid12;
         *&buf[12] = 2114;
-        *&buf[14] = v146;
+        *&buf[14] = path11;
         _os_log_impl(&dword_19BF1F000, v144, OS_LOG_TYPE_ERROR, "Failed to import iTunes sync photo %{public}@, unable to insert asset %{public}@", buf, 0x16u);
 
         v147 = v220;
-        v9 = v228;
+        libraryCopy = v228;
         v118 = v214;
       }
 
       else
       {
-        v9 = v228;
+        libraryCopy = v228;
         v118 = v214;
         v147 = v220;
       }
@@ -5467,11 +5467,11 @@ LABEL_76:
   v137 = PLSyncGetLog();
   if (os_log_type_enabled(v137, OS_LOG_TYPE_ERROR))
   {
-    v138 = [v220 path];
+    path12 = [v220 path];
     *buf = 138412802;
     *&buf[4] = v76;
     *&buf[12] = 2112;
-    *&buf[14] = v138;
+    *&buf[14] = path12;
     *&buf[22] = 2112;
     v270 = v112;
     _os_log_impl(&dword_19BF1F000, v137, OS_LOG_TYPE_ERROR, "Unable to move sync photo %@ to %@: %@", buf, 0x20u);
@@ -5480,12 +5480,12 @@ LABEL_76:
   }
 
   v139 = PLSyncGetLog();
-  v9 = v228;
+  libraryCopy = v228;
   if (os_log_type_enabled(v139, OS_LOG_TYPE_ERROR))
   {
-    v140 = [v222 uuid];
+    uuid13 = [v222 uuid];
     *buf = 138543362;
-    *&buf[4] = v140;
+    *&buf[4] = uuid13;
     _os_log_impl(&dword_19BF1F000, v139, OS_LOG_TYPE_ERROR, "Sync save job failed for photo %{public}@", buf, 0xCu);
 
     v110 = v220;
@@ -5496,93 +5496,93 @@ LABEL_111:
   v141 = 0;
 LABEL_152:
 
-  v8 = v222;
+  jobCopy = v222;
   if ((v141 & 1) == 0)
   {
     goto LABEL_27;
   }
 
 LABEL_153:
-  v10 = v223;
+  mapCopy = v223;
   if (v35)
   {
-    v159 = [v8 uuid];
+    uuid14 = [jobCopy uuid];
 
-    if (v159)
+    if (uuid14)
     {
-      v160 = [v8 uuid];
-      [v35 setUuid:v160];
+      uuid15 = [jobCopy uuid];
+      [v35 setUuid:uuid15];
     }
 
     v161 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
-    v162 = [v8 creationDate];
+    creationDate = [jobCopy creationDate];
 
-    if (v162)
+    if (creationDate)
     {
-      v163 = [v8 creationDate];
-      [v35 setDateCreated:v163];
+      creationDate2 = [jobCopy creationDate];
+      [v35 setDateCreated:creationDate2];
 
-      v164 = [v8 creationDate];
-      [v161 setObject:v164 forKey:*MEMORY[0x1E695DAA8]];
+      creationDate3 = [jobCopy creationDate];
+      [v161 setObject:creationDate3 forKey:*MEMORY[0x1E695DAA8]];
     }
 
-    v165 = [v8 modificationDate];
+    modificationDate = [jobCopy modificationDate];
 
-    if (v165)
+    if (modificationDate)
     {
-      v166 = [v8 modificationDate];
-      [v35 setModificationDate:v166];
+      modificationDate2 = [jobCopy modificationDate];
+      [v35 setModificationDate:modificationDate2];
 
-      v167 = [v8 modificationDate];
-      [v161 setObject:v167 forKey:*MEMORY[0x1E695DA98]];
+      modificationDate3 = [jobCopy modificationDate];
+      [v161 setObject:modificationDate3 forKey:*MEMORY[0x1E695DA98]];
     }
 
     if ([v161 count])
     {
-      v168 = [v35 mainFileURL];
-      [v168 setResourceValues:v161 error:0];
+      mainFileURL = [v35 mainFileURL];
+      [mainFileURL setResourceValues:v161 error:0];
     }
 
-    v169 = [v8 location];
-    [v169 coordinate];
+    location = [jobCopy location];
+    [location coordinate];
     v171 = v170;
     [v35 longitude];
-    if (v171 != v172 || ([v169 coordinate], v174 = v173, objc_msgSend(v35, "latitude"), v174 != v175))
+    if (v171 != v172 || ([location coordinate], v174 = v173, objc_msgSend(v35, "latitude"), v174 != v175))
     {
-      [v35 setLocation:v169];
+      [v35 setLocation:location];
     }
 
-    v219 = v169;
-    v176 = [v8 sortToken];
-    v217 = v176;
-    if (v176)
+    v219 = location;
+    sortToken = [jobCopy sortToken];
+    v217 = sortToken;
+    if (sortToken)
     {
-      [v176 doubleValue];
+      [sortToken doubleValue];
       [v35 setSortToken:?];
     }
 
     else
     {
-      v177 = [v35 dateCreated];
-      [v177 timeIntervalSinceReferenceDate];
+      dateCreated = [v35 dateCreated];
+      [dateCreated timeIntervalSinceReferenceDate];
       [v35 setSortToken:?];
     }
 
     v221 = v161;
-    v178 = [v8 originalFileName];
+    originalFileName = [jobCopy originalFileName];
 
-    if (v178)
+    if (originalFileName)
     {
-      v179 = [v8 originalFileName];
-      [v35 setOriginalFilename:v179];
+      originalFileName2 = [jobCopy originalFileName];
+      [v35 setOriginalFilename:originalFileName2];
     }
 
     v241 = 0u;
     v242 = 0u;
     v240 = 0u;
     v239 = 0u;
-    v180 = [v35 legacyFaces];
-    v181 = [v180 countByEnumeratingWithState:&v239 objects:v263 count:16];
+    legacyFaces = [v35 legacyFaces];
+    v181 = [legacyFaces countByEnumeratingWithState:&v239 objects:v263 count:16];
     if (v181)
     {
       v182 = v181;
@@ -5593,13 +5593,13 @@ LABEL_153:
         {
           if (*v240 != v183)
           {
-            objc_enumerationMutation(v180);
+            objc_enumerationMutation(legacyFaces);
           }
 
           [*(*(&v239 + 1) + 8 * i) delete];
         }
 
-        v182 = [v180 countByEnumeratingWithState:&v239 objects:v263 count:16];
+        v182 = [legacyFaces countByEnumeratingWithState:&v239 objects:v263 count:16];
       }
 
       while (v182);
@@ -5611,26 +5611,26 @@ LABEL_153:
     v237[3] = &unk_1E7565C20;
     v185 = v35;
     v238 = v185;
-    [v8 processFacesWithBlock:v237];
-    v186 = [v8 facesInfo];
-    v187 = [v186 count];
+    [jobCopy processFacesWithBlock:v237];
+    facesInfo = [jobCopy facesInfo];
+    v187 = [facesInfo count];
 
     if (v187)
     {
       v188 = objc_loadWeakRetained(&self->_libraryServicesManager);
-      v189 = [v188 pathManager];
-      v190 = [v189 iTunesSyncedFaceDataDirectory];
+      pathManager3 = [v188 pathManager];
+      iTunesSyncedFaceDataDirectory = [pathManager3 iTunesSyncedFaceDataDirectory];
 
-      v191 = [MEMORY[0x1E696AC08] defaultManager];
-      [v191 createDirectoryAtPath:v190 withIntermediateDirectories:1 attributes:0 error:0];
+      defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager4 createDirectoryAtPath:iTunesSyncedFaceDataDirectory withIntermediateDirectories:1 attributes:0 error:0];
 
-      v192 = [v185 uuid];
-      v193 = [v190 stringByAppendingPathComponent:v192];
+      uuid16 = [v185 uuid];
+      v193 = [iTunesSyncedFaceDataDirectory stringByAppendingPathComponent:uuid16];
       v194 = [v193 stringByAppendingPathExtension:@"plist"];
 
       v195 = MEMORY[0x1E696AE40];
-      v196 = [v8 facesInfo];
-      v197 = [v195 dataWithPropertyList:v196 format:100 options:0 error:0];
+      facesInfo2 = [jobCopy facesInfo];
+      v197 = [v195 dataWithPropertyList:facesInfo2 format:100 options:0 error:0];
 
       [v197 writeToFile:v194 options:1073741825 error:0];
     }
@@ -5639,18 +5639,18 @@ LABEL_153:
     v236 = 0u;
     v233 = 0u;
     v234 = 0u;
-    objb = [v8 albumURIs];
+    objb = [jobCopy albumURIs];
     v198 = [objb countByEnumeratingWithState:&v233 objects:v262 count:16];
     if (!v198)
     {
 LABEL_197:
 
-      v210 = [v228 syncProgressAlbum];
-      [v210 reducePendingItemsCountBy:1];
+      syncProgressAlbum = [v228 syncProgressAlbum];
+      [syncProgressAlbum reducePendingItemsCountBy:1];
 
       [v185 persistMetadataToFilesystem];
-      v9 = v228;
-      v8 = v222;
+      libraryCopy = v228;
+      jobCopy = v222;
       goto LABEL_28;
     }
 
@@ -5666,18 +5666,18 @@ LABEL_182:
       }
 
       v202 = *(*(&v233 + 1) + 8 * v201);
-      v203 = [v10 objectForKey:v202];
+      v203 = [mapCopy objectForKey:v202];
       if (!v203)
       {
-        v204 = v10;
-        v205 = [v228 managedObjectContext];
-        v206 = [v205 persistentStoreCoordinator];
-        v207 = [v206 managedObjectIDForURIRepresentation:v202];
+        v204 = mapCopy;
+        managedObjectContext2 = [v228 managedObjectContext];
+        persistentStoreCoordinator = [managedObjectContext2 persistentStoreCoordinator];
+        v207 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:v202];
 
         if (v207)
         {
           v232 = 0;
-          v203 = [v205 existingObjectWithID:v207 error:&v232];
+          v203 = [managedObjectContext2 existingObjectWithID:v207 error:&v232];
           v208 = v232;
           if (v203)
           {
@@ -5710,7 +5710,7 @@ LABEL_182:
         v203 = 0;
 LABEL_194:
 
-        v10 = v204;
+        mapCopy = v204;
       }
 
       [v203 addAssetUsingiTunesAlbumOrder:v185];
@@ -5775,73 +5775,73 @@ void __53__PLImageWriter_processSyncSaveJob_library_albumMap___block_invoke(uint
 
 - (void)_resetSyncedAssetsDCIMDirectory
 {
-  v2 = [(PLImageWriter *)self iTunesSyncedAssetsDCIMDirectory];
-  [v2 reset];
+  iTunesSyncedAssetsDCIMDirectory = [(PLImageWriter *)self iTunesSyncedAssetsDCIMDirectory];
+  [iTunesSyncedAssetsDCIMDirectory reset];
 }
 
 - (id)iTunesSyncedAssetsDCIMDirectory
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_iTunesSyncedAssetsDCIMDirectory)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_iTunesSyncedAssetsDCIMDirectory)
   {
-    WeakRetained = objc_loadWeakRetained(&v2->_libraryServicesManager);
-    v4 = [WeakRetained pathManager];
-    v5 = [v4 iTunesSyncedAssetsDirectory];
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_libraryServicesManager);
+    pathManager = [WeakRetained pathManager];
+    iTunesSyncedAssetsDirectory = [pathManager iTunesSyncedAssetsDirectory];
 
     v13 = 0;
-    LOBYTE(v4) = [MEMORY[0x1E69BF238] createDirectoryAtPath:v5 error:&v13];
+    LOBYTE(pathManager) = [MEMORY[0x1E69BF238] createDirectoryAtPath:iTunesSyncedAssetsDirectory error:&v13];
     v6 = v13;
-    if ((v4 & 1) == 0)
+    if ((pathManager & 1) == 0)
     {
       v7 = PLSyncGetLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v15 = v5;
+        v15 = iTunesSyncedAssetsDirectory;
         v16 = 2112;
         v17 = v6;
         _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "Unable to create directory %@: %@", buf, 0x16u);
       }
     }
 
-    v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:v5];
+    v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:iTunesSyncedAssetsDirectory];
     v9 = [objc_alloc(MEMORY[0x1E69BF2F8]) initWithDirectoryURL:v8 subDirectorySuffix:@"SYNCD" perDirectoryLimit:2000 userInfoPath:0];
-    iTunesSyncedAssetsDCIMDirectory = v2->_iTunesSyncedAssetsDCIMDirectory;
-    v2->_iTunesSyncedAssetsDCIMDirectory = v9;
+    iTunesSyncedAssetsDCIMDirectory = selfCopy->_iTunesSyncedAssetsDCIMDirectory;
+    selfCopy->_iTunesSyncedAssetsDCIMDirectory = v9;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v11 = v2->_iTunesSyncedAssetsDCIMDirectory;
+  v11 = selfCopy->_iTunesSyncedAssetsDCIMDirectory;
 
   return v11;
 }
 
-- (void)_enablePhotoStreamJob:(id)a3 completion:(id)a4
+- (void)_enablePhotoStreamJob:(id)job completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  jobCopy = job;
+  completionCopy = completion;
   v8 = PLMyPhotoStreamGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v6;
+    v15 = jobCopy;
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "_enablePhotoStreamJob %@", buf, 0xCu);
   }
 
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  [v9 setObject:*MEMORY[0x1E69C0448] forKey:*MEMORY[0x1E69C0410]];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:*MEMORY[0x1E69C0448] forKey:*MEMORY[0x1E69C0410]];
   v10 = [PLAssetTransactionReason transactionReason:@"[_enablePhotoStreamJob]Enabling PhotoStream so we make sure that previous assets are deleted."];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __50__PLImageWriter__enablePhotoStreamJob_completion___block_invoke;
   v12[3] = &unk_1E7576AA0;
-  v13 = v7;
-  v11 = v7;
-  [(PLImageWriter *)self _processDeletePhotoStreamDataJob:v9 withReason:v10 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(PLImageWriter *)self _processDeletePhotoStreamDataJob:dictionary withReason:v10 completion:v12];
 }
 
 uint64_t __50__PLImageWriter__enablePhotoStreamJob_completion___block_invoke(uint64_t a1)
@@ -5856,23 +5856,23 @@ uint64_t __50__PLImageWriter__enablePhotoStreamJob_completion___block_invoke(uin
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)_processDeletePhotoStreamDataJob:(id)a3 withReason:(id)a4 completion:(id)a5
+- (void)_processDeletePhotoStreamDataJob:(id)job withReason:(id)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  [(PLImageWriter *)self _incrementJobCount:v8];
+  jobCopy = job;
+  completionCopy = completion;
+  reasonCopy = reason;
+  [(PLImageWriter *)self _incrementJobCount:jobCopy];
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __72__PLImageWriter__processDeletePhotoStreamDataJob_withReason_completion___block_invoke;
   v14[3] = &unk_1E7576F38;
-  v15 = v8;
-  v16 = v9;
+  v15 = jobCopy;
+  v16 = completionCopy;
   v14[4] = self;
-  v12 = v8;
-  v13 = v9;
-  [PLPhotoStreamsHelper deletePhotoStreamAssetsWithLibraryServiceManager:WeakRetained withReason:v10 completion:v14];
+  v12 = jobCopy;
+  v13 = completionCopy;
+  [PLPhotoStreamsHelper deletePhotoStreamAssetsWithLibraryServiceManager:WeakRetained withReason:reasonCopy completion:v14];
 }
 
 uint64_t __72__PLImageWriter__processDeletePhotoStreamDataJob_withReason_completion___block_invoke(void *a1)
@@ -5884,16 +5884,16 @@ uint64_t __72__PLImageWriter__processDeletePhotoStreamDataJob_withReason_complet
   return [v2 _decrementJobCount:v3];
 }
 
-- (void)_processAutodeleteEmptyAlbumJob:(id)a3 completion:(id)a4
+- (void)_processAutodeleteEmptyAlbumJob:(id)job completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  jobCopy = job;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = [v6 objectForKey:@"EmptyAlbumToDelete"];
+  v9 = [jobCopy objectForKey:@"EmptyAlbumToDelete"];
   if (v9)
   {
     v10 = [(PLImageWriter *)self _newShortLivedLibraryWithName:"[PLImageWriter _processAutodeleteEmptyAlbumJob:completion:]"];
-    [(PLImageWriter *)self _incrementJobCount:v6];
+    [(PLImageWriter *)self _incrementJobCount:jobCopy];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __60__PLImageWriter__processAutodeleteEmptyAlbumJob_completion___block_invoke;
@@ -5904,16 +5904,16 @@ uint64_t __72__PLImageWriter__processDeletePhotoStreamDataJob_withReason_complet
     v12[1] = 3221225472;
     v12[2] = __60__PLImageWriter__processAutodeleteEmptyAlbumJob_completion___block_invoke_2;
     v12[3] = &unk_1E7576F38;
-    v14 = v7;
+    v14 = completionCopy;
     v12[4] = self;
-    v13 = v6;
+    v13 = jobCopy;
     v11 = v10;
     [v11 performTransaction:v15 completionHandler:v12];
   }
 
   else
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   objc_autoreleasePoolPop(v8);
@@ -5955,25 +5955,25 @@ uint64_t __60__PLImageWriter__processAutodeleteEmptyAlbumJob_completion___block_
   return [v2 _decrementJobCount:v3];
 }
 
-- (void)_processAvalanchesValidationJob:(id)a3 completion:(id)a4
+- (void)_processAvalanchesValidationJob:(id)job completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  jobCopy = job;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = [v6 objectForKey:*MEMORY[0x1E69C0340]];
+  v9 = [jobCopy objectForKey:*MEMORY[0x1E69C0340]];
   v10 = [(PLImageWriter *)self _newShortLivedLibraryWithName:"[PLImageWriter _processAvalanchesValidationJob:completion:]"];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __60__PLImageWriter__processAvalanchesValidationJob_completion___block_invoke;
   v14[3] = &unk_1E75761B8;
   v15 = v9;
-  v11 = v6;
+  v11 = jobCopy;
   v16 = v11;
   v17 = v10;
   v12 = v10;
   v13 = v9;
   [v12 performBlockAndWait:v14];
-  v7[2](v7);
+  completionCopy[2](completionCopy);
 
   objc_autoreleasePoolPop(v8);
 }
@@ -6024,31 +6024,31 @@ void __60__PLImageWriter__processAvalanchesValidationJob_completion___block_invo
   }
 }
 
-- (void)_processAvalancheJob:(id)a3 completion:(id)a4
+- (void)_processAvalancheJob:(id)job completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  jobCopy = job;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = [v6 objectForKey:*MEMORY[0x1E69C03B8]];
+  v9 = [jobCopy objectForKey:*MEMORY[0x1E69C03B8]];
   if ([v9 length])
   {
-    v10 = [v6 objectForKey:*MEMORY[0x1E69C0328]];
-    v11 = [v6 objectForKey:*MEMORY[0x1E69C0330]];
-    v12 = [v6 objectForKey:*MEMORY[0x1E69C0338]];
+    v10 = [jobCopy objectForKey:*MEMORY[0x1E69C0328]];
+    v11 = [jobCopy objectForKey:*MEMORY[0x1E69C0330]];
+    v12 = [jobCopy objectForKey:*MEMORY[0x1E69C0338]];
     v13 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.mobileslideshow"];
     if ([v13 BOOLForKey:@"PLImageWriterStashCameraJob"])
     {
-      v14 = [v6 objectForKeyedSubscript:@"kPLImageWriterReplayedCameraJob"];
+      v14 = [jobCopy objectForKeyedSubscript:@"kPLImageWriterReplayedCameraJob"];
 
       if (!v14)
       {
-        [(PLImageWriter *)self _copyJobContentsToHoldingDirectoryWithUUID:v9 incomingPath:0 job:v6];
+        [(PLImageWriter *)self _copyJobContentsToHoldingDirectoryWithUUID:v9 incomingPath:0 job:jobCopy];
       }
     }
 
     if ([v10 count] && objc_msgSend(v11, "count") && v12)
     {
-      [(PLImageWriter *)self _incrementJobCount:v6];
+      [(PLImageWriter *)self _incrementJobCount:jobCopy];
       v15 = [(PLImageWriter *)self _newShortLivedLibraryWithName:"[PLImageWriter _processAvalancheJob:completion:]"];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
@@ -6061,8 +6061,8 @@ void __60__PLImageWriter__processAvalanchesValidationJob_completion___block_invo
       v22 = v12;
       v16 = v15;
       [v16 performTransactionAndWait:v17];
-      v7[2](v7);
-      [(PLImageWriter *)self _decrementJobCount:v6];
+      completionCopy[2](completionCopy);
+      [(PLImageWriter *)self _decrementJobCount:jobCopy];
     }
   }
 
@@ -6096,26 +6096,26 @@ void __49__PLImageWriter__processAvalancheJob_completion___block_invoke(uint64_t
   }
 }
 
-- (void)_processBatchImageJob:(id)a3 inLibrary:(id)a4 completion:(id)a5
+- (void)_processBatchImageJob:(id)job inLibrary:(id)library completion:(id)completion
 {
   v62 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  jobCopy = job;
+  libraryCopy = library;
+  completionCopy = completion;
   v11 = *MEMORY[0x1E69C0348];
-  v12 = [v8 objectForKey:*MEMORY[0x1E69C0348]];
+  v12 = [jobCopy objectForKey:*MEMORY[0x1E69C0348]];
   v13 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.mobileslideshow"];
   if ([v13 BOOLForKey:@"PLImageWriterStashCameraJob"])
   {
-    v14 = [v8 objectForKeyedSubscript:@"kPLImageWriterReplayedCameraJob"];
+    v14 = [jobCopy objectForKeyedSubscript:@"kPLImageWriterReplayedCameraJob"];
 
     if (!v14)
     {
       v42 = v11;
-      v44 = v9;
-      v45 = self;
-      v46 = v10;
-      v47 = v8;
+      v44 = libraryCopy;
+      selfCopy = self;
+      v46 = completionCopy;
+      v47 = jobCopy;
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v16 = [v12 count];
       if (v16)
@@ -6169,31 +6169,31 @@ void __49__PLImageWriter__processAvalancheJob_completion___block_invoke(uint64_t
         while (v23);
       }
 
-      v32 = [v21 firstObject];
+      firstObject = [v21 firstObject];
 
-      if (v32)
+      if (firstObject)
       {
-        v33 = [v21 firstObject];
-        v34 = [v33 objectForKey:*MEMORY[0x1E69C0360]];
+        firstObject2 = [v21 firstObject];
+        v34 = [firstObject2 objectForKey:*MEMORY[0x1E69C0360]];
 
-        v35 = [v21 firstObject];
-        v36 = [v35 objectForKey:*MEMORY[0x1E69C0518]];
+        firstObject3 = [v21 firstObject];
+        v36 = [firstObject3 objectForKey:*MEMORY[0x1E69C0518]];
 
-        v8 = v47;
+        jobCopy = v47;
         v37 = [v47 mutableCopy];
         [v37 setObject:v21 forKeyedSubscript:v42];
-        self = v45;
-        [(PLImageWriter *)v45 _copyJobContentsToHoldingDirectoryWithUUID:v34 incomingPath:v36 job:v37];
+        self = selfCopy;
+        [(PLImageWriter *)selfCopy _copyJobContentsToHoldingDirectoryWithUUID:v34 incomingPath:v36 job:v37];
 
-        v10 = v46;
+        completionCopy = v46;
       }
 
       else
       {
         v34 = PLAssetImportGetLog();
-        v10 = v46;
-        v8 = v47;
-        self = v45;
+        completionCopy = v46;
+        jobCopy = v47;
+        self = selfCopy;
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
         {
           *buf = 0;
@@ -6202,7 +6202,7 @@ void __49__PLImageWriter__processAvalancheJob_completion___block_invoke(uint64_t
       }
 
       v12 = v43;
-      v9 = v44;
+      libraryCopy = v44;
     }
   }
 
@@ -6212,11 +6212,11 @@ void __49__PLImageWriter__processAvalancheJob_completion___block_invoke(uint64_t
   v51[3] = &unk_1E75761B8;
   v38 = v12;
   v52 = v38;
-  v53 = self;
-  v39 = v9;
+  selfCopy2 = self;
+  v39 = libraryCopy;
   v54 = v39;
   [v39 performTransactionAndWait:v51];
-  [(PLImageWriter *)self _incrementJobCount:v8];
+  [(PLImageWriter *)self _incrementJobCount:jobCopy];
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
   v48[2] = __60__PLImageWriter__processBatchImageJob_inLibrary_completion___block_invoke_3;
@@ -6226,8 +6226,8 @@ void __49__PLImageWriter__processAvalancheJob_completion___block_invoke(uint64_t
   v40 = v38;
   v41 = v39;
   [v41 performTransactionAndWait:v48];
-  v10[2](v10);
-  [(PLImageWriter *)self _decrementJobCount:v8];
+  completionCopy[2](completionCopy);
+  [(PLImageWriter *)self _decrementJobCount:jobCopy];
 }
 
 void __60__PLImageWriter__processBatchImageJob_inLibrary_completion___block_invoke(uint64_t a1)
@@ -6364,18 +6364,18 @@ void __60__PLImageWriter__processBatchImageJob_inLibrary_completion___block_invo
   }
 }
 
-- (id)_processLimitedLibraryAdditionIfNeededWithAssetUUID:(id)a3 clientBundleIdentifier:(id)a4 clientAuthorization:(id)a5 library:(id)a6
+- (id)_processLimitedLibraryAdditionIfNeededWithAssetUUID:(id)d clientBundleIdentifier:(id)identifier clientAuthorization:(id)authorization library:(id)library
 {
   v21 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v9 length] && objc_msgSend(v10, "length"))
+  dCopy = d;
+  identifierCopy = identifier;
+  authorizationCopy = authorization;
+  libraryCopy = library;
+  if ([dCopy length] && objc_msgSend(identifierCopy, "length"))
   {
-    if (v11)
+    if (authorizationCopy)
     {
-      [v11 clientAuditToken];
+      [authorizationCopy clientAuditToken];
     }
 
     else
@@ -6383,24 +6383,24 @@ void __60__PLImageWriter__processBatchImageJob_inLibrary_completion___block_invo
       memset(buf, 0, 32);
     }
 
-    v15 = [v12 managedObjectContext];
-    v13 = [PLLimitedLibraryFetchFilter fetchOrCreateLimitedLibraryFetchFilterWithApplicationIdentifier:v10 auditToken:buf inManagedObjectContext:v15];
+    managedObjectContext = [libraryCopy managedObjectContext];
+    v13 = [PLLimitedLibraryFetchFilter fetchOrCreateLimitedLibraryFetchFilterWithApplicationIdentifier:identifierCopy auditToken:buf inManagedObjectContext:managedObjectContext];
 
     v16 = PLAssetImportGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      *&buf[4] = v9;
+      *&buf[4] = dCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v10;
+      *&buf[14] = identifierCopy;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "Adding image writer asset %{public}@ to limited library fetch filter for %@", buf, 0x16u);
     }
 
-    v19 = v9;
+    v19 = dCopy;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
     [v13 addAssetsWithUUIDs:v17];
 
-    v14 = [v13 objectID];
+    objectID = [v13 objectID];
   }
 
   else
@@ -6409,21 +6409,21 @@ void __60__PLImageWriter__processBatchImageJob_inLibrary_completion___block_invo
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      *&buf[4] = v9;
+      *&buf[4] = dCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v10;
+      *&buf[14] = identifierCopy;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "Error adding asset to limited library due to nil uuid %{public}@ or clientBundleIdentifier %@", buf, 0x16u);
     }
 
-    v14 = 0;
+    objectID = 0;
   }
 
-  return v14;
+  return objectID;
 }
 
-- (void)_removeInProgressExtendedAttributesForFileAtURL:(id)a3
+- (void)_removeInProgressExtendedAttributesForFileAtURL:(id)l
 {
-  v3 = [MEMORY[0x1E69BF230] filesystemPersistenceBatchItemForFileAtURL:a3];
+  v3 = [MEMORY[0x1E69BF230] filesystemPersistenceBatchItemForFileAtURL:l];
   if (v3)
   {
     v4 = v3;
@@ -6436,13 +6436,13 @@ void __60__PLImageWriter__processBatchImageJob_inLibrary_completion___block_invo
   }
 }
 
-- (void)_processImageJob:(id)a3 inLibrary:(id)a4 completion:(id)a5
+- (void)_processImageJob:(id)job inLibrary:(id)library completion:(id)completion
 {
   v238 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v143 = a4;
-  v138 = a5;
-  v150 = [v9 objectForKey:@"callStack"];
+  jobCopy = job;
+  libraryCopy = library;
+  completionCopy = completion;
+  v150 = [jobCopy objectForKey:@"callStack"];
   if (v150)
   {
     v10 = PLAssetImportGetLog();
@@ -6461,9 +6461,9 @@ void __60__PLImageWriter__processBatchImageJob_inLibrary_completion___block_invo
   }
 
   v13 = *MEMORY[0x1E69C0518];
-  v14 = [v9 objectForKey:*MEMORY[0x1E69C0518]];
-  v149 = [MEMORY[0x1E696AC08] defaultManager];
-  if (v14 && ([v149 fileExistsAtPath:v14] & 1) != 0)
+  v14 = [jobCopy objectForKey:*MEMORY[0x1E69C0518]];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (v14 && ([defaultManager fileExistsAtPath:v14] & 1) != 0)
   {
     v15 = v14;
 LABEL_10:
@@ -6472,12 +6472,12 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  v16 = [MEMORY[0x1E69BF178] sharedDCIMWriter];
-  [v16 saveImageJobToDisk:v9];
+  mEMORY[0x1E69BF178] = [MEMORY[0x1E69BF178] sharedDCIMWriter];
+  [mEMORY[0x1E69BF178] saveImageJobToDisk:jobCopy];
 
-  v17 = [v9 objectForKey:v13];
+  v17 = [jobCopy objectForKey:v13];
 
-  if ([v149 fileExistsAtPath:v17])
+  if ([defaultManager fileExistsAtPath:v17])
   {
     v15 = v17;
     if (v17)
@@ -6493,14 +6493,14 @@ LABEL_10:
   v145 = 0;
   v153 = 0;
 LABEL_13:
-  v142 = [v9 objectForKey:*MEMORY[0x1E69C03B8]];
-  v140 = [v145 pathExtension];
-  v18 = [v9 objectForKey:*MEMORY[0x1E69C0388]];
+  v142 = [jobCopy objectForKey:*MEMORY[0x1E69C03B8]];
+  pathExtension = [v145 pathExtension];
+  v18 = [jobCopy objectForKey:*MEMORY[0x1E69C0388]];
   v19 = v18 == 0;
 
   if (!v19)
   {
-    v20 = [(PLImageWriter *)self cameraAssetPathForNewAssetWithExtension:v140 assetUUID:v142];
+    v20 = [(PLImageWriter *)self cameraAssetPathForNewAssetWithExtension:pathExtension assetUUID:v142];
     if (v20)
     {
       v21 = [MEMORY[0x1E695DFF8] fileURLWithPath:v20 isDirectory:0];
@@ -6510,7 +6510,7 @@ LABEL_13:
     goto LABEL_20;
   }
 
-  v20 = [v9 objectForKey:*MEMORY[0x1E69C04C8]];
+  v20 = [jobCopy objectForKey:*MEMORY[0x1E69C04C8]];
   if (!v20)
   {
 LABEL_20:
@@ -6520,15 +6520,15 @@ LABEL_20:
 
   v22 = [MEMORY[0x1E695DFF8] fileURLWithPath:v20 isDirectory:0];
   v21 = v22;
-  if (v140)
+  if (pathExtension)
   {
-    v23 = [v22 pathExtension];
-    v24 = [v23 isEqualToString:v140];
+    pathExtension2 = [v22 pathExtension];
+    v24 = [pathExtension2 isEqualToString:pathExtension];
 
     if ((v24 & 1) == 0)
     {
-      v25 = [v21 URLByDeletingPathExtension];
-      v26 = [v25 URLByAppendingPathExtension:v140];
+      uRLByDeletingPathExtension = [v21 URLByDeletingPathExtension];
+      v26 = [uRLByDeletingPathExtension URLByAppendingPathExtension:pathExtension];
 
       v21 = v26;
     }
@@ -6536,8 +6536,8 @@ LABEL_20:
 
 LABEL_21:
 
-  v144 = [v9 objectForKey:*MEMORY[0x1E69C03B0]];
-  v146 = [v9 objectForKey:*MEMORY[0x1E69C0378]];
+  v144 = [jobCopy objectForKey:*MEMORY[0x1E69C03B0]];
+  v146 = [jobCopy objectForKey:*MEMORY[0x1E69C0378]];
   if (v146)
   {
     v152 = [[PLIngestJobCameraMetadata alloc] initWithCameraMetadataPath:v146];
@@ -6554,19 +6554,19 @@ LABEL_21:
   *&buf[16] = 0x3032000000;
   v235 = __Block_byref_object_copy__5211;
   v236 = __Block_byref_object_dispose__5212;
-  v237 = [v9 objectForKey:*MEMORY[0x1E69C0350]];
-  v27 = [v9 objectForKey:*MEMORY[0x1E69C04D0]];
+  v237 = [jobCopy objectForKey:*MEMORY[0x1E69C0350]];
+  v27 = [jobCopy objectForKey:*MEMORY[0x1E69C04D0]];
   [(PLImageWriter *)self _linkDiagnosticFileWithSourcePath:v27 forPhotoDestinationURL:v21];
   v137 = v27;
   v151 = v21;
   v28 = MEMORY[0x1E69C0868];
-  v29 = [(PLIngestJobCameraMetadata *)v152 cameraMetadata];
-  v30 = [v28 semanticEnhanceSceneForCameraMetadata:v29];
+  cameraMetadata = [(PLIngestJobCameraMetadata *)v152 cameraMetadata];
+  v30 = [v28 semanticEnhanceSceneForCameraMetadata:cameraMetadata];
   v134 = v31;
   v32 = v30;
 
-  v33 = [v151 pathExtension];
-  v139 = [PLManagedAsset uniformTypeIdentifierFromPathExtension:v33 assetType:0];
+  pathExtension3 = [v151 pathExtension];
+  v139 = [PLManagedAsset uniformTypeIdentifierFromPathExtension:pathExtension3 assetType:0];
 
   v34 = [MEMORY[0x1E69C08F0] typeWithIdentifier:v139];
   v35 = [v34 conformsToType:*MEMORY[0x1E6982F88]];
@@ -6590,10 +6590,10 @@ LABEL_21:
     v39 = v225;
     if (v38)
     {
-      v40 = [v38 portraitMetadata];
+      portraitMetadata = [v38 portraitMetadata];
 
       v41 = v147;
-      if (v40)
+      if (portraitMetadata)
       {
         v41 = -1;
       }
@@ -6633,13 +6633,13 @@ LABEL_21:
       _os_log_impl(&dword_19BF1F000, v43, OS_LOG_TYPE_DEFAULT, "[SemDev] Classifying image as semantic enhance scene: %@", v228, 0xCu);
     }
 
-    v47 = [(PLIngestJobCameraMetadata *)v152 cameraMetadata];
-    [v47 setSemanticEnhanceScene:v147];
+    cameraMetadata2 = [(PLIngestJobCameraMetadata *)v152 cameraMetadata];
+    [cameraMetadata2 setSemanticEnhanceScene:v147];
 
-    v48 = [(PLIngestJobCameraMetadata *)v152 cameraMetadata];
-    [v48 setSemanticEnhanceSceneConfidence:v134];
+    cameraMetadata3 = [(PLIngestJobCameraMetadata *)v152 cameraMetadata];
+    [cameraMetadata3 setSemanticEnhanceSceneConfidence:v134];
 
-    v49 = [PLImageWriter cameraMetadataURLForPrimaryAssetURL:v151 photoLibrary:v143];
+    v49 = [PLImageWriter cameraMetadataURLForPrimaryAssetURL:v151 photoLibrary:libraryCopy];
     v224 = 0;
     v50 = [(PLImageWriter *)self _writeOutCameraMetadata:v152 destinationURL:v49 error:&v224];
     v51 = v224;
@@ -6686,8 +6686,8 @@ LABEL_52:
   {
     v54 = [PLPhotoLibrary deferredPhotoPreviewDestinationURLForPrimaryAssetURL:v46];
 
-    v136 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69C03F0]];
-    v141 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69C03E0]];
+    v136 = [jobCopy objectForKeyedSubscript:*MEMORY[0x1E69C03F0]];
+    v141 = [jobCopy objectForKeyedSubscript:*MEMORY[0x1E69C03E0]];
     v45 = 1;
     v46 = v54;
   }
@@ -6700,8 +6700,8 @@ LABEL_52:
   if (v153 && v46)
   {
     v55 = MEMORY[0x1E69BF230];
-    v56 = [v46 path];
-    [v55 persistString:v56 forKey:*MEMORY[0x1E69BFDB0] fileURL:v153];
+    path = [v46 path];
+    [v55 persistString:path forKey:*MEMORY[0x1E69BFDB0] fileURL:v153];
     v57 = v46;
 
     if (v150)
@@ -6718,9 +6718,9 @@ LABEL_52:
     v232 = *MEMORY[0x1E696A3A0];
     v233 = *MEMORY[0x1E696A388];
     v59 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v233 forKeys:&v232 count:1];
-    v60 = [v153 path];
+    path2 = [v153 path];
     v223 = 0;
-    v61 = [v149 setAttributes:v59 ofItemAtPath:v60 error:&v223];
+    v61 = [defaultManager setAttributes:v59 ofItemAtPath:path2 error:&v223];
     v62 = v223;
 
     if ((v61 & 1) == 0)
@@ -6728,9 +6728,9 @@ LABEL_52:
       v63 = PLAssetImportGetLog();
       if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
       {
-        v64 = [v153 path];
+        path3 = [v153 path];
         *v228 = 138412546;
-        *&v228[4] = v64;
+        *&v228[4] = path3;
         *&v228[12] = 2112;
         *&v228[14] = v62;
         _os_log_impl(&dword_19BF1F000, v63, OS_LOG_TYPE_ERROR, "Unable to assign data protection to %@: %@", v228, 0x16u);
@@ -6788,43 +6788,43 @@ LABEL_75:
     v219[1] = 3221225472;
     v219[2] = __55__PLImageWriter__processImageJob_inLibrary_completion___block_invoke;
     v219[3] = &unk_1E7578848;
-    v220 = v143;
+    v220 = libraryCopy;
     v221 = v142;
     v216[0] = MEMORY[0x1E69E9820];
     v216[1] = 3221225472;
     v216[2] = __55__PLImageWriter__processImageJob_inLibrary_completion___block_invoke_2;
     v216[3] = &unk_1E7576F38;
     v216[4] = self;
-    v217 = v9;
-    v218 = v138;
+    v217 = jobCopy;
+    v218 = completionCopy;
     [v220 performTransaction:v219 completionHandler:v216];
 
     v82 = v220;
     goto LABEL_111;
   }
 
-  v126 = [v9 objectForKey:*MEMORY[0x1E69C0390]];
-  v122 = [v9 objectForKey:*MEMORY[0x1E69C0360]];
+  v126 = [jobCopy objectForKey:*MEMORY[0x1E69C0390]];
+  v122 = [jobCopy objectForKey:*MEMORY[0x1E69C0360]];
   v121 = v45;
   v112 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.mobileslideshow"];
   if ([v112 BOOLForKey:@"PLImageWriterStashCameraJob"])
   {
-    v69 = [v9 objectForKeyedSubscript:@"kPLImageWriterReplayedCameraJob"];
+    v69 = [jobCopy objectForKeyedSubscript:@"kPLImageWriterReplayedCameraJob"];
     v70 = (v69 | v122) == 0;
 
     if (v70)
     {
-      [(PLImageWriter *)self _copyJobContentsToHoldingDirectoryWithUUID:v126 incomingPath:v145 job:v9];
+      [(PLImageWriter *)self _copyJobContentsToHoldingDirectoryWithUUID:v126 incomingPath:v145 job:jobCopy];
     }
   }
 
-  v71 = [v9 objectForKey:*MEMORY[0x1E69C04F0]];
-  v130 = [v71 BOOLValue];
+  v71 = [jobCopy objectForKey:*MEMORY[0x1E69C04F0]];
+  bOOLValue = [v71 BOOLValue];
 
-  if (v130)
+  if (bOOLValue)
   {
-    v72 = [v145 stringByDeletingLastPathComponent];
-    v73 = _photoIrisIndicatorFilePathForPhoto(v72, v126);
+    stringByDeletingLastPathComponent = [v145 stringByDeletingLastPathComponent];
+    v73 = _photoIrisIndicatorFilePathForPhoto(stringByDeletingLastPathComponent, v126);
     if (v73)
     {
       PLMakeIndicatorFileExistAtPath();
@@ -6835,7 +6835,7 @@ LABEL_75:
       block[1] = 3221225472;
       block[2] = __55__PLImageWriter__processImageJob_inLibrary_completion___block_invoke_3;
       block[3] = &unk_1E75761B8;
-      v213 = v143;
+      v213 = libraryCopy;
       v214 = v73;
       v77 = v74;
       v215 = v77;
@@ -6843,11 +6843,11 @@ LABEL_75:
     }
   }
 
-  v129 = [v9 objectForKey:*MEMORY[0x1E69C02B0]];
-  v132 = [v9 objectForKey:*MEMORY[0x1E69C0320]];
-  v119 = [v9 objectForKey:*MEMORY[0x1E69C0318]];
-  v117 = [v9 objectForKey:*MEMORY[0x1E69C04B0]];
-  v78 = [v9 objectForKey:*MEMORY[0x1E69C0380]];
+  v129 = [jobCopy objectForKey:*MEMORY[0x1E69C02B0]];
+  v132 = [jobCopy objectForKey:*MEMORY[0x1E69C0320]];
+  v119 = [jobCopy objectForKey:*MEMORY[0x1E69C0318]];
+  v117 = [jobCopy objectForKey:*MEMORY[0x1E69C04B0]];
+  v78 = [jobCopy objectForKey:*MEMORY[0x1E69C0380]];
   if (v78)
   {
     objc_opt_class();
@@ -6858,11 +6858,11 @@ LABEL_75:
     }
   }
 
-  v116 = [v9 objectForKey:*MEMORY[0x1E69C0398]];
-  v114 = [v9 objectForKey:*MEMORY[0x1E69C0370]];
-  v79 = [v9 objectForKey:@"ImportedBy"];
-  v124 = [v9 objectForKey:*MEMORY[0x1E69C03C8]];
-  v128 = [v9 objectForKey:*MEMORY[0x1E69C0400]];
+  v116 = [jobCopy objectForKey:*MEMORY[0x1E69C0398]];
+  v114 = [jobCopy objectForKey:*MEMORY[0x1E69C0370]];
+  v79 = [jobCopy objectForKey:@"ImportedBy"];
+  v124 = [jobCopy objectForKey:*MEMORY[0x1E69C03C8]];
+  v128 = [jobCopy objectForKey:*MEMORY[0x1E69C0400]];
   if (!v128)
   {
     v80 = [v124 objectForKey:*MEMORY[0x1E696DE78]];
@@ -6879,7 +6879,7 @@ LABEL_75:
     }
   }
 
-  v83 = [v9 objectForKey:*MEMORY[0x1E69C0540]];
+  v83 = [jobCopy objectForKey:*MEMORY[0x1E69C0540]];
   if ([v83 length])
   {
     v84 = DCIM_newPLImageWithStoredJPEGData();
@@ -6888,7 +6888,7 @@ LABEL_75:
   else
   {
     v85 = 0;
-    if (![v9 objectForKey:*MEMORY[0x1E69C0548]] || !v128)
+    if (![jobCopy objectForKey:*MEMORY[0x1E69C0548]] || !v128)
     {
       goto LABEL_98;
     }
@@ -6904,21 +6904,21 @@ LABEL_98:
   *&v228[16] = 0x3032000000;
   v229 = __Block_byref_object_copy__5211;
   v230 = __Block_byref_object_dispose__5212;
-  v231 = [v9 objectForKey:*MEMORY[0x1E69C04D8]];
-  v113 = [v9 objectForKey:*MEMORY[0x1E69C04C0]];
-  v86 = [v9 objectForKey:*MEMORY[0x1E69C04B8]];
+  v231 = [jobCopy objectForKey:*MEMORY[0x1E69C04D8]];
+  v113 = [jobCopy objectForKey:*MEMORY[0x1E69C04C0]];
+  v86 = [jobCopy objectForKey:*MEMORY[0x1E69C04B8]];
   v210[0] = 0;
   v210[1] = v210;
   v210[2] = 0x2020000000;
   v211 = 0;
-  v87 = [MEMORY[0x1E69BF328] defaultSavedAssetTypeForUnspecifiedImageWriterJobs];
+  defaultSavedAssetTypeForUnspecifiedImageWriterJobs = [MEMORY[0x1E69BF328] defaultSavedAssetTypeForUnspecifiedImageWriterJobs];
   v88 = *MEMORY[0x1E69C0558];
-  v89 = [v9 objectForKey:*MEMORY[0x1E69C0558]];
+  v89 = [jobCopy objectForKey:*MEMORY[0x1E69C0558]];
 
   if (v89)
   {
-    v90 = [v9 objectForKey:v88];
-    v87 = [v90 integerValue];
+    v90 = [jobCopy objectForKey:v88];
+    defaultSavedAssetTypeForUnspecifiedImageWriterJobs = [v90 integerValue];
   }
 
   if (([v79 intValue] == 6 || objc_msgSend(v79, "intValue") == 9) && objc_msgSend(v132, "length"))
@@ -6928,13 +6928,13 @@ LABEL_98:
     v92 = *MEMORY[0x1E69BF4C0];
     v226[0] = v91;
     v226[1] = v92;
-    v93 = v129;
+    null = v129;
     if (!v129)
     {
-      v93 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v227[1] = v93;
+    v227[1] = null;
     v94 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v227 forKeys:v226 count:2];
     PLSendCoreAnalyticEvent();
 
@@ -6955,7 +6955,7 @@ LABEL_98:
   v206[3] = __Block_byref_object_copy__5211;
   v206[4] = __Block_byref_object_dispose__5212;
   v207 = 0;
-  [(PLImageWriter *)self _incrementJobCount:v9];
+  [(PLImageWriter *)self _incrementJobCount:jobCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__PLImageWriter__processImageJob_inLibrary_completion___block_invoke_5;
@@ -6974,36 +6974,36 @@ LABEL_98:
   v176 = v120;
   v111 = v78;
   v177 = v111;
-  v106 = v143;
+  v106 = libraryCopy;
   v178 = v106;
   v95 = v135;
   v179 = v95;
   v180 = v151;
   v125 = v85;
   v181 = v125;
-  v203 = v87;
+  v203 = defaultSavedAssetTypeForUnspecifiedImageWriterJobs;
   v182 = v142;
   v107 = v126;
   v183 = v107;
   v204 = v121;
   v127 = v116;
   v184 = v127;
-  v205 = v130;
+  v205 = bOOLValue;
   v185 = v136;
   v186 = v141;
   v196 = buf;
   v197 = v228;
-  v96 = v149;
+  v96 = defaultManager;
   v187 = v96;
   v133 = v113;
   v188 = v133;
-  v189 = self;
+  selfCopy = self;
   v131 = v83;
   v190 = v131;
   v198 = v210;
   v97 = v86;
   v191 = v97;
-  v98 = v9;
+  v98 = jobCopy;
   v192 = v98;
   v193 = v152;
   v123 = v122;
@@ -7025,7 +7025,7 @@ LABEL_98:
   v158 = v96;
   v159 = v145;
   v160 = v150;
-  v161 = self;
+  selfCopy2 = self;
   v162 = v137;
   v148 = v97;
   v163 = v148;
@@ -7034,7 +7034,7 @@ LABEL_98:
   v167 = v228;
   v168 = v208;
   v169 = v206;
-  v101 = v138;
+  v101 = completionCopy;
   v165 = v101;
   v102 = _Block_copy(v154);
   v103 = [v100 objectForKey:@"imagejob_transient_save_transaction"];
@@ -7832,19 +7832,19 @@ uint64_t __55__PLImageWriter__processImageJob_inLibrary_completion___block_invok
   return [v2 stillAlive];
 }
 
-- (void)_linkDiagnosticFileWithSourcePath:(id)a3 forPhotoDestinationURL:(id)a4
+- (void)_linkDiagnosticFileWithSourcePath:(id)path forPhotoDestinationURL:(id)l
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = v8;
-  if (v6 && [v8 fileExistsAtPath:v6 isDirectory:0])
+  pathCopy = path;
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v9 = defaultManager;
+  if (pathCopy && [defaultManager fileExistsAtPath:pathCopy isDirectory:0])
   {
-    v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6 isDirectory:0];
+    v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
     v11 = [(PLImageWriter *)self _newShortLivedLibraryWithName:"[PLImageWriter _linkDiagnosticFileWithSourcePath:forPhotoDestinationURL:]"];
-    v12 = [v7 lastPathComponent];
-    v13 = [PLManagedAsset diagnosticFilePathForLibrary:v11 mainFilename:v12 createIfNeeded:1];
+    lastPathComponent = [lCopy lastPathComponent];
+    v13 = [PLManagedAsset diagnosticFilePathForLibrary:v11 mainFilename:lastPathComponent createIfNeeded:1];
     if (v13)
     {
       v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:v13 isDirectory:0];
@@ -7891,7 +7891,7 @@ uint64_t __55__PLImageWriter__processImageJob_inLibrary_completion___block_invok
         *buf = 134218240;
         v22 = v11;
         v23 = 2048;
-        v24 = v12;
+        v24 = lastPathComponent;
         _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_ERROR, "Failed to get a diagnostic file URL (library: %p, mainFilename: %p)", buf, 0x16u);
       }
 
@@ -7902,28 +7902,28 @@ LABEL_17:
   }
 }
 
-- (id)writeFilteredPreviewWithImageData:(id)a3 orImage:(id)a4 toPathWithBaseName:(id)a5
+- (id)writeFilteredPreviewWithImageData:(id)data orImage:(id)image toPathWithBaseName:(id)name
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  dataCopy = data;
+  imageCopy = image;
+  nameCopy = name;
+  if (dataCopy)
   {
-    v10 = v7;
+    v10 = dataCopy;
 LABEL_3:
-    v11 = [v9 stringByAppendingPathExtension:@"tempFilteredPreview.JPG"];
+    v11 = [nameCopy stringByAppendingPathExtension:@"tempFilteredPreview.JPG"];
     v12 = NSTemporaryDirectory();
     v13 = [v12 stringByAppendingPathComponent:v11];
 
-    v14 = [MEMORY[0x1E696AC08] defaultManager];
-    v15 = [v14 fileExistsAtPath:v13 isDirectory:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v15 = [defaultManager fileExistsAtPath:v13 isDirectory:0];
 
     if (v15)
     {
-      v16 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
       v25 = 0;
-      v17 = [v16 removeItemAtPath:v13 error:&v25];
+      v17 = [defaultManager2 removeItemAtPath:v13 error:&v25];
       v18 = v25;
 
       if ((v17 & 1) == 0)
@@ -7961,7 +7961,7 @@ LABEL_3:
     goto LABEL_19;
   }
 
-  if (v8)
+  if (imageCopy)
   {
     v10 = DCIM_newJPEGRepresentationWithPLImage();
     if (v10)
@@ -7984,31 +7984,31 @@ LABEL_19:
   return v13;
 }
 
-- (void)_removeTransientKeys:(id)a3
+- (void)_removeTransientKeys:(id)keys
 {
   v3 = *MEMORY[0x1E69C03F8];
-  v4 = a3;
-  [v4 removeObjectForKey:v3];
-  [v4 removeObjectForKey:*MEMORY[0x1E69C0548]];
-  [v4 removeObjectForKey:*MEMORY[0x1E69C0540]];
-  [v4 removeObjectForKey:*MEMORY[0x1E69C0598]];
-  [v4 removeObjectForKey:@"PLImageWriterTransientAsset"];
+  keysCopy = keys;
+  [keysCopy removeObjectForKey:v3];
+  [keysCopy removeObjectForKey:*MEMORY[0x1E69C0548]];
+  [keysCopy removeObjectForKey:*MEMORY[0x1E69C0540]];
+  [keysCopy removeObjectForKey:*MEMORY[0x1E69C0598]];
+  [keysCopy removeObjectForKey:@"PLImageWriterTransientAsset"];
 }
 
-- (id)pathForNewAssetPathAtAlbumDirectoryPath:(id)a3 assetType:(unsigned int)a4 extension:(id)a5
+- (id)pathForNewAssetPathAtAlbumDirectoryPath:(id)path assetType:(unsigned int)type extension:(id)extension
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  pathCopy = path;
+  extensionCopy = extension;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v32 = NSStringFromSelector(a2);
-    [v31 handleFailureInMethod:a2 object:self file:@"PLImageWriter.m" lineNumber:586 description:{@"%@ can only be called from assetsd", v32}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLImageWriter.m" lineNumber:586 description:{@"%@ can only be called from assetsd", v32}];
   }
 
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v11 fileExistsAtPath:v9])
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:pathCopy])
   {
     v12 = 0;
   }
@@ -8016,18 +8016,18 @@ LABEL_19:
   else
   {
     v34 = 0;
-    v19 = [v11 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:&v34];
+    v19 = [defaultManager createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:0 error:&v34];
     v20 = v34;
     if ((v19 & 1) == 0)
     {
-      v21 = PLAssetImportGetLog();
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      stringByDeletingPathExtension = PLAssetImportGetLog();
+      if (os_log_type_enabled(stringByDeletingPathExtension, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v36 = v9;
+        v36 = pathCopy;
         v37 = 2112;
         v38 = v20;
-        _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "Error creating album subdirectory %@ : %@", buf, 0x16u);
+        _os_log_impl(&dword_19BF1F000, stringByDeletingPathExtension, OS_LOG_TYPE_ERROR, "Error creating album subdirectory %@ : %@", buf, 0x16u);
       }
 
       v18 = 0;
@@ -8035,9 +8035,9 @@ LABEL_19:
       goto LABEL_29;
     }
 
-    v21 = [v9 stringByAppendingPathComponent:@".MISC"];
+    stringByDeletingPathExtension = [pathCopy stringByAppendingPathComponent:@".MISC"];
     v33 = v20;
-    v22 = [v11 createDirectoryAtPath:v21 withIntermediateDirectories:1 attributes:0 error:&v33];
+    v22 = [defaultManager createDirectoryAtPath:stringByDeletingPathExtension withIntermediateDirectories:1 attributes:0 error:&v33];
     v12 = v33;
 
     if ((v22 & 1) == 0)
@@ -8046,7 +8046,7 @@ LABEL_19:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v36 = v21;
+        v36 = stringByDeletingPathExtension;
         v37 = 2112;
         v38 = v12;
         _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_ERROR, "Error creating album misc subdirectory %@ : %@", buf, 0x16u);
@@ -8058,13 +8058,13 @@ LABEL_19:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v14 = [WeakRetained pathManager];
-  v15 = [v14 isUBF];
+  pathManager = [WeakRetained pathManager];
+  isUBF = [pathManager isUBF];
 
-  if (!v15)
+  if (!isUBF)
   {
-    v16 = [__albumDCIMDirectoriesByPath objectForKey:v9];
-    if (!v16)
+    uUID = [__albumDCIMDirectoriesByPath objectForKey:pathCopy];
+    if (!uUID)
     {
       if (!__albumDCIMDirectoriesByPath)
       {
@@ -8073,50 +8073,50 @@ LABEL_19:
         __albumDCIMDirectoriesByPath = v23;
       }
 
-      v16 = [objc_alloc(MEMORY[0x1E69BF290]) initWithDCIMPath:v9];
-      [__albumDCIMDirectoriesByPath setObject:v16 forKey:v9];
+      uUID = [objc_alloc(MEMORY[0x1E69BF290]) initWithDCIMPath:pathCopy];
+      [__albumDCIMDirectoriesByPath setObject:uUID forKey:pathCopy];
     }
 
-    [v16 lockDirectory];
-    v17 = [v16 nextAvailableDirectory];
-    v25 = [v17 nextAvailableFileGroup];
-    [v17 ensureDirectoryExists];
-    [v16 unlockDirectory];
-    if (a4 == 1)
+    [uUID lockDirectory];
+    nextAvailableDirectory = [uUID nextAvailableDirectory];
+    nextAvailableFileGroup = [nextAvailableDirectory nextAvailableFileGroup];
+    [nextAvailableDirectory ensureDirectoryExists];
+    [uUID unlockDirectory];
+    if (type == 1)
     {
-      v26 = [v25 pathForVideoFile];
+      pathForVideoFile = [nextAvailableFileGroup pathForVideoFile];
     }
 
     else
     {
-      if (a4)
+      if (type)
       {
         v18 = 0;
         goto LABEL_26;
       }
 
-      v26 = [v25 pathForFullSizeImage];
+      pathForVideoFile = [nextAvailableFileGroup pathForFullSizeImage];
     }
 
-    v18 = v26;
+    v18 = pathForVideoFile;
 LABEL_26:
 
     goto LABEL_27;
   }
 
-  v16 = [MEMORY[0x1E696AFB0] UUID];
-  v17 = [v16 UUIDString];
-  v18 = [v9 stringByAppendingPathComponent:v17];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  nextAvailableDirectory = [uUID UUIDString];
+  v18 = [pathCopy stringByAppendingPathComponent:nextAvailableDirectory];
 LABEL_27:
 
-  if (![v10 length])
+  if (![extensionCopy length])
   {
     goto LABEL_30;
   }
 
-  v21 = [v18 stringByDeletingPathExtension];
-  v28 = [v10 uppercaseString];
-  v29 = [v21 stringByAppendingPathExtension:v28];
+  stringByDeletingPathExtension = [v18 stringByDeletingPathExtension];
+  uppercaseString = [extensionCopy uppercaseString];
+  v29 = [stringByDeletingPathExtension stringByAppendingPathExtension:uppercaseString];
 
   v18 = v29;
 LABEL_29:
@@ -8126,39 +8126,39 @@ LABEL_30:
   return v18;
 }
 
-- (id)_pathForNewAssetWithPath:(id)a3 withExtension:(id)a4
+- (id)_pathForNewAssetWithPath:(id)path withExtension:(id)extension
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  extensionCopy = extension;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = NSStringFromSelector(a2);
-    [v22 handleFailureInMethod:a2 object:self file:@"PLImageWriter.m" lineNumber:559 description:{@"%@ can only be called from assetsd", v23}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLImageWriter.m" lineNumber:559 description:{@"%@ can only be called from assetsd", v23}];
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = v7;
+  v10 = pathCopy;
   v11 = v10;
-  if ([v8 length])
+  if ([extensionCopy length])
   {
-    v12 = [v10 pathExtension];
-    v13 = [v12 isEqualToString:v8];
+    pathExtension = [v10 pathExtension];
+    v13 = [pathExtension isEqualToString:extensionCopy];
 
     v11 = v10;
     if ((v13 & 1) == 0)
     {
-      v14 = [v10 stringByDeletingPathExtension];
-      v15 = [v8 uppercaseString];
-      v11 = [v14 stringByAppendingPathExtension:v15];
+      stringByDeletingPathExtension = [v10 stringByDeletingPathExtension];
+      uppercaseString = [extensionCopy uppercaseString];
+      v11 = [stringByDeletingPathExtension stringByAppendingPathExtension:uppercaseString];
     }
   }
 
-  v16 = [MEMORY[0x1E696AC08] defaultManager];
-  v17 = [v11 stringByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  stringByDeletingLastPathComponent = [v11 stringByDeletingLastPathComponent];
   v24 = 0;
-  v18 = [v16 createDirectoryAtPath:v17 withIntermediateDirectories:1 attributes:0 error:&v24];
+  v18 = [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v24];
   v19 = v24;
 
   if ((v18 & 1) == 0)
@@ -8169,7 +8169,7 @@ LABEL_30:
       *buf = 138412802;
       v26 = v11;
       v27 = 2114;
-      v28 = v8;
+      v28 = extensionCopy;
       v29 = 2112;
       v30 = v19;
       _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "Failed to create directory at path: %@, extension: %{public}@ (Error: %@)", buf, 0x20u);
@@ -8181,20 +8181,20 @@ LABEL_30:
   return v11;
 }
 
-- (id)pathForNewAssetWithDirectoryPath:(id)a3 fileName:(id)a4 extension:(id)a5
+- (id)pathForNewAssetWithDirectoryPath:(id)path fileName:(id)name extension:(id)extension
 {
-  v8 = a5;
-  v9 = [a3 stringByAppendingPathComponent:a4];
-  v10 = [(PLImageWriter *)self _pathForNewAssetWithPath:v9 withExtension:v8];
+  extensionCopy = extension;
+  v9 = [path stringByAppendingPathComponent:name];
+  v10 = [(PLImageWriter *)self _pathForNewAssetWithPath:v9 withExtension:extensionCopy];
 
   return v10;
 }
 
-- (id)cameraAssetPathForNewAssetWithExtension:(id)a3 assetUUID:(id)a4
+- (id)cameraAssetPathForNewAssetWithExtension:(id)extension assetUUID:(id)d
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  extensionCopy = extension;
+  dCopy = d;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -8202,49 +8202,49 @@ LABEL_30:
   v32 = __Block_byref_object_dispose__5212;
   v33 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v10 = [WeakRetained pathManager];
-  v11 = [v10 isUBF];
+  pathManager = [WeakRetained pathManager];
+  isUBF = [pathManager isUBF];
 
-  if (v11)
+  if (isUBF)
   {
-    if (!v8)
+    if (!dCopy)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"PLImageWriter.m" lineNumber:530 description:{@"Invalid parameter not satisfying: %@", @"assetUUID"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLImageWriter.m" lineNumber:530 description:{@"Invalid parameter not satisfying: %@", @"assetUUID"}];
       goto LABEL_16;
     }
 
-    if (v7)
+    if (extensionCopy)
     {
-      v12 = [MEMORY[0x1E69C08F0] typeForFilenameExtensionOrLastPathComponent:v7];
-      v13 = [v12 identifier];
+      v12 = [MEMORY[0x1E69C08F0] typeForFilenameExtensionOrLastPathComponent:extensionCopy];
+      currentHandler = [v12 identifier];
     }
 
     else
     {
-      v13 = 0;
+      currentHandler = 0;
     }
 
-    v17 = [objc_alloc(MEMORY[0x1E69BF298]) initWithAssetUuid:v8 bundleScope:0 uti:v13 resourceVersion:0 resourceType:31];
-    v18 = objc_loadWeakRetained(&self->_libraryServicesManager);
-    v20 = [v18 pathManager];
+    v17 = [objc_alloc(MEMORY[0x1E69BF298]) initWithAssetUuid:dCopy bundleScope:0 uti:currentHandler resourceVersion:0 resourceType:31];
+    extensionCopy = objc_loadWeakRetained(&self->_libraryServicesManager);
+    pathManager2 = [extensionCopy pathManager];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __67__PLImageWriter_cameraAssetPathForNewAssetWithExtension_assetUUID___block_invoke;
     v27[3] = &unk_1E7565AE8;
     v27[4] = &v28;
-    [v20 obtainAccessAndWaitWithFileWithIdentifier:v17 mode:2 toURLWithHandler:v27];
+    [pathManager2 obtainAccessAndWaitWithFileWithIdentifier:v17 mode:2 toURLWithHandler:v27];
   }
 
   else
   {
     v14 = objc_loadWeakRetained(&self->_libraryServicesManager);
-    v15 = [v14 pathManager];
-    v13 = [v15 simpleDCIMDirectory];
+    pathManager3 = [v14 pathManager];
+    currentHandler = [pathManager3 simpleDCIMDirectory];
 
-    if (v13)
+    if (currentHandler)
     {
-      v16 = [v13 nextAvailableFileURLWithExtension:v7];
+      v16 = [currentHandler nextAvailableFileURLWithExtension:extensionCopy];
       v17 = v16;
       if (!v16)
       {
@@ -8252,19 +8252,19 @@ LABEL_30:
         if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
         {
           *buf = 138412290;
-          v35 = v7;
+          v35 = extensionCopy;
           _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_FAULT, "Failed to get next available URL under DCIM folder for extension: %@", buf, 0xCu);
         }
 
-        v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected nil value for DCIM directory for extension: %@", v7];
-        [PLDiagnostics fileRadarUserNotificationWithHeader:@"Unexpected Photo Library state" message:@"Please file a Radar against Photos" radarTitle:@"TTR: [PLImageWriter cameraAssetPathForNewAssetWithExtension:assetUUID:] Unexpected nil value for DCIM directory" radarDescription:v18];
+        extensionCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected nil value for DCIM directory for extension: %@", extensionCopy];
+        [PLDiagnostics fileRadarUserNotificationWithHeader:@"Unexpected Photo Library state" message:@"Please file a Radar against Photos" radarTitle:@"TTR: [PLImageWriter cameraAssetPathForNewAssetWithExtension:assetUUID:] Unexpected nil value for DCIM directory" radarDescription:extensionCopy];
         v17 = 0;
         goto LABEL_15;
       }
 
-      v18 = [v16 path];
-      v19 = [(PLImageWriter *)self _pathForNewAssetWithPath:v18 withExtension:v7];
-      v20 = v29[5];
+      extensionCopy = [v16 path];
+      v19 = [(PLImageWriter *)self _pathForNewAssetWithPath:extensionCopy withExtension:extensionCopy];
+      pathManager2 = v29[5];
       v29[5] = v19;
     }
 
@@ -8274,18 +8274,18 @@ LABEL_30:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v35 = v7;
+        v35 = extensionCopy;
         _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_FAULT, "Failed to get the DCIM directory for extension: %@", buf, 0xCu);
       }
 
       v22 = MEMORY[0x1E696AEC0];
-      v18 = objc_loadWeakRetained(&self->_libraryServicesManager);
-      v20 = [v18 pathManager];
-      v23 = [v22 stringWithFormat:@"Unexpected nil value for DCIM directory for\nextension: %@\nLSM: %@\nlibrary: %@", v7, v18, v20];
+      extensionCopy = objc_loadWeakRetained(&self->_libraryServicesManager);
+      pathManager2 = [extensionCopy pathManager];
+      v23 = [v22 stringWithFormat:@"Unexpected nil value for DCIM directory for\nextension: %@\nLSM: %@\nlibrary: %@", extensionCopy, extensionCopy, pathManager2];
       [PLDiagnostics fileRadarUserNotificationWithHeader:@"Unexpected Photo Library state" message:@"Please file a Radar against Photos" radarTitle:@"TTR: [PLImageWriter cameraAssetPathForNewAssetWithExtension:assetUUID:] Unexpected nil value for DCIM directory" radarDescription:v23];
 
-      v13 = 0;
-      v17 = v18;
+      currentHandler = 0;
+      v17 = extensionCopy;
     }
   }
 
@@ -8306,21 +8306,21 @@ void __67__PLImageWriter_cameraAssetPathForNewAssetWithExtension_assetUUID___blo
   *(v4 + 40) = v3;
 }
 
-- (void)delayJob:(id)a3 delay:(int64_t)a4
+- (void)delayJob:(id)job delay:(int64_t)delay
 {
-  v6 = a3;
+  jobCopy = job;
   v7 = [MEMORY[0x1E69BF360] transaction:"-[PLImageWriter delayJob:delay:]"];
-  v8 = dispatch_time(0, 1000000000 * a4);
+  v8 = dispatch_time(0, 1000000000 * delay);
   jobQueue = self->_jobQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __32__PLImageWriter_delayJob_delay___block_invoke;
   block[3] = &unk_1E75761B8;
   block[4] = self;
-  v13 = v6;
+  v13 = jobCopy;
   v14 = v7;
   v10 = v7;
-  v11 = v6;
+  v11 = jobCopy;
   dispatch_after(v8, jobQueue, block);
 }
 
@@ -8338,23 +8338,23 @@ uint64_t __32__PLImageWriter_delayJob_delay___block_invoke(uint64_t a1)
   return [*(a1 + 48) stillAlive];
 }
 
-- (BOOL)enqueueJob:(id)a3
+- (BOOL)enqueueJob:(id)job
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  jobCopy = job;
   v5 = *MEMORY[0x1E69C0408];
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C0408]];
+  v6 = [jobCopy objectForKeyedSubscript:*MEMORY[0x1E69C0408]];
 
   if (!v6)
   {
     ++enqueueJob__s_jobIndex;
     v7 = [MEMORY[0x1E696AD98] numberWithInt:?];
-    [v4 setObject:v7 forKeyedSubscript:v5];
+    [jobCopy setObject:v7 forKeyedSubscript:v5];
   }
 
-  [(PLImageWriter *)self _incrementJobCount:v4];
+  [(PLImageWriter *)self _incrementJobCount:jobCopy];
   v8 = *MEMORY[0x1E69C0410];
-  v9 = [v4 objectForKey:*MEMORY[0x1E69C0410]];
+  v9 = [jobCopy objectForKey:*MEMORY[0x1E69C0410]];
   v10 = PLAssetImportGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -8368,7 +8368,7 @@ uint64_t __32__PLImageWriter_delayJob_delay___block_invoke(uint64_t a1)
     dispatch_once(&enqueueJob__onceToken, &__block_literal_global_5498);
   }
 
-  if (enqueueJob__debugVideoJobDelay && ([v4 objectForKeyedSubscript:v8], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", *MEMORY[0x1E69C0478]), v11, v12))
+  if (enqueueJob__debugVideoJobDelay && ([jobCopy objectForKeyedSubscript:v8], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", *MEMORY[0x1E69C0478]), v11, v12))
   {
     v13 = PLAssetImportGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -8383,7 +8383,7 @@ uint64_t __32__PLImageWriter_delayJob_delay___block_invoke(uint64_t a1)
 
   else
   {
-    if (!enqueueJob__debugImageJobDelay || ([v4 objectForKeyedSubscript:v8], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqualToString:", *MEMORY[0x1E69C0458]), v15, !v16))
+    if (!enqueueJob__debugImageJobDelay || ([jobCopy objectForKeyedSubscript:v8], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqualToString:", *MEMORY[0x1E69C0458]), v15, !v16))
     {
       jobQueue = self->_jobQueue;
       v20[0] = MEMORY[0x1E69E9820];
@@ -8391,7 +8391,7 @@ uint64_t __32__PLImageWriter_delayJob_delay___block_invoke(uint64_t a1)
       v20[2] = __28__PLImageWriter_enqueueJob___block_invoke_129;
       v20[3] = &unk_1E7578848;
       v20[4] = self;
-      v21 = v4;
+      v21 = jobCopy;
       dispatch_async(jobQueue, v20);
 
       goto LABEL_19;
@@ -8408,7 +8408,7 @@ uint64_t __32__PLImageWriter_delayJob_delay___block_invoke(uint64_t a1)
     v14 = enqueueJob__debugImageJobDelay;
   }
 
-  [(PLImageWriter *)self delayJob:v4 delay:v14];
+  [(PLImageWriter *)self delayJob:jobCopy delay:v14];
 LABEL_19:
 
   return 1;
@@ -8462,12 +8462,12 @@ void __28__PLImageWriter_enqueueJob___block_invoke()
   return v3;
 }
 
-- (void)_decrementJobCount:(id)a3
+- (void)_decrementJobCount:(id)count
 {
-  v18 = a3;
+  countCopy = count;
   v5 = objc_opt_class();
   v6 = *MEMORY[0x1E69C0410];
-  v7 = [v18 objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
+  v7 = [countCopy objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
   LODWORD(v5) = [v5 _requiresIndicatorFileForJobType:v7];
 
   if (v5)
@@ -8477,10 +8477,10 @@ void __28__PLImageWriter_enqueueJob___block_invoke()
     self->_unfinishedJobsRequiringIndicatorCount = v8;
     if (!v8)
     {
-      v9 = [(PLImageWriter *)self indicatorFileCoordinator];
+      indicatorFileCoordinator = [(PLImageWriter *)self indicatorFileCoordinator];
       WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-      v11 = [WeakRetained crashRecoverySupport];
-      [v9 setImageWriter:self isBusy:0 crashRecoverySupport:v11];
+      crashRecoverySupport = [WeakRetained crashRecoverySupport];
+      [indicatorFileCoordinator setImageWriter:self isBusy:0 crashRecoverySupport:crashRecoverySupport];
     }
 
     os_unfair_recursive_lock_unlock();
@@ -8489,14 +8489,14 @@ void __28__PLImageWriter_enqueueJob___block_invoke()
   os_unfair_lock_lock(&self->_transactionLock);
   if (!self->_transactionCounter)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLImageWriter.m" lineNumber:448 description:{@"Invalid parameter not satisfying: %@", @"_transactionCounter > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLImageWriter.m" lineNumber:448 description:{@"Invalid parameter not satisfying: %@", @"_transactionCounter > 0"}];
   }
 
   if (!self->_transaction)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLImageWriter.m" lineNumber:449 description:{@"Invalid parameter not satisfying: %@", @"_transaction"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLImageWriter.m" lineNumber:449 description:{@"Invalid parameter not satisfying: %@", @"_transaction"}];
   }
 
   v12 = self->_transactionCounter - 1;
@@ -8508,7 +8508,7 @@ void __28__PLImageWriter_enqueueJob___block_invoke()
   }
 
   v14 = objc_opt_class();
-  v15 = [v18 objectForKeyedSubscript:v6];
+  v15 = [countCopy objectForKeyedSubscript:v6];
   LODWORD(v14) = [v14 _requiresCrashRecoveryForJobType:v15];
 
   if (v14)
@@ -8519,9 +8519,9 @@ void __28__PLImageWriter_enqueueJob___block_invoke()
   os_unfair_lock_unlock(&self->_transactionLock);
 }
 
-- (void)_incrementJobCount:(id)a3
+- (void)_incrementJobCount:(id)count
 {
-  v20 = a3;
+  countCopy = count;
   os_unfair_lock_lock(&self->_transactionLock);
   transactionCounter = self->_transactionCounter;
   self->_transactionCounter = transactionCounter + 1;
@@ -8530,8 +8530,8 @@ void __28__PLImageWriter_enqueueJob___block_invoke()
   {
     if (!transaction)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"PLImageWriter.m" lineNumber:419 description:{@"Invalid parameter not satisfying: %@", @"_transaction"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLImageWriter.m" lineNumber:419 description:{@"Invalid parameter not satisfying: %@", @"_transaction"}];
     }
 
     os_transaction_needs_more_time();
@@ -8541,8 +8541,8 @@ void __28__PLImageWriter_enqueueJob___block_invoke()
   {
     if (transaction)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"PLImageWriter.m" lineNumber:416 description:{@"Invalid parameter not satisfying: %@", @"!_transaction"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLImageWriter.m" lineNumber:416 description:{@"Invalid parameter not satisfying: %@", @"!_transaction"}];
     }
 
     v7 = os_transaction_create();
@@ -8552,7 +8552,7 @@ void __28__PLImageWriter_enqueueJob___block_invoke()
 
   v9 = objc_opt_class();
   v10 = *MEMORY[0x1E69C0410];
-  v11 = [v20 objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
+  v11 = [countCopy objectForKeyedSubscript:*MEMORY[0x1E69C0410]];
   LODWORD(v9) = [v9 _requiresCrashRecoveryForJobType:v11];
 
   if (v9)
@@ -8562,7 +8562,7 @@ void __28__PLImageWriter_enqueueJob___block_invoke()
 
   os_unfair_lock_unlock(&self->_transactionLock);
   v12 = objc_opt_class();
-  v13 = [v20 objectForKeyedSubscript:v10];
+  v13 = [countCopy objectForKeyedSubscript:v10];
   LODWORD(v12) = [v12 _requiresIndicatorFileForJobType:v13];
 
   if (v12)
@@ -8572,10 +8572,10 @@ void __28__PLImageWriter_enqueueJob___block_invoke()
     self->_unfinishedJobsRequiringIndicatorCount = unfinishedJobsRequiringIndicatorCount + 1;
     if (!unfinishedJobsRequiringIndicatorCount)
     {
-      v15 = [(PLImageWriter *)self indicatorFileCoordinator];
+      indicatorFileCoordinator = [(PLImageWriter *)self indicatorFileCoordinator];
       WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-      v17 = [WeakRetained crashRecoverySupport];
-      [v15 setImageWriter:self isBusy:1 crashRecoverySupport:v17];
+      crashRecoverySupport = [WeakRetained crashRecoverySupport];
+      [indicatorFileCoordinator setImageWriter:self isBusy:1 crashRecoverySupport:crashRecoverySupport];
     }
 
     os_unfair_recursive_lock_unlock();
@@ -8588,10 +8588,10 @@ void __28__PLImageWriter_enqueueJob___block_invoke()
   if (!indicatorFileCoordinator)
   {
     WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-    v5 = [WeakRetained libraryBundle];
-    v6 = [v5 indicatorFileCoordinator];
+    libraryBundle = [WeakRetained libraryBundle];
+    indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
     v7 = self->_indicatorFileCoordinator;
-    self->_indicatorFileCoordinator = v6;
+    self->_indicatorFileCoordinator = indicatorFileCoordinator;
 
     indicatorFileCoordinator = self->_indicatorFileCoordinator;
   }
@@ -8599,33 +8599,33 @@ void __28__PLImageWriter_enqueueJob___block_invoke()
   return indicatorFileCoordinator;
 }
 
-- (BOOL)_isHighPriorityJob:(id)a3
+- (BOOL)_isHighPriorityJob:(id)job
 {
-  v3 = [a3 objectForKey:*MEMORY[0x1E69C0410]];
+  v3 = [job objectForKey:*MEMORY[0x1E69C0410]];
   v4 = ([v3 isEqualToString:*MEMORY[0x1E69C0458]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69C0430]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69C0420]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69C0428]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69C0478]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69C0490]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69C0488]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69C0480]) & 1) != 0 || objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69C0470]);
 
   return v4;
 }
 
-- (id)_newShortLivedLibraryWithName:(const char *)a3
+- (id)_newShortLivedLibraryWithName:(const char *)name
 {
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v5 = [WeakRetained databaseContext];
-  v6 = [v5 newShortLivedLibraryWithName:a3 libraryRole:2];
+  databaseContext = [WeakRetained databaseContext];
+  v6 = [databaseContext newShortLivedLibraryWithName:name libraryRole:2];
 
   return v6;
 }
 
-- (PLImageWriter)initWithLibraryServicesManager:(id)a3
+- (PLImageWriter)initWithLibraryServicesManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = PLImageWriter;
   v5 = [(PLImageWriter *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_libraryServicesManager, v4);
+    objc_storeWeak(&v5->_libraryServicesManager, managerCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.photos.backend.imageWriterQueue", v7);
     jobQueue = v6->_jobQueue;
@@ -8651,20 +8651,20 @@ void __28__PLImageWriter_enqueueJob___block_invoke()
   objc_exception_throw(v2);
 }
 
-+ (void)setAdjustmentsForNewVideo:(id)a3 mainFileMetadata:(id)a4 withAdjustmentsDictionary:(id)a5 cameraAdjustments:(id)a6 renderedContentPath:(id)a7 renderedPosterFramePreviewPath:(id)a8 finalAssetSize:(CGSize)a9
++ (void)setAdjustmentsForNewVideo:(id)video mainFileMetadata:(id)metadata withAdjustmentsDictionary:(id)dictionary cameraAdjustments:(id)adjustments renderedContentPath:(id)path renderedPosterFramePreviewPath:(id)previewPath finalAssetSize:(CGSize)size
 {
-  height = a9.height;
-  width = a9.width;
+  height = size.height;
+  width = size.width;
   v40 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  if (!v18)
+  videoCopy = video;
+  metadataCopy = metadata;
+  dictionaryCopy = dictionary;
+  adjustmentsCopy = adjustments;
+  pathCopy = path;
+  previewPathCopy = previewPath;
+  if (!dictionaryCopy)
   {
-    if (!v19)
+    if (!adjustmentsCopy)
     {
       goto LABEL_31;
     }
@@ -8674,19 +8674,19 @@ void __28__PLImageWriter_enqueueJob___block_invoke()
     {
       height = 0.0;
       width = 0.0;
-      if ([v16 originalWidth] >= 1)
+      if ([videoCopy originalWidth] >= 1)
       {
-        width = [v16 originalWidth];
+        width = [videoCopy originalWidth];
       }
 
-      if ([v16 originalHeight] >= 1)
+      if ([videoCopy originalHeight] >= 1)
       {
-        height = [v16 originalHeight];
+        height = [videoCopy originalHeight];
       }
     }
 
     v23 = [PLPhotoEditExportProperties exportPropertiesWithImageWidth:width imageHeight:height exifOrientation:0 duration:0.0, v25];
-    v27 = [PLImageWriter _assetAdjustmentsFromCameraAdjustmentData:v19 cameraMetadata:0 exportProperties:v23 assetType:1 applySemanticEnhance:0 sourceURL:0];
+    v27 = [PLImageWriter _assetAdjustmentsFromCameraAdjustmentData:adjustmentsCopy cameraMetadata:0 exportProperties:v23 assetType:1 applySemanticEnhance:0 sourceURL:0];
     if (!v27)
     {
 
@@ -8694,13 +8694,13 @@ void __28__PLImageWriter_enqueueJob___block_invoke()
     }
 
     v24 = v27;
-    v28 = [v16 dateCreated];
-    [v24 setAdjustmentTimestamp:v28];
+    dateCreated = [videoCopy dateCreated];
+    [v24 setAdjustmentTimestamp:dateCreated];
 
-    if (v20)
+    if (pathCopy)
     {
-      v29 = [MEMORY[0x1E696AC08] defaultManager];
-      v30 = [v29 fileExistsAtPath:v20];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v30 = [defaultManager fileExistsAtPath:pathCopy];
 
       if ((v30 & 1) == 0)
       {
@@ -8708,13 +8708,13 @@ void __28__PLImageWriter_enqueueJob___block_invoke()
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
           v38 = 138412290;
-          v39 = v20;
+          v39 = pathCopy;
           _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_DEFAULT, "setting adjustments but rendered image does not exist at %@", &v38, 0xCu);
         }
       }
 
-      v32 = [MEMORY[0x1E695DFF8] fileURLWithPath:v20 isDirectory:0];
-      if (!v21)
+      dateCreated2 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
+      if (!previewPathCopy)
       {
         goto LABEL_23;
       }
@@ -8729,21 +8729,21 @@ void __28__PLImageWriter_enqueueJob___block_invoke()
         _os_log_impl(&dword_19BF1F000, v37, OS_LOG_TYPE_DEFAULT, "setting adjustments with no filteredImagePath provided", &v38, 2u);
       }
 
-      v32 = 0;
-      if (!v21)
+      dateCreated2 = 0;
+      if (!previewPathCopy)
       {
         goto LABEL_23;
       }
     }
 
-    v33 = [MEMORY[0x1E695DFF8] fileURLWithPath:v21 isDirectory:0];
+    v33 = [MEMORY[0x1E695DFF8] fileURLWithPath:previewPathCopy isDirectory:0];
 
-    v32 = v33;
+    dateCreated2 = v33;
 LABEL_23:
-    v34 = [PLAssetAdjustmentOptions assetAdjustmentOptionsForImageWriterWithEditedRenderURL:v32 async:1 fullSizeRenderSize:v17 mainFileMetadata:width, height];
-    [v16 setAdjustments:v24 options:v34];
+    height = [PLAssetAdjustmentOptions assetAdjustmentOptionsForImageWriterWithEditedRenderURL:dateCreated2 async:1 fullSizeRenderSize:metadataCopy mainFileMetadata:width, height];
+    [videoCopy setAdjustments:v24 options:height];
 
-    if (([v16 setCurrentAdjustmentAsOriginalAdjustment] & 1) == 0)
+    if (([videoCopy setCurrentAdjustmentAsOriginalAdjustment] & 1) == 0)
     {
       v35 = PLAssetImportGetLog();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -8756,18 +8756,18 @@ LABEL_23:
     goto LABEL_29;
   }
 
-  v22 = [objc_alloc(MEMORY[0x1E69C0660]) initWithPropertyListDictionary:v18];
+  v22 = [objc_alloc(MEMORY[0x1E69C0660]) initWithPropertyListDictionary:dictionaryCopy];
   if (!v22)
   {
 LABEL_31:
-    [v16 setDefaultAdjustmentsIfNecessaryWithMainFileMetadata:v17];
+    [videoCopy setDefaultAdjustmentsIfNecessaryWithMainFileMetadata:metadataCopy];
     goto LABEL_32;
   }
 
   v23 = v22;
-  if (v20)
+  if (pathCopy)
   {
-    v24 = [MEMORY[0x1E695DFF8] fileURLWithPath:v20 isDirectory:0];
+    v24 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
   }
 
   else
@@ -8775,22 +8775,22 @@ LABEL_31:
     v24 = 0;
   }
 
-  v36 = [PLAssetAdjustmentOptions assetAdjustmentOptionsForImageWriterWithEditedRenderURL:v24 async:0 fullSizeRenderSize:v17 mainFileMetadata:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
-  [v16 setAdjustments:v23 options:v36];
+  v36 = [PLAssetAdjustmentOptions assetAdjustmentOptionsForImageWriterWithEditedRenderURL:v24 async:0 fullSizeRenderSize:metadataCopy mainFileMetadata:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  [videoCopy setAdjustments:v23 options:v36];
 
-  v32 = [v16 dateCreated];
-  [v16 setModificationDate:v32];
+  dateCreated2 = [videoCopy dateCreated];
+  [videoCopy setModificationDate:dateCreated2];
 LABEL_29:
 
 LABEL_32:
 }
 
-+ (BOOL)_hasPrimaryAssetAndAdjustmentsFilesWithType:(signed __int16)a3 inIncomingFilenames:(id)a4 forAssetUUID:(id)a5
++ (BOOL)_hasPrimaryAssetAndAdjustmentsFilesWithType:(signed __int16)type inIncomingFilenames:(id)filenames forAssetUUID:(id)d
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  if (!v8)
+  filenamesCopy = filenames;
+  dCopy = d;
+  if (!dCopy)
   {
     v23 = 0;
     goto LABEL_29;
@@ -8800,7 +8800,7 @@ LABEL_32:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v7;
+  obj = filenamesCopy;
   v9 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (!v9)
   {
@@ -8809,7 +8809,7 @@ LABEL_32:
   }
 
   v10 = v9;
-  v25 = v7;
+  v25 = filenamesCopy;
   v11 = 0;
   v12 = 0;
   v13 = *v29;
@@ -8824,8 +8824,8 @@ LABEL_4:
     }
 
     v15 = *(*(&v28 + 1) + 8 * v14);
-    v16 = [a1 _assetUUIDFromIncomingFilename:v15];
-    v17 = [v16 isEqualToString:v8];
+    v16 = [self _assetUUIDFromIncomingFilename:v15];
+    v17 = [v16 isEqualToString:dCopy];
 
     if (v17)
     {
@@ -8860,8 +8860,8 @@ LABEL_15:
 
   else
   {
-    v19 = [v15 pathExtension];
-    v18 = [v19 isEqualToString:v26];
+    pathExtension = [v15 pathExtension];
+    v18 = [pathExtension isEqualToString:v26];
   }
 
   if ((v12 | v18))
@@ -8870,11 +8870,11 @@ LABEL_15:
     goto LABEL_13;
   }
 
-  v20 = [v15 pathExtension];
-  v21 = [v15 stringByDeletingPathExtension];
-  if ([v21 hasSuffix:v8])
+  pathExtension2 = [v15 pathExtension];
+  stringByDeletingPathExtension = [v15 stringByDeletingPathExtension];
+  if ([stringByDeletingPathExtension hasSuffix:dCopy])
   {
-    v12 = [PLPhotoLibrary isImageFileExtension:v20];
+    v12 = [PLPhotoLibrary isImageFileExtension:pathExtension2];
   }
 
   else
@@ -8895,78 +8895,78 @@ LABEL_14:
 
   v23 = 1;
 LABEL_25:
-  v7 = v25;
+  filenamesCopy = v25;
 LABEL_28:
 
 LABEL_29:
   return v23;
 }
 
-+ (id)_assetUUIDFromIncomingFilename:(id)a3
++ (id)_assetUUIDFromIncomingFilename:(id)filename
 {
-  v3 = [a3 componentsSeparatedByString:*MEMORY[0x1E69C00D8]];
+  v3 = [filename componentsSeparatedByString:*MEMORY[0x1E69C00D8]];
   if ([v3 count] == 2)
   {
     v4 = [v3 objectAtIndex:1];
     v5 = [v4 componentsSeparatedByString:@"."];
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
   }
 
   else
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
-  return v6;
+  return firstObject;
 }
 
-+ (void)photoIrisPairingDidSucceed:(BOOL)a3 fileIndicatorPath:(id)a4 photoAsset:(id)a5 photoLibrary:(id)a6
++ (void)photoIrisPairingDidSucceed:(BOOL)succeed fileIndicatorPath:(id)path photoAsset:(id)asset photoLibrary:(id)library
 {
   v23 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  pathCopy = path;
+  assetCopy = asset;
+  libraryCopy = library;
+  if (!pathCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"PLImageWriter.m" lineNumber:2684 description:@"expect photo indicator file"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLImageWriter.m" lineNumber:2684 description:@"expect photo indicator file"];
   }
 
   if (PLDoesIndicatorFileExistAtPath())
   {
-    if (v11 && !v12)
+    if (pathCopy && !assetCopy)
     {
-      v14 = _uuidFromPhotoIrisIndicatorFilePath(v11);
+      v14 = _uuidFromPhotoIrisIndicatorFilePath(pathCopy);
       if (v14)
       {
-        v15 = [v13 managedObjectContext];
-        v12 = [PLImageWriter _fetchPhotoAssetForUUID:v14 moc:v15];
+        managedObjectContext = [libraryCopy managedObjectContext];
+        assetCopy = [PLImageWriter _fetchPhotoAssetForUUID:v14 moc:managedObjectContext];
       }
 
       else
       {
-        v12 = 0;
+        assetCopy = 0;
       }
     }
 
-    if (v12)
+    if (assetCopy)
     {
-      if (!a3 && [v12 kindSubtype] == 2)
+      if (!succeed && [assetCopy kindSubtype] == 2)
       {
         v17 = PLAssetImportGetLog();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v12 uuid];
+          uuid = [assetCopy uuid];
           v21 = 138412290;
-          v22 = v18;
+          v22 = uuid;
           _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "photo asset %@ got no video, demoting subtype", &v21, 0xCu);
         }
 
-        [v12 setKindSubtype:0];
-        if ([v12 hasAdjustments] && !objc_msgSend(v12, "deferredProcessingNeeded"))
+        [assetCopy setKindSubtype:0];
+        if ([assetCopy hasAdjustments] && !objc_msgSend(assetCopy, "deferredProcessingNeeded"))
         {
-          [v12 setDeferredProcessingNeeded:2];
-          [PLImageWriter _signalBackgroundProcessingNeededForAsset:v12 reason:@"live photo demote"];
+          [assetCopy setDeferredProcessingNeeded:2];
+          [PLImageWriter _signalBackgroundProcessingNeededForAsset:assetCopy reason:@"live photo demote"];
         }
       }
     }
@@ -8977,7 +8977,7 @@ LABEL_29:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138412290;
-        v22 = v11;
+        v22 = pathCopy;
         _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "unable to locate photo asset from indicator file %@", &v21, 0xCu);
       }
     }
@@ -8991,22 +8991,22 @@ LABEL_29:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       v21 = 138412290;
-      v22 = v11;
+      v22 = pathCopy;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEBUG, "ignoring pairing operation for indicator file %@", &v21, 0xCu);
     }
   }
 }
 
-+ (id)_pathsByAssetUUIDFromIncomingCrashRecoveryPaths:(id)a3
++ (id)_pathsByAssetUUIDFromIncomingCrashRecoveryPaths:(id)paths
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  pathsCopy = paths;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v3;
+  obj = pathsCopy;
   v5 = [obj countByEnumeratingWithState:&v24 objects:v36 count:16];
   if (v5)
   {
@@ -9023,8 +9023,8 @@ LABEL_29:
 
         v9 = *(*(&v24 + 1) + 8 * i);
         v10 = objc_opt_class();
-        v11 = [v9 lastPathComponent];
-        v12 = [v10 _assetUUIDFromIncomingFilename:v11];
+        lastPathComponent = [v9 lastPathComponent];
+        v12 = [v10 _assetUUIDFromIncomingFilename:lastPathComponent];
 
         v13 = PLAssetImportGetLog();
         v14 = v13;
@@ -9051,14 +9051,14 @@ LABEL_29:
           _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEBUG, "%{public}s: assetUUID %{public}@", buf, 0x16u);
         }
 
-        v15 = [v4 objectForKeyedSubscript:v12];
+        v15 = [dictionary objectForKeyedSubscript:v12];
 
         if (v15)
         {
           v16 = PLAssetImportGetLog();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [v4 objectForKeyedSubscript:v12];
+            v17 = [dictionary objectForKeyedSubscript:v12];
             *buf = 136446978;
             v29 = "+[PLImageWriter _pathsByAssetUUIDFromIncomingCrashRecoveryPaths:]";
             v30 = 2114;
@@ -9070,9 +9070,9 @@ LABEL_29:
             _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "%{public}s Redundant render/adjustment file associated with asset %{public}@: previously found %{public}@, removing %{public}@", buf, 0x2Au);
           }
 
-          v18 = [MEMORY[0x1E696AC08] defaultManager];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
           v23 = 0;
-          v19 = [v18 removeItemAtPath:v9 error:&v23];
+          v19 = [defaultManager removeItemAtPath:v9 error:&v23];
           v14 = v23;
 
           if ((v19 & 1) == 0)
@@ -9093,7 +9093,7 @@ LABEL_18:
           goto LABEL_20;
         }
 
-        [v4 setObject:v9 forKeyedSubscript:v12];
+        [dictionary setObject:v9 forKeyedSubscript:v12];
 LABEL_20:
       }
 
@@ -9103,24 +9103,24 @@ LABEL_20:
     while (v6);
   }
 
-  return v4;
+  return dictionary;
 }
 
-+ (id)_fetchPhotoAssetForUUID:(id)a3 moc:(id)a4
++ (id)_fetchPhotoAssetForUUID:(id)d moc:(id)moc
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v6 = MEMORY[0x1E695D5E0];
-  v7 = a4;
+  mocCopy = moc;
   v8 = +[PLManagedAsset entityName];
   v9 = [v6 fetchRequestWithEntityName:v8];
 
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"uuid = %@ AND noindex:(kind) = %d", v5, 0];
+  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"uuid = %@ AND noindex:(kind) = %d", dCopy, 0];
   [v9 setPredicate:v10];
 
   [v9 setFetchLimit:1];
   v16 = 0;
-  v11 = [v7 executeFetchRequest:v9 error:&v16];
+  v11 = [mocCopy executeFetchRequest:v9 error:&v16];
 
   v12 = v16;
   if (!v11)
@@ -9129,30 +9129,30 @@ LABEL_20:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v18 = v5;
+      v18 = dCopy;
       v19 = 2112;
       v20 = v12;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "Failed to fetchPhotoAssetForUUID:%{public}@ %@", buf, 0x16u);
     }
   }
 
-  v14 = [v11 firstObject];
+  firstObject = [v11 firstObject];
 
-  return v14;
+  return firstObject;
 }
 
-+ (BOOL)setAdjustmentsForNewPhoto:(id)a3 mainFileMetadata:(id)a4 cameraAdjustmentData:(id)a5 adjustmentDataPath:(id)a6 filteredImagePath:(id)a7 cameraMetadata:(id)a8 finalAssetSize:(CGSize)a9 isSubstandardRender:(BOOL)a10
++ (BOOL)setAdjustmentsForNewPhoto:(id)photo mainFileMetadata:(id)metadata cameraAdjustmentData:(id)data adjustmentDataPath:(id)path filteredImagePath:(id)imagePath cameraMetadata:(id)cameraMetadata finalAssetSize:(CGSize)size isSubstandardRender:(BOOL)self0
 {
-  height = a9.height;
-  width = a9.width;
+  height = size.height;
+  width = size.width;
   v48 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  if (!(v20 | v21))
+  photoCopy = photo;
+  metadataCopy = metadata;
+  dataCopy = data;
+  pathCopy = path;
+  imagePathCopy = imagePath;
+  cameraMetadataCopy = cameraMetadata;
+  if (!(dataCopy | pathCopy))
   {
     v29 = 0;
     goto LABEL_38;
@@ -9165,21 +9165,21 @@ LABEL_20:
   {
     height = 0.0;
     width = 0.0;
-    if ([v18 originalWidth] >= 1)
+    if ([photoCopy originalWidth] >= 1)
     {
-      width = [v18 originalWidth];
+      width = [photoCopy originalWidth];
     }
 
-    if ([v18 originalHeight] >= 1)
+    if ([photoCopy originalHeight] >= 1)
     {
-      height = [v18 originalHeight];
+      height = [photoCopy originalHeight];
     }
   }
 
-  v28 = [v18 orientation];
-  if (v18)
+  orientation = [photoCopy orientation];
+  if (photoCopy)
   {
-    [v18 photoIrisVideoDuration];
+    [photoCopy photoIrisVideoDuration];
   }
 
   else
@@ -9187,11 +9187,11 @@ LABEL_20:
     memset(&time, 0, sizeof(time));
   }
 
-  v30 = [PLPhotoEditExportProperties exportPropertiesWithImageWidth:width imageHeight:height exifOrientation:v28 duration:CMTimeGetSeconds(&time)];
-  if (v20)
+  v30 = [PLPhotoEditExportProperties exportPropertiesWithImageWidth:width imageHeight:height exifOrientation:orientation duration:CMTimeGetSeconds(&time)];
+  if (dataCopy)
   {
-    v31 = [a1 _assetAdjustmentsFromCameraAdjustmentData:v20 cameraMetadata:v23 exportProperties:v30 assetType:0 applySemanticEnhance:0 sourceURL:0];
-    if (!v21)
+    v31 = [self _assetAdjustmentsFromCameraAdjustmentData:dataCopy cameraMetadata:cameraMetadataCopy exportProperties:v30 assetType:0 applySemanticEnhance:0 sourceURL:0];
+    if (!pathCopy)
     {
       goto LABEL_21;
     }
@@ -9199,14 +9199,14 @@ LABEL_20:
 LABEL_19:
     if (!v31)
     {
-      v31 = [a1 assetAdjustmentsFromCameraAdjustmentsFileAtPath:v21 exportProperties:v30 cameraMetadata:v23];
+      v31 = [self assetAdjustmentsFromCameraAdjustmentsFileAtPath:pathCopy exportProperties:v30 cameraMetadata:cameraMetadataCopy];
     }
 
     goto LABEL_21;
   }
 
   v31 = 0;
-  if (v21)
+  if (pathCopy)
   {
     goto LABEL_19;
   }
@@ -9217,15 +9217,15 @@ LABEL_21:
   {
     v44 = v30;
     v45 = v24;
-    v32 = [v18 dateCreated];
-    [v31 setAdjustmentTimestamp:v32];
+    dateCreated = [photoCopy dateCreated];
+    [v31 setAdjustmentTimestamp:dateCreated];
 
-    v46 = v23;
-    if (v22)
+    v46 = cameraMetadataCopy;
+    if (imagePathCopy)
     {
-      v33 = v19;
-      v34 = [MEMORY[0x1E696AC08] defaultManager];
-      v35 = [v34 fileExistsAtPath:v22];
+      v33 = metadataCopy;
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v35 = [defaultManager fileExistsAtPath:imagePathCopy];
 
       if ((v35 & 1) == 0)
       {
@@ -9233,13 +9233,13 @@ LABEL_21:
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
         {
           LODWORD(time.value) = 138412290;
-          *(&time.value + 4) = v22;
+          *(&time.value + 4) = imagePathCopy;
           _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_DEFAULT, "setting adjustments but rendered image does not exist at %@", &time, 0xCu);
         }
       }
 
-      v37 = [MEMORY[0x1E695DFF8] fileURLWithPath:v22 isDirectory:0];
-      v19 = v33;
+      v37 = [MEMORY[0x1E695DFF8] fileURLWithPath:imagePathCopy isDirectory:0];
+      metadataCopy = v33;
     }
 
     else
@@ -9254,11 +9254,11 @@ LABEL_21:
       v37 = 0;
     }
 
-    v39 = v19;
-    v40 = [PLAssetAdjustmentOptions assetAdjustmentOptionsForImageWriterWithEditedRenderURL:v37 async:a10 fullSizeRenderSize:v19 mainFileMetadata:width, height];
-    [v18 setAdjustments:v31 options:v40];
+    v39 = metadataCopy;
+    height = [PLAssetAdjustmentOptions assetAdjustmentOptionsForImageWriterWithEditedRenderURL:v37 async:render fullSizeRenderSize:metadataCopy mainFileMetadata:width, height];
+    [photoCopy setAdjustments:v31 options:height];
 
-    if (a10 && ([v18 setCurrentAdjustmentAsOriginalAdjustment] & 1) == 0)
+    if (render && ([photoCopy setCurrentAdjustmentAsOriginalAdjustment] & 1) == 0)
     {
       v41 = PLAssetImportGetLog();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
@@ -9268,12 +9268,12 @@ LABEL_21:
       }
     }
 
-    v42 = [v18 dateCreated];
-    [v18 setModificationDate:v42];
+    dateCreated2 = [photoCopy dateCreated];
+    [photoCopy setModificationDate:dateCreated2];
 
-    v19 = v39;
+    metadataCopy = v39;
     v24 = v45;
-    v23 = v46;
+    cameraMetadataCopy = v46;
     v30 = v44;
   }
 
@@ -9283,19 +9283,19 @@ LABEL_38:
   return v29;
 }
 
-+ (id)_assetAdjustmentsFromCameraAdjustmentData:(id)a3 cameraMetadata:(id)a4 exportProperties:(id)a5 assetType:(signed __int16)a6 applySemanticEnhance:(BOOL)a7 sourceURL:(id)a8
++ (id)_assetAdjustmentsFromCameraAdjustmentData:(id)data cameraMetadata:(id)metadata exportProperties:(id)properties assetType:(signed __int16)type applySemanticEnhance:(BOOL)enhance sourceURL:(id)l
 {
-  v9 = a7;
-  v10 = a6;
+  enhanceCopy = enhance;
+  typeCopy = type;
   v34 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  if (v14)
+  dataCopy = data;
+  metadataCopy = metadata;
+  propertiesCopy = properties;
+  lCopy = l;
+  if (dataCopy)
   {
     v29 = 0;
-    v18 = [MEMORY[0x1E69C0670] deserializedAdjustmentsFromData:v14 error:&v29];
+    v18 = [MEMORY[0x1E69C0670] deserializedAdjustmentsFromData:dataCopy error:&v29];
     v19 = v29;
     v20 = v19;
     if (v18)
@@ -9311,11 +9311,11 @@ LABEL_38:
     v22 = v21;
     if (!v21)
     {
-      v28 = v10;
+      v28 = typeCopy;
       v23 = PLAssetImportGetLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [v14 length];
+        v24 = [dataCopy length];
         *buf = 134218242;
         v31 = v24;
         v32 = 2112;
@@ -9323,10 +9323,10 @@ LABEL_38:
         _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_DEFAULT, "Error deserializing camera adjustments data (length=%lu): %@", buf, 0x16u);
       }
 
-      v10 = v28;
+      typeCopy = v28;
     }
 
-    if (v9)
+    if (enhanceCopy)
     {
       goto LABEL_13;
     }
@@ -9336,10 +9336,10 @@ LABEL_38:
   {
     v18 = 0;
     v22 = 1;
-    if (v9)
+    if (enhanceCopy)
     {
 LABEL_13:
-      v25 = [PLCompositionHelper wantsSemanticEnhanceForCameraMetadata:v15];
+      v25 = [PLCompositionHelper wantsSemanticEnhanceForCameraMetadata:metadataCopy];
       goto LABEL_16;
     }
   }
@@ -9348,7 +9348,7 @@ LABEL_13:
 LABEL_16:
   if ((v22 & (v18 != 0 || v25)) == 1)
   {
-    v26 = [a1 _assetAdjustmentsFromCameraAdjustments:v18 cameraMetadata:v15 exportProperties:v16 assetType:v10 applySemanticEnhance:v9 sourceURL:v17];
+    v26 = [self _assetAdjustmentsFromCameraAdjustments:v18 cameraMetadata:metadataCopy exportProperties:propertiesCopy assetType:typeCopy applySemanticEnhance:enhanceCopy sourceURL:lCopy];
   }
 
   else
@@ -9359,34 +9359,34 @@ LABEL_16:
   return v26;
 }
 
-+ (id)_assetAdjustmentsFromCameraAdjustments:(id)a3 cameraMetadata:(id)a4 exportProperties:(id)a5 assetType:(signed __int16)a6 applySemanticEnhance:(BOOL)a7 sourceURL:(id)a8
++ (id)_assetAdjustmentsFromCameraAdjustments:(id)adjustments cameraMetadata:(id)metadata exportProperties:(id)properties assetType:(signed __int16)type applySemanticEnhance:(BOOL)enhance sourceURL:(id)l
 {
-  v9 = a7;
-  v10 = a6;
+  enhanceCopy = enhance;
+  typeCopy = type;
   v66 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  if (v9)
+  adjustmentsCopy = adjustments;
+  metadataCopy = metadata;
+  propertiesCopy = properties;
+  lCopy = l;
+  if (enhanceCopy)
   {
-    v9 = [PLCompositionHelper wantsSemanticEnhanceForCameraMetadata:v15];
+    enhanceCopy = [PLCompositionHelper wantsSemanticEnhanceForCameraMetadata:metadataCopy];
   }
 
-  if (!v14 && !v9)
+  if (!adjustmentsCopy && !enhanceCopy)
   {
     v18 = 0;
     goto LABEL_45;
   }
 
-  v53 = a1;
-  v52 = [v14 effectFilterName];
-  v19 = [v14 portraitEffectFilterName];
-  v20 = [v14 portraitMetadata];
-  v21 = [v14 isDepthEnabled];
+  selfCopy = self;
+  effectFilterName = [adjustmentsCopy effectFilterName];
+  portraitEffectFilterName = [adjustmentsCopy portraitEffectFilterName];
+  portraitMetadata = [adjustmentsCopy portraitMetadata];
+  isDepthEnabled = [adjustmentsCopy isDepthEnabled];
   v22 = +[PLCompositionHelper newIdentityCompositionController];
   v23 = v22;
-  if (v10 == 1)
+  if (typeCopy == 1)
   {
     v24 = 2;
   }
@@ -9397,34 +9397,34 @@ LABEL_16:
   }
 
   [v22 setMediaType:v24];
-  v25 = [v23 adjustmentConstants];
-  v26 = v20;
-  v27 = v25;
-  v54 = v19;
-  if (v19)
+  adjustmentConstants = [v23 adjustmentConstants];
+  v26 = portraitMetadata;
+  v27 = adjustmentConstants;
+  v54 = portraitEffectFilterName;
+  if (portraitEffectFilterName)
   {
     v28 = 1;
   }
 
   else
   {
-    v28 = v21;
+    v28 = isDepthEnabled;
   }
 
   v51 = v26;
   if (v28 == 1 && v26)
   {
     [PLPhotoEditRenderer updateCompositionController:v23 fromPortraitMetadata:?];
-    if (v21)
+    if (isDepthEnabled)
     {
-      v29 = [v23 depthAdjustmentController];
-      v30 = [v29 depthInfo];
-      v31 = [v30 count];
+      depthAdjustmentController = [v23 depthAdjustmentController];
+      depthInfo = [depthAdjustmentController depthInfo];
+      v31 = [depthInfo count];
 
       if (v31)
       {
-        v32 = [v27 PIDepthAdjustmentKey];
-        [v23 modifyAdjustmentWithKey:v32 modificationBlock:&__block_literal_global_257];
+        pIDepthAdjustmentKey = [v27 PIDepthAdjustmentKey];
+        [v23 modifyAdjustmentWithKey:pIDepthAdjustmentKey modificationBlock:&__block_literal_global_257];
       }
     }
 
@@ -9433,9 +9433,9 @@ LABEL_16:
       goto LABEL_31;
     }
 
-    v33 = [v23 portraitAdjustmentController];
-    v34 = [v33 portraitInfo];
-    v35 = [v34 count];
+    portraitAdjustmentController = [v23 portraitAdjustmentController];
+    portraitInfo = [portraitAdjustmentController portraitInfo];
+    v35 = [portraitInfo count];
 
     if (!v35)
     {
@@ -9445,13 +9445,13 @@ LABEL_16:
     v36 = [PLPhotoEffect effectWithCIFilterName:v54];
     if (v36)
     {
-      v37 = [v27 PIPortraitAdjustmentKey];
+      pIPortraitAdjustmentKey = [v27 PIPortraitAdjustmentKey];
       v62[0] = MEMORY[0x1E69E9820];
       v62[1] = 3221225472;
       v62[2] = __129__PLImageWriter__assetAdjustmentsFromCameraAdjustments_cameraMetadata_exportProperties_assetType_applySemanticEnhance_sourceURL___block_invoke_2;
       v62[3] = &unk_1E756AA40;
       v63 = v36;
-      [v23 modifyAdjustmentWithKey:v37 modificationBlock:v62];
+      [v23 modifyAdjustmentWithKey:pIPortraitAdjustmentKey modificationBlock:v62];
 
       v38 = v63;
     }
@@ -9470,8 +9470,8 @@ LABEL_16:
 
   else
   {
-    v39 = v21 ^ 1;
-    if (v10 != 1)
+    v39 = isDepthEnabled ^ 1;
+    if (typeCopy != 1)
     {
       v39 = 1;
     }
@@ -9481,32 +9481,32 @@ LABEL_16:
       goto LABEL_31;
     }
 
-    v40 = [v25 PIPortraitVideoAdjustmentKey];
+    pIPortraitVideoAdjustmentKey = [adjustmentConstants PIPortraitVideoAdjustmentKey];
     v60[0] = MEMORY[0x1E69E9820];
     v60[1] = 3221225472;
     v60[2] = __129__PLImageWriter__assetAdjustmentsFromCameraAdjustments_cameraMetadata_exportProperties_assetType_applySemanticEnhance_sourceURL___block_invoke_260;
     v60[3] = &unk_1E7565B88;
-    v41 = v14;
+    v41 = adjustmentsCopy;
     v61 = v41;
-    [v23 modifyAdjustmentWithKey:v40 modificationBlock:v60];
+    [v23 modifyAdjustmentWithKey:pIPortraitVideoAdjustmentKey modificationBlock:v60];
 
     if ([v41 isEligibleForCinematicAudioEffectProcessing])
     {
-      v42 = [v27 PICinematicAudioAdjustmentKey];
-      [v23 modifyAdjustmentWithKey:v42 modificationBlock:&__block_literal_global_265];
+      pICinematicAudioAdjustmentKey = [v27 PICinematicAudioAdjustmentKey];
+      [v23 modifyAdjustmentWithKey:pICinematicAudioAdjustmentKey modificationBlock:&__block_literal_global_265];
     }
 
     v36 = v61;
   }
 
 LABEL_31:
-  if (v52)
+  if (effectFilterName)
   {
-    v43 = [PLPhotoEffect effectWithCIFilterName:v52];
+    v43 = [PLPhotoEffect effectWithCIFilterName:effectFilterName];
     v44 = v43;
     if (v43)
     {
-      +[PLCompositionHelper compositionController:setEffectFilterName:version:](PLCompositionHelper, "compositionController:setEffectFilterName:version:", v23, v52, [v43 latestVersion]);
+      +[PLCompositionHelper compositionController:setEffectFilterName:version:](PLCompositionHelper, "compositionController:setEffectFilterName:version:", v23, effectFilterName, [v43 latestVersion]);
     }
 
     else
@@ -9515,43 +9515,43 @@ LABEL_31:
       if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v65 = v52;
+        v65 = effectFilterName;
         _os_log_impl(&dword_19BF1F000, v45, OS_LOG_TYPE_ERROR, "Failed to create photo effect for %@", buf, 0xCu);
       }
     }
   }
 
-  if ([v14 hasCrop])
+  if ([adjustmentsCopy hasCrop])
   {
-    v46 = [v27 PICropAdjustmentKey];
+    pICropAdjustmentKey = [v27 PICropAdjustmentKey];
     v57[0] = MEMORY[0x1E69E9820];
     v57[1] = 3221225472;
     v57[2] = __129__PLImageWriter__assetAdjustmentsFromCameraAdjustments_cameraMetadata_exportProperties_assetType_applySemanticEnhance_sourceURL___block_invoke_266;
     v57[3] = &unk_1E7565BD0;
-    v58 = v14;
-    v59 = v16;
-    [v23 modifyAdjustmentWithKey:v46 modificationBlock:v57];
+    v58 = adjustmentsCopy;
+    v59 = propertiesCopy;
+    [v23 modifyAdjustmentWithKey:pICropAdjustmentKey modificationBlock:v57];
   }
 
-  if (v9)
+  if (enhanceCopy)
   {
-    [PLCompositionHelper compositionController:v23 updateSemanticEnhanceFromCameraMetadata:v15 exportProperties:v16];
+    [PLCompositionHelper compositionController:v23 updateSemanticEnhanceFromCameraMetadata:metadataCopy exportProperties:propertiesCopy];
   }
 
-  if ([v14 isSloMoEnabled])
+  if ([adjustmentsCopy isSloMoEnabled])
   {
-    v47 = [MEMORY[0x1E6987E28] assetWithURL:v17];
-    v48 = [v27 PISlomoAdjustmentKey];
+    v47 = [MEMORY[0x1E6987E28] assetWithURL:lCopy];
+    pISlomoAdjustmentKey = [v27 PISlomoAdjustmentKey];
     v55[0] = MEMORY[0x1E69E9820];
     v55[1] = 3221225472;
     v55[2] = __129__PLImageWriter__assetAdjustmentsFromCameraAdjustments_cameraMetadata_exportProperties_assetType_applySemanticEnhance_sourceURL___block_invoke_2_268;
     v55[3] = &unk_1E7565BF8;
     v56 = v47;
     v49 = v47;
-    [v23 modifyAdjustmentWithKey:v48 modificationBlock:v55];
+    [v23 modifyAdjustmentWithKey:pISlomoAdjustmentKey modificationBlock:v55];
   }
 
-  v18 = [v53 assetAdjustmentsFromCompositionController:v23 exportProperties:v16];
+  v18 = [selfCopy assetAdjustmentsFromCompositionController:v23 exportProperties:propertiesCopy];
 
 LABEL_45:
 
@@ -9654,23 +9654,23 @@ void __129__PLImageWriter__assetAdjustmentsFromCameraAdjustments_cameraMetadata_
   [v2 setEnabled:1];
 }
 
-+ (id)assetAdjustmentsFromCameraAdjustmentsFileAtPath:(id)a3 exportProperties:(id)a4 cameraMetadata:(id)a5
++ (id)assetAdjustmentsFromCameraAdjustmentsFileAtPath:(id)path exportProperties:(id)properties cameraMetadata:(id)metadata
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v8];
+  pathCopy = path;
+  propertiesCopy = properties;
+  metadataCopy = metadata;
+  v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:pathCopy];
   v27 = 0;
   v12 = [MEMORY[0x1E69C0670] deserializedAdjustmentsFromData:v11 error:&v27];
   v13 = v27;
   if (v13)
   {
-    v14 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:v8];
+    v14 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:pathCopy];
     if (v14)
     {
-      v22 = v9;
-      v23 = v10;
+      v22 = propertiesCopy;
+      v23 = metadataCopy;
       v25 = 0;
       v26 = 0;
       v24 = 0;
@@ -9680,8 +9680,8 @@ void __129__PLImageWriter__assetAdjustmentsFromCameraAdjustments_cameraMetadata_
       v18 = v24;
       if (v15)
       {
-        v9 = v22;
-        v19 = [a1 assetAdjustmentsFromCameraFilters:v16 portraitMetadata:v17 exportProperties:v22 cameraMetadata:v23];
+        propertiesCopy = v22;
+        v19 = [self assetAdjustmentsFromCameraFilters:v16 portraitMetadata:v17 exportProperties:v22 cameraMetadata:v23];
       }
 
       else
@@ -9690,17 +9690,17 @@ void __129__PLImageWriter__assetAdjustmentsFromCameraAdjustments_cameraMetadata_
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v29 = v8;
+          v29 = pathCopy;
           v30 = 2112;
           v31 = v18;
           _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "Error deserializing camera adjustments dictionary at path %@: %@", buf, 0x16u);
         }
 
         v19 = 0;
-        v9 = v22;
+        propertiesCopy = v22;
       }
 
-      v10 = v23;
+      metadataCopy = v23;
     }
 
     else
@@ -9709,7 +9709,7 @@ void __129__PLImageWriter__assetAdjustmentsFromCameraAdjustments_cameraMetadata_
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v29 = v8;
+        v29 = pathCopy;
         _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "Could not read camera adjustments dictionary from path %@", buf, 0xCu);
       }
 
@@ -9719,21 +9719,21 @@ void __129__PLImageWriter__assetAdjustmentsFromCameraAdjustments_cameraMetadata_
 
   else
   {
-    v19 = [a1 assetAdjustmentsFromCameraAdjustments:v12 cameraMetadata:v10 exportProperties:v9];
+    v19 = [self assetAdjustmentsFromCameraAdjustments:v12 cameraMetadata:metadataCopy exportProperties:propertiesCopy];
   }
 
   return v19;
 }
 
-+ (id)assetAdjustmentsFromCameraFilters:(id)a3 portraitMetadata:(id)a4 exportProperties:(id)a5 cameraMetadata:(id)a6
++ (id)assetAdjustmentsFromCameraFilters:(id)filters portraitMetadata:(id)metadata exportProperties:(id)properties cameraMetadata:(id)cameraMetadata
 {
   v10 = MEMORY[0x1E69C0730];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  cameraMetadataCopy = cameraMetadata;
+  propertiesCopy = properties;
+  metadataCopy = metadata;
+  filtersCopy = filters;
   v15 = objc_alloc_init(v10);
-  [v15 setPortraitMetadata:v13];
+  [v15 setPortraitMetadata:metadataCopy];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -9741,9 +9741,9 @@ void __129__PLImageWriter__assetAdjustmentsFromCameraAdjustments_cameraMetadata_
   v19[3] = &unk_1E7565B60;
   v20 = v15;
   v16 = v15;
-  [v14 enumerateObjectsUsingBlock:v19];
+  [filtersCopy enumerateObjectsUsingBlock:v19];
 
-  v17 = [a1 assetAdjustmentsFromCameraAdjustments:v16 cameraMetadata:v11 exportProperties:v12];
+  v17 = [self assetAdjustmentsFromCameraAdjustments:v16 cameraMetadata:cameraMetadataCopy exportProperties:propertiesCopy];
 
   return v17;
 }
@@ -9767,20 +9767,20 @@ void __100__PLImageWriter_assetAdjustmentsFromCameraFilters_portraitMetadata_exp
   }
 }
 
-+ (id)assetAdjustmentsFromCompositionController:(id)a3 exportProperties:(id)a4
++ (id)assetAdjustmentsFromCompositionController:(id)controller exportProperties:(id)properties
 {
-  v5 = a4;
-  v6 = a3;
+  propertiesCopy = properties;
+  controllerCopy = controller;
   v7 = objc_alloc_init(PLPhotoEditPersistenceManager);
   v17 = 0;
   v18 = 0;
-  v8 = [(PLPhotoEditPersistenceManager *)v7 dataFromCompositionController:v6 outFormatIdentifier:&v18 outFormatVersion:&v17 exportProperties:v5];
+  v8 = [(PLPhotoEditPersistenceManager *)v7 dataFromCompositionController:controllerCopy outFormatIdentifier:&v18 outFormatVersion:&v17 exportProperties:propertiesCopy];
 
   v9 = v18;
   v10 = v17;
-  v11 = [v6 adjustmentConstants];
-  v12 = [v11 PISemanticEnhanceAdjustmentKey];
-  v13 = [v6 adjustmentControllerForKey:v12];
+  adjustmentConstants = [controllerCopy adjustmentConstants];
+  pISemanticEnhanceAdjustmentKey = [adjustmentConstants PISemanticEnhanceAdjustmentKey];
+  v13 = [controllerCopy adjustmentControllerForKey:pISemanticEnhanceAdjustmentKey];
 
   if (v13)
   {
@@ -9797,17 +9797,17 @@ void __100__PLImageWriter_assetAdjustmentsFromCameraFilters_portraitMetadata_exp
   return v15;
 }
 
-+ (id)cameraMetadataURLForPrimaryAssetURL:(id)a3 photoLibrary:(id)a4
++ (id)cameraMetadataURLForPrimaryAssetURL:(id)l photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = [a4 pathManager];
-  v7 = [v6 privateDirectoryWithSubType:9 createIfNeeded:1 error:0];
+  lCopy = l;
+  pathManager = [library pathManager];
+  v7 = [pathManager privateDirectoryWithSubType:9 createIfNeeded:1 error:0];
 
-  v8 = [v5 path];
+  path = [lCopy path];
 
-  v9 = [v8 lastPathComponent];
-  v10 = [v9 stringByDeletingPathExtension];
-  v11 = [v10 stringByAppendingPathExtension:*MEMORY[0x1E69C00C0]];
+  lastPathComponent = [path lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  v11 = [stringByDeletingPathExtension stringByAppendingPathExtension:*MEMORY[0x1E69C00C0]];
 
   v12 = MEMORY[0x1E695DFF8];
   v13 = [v7 stringByAppendingPathComponent:v11];
@@ -9816,45 +9816,45 @@ void __100__PLImageWriter_assetAdjustmentsFromCameraFilters_portraitMetadata_exp
   return v14;
 }
 
-+ (id)semanticEnhancePreviewDestinationURLForPrimaryAssetURL:(id)a3
++ (id)semanticEnhancePreviewDestinationURLForPrimaryAssetURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 pathExtension];
-  v5 = [v3 path];
+  lCopy = l;
+  pathExtension = [lCopy pathExtension];
+  path = [lCopy path];
 
-  v6 = [v5 stringByDeletingPathExtension];
-  v7 = [v6 stringByAppendingString:*MEMORY[0x1E69BFF98]];
-  v8 = [v7 stringByAppendingPathExtension:v4];
+  stringByDeletingPathExtension = [path stringByDeletingPathExtension];
+  v7 = [stringByDeletingPathExtension stringByAppendingString:*MEMORY[0x1E69BFF98]];
+  v8 = [v7 stringByAppendingPathExtension:pathExtension];
 
   v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8 isDirectory:0];
 
   return v9;
 }
 
-+ (id)finalizedAssetURLForDeferredPhotoPreviewURL:(id)a3 extension:(id)a4
++ (id)finalizedAssetURLForDeferredPhotoPreviewURL:(id)l extension:(id)extension
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 isDeferredPhotoPreviewURL:v6])
+  lCopy = l;
+  extensionCopy = extension;
+  if ([self isDeferredPhotoPreviewURL:lCopy])
   {
-    v8 = [v6 lastPathComponent];
-    v9 = [v8 stringByDeletingPathExtension];
-    v10 = [v9 length];
-    v11 = [v9 substringToIndex:{v10 - objc_msgSend(*MEMORY[0x1E69BFCF0], "length")}];
+    lastPathComponent = [lCopy lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+    v10 = [stringByDeletingPathExtension length];
+    v11 = [stringByDeletingPathExtension substringToIndex:{v10 - objc_msgSend(*MEMORY[0x1E69BFCF0], "length")}];
     v12 = v11;
-    if (v7)
+    if (extensionCopy)
     {
-      v13 = [v11 stringByAppendingPathExtension:v7];
+      v13 = [v11 stringByAppendingPathExtension:extensionCopy];
     }
 
     else
     {
-      v15 = [v8 pathExtension];
-      v13 = [v12 stringByAppendingPathExtension:v15];
+      pathExtension = [lastPathComponent pathExtension];
+      v13 = [v12 stringByAppendingPathExtension:pathExtension];
     }
 
-    v16 = [v6 URLByDeletingLastPathComponent];
-    v14 = [v16 URLByAppendingPathComponent:v13];
+    uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+    v14 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v13];
   }
 
   else
@@ -9865,20 +9865,20 @@ void __100__PLImageWriter_assetAdjustmentsFromCameraFilters_portraitMetadata_exp
   return v14;
 }
 
-+ (BOOL)isDeferredPhotoPreviewURL:(id)a3
++ (BOOL)isDeferredPhotoPreviewURL:(id)l
 {
-  v3 = [a3 lastPathComponent];
-  v4 = [v3 stringByDeletingPathExtension];
-  if ([v4 hasPrefix:@"IMG_"])
+  lastPathComponent = [l lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  if ([stringByDeletingPathExtension hasPrefix:@"IMG_"])
   {
-    if ([v4 hasSuffix:*MEMORY[0x1E69BFCF0]])
+    if ([stringByDeletingPathExtension hasSuffix:*MEMORY[0x1E69BFCF0]])
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = [v4 hasSuffix:*MEMORY[0x1E69BFF98]];
+      v5 = [stringByDeletingPathExtension hasSuffix:*MEMORY[0x1E69BFF98]];
     }
   }
 
@@ -9890,22 +9890,22 @@ void __100__PLImageWriter_assetAdjustmentsFromCameraFilters_portraitMetadata_exp
   return v5;
 }
 
-+ (BOOL)isSpatialOverCaptureURL:(id)a3
++ (BOOL)isSpatialOverCaptureURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 lastPathComponent];
-  v5 = [v4 stringByDeletingPathExtension];
-  if ([v5 hasPrefix:@"IMG_"])
+  lCopy = l;
+  lastPathComponent = [lCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  if ([stringByDeletingPathExtension hasPrefix:@"IMG_"])
   {
-    v6 = [v5 hasSuffix:*MEMORY[0x1E69BFFB0]];
+    v6 = [stringByDeletingPathExtension hasSuffix:*MEMORY[0x1E69BFFB0]];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69BF298] uuidFromURL:v3];
+    v7 = [MEMORY[0x1E69BF298] uuidFromURL:lCopy];
     if (v7)
     {
-      v6 = [v5 hasSuffix:*MEMORY[0x1E69BFFB0]];
+      v6 = [stringByDeletingPathExtension hasSuffix:*MEMORY[0x1E69BFFB0]];
     }
 
     else
@@ -9917,71 +9917,71 @@ void __100__PLImageWriter_assetAdjustmentsFromCameraFilters_portraitMetadata_exp
   return v6;
 }
 
-+ (void)_signalBackgroundProcessingNeededForAsset:(id)a3 reason:(id)a4
++ (void)_signalBackgroundProcessingNeededForAsset:(id)asset reason:(id)reason
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 photoLibrary];
-  v8 = [(__CFString *)v7 libraryServicesManager];
-  v9 = [v8 backgroundJobService];
+  assetCopy = asset;
+  reasonCopy = reason;
+  photoLibrary = [assetCopy photoLibrary];
+  libraryServicesManager = [(__CFString *)photoLibrary libraryServicesManager];
+  backgroundJobService = [libraryServicesManager backgroundJobService];
   v10 = PLAssetImportGetLog();
-  v11 = v10;
-  if (v9)
+  photoLibrary2 = v10;
+  if (backgroundJobService)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v5 deferredProcessingNeeded];
-      if (v12 > 0xA)
+      deferredProcessingNeeded = [assetCopy deferredProcessingNeeded];
+      if (deferredProcessingNeeded > 0xA)
       {
         v13 = 0;
       }
 
       else
       {
-        v13 = off_1E7567B18[v12];
+        v13 = off_1E7567B18[deferredProcessingNeeded];
       }
 
       v15 = v13;
-      v16 = [v5 uuidDescription];
+      uuidDescription = [assetCopy uuidDescription];
       v17 = 138543874;
       v18 = v15;
       v19 = 2114;
-      v20 = v16;
+      v20 = uuidDescription;
       v21 = 2114;
-      v22 = v6;
-      _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "ImageWriter signaling %{public}@ background processing needed for %{public}@, due to %{public}@", &v17, 0x20u);
+      v22 = reasonCopy;
+      _os_log_impl(&dword_19BF1F000, photoLibrary2, OS_LOG_TYPE_DEFAULT, "ImageWriter signaling %{public}@ background processing needed for %{public}@, due to %{public}@", &v17, 0x20u);
     }
 
-    [v9 startWatchdogTimerIfNeededWithSourceDescription:@"ImageWriter"];
-    v11 = [v5 photoLibrary];
-    v14 = +[PLBackgroundJobWorkerTypes typesMaskForDeferredProcessingNeeded:videoDeferredProcessingNeeded:](PLBackgroundJobWorkerTypes, "typesMaskForDeferredProcessingNeeded:videoDeferredProcessingNeeded:", [v5 deferredProcessingNeeded], objc_msgSend(v5, "videoDeferredProcessingNeeded"));
-    [v9 signalBackgroundProcessingNeededOnLibrary:v11 workerTypes:v14];
+    [backgroundJobService startWatchdogTimerIfNeededWithSourceDescription:@"ImageWriter"];
+    photoLibrary2 = [assetCopy photoLibrary];
+    uuidDescription2 = +[PLBackgroundJobWorkerTypes typesMaskForDeferredProcessingNeeded:videoDeferredProcessingNeeded:](PLBackgroundJobWorkerTypes, "typesMaskForDeferredProcessingNeeded:videoDeferredProcessingNeeded:", [assetCopy deferredProcessingNeeded], objc_msgSend(assetCopy, "videoDeferredProcessingNeeded"));
+    [backgroundJobService signalBackgroundProcessingNeededOnLibrary:photoLibrary2 workerTypes:uuidDescription2];
     goto LABEL_10;
   }
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
   {
-    v14 = [v5 uuidDescription];
+    uuidDescription2 = [assetCopy uuidDescription];
     v17 = 138544386;
-    v18 = v6;
+    v18 = reasonCopy;
     v19 = 2114;
-    v20 = v14;
+    v20 = uuidDescription2;
     v21 = 2048;
-    v22 = v7;
+    v22 = photoLibrary;
     v23 = 2048;
-    v24 = v8;
+    v24 = libraryServicesManager;
     v25 = 2048;
     v26 = 0;
-    _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_FAULT, "ImageWriter is unable to signal background processing for %{public}@: asset: %{public}@, photoLibrary: %p, libraryServicesManager: %p, backgroundJobService: %p", &v17, 0x34u);
+    _os_log_impl(&dword_19BF1F000, photoLibrary2, OS_LOG_TYPE_FAULT, "ImageWriter is unable to signal background processing for %{public}@: asset: %{public}@, photoLibrary: %p, libraryServicesManager: %p, backgroundJobService: %p", &v17, 0x34u);
 LABEL_10:
   }
 }
 
-+ (BOOL)_requiresIndicatorFileForJobType:(id)a3
++ (BOOL)_requiresIndicatorFileForJobType:(id)type
 {
-  v3 = a3;
-  v4 = ([v3 isEqualToString:*MEMORY[0x1E69C0440]] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69C0498]) & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69C0450]) & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69C0418]) & 1) == 0 && !objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69C0448]);
+  typeCopy = type;
+  v4 = ([typeCopy isEqualToString:*MEMORY[0x1E69C0440]] & 1) == 0 && (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x1E69C0498]) & 1) == 0 && (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x1E69C0450]) & 1) == 0 && (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x1E69C0418]) & 1) == 0 && !objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x1E69C0448]);
 
   return v4;
 }

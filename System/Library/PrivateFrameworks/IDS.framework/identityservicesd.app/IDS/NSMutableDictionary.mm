@@ -1,19 +1,19 @@
 @interface NSMutableDictionary
-- (void)setPreflightStack:(id)a3 forIdentifier:(id)a4;
+- (void)setPreflightStack:(id)stack forIdentifier:(id)identifier;
 @end
 
 @implementation NSMutableDictionary
 
-- (void)setPreflightStack:(id)a3 forIdentifier:(id)a4
+- (void)setPreflightStack:(id)stack forIdentifier:(id)identifier
 {
-  if (a3)
+  if (stack)
   {
-    [(NSMutableDictionary *)self setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)self setObject:stack forKey:identifier];
   }
 
   else
   {
-    [(NSMutableDictionary *)self removeObjectForKey:a4];
+    [(NSMutableDictionary *)self removeObjectForKey:identifier];
   }
 }
 

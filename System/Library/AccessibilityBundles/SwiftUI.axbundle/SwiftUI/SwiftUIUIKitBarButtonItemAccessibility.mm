@@ -1,5 +1,5 @@
 @interface SwiftUIUIKitBarButtonItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHint;
 - (id)accessibilityIdentifier;
 - (id)accessibilityLabel;
@@ -8,33 +8,33 @@
 
 @implementation SwiftUIUIKitBarButtonItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SwiftUI.UIKitBarButtonItem" isKindOfClass:@"UIBarButtonItem"];
-  [v3 validateClass:@"SwiftUI.UIKitBarButtonItem" hasSwiftField:@"host" withSwiftType:"UIKitBarItemHost<BarItemView>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SwiftUI.UIKitBarButtonItem" isKindOfClass:@"UIBarButtonItem"];
+  [validationsCopy validateClass:@"SwiftUI.UIKitBarButtonItem" hasSwiftField:@"host" withSwiftType:"UIKitBarItemHost<BarItemView>"];
 }
 
 - (id)accessibilityIdentifier
 {
   v3 = [(SwiftUIUIKitBarButtonItemAccessibility *)self safeSwiftValueForKey:@"host"];
-  v4 = [v3 accessibilityElements];
-  v5 = [v4 firstObject];
-  v6 = [v5 accessibilityIdentifier];
-  v7 = v6;
-  if (v6)
+  accessibilityElements = [v3 accessibilityElements];
+  firstObject = [accessibilityElements firstObject];
+  accessibilityIdentifier = [firstObject accessibilityIdentifier];
+  v7 = accessibilityIdentifier;
+  if (accessibilityIdentifier)
   {
-    v8 = v6;
+    accessibilityIdentifier2 = accessibilityIdentifier;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = SwiftUIUIKitBarButtonItemAccessibility;
-    v8 = [(SwiftUIUIKitBarButtonItemAccessibility *)&v11 accessibilityIdentifier];
+    accessibilityIdentifier2 = [(SwiftUIUIKitBarButtonItemAccessibility *)&v11 accessibilityIdentifier];
   }
 
-  v9 = v8;
+  v9 = accessibilityIdentifier2;
 
   return v9;
 }
@@ -42,23 +42,23 @@
 - (id)accessibilityLabel
 {
   v3 = [(SwiftUIUIKitBarButtonItemAccessibility *)self safeSwiftValueForKey:@"host"];
-  v4 = [v3 accessibilityElements];
-  v5 = [v4 firstObject];
-  v6 = [v5 accessibilityLabel];
-  v7 = v6;
-  if (v6)
+  accessibilityElements = [v3 accessibilityElements];
+  firstObject = [accessibilityElements firstObject];
+  accessibilityLabel = [firstObject accessibilityLabel];
+  v7 = accessibilityLabel;
+  if (accessibilityLabel)
   {
-    v8 = v6;
+    accessibilityLabel2 = accessibilityLabel;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = SwiftUIUIKitBarButtonItemAccessibility;
-    v8 = [(SwiftUIUIKitBarButtonItemAccessibility *)&v11 accessibilityLabel];
+    accessibilityLabel2 = [(SwiftUIUIKitBarButtonItemAccessibility *)&v11 accessibilityLabel];
   }
 
-  v9 = v8;
+  v9 = accessibilityLabel2;
 
   return v9;
 }
@@ -66,23 +66,23 @@
 - (id)accessibilityValue
 {
   v3 = [(SwiftUIUIKitBarButtonItemAccessibility *)self safeSwiftValueForKey:@"host"];
-  v4 = [v3 accessibilityElements];
-  v5 = [v4 firstObject];
-  v6 = [v5 accessibilityValue];
-  v7 = v6;
-  if (v6)
+  accessibilityElements = [v3 accessibilityElements];
+  firstObject = [accessibilityElements firstObject];
+  accessibilityValue = [firstObject accessibilityValue];
+  v7 = accessibilityValue;
+  if (accessibilityValue)
   {
-    v8 = v6;
+    accessibilityValue2 = accessibilityValue;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = SwiftUIUIKitBarButtonItemAccessibility;
-    v8 = [(SwiftUIUIKitBarButtonItemAccessibility *)&v11 accessibilityValue];
+    accessibilityValue2 = [(SwiftUIUIKitBarButtonItemAccessibility *)&v11 accessibilityValue];
   }
 
-  v9 = v8;
+  v9 = accessibilityValue2;
 
   return v9;
 }
@@ -90,23 +90,23 @@
 - (id)accessibilityHint
 {
   v3 = [(SwiftUIUIKitBarButtonItemAccessibility *)self safeSwiftValueForKey:@"host"];
-  v4 = [v3 accessibilityElements];
-  v5 = [v4 firstObject];
-  v6 = [v5 accessibilityHint];
-  v7 = v6;
-  if (v6)
+  accessibilityElements = [v3 accessibilityElements];
+  firstObject = [accessibilityElements firstObject];
+  accessibilityHint = [firstObject accessibilityHint];
+  v7 = accessibilityHint;
+  if (accessibilityHint)
   {
-    v8 = v6;
+    accessibilityHint2 = accessibilityHint;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = SwiftUIUIKitBarButtonItemAccessibility;
-    v8 = [(SwiftUIUIKitBarButtonItemAccessibility *)&v11 accessibilityHint];
+    accessibilityHint2 = [(SwiftUIUIKitBarButtonItemAccessibility *)&v11 accessibilityHint];
   }
 
-  v9 = v8;
+  v9 = accessibilityHint2;
 
   return v9;
 }

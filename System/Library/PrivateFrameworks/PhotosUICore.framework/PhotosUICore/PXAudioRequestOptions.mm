@@ -1,33 +1,33 @@
 @interface PXAudioRequestOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXAudioRequestOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)setFadeOutDuration:(id *)a3;
-- (void)setMaximumDuration:(id *)a3;
-- (void)setPreferredDuration:(id *)a3;
+- (void)setFadeOutDuration:(id *)duration;
+- (void)setMaximumDuration:(id *)duration;
+- (void)setPreferredDuration:(id *)duration;
 @end
 
 @implementation PXAudioRequestOptions
 
-- (void)setMaximumDuration:(id *)a3
+- (void)setMaximumDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_maximumDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_maximumDuration.epoch = duration->var3;
   *&self->_maximumDuration.value = v3;
 }
 
-- (void)setFadeOutDuration:(id *)a3
+- (void)setFadeOutDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_fadeOutDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_fadeOutDuration.epoch = duration->var3;
   *&self->_fadeOutDuration.value = v3;
 }
 
-- (void)setPreferredDuration:(id *)a3
+- (void)setPreferredDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_preferredDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_preferredDuration.epoch = duration->var3;
   *&self->_preferredDuration.value = v3;
 }
 
@@ -42,13 +42,13 @@
   return v4 ^ (32 * (Seconds ^ CMTimeGetSeconds(&preferredDuration))) ^ self->_intent;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(PXAudioRequestOptions *)self preferredDuration];
     if (v5)
     {
@@ -62,9 +62,9 @@
 
     if (!CMTimeCompare(&time1, &v12) && (v7 = -[PXAudioRequestOptions networkAccessAllowed](self, "networkAccessAllowed"), v7 == [v5 networkAccessAllowed]) && (v8 = -[PXAudioRequestOptions intent](self, "intent"), v8 == objc_msgSend(v5, "intent")))
     {
-      v9 = [(PXAudioRequestOptions *)self entryPoint];
-      v10 = [v5 entryPoint];
-      if (v9 != v10 && ![v9 isEqual:v10])
+      entryPoint = [(PXAudioRequestOptions *)self entryPoint];
+      entryPoint2 = [v5 entryPoint];
+      if (entryPoint != entryPoint2 && ![entryPoint isEqual:entryPoint2])
       {
         goto LABEL_18;
       }
@@ -117,7 +117,7 @@ LABEL_18:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PXAudioRequestOptions);
   [(PXAudioRequestOptions *)self preferredDuration];
@@ -126,8 +126,8 @@ LABEL_18:
   [(PXAudioRequestOptions *)v4 setPreferredDuration:&v11];
   [(PXAudioRequestOptions *)v4 setNetworkAccessAllowed:[(PXAudioRequestOptions *)self networkAccessAllowed]];
   [(PXAudioRequestOptions *)v4 setIntent:[(PXAudioRequestOptions *)self intent]];
-  v5 = [(PXAudioRequestOptions *)self entryPoint];
-  [(PXAudioRequestOptions *)v4 setEntryPoint:v5];
+  entryPoint = [(PXAudioRequestOptions *)self entryPoint];
+  [(PXAudioRequestOptions *)v4 setEntryPoint:entryPoint];
 
   [(PXAudioRequestOptions *)self fadeOutDuration];
   v11 = v9;

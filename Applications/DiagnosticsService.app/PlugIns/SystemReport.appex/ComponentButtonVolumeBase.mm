@@ -1,18 +1,18 @@
 @interface ComponentButtonVolumeBase
 - (BOOL)isVolumeButtonRepaired;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentButtonVolumeBase
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
   v6.receiver = self;
   v6.super_class = ComponentButtonVolumeBase;
-  v4 = a3;
-  [(ComponentBase *)&v6 populateAttributes:v4];
+  attributesCopy = attributes;
+  [(ComponentBase *)&v6 populateAttributes:attributesCopy];
   v5 = [NSNumber numberWithBool:[(ComponentButtonVolumeBase *)self isVolumeButtonRepaired:v6.receiver]];
-  [v4 setObject:v5 forKeyedSubscript:@"isVolumeButtonRepaired"];
+  [attributesCopy setObject:v5 forKeyedSubscript:@"isVolumeButtonRepaired"];
 }
 
 - (BOOL)isVolumeButtonRepaired

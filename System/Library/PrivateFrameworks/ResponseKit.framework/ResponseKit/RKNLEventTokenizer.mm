@@ -1,15 +1,15 @@
 @interface RKNLEventTokenizer
-+ (BOOL)isSpecialToken:(id)a3;
++ (BOOL)isSpecialToken:(id)token;
 + (void)initialize;
-- (BOOL)hasEmoticon:(id)a3;
-- (RKNLEventTokenizer)initWithLanguageID:(id)a3;
-- (id)buildTokenSquence:(id)a3 withOffset:(unint64_t)a4;
-- (id)getTokens:(id)a3;
-- (id)processForEmoticons:(id)a3;
-- (id)processForEmoticonsAndEmojis:(id)a3;
-- (id)processForHyphenation:(id)a3;
-- (id)tokenizeWithDataDetectors:(id)a3;
-- (id)transform:(id)a3;
+- (BOOL)hasEmoticon:(id)emoticon;
+- (RKNLEventTokenizer)initWithLanguageID:(id)d;
+- (id)buildTokenSquence:(id)squence withOffset:(unint64_t)offset;
+- (id)getTokens:(id)tokens;
+- (id)processForEmoticons:(id)emoticons;
+- (id)processForEmoticonsAndEmojis:(id)emojis;
+- (id)processForHyphenation:(id)hyphenation;
+- (id)tokenizeWithDataDetectors:(id)detectors;
+- (id)transform:(id)transform;
 - (void)dealloc;
 @end
 
@@ -488,16 +488,16 @@
   [(RKNLEventTokenizer *)&v4 dealloc];
 }
 
-- (RKNLEventTokenizer)initWithLanguageID:(id)a3
+- (RKNLEventTokenizer)initWithLanguageID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = RKNLEventTokenizer;
   v6 = [(RKNLEventTokenizer *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_languageID, a3);
+    objc_storeStrong(&v6->_languageID, d);
     CanonicalLocaleIdentifierFromString = CFLocaleCreateCanonicalLocaleIdentifierFromString(0, v7->_languageID);
     v9 = CFLocaleCreate(0, CanonicalLocaleIdentifierFromString);
     v10 = *MEMORY[0x277CBECE8];
@@ -511,25 +511,25 @@
   return v7;
 }
 
-+ (BOOL)isSpecialToken:(id)a3
++ (BOOL)isSpecialToken:(id)token
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"URL"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"PHONE") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"ADDRESS") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"DATE_TIME") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"CURRENCY") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"DIGIT_STRG") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"EMOTICON_HAPPY") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"EMOTICON_PERTURBED") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"EMOTICONHAPPY") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"EMOTICONPERTURBED") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"DATETIME"))
+  tokenCopy = token;
+  if ([tokenCopy isEqualToString:@"URL"] & 1) != 0 || (objc_msgSend(tokenCopy, "isEqualToString:", @"PHONE") & 1) != 0 || (objc_msgSend(tokenCopy, "isEqualToString:", @"ADDRESS") & 1) != 0 || (objc_msgSend(tokenCopy, "isEqualToString:", @"DATE_TIME") & 1) != 0 || (objc_msgSend(tokenCopy, "isEqualToString:", @"CURRENCY") & 1) != 0 || (objc_msgSend(tokenCopy, "isEqualToString:", @"DIGIT_STRG") & 1) != 0 || (objc_msgSend(tokenCopy, "isEqualToString:", @"EMOTICON_HAPPY") & 1) != 0 || (objc_msgSend(tokenCopy, "isEqualToString:", @"EMOTICON_PERTURBED") & 1) != 0 || (objc_msgSend(tokenCopy, "isEqualToString:", @"EMOTICONHAPPY") & 1) != 0 || (objc_msgSend(tokenCopy, "isEqualToString:", @"EMOTICONPERTURBED") & 1) != 0 || (objc_msgSend(tokenCopy, "isEqualToString:", @"DATETIME"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"DIGITSTRG"];
+    v4 = [tokenCopy isEqualToString:@"DIGITSTRG"];
   }
 
   return v4;
 }
 
-- (id)tokenizeWithDataDetectors:(id)a3
+- (id)tokenizeWithDataDetectors:(id)detectors
 {
-  v3 = a3;
+  detectorsCopy = detectors;
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x2020000000;
@@ -618,12 +618,12 @@ LABEL_24:
           v34 = v11;
           v19 = v6;
           v20 = Count;
-          v21 = v3;
-          v22 = [v3 substringWithRange:{v8, Range - v8}];
+          v21 = detectorsCopy;
+          v22 = [detectorsCopy substringWithRange:{v8, Range - v8}];
           v23 = -[RKNLEventToken initWithString:location:length:]([RKNLEventToken alloc], "initWithString:location:length:", v22, v8, [v22 length]);
           [v4 addObject:v23];
 
-          v3 = v21;
+          detectorsCopy = v21;
           Count = v20;
           v6 = v19;
           v11 = v34;
@@ -652,10 +652,10 @@ LABEL_31:
     v8 = 0;
   }
 
-  if (v8 < [v3 length])
+  if (v8 < [detectorsCopy length])
   {
-    v25 = [v3 substringWithRange:{v8, objc_msgSend(v3, "length") - v8}];
-    v26 = -[RKNLEventToken initWithString:location:length:]([RKNLEventToken alloc], "initWithString:location:length:", v25, v8, [v3 length] - v8);
+    v25 = [detectorsCopy substringWithRange:{v8, objc_msgSend(detectorsCopy, "length") - v8}];
+    v26 = -[RKNLEventToken initWithString:location:length:]([RKNLEventToken alloc], "initWithString:location:length:", v25, v8, [detectorsCopy length] - v8);
     [v4 addObject:v26];
   }
 
@@ -672,10 +672,10 @@ uint64_t __48__RKNLEventTokenizer_tokenizeWithDataDetectors___block_invoke(uint6
   return result;
 }
 
-- (BOOL)hasEmoticon:(id)a3
+- (BOOL)hasEmoticon:(id)emoticon
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  emoticonCopy = emoticon;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -694,7 +694,7 @@ uint64_t __48__RKNLEventTokenizer_tokenizeWithDataDetectors___block_invoke(uint6
           objc_enumerationMutation(v4);
         }
 
-        if ([v3 containsString:{*(*(&v10 + 1) + 8 * i), v10}])
+        if ([emoticonCopy containsString:{*(*(&v10 + 1) + 8 * i), v10}])
         {
           LOBYTE(v5) = 1;
           goto LABEL_11;
@@ -717,16 +717,16 @@ LABEL_11:
   return v5;
 }
 
-- (id)processForEmoticonsAndEmojis:(id)a3
+- (id)processForEmoticonsAndEmojis:(id)emojis
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  emojisCopy = emojis;
   v4 = objc_opt_new();
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v3;
+  obj = emojisCopy;
   v32 = [obj countByEnumeratingWithState:&v54 objects:v59 count:16];
   if (v32)
   {
@@ -741,14 +741,14 @@ LABEL_11:
         }
 
         v7 = *(*(&v54 + 1) + 8 * i);
-        v8 = [v7 string];
+        string = [v7 string];
         v50 = 0;
         v51 = &v50;
         v52 = 0x2020000000;
-        v53 = [v7 location];
+        location = [v7 location];
         if (CEMStringContainsEmoji())
         {
-          CFStringGetLength(v8);
+          CFStringGetLength(string);
           v46 = 0;
           v47 = &v46;
           v48 = 0x2020000000;
@@ -758,7 +758,7 @@ LABEL_11:
           v40 = __51__RKNLEventTokenizer_processForEmoticonsAndEmojis___block_invoke;
           v41 = &unk_279B10048;
           v44 = &v46;
-          v9 = v8;
+          v9 = string;
           v42 = v9;
           v10 = v4;
           v43 = v10;
@@ -815,8 +815,8 @@ LABEL_11:
         }
 
         v25 = *(*(&v34 + 1) + 8 * j);
-        v26 = [v25 string];
-        v27 = [(RKNLEventTokenizer *)self hasEmoticon:v26];
+        string2 = [v25 string];
+        v27 = [(RKNLEventTokenizer *)self hasEmoticon:string2];
 
         if (v27)
         {
@@ -880,18 +880,18 @@ void __51__RKNLEventTokenizer_processForEmoticonsAndEmojis___block_invoke(uint64
   *(*(*(a1 + 48) + 8) + 24) = a3 + a4;
 }
 
-- (id)transform:(id)a3
+- (id)transform:(id)transform
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v32 = self;
+  transformCopy = transform;
+  selfCopy = self;
   v40 = [(NSString *)self->_languageID isEqualToString:@"ja"]|| [(NSString *)self->_languageID isEqualToString:@"zh-Hans"]|| [(NSString *)self->_languageID isEqualToString:@"zh-Hant"];
   v34 = objc_opt_new();
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v4;
+  obj = transformCopy;
   v36 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v36)
   {
@@ -908,11 +908,11 @@ void __51__RKNLEventTokenizer_processForEmoticonsAndEmojis___block_invoke(uint64
 
         v39 = v5;
         v6 = *(*(&v43 + 1) + 8 * v5);
-        v7 = [v6 string];
+        string = [v6 string];
         v37 = v6;
-        v38 = [v6 location];
+        location = [v6 location];
         v41 = objc_alloc_init(MEMORY[0x277CCAB68]);
-        Length = CFStringGetLength(v7);
+        Length = CFStringGetLength(string);
         v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
         if (Length >= 1)
         {
@@ -921,8 +921,8 @@ void __51__RKNLEventTokenizer_processForEmoticonsAndEmojis___block_invoke(uint64
           v11 = &stru_2874A9C90;
           while (1)
           {
-            RangeOfComposedCharactersAtIndex = CFStringGetRangeOfComposedCharactersAtIndex(v7, v10);
-            v12 = CFStringCreateWithSubstring(0, v7, RangeOfComposedCharactersAtIndex);
+            RangeOfComposedCharactersAtIndex = CFStringGetRangeOfComposedCharactersAtIndex(string, v10);
+            v12 = CFStringCreateWithSubstring(0, string, RangeOfComposedCharactersAtIndex);
             v13 = [specialCharMapping objectForKey:v12];
             v14 = v13;
             if (v13)
@@ -975,9 +975,9 @@ LABEL_18:
             {
               if (CEMStringContainsEmoji() || (-[__CFString isEqualToString:](v16, "isEqualToString:", @"?") & 1) != 0 || (-[__CFString isEqualToString:](v16, "isEqualToString:", @":") & 1) != 0 || (v21 = [v19 integerValue], v21 >= kMaxCharRepetitionAllowed))
               {
-                v22 = [v19 integerValue];
+                integerValue = [v19 integerValue];
                 v23 = v42;
-                if (v22 >= kMaxCharRepetitionAllowed)
+                if (integerValue >= kMaxCharRepetitionAllowed)
                 {
                   v23 = v42 + 1;
                 }
@@ -1024,7 +1024,7 @@ LABEL_34:
             v27 = [v41 length] + v42;
           }
 
-          v28 = [(RKNLEventToken *)v26 initWithString:v41 location:v38 length:v27];
+          v28 = [(RKNLEventToken *)v26 initWithString:v41 location:location length:v27];
           [v34 addObject:v28];
         }
 
@@ -1038,21 +1038,21 @@ LABEL_34:
     while (v36);
   }
 
-  v29 = [(RKNLEventTokenizer *)v32 processForHyphenation:v34];
+  v29 = [(RKNLEventTokenizer *)selfCopy processForHyphenation:v34];
 
   v30 = *MEMORY[0x277D85DE8];
 
   return v29;
 }
 
-- (id)processForEmoticons:(id)a3
+- (id)processForEmoticons:(id)emoticons
 {
-  v3 = a3;
+  emoticonsCopy = emoticons;
   v37 = objc_opt_new();
-  v38 = v3;
-  v4 = [v3 string];
+  v38 = emoticonsCopy;
+  string = [emoticonsCopy string];
   v5 = [&stru_2874A9C90 stringByPaddingToLength:kMaxCharToConsiderForEmoticonDetection withString:@" " startingAtIndex:0];
-  v6 = [v4 stringByAppendingString:v5];
+  v6 = [string stringByAppendingString:v5];
 
   v7 = 0x27FF08000uLL;
   theString = v6;
@@ -1106,8 +1106,8 @@ LABEL_34:
         v35 = RangeOfComposedCharactersAtIndex.location - v16 + 1;
         if (v35 > v39)
         {
-          v21 = [v38 string];
-          v22 = [v21 substringWithRange:{v39, v35 - v39}];
+          string2 = [v38 string];
+          v22 = [string2 substringWithRange:{v39, v35 - v39}];
 
           v23 = -[RKNLEventToken initWithString:location:length:]([RKNLEventToken alloc], "initWithString:location:length:", v22, [v38 location] + v39, objc_msgSend(v22, "length"));
           [v37 addObject:v23];
@@ -1132,38 +1132,38 @@ LABEL_15:
     while (Length > kMinCharToConsiderForEmoticonDetection);
   }
 
-  v25 = [v38 string];
-  v26 = [v25 length];
+  string3 = [v38 string];
+  v26 = [string3 length];
 
   if (v39 < v26)
   {
-    v27 = [v38 string];
-    v28 = [v38 string];
-    v29 = [v27 substringWithRange:{v39, objc_msgSend(v28, "length") - v39}];
+    string4 = [v38 string];
+    string5 = [v38 string];
+    v29 = [string4 substringWithRange:{v39, objc_msgSend(string5, "length") - v39}];
 
     v30 = [RKNLEventToken alloc];
-    v31 = [v38 location];
-    v32 = [v38 string];
-    v33 = -[RKNLEventToken initWithString:location:length:](v30, "initWithString:location:length:", v29, v31 + v39, [v32 length] - v39);
+    location = [v38 location];
+    string6 = [v38 string];
+    v33 = -[RKNLEventToken initWithString:location:length:](v30, "initWithString:location:length:", v29, location + v39, [string6 length] - v39);
     [v37 addObject:v33];
   }
 
   return v37;
 }
 
-- (id)processForHyphenation:(id)a3
+- (id)processForHyphenation:(id)hyphenation
 {
-  v3 = a3;
+  hyphenationCopy = hyphenation;
   v20 = objc_opt_new();
-  if ([v3 count])
+  if ([hyphenationCopy count])
   {
     v4 = 0;
-    v19 = v3;
+    v19 = hyphenationCopy;
     do
     {
-      v5 = [v3 objectAtIndexedSubscript:{v4, v19}];
-      v6 = [v5 string];
-      v7 = [v6 componentsSeparatedByString:@" "];
+      v5 = [hyphenationCopy objectAtIndexedSubscript:{v4, v19}];
+      string = [v5 string];
+      v7 = [string componentsSeparatedByString:@" "];
 
       v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
       if ([v7 count])
@@ -1185,8 +1185,8 @@ LABEL_15:
           if (!v11 || [v10 containsString:@"-"] && v9 && objc_msgSend(v10, "hasPrefix:", @"-"))
           {
             v12 = [v10 stringByReplacingOccurrencesOfString:@"-" withString:kEMDash];
-            v13 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-            v14 = [v12 stringByTrimmingCharactersInSet:v13];
+            whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+            v14 = [v12 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
             v10 = v14;
           }
@@ -1200,7 +1200,7 @@ LABEL_15:
       }
 
       v15 = [v8 componentsJoinedByString:@" "];
-      v3 = v19;
+      hyphenationCopy = v19;
       v16 = [v19 objectAtIndexedSubscript:v4];
       [v16 setString:v15];
 
@@ -1216,21 +1216,21 @@ LABEL_15:
   return v20;
 }
 
-- (id)getTokens:(id)a3
+- (id)getTokens:(id)tokens
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tokensCopy = tokens;
   if (getTokens__onceToken != -1)
   {
     [RKNLEventTokenizer getTokens:];
   }
 
-  v37 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v4;
+  obj = tokensCopy;
   v5 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (!v5)
   {
@@ -1255,25 +1255,25 @@ LABEL_15:
       }
 
       v41 = *(*(&v43 + 1) + 8 * v9);
-      v10 = [v41 string];
-      if (![RKNLEventTokenizer isSpecialToken:v10])
+      string = [v41 string];
+      if (![RKNLEventTokenizer isSpecialToken:string])
       {
         v39 = v7;
-        v15 = [(RKNLEventTokenizer *)self tokenizer];
-        v50.length = CFStringGetLength(v10);
+        tokenizer = [(RKNLEventTokenizer *)self tokenizer];
+        v50.length = CFStringGetLength(string);
         v50.location = 0;
-        CFStringTokenizerSetString(v15, v10, v50);
+        CFStringTokenizerSetString(tokenizer, string, v50);
         while (1)
         {
           if (!CFStringTokenizerAdvanceToNextToken([(RKNLEventTokenizer *)self tokenizer]))
           {
-            v31 = [v41 location];
-            v7 = [v41 length] + v31;
+            location = [v41 location];
+            v7 = [v41 length] + location;
             goto LABEL_41;
           }
 
           CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange([(RKNLEventTokenizer *)self tokenizer]);
-          v17 = [(__CFString *)v10 substringWithRange:CurrentTokenRange.location, CurrentTokenRange.length];
+          v17 = [(__CFString *)string substringWithRange:CurrentTokenRange.location, CurrentTokenRange.length];
           MutableCopy = CFStringCreateMutableCopy(v8, 0, v17);
           CFStringNormalize(MutableCopy, kCFStringNormalizationFormKC);
 
@@ -1323,12 +1323,12 @@ LABEL_27:
             v29 = @"DIGIT_STRG";
 LABEL_34:
             [v28 setString:v29];
-            v30 = [v23 string];
+            string2 = [v23 string];
 
             [v23 setLocation:CurrentTokenRange.location + v39];
             [v23 setLength:CurrentTokenRange.length];
-            [v37 addObject:v23];
-            v42 = v30;
+            [array addObject:v23];
+            v42 = string2;
 LABEL_35:
             v6 = v36;
           }
@@ -1358,7 +1358,7 @@ LABEL_35:
         goto LABEL_37;
       }
 
-      v11 = [(__CFString *)v10 stringByReplacingOccurrencesOfString:@"DATETIME" withString:@"DATE_TIME"];
+      v11 = [(__CFString *)string stringByReplacingOccurrencesOfString:@"DATETIME" withString:@"DATE_TIME"];
 
       v12 = [v11 stringByReplacingOccurrencesOfString:@"EMOTICONHAPPY" withString:@"EMOTICON_HAPPY"];
 
@@ -1366,10 +1366,10 @@ LABEL_35:
 
       if ([v13 isEqualToString:v42])
       {
-        v10 = v13;
+        string = v13;
 
-        v14 = [v41 location];
-        v7 = [v41 length] + v14;
+        location2 = [v41 location];
+        v7 = [v41 length] + location2;
       }
 
       else
@@ -1378,14 +1378,14 @@ LABEL_35:
         [v32 setString:v13];
         [v32 setLocation:{objc_msgSend(v41, "location")}];
         [v32 setLength:{objc_msgSend(v41, "length")}];
-        [v37 addObject:v32];
-        v10 = v13;
+        [array addObject:v32];
+        string = v13;
 
-        v33 = [v41 location];
-        v7 = [v41 length] + v33;
+        location3 = [v41 location];
+        v7 = [v41 length] + location3;
       }
 
-      v42 = v10;
+      v42 = string;
 LABEL_41:
 
       ++v9;
@@ -1400,7 +1400,7 @@ LABEL_45:
 
   v34 = *MEMORY[0x277D85DE8];
 
-  return v37;
+  return array;
 }
 
 void __32__RKNLEventTokenizer_getTokens___block_invoke()
@@ -1427,9 +1427,9 @@ void __32__RKNLEventTokenizer_getTokens___block_invoke()
   getTokens__nonDigitCommaPeriodSet = v8;
 }
 
-- (id)buildTokenSquence:(id)a3 withOffset:(unint64_t)a4
+- (id)buildTokenSquence:(id)squence withOffset:(unint64_t)offset
 {
-  v6 = [(RKNLEventTokenizer *)self tokenizeWithDataDetectors:a3];
+  v6 = [(RKNLEventTokenizer *)self tokenizeWithDataDetectors:squence];
   v7 = [(RKNLEventTokenizer *)self processForEmoticonsAndEmojis:v6];
   v8 = [(RKNLEventTokenizer *)self transform:v7];
   v9 = [(RKNLEventTokenizer *)self getTokens:v8];
@@ -1439,7 +1439,7 @@ void __32__RKNLEventTokenizer_getTokens___block_invoke()
     do
     {
       v11 = [v9 objectAtIndexedSubscript:v10];
-      [v11 setLocation:{objc_msgSend(v11, "location") + a4}];
+      [v11 setLocation:{objc_msgSend(v11, "location") + offset}];
 
       ++v10;
     }

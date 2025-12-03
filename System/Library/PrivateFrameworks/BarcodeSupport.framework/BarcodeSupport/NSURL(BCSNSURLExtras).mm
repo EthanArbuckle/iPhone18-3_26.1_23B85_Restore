@@ -20,17 +20,17 @@
 
 - (uint64_t)_bcs_isHTTPFamilyURL
 {
-  v1 = [a1 scheme];
-  v2 = [v1 lowercaseString];
+  scheme = [self scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if ([v2 isEqualToString:@"http"])
+  if ([lowercaseString isEqualToString:@"http"])
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 isEqualToString:@"https"];
+    v3 = [lowercaseString isEqualToString:@"https"];
   }
 
   return v3;
@@ -38,27 +38,27 @@
 
 - (uint64_t)_bcs_isWalletRemoteRequestURL
 {
-  v1 = [a1 absoluteString];
-  v2 = [v1 safari_hasCaseInsensitivePrefix:@"https://wallet.apple.com/remoteRequest/?t="];
+  absoluteString = [self absoluteString];
+  v2 = [absoluteString safari_hasCaseInsensitivePrefix:@"https://wallet.apple.com/remoteRequest/?t="];
 
   return v2;
 }
 
 - (uint64_t)_bcs_isMapsURL
 {
-  v2 = [a1 scheme];
-  v3 = [v2 lowercaseString];
+  scheme = [self scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if ([v3 isEqualToString:@"maps"])
+  if ([lowercaseString isEqualToString:@"maps"])
   {
     v4 = 1;
   }
 
-  else if (([v3 isEqualToString:@"http"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"https"))
+  else if (([lowercaseString isEqualToString:@"http"] & 1) != 0 || objc_msgSend(lowercaseString, "isEqualToString:", @"https"))
   {
-    v5 = [a1 host];
-    v6 = [v5 lowercaseString];
-    v4 = [v6 isEqualToString:@"maps.apple.com"];
+    host = [self host];
+    lowercaseString2 = [host lowercaseString];
+    v4 = [lowercaseString2 isEqualToString:@"maps.apple.com"];
   }
 
   else
@@ -71,16 +71,16 @@
 
 - (uint64_t)_bcs_isSHCURL
 {
-  v2 = [a1 scheme];
-  v3 = [v2 lowercaseString];
+  scheme = [self scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  v4 = validHealthURLPrefixForScheme(v3);
+  v4 = validHealthURLPrefixForScheme(lowercaseString);
   if (v4)
   {
-    v5 = [a1 absoluteString];
-    if ([v5 safari_hasCaseInsensitivePrefix:v4] && (v6 = objc_msgSend(v4, "length"), objc_msgSend(v5, "length") >= v6))
+    absoluteString = [self absoluteString];
+    if ([absoluteString safari_hasCaseInsensitivePrefix:v4] && (v6 = objc_msgSend(v4, "length"), objc_msgSend(absoluteString, "length") >= v6))
     {
-      v8 = [v5 substringFromIndex:v6];
+      v8 = [absoluteString substringFromIndex:v6];
       v7 = [v8 hasPrefix:@"/"] ^ 1;
     }
 
@@ -100,16 +100,16 @@
 
 - (uint64_t)_bcs_isRedirectedSHCURL
 {
-  v2 = [a1 absoluteString];
-  if ([v2 safari_hasCaseInsensitivePrefix:@"https://redirect.health.apple.com/SMARTHealthCard/"])
+  absoluteString = [self absoluteString];
+  if ([absoluteString safari_hasCaseInsensitivePrefix:@"https://redirect.health.apple.com/SMARTHealthCard/"])
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [a1 absoluteString];
-    v3 = [v4 safari_hasCaseInsensitivePrefix:@"https://redirect.health.apple.com/EU-DCC/#"];
+    absoluteString2 = [self absoluteString];
+    v3 = [absoluteString2 safari_hasCaseInsensitivePrefix:@"https://redirect.health.apple.com/EU-DCC/#"];
   }
 
   return v3;
@@ -117,76 +117,76 @@
 
 - (uint64_t)_bcs_isOtpauthURL
 {
-  if ([a1 _bcs_hasScheme:@"otpauth"])
+  if ([self _bcs_hasScheme:@"otpauth"])
   {
     return 1;
   }
 
-  return [a1 _bcs_hasScheme:@"apple-otpauth"];
+  return [self _bcs_hasScheme:@"apple-otpauth"];
 }
 
 - (uint64_t)_bcs_isOtpauthMigrationURL
 {
-  if ([a1 _bcs_hasScheme:@"otpauth-migration"])
+  if ([self _bcs_hasScheme:@"otpauth-migration"])
   {
     return 1;
   }
 
-  return [a1 _bcs_hasScheme:@"apple-otpauth-migration"];
+  return [self _bcs_hasScheme:@"apple-otpauth-migration"];
 }
 
 - (id)_bcs_displayString
 {
-  if ([a1 _bcs_isHTTPFamilyURL])
+  if ([self _bcs_isHTTPFamilyURL])
   {
-    v2 = [a1 _lp_simplifiedDisplayString];
-    if ([v2 length] > 0x14)
+    _lp_simplifiedDisplayString = [self _lp_simplifiedDisplayString];
+    if ([_lp_simplifiedDisplayString length] > 0x14)
     {
-      v4 = [a1 _lp_highLevelDomain];
-      if ([v4 length])
+      _lp_highLevelDomain = [self _lp_highLevelDomain];
+      if ([_lp_highLevelDomain length])
       {
-        v5 = [v4 _bcs_stringForcingLeftToRightDirection];
+        _bcs_stringForcingLeftToRightDirection = [_lp_highLevelDomain _bcs_stringForcingLeftToRightDirection];
       }
 
       else
       {
-        v5 = v2;
+        _bcs_stringForcingLeftToRightDirection = _lp_simplifiedDisplayString;
       }
 
-      v3 = v5;
+      scheme = _bcs_stringForcingLeftToRightDirection;
     }
 
     else
     {
-      v3 = v2;
+      scheme = _lp_simplifiedDisplayString;
     }
   }
 
   else
   {
-    v3 = [a1 scheme];
+    scheme = [self scheme];
   }
 
-  return v3;
+  return scheme;
 }
 
 - (uint64_t)_bcs_isDataDetectorURL
 {
-  v1 = [a1 scheme];
-  v2 = [v1 lowercaseString];
+  scheme = [self scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  v3 = [v2 isEqualToString:@"x-barcode-datadetectors-action"];
+  v3 = [lowercaseString isEqualToString:@"x-barcode-datadetectors-action"];
   return v3;
 }
 
 - (id)_bcs_hostWithoutWwwDot
 {
-  v1 = [MEMORY[0x277CCACE0] componentsWithURL:a1 resolvingAgainstBaseURL:1];
-  v2 = [v1 host];
-  v3 = v2;
-  if (v2)
+  v1 = [MEMORY[0x277CCACE0] componentsWithURL:self resolvingAgainstBaseURL:1];
+  host = [v1 host];
+  v3 = host;
+  if (host)
   {
-    if ([v2 rangeOfString:@"www." options:9] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([host rangeOfString:@"www." options:9] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v4 = v3;
     }
@@ -199,28 +199,28 @@
     v6 = v4;
     if ([v4 length])
     {
-      v5 = [v6 lowercaseString];
+      lowercaseString = [v6 lowercaseString];
     }
 
     else
     {
-      v5 = 0;
+      lowercaseString = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    lowercaseString = 0;
   }
 
-  return v5;
+  return lowercaseString;
 }
 
 - (id)_bcs_redirectedHealthURLWithOriginalString:()BCSNSURLExtras
 {
   v4 = a3;
-  v5 = [a1 scheme];
-  v6 = validHealthURLPrefixForScheme(v5);
+  scheme = [self scheme];
+  v6 = validHealthURLPrefixForScheme(scheme);
 
   if (!v6)
   {
@@ -228,11 +228,11 @@
     goto LABEL_10;
   }
 
-  v7 = [a1 absoluteString];
-  v8 = [v7 substringFromIndex:{objc_msgSend(v6, "length")}];
+  absoluteString = [self absoluteString];
+  v8 = [absoluteString substringFromIndex:{objc_msgSend(v6, "length")}];
 
-  v9 = [a1 scheme];
-  v10 = [v9 caseInsensitiveCompare:@"shc"];
+  scheme2 = [self scheme];
+  v10 = [scheme2 caseInsensitiveCompare:@"shc"];
 
   if (!v10)
   {
@@ -244,14 +244,14 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v11 = [a1 scheme];
-  v12 = [v11 caseInsensitiveCompare:@"hc1"];
+  scheme3 = [self scheme];
+  v12 = [scheme3 caseInsensitiveCompare:@"hc1"];
 
   if (!v12)
   {
     v16 = [v4 substringFromIndex:{objc_msgSend(v6, "length")}];
-    v17 = [MEMORY[0x277CCA900] URLFragmentAllowedCharacterSet];
-    v15 = [v16 stringByAddingPercentEncodingWithAllowedCharacters:v17];
+    uRLFragmentAllowedCharacterSet = [MEMORY[0x277CCA900] URLFragmentAllowedCharacterSet];
+    v15 = [v16 stringByAddingPercentEncodingWithAllowedCharacters:uRLFragmentAllowedCharacterSet];
 
     v18 = MEMORY[0x277CBEBC0];
     v19 = [@"https://redirect.health.apple.com/EU-DCC/#" stringByAppendingString:v15];
@@ -288,9 +288,9 @@ LABEL_10:
 
   v3 = v2;
   _Block_object_dispose(&v26, 8);
-  v4 = [a1 absoluteString];
+  absoluteString = [self absoluteString];
   v20 = 0;
-  v5 = [v2 sourceWithQRCodeValue:v4 error:&v20];
+  v5 = [v2 sourceWithQRCodeValue:absoluteString error:&v20];
   v6 = v20;
 
   if (v5)
@@ -328,13 +328,13 @@ LABEL_10:
 
     else
     {
-      v16 = [v10 localizedTypeDisplayNames];
-      v17 = [v16 count];
+      localizedTypeDisplayNames = [v10 localizedTypeDisplayNames];
+      v17 = [localizedTypeDisplayNames count];
 
       if (v17 == 1)
       {
-        v18 = [v10 localizedTypeDisplayNames];
-        v12 = [v18 firstObject];
+        localizedTypeDisplayNames2 = [v10 localizedTypeDisplayNames];
+        firstObject = [localizedTypeDisplayNames2 firstObject];
 
         goto LABEL_10;
       }
@@ -345,7 +345,7 @@ LABEL_10:
       }
     }
 
-    v12 = 0;
+    firstObject = 0;
 LABEL_10:
 
     goto LABEL_14;
@@ -353,22 +353,22 @@ LABEL_10:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [(NSURL(BCSNSURLExtras) *)a1 _bcs_localizedDisplayNameForRedirectedSHCURL];
+    [(NSURL(BCSNSURLExtras) *)self _bcs_localizedDisplayNameForRedirectedSHCURL];
   }
 
-  v12 = 0;
+  firstObject = 0;
   v11 = v6;
 LABEL_14:
 
-  return v12;
+  return firstObject;
 }
 
 + (id)_bcs_searchURLWithQuery:()BCSNSURLExtras
 {
   v3 = MEMORY[0x277CCA900];
   v4 = a3;
-  v5 = [v3 URLQueryAllowedCharacterSet];
-  v6 = [v4 stringByAddingPercentEncodingWithAllowedCharacters:v5];
+  uRLQueryAllowedCharacterSet = [v3 URLQueryAllowedCharacterSet];
+  v6 = [v4 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
   v7 = MEMORY[0x277CBEBC0];
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"x-web-search://?%@", v6];
@@ -380,8 +380,8 @@ LABEL_14:
 - (uint64_t)_bcs_hasScheme:()BCSNSURLExtras
 {
   v4 = a3;
-  v5 = [a1 scheme];
-  v6 = [v5 safari_isCaseInsensitiveEqualToString:v4];
+  scheme = [self scheme];
+  v6 = [scheme safari_isCaseInsensitiveEqualToString:v4];
 
   return v6;
 }
@@ -389,9 +389,9 @@ LABEL_14:
 - (void)_bcs_localizedDisplayNameForRedirectedSHCURL
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [a1 absoluteString];
+  absoluteString = [self absoluteString];
   v5 = 138478083;
-  v6 = v3;
+  v6 = absoluteString;
   v7 = 2113;
   v8 = a2;
   _os_log_error_impl(&dword_241993000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "BCSURLAction: Unable to create HKSignedClinicalDataSource for: %{private}@ error: %{private}@", &v5, 0x16u);

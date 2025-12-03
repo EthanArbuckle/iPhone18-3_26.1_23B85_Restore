@@ -1,22 +1,22 @@
 @interface MRDPlaybackQueueArtworkCacheSize
 + (MRDPlaybackQueueArtworkCacheSize)defaultSize;
-- (MRDPlaybackQueueArtworkCacheSize)initWithW:(double)a3 h:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MRDPlaybackQueueArtworkCacheSize)initWithW:(double)w h:(double)h;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation MRDPlaybackQueueArtworkCacheSize
 
-- (MRDPlaybackQueueArtworkCacheSize)initWithW:(double)a3 h:(double)a4
+- (MRDPlaybackQueueArtworkCacheSize)initWithW:(double)w h:(double)h
 {
   v7.receiver = self;
   v7.super_class = MRDPlaybackQueueArtworkCacheSize;
   result = [(MRDPlaybackQueueArtworkCacheSize *)&v7 init];
   if (result)
   {
-    result->_w = a3;
-    result->_h = a4;
+    result->_w = w;
+    result->_h = h;
   }
 
   return result;
@@ -29,7 +29,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MRDPlaybackQueueArtworkCacheSize alloc];
   [(MRDPlaybackQueueArtworkCacheSize *)self w];
@@ -51,9 +51,9 @@
   return v3;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  if (self->_w * self->_h <= *(a3 + 1) * *(a3 + 2))
+  if (self->_w * self->_h <= *(compare + 1) * *(compare + 2))
   {
     return 1;
   }

@@ -1,9 +1,9 @@
 @interface CNVCard30CardBuilder
-+ (id)builderWithPerson:(id)a3;
-+ (unint64_t)estimatedBytesAvailableForPhotoWithOptions:(id)a3 serializer:(id)a4;
++ (id)builderWithPerson:(id)person;
++ (unint64_t)estimatedBytesAvailableForPhotoWithOptions:(id)options serializer:(id)serializer;
 - (BOOL)addPhotoReferences;
-- (CNVCard30CardBuilder)initWithPerson:(id)a3;
-- (void)_addAttributesForCropRects:(id)a3 imageHash:(id)a4 toLine:(id)a5;
+- (CNVCard30CardBuilder)initWithPerson:(id)person;
+- (void)_addAttributesForCropRects:(id)rects imageHash:(id)hash toLine:(id)line;
 - (void)addActivityAlerts;
 - (void)addAddressingGrammar;
 - (void)addAlternateBirthday;
@@ -19,10 +19,10 @@
 - (void)addImageBackgroundColorsData;
 - (void)addImageHash;
 - (void)addImageType;
-- (void)addInstantMessagingHandles:(id)a3;
+- (void)addInstantMessagingHandles:(id)handles;
 - (void)addInstantMessagingInfo;
-- (void)addLegacyInstantMessagingHandles:(id)a3 forService:(id)a4 vCardProperty:(id)a5;
-- (void)addLineWithName:(id)a3 value:(id)a4;
+- (void)addLegacyInstantMessagingHandles:(id)handles forService:(id)service vCardProperty:(id)property;
+- (void)addLineWithName:(id)name value:(id)value;
 - (void)addNameComponents;
 - (void)addNameLines;
 - (void)addNameOrderMarker;
@@ -31,12 +31,12 @@
 - (void)addOtherDates;
 - (void)addPhoneNumbers;
 - (void)addPhonemeData;
-- (void)addPhotoWithOptions:(id)a3;
+- (void)addPhotoWithOptions:(id)options;
 - (void)addPostalAddresses;
 - (void)addPosterIdentifier;
 - (void)addPreferredApplePersonaIdentifier;
 - (void)addPreferredLikenessSource;
-- (void)addPropertyLinesForValues:(id)a3 generator:(id)a4;
+- (void)addPropertyLinesForValues:(id)values generator:(id)generator;
 - (void)addRelatedNames;
 - (void)addSensitiveContentConfiguration;
 - (void)addSharedPhotoDisplayPreference;
@@ -46,38 +46,38 @@
 - (void)addUnknownProperties;
 - (void)addWallpaper;
 - (void)addWatchWallpaperImageData;
-- (void)buildWithSerializer:(id)a3;
-- (void)preparePhotoLineWithOptions:(id)a3;
-- (void)removeUnknownPropertiesWithTag:(id)a3;
+- (void)buildWithSerializer:(id)serializer;
+- (void)preparePhotoLineWithOptions:(id)options;
+- (void)removeUnknownPropertiesWithTag:(id)tag;
 @end
 
 @implementation CNVCard30CardBuilder
 
-+ (id)builderWithPerson:(id)a3
++ (id)builderWithPerson:(id)person
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPerson:v4];
+  personCopy = person;
+  v5 = [[self alloc] initWithPerson:personCopy];
 
   return v5;
 }
 
-- (CNVCard30CardBuilder)initWithPerson:(id)a3
+- (CNVCard30CardBuilder)initWithPerson:(id)person
 {
-  v5 = a3;
+  personCopy = person;
   v17.receiver = self;
   v17.super_class = CNVCard30CardBuilder;
   v6 = [(CNVCard30CardBuilder *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_person, a3);
+    objc_storeStrong(&v6->_person, person);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     lines = v7->_lines;
     v7->_lines = v8;
 
     v7->_groupCount = 0;
-    v10 = [v5 unknownProperties];
-    v11 = [v10 mutableCopy];
+    unknownProperties = [personCopy unknownProperties];
+    v11 = [unknownProperties mutableCopy];
     unknownProperties = v7->_unknownProperties;
     v7->_unknownProperties = v11;
 
@@ -92,9 +92,9 @@
   return v7;
 }
 
-- (void)buildWithSerializer:(id)a3
+- (void)buildWithSerializer:(id)serializer
 {
-  v4 = a3;
+  serializerCopy = serializer;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -108,7 +108,7 @@
   v9[3] = &unk_27A710EC8;
   v9[4] = self;
   v11 = &v12;
-  v6 = v4;
+  v6 = serializerCopy;
   v10 = v6;
   [(NSMutableArray *)lines enumerateObjectsUsingBlock:v9];
   retrofitPhoto = self->_retrofitPhoto;
@@ -137,21 +137,21 @@ void __44__CNVCard30CardBuilder_buildWithSerializer___block_invoke(uint64_t a1, 
   [v9 serializeWithStrategy:*(a1 + 40)];
 }
 
-- (void)removeUnknownPropertiesWithTag:(id)a3
+- (void)removeUnknownPropertiesWithTag:(id)tag
 {
   unknownProperties = self->_unknownProperties;
-  v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"propertyName != %@", a3];
+  v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"propertyName != %@", tag];
   [(NSMutableArray *)unknownProperties filterUsingPredicate:v4];
 }
 
-- (void)addLineWithName:(id)a3 value:(id)a4
+- (void)addLineWithName:(id)name value:(id)value
 {
-  v9 = a3;
-  v6 = a4;
+  nameCopy = name;
+  valueCopy = value;
   if (((*(*MEMORY[0x277CFBD30] + 16))() & 1) == 0)
   {
     lines = self->_lines;
-    v8 = [(CNVCardLineFactory *)self->_lineFactory stringLineWithName:v9 value:v6];
+    v8 = [(CNVCardLineFactory *)self->_lineFactory stringLineWithName:nameCopy value:valueCopy];
     [(NSMutableArray *)lines _cn_addNonNilObject:v8];
   }
 }
@@ -160,8 +160,8 @@ void __44__CNVCard30CardBuilder_buildWithSerializer___block_invoke(uint64_t a1, 
 {
   [(CNVCard30CardBuilder *)self addLineWithName:@"BEGIN" value:@"VCARD"];
   lines = self->_lines;
-  v4 = [(CNVCardLineFactory *)self->_lineFactory versionPlaceholderLine];
-  [(NSMutableArray *)lines _cn_addNonNilObject:v4];
+  versionPlaceholderLine = [(CNVCardLineFactory *)self->_lineFactory versionPlaceholderLine];
+  [(NSMutableArray *)lines _cn_addNonNilObject:versionPlaceholderLine];
 
   if (addBeginningOfCard_onceToken != -1)
   {
@@ -185,55 +185,55 @@ void __42__CNVCard30CardBuilder_addBeginningOfCard__block_invoke()
 {
   [(CNVCard30CardBuilder *)self addNameComponents];
   [(CNVCard30CardBuilder *)self addFullName];
-  v3 = [(CNVCardPerson *)self->_person nickname];
-  [(CNVCard30CardBuilder *)self addLineWithName:@"NICKNAME" value:v3];
+  nickname = [(CNVCardPerson *)self->_person nickname];
+  [(CNVCard30CardBuilder *)self addLineWithName:@"NICKNAME" value:nickname];
 
-  v4 = [(CNVCardPerson *)self->_person maidenName];
-  [(CNVCard30CardBuilder *)self addLineWithName:@"X-MAIDENNAME" value:v4];
+  maidenName = [(CNVCardPerson *)self->_person maidenName];
+  [(CNVCard30CardBuilder *)self addLineWithName:@"X-MAIDENNAME" value:maidenName];
 
-  v5 = [(CNVCardPerson *)self->_person phoneticFirstName];
-  [(CNVCard30CardBuilder *)self addLineWithName:@"X-PHONETIC-FIRST-NAME" value:v5];
+  phoneticFirstName = [(CNVCardPerson *)self->_person phoneticFirstName];
+  [(CNVCard30CardBuilder *)self addLineWithName:@"X-PHONETIC-FIRST-NAME" value:phoneticFirstName];
 
-  v6 = [(CNVCardPerson *)self->_person phoneticMiddleName];
-  [(CNVCard30CardBuilder *)self addLineWithName:@"X-PHONETIC-MIDDLE-NAME" value:v6];
+  phoneticMiddleName = [(CNVCardPerson *)self->_person phoneticMiddleName];
+  [(CNVCard30CardBuilder *)self addLineWithName:@"X-PHONETIC-MIDDLE-NAME" value:phoneticMiddleName];
 
-  v7 = [(CNVCardPerson *)self->_person phoneticLastName];
-  [(CNVCard30CardBuilder *)self addLineWithName:@"X-PHONETIC-LAST-NAME" value:v7];
+  phoneticLastName = [(CNVCardPerson *)self->_person phoneticLastName];
+  [(CNVCard30CardBuilder *)self addLineWithName:@"X-PHONETIC-LAST-NAME" value:phoneticLastName];
 
-  v8 = [(CNVCardPerson *)self->_person pronunciationFirstName];
-  [(CNVCard30CardBuilder *)self addLineWithName:@"X-PRONUNCIATION-FIRST-NAME" value:v8];
+  pronunciationFirstName = [(CNVCardPerson *)self->_person pronunciationFirstName];
+  [(CNVCard30CardBuilder *)self addLineWithName:@"X-PRONUNCIATION-FIRST-NAME" value:pronunciationFirstName];
 
-  v9 = [(CNVCardPerson *)self->_person pronunciationLastName];
-  [(CNVCard30CardBuilder *)self addLineWithName:@"X-PRONUNCIATION-LAST-NAME" value:v9];
+  pronunciationLastName = [(CNVCardPerson *)self->_person pronunciationLastName];
+  [(CNVCard30CardBuilder *)self addLineWithName:@"X-PRONUNCIATION-LAST-NAME" value:pronunciationLastName];
 
   [(CNVCard30CardBuilder *)self addOrganization];
-  v10 = [(CNVCardPerson *)self->_person phoneticOrganization];
-  [(CNVCard30CardBuilder *)self addLineWithName:@"X-PHONETIC-ORG" value:v10];
+  phoneticOrganization = [(CNVCardPerson *)self->_person phoneticOrganization];
+  [(CNVCard30CardBuilder *)self addLineWithName:@"X-PHONETIC-ORG" value:phoneticOrganization];
 
-  v11 = [(CNVCardPerson *)self->_person jobTitle];
-  [(CNVCard30CardBuilder *)self addLineWithName:@"TITLE" value:v11];
+  jobTitle = [(CNVCardPerson *)self->_person jobTitle];
+  [(CNVCard30CardBuilder *)self addLineWithName:@"TITLE" value:jobTitle];
 }
 
 - (void)addNameComponents
 {
-  v10 = [MEMORY[0x277CBEB18] array];
-  v3 = [(CNVCardPerson *)self->_person lastName];
-  [v10 _cn_addObject:v3 orPlaceholder:&stru_288651EC0];
+  array = [MEMORY[0x277CBEB18] array];
+  lastName = [(CNVCardPerson *)self->_person lastName];
+  [array _cn_addObject:lastName orPlaceholder:&stru_288651EC0];
 
-  v4 = [(CNVCardPerson *)self->_person firstName];
-  [v10 _cn_addObject:v4 orPlaceholder:&stru_288651EC0];
+  firstName = [(CNVCardPerson *)self->_person firstName];
+  [array _cn_addObject:firstName orPlaceholder:&stru_288651EC0];
 
-  v5 = [(CNVCardPerson *)self->_person middleName];
-  [v10 _cn_addObject:v5 orPlaceholder:&stru_288651EC0];
+  middleName = [(CNVCardPerson *)self->_person middleName];
+  [array _cn_addObject:middleName orPlaceholder:&stru_288651EC0];
 
-  v6 = [(CNVCardPerson *)self->_person title];
-  [v10 _cn_addObject:v6 orPlaceholder:&stru_288651EC0];
+  title = [(CNVCardPerson *)self->_person title];
+  [array _cn_addObject:title orPlaceholder:&stru_288651EC0];
 
-  v7 = [(CNVCardPerson *)self->_person suffix];
-  [v10 _cn_addObject:v7 orPlaceholder:&stru_288651EC0];
+  suffix = [(CNVCardPerson *)self->_person suffix];
+  [array _cn_addObject:suffix orPlaceholder:&stru_288651EC0];
 
   lines = self->_lines;
-  v9 = [(CNVCardLineFactory *)self->_lineFactory arrayLineWithName:@"N" value:v10];
+  v9 = [(CNVCardLineFactory *)self->_lineFactory arrayLineWithName:@"N" value:array];
   [(NSMutableArray *)lines _cn_addNonNilObject:v9];
 }
 
@@ -246,23 +246,23 @@ void __42__CNVCard30CardBuilder_addBeginningOfCard__block_invoke()
 - (void)addAddressingGrammar
 {
   v4 = [CNVCardLineGenerator generatorWithName:@"X-ADDRESSING-GRAMMAR" groupingCount:&self->_groupCount];
-  v3 = [(CNVCardPerson *)self->_person addressingGrammars];
-  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:v3 generator:v4];
+  addressingGrammars = [(CNVCardPerson *)self->_person addressingGrammars];
+  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:addressingGrammars generator:v4];
 }
 
 - (void)addOrganization
 {
-  v7 = [MEMORY[0x277CBEB18] array];
-  v3 = [(CNVCardPerson *)self->_person organization];
-  [v7 _cn_addObject:v3 orPlaceholder:&stru_288651EC0];
+  array = [MEMORY[0x277CBEB18] array];
+  organization = [(CNVCardPerson *)self->_person organization];
+  [array _cn_addObject:organization orPlaceholder:&stru_288651EC0];
 
-  v4 = [(CNVCardPerson *)self->_person department];
-  [v7 _cn_addObject:v4 orPlaceholder:&stru_288651EC0];
+  department = [(CNVCardPerson *)self->_person department];
+  [array _cn_addObject:department orPlaceholder:&stru_288651EC0];
 
-  if (([v7 _cn_all:*MEMORY[0x277CFBD30]] & 1) == 0)
+  if (([array _cn_all:*MEMORY[0x277CFBD30]] & 1) == 0)
   {
     lines = self->_lines;
-    v6 = [(CNVCardLineFactory *)self->_lineFactory arrayLineWithName:@"ORG" value:v7];
+    v6 = [(CNVCardLineFactory *)self->_lineFactory arrayLineWithName:@"ORG" value:array];
     [(NSMutableArray *)lines _cn_addNonNilObject:v6];
   }
 }
@@ -270,43 +270,43 @@ void __42__CNVCard30CardBuilder_addBeginningOfCard__block_invoke()
 - (void)addEmailAddresses
 {
   v4 = [CNVCardLineGenerator emailGeneratorWithName:@"EMAIL" groupingCount:&self->_groupCount];
-  v3 = [(CNVCardPerson *)self->_person emailAddresses];
-  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:v3 generator:v4];
+  emailAddresses = [(CNVCardPerson *)self->_person emailAddresses];
+  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:emailAddresses generator:v4];
 }
 
 - (void)addPhoneNumbers
 {
   v4 = [CNVCardLineGenerator phoneGeneratorWithName:@"TEL" groupingCount:&self->_groupCount];
-  v3 = [(CNVCardPerson *)self->_person phoneNumbers];
-  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:v3 generator:v4];
+  phoneNumbers = [(CNVCardPerson *)self->_person phoneNumbers];
+  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:phoneNumbers generator:v4];
 }
 
 - (void)addPostalAddresses
 {
   v4 = [CNVCardLineGenerator streetAddressGeneratorWithName:@"ADR" groupingCount:&self->_groupCount];
-  v3 = [(CNVCardPerson *)self->_person postalAddresses];
-  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:v3 generator:v4];
+  postalAddresses = [(CNVCardPerson *)self->_person postalAddresses];
+  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:postalAddresses generator:v4];
 }
 
 - (void)addSocialProfiles
 {
   v4 = [CNVCardLineGenerator socialProfileGeneratorWithName:@"X-SOCIALPROFILE" groupingCount:&self->_groupCount];
-  v3 = [(CNVCardPerson *)self->_person socialProfiles];
-  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:v3 generator:v4];
+  socialProfiles = [(CNVCardPerson *)self->_person socialProfiles];
+  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:socialProfiles generator:v4];
 }
 
 - (void)addActivityAlerts
 {
   v3 = [CNVCardLineGenerator activityAlertGeneratorWithName:@"X-ACTIVITY-ALERT" groupingCount:&self->_groupCount];
-  v4 = [(CNVCardPerson *)self->_person activityAlerts];
+  activityAlerts = [(CNVCardPerson *)self->_person activityAlerts];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__CNVCard30CardBuilder_addActivityAlerts__block_invoke;
   v6[3] = &unk_27A710EF0;
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
-  [v4 enumerateKeysAndObjectsUsingBlock:v6];
+  [activityAlerts enumerateKeysAndObjectsUsingBlock:v6];
 }
 
 void __41__CNVCard30CardBuilder_addActivityAlerts__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -329,64 +329,64 @@ void __41__CNVCard30CardBuilder_addActivityAlerts__block_invoke(uint64_t a1, voi
 
 - (void)addNote
 {
-  v3 = [(CNVCardPerson *)self->_person note];
-  [(CNVCard30CardBuilder *)self addLineWithName:@"NOTE" value:v3];
+  note = [(CNVCardPerson *)self->_person note];
+  [(CNVCard30CardBuilder *)self addLineWithName:@"NOTE" value:note];
 }
 
 - (void)addURLs
 {
   v4 = [CNVCardLineGenerator generatorWithName:@"URL" groupingCount:&self->_groupCount];
-  v3 = [(CNVCardPerson *)self->_person urls];
-  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:v3 generator:v4];
+  urls = [(CNVCardPerson *)self->_person urls];
+  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:urls generator:v4];
 }
 
 - (void)addCalendarURIs
 {
   v4 = [CNVCardLineGenerator generatorWithName:@"CALURI" groupingCount:&self->_groupCount];
-  v3 = [(CNVCardPerson *)self->_person calendarURIs];
-  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:v3 generator:v4];
+  calendarURIs = [(CNVCardPerson *)self->_person calendarURIs];
+  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:calendarURIs generator:v4];
 }
 
 - (void)addBirthday
 {
-  v3 = [(CNVCardPerson *)self->_person birthdayComponents];
-  if (v3)
+  birthdayComponents = [(CNVCardPerson *)self->_person birthdayComponents];
+  if (birthdayComponents)
   {
-    v6 = v3;
+    v6 = birthdayComponents;
     v4 = [CNVCardLineGenerator dateComponentsGeneratorWithName:@"BDAY" groupingCount:0];
     v5 = [v4 lineWithValue:v6 label:0];
     [(NSMutableArray *)self->_lines _cn_addNonNilObject:v5];
 
-    v3 = v6;
+    birthdayComponents = v6;
   }
 }
 
 - (void)addAlternateBirthday
 {
-  v3 = [(CNVCardPerson *)self->_person alternateBirthdayComponents];
-  if (v3)
+  alternateBirthdayComponents = [(CNVCardPerson *)self->_person alternateBirthdayComponents];
+  if (alternateBirthdayComponents)
   {
-    v6 = v3;
+    v6 = alternateBirthdayComponents;
     v4 = [CNVCardLineGenerator alternateDateComponentsGeneratorWithName:@"X-ALTBDAY" groupingcount:&self->_groupCount];
     v5 = [v4 lineWithValue:v6 label:0];
     [(NSMutableArray *)self->_lines _cn_addNonNilObject:v5];
 
-    v3 = v6;
+    alternateBirthdayComponents = v6;
   }
 }
 
 - (void)addOtherDates
 {
   v4 = [CNVCardLineGenerator dateComponentsGeneratorWithName:@"X-ABDATE" groupingCount:&self->_groupCount];
-  v3 = [(CNVCardPerson *)self->_person otherDateComponents];
-  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:v3 generator:v4];
+  otherDateComponents = [(CNVCardPerson *)self->_person otherDateComponents];
+  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:otherDateComponents generator:v4];
 }
 
 - (void)addRelatedNames
 {
   v4 = [CNVCardLineGenerator generatorWithName:@"X-ABRELATEDNAMES" groupingCount:&self->_groupCount];
-  v3 = [(CNVCardPerson *)self->_person relatedNames];
-  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:v3 generator:v4];
+  relatedNames = [(CNVCardPerson *)self->_person relatedNames];
+  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:relatedNames generator:v4];
 }
 
 - (void)addCompanyMarker
@@ -400,15 +400,15 @@ void __41__CNVCard30CardBuilder_addActivityAlerts__block_invoke(uint64_t a1, voi
 
 - (void)addNameOrderMarker
 {
-  v3 = [(CNVCardPerson *)self->_person nameOrder];
-  if (v3 == 1)
+  nameOrder = [(CNVCardPerson *)self->_person nameOrder];
+  if (nameOrder == 1)
   {
     v4 = @"FIRST";
   }
 
   else
   {
-    if (v3 != 2)
+    if (nameOrder != 2)
     {
       return;
     }
@@ -422,10 +422,10 @@ void __41__CNVCard30CardBuilder_addActivityAlerts__block_invoke(uint64_t a1, voi
 - (void)addCategories
 {
   [(CNVCard30CardBuilder *)self removeUnknownPropertiesWithTag:@"CATEGORIES"];
-  v6 = [(CNVCardPerson *)self->_person namesOfParentGroups];
-  if ([v6 count])
+  namesOfParentGroups = [(CNVCardPerson *)self->_person namesOfParentGroups];
+  if ([namesOfParentGroups count])
   {
-    v3 = [v6 sortedArrayUsingSelector:sel_localizedStandardCompare_];
+    v3 = [namesOfParentGroups sortedArrayUsingSelector:sel_localizedStandardCompare_];
     lines = self->_lines;
     v5 = [(CNVCardLineFactory *)self->_lineFactory arrayLineWithName:@"CATEGORIES" value:v3 itemSeparator:@", "];
     [(NSMutableArray *)lines _cn_addNonNilObject:v5];
@@ -457,13 +457,13 @@ void __41__CNVCard30CardBuilder_addActivityAlerts__block_invoke(uint64_t a1, voi
 
         v8 = *(*(&v16 + 1) + 8 * v7);
         v9 = objc_alloc(MEMORY[0x277CBEA90]);
-        v10 = [v8 originalLine];
-        v11 = [v9 initWithBase64EncodedString:v10 options:0];
+        originalLine = [v8 originalLine];
+        v11 = [v9 initWithBase64EncodedString:originalLine options:0];
 
         if (!v11)
         {
-          v12 = [v8 originalLine];
-          v11 = [v12 dataUsingEncoding:4];
+          originalLine2 = [v8 originalLine];
+          v11 = [originalLine2 dataUsingEncoding:4];
         }
 
         lines = self->_lines;
@@ -485,8 +485,8 @@ void __41__CNVCard30CardBuilder_addActivityAlerts__block_invoke(uint64_t a1, voi
 
 - (void)addCardDAVUID
 {
-  v3 = [(CNVCardPerson *)self->_person cardDAVUID];
-  [(CNVCard30CardBuilder *)self addLineWithName:@"UID" value:v3];
+  cardDAVUID = [(CNVCardPerson *)self->_person cardDAVUID];
+  [(CNVCard30CardBuilder *)self addLineWithName:@"UID" value:cardDAVUID];
 }
 
 - (void)addUID
@@ -497,20 +497,20 @@ void __41__CNVCard30CardBuilder_addActivityAlerts__block_invoke(uint64_t a1, voi
 
 - (void)addPhonemeData
 {
-  v3 = [(CNVCardPerson *)self->_person phonemeData];
-  [(CNVCard30CardBuilder *)self addLineWithName:@"X-ADDRESSBOOKSERVER-PHONEME-DATA" value:v3];
+  phonemeData = [(CNVCardPerson *)self->_person phonemeData];
+  [(CNVCard30CardBuilder *)self addLineWithName:@"X-ADDRESSBOOKSERVER-PHONEME-DATA" value:phonemeData];
 }
 
 - (void)addPreferredLikenessSource
 {
-  v3 = [(CNVCardPerson *)self->_person preferredLikenessSource];
-  [(CNVCard30CardBuilder *)self addLineWithName:@"X-APPLE-LIKENESS-SOURCE" value:v3];
+  preferredLikenessSource = [(CNVCardPerson *)self->_person preferredLikenessSource];
+  [(CNVCard30CardBuilder *)self addLineWithName:@"X-APPLE-LIKENESS-SOURCE" value:preferredLikenessSource];
 }
 
 - (void)addPreferredApplePersonaIdentifier
 {
-  v3 = [(CNVCardPerson *)self->_person preferredApplePersonaIdentifier];
-  [(CNVCard30CardBuilder *)self addLineWithName:@"X-APPLE-LIKENESS-SERVICE-IDENTIFIER" value:v3];
+  preferredApplePersonaIdentifier = [(CNVCardPerson *)self->_person preferredApplePersonaIdentifier];
+  [(CNVCard30CardBuilder *)self addLineWithName:@"X-APPLE-LIKENESS-SERVICE-IDENTIFIER" value:preferredApplePersonaIdentifier];
 }
 
 - (void)addDowntimeWhitelist
@@ -537,35 +537,35 @@ void __41__CNVCard30CardBuilder_addActivityAlerts__block_invoke(uint64_t a1, voi
 
 - (void)addImageType
 {
-  v3 = [(CNVCardPerson *)self->_person imageType];
-  [(CNVCard30CardBuilder *)self addLineWithName:@"X-IMAGETYPE" value:v3];
+  imageType = [(CNVCardPerson *)self->_person imageType];
+  [(CNVCard30CardBuilder *)self addLineWithName:@"X-IMAGETYPE" value:imageType];
 }
 
 - (void)addImageHash
 {
-  v4 = [(CNVCardPerson *)self->_person imageHash];
-  v3 = [v4 base64EncodedStringWithOptions:0];
+  imageHash = [(CNVCardPerson *)self->_person imageHash];
+  v3 = [imageHash base64EncodedStringWithOptions:0];
   [(CNVCard30CardBuilder *)self addLineWithName:@"X-IMAGEHASH" value:v3];
 }
 
 - (void)addWallpaper
 {
-  v4 = [(CNVCardPerson *)self->_person wallpaper];
-  v3 = [v4 base64EncodedStringWithOptions:0];
+  wallpaper = [(CNVCardPerson *)self->_person wallpaper];
+  v3 = [wallpaper base64EncodedStringWithOptions:0];
   [(CNVCard30CardBuilder *)self addLineWithName:@"X-WALLPAPER" value:v3];
 }
 
 - (void)addWatchWallpaperImageData
 {
-  v4 = [(CNVCardPerson *)self->_person watchWallpaperImageData];
-  v3 = [v4 base64EncodedStringWithOptions:0];
+  watchWallpaperImageData = [(CNVCardPerson *)self->_person watchWallpaperImageData];
+  v3 = [watchWallpaperImageData base64EncodedStringWithOptions:0];
   [(CNVCard30CardBuilder *)self addLineWithName:@"X-WATCH-WALLPAPER-IMAGE-DATA" value:v3];
 }
 
 - (void)addPosterIdentifier
 {
-  v3 = [(CNVCardPerson *)self->_person posterIdentifier];
-  [(CNVCard30CardBuilder *)self addLineWithName:@"VND-63-POSTER-IDENTIFIER" value:v3];
+  posterIdentifier = [(CNVCardPerson *)self->_person posterIdentifier];
+  [(CNVCard30CardBuilder *)self addLineWithName:@"VND-63-POSTER-IDENTIFIER" value:posterIdentifier];
 }
 
 - (void)addSharedPhotoDisplayPreference
@@ -581,75 +581,75 @@ void __41__CNVCard30CardBuilder_addActivityAlerts__block_invoke(uint64_t a1, voi
 
 - (void)addImageBackgroundColorsData
 {
-  v4 = [(CNVCardPerson *)self->_person imageBackgroundColorsData];
-  v3 = [v4 base64EncodedStringWithOptions:0];
+  imageBackgroundColorsData = [(CNVCardPerson *)self->_person imageBackgroundColorsData];
+  v3 = [imageBackgroundColorsData base64EncodedStringWithOptions:0];
   [(CNVCard30CardBuilder *)self addLineWithName:@"X-IMAGE-BACKGROUND-COLORS-DATA" value:v3];
 }
 
 - (void)addSensitiveContentConfiguration
 {
-  v4 = [(CNVCardPerson *)self->_person sensitiveContentConfiguration];
-  v3 = [v4 base64EncodedStringWithOptions:0];
+  sensitiveContentConfiguration = [(CNVCardPerson *)self->_person sensitiveContentConfiguration];
+  v3 = [sensitiveContentConfiguration base64EncodedStringWithOptions:0];
   [(CNVCard30CardBuilder *)self addLineWithName:@"VND-63-SENSITIVE-CONTENT-CONFIG" value:v3];
 }
 
 - (void)addInstantMessagingInfo
 {
-  v3 = [(CNVCardPerson *)self->_person instantMessagingAddresses];
-  [(CNVCard30CardBuilder *)self addLegacyInstantMessagingHandles:v3 forService:@"AIMInstant" vCardProperty:@"X-AIM"];
-  [(CNVCard30CardBuilder *)self addLegacyInstantMessagingHandles:v3 forService:@"JabberInstant" vCardProperty:@"X-JABBER"];
-  [(CNVCard30CardBuilder *)self addLegacyInstantMessagingHandles:v3 forService:@"MSNInstant" vCardProperty:@"X-MSN"];
-  [(CNVCard30CardBuilder *)self addLegacyInstantMessagingHandles:v3 forService:@"YahooInstant" vCardProperty:@"X-YAHOO"];
-  [(CNVCard30CardBuilder *)self addLegacyInstantMessagingHandles:v3 forService:@"ICQInstant" vCardProperty:@"X-ICQ"];
-  [(CNVCard30CardBuilder *)self addInstantMessagingHandles:v3];
+  instantMessagingAddresses = [(CNVCardPerson *)self->_person instantMessagingAddresses];
+  [(CNVCard30CardBuilder *)self addLegacyInstantMessagingHandles:instantMessagingAddresses forService:@"AIMInstant" vCardProperty:@"X-AIM"];
+  [(CNVCard30CardBuilder *)self addLegacyInstantMessagingHandles:instantMessagingAddresses forService:@"JabberInstant" vCardProperty:@"X-JABBER"];
+  [(CNVCard30CardBuilder *)self addLegacyInstantMessagingHandles:instantMessagingAddresses forService:@"MSNInstant" vCardProperty:@"X-MSN"];
+  [(CNVCard30CardBuilder *)self addLegacyInstantMessagingHandles:instantMessagingAddresses forService:@"YahooInstant" vCardProperty:@"X-YAHOO"];
+  [(CNVCard30CardBuilder *)self addLegacyInstantMessagingHandles:instantMessagingAddresses forService:@"ICQInstant" vCardProperty:@"X-ICQ"];
+  [(CNVCard30CardBuilder *)self addInstantMessagingHandles:instantMessagingAddresses];
 }
 
-- (void)addInstantMessagingHandles:(id)a3
+- (void)addInstantMessagingHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   v5 = [CNVCardLineGenerator instantMessagingGeneratorWithName:@"IMPP" groupingCount:&self->_groupCount];
-  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:v4 generator:v5];
+  [(CNVCard30CardBuilder *)self addPropertyLinesForValues:handlesCopy generator:v5];
 }
 
-- (void)addLegacyInstantMessagingHandles:(id)a3 forService:(id)a4 vCardProperty:(id)a5
+- (void)addLegacyInstantMessagingHandles:(id)handles forService:(id)service vCardProperty:(id)property
 {
-  v8 = a4;
-  v9 = a3;
-  v12 = [CNVCardLineGenerator legacyInstantMessagingGeneratorWithName:a5 groupingCount:&self->_groupCount];
-  v10 = (*(sFilterIMPPsForService + 2))(sFilterIMPPsForService, v8);
+  serviceCopy = service;
+  handlesCopy = handles;
+  v12 = [CNVCardLineGenerator legacyInstantMessagingGeneratorWithName:property groupingCount:&self->_groupCount];
+  v10 = (*(sFilterIMPPsForService + 2))(sFilterIMPPsForService, serviceCopy);
 
-  v11 = [v9 _cn_filter:v10];
+  v11 = [handlesCopy _cn_filter:v10];
 
   [(CNVCard30CardBuilder *)self addPropertyLinesForValues:v11 generator:v12];
 }
 
-- (void)addPhotoWithOptions:(id)a3
+- (void)addPhotoWithOptions:(id)options
 {
-  v4 = a3;
-  if ([v4 includePhotos] && (!objc_msgSend(v4, "usePhotoReferencesIfAvailable") || !-[CNVCard30CardBuilder addPhotoReferences](self, "addPhotoReferences")))
+  optionsCopy = options;
+  if ([optionsCopy includePhotos] && (!objc_msgSend(optionsCopy, "usePhotoReferencesIfAvailable") || !-[CNVCard30CardBuilder addPhotoReferences](self, "addPhotoReferences")))
   {
-    [(CNVCard30CardBuilder *)self preparePhotoLineWithOptions:v4];
+    [(CNVCard30CardBuilder *)self preparePhotoLineWithOptions:optionsCopy];
   }
 }
 
 - (BOOL)addPhotoReferences
 {
-  v3 = [(CNVCardPerson *)self->_person imageReferences];
-  if ([v3 count])
+  imageReferences = [(CNVCardPerson *)self->_person imageReferences];
+  if ([imageReferences count])
   {
-    v4 = [v3 objectAtIndex:0];
+    v4 = [imageReferences objectAtIndex:0];
     v5 = [v4 length];
     v6 = v5 != 0;
     if (v5)
     {
       v7 = [(CNVCardLineFactory *)self->_lineFactory stringLineWithName:@"PHOTO" value:v4];
       [v7 addParameterWithName:@"VALUE" value:@"uri"];
-      v8 = [(CNVCardPerson *)self->_person memojiMetadata];
-      v9 = [v8 base64EncodedStringWithOptions:0];
+      memojiMetadata = [(CNVCardPerson *)self->_person memojiMetadata];
+      v9 = [memojiMetadata base64EncodedStringWithOptions:0];
       [v7 addParameterWithName:@"VND-63-MEMOJI-DETAILS" value:v9];
 
-      v10 = [(CNVCardPerson *)self->_person largeImageCropRects];
-      [(CNVCard30CardBuilder *)self _addAttributesForCropRects:v10 imageHash:0 toLine:v7];
+      largeImageCropRects = [(CNVCardPerson *)self->_person largeImageCropRects];
+      [(CNVCard30CardBuilder *)self _addAttributesForCropRects:largeImageCropRects imageHash:0 toLine:v7];
       [(CNVCard30CardBuilder *)self addImageType];
       [(CNVCard30CardBuilder *)self addImageHash];
       [(NSMutableArray *)self->_lines _cn_addNonNilObject:v7];
@@ -665,25 +665,25 @@ void __41__CNVCard30CardBuilder_addActivityAlerts__block_invoke(uint64_t a1, voi
   return v6;
 }
 
-- (void)preparePhotoLineWithOptions:(id)a3
+- (void)preparePhotoLineWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = self->_person;
   v6 = self->_lineFactory;
-  v7 = self;
-  v7->_countOfLinesBeforePhoto = [(NSMutableArray *)v7->_lines count];
+  selfCopy = self;
+  selfCopy->_countOfLinesBeforePhoto = [(NSMutableArray *)selfCopy->_lines count];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __52__CNVCard30CardBuilder_preparePhotoLineWithOptions___block_invoke;
   v14[3] = &unk_27A710F60;
-  v15 = v4;
+  v15 = optionsCopy;
   v16 = v5;
   v17 = v6;
-  v18 = v7;
-  v8 = v7;
+  v18 = selfCopy;
+  v8 = selfCopy;
   v9 = v6;
   v10 = v5;
-  v11 = v4;
+  v11 = optionsCopy;
   v12 = [v14 copy];
   retrofitPhoto = v8->_retrofitPhoto;
   v8->_retrofitPhoto = v12;
@@ -738,16 +738,16 @@ void __52__CNVCard30CardBuilder_preparePhotoLineWithOptions___block_invoke(uint6
   }
 }
 
-+ (unint64_t)estimatedBytesAvailableForPhotoWithOptions:(id)a3 serializer:(id)a4
++ (unint64_t)estimatedBytesAvailableForPhotoWithOptions:(id)options serializer:(id)serializer
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 maximumEncodingLength])
+  optionsCopy = options;
+  serializerCopy = serializer;
+  if ([optionsCopy maximumEncodingLength])
   {
-    v7 = [v6 estimatedDataLength] + 129;
-    if (v7 <= [v5 maximumEncodingLength])
+    v7 = [serializerCopy estimatedDataLength] + 129;
+    if (v7 <= [optionsCopy maximumEncodingLength])
     {
-      v8 = [MEMORY[0x277CBEA90] _cn_maxDataLengthFittingInBase64EncodingLength:{objc_msgSend(v5, "maximumEncodingLength") - v7}];
+      v8 = [MEMORY[0x277CBEA90] _cn_maxDataLengthFittingInBase64EncodingLength:{objc_msgSend(optionsCopy, "maximumEncodingLength") - v7}];
     }
 
     else
@@ -761,10 +761,10 @@ void __52__CNVCard30CardBuilder_preparePhotoLineWithOptions___block_invoke(uint6
     v8 = -1;
   }
 
-  if ([v5 maximumImageEncodingLength])
+  if ([optionsCopy maximumImageEncodingLength])
   {
-    v9 = [MEMORY[0x277CBEA90] _cn_maxDataLengthFittingInBase64EncodingLength:{objc_msgSend(v5, "maximumImageEncodingLength")}];
-    v10 = [v5 maximumEncodingLength];
+    v9 = [MEMORY[0x277CBEA90] _cn_maxDataLengthFittingInBase64EncodingLength:{objc_msgSend(optionsCopy, "maximumImageEncodingLength")}];
+    maximumEncodingLength = [optionsCopy maximumEncodingLength];
     if (v8 >= v9)
     {
       v11 = v9;
@@ -775,7 +775,7 @@ void __52__CNVCard30CardBuilder_preparePhotoLineWithOptions___block_invoke(uint6
       v11 = v8;
     }
 
-    if (v10)
+    if (maximumEncodingLength)
     {
       v8 = v11;
     }
@@ -789,21 +789,21 @@ void __52__CNVCard30CardBuilder_preparePhotoLineWithOptions___block_invoke(uint6
   return v8;
 }
 
-- (void)_addAttributesForCropRects:(id)a3 imageHash:(id)a4 toLine:(id)a5
+- (void)_addAttributesForCropRects:(id)rects imageHash:(id)hash toLine:(id)line
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  rectsCopy = rects;
+  hashCopy = hash;
+  lineCopy = line;
+  if ([rectsCopy count])
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __68__CNVCard30CardBuilder__addAttributesForCropRects_imageHash_toLine___block_invoke;
     v11[3] = &unk_27A710F88;
-    v12 = v9;
-    v13 = self;
-    v14 = v10;
-    [v8 enumerateKeysAndObjectsUsingBlock:v11];
+    v12 = hashCopy;
+    selfCopy = self;
+    v14 = lineCopy;
+    [rectsCopy enumerateKeysAndObjectsUsingBlock:v11];
   }
 }
 
@@ -845,20 +845,20 @@ void __68__CNVCard30CardBuilder__addAttributesForCropRects_imageHash_toLine___bl
   }
 }
 
-- (void)addPropertyLinesForValues:(id)a3 generator:(id)a4
+- (void)addPropertyLinesForValues:(id)values generator:(id)generator
 {
-  v6 = a4;
+  generatorCopy = generator;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__CNVCard30CardBuilder_addPropertyLinesForValues_generator___block_invoke;
   v11[3] = &unk_27A710FB0;
-  v12 = v6;
-  v7 = v6;
-  v8 = [a3 _cn_map:v11];
+  v12 = generatorCopy;
+  v7 = generatorCopy;
+  v8 = [values _cn_map:v11];
   v9 = [v8 _cn_filter:&__block_literal_global_225];
 
-  v10 = [v9 firstObject];
-  [v7 addPrimaryValueMarkerToLine:v10];
+  firstObject = [v9 firstObject];
+  [v7 addPrimaryValueMarkerToLine:firstObject];
 
   [(NSMutableArray *)self->_lines addObjectsFromArray:v9];
 }

@@ -1,30 +1,30 @@
 @interface SUICProgressIndicatorViewController
-- (BOOL)_shouldAcceptEventsFromStateMachine:(id)a3;
+- (BOOL)_shouldAcceptEventsFromStateMachine:(id)machine;
 - (SUICProgressIndicatorViewControllerDataSource)dataSource;
 - (id)_stateMachine;
 - (void)loadView;
-- (void)progressStateMachine:(id)a3 didTransitionToState:(unint64_t)a4 fromState:(unint64_t)a5 forEvent:(unint64_t)a6;
-- (void)progressStateMachine:(id)a3 ignoredEvent:(unint64_t)a4;
+- (void)progressStateMachine:(id)machine didTransitionToState:(unint64_t)state fromState:(unint64_t)fromState forEvent:(unint64_t)event;
+- (void)progressStateMachine:(id)machine ignoredEvent:(unint64_t)event;
 @end
 
 @implementation SUICProgressIndicatorViewController
 
 - (id)_stateMachine
 {
-  v3 = [(SUICProgressIndicatorViewController *)self dataSource];
-  v4 = [v3 stateMachineForProgressIndicatorViewController:self];
+  dataSource = [(SUICProgressIndicatorViewController *)self dataSource];
+  v4 = [dataSource stateMachineForProgressIndicatorViewController:self];
 
   return v4;
 }
 
-- (BOOL)_shouldAcceptEventsFromStateMachine:(id)a3
+- (BOOL)_shouldAcceptEventsFromStateMachine:(id)machine
 {
-  v4 = a3;
-  v5 = [(SUICProgressIndicatorViewController *)self dataSource];
-  if (v5)
+  machineCopy = machine;
+  dataSource = [(SUICProgressIndicatorViewController *)self dataSource];
+  if (dataSource)
   {
-    v6 = [(SUICProgressIndicatorViewController *)self _stateMachine];
-    v7 = v6 == v4;
+    _stateMachine = [(SUICProgressIndicatorViewController *)self _stateMachine];
+    v7 = _stateMachine == machineCopy;
   }
 
   else
@@ -54,16 +54,16 @@
   }
 }
 
-- (void)progressStateMachine:(id)a3 didTransitionToState:(unint64_t)a4 fromState:(unint64_t)a5 forEvent:(unint64_t)a6
+- (void)progressStateMachine:(id)machine didTransitionToState:(unint64_t)state fromState:(unint64_t)fromState forEvent:(unint64_t)event
 {
   v45 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if ([(SUICProgressIndicatorViewController *)self _shouldAcceptEventsFromStateMachine:v10])
+  machineCopy = machine;
+  if ([(SUICProgressIndicatorViewController *)self _shouldAcceptEventsFromStateMachine:machineCopy])
   {
-    v11 = [(SUICProgressIndicatorViewController *)self dataSource];
+    dataSource = [(SUICProgressIndicatorViewController *)self dataSource];
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v11 shouldAnimateTransitionToState:a4 fromState:a5 forProgressIndicatorViewController:self];
+      v12 = [dataSource shouldAnimateTransitionToState:state fromState:fromState forProgressIndicatorViewController:self];
     }
 
     else
@@ -71,20 +71,20 @@
       v12 = 1;
     }
 
-    if (a4 > 1)
+    if (state > 1)
     {
-      if (a4 == 2)
+      if (state == 2)
       {
-        v20 = [(SUICProgressIndicatorViewController *)self dataSource];
-        v21 = [v20 progress];
+        dataSource2 = [(SUICProgressIndicatorViewController *)self dataSource];
+        progress = [dataSource2 progress];
 
         [(SUICProgressIndicatorView *)self->_progressIndicatorView setSpinning:0];
         [(SUICProgressIndicatorView *)self->_progressIndicatorView setDarkened:0 animated:v12 completion:0];
         [(SUICProgressIndicatorView *)self->_progressIndicatorView setCheckmarkVisible:0 animated:v12 completion:0];
-        -[SUICProgressIndicatorView setProgressValue:animated:completion:](self->_progressIndicatorView, "setProgressValue:animated:completion:", v12, 0, [v21 completedUnitCount] / objc_msgSend(v21, "totalUnitCount"));
+        -[SUICProgressIndicatorView setProgressValue:animated:completion:](self->_progressIndicatorView, "setProgressValue:animated:completion:", v12, 0, [progress completedUnitCount] / objc_msgSend(progress, "totalUnitCount"));
       }
 
-      else if (a4 == 3)
+      else if (state == 3)
       {
         objc_initWeak(buf, self);
         progressIndicatorView = self->_progressIndicatorView;
@@ -101,9 +101,9 @@
       }
     }
 
-    else if (a4)
+    else if (state)
     {
-      if (a4 == 1)
+      if (state == 1)
       {
         [(SUICProgressIndicatorView *)self->_progressIndicatorView setArrowVisible:0 delay:v12 animated:0 completion:0.0];
         objc_initWeak(buf, self);
@@ -141,13 +141,13 @@
     if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_INFO))
     {
       v23 = v22;
-      v24 = SUICProgressStateNameForState(a4);
-      v25 = SUICProgressStateNameForState(a5);
-      v26 = SUICProgressEventNameForEvent(a6);
+      v24 = SUICProgressStateNameForState(state);
+      v25 = SUICProgressStateNameForState(fromState);
+      v26 = SUICProgressEventNameForEvent(event);
       *buf = 136316162;
       v36 = "[SUICProgressIndicatorViewController progressStateMachine:didTransitionToState:fromState:forEvent:]";
       v37 = 2112;
-      v38 = v10;
+      v38 = machineCopy;
       v39 = 2112;
       v40 = v24;
       v41 = 2112;
@@ -164,14 +164,14 @@
     if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_ERROR))
     {
       v14 = v13;
-      v15 = [(SUICProgressIndicatorViewController *)self _stateMachine];
-      v16 = SUICProgressEventNameForEvent(a6);
+      _stateMachine = [(SUICProgressIndicatorViewController *)self _stateMachine];
+      v16 = SUICProgressEventNameForEvent(event);
       *buf = 136315906;
       v36 = "[SUICProgressIndicatorViewController progressStateMachine:didTransitionToState:fromState:forEvent:]";
       v37 = 2112;
-      v38 = v10;
+      v38 = machineCopy;
       v39 = 2112;
-      v40 = v15;
+      v40 = _stateMachine;
       v41 = 2112;
       v42 = v16;
       _os_log_error_impl(&dword_1C432B000, v14, OS_LOG_TYPE_ERROR, "%s State machine %@ doesn't match data source state machine %@, not listening to event %@", buf, 0x2Au);
@@ -234,22 +234,22 @@ void __100__SUICProgressIndicatorViewController_progressStateMachine_didTransiti
   }
 }
 
-- (void)progressStateMachine:(id)a3 ignoredEvent:(unint64_t)a4
+- (void)progressStateMachine:(id)machine ignoredEvent:(unint64_t)event
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(SUICProgressIndicatorViewController *)self _shouldAcceptEventsFromStateMachine:v6];
+  machineCopy = machine;
+  v7 = [(SUICProgressIndicatorViewController *)self _shouldAcceptEventsFromStateMachine:machineCopy];
   v8 = *MEMORY[0x1E698D0A0];
   if (v7)
   {
     if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_INFO))
     {
       v9 = v8;
-      v10 = SUICProgressEventNameForEvent(a4);
+      v10 = SUICProgressEventNameForEvent(event);
       v11 = 136315650;
       v12 = "[SUICProgressIndicatorViewController progressStateMachine:ignoredEvent:]";
       v13 = 2112;
-      v14 = v6;
+      v14 = machineCopy;
       v15 = 2112;
       v16 = v10;
       _os_log_impl(&dword_1C432B000, v9, OS_LOG_TYPE_INFO, "%s State machine %@ ignored event %@", &v11, 0x20u);
@@ -258,7 +258,7 @@ void __100__SUICProgressIndicatorViewController_progressStateMachine_didTransiti
 
   else if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_ERROR))
   {
-    [(SUICProgressIndicatorViewController *)v6 progressStateMachine:v8 ignoredEvent:self];
+    [(SUICProgressIndicatorViewController *)machineCopy progressStateMachine:v8 ignoredEvent:self];
   }
 }
 

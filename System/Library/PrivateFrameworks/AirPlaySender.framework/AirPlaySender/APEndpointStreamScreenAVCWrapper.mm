@@ -1,45 +1,45 @@
 @interface APEndpointStreamScreenAVCWrapper
-- (APEndpointStreamScreenAVCWrapper)initWithClientPID:(__CFNumber *)a3 hdrMode:(__CFString *)a4 presentationMode:(BOOL)a5 hdrMirroringSupported:(BOOL)a6 eventHandlers:(id *)a7 error:(int *)a8;
-- (id)negotiationDataForPresentationMode:(unsigned __int8)a3;
-- (int)createVideoStreamConfig:(id *)a3 withDirection:(int64_t)a4 screenOptions:(id *)a5 previousConfig:(id)a6;
-- (int)getClientUPID:(unint64_t *)a3;
-- (int)initScreeenCaptureWithScreenOptions:(id *)a3;
-- (int)initializeNegotiatorWithMode:(__CFString *)a3 presentationMode:(BOOL)a4 hdrMirroringSupported:(BOOL)a5;
-- (int)restartWithScreenOptions:(id *)a3 negotiatedBlob:(id)a4;
-- (int)setCaptureSourceIDForStreamConfig:(id)a3;
+- (APEndpointStreamScreenAVCWrapper)initWithClientPID:(__CFNumber *)d hdrMode:(__CFString *)mode presentationMode:(BOOL)presentationMode hdrMirroringSupported:(BOOL)supported eventHandlers:(id *)handlers error:(int *)error;
+- (id)negotiationDataForPresentationMode:(unsigned __int8)mode;
+- (int)createVideoStreamConfig:(id *)config withDirection:(int64_t)direction screenOptions:(id *)options previousConfig:(id)previousConfig;
+- (int)getClientUPID:(unint64_t *)d;
+- (int)initScreeenCaptureWithScreenOptions:(id *)options;
+- (int)initializeNegotiatorWithMode:(__CFString *)mode presentationMode:(BOOL)presentationMode hdrMirroringSupported:(BOOL)supported;
+- (int)restartWithScreenOptions:(id *)options negotiatedBlob:(id)blob;
+- (int)setCaptureSourceIDForStreamConfig:(id)config;
 - (int)start;
-- (int)startWithNWConnectionClientID:(unsigned __int8)a3[16] negotiatedBlob:(id)a4 screenOptions:(id *)a5 completion:(id *)a6;
+- (int)startWithNWConnectionClientID:(unsigned __int8)d[16] negotiatedBlob:(id)blob screenOptions:(id *)options completion:(id *)completion;
 - (int)stop;
-- (unint64_t)convertHDRMode:(__CFString *)a3;
-- (unsigned)isConfigPresentForPresentationMode:(unsigned __int8)a3;
+- (unint64_t)convertHDRMode:(__CFString *)mode;
+- (unsigned)isConfigPresentForPresentationMode:(unsigned __int8)mode;
 - (void)dealloc;
-- (void)getVideoResolutionFromOptions:(id *)a3 width:(unint64_t *)a4 height:(unint64_t *)a5;
-- (void)handleFailureWithError:(int)a3 reason:(__CFString *)a4;
-- (void)screenCapture:(id)a3 didStart:(BOOL)a4 withError:(id)a5;
-- (void)screenCapture:(id)a3 didStop:(BOOL)a4 withError:(id)a5;
-- (void)screenCapture:(id)a3 screenDidClear:(BOOL)a4;
-- (void)serverDidDisconnect:(id)a3;
-- (void)stopWithCompletion:(id *)a3;
-- (void)stream:(id)a3 didStart:(BOOL)a4 error:(id)a5;
-- (void)streamDidServerDie:(id)a3;
-- (void)streamDidStop:(id)a3;
+- (void)getVideoResolutionFromOptions:(id *)options width:(unint64_t *)width height:(unint64_t *)height;
+- (void)handleFailureWithError:(int)error reason:(__CFString *)reason;
+- (void)screenCapture:(id)capture didStart:(BOOL)start withError:(id)error;
+- (void)screenCapture:(id)capture didStop:(BOOL)stop withError:(id)error;
+- (void)screenCapture:(id)capture screenDidClear:(BOOL)clear;
+- (void)serverDidDisconnect:(id)disconnect;
+- (void)stopWithCompletion:(id *)completion;
+- (void)stream:(id)stream didStart:(BOOL)start error:(id)error;
+- (void)streamDidServerDie:(id)die;
+- (void)streamDidStop:(id)stop;
 @end
 
 @implementation APEndpointStreamScreenAVCWrapper
 
-- (APEndpointStreamScreenAVCWrapper)initWithClientPID:(__CFNumber *)a3 hdrMode:(__CFString *)a4 presentationMode:(BOOL)a5 hdrMirroringSupported:(BOOL)a6 eventHandlers:(id *)a7 error:(int *)a8
+- (APEndpointStreamScreenAVCWrapper)initWithClientPID:(__CFNumber *)d hdrMode:(__CFString *)mode presentationMode:(BOOL)presentationMode hdrMirroringSupported:(BOOL)supported eventHandlers:(id *)handlers error:(int *)error
 {
-  v10 = a6;
-  v11 = a5;
+  supportedCopy = supported;
+  presentationModeCopy = presentationMode;
   v19.receiver = self;
   v19.super_class = APEndpointStreamScreenAVCWrapper;
   v14 = [(APEndpointStreamScreenAVCWrapper *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    if (a3)
+    if (d)
     {
-      CFNumberGetValue(a3, kCFNumberIntType, &v14->_clientPID);
+      CFNumberGetValue(d, kCFNumberIntType, &v14->_clientPID);
     }
 
     v16 = dispatch_semaphore_create(0);
@@ -47,13 +47,13 @@
     if (v16)
     {
       v15->_eventWeakContext = FigCFWeakReferenceHolderCreateWithReferencedObject();
-      v15->_eventHandleStart = a7->var1;
-      v15->_eventHandleStop = a7->var2;
-      v15->_eventHandleFailed = a7->var3;
-      v15->_eventHandleClearScreen = a7->var4;
+      v15->_eventHandleStart = handlers->var1;
+      v15->_eventHandleStop = handlers->var2;
+      v15->_eventHandleFailed = handlers->var3;
+      v15->_eventHandleClearScreen = handlers->var4;
       v15->_isSubFrameEnabled = FigGetCFPreferenceNumberWithDefault();
-      v17 = [(APEndpointStreamScreenAVCWrapper *)v15 initializeNegotiatorWithMode:a4 presentationMode:v11 hdrMirroringSupported:v10];
-      *a8 = v17;
+      v17 = [(APEndpointStreamScreenAVCWrapper *)v15 initializeNegotiatorWithMode:mode presentationMode:presentationModeCopy hdrMirroringSupported:supportedCopy];
+      *error = v17;
       if (v17)
       {
         [APEndpointStreamScreenAVCWrapper initWithClientPID:hdrMode:presentationMode:hdrMirroringSupported:eventHandlers:error:];
@@ -69,13 +69,13 @@
   return v15;
 }
 
-- (int)initializeNegotiatorWithMode:(__CFString *)a3 presentationMode:(BOOL)a4 hdrMirroringSupported:(BOOL)a5
+- (int)initializeNegotiatorWithMode:(__CFString *)mode presentationMode:(BOOL)presentationMode hdrMirroringSupported:(BOOL)supported
 {
-  v5 = a4;
+  presentationModeCopy = presentationMode;
   v18[0] = 0;
-  if (a4 || a5)
+  if (presentationMode || supported)
   {
-    v7 = [(APEndpointStreamScreenAVCWrapper *)self convertHDRMode:a3];
+    v7 = [(APEndpointStreamScreenAVCWrapper *)self convertHDRMode:mode];
   }
 
   else
@@ -88,7 +88,7 @@
   {
     [APEndpointStreamScreenAVCWrapper initializeNegotiatorWithMode:presentationMode:hdrMirroringSupported:];
 LABEL_19:
-    v15 = -16761;
+    code = -16761;
     goto LABEL_14;
   }
 
@@ -114,12 +114,12 @@ LABEL_19:
   _Block_object_dispose(&v20, 8);
   if (!v10)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInFunction:objc_msgSend(MEMORY[0x277CCACA8] file:"stringWithUTF8String:" lineNumber:"NSString *getAVCMediaStreamNegotiatorHDRMode(void)") description:{@"APEndpointStreamScreenUDP.m", 74, @"%s", dlerror()}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInFunction:objc_msgSend(MEMORY[0x277CCACA8] file:"stringWithUTF8String:" lineNumber:"NSString *getAVCMediaStreamNegotiatorHDRMode(void)") description:{@"APEndpointStreamScreenUDP.m", 74, @"%s", dlerror()}];
     __break(1u);
 LABEL_17:
     APSLogErrorAt();
-    v15 = [v18[0] code];
+    code = [v18[0] code];
     goto LABEL_14;
   }
 
@@ -132,7 +132,7 @@ LABEL_17:
 
   v13 = [objc_alloc(getAVCMediaStreamNegotiatorClass()) initWithMode:2 options:v12 error:v18];
   v14 = 32;
-  if (v5)
+  if (presentationModeCopy)
   {
     v14 = 40;
   }
@@ -143,13 +143,13 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v15 = 0;
+  code = 0;
 LABEL_14:
 
-  return v15;
+  return code;
 }
 
-- (int)initScreeenCaptureWithScreenOptions:(id *)a3
+- (int)initScreeenCaptureWithScreenOptions:(id *)options
 {
   v18 = 0;
   v19 = &v18;
@@ -178,9 +178,9 @@ LABEL_14:
   }
 
   [v6 setScreenCaptureDisplayID:0xFFFFFFFFLL];
-  v8 = a3->var7 ? 1 : 2;
+  v8 = options->var7 ? 1 : 2;
   [v7 setDisplayMode:v8];
-  [v7 setPdProtectionOptions:a3->var9];
+  [v7 setPdProtectionOptions:options->var9];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3052000000;
@@ -217,7 +217,7 @@ LABEL_12:
   return v11;
 }
 
-- (int)setCaptureSourceIDForStreamConfig:(id)a3
+- (int)setCaptureSourceIDForStreamConfig:(id)config
 {
   avcScreenCapture = self->_avcScreenCapture;
   if (!avcScreenCapture)
@@ -226,13 +226,13 @@ LABEL_12:
     return -6727;
   }
 
-  if (!a3)
+  if (!config)
   {
     [APEndpointStreamScreenAVCWrapper setCaptureSourceIDForStreamConfig:];
     return -6727;
   }
 
-  [objc_msgSend(a3 "video")];
+  [objc_msgSend(config "video")];
   if (gLogCategory_APEndpointStreamScreenUDP > 50)
   {
     return 0;
@@ -240,7 +240,7 @@ LABEL_12:
 
   if (gLogCategory_APEndpointStreamScreenUDP != -1 || (result = _LogCategory_Initialize()) != 0)
   {
-    [APEndpointStreamScreenAVCWrapper setCaptureSourceIDForStreamConfig:a3];
+    [APEndpointStreamScreenAVCWrapper setCaptureSourceIDForStreamConfig:config];
     return 0;
   }
 
@@ -283,10 +283,10 @@ LABEL_12:
   return -6722;
 }
 
-- (int)startWithNWConnectionClientID:(unsigned __int8)a3[16] negotiatedBlob:(id)a4 screenOptions:(id *)a5 completion:(id *)a6
+- (int)startWithNWConnectionClientID:(unsigned __int8)d[16] negotiatedBlob:(id)blob screenOptions:(id *)options completion:(id *)completion
 {
   v34 = 0;
-  if (a5->var4)
+  if (options->var4)
   {
     v10 = 56;
   }
@@ -297,35 +297,35 @@ LABEL_12:
   }
 
   v11 = 40;
-  if (!a5->var4)
+  if (!options->var4)
   {
     v11 = 32;
   }
 
   v12 = *(&self->super.isa + v11);
-  [v12 setAnswer:a4 withError:&v34];
+  [v12 setAnswer:blob withError:&v34];
   if (v34)
   {
     APSLogErrorAt();
-    LODWORD(v28) = [v34 code];
+    LODWORD(start) = [v34 code];
 LABEL_31:
     v19 = 0;
     v18 = 0;
     goto LABEL_26;
   }
 
-  v13 = [(APEndpointStreamScreenAVCWrapper *)self createVideoStreamConfig:self + v10 withDirection:1 screenOptions:a5 previousConfig:0];
+  v13 = [(APEndpointStreamScreenAVCWrapper *)self createVideoStreamConfig:self + v10 withDirection:1 screenOptions:options previousConfig:0];
   if (v13)
   {
-    LODWORD(v28) = v13;
+    LODWORD(start) = v13;
     [APEndpointStreamScreenAVCWrapper startWithNWConnectionClientID:negotiatedBlob:screenOptions:completion:];
     goto LABEL_31;
   }
 
-  v14 = [(APEndpointStreamScreenAVCWrapper *)self initScreeenCaptureWithScreenOptions:a5];
+  v14 = [(APEndpointStreamScreenAVCWrapper *)self initScreeenCaptureWithScreenOptions:options];
   if (v14)
   {
-    LODWORD(v28) = v14;
+    LODWORD(start) = v14;
     [APEndpointStreamScreenAVCWrapper startWithNWConnectionClientID:negotiatedBlob:screenOptions:completion:];
     goto LABEL_31;
   }
@@ -333,7 +333,7 @@ LABEL_31:
   v15 = [(APEndpointStreamScreenAVCWrapper *)self setCaptureSourceIDForStreamConfig:*(&self->super.isa + v10)];
   if (v15)
   {
-    LODWORD(v28) = v15;
+    LODWORD(start) = v15;
     [APEndpointStreamScreenAVCWrapper startWithNWConnectionClientID:negotiatedBlob:screenOptions:completion:];
     goto LABEL_31;
   }
@@ -342,11 +342,11 @@ LABEL_31:
   if (v34)
   {
     APSLogErrorAt();
-    v33 = [v34 code];
+    code = [v34 code];
     v19 = 0;
     v18 = 0;
 LABEL_37:
-    LODWORD(v28) = v33;
+    LODWORD(start) = code;
     goto LABEL_26;
   }
 
@@ -356,7 +356,7 @@ LABEL_37:
     [APEndpointStreamScreenAVCWrapper startWithNWConnectionClientID:negotiatedBlob:screenOptions:completion:];
     v19 = 0;
     v18 = 0;
-    LODWORD(v28) = -16761;
+    LODWORD(start) = -16761;
     goto LABEL_26;
   }
 
@@ -433,16 +433,16 @@ LABEL_37:
   }
 
   _Block_object_dispose(&v40, 8);
-  v27 = [[v26 alloc] initWithNWConnectionClientID:a3 options:v17 error:&v34];
+  v27 = [[v26 alloc] initWithNWConnectionClientID:d options:v17 error:&v34];
   self->_avcVideoStream = v27;
   if (v34 || ([(AVCVideoStream *)v27 setDelegate:self], [(AVCVideoStream *)self->_avcVideoStream configure:*(&self->super.isa + v10) error:&v34], v34))
   {
     APSLogErrorAt();
-    v33 = [v34 code];
+    code = [v34 code];
     goto LABEL_37;
   }
 
-  v28 = [(APEndpointStreamScreenAVCWrapper *)self start];
+  start = [(APEndpointStreamScreenAVCWrapper *)self start];
   if (self->_eventHandleStart)
   {
     if (self->_eventWeakContext)
@@ -452,9 +452,9 @@ LABEL_37:
       {
         v30 = v29;
         eventHandleStart = self->_eventHandleStart;
-        v40 = *&a6->var0;
-        v41 = *&a6->var2;
-        eventHandleStart(v29, &v40, v28);
+        v40 = *&completion->var0;
+        v41 = *&completion->var2;
+        eventHandleStart(v29, &v40, start);
         CFRelease(v30);
       }
     }
@@ -462,7 +462,7 @@ LABEL_37:
 
 LABEL_26:
 
-  return v28;
+  return start;
 }
 
 - (int)stop
@@ -483,12 +483,12 @@ LABEL_26:
   return v5;
 }
 
-- (void)stopWithCompletion:(id *)a3
+- (void)stopWithCompletion:(id *)completion
 {
-  v5 = [(APEndpointStreamScreenAVCWrapper *)self stop];
+  stop = [(APEndpointStreamScreenAVCWrapper *)self stop];
   if (self->_eventHandleStop)
   {
-    v6 = v5;
+    v6 = stop;
     if (self->_eventWeakContext)
     {
       v7 = FigCFWeakReferenceHolderCopyReferencedObject();
@@ -496,8 +496,8 @@ LABEL_26:
       {
         v8 = v7;
         eventHandleStop = self->_eventHandleStop;
-        v10 = *&a3->var0;
-        v11 = *&a3->var2;
+        v10 = *&completion->var0;
+        v11 = *&completion->var2;
         eventHandleStop(v7, &v10, v6);
         CFRelease(v8);
       }
@@ -511,32 +511,32 @@ LABEL_26:
   self->_avcScreenCapture = 0;
 }
 
-- (unint64_t)convertHDRMode:(__CFString *)a3
+- (unint64_t)convertHDRMode:(__CFString *)mode
 {
-  if (CFEqual(a3, *MEMORY[0x277CD6530]))
+  if (CFEqual(mode, *MEMORY[0x277CD6530]))
   {
     return 1;
   }
 
   else
   {
-    return 2 * (CFEqual(a3, *MEMORY[0x277CD6528]) != 0);
+    return 2 * (CFEqual(mode, *MEMORY[0x277CD6528]) != 0);
   }
 }
 
-- (void)getVideoResolutionFromOptions:(id *)a3 width:(unint64_t *)a4 height:(unint64_t *)a5
+- (void)getVideoResolutionFromOptions:(id *)options width:(unint64_t *)width height:(unint64_t *)height
 {
   APSHasHDRSenderSupport();
   APSGetMaxSizePreservingAspectRatio();
-  *a4 = APSSettingsGetIntWithDefault();
-  *a5 = APSSettingsGetIntWithDefault();
+  *width = APSSettingsGetIntWithDefault();
+  *height = APSSettingsGetIntWithDefault();
 }
 
-- (int)restartWithScreenOptions:(id *)a3 negotiatedBlob:(id)a4
+- (int)restartWithScreenOptions:(id *)options negotiatedBlob:(id)blob
 {
   v19 = 0;
   v7 = 56;
-  if (a3->var4)
+  if (options->var4)
   {
     v8 = 56;
   }
@@ -546,13 +546,13 @@ LABEL_26:
     v8 = 48;
   }
 
-  if (a3->var4)
+  if (options->var4)
   {
     v7 = 48;
   }
 
   v9 = *(&self->super.isa + v7);
-  if (a3->var4)
+  if (options->var4)
   {
     p_videoStreamConfigForPresentationMode = &self->_videoStreamConfigForPresentationMode;
   }
@@ -563,24 +563,24 @@ LABEL_26:
   }
 
   v11 = 40;
-  if (!a3->var4)
+  if (!options->var4)
   {
     v11 = 32;
   }
 
   v12 = *(&self->super.isa + v11);
-  v13 = [(APEndpointStreamScreenAVCWrapper *)self stop];
-  if (v13)
+  stop = [(APEndpointStreamScreenAVCWrapper *)self stop];
+  if (stop)
   {
-    v17 = v13;
+    start = stop;
     [APEndpointStreamScreenAVCWrapper restartWithScreenOptions:negotiatedBlob:];
   }
 
   else
   {
-    if (a4)
+    if (blob)
     {
-      [v12 setAnswer:a4 withError:&v19];
+      [v12 setAnswer:blob withError:&v19];
       if (v19)
       {
         goto LABEL_26;
@@ -595,29 +595,29 @@ LABEL_26:
         return -6727;
       }
 
-      v14 = -[APEndpointStreamScreenAVCWrapper createVideoStreamConfig:withDirection:screenOptions:previousConfig:](self, "createVideoStreamConfig:withDirection:screenOptions:previousConfig:", p_videoStreamConfigForPresentationMode, [v9 direction], a3, v9);
+      v14 = -[APEndpointStreamScreenAVCWrapper createVideoStreamConfig:withDirection:screenOptions:previousConfig:](self, "createVideoStreamConfig:withDirection:screenOptions:previousConfig:", p_videoStreamConfigForPresentationMode, [v9 direction], options, v9);
       if (v14)
       {
-        v17 = v14;
+        start = v14;
         [APEndpointStreamScreenAVCWrapper restartWithScreenOptions:negotiatedBlob:];
-        return v17;
+        return start;
       }
     }
 
-    v15 = [(APEndpointStreamScreenAVCWrapper *)self initScreeenCaptureWithScreenOptions:a3];
+    v15 = [(APEndpointStreamScreenAVCWrapper *)self initScreeenCaptureWithScreenOptions:options];
     if (v15)
     {
-      v17 = v15;
+      start = v15;
       [APEndpointStreamScreenAVCWrapper restartWithScreenOptions:negotiatedBlob:];
-      return v17;
+      return start;
     }
 
     v16 = [(APEndpointStreamScreenAVCWrapper *)self setCaptureSourceIDForStreamConfig:*(&self->super.isa + v8)];
     if (v16)
     {
-      v17 = v16;
+      start = v16;
       [APEndpointStreamScreenAVCWrapper restartWithScreenOptions:negotiatedBlob:];
-      return v17;
+      return start;
     }
 
     [(AVCVideoStream *)self->_avcVideoStream configure:*(&self->super.isa + v8) error:&v19];
@@ -628,24 +628,24 @@ LABEL_26:
       return [v19 code];
     }
 
-    v17 = [(APEndpointStreamScreenAVCWrapper *)self start];
-    if (v17)
+    start = [(APEndpointStreamScreenAVCWrapper *)self start];
+    if (start)
     {
       [APEndpointStreamScreenAVCWrapper restartWithScreenOptions:negotiatedBlob:];
     }
   }
 
-  return v17;
+  return start;
 }
 
-- (int)createVideoStreamConfig:(id *)a3 withDirection:(int64_t)a4 screenOptions:(id *)a5 previousConfig:(id)a6
+- (int)createVideoStreamConfig:(id *)config withDirection:(int64_t)direction screenOptions:(id *)options previousConfig:(id)previousConfig
 {
   v23 = 0;
   v24 = 0;
   v22 = 0;
-  p_var4 = &a5->var4;
+  p_var4 = &options->var4;
   v12 = 40;
-  if (!a5->var4)
+  if (!options->var4)
   {
     v12 = 32;
   }
@@ -660,12 +660,12 @@ LABEL_26:
   else
   {
     v14 = v13;
-    [(APEndpointStreamScreenAVCWrapper *)self getVideoResolutionFromOptions:a5 width:&v23 height:&v22];
+    [(APEndpointStreamScreenAVCWrapper *)self getVideoResolutionFromOptions:options width:&v23 height:&v22];
     [objc_msgSend(v14 "video")];
     [objc_msgSend(v14 "video")];
     [objc_msgSend(v14 "video")];
-    [v14 setDirection:a4];
-    var1 = a5->var1;
+    [v14 setDirection:direction];
+    var1 = options->var1;
     if (var1)
     {
       [objc_msgSend(v14 "video")];
@@ -685,20 +685,20 @@ LABEL_26:
     [v14 setRtcpTimeOutInterval:30.0];
     [v14 setSRTPCipherSuite:5];
     [v14 setSRTCPCipherSuite:5];
-    if (a6)
+    if (previousConfig)
     {
-      [v14 setReceiveMasterKey:{objc_msgSend(a6, "receiveMasterKey")}];
-      var2 = [a6 sendMasterKey];
+      [v14 setReceiveMasterKey:{objc_msgSend(previousConfig, "receiveMasterKey")}];
+      var2 = [previousConfig sendMasterKey];
     }
 
     else
     {
-      [v14 setReceiveMasterKey:a5->var3];
-      var2 = a5->var2;
+      [v14 setReceiveMasterKey:options->var3];
+      var2 = options->var2;
     }
 
     [v14 setSendMasterKey:var2];
-    var8 = a5->var8;
+    var8 = options->var8;
     if (var8)
     {
       [objc_msgSend(v14 "video")];
@@ -711,13 +711,13 @@ LABEL_26:
 
     v20 = v14;
     result = 0;
-    *a3 = v20;
+    *config = v20;
   }
 
   return result;
 }
 
-- (int)getClientUPID:(unint64_t *)a3
+- (int)getClientUPID:(unint64_t *)d
 {
   v26 = *MEMORY[0x277D85DE8];
   v25 = 0;
@@ -745,8 +745,8 @@ LABEL_26:
     }
 
     _Block_object_dispose(&v16, 8);
-    v5 = [v4 getDaemonProcessInfo];
-    if (v5)
+    getDaemonProcessInfo = [v4 getDaemonProcessInfo];
+    if (getDaemonProcessInfo)
     {
       v11 = 0;
       v12 = &v11;
@@ -773,7 +773,7 @@ LABEL_26:
         [APEndpointStreamScreenAVCWrapper getClientUPID:];
       }
 
-      *a3 = [objc_msgSend(v5 objectForKeyedSubscript:{*v6), "longLongValue"}];
+      *d = [objc_msgSend(getDaemonProcessInfo objectForKeyedSubscript:{*v6), "longLongValue"}];
     }
 
     else
@@ -787,12 +787,12 @@ LABEL_26:
     v9 = getpid();
     if (proc_pidinfo(v9, 17, 1uLL, &buffer, 56) == 56)
     {
-      *a3 = v23;
+      *d = v23;
     }
 
     else
     {
-      *a3 = 0;
+      *d = 0;
       if (gLogCategory_APEndpointStreamScreenUDP <= 90 && (gLogCategory_APEndpointStreamScreenUDP != -1 || _LogCategory_Initialize()))
       {
         [APEndpointStreamScreenAVCWrapper getClientUPID:];
@@ -803,10 +803,10 @@ LABEL_26:
   return 0;
 }
 
-- (id)negotiationDataForPresentationMode:(unsigned __int8)a3
+- (id)negotiationDataForPresentationMode:(unsigned __int8)mode
 {
   v3 = 40;
-  if (!a3)
+  if (!mode)
   {
     v3 = 32;
   }
@@ -814,10 +814,10 @@ LABEL_26:
   return [*(&self->super.isa + v3) offer];
 }
 
-- (unsigned)isConfigPresentForPresentationMode:(unsigned __int8)a3
+- (unsigned)isConfigPresentForPresentationMode:(unsigned __int8)mode
 {
   v3 = 56;
-  if (!a3)
+  if (!mode)
   {
     v3 = 48;
   }
@@ -825,18 +825,18 @@ LABEL_26:
   return *(&self->super.isa + v3) != 0;
 }
 
-- (void)handleFailureWithError:(int)a3 reason:(__CFString *)a4
+- (void)handleFailureWithError:(int)error reason:(__CFString *)reason
 {
   if (self->_eventHandleFailed)
   {
     if (self->_eventWeakContext)
     {
-      v6 = *&a3;
+      v6 = *&error;
       v7 = FigCFWeakReferenceHolderCopyReferencedObject();
       if (v7)
       {
         v8 = v7;
-        (self->_eventHandleFailed)(v7, v6, a4);
+        (self->_eventHandleFailed)(v7, v6, reason);
 
         CFRelease(v8);
       }
@@ -844,16 +844,16 @@ LABEL_26:
   }
 }
 
-- (void)stream:(id)a3 didStart:(BOOL)a4 error:(id)a5
+- (void)stream:(id)stream didStart:(BOOL)start error:(id)error
 {
-  if (a5)
+  if (error)
   {
-    v6 = [a5 code];
+    code = [error code];
   }
 
   else
   {
-    v6 = 0;
+    code = 0;
   }
 
   if (gLogCategory_APEndpointStreamScreenUDP <= 30 && (gLogCategory_APEndpointStreamScreenUDP != -1 || _LogCategory_Initialize()))
@@ -861,13 +861,13 @@ LABEL_26:
     LogPrintF();
   }
 
-  self->_didStartStatus = v6;
+  self->_didStartStatus = code;
   completionSemaphore = self->_completionSemaphore;
 
   dispatch_semaphore_signal(completionSemaphore);
 }
 
-- (void)streamDidStop:(id)a3
+- (void)streamDidStop:(id)stop
 {
   if (gLogCategory_APEndpointStreamScreenUDP <= 30 && (gLogCategory_APEndpointStreamScreenUDP != -1 || _LogCategory_Initialize()))
   {
@@ -879,7 +879,7 @@ LABEL_26:
   dispatch_semaphore_signal(completionSemaphore);
 }
 
-- (void)streamDidServerDie:(id)a3
+- (void)streamDidServerDie:(id)die
 {
   if (gLogCategory_APEndpointStreamScreenUDP <= 30 && (gLogCategory_APEndpointStreamScreenUDP != -1 || _LogCategory_Initialize()))
   {
@@ -889,7 +889,7 @@ LABEL_26:
   [(APEndpointStreamScreenAVCWrapper *)self handleFailureWithError:4294960543 reason:@"Server Died"];
 }
 
-- (void)screenCapture:(id)a3 didStop:(BOOL)a4 withError:(id)a5
+- (void)screenCapture:(id)capture didStop:(BOOL)stop withError:(id)error
 {
   if (gLogCategory_APEndpointStreamScreenUDP <= 40 && (gLogCategory_APEndpointStreamScreenUDP != -1 || _LogCategory_Initialize()))
   {
@@ -897,7 +897,7 @@ LABEL_26:
   }
 }
 
-- (void)screenCapture:(id)a3 didStart:(BOOL)a4 withError:(id)a5
+- (void)screenCapture:(id)capture didStart:(BOOL)start withError:(id)error
 {
   if (gLogCategory_APEndpointStreamScreenUDP <= 40 && (gLogCategory_APEndpointStreamScreenUDP != -1 || _LogCategory_Initialize()))
   {
@@ -905,9 +905,9 @@ LABEL_26:
   }
 }
 
-- (void)screenCapture:(id)a3 screenDidClear:(BOOL)a4
+- (void)screenCapture:(id)capture screenDidClear:(BOOL)clear
 {
-  v4 = a4;
+  clearCopy = clear;
   if (gLogCategory_APEndpointStreamScreenUDP <= 40 && (gLogCategory_APEndpointStreamScreenUDP != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -921,7 +921,7 @@ LABEL_26:
       if (v6)
       {
         v7 = v6;
-        (self->_eventHandleClearScreen)(v6, v4);
+        (self->_eventHandleClearScreen)(v6, clearCopy);
 
         CFRelease(v7);
       }
@@ -929,7 +929,7 @@ LABEL_26:
   }
 }
 
-- (void)serverDidDisconnect:(id)a3
+- (void)serverDidDisconnect:(id)disconnect
 {
   if (gLogCategory_APEndpointStreamScreenUDP <= 40 && (gLogCategory_APEndpointStreamScreenUDP != -1 || _LogCategory_Initialize()))
   {

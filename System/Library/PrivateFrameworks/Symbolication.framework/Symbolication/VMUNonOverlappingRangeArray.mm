@@ -1,18 +1,18 @@
 @interface VMUNonOverlappingRangeArray
-- (void)addOrExtendRange:(_VMURange)a3;
-- (void)mergeRange:(_VMURange)a3;
-- (void)mergeRange:(_VMURange)a3 excludingRanges:(id)a4;
-- (void)mergeRanges:(id)a3;
-- (void)mergeRanges:(id)a3 excludingRanges:(id)a4;
+- (void)addOrExtendRange:(_VMURange)range;
+- (void)mergeRange:(_VMURange)range;
+- (void)mergeRange:(_VMURange)range excludingRanges:(id)ranges;
+- (void)mergeRanges:(id)ranges;
+- (void)mergeRanges:(id)ranges excludingRanges:(id)excludingRanges;
 - (void)sortAndMergeRanges;
 @end
 
 @implementation VMUNonOverlappingRangeArray
 
-- (void)addOrExtendRange:(_VMURange)a3
+- (void)addOrExtendRange:(_VMURange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   count = self->super._count;
   if (!count)
   {
@@ -22,7 +22,7 @@
   v7 = &self->super._ranges[count - 1];
   v8 = v7->location;
   v9 = v7->length;
-  if (VMURangeContainsRange(v7->location, v9, a3.location, a3.length))
+  if (VMURangeContainsRange(v7->location, v9, range.location, range.length))
   {
     return;
   }
@@ -73,10 +73,10 @@ LABEL_5:
   free(ranges);
 }
 
-- (void)mergeRange:(_VMURange)a3
+- (void)mergeRange:(_VMURange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if (!self->super._sorted)
   {
     [(VMURangeArray *)self sort];
@@ -138,15 +138,15 @@ LABEL_18:
   }
 }
 
-- (void)mergeRanges:(id)a3
+- (void)mergeRanges:(id)ranges
 {
-  v3 = *(a3 + 2);
+  v3 = *(ranges + 2);
   if (v3)
   {
     v6 = 16 * v3;
     do
     {
-      [(VMUNonOverlappingRangeArray *)self mergeRange:*(*(a3 + 2) + v6 - 16), *(*(a3 + 2) + v6 - 8)];
+      [(VMUNonOverlappingRangeArray *)self mergeRange:*(*(ranges + 2) + v6 - 16), *(*(ranges + 2) + v6 - 8)];
       v6 -= 16;
     }
 
@@ -154,9 +154,9 @@ LABEL_18:
   }
 }
 
-- (void)mergeRange:(_VMURange)a3 excludingRanges:(id)a4
+- (void)mergeRange:(_VMURange)range excludingRanges:(id)ranges
 {
-  v5 = [a4 subrangeNotExcludedBySelfForRange:{a3.location, a3.length}];
+  v5 = [ranges subrangeNotExcludedBySelfForRange:{range.location, range.length}];
   if (v6)
   {
 
@@ -164,15 +164,15 @@ LABEL_18:
   }
 }
 
-- (void)mergeRanges:(id)a3 excludingRanges:(id)a4
+- (void)mergeRanges:(id)ranges excludingRanges:(id)excludingRanges
 {
-  v4 = *(a3 + 2);
+  v4 = *(ranges + 2);
   if (v4)
   {
     v8 = 16 * v4;
     do
     {
-      [(VMUNonOverlappingRangeArray *)self mergeRange:*(*(a3 + 2) + v8 - 16) excludingRanges:*(*(a3 + 2) + v8 - 8), a4];
+      [(VMUNonOverlappingRangeArray *)self mergeRange:*(*(ranges + 2) + v8 - 16) excludingRanges:*(*(ranges + 2) + v8 - 8), excludingRanges];
       v8 -= 16;
     }
 

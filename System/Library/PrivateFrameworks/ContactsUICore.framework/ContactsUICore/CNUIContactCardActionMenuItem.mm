@@ -1,67 +1,67 @@
 @interface CNUIContactCardActionMenuItem
-- (CNUIContactCardActionMenuItem)initWithAttributedTitle:(id)a3 actionItem:(id)a4;
-- (CNUIContactCardActionMenuItem)initWithTitle:(id)a3 subtitle:(id)a4 imageName:(id)a5 shouldDisplayInline:(BOOL)a6 actionItem:(id)a7;
-- (CNUIContactCardActionMenuItem)initWithTitle:(id)a3 subtitle:(id)a4 imageName:(id)a5 shouldDisplayInline:(BOOL)a6 menuItems:(id)a7;
+- (CNUIContactCardActionMenuItem)initWithAttributedTitle:(id)title actionItem:(id)item;
+- (CNUIContactCardActionMenuItem)initWithTitle:(id)title subtitle:(id)subtitle imageName:(id)name shouldDisplayInline:(BOOL)inline actionItem:(id)item;
+- (CNUIContactCardActionMenuItem)initWithTitle:(id)title subtitle:(id)subtitle imageName:(id)name shouldDisplayInline:(BOOL)inline menuItems:(id)items;
 @end
 
 @implementation CNUIContactCardActionMenuItem
 
-- (CNUIContactCardActionMenuItem)initWithTitle:(id)a3 subtitle:(id)a4 imageName:(id)a5 shouldDisplayInline:(BOOL)a6 actionItem:(id)a7
+- (CNUIContactCardActionMenuItem)initWithTitle:(id)title subtitle:(id)subtitle imageName:(id)name shouldDisplayInline:(BOOL)inline actionItem:(id)item
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  nameCopy = name;
+  itemCopy = item;
   v25.receiver = self;
   v25.super_class = CNUIContactCardActionMenuItem;
   v16 = [(CNUIContactCardActionMenuItem *)&v25 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [titleCopy copy];
     title = v16->_title;
     v16->_title = v17;
 
-    v19 = [v13 copy];
+    v19 = [subtitleCopy copy];
     subtitle = v16->_subtitle;
     v16->_subtitle = v19;
 
-    v21 = [v14 copy];
+    v21 = [nameCopy copy];
     imageName = v16->_imageName;
     v16->_imageName = v21;
 
-    v16->_shouldDisplayInline = a6;
-    objc_storeStrong(&v16->_actionItem, a7);
+    v16->_shouldDisplayInline = inline;
+    objc_storeStrong(&v16->_actionItem, item);
     v23 = v16;
   }
 
   return v16;
 }
 
-- (CNUIContactCardActionMenuItem)initWithTitle:(id)a3 subtitle:(id)a4 imageName:(id)a5 shouldDisplayInline:(BOOL)a6 menuItems:(id)a7
+- (CNUIContactCardActionMenuItem)initWithTitle:(id)title subtitle:(id)subtitle imageName:(id)name shouldDisplayInline:(BOOL)inline menuItems:(id)items
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  nameCopy = name;
+  itemsCopy = items;
   v27.receiver = self;
   v27.super_class = CNUIContactCardActionMenuItem;
   v16 = [(CNUIContactCardActionMenuItem *)&v27 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [titleCopy copy];
     title = v16->_title;
     v16->_title = v17;
 
-    v19 = [v13 copy];
+    v19 = [subtitleCopy copy];
     subtitle = v16->_subtitle;
     v16->_subtitle = v19;
 
-    v21 = [v14 copy];
+    v21 = [nameCopy copy];
     imageName = v16->_imageName;
     v16->_imageName = v21;
 
-    v16->_shouldDisplayInline = a6;
-    v23 = [v15 copy];
+    v16->_shouldDisplayInline = inline;
+    v23 = [itemsCopy copy];
     menuItems = v16->_menuItems;
     v16->_menuItems = v23;
 
@@ -71,24 +71,24 @@
   return v16;
 }
 
-- (CNUIContactCardActionMenuItem)initWithAttributedTitle:(id)a3 actionItem:(id)a4
+- (CNUIContactCardActionMenuItem)initWithAttributedTitle:(id)title actionItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  itemCopy = item;
   v15.receiver = self;
   v15.super_class = CNUIContactCardActionMenuItem;
   v8 = [(CNUIContactCardActionMenuItem *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [titleCopy copy];
     attributedTitle = v8->_attributedTitle;
     v8->_attributedTitle = v9;
 
-    v11 = [v6 string];
+    string = [titleCopy string];
     title = v8->_title;
-    v8->_title = v11;
+    v8->_title = string;
 
-    objc_storeStrong(&v8->_actionItem, a4);
+    objc_storeStrong(&v8->_actionItem, item);
     v13 = v8;
   }
 

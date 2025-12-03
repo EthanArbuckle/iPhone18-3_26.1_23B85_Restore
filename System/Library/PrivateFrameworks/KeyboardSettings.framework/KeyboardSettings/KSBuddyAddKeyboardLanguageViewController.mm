@@ -1,11 +1,11 @@
 @interface KSBuddyAddKeyboardLanguageViewController
-- (KSBuddyAddKeyboardLanguageViewController)initWithCompletion:(id)a3;
+- (KSBuddyAddKeyboardLanguageViewController)initWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation KSBuddyAddKeyboardLanguageViewController
 
-- (KSBuddyAddKeyboardLanguageViewController)initWithCompletion:(id)a3
+- (KSBuddyAddKeyboardLanguageViewController)initWithCompletion:(id)completion
 {
   v7.receiver = self;
   v7.super_class = KSBuddyAddKeyboardLanguageViewController;
@@ -13,7 +13,7 @@
   if (v4)
   {
     v5 = objc_opt_new();
-    [v5 setCompletionBlock:a3];
+    [v5 setCompletionBlock:completion];
     [(KSBuddyAddKeyboardLanguageViewController *)v4 setWrapper:v5];
   }
 

@@ -1,9 +1,9 @@
 @interface NUGroupPattern
-- (BOOL)isEqualToGroupPattern:(id)a3;
-- (BOOL)isEqualToPattern:(id)a3;
+- (BOOL)isEqualToGroupPattern:(id)pattern;
+- (BOOL)isEqualToPattern:(id)pattern;
 - (BOOL)isFixedOrder;
-- (BOOL)match:(id)a3 location:(unint64_t *)a4 count:(unint64_t *)a5;
-- (NUGroupPattern)initWithGroup:(id)a3;
+- (BOOL)match:(id)match location:(unint64_t *)location count:(unint64_t *)count;
+- (NUGroupPattern)initWithGroup:(id)group;
 - (id)optimizedPattern;
 - (id)shortestMatch;
 - (id)stringRepresentation;
@@ -12,10 +12,10 @@
 
 @implementation NUGroupPattern
 
-- (BOOL)match:(id)a3 location:(unint64_t *)a4 count:(unint64_t *)a5
+- (BOOL)match:(id)match location:(unint64_t *)location count:(unint64_t *)count
 {
-  v11 = a5;
-  v7 = a3;
+  countCopy = count;
+  matchCopy = match;
   v8 = [(NSArray *)self->_group mutableCopy];
   v21 = 0;
   v22 = &v21;
@@ -37,10 +37,10 @@
     v12[1] = 3221225472;
     v12[2] = __39__NUGroupPattern_match_location_count___block_invoke;
     v12[3] = &unk_1E8109BE0;
-    v13 = v7;
+    v13 = matchCopy;
     v14 = &v17;
     v15 = &v21;
-    v16 = a4;
+    locationCopy = location;
     [v8 enumerateObjectsUsingBlock:v12];
     if (v18[3] == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -54,7 +54,7 @@
     _Block_object_dispose(&v17, 8);
   }
 
-  *v11 = v22[3];
+  *countCopy = v22[3];
   _Block_object_dispose(&v21, 8);
 
   return v9 == 0;
@@ -77,21 +77,21 @@ uint64_t __39__NUGroupPattern_match_location_count___block_invoke(void *a1, void
   return result;
 }
 
-- (BOOL)isEqualToGroupPattern:(id)a3
+- (BOOL)isEqualToGroupPattern:(id)pattern
 {
-  v4 = a3;
-  v5 = [(NUGroupPattern *)self group];
-  v6 = [v4 group];
+  patternCopy = pattern;
+  group = [(NUGroupPattern *)self group];
+  group2 = [patternCopy group];
 
-  LOBYTE(v4) = [v5 isEqualToArray:v6];
-  return v4;
+  LOBYTE(patternCopy) = [group isEqualToArray:group2];
+  return patternCopy;
 }
 
-- (BOOL)isEqualToPattern:(id)a3
+- (BOOL)isEqualToPattern:(id)pattern
 {
-  v4 = a3;
+  patternCopy = pattern;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUGroupPattern *)self isEqualToGroupPattern:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUGroupPattern *)self isEqualToGroupPattern:patternCopy];
 
   return v5;
 }
@@ -119,8 +119,8 @@ uint64_t __39__NUGroupPattern_match_location_count___block_invoke(void *a1, void
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) stringRepresentation];
-        [v3 addObject:v9];
+        stringRepresentation = [*(*(&v14 + 1) + 8 * i) stringRepresentation];
+        [v3 addObject:stringRepresentation];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -159,10 +159,10 @@ uint64_t __39__NUGroupPattern_match_location_count___block_invoke(void *a1, void
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) optimizedPattern];
-        if (([v9 isEmpty] & 1) == 0)
+        optimizedPattern = [*(*(&v13 + 1) + 8 * i) optimizedPattern];
+        if (([optimizedPattern isEmpty] & 1) == 0)
         {
-          [v3 addObject:v9];
+          [v3 addObject:optimizedPattern];
         }
       }
 
@@ -202,21 +202,21 @@ uint64_t __39__NUGroupPattern_match_location_count___block_invoke(void *a1, void
     if ([(NSArray *)self->_group count]== 1)
     {
       v3 = [(NSArray *)self->_group objectAtIndexedSubscript:0];
-      v4 = [v3 shortestMatch];
+      shortestMatch = [v3 shortestMatch];
     }
 
     else
     {
-      v4 = 0;
+      shortestMatch = 0;
     }
   }
 
   else
   {
-    v4 = MEMORY[0x1E695E0F0];
+    shortestMatch = MEMORY[0x1E695E0F0];
   }
 
-  return v4;
+  return shortestMatch;
 }
 
 - (BOOL)isFixedOrder
@@ -232,9 +232,9 @@ uint64_t __39__NUGroupPattern_match_location_count___block_invoke(void *a1, void
   }
 
   v3 = [(NSArray *)self->_group objectAtIndexedSubscript:0];
-  v4 = [v3 isFixedOrder];
+  isFixedOrder = [v3 isFixedOrder];
 
-  return v4;
+  return isFixedOrder;
 }
 
 - (id)tokens
@@ -260,8 +260,8 @@ uint64_t __39__NUGroupPattern_match_location_count___block_invoke(void *a1, void
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) tokens];
-        [v3 unionSet:v9];
+        tokens = [*(*(&v11 + 1) + 8 * i) tokens];
+        [v3 unionSet:tokens];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -273,11 +273,11 @@ uint64_t __39__NUGroupPattern_match_location_count___block_invoke(void *a1, void
   return v3;
 }
 
-- (NUGroupPattern)initWithGroup:(id)a3
+- (NUGroupPattern)initWithGroup:(id)group
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  groupCopy = group;
+  if (!groupCopy)
   {
     v10 = NUAssertLogger_5128();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -298,8 +298,8 @@ uint64_t __39__NUGroupPattern_match_location_count___block_invoke(void *a1, void
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v17;
         v29 = 2114;
@@ -310,8 +310,8 @@ uint64_t __39__NUGroupPattern_match_location_count___block_invoke(void *a1, void
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -320,7 +320,7 @@ uint64_t __39__NUGroupPattern_match_location_count___block_invoke(void *a1, void
     _NUAssertFailHandler("[NUGroupPattern initWithGroup:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUPattern.m", 445, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "group != nil");
   }
 
-  v5 = v4;
+  v5 = groupCopy;
   v26.receiver = self;
   v26.super_class = NUGroupPattern;
   v6 = [(NUGroupPattern *)&v26 init];

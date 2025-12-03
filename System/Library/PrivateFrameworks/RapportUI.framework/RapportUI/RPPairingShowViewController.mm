@@ -10,7 +10,7 @@
   v2 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.RapportUI"];
   v3 = [MEMORY[0x277D75AC8] storyboardWithName:@"RPPairingShow_iOS" bundle:v2];
   v4 = [v3 instantiateViewControllerWithIdentifier:@"PINShow"];
-  v5 = [v4 view];
+  view = [v4 view];
 
   return v4;
 }

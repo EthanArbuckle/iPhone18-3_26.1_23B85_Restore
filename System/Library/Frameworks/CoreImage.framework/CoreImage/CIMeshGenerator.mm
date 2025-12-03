@@ -1,6 +1,6 @@
 @interface CIMeshGenerator
 + (id)customAttributes;
-- (CGRect)extentOfMeshStart:(int)a3 count:(int)a4 halfWidth:(double)a5;
+- (CGRect)extentOfMeshStart:(int)start count:(int)count halfWidth:(double)width;
 - (id)outputImage;
 @end
 
@@ -38,9 +38,9 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:5];
 }
 
-- (CGRect)extentOfMeshStart:(int)a3 count:(int)a4 halfWidth:(double)a5
+- (CGRect)extentOfMeshStart:(int)start count:(int)count halfWidth:(double)width
 {
-  if (a4 < 1)
+  if (count < 1)
   {
     v39 = 0.0;
     v40 = 0.0;
@@ -67,15 +67,15 @@
     v59 = v11;
     v60 = v12;
     v23 = 0;
-    v24 = a3;
-    v25 = -a4;
+    startCopy = start;
+    v25 = -count;
     v26 = 0.0;
     v27 = 0.0;
     v28 = 0.0;
     v29 = 0.0;
     do
     {
-      v30 = [(NSArray *)self->inputMesh objectAtIndexedSubscript:v24, v45, v46, v47, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60];
+      v30 = [(NSArray *)self->inputMesh objectAtIndexedSubscript:startCopy, v45, v46, v47, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60];
       [v30 X];
       v32 = v31;
       [v30 Y];
@@ -84,10 +84,10 @@
       v36 = v35;
       [v30 W];
       v38 = v37;
-      v39 = fmin(v32, v36) - a5;
-      v40 = fmax(v32, v36) + a5;
-      v41 = fmin(v34, v38) - a5;
-      v42 = fmax(v34, v38) + a5;
+      v39 = fmin(v32, v36) - width;
+      v40 = fmax(v32, v36) + width;
+      v41 = fmin(v34, v38) - width;
+      v42 = fmax(v34, v38) + width;
       if (v23)
       {
         if (v39 >= v29)
@@ -112,7 +112,7 @@
       }
 
       --v23;
-      ++v24;
+      ++startCopy;
       v26 = v42;
       v27 = v41;
       v28 = v40;
@@ -161,7 +161,7 @@
           *(&v124 + i) = [(NSArray *)self->inputMesh objectAtIndexedSubscript:v11 + i];
         }
 
-        v23 = [(CIMeshGenerator *)self _CIMesh32];
+        _CIMesh32 = [(CIMeshGenerator *)self _CIMesh32];
         v120[0] = v124;
         v120[1] = v125;
         v120[2] = v126;
@@ -184,7 +184,7 @@
         v122 = inputColor;
         *&v26 = v9;
         v123 = [MEMORY[0x1E696AD98] numberWithFloat:v26];
-        v27 = [v23 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v120, 35), v15, v17, v19, v21}];
+        v27 = [_CIMesh32 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v120, 35), v15, v17, v19, v21}];
         if (v10)
         {
           v27 = [v27 imageByCompositingOverImage:v10];
@@ -222,7 +222,7 @@
       }
 
       while (v36 != 128);
-      v38 = [(CIMeshGenerator *)self _CIMesh16];
+      _CIMesh16 = [(CIMeshGenerator *)self _CIMesh16];
       v116[0] = v124;
       v116[1] = v125;
       v116[2] = v126;
@@ -237,7 +237,7 @@
       v118 = v40;
       *&v41 = v9;
       v119 = [MEMORY[0x1E696AD98] numberWithFloat:v41];
-      v42 = [v38 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v116, 19), v29, v31, v33, v35}];
+      v42 = [_CIMesh16 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v116, 19), v29, v31, v33, v35}];
       if (v10)
       {
         v42 = [v42 imageByCompositingOverImage:v10];
@@ -265,7 +265,7 @@
       }
 
       while (v51 != 64);
-      v53 = [(CIMeshGenerator *)self _CIMesh8];
+      _CIMesh8 = [(CIMeshGenerator *)self _CIMesh8];
       v112[0] = v124;
       v112[1] = v125;
       v112[2] = v126;
@@ -276,7 +276,7 @@
       v114 = v55;
       *&v56 = v9;
       v115 = [MEMORY[0x1E696AD98] numberWithFloat:v56];
-      v57 = [v53 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v112, 11), v44, v46, v48, v50}];
+      v57 = [_CIMesh8 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v112, 11), v44, v46, v48, v50}];
       if (v10)
       {
         v57 = [v57 imageByCompositingOverImage:v10];
@@ -304,7 +304,7 @@
       }
 
       while (v66 != 32);
-      v68 = [(CIMeshGenerator *)self _CIMesh4];
+      _CIMesh4 = [(CIMeshGenerator *)self _CIMesh4];
       v108[0] = v124;
       v108[1] = v125;
       v69 = [MEMORY[0x1E696AD98] numberWithDouble:v6 + v6];
@@ -313,7 +313,7 @@
       v110 = v70;
       *&v71 = v9;
       v111 = [MEMORY[0x1E696AD98] numberWithFloat:v71];
-      v72 = [v68 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v108, 7), v59, v61, v63, v65}];
+      v72 = [_CIMesh4 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v108, 7), v59, v61, v63, v65}];
       if (v10)
       {
         v72 = [v72 imageByCompositingOverImage:v10];
@@ -333,7 +333,7 @@
       v80 = v79;
       *&v124 = [(NSArray *)self->inputMesh objectAtIndexedSubscript:v11];
       *(&v124 + 1) = [(NSArray *)self->inputMesh objectAtIndexedSubscript:v11 + 1];
-      v81 = [(CIMeshGenerator *)self _CIMesh2];
+      _CIMesh2 = [(CIMeshGenerator *)self _CIMesh2];
       v104 = v124;
       v82 = [MEMORY[0x1E696AD98] numberWithDouble:v6 + v6];
       v83 = self->inputColor;
@@ -341,7 +341,7 @@
       v106 = v83;
       *&v84 = v9;
       v107 = [MEMORY[0x1E696AD98] numberWithFloat:v84];
-      v85 = [v81 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v104, 5), v74, v76, v78, v80}];
+      v85 = [_CIMesh2 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v104, 5), v74, v76, v78, v80}];
       if (v10)
       {
         v85 = [v85 imageByCompositingOverImage:v10];
@@ -361,7 +361,7 @@
       v93 = v92;
       v94 = [(NSArray *)self->inputMesh objectAtIndexedSubscript:v11];
       *&v124 = v94;
-      v95 = [(CIMeshGenerator *)self _CIMesh1];
+      _CIMesh1 = [(CIMeshGenerator *)self _CIMesh1];
       v103[0] = v94;
       v96 = [MEMORY[0x1E696AD98] numberWithDouble:v6 + v6];
       v97 = self->inputColor;
@@ -369,7 +369,7 @@
       v103[2] = v97;
       *&v98 = v9;
       v103[3] = [MEMORY[0x1E696AD98] numberWithFloat:v98];
-      v99 = [v95 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v103, 4), v87, v89, v91, v93}];
+      v99 = [_CIMesh1 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v103, 4), v87, v89, v91, v93}];
       if (v10)
       {
         return [v99 imageByCompositingOverImage:v10];

@@ -1,26 +1,26 @@
 @interface HMFSoftwareVersion
-+ (BOOL)isValidVersionString:(id)a3;
++ (BOOL)isValidVersionString:(id)string;
 + (id)logCategory;
-- (HMFSoftwareVersion)initWithCoder:(id)a3;
-- (HMFSoftwareVersion)initWithMajorVersion:(unint64_t)a3 minorVersion:(unint64_t)a4 updateVersion:(unint64_t)a5 buildVersion:(id)a6;
-- (HMFSoftwareVersion)initWithString:(id)a3;
+- (HMFSoftwareVersion)initWithCoder:(id)coder;
+- (HMFSoftwareVersion)initWithMajorVersion:(unint64_t)version minorVersion:(unint64_t)minorVersion updateVersion:(unint64_t)updateVersion buildVersion:(id)buildVersion;
+- (HMFSoftwareVersion)initWithString:(id)string;
 - (NSString)shortVersionString;
 - (id)versionString;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMFSoftwareVersion
 
-- (HMFSoftwareVersion)initWithMajorVersion:(unint64_t)a3 minorVersion:(unint64_t)a4 updateVersion:(unint64_t)a5 buildVersion:(id)a6
+- (HMFSoftwareVersion)initWithMajorVersion:(unint64_t)version minorVersion:(unint64_t)minorVersion updateVersion:(unint64_t)updateVersion buildVersion:(id)buildVersion
 {
-  v10 = a6;
+  buildVersionCopy = buildVersion;
   v15.receiver = self;
   v15.super_class = HMFSoftwareVersion;
-  v11 = [(HMFVersion *)&v15 initWithMajorVersion:a3 minorVersion:a4 updateVersion:a5];
+  v11 = [(HMFVersion *)&v15 initWithMajorVersion:version minorVersion:minorVersion updateVersion:updateVersion];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [buildVersionCopy copy];
     buildVersion = v11->_buildVersion;
     v11->_buildVersion = v12;
   }
@@ -28,14 +28,14 @@
   return v11;
 }
 
-- (HMFSoftwareVersion)initWithString:(id)a3
+- (HMFSoftwareVersion)initWithString:(id)string
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
     v5 = +[HMFVersion versionRegex];
-    v6 = [v5 matchesInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+    v6 = [v5 matchesInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
 
     if ([v6 count])
     {
@@ -43,10 +43,10 @@
       if ([v7 numberOfRanges])
       {
         v8 = [v7 rangeAtIndex:1];
-        v10 = [v4 substringWithRange:{v8, v9}];
+        v10 = [stringCopy substringWithRange:{v8, v9}];
         if ([v7 numberOfRanges] >= 4 && (v11 = objc_msgSend(v7, "rangeAtIndex:", 3), v12))
         {
-          v13 = [v4 substringWithRange:{v11, v12}];
+          v13 = [stringCopy substringWithRange:{v11, v12}];
         }
 
         else
@@ -56,7 +56,7 @@
 
         if ([v7 numberOfRanges] >= 6 && (v18 = objc_msgSend(v7, "rangeAtIndex:", 5), v19))
         {
-          v20 = [v4 substringWithRange:{v18, v19}];
+          v20 = [stringCopy substringWithRange:{v18, v19}];
         }
 
         else
@@ -66,7 +66,7 @@
 
         if ([v7 numberOfRanges] >= 0xD && (v21 = objc_msgSend(v7, "rangeAtIndex:", 12), v22))
         {
-          v23 = [v4 substringWithRange:{v21, v22}];
+          v23 = [stringCopy substringWithRange:{v21, v22}];
         }
 
         else
@@ -79,7 +79,7 @@
           v24 = [v7 rangeAtIndex:10];
           if (v25)
           {
-            v26 = [v4 substringWithRange:{v24, v25}];
+            v26 = [stringCopy substringWithRange:{v24, v25}];
 
             v23 = v26;
           }
@@ -90,7 +90,7 @@
           v27 = [v7 rangeAtIndex:8];
           if (v28)
           {
-            v29 = [v4 substringWithRange:{v27, v28}];
+            v29 = [stringCopy substringWithRange:{v27, v28}];
 
             v23 = v29;
           }
@@ -98,7 +98,7 @@
 
         self = -[HMFSoftwareVersion initWithMajorVersion:minorVersion:updateVersion:buildVersion:](self, "initWithMajorVersion:minorVersion:updateVersion:buildVersion:", [v10 integerValue], objc_msgSend(v13, "integerValue"), objc_msgSend(v20, "integerValue"), v23);
 
-        v14 = self;
+        selfCopy = self;
       }
 
       else
@@ -112,12 +112,12 @@
           v35 = 138543618;
           v36 = v32;
           v37 = 2112;
-          v38 = v4;
+          v38 = stringCopy;
           _os_log_impl(&dword_22ADEC000, v31, OS_LOG_TYPE_INFO, "%{public}@Invalid version string: %@", &v35, 0x16u);
         }
 
         objc_autoreleasePoolPop(v30);
-        v14 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -132,66 +132,66 @@
         v35 = 138543618;
         v36 = v17;
         v37 = 2112;
-        v38 = v4;
+        v38 = stringCopy;
         _os_log_impl(&dword_22ADEC000, v16, OS_LOG_TYPE_INFO, "%{public}@Invalid version string: %@", &v35, 0x16u);
       }
 
       objc_autoreleasePoolPop(v15);
-      v14 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
   v33 = *MEMORY[0x277D85DE8];
-  return v14;
+  return selfCopy;
 }
 
 - (id)versionString
 {
-  v3 = [(HMFSoftwareVersion *)self buildVersion];
+  buildVersion = [(HMFSoftwareVersion *)self buildVersion];
 
-  if (v3)
+  if (buildVersion)
   {
     v4 = MEMORY[0x277CCACA8];
     v10.receiver = self;
     v10.super_class = HMFSoftwareVersion;
-    v5 = [(HMFVersion *)&v10 versionString];
-    v6 = [(HMFSoftwareVersion *)self buildVersion];
-    v7 = [v4 stringWithFormat:@"%@ (%@)", v5, v6];
+    versionString = [(HMFVersion *)&v10 versionString];
+    buildVersion2 = [(HMFSoftwareVersion *)self buildVersion];
+    versionString2 = [v4 stringWithFormat:@"%@ (%@)", versionString, buildVersion2];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = HMFSoftwareVersion;
-    v7 = [(HMFVersion *)&v9 versionString];
+    versionString2 = [(HMFVersion *)&v9 versionString];
   }
 
-  return v7;
+  return versionString2;
 }
 
 - (NSString)shortVersionString
 {
   v4.receiver = self;
   v4.super_class = HMFSoftwareVersion;
-  v2 = [(HMFVersion *)&v4 versionString];
+  versionString = [(HMFVersion *)&v4 versionString];
 
-  return v2;
+  return versionString;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v13.receiver = self;
   v13.super_class = HMFSoftwareVersion;
-  v5 = [(HMFVersion *)&v13 compare:v4];
-  if (!v5)
+  buildVersion = [(HMFVersion *)&v13 compare:compareCopy];
+  if (!buildVersion)
   {
-    v6 = v4;
+    v6 = compareCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -205,35 +205,35 @@
 
     v8 = v7;
 
-    v5 = [(HMFSoftwareVersion *)self buildVersion];
-    if (v5)
+    buildVersion = [(HMFSoftwareVersion *)self buildVersion];
+    if (buildVersion)
     {
-      v9 = [v8 buildVersion];
+      buildVersion2 = [v8 buildVersion];
 
-      if (v9)
+      if (buildVersion2)
       {
-        v10 = [(HMFSoftwareVersion *)self buildVersion];
-        v11 = [v8 buildVersion];
-        v5 = [v10 compare:v11 options:65];
+        buildVersion3 = [(HMFSoftwareVersion *)self buildVersion];
+        buildVersion4 = [v8 buildVersion];
+        buildVersion = [buildVersion3 compare:buildVersion4 options:65];
       }
 
       else
       {
-        v5 = 0;
+        buildVersion = 0;
       }
     }
   }
 
-  return v5;
+  return buildVersion;
 }
 
-+ (BOOL)isValidVersionString:(id)a3
++ (BOOL)isValidVersionString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[HMFVersion versionRegex];
   if (v4)
   {
-    v5 = [v4 matchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+    v5 = [v4 matchesInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
     v6 = [v5 count] != 0;
   }
 
@@ -245,34 +245,34 @@
   return v6;
 }
 
-- (HMFSoftwareVersion)initWithCoder:(id)a3
+- (HMFSoftwareVersion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [[HMFVersion alloc] initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [[HMFVersion alloc] initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.build"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.build"];
     self = [(HMFSoftwareVersion *)self initWithMajorVersion:[(HMFVersion *)v5 majorVersion] minorVersion:[(HMFVersion *)v5 minorVersion] updateVersion:[(HMFVersion *)v5 updateVersion] buildVersion:v6];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HMFSoftwareVersion;
-  v4 = a3;
-  [(HMFVersion *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HMFVersion *)&v6 encodeWithCoder:coderCopy];
   v5 = [(HMFSoftwareVersion *)self buildVersion:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"HM.build"];
+  [coderCopy encodeObject:v5 forKey:@"HM.build"];
 }
 
 + (id)logCategory

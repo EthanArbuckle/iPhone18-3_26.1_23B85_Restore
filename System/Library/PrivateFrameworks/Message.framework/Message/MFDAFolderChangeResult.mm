@@ -1,28 +1,28 @@
 @interface MFDAFolderChangeResult
-- (MFDAFolderChangeResult)initWithStatusCode:(int64_t)a3 error:(id)a4 folderID:(id)a5 folderName:(id)a6;
+- (MFDAFolderChangeResult)initWithStatusCode:(int64_t)code error:(id)error folderID:(id)d folderName:(id)name;
 - (id)description;
 @end
 
 @implementation MFDAFolderChangeResult
 
-- (MFDAFolderChangeResult)initWithStatusCode:(int64_t)a3 error:(id)a4 folderID:(id)a5 folderName:(id)a6
+- (MFDAFolderChangeResult)initWithStatusCode:(int64_t)code error:(id)error folderID:(id)d folderName:(id)name
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  errorCopy = error;
+  dCopy = d;
+  nameCopy = name;
   v21.receiver = self;
   v21.super_class = MFDAFolderChangeResult;
   v14 = [(MFDAFolderChangeResult *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    v14->_statusCode = a3;
-    objc_storeStrong(&v14->_error, a4);
-    v16 = [v12 copy];
+    v14->_statusCode = code;
+    objc_storeStrong(&v14->_error, error);
+    v16 = [dCopy copy];
     folderID = v15->_folderID;
     v15->_folderID = v16;
 
-    v18 = [v13 copy];
+    v18 = [nameCopy copy];
     folderName = v15->_folderName;
     v15->_folderName = v18;
   }

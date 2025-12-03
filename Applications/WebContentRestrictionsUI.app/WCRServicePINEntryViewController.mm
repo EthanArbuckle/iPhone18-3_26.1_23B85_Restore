@@ -5,8 +5,8 @@
 - (__CFString)blockTimeIntervalKey;
 - (__CFString)blockedStateKey;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)setDelegate:(id)a3;
-- (void)setPane:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setPane:(id)pane;
 - (void)viewDidLoad;
 @end
 
@@ -42,9 +42,9 @@
 - (void)viewDidLoad
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v5 = 16;
   }
@@ -60,9 +60,9 @@
   [(WCRServicePINEntryViewController *)&v6 viewDidLoad];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -78,14 +78,14 @@
   }
 }
 
-- (void)setPane:(id)a3
+- (void)setPane:(id)pane
 {
   v6.receiver = self;
   v6.super_class = WCRServicePINEntryViewController;
-  [(WCRServicePINEntryViewController *)&v6 setPane:a3];
+  [(WCRServicePINEntryViewController *)&v6 setPane:pane];
   v4 = sub_100001354(@"PINCODE_TITLE_LOCKED");
-  v5 = [(WCRServicePINEntryViewController *)self navigationItem];
-  [v5 setTitle:v4];
+  navigationItem = [(WCRServicePINEntryViewController *)self navigationItem];
+  [navigationItem setTitle:v4];
 }
 
 - (BOOL)requiresKeyboard
@@ -99,9 +99,9 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }

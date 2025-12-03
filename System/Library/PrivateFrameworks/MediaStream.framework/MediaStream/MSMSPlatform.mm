@@ -1,58 +1,58 @@
 @interface MSMSPlatform
 + (id)thePlatform;
 - (BOOL)_mayPerformFileTransfer;
-- (BOOL)personIDUsesProductionPushEnvironment:(id)a3;
+- (BOOL)personIDUsesProductionPushEnvironment:(id)environment;
 - (Class)deletePluginClass;
 - (Class)pluginClass;
 - (Class)publisherPluginClass;
 - (Class)subscriberPluginClass;
 - (MSMSPlatform)init;
-- (__CFString)_facilityStringForFacility:(int)a3;
+- (__CFString)_facilityStringForFacility:(int)facility;
 - (id)OSString;
 - (id)OSVersion;
 - (id)UDID;
-- (id)_accountForPersonID:(id)a3;
+- (id)_accountForPersonID:(id)d;
 - (id)appBundleInfoString;
-- (id)authTokenForPersonID:(id)a3;
-- (id)baseURLForPersonID:(id)a3;
-- (id)contentURLForPersonID:(id)a3;
-- (id)fullNameFromFirstName:(id)a3 lastName:(id)a4;
+- (id)authTokenForPersonID:(id)d;
+- (id)baseURLForPersonID:(id)d;
+- (id)contentURLForPersonID:(id)d;
+- (id)fullNameFromFirstName:(id)name lastName:(id)lastName;
 - (id)hardwareString;
 - (id)pathMediaStreamDir;
 - (id)socketOptions;
-- (id)stringForSysctlKey:(id)a3;
+- (id)stringForSysctlKey:(id)key;
 - (void)_rereadDefaults;
 - (void)didDetectUnrecoverableCondition;
-- (void)logFacility:(int)a3 level:(int)a4 format:(id)a5 args:(char *)a6;
-- (void)logFile:(const char *)a3 func:(const char *)a4 line:(int)a5 facility:(int)a6 level:(int)a7 format:(id)a8 args:(char *)a9;
+- (void)logFacility:(int)facility level:(int)level format:(id)format args:(char *)args;
+- (void)logFile:(const char *)file func:(const char *)func line:(int)line facility:(int)facility level:(int)level format:(id)format args:(char *)args;
 @end
 
 @implementation MSMSPlatform
 
-- (id)fullNameFromFirstName:(id)a3 lastName:(id)a4
+- (id)fullNameFromFirstName:(id)name lastName:(id)lastName
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] && objc_msgSend(v6, "length"))
+  nameCopy = name;
+  lastNameCopy = lastName;
+  if ([nameCopy length] && objc_msgSend(lastNameCopy, "length"))
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v5, v6];
-    v8 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v9 = [v7 stringByTrimmingCharactersInSet:v8];
+    lastNameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", nameCopy, lastNameCopy];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v9 = [lastNameCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     goto LABEL_9;
   }
 
-  if ([v5 length])
+  if ([nameCopy length])
   {
-    v10 = v5;
+    v10 = nameCopy;
 LABEL_8:
     v9 = v10;
     goto LABEL_9;
   }
 
-  if ([v6 length])
+  if ([lastNameCopy length])
   {
-    v10 = v6;
+    v10 = lastNameCopy;
     goto LABEL_8;
   }
 
@@ -62,9 +62,9 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)personIDUsesProductionPushEnvironment:(id)a3
+- (BOOL)personIDUsesProductionPushEnvironment:(id)environment
 {
-  v3 = [(MSMSPlatform *)self _accountForPersonID:a3];
+  v3 = [(MSMSPlatform *)self _accountForPersonID:environment];
   v4 = [v3 propertiesForDataclass:*MEMORY[0x277CB9158]];
   v5 = [v4 objectForKey:@"apsEnv"];
   v6 = [v5 isEqualToString:@"production"];
@@ -72,12 +72,12 @@ LABEL_9:
   return v6;
 }
 
-- (id)contentURLForPersonID:(id)a3
+- (id)contentURLForPersonID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(MSMSPlatform *)self _accountForPersonID:v4];
+    v5 = [(MSMSPlatform *)self _accountForPersonID:dCopy];
     v6 = v5;
     if (!v5)
     {
@@ -91,7 +91,7 @@ LABEL_9:
 
     if (v10)
     {
-      v11 = [v10 URLByAppendingPathComponent:v4];
+      v11 = [v10 URLByAppendingPathComponent:dCopy];
     }
 
     else
@@ -109,11 +109,11 @@ LABEL_5:
   return v11;
 }
 
-- (id)baseURLForPersonID:(id)a3
+- (id)baseURLForPersonID:(id)d
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 objectForKey:@"MSForcedBaseURL"];
+  dCopy = d;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:@"MSForcedBaseURL"];
 
   if (v6)
   {
@@ -122,7 +122,7 @@ LABEL_5:
 
   else
   {
-    v8 = [(MSMSPlatform *)self _accountForPersonID:v4];
+    v8 = [(MSMSPlatform *)self _accountForPersonID:dCopy];
     v9 = MEMORY[0x277CBEBC0];
     v10 = [v8 propertiesForDataclass:*MEMORY[0x277CB9158]];
     v11 = [v10 objectForKey:@"url"];
@@ -132,15 +132,15 @@ LABEL_5:
   return v7;
 }
 
-- (id)authTokenForPersonID:(id)a3
+- (id)authTokenForPersonID:(id)d
 {
-  v4 = a3;
-  v5 = [(MSMSPlatform *)self _accountForPersonID:v4];
+  dCopy = d;
+  v5 = [(MSMSPlatform *)self _accountForPersonID:dCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 aa_authToken];
-    if (v7)
+    aa_authToken = [v5 aa_authToken];
+    if (aa_authToken)
     {
       goto LABEL_7;
     }
@@ -152,20 +152,20 @@ LABEL_5:
     }
 
     v8 = +[MSAuthenticationManager sharedManager];
-    [v8 didEncounterAuthenticationFailureForPersonID:v4];
+    [v8 didEncounterAuthenticationFailureForPersonID:dCopy];
   }
 
-  v7 = 0;
+  aa_authToken = 0;
 LABEL_7:
 
-  return v7;
+  return aa_authToken;
 }
 
-- (id)_accountForPersonID:(id)a3
+- (id)_accountForPersonID:(id)d
 {
-  v4 = a3;
-  v5 = [(MSMSPlatform *)self accountStore];
-  v6 = [v5 aa_appleAccountWithPersonID:v4];
+  dCopy = d;
+  accountStore = [(MSMSPlatform *)self accountStore];
+  v6 = [accountStore aa_appleAccountWithPersonID:dCopy];
 
   return v6;
 }
@@ -219,10 +219,10 @@ LABEL_7:
   }
 
   v4 = +[MSPauseManager sharedManager];
-  v5 = [v4 isPaused];
+  isPaused = [v4 isPaused];
 
   v6 = *MEMORY[0x277D85DE8];
-  return v3 & (v5 ^ 1);
+  return v3 & (isPaused ^ 1);
 }
 
 - (id)appBundleInfoString
@@ -290,11 +290,11 @@ uint64_t __30__MSMSPlatform_hardwareString__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)stringForSysctlKey:(id)a3
+- (id)stringForSysctlKey:(id)key
 {
   v8 = *MEMORY[0x277D85DE8];
   v6 = 256;
-  if (sysctlbyname([a3 UTF8String], v7, &v6, 0, 0))
+  if (sysctlbyname([key UTF8String], v7, &v6, 0, 0))
   {
     v3 = @"UNKNOWN";
   }
@@ -312,10 +312,10 @@ uint64_t __30__MSMSPlatform_hardwareString__block_invoke()
 
 - (id)OSVersion
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 operatingSystemVersionString];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  operatingSystemVersionString = [processInfo operatingSystemVersionString];
 
-  return v3;
+  return operatingSystemVersionString;
 }
 
 - (id)UDID
@@ -340,49 +340,49 @@ uint64_t __20__MSMSPlatform_UDID__block_invoke()
 - (Class)deletePluginClass
 {
   v7 = *MEMORY[0x277D85DE8];
-  v2 = [(MSMSPlatform *)self pluginClass];
+  pluginClass = [(MSMSPlatform *)self pluginClass];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = 138543362;
-    v6 = v2;
+    v6 = pluginClass;
     _os_log_debug_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "deleterPluginClass principalClass %{public}@", &v5, 0xCu);
   }
 
   v3 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return pluginClass;
 }
 
 - (Class)subscriberPluginClass
 {
   v7 = *MEMORY[0x277D85DE8];
-  v2 = [(MSMSPlatform *)self pluginClass];
+  pluginClass = [(MSMSPlatform *)self pluginClass];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = 138543362;
-    v6 = v2;
+    v6 = pluginClass;
     _os_log_debug_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "subscriberPluginClass principalClass %{public}@", &v5, 0xCu);
   }
 
   v3 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return pluginClass;
 }
 
 - (Class)publisherPluginClass
 {
   v7 = *MEMORY[0x277D85DE8];
-  v2 = [(MSMSPlatform *)self pluginClass];
+  pluginClass = [(MSMSPlatform *)self pluginClass];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = 138543362;
-    v6 = v2;
+    v6 = pluginClass;
     _os_log_debug_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "publisherPluginClass principalClass %{public}@", &v5, 0xCu);
   }
 
   v3 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return pluginClass;
 }
 
 - (Class)pluginClass
@@ -393,9 +393,9 @@ uint64_t __20__MSMSPlatform_UDID__block_invoke()
   }
 
   v2 = [MEMORY[0x277CCA8D8] bundleWithPath:pluginClass_pluginPath];
-  v3 = [v2 principalClass];
+  principalClass = [v2 principalClass];
 
-  return v3;
+  return principalClass;
 }
 
 void __27__MSMSPlatform_pluginClass__block_invoke()
@@ -436,13 +436,13 @@ void __34__MSMSPlatform_pathMediaStreamDir__block_invoke()
   pathMediaStreamDir_path = v1;
 }
 
-- (void)logFile:(const char *)a3 func:(const char *)a4 line:(int)a5 facility:(int)a6 level:(int)a7 format:(id)a8 args:(char *)a9
+- (void)logFile:(const char *)file func:(const char *)func line:(int)line facility:(int)facility level:(int)level format:(id)format args:(char *)args
 {
   v13 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = a8;
+    formatCopy = format;
     _os_log_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unexpected call to legacy logging method, please switch to os_log(): %@", &v11, 0xCu);
   }
 
@@ -479,34 +479,34 @@ void __34__MSMSPlatform_pathMediaStreamDir__block_invoke()
   self->_isPerfLoggingEnabled = v6;
   if (v6 != isPerfLoggingEnabled)
   {
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 postNotificationName:@"MSPlatformPerformanceLoggingSettingDidChange" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"MSPlatformPerformanceLoggingSettingDidChange" object:self];
   }
 }
 
-- (void)logFacility:(int)a3 level:(int)a4 format:(id)a5 args:(char *)a6
+- (void)logFacility:(int)facility level:(int)level format:(id)format args:(char *)args
 {
   v10 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = a5;
+    formatCopy = format;
     _os_log_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unexpected call to legacy logging method, please switch to os_log(): %@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (__CFString)_facilityStringForFacility:(int)a3
+- (__CFString)_facilityStringForFacility:(int)facility
 {
-  if (a3 > 4)
+  if (facility > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_2798A4DB0[a3];
+    return off_2798A4DB0[facility];
   }
 }
 

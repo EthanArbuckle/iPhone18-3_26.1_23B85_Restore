@@ -1,20 +1,20 @@
 @interface GDPersonRankingServiceConfiguration
-- (GDPersonRankingServiceConfiguration)initWithIsFavoriteMultiplier:(double)a3 emergencyContactMultiplier:(double)a4 iCloudFamilyMemberMultiplier:(double)a5 relationshipTagMultplier:(double)a6;
+- (GDPersonRankingServiceConfiguration)initWithIsFavoriteMultiplier:(double)multiplier emergencyContactMultiplier:(double)contactMultiplier iCloudFamilyMemberMultiplier:(double)memberMultiplier relationshipTagMultplier:(double)multplier;
 @end
 
 @implementation GDPersonRankingServiceConfiguration
 
-- (GDPersonRankingServiceConfiguration)initWithIsFavoriteMultiplier:(double)a3 emergencyContactMultiplier:(double)a4 iCloudFamilyMemberMultiplier:(double)a5 relationshipTagMultplier:(double)a6
+- (GDPersonRankingServiceConfiguration)initWithIsFavoriteMultiplier:(double)multiplier emergencyContactMultiplier:(double)contactMultiplier iCloudFamilyMemberMultiplier:(double)memberMultiplier relationshipTagMultplier:(double)multplier
 {
   v11.receiver = self;
   v11.super_class = GDPersonRankingServiceConfiguration;
   result = [(GDPersonRankingServiceConfiguration *)&v11 init];
   if (result)
   {
-    result->_isFavoriteMultiplier = a3;
-    result->_emergencyContactMultiplier = a4;
-    result->_iCloudFamilyMemberMultiplier = a5;
-    result->_relationshipTagMultiplier = a6;
+    result->_isFavoriteMultiplier = multiplier;
+    result->_emergencyContactMultiplier = contactMultiplier;
+    result->_iCloudFamilyMemberMultiplier = memberMultiplier;
+    result->_relationshipTagMultiplier = multplier;
   }
 
   return result;

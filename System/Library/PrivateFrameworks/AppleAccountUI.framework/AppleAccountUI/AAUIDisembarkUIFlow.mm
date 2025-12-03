@@ -1,12 +1,12 @@
 @interface AAUIDisembarkUIFlow
-+ (void)startDisembarkUIFlowWithParentViewController:(id)a3;
++ (void)startDisembarkUIFlowWithParentViewController:(id)controller;
 @end
 
 @implementation AAUIDisembarkUIFlow
 
-+ (void)startDisembarkUIFlowWithParentViewController:(id)a3
++ (void)startDisembarkUIFlowWithParentViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -43,8 +43,8 @@
 
   v7 = v6;
   _Block_object_dispose(&v14, 8);
-  v8 = [v6 defaultConfiguration];
-  [v4 presentUsingParentViewController:v3 configuration:v8 completion:0];
+  defaultConfiguration = [v6 defaultConfiguration];
+  [v4 presentUsingParentViewController:controllerCopy configuration:defaultConfiguration completion:0];
 }
 
 @end

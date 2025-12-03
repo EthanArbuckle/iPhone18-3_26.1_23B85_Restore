@@ -1,24 +1,24 @@
 @interface USPSchemaUSPSessionInfoItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (USPSchemaUSPSessionInfoItem)initWithDictionary:(id)a3;
-- (USPSchemaUSPSessionInfoItem)initWithJSON:(id)a3;
+- (USPSchemaUSPSessionInfoItem)initWithDictionary:(id)dictionary;
+- (USPSchemaUSPSessionInfoItem)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation USPSchemaUSPSessionInfoItem
 
-- (USPSchemaUSPSessionInfoItem)initWithDictionary:(id)a3
+- (USPSchemaUSPSessionInfoItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = USPSchemaUSPSessionInfoItem;
   v5 = [(USPSchemaUSPSessionInfoItem *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"name"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -26,7 +26,7 @@
       [(USPSchemaUSPSessionInfoItem *)v5 setName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"value"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"value"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (USPSchemaUSPSessionInfoItem)initWithJSON:(id)a3
+- (USPSchemaUSPSessionInfoItem)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(USPSchemaUSPSessionInfoItem *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(USPSchemaUSPSessionInfoItem *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(USPSchemaUSPSessionInfoItem *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,48 +76,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_name)
   {
-    v4 = [(USPSchemaUSPSessionInfoItem *)self name];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"name"];
+    name = [(USPSchemaUSPSessionInfoItem *)self name];
+    v5 = [name copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"name"];
   }
 
   if (self->_value)
   {
-    v6 = [(USPSchemaUSPSessionInfoItem *)self value];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"value"];
+    value = [(USPSchemaUSPSessionInfoItem *)self value];
+    v7 = [value copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"value"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(USPSchemaUSPSessionInfoItem *)self name];
-  v6 = [v4 name];
-  if ((v5 != 0) == (v6 == 0))
+  name = [(USPSchemaUSPSessionInfoItem *)self name];
+  name2 = [equalCopy name];
+  if ((name != 0) == (name2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(USPSchemaUSPSessionInfoItem *)self name];
-  if (v7)
+  name3 = [(USPSchemaUSPSessionInfoItem *)self name];
+  if (name3)
   {
-    v8 = v7;
-    v9 = [(USPSchemaUSPSessionInfoItem *)self name];
-    v10 = [v4 name];
-    v11 = [v9 isEqual:v10];
+    v8 = name3;
+    name4 = [(USPSchemaUSPSessionInfoItem *)self name];
+    name5 = [equalCopy name];
+    v11 = [name4 isEqual:name5];
 
     if (!v11)
     {
@@ -129,12 +129,12 @@
   {
   }
 
-  v5 = [(USPSchemaUSPSessionInfoItem *)self value];
-  v6 = [v4 value];
-  if ((v5 != 0) != (v6 == 0))
+  name = [(USPSchemaUSPSessionInfoItem *)self value];
+  name2 = [equalCopy value];
+  if ((name != 0) != (name2 == 0))
   {
-    v12 = [(USPSchemaUSPSessionInfoItem *)self value];
-    if (!v12)
+    value = [(USPSchemaUSPSessionInfoItem *)self value];
+    if (!value)
     {
 
 LABEL_15:
@@ -142,10 +142,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(USPSchemaUSPSessionInfoItem *)self value];
-    v15 = [v4 value];
-    v16 = [v14 isEqual:v15];
+    v13 = value;
+    value2 = [(USPSchemaUSPSessionInfoItem *)self value];
+    value3 = [equalCopy value];
+    v16 = [value2 isEqual:value3];
 
     if (v16)
     {
@@ -165,19 +165,19 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(USPSchemaUSPSessionInfoItem *)self name];
+  toCopy = to;
+  name = [(USPSchemaUSPSessionInfoItem *)self name];
 
-  if (v4)
+  if (name)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(USPSchemaUSPSessionInfoItem *)self value];
+  value = [(USPSchemaUSPSessionInfoItem *)self value];
 
-  if (v5)
+  if (value)
   {
     PBDataWriterWriteStringField();
   }

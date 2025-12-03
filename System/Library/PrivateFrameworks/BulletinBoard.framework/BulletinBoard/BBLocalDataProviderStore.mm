@@ -1,35 +1,35 @@
 @interface BBLocalDataProviderStore
-+ (id)localDataProviderStoreWithDelegate:(id)a3 dataProviderQueue:(id)a4;
-- (BBLocalDataProviderStore)initWithDelegate:(id)a3 dataProviderQueue:(id)a4;
-- (id)dataProviderForSectionID:(id)a3;
-- (id)dataProvidersForUniversalSectionID:(id)a3;
-- (id)debugDescriptionWithChildren:(unint64_t)a3;
-- (void)_addDataProviderClass:(Class)a3 performMigration:(BOOL)a4;
-- (void)_addLocalDataProviderFactoryOfClass:(Class)a3;
-- (void)_queue_removeDataProvider:(id)a3;
-- (void)addDataProvider:(id)a3 performMigration:(BOOL)a4;
-- (void)addParentSectionInfo:(id)a3 displayName:(id)a4 icon:(id)a5 universalSectionID:(id)a6;
-- (void)loadAllDataProvidersAndPerformMigration:(BOOL)a3;
-- (void)performBlockOnDataProviders:(id)a3;
-- (void)removeDataProvider:(id)a3;
-- (void)removeDataProviderWithSectionID:(id)a3;
++ (id)localDataProviderStoreWithDelegate:(id)delegate dataProviderQueue:(id)queue;
+- (BBLocalDataProviderStore)initWithDelegate:(id)delegate dataProviderQueue:(id)queue;
+- (id)dataProviderForSectionID:(id)d;
+- (id)dataProvidersForUniversalSectionID:(id)d;
+- (id)debugDescriptionWithChildren:(unint64_t)children;
+- (void)_addDataProviderClass:(Class)class performMigration:(BOOL)migration;
+- (void)_addLocalDataProviderFactoryOfClass:(Class)class;
+- (void)_queue_removeDataProvider:(id)provider;
+- (void)addDataProvider:(id)provider performMigration:(BOOL)migration;
+- (void)addParentSectionInfo:(id)info displayName:(id)name icon:(id)icon universalSectionID:(id)d;
+- (void)loadAllDataProvidersAndPerformMigration:(BOOL)migration;
+- (void)performBlockOnDataProviders:(id)providers;
+- (void)removeDataProvider:(id)provider;
+- (void)removeDataProviderWithSectionID:(id)d;
 @end
 
 @implementation BBLocalDataProviderStore
 
-+ (id)localDataProviderStoreWithDelegate:(id)a3 dataProviderQueue:(id)a4
++ (id)localDataProviderStoreWithDelegate:(id)delegate dataProviderQueue:(id)queue
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[BBLocalDataProviderStore alloc] initWithDelegate:v6 dataProviderQueue:v5];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  v7 = [[BBLocalDataProviderStore alloc] initWithDelegate:delegateCopy dataProviderQueue:queueCopy];
 
   return v7;
 }
 
-- (BBLocalDataProviderStore)initWithDelegate:(id)a3 dataProviderQueue:(id)a4
+- (BBLocalDataProviderStore)initWithDelegate:(id)delegate dataProviderQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = BBLocalDataProviderStore;
   v9 = [(BBLocalDataProviderStore *)&v20 init];
@@ -40,7 +40,7 @@
     queue = v9->_queue;
     v9->_queue = v11;
 
-    objc_storeStrong(&v9->_serverQueue, a4);
+    objc_storeStrong(&v9->_serverQueue, queue);
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
     dataProvidersBySectionID = v9->_dataProvidersBySectionID;
     v9->_dataProvidersBySectionID = v13;
@@ -49,7 +49,7 @@
     dataProvidersByUniversalSectionID = v9->_dataProvidersByUniversalSectionID;
     v9->_dataProvidersByUniversalSectionID = v15;
 
-    objc_storeStrong(&v9->_delegate, a3);
+    objc_storeStrong(&v9->_delegate, delegate);
     v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
     localFactories = v9->_localFactories;
     v9->_localFactories = v17;
@@ -58,19 +58,19 @@
   return v9;
 }
 
-- (id)debugDescriptionWithChildren:(unint64_t)a3
+- (id)debugDescriptionWithChildren:(unint64_t)children
 {
   v5 = [MEMORY[0x277CCAB68] stringWithString:&stru_28541A970];
-  if (a3)
+  if (children)
   {
-    v6 = a3;
+    childrenCopy = children;
     do
     {
       [v5 appendString:@"    "];
-      --v6;
+      --childrenCopy;
     }
 
-    while (v6);
+    while (childrenCopy);
   }
 
   v7 = MEMORY[0x277CCAB68];
@@ -86,7 +86,7 @@
   block[4] = self;
   v12 = v10;
   v17 = v12;
-  v18 = a3;
+  childrenCopy2 = children;
   dispatch_sync(queue, block);
   v13 = v17;
   v14 = v12;
@@ -135,9 +135,9 @@ void __57__BBLocalDataProviderStore_debugDescriptionWithChildren___block_invoke(
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadAllDataProvidersAndPerformMigration:(BOOL)a3
+- (void)loadAllDataProvidersAndPerformMigration:(BOOL)migration
 {
-  v24 = a3;
+  migrationCopy = migration;
   v35 = *MEMORY[0x277D85DE8];
   v29 = 0u;
   v30 = 0u;
@@ -164,8 +164,8 @@ void __57__BBLocalDataProviderStore_debugDescriptionWithChildren___block_invoke(
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v5 = [MEMORY[0x277CCAA00] defaultManager];
-        v6 = [v5 contentsOfDirectoryAtPath:v4 error:0];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        v6 = [defaultManager contentsOfDirectoryAtPath:v4 error:0];
 
         v7 = [v6 countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v7)
@@ -184,8 +184,8 @@ void __57__BBLocalDataProviderStore_debugDescriptionWithChildren___block_invoke(
 
               v11 = *(*(&v25 + 1) + 8 * v10);
               v12 = objc_autoreleasePoolPush();
-              v13 = [v11 pathExtension];
-              v14 = [v13 caseInsensitiveCompare:@"bundle"];
+              pathExtension = [v11 pathExtension];
+              v14 = [pathExtension caseInsensitiveCompare:@"bundle"];
 
               if (!v14)
               {
@@ -195,7 +195,7 @@ void __57__BBLocalDataProviderStore_debugDescriptionWithChildren___block_invoke(
 
                 if (v17 && BBHasRequiredCapabilitiesForBundle(v17))
                 {
-                  [(BBLocalDataProviderStore *)self _loadDataProviderPluginBundle:v17 performMigration:v24];
+                  [(BBLocalDataProviderStore *)self _loadDataProviderPluginBundle:v17 performMigration:migrationCopy];
                 }
               }
 
@@ -223,7 +223,7 @@ void __57__BBLocalDataProviderStore_debugDescriptionWithChildren___block_invoke(
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addDataProviderClass:(Class)a3 performMigration:(BOOL)a4
+- (void)_addDataProviderClass:(Class)class performMigration:(BOOL)migration
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -231,8 +231,8 @@ void __57__BBLocalDataProviderStore_debugDescriptionWithChildren___block_invoke(
   block[2] = __67__BBLocalDataProviderStore__addDataProviderClass_performMigration___block_invoke;
   block[3] = &unk_278D2B688;
   block[4] = self;
-  block[5] = a3;
-  v6 = a4;
+  block[5] = class;
+  migrationCopy = migration;
   dispatch_async(queue, block);
 }
 
@@ -242,9 +242,9 @@ void __67__BBLocalDataProviderStore__addDataProviderClass_performMigration___blo
   [*(a1 + 32) _queue_addDataProvider:v2 performMigration:*(a1 + 48)];
 }
 
-- (id)dataProviderForSectionID:(id)a3
+- (id)dataProviderForSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -256,10 +256,10 @@ void __67__BBLocalDataProviderStore__addDataProviderClass_performMigration___blo
   block[1] = 3221225472;
   block[2] = __53__BBLocalDataProviderStore_dataProviderForSectionID___block_invoke;
   block[3] = &unk_278D2A8D8;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -278,9 +278,9 @@ uint64_t __53__BBLocalDataProviderStore_dataProviderForSectionID___block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)dataProvidersForUniversalSectionID:(id)a3
+- (id)dataProvidersForUniversalSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -292,10 +292,10 @@ uint64_t __53__BBLocalDataProviderStore_dataProviderForSectionID___block_invoke(
   block[1] = 3221225472;
   block[2] = __63__BBLocalDataProviderStore_dataProvidersForUniversalSectionID___block_invoke;
   block[3] = &unk_278D2A8D8;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -314,25 +314,25 @@ uint64_t __63__BBLocalDataProviderStore_dataProvidersForUniversalSectionID___blo
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_queue_removeDataProvider:(id)a3
+- (void)_queue_removeDataProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [v4 sectionIdentifier];
-  if (v5)
+  providerCopy = provider;
+  sectionIdentifier = [providerCopy sectionIdentifier];
+  if (sectionIdentifier)
   {
-    [(NSMutableDictionary *)self->_dataProvidersBySectionID removeObjectForKey:v5];
-    v6 = [v4 universalSectionIdentifier];
-    if (v6)
+    [(NSMutableDictionary *)self->_dataProvidersBySectionID removeObjectForKey:sectionIdentifier];
+    universalSectionIdentifier = [providerCopy universalSectionIdentifier];
+    if (universalSectionIdentifier)
     {
-      v7 = [(NSMutableDictionary *)self->_dataProvidersByUniversalSectionID objectForKey:v6];
-      [v7 removeObject:v4];
+      v7 = [(NSMutableDictionary *)self->_dataProvidersByUniversalSectionID objectForKey:universalSectionIdentifier];
+      [v7 removeObject:providerCopy];
       if (![v7 count])
       {
-        [(NSMutableDictionary *)self->_dataProvidersByUniversalSectionID removeObjectForKey:v6];
+        [(NSMutableDictionary *)self->_dataProvidersByUniversalSectionID removeObjectForKey:universalSectionIdentifier];
       }
     }
 
-    [(BBDataProviderStoreDelegate *)self->_delegate dataProviderStore:self didRemoveDataProvider:v4];
+    [(BBDataProviderStoreDelegate *)self->_delegate dataProviderStore:self didRemoveDataProvider:providerCopy];
   }
 
   else
@@ -345,24 +345,24 @@ uint64_t __63__BBLocalDataProviderStore_dataProvidersForUniversalSectionID___blo
   }
 }
 
-- (void)removeDataProvider:(id)a3
+- (void)removeDataProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__BBLocalDataProviderStore_removeDataProvider___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = providerCopy;
+  v6 = providerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)performBlockOnDataProviders:(id)a3
+- (void)performBlockOnDataProviders:(id)providers
 {
-  v5 = a3;
-  if (!v5)
+  providersCopy = providers;
+  if (!providersCopy)
   {
     [(BBLocalDataProviderStore *)a2 performBlockOnDataProviders:?];
   }
@@ -373,8 +373,8 @@ uint64_t __63__BBLocalDataProviderStore_dataProvidersForUniversalSectionID___blo
   v8[2] = __56__BBLocalDataProviderStore_performBlockOnDataProviders___block_invoke;
   v8[3] = &unk_278D2AC38;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = providersCopy;
+  v7 = providersCopy;
   dispatch_async(queue, v8);
 }
 
@@ -450,7 +450,7 @@ void __56__BBLocalDataProviderStore_performBlockOnDataProviders___block_invoke(u
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addLocalDataProviderFactoryOfClass:(Class)a3
+- (void)_addLocalDataProviderFactoryOfClass:(Class)class
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -458,7 +458,7 @@ void __56__BBLocalDataProviderStore_performBlockOnDataProviders___block_invoke(u
   v4[2] = __64__BBLocalDataProviderStore__addLocalDataProviderFactoryOfClass___block_invoke;
   v4[3] = &unk_278D2B6B0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = class;
   dispatch_async(queue, v4);
 }
 
@@ -469,18 +469,18 @@ void __64__BBLocalDataProviderStore__addLocalDataProviderFactoryOfClass___block_
   [*(*(a1 + 32) + 48) addObject:v2];
 }
 
-- (void)addDataProvider:(id)a3 performMigration:(BOOL)a4
+- (void)addDataProvider:(id)provider performMigration:(BOOL)migration
 {
-  v6 = a3;
+  providerCopy = provider;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__BBLocalDataProviderStore_addDataProvider_performMigration___block_invoke;
   block[3] = &unk_278D2AA18;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = providerCopy;
+  selfCopy = self;
+  migrationCopy = migration;
+  v8 = providerCopy;
   dispatch_async(queue, block);
 }
 
@@ -490,17 +490,17 @@ void __61__BBLocalDataProviderStore_addDataProvider_performMigration___block_inv
   [*(a1 + 40) _queue_addDataProvider:v2 performMigration:*(a1 + 48)];
 }
 
-- (void)removeDataProviderWithSectionID:(id)a3
+- (void)removeDataProviderWithSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__BBLocalDataProviderStore_removeDataProviderWithSectionID___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
@@ -510,18 +510,18 @@ void __60__BBLocalDataProviderStore_removeDataProviderWithSectionID___block_invo
   [*(a1 + 32) _queue_removeDataProvider:v2];
 }
 
-- (void)addParentSectionInfo:(id)a3 displayName:(id)a4 icon:(id)a5 universalSectionID:(id)a6
+- (void)addParentSectionInfo:(id)info displayName:(id)name icon:(id)icon universalSectionID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [a3 copy];
-  [v13 setDisplayName:v12];
+  dCopy = d;
+  iconCopy = icon;
+  nameCopy = name;
+  v13 = [info copy];
+  [v13 setDisplayName:nameCopy];
 
-  [v13 setIcon:v11];
+  [v13 setIcon:iconCopy];
   v14 = [BBParentSectionDataProviderFactory factoryFromSectionInfo:v13];
-  [v14 setUniversalSectionIdentifier:v10];
+  [v14 setUniversalSectionIdentifier:dCopy];
 
   v15 = BBLogConnection;
   if (os_log_type_enabled(BBLogConnection, OS_LOG_TYPE_DEFAULT))
@@ -529,11 +529,11 @@ void __60__BBLocalDataProviderStore_removeDataProviderWithSectionID___block_invo
     v16 = v15;
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    v19 = [v14 sectionIdentifier];
+    sectionIdentifier = [v14 sectionIdentifier];
     v22 = 138543618;
     v23 = v18;
     v24 = 2114;
-    v25 = v19;
+    v25 = sectionIdentifier;
     _os_log_impl(&dword_241EFF000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ adding parent section factory for section %{public}@", &v22, 0x16u);
   }
 

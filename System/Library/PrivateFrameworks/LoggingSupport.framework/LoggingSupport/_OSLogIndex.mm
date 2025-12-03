@@ -1,22 +1,22 @@
 @interface _OSLogIndex
-- (BOOL)_addFileToIndex:(const char *)a3 error:(id *)a4;
+- (BOOL)_addFileToIndex:(const char *)index error:(id *)error;
 - (BOOL)_buildFileIndex;
-- (BOOL)_buildSingleFileIndex:(id *)a3;
+- (BOOL)_buildSingleFileIndex:(id *)index;
 - (BOOL)_openTimesyncDatabase;
-- (BOOL)_readArchiveMetadata:(id *)a3;
-- (BOOL)addReferenceToIndex:(id)a3 error:(id *)a4;
+- (BOOL)_readArchiveMetadata:(id *)metadata;
+- (BOOL)addReferenceToIndex:(id)index error:(id *)error;
 - (_OSLogIndex)init;
-- (_OSLogIndex)initWithCollection:(id)a3 buildLocalIndex:(BOOL)a4;
-- (_OSLogIndex)initWithCollection:(id)a3 timesync:(_os_timesync_db_s *)a4 metadata:(id)a5;
+- (_OSLogIndex)initWithCollection:(id)collection buildLocalIndex:(BOOL)index;
+- (_OSLogIndex)initWithCollection:(id)collection timesync:(_os_timesync_db_s *)timesync metadata:(id)metadata;
 - (unint64_t)endWalltime;
 - (unint64_t)persistStartWalltime;
 - (unint64_t)specialStartWalltime;
-- (void)_foreachIndexFile:(id)a3;
+- (void)_foreachIndexFile:(id)file;
 - (void)dealloc;
-- (void)enumerateEntriesFrom:(unint64_t)a3 to:(unint64_t)a4 options:(unsigned int)a5 usingBlock:(id)a6;
-- (void)enumerateEntriesFromLastBootWithOptions:(unsigned int)a3 usingBlock:(id)a4;
-- (void)enumerateFilesUsingBlock:(id)a3;
-- (void)insertChunkStore:(id)a3;
+- (void)enumerateEntriesFrom:(unint64_t)from to:(unint64_t)to options:(unsigned int)options usingBlock:(id)block;
+- (void)enumerateEntriesFromLastBootWithOptions:(unsigned int)options usingBlock:(id)block;
+- (void)enumerateFilesUsingBlock:(id)block;
+- (void)insertChunkStore:(id)store;
 @end
 
 @implementation _OSLogIndex
@@ -36,12 +36,12 @@
   return v2;
 }
 
-- (void)enumerateFilesUsingBlock:(id)a3
+- (void)enumerateFilesUsingBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_OSLogCollectionReference *)self->_lcr UUIDTextReference];
-  v6 = [v5 fileDescriptor];
+  blockCopy = block;
+  uUIDTextReference = [(_OSLogCollectionReference *)self->_lcr UUIDTextReference];
+  fileDescriptor = [uUIDTextReference fileDescriptor];
 
   v19 = 0u;
   v20 = 0u;
@@ -65,7 +65,7 @@ LABEL_3:
       v12 = *(*(&v17 + 1) + 8 * v11);
       v13 = objc_autoreleasePoolPush();
       v14 = [v12 copyMappedChunkStore:{0, v17}];
-      v15 = (*(v4 + 2))(v4, v6, v14[1], v14[2]);
+      v15 = (*(blockCopy + 2))(blockCopy, fileDescriptor, v14[1], v14[2]);
 
       objc_autoreleasePoolPop(v13);
       if (!v15)
@@ -89,17 +89,17 @@ LABEL_3:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateEntriesFromLastBootWithOptions:(unsigned int)a3 usingBlock:(id)a4
+- (void)enumerateEntriesFromLastBootWithOptions:(unsigned int)options usingBlock:(id)block
 {
   tsdb = self->_tsdb;
-  v5 = a4;
+  blockCopy = block;
   _timesync_range_create_since_last_boot();
 }
 
-- (void)enumerateEntriesFrom:(unint64_t)a3 to:(unint64_t)a4 options:(unsigned int)a5 usingBlock:(id)a6
+- (void)enumerateEntriesFrom:(unint64_t)from to:(unint64_t)to options:(unsigned int)options usingBlock:(id)block
 {
   tsdb = self->_tsdb;
-  v7 = a6;
+  blockCopy = block;
   _timesync_range_create_impl();
 }
 
@@ -142,10 +142,10 @@ LABEL_3:
   }
 }
 
-- (BOOL)_buildSingleFileIndex:(id *)a3
+- (BOOL)_buildSingleFileIndex:(id *)index
 {
   v5 = [[_OSLogChunkFileReference alloc] initWithCollection:self->_lcr subpath:[(NSString *)self->_file fileSystemRepresentation]];
-  v6 = [[_OSLogIndexFile alloc] initWithTraceFile:v5 error:a3];
+  v6 = [[_OSLogIndexFile alloc] initWithTraceFile:v5 error:index];
   if (v6)
   {
     [(NSMutableArray *)self->_fileq addObject:v6];
@@ -157,10 +157,10 @@ LABEL_3:
 - (BOOL)_buildFileIndex
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(_OSLogCollectionReference *)self->_lcr diagnosticsDirectoryReference];
-  v4 = [v3 fileDescriptor];
+  diagnosticsDirectoryReference = [(_OSLogCollectionReference *)self->_lcr diagnosticsDirectoryReference];
+  fileDescriptor = [diagnosticsDirectoryReference fileDescriptor];
 
-  if (fcntl(v4, 50, __s, 1025) < 0)
+  if (fcntl(fileDescriptor, 50, __s, 1025) < 0)
   {
     LOBYTE(v5) = 0;
   }
@@ -232,18 +232,18 @@ LABEL_3:
   return v5;
 }
 
-- (void)insertChunkStore:(id)a3
+- (void)insertChunkStore:(id)store
 {
-  v4 = a3;
-  v5 = [[_OSLogIndexFile alloc] initWithChunkStore:v4 error:0];
+  storeCopy = store;
+  v5 = [[_OSLogIndexFile alloc] initWithChunkStore:storeCopy error:0];
 
   [(NSMutableArray *)self->_fileq addObject:v5];
 }
 
-- (void)_foreachIndexFile:(id)a3
+- (void)_foreachIndexFile:(id)file
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fileCopy = file;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -264,7 +264,7 @@ LABEL_3:
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v9++));
+        fileCopy[2](fileCopy, *(*(&v11 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
@@ -277,18 +277,18 @@ LABEL_3:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_addFileToIndex:(const char *)a3 error:(id *)a4
+- (BOOL)_addFileToIndex:(const char *)index error:(id *)error
 {
-  v6 = [[_OSLogChunkFileReference alloc] initWithCollection:self->_lcr subpath:a3];
-  LOBYTE(a4) = [(_OSLogIndex *)self addReferenceToIndex:v6 error:a4];
+  v6 = [[_OSLogChunkFileReference alloc] initWithCollection:self->_lcr subpath:index];
+  LOBYTE(error) = [(_OSLogIndex *)self addReferenceToIndex:v6 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)addReferenceToIndex:(id)a3 error:(id *)a4
+- (BOOL)addReferenceToIndex:(id)index error:(id *)error
 {
-  v6 = a3;
-  v7 = [[_OSLogIndexFile alloc] initWithTraceFile:v6 error:a4];
+  indexCopy = index;
+  v7 = [[_OSLogIndexFile alloc] initWithTraceFile:indexCopy error:error];
 
   if (v7)
   {
@@ -300,10 +300,10 @@ LABEL_3:
 
 - (BOOL)_openTimesyncDatabase
 {
-  v3 = [(_OSLogCollectionReference *)self->_lcr timesyncReference];
-  v4 = [v3 fileDescriptor];
+  timesyncReference = [(_OSLogCollectionReference *)self->_lcr timesyncReference];
+  fileDescriptor = [timesyncReference fileDescriptor];
 
-  v5 = _timesync_db_openat(v4, ".");
+  v5 = _timesync_db_openat(fileDescriptor, ".");
   if (v5)
   {
     self->_tsdb = v5;
@@ -312,16 +312,16 @@ LABEL_3:
   return v5 != 0;
 }
 
-- (BOOL)_readArchiveMetadata:(id *)a3
+- (BOOL)_readArchiveMetadata:(id *)metadata
 {
-  v5 = [(_OSLogCollectionReference *)self->_lcr diagnosticsDirectoryReference];
-  [v5 fileDescriptor];
+  diagnosticsDirectoryReference = [(_OSLogCollectionReference *)self->_lcr diagnosticsDirectoryReference];
+  [diagnosticsDirectoryReference fileDescriptor];
   v6 = _os_trace_mmap_at();
 
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:v6 length:0 deallocator:&__block_literal_global_590];
-    v8 = [MEMORY[0x277CCAC58] propertyListWithData:v7 options:0 format:0 error:a3];
+    v8 = [MEMORY[0x277CCAC58] propertyListWithData:v7 options:0 format:0 error:metadata];
     v9 = v8;
     if (v8)
     {
@@ -576,7 +576,7 @@ LABEL_56:
   else
   {
     v52 = __error();
-    _OSLogFailWithPOSIXError(*v52, a3);
+    _OSLogFailWithPOSIXError(*v52, metadata);
     return 0;
   }
 
@@ -596,10 +596,10 @@ LABEL_56:
   [(_OSLogIndex *)&v4 dealloc];
 }
 
-- (_OSLogIndex)initWithCollection:(id)a3 timesync:(_os_timesync_db_s *)a4 metadata:(id)a5
+- (_OSLogIndex)initWithCollection:(id)collection timesync:(_os_timesync_db_s *)timesync metadata:(id)metadata
 {
-  v9 = a3;
-  v10 = a5;
+  collectionCopy = collection;
+  metadataCopy = metadata;
   v11 = [(_OSLogIndex *)self init];
   v12 = v11;
   if (!v11)
@@ -609,110 +609,110 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  objc_storeStrong(&v11->_lcr, a3);
-  v13 = _timesync_db_openat(*a4, ".");
+  objc_storeStrong(&v11->_lcr, collection);
+  v13 = _timesync_db_openat(*timesync, ".");
   v12->_tsdb = v13;
   if (v13)
   {
-    objc_storeStrong(&v12->_metadata2, a5);
-    if (v10)
+    objc_storeStrong(&v12->_metadata2, metadata);
+    if (metadataCopy)
     {
-      v14 = v10;
-      v15 = [v14 oldestLive];
-      v16 = v15;
-      if (v15)
+      v14 = metadataCopy;
+      oldestLive = [v14 oldestLive];
+      v16 = oldestLive;
+      if (oldestLive)
       {
-        *v12->_metadata.olim_oldestlive.uuid = *[v15 UUID];
-        v17 = [v16 continuousTime];
+        *v12->_metadata.olim_oldestlive.uuid = *[oldestLive UUID];
+        continuousTime = [v16 continuousTime];
       }
 
       else
       {
         uuid_clear(v12->_metadata.olim_oldestlive.uuid);
-        v17 = 0;
+        continuousTime = 0;
       }
 
-      v12->_metadata.olim_oldestlive.continuous = v17;
+      v12->_metadata.olim_oldestlive.continuous = continuousTime;
 
-      v19 = [v14 oldestPersist];
-      v20 = v19;
-      if (v19)
+      oldestPersist = [v14 oldestPersist];
+      v20 = oldestPersist;
+      if (oldestPersist)
       {
-        *v12->_metadata.olim_oldestpersist.uuid = *[v19 UUID];
-        v21 = [v20 continuousTime];
+        *v12->_metadata.olim_oldestpersist.uuid = *[oldestPersist UUID];
+        continuousTime2 = [v20 continuousTime];
       }
 
       else
       {
         uuid_clear(v12->_metadata.olim_oldestpersist.uuid);
-        v21 = 0;
+        continuousTime2 = 0;
       }
 
-      v12->_metadata.olim_oldestpersist.continuous = v21;
+      v12->_metadata.olim_oldestpersist.continuous = continuousTime2;
 
-      v22 = [v14 oldestSpecial];
-      v23 = v22;
-      if (v22)
+      oldestSpecial = [v14 oldestSpecial];
+      v23 = oldestSpecial;
+      if (oldestSpecial)
       {
-        *v12->_metadata.olim_oldestspecial.uuid = *[v22 UUID];
-        v24 = [v23 continuousTime];
+        *v12->_metadata.olim_oldestspecial.uuid = *[oldestSpecial UUID];
+        continuousTime3 = [v23 continuousTime];
       }
 
       else
       {
         uuid_clear(v12->_metadata.olim_oldestspecial.uuid);
-        v24 = 0;
+        continuousTime3 = 0;
       }
 
-      v12->_metadata.olim_oldestspecial.continuous = v24;
+      v12->_metadata.olim_oldestspecial.continuous = continuousTime3;
 
-      v25 = [v14 oldestSignpost];
-      v26 = v25;
-      if (v25)
+      oldestSignpost = [v14 oldestSignpost];
+      v26 = oldestSignpost;
+      if (oldestSignpost)
       {
-        *v12->_metadata.olim_oldestsignpost.uuid = *[v25 UUID];
-        v27 = [v26 continuousTime];
+        *v12->_metadata.olim_oldestsignpost.uuid = *[oldestSignpost UUID];
+        continuousTime4 = [v26 continuousTime];
       }
 
       else
       {
         uuid_clear(v12->_metadata.olim_oldestsignpost.uuid);
-        v27 = 0;
+        continuousTime4 = 0;
       }
 
-      v12->_metadata.olim_oldestsignpost.continuous = v27;
+      v12->_metadata.olim_oldestsignpost.continuous = continuousTime4;
 
-      v28 = [v14 oldestHighVolume];
-      v29 = v28;
-      if (v28)
+      oldestHighVolume = [v14 oldestHighVolume];
+      v29 = oldestHighVolume;
+      if (oldestHighVolume)
       {
-        *v12->_metadata.olim_oldesthighvol.uuid = *[v28 UUID];
-        v30 = [v29 continuousTime];
+        *v12->_metadata.olim_oldesthighvol.uuid = *[oldestHighVolume UUID];
+        continuousTime5 = [v29 continuousTime];
       }
 
       else
       {
         uuid_clear(v12->_metadata.olim_oldesthighvol.uuid);
-        v30 = 0;
+        continuousTime5 = 0;
       }
 
-      v12->_metadata.olim_oldesthighvol.continuous = v30;
+      v12->_metadata.olim_oldesthighvol.continuous = continuousTime5;
 
       v31 = [v14 end];
       v32 = v31;
       if (v31)
       {
         *v12->_metadata.olim_end.uuid = *[v31 UUID];
-        v33 = [v32 continuousTime];
+        continuousTime6 = [v32 continuousTime];
       }
 
       else
       {
         uuid_clear(v12->_metadata.olim_end.uuid);
-        v33 = 0;
+        continuousTime6 = 0;
       }
 
-      v12->_metadata.olim_end.continuous = v33;
+      v12->_metadata.olim_end.continuous = continuousTime6;
 
       v34 = 0;
       for (i = v12->_metadata.olim_ttl; ; ++i)
@@ -722,16 +722,16 @@ LABEL_37:
         if (v36)
         {
           *i->timeref.uuid = *[v36 UUID];
-          v38 = [v37 continuousTime];
+          continuousTime7 = [v37 continuousTime];
         }
 
         else
         {
           uuid_clear(i->timeref.uuid);
-          v38 = 0;
+          continuousTime7 = 0;
         }
 
-        i->timeref.continuous = v38;
+        i->timeref.continuous = continuousTime7;
 
         if (v34 <= 1)
         {
@@ -777,13 +777,13 @@ LABEL_38:
   return v18;
 }
 
-- (_OSLogIndex)initWithCollection:(id)a3 buildLocalIndex:(BOOL)a4
+- (_OSLogIndex)initWithCollection:(id)collection buildLocalIndex:(BOOL)index
 {
-  v4 = a4;
-  v7 = a3;
+  indexCopy = index;
+  collectionCopy = collection;
   v8 = [(_OSLogIndex *)self init];
   v9 = v8;
-  if (v8 && ((objc_storeStrong(&v8->_lcr, a3), ![(_OSLogIndex *)v9 _openTimesyncDatabase]) || ([(_OSLogIndex *)v9 _readArchiveMetadata:0], v4) && ![(_OSLogIndex *)v9 _buildFileIndex]))
+  if (v8 && ((objc_storeStrong(&v8->_lcr, collection), ![(_OSLogIndex *)v9 _openTimesyncDatabase]) || ([(_OSLogIndex *)v9 _readArchiveMetadata:0], indexCopy) && ![(_OSLogIndex *)v9 _buildFileIndex]))
   {
     v10 = 0;
   }

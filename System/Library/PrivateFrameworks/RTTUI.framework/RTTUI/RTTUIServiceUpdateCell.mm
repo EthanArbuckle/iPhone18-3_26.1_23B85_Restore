@@ -1,31 +1,31 @@
 @interface RTTUIServiceUpdateCell
-+ (double)heightForWidth:(double)a3 delegate:(id)a4 serviceUpdate:(id)a5;
++ (double)heightForWidth:(double)width delegate:(id)delegate serviceUpdate:(id)update;
 - (RTTUIServiceCellDelegate)delegate;
-- (RTTUIServiceUpdateCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 serviceUpdate:(id)a5;
-- (double)preferredHeightForWidth:(double)a3;
+- (RTTUIServiceUpdateCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier serviceUpdate:(id)update;
+- (double)preferredHeightForWidth:(double)width;
 - (void)adjustTextViewSize;
 - (void)layoutSubviews;
 @end
 
 @implementation RTTUIServiceUpdateCell
 
-+ (double)heightForWidth:(double)a3 delegate:(id)a4 serviceUpdate:(id)a5
++ (double)heightForWidth:(double)width delegate:(id)delegate serviceUpdate:(id)update
 {
-  v7 = a5;
+  updateCopy = update;
   v8 = heightForWidth_delegate_serviceUpdate__onceToken;
-  v9 = a4;
+  delegateCopy = delegate;
   if (v8 != -1)
   {
     +[RTTUIServiceUpdateCell heightForWidth:delegate:serviceUpdate:];
   }
 
   v10 = *(heightForWidth_delegate_serviceUpdate__SizeCell + 1040);
-  *(heightForWidth_delegate_serviceUpdate__SizeCell + 1040) = v7;
-  v11 = v7;
+  *(heightForWidth_delegate_serviceUpdate__SizeCell + 1040) = updateCopy;
+  v11 = updateCopy;
 
-  [heightForWidth_delegate_serviceUpdate__SizeCell setDelegate:v9];
+  [heightForWidth_delegate_serviceUpdate__SizeCell setDelegate:delegateCopy];
   [heightForWidth_delegate_serviceUpdate__SizeCell updateLayout];
-  [heightForWidth_delegate_serviceUpdate__SizeCell preferredHeightForWidth:a3];
+  [heightForWidth_delegate_serviceUpdate__SizeCell preferredHeightForWidth:width];
   v13 = v12;
 
   return v13;
@@ -42,26 +42,26 @@ uint64_t __64__RTTUIServiceUpdateCell_heightForWidth_delegate_serviceUpdate___bl
   return [v2 updateLayout];
 }
 
-- (RTTUIServiceUpdateCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 serviceUpdate:(id)a5
+- (RTTUIServiceUpdateCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier serviceUpdate:(id)update
 {
-  v9 = a5;
+  updateCopy = update;
   v13.receiver = self;
   v13.super_class = RTTUIServiceUpdateCell;
-  v10 = [(RTTUIServiceUpdateCell *)&v13 initWithStyle:a3 reuseIdentifier:a4];
+  v10 = [(RTTUIServiceUpdateCell *)&v13 initWithStyle:style reuseIdentifier:identifier];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_serviceUpdate, a5);
+    objc_storeStrong(&v10->_serviceUpdate, update);
   }
 
   return v11;
 }
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
-  [(UITextView *)self->_titleView sizeThatFits:a3, 1.79769313e308];
+  [(UITextView *)self->_titleView sizeThatFits:width, 1.79769313e308];
   v6 = v5;
-  [(UITextView *)self->_subtitleView sizeThatFits:a3, 1.79769313e308];
+  [(UITextView *)self->_subtitleView sizeThatFits:width, 1.79769313e308];
   return fmax(v6 + v7, 20.0);
 }
 
@@ -81,8 +81,8 @@ uint64_t __64__RTTUIServiceUpdateCell_heightForWidth_delegate_serviceUpdate___bl
   [(UITextView *)self->_subtitleView setFont:v12];
 
   titleView = self->_titleView;
-  v14 = [(RTTUIServiceUpdateCell *)self window];
-  [v14 frame];
+  window = [(RTTUIServiceUpdateCell *)self window];
+  [window frame];
   [(UITextView *)titleView sizeThatFits:CGRectGetWidth(v50), 1.79769313e308];
   v16 = v15;
 
@@ -95,8 +95,8 @@ uint64_t __64__RTTUIServiceUpdateCell_heightForWidth_delegate_serviceUpdate___bl
   v51.size.height = v10;
   Width = CGRectGetWidth(v51);
   v19 = self->_titleView;
-  v20 = [(RTTUIServiceUpdateCell *)self window];
-  [v20 frame];
+  window2 = [(RTTUIServiceUpdateCell *)self window];
+  [window2 frame];
   [(UITextView *)v19 sizeThatFits:CGRectGetWidth(v52), v17];
   v22 = v21;
 
@@ -123,8 +123,8 @@ uint64_t __64__RTTUIServiceUpdateCell_heightForWidth_delegate_serviceUpdate___bl
   v46 = (v25 - CGRectGetWidth(v54)) * 0.5;
   [(UITextView *)self->_titleView setFrame:?];
   subtitleView = self->_subtitleView;
-  v27 = [(RTTUIServiceUpdateCell *)self window];
-  [v27 frame];
+  window3 = [(RTTUIServiceUpdateCell *)self window];
+  [window3 frame];
   [(UITextView *)subtitleView sizeThatFits:CGRectGetWidth(v55), 1.79769313e308];
   v29 = v28;
 
@@ -138,8 +138,8 @@ uint64_t __64__RTTUIServiceUpdateCell_heightForWidth_delegate_serviceUpdate___bl
   v33 = v10;
   v34 = CGRectGetWidth(v56);
   v35 = self->_subtitleView;
-  v36 = [(RTTUIServiceUpdateCell *)self window];
-  [v36 frame];
+  window4 = [(RTTUIServiceUpdateCell *)self window];
+  [window4 frame];
   [(UITextView *)v35 sizeThatFits:CGRectGetWidth(v57), v30];
   v38 = v37;
 
@@ -194,34 +194,34 @@ void __44__RTTUIServiceUpdateCell_adjustTextViewSize__block_invoke(uint64_t a1)
   v58.receiver = self;
   v58.super_class = RTTUIServiceUpdateCell;
   [(RTTUIServiceUpdateCell *)&v58 layoutSubviews];
-  v3 = [(RTTUIServiceUpdateCell *)self delegate];
-  v4 = [v3 isCurrentCallConnected];
+  delegate = [(RTTUIServiceUpdateCell *)self delegate];
+  isCurrentCallConnected = [delegate isCurrentCallConnected];
 
   if (!self->_titleView)
   {
     v5 = [RTTUIStaticTextView alloc];
-    v6 = [(RTTUIServiceUpdateCell *)self textLabel];
-    [v6 frame];
+    textLabel = [(RTTUIServiceUpdateCell *)self textLabel];
+    [textLabel frame];
     v7 = [(RTTUIStaticTextView *)v5 initWithFrame:0 textContainer:?];
     titleView = self->_titleView;
     self->_titleView = v7;
 
     v9 = self->_titleView;
-    v10 = [MEMORY[0x277D75348] clearColor];
-    [(UITextView *)v9 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UITextView *)v9 setBackgroundColor:clearColor];
 
     v11 = self->_titleView;
     v12 = [MEMORY[0x277D74300] boldSystemFontOfSize:20.0];
     [(UITextView *)v11 setFont:v12];
 
-    v13 = [(RTTUIServiceUpdateCell *)self contentView];
-    [v13 addSubview:self->_titleView];
+    contentView = [(RTTUIServiceUpdateCell *)self contentView];
+    [contentView addSubview:self->_titleView];
 
-    v14 = [(UITextView *)self->_titleView textContainer];
-    [v14 setLineBreakMode:0];
+    textContainer = [(UITextView *)self->_titleView textContainer];
+    [textContainer setLineBreakMode:0];
 
-    v15 = [(UITextView *)self->_titleView textContainer];
-    [v15 setMaximumNumberOfLines:0];
+    textContainer2 = [(UITextView *)self->_titleView textContainer];
+    [textContainer2 setMaximumNumberOfLines:0];
 
     [(UITextView *)self->_titleView setTextAlignment:1];
     [(UITextView *)self->_titleView setEditable:0];
@@ -232,28 +232,28 @@ void __44__RTTUIServiceUpdateCell_adjustTextViewSize__block_invoke(uint64_t a1)
   if (!self->_subtitleView)
   {
     v16 = [RTTUIStaticTextView alloc];
-    v17 = [(RTTUIServiceUpdateCell *)self textLabel];
-    [v17 frame];
+    textLabel2 = [(RTTUIServiceUpdateCell *)self textLabel];
+    [textLabel2 frame];
     v18 = [(RTTUIStaticTextView *)v16 initWithFrame:0 textContainer:?];
     subtitleView = self->_subtitleView;
     self->_subtitleView = v18;
 
     v20 = self->_subtitleView;
-    v21 = [MEMORY[0x277D75348] clearColor];
-    [(UITextView *)v20 setBackgroundColor:v21];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UITextView *)v20 setBackgroundColor:clearColor2];
 
     v22 = self->_subtitleView;
     v23 = [MEMORY[0x277D74300] systemFontOfSize:20.0];
     [(UITextView *)v22 setFont:v23];
 
-    v24 = [(RTTUIServiceUpdateCell *)self contentView];
-    [v24 addSubview:self->_subtitleView];
+    contentView2 = [(RTTUIServiceUpdateCell *)self contentView];
+    [contentView2 addSubview:self->_subtitleView];
 
-    v25 = [(UITextView *)self->_subtitleView textContainer];
-    [v25 setLineBreakMode:0];
+    textContainer3 = [(UITextView *)self->_subtitleView textContainer];
+    [textContainer3 setLineBreakMode:0];
 
-    v26 = [(UITextView *)self->_subtitleView textContainer];
-    [v26 setMaximumNumberOfLines:0];
+    textContainer4 = [(UITextView *)self->_subtitleView textContainer];
+    [textContainer4 setMaximumNumberOfLines:0];
 
     [(UITextView *)self->_subtitleView setTextAlignment:1];
     [(UITextView *)self->_subtitleView setEditable:0];
@@ -261,21 +261,21 @@ void __44__RTTUIServiceUpdateCell_adjustTextViewSize__block_invoke(uint64_t a1)
     [(UITextView *)self->_subtitleView setScrollEnabled:0];
   }
 
-  v27 = [MEMORY[0x277D75348] clearColor];
-  [(RTTUIServiceUpdateCell *)self setBackgroundColor:v27];
+  clearColor3 = [MEMORY[0x277D75348] clearColor];
+  [(RTTUIServiceUpdateCell *)self setBackgroundColor:clearColor3];
 
-  v28 = [(RTTServiceUpdate *)self->_serviceUpdate serviceUpdateType];
-  v29 = [v28 isEqualToString:*MEMORY[0x277D440F8]];
+  serviceUpdateType = [(RTTServiceUpdate *)self->_serviceUpdate serviceUpdateType];
+  v29 = [serviceUpdateType isEqualToString:*MEMORY[0x277D440F8]];
 
   if (!v29)
   {
-    v30 = [(RTTServiceUpdate *)self->_serviceUpdate serviceUpdateType];
-    v31 = [v30 isEqualToString:*MEMORY[0x277D44128]];
+    serviceUpdateType2 = [(RTTServiceUpdate *)self->_serviceUpdate serviceUpdateType];
+    v31 = [serviceUpdateType2 isEqualToString:*MEMORY[0x277D44128]];
 
     if (!v31)
     {
-      v36 = [(RTTServiceUpdate *)self->_serviceUpdate serviceUpdateType];
-      v37 = [v36 isEqualToString:*MEMORY[0x277D44108]];
+      serviceUpdateType3 = [(RTTServiceUpdate *)self->_serviceUpdate serviceUpdateType];
+      v37 = [serviceUpdateType3 isEqualToString:*MEMORY[0x277D44108]];
 
       if (v37)
       {
@@ -285,13 +285,13 @@ void __44__RTTUIServiceUpdateCell_adjustTextViewSize__block_invoke(uint64_t a1)
 
       else
       {
-        v40 = [(RTTServiceUpdate *)self->_serviceUpdate serviceUpdateType];
-        v41 = [v40 isEqualToString:*MEMORY[0x277D44120]];
+        serviceUpdateType4 = [(RTTServiceUpdate *)self->_serviceUpdate serviceUpdateType];
+        v41 = [serviceUpdateType4 isEqualToString:*MEMORY[0x277D44120]];
 
         if (!v41)
         {
-          v45 = [(RTTServiceUpdate *)self->_serviceUpdate serviceUpdateType];
-          v46 = [v45 isEqualToString:*MEMORY[0x277D44100]];
+          serviceUpdateType5 = [(RTTServiceUpdate *)self->_serviceUpdate serviceUpdateType];
+          v46 = [serviceUpdateType5 isEqualToString:*MEMORY[0x277D44100]];
 
           if (v46)
           {
@@ -300,30 +300,30 @@ void __44__RTTUIServiceUpdateCell_adjustTextViewSize__block_invoke(uint64_t a1)
 
           else
           {
-            v48 = [(RTTServiceUpdate *)self->_serviceUpdate serviceUpdateType];
+            serviceUpdateType6 = [(RTTServiceUpdate *)self->_serviceUpdate serviceUpdateType];
             v49 = *MEMORY[0x277D44118];
 
-            if (v48 == v49)
+            if (serviceUpdateType6 == v49)
             {
               v47 = self->_titleView;
             }
 
             else
             {
-              v50 = [(RTTServiceUpdate *)self->_serviceUpdate serviceUpdateType];
+              serviceUpdateType7 = [(RTTServiceUpdate *)self->_serviceUpdate serviceUpdateType];
               v51 = *MEMORY[0x277D44130];
 
-              if (v50 == v51)
+              if (serviceUpdateType7 == v51)
               {
                 v47 = self->_titleView;
               }
 
               else
               {
-                v52 = [(RTTServiceUpdate *)self->_serviceUpdate serviceUpdateType];
+                serviceUpdateType8 = [(RTTServiceUpdate *)self->_serviceUpdate serviceUpdateType];
                 v53 = *MEMORY[0x277D44110];
 
-                if (v52 != v53)
+                if (serviceUpdateType8 != v53)
                 {
                   goto LABEL_23;
                 }
@@ -364,18 +364,18 @@ LABEL_22:
 
 LABEL_23:
   IsRTTNotificationContentExtension = Soft_AXProcessIsRTTNotificationContentExtension();
-  if (!v4 || IsRTTNotificationContentExtension)
+  if (!isCurrentCallConnected || IsRTTNotificationContentExtension)
   {
-    v56 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
   }
 
   else
   {
-    v56 = [MEMORY[0x277D75348] whiteColor];
+    labelColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  v57 = v56;
-  [(UITextView *)self->_titleView setTextColor:v56];
+  v57 = labelColor;
+  [(UITextView *)self->_titleView setTextColor:labelColor];
   [(UITextView *)self->_subtitleView setTextColor:v57];
   [(RTTUIServiceUpdateCell *)self adjustTextViewSize];
 }

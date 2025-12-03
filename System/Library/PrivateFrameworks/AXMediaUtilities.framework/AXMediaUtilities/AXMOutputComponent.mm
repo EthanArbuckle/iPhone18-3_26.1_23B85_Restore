@@ -1,7 +1,7 @@
 @interface AXMOutputComponent
 - (AXMOutputComponent)init;
 - (id)description;
-- (void)transitionToState:(int64_t)a3 completion:(id)a4;
+- (void)transitionToState:(int64_t)state completion:(id)completion;
 @end
 
 @implementation AXMOutputComponent
@@ -40,11 +40,11 @@
   return v8;
 }
 
-- (void)transitionToState:(int64_t)a3 completion:(id)a4
+- (void)transitionToState:(int64_t)state completion:(id)completion
 {
-  v6 = a4;
-  [(AXMOutputComponent *)self setComponentState:a3];
-  v6[2]();
+  completionCopy = completion;
+  [(AXMOutputComponent *)self setComponentState:state];
+  completionCopy[2]();
 }
 
 @end

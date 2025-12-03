@@ -1,38 +1,38 @@
 @interface PSUIAddCellularPlanSpecifier
 - (PSListController)hostController;
-- (PSUIAddCellularPlanSpecifier)initWithHostController:(id)a3 isEmbeddedInCarrierList:(BOOL)a4 planManager:(id)a5;
+- (PSUIAddCellularPlanSpecifier)initWithHostController:(id)controller isEmbeddedInCarrierList:(BOOL)list planManager:(id)manager;
 - (UIViewController)firstViewController;
 - (UIViewController)presentedController;
 - (void)_showWifiAlert;
-- (void)addCellularPlanCellPressed:(id)a3;
+- (void)addCellularPlanCellPressed:(id)pressed;
 - (void)cellularPlanChanged;
 - (void)setUpeSIMNeeded;
-- (void)simSetupFlowCompleted:(unint64_t)a3;
+- (void)simSetupFlowCompleted:(unint64_t)completed;
 @end
 
 @implementation PSUIAddCellularPlanSpecifier
 
-- (PSUIAddCellularPlanSpecifier)initWithHostController:(id)a3 isEmbeddedInCarrierList:(BOOL)a4 planManager:(id)a5
+- (PSUIAddCellularPlanSpecifier)initWithHostController:(id)controller isEmbeddedInCarrierList:(BOOL)list planManager:(id)manager
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v6)
+  listCopy = list;
+  controllerCopy = controller;
+  managerCopy = manager;
+  if (listCopy)
   {
-    v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    currentDevice = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v11 = @"CELLULAR_CHOOSE_NETWORK_OTHER";
-    v12 = [v10 localizedStringForKey:@"CELLULAR_CHOOSE_NETWORK_OTHER" value:&stru_287733598 table:@"Cellular"];
+    v12 = [currentDevice localizedStringForKey:@"CELLULAR_CHOOSE_NETWORK_OTHER" value:&stru_287733598 table:@"Cellular"];
     v13 = 3;
   }
 
   else
   {
     v14 = +[PSUICellularPlanManagerCache sharedInstance];
-    v15 = [v14 planItems];
-    v16 = [v15 count];
+    planItems = [v14 planItems];
+    v16 = [planItems count];
 
-    v10 = [MEMORY[0x277D75418] currentDevice];
-    if ([v10 sf_isiPad])
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice sf_isiPad])
     {
       v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v18 = v17;
@@ -72,10 +72,10 @@
     [(PSUIAddCellularPlanSpecifier *)v21 setIdentifier:v11];
     [(PSUIAddCellularPlanSpecifier *)v22 setTarget:v22];
     [(PSUIAddCellularPlanSpecifier *)v22 setButtonAction:sel_addCellularPlanCellPressed_];
-    objc_storeWeak(&v22->_hostController, v8);
-    objc_storeStrong(&v22->_planManager, a5);
+    objc_storeWeak(&v22->_hostController, controllerCopy);
+    objc_storeStrong(&v22->_planManager, manager);
     v22->_isRequestingOngoing = 0;
-    v22->_isEmbeddedInCarrierList = v6;
+    v22->_isEmbeddedInCarrierList = listCopy;
     v23 = objc_alloc(MEMORY[0x277CC37B0]);
     v24 = [v23 initWithQueue:MEMORY[0x277D85CD0]];
     coreTelephonyClient = v22->_coreTelephonyClient;
@@ -84,17 +84,17 @@
     [(CoreTelephonyClient *)v22->_coreTelephonyClient setDelegate:v22];
     [(PSUIAddCellularPlanSpecifier *)v22 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
     WeakRetained = objc_loadWeakRetained(&v22->_hostController);
-    v27 = [WeakRetained table];
+    table = [WeakRetained table];
     v28 = objc_opt_class();
     v29 = +[(PSTableCell *)_TtC18SettingsCellularUI33SettingsCellularButtonSpinnerCell];
-    [v27 registerClass:v28 forCellReuseIdentifier:v29];
+    [table registerClass:v28 forCellReuseIdentifier:v29];
   }
 
-  v30 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v30 addObserver:v22 selector:sel_setUpeSIMNeeded name:@"PSUICellularPlanSetUpNeeded" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v22 selector:sel_setUpeSIMNeeded name:@"PSUICellularPlanSetUpNeeded" object:0];
 
-  v31 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v31 addObserver:v22 selector:sel_cellularPlanChanged name:@"PSUICellularPlanChanged" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:v22 selector:sel_cellularPlanChanged name:@"PSUICellularPlanChanged" object:0];
 
   return v22;
 }
@@ -102,37 +102,37 @@
 - (void)setUpeSIMNeeded
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUIAddCellularPlanSpecifier *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIAddCellularPlanSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
     v6 = @"PSUICellularPlanSetUpNeeded";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Received notification %@", &v5, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Received notification %@", &v5, 0xCu);
   }
 
   [(PSUIAddCellularPlanSpecifier *)self addCellularPlanCellPressed:self];
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addCellularPlanCellPressed:(id)a3
+- (void)addCellularPlanCellPressed:(id)pressed
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSUIAddCellularPlanSpecifier *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  pressedCopy = pressed;
+  getLogger = [(PSUIAddCellularPlanSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v16 = "[PSUIAddCellularPlanSpecifier addCellularPlanCellPressed:]";
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
   if (self->_isRequestingOngoing || self->_flow && (WeakRetained = objc_loadWeakRetained(&self->_hostController), [WeakRetained presentedViewController], v7 = objc_claimAutoreleasedReturnValue(), v8 = v7 == 0, v7, WeakRetained, !v8))
   {
-    v9 = [(PSUIAddCellularPlanSpecifier *)self getLogger];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    getLogger2 = [(PSUIAddCellularPlanSpecifier *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_2658DE000, v9, OS_LOG_TYPE_ERROR, "duplicate request to launch SimSetupSupport", buf, 2u);
+      _os_log_error_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_ERROR, "duplicate request to launch SimSetupSupport", buf, 2u);
     }
   }
 
@@ -147,7 +147,7 @@
     v12[3] = &unk_279BAAD20;
     objc_copyWeak(&v14, buf);
     v12[4] = self;
-    v13 = v4;
+    v13 = pressedCopy;
     [(CoreTelephonyClient *)coreTelephonyClient getTravelInfoForIccid:&stru_287733598 completion:v12];
 
     objc_destroyWeak(&v14);
@@ -343,31 +343,31 @@ uint64_t __59__PSUIAddCellularPlanSpecifier_addCellularPlanCellPressed___block_i
 - (void)cellularPlanChanged
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUIAddCellularPlanSpecifier *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIAddCellularPlanSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 136315394;
     v15 = "[PSUIAddCellularPlanSpecifier cellularPlanChanged]";
     v16 = 2112;
     v17 = @"PSUICellularPlanChanged";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s received notification %@", &v14, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s received notification %@", &v14, 0x16u);
   }
 
   if ([(PSUIAddCellularPlanSpecifier *)self isEmbeddedInCarrierList])
   {
-    v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v5 = [v4 localizedStringForKey:@"CELLULAR_CHOOSE_NETWORK_OTHER" value:&stru_287733598 table:@"Cellular"];
+    currentDevice = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    v5 = [currentDevice localizedStringForKey:@"CELLULAR_CHOOSE_NETWORK_OTHER" value:&stru_287733598 table:@"Cellular"];
     [(PSUIAddCellularPlanSpecifier *)self setName:v5];
   }
 
   else
   {
     v6 = +[PSUICellularPlanManagerCache sharedInstance];
-    v7 = [v6 planItems];
-    v8 = [v7 count];
+    planItems = [v6 planItems];
+    v8 = [planItems count];
 
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    if ([v4 sf_isiPad])
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice sf_isiPad])
     {
       v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v5 = v9;
@@ -399,15 +399,15 @@ uint64_t __59__PSUIAddCellularPlanSpecifier_addCellularPlanCellPressed___block_i
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)simSetupFlowCompleted:(unint64_t)a3
+- (void)simSetupFlowCompleted:(unint64_t)completed
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = [(PSUIAddCellularPlanSpecifier *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIAddCellularPlanSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = self;
-    _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "finish activation flow. self:%@", buf, 0xCu);
+    selfCopy = self;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "finish activation flow. self:%@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
@@ -474,8 +474,8 @@ void __54__PSUIAddCellularPlanSpecifier_simSetupFlowCompleted___block_invoke(uin
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"NOT_CONNECTED_TO_INTERNET" value:&stru_287733598 table:@"Gemini-Gemini"];
 
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  LODWORD(v3) = [v5 sf_isiPhone];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  LODWORD(v3) = [currentDevice sf_isiPhone];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = v6;
   if (v3)
@@ -491,8 +491,8 @@ void __54__PSUIAddCellularPlanSpecifier_simSetupFlowCompleted___block_invoke(uin
   v9 = [v6 localizedStringForKey:v8 value:&stru_287733598 table:@"Gemini-Gemini"];
 
   v10 = [MEMORY[0x277D75110] alertControllerWithTitle:v4 message:v9 preferredStyle:1];
-  v11 = [MEMORY[0x277D75418] currentDevice];
-  if ([v11 sf_isChinaRegionCellularDevice])
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice2 sf_isChinaRegionCellularDevice])
   {
     v12 = @"CHOOSE_WLAN";
   }

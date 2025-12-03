@@ -4,16 +4,16 @@
 - (NSDictionary)visualParameters;
 - (NSString)catId;
 - (NSString)visualId;
-- (void)setCaptionPrint:(id)a3;
-- (void)setCaptionSpeak:(id)a3;
-- (void)setCatId:(id)a3;
-- (void)setDialogId:(id)a3;
-- (void)setMeta:(id)a3;
-- (void)setPrint:(id)a3;
-- (void)setSpeak:(id)a3;
-- (void)setVisualId:(id)a3;
-- (void)setVisualParameters:(id)a3;
-- (void)setVisualResponse:(id)a3;
+- (void)setCaptionPrint:(id)print;
+- (void)setCaptionSpeak:(id)speak;
+- (void)setCatId:(id)id;
+- (void)setDialogId:(id)id;
+- (void)setMeta:(id)meta;
+- (void)setPrint:(id)print;
+- (void)setSpeak:(id)speak;
+- (void)setVisualId:(id)id;
+- (void)setVisualParameters:(id)parameters;
+- (void)setVisualResponse:(id)response;
 @end
 
 @implementation AnyDialog.RemoteDialogResult
@@ -26,32 +26,32 @@
   return v2;
 }
 
-- (void)setCatId:(id)a3
+- (void)setCatId:(id)id
 {
   v4 = sub_221BCD388();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_221B0FFB8(v4, v6);
 }
 
-- (void)setCaptionSpeak:(id)a3
+- (void)setCaptionSpeak:(id)speak
 {
   v4 = sub_221BCD668();
-  v5 = self;
+  selfCopy = self;
   sub_221B10064(v4);
 }
 
-- (void)setCaptionPrint:(id)a3
+- (void)setCaptionPrint:(id)print
 {
   v4 = sub_221BCD668();
-  v5 = self;
+  selfCopy = self;
   sub_221B1010C(v4);
 }
 
-- (void)setDialogId:(id)a3
+- (void)setDialogId:(id)id
 {
   v4 = sub_221BCD668();
-  v5 = self;
+  selfCopy = self;
   sub_221B101B4(v4);
 }
 
@@ -63,24 +63,24 @@
   return v2;
 }
 
-- (void)setMeta:(id)a3
+- (void)setMeta:(id)meta
 {
   v4 = sub_221BCD298();
-  v5 = self;
+  selfCopy = self;
   sub_221B102B0(v4);
 }
 
-- (void)setPrint:(id)a3
+- (void)setPrint:(id)print
 {
   v4 = sub_221BCD668();
-  v5 = self;
+  selfCopy = self;
   sub_221B10358(v4);
 }
 
-- (void)setSpeak:(id)a3
+- (void)setSpeak:(id)speak
 {
   v4 = sub_221BCD668();
-  v5 = self;
+  selfCopy = self;
   sub_221B104B0(v4);
 }
 
@@ -100,9 +100,9 @@
   return v3;
 }
 
-- (void)setVisualId:(id)a3
+- (void)setVisualId:(id)id
 {
-  if (a3)
+  if (id)
   {
     v4 = sub_221BCD388();
     v6 = v5;
@@ -114,7 +114,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_221B10788(v4, v6);
 }
 
@@ -133,9 +133,9 @@
   return v2;
 }
 
-- (void)setVisualParameters:(id)a3
+- (void)setVisualParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
     v4 = sub_221BCD298();
   }
@@ -145,7 +145,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_221B108A0(v4);
 }
 
@@ -168,24 +168,24 @@
   return v4;
 }
 
-- (void)setVisualResponse:(id)a3
+- (void)setVisualResponse:(id)response
 {
-  v3 = a3;
-  if (a3)
+  responseCopy = response;
+  if (response)
   {
-    v4 = self;
-    v5 = v3;
-    v3 = sub_221BCC468();
+    selfCopy = self;
+    v5 = responseCopy;
+    responseCopy = sub_221BCC468();
     v7 = v6;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0xF000000000000000;
   }
 
-  sub_221B109F0(v3, v7);
+  sub_221B109F0(responseCopy, v7);
 }
 
 @end

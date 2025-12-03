@@ -1,14 +1,14 @@
 @interface DefaultOneUpBadgeContentProvider
-- (id)undoManagerForActionPerformer:(id)a3;
+- (id)undoManagerForActionPerformer:(id)performer;
 @end
 
 @implementation DefaultOneUpBadgeContentProvider
 
-- (id)undoManagerForActionPerformer:(id)a3
+- (id)undoManagerForActionPerformer:(id)performer
 {
-  v4 = a3;
-  v5 = self;
-  v6 = DefaultOneUpBadgeContentProvider.undoManager(for:)(v5);
+  performerCopy = performer;
+  selfCopy = self;
+  v6 = DefaultOneUpBadgeContentProvider.undoManager(for:)(selfCopy);
 
   return v6;
 }

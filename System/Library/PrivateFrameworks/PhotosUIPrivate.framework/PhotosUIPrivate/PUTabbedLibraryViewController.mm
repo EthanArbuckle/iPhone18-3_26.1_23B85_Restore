@@ -1,69 +1,69 @@
 @interface PUTabbedLibraryViewController
-- (BOOL)_navigateToDefaultLocationInNavigationController:(id)a3 animated:(BOOL)a4;
-- (BOOL)_navigateToRootOfCurrentTabAnimated:(BOOL)a3 dismissAnyPresentedViewController:(BOOL)a4;
-- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)a3;
+- (BOOL)_navigateToDefaultLocationInNavigationController:(id)controller animated:(BOOL)animated;
+- (BOOL)_navigateToRootOfCurrentTabAnimated:(BOOL)animated dismissAnyPresentedViewController:(BOOL)controller;
+- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)controller;
 - (BOOL)_useSearchTab;
-- (BOOL)contentModeIsAvailableForNavigation:(int)a3;
-- (BOOL)pu_shouldSelectTab:(id)a3;
+- (BOOL)contentModeIsAvailableForNavigation:(int)navigation;
+- (BOOL)pu_shouldSelectTab:(id)tab;
 - (NSArray)currentRootTabIdentifiers;
 - (OS_os_log)tabbedLibraryLog;
 - (PUSidebarViewController)sidebarViewController;
-- (PUTabbedLibraryViewController)initWithCoder:(id)a3;
-- (PUTabbedLibraryViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (PUTabbedLibraryViewController)initWithPhotoLibrary:(id)a3 libraryFilterState:(id)a4 actionDelegate:(id)a5;
+- (PUTabbedLibraryViewController)initWithCoder:(id)coder;
+- (PUTabbedLibraryViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (PUTabbedLibraryViewController)initWithPhotoLibrary:(id)library libraryFilterState:(id)state actionDelegate:(id)delegate;
 - (PXActionProviderDelegate)actionDelegate;
 - (UINavigationController)selectedNavigationController;
 - (UIViewController)searchHomeController;
-- (id)_addAlbumActionWithTitle:(id)a3 actionType:(id)a4;
-- (id)_existingTabForContentMode:(int)a3;
-- (id)_makeNavigationControllerWithRootController:(id)a3;
-- (id)_makeViewControllerForCollectionsTab:(id)a3;
-- (id)_makeViewControllerForImportTab:(id)a3;
-- (id)_makeViewControllerForLibraryTab:(id)a3;
-- (id)_makeViewControllerForSearchTab:(id)a3;
-- (id)_navigationControllerForIdentifier:(id)a3;
-- (id)_snapBackRootViewControllerInNavigationController:(id)a3;
-- (id)_tabForIdentifier:(id)a3;
-- (id)_tabRootViewControllerInNavigationController:(id)a3;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
-- (id)navigationController:(id)a3 interactionControllerForAnimationController:(id)a4;
-- (id)nextExistingParticipantOnRouteToDestination:(id)a3;
-- (int)_contentModeForNavigationController:(id)a3;
-- (int)contentModeForTab:(id)a3;
+- (id)_addAlbumActionWithTitle:(id)title actionType:(id)type;
+- (id)_existingTabForContentMode:(int)mode;
+- (id)_makeNavigationControllerWithRootController:(id)controller;
+- (id)_makeViewControllerForCollectionsTab:(id)tab;
+- (id)_makeViewControllerForImportTab:(id)tab;
+- (id)_makeViewControllerForLibraryTab:(id)tab;
+- (id)_makeViewControllerForSearchTab:(id)tab;
+- (id)_navigationControllerForIdentifier:(id)identifier;
+- (id)_snapBackRootViewControllerInNavigationController:(id)controller;
+- (id)_tabForIdentifier:(id)identifier;
+- (id)_tabRootViewControllerInNavigationController:(id)controller;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
+- (id)navigationController:(id)controller interactionControllerForAnimationController:(id)animationController;
+- (id)nextExistingParticipantOnRouteToDestination:(id)destination;
+- (int)_contentModeForNavigationController:(id)controller;
+- (int)contentModeForTab:(id)tab;
 - (int)selectedContentMode;
-- (unint64_t)operationForAcceptingItemsFromDropSession:(id)a3 tab:(id)a4;
-- (unint64_t)routingOptionsForDestination:(id)a3;
+- (unint64_t)operationForAcceptingItemsFromDropSession:(id)session tab:(id)tab;
+- (unint64_t)routingOptionsForDestination:(id)destination;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_handleActionCompletionWithSuccess:(BOOL)a3 error:(id)a4 destinationCollection:(id)a5;
-- (void)_logAnalyticsTabChanged:(int)a3;
-- (void)_navigateToContentMode:(int)a3 animated:(BOOL)a4 dismissAnyPresentedViewController:(BOOL)a5 completion:(id)a6;
-- (void)_navigateToInitialLocationInCurrentNavigationControllerAnimated:(BOOL)a3;
-- (void)_performActionForType:(id)a3;
-- (void)_sceneWillEnterForeground:(id)a3;
+- (void)_handleActionCompletionWithSuccess:(BOOL)success error:(id)error destinationCollection:(id)collection;
+- (void)_logAnalyticsTabChanged:(int)changed;
+- (void)_navigateToContentMode:(int)mode animated:(BOOL)animated dismissAnyPresentedViewController:(BOOL)controller completion:(id)completion;
+- (void)_navigateToInitialLocationInCurrentNavigationControllerAnimated:(BOOL)animated;
+- (void)_performActionForType:(id)type;
+- (void)_sceneWillEnterForeground:(id)foreground;
 - (void)_selectedTabDidChange;
-- (void)_setSelectedTab:(id)a3 animated:(BOOL)a4;
+- (void)_setSelectedTab:(id)tab animated:(BOOL)animated;
 - (void)_updateCollectionsTabGroupChildren;
 - (void)_updateTabBarMinimizeBehavior;
-- (void)_updateTabBarVisibilityForHorizontalSizeClass:(int64_t)a3;
-- (void)acceptItemsFromDropSession:(id)a3 tab:(id)a4;
-- (void)configureSearchTab:(id)a3;
-- (void)displayOrderDidChangeForGroup:(id)a3;
+- (void)_updateTabBarVisibilityForHorizontalSizeClass:(int64_t)class;
+- (void)acceptItemsFromDropSession:(id)session tab:(id)tab;
+- (void)configureSearchTab:(id)tab;
+- (void)displayOrderDidChangeForGroup:(id)group;
 - (void)navigateToCollectionsTabRoot;
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)ppt_runTabSwitchingTestWithName:(id)a3 options:(id)a4 delegate:(id)a5 completionHandler:(id)a6;
-- (void)pu_didSelectTab:(id)a3 previousTab:(id)a4;
-- (void)px_switchToTabAndNavigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)setImportViewController:(id)a3 forImportSource:(id)a4;
-- (void)setSelectedContentMode:(int)a3;
-- (void)setSelectedTab:(id)a3;
-- (void)updateDisplayedTabsAnimated:(BOOL)a3;
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)ppt_runTabSwitchingTestWithName:(id)name options:(id)options delegate:(id)delegate completionHandler:(id)handler;
+- (void)pu_didSelectTab:(id)tab previousTab:(id)previousTab;
+- (void)px_switchToTabAndNavigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler;
+- (void)setImportViewController:(id)controller forImportSource:(id)source;
+- (void)setSelectedContentMode:(int)mode;
+- (void)setSelectedTab:(id)tab;
+- (void)updateDisplayedTabsAnimated:(BOOL)animated;
 - (void)updateNotificationBadge;
-- (void)validateCommand:(id)a3;
+- (void)validateCommand:(id)command;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PUTabbedLibraryViewController
@@ -74,35 +74,35 @@
   v11.super_class = PUTabbedLibraryViewController;
   [(PUTabbedLibraryViewController *)&v11 viewDidLoad];
   [(PUTabbedLibraryViewController *)self px_enableExtendedTraitCollection];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = *MEMORY[0x1E69DE360];
-  v5 = [(PUTabbedLibraryViewController *)self view];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
-  [v3 addObserver:self selector:sel__sceneWillEnterForeground_ name:v4 object:v7];
+  view = [(PUTabbedLibraryViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  [defaultCenter addObserver:self selector:sel__sceneWillEnterForeground_ name:v4 object:windowScene];
 
-  v8 = [MEMORY[0x1E69C3498] sharedInstance];
-  v9 = [v8 springLoadingEnabled];
-  v10 = [(PUTabbedLibraryViewController *)self tabBar];
-  [v10 setSpringLoaded:v9];
+  mEMORY[0x1E69C3498] = [MEMORY[0x1E69C3498] sharedInstance];
+  springLoadingEnabled = [mEMORY[0x1E69C3498] springLoadingEnabled];
+  tabBar = [(PUTabbedLibraryViewController *)self tabBar];
+  [tabBar setSpringLoaded:springLoadingEnabled];
 }
 
-- (void)configureSearchTab:(id)a3
+- (void)configureSearchTab:(id)tab
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B36FA240(v4);
+  tabCopy = tab;
+  selfCopy = self;
+  sub_1B36FA240(tabCopy);
 }
 
 - (UINavigationController)selectedNavigationController
 {
-  v2 = [(PUTabbedLibraryViewController *)self selectedTab];
-  v3 = [v2 viewController];
+  selectedTab = [(PUTabbedLibraryViewController *)self selectedTab];
+  viewController = [selectedTab viewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = viewController;
   }
 
   else
@@ -136,7 +136,7 @@ uint64_t __49__PUTabbedLibraryViewController_tabbedLibraryLog__block_invoke()
 
 - (UIViewController)searchHomeController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B36FBD54();
 
   return v3;
@@ -144,15 +144,15 @@ uint64_t __49__PUTabbedLibraryViewController_tabbedLibraryLog__block_invoke()
 
 - (int)selectedContentMode
 {
-  v3 = [(PUTabbedLibraryViewController *)self selectedTab];
+  selectedTab = [(PUTabbedLibraryViewController *)self selectedTab];
 
-  if (!v3)
+  if (!selectedTab)
   {
     return -1;
   }
 
-  v4 = [(PUTabbedLibraryViewController *)self selectedTab];
-  v5 = [(PUTabbedLibraryViewController *)self contentModeForTab:v4];
+  selectedTab2 = [(PUTabbedLibraryViewController *)self selectedTab];
+  v5 = [(PUTabbedLibraryViewController *)self contentModeForTab:selectedTab2];
 
   return v5;
 }
@@ -167,36 +167,36 @@ uint64_t __49__PUTabbedLibraryViewController_tabbedLibraryLog__block_invoke()
 - (void)_selectedTabDidChange
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [(PUTabbedLibraryViewController *)self selectedContentMode];
+  selectedContentMode = [(PUTabbedLibraryViewController *)self selectedContentMode];
   v4 = PLUIGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5[0] = 67109120;
-    v5[1] = v3;
+    v5[1] = selectedContentMode;
     _os_log_impl(&dword_1B36F3000, v4, OS_LOG_TYPE_DEFAULT, "Tab did change, selected content mode: %i", v5, 8u);
   }
 
-  [(NSMutableIndexSet *)self->_everDisplayedContentModes addIndex:v3];
-  if (v3 != 12)
+  [(NSMutableIndexSet *)self->_everDisplayedContentModes addIndex:selectedContentMode];
+  if (selectedContentMode != 12)
   {
-    self->_lastSelectedContentModeExcludingSearch = v3;
+    self->_lastSelectedContentModeExcludingSearch = selectedContentMode;
   }
 
-  [(PUTabbedLibraryViewController *)self _logAnalyticsTabChanged:v3];
+  [(PUTabbedLibraryViewController *)self _logAnalyticsTabChanged:selectedContentMode];
   [(PUTabbedLibraryViewController *)self _updateTabBarMinimizeBehavior];
 }
 
 - (void)_updateTabBarMinimizeBehavior
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69C3418] sharedInstance];
-  v4 = [v3 enableTabBarAccessoryControls];
+  mEMORY[0x1E69C3418] = [MEMORY[0x1E69C3418] sharedInstance];
+  enableTabBarAccessoryControls = [mEMORY[0x1E69C3418] enableTabBarAccessoryControls];
 
-  if (v4)
+  if (enableTabBarAccessoryControls)
   {
-    v5 = [(PUTabbedLibraryViewController *)self selectedTab];
-    v6 = [v5 identifier];
-    v7 = [v6 isEqualToString:*MEMORY[0x1E69C41A0]];
+    selectedTab = [(PUTabbedLibraryViewController *)self selectedTab];
+    identifier = [selectedTab identifier];
+    v7 = [identifier isEqualToString:*MEMORY[0x1E69C41A0]];
 
     if (v7)
     {
@@ -229,7 +229,7 @@ uint64_t __49__PUTabbedLibraryViewController_tabbedLibraryLog__block_invoke()
 
 - (void)updateNotificationBadge
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3811CC0();
 }
 
@@ -240,17 +240,17 @@ uint64_t __49__PUTabbedLibraryViewController_tabbedLibraryLog__block_invoke()
   return WeakRetained;
 }
 
-- (void)ppt_runTabSwitchingTestWithName:(id)a3 options:(id)a4 delegate:(id)a5 completionHandler:(id)a6
+- (void)ppt_runTabSwitchingTestWithName:(id)name options:(id)options delegate:(id)delegate completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(PUTabbedLibraryViewController *)self px_splitViewController];
-  v16 = v15;
-  if (v15)
+  nameCopy = name;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  px_splitViewController = [(PUTabbedLibraryViewController *)self px_splitViewController];
+  v16 = px_splitViewController;
+  if (px_splitViewController)
   {
-    if ([v15 isSidebarVisible])
+    if ([px_splitViewController isSidebarVisible])
     {
       delta = 0;
     }
@@ -261,8 +261,8 @@ uint64_t __49__PUTabbedLibraryViewController_tabbedLibraryLog__block_invoke()
       delta = 1000000000;
     }
 
-    v17 = [v16 sidebarViewController];
-    if (v17)
+    sidebarViewController = [v16 sidebarViewController];
+    if (sidebarViewController)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -270,24 +270,24 @@ uint64_t __49__PUTabbedLibraryViewController_tabbedLibraryLog__block_invoke()
         goto LABEL_8;
       }
 
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v30 = objc_opt_class();
       v24 = NSStringFromClass(v30);
-      v34 = [v17 px_descriptionForAssertionMessage];
-      [v22 handleFailureInMethod:a2 object:self file:@"PUTabbedLibraryViewController.m" lineNumber:1021 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"splitViewController.sidebarViewController", v24, v34}];
+      px_descriptionForAssertionMessage = [sidebarViewController px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUTabbedLibraryViewController.m" lineNumber:1021 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"splitViewController.sidebarViewController", v24, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
-      [v22 handleFailureInMethod:a2 object:self file:@"PUTabbedLibraryViewController.m" lineNumber:1021 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"splitViewController.sidebarViewController", v24}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUTabbedLibraryViewController.m" lineNumber:1021 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"splitViewController.sidebarViewController", v24}];
     }
 
 LABEL_8:
-    v18 = [v17 topViewController];
-    if (v18)
+    topViewController = [sidebarViewController topViewController];
+    if (topViewController)
     {
       v19 = a2;
       objc_opt_class();
@@ -299,34 +299,34 @@ LABEL_10:
         block[1] = 3221225472;
         block[2] = __100__PUTabbedLibraryViewController_ppt_runTabSwitchingTestWithName_options_delegate_completionHandler___block_invoke;
         block[3] = &unk_1E7B7DCB0;
-        v38 = v18;
-        v39 = v11;
-        v40 = v12;
-        v41 = v13;
-        v42 = v14;
-        v21 = v18;
+        v38 = topViewController;
+        v39 = nameCopy;
+        v40 = optionsCopy;
+        v41 = delegateCopy;
+        v42 = handlerCopy;
+        v21 = topViewController;
         dispatch_after(v20, MEMORY[0x1E69E96A0], block);
 
         goto LABEL_11;
       }
 
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v31 = objc_opt_class();
       v29 = NSStringFromClass(v31);
-      v33 = [v18 px_descriptionForAssertionMessage];
+      px_descriptionForAssertionMessage2 = [topViewController px_descriptionForAssertionMessage];
       v32 = v19;
-      v25 = v35;
-      [v35 handleFailureInMethod:v32 object:self file:@"PUTabbedLibraryViewController.m" lineNumber:1022 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"sidebarNavigationController.topViewController", v29, v33}];
+      currentHandler3 = currentHandler2;
+      [currentHandler2 handleFailureInMethod:v32 object:self file:@"PUTabbedLibraryViewController.m" lineNumber:1022 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"sidebarNavigationController.topViewController", v29, px_descriptionForAssertionMessage2}];
     }
 
     else
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v26 = objc_opt_class();
       v27 = NSStringFromClass(v26);
       v28 = a2;
       v29 = v27;
-      [v25 handleFailureInMethod:v28 object:self file:@"PUTabbedLibraryViewController.m" lineNumber:1022 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"sidebarNavigationController.topViewController", v27}];
+      [currentHandler3 handleFailureInMethod:v28 object:self file:@"PUTabbedLibraryViewController.m" lineNumber:1022 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"sidebarNavigationController.topViewController", v27}];
     }
 
     goto LABEL_10;
@@ -334,15 +334,15 @@ LABEL_10:
 
   v43.receiver = self;
   v43.super_class = PUTabbedLibraryViewController;
-  [(PUTabbedLibraryViewController *)&v43 ppt_runTabSwitchingTestWithName:v11 options:v12 delegate:v13 completionHandler:v14];
+  [(PUTabbedLibraryViewController *)&v43 ppt_runTabSwitchingTestWithName:nameCopy options:optionsCopy delegate:delegateCopy completionHandler:handlerCopy];
 LABEL_11:
 }
 
-- (void)setImportViewController:(id)a3 forImportSource:(id)a4
+- (void)setImportViewController:(id)controller forImportSource:(id)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  controllerCopy = controller;
+  sourceCopy = source;
+  v10 = controllerCopy;
   v17 = v10;
   if (v10)
   {
@@ -351,11 +351,11 @@ LABEL_11:
     v10 = v17;
     if ((isKindOfClass & 1) == 0)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
-      v16 = [(PUImportViewController *)v17 px_descriptionForAssertionMessage];
-      [v13 handleFailureInMethod:a2 object:self file:@"PUTabbedLibraryViewController.m" lineNumber:983 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"viewController", v15, v16}];
+      px_descriptionForAssertionMessage = [(PUImportViewController *)v17 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUTabbedLibraryViewController.m" lineNumber:983 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"viewController", v15, px_descriptionForAssertionMessage}];
 
       v10 = v17;
     }
@@ -367,104 +367,104 @@ LABEL_11:
     [(NSMutableDictionary *)self->_rootTabsByIdentifier setObject:0 forKeyedSubscript:*MEMORY[0x1E69C40C8]];
     [(NSMutableDictionary *)self->_navigationControllersByIdentifier setObject:0 forKeyedSubscript:v12];
     [(PUTabbedLibraryViewController *)self willChangeValueForKey:@"importViewController"];
-    objc_storeStrong(&self->_importViewController, a3);
+    objc_storeStrong(&self->_importViewController, controller);
     [(PUTabbedLibraryViewController *)self didChangeValueForKey:@"importViewController"];
     [(PUTabbedLibraryViewController *)self updateDisplayedTabsAnimated:self->_importViewController != 0];
   }
 }
 
-- (id)nextExistingParticipantOnRouteToDestination:(id)a3
+- (id)nextExistingParticipantOnRouteToDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(PUTabbedLibraryViewController *)self presentedViewController];
+  destinationCopy = destination;
+  presentedViewController = [(PUTabbedLibraryViewController *)self presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
     goto LABEL_2;
   }
 
-  v7 = [(PUTabbedLibraryViewController *)self selectedNavigationController];
-  if (v7)
+  selectedNavigationController = [(PUTabbedLibraryViewController *)self selectedNavigationController];
+  if (selectedNavigationController)
   {
   }
 
   else if ([(PUTabbedLibraryViewController *)self selectedContentMode]== 13)
   {
-    v8 = [(PUTabbedLibraryViewController *)self selectedViewController];
+    selectedViewController = [(PUTabbedLibraryViewController *)self selectedViewController];
     goto LABEL_9;
   }
 
-  v9 = [(PUTabbedLibraryViewController *)self selectedContentMode];
-  if (v9 != [MEMORY[0x1E69C3758] contentModeForNavigationDestination:v4 useSearchTab:{-[PUTabbedLibraryViewController _useSearchTab](self, "_useSearchTab")}])
+  selectedContentMode = [(PUTabbedLibraryViewController *)self selectedContentMode];
+  if (selectedContentMode != [MEMORY[0x1E69C3758] contentModeForNavigationDestination:destinationCopy useSearchTab:{-[PUTabbedLibraryViewController _useSearchTab](self, "_useSearchTab")}])
   {
 LABEL_2:
     v6 = 0;
     goto LABEL_10;
   }
 
-  v8 = [(PUTabbedLibraryViewController *)self selectedNavigationController];
+  selectedViewController = [(PUTabbedLibraryViewController *)self selectedNavigationController];
 LABEL_9:
-  v6 = v8;
+  v6 = selectedViewController;
 LABEL_10:
 
   return v6;
 }
 
-- (void)px_switchToTabAndNavigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)px_switchToTabAndNavigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  -[PUTabbedLibraryViewController setSelectedContentMode:](self, "setSelectedContentMode:", [MEMORY[0x1E69C3758] contentModeForNavigationDestination:v8 useSearchTab:{-[PUTabbedLibraryViewController _useSearchTab](self, "_useSearchTab")}]);
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
+  destinationCopy = destination;
+  handlerCopy = handler;
+  -[PUTabbedLibraryViewController setSelectedContentMode:](self, "setSelectedContentMode:", [MEMORY[0x1E69C3758] contentModeForNavigationDestination:destinationCopy useSearchTab:{-[PUTabbedLibraryViewController _useSearchTab](self, "_useSearchTab")}]);
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v11 = *MEMORY[0x1E69BE9A8];
   v21[0] = *MEMORY[0x1E69BE9B0];
   v12 = [MEMORY[0x1E696AD98] numberWithInt:{-[PUTabbedLibraryViewController selectedContentMode](self, "selectedContentMode")}];
   v21[1] = *MEMORY[0x1E69BE9B8];
   v22[0] = v12;
-  v22[1] = v8;
+  v22[1] = destinationCopy;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
-  [v10 postNotificationName:v11 object:0 userInfo:v13];
+  [defaultCenter postNotificationName:v11 object:0 userInfo:v13];
 
-  v14 = [(PUTabbedLibraryViewController *)self nextExistingParticipantOnRouteToDestination:v8];
+  v14 = [(PUTabbedLibraryViewController *)self nextExistingParticipantOnRouteToDestination:destinationCopy];
   if (v14)
   {
-    v15 = [(PUTabbedLibraryViewController *)self transitionCoordinator];
-    if (v15)
+    transitionCoordinator = [(PUTabbedLibraryViewController *)self transitionCoordinator];
+    if (transitionCoordinator)
     {
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __98__PUTabbedLibraryViewController_px_switchToTabAndNavigateToDestination_options_completionHandler___block_invoke;
       v16[3] = &unk_1E7B74B10;
       v17 = v14;
-      v18 = v8;
-      v20 = a4;
-      v19 = v9;
-      [v15 animateAlongsideTransition:0 completion:v16];
+      v18 = destinationCopy;
+      optionsCopy = options;
+      v19 = handlerCopy;
+      [transitionCoordinator animateAlongsideTransition:0 completion:v16];
     }
 
     else
     {
-      [v14 navigateToDestination:v8 options:a4 completionHandler:v9];
+      [v14 navigateToDestination:destinationCopy options:options completionHandler:handlerCopy];
     }
   }
 
   else
   {
-    v15 = [objc_alloc(MEMORY[0x1E69C3938]) initWithDestination:v8 options:a4 completionHandler:v9];
-    [(PUTabbedLibraryViewController *)self setPendingNavigationRequest:v15];
+    transitionCoordinator = [objc_alloc(MEMORY[0x1E69C3938]) initWithDestination:destinationCopy options:options completionHandler:handlerCopy];
+    [(PUTabbedLibraryViewController *)self setPendingNavigationRequest:transitionCoordinator];
   }
 }
 
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = PXLemonadeReroutedProgrammaticDestination();
   v9 = [MEMORY[0x1E69C3758] contentModeForNavigationDestination:v8 useSearchTab:{-[PUTabbedLibraryViewController _useSearchTab](self, "_useSearchTab")}];
   if (v9 != [(PUTabbedLibraryViewController *)self selectedContentMode])
   {
-    v10 = [(PUTabbedLibraryViewController *)self selectedNavigationController];
-    v11 = [v10 viewControllers];
+    selectedNavigationController = [(PUTabbedLibraryViewController *)self selectedNavigationController];
+    viewControllers = [selectedNavigationController viewControllers];
     v12 = PXExists();
 
     if (v12)
@@ -477,7 +477,7 @@ LABEL_10:
   [MEMORY[0x1E69C3758] setPersistedLibraryContentModeSelection:v13];
   v14.receiver = self;
   v14.super_class = PUTabbedLibraryViewController;
-  [(PUTabbedLibraryViewController *)&v14 navigateToDestination:v8 options:a4 completionHandler:v7];
+  [(PUTabbedLibraryViewController *)&v14 navigateToDestination:v8 options:options completionHandler:handlerCopy];
 }
 
 uint64_t __81__PUTabbedLibraryViewController_navigateToDestination_options_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -489,7 +489,7 @@ uint64_t __81__PUTabbedLibraryViewController_navigateToDestination_options_compl
   return isKindOfClass & 1;
 }
 
-- (unint64_t)routingOptionsForDestination:(id)a3
+- (unint64_t)routingOptionsForDestination:(id)destination
 {
   v4 = PXLemonadeReroutedProgrammaticDestination();
   v5 = [MEMORY[0x1E69C3758] contentModeForNavigationDestination:v4 useSearchTab:{-[PUTabbedLibraryViewController _useSearchTab](self, "_useSearchTab")}] != -1;
@@ -499,28 +499,28 @@ uint64_t __81__PUTabbedLibraryViewController_navigateToDestination_options_compl
 
 - (BOOL)_useSearchTab
 {
-  v2 = [(PUTabbedLibraryViewController *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom] != 1;
+  traitCollection = [(PUTabbedLibraryViewController *)self traitCollection];
+  v3 = [traitCollection userInterfaceIdiom] != 1;
 
   return v3;
 }
 
-- (void)_performActionForType:(id)a3
+- (void)_performActionForType:(id)type
 {
-  v5 = a3;
-  if (!v5)
+  typeCopy = type;
+  if (!typeCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PUTabbedLibraryViewController.m" lineNumber:859 description:{@"Invalid parameter not satisfying: %@", @"actionType != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTabbedLibraryViewController.m" lineNumber:859 description:{@"Invalid parameter not satisfying: %@", @"actionType != nil"}];
   }
 
-  v6 = [(PUTabbedLibraryViewController *)self photoLibrary];
-  v7 = [v6 px_virtualCollections];
-  if ([v5 isEqualToString:*MEMORY[0x1E69C4000]])
+  photoLibrary = [(PUTabbedLibraryViewController *)self photoLibrary];
+  px_virtualCollections = [photoLibrary px_virtualCollections];
+  if ([typeCopy isEqualToString:*MEMORY[0x1E69C4000]])
   {
     v8 = objc_alloc(MEMORY[0x1E69C3410]);
     v9 = [MEMORY[0x1E69C4608] defaultPresenterWithViewController:self];
-    v10 = [v8 initWithPhotoLibrary:v6 presentationEnvironment:v9];
+    v10 = [v8 initWithPhotoLibrary:photoLibrary presentationEnvironment:v9];
 
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -528,7 +528,7 @@ uint64_t __81__PUTabbedLibraryViewController_navigateToDestination_options_compl
     v22[3] = &unk_1E7B7FB70;
     v22[4] = self;
     v11 = &v23;
-    v23 = v7;
+    v23 = px_virtualCollections;
     v12 = v22;
     v13 = v10;
   }
@@ -536,19 +536,19 @@ uint64_t __81__PUTabbedLibraryViewController_navigateToDestination_options_compl
   else
   {
     v14 = objc_alloc(MEMORY[0x1E69C37E0]);
-    v15 = [v7 rootAlbumCollectionList];
-    v16 = [v14 initWithActionType:v5 collectionList:v15];
+    rootAlbumCollectionList = [px_virtualCollections rootAlbumCollectionList];
+    v16 = [v14 initWithActionType:typeCopy collectionList:rootAlbumCollectionList];
 
     if (!v16)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"PUTabbedLibraryViewController.m" lineNumber:875 description:{@"Unable to create action performer for type = '%@'", v5}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUTabbedLibraryViewController.m" lineNumber:875 description:{@"Unable to create action performer for type = '%@'", typeCopy}];
 
       abort();
     }
 
-    v17 = [(PUTabbedLibraryViewController *)self actionDelegate];
-    [v16 setDelegate:v17];
+    actionDelegate = [(PUTabbedLibraryViewController *)self actionDelegate];
+    [v16 setDelegate:actionDelegate];
 
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
@@ -583,15 +583,15 @@ void __55__PUTabbedLibraryViewController__performActionForType___block_invoke_2(
   [v4 _handleActionCompletionWithSuccess:a2 error:v6 destinationCollection:v7];
 }
 
-- (void)_handleActionCompletionWithSuccess:(BOOL)a3 error:(id)a4 destinationCollection:(id)a5
+- (void)_handleActionCompletionWithSuccess:(BOOL)success error:(id)error destinationCollection:(id)collection
 {
-  v6 = a3;
+  successCopy = success;
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if (v6)
+  errorCopy = error;
+  collectionCopy = collection;
+  if (successCopy)
   {
-    v10 = [objc_alloc(MEMORY[0x1E69C3930]) initWithObject:v9 revealMode:1];
+    v10 = [objc_alloc(MEMORY[0x1E69C3930]) initWithObject:collectionCopy revealMode:1];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __96__PUTabbedLibraryViewController__handleActionCompletionWithSuccess_error_destinationCollection___block_invoke;
@@ -607,7 +607,7 @@ void __55__PUTabbedLibraryViewController__performActionForType___block_invoke_2(
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v15 = v8;
+      v15 = errorCopy;
       _os_log_impl(&dword_1B36F3000, v11, OS_LOG_TYPE_ERROR, "Failed to perform action: error=%@", buf, 0xCu);
     }
   }
@@ -643,19 +643,19 @@ void __96__PUTabbedLibraryViewController__handleActionCompletionWithSuccess_erro
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 1) != 0 && PXCollectionsTabListManagerObserverContext == a5)
+  if ((change & 1) != 0 && PXCollectionsTabListManagerObserverContext == context)
   {
     [(PUTabbedLibraryViewController *)self _updateCollectionsTabGroupChildren];
   }
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  toViewControllerCopy = toViewController;
   if ([(PUTabbedLibraryViewController *)self shouldSuppressAnimationsDuringProgrammaticNavigation]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v13 = 0;
@@ -663,20 +663,20 @@ void __96__PUTabbedLibraryViewController__handleActionCompletionWithSuccess_erro
 
   else
   {
-    v13 = [v10 navigationController:v10 animationControllerForOperation:a4 fromViewController:v11 toViewController:v12];
+    v13 = [controllerCopy navigationController:controllerCopy animationControllerForOperation:operation fromViewController:viewControllerCopy toViewController:toViewControllerCopy];
   }
 
   return v13;
 }
 
-- (id)navigationController:(id)a3 interactionControllerForAnimationController:(id)a4
+- (id)navigationController:(id)controller interactionControllerForAnimationController:(id)animationController
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  animationControllerCopy = animationController;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 navigationController:v5 interactionControllerForAnimationController:v6];
+    v7 = [controllerCopy navigationController:controllerCopy interactionControllerForAnimationController:animationControllerCopy];
   }
 
   else
@@ -687,65 +687,65 @@ void __96__PUTabbedLibraryViewController__handleActionCompletionWithSuccess_erro
   return v7;
 }
 
-- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)a3
+- (BOOL)_navigationControllerShouldUseBuiltinInteractionController:(id)controller
 {
-  v3 = [a3 topViewController];
-  v4 = [v3 pu_navigationTransition];
-  v5 = v4 == 0;
+  topViewController = [controller topViewController];
+  pu_navigationTransition = [topViewController pu_navigationTransition];
+  v5 = pu_navigationTransition == 0;
 
   return v5;
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v7 = a4;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 navigationController:v8 didShowViewController:v7 animated:v5];
+    [controllerCopy navigationController:controllerCopy didShowViewController:viewControllerCopy animated:animatedCopy];
   }
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v7 = a4;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 navigationController:v8 willShowViewController:v7 animated:v5];
+    [controllerCopy navigationController:controllerCopy willShowViewController:viewControllerCopy animated:animatedCopy];
   }
 }
 
-- (id)_tabRootViewControllerInNavigationController:(id)a3
+- (id)_tabRootViewControllerInNavigationController:(id)controller
 {
-  v3 = [a3 viewControllers];
-  v4 = [v3 firstObject];
+  viewControllers = [controller viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)_snapBackRootViewControllerInNavigationController:(id)a3
+- (id)_snapBackRootViewControllerInNavigationController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 viewControllers];
-  v6 = [v5 indexOfObjectPassingTest:&__block_literal_global_4050];
+  controllerCopy = controller;
+  viewControllers = [controllerCopy viewControllers];
+  v6 = [viewControllers indexOfObjectPassingTest:&__block_literal_global_4050];
   if ((v6 - 1) > 0x7FFFFFFFFFFFFFFDLL)
   {
     goto LABEL_10;
   }
 
   v7 = v6;
-  v8 = [v5 objectAtIndexedSubscript:?];
+  v8 = [viewControllers objectAtIndexedSubscript:?];
   if (([v8 pu_wantsTabBarVisible] & 1) == 0)
   {
     v10 = v7 - 2;
     while (v10 + 1 >= 1)
     {
-      v9 = [v5 objectAtIndexedSubscript:v10];
+      v9 = [viewControllers objectAtIndexedSubscript:v10];
 
       --v10;
       v8 = v9;
@@ -763,7 +763,7 @@ LABEL_7:
   if (!v9)
   {
 LABEL_10:
-    v9 = [(PUTabbedLibraryViewController *)self _tabRootViewControllerInNavigationController:v4];
+    v9 = [(PUTabbedLibraryViewController *)self _tabRootViewControllerInNavigationController:controllerCopy];
   }
 
   return v9;
@@ -778,25 +778,25 @@ uint64_t __83__PUTabbedLibraryViewController__snapBackRootViewControllerInNaviga
   return isKindOfClass & 1;
 }
 
-- (BOOL)contentModeIsAvailableForNavigation:(int)a3
+- (BOOL)contentModeIsAvailableForNavigation:(int)navigation
 {
-  v3 = [(PUTabbedLibraryViewController *)self _existingTabForContentMode:*&a3];
+  v3 = [(PUTabbedLibraryViewController *)self _existingTabForContentMode:*&navigation];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)_navigateToRootOfCurrentTabAnimated:(BOOL)a3 dismissAnyPresentedViewController:(BOOL)a4
+- (BOOL)_navigateToRootOfCurrentTabAnimated:(BOOL)animated dismissAnyPresentedViewController:(BOOL)controller
 {
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v6 = [(PUTabbedLibraryViewController *)self selectedNavigationController];
-  if (v6)
+  selectedNavigationController = [(PUTabbedLibraryViewController *)self selectedNavigationController];
+  if (selectedNavigationController)
   {
-    v7 = [(PUTabbedLibraryViewController *)self _tabRootViewControllerInNavigationController:v6];
-    if (!v7)
+    viewController = [(PUTabbedLibraryViewController *)self _tabRootViewControllerInNavigationController:selectedNavigationController];
+    if (!viewController)
     {
       goto LABEL_6;
     }
@@ -804,10 +804,10 @@ uint64_t __83__PUTabbedLibraryViewController__snapBackRootViewControllerInNaviga
     goto LABEL_5;
   }
 
-  v8 = [(PUTabbedLibraryViewController *)self selectedTab];
-  v7 = [v8 viewController];
+  selectedTab = [(PUTabbedLibraryViewController *)self selectedTab];
+  viewController = [selectedTab viewController];
 
-  if (v7)
+  if (viewController)
   {
 LABEL_5:
     v9 = MEMORY[0x1E69DD258];
@@ -815,10 +815,10 @@ LABEL_5:
     v12[1] = 3221225472;
     v12[2] = __103__PUTabbedLibraryViewController__navigateToRootOfCurrentTabAnimated_dismissAnyPresentedViewController___block_invoke;
     v12[3] = &unk_1E7B74AA8;
-    v16 = a4;
+    controllerCopy = controller;
     v15 = &v17;
-    v13 = v7;
-    v14 = v6;
+    v13 = viewController;
+    v14 = selectedNavigationController;
     [v9 _performWithoutDeferringTransitions:v12];
   }
 
@@ -852,45 +852,45 @@ uint64_t __103__PUTabbedLibraryViewController__navigateToRootOfCurrentTabAnimate
   return result;
 }
 
-- (void)_navigateToContentMode:(int)a3 animated:(BOOL)a4 dismissAnyPresentedViewController:(BOOL)a5 completion:(id)a6
+- (void)_navigateToContentMode:(int)mode animated:(BOOL)animated dismissAnyPresentedViewController:(BOOL)controller completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = *&a3;
-  v12 = a6;
-  v10 = [(PUTabbedLibraryViewController *)self _navigateToRootOfCurrentTabAnimated:v7 dismissAnyPresentedViewController:v6];
+  controllerCopy = controller;
+  animatedCopy = animated;
+  v8 = *&mode;
+  completionCopy = completion;
+  v10 = [(PUTabbedLibraryViewController *)self _navigateToRootOfCurrentTabAnimated:animatedCopy dismissAnyPresentedViewController:controllerCopy];
   if (v10)
   {
     [(PUTabbedLibraryViewController *)self setSelectedContentMode:v8];
   }
 
-  v11 = v12;
-  if (v12)
+  v11 = completionCopy;
+  if (completionCopy)
   {
-    (*(v12 + 2))(v12, v10);
-    v11 = v12;
+    (*(completionCopy + 2))(completionCopy, v10);
+    v11 = completionCopy;
   }
 }
 
-- (void)_navigateToInitialLocationInCurrentNavigationControllerAnimated:(BOOL)a3
+- (void)_navigateToInitialLocationInCurrentNavigationControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(PUTabbedLibraryViewController *)self _navigateToRootOfCurrentTabAnimated:?];
-  v5 = [(PUTabbedLibraryViewController *)self selectedNavigationController];
-  v6 = [v5 topViewController];
-  v7 = v6;
-  if (v6)
+  selectedNavigationController = [(PUTabbedLibraryViewController *)self selectedNavigationController];
+  topViewController = [selectedNavigationController topViewController];
+  v7 = topViewController;
+  if (topViewController)
   {
-    v9 = v6;
+    viewController = topViewController;
   }
 
   else
   {
-    v8 = [(PUTabbedLibraryViewController *)self selectedTab];
-    v9 = [v8 viewController];
+    selectedTab = [(PUTabbedLibraryViewController *)self selectedTab];
+    viewController = [selectedTab viewController];
   }
 
-  [v9 px_scrollToInitialPositionAnimated:v3];
+  [viewController px_scrollToInitialPositionAnimated:animatedCopy];
 }
 
 - (void)navigateToCollectionsTabRoot
@@ -900,20 +900,20 @@ uint64_t __103__PUTabbedLibraryViewController__navigateToRootOfCurrentTabAnimate
   [(PUTabbedLibraryViewController *)self _navigateToInitialLocationInCurrentNavigationControllerAnimated:0];
 }
 
-- (BOOL)_navigateToDefaultLocationInNavigationController:(id)a3 animated:(BOOL)a4
+- (BOOL)_navigateToDefaultLocationInNavigationController:(id)controller animated:(BOOL)animated
 {
-  v5 = a3;
-  if ([(PUTabbedLibraryViewController *)self _contentModeForNavigationController:v5]== 10)
+  controllerCopy = controller;
+  if ([(PUTabbedLibraryViewController *)self _contentModeForNavigationController:controllerCopy]== 10)
   {
-    v6 = [v5 popToRootViewControllerAnimated:1];
+    v6 = [controllerCopy popToRootViewControllerAnimated:1];
   }
 
   return 0;
 }
 
-- (void)_updateTabBarVisibilityForHorizontalSizeClass:(int64_t)a3
+- (void)_updateTabBarVisibilityForHorizontalSizeClass:(int64_t)class
 {
-  if (a3 == 2)
+  if (class == 2)
   {
     [(PUTabbedLibraryViewController *)self hideBarWithTransition:0];
   }
@@ -924,10 +924,10 @@ uint64_t __103__PUTabbedLibraryViewController__navigateToRootOfCurrentTabAnimate
   }
 }
 
-- (void)_sceneWillEnterForeground:(id)a3
+- (void)_sceneWillEnterForeground:(id)foreground
 {
-  v4 = [(PUTabbedLibraryViewController *)self viewControllers];
-  v5 = [v4 count];
+  viewControllers = [(PUTabbedLibraryViewController *)self viewControllers];
+  v5 = [viewControllers count];
 
   if (v5)
   {
@@ -936,10 +936,10 @@ uint64_t __103__PUTabbedLibraryViewController__navigateToRootOfCurrentTabAnimate
   }
 }
 
-- (void)acceptItemsFromDropSession:(id)a3 tab:(id)a4
+- (void)acceptItemsFromDropSession:(id)session tab:(id)tab
 {
-  v9 = a3;
-  v6 = [(PUTabbedSidebarController *)self->_sidebarController representedObjectForTab:a4];
+  sessionCopy = session;
+  v6 = [(PUTabbedSidebarController *)self->_sidebarController representedObjectForTab:tab];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v7 = v6;
@@ -949,9 +949,9 @@ uint64_t __103__PUTabbedLibraryViewController__navigateToRootOfCurrentTabAnimate
       goto LABEL_7;
     }
 
-    v6 = [MEMORY[0x1E69C37B0] dropAssetsActionPerformerForAssetCollection:v7 dropSession:v9];
-    v8 = [(PUTabbedLibraryViewController *)self actionDelegate];
-    [v6 setDelegate:v8];
+    v6 = [MEMORY[0x1E69C37B0] dropAssetsActionPerformerForAssetCollection:v7 dropSession:sessionCopy];
+    actionDelegate = [(PUTabbedLibraryViewController *)self actionDelegate];
+    [v6 setDelegate:actionDelegate];
 
     [v6 performActionWithCompletionHandler:0];
   }
@@ -964,10 +964,10 @@ uint64_t __103__PUTabbedLibraryViewController__navigateToRootOfCurrentTabAnimate
 LABEL_7:
 }
 
-- (unint64_t)operationForAcceptingItemsFromDropSession:(id)a3 tab:(id)a4
+- (unint64_t)operationForAcceptingItemsFromDropSession:(id)session tab:(id)tab
 {
-  v6 = a3;
-  v7 = [(PUTabbedSidebarController *)self->_sidebarController representedObjectForTab:a4];
+  sessionCopy = session;
+  v7 = [(PUTabbedSidebarController *)self->_sidebarController representedObjectForTab:tab];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v8 = v7;
@@ -978,8 +978,8 @@ LABEL_7:
     v8 = 0;
   }
 
-  v9 = [v8 px_assetsDropMode];
-  if (v9 == 2)
+  px_assetsDropMode = [v8 px_assetsDropMode];
+  if (px_assetsDropMode == 2)
   {
     if (PXDropSessionHasItemsNeedingImport())
     {
@@ -992,7 +992,7 @@ LABEL_7:
     }
   }
 
-  else if (v9 == 1)
+  else if (px_assetsDropMode == 1)
   {
     v10 = 2;
   }
@@ -1005,40 +1005,40 @@ LABEL_7:
   return v10;
 }
 
-- (void)displayOrderDidChangeForGroup:(id)a3
+- (void)displayOrderDidChangeForGroup:(id)group
 {
   sidebarController = self->_sidebarController;
-  v5 = a3;
-  v6 = [(PUTabbedLibraryViewController *)self undoManager];
-  [(PUTabbedSidebarController *)sidebarController displayOrderDidChangeForGroup:v5 undoManager:v6];
+  groupCopy = group;
+  undoManager = [(PUTabbedLibraryViewController *)self undoManager];
+  [(PUTabbedSidebarController *)sidebarController displayOrderDidChangeForGroup:groupCopy undoManager:undoManager];
 }
 
-- (void)updateDisplayedTabsAnimated:(BOOL)a3
+- (void)updateDisplayedTabsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [(PUTabbedLibraryViewController *)self tabs];
-  v6 = [v5 count];
+  tabs = [(PUTabbedLibraryViewController *)self tabs];
+  v6 = [tabs count];
 
-  v7 = [(PUTabbedLibraryViewController *)self selectedTab];
-  v8 = [(PUTabbedLibraryViewController *)self currentRootTabIdentifiers];
+  selectedTab = [(PUTabbedLibraryViewController *)self selectedTab];
+  currentRootTabIdentifiers = [(PUTabbedLibraryViewController *)self currentRootTabIdentifiers];
   v9 = PXMap();
 
-  [(PUTabbedLibraryViewController *)self setTabs:v9 animated:v3];
-  if (v7 && ([v9 containsObject:v7] & 1) == 0)
+  [(PUTabbedLibraryViewController *)self setTabs:v9 animated:animatedCopy];
+  if (selectedTab && ([v9 containsObject:selectedTab] & 1) == 0)
   {
     v10 = PLUIGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v19 = v7;
+      v19 = selectedTab;
       _os_log_impl(&dword_1B36F3000, v10, OS_LOG_TYPE_INFO, "TabbedLibraryViewController: Selected tab for content mode (%@) has been removed. Falling back to Photos tab.", buf, 0xCu);
     }
 
-    [(PUTabbedLibraryViewController *)self navigateToContentMode:10 animated:v3 completion:0];
+    [(PUTabbedLibraryViewController *)self navigateToContentMode:10 animated:animatedCopy completion:0];
   }
 
-  [(PUTabbedLibraryViewController *)self setTabs:v9 animated:v3];
+  [(PUTabbedLibraryViewController *)self setTabs:v9 animated:animatedCopy];
   if (self->_pendingSelectedContentMode == -1)
   {
     if (v6)
@@ -1052,17 +1052,17 @@ LABEL_7:
     v11 = [(PUTabbedLibraryViewController *)self _existingTabForContentMode:?];
     if (v11)
     {
-      [(PUTabbedLibraryViewController *)self _setSelectedTab:v11 animated:v3];
+      [(PUTabbedLibraryViewController *)self _setSelectedTab:v11 animated:animatedCopy];
     }
 
     self->_pendingSelectedContentMode = -1;
   }
 
-  v12 = [(PUTabbedLibraryViewController *)self selectedTab];
-  v13 = [v12 viewController];
+  selectedTab2 = [(PUTabbedLibraryViewController *)self selectedTab];
+  viewController = [selectedTab2 viewController];
 
-  v14 = [(PUTabbedLibraryViewController *)self pendingNavigationRequest];
-  if (v14)
+  pendingNavigationRequest = [(PUTabbedLibraryViewController *)self pendingNavigationRequest];
+  if (pendingNavigationRequest)
   {
     [(PUTabbedLibraryViewController *)self setPendingNavigationRequest:0];
     PXProgrammaticNavigationRequestExecute();
@@ -1073,42 +1073,42 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(PUTabbedLibraryViewController *)self navigateToInitialLocationInNavigationController:v13];
+      [(PUTabbedLibraryViewController *)self navigateToInitialLocationInNavigationController:viewController];
     }
   }
 
 LABEL_17:
-  v15 = [(PUTabbedLibraryViewController *)self tabs];
-  v16 = [v15 count];
+  tabs2 = [(PUTabbedLibraryViewController *)self tabs];
+  v16 = [tabs2 count];
 
   if (v16 != v6)
   {
-    v17 = [(PUTabbedLibraryViewController *)self selectedTab];
-    [(PUTabbedLibraryViewController *)self _setSelectedTab:v17 animated:v3];
+    selectedTab3 = [(PUTabbedLibraryViewController *)self selectedTab];
+    [(PUTabbedLibraryViewController *)self _setSelectedTab:selectedTab3 animated:animatedCopy];
   }
 
   [(PUTabbedLibraryViewController *)self _updateTabBarMinimizeBehavior];
 }
 
-- (id)_makeNavigationControllerWithRootController:(id)a3
+- (id)_makeNavigationControllerWithRootController:(id)controller
 {
-  v4 = a3;
-  v5 = [[PUNavigationController alloc] initWithRootViewController:v4];
+  controllerCopy = controller;
+  v5 = [[PUNavigationController alloc] initWithRootViewController:controllerCopy];
 
   [(PUNavigationController *)v5 setDelegate:self];
 
   return v5;
 }
 
-- (id)_existingTabForContentMode:(int)a3
+- (id)_existingTabForContentMode:(int)mode
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(PUTabbedLibraryViewController *)self tabs];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  tabs = [(PUTabbedLibraryViewController *)self tabs];
+  v6 = [tabs countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1119,18 +1119,18 @@ LABEL_17:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tabs);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([(PUTabbedLibraryViewController *)self contentModeForTab:v10]== a3)
+        if ([(PUTabbedLibraryViewController *)self contentModeForTab:v10]== mode)
         {
           v11 = v10;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [tabs countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -1146,20 +1146,20 @@ LABEL_11:
   return v11;
 }
 
-- (void)setSelectedTab:(id)a3
+- (void)setSelectedTab:(id)tab
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUTabbedLibraryViewController *)self contentModeForTab:v4];
+  tabCopy = tab;
+  v5 = [(PUTabbedLibraryViewController *)self contentModeForTab:tabCopy];
   [(PUTabbedLibraryViewController *)self _logAnalyticsTabChanged:v5];
-  v6 = [(PUTabbedLibraryViewController *)self selectedTab];
+  selectedTab = [(PUTabbedLibraryViewController *)self selectedTab];
   v9.receiver = self;
   v9.super_class = PUTabbedLibraryViewController;
-  [(PUTabbedLibraryViewController *)&v9 setSelectedTab:v4];
+  [(PUTabbedLibraryViewController *)&v9 setSelectedTab:tabCopy];
 
-  v7 = [(PUTabbedLibraryViewController *)self selectedTab];
+  selectedTab2 = [(PUTabbedLibraryViewController *)self selectedTab];
 
-  if (v6 != v7)
+  if (selectedTab != selectedTab2)
   {
     v8 = PLPPTGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1173,14 +1173,14 @@ LABEL_11:
   [(PUTabbedLibraryViewController *)self _selectedTabDidChange];
 }
 
-- (void)_logAnalyticsTabChanged:(int)a3
+- (void)_logAnalyticsTabChanged:(int)changed
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  if (a3 <= 9)
+  if (changed <= 9)
   {
-    if (a3 != 1)
+    if (changed != 1)
     {
-      if (a3 == 6)
+      if (changed == 6)
       {
         v4 = @"PXTabIdentifierImport";
         goto LABEL_13;
@@ -1194,7 +1194,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  switch(a3)
+  switch(changed)
   {
     case 10:
       v4 = @"PXTabIdentifierLibrary";
@@ -1209,8 +1209,8 @@ LABEL_9:
 LABEL_12:
   v4 = @"PXTabIdentifierUndefined";
 LABEL_13:
-  v5 = [(PUTabbedLibraryViewController *)self parentViewController];
-  if (v5)
+  parentViewController = [(PUTabbedLibraryViewController *)self parentViewController];
+  if (parentViewController)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
@@ -1241,9 +1241,9 @@ LABEL_13:
   }
 }
 
-- (int)contentModeForTab:(id)a3
+- (int)contentModeForTab:(id)tab
 {
-  v3 = a3;
+  tabCopy = tab;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1252,8 +1252,8 @@ LABEL_13:
 
   else
   {
-    v5 = [v3 identifier];
-    v6 = [v5 isEqualToString:*MEMORY[0x1E69C41A0]];
+    identifier = [tabCopy identifier];
+    v6 = [identifier isEqualToString:*MEMORY[0x1E69C41A0]];
 
     if (v6)
     {
@@ -1262,8 +1262,8 @@ LABEL_13:
 
     else
     {
-      v7 = [v3 identifier];
-      v8 = [v7 isEqualToString:*MEMORY[0x1E69C4198]];
+      identifier2 = [tabCopy identifier];
+      v8 = [identifier2 isEqualToString:*MEMORY[0x1E69C4198]];
 
       if (v8)
       {
@@ -1272,8 +1272,8 @@ LABEL_13:
 
       else
       {
-        v9 = [v3 identifier];
-        v10 = [v9 isEqualToString:*MEMORY[0x1E69C40C8]];
+        identifier3 = [tabCopy identifier];
+        v10 = [identifier3 isEqualToString:*MEMORY[0x1E69C40C8]];
 
         if (v10)
         {
@@ -1291,9 +1291,9 @@ LABEL_13:
   return v4;
 }
 
-- (void)setSelectedContentMode:(int)a3
+- (void)setSelectedContentMode:(int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   v5 = [(PUTabbedLibraryViewController *)self _existingTabForContentMode:?];
   v6 = v3;
   v7 = v5;
@@ -1307,14 +1307,14 @@ LABEL_13:
   [(PUTabbedLibraryViewController *)self _logAnalyticsTabChanged:v3];
 }
 
-- (int)_contentModeForNavigationController:(id)a3
+- (int)_contentModeForNavigationController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 tab];
+  controllerCopy = controller;
+  v5 = [controllerCopy tab];
 
   if (v5)
   {
-    v6 = [v4 tab];
+    v6 = [controllerCopy tab];
     v7 = [(PUTabbedLibraryViewController *)self contentModeForTab:v6];
   }
 
@@ -1326,14 +1326,14 @@ LABEL_13:
   return v7;
 }
 
-- (void)pu_didSelectTab:(id)a3 previousTab:(id)a4
+- (void)pu_didSelectTab:(id)tab previousTab:(id)previousTab
 {
-  if (a3 == a4)
+  if (tab == previousTab)
   {
-    v5 = [(PUTabbedLibraryViewController *)self tabBar];
-    v6 = [v5 _isMinimized];
+    tabBar = [(PUTabbedLibraryViewController *)self tabBar];
+    _isMinimized = [tabBar _isMinimized];
 
-    if ((v6 & 1) == 0)
+    if ((_isMinimized & 1) == 0)
     {
       [(PUTabbedLibraryViewController *)self _navigateToInitialLocationInCurrentNavigationControllerAnimated:1];
     }
@@ -1342,18 +1342,18 @@ LABEL_13:
   [(PUTabbedLibraryViewController *)self _selectedTabDidChange];
 }
 
-- (BOOL)pu_shouldSelectTab:(id)a3
+- (BOOL)pu_shouldSelectTab:(id)tab
 {
-  v4 = a3;
-  v5 = [(PUTabbedLibraryViewController *)self tabBar];
-  v6 = [v5 isUserInteractionEnabled];
+  tabCopy = tab;
+  tabBar = [(PUTabbedLibraryViewController *)self tabBar];
+  isUserInteractionEnabled = [tabBar isUserInteractionEnabled];
 
-  if (v6)
+  if (isUserInteractionEnabled)
   {
-    v7 = [v4 viewController];
+    viewController = [tabCopy viewController];
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v8 = v7;
+      v8 = viewController;
 
       if (!v8)
       {
@@ -1361,11 +1361,11 @@ LABEL_13:
         goto LABEL_10;
       }
 
-      v9 = [(PUTabbedLibraryViewController *)self selectedTab];
-      if (v9 == v4)
+      selectedTab = [(PUTabbedLibraryViewController *)self selectedTab];
+      if (selectedTab == tabCopy)
       {
-        v13 = [(PUTabbedLibraryViewController *)self tabBar];
-        v10 = [v13 _isMinimized] ^ 1;
+        tabBar2 = [(PUTabbedLibraryViewController *)self tabBar];
+        v10 = [tabBar2 _isMinimized] ^ 1;
       }
 
       else
@@ -1373,12 +1373,12 @@ LABEL_13:
         v10 = 0;
       }
 
-      v14 = [v4 badgeValue];
-      v15 = [v14 length];
+      badgeValue = [tabCopy badgeValue];
+      v15 = [badgeValue length];
 
-      LODWORD(v14) = [(PUTabbedLibraryViewController *)self contentModeForTab:v4];
-      v16 = [(NSMutableIndexSet *)self->_everDisplayedContentModes containsIndex:v14];
-      if (v14 == 10 || !v16 || v15)
+      LODWORD(badgeValue) = [(PUTabbedLibraryViewController *)self contentModeForTab:tabCopy];
+      v16 = [(NSMutableIndexSet *)self->_everDisplayedContentModes containsIndex:badgeValue];
+      if (badgeValue == 10 || !v16 || v15)
       {
         v11 = [(PUTabbedLibraryViewController *)self _navigateToDefaultLocationInNavigationController:v8 animated:v10]& v10 ^ 1;
       }
@@ -1393,8 +1393,8 @@ LABEL_13:
         goto LABEL_10;
       }
 
-      v7 = [v8 topViewController];
-      if ([v7 pu_handleSecondTabTap])
+      viewController = [v8 topViewController];
+      if ([viewController pu_handleSecondTabTap])
       {
         LOBYTE(v11) = 0;
       }
@@ -1428,19 +1428,19 @@ LABEL_11:
 
 - (void)_updateCollectionsTabGroupChildren
 {
-  v4 = [(PUTabbedSidebarController *)self->_sidebarController collectionsTabListManager];
-  v3 = [v4 childTabs];
-  [(UITabGroup *)self->_collectionsTabGroup setChildren:v3];
+  collectionsTabListManager = [(PUTabbedSidebarController *)self->_sidebarController collectionsTabListManager];
+  childTabs = [collectionsTabListManager childTabs];
+  [(UITabGroup *)self->_collectionsTabGroup setChildren:childTabs];
 }
 
-- (void)_setSelectedTab:(id)a3 animated:(BOOL)a4
+- (void)_setSelectedTab:(id)tab animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  animatedCopy = animated;
+  tabCopy = tab;
+  v7 = tabCopy;
+  if (animatedCopy)
   {
-    [(PUTabbedLibraryViewController *)self setSelectedTab:v6];
+    [(PUTabbedLibraryViewController *)self setSelectedTab:tabCopy];
   }
 
   else
@@ -1451,19 +1451,19 @@ LABEL_11:
     v9[2] = __58__PUTabbedLibraryViewController__setSelectedTab_animated___block_invoke;
     v9[3] = &unk_1E7B80C38;
     v9[4] = self;
-    v10 = v6;
+    v10 = tabCopy;
     [v8 performWithoutAnimation:v9];
   }
 }
 
-- (id)_tabForIdentifier:(id)a3
+- (id)_tabForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_rootTabsByIdentifier objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_rootTabsByIdentifier objectForKeyedSubscript:identifierCopy];
   if (!v5)
   {
     objc_initWeak(&location, self);
-    if ([v4 isEqualToString:*MEMORY[0x1E69C41A0]])
+    if ([identifierCopy isEqualToString:*MEMORY[0x1E69C41A0]])
     {
       v6 = objc_alloc(MEMORY[0x1E69DCFE0]);
       v7 = PULocalizedString(@"CURATED_LIBRARY_TAB");
@@ -1474,12 +1474,12 @@ LABEL_11:
       v27[3] = &unk_1E7B74A58;
       v9 = &v28;
       objc_copyWeak(&v28, &location);
-      v5 = [v6 initWithTitle:v7 image:v8 identifier:v4 viewControllerProvider:v27];
+      v5 = [v6 initWithTitle:v7 image:v8 identifier:identifierCopy viewControllerProvider:v27];
 
       [v5 setAccessibilityIdentifier:@"LibraryTab"];
     }
 
-    else if ([v4 isEqualToString:*MEMORY[0x1E69C4198]])
+    else if ([identifierCopy isEqualToString:*MEMORY[0x1E69C4198]])
     {
       v10 = objc_alloc(MEMORY[0x1E69DD010]);
       v11 = PULocalizedString(@"COLLECTIONS_TAB");
@@ -1490,9 +1490,9 @@ LABEL_11:
       v25[3] = &unk_1E7B74A58;
       v9 = &v26;
       objc_copyWeak(&v26, &location);
-      v5 = [v10 initWithTitle:v11 image:v12 identifier:v4 viewControllerProvider:v25];
+      v5 = [v10 initWithTitle:v11 image:v12 identifier:identifierCopy viewControllerProvider:v25];
 
-      v13 = [(PUTabbedLibraryViewController *)self _navigationControllerForIdentifier:v4];
+      v13 = [(PUTabbedLibraryViewController *)self _navigationControllerForIdentifier:identifierCopy];
       [v5 setManagingNavigationController:v13];
 
       [v5 setAccessibilityIdentifier:@"CollectionsTab"];
@@ -1501,15 +1501,15 @@ LABEL_11:
       sidebarController = self->_sidebarController;
       if (sidebarController)
       {
-        v15 = [(PUTabbedSidebarController *)sidebarController collectionsTabListManager];
-        [v15 registerChangeObserver:self context:PXCollectionsTabListManagerObserverContext];
+        collectionsTabListManager = [(PUTabbedSidebarController *)sidebarController collectionsTabListManager];
+        [collectionsTabListManager registerChangeObserver:self context:PXCollectionsTabListManagerObserverContext];
         [(PUTabbedLibraryViewController *)self _updateCollectionsTabGroupChildren];
       }
 
       [(PUTabbedLibraryViewController *)self updateNotificationBadge];
     }
 
-    else if ([v4 isEqualToString:*MEMORY[0x1E69C40C8]])
+    else if ([identifierCopy isEqualToString:*MEMORY[0x1E69C40C8]])
     {
       v16 = objc_alloc(MEMORY[0x1E69DCFE0]);
       v17 = PULocalizedString(@"Import");
@@ -1520,14 +1520,14 @@ LABEL_11:
       v23[3] = &unk_1E7B74A58;
       v9 = &v24;
       objc_copyWeak(&v24, &location);
-      v5 = [v16 initWithTitle:v17 image:v18 identifier:v4 viewControllerProvider:v23];
+      v5 = [v16 initWithTitle:v17 image:v18 identifier:identifierCopy viewControllerProvider:v23];
 
       [v5 setAccessibilityIdentifier:@"ImportTab"];
     }
 
     else
     {
-      if (![v4 isEqualToString:*MEMORY[0x1E69C41B0]])
+      if (![identifierCopy isEqualToString:*MEMORY[0x1E69C41B0]])
       {
         v5 = 0;
         goto LABEL_13;
@@ -1547,7 +1547,7 @@ LABEL_11:
 
     objc_destroyWeak(v9);
 LABEL_13:
-    [(NSMutableDictionary *)self->_rootTabsByIdentifier setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_rootTabsByIdentifier setObject:v5 forKeyedSubscript:identifierCopy];
     objc_destroyWeak(&location);
   }
 
@@ -1590,60 +1590,60 @@ id __51__PUTabbedLibraryViewController__tabForIdentifier___block_invoke_4(uint64
   return v5;
 }
 
-- (id)_navigationControllerForIdentifier:(id)a3
+- (id)_navigationControllerForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_navigationControllersByIdentifier objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_navigationControllersByIdentifier objectForKeyedSubscript:identifierCopy];
   if (!v5)
   {
     v5 = [[PUNavigationController alloc] initWithNavigationBarClass:objc_opt_class() toolbarClass:0];
     [(PUNavigationController *)v5 setDelegate:self];
-    [(NSMutableDictionary *)self->_navigationControllersByIdentifier setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_navigationControllersByIdentifier setObject:v5 forKeyedSubscript:identifierCopy];
   }
 
   return v5;
 }
 
-- (id)_makeViewControllerForSearchTab:(id)a3
+- (id)_makeViewControllerForSearchTab:(id)tab
 {
-  v4 = [(PUTabbedLibraryViewController *)self searchHomeController];
-  v5 = [(PUTabbedLibraryViewController *)self _makeNavigationControllerWithRootController:v4];
+  searchHomeController = [(PUTabbedLibraryViewController *)self searchHomeController];
+  v5 = [(PUTabbedLibraryViewController *)self _makeNavigationControllerWithRootController:searchHomeController];
 
   return v5;
 }
 
-- (id)_makeViewControllerForImportTab:(id)a3
+- (id)_makeViewControllerForImportTab:(id)tab
 {
-  v4 = [a3 identifier];
-  v5 = [(PUTabbedLibraryViewController *)self _navigationControllerForIdentifier:v4];
+  identifier = [tab identifier];
+  v5 = [(PUTabbedLibraryViewController *)self _navigationControllerForIdentifier:identifier];
 
   v6 = MEMORY[0x1E695DEC8];
-  v7 = [(PUTabbedLibraryViewController *)self importViewController];
-  v8 = [v6 arrayWithObjects:{v7, 0}];
+  importViewController = [(PUTabbedLibraryViewController *)self importViewController];
+  v8 = [v6 arrayWithObjects:{importViewController, 0}];
   [v5 setViewControllers:v8];
 
   return v5;
 }
 
-- (id)_makeViewControllerForCollectionsTab:(id)a3
+- (id)_makeViewControllerForCollectionsTab:(id)tab
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUTabbedLibraryViewController *)self photoLibrary];
-  v6 = [v5 px_virtualCollections];
-  v7 = [v6 collectionsCollection];
+  tabCopy = tab;
+  photoLibrary = [(PUTabbedLibraryViewController *)self photoLibrary];
+  px_virtualCollections = [photoLibrary px_virtualCollections];
+  collectionsCollection = [px_virtualCollections collectionsCollection];
 
-  v8 = [objc_alloc(MEMORY[0x1E69C3930]) initWithObject:v7 revealMode:1];
+  v8 = [objc_alloc(MEMORY[0x1E69C3930]) initWithObject:collectionsCollection revealMode:1];
   v9 = PXLemonadeViewControllerFactory();
-  v10 = [(PUTabbedLibraryViewController *)self photoLibrary];
-  v11 = [v9 viewControllerWithPhotoLibrary:v10 destination:v8];
+  photoLibrary2 = [(PUTabbedLibraryViewController *)self photoLibrary];
+  v11 = [v9 viewControllerWithPhotoLibrary:photoLibrary2 destination:v8];
 
-  v12 = [(PUTabbedLibraryViewController *)self actionDelegate];
-  [v11 setActionProviderDelegate:v12];
+  actionDelegate = [(PUTabbedLibraryViewController *)self actionDelegate];
+  [v11 setActionProviderDelegate:actionDelegate];
 
-  v13 = [v4 identifier];
+  identifier = [tabCopy identifier];
 
-  v14 = [(PUTabbedLibraryViewController *)self _navigationControllerForIdentifier:v13];
+  v14 = [(PUTabbedLibraryViewController *)self _navigationControllerForIdentifier:identifier];
 
   v17[0] = v11;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
@@ -1652,29 +1652,29 @@ id __51__PUTabbedLibraryViewController__tabForIdentifier___block_invoke_4(uint64
   return v14;
 }
 
-- (id)_makeViewControllerForLibraryTab:(id)a3
+- (id)_makeViewControllerForLibraryTab:(id)tab
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69C3430];
-  v5 = a3;
+  tabCopy = tab;
   v6 = [v4 alloc];
-  v7 = [(PUTabbedLibraryViewController *)self photoLibrary];
-  v8 = [v6 initWithPhotoLibrary:v7];
+  photoLibrary = [(PUTabbedLibraryViewController *)self photoLibrary];
+  v8 = [v6 initWithPhotoLibrary:photoLibrary];
 
   [v8 setEnableDays:0];
-  v9 = [MEMORY[0x1E69C3418] sharedInstance];
-  [v8 setShowSecondaryToolbar:{objc_msgSend(v9, "enableTabBarAccessoryControls")}];
+  mEMORY[0x1E69C3418] = [MEMORY[0x1E69C3418] sharedInstance];
+  [v8 setShowSecondaryToolbar:{objc_msgSend(mEMORY[0x1E69C3418], "enableTabBarAccessoryControls")}];
 
   [v8 setInitialZoomLevel:4];
   v10 = objc_alloc(MEMORY[0x1E69C3900]);
-  v11 = [(PUTabbedLibraryViewController *)self photoLibrary];
-  v12 = [v10 initWithPhotoLibrary:v11];
+  photoLibrary2 = [(PUTabbedLibraryViewController *)self photoLibrary];
+  v12 = [v10 initWithPhotoLibrary:photoLibrary2];
   [v8 setViewOptionsModel:v12];
 
   v13 = [objc_alloc(MEMORY[0x1E69C3428]) initWithConfiguration:v8];
-  v14 = [v5 identifier];
+  identifier = [tabCopy identifier];
 
-  v15 = [(PUTabbedLibraryViewController *)self _navigationControllerForIdentifier:v14];
+  v15 = [(PUTabbedLibraryViewController *)self _navigationControllerForIdentifier:identifier];
 
   v18[0] = v13;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
@@ -1683,13 +1683,13 @@ id __51__PUTabbedLibraryViewController__tabForIdentifier___block_invoke_4(uint64
   return v15;
 }
 
-- (id)_addAlbumActionWithTitle:(id)a3 actionType:(id)a4
+- (id)_addAlbumActionWithTitle:(id)title actionType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  typeCopy = type;
   v8 = MEMORY[0x1E69DCAD8];
-  v9 = [MEMORY[0x1E69DC888] labelColor];
-  v10 = [v8 configurationWithHierarchicalColor:v9];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v10 = [v8 configurationWithHierarchicalColor:labelColor];
 
   v11 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:3 weight:22.0];
   v12 = [v10 configurationByApplyingConfiguration:v11];
@@ -1702,9 +1702,9 @@ id __51__PUTabbedLibraryViewController__tabForIdentifier___block_invoke_4(uint64
   v18[2] = __69__PUTabbedLibraryViewController__addAlbumActionWithTitle_actionType___block_invoke;
   v18[3] = &unk_1E7B7F4F0;
   objc_copyWeak(&v20, &location);
-  v15 = v7;
+  v15 = typeCopy;
   v19 = v15;
-  v16 = [v14 actionWithTitle:v6 image:v13 identifier:v15 handler:v18];
+  v16 = [v14 actionWithTitle:titleCopy image:v13 identifier:v15 handler:v18];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
@@ -1718,34 +1718,34 @@ void __69__PUTabbedLibraryViewController__addAlbumActionWithTitle_actionType___b
   [WeakRetained _performActionForType:*(a1 + 32)];
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v7 = a3;
-  v3 = [v7 action];
-  if (v3 == sel_newAlbum_)
+  commandCopy = command;
+  action = [commandCopy action];
+  if (action == sel_newAlbum_)
   {
     v4 = *MEMORY[0x1E69C3FE8];
     if (v4)
     {
       v5 = v4;
       v6 = [MEMORY[0x1E69C37E0] localizedTitleForActionType:v4 collectionList:0];
-      [v7 setTitle:v6];
+      [commandCopy setTitle:v6];
     }
   }
 
-  else if (v3 == sel_newSmartAlbum_)
+  else if (action == sel_newSmartAlbum_)
   {
-    [v7 setAttributes:{objc_msgSend(v7, "attributes") | 4}];
+    [commandCopy setAttributes:{objc_msgSend(commandCopy, "attributes") | 4}];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PUTabbedLibraryViewController;
-  [(PUTabbedLibraryViewController *)&v6 viewWillAppear:a3];
-  v4 = [(PUTabbedLibraryViewController *)self tabs];
-  v5 = [v4 count];
+  [(PUTabbedLibraryViewController *)&v6 viewWillAppear:appear];
+  tabs = [(PUTabbedLibraryViewController *)self tabs];
+  v5 = [tabs count];
 
   if (!v5)
   {
@@ -1755,7 +1755,7 @@ void __69__PUTabbedLibraryViewController__addAlbumActionWithTitle_actionType___b
 
 - (NSArray)currentRootTabIdentifiers
 {
-  v2 = [(PUTabbedLibraryViewController *)self rootTabIdentifiers];
+  rootTabIdentifiers = [(PUTabbedLibraryViewController *)self rootTabIdentifiers];
   v3 = PXFilter();
 
   return v3;
@@ -1783,45 +1783,45 @@ uint64_t __58__PUTabbedLibraryViewController_currentRootTabIdentifiers__block_in
   return v4;
 }
 
-- (PUTabbedLibraryViewController)initWithCoder:(id)a3
+- (PUTabbedLibraryViewController)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PUTabbedLibraryViewController.m" lineNumber:158 description:{@"%s is not available as initializer", "-[PUTabbedLibraryViewController initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUTabbedLibraryViewController.m" lineNumber:158 description:{@"%s is not available as initializer", "-[PUTabbedLibraryViewController initWithCoder:]"}];
 
   abort();
 }
 
-- (PUTabbedLibraryViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PUTabbedLibraryViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PUTabbedLibraryViewController.m" lineNumber:154 description:{@"%s is not available as initializer", "-[PUTabbedLibraryViewController initWithNibName:bundle:]"}];
+  nameCopy = name;
+  bundleCopy = bundle;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUTabbedLibraryViewController.m" lineNumber:154 description:{@"%s is not available as initializer", "-[PUTabbedLibraryViewController initWithNibName:bundle:]"}];
 
   abort();
 }
 
-- (PUTabbedLibraryViewController)initWithPhotoLibrary:(id)a3 libraryFilterState:(id)a4 actionDelegate:(id)a5
+- (PUTabbedLibraryViewController)initWithPhotoLibrary:(id)library libraryFilterState:(id)state actionDelegate:(id)delegate
 {
   v41[4] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  libraryCopy = library;
+  stateCopy = state;
+  delegateCopy = delegate;
   v40.receiver = self;
   v40.super_class = PUTabbedLibraryViewController;
   v13 = [(PUTabbedLibraryViewController *)&v40 initWithNibName:0 bundle:0];
   if (v13)
   {
-    if (!v10)
+    if (!libraryCopy)
     {
-      v37 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v37 handleFailureInMethod:a2 object:v13 file:@"PUTabbedLibraryViewController.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v13 file:@"PUTabbedLibraryViewController.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
     }
 
-    objc_storeStrong(&v13->_photoLibrary, a3);
-    objc_storeStrong(&v13->_libraryFilterState, a4);
-    objc_storeWeak(&v13->_actionDelegate, v12);
+    objc_storeStrong(&v13->_photoLibrary, library);
+    objc_storeStrong(&v13->_libraryFilterState, state);
+    objc_storeWeak(&v13->_actionDelegate, delegateCopy);
     v14 = objc_alloc_init(MEMORY[0x1E696AD50]);
     everDisplayedContentModes = v13->_everDisplayedContentModes;
     v13->_everDisplayedContentModes = v14;
@@ -1845,12 +1845,12 @@ uint64_t __58__PUTabbedLibraryViewController_currentRootTabIdentifiers__block_in
     navigationControllersByIdentifier = v13->_navigationControllersByIdentifier;
     v13->_navigationControllersByIdentifier = v22;
 
-    v24 = [(PUTabbedLibraryViewController *)v13 traitCollection];
-    v25 = [v24 userInterfaceIdiom];
+    traitCollection = [(PUTabbedLibraryViewController *)v13 traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v25 == 1)
+    if (userInterfaceIdiom == 1)
     {
-      v26 = [[PUTabbedSidebarController alloc] initWithPhotoLibrary:v10 libraryFilterState:v11 actionProviderDelegate:v12];
+      v26 = [[PUTabbedSidebarController alloc] initWithPhotoLibrary:libraryCopy libraryFilterState:stateCopy actionProviderDelegate:delegateCopy];
       sidebarController = v13->_sidebarController;
       v13->_sidebarController = v26;
 
@@ -1863,20 +1863,20 @@ uint64_t __58__PUTabbedLibraryViewController_currentRootTabIdentifiers__block_in
       [(PUTabbedSidebarController *)v13->_sidebarController setAddSharedAlbumAction:v31];
 
       v32 = v13->_sidebarController;
-      v33 = [(PUTabbedLibraryViewController *)v13 sidebar];
-      [v33 setDelegate:v32];
+      sidebar = [(PUTabbedLibraryViewController *)v13 sidebar];
+      [sidebar setDelegate:v32];
     }
 
-    v34 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v34 addObserver:v13 selector:sel__didFinishPostingNotifications_ name:*MEMORY[0x1E69BE918] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__didFinishPostingNotifications_ name:*MEMORY[0x1E69BE918] object:0];
 
-    v35 = [MEMORY[0x1E69C4598] sharedScheduler];
+    mEMORY[0x1E69C4598] = [MEMORY[0x1E69C4598] sharedScheduler];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __88__PUTabbedLibraryViewController_initWithPhotoLibrary_libraryFilterState_actionDelegate___block_invoke;
     v38[3] = &unk_1E7B80DD0;
     v39 = v13;
-    [v35 scheduleMainQueueTask:v38];
+    [mEMORY[0x1E69C4598] scheduleMainQueueTask:v38];
   }
 
   return v13;

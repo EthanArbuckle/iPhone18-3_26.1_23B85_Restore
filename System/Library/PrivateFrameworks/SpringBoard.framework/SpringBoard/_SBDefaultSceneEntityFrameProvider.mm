@@ -1,31 +1,31 @@
 @interface _SBDefaultSceneEntityFrameProvider
-- (CGRect)sceneEntityFrameForWorkspaceEntity:(id)a3 inLayoutState:(id)a4;
+- (CGRect)sceneEntityFrameForWorkspaceEntity:(id)entity inLayoutState:(id)state;
 - (SBWindowScene)windowScene;
-- (_SBDefaultSceneEntityFrameProvider)initWithWindowScene:(id)a3;
+- (_SBDefaultSceneEntityFrameProvider)initWithWindowScene:(id)scene;
 @end
 
 @implementation _SBDefaultSceneEntityFrameProvider
 
-- (_SBDefaultSceneEntityFrameProvider)initWithWindowScene:(id)a3
+- (_SBDefaultSceneEntityFrameProvider)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = _SBDefaultSceneEntityFrameProvider;
   v5 = [(_SBDefaultSceneEntityFrameProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_windowScene, v4);
+    objc_storeWeak(&v5->_windowScene, sceneCopy);
   }
 
   return v6;
 }
 
-- (CGRect)sceneEntityFrameForWorkspaceEntity:(id)a3 inLayoutState:(id)a4
+- (CGRect)sceneEntityFrameForWorkspaceEntity:(id)entity inLayoutState:(id)state
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v5 = [WeakRetained _fbsDisplayConfiguration];
-  [v5 bounds];
+  _fbsDisplayConfiguration = [WeakRetained _fbsDisplayConfiguration];
+  [_fbsDisplayConfiguration bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;

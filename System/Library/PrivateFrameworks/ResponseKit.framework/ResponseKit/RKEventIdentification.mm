@@ -1,26 +1,26 @@
 @interface RKEventIdentification
 - ($A8567127CD1317684890FBE2DC5448B6)topClassification;
-- (RKEventIdentification)initWithOwnedTokenSequences:(id)a3 probabilities:(float *)a4;
+- (RKEventIdentification)initWithOwnedTokenSequences:(id)sequences probabilities:(float *)probabilities;
 - (id)description;
 - (void)dealloc;
-- (void)enumerateClassifiedTokens:(id)a3;
-- (void)enumerateTopKClassificationsForEachString:(unint64_t)a3 block:(id)a4;
-- (void)getTopKClassifications:(unint64_t)a3 block:(id)a4;
+- (void)enumerateClassifiedTokens:(id)tokens;
+- (void)enumerateTopKClassificationsForEachString:(unint64_t)string block:(id)block;
+- (void)getTopKClassifications:(unint64_t)classifications block:(id)block;
 @end
 
 @implementation RKEventIdentification
 
-- (RKEventIdentification)initWithOwnedTokenSequences:(id)a3 probabilities:(float *)a4
+- (RKEventIdentification)initWithOwnedTokenSequences:(id)sequences probabilities:(float *)probabilities
 {
-  v7 = a3;
+  sequencesCopy = sequences;
   v11.receiver = self;
   v11.super_class = RKEventIdentification;
   v8 = [(RKEventIdentification *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_tokenSequences, a3);
-    v9->_probabilities = a4;
+    objc_storeStrong(&v8->_tokenSequences, sequences);
+    v9->_probabilities = probabilities;
   }
 
   return v9;
@@ -34,9 +34,9 @@
   [(RKEventIdentification *)&v3 dealloc];
 }
 
-- (void)enumerateClassifiedTokens:(id)a3
+- (void)enumerateClassifiedTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   v5 = 0;
   probabilities = self->_probabilities;
   while (v5 < [(NSArray *)self->_tokenSequences count])
@@ -62,16 +62,16 @@
         v11 = [(NSArray *)self->_tokenSequences objectAtIndex:v5];
         v12 = [v11 objectAtIndexedSubscript:v10];
 
-        v13 = [v12 location];
+        location = [v12 location];
         v14 = [v12 length];
         v16 = 0;
         v15[0] = v5;
-        v15[1] = v13;
+        v15[1] = location;
         v15[2] = v14;
-        v4[2](v4, v15, probabilities, &v16);
-        LOBYTE(v13) = v16;
+        tokensCopy[2](tokensCopy, v15, probabilities, &v16);
+        LOBYTE(location) = v16;
 
-        if (v13)
+        if (location)
         {
           goto LABEL_11;
         }
@@ -88,15 +88,15 @@
 LABEL_11:
 }
 
-- (void)enumerateTopKClassificationsForEachString:(unint64_t)a3 block:(id)a4
+- (void)enumerateTopKClassificationsForEachString:(unint64_t)string block:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v15 = self;
+  selfCopy = self;
   v14 = self->_tokenSequences;
   v7 = [(NSArray *)v14 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
@@ -124,8 +124,8 @@ LABEL_11:
           v12 = v11;
         }
 
-        findTopKClassifications(&(&v14)[-2 * a3], a3, v15->_probabilities, v8, v12);
-        v6[2](v6, &(&v14)[-2 * a3]);
+        findTopKClassifications(&(&v14)[-2 * string], string, selfCopy->_probabilities, v8, v12);
+        blockCopy[2](blockCopy, &(&v14)[-2 * string]);
         v8 += v12;
         ++v10;
       }
@@ -140,10 +140,10 @@ LABEL_11:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getTopKClassifications:(unint64_t)a3 block:(id)a4
+- (void)getTopKClassifications:(unint64_t)classifications block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -183,8 +183,8 @@ LABEL_11:
     while (v9);
   }
 
-  findTopKClassifications(&v15 - a3, a3, self->_probabilities, 0, v8);
-  v6[2](v6, &v15 - a3);
+  findTopKClassifications(&v15 - classifications, classifications, self->_probabilities, 0, v8);
+  blockCopy[2](blockCopy, &v15 - classifications);
 
   v14 = *MEMORY[0x277D85DE8];
 }

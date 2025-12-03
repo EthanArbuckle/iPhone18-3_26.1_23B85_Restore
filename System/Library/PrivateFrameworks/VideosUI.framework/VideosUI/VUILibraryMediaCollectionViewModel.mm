@@ -6,8 +6,8 @@
 
 - (BOOL)hasContent
 {
-  v2 = [(VUILibraryMediaCollectionViewModel *)self seasonViewModels];
-  v3 = [v2 count] != 0;
+  seasonViewModels = [(VUILibraryMediaCollectionViewModel *)self seasonViewModels];
+  v3 = [seasonViewModels count] != 0;
 
   return v3;
 }

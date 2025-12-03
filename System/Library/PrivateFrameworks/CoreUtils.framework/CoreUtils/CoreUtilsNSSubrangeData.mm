@@ -1,35 +1,35 @@
 @interface CoreUtilsNSSubrangeData
 - (CoreUtilsNSSubrangeData)init;
-- (CoreUtilsNSSubrangeData)initWithData:(id)a3 range:(_NSRange)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CoreUtilsNSSubrangeData)initWithData:(id)data range:(_NSRange)range;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)getBytes:(void *)a3 length:(unint64_t)a4;
-- (void)getBytes:(void *)a3 range:(_NSRange)a4;
+- (void)getBytes:(void *)bytes length:(unint64_t)length;
+- (void)getBytes:(void *)bytes range:(_NSRange)range;
 @end
 
 @implementation CoreUtilsNSSubrangeData
 
-- (void)getBytes:(void *)a3 range:(_NSRange)a4
+- (void)getBytes:(void *)bytes range:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
-    v8 = [(NSData *)self->_data bytes];
-    if (v8)
+    length = range.length;
+    location = range.location;
+    bytes = [(NSData *)self->_data bytes];
+    if (bytes)
     {
-      v9 = &v8[self->_range.location + location];
+      v9 = &bytes[self->_range.location + location];
 
-      memmove(a3, v9, length);
+      memmove(bytes, v9, length);
     }
   }
 }
 
-- (void)getBytes:(void *)a3 length:(unint64_t)a4
+- (void)getBytes:(void *)bytes length:(unint64_t)length
 {
-  if (self->_range.length >= a4)
+  if (self->_range.length >= length)
   {
-    length = a4;
+    length = length;
   }
 
   else
@@ -37,14 +37,14 @@
     length = self->_range.length;
   }
 
-  [(NSData *)self->_data getBytes:a3 range:self->_range.location, length];
+  [(NSData *)self->_data getBytes:bytes range:self->_range.location, length];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = self;
+  selfCopy = self;
 
-  return v4;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -54,20 +54,20 @@
   [(CoreUtilsNSSubrangeData *)&v2 dealloc];
 }
 
-- (CoreUtilsNSSubrangeData)initWithData:(id)a3 range:(_NSRange)a4
+- (CoreUtilsNSSubrangeData)initWithData:(id)data range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  dataCopy = data;
   v8 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    self->_range.location = *(v7 + 2) + location;
+    self->_range.location = *(dataCopy + 2) + location;
     self->_range.length = length;
-    v10 = *(v7 + 1);
-    v11 = v7;
+    v10 = *(dataCopy + 1);
+    v11 = dataCopy;
     data = self->_data;
     self->_data = v10;
   }
@@ -76,22 +76,22 @@
   {
     self->_range.location = location;
     self->_range.length = length;
-    v13 = v7;
+    v13 = dataCopy;
     v11 = self->_data;
     self->_data = v13;
   }
 
   if (self->_data)
   {
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (CoreUtilsNSSubrangeData)init

@@ -1,26 +1,26 @@
 @interface PKPaymentIssuerProvisioningExtensionCredential
-- (BOOL)_isEqualToCredential:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentIssuerProvisioningExtensionCredential)initWithExtension:(id)a3 entry:(id)a4;
-- (id)detailDescriptionWithEnvironment:(unint64_t)a3;
+- (BOOL)_isEqualToCredential:(id)credential;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentIssuerProvisioningExtensionCredential)initWithExtension:(id)extension entry:(id)entry;
+- (id)detailDescriptionWithEnvironment:(unint64_t)environment;
 - (id)metadata;
 - (unint64_t)hash;
 @end
 
 @implementation PKPaymentIssuerProvisioningExtensionCredential
 
-- (PKPaymentIssuerProvisioningExtensionCredential)initWithExtension:(id)a3 entry:(id)a4
+- (PKPaymentIssuerProvisioningExtensionCredential)initWithExtension:(id)extension entry:(id)entry
 {
-  v7 = a3;
-  v8 = a4;
+  extensionCopy = extension;
+  entryCopy = entry;
   v9 = [(PKPaymentCredential *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_extension, a3);
-    objc_storeStrong(&v10->_entry, a4);
-    v11 = [(PKIssuerProvisioningExtensionPassEntry *)v10->_entry title];
-    [(PKPaymentCredential *)v10 setLongDescription:v11];
+    objc_storeStrong(&v9->_extension, extension);
+    objc_storeStrong(&v10->_entry, entry);
+    title = [(PKIssuerProvisioningExtensionPassEntry *)v10->_entry title];
+    [(PKPaymentCredential *)v10 setLongDescription:title];
   }
 
   return v10;
@@ -30,14 +30,14 @@
 {
   v24 = *MEMORY[0x1E69E9840];
   v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [(PKIssuerProvisioningExtensionPaymentPassEntry *)self->_entry addRequestConfiguration];
-  v4 = [v3 _effectiveDetails];
+  addRequestConfiguration = [(PKIssuerProvisioningExtensionPaymentPassEntry *)self->_entry addRequestConfiguration];
+  _effectiveDetails = [addRequestConfiguration _effectiveDetails];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = v4;
+  obj = _effectiveDetails;
   v5 = [obj countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v5)
   {
@@ -56,11 +56,11 @@
         v22[0] = @"text";
         v21[0] = @"valueType";
         v21[1] = @"value";
-        v10 = [v9 value];
-        v22[1] = v10;
+        value = [v9 value];
+        v22[1] = value;
         v21[2] = @"localizedDisplayName";
-        v11 = [v9 label];
-        v22[2] = v11;
+        label = [v9 label];
+        v22[2] = label;
         v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:3];
 
         v13 = [PKPaymentCredentialMetadata paymentCredentialMetadataWithConfiguration:v12];
@@ -79,15 +79,15 @@
   return v16;
 }
 
-- (id)detailDescriptionWithEnvironment:(unint64_t)a3
+- (id)detailDescriptionWithEnvironment:(unint64_t)environment
 {
-  v3 = [(PKPaymentIssuerProvisioningExtensionCredential *)self entry];
-  v4 = [v3 addRequestConfiguration];
-  v5 = [v4 primaryAccountSuffix];
+  entry = [(PKPaymentIssuerProvisioningExtensionCredential *)self entry];
+  addRequestConfiguration = [entry addRequestConfiguration];
+  primaryAccountSuffix = [addRequestConfiguration primaryAccountSuffix];
 
-  if ([v5 length])
+  if ([primaryAccountSuffix length])
   {
-    v6 = PKMaskedPaymentPAN(v5);
+    v6 = PKMaskedPaymentPAN(primaryAccountSuffix);
   }
 
   else
@@ -100,19 +100,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_entry];
-  v4 = [(PKPaymentIssuerProvisioningExtensionCredential *)self metadata];
-  [v3 safelyAddObject:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_entry];
+  metadata = [(PKPaymentIssuerProvisioningExtensionCredential *)self metadata];
+  [array safelyAddObject:metadata];
 
-  v5 = PKCombinedHash(17, v3);
+  v5 = PKCombinedHash(17, array);
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -120,22 +120,22 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKPaymentIssuerProvisioningExtensionCredential *)self _isEqualToCredential:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKPaymentIssuerProvisioningExtensionCredential *)self _isEqualToCredential:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_isEqualToCredential:(id)a3
+- (BOOL)_isEqualToCredential:(id)credential
 {
-  v4 = a3;
-  if (!v4)
+  credentialCopy = credential;
+  if (!credentialCopy)
   {
     goto LABEL_8;
   }
 
   entry = self->_entry;
-  v6 = v4[15];
+  v6 = credentialCopy[15];
   if (entry)
   {
     v7 = v6 == 0;
@@ -164,17 +164,17 @@ LABEL_8:
   }
 
 LABEL_10:
-  v10 = [(PKPaymentIssuerProvisioningExtensionCredential *)self metadata];
-  v11 = [v4 metadata];
-  v12 = v11;
-  if (v10 && v11)
+  metadata = [(PKPaymentIssuerProvisioningExtensionCredential *)self metadata];
+  metadata2 = [credentialCopy metadata];
+  v12 = metadata2;
+  if (metadata && metadata2)
   {
-    v8 = [v10 isEqual:v11];
+    v8 = [metadata isEqual:metadata2];
   }
 
   else
   {
-    v8 = v10 == v11;
+    v8 = metadata == metadata2;
   }
 
 LABEL_15:

@@ -1,25 +1,25 @@
 @interface WGWidgetLifeCycleSequence
-- (BOOL)_isValidTransitionToState:(int64_t)a3;
-- (WGWidgetLifeCycleSequence)initWithSequenceIdentifier:(id)a3;
-- (WGWidgetLifeCycleSequence)sequenceWithIdentifier:(id)a3;
-- (id)beginTransitionToState:(int64_t)a3 error:(id *)a4;
+- (BOOL)_isValidTransitionToState:(int64_t)state;
+- (WGWidgetLifeCycleSequence)initWithSequenceIdentifier:(id)identifier;
+- (WGWidgetLifeCycleSequence)sequenceWithIdentifier:(id)identifier;
+- (id)beginTransitionToState:(int64_t)state error:(id *)error;
 - (id)description;
-- (id)transitionToState:(int64_t)a3;
+- (id)transitionToState:(int64_t)state;
 - (int64_t)currentState;
-- (void)_setCurrentState:(int64_t)a3;
+- (void)_setCurrentState:(int64_t)state;
 @end
 
 @implementation WGWidgetLifeCycleSequence
 
-- (WGWidgetLifeCycleSequence)initWithSequenceIdentifier:(id)a3
+- (WGWidgetLifeCycleSequence)initWithSequenceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = WGWidgetLifeCycleSequence;
   v5 = [(WGWidgetLifeCycleSequence *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     sequenceIdentifier = v5->_sequenceIdentifier;
     v5->_sequenceIdentifier = v6;
   }
@@ -27,15 +27,15 @@
   return v5;
 }
 
-- (WGWidgetLifeCycleSequence)sequenceWithIdentifier:(id)a3
+- (WGWidgetLifeCycleSequence)sequenceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (![(WGWidgetLifeCycleSequence *)self isCurrentStateAtLeast:5])
   {
     [WGWidgetLifeCycleSequence sequenceWithIdentifier:];
   }
 
-  v5 = [objc_alloc(objc_opt_class()) initWithSequenceIdentifier:v4];
+  v5 = [objc_alloc(objc_opt_class()) initWithSequenceIdentifier:identifierCopy];
 
   [v5 _setPreviousSequence:self];
 
@@ -56,9 +56,9 @@
   }
 }
 
-- (BOOL)_isValidTransitionToState:(int64_t)a3
+- (BOOL)_isValidTransitionToState:(int64_t)state
 {
-  if (a3 >= 7)
+  if (state >= 7)
   {
     [WGWidgetLifeCycleSequence _isValidTransitionToState:];
   }
@@ -71,7 +71,7 @@
       [WGWidgetLifeCycleSequence _isValidTransitionToState:];
     }
 
-    if ([(WGWidgetLifeCycleSequence *)self->_previousSequence currentState]< a3)
+    if ([(WGWidgetLifeCycleSequence *)self->_previousSequence currentState]< state)
     {
       return 1;
     }
@@ -83,15 +83,15 @@
   }
 
   currentState = self->_currentState;
-  v8 = currentState <= 6 && a3 - 1 >= currentState;
-  return a3 <= 6 && v8;
+  v8 = currentState <= 6 && state - 1 >= currentState;
+  return state <= 6 && v8;
 }
 
-- (void)_setCurrentState:(int64_t)a3
+- (void)_setCurrentState:(int64_t)state
 {
-  if (a3 <= 0 && (v5 = self->_previousSequence) != 0)
+  if (state <= 0 && (v5 = self->_previousSequence) != 0)
   {
-    [(WGWidgetLifeCycleSequence *)v5 _setCurrentState:a3];
+    [(WGWidgetLifeCycleSequence *)v5 _setCurrentState:state];
     if ([(WGWidgetLifeCycleSequence *)self->_previousSequence isCurrentState:0])
     {
       previousSequence = self->_previousSequence;
@@ -104,34 +104,34 @@
     v7 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEBUG))
     {
-      [(WGWidgetLifeCycleSequence *)v7 _setCurrentState:a3];
+      [(WGWidgetLifeCycleSequence *)v7 _setCurrentState:state];
     }
 
     v8 = self->_previousSequence;
     self->_previousSequence = 0;
 
-    self->_currentState = a3;
+    self->_currentState = state;
   }
 }
 
-- (id)beginTransitionToState:(int64_t)a3 error:(id *)a4
+- (id)beginTransitionToState:(int64_t)state error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = [(WGWidgetLifeCycleSequence *)self currentState];
-  v8 = [(WGWidgetLifeCycleSequence *)self _isValidTransitionToState:a3];
+  currentState = [(WGWidgetLifeCycleSequence *)self currentState];
+  v8 = [(WGWidgetLifeCycleSequence *)self _isValidTransitionToState:state];
   v9 = WGLogWidgets;
   if (!v8)
   {
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_ERROR))
     {
-      [(WGWidgetLifeCycleSequence *)v9 beginTransitionToState:v7 error:a3];
-      if (!a4)
+      [(WGWidgetLifeCycleSequence *)v9 beginTransitionToState:currentState error:state];
+      if (!error)
       {
         goto LABEL_8;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
 LABEL_8:
       v10 = 0;
@@ -140,14 +140,14 @@ LABEL_8:
 
     v11 = MEMORY[0x277CCACA8];
     v12 = WGStringFromWidgetLifeCycleSequenceState([(WGWidgetLifeCycleSequence *)self currentState]);
-    v13 = WGStringFromWidgetLifeCycleSequenceState(a3);
+    v13 = WGStringFromWidgetLifeCycleSequenceState(state);
     v14 = [v11 stringWithFormat:@"Invalid transition from '%@' to '%@' attempted", v12, v13];
 
     v15 = MEMORY[0x277CCA9B8];
     v25 = *MEMORY[0x277CCA450];
     v26 = v14;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-    *a4 = [v15 errorWithDomain:@"WGWidgetLifeCycleErrorDomain" code:0 userInfo:v16];
+    *error = [v15 errorWithDomain:@"WGWidgetLifeCycleErrorDomain" code:0 userInfo:v16];
 
     goto LABEL_8;
   }
@@ -155,13 +155,13 @@ LABEL_8:
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEBUG))
   {
     v19 = v9;
-    v20 = [(WGWidgetLifeCycleSequence *)self sequenceIdentifier];
-    v21 = WGStringFromWidgetLifeCycleSequenceState(v7);
-    v22 = WGStringFromWidgetLifeCycleSequenceState(a3);
+    sequenceIdentifier = [(WGWidgetLifeCycleSequence *)self sequenceIdentifier];
+    v21 = WGStringFromWidgetLifeCycleSequenceState(currentState);
+    v22 = WGStringFromWidgetLifeCycleSequenceState(state);
     *location = 138544130;
-    *&location[4] = v20;
+    *&location[4] = sequenceIdentifier;
     v28 = 2050;
-    v29 = self;
+    selfCopy = self;
     v30 = 2114;
     v31 = v21;
     v32 = 2114;
@@ -175,8 +175,8 @@ LABEL_8:
   v23[2] = __58__WGWidgetLifeCycleSequence_beginTransitionToState_error___block_invoke;
   v23[3] = &unk_279ED0E98;
   objc_copyWeak(v24, location);
-  v24[1] = v7;
-  v24[2] = a3;
+  v24[1] = currentState;
+  v24[2] = state;
   v10 = MEMORY[0x2743E8C10](v23);
   objc_destroyWeak(v24);
   objc_destroyWeak(location);
@@ -244,10 +244,10 @@ LABEL_13:
   return v9;
 }
 
-- (id)transitionToState:(int64_t)a3
+- (id)transitionToState:(int64_t)state
 {
   v7 = 0;
-  v4 = [(WGWidgetLifeCycleSequence *)self beginTransitionToState:a3 error:&v7];
+  v4 = [(WGWidgetLifeCycleSequence *)self beginTransitionToState:state error:&v7];
   v5 = v7;
   if (!v5)
   {
@@ -256,7 +256,7 @@ LABEL_13:
       [WGWidgetLifeCycleSequence transitionToState:];
     }
 
-    v5 = v4[2](v4, a3);
+    v5 = v4[2](v4, state);
   }
 
   return v5;
@@ -266,9 +266,9 @@ LABEL_13:
 {
   v3 = MEMORY[0x277CCAB68];
   v4 = objc_opt_class();
-  v5 = [(WGWidgetLifeCycleSequence *)self sequenceIdentifier];
+  sequenceIdentifier = [(WGWidgetLifeCycleSequence *)self sequenceIdentifier];
   v6 = WGStringFromWidgetLifeCycleSequenceState([(WGWidgetLifeCycleSequence *)self currentState]);
-  v7 = [v3 stringWithFormat:@"<%@: %p sequenceID: %@; currentState: %@", v4, self, v5, v6];;
+  v7 = [v3 stringWithFormat:@"<%@: %p sequenceID: %@; currentState: %@", v4, self, sequenceIdentifier, v6];;
 
   previousSequence = self->_previousSequence;
   if (previousSequence)

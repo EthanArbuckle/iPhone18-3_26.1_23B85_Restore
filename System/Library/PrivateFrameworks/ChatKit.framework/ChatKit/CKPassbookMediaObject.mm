@@ -5,9 +5,9 @@
 - (BOOL)shouldShowViewer;
 - (Class)previewBalloonViewClass;
 - (PKPass)pass;
-- (id)attachmentSummary:(unint64_t)a3;
-- (id)generateThumbnailForWidth:(double)a3 orientation:(char)a4;
-- (id)previewForWidth:(double)a3 orientation:(char)a4;
+- (id)attachmentSummary:(unint64_t)summary;
+- (id)generateThumbnailForWidth:(double)width orientation:(char)orientation;
+- (id)previewForWidth:(double)width orientation:(char)orientation;
 - (id)previewItemTitle;
 @end
 
@@ -16,17 +16,17 @@
 - (BOOL)isSupported
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 supportsPassbookAttachments];
+  supportsPassbookAttachments = [v2 supportsPassbookAttachments];
 
-  return v3;
+  return supportsPassbookAttachments;
 }
 
 + (BOOL)isPreviewable
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 supportsPassbookAttachments];
+  supportsPassbookAttachments = [v2 supportsPassbookAttachments];
 
-  return v3;
+  return supportsPassbookAttachments;
 }
 
 + (id)UTITypes
@@ -38,14 +38,14 @@
   return v2;
 }
 
-- (id)attachmentSummary:(unint64_t)a3
+- (id)attachmentSummary:(unint64_t)summary
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = IMSharedUtilitiesFrameworkBundle();
   v6 = [v5 localizedStringForKey:@"%lu Passes" value:&stru_1F04268F8 table:@"IMSharedUtilities"];
-  v7 = [v4 localizedStringWithFormat:v6, a3];
+  summary = [v4 localizedStringWithFormat:v6, summary];
 
-  return v7;
+  return summary;
 }
 
 - (Class)previewBalloonViewClass
@@ -54,25 +54,25 @@
   {
     v5.receiver = self;
     v5.super_class = CKPassbookMediaObject;
-    v3 = [(CKMediaObject *)&v5 previewBalloonViewClass];
+    previewBalloonViewClass = [(CKMediaObject *)&v5 previewBalloonViewClass];
   }
 
   else
   {
-    v3 = [(CKMediaObject *)self placeholderBalloonViewClass];
+    previewBalloonViewClass = [(CKMediaObject *)self placeholderBalloonViewClass];
   }
 
-  return v3;
+  return previewBalloonViewClass;
 }
 
-- (id)previewForWidth:(double)a3 orientation:(char)a4
+- (id)previewForWidth:(double)width orientation:(char)orientation
 {
-  v4 = a4;
+  orientationCopy = orientation;
   if ([(CKPassbookMediaObject *)self isSupported])
   {
     v9.receiver = self;
     v9.super_class = CKPassbookMediaObject;
-    v7 = [(CKMediaObject *)&v9 previewForWidth:v4 orientation:a3];
+    v7 = [(CKMediaObject *)&v9 previewForWidth:orientationCopy orientation:width];
   }
 
   else
@@ -83,16 +83,16 @@
   return v7;
 }
 
-- (id)generateThumbnailForWidth:(double)a3 orientation:(char)a4
+- (id)generateThumbnailForWidth:(double)width orientation:(char)orientation
 {
-  v4 = a4;
+  orientationCopy = orientation;
   v7 = +[CKUIBehavior sharedBehaviors];
-  [v7 thumbnailFillSizeForWidth:a3 imageSize:{3.0, 4.0}];
+  [v7 thumbnailFillSizeForWidth:width imageSize:{3.0, 4.0}];
   v9 = v8;
   v11 = v10;
 
   v12 = +[CKUIBehavior sharedBehaviors];
-  [v12 thumbnailContentAlignmentInsetsForOrientation:v4];
+  [v12 thumbnailContentAlignmentInsetsForOrientation:orientationCopy];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -103,10 +103,10 @@
 
 - (BOOL)shouldShowViewer
 {
-  v2 = [(CKMediaObject *)self transfer];
-  v3 = [v2 isFileDataReady];
+  transfer = [(CKMediaObject *)self transfer];
+  isFileDataReady = [transfer isFileDataReady];
 
-  return v3;
+  return isFileDataReady;
 }
 
 - (id)previewItemTitle
@@ -141,8 +141,8 @@
       }
 
       v6 = [sPKPassClass alloc];
-      v7 = [(CKMediaObject *)self data];
-      v8 = [v6 initWithData:v7 error:0];
+      data = [(CKMediaObject *)self data];
+      v8 = [v6 initWithData:data error:0];
       v9 = self->_pass;
       self->_pass = v8;
 

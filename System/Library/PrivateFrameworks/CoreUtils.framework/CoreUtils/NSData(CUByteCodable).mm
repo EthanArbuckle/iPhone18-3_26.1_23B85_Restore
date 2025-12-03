@@ -7,8 +7,8 @@
 
 - (const)encodedBytesAndReturnLength:()CUByteCodable error:
 {
-  *a3 = [a1 length];
-  result = [a1 bytes];
+  *a3 = [self length];
+  result = [self bytes];
   if (!result)
   {
     return "";

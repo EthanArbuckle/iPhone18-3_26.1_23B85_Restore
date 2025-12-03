@@ -1,46 +1,46 @@
 @interface MicActivityDXPCConnection
 - (MicActivityDXPCConnection)init;
-- (void)disableMicrophoneActivityDetection:(id)a3;
-- (void)enableMicrophoneActivityDetection:(id)a3;
-- (void)listenForMicrophoneActivity:(id)a3 reply:(id)a4;
-- (void)stopListeningForMicrophoneActivity:(id)a3;
+- (void)disableMicrophoneActivityDetection:(id)detection;
+- (void)enableMicrophoneActivityDetection:(id)detection;
+- (void)listenForMicrophoneActivity:(id)activity reply:(id)reply;
+- (void)stopListeningForMicrophoneActivity:(id)activity;
 @end
 
 @implementation MicActivityDXPCConnection
 
-- (void)stopListeningForMicrophoneActivity:(id)a3
+- (void)stopListeningForMicrophoneActivity:(id)activity
 {
   v6 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(MicActivityClientProtocol *)self->server stopListeningForMicrophoneActivity:v4];
+  activityCopy = activity;
+  [(MicActivityClientProtocol *)self->server stopListeningForMicrophoneActivity:activityCopy];
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)listenForMicrophoneActivity:(id)a3 reply:(id)a4
+- (void)listenForMicrophoneActivity:(id)activity reply:(id)reply
 {
   v9 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [(MicActivityClientProtocol *)self->server listenForMicrophoneActivity:v6 reply:v7];
+  activityCopy = activity;
+  replyCopy = reply;
+  [(MicActivityClientProtocol *)self->server listenForMicrophoneActivity:activityCopy reply:replyCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)disableMicrophoneActivityDetection:(id)a3
+- (void)disableMicrophoneActivityDetection:(id)detection
 {
   v6 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(MicActivityClientProtocol *)self->server disableMicrophoneActivityDetection:v4];
+  detectionCopy = detection;
+  [(MicActivityClientProtocol *)self->server disableMicrophoneActivityDetection:detectionCopy];
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enableMicrophoneActivityDetection:(id)a3
+- (void)enableMicrophoneActivityDetection:(id)detection
 {
   v6 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(MicActivityClientProtocol *)self->server enableMicrophoneActivityDetection:v4];
+  detectionCopy = detection;
+  [(MicActivityClientProtocol *)self->server enableMicrophoneActivityDetection:detectionCopy];
 
   v5 = *MEMORY[0x1E69E9840];
 }

@@ -1,25 +1,25 @@
 @interface PKPeerPaymentIntentHandler
 + (void)connectToIMDaemonController;
 - (PKIntentHandlerDelegate)delegate;
-- (PKPeerPaymentIntentHandler)initWithDelegate:(id)a3 intentQueue:(id)a4;
-- (id)_allHandlesForContact:(id)a3;
-- (id)_canonicalizedMessagesHandleForContactHandle:(id)a3;
-- (id)_contactsForPersons:(id)a3;
-- (id)_mostRecentlyUsedHandle:(id)a3;
-- (id)_personForContact:(id)a3 handle:(id)a4 otherAliases:(id)a5 customIdentifier:(id)a6;
-- (id)_personForContactUsingMostRecentlyUsedHandle:(id)a3;
-- (id)_personForDictatedPhoneNumberOrEmail:(id)a3;
-- (id)_personsForContactsUsingMostRecentlyUsedHandle:(id)a3;
-- (id)_personsForHandlesOnContactPreferringMostRecentlyUsed:(id)a3;
-- (id)_siriMatchResult:(id)a3;
-- (id)inCurrencyAmountFromPKAmount:(id)a3;
-- (id)pkCurrencyAmountFromIntentAmount:(id)a3;
-- (id)resolveSiriMatchesForPerson:(id)a3;
+- (PKPeerPaymentIntentHandler)initWithDelegate:(id)delegate intentQueue:(id)queue;
+- (id)_allHandlesForContact:(id)contact;
+- (id)_canonicalizedMessagesHandleForContactHandle:(id)handle;
+- (id)_contactsForPersons:(id)persons;
+- (id)_mostRecentlyUsedHandle:(id)handle;
+- (id)_personForContact:(id)contact handle:(id)handle otherAliases:(id)aliases customIdentifier:(id)identifier;
+- (id)_personForContactUsingMostRecentlyUsedHandle:(id)handle;
+- (id)_personForDictatedPhoneNumberOrEmail:(id)email;
+- (id)_personsForContactsUsingMostRecentlyUsedHandle:(id)handle;
+- (id)_personsForHandlesOnContactPreferringMostRecentlyUsed:(id)used;
+- (id)_siriMatchResult:(id)result;
+- (id)inCurrencyAmountFromPKAmount:(id)amount;
+- (id)pkCurrencyAmountFromIntentAmount:(id)amount;
+- (id)resolveSiriMatchesForPerson:(id)person;
 - (id)siriLocale;
-- (void)_sendComposition:(id)a3 toRecipient:(id)a4;
-- (void)peerPaymentRegistrationStatusWithCompletion:(id)a3;
-- (void)sendMessage:(id)a3 toRecipient:(id)a4;
-- (void)validateCurrencyAmount:(id)a3 completion:(id)a4;
+- (void)_sendComposition:(id)composition toRecipient:(id)recipient;
+- (void)peerPaymentRegistrationStatusWithCompletion:(id)completion;
+- (void)sendMessage:(id)message toRecipient:(id)recipient;
+- (void)validateCurrencyAmount:(id)amount completion:(id)completion;
 @end
 
 @implementation PKPeerPaymentIntentHandler
@@ -32,18 +32,18 @@
   }
 }
 
-- (PKPeerPaymentIntentHandler)initWithDelegate:(id)a3 intentQueue:(id)a4
+- (PKPeerPaymentIntentHandler)initWithDelegate:(id)delegate intentQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = PKPeerPaymentIntentHandler;
   v8 = [(PKPeerPaymentIntentHandler *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_intentQueue, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_intentQueue, queue);
     v10 = objc_alloc_init(CNContactStore);
     contactStore = v9->_contactStore;
     v9->_contactStore = v10;
@@ -69,15 +69,15 @@
   return v9;
 }
 
-- (id)pkCurrencyAmountFromIntentAmount:(id)a3
+- (id)pkCurrencyAmountFromIntentAmount:(id)amount
 {
-  v3 = a3;
-  v4 = [v3 amount];
-  v5 = [v3 currencyCode];
+  amountCopy = amount;
+  amount = [amountCopy amount];
+  currencyCode = [amountCopy currencyCode];
 
-  if (v4 && [v5 length] && (+[NSDecimalNumber notANumber](NSDecimalNumber, "notANumber"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v4, "isEqualToNumber:", v6), v6, (v7 & 1) == 0))
+  if (amount && [currencyCode length] && (+[NSDecimalNumber notANumber](NSDecimalNumber, "notANumber"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(amount, "isEqualToNumber:", v6), v6, (v7 & 1) == 0))
   {
-    v8 = [[PKCurrencyAmount alloc] initWithAmount:v4 currency:v5 exponent:0];
+    v8 = [[PKCurrencyAmount alloc] initWithAmount:amount currency:currencyCode exponent:0];
   }
 
   else
@@ -88,34 +88,34 @@
   return v8;
 }
 
-- (id)inCurrencyAmountFromPKAmount:(id)a3
+- (id)inCurrencyAmountFromPKAmount:(id)amount
 {
-  v3 = a3;
+  amountCopy = amount;
   v4 = [INCurrencyAmount alloc];
-  v5 = [v3 amount];
-  v6 = [v3 currency];
+  amount = [amountCopy amount];
+  currency = [amountCopy currency];
 
-  v7 = [v4 initWithAmount:v5 currencyCode:v6];
+  v7 = [v4 initWithAmount:amount currencyCode:currency];
 
   return v7;
 }
 
-- (id)resolveSiriMatchesForPerson:(id)a3
+- (id)resolveSiriMatchesForPerson:(id)person
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  personCopy = person;
+  v5 = personCopy;
+  if (!personCopy)
   {
     v8 = +[INPersonResolutionResult needsValue];
 LABEL_7:
-    v9 = v8;
+    siriMatches = v8;
     v10 = [(PKPeerPaymentIntentHandler *)self _siriMatchResult:v8];
     goto LABEL_33;
   }
 
-  v6 = [v4 customIdentifier];
+  customIdentifier = [personCopy customIdentifier];
 
-  if (v6)
+  if (customIdentifier)
   {
     v7 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -129,8 +129,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v9 = [v5 siriMatches];
-  v11 = [(PKPeerPaymentIntentHandler *)self _contactsForPersons:v9];
+  siriMatches = [v5 siriMatches];
+  v11 = [(PKPeerPaymentIntentHandler *)self _contactsForPersons:siriMatches];
   v12 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -143,26 +143,26 @@ LABEL_7:
   {
     if ([v11 count] == 1)
     {
-      v13 = [v11 firstObject];
+      firstObject = [v11 firstObject];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v27 = 138412290;
-        v28 = v13;
+        v28 = firstObject;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Resolved contact: %@", &v27, 0xCu);
       }
 
-      v14 = [(PKPeerPaymentIntentHandler *)self _personsForHandlesOnContactPreferringMostRecentlyUsed:v13];
+      v14 = [(PKPeerPaymentIntentHandler *)self _personsForHandlesOnContactPreferringMostRecentlyUsed:firstObject];
       if ([v14 count] == 1)
       {
-        v15 = [v14 firstObject];
+        firstObject2 = [v14 firstObject];
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           v27 = 138412290;
-          v28 = v15;
+          v28 = firstObject2;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Resolved alias: %@", &v27, 0xCu);
         }
 
-        v16 = [INPersonResolutionResult successWithResolvedPerson:v15];
+        v16 = [INPersonResolutionResult successWithResolvedPerson:firstObject2];
         v10 = [(PKPeerPaymentIntentHandler *)self _siriMatchResult:v16];
 
         goto LABEL_32;
@@ -197,32 +197,32 @@ LABEL_7:
       goto LABEL_29;
     }
 
-    v13 = [(PKPeerPaymentIntentHandler *)self _personsForContactsUsingMostRecentlyUsedHandle:v11];
+    firstObject = [(PKPeerPaymentIntentHandler *)self _personsForContactsUsingMostRecentlyUsedHandle:v11];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v13 count];
+      v19 = [firstObject count];
       v27 = 134217984;
       v28 = v19;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Asking user to disambiguate among %lu contacts", &v27, 0xCu);
     }
 
-    v20 = [INPersonResolutionResult disambiguationWithPeopleToDisambiguate:v13];
+    v20 = [INPersonResolutionResult disambiguationWithPeopleToDisambiguate:firstObject];
 LABEL_31:
     v14 = v20;
     v10 = [(PKPeerPaymentIntentHandler *)self _siriMatchResult:v20];
     goto LABEL_32;
   }
 
-  v17 = [v5 personHandle];
-  v13 = [v17 value];
+  personHandle = [v5 personHandle];
+  firstObject = [personHandle value];
 
-  if (![v13 length])
+  if (![firstObject length])
   {
     v20 = +[INPersonResolutionResult unsupported];
     goto LABEL_31;
   }
 
-  v14 = [(PKPeerPaymentIntentHandler *)self _personForDictatedPhoneNumberOrEmail:v13];
+  v14 = [(PKPeerPaymentIntentHandler *)self _personForDictatedPhoneNumberOrEmail:firstObject];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v27 = 138412290;
@@ -241,47 +241,47 @@ LABEL_33:
   return v10;
 }
 
-- (id)_siriMatchResult:(id)a3
+- (id)_siriMatchResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = objc_alloc_init(PKSiriMatchesPersonResolutionResult);
-  [(PKSiriMatchesPersonResolutionResult *)v4 setPersonResolutionResult:v3];
+  [(PKSiriMatchesPersonResolutionResult *)v4 setPersonResolutionResult:resultCopy];
 
   return v4;
 }
 
-- (void)validateCurrencyAmount:(id)a3 completion:(id)a4
+- (void)validateCurrencyAmount:(id)amount completion:(id)completion
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [(PKPeerPaymentIntentHandler *)self peerPaymentService];
-  if (!v20 || !v7)
+  amountCopy = amount;
+  completionCopy = completion;
+  peerPaymentService = [(PKPeerPaymentIntentHandler *)self peerPaymentService];
+  if (!amountCopy || !peerPaymentService)
   {
-    (*(v6 + 2))(v6, 0, 0, 0, 1);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, 1);
     goto LABEL_12;
   }
 
-  v8 = [v20 currency];
-  v9 = [v20 amount];
-  v10 = [v7 account];
-  v11 = [v10 currentBalance];
-  v12 = [v11 currency];
+  currency = [amountCopy currency];
+  amount = [amountCopy amount];
+  account = [peerPaymentService account];
+  currentBalance = [account currentBalance];
+  currency2 = [currentBalance currency];
 
-  v13 = [v10 sendToUserFeatureDescriptor];
-  v14 = [v13 minimumAmount];
-  v15 = [v13 maximumAmount];
-  v19 = v8;
-  if (v12)
+  sendToUserFeatureDescriptor = [account sendToUserFeatureDescriptor];
+  minimumAmount = [sendToUserFeatureDescriptor minimumAmount];
+  maximumAmount = [sendToUserFeatureDescriptor maximumAmount];
+  v19 = currency;
+  if (currency2)
   {
-    v16 = [v12 caseInsensitiveCompare:{v8, v8}] != 0;
-    if (v14)
+    v16 = [currency2 caseInsensitiveCompare:{currency, currency}] != 0;
+    if (minimumAmount)
     {
       goto LABEL_5;
     }
 
 LABEL_9:
     v17 = 0;
-    if (v15)
+    if (maximumAmount)
     {
       goto LABEL_6;
     }
@@ -292,37 +292,37 @@ LABEL_10:
   }
 
   v16 = 0;
-  if (!v14)
+  if (!minimumAmount)
   {
     goto LABEL_9;
   }
 
 LABEL_5:
-  v17 = [v9 compare:{v14, v19}] == -1;
-  if (!v15)
+  v17 = [amount compare:{minimumAmount, v19}] == -1;
+  if (!maximumAmount)
   {
     goto LABEL_10;
   }
 
 LABEL_6:
-  v18 = [v9 compare:{v15, v19}] == 1;
+  v18 = [amount compare:{maximumAmount, v19}] == 1;
 LABEL_11:
-  (*(v6 + 2))(v6, v16, v17, v18, 0);
+  (*(completionCopy + 2))(completionCopy, v16, v17, v18, 0);
 
 LABEL_12:
 }
 
-- (id)_contactsForPersons:(id)a3
+- (id)_contactsForPersons:(id)persons
 {
-  v4 = a3;
-  if ([v4 count])
+  personsCopy = persons;
+  if ([personsCopy count])
   {
     v5 = objc_alloc_init(NSMutableArray);
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = v4;
+    v6 = personsCopy;
     v7 = [v6 countByEnumeratingWithState:&v21 objects:v28 count:16];
     if (v7)
     {
@@ -337,8 +337,8 @@ LABEL_12:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v21 + 1) + 8 * i) contactIdentifier];
-          [v5 safelyAddObject:v11];
+          contactIdentifier = [*(*(&v21 + 1) + 8 * i) contactIdentifier];
+          [v5 safelyAddObject:contactIdentifier];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v21 objects:v28 count:16];
@@ -383,15 +383,15 @@ LABEL_12:
   return v16;
 }
 
-- (id)_personsForContactsUsingMostRecentlyUsedHandle:(id)a3
+- (id)_personsForContactsUsingMostRecentlyUsedHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v5 = objc_alloc_init(NSMutableArray);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = handleCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -421,10 +421,10 @@ LABEL_12:
   return v12;
 }
 
-- (id)_personsForHandlesOnContactPreferringMostRecentlyUsed:(id)a3
+- (id)_personsForHandlesOnContactPreferringMostRecentlyUsed:(id)used
 {
-  v4 = a3;
-  v5 = [(PKPeerPaymentIntentHandler *)self _allHandlesForContact:v4];
+  usedCopy = used;
+  v5 = [(PKPeerPaymentIntentHandler *)self _allHandlesForContact:usedCopy];
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -445,8 +445,8 @@ LABEL_12:
     }
 
     [v5 removeObject:v7];
-    v9 = [v4 identifier];
-    v10 = [(PKPeerPaymentIntentHandler *)self _personForContact:v4 handle:v7 otherAliases:v5 customIdentifier:v9];
+    identifier = [usedCopy identifier];
+    v10 = [(PKPeerPaymentIntentHandler *)self _personForContact:usedCopy handle:v7 otherAliases:v5 customIdentifier:identifier];
     v27 = v10;
     v11 = [NSArray arrayWithObjects:&v27 count:1];
   }
@@ -459,7 +459,7 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "User has not recently interacted with any of the handles", buf, 2u);
     }
 
-    v9 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+    identifier = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -481,9 +481,9 @@ LABEL_12:
           }
 
           v17 = *(*(&v22 + 1) + 8 * i);
-          v18 = [v4 identifier];
-          v19 = [(PKPeerPaymentIntentHandler *)self _personForContact:v4 handle:v17 otherAliases:0 customIdentifier:v18];
-          [v9 addObject:v19];
+          identifier2 = [usedCopy identifier];
+          v19 = [(PKPeerPaymentIntentHandler *)self _personForContact:usedCopy handle:v17 otherAliases:0 customIdentifier:identifier2];
+          [identifier addObject:v19];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -492,24 +492,24 @@ LABEL_12:
       while (v14);
     }
 
-    v11 = [v9 copy];
+    v11 = [identifier copy];
     v5 = v21;
   }
 
   return v11;
 }
 
-- (id)_allHandlesForContact:(id)a3
+- (id)_allHandlesForContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = objc_alloc_init(NSMutableArray);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v27 = v3;
-  v5 = [v3 phoneNumbers];
-  v6 = [v5 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  v27 = contactCopy;
+  phoneNumbers = [contactCopy phoneNumbers];
+  v6 = [phoneNumbers countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v6)
   {
     v7 = v6;
@@ -520,20 +520,20 @@ LABEL_12:
       {
         if (*v33 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(phoneNumbers);
         }
 
         v10 = *(*(&v32 + 1) + 8 * i);
         v11 = INPersonHandleLabelForCNLabeledValue();
         v12 = [INPersonHandle alloc];
-        v13 = [v10 value];
-        v14 = [v13 stringValue];
-        v15 = [v12 initWithValue:v14 type:2 label:v11];
+        value = [v10 value];
+        stringValue = [value stringValue];
+        v15 = [v12 initWithValue:stringValue type:2 label:v11];
 
         [v4 addObject:v15];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v32 objects:v37 count:16];
+      v7 = [phoneNumbers countByEnumeratingWithState:&v32 objects:v37 count:16];
     }
 
     while (v7);
@@ -543,8 +543,8 @@ LABEL_12:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v16 = [v27 emailAddresses];
-  v17 = [v16 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  emailAddresses = [v27 emailAddresses];
+  v17 = [emailAddresses countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v17)
   {
     v18 = v17;
@@ -555,19 +555,19 @@ LABEL_12:
       {
         if (*v29 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(emailAddresses);
         }
 
         v21 = *(*(&v28 + 1) + 8 * j);
         v22 = INPersonHandleLabelForCNLabeledValue();
         v23 = [INPersonHandle alloc];
-        v24 = [v21 value];
-        v25 = [v23 initWithValue:v24 type:1 label:v22];
+        value2 = [v21 value];
+        v25 = [v23 initWithValue:value2 type:1 label:v22];
 
         [v4 addObject:v25];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      v18 = [emailAddresses countByEnumeratingWithState:&v28 objects:v36 count:16];
     }
 
     while (v18);
@@ -576,20 +576,20 @@ LABEL_12:
   return v4;
 }
 
-- (id)_personForContactUsingMostRecentlyUsedHandle:(id)a3
+- (id)_personForContactUsingMostRecentlyUsedHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(PKPeerPaymentIntentHandler *)self _allHandlesForContact:v4];
+  handleCopy = handle;
+  v5 = [(PKPeerPaymentIntentHandler *)self _allHandlesForContact:handleCopy];
   v6 = [(PKPeerPaymentIntentHandler *)self _mostRecentlyUsedHandle:v5];
   if (v6)
   {
-    v7 = v6;
+    firstObject = v6;
     [v5 removeObject:v6];
   }
 
   else if ([v5 count])
   {
-    v7 = [v5 firstObject];
+    firstObject = [v5 firstObject];
     [v5 removeObjectAtIndex:0];
   }
 
@@ -599,11 +599,11 @@ LABEL_12:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = handleCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Contact %@ has no phone numbers or email addresses, using an empty person handle", &v12, 0xCu);
     }
 
-    v7 = [[INPersonHandle alloc] initWithValue:0 type:0];
+    firstObject = [[INPersonHandle alloc] initWithValue:0 type:0];
   }
 
   if (![v5 count])
@@ -612,33 +612,33 @@ LABEL_12:
     v5 = 0;
   }
 
-  v9 = [v4 identifier];
-  v10 = [(PKPeerPaymentIntentHandler *)self _personForContact:v4 handle:v7 otherAliases:v5 customIdentifier:v9];
+  identifier = [handleCopy identifier];
+  v10 = [(PKPeerPaymentIntentHandler *)self _personForContact:handleCopy handle:firstObject otherAliases:v5 customIdentifier:identifier];
 
   return v10;
 }
 
-- (id)_personForContact:(id)a3 handle:(id)a4 otherAliases:(id)a5 customIdentifier:(id)a6
+- (id)_personForContact:(id)contact handle:(id)handle otherAliases:(id)aliases customIdentifier:(id)identifier
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v12 nameComponents];
-  v14 = [v12 pkFullyQualifiedName];
+  identifierCopy = identifier;
+  aliasesCopy = aliases;
+  handleCopy = handle;
+  contactCopy = contact;
+  nameComponents = [contactCopy nameComponents];
+  pkFullyQualifiedName = [contactCopy pkFullyQualifiedName];
   v15 = [INPerson alloc];
-  v16 = [v12 identifier];
+  identifier = [contactCopy identifier];
 
-  v17 = [v15 initWithPersonHandle:v11 nameComponents:v13 displayName:v14 image:0 contactIdentifier:v16 customIdentifier:v9 aliases:v10 suggestionType:1];
+  v17 = [v15 initWithPersonHandle:handleCopy nameComponents:nameComponents displayName:pkFullyQualifiedName image:0 contactIdentifier:identifier customIdentifier:identifierCopy aliases:aliasesCopy suggestionType:1];
 
   return v17;
 }
 
-- (id)_personForDictatedPhoneNumberOrEmail:(id)a3
+- (id)_personForDictatedPhoneNumberOrEmail:(id)email
 {
-  v3 = a3;
-  v4 = [PKPeerPaymentCounterpartHandleFormatter formatCounterpartHandle:v3];
-  if ([v3 containsString:@"@"])
+  emailCopy = email;
+  v4 = [PKPeerPaymentCounterpartHandleFormatter formatCounterpartHandle:emailCopy];
+  if ([emailCopy containsString:@"@"])
   {
     v5 = 1;
   }
@@ -648,24 +648,24 @@ LABEL_12:
     v5 = 2;
   }
 
-  v6 = [[INPersonHandle alloc] initWithValue:v3 type:v5];
+  v6 = [[INPersonHandle alloc] initWithValue:emailCopy type:v5];
 
   v7 = [[INPerson alloc] initWithPersonHandle:v6 nameComponents:0 displayName:v4 image:0 contactIdentifier:0 customIdentifier:0];
 
   return v7;
 }
 
-- (void)sendMessage:(id)a3 toRecipient:(id)a4
+- (void)sendMessage:(id)message toRecipient:(id)recipient
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  recipientCopy = recipient;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v8 = [v6 underlyingMessage];
-  v9 = [v6 memo];
-  v10 = [CKComposition compositionWithMSMessage:v8 appExtensionIdentifier:PKPeerPaymentMessagesExtensionBundleIdentifier];
-  if ([v9 length])
+  underlyingMessage = [messageCopy underlyingMessage];
+  memo = [messageCopy memo];
+  v10 = [CKComposition compositionWithMSMessage:underlyingMessage appExtensionIdentifier:PKPeerPaymentMessagesExtensionBundleIdentifier];
+  if ([memo length])
   {
-    v11 = [[NSAttributedString alloc] initWithString:v9];
+    v11 = [[NSAttributedString alloc] initWithString:memo];
     v12 = [v10 compositionByAppendingText:v11];
 
     v10 = v12;
@@ -682,7 +682,7 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Sending composition: %@", &v15, 0xCu);
     }
 
-    [(PKPeerPaymentIntentHandler *)self _sendComposition:v10 toRecipient:v7];
+    [(PKPeerPaymentIntentHandler *)self _sendComposition:v10 toRecipient:recipientCopy];
   }
 
   else
@@ -690,54 +690,54 @@ LABEL_12:
     if (v14)
     {
       v15 = 138412290;
-      v16 = v6;
+      v16 = messageCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Could not construct composition for peer payment message: %@", &v15, 0xCu);
     }
   }
 }
 
-- (void)_sendComposition:(id)a3 toRecipient:(id)a4
+- (void)_sendComposition:(id)composition toRecipient:(id)recipient
 {
-  v5 = a3;
-  v6 = a4;
+  compositionCopy = composition;
+  recipientCopy = recipient;
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v33 = v5;
+    v33 = compositionCopy;
     v34 = 2112;
-    v35 = v6;
+    v35 = recipientCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Sending composition %@ to recipient %@", buf, 0x16u);
   }
 
   [objc_opt_class() connectToIMDaemonController];
-  v31 = v6;
+  v31 = recipientCopy;
   v8 = [NSArray arrayWithObjects:&v31 count:1];
   v9 = CKMakeHandlesFromRecipients();
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
   v11 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v10)
+  if (firstObject)
   {
     if (v11)
     {
       *buf = 138412290;
-      v33 = v10;
+      v33 = firstObject;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Resolved recipient IMHandle: %@", buf, 0xCu);
     }
 
     v12 = +[IMChatRegistry sharedRegistry];
-    v13 = [v12 chatWithHandle:v10];
+    v13 = [v12 chatWithHandle:firstObject];
 
     [v13 join];
     v14 = [[CKConversation alloc] initWithChat:v13];
     [v14 refreshServiceForSending];
-    v15 = [v14 messagesFromComposition:v5];
+    v15 = [v14 messagesFromComposition:compositionCopy];
     if ([v15 count])
     {
-      v23 = v10;
-      v24 = v6;
-      v25 = v5;
+      v23 = firstObject;
+      v24 = recipientCopy;
+      v25 = compositionCopy;
       v16 = +[IMService iMessageService];
       v26 = 0u;
       v27 = 0u;
@@ -775,9 +775,9 @@ LABEL_12:
         while (v19);
       }
 
-      v6 = v24;
-      v5 = v25;
-      v10 = v23;
+      recipientCopy = v24;
+      compositionCopy = v25;
+      firstObject = v23;
     }
 
     else
@@ -785,7 +785,7 @@ LABEL_12:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v33 = v5;
+        v33 = compositionCopy;
         v34 = 2112;
         v35 = v14;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Could not create IMMessages with composition: %@ conversation %@", buf, 0x16u);
@@ -800,25 +800,25 @@ LABEL_12:
   else if (v11)
   {
     *buf = 138412290;
-    v33 = v6;
+    v33 = recipientCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Could not resolve IMHandle for recipient %@", buf, 0xCu);
   }
 }
 
-- (void)peerPaymentRegistrationStatusWithCompletion:(id)a3
+- (void)peerPaymentRegistrationStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_registrationStatus && self->_hasAccountResolution)
   {
     accountResolution = self->_accountResolution;
-    (*(v4 + 2))(v4);
+    (*(completionCopy + 2))(completionCopy);
   }
 
   else
   {
-    v7 = [(PKPeerPaymentController *)self->_peerPaymentController peerPaymentPass];
-    v8 = [(PKPeerPaymentController *)self->_peerPaymentController account];
+    peerPaymentPass = [(PKPeerPaymentController *)self->_peerPaymentController peerPaymentPass];
+    account = [(PKPeerPaymentController *)self->_peerPaymentController account];
     v9 = PKPeerPaymentAccountResolutionForAccountAndPeerPaymentPass();
     self->_accountResolution = v9;
     self->_hasAccountResolution = 1;
@@ -834,18 +834,18 @@ LABEL_12:
   }
 }
 
-- (id)_mostRecentlyUsedHandle:(id)a3
+- (id)_mostRecentlyUsedHandle:(id)handle
 {
-  v4 = a3;
-  if ([v4 count])
+  handleCopy = handle;
+  if ([handleCopy count])
   {
-    v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(handleCopy, "count")}];
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v26 = v4;
-    v6 = v4;
+    v26 = handleCopy;
+    v6 = handleCopy;
     v7 = [v6 countByEnumeratingWithState:&v44 objects:v53 count:16];
     if (v7)
     {
@@ -860,8 +860,8 @@ LABEL_12:
           }
 
           v10 = *(*(&v44 + 1) + 8 * i);
-          v11 = [v10 value];
-          v12 = [(PKPeerPaymentIntentHandler *)self _canonicalizedMessagesHandleForContactHandle:v11];
+          value = [v10 value];
+          v12 = [(PKPeerPaymentIntentHandler *)self _canonicalizedMessagesHandleForContactHandle:value];
           if (v12)
           {
             [v5 setObject:v10 forKeyedSubscript:v12];
@@ -874,21 +874,21 @@ LABEL_12:
       while (v7);
     }
 
-    v27 = [v5 allKeys];
+    allKeys = [v5 allKeys];
     v38 = 0;
     v39 = &v38;
     v40 = 0x3032000000;
     v41 = sub_100003544;
     v42 = sub_100003554;
     v43 = 0;
-    if ([v27 count])
+    if ([allKeys count])
     {
       v32 = _NSConcreteStackBlock;
       v33 = 3221225472;
       v34 = sub_10000355C;
       v35 = &unk_100014568;
       v37 = &v38;
-      v36 = v27;
+      v36 = allKeys;
       IMDPersistencePerformBlock();
     }
 
@@ -976,7 +976,7 @@ LABEL_30:
 
     _Block_object_dispose(&v38, 8);
 
-    v4 = v26;
+    handleCopy = v26;
   }
 
   else
@@ -987,16 +987,16 @@ LABEL_30:
   return v23;
 }
 
-- (id)_canonicalizedMessagesHandleForContactHandle:(id)a3
+- (id)_canonicalizedMessagesHandleForContactHandle:(id)handle
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  handleCopy = handle;
+  v4 = handleCopy;
+  if (!handleCopy)
   {
     goto LABEL_7;
   }
 
-  if (![v3 hasPrefix:@"+"])
+  if (![handleCopy hasPrefix:@"+"])
   {
     if (![v4 _appearsToBePhoneNumber])
     {
@@ -1030,9 +1030,9 @@ LABEL_10:
 - (id)siriLocale
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 languageCode];
+  languageCode = [v2 languageCode];
 
-  v4 = [v3 length];
+  v4 = [languageCode length];
   v5 = PKLogFacilityTypeGetObject();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
   if (v4)
@@ -1040,11 +1040,11 @@ LABEL_10:
     if (v6)
     {
       v10 = 138412290;
-      v11 = v3;
+      v11 = languageCode;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Using Siri language code: %@", &v10, 0xCu);
     }
 
-    v7 = [NSLocale localeWithLocaleIdentifier:v3];
+    v7 = [NSLocale localeWithLocaleIdentifier:languageCode];
   }
 
   else

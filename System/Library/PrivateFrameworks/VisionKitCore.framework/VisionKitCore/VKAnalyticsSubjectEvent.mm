@@ -1,22 +1,22 @@
 @interface VKAnalyticsSubjectEvent
-- (VKAnalyticsSubjectEvent)initWithEventType:(int64_t)a3 interactionType:(int64_t)a4 subjectFound:(BOOL)a5 processingDuration:(double)a6 customIdentifier:(id)a7;
+- (VKAnalyticsSubjectEvent)initWithEventType:(int64_t)type interactionType:(int64_t)interactionType subjectFound:(BOOL)found processingDuration:(double)duration customIdentifier:(id)identifier;
 - (id)coreAnalyticsDictionary;
 - (id)description;
 @end
 
 @implementation VKAnalyticsSubjectEvent
 
-- (VKAnalyticsSubjectEvent)initWithEventType:(int64_t)a3 interactionType:(int64_t)a4 subjectFound:(BOOL)a5 processingDuration:(double)a6 customIdentifier:(id)a7
+- (VKAnalyticsSubjectEvent)initWithEventType:(int64_t)type interactionType:(int64_t)interactionType subjectFound:(BOOL)found processingDuration:(double)duration customIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = VKAnalyticsSubjectEvent;
-  result = [(VKAnalyticsEvent *)&v12 initWithCustomIdentifier:a7];
+  result = [(VKAnalyticsEvent *)&v12 initWithCustomIdentifier:identifier];
   if (result)
   {
-    result->_eventType = a3;
-    result->_subjectFound = a5;
-    result->_processingDuration = a6;
-    result->_interactionType = a4;
+    result->_eventType = type;
+    result->_subjectFound = found;
+    result->_processingDuration = duration;
+    result->_interactionType = interactionType;
   }
 
   return result;
@@ -43,8 +43,8 @@
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[VKAnalyticsEvent isPerformingAutomatedTest](self, "isPerformingAutomatedTest")}];
   v13[4] = v8;
   v12[5] = @"bundleId";
-  v9 = [(VKAnalyticsEvent *)self bundleIdentifier];
-  v13[5] = v9;
+  bundleIdentifier = [(VKAnalyticsEvent *)self bundleIdentifier];
+  v13[5] = bundleIdentifier;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:6];
 
   return v10;
@@ -62,8 +62,8 @@
   [(VKAnalyticsSubjectEvent *)self processingDuration];
   v9 = v8;
   v10 = VKMUIStringForBool([(VKAnalyticsEvent *)self isPerformingAutomatedTest]);
-  v11 = [(VKAnalyticsEvent *)self bundleIdentifier];
-  v12 = [v3 stringWithFormat:@"%@ \n eventType: %@ \n interactionType: %@ \n subjectFound: %@ \n processingDuration: %f \n automatedTest: %@ \n bundleId: %@ ", v4, v5, v6, v7, v9, v10, v11];
+  bundleIdentifier = [(VKAnalyticsEvent *)self bundleIdentifier];
+  v12 = [v3 stringWithFormat:@"%@ \n eventType: %@ \n interactionType: %@ \n subjectFound: %@ \n processingDuration: %f \n automatedTest: %@ \n bundleId: %@ ", v4, v5, v6, v7, v9, v10, bundleIdentifier];
 
   return v12;
 }

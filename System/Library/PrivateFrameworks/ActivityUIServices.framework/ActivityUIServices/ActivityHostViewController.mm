@@ -1,7 +1,7 @@
 @interface ActivityHostViewController
 - (ACActivityDescriptor)acActivityDescriptor;
 - (BLSHBacklightSceneHostEnvironment)backlightHostEnvironment;
-- (BOOL)handleHardwareButtonForType:(int64_t)a3;
+- (BOOL)handleHardwareButtonForType:(int64_t)type;
 - (BOOL)idleTimerDisabled;
 - (BOOL)shouldShareTouchesWithHost;
 - (BOOL)wantsBaseContentTouchEvents;
@@ -14,38 +14,38 @@
 - (_TtC18ActivityUIServices20ActivitySceneMetrics)resolvedMetrics;
 - (_TtC18ActivityUIServices22ActivityMetricsRequest)systemProvidedMetrics;
 - (_TtC18ActivityUIServices23ActivitySceneDescriptor)activitySceneDescriptor;
-- (_TtC18ActivityUIServices26ActivityHostViewController)initWithActivitySceneDescriptor:(id)a3 targetBundleIdentifier:(id)a4;
-- (_TtC18ActivityUIServices26ActivityHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18ActivityUIServices26ActivityHostViewController)initWithActivitySceneDescriptor:(id)descriptor targetBundleIdentifier:(id)identifier;
+- (_TtC18ActivityUIServices26ActivityHostViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP18ActivityUIServices34ActivityHostViewControllerDelegate_)delegate;
 - (id)cancelTouchesForCurrentEventInHostedContent;
-- (void)ensureContentWithTimeout:(double)a3 queue:(id)a4 completion:(id)a5;
-- (void)handleHardwareButtonPressForType:(int64_t)a3;
+- (void)ensureContentWithTimeout:(double)timeout queue:(id)queue completion:(id)completion;
+- (void)handleHardwareButtonPressForType:(int64_t)type;
 - (void)invalidate;
 - (void)requestLaunch;
-- (void)scene:(id)a3 didReceiveActions:(id)a4;
-- (void)sceneContentStateDidChange:(id)a3;
-- (void)sceneDidActivate:(id)a3;
-- (void)sceneDidDeactivate:(id)a3 withError:(id)a4;
-- (void)sceneDidInvalidate:(id)a3;
-- (void)sceneLayerManagerDidStartTrackingLayers:(id)a3;
-- (void)sceneLayerManagerDidStopTrackingLayers:(id)a3;
-- (void)sceneLayerManagerDidUpdateLayers:(id)a3;
-- (void)setActivitySceneDescriptor:(id)a3;
-- (void)setActivityTouchRestrictedRects:(id)a3;
-- (void)setAudioCategoriesDisablingVolumeHUD:(id)a3;
-- (void)setBackgroundTintColor:(id)a3;
-- (void)setIdleTimerDisabled:(BOOL)a3;
-- (void)setPresentationMode:(unsigned int)a3;
-- (void)setResolvedMetrics:(id)a3;
-- (void)setSceneDeactivationReasons:(unint64_t)a3;
-- (void)setShouldShareTouchesWithHost:(BOOL)a3;
-- (void)setSystemProvidedMetrics:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setWantsBaseContentTouchEvents:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)scene:(id)scene didReceiveActions:(id)actions;
+- (void)sceneContentStateDidChange:(id)change;
+- (void)sceneDidActivate:(id)activate;
+- (void)sceneDidDeactivate:(id)deactivate withError:(id)error;
+- (void)sceneDidInvalidate:(id)invalidate;
+- (void)sceneLayerManagerDidStartTrackingLayers:(id)layers;
+- (void)sceneLayerManagerDidStopTrackingLayers:(id)layers;
+- (void)sceneLayerManagerDidUpdateLayers:(id)layers;
+- (void)setActivitySceneDescriptor:(id)descriptor;
+- (void)setActivityTouchRestrictedRects:(id)rects;
+- (void)setAudioCategoriesDisablingVolumeHUD:(id)d;
+- (void)setBackgroundTintColor:(id)color;
+- (void)setIdleTimerDisabled:(BOOL)disabled;
+- (void)setPresentationMode:(unsigned int)mode;
+- (void)setResolvedMetrics:(id)metrics;
+- (void)setSceneDeactivationReasons:(unint64_t)reasons;
+- (void)setShouldShareTouchesWithHost:(BOOL)host;
+- (void)setSystemProvidedMetrics:(id)metrics;
+- (void)setTextColor:(id)color;
+- (void)setWantsBaseContentTouchEvents:(BOOL)events;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ActivityHostViewController
@@ -65,13 +65,13 @@
   return *(self + v3);
 }
 
-- (void)setActivitySceneDescriptor:(id)a3
+- (void)setActivitySceneDescriptor:(id)descriptor
 {
   v5 = OBJC_IVAR____TtC18ActivityUIServices26ActivityHostViewController_activitySceneDescriptor;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = descriptor;
+  descriptorCopy = descriptor;
 }
 
 - (ACActivityDescriptor)acActivityDescriptor
@@ -90,11 +90,11 @@
   return v9;
 }
 
-- (void)setPresentationMode:(unsigned int)a3
+- (void)setPresentationMode:(unsigned int)mode
 {
-  v4 = self;
+  selfCopy = self;
   BSDispatchQueueAssertMain();
-  sub_18E62CC9C(a3, 0);
+  sub_18E62CC9C(mode, 0);
 }
 
 - (BOOL)wantsBaseContentTouchEvents
@@ -104,18 +104,18 @@
   return *(self + v3);
 }
 
-- (void)setWantsBaseContentTouchEvents:(BOOL)a3
+- (void)setWantsBaseContentTouchEvents:(BOOL)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v5 = OBJC_IVAR____TtC18ActivityUIServices26ActivityHostViewController_wantsBaseContentTouchEvents;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
-  if (v6 != v3)
+  *(self + v5) = eventsCopy;
+  if (v6 != eventsCopy)
   {
     v7 = swift_allocObject();
     swift_unknownObjectWeakInit();
-    v8 = self;
+    selfCopy = self;
     sub_18E62E8BC(sub_18E63D3D0, v7);
   }
 }
@@ -127,11 +127,11 @@
   return *(self + v3);
 }
 
-- (void)setBackgroundTintColor:(id)a3
+- (void)setBackgroundTintColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_18E62975C(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_18E62975C(color);
 }
 
 - (UIColor)textColor
@@ -141,11 +141,11 @@
   return *(self + v3);
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_18E6297BC(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_18E6297BC(color);
 }
 
 - (_TtC18ActivityUIServices20ActivitySceneMetrics)resolvedMetrics
@@ -155,14 +155,14 @@
   return *(self + v3);
 }
 
-- (void)setResolvedMetrics:(id)a3
+- (void)setResolvedMetrics:(id)metrics
 {
   v5 = OBJC_IVAR____TtC18ActivityUIServices26ActivityHostViewController_resolvedMetrics;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = metrics;
+  metricsCopy = metrics;
+  selfCopy = self;
 
   BSDispatchQueueAssertMain();
   sub_18E62EB30();
@@ -175,10 +175,10 @@
   return *(self + v3);
 }
 
-- (void)setIdleTimerDisabled:(BOOL)a3
+- (void)setIdleTimerDisabled:(BOOL)disabled
 {
-  v4 = self;
-  sub_18E629910(a3);
+  selfCopy = self;
+  sub_18E629910(disabled);
 }
 
 - (NSArray)audioCategoriesDisablingVolumeHUD
@@ -199,9 +199,9 @@
   return v4;
 }
 
-- (void)setAudioCategoriesDisablingVolumeHUD:(id)a3
+- (void)setAudioCategoriesDisablingVolumeHUD:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = sub_18E65F9A0();
   }
@@ -215,7 +215,7 @@
   swift_beginAccess();
   v6 = *(self + v5);
   *(self + v5) = v4;
-  v7 = self;
+  selfCopy = self;
 
   BSDispatchQueueAssertMain();
   swift_beginAccess();
@@ -239,7 +239,7 @@
   return v5;
 }
 
-- (void)setActivityTouchRestrictedRects:(id)a3
+- (void)setActivityTouchRestrictedRects:(id)rects
 {
   type metadata accessor for CGRect(0);
   v4 = sub_18E65F9A0();
@@ -256,26 +256,26 @@
   return *(self + v3);
 }
 
-- (void)setSystemProvidedMetrics:(id)a3
+- (void)setSystemProvidedMetrics:(id)metrics
 {
   v5 = OBJC_IVAR____TtC18ActivityUIServices26ActivityHostViewController_systemProvidedMetrics;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = metrics;
+  metricsCopy = metrics;
 }
 
 - (_TtC18ActivityUIServices20ActivitySceneMetrics)fallbackMetrics
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18E629C68();
 
   return v3;
 }
 
-- (_TtC18ActivityUIServices26ActivityHostViewController)initWithActivitySceneDescriptor:(id)a3 targetBundleIdentifier:(id)a4
+- (_TtC18ActivityUIServices26ActivityHostViewController)initWithActivitySceneDescriptor:(id)descriptor targetBundleIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v5 = sub_18E65F900();
     v7 = v6;
@@ -287,36 +287,36 @@
     v7 = 0;
   }
 
-  return ActivityHostViewController.init(activitySceneDescriptor:targetBundleIdentifier:)(a3, v5, v7);
+  return ActivityHostViewController.init(activitySceneDescriptor:targetBundleIdentifier:)(descriptor, v5, v7);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   BSDispatchQueueAssertMain();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for ActivityHostViewController();
   [(ActivityHostViewController *)&v3 viewDidLoad];
   sub_18E62FBAC();
   sub_18E62FDC4();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_18E632100(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_18E632100(change);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = type metadata accessor for ActivityHostViewController();
   swift_unknownObjectRetain();
   v7 = v12.receiver;
-  [(ActivityHostViewController *)&v12 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(ActivityHostViewController *)&v12 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   v8 = OBJC_IVAR____TtC18ActivityUIServices26ActivityHostViewController_activitySceneDescriptor;
   v9 = swift_beginAccess();
   if (*(*&v7[v8] + OBJC_IVAR____TtC18ActivityUIServices23ActivitySceneDescriptor_activitySceneType) == 4)
@@ -337,54 +337,54 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_18E6327E4();
 }
 
-- (void)ensureContentWithTimeout:(double)a3 queue:(id)a4 completion:(id)a5
+- (void)ensureContentWithTimeout:(double)timeout queue:(id)queue completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = a4;
-  v11 = self;
-  sub_18E62A5DC(v10, sub_18E63CA90, v9, a3);
+  queueCopy = queue;
+  selfCopy = self;
+  sub_18E62A5DC(queueCopy, sub_18E63CA90, v9, timeout);
 }
 
-- (void)setSceneDeactivationReasons:(unint64_t)a3
+- (void)setSceneDeactivationReasons:(unint64_t)reasons
 {
-  v4 = self;
-  sub_18E62B3B4(a3);
+  selfCopy = self;
+  sub_18E62B3B4(reasons);
 }
 
 - (BLSHBacklightSceneHostEnvironment)backlightHostEnvironment
 {
-  v2 = self;
+  selfCopy = self;
   BSDispatchQueueAssertMain();
-  v3 = *(v2 + OBJC_IVAR____TtC18ActivityUIServices26ActivityHostViewController_scene);
+  v3 = *(selfCopy + OBJC_IVAR____TtC18ActivityUIServices26ActivityHostViewController_scene);
   if (v3)
   {
     v4 = v3;
-    v5 = [v4 backlightSceneHostEnvironment];
+    backlightSceneHostEnvironment = [v4 backlightSceneHostEnvironment];
   }
 
   else
   {
-    v5 = 0;
+    backlightSceneHostEnvironment = 0;
   }
 
-  return v5;
+  return backlightSceneHostEnvironment;
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_18E62B574();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_18E63391C();
 
   v3 = sub_18E65F8F0();
@@ -399,12 +399,12 @@
   return *(self + v3);
 }
 
-- (void)setShouldShareTouchesWithHost:(BOOL)a3
+- (void)setShouldShareTouchesWithHost:(BOOL)host
 {
   v5 = OBJC_IVAR____TtC18ActivityUIServices26ActivityHostViewController_shouldShareTouchesWithHost;
   swift_beginAccess();
-  *(self + v5) = a3;
-  v6 = self;
+  *(self + v5) = host;
+  selfCopy = self;
   BSDispatchQueueAssertMain();
   if (*(self + v5) == 1)
   {
@@ -419,7 +419,7 @@
 
 - (id)cancelTouchesForCurrentEventInHostedContent
 {
-  v2 = self;
+  selfCopy = self;
   sub_18E62B9B4();
   v4 = v3;
 
@@ -428,88 +428,88 @@
 
 - (void)requestLaunch
 {
-  v2 = self;
+  selfCopy = self;
   sub_18E62BE5C();
 }
 
-- (BOOL)handleHardwareButtonForType:(int64_t)a3
+- (BOOL)handleHardwareButtonForType:(int64_t)type
 {
-  v4 = self;
-  LOBYTE(a3) = sub_18E62C0E8(a3);
+  selfCopy = self;
+  LOBYTE(type) = sub_18E62C0E8(type);
 
-  return a3 & 1;
+  return type & 1;
 }
 
-- (void)handleHardwareButtonPressForType:(int64_t)a3
+- (void)handleHardwareButtonPressForType:(int64_t)type
 {
-  v4 = self;
-  sub_18E62C0E8(a3);
+  selfCopy = self;
+  sub_18E62C0E8(type);
 }
 
-- (_TtC18ActivityUIServices26ActivityHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18ActivityUIServices26ActivityHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)sceneDidActivate:(id)a3
+- (void)sceneDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
+  activateCopy = activate;
+  selfCopy = self;
   _s18ActivityUIServices0A18HostViewControllerC16sceneDidActivateyySo7FBSceneCF_0();
 }
 
-- (void)sceneDidInvalidate:(id)a3
+- (void)sceneDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   _s18ActivityUIServices0A18HostViewControllerC18sceneDidInvalidateyySo7FBSceneCF_0();
 }
 
-- (void)sceneDidDeactivate:(id)a3 withError:(id)a4
+- (void)sceneDidDeactivate:(id)deactivate withError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  ActivityHostViewController.sceneDidDeactivate(_:withError:)(v6, a4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  errorCopy = error;
+  ActivityHostViewController.sceneDidDeactivate(_:withError:)(deactivateCopy, error);
 }
 
-- (void)sceneContentStateDidChange:(id)a3
+- (void)sceneContentStateDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  ActivityHostViewController.sceneContentStateDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  ActivityHostViewController.sceneContentStateDidChange(_:)(changeCopy);
 }
 
-- (void)scene:(id)a3 didReceiveActions:(id)a4
+- (void)scene:(id)scene didReceiveActions:(id)actions
 {
   sub_18E623B78(0, &qword_1ED764CE0, 0x1E698E5F0);
   sub_18E63B6CC();
   v6 = sub_18E65FA00();
-  v7 = a3;
-  v8 = self;
-  ActivityHostViewController.scene(_:didReceive:)(v7, v6);
+  sceneCopy = scene;
+  selfCopy = self;
+  ActivityHostViewController.scene(_:didReceive:)(sceneCopy, v6);
 }
 
-- (void)sceneLayerManagerDidUpdateLayers:(id)a3
+- (void)sceneLayerManagerDidUpdateLayers:(id)layers
 {
-  v4 = a3;
-  v5 = self;
+  layersCopy = layers;
+  selfCopy = self;
   sub_18E63BF80(sub_18E62F264, "[%{public}s] sceneLayerManagerDidUpdateLayers");
 }
 
-- (void)sceneLayerManagerDidStopTrackingLayers:(id)a3
+- (void)sceneLayerManagerDidStopTrackingLayers:(id)layers
 {
-  v4 = a3;
-  v5 = self;
+  layersCopy = layers;
+  selfCopy = self;
   sub_18E63BF80(sub_18E62FA90, "[%{public}s] sceneLayerManagerDidStopTrackingLayers");
 }
 
-- (void)sceneLayerManagerDidStartTrackingLayers:(id)a3
+- (void)sceneLayerManagerDidStartTrackingLayers:(id)layers
 {
-  v4 = a3;
-  v5 = self;
+  layersCopy = layers;
+  selfCopy = self;
   sub_18E63BF80(sub_18E62F264, "[%{public}s] sceneLayerManagerDidStartTrackingLayers");
 }
 

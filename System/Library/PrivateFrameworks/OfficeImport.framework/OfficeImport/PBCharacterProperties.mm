@@ -1,16 +1,16 @@
 @interface PBCharacterProperties
-+ (void)readCharacterProperties:(id)a3 characterProperty:(PptCharProperty *)a4 state:(id)a5;
-+ (void)readCharacterProperties:(id)a3 specialInfo:(const PptSpecialInfo *)a4 state:(id)a5;
++ (void)readCharacterProperties:(id)properties characterProperty:(PptCharProperty *)property state:(id)state;
++ (void)readCharacterProperties:(id)properties specialInfo:(const PptSpecialInfo *)info state:(id)state;
 @end
 
 @implementation PBCharacterProperties
 
-+ (void)readCharacterProperties:(id)a3 characterProperty:(PptCharProperty *)a4 state:(id)a5
++ (void)readCharacterProperties:(id)properties characterProperty:(PptCharProperty *)property state:(id)state
 {
-  v44 = a3;
-  v7 = a5;
-  v8 = [v7 currentMacCharStyle];
-  v9 = v8;
+  propertiesCopy = properties;
+  stateCopy = state;
+  currentMacCharStyle = [stateCopy currentMacCharStyle];
+  v9 = currentMacCharStyle;
   {
     v14 = *(v13 + 8 * v12);
   }
@@ -20,15 +20,15 @@
     v14 = 0;
   }
 
-  if (([v7 hasCharacterPropertyBulletIndex] & 1) == 0)
+  if (([stateCopy hasCharacterPropertyBulletIndex] & 1) == 0)
   {
-    [v7 setBulletIndex:(*(a4 + 2) >> 10) & 0xF];
+    [stateCopy setBulletIndex:(*(property + 2) >> 10) & 0xF];
   }
 
-  [v44 setIsBold:*(a4 + 2) & 1];
-  [v44 setIsItalic:(*(a4 + 2) >> 1) & 1];
-  [v44 setUnderlineType:(*(a4 + 4) >> 1) & 2];
-  if ((*(a4 + 2) & 0x10) != 0)
+  [propertiesCopy setIsBold:*(property + 2) & 1];
+  [propertiesCopy setIsItalic:(*(property + 2) >> 1) & 1];
+  [propertiesCopy setUnderlineType:(*(property + 4) >> 1) & 2];
+  if ((*(property + 2) & 0x10) != 0)
   {
     v15 = +[PBCharacterProperties readCharacterProperties:characterProperty:state:]::effects;
     if (!+[PBCharacterProperties readCharacterProperties:characterProperty:state:]::effects)
@@ -52,14 +52,14 @@
     v15 = +[PBCharacterProperties readCharacterProperties:characterProperty:state:]::effects;
   }
 
-  [v44 setEffects:v15];
+  [propertiesCopy setEffects:v15];
   if (v14 && *(v14 + 8) == 1)
   {
     *&v19 = EshFixedPointUtil::toFloat(*(v14 + 12));
-    [v44 setOpacity:v19];
+    [propertiesCopy setOpacity:v19];
   }
 
-  v20 = *(a4 + 2);
+  v20 = *(property + 2);
   if ((v20 & 8) != 0)
   {
     v21 = 1;
@@ -70,65 +70,65 @@
     v21 = (v20 << 22 >> 31) & 3;
   }
 
-  [v44 setFormatType:v21];
-  v22 = a4->var19 / 100.0;
+  [propertiesCopy setFormatType:v21];
+  v22 = property->var19 / 100.0;
   *&v22 = v22;
-  [v44 setBaseline:v22];
-  if ((*(&a4->var0 + 1) & 0x40) != 0)
+  [propertiesCopy setBaseline:v22];
+  if ((*(&property->var0 + 1) & 0x40) != 0)
   {
-    LOWORD(v23) = a4->var17;
+    LOWORD(v23) = property->var17;
     *&v23 = LODWORD(v23);
-    [v44 setSize:v23];
+    [propertiesCopy setSize:v23];
   }
 
-  if (a4->var13 != 0xFFFFLL)
+  if (property->var13 != 0xFFFFLL)
   {
-    v24 = [v7 fontEntityAtIndex:?];
-    v25 = [v24 faceName];
-    [v44 setLatinFont:v25];
+    v24 = [stateCopy fontEntityAtIndex:?];
+    faceName = [v24 faceName];
+    [propertiesCopy setLatinFont:faceName];
   }
 
-  if ((*(&a4->var0 + 1) & 0x10) != 0 && a4->var15 != 0xFFFFLL)
+  if ((*(&property->var0 + 1) & 0x10) != 0 && property->var15 != 0xFFFFLL)
   {
-    v26 = [v7 fontEntityAtIndex:?];
-    v27 = [v26 faceName];
-    [v44 setHAnsiFont:v27];
+    v26 = [stateCopy fontEntityAtIndex:?];
+    faceName2 = [v26 faceName];
+    [propertiesCopy setHAnsiFont:faceName2];
   }
 
-  if (a4->var14 != 0xFFFFLL)
+  if (property->var14 != 0xFFFFLL)
   {
-    v28 = [v7 fontEntityAtIndex:?];
-    v29 = [v28 faceName];
-    [v44 setEastAsianFont:v29];
+    v28 = [stateCopy fontEntityAtIndex:?];
+    faceName3 = [v28 faceName];
+    [propertiesCopy setEastAsianFont:faceName3];
   }
 
-  if ((a4->var16 & 0x8000000000000000) == 0)
+  if ((property->var16 & 0x8000000000000000) == 0)
   {
-    v30 = [v7 fontEntityAtIndex:?];
-    v31 = [v30 faceName];
-    [v44 setSymbolFont:v31];
+    v30 = [stateCopy fontEntityAtIndex:?];
+    faceName4 = [v30 faceName];
+    [propertiesCopy setSymbolFont:faceName4];
   }
 
-  var0 = a4->var0;
-  if ((*&a4->var0 & 0x40) != 0 && (*(a4 + 2) & 0x40) != 0)
+  var0 = property->var0;
+  if ((*&property->var0 & 0x40) != 0 && (*(property + 2) & 0x40) != 0)
   {
-    [v44 setFormatKerningType:2];
-    var0 = a4->var0;
+    [propertiesCopy setFormatKerningType:2];
+    var0 = property->var0;
   }
 
-  if ((*&var0 & 0x100) != 0 && (*(a4 + 2) & 0x100) != 0)
+  if ((*&var0 & 0x100) != 0 && (*(property + 2) & 0x100) != 0)
   {
-    [v44 setFormatKerningType:1];
+    [propertiesCopy setFormatKerningType:1];
   }
 
-  var1 = a4->var18.var1;
+  var1 = property->var18.var1;
   if (var1 != 255)
   {
     if (var1 == 254)
     {
-      v34 = a4->var18.var0.var1;
-      var2 = a4->var18.var0.var2;
-      var3 = a4->var18.var0.var3;
+      v34 = property->var18.var0.var1;
+      var2 = property->var18.var0.var2;
+      var3 = property->var18.var0.var3;
       v37 = [OADRgbColor alloc];
       *&v38 = v34;
       *&v39 = var2;
@@ -138,13 +138,13 @@
 
     else
     {
-      v41 = [[OADSchemeColor alloc] initWithSchemeColorIndex:[PBColorScheme oadSchemeColorValueForEshSchemeColorIndex:a4->var18.var1]];
+      v41 = [[OADSchemeColor alloc] initWithSchemeColorIndex:[PBColorScheme oadSchemeColorValueForEshSchemeColorIndex:property->var18.var1]];
     }
 
     v42 = v41;
     v43 = objc_alloc_init(OADSolidFill);
     [(OADSolidFill *)v43 setColor:v42];
-    [v44 setFill:v43];
+    [propertiesCopy setFill:v43];
   }
 }
 
@@ -155,12 +155,12 @@ void __73__PBCharacterProperties_readCharacterProperties_characterProperty_state
   +[PBCharacterProperties readCharacterProperties:characterProperty:state:]::effects = v0;
 }
 
-+ (void)readCharacterProperties:(id)a3 specialInfo:(const PptSpecialInfo *)a4 state:(id)a5
++ (void)readCharacterProperties:(id)properties specialInfo:(const PptSpecialInfo *)info state:(id)state
 {
-  v6 = a3;
-  if ((*&a4->var0 & 2) != 0)
+  propertiesCopy = properties;
+  if ((*&info->var0 & 2) != 0)
   {
-    [v6 setLanguage:*&a4->var1];
+    [propertiesCopy setLanguage:*&info->var1];
   }
 }
 

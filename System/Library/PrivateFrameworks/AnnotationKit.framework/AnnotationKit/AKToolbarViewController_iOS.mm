@@ -1,56 +1,56 @@
 @interface AKToolbarViewController_iOS
-- (AKToolbarViewController_iOS)initWithController:(id)a3;
+- (AKToolbarViewController_iOS)initWithController:(id)controller;
 - (BOOL)_legacyDoodlesEnabled;
 - (BOOL)_validateUndoButton;
 - (BOOL)isPresentingPopover;
 - (BOOL)isPresentingPopovers;
-- (BOOL)presentationControllerShouldDismiss:(id)a3;
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss;
 - (double)heightIncludingAdditionalVisibleBars;
 - (double)visibleHeightOfAttributeBar;
-- (id)_barButtonForToolbarType:(unint64_t)a3;
+- (id)_barButtonForToolbarType:(unint64_t)type;
 - (id)_buildUndoAlertController;
-- (id)_createNewColorPickerToolbarButtonWithTarget:(id)a3 selector:(SEL)a4;
-- (id)_createNewCustomViewToolbarButtonWithImage:(id)a3 target:(id)a4 selector:(SEL)a5;
-- (id)_createNewToggleToolbarButtonWithImage:(id)a3 tag:(int64_t)a4 target:(id)a5 selector:(SEL)a6 autoUpdatesColor:(BOOL)a7;
+- (id)_createNewColorPickerToolbarButtonWithTarget:(id)target selector:(SEL)selector;
+- (id)_createNewCustomViewToolbarButtonWithImage:(id)image target:(id)target selector:(SEL)selector;
+- (id)_createNewToggleToolbarButtonWithImage:(id)image tag:(int64_t)tag target:(id)target selector:(SEL)selector autoUpdatesColor:(BOOL)color;
 - (id)_doodleModeToolbarImage;
-- (id)_toolbarButtonItemOfType:(unint64_t)a3;
+- (id)_toolbarButtonItemOfType:(unint64_t)type;
 - (int64_t)_attributeTagForCurrentSelectionState;
 - (unint64_t)_workaroundToolbarPopoverPositioningBug26744300;
 - (void)_buildBasicItems;
-- (void)_deleteSelectedItems:(id)a3;
-- (void)_dismissCurrentlyPresentedPopoverAnimated:(BOOL)a3 withCompletion:(id)a4;
+- (void)_deleteSelectedItems:(id)items;
+- (void)_dismissCurrentlyPresentedPopoverAnimated:(BOOL)animated withCompletion:(id)completion;
 - (void)_layoutAttributeContainer;
-- (void)_layoutToolbarForTraitCollection:(id)a3;
-- (void)_peripheralAvailabilityDidUpdate:(id)a3;
-- (void)_redoButtonAction:(id)a3;
-- (void)_setupPassthroughViewsForViewController:(id)a3;
-- (void)_showColorPickerPopover:(id)a3;
-- (void)_showLineStylePopover:(id)a3;
-- (void)_showSignaturesPopover:(id)a3;
-- (void)_showTextStylePopover:(id)a3;
-- (void)_showUndoAlert:(id)a3;
-- (void)_undoAllButtonAction:(id)a3;
-- (void)_undoButtonAction:(id)a3;
-- (void)_undoLongPressAction:(id)a3;
-- (void)_undoManagerNotification:(id)a3;
-- (void)_updateToggleButton:(id)a3 withTraitCollection:(id)a4;
+- (void)_layoutToolbarForTraitCollection:(id)collection;
+- (void)_peripheralAvailabilityDidUpdate:(id)update;
+- (void)_redoButtonAction:(id)action;
+- (void)_setupPassthroughViewsForViewController:(id)controller;
+- (void)_showColorPickerPopover:(id)popover;
+- (void)_showLineStylePopover:(id)popover;
+- (void)_showSignaturesPopover:(id)popover;
+- (void)_showTextStylePopover:(id)popover;
+- (void)_showUndoAlert:(id)alert;
+- (void)_undoAllButtonAction:(id)action;
+- (void)_undoButtonAction:(id)action;
+- (void)_undoLongPressAction:(id)action;
+- (void)_undoManagerNotification:(id)notification;
+- (void)_updateToggleButton:(id)button withTraitCollection:(id)collection;
 - (void)dealloc;
 - (void)dismissAttributeToolbarForSelectedAnnotations;
 - (void)dismissAttributeToolbarImmediately;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)revalidateItems;
-- (void)setBarTintColor:(id)a3;
-- (void)setTintColor:(id)a3;
-- (void)showAttributeToolbarForSelectedAnnotations:(id)a3 andToolMode:(unint64_t)a4;
-- (void)signatureCreationControllerDidCreateSignature:(id)a3;
-- (void)signaturesViewControllerContinueToCreateSignature:(id)a3;
-- (void)signaturesViewControllerContinueToManageSignatures:(id)a3;
-- (void)signaturesViewControllerDidCancel:(id)a3;
-- (void)signaturesViewControllerDidSelectSignature:(id)a3;
-- (void)signaturesViewControllerEnterSignatureMode:(id)a3;
+- (void)setBarTintColor:(id)color;
+- (void)setTintColor:(id)color;
+- (void)showAttributeToolbarForSelectedAnnotations:(id)annotations andToolMode:(unint64_t)mode;
+- (void)signatureCreationControllerDidCreateSignature:(id)signature;
+- (void)signaturesViewControllerContinueToCreateSignature:(id)signature;
+- (void)signaturesViewControllerContinueToManageSignatures:(id)signatures;
+- (void)signaturesViewControllerDidCancel:(id)cancel;
+- (void)signaturesViewControllerDidSelectSignature:(id)signature;
+- (void)signaturesViewControllerEnterSignatureMode:(id)mode;
 - (void)syncUIToSelectedColor;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation AKToolbarViewController_iOS
@@ -67,21 +67,21 @@
 
 - (unint64_t)_workaroundToolbarPopoverPositioningBug26744300
 {
-  v2 = [(AKToolbarViewController_iOS *)self undoButton];
-  v3 = [v2 customView];
+  undoButton = [(AKToolbarViewController_iOS *)self undoButton];
+  customView = [undoButton customView];
 
-  if (!v3)
+  if (!customView)
   {
     NSLog(&cfstr_UndoButtonMust.isa);
   }
 
-  v4 = [v3 window];
-  [v3 bounds];
-  [v4 convertRect:v3 fromCoordinateSpace:?];
+  window = [customView window];
+  [customView bounds];
+  [window convertRect:customView fromCoordinateSpace:?];
   v6 = v5;
 
-  v7 = [v3 window];
-  [v7 bounds];
+  window2 = [customView window];
+  [window2 bounds];
   v9 = v8;
 
   if (v6 < v9 * 0.5)
@@ -97,34 +97,34 @@
   return v10;
 }
 
-- (AKToolbarViewController_iOS)initWithController:(id)a3
+- (AKToolbarViewController_iOS)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v19.receiver = self;
   v19.super_class = AKToolbarViewController_iOS;
-  v5 = [(AKToolbarViewController *)&v19 initWithController:v4];
+  v5 = [(AKToolbarViewController *)&v19 initWithController:controllerCopy];
   v6 = v5;
   if (v5)
   {
     [(AKToolbarViewController_iOS *)v5 _buildBasicItems];
-    v7 = [v4 undoController];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
+    undoController = [controllerCopy undoController];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v9 = *MEMORY[0x277CCA810];
-    v10 = [v7 undoManager];
-    [v8 addObserver:v6 selector:sel__undoManagerNotification_ name:v9 object:v10];
+    undoManager = [undoController undoManager];
+    [defaultCenter addObserver:v6 selector:sel__undoManagerNotification_ name:v9 object:undoManager];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
     v12 = *MEMORY[0x277CCA808];
-    v13 = [v7 undoManager];
-    [v11 addObserver:v6 selector:sel__undoManagerNotification_ name:v12 object:v13];
+    undoManager2 = [undoController undoManager];
+    [defaultCenter2 addObserver:v6 selector:sel__undoManagerNotification_ name:v12 object:undoManager2];
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
     v15 = *MEMORY[0x277CCA7F8];
-    v16 = [v7 undoManager];
-    [v14 addObserver:v6 selector:sel__undoManagerNotification_ name:v15 object:v16];
+    undoManager3 = [undoController undoManager];
+    [defaultCenter3 addObserver:v6 selector:sel__undoManagerNotification_ name:v15 object:undoManager3];
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v6 selector:sel__peripheralAvailabilityDidUpdate_ name:@"AKPeripheralAvailabilityManagerAvailabilityNotification" object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v6 selector:sel__peripheralAvailabilityDidUpdate_ name:@"AKPeripheralAvailabilityManagerAvailabilityNotification" object:0];
   }
 
   return v6;
@@ -133,8 +133,8 @@
 - (void)dealloc
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_dismissAttributeToolbarForSelectedAnnotations object:0];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(AKToolbarViewController_iOS *)self _dismissCurrentlyPresentedPopoverAnimated:0 withCompletion:0];
   v4.receiver = self;
@@ -155,8 +155,8 @@
   v9 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v4, v5, v6, v7}];
   [(AKToolbarViewController_iOS *)self setFloatingAttributeToolbarContainer:v9];
 
-  v10 = [(AKToolbarViewController_iOS *)self floatingAttributeToolbarContainer];
-  [v10 setHidden:1];
+  floatingAttributeToolbarContainer = [(AKToolbarViewController_iOS *)self floatingAttributeToolbarContainer];
+  [floatingAttributeToolbarContainer setHidden:1];
 }
 
 - (void)_buildBasicItems
@@ -204,52 +204,52 @@
   [(AKToolbarViewController_iOS *)self _layoutToolbarForTraitCollection:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = AKToolbarViewController_iOS;
-  v4 = a3;
-  [(AKToolbarViewController_iOS *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(AKToolbarViewController_iOS *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(AKToolbarViewController_iOS *)self traitCollection:v8.receiver];
-  v6 = sub_23F45174C(v5, v4);
+  v6 = sub_23F45174C(v5, changeCopy);
 
   if (!v6)
   {
-    v7 = [(AKToolbarViewController_iOS *)self traitCollection];
-    [(AKToolbarViewController_iOS *)self _layoutToolbarForTraitCollection:v7];
+    traitCollection = [(AKToolbarViewController_iOS *)self traitCollection];
+    [(AKToolbarViewController_iOS *)self _layoutToolbarForTraitCollection:traitCollection];
 
     [(AKToolbarViewController_iOS *)self revalidateItems];
   }
 }
 
-- (void)_layoutToolbarForTraitCollection:(id)a3
+- (void)_layoutToolbarForTraitCollection:(id)collection
 {
   v44[15] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AKToolbarViewController_iOS *)self view];
+  collectionCopy = collection;
+  view = [(AKToolbarViewController_iOS *)self view];
   v40 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:6 target:0 action:0];
   [v40 setWidth:8.0];
   v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:5 target:0 action:0];
   objc_setAssociatedObject(v6, sel_akToolbarButtonItemType, &unk_2851BB448, 0x303);
-  v7 = sub_23F4516FC(v4);
-  v8 = [(AKToolbarViewController_iOS *)self floatingAttributeToolbarContainer];
-  [v8 setHidden:v7];
+  v7 = sub_23F4516FC(collectionCopy);
+  floatingAttributeToolbarContainer = [(AKToolbarViewController_iOS *)self floatingAttributeToolbarContainer];
+  [floatingAttributeToolbarContainer setHidden:v7];
 
   v39 = MEMORY[0x277CBEB18];
-  v9 = [(AKToolbarViewController_iOS *)self inkButton];
-  v10 = v9;
+  inkButton = [(AKToolbarViewController_iOS *)self inkButton];
+  v10 = inkButton;
   if (!v7)
   {
-    v42[0] = v9;
+    v42[0] = inkButton;
     v42[1] = v6;
-    v20 = [(AKToolbarViewController_iOS *)self loupeButton];
-    v42[2] = v20;
+    loupeButton = [(AKToolbarViewController_iOS *)self loupeButton];
+    v42[2] = loupeButton;
     v42[3] = v6;
-    v21 = [(AKToolbarViewController_iOS *)self textButton];
-    v42[4] = v21;
+    textButton = [(AKToolbarViewController_iOS *)self textButton];
+    v42[4] = textButton;
     v42[5] = v6;
-    v22 = [(AKToolbarViewController_iOS *)self signatureButton];
-    v42[6] = v22;
+    signatureButton = [(AKToolbarViewController_iOS *)self signatureButton];
+    v42[6] = signatureButton;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:7];
     v17 = [v39 arrayWithArray:v23];
 
@@ -258,45 +258,45 @@
       goto LABEL_8;
     }
 
-    v18 = [(AKToolbarViewController_iOS *)self sketchButton];
-    v41 = v18;
+    sketchButton = [(AKToolbarViewController_iOS *)self sketchButton];
+    v41 = sketchButton;
     v19 = &v41;
     goto LABEL_6;
   }
 
-  v37 = v5;
-  v38 = v4;
-  v44[0] = v9;
+  v37 = view;
+  v38 = collectionCopy;
+  v44[0] = inkButton;
   v44[1] = v6;
-  v36 = [(AKToolbarViewController_iOS *)self loupeButton];
-  v44[2] = v36;
+  loupeButton2 = [(AKToolbarViewController_iOS *)self loupeButton];
+  v44[2] = loupeButton2;
   v44[3] = v6;
-  v11 = [(AKToolbarViewController_iOS *)self textButton];
-  v44[4] = v11;
+  textButton2 = [(AKToolbarViewController_iOS *)self textButton];
+  v44[4] = textButton2;
   v44[5] = v6;
-  v12 = [(AKToolbarViewController_iOS *)self signatureButton];
-  v44[6] = v12;
+  signatureButton2 = [(AKToolbarViewController_iOS *)self signatureButton];
+  v44[6] = signatureButton2;
   v44[7] = v6;
   v44[8] = v6;
   v44[9] = v6;
-  v13 = [(AKToolbarViewController_iOS *)self strokeColorButton];
-  v44[10] = v13;
+  strokeColorButton = [(AKToolbarViewController_iOS *)self strokeColorButton];
+  v44[10] = strokeColorButton;
   v44[11] = v6;
-  v14 = [(AKToolbarViewController_iOS *)self lineStyleButton];
-  v44[12] = v14;
+  lineStyleButton = [(AKToolbarViewController_iOS *)self lineStyleButton];
+  v44[12] = lineStyleButton;
   v44[13] = v6;
-  v15 = [(AKToolbarViewController_iOS *)self textStyleButton];
-  v44[14] = v15;
+  textStyleButton = [(AKToolbarViewController_iOS *)self textStyleButton];
+  v44[14] = textStyleButton;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:15];
   v17 = [v39 arrayWithArray:v16];
 
   if ([(AKToolbarViewController_iOS *)self _legacyDoodlesEnabled])
   {
-    v18 = [(AKToolbarViewController_iOS *)self sketchButton];
-    v43 = v18;
+    sketchButton = [(AKToolbarViewController_iOS *)self sketchButton];
+    v43 = sketchButton;
     v19 = &v43;
-    v5 = v37;
-    v4 = v38;
+    view = v37;
+    collectionCopy = v38;
 LABEL_6:
     v19[1] = v6;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:? count:?];
@@ -306,160 +306,160 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v5 = v37;
-  v4 = v38;
+  view = v37;
+  collectionCopy = v38;
 LABEL_8:
   [(AKToolbarViewController_iOS *)self setStaticToolbarItems:v17];
 
-  v26 = [(AKToolbarViewController_iOS *)self barTintColor];
-  v27 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
-  v28 = [v27 toolbar];
-  [v28 setBarTintColor:v26];
+  barTintColor = [(AKToolbarViewController_iOS *)self barTintColor];
+  attributeToolbarViewController = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
+  toolbar = [attributeToolbarViewController toolbar];
+  [toolbar setBarTintColor:barTintColor];
 
   if ([(AKToolbarViewController_iOS *)self _legacyDoodlesEnabled])
   {
-    v29 = [(AKToolbarViewController_iOS *)self sketchButton];
-    [(AKToolbarViewController_iOS *)self _updateToggleButton:v29 withTraitCollection:v4];
+    sketchButton2 = [(AKToolbarViewController_iOS *)self sketchButton];
+    [(AKToolbarViewController_iOS *)self _updateToggleButton:sketchButton2 withTraitCollection:collectionCopy];
   }
 
-  v30 = [(AKToolbarViewController_iOS *)self inkButton];
-  [(AKToolbarViewController_iOS *)self _updateToggleButton:v30 withTraitCollection:v4];
+  inkButton2 = [(AKToolbarViewController_iOS *)self inkButton];
+  [(AKToolbarViewController_iOS *)self _updateToggleButton:inkButton2 withTraitCollection:collectionCopy];
 
-  v31 = [(AKToolbarViewController_iOS *)self signatureButton];
-  [(AKToolbarViewController_iOS *)self _updateToggleButton:v31 withTraitCollection:v4];
+  signatureButton3 = [(AKToolbarViewController_iOS *)self signatureButton];
+  [(AKToolbarViewController_iOS *)self _updateToggleButton:signatureButton3 withTraitCollection:collectionCopy];
 
-  v32 = [(AKToolbarViewController_iOS *)self staticToolbarItems];
-  v33 = [(AKToolbarViewController *)self controller];
-  v34 = [v33 delegate];
+  staticToolbarItems = [(AKToolbarViewController_iOS *)self staticToolbarItems];
+  controller = [(AKToolbarViewController *)self controller];
+  delegate = [controller delegate];
   if (objc_opt_respondsToSelector())
   {
-    v35 = [v34 controller:v33 willSetToolbarItems:v32];
+    v35 = [delegate controller:controller willSetToolbarItems:staticToolbarItems];
 
-    v32 = v35;
+    staticToolbarItems = v35;
   }
 
-  [v5 setItems:v32 animated:0];
+  [view setItems:staticToolbarItems animated:0];
 }
 
-- (void)_updateToggleButton:(id)a3 withTraitCollection:(id)a4
+- (void)_updateToggleButton:(id)button withTraitCollection:(id)collection
 {
-  v17 = [a3 customView];
-  v5 = [(AKToolbarViewController_iOS *)self barTintColor];
-  if (v5 && ([MEMORY[0x277D75348] whiteColor], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "akIsEqualToColor:", v6), v6, !v7))
+  customView = [button customView];
+  barTintColor = [(AKToolbarViewController_iOS *)self barTintColor];
+  if (barTintColor && ([MEMORY[0x277D75348] whiteColor], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(barTintColor, "akIsEqualToColor:", v6), v6, !v7))
   {
-    [v17 setShouldTintNormalImage:1];
-    [v17 setShowsBackgroundColor:0];
-    v11 = [MEMORY[0x277D75348] whiteColor];
-    [v17 setTintColor:v11];
+    [customView setShouldTintNormalImage:1];
+    [customView setShowsBackgroundColor:0];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [customView setTintColor:whiteColor];
 
-    v10 = [MEMORY[0x277D75348] systemBlueColor];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
   }
 
   else
   {
-    [v17 setShouldTintNormalImage:1];
-    [v17 setShowsBackgroundColor:1];
-    v8 = [(AKToolbarViewController_iOS *)self view];
-    v9 = [v8 tintColor];
-    [v17 setTintColor:v9];
+    [customView setShouldTintNormalImage:1];
+    [customView setShowsBackgroundColor:1];
+    view = [(AKToolbarViewController_iOS *)self view];
+    tintColor = [view tintColor];
+    [customView setTintColor:tintColor];
 
-    v10 = [MEMORY[0x277D75348] whiteColor];
+    systemBlueColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  v12 = v10;
-  [v17 setSelectedColor:v10];
+  v12 = systemBlueColor;
+  [customView setSelectedColor:systemBlueColor];
 
-  if ([v17 tag] == 764015)
+  if ([customView tag] == 764015)
   {
-    v13 = [(AKToolbarViewController_iOS *)self _doodleModeToolbarImage];
+    _doodleModeToolbarImage = [(AKToolbarViewController_iOS *)self _doodleModeToolbarImage];
 LABEL_14:
-    v16 = v13;
-    [v17 setTemplateImage:v13];
-    [v17 setImage:v16 forState:0];
+    v16 = _doodleModeToolbarImage;
+    [customView setTemplateImage:_doodleModeToolbarImage];
+    [customView setImage:v16 forState:0];
 
     goto LABEL_15;
   }
 
-  if ([v17 tag] == 764016)
+  if ([customView tag] == 764016)
   {
     v14 = objc_opt_class();
     v15 = 1;
 LABEL_13:
-    v13 = [v14 imageForToolbarButtonItemOfType:v15];
+    _doodleModeToolbarImage = [v14 imageForToolbarButtonItemOfType:v15];
     goto LABEL_14;
   }
 
-  if ([v17 tag] == 764017)
+  if ([customView tag] == 764017)
   {
     v14 = objc_opt_class();
     v15 = 13;
     goto LABEL_13;
   }
 
-  if ([v17 tag] == 764022)
+  if ([customView tag] == 764022)
   {
     v14 = objc_opt_class();
     v15 = 3;
     goto LABEL_13;
   }
 
-  [v17 tag];
+  [customView tag];
 LABEL_15:
 }
 
 - (void)revalidateItems
 {
-  v30 = [(AKToolbarViewController *)self controller];
-  if (([v30 isTornDown] & 1) == 0)
+  controller = [(AKToolbarViewController *)self controller];
+  if (([controller isTornDown] & 1) == 0)
   {
     if ([(AKToolbarViewController_iOS *)self _legacyDoodlesEnabled])
     {
-      v3 = [(AKToolbarViewController_iOS *)self sketchButton];
-      v4 = [v3 customView];
-      [v30 validateSender:v4];
+      sketchButton = [(AKToolbarViewController_iOS *)self sketchButton];
+      customView = [sketchButton customView];
+      [controller validateSender:customView];
     }
 
-    v5 = [(AKToolbarViewController_iOS *)self inkButton];
-    v6 = [v5 customView];
-    [v30 validateSender:v6];
+    inkButton = [(AKToolbarViewController_iOS *)self inkButton];
+    customView2 = [inkButton customView];
+    [controller validateSender:customView2];
 
-    v7 = [(AKToolbarViewController_iOS *)self signatureButton];
-    v8 = [v7 customView];
-    [v30 validateSender:v8];
+    signatureButton = [(AKToolbarViewController_iOS *)self signatureButton];
+    customView3 = [signatureButton customView];
+    [controller validateSender:customView3];
 
     if ([(AKToolbarViewController_iOS *)self _legacyDoodlesEnabled])
     {
-      v9 = [(AKToolbarViewController_iOS *)self richSketchButton];
+      richSketchButton = [(AKToolbarViewController_iOS *)self richSketchButton];
 
-      if (v9)
+      if (richSketchButton)
       {
-        v10 = [(AKToolbarViewController_iOS *)self richSketchButton];
-        v11 = [v10 customView];
-        [v30 validateSender:v11];
+        richSketchButton2 = [(AKToolbarViewController_iOS *)self richSketchButton];
+        customView4 = [richSketchButton2 customView];
+        [controller validateSender:customView4];
       }
     }
 
-    v12 = [v30 validateUndo:0];
-    v13 = [v30 validateRedo:0];
-    v14 = [(AKToolbarViewController_iOS *)self undoButton];
-    [v14 setEnabled:v12];
+    v12 = [controller validateUndo:0];
+    v13 = [controller validateRedo:0];
+    undoButton = [(AKToolbarViewController_iOS *)self undoButton];
+    [undoButton setEnabled:v12];
 
-    v15 = [(AKToolbarViewController_iOS *)self redoButton];
-    [v15 setEnabled:v13];
+    redoButton = [(AKToolbarViewController_iOS *)self redoButton];
+    [redoButton setEnabled:v13];
 
-    v16 = [v30 toolController];
-    v17 = [v30 currentPageController];
-    v18 = [v17 pageModelController];
+    toolController = [controller toolController];
+    currentPageController = [controller currentPageController];
+    pageModelController = [currentPageController pageModelController];
 
-    v19 = [v18 selectedAnnotations];
-    v20 = [(AKToolbarViewController_iOS *)self traitCollection];
-    v21 = sub_23F4516FC(v20);
+    selectedAnnotations = [pageModelController selectedAnnotations];
+    traitCollection = [(AKToolbarViewController_iOS *)self traitCollection];
+    v21 = sub_23F4516FC(traitCollection);
 
     if (v21)
     {
-      if ([v19 count] == 1)
+      if ([selectedAnnotations count] == 1)
       {
-        v22 = [v19 anyObject];
+        anyObject = [selectedAnnotations anyObject];
         objc_opt_class();
         v23 = objc_opt_isKindOfClass() ^ 1;
       }
@@ -469,17 +469,17 @@ LABEL_15:
         v23 = 1;
       }
 
-      v25 = [(AKToolbarViewController_iOS *)self lineStyleButton];
-      [v25 setEnabled:v23 & 1];
+      lineStyleButton = [(AKToolbarViewController_iOS *)self lineStyleButton];
+      [lineStyleButton setEnabled:v23 & 1];
 
-      v26 = [(AKToolbarViewController_iOS *)self textStyleButton];
-      [v26 setEnabled:v23 & 1];
+      textStyleButton = [(AKToolbarViewController_iOS *)self textStyleButton];
+      [textStyleButton setEnabled:v23 & 1];
 
-      v27 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
-      v28 = [v27 viewIfLoaded];
-      v29 = [v28 superview];
+      attributeToolbarViewController = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
+      viewIfLoaded = [attributeToolbarViewController viewIfLoaded];
+      superview = [viewIfLoaded superview];
 
-      if (v29)
+      if (superview)
       {
         [(AKToolbarViewController_iOS *)self dismissAttributeToolbarImmediately];
       }
@@ -487,10 +487,10 @@ LABEL_15:
 
     else
     {
-      v24 = [v16 toolMode];
-      if ([v19 count] || v24 <= 5 && ((1 << v24) & 0x36) != 0)
+      toolMode = [toolController toolMode];
+      if ([selectedAnnotations count] || toolMode <= 5 && ((1 << toolMode) & 0x36) != 0)
       {
-        [(AKToolbarViewController_iOS *)self showAttributeToolbarForSelectedAnnotations:v19 andToolMode:v24];
+        [(AKToolbarViewController_iOS *)self showAttributeToolbarForSelectedAnnotations:selectedAnnotations andToolMode:toolMode];
       }
 
       else
@@ -505,123 +505,123 @@ LABEL_15:
 
 - (void)syncUIToSelectedColor
 {
-  v3 = [(AKToolbarViewController *)self controller];
-  v4 = [v3 attributeController];
-  v5 = [v3 currentPageController];
-  v6 = [v5 pageModelController];
+  controller = [(AKToolbarViewController *)self controller];
+  attributeController = [controller attributeController];
+  currentPageController = [controller currentPageController];
+  pageModelController = [currentPageController pageModelController];
 
-  v7 = [v6 selectedAnnotations];
-  if ([v7 count] == 1)
+  selectedAnnotations = [pageModelController selectedAnnotations];
+  if ([selectedAnnotations count] == 1)
   {
-    v8 = [v7 anyObject];
+    anyObject = [selectedAnnotations anyObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v10 = [v7 anyObject];
-      v11 = [v10 typingAttributes];
-      v18 = [v11 objectForKey:*MEMORY[0x277D740C0]];
+      anyObject2 = [selectedAnnotations anyObject];
+      typingAttributes = [anyObject2 typingAttributes];
+      strokeColor = [typingAttributes objectForKey:*MEMORY[0x277D740C0]];
 
       goto LABEL_7;
     }
   }
 
-  if ([v7 count] == 1)
+  if ([selectedAnnotations count] == 1)
   {
-    v12 = [v7 anyObject];
+    anyObject3 = [selectedAnnotations anyObject];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v10 = [v7 anyObject];
-      v18 = [v10 performSelector:sel_strokeColor];
+      anyObject2 = [selectedAnnotations anyObject];
+      strokeColor = [anyObject2 performSelector:sel_strokeColor];
 LABEL_7:
 
-      if (v18)
+      if (strokeColor)
       {
         goto LABEL_9;
       }
     }
   }
 
-  v18 = [v4 strokeColor];
+  strokeColor = [attributeController strokeColor];
 LABEL_9:
-  v14 = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
-  [v14 setColor:v18];
+  colorPickerPopoverViewController = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
+  [colorPickerPopoverViewController setColor:strokeColor];
 
-  v15 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
-  [v15 setColor:v18];
+  attributeToolbarViewController = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
+  [attributeToolbarViewController setColor:strokeColor];
 
-  v16 = [(AKToolbarViewController_iOS *)self strokeColorButton];
-  v17 = [v16 customView];
+  strokeColorButton = [(AKToolbarViewController_iOS *)self strokeColorButton];
+  customView = [strokeColorButton customView];
 
-  [v17 setColor:v18];
+  [customView setColor:strokeColor];
 }
 
-- (id)_barButtonForToolbarType:(unint64_t)a3
+- (id)_barButtonForToolbarType:(unint64_t)type
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v5 = [(AKToolbarViewController *)self controller];
-  v6 = 0;
-  if (a3 <= 5)
+  controller = [(AKToolbarViewController *)self controller];
+  _doodleModeToolbarImage = 0;
+  if (type <= 5)
   {
-    if (a3 > 2)
+    if (type > 2)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
-        v6 = [objc_opt_class() imageForToolbarButtonItemOfType:3];
-        v8 = [(AKToolbarViewController_iOS *)self _createNewToggleToolbarButtonWithImage:v6 tag:764022 target:self selector:sel__showSignaturesPopover_ autoUpdatesColor:0];
+        _doodleModeToolbarImage = [objc_opt_class() imageForToolbarButtonItemOfType:3];
+        v8 = [(AKToolbarViewController_iOS *)self _createNewToggleToolbarButtonWithImage:_doodleModeToolbarImage tag:764022 target:self selector:sel__showSignaturesPopover_ autoUpdatesColor:0];
         v7 = v8;
         v9 = 764019;
         goto LABEL_25;
       }
 
-      if (a3 == 4)
+      if (type == 4)
       {
-        v6 = [objc_opt_class() imageForToolbarButtonItemOfType:4];
-        v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v6 style:0 target:v5 action:sel_performActionForSender_];
+        _doodleModeToolbarImage = [objc_opt_class() imageForToolbarButtonItemOfType:4];
+        v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:_doodleModeToolbarImage style:0 target:controller action:sel_performActionForSender_];
         v7 = v8;
         v9 = 764014;
         goto LABEL_25;
       }
 
-      v6 = [objc_opt_class() imageForToolbarButtonItemOfType:5];
+      _doodleModeToolbarImage = [objc_opt_class() imageForToolbarButtonItemOfType:5];
       v10 = sel__showTextStylePopover_;
       goto LABEL_28;
     }
 
-    if (a3)
+    if (type)
     {
       v7 = 0;
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_31;
       }
 
-      v6 = [objc_opt_class() imageForToolbarButtonItemOfType:1];
+      _doodleModeToolbarImage = [objc_opt_class() imageForToolbarButtonItemOfType:1];
       v11 = 764016;
     }
 
     else
     {
-      v6 = [(AKToolbarViewController_iOS *)self _doodleModeToolbarImage];
+      _doodleModeToolbarImage = [(AKToolbarViewController_iOS *)self _doodleModeToolbarImage];
       v11 = 764015;
     }
 
 LABEL_19:
-    v12 = [(AKToolbarViewController_iOS *)self _createNewToggleToolbarButtonWithImage:v6 tag:v11 target:v5 selector:sel_performActionForSender_ autoUpdatesColor:1];
+    v12 = [(AKToolbarViewController_iOS *)self _createNewToggleToolbarButtonWithImage:_doodleModeToolbarImage tag:v11 target:controller selector:sel_performActionForSender_ autoUpdatesColor:1];
     goto LABEL_29;
   }
 
-  if (a3 <= 9)
+  if (type <= 9)
   {
-    if (a3 != 6)
+    if (type != 6)
     {
-      if (a3 == 7)
+      if (type == 7)
       {
         v7 = [(AKToolbarViewController_iOS *)self _createNewColorPickerToolbarButtonWithTarget:self selector:sel__showColorPickerPopover_];
-        v6 = 0;
+        _doodleModeToolbarImage = 0;
         if (!v7)
         {
           goto LABEL_31;
@@ -631,13 +631,13 @@ LABEL_19:
       }
 
       v7 = 0;
-      if (a3 != 9)
+      if (type != 9)
       {
         goto LABEL_31;
       }
 
-      v6 = [AKAnnotationImageHelper imageForShapeTag:764020];
-      v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v6 style:0 target:v5 action:sel_performActionForSender_];
+      _doodleModeToolbarImage = [AKAnnotationImageHelper imageForShapeTag:764020];
+      v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:_doodleModeToolbarImage style:0 target:controller action:sel_performActionForSender_];
       v7 = v8;
       v9 = 764020;
 LABEL_25:
@@ -648,16 +648,16 @@ LABEL_25:
       }
 
 LABEL_30:
-      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
       objc_setAssociatedObject(v7, sel_akToolbarButtonItemType, v13, 0x303);
 
       goto LABEL_31;
     }
 
-    v6 = [objc_opt_class() imageForToolbarButtonItemOfType:6];
+    _doodleModeToolbarImage = [objc_opt_class() imageForToolbarButtonItemOfType:6];
     v10 = sel__showLineStylePopover_;
 LABEL_28:
-    v12 = [(AKToolbarViewController_iOS *)self _createNewCustomViewToolbarButtonWithImage:v6 target:self selector:v10];
+    v12 = [(AKToolbarViewController_iOS *)self _createNewCustomViewToolbarButtonWithImage:_doodleModeToolbarImage target:self selector:v10];
 LABEL_29:
     v7 = v12;
     if (!v12)
@@ -668,28 +668,28 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (a3 != 10)
+  if (type != 10)
   {
-    if (a3 == 11)
+    if (type == 11)
     {
-      v6 = [objc_opt_class() imageForToolbarButtonItemOfType:11];
-      v12 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v6 style:0 target:v5 action:sel_redo_];
+      _doodleModeToolbarImage = [objc_opt_class() imageForToolbarButtonItemOfType:11];
+      v12 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:_doodleModeToolbarImage style:0 target:controller action:sel_redo_];
       goto LABEL_29;
     }
 
     v7 = 0;
-    if (a3 != 13)
+    if (type != 13)
     {
       goto LABEL_31;
     }
 
-    v6 = [objc_opt_class() imageForToolbarButtonItemOfType:13];
+    _doodleModeToolbarImage = [objc_opt_class() imageForToolbarButtonItemOfType:13];
     v11 = 764017;
     goto LABEL_19;
   }
 
-  v6 = [objc_opt_class() imageForToolbarButtonItemOfType:10];
-  v7 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v6 style:0 target:v5 action:sel_undo_];
+  _doodleModeToolbarImage = [objc_opt_class() imageForToolbarButtonItemOfType:10];
+  v7 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:_doodleModeToolbarImage style:0 target:controller action:sel_undo_];
   v15 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel__undoLongPressAction_];
   v17[0] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
@@ -705,37 +705,37 @@ LABEL_31:
   return v7;
 }
 
-- (void)_deleteSelectedItems:(id)a3
+- (void)_deleteSelectedItems:(id)items
 {
-  v9 = [(AKToolbarViewController *)self controller];
-  v3 = [v9 currentPageController];
-  v4 = [v3 pageModelController];
-  v5 = [v4 selectedAnnotations];
-  v6 = [v5 allObjects];
+  controller = [(AKToolbarViewController *)self controller];
+  currentPageController = [controller currentPageController];
+  pageModelController = [currentPageController pageModelController];
+  selectedAnnotations = [pageModelController selectedAnnotations];
+  allObjects = [selectedAnnotations allObjects];
 
-  if ([v6 count])
+  if ([allObjects count])
   {
-    v7 = [v3 pageModelController];
-    v8 = [v7 mutableArrayValueForKey:@"annotations"];
+    pageModelController2 = [currentPageController pageModelController];
+    v8 = [pageModelController2 mutableArrayValueForKey:@"annotations"];
 
-    [v8 removeObjectsInArray:v6];
+    [v8 removeObjectsInArray:allObjects];
   }
 }
 
-- (id)_toolbarButtonItemOfType:(unint64_t)a3
+- (id)_toolbarButtonItemOfType:(unint64_t)type
 {
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    if (a3 > 2)
+    if (type > 2)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
-        v3 = [(AKToolbarViewController_iOS *)self signatureButton];
+        signatureButton = [(AKToolbarViewController_iOS *)self signatureButton];
       }
 
       else
       {
-        if (a3 == 4)
+        if (type == 4)
         {
           [(AKToolbarViewController_iOS *)self textButton];
         }
@@ -744,81 +744,81 @@ LABEL_31:
         {
           [(AKToolbarViewController_iOS *)self textStyleButton];
         }
-        v3 = ;
+        signatureButton = ;
       }
 
       goto LABEL_27;
     }
 
-    if (!a3)
+    if (!type)
     {
-      v3 = [(AKToolbarViewController_iOS *)self sketchButton];
+      signatureButton = [(AKToolbarViewController_iOS *)self sketchButton];
       goto LABEL_27;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
-      v3 = [(AKToolbarViewController_iOS *)self richSketchButton];
+      signatureButton = [(AKToolbarViewController_iOS *)self richSketchButton];
       goto LABEL_27;
     }
   }
 
-  else if (a3 > 9)
+  else if (type > 9)
   {
-    switch(a3)
+    switch(type)
     {
       case 0xAuLL:
-        v3 = [(AKToolbarViewController_iOS *)self undoButton];
+        signatureButton = [(AKToolbarViewController_iOS *)self undoButton];
         goto LABEL_27;
       case 0xBuLL:
-        v3 = [(AKToolbarViewController_iOS *)self redoButton];
+        signatureButton = [(AKToolbarViewController_iOS *)self redoButton];
         goto LABEL_27;
       case 0xDuLL:
-        v3 = [(AKToolbarViewController_iOS *)self inkButton];
+        signatureButton = [(AKToolbarViewController_iOS *)self inkButton];
         goto LABEL_27;
     }
   }
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 6uLL:
-        v3 = [(AKToolbarViewController_iOS *)self lineStyleButton];
+        signatureButton = [(AKToolbarViewController_iOS *)self lineStyleButton];
         goto LABEL_27;
       case 7uLL:
-        v3 = [(AKToolbarViewController_iOS *)self strokeColorButton];
+        signatureButton = [(AKToolbarViewController_iOS *)self strokeColorButton];
         goto LABEL_27;
       case 9uLL:
-        v3 = [(AKToolbarViewController_iOS *)self loupeButton];
+        signatureButton = [(AKToolbarViewController_iOS *)self loupeButton];
         goto LABEL_27;
     }
   }
 
-  NSLog(&cfstr_Toolbarbuttoni.isa, a2, a3);
-  v3 = 0;
+  NSLog(&cfstr_Toolbarbuttoni.isa, a2, type);
+  signatureButton = 0;
 LABEL_27:
 
-  return v3;
+  return signatureButton;
 }
 
-- (id)_createNewToggleToolbarButtonWithImage:(id)a3 tag:(int64_t)a4 target:(id)a5 selector:(SEL)a6 autoUpdatesColor:(BOOL)a7
+- (id)_createNewToggleToolbarButtonWithImage:(id)image tag:(int64_t)tag target:(id)target selector:(SEL)selector autoUpdatesColor:(BOOL)color
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a5;
+  colorCopy = color;
+  imageCopy = image;
+  targetCopy = target;
   v14 = [AKToggleButton alloc];
-  v15 = [(AKToggleButton *)v14 initWithFrame:v12 templateImage:v7 autoUpdatesColor:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-  v16 = [(AKToolbarViewController_iOS *)self traitCollection];
-  v17 = sub_23F4516FC(v16);
+  v15 = [(AKToggleButton *)v14 initWithFrame:imageCopy templateImage:colorCopy autoUpdatesColor:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  traitCollection = [(AKToolbarViewController_iOS *)self traitCollection];
+  v17 = sub_23F4516FC(traitCollection);
 
   [(AKToggleButton *)v15 setShouldTintNormalImage:1];
   if (v17)
   {
     [(AKToggleButton *)v15 setShowsBackgroundColor:1];
-    v18 = [(AKToolbarViewController_iOS *)self view];
-    v19 = [v18 tintColor];
-    [(AKToggleButton *)v15 setTintColor:v19];
+    view = [(AKToolbarViewController_iOS *)self view];
+    tintColor = [view tintColor];
+    [(AKToggleButton *)v15 setTintColor:tintColor];
 
     [MEMORY[0x277D75348] whiteColor];
   }
@@ -826,8 +826,8 @@ LABEL_27:
   else
   {
     [(AKToggleButton *)v15 setShowsBackgroundColor:0];
-    v20 = [MEMORY[0x277D75348] whiteColor];
-    [(AKToggleButton *)v15 setTintColor:v20];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(AKToggleButton *)v15 setTintColor:whiteColor];
 
     [MEMORY[0x277D75348] systemBlueColor];
   }
@@ -835,40 +835,40 @@ LABEL_27:
   [(AKToggleButton *)v15 setSelectedColor:v21];
 
   [(AKToggleButton *)v15 setFrame:0.0, 0.0, 29.0, 29.0];
-  v22 = [(AKToggleButton *)v15 layer];
-  [v22 setCornerRadius:3.0];
+  layer = [(AKToggleButton *)v15 layer];
+  [layer setCornerRadius:3.0];
 
-  [(AKToggleButton *)v15 setTag:a4];
-  [(AKToggleButton *)v15 setImage:v12 forState:0];
-  [(AKToggleButton *)v15 addTarget:v13 action:a6 forControlEvents:64];
+  [(AKToggleButton *)v15 setTag:tag];
+  [(AKToggleButton *)v15 setImage:imageCopy forState:0];
+  [(AKToggleButton *)v15 addTarget:targetCopy action:selector forControlEvents:64];
 
   v23 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v15];
 
   return v23;
 }
 
-- (id)_createNewColorPickerToolbarButtonWithTarget:(id)a3 selector:(SEL)a4
+- (id)_createNewColorPickerToolbarButtonWithTarget:(id)target selector:(SEL)selector
 {
-  v5 = a3;
+  targetCopy = target;
   v6 = [AKColorPaletteButton buttonWithType:0];
   [v6 setFrame:{0.0, 0.0, 19.0, 19.0}];
-  [v6 addTarget:v5 action:a4 forControlEvents:64];
+  [v6 addTarget:targetCopy action:selector forControlEvents:64];
 
   v7 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v6];
 
   return v7;
 }
 
-- (id)_createNewCustomViewToolbarButtonWithImage:(id)a3 target:(id)a4 selector:(SEL)a5
+- (id)_createNewCustomViewToolbarButtonWithImage:(id)image target:(id)target selector:(SEL)selector
 {
   v7 = MEMORY[0x277D75220];
-  v8 = a4;
-  v9 = a3;
+  targetCopy = target;
+  imageCopy = image;
   v10 = [v7 buttonWithType:1];
   [v10 setFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  [v10 addTarget:v8 action:a5 forControlEvents:64];
+  [v10 addTarget:targetCopy action:selector forControlEvents:64];
 
-  [v10 setImage:v9 forState:0];
+  [v10 setImage:imageCopy forState:0];
   [v10 sizeToFit];
   v11 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v10];
 
@@ -877,18 +877,18 @@ LABEL_27:
 
 - (id)_doodleModeToolbarImage
 {
-  v2 = [(AKToolbarViewController *)self controller];
-  v3 = [v2 shouldDrawVariableStrokeDoodles];
+  controller = [(AKToolbarViewController *)self controller];
+  shouldDrawVariableStrokeDoodles = [controller shouldDrawVariableStrokeDoodles];
 
-  v4 = [objc_opt_class() imageForToolbarButtonItemOfType:v3];
+  v4 = [objc_opt_class() imageForToolbarButtonItemOfType:shouldDrawVariableStrokeDoodles];
 
   return v4;
 }
 
 - (double)heightIncludingAdditionalVisibleBars
 {
-  v3 = [(AKToolbarViewController_iOS *)self view];
-  [v3 frame];
+  view = [(AKToolbarViewController_iOS *)self view];
+  [view frame];
   Height = CGRectGetHeight(v8);
   [(AKToolbarViewController_iOS *)self visibleHeightOfAttributeBar];
   v6 = Height + v5;
@@ -898,28 +898,28 @@ LABEL_27:
 
 - (double)visibleHeightOfAttributeBar
 {
-  v3 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
+  attributeToolbarViewController = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
   v4 = 0.0;
-  if (v3)
+  if (attributeToolbarViewController)
   {
-    v5 = v3;
-    v6 = [(AKToolbarViewController_iOS *)self floatingAttributeToolbarContainer];
+    v5 = attributeToolbarViewController;
+    floatingAttributeToolbarContainer = [(AKToolbarViewController_iOS *)self floatingAttributeToolbarContainer];
 
-    if (v6)
+    if (floatingAttributeToolbarContainer)
     {
-      v7 = [(AKToolbarViewController_iOS *)self view];
-      v8 = [(AKToolbarViewController_iOS *)self view];
-      v9 = [v8 superview];
+      view = [(AKToolbarViewController_iOS *)self view];
+      view2 = [(AKToolbarViewController_iOS *)self view];
+      superview = [view2 superview];
 
-      v10 = [(AKToolbarViewController_iOS *)self floatingAttributeToolbarContainer];
-      [v7 frame];
-      [v9 convertRect:0 toView:?];
+      floatingAttributeToolbarContainer2 = [(AKToolbarViewController_iOS *)self floatingAttributeToolbarContainer];
+      [view frame];
+      [superview convertRect:0 toView:?];
       v12 = v11;
       v14 = v13;
       v16 = v15;
       v18 = v17;
-      [v10 frame];
-      [v9 convertRect:0 toView:?];
+      [floatingAttributeToolbarContainer2 frame];
+      [superview convertRect:0 toView:?];
       v20 = v19;
       v22 = v21;
       v24 = v23;
@@ -952,14 +952,14 @@ LABEL_27:
 - (int64_t)_attributeTagForCurrentSelectionState
 {
   v2 = 765101;
-  v3 = [(AKToolbarViewController *)self controller];
-  v4 = [v3 currentPageController];
-  v5 = [v4 pageModelController];
+  controller = [(AKToolbarViewController *)self controller];
+  currentPageController = [controller currentPageController];
+  pageModelController = [currentPageController pageModelController];
 
-  v6 = [v5 selectedAnnotations];
-  if ([v6 count] == 1)
+  selectedAnnotations = [pageModelController selectedAnnotations];
+  if ([selectedAnnotations count] == 1)
   {
-    v7 = [v6 anyObject];
+    anyObject = [selectedAnnotations anyObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -972,65 +972,65 @@ LABEL_27:
   return v2;
 }
 
-- (void)setBarTintColor:(id)a3
+- (void)setBarTintColor:(id)color
 {
-  objc_storeStrong(&self->_barTintColor, a3);
-  v5 = a3;
-  v6 = [(AKToolbarViewController_iOS *)self view];
-  [v6 setBarTintColor:v5];
+  objc_storeStrong(&self->_barTintColor, color);
+  colorCopy = color;
+  view = [(AKToolbarViewController_iOS *)self view];
+  [view setBarTintColor:colorCopy];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  objc_storeStrong(&self->_tintColor, a3);
-  v5 = a3;
-  v6 = [(AKToolbarViewController_iOS *)self view];
-  [v6 setTintColor:v5];
+  objc_storeStrong(&self->_tintColor, color);
+  colorCopy = color;
+  view = [(AKToolbarViewController_iOS *)self view];
+  [view setTintColor:colorCopy];
 }
 
 - (BOOL)isPresentingPopover
 {
-  v3 = [(AKToolbarViewController_iOS *)self signaturesAlertController];
+  signaturesAlertController = [(AKToolbarViewController_iOS *)self signaturesAlertController];
 
-  if (v3)
+  if (signaturesAlertController)
   {
     return 1;
   }
 
-  v4 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
+  signaturesSheetViewController = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
 
-  if (v4)
+  if (signaturesSheetViewController)
   {
     return 1;
   }
 
-  v5 = [(AKToolbarViewController_iOS *)self lineStylesViewController];
+  lineStylesViewController = [(AKToolbarViewController_iOS *)self lineStylesViewController];
 
-  if (v5)
+  if (lineStylesViewController)
   {
     return 1;
   }
 
-  v6 = [(AKToolbarViewController_iOS *)self textAttributesViewController];
+  textAttributesViewController = [(AKToolbarViewController_iOS *)self textAttributesViewController];
 
-  if (v6)
+  if (textAttributesViewController)
   {
     return 1;
   }
 
-  v7 = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
+  colorPickerPopoverViewController = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
 
-  if (v7)
+  if (colorPickerPopoverViewController)
   {
     return 1;
   }
 
-  v9 = [(AKToolbarViewController_iOS *)self undoAlertController];
+  undoAlertController = [(AKToolbarViewController_iOS *)self undoAlertController];
 
-  return v9 != 0;
+  return undoAlertController != 0;
 }
 
-- (void)_undoManagerNotification:(id)a3
+- (void)_undoManagerNotification:(id)notification
 {
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
@@ -1049,74 +1049,74 @@ LABEL_27:
   }
 }
 
-- (void)_undoLongPressAction:(id)a3
+- (void)_undoLongPressAction:(id)action
 {
-  v6 = a3;
-  v4 = [(AKToolbarViewController_iOS *)self presentedViewController];
+  actionCopy = action;
+  presentedViewController = [(AKToolbarViewController_iOS *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    [(AKToolbarViewController_iOS *)self _showUndoAlert:v6];
+    [(AKToolbarViewController_iOS *)self _showUndoAlert:actionCopy];
   }
 }
 
-- (void)_undoButtonAction:(id)a3
+- (void)_undoButtonAction:(id)action
 {
-  v3 = [(AKToolbarViewController *)self controller];
-  [v3 undo:0];
+  controller = [(AKToolbarViewController *)self controller];
+  [controller undo:0];
 }
 
-- (void)_redoButtonAction:(id)a3
+- (void)_redoButtonAction:(id)action
 {
-  v3 = [(AKToolbarViewController *)self controller];
-  [v3 redo:0];
+  controller = [(AKToolbarViewController *)self controller];
+  [controller redo:0];
 }
 
-- (void)_undoAllButtonAction:(id)a3
+- (void)_undoAllButtonAction:(id)action
 {
-  v3 = [(AKToolbarViewController *)self controller];
-  if ([v3 validateUndo:0])
+  controller = [(AKToolbarViewController *)self controller];
+  if ([controller validateUndo:0])
   {
     do
     {
-      [v3 undo:0];
+      [controller undo:0];
     }
 
-    while (([v3 validateUndo:0] & 1) != 0);
+    while (([controller validateUndo:0] & 1) != 0);
   }
 }
 
-- (void)_showUndoAlert:(id)a3
+- (void)_showUndoAlert:(id)alert
 {
-  v6 = [(AKToolbarViewController_iOS *)self _buildUndoAlertController];
-  v4 = [(AKToolbarViewController_iOS *)self undoButton];
-  v5 = [v6 popoverPresentationController];
-  [v5 setBarButtonItem:v4];
+  _buildUndoAlertController = [(AKToolbarViewController_iOS *)self _buildUndoAlertController];
+  undoButton = [(AKToolbarViewController_iOS *)self undoButton];
+  popoverPresentationController = [_buildUndoAlertController popoverPresentationController];
+  [popoverPresentationController setBarButtonItem:undoButton];
 
-  [v6 setModalPresentationStyle:7];
-  [(AKToolbarViewController_iOS *)self presentViewController:v6 animated:1 completion:0];
+  [_buildUndoAlertController setModalPresentationStyle:7];
+  [(AKToolbarViewController_iOS *)self presentViewController:_buildUndoAlertController animated:1 completion:0];
 }
 
 - (id)_buildUndoAlertController
 {
-  v3 = [(AKToolbarViewController *)self controller];
+  controller = [(AKToolbarViewController *)self controller];
   objc_initWeak(&location, self);
-  v4 = [v3 validateUndo:0];
+  v4 = [controller validateUndo:0];
   v5 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:0];
   if (v4)
   {
     v6 = +[AKController akBundle];
     v7 = [v6 localizedStringForKey:@"Undo" value:&stru_28519E870 table:@"AKToolbarViewController_iOS"];
 
-    v8 = [v3 undoController];
-    v9 = [v8 undoManager];
-    v10 = [v9 undoActionName];
+    undoController = [controller undoController];
+    undoManager = [undoController undoManager];
+    undoActionName = [undoManager undoActionName];
 
-    if ([v10 length])
+    if ([undoActionName length])
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v7, v10];
+      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v7, undoActionName];
 
       v7 = v11;
     }
@@ -1158,49 +1158,49 @@ LABEL_27:
 
 - (BOOL)_validateUndoButton
 {
-  v2 = [(AKToolbarViewController *)self controller];
-  v3 = [v2 validateUndo:0];
+  controller = [(AKToolbarViewController *)self controller];
+  v3 = [controller validateUndo:0];
 
   return v3;
 }
 
 - (BOOL)isPresentingPopovers
 {
-  v2 = [(AKToolbarViewController_iOS *)self presentedViewController];
-  v3 = v2 != 0;
+  presentedViewController = [(AKToolbarViewController_iOS *)self presentedViewController];
+  v3 = presentedViewController != 0;
 
   return v3;
 }
 
-- (void)_showSignaturesPopover:(id)a3
+- (void)_showSignaturesPopover:(id)popover
 {
-  v4 = [(AKToolbarViewController *)self controller];
-  v5 = [v4 signatureModelController];
-  v6 = [v4 toolController];
-  v7 = [v6 toolMode];
+  controller = [(AKToolbarViewController *)self controller];
+  signatureModelController = [controller signatureModelController];
+  toolController = [controller toolController];
+  toolMode = [toolController toolMode];
 
-  if (v7 == 5)
+  if (toolMode == 5)
   {
     v8 = objc_opt_new();
     [v8 setTag:764022];
-    [v4 performActionForSender:v8];
+    [controller performActionForSender:v8];
   }
 
-  v9 = [v5 signatures];
-  v10 = [v9 count];
+  signatures = [signatureModelController signatures];
+  v10 = [signatures count];
 
   if (v10)
   {
-    v11 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
+    signaturesSheetViewController = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
 
-    if (!v11)
+    if (!signaturesSheetViewController)
     {
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = sub_23F437DCC;
       v12[3] = &unk_278C7B810;
-      v13 = v4;
-      v14 = self;
+      v13 = controller;
+      selfCopy = self;
       [(AKToolbarViewController_iOS *)self _dismissCurrentlyPresentedPopoverAnimated:0 withCompletion:v12];
     }
   }
@@ -1216,11 +1216,11 @@ LABEL_27:
   }
 }
 
-- (void)_showLineStylePopover:(id)a3
+- (void)_showLineStylePopover:(id)popover
 {
-  v4 = [(AKToolbarViewController_iOS *)self lineStylesViewController];
+  lineStylesViewController = [(AKToolbarViewController_iOS *)self lineStylesViewController];
 
-  if (!v4)
+  if (!lineStylesViewController)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
@@ -1231,11 +1231,11 @@ LABEL_27:
   }
 }
 
-- (void)_showTextStylePopover:(id)a3
+- (void)_showTextStylePopover:(id)popover
 {
-  v4 = [(AKToolbarViewController_iOS *)self textAttributesViewController];
+  textAttributesViewController = [(AKToolbarViewController_iOS *)self textAttributesViewController];
 
-  if (!v4)
+  if (!textAttributesViewController)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
@@ -1246,11 +1246,11 @@ LABEL_27:
   }
 }
 
-- (void)_showColorPickerPopover:(id)a3
+- (void)_showColorPickerPopover:(id)popover
 {
-  v4 = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
+  colorPickerPopoverViewController = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
 
-  if (!v4)
+  if (!colorPickerPopoverViewController)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
@@ -1261,81 +1261,81 @@ LABEL_27:
   }
 }
 
-- (void)_dismissCurrentlyPresentedPopoverAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)_dismissCurrentlyPresentedPopoverAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v4 = a3;
-  v30 = a4;
-  v6 = [(AKToolbarViewController_iOS *)self presentedViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  presentedViewController = [(AKToolbarViewController_iOS *)self presentedViewController];
 
-  if (v6)
+  if (presentedViewController)
   {
-    v7 = [(AKToolbarViewController_iOS *)self presentedViewController];
-    v8 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
+    presentedViewController2 = [(AKToolbarViewController_iOS *)self presentedViewController];
+    signaturesSheetViewController = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
 
-    if (v7 == v8)
+    if (presentedViewController2 == signaturesSheetViewController)
     {
-      v21 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
-      v22 = [v21 popoverPresentationController];
-      [v22 setDelegate:0];
+      signaturesSheetViewController2 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
+      popoverPresentationController = [signaturesSheetViewController2 popoverPresentationController];
+      [popoverPresentationController setDelegate:0];
 
       [(AKToolbarViewController_iOS *)self setSignaturesSheetViewController:0];
     }
 
     else
     {
-      v9 = [(AKToolbarViewController_iOS *)self presentedViewController];
-      v10 = [(AKToolbarViewController_iOS *)self lineStylesViewController];
+      presentedViewController3 = [(AKToolbarViewController_iOS *)self presentedViewController];
+      lineStylesViewController = [(AKToolbarViewController_iOS *)self lineStylesViewController];
 
-      if (v9 == v10)
+      if (presentedViewController3 == lineStylesViewController)
       {
-        v23 = [(AKToolbarViewController_iOS *)self lineStylesViewController];
-        v24 = [v23 popoverPresentationController];
-        [v24 setDelegate:0];
+        lineStylesViewController2 = [(AKToolbarViewController_iOS *)self lineStylesViewController];
+        popoverPresentationController2 = [lineStylesViewController2 popoverPresentationController];
+        [popoverPresentationController2 setDelegate:0];
 
         [(AKToolbarViewController_iOS *)self setLineStylesViewController:0];
       }
 
       else
       {
-        v11 = [(AKToolbarViewController_iOS *)self presentedViewController];
-        v12 = [(AKToolbarViewController_iOS *)self undoAlertController];
+        presentedViewController4 = [(AKToolbarViewController_iOS *)self presentedViewController];
+        undoAlertController = [(AKToolbarViewController_iOS *)self undoAlertController];
 
-        if (v11 == v12)
+        if (presentedViewController4 == undoAlertController)
         {
-          v25 = [(AKToolbarViewController_iOS *)self undoAlertController];
-          v26 = [v25 popoverPresentationController];
-          [v26 setDelegate:0];
+          undoAlertController2 = [(AKToolbarViewController_iOS *)self undoAlertController];
+          popoverPresentationController3 = [undoAlertController2 popoverPresentationController];
+          [popoverPresentationController3 setDelegate:0];
 
           [(AKToolbarViewController_iOS *)self setUndoAlertController:0];
         }
 
         else
         {
-          v13 = [(AKToolbarViewController_iOS *)self presentedViewController];
-          v14 = [(AKToolbarViewController_iOS *)self textAttributesViewController];
+          presentedViewController5 = [(AKToolbarViewController_iOS *)self presentedViewController];
+          textAttributesViewController = [(AKToolbarViewController_iOS *)self textAttributesViewController];
 
-          if (v13 == v14)
+          if (presentedViewController5 == textAttributesViewController)
           {
-            v27 = [(AKToolbarViewController_iOS *)self textAttributesViewController];
-            v28 = [v27 popoverPresentationController];
-            [v28 setDelegate:0];
+            textAttributesViewController2 = [(AKToolbarViewController_iOS *)self textAttributesViewController];
+            popoverPresentationController4 = [textAttributesViewController2 popoverPresentationController];
+            [popoverPresentationController4 setDelegate:0];
 
             [(AKToolbarViewController_iOS *)self setTextAttributesViewController:0];
           }
 
           else
           {
-            v15 = [(AKToolbarViewController_iOS *)self presentedViewController];
-            v16 = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
+            presentedViewController6 = [(AKToolbarViewController_iOS *)self presentedViewController];
+            colorPickerPopoverViewController = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
 
-            if (v15 == v16)
+            if (presentedViewController6 == colorPickerPopoverViewController)
             {
-              v17 = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
-              [v17 removeObserver:self forKeyPath:@"color"];
+              colorPickerPopoverViewController2 = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
+              [colorPickerPopoverViewController2 removeObserver:self forKeyPath:@"color"];
 
-              v18 = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
-              v19 = [v18 popoverPresentationController];
-              [v19 setDelegate:0];
+              colorPickerPopoverViewController3 = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
+              popoverPresentationController5 = [colorPickerPopoverViewController3 popoverPresentationController];
+              [popoverPresentationController5 setDelegate:0];
 
               [(AKToolbarViewController_iOS *)self setColorPickerPopoverViewController:0];
             }
@@ -1344,112 +1344,112 @@ LABEL_27:
       }
     }
 
-    v29 = [(AKToolbarViewController_iOS *)self presentedViewController];
-    [v29 dismissViewControllerAnimated:v4 completion:v30];
+    presentedViewController7 = [(AKToolbarViewController_iOS *)self presentedViewController];
+    [presentedViewController7 dismissViewControllerAnimated:animatedCopy completion:completionCopy];
 
     [MEMORY[0x277D758A8] _setAlwaysAllowPopoverPresentations:0];
   }
 
   else
   {
-    v20 = v30;
-    if (!v30)
+    v20 = completionCopy;
+    if (!completionCopy)
     {
       goto LABEL_16;
     }
 
-    (*(v30 + 2))(v30);
+    (*(completionCopy + 2))(completionCopy);
   }
 
-  v20 = v30;
+  v20 = completionCopy;
 LABEL_16:
 }
 
-- (void)_setupPassthroughViewsForViewController:(id)a3
+- (void)_setupPassthroughViewsForViewController:(id)controller
 {
   v23[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AKLineStylesViewController *)v4 popoverPresentationController];
-  v6 = [v5 passthroughViews];
-  v7 = [v6 mutableCopy];
+  controllerCopy = controller;
+  popoverPresentationController = [(AKLineStylesViewController *)controllerCopy popoverPresentationController];
+  passthroughViews = [popoverPresentationController passthroughViews];
+  array = [passthroughViews mutableCopy];
 
-  v22 = v5;
-  [v5 _setIgnoreBarButtonItemSiblings:1];
-  if (!v7)
+  v22 = popoverPresentationController;
+  [popoverPresentationController _setIgnoreBarButtonItemSiblings:1];
+  if (!array)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  v8 = [(AKToolbarViewController_iOS *)self lineStyleButton];
-  v9 = [v8 customView];
-  v23[0] = v9;
-  v10 = [(AKToolbarViewController_iOS *)self strokeColorButton];
-  v11 = [v10 customView];
-  v23[1] = v11;
-  v12 = [(AKToolbarViewController_iOS *)self textStyleButton];
-  v13 = [v12 customView];
-  v23[2] = v13;
+  lineStyleButton = [(AKToolbarViewController_iOS *)self lineStyleButton];
+  customView = [lineStyleButton customView];
+  v23[0] = customView;
+  strokeColorButton = [(AKToolbarViewController_iOS *)self strokeColorButton];
+  customView2 = [strokeColorButton customView];
+  v23[1] = customView2;
+  textStyleButton = [(AKToolbarViewController_iOS *)self textStyleButton];
+  customView3 = [textStyleButton customView];
+  v23[2] = customView3;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:3];
-  [v7 addObjectsFromArray:v14];
+  [array addObjectsFromArray:v14];
 
-  if (self->_colorPickerPopoverViewController == v4)
+  if (self->_colorPickerPopoverViewController == controllerCopy)
   {
-    v15 = [(AKToolbarViewController_iOS *)self strokeColorButton];
+    strokeColorButton2 = [(AKToolbarViewController_iOS *)self strokeColorButton];
   }
 
-  else if (self->_textAttributesViewController == v4)
+  else if (self->_textAttributesViewController == controllerCopy)
   {
-    v15 = [(AKToolbarViewController_iOS *)self textStyleButton];
+    strokeColorButton2 = [(AKToolbarViewController_iOS *)self textStyleButton];
   }
 
   else
   {
-    if (self->_lineStylesViewController != v4)
+    if (self->_lineStylesViewController != controllerCopy)
     {
       goto LABEL_10;
     }
 
-    v15 = [(AKToolbarViewController_iOS *)self lineStyleButton];
+    strokeColorButton2 = [(AKToolbarViewController_iOS *)self lineStyleButton];
   }
 
-  v16 = v15;
-  v17 = [v15 customView];
-  [v7 removeObject:v17];
+  v16 = strokeColorButton2;
+  customView4 = [strokeColorButton2 customView];
+  [array removeObject:customView4];
 
 LABEL_10:
-  v18 = [(AKToolbarViewController *)self controller];
-  v19 = [v18 currentPageController];
-  v20 = [v19 overlayView];
+  controller = [(AKToolbarViewController *)self controller];
+  currentPageController = [controller currentPageController];
+  overlayView = [currentPageController overlayView];
 
-  v21 = [v20 superview];
+  superview = [overlayView superview];
 
-  if (v21)
+  if (superview)
   {
-    [v7 addObject:v20];
+    [array addObject:overlayView];
   }
 
-  [v22 setPassthroughViews:v7];
+  [v22 setPassthroughViews:array];
 }
 
 - (void)_layoutAttributeContainer
 {
-  v3 = [(AKToolbarViewController_iOS *)self floatingAttributeToolbarContainer];
-  v4 = [v3 superview];
+  floatingAttributeToolbarContainer = [(AKToolbarViewController_iOS *)self floatingAttributeToolbarContainer];
+  superview = [floatingAttributeToolbarContainer superview];
 
-  if (!v4)
+  if (!superview)
   {
-    v5 = [(AKToolbarViewController_iOS *)self floatingAttributeToolbarContainer];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    floatingAttributeToolbarContainer2 = [(AKToolbarViewController_iOS *)self floatingAttributeToolbarContainer];
+    [floatingAttributeToolbarContainer2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     firstValue = [(AKToolbarViewController_iOS *)self floatingAttributeToolbarContainer];
-    v6 = [(AKToolbarViewController_iOS *)self view];
-    v7 = [v6 superview];
+    view = [(AKToolbarViewController_iOS *)self view];
+    superview2 = [view superview];
 
-    v8 = [(AKToolbarViewController_iOS *)self view];
-    if (v7)
+    view2 = [(AKToolbarViewController_iOS *)self view];
+    if (superview2)
     {
-      [v7 insertSubview:firstValue belowSubview:v8];
-      v9 = _NSDictionaryOfVariableBindings(&cfstr_Attributetoolb.isa, firstValue, v8, 0);
+      [superview2 insertSubview:firstValue belowSubview:view2];
+      v9 = _NSDictionaryOfVariableBindings(&cfstr_Attributetoolb.isa, firstValue, view2, 0);
       v10 = MEMORY[0x277CCAAD0];
       v11 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[attributeToolbarContainer]|" options:0 metrics:0 views:v9];
       [v10 activateConstraints:v11];
@@ -1458,50 +1458,50 @@ LABEL_10:
       v13 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:[attributeToolbarContainer(44@999)]" options:0 metrics:0 views:v9];
       [v12 activateConstraints:v13];
 
-      v14 = [MEMORY[0x277CCAAD0] constraintWithItem:firstValue attribute:4 relatedBy:0 toItem:v8 attribute:3 multiplier:1.0 constant:0.0];
+      v14 = [MEMORY[0x277CCAAD0] constraintWithItem:firstValue attribute:4 relatedBy:0 toItem:view2 attribute:3 multiplier:1.0 constant:0.0];
       [(AKToolbarViewController_iOS *)self setAttributeToolbarViewControllerConstraint:v14];
 
-      [v8 frame];
+      [view2 frame];
       Height = CGRectGetHeight(v20);
-      v16 = [(AKToolbarViewController_iOS *)self attributeToolbarViewControllerConstraint];
-      [v16 setConstant:Height];
+      attributeToolbarViewControllerConstraint = [(AKToolbarViewController_iOS *)self attributeToolbarViewControllerConstraint];
+      [attributeToolbarViewControllerConstraint setConstant:Height];
 
-      v17 = [(AKToolbarViewController_iOS *)self attributeToolbarViewControllerConstraint];
-      [v17 setActive:1];
+      attributeToolbarViewControllerConstraint2 = [(AKToolbarViewController_iOS *)self attributeToolbarViewControllerConstraint];
+      [attributeToolbarViewControllerConstraint2 setActive:1];
 
-      [v7 layoutIfNeeded];
+      [superview2 layoutIfNeeded];
     }
   }
 }
 
-- (void)showAttributeToolbarForSelectedAnnotations:(id)a3 andToolMode:(unint64_t)a4
+- (void)showAttributeToolbarForSelectedAnnotations:(id)annotations andToolMode:(unint64_t)mode
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  annotationsCopy = annotations;
   [(AKToolbarViewController_iOS *)self _layoutAttributeContainer];
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_dismissAttributeToolbarForSelectedAnnotations object:0];
-  v6 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
+  attributeToolbarViewController = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
 
-  if (!v6)
+  if (!attributeToolbarViewController)
   {
-    v7 = [(AKToolbarViewController *)self controller];
-    v8 = [[AKFloatingAttributePickerViewController alloc] initWithController:v7];
+    controller = [(AKToolbarViewController *)self controller];
+    v8 = [[AKFloatingAttributePickerViewController alloc] initWithController:controller];
     [(AKToolbarViewController_iOS *)self setAttributeToolbarViewController:v8];
 
-    v9 = [(AKToolbarViewController_iOS *)self floatingAttributeToolbarContainer];
-    v10 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
-    v11 = [v10 view];
-    [v9 addSubview:v11];
+    floatingAttributeToolbarContainer = [(AKToolbarViewController_iOS *)self floatingAttributeToolbarContainer];
+    attributeToolbarViewController2 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
+    view = [attributeToolbarViewController2 view];
+    [floatingAttributeToolbarContainer addSubview:view];
 
-    v12 = [(AKToolbarViewController_iOS *)self barTintColor];
-    v13 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
-    v14 = [v13 toolbar];
-    [v14 setBarTintColor:v12];
+    barTintColor = [(AKToolbarViewController_iOS *)self barTintColor];
+    attributeToolbarViewController3 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
+    toolbar = [attributeToolbarViewController3 toolbar];
+    [toolbar setBarTintColor:barTintColor];
 
-    v15 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
-    v16 = [v15 view];
+    attributeToolbarViewController4 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
+    view2 = [attributeToolbarViewController4 view];
 
-    v17 = _NSDictionaryOfVariableBindings(&cfstr_Attributetoolb_0.isa, v16, 0);
+    v17 = _NSDictionaryOfVariableBindings(&cfstr_Attributetoolb_0.isa, view2, 0);
     v18 = MEMORY[0x277CCAAD0];
     v19 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[attributeToolbar]|" options:0 metrics:0 views:v17];
     [v18 activateConstraints:v19];
@@ -1510,171 +1510,171 @@ LABEL_10:
     v21 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|[attributeToolbar]|" options:0 metrics:0 views:v17];
     [v20 activateConstraints:v21];
 
-    v22 = [(AKToolbarViewController_iOS *)self view];
-    v23 = [v22 superview];
+    view3 = [(AKToolbarViewController_iOS *)self view];
+    superview = [view3 superview];
 
-    v24 = [(AKToolbarViewController_iOS *)self view];
-    [v24 frame];
+    view4 = [(AKToolbarViewController_iOS *)self view];
+    [view4 frame];
     Height = CGRectGetHeight(v47);
-    v26 = [(AKToolbarViewController_iOS *)self attributeToolbarViewControllerConstraint];
-    [v26 setConstant:Height];
+    attributeToolbarViewControllerConstraint = [(AKToolbarViewController_iOS *)self attributeToolbarViewControllerConstraint];
+    [attributeToolbarViewControllerConstraint setConstant:Height];
 
-    v27 = [(AKToolbarViewController_iOS *)self attributeToolbarViewControllerConstraint];
-    [v27 setActive:1];
+    attributeToolbarViewControllerConstraint2 = [(AKToolbarViewController_iOS *)self attributeToolbarViewControllerConstraint];
+    [attributeToolbarViewControllerConstraint2 setActive:1];
 
-    [v23 layoutIfNeeded];
+    [superview layoutIfNeeded];
     v28 = MEMORY[0x277D75D18];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = sub_23F4399F4;
     v42[3] = &unk_278C7BBF8;
     v42[4] = self;
-    v43 = v23;
-    v44 = v7;
-    v29 = v7;
-    v30 = v23;
+    v43 = superview;
+    v44 = controller;
+    v29 = controller;
+    v30 = superview;
     [v28 animateWithDuration:v42 animations:0 completion:0.1];
   }
 
-  if ([v5 count] != 1)
+  if ([annotationsCopy count] != 1)
   {
-    v31 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
-    v32 = [(AKToolbarViewController_iOS *)self lineStyleButton];
-    v45 = v32;
-    v33 = [MEMORY[0x277CBEA60] arrayWithObjects:&v45 count:1];
-    v35 = v31;
-    v36 = v33;
+    attributeToolbarViewController5 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
+    lineStyleButton = [(AKToolbarViewController_iOS *)self lineStyleButton];
+    v45 = lineStyleButton;
+    textStyleButton2 = [MEMORY[0x277CBEA60] arrayWithObjects:&v45 count:1];
+    attributeToolbarViewController6 = attributeToolbarViewController5;
+    v36 = textStyleButton2;
 LABEL_7:
-    [v35 setRightButtonItems:v36 animated:1];
+    [attributeToolbarViewController6 setRightButtonItems:v36 animated:1];
     goto LABEL_8;
   }
 
-  v31 = [v5 anyObject];
+  attributeToolbarViewController5 = [annotationsCopy anyObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v32 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
-      [v32 setRightButtonItems:0 animated:1];
+      lineStyleButton = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
+      [lineStyleButton setRightButtonItems:0 animated:1];
       goto LABEL_9;
     }
 
-    v32 = [MEMORY[0x277CBEB18] array];
+    lineStyleButton = [MEMORY[0x277CBEB18] array];
     if (objc_opt_respondsToSelector())
     {
-      v39 = [(AKToolbarViewController_iOS *)self textStyleButton];
-      [v32 addObject:v39];
+      textStyleButton = [(AKToolbarViewController_iOS *)self textStyleButton];
+      [lineStyleButton addObject:textStyleButton];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v40 = [(AKToolbarViewController_iOS *)self lineStyleButton];
-      [v32 addObject:v40];
+      lineStyleButton2 = [(AKToolbarViewController_iOS *)self lineStyleButton];
+      [lineStyleButton addObject:lineStyleButton2];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if ([v31 pathIsPrestroked])
+        if ([attributeToolbarViewController5 pathIsPrestroked])
         {
-          v41 = [(AKToolbarViewController_iOS *)self lineStyleButton];
-          [v32 removeObject:v41];
+          lineStyleButton3 = [(AKToolbarViewController_iOS *)self lineStyleButton];
+          [lineStyleButton removeObject:lineStyleButton3];
         }
       }
     }
 
-    v35 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
-    v33 = v35;
-    v36 = v32;
+    attributeToolbarViewController6 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
+    textStyleButton2 = attributeToolbarViewController6;
+    v36 = lineStyleButton;
     goto LABEL_7;
   }
 
-  v32 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
-  v33 = [(AKToolbarViewController_iOS *)self textStyleButton];
-  v46[0] = v33;
+  lineStyleButton = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
+  textStyleButton2 = [(AKToolbarViewController_iOS *)self textStyleButton];
+  v46[0] = textStyleButton2;
   v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:1];
-  [v32 setRightButtonItems:v34 animated:1];
+  [lineStyleButton setRightButtonItems:v34 animated:1];
 
 LABEL_8:
 LABEL_9:
 
-  v37 = [(AKToolbarViewController_iOS *)self _attributeTagForCurrentSelectionState];
-  v38 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
-  [v38 setColorAttributeTag:v37];
+  _attributeTagForCurrentSelectionState = [(AKToolbarViewController_iOS *)self _attributeTagForCurrentSelectionState];
+  attributeToolbarViewController7 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
+  [attributeToolbarViewController7 setColorAttributeTag:_attributeTagForCurrentSelectionState];
 
   [(AKToolbarViewController_iOS *)self syncUIToSelectedColor];
 }
 
 - (void)dismissAttributeToolbarForSelectedAnnotations
 {
-  v3 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
+  attributeToolbarViewController = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
 
-  if (v3)
+  if (attributeToolbarViewController)
   {
-    v4 = [(AKToolbarViewController_iOS *)self view];
-    v5 = [v4 superview];
+    view = [(AKToolbarViewController_iOS *)self view];
+    superview = [view superview];
 
-    v6 = [(AKToolbarViewController_iOS *)self view];
+    view2 = [(AKToolbarViewController_iOS *)self view];
     v7 = MEMORY[0x277D75D18];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = sub_23F439BC0;
     v11[3] = &unk_278C7BBF8;
     v11[4] = self;
-    v12 = v6;
-    v13 = v5;
+    v12 = view2;
+    v13 = superview;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = sub_23F439C28;
     v10[3] = &unk_278C7B720;
     v10[4] = self;
-    v8 = v5;
-    v9 = v6;
+    v8 = superview;
+    v9 = view2;
     [v7 animateWithDuration:v11 animations:v10 completion:0.1];
   }
 }
 
 - (void)dismissAttributeToolbarImmediately
 {
-  v7 = [(AKToolbarViewController_iOS *)self view];
-  [v7 frame];
+  view = [(AKToolbarViewController_iOS *)self view];
+  [view frame];
   Height = CGRectGetHeight(v9);
-  v4 = [(AKToolbarViewController_iOS *)self attributeToolbarViewControllerConstraint];
-  [v4 setConstant:Height];
+  attributeToolbarViewControllerConstraint = [(AKToolbarViewController_iOS *)self attributeToolbarViewControllerConstraint];
+  [attributeToolbarViewControllerConstraint setConstant:Height];
 
-  v5 = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
-  v6 = [v5 view];
-  [v6 removeFromSuperview];
+  attributeToolbarViewController = [(AKToolbarViewController_iOS *)self attributeToolbarViewController];
+  view2 = [attributeToolbarViewController view];
+  [view2 removeFromSuperview];
 
   [(AKToolbarViewController_iOS *)self setAttributeToolbarViewController:0];
 }
 
-- (BOOL)presentationControllerShouldDismiss:(id)a3
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss
 {
-  v4 = a3;
+  dismissCopy = dismiss;
   AKLog(@"%s %@");
   v5 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController:"[AKToolbarViewController_iOS presentationControllerShouldDismiss:]"];
-  v6 = [v5 popoverPresentationController];
+  popoverPresentationController = [v5 popoverPresentationController];
 
-  if (v6 == v4)
+  if (popoverPresentationController == dismissCopy)
   {
-    v19 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
-    v20 = [v19 popoverPresentationController];
-    [v20 setDelegate:0];
+    signaturesSheetViewController = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
+    popoverPresentationController2 = [signaturesSheetViewController popoverPresentationController];
+    [popoverPresentationController2 setDelegate:0];
 
     [(AKToolbarViewController_iOS *)self setSignaturesSheetViewController:0];
     goto LABEL_14;
   }
 
-  v7 = [(AKToolbarViewController_iOS *)self lineStylesViewController];
-  v8 = [v7 popoverPresentationController];
+  lineStylesViewController = [(AKToolbarViewController_iOS *)self lineStylesViewController];
+  popoverPresentationController3 = [lineStylesViewController popoverPresentationController];
 
-  if (v8 == v4)
+  if (popoverPresentationController3 == dismissCopy)
   {
-    v21 = [(AKToolbarViewController_iOS *)self lineStylesViewController];
-    v22 = [v21 popoverPresentationController];
-    [v22 setDelegate:0];
+    lineStylesViewController2 = [(AKToolbarViewController_iOS *)self lineStylesViewController];
+    popoverPresentationController4 = [lineStylesViewController2 popoverPresentationController];
+    [popoverPresentationController4 setDelegate:0];
 
     [(AKToolbarViewController_iOS *)self setLineStylesViewController:0];
 LABEL_13:
@@ -1682,56 +1682,56 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v9 = [(AKToolbarViewController_iOS *)self undoAlertController];
-  v10 = [v9 popoverPresentationController];
+  undoAlertController = [(AKToolbarViewController_iOS *)self undoAlertController];
+  popoverPresentationController5 = [undoAlertController popoverPresentationController];
 
-  if (v10 == v4)
+  if (popoverPresentationController5 == dismissCopy)
   {
-    v23 = [(AKToolbarViewController_iOS *)self undoAlertController];
-    v24 = [v23 popoverPresentationController];
-    [v24 setDelegate:0];
+    undoAlertController2 = [(AKToolbarViewController_iOS *)self undoAlertController];
+    popoverPresentationController6 = [undoAlertController2 popoverPresentationController];
+    [popoverPresentationController6 setDelegate:0];
 
     [(AKToolbarViewController_iOS *)self setUndoAlertController:0];
     goto LABEL_13;
   }
 
-  v11 = [(AKToolbarViewController_iOS *)self textAttributesViewController];
-  v12 = [v11 popoverPresentationController];
+  textAttributesViewController = [(AKToolbarViewController_iOS *)self textAttributesViewController];
+  popoverPresentationController7 = [textAttributesViewController popoverPresentationController];
 
-  if (v12 == v4)
+  if (popoverPresentationController7 == dismissCopy)
   {
-    v25 = [(AKToolbarViewController_iOS *)self textAttributesViewController];
-    v26 = [v25 popoverPresentationController];
-    [v26 setDelegate:0];
+    textAttributesViewController2 = [(AKToolbarViewController_iOS *)self textAttributesViewController];
+    popoverPresentationController8 = [textAttributesViewController2 popoverPresentationController];
+    [popoverPresentationController8 setDelegate:0];
 
     [(AKToolbarViewController_iOS *)self setTextAttributesViewController:0];
     goto LABEL_13;
   }
 
-  v13 = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
-  v14 = [v13 popoverPresentationController];
+  colorPickerPopoverViewController = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
+  popoverPresentationController9 = [colorPickerPopoverViewController popoverPresentationController];
 
-  if (v14 == v4)
+  if (popoverPresentationController9 == dismissCopy)
   {
-    v27 = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
-    [v27 removeObserver:self forKeyPath:@"color"];
+    colorPickerPopoverViewController2 = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
+    [colorPickerPopoverViewController2 removeObserver:self forKeyPath:@"color"];
 
-    v28 = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
-    v29 = [v28 popoverPresentationController];
-    [v29 setDelegate:0];
+    colorPickerPopoverViewController3 = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
+    popoverPresentationController10 = [colorPickerPopoverViewController3 popoverPresentationController];
+    [popoverPresentationController10 setDelegate:0];
 
     [(AKToolbarViewController_iOS *)self setColorPickerPopoverViewController:0];
     goto LABEL_13;
   }
 
-  v15 = [(AKToolbarViewController_iOS *)self signaturesAlertController];
-  v16 = [v15 popoverPresentationController];
+  signaturesAlertController = [(AKToolbarViewController_iOS *)self signaturesAlertController];
+  popoverPresentationController11 = [signaturesAlertController popoverPresentationController];
 
-  if (v16 == v4)
+  if (popoverPresentationController11 == dismissCopy)
   {
-    v17 = [(AKToolbarViewController_iOS *)self signaturesAlertController];
-    v18 = [v17 popoverPresentationController];
-    [v18 setDelegate:0];
+    signaturesAlertController2 = [(AKToolbarViewController_iOS *)self signaturesAlertController];
+    popoverPresentationController12 = [signaturesAlertController2 popoverPresentationController];
+    [popoverPresentationController12 setDelegate:0];
 
     [(AKToolbarViewController_iOS *)self setSignaturesAlertController:0];
   }
@@ -1741,107 +1741,107 @@ LABEL_14:
   return 1;
 }
 
-- (void)signaturesViewControllerDidCancel:(id)a3
+- (void)signaturesViewControllerDidCancel:(id)cancel
 {
   AKLog(@"%s %@");
   v4 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController:"[AKToolbarViewController_iOS signaturesViewControllerDidCancel:]"];
 
   if (v4)
   {
-    v12 = [(AKToolbarViewController *)self controller];
-    v5 = [v12 delegate];
+    controller = [(AKToolbarViewController *)self controller];
+    delegate = [controller delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 controllerWillDismissSignatureManagerView:v12];
+      [delegate controllerWillDismissSignatureManagerView:controller];
     }
 
     [(AKToolbarViewController_iOS *)self dismissViewControllerAnimated:1 completion:0];
-    v6 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
-    v7 = [v6 popoverPresentationController];
-    [v7 setDelegate:0];
+    signaturesSheetViewController = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
+    popoverPresentationController = [signaturesSheetViewController popoverPresentationController];
+    [popoverPresentationController setDelegate:0];
 
     [(AKToolbarViewController_iOS *)self setSignaturesSheetViewController:0];
   }
 
   else
   {
-    v8 = [(AKToolbarViewController_iOS *)self signaturesAlertController];
+    signaturesAlertController = [(AKToolbarViewController_iOS *)self signaturesAlertController];
 
-    if (v8)
+    if (signaturesAlertController)
     {
-      v9 = [(AKToolbarViewController_iOS *)self signaturesAlertController];
-      v10 = [v9 popoverPresentationController];
-      [v10 setDelegate:0];
+      signaturesAlertController2 = [(AKToolbarViewController_iOS *)self signaturesAlertController];
+      popoverPresentationController2 = [signaturesAlertController2 popoverPresentationController];
+      [popoverPresentationController2 setDelegate:0];
 
       [(AKToolbarViewController_iOS *)self setSignaturesAlertController:0];
     }
   }
 }
 
-- (void)signaturesViewControllerDidSelectSignature:(id)a3
+- (void)signaturesViewControllerDidSelectSignature:(id)signature
 {
   AKLog(@"%s %@");
   v4 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController:"[AKToolbarViewController_iOS signaturesViewControllerDidSelectSignature:]"];
 
   if (v4)
   {
-    v5 = [(AKToolbarViewController *)self controller];
-    v6 = [v5 delegate];
+    controller = [(AKToolbarViewController *)self controller];
+    delegate = [controller delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v6 controllerWillDismissSignatureManagerView:v5];
+      [delegate controllerWillDismissSignatureManagerView:controller];
     }
 
     [(AKToolbarViewController_iOS *)self dismissViewControllerAnimated:1 completion:0];
-    v7 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
-    v8 = [v7 popoverPresentationController];
-    [v8 setDelegate:0];
+    signaturesSheetViewController = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
+    popoverPresentationController = [signaturesSheetViewController popoverPresentationController];
+    [popoverPresentationController setDelegate:0];
 
-    v9 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
-    [v9 setDelegate:0];
+    signaturesSheetViewController2 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
+    [signaturesSheetViewController2 setDelegate:0];
 
     [(AKToolbarViewController_iOS *)self setSignaturesSheetViewController:0];
   }
 
   else
   {
-    v10 = [(AKToolbarViewController_iOS *)self signaturesAlertController];
+    signaturesAlertController = [(AKToolbarViewController_iOS *)self signaturesAlertController];
 
-    if (v10)
+    if (signaturesAlertController)
     {
       [(AKToolbarViewController_iOS *)self dismissViewControllerAnimated:1 completion:0];
-      v11 = [(AKToolbarViewController_iOS *)self signaturesAlertController];
-      v12 = [v11 popoverPresentationController];
-      [v12 setDelegate:0];
+      signaturesAlertController2 = [(AKToolbarViewController_iOS *)self signaturesAlertController];
+      popoverPresentationController2 = [signaturesAlertController2 popoverPresentationController];
+      [popoverPresentationController2 setDelegate:0];
 
       [(AKToolbarViewController_iOS *)self setSignaturesAlertController:0];
     }
   }
 
-  v16 = [(AKToolbarViewController *)self controller];
+  controller2 = [(AKToolbarViewController *)self controller];
   v13 = objc_alloc(MEMORY[0x277D75220]);
   v14 = [v13 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v14 setTag:764019];
-  [v16 performActionForSender:v14];
+  [controller2 performActionForSender:v14];
 }
 
-- (void)signaturesViewControllerContinueToManageSignatures:(id)a3
+- (void)signaturesViewControllerContinueToManageSignatures:(id)signatures
 {
-  v23 = a3;
-  v4 = [(AKToolbarViewController_iOS *)self signaturesAlertController];
+  signaturesCopy = signatures;
+  signaturesAlertController = [(AKToolbarViewController_iOS *)self signaturesAlertController];
 
-  if (v4)
+  if (signaturesAlertController)
   {
-    v5 = [(AKToolbarViewController_iOS *)self presentedViewController];
+    presentedViewController = [(AKToolbarViewController_iOS *)self presentedViewController];
 
-    if (v5)
+    if (presentedViewController)
     {
       [(AKToolbarViewController_iOS *)self dismissViewControllerAnimated:1 completion:0];
     }
 
-    v6 = [(AKToolbarViewController_iOS *)self signaturesAlertController];
-    v7 = [v6 popoverPresentationController];
-    [v7 setDelegate:0];
+    signaturesAlertController2 = [(AKToolbarViewController_iOS *)self signaturesAlertController];
+    popoverPresentationController = [signaturesAlertController2 popoverPresentationController];
+    [popoverPresentationController setDelegate:0];
 
     [(AKToolbarViewController_iOS *)self setSignaturesAlertController:0];
   }
@@ -1849,19 +1849,19 @@ LABEL_14:
   AKLog(@"%s %@");
   v8 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController:"[AKToolbarViewController_iOS signaturesViewControllerContinueToManageSignatures:]"];
 
-  v9 = v23;
+  v9 = signaturesCopy;
   if (!v8)
   {
     v10 = [AKSignaturesViewController_iOS alloc];
-    v11 = [(AKToolbarViewController *)self controller];
-    v12 = [(AKSignaturesViewController_iOS *)v10 initWithController:v11];
+    controller = [(AKToolbarViewController *)self controller];
+    v12 = [(AKSignaturesViewController_iOS *)v10 initWithController:controller];
     [(AKToolbarViewController_iOS *)self setSignaturesSheetViewController:v12];
 
-    v13 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
-    [v13 setDelegate:self];
+    signaturesSheetViewController = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
+    [signaturesSheetViewController setDelegate:self];
 
-    v14 = [MEMORY[0x277D75418] currentDevice];
-    if ([v14 userInterfaceIdiom] == 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] == 1)
     {
       v15 = 5;
     }
@@ -1871,59 +1871,59 @@ LABEL_14:
       v15 = 0;
     }
 
-    v16 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
-    [v16 setModalPresentationStyle:v15];
+    signaturesSheetViewController2 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
+    [signaturesSheetViewController2 setModalPresentationStyle:v15];
 
-    v17 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
-    [v17 setShowsNavigationBar:1];
+    signaturesSheetViewController3 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
+    [signaturesSheetViewController3 setShowsNavigationBar:1];
 
-    v18 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
-    [v18 setPresentedInAlert:0];
+    signaturesSheetViewController4 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
+    [signaturesSheetViewController4 setPresentedInAlert:0];
 
-    v19 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
-    [v19 setAllowsEdits:1];
+    signaturesSheetViewController5 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
+    [signaturesSheetViewController5 setAllowsEdits:1];
 
-    v20 = [(AKToolbarViewController *)self controller];
-    v21 = [v20 delegate];
+    controller2 = [(AKToolbarViewController *)self controller];
+    delegate = [controller2 delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v21 controllerWillShowSignatureManagerView:v20];
+      [delegate controllerWillShowSignatureManagerView:controller2];
     }
 
-    v22 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
-    [(AKToolbarViewController_iOS *)self presentViewController:v22 animated:1 completion:0];
+    signaturesSheetViewController6 = [(AKToolbarViewController_iOS *)self signaturesSheetViewController];
+    [(AKToolbarViewController_iOS *)self presentViewController:signaturesSheetViewController6 animated:1 completion:0];
 
-    v9 = v23;
+    v9 = signaturesCopy;
   }
 }
 
-- (void)signaturesViewControllerEnterSignatureMode:(id)a3
+- (void)signaturesViewControllerEnterSignatureMode:(id)mode
 {
-  v4 = [(AKToolbarViewController_iOS *)self signaturesAlertController];
+  signaturesAlertController = [(AKToolbarViewController_iOS *)self signaturesAlertController];
 
-  if (v4)
+  if (signaturesAlertController)
   {
-    v5 = [(AKToolbarViewController_iOS *)self presentedViewController];
+    presentedViewController = [(AKToolbarViewController_iOS *)self presentedViewController];
 
-    if (v5)
+    if (presentedViewController)
     {
       [(AKToolbarViewController_iOS *)self dismissViewControllerAnimated:1 completion:0];
     }
 
-    v6 = [(AKToolbarViewController_iOS *)self signaturesAlertController];
-    v7 = [v6 popoverPresentationController];
-    [v7 setDelegate:0];
+    signaturesAlertController2 = [(AKToolbarViewController_iOS *)self signaturesAlertController];
+    popoverPresentationController = [signaturesAlertController2 popoverPresentationController];
+    [popoverPresentationController setDelegate:0];
 
     [(AKToolbarViewController_iOS *)self setSignaturesAlertController:0];
   }
 
-  v9 = [(AKToolbarViewController *)self controller];
+  controller = [(AKToolbarViewController *)self controller];
   v8 = objc_opt_new();
   [v8 setTag:764022];
-  [v9 performActionForSender:v8];
+  [controller performActionForSender:v8];
 }
 
-- (void)signaturesViewControllerContinueToCreateSignature:(id)a3
+- (void)signaturesViewControllerContinueToCreateSignature:(id)signature
 {
   AKLog(@"%s %@");
   v8[0] = MEMORY[0x277D85DD0];
@@ -1945,41 +1945,41 @@ LABEL_14:
   }
 }
 
-- (void)signatureCreationControllerDidCreateSignature:(id)a3
+- (void)signatureCreationControllerDidCreateSignature:(id)signature
 {
-  v5 = [(AKToolbarViewController *)self controller];
+  controller = [(AKToolbarViewController *)self controller];
   v3 = objc_alloc(MEMORY[0x277D75220]);
   v4 = [v3 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v4 setTag:764019];
-  [v5 performActionForSender:v4];
+  [controller performActionForSender:v4];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v13 = a4;
-  if ([a3 isEqualToString:@"color"])
+  objectCopy = object;
+  if ([path isEqualToString:@"color"])
   {
-    v8 = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
+    colorPickerPopoverViewController = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
 
-    if (v8 == v13)
+    if (colorPickerPopoverViewController == objectCopy)
     {
-      v9 = [(AKToolbarViewController_iOS *)self strokeColorButton];
-      v10 = [v9 customView];
+      strokeColorButton = [(AKToolbarViewController_iOS *)self strokeColorButton];
+      customView = [strokeColorButton customView];
 
-      v11 = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
-      v12 = [v11 color];
-      [v10 setColor:v12];
+      colorPickerPopoverViewController2 = [(AKToolbarViewController_iOS *)self colorPickerPopoverViewController];
+      color = [colorPickerPopoverViewController2 color];
+      [customView setColor:color];
     }
   }
 }
 
-- (void)_peripheralAvailabilityDidUpdate:(id)a3
+- (void)_peripheralAvailabilityDidUpdate:(id)update
 {
   if ([(AKToolbarViewController_iOS *)self _legacyDoodlesEnabled])
   {
-    v4 = [(AKToolbarViewController_iOS *)self sketchButton];
-    v5 = [(AKToolbarViewController_iOS *)self traitCollection];
-    [(AKToolbarViewController_iOS *)self _updateToggleButton:v4 withTraitCollection:v5];
+    sketchButton = [(AKToolbarViewController_iOS *)self sketchButton];
+    traitCollection = [(AKToolbarViewController_iOS *)self traitCollection];
+    [(AKToolbarViewController_iOS *)self _updateToggleButton:sketchButton withTraitCollection:traitCollection];
   }
 
   [(AKToolbarViewController_iOS *)self revalidateItems];

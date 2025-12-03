@@ -1,12 +1,12 @@
 @interface HMDCHIPHomeKeychainFabricData
 + (id)logCategory;
-- (BOOL)storeFabricData:(id)a3 dataVersion:(id)a4;
-- (BOOL)storeFabricData:(id)a3 dataVersion:(id)a4 creationTime:(id)a5;
-- (HMDCHIPHomeKeychainFabricData)initWithHomeUUID:(id)a3 iCloudIdentifier:(id)a4;
+- (BOOL)storeFabricData:(id)data dataVersion:(id)version;
+- (BOOL)storeFabricData:(id)data dataVersion:(id)version creationTime:(id)time;
+- (HMDCHIPHomeKeychainFabricData)initWithHomeUUID:(id)d iCloudIdentifier:(id)identifier;
 - (NSArray)fabricDataItems;
 - (id)logIdentifier;
-- (id)rcacFromFabricData:(id)a3;
-- (id)unarchiveKeyItemValue:(id)a3;
+- (id)rcacFromFabricData:(id)data;
+- (id)unarchiveKeyItemValue:(id)value;
 @end
 
 @implementation HMDCHIPHomeKeychainFabricData
@@ -14,64 +14,64 @@
 - (id)logIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDCHIPHomeKeychainFabricData *)self homeUUID];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  homeUUID = [(HMDCHIPHomeKeychainFabricData *)self homeUUID];
+  v4 = [v2 stringWithFormat:@"%@", homeUUID];
 
   return v4;
 }
 
-- (id)rcacFromFabricData:(id)a3
+- (id)rcacFromFabricData:(id)data
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 rootCert];
+  dataCopy = data;
+  rootCert = [dataCopy rootCert];
 
-  if (!v5)
+  if (!rootCert)
   {
     _HMFPreconditionFailure();
   }
 
-  v6 = [v4 rootCert];
+  rootCert2 = [dataCopy rootCert];
 
-  if (v6)
+  if (rootCert2)
   {
     v7 = MEMORY[0x277CD5230];
-    v8 = [v4 rootCert];
-    v9 = [v7 convertX509Certificate:v8];
+    rootCert3 = [dataCopy rootCert];
+    v9 = [v7 convertX509Certificate:rootCert3];
 
     if (v9)
     {
       v10 = [objc_alloc(MEMORY[0x277CD5228]) initWithTLVBytes:v9];
-      v11 = [v10 subject];
-      v12 = [v11 rootCACertificateID];
+      subject = [v10 subject];
+      rootCACertificateID = [subject rootCACertificateID];
     }
 
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         v20 = HMFGetLogIdentifier();
-        v21 = [v4 rootCert];
-        v22 = [v21 shortDescription];
+        rootCert4 = [dataCopy rootCert];
+        shortDescription = [rootCert4 shortDescription];
         v25 = 138543618;
         v26 = v20;
         v27 = 2112;
-        v28 = v22;
+        v28 = shortDescription;
         _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_ERROR, "%{public}@Corrupt fabricData rootCert %@", &v25, 0x16u);
       }
 
       objc_autoreleasePoolPop(v17);
-      v12 = 0;
+      rootCACertificateID = 0;
     }
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -79,23 +79,23 @@
       v25 = 138543618;
       v26 = v16;
       v27 = 2112;
-      v28 = v4;
+      v28 = dataCopy;
       _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_ERROR, "%{public}@fabricData didn't contain rootCert to extract RCAC from: %@", &v25, 0x16u);
     }
 
     objc_autoreleasePoolPop(v13);
-    v12 = 0;
+    rootCACertificateID = 0;
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return rootCACertificateID;
 }
 
-- (id)unarchiveKeyItemValue:(id)a3
+- (id)unarchiveKeyItemValue:(id)value
 {
   v23[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   v5 = MEMORY[0x277CCAAC8];
   v6 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
   v7 = MEMORY[0x277CBEB98];
@@ -105,13 +105,13 @@
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:3];
   v9 = [v7 setWithArray:v8];
   v18 = 0;
-  v10 = [v5 unarchivedDictionaryWithKeysOfClasses:v6 objectsOfClasses:v9 fromData:v4 error:&v18];
+  v10 = [v5 unarchivedDictionaryWithKeysOfClasses:v6 objectsOfClasses:v9 fromData:valueCopy error:&v18];
   v11 = v18;
 
   if (!v10)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -134,16 +134,16 @@
 - (NSArray)fabricDataItems
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCHIPHomeKeychainFabricData *)self systemKeychainStore];
+  systemKeychainStore = [(HMDCHIPHomeKeychainFabricData *)self systemKeychainStore];
   v4 = [MEMORY[0x277CCABB0] numberWithInt:{-[HMDCHIPHomeKeychainFabricData signedOut](self, "signedOut") ^ 1}];
   v19 = 0;
-  v5 = [v3 allKeychainItemsForType:&unk_286628798 identifier:0 syncable:v4 error:&v19];
+  v5 = [systemKeychainStore allKeychainItemsForType:&unk_286628798 identifier:0 syncable:v4 error:&v19];
   v6 = v19;
 
   if (v6)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -154,7 +154,7 @@
     }
 
     objc_autoreleasePoolPop(v7);
-    v11 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
   else
@@ -173,12 +173,12 @@
     v13 = [v12 na_filter:v17];
 
     v14 = [v13 na_map:&__block_literal_global_99089];
-    v11 = [v14 na_filter:&__block_literal_global_114_99090];
+    array = [v14 na_filter:&__block_literal_global_114_99090];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return array;
 }
 
 id __48__HMDCHIPHomeKeychainFabricData_fabricDataItems__block_invoke(uint64_t a1, void *a2)
@@ -241,32 +241,32 @@ HMDCHIPHomeKeychainFabricDataItem *__48__HMDCHIPHomeKeychainFabricData_fabricDat
   return v3;
 }
 
-- (BOOL)storeFabricData:(id)a3 dataVersion:(id)a4 creationTime:(id)a5
+- (BOOL)storeFabricData:(id)data dataVersion:(id)version creationTime:(id)time
 {
   v80[9] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 rootKeyPair];
-  if (v11 && (v12 = v11, [v8 residentOperationalKeyPair], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
+  dataCopy = data;
+  versionCopy = version;
+  timeCopy = time;
+  rootKeyPair = [dataCopy rootKeyPair];
+  if (rootKeyPair && (v12 = rootKeyPair, [dataCopy residentOperationalKeyPair], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
   {
-    v14 = [v8 rootKeyPair];
-    v15 = SecKeyCopyExternalRepresentation([v14 privateKey], 0);
+    rootKeyPair2 = [dataCopy rootKeyPair];
+    v15 = SecKeyCopyExternalRepresentation([rootKeyPair2 privateKey], 0);
 
     if (v15)
     {
-      v16 = [v8 residentOperationalKeyPair];
-      v17 = SecKeyCopyExternalRepresentation([v16 privateKey], 0);
+      residentOperationalKeyPair = [dataCopy residentOperationalKeyPair];
+      v17 = SecKeyCopyExternalRepresentation([residentOperationalKeyPair privateKey], 0);
 
       if (v17)
       {
         v79[0] = @"homeUUID";
-        v18 = [(HMDCHIPHomeKeychainFabricData *)self homeUUID];
-        v19 = [v18 UUIDString];
-        v80[0] = v19;
+        homeUUID = [(HMDCHIPHomeKeychainFabricData *)self homeUUID];
+        uUIDString = [homeUUID UUIDString];
+        v80[0] = uUIDString;
         v79[1] = @"iCloudID";
-        v20 = [(HMDCHIPHomeKeychainFabricData *)self iCloudIdentifier];
-        v80[1] = v20;
+        iCloudIdentifier = [(HMDCHIPHomeKeychainFabricData *)self iCloudIdentifier];
+        v80[1] = iCloudIdentifier;
         v80[2] = v15;
         v71 = v17;
         v72 = v15;
@@ -274,22 +274,22 @@ HMDCHIPHomeKeychainFabricDataItem *__48__HMDCHIPHomeKeychainFabricData_fabricDat
         v79[3] = @"opKey";
         v80[3] = v17;
         v79[4] = @"fabricID";
-        v21 = [v8 fabricID];
-        v80[4] = v21;
+        fabricID = [dataCopy fabricID];
+        v80[4] = fabricID;
         v79[5] = @"residentNodeID";
-        v22 = [v8 residentNodeID];
-        v80[5] = v22;
+        residentNodeID = [dataCopy residentNodeID];
+        v80[5] = residentNodeID;
         v79[6] = @"ipk";
-        v23 = [v8 ipk];
+        v23 = [dataCopy ipk];
         v80[6] = v23;
-        v80[7] = v9;
-        v70 = v9;
+        v80[7] = versionCopy;
+        v70 = versionCopy;
         v79[7] = @"version";
         v79[8] = @"createTime";
-        v80[8] = v10;
+        v80[8] = timeCopy;
         v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v80 forKeys:v79 count:9];
 
-        v25 = [(HMDCHIPHomeKeychainFabricData *)self rcacFromFabricData:v8];
+        v25 = [(HMDCHIPHomeKeychainFabricData *)self rcacFromFabricData:dataCopy];
         v69 = v25;
         if (v25)
         {
@@ -314,27 +314,27 @@ HMDCHIPHomeKeychainFabricDataItem *__48__HMDCHIPHomeKeychainFabricData_fabricDat
           v44 = objc_alloc_init(MEMORY[0x277CFEBC8]);
           [v44 setValueData:v42];
           [v44 setSyncable:{-[HMDCHIPHomeKeychainFabricData signedOut](self, "signedOut") ^ 1}];
-          v45 = [MEMORY[0x277CCAD78] UUID];
-          v46 = [v45 UUIDString];
-          [v44 setAccount:v46];
+          uUID = [MEMORY[0x277CCAD78] UUID];
+          uUIDString2 = [uUID UUIDString];
+          [v44 setAccount:uUIDString2];
 
           [v44 setAccessGroup:@"com.apple.hap.pairing"];
           [v44 setLabel:*MEMORY[0x277D17BB0]];
           [v44 setItemDescription:*MEMORY[0x277D17BA8]];
           [v44 setType:&unk_286628798];
           v47 = MEMORY[0x277CFEC78];
-          v48 = [v44 type];
-          v49 = [v47 viewHintForType:v48];
+          type = [v44 type];
+          v49 = [v47 viewHintForType:type];
           [v44 setViewHint:v49];
 
-          v50 = [(HMDCHIPHomeKeychainFabricData *)self systemKeychainStore];
+          systemKeychainStore = [(HMDCHIPHomeKeychainFabricData *)self systemKeychainStore];
           v73 = v43;
-          [v50 updateKeychainItem:v44 createIfNeeded:1 error:&v73];
+          [systemKeychainStore updateKeychainItem:v44 createIfNeeded:1 error:&v73];
           v51 = v73;
 
           v33 = v51 == 0;
           v52 = objc_autoreleasePoolPush();
-          v53 = self;
+          selfCopy = self;
           v54 = HMFGetOSLogHandle();
           v55 = v54;
           if (v51)
@@ -375,7 +375,7 @@ HMDCHIPHomeKeychainFabricDataItem *__48__HMDCHIPHomeKeychainFabricData_fabricDat
         else
         {
           v58 = objc_autoreleasePoolPush();
-          v59 = self;
+          selfCopy2 = self;
           v60 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
           {
@@ -393,7 +393,7 @@ HMDCHIPHomeKeychainFabricDataItem *__48__HMDCHIPHomeKeychainFabricData_fabricDat
           v15 = v72;
         }
 
-        v9 = v70;
+        versionCopy = v70;
 
         v17 = v71;
       }
@@ -401,7 +401,7 @@ HMDCHIPHomeKeychainFabricDataItem *__48__HMDCHIPHomeKeychainFabricData_fabricDat
       else
       {
         v38 = objc_autoreleasePoolPush();
-        v39 = self;
+        selfCopy3 = self;
         v40 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
@@ -419,7 +419,7 @@ HMDCHIPHomeKeychainFabricDataItem *__48__HMDCHIPHomeKeychainFabricData_fabricDat
     else
     {
       v34 = objc_autoreleasePoolPush();
-      v35 = self;
+      selfCopy4 = self;
       v36 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
@@ -437,7 +437,7 @@ HMDCHIPHomeKeychainFabricDataItem *__48__HMDCHIPHomeKeychainFabricData_fabricDat
   else
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy5 = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
@@ -455,33 +455,33 @@ HMDCHIPHomeKeychainFabricDataItem *__48__HMDCHIPHomeKeychainFabricData_fabricDat
   return v33;
 }
 
-- (BOOL)storeFabricData:(id)a3 dataVersion:(id)a4
+- (BOOL)storeFabricData:(id)data dataVersion:(id)version
 {
   v6 = MEMORY[0x277D0F7F0];
-  v7 = a4;
-  v8 = a3;
+  versionCopy = version;
+  dataCopy = data;
   v9 = objc_alloc_init(v6);
   v10 = MEMORY[0x277CCABB0];
   [v9 timeIntervalSince1970];
   v11 = [v10 numberWithDouble:?];
-  LOBYTE(self) = [(HMDCHIPHomeKeychainFabricData *)self storeFabricData:v8 dataVersion:v7 creationTime:v11];
+  LOBYTE(self) = [(HMDCHIPHomeKeychainFabricData *)self storeFabricData:dataCopy dataVersion:versionCopy creationTime:v11];
 
   return self;
 }
 
-- (HMDCHIPHomeKeychainFabricData)initWithHomeUUID:(id)a3 iCloudIdentifier:(id)a4
+- (HMDCHIPHomeKeychainFabricData)initWithHomeUUID:(id)d iCloudIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = HMDCHIPHomeKeychainFabricData;
   v9 = [(HMDCHIPHomeKeychainFabricData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_homeUUID, a3);
-    objc_storeStrong(&v10->_iCloudIdentifier, a4);
-    v10->_signedOut = [v8 isEqual:@"NOT-LOGGED-IN"];
+    objc_storeStrong(&v9->_homeUUID, d);
+    objc_storeStrong(&v10->_iCloudIdentifier, identifier);
+    v10->_signedOut = [identifierCopy isEqual:@"NOT-LOGGED-IN"];
   }
 
   return v10;

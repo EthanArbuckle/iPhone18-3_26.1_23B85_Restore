@@ -1,40 +1,40 @@
 @interface EFParenthesizedSQLExpression
-+ (id)parenthesizedValueCollectionExpressable:(id)a3;
-+ (id)parenthesizedValueExpressable:(id)a3;
-- (EFParenthesizedSQLExpression)initWithExpressable:(id)a3;
++ (id)parenthesizedValueCollectionExpressable:(id)expressable;
++ (id)parenthesizedValueExpressable:(id)expressable;
+- (EFParenthesizedSQLExpression)initWithExpressable:(id)expressable;
 - (id)ef_SQLExpression;
-- (void)ef_renderSQLExpressionInto:(id)a3;
-- (void)ef_renderSQLExpressionInto:(id)a3 conjoiner:(id)a4;
+- (void)ef_renderSQLExpressionInto:(id)into;
+- (void)ef_renderSQLExpressionInto:(id)into conjoiner:(id)conjoiner;
 @end
 
 @implementation EFParenthesizedSQLExpression
 
-+ (id)parenthesizedValueExpressable:(id)a3
++ (id)parenthesizedValueExpressable:(id)expressable
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithExpressable:v4];
+  expressableCopy = expressable;
+  v5 = [[self alloc] initWithExpressable:expressableCopy];
 
   return v5;
 }
 
-+ (id)parenthesizedValueCollectionExpressable:(id)a3
++ (id)parenthesizedValueCollectionExpressable:(id)expressable
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithExpressable:v4];
+  expressableCopy = expressable;
+  v5 = [[self alloc] initWithExpressable:expressableCopy];
 
   return v5;
 }
 
-- (EFParenthesizedSQLExpression)initWithExpressable:(id)a3
+- (EFParenthesizedSQLExpression)initWithExpressable:(id)expressable
 {
-  v5 = a3;
+  expressableCopy = expressable;
   v9.receiver = self;
   v9.super_class = EFParenthesizedSQLExpression;
   v6 = [(EFParenthesizedSQLExpression *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_expressable, a3);
+    objc_storeStrong(&v6->_expressable, expressable);
   }
 
   return v7;
@@ -42,27 +42,27 @@
 
 - (id)ef_SQLExpression
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [(EFParenthesizedSQLExpression *)self ef_renderSQLExpressionInto:v3];
+  string = [MEMORY[0x1E696AD60] string];
+  [(EFParenthesizedSQLExpression *)self ef_renderSQLExpressionInto:string];
 
-  return v3;
+  return string;
 }
 
-- (void)ef_renderSQLExpressionInto:(id)a3
+- (void)ef_renderSQLExpressionInto:(id)into
 {
-  v4 = a3;
-  objc_msgSend(v4, "appendString:", @"(");
-  [self->_expressable ef_renderSQLExpressionInto:v4];
-  [v4 appendString:@""]);
+  intoCopy = into;
+  objc_msgSend(intoCopy, "appendString:", @"(");
+  [self->_expressable ef_renderSQLExpressionInto:intoCopy];
+  [intoCopy appendString:@""]);
 }
 
-- (void)ef_renderSQLExpressionInto:(id)a3 conjoiner:(id)a4
+- (void)ef_renderSQLExpressionInto:(id)into conjoiner:(id)conjoiner
 {
-  v7 = a3;
-  v6 = a4;
-  objc_msgSend(v7, "appendString:", @"(");
-  [self->_expressable ef_renderSQLExpressionInto:v7 conjoiner:v6];
-  [v7 appendString:@""]);
+  intoCopy = into;
+  conjoinerCopy = conjoiner;
+  objc_msgSend(intoCopy, "appendString:", @"(");
+  [self->_expressable ef_renderSQLExpressionInto:intoCopy conjoiner:conjoinerCopy];
+  [intoCopy appendString:@""]);
 }
 
 @end

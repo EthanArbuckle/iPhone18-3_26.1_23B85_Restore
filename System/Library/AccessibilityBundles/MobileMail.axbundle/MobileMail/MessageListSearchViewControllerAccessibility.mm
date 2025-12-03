@@ -1,16 +1,16 @@
 @interface MessageListSearchViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation MessageListSearchViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MessageListSearchViewController" hasInstanceMethod:@"setSearchSuggestionsVisible:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"MessageListSearchViewController" hasInstanceMethod:@"isSearchSuggestionsVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MessageListSearchViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MessageListSearchViewController" hasInstanceMethod:@"setSearchSuggestionsVisible:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"MessageListSearchViewController" hasInstanceMethod:@"isSearchSuggestionsVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MessageListSearchViewController" isKindOfClass:@"UIViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

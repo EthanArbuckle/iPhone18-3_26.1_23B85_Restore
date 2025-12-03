@@ -1,11 +1,11 @@
 @interface VCSessionMessageBufferElement
-- (VCSessionMessageBufferElement)initWithMessage:(id)a3 sequenceNumber:(unint64_t)a4 retryNumber:(unint64_t)a5;
+- (VCSessionMessageBufferElement)initWithMessage:(id)message sequenceNumber:(unint64_t)number retryNumber:(unint64_t)retryNumber;
 - (void)dealloc;
 @end
 
 @implementation VCSessionMessageBufferElement
 
-- (VCSessionMessageBufferElement)initWithMessage:(id)a3 sequenceNumber:(unint64_t)a4 retryNumber:(unint64_t)a5
+- (VCSessionMessageBufferElement)initWithMessage:(id)message sequenceNumber:(unint64_t)number retryNumber:(unint64_t)retryNumber
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -13,9 +13,9 @@
   v8 = [(VCSessionMessageBufferElement *)&v10 init];
   if (v8)
   {
-    v8->_message = a3;
-    v8->_sequenceNumber = a4;
-    v8->_retryNumber = a5;
+    v8->_message = message;
+    v8->_sequenceNumber = number;
+    v8->_retryNumber = retryNumber;
   }
 
   return v8;

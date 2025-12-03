@@ -1,58 +1,58 @@
 @interface PKPassTileAccessorySpinner
-- (BOOL)_isEqual:(id)a3;
-- (BOOL)_setUpWithDictionary:(id)a3;
-- (PKPassTileAccessorySpinner)initWithCoder:(id)a3;
-- (id)createResolvedAccessoryWithBundle:(id)a3 privateBundle:(id)a4;
+- (BOOL)_isEqual:(id)equal;
+- (BOOL)_setUpWithDictionary:(id)dictionary;
+- (PKPassTileAccessorySpinner)initWithCoder:(id)coder;
+- (id)createResolvedAccessoryWithBundle:(id)bundle privateBundle:(id)privateBundle;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassTileAccessorySpinner
 
-- (BOOL)_setUpWithDictionary:(id)a3
+- (BOOL)_setUpWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v7.receiver = self;
   v7.super_class = PKPassTileAccessorySpinner;
-  v5 = [(PKPassTileAccessory *)&v7 _setUpWithDictionary:v4];
+  v5 = [(PKPassTileAccessory *)&v7 _setUpWithDictionary:dictionaryCopy];
   if (v5)
   {
-    self->_spinnerEnabled = [v4 PKBoolForKey:@"spinnerEnabled"];
+    self->_spinnerEnabled = [dictionaryCopy PKBoolForKey:@"spinnerEnabled"];
   }
 
   return v5;
 }
 
-- (id)createResolvedAccessoryWithBundle:(id)a3 privateBundle:(id)a4
+- (id)createResolvedAccessoryWithBundle:(id)bundle privateBundle:(id)privateBundle
 {
   v6.receiver = self;
   v6.super_class = PKPassTileAccessorySpinner;
-  result = [(PKPassTileAccessory *)&v6 createResolvedAccessoryWithBundle:a3 privateBundle:a4];
+  result = [(PKPassTileAccessory *)&v6 createResolvedAccessoryWithBundle:bundle privateBundle:privateBundle];
   *(result + 24) = self->_spinnerEnabled;
   return result;
 }
 
-- (PKPassTileAccessorySpinner)initWithCoder:(id)a3
+- (PKPassTileAccessorySpinner)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKPassTileAccessorySpinner;
-  v5 = [(PKPassTileAccessory *)&v7 initWithCoder:v4];
+  v5 = [(PKPassTileAccessory *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_spinnerEnabled = [v4 decodeBoolForKey:@"spinnerEnabled"];
+    v5->_spinnerEnabled = [coderCopy decodeBoolForKey:@"spinnerEnabled"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPassTileAccessorySpinner;
-  v4 = a3;
-  [(PKPassTileAccessory *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_spinnerEnabled forKey:{@"spinnerEnabled", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKPassTileAccessory *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_spinnerEnabled forKey:{@"spinnerEnabled", v5.receiver, v5.super_class}];
 }
 
 - (unint64_t)hash
@@ -66,14 +66,14 @@
   return SipHash();
 }
 
-- (BOOL)_isEqual:(id)a3
+- (BOOL)_isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = PKPassTileAccessorySpinner;
-  if ([(PKPassTileAccessory *)&v7 _isEqual:v4])
+  if ([(PKPassTileAccessory *)&v7 _isEqual:equalCopy])
   {
-    v5 = v4[24] == self->_spinnerEnabled;
+    v5 = equalCopy[24] == self->_spinnerEnabled;
   }
 
   else

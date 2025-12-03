@@ -2,15 +2,15 @@
 - (BOOL)_isVideoFrameRequest;
 - (BOOL)representsShareableHighQualityResource;
 - (BOOL)shouldReportProgress;
-- (PHImageRequestContext)initWithRequestID:(int)a3 managerID:(unint64_t)a4 asset:(id)a5 displaySpec:(id)a6 options:(id)a7 resultHandler:(id)a8;
+- (PHImageRequestContext)initWithRequestID:(int)d managerID:(unint64_t)iD asset:(id)asset displaySpec:(id)spec options:(id)options resultHandler:(id)handler;
 - (id)_lazyProgress;
-- (id)_produceFinalImageRequestForRequest:(id)a3;
-- (id)_produceIntermediateImageRequestForRequest:(id)a3;
+- (id)_produceFinalImageRequestForRequest:(id)request;
+- (id)_produceIntermediateImageRequestForRequest:(id)request;
 - (id)_videoBehavior;
 - (id)initialRequests;
-- (id)produceChildRequestsForRequest:(id)a3 reportingIsLocallyAvailable:(BOOL)a4 isDegraded:(BOOL)a5 result:(id)a6;
+- (id)produceChildRequestsForRequest:(id)request reportingIsLocallyAvailable:(BOOL)available isDegraded:(BOOL)degraded result:(id)result;
 - (id)progresses;
-- (void)processMediaResult:(id)a3 forRequest:(id)a4;
+- (void)processMediaResult:(id)result forRequest:(id)request;
 @end
 
 @implementation PHImageRequestContext
@@ -19,13 +19,13 @@
 {
   v5.receiver = self;
   v5.super_class = PHImageRequestContext;
-  v3 = [(PHMediaRequestContext *)&v5 shouldReportProgress];
-  if (v3)
+  shouldReportProgress = [(PHMediaRequestContext *)&v5 shouldReportProgress];
+  if (shouldReportProgress)
   {
-    LOBYTE(v3) = [(PHImageRequestOptions *)self->_imageOptions isNetworkAccessAllowed];
+    LOBYTE(shouldReportProgress) = [(PHImageRequestOptions *)self->_imageOptions isNetworkAccessAllowed];
   }
 
-  return v3;
+  return shouldReportProgress;
 }
 
 - (id)progresses
@@ -33,8 +33,8 @@
   v6[1] = *MEMORY[0x1E69E9840];
   if ([(PHImageRequestContext *)self shouldReportProgress])
   {
-    v3 = [(PHImageRequestContext *)self _lazyProgress];
-    v6[0] = v3;
+    _lazyProgress = [(PHImageRequestContext *)self _lazyProgress];
+    v6[0] = _lazyProgress;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   }
 
@@ -66,19 +66,19 @@
   if ([(PHImageRequestContext *)self _isVideoFrameRequest])
   {
     v3 = [PHVideoRequest alloc];
-    v4 = [(PHMediaRequestContext *)self requestID];
-    v5 = [(PHMediaRequestContext *)self nextRequestIndex];
-    v6 = [(PHImageRequestContext *)self type];
-    v7 = [(PHMediaRequestContext *)self managerID];
-    v8 = [(PHMediaRequestContext *)self asset];
-    v9 = [(PHMediaRequestContext *)self displaySpec];
-    v10 = [(PHImageRequestContext *)self _videoBehavior];
-    v11 = [(PHVideoRequest *)v3 initWithRequestID:v4 requestIndex:v5 contextType:v6 managerID:v7 asset:v8 displaySpec:v9 behaviorSpec:v10 delegate:self];
+    requestID = [(PHMediaRequestContext *)self requestID];
+    nextRequestIndex = [(PHMediaRequestContext *)self nextRequestIndex];
+    type = [(PHImageRequestContext *)self type];
+    managerID = [(PHMediaRequestContext *)self managerID];
+    asset = [(PHMediaRequestContext *)self asset];
+    displaySpec = [(PHMediaRequestContext *)self displaySpec];
+    _videoBehavior = [(PHImageRequestContext *)self _videoBehavior];
+    v11 = [(PHVideoRequest *)v3 initWithRequestID:requestID requestIndex:nextRequestIndex contextType:type managerID:managerID asset:asset displaySpec:displaySpec behaviorSpec:_videoBehavior delegate:self];
 
     v12 = PLImageManagerGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v11 identifierString];
+      identifierString = [v11 identifierString];
       imageOptions = self->_imageOptions;
       if (imageOptions)
       {
@@ -92,7 +92,7 @@
 
       v45 = CMTimeCopyDescription(0, &buf);
       LODWORD(buf.value) = 138543618;
-      *(&buf.value + 4) = v13;
+      *(&buf.value + 4) = identifierString;
       LOWORD(buf.flags) = 2114;
       *(&buf.flags + 2) = v45;
       _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_DEFAULT, "[RM]: %{public}@ starting video request to load video frame at time: %{public}@", &buf, 0x16u);
@@ -105,51 +105,51 @@
   else if (([PHImageRequestBehaviorSpec loadingOptionsFromLoadingMode:[(PHImageRequestOptions *)self->_imageOptions loadingMode]]& 7) != 0)
   {
     HasSingleRequest = PHImageRequestDeliveryModeHasSingleRequest([(PHImageRequestOptions *)self->_imageOptions deliveryMode]);
-    v15 = [(PHImageRequestContext *)self imageOptions];
-    v16 = [(PHMediaRequestContext *)self asset];
-    v11 = [PHImageRequestBehaviorSpec imageRequestInitialBehaviorSpecWithImageRequestOptions:v15 asset:v16];
+    imageOptions = [(PHImageRequestContext *)self imageOptions];
+    asset2 = [(PHMediaRequestContext *)self asset];
+    v11 = [PHImageRequestBehaviorSpec imageRequestInitialBehaviorSpecWithImageRequestOptions:imageOptions asset:asset2];
 
     v17 = [PHImageRequest alloc];
-    v18 = [(PHMediaRequestContext *)self requestID];
-    v19 = [(PHMediaRequestContext *)self nextRequestIndex];
-    v20 = [(PHImageRequestContext *)self type];
-    v21 = [(PHMediaRequestContext *)self managerID];
-    v22 = [(PHMediaRequestContext *)self asset];
-    v23 = [(PHMediaRequestContext *)self displaySpec];
-    v24 = [(PHMediaRequestContext *)self imageResourceChooser];
-    v25 = [(PHImageRequest *)v17 initWithRequestID:v18 requestIndex:v19 contextType:v20 managerID:v21 asset:v22 displaySpec:v23 behaviorSpec:v11 chooser:v24 delegate:self];
+    requestID2 = [(PHMediaRequestContext *)self requestID];
+    nextRequestIndex2 = [(PHMediaRequestContext *)self nextRequestIndex];
+    type2 = [(PHImageRequestContext *)self type];
+    managerID2 = [(PHMediaRequestContext *)self managerID];
+    asset3 = [(PHMediaRequestContext *)self asset];
+    displaySpec2 = [(PHMediaRequestContext *)self displaySpec];
+    imageResourceChooser = [(PHMediaRequestContext *)self imageResourceChooser];
+    v25 = [(PHImageRequest *)v17 initWithRequestID:requestID2 requestIndex:nextRequestIndex2 contextType:type2 managerID:managerID2 asset:asset3 displaySpec:displaySpec2 behaviorSpec:v11 chooser:imageResourceChooser delegate:self];
 
-    v26 = [(PHImageRequestContext *)self _lazyProgress];
-    v27 = [(PHMediaRequest *)v25 identifierString];
-    [(PHMediaRequestContext *)self setProgress:v26 forRequestIdentifier:v27];
+    _lazyProgress = [(PHImageRequestContext *)self _lazyProgress];
+    identifierString2 = [(PHMediaRequest *)v25 identifierString];
+    [(PHMediaRequestContext *)self setProgress:_lazyProgress forRequestIdentifier:identifierString2];
 
     if ([(PHImageRequestOptions *)self->_imageOptions chooseAlchemist])
     {
       v47 = MEMORY[0x1E69BE540];
-      v51 = [(PHMediaRequestContext *)self asset];
-      v48 = [v51 uuid];
-      v50 = [(PHMediaRequestContext *)self asset];
-      v28 = [v50 bundleScope];
-      v49 = [(PHMediaRequestContext *)self asset];
-      v29 = [v49 directory];
-      v30 = [(PHMediaRequestContext *)self asset];
-      v31 = [v30 filename];
-      v32 = [(PHMediaRequestContext *)self asset];
-      v33 = [v32 photoLibrary];
-      v34 = [v33 pathManager];
-      v35 = [v47 pathForAlchemistImageWithUUID:v48 bundleScope:v28 directory:v29 filename:v31 pathManager:v34];
+      asset4 = [(PHMediaRequestContext *)self asset];
+      uuid = [asset4 uuid];
+      asset5 = [(PHMediaRequestContext *)self asset];
+      bundleScope = [asset5 bundleScope];
+      asset6 = [(PHMediaRequestContext *)self asset];
+      directory = [asset6 directory];
+      asset7 = [(PHMediaRequestContext *)self asset];
+      filename = [asset7 filename];
+      asset8 = [(PHMediaRequestContext *)self asset];
+      photoLibrary = [asset8 photoLibrary];
+      pathManager = [photoLibrary pathManager];
+      v35 = [v47 pathForAlchemistImageWithUUID:uuid bundleScope:bundleScope directory:directory filename:filename pathManager:pathManager];
 
       v36 = [MEMORY[0x1E695DFF8] fileURLWithPath:v35 isDirectory:0];
-      v37 = [*MEMORY[0x1E6982E00] identifier];
-      [(PHImageRequest *)v25 configureWithURL:v36 uniformTypeIdentifier:v37 exifOrientation:1];
+      identifier = [*MEMORY[0x1E6982E00] identifier];
+      [(PHImageRequest *)v25 configureWithURL:v36 uniformTypeIdentifier:identifier exifOrientation:1];
     }
 
-    v38 = [(PHImageRequestOptions *)self->_imageOptions contextualVideoThumbnailIdentifier];
+    contextualVideoThumbnailIdentifier = [(PHImageRequestOptions *)self->_imageOptions contextualVideoThumbnailIdentifier];
 
-    if (v38)
+    if (contextualVideoThumbnailIdentifier)
     {
-      v39 = [(PHMediaRequestContext *)self asset];
-      v40 = [v39 managedObjectContextForFetchingResources];
+      asset9 = [(PHMediaRequestContext *)self asset];
+      managedObjectContextForFetchingResources = [asset9 managedObjectContextForFetchingResources];
 
       buf.value = 0;
       *&buf.timescale = &buf;
@@ -162,15 +162,15 @@
       v53[2] = __40__PHImageRequestContext_initialRequests__block_invoke;
       v53[3] = &unk_1E75AA3F8;
       v53[4] = self;
-      v41 = v40;
+      v41 = managedObjectContextForFetchingResources;
       v54 = v41;
       p_buf = &buf;
       [v41 performBlockAndWait:v53];
       v42 = *(*&buf.timescale + 40);
       if (v42)
       {
-        v43 = [MEMORY[0x1E69BE6D0] utiForContextualVideoThumbnail];
-        [(PHImageRequest *)v25 configureWithURL:v42 uniformTypeIdentifier:v43 exifOrientation:1];
+        utiForContextualVideoThumbnail = [MEMORY[0x1E69BE6D0] utiForContextualVideoThumbnail];
+        [(PHImageRequest *)v25 configureWithURL:v42 uniformTypeIdentifier:utiForContextualVideoThumbnail exifOrientation:1];
       }
 
       _Block_object_dispose(&buf, 8);
@@ -206,8 +206,8 @@
 
 - (BOOL)_isVideoFrameRequest
 {
-  v3 = [(PHMediaRequestContext *)self asset];
-  if ([v3 isVideo])
+  asset = [(PHMediaRequestContext *)self asset];
+  if ([asset isVideo])
   {
     imageOptions = self->_imageOptions;
     if (imageOptions)
@@ -230,26 +230,26 @@
   return v5;
 }
 
-- (void)processMediaResult:(id)a3 forRequest:(id)a4
+- (void)processMediaResult:(id)result forRequest:(id)request
 {
   v56 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  requestCopy = request;
   if (self->super._resultHandler)
   {
-    v9 = [(PHImageRequestContext *)self _isVideoFrameRequest];
-    v10 = v7;
+    _isVideoFrameRequest = [(PHImageRequestContext *)self _isVideoFrameRequest];
+    v10 = resultCopy;
     v11 = v10;
-    if (v9)
+    if (_isVideoFrameRequest)
     {
-      v12 = [v10 videoURL];
+      videoURL = [v10 videoURL];
 
-      if (v12)
+      if (videoURL)
       {
         v13 = PLImageManagerGetLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v8 identifierString];
+          identifierString = [requestCopy identifierString];
           imageOptions = self->_imageOptions;
           if (imageOptions)
           {
@@ -262,19 +262,19 @@
           }
 
           v34 = CMTimeCopyDescription(0, &buf);
-          v35 = [v11 videoURL];
-          v36 = [v35 path];
+          videoURL2 = [v11 videoURL];
+          path = [videoURL2 path];
           LODWORD(buf.value) = 138543874;
-          *(&buf.value + 4) = v14;
+          *(&buf.value + 4) = identifierString;
           LOWORD(buf.flags) = 2114;
           *(&buf.flags + 2) = v34;
           HIWORD(buf.epoch) = 2112;
-          v55 = v36;
+          v55 = path;
           _os_log_impl(&dword_19C86F000, v13, OS_LOG_TYPE_DEFAULT, "[RM]: %{public}@ generating video frame at time: %{public}@, file path: '%@'", &buf, 0x20u);
         }
 
         v37 = MEMORY[0x1E69BE6D8];
-        v38 = [v11 videoURL];
+        videoURL3 = [v11 videoURL];
         v39 = self->_imageOptions;
         if (v39)
         {
@@ -291,8 +291,8 @@
         v52[2] = __55__PHImageRequestContext_processMediaResult_forRequest___block_invoke;
         v52[3] = &unk_1E75A88E0;
         v52[4] = self;
-        v53 = v8;
-        [v37 generateKeyFrameFromVideoURL:v38 time:&buf completion:v52];
+        v53 = requestCopy;
+        [v37 generateKeyFrameFromVideoURL:videoURL3 time:&buf completion:v52];
       }
 
       else
@@ -303,9 +303,9 @@
 
     else
     {
-      v16 = v8;
-      v17 = [v16 behaviorSpec];
-      v18 = [v17 choosingPolicy];
+      v16 = requestCopy;
+      behaviorSpec = [v16 behaviorSpec];
+      choosingPolicy = [behaviorSpec choosingPolicy];
 
       if ([(PHImageRequestOptions *)self->_imageOptions deliveryMode])
       {
@@ -314,7 +314,7 @@
 
       else
       {
-        v19 = v18 == 3;
+        v19 = choosingPolicy == 3;
       }
 
       v20 = v19;
@@ -326,8 +326,8 @@
 
       else
       {
-        v22 = v18 == 1;
-        v23 = v18 != 1;
+        v22 = choosingPolicy == 1;
+        v23 = choosingPolicy != 1;
         if (v22)
         {
           v21 = 1;
@@ -351,17 +351,17 @@
         v32 = PLImageManagerGetLog();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
         {
-          v33 = [v16 identifierString];
+          identifierString2 = [v16 identifierString];
           LODWORD(buf.value) = 138412290;
-          *(&buf.value + 4) = v33;
+          *(&buf.value + 4) = identifierString2;
           _os_log_impl(&dword_19C86F000, v32, OS_LOG_TYPE_DEBUG, "[RM]: %@ image request context avoiding delivering out of order result.", &buf, 0xCu);
         }
 
         if (PHImageManagerRecordEnabled())
         {
-          v42 = [v16 requestID];
-          v43 = [v16 identifierString];
-          [PHImageManagerRequestTracer traceMessageForRequestID:v42 message:@"[RM]: %@ image request context avoiding delivering out of order result.", v43];
+          requestID = [v16 requestID];
+          identifierString3 = [v16 identifierString];
+          [PHImageManagerRequestTracer traceMessageForRequestID:requestID message:@"[RM]: %@ image request context avoiding delivering out of order result.", identifierString3];
         }
       }
 
@@ -401,11 +401,11 @@ LABEL_64:
             if (PHImageManagerRecordEnabled())
             {
               v44 = v23;
-              v45 = [v16 requestID];
-              v46 = [v16 identifierString];
-              v47 = v45;
+              requestID2 = [v16 requestID];
+              identifierString4 = [v16 identifierString];
+              v47 = requestID2;
               v23 = v44;
-              [PHImageManagerRequestTracer traceMessageForRequestID:v47 message:@"[RM]: %@ image request context delivering %@ result.", v46, off_1E75A8900[v21 - 1]];
+              [PHImageManagerRequestTracer traceMessageForRequestID:v47 message:@"[RM]: %@ image request context delivering %@ result.", identifierString4, off_1E75A8900[v21 - 1]];
             }
 
             (*(self->super._resultHandler + 2))();
@@ -417,17 +417,17 @@ LABEL_64:
             v30 = PLImageManagerGetLog();
             if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
             {
-              v31 = [v16 identifierString];
+              identifierString5 = [v16 identifierString];
               LODWORD(buf.value) = 138412290;
-              *(&buf.value + 4) = v31;
+              *(&buf.value + 4) = identifierString5;
               _os_log_impl(&dword_19C86F000, v30, OS_LOG_TYPE_DEBUG, "[RM]: %@ image request context delivering delayed final result.", &buf, 0xCu);
             }
 
             if (PHImageManagerRecordEnabled())
             {
-              v48 = [v16 requestID];
-              v49 = [v16 identifierString];
-              [PHImageManagerRequestTracer traceMessageForRequestID:v48 message:@"[RM]: %@ image request context delivering delayed final result.", v49];
+              requestID3 = [v16 requestID];
+              identifierString6 = [v16 identifierString];
+              [PHImageManagerRequestTracer traceMessageForRequestID:requestID3 message:@"[RM]: %@ image request context delivering delayed final result.", identifierString6];
             }
 
             (*(self->super._resultHandler + 2))();
@@ -440,21 +440,21 @@ LABEL_64:
           v40 = PLImageManagerGetLog();
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
           {
-            v41 = [v16 identifierString];
+            identifierString7 = [v16 identifierString];
             LODWORD(buf.value) = 138412290;
-            *(&buf.value + 4) = v41;
+            *(&buf.value + 4) = identifierString7;
             _os_log_impl(&dword_19C86F000, v40, OS_LOG_TYPE_DEBUG, "[RM]: %@ image request delaying empty final result while waiting on secondary intermediate...", &buf, 0xCu);
           }
 
           if (PHImageManagerRecordEnabled())
           {
-            v50 = [v16 requestID];
-            v51 = [v16 identifierString];
-            [PHImageManagerRequestTracer traceMessageForRequestID:v50 message:@"[RM]: %@ image request delaying empty final result while waiting on secondary intermediate...", v51];
+            requestID4 = [v16 requestID];
+            identifierString8 = [v16 identifierString];
+            [PHImageManagerRequestTracer traceMessageForRequestID:requestID4 message:@"[RM]: %@ image request delaying empty final result while waiting on secondary intermediate...", identifierString8];
           }
 
           (*(self->super._resultHandler + 2))();
-          objc_storeStrong(&self->_delayedFinalInvalidDataResult, a3);
+          objc_storeStrong(&self->_delayedFinalInvalidDataResult, result);
         }
       }
 
@@ -473,20 +473,20 @@ void __55__PHImageRequestContext_processMediaResult_forRequest___block_invoke(ui
   (*(*(*(a1 + 32) + 8) + 16))();
 }
 
-- (id)produceChildRequestsForRequest:(id)a3 reportingIsLocallyAvailable:(BOOL)a4 isDegraded:(BOOL)a5 result:(id)a6
+- (id)produceChildRequestsForRequest:(id)request reportingIsLocallyAvailable:(BOOL)available isDegraded:(BOOL)degraded result:(id)result
 {
-  v6 = a5;
-  v7 = a4;
+  degradedCopy = degraded;
+  availableCopy = available;
   v35 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  requestCopy = request;
   if ([(PHImageRequestContext *)self _isVideoFrameRequest])
   {
     v10 = 0;
     goto LABEL_24;
   }
 
-  v11 = v9;
-  if (v7 && !v6)
+  v11 = requestCopy;
+  if (availableCopy && !degradedCopy)
   {
     goto LABEL_22;
   }
@@ -496,10 +496,10 @@ void __55__PHImageRequestContext_processMediaResult_forRequest___block_invoke(ui
     goto LABEL_22;
   }
 
-  v12 = [(PHImageRequest *)v11 behaviorSpec];
-  v13 = [v12 choosingPolicy];
+  behaviorSpec = [(PHImageRequest *)v11 behaviorSpec];
+  choosingPolicy = [behaviorSpec choosingPolicy];
 
-  if (v13 == 3)
+  if (choosingPolicy == 3)
   {
     goto LABEL_22;
   }
@@ -507,11 +507,11 @@ void __55__PHImageRequestContext_processMediaResult_forRequest___block_invoke(ui
   initialRequest = self->_initialRequest;
   if (initialRequest == v11)
   {
-    v23 = [(PHImageRequest *)initialRequest behaviorSpec];
-    v24 = [v23 choosingPolicy];
+    behaviorSpec2 = [(PHImageRequest *)initialRequest behaviorSpec];
+    choosingPolicy2 = [behaviorSpec2 choosingPolicy];
 
     v25 = [(PHImageRequestOptions *)self->_imageOptions opportunisticDegradedImagesToReturn]& 2;
-    if (v24 != 1 || v25 == 0)
+    if (choosingPolicy2 != 1 || v25 == 0)
     {
       p_finalRequest = &self->_finalRequest;
       if (self->_finalRequest)
@@ -560,18 +560,18 @@ LABEL_29:
       v18 = PLImageManagerGetLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        v19 = [*p_finalRequest identifierString];
+        identifierString = [*p_finalRequest identifierString];
         *buf = 138412290;
-        v34 = v19;
+        v34 = identifierString;
         _os_log_impl(&dword_19C86F000, v18, OS_LOG_TYPE_DEBUG, "[RM]: %@ starting final image request", buf, 0xCu);
       }
 
       if (PHImageManagerRecordEnabled())
       {
-        v20 = [(PHMediaRequest *)v11 requestID];
+        requestID = [(PHMediaRequest *)v11 requestID];
         [*p_finalRequest identifierString];
         v22 = v21 = p_finalRequest;
-        [PHImageManagerRequestTracer traceMessageForRequestID:v20 message:@"[RM]: %@ starting final image request", v22];
+        [PHImageManagerRequestTracer traceMessageForRequestID:requestID message:@"[RM]: %@ starting final image request", v22];
 
         p_finalRequest = v21;
       }
@@ -607,9 +607,9 @@ void __40__PHImageRequestContext_initialRequests__block_invoke(uint64_t a1)
 
 - (BOOL)representsShareableHighQualityResource
 {
-  v6 = [(PHMediaRequestContext *)self asset];
-  v7 = [v6 playbackStyle];
-  if (v7 == 1)
+  asset = [(PHMediaRequestContext *)self asset];
+  playbackStyle = [asset playbackStyle];
+  if (playbackStyle == 1)
   {
     v8 = 0;
     v9 = 0;
@@ -617,8 +617,8 @@ void __40__PHImageRequestContext_initialRequests__block_invoke(uint64_t a1)
 
   else
   {
-    v2 = [(PHMediaRequestContext *)self asset];
-    if ([v2 playbackStyle] == 3)
+    asset2 = [(PHMediaRequestContext *)self asset];
+    if ([asset2 playbackStyle] == 3)
     {
       v8 = 0;
       v9 = 0;
@@ -626,8 +626,8 @@ void __40__PHImageRequestContext_initialRequests__block_invoke(uint64_t a1)
 
     else
     {
-      v3 = [(PHMediaRequestContext *)self asset];
-      if ([v3 playbackStyle] == 2)
+      asset3 = [(PHMediaRequestContext *)self asset];
+      if ([asset3 playbackStyle] == 2)
       {
         v9 = 0;
         v8 = 1;
@@ -635,26 +635,26 @@ void __40__PHImageRequestContext_initialRequests__block_invoke(uint64_t a1)
 
       else
       {
-        v15 = [(PHMediaRequestContext *)self asset];
-        if ([v15 playbackStyle] != 5)
+        asset4 = [(PHMediaRequestContext *)self asset];
+        if ([asset4 playbackStyle] != 5)
         {
 
           v13 = 0;
           goto LABEL_21;
         }
 
-        v16 = v15;
+        v16 = asset4;
         v8 = 1;
         v9 = 1;
       }
     }
   }
 
-  v10 = [(PHMediaRequestContext *)self displaySpec];
-  if (v10)
+  displaySpec = [(PHMediaRequestContext *)self displaySpec];
+  if (displaySpec)
   {
-    v4 = [(PHMediaRequestContext *)self displaySpec];
-    [v4 targetSize];
+    displaySpec2 = [(PHMediaRequestContext *)self displaySpec];
+    [displaySpec2 targetSize];
     if (v12 == -1.0 && v11 == -1.0)
     {
       v13 = 1;
@@ -665,7 +665,7 @@ void __40__PHImageRequestContext_initialRequests__block_invoke(uint64_t a1)
   if (([(PHImageRequestOptions *)self->_imageOptions loadingMode]& 2) != 0)
   {
     v13 = [(PHImageRequestOptions *)self->_imageOptions deliveryMode]== PHImageRequestOptionsDeliveryModeHighQualityFormat;
-    if (v10)
+    if (displaySpec)
     {
 LABEL_13:
 
@@ -687,7 +687,7 @@ LABEL_18:
   else
   {
     v13 = 0;
-    if (v10)
+    if (displaySpec)
     {
       goto LABEL_13;
     }
@@ -706,7 +706,7 @@ LABEL_19:
   }
 
 LABEL_20:
-  if (v7 != 1)
+  if (playbackStyle != 1)
   {
 LABEL_21:
   }
@@ -714,89 +714,89 @@ LABEL_21:
   return v13;
 }
 
-- (id)_produceIntermediateImageRequestForRequest:(id)a3
+- (id)_produceIntermediateImageRequestForRequest:(id)request
 {
   v29 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v4 = [v24 behaviorSpec];
-  v5 = [(PHImageRequestContext *)self imageOptions];
-  v6 = [(PHMediaRequestContext *)self asset];
-  v7 = [PHImageRequestBehaviorSpec imageRequestIntermediateBehaviorSpecWithPreviousBehaviorSpec:v4 options:v5 asset:v6];
+  requestCopy = request;
+  behaviorSpec = [requestCopy behaviorSpec];
+  imageOptions = [(PHImageRequestContext *)self imageOptions];
+  asset = [(PHMediaRequestContext *)self asset];
+  v7 = [PHImageRequestBehaviorSpec imageRequestIntermediateBehaviorSpecWithPreviousBehaviorSpec:behaviorSpec options:imageOptions asset:asset];
 
   v8 = [PHImageRequest alloc];
-  v9 = [(PHMediaRequestContext *)self requestID];
-  v10 = [(PHMediaRequestContext *)self nextRequestIndex];
-  v11 = [(PHImageRequestContext *)self type];
-  v12 = [(PHMediaRequestContext *)self managerID];
-  v13 = [(PHMediaRequestContext *)self asset];
-  v14 = [(PHMediaRequestContext *)self displaySpec];
-  v15 = [(PHMediaRequestContext *)self imageResourceChooser];
-  v16 = [(PHImageRequest *)v8 initWithRequestID:v9 requestIndex:v10 contextType:v11 managerID:v12 asset:v13 displaySpec:v14 behaviorSpec:v7 chooser:v15 delegate:self];
+  requestID = [(PHMediaRequestContext *)self requestID];
+  nextRequestIndex = [(PHMediaRequestContext *)self nextRequestIndex];
+  type = [(PHImageRequestContext *)self type];
+  managerID = [(PHMediaRequestContext *)self managerID];
+  asset2 = [(PHMediaRequestContext *)self asset];
+  displaySpec = [(PHMediaRequestContext *)self displaySpec];
+  imageResourceChooser = [(PHMediaRequestContext *)self imageResourceChooser];
+  v16 = [(PHImageRequest *)v8 initWithRequestID:requestID requestIndex:nextRequestIndex contextType:type managerID:managerID asset:asset2 displaySpec:displaySpec behaviorSpec:v7 chooser:imageResourceChooser delegate:self];
 
   v17 = PLImageManagerGetLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [v24 identifierString];
-    v19 = [(PHMediaRequest *)v16 identifierString];
+    identifierString = [requestCopy identifierString];
+    identifierString2 = [(PHMediaRequest *)v16 identifierString];
     *buf = 138412546;
-    v26 = v18;
+    v26 = identifierString;
     v27 = 2112;
-    v28 = v19;
+    v28 = identifierString2;
     _os_log_impl(&dword_19C86F000, v17, OS_LOG_TYPE_DEBUG, "[RM]: %@ Spawned intermediate (SPI) child request: %@", buf, 0x16u);
   }
 
   if (PHImageManagerRecordEnabled())
   {
-    v21 = [v24 requestID];
-    v22 = [v24 identifierString];
-    v23 = [(PHMediaRequest *)v16 identifierString];
-    [PHImageManagerRequestTracer traceMessageForRequestID:v21 message:@"[RM]: %@ Spawned intermediate (SPI) child request: %@", v22, v23];
+    requestID2 = [requestCopy requestID];
+    identifierString3 = [requestCopy identifierString];
+    identifierString4 = [(PHMediaRequest *)v16 identifierString];
+    [PHImageManagerRequestTracer traceMessageForRequestID:requestID2 message:@"[RM]: %@ Spawned intermediate (SPI) child request: %@", identifierString3, identifierString4];
   }
 
   return v16;
 }
 
-- (id)_produceFinalImageRequestForRequest:(id)a3
+- (id)_produceFinalImageRequestForRequest:(id)request
 {
   v31 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v4 = [v26 behaviorSpec];
-  v5 = [(PHImageRequestContext *)self imageOptions];
-  v6 = [(PHMediaRequestContext *)self asset];
-  v7 = [PHImageRequestBehaviorSpec imageRequestBestBehaviorSpecWithPreviousBehaviorSpec:v4 options:v5 asset:v6];
+  requestCopy = request;
+  behaviorSpec = [requestCopy behaviorSpec];
+  imageOptions = [(PHImageRequestContext *)self imageOptions];
+  asset = [(PHMediaRequestContext *)self asset];
+  v7 = [PHImageRequestBehaviorSpec imageRequestBestBehaviorSpecWithPreviousBehaviorSpec:behaviorSpec options:imageOptions asset:asset];
 
   v8 = [PHImageRequest alloc];
-  v9 = [(PHMediaRequestContext *)self requestID];
-  v10 = [(PHMediaRequestContext *)self nextRequestIndex];
-  v11 = [(PHImageRequestContext *)self type];
-  v12 = [(PHMediaRequestContext *)self managerID];
-  v13 = [(PHMediaRequestContext *)self asset];
-  v14 = [(PHMediaRequestContext *)self displaySpec];
-  v15 = [(PHMediaRequestContext *)self imageResourceChooser];
-  v16 = [(PHImageRequest *)v8 initWithRequestID:v9 requestIndex:v10 contextType:v11 managerID:v12 asset:v13 displaySpec:v14 behaviorSpec:v7 chooser:v15 delegate:self];
+  requestID = [(PHMediaRequestContext *)self requestID];
+  nextRequestIndex = [(PHMediaRequestContext *)self nextRequestIndex];
+  type = [(PHImageRequestContext *)self type];
+  managerID = [(PHMediaRequestContext *)self managerID];
+  asset2 = [(PHMediaRequestContext *)self asset];
+  displaySpec = [(PHMediaRequestContext *)self displaySpec];
+  imageResourceChooser = [(PHMediaRequestContext *)self imageResourceChooser];
+  v16 = [(PHImageRequest *)v8 initWithRequestID:requestID requestIndex:nextRequestIndex contextType:type managerID:managerID asset:asset2 displaySpec:displaySpec behaviorSpec:v7 chooser:imageResourceChooser delegate:self];
 
-  v17 = [(PHImageRequestContext *)self _lazyProgress];
-  v18 = [(PHMediaRequest *)v16 identifierString];
-  [(PHMediaRequestContext *)self setProgress:v17 forRequestIdentifier:v18];
+  _lazyProgress = [(PHImageRequestContext *)self _lazyProgress];
+  identifierString = [(PHMediaRequest *)v16 identifierString];
+  [(PHMediaRequestContext *)self setProgress:_lazyProgress forRequestIdentifier:identifierString];
 
   v19 = PLImageManagerGetLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
-    v20 = [v26 identifierString];
-    v21 = [(PHMediaRequest *)v16 identifierString];
+    identifierString2 = [requestCopy identifierString];
+    identifierString3 = [(PHMediaRequest *)v16 identifierString];
     *buf = 138412546;
-    v28 = v20;
+    v28 = identifierString2;
     v29 = 2112;
-    v30 = v21;
+    v30 = identifierString3;
     _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_DEBUG, "[RM]: %@ Spawned final (best) child request: %@", buf, 0x16u);
   }
 
   if (PHImageManagerRecordEnabled())
   {
-    v23 = [v26 requestID];
-    v24 = [v26 identifierString];
-    v25 = [(PHMediaRequest *)v16 identifierString];
-    [PHImageManagerRequestTracer traceMessageForRequestID:v23 message:@"[RM]: %@ Spawned final (best) child request: %@", v24, v25];
+    requestID2 = [requestCopy requestID];
+    identifierString4 = [requestCopy identifierString];
+    identifierString5 = [(PHMediaRequest *)v16 identifierString];
+    [PHImageManagerRequestTracer traceMessageForRequestID:requestID2 message:@"[RM]: %@ Spawned final (best) child request: %@", identifierString4, identifierString5];
   }
 
   return v16;
@@ -812,11 +812,11 @@ LABEL_21:
 
   else
   {
-    v5 = [(PHMediaRequestContext *)self displaySpec];
-    v6 = [(PHMediaRequestContext *)self asset];
-    v7 = [v6 pixelWidth];
-    v8 = [(PHMediaRequestContext *)self asset];
-    [v5 requestSizeFromFullSizedWidth:v7 height:{objc_msgSend(v8, "pixelHeight")}];
+    displaySpec = [(PHMediaRequestContext *)self displaySpec];
+    asset = [(PHMediaRequestContext *)self asset];
+    pixelWidth = [asset pixelWidth];
+    asset2 = [(PHMediaRequestContext *)self asset];
+    [displaySpec requestSizeFromFullSizedWidth:pixelWidth height:{objc_msgSend(asset2, "pixelHeight")}];
     v10 = v9;
     v12 = v11;
 
@@ -836,14 +836,14 @@ LABEL_21:
   [(PHVideoRequestBehaviorSpec *)v3 setStreamingAllowed:[(PHImageRequestOptions *)self->_imageOptions isNetworkAccessAllowed]];
   [(PHVideoRequestBehaviorSpec *)v3 setDownloadIntent:[(PHImageRequestOptions *)self->_imageOptions downloadIntent]];
   [(PHVideoRequestBehaviorSpec *)v3 setDownloadPriority:[(PHImageRequestOptions *)self->_imageOptions downloadPriority]];
-  v13 = [(PHImageRequestOptions *)self->_imageOptions version];
+  version = [(PHImageRequestOptions *)self->_imageOptions version];
   v14 = 8;
-  if (v13 != 8)
+  if (version != 8)
   {
     v14 = 0;
   }
 
-  if ((v13 - 1) >= 2)
+  if ((version - 1) >= 2)
   {
     v15 = v14;
   }
@@ -858,18 +858,18 @@ LABEL_21:
   return v3;
 }
 
-- (PHImageRequestContext)initWithRequestID:(int)a3 managerID:(unint64_t)a4 asset:(id)a5 displaySpec:(id)a6 options:(id)a7 resultHandler:(id)a8
+- (PHImageRequestContext)initWithRequestID:(int)d managerID:(unint64_t)iD asset:(id)asset displaySpec:(id)spec options:(id)options resultHandler:(id)handler
 {
-  v12 = *&a3;
-  v14 = a6;
-  v15 = a7;
+  v12 = *&d;
+  specCopy = spec;
+  optionsCopy = options;
   v23.receiver = self;
   v23.super_class = PHImageRequestContext;
-  v16 = [(PHMediaRequestContext *)&v23 initWithRequestID:v12 managerID:a4 asset:a5 displaySpec:v14 resultHandler:a8];
+  v16 = [(PHMediaRequestContext *)&v23 initWithRequestID:v12 managerID:iD asset:asset displaySpec:specCopy resultHandler:handler];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_imageOptions, a7);
+    objc_storeStrong(&v16->_imageOptions, options);
     v17->_lock_highestResultPhaseDelivered = 0;
     v17->_lock._os_unfair_lock_opaque = 0;
     if ([(PHImageRequestOptions *)v17->_imageOptions isSynchronous])
@@ -904,7 +904,7 @@ LABEL_21:
       }
     }
 
-    if ([v14 hasExplicitCrop] && objc_msgSend(v15, "resizeMode") != 2)
+    if ([specCopy hasExplicitCrop] && objc_msgSend(optionsCopy, "resizeMode") != 2)
     {
       v20 = PLImageManagerGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))

@@ -1,11 +1,11 @@
 @interface SBHFolderIconVisualConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)gridCellSize;
 - (CGSize)gridCellSpacing;
 - (SBHFolderIconVisualConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
@@ -47,7 +47,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   if (result)
@@ -59,10 +59,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -72,7 +72,7 @@
     v5 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v8 = (isKindOfClass & 1) != 0 && (self->_gridCellSize.width == v4->_gridCellSize.width ? (v7 = self->_gridCellSize.height == v4->_gridCellSize.height) : (v7 = 0), v7) && self->_gridCellSpacing.height == v4->_gridCellSpacing.height && self->_gridCellSpacing.width == v4->_gridCellSpacing.width;
+    v8 = (isKindOfClass & 1) != 0 && (self->_gridCellSize.width == equalCopy->_gridCellSize.width ? (v7 = self->_gridCellSize.height == equalCopy->_gridCellSize.height) : (v7 = 0), v7) && self->_gridCellSpacing.height == equalCopy->_gridCellSpacing.height && self->_gridCellSpacing.width == equalCopy->_gridCellSpacing.width;
   }
 
   return v8;
@@ -80,29 +80,29 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBHFolderIconVisualConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHFolderIconVisualConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHFolderIconVisualConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHFolderIconVisualConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHFolderIconVisualConfiguration *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBHFolderIconVisualConfiguration *)self succinctDescriptionBuilder];
   [(SBHFolderIconVisualConfiguration *)self gridCellSize];
-  v5 = [v4 appendSize:@"gridCellSize" withName:?];
+  v5 = [succinctDescriptionBuilder appendSize:@"gridCellSize" withName:?];
   [(SBHFolderIconVisualConfiguration *)self gridCellSpacing];
-  v6 = [v4 appendSize:@"gridCellSpacing" withName:?];
+  v6 = [succinctDescriptionBuilder appendSize:@"gridCellSpacing" withName:?];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

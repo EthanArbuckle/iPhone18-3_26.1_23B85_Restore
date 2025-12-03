@@ -1,29 +1,29 @@
 @interface FLOWLINKSchemaFLOWLINKAction
-- (BOOL)isEqual:(id)a3;
-- (FLOWLINKSchemaFLOWLINKAction)initWithDictionary:(id)a3;
-- (FLOWLINKSchemaFLOWLINKAction)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWLINKSchemaFLOWLINKAction)initWithDictionary:(id)dictionary;
+- (FLOWLINKSchemaFLOWLINKAction)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addParameters:(id)a3;
-- (void)setHasPresentationStyle:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addParameters:(id)parameters;
+- (void)setHasPresentationStyle:(BOOL)style;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWLINKSchemaFLOWLINKAction
 
-- (FLOWLINKSchemaFLOWLINKAction)initWithDictionary:(id)a3
+- (FLOWLINKSchemaFLOWLINKAction)initWithDictionary:(id)dictionary
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = FLOWLINKSchemaFLOWLINKAction;
   v5 = [(FLOWLINKSchemaFLOWLINKAction *)&v29 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(FLOWLINKSchemaFLOWLINKAction *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"actionIdentifierName"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"actionIdentifierName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,21 +39,21 @@
       [(FLOWLINKSchemaFLOWLINKAction *)v5 setActionIdentifierName:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"systemProtocol"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"systemProtocol"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWLINKSchemaFLOWLINKAction setSystemProtocol:](v5, "setSystemProtocol:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"presentationStyle"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"presentationStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWLINKSchemaFLOWLINKAction setPresentationStyle:](v5, "setPresentationStyle:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"parameters"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"parameters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,30 +105,30 @@
   return v5;
 }
 
-- (FLOWLINKSchemaFLOWLINKAction)initWithJSON:(id)a3
+- (FLOWLINKSchemaFLOWLINKAction)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWLINKSchemaFLOWLINKAction *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWLINKSchemaFLOWLINKAction *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWLINKSchemaFLOWLINKAction *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -142,33 +142,33 @@
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_actionIdentifierName)
   {
-    v4 = [(FLOWLINKSchemaFLOWLINKAction *)self actionIdentifierName];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"actionIdentifierName"];
+    actionIdentifierName = [(FLOWLINKSchemaFLOWLINKAction *)self actionIdentifierName];
+    v5 = [actionIdentifierName copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"actionIdentifierName"];
   }
 
   if (self->_linkId)
   {
-    v6 = [(FLOWLINKSchemaFLOWLINKAction *)self linkId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    linkId = [(FLOWLINKSchemaFLOWLINKAction *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
   if ([(NSArray *)self->_parameters count])
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -188,16 +188,16 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          if (v15)
+          dictionaryRepresentation2 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v9 addObject:v15];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v16 = [MEMORY[0x1E695DFB0] null];
-            [v9 addObject:v16];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -207,7 +207,7 @@
       while (v12);
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"parameters"];
+    [dictionary setObject:array forKeyedSubscript:@"parameters"];
   }
 
   has = self->_has;
@@ -224,7 +224,7 @@
       v19 = off_1E78D4C40[v18];
     }
 
-    [v3 setObject:v19 forKeyedSubscript:{@"presentationStyle", v23}];
+    [dictionary setObject:v19 forKeyedSubscript:{@"presentationStyle", v23}];
     has = self->_has;
   }
 
@@ -241,12 +241,12 @@
       v21 = off_1E78D4C58[v20];
     }
 
-    [v3 setObject:v21 forKeyedSubscript:{@"systemProtocol", v23}];
+    [dictionary setObject:v21 forKeyedSubscript:{@"systemProtocol", v23}];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v23];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v23];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -277,28 +277,28 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ [(NSArray *)self->_parameters hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = [(FLOWLINKSchemaFLOWLINKAction *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWLINKSchemaFLOWLINKAction *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_23;
   }
 
-  v7 = [(FLOWLINKSchemaFLOWLINKAction *)self linkId];
-  if (v7)
+  linkId3 = [(FLOWLINKSchemaFLOWLINKAction *)self linkId];
+  if (linkId3)
   {
-    v8 = v7;
-    v9 = [(FLOWLINKSchemaFLOWLINKAction *)self linkId];
-    v10 = [v4 linkId];
-    v11 = [v9 isEqual:v10];
+    v8 = linkId3;
+    linkId4 = [(FLOWLINKSchemaFLOWLINKAction *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v11 = [linkId4 isEqual:linkId5];
 
     if (!v11)
     {
@@ -310,20 +310,20 @@ LABEL_3:
   {
   }
 
-  v5 = [(FLOWLINKSchemaFLOWLINKAction *)self actionIdentifierName];
-  v6 = [v4 actionIdentifierName];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWLINKSchemaFLOWLINKAction *)self actionIdentifierName];
+  linkId2 = [equalCopy actionIdentifierName];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_23;
   }
 
-  v12 = [(FLOWLINKSchemaFLOWLINKAction *)self actionIdentifierName];
-  if (v12)
+  actionIdentifierName = [(FLOWLINKSchemaFLOWLINKAction *)self actionIdentifierName];
+  if (actionIdentifierName)
   {
-    v13 = v12;
-    v14 = [(FLOWLINKSchemaFLOWLINKAction *)self actionIdentifierName];
-    v15 = [v4 actionIdentifierName];
-    v16 = [v14 isEqual:v15];
+    v13 = actionIdentifierName;
+    actionIdentifierName2 = [(FLOWLINKSchemaFLOWLINKAction *)self actionIdentifierName];
+    actionIdentifierName3 = [equalCopy actionIdentifierName];
+    v16 = [actionIdentifierName2 isEqual:actionIdentifierName3];
 
     if (!v16)
     {
@@ -336,7 +336,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v18 = v4[40];
+  v18 = equalCopy[40];
   if ((*&has & 1) != (v18 & 1))
   {
     goto LABEL_24;
@@ -345,13 +345,13 @@ LABEL_3:
   if (*&has)
   {
     systemProtocol = self->_systemProtocol;
-    if (systemProtocol != [v4 systemProtocol])
+    if (systemProtocol != [equalCopy systemProtocol])
     {
       goto LABEL_24;
     }
 
     has = self->_has;
-    v18 = v4[40];
+    v18 = equalCopy[40];
   }
 
   v20 = (*&has >> 1) & 1;
@@ -363,23 +363,23 @@ LABEL_3:
   if (v20)
   {
     presentationStyle = self->_presentationStyle;
-    if (presentationStyle != [v4 presentationStyle])
+    if (presentationStyle != [equalCopy presentationStyle])
     {
       goto LABEL_24;
     }
   }
 
-  v5 = [(FLOWLINKSchemaFLOWLINKAction *)self parameters];
-  v6 = [v4 parameters];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(FLOWLINKSchemaFLOWLINKAction *)self parameters];
+  linkId2 = [equalCopy parameters];
+  if ((linkId != 0) == (linkId2 == 0))
   {
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v22 = [(FLOWLINKSchemaFLOWLINKAction *)self parameters];
-  if (!v22)
+  parameters = [(FLOWLINKSchemaFLOWLINKAction *)self parameters];
+  if (!parameters)
   {
 
 LABEL_27:
@@ -387,10 +387,10 @@ LABEL_27:
     goto LABEL_25;
   }
 
-  v23 = v22;
-  v24 = [(FLOWLINKSchemaFLOWLINKAction *)self parameters];
-  v25 = [v4 parameters];
-  v26 = [v24 isEqual:v25];
+  v23 = parameters;
+  parameters2 = [(FLOWLINKSchemaFLOWLINKAction *)self parameters];
+  parameters3 = [equalCopy parameters];
+  v26 = [parameters2 isEqual:parameters3];
 
   if (v26)
   {
@@ -404,21 +404,21 @@ LABEL_25:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FLOWLINKSchemaFLOWLINKAction *)self linkId];
+  toCopy = to;
+  linkId = [(FLOWLINKSchemaFLOWLINKAction *)self linkId];
 
-  if (v5)
+  if (linkId)
   {
-    v6 = [(FLOWLINKSchemaFLOWLINKAction *)self linkId];
+    linkId2 = [(FLOWLINKSchemaFLOWLINKAction *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(FLOWLINKSchemaFLOWLINKAction *)self actionIdentifierName];
+  actionIdentifierName = [(FLOWLINKSchemaFLOWLINKAction *)self actionIdentifierName];
 
-  if (v7)
+  if (actionIdentifierName)
   {
     PBDataWriterWriteStringField();
   }
@@ -464,27 +464,27 @@ LABEL_25:
   }
 }
 
-- (void)addParameters:(id)a3
+- (void)addParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   parameters = self->_parameters;
-  v8 = v4;
+  v8 = parametersCopy;
   if (!parameters)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_parameters;
-    self->_parameters = v6;
+    self->_parameters = array;
 
-    v4 = v8;
+    parametersCopy = v8;
     parameters = self->_parameters;
   }
 
-  [(NSArray *)parameters addObject:v4];
+  [(NSArray *)parameters addObject:parametersCopy];
 }
 
-- (void)setHasPresentationStyle:(BOOL)a3
+- (void)setHasPresentationStyle:(BOOL)style
 {
-  if (a3)
+  if (style)
   {
     v3 = 2;
   }
@@ -497,23 +497,23 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = FLOWLINKSchemaFLOWLINKAction;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLOWLINKSchemaFLOWLINKAction *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  linkId = [(FLOWLINKSchemaFLOWLINKAction *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLOWLINKSchemaFLOWLINKAction *)self deleteLinkId];
   }
 
-  v9 = [(FLOWLINKSchemaFLOWLINKAction *)self parameters];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  parameters = [(FLOWLINKSchemaFLOWLINKAction *)self parameters];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:parameters underConditions:policyCopy];
   [(FLOWLINKSchemaFLOWLINKAction *)self setParameters:v10];
 
   return v5;

@@ -1,22 +1,22 @@
 @interface VCPVideoFaceMeshAnalyzer
-- (BOOL)updateFocalLengthInPixels:(float)a3;
-- (VCPVideoFaceMeshAnalyzer)initWithFocalLengthInPixels:(float)a3 offline:(BOOL)a4 isFastMode:(BOOL)a5;
-- (int)analyzeFrame:(__CVBuffer *)a3 withFaceRect:(CGRect)a4 withRotation:(int)a5 withTimestamp:(id *)a6;
-- (int)checkResolutionChange:(__CVBuffer *)a3 withRotation:(int)a4;
-- (int)setFrame:(__CVBuffer *)a3;
-- (int)validateFace:(__CVBuffer *)a3 eulerAngles:(float *)a4;
+- (BOOL)updateFocalLengthInPixels:(float)pixels;
+- (VCPVideoFaceMeshAnalyzer)initWithFocalLengthInPixels:(float)pixels offline:(BOOL)offline isFastMode:(BOOL)mode;
+- (int)analyzeFrame:(__CVBuffer *)frame withFaceRect:(CGRect)rect withRotation:(int)rotation withTimestamp:(id *)timestamp;
+- (int)checkResolutionChange:(__CVBuffer *)change withRotation:(int)rotation;
+- (int)setFrame:(__CVBuffer *)frame;
+- (int)validateFace:(__CVBuffer *)face eulerAngles:(float *)angles;
 - (void)dealloc;
 - (void)makeValidationDecision;
 - (void)mapToCameraNegativeZ;
-- (void)rotateLandmarks:(int)a3 width:(int)a4 height:(int)a5 landmarks:(float *)a6 numLandmarks:(int)a7;
+- (void)rotateLandmarks:(int)landmarks width:(int)width height:(int)height landmarks:(float *)a6 numLandmarks:(int)numLandmarks;
 - (void)updateIntrinsicWhenRotated;
 @end
 
 @implementation VCPVideoFaceMeshAnalyzer
 
-- (VCPVideoFaceMeshAnalyzer)initWithFocalLengthInPixels:(float)a3 offline:(BOOL)a4 isFastMode:(BOOL)a5
+- (VCPVideoFaceMeshAnalyzer)initWithFocalLengthInPixels:(float)pixels offline:(BOOL)offline isFastMode:(BOOL)mode
 {
-  v5 = a5;
+  modeCopy = mode;
   v16 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = VCPVideoFaceMeshAnalyzer;
@@ -24,12 +24,12 @@
   v9 = v8;
   if (v8)
   {
-    v8->_focalLengthInPixels = a3;
-    v8->_offline = a4;
+    v8->_focalLengthInPixels = pixels;
+    v8->_offline = offline;
     v8->_initialized = 0;
     v8->_vertexCount = 0;
     *v8->_meshVertices = 0;
-    v10 = [[VCPFaceShapeModel alloc] initWithMode:v5];
+    v10 = [[VCPFaceShapeModel alloc] initWithMode:modeCopy];
     shapeModel = v9->_shapeModel;
     v9->_shapeModel = v10;
 
@@ -49,9 +49,9 @@
   return v13;
 }
 
-- (BOOL)updateFocalLengthInPixels:(float)a3
+- (BOOL)updateFocalLengthInPixels:(float)pixels
 {
-  self->_focalLengthInPixels = a3;
+  self->_focalLengthInPixels = pixels;
   shapeModel = self->_shapeModel;
   if (shapeModel)
   {
@@ -70,15 +70,15 @@
   self->_bufferRotated ^= 1u;
 }
 
-- (int)setFrame:(__CVBuffer *)a3
+- (int)setFrame:(__CVBuffer *)frame
 {
   if (self->_initialized)
   {
     return -18;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(frame);
+  Height = CVPixelBufferGetHeight(frame);
   self->_uc = vcvts_n_f32_s32(Width, 1uLL);
   self->_vc = vcvts_n_f32_s32(Height, 1uLL);
   self->_bufferRotated = 0;
@@ -163,11 +163,11 @@
   }
 }
 
-- (int)validateFace:(__CVBuffer *)a3 eulerAngles:(float *)a4
+- (int)validateFace:(__CVBuffer *)face eulerAngles:(float *)angles
 {
   v28 = *MEMORY[0x1E69E9840];
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-  HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(face, 0);
+  HeightOfPlane = CVPixelBufferGetHeightOfPlane(face, 0);
   v9 = CVPixelBufferGetBytesPerRowOfPlane(self->_valBuffer, 0);
   v10 = CVPixelBufferGetHeightOfPlane(self->_valBuffer, 0);
   if (self->_bufferRotated)
@@ -206,11 +206,11 @@
   v23 = v16;
   if (!v16 || (v12 = v16, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, *pixelBuffer = v15, *&pixelBuffer[8] = 1024, *&pixelBuffer[10] = v12, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v12 = v23) == 0))
   {
-    *&pixelBuffer[4] = a3;
+    *&pixelBuffer[4] = face;
     *&pixelBuffer[12] = 1;
-    if (a3)
+    if (face)
     {
-      v12 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+      v12 = CVPixelBufferLockBaseAddress(face, 1uLL);
       *buf = v12;
       if (v12)
       {
@@ -222,7 +222,7 @@
 
       else
       {
-        BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
+        BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(face, 0);
         v19 = CVPixelBufferGetBaseAddressOfPlane(v15, 0);
         memcpy(v19, BaseAddressOfPlane, HeightOfPlane * BytesPerRowOfPlane);
         v12 = CVPixelBufferLock::Unlock(buf);
@@ -239,7 +239,7 @@
             v22[2] = __53__VCPVideoFaceMeshAnalyzer_validateFace_eulerAngles___block_invoke;
             v22[3] = &unk_1E8350748;
             v22[4] = self;
-            v22[5] = a4;
+            v22[5] = angles;
             v22[6] = v15;
             dispatch_group_async(validationGroup, validationQueue, v22);
             CFRelease(v15);
@@ -332,15 +332,15 @@ _BYTE *__53__VCPVideoFaceMeshAnalyzer_validateFace_eulerAngles___block_invoke(vo
   return result;
 }
 
-- (int)checkResolutionChange:(__CVBuffer *)a3 withRotation:(int)a4
+- (int)checkResolutionChange:(__CVBuffer *)change withRotation:(int)rotation
 {
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-  Width = CVPixelBufferGetWidth(a3);
-  HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(change, 0);
+  Width = CVPixelBufferGetWidth(change);
+  HeightOfPlane = CVPixelBufferGetHeightOfPlane(change, 0);
   p_valBuffer = &self->_valBuffer;
   v11 = CVPixelBufferGetBytesPerRowOfPlane(self->_valBuffer, 0);
   v12 = CVPixelBufferGetHeightOfPlane(self->_valBuffer, 0);
-  if (a4 == 270 || a4 == 90)
+  if (rotation == 270 || rotation == 90)
   {
     [(VCPVideoFaceMeshAnalyzer *)self updateIntrinsicWhenRotated];
   }
@@ -367,7 +367,7 @@ _BYTE *__53__VCPVideoFaceMeshAnalyzer_validateFace_eulerAngles___block_invoke(vo
     CFRelease(valBufferRotated);
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(change);
   if (self->_bufferRotated)
   {
     v16 = HeightOfPlane;
@@ -402,79 +402,79 @@ _BYTE *__53__VCPVideoFaceMeshAnalyzer_validateFace_eulerAngles___block_invoke(vo
   return -108;
 }
 
-- (void)rotateLandmarks:(int)a3 width:(int)a4 height:(int)a5 landmarks:(float *)a6 numLandmarks:(int)a7
+- (void)rotateLandmarks:(int)landmarks width:(int)width height:(int)height landmarks:(float *)a6 numLandmarks:(int)numLandmarks
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  if (a3 && a3 != 360)
+  if (landmarks && landmarks != 360)
   {
     v9 = a6;
-    v12 = (v24 - ((4 * (2 * a7) + 15) & 0x7FFFFFFF0));
-    memcpy(v12, a6, 8 * a7);
-    if (a3 == 270)
+    v12 = (v24 - ((4 * (2 * numLandmarks) + 15) & 0x7FFFFFFF0));
+    memcpy(v12, a6, 8 * numLandmarks);
+    if (landmarks == 270)
     {
-      if (a7 >= 1)
+      if (numLandmarks >= 1)
       {
-        v20 = a7;
+        numLandmarksCopy = numLandmarks;
         v21 = v12 + 1;
         v22 = v9 + 1;
         do
         {
-          v23 = (a5 - 1) - *(v21 - 1);
+          v23 = (height - 1) - *(v21 - 1);
           *(v22 - 1) = *v21;
           *v22 = v23;
           v21 += 2;
           v22 += 2;
-          --v20;
+          --numLandmarksCopy;
         }
 
-        while (v20);
+        while (numLandmarksCopy);
       }
     }
 
-    else if (a3 == 180)
+    else if (landmarks == 180)
     {
-      if (a7 >= 1)
+      if (numLandmarks >= 1)
       {
-        v17 = vcvt_f32_s32(vadd_s32(__PAIR64__(a5, a4), -1));
-        v18 = a7;
+        v17 = vcvt_f32_s32(vadd_s32(__PAIR64__(height, width), -1));
+        numLandmarksCopy2 = numLandmarks;
         do
         {
           v19 = *v12++;
           *v9++ = vsub_f32(v17, v19);
-          --v18;
+          --numLandmarksCopy2;
         }
 
-        while (v18);
+        while (numLandmarksCopy2);
       }
     }
 
-    else if (a3 == 90 && a7 >= 1)
+    else if (landmarks == 90 && numLandmarks >= 1)
     {
-      v13 = a7;
+      numLandmarksCopy3 = numLandmarks;
       v14 = v12 + 1;
       v15 = v9 + 1;
       do
       {
         v16 = *(v14 - 1);
-        *(v15 - 1) = (a4 - 1) - *v14;
+        *(v15 - 1) = (width - 1) - *v14;
         *v15 = v16;
         v14 += 2;
         v15 += 2;
-        --v13;
+        --numLandmarksCopy3;
       }
 
-      while (v13);
+      while (numLandmarksCopy3);
     }
   }
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 withFaceRect:(CGRect)a4 withRotation:(int)a5 withTimestamp:(id *)a6
+- (int)analyzeFrame:(__CVBuffer *)frame withFaceRect:(CGRect)rect withRotation:(int)rotation withTimestamp:(id *)timestamp
 {
-  v6 = *&a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  v6 = *&rotation;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v67 = *MEMORY[0x1E69E9840];
   blendShapes = self->_blendShapes;
   self->_blendShapes = 0;
@@ -500,12 +500,12 @@ _BYTE *__53__VCPVideoFaceMeshAnalyzer_validateFace_eulerAngles___block_invoke(vo
   self->_faceCount = 1;
   if (self->_initialized)
   {
-    [(VCPVideoFaceMeshAnalyzer *)self checkResolutionChange:a3 withRotation:v6];
+    [(VCPVideoFaceMeshAnalyzer *)self checkResolutionChange:frame withRotation:v6];
   }
 
   else
   {
-    a_low = [(VCPVideoFaceMeshAnalyzer *)self setFrame:a3];
+    a_low = [(VCPVideoFaceMeshAnalyzer *)self setFrame:frame];
     if (a_low)
     {
       return a_low;
@@ -514,12 +514,12 @@ _BYTE *__53__VCPVideoFaceMeshAnalyzer_validateFace_eulerAngles___block_invoke(vo
     self->_initialized = 1;
   }
 
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-  v22 = CVPixelBufferGetWidth(a3);
-  v23 = CVPixelBufferGetHeight(a3);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(frame, 0);
+  v22 = CVPixelBufferGetWidth(frame);
+  v23 = CVPixelBufferGetHeight(frame);
   if (!self->_valBuffer)
   {
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(frame);
     if (CVPixelBufferCreate(*MEMORY[0x1E695E480], v22, v23, PixelFormatType, 0, &self->_valBuffer))
     {
       return -108;
@@ -528,7 +528,7 @@ _BYTE *__53__VCPVideoFaceMeshAnalyzer_validateFace_eulerAngles___block_invoke(vo
 
   if (!self->_valBufferRotated)
   {
-    v32 = CVPixelBufferGetPixelFormatType(a3);
+    v32 = CVPixelBufferGetPixelFormatType(frame);
     if (CVPixelBufferCreate(*MEMORY[0x1E695E480], v23, v22, v32, 0, &self->_valBufferRotated))
     {
       return -108;
@@ -560,12 +560,12 @@ _BYTE *__53__VCPVideoFaceMeshAnalyzer_validateFace_eulerAngles___block_invoke(vo
     [(VCPVideoFaceMeshAnalyzer *)self rotateLandmarks:v6 width:v22 height:v23 landmarks:self->_prevLM numLandmarks:63];
     [(VCPRTLandmarkDetector *)self->_lmTracker calculateFaceRectFromPrevLM:self->_prevLM result:v62 numOfLandmarks:63];
     *buf = 0;
-    *&pixelBuffer[4] = a3;
-    if (a3)
+    *&pixelBuffer[4] = frame;
+    if (frame)
     {
-      a_low = CVPixelBufferLockBaseAddress(a3, 0);
+      a_low = CVPixelBufferLockBaseAddress(frame, 0);
       *buf = a_low;
-      if (a_low && (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) || (*v63 = 134218240, v64 = *&pixelBuffer[4], v65 = 1024, v66 = a_low, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", v63, 0x12u), (a_low = *buf) != 0)) || ([(VCPRTLandmarkDetector *)self->_lmTracker detectLandmark:CVPixelBufferGetBaseAddressOfPlane(a3 width:0) height:v22 stride:v23 facerect:BytesPerRowOfPlane prevResult:v62 result:self->_prevLM, self->_curLM], (a_low = CVPixelBufferLock::Unlock(buf)) != 0))
+      if (a_low && (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) || (*v63 = 134218240, v64 = *&pixelBuffer[4], v65 = 1024, v66 = a_low, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", v63, 0x12u), (a_low = *buf) != 0)) || ([(VCPRTLandmarkDetector *)self->_lmTracker detectLandmark:CVPixelBufferGetBaseAddressOfPlane(frame width:0) height:v22 stride:v23 facerect:BytesPerRowOfPlane prevResult:v62 result:self->_prevLM, self->_curLM], (a_low = CVPixelBufferLock::Unlock(buf)) != 0))
       {
         v30 = 0;
       }
@@ -588,7 +588,7 @@ _BYTE *__53__VCPVideoFaceMeshAnalyzer_validateFace_eulerAngles___block_invoke(vo
         {
           if (self->_lostTrackCounter > 0 || self->_validateFailedOnce)
           {
-            [(VCPVideoFaceMeshAnalyzer *)self validateFace:a3 eulerAngles:self->_eulerAngle, v47];
+            [(VCPVideoFaceMeshAnalyzer *)self validateFace:frame eulerAngles:self->_eulerAngle, v47];
             curLM = self->_curLM;
             v48 = 1;
           }
@@ -622,7 +622,7 @@ _BYTE *__53__VCPVideoFaceMeshAnalyzer_validateFace_eulerAngles___block_invoke(vo
         self->_trackingModeCounter = v53;
         if ((v49 & 1) == 0 && (v48 & 1) == 0 && !(v53 % 3))
         {
-          [(VCPVideoFaceMeshAnalyzer *)self validateFace:a3 eulerAngles:self->_eulerAngle];
+          [(VCPVideoFaceMeshAnalyzer *)self validateFace:frame eulerAngles:self->_eulerAngle];
         }
 
         if (v48)
@@ -705,13 +705,13 @@ _BYTE *__53__VCPVideoFaceMeshAnalyzer_validateFace_eulerAngles___block_invoke(vo
   }
 
   LODWORD(v61.a) = 0;
-  *&v61.b = a3;
+  *&v61.b = frame;
   v61.c = 0.0;
-  if (a3)
+  if (frame)
   {
-    a_low = CVPixelBufferLockBaseAddress(a3, 0);
+    a_low = CVPixelBufferLockBaseAddress(frame, 0);
     LODWORD(v61.a) = a_low;
-    if (a_low && (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) || (*buf = 134218240, *pixelBuffer = v61.b, *&pixelBuffer[8] = 1024, *&pixelBuffer[10] = a_low, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (a_low = LODWORD(v61.a)) != 0)) || ([(VCPRTLandmarkDetector *)self->_lmDetector detectLandmark:CVPixelBufferGetBaseAddressOfPlane(a3 width:0) height:v22 stride:v23 facerect:BytesPerRowOfPlane prevResult:v62 result:0, self->_curLM], (a_low = CVPixelBufferLock::Unlock(&v61)) != 0))
+    if (a_low && (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) || (*buf = 134218240, *pixelBuffer = v61.b, *&pixelBuffer[8] = 1024, *&pixelBuffer[10] = a_low, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (a_low = LODWORD(v61.a)) != 0)) || ([(VCPRTLandmarkDetector *)self->_lmDetector detectLandmark:CVPixelBufferGetBaseAddressOfPlane(frame width:0) height:v22 stride:v23 facerect:BytesPerRowOfPlane prevResult:v62 result:0, self->_curLM], (a_low = CVPixelBufferLock::Unlock(&v61)) != 0))
     {
       v30 = 0;
       goto LABEL_43;
@@ -727,11 +727,11 @@ _BYTE *__53__VCPVideoFaceMeshAnalyzer_validateFace_eulerAngles___block_invoke(vo
 
     else
     {
-      v51 = [(VCPFaceShapeModel *)shapeModel isIdentityInit];
-      v52 = v51;
-      if (v51)
+      isIdentityInit = [(VCPFaceShapeModel *)shapeModel isIdentityInit];
+      v52 = isIdentityInit;
+      if (isIdentityInit)
       {
-        [(VCPVideoFaceMeshAnalyzer *)self validateFace:a3 eulerAngles:self->_eulerAngle];
+        [(VCPVideoFaceMeshAnalyzer *)self validateFace:frame eulerAngles:self->_eulerAngle];
       }
 
       if ([(VCPFaceShapeModel *)self->_shapeModel fitOneImage:self->_curLM])
@@ -823,14 +823,14 @@ LABEL_49:
 
   memcpy(*self->_meshVertices, [(VCPFaceShapeModel *)self->_shapeModel meshVertices], 16 * self->_vertexCount);
   [(VCPVideoFaceMeshAnalyzer *)self mapToCameraNegativeZ];
-  v39 = [(VCPFaceShapeModel *)self->_shapeModel blendShapes];
-  v40 = v39 == 0;
+  blendShapes = [(VCPFaceShapeModel *)self->_shapeModel blendShapes];
+  v40 = blendShapes == 0;
 
   if (!v40)
   {
     v41 = MEMORY[0x1E695DF20];
-    v42 = [(VCPFaceShapeModel *)self->_shapeModel blendShapes];
-    v43 = [v41 dictionaryWithDictionary:v42];
+    blendShapes2 = [(VCPFaceShapeModel *)self->_shapeModel blendShapes];
+    v43 = [v41 dictionaryWithDictionary:blendShapes2];
     v44 = self->_blendShapes;
     self->_blendShapes = v43;
   }

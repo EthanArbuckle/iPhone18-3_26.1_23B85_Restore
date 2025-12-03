@@ -1,34 +1,34 @@
 @interface CKMacRecipientsController
-- (BOOL)shouldShowVerifiedIconForRecipient:(id)a3;
+- (BOOL)shouldShowVerifiedIconForRecipient:(id)recipient;
 - (CGRect)detailsToolbarItemFrame;
 - (CGRect)faceTimeJoinCallToolbarItemFrame;
 - (CGRect)faceTimeStartOrLaunchCallToolbarItemFrame;
 - (CGRect)innermostToolbarItemFrame;
 - (CKConversation)conversation;
-- (CKMacRecipientsController)initWithConversation:(id)a3;
+- (CKMacRecipientsController)initWithConversation:(id)conversation;
 - (CKMacRecipientsControllerDelegate)delegate;
-- (double)_fieldContainerHeightForNumberOfRows:(unint64_t)a3;
+- (double)_fieldContainerHeightForNumberOfRows:(unint64_t)rows;
 - (double)preferredMacToolbarHeight;
-- (id)composeRecipientView:(id)a3 contextMenuConfigurationForAtom:(id)a4;
+- (id)composeRecipientView:(id)view contextMenuConfigurationForAtom:(id)atom;
 - (id)handlesForScreenTimePolicyCheck;
 - (id)recipients;
-- (unint64_t)_atomPresentationOptionsForRecipient:(id)a3;
-- (void)_handleAddressBookChangedNotification:(id)a3;
-- (void)_handleAddressBookPartialChangedNotification:(id)a3;
-- (void)_handleConversationPreferredServiceDidChangeNotification:(id)a3;
-- (void)_handleKeyTransparencyStatusChangedNotification:(id)a3;
+- (unint64_t)_atomPresentationOptionsForRecipient:(id)recipient;
+- (void)_handleAddressBookChangedNotification:(id)notification;
+- (void)_handleAddressBookPartialChangedNotification:(id)notification;
+- (void)_handleConversationPreferredServiceDidChangeNotification:(id)notification;
+- (void)_handleKeyTransparencyStatusChangedNotification:(id)notification;
 - (void)_notifyDelegatesToFieldHeightHasChanged;
 - (void)_reloadCurrentRecipientData;
-- (void)_showContactCardForEntity:(id)a3 sourceView:(id)a4;
+- (void)_showContactCardForEntity:(id)entity sourceView:(id)view;
 - (void)_updateToFieldFrame;
-- (void)addRecipients:(id)a3;
-- (void)composeRecipientView:(id)a3 disambiguateRecipientForAtom:(id)a4;
+- (void)addRecipients:(id)recipients;
+- (void)composeRecipientView:(id)view disambiguateRecipientForAtom:(id)atom;
 - (void)dealloc;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)refreshRecipients;
 - (void)reset;
-- (void)setConversation:(id)a3;
+- (void)setConversation:(id)conversation;
 - (void)updateScreenTimePolicy;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -38,19 +38,19 @@
 
 - (void)dealloc
 {
-  v3 = [(CKMacRecipientsController *)self currentConversationContext];
+  currentConversationContext = [(CKMacRecipientsController *)self currentConversationContext];
 
-  if (v3)
+  if (currentConversationContext)
   {
-    v4 = [(CKMacRecipientsController *)self currentConversationContext];
-    [v4 removeObserver:self forKeyPath:@"allowedByScreenTime"];
+    currentConversationContext2 = [(CKMacRecipientsController *)self currentConversationContext];
+    [currentConversationContext2 removeObserver:self forKeyPath:@"allowedByScreenTime"];
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v6 = [(CKMacRecipientsController *)self toField];
-  [v6 setDelegate:0];
+  toField = [(CKMacRecipientsController *)self toField];
+  [toField setDelegate:0];
 
   self->_numberOfRowsInToField = 1;
   v7.receiver = self;
@@ -58,19 +58,19 @@
   [(CKMacRecipientsController *)&v7 dealloc];
 }
 
-- (CKMacRecipientsController)initWithConversation:(id)a3
+- (CKMacRecipientsController)initWithConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   v10.receiver = self;
   v10.super_class = CKMacRecipientsController;
   v5 = [(CKMacRecipientsController *)&v10 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_conversation, v4);
-    if (v4)
+    objc_storeWeak(&v5->_conversation, conversationCopy);
+    if (conversationCopy)
     {
-      v7 = [[CKDetailsContactsManager alloc] initWithConversation:v4 delegate:v6];
+      v7 = [[CKDetailsContactsManager alloc] initWithConversation:conversationCopy delegate:v6];
       contactsManager = v6->_contactsManager;
       v6->_contactsManager = v7;
     }
@@ -84,46 +84,46 @@
 
 - (double)preferredMacToolbarHeight
 {
-  v3 = [(CKMacRecipientsController *)self toField];
-  v4 = [v3 numberOfRowsOfTextInField];
-  v5 = [(CKMacRecipientsController *)self numberOfRowsInToField];
+  toField = [(CKMacRecipientsController *)self toField];
+  numberOfRowsOfTextInField = [toField numberOfRowsOfTextInField];
+  numberOfRowsInToField = [(CKMacRecipientsController *)self numberOfRowsInToField];
 
-  if (v4 != v5)
+  if (numberOfRowsOfTextInField != numberOfRowsInToField)
   {
-    v6 = [(CKMacRecipientsController *)self toField];
-    -[CKMacRecipientsController setNumberOfRowsInToField:](self, "setNumberOfRowsInToField:", [v6 numberOfRowsOfTextInField]);
+    toField2 = [(CKMacRecipientsController *)self toField];
+    -[CKMacRecipientsController setNumberOfRowsInToField:](self, "setNumberOfRowsInToField:", [toField2 numberOfRowsOfTextInField]);
   }
 
   if ([(CKMacRecipientsController *)self numberOfRowsInToField]< 2 || [(CKMacRecipientsController *)self numberOfRowsInToField]> 3)
   {
     if ([(CKMacRecipientsController *)self numberOfRowsInToField]<= 3)
     {
-      v7 = 1;
+      numberOfRowsInToField2 = 1;
     }
 
     else
     {
-      v7 = 3;
+      numberOfRowsInToField2 = 3;
     }
   }
 
   else
   {
-    v7 = [(CKMacRecipientsController *)self numberOfRowsInToField];
+    numberOfRowsInToField2 = [(CKMacRecipientsController *)self numberOfRowsInToField];
   }
 
-  [(CKMacRecipientsController *)self _fieldContainerHeightForNumberOfRows:v7];
+  [(CKMacRecipientsController *)self _fieldContainerHeightForNumberOfRows:numberOfRowsInToField2];
   return result;
 }
 
-- (double)_fieldContainerHeightForNumberOfRows:(unint64_t)a3
+- (double)_fieldContainerHeightForNumberOfRows:(unint64_t)rows
 {
   v4 = +[CKUIBehavior sharedBehaviors];
   [v4 macAppKitToolbarHeight];
   v6 = v5;
-  if (a3 >= 2)
+  if (rows >= 2)
   {
-    v7 = (a3 - 1);
+    v7 = (rows - 1);
     [MEMORY[0x1E6996398] defaultHeight];
     v9 = v8;
     v10 = +[CKUIBehavior sharedBehaviors];
@@ -137,143 +137,143 @@
 - (void)loadView
 {
   v3 = objc_alloc(MEMORY[0x1E69DD250]);
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v5 = [v3 initWithFrame:?];
   [(CKMacRecipientsController *)self setView:v5];
 
-  v6 = [(CKMacRecipientsController *)self view];
-  [v6 setAutoresizingMask:18];
+  view = [(CKMacRecipientsController *)self view];
+  [view setAutoresizingMask:18];
 
-  v7 = [(CKMacRecipientsController *)self view];
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [v7 setBackgroundColor:v8];
+  view2 = [(CKMacRecipientsController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view2 setBackgroundColor:clearColor];
 
-  v9 = [(CKMacRecipientsController *)self view];
-  [v9 setClipsToBounds:1];
+  view3 = [(CKMacRecipientsController *)self view];
+  [view3 setClipsToBounds:1];
 
   v10 = objc_alloc(MEMORY[0x1E69DCEF8]);
-  v11 = [(CKMacRecipientsController *)self view];
-  [v11 bounds];
+  view4 = [(CKMacRecipientsController *)self view];
+  [view4 bounds];
   v12 = [v10 initWithFrame:?];
   [(CKMacRecipientsController *)self setToFieldScrollView:v12];
 
-  v13 = [(CKMacRecipientsController *)self toFieldScrollView];
-  [v13 setAutoresizingMask:18];
+  toFieldScrollView = [(CKMacRecipientsController *)self toFieldScrollView];
+  [toFieldScrollView setAutoresizingMask:18];
 
-  v14 = [(CKMacRecipientsController *)self toFieldScrollView];
-  [v14 setAlwaysBounceVertical:1];
+  toFieldScrollView2 = [(CKMacRecipientsController *)self toFieldScrollView];
+  [toFieldScrollView2 setAlwaysBounceVertical:1];
 
-  v15 = [(CKMacRecipientsController *)self toFieldScrollView];
-  [v15 setShowsHorizontalScrollIndicator:0];
+  toFieldScrollView3 = [(CKMacRecipientsController *)self toFieldScrollView];
+  [toFieldScrollView3 setShowsHorizontalScrollIndicator:0];
 
-  v16 = [(CKMacRecipientsController *)self toFieldScrollView];
-  [v16 setAutomaticallyAdjustsScrollIndicatorInsets:0];
+  toFieldScrollView4 = [(CKMacRecipientsController *)self toFieldScrollView];
+  [toFieldScrollView4 setAutomaticallyAdjustsScrollIndicatorInsets:0];
 
-  v17 = [(CKMacRecipientsController *)self toFieldScrollView];
-  [v17 setContentInsetAdjustmentBehavior:2];
+  toFieldScrollView5 = [(CKMacRecipientsController *)self toFieldScrollView];
+  [toFieldScrollView5 setContentInsetAdjustmentBehavior:2];
 
-  v18 = [(CKMacRecipientsController *)self toFieldScrollView];
-  [v18 setScrollEnabled:0];
+  toFieldScrollView6 = [(CKMacRecipientsController *)self toFieldScrollView];
+  [toFieldScrollView6 setScrollEnabled:0];
 
-  v19 = [(CKMacRecipientsController *)self toFieldScrollView];
-  [v19 setShowsVerticalScrollIndicator:0];
+  toFieldScrollView7 = [(CKMacRecipientsController *)self toFieldScrollView];
+  [toFieldScrollView7 setShowsVerticalScrollIndicator:0];
 
-  v20 = [(CKMacRecipientsController *)self view];
-  v21 = [(CKMacRecipientsController *)self toFieldScrollView];
-  [v20 addSubview:v21];
+  view5 = [(CKMacRecipientsController *)self view];
+  toFieldScrollView8 = [(CKMacRecipientsController *)self toFieldScrollView];
+  [view5 addSubview:toFieldScrollView8];
 
   v22 = objc_alloc(MEMORY[0x1E6996428]);
   v23 = [v22 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   toField = self->_toField;
   self->_toField = v23;
 
-  v25 = [(CKMacRecipientsController *)self toField];
-  [v25 setAutoresizingMask:18];
+  toField = [(CKMacRecipientsController *)self toField];
+  [toField setAutoresizingMask:18];
 
   if (loadView_onceToken_0 != -1)
   {
     [CKMacRecipientsController loadView];
   }
 
-  v26 = [(CKMacRecipientsController *)self toField];
-  v27 = [v26 labelView];
-  [v27 setAttributedText:loadView_toText_0];
+  toField2 = [(CKMacRecipientsController *)self toField];
+  labelView = [toField2 labelView];
+  [labelView setAttributedText:loadView_toText_0];
 
-  v28 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  LODWORD(v27) = [v28 isTranscriptSharingEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  LODWORD(labelView) = [mEMORY[0x1E69A8070] isTranscriptSharingEnabled];
 
-  if (v27)
+  if (labelView)
   {
-    v29 = [(CKMacRecipientsController *)self conversation];
-    v30 = [v29 chat];
-    v31 = [v30 isStewieSharingChat];
+    conversation = [(CKMacRecipientsController *)self conversation];
+    chat = [conversation chat];
+    isStewieSharingChat = [chat isStewieSharingChat];
 
-    if (v31)
+    if (isStewieSharingChat)
     {
-      v32 = [(CKMacRecipientsController *)self toField];
-      v33 = [v32 labelView];
-      [v33 setHidden:1];
+      toField3 = [(CKMacRecipientsController *)self toField];
+      labelView2 = [toField3 labelView];
+      [labelView2 setHidden:1];
     }
   }
 
-  v34 = [(CKMacRecipientsController *)self toField];
-  v35 = [v34 addButton];
-  [v35 setHidden:1];
+  toField4 = [(CKMacRecipientsController *)self toField];
+  addButton = [toField4 addButton];
+  [addButton setHidden:1];
 
-  v36 = [(CKMacRecipientsController *)self toField];
-  [v36 setSeparatorHidden:1];
+  toField5 = [(CKMacRecipientsController *)self toField];
+  [toField5 setSeparatorHidden:1];
 
-  v37 = [(CKMacRecipientsController *)self toField];
-  v38 = [MEMORY[0x1E69DC888] clearColor];
-  [v37 setBackgroundColor:v38];
+  toField6 = [(CKMacRecipientsController *)self toField];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [toField6 setBackgroundColor:clearColor2];
 
-  v39 = [(CKMacRecipientsController *)self toField];
-  [v39 setDelegate:self];
+  toField7 = [(CKMacRecipientsController *)self toField];
+  [toField7 setDelegate:self];
 
-  v40 = [(CKMacRecipientsController *)self toField];
-  [v40 setExpandRecipientsInNamedGroups:0];
+  toField8 = [(CKMacRecipientsController *)self toField];
+  [toField8 setExpandRecipientsInNamedGroups:0];
 
-  v41 = [(CKMacRecipientsController *)self toField];
-  [v41 setShowsAddButtonWhenExpanded:0];
+  toField9 = [(CKMacRecipientsController *)self toField];
+  [toField9 setShowsAddButtonWhenExpanded:0];
 
-  v42 = [(CKMacRecipientsController *)self toField];
-  [v42 setUsingActiveAppearance:1];
+  toField10 = [(CKMacRecipientsController *)self toField];
+  [toField10 setUsingActiveAppearance:1];
 
-  v43 = [(CKMacRecipientsController *)self toField];
-  v44 = [v43 textView];
-  [v44 setEditable:0];
+  toField11 = [(CKMacRecipientsController *)self toField];
+  textView = [toField11 textView];
+  [textView setEditable:0];
 
-  v45 = [(CKMacRecipientsController *)self toField];
-  v46 = [v45 textView];
-  [v46 setSelectable:0];
+  toField12 = [(CKMacRecipientsController *)self toField];
+  textView2 = [toField12 textView];
+  [textView2 setSelectable:0];
 
   [(CKMacRecipientsController *)self _updateToFieldFrame];
-  v47 = [(CKMacRecipientsController *)self toFieldScrollView];
-  v48 = [(CKMacRecipientsController *)self toField];
-  [v47 addSubview:v48];
+  toFieldScrollView9 = [(CKMacRecipientsController *)self toFieldScrollView];
+  toField13 = [(CKMacRecipientsController *)self toField];
+  [toFieldScrollView9 addSubview:toField13];
 
   v49 = objc_alloc(MEMORY[0x1E69DD250]);
   [(CKMacRecipientsController *)self detailsToolbarItemFrame];
   v50 = [v49 initWithFrame:?];
   [(CKMacRecipientsController *)self setDetailsPopoverPresentationSourceView:v50];
 
-  v51 = [(CKMacRecipientsController *)self detailsPopoverPresentationSourceView];
-  [v51 setBackgroundColor:0];
+  detailsPopoverPresentationSourceView = [(CKMacRecipientsController *)self detailsPopoverPresentationSourceView];
+  [detailsPopoverPresentationSourceView setBackgroundColor:0];
 
-  v52 = [(CKMacRecipientsController *)self detailsPopoverPresentationSourceView];
-  [v52 setOpaque:0];
+  detailsPopoverPresentationSourceView2 = [(CKMacRecipientsController *)self detailsPopoverPresentationSourceView];
+  [detailsPopoverPresentationSourceView2 setOpaque:0];
 
-  v53 = [(CKMacRecipientsController *)self detailsPopoverPresentationSourceView];
-  [v53 setUserInteractionEnabled:0];
+  detailsPopoverPresentationSourceView3 = [(CKMacRecipientsController *)self detailsPopoverPresentationSourceView];
+  [detailsPopoverPresentationSourceView3 setUserInteractionEnabled:0];
 
-  v54 = [(CKMacRecipientsController *)self view];
-  v55 = [(CKMacRecipientsController *)self detailsPopoverPresentationSourceView];
-  [v54 addSubview:v55];
+  view6 = [(CKMacRecipientsController *)self view];
+  detailsPopoverPresentationSourceView4 = [(CKMacRecipientsController *)self detailsPopoverPresentationSourceView];
+  [view6 addSubview:detailsPopoverPresentationSourceView4];
 
   [(CKMacRecipientsController *)self refreshRecipients];
-  v56 = [(CKMacRecipientsController *)self view];
-  [v56 setUserInteractionEnabled:1];
+  view7 = [(CKMacRecipientsController *)self view];
+  [view7 setUserInteractionEnabled:1];
 }
 
 void __37__CKMacRecipientsController_loadView__block_invoke()
@@ -310,11 +310,11 @@ void __37__CKMacRecipientsController_loadView__block_invoke()
   v5.receiver = self;
   v5.super_class = CKMacRecipientsController;
   [(CKMacRecipientsController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__handleConversationPreferredServiceDidChangeNotification_ name:@"CKConversationPreferredServiceChangedNotification" object:0];
-  [v3 addObserver:self selector:sel__handleAddressBookChangedNotification_ name:*MEMORY[0x1E69A6828] object:0];
-  [v3 addObserver:self selector:sel__handleAddressBookPartialChangedNotification_ name:*MEMORY[0x1E69A6838] object:0];
-  [v3 addObserver:self selector:sel__handleKeyTransparencyStatusChangedNotification_ name:*MEMORY[0x1E69A5810] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleConversationPreferredServiceDidChangeNotification_ name:@"CKConversationPreferredServiceChangedNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__handleAddressBookChangedNotification_ name:*MEMORY[0x1E69A6828] object:0];
+  [defaultCenter addObserver:self selector:sel__handleAddressBookPartialChangedNotification_ name:*MEMORY[0x1E69A6838] object:0];
+  [defaultCenter addObserver:self selector:sel__handleKeyTransparencyStatusChangedNotification_ name:*MEMORY[0x1E69A5810] object:0];
   v4 = [[CKManualUpdater alloc] initWithTarget:self action:sel__reloadCurrentRecipientData];
   [(CKMacRecipientsController *)self setAddressBookNotificationUpdater:v4];
 }
@@ -327,8 +327,8 @@ void __37__CKMacRecipientsController_loadView__block_invoke()
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKMacRecipientsController *)self detailsPopoverPresentationSourceView];
-  [v11 frame];
+  detailsPopoverPresentationSourceView = [(CKMacRecipientsController *)self detailsPopoverPresentationSourceView];
+  [detailsPopoverPresentationSourceView frame];
   v31.origin.x = v12;
   v31.origin.y = v13;
   v31.size.width = v14;
@@ -341,34 +341,34 @@ void __37__CKMacRecipientsController_loadView__block_invoke()
 
   if (!v16)
   {
-    v17 = [(CKMacRecipientsController *)self detailsPopoverPresentationSourceView];
-    [v17 setFrame:{v4, v6, v8, v10}];
+    detailsPopoverPresentationSourceView2 = [(CKMacRecipientsController *)self detailsPopoverPresentationSourceView];
+    [detailsPopoverPresentationSourceView2 setFrame:{v4, v6, v8, v10}];
   }
 
   if (CKIsRunningInMacCatalyst())
   {
-    v18 = [(CKMacRecipientsController *)self toField];
-    [v18 frame];
+    toField = [(CKMacRecipientsController *)self toField];
+    [toField frame];
     v20 = v19;
-    v21 = [(CKMacRecipientsController *)self toField];
-    [v21 frame];
+    toField2 = [(CKMacRecipientsController *)self toField];
+    [toField2 frame];
     v23 = v22 + 8.0;
-    v24 = [(CKMacRecipientsController *)self toFieldScrollView];
-    [v24 setContentSize:{v20, v23}];
+    toFieldScrollView = [(CKMacRecipientsController *)self toFieldScrollView];
+    [toFieldScrollView setContentSize:{v20, v23}];
 
-    v25 = [(CKMacRecipientsController *)self _shouldEnableScrolling];
-    v26 = [(CKMacRecipientsController *)self toFieldScrollView];
-    [v26 setScrollEnabled:v25];
+    _shouldEnableScrolling = [(CKMacRecipientsController *)self _shouldEnableScrolling];
+    toFieldScrollView2 = [(CKMacRecipientsController *)self toFieldScrollView];
+    [toFieldScrollView2 setScrollEnabled:_shouldEnableScrolling];
 
-    v27 = [(CKMacRecipientsController *)self _shouldEnableScrolling];
-    v28 = [(CKMacRecipientsController *)self toFieldScrollView];
-    [v28 setShowsVerticalScrollIndicator:v27];
+    _shouldEnableScrolling2 = [(CKMacRecipientsController *)self _shouldEnableScrolling];
+    toFieldScrollView3 = [(CKMacRecipientsController *)self toFieldScrollView];
+    [toFieldScrollView3 setShowsVerticalScrollIndicator:_shouldEnableScrolling2];
   }
 }
 
-- (void)setConversation:(id)a3
+- (void)setConversation:(id)conversation
 {
-  obj = a3;
+  obj = conversation;
   WeakRetained = objc_loadWeakRetained(&self->_conversation);
 
   v5 = obj;
@@ -382,13 +382,13 @@ void __37__CKMacRecipientsController_loadView__block_invoke()
       contactsManager = self->_contactsManager;
       self->_contactsManager = v6;
 
-      v8 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      v9 = [v8 isKeyTransparencyEnabled];
+      mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      isKeyTransparencyEnabled = [mEMORY[0x1E69A8070] isKeyTransparencyEnabled];
 
-      if (v9)
+      if (isKeyTransparencyEnabled)
       {
-        v10 = [obj chat];
-        [v10 fetchKTStatus];
+        chat = [obj chat];
+        [chat fetchKTStatus];
       }
     }
 
@@ -399,23 +399,23 @@ void __37__CKMacRecipientsController_loadView__block_invoke()
 
 - (void)refreshRecipients
 {
-  v2 = self;
+  selfCopy = self;
   v33 = *MEMORY[0x1E69E9840];
   [(CKMacRecipientsController *)self reset];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CKMacRecipientsController *)v2 conversation];
+  array = [MEMORY[0x1E695DF70] array];
+  conversation = [(CKMacRecipientsController *)selfCopy conversation];
 
-  if (v4)
+  if (conversation)
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v26 = v2;
-    v5 = [(CKMacRecipientsController *)v2 conversation];
-    v6 = [v5 recipients];
+    v26 = selfCopy;
+    conversation2 = [(CKMacRecipientsController *)selfCopy conversation];
+    recipients = [conversation2 recipients];
 
-    v7 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    v7 = [recipients countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v7)
     {
       v8 = v7;
@@ -427,29 +427,29 @@ void __37__CKMacRecipientsController_loadView__block_invoke()
         {
           if (*v28 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(recipients);
           }
 
-          v11 = [*(*(&v27 + 1) + 8 * v10) defaultIMHandle];
-          v12 = v11;
-          if (v11)
+          defaultIMHandle = [*(*(&v27 + 1) + 8 * v10) defaultIMHandle];
+          v12 = defaultIMHandle;
+          if (defaultIMHandle)
           {
-            v13 = [v11 normalizedID];
-            if (CKIsValidAddress(v13))
+            normalizedID = [defaultIMHandle normalizedID];
+            if (CKIsValidAddress(normalizedID))
             {
               v14 = +[CKRecipientGenerator sharedRecipientGenerator];
-              v15 = [v14 recipientWithAddress:v13];
+              v15 = [v14 recipientWithAddress:normalizedID];
 
               if (v15)
               {
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v16 = [(CKMacRecipientsController *)v26 conversation];
-                  [v15 setUseAbbreviatedDisplayName:{objc_msgSend(v16, "isGroupConversation")}];
+                  conversation3 = [(CKMacRecipientsController *)v26 conversation];
+                  [v15 setUseAbbreviatedDisplayName:{objc_msgSend(conversation3, "isGroupConversation")}];
                 }
 
-                [v3 addObject:v15];
+                [array addObject:v15];
               }
             }
           }
@@ -458,41 +458,41 @@ void __37__CKMacRecipientsController_loadView__block_invoke()
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v8 = [recipients countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v8);
     }
 
-    v2 = v26;
+    selfCopy = v26;
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    v17 = [(CKMacRecipientsController *)v2 conversation];
-    if ([v17 isGroupConversation])
+    conversation4 = [(CKMacRecipientsController *)selfCopy conversation];
+    if ([conversation4 isGroupConversation])
     {
-      v18 = [(CKMacRecipientsController *)v2 conversation];
-      v19 = [v18 hasDisplayName];
+      conversation5 = [(CKMacRecipientsController *)selfCopy conversation];
+      hasDisplayName = [conversation5 hasDisplayName];
 
-      if (!v19)
+      if (!hasDisplayName)
       {
 LABEL_23:
-        [(CKMacRecipientsController *)v2 addRecipients:v3];
+        [(CKMacRecipientsController *)selfCopy addRecipients:array];
         goto LABEL_24;
       }
 
       v20 = objc_alloc(MEMORY[0x1E6996418]);
-      v21 = [(CKMacRecipientsController *)v2 conversation];
-      v22 = [v21 displayName];
-      v17 = [v20 initWithChildren:v3 displayString:v22];
+      conversation6 = [(CKMacRecipientsController *)selfCopy conversation];
+      displayName = [conversation6 displayName];
+      conversation4 = [v20 initWithChildren:array displayString:displayName];
 
       v23 = MEMORY[0x1E695DF70];
-      v31 = v17;
+      v31 = conversation4;
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
       v25 = [v23 arrayWithArray:v24];
 
-      v3 = v25;
+      array = v25;
     }
 
     goto LABEL_23;
@@ -508,16 +508,16 @@ LABEL_24:
   v5 = v4;
   v7 = v6;
 
-  v8 = [(CKMacRecipientsController *)self view];
-  [v8 frame];
+  view = [(CKMacRecipientsController *)self view];
+  [view frame];
   v10 = v9;
 
   v11 = +[CKUIBehavior sharedBehaviors];
   [v11 macAppKitToolbarHeight];
   v13 = v12;
 
-  v14 = [(CKMacRecipientsController *)self view];
-  LODWORD(v11) = [v14 _shouldReverseLayoutDirection];
+  view2 = [(CKMacRecipientsController *)self view];
+  LODWORD(v11) = [view2 _shouldReverseLayoutDirection];
 
   v15 = +[CKUIBehavior sharedBehaviors];
   [v15 macNSToolbarItemInterItemSpacing];
@@ -546,8 +546,8 @@ LABEL_24:
   v5 = v4;
   v7 = v6;
 
-  v8 = [(CKMacRecipientsController *)self view];
-  [v8 frame];
+  view = [(CKMacRecipientsController *)self view];
+  [view frame];
   v10 = v9;
 
   v11 = +[CKUIBehavior sharedBehaviors];
@@ -559,8 +559,8 @@ LABEL_24:
   v16 = v15;
 
   v17 = v5 + v5 + v16 * 2.0;
-  v18 = [(CKMacRecipientsController *)self view];
-  LODWORD(v14) = [v18 _shouldReverseLayoutDirection];
+  view2 = [(CKMacRecipientsController *)self view];
+  LODWORD(v14) = [view2 _shouldReverseLayoutDirection];
 
   v19 = v10 - v17;
   if (v14)
@@ -589,8 +589,8 @@ LABEL_24:
   v8 = v7;
   v10 = v9;
 
-  v11 = [(CKMacRecipientsController *)self view];
-  [v11 frame];
+  view = [(CKMacRecipientsController *)self view];
+  [view frame];
   v13 = v12;
 
   v14 = +[CKUIBehavior sharedBehaviors];
@@ -602,8 +602,8 @@ LABEL_24:
   v19 = v18;
 
   v20 = v8 + v5 + v19 * 2.0;
-  v21 = [(CKMacRecipientsController *)self view];
-  LODWORD(v17) = [v21 _shouldReverseLayoutDirection];
+  view2 = [(CKMacRecipientsController *)self view];
+  LODWORD(v17) = [view2 _shouldReverseLayoutDirection];
 
   v22 = v13 - v20;
   if (v17)
@@ -623,12 +623,12 @@ LABEL_24:
 
 - (CGRect)innermostToolbarItemFrame
 {
-  v3 = [(CKMacRecipientsController *)self delegate];
-  v4 = [v3 innermostToolbarItemIdentifier];
-  v5 = v4;
-  if (v4)
+  delegate = [(CKMacRecipientsController *)self delegate];
+  innermostToolbarItemIdentifier = [delegate innermostToolbarItemIdentifier];
+  v5 = innermostToolbarItemIdentifier;
+  if (innermostToolbarItemIdentifier)
   {
-    v6 = v4;
+    v6 = innermostToolbarItemIdentifier;
   }
 
   else
@@ -673,16 +673,16 @@ LABEL_9:
 
 - (void)_updateToFieldFrame
 {
-  v3 = [(CKMacRecipientsController *)self view];
-  v4 = [v3 _shouldReverseLayoutDirection];
+  view = [(CKMacRecipientsController *)self view];
+  _shouldReverseLayoutDirection = [view _shouldReverseLayoutDirection];
 
   [(CKMacRecipientsController *)self innermostToolbarItemFrame];
   v6 = v5;
   v44 = v7;
   v45 = v8;
   rect = v9;
-  v10 = [(CKMacRecipientsController *)self view];
-  [v10 frame];
+  view2 = [(CKMacRecipientsController *)self view];
+  [view2 frame];
   v43 = v11;
 
   v12 = +[CKUIBehavior sharedBehaviors];
@@ -696,12 +696,12 @@ LABEL_9:
   [v19 toFieldXOffset];
   v21 = v20;
 
-  v22 = [(CNComposeRecipientTextView *)self->_toField labelView];
-  [v22 sizeToFit];
+  labelView = [(CNComposeRecipientTextView *)self->_toField labelView];
+  [labelView sizeToFit];
 
   toField = self->_toField;
-  v24 = [(CNComposeRecipientTextView *)toField labelView];
-  [v24 frame];
+  labelView2 = [(CNComposeRecipientTextView *)toField labelView];
+  [labelView2 frame];
   [(CNComposeRecipientTextView *)toField convertRect:self->_toField toView:?];
 
   v25 = +[CKUIBehavior sharedBehaviors];
@@ -709,12 +709,12 @@ LABEL_9:
 
   v26 = +[CKUIBehavior sharedBehaviors];
   [v26 toFieldYOffset];
-  v27 = [(CKMacRecipientsController *)self traitCollection];
-  [v27 displayScale];
+  traitCollection = [(CKMacRecipientsController *)self traitCollection];
+  [traitCollection displayScale];
   UIRoundToScale();
   v29 = v28;
 
-  if (v4)
+  if (_shouldReverseLayoutDirection)
   {
     v48.origin.x = v6;
     v48.origin.y = v44;
@@ -731,9 +731,9 @@ LABEL_9:
   }
 
   v31 = v6 - v21 - v16;
-  v32 = [(CKMacRecipientsController *)self view];
-  v33 = [v32 traitCollection];
-  [v33 displayScale];
+  view3 = [(CKMacRecipientsController *)self view];
+  traitCollection2 = [view3 traitCollection];
+  [traitCollection2 displayScale];
   v35 = round(MaxX * v34) / v34;
   v36 = round(v29 * v34) / v34;
   v37 = round(v31 * v34) / v34;
@@ -758,10 +758,10 @@ LABEL_9:
 
 - (void)_reloadCurrentRecipientData
 {
-  v2 = self;
+  selfCopy = self;
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [(CKMacRecipientsController *)self recipients];
-  v4 = [v3 copy];
+  recipients = [(CKMacRecipientsController *)self recipients];
+  v4 = [recipients copy];
 
   v35 = 0u;
   v36 = 0u;
@@ -773,7 +773,7 @@ LABEL_9:
   {
     v5 = *v34;
     v24 = *v34;
-    v25 = v2;
+    v25 = selfCopy;
     do
     {
       v6 = 0;
@@ -785,20 +785,20 @@ LABEL_9:
         }
 
         v7 = *(*(&v33 + 1) + 8 * v6);
-        v8 = [(CKMacRecipientsController *)v2 toField];
-        [v8 removeRecipient:v7];
+        toField = [(CKMacRecipientsController *)selfCopy toField];
+        [toField removeRecipient:v7];
 
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && ([v7 children], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
         {
-          v10 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
           v29 = 0u;
           v30 = 0u;
           v31 = 0u;
           v32 = 0u;
           v27 = v7;
-          v11 = [v7 children];
-          v12 = [v11 countByEnumeratingWithState:&v29 objects:v37 count:16];
+          children = [v7 children];
+          v12 = [children countByEnumeratingWithState:&v29 objects:v37 count:16];
           if (v12)
           {
             v13 = v12;
@@ -810,45 +810,45 @@ LABEL_9:
               {
                 if (*v30 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(children);
                 }
 
                 v16 = *(*(&v29 + 1) + 8 * v15);
                 v17 = +[CKRecipientGenerator sharedRecipientGenerator];
-                v18 = [v16 normalizedAddress];
-                v19 = [v17 recipientWithAddress:v18];
+                normalizedAddress = [v16 normalizedAddress];
+                v19 = [v17 recipientWithAddress:normalizedAddress];
 
                 if (v19)
                 {
-                  [v10 addObject:v19];
+                  [array addObject:v19];
                 }
 
                 ++v15;
               }
 
               while (v13 != v15);
-              v13 = [v11 countByEnumeratingWithState:&v29 objects:v37 count:16];
+              v13 = [children countByEnumeratingWithState:&v29 objects:v37 count:16];
             }
 
             while (v13);
           }
 
           v20 = objc_alloc(MEMORY[0x1E6996418]);
-          v21 = [v27 displayString];
-          v22 = [v20 initWithChildren:v10 displayString:v21];
+          displayString = [v27 displayString];
+          v22 = [v20 initWithChildren:array displayString:displayString];
           v5 = v24;
-          v2 = v25;
+          selfCopy = v25;
         }
 
         else
         {
-          v10 = +[CKRecipientGenerator sharedRecipientGenerator];
-          v21 = [v7 normalizedAddress];
-          v22 = [v10 recipientWithAddress:v21];
+          array = +[CKRecipientGenerator sharedRecipientGenerator];
+          displayString = [v7 normalizedAddress];
+          v22 = [array recipientWithAddress:displayString];
         }
 
-        v23 = [(CKMacRecipientsController *)v2 toField];
-        [v23 addRecipient:v22];
+        toField2 = [(CKMacRecipientsController *)selfCopy toField];
+        [toField2 addRecipient:v22];
 
         ++v6;
       }
@@ -860,23 +860,23 @@ LABEL_9:
     while (v28);
   }
 
-  [(CKMacRecipientsController *)v2 _notifyDelegatesToFieldHeightHasChanged];
+  [(CKMacRecipientsController *)selfCopy _notifyDelegatesToFieldHeightHasChanged];
 }
 
 - (id)recipients
 {
-  v2 = [(CKMacRecipientsController *)self toField];
-  v3 = [v2 recipients];
+  toField = [(CKMacRecipientsController *)self toField];
+  recipients = [toField recipients];
 
-  return v3;
+  return recipients;
 }
 
-- (void)addRecipients:(id)a3
+- (void)addRecipients:(id)recipients
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  recipientsCopy = recipients;
+  v5 = recipientsCopy;
+  if (recipientsCopy && [recipientsCopy count])
   {
     v15 = 0u;
     v16 = 0u;
@@ -899,8 +899,8 @@ LABEL_9:
           }
 
           v11 = *(*(&v13 + 1) + 8 * v10);
-          v12 = [(CKMacRecipientsController *)self toField];
-          [v12 addRecipient:v11];
+          toField = [(CKMacRecipientsController *)self toField];
+          [toField addRecipient:v11];
 
           ++v10;
         }
@@ -920,56 +920,56 @@ LABEL_9:
 
 - (void)reset
 {
-  v3 = [(CKMacRecipientsController *)self toField];
-  v4 = [v3 recipients];
-  v5 = [v4 count];
+  toField = [(CKMacRecipientsController *)self toField];
+  recipients = [toField recipients];
+  v5 = [recipients count];
 
   if (v5)
   {
-    v6 = [(CKMacRecipientsController *)self toField];
-    v7 = [MEMORY[0x1E695DEC8] array];
-    [v6 setRecipients:v7];
+    toField2 = [(CKMacRecipientsController *)self toField];
+    array = [MEMORY[0x1E695DEC8] array];
+    [toField2 setRecipients:array];
 
-    v8 = [(CKMacRecipientsController *)self toField];
-    v9 = [MEMORY[0x1E695DEC8] array];
-    [v8 setAddresses:v9];
+    toField3 = [(CKMacRecipientsController *)self toField];
+    array2 = [MEMORY[0x1E695DEC8] array];
+    [toField3 setAddresses:array2];
 
-    v10 = [(CKMacRecipientsController *)self toField];
-    [v10 clearText];
+    toField4 = [(CKMacRecipientsController *)self toField];
+    [toField4 clearText];
   }
 }
 
 - (void)_notifyDelegatesToFieldHeightHasChanged
 {
-  v3 = [(CKMacRecipientsController *)self numberOfRowsInToField];
-  v4 = [(CKMacRecipientsController *)self toField];
-  v5 = [v4 numberOfRowsOfTextInField];
+  numberOfRowsInToField = [(CKMacRecipientsController *)self numberOfRowsInToField];
+  toField = [(CKMacRecipientsController *)self toField];
+  numberOfRowsOfTextInField = [toField numberOfRowsOfTextInField];
 
-  if (v3 != v5)
+  if (numberOfRowsInToField != numberOfRowsOfTextInField)
   {
-    v6 = [(CKMacRecipientsController *)self toField];
-    -[CKMacRecipientsController setNumberOfRowsInToField:](self, "setNumberOfRowsInToField:", [v6 numberOfRowsOfTextInField]);
+    toField2 = [(CKMacRecipientsController *)self toField];
+    -[CKMacRecipientsController setNumberOfRowsInToField:](self, "setNumberOfRowsInToField:", [toField2 numberOfRowsOfTextInField]);
 
-    v7 = [(CKMacRecipientsController *)self delegate];
-    [v7 macRecipientsControllerDidUpdateToFieldSizing:self];
+    delegate = [(CKMacRecipientsController *)self delegate];
+    [delegate macRecipientsControllerDidUpdateToFieldSizing:self];
   }
 }
 
-- (void)_handleAddressBookChangedNotification:(id)a3
+- (void)_handleAddressBookChangedNotification:(id)notification
 {
-  v4 = [(CKMacRecipientsController *)self addressBookNotificationUpdater];
-  [v4 setNeedsUpdate];
+  addressBookNotificationUpdater = [(CKMacRecipientsController *)self addressBookNotificationUpdater];
+  [addressBookNotificationUpdater setNeedsUpdate];
 
-  v5 = [(CKMacRecipientsController *)self addressBookNotificationUpdater];
-  [v5 updateIfNeeded];
+  addressBookNotificationUpdater2 = [(CKMacRecipientsController *)self addressBookNotificationUpdater];
+  [addressBookNotificationUpdater2 updateIfNeeded];
 }
 
-- (void)_handleAddressBookPartialChangedNotification:(id)a3
+- (void)_handleAddressBookPartialChangedNotification:(id)notification
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69A6868]];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69A6868]];
 
   if ([v6 length])
   {
@@ -977,8 +977,8 @@ LABEL_9:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(CKMacRecipientsController *)self recipients];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    recipients = [(CKMacRecipientsController *)self recipients];
+    v8 = [recipients countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -989,20 +989,20 @@ LABEL_9:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(recipients);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) normalizedAddress];
-          v13 = [v6 isEqualToString:v12];
+          normalizedAddress = [*(*(&v14 + 1) + 8 * i) normalizedAddress];
+          v13 = [v6 isEqualToString:normalizedAddress];
 
           if (v13)
           {
-            [(CKMacRecipientsController *)self _handleAddressBookChangedNotification:v4];
+            [(CKMacRecipientsController *)self _handleAddressBookChangedNotification:notificationCopy];
             goto LABEL_12;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [recipients countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v9)
         {
           continue;
@@ -1016,37 +1016,37 @@ LABEL_12:
   }
 }
 
-- (void)_handleConversationPreferredServiceDidChangeNotification:(id)a3
+- (void)_handleConversationPreferredServiceDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(CKMacRecipientsController *)self conversation];
-  v6 = [v4 object];
+  notificationCopy = notification;
+  conversation = [(CKMacRecipientsController *)self conversation];
+  object = [notificationCopy object];
 
-  LODWORD(v4) = [v5 isEqual:v6];
-  if (v4)
+  LODWORD(notificationCopy) = [conversation isEqual:object];
+  if (notificationCopy)
   {
-    v7 = [(CKMacRecipientsController *)self toField];
-    [v7 invalidateAtomPresentationOptions];
+    toField = [(CKMacRecipientsController *)self toField];
+    [toField invalidateAtomPresentationOptions];
   }
 }
 
-- (unint64_t)_atomPresentationOptionsForRecipient:(id)a3
+- (unint64_t)_atomPresentationOptionsForRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [v4 address];
+  recipientCopy = recipient;
+  address = [recipientCopy address];
 
-  if (v5)
+  if (address)
   {
     if ([MEMORY[0x1E69A5B68] isContactLimitsFeatureEnabled])
     {
-      v6 = [(CKMacRecipientsController *)self currentConversationContext];
+      currentConversationContext = [(CKMacRecipientsController *)self currentConversationContext];
 
-      if (v6)
+      if (currentConversationContext)
       {
-        v7 = [(CKMacRecipientsController *)self currentConversationContext];
-        v8 = [v7 allowedByContactsHandle];
-        v9 = [v4 normalizedAddress];
-        v10 = [v8 objectForKey:v9];
+        currentConversationContext2 = [(CKMacRecipientsController *)self currentConversationContext];
+        allowedByContactsHandle = [currentConversationContext2 allowedByContactsHandle];
+        normalizedAddress = [recipientCopy normalizedAddress];
+        v10 = [allowedByContactsHandle objectForKey:normalizedAddress];
 
         if (v10 && ![v10 BOOLValue])
         {
@@ -1057,30 +1057,30 @@ LABEL_12:
       }
     }
 
-    v11 = [(CKMacRecipientsController *)self conversation];
+    conversation = [(CKMacRecipientsController *)self conversation];
 
-    if (v11)
+    if (conversation)
     {
-      v12 = [(CKMacRecipientsController *)self conversation];
-      v13 = [v12 sendingService];
-      v14 = [MEMORY[0x1E69A5C90] iMessageService];
+      conversation2 = [(CKMacRecipientsController *)self conversation];
+      sendingService = [conversation2 sendingService];
+      iMessageService = [MEMORY[0x1E69A5C90] iMessageService];
 
-      if (v13 == v14)
+      if (sendingService == iMessageService)
       {
         v21 = 0;
         goto LABEL_18;
       }
 
-      v15 = [(CKMacRecipientsController *)self conversation];
-      v16 = [v15 sendingService];
-      if (v16)
+      conversation3 = [(CKMacRecipientsController *)self conversation];
+      sendingService2 = [conversation3 sendingService];
+      if (sendingService2)
       {
-        v17 = v16;
-        v18 = [(CKMacRecipientsController *)self conversation];
-        v19 = [v18 sendingService];
-        v20 = [MEMORY[0x1E69A5C90] facetimeService];
+        v17 = sendingService2;
+        conversation4 = [(CKMacRecipientsController *)self conversation];
+        sendingService3 = [conversation4 sendingService];
+        facetimeService = [MEMORY[0x1E69A5C90] facetimeService];
 
-        if (v19 != v20)
+        if (sendingService3 != facetimeService)
         {
           v21 = 2;
           goto LABEL_18;
@@ -1109,31 +1109,31 @@ LABEL_18:
   return v21;
 }
 
-- (BOOL)shouldShowVerifiedIconForRecipient:(id)a3
+- (BOOL)shouldShowVerifiedIconForRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [(CKMacRecipientsController *)self conversation];
-  v6 = [v5 chat];
-  v7 = [CKContactKeyVerificationRecipientsHelper shouldShowVerifiedIconForRecipient:v4 inChat:v6];
+  recipientCopy = recipient;
+  conversation = [(CKMacRecipientsController *)self conversation];
+  chat = [conversation chat];
+  v7 = [CKContactKeyVerificationRecipientsHelper shouldShowVerifiedIconForRecipient:recipientCopy inChat:chat];
 
   return v7;
 }
 
-- (void)_handleKeyTransparencyStatusChangedNotification:(id)a3
+- (void)_handleKeyTransparencyStatusChangedNotification:(id)notification
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isKeyTransparencyEnabled];
+  notificationCopy = notification;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isKeyTransparencyEnabled = [mEMORY[0x1E69A8070] isKeyTransparencyEnabled];
 
-  if (v6)
+  if (isKeyTransparencyEnabled)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKey:*MEMORY[0x1E69A5800]];
+    userInfo = [notificationCopy userInfo];
+    v8 = [userInfo objectForKey:*MEMORY[0x1E69A5800]];
 
-    v9 = [(CKMacRecipientsController *)self recipients];
-    v10 = [(CKMacRecipientsController *)self conversation];
-    v11 = [CKContactKeyVerificationRecipientsHelper recipientsToUpdateForUpdatedCKVHandles:v8 recipients:v9 inConversation:v10];
+    recipients = [(CKMacRecipientsController *)self recipients];
+    conversation = [(CKMacRecipientsController *)self conversation];
+    v11 = [CKContactKeyVerificationRecipientsHelper recipientsToUpdateForUpdatedCKVHandles:v8 recipients:recipients inConversation:conversation];
 
     v21 = 0u;
     v22 = 0u;
@@ -1156,8 +1156,8 @@ LABEL_18:
           }
 
           v17 = *(*(&v19 + 1) + 8 * v16);
-          v18 = [(CKMacRecipientsController *)self toField];
-          [v18 invalidateAtomPresentationOptionsForRecipient:v17];
+          toField = [(CKMacRecipientsController *)self toField];
+          [toField invalidateAtomPresentationOptionsForRecipient:v17];
 
           ++v16;
         }
@@ -1171,34 +1171,34 @@ LABEL_18:
   }
 }
 
-- (id)composeRecipientView:(id)a3 contextMenuConfigurationForAtom:(id)a4
+- (id)composeRecipientView:(id)view contextMenuConfigurationForAtom:(id)atom
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKMacRecipientsController *)self toField];
+  viewCopy = view;
+  atomCopy = atom;
+  toField = [(CKMacRecipientsController *)self toField];
 
-  if (v8 != v6)
+  if (toField != viewCopy)
   {
     goto LABEL_2;
   }
 
-  v11 = [v7 recipient];
+  recipient = [atomCopy recipient];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v38 = v7;
-    v14 = [v7 recipient];
-    v15 = [v14 children];
+    v38 = atomCopy;
+    recipient2 = [atomCopy recipient];
+    children = [recipient2 children];
 
-    v16 = [v15 countByEnumeratingWithState:&v41 objects:v45 count:16];
+    v16 = [children countByEnumeratingWithState:&v41 objects:v45 count:16];
     if (v16)
     {
       v17 = v16;
@@ -1209,29 +1209,29 @@ LABEL_18:
         {
           if (*v42 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(children);
           }
 
-          v20 = [*(*(&v41 + 1) + 8 * i) normalizedAddress];
-          v21 = [CKEntity entityForAddress:v20];
-          [v13 addObject:v21];
+          normalizedAddress = [*(*(&v41 + 1) + 8 * i) normalizedAddress];
+          v21 = [CKEntity entityForAddress:normalizedAddress];
+          [array addObject:v21];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v41 objects:v45 count:16];
+        v17 = [children countByEnumeratingWithState:&v41 objects:v45 count:16];
       }
 
       while (v17);
     }
 
-    v22 = [(CKMacRecipientsController *)self conversation];
-    v23 = [v22 recipients];
-    v24 = [v23 isEqualToArray:v13];
+    conversation = [(CKMacRecipientsController *)self conversation];
+    recipients = [conversation recipients];
+    v24 = [recipients isEqualToArray:array];
 
     if (v24)
     {
-      v25 = [(CKMacRecipientsController *)self conversation];
-      v26 = [(CKMacRecipientsController *)self contactsManager];
-      v9 = [CKContextMenuGenerator menuForNamedGroupConversation:v25 andContactsManager:v26];
+      conversation2 = [(CKMacRecipientsController *)self conversation];
+      contactsManager = [(CKMacRecipientsController *)self contactsManager];
+      v9 = [CKContextMenuGenerator menuForNamedGroupConversation:conversation2 andContactsManager:contactsManager];
     }
 
     else
@@ -1239,27 +1239,27 @@ LABEL_18:
       v9 = 0;
     }
 
-    v7 = v38;
+    atomCopy = v38;
   }
 
   else
   {
-    v27 = [(CKMacRecipientsController *)self contactsManager];
-    v28 = [v27 conformsToProtocol:&unk_1F06794C0];
+    contactsManager2 = [(CKMacRecipientsController *)self contactsManager];
+    v28 = [contactsManager2 conformsToProtocol:&unk_1F06794C0];
 
-    if (!v28 || ([v7 recipient], (v29 = objc_claimAutoreleasedReturnValue()) == 0) || (v30 = v29, objc_msgSend(v7, "recipient"), v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v31, "normalizedAddress"), v32 = objc_claimAutoreleasedReturnValue(), v32, v31, v30, !v32))
+    if (!v28 || ([atomCopy recipient], (v29 = objc_claimAutoreleasedReturnValue()) == 0) || (v30 = v29, objc_msgSend(atomCopy, "recipient"), v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v31, "normalizedAddress"), v32 = objc_claimAutoreleasedReturnValue(), v32, v31, v30, !v32))
     {
 LABEL_2:
       v9 = 0;
       goto LABEL_3;
     }
 
-    v33 = [v7 recipient];
-    v34 = [v33 normalizedAddress];
-    v13 = [CKEntity entityForAddress:v34];
+    recipient3 = [atomCopy recipient];
+    normalizedAddress2 = [recipient3 normalizedAddress];
+    array = [CKEntity entityForAddress:normalizedAddress2];
 
-    v35 = [(CKMacRecipientsController *)self contactsManager];
-    v9 = [v35 contextMenuForEntity:v13 atom:v7];
+    contactsManager3 = [(CKMacRecipientsController *)self contactsManager];
+    v9 = [contactsManager3 contextMenuForEntity:array atom:atomCopy];
   }
 
   if (v9)
@@ -1279,63 +1279,63 @@ LABEL_3:
   return v9;
 }
 
-- (void)composeRecipientView:(id)a3 disambiguateRecipientForAtom:(id)a4
+- (void)composeRecipientView:(id)view disambiguateRecipientForAtom:(id)atom
 {
-  v17 = a4;
+  atomCopy = atom;
   if (CKIsRunningInMacCatalyst())
   {
-    v5 = [v17 recipient];
+    recipient = [atomCopy recipient];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v7 = [v17 recipient];
-      v8 = [v7 normalizedAddress];
-      v9 = [CKEntity entityForAddress:v8];
+      recipient2 = [atomCopy recipient];
+      normalizedAddress = [recipient2 normalizedAddress];
+      v9 = [CKEntity entityForAddress:normalizedAddress];
 
-      v10 = [(CKMacRecipientsController *)self conversation];
-      LODWORD(v8) = [v10 isGroupConversation];
+      conversation = [(CKMacRecipientsController *)self conversation];
+      LODWORD(normalizedAddress) = [conversation isGroupConversation];
 
-      if (v8)
+      if (normalizedAddress)
       {
         v11 = MEMORY[0x1E696AEC0];
-        v12 = [v9 defaultIMHandle];
-        v13 = [v12 ID];
+        defaultIMHandle = [v9 defaultIMHandle];
+        v13 = [defaultIMHandle ID];
         v14 = [v11 stringWithFormat:@"messages://open?addresses=%@", v13];
 
         v15 = [MEMORY[0x1E695DFF8] URLWithString:v14];
-        v16 = [MEMORY[0x1E69DC668] sharedApplication];
-        [v16 openURL:v15 options:MEMORY[0x1E695E0F8] completionHandler:0];
+        mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+        [mEMORY[0x1E69DC668] openURL:v15 options:MEMORY[0x1E695E0F8] completionHandler:0];
       }
 
       else
       {
-        [(CKMacRecipientsController *)self _showContactCardForEntity:v9 sourceView:v17];
+        [(CKMacRecipientsController *)self _showContactCardForEntity:v9 sourceView:atomCopy];
       }
     }
   }
 }
 
-- (void)_showContactCardForEntity:(id)a3 sourceView:(id)a4
+- (void)_showContactCardForEntity:(id)entity sourceView:(id)view
 {
-  v4 = [a3 rawAddress];
+  rawAddress = [entity rawAddress];
   v13 = IMStripFormattingFromAddress();
 
-  v5 = [MEMORY[0x1E69A5A80] sharedInstance];
-  v6 = [v5 __ck_bestAccountForAddress:v13];
+  mEMORY[0x1E69A5A80] = [MEMORY[0x1E69A5A80] sharedInstance];
+  v6 = [mEMORY[0x1E69A5A80] __ck_bestAccountForAddress:v13];
   v7 = [v6 imHandleWithID:v13 alreadyCanonical:0];
 
   v8 = [v7 cnContactWithKeys:MEMORY[0x1E695E0F0]];
   if (CKIsRunningInMacCatalyst() && [MEMORY[0x1E69A7FD0] isCNContactAKnownContact:v8])
   {
     v9 = [MEMORY[0x1E696AD60] stringWithString:@"addressbook://"];
-    v10 = [v8 identifier];
-    [v9 appendString:v10];
+    identifier = [v8 identifier];
+    [v9 appendString:identifier];
 
-    v11 = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
     v12 = [MEMORY[0x1E695DFF8] URLWithString:v9];
-    [v11 openURL:v12 options:MEMORY[0x1E695E0F8] completionHandler:0];
+    [mEMORY[0x1E69DC668] openURL:v12 options:MEMORY[0x1E695E0F8] completionHandler:0];
   }
 }
 
@@ -1349,10 +1349,10 @@ LABEL_3:
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [(CKMacRecipientsController *)self toField];
-    v5 = [v4 recipients];
+    toField = [(CKMacRecipientsController *)self toField];
+    recipients = [toField recipients];
 
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v6 = [recipients countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1363,17 +1363,17 @@ LABEL_3:
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(recipients);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) normalizedAddress];
-          if (v10)
+          normalizedAddress = [*(*(&v13 + 1) + 8 * i) normalizedAddress];
+          if (normalizedAddress)
           {
-            [v3 addObject:v10];
+            [v3 addObject:normalizedAddress];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [recipients countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
@@ -1392,49 +1392,49 @@ LABEL_3:
 
 - (void)updateScreenTimePolicy
 {
-  v3 = [(CKMacRecipientsController *)self currentConversationContext];
+  currentConversationContext = [(CKMacRecipientsController *)self currentConversationContext];
 
-  if (v3)
+  if (currentConversationContext)
   {
-    v4 = [(CKMacRecipientsController *)self currentConversationContext];
-    [v4 removeObserver:self forKeyPath:@"allowedByScreenTime"];
+    currentConversationContext2 = [(CKMacRecipientsController *)self currentConversationContext];
+    [currentConversationContext2 removeObserver:self forKeyPath:@"allowedByScreenTime"];
 
     [(CKMacRecipientsController *)self setCurrentConversationContext:0];
   }
 
   if ([MEMORY[0x1E69A5B68] isContactLimitsFeatureEnabled])
   {
-    v5 = [(CKMacRecipientsController *)self handlesForScreenTimePolicyCheck];
-    v6 = [MEMORY[0x1E69A5B68] sharedInstance];
+    handlesForScreenTimePolicyCheck = [(CKMacRecipientsController *)self handlesForScreenTimePolicyCheck];
+    mEMORY[0x1E69A5B68] = [MEMORY[0x1E69A5B68] sharedInstance];
     v11 = 0;
-    v7 = [v6 allowedToShowConversationWithHandleIDs:v5 sync:1 context:&v11];
+    v7 = [mEMORY[0x1E69A5B68] allowedToShowConversationWithHandleIDs:handlesForScreenTimePolicyCheck sync:1 context:&v11];
     v8 = v11;
 
     [(CKMacRecipientsController *)self setCurrentConversationContext:v8];
     if (v7 != [(CKMacRecipientsController *)self allowedByScreenTime])
     {
-      v9 = [(CKMacRecipientsController *)self toField];
-      [v9 invalidateAtomPresentationOptions];
+      toField = [(CKMacRecipientsController *)self toField];
+      [toField invalidateAtomPresentationOptions];
     }
 
     [(CKMacRecipientsController *)self setAllowedByScreenTime:v7];
-    v10 = [(CKMacRecipientsController *)self currentConversationContext];
-    [v10 addObserver:self forKeyPath:@"allowedByScreenTime" options:1 context:ctxAllowedByScreenTime_0];
+    currentConversationContext3 = [(CKMacRecipientsController *)self currentConversationContext];
+    [currentConversationContext3 addObserver:self forKeyPath:@"allowedByScreenTime" options:1 context:ctxAllowedByScreenTime_0];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a4;
-  v11 = v10;
-  if (ctxAllowedByScreenTime_0 == a6)
+  objectCopy = object;
+  v11 = objectCopy;
+  if (ctxAllowedByScreenTime_0 == context)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __76__CKMacRecipientsController_observeValueForKeyPath_ofObject_change_context___block_invoke;
     block[3] = &unk_1E72EB8D0;
-    v14 = v10;
-    v15 = self;
+    v14 = objectCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
@@ -1442,7 +1442,7 @@ LABEL_3:
   {
     v12.receiver = self;
     v12.super_class = CKMacRecipientsController;
-    [(CKMacRecipientsController *)&v12 observeValueForKeyPath:a3 ofObject:v10 change:a5 context:a6];
+    [(CKMacRecipientsController *)&v12 observeValueForKeyPath:path ofObject:objectCopy change:change context:context];
   }
 }
 

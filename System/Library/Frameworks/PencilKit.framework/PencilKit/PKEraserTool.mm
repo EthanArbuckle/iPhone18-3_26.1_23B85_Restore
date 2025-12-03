@@ -6,10 +6,10 @@
 - (CGFloat)width;
 - (PKEraserTool)initWithEraserType:(PKEraserType)eraserType;
 - (PKEraserTool)initWithEraserType:(PKEraserType)eraserType width:(CGFloat)width;
-- (PKEraserTool)initWithEraserType:(int64_t)a3 weight:(double)a4;
+- (PKEraserTool)initWithEraserType:(int64_t)type weight:(double)weight;
 - (PKEraserType)eraserType;
 - (double)_weight;
-- (void)setWidth:(double)a3;
+- (void)setWidth:(double)width;
 @end
 
 @implementation PKEraserTool
@@ -24,9 +24,9 @@
   return v5;
 }
 
-- (PKEraserTool)initWithEraserType:(int64_t)a3 weight:(double)a4
+- (PKEraserTool)initWithEraserType:(int64_t)type weight:(double)weight
 {
-  v5 = PKEraserInkForTypeAndWeight(a3, a4);
+  v5 = PKEraserInkForTypeAndWeight(type, weight);
   v8.receiver = self;
   v8.super_class = PKEraserTool;
   v6 = [(PKTool *)&v8 _initWithInk:v5];
@@ -48,8 +48,8 @@
 - (BOOL)_isFixedWidthBitmap
 {
   v3 = [(PKTool *)self ink];
-  v4 = [v3 identifier];
-  if ([v4 isEqualToString:@"com.apple.ink.eraser"])
+  identifier = [v3 identifier];
+  if ([identifier isEqualToString:@"com.apple.ink.eraser"])
   {
     v5 = [(PKTool *)self ink];
     v6 = [v5 version] > 3;
@@ -78,7 +78,7 @@
   return v5;
 }
 
-- (void)setWidth:(double)a3
+- (void)setWidth:(double)width
 {
   if ([(PKEraserTool *)self _isFixedWidthBitmap])
   {
@@ -144,8 +144,8 @@
 - (PKEraserType)eraserType
 {
   v3 = [(PKTool *)self ink];
-  v4 = [v3 identifier];
-  v5 = [v4 isEqual:@"com.apple.ink.objectEraser"];
+  identifier = [v3 identifier];
+  v5 = [identifier isEqual:@"com.apple.ink.objectEraser"];
 
   if (v5)
   {

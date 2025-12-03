@@ -1,26 +1,26 @@
 @interface CPLFaceInstance
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isTorsoOnly;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)pointerDescription;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)_setFaceStateBit:(unsigned int)a3 fromBoolValue:(BOOL)a4;
-- (void)addRejectedPersonIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBodyCenterY:(BOOL)a3;
-- (void)setHasBodyHeight:(BOOL)a3;
-- (void)setHasBodyWidth:(BOOL)a3;
-- (void)setHasCenterX:(BOOL)a3;
-- (void)setHasCenterY:(BOOL)a3;
-- (void)setHasDetectionType:(BOOL)a3;
-- (void)setHasFaceState:(BOOL)a3;
-- (void)setHasNameSource:(BOOL)a3;
-- (void)setHasSize:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)_setFaceStateBit:(unsigned int)bit fromBoolValue:(BOOL)value;
+- (void)addRejectedPersonIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBodyCenterY:(BOOL)y;
+- (void)setHasBodyHeight:(BOOL)height;
+- (void)setHasBodyWidth:(BOOL)width;
+- (void)setHasCenterX:(BOOL)x;
+- (void)setHasCenterY:(BOOL)y;
+- (void)setHasDetectionType:(BOOL)type;
+- (void)setHasFaceState:(BOOL)state;
+- (void)setHasNameSource:(BOOL)source;
+- (void)setHasSize:(BOOL)size;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CPLFaceInstance
@@ -37,18 +37,18 @@
   return v4 != 0.0;
 }
 
-- (void)_setFaceStateBit:(unsigned int)a3 fromBoolValue:(BOOL)a4
+- (void)_setFaceStateBit:(unsigned int)bit fromBoolValue:(BOOL)value
 {
-  v4 = a4;
-  v7 = [(CPLFaceInstance *)self faceState];
-  if (v4)
+  valueCopy = value;
+  faceState = [(CPLFaceInstance *)self faceState];
+  if (valueCopy)
   {
-    v8 = v7 | a3;
+    v8 = faceState | bit;
   }
 
   else
   {
-    v8 = v7 & ~a3;
+    v8 = faceState & ~bit;
   }
 
   [(CPLFaceInstance *)self setFaceState:v8];
@@ -64,10 +64,10 @@
   return v6;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  compareCopy = compare;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -83,27 +83,27 @@
       }
     }
 
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLFaceAnalysisReference.m"];
-    [v16 handleFailureInMethod:a2 object:self file:v17 lineNumber:31 description:{@"Unexpected class type: %@", objc_opt_class()}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v17 lineNumber:31 description:{@"Unexpected class type: %@", objc_opt_class()}];
 
     abort();
   }
 
-  if (![(CPLFaceInstance *)self isEqual:v5])
+  if (![(CPLFaceInstance *)self isEqual:compareCopy])
   {
     personIdentifier = self->_personIdentifier;
     if (!personIdentifier)
     {
-      v11 = [v5 personIdentifier];
+      personIdentifier = [compareCopy personIdentifier];
 
-      if (!v11)
+      if (!personIdentifier)
       {
-        v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_size];
+        personIdentifier2 = [MEMORY[0x1E696AD98] numberWithDouble:self->_size];
         v12 = MEMORY[0x1E696AD98];
-        [v5 size];
+        [compareCopy size];
         v13 = [v12 numberWithDouble:?];
-        v6 = [v8 compare:v13];
+        v6 = [personIdentifier2 compare:v13];
 
         goto LABEL_6;
       }
@@ -116,8 +116,8 @@
       }
     }
 
-    v8 = [v5 personIdentifier];
-    v6 = [(NSString *)personIdentifier compare:v8];
+    personIdentifier2 = [compareCopy personIdentifier];
+    v6 = [(NSString *)personIdentifier compare:personIdentifier2];
 LABEL_6:
 
     goto LABEL_7;
@@ -130,21 +130,21 @@ LABEL_7:
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 10))
+  fromCopy = from;
+  if (*(fromCopy + 10))
   {
     [(CPLFaceInstance *)self setPersonIdentifier:?];
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x10) != 0)
   {
-    self->_centerX = *(v4 + 5);
+    self->_centerX = *(fromCopy + 5);
     *&self->_has |= 0x10u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
     if ((v5 & 0x20) == 0)
     {
 LABEL_5:
@@ -162,9 +162,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  self->_centerY = *(v4 + 6);
+  self->_centerY = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x40) == 0)
   {
 LABEL_6:
@@ -177,12 +177,12 @@ LABEL_6:
   }
 
 LABEL_25:
-  self->_size = *(v4 + 7);
+  self->_size = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  if ((*(v4 + 48) & 0x100) != 0)
+  if ((*(fromCopy + 48) & 0x100) != 0)
   {
 LABEL_7:
-    self->_faceState = *(v4 + 17);
+    self->_faceState = *(fromCopy + 17);
     *&self->_has |= 0x100u;
   }
 
@@ -191,7 +191,7 @@ LABEL_8:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = *(v4 + 11);
+  v6 = *(fromCopy + 11);
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -215,12 +215,12 @@ LABEL_8:
     while (v8);
   }
 
-  v11 = *(v4 + 48);
+  v11 = *(fromCopy + 48);
   if ((v11 & 0x200) != 0)
   {
-    self->_nameSource = *(v4 + 18);
+    self->_nameSource = *(fromCopy + 18);
     *&self->_has |= 0x200u;
-    v11 = *(v4 + 48);
+    v11 = *(fromCopy + 48);
     if ((v11 & 0x80) == 0)
     {
 LABEL_17:
@@ -238,9 +238,9 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  self->_detectionType = *(v4 + 16);
+  self->_detectionType = *(fromCopy + 16);
   *&self->_has |= 0x80u;
-  v11 = *(v4 + 48);
+  v11 = *(fromCopy + 48);
   if ((v11 & 1) == 0)
   {
 LABEL_18:
@@ -253,9 +253,9 @@ LABEL_18:
   }
 
 LABEL_29:
-  self->_bodyCenterX = *(v4 + 1);
+  self->_bodyCenterX = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v11 = *(v4 + 48);
+  v11 = *(fromCopy + 48);
   if ((v11 & 2) == 0)
   {
 LABEL_19:
@@ -265,9 +265,9 @@ LABEL_19:
     }
 
 LABEL_31:
-    self->_bodyWidth = *(v4 + 4);
+    self->_bodyWidth = *(fromCopy + 4);
     *&self->_has |= 8u;
-    if ((*(v4 + 48) & 4) == 0)
+    if ((*(fromCopy + 48) & 4) == 0)
     {
       goto LABEL_22;
     }
@@ -276,9 +276,9 @@ LABEL_31:
   }
 
 LABEL_30:
-  self->_bodyCenterY = *(v4 + 2);
+  self->_bodyCenterY = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v11 = *(v4 + 48);
+  v11 = *(fromCopy + 48);
   if ((v11 & 8) != 0)
   {
     goto LABEL_31;
@@ -288,7 +288,7 @@ LABEL_20:
   if ((v11 & 4) != 0)
   {
 LABEL_21:
-    self->_bodyHeight = *(v4 + 3);
+    self->_bodyHeight = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
@@ -579,16 +579,16 @@ LABEL_38:
   return v7 ^ v3 ^ v11 ^ v15 ^ v19 ^ v20 ^ v24 ^ v25 ^ v29 ^ v30 ^ v34 ^ v38;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_57;
   }
 
   personIdentifier = self->_personIdentifier;
-  if (personIdentifier | *(v4 + 10))
+  if (personIdentifier | *(equalCopy + 10))
   {
     if (![(NSString *)personIdentifier isEqual:?])
     {
@@ -597,10 +597,10 @@ LABEL_38:
   }
 
   has = self->_has;
-  v7 = *(v4 + 48);
+  v7 = *(equalCopy + 48);
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_centerX != *(v4 + 5))
+    if ((v7 & 0x10) == 0 || self->_centerX != *(equalCopy + 5))
     {
       goto LABEL_57;
     }
@@ -613,7 +613,7 @@ LABEL_38:
 
   if ((has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_centerY != *(v4 + 6))
+    if ((v7 & 0x20) == 0 || self->_centerY != *(equalCopy + 6))
     {
       goto LABEL_57;
     }
@@ -626,7 +626,7 @@ LABEL_38:
 
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_size != *(v4 + 7))
+    if ((v7 & 0x40) == 0 || self->_size != *(equalCopy + 7))
     {
       goto LABEL_57;
     }
@@ -639,19 +639,19 @@ LABEL_38:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 48) & 0x100) == 0 || self->_faceState != *(v4 + 17))
+    if ((*(equalCopy + 48) & 0x100) == 0 || self->_faceState != *(equalCopy + 17))
     {
       goto LABEL_57;
     }
   }
 
-  else if ((*(v4 + 48) & 0x100) != 0)
+  else if ((*(equalCopy + 48) & 0x100) != 0)
   {
     goto LABEL_57;
   }
 
   rejectedPersonIdentifiers = self->_rejectedPersonIdentifiers;
-  if (rejectedPersonIdentifiers | *(v4 + 11))
+  if (rejectedPersonIdentifiers | *(equalCopy + 11))
   {
     if (![(NSMutableArray *)rejectedPersonIdentifiers isEqual:?])
     {
@@ -661,12 +661,12 @@ LABEL_57:
     }
 
     has = self->_has;
-    v7 = *(v4 + 48);
+    v7 = *(equalCopy + 48);
   }
 
   if ((has & 0x200) != 0)
   {
-    if ((v7 & 0x200) == 0 || self->_nameSource != *(v4 + 18))
+    if ((v7 & 0x200) == 0 || self->_nameSource != *(equalCopy + 18))
     {
       goto LABEL_57;
     }
@@ -679,7 +679,7 @@ LABEL_57:
 
   if ((has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_detectionType != *(v4 + 16))
+    if ((v7 & 0x80) == 0 || self->_detectionType != *(equalCopy + 16))
     {
       goto LABEL_57;
     }
@@ -692,7 +692,7 @@ LABEL_57:
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_bodyCenterX != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_bodyCenterX != *(equalCopy + 1))
     {
       goto LABEL_57;
     }
@@ -705,7 +705,7 @@ LABEL_57:
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_bodyCenterY != *(v4 + 2))
+    if ((v7 & 2) == 0 || self->_bodyCenterY != *(equalCopy + 2))
     {
       goto LABEL_57;
     }
@@ -718,7 +718,7 @@ LABEL_57:
 
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_bodyWidth != *(v4 + 4))
+    if ((v7 & 8) == 0 || self->_bodyWidth != *(equalCopy + 4))
     {
       goto LABEL_57;
     }
@@ -731,7 +731,7 @@ LABEL_57:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_bodyHeight != *(v4 + 3))
+    if ((v7 & 4) == 0 || self->_bodyHeight != *(equalCopy + 3))
     {
       goto LABEL_57;
     }
@@ -749,11 +749,11 @@ LABEL_58:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_personIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_personIdentifier copyWithZone:zone];
   v7 = *(v5 + 80);
   *(v5 + 80) = v6;
 
@@ -824,7 +824,7 @@ LABEL_6:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{a3, v18}];
+        v14 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{zone, v18}];
         [v5 addRejectedPersonIdentifiers:v14];
       }
 
@@ -916,21 +916,21 @@ LABEL_20:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v11 = v4;
+  toCopy = to;
+  v11 = toCopy;
   if (self->_personIdentifier)
   {
-    [v4 setPersonIdentifier:?];
-    v4 = v11;
+    [toCopy setPersonIdentifier:?];
+    toCopy = v11;
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(v4 + 5) = *&self->_centerX;
-    *(v4 + 48) |= 0x10u;
+    *(toCopy + 5) = *&self->_centerX;
+    *(toCopy + 48) |= 0x10u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -941,8 +941,8 @@ LABEL_5:
       }
 
 LABEL_24:
-      *(v4 + 7) = *&self->_size;
-      *(v4 + 48) |= 0x40u;
+      *(toCopy + 7) = *&self->_size;
+      *(toCopy + 48) |= 0x40u;
       if ((*&self->_has & 0x100) == 0)
       {
         goto LABEL_8;
@@ -957,8 +957,8 @@ LABEL_24:
     goto LABEL_5;
   }
 
-  *(v4 + 6) = *&self->_centerY;
-  *(v4 + 48) |= 0x20u;
+  *(toCopy + 6) = *&self->_centerY;
+  *(toCopy + 48) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) != 0)
   {
@@ -969,18 +969,18 @@ LABEL_6:
   if ((has & 0x100) != 0)
   {
 LABEL_7:
-    *(v4 + 17) = self->_faceState;
-    *(v4 + 48) |= 0x100u;
+    *(toCopy + 17) = self->_faceState;
+    *(toCopy + 48) |= 0x100u;
   }
 
 LABEL_8:
   if ([(CPLFaceInstance *)self rejectedPersonIdentifiersCount])
   {
     [v11 clearRejectedPersonIdentifiers];
-    v6 = [(CPLFaceInstance *)self rejectedPersonIdentifiersCount];
-    if (v6)
+    rejectedPersonIdentifiersCount = [(CPLFaceInstance *)self rejectedPersonIdentifiersCount];
+    if (rejectedPersonIdentifiersCount)
     {
-      v7 = v6;
+      v7 = rejectedPersonIdentifiersCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(CPLFaceInstance *)self rejectedPersonIdentifiersAtIndex:i];
@@ -1069,10 +1069,10 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_personIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -1239,12 +1239,12 @@ LABEL_22:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   personIdentifier = self->_personIdentifier;
   if (personIdentifier)
   {
-    [v3 setObject:personIdentifier forKey:@"personIdentifier"];
+    [dictionary setObject:personIdentifier forKey:@"personIdentifier"];
   }
 
   has = self->_has;
@@ -1397,15 +1397,15 @@ LABEL_17:
   v8.receiver = self;
   v8.super_class = CPLFaceInstance;
   v4 = [(CPLFaceInstance *)&v8 description];
-  v5 = [(CPLFaceInstance *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(CPLFaceInstance *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasBodyHeight:(BOOL)a3
+- (void)setHasBodyHeight:(BOOL)height
 {
-  if (a3)
+  if (height)
   {
     v3 = 4;
   }
@@ -1418,9 +1418,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasBodyWidth:(BOOL)a3
+- (void)setHasBodyWidth:(BOOL)width
 {
-  if (a3)
+  if (width)
   {
     v3 = 8;
   }
@@ -1433,9 +1433,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasBodyCenterY:(BOOL)a3
+- (void)setHasBodyCenterY:(BOOL)y
 {
-  if (a3)
+  if (y)
   {
     v3 = 2;
   }
@@ -1448,9 +1448,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasDetectionType:(BOOL)a3
+- (void)setHasDetectionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 128;
   }
@@ -1463,9 +1463,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasNameSource:(BOOL)a3
+- (void)setHasNameSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 512;
   }
@@ -1478,27 +1478,27 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)addRejectedPersonIdentifiers:(id)a3
+- (void)addRejectedPersonIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   rejectedPersonIdentifiers = self->_rejectedPersonIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!rejectedPersonIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_rejectedPersonIdentifiers;
     self->_rejectedPersonIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     rejectedPersonIdentifiers = self->_rejectedPersonIdentifiers;
   }
 
-  [(NSMutableArray *)rejectedPersonIdentifiers addObject:v4];
+  [(NSMutableArray *)rejectedPersonIdentifiers addObject:identifiersCopy];
 }
 
-- (void)setHasFaceState:(BOOL)a3
+- (void)setHasFaceState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 256;
   }
@@ -1511,9 +1511,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasSize:(BOOL)a3
+- (void)setHasSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 64;
   }
@@ -1526,9 +1526,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasCenterY:(BOOL)a3
+- (void)setHasCenterY:(BOOL)y
 {
-  if (a3)
+  if (y)
   {
     v3 = 32;
   }
@@ -1541,9 +1541,9 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasCenterX:(BOOL)a3
+- (void)setHasCenterX:(BOOL)x
 {
-  if (a3)
+  if (x)
   {
     v3 = 16;
   }

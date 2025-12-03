@@ -1,24 +1,24 @@
 @interface HKHealthQueryFetchOperation
-- (HKHealthQueryFetchOperation)initWithHealthStore:(id)a3 operationDescription:(id)a4 completion:(id)a5;
-- (void)completedWithResults:(id)a3 error:(id)a4;
-- (void)startOperationWithCompletion:(id)a3;
+- (HKHealthQueryFetchOperation)initWithHealthStore:(id)store operationDescription:(id)description completion:(id)completion;
+- (void)completedWithResults:(id)results error:(id)error;
+- (void)startOperationWithCompletion:(id)completion;
 - (void)stopOperation;
 @end
 
 @implementation HKHealthQueryFetchOperation
 
-- (HKHealthQueryFetchOperation)initWithHealthStore:(id)a3 operationDescription:(id)a4 completion:(id)a5
+- (HKHealthQueryFetchOperation)initWithHealthStore:(id)store operationDescription:(id)description completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
+  storeCopy = store;
+  completionCopy = completion;
   v17.receiver = self;
   v17.super_class = HKHealthQueryFetchOperation;
-  v11 = [(HKFetchOperation *)&v17 initWithOperationDescription:a4];
+  v11 = [(HKFetchOperation *)&v17 initWithOperationDescription:description];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_healthStore, a3);
-    v13 = _Block_copy(v10);
+    objc_storeStrong(&v11->_healthStore, store);
+    v13 = _Block_copy(completionCopy);
     lockedClientCompletion = v12->_lockedClientCompletion;
     v12->_lockedClientCompletion = v13;
 
@@ -31,12 +31,12 @@
   return v12;
 }
 
-- (void)startOperationWithCompletion:(id)a3
+- (void)startOperationWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_callbackLock);
-  v5 = _Block_copy(v4);
+  v5 = _Block_copy(completionCopy);
   lockedFetchOperationManager = self->_lockedFetchOperationManager;
   self->_lockedFetchOperationManager = v5;
 
@@ -123,15 +123,15 @@
   os_unfair_lock_unlock(&self->_callbackLock);
 }
 
-- (void)completedWithResults:(id)a3 error:(id)a4
+- (void)completedWithResults:(id)results error:(id)error
 {
-  v11 = a3;
-  v6 = a4;
+  resultsCopy = results;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_callbackLock);
   lockedClientCompletion = self->_lockedClientCompletion;
   if (lockedClientCompletion)
   {
-    lockedClientCompletion[2](lockedClientCompletion, self, v11, v6);
+    lockedClientCompletion[2](lockedClientCompletion, self, resultsCopy, errorCopy);
     v8 = self->_lockedClientCompletion;
     self->_lockedClientCompletion = 0;
   }
@@ -139,7 +139,7 @@
   lockedFetchOperationManager = self->_lockedFetchOperationManager;
   if (lockedFetchOperationManager)
   {
-    lockedFetchOperationManager[2](lockedFetchOperationManager, v6 == 0, v6);
+    lockedFetchOperationManager[2](lockedFetchOperationManager, errorCopy == 0, errorCopy);
     v10 = self->_lockedFetchOperationManager;
     self->_lockedFetchOperationManager = 0;
   }

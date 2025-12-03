@@ -1,35 +1,35 @@
 @interface ASCABLELoginChoice
-- (ASCABLELoginChoice)initWithCoder:(id)a3;
-- (ASCABLELoginChoice)initWithQRCodeURL:(id)a3;
+- (ASCABLELoginChoice)initWithCoder:(id)coder;
+- (ASCABLELoginChoice)initWithQRCodeURL:(id)l;
 @end
 
 @implementation ASCABLELoginChoice
 
-- (ASCABLELoginChoice)initWithQRCodeURL:(id)a3
+- (ASCABLELoginChoice)initWithQRCodeURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = ASCABLELoginChoice;
   v6 = [(ASCABLELoginChoice *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_qrCodeURL, a3);
+    objc_storeStrong(&v6->_qrCodeURL, l);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (ASCABLELoginChoice)initWithCoder:(id)a3
+- (ASCABLELoginChoice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = ASCABLELoginChoice;
   v5 = [(ASCABLELoginChoice *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"qrCodeURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"qrCodeURL"];
     qrCodeURL = v5->_qrCodeURL;
     v5->_qrCodeURL = v6;
 

@@ -1,34 +1,34 @@
 @interface TRAMutableSettingsUserInterfaceStyle
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)setUserInterfaceStyleInputs:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)setUserInterfaceStyleInputs:(id)inputs;
 @end
 
 @implementation TRAMutableSettingsUserInterfaceStyle
 
-- (void)setUserInterfaceStyleInputs:(id)a3
+- (void)setUserInterfaceStyleInputs:(id)inputs
 {
-  v5 = a3;
+  inputsCopy = inputs;
   userInterfaceStyleInputs = self->super._userInterfaceStyleInputs;
   p_userInterfaceStyleInputs = &self->super._userInterfaceStyleInputs;
-  if (userInterfaceStyleInputs != v5)
+  if (userInterfaceStyleInputs != inputsCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_userInterfaceStyleInputs, a3);
-    v5 = v8;
+    v8 = inputsCopy;
+    objc_storeStrong(p_userInterfaceStyleInputs, inputs);
+    inputsCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TRASettingsUserInterfaceStyle allocWithZone:a3];
+  v4 = [TRASettingsUserInterfaceStyle allocWithZone:zone];
 
   return [(TRASettingsUserInterfaceStyle *)v4 initWithUserInterfaceStyleSettings:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithUserInterfaceStyleSettings:self];
 }

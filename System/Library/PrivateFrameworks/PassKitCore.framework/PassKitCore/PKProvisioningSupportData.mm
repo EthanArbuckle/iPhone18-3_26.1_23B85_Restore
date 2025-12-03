@@ -1,36 +1,36 @@
 @interface PKProvisioningSupportData
-- (PKProvisioningSupportData)initWithCoder:(id)a3;
-- (PKProvisioningSupportData)initWithEncryptedSupportDataDictionary:(id)a3 sid:(id)a4;
+- (PKProvisioningSupportData)initWithCoder:(id)coder;
+- (PKProvisioningSupportData)initWithEncryptedSupportDataDictionary:(id)dictionary sid:(id)sid;
 - (id)_dictionaryRepresentation;
-- (id)archiveForKeychainWithError:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)archiveForKeychainWithError:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKProvisioningSupportData
 
-- (PKProvisioningSupportData)initWithEncryptedSupportDataDictionary:(id)a3 sid:(id)a4
+- (PKProvisioningSupportData)initWithEncryptedSupportDataDictionary:(id)dictionary sid:(id)sid
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  sidCopy = sid;
   v12.receiver = self;
   v12.super_class = PKProvisioningSupportData;
   v9 = [(PKProvisioningSupportData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_encryptedSupportDataDictionary, a3);
-    objc_storeStrong(&v10->_sid, a4);
+    objc_storeStrong(&v9->_encryptedSupportDataDictionary, dictionary);
+    objc_storeStrong(&v10->_sid, sid);
   }
 
   return v10;
 }
 
-- (id)archiveForKeychainWithError:(id *)a3
+- (id)archiveForKeychainWithError:(id *)error
 {
   v4 = MEMORY[0x1E696ACC8];
-  v5 = [(PKProvisioningSupportData *)self _dictionaryRepresentation];
-  v6 = [v4 archivedDataWithRootObject:v5 requiringSecureCoding:1 error:a3];
+  _dictionaryRepresentation = [(PKProvisioningSupportData *)self _dictionaryRepresentation];
+  v6 = [v4 archivedDataWithRootObject:_dictionaryRepresentation requiringSecureCoding:1 error:error];
 
   return v6;
 }
@@ -55,9 +55,9 @@
   return v4;
 }
 
-- (PKProvisioningSupportData)initWithCoder:(id)a3
+- (PKProvisioningSupportData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKProvisioningSupportData;
   v5 = [(PKProvisioningSupportData *)&v14 init];
@@ -66,11 +66,11 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"EncryptedSupportDictionary"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"EncryptedSupportDictionary"];
     encryptedSupportDataDictionary = v5->_encryptedSupportDataDictionary;
     v5->_encryptedSupportDataDictionary = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SID"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SID"];
     sid = v5->_sid;
     v5->_sid = v11;
   }
@@ -78,17 +78,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   encryptedSupportDataDictionary = self->_encryptedSupportDataDictionary;
-  v5 = a3;
-  [v5 encodeObject:encryptedSupportDataDictionary forKey:@"EncryptedSupportDictionary"];
-  [v5 encodeObject:self->_sid forKey:@"SID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:encryptedSupportDataDictionary forKey:@"EncryptedSupportDictionary"];
+  [coderCopy encodeObject:self->_sid forKey:@"SID"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = [(NSDictionary *)self->_encryptedSupportDataDictionary copy];
   v6 = v4[1];
   v4[1] = v5;

@@ -1,21 +1,21 @@
 @interface SXTestingConditionValidator
-- (BOOL)validateCondition:(id)a3 context:(id)a4;
+- (BOOL)validateCondition:(id)condition context:(id)context;
 @end
 
 @implementation SXTestingConditionValidator
 
-- (BOOL)validateCondition:(id)a3 context:(id)a4
+- (BOOL)validateCondition:(id)condition context:(id)context
 {
-  v5 = a4;
-  v6 = [a3 testing];
-  if (v6 == 2)
+  contextCopy = context;
+  testing = [condition testing];
+  if (testing == 2)
   {
-    v7 = [v5 testing] ^ 1;
+    v7 = [contextCopy testing] ^ 1;
   }
 
-  else if (v6 == 1)
+  else if (testing == 1)
   {
-    LOBYTE(v7) = [v5 testing];
+    LOBYTE(v7) = [contextCopy testing];
   }
 
   else

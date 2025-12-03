@@ -1,12 +1,12 @@
 @interface ICDocCamDocumentInfo
 - (DCScanDataDelegate)scanDataDelegate;
 - (ICDocCamDocumentInfo)init;
-- (ICDocCamDocumentInfo)initWithCoder:(id)a3;
-- (ICDocCamDocumentInfo)initWithDelegate:(id)a3;
+- (ICDocCamDocumentInfo)initWithCoder:(id)coder;
+- (ICDocCamDocumentInfo)initWithDelegate:(id)delegate;
 - (ICDocCamViewControllerDelegate)delegate;
 - (id)allUUIDs;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICDocCamDocumentInfo
@@ -24,14 +24,14 @@
   return result;
 }
 
-- (ICDocCamDocumentInfo)initWithDelegate:(id)a3
+- (ICDocCamDocumentInfo)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(ICDocCamDocumentInfo *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -39,13 +39,13 @@
 
 - (DCScanDataDelegate)scanDataDelegate
 {
-  v3 = [(ICDocCamDocumentInfo *)self scanDataDelegateIdentifier];
+  scanDataDelegateIdentifier = [(ICDocCamDocumentInfo *)self scanDataDelegateIdentifier];
 
-  if (v3)
+  if (scanDataDelegateIdentifier)
   {
-    v4 = [(ICDocCamDocumentInfo *)self delegate];
-    v5 = [(ICDocCamDocumentInfo *)self scanDataDelegateIdentifier];
-    v6 = [v4 scanDataDelegateWithIdentifier:v5];
+    delegate = [(ICDocCamDocumentInfo *)self delegate];
+    scanDataDelegateIdentifier2 = [(ICDocCamDocumentInfo *)self scanDataDelegateIdentifier];
+    v6 = [delegate scanDataDelegateWithIdentifier:scanDataDelegateIdentifier2];
   }
 
   else
@@ -59,36 +59,36 @@
 - (id)allUUIDs
 {
   v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:3];
-  v4 = [(ICDocCamDocumentInfo *)self croppedAndFilteredImageUUID];
+  croppedAndFilteredImageUUID = [(ICDocCamDocumentInfo *)self croppedAndFilteredImageUUID];
 
-  if (v4)
+  if (croppedAndFilteredImageUUID)
   {
-    v5 = [(ICDocCamDocumentInfo *)self croppedAndFilteredImageUUID];
-    [v3 addObject:v5];
+    croppedAndFilteredImageUUID2 = [(ICDocCamDocumentInfo *)self croppedAndFilteredImageUUID];
+    [v3 addObject:croppedAndFilteredImageUUID2];
   }
 
-  v6 = [(ICDocCamDocumentInfo *)self croppedButNotFilteredImageUUID];
+  croppedButNotFilteredImageUUID = [(ICDocCamDocumentInfo *)self croppedButNotFilteredImageUUID];
 
-  if (v6)
+  if (croppedButNotFilteredImageUUID)
   {
-    v7 = [(ICDocCamDocumentInfo *)self croppedButNotFilteredImageUUID];
-    [v3 addObject:v7];
+    croppedButNotFilteredImageUUID2 = [(ICDocCamDocumentInfo *)self croppedButNotFilteredImageUUID];
+    [v3 addObject:croppedButNotFilteredImageUUID2];
   }
 
-  v8 = [(ICDocCamDocumentInfo *)self fullImageUUID];
+  fullImageUUID = [(ICDocCamDocumentInfo *)self fullImageUUID];
 
-  if (v8)
+  if (fullImageUUID)
   {
-    v9 = [(ICDocCamDocumentInfo *)self fullImageUUID];
-    [v3 addObject:v9];
+    fullImageUUID2 = [(ICDocCamDocumentInfo *)self fullImageUUID];
+    [v3 addObject:fullImageUUID2];
   }
 
-  v10 = [(ICDocCamDocumentInfo *)self meshAnimImageUUID];
+  meshAnimImageUUID = [(ICDocCamDocumentInfo *)self meshAnimImageUUID];
 
-  if (v10)
+  if (meshAnimImageUUID)
   {
-    v11 = [(ICDocCamDocumentInfo *)self meshAnimImageUUID];
-    [v3 addObject:v11];
+    meshAnimImageUUID2 = [(ICDocCamDocumentInfo *)self meshAnimImageUUID];
+    [v3 addObject:meshAnimImageUUID2];
   }
 
   v12 = [v3 copy];
@@ -100,32 +100,32 @@
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
   [v3 appendFormat:@"\nself: %p\n", self];
-  v4 = [(ICDocCamDocumentInfo *)self imageQuad];
-  [v3 appendFormat:@"  imageQuad                      : %p\n", v4];
+  imageQuad = [(ICDocCamDocumentInfo *)self imageQuad];
+  [v3 appendFormat:@"  imageQuad                      : %p\n", imageQuad];
 
-  v5 = [(ICDocCamDocumentInfo *)self croppedAndFilteredImageUUID];
-  [v3 appendFormat:@"  croppedAndFilteredImageUUID    : %@\n", v5];
+  croppedAndFilteredImageUUID = [(ICDocCamDocumentInfo *)self croppedAndFilteredImageUUID];
+  [v3 appendFormat:@"  croppedAndFilteredImageUUID    : %@\n", croppedAndFilteredImageUUID];
 
-  v6 = [(ICDocCamDocumentInfo *)self croppedButNotFilteredImageUUID];
-  [v3 appendFormat:@"  croppedButNotFilteredImageUUID : %@\n", v6];
+  croppedButNotFilteredImageUUID = [(ICDocCamDocumentInfo *)self croppedButNotFilteredImageUUID];
+  [v3 appendFormat:@"  croppedButNotFilteredImageUUID : %@\n", croppedButNotFilteredImageUUID];
 
-  v7 = [(ICDocCamDocumentInfo *)self fullImageUUID];
-  [v3 appendFormat:@"  fullImageUUID                  : %@\n", v7];
+  fullImageUUID = [(ICDocCamDocumentInfo *)self fullImageUUID];
+  [v3 appendFormat:@"  fullImageUUID                  : %@\n", fullImageUUID];
 
-  v8 = [(ICDocCamDocumentInfo *)self meshAnimImageUUID];
-  [v3 appendFormat:@"  meshAnimImageUUID              : %@\n", v8];
+  meshAnimImageUUID = [(ICDocCamDocumentInfo *)self meshAnimImageUUID];
+  [v3 appendFormat:@"  meshAnimImageUUID              : %@\n", meshAnimImageUUID];
 
   [v3 appendFormat:@"  currentFilter                  : %d\n", -[ICDocCamDocumentInfo currentFilter](self, "currentFilter")];
   [v3 appendFormat:@"  currentOrientation             : %ld\n", -[ICDocCamDocumentInfo currentOrientation](self, "currentOrientation")];
-  v9 = [(ICDocCamDocumentInfo *)self scanDataDelegateIdentifier];
-  [v3 appendFormat:@"  scanDataDelegateIdentifier     : %@\n", v9];
+  scanDataDelegateIdentifier = [(ICDocCamDocumentInfo *)self scanDataDelegateIdentifier];
+  [v3 appendFormat:@"  scanDataDelegateIdentifier     : %@\n", scanDataDelegateIdentifier];
 
-  v10 = [(ICDocCamDocumentInfo *)self scanDataDelegate];
-  [v3 appendFormat:@"  scanDataDelegate               : %p\n", v10];
+  scanDataDelegate = [(ICDocCamDocumentInfo *)self scanDataDelegate];
+  [v3 appendFormat:@"  scanDataDelegate               : %p\n", scanDataDelegate];
 
-  v11 = [(ICDocCamDocumentInfo *)self hasFilter];
+  hasFilter = [(ICDocCamDocumentInfo *)self hasFilter];
   v12 = "NO";
-  if (v11)
+  if (hasFilter)
   {
     v12 = "YES";
   }
@@ -135,10 +135,10 @@
   return v3;
 }
 
-- (ICDocCamDocumentInfo)initWithCoder:(id)a3
+- (ICDocCamDocumentInfo)initWithCoder:(id)coder
 {
   v19[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = ICDocCamDocumentInfo;
   v5 = [(ICDocCamDocumentInfo *)&v18 init];
@@ -152,64 +152,64 @@
     v19[4] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:5];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kMetadataFieldCodingKey"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kMetadataFieldCodingKey"];
     [(ICDocCamDocumentInfo *)v5 setMetaData:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kImageQuadFieldCodingKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kImageQuadFieldCodingKey"];
     [(ICDocCamDocumentInfo *)v5 setImageQuad:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCroppedAndFilteredImageUUIDFieldCodingKey"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCroppedAndFilteredImageUUIDFieldCodingKey"];
     [(ICDocCamDocumentInfo *)v5 setCroppedAndFilteredImageUUID:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCroppedButNotFilteredImageUUIDFieldCodingKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCroppedButNotFilteredImageUUIDFieldCodingKey"];
     [(ICDocCamDocumentInfo *)v5 setCroppedButNotFilteredImageUUID:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kFullImageUUIDFieldCodingKey"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kFullImageUUIDFieldCodingKey"];
     [(ICDocCamDocumentInfo *)v5 setFullImageUUID:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kMeshAnimImageUUIDFieldCodingKey"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kMeshAnimImageUUIDFieldCodingKey"];
     [(ICDocCamDocumentInfo *)v5 setMeshAnimImageUUID:v14];
 
-    -[ICDocCamDocumentInfo setCurrentFilter:](v5, "setCurrentFilter:", [v4 decodeInt32ForKey:@"kCurrentFilterUUIDFieldCodingKey"]);
-    -[ICDocCamDocumentInfo setCurrentOrientation:](v5, "setCurrentOrientation:", [v4 decodeIntegerForKey:@"kCurrentOrientationFieldCodingKey"]);
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kScanDataDelegateIdentifierFieldCodingKey"];
+    -[ICDocCamDocumentInfo setCurrentFilter:](v5, "setCurrentFilter:", [coderCopy decodeInt32ForKey:@"kCurrentFilterUUIDFieldCodingKey"]);
+    -[ICDocCamDocumentInfo setCurrentOrientation:](v5, "setCurrentOrientation:", [coderCopy decodeIntegerForKey:@"kCurrentOrientationFieldCodingKey"]);
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kScanDataDelegateIdentifierFieldCodingKey"];
     [(ICDocCamDocumentInfo *)v5 setScanDataDelegateIdentifier:v15];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kMarkupModelDataFieldCodingKey"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kMarkupModelDataFieldCodingKey"];
     [(ICDocCamDocumentInfo *)v5 setMarkupModelData:v16];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ICDocCamDocumentInfo *)self metaData];
-  [v4 encodeObject:v5 forKey:@"kMetadataFieldCodingKey"];
+  coderCopy = coder;
+  metaData = [(ICDocCamDocumentInfo *)self metaData];
+  [coderCopy encodeObject:metaData forKey:@"kMetadataFieldCodingKey"];
 
-  v6 = [(ICDocCamDocumentInfo *)self imageQuad];
-  [v4 encodeObject:v6 forKey:@"kImageQuadFieldCodingKey"];
+  imageQuad = [(ICDocCamDocumentInfo *)self imageQuad];
+  [coderCopy encodeObject:imageQuad forKey:@"kImageQuadFieldCodingKey"];
 
-  v7 = [(ICDocCamDocumentInfo *)self croppedAndFilteredImageUUID];
-  [v4 encodeObject:v7 forKey:@"kCroppedAndFilteredImageUUIDFieldCodingKey"];
+  croppedAndFilteredImageUUID = [(ICDocCamDocumentInfo *)self croppedAndFilteredImageUUID];
+  [coderCopy encodeObject:croppedAndFilteredImageUUID forKey:@"kCroppedAndFilteredImageUUIDFieldCodingKey"];
 
-  v8 = [(ICDocCamDocumentInfo *)self croppedButNotFilteredImageUUID];
-  [v4 encodeObject:v8 forKey:@"kCroppedButNotFilteredImageUUIDFieldCodingKey"];
+  croppedButNotFilteredImageUUID = [(ICDocCamDocumentInfo *)self croppedButNotFilteredImageUUID];
+  [coderCopy encodeObject:croppedButNotFilteredImageUUID forKey:@"kCroppedButNotFilteredImageUUIDFieldCodingKey"];
 
-  v9 = [(ICDocCamDocumentInfo *)self fullImageUUID];
-  [v4 encodeObject:v9 forKey:@"kFullImageUUIDFieldCodingKey"];
+  fullImageUUID = [(ICDocCamDocumentInfo *)self fullImageUUID];
+  [coderCopy encodeObject:fullImageUUID forKey:@"kFullImageUUIDFieldCodingKey"];
 
-  v10 = [(ICDocCamDocumentInfo *)self meshAnimImageUUID];
-  [v4 encodeObject:v10 forKey:@"kMeshAnimImageUUIDFieldCodingKey"];
+  meshAnimImageUUID = [(ICDocCamDocumentInfo *)self meshAnimImageUUID];
+  [coderCopy encodeObject:meshAnimImageUUID forKey:@"kMeshAnimImageUUIDFieldCodingKey"];
 
-  [v4 encodeInt32:-[ICDocCamDocumentInfo currentFilter](self forKey:{"currentFilter"), @"kCurrentFilterUUIDFieldCodingKey"}];
-  [v4 encodeInteger:-[ICDocCamDocumentInfo currentOrientation](self forKey:{"currentOrientation"), @"kCurrentOrientationFieldCodingKey"}];
-  v11 = [(ICDocCamDocumentInfo *)self scanDataDelegateIdentifier];
-  [v4 encodeObject:v11 forKey:@"kScanDataDelegateIdentifierFieldCodingKey"];
+  [coderCopy encodeInt32:-[ICDocCamDocumentInfo currentFilter](self forKey:{"currentFilter"), @"kCurrentFilterUUIDFieldCodingKey"}];
+  [coderCopy encodeInteger:-[ICDocCamDocumentInfo currentOrientation](self forKey:{"currentOrientation"), @"kCurrentOrientationFieldCodingKey"}];
+  scanDataDelegateIdentifier = [(ICDocCamDocumentInfo *)self scanDataDelegateIdentifier];
+  [coderCopy encodeObject:scanDataDelegateIdentifier forKey:@"kScanDataDelegateIdentifierFieldCodingKey"];
 
-  v12 = [(ICDocCamDocumentInfo *)self markupModelData];
-  [v4 encodeObject:v12 forKey:@"kMarkupModelDataFieldCodingKey"];
+  markupModelData = [(ICDocCamDocumentInfo *)self markupModelData];
+  [coderCopy encodeObject:markupModelData forKey:@"kMarkupModelDataFieldCodingKey"];
 }
 
 - (ICDocCamViewControllerDelegate)delegate

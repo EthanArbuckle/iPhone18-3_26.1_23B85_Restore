@@ -1,12 +1,12 @@
 @interface OrderImportControllerProvider
-+ (id)makeViewControllerWithBundleURL:(id)a3 competion:(id)a4 error:(id *)a5;
-+ (id)makeViewControllerWithOrderData:(id)a3 competion:(id)a4 error:(id *)a5;
++ (id)makeViewControllerWithBundleURL:(id)l competion:(id)competion error:(id *)error;
++ (id)makeViewControllerWithOrderData:(id)data competion:(id)competion error:(id *)error;
 - (_TtC12FinanceKitUI29OrderImportControllerProvider)init;
 @end
 
 @implementation OrderImportControllerProvider
 
-+ (id)makeViewControllerWithBundleURL:(id)a3 competion:(id)a4 error:(id *)a5
++ (id)makeViewControllerWithBundleURL:(id)l competion:(id)competion error:(id *)error
 {
   v6 = sub_23875B940();
   v7 = *(v6 - 8);
@@ -21,7 +21,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(competion);
   sub_23875B8B0();
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
@@ -34,7 +34,7 @@
   return v17;
 }
 
-+ (id)makeViewControllerWithOrderData:(id)a3 competion:(id)a4 error:(id *)a5
++ (id)makeViewControllerWithOrderData:(id)data competion:(id)competion error:(id *)error
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -44,8 +44,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = _Block_copy(a4);
-  v8 = a3;
+  v7 = _Block_copy(competion);
+  dataCopy = data;
   v9 = sub_23875B990();
   v11 = v10;
 

@@ -1,6 +1,6 @@
 @interface CAIAANodeContainer
 + (void)initialize;
-- (CAIAANodeContainer)initWithFrame:(CGRect)a3;
+- (CAIAANodeContainer)initWithFrame:(CGRect)frame;
 - (double)contentWidth;
 - (void)layoutSubviews;
 @end
@@ -23,11 +23,11 @@
   _minWidth = v2;
 }
 
-- (CAIAANodeContainer)initWithFrame:(CGRect)a3
+- (CAIAANodeContainer)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CAIAANodeContainer;
-  v3 = [(CAIAANodeContainer *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAIAANodeContainer *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -46,13 +46,13 @@
   v43.receiver = self;
   v43.super_class = CAIAANodeContainer;
   [(CAIAANodeContainer *)&v43 layoutSubviews];
-  v3 = [(CAIAANodeContainer *)self subviews];
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  subviews = [(CAIAANodeContainer *)self subviews];
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(subviews, "count")}];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v5 = [v3 countByEnumeratingWithState:&v39 objects:v44 count:16];
+  v5 = [subviews countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v5)
   {
     v6 = v5;
@@ -63,7 +63,7 @@
       {
         if (*v40 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v39 + 1) + 8 * i);
@@ -74,7 +74,7 @@
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v39 objects:v44 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v39 objects:v44 count:16];
     }
 
     while (v6);
@@ -160,13 +160,13 @@
 - (double)contentWidth
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(CAIAANodeContainer *)self subviews];
-  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  subviews = [(CAIAANodeContainer *)self subviews];
+  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(subviews, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -178,7 +178,7 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v12 + 1) + 8 * v7);
@@ -192,7 +192,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);

@@ -1,30 +1,30 @@
 @interface WFItemProviderRequestMetadata
-- (WFItemProviderRequestMetadata)initWithCoder:(id)a3;
+- (WFItemProviderRequestMetadata)initWithCoder:(id)coder;
 - (id)registeredTypeIdentifiers;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchLinkMetadataWithCompletion:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchLinkMetadataWithCompletion:(id)completion;
 @end
 
 @implementation WFItemProviderRequestMetadata
 
-- (WFItemProviderRequestMetadata)initWithCoder:(id)a3
+- (WFItemProviderRequestMetadata)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   result = [MEMORY[0x1E695DF30] raise:@"Subclass must override" format:@"Subclasses must override initWithCoder"];
   __break(1u);
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   [MEMORY[0x1E695DF30] raise:@"Subclass must override" format:@"Subclasses must override encodeWithCoder"];
   __break(1u);
 }
 
-- (void)fetchLinkMetadataWithCompletion:(id)a3
+- (void)fetchLinkMetadataWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   [MEMORY[0x1E695DF30] raise:@"Subclass must override" format:@"Subclasses must override fetchLinkMetadataWithCompletion"];
   __break(1u);
 }

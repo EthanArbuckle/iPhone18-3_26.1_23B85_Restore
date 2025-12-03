@@ -1,5 +1,5 @@
 @interface CKPinnedConversationViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityCustomActionGroupIdentifier;
 - (id)_axFromString;
 - (id)accessibilityLabel;
@@ -8,22 +8,22 @@
 
 @implementation CKPinnedConversationViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKPinnedConversationView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKPinnedConversationSummaryBubble"];
-  [v3 validateClass:@"CKConversation"];
-  [v3 validateClass:@"CKConversation" hasInstanceMethod:@"hasUnreadMessages" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKConversation" hasInstanceMethod:@"isMuted" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKPinnedConversationView" hasInstanceMethod:@"activityView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKPinnedConversationActivityView" hasInstanceMethod:@"activityItemViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKPinnedConversationSummaryBubble" hasInstanceMethod:@"summaryLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKPinnedConversationView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKPinnedConversationSummaryBubble"];
+  [validationsCopy validateClass:@"CKConversation"];
+  [validationsCopy validateClass:@"CKConversation" hasInstanceMethod:@"hasUnreadMessages" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKConversation" hasInstanceMethod:@"isMuted" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKPinnedConversationView" hasInstanceMethod:@"activityView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKPinnedConversationActivityView" hasInstanceMethod:@"activityItemViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKPinnedConversationSummaryBubble" hasInstanceMethod:@"summaryLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(CKPinnedConversationViewAccessibility *)self _axFromString];
+  _axFromString = [(CKPinnedConversationViewAccessibility *)self _axFromString];
   v4 = [(CKPinnedConversationViewAccessibility *)self safeValueForKey:@"conversation"];
   v5 = [v4 safeBoolForKey:@"hasUnreadMessages"];
   if ([v4 safeBoolForKey:@"isMuted"])
@@ -41,10 +41,10 @@
     v7 = [(CKPinnedConversationViewAccessibility *)self safeValueForKey:@"activityView"];
     v8 = [v7 safeValueForKey:@"activityItemViews"];
     v9 = [v8 ax_filteredArrayUsingBlock:&__block_literal_global_5];
-    v10 = [v9 firstObject];
+    firstObject = [v9 firstObject];
 
-    v11 = [v10 safeValueForKey:@"summaryLabel"];
-    v12 = [v11 accessibilityLabel];
+    v11 = [firstObject safeValueForKey:@"summaryLabel"];
+    accessibilityLabel = [v11 accessibilityLabel];
 
     v13 = accessibilityLocalizedString(@"unread.messages");
     v14 = __UIAXStringForVariables();
@@ -79,7 +79,7 @@ uint64_t __59__CKPinnedConversationViewAccessibility_accessibilityLabel__block_i
 
 - (id)accessibilityUserInputLabels
 {
-  v2 = [(CKPinnedConversationViewAccessibility *)self _axFromString];
+  _axFromString = [(CKPinnedConversationViewAccessibility *)self _axFromString];
   v3 = MEMORY[0x29C2D0360]();
 
   return v3;
@@ -88,7 +88,7 @@ uint64_t __59__CKPinnedConversationViewAccessibility_accessibilityLabel__block_i
 - (id)_axFromString
 {
   v2 = [(CKPinnedConversationViewAccessibility *)self safeValueForKey:@"titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
   v4 = UIAXApplyPhoneContextTokenToString();
 

@@ -6,14 +6,14 @@
 
 - (_SFUIViewPopoverSourceInfo)safari_popoverSourceInfo
 {
-  v2 = [a1 view];
-  [a1 locationInView:v2];
+  view = [self view];
+  [self locationInView:view];
   v4 = v3;
   v6 = v5;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v2;
+    v7 = view;
     v8 = [v7 indexPathForItemAtPoint:{v4, v6}];
     if (v8)
     {
@@ -29,7 +29,7 @@
   }
 
   v12 = [_SFUIViewPopoverSourceInfo alloc];
-  v11 = [(_SFUIViewPopoverSourceInfo *)v12 initWithView:v2 rect:v4, v6, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  v11 = [(_SFUIViewPopoverSourceInfo *)v12 initWithView:view rect:v4, v6, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
 LABEL_7:
 
   return v11;

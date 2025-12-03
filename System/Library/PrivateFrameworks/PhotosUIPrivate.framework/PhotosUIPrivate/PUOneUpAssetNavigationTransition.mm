@@ -1,7 +1,7 @@
 @interface PUOneUpAssetNavigationTransition
 - (PUOneUpAssetNavigationTransition)init;
 - (id)toViewController;
-- (void)_animateTransitionWithOperation:(int64_t)a3;
+- (void)_animateTransitionWithOperation:(int64_t)operation;
 - (void)_prepareViewForTransition;
 @end
 
@@ -9,48 +9,48 @@
 
 - (void)_prepareViewForTransition
 {
-  v7 = [(PUViewControllerTransition *)self containerView];
-  v3 = [(PUOneUpAssetNavigationTransition *)self toViewController];
-  v4 = [v3 view];
-  v5 = [(PUViewControllerTransition *)self fromViewController];
-  v6 = [v5 view];
+  containerView = [(PUViewControllerTransition *)self containerView];
+  toViewController = [(PUOneUpAssetNavigationTransition *)self toViewController];
+  view = [toViewController view];
+  fromViewController = [(PUViewControllerTransition *)self fromViewController];
+  view2 = [fromViewController view];
   [(PUViewControllerTransition *)self finalToViewFrame];
-  [v4 setFrame:?];
-  [v7 insertSubview:v4 aboveSubview:v6];
+  [view setFrame:?];
+  [containerView insertSubview:view aboveSubview:view2];
 }
 
 - (id)toViewController
 {
   v4.receiver = self;
   v4.super_class = PUOneUpAssetNavigationTransition;
-  v2 = [(PUViewControllerTransition *)&v4 toViewController];
+  toViewController = [(PUViewControllerTransition *)&v4 toViewController];
 
-  return v2;
+  return toViewController;
 }
 
-- (void)_animateTransitionWithOperation:(int64_t)a3
+- (void)_animateTransitionWithOperation:(int64_t)operation
 {
-  v5 = [(PUViewControllerTransition *)self fromViewController];
-  v6 = [(PUOneUpAssetNavigationTransition *)self toViewController];
-  if (([v5 conformsToProtocol:&unk_1F2BE7160] & 1) == 0)
+  fromViewController = [(PUViewControllerTransition *)self fromViewController];
+  toViewController = [(PUOneUpAssetNavigationTransition *)self toViewController];
+  if (([fromViewController conformsToProtocol:&unk_1F2BE7160] & 1) == 0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PUOneUpAssetNavigationTransition.m" lineNumber:36 description:{@"%@ (fromViewController) isn't conforming to PUOneUpAssetTransitionViewController", v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpAssetNavigationTransition.m" lineNumber:36 description:{@"%@ (fromViewController) isn't conforming to PUOneUpAssetTransitionViewController", fromViewController}];
   }
 
-  if (([v6 conformsToProtocol:&unk_1F2BE7160] & 1) == 0)
+  if (([toViewController conformsToProtocol:&unk_1F2BE7160] & 1) == 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PUOneUpAssetNavigationTransition.m" lineNumber:37 description:{@"%@ (toViewController) isn't conforming to PUOneUpAssetTransitionViewController", v6}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUOneUpAssetNavigationTransition.m" lineNumber:37 description:{@"%@ (toViewController) isn't conforming to PUOneUpAssetTransitionViewController", toViewController}];
   }
 
-  v7 = [(PUOneUpAssetNavigationTransition *)self toViewController];
-  v8 = [v7 view];
-  [v8 layoutIfNeeded];
+  toViewController2 = [(PUOneUpAssetNavigationTransition *)self toViewController];
+  view = [toViewController2 view];
+  [view layoutIfNeeded];
 
   [(PUOneUpAssetNavigationTransition *)self _prepareViewForTransition];
-  v9 = [v5 navigationController];
-  if (v9)
+  navigationController = [fromViewController navigationController];
+  if (navigationController)
   {
     goto LABEL_6;
   }
@@ -58,8 +58,8 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v5;
-    if (v9)
+    navigationController = fromViewController;
+    if (navigationController)
     {
       goto LABEL_6;
     }
@@ -68,34 +68,34 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v6;
+    navigationController = toViewController;
 LABEL_6:
-    v10 = v9;
+    v10 = navigationController;
     goto LABEL_7;
   }
 
   v10 = 0;
 LABEL_7:
-  v11 = [v10 _useStandardStatusBarHeight];
-  v12 = [v5 prefersStatusBarHidden];
-  if (v12 != [v6 prefersStatusBarHidden])
+  _useStandardStatusBarHeight = [v10 _useStandardStatusBarHeight];
+  prefersStatusBarHidden = [fromViewController prefersStatusBarHidden];
+  if (prefersStatusBarHidden != [toViewController prefersStatusBarHidden])
   {
     [v10 _setUseStandardStatusBarHeight:1];
   }
 
-  [v5 oneUpAssetTransitionWillBegin:self];
+  [fromViewController oneUpAssetTransitionWillBegin:self];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __68__PUOneUpAssetNavigationTransition__animateTransitionWithOperation___block_invoke;
   v18[3] = &unk_1E7B79568;
   v18[4] = self;
-  v19 = v6;
-  v20 = v5;
+  v19 = toViewController;
+  v20 = fromViewController;
   v21 = v10;
-  v22 = v11;
+  v22 = _useStandardStatusBarHeight;
   v13 = v10;
-  v14 = v5;
-  v15 = v6;
+  v14 = fromViewController;
+  v15 = toViewController;
   [v14 oneUpAssetTransition:self requestTransitionContextWithCompletion:v18];
 }
 

@@ -1,18 +1,18 @@
 @interface CLElevationGainFromProfile
-- (BOOL)addTransitionPointWithAltitude:(double)a3 andTimestamp:(double)a4;
-- (BOOL)computeAscendingDescendingSegments:(optional<CMWorkoutType>)a3;
-- (BOOL)computeElevationGainFromSegmentsAscended:(BatchedElevationData *)a3 descended:(BatchedElevationData *)a4;
-- (CLElevationGainFromProfile)initWithBuffers:(void *)a3;
-- (double)computeAdjustedStartTimeFromElevationProfileStartTime:(double)a3;
-- (double)getProfileSegmentingThresholdFromSmootherOutput:(shared_ptr<CLBarometerCalibration_Types:(optional<CMWorkoutType>)a4 :CLBarometerCalibrationSmoothedWorkoutElevation>)a3 workoutType:;
+- (BOOL)addTransitionPointWithAltitude:(double)altitude andTimestamp:(double)timestamp;
+- (BOOL)computeAscendingDescendingSegments:(optional<CMWorkoutType>)segments;
+- (BOOL)computeElevationGainFromSegmentsAscended:(BatchedElevationData *)ascended descended:(BatchedElevationData *)descended;
+- (CLElevationGainFromProfile)initWithBuffers:(void *)buffers;
+- (double)computeAdjustedStartTimeFromElevationProfileStartTime:(double)time;
+- (double)getProfileSegmentingThresholdFromSmootherOutput:(shared_ptr<CLBarometerCalibration_Types:(optional<CMWorkoutType>)output :CLBarometerCalibrationSmoothedWorkoutElevation>)a3 workoutType:;
 - (id).cxx_construct;
 - (int)getNumAscendingDescendingSegments;
-- (void)removeElevationProfileSegmentPointsFromTimestamp:(double)a3;
+- (void)removeElevationProfileSegmentPointsFromTimestamp:(double)timestamp;
 @end
 
 @implementation CLElevationGainFromProfile
 
-- (CLElevationGainFromProfile)initWithBuffers:(void *)a3
+- (CLElevationGainFromProfile)initWithBuffers:(void *)buffers
 {
   v10.receiver = self;
   v10.super_class = CLElevationGainFromProfile;
@@ -20,7 +20,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_dataBuffers = a3;
+    v4->_dataBuffers = buffers;
     v9 = 0;
     sub_100126E84(v7, "ElevationVerbose", &v9, 0);
     v5->_verboseLogging = v7[1];
@@ -36,11 +36,11 @@
   return v5;
 }
 
-- (BOOL)computeAscendingDescendingSegments:(optional<CMWorkoutType>)a3
+- (BOOL)computeAscendingDescendingSegments:(optional<CMWorkoutType>)segments
 {
-  v3 = *&a3.var1;
-  var1 = a3.var0.var1;
-  v67 = self;
+  v3 = *&segments.var1;
+  var1 = segments.var0.var1;
+  selfCopy = self;
   dataBuffers = self->_dataBuffers;
   Current = CFAbsoluteTimeGetCurrent();
   v8 = dataBuffers[83];
@@ -79,7 +79,7 @@
 
 LABEL_109:
       sub_1018FF6A8(buf);
-      v57 = v67->_workoutElevationProfileCount;
+      v57 = selfCopy->_workoutElevationProfileCount;
       v68 = 134218240;
       v69 = Current;
       v70 = 1024;
@@ -141,13 +141,13 @@ LABEL_25:
 
     [(CLElevationGainFromProfile *)self computeAdjustedStartTimeFromElevationProfileStartTime:*v21];
     v23 = v22;
-    [(CLElevationGainFromProfile *)v67 removeElevationProfileSegmentPointsFromTimestamp:v22 + -0.1];
-    begin = v67->_elevationProfileSegmentTransitionPoints.__begin_;
-    end = v67->_elevationProfileSegmentTransitionPoints.__end_;
+    [(CLElevationGainFromProfile *)selfCopy removeElevationProfileSegmentPointsFromTimestamp:v22 + -0.1];
+    begin = selfCopy->_elevationProfileSegmentTransitionPoints.__begin_;
+    end = selfCopy->_elevationProfileSegmentTransitionPoints.__end_;
     v26 = (end - 1);
     v27 = (end - 2);
     *v66 = Current;
-    v66[1] = &v67;
+    v66[1] = &selfCopy;
     if (begin == end)
     {
       v26 = v21 + 1;
@@ -172,15 +172,15 @@ LABEL_25:
     if (begin == end)
     {
 LABEL_116:
-      if ([(CLElevationGainFromProfile *)v67 addTransitionPointWithAltitude:v21[1] andTimestamp:*v21])
+      if ([(CLElevationGainFromProfile *)selfCopy addTransitionPointWithAltitude:v21[1] andTimestamp:*v21])
       {
         v30 = 1;
-        sub_100685D34(v66, v67->_elevationProfileSegmentTransitionPoints.__end_ - 2, 1);
+        sub_100685D34(v66, selfCopy->_elevationProfileSegmentTransitionPoints.__end_ - 2, 1);
 LABEL_47:
         if (dataBuffers[83] - 1 <= v30)
         {
 LABEL_106:
-          sub_100685F40(&v67->_elevationProfileSegmentTransitionPoints.__begin_);
+          sub_100685F40(&selfCopy->_elevationProfileSegmentTransitionPoints.__begin_);
           if (v20)
           {
             sub_100008080(v20);
@@ -225,7 +225,7 @@ LABEL_106:
             v40 = qword_1025D4418;
             if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_ERROR))
             {
-              v41 = v67->_workoutElevationProfileCount;
+              v41 = selfCopy->_workoutElevationProfileCount;
               *buf = 134218240;
               v83 = Current;
               v84 = 1024;
@@ -236,7 +236,7 @@ LABEL_106:
             if (sub_10000A100(121, 0))
             {
               sub_1018FF6A8(buf);
-              v51 = v67->_workoutElevationProfileCount;
+              v51 = selfCopy->_workoutElevationProfileCount;
               v68 = 134218240;
               v69 = Current;
               v70 = 1024;
@@ -261,12 +261,12 @@ LABEL_106:
             goto LABEL_95;
           }
 
-          v43 = v67;
+          v43 = selfCopy;
           if (v30 == dataBuffers[83] - 2)
           {
-            if ([(CLElevationGainFromProfile *)v67 addTransitionPointWithAltitude:v39[1] andTimestamp:*v39])
+            if ([(CLElevationGainFromProfile *)selfCopy addTransitionPointWithAltitude:v39[1] andTimestamp:*v39])
             {
-              sub_100685D34(v66, v67->_elevationProfileSegmentTransitionPoints.__end_ - 2, 1);
+              sub_100685D34(v66, selfCopy->_elevationProfileSegmentTransitionPoints.__end_ - 2, 1);
             }
 
             v42 = 28;
@@ -303,7 +303,7 @@ LABEL_106:
             {
               v47 = *v39;
               v48 = *(v39 + 6);
-              v49 = v67->_workoutElevationProfileCount;
+              v49 = selfCopy->_workoutElevationProfileCount;
               *buf = 134219520;
               v83 = Current;
               v84 = 2048;
@@ -326,7 +326,7 @@ LABEL_106:
               sub_1018FF6A8(buf);
               v53 = *v39;
               v54 = *(v39 + 6);
-              v55 = v67->_workoutElevationProfileCount;
+              v55 = selfCopy->_workoutElevationProfileCount;
               v68 = 134219520;
               v69 = Current;
               v70 = 2048;
@@ -375,9 +375,9 @@ LABEL_88:
             }
 
             v36 = *v39;
-            if ([CLElevationGainFromProfile addTransitionPointWithAltitude:v67 andTimestamp:"addTransitionPointWithAltitude:andTimestamp:"])
+            if ([CLElevationGainFromProfile addTransitionPointWithAltitude:selfCopy andTimestamp:"addTransitionPointWithAltitude:andTimestamp:"])
             {
-              sub_100685D34(v66, v67->_elevationProfileSegmentTransitionPoints.__end_ - 2, 1);
+              sub_100685D34(v66, selfCopy->_elevationProfileSegmentTransitionPoints.__end_ - 2, 1);
             }
 
             v42 = 0;
@@ -390,9 +390,9 @@ LABEL_88:
               if (v50 < v35 - v45)
               {
                 v28 = *v39;
-                if ([(CLElevationGainFromProfile *)v67 addTransitionPointWithAltitude:v35 andTimestamp:v36])
+                if ([(CLElevationGainFromProfile *)selfCopy addTransitionPointWithAltitude:v35 andTimestamp:v36])
                 {
-                  sub_100685D34(v66, v67->_elevationProfileSegmentTransitionPoints.__end_ - 2, 1);
+                  sub_100685D34(v66, selfCopy->_elevationProfileSegmentTransitionPoints.__end_ - 2, 1);
                 }
 
                 v42 = 0;
@@ -439,7 +439,7 @@ LABEL_96:
       v31 = qword_1025D4418;
       if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_ERROR))
       {
-        v32 = v67->_workoutElevationProfileCount;
+        v32 = selfCopy->_workoutElevationProfileCount;
         *buf = 134218240;
         v83 = Current;
         v84 = 1024;
@@ -450,7 +450,7 @@ LABEL_96:
       if (sub_10000A100(121, 0))
       {
         sub_1018FF6A8(buf);
-        v59 = v67->_workoutElevationProfileCount;
+        v59 = selfCopy->_workoutElevationProfileCount;
         v68 = 134218240;
         v69 = Current;
         v70 = 1024;
@@ -487,7 +487,7 @@ LABEL_96:
   v11 = sub_10000A100(121, 2);
   if (v11)
   {
-    sub_1018FF714(&v67, Current);
+    sub_1018FF714(&selfCopy, Current);
 LABEL_27:
     LOBYTE(v11) = 0;
   }
@@ -495,7 +495,7 @@ LABEL_27:
   return v11;
 }
 
-- (double)getProfileSegmentingThresholdFromSmootherOutput:(shared_ptr<CLBarometerCalibration_Types:(optional<CMWorkoutType>)a4 :CLBarometerCalibrationSmoothedWorkoutElevation>)a3 workoutType:
+- (double)getProfileSegmentingThresholdFromSmootherOutput:(shared_ptr<CLBarometerCalibration_Types:(optional<CMWorkoutType>)output :CLBarometerCalibrationSmoothedWorkoutElevation>)a3 workoutType:
 {
   if (!*a3.var0)
   {
@@ -530,7 +530,7 @@ LABEL_27:
     atomic_fetch_add_explicit(&v6->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  if ((a4.var0.var0 & 1) != 0 && a3.var1 == 4)
+  if ((output.var0.var0 & 1) != 0 && a3.var1 == 4)
   {
     verticalToleranceInMetersCycling = self->_verticalToleranceInMetersCycling;
     sub_1006862EC(v16, verticalToleranceInMetersCycling);
@@ -600,7 +600,7 @@ LABEL_8:
   return verticalToleranceInMetersCycling;
 }
 
-- (BOOL)computeElevationGainFromSegmentsAscended:(BatchedElevationData *)a3 descended:(BatchedElevationData *)a4
+- (BOOL)computeElevationGainFromSegmentsAscended:(BatchedElevationData *)ascended descended:(BatchedElevationData *)descended
 {
   Current = CFAbsoluteTimeGetCurrent();
   begin = self->_elevationProfileSegmentTransitionPoints.__begin_;
@@ -632,16 +632,16 @@ LABEL_2:
     if (!--v16)
     {
       v19 = *(end - 2);
-      a3->var1 = v19;
-      a4->var1 = v19;
-      v20 = a3->var1 + -180.0;
+      ascended->var1 = v19;
+      descended->var1 = v19;
+      v20 = ascended->var1 + -180.0;
       if (v14 <= v20)
       {
-        a3->var3 = v20;
-        a4->var3 = v20;
+        ascended->var3 = v20;
+        descended->var3 = v20;
       }
 
-      var3 = a3->var3;
+      var3 = ascended->var3;
       v22 = (begin + 16);
       v23 = 0.0;
       v24 = 0.0;
@@ -683,10 +683,10 @@ LABEL_2:
       }
 
       while (v15);
-      a3->var0 = llround(v23 * 100.0);
-      a4->var0 = llround(v24 * 100.0);
-      a3->var2 = llround(v25 * 100.0);
-      a4->var2 = llround(v26 * 100.0);
+      ascended->var0 = llround(v23 * 100.0);
+      descended->var0 = llround(v24 * 100.0);
+      ascended->var2 = llround(v25 * 100.0);
+      descended->var2 = llround(v26 * 100.0);
       if (qword_1025D4410 != -1)
       {
         sub_1018FF694();
@@ -695,12 +695,12 @@ LABEL_2:
       v31 = qword_1025D4418;
       if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_DEFAULT))
       {
-        var1 = a3->var1;
-        var0 = a3->var0;
-        v34 = a4->var0;
-        v35 = a3->var3;
-        var2 = a3->var2;
-        v37 = a4->var2;
+        var1 = ascended->var1;
+        var0 = ascended->var0;
+        v34 = descended->var0;
+        v35 = ascended->var3;
+        var2 = ascended->var2;
+        v37 = descended->var2;
         *buf = 134219520;
         v46 = var1;
         v47 = 1024;
@@ -781,13 +781,13 @@ LABEL_2:
   return v11;
 }
 
-- (void)removeElevationProfileSegmentPointsFromTimestamp:(double)a3
+- (void)removeElevationProfileSegmentPointsFromTimestamp:(double)timestamp
 {
   begin = self->_elevationProfileSegmentTransitionPoints.__begin_;
   end = self->_elevationProfileSegmentTransitionPoints.__end_;
   if (begin != end)
   {
-    while (*begin <= a3)
+    while (*begin <= timestamp)
     {
       begin = (begin + 16);
       if (begin == end)
@@ -803,7 +803,7 @@ LABEL_2:
       {
         do
         {
-          if (*v7 <= a3)
+          if (*v7 <= timestamp)
           {
             *begin = *v7;
             begin = (begin + 16);
@@ -835,7 +835,7 @@ LABEL_13:
     Current = CFAbsoluteTimeGetCurrent();
     workoutElevationProfileCount = self->_workoutElevationProfileCount;
     v11 = 134218496;
-    v12 = a3;
+    timestampCopy = timestamp;
     v13 = 2048;
     v14 = Current;
     v15 = 1024;
@@ -849,26 +849,26 @@ LABEL_13:
   }
 }
 
-- (double)computeAdjustedStartTimeFromElevationProfileStartTime:(double)a3
+- (double)computeAdjustedStartTimeFromElevationProfileStartTime:(double)time
 {
   for (i = self->_elevationProfileSegmentTransitionPoints.__begin_; i != self->_elevationProfileSegmentTransitionPoints.__end_; i = (i + 16))
   {
     v4 = *i;
-    if (*i >= a3)
+    if (*i >= time)
     {
       return v4;
     }
   }
 
-  return a3;
+  return time;
 }
 
-- (BOOL)addTransitionPointWithAltitude:(double)a3 andTimestamp:(double)a4
+- (BOOL)addTransitionPointWithAltitude:(double)altitude andTimestamp:(double)timestamp
 {
   begin = self->_elevationProfileSegmentTransitionPoints.__begin_;
   end = self->_elevationProfileSegmentTransitionPoints.__end_;
   p_elevationProfileSegmentTransitionPoints = &self->_elevationProfileSegmentTransitionPoints;
-  if (begin != end && vabdd_f64(*(end - 2), a4) < 0.001 && vabdd_f64(*(end - 1), a3) < 0.001)
+  if (begin != end && vabdd_f64(*(end - 2), timestamp) < 0.001 && vabdd_f64(*(end - 1), altitude) < 0.001)
   {
     return 0;
   }
@@ -901,8 +901,8 @@ LABEL_13:
     }
 
     v15 = (16 * v12);
-    *v15 = a4;
-    v15[1] = a3;
+    *v15 = timestamp;
+    v15[1] = altitude;
     v10 = (16 * v12 + 16);
     memcpy(0, begin, v11);
     v16 = self->_elevationProfileSegmentTransitionPoints.__begin_;
@@ -917,8 +917,8 @@ LABEL_13:
 
   else
   {
-    *end = a4;
-    *(end + 1) = a3;
+    *end = timestamp;
+    *(end + 1) = altitude;
     v10 = (end + 16);
   }
 

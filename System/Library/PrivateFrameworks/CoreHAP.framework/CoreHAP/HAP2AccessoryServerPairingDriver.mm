@@ -1,8 +1,8 @@
 @interface HAP2AccessoryServerPairingDriver
-+ (id)_generateWorkItemsForAuthMethod:(unint64_t)a3;
++ (id)_generateWorkItemsForAuthMethod:(unint64_t)method;
 - (HAP2AccessoryServerEncoding)encoding;
-- (HAP2AccessoryServerPairingDriver)initWithTransport:(id)a3 secureTransportFactory:(id)a4 encoding:(id)a5 featureFlags:(unint64_t)a6;
-- (HAP2AccessoryServerPairingDriver)initWithTransport:(id)a3 secureTransportFactory:(id)a4 encoding:(id)a5 featureFlags:(unint64_t)a6 workItems:(id)a7;
+- (HAP2AccessoryServerPairingDriver)initWithTransport:(id)transport secureTransportFactory:(id)factory encoding:(id)encoding featureFlags:(unint64_t)flags;
+- (HAP2AccessoryServerPairingDriver)initWithTransport:(id)transport secureTransportFactory:(id)factory encoding:(id)encoding featureFlags:(unint64_t)flags workItems:(id)items;
 - (HAP2AccessoryServerPairingDriverDelegate)delegate;
 - (HAP2AccessoryServerTransport)transport;
 - (HAP2UnpairedAccessoryServer)accessoryServer;
@@ -13,16 +13,16 @@
 - (NSString)description;
 - (id)currentWorkItem;
 - (id)moveToNextWorkItem;
-- (id)pairAccessory:(id)a3 pairingRequest:(id)a4 delegate:(id)a5;
-- (void)_cancelWithError:(id)a3;
-- (void)_pairingFinishedWithError:(id)a3;
-- (void)cancelWithError:(id)a3;
-- (void)setAccessoryServer:(id)a3;
-- (void)setCancelError:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setPairingRequest:(id)a3;
-- (void)setPairingSession:(id)a3;
-- (void)workItem:(id)a3 finishedWithError:(id)a4;
+- (id)pairAccessory:(id)accessory pairingRequest:(id)request delegate:(id)delegate;
+- (void)_cancelWithError:(id)error;
+- (void)_pairingFinishedWithError:(id)error;
+- (void)cancelWithError:(id)error;
+- (void)setAccessoryServer:(id)server;
+- (void)setCancelError:(id)error;
+- (void)setDelegate:(id)delegate;
+- (void)setPairingRequest:(id)request;
+- (void)setPairingSession:(id)session;
+- (void)workItem:(id)item finishedWithError:(id)error;
 @end
 
 @implementation HAP2AccessoryServerPairingDriver
@@ -36,51 +36,51 @@
 
 - (NSString)description
 {
-  v3 = [(HAP2AccessoryServerPairingDriver *)self accessoryServer];
+  accessoryServer = [(HAP2AccessoryServerPairingDriver *)self accessoryServer];
   v4 = MEMORY[0x277CCACA8];
   v10.receiver = self;
   v10.super_class = HAP2AccessoryServerPairingDriver;
   v5 = [(HAP2LoggingObject *)&v10 description];
-  v6 = [v3 name];
-  v7 = [v3 deviceID];
-  v8 = [v4 stringWithFormat:@"%@ [%@/%@]", v5, v6, v7];
+  name = [accessoryServer name];
+  deviceID = [accessoryServer deviceID];
+  v8 = [v4 stringWithFormat:@"%@ [%@/%@]", v5, name, deviceID];
 
   return v8;
 }
 
-- (void)workItem:(id)a3 finishedWithError:(id)a4
+- (void)workItem:(id)item finishedWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAP2AccessoryServerPairingDriver *)self operationQueue];
-  [v8 assertCurrentQueue];
+  itemCopy = item;
+  errorCopy = error;
+  operationQueue = [(HAP2AccessoryServerPairingDriver *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v9 = [(HAP2AccessoryServerPairingDriver *)self currentWorkItem];
-  v10 = [v6 isEqual:v9];
+  currentWorkItem = [(HAP2AccessoryServerPairingDriver *)self currentWorkItem];
+  v10 = [itemCopy isEqual:currentWorkItem];
 
   if (v10)
   {
-    v11 = [(HAP2AccessoryServerPairingDriver *)self pairingActivity];
+    pairingActivity = [(HAP2AccessoryServerPairingDriver *)self pairingActivity];
     v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HAP2AccessoryServerPairingDriver currentWorkItemIndex](self, "currentWorkItemIndex")}];
     v13 = MEMORY[0x277CCABB0];
-    v14 = [(HAP2AccessoryServerPairingDriver *)self workItems];
-    v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(v14, "count")}];
+    workItems = [(HAP2AccessoryServerPairingDriver *)self workItems];
+    v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(workItems, "count")}];
 
-    [v7 domain];
-    [v7 code];
-    if (v7)
+    [errorCopy domain];
+    [errorCopy code];
+    if (errorCopy)
     {
-      [(HAP2AccessoryServerPairingDriver *)self _pairingFinishedWithError:v7];
+      [(HAP2AccessoryServerPairingDriver *)self _pairingFinishedWithError:errorCopy];
     }
 
     else
     {
-      v16 = [(HAP2AccessoryServerPairingDriver *)self moveToNextWorkItem];
-      if (v16)
+      moveToNextWorkItem = [(HAP2AccessoryServerPairingDriver *)self moveToNextWorkItem];
+      if (moveToNextWorkItem)
       {
-        [v11 begin];
-        v17 = v11;
-        [v16 startWithPairingDriver:self];
+        [pairingActivity begin];
+        v17 = pairingActivity;
+        [moveToNextWorkItem startWithPairingDriver:self];
         __HMFActivityScopeLeave();
       }
 
@@ -92,12 +92,12 @@
   }
 }
 
-- (void)_pairingFinishedWithError:(id)a3
+- (void)_pairingFinishedWithError:(id)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerPairingDriver *)self operationQueue];
-  [v5 assertCurrentQueue];
+  errorCopy = error;
+  operationQueue = [(HAP2AccessoryServerPairingDriver *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
   if (hap2LogInitialize_onceToken != -1)
   {
@@ -106,7 +106,7 @@
 
   v6 = hap2Log_accessory;
   v7 = os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (errorCopy)
   {
     if (!v7)
     {
@@ -114,9 +114,9 @@
     }
 
     *buf = 138412546;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2112;
-    v25 = v4;
+    v25 = errorCopy;
     v8 = "%@ Finished with error: %@";
     v9 = v6;
     v10 = 22;
@@ -130,7 +130,7 @@
     }
 
     *buf = 138412290;
-    v23 = self;
+    selfCopy2 = self;
     v8 = "%@ Finished successfully";
     v9 = v6;
     v10 = 12;
@@ -138,7 +138,7 @@
 
   _os_log_impl(&dword_22AADC000, v9, OS_LOG_TYPE_DEFAULT, v8, buf, v10);
 LABEL_9:
-  v11 = v4 == 0;
+  v11 = errorCopy == 0;
   [(HAP2AccessoryServerPairingDriver *)self setPairingRequest:0];
   [(HAP2AccessoryServerPairingDriver *)self setPairingSession:0];
   objc_initWeak(buf, self);
@@ -147,7 +147,7 @@ LABEL_9:
   v19[2] = __62__HAP2AccessoryServerPairingDriver__pairingFinishedWithError___block_invoke;
   v19[3] = &unk_2786D6EB0;
   objc_copyWeak(&v21, buf);
-  v12 = v4;
+  v12 = errorCopy;
   v20 = v12;
   v13 = MEMORY[0x231885210](v19);
   v14 = v13;
@@ -158,14 +158,14 @@ LABEL_9:
 
   else
   {
-    v15 = [(HAP2AccessoryServerPairingDriver *)self transport];
+    transport = [(HAP2AccessoryServerPairingDriver *)self transport];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __62__HAP2AccessoryServerPairingDriver__pairingFinishedWithError___block_invoke_2;
     v17[3] = &unk_2786D5D70;
     v17[4] = self;
     v18 = v14;
-    [v15 closeWithError:0 completion:v17];
+    [transport closeWithError:0 completion:v17];
   }
 
   objc_destroyWeak(&v21);
@@ -196,44 +196,44 @@ void __62__HAP2AccessoryServerPairingDriver__pairingFinishedWithError___block_in
   [v2 addBlock:v3];
 }
 
-- (void)_cancelWithError:(id)a3
+- (void)_cancelWithError:(id)error
 {
-  v8 = a3;
-  v4 = [(HAP2AccessoryServerPairingDriver *)self operationQueue];
-  [v4 assertCurrentQueue];
+  errorCopy = error;
+  operationQueue = [(HAP2AccessoryServerPairingDriver *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v5 = [(HAP2AccessoryServerPairingDriver *)self cancelError];
+  cancelError = [(HAP2AccessoryServerPairingDriver *)self cancelError];
 
-  if (!v5)
+  if (!cancelError)
   {
-    [(HAP2AccessoryServerPairingDriver *)self setCancelError:v8];
-    v6 = [(HAP2AccessoryServerPairingDriver *)self currentWorkItem];
-    v7 = v6;
-    if (v6)
+    [(HAP2AccessoryServerPairingDriver *)self setCancelError:errorCopy];
+    currentWorkItem = [(HAP2AccessoryServerPairingDriver *)self currentWorkItem];
+    v7 = currentWorkItem;
+    if (currentWorkItem)
     {
-      [v6 cancelWithError:v8];
+      [currentWorkItem cancelWithError:errorCopy];
     }
 
     else
     {
-      [(HAP2AccessoryServerPairingDriver *)self _pairingFinishedWithError:v8];
+      [(HAP2AccessoryServerPairingDriver *)self _pairingFinishedWithError:errorCopy];
     }
   }
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_initWeak(&location, self);
-  v5 = [(HAP2AccessoryServerPairingDriver *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriver *)self operationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__HAP2AccessoryServerPairingDriver_cancelWithError___block_invoke;
   v7[3] = &unk_2786D6EB0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = errorCopy;
   v8 = v6;
-  [v5 addBlock:v7];
+  [operationQueue addBlock:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -247,22 +247,22 @@ void __52__HAP2AccessoryServerPairingDriver_cancelWithError___block_invoke(uint6
 
 - (id)currentWorkItem
 {
-  v3 = [(HAP2AccessoryServerPairingDriver *)self operationQueue];
-  [v3 assertCurrentQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriver *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v4 = [(HAP2AccessoryServerPairingDriver *)self currentWorkItemIndex];
-  v5 = [(HAP2AccessoryServerPairingDriver *)self workItems];
-  v6 = [v5 count];
+  currentWorkItemIndex = [(HAP2AccessoryServerPairingDriver *)self currentWorkItemIndex];
+  workItems = [(HAP2AccessoryServerPairingDriver *)self workItems];
+  v6 = [workItems count];
 
-  if (v4 >= v6)
+  if (currentWorkItemIndex >= v6)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(HAP2AccessoryServerPairingDriver *)self workItems];
-    v8 = [v7 objectAtIndexedSubscript:v4];
+    workItems2 = [(HAP2AccessoryServerPairingDriver *)self workItems];
+    v8 = [workItems2 objectAtIndexedSubscript:currentWorkItemIndex];
   }
 
   return v8;
@@ -270,24 +270,24 @@ void __52__HAP2AccessoryServerPairingDriver_cancelWithError___block_invoke(uint6
 
 - (id)moveToNextWorkItem
 {
-  v3 = [(HAP2AccessoryServerPairingDriver *)self operationQueue];
-  [v3 assertCurrentQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriver *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
   [(HAP2AccessoryServerPairingDriver *)self setCurrentWorkItemIndex:[(HAP2AccessoryServerPairingDriver *)self currentWorkItemIndex]+ 1];
 
   return [(HAP2AccessoryServerPairingDriver *)self currentWorkItem];
 }
 
-- (id)pairAccessory:(id)a3 pairingRequest:(id)a4 delegate:(id)a5
+- (id)pairAccessory:(id)accessory pairingRequest:(id)request delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  accessoryCopy = accessory;
+  requestCopy = request;
+  delegateCopy = delegate;
   [(HAP2AccessoryServerPairingDriver *)self accessoryServer];
 
-  if ([v9 conformsToProtocol:&unk_283EB5C18])
+  if ([accessoryCopy conformsToProtocol:&unk_283EB5C18])
   {
-    v12 = v9;
+    v12 = accessoryCopy;
   }
 
   else
@@ -302,18 +302,18 @@ void __52__HAP2AccessoryServerPairingDriver_cancelWithError___block_invoke(uint6
   v17 = [v15 stringWithFormat:@"%@, %s:%ld", v16, "/Library/Caches/com.apple.xbs/Sources/HomeKit/Sources/CoreHAP/HAP2/Pairing/HAP2AccessoryServerPairingDriver.m", 316];
   v18 = [v14 initWithName:v17];
 
-  [(HAP2AccessoryServerPairingDriver *)self setPairingRequest:v10];
+  [(HAP2AccessoryServerPairingDriver *)self setPairingRequest:requestCopy];
   [(HAP2AccessoryServerPairingDriver *)self setAccessoryServer:v13];
-  [(HAP2AccessoryServerPairingDriver *)self setDelegate:v11];
+  [(HAP2AccessoryServerPairingDriver *)self setDelegate:delegateCopy];
   [(HAP2AccessoryServerPairingDriver *)self setPairingActivity:v18];
   if (!self->_operationQueue)
   {
-    v19 = [v13 operationQueue];
-    [(HAP2AccessoryServerPairingDriver *)self setOperationQueue:v19];
+    operationQueue = [v13 operationQueue];
+    [(HAP2AccessoryServerPairingDriver *)self setOperationQueue:operationQueue];
   }
 
   objc_initWeak(&location, self);
-  v20 = [(HAP2AccessoryServerPairingDriver *)self operationQueue];
+  operationQueue2 = [(HAP2AccessoryServerPairingDriver *)self operationQueue];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __74__HAP2AccessoryServerPairingDriver_pairAccessory_pairingRequest_delegate___block_invoke;
@@ -321,7 +321,7 @@ void __52__HAP2AccessoryServerPairingDriver_cancelWithError___block_invoke(uint6
   objc_copyWeak(&v25, &location);
   v21 = v18;
   v24 = v21;
-  [v20 addBlock:v23];
+  [operationQueue2 addBlock:v23];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
@@ -341,18 +341,18 @@ void __74__HAP2AccessoryServerPairingDriver_pairAccessory_pairingRequest_delegat
   __HMFActivityScopeLeave();
 }
 
-- (void)setCancelError:(id)a3
+- (void)setCancelError:(id)error
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
+  errorCopy = error;
+  propertyLock = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__HAP2AccessoryServerPairingDriver_setCancelError___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWritingBlock:v7];
+  v8 = errorCopy;
+  v6 = errorCopy;
+  [propertyLock performWritingBlock:v7];
 }
 
 - (NSError)cancelError
@@ -363,14 +363,14 @@ void __74__HAP2AccessoryServerPairingDriver_pairAccessory_pairingRequest_delegat
   v10 = __Block_byref_object_copy__19076;
   v11 = __Block_byref_object_dispose__19077;
   v12 = 0;
-  v3 = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
+  propertyLock = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__HAP2AccessoryServerPairingDriver_cancelError__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -378,18 +378,18 @@ void __74__HAP2AccessoryServerPairingDriver_pairAccessory_pairingRequest_delegat
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
+  delegateCopy = delegate;
+  propertyLock = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__HAP2AccessoryServerPairingDriver_setDelegate___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWritingBlock:v7];
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  [propertyLock performWritingBlock:v7];
 }
 
 - (HAP2AccessoryServerPairingDriverDelegate)delegate
@@ -400,14 +400,14 @@ void __74__HAP2AccessoryServerPairingDriver_pairAccessory_pairingRequest_delegat
   v10 = __Block_byref_object_copy__19076;
   v11 = __Block_byref_object_dispose__19077;
   v12 = 0;
-  v3 = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
+  propertyLock = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__HAP2AccessoryServerPairingDriver_delegate__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -425,18 +425,18 @@ uint64_t __44__HAP2AccessoryServerPairingDriver_delegate__block_invoke(uint64_t 
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setAccessoryServer:(id)a3
+- (void)setAccessoryServer:(id)server
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
+  serverCopy = server;
+  propertyLock = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__HAP2AccessoryServerPairingDriver_setAccessoryServer___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWritingBlock:v7];
+  v8 = serverCopy;
+  v6 = serverCopy;
+  [propertyLock performWritingBlock:v7];
 }
 
 - (HAP2UnpairedAccessoryServer)accessoryServer
@@ -447,14 +447,14 @@ uint64_t __44__HAP2AccessoryServerPairingDriver_delegate__block_invoke(uint64_t 
   v10 = __Block_byref_object_copy__19076;
   v11 = __Block_byref_object_dispose__19077;
   v12 = 0;
-  v3 = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
+  propertyLock = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__HAP2AccessoryServerPairingDriver_accessoryServer__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -472,18 +472,18 @@ uint64_t __51__HAP2AccessoryServerPairingDriver_accessoryServer__block_invoke(ui
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setPairingRequest:(id)a3
+- (void)setPairingRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
+  requestCopy = request;
+  propertyLock = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__HAP2AccessoryServerPairingDriver_setPairingRequest___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWritingBlock:v7];
+  v8 = requestCopy;
+  v6 = requestCopy;
+  [propertyLock performWritingBlock:v7];
 }
 
 - (HAPAccessoryPairingRequest)pairingRequest
@@ -494,14 +494,14 @@ uint64_t __51__HAP2AccessoryServerPairingDriver_accessoryServer__block_invoke(ui
   v10 = __Block_byref_object_copy__19076;
   v11 = __Block_byref_object_dispose__19077;
   v12 = 0;
-  v3 = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
+  propertyLock = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__HAP2AccessoryServerPairingDriver_pairingRequest__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -517,14 +517,14 @@ uint64_t __51__HAP2AccessoryServerPairingDriver_accessoryServer__block_invoke(ui
   v10 = __Block_byref_object_copy__19076;
   v11 = __Block_byref_object_dispose__19077;
   v12 = 0;
-  v3 = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
+  propertyLock = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__HAP2AccessoryServerPairingDriver_encoding__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -540,14 +540,14 @@ uint64_t __51__HAP2AccessoryServerPairingDriver_accessoryServer__block_invoke(ui
   v10 = __Block_byref_object_copy__19076;
   v11 = __Block_byref_object_dispose__19077;
   v12 = 0;
-  v3 = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
+  propertyLock = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__HAP2AccessoryServerPairingDriver_transport__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -555,18 +555,18 @@ uint64_t __51__HAP2AccessoryServerPairingDriver_accessoryServer__block_invoke(ui
   return v4;
 }
 
-- (void)setPairingSession:(id)a3
+- (void)setPairingSession:(id)session
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
+  sessionCopy = session;
+  propertyLock = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__HAP2AccessoryServerPairingDriver_setPairingSession___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWritingBlock:v7];
+  v8 = sessionCopy;
+  v6 = sessionCopy;
+  [propertyLock performWritingBlock:v7];
 }
 
 - (HAPSRPPairSetupSession)pairingSession
@@ -577,14 +577,14 @@ uint64_t __51__HAP2AccessoryServerPairingDriver_accessoryServer__block_invoke(ui
   v10 = __Block_byref_object_copy__19076;
   v11 = __Block_byref_object_dispose__19077;
   v12 = 0;
-  v3 = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
+  propertyLock = [(HAP2AccessoryServerPairingDriver *)self propertyLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__HAP2AccessoryServerPairingDriver_pairingSession__block_invoke;
   v6[3] = &unk_2786D6E60;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performReadingBlock:v6];
+  [propertyLock performReadingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -592,37 +592,37 @@ uint64_t __51__HAP2AccessoryServerPairingDriver_accessoryServer__block_invoke(ui
   return v4;
 }
 
-- (HAP2AccessoryServerPairingDriver)initWithTransport:(id)a3 secureTransportFactory:(id)a4 encoding:(id)a5 featureFlags:(unint64_t)a6
+- (HAP2AccessoryServerPairingDriver)initWithTransport:(id)transport secureTransportFactory:(id)factory encoding:(id)encoding featureFlags:(unint64_t)flags
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  encodingCopy = encoding;
+  factoryCopy = factory;
+  transportCopy = transport;
   v13 = objc_opt_class();
   v14 = 1;
   v15 = 2;
   v16 = 4;
   v17 = 5;
-  if ((a6 & 0x10) != 0)
+  if ((flags & 0x10) != 0)
   {
     v17 = 6;
   }
 
-  if ((a6 & 8) == 0)
+  if ((flags & 8) == 0)
   {
     v16 = v17;
   }
 
-  if ((a6 & 2) == 0)
+  if ((flags & 2) == 0)
   {
     v15 = v16;
   }
 
-  if ((a6 & 1) == 0)
+  if ((flags & 1) == 0)
   {
     v14 = v15;
   }
 
-  if ((a6 & 0xBF) != 0)
+  if ((flags & 0xBF) != 0)
   {
     v18 = v14;
   }
@@ -633,7 +633,7 @@ uint64_t __51__HAP2AccessoryServerPairingDriver_accessoryServer__block_invoke(ui
   }
 
   v19 = [v13 _generateWorkItemsForAuthMethod:v18];
-  v20 = [(HAP2AccessoryServerPairingDriver *)self initWithTransport:v12 secureTransportFactory:v11 encoding:v10 featureFlags:a6 workItems:v19];
+  v20 = [(HAP2AccessoryServerPairingDriver *)self initWithTransport:transportCopy secureTransportFactory:factoryCopy encoding:encodingCopy featureFlags:flags workItems:v19];
 
   if (v20)
   {
@@ -643,12 +643,12 @@ uint64_t __51__HAP2AccessoryServerPairingDriver_accessoryServer__block_invoke(ui
   return v20;
 }
 
-- (HAP2AccessoryServerPairingDriver)initWithTransport:(id)a3 secureTransportFactory:(id)a4 encoding:(id)a5 featureFlags:(unint64_t)a6 workItems:(id)a7
+- (HAP2AccessoryServerPairingDriver)initWithTransport:(id)transport secureTransportFactory:(id)factory encoding:(id)encoding featureFlags:(unint64_t)flags workItems:(id)items
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  transportCopy = transport;
+  factoryCopy = factory;
+  encodingCopy = encoding;
+  itemsCopy = items;
   v23.receiver = self;
   v23.super_class = HAP2AccessoryServerPairingDriver;
   v17 = [(HAP2AccessoryServerPairingDriver *)&v23 init];
@@ -658,23 +658,23 @@ uint64_t __51__HAP2AccessoryServerPairingDriver_accessoryServer__block_invoke(ui
     propertyLock = v17->_propertyLock;
     v17->_propertyLock = v18;
 
-    objc_storeStrong(&v17->_transport, a3);
-    objc_storeStrong(&v17->_secureTransportFactory, a4);
-    objc_storeStrong(&v17->_encoding, a5);
-    v17->_featureFlags = a6;
-    if ((a6 & 0xBF) != 0)
+    objc_storeStrong(&v17->_transport, transport);
+    objc_storeStrong(&v17->_secureTransportFactory, factory);
+    objc_storeStrong(&v17->_encoding, encoding);
+    v17->_featureFlags = flags;
+    if ((flags & 0xBF) != 0)
     {
-      if (a6)
+      if (flags)
       {
         v20 = 1;
       }
 
-      else if ((a6 & 2) != 0)
+      else if ((flags & 2) != 0)
       {
         v20 = 2;
       }
 
-      else if ((a6 & 8) != 0)
+      else if ((flags & 8) != 0)
       {
         v20 = 4;
       }
@@ -682,7 +682,7 @@ uint64_t __51__HAP2AccessoryServerPairingDriver_accessoryServer__block_invoke(ui
       else
       {
         v20 = 5;
-        if ((a6 & 0x10) != 0)
+        if ((flags & 0x10) != 0)
         {
           v20 = 6;
         }
@@ -695,22 +695,22 @@ uint64_t __51__HAP2AccessoryServerPairingDriver_accessoryServer__block_invoke(ui
     }
 
     v17->_authMethod = v20;
-    objc_storeStrong(&v17->_workItems, a7);
+    objc_storeStrong(&v17->_workItems, items);
     v21 = v17;
   }
 
   return v17;
 }
 
-+ (id)_generateWorkItemsForAuthMethod:(unint64_t)a3
++ (id)_generateWorkItemsForAuthMethod:(unint64_t)method
 {
   v3 = 0;
   v21[7] = *MEMORY[0x277D85DE8];
-  if (a3 > 2)
+  if (method > 2)
   {
-    if (a3 <= 4)
+    if (method <= 4)
     {
-      if (a3 != 3)
+      if (method != 3)
       {
         v4 = +[HAP2AccessoryServerPairingDriverTransportControlWorkItem openConnection];
         v20[0] = v4;
@@ -741,9 +741,9 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    if (a3 != 5)
+    if (method != 5)
     {
-      if (a3 != 6)
+      if (method != 6)
       {
         goto LABEL_17;
       }
@@ -781,17 +781,17 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  if (!a3)
+  if (!method)
   {
     goto LABEL_13;
   }
 
-  if (a3 == 1)
+  if (method == 1)
   {
     goto LABEL_14;
   }
 
-  if (a3 != 2)
+  if (method != 2)
   {
     goto LABEL_17;
   }

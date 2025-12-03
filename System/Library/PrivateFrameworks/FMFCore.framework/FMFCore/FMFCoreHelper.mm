@@ -1,20 +1,20 @@
 @interface FMFCoreHelper
-+ (id)displayNameFor:(id)a3;
++ (id)displayNameFor:(id)for;
 - (_TtC7FMFCore13FMFCoreHelper)init;
 @end
 
 @implementation FMFCoreHelper
 
-+ (id)displayNameFor:(id)a3
++ (id)displayNameFor:(id)for
 {
   v3 = qword_27EF3EBE8;
-  v4 = a3;
+  forCopy = for;
   if (v3 != -1)
   {
     swift_once();
   }
 
-  sub_24A42E63C(v4, v7);
+  sub_24A42E63C(forCopy, v7);
 
   v5 = sub_24A4AB820();
 

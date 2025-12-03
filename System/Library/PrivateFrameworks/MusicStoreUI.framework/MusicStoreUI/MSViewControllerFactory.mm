@@ -1,9 +1,9 @@
 @interface MSViewControllerFactory
 - (id)newDownloadManagerOptions;
-- (id)newNetworkLockoutViewControllerWithSection:(id)a3;
+- (id)newNetworkLockoutViewControllerWithSection:(id)section;
 - (id)newPlaceholderViewController;
-- (id)newViewControllerForPage:(id)a3 ofType:(int64_t)a4;
-- (id)newViewControllerForTrackList:(id)a3;
+- (id)newViewControllerForPage:(id)page ofType:(int64_t)type;
+- (id)newViewControllerForTrackList:(id)list;
 @end
 
 @implementation MSViewControllerFactory
@@ -17,9 +17,9 @@
   return v2;
 }
 
-- (id)newNetworkLockoutViewControllerWithSection:(id)a3
+- (id)newNetworkLockoutViewControllerWithSection:(id)section
 {
-  v3 = [objc_alloc(MEMORY[0x277D7FE38]) initWithSection:a3];
+  v3 = [objc_alloc(MEMORY[0x277D7FE38]) initWithSection:section];
   [v3 setLocalizationBundle:{objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class())}];
   return v3;
 }
@@ -28,29 +28,29 @@
 {
   v4.receiver = self;
   v4.super_class = MSViewControllerFactory;
-  v2 = [(SUViewControllerFactory *)&v4 newPlaceholderViewController];
-  [v2 setDefaultBackgroundGradient:{objc_msgSend(MEMORY[0x277D7FDD8], "gradientWithColor:", objc_msgSend(MEMORY[0x277D75348], "systemBackgroundColor"))}];
-  return v2;
+  newPlaceholderViewController = [(SUViewControllerFactory *)&v4 newPlaceholderViewController];
+  [newPlaceholderViewController setDefaultBackgroundGradient:{objc_msgSend(MEMORY[0x277D7FDD8], "gradientWithColor:", objc_msgSend(MEMORY[0x277D75348], "systemBackgroundColor"))}];
+  return newPlaceholderViewController;
 }
 
-- (id)newViewControllerForPage:(id)a3 ofType:(int64_t)a4
+- (id)newViewControllerForPage:(id)page ofType:(int64_t)type
 {
-  if (a4)
+  if (type)
   {
     v8.receiver = self;
     v8.super_class = MSViewControllerFactory;
-    return [(SUViewControllerFactory *)&v8 newViewControllerForPage:a3 ofType:?];
+    return [(SUViewControllerFactory *)&v8 newViewControllerForPage:page ofType:?];
   }
 
-  v6 = [a3 type];
-  if (v6 == 2)
+  type = [page type];
+  if (type == 2)
   {
     v4 = objc_alloc_init(MEMORY[0x277D7FE68]);
     [v4 setDataSourceClass:objc_opt_class()];
     return v4;
   }
 
-  if (v6 == 1)
+  if (type == 1)
   {
     v7 = MSTrackListViewController;
   }
@@ -63,10 +63,10 @@
   return objc_alloc_init(v7);
 }
 
-- (id)newViewControllerForTrackList:(id)a3
+- (id)newViewControllerForTrackList:(id)list
 {
   v4 = objc_alloc_init(MSTrackListViewController);
-  [(MSStructuredPageViewController *)v4 reloadWithStorePage:a3 forURL:0];
+  [(MSStructuredPageViewController *)v4 reloadWithStorePage:list forURL:0];
   return v4;
 }
 

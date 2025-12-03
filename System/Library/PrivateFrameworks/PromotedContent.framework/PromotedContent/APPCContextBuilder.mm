@@ -1,23 +1,23 @@
 @interface APPCContextBuilder
 - (APPCContext)context;
 - (APPCContextBuilder)init;
-- (APPCContextBuilder)initWithMaxSize:(CGSize)a3 current:(id)a4 newsContext:(id)a5 requestedAd:(id)a6;
-- (APPCContextBuilder)initWithMaxSize:(CGSize)a3 current:(id)a4 next:(id)a5 newsContext:(id)a6 requestedAd:(id)a7;
+- (APPCContextBuilder)initWithMaxSize:(CGSize)size current:(id)current newsContext:(id)context requestedAd:(id)ad;
+- (APPCContextBuilder)initWithMaxSize:(CGSize)size current:(id)current next:(id)next newsContext:(id)context requestedAd:(id)ad;
 - (APPCPromotableContentDepiction)current;
-- (BOOL)addAdjacentWithAdjacent:(id)a3 error:(id *)a4;
+- (BOOL)addAdjacentWithAdjacent:(id)adjacent error:(id *)error;
 - (CGSize)maxSize;
 - (NSArray)adjacent;
 - (NSArray)next;
 - (NSString)requestedAd;
 - (NSUUID)identifier;
 - (_TtC15PromotedContent23NewsSupplementalContext)newsContext;
-- (void)removeAdjacentWithAdjacent:(id)a3;
-- (void)setCurrent:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setMaxSize:(CGSize)a3;
-- (void)setNewsContext:(id)a3;
-- (void)setNext:(id)a3;
-- (void)setRequestedAd:(id)a3;
+- (void)removeAdjacentWithAdjacent:(id)adjacent;
+- (void)setCurrent:(id)current;
+- (void)setIdentifier:(id)identifier;
+- (void)setMaxSize:(CGSize)size;
+- (void)setNewsContext:(id)context;
+- (void)setNext:(id)next;
+- (void)setRequestedAd:(id)ad;
 @end
 
 @implementation APPCContextBuilder
@@ -38,7 +38,7 @@
   return v9;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   v4 = sub_1C1B945F8();
   v5 = *(v4 - 8);
@@ -49,7 +49,7 @@
   v9 = OBJC_IVAR___APPCContextBuilder_identifier;
   swift_beginAccess();
   v10 = *(v5 + 40);
-  v11 = self;
+  selfCopy = self;
   v10(self + v9, v8, v4);
   swift_endAccess();
 }
@@ -65,10 +65,10 @@
   return result;
 }
 
-- (void)setMaxSize:(CGSize)a3
+- (void)setMaxSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = (self + OBJC_IVAR___APPCContextBuilder_maxSize);
   swift_beginAccess();
   *v5 = width;
@@ -85,11 +85,11 @@
   return v5;
 }
 
-- (void)setCurrent:(id)a3
+- (void)setCurrent:(id)current
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1C1AF6EF4(a3);
+  selfCopy = self;
+  sub_1C1AF6EF4(current);
 }
 
 - (NSArray)next
@@ -104,7 +104,7 @@
   return v5;
 }
 
-- (void)setNext:(id)a3
+- (void)setNext:(id)next
 {
   sub_1C1AC1F08(&unk_1EBF09000, &qword_1C1B9CEC8);
   v4 = sub_1C1B94EC8();
@@ -118,11 +118,11 @@
 {
   v3 = OBJC_IVAR___APPCContextBuilder_resourceLock;
   v4 = *(self + OBJC_IVAR___APPCContextBuilder_resourceLock);
-  v5 = self;
+  selfCopy = self;
   [v4 lock];
   v6 = OBJC_IVAR___APPCContextBuilder_adjacentInternal;
   swift_beginAccess();
-  v7 = *(v5 + v6);
+  v7 = *(selfCopy + v6);
   v8 = *(self + v3);
 
   [v8 unlock];
@@ -152,9 +152,9 @@
   return v4;
 }
 
-- (void)setRequestedAd:(id)a3
+- (void)setRequestedAd:(id)ad
 {
-  if (a3)
+  if (ad)
   {
     v4 = sub_1C1B94D88();
     v6 = v5;
@@ -180,32 +180,32 @@
   return *(self + v3);
 }
 
-- (void)setNewsContext:(id)a3
+- (void)setNewsContext:(id)context
 {
   v5 = OBJC_IVAR___APPCContextBuilder_newsContext;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = context;
+  contextCopy = context;
 }
 
 - (APPCContext)context
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C1AA47BC();
 
   return v3;
 }
 
-- (APPCContextBuilder)initWithMaxSize:(CGSize)a3 current:(id)a4 next:(id)a5 newsContext:(id)a6 requestedAd:(id)a7
+- (APPCContextBuilder)initWithMaxSize:(CGSize)size current:(id)current next:(id)next newsContext:(id)context requestedAd:(id)ad
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   sub_1C1AC1F08(&unk_1EBF09000, &qword_1C1B9CEC8);
   v12 = sub_1C1B94EC8();
-  if (a7)
+  if (ad)
   {
-    a7 = sub_1C1B94D88();
+    ad = sub_1C1B94D88();
     v14 = v13;
   }
 
@@ -215,18 +215,18 @@
   }
 
   swift_unknownObjectRetain();
-  v15 = a6;
-  v16 = sub_1C1AF8784(a4, v12, a6, a7, v14, width, height);
+  contextCopy = context;
+  v16 = sub_1C1AF8784(current, v12, context, ad, v14, width, height);
   swift_unknownObjectRelease();
 
   return v16;
 }
 
-- (APPCContextBuilder)initWithMaxSize:(CGSize)a3 current:(id)a4 newsContext:(id)a5 requestedAd:(id)a6
+- (APPCContextBuilder)initWithMaxSize:(CGSize)size current:(id)current newsContext:(id)context requestedAd:(id)ad
 {
-  height = a3.height;
-  width = a3.width;
-  if (a6)
+  height = size.height;
+  width = size.width;
+  if (ad)
   {
     v10 = sub_1C1B94D88();
     v12 = v11;
@@ -239,41 +239,41 @@
   }
 
   swift_unknownObjectRetain();
-  v13 = a5;
-  v14 = sub_1C1AA426C(a4, a5, v10, v12, width, height);
+  contextCopy = context;
+  v14 = sub_1C1AA426C(current, context, v10, v12, width, height);
   swift_unknownObjectRelease();
 
   return v14;
 }
 
-- (BOOL)addAdjacentWithAdjacent:(id)a3 error:(id *)a4
+- (BOOL)addAdjacentWithAdjacent:(id)adjacent error:(id *)error
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_1C1AF7E8C(a3);
+  selfCopy = self;
+  sub_1C1AF7E8C(adjacent);
 
   swift_unknownObjectRelease();
   return 1;
 }
 
-- (void)removeAdjacentWithAdjacent:(id)a3
+- (void)removeAdjacentWithAdjacent:(id)adjacent
 {
   v5 = OBJC_IVAR___APPCContextBuilder_resourceLock;
   v6 = *(self + OBJC_IVAR___APPCContextBuilder_resourceLock);
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   [v6 lock];
   v8 = OBJC_IVAR___APPCContextBuilder_adjacentInternal;
   swift_beginAccess();
   swift_unknownObjectRetain();
-  v9 = sub_1C1AF895C((v7 + v8), a3);
+  v9 = sub_1C1AF895C((selfCopy + v8), adjacent);
   swift_unknownObjectRelease();
-  v10 = *(v7 + v8);
+  v10 = *(selfCopy + v8);
   if (v10 >> 62)
   {
     if (v10 < 0)
     {
-      v12 = *(v7 + v8);
+      v12 = *(selfCopy + v8);
     }
 
     v11 = sub_1C1B953A8();

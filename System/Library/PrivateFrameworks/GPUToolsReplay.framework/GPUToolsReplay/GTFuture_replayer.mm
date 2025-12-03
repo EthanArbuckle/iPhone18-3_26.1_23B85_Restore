@@ -1,8 +1,8 @@
 @interface GTFuture_replayer
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (BOOL)logPerformance;
 + (id)future;
-+ (id)futureWithResult:(id)a3 error:(id)a4;
++ (id)futureWithResult:(id)result error:(id)error;
 - (BOOL)BOOLResult;
 - (BOOL)_waitForDependencies_REQUIRESLOCK;
 - (BOOL)isCancelled;
@@ -16,21 +16,21 @@
 - (int)intResult;
 - (int64_t)queuePriority;
 - (unsigned)uint32Result;
-- (void)_addDependency_REQUIRESLOCK:(id)a3;
-- (void)_setResult:(id)a3 error:(id)a4 notify_NOLOCK:(BOOL)a5;
+- (void)_addDependency_REQUIRESLOCK:(id)k;
+- (void)_setResult:(id)result error:(id)error notify_NOLOCK:(BOOL)k;
 - (void)_start_NOLOCK;
-- (void)addDependency:(id)a3;
-- (void)addResultHandler:(id)a3;
+- (void)addDependency:(id)dependency;
+- (void)addResultHandler:(id)handler;
 - (void)cancel;
 - (void)dealloc;
-- (void)notifyGroup:(id)a3;
-- (void)notifyOnQueue:(id)a3 handler:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)requestResult:(id)a3;
-- (void)resolveWithFuture:(id)a3;
-- (void)setCompletionBlock:(id)a3;
-- (void)setQueuePriority:(int64_t)a3;
-- (void)timeoutAfter:(double)a3 label:(id)a4;
+- (void)notifyGroup:(id)group;
+- (void)notifyOnQueue:(id)queue handler:(id)handler;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)requestResult:(id)result;
+- (void)resolveWithFuture:(id)future;
+- (void)setCompletionBlock:(id)block;
+- (void)setQueuePriority:(int64_t)priority;
+- (void)timeoutAfter:(double)after label:(id)label;
 - (void)waitUntilFinished;
 - (void)waitUntilResolved;
 @end
@@ -60,13 +60,13 @@
   return !self->_cancelled;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(NSCondition *)self->_condition lock];
-    [(NSMutableArray *)self->_inflightDependencies removeObject:a4];
+    [(NSMutableArray *)self->_inflightDependencies removeObject:object];
     [(NSCondition *)self->_condition broadcast];
     condition = self->_condition;
 
@@ -74,7 +74,7 @@
   }
 }
 
-- (void)_addDependency_REQUIRESLOCK:(id)a3
+- (void)_addDependency_REQUIRESLOCK:(id)k
 {
   inflightDependencies = self->_inflightDependencies;
   if (!inflightDependencies)
@@ -83,11 +83,11 @@
     self->_inflightDependencies = inflightDependencies;
   }
 
-  if (([(NSMutableArray *)inflightDependencies containsObject:a3]& 1) == 0)
+  if (([(NSMutableArray *)inflightDependencies containsObject:k]& 1) == 0)
   {
-    if (([a3 isFinished] & 1) == 0)
+    if (([k isFinished] & 1) == 0)
     {
-      [(NSMutableArray *)self->_inflightDependencies addObject:a3];
+      [(NSMutableArray *)self->_inflightDependencies addObject:k];
     }
 
     objc_opt_class();
@@ -98,19 +98,19 @@
       v6[2] = __40__GTFuture__addDependency_REQUIRESLOCK___block_invoke;
       v6[3] = &unk_279657D48;
       v6[4] = self;
-      v6[5] = a3;
-      [a3 addResultHandler:v6];
+      v6[5] = k;
+      [k addResultHandler:v6];
     }
 
     else
     {
 
-      [a3 addObserver:self forKeyPath:@"isFinished" options:1 context:0];
+      [k addObserver:self forKeyPath:@"isFinished" options:1 context:0];
     }
   }
 }
 
-- (void)notifyGroup:(id)a3
+- (void)notifyGroup:(id)group
 {
   [(NSCondition *)self->_condition lock];
   if (self->_resolved)
@@ -122,79 +122,79 @@
 
   else
   {
-    dispatch_retain(a3);
-    dispatch_group_enter(a3);
+    dispatch_retain(group);
+    dispatch_group_enter(group);
     notifyList = self->_notifyList;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __24__GTFuture_notifyGroup___block_invoke;
     v7[3] = &unk_279657CF8;
-    v7[4] = a3;
+    v7[4] = group;
     -[NSMutableArray addObject:](notifyList, "addObject:", [MEMORY[0x277CCA8C8] blockOperationWithBlock:v7]);
     [(NSCondition *)self->_condition unlock];
   }
 }
 
-- (void)notifyOnQueue:(id)a3 handler:(id)a4
+- (void)notifyOnQueue:(id)queue handler:(id)handler
 {
   [(NSCondition *)self->_condition lock];
   if (self->_resolved)
   {
     [(NSCondition *)self->_condition unlock];
 
-    dispatch_async(a3, a4);
+    dispatch_async(queue, handler);
   }
 
   else
   {
-    dispatch_retain(a3);
+    dispatch_retain(queue);
     notifyList = self->_notifyList;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __34__GTFuture_notifyOnQueue_handler___block_invoke;
     v8[3] = &unk_279658200;
-    v8[4] = a3;
-    v8[5] = a4;
+    v8[4] = queue;
+    v8[5] = handler;
     -[NSMutableArray addObject:](notifyList, "addObject:", [MEMORY[0x277CCA8C8] blockOperationWithBlock:v8]);
     [(NSCondition *)self->_condition unlock];
   }
 }
 
-- (void)resolveWithFuture:(id)a3
+- (void)resolveWithFuture:(id)future
 {
-  [*(a3 + 32) lock];
-  if (*(a3 + 264) == 1)
+  [*(future + 32) lock];
+  if (*(future + 264) == 1)
   {
-    v5 = *(a3 + 34);
-    v6 = *(a3 + 35);
-    [*(a3 + 32) unlock];
+    v5 = *(future + 34);
+    v6 = *(future + 35);
+    [*(future + 32) unlock];
 
     [(GTFuture_replayer *)self _setResult:v5 error:v6 notify_NOLOCK:1];
   }
 
   else
   {
-    v7 = a3;
-    v8 = *(a3 + 36);
+    futureCopy = future;
+    v8 = *(future + 36);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __30__GTFuture_resolveWithFuture___block_invoke;
     v9[3] = &unk_279657D20;
-    v9[4] = a3;
+    v9[4] = future;
     v9[5] = self;
     [v8 addObject:{objc_msgSend(MEMORY[0x277CCA8C8], "blockOperationWithBlock:", v9)}];
-    [*(a3 + 32) unlock];
+    [*(future + 32) unlock];
   }
 }
 
-- (void)timeoutAfter:(double)a3 label:(id)a4
+- (void)timeoutAfter:(double)after label:(id)label
 {
   [(NSCondition *)self->_condition lock];
   resolved = self->_resolved;
   [(NSCondition *)self->_condition unlock];
   if (!resolved)
   {
-    v7 = dispatch_time(0, (a3 * 1000000000.0));
+    v7 = dispatch_time(0, (after * 1000000000.0));
     global_queue = dispatch_get_global_queue(2, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -226,7 +226,7 @@
   return v3;
 }
 
-- (void)_setResult:(id)a3 error:(id)a4 notify_NOLOCK:(BOOL)a5
+- (void)_setResult:(id)result error:(id)error notify_NOLOCK:(BOOL)k
 {
   v22 = *MEMORY[0x277D85DE8];
   [(GTFuture_replayer *)self willChangeValueForKey:@"isFinished"];
@@ -237,17 +237,17 @@
     goto LABEL_16;
   }
 
-  if (a4)
+  if (error)
   {
     error = self->_error;
-    if (error != a4)
+    if (error != error)
     {
 
-      self->_error = a4;
+      self->_error = error;
     }
   }
 
-  if (!a5)
+  if (!k)
   {
 LABEL_16:
     [(NSCondition *)self->_condition unlock];
@@ -255,7 +255,7 @@ LABEL_16:
 
   else
   {
-    self->_result = a3;
+    self->_result = result;
     self->_resolved = 1;
     notifyList = self->_notifyList;
     self->_notifyList = 0;
@@ -305,45 +305,45 @@ LABEL_16:
 
 - (int)intResult
 {
-  v2 = [(GTFuture_replayer *)self result];
+  result = [(GTFuture_replayer *)self result];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    return v2 != 0;
+    return result != 0;
   }
 
-  return [v2 intValue];
+  return [result intValue];
 }
 
 - (unsigned)uint32Result
 {
-  v2 = [(GTFuture_replayer *)self result];
+  result = [(GTFuture_replayer *)self result];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    return v2 != 0;
+    return result != 0;
   }
 
-  return [v2 unsignedIntValue];
+  return [result unsignedIntValue];
 }
 
 - (BOOL)BOOLResult
 {
-  v2 = [(GTFuture_replayer *)self result];
+  result = [(GTFuture_replayer *)self result];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    return v2 != 0;
+    return result != 0;
   }
 
-  return [v2 BOOLValue];
+  return [result BOOLValue];
 }
 
-- (void)requestResult:(id)a3
+- (void)requestResult:(id)result
 {
-  [(GTFuture_replayer *)self addResultHandler:a3];
+  [(GTFuture_replayer *)self addResultHandler:result];
 
   [(GTFuture_replayer *)self _start_NOLOCK];
 }
 
-- (void)addResultHandler:(id)a3
+- (void)addResultHandler:(id)handler
 {
   [(NSCondition *)self->_condition lock];
   if (self->_resolved)
@@ -351,7 +351,7 @@ LABEL_16:
     result = self->_result;
     error = self->_error;
     [(NSCondition *)self->_condition unlock];
-    v7 = [a3 copy];
+    v7 = [handler copy];
     global_queue = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -365,7 +365,7 @@ LABEL_16:
 
   else
   {
-    v9 = [a3 copy];
+    v9 = [handler copy];
     notifyList = self->_notifyList;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -391,21 +391,21 @@ LABEL_16:
   [MEMORY[0x277CCACC8] isMainThread];
   if (+[GTFuture_replayer logPerformance])
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     resolved = self->_resolved;
   }
 
   else
   {
     resolved = 0;
-    v3 = 0;
+    date = 0;
   }
 
   [(GTFuture_replayer *)self _start_NOLOCK];
   [(GTFuture_replayer *)self waitUntilFinished];
   if (+[GTFuture_replayer logPerformance])
   {
-    [v3 timeIntervalSinceNow];
+    [date timeIntervalSinceNow];
     v6 = -v5;
     v7 = [(NSString *)NSTemporaryDirectory() stringByAppendingPathComponent:@"GPUDebugger.DYFuture.csv"];
     v8 = MEMORY[0x277CCACA8];
@@ -436,10 +436,10 @@ LABEL_16:
   }
 }
 
-- (void)addDependency:(id)a3
+- (void)addDependency:(id)dependency
 {
   [(NSCondition *)self->_condition lock];
-  [(GTFuture_replayer *)self _addDependency_REQUIRESLOCK:a3];
+  [(GTFuture_replayer *)self _addDependency_REQUIRESLOCK:dependency];
   condition = self->_condition;
 
   [(NSCondition *)condition unlock];
@@ -477,10 +477,10 @@ LABEL_16:
   [(GTFuture_replayer *)self didChangeValueForKey:@"isExecuting"];
 }
 
-- (void)setCompletionBlock:(id)a3
+- (void)setCompletionBlock:(id)block
 {
   [(NSCondition *)self->_condition lock];
-  self->_completion = [a3 copy];
+  self->_completion = [block copy];
   condition = self->_condition;
 
   [(NSCondition *)condition unlock];
@@ -494,10 +494,10 @@ LABEL_16:
   return v3;
 }
 
-- (void)setQueuePriority:(int64_t)a3
+- (void)setQueuePriority:(int64_t)priority
 {
   [(NSCondition *)self->_condition lock];
-  self->_priority = a3;
+  self->_priority = priority;
   condition = self->_condition;
 
   [(NSCondition *)condition unlock];
@@ -591,24 +591,24 @@ LABEL_16:
   return +[GTFuture logPerformance]::log;
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  if ([a3 isEqualToString:@"isFinished"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"isExecuting"))
+  if ([key isEqualToString:@"isFinished"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"isExecuting"))
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___GTFuture_replayer;
-  return objc_msgSendSuper2(&v6, sel_automaticallyNotifiesObserversForKey_, a3);
+  return objc_msgSendSuper2(&v6, sel_automaticallyNotifiesObserversForKey_, key);
 }
 
-+ (id)futureWithResult:(id)a3 error:(id)a4
++ (id)futureWithResult:(id)result error:(id)error
 {
-  v6 = [a1 future];
-  [v6 setError:a4];
-  [v6 setResult:a3];
-  return v6;
+  future = [self future];
+  [future setError:error];
+  [future setResult:result];
+  return future;
 }
 
 + (id)future

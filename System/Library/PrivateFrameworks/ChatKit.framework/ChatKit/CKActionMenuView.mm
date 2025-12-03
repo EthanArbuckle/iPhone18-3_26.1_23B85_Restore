@@ -1,19 +1,19 @@
 @interface CKActionMenuView
-+ (void)collapseAnimation:(id)a3 completion:(id)a4;
++ (void)collapseAnimation:(id)animation completion:(id)completion;
 - (CGPoint)presentationTargetPosition;
 - (CGRect)presentationTargetBounds;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CKActionMenuController)actionMenuController;
-- (CKActionMenuView)initWithActionMenuItems:(id)a3 defaultActionIndex:(unint64_t)a4 blurEffectStyle:(int64_t)a5;
-- (id)actionMenuItemAtPoint:(CGPoint)a3 velocity:(CGPoint)a4;
+- (CKActionMenuView)initWithActionMenuItems:(id)items defaultActionIndex:(unint64_t)index blurEffectStyle:(int64_t)style;
+- (id)actionMenuItemAtPoint:(CGPoint)point velocity:(CGPoint)velocity;
 - (id)description;
-- (void)actionMenuGestureRecognized:(id)a3;
-- (void)configureForPresentationAtPoint:(CGPoint)a3 inRect:(CGRect)a4;
-- (void)dismissActionMenuViewAnimated:(BOOL)a3 completion:(id)a4;
+- (void)actionMenuGestureRecognized:(id)recognized;
+- (void)configureForPresentationAtPoint:(CGPoint)point inRect:(CGRect)rect;
+- (void)dismissActionMenuViewAnimated:(BOOL)animated completion:(id)completion;
 - (void)layoutSubviews;
-- (void)presentActionMenuViewFromPoint:(CGPoint)a3 inRect:(CGRect)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)setActionMenuItems:(id)a3 defaultActionIndex:(unint64_t)a4 animated:(BOOL)a5;
-- (void)setCollapsed:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentActionMenuViewFromPoint:(CGPoint)point inRect:(CGRect)rect animated:(BOOL)animated completion:(id)completion;
+- (void)setActionMenuItems:(id)items defaultActionIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)setCollapsed:(BOOL)collapsed animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation CKActionMenuView
@@ -24,15 +24,15 @@
   v8.receiver = self;
   v8.super_class = CKActionMenuView;
   v4 = [(CKActionMenuView *)&v8 description];
-  v5 = [(CKActionMenuView *)self actionMenuItems];
-  v6 = [v3 stringWithFormat:@"%@ actionMenuItems: %@ defaultActionIndex: %d", v4, v5, -[CKActionMenuView defaultActionIndex](self, "defaultActionIndex")];
+  actionMenuItems = [(CKActionMenuView *)self actionMenuItems];
+  v6 = [v3 stringWithFormat:@"%@ actionMenuItems: %@ defaultActionIndex: %d", v4, actionMenuItems, -[CKActionMenuView defaultActionIndex](self, "defaultActionIndex")];
 
   return v6;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(CKActionMenuView *)self actionMenuItems:a3.width];
+  v3 = [(CKActionMenuView *)self actionMenuItems:fits.width];
   v4 = ([v3 count] - 1) * 90.0 + 60.0;
 
   v5 = 60.0;
@@ -53,10 +53,10 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKActionMenuView *)self blurView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  blurView = [(CKActionMenuView *)self blurView];
+  [blurView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(CKActionMenuView *)self presentationActionMenuItems];
+  presentationActionMenuItems = [(CKActionMenuView *)self presentationActionMenuItems];
   if ([(CKActionMenuView *)self isCollapsed])
   {
     v48.origin.x = v4;
@@ -73,7 +73,7 @@
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v15 = v12;
+    v15 = presentationActionMenuItems;
     v16 = [v15 countByEnumeratingWithState:&v40 objects:v46 count:16];
     if (v16)
     {
@@ -89,13 +89,13 @@
           }
 
           v20 = *(*(&v40 + 1) + 8 * i);
-          v21 = [v20 view];
-          v22 = [v21 layer];
-          [v22 setPosition:{MidX, MidY}];
+          view = [v20 view];
+          layer = [view layer];
+          [layer setPosition:{MidX, MidY}];
 
-          v23 = [v20 label];
-          v24 = [v23 layer];
-          [v24 setPosition:{70.0, MidY}];
+          label = [v20 label];
+          layer2 = [label layer];
+          [layer2 setPosition:{70.0, MidY}];
         }
 
         v17 = [v15 countByEnumeratingWithState:&v40 objects:v46 count:16];
@@ -111,7 +111,7 @@
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v25 = v12;
+    v25 = presentationActionMenuItems;
     v26 = [v25 countByEnumeratingWithState:&v36 objects:v45 count:16];
     if (v26)
     {
@@ -128,13 +128,13 @@
           }
 
           v31 = *(*(&v36 + 1) + 8 * j);
-          v32 = [v31 view];
-          v33 = [v32 layer];
-          [v33 setPosition:{30.0, v29}];
+          view2 = [v31 view];
+          layer3 = [view2 layer];
+          [layer3 setPosition:{30.0, v29}];
 
-          v34 = [v31 label];
-          v35 = [v34 layer];
-          [v35 setPosition:{70.0, v29}];
+          label2 = [v31 label];
+          layer4 = [label2 layer];
+          [layer4 setPosition:{70.0, v29}];
 
           v29 = v29 + 90.0;
         }
@@ -147,38 +147,38 @@
   }
 }
 
-- (CKActionMenuView)initWithActionMenuItems:(id)a3 defaultActionIndex:(unint64_t)a4 blurEffectStyle:(int64_t)a5
+- (CKActionMenuView)initWithActionMenuItems:(id)items defaultActionIndex:(unint64_t)index blurEffectStyle:(int64_t)style
 {
-  v8 = a3;
+  itemsCopy = items;
   v20.receiver = self;
   v20.super_class = CKActionMenuView;
   v9 = [(CKActionMenuView *)&v20 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v9)
   {
-    v10 = [MEMORY[0x1E69DC730] effectWithStyle:a5];
+    v10 = [MEMORY[0x1E69DC730] effectWithStyle:style];
     [(CKActionMenuView *)v9 setBlurEffect:v10];
 
     v11 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:0];
     [(CKActionMenuView *)v9 setBlurView:v11];
     [(CKActionMenuView *)v9 addSubview:v11];
-    v12 = [v11 contentView];
-    v13 = [MEMORY[0x1E69DC888] whiteColor];
-    [v12 setBackgroundColor:v13];
+    contentView = [v11 contentView];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [contentView setBackgroundColor:whiteColor];
 
-    v14 = [v11 contentView];
-    v15 = [v14 layer];
-    [v15 setCompositingFilter:*MEMORY[0x1E6979CA0]];
+    contentView2 = [v11 contentView];
+    layer = [contentView2 layer];
+    [layer setCompositingFilter:*MEMORY[0x1E6979CA0]];
 
-    v16 = [v11 layer];
-    [v16 setMasksToBounds:1];
+    layer2 = [v11 layer];
+    [layer2 setMasksToBounds:1];
 
-    v17 = [v11 layer];
-    [v17 setCornerRadius:30.0];
+    layer3 = [v11 layer];
+    [layer3 setCornerRadius:30.0];
 
     [(CKActionMenuView *)v9 setPresentationTargetBounds:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
-    [(CKActionMenuView *)v9 setPresentationActionMenuItems:v8];
-    [(CKActionMenuView *)v9 setPresentationDefaultActionIndex:a4];
-    [(CKActionMenuView *)v9 setActionMenuItems:v8 defaultActionIndex:a4 animated:0];
+    [(CKActionMenuView *)v9 setPresentationActionMenuItems:itemsCopy];
+    [(CKActionMenuView *)v9 setPresentationDefaultActionIndex:index];
+    [(CKActionMenuView *)v9 setActionMenuItems:itemsCopy defaultActionIndex:index animated:0];
     [(CKActionMenuView *)v9 setCollapsed:1 animated:0 completion:0];
     v18 = +[CKActionMenuGestureRecognizer actionMenuGestureRecognizer];
     [v18 setMinimumPressDuration:0.0];
@@ -188,22 +188,22 @@
   return v9;
 }
 
-- (void)setActionMenuItems:(id)a3 defaultActionIndex:(unint64_t)a4 animated:(BOOL)a5
+- (void)setActionMenuItems:(id)items defaultActionIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v59 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if ([v8 count] <= a4)
+  itemsCopy = items;
+  if ([itemsCopy count] <= index)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"*** %s: defaultActionIndex %d must be a valid index in actionMenuItems %@", "-[CKActionMenuView setActionMenuItems:defaultActionIndex:animated:]", a4, v8];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"*** %s: defaultActionIndex %d must be a valid index in actionMenuItems %@", "-[CKActionMenuView setActionMenuItems:defaultActionIndex:animated:]", index, itemsCopy];
     v43 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
     objc_exception_throw(v43);
   }
 
-  v9 = [(CKActionMenuView *)self actionMenuItems];
-  [(CKActionMenuView *)self setActionMenuItems:v8];
-  [(CKActionMenuView *)self setDefaultActionIndex:a4];
-  v44 = v5;
+  actionMenuItems = [(CKActionMenuView *)self actionMenuItems];
+  [(CKActionMenuView *)self setActionMenuItems:itemsCopy];
+  [(CKActionMenuView *)self setDefaultActionIndex:index];
+  v44 = animatedCopy;
   if ([(CKActionMenuView *)self isCollapsed])
   {
     memset(&v57, 0, sizeof(v57));
@@ -216,8 +216,8 @@
     [(CKActionMenuView *)self presentationTargetBounds];
     if (!CGRectIsNull(v60))
     {
-      v11 = [(CKActionMenuView *)self layer];
-      [v11 position];
+      layer = [(CKActionMenuView *)self layer];
+      [layer position];
       v13 = v12;
       v15 = v14;
 
@@ -226,8 +226,8 @@
       v19 = v18;
       [(CKActionMenuView *)self presentationTargetBounds];
       [(CKActionMenuView *)self configureForPresentationAtPoint:v17 inRect:v19, v20, v21, v22, v23];
-      v24 = [(CKActionMenuView *)self layer];
-      [v24 setPosition:{v13, v15}];
+      layer2 = [(CKActionMenuView *)self layer];
+      [layer2 setPosition:{v13, v15}];
     }
 
     v25 = *(MEMORY[0x1E695EFD0] + 16);
@@ -241,7 +241,7 @@
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v26 = v8;
+  v26 = itemsCopy;
   v27 = [v26 countByEnumeratingWithState:&v53 objects:v58 count:16];
   if (v27)
   {
@@ -257,24 +257,24 @@
         }
 
         v31 = *(*(&v53 + 1) + 8 * i);
-        if (([v9 ck_containsObjectIdenticalTo:v31] & 1) == 0)
+        if (([actionMenuItems ck_containsObjectIdenticalTo:v31] & 1) == 0)
         {
-          v32 = [v31 view];
-          [v32 setAlpha:0.0];
+          view = [v31 view];
+          [view setAlpha:0.0];
           v52 = v57;
-          [v32 setTransform:&v52];
-          v33 = [(CKActionMenuView *)self blurView];
-          [(CKActionMenuView *)self insertSubview:v32 aboveSubview:v33];
+          [view setTransform:&v52];
+          blurView = [(CKActionMenuView *)self blurView];
+          [(CKActionMenuView *)self insertSubview:view aboveSubview:blurView];
 
-          v34 = [v31 label];
-          [v34 setAlpha:0.0];
+          label = [v31 label];
+          [label setAlpha:0.0];
           v52 = v57;
-          [v34 setTransform:&v52];
-          v35 = [v34 layer];
-          [v35 setAnchorPoint:{0.0, 0.5}];
+          [label setTransform:&v52];
+          layer3 = [label layer];
+          [layer3 setAnchorPoint:{0.0, 0.5}];
 
-          v36 = [(CKActionMenuView *)self blurView];
-          [(CKActionMenuView *)self insertSubview:v34 aboveSubview:v36];
+          blurView2 = [(CKActionMenuView *)self blurView];
+          [(CKActionMenuView *)self insertSubview:label aboveSubview:blurView2];
         }
       }
 
@@ -288,7 +288,7 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __67__CKActionMenuView_setActionMenuItems_defaultActionIndex_animated___block_invoke;
   aBlock[3] = &unk_1E72EBC38;
-  v37 = v9;
+  v37 = actionMenuItems;
   v49 = v37;
   v38 = v26;
   v50 = v38;
@@ -431,30 +431,30 @@ void __67__CKActionMenuView_setActionMenuItems_defaultActionIndex_animated___blo
   }
 }
 
-- (void)presentActionMenuViewFromPoint:(CGPoint)a3 inRect:(CGRect)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)presentActionMenuViewFromPoint:(CGPoint)point inRect:(CGRect)rect animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3.y;
-  v12 = a3.x;
-  v14 = a6;
+  animatedCopy = animated;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v11 = point.y;
+  v12 = point.x;
+  completionCopy = completion;
   [(CKActionMenuView *)self setPresentationTargetPosition:v12, v11];
   [(CKActionMenuView *)self setPresentationTargetBounds:x, y, width, height];
   [(CKActionMenuView *)self configureForPresentationAtPoint:v12 inRect:v11, x, y, width, height];
-  v15 = [(CKActionMenuView *)self actionMenuItems];
-  v16 = [v15 objectAtIndex:{-[CKActionMenuView defaultActionIndex](self, "defaultActionIndex")}];
+  actionMenuItems = [(CKActionMenuView *)self actionMenuItems];
+  v16 = [actionMenuItems objectAtIndex:{-[CKActionMenuView defaultActionIndex](self, "defaultActionIndex")}];
 
   [v16 updateForState:1 touchInside:1];
   [(CKActionMenuView *)self setTouchInside:1];
-  [(CKActionMenuView *)self setCollapsed:0 animated:v6 completion:v14];
+  [(CKActionMenuView *)self setCollapsed:0 animated:animatedCopy completion:completionCopy];
 }
 
-- (void)dismissActionMenuViewAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissActionMenuViewAnimated:(BOOL)animated completion:(id)completion
 {
-  [(CKActionMenuView *)self setCollapsed:1 animated:a3 completion:a4];
+  [(CKActionMenuView *)self setCollapsed:1 animated:animated completion:completion];
   [(CKActionMenuView *)self setPresentationTargetPosition:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
   v5 = *MEMORY[0x1E695F050];
   v6 = *(MEMORY[0x1E695F050] + 8);
@@ -464,22 +464,22 @@ void __67__CKActionMenuView_setActionMenuItems_defaultActionIndex_animated___blo
   [(CKActionMenuView *)self setPresentationTargetBounds:v5, v6, v7, v8];
 }
 
-- (void)actionMenuGestureRecognized:(id)a3
+- (void)actionMenuGestureRecognized:(id)recognized
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 state];
-  [v4 locationInView:self];
+  recognizedCopy = recognized;
+  state = [recognizedCopy state];
+  [recognizedCopy locationInView:self];
   v7 = v6;
   v9 = v8;
-  [v4 velocityInView:self];
+  [recognizedCopy velocityInView:self];
   v12 = [(CKActionMenuView *)self actionMenuItemAtPoint:v7 velocity:v9, v10, v11];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v13 = [(CKActionMenuView *)self actionMenuItems];
-  v14 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  actionMenuItems = [(CKActionMenuView *)self actionMenuItems];
+  v14 = [actionMenuItems countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v14)
   {
     v15 = v14;
@@ -491,15 +491,15 @@ void __67__CKActionMenuView_setActionMenuItems_defaultActionIndex_animated___blo
       {
         if (*v19 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(actionMenuItems);
         }
 
-        [*(*(&v18 + 1) + 8 * v17) updateForState:v5 touchInside:*(*(&v18 + 1) + 8 * v17) == v12];
+        [*(*(&v18 + 1) + 8 * v17) updateForState:state touchInside:*(*(&v18 + 1) + 8 * v17) == v12];
         ++v17;
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v15 = [actionMenuItems countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v15);
@@ -508,44 +508,44 @@ void __67__CKActionMenuView_setActionMenuItems_defaultActionIndex_animated___blo
   [(CKActionMenuView *)self setTouchInside:v12 != 0];
 }
 
-+ (void)collapseAnimation:(id)a3 completion:(id)a4
++ (void)collapseAnimation:(id)animation completion:(id)completion
 {
-  v5 = a4;
-  [MEMORY[0x1E69DD250] _animateUsingSpringWithDuration:6 delay:a3 options:0 mass:1.545 stiffness:0.0 damping:1.0 initialVelocity:400.0 animations:25.0 completion:0.0];
+  completionCopy = completion;
+  [MEMORY[0x1E69DD250] _animateUsingSpringWithDuration:6 delay:animation options:0 mass:1.545 stiffness:0.0 damping:1.0 initialVelocity:400.0 animations:25.0 completion:0.0];
   v6 = dispatch_time(0, 300000000);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__CKActionMenuView_collapseAnimation_completion___block_invoke;
   block[3] = &unk_1E72EBDB8;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_after(v6, MEMORY[0x1E69E96A0], block);
 }
 
-- (void)setCollapsed:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setCollapsed:(BOOL)collapsed animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  collapsedCopy = collapsed;
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (self->_collapsed != v6)
+  completionCopy = completion;
+  if (self->_collapsed != collapsedCopy)
   {
-    self->_collapsed = v6;
-    v9 = [(CKActionMenuView *)self actionMenuController];
-    v10 = [v9 delegate];
-    v11 = v10;
-    if (v6)
+    self->_collapsed = collapsedCopy;
+    actionMenuController = [(CKActionMenuView *)self actionMenuController];
+    delegate = [actionMenuController delegate];
+    v11 = delegate;
+    if (collapsedCopy)
     {
-      v28 = v10;
-      v29 = v5;
+      v28 = delegate;
+      v29 = animatedCopy;
       memset(&v50, 0, sizeof(v50));
       CGAffineTransformMakeScale(&v50, 0.5, 0.5);
       v49 = 0u;
       v48 = 0u;
       v47 = 0u;
       v46 = 0u;
-      v12 = [(CKActionMenuView *)self actionMenuItems];
-      v13 = [v12 countByEnumeratingWithState:&v46 objects:v51 count:16];
+      actionMenuItems = [(CKActionMenuView *)self actionMenuItems];
+      v13 = [actionMenuItems countByEnumeratingWithState:&v46 objects:v51 count:16];
       if (v13)
       {
         v14 = v13;
@@ -556,14 +556,14 @@ void __67__CKActionMenuView_setActionMenuItems_defaultActionIndex_animated___blo
           {
             if (*v47 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(actionMenuItems);
             }
 
-            v17 = [*(*(&v46 + 1) + 8 * i) label];
-            [v17 setAlpha:0.0];
+            label = [*(*(&v46 + 1) + 8 * i) label];
+            [label setAlpha:0.0];
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v46 objects:v51 count:16];
+          v14 = [actionMenuItems countByEnumeratingWithState:&v46 objects:v51 count:16];
         }
 
         while (v14);
@@ -572,7 +572,7 @@ void __67__CKActionMenuView_setActionMenuItems_defaultActionIndex_animated___blo
       v18 = 0.0;
       v19 = 0x404E000000000000;
       v20 = 0x404E000000000000;
-      v5 = v29;
+      animatedCopy = v29;
       v11 = v28;
     }
 
@@ -593,29 +593,29 @@ void __67__CKActionMenuView_setActionMenuItems_defaultActionIndex_animated___blo
     aBlock[4] = self;
     v40 = v20;
     v41 = v19;
-    v44 = v6;
+    v44 = collapsedCopy;
     v42 = v50;
     v43 = v18;
     v22 = v11;
     v38 = v22;
-    v23 = v9;
+    v23 = actionMenuController;
     v39 = v23;
-    v45 = v5;
+    v45 = animatedCopy;
     v24 = _Block_copy(aBlock);
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __53__CKActionMenuView_setCollapsed_animated_completion___block_invoke_2;
     v30[3] = &unk_1E72F4A28;
-    v34 = v8;
-    v36 = v6;
+    v34 = completionCopy;
+    v36 = collapsedCopy;
     v25 = v22;
     v31 = v25;
     v26 = v23;
     v32 = v26;
-    v33 = self;
+    selfCopy = self;
     v35 = v18;
     v27 = _Block_copy(v30);
-    if (v5)
+    if (animatedCopy)
     {
       [CKActionMenuView collapseAnimation:v24 completion:v27];
     }
@@ -807,30 +807,30 @@ void __53__CKActionMenuView_setCollapsed_animated_completion___block_invoke_3(ui
   }
 }
 
-- (id)actionMenuItemAtPoint:(CGPoint)a3 velocity:(CGPoint)a4
+- (id)actionMenuItemAtPoint:(CGPoint)point velocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = velocity.y;
+  x = velocity.x;
+  v6 = point.y;
+  v7 = point.x;
   v31 = *MEMORY[0x1E69E9840];
   v9 = *MEMORY[0x1E695EFF8];
   v10 = *(MEMORY[0x1E695EFF8] + 8);
-  if ([(UIView *)self pointMostlyInside:a3.x threshold:a3.y velocity:10.0, *MEMORY[0x1E695EFF8], v10]|| (x == v9 ? (v24 = y == v10) : (v24 = 0), !v24 && [(CKActionMenuView *)self isTouchInside]&& [(UIView *)self pointMostlyInside:v7 threshold:v6 velocity:10.0, x, y]))
+  if ([(UIView *)self pointMostlyInside:point.x threshold:point.y velocity:10.0, *MEMORY[0x1E695EFF8], v10]|| (x == v9 ? (v24 = y == v10) : (v24 = 0), !v24 && [(CKActionMenuView *)self isTouchInside]&& [(UIView *)self pointMostlyInside:v7 threshold:v6 velocity:10.0, x, y]))
   {
-    v11 = [(CKActionMenuView *)self presentationActionMenuItems];
+    presentationActionMenuItems = [(CKActionMenuView *)self presentationActionMenuItems];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v12 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v12 = [presentationActionMenuItems countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (!v12)
     {
       goto LABEL_13;
     }
 
     v13 = v12;
-    v14 = 0;
+    lastObject = 0;
     v15 = *v27;
     do
     {
@@ -838,41 +838,41 @@ void __53__CKActionMenuView_setCollapsed_animated_completion___block_invoke_3(ui
       {
         if (*v27 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(presentationActionMenuItems);
         }
 
         v17 = *(*(&v26 + 1) + 8 * i);
-        v18 = [v17 view];
+        view = [v17 view];
         if ([v17 isEnabled])
         {
-          [v18 convertPoint:self fromView:{v7, v6}];
-          if ([v18 pointMostlyInside:? threshold:? velocity:?])
+          [view convertPoint:self fromView:{v7, v6}];
+          if ([view pointMostlyInside:? threshold:? velocity:?])
           {
             v19 = v17;
 
-            v14 = v19;
+            lastObject = v19;
           }
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v13 = [presentationActionMenuItems countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v13);
-    if (!v14)
+    if (!lastObject)
     {
 LABEL_13:
       v20 = v7 + -30.0;
       v21 = atan2(v6 + -30.0, v20);
-      if (v21 < -2.35619449 || v21 > -0.785398163 || ([v11 firstObject], (v14 = objc_claimAutoreleasedReturnValue()) == 0))
+      if (v21 < -2.35619449 || v21 > -0.785398163 || ([presentationActionMenuItems firstObject], (lastObject = objc_claimAutoreleasedReturnValue()) == 0))
       {
         [(CKActionMenuView *)self bounds];
         MaxY = CGRectGetMaxY(v33);
         v23 = atan2(v6 - (MaxY + -30.0), v20);
-        v14 = 0;
+        lastObject = 0;
         if (v23 >= 0.785398163 && v23 <= 2.35619449)
         {
-          v14 = [v11 lastObject];
+          lastObject = [presentationActionMenuItems lastObject];
         }
       }
     }
@@ -880,31 +880,31 @@ LABEL_13:
 
   else
   {
-    v14 = 0;
+    lastObject = 0;
   }
 
-  return v14;
+  return lastObject;
 }
 
-- (void)configureForPresentationAtPoint:(CGPoint)a3 inRect:(CGRect)a4
+- (void)configureForPresentationAtPoint:(CGPoint)point inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.y;
-  v9 = a3.x;
-  v11 = [(CKActionMenuView *)self actionMenuItems];
-  v12 = [(CKActionMenuView *)self defaultActionIndex];
-  v13 = [v11 objectAtIndex:v12];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = point.y;
+  v9 = point.x;
+  actionMenuItems = [(CKActionMenuView *)self actionMenuItems];
+  defaultActionIndex = [(CKActionMenuView *)self defaultActionIndex];
+  v13 = [actionMenuItems objectAtIndex:defaultActionIndex];
   [(CKActionMenuView *)self sizeThatFits:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   v15 = v14;
   v17 = v16;
   v61 = v9;
   v18 = v9 + v14 * -0.5;
-  v57 = v12;
+  v57 = defaultActionIndex;
   v62 = v8;
-  v19 = v8 + -(v12 * 90.0 + 30.0) / v16 * v16;
+  v19 = v8 + -(defaultActionIndex * 90.0 + 30.0) / v16 * v16;
   v67.origin.x = x;
   rect = y;
   v67.origin.y = y;
@@ -976,7 +976,7 @@ LABEL_6:
   v28 = x;
   if (v27)
   {
-    v34 = rect;
+    rectCopy = rect;
     v35 = width;
     v36 = height;
     MaxY = CGRectGetMaxY(*&v28);
@@ -1004,7 +1004,7 @@ LABEL_6:
 
   else
   {
-    v29 = rect;
+    rectCopy2 = rect;
     v30 = width;
     v31 = height;
     v32 = CGRectGetMinY(*&v28);
@@ -1017,7 +1017,7 @@ LABEL_6:
 
   v38 = v32 - v33;
 LABEL_11:
-  v39 = v11;
+  v39 = actionMenuItems;
   v40 = fabs(v38);
   v60 = v18;
   v63 = v39;
@@ -1042,7 +1042,7 @@ LABEL_11:
 
       else
       {
-        v43 = v12;
+        v43 = defaultActionIndex;
       }
     }
 
@@ -1054,11 +1054,11 @@ LABEL_11:
 
     v46 = v64;
     v45 = [v39 mutableCopy];
-    [v45 removeObjectAtIndex:v12];
+    [v45 removeObjectAtIndex:defaultActionIndex];
     [v45 insertObject:v13 atIndex:v43];
 
     v44 = v43 * 90.0 + 30.0;
-    v12 = v43;
+    defaultActionIndex = v43;
   }
 
   v58 = v44 / v17;
@@ -1119,14 +1119,14 @@ LABEL_11:
   v53 = v49 - v50;
 LABEL_24:
   v54 = v62 + v53;
-  v55 = [(CKActionMenuView *)self layer];
-  [v55 setPosition:{v61 + v59, v54}];
+  layer = [(CKActionMenuView *)self layer];
+  [layer setPosition:{v61 + v59, v54}];
 
-  v56 = [(CKActionMenuView *)self layer];
-  [v56 setAnchorPoint:{0.5, v58}];
+  layer2 = [(CKActionMenuView *)self layer];
+  [layer2 setAnchorPoint:{0.5, v58}];
 
   [(CKActionMenuView *)self setPresentationActionMenuItems:v45];
-  [(CKActionMenuView *)self setPresentationDefaultActionIndex:v12];
+  [(CKActionMenuView *)self setPresentationDefaultActionIndex:defaultActionIndex];
 }
 
 - (CKActionMenuController)actionMenuController

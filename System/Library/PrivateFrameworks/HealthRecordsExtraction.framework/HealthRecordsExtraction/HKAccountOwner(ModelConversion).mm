@@ -9,10 +9,10 @@
   v97 = *MEMORY[0x277D85DE8];
   v4 = a3;
   v81 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(__CFString *)v4 representedResource];
-  v80 = [v5 identifier];
+  representedResource = [(__CFString *)v4 representedResource];
+  identifier = [representedResource identifier];
 
-  if (!v80)
+  if (!identifier)
   {
     _HKInitializeLogging();
     v6 = *MEMORY[0x277CCC2C0];
@@ -29,11 +29,11 @@
     [v81 addObject:v9];
   }
 
-  v70 = [objc_alloc(MEMORY[0x277CCD600]) initWithFHIRIdentifier:v80];
-  v10 = [(__CFString *)v4 rulesVersion];
-  v71 = [v10 integerValue];
+  v70 = [objc_alloc(MEMORY[0x277CCD600]) initWithFHIRIdentifier:identifier];
+  rulesVersion = [(__CFString *)v4 rulesVersion];
+  integerValue = [rulesVersion integerValue];
 
-  if (v71 <= 0)
+  if (integerValue <= 0)
   {
     _HKInitializeLogging();
     v11 = *MEMORY[0x277CCC2C0];
@@ -77,7 +77,7 @@
     [v81 addObject:v79];
   }
 
-  v69 = [(__CFString *)v4 country];
+  country = [(__CFString *)v4 country];
   v85 = 0;
   v75 = [(__CFString *)v4 medicalRecordPropertyValueForKey:@"note" expectedClass:objc_opt_class() isArray:0 error:&v85];
   v78 = v85;
@@ -126,8 +126,8 @@
     [v81 addObject:v77];
   }
 
-  v28 = [(__CFString *)v4 representedResource];
-  v67 = [v28 extractionHints];
+  representedResource2 = [(__CFString *)v4 representedResource];
+  extractionHints = [representedResource2 extractionHints];
 
   v83 = 0;
   v29 = [(__CFString *)v4 medicalRecordPropertyValueForKey:@"name" expectedClass:objc_opt_class() isArray:0 error:&v83];
@@ -201,29 +201,29 @@
   v47 = v40;
   if (![v81 count])
   {
-    v55 = [(__CFString *)v4 representedResource];
-    v56 = [v55 receivedDate];
-    v57 = v56;
-    if (v56)
+    representedResource3 = [(__CFString *)v4 representedResource];
+    receivedDate = [representedResource3 receivedDate];
+    v57 = receivedDate;
+    if (receivedDate)
     {
-      v58 = v56;
+      date = receivedDate;
     }
 
     else
     {
-      v58 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
-    v59 = v58;
+    v59 = date;
 
-    v60 = [v74 BOOLValue];
-    v52 = [MEMORY[0x277CCD2E8] localDevice];
-    v61 = [(__CFString *)v4 medicalRecordMetadata];
-    v62 = [MEMORY[0x277CCCF90] accountOwnerType];
-    v54 = [MEMORY[0x277CCCF88] accountOwnerWithType:v62 note:v75 enteredInError:v60 modifiedDate:v59 originIdentifier:v70 locale:v76 extractionVersion:v71 device:v52 metadata:v61 country:v69 state:(v67 >> 2) & 1 name:v73 birthDate:v47];
-    v63 = [(__CFString *)v4 representedResource];
-    v64 = [v63 firstSeenDate];
-    [v54 _setCreationDate:v64];
+    bOOLValue = [v74 BOOLValue];
+    localDevice = [MEMORY[0x277CCD2E8] localDevice];
+    medicalRecordMetadata = [(__CFString *)v4 medicalRecordMetadata];
+    accountOwnerType = [MEMORY[0x277CCCF90] accountOwnerType];
+    v54 = [MEMORY[0x277CCCF88] accountOwnerWithType:accountOwnerType note:v75 enteredInError:bOOLValue modifiedDate:v59 originIdentifier:v70 locale:v76 extractionVersion:integerValue device:localDevice metadata:medicalRecordMetadata country:country state:(extractionHints >> 2) & 1 name:v73 birthDate:v47];
+    representedResource4 = [(__CFString *)v4 representedResource];
+    firstSeenDate = [representedResource4 firstSeenDate];
+    [v54 _setCreationDate:firstSeenDate];
 
     goto LABEL_47;
   }
@@ -235,7 +235,7 @@
   v50 = [v48 errorWithDomain:@"HDHealthRecordsServiceErrorDomain" code:201 userInfo:v49];
 
   v51 = v50;
-  v52 = v51;
+  localDevice = v51;
   if (!v51)
   {
     goto LABEL_43;
@@ -251,9 +251,9 @@ LABEL_43:
 
   v53 = v51;
   v54 = 0;
-  *a4 = v52;
+  *a4 = localDevice;
 LABEL_44:
-  v59 = v52;
+  v59 = localDevice;
 LABEL_47:
 
   v65 = *MEMORY[0x277D85DE8];

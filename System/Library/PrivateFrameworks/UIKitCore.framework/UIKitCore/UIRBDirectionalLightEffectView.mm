@@ -1,7 +1,7 @@
 @interface UIRBDirectionalLightEffectView
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)update:(id)a3;
+- (void)update:(id)update;
 @end
 
 @implementation UIRBDirectionalLightEffectView
@@ -18,16 +18,16 @@
   sub_189230C30();
 }
 
-- (void)update:(id)a3
+- (void)update:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  sub_189230D80(v4);
+  updateCopy = update;
+  selfCopy = self;
+  sub_189230D80(updateCopy);
 }
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_189230FA4();
 }
 

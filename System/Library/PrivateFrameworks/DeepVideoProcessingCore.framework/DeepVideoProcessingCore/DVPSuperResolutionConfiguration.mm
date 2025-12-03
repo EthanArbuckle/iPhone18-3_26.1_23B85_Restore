@@ -1,12 +1,12 @@
 @interface DVPSuperResolutionConfiguration
-+ (BOOL)isSupportedRevision:(int64_t)a3;
++ (BOOL)isSupportedRevision:(int64_t)revision;
 + (int64_t)defaultRevision;
-- (DVPSuperResolutionConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 scaleFactor:(int64_t)a5 inputType:(int64_t)a6 usePrecomputedFlow:(BOOL)a7 qualityPrioritization:(int64_t)a8 revision:(int64_t)a9;
+- (DVPSuperResolutionConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height scaleFactor:(int64_t)factor inputType:(int64_t)type usePrecomputedFlow:(BOOL)flow qualityPrioritization:(int64_t)prioritization revision:(int64_t)revision;
 @end
 
 @implementation DVPSuperResolutionConfiguration
 
-- (DVPSuperResolutionConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 scaleFactor:(int64_t)a5 inputType:(int64_t)a6 usePrecomputedFlow:(BOOL)a7 qualityPrioritization:(int64_t)a8 revision:(int64_t)a9
+- (DVPSuperResolutionConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height scaleFactor:(int64_t)factor inputType:(int64_t)type usePrecomputedFlow:(BOOL)flow qualityPrioritization:(int64_t)prioritization revision:(int64_t)revision
 {
   v22.receiver = self;
   v22.super_class = DVPSuperResolutionConfiguration;
@@ -17,9 +17,9 @@
     goto LABEL_13;
   }
 
-  if (a6 == 1)
+  if (type == 1)
   {
-    if ((a3 - 1441) <= 0xFFFFFFFFFFFFFA5FLL)
+    if ((width - 1441) <= 0xFFFFFFFFFFFFFA5FLL)
     {
 LABEL_4:
       NSLog(&cfstr_InvalidInputWi.isa);
@@ -29,29 +29,29 @@ LABEL_13:
     }
   }
 
-  else if ((a3 - 1921) <= 0xFFFFFFFFFFFFF87FLL)
+  else if ((width - 1921) <= 0xFFFFFFFFFFFFF87FLL)
   {
     goto LABEL_4;
   }
 
-  if ((a4 - 1081) <= 0xFFFFFFFFFFFFFBC7)
+  if ((height - 1081) <= 0xFFFFFFFFFFFFFBC7)
   {
     NSLog(&cfstr_InvalidInputHe.isa);
     goto LABEL_13;
   }
 
-  if (![DVPSuperResolutionConfiguration isSupportedRevision:a9])
+  if (![DVPSuperResolutionConfiguration isSupportedRevision:revision])
   {
-    NSLog(&cfstr_ErrorInvalidDv.isa, a9);
+    NSLog(&cfstr_ErrorInvalidDv.isa, revision);
     goto LABEL_13;
   }
 
-  v15->_usePrecomputedFlow = a7;
-  v15->_qualityPrioritization = a8;
-  v15->_frameWidth = a3;
-  v15->_frameHeight = a4;
-  v15->_scaleFactor = a5;
-  v15->_revision = a9;
+  v15->_usePrecomputedFlow = flow;
+  v15->_qualityPrioritization = prioritization;
+  v15->_frameWidth = width;
+  v15->_frameHeight = height;
+  v15->_scaleFactor = factor;
+  v15->_revision = revision;
   v16 = getFramePreferredPixelFormats();
   framePreferredPixelFormats = v15->_framePreferredPixelFormats;
   v15->_framePreferredPixelFormats = v16;
@@ -69,17 +69,17 @@ LABEL_9:
 + (int64_t)defaultRevision
 {
   v2 = +[DVPSuperResolutionConfiguration supportedRevisions];
-  v3 = [v2 lastIndex];
+  lastIndex = [v2 lastIndex];
 
-  return v3;
+  return lastIndex;
 }
 
-+ (BOOL)isSupportedRevision:(int64_t)a3
++ (BOOL)isSupportedRevision:(int64_t)revision
 {
   v4 = +[DVPSuperResolutionConfiguration supportedRevisions];
-  LOBYTE(a3) = [v4 containsIndex:a3];
+  LOBYTE(revision) = [v4 containsIndex:revision];
 
-  return a3;
+  return revision;
 }
 
 @end

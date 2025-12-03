@@ -11,12 +11,12 @@
   value = a3;
   if (objc_opt_respondsToSelector())
   {
-    [a1 setNestedPlayEvent:value];
+    [self setNestedPlayEvent:value];
   }
 
   else
   {
-    objc_setAssociatedObject(a1, _NestedPlayEvent, value, 1);
+    objc_setAssociatedObject(self, _NestedPlayEvent, value, 1);
   }
 }
 
@@ -24,12 +24,12 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    [a1 nestedPlayEvent];
+    [self nestedPlayEvent];
   }
 
   else
   {
-    objc_getAssociatedObject(a1, _NestedPlayEvent);
+    objc_getAssociatedObject(self, _NestedPlayEvent);
   }
   v2 = ;
 
@@ -43,12 +43,12 @@
   v10 = a3;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [a1 playEventWithModelObject:v10 nestedPlayEvent:v8 featureName:v9];
+    v11 = [self playEventWithModelObject:v10 nestedPlayEvent:v8 featureName:v9];
   }
 
   else
   {
-    v11 = [a1 playEventWithModelObject:v10 featureName:v9];
+    v11 = [self playEventWithModelObject:v10 featureName:v9];
 
     [v11 mpc_setNestedPlayEvent:v8];
   }

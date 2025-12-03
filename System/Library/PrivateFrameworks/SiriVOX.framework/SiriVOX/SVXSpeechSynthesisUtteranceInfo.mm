@@ -1,40 +1,40 @@
 @interface SVXSpeechSynthesisUtteranceInfo
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SVXSpeechSynthesisUtteranceInfo)initWithCoder:(id)a3;
-- (SVXSpeechSynthesisUtteranceInfo)initWithUtterance:(id)a3 wordTimings:(id)a4;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SVXSpeechSynthesisUtteranceInfo)initWithCoder:(id)coder;
+- (SVXSpeechSynthesisUtteranceInfo)initWithUtterance:(id)utterance wordTimings:(id)timings;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVXSpeechSynthesisUtteranceInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   utterance = self->_utterance;
-  v5 = a3;
-  [v5 encodeObject:utterance forKey:@"SVXSpeechSynthesisUtteranceInfo::utterance"];
-  [v5 encodeObject:self->_wordTimings forKey:@"SVXSpeechSynthesisUtteranceInfo::wordTimings"];
+  coderCopy = coder;
+  [coderCopy encodeObject:utterance forKey:@"SVXSpeechSynthesisUtteranceInfo::utterance"];
+  [coderCopy encodeObject:self->_wordTimings forKey:@"SVXSpeechSynthesisUtteranceInfo::wordTimings"];
 }
 
-- (SVXSpeechSynthesisUtteranceInfo)initWithCoder:(id)a3
+- (SVXSpeechSynthesisUtteranceInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXSpeechSynthesisUtteranceInfo::utterance"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXSpeechSynthesisUtteranceInfo::utterance"];
   v6 = MEMORY[0x277CBEB98];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"SVXSpeechSynthesisUtteranceInfo::wordTimings"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"SVXSpeechSynthesisUtteranceInfo::wordTimings"];
 
   v10 = [(SVXSpeechSynthesisUtteranceInfo *)self initWithUtterance:v5 wordTimings:v9];
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -44,14 +44,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SVXSpeechSynthesisUtteranceInfo *)v5 utterance];
+      v5 = equalCopy;
+      utterance = [(SVXSpeechSynthesisUtteranceInfo *)v5 utterance];
       utterance = self->_utterance;
-      if (utterance == v6 || [(NSString *)utterance isEqual:v6])
+      if (utterance == utterance || [(NSString *)utterance isEqual:utterance])
       {
-        v8 = [(SVXSpeechSynthesisUtteranceInfo *)v5 wordTimings];
+        wordTimings = [(SVXSpeechSynthesisUtteranceInfo *)v5 wordTimings];
         wordTimings = self->_wordTimings;
-        v10 = wordTimings == v8 || [(NSArray *)wordTimings isEqual:v8];
+        v10 = wordTimings == wordTimings || [(NSArray *)wordTimings isEqual:wordTimings];
       }
 
       else
@@ -69,7 +69,7 @@
   return v10;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v8.receiver = self;
@@ -80,20 +80,20 @@
   return v6;
 }
 
-- (SVXSpeechSynthesisUtteranceInfo)initWithUtterance:(id)a3 wordTimings:(id)a4
+- (SVXSpeechSynthesisUtteranceInfo)initWithUtterance:(id)utterance wordTimings:(id)timings
 {
-  v6 = a3;
-  v7 = a4;
+  utteranceCopy = utterance;
+  timingsCopy = timings;
   v14.receiver = self;
   v14.super_class = SVXSpeechSynthesisUtteranceInfo;
   v8 = [(SVXSpeechSynthesisUtteranceInfo *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [utteranceCopy copy];
     utterance = v8->_utterance;
     v8->_utterance = v9;
 
-    v11 = [v7 copy];
+    v11 = [timingsCopy copy];
     wordTimings = v8->_wordTimings;
     v8->_wordTimings = v11;
   }
@@ -101,36 +101,36 @@
   return v8;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SVXSpeechSynthesisUtteranceInfoMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SVXSpeechSynthesisUtteranceInfoMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SVXSpeechSynthesisUtteranceInfoMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SVXSpeechSynthesisUtteranceInfo *)self copy];
+    generate = [(SVXSpeechSynthesisUtteranceInfo *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SVXSpeechSynthesisUtteranceInfoMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SVXSpeechSynthesisUtteranceInfoMutation *)v4 generate];
+  generate = [(_SVXSpeechSynthesisUtteranceInfoMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

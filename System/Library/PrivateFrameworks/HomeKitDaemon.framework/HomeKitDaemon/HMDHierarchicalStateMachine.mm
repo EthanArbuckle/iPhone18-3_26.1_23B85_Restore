@@ -1,21 +1,21 @@
 @interface HMDHierarchicalStateMachine
 + (id)logCategory;
-- (HMDHierarchicalStateMachine)initWithQueue:(id)a3 allowSelfStateTransitions:(BOOL)a4;
+- (HMDHierarchicalStateMachine)initWithQueue:(id)queue allowSelfStateTransitions:(BOOL)transitions;
 - (HMDHierarchicalStateMachineState)currentHSMState;
 - (HMDHierarchicalStateMachineState)initialState;
-- (id)stateWithName:(id)a3;
+- (id)stateWithName:(id)name;
 - (void)_start;
-- (void)currentHSMStateWithCompletion:(id)a3;
+- (void)currentHSMStateWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)dispatchEvent:(id)a3;
-- (void)dispatchEvent:(id)a3 userInfo:(id)a4;
-- (void)dispatchEvent:(id)a3 userInfo:(id)a4 completion:(id)a5;
-- (void)setHSMInternalCurrentState:(id)a3;
-- (void)setInitialState:(id)a3;
-- (void)setStates:(id)a3;
+- (void)dispatchEvent:(id)event;
+- (void)dispatchEvent:(id)event userInfo:(id)info;
+- (void)dispatchEvent:(id)event userInfo:(id)info completion:(id)completion;
+- (void)setHSMInternalCurrentState:(id)state;
+- (void)setInitialState:(id)state;
+- (void)setStates:(id)states;
 - (void)start;
-- (void)transitionToState:(id)a3;
-- (void)transitionToState:(id)a3 withEvent:(id)a4;
+- (void)transitionToState:(id)state;
+- (void)transitionToState:(id)state withEvent:(id)event;
 @end
 
 @implementation HMDHierarchicalStateMachine
@@ -27,32 +27,32 @@
   return WeakRetained;
 }
 
-- (void)setHSMInternalCurrentState:(id)a3
+- (void)setHSMInternalCurrentState:(id)state
 {
-  v4 = a3;
-  v5 = [(HMDHierarchicalStateMachine *)self queue];
-  dispatch_assert_queue_V2(v5);
+  stateCopy = state;
+  queue = [(HMDHierarchicalStateMachine *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(HMDHierarchicalStateMachine *)self setCurrentHSMState:v4];
+  [(HMDHierarchicalStateMachine *)self setCurrentHSMState:stateCopy];
 
   [(HMDHierarchicalStateMachine *)self setEventCausingStateTransition:0];
 }
 
-- (id)stateWithName:(id)a3
+- (id)stateWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(HMDHierarchicalStateMachine *)self queue];
-  dispatch_assert_queue_V2(v5);
+  nameCopy = name;
+  queue = [(HMDHierarchicalStateMachine *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(HMDHierarchicalStateMachine *)self cuStateMachine];
-  v7 = [v6 states];
+  cuStateMachine = [(HMDHierarchicalStateMachine *)self cuStateMachine];
+  states = [cuStateMachine states];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __45__HMDHierarchicalStateMachine_stateWithName___block_invoke;
   v14[3] = &unk_27868A7C8;
-  v15 = v4;
-  v8 = v4;
-  v9 = [v7 na_firstObjectPassingTest:v14];
+  v15 = nameCopy;
+  v8 = nameCopy;
+  v9 = [states na_firstObjectPassingTest:v14];
 
   v10 = v9;
   objc_opt_class();
@@ -80,18 +80,18 @@ uint64_t __45__HMDHierarchicalStateMachine_stateWithName___block_invoke(uint64_t
   return v4;
 }
 
-- (void)currentHSMStateWithCompletion:(id)a3
+- (void)currentHSMStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HMDHierarchicalStateMachine *)self queue];
+  completionCopy = completion;
+  queue = [(HMDHierarchicalStateMachine *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__HMDHierarchicalStateMachine_currentHSMStateWithCompletion___block_invoke;
   v7[3] = &unk_27868A7A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __61__HMDHierarchicalStateMachine_currentHSMStateWithCompletion___block_invoke(uint64_t a1)
@@ -105,30 +105,30 @@ void __61__HMDHierarchicalStateMachine_currentHSMStateWithCompletion___block_inv
   }
 }
 
-- (void)setStates:(id)a3
+- (void)setStates:(id)states
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__HMDHierarchicalStateMachine_setStates___block_invoke;
   v7[3] = &unk_27868A778;
   v7[4] = self;
-  v4 = a3;
-  [v4 hmf_enumerateWithAutoreleasePoolUsingBlock:v7];
-  v5 = [v4 copy];
+  statesCopy = states;
+  [statesCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v7];
+  v5 = [statesCopy copy];
 
-  v6 = [(HMDHierarchicalStateMachine *)self cuStateMachine];
-  [v6 setStates:v5];
+  cuStateMachine = [(HMDHierarchicalStateMachine *)self cuStateMachine];
+  [cuStateMachine setStates:v5];
 }
 
 - (HMDHierarchicalStateMachineState)initialState
 {
-  v2 = [(HMDHierarchicalStateMachine *)self cuStateMachine];
-  v3 = [v2 initialState];
+  cuStateMachine = [(HMDHierarchicalStateMachine *)self cuStateMachine];
+  initialState = [cuStateMachine initialState];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = initialState;
   }
 
   else
@@ -141,80 +141,80 @@ void __61__HMDHierarchicalStateMachine_currentHSMStateWithCompletion___block_inv
   return v4;
 }
 
-- (void)setInitialState:(id)a3
+- (void)setInitialState:(id)state
 {
-  v4 = a3;
-  v5 = [(HMDHierarchicalStateMachine *)self cuStateMachine];
-  [v5 setInitialState:v4];
+  stateCopy = state;
+  cuStateMachine = [(HMDHierarchicalStateMachine *)self cuStateMachine];
+  [cuStateMachine setInitialState:stateCopy];
 }
 
-- (void)transitionToState:(id)a3 withEvent:(id)a4
+- (void)transitionToState:(id)state withEvent:(id)event
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(HMDHierarchicalStateMachine *)self queue];
-  dispatch_assert_queue_V2(v7);
+  stateCopy = state;
+  eventCopy = event;
+  queue = [(HMDHierarchicalStateMachine *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [(HMDHierarchicalStateMachine *)self currentHSMState];
-  if (![v8 isEqual:v11])
+  currentHSMState = [(HMDHierarchicalStateMachine *)self currentHSMState];
+  if (![currentHSMState isEqual:stateCopy])
   {
 
     goto LABEL_5;
   }
 
-  v9 = [(HMDHierarchicalStateMachine *)self allowSelfStateTransitions];
+  allowSelfStateTransitions = [(HMDHierarchicalStateMachine *)self allowSelfStateTransitions];
 
-  if (v9)
+  if (allowSelfStateTransitions)
   {
 LABEL_5:
-    [(HMDHierarchicalStateMachine *)self setEventCausingStateTransition:v6];
-    v10 = [(HMDHierarchicalStateMachine *)self cuStateMachine];
-    [v10 transitionToState:v11];
+    [(HMDHierarchicalStateMachine *)self setEventCausingStateTransition:eventCopy];
+    cuStateMachine = [(HMDHierarchicalStateMachine *)self cuStateMachine];
+    [cuStateMachine transitionToState:stateCopy];
   }
 }
 
-- (void)transitionToState:(id)a3
+- (void)transitionToState:(id)state
 {
-  v5 = a3;
-  v4 = [(HMDHierarchicalStateMachine *)self queue];
-  dispatch_assert_queue_V2(v4);
+  stateCopy = state;
+  queue = [(HMDHierarchicalStateMachine *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(HMDHierarchicalStateMachine *)self transitionToState:v5 withEvent:0];
+  [(HMDHierarchicalStateMachine *)self transitionToState:stateCopy withEvent:0];
 }
 
-- (void)dispatchEvent:(id)a3 userInfo:(id)a4 completion:(id)a5
+- (void)dispatchEvent:(id)event userInfo:(id)info completion:(id)completion
 {
   v8 = MEMORY[0x277D02920];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithName:v11 userInfo:v10 completion:v9];
+  completionCopy = completion;
+  infoCopy = info;
+  eventCopy = event;
+  v12 = [[v8 alloc] initWithName:eventCopy userInfo:infoCopy completion:completionCopy];
 
   [(HMDHierarchicalStateMachine *)self dispatchEvent:v12];
 }
 
-- (void)dispatchEvent:(id)a3 userInfo:(id)a4
+- (void)dispatchEvent:(id)event userInfo:(id)info
 {
   v6 = MEMORY[0x277D02920];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithName:v8 userInfo:v7];
+  infoCopy = info;
+  eventCopy = event;
+  v9 = [[v6 alloc] initWithName:eventCopy userInfo:infoCopy];
 
   [(HMDHierarchicalStateMachine *)self dispatchEvent:v9];
 }
 
-- (void)dispatchEvent:(id)a3
+- (void)dispatchEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(HMDHierarchicalStateMachine *)self queue];
+  eventCopy = event;
+  queue = [(HMDHierarchicalStateMachine *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__HMDHierarchicalStateMachine_dispatchEvent___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = eventCopy;
+  v6 = eventCopy;
+  dispatch_async(queue, v7);
 }
 
 void __45__HMDHierarchicalStateMachine_dispatchEvent___block_invoke(uint64_t a1)
@@ -267,39 +267,39 @@ void __45__HMDHierarchicalStateMachine_dispatchEvent___block_invoke(uint64_t a1)
 
 - (void)_start
 {
-  v3 = [(HMDHierarchicalStateMachine *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(HMDHierarchicalStateMachine *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(HMDHierarchicalStateMachine *)self cuStateMachine];
-  [v4 start];
+  cuStateMachine = [(HMDHierarchicalStateMachine *)self cuStateMachine];
+  [cuStateMachine start];
 
   self->_started = 1;
 }
 
 - (void)start
 {
-  v3 = [(HMDHierarchicalStateMachine *)self queue];
+  queue = [(HMDHierarchicalStateMachine *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__HMDHierarchicalStateMachine_start__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)dealloc
 {
-  v3 = [(HMDHierarchicalStateMachine *)self cuStateMachine];
-  [v3 invalidate];
+  cuStateMachine = [(HMDHierarchicalStateMachine *)self cuStateMachine];
+  [cuStateMachine invalidate];
 
   v4.receiver = self;
   v4.super_class = HMDHierarchicalStateMachine;
   [(HMDHierarchicalStateMachine *)&v4 dealloc];
 }
 
-- (HMDHierarchicalStateMachine)initWithQueue:(id)a3 allowSelfStateTransitions:(BOOL)a4
+- (HMDHierarchicalStateMachine)initWithQueue:(id)queue allowSelfStateTransitions:(BOOL)transitions
 {
-  v7 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = HMDHierarchicalStateMachine;
   v8 = [(HMDHierarchicalStateMachine *)&v12 init];
@@ -309,8 +309,8 @@ void __45__HMDHierarchicalStateMachine_dispatchEvent___block_invoke(uint64_t a1)
     cuStateMachine = v8->_cuStateMachine;
     v8->_cuStateMachine = v9;
 
-    objc_storeStrong(&v8->_queue, a3);
-    v8->_allowSelfStateTransitions = a4;
+    objc_storeStrong(&v8->_queue, queue);
+    v8->_allowSelfStateTransitions = transitions;
   }
 
   return v8;

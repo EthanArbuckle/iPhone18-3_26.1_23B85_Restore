@@ -1,29 +1,29 @@
 @interface _CDEventStream
-+ (id)eventStreamWithProperties:(id)a3;
-- (_CDEventStream)initWithProperties:(id)a3;
++ (id)eventStreamWithProperties:(id)properties;
+- (_CDEventStream)initWithProperties:(id)properties;
 - (id)description;
 @end
 
 @implementation _CDEventStream
 
-+ (id)eventStreamWithProperties:(id)a3
++ (id)eventStreamWithProperties:(id)properties
 {
-  v3 = a3;
-  v4 = [[_CDEventStream alloc] initWithProperties:v3];
+  propertiesCopy = properties;
+  v4 = [[_CDEventStream alloc] initWithProperties:propertiesCopy];
 
   return v4;
 }
 
-- (_CDEventStream)initWithProperties:(id)a3
+- (_CDEventStream)initWithProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   v9.receiver = self;
   v9.super_class = _CDEventStream;
   v6 = [(_CDEventStream *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->eventStreamProperties, a3);
+    objc_storeStrong(&v6->eventStreamProperties, properties);
   }
 
   return v7;
@@ -32,8 +32,8 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(_CDEventStream *)self eventStreamProperties];
-  v4 = [v2 stringWithFormat:@"Event Stream Properties: %@ \n", v3];
+  eventStreamProperties = [(_CDEventStream *)self eventStreamProperties];
+  v4 = [v2 stringWithFormat:@"Event Stream Properties: %@ \n", eventStreamProperties];
 
   return v4;
 }

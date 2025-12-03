@@ -1,20 +1,20 @@
 @interface CKFetchWhitelistedBundleIDsOperation
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3;
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks;
 - (BOOL)hasCKOperationCallbacksSet;
 - (id)activityCreate;
 - (id)fetchWhitelistedBundleIDsCompletionBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
-- (void)handleOperationDidCompleteWithBundleIDs:(id)a3 metrics:(id)a4 error:(id)a5;
-- (void)setFetchWhitelistedBundleIDsCompletionBlock:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
+- (void)handleOperationDidCompleteWithBundleIDs:(id)ds metrics:(id)metrics error:(id)error;
+- (void)setFetchWhitelistedBundleIDsCompletionBlock:(id)block;
 @end
 
 @implementation CKFetchWhitelistedBundleIDsOperation
 
-- (void)setFetchWhitelistedBundleIDsCompletionBlock:(id)a3
+- (void)setFetchWhitelistedBundleIDsCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -28,16 +28,16 @@
     v12[2] = sub_188608C60;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     fetchWhitelistedBundleIDsCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_fetchWhitelistedBundleIDsCompletionBlock != v6)
+  if (self->_fetchWhitelistedBundleIDsCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     fetchWhitelistedBundleIDsCompletionBlock = self->_fetchWhitelistedBundleIDsCompletionBlock;
     self->_fetchWhitelistedBundleIDsCompletionBlock = v9;
 LABEL_9:
@@ -95,15 +95,15 @@ LABEL_9:
   return v5;
 }
 
-- (void)handleOperationDidCompleteWithBundleIDs:(id)a3 metrics:(id)a4 error:(id)a5
+- (void)handleOperationDidCompleteWithBundleIDs:(id)ds metrics:(id)metrics error:(id)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  dsCopy = ds;
+  errorCopy = error;
+  metricsCopy = metrics;
   if ((objc_msgSend_isCancelled(self, v11, v12) & 1) == 0)
   {
-    objc_msgSend_setBundleIDs_(self, v13, v8);
+    objc_msgSend_setBundleIDs_(self, v13, dsCopy);
   }
 
   if (ck_log_initialization_predicate != -1)
@@ -119,20 +119,20 @@ LABEL_9:
     *buf = 138543618;
     v22 = v19;
     v23 = 2112;
-    v24 = v8;
+    v24 = dsCopy;
     _os_log_debug_impl(&dword_1883EA000, v16, OS_LOG_TYPE_DEBUG, "Received completion callback for operation %{public}@ with bundle IDs %@", buf, 0x16u);
   }
 
   v20.receiver = self;
   v20.super_class = CKFetchWhitelistedBundleIDsOperation;
-  [(CKOperation *)&v20 handleOperationDidCompleteWithMetrics:v10 error:v9];
+  [(CKOperation *)&v20 handleOperationDidCompleteWithMetrics:metricsCopy error:errorCopy];
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super._signpost;
@@ -186,7 +186,7 @@ LABEL_9:
   {
     v22 = objc_msgSend_fetchWhitelistedBundleIDsCompletionBlock(self, v20, v21);
     v25 = objc_msgSend_bundleIDs(self, v23, v24);
-    v28 = objc_msgSend_CKClientSuitableError(v4, v26, v27);
+    v28 = objc_msgSend_CKClientSuitableError(errorCopy, v26, v27);
     (v22)[2](v22, v25, v28);
 
     objc_msgSend_setFetchWhitelistedBundleIDsCompletionBlock_(self, v29, 0);
@@ -194,7 +194,7 @@ LABEL_9:
 
   v30.receiver = self;
   v30.super_class = CKFetchWhitelistedBundleIDsOperation;
-  [(CKOperation *)&v30 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v30 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (void)ckSignpostBegin
@@ -271,10 +271,10 @@ LABEL_9:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super._signpost;
@@ -318,7 +318,7 @@ LABEL_9:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKFetchWhitelistedBundleIDsOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }
@@ -333,15 +333,15 @@ LABEL_9:
   return v2;
 }
 
-+ (void)applyDaemonCallbackInterfaceTweaks:(id)a3
++ (void)applyDaemonCallbackInterfaceTweaks:(id)tweaks
 {
-  v4 = a3;
+  tweaksCopy = tweaks;
   v5 = CKErrorUserInfoClasses();
-  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v4, v6, v5, sel_handleOperationDidCompleteWithBundleIDs_metrics_error_, 2, 0);
+  objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(tweaksCopy, v6, v5, sel_handleOperationDidCompleteWithBundleIDs_metrics_error_, 2, 0);
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CKFetchWhitelistedBundleIDsOperation;
-  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, v4);
+  objc_msgSendSuper2(&v7, sel_applyDaemonCallbackInterfaceTweaks_, tweaksCopy);
 }
 
 @end

@@ -14,10 +14,10 @@
 
 - (id)itemProviderIdentifier
 {
-  v1 = [a1 attachment];
-  v2 = [v1 identifier];
+  attachment = [self attachment];
+  identifier = [attachment identifier];
 
-  return v2;
+  return identifier;
 }
 
 + (id)writableTypeIdentifiersForItemProvider
@@ -32,12 +32,12 @@
 - (id)writableTypeIdentifiersForItemProvider
 {
   v11 = *MEMORY[0x277D85DE8];
-  v1 = [a1 itemProviderUTI];
-  v2 = v1;
-  if (v1)
+  itemProviderUTI = [self itemProviderUTI];
+  v2 = itemProviderUTI;
+  if (itemProviderUTI)
   {
     v9 = *MEMORY[0x277D35D08];
-    v10 = v1;
+    v10 = itemProviderUTI;
     v3 = MEMORY[0x277CBEA60];
     v4 = &v9;
     v5 = 2;
@@ -71,47 +71,47 @@
 
 - (id)itemProviderUTI
 {
-  v1 = [a1 attachment];
-  v2 = [v1 typeUTI];
+  attachment = [self attachment];
+  typeUTI = [attachment typeUTI];
 
-  return v2;
+  return typeUTI;
 }
 
 - (id)itemProviderWritingURL
 {
-  v2 = [a1 attachment];
-  v3 = [v2 media];
-  if ([v3 hasFile])
+  attachment = [self attachment];
+  media = [attachment media];
+  if ([media hasFile])
   {
-    v4 = [a1 attachment];
-    v5 = [v4 media];
-    v6 = [v5 mediaURL];
+    attachment2 = [self attachment];
+    media2 = [attachment2 media];
+    mediaURL = [media2 mediaURL];
   }
 
   else
   {
-    v6 = 0;
+    mediaURL = 0;
   }
 
-  return v6;
+  return mediaURL;
 }
 
 - (id)itemProviderWritingData
 {
-  v2 = [a1 attachment];
-  if ([v2 isPasswordProtected])
+  attachment = [self attachment];
+  if ([attachment isPasswordProtected])
   {
-    v3 = [v2 media];
-    v4 = [v3 decryptedData];
+    media = [attachment media];
+    decryptedData = [media decryptedData];
 LABEL_5:
-    v5 = v4;
+    v5 = decryptedData;
     goto LABEL_6;
   }
 
-  v3 = [a1 itemProviderWritingURL];
-  if (v3)
+  media = [self itemProviderWritingURL];
+  if (media)
   {
-    v4 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v3 options:1 error:0];
+    decryptedData = [MEMORY[0x277CBEA90] dataWithContentsOfURL:media options:1 error:0];
     goto LABEL_5;
   }
 
@@ -124,27 +124,27 @@ LABEL_6:
 - (void)registerFileLoadHandlersOnItemProvider:()ItemProviderWriting
 {
   v4 = a3;
-  v5 = [a1 attachment];
-  v6 = [v5 media];
-  if ([v6 hasFile])
+  attachment = [self attachment];
+  media = [attachment media];
+  if ([media hasFile])
   {
-    v7 = [a1 attachment];
-    v8 = [v7 isPasswordProtected];
+    attachment2 = [self attachment];
+    isPasswordProtected = [attachment2 isPasswordProtected];
 
-    if ((v8 & 1) == 0)
+    if ((isPasswordProtected & 1) == 0)
     {
-      v9 = [a1 attachment];
-      v10 = [v9 objectID];
+      attachment3 = [self attachment];
+      objectID = [attachment3 objectID];
 
-      v11 = [a1 attachment];
-      v12 = [v11 typeUTI];
+      attachment4 = [self attachment];
+      typeUTI = [attachment4 typeUTI];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __81__ICAttachmentModel_ItemProviderWriting__registerFileLoadHandlersOnItemProvider___block_invoke;
       v14[3] = &unk_2781ABD70;
-      v15 = v10;
-      v13 = v10;
-      [v4 registerFileRepresentationForTypeIdentifier:v12 fileOptions:0 visibility:0 loadHandler:v14];
+      v15 = objectID;
+      v13 = objectID;
+      [v4 registerFileRepresentationForTypeIdentifier:typeUTI fileOptions:0 visibility:0 loadHandler:v14];
     }
   }
 
@@ -157,21 +157,21 @@ LABEL_6:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 attachment];
-  v9 = [v8 objectID];
+  attachment = [self attachment];
+  objectID = [attachment objectID];
 
-  v10 = [MEMORY[0x277D35F30] sharedContext];
+  mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __102__ICAttachmentModel_ItemProviderWriting__loadDataWithTypeIdentifier_forItemProviderCompletionHandler___block_invoke;
   v15[3] = &unk_2781ABD98;
-  v16 = v9;
+  v16 = objectID;
   v17 = v6;
   v18 = v7;
   v11 = v7;
   v12 = v6;
-  v13 = v9;
-  [v10 performBackgroundTask:v15];
+  v13 = objectID;
+  [mEMORY[0x277D35F30] performBackgroundTask:v15];
 
   return 0;
 }

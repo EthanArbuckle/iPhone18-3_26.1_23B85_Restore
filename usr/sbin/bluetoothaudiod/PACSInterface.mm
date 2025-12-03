@@ -1,22 +1,22 @@
 @interface PACSInterface
-- (PACSInterface)initWithPeripheral:(id)a3 service:(id)a4;
-- (unsigned)codecConfigSupportedWithCodecID:(unint64_t)a3 withCodecConfig:(unsigned __int8)a4 withDirection:(BOOL)a5;
-- (unsigned)determineChannelCount:(unsigned int)a3;
-- (unsigned)determineHighestChanCountSupport:(unsigned __int8)a3;
-- (unsigned)getAudioLocationMask:(BOOL)a3;
-- (unsigned)getAvailableAudioContexts:(BOOL)a3;
-- (unsigned)getNumOfChanLocSet:(BOOL)a3;
-- (unsigned)getSupportedAudioChannelCountMask:(BOOL)a3;
-- (unsigned)getSupportedAudioContexts:(BOOL)a3;
+- (PACSInterface)initWithPeripheral:(id)peripheral service:(id)service;
+- (unsigned)codecConfigSupportedWithCodecID:(unint64_t)d withCodecConfig:(unsigned __int8)config withDirection:(BOOL)direction;
+- (unsigned)determineChannelCount:(unsigned int)count;
+- (unsigned)determineHighestChanCountSupport:(unsigned __int8)support;
+- (unsigned)getAudioLocationMask:(BOOL)mask;
+- (unsigned)getAvailableAudioContexts:(BOOL)contexts;
+- (unsigned)getNumOfChanLocSet:(BOOL)set;
+- (unsigned)getSupportedAudioChannelCountMask:(BOOL)mask;
+- (unsigned)getSupportedAudioContexts:(BOOL)contexts;
 - (void)checkAllAttributesReady;
-- (void)createCodecConfigList:(BOOL)a3;
-- (void)handleAudioLocationsUpdateWithDirection:(BOOL)a3;
+- (void)createCodecConfigList:(BOOL)list;
+- (void)handleAudioLocationsUpdateWithDirection:(BOOL)direction;
 - (void)handleAvailableAudioContextUpdate;
-- (void)handlePACUpdate:(id)a3 withType:(BOOL)a4;
+- (void)handlePACUpdate:(id)update withType:(BOOL)type;
 - (void)handleSupportedAudioContextUpdate;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
 - (void)readAvailableContexts;
 - (void)readSinkAudioLocations;
 - (void)readSourceAudioLocations;
@@ -30,11 +30,11 @@
 
 @implementation PACSInterface
 
-- (PACSInterface)initWithPeripheral:(id)a3 service:(id)a4
+- (PACSInterface)initWithPeripheral:(id)peripheral service:(id)service
 {
   v25.receiver = self;
   v25.super_class = PACSInterface;
-  v4 = [(ServiceInterface *)&v25 initWithPeripheral:a3 service:a4];
+  v4 = [(ServiceInterface *)&v25 initWithPeripheral:peripheral service:service];
   v5 = v4;
   if (v4)
   {
@@ -100,17 +100,17 @@
   v15[5] = v8;
   v9 = [NSArray arrayWithObjects:v15 count:6];
 
-  v10 = [(ServiceInterface *)self peripheral];
-  v11 = [(ServiceInterface *)self service];
-  [v10 discoverCharacteristics:v9 forService:v11];
+  peripheral = [(ServiceInterface *)self peripheral];
+  service = [(ServiceInterface *)self service];
+  [peripheral discoverCharacteristics:v9 forService:service];
 
-  v12 = [(PACSInterface *)self recordQueue];
+  recordQueue = [(PACSInterface *)self recordQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000B444;
   v13[3] = &unk_100094CB8;
   v13[4] = self;
-  dispatch_async(v12, v13);
+  dispatch_async(recordQueue, v13);
 }
 
 - (void)stop
@@ -120,17 +120,17 @@
   [(ServiceInterface *)&v2 stop];
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  if (!a5)
+  peripheralCopy = peripheral;
+  if (!error)
   {
-    v48 = v8;
+    v48 = peripheralCopy;
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    obj = [a4 characteristics];
+    obj = [service characteristics];
     v9 = [obj countByEnumeratingWithState:&v50 objects:v54 count:16];
     if (!v9)
     {
@@ -155,19 +155,19 @@
         }
 
         v14 = *(*(&v50 + 1) + 8 * i);
-        v15 = [v14 UUID];
+        uUID = [v14 UUID];
         v16 = [CBUUID UUIDWithString:v12];
-        v17 = [v15 isEqual:v16];
+        v17 = [uUID isEqual:v16];
 
         if (v17)
         {
-          v18 = [(PACSInterface *)self sinkPACCharacteristic];
-          v19 = [v18 count];
+          sinkPACCharacteristic = [(PACSInterface *)self sinkPACCharacteristic];
+          v19 = [sinkPACCharacteristic count];
 
           if (v19 <= 1)
           {
-            v20 = [(PACSInterface *)self sinkPACCharacteristic];
-            [v20 addObject:v14];
+            sinkPACCharacteristic2 = [(PACSInterface *)self sinkPACCharacteristic];
+            [sinkPACCharacteristic2 addObject:v14];
 
             if (([v14 properties] & 0x10) != 0)
             {
@@ -181,19 +181,19 @@
           continue;
         }
 
-        v21 = [v14 UUID];
+        uUID2 = [v14 UUID];
         v22 = [CBUUID UUIDWithString:v47];
-        v23 = [v21 isEqual:v22];
+        v23 = [uUID2 isEqual:v22];
 
         if (v23)
         {
-          v24 = [(PACSInterface *)self sourcePACCharacteristic];
-          v25 = [v24 count];
+          sourcePACCharacteristic = [(PACSInterface *)self sourcePACCharacteristic];
+          v25 = [sourcePACCharacteristic count];
 
           if (v25 <= 1)
           {
-            v26 = [(PACSInterface *)self sourcePACCharacteristic];
-            [v26 addObject:v14];
+            sourcePACCharacteristic2 = [(PACSInterface *)self sourcePACCharacteristic];
+            [sourcePACCharacteristic2 addObject:v14];
 
             if (([v14 properties] & 0x10) != 0)
             {
@@ -207,16 +207,16 @@
           continue;
         }
 
-        v27 = [(PACSInterface *)self availableContextCharacteristic];
-        if (v27)
+        availableContextCharacteristic = [(PACSInterface *)self availableContextCharacteristic];
+        if (availableContextCharacteristic)
         {
         }
 
         else
         {
-          v28 = [v14 UUID];
+          uUID3 = [v14 UUID];
           v29 = [CBUUID UUIDWithString:v46];
-          v30 = [v28 isEqual:v29];
+          v30 = [uUID3 isEqual:v29];
 
           if (v30)
           {
@@ -232,16 +232,16 @@ LABEL_33:
           }
         }
 
-        v31 = [(PACSInterface *)self supportedContextCharacteristic];
-        if (v31)
+        supportedContextCharacteristic = [(PACSInterface *)self supportedContextCharacteristic];
+        if (supportedContextCharacteristic)
         {
         }
 
         else
         {
-          v32 = [v14 UUID];
+          uUID4 = [v14 UUID];
           v33 = [CBUUID UUIDWithString:v45];
-          v34 = [v32 isEqual:v33];
+          v34 = [uUID4 isEqual:v33];
 
           if (v34)
           {
@@ -250,16 +250,16 @@ LABEL_33:
           }
         }
 
-        v35 = [(PACSInterface *)self sinkAudioLocationsCharacteristics];
-        if (v35)
+        sinkAudioLocationsCharacteristics = [(PACSInterface *)self sinkAudioLocationsCharacteristics];
+        if (sinkAudioLocationsCharacteristics)
         {
         }
 
         else
         {
-          v36 = [v14 UUID];
+          uUID5 = [v14 UUID];
           v37 = [CBUUID UUIDWithString:v44];
-          v38 = [v36 isEqual:v37];
+          v38 = [uUID5 isEqual:v37];
 
           if (v38)
           {
@@ -268,16 +268,16 @@ LABEL_33:
           }
         }
 
-        v39 = [(PACSInterface *)self sourceAudioLocationsCharacteristics];
-        if (v39)
+        sourceAudioLocationsCharacteristics = [(PACSInterface *)self sourceAudioLocationsCharacteristics];
+        if (sourceAudioLocationsCharacteristics)
         {
 
           continue;
         }
 
-        v40 = [v14 UUID];
+        uUID6 = [v14 UUID];
         v41 = [CBUUID UUIDWithString:v43];
-        v42 = [v40 isEqual:v41];
+        v42 = [uUID6 isEqual:v41];
 
         if (v42)
         {
@@ -292,23 +292,23 @@ LABEL_33:
 LABEL_38:
 
         [(ServiceInterface *)self notifyDidStart];
-        v8 = v48;
+        peripheralCopy = v48;
         break;
       }
     }
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   v11 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v9 description];
+    v13 = [characteristicCopy description];
     *buf = 136315394;
     v41 = "[PACSInterface peripheral:didUpdateValueForCharacteristic:error:]";
     v42 = 2112;
@@ -316,14 +316,14 @@ LABEL_38:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "PACSClientService %s updated characteristic %@ ", buf, 0x16u);
   }
 
-  if (!v10)
+  if (!errorCopy)
   {
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v14 = [(PACSInterface *)self sinkPACCharacteristic];
-    v15 = [v14 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    sinkPACCharacteristic = [(PACSInterface *)self sinkPACCharacteristic];
+    v15 = [sinkPACCharacteristic countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v15)
     {
       v16 = v15;
@@ -334,20 +334,20 @@ LABEL_38:
         {
           if (*v35 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(sinkPACCharacteristic);
           }
 
-          if (*(*(&v34 + 1) + 8 * i) == v9)
+          if (*(*(&v34 + 1) + 8 * i) == characteristicCopy)
           {
-            v29 = self;
+            selfCopy2 = self;
 LABEL_27:
-            [PACSInterface handlePACUpdate:v29 withType:"handlePACUpdate:withType:"];
+            [PACSInterface handlePACUpdate:selfCopy2 withType:"handlePACUpdate:withType:"];
 
             goto LABEL_28;
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v16 = [sinkPACCharacteristic countByEnumeratingWithState:&v34 objects:v39 count:16];
         if (v16)
         {
           continue;
@@ -361,8 +361,8 @@ LABEL_27:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v14 = [(PACSInterface *)self sourcePACCharacteristic];
-    v19 = [v14 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    sinkPACCharacteristic = [(PACSInterface *)self sourcePACCharacteristic];
+    v19 = [sinkPACCharacteristic countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v19)
     {
       v20 = v19;
@@ -373,17 +373,17 @@ LABEL_27:
         {
           if (*v31 != v21)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(sinkPACCharacteristic);
           }
 
-          if (*(*(&v30 + 1) + 8 * j) == v9)
+          if (*(*(&v30 + 1) + 8 * j) == characteristicCopy)
           {
-            v29 = self;
+            selfCopy2 = self;
             goto LABEL_27;
           }
         }
 
-        v20 = [v14 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v20 = [sinkPACCharacteristic countByEnumeratingWithState:&v30 objects:v38 count:16];
         if (v20)
         {
           continue;
@@ -393,41 +393,41 @@ LABEL_27:
       }
     }
 
-    v23 = [(PACSInterface *)self availableContextCharacteristic];
+    availableContextCharacteristic = [(PACSInterface *)self availableContextCharacteristic];
 
-    if (v23 == v9)
+    if (availableContextCharacteristic == characteristicCopy)
     {
       [(PACSInterface *)self handleAvailableAudioContextUpdate];
     }
 
     else
     {
-      v24 = [(PACSInterface *)self supportedContextCharacteristic];
+      supportedContextCharacteristic = [(PACSInterface *)self supportedContextCharacteristic];
 
-      if (v24 == v9)
+      if (supportedContextCharacteristic == characteristicCopy)
       {
         [(PACSInterface *)self handleSupportedAudioContextUpdate];
       }
 
       else
       {
-        v25 = [(PACSInterface *)self sinkAudioLocationsCharacteristics];
+        sinkAudioLocationsCharacteristics = [(PACSInterface *)self sinkAudioLocationsCharacteristics];
 
-        if (v25 == v9)
+        if (sinkAudioLocationsCharacteristics == characteristicCopy)
         {
-          v27 = self;
+          selfCopy4 = self;
           v28 = 1;
           goto LABEL_32;
         }
 
-        v26 = [(PACSInterface *)self sourceAudioLocationsCharacteristics];
+        sourceAudioLocationsCharacteristics = [(PACSInterface *)self sourceAudioLocationsCharacteristics];
 
-        if (v26 == v9)
+        if (sourceAudioLocationsCharacteristics == characteristicCopy)
         {
-          v27 = self;
+          selfCopy4 = self;
           v28 = 0;
 LABEL_32:
-          [(PACSInterface *)v27 handleAudioLocationsUpdateWithDirection:v28];
+          [(PACSInterface *)selfCopy4 handleAudioLocationsUpdateWithDirection:v28];
         }
       }
     }
@@ -436,51 +436,51 @@ LABEL_32:
 LABEL_28:
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
   v6 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [a4 description];
+    v8 = [characteristic description];
     v9 = 138412290;
     v10 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "didWriteValueForCharacteristic: %@", &v9, 0xCu);
   }
 }
 
-- (void)handlePACUpdate:(id)a3 withType:(BOOL)a4
+- (void)handlePACUpdate:(id)update withType:(BOOL)type
 {
-  v4 = a4;
-  v6 = a3;
+  typeCopy = type;
+  updateCopy = update;
   v7 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [v6 value];
+    value = [updateCopy value];
     *buf = 138412546;
-    *v40 = v9;
+    *v40 = value;
     *&v40[8] = 1024;
-    v41 = v4;
+    v41 = typeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "handlePACUpdate data %@ isSink: %d", buf, 0x12u);
   }
 
   v10 = &OBJC_IVAR___PACSInterface__sourcePacRecordSet;
-  if (v4)
+  if (typeCopy)
   {
     v10 = &OBJC_IVAR___PACSInterface__sinkPacRecordSet;
   }
 
   v11 = *(&self->super.super.isa + *v10);
-  v12 = [v6 value];
-  v13 = [DataInputStream inputStreamWithData:v12 byteOrder:1];
+  value2 = [updateCopy value];
+  v13 = [DataInputStream inputStreamWithData:value2 byteOrder:1];
 
   v38 = 0;
   if ([v13 readUint8:&v38])
   {
-    v30 = self;
-    v31 = v4;
-    v32 = v6;
+    selfCopy = self;
+    v31 = typeCopy;
+    v32 = updateCopy;
     if (v38)
     {
       v14 = 0;
@@ -609,8 +609,8 @@ LABEL_42:
 
             v28 = v34;
             v24 = [v11 objectAtIndexedSubscript:v14];
-            v29 = [v24 extendedMetaData];
-            [v13 readNumBytes:v28 toData:v29];
+            extendedMetaData = [v24 extendedMetaData];
+            [v13 readNumBytes:v28 toData:extendedMetaData];
           }
 
           else
@@ -634,8 +634,8 @@ LABEL_36:
 
             v23 = v34;
             v24 = [v11 objectAtIndexedSubscript:v14];
-            v25 = [v24 vendorSpecific];
-            [v13 readNumBytes:v23 toData:v25];
+            vendorSpecific = [v24 vendorSpecific];
+            [v13 readNumBytes:v23 toData:vendorSpecific];
           }
         }
 
@@ -668,10 +668,10 @@ LABEL_41:
     }
 
 LABEL_43:
-    [(PACSInterface *)v30 createCodecConfigList:v31];
+    [(PACSInterface *)selfCopy createCodecConfigList:v31];
     buf[0] = 0;
     [v13 readUint8:buf];
-    v6 = v32;
+    updateCopy = v32;
   }
 }
 
@@ -681,17 +681,17 @@ LABEL_43:
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(PACSInterface *)self availableContextCharacteristic];
-    v6 = [v5 value];
-    v7 = [v6 description];
+    availableContextCharacteristic = [(PACSInterface *)self availableContextCharacteristic];
+    value = [availableContextCharacteristic value];
+    v7 = [value description];
     *buf = 138412290;
     v13 = v7;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Available audio context update: %@", buf, 0xCu);
   }
 
-  v8 = [(PACSInterface *)self availableContextCharacteristic];
-  v9 = [v8 value];
-  v10 = [DataInputStream inputStreamWithData:v9 byteOrder:1];
+  availableContextCharacteristic2 = [(PACSInterface *)self availableContextCharacteristic];
+  value2 = [availableContextCharacteristic2 value];
+  v10 = [DataInputStream inputStreamWithData:value2 byteOrder:1];
 
   *buf = 0;
   v11 = 0;
@@ -707,17 +707,17 @@ LABEL_43:
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(PACSInterface *)self supportedContextCharacteristic];
-    v6 = [v5 value];
-    v7 = [v6 description];
+    supportedContextCharacteristic = [(PACSInterface *)self supportedContextCharacteristic];
+    value = [supportedContextCharacteristic value];
+    v7 = [value description];
     *buf = 138412290;
     v13 = v7;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Supported audio context update: %@", buf, 0xCu);
   }
 
-  v8 = [(PACSInterface *)self supportedContextCharacteristic];
-  v9 = [v8 value];
-  v10 = [DataInputStream inputStreamWithData:v9 byteOrder:1];
+  supportedContextCharacteristic2 = [(PACSInterface *)self supportedContextCharacteristic];
+  value2 = [supportedContextCharacteristic2 value];
+  v10 = [DataInputStream inputStreamWithData:value2 byteOrder:1];
 
   *buf = 0;
   v11 = 0;
@@ -727,10 +727,10 @@ LABEL_43:
   [(PACSInterface *)self setSupportedSourceAudioContext:v11];
 }
 
-- (void)handleAudioLocationsUpdateWithDirection:(BOOL)a3
+- (void)handleAudioLocationsUpdateWithDirection:(BOOL)direction
 {
-  v3 = a3;
-  if (a3)
+  directionCopy = direction;
+  if (direction)
   {
     [(PACSInterface *)self sinkAudioLocationsCharacteristics];
   }
@@ -744,11 +744,11 @@ LABEL_43:
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v5 value];
-    v9 = [v8 description];
+    value = [v5 value];
+    v9 = [value description];
     v10 = v9;
     v11 = @"Source";
-    if (v3)
+    if (directionCopy)
     {
       v11 = @"Sink";
     }
@@ -760,12 +760,12 @@ LABEL_43:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Supported audio Locations update: %@ for %@", &v14, 0x16u);
   }
 
-  v12 = [v5 value];
-  v13 = [DataInputStream inputStreamWithData:v12 byteOrder:1];
+  value2 = [v5 value];
+  v13 = [DataInputStream inputStreamWithData:value2 byteOrder:1];
 
   v14 = 0;
   [v13 readUint32:&v14];
-  if (v3)
+  if (directionCopy)
   {
     [(PACSInterface *)self setSinkLocationMask:v14];
   }
@@ -778,9 +778,9 @@ LABEL_43:
   [(PACSInterface *)self checkAllAttributesReady];
 }
 
-- (unsigned)getAudioLocationMask:(BOOL)a3
+- (unsigned)getAudioLocationMask:(BOOL)mask
 {
-  if (a3)
+  if (mask)
   {
     return [(PACSInterface *)self sinkLocationMask];
   }
@@ -791,9 +791,9 @@ LABEL_43:
   }
 }
 
-- (unsigned)getSupportedAudioChannelCountMask:(BOOL)a3
+- (unsigned)getSupportedAudioChannelCountMask:(BOOL)mask
 {
-  if (a3)
+  if (mask)
   {
     return [(PACSInterface *)self sinkSupportedAudioChanCount];
   }
@@ -804,24 +804,24 @@ LABEL_43:
   }
 }
 
-- (unsigned)getNumOfChanLocSet:(BOOL)a3
+- (unsigned)getNumOfChanLocSet:(BOOL)set
 {
-  if (a3)
+  if (set)
   {
-    v4 = [(PACSInterface *)self sinkLocationMask];
+    sinkLocationMask = [(PACSInterface *)self sinkLocationMask];
   }
 
   else
   {
-    v4 = [(PACSInterface *)self sourceLocationMask];
+    sinkLocationMask = [(PACSInterface *)self sourceLocationMask];
   }
 
-  return [(PACSInterface *)self determineChannelCount:v4];
+  return [(PACSInterface *)self determineChannelCount:sinkLocationMask];
 }
 
-- (unsigned)getAvailableAudioContexts:(BOOL)a3
+- (unsigned)getAvailableAudioContexts:(BOOL)contexts
 {
-  if (a3)
+  if (contexts)
   {
     return [(PACSInterface *)self availableSinkAudioContext];
   }
@@ -832,9 +832,9 @@ LABEL_43:
   }
 }
 
-- (unsigned)getSupportedAudioContexts:(BOOL)a3
+- (unsigned)getSupportedAudioContexts:(BOOL)contexts
 {
-  if (a3)
+  if (contexts)
   {
     return [(PACSInterface *)self supportedSinkAudioContext];
   }
@@ -845,10 +845,10 @@ LABEL_43:
   }
 }
 
-- (unsigned)codecConfigSupportedWithCodecID:(unint64_t)a3 withCodecConfig:(unsigned __int8)a4 withDirection:(BOOL)a5
+- (unsigned)codecConfigSupportedWithCodecID:(unint64_t)d withCodecConfig:(unsigned __int8)config withDirection:(BOOL)direction
 {
-  v5 = a4;
-  if (a5)
+  configCopy = config;
+  if (direction)
   {
     v7 = &OBJC_IVAR___PACSInterface__sinkPacRecordSet;
   }
@@ -860,7 +860,7 @@ LABEL_43:
 
   v8 = *(&self->super.super.isa + *v7);
   v9 = v8;
-  if (v5 <= 0xF)
+  if (configCopy <= 0xF)
   {
     v24 = 0u;
     v25 = 0u;
@@ -872,7 +872,7 @@ LABEL_43:
     {
       v13 = v12;
       v14 = *v23;
-      v15 = &unk_100070050 + 6 * v5;
+      v15 = &unk_100070050 + 6 * configCopy;
       v10 = 9;
       while (2)
       {
@@ -884,7 +884,7 @@ LABEL_43:
           }
 
           v17 = *(*(&v22 + 1) + 8 * i);
-          if ([v17 codecID] == a3 && objc_msgSend(v17, "codecID") == 6)
+          if ([v17 codecID] == d && objc_msgSend(v17, "codecID") == 6)
           {
             v18 = v15[1] - 1;
             if (([v17 supportedSamplingFreq] >> v18))
@@ -941,18 +941,18 @@ LABEL_25:
   return v10;
 }
 
-- (unsigned)determineChannelCount:(unsigned int)a3
+- (unsigned)determineChannelCount:(unsigned int)count
 {
-  v3.i32[0] = a3;
+  v3.i32[0] = count;
   v4 = vcnt_s8(v3);
   v4.i16[0] = vaddlv_u8(v4);
   return v4.i32[0];
 }
 
-- (unsigned)determineHighestChanCountSupport:(unsigned __int8)a3
+- (unsigned)determineHighestChanCountSupport:(unsigned __int8)support
 {
-  v3 = 8 - __clz(a3 << 24);
-  if (!a3)
+  v3 = 8 - __clz(support << 24);
+  if (!support)
   {
     LOBYTE(v3) = 0;
   }
@@ -960,10 +960,10 @@ LABEL_25:
   return v3;
 }
 
-- (void)createCodecConfigList:(BOOL)a3
+- (void)createCodecConfigList:(BOOL)list
 {
-  v22 = a3;
-  if (a3)
+  listCopy = list;
+  if (list)
   {
     v4 = &OBJC_IVAR___PACSInterface__sinkPacRecordSet;
   }
@@ -974,7 +974,7 @@ LABEL_25:
   }
 
   v5 = *(&self->super.super.isa + *v4);
-  if (a3)
+  if (list)
   {
     v6 = &OBJC_IVAR___PACSInterface__sinkCodecConfigArray;
   }
@@ -1007,10 +1007,10 @@ LABEL_25:
         }
 
         v13 = *(*(&v27 + 1) + 8 * i);
-        v14 = [v13 supportedSamplingFreq];
-        if (v14)
+        supportedSamplingFreq = [v13 supportedSamplingFreq];
+        if (supportedSamplingFreq)
         {
-          v15 = v14;
+          v15 = supportedSamplingFreq;
           do
           {
             if (v15)
@@ -1107,9 +1107,9 @@ LABEL_25:
           while (v15);
         }
 
-        v18 = [(PACSInterface *)self codecIDArray];
+        codecIDArray = [(PACSInterface *)self codecIDArray];
         v19 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v13 codecID]);
-        [v18 addObject:v19];
+        [codecIDArray addObject:v19];
       }
 
       v10 = [obj countByEnumeratingWithState:&v27 objects:v35 count:16];
@@ -1122,7 +1122,7 @@ LABEL_25:
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v21 = @"Source";
-    if (v22)
+    if (listCopy)
     {
       v21 = @"Sink";
     }
@@ -1141,12 +1141,12 @@ LABEL_25:
 {
   if ([(PACSInterface *)self isSinkPresent])
   {
-    v3 = [(PACSInterface *)self sinkCodecConfigArray];
-    if ([v3 count])
+    sinkCodecConfigArray = [(PACSInterface *)self sinkCodecConfigArray];
+    if ([sinkCodecConfigArray count])
     {
-      v4 = [(PACSInterface *)self sinkLocationMask];
+      sinkLocationMask = [(PACSInterface *)self sinkLocationMask];
 
-      if (v4)
+      if (sinkLocationMask)
       {
         goto LABEL_4;
       }
@@ -1171,12 +1171,12 @@ LABEL_25:
 LABEL_4:
   if ([(PACSInterface *)self isSourcePresent])
   {
-    v5 = [(PACSInterface *)self sourceCodecConfigArray];
-    if ([v5 count])
+    sourceCodecConfigArray = [(PACSInterface *)self sourceCodecConfigArray];
+    if ([sourceCodecConfigArray count])
     {
-      v6 = [(PACSInterface *)self sourceLocationMask];
+      sourceLocationMask = [(PACSInterface *)self sourceLocationMask];
 
-      if (v6)
+      if (sourceLocationMask)
       {
         goto LABEL_7;
       }
@@ -1208,35 +1208,35 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Signaling Device Is Ready", v12, 2u);
   }
 
-  v8 = [(PACSInterface *)self recordSemaphore];
-  dispatch_semaphore_signal(v8);
+  recordSemaphore = [(PACSInterface *)self recordSemaphore];
+  dispatch_semaphore_signal(recordSemaphore);
 }
 
 - (void)sendDeviceAttributes
 {
   v20 = +[NSMutableDictionary dictionary];
-  v3 = [(PACSInterface *)self sinkCodecConfigArray];
-  v4 = [v3 count];
+  sinkCodecConfigArray = [(PACSInterface *)self sinkCodecConfigArray];
+  v4 = [sinkCodecConfigArray count];
 
   if (v4)
   {
-    v5 = [(PACSInterface *)self sinkCodecConfigArray];
-    [v20 setValue:v5 forKey:@"kSinkCodecConfigArray"];
+    sinkCodecConfigArray2 = [(PACSInterface *)self sinkCodecConfigArray];
+    [v20 setValue:sinkCodecConfigArray2 forKey:@"kSinkCodecConfigArray"];
   }
 
-  v6 = [(PACSInterface *)self sourceCodecConfigArray];
-  v7 = [v6 count];
+  sourceCodecConfigArray = [(PACSInterface *)self sourceCodecConfigArray];
+  v7 = [sourceCodecConfigArray count];
 
   if (v7)
   {
-    v8 = [(PACSInterface *)self sourceCodecConfigArray];
-    [v20 setValue:v8 forKey:@"kSourceCodecConfigArray"];
+    sourceCodecConfigArray2 = [(PACSInterface *)self sourceCodecConfigArray];
+    [v20 setValue:sourceCodecConfigArray2 forKey:@"kSourceCodecConfigArray"];
   }
 
   if ([(PACSInterface *)self sinkLocationMask])
   {
-    v9 = [(PACSInterface *)self sinkPACCharacteristic];
-    v10 = [v9 count];
+    sinkPACCharacteristic = [(PACSInterface *)self sinkPACCharacteristic];
+    v10 = [sinkPACCharacteristic count];
 
     if (v10)
     {
@@ -1247,8 +1247,8 @@ LABEL_7:
 
   if ([(PACSInterface *)self sourceLocationMask])
   {
-    v12 = [(PACSInterface *)self sourcePACCharacteristic];
-    v13 = [v12 count];
+    sourcePACCharacteristic = [(PACSInterface *)self sourcePACCharacteristic];
+    v13 = [sourcePACCharacteristic count];
 
     if (v13)
     {
@@ -1257,99 +1257,99 @@ LABEL_7:
     }
   }
 
-  v15 = [(PACSInterface *)self codecIDArray];
-  v16 = [v15 count];
+  codecIDArray = [(PACSInterface *)self codecIDArray];
+  v16 = [codecIDArray count];
 
   if (v16)
   {
-    v17 = [(PACSInterface *)self codecIDArray];
-    v18 = [v17 allObjects];
-    [v20 setValue:v18 forKey:@"kCodecIDArray"];
+    codecIDArray2 = [(PACSInterface *)self codecIDArray];
+    allObjects = [codecIDArray2 allObjects];
+    [v20 setValue:allObjects forKey:@"kCodecIDArray"];
   }
 
-  v19 = [(ServiceInterface *)self serviceEventHandler];
-  (v19)[2](v19, 26, v20);
+  serviceEventHandler = [(ServiceInterface *)self serviceEventHandler];
+  (serviceEventHandler)[2](serviceEventHandler, 26, v20);
 }
 
 - (void)readSinkAudioLocations
 {
-  v3 = [(PACSInterface *)self sinkAudioLocationsCharacteristics];
+  sinkAudioLocationsCharacteristics = [(PACSInterface *)self sinkAudioLocationsCharacteristics];
 
-  if (v3)
+  if (sinkAudioLocationsCharacteristics)
   {
-    v5 = [(ServiceInterface *)self peripheral];
-    v4 = [(PACSInterface *)self sinkAudioLocationsCharacteristics];
-    [v5 readValueForCharacteristic:v4];
+    peripheral = [(ServiceInterface *)self peripheral];
+    sinkAudioLocationsCharacteristics2 = [(PACSInterface *)self sinkAudioLocationsCharacteristics];
+    [peripheral readValueForCharacteristic:sinkAudioLocationsCharacteristics2];
   }
 }
 
 - (void)readSourceAudioLocations
 {
-  v3 = [(PACSInterface *)self sourceAudioLocationsCharacteristics];
+  sourceAudioLocationsCharacteristics = [(PACSInterface *)self sourceAudioLocationsCharacteristics];
 
-  if (v3)
+  if (sourceAudioLocationsCharacteristics)
   {
-    v5 = [(ServiceInterface *)self peripheral];
-    v4 = [(PACSInterface *)self sourceAudioLocationsCharacteristics];
-    [v5 readValueForCharacteristic:v4];
+    peripheral = [(ServiceInterface *)self peripheral];
+    sourceAudioLocationsCharacteristics2 = [(PACSInterface *)self sourceAudioLocationsCharacteristics];
+    [peripheral readValueForCharacteristic:sourceAudioLocationsCharacteristics2];
   }
 }
 
 - (void)writeSinkAudioLocations
 {
-  v3 = [(PACSInterface *)self sinkAudioLocationsCharacteristics];
+  sinkAudioLocationsCharacteristics = [(PACSInterface *)self sinkAudioLocationsCharacteristics];
 
-  if (v3)
+  if (sinkAudioLocationsCharacteristics)
   {
     v8 = [DataOutputStream outputStreamWithByteOrder:1];
     [v8 writeUint32:0];
-    v4 = [v8 data];
-    v5 = [v4 mutableCopy];
+    data = [v8 data];
+    v5 = [data mutableCopy];
 
-    v6 = [(ServiceInterface *)self peripheral];
-    v7 = [(PACSInterface *)self sinkAudioLocationsCharacteristics];
-    [v6 writeValue:v5 forCharacteristic:v7 type:0];
+    peripheral = [(ServiceInterface *)self peripheral];
+    sinkAudioLocationsCharacteristics2 = [(PACSInterface *)self sinkAudioLocationsCharacteristics];
+    [peripheral writeValue:v5 forCharacteristic:sinkAudioLocationsCharacteristics2 type:0];
   }
 }
 
 - (void)writeSourceAudioLocations
 {
-  v3 = [(PACSInterface *)self sourceAudioLocationsCharacteristics];
+  sourceAudioLocationsCharacteristics = [(PACSInterface *)self sourceAudioLocationsCharacteristics];
 
-  if (v3)
+  if (sourceAudioLocationsCharacteristics)
   {
     v8 = [DataOutputStream outputStreamWithByteOrder:1];
     [v8 writeUint32:0];
-    v4 = [v8 data];
-    v5 = [v4 mutableCopy];
+    data = [v8 data];
+    v5 = [data mutableCopy];
 
-    v6 = [(ServiceInterface *)self peripheral];
-    v7 = [(PACSInterface *)self sourceAudioLocationsCharacteristics];
-    [v6 writeValue:v5 forCharacteristic:v7 type:0];
+    peripheral = [(ServiceInterface *)self peripheral];
+    sourceAudioLocationsCharacteristics2 = [(PACSInterface *)self sourceAudioLocationsCharacteristics];
+    [peripheral writeValue:v5 forCharacteristic:sourceAudioLocationsCharacteristics2 type:0];
   }
 }
 
 - (void)readAvailableContexts
 {
-  v3 = [(PACSInterface *)self availableContextCharacteristic];
+  availableContextCharacteristic = [(PACSInterface *)self availableContextCharacteristic];
 
-  if (v3)
+  if (availableContextCharacteristic)
   {
-    v5 = [(ServiceInterface *)self peripheral];
-    v4 = [(PACSInterface *)self availableContextCharacteristic];
-    [v5 readValueForCharacteristic:v4];
+    peripheral = [(ServiceInterface *)self peripheral];
+    availableContextCharacteristic2 = [(PACSInterface *)self availableContextCharacteristic];
+    [peripheral readValueForCharacteristic:availableContextCharacteristic2];
   }
 }
 
 - (void)readSupportedContexts
 {
-  v3 = [(PACSInterface *)self supportedContextCharacteristic];
+  supportedContextCharacteristic = [(PACSInterface *)self supportedContextCharacteristic];
 
-  if (v3)
+  if (supportedContextCharacteristic)
   {
-    v5 = [(ServiceInterface *)self peripheral];
-    v4 = [(PACSInterface *)self supportedContextCharacteristic];
-    [v5 readValueForCharacteristic:v4];
+    peripheral = [(ServiceInterface *)self peripheral];
+    supportedContextCharacteristic2 = [(PACSInterface *)self supportedContextCharacteristic];
+    [peripheral readValueForCharacteristic:supportedContextCharacteristic2];
   }
 }
 

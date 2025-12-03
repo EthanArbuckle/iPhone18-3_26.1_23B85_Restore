@@ -1,10 +1,10 @@
 @interface AMSPurchaseQueueBatchList
 - (AMSPurchaseQueueBatchList)init;
-- (id)batchForPurchase:(id)a3;
+- (id)batchForPurchase:(id)purchase;
 - (id)nextPurchase;
 - (unint64_t)count;
-- (void)appendBatch:(id)a3;
-- (void)popBatch:(id)a3;
+- (void)appendBatch:(id)batch;
+- (void)popBatch:(id)batch;
 @end
 
 @implementation AMSPurchaseQueueBatchList
@@ -17,8 +17,8 @@
   if (v2)
   {
     v3 = [AMSThreadSafeObject alloc];
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [(AMSThreadSafeObject *)v3 initWithObject:v4];
+    array = [MEMORY[0x1E695DF70] array];
+    v5 = [(AMSThreadSafeObject *)v3 initWithObject:array];
     backingArray = v2->_backingArray;
     v2->_backingArray = v5;
   }
@@ -32,13 +32,13 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(AMSPurchaseQueueBatchList *)self backingArray];
+  backingArray = [(AMSPurchaseQueueBatchList *)self backingArray];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __34__AMSPurchaseQueueBatchList_count__block_invoke;
   v5[3] = &unk_1E73BB260;
   v5[4] = &v6;
-  [v2 read:v5];
+  [backingArray read:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -52,17 +52,17 @@ uint64_t __34__AMSPurchaseQueueBatchList_count__block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (void)appendBatch:(id)a3
+- (void)appendBatch:(id)batch
 {
-  v4 = a3;
-  v5 = [(AMSPurchaseQueueBatchList *)self backingArray];
+  batchCopy = batch;
+  backingArray = [(AMSPurchaseQueueBatchList *)self backingArray];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__AMSPurchaseQueueBatchList_appendBatch___block_invoke;
   v7[3] = &unk_1E73BB288;
-  v8 = v4;
-  v6 = v4;
-  [v5 readWrite:v7];
+  v8 = batchCopy;
+  v6 = batchCopy;
+  [backingArray readWrite:v7];
 }
 
 id __41__AMSPurchaseQueueBatchList_appendBatch___block_invoke(uint64_t a1, void *a2)
@@ -83,13 +83,13 @@ id __41__AMSPurchaseQueueBatchList_appendBatch___block_invoke(uint64_t a1, void 
   v9 = __Block_byref_object_copy__57;
   v10 = __Block_byref_object_dispose__57;
   v11 = 0;
-  v2 = [(AMSPurchaseQueueBatchList *)self backingArray];
+  backingArray = [(AMSPurchaseQueueBatchList *)self backingArray];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __41__AMSPurchaseQueueBatchList_nextPurchase__block_invoke;
   v5[3] = &unk_1E73BB260;
   v5[4] = &v6;
-  [v2 read:v5];
+  [backingArray read:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -143,24 +143,24 @@ void __41__AMSPurchaseQueueBatchList_nextPurchase__block_invoke(uint64_t a1, voi
 LABEL_11:
 }
 
-- (id)batchForPurchase:(id)a3
+- (id)batchForPurchase:(id)purchase
 {
-  v4 = a3;
+  purchaseCopy = purchase;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__57;
   v16 = __Block_byref_object_dispose__57;
   v17 = 0;
-  v5 = [(AMSPurchaseQueueBatchList *)self backingArray];
+  backingArray = [(AMSPurchaseQueueBatchList *)self backingArray];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__AMSPurchaseQueueBatchList_batchForPurchase___block_invoke;
   v9[3] = &unk_1E73BB2B0;
-  v6 = v4;
+  v6 = purchaseCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 read:v9];
+  [backingArray read:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -214,17 +214,17 @@ void __46__AMSPurchaseQueueBatchList_batchForPurchase___block_invoke(uint64_t a1
 LABEL_11:
 }
 
-- (void)popBatch:(id)a3
+- (void)popBatch:(id)batch
 {
-  v4 = a3;
-  v5 = [(AMSPurchaseQueueBatchList *)self backingArray];
+  batchCopy = batch;
+  backingArray = [(AMSPurchaseQueueBatchList *)self backingArray];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__AMSPurchaseQueueBatchList_popBatch___block_invoke;
   v7[3] = &unk_1E73BB288;
-  v8 = v4;
-  v6 = v4;
-  [v5 readWrite:v7];
+  v8 = batchCopy;
+  v6 = batchCopy;
+  [backingArray readWrite:v7];
 }
 
 id __38__AMSPurchaseQueueBatchList_popBatch___block_invoke(uint64_t a1, void *a2)

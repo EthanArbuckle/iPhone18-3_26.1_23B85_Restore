@@ -1,7 +1,7 @@
 @interface SCATModernMenuGestureFreehandMoreSheet
 - (id)makeMenuItemsIfNeeded;
 - (id)menuItemStruts;
-- (void)menuItemWasActivated:(id)a3;
+- (void)menuItemWasActivated:(id)activated;
 @end
 
 @implementation SCATModernMenuGestureFreehandMoreSheet
@@ -19,38 +19,38 @@
 
   if (AXDeviceIsPad())
   {
-    v8 = [(SCATModernMenuGestureFreehandSheetBase *)self autoPressLiftItems];
-    [v3 addObjectsFromArray:v8];
+    autoPressLiftItems = [(SCATModernMenuGestureFreehandSheetBase *)self autoPressLiftItems];
+    [v3 addObjectsFromArray:autoPressLiftItems];
   }
 
-  v9 = [(SCATModernMenuGestureFreehandSheetBase *)self moveToolbarMenuItem];
-  [v3 addObject:v9];
+  moveToolbarMenuItem = [(SCATModernMenuGestureFreehandSheetBase *)self moveToolbarMenuItem];
+  [v3 addObject:moveToolbarMenuItem];
 
   return v3;
 }
 
-- (void)menuItemWasActivated:(id)a3
+- (void)menuItemWasActivated:(id)activated
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:@"freehand_slower"])
+  activatedCopy = activated;
+  identifier = [activatedCopy identifier];
+  if ([identifier isEqualToString:@"freehand_slower"])
   {
-    v6 = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
-    [v6 decreaseVelocityForFreehandSheet:self];
+    delegate = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
+    [delegate decreaseVelocityForFreehandSheet:self];
   }
 
   else
   {
-    if (![v5 isEqualToString:@"freehand_faster"])
+    if (![identifier isEqualToString:@"freehand_faster"])
     {
       v7.receiver = self;
       v7.super_class = SCATModernMenuGestureFreehandMoreSheet;
-      [(SCATModernMenuGestureFreehandSheetBase *)&v7 menuItemWasActivated:v4];
+      [(SCATModernMenuGestureFreehandSheetBase *)&v7 menuItemWasActivated:activatedCopy];
       goto LABEL_7;
     }
 
-    v6 = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
-    [v6 increaseVelocityForFreehandSheet:self];
+    delegate = [(SCATModernMenuGestureFreehandSheetBase *)self delegate];
+    [delegate increaseVelocityForFreehandSheet:self];
   }
 
 LABEL_7:

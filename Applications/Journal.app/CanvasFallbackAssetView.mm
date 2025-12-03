@@ -1,10 +1,10 @@
 @interface CanvasFallbackAssetView
-- (_TtC7Journal23CanvasFallbackAssetView)initWithCoder:(id)a3;
+- (_TtC7Journal23CanvasFallbackAssetView)initWithCoder:(id)coder;
 @end
 
 @implementation CanvasFallbackAssetView
 
-- (_TtC7Journal23CanvasFallbackAssetView)initWithCoder:(id)a3
+- (_TtC7Journal23CanvasFallbackAssetView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC7Journal23CanvasFallbackAssetView_symbolImageView;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(UIImageView) init];

@@ -1,36 +1,36 @@
 @interface CMIOExtensionSample
-+ (id)sampleWithCMSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (BOOL)isEqual:(id)a3;
-- (CMIOExtensionSample)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (CMIOExtensionSample)initWithCoder:(id)a3;
-- (CMIOExtensionSample)initWithXPCDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)sampleWithCMSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (BOOL)isEqual:(id)equal;
+- (CMIOExtensionSample)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (CMIOExtensionSample)initWithCoder:(id)coder;
+- (CMIOExtensionSample)initWithXPCDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCDictionary;
 - (id)description;
 - (void)copyXPCDictionary;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMIOExtensionSample
 
-+ (id)sampleWithCMSampleBuffer:(opaqueCMSampleBuffer *)a3
++ (id)sampleWithCMSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithCMSampleBuffer:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithCMSampleBuffer:buffer];
 
   return v3;
 }
 
-- (CMIOExtensionSample)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (CMIOExtensionSample)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v9.receiver = self;
   v9.super_class = CMIOExtensionSample;
   v4 = [(CMIOExtensionSample *)&v9 init];
   if (v4)
   {
-    if (a3)
+    if (buffer)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(buffer);
       v4->_sampleBuffer = v5;
       FormatDescription = CMSampleBufferGetFormatDescription(v5);
       MediaType = CMFormatDescriptionGetMediaType(FormatDescription);
@@ -86,9 +86,9 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -100,18 +100,18 @@
   }
 
   sampleBuffer = self->_sampleBuffer;
-  return sampleBuffer == [a3 sampleBuffer];
+  return sampleBuffer == [equal sampleBuffer];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CMIOExtensionSample allocWithZone:a3];
+  v4 = [CMIOExtensionSample allocWithZone:zone];
   sampleBuffer = self->_sampleBuffer;
 
   return [(CMIOExtensionSample *)v4 initWithCMSampleBuffer:sampleBuffer];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -119,17 +119,17 @@
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"%@ can only be encoded as part of an xpc message", self}];
   }
 
-  v5 = [(CMIOExtensionSample *)self copyXPCDictionary];
-  if (v5)
+  copyXPCDictionary = [(CMIOExtensionSample *)self copyXPCDictionary];
+  if (copyXPCDictionary)
   {
-    v6 = v5;
-    [a3 encodeXPCObject:v5 forKey:@"sampleBuffer"];
+    v6 = copyXPCDictionary;
+    [coder encodeXPCObject:copyXPCDictionary forKey:@"sampleBuffer"];
 
     xpc_release(v6);
   }
 }
 
-- (CMIOExtensionSample)initWithCoder:(id)a3
+- (CMIOExtensionSample)initWithCoder:(id)coder
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -137,7 +137,7 @@
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"%@ can only be encoded as part of an xpc message", self}];
   }
 
-  v5 = [a3 decodeXPCObjectOfType:MEMORY[0x277D86468] forKey:@"sampleBuffer"];
+  v5 = [coder decodeXPCObjectOfType:MEMORY[0x277D86468] forKey:@"sampleBuffer"];
   if (v5)
   {
 
@@ -255,15 +255,15 @@ LABEL_25:
   return v3;
 }
 
-- (CMIOExtensionSample)initWithXPCDictionary:(id)a3
+- (CMIOExtensionSample)initWithXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v36 = 0;
     blockBufferOut = 0;
     formatDescriptionOut = 0;
     pixelBufferOut = 0;
-    value = xpc_dictionary_get_value(a3, "buffer");
+    value = xpc_dictionary_get_value(dictionary, "buffer");
     if (!value)
     {
       v12 = CMIOLog();
@@ -323,7 +323,7 @@ LABEL_25:
           }
         }
 
-        v21 = xpc_dictionary_get_value(a3, "iosurface");
+        v21 = xpc_dictionary_get_value(dictionary, "iosurface");
         if (v21)
         {
           v22 = IOSurfaceLookupFromXPCObject(v21);

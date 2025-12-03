@@ -31,7 +31,7 @@
   else
   {
     LOBYTE(v19) = 1;
-    v17 = [a1 extensionForContentType:v12 allowExtensionsForParentTypes:0 applicationBundleIdentifier:v13 extensionPath:0 extensionType:0 generationType:a6 shouldUseRestrictedExtension:v19];
+    v17 = [self extensionForContentType:v12 allowExtensionsForParentTypes:0 applicationBundleIdentifier:v13 extensionPath:0 extensionType:0 generationType:a6 shouldUseRestrictedExtension:v19];
     v18 = v17;
     if (v17)
     {

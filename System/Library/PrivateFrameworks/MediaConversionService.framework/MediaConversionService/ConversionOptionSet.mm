@@ -1,17 +1,17 @@
 @interface ConversionOptionSet
-+ (CGSize)sizeForImageAtPath:(id)a3;
++ (CGSize)sizeForImageAtPath:(id)path;
 + (id)knownConversionTypes;
-- (BOOL)processConversionOptionKey:(id)a3 valueString:(id)a4;
+- (BOOL)processConversionOptionKey:(id)key valueString:(id)string;
 - (ConversionOptionSet)init;
-- (double)scaleFactorForInputSize:(CGSize)a3 sharedStreamsSizeSpecificationString:(id)a4;
-- (id)arrayOfStringsForString:(id)a3;
-- (id)cmTimeRangeDictionaryForString:(id)a3;
-- (id)conversionOptionValueForString:(id)a3 valueType:(unint64_t)a4;
-- (id)metadataPolicyForString:(id)a3;
-- (id)pfVideoAdjustmentsDictionaryForString:(id)a3;
-- (id)photosAdjustmentsDictionaryForAdjustmentsFileAtPath:(id)a3;
-- (id)photosAdjustmentsDictionaryForString:(id)a3;
-- (id)presetListForMapping:(id)a3;
+- (double)scaleFactorForInputSize:(CGSize)size sharedStreamsSizeSpecificationString:(id)string;
+- (id)arrayOfStringsForString:(id)string;
+- (id)cmTimeRangeDictionaryForString:(id)string;
+- (id)conversionOptionValueForString:(id)string valueType:(unint64_t)type;
+- (id)metadataPolicyForString:(id)string;
+- (id)pfVideoAdjustmentsDictionaryForString:(id)string;
+- (id)photosAdjustmentsDictionaryForAdjustmentsFileAtPath:(id)path;
+- (id)photosAdjustmentsDictionaryForString:(id)string;
+- (id)presetListForMapping:(id)mapping;
 - (id)presetNameToOptionsMappingForVideoTranscoding;
 - (int)checkDestinationExists;
 - (int)validateAndProcess;
@@ -19,12 +19,12 @@
 
 @implementation ConversionOptionSet
 
-- (id)photosAdjustmentsDictionaryForAdjustmentsFileAtPath:(id)a3
+- (id)photosAdjustmentsDictionaryForAdjustmentsFileAtPath:(id)path
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pathCopy = path;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:v3];
+  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
   v17 = 0;
   v6 = [v4 dictionaryWithContentsOfURL:v5 error:&v17];
   v7 = v17;
@@ -47,7 +47,7 @@
 
     if (v12 || v10 == 0)
     {
-      [MediaConversionServiceCommandLineDriver outputError:@"Unable to parse photos adjustment option string. Interpreted as file path, but some expected information is missing in file %@\n", v3];
+      [MediaConversionServiceCommandLineDriver outputError:@"Unable to parse photos adjustment option string. Interpreted as file path, but some expected information is missing in file %@\n", pathCopy];
       v14 = 0;
     }
 
@@ -74,10 +74,10 @@
   return v14;
 }
 
-- (id)pfVideoAdjustmentsDictionaryForString:(id)a3
+- (id)pfVideoAdjustmentsDictionaryForString:(id)string
 {
   v18[5] = *MEMORY[0x277D85DE8];
-  v3 = [a3 componentsSeparatedByString:@":"];
+  v3 = [string componentsSeparatedByString:@":"];
   if ([v3 count] == 5)
   {
     v4 = [v3 objectAtIndexedSubscript:0];
@@ -87,10 +87,10 @@
     if (v7)
     {
       v8 = [v3 objectAtIndexedSubscript:3];
-      v9 = [v8 integerValue];
+      integerValue = [v8 integerValue];
 
       v10 = [v3 objectAtIndexedSubscript:4];
-      v11 = [v10 integerValue];
+      integerValue2 = [v10 integerValue];
 
       v17[0] = @"adjustmentFormatIdentifier";
       v17[1] = @"adjustmentFormatVersion";
@@ -99,10 +99,10 @@
       v18[2] = v7;
       v17[2] = @"adjustmentData";
       v17[3] = @"adjustmentBaseVersion";
-      v12 = [MEMORY[0x277CCABB0] numberWithInteger:v9];
+      v12 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
       v18[3] = v12;
       v17[4] = @"adjustmentRenderTypes";
-      v13 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
+      v13 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue2];
       v18[4] = v13;
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:5];
     }
@@ -125,22 +125,22 @@
   return v14;
 }
 
-- (id)photosAdjustmentsDictionaryForString:(id)a3
+- (id)photosAdjustmentsDictionaryForString:(id)string
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 stringByExpandingTildeInPath];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 fileExistsAtPath:v5];
+  stringCopy = string;
+  stringByExpandingTildeInPath = [stringCopy stringByExpandingTildeInPath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:stringByExpandingTildeInPath];
 
   if (v7)
   {
-    v8 = [(ConversionOptionSet *)self photosAdjustmentsDictionaryForAdjustmentsFileAtPath:v5];
+    v8 = [(ConversionOptionSet *)self photosAdjustmentsDictionaryForAdjustmentsFileAtPath:stringByExpandingTildeInPath];
   }
 
   else
   {
-    v9 = [v4 componentsSeparatedByString:@":"];
+    v9 = [stringCopy componentsSeparatedByString:@":"];
     if ([v9 count] == 3)
     {
       v10 = [v9 objectAtIndexedSubscript:0];
@@ -178,29 +178,29 @@
   return v8;
 }
 
-- (id)cmTimeRangeDictionaryForString:(id)a3
+- (id)cmTimeRangeDictionaryForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"^(\\d+)/(\\d+):(\\d+)/(\\d+)$" options:0 error:0];
-  v5 = [v4 firstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  v5 = [v4 firstMatchInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
   v6 = v5;
   if (v5)
   {
     memset(&v28, 0, sizeof(v28));
     v7 = [v5 rangeAtIndex:1];
-    v9 = [v3 substringWithRange:{v7, v8}];
-    v10 = [v9 integerValue];
+    v9 = [stringCopy substringWithRange:{v7, v8}];
+    integerValue = [v9 integerValue];
     v11 = [v6 rangeAtIndex:2];
-    v13 = [v3 substringWithRange:{v11, v12}];
-    CMTimeMake(&v28, v10, [v13 integerValue]);
+    v13 = [stringCopy substringWithRange:{v11, v12}];
+    CMTimeMake(&v28, integerValue, [v13 integerValue]);
 
     memset(&v27, 0, sizeof(v27));
     v14 = [v6 rangeAtIndex:3];
-    v16 = [v3 substringWithRange:{v14, v15}];
-    v17 = [v16 integerValue];
+    v16 = [stringCopy substringWithRange:{v14, v15}];
+    integerValue2 = [v16 integerValue];
     v18 = [v6 rangeAtIndex:4];
-    v20 = [v3 substringWithRange:{v18, v19}];
-    CMTimeMake(&v27, v17, [v20 integerValue]);
+    v20 = [stringCopy substringWithRange:{v18, v19}];
+    CMTimeMake(&v27, integerValue2, [v20 integerValue]);
 
     memset(&v26, 0, sizeof(v26));
     start.start = v28;
@@ -213,42 +213,42 @@
 
   else
   {
-    [MediaConversionServiceCommandLineDriver outputError:@"Unable to parse string %@ as a CMTimeRange. Expected format is <value>/<timescale>:<value>/<timescale>, the first pair is the start time, the second pair is the duration.\n", v3];
+    [MediaConversionServiceCommandLineDriver outputError:@"Unable to parse string %@ as a CMTimeRange. Expected format is <value>/<timescale>:<value>/<timescale>, the first pair is the start time, the second pair is the duration.\n", stringCopy];
     v22 = 0;
   }
 
   return v22;
 }
 
-- (id)metadataPolicyForString:(id)a3
+- (id)metadataPolicyForString:(id)string
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isEqualToString:@"default"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"default"])
   {
     v4 = MEMORY[0x277D3B418];
-    v5 = [MEMORY[0x277D3B420] standardPolicy];
-    v13[0] = v5;
-    v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-    v7 = [v4 policyWithPolicies:v6];
+    standardPolicy = [MEMORY[0x277D3B420] standardPolicy];
+    v13[0] = standardPolicy;
+    livePhotoPairingIdentifierMetadataKey = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
+    v7 = [v4 policyWithPolicies:livePhotoPairingIdentifierMetadataKey];
 LABEL_5:
     v10 = v7;
 
     goto LABEL_7;
   }
 
-  if ([v3 hasPrefix:@"set-livephoto-id:"])
+  if ([stringCopy hasPrefix:@"set-livephoto-id:"])
   {
-    v8 = [v3 componentsSeparatedByString:@":"];
-    v5 = [v8 lastObject];
+    v8 = [stringCopy componentsSeparatedByString:@":"];
+    standardPolicy = [v8 lastObject];
 
     v9 = MEMORY[0x277D3B410];
-    v6 = [MEMORY[0x277D3B458] livePhotoPairingIdentifierMetadataKey];
-    v7 = [v9 policyWithKey:v6 value:v5];
+    livePhotoPairingIdentifierMetadataKey = [MEMORY[0x277D3B458] livePhotoPairingIdentifierMetadataKey];
+    v7 = [v9 policyWithKey:livePhotoPairingIdentifierMetadataKey value:standardPolicy];
     goto LABEL_5;
   }
 
-  [MediaConversionServiceCommandLineDriver outputError:@"metadata policy %@ is not supported\n", v3];
+  [MediaConversionServiceCommandLineDriver outputError:@"metadata policy %@ is not supported\n", stringCopy];
   v10 = 0;
 LABEL_7:
 
@@ -257,11 +257,11 @@ LABEL_7:
   return v10;
 }
 
-- (id)arrayOfStringsForString:(id)a3
+- (id)arrayOfStringsForString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 substringToIndex:1];
-  v5 = [v3 componentsSeparatedByString:v4];
+  stringCopy = string;
+  v4 = [stringCopy substringToIndex:1];
+  v5 = [stringCopy componentsSeparatedByString:v4];
 
   v6 = [v5 count];
   v10[0] = MEMORY[0x277D85DD0];
@@ -287,96 +287,96 @@ uint64_t __47__ConversionOptionSet_arrayOfStringsForString___block_invoke(uint64
   return a3;
 }
 
-- (id)conversionOptionValueForString:(id)a3 valueType:(unint64_t)a4
+- (id)conversionOptionValueForString:(id)string valueType:(unint64_t)type
 {
-  v6 = a3;
+  stringCopy = string;
   v7 = objc_opt_new();
   [v7 setNumberStyle:1];
   v8 = objc_opt_new();
   v9 = v8;
   v10 = 0;
-  if (a4 <= 5)
+  if (type <= 5)
   {
-    if (a4 <= 2)
+    if (type <= 2)
     {
-      if (a4)
+      if (type)
       {
-        if (a4 == 1)
+        if (type == 1)
         {
-          v11 = v6;
+          v11 = stringCopy;
         }
 
         else
         {
-          if (a4 != 2)
+          if (type != 2)
           {
             goto LABEL_26;
           }
 
-          v11 = [v7 numberFromString:v6];
+          v11 = [v7 numberFromString:stringCopy];
         }
 
         goto LABEL_25;
       }
 
-      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unable to create value from string %@ for unknown value type", v6}];
+      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unable to create value from string %@ for unknown value type", stringCopy}];
 LABEL_16:
       v10 = 0;
       goto LABEL_26;
     }
 
-    if (a4 == 3)
+    if (type == 3)
     {
-      v11 = [v8 dateFromString:v6];
+      v11 = [v8 dateFromString:stringCopy];
       goto LABEL_25;
     }
 
-    if (a4 == 4)
+    if (type == 4)
     {
-      [(ConversionOptionSet *)self pfVideoAdjustmentsDictionaryForString:v6];
+      [(ConversionOptionSet *)self pfVideoAdjustmentsDictionaryForString:stringCopy];
     }
 
     else
     {
-      [(ConversionOptionSet *)self cmTimeRangeDictionaryForString:v6];
+      [(ConversionOptionSet *)self cmTimeRangeDictionaryForString:stringCopy];
     }
   }
 
   else
   {
-    if (a4 > 8)
+    if (type > 8)
     {
-      if (a4 - 10 >= 3)
+      if (type - 10 >= 3)
       {
-        if (a4 != 9)
+        if (type != 9)
         {
           goto LABEL_26;
         }
 
-        v11 = [(ConversionOptionSet *)self photosAdjustmentsDictionaryForString:v6];
+        v11 = [(ConversionOptionSet *)self photosAdjustmentsDictionaryForString:stringCopy];
         goto LABEL_25;
       }
 
       goto LABEL_15;
     }
 
-    if (a4 == 6)
+    if (type == 6)
     {
 LABEL_15:
-      v12 = off_27989B2B0[a4];
+      v12 = off_27989B2B0[type];
       [MediaConversionServiceCommandLineDriver outputError:@"Value type %@ is not supported\n", v12];
 
       goto LABEL_16;
     }
 
-    if (a4 == 7)
+    if (type == 7)
     {
-      [(ConversionOptionSet *)self arrayOfStringsForString:v6];
+      [(ConversionOptionSet *)self arrayOfStringsForString:stringCopy];
     }
 
     else
     {
-      [(ConversionOptionSet *)self metadataPolicyForString:v6];
+      [(ConversionOptionSet *)self metadataPolicyForString:stringCopy];
     }
   }
   v11 = ;
@@ -387,12 +387,12 @@ LABEL_26:
   return v10;
 }
 
-- (double)scaleFactorForInputSize:(CGSize)a3 sharedStreamsSizeSpecificationString:(id)a4
+- (double)scaleFactorForInputSize:(CGSize)size sharedStreamsSizeSpecificationString:(id)string
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a4;
-  v7 = [v6 componentsSeparatedByString:@":"];
+  height = size.height;
+  width = size.width;
+  stringCopy = string;
+  v7 = [stringCopy componentsSeparatedByString:@":"];
   if ([v7 count] == 3)
   {
     v8 = [v7 objectAtIndexedSubscript:0];
@@ -455,22 +455,22 @@ LABEL_26:
 
   else
   {
-    [MediaConversionServiceCommandLineDriver outputError:@"Unable to get values from size specification string %@\n", v6];
+    [MediaConversionServiceCommandLineDriver outputError:@"Unable to get values from size specification string %@\n", stringCopy];
     v21 = 0.0;
   }
 
   return v21;
 }
 
-- (BOOL)processConversionOptionKey:(id)a3 valueString:(id)a4
+- (BOOL)processConversionOptionKey:(id)key valueString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  stringCopy = string;
   if (!self->_conversionOptions)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     conversionOptions = self->_conversionOptions;
-    self->_conversionOptions = v8;
+    self->_conversionOptions = dictionary;
   }
 
   if (processConversionOptionKey_valueString__onceToken != -1)
@@ -478,49 +478,49 @@ LABEL_26:
     dispatch_once(&processConversionOptionKey_valueString__onceToken, &__block_literal_global_743);
   }
 
-  if (![v6 isEqualToString:@"SharedStreamsDimensions"])
+  if (![keyCopy isEqualToString:@"SharedStreamsDimensions"])
   {
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"PAMediaConversionServiceOption%@Key", v6];
-    v17 = [processConversionOptionKey_valueString__knownConversionOptions objectForKeyedSubscript:v16];
+    keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"PAMediaConversionServiceOption%@Key", keyCopy];
+    v17 = [processConversionOptionKey_valueString__knownConversionOptions objectForKeyedSubscript:keyCopy];
     if (v17)
     {
-      v18 = [(NSMutableDictionary *)self->_conversionOptions objectForKeyedSubscript:v16];
+      v18 = [(NSMutableDictionary *)self->_conversionOptions objectForKeyedSubscript:keyCopy];
 
       if (!v18)
       {
-        v20 = [v17 integerValue];
-        v21 = [(ConversionOptionSet *)self conversionOptionValueForString:v7 valueType:v20];
+        integerValue = [v17 integerValue];
+        v21 = [(ConversionOptionSet *)self conversionOptionValueForString:stringCopy valueType:integerValue];
         v15 = v21 != 0;
         if (v21)
         {
-          [(NSMutableDictionary *)self->_conversionOptions setObject:v21 forKeyedSubscript:v16];
+          [(NSMutableDictionary *)self->_conversionOptions setObject:v21 forKeyedSubscript:keyCopy];
         }
 
         else
         {
-          if (v20 > 0xC)
+          if (integerValue > 0xC)
           {
             v22 = 0;
           }
 
           else
           {
-            v22 = off_27989B2B0[v20];
+            v22 = off_27989B2B0[integerValue];
           }
 
           v23 = v22;
-          [MediaConversionServiceCommandLineDriver outputError:@"Unable to create value of type %@ from string '%@' for option '%@'\n", v23, v7, v6];
+          [MediaConversionServiceCommandLineDriver outputError:@"Unable to create value of type %@ from string '%@' for option '%@'\n", v23, stringCopy, keyCopy];
         }
 
         goto LABEL_30;
       }
 
-      [MediaConversionServiceCommandLineDriver outputError:@"Conversion option '%@' passed more than once, must be unique\n", v6];
+      [MediaConversionServiceCommandLineDriver outputError:@"Conversion option '%@' passed more than once, must be unique\n", keyCopy];
     }
 
     else
     {
-      [MediaConversionServiceCommandLineDriver outputError:@"Unknown conversion option '%@'\n", v6];
+      [MediaConversionServiceCommandLineDriver outputError:@"Unknown conversion option '%@'\n", keyCopy];
     }
 
     LOBYTE(v15) = 0;
@@ -546,7 +546,7 @@ LABEL_24:
     goto LABEL_31;
   }
 
-  [(ConversionOptionSet *)self scaleFactorForInputSize:v7 sharedStreamsSizeSpecificationString:?];
+  [(ConversionOptionSet *)self scaleFactorForInputSize:stringCopy sharedStreamsSizeSpecificationString:?];
   if (v13 == 0.0)
   {
     v19 = @"Unable to determine scale factor\n";
@@ -650,10 +650,10 @@ LABEL_31:
   return v14;
 }
 
-- (id)presetListForMapping:(id)a3
+- (id)presetListForMapping:(id)mapping
 {
-  v3 = [a3 allKeys];
-  v4 = [v3 componentsJoinedByString:{@", "}];
+  allKeys = [mapping allKeys];
+  v4 = [allKeys componentsJoinedByString:{@", "}];
 
   return v4;
 }
@@ -661,19 +661,19 @@ LABEL_31:
 - (int)checkDestinationExists
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [MEMORY[0x277CBEB18] array];
-  if (self->_destinationPath && [v3 fileExistsAtPath:?])
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  array = [MEMORY[0x277CBEB18] array];
+  if (self->_destinationPath && [defaultManager fileExistsAtPath:?])
   {
-    [v4 addObject:self->_destinationPath];
+    [array addObject:self->_destinationPath];
   }
 
-  if (self->_destinationPathVideoComplement && [v3 fileExistsAtPath:?])
+  if (self->_destinationPathVideoComplement && [defaultManager fileExistsAtPath:?])
   {
-    [v4 addObject:self->_destinationPathVideoComplement];
+    [array addObject:self->_destinationPathVideoComplement];
   }
 
-  if (![v4 count])
+  if (![array count])
   {
 LABEL_18:
     v14 = 0;
@@ -686,7 +686,7 @@ LABEL_18:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = v4;
+    v5 = array;
     v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v6)
     {
@@ -703,7 +703,7 @@ LABEL_18:
 
           v10 = *(*(&v19 + 1) + 8 * i);
           v18 = 0;
-          v11 = [v3 removeItemAtPath:v10 error:&v18];
+          v11 = [defaultManager removeItemAtPath:v10 error:&v18];
           v12 = v18;
           v13 = v12;
           if ((v11 & 1) == 0)
@@ -727,7 +727,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v15 = [v4 componentsJoinedByString:{@", "}];
+  v15 = [array componentsJoinedByString:{@", "}];
   [MediaConversionServiceCommandLineDriver outputError:@"Destination path(s) already exist(s): %@. Use --replace option to overwrite existing output files.\n", v15];
 
 LABEL_21:
@@ -741,8 +741,8 @@ LABEL_22:
 - (int)validateAndProcess
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() knownConversionTypes];
-  v4 = [v3 containsObject:self->_conversionType];
+  knownConversionTypes = [objc_opt_class() knownConversionTypes];
+  v4 = [knownConversionTypes containsObject:self->_conversionType];
 
   if (v4)
   {
@@ -779,19 +779,19 @@ LABEL_22:
       [MediaConversionServiceCommandLineDriver output:@"%@\n", v8];
 LABEL_17:
 
-      v7 = 64;
+      checkDestinationExists = 64;
       goto LABEL_18;
     }
 
-    v16 = [MEMORY[0x277CCAA00] defaultManager];
-    if ([v16 fileExistsAtPath:self->_sourcePath])
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if ([defaultManager fileExistsAtPath:self->_sourcePath])
     {
-      v7 = [(ConversionOptionSet *)self checkDestinationExists];
-      if (!v7)
+      checkDestinationExists = [(ConversionOptionSet *)self checkDestinationExists];
+      if (!checkDestinationExists)
       {
-        v17 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         conversionOptions = self->_conversionOptions;
-        self->_conversionOptions = v17;
+        self->_conversionOptions = dictionary;
 
         [(NSMutableDictionary *)self->_conversionOptions setObject:@"photosctl media-conversion" forKeyedSubscript:@"PAMediaConversionServiceOptionRequestReasonKey"];
         v34 = 0u;
@@ -868,7 +868,7 @@ LABEL_38:
               [MediaConversionServiceCommandLineDriver output:@"Conversion options: %@\n", self->_conversionOptions];
             }
 
-            v7 = 0;
+            checkDestinationExists = 0;
             goto LABEL_48;
           }
 
@@ -882,14 +882,14 @@ LABEL_38:
 
         [MediaConversionServiceCommandLineDriver outputError:v31];
 LABEL_47:
-        v7 = 65;
+        checkDestinationExists = 65;
       }
     }
 
     else
     {
       [MediaConversionServiceCommandLineDriver outputError:@"Source path does not exist: %@\n", self->_sourcePath];
-      v7 = 66;
+      checkDestinationExists = 66;
     }
 
 LABEL_48:
@@ -897,14 +897,14 @@ LABEL_48:
     goto LABEL_18;
   }
 
-  v5 = [objc_opt_class() knownConversionTypes];
-  v6 = [v5 componentsJoinedByString:{@", "}];
+  knownConversionTypes2 = [objc_opt_class() knownConversionTypes];
+  v6 = [knownConversionTypes2 componentsJoinedByString:{@", "}];
   [MediaConversionServiceCommandLineDriver output:@"Please specify a valid conversion type: %@\n", v6];
 
-  v7 = 65;
+  checkDestinationExists = 65;
 LABEL_18:
   v14 = *MEMORY[0x277D85DE8];
-  return v7;
+  return checkDestinationExists;
 }
 
 - (ConversionOptionSet)init
@@ -914,9 +914,9 @@ LABEL_18:
   v2 = [(ConversionOptionSet *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     conversionOptionInputKeyValuePairs = v2->_conversionOptionInputKeyValuePairs;
-    v2->_conversionOptionInputKeyValuePairs = v3;
+    v2->_conversionOptionInputKeyValuePairs = array;
 
     v2->_repeatCount = 1;
   }
@@ -924,17 +924,17 @@ LABEL_18:
   return v2;
 }
 
-+ (CGSize)sizeForImageAtPath:(id)a3
++ (CGSize)sizeForImageAtPath:(id)path
 {
-  v3 = [MEMORY[0x277CBEBC0] fileURLWithPath:a3];
+  v3 = [MEMORY[0x277CBEBC0] fileURLWithPath:path];
   v4 = [PAMediaConversionServiceImagingUtilities primaryImagePropertiesForFileAtURL:v3];
   v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CD3450]];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
   v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277CD3448]];
-  v8 = [v7 integerValue];
+  integerValue2 = [v7 integerValue];
 
-  v9 = v6;
-  v10 = v8;
+  v9 = integerValue;
+  v10 = integerValue2;
   result.height = v10;
   result.width = v9;
   return result;

@@ -1,9 +1,9 @@
 @interface MPSCNNPoolingMax
 - (MPSCNNPoolingMax)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSCNNPoolingMax)initWithDevice:(id)device kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight strideInPixelsX:(NSUInteger)strideInPixelsX strideInPixelsY:(NSUInteger)strideInPixelsY;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)resultStateForSourceImage:(id)a3 sourceStates:(id)a4 destinationImage:(id)a5;
-- (id)temporaryResultStateForCommandBuffer:(id)a3 sourceImage:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)resultStateForSourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage;
+- (id)temporaryResultStateForCommandBuffer:(id)buffer sourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage;
 @end
 
 @implementation MPSCNNPoolingMax
@@ -44,11 +44,11 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v22.receiver = self;
   v22.super_class = MPSCNNPoolingMax;
-  v5 = [(MPSCNNPooling *)&v22 copyWithZone:a3 device:a4];
+  v5 = [(MPSCNNPooling *)&v22 copyWithZone:zone device:device];
   v13 = v5;
   if (v5)
   {
@@ -63,14 +63,14 @@
   return v13;
 }
 
-- (id)resultStateForSourceImage:(id)a3 sourceStates:(id)a4 destinationImage:(id)a5
+- (id)resultStateForSourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage
 {
   kernelWidth_low = LOWORD(self->super.super._kernelWidth);
   kernelHeight_low = LOWORD(self->super.super._kernelHeight);
   LOWORD(v108) = self->super.super._kernelWidth;
   v103 = __PAIR64__(kernelHeight_low, kernelWidth_low);
   v13 = vand_s8(__PAIR64__(kernelHeight_low, kernelWidth_low), 0xFFFF0000FFFFLL);
-  objc_msgSend_offset(self, a2, a3, a4, a5, v5, v6, v7);
+  objc_msgSend_offset(self, a2, image, states, destinationImage, v5, v6, v7);
   v14.i16[0] = v111;
   v102 = v14;
   objc_msgSend_offset(self, v15, v16, v17, v18, v19, v20, v21);
@@ -83,10 +83,10 @@
   v38 = objc_msgSend_strideInPixelsY(self, v31, v32, v33, v34, v35, v36, v37);
   HIWORD(v106) = WORD2(v104);
   LOWORD(v106) = v104;
-  v46 = objc_msgSend_width(a5, v39, v40, v41, v42, v43, v44, v45);
-  v54 = objc_msgSend_height(a5, v47, v48, v49, v50, v51, v52, v53);
-  v62 = objc_msgSend_width(a3, v55, v56, v57, v58, v59, v60, v61);
-  v70 = objc_msgSend_height(a3, v63, v64, v65, v66, v67, v68, v69);
+  v46 = objc_msgSend_width(destinationImage, v39, v40, v41, v42, v43, v44, v45);
+  v54 = objc_msgSend_height(destinationImage, v47, v48, v49, v50, v51, v52, v53);
+  v62 = objc_msgSend_width(image, v55, v56, v57, v58, v59, v60, v61);
+  v70 = objc_msgSend_height(image, v63, v64, v65, v66, v67, v68, v69);
   v75.i64[1] = -1;
   v76.i32[0] = v106 << 16;
   v76.i16[3] = v38;
@@ -103,10 +103,10 @@
   v75.i64[0] = __PAIR64__(v70, v62);
   v77.i32[0] = vmovn_s32(vcgtq_s32(v75, v80)).u32[0];
   v77.i32[1] = vmovn_s32(vcgtq_s32(v80, v75)).i32[1];
-  if ((vminv_u16(v77) & 1) != 0 && self->super.super._kernelWidth <= 0xF && self->super.super._kernelHeight <= 0xF && *(a3 + *MEMORY[0x277CD7310]) < 2uLL)
+  if ((vminv_u16(v77) & 1) != 0 && self->super.super._kernelWidth <= 0xF && self->super.super._kernelHeight <= 0xF && *(image + *MEMORY[0x277CD7310]) < 2uLL)
   {
-    v82 = sub_239D05FA8(0, self, a3, a5, v71, v72, v73, v74);
-    objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v83, v82, a3, a4, a5, v84, v85);
+    v82 = sub_239D05FA8(0, self, image, destinationImage, v71, v72, v73, v74);
+    objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v83, v82, image, states, destinationImage, v84, v85);
     if ((*(&self->super.super.super.super.isa + *MEMORY[0x277CD7378]) & 0x10) != 0)
     {
       v86 = MEMORY[0x277CCACA8];
@@ -123,18 +123,18 @@
   {
     v109.receiver = self;
     v109.super_class = MPSCNNPoolingMax;
-    return [(MPSCNNKernel *)&v109 resultStateForSourceImage:a3 sourceStates:a4 destinationImage:a5];
+    return [(MPSCNNKernel *)&v109 resultStateForSourceImage:image sourceStates:states destinationImage:destinationImage];
   }
 }
 
-- (id)temporaryResultStateForCommandBuffer:(id)a3 sourceImage:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6
+- (id)temporaryResultStateForCommandBuffer:(id)buffer sourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage
 {
   kernelWidth_low = LOWORD(self->super.super._kernelWidth);
   kernelHeight_low = LOWORD(self->super.super._kernelHeight);
   LOWORD(v109) = self->super.super._kernelWidth;
   v103 = __PAIR64__(kernelHeight_low, kernelWidth_low);
   v13 = vand_s8(__PAIR64__(kernelHeight_low, kernelWidth_low), 0xFFFF0000FFFFLL);
-  objc_msgSend_offset(self, a2, a3, a4, a5, a6, v6, v7);
+  objc_msgSend_offset(self, a2, buffer, image, states, destinationImage, v6, v7);
   v14.i16[0] = v112;
   v102 = v14;
   objc_msgSend_offset(self, v15, v16, v17, v18, v19, v20, v21);
@@ -147,10 +147,10 @@
   v38 = objc_msgSend_strideInPixelsY(self, v31, v32, v33, v34, v35, v36, v37);
   HIWORD(v107) = WORD2(v104);
   LOWORD(v107) = v104;
-  v46 = objc_msgSend_width(a6, v39, v40, v41, v42, v43, v44, v45);
-  v54 = objc_msgSend_height(a6, v47, v48, v49, v50, v51, v52, v53);
-  v62 = objc_msgSend_width(a4, v55, v56, v57, v58, v59, v60, v61);
-  v70 = objc_msgSend_height(a4, v63, v64, v65, v66, v67, v68, v69);
+  v46 = objc_msgSend_width(destinationImage, v39, v40, v41, v42, v43, v44, v45);
+  v54 = objc_msgSend_height(destinationImage, v47, v48, v49, v50, v51, v52, v53);
+  v62 = objc_msgSend_width(image, v55, v56, v57, v58, v59, v60, v61);
+  v70 = objc_msgSend_height(image, v63, v64, v65, v66, v67, v68, v69);
   v75.i64[1] = -1;
   v76.i32[0] = v107 << 16;
   v76.i16[3] = v38;
@@ -167,10 +167,10 @@
   v75.i64[0] = __PAIR64__(v70, v62);
   v77.i32[0] = vmovn_s32(vcgtq_s32(v75, v80)).u32[0];
   v77.i32[1] = vmovn_s32(vcgtq_s32(v80, v75)).i32[1];
-  if ((vminv_u16(v77) & 1) != 0 && self->super.super._kernelWidth <= 0xF && self->super.super._kernelHeight <= 0xF && *(a4 + *MEMORY[0x277CD7310]) < 2uLL)
+  if ((vminv_u16(v77) & 1) != 0 && self->super.super._kernelWidth <= 0xF && self->super.super._kernelHeight <= 0xF && *(image + *MEMORY[0x277CD7310]) < 2uLL)
   {
-    v82 = sub_239D05FA8(a3, self, a4, a6, v71, v72, v73, v74);
-    objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v83, v82, a4, a5, a6, v84, v85);
+    v82 = sub_239D05FA8(buffer, self, image, destinationImage, v71, v72, v73, v74);
+    objc_msgSend_copyToGradientState_sourceImage_sourceStates_destinationImage_(self, v83, v82, image, states, destinationImage, v84, v85);
     if ((*(&self->super.super.super.super.isa + *MEMORY[0x277CD7378]) & 0x10) != 0)
     {
       v86 = MEMORY[0x277CCACA8];
@@ -187,7 +187,7 @@
   {
     v110.receiver = self;
     v110.super_class = MPSCNNPoolingMax;
-    return [(MPSCNNKernel *)&v110 temporaryResultStateForCommandBuffer:a3 sourceImage:a4 sourceStates:a5 destinationImage:a6];
+    return [(MPSCNNKernel *)&v110 temporaryResultStateForCommandBuffer:buffer sourceImage:image sourceStates:states destinationImage:destinationImage];
   }
 }
 

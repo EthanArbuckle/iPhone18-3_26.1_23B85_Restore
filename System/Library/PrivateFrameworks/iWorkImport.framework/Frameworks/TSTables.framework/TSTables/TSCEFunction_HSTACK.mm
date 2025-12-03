@@ -1,21 +1,21 @@
 @interface TSCEFunction_HSTACK
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_HSTACK
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v83 = objc_msgSend_functionIndex(a4, a2, a3, a4, a5);
-  if (*(a5 + 1) - *a5 == 8)
+  v83 = objc_msgSend_functionIndex(spec, a2, context, spec, arguments);
+  if (*(arguments + 1) - *arguments == 8)
   {
-    v9 = **a5;
+    v9 = **arguments;
     v98[0] = 0;
-    v10 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v9, v8, a3, a4, 0, 0, v98);
+    v10 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v9, v8, context, spec, 0, 0, v98);
     v14 = v98[0];
     if (v14)
     {
-      v15 = objc_msgSend_raiseErrorOrConvert_(a3, v11, v14, v12, v13);
+      v15 = objc_msgSend_raiseErrorOrConvert_(context, v11, v14, v12, v13);
     }
 
     else
@@ -30,16 +30,16 @@
   else
   {
     v20 = objc_opt_new();
-    v21 = *(a5 + 1) - *a5;
+    v21 = *(arguments + 1) - *arguments;
     if ((v21 >> 3) < 1)
     {
       v32 = 0;
 LABEL_26:
-      v46 = objc_msgSend_functionName(a4, v16, v17, v18, v19);
+      v46 = objc_msgSend_functionName(spec, v16, v17, v18, v19);
       v50 = objc_msgSend_sizeMismatchInputError_(TSCEError, v47, v46, v48, v49);
       v23 = objc_msgSend_errorValue_(TSCEErrorValue, v51, v50, v52, v53);
 
-      v87 = objc_msgSend_dimensions(v20, v54, v55, v56, v57);
+      contextCopy = objc_msgSend_dimensions(v20, v54, v55, v56, v57);
       v96 = 0;
       do
       {
@@ -48,7 +48,7 @@ LABEL_26:
           objc_msgSend_setValue_atCoord_(v20, v61, v23, &v96, v62);
         }
 
-        v63 = TSCEGridDimensions::nextCoordRowMajorOrder(&v87, &v96);
+        v63 = TSCEGridDimensions::nextCoordRowMajorOrder(&contextCopy, &v96);
         v96 = v63;
       }
 
@@ -69,10 +69,10 @@ LABEL_26:
       v82 = vdupq_n_s64(0x7FFF7FFFFFFFuLL);
       while (1)
       {
-        v23 = *(*a5 + 8 * v22);
+        v23 = *(*arguments + 8 * v22);
         if (objc_msgSend_isTokenOrEmptyArg(v23, v24, v25, v26, v27))
         {
-          v73 = objc_msgSend_functionName(a4, v28, v29, v30, v31);
+          v73 = objc_msgSend_functionName(spec, v28, v29, v30, v31);
           v77 = objc_msgSend_sizeMismatchInputError_(TSCEError, v74, v73, v75, v76);
           v72 = objc_msgSend_errorValue_(TSCEErrorValue, v78, v77, v79, v80);
 
@@ -81,7 +81,7 @@ LABEL_26:
         }
 
         v97 = 0;
-        v32 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v23, v28, a3, a4, v22, 0, &v97);
+        v32 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v23, v28, context, spec, v22, 0, &v97);
         v14 = v97;
 
         if (v14)
@@ -91,7 +91,7 @@ LABEL_26:
 
         if (objc_msgSend_canResolveToSingleError(v32, v33, v34, v35, v36))
         {
-          v14 = objc_msgSend_errorWithContext_(v32, v33, a3, v35, v36);
+          v14 = objc_msgSend_errorWithContext_(v32, v33, context, v35, v36);
           if (v14)
           {
             break;
@@ -102,8 +102,8 @@ LABEL_26:
         if (v96.height * v96.width)
         {
           v95 = 0;
-          v87 = a3;
-          v88 = a4;
+          contextCopy = context;
+          specCopy = spec;
           v89 = 0;
           v90 = v22;
           v91[0] = 0;
@@ -113,7 +113,7 @@ LABEL_26:
           v94 = 0;
           do
           {
-            v40 = objc_msgSend_valueAtGridCoord_accessContext_(v32, v38, *&v95, &v87, v39);
+            v40 = objc_msgSend_valueAtGridCoord_accessContext_(v32, v38, *&v95, &contextCopy, v39);
             v86 = v85 >> 32;
             sub_2211786BC(&v86, &v95);
             objc_msgSend_setValue_atCoord_(v20, v41, v40, &v86, v42);
@@ -159,7 +159,7 @@ LABEL_26:
         }
       }
 
-      v72 = objc_msgSend_raiseErrorOrConvert_(a3, v33, v14, v35, v36);
+      v72 = objc_msgSend_raiseErrorOrConvert_(context, v33, v14, v35, v36);
     }
 
     v10 = v32;

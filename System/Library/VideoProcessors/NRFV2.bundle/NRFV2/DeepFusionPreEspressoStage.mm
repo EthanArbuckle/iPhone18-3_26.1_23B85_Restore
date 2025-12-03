@@ -1,41 +1,41 @@
 @interface DeepFusionPreEspressoStage
-- (DFSynthLongHighlightParameters)_createHighlightParameters:(SEL)a3 highlightTuning:(const DeepFusionFrameMeta *)a4 totalGain:(id)a5;
-- (DeepFusionRawNoiseModelParameters)_createRawNoiseModelParameters:(SEL)a3;
-- (int)estimateNoiseRefNoise:(DeepFusionPreEspressoStage *)self synthLongNoise:(SEL)a2 synthRefNoisePretuning:(id)a3 synthLongNoisePretuning:(id)a4 synthRefLuma:(id)a5 synthRefChroma:(id)a6 synthLongLuma:(id)a7 synthLongChroma:(id)a8 lscGains:(id)a9 slFusionMap:(id)a10 longFusionMap:(id)a11 outRefNoisePyramid:(id)a12 outSLNoisePyramid:(id)a13 noiseEstimationParams:(id)a14 offset:(id)a15 tileDimension:(NoiseEstimationParameters *)a16;
-- (int)filterChroma:(id)a3 outChroma:(id)a4 alpha:(float)a5;
-- (int)setEstimateNoiseParams:(NoiseEstimationParameters *)a3 fullDimension:(const IntermediateEncodingParameters *)a4 intermediateEncodingParams:;
-- (int)yuvCopyAndBias:(id)a3 chromaInput:(id)a4 lumaOutput:(id)a5 chromaOutput:(id)a6;
-- (int)yuvPlanarRGBToRGBA:(id)a3 outRGBA:(id)a4;
-- (void)computeGlobalNoiseFactor:(id)a3 totalGain:(float)a4 synthRefFactor:(float *)a5 synthLongFactor:(float *)a6;
-- (void)getLumaMaskTuning:(const NoiseEstimationParameters *)a3 outTuning:(LumaMaskTuningParam *)a4;
-- (void)getNoiseTuningParams:(const NoiseEstimationParameters *)a3 fullDimension:(NoiseTuningParams *)a4 outTuning:;
+- (DFSynthLongHighlightParameters)_createHighlightParameters:(SEL)parameters highlightTuning:(const DeepFusionFrameMeta *)tuning totalGain:(id)gain;
+- (DeepFusionRawNoiseModelParameters)_createRawNoiseModelParameters:(SEL)parameters;
+- (int)estimateNoiseRefNoise:(DeepFusionPreEspressoStage *)self synthLongNoise:(SEL)noise synthRefNoisePretuning:(id)pretuning synthLongNoisePretuning:(id)noisePretuning synthRefLuma:(id)luma synthRefChroma:(id)chroma synthLongLuma:(id)longLuma synthLongChroma:(id)longChroma lscGains:(id)gains slFusionMap:(id)self0 longFusionMap:(id)self1 outRefNoisePyramid:(id)self2 outSLNoisePyramid:(id)self3 noiseEstimationParams:(id)self4 offset:(id)self5 tileDimension:(NoiseEstimationParameters *)self6;
+- (int)filterChroma:(id)chroma outChroma:(id)outChroma alpha:(float)alpha;
+- (int)setEstimateNoiseParams:(NoiseEstimationParameters *)params fullDimension:(const IntermediateEncodingParameters *)dimension intermediateEncodingParams:;
+- (int)yuvCopyAndBias:(id)bias chromaInput:(id)input lumaOutput:(id)output chromaOutput:(id)chromaOutput;
+- (int)yuvPlanarRGBToRGBA:(id)a outRGBA:(id)bA;
+- (void)computeGlobalNoiseFactor:(id)factor totalGain:(float)gain synthRefFactor:(float *)refFactor synthLongFactor:(float *)longFactor;
+- (void)getLumaMaskTuning:(const NoiseEstimationParameters *)tuning outTuning:(LumaMaskTuningParam *)outTuning;
+- (void)getNoiseTuningParams:(const NoiseEstimationParameters *)params fullDimension:(NoiseTuningParams *)dimension outTuning:;
 @end
 
 @implementation DeepFusionPreEspressoStage
 
-- (DFSynthLongHighlightParameters)_createHighlightParameters:(SEL)a3 highlightTuning:(const DeepFusionFrameMeta *)a4 totalGain:(id)a5
+- (DFSynthLongHighlightParameters)_createHighlightParameters:(SEL)parameters highlightTuning:(const DeepFusionFrameMeta *)tuning totalGain:(id)gain
 {
-  v7 = sqrtf(a6 / a4->syntheticLongExposure.analog_gain);
-  LODWORD(v6) = *(a5 + 2);
-  DWORD1(v6) = *(a5 + 4);
+  v7 = sqrtf(a6 / tuning->syntheticLongExposure.analog_gain);
+  LODWORD(v6) = *(gain + 2);
+  DWORD1(v6) = *(gain + 4);
   *&v6 = vmul_n_f32(*&v6, v7);
-  *(&v6 + 2) = v7 * *(a5 + 3);
+  *(&v6 + 2) = v7 * *(gain + 3);
   *&retstr[1].var3 = 0;
   *&retstr[2].var0 = 0;
-  v8 = *(a5 + 5);
+  v8 = *(gain + 5);
   *&retstr->var0 = v6;
-  v9 = *(a5 + 6);
-  v10 = *(a5 + 7);
+  v9 = *(gain + 6);
+  v10 = *(gain + 7);
   retstr->var4 = v8;
   retstr[1].var0 = v9;
-  v11 = *(a5 + 8);
+  v11 = *(gain + 8);
   retstr[1].var1 = v10;
   retstr[1].var2 = v11;
-  retstr[1].var3 = *(a5 + 9);
+  retstr[1].var3 = *(gain + 9);
   return self;
 }
 
-- (DeepFusionRawNoiseModelParameters)_createRawNoiseModelParameters:(SEL)a3
+- (DeepFusionRawNoiseModelParameters)_createRawNoiseModelParameters:(SEL)parameters
 {
   v5.i32[0] = 1.0;
   if (a4->hr_enabled)
@@ -52,7 +52,7 @@
   *&retstr[1].var4 = 0;
   *&retstr->var0 = v6;
   *&retstr->var4 = a4->analog_gain;
-  result = objc_msgSend_calculateReadNoise_(DeepFusionCommon, a3, a4, v4);
+  result = objc_msgSend_calculateReadNoise_(DeepFusionCommon, parameters, a4, v4);
   retstr->var5 = v16;
   *&retstr[1].var0 = *&a4->conversion_gain;
   LOBYTE(retstr[1].var2) = self->_networkVersion == 1;
@@ -60,19 +60,19 @@
   return result;
 }
 
-- (void)computeGlobalNoiseFactor:(id)a3 totalGain:(float)a4 synthRefFactor:(float *)a5 synthLongFactor:(float *)a6
+- (void)computeGlobalNoiseFactor:(id)factor totalGain:(float)gain synthRefFactor:(float *)refFactor synthLongFactor:(float *)longFactor
 {
-  v9 = *(*(a3 + 5) + 8);
-  v10 = a3;
-  *a5 = sub_29584472C(v9, a4);
-  v11 = v10[6];
+  v9 = *(*(factor + 5) + 8);
+  factorCopy = factor;
+  *refFactor = sub_29584472C(v9, gain);
+  v11 = factorCopy[6];
 
-  *a6 = sub_29584472C(*(v11 + 8), a4);
+  *longFactor = sub_29584472C(*(v11 + 8), gain);
 }
 
-- (void)getLumaMaskTuning:(const NoiseEstimationParameters *)a3 outTuning:(LumaMaskTuningParam *)a4
+- (void)getLumaMaskTuning:(const NoiseEstimationParameters *)tuning outTuning:(LumaMaskTuningParam *)outTuning
 {
-  v6 = sub_29584472C(*(a3->var4 + 4), a3->var1);
+  v6 = sub_29584472C(*(tuning->var4 + 4), tuning->var1);
   if (v6 == 0.0)
   {
     v7 = 1.0;
@@ -83,73 +83,73 @@
     v7 = 1.0 / v6;
   }
 
-  a4->var0 = v7;
-  a4->var1 = sub_29584472C(*(*(a3->var4 + 5) + 16), a3->var1);
-  a4->var2 = sub_29584472C(*(*(a3->var4 + 6) + 16), a3->var1);
+  outTuning->var0 = v7;
+  outTuning->var1 = sub_29584472C(*(*(tuning->var4 + 5) + 16), tuning->var1);
+  outTuning->var2 = sub_29584472C(*(*(tuning->var4 + 6) + 16), tuning->var1);
 }
 
-- (void)getNoiseTuningParams:(const NoiseEstimationParameters *)a3 fullDimension:(NoiseTuningParams *)a4 outTuning:
+- (void)getNoiseTuningParams:(const NoiseEstimationParameters *)params fullDimension:(NoiseTuningParams *)dimension outTuning:
 {
   v6 = v4;
-  v7 = a4;
-  *&v5 = a3->var1;
-  objc_msgSend_computeGlobalNoiseFactor_totalGain_synthRefFactor_synthLongFactor_(self, a2, a3->var4, v4, v4 + 4, v5);
-  v10 = sub_29584472C(*(a3->var4 + 1), a3->var1);
-  var2 = a3->var2;
+  dimensionCopy = dimension;
+  *&v5 = params->var1;
+  objc_msgSend_computeGlobalNoiseFactor_totalGain_synthRefFactor_synthLongFactor_(self, a2, params->var4, v4, v4 + 4, v5);
+  v10 = sub_29584472C(*(params->var4 + 1), params->var1);
+  var2 = params->var2;
   v6[1].f32[0] = v10;
   v6[1].f32[1] = var2;
-  v12.i32[0] = v7;
-  v12.i32[1] = HIWORD(v7);
+  v12.i32[0] = dimensionCopy;
+  v12.i32[1] = HIWORD(dimensionCopy);
   __asm { FMOV            V1.2S, #1.0 }
 
   v6[2] = vdiv_f32(_D1, vcvt_f32_u32(v12));
 
-  MEMORY[0x2A1C70FE8](self, sel_getLumaMaskTuning_outTuning_, a3, &v6[3]);
+  MEMORY[0x2A1C70FE8](self, sel_getLumaMaskTuning_outTuning_, params, &v6[3]);
 }
 
-- (int)setEstimateNoiseParams:(NoiseEstimationParameters *)a3 fullDimension:(const IntermediateEncodingParameters *)a4 intermediateEncodingParams:
+- (int)setEstimateNoiseParams:(NoiseEstimationParameters *)params fullDimension:(const IntermediateEncodingParameters *)dimension intermediateEncodingParams:
 {
   v5 = v4;
-  v9 = objc_msgSend_contents(self->_noiseParamBuffer, a2, a3, a4);
-  *v9 = a3->var0;
-  *(v9 + 4) = a3->var6;
-  objc_msgSend__createRawNoiseModelParameters_(self, v10, &a3->var3->syntheticLongExposure, v11);
+  v9 = objc_msgSend_contents(self->_noiseParamBuffer, a2, params, dimension);
+  *v9 = params->var0;
+  *(v9 + 4) = params->var6;
+  objc_msgSend__createRawNoiseModelParameters_(self, v10, &params->var3->syntheticLongExposure, v11);
   *(v9 + 16) = v20;
   *(v9 + 32) = v21;
   *(v9 + 48) = v22;
-  objc_msgSend__createRawNoiseModelParameters_(self, v12, &a3->var3->longExposure, v13);
+  objc_msgSend__createRawNoiseModelParameters_(self, v12, &params->var3->longExposure, v13);
   *(v9 + 64) = v20;
   *(v9 + 80) = v21;
   HIDWORD(v14) = DWORD1(v22);
   *(v9 + 96) = v22;
-  *(v9 + 112) = a3->var7;
-  *&v14 = a3->var1;
-  objc_msgSend__createHighlightParameters_highlightTuning_totalGain_(self, v15, a3->var3, a3->var5, v14);
+  *(v9 + 112) = params->var7;
+  *&v14 = params->var1;
+  objc_msgSend__createHighlightParameters_highlightTuning_totalGain_(self, v15, params->var3, params->var5, v14);
   *(v9 + 128) = v20;
   *(v9 + 144) = v21;
   *(v9 + 160) = v22;
   *(v9 + 8) = *v5;
-  objc_msgSend_getNoiseTuningParams_fullDimension_outTuning_(self, v16, a3, a4, v9 + 176);
+  objc_msgSend_getNoiseTuningParams_fullDimension_outTuning_(self, v16, params, dimension, v9 + 176);
   v17 = *(v9 + 204);
   v18 = *(v9 + 208);
   return 0;
 }
 
-- (int)estimateNoiseRefNoise:(DeepFusionPreEspressoStage *)self synthLongNoise:(SEL)a2 synthRefNoisePretuning:(id)a3 synthLongNoisePretuning:(id)a4 synthRefLuma:(id)a5 synthRefChroma:(id)a6 synthLongLuma:(id)a7 synthLongChroma:(id)a8 lscGains:(id)a9 slFusionMap:(id)a10 longFusionMap:(id)a11 outRefNoisePyramid:(id)a12 outSLNoisePyramid:(id)a13 noiseEstimationParams:(id)a14 offset:(id)a15 tileDimension:(NoiseEstimationParameters *)a16
+- (int)estimateNoiseRefNoise:(DeepFusionPreEspressoStage *)self synthLongNoise:(SEL)noise synthRefNoisePretuning:(id)pretuning synthLongNoisePretuning:(id)noisePretuning synthRefLuma:(id)luma synthRefChroma:(id)chroma synthLongLuma:(id)longLuma synthLongChroma:(id)longChroma lscGains:(id)gains slFusionMap:(id)self0 longFusionMap:(id)self1 outRefNoisePyramid:(id)self2 outSLNoisePyramid:(id)self3 noiseEstimationParams:(id)self4 offset:(id)self5 tileDimension:(NoiseEstimationParameters *)self6
 {
-  v72 = a3;
-  v71 = a4;
-  v70 = a5;
-  v22 = a6;
-  v79 = a7;
-  v78 = a8;
-  v23 = a9;
-  v77 = a10;
-  v24 = a11;
-  v76 = a12;
-  v75 = a13;
-  v74 = a14;
-  v73 = a15;
+  pretuningCopy = pretuning;
+  noisePretuningCopy = noisePretuning;
+  lumaCopy = luma;
+  chromaCopy = chroma;
+  longLumaCopy = longLuma;
+  longChromaCopy = longChroma;
+  gainsCopy = gains;
+  mapCopy = map;
+  fusionMapCopy = fusionMap;
+  pyramidCopy = pyramid;
+  noisePyramidCopy = noisePyramid;
+  paramsCopy = params;
+  offsetCopy = offset;
   v83[0] = v84;
   v28 = objc_msgSend_commandQueue(self->_metalContext, v25, v26, v27);
   v32 = objc_msgSend_commandBuffer(v28, v29, v30, v31);
@@ -160,20 +160,20 @@
   if (v38)
   {
     objc_msgSend_setLabel_(v38, v39, @"_kernels->_estimateAndTuneNoise[noiseEstimationParams->preEspressoMetaData->combo == L_EV0x3]", v40);
-    objc_msgSend_setComputePipelineState_(v41, v42, self->_kernels->_estimateAndTuneNoise[a16->var3->combo == 0], v43);
-    objc_msgSend_setTexture_atIndex_(v41, v44, v70, 0);
-    objc_msgSend_setTexture_atIndex_(v41, v45, v22, 1);
-    objc_msgSend_setTexture_atIndex_(v41, v46, v72, 2);
-    objc_msgSend_setTexture_atIndex_(v41, v47, v71, 3);
-    objc_msgSend_setTexture_atIndex_(v41, v48, v24, 4);
-    objc_msgSend_setTexture_atIndex_(v41, v49, v79, 5);
-    objc_msgSend_setTexture_atIndex_(v41, v50, v78, 6);
-    objc_msgSend_setTexture_atIndex_(v41, v51, v23, 7);
-    objc_msgSend_setTexture_atIndex_(v41, v52, v77, 8);
-    objc_msgSend_setTexture_atIndex_(v41, v53, v76, 9);
-    objc_msgSend_setTexture_atIndex_(v41, v54, v75, 10);
-    objc_msgSend_setTexture_atIndex_(v41, v55, v74, 11);
-    objc_msgSend_setTexture_atIndex_(v41, v56, v73, 12);
+    objc_msgSend_setComputePipelineState_(v41, v42, self->_kernels->_estimateAndTuneNoise[dimension->var3->combo == 0], v43);
+    objc_msgSend_setTexture_atIndex_(v41, v44, lumaCopy, 0);
+    objc_msgSend_setTexture_atIndex_(v41, v45, chromaCopy, 1);
+    objc_msgSend_setTexture_atIndex_(v41, v46, pretuningCopy, 2);
+    objc_msgSend_setTexture_atIndex_(v41, v47, noisePretuningCopy, 3);
+    objc_msgSend_setTexture_atIndex_(v41, v48, fusionMapCopy, 4);
+    objc_msgSend_setTexture_atIndex_(v41, v49, longLumaCopy, 5);
+    objc_msgSend_setTexture_atIndex_(v41, v50, longChromaCopy, 6);
+    objc_msgSend_setTexture_atIndex_(v41, v51, gainsCopy, 7);
+    objc_msgSend_setTexture_atIndex_(v41, v52, mapCopy, 8);
+    objc_msgSend_setTexture_atIndex_(v41, v53, pyramidCopy, 9);
+    objc_msgSend_setTexture_atIndex_(v41, v54, noisePyramidCopy, 10);
+    objc_msgSend_setTexture_atIndex_(v41, v55, paramsCopy, 11);
+    objc_msgSend_setTexture_atIndex_(v41, v56, offsetCopy, 12);
     objc_msgSend_setBuffer_offset_atIndex_(v41, v57, self->_noiseParamBuffer, 0, 0);
     objc_msgSend_setBytes_length_atIndex_(v41, v58, v83, 4, 1);
     v82[0] = v85;
@@ -185,54 +185,54 @@
     objc_msgSend_endEncoding(v41, v60, v61, v62);
     objc_msgSend_commit(v32, v63, v64, v65);
     v66 = 0;
-    v67 = v72;
-    v68 = v71;
+    v67 = pretuningCopy;
+    v68 = noisePretuningCopy;
   }
 
   else
   {
     sub_2958CA320(v82);
     v66 = v82[0];
-    v68 = v71;
-    v67 = v72;
+    v68 = noisePretuningCopy;
+    v67 = pretuningCopy;
   }
 
   return v66;
 }
 
-- (int)yuvCopyAndBias:(id)a3 chromaInput:(id)a4 lumaOutput:(id)a5 chromaOutput:(id)a6
+- (int)yuvCopyAndBias:(id)bias chromaInput:(id)input lumaOutput:(id)output chromaOutput:(id)chromaOutput
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v17 = v13;
-  if (!v10)
+  biasCopy = bias;
+  inputCopy = input;
+  outputCopy = output;
+  chromaOutputCopy = chromaOutput;
+  v17 = chromaOutputCopy;
+  if (!biasCopy)
   {
     sub_2958CA898(v79);
     goto LABEL_21;
   }
 
-  if (!v11)
+  if (!inputCopy)
   {
     sub_2958CA7EC(v79);
     goto LABEL_21;
   }
 
-  if (!v12)
+  if (!outputCopy)
   {
     sub_2958CA740(v79);
     goto LABEL_21;
   }
 
-  if (!v13)
+  if (!chromaOutputCopy)
   {
     sub_2958CA694(v79);
     goto LABEL_21;
   }
 
-  v18 = objc_msgSend_width(v10, v14, v15, v16);
-  if (v18 != objc_msgSend_width(v12, v19, v20, v21) || (v25 = objc_msgSend_height(v10, v22, v23, v24), v25 != objc_msgSend_height(v12, v26, v27, v28)))
+  v18 = objc_msgSend_width(biasCopy, v14, v15, v16);
+  if (v18 != objc_msgSend_width(outputCopy, v19, v20, v21) || (v25 = objc_msgSend_height(biasCopy, v22, v23, v24), v25 != objc_msgSend_height(outputCopy, v26, v27, v28)))
   {
     sub_2958CA3CC(v79);
 LABEL_21:
@@ -240,8 +240,8 @@ LABEL_21:
     goto LABEL_12;
   }
 
-  v32 = objc_msgSend_width(v11, v29, v30, v31);
-  if (v32 != objc_msgSend_width(v17, v33, v34, v35) || (v39 = objc_msgSend_height(v11, v36, v37, v38), v39 != objc_msgSend_height(v17, v40, v41, v42)))
+  v32 = objc_msgSend_width(inputCopy, v29, v30, v31);
+  if (v32 != objc_msgSend_width(v17, v33, v34, v35) || (v39 = objc_msgSend_height(inputCopy, v36, v37, v38), v39 != objc_msgSend_height(v17, v40, v41, v42)))
   {
     sub_2958CA478(v79);
     goto LABEL_21;
@@ -265,12 +265,12 @@ LABEL_21:
 
   v57 = v54;
   objc_msgSend_setComputePipelineState_(v54, v55, self->_kernels->_yuvCopyAndBias, v56);
-  objc_msgSend_setTexture_atIndex_(v57, v58, v10, 0);
-  objc_msgSend_setTexture_atIndex_(v57, v59, v11, 1);
-  objc_msgSend_setTexture_atIndex_(v57, v60, v12, 2);
+  objc_msgSend_setTexture_atIndex_(v57, v58, biasCopy, 0);
+  objc_msgSend_setTexture_atIndex_(v57, v59, inputCopy, 1);
+  objc_msgSend_setTexture_atIndex_(v57, v60, outputCopy, 2);
   objc_msgSend_setTexture_atIndex_(v57, v61, v17, 3);
-  v79[0] = objc_msgSend_width(v10, v62, v63, v64);
-  v79[1] = objc_msgSend_height(v10, v65, v66, v67);
+  v79[0] = objc_msgSend_width(biasCopy, v62, v63, v64);
+  v79[1] = objc_msgSend_height(biasCopy, v65, v66, v67);
   v79[2] = 1;
   v77 = xmmword_2959D5ED0;
   v78 = 1;
@@ -284,25 +284,25 @@ LABEL_12:
   return v75;
 }
 
-- (int)yuvPlanarRGBToRGBA:(id)a3 outRGBA:(id)a4
+- (int)yuvPlanarRGBToRGBA:(id)a outRGBA:(id)bA
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = v7;
-  if (!v6)
+  aCopy = a;
+  bACopy = bA;
+  v11 = bACopy;
+  if (!aCopy)
   {
     sub_2958CAC0C(v57);
     goto LABEL_14;
   }
 
-  if (!v7)
+  if (!bACopy)
   {
     sub_2958CAB60(v57);
     goto LABEL_14;
   }
 
-  v12 = objc_msgSend_width(v7, v8, v9, v10);
-  if (v12 != objc_msgSend_width(v6, v13, v14, v15) || (v19 = objc_msgSend_height(v11, v16, v17, v18), v19 != objc_msgSend_height(v6, v20, v21, v22) / 3uLL))
+  v12 = objc_msgSend_width(bACopy, v8, v9, v10);
+  if (v12 != objc_msgSend_width(aCopy, v13, v14, v15) || (v19 = objc_msgSend_height(v11, v16, v17, v18), v19 != objc_msgSend_height(aCopy, v20, v21, v22) / 3uLL))
   {
     sub_2958CA944(v57);
 LABEL_14:
@@ -328,7 +328,7 @@ LABEL_14:
 
   v37 = v34;
   objc_msgSend_setComputePipelineState_(v34, v35, self->_kernels->_yuvPlanarRGBToRGBA, v36);
-  objc_msgSend_setTexture_atIndex_(v37, v38, v6, 0);
+  objc_msgSend_setTexture_atIndex_(v37, v38, aCopy, 0);
   objc_msgSend_setTexture_atIndex_(v37, v39, v11, 1);
   v57[0] = objc_msgSend_width(v11, v40, v41, v42);
   v57[1] = objc_msgSend_height(v11, v43, v44, v45);
@@ -345,12 +345,12 @@ LABEL_8:
   return v53;
 }
 
-- (int)filterChroma:(id)a3 outChroma:(id)a4 alpha:(float)a5
+- (int)filterChroma:(id)chroma outChroma:(id)outChroma alpha:(float)alpha
 {
-  v8 = a3;
-  v9 = a4;
-  v13 = v9;
-  if (!v8)
+  chromaCopy = chroma;
+  outChromaCopy = outChroma;
+  v13 = outChromaCopy;
+  if (!chromaCopy)
   {
     sub_2958CAF80(v47);
 LABEL_14:
@@ -358,13 +358,13 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  if (!v9)
+  if (!outChromaCopy)
   {
     sub_2958CAED4(v47);
     goto LABEL_14;
   }
 
-  if (a5 <= 0.0 || a5 > 1.0)
+  if (alpha <= 0.0 || alpha > 1.0)
   {
     sub_2958CAE28(v47);
     goto LABEL_14;
@@ -388,14 +388,14 @@ LABEL_14:
 
   v25 = v22;
   objc_msgSend_setComputePipelineState_(v22, v23, self->_kernels->_filterChroma, v24);
-  objc_msgSend_setTexture_atIndex_(v25, v26, v8, 0);
+  objc_msgSend_setTexture_atIndex_(v25, v26, chromaCopy, 0);
   objc_msgSend_setTexture_atIndex_(v25, v27, v13, 1);
-  *&v28 = (a5 * -0.88889) + 1.0;
+  *&v28 = (alpha * -0.88889) + 1.0;
   *(&v28 + 1) = (1.0 - *&v28) * 0.125;
   v48 = v28;
   objc_msgSend_setBytes_length_atIndex_(v25, v29, &v48, 8, 0);
-  v47[0] = objc_msgSend_width(v8, v30, v31, v32);
-  v47[1] = objc_msgSend_height(v8, v33, v34, v35);
+  v47[0] = objc_msgSend_width(chromaCopy, v30, v31, v32);
+  v47[1] = objc_msgSend_height(chromaCopy, v33, v34, v35);
   v47[2] = 1;
   v45 = xmmword_2959D5ED0;
   v46 = 1;

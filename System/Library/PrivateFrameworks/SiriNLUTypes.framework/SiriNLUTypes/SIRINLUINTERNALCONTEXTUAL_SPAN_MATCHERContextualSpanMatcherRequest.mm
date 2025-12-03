@@ -1,22 +1,22 @@
 @interface SIRINLUINTERNALCONTEXTUAL_SPAN_MATCHERContextualSpanMatcherRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALCONTEXTUAL_SPAN_MATCHERContextualSpanMatcherRequest
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   requestId = self->_requestId;
-  v13 = v4;
-  v6 = v4[3];
+  v13 = fromCopy;
+  v6 = fromCopy[3];
   if (requestId)
   {
     if (v6)
@@ -84,13 +84,13 @@
   return v4 ^ v5 ^ [(SIRINLUEXTERNALUUID *)self->_nluRequestId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((requestId = self->_requestId, !(requestId | v4[3])) || -[SIRINLUEXTERNALRequestID isEqual:](requestId, "isEqual:")) && ((tokenChain = self->_tokenChain, !(tokenChain | v4[4])) || -[SIRINLUINTERNALTokenChain isEqual:](tokenChain, "isEqual:")) && ((nlContext = self->_nlContext, !(nlContext | v4[1])) || -[SIRINLUEXTERNALNLContext isEqual:](nlContext, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((requestId = self->_requestId, !(requestId | equalCopy[3])) || -[SIRINLUEXTERNALRequestID isEqual:](requestId, "isEqual:")) && ((tokenChain = self->_tokenChain, !(tokenChain | equalCopy[4])) || -[SIRINLUINTERNALTokenChain isEqual:](tokenChain, "isEqual:")) && ((nlContext = self->_nlContext, !(nlContext | equalCopy[1])) || -[SIRINLUEXTERNALNLContext isEqual:](nlContext, "isEqual:")))
   {
     nluRequestId = self->_nluRequestId;
-    if (nluRequestId | v4[2])
+    if (nluRequestId | equalCopy[2])
     {
       v9 = [(SIRINLUEXTERNALUUID *)nluRequestId isEqual:?];
     }
@@ -109,118 +109,118 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALRequestID *)self->_requestId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALRequestID *)self->_requestId copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(SIRINLUINTERNALTokenChain *)self->_tokenChain copyWithZone:a3];
+  v8 = [(SIRINLUINTERNALTokenChain *)self->_tokenChain copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(SIRINLUEXTERNALNLContext *)self->_nlContext copyWithZone:a3];
+  v10 = [(SIRINLUEXTERNALNLContext *)self->_nlContext copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
-  v12 = [(SIRINLUEXTERNALUUID *)self->_nluRequestId copyWithZone:a3];
+  v12 = [(SIRINLUEXTERNALUUID *)self->_nluRequestId copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_requestId)
   {
-    [v4 setRequestId:?];
-    v4 = v5;
+    [toCopy setRequestId:?];
+    toCopy = v5;
   }
 
   if (self->_tokenChain)
   {
     [v5 setTokenChain:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_nlContext)
   {
     [v5 setNlContext:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_nluRequestId)
   {
     [v5 setNluRequestId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_requestId)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_tokenChain)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_nlContext)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_nluRequestId)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   requestId = self->_requestId;
   if (requestId)
   {
-    v5 = [(SIRINLUEXTERNALRequestID *)requestId dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"request_id"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALRequestID *)requestId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"request_id"];
   }
 
   tokenChain = self->_tokenChain;
   if (tokenChain)
   {
-    v7 = [(SIRINLUINTERNALTokenChain *)tokenChain dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"token_chain"];
+    dictionaryRepresentation2 = [(SIRINLUINTERNALTokenChain *)tokenChain dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"token_chain"];
   }
 
   nlContext = self->_nlContext;
   if (nlContext)
   {
-    v9 = [(SIRINLUEXTERNALNLContext *)nlContext dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"nl_context"];
+    dictionaryRepresentation3 = [(SIRINLUEXTERNALNLContext *)nlContext dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"nl_context"];
   }
 
   nluRequestId = self->_nluRequestId;
   if (nluRequestId)
   {
-    v11 = [(SIRINLUEXTERNALUUID *)nluRequestId dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"nlu_request_id"];
+    dictionaryRepresentation4 = [(SIRINLUEXTERNALUUID *)nluRequestId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"nlu_request_id"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -229,8 +229,8 @@
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALCONTEXTUAL_SPAN_MATCHERContextualSpanMatcherRequest;
   v4 = [(SIRINLUINTERNALCONTEXTUAL_SPAN_MATCHERContextualSpanMatcherRequest *)&v8 description];
-  v5 = [(SIRINLUINTERNALCONTEXTUAL_SPAN_MATCHERContextualSpanMatcherRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALCONTEXTUAL_SPAN_MATCHERContextualSpanMatcherRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

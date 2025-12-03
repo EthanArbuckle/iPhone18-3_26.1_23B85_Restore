@@ -1,6 +1,6 @@
 @interface SiriCoreSiriConnectionInfo
 - (id)description;
-- (void)_appendPotentiallyNilString:(id)a3 toMutableString:(id)a4;
+- (void)_appendPotentiallyNilString:(id)string toMutableString:(id)mutableString;
 @end
 
 @implementation SiriCoreSiriConnectionInfo
@@ -47,14 +47,14 @@
   return v3;
 }
 
-- (void)_appendPotentiallyNilString:(id)a3 toMutableString:(id)a4
+- (void)_appendPotentiallyNilString:(id)string toMutableString:(id)mutableString
 {
-  if (!a3)
+  if (!string)
   {
-    a3 = @"(nil)";
+    string = @"(nil)";
   }
 
-  [a4 appendString:a3];
+  [mutableString appendString:string];
 }
 
 @end

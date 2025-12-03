@@ -1,50 +1,50 @@
 @interface CUShutterButton
-+ (CUShutterButton)shutterButtonWithLayoutStyle:(int64_t)a3;
-+ (CUShutterButton)shutterButtonWithSpec:(CAMShutterButtonSpec *)a3;
++ (CUShutterButton)shutterButtonWithLayoutStyle:(int64_t)style;
++ (CUShutterButton)shutterButtonWithSpec:(CAMShutterButtonSpec *)spec;
 + (id)shutterButton;
 + (id)smallShutterButton;
-+ (id)smallShutterButtonWithLayoutStyle:(int64_t)a3;
-- ($EA90F2AF3C0DC35AB2D8304CE3BCA89E)_timelapseRingSpecForLayoutStyle:(SEL)a3;
-- (BOOL)_shouldShowBackgroundViewForMode:(int64_t)a3;
-- (BOOL)_shouldShowContrastBorderForMode:(int64_t)a3 layoutStyle:(int64_t)a4;
++ (id)smallShutterButtonWithLayoutStyle:(int64_t)style;
+- ($EA90F2AF3C0DC35AB2D8304CE3BCA89E)_timelapseRingSpecForLayoutStyle:(SEL)style;
+- (BOOL)_shouldShowBackgroundViewForMode:(int64_t)mode;
+- (BOOL)_shouldShowContrastBorderForMode:(int64_t)mode layoutStyle:(int64_t)style;
 - (CAMShutterButtonDelegate)delegate;
 - (CAMShutterButtonSpec)spec;
-- (CGSize)_sizeForMode:(int64_t)a3;
+- (CGSize)_sizeForMode:(int64_t)mode;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CUShutterButton)initWithCoder:(id)a3;
-- (CUShutterButton)initWithFrame:(CGRect)a3;
-- (CUShutterButton)initWithFrame:(CGRect)a3 layoutStyle:(int64_t)a4 spec:(CAMShutterButtonSpec *)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CUShutterButton)initWithCoder:(id)coder;
+- (CUShutterButton)initWithFrame:(CGRect)frame;
+- (CUShutterButton)initWithFrame:(CGRect)frame layoutStyle:(int64_t)style spec:(CAMShutterButtonSpec *)spec;
 - (UIEdgeInsets)tappableEdgeInsets;
-- (double)_cornerRadiusForMode:(int64_t)a3;
+- (double)_cornerRadiusForMode:(int64_t)mode;
 - (id)_contentColor;
-- (id)_innerCircleColorForMode:(int64_t)a3 spinning:(BOOL)a4;
-- (id)_outerImageForMode:(int64_t)a3 layoutStyle:(int64_t)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_commonCAMShutterButtonInitializationWithLayoutStyle:(int64_t)a3 spec:(CAMShutterButtonSpec *)a4;
+- (id)_innerCircleColorForMode:(int64_t)mode spinning:(BOOL)spinning;
+- (id)_outerImageForMode:(int64_t)mode layoutStyle:(int64_t)style;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_commonCAMShutterButtonInitializationWithLayoutStyle:(int64_t)style spec:(CAMShutterButtonSpec *)spec;
 - (void)_performHighlightAnimation;
-- (void)_performModeSwitchAnimationFromMode:(int64_t)a3 toMode:(int64_t)a4 animated:(BOOL)a5;
+- (void)_performModeSwitchAnimationFromMode:(int64_t)mode toMode:(int64_t)toMode animated:(BOOL)animated;
 - (void)_updateOuterAndInnerLayers;
 - (void)_updateSpinningAnimations;
 - (void)layoutSubviews;
-- (void)setContentColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLayoutStyle:(int64_t)a3;
-- (void)setMode:(int64_t)a3 animated:(BOOL)a4;
-- (void)setShowDisabled:(BOOL)a3;
-- (void)setSpec:(CAMShutterButtonSpec *)a3;
-- (void)setSpinning:(BOOL)a3;
-- (void)setStopModeBackgroundColor:(id)a3;
-- (void)setTappableEdgeInsets:(UIEdgeInsets)a3;
+- (void)setContentColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLayoutStyle:(int64_t)style;
+- (void)setMode:(int64_t)mode animated:(BOOL)animated;
+- (void)setShowDisabled:(BOOL)disabled;
+- (void)setSpec:(CAMShutterButtonSpec *)spec;
+- (void)setSpinning:(BOOL)spinning;
+- (void)setStopModeBackgroundColor:(id)color;
+- (void)setTappableEdgeInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation CUShutterButton
 
 - (void)_updateOuterAndInnerLayers
 {
-  v3 = [(CUShutterButton *)self mode];
-  v4 = [CAMShutterUtilities shouldUseImageViewForMode:v3];
-  v5 = [(CUShutterButton *)self _innerView];
+  mode = [(CUShutterButton *)self mode];
+  v4 = [CAMShutterUtilities shouldUseImageViewForMode:mode];
+  _innerView = [(CUShutterButton *)self _innerView];
   if (v4)
   {
     if (!self->__outerImageView)
@@ -58,11 +58,11 @@
       [(CUShutterButton *)self insertSubview:self->__outerImageView belowSubview:self->__outerView];
     }
 
-    v9 = [(CUShutterButton *)self _outerImageForMode:v3 layoutStyle:self->_layoutStyle];
+    v9 = [(CUShutterButton *)self _outerImageForMode:mode layoutStyle:self->_layoutStyle];
     [(UIImageView *)self->__outerImageView setImage:v9];
   }
 
-  if ([CAMShutterUtilities shouldUseTimelapseOuterViewForMode:v3]&& !self->__timelapseOuterView)
+  if ([CAMShutterUtilities shouldUseTimelapseOuterViewForMode:mode]&& !self->__timelapseOuterView)
   {
     v26 = 0u;
     v27 = 0u;
@@ -78,31 +78,31 @@
     [(CUShutterButton *)self insertSubview:self->__timelapseOuterView belowSubview:self->__outerView];
   }
 
-  if ([(CUShutterButton *)self _shouldShowBackgroundViewForMode:v3])
+  if ([(CUShutterButton *)self _shouldShowBackgroundViewForMode:mode])
   {
-    v13 = [(CUShutterButton *)self _stopModeBackground];
-    if (!v13)
+    _stopModeBackground = [(CUShutterButton *)self _stopModeBackground];
+    if (!_stopModeBackground)
     {
-      v13 = objc_alloc_init(MEMORY[0x1E69DD250]);
-      [v13 setUserInteractionEnabled:0];
-      [(CUShutterButton *)self set_stopModeBackground:v13];
-      [(CUShutterButton *)self insertSubview:v13 belowSubview:v5];
+      _stopModeBackground = objc_alloc_init(MEMORY[0x1E69DD250]);
+      [_stopModeBackground setUserInteractionEnabled:0];
+      [(CUShutterButton *)self set_stopModeBackground:_stopModeBackground];
+      [(CUShutterButton *)self insertSubview:_stopModeBackground belowSubview:_innerView];
     }
 
-    v14 = [(CUShutterButton *)self stopModeBackgroundColor];
-    [v13 setBackgroundColor:v14];
+    stopModeBackgroundColor = [(CUShutterButton *)self stopModeBackgroundColor];
+    [_stopModeBackground setBackgroundColor:stopModeBackgroundColor];
   }
 
-  v15 = [(CUShutterButton *)self _shouldShowContrastBorderForMode:v3 layoutStyle:self->_layoutStyle];
-  v16 = [(CUShutterButton *)self _outerView];
-  [v16 setShowContrastBorder:v15];
-  v17 = [(CUShutterButton *)self _contentColor];
-  [v16 setColor:v17];
+  v15 = [(CUShutterButton *)self _shouldShowContrastBorderForMode:mode layoutStyle:self->_layoutStyle];
+  _outerView = [(CUShutterButton *)self _outerView];
+  [_outerView setShowContrastBorder:v15];
+  _contentColor = [(CUShutterButton *)self _contentColor];
+  [_outerView setColor:_contentColor];
 
-  v18 = [(CUShutterButton *)self isSpinning];
-  v19 = [v5 layer];
-  v20 = [(CUShutterButton *)self _innerCircleColorForMode:v3 spinning:v18];
-  [v19 setBackgroundColor:{objc_msgSend(v20, "CGColor")}];
+  isSpinning = [(CUShutterButton *)self isSpinning];
+  layer = [_innerView layer];
+  v20 = [(CUShutterButton *)self _innerCircleColorForMode:mode spinning:isSpinning];
+  [layer setBackgroundColor:{objc_msgSend(v20, "CGColor")}];
 
   innerViewContrastView = self->__innerViewContrastView;
   if (v15)
@@ -131,19 +131,19 @@
 
 - (id)_contentColor
 {
-  v2 = [(CUShutterButton *)self contentColor];
-  v3 = v2;
-  if (v2)
+  contentColor = [(CUShutterButton *)self contentColor];
+  v3 = contentColor;
+  if (contentColor)
   {
-    v4 = v2;
+    whiteColor = contentColor;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  v5 = v4;
+  v5 = whiteColor;
 
   return v5;
 }
@@ -174,47 +174,47 @@
   v10 = v9;
   [(UIImageView *)self->__outerImageView setFrame:?];
   [(CAMTimelapseShutterRingView *)self->__timelapseOuterView setFrame:v4, v6, v8, v10];
-  v11 = [(CUShutterButton *)self mode];
-  v12 = [(CUShutterButton *)self _outerView];
-  [v12 frameForAlignmentRect:{v4, v6, v8, v10}];
-  [v12 setFrame:?];
-  v13 = [(CUShutterButton *)self _glassBackground];
-  [v13 setFrame:{v4, v6, v8, v10}];
-  v14 = [v13 layer];
-  [v14 setCornerRadius:v8 * 0.5];
+  mode = [(CUShutterButton *)self mode];
+  _outerView = [(CUShutterButton *)self _outerView];
+  [_outerView frameForAlignmentRect:{v4, v6, v8, v10}];
+  [_outerView setFrame:?];
+  _glassBackground = [(CUShutterButton *)self _glassBackground];
+  [_glassBackground setFrame:{v4, v6, v8, v10}];
+  layer = [_glassBackground layer];
+  [layer setCornerRadius:v8 * 0.5];
 
-  v15 = [(CUShutterButton *)self _innerView];
+  _innerView = [(CUShutterButton *)self _innerView];
   v16 = *MEMORY[0x1E695F058];
   v17 = *(MEMORY[0x1E695F058] + 8);
-  [(CUShutterButton *)self _sizeForMode:v11];
+  [(CUShutterButton *)self _sizeForMode:mode];
   v19 = v18;
   v21 = v20;
   UIRectGetCenter();
   v23 = v22;
   v25 = v24;
-  [v15 setBounds:{v16, v17, v19, v21}];
-  [v15 setCenter:{v23, v25}];
-  v26 = [(CUShutterButton *)self _innerViewContrastView];
+  [_innerView setBounds:{v16, v17, v19, v21}];
+  [_innerView setCenter:{v23, v25}];
+  _innerViewContrastView = [(CUShutterButton *)self _innerViewContrastView];
   v27 = CAMPixelWidthForView(self);
   UIRectCenteredAboutPointScale();
   v39 = CGRectInset(v38, -v27, -v27);
-  [v26 frameForAlignmentRect:{v39.origin.x, v39.origin.y, v39.size.width, v39.size.height}];
-  [v26 setBounds:{0.0, 0.0}];
-  [v26 setCenter:{v23, v25}];
-  [(CUShutterButton *)self _cornerRadiusForMode:v11];
+  [_innerViewContrastView frameForAlignmentRect:{v39.origin.x, v39.origin.y, v39.size.width, v39.size.height}];
+  [_innerViewContrastView setBounds:{0.0, 0.0}];
+  [_innerViewContrastView setCenter:{v23, v25}];
+  [(CUShutterButton *)self _cornerRadiusForMode:mode];
   v29 = v28;
-  v30 = [v15 layer];
-  [v30 setCornerRadius:v29];
-  if ([(CUShutterButton *)self _shouldShowBackgroundViewForMode:v11])
+  layer2 = [_innerView layer];
+  [layer2 setCornerRadius:v29];
+  if ([(CUShutterButton *)self _shouldShowBackgroundViewForMode:mode])
   {
-    v31 = [(CUShutterButton *)self _stopModeBackground];
+    _stopModeBackground = [(CUShutterButton *)self _stopModeBackground];
     [(CUShutterButton *)self _sizeForMode:0];
-    [v31 setBounds:{v16, v17, v32, v33}];
-    [v31 setCenter:{v23, v25}];
+    [_stopModeBackground setBounds:{v16, v17, v32, v33}];
+    [_stopModeBackground setCenter:{v23, v25}];
     [(CUShutterButton *)self _cornerRadiusForMode:0];
     v35 = v34;
-    v36 = [v31 layer];
-    [v36 setCornerRadius:v35];
+    layer3 = [_stopModeBackground layer];
+    [layer3 setCornerRadius:v35];
   }
 }
 
@@ -229,17 +229,17 @@
 
 - (void)_performHighlightAnimation
 {
-  v3 = [(CUShutterButton *)self isHighlighted];
-  v4 = [(CUShutterButton *)self _innerView];
-  v5 = [v4 layer];
+  isHighlighted = [(CUShutterButton *)self isHighlighted];
+  _innerView = [(CUShutterButton *)self _innerView];
+  layer = [_innerView layer];
 
-  v6 = [(CUShutterButton *)self _innerViewContrastView];
-  v7 = [v6 layer];
+  _innerViewContrastView = [(CUShutterButton *)self _innerViewContrastView];
+  layer2 = [_innerViewContrastView layer];
 
   v8 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"transform.scale.xy"];
   [v8 setMass:0.8];
   [v8 setVelocity:0.0];
-  if (v3)
+  if (isHighlighted)
   {
     v9 = 0.9;
   }
@@ -249,7 +249,7 @@
     v9 = 1.0;
   }
 
-  if (v3)
+  if (isHighlighted)
   {
     v10 = 12.0;
   }
@@ -272,65 +272,65 @@
   v17 = [MEMORY[0x1E69793D0] functionWithControlPoints:v13 :v16 :v14 :v15];
   [v8 setTimingFunction:v17];
 
-  v18 = [v5 presentationLayer];
-  v19 = [v18 valueForKeyPath:@"transform.scale.xy"];
+  presentationLayer = [layer presentationLayer];
+  v19 = [presentationLayer valueForKeyPath:@"transform.scale.xy"];
   [v8 setFromValue:v19];
 
   v20 = [MEMORY[0x1E696AD98] numberWithDouble:v9];
   [v8 setToValue:v20];
 
-  [v5 addAnimation:v8 forKey:@"highlightScaleAnimation"];
-  [v7 addAnimation:v8 forKey:@"highlightScaleAnimation"];
+  [layer addAnimation:v8 forKey:@"highlightScaleAnimation"];
+  [layer2 addAnimation:v8 forKey:@"highlightScaleAnimation"];
   memset(&v22, 0, sizeof(v22));
   CATransform3DMakeScale(&v22, v9, v9, 1.0);
   v21 = v22;
-  [v5 setTransform:&v21];
+  [layer setTransform:&v21];
   v21 = v22;
-  [v7 setTransform:&v21];
+  [layer2 setTransform:&v21];
 }
 
 + (id)smallShutterButton
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-  return [a1 smallShutterButtonWithLayoutStyle:v4];
+  return [self smallShutterButtonWithLayoutStyle:cam_initialLayoutStyle];
 }
 
 + (id)shutterButton
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-  return [a1 shutterButtonWithLayoutStyle:v4];
+  return [self shutterButtonWithLayoutStyle:cam_initialLayoutStyle];
 }
 
-+ (CUShutterButton)shutterButtonWithSpec:(CAMShutterButtonSpec *)a3
++ (CUShutterButton)shutterButtonWithSpec:(CAMShutterButtonSpec *)spec
 {
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-  v7 = [a1 alloc];
+  v7 = [self alloc];
   v8 = *MEMORY[0x1E695F058];
   v9 = *(MEMORY[0x1E695F058] + 8);
   v10 = *(MEMORY[0x1E695F058] + 16);
   v11 = *(MEMORY[0x1E695F058] + 24);
-  v12 = *&a3->stopSquareSideLength;
-  v15[0] = *&a3->outerRingDiameter;
+  v12 = *&spec->stopSquareSideLength;
+  v15[0] = *&spec->outerRingDiameter;
   v15[1] = v12;
-  interRingSpacing = a3->interRingSpacing;
-  v13 = [v7 initWithFrame:v6 layoutStyle:v15 spec:{v8, v9, v10, v11}];
+  interRingSpacing = spec->interRingSpacing;
+  v13 = [v7 initWithFrame:cam_initialLayoutStyle layoutStyle:v15 spec:{v8, v9, v10, v11}];
 
   return v13;
 }
 
-+ (CUShutterButton)shutterButtonWithLayoutStyle:(int64_t)a3
++ (CUShutterButton)shutterButtonWithLayoutStyle:(int64_t)style
 {
   v16 = 0;
   v14 = 0u;
   v15 = 0u;
-  CAMShutterButtonSpecForLayoutStyle(a3, &v14);
-  v5 = [a1 alloc];
+  CAMShutterButtonSpecForLayoutStyle(style, &v14);
+  v5 = [self alloc];
   v6 = *MEMORY[0x1E695F058];
   v7 = *(MEMORY[0x1E695F058] + 8);
   v8 = *(MEMORY[0x1E695F058] + 16);
@@ -338,17 +338,17 @@
   v12[0] = v14;
   v12[1] = v15;
   v13 = v16;
-  v10 = [v5 initWithFrame:a3 layoutStyle:v12 spec:{v6, v7, v8, v9}];
+  v10 = [v5 initWithFrame:style layoutStyle:v12 spec:{v6, v7, v8, v9}];
 
   return v10;
 }
 
-+ (id)smallShutterButtonWithLayoutStyle:(int64_t)a3
++ (id)smallShutterButtonWithLayoutStyle:(int64_t)style
 {
-  if (a3 == 3)
+  if (style == 3)
   {
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v7 = 1.0 / v6;
 
     v8 = v7 + 55.0;
@@ -361,7 +361,7 @@
     v8 = 47.0;
   }
 
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   v11 = *MEMORY[0x1E695F058];
   v12 = *(MEMORY[0x1E695F058] + 8);
   v13 = *(MEMORY[0x1E695F058] + 16);
@@ -370,23 +370,23 @@
   *&v17[1] = v9;
   v18 = xmmword_1A3A69B90;
   v19 = 0x4000000000000000;
-  v15 = [v10 initWithFrame:a3 layoutStyle:v17 spec:{v11, v12, v13, v14}];
+  v15 = [v10 initWithFrame:style layoutStyle:v17 spec:{v11, v12, v13, v14}];
 
   return v15;
 }
 
-- (void)_commonCAMShutterButtonInitializationWithLayoutStyle:(int64_t)a3 spec:(CAMShutterButtonSpec *)a4
+- (void)_commonCAMShutterButtonInitializationWithLayoutStyle:(int64_t)style spec:(CAMShutterButtonSpec *)spec
 {
   self->_mode = 0;
-  v5 = *&a4->outerRingDiameter;
-  v6 = *&a4->stopSquareSideLength;
-  self->_spec.interRingSpacing = a4->interRingSpacing;
+  v5 = *&spec->outerRingDiameter;
+  v6 = *&spec->stopSquareSideLength;
+  self->_spec.interRingSpacing = spec->interRingSpacing;
   *&self->_spec.outerRingDiameter = v5;
   *&self->_spec.stopSquareSideLength = v6;
-  self->_layoutStyle = a3;
-  v7 = [MEMORY[0x1E69DC888] whiteColor];
+  self->_layoutStyle = style;
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   contentColor = self->_contentColor;
-  self->_contentColor = v7;
+  self->_contentColor = whiteColor;
 
   v9 = objc_alloc_init(MEMORY[0x1E69DD250]);
   glassBackground = self->__glassBackground;
@@ -411,75 +411,75 @@
   [(CUShutterButton *)self _updateOuterAndInnerLayers];
 }
 
-- (CUShutterButton)initWithFrame:(CGRect)a3 layoutStyle:(int64_t)a4 spec:(CAMShutterButtonSpec *)a5
+- (CUShutterButton)initWithFrame:(CGRect)frame layoutStyle:(int64_t)style spec:(CAMShutterButtonSpec *)spec
 {
   v13.receiver = self;
   v13.super_class = CUShutterButton;
-  v7 = [(CUShutterButton *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(CUShutterButton *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v7;
   if (v7)
   {
-    v9 = *&a5->stopSquareSideLength;
-    v11[0] = *&a5->outerRingDiameter;
+    v9 = *&spec->stopSquareSideLength;
+    v11[0] = *&spec->outerRingDiameter;
     v11[1] = v9;
-    interRingSpacing = a5->interRingSpacing;
-    [(CUShutterButton *)v7 _commonCAMShutterButtonInitializationWithLayoutStyle:a4 spec:v11];
+    interRingSpacing = spec->interRingSpacing;
+    [(CUShutterButton *)v7 _commonCAMShutterButtonInitializationWithLayoutStyle:style spec:v11];
   }
 
   return v8;
 }
 
-- (CUShutterButton)initWithFrame:(CGRect)a3
+- (CUShutterButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [MEMORY[0x1E69DC938] currentDevice];
-  v9 = [v8 cam_initialLayoutStyle];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
   v15 = 0;
   v13 = 0u;
   v14 = 0u;
-  CAMShutterButtonSpecForLayoutStyle(v9, &v13);
+  CAMShutterButtonSpecForLayoutStyle(cam_initialLayoutStyle, &v13);
   v11[0] = v13;
   v11[1] = v14;
   v12 = v15;
-  return [(CUShutterButton *)self initWithFrame:v9 layoutStyle:v11 spec:x, y, width, height];
+  return [(CUShutterButton *)self initWithFrame:cam_initialLayoutStyle layoutStyle:v11 spec:x, y, width, height];
 }
 
-- (CUShutterButton)initWithCoder:(id)a3
+- (CUShutterButton)initWithCoder:(id)coder
 {
   v13.receiver = self;
   v13.super_class = CUShutterButton;
-  v3 = [(CUShutterButton *)&v13 initWithCoder:a3];
+  v3 = [(CUShutterButton *)&v13 initWithCoder:coder];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    v5 = [v4 cam_initialLayoutStyle];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
     v12 = 0;
     v10 = 0u;
     v11 = 0u;
-    CAMShutterButtonSpecForLayoutStyle(v5, &v10);
+    CAMShutterButtonSpecForLayoutStyle(cam_initialLayoutStyle, &v10);
     v8[0] = v10;
     v8[1] = v11;
     v9 = v12;
-    [(CUShutterButton *)v3 _commonCAMShutterButtonInitializationWithLayoutStyle:v5 spec:v8];
+    [(CUShutterButton *)v3 _commonCAMShutterButtonInitializationWithLayoutStyle:cam_initialLayoutStyle spec:v8];
     v6 = v3;
   }
 
   return v3;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if (([(CUShutterButton *)self isEnabled]& 1) == 0)
   {
-    if ([(CUShutterButton *)self pointInside:v7 withEvent:x, y])
+    if ([(CUShutterButton *)self pointInside:eventCopy withEvent:x, y])
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v9 = objc_opt_respondsToSelector();
@@ -494,7 +494,7 @@
 
   v13.receiver = self;
   v13.super_class = CUShutterButton;
-  v11 = [(CUShutterButton *)&v13 hitTest:v7 withEvent:x, y];
+  v11 = [(CUShutterButton *)&v13 hitTest:eventCopy withEvent:x, y];
 
   return v11;
 }
@@ -508,7 +508,7 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   outerRingDiameter = self->_spec.outerRingDiameter;
   v4 = outerRingDiameter;
@@ -517,94 +517,94 @@
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(CUShutterButton *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(CUShutterButton *)self isHighlighted];
   v6.receiver = self;
   v6.super_class = CUShutterButton;
-  [(CUShutterButton *)&v6 setHighlighted:v3];
-  if (v5 != v3)
+  [(CUShutterButton *)&v6 setHighlighted:highlightedCopy];
+  if (isHighlighted != highlightedCopy)
   {
     [(CUShutterButton *)self _performHighlightAnimation];
   }
 }
 
-- (void)setMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setMode:(int64_t)mode animated:(BOOL)animated
 {
   mode = self->_mode;
-  if (mode != a3)
+  if (mode != mode)
   {
-    v5 = a4;
-    self->_mode = a3;
+    animatedCopy = animated;
+    self->_mode = mode;
     [(CUShutterButton *)self _updateOuterAndInnerLayers];
     v7 = self->_mode;
 
-    [(CUShutterButton *)self _performModeSwitchAnimationFromMode:mode toMode:v7 animated:v5];
+    [(CUShutterButton *)self _performModeSwitchAnimationFromMode:mode toMode:v7 animated:animatedCopy];
   }
 }
 
-- (void)setSpinning:(BOOL)a3
+- (void)setSpinning:(BOOL)spinning
 {
-  if (self->_spinning != a3)
+  if (self->_spinning != spinning)
   {
-    self->_spinning = a3;
+    self->_spinning = spinning;
     [(CUShutterButton *)self _updateSpinningAnimations];
   }
 }
 
-- (void)setTappableEdgeInsets:(UIEdgeInsets)a3
+- (void)setTappableEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_tappableEdgeInsets.top), vceqq_f64(v4, *&self->_tappableEdgeInsets.bottom)))) & 1) == 0)
   {
-    self->_tappableEdgeInsets = a3;
+    self->_tappableEdgeInsets = insets;
     [(CUShutterButton *)self setNeedsLayout];
   }
 }
 
-- (void)setContentColor:(id)a3
+- (void)setContentColor:(id)color
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_contentColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_contentColor] & 1) == 0)
   {
-    objc_storeStrong(&self->_contentColor, a3);
+    objc_storeStrong(&self->_contentColor, color);
     [(CUShutterButton *)self _updateOuterAndInnerLayers];
   }
 }
 
-- (void)setStopModeBackgroundColor:(id)a3
+- (void)setStopModeBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_stopModeBackgroundColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_stopModeBackgroundColor] & 1) == 0)
   {
-    objc_storeStrong(&self->_stopModeBackgroundColor, a3);
+    objc_storeStrong(&self->_stopModeBackgroundColor, color);
     [(CUShutterButton *)self _updateOuterAndInnerLayers];
   }
 }
 
-- (void)setSpec:(CAMShutterButtonSpec *)a3
+- (void)setSpec:(CAMShutterButtonSpec *)spec
 {
-  interRingSpacing = a3->interRingSpacing;
-  v5 = *&a3->stopSquareSideLength;
-  *&self->_spec.outerRingDiameter = *&a3->outerRingDiameter;
+  interRingSpacing = spec->interRingSpacing;
+  v5 = *&spec->stopSquareSideLength;
+  *&self->_spec.outerRingDiameter = *&spec->outerRingDiameter;
   *&self->_spec.stopSquareSideLength = v5;
   self->_spec.interRingSpacing = interRingSpacing;
   outerView = self->__outerView;
-  v7 = *&a3->stopSquareSideLength;
-  v8[0] = *&a3->outerRingDiameter;
+  v7 = *&spec->stopSquareSideLength;
+  v8[0] = *&spec->outerRingDiameter;
   v8[1] = v7;
-  v9 = a3->interRingSpacing;
+  v9 = spec->interRingSpacing;
   [(CAMShutterButtonRingView *)outerView setSpec:v8];
   [(CUShutterButton *)self _updateOuterAndInnerLayers];
 }
 
-- (id)_innerCircleColorForMode:(int64_t)a3 spinning:(BOOL)a4
+- (id)_innerCircleColorForMode:(int64_t)mode spinning:(BOOL)spinning
 {
-  if (a4)
+  if (spinning)
   {
     v6 = 0.2;
   }
@@ -614,26 +614,26 @@
     v6 = 1.0;
   }
 
-  v7 = [MEMORY[0x1E696AAE8] mainBundle];
-  v8 = [v7 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v9 = [v8 isEqualToString:@"com.apple.camera.lockscreen"];
+  v9 = [bundleIdentifier isEqualToString:@"com.apple.camera.lockscreen"];
   v10 = +[CAMCaptureCapabilities capabilities];
-  v11 = [v10 featureDevelopmentShowLockIndicator];
+  featureDevelopmentShowLockIndicator = [v10 featureDevelopmentShowLockIndicator];
 
-  if (a3 > 9)
+  if (mode > 9)
   {
     v12 = 0;
   }
 
-  else if (((1 << a3) & 0x1CE) != 0)
+  else if (((1 << mode) & 0x1CE) != 0)
   {
     v12 = [MEMORY[0x1E69DC888] colorWithRed:0.961 green:0.2 blue:0.2 alpha:v6];
   }
 
   else
   {
-    if ((v11 & v9) == 1)
+    if ((featureDevelopmentShowLockIndicator & v9) == 1)
     {
       [MEMORY[0x1E69DC888] blueColor];
     }
@@ -649,9 +649,9 @@
   return v12;
 }
 
-- (CGSize)_sizeForMode:(int64_t)a3
+- (CGSize)_sizeForMode:(int64_t)mode
 {
-  v4 = [CAMShutterUtilities isStopMode:a3];
+  v4 = [CAMShutterUtilities isStopMode:mode];
   [(CUShutterButton *)self spec];
   if (v4)
   {
@@ -669,9 +669,9 @@
   return result;
 }
 
-- (double)_cornerRadiusForMode:(int64_t)a3
+- (double)_cornerRadiusForMode:(int64_t)mode
 {
-  v4 = [CAMShutterUtilities isStopMode:a3];
+  v4 = [CAMShutterUtilities isStopMode:mode];
   [(CUShutterButton *)self spec];
   if (v4)
   {
@@ -684,9 +684,9 @@
   }
 }
 
-- (id)_outerImageForMode:(int64_t)a3 layoutStyle:(int64_t)a4
+- (id)_outerImageForMode:(int64_t)mode layoutStyle:(int64_t)style
 {
-  if (a3 == 2 || a3 == 7)
+  if (mode == 2 || mode == 7)
   {
     v5 = @"CAMShutterButtonSlomo";
   }
@@ -696,7 +696,7 @@
     v5 = 0;
   }
 
-  if (a4 == 3)
+  if (style == 3)
   {
     v5 = [(__CFString *)v5 stringByAppendingString:@"Phone"];
   }
@@ -716,7 +716,7 @@
   return v8;
 }
 
-- ($EA90F2AF3C0DC35AB2D8304CE3BCA89E)_timelapseRingSpecForLayoutStyle:(SEL)a3
+- ($EA90F2AF3C0DC35AB2D8304CE3BCA89E)_timelapseRingSpecForLayoutStyle:(SEL)style
 {
   *&retstr->var0 = xmmword_1A3A69BA0;
   retstr->var2 = CAMPixelWidthForView(self) + 3.0;
@@ -730,11 +730,11 @@
   return result;
 }
 
-- (BOOL)_shouldShowContrastBorderForMode:(int64_t)a3 layoutStyle:(int64_t)a4
+- (BOOL)_shouldShowContrastBorderForMode:(int64_t)mode layoutStyle:(int64_t)style
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    return (a3 < 0xA) & (0x231u >> a3);
+    return (mode < 0xA) & (0x231u >> mode);
   }
 
   else
@@ -743,12 +743,12 @@
   }
 }
 
-- (BOOL)_shouldShowBackgroundViewForMode:(int64_t)a3
+- (BOOL)_shouldShowBackgroundViewForMode:(int64_t)mode
 {
-  v4 = [(CUShutterButton *)self stopModeBackgroundColor];
-  if (v4)
+  stopModeBackgroundColor = [(CUShutterButton *)self stopModeBackgroundColor];
+  if (stopModeBackgroundColor)
   {
-    v5 = [CAMShutterUtilities isStopMode:a3];
+    v5 = [CAMShutterUtilities isStopMode:mode];
   }
 
   else
@@ -759,33 +759,33 @@
   return v5;
 }
 
-- (void)_performModeSwitchAnimationFromMode:(int64_t)a3 toMode:(int64_t)a4 animated:(BOOL)a5
+- (void)_performModeSwitchAnimationFromMode:(int64_t)mode toMode:(int64_t)toMode animated:(BOOL)animated
 {
-  v5 = a5;
-  v9 = [(CUShutterButton *)self _innerView];
-  v158 = [v9 layer];
+  animatedCopy = animated;
+  _innerView = [(CUShutterButton *)self _innerView];
+  layer = [_innerView layer];
 
-  v10 = [(CUShutterButton *)self _outerView];
-  v11 = [v10 layer];
+  _outerView = [(CUShutterButton *)self _outerView];
+  layer2 = [_outerView layer];
 
-  v12 = [(CUShutterButton *)self _outerImageView];
-  v13 = [v12 layer];
+  _outerImageView = [(CUShutterButton *)self _outerImageView];
+  layer3 = [_outerImageView layer];
 
-  v14 = [(CUShutterButton *)self _stopModeBackground];
-  v15 = [v14 layer];
+  _stopModeBackground = [(CUShutterButton *)self _stopModeBackground];
+  layer4 = [_stopModeBackground layer];
 
-  v16 = [(CUShutterButton *)self _timelapseOuterView];
-  v157 = [v16 layer];
+  _timelapseOuterView = [(CUShutterButton *)self _timelapseOuterView];
+  layer5 = [_timelapseOuterView layer];
 
-  v17 = [(CUShutterButton *)self isSpinning];
-  v18 = [(CUShutterButton *)self _innerCircleColorForMode:a4 spinning:v17];
-  v19 = [v18 CGColor];
+  isSpinning = [(CUShutterButton *)self isSpinning];
+  v18 = [(CUShutterButton *)self _innerCircleColorForMode:toMode spinning:isSpinning];
+  cGColor = [v18 CGColor];
 
-  v150 = v17;
-  v20 = v5 && ~v17;
-  v156 = [CAMShutterUtilities shouldUseImageViewForMode:a4];
-  v155 = [CAMShutterUtilities shouldUseTimelapseOuterViewForMode:a4];
-  v148 = [(CUShutterButton *)self _shouldShowBackgroundViewForMode:a4];
+  v150 = isSpinning;
+  v20 = animatedCopy && ~isSpinning;
+  v156 = [CAMShutterUtilities shouldUseImageViewForMode:toMode];
+  v155 = [CAMShutterUtilities shouldUseTimelapseOuterViewForMode:toMode];
+  v148 = [(CUShutterButton *)self _shouldShowBackgroundViewForMode:toMode];
   if ([(CUShutterButton *)self showDisabled])
   {
     v21 = 0.4;
@@ -797,30 +797,30 @@
   }
 
   v135 = v20;
-  v154 = v19;
+  v154 = cGColor;
   if (v20 == 1)
   {
-    v22 = [v158 presentationLayer];
-    v151 = v11;
-    v140 = a4;
-    v143 = a3;
-    v134 = v15;
-    if (v22)
+    presentationLayer = [layer presentationLayer];
+    v151 = layer2;
+    toModeCopy = toMode;
+    modeCopy = mode;
+    v134 = layer4;
+    if (presentationLayer)
     {
-      v23 = [v158 presentationLayer];
-      v24 = [v23 valueForKeyPath:@"backgroundColor"];
+      presentationLayer2 = [layer presentationLayer];
+      v24 = [presentationLayer2 valueForKeyPath:@"backgroundColor"];
     }
 
     else
     {
-      v24 = [v158 valueForKeyPath:@"backgroundColor"];
+      v24 = [layer valueForKeyPath:@"backgroundColor"];
     }
 
     v146 = v24;
 
     v25 = [MEMORY[0x1E6979318] animationWithKeyPath:@"backgroundColor"];
     [v25 setFromValue:v24];
-    [v25 setToValue:v19];
+    [v25 setToValue:cGColor];
     UIAnimationDragCoefficient();
     [v25 setDuration:v26 * 0.25];
     v27 = *MEMORY[0x1E6979EB8];
@@ -829,7 +829,7 @@
 
     v29 = *MEMORY[0x1E69797E0];
     [v25 setFillMode:*MEMORY[0x1E69797E0]];
-    [v158 addAnimation:v25 forKey:@"backgroundColorAnimation"];
+    [layer addAnimation:v25 forKey:@"backgroundColorAnimation"];
     v30 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
     v31 = MEMORY[0x1E696AD98];
     [(UIView *)self->__innerView alpha];
@@ -842,7 +842,7 @@
     [v30 setTimingFunction:v34];
 
     [v30 setFillMode:v29];
-    [v158 addAnimation:v30 forKey:@"opacity"];
+    [layer addAnimation:v30 forKey:@"opacity"];
     v35 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
     v36 = MEMORY[0x1E696AD98];
     [(CAMShutterButtonRingView *)self->__outerView alpha];
@@ -868,7 +868,7 @@
     [v40 setTimingFunction:v44];
 
     [v40 setFillMode:v29];
-    [v13 addAnimation:v40 forKey:@"opacity"];
+    [layer3 addAnimation:v40 forKey:@"opacity"];
     v45 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
     v46 = MEMORY[0x1E696AD98];
     [(CAMTimelapseShutterRingView *)self->__timelapseOuterView alpha];
@@ -881,24 +881,24 @@
     [v45 setTimingFunction:v49];
 
     [v45 setFillMode:v29];
-    [v157 addAnimation:v45 forKey:@"opacity"];
+    [layer5 addAnimation:v45 forKey:@"opacity"];
 
-    v19 = v154;
-    v11 = v151;
+    cGColor = v154;
+    layer2 = v151;
 
-    a4 = v140;
-    a3 = v143;
-    v15 = v134;
+    toMode = toModeCopy;
+    mode = modeCopy;
+    layer4 = v134;
   }
 
-  v50 = [CAMShutterUtilities isStopMode:a4];
-  v51 = [CAMShutterUtilities isStopMode:a3];
+  v50 = [CAMShutterUtilities isStopMode:toMode];
+  v51 = [CAMShutterUtilities isStopMode:mode];
   if (v50)
   {
-    [(CUShutterButton *)self _sizeForMode:a4];
+    [(CUShutterButton *)self _sizeForMode:toMode];
     v147 = [MEMORY[0x1E696B098] valueWithCGSize:?];
     v52 = MEMORY[0x1E696AD98];
-    [(CUShutterButton *)self _cornerRadiusForMode:a4];
+    [(CUShutterButton *)self _cornerRadiusForMode:toMode];
     v53 = [v52 numberWithDouble:?];
     v54 = 0.0;
     if (v148)
@@ -908,25 +908,25 @@
 
     v55 = [MEMORY[0x1E696AD98] numberWithDouble:v54];
     v56 = v55;
-    v57 = v11;
+    v57 = layer2;
     if (v135)
     {
       v136 = v55;
       UIAnimationDragCoefficient();
       v59 = v58;
-      v60 = [v158 presentationLayer];
-      v141 = a4;
-      v144 = a3;
-      v138 = v13;
-      if (v60)
+      presentationLayer3 = [layer presentationLayer];
+      toModeCopy2 = toMode;
+      modeCopy2 = mode;
+      v138 = layer3;
+      if (presentationLayer3)
       {
-        v61 = [v158 presentationLayer];
-        v62 = [v61 valueForKeyPath:@"bounds.size"];
+        presentationLayer4 = [layer presentationLayer];
+        v62 = [presentationLayer4 valueForKeyPath:@"bounds.size"];
       }
 
       else
       {
-        v62 = [v158 valueForKeyPath:@"bounds.size"];
+        v62 = [layer valueForKeyPath:@"bounds.size"];
       }
 
       v77 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"bounds.size"];
@@ -948,17 +948,17 @@
 
       v84 = *MEMORY[0x1E69797E0];
       [v77 setFillMode:*MEMORY[0x1E69797E0]];
-      v85 = [v158 presentationLayer];
-      v86 = v15;
-      if (v85)
+      presentationLayer5 = [layer presentationLayer];
+      v86 = layer4;
+      if (presentationLayer5)
       {
-        v87 = [v158 presentationLayer];
-        v88 = [v87 valueForKeyPath:@"cornerRadius"];
+        presentationLayer6 = [layer presentationLayer];
+        v88 = [presentationLayer6 valueForKeyPath:@"cornerRadius"];
       }
 
       else
       {
-        v88 = [v158 valueForKeyPath:@"cornerRadius"];
+        v88 = [layer valueForKeyPath:@"cornerRadius"];
       }
 
       v89 = [MEMORY[0x1E6979318] animationWithKeyPath:@"cornerRadius"];
@@ -973,20 +973,20 @@
       [v89 setTimingFunction:v94];
 
       [v89 setFillMode:v84];
-      [v158 addAnimation:v77 forKey:@"sizeAnimation"];
-      [v158 addAnimation:v89 forKey:@"cornerRadiusAnimation"];
+      [layer addAnimation:v77 forKey:@"sizeAnimation"];
+      [layer addAnimation:v89 forKey:@"cornerRadiusAnimation"];
       if (v148)
       {
-        v95 = [v15 presentationLayer];
-        v96 = v95;
-        if (v95)
+        presentationLayer7 = [layer4 presentationLayer];
+        v96 = presentationLayer7;
+        if (presentationLayer7)
         {
-          v97 = v95;
+          v97 = presentationLayer7;
         }
 
         else
         {
-          v97 = v15;
+          v97 = layer4;
         }
 
         v98 = v97;
@@ -1000,34 +1000,34 @@
         v101 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED0]];
         [v100 setTimingFunction:v101];
 
-        v86 = v15;
-        [v15 addAnimation:v100 forKey:@"opacityAnimation"];
+        v86 = layer4;
+        [layer4 addAnimation:v100 forKey:@"opacityAnimation"];
 
         v57 = v152;
       }
 
-      a4 = v141;
-      a3 = v144;
+      toMode = toModeCopy2;
+      mode = modeCopy2;
       v56 = v136;
-      v13 = v138;
-      v15 = v86;
+      layer3 = v138;
+      layer4 = v86;
       goto LABEL_42;
     }
   }
 
   else
   {
-    v57 = v11;
+    v57 = layer2;
     if (!v51)
     {
       goto LABEL_43;
     }
 
-    [(CUShutterButton *)self _sizeForMode:a4];
+    [(CUShutterButton *)self _sizeForMode:toMode];
     v64 = v63;
     v147 = [MEMORY[0x1E696B098] valueWithCGSize:?];
     v53 = [MEMORY[0x1E696AD98] numberWithDouble:ceil(v64 * 0.5)];
-    v65 = [(CUShutterButton *)self _shouldShowBackgroundViewForMode:a3];
+    v65 = [(CUShutterButton *)self _shouldShowBackgroundViewForMode:mode];
     v66 = 0.0;
     if (v148)
     {
@@ -1046,20 +1046,20 @@
       v149 = [MEMORY[0x1E69793D0] functionWithControlPoints:0.0 :v68 :v69 :v70];
       UIAnimationDragCoefficient();
       v72 = v71;
-      v73 = [v158 presentationLayer];
-      v142 = a4;
-      v145 = a3;
-      v139 = v13;
-      v74 = v15;
-      if (v73)
+      presentationLayer8 = [layer presentationLayer];
+      toModeCopy3 = toMode;
+      modeCopy3 = mode;
+      v139 = layer3;
+      v74 = layer4;
+      if (presentationLayer8)
       {
-        v75 = [v158 presentationLayer];
-        v76 = [v75 valueForKeyPath:@"bounds.size"];
+        presentationLayer9 = [layer presentationLayer];
+        v76 = [presentationLayer9 valueForKeyPath:@"bounds.size"];
       }
 
       else
       {
-        v76 = [v158 valueForKeyPath:@"bounds.size"];
+        v76 = [layer valueForKeyPath:@"bounds.size"];
       }
 
       v102 = [MEMORY[0x1E6979318] animationWithKeyPath:@"bounds.size"];
@@ -1073,17 +1073,17 @@
       [v102 setTimingFunction:v149];
       v106 = *MEMORY[0x1E69797E0];
       [v102 setFillMode:*MEMORY[0x1E69797E0]];
-      v107 = [v158 presentationLayer];
+      presentationLayer10 = [layer presentationLayer];
       v153 = v57;
-      if (v107)
+      if (presentationLayer10)
       {
-        v108 = [v158 presentationLayer];
-        v109 = [v108 valueForKeyPath:@"cornerRadius"];
+        presentationLayer11 = [layer presentationLayer];
+        v109 = [presentationLayer11 valueForKeyPath:@"cornerRadius"];
       }
 
       else
       {
-        v109 = [v158 valueForKeyPath:@"cornerRadius"];
+        v109 = [layer valueForKeyPath:@"cornerRadius"];
       }
 
       v110 = [MEMORY[0x1E6979318] animationWithKeyPath:@"cornerRadius"];
@@ -1092,16 +1092,16 @@
       [v110 setDuration:v103 * 0.22];
       [v110 setTimingFunction:v149];
       [v110 setFillMode:v106];
-      [v158 addAnimation:v102 forKey:@"sizeAnimation"];
-      [v158 addAnimation:v110 forKey:@"cornerRadiusAnimation"];
+      [layer addAnimation:v102 forKey:@"sizeAnimation"];
+      [layer addAnimation:v110 forKey:@"cornerRadiusAnimation"];
       if (v131)
       {
         v111 = v74;
-        v112 = [v74 presentationLayer];
-        v113 = v112;
-        if (v112)
+        presentationLayer12 = [v74 presentationLayer];
+        v113 = presentationLayer12;
+        if (presentationLayer12)
         {
-          v114 = v112;
+          v114 = presentationLayer12;
         }
 
         else
@@ -1126,37 +1126,37 @@
       }
 
       v57 = v153;
-      a4 = v142;
-      a3 = v145;
+      toMode = toModeCopy3;
+      mode = modeCopy3;
       v56 = v137;
-      v13 = v139;
-      v15 = v74;
+      layer3 = v139;
+      layer4 = v74;
       goto LABEL_42;
     }
   }
 
-  [v158 removeAllAnimations];
-  [v15 removeAllAnimations];
+  [layer removeAllAnimations];
+  [layer4 removeAllAnimations];
 LABEL_42:
-  [v158 setValue:v147 forKeyPath:@"bounds.size"];
-  [v158 setValue:v53 forKeyPath:@"cornerRadius"];
-  [v15 setValue:v56 forKey:@"opacity"];
+  [layer setValue:v147 forKeyPath:@"bounds.size"];
+  [layer setValue:v53 forKeyPath:@"cornerRadius"];
+  [layer4 setValue:v56 forKey:@"opacity"];
 
-  v19 = v154;
+  cGColor = v154;
 LABEL_43:
   if (v150)
   {
-    [v158 bounds];
+    [layer bounds];
     UIRectGetCenter();
     v121 = v120;
     v123 = v122;
-    v124 = [(CUShutterButton *)self _spinnerView];
-    [v124 setCenter:{v121, v123}];
+    _spinnerView = [(CUShutterButton *)self _spinnerView];
+    [_spinnerView setCenter:{v121, v123}];
   }
 
-  [v158 setValue:v19 forKeyPath:@"backgroundColor"];
+  [layer setValue:cGColor forKeyPath:@"backgroundColor"];
   *&v125 = v21;
-  [v158 setOpacity:v125];
+  [layer setOpacity:v125];
   if (v156 || v155)
   {
     *&v126 = 0.0;
@@ -1178,7 +1178,7 @@ LABEL_43:
     *&v127 = 0.0;
   }
 
-  [v13 setOpacity:v127];
+  [layer3 setOpacity:v127];
   if (v155)
   {
     *&v128 = v21;
@@ -1189,10 +1189,10 @@ LABEL_43:
     *&v128 = 0.0;
   }
 
-  [v157 setOpacity:v128];
-  v129 = a3 == 3 && a4 == 8;
+  [layer5 setOpacity:v128];
+  v129 = mode == 3 && toMode == 8;
   v130 = v129;
-  if (v129 || a3 == 8)
+  if (v129 || mode == 8)
   {
     [(CAMTimelapseShutterRingView *)self->__timelapseOuterView setAnimating:v130];
   }
@@ -1200,36 +1200,36 @@ LABEL_43:
 
 - (void)_updateSpinningAnimations
 {
-  v3 = [(CUShutterButton *)self isSpinning];
-  v4 = [(CUShutterButton *)self _isSpinningSupportedForLayoutStyle:[(CUShutterButton *)self layoutStyle]]& v3;
-  v5 = [(CUShutterButton *)self _innerView];
-  v6 = [(CUShutterButton *)self _spinnerView];
-  if (!v6)
+  isSpinning = [(CUShutterButton *)self isSpinning];
+  v4 = [(CUShutterButton *)self _isSpinningSupportedForLayoutStyle:[(CUShutterButton *)self layoutStyle]]& isSpinning;
+  _innerView = [(CUShutterButton *)self _innerView];
+  _spinnerView = [(CUShutterButton *)self _spinnerView];
+  if (!_spinnerView)
   {
-    v6 = [CAMShutterUtilities spinnerViewForLayoutStyle:[(CUShutterButton *)self layoutStyle]];
-    [(CUShutterButton *)self set_spinnerView:v6];
+    _spinnerView = [CAMShutterUtilities spinnerViewForLayoutStyle:[(CUShutterButton *)self layoutStyle]];
+    [(CUShutterButton *)self set_spinnerView:_spinnerView];
   }
 
-  v7 = [v6 layer];
+  layer = [_spinnerView layer];
   v8 = [(CUShutterButton *)self _innerCircleColorForMode:[(CUShutterButton *)self mode] spinning:v4];
   if (v4)
   {
-    [v5 addSubview:v6];
-    [v5 bounds];
+    [_innerView addSubview:_spinnerView];
+    [_innerView bounds];
     UIRectGetCenter();
-    [v6 setCenter:?];
+    [_spinnerView setCenter:?];
     [(CUShutterButton *)self spec];
-    [v6 setBounds:{0.0, 0.0, v21 + (v22 + v23) * -2.0, v21 + (v22 + v23) * -2.0}];
-    [v5 setBackgroundColor:v8];
-    [v6 setAlpha:1.0];
-    v9 = [v5 layer];
-    [v9 removeAnimationForKey:@"sizeAnimation"];
+    [_spinnerView setBounds:{0.0, 0.0, v21 + (v22 + v23) * -2.0, v21 + (v22 + v23) * -2.0}];
+    [_innerView setBackgroundColor:v8];
+    [_spinnerView setAlpha:1.0];
+    layer2 = [_innerView layer];
+    [layer2 removeAnimationForKey:@"sizeAnimation"];
 
-    v10 = [v5 layer];
-    [v10 removeAnimationForKey:@"backgroundColorAnimation"];
+    layer3 = [_innerView layer];
+    [layer3 removeAnimationForKey:@"backgroundColorAnimation"];
 
     v11 = +[CAMShutterUtilities spinnerAnimation];
-    [v7 addAnimation:v11 forKey:@"spinnerRotation"];
+    [layer addAnimation:v11 forKey:@"spinnerRotation"];
   }
 
   else
@@ -1239,16 +1239,16 @@ LABEL_43:
     v17[1] = 3221225472;
     v17[2] = __44__CUShutterButton__updateSpinningAnimations__block_invoke;
     v17[3] = &unk_1E76F7938;
-    v18 = v5;
+    v18 = _innerView;
     v19 = v8;
-    v20 = v6;
+    v20 = _spinnerView;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __44__CUShutterButton__updateSpinningAnimations__block_invoke_2;
     v13[3] = &unk_1E76FB068;
     v13[4] = self;
     v14 = v20;
-    v15 = v7;
+    v15 = layer;
     v16 = @"spinnerRotation";
     [v12 animateWithDuration:327680 delay:v17 options:v13 animations:0.3 completion:0.0];
 
@@ -1279,34 +1279,34 @@ uint64_t __44__CUShutterButton__updateSpinningAnimations__block_invoke_2(uint64_
   return result;
 }
 
-- (void)setShowDisabled:(BOOL)a3
+- (void)setShowDisabled:(BOOL)disabled
 {
-  if (self->_showDisabled != a3)
+  if (self->_showDisabled != disabled)
   {
-    self->_showDisabled = a3;
-    v5 = [(CUShutterButton *)self mode];
-    v6 = [(CUShutterButton *)self mode];
+    self->_showDisabled = disabled;
+    mode = [(CUShutterButton *)self mode];
+    mode2 = [(CUShutterButton *)self mode];
 
-    [(CUShutterButton *)self _performModeSwitchAnimationFromMode:v5 toMode:v6 animated:0];
+    [(CUShutterButton *)self _performModeSwitchAnimationFromMode:mode toMode:mode2 animated:0];
   }
 }
 
-- (void)setLayoutStyle:(int64_t)a3
+- (void)setLayoutStyle:(int64_t)style
 {
   layoutStyle = self->_layoutStyle;
-  if (layoutStyle != a3)
+  if (layoutStyle != style)
   {
-    self->_layoutStyle = a3;
+    self->_layoutStyle = style;
     v11 = 0;
     v9 = 0u;
     v10 = 0u;
-    CAMShutterButtonSpecForLayoutStyle(a3, &v9);
+    CAMShutterButtonSpecForLayoutStyle(style, &v9);
     v7[0] = v9;
     v7[1] = v10;
     v8 = v11;
     [(CUShutterButton *)self setSpec:v7];
     v6 = [(CUShutterButton *)self _isSpinningSupportedForLayoutStyle:layoutStyle];
-    if (v6 != [(CUShutterButton *)self _isSpinningSupportedForLayoutStyle:a3])
+    if (v6 != [(CUShutterButton *)self _isSpinningSupportedForLayoutStyle:style])
     {
       [(CUShutterButton *)self _updateSpinningAnimations];
     }

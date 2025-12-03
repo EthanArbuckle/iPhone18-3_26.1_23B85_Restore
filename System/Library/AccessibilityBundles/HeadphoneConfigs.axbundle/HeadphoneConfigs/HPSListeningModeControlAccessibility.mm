@@ -1,6 +1,6 @@
 @interface HPSListeningModeControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axLabelForBTListeningMode:(int)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axLabelForBTListeningMode:(int)mode;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axSetSegmentLabels;
@@ -9,13 +9,13 @@
 
 @implementation HPSListeningModeControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HPSListeningModeControl" hasInstanceVariable:@"_segmentedControl" withType:"UISegmentedControl"];
-  [v3 validateClass:@"UISegmentedControl" hasInstanceVariable:@"_segments" withType:"NSMutableArray"];
-  [v3 validateClass:@"HPSListeningModeControl" hasInstanceMethod:@"addModeOptions" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"HPSListeningModeControl" hasInstanceMethod:@"getListeningModeFromIndex:" withFullSignature:{"i", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HPSListeningModeControl" hasInstanceVariable:@"_segmentedControl" withType:"UISegmentedControl"];
+  [validationsCopy validateClass:@"UISegmentedControl" hasInstanceVariable:@"_segments" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"HPSListeningModeControl" hasInstanceMethod:@"addModeOptions" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"HPSListeningModeControl" hasInstanceMethod:@"getListeningModeFromIndex:" withFullSignature:{"i", "q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -34,17 +34,17 @@
   if (v3)
   {
     v10[0] = v3;
-    v5 = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
+    accessibilityElements = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = HPSListeningModeControlAccessibility;
-    v5 = [(HPSListeningModeControlAccessibility *)&v9 accessibilityElements];
+    accessibilityElements = [(HPSListeningModeControlAccessibility *)&v9 accessibilityElements];
   }
 
-  v6 = v5;
+  v6 = accessibilityElements;
 
   v7 = *MEMORY[0x29EDCA608];
 
@@ -97,16 +97,16 @@ uint64_t __59__HPSListeningModeControlAccessibility__axSetSegmentLabels__block_i
   return result;
 }
 
-- (id)_axLabelForBTListeningMode:(int)a3
+- (id)_axLabelForBTListeningMode:(int)mode
 {
-  if ((a3 - 1) > 3)
+  if ((mode - 1) > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = accessibilityLocalizedString(off_29F2C1FD0[a3 - 1]);
+    v4 = accessibilityLocalizedString(off_29F2C1FD0[mode - 1]);
   }
 
   return v4;

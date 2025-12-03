@@ -1,152 +1,152 @@
 @interface CRKFeatureDataStore_iOS
-+ (unint64_t)crkBoolTypeFromMCBoolType:(int)a3;
++ (unint64_t)crkBoolTypeFromMCBoolType:(int)type;
 - (BOOL)isClassroomAutomaticClassJoiningForced;
 - (BOOL)isClassroomInstructorRoleEnabled;
 - (BOOL)isClassroomRequestPermissionToLeaveClassesForced;
 - (BOOL)isClassroomStudentRoleEnabled;
 - (BOOL)isClassroomUnpromptedScreenObservationForced;
 - (NSSet)activeClassroomRoles;
-- (unint64_t)BOOLRestrictionForFeature:(id)a3;
-- (unint64_t)effectiveBoolValueForSetting:(id)a3 outAsk:(BOOL *)a4;
-- (unint64_t)effectiveValueForSetting:(id)a3 configurationUUID:(id)a4 outAsk:(BOOL *)a5;
-- (void)setBoolValue:(BOOL)a3 ask:(BOOL)a4 forSetting:(id)a5;
-- (void)setBoolValue:(BOOL)a3 ask:(BOOL)a4 forSetting:(id)a5 configurationUUID:(id)a6;
-- (void)setClassroomInstructorRoleEnabled:(BOOL)a3;
-- (void)setClassroomStudentRoleEnabled:(BOOL)a3;
+- (unint64_t)BOOLRestrictionForFeature:(id)feature;
+- (unint64_t)effectiveBoolValueForSetting:(id)setting outAsk:(BOOL *)ask;
+- (unint64_t)effectiveValueForSetting:(id)setting configurationUUID:(id)d outAsk:(BOOL *)ask;
+- (void)setBoolValue:(BOOL)value ask:(BOOL)ask forSetting:(id)setting;
+- (void)setBoolValue:(BOOL)value ask:(BOOL)ask forSetting:(id)setting configurationUUID:(id)d;
+- (void)setClassroomInstructorRoleEnabled:(BOOL)enabled;
+- (void)setClassroomStudentRoleEnabled:(BOOL)enabled;
 @end
 
 @implementation CRKFeatureDataStore_iOS
 
-- (unint64_t)effectiveBoolValueForSetting:(id)a3 outAsk:(BOOL *)a4
+- (unint64_t)effectiveBoolValueForSetting:(id)setting outAsk:(BOOL *)ask
 {
   v5 = MEMORY[0x277D262A0];
-  v6 = a3;
-  v7 = [v5 sharedConnection];
-  v8 = [v7 effectiveBoolValueForSetting:v6 outAsk:a4];
+  settingCopy = setting;
+  sharedConnection = [v5 sharedConnection];
+  v8 = [sharedConnection effectiveBoolValueForSetting:settingCopy outAsk:ask];
 
   v9 = objc_opt_class();
 
   return [v9 crkBoolTypeFromMCBoolType:v8];
 }
 
-- (void)setBoolValue:(BOOL)a3 ask:(BOOL)a4 forSetting:(id)a5
+- (void)setBoolValue:(BOOL)value ask:(BOOL)ask forSetting:(id)setting
 {
-  v5 = a4;
-  v6 = a3;
+  askCopy = ask;
+  valueCopy = value;
   v7 = MEMORY[0x277D262A0];
-  v8 = a5;
-  v9 = [v7 sharedConnection];
-  [v9 setBoolValue:v6 ask:v5 forSetting:v8 passcode:0];
+  settingCopy = setting;
+  sharedConnection = [v7 sharedConnection];
+  [sharedConnection setBoolValue:valueCopy ask:askCopy forSetting:settingCopy passcode:0];
 }
 
-- (unint64_t)BOOLRestrictionForFeature:(id)a3
+- (unint64_t)BOOLRestrictionForFeature:(id)feature
 {
   v3 = MEMORY[0x277D262A0];
-  v4 = a3;
-  v5 = [v3 sharedConnection];
-  v6 = [v5 BOOLRestrictionForFeature:v4];
+  featureCopy = feature;
+  sharedConnection = [v3 sharedConnection];
+  v6 = [sharedConnection BOOLRestrictionForFeature:featureCopy];
 
   v7 = objc_opt_class();
 
   return [v7 crkBoolTypeFromMCBoolType:v6];
 }
 
-- (unint64_t)effectiveValueForSetting:(id)a3 configurationUUID:(id)a4 outAsk:(BOOL *)a5
+- (unint64_t)effectiveValueForSetting:(id)setting configurationUUID:(id)d outAsk:(BOOL *)ask
 {
   v7 = MEMORY[0x277D262A0];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 sharedConnection];
-  v11 = [v10 effectiveBoolValueForSetting:v9 configurationUUID:v8 outAsk:a5];
+  dCopy = d;
+  settingCopy = setting;
+  sharedConnection = [v7 sharedConnection];
+  v11 = [sharedConnection effectiveBoolValueForSetting:settingCopy configurationUUID:dCopy outAsk:ask];
 
   v12 = objc_opt_class();
 
   return [v12 crkBoolTypeFromMCBoolType:v11];
 }
 
-- (void)setBoolValue:(BOOL)a3 ask:(BOOL)a4 forSetting:(id)a5 configurationUUID:(id)a6
+- (void)setBoolValue:(BOOL)value ask:(BOOL)ask forSetting:(id)setting configurationUUID:(id)d
 {
-  v7 = a4;
-  v8 = a3;
+  askCopy = ask;
+  valueCopy = value;
   v9 = MEMORY[0x277D262A0];
-  v10 = a6;
-  v11 = a5;
-  v12 = [v9 sharedConnection];
-  [v12 setBoolValue:v8 ask:v7 forSetting:v11 configurationUUID:v10 toSystem:0 user:1 passcode:0];
+  dCopy = d;
+  settingCopy = setting;
+  sharedConnection = [v9 sharedConnection];
+  [sharedConnection setBoolValue:valueCopy ask:askCopy forSetting:settingCopy configurationUUID:dCopy toSystem:0 user:1 passcode:0];
 }
 
 - (BOOL)isClassroomUnpromptedScreenObservationForced
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isClassroomUnpromptedScreenObservationForced];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isClassroomUnpromptedScreenObservationForced = [mEMORY[0x277D262A0] isClassroomUnpromptedScreenObservationForced];
 
-  return v3;
+  return isClassroomUnpromptedScreenObservationForced;
 }
 
 - (BOOL)isClassroomAutomaticClassJoiningForced
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isClassroomAutomaticClassJoiningForced];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isClassroomAutomaticClassJoiningForced = [mEMORY[0x277D262A0] isClassroomAutomaticClassJoiningForced];
 
-  return v3;
+  return isClassroomAutomaticClassJoiningForced;
 }
 
 - (BOOL)isClassroomRequestPermissionToLeaveClassesForced
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isClassroomRequestPermissionToLeaveClassesForced];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isClassroomRequestPermissionToLeaveClassesForced = [mEMORY[0x277D262A0] isClassroomRequestPermissionToLeaveClassesForced];
 
-  return v3;
+  return isClassroomRequestPermissionToLeaveClassesForced;
 }
 
 - (BOOL)isClassroomStudentRoleEnabled
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isClassroomStudentRoleEnabled];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isClassroomStudentRoleEnabled = [mEMORY[0x277D262A0] isClassroomStudentRoleEnabled];
 
-  return v3;
+  return isClassroomStudentRoleEnabled;
 }
 
-- (void)setClassroomStudentRoleEnabled:(BOOL)a3
+- (void)setClassroomStudentRoleEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  [v4 setClassroomStudentRoleEnabled:v3];
+  enabledCopy = enabled;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] setClassroomStudentRoleEnabled:enabledCopy];
 }
 
 - (BOOL)isClassroomInstructorRoleEnabled
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isClassroomInstructorRoleEnabled];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isClassroomInstructorRoleEnabled = [mEMORY[0x277D262A0] isClassroomInstructorRoleEnabled];
 
-  return v3;
+  return isClassroomInstructorRoleEnabled;
 }
 
-- (void)setClassroomInstructorRoleEnabled:(BOOL)a3
+- (void)setClassroomInstructorRoleEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  [v4 setClassroomInstructorRoleEnabled:v3];
+  enabledCopy = enabled;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] setClassroomInstructorRoleEnabled:enabledCopy];
 }
 
 - (NSSet)activeClassroomRoles
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 activeClassroomRoles];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  activeClassroomRoles = [mEMORY[0x277D262A0] activeClassroomRoles];
 
-  return v3;
+  return activeClassroomRoles;
 }
 
-+ (unint64_t)crkBoolTypeFromMCBoolType:(int)a3
++ (unint64_t)crkBoolTypeFromMCBoolType:(int)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return type == 1;
   }
 }
 

@@ -1,32 +1,32 @@
 @interface SecKeyP256Private
-+ (id)compactPrivateKeyWithAccessControl:(id)a3;
++ (id)compactPrivateKeyWithAccessControl:(id)control;
 + (id)generate;
-+ (id)generateWithAccessControl:(id)a3;
-- (SecKeyP256Private)initWithData:(id)a3 error:(id *)a4;
++ (id)generateWithAccessControl:(id)control;
+- (SecKeyP256Private)initWithData:(id)data error:(id *)error;
 - (SecKeyP256Public)publicKey;
-- (id)getPrivateKeyRefWithError:(id *)a3;
-- (id)keyAgreement:(id)a3 error:(id *)a4 isRetry:(BOOL)a5;
-- (id)signData:(id)a3 error:(id *)a4;
+- (id)getPrivateKeyRefWithError:(id *)error;
+- (id)keyAgreement:(id)agreement error:(id *)error isRetry:(BOOL)retry;
+- (id)signData:(id)data error:(id *)error;
 @end
 
 @implementation SecKeyP256Private
 
 + (id)generate
 {
-  v3 = [a1 defaultProtectionClassForPlatform];
-  v4 = [a1 generateWithAccessControl:v3];
+  defaultProtectionClassForPlatform = [self defaultProtectionClassForPlatform];
+  v4 = [self generateWithAccessControl:defaultProtectionClassForPlatform];
 
   return v4;
 }
 
-+ (id)compactPrivateKeyWithAccessControl:(id)a3
++ (id)compactPrivateKeyWithAccessControl:(id)control
 {
   v36[5] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  controlCopy = control;
   error = 0;
   v4 = *MEMORY[0x277CBECE8];
-  v33 = v3;
-  v5 = SecAccessControlCreateWithFlags(v4, v3, 0x40000000uLL, 0);
+  v33 = controlCopy;
+  v5 = SecAccessControlCreateWithFlags(v4, controlCopy, 0x40000000uLL, 0);
   v6 = *MEMORY[0x277CDC040];
   v7 = *MEMORY[0x277CDC018];
   v35[0] = *MEMORY[0x277CDC028];
@@ -146,15 +146,15 @@ LABEL_23:
   return v25;
 }
 
-+ (id)generateWithAccessControl:(id)a3
++ (id)generateWithAccessControl:(id)control
 {
-  v3 = [a1 compactPrivateKeyWithAccessControl:a3];
+  v3 = [self compactPrivateKeyWithAccessControl:control];
   v4 = [[SecKeyP256Private alloc] initWithData:v3 error:0];
 
   return v4;
 }
 
-- (id)getPrivateKeyRefWithError:(id *)a3
+- (id)getPrivateKeyRefWithError:(id *)error
 {
   v17[2] = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CDC158];
@@ -162,19 +162,19 @@ LABEL_23:
   v6 = *MEMORY[0x277CDC178];
   v16[0] = v5;
   v16[1] = v6;
-  v7 = [(SecKeyP256Private *)self privateKeyBlob];
-  v17[1] = v7;
+  privateKeyBlob = [(SecKeyP256Private *)self privateKeyBlob];
+  v17[1] = privateKeyBlob;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
   error = 0;
-  v9 = [(SecKeyP256Private *)self privateKeyBlob];
-  v10 = SecKeyCreateWithData(v9, v8, &error);
+  privateKeyBlob2 = [(SecKeyP256Private *)self privateKeyBlob];
+  v10 = SecKeyCreateWithData(privateKeyBlob2, v8, &error);
 
   if (error)
   {
     v11 = CFErrorCopyDescription(error);
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Deserialization of SecKey failed with description: %@", v11];
-    MPLogAndAssignError(3, a3, v12);
+    MPLogAndAssignError(3, error, v12);
 
     CFRelease(error);
   }
@@ -184,23 +184,23 @@ LABEL_23:
   return v10;
 }
 
-- (id)keyAgreement:(id)a3 error:(id *)a4 isRetry:(BOOL)a5
+- (id)keyAgreement:(id)agreement error:(id *)error isRetry:(BOOL)retry
 {
-  v7 = a3;
+  agreementCopy = agreement;
   v8 = *MEMORY[0x277CDC280];
   if (SecKeyIsAlgorithmSupported(self->_privateKey, kSecKeyOperationTypeKeyExchange, *MEMORY[0x277CDC280]))
   {
     error = 0;
-    v9 = [v7 dataRepresentation];
-    if (v9)
+    dataRepresentation = [agreementCopy dataRepresentation];
+    if (dataRepresentation)
     {
-      v10 = [[SecKeyP256Public alloc] initWithData:v9 error:a4];
+      v10 = [[SecKeyP256Public alloc] initWithData:dataRepresentation error:error];
       v11 = v10;
       if (v10)
       {
         privateKey = self->_privateKey;
-        v13 = [(SecKeyP256Public *)v10 publicKeyRef];
-        v14 = SecKeyCopyKeyExchangeResult(privateKey, v8, v13, MEMORY[0x277CBEC10], &error);
+        publicKeyRef = [(SecKeyP256Public *)v10 publicKeyRef];
+        v14 = SecKeyCopyKeyExchangeResult(privateKey, v8, publicKeyRef, MEMORY[0x277CBEC10], &error);
         v15 = v14;
         if (v14)
         {
@@ -210,9 +210,9 @@ LABEL_23:
 
         else
         {
-          if (a4)
+          if (error)
           {
-            *a4 = error;
+            *error = error;
           }
 
           else
@@ -229,7 +229,7 @@ LABEL_23:
         v15 = MessageProtectionLog();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          [(SecKeyP256Private *)a4 keyAgreement:v15 error:v17 isRetry:v18, v19, v20, v21, v22];
+          [(SecKeyP256Private *)error keyAgreement:v15 error:v17 isRetry:v18, v19, v20, v21, v22];
         }
 
         v16 = 0;
@@ -238,14 +238,14 @@ LABEL_23:
 
     else
     {
-      MPLogAndAssignError(7, a4, @"Failed to obtain data for the public key.");
+      MPLogAndAssignError(7, error, @"Failed to obtain data for the public key.");
       v16 = 0;
     }
   }
 
   else
   {
-    MPLogAndAssignError(3, a4, @"This key is not allowed to do a DH key agreement.");
+    MPLogAndAssignError(3, error, @"This key is not allowed to do a DH key agreement.");
     v16 = 0;
   }
 
@@ -285,15 +285,15 @@ LABEL_5:
   return v7;
 }
 
-- (id)signData:(id)a3 error:(id *)a4
+- (id)signData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = *MEMORY[0x277CDC318];
   if (SecKeyIsAlgorithmSupported(self->_privateKey, kSecKeyOperationTypeSign, *MEMORY[0x277CDC318]))
   {
     error = 0;
     v8 = [MEMORY[0x277CBEB28] dataWithLength:32];
-    CC_SHA256([v6 bytes], objc_msgSend(v6, "length"), objc_msgSend(v8, "bytes"));
+    CC_SHA256([dataCopy bytes], objc_msgSend(dataCopy, "length"), objc_msgSend(v8, "bytes"));
     v9 = SecKeyCreateSignature(self->_privateKey, v7, v8, &error);
     v10 = v9;
     if (v9)
@@ -301,24 +301,24 @@ LABEL_5:
       v11 = v9;
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = error;
+      *error = error;
     }
   }
 
   else
   {
-    MPLogAndAssignError(2, a4, @"Attempting to sign with a key that doesn't support that operation.");
+    MPLogAndAssignError(2, error, @"Attempting to sign with a key that doesn't support that operation.");
     v10 = 0;
   }
 
   return v10;
 }
 
-- (SecKeyP256Private)initWithData:(id)a3 error:(id *)a4
+- (SecKeyP256Private)initWithData:(id)data error:(id *)error
 {
-  v7 = a3;
+  dataCopy = data;
   v19.receiver = self;
   v19.super_class = SecKeyP256Private;
   v8 = [(SecKeyP256Private *)&v19 init];
@@ -328,16 +328,16 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if (!v7)
+  if (!dataCopy)
   {
-    MPLogAndAssignError(1, a4, @"Attempting to initialize a key with missing OID data.");
+    MPLogAndAssignError(1, error, @"Attempting to initialize a key with missing OID data.");
 LABEL_15:
     v16 = 0;
     goto LABEL_16;
   }
 
-  objc_storeStrong(&v8->_privateKeyBlob, a3);
-  v10 = [(SecKeyP256Private *)v9 getPrivateKeyRefWithError:a4];
+  objc_storeStrong(&v8->_privateKeyBlob, data);
+  v10 = [(SecKeyP256Private *)v9 getPrivateKeyRefWithError:error];
   privateKey = v9->_privateKey;
   v9->_privateKey = v10;
 
@@ -346,26 +346,26 @@ LABEL_15:
     v12 = MessageProtectionLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [SecKeyP256Private initWithData:a4 error:v12];
+      [SecKeyP256Private initWithData:error error:v12];
     }
 
     goto LABEL_14;
   }
 
   v12 = [@"Key Validation String" dataUsingEncoding:4];
-  v13 = [(SecKeyP256Private *)v9 signData:v12 error:a4];
+  v13 = [(SecKeyP256Private *)v9 signData:v12 error:error];
   if (!v13)
   {
     v17 = @"Failed to test sign with SecKeyP256 during initialization.";
 LABEL_13:
-    MPLogAndAssignError(407, a4, v17);
+    MPLogAndAssignError(407, error, v17);
 
 LABEL_14:
     goto LABEL_15;
   }
 
-  v14 = [(SecKeyP256Private *)v9 publicKey];
-  v15 = [v14 verifySignature:v13 data:v12];
+  publicKey = [(SecKeyP256Private *)v9 publicKey];
+  v15 = [publicKey verifySignature:v13 data:v12];
 
   if (!v15)
   {

@@ -1,5 +1,5 @@
 @interface SXQuickLookComponentView
-- (SXQuickLookComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 fileProvider:(id)a7 quickLookModule:(id)a8;
+- (SXQuickLookComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory fileProvider:(id)fileProvider quickLookModule:(id)module;
 - (id)createErrorState;
 - (id)createIdleState;
 - (id)createLoadingState;
@@ -11,24 +11,24 @@
 - (void)layoutErrorView;
 - (void)layoutLoadingIndicator;
 - (void)layoutWebView;
-- (void)presentComponentWithChanges:(id)a3;
+- (void)presentComponentWithChanges:(id)changes;
 - (void)renderContents;
 @end
 
 @implementation SXQuickLookComponentView
 
-- (SXQuickLookComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 fileProvider:(id)a7 quickLookModule:(id)a8
+- (SXQuickLookComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory fileProvider:(id)fileProvider quickLookModule:(id)module
 {
-  v15 = a7;
-  v16 = a8;
+  fileProviderCopy = fileProvider;
+  moduleCopy = module;
   v20.receiver = self;
   v20.super_class = SXQuickLookComponentView;
-  v17 = [(SXComponentView *)&v20 initWithDOMObjectProvider:a3 viewport:a4 presentationDelegate:a5 componentStyleRendererFactory:a6];
+  v17 = [(SXComponentView *)&v20 initWithDOMObjectProvider:provider viewport:viewport presentationDelegate:delegate componentStyleRendererFactory:factory];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_fileProvider, a7);
-    objc_storeStrong(&v18->_quickLookModule, a8);
+    objc_storeStrong(&v17->_fileProvider, fileProvider);
+    objc_storeStrong(&v18->_quickLookModule, module);
   }
 
   return v18;
@@ -47,96 +47,96 @@
   loadingIndicator = self->_loadingIndicator;
   self->_loadingIndicator = v5;
 
-  v7 = [(SXComponentView *)self contentView];
-  v8 = [(SXQuickLookComponentView *)self loadingIndicator];
-  [v7 addSubview:v8];
+  contentView = [(SXComponentView *)self contentView];
+  loadingIndicator = [(SXQuickLookComponentView *)self loadingIndicator];
+  [contentView addSubview:loadingIndicator];
 
-  v9 = [(SXQuickLookComponentView *)self createIdleState];
+  createIdleState = [(SXQuickLookComponentView *)self createIdleState];
   idleState = self->_idleState;
-  self->_idleState = v9;
+  self->_idleState = createIdleState;
 
-  v11 = [(SXQuickLookComponentView *)self createLoadingState];
+  createLoadingState = [(SXQuickLookComponentView *)self createLoadingState];
   loadingState = self->_loadingState;
-  self->_loadingState = v11;
+  self->_loadingState = createLoadingState;
 
-  v13 = [(SXQuickLookComponentView *)self createPresentingState];
+  createPresentingState = [(SXQuickLookComponentView *)self createPresentingState];
   presentingState = self->_presentingState;
-  self->_presentingState = v13;
+  self->_presentingState = createPresentingState;
 
-  v15 = [(SXQuickLookComponentView *)self createErrorState];
+  createErrorState = [(SXQuickLookComponentView *)self createErrorState];
   errorState = self->_errorState;
-  self->_errorState = v15;
+  self->_errorState = createErrorState;
 
   v17 = objc_alloc(MEMORY[0x1E69B6908]);
-  v18 = [(SXQuickLookComponentView *)self idleState];
-  v19 = [v17 initWithState:v18 withOwner:self];
+  idleState = [(SXQuickLookComponentView *)self idleState];
+  v19 = [v17 initWithState:idleState withOwner:self];
   stateMachine = self->_stateMachine;
   self->_stateMachine = v19;
 
-  v21 = [(SXQuickLookComponentView *)self stateMachine];
-  v22 = [(SXQuickLookComponentView *)self loadingState];
-  [v21 addState:v22];
+  stateMachine = [(SXQuickLookComponentView *)self stateMachine];
+  loadingState = [(SXQuickLookComponentView *)self loadingState];
+  [stateMachine addState:loadingState];
 
-  v23 = [(SXQuickLookComponentView *)self stateMachine];
-  v24 = [(SXQuickLookComponentView *)self presentingState];
-  [v23 addState:v24];
+  stateMachine2 = [(SXQuickLookComponentView *)self stateMachine];
+  presentingState = [(SXQuickLookComponentView *)self presentingState];
+  [stateMachine2 addState:presentingState];
 
-  v25 = [(SXQuickLookComponentView *)self stateMachine];
-  v26 = [(SXQuickLookComponentView *)self errorState];
-  [v25 addState:v26];
+  stateMachine3 = [(SXQuickLookComponentView *)self stateMachine];
+  errorState = [(SXQuickLookComponentView *)self errorState];
+  [stateMachine3 addState:errorState];
 
   v27 = objc_alloc(MEMORY[0x1E69B6910]);
   v28 = MEMORY[0x1E695DFD8];
-  v29 = [(SXQuickLookComponentView *)self idleState];
-  v30 = [(SXQuickLookComponentView *)self errorState];
-  v31 = [v28 setWithObjects:{v29, v30, 0}];
-  v32 = [(SXQuickLookComponentView *)self loadingState];
-  v33 = [v27 initWithName:@"load" transitionFromStates:v31 toState:v32];
+  idleState2 = [(SXQuickLookComponentView *)self idleState];
+  errorState2 = [(SXQuickLookComponentView *)self errorState];
+  v31 = [v28 setWithObjects:{idleState2, errorState2, 0}];
+  loadingState2 = [(SXQuickLookComponentView *)self loadingState];
+  v33 = [v27 initWithName:@"load" transitionFromStates:v31 toState:loadingState2];
 
   v34 = objc_alloc(MEMORY[0x1E69B6910]);
   v35 = MEMORY[0x1E695DFD8];
-  v36 = [(SXQuickLookComponentView *)self loadingState];
-  v37 = [v35 setWithObjects:{v36, 0}];
-  v38 = [(SXQuickLookComponentView *)self presentingState];
-  v39 = [v34 initWithName:@"present" transitionFromStates:v37 toState:v38];
+  loadingState3 = [(SXQuickLookComponentView *)self loadingState];
+  v37 = [v35 setWithObjects:{loadingState3, 0}];
+  presentingState2 = [(SXQuickLookComponentView *)self presentingState];
+  v39 = [v34 initWithName:@"present" transitionFromStates:v37 toState:presentingState2];
 
   v40 = objc_alloc(MEMORY[0x1E69B6910]);
   v41 = MEMORY[0x1E695DFD8];
-  v42 = [(SXQuickLookComponentView *)self loadingState];
-  v43 = [v41 setWithObjects:{v42, 0}];
-  v44 = [(SXQuickLookComponentView *)self errorState];
-  v45 = [v40 initWithName:@"error" transitionFromStates:v43 toState:v44];
+  loadingState4 = [(SXQuickLookComponentView *)self loadingState];
+  v43 = [v41 setWithObjects:{loadingState4, 0}];
+  errorState3 = [(SXQuickLookComponentView *)self errorState];
+  v45 = [v40 initWithName:@"error" transitionFromStates:v43 toState:errorState3];
 
   v46 = objc_alloc(MEMORY[0x1E69B6910]);
   v47 = MEMORY[0x1E695DFD8];
-  v48 = [(SXQuickLookComponentView *)self loadingState];
-  v49 = [(SXQuickLookComponentView *)self presentingState];
-  v50 = [v47 setWithObjects:{v48, v49, 0}];
-  v51 = [(SXQuickLookComponentView *)self idleState];
-  v52 = [v46 initWithName:@"unload" transitionFromStates:v50 toState:v51];
+  loadingState5 = [(SXQuickLookComponentView *)self loadingState];
+  presentingState3 = [(SXQuickLookComponentView *)self presentingState];
+  v50 = [v47 setWithObjects:{loadingState5, presentingState3, 0}];
+  idleState3 = [(SXQuickLookComponentView *)self idleState];
+  v52 = [v46 initWithName:@"unload" transitionFromStates:v50 toState:idleState3];
 
-  v53 = [(SXQuickLookComponentView *)self stateMachine];
-  [v53 addEvent:v33];
+  stateMachine4 = [(SXQuickLookComponentView *)self stateMachine];
+  [stateMachine4 addEvent:v33];
 
-  v54 = [(SXQuickLookComponentView *)self stateMachine];
-  [v54 addEvent:v39];
+  stateMachine5 = [(SXQuickLookComponentView *)self stateMachine];
+  [stateMachine5 addEvent:v39];
 
-  v55 = [(SXQuickLookComponentView *)self stateMachine];
-  [v55 addEvent:v45];
+  stateMachine6 = [(SXQuickLookComponentView *)self stateMachine];
+  [stateMachine6 addEvent:v45];
 
-  v56 = [(SXQuickLookComponentView *)self stateMachine];
-  [v56 addEvent:v52];
+  stateMachine7 = [(SXQuickLookComponentView *)self stateMachine];
+  [stateMachine7 addEvent:v52];
 
-  v57 = [(SXQuickLookComponentView *)self stateMachine];
-  [v57 activate];
+  stateMachine8 = [(SXQuickLookComponentView *)self stateMachine];
+  [stateMachine8 activate];
 }
 
-- (void)presentComponentWithChanges:(id)a3
+- (void)presentComponentWithChanges:(id)changes
 {
-  var0 = a3.var0;
+  var0 = changes.var0;
   v5.receiver = self;
   v5.super_class = SXQuickLookComponentView;
-  [(SXComponentView *)&v5 presentComponentWithChanges:*&a3.var0 & 0xFFFFFFLL];
+  [(SXComponentView *)&v5 presentComponentWithChanges:*&changes.var0 & 0xFFFFFFLL];
   if (var0)
   {
     [(SXQuickLookComponentView *)self layout];
@@ -148,8 +148,8 @@
   v5.receiver = self;
   v5.super_class = SXQuickLookComponentView;
   [(SXComponentView *)&v5 renderContents];
-  v3 = [(SXQuickLookComponentView *)self stateMachine];
-  v4 = [v3 fireEventWithName:@"load" withContext:0];
+  stateMachine = [(SXQuickLookComponentView *)self stateMachine];
+  v4 = [stateMachine fireEventWithName:@"load" withContext:0];
 
   [(SXQuickLookComponentView *)self layout];
 }
@@ -159,14 +159,14 @@
   v5.receiver = self;
   v5.super_class = SXQuickLookComponentView;
   [(SXComponentView *)&v5 discardContents];
-  v3 = [(SXQuickLookComponentView *)self stateMachine];
-  v4 = [v3 fireEventWithName:@"unload" withContext:0];
+  stateMachine = [(SXQuickLookComponentView *)self stateMachine];
+  v4 = [stateMachine fireEventWithName:@"unload" withContext:0];
 }
 
 - (void)handleTap
 {
-  v3 = [(SXQuickLookComponentView *)self stateMachine];
-  v2 = [v3 fireEventWithName:@"load" withContext:0];
+  stateMachine = [(SXQuickLookComponentView *)self stateMachine];
+  v2 = [stateMachine fireEventWithName:@"load" withContext:0];
 }
 
 - (void)layout
@@ -179,33 +179,33 @@
 
 - (void)layoutLoadingIndicator
 {
-  v6 = [(SXQuickLookComponentView *)self loadingIndicator];
-  v3 = [(SXComponentView *)self contentView];
-  [v3 bounds];
+  loadingIndicator = [(SXQuickLookComponentView *)self loadingIndicator];
+  contentView = [(SXComponentView *)self contentView];
+  [contentView bounds];
   MidX = CGRectGetMidX(v8);
-  v5 = [(SXComponentView *)self contentView];
-  [v5 bounds];
-  [v6 setCenter:{MidX, CGRectGetMidY(v9)}];
+  contentView2 = [(SXComponentView *)self contentView];
+  [contentView2 bounds];
+  [loadingIndicator setCenter:{MidX, CGRectGetMidY(v9)}];
 }
 
 - (void)layoutWebView
 {
-  v5 = [(SXQuickLookComponentView *)self quickLookViewController];
-  v3 = [v5 view];
-  v4 = [(SXComponentView *)self contentView];
-  [v4 bounds];
-  [v3 setFrame:?];
+  quickLookViewController = [(SXQuickLookComponentView *)self quickLookViewController];
+  view = [quickLookViewController view];
+  contentView = [(SXComponentView *)self contentView];
+  [contentView bounds];
+  [view setFrame:?];
 }
 
 - (void)layoutErrorView
 {
-  v6 = [(SXQuickLookComponentView *)self errorLabel];
-  v3 = [(SXComponentView *)self contentView];
-  [v3 bounds];
+  errorLabel = [(SXQuickLookComponentView *)self errorLabel];
+  contentView = [(SXComponentView *)self contentView];
+  [contentView bounds];
   MidX = CGRectGetMidX(v8);
-  v5 = [(SXComponentView *)self contentView];
-  [v5 bounds];
-  [v6 setCenter:{MidX, CGRectGetMidY(v9)}];
+  contentView2 = [(SXComponentView *)self contentView];
+  [contentView2 bounds];
+  [errorLabel setCenter:{MidX, CGRectGetMidY(v9)}];
 }
 
 - (id)createIdleState

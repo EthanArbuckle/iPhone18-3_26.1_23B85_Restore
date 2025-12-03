@@ -1,14 +1,14 @@
 @interface UILocalizedIndexedCollation
-+ (UILocalizedIndexedCollation)collationWithDictionary:(id)a3;
++ (UILocalizedIndexedCollation)collationWithDictionary:(id)dictionary;
 + (UILocalizedIndexedCollation)currentCollation;
 - (NSArray)sectionIndexTitles;
 - (NSArray)sortedArrayFromArray:(NSArray *)array collationStringSelector:(SEL)selector;
 - (NSInteger)sectionForObject:(id)object collationStringSelector:(SEL)selector;
 - (NSInteger)sectionForSectionIndexTitleAtIndex:(NSInteger)indexTitleIndex;
-- (UILocalizedIndexedCollation)initWithDictionary:(id)a3;
+- (UILocalizedIndexedCollation)initWithDictionary:(id)dictionary;
 - (__CFStringTokenizer)tokenizer;
-- (id)_kanaTranscriptionForString:(id)a3;
-- (id)transformedCollationStringForString:(id)a3;
+- (id)_kanaTranscriptionForString:(id)string;
+- (id)transformedCollationStringForString:(id)string;
 - (void)dealloc;
 @end
 
@@ -20,7 +20,7 @@
   v4 = [v3 pathForResource:@"UITableViewLocalizedSectionIndex" ofType:@"plist"];
 
   v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:v4];
-  v6 = [a1 collationWithDictionary:v5];
+  v6 = [self collationWithDictionary:v5];
 
   return v6;
 }
@@ -38,50 +38,50 @@
   [(UILocalizedIndexedCollation *)&v4 dealloc];
 }
 
-+ (UILocalizedIndexedCollation)collationWithDictionary:(id)a3
++ (UILocalizedIndexedCollation)collationWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[self alloc] initWithDictionary:dictionaryCopy];
 
   return v5;
 }
 
-- (UILocalizedIndexedCollation)initWithDictionary:(id)a3
+- (UILocalizedIndexedCollation)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = UILocalizedIndexedCollation;
   v6 = [(UILocalizedIndexedCollation *)&v29 init];
   if (v6)
   {
-    v7 = [v5 objectForKey:@"UICollationKey"];
+    v7 = [dictionaryCopy objectForKey:@"UICollationKey"];
     if (!v7)
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v28 handleFailureInMethod:a2 object:v6 file:@"UILocalizedIndexedCollation.m" lineNumber:61 description:@"Missing locale identifier in collation dictionary"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"UILocalizedIndexedCollation.m" lineNumber:61 description:@"Missing locale identifier in collation dictionary"];
     }
 
     v8 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:v7];
     locale = v6->_locale;
     v6->_locale = v8;
 
-    v10 = [v5 objectForKey:@"UISectionTitles"];
+    v10 = [dictionaryCopy objectForKey:@"UISectionTitles"];
     sectionTitles = v6->_sectionTitles;
     v6->_sectionTitles = v10;
 
-    v12 = [v5 objectForKey:@"UISectionStartStrings"];
+    v12 = [dictionaryCopy objectForKey:@"UISectionStartStrings"];
     sectionStartStrings = v6->_sectionStartStrings;
     v6->_sectionStartStrings = v12;
 
-    v14 = [v5 objectForKey:@"UIIndexTitles"];
+    v14 = [dictionaryCopy objectForKey:@"UIIndexTitles"];
     sectionIndexTitles = v6->_sectionIndexTitles;
     v6->_sectionIndexTitles = v14;
 
-    v16 = [v5 objectForKey:@"UIIndexMapping"];
+    v16 = [dictionaryCopy objectForKey:@"UIIndexMapping"];
     sectionIndexMapping = v6->_sectionIndexMapping;
     v6->_sectionIndexMapping = v16;
 
-    v18 = [v5 objectForKey:@"UITransform"];
+    v18 = [dictionaryCopy objectForKey:@"UITransform"];
     transform = v6->_transform;
     v6->_transform = v18;
 
@@ -89,12 +89,12 @@
     firstSectionStartString = v6->_firstSectionStartString;
     v6->_firstSectionStartString = v20;
 
-    v22 = [(NSArray *)v6->_sectionStartStrings lastObject];
+    lastObject = [(NSArray *)v6->_sectionStartStrings lastObject];
     lastSectionStartString = v6->_lastSectionStartString;
-    v6->_lastSectionStartString = v22;
+    v6->_lastSectionStartString = lastObject;
 
-    v24 = [(NSLocale *)v6->_locale languageCode];
-    v6->_primaryLanguageIsJapanese = [v24 isEqualToString:@"ja"];
+    languageCode = [(NSLocale *)v6->_locale languageCode];
+    v6->_primaryLanguageIsJapanese = [languageCode isEqualToString:@"ja"];
 
     if (v6->_primaryLanguageIsJapanese)
     {
@@ -104,23 +104,23 @@
     else
     {
       v25 = [MEMORY[0x1E696AAE8] preferredLocalizationsFromArray:&unk_1EFE2D978];
-      v26 = [v25 firstObject];
-      v6->_preferJapaneseRomajiTranscriptions = [v26 isEqualToString:@"ja"];
+      firstObject = [v25 firstObject];
+      v6->_preferJapaneseRomajiTranscriptions = [firstObject isEqualToString:@"ja"];
     }
   }
 
   return v6;
 }
 
-- (id)_kanaTranscriptionForString:(id)a3
+- (id)_kanaTranscriptionForString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 _firstGrapheme];
-  v6 = [v5 _containsJapaneseOnly];
+  stringCopy = string;
+  _firstGrapheme = [stringCopy _firstGrapheme];
+  _containsJapaneseOnly = [_firstGrapheme _containsJapaneseOnly];
 
-  if (v6)
+  if (_containsJapaneseOnly)
   {
-    v7 = [v4 _stringByTranscribingUsingTokenizer:{-[UILocalizedIndexedCollation tokenizer](self, "tokenizer")}];
+    v7 = [stringCopy _stringByTranscribingUsingTokenizer:{-[UILocalizedIndexedCollation tokenizer](self, "tokenizer")}];
   }
 
   else
@@ -131,11 +131,11 @@
   return v7;
 }
 
-- (id)transformedCollationStringForString:(id)a3
+- (id)transformedCollationStringForString:(id)string
 {
-  if (a3 && self->_transform)
+  if (string && self->_transform)
   {
-    MutableCopy = CFStringCreateMutableCopy(0, 0, a3);
+    MutableCopy = CFStringCreateMutableCopy(0, 0, string);
     if (CFStringTransform(MutableCopy, 0, self->_transform, 0))
     {
       goto LABEL_18;
@@ -145,22 +145,22 @@
     goto LABEL_17;
   }
 
-  if (!a3)
+  if (!string)
   {
     goto LABEL_17;
   }
 
-  v6 = [a3 length];
-  if ([a3 compare:self->_lastSectionStartString options:64 range:0 locale:{v6, self->_locale}] == -1 && objc_msgSend(a3, "compare:options:range:locale:", self->_firstSectionStartString, 64, 0, v6, self->_locale) != -1)
+  v6 = [string length];
+  if ([string compare:self->_lastSectionStartString options:64 range:0 locale:{v6, self->_locale}] == -1 && objc_msgSend(string, "compare:options:range:locale:", self->_firstSectionStartString, 64, 0, v6, self->_locale) != -1)
   {
     goto LABEL_17;
   }
 
-  if (!self->_primaryLanguageIsJapanese || ([(UILocalizedIndexedCollation *)self _kanaTranscriptionForString:a3], (MutableCopy = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!self->_primaryLanguageIsJapanese || ([(UILocalizedIndexedCollation *)self _kanaTranscriptionForString:string], (MutableCopy = objc_claimAutoreleasedReturnValue()) == 0))
   {
     if (!self->_preferJapaneseRomajiTranscriptions)
     {
-      MutableCopy = [a3 _stringByApplyingTransform:*MEMORY[0x1E695E9A8]];
+      MutableCopy = [string _stringByApplyingTransform:*MEMORY[0x1E695E9A8]];
       if (MutableCopy)
       {
         goto LABEL_18;
@@ -169,19 +169,19 @@
       goto LABEL_17;
     }
 
-    v7 = [(UILocalizedIndexedCollation *)self _kanaTranscriptionForString:a3];
-    v8 = v7;
-    if (!v7)
+    stringCopy = [(UILocalizedIndexedCollation *)self _kanaTranscriptionForString:string];
+    v8 = stringCopy;
+    if (!stringCopy)
     {
-      v7 = a3;
+      stringCopy = string;
     }
 
-    MutableCopy = [v7 _stringByApplyingTransform:*MEMORY[0x1E695E9A8]];
+    MutableCopy = [stringCopy _stringByApplyingTransform:*MEMORY[0x1E695E9A8]];
 
     if (!MutableCopy)
     {
 LABEL_17:
-      MutableCopy = a3;
+      MutableCopy = string;
     }
   }
 
@@ -221,15 +221,15 @@ LABEL_18:
 
 - (NSInteger)sectionForSectionIndexTitleAtIndex:(NSInteger)indexTitleIndex
 {
-  v3 = indexTitleIndex;
+  intValue = indexTitleIndex;
   sectionIndexMapping = self->_sectionIndexMapping;
   if (sectionIndexMapping)
   {
     v5 = [(NSArray *)sectionIndexMapping objectAtIndex:indexTitleIndex];
-    v3 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
-  return v3;
+  return intValue;
 }
 
 - (NSInteger)sectionForObject:(id)object collationStringSelector:(SEL)selector

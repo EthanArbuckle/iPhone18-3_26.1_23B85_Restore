@@ -8,7 +8,7 @@
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     v4 = MEMORY[0x277D17DB8];
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:{&unk_286629668, &unk_286629680, &unk_286629698, &unk_2866296B0, &unk_2866296C8, &unk_2866296E0, &unk_2866296F8, &unk_286629710, &unk_286629728, &unk_286629740, &unk_286629758, &unk_286629770, 0}];

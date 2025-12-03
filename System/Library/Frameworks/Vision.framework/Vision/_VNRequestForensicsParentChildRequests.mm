@@ -1,16 +1,16 @@
 @interface _VNRequestForensicsParentChildRequests
-- (BOOL)isEqual:(id)a3;
-- (_VNRequestForensicsParentChildRequests)initWithParentRequest:(id)a3 orderedChildRequests:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (_VNRequestForensicsParentChildRequests)initWithParentRequest:(id)request orderedChildRequests:(id)requests;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation _VNRequestForensicsParentChildRequests
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -20,11 +20,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       parentRequest = self->_parentRequest;
-      v7 = [(_VNRequestForensicsParentChildRequests *)v5 parentRequest];
+      parentRequest = [(_VNRequestForensicsParentChildRequests *)v5 parentRequest];
 
-      if (parentRequest != v7)
+      if (parentRequest != parentRequest)
       {
         v8 = 0;
 LABEL_19:
@@ -33,9 +33,9 @@ LABEL_19:
       }
 
       orderedChildRequests = self->_orderedChildRequests;
-      v10 = [(_VNRequestForensicsParentChildRequests *)v5 orderedChildRequests];
+      orderedChildRequests = [(_VNRequestForensicsParentChildRequests *)v5 orderedChildRequests];
       v11 = orderedChildRequests;
-      v12 = v10;
+      v12 = orderedChildRequests;
       if (v11 != v12)
       {
         v13 = [(NSArray *)v11 count];
@@ -82,11 +82,11 @@ LABEL_20:
 
 - (unint64_t)hash
 {
-  v3 = [(_VNRequestForensicsParentChildRequests *)self parentRequest];
-  v4 = [v3 hash];
+  parentRequest = [(_VNRequestForensicsParentChildRequests *)self parentRequest];
+  v4 = [parentRequest hash];
 
-  v5 = [(_VNRequestForensicsParentChildRequests *)self orderedChildRequests];
-  v6 = [v5 hash] ^ __ROR8__(v4, 51);
+  orderedChildRequests = [(_VNRequestForensicsParentChildRequests *)self orderedChildRequests];
+  v6 = [orderedChildRequests hash] ^ __ROR8__(v4, 51);
 
   return v6;
 }
@@ -94,26 +94,26 @@ LABEL_20:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_VNRequestForensicsParentChildRequests *)self parentRequest];
-  v5 = [(_VNRequestForensicsParentChildRequests *)self orderedChildRequests];
-  v6 = [v5 componentsJoinedByString:{@", "}];
-  v7 = [v3 stringWithFormat:@"( %@, [ %@ ])", v4, v6];
+  parentRequest = [(_VNRequestForensicsParentChildRequests *)self parentRequest];
+  orderedChildRequests = [(_VNRequestForensicsParentChildRequests *)self orderedChildRequests];
+  v6 = [orderedChildRequests componentsJoinedByString:{@", "}];
+  v7 = [v3 stringWithFormat:@"( %@, [ %@ ])", parentRequest, v6];
 
   return v7;
 }
 
-- (_VNRequestForensicsParentChildRequests)initWithParentRequest:(id)a3 orderedChildRequests:(id)a4
+- (_VNRequestForensicsParentChildRequests)initWithParentRequest:(id)request orderedChildRequests:(id)requests
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  requestsCopy = requests;
   v15.receiver = self;
   v15.super_class = _VNRequestForensicsParentChildRequests;
   v9 = [(_VNRequestForensicsParentChildRequests *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_parentRequest, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_parentRequest, request);
+    v11 = [requestsCopy copy];
     orderedChildRequests = v10->_orderedChildRequests;
     v10->_orderedChildRequests = v11;
 

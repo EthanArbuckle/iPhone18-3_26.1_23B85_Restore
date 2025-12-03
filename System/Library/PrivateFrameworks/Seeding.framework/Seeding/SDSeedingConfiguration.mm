@@ -1,56 +1,56 @@
 @interface SDSeedingConfiguration
 + (SDSeedingConfiguration)nullConfiguration;
 + (id)currentConfiguration;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)dictionaryRepresentation;
 - (NSDictionary)enrollmentMetadata;
-- (SDSeedingConfiguration)initWithBetaProgram:(id)a3;
-- (SDSeedingConfiguration)initWithCoder:(id)a3;
-- (SDSeedingConfiguration)initWithDictionaryRepresentation:(id)a3;
+- (SDSeedingConfiguration)initWithBetaProgram:(id)program;
+- (SDSeedingConfiguration)initWithCoder:(id)coder;
+- (SDSeedingConfiguration)initWithDictionaryRepresentation:(id)representation;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SDSeedingConfiguration
 
-- (SDSeedingConfiguration)initWithDictionaryRepresentation:(id)a3
+- (SDSeedingConfiguration)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v11.receiver = self;
   v11.super_class = SDSeedingConfiguration;
   v5 = [(SDSeedingConfiguration *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"seedProgram"];
+    v6 = [representationCopy objectForKeyedSubscript:@"seedProgram"];
     [(SDSeedingConfiguration *)v5 setSeedProgram:[SDSeedProgramManager _seedProgramForString:v6]];
 
-    v7 = [v4 objectForKeyedSubscript:@"assetAudience"];
+    v7 = [representationCopy objectForKeyedSubscript:@"assetAudience"];
     [(SDSeedingConfiguration *)v5 setAssetAudience:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"catalog"];
+    v8 = [representationCopy objectForKeyedSubscript:@"catalog"];
     [(SDSeedingConfiguration *)v5 setCatalog:v8];
 
-    v9 = [v4 objectForKeyedSubscript:@"accountID"];
+    v9 = [representationCopy objectForKeyedSubscript:@"accountID"];
     [(SDSeedingConfiguration *)v5 setAccountID:v9];
   }
 
   return v5;
 }
 
-- (SDSeedingConfiguration)initWithBetaProgram:(id)a3
+- (SDSeedingConfiguration)initWithBetaProgram:(id)program
 {
-  v4 = a3;
+  programCopy = program;
   v16.receiver = self;
   v16.super_class = SDSeedingConfiguration;
   v5 = [(SDSeedingConfiguration *)&v16 init];
   if (v5)
   {
-    -[SDSeedingConfiguration setSeedProgram:](v5, "setSeedProgram:", [v4 program]);
-    v6 = [v4 assetAudience];
-    v7 = v6;
-    if (v6)
+    -[SDSeedingConfiguration setSeedProgram:](v5, "setSeedProgram:", [programCopy program]);
+    assetAudience = [programCopy assetAudience];
+    v7 = assetAudience;
+    if (assetAudience)
     {
-      v8 = v6;
+      v8 = assetAudience;
     }
 
     else
@@ -60,12 +60,12 @@
 
     [(SDSeedingConfiguration *)v5 setAssetAudience:v8];
 
-    v9 = [v4 catalog];
-    v10 = [v9 absoluteString];
-    v11 = v10;
-    if (v10)
+    catalog = [programCopy catalog];
+    absoluteString = [catalog absoluteString];
+    v11 = absoluteString;
+    if (absoluteString)
     {
-      v12 = v10;
+      v12 = absoluteString;
     }
 
     else
@@ -75,59 +75,59 @@
 
     [(SDSeedingConfiguration *)v5 setCatalog:v12];
 
-    v13 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "programID")}];
+    v13 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(programCopy, "programID")}];
     [(SDSeedingConfiguration *)v5 setSeedProgramID:v13];
 
-    v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "accountID")}];
+    v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(programCopy, "accountID")}];
     [(SDSeedingConfiguration *)v5 setAccountID:v14];
   }
 
   return v5;
 }
 
-- (SDSeedingConfiguration)initWithCoder:(id)a3
+- (SDSeedingConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = SDSeedingConfiguration;
   v5 = [(SDSeedingConfiguration *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"seedProgram"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"seedProgram"];
     [(SDSeedingConfiguration *)v5 setSeedProgram:[SDSeedProgramManager _seedProgramForString:v6]];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetAudience"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetAudience"];
     [(SDSeedingConfiguration *)v5 setAssetAudience:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"catalog"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"catalog"];
     [(SDSeedingConfiguration *)v5 setCatalog:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"seedProgramID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"seedProgramID"];
     [(SDSeedingConfiguration *)v5 setSeedProgramID:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
     [(SDSeedingConfiguration *)v5 setAccountID:v10];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [SDSeedProgramManager stringForSeedProgram:[(SDSeedingConfiguration *)self seedProgram]];
-  [v4 encodeObject:v5 forKey:@"seedProgram"];
+  [coderCopy encodeObject:v5 forKey:@"seedProgram"];
 
-  v6 = [(SDSeedingConfiguration *)self assetAudience];
-  [v4 encodeObject:v6 forKey:@"assetAudience"];
+  assetAudience = [(SDSeedingConfiguration *)self assetAudience];
+  [coderCopy encodeObject:assetAudience forKey:@"assetAudience"];
 
-  v7 = [(SDSeedingConfiguration *)self catalog];
-  [v4 encodeObject:v7 forKey:@"catalog"];
+  catalog = [(SDSeedingConfiguration *)self catalog];
+  [coderCopy encodeObject:catalog forKey:@"catalog"];
 
-  v8 = [(SDSeedingConfiguration *)self seedProgramID];
-  [v4 encodeObject:v8 forKey:@"seedProgramID"];
+  seedProgramID = [(SDSeedingConfiguration *)self seedProgramID];
+  [coderCopy encodeObject:seedProgramID forKey:@"seedProgramID"];
 
-  v9 = [(SDSeedingConfiguration *)self accountID];
-  [v4 encodeObject:v9 forKey:@"accountID"];
+  accountID = [(SDSeedingConfiguration *)self accountID];
+  [coderCopy encodeObject:accountID forKey:@"accountID"];
 }
 
 + (id)currentConfiguration
@@ -137,15 +137,15 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 program];
+    program = [v3 program];
   }
 
   else
   {
-    v5 = 0;
+    program = 0;
   }
 
-  [(SDSeedingConfiguration *)v2 setSeedProgram:v5];
+  [(SDSeedingConfiguration *)v2 setSeedProgram:program];
   v6 = +[SDCatalogUtilities _currentAssetAudience];
   v7 = v6;
   if (v6)
@@ -161,11 +161,11 @@
   [(SDSeedingConfiguration *)v2 setAssetAudience:v8];
 
   v9 = +[SDBetaManager sharedManager];
-  v10 = [v9 _assetServerURLString];
-  v11 = v10;
-  if (v10)
+  _assetServerURLString = [v9 _assetServerURLString];
+  v11 = _assetServerURLString;
+  if (_assetServerURLString)
   {
-    v12 = v10;
+    v12 = _assetServerURLString;
   }
 
   else
@@ -202,11 +202,11 @@
 
   v23[0] = v5;
   v22[1] = @"assetAudience";
-  v6 = [(SDSeedingConfiguration *)self assetAudience];
-  v7 = v6;
-  if (v6)
+  assetAudience = [(SDSeedingConfiguration *)self assetAudience];
+  v7 = assetAudience;
+  if (assetAudience)
   {
-    v8 = v6;
+    v8 = assetAudience;
   }
 
   else
@@ -216,11 +216,11 @@
 
   v23[1] = v8;
   v22[2] = @"catalog";
-  v9 = [(SDSeedingConfiguration *)self catalog];
-  v10 = v9;
-  if (v9)
+  catalog = [(SDSeedingConfiguration *)self catalog];
+  v10 = catalog;
+  if (catalog)
   {
-    v11 = v9;
+    v11 = catalog;
   }
 
   else
@@ -230,12 +230,12 @@
 
   v23[2] = v11;
   v22[3] = @"seedProgramID";
-  v12 = [(SDSeedingConfiguration *)self seedProgramID];
-  v13 = [v12 stringValue];
-  v14 = v13;
-  if (v13)
+  seedProgramID = [(SDSeedingConfiguration *)self seedProgramID];
+  stringValue = [seedProgramID stringValue];
+  v14 = stringValue;
+  if (stringValue)
   {
-    v15 = v13;
+    v15 = stringValue;
   }
 
   else
@@ -245,12 +245,12 @@
 
   v23[3] = v15;
   v22[4] = @"accountID";
-  v16 = [(SDSeedingConfiguration *)self accountID];
-  v17 = v16;
+  accountID = [(SDSeedingConfiguration *)self accountID];
+  v17 = accountID;
   v18 = &unk_284250A80;
-  if (v16)
+  if (accountID)
   {
-    v18 = v16;
+    v18 = accountID;
   }
 
   v23[4] = v18;
@@ -264,12 +264,12 @@
 - (NSDictionary)enrollmentMetadata
 {
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
-  v4 = [(SDSeedingConfiguration *)self assetAudience];
-  [v3 setObject:v4 forKeyedSubscript:@"AssetAudience"];
+  assetAudience = [(SDSeedingConfiguration *)self assetAudience];
+  [v3 setObject:assetAudience forKeyedSubscript:@"AssetAudience"];
 
-  v5 = [(SDSeedingConfiguration *)self seedProgramID];
-  v6 = [v5 stringValue];
-  [v3 setObject:v6 forKeyedSubscript:@"ProgramID"];
+  seedProgramID = [(SDSeedingConfiguration *)self seedProgramID];
+  stringValue = [seedProgramID stringValue];
+  [v3 setObject:stringValue forKeyedSubscript:@"ProgramID"];
 
   v7 = [SDSeedProgramManager stringForSeedProgram:[(SDSeedingConfiguration *)self seedProgram]];
   [v3 setObject:v7 forKeyedSubscript:@"SeedProgram"];
@@ -279,26 +279,26 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [(SDSeedingConfiguration *)self seedProgram];
-    if (v6 == [v5 seedProgram])
+    v5 = equalCopy;
+    seedProgram = [(SDSeedingConfiguration *)self seedProgram];
+    if (seedProgram == [v5 seedProgram])
     {
-      v7 = [(SDSeedingConfiguration *)self assetAudience];
-      v8 = [v5 assetAudience];
-      if ([v7 isEqualToString:v8])
+      assetAudience = [(SDSeedingConfiguration *)self assetAudience];
+      assetAudience2 = [v5 assetAudience];
+      if ([assetAudience isEqualToString:assetAudience2])
       {
-        v9 = [(SDSeedingConfiguration *)self catalog];
-        v10 = [v5 catalog];
-        if ([v9 isEqualToString:v10])
+        catalog = [(SDSeedingConfiguration *)self catalog];
+        catalog2 = [v5 catalog];
+        if ([catalog isEqualToString:catalog2])
         {
-          v11 = [(SDSeedingConfiguration *)self seedProgramID];
-          v12 = [v5 seedProgramID];
-          v13 = [v11 isEqualToNumber:v12];
+          seedProgramID = [(SDSeedingConfiguration *)self seedProgramID];
+          seedProgramID2 = [v5 seedProgramID];
+          v13 = [seedProgramID isEqualToNumber:seedProgramID2];
         }
 
         else
@@ -345,8 +345,8 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [SDSeedProgramManager stringForSeedProgram:[(SDSeedingConfiguration *)self seedProgram]];
-  v7 = [(SDSeedingConfiguration *)self assetAudience];
-  v8 = [v3 stringWithFormat:@"%@: %@ - %@", v5, v6, v7];
+  assetAudience = [(SDSeedingConfiguration *)self assetAudience];
+  v8 = [v3 stringWithFormat:@"%@: %@ - %@", v5, v6, assetAudience];
 
   return v8;
 }

@@ -1,24 +1,24 @@
 @interface PPNamedEntity
-+ (id)clusterIdentifierFromName:(id)a3;
-+ (id)describeCategory:(unint64_t)a3;
-+ (unint64_t)categoryForDescription:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNamedEntity:(id)a3;
++ (id)clusterIdentifierFromName:(id)name;
++ (id)describeCategory:(unint64_t)category;
++ (unint64_t)categoryForDescription:(id)description;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNamedEntity:(id)entity;
 - (NSSet)featureNames;
-- (PPNamedEntity)initWithCoder:(id)a3;
-- (PPNamedEntity)initWithName:(id)a3 category:(unint64_t)a4 dynamicCategory:(id)a5 language:(id)a6 mostRelevantRecord:(id)a7;
+- (PPNamedEntity)initWithCoder:(id)coder;
+- (PPNamedEntity)initWithName:(id)name category:(unint64_t)category dynamicCategory:(id)dynamicCategory language:(id)language mostRelevantRecord:(id)record;
 - (id)description;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPNamedEntity
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"name"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"name"])
   {
     v5 = MEMORY[0x1E695FE60];
     name = self->_name;
@@ -29,20 +29,20 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"category"])
+  if ([nameCopy isEqualToString:@"category"])
   {
     v7 = [MEMORY[0x1E695FE60] featureValueWithInt64:self->_category];
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"dynamicCategory"])
+  if ([nameCopy isEqualToString:@"dynamicCategory"])
   {
     v10 = MEMORY[0x1E695FE60];
-    v11 = [(PPNamedEntity *)self dynamicCategory];
-    v12 = v11;
-    if (v11)
+    dynamicCategory = [(PPNamedEntity *)self dynamicCategory];
+    v12 = dynamicCategory;
+    if (dynamicCategory)
     {
-      v13 = v11;
+      v13 = dynamicCategory;
     }
 
     else
@@ -55,14 +55,14 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"bestLanguage"])
+  if ([nameCopy isEqualToString:@"bestLanguage"])
   {
     v5 = MEMORY[0x1E695FE60];
     name = self->_bestLanguage;
     goto LABEL_3;
   }
 
-  if ([v4 isEqualToString:@"sentimentScore"])
+  if ([nameCopy isEqualToString:@"sentimentScore"])
   {
     v14 = MEMORY[0x1E695FE60];
     [(PPNamedEntity *)self sentimentScore];
@@ -110,10 +110,10 @@ void __29__PPNamedEntity_featureNames__block_invoke()
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -121,37 +121,37 @@ void __29__PPNamedEntity_featureNames__block_invoke()
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPNamedEntity *)self isEqualToNamedEntity:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPNamedEntity *)self isEqualToNamedEntity:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToNamedEntity:(id)a3
+- (BOOL)isEqualToNamedEntity:(id)entity
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  entityCopy = entity;
+  v5 = entityCopy;
+  if (entityCopy == self)
   {
     LOBYTE(v12) = 1;
   }
 
   else
   {
-    if (v4)
+    if (entityCopy)
     {
       v6 = self->_name;
-      v7 = [(PPNamedEntity *)v5 name];
-      if (v6 | v7)
+      name = [(PPNamedEntity *)v5 name];
+      if (v6 | name)
       {
-        v11 = v7;
+        v11 = name;
         LOBYTE(v12) = 0;
-        if (!v6 || !v7)
+        if (!v6 || !name)
         {
           goto LABEL_21;
         }
 
-        v12 = [(NSString *)v6 isEqualToString:v7];
+        v12 = [(NSString *)v6 isEqualToString:name];
 
         if (!v12)
         {
@@ -163,19 +163,19 @@ void __29__PPNamedEntity_featureNames__block_invoke()
       if (category == [(PPNamedEntity *)v5 category])
       {
         v6 = self->_dynamicCategory;
-        v9 = [(PPNamedEntity *)v5 dynamicCategory];
-        if (!(v6 | v9))
+        dynamicCategory = [(PPNamedEntity *)v5 dynamicCategory];
+        if (!(v6 | dynamicCategory))
         {
 LABEL_6:
           v6 = self->_bestLanguage;
-          v10 = [(PPNamedEntity *)v5 bestLanguage];
-          if (v6 | v10)
+          bestLanguage = [(PPNamedEntity *)v5 bestLanguage];
+          if (v6 | bestLanguage)
           {
-            v11 = v10;
+            v11 = bestLanguage;
             LOBYTE(v12) = 0;
-            if (v6 && v10)
+            if (v6 && bestLanguage)
             {
-              LOBYTE(v12) = [(NSString *)v6 isEqualToString:v10];
+              LOBYTE(v12) = [(NSString *)v6 isEqualToString:bestLanguage];
             }
           }
 
@@ -189,11 +189,11 @@ LABEL_6:
           goto LABEL_21;
         }
 
-        v11 = v9;
+        v11 = dynamicCategory;
         LOBYTE(v12) = 0;
-        if (v6 && v9)
+        if (v6 && dynamicCategory)
         {
-          v12 = [(NSString *)v6 isEqualToString:v9];
+          v12 = [(NSString *)v6 isEqualToString:dynamicCategory];
 
           if (!v12)
           {
@@ -224,27 +224,27 @@ LABEL_22:
   return v3 ^ v4 ^ [(NSString *)self->_dynamicCategory hash];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeInt32:LODWORD(self->_category) forKey:@"cat"];
-  [v5 encodeObject:self->_dynamicCategory forKey:@"dcat"];
-  [v5 encodeObject:self->_bestLanguage forKey:@"lang"];
-  v6 = [(PPNamedEntity *)self mostRelevantRecord];
-  [v5 encodeObject:v6 forKey:@"rec"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeInt32:LODWORD(self->_category) forKey:@"cat"];
+  [coderCopy encodeObject:self->_dynamicCategory forKey:@"dcat"];
+  [coderCopy encodeObject:self->_bestLanguage forKey:@"lang"];
+  mostRelevantRecord = [(PPNamedEntity *)self mostRelevantRecord];
+  [coderCopy encodeObject:mostRelevantRecord forKey:@"rec"];
 }
 
-- (PPNamedEntity)initWithCoder:(id)a3
+- (PPNamedEntity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"name"];
-  v7 = [v4 decodeInt32ForKey:@"cat"];
-  v8 = [v4 decodeObjectOfClass:v5 forKey:@"dcat"];
-  v9 = [v4 decodeObjectOfClass:v5 forKey:@"lang"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rec"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"name"];
+  v7 = [coderCopy decodeInt32ForKey:@"cat"];
+  v8 = [coderCopy decodeObjectOfClass:v5 forKey:@"dcat"];
+  v9 = [coderCopy decodeObjectOfClass:v5 forKey:@"lang"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rec"];
 
   if (v6)
   {
@@ -258,36 +258,36 @@ LABEL_22:
 
   if (v11)
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PPNamedEntity *)self initWithName:v6 category:v7 dynamicCategory:v8 language:v9 mostRelevantRecord:v10];
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (PPNamedEntity)initWithName:(id)a3 category:(unint64_t)a4 dynamicCategory:(id)a5 language:(id)a6 mostRelevantRecord:(id)a7
+- (PPNamedEntity)initWithName:(id)name category:(unint64_t)category dynamicCategory:(id)dynamicCategory language:(id)language mostRelevantRecord:(id)record
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v14)
+  nameCopy = name;
+  dynamicCategoryCopy = dynamicCategory;
+  languageCopy = language;
+  recordCopy = record;
+  if (nameCopy)
   {
-    if (v16)
+    if (languageCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PPNamedEntity.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"language"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPNamedEntity.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"language"}];
 
-    if (v17)
+    if (recordCopy)
     {
       goto LABEL_4;
     }
@@ -295,19 +295,19 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"PPNamedEntity.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PPNamedEntity.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
-  if (!v16)
+  if (!languageCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (v17)
+  if (recordCopy)
   {
 LABEL_4:
-    v18 = [[PPNamedEntityWithRecord alloc] initWithName:v14 category:a4 dynamicCategory:v15 language:v16 mostRelevantRecord:v17];
+    v18 = [[PPNamedEntityWithRecord alloc] initWithName:nameCopy category:category dynamicCategory:dynamicCategoryCopy language:languageCopy mostRelevantRecord:recordCopy];
     goto LABEL_10;
   }
 
@@ -318,11 +318,11 @@ LABEL_7:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_name, a3);
-    v20->_category = a4;
-    objc_storeStrong(&v20->_dynamicCategory, a5);
-    objc_storeStrong(&v20->_bestLanguage, a6);
-    v21 = [PPNamedEntity clusterIdentifierFromName:v14];
+    objc_storeStrong(&v19->_name, name);
+    v20->_category = category;
+    objc_storeStrong(&v20->_dynamicCategory, dynamicCategory);
+    objc_storeStrong(&v20->_bestLanguage, language);
+    v21 = [PPNamedEntity clusterIdentifierFromName:nameCopy];
     clusterIdentifier = v20->_clusterIdentifier;
     v20->_clusterIdentifier = v21;
   }
@@ -335,25 +335,25 @@ LABEL_10:
   return p_super;
 }
 
-+ (id)clusterIdentifierFromName:(id)a3
++ (id)clusterIdentifierFromName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 lowercaseString];
+  lowercaseString = [nameCopy lowercaseString];
   objc_autoreleasePoolPop(v4);
-  if ([v3 isEqualToString:v5])
+  if ([nameCopy isEqualToString:lowercaseString])
   {
-    v6 = v3;
+    v6 = nameCopy;
 
-    v5 = v6;
+    lowercaseString = v6;
   }
 
-  v7 = [v5 copy];
+  v7 = [lowercaseString copy];
 
   return v7;
 }
 
-+ (unint64_t)categoryForDescription:(id)a3
++ (unint64_t)categoryForDescription:(id)description
 {
   v11[21] = *MEMORY[0x1E69E9840];
   v10[0] = @"person";
@@ -399,38 +399,38 @@ LABEL_10:
   v10[20] = @"tv show";
   v11[20] = &unk_1F1B45EC8;
   v3 = MEMORY[0x1E695DF20];
-  v4 = a3;
+  descriptionCopy = description;
   v5 = [v3 dictionaryWithObjects:v11 forKeys:v10 count:21];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:descriptionCopy];
 
   if (v6)
   {
-    v7 = [v6 unsignedIntValue];
+    unsignedIntValue = [v6 unsignedIntValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntValue = 0;
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return unsignedIntValue;
 }
 
-+ (id)describeCategory:(unint64_t)a3
++ (id)describeCategory:(unint64_t)category
 {
-  if (a3 - 1 >= 0x15)
+  if (category - 1 >= 0x15)
   {
-    v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unknown (%lu)", a3];
-    v3 = [v4 _pas_stringBackedByUTF8CString];
+    category = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unknown (%lu)", category];
+    _pas_stringBackedByUTF8CString = [category _pas_stringBackedByUTF8CString];
   }
 
   else
   {
-    v3 = off_1E77F5F10[a3 - 1];
+    _pas_stringBackedByUTF8CString = off_1E77F5F10[category - 1];
   }
 
-  return v3;
+  return _pas_stringBackedByUTF8CString;
 }
 
 @end

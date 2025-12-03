@@ -1,15 +1,15 @@
 @interface _SNEBankCustomModel
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
 @end
 
 @implementation _SNEBankCustomModel
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
   swift_unknownObjectRetain();
-  v8 = a4;
-  v9 = self;
-  sub_1C9950274(a3);
+  optionsCopy = options;
+  selfCopy = self;
+  sub_1C9950274(features);
   v11 = v10;
 
   swift_unknownObjectRelease();

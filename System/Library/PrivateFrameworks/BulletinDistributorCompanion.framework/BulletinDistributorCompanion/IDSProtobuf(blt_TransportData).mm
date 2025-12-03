@@ -6,11 +6,11 @@
 
 - (BLTPBTransportData)transportData
 {
-  v1 = [a1 data];
-  v2 = [v1 length] - 2;
-  v3 = [v1 bytes];
-  v4 = *(v3 + v2);
-  if (*(v3 + v2))
+  data = [self data];
+  v2 = [data length] - 2;
+  bytes = [data bytes];
+  v4 = *(bytes + v2);
+  if (*(bytes + v2))
   {
     v5 = v2 >= v4;
   }
@@ -22,7 +22,7 @@
 
   if (v5)
   {
-    v7 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:objc_msgSend(v1 length:"bytes") + v2 - v4 freeWhenDone:{v4, 0}];
+    v7 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:objc_msgSend(data length:"bytes") + v2 - v4 freeWhenDone:{v4, 0}];
     v6 = [[BLTPBTransportData alloc] initWithData:v7];
   }
 

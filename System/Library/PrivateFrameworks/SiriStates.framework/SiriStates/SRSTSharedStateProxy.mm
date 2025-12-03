@@ -1,16 +1,16 @@
 @interface SRSTSharedStateProxy
-- (SRSTSharedStateProxy)initWithState:(id)a3;
+- (SRSTSharedStateProxy)initWithState:(id)state;
 @end
 
 @implementation SRSTSharedStateProxy
 
-- (SRSTSharedStateProxy)initWithState:(id)a3
+- (SRSTSharedStateProxy)initWithState:(id)state
 {
   v6.receiver = self;
   v6.super_class = SRSTSharedStateProxy;
-  v3 = a3;
+  stateCopy = state;
   v4 = [(SRSTSharedStateProxy *)&v6 init];
-  [(SRSTSharedStateProxy *)v4 setState:v3, v6.receiver, v6.super_class];
+  [(SRSTSharedStateProxy *)v4 setState:stateCopy, v6.receiver, v6.super_class];
 
   return v4;
 }

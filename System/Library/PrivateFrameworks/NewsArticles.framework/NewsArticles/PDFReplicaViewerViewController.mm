@@ -1,17 +1,17 @@
 @interface PDFReplicaViewerViewController
 - (BOOL)prefersHomeIndicatorAutoHidden;
 - (BOOL)prefersStatusBarHidden;
-- (_TtC12NewsArticles30PDFReplicaViewerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC12NewsArticles30PDFReplicaViewerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)nextPageKeyCommand;
 - (void)previousPageKeyCommand;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PDFReplicaViewerViewController
@@ -20,7 +20,7 @@
 {
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles30PDFReplicaViewerViewController_barVisibilityAnimator))
   {
-    v2 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     v3 = sub_1D7D0BF64();
     swift_unknownObjectRelease();
@@ -36,13 +36,13 @@
 
 - (BOOL)prefersHomeIndicatorAutoHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D79DAACC();
 
   return v3 & 1;
 }
 
-- (_TtC12NewsArticles30PDFReplicaViewerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles30PDFReplicaViewerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -51,41 +51,41 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D79DB240();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D79DC3A8();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1D79DC6C0(a3);
+  selfCopy = self;
+  sub_1D79DC6C0(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1D79DCE5C(a3);
+  selfCopy = self;
+  sub_1D79DCE5C(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1D79DD9A0(a3);
+  selfCopy = self;
+  sub_1D79DD9A0(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(PDFReplicaViewerViewController *)&v5 viewDidDisappear:v3];
+  [(PDFReplicaViewerViewController *)&v5 viewDidDisappear:disappearCopy];
   if (*&v4[OBJC_IVAR____TtC12NewsArticles30PDFReplicaViewerViewController_pageSheetPresentationObserver])
   {
 
@@ -93,11 +93,11 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D79DDB48(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1D79DDB48(change);
 }
 
 - (void)viewSafeAreaInsetsDidChange
@@ -116,13 +116,13 @@
 
 - (void)previousPageKeyCommand
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7D2AADC();
 }
 
 - (void)nextPageKeyCommand
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7D2AAAC();
 }
 

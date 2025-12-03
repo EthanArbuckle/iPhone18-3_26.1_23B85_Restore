@@ -10,23 +10,23 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 _paperBundleURL];
+    _paperBundleURL = [self _paperBundleURL];
   }
 
   else
   {
-    v2 = objc_alloc_init(MEMORY[0x1E695DFF8]);
+    _paperBundleURL = objc_alloc_init(MEMORY[0x1E695DFF8]);
   }
 
-  return v2;
+  return _paperBundleURL;
 }
 
 - (id)_paperBundleDatabaseURL
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 _paperBundleURL];
-    v3 = [v2 URLByAppendingPathComponent:@"Database"];
+    _paperBundleURL = [self _paperBundleURL];
+    v3 = [_paperBundleURL URLByAppendingPathComponent:@"Database"];
   }
 
   else
@@ -41,8 +41,8 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 _paperBundleURL];
-    v3 = [v2 URLByAppendingPathComponent:@"Assets.bundle"];
+    _paperBundleURL = [self _paperBundleURL];
+    v3 = [_paperBundleURL URLByAppendingPathComponent:@"Assets.bundle"];
   }
 
   else

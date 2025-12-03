@@ -1,14 +1,14 @@
 @interface AWDWiFiMetricsManagerAutoJoinSession
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addRecords:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addRecords:(id)records;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsManagerAutoJoinSession
@@ -21,7 +21,7 @@
   [(AWDWiFiMetricsManagerAutoJoinSession *)&v3 dealloc];
 }
 
-- (void)addRecords:(id)a3
+- (void)addRecords:(id)records
 {
   records = self->_records;
   if (!records)
@@ -30,7 +30,7 @@
     self->_records = records;
   }
 
-  [(NSMutableArray *)records addObject:a3];
+  [(NSMutableArray *)records addObject:records];
 }
 
 - (id)description
@@ -43,10 +43,10 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   if ([(NSMutableArray *)self->_records count])
@@ -82,14 +82,14 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"records"];
+    [dictionary setObject:v4 forKey:@"records"];
   }
 
   v10 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x29EDCA608];
   if (*&self->_has)
@@ -133,33 +133,33 @@
   v11 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 24) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 24) |= 1u;
   }
 
   if ([(AWDWiFiMetricsManagerAutoJoinSession *)self recordsCount])
   {
-    [a3 clearRecords];
-    v5 = [(AWDWiFiMetricsManagerAutoJoinSession *)self recordsCount];
-    if (v5)
+    [to clearRecords];
+    recordsCount = [(AWDWiFiMetricsManagerAutoJoinSession *)self recordsCount];
+    if (recordsCount)
     {
-      v6 = v5;
+      v6 = recordsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addRecords:{-[AWDWiFiMetricsManagerAutoJoinSession recordsAtIndex:](self, "recordsAtIndex:", i)}];
+        [to addRecords:{-[AWDWiFiMetricsManagerAutoJoinSession recordsAtIndex:](self, "recordsAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -187,7 +187,7 @@
           objc_enumerationMutation(records);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addRecords:v12];
 
         ++v11;
@@ -204,21 +204,21 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 24);
+    v6 = *(equal + 24);
     if (*&self->_has)
     {
-      if ((*(a3 + 24) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 24) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_9;
       }
     }
 
-    else if (*(a3 + 24))
+    else if (*(equal + 24))
     {
 LABEL_9:
       LOBYTE(v5) = 0;
@@ -226,7 +226,7 @@ LABEL_9:
     }
 
     records = self->_records;
-    if (records | *(a3 + 2))
+    if (records | *(equal + 2))
     {
 
       LOBYTE(v5) = [(NSMutableArray *)records isEqual:?];
@@ -256,12 +256,12 @@ LABEL_9:
   return [(NSMutableArray *)self->_records hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 24))
+  if (*(from + 24))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
@@ -269,7 +269,7 @@ LABEL_9:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = *(a3 + 2);
+  v4 = *(from + 2);
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {

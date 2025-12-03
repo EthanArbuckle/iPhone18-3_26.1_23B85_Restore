@@ -3,37 +3,37 @@
 - (BOOL)shouldAllowDomainPublishRequest;
 - (HMDHome)home;
 - (HMDResidentStatus)currentPrimaryResident;
-- (HMDResidentStatusChannel)initWithHome:(id)a3 queue:(id)a4;
-- (HMDResidentStatusChannel)initWithHome:(id)a3 queue:(id)a4 notificationCenter:(id)a5 timerProvider:(id)a6 channelProvider:(id)a7 logEventSubmitter:(id)a8 featuresDataSource:(id)a9;
+- (HMDResidentStatusChannel)initWithHome:(id)home queue:(id)queue;
+- (HMDResidentStatusChannel)initWithHome:(id)home queue:(id)queue notificationCenter:(id)center timerProvider:(id)provider channelProvider:(id)channelProvider logEventSubmitter:(id)submitter featuresDataSource:(id)source;
 - (HMDResidentStatusChannelManager)manager;
 - (NSSet)domainDataStatuses;
 - (NSSet)presentResidentStatuses;
-- (id)_startTimerWithDuration:(double)a3;
-- (id)dataForDomain:(unint64_t)a3;
+- (id)_startTimerWithDuration:(double)duration;
+- (id)dataForDomain:(unint64_t)domain;
 - (id)domainDataPairsPayload;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
 - (id)logIdentifier;
-- (id)payloadWithStatus:(id)a3;
-- (void)_handleHomeUserAddedNotification:(id)a3;
-- (void)_handleHomeUserRemovedNotification:(id)a3;
-- (void)_handlePrimaryResidentUpdateNotification:(id)a3;
+- (id)payloadWithStatus:(id)status;
+- (void)_handleHomeUserAddedNotification:(id)notification;
+- (void)_handleHomeUserRemovedNotification:(id)notification;
+- (void)_handlePrimaryResidentUpdateNotification:(id)notification;
 - (void)_inviteSharedUsers;
-- (void)_publishResidentStatus:(id)a3 reason:(int64_t)a4;
+- (void)_publishResidentStatus:(id)status reason:(int64_t)reason;
 - (void)_startDebounceTimer;
 - (void)_stopDebounceTimer;
 - (void)_stopPublishingAsResident;
-- (void)addObserver:(id)a3;
-- (void)channel:(id)a3 didObserveConnectionChange:(BOOL)a4;
-- (void)channel:(id)a3 didObserveRecordUpdate:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)channel:(id)channel didObserveConnectionChange:(BOOL)change;
+- (void)channel:(id)channel didObserveRecordUpdate:(id)update;
 - (void)domainPublishRateLimitingTimerFired;
-- (void)publishDomain:(unint64_t)a3 data:(id)a4 completion:(id)a5;
-- (void)publishResidentStatus:(id)a3 reason:(int64_t)a4;
-- (void)removeObserver:(id)a3;
+- (void)publishDomain:(unint64_t)domain data:(id)data completion:(id)completion;
+- (void)publishResidentStatus:(id)status reason:(int64_t)reason;
+- (void)removeObserver:(id)observer;
 - (void)start;
 - (void)stop;
 - (void)stopPublishingAsResident;
-- (void)stopPublishingDomain:(unint64_t)a3;
-- (void)timerDidFire:(id)a3;
+- (void)stopPublishingDomain:(unint64_t)domain;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDResidentStatusChannel
@@ -54,23 +54,23 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDResidentStatusChannel *)self home];
-  v3 = [v2 uuid];
-  v4 = [v3 UUIDString];
+  home = [(HMDResidentStatusChannel *)self home];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 - (void)_inviteSharedUsers
 {
   v19 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(HMDResidentStatusChannel *)self home];
-  if ([v3 isOwnerUser] && objc_msgSend(v3, "isCurrentDevicePrimaryResident") && -[HMDResidentStatusChannel receivedInitialChannelState](self, "receivedInitialChannelState"))
+  home = [(HMDResidentStatusChannel *)self home];
+  if ([home isOwnerUser] && objc_msgSend(home, "isCurrentDevicePrimaryResident") && -[HMDResidentStatusChannel receivedInitialChannelState](self, "receivedInitialChannelState"))
   {
-    v4 = [v3 usersIncludingPendingUsers:1];
+    v4 = [home usersIncludingPendingUsers:1];
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -83,8 +83,8 @@
     }
 
     objc_autoreleasePoolPop(v5);
-    objc_initWeak(buf, v6);
-    v9 = [(HMDResidentStatusChannel *)v6 channel];
+    objc_initWeak(buf, selfCopy);
+    channel = [(HMDResidentStatusChannel *)selfCopy channel];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __46__HMDResidentStatusChannel__inviteSharedUsers__block_invoke;
@@ -92,7 +92,7 @@
     objc_copyWeak(&v14, buf);
     v10 = v4;
     v13 = v10;
-    [v9 setInvitedUsers:v10 withCompletion:v12];
+    [channel setInvitedUsers:v10 withCompletion:v12];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(buf);
@@ -147,10 +147,10 @@ void __46__HMDResidentStatusChannel__inviteSharedUsers__block_invoke(uint64_t a1
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_startTimerWithDuration:(double)a3
+- (id)_startTimerWithDuration:(double)duration
 {
-  v5 = [(HMDResidentStatusChannel *)self timerProvider];
-  v6 = [v5 timerWithTimeInterval:0 options:a3];
+  timerProvider = [(HMDResidentStatusChannel *)self timerProvider];
+  v6 = [timerProvider timerWithTimeInterval:0 options:duration];
 
   [v6 setDelegate:self];
   [v6 setDelegateQueue:self->_queue];
@@ -161,40 +161,40 @@ void __46__HMDResidentStatusChannel__inviteSharedUsers__block_invoke(uint64_t a1
 
 - (void)_stopDebounceTimer
 {
-  v3 = [(HMDResidentStatusChannel *)self debounceTimer];
-  [v3 cancel];
+  debounceTimer = [(HMDResidentStatusChannel *)self debounceTimer];
+  [debounceTimer cancel];
 
   [(HMDResidentStatusChannel *)self setDebounceTimer:0];
 }
 
 - (void)_startDebounceTimer
 {
-  v3 = [(HMDResidentStatusChannel *)self debounceTimer];
+  debounceTimer = [(HMDResidentStatusChannel *)self debounceTimer];
 
-  if (!v3)
+  if (!debounceTimer)
   {
     v4 = [(HMDResidentStatusChannel *)self _startTimerWithDuration:120.0];
     [(HMDResidentStatusChannel *)self setDebounceTimer:v4];
   }
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(HMDResidentStatusChannel *)self debounceTimer];
+  debounceTimer = [(HMDResidentStatusChannel *)self debounceTimer];
 
-  if (v5 == v4)
+  if (debounceTimer == fireCopy)
   {
     [(HMDResidentStatusChannel *)self _stopDebounceTimer];
-    v8 = [(HMDResidentStatusChannel *)self channel];
-    v9 = [v8 isConnected];
+    channel = [(HMDResidentStatusChannel *)self channel];
+    isConnected = [channel isConnected];
 
-    if ((v9 & 1) == 0)
+    if ((isConnected & 1) == 0)
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -205,18 +205,18 @@ void __46__HMDResidentStatusChannel__inviteSharedUsers__block_invoke(uint64_t a1
       }
 
       objc_autoreleasePoolPop(v10);
-      [(HMDResidentStatusChannel *)v11 setConnected:0];
-      v14 = [(HMDResidentStatusChannel *)v11 channel];
+      [(HMDResidentStatusChannel *)selfCopy setConnected:0];
+      channel2 = [(HMDResidentStatusChannel *)selfCopy channel];
       v15 = [MEMORY[0x277CBEB98] set];
-      [(HMDResidentStatusChannel *)v11 channel:v14 didObserveRecordUpdate:v15];
+      [(HMDResidentStatusChannel *)selfCopy channel:channel2 didObserveRecordUpdate:v15];
     }
   }
 
   else
   {
-    v6 = [(HMDResidentStatusChannel *)self inviteRetryTimer];
+    inviteRetryTimer = [(HMDResidentStatusChannel *)self inviteRetryTimer];
 
-    if (v6 == v4)
+    if (inviteRetryTimer == fireCopy)
     {
       [(HMDResidentStatusChannel *)self setInviteRetryTimer:0];
       [(HMDResidentStatusChannel *)self _inviteSharedUsers];
@@ -224,9 +224,9 @@ void __46__HMDResidentStatusChannel__inviteSharedUsers__block_invoke(uint64_t a1
 
     else
     {
-      v7 = [(HMDResidentStatusChannel *)self domainPublishRateLimitingTimer];
+      domainPublishRateLimitingTimer = [(HMDResidentStatusChannel *)self domainPublishRateLimitingTimer];
 
-      if (v7 == v4)
+      if (domainPublishRateLimitingTimer == fireCopy)
       {
         [(HMDResidentStatusChannel *)self domainPublishRateLimitingTimerFired];
       }
@@ -236,17 +236,17 @@ void __46__HMDResidentStatusChannel__inviteSharedUsers__block_invoke(uint64_t a1
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)channel:(id)a3 didObserveConnectionChange:(BOOL)a4
+- (void)channel:(id)channel didObserveConnectionChange:(BOOL)change
 {
-  v4 = a4;
+  changeCopy = change;
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  channelCopy = channel;
   dispatch_assert_queue_V2(self->_queue);
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (changeCopy)
   {
     if (v10)
     {
@@ -257,7 +257,7 @@ void __46__HMDResidentStatusChannel__inviteSharedUsers__block_invoke(uint64_t a1
     }
 
     objc_autoreleasePoolPop(v7);
-    [(HMDResidentStatusChannel *)v8 _stopDebounceTimer];
+    [(HMDResidentStatusChannel *)selfCopy _stopDebounceTimer];
   }
 
   else
@@ -271,20 +271,20 @@ void __46__HMDResidentStatusChannel__inviteSharedUsers__block_invoke(uint64_t a1
     }
 
     objc_autoreleasePoolPop(v7);
-    [(HMDResidentStatusChannel *)v8 _startDebounceTimer];
+    [(HMDResidentStatusChannel *)selfCopy _startDebounceTimer];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)channel:(id)a3 didObserveRecordUpdate:(id)a4
+- (void)channel:(id)channel didObserveRecordUpdate:(id)update
 {
   v145 = *MEMORY[0x277D85DE8];
-  v111 = a3;
-  v6 = a4;
+  channelCopy = channel;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_queue);
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -292,13 +292,13 @@ void __46__HMDResidentStatusChannel__inviteSharedUsers__block_invoke(uint64_t a1
     *buf = 138543618;
     v137 = v10;
     v138 = 2048;
-    v139 = [v6 count];
+    v139 = [updateCopy count];
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@Status channel updated records (%lu)", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
   v11 = objc_autoreleasePoolPush();
-  v12 = v8;
+  v12 = selfCopy;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -306,27 +306,27 @@ void __46__HMDResidentStatusChannel__inviteSharedUsers__block_invoke(uint64_t a1
     *buf = 138543618;
     v137 = v14;
     v138 = 2112;
-    v139 = v6;
+    v139 = updateCopy;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_DEBUG, "%{public}@Status channel updated records: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
   v126 = [MEMORY[0x277CBEB58] set];
   v120 = [MEMORY[0x277CBEB58] set];
-  v15 = [(HMDResidentStatusChannel *)v12 residentStatusMap];
-  v16 = [v15 allValues];
-  v125 = [v16 mutableCopy];
+  residentStatusMap = [(HMDResidentStatusChannel *)v12 residentStatusMap];
+  allValues = [residentStatusMap allValues];
+  v125 = [allValues mutableCopy];
 
   obj = [MEMORY[0x277CBEB38] dictionary];
   v119 = [MEMORY[0x277CBEB58] set];
   v116 = [MEMORY[0x277CBEB58] set];
   v118 = [MEMORY[0x277CBEB58] set];
-  v114 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v131 = 0u;
   v132 = 0u;
   v133 = 0u;
   v134 = 0u;
-  v17 = v6;
+  v17 = updateCopy;
   v113 = v17;
   v123 = [v17 countByEnumeratingWithState:&v131 objects:v144 count:16];
   if (!v123)
@@ -356,9 +356,9 @@ void __46__HMDResidentStatusChannel__inviteSharedUsers__block_invoke(uint64_t a1
           if (!v117)
           {
             v42 = MEMORY[0x277CBEB98];
-            v43 = [(HMDResidentStatusChannel *)v12 home];
-            v44 = [v43 enabledResidents];
-            v45 = [v42 setWithArray:v44];
+            home = [(HMDResidentStatusChannel *)v12 home];
+            enabledResidents = [home enabledResidents];
+            v45 = [v42 setWithArray:enabledResidents];
             v46 = [(HMDResidentStatus *)v21 matchingDeviceFromResidentDevices:v45];
 
             v47 = objc_autoreleasePoolPush();
@@ -367,11 +367,11 @@ void __46__HMDResidentStatusChannel__inviteSharedUsers__block_invoke(uint64_t a1
             if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
             {
               v50 = HMFGetLogIdentifier();
-              v51 = [v46 shortDescription];
+              shortDescription = [v46 shortDescription];
               *buf = 138543618;
               v137 = v50;
               v138 = 2112;
-              v139 = v51;
+              v139 = shortDescription;
               _os_log_impl(&dword_229538000, v49, OS_LOG_TYPE_INFO, "%{public}@Found primary resident %@", buf, 0x16u);
             }
 
@@ -382,12 +382,12 @@ void __46__HMDResidentStatusChannel__inviteSharedUsers__block_invoke(uint64_t a1
             goto LABEL_31;
           }
 
-          v22 = [(HMDResidentStatus *)v21 assertionTime];
-          if (v22 && (v23 = v22, [(HMDResidentStatus *)v117 assertionTime], v24 = objc_claimAutoreleasedReturnValue(), v24, v23, v24))
+          assertionTime = [(HMDResidentStatus *)v21 assertionTime];
+          if (assertionTime && (v23 = assertionTime, [(HMDResidentStatus *)v117 assertionTime], v24 = objc_claimAutoreleasedReturnValue(), v24, v23, v24))
           {
-            v25 = [(HMDResidentStatus *)v21 assertionTime];
-            v26 = [(HMDResidentStatus *)v117 assertionTime];
-            v27 = [v25 compare:v26];
+            assertionTime2 = [(HMDResidentStatus *)v21 assertionTime];
+            assertionTime3 = [(HMDResidentStatus *)v117 assertionTime];
+            v27 = [assertionTime2 compare:assertionTime3];
 
             v28 = objc_autoreleasePoolPush();
             v29 = v12;
@@ -452,9 +452,9 @@ LABEL_29:
         }
 
 LABEL_31:
-        v52 = [(HMDResidentStatusChannel *)v12 residentStatusMap];
-        v53 = [(HMDResidentStatus *)v21 idsIdentifier];
-        v54 = [v52 objectForKeyedSubscript:v53];
+        residentStatusMap2 = [(HMDResidentStatusChannel *)v12 residentStatusMap];
+        idsIdentifier = [(HMDResidentStatus *)v21 idsIdentifier];
+        v54 = [residentStatusMap2 objectForKeyedSubscript:idsIdentifier];
 
         v55 = v126;
         if (!v54 || (v56 = [(HMDResidentStatus *)v21 hasChangedFrom:v54], v55 = v120, v56))
@@ -463,25 +463,25 @@ LABEL_31:
         }
 
         [v125 removeObject:v21];
-        v57 = [(HMDResidentStatus *)v21 idsIdentifier];
-        [obj setObject:v21 forKeyedSubscript:v57];
+        idsIdentifier2 = [(HMDResidentStatus *)v21 idsIdentifier];
+        [obj setObject:v21 forKeyedSubscript:idsIdentifier2];
 
-        v34 = [[HMDResidentStatusDomainData alloc] initWithChannelRecord:v19];
-        if (v34)
+        currentPrimaryResident = [[HMDResidentStatusDomainData alloc] initWithChannelRecord:v19];
+        if (currentPrimaryResident)
         {
-          v58 = [(HMDResidentStatusChannel *)v12 domainDataStatusMap];
-          v59 = [(HMDResidentStatus *)v21 idsIdentifier];
-          v60 = [v58 objectForKeyedSubscript:v59];
+          domainDataStatusMap = [(HMDResidentStatusChannel *)v12 domainDataStatusMap];
+          idsIdentifier3 = [(HMDResidentStatus *)v21 idsIdentifier];
+          v60 = [domainDataStatusMap objectForKeyedSubscript:idsIdentifier3];
 
           v61 = v119;
-          if (!v60 || (v62 = [(HMDResidentStatusDomainData *)v34 hasChangedFrom:v60], v61 = v116, v62))
+          if (!v60 || (v62 = [(HMDResidentStatusDomainData *)currentPrimaryResident hasChangedFrom:v60], v61 = v116, v62))
           {
-            [v61 addObject:v34];
+            [v61 addObject:currentPrimaryResident];
           }
 
-          [v118 removeObject:v34];
-          v63 = [(HMDResidentStatus *)v21 idsIdentifier];
-          [v114 setObject:v34 forKeyedSubscript:v63];
+          [v118 removeObject:currentPrimaryResident];
+          idsIdentifier4 = [(HMDResidentStatus *)v21 idsIdentifier];
+          [dictionary setObject:currentPrimaryResident forKeyedSubscript:idsIdentifier4];
         }
 
         else
@@ -506,7 +506,7 @@ LABEL_31:
         goto LABEL_43;
       }
 
-      v34 = objc_autoreleasePoolPush();
+      currentPrimaryResident = objc_autoreleasePoolPush();
       v35 = v12;
       v36 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -519,7 +519,7 @@ LABEL_31:
         _os_log_impl(&dword_229538000, v36, OS_LOG_TYPE_ERROR, "%{public}@Failed to create status from record %@", buf, 0x16u);
       }
 
-      objc_autoreleasePoolPop(v34);
+      objc_autoreleasePoolPop(currentPrimaryResident);
 LABEL_43:
     }
 
@@ -535,16 +535,16 @@ LABEL_43:
   }
 
 LABEL_48:
-  v34 = [(HMDResidentStatusChannel *)v12 currentPrimaryResident];
+  currentPrimaryResident = [(HMDResidentStatusChannel *)v12 currentPrimaryResident];
   v68 = 0;
   v117 = 0;
   v69 = 0;
   v70 = 0;
-  if (v34)
+  if (currentPrimaryResident)
   {
 LABEL_49:
-    v71 = [(HMDResidentStatusChannel *)v12 currentPrimaryResident];
-    v70 = [(HMDResidentStatus *)v117 isEqual:v71]^ 1;
+    currentPrimaryResident2 = [(HMDResidentStatusChannel *)v12 currentPrimaryResident];
+    v70 = [(HMDResidentStatus *)v117 isEqual:currentPrimaryResident2]^ 1;
 
     if (v68)
     {
@@ -552,7 +552,7 @@ LABEL_49:
       goto LABEL_53;
     }
 
-    v69 = v34;
+    v69 = currentPrimaryResident;
   }
 
   v72 = 0;
@@ -564,8 +564,8 @@ LABEL_53:
   if (os_log_type_enabled(v75, OS_LOG_TYPE_INFO))
   {
     v76 = HMFGetLogIdentifier();
-    v77 = [(HMDResidentStatusChannel *)v74 currentPrimaryResident];
-    v78 = v77;
+    currentPrimaryResident3 = [(HMDResidentStatusChannel *)v74 currentPrimaryResident];
+    v78 = currentPrimaryResident3;
     v79 = @"NO";
     *buf = 138544130;
     v137 = v76;
@@ -577,7 +577,7 @@ LABEL_53:
     v138 = 2112;
     v139 = v117;
     v140 = 2112;
-    v141 = v77;
+    v141 = currentPrimaryResident3;
     v142 = 2112;
     v143 = v79;
     _os_log_impl(&dword_229538000, v75, OS_LOG_TYPE_INFO, "%{public}@Found primary resident = %@, current primary resident %@, will notify %@", buf, 0x2Au);
@@ -589,24 +589,24 @@ LABEL_53:
   os_unfair_lock_lock_with_options();
   objc_storeStrong(&v74->_residentStatusMap, obj);
   objc_storeStrong(&v74->_currentPrimaryResident, v117);
-  objc_storeStrong(&v74->_domainDataStatusMap, v114);
+  objc_storeStrong(&v74->_domainDataStatusMap, dictionary);
   os_unfair_lock_unlock(&v74->_lock);
-  v80 = [(HMDResidentStatusChannel *)v74 channel];
-  if ([v80 isConnected])
+  channel = [(HMDResidentStatusChannel *)v74 channel];
+  if ([channel isConnected])
   {
-    v81 = [(HMDResidentStatusChannel *)v74 isConnected];
+    isConnected = [(HMDResidentStatusChannel *)v74 isConnected];
 
-    if (!v81)
+    if (!isConnected)
     {
       [(HMDResidentStatusChannel *)v74 setConnected:1];
       [(HMDResidentStatusChannel *)v74 _stopDebounceTimer];
-      v80 = [(HMDResidentStatusChannel *)v74 home];
-      if ([v80 isCurrentDeviceAvailableResident])
+      channel = [(HMDResidentStatusChannel *)v74 home];
+      if ([channel isCurrentDeviceAvailableResident])
       {
-        v82 = [v80 homeManager];
-        v83 = [v82 currentAccessorySetupMetricDispatcher];
+        homeManager = [channel homeManager];
+        currentAccessorySetupMetricDispatcher = [homeManager currentAccessorySetupMetricDispatcher];
 
-        [v83 markPrimaryResidentSelectionConnectedToStatusKitFutureResolved];
+        [currentAccessorySetupMetricDispatcher markPrimaryResidentSelectionConnectedToStatusKitFutureResolved];
       }
 
       goto LABEL_61;
@@ -618,7 +618,7 @@ LABEL_53:
 LABEL_61:
   }
 
-  v84 = [(HMDResidentStatusChannel *)v74 home];
+  home2 = [(HMDResidentStatusChannel *)v74 home];
   if (![(HMDResidentStatusChannel *)v74 receivedInitialChannelState])
   {
     v85 = objc_autoreleasePoolPush();
@@ -634,33 +634,33 @@ LABEL_61:
 
     objc_autoreleasePoolPop(v85);
     [(HMDResidentStatusChannel *)v86 setReceivedInitialChannelState:1];
-    v89 = [(HMDResidentStatusChannel *)v86 initialConnectedToStatusKitPromise];
-    [v89 fulfillWithNoValue];
+    initialConnectedToStatusKitPromise = [(HMDResidentStatusChannel *)v86 initialConnectedToStatusKitPromise];
+    [initialConnectedToStatusKitPromise fulfillWithNoValue];
 
     [(HMDResidentStatusChannel *)v86 _inviteSharedUsers];
   }
 
   v90 = [HMDResidentStatusChannelObserveLogEvent alloc];
-  v112 = v84;
-  v91 = [v84 uuid];
+  v112 = home2;
+  uuid = [home2 uuid];
   v92 = [v125 count] != 0;
   v93 = [v126 count] != 0;
   v94 = [v120 count] != 0;
   LOBYTE(v109) = [v17 count] != 0;
   v95 = v92;
   v96 = v124;
-  v97 = [(HMDResidentStatusChannelObserveLogEvent *)v90 initWithHomeUUID:v91 didLoseStatuses:v95 didAddStatuses:v93 didUpdateStatuses:v94 didFindPrimary:v72 didPrimaryChange:v70 isStatusesEmpty:v109];
+  v97 = [(HMDResidentStatusChannelObserveLogEvent *)v90 initWithHomeUUID:uuid didLoseStatuses:v95 didAddStatuses:v93 didUpdateStatuses:v94 didFindPrimary:v72 didPrimaryChange:v70 isStatusesEmpty:v109];
 
-  v98 = [(HMDResidentStatusChannel *)v124 logEventSubmitter];
+  logEventSubmitter = [(HMDResidentStatusChannel *)v124 logEventSubmitter];
   v110 = v97;
-  [v98 submitLogEvent:v97];
+  [logEventSubmitter submitLogEvent:v97];
 
   v129 = 0u;
   v130 = 0u;
   v127 = 0u;
   v128 = 0u;
-  v122 = [(HMDResidentStatusChannel *)v124 observers];
-  v99 = [v122 countByEnumeratingWithState:&v127 objects:v135 count:16];
+  observers = [(HMDResidentStatusChannel *)v124 observers];
+  v99 = [observers countByEnumeratingWithState:&v127 objects:v135 count:16];
   if (v99)
   {
     v100 = v99;
@@ -671,7 +671,7 @@ LABEL_61:
       {
         if (*v128 != v101)
         {
-          objc_enumerationMutation(v122);
+          objc_enumerationMutation(observers);
         }
 
         v103 = *(*(&v127 + 1) + 8 * j);
@@ -698,7 +698,7 @@ LABEL_61:
         }
       }
 
-      v100 = [v122 countByEnumeratingWithState:&v127 objects:v135 count:16];
+      v100 = [observers countByEnumeratingWithState:&v127 objects:v135 count:16];
     }
 
     while (v100);
@@ -707,17 +707,17 @@ LABEL_61:
   v108 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handlePrimaryResidentUpdateNotification:(id)a3
+- (void)_handlePrimaryResidentUpdateNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__HMDResidentStatusChannel__handlePrimaryResidentUpdateNotification___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(queue, v7);
 }
 
@@ -744,17 +744,17 @@ uint64_t __69__HMDResidentStatusChannel__handlePrimaryResidentUpdateNotification
   return result;
 }
 
-- (void)_handleHomeUserRemovedNotification:(id)a3
+- (void)_handleHomeUserRemovedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__HMDResidentStatusChannel__handleHomeUserRemovedNotification___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(queue, v7);
 }
 
@@ -781,17 +781,17 @@ uint64_t __63__HMDResidentStatusChannel__handleHomeUserRemovedNotification___blo
   return result;
 }
 
-- (void)_handleHomeUserAddedNotification:(id)a3
+- (void)_handleHomeUserAddedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__HMDResidentStatusChannel__handleHomeUserAddedNotification___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(queue, v7);
 }
 
@@ -823,7 +823,7 @@ uint64_t __61__HMDResidentStatusChannel__handleHomeUserAddedNotification___block
   v12 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -834,34 +834,34 @@ uint64_t __61__HMDResidentStatusChannel__handleHomeUserAddedNotification___block
   }
 
   objc_autoreleasePoolPop(v3);
-  if ([(HMDResidentStatusChannel *)v4 domainDataCached])
+  if ([(HMDResidentStatusChannel *)selfCopy domainDataCached])
   {
-    v7 = [(HMDResidentStatusChannel *)v4 localResidentStatus];
-    [(HMDResidentStatusChannel *)v4 _publishResidentStatus:v7 reason:7];
+    localResidentStatus = [(HMDResidentStatusChannel *)selfCopy localResidentStatus];
+    [(HMDResidentStatusChannel *)selfCopy _publishResidentStatus:localResidentStatus reason:7];
   }
 
-  [(HMDResidentStatusChannel *)v4 setDomainPublishCount:0];
-  v8 = [(HMDResidentStatusChannel *)v4 domainPublishRateLimitingTimer];
-  [v8 cancel];
+  [(HMDResidentStatusChannel *)selfCopy setDomainPublishCount:0];
+  domainPublishRateLimitingTimer = [(HMDResidentStatusChannel *)selfCopy domainPublishRateLimitingTimer];
+  [domainPublishRateLimitingTimer cancel];
 
-  [(HMDResidentStatusChannel *)v4 setDomainPublishRateLimitingTimer:0];
+  [(HMDResidentStatusChannel *)selfCopy setDomainPublishRateLimitingTimer:0];
   v9 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)shouldAllowDomainPublishRequest
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDResidentStatusChannel *)self domainPublishRateLimitingTimer];
-  v4 = [v3 isRunning];
+  domainPublishRateLimitingTimer = [(HMDResidentStatusChannel *)self domainPublishRateLimitingTimer];
+  isRunning = [domainPublishRateLimitingTimer isRunning];
 
-  if (v4)
+  if (isRunning)
   {
     [(HMDResidentStatusChannel *)self setDomainPublishCount:[(HMDResidentStatusChannel *)self domainPublishCount]+ 1];
     if ([(HMDResidentStatusChannel *)self domainPublishCount]>= 0xB)
     {
       [(HMDResidentStatusChannel *)self setDomainPublishAllowed:0];
       v5 = objc_autoreleasePoolPush();
-      v6 = self;
+      selfCopy = self;
       v7 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
@@ -869,7 +869,7 @@ uint64_t __61__HMDResidentStatusChannel__handleHomeUserAddedNotification___block
         v16 = 138543618;
         v17 = v8;
         v18 = 2048;
-        v19 = [(HMDResidentStatusChannel *)v6 domainPublishCount];
+        domainPublishCount = [(HMDResidentStatusChannel *)selfCopy domainPublishCount];
         _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Domain data publishes got rate limited. Number of publishes: %lu", &v16, 0x16u);
       }
 
@@ -880,7 +880,7 @@ uint64_t __61__HMDResidentStatusChannel__handleHomeUserAddedNotification___block
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -891,11 +891,11 @@ uint64_t __61__HMDResidentStatusChannel__handleHomeUserAddedNotification___block
     }
 
     objc_autoreleasePoolPop(v9);
-    [(HMDResidentStatusChannel *)v10 setDomainPublishCount:1];
-    v13 = [(HMDResidentStatusChannel *)v10 _startTimerWithDuration:3600.0];
-    [(HMDResidentStatusChannel *)v10 setDomainPublishRateLimitingTimer:v13];
+    [(HMDResidentStatusChannel *)selfCopy2 setDomainPublishCount:1];
+    v13 = [(HMDResidentStatusChannel *)selfCopy2 _startTimerWithDuration:3600.0];
+    [(HMDResidentStatusChannel *)selfCopy2 setDomainPublishRateLimitingTimer:v13];
 
-    [(HMDResidentStatusChannel *)v10 setDomainPublishAllowed:1];
+    [(HMDResidentStatusChannel *)selfCopy2 setDomainPublishAllowed:1];
   }
 
   result = [(HMDResidentStatusChannel *)self domainPublishAllowed];
@@ -903,10 +903,10 @@ uint64_t __61__HMDResidentStatusChannel__handleHomeUserAddedNotification___block
   return result;
 }
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = [(HMDSDumpState *)self->_channel dumpStateWithPrivacyLevel:a3];
+  v4 = [(HMDSDumpState *)self->_channel dumpStateWithPrivacyLevel:level];
   v5 = [v3 dictionaryWithDictionary:v4];
 
   v6 = [v5 copy];
@@ -914,17 +914,17 @@ uint64_t __61__HMDResidentStatusChannel__handleHomeUserAddedNotification___block
   return v6;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__HMDResidentStatusChannel_removeObserver___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -934,17 +934,17 @@ void __43__HMDResidentStatusChannel_removeObserver___block_invoke(uint64_t a1)
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__HMDResidentStatusChannel_addObserver___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -967,9 +967,9 @@ void __40__HMDResidentStatusChannel_addObserver___block_invoke(uint64_t a1)
 {
   os_unfair_lock_lock_with_options();
   v3 = objc_alloc(MEMORY[0x277CBEB98]);
-  v4 = [(HMDResidentStatusChannel *)self domainDataStatusMap];
-  v5 = [v4 allValues];
-  v6 = [v3 initWithArray:v5];
+  domainDataStatusMap = [(HMDResidentStatusChannel *)self domainDataStatusMap];
+  allValues = [domainDataStatusMap allValues];
+  v6 = [v3 initWithArray:allValues];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -980,9 +980,9 @@ void __40__HMDResidentStatusChannel_addObserver___block_invoke(uint64_t a1)
 {
   os_unfair_lock_lock_with_options();
   v3 = objc_alloc(MEMORY[0x277CBEB98]);
-  v4 = [(HMDResidentStatusChannel *)self residentStatusMap];
-  v5 = [v4 allValues];
-  v6 = [v3 initWithArray:v5];
+  residentStatusMap = [(HMDResidentStatusChannel *)self residentStatusMap];
+  allValues = [residentStatusMap allValues];
+  v6 = [v3 initWithArray:allValues];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -994,7 +994,7 @@ void __40__HMDResidentStatusChannel_addObserver___block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1005,11 +1005,11 @@ void __40__HMDResidentStatusChannel_addObserver___block_invoke(uint64_t a1)
   }
 
   objc_autoreleasePoolPop(v3);
-  localResidentStatus = v4->_localResidentStatus;
-  v4->_localResidentStatus = 0;
+  localResidentStatus = selfCopy->_localResidentStatus;
+  selfCopy->_localResidentStatus = 0;
 
-  objc_initWeak(buf, v4);
-  channel = v4->_channel;
+  objc_initWeak(buf, selfCopy);
+  channel = selfCopy->_channel;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53__HMDResidentStatusChannel__stopPublishingAsResident__block_invoke;
@@ -1058,7 +1058,7 @@ void __53__HMDResidentStatusChannel__stopPublishingAsResident__block_invoke(uint
   dispatch_async(queue, block);
 }
 
-- (void)stopPublishingDomain:(unint64_t)a3
+- (void)stopPublishingDomain:(unint64_t)domain
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1066,7 +1066,7 @@ void __53__HMDResidentStatusChannel__stopPublishingAsResident__block_invoke(uint
   v4[2] = __49__HMDResidentStatusChannel_stopPublishingDomain___block_invoke;
   v4[3] = &unk_27868A0D0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = domain;
   dispatch_async(queue, v4);
 }
 
@@ -1098,11 +1098,11 @@ void __49__HMDResidentStatusChannel_stopPublishingDomain___block_invoke(uint64_t
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dataForDomain:(unint64_t)a3
+- (id)dataForDomain:(unint64_t)domain
 {
   v5 = [MEMORY[0x277CBEB58] set];
-  v6 = StringForResidentStatusChannelDomain(a3);
-  v7 = [(HMDResidentStatusChannel *)self domainDataStatuses];
+  v6 = StringForResidentStatusChannelDomain(domain);
+  domainDataStatuses = [(HMDResidentStatusChannel *)self domainDataStatuses];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __42__HMDResidentStatusChannel_dataForDomain___block_invoke;
@@ -1111,7 +1111,7 @@ void __49__HMDResidentStatusChannel_stopPublishingDomain___block_invoke(uint64_t
   v17 = v5;
   v8 = v5;
   v9 = v6;
-  [v7 hmf_enumerateWithAutoreleasePoolUsingBlock:&v12];
+  [domainDataStatuses hmf_enumerateWithAutoreleasePoolUsingBlock:&v12];
 
   v10 = [v8 copy];
 
@@ -1149,72 +1149,72 @@ void __42__HMDResidentStatusChannel_dataForDomain___block_invoke(uint64_t a1, vo
 {
   v25 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(HMDResidentStatusChannel *)self domainDataPairs];
-  v4 = [v3 count];
+  domainDataPairs = [(HMDResidentStatusChannel *)self domainDataPairs];
+  v4 = [domainDataPairs count];
 
   if (v4)
   {
     v16 = 0;
-    v5 = [(HMDResidentStatusChannel *)self domainDataPairs];
-    v6 = MEMORY[0x22AAD2E60](v5, 8, &v16);
+    domainDataPairs2 = [(HMDResidentStatusChannel *)self domainDataPairs];
+    v6 = MEMORY[0x22AAD2E60](domainDataPairs2, 8, &v16);
 
     if (v6)
     {
       v17 = @"ddp";
       v18 = v6;
-      v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
+      dictionary = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     }
 
     else
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v12 = HMFGetLogIdentifier();
-        v13 = [(HMDResidentStatusChannel *)v10 domainDataPairs];
+        domainDataPairs3 = [(HMDResidentStatusChannel *)selfCopy domainDataPairs];
         *buf = 138543874;
         v20 = v12;
         v21 = 2112;
-        v22 = v13;
+        v22 = domainDataPairs3;
         v23 = 2048;
         v24 = v16;
         _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_ERROR, "%{public}@Encoding failed for domain data pairs: %@ with error(status %ld)", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v9);
-      v7 = [MEMORY[0x277CBEAC0] dictionary];
+      dictionary = [MEMORY[0x277CBEAC0] dictionary];
     }
 
-    v8 = v7;
+    dictionary2 = dictionary;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary2 = [MEMORY[0x277CBEAC0] dictionary];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return dictionary2;
 }
 
-- (void)publishDomain:(unint64_t)a3 data:(id)a4 completion:(id)a5
+- (void)publishDomain:(unint64_t)domain data:(id)data completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __58__HMDResidentStatusChannel_publishDomain_data_completion___block_invoke;
   v13[3] = &unk_278688B30;
-  v15 = v9;
-  v16 = a3;
+  v15 = completionCopy;
+  domainCopy = domain;
   v13[4] = self;
-  v14 = v8;
-  v11 = v8;
-  v12 = v9;
+  v14 = dataCopy;
+  v11 = dataCopy;
+  v12 = completionCopy;
   dispatch_async(queue, v13);
 }
 
@@ -1325,73 +1325,73 @@ void __58__HMDResidentStatusChannel_publishDomain_data_completion___block_invoke
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)payloadWithStatus:(id)a3
+- (id)payloadWithStatus:(id)status
 {
   queue = self->_queue;
-  v5 = a3;
+  statusCopy = status;
   dispatch_assert_queue_V2(queue);
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [v5 channelRecordPayload];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  channelRecordPayload = [statusCopy channelRecordPayload];
 
-  if ([v7 count])
+  if ([channelRecordPayload count])
   {
-    [v6 addEntriesFromDictionary:v7];
+    [dictionary addEntriesFromDictionary:channelRecordPayload];
   }
 
-  v8 = [(HMDResidentStatusChannel *)self domainDataPairsPayload];
-  if ([v8 count])
+  domainDataPairsPayload = [(HMDResidentStatusChannel *)self domainDataPairsPayload];
+  if ([domainDataPairsPayload count])
   {
-    [v6 addEntriesFromDictionary:v8];
+    [dictionary addEntriesFromDictionary:domainDataPairsPayload];
   }
 
-  v9 = [v6 copy];
+  v9 = [dictionary copy];
 
   return v9;
 }
 
-- (void)_publishResidentStatus:(id)a3 reason:(int64_t)a4
+- (void)_publishResidentStatus:(id)status reason:(int64_t)reason
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  statusCopy = status;
   dispatch_assert_queue_V2(self->_queue);
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    if (a4 >= 9)
+    if (reason >= 9)
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown reason: %lu", a4];
+      reason = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown reason: %lu", reason];
     }
 
     else
     {
-      v11 = off_278678198[a4];
+      reason = off_278678198[reason];
     }
 
     *buf = 138543874;
     v23 = v10;
     v24 = 2112;
-    v25 = v6;
+    v25 = statusCopy;
     v26 = 2112;
-    v27 = v11;
+    v27 = reason;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Publishing resident status: %@ with reason: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
-  if (v8->_channel)
+  if (selfCopy->_channel)
   {
-    v12 = [(HMDResidentStatusChannel *)v8 _shouldDebounce:a4];
-    v13 = [(HMDResidentStatusChannel *)v8 payloadWithStatus:v6];
-    objc_initWeak(buf, v8);
-    channel = v8->_channel;
+    v12 = [(HMDResidentStatusChannel *)selfCopy _shouldDebounce:reason];
+    v13 = [(HMDResidentStatusChannel *)selfCopy payloadWithStatus:statusCopy];
+    objc_initWeak(buf, selfCopy);
+    channel = selfCopy->_channel;
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __58__HMDResidentStatusChannel__publishResidentStatus_reason___block_invoke;
     v20[3] = &unk_278678150;
     objc_copyWeak(v21, buf);
-    v21[1] = a4;
+    v21[1] = reason;
     [(HMDSDumpState *)channel publishRecordWithPayload:v13 shouldDebounce:v12 withCompletion:v20];
     objc_destroyWeak(v21);
     objc_destroyWeak(buf);
@@ -1400,7 +1400,7 @@ void __58__HMDResidentStatusChannel_publishDomain_data_completion___block_invoke
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v8;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -1455,18 +1455,18 @@ void __58__HMDResidentStatusChannel__publishResidentStatus_reason___block_invoke
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishResidentStatus:(id)a3 reason:(int64_t)a4
+- (void)publishResidentStatus:(id)status reason:(int64_t)reason
 {
-  v6 = a3;
+  statusCopy = status;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__HMDResidentStatusChannel_publishResidentStatus_reason___block_invoke;
   block[3] = &unk_278685DF8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = statusCopy;
+  reasonCopy = reason;
+  v8 = statusCopy;
   dispatch_async(queue, block);
 }
 
@@ -1700,54 +1700,54 @@ void __33__HMDResidentStatusChannel_start__block_invoke_217(uint64_t a1, void *a
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDResidentStatusChannel)initWithHome:(id)a3 queue:(id)a4
+- (HMDResidentStatusChannel)initWithHome:(id)home queue:(id)queue
 {
   v6 = MEMORY[0x277CCAB98];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultCenter];
+  queueCopy = queue;
+  homeCopy = home;
+  defaultCenter = [v6 defaultCenter];
   v10 = objc_opt_new();
   v11 = objc_opt_new();
   v12 = +[HMDMetricsManager sharedLogEventSubmitter];
   v13 = +[HMDFeaturesDataSource defaultDataSource];
-  v14 = [(HMDResidentStatusChannel *)self initWithHome:v8 queue:v7 notificationCenter:v9 timerProvider:v10 channelProvider:v11 logEventSubmitter:v12 featuresDataSource:v13];
+  v14 = [(HMDResidentStatusChannel *)self initWithHome:homeCopy queue:queueCopy notificationCenter:defaultCenter timerProvider:v10 channelProvider:v11 logEventSubmitter:v12 featuresDataSource:v13];
 
   return v14;
 }
 
-- (HMDResidentStatusChannel)initWithHome:(id)a3 queue:(id)a4 notificationCenter:(id)a5 timerProvider:(id)a6 channelProvider:(id)a7 logEventSubmitter:(id)a8 featuresDataSource:(id)a9
+- (HMDResidentStatusChannel)initWithHome:(id)home queue:(id)queue notificationCenter:(id)center timerProvider:(id)provider channelProvider:(id)channelProvider logEventSubmitter:(id)submitter featuresDataSource:(id)source
 {
-  v15 = a3;
-  v40 = a4;
-  v39 = a5;
-  v38 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  homeCopy = home;
+  queueCopy = queue;
+  centerCopy = center;
+  providerCopy = provider;
+  channelProviderCopy = channelProvider;
+  submitterCopy = submitter;
+  sourceCopy = source;
   v45.receiver = self;
   v45.super_class = HMDResidentStatusChannel;
   v19 = [(HMDResidentStatusChannel *)&v45 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeWeak(&v19->_home, v15);
-    objc_storeStrong(&v20->_queue, a4);
+    objc_storeWeak(&v19->_home, homeCopy);
+    objc_storeStrong(&v20->_queue, queue);
     v20->_lock._os_unfair_lock_opaque = 0;
-    v21 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     residentStatusMap = v20->_residentStatusMap;
-    v20->_residentStatusMap = v21;
+    v20->_residentStatusMap = dictionary;
 
-    objc_storeStrong(&v20->_notificationCenter, a5);
-    v23 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v20->_notificationCenter, center);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v20->_observers;
-    v20->_observers = v23;
+    v20->_observers = weakObjectsHashTable;
 
-    objc_storeStrong(&v20->_timerProvider, a6);
-    objc_storeStrong(&v20->_logEventSubmitter, a8);
-    objc_storeStrong(&v20->_featuresDataSource, a9);
-    v25 = [v15 uuid];
-    v26 = [v25 UUIDString];
-    v27 = [v16 createStatusChannelWithPrefix:@"HomeKitResidentStatus" identifier:v26 queue:v20->_queue];
+    objc_storeStrong(&v20->_timerProvider, provider);
+    objc_storeStrong(&v20->_logEventSubmitter, submitter);
+    objc_storeStrong(&v20->_featuresDataSource, source);
+    uuid = [homeCopy uuid];
+    uUIDString = [uuid UUIDString];
+    v27 = [channelProviderCopy createStatusChannelWithPrefix:@"HomeKitResidentStatus" identifier:uUIDString queue:v20->_queue];
     channel = v20->_channel;
     v20->_channel = v27;
 
@@ -1767,16 +1767,16 @@ void __33__HMDResidentStatusChannel_start__block_invoke_217(uint64_t a1, void *a
 
     objc_storeStrong(&v20->_initialConnectedToStatusKitPromise, obj);
     v20->_receivedInitialChannelState = 0;
-    v32 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     domainDataPairs = v20->_domainDataPairs;
-    v20->_domainDataPairs = v32;
+    v20->_domainDataPairs = dictionary2;
 
     localResidentStatus = v20->_localResidentStatus;
     v20->_localResidentStatus = 0;
 
-    v35 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     domainDataStatusMap = v20->_domainDataStatusMap;
-    v20->_domainDataStatusMap = v35;
+    v20->_domainDataStatusMap = dictionary3;
 
     objc_destroyWeak(&v43);
     objc_destroyWeak(&location);

@@ -1,46 +1,46 @@
 @interface HMPBCommandContainer
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMPBCommandContainer
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v6 = a3;
-  if (v6[4])
+  fromCopy = from;
+  if (fromCopy[4])
   {
     [(HMPBCommandContainer *)self setCommandID:?];
   }
 
-  if (v6[5])
+  if (fromCopy[5])
   {
     [(HMPBCommandContainer *)self setEndpointID:?];
   }
 
-  if (v6[2])
+  if (fromCopy[2])
   {
     [(HMPBCommandContainer *)self setClusterID:?];
   }
 
-  if (v6[3])
+  if (fromCopy[3])
   {
     [(HMPBCommandContainer *)self setCommandFields:?];
   }
 
-  if (v6[6])
+  if (fromCopy[6])
   {
     [(HMPBCommandContainer *)self setExpectedValues:?];
   }
 
   accessoryReference = self->_accessoryReference;
-  v5 = v6[1];
+  v5 = fromCopy[1];
   if (accessoryReference)
   {
     if (v5)
@@ -65,13 +65,13 @@
   return v6 ^ v7 ^ [(HMPBAccessoryReference *)self->_accessoryReference hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((commandID = self->_commandID, !(commandID | v4[4])) || -[NSData isEqual:](commandID, "isEqual:")) && ((endpointID = self->_endpointID, !(endpointID | v4[5])) || -[NSData isEqual:](endpointID, "isEqual:")) && ((clusterID = self->_clusterID, !(clusterID | v4[2])) || -[NSData isEqual:](clusterID, "isEqual:")) && ((commandFields = self->_commandFields, !(commandFields | v4[3])) || -[NSData isEqual:](commandFields, "isEqual:")) && ((expectedValues = self->_expectedValues, !(expectedValues | v4[6])) || -[NSData isEqual:](expectedValues, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((commandID = self->_commandID, !(commandID | equalCopy[4])) || -[NSData isEqual:](commandID, "isEqual:")) && ((endpointID = self->_endpointID, !(endpointID | equalCopy[5])) || -[NSData isEqual:](endpointID, "isEqual:")) && ((clusterID = self->_clusterID, !(clusterID | equalCopy[2])) || -[NSData isEqual:](clusterID, "isEqual:")) && ((commandFields = self->_commandFields, !(commandFields | equalCopy[3])) || -[NSData isEqual:](commandFields, "isEqual:")) && ((expectedValues = self->_expectedValues, !(expectedValues | equalCopy[6])) || -[NSData isEqual:](expectedValues, "isEqual:")))
   {
     accessoryReference = self->_accessoryReference;
-    if (accessoryReference | v4[1])
+    if (accessoryReference | equalCopy[1])
     {
       v11 = [(HMPBAccessoryReference *)accessoryReference isEqual:?];
     }
@@ -90,126 +90,126 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_commandID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_commandID copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSData *)self->_endpointID copyWithZone:a3];
+  v8 = [(NSData *)self->_endpointID copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
-  v10 = [(NSData *)self->_clusterID copyWithZone:a3];
+  v10 = [(NSData *)self->_clusterID copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSData *)self->_commandFields copyWithZone:a3];
+  v12 = [(NSData *)self->_commandFields copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(NSData *)self->_expectedValues copyWithZone:a3];
+  v14 = [(NSData *)self->_expectedValues copyWithZone:zone];
   v15 = v5[6];
   v5[6] = v14;
 
-  v16 = [(HMPBAccessoryReference *)self->_accessoryReference copyWithZone:a3];
+  v16 = [(HMPBAccessoryReference *)self->_accessoryReference copyWithZone:zone];
   v17 = v5[1];
   v5[1] = v16;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_commandID)
   {
-    [v4 setCommandID:?];
-    v4 = v5;
+    [toCopy setCommandID:?];
+    toCopy = v5;
   }
 
   if (self->_endpointID)
   {
     [v5 setEndpointID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_clusterID)
   {
     [v5 setClusterID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_commandFields)
   {
     [v5 setCommandFields:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_expectedValues)
   {
     [v5 setExpectedValues:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_accessoryReference)
   {
     [v5 setAccessoryReference:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_commandID)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_endpointID)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_clusterID)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_commandFields)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_expectedValues)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_accessoryReference)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   commandID = self->_commandID;
   if (commandID)
   {
-    [v3 setObject:commandID forKey:@"commandID"];
+    [dictionary setObject:commandID forKey:@"commandID"];
   }
 
   endpointID = self->_endpointID;
@@ -239,8 +239,8 @@
   accessoryReference = self->_accessoryReference;
   if (accessoryReference)
   {
-    v11 = [(HMPBAccessoryReference *)accessoryReference dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"accessoryReference"];
+    dictionaryRepresentation = [(HMPBAccessoryReference *)accessoryReference dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"accessoryReference"];
   }
 
   return v4;
@@ -252,8 +252,8 @@
   v8.receiver = self;
   v8.super_class = HMPBCommandContainer;
   v4 = [(HMPBCommandContainer *)&v8 description];
-  v5 = [(HMPBCommandContainer *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMPBCommandContainer *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

@@ -1,6 +1,6 @@
 @interface HMDCameraIDSSessionHandler
 + (id)logCategory;
-- (HMDCameraIDSSessionHandler)initWithSessionID:(id)a3 workQueue:(id)a4 idsStreamService:(id)a5;
+- (HMDCameraIDSSessionHandler)initWithSessionID:(id)d workQueue:(id)queue idsStreamService:(id)service;
 - (id)logIdentifier;
 - (void)dealloc;
 @end
@@ -9,8 +9,8 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraIDSSessionHandler *)self sessionID];
-  v3 = [v2 description];
+  sessionID = [(HMDCameraIDSSessionHandler *)self sessionID];
+  v3 = [sessionID description];
 
   return v3;
 }
@@ -19,7 +19,7 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -30,34 +30,34 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  [(HMDIDSSession *)v4->_idsSession endSession];
-  [(HMDIDSService *)v4->_idsStreamService removeDelegate:v4];
-  v8.receiver = v4;
+  [(HMDIDSSession *)selfCopy->_idsSession endSession];
+  [(HMDIDSService *)selfCopy->_idsStreamService removeDelegate:selfCopy];
+  v8.receiver = selfCopy;
   v8.super_class = HMDCameraIDSSessionHandler;
   [(HMDCameraIDSSessionHandler *)&v8 dealloc];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraIDSSessionHandler)initWithSessionID:(id)a3 workQueue:(id)a4 idsStreamService:(id)a5
+- (HMDCameraIDSSessionHandler)initWithSessionID:(id)d workQueue:(id)queue idsStreamService:(id)service
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  dCopy = d;
+  queueCopy = queue;
+  serviceCopy = service;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v10)
+  if (!queueCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = serviceCopy;
+  if (!serviceCopy)
   {
 LABEL_9:
     v16 = _HMFPreconditionFailure();
@@ -70,9 +70,9 @@ LABEL_9:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_workQueue, a4);
-    objc_storeStrong(&v14->_sessionID, a3);
-    objc_storeStrong(&v14->_idsStreamService, a5);
+    objc_storeStrong(&v13->_workQueue, queue);
+    objc_storeStrong(&v14->_sessionID, d);
+    objc_storeStrong(&v14->_idsStreamService, service);
     [(HMDIDSService *)v14->_idsStreamService addDelegate:v14 queue:v14->_workQueue];
   }
 

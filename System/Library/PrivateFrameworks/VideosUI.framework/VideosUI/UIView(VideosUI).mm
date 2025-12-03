@@ -11,8 +11,8 @@
 - (double)topMarginWithBaselineMargin:()VideosUI maximumContentSizeCategory:
 {
   v3 = MEMORY[0x1E69DF6D0];
-  v4 = [a1 vuiTraitCollection];
-  [v3 scaleContentSizeValue:v4 forTraitCollection:a2];
+  vuiTraitCollection = [self vuiTraitCollection];
+  [v3 scaleContentSizeValue:vuiTraitCollection forTraitCollection:a2];
   v6 = v5;
 
   return v6;
@@ -21,8 +21,8 @@
 - (double)bottomMarginWithBaselineMargin:()VideosUI maximumContentSizeCategory:
 {
   v3 = MEMORY[0x1E69DF6D0];
-  v4 = [a1 vuiTraitCollection];
-  [v3 scaleContentSizeValue:v4 forTraitCollection:a2];
+  vuiTraitCollection = [self vuiTraitCollection];
+  [v3 scaleContentSizeValue:vuiTraitCollection forTraitCollection:a2];
   v6 = v5;
 
   return v6;
@@ -32,12 +32,12 @@
 {
   v16 = a9;
   v17 = a3 == *(MEMORY[0x1E695F060] + 8) && a2 == *MEMORY[0x1E695F060];
-  v18 = [a1 vuiTraitCollection];
+  vuiTraitCollection = [self vuiTraitCollection];
   v19 = 1;
   if (v16 && !v17)
   {
-    v20 = [v16 legibilityWeight];
-    if (v20 != [v18 legibilityWeight])
+    legibilityWeight = [v16 legibilityWeight];
+    if (legibilityWeight != [vuiTraitCollection legibilityWeight])
     {
       v19 = 1;
       goto LABEL_20;
@@ -98,8 +98,8 @@ LABEL_20:
   v4[1] = 3221225472;
   v4[2] = __44__UIView_VideosUI__vui_sizeThatFits_layout___block_invoke;
   v4[3] = &unk_1E872EB88;
-  v4[4] = a1;
-  return [a1 vui_sizeThatFits:a3 layout:v4 withSizeCalculation:?];
+  v4[4] = self;
+  return [self vui_sizeThatFits:a3 layout:v4 withSizeCalculation:?];
 }
 
 - (double)vui_sizeThatFits:()VideosUI layout:withSizeCalculation:
@@ -114,37 +114,37 @@ LABEL_20:
   [v9 maxHeight];
   v15 = v14;
   [v9 width];
-  v17 = v16;
+  selfCopy3 = v16;
   [v9 height];
   v19 = v18;
 
-  if (v17 <= 0.0 || v19 <= 0.0)
+  if (selfCopy3 <= 0.0 || v19 <= 0.0)
   {
-    v20 = v17;
-    v21 = v17;
-    if (v17 <= 0.0)
+    v20 = selfCopy3;
+    selfCopy2 = selfCopy3;
+    if (selfCopy3 <= 0.0)
     {
-      if (a1 > 0.0 && (a1 < v13 || v13 <= 0.0))
+      if (self > 0.0 && (self < v13 || v13 <= 0.0))
       {
-        v17 = a1;
+        selfCopy3 = self;
         v20 = v11;
-        v21 = a1;
+        selfCopy2 = self;
       }
 
       else
       {
         if (v13 <= 0.0)
         {
-          v17 = a1;
+          selfCopy3 = self;
         }
 
         else
         {
-          v17 = v13;
+          selfCopy3 = v13;
         }
 
         v20 = v11;
-        v21 = v13;
+        selfCopy2 = v13;
       }
     }
 
@@ -166,29 +166,29 @@ LABEL_20:
       }
     }
 
-    v22 = v8[2](v8, v17, v19);
-    if (v22 <= v21 || v21 <= 0.0)
+    v22 = v8[2](v8, selfCopy3, v19);
+    if (v22 <= selfCopy2 || selfCopy2 <= 0.0)
     {
       v24 = v22;
     }
 
     else
     {
-      v24 = v21;
+      v24 = selfCopy2;
     }
 
     if (v22 >= v20)
     {
-      v17 = v24;
+      selfCopy3 = v24;
     }
 
     else
     {
-      v17 = v20;
+      selfCopy3 = v20;
     }
   }
 
-  return v17;
+  return selfCopy3;
 }
 
 @end

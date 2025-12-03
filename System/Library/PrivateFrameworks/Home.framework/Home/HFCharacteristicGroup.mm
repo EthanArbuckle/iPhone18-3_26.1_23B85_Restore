@@ -3,11 +3,11 @@
 + (id)_targetCurrentStateCharacteristicGroups;
 + (id)_targetCurrentStateCharacteristicTypeMap;
 + (id)allCharacteristicGroups;
-+ (id)characteristicGroupForCharacteristicType:(id)a3;
-+ (id)characteristicGroupForIdentifier:(id)a3;
-+ (id)groupedTitleForCharacteristicType:(id)a3;
++ (id)characteristicGroupForCharacteristicType:(id)type;
++ (id)characteristicGroupForIdentifier:(id)identifier;
++ (id)groupedTitleForCharacteristicType:(id)type;
 - (HFCharacteristicGroup)init;
-- (HFCharacteristicGroup)initWithID:(id)a3 title:(id)a4 characteristicTypes:(id)a5;
+- (HFCharacteristicGroup)initWithID:(id)d title:(id)title characteristicTypes:(id)types;
 - (int64_t)groupSortPriority;
 @end
 
@@ -71,7 +71,7 @@ void __65__HFCharacteristicGroup__targetCurrentStateCharacteristicTypeMap__block
   block[1] = 3221225472;
   block[2] = __65__HFCharacteristicGroup__currentTargetStateCharacteristicTypeMap__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280E03B30 != -1)
   {
     dispatch_once(&qword_280E03B30, block);
@@ -147,7 +147,7 @@ void __64__HFCharacteristicGroup__targetCurrentStateCharacteristicGroups__block_
   block[1] = 3221225472;
   block[2] = __48__HFCharacteristicGroup_allCharacteristicGroups__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280E03B50 != -1)
   {
     dispatch_once(&qword_280E03B50, block);
@@ -262,12 +262,12 @@ void __48__HFCharacteristicGroup_allCharacteristicGroups__block_invoke(uint64_t 
   v47 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)groupedTitleForCharacteristicType:(id)a3
++ (id)groupedTitleForCharacteristicType:(id)type
 {
-  v4 = a3;
-  v5 = [a1 _currentTargetStateCharacteristicTypeMap];
-  v6 = [v5 allKeys];
-  v7 = [v6 containsObject:v4];
+  typeCopy = type;
+  _currentTargetStateCharacteristicTypeMap = [self _currentTargetStateCharacteristicTypeMap];
+  allKeys = [_currentTargetStateCharacteristicTypeMap allKeys];
+  v7 = [allKeys containsObject:typeCopy];
 
   if (v7)
   {
@@ -281,7 +281,7 @@ void __48__HFCharacteristicGroup_allCharacteristicGroups__block_invoke(uint64_t 
       dispatch_once(&qword_280E03B60, &__block_literal_global_105_2);
     }
 
-    v9 = [qword_280E03B58 objectForKeyedSubscript:v4];
+    v9 = [qword_280E03B58 objectForKeyedSubscript:typeCopy];
     v10 = v9;
     if (v9)
     {
@@ -342,17 +342,17 @@ void __59__HFCharacteristicGroup_groupedTitleForCharacteristicType___block_invok
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)characteristicGroupForCharacteristicType:(id)a3
++ (id)characteristicGroupForCharacteristicType:(id)type
 {
-  v4 = a3;
-  v5 = [a1 allCharacteristicGroups];
+  typeCopy = type;
+  allCharacteristicGroups = [self allCharacteristicGroups];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__HFCharacteristicGroup_characteristicGroupForCharacteristicType___block_invoke;
   v9[3] = &unk_277E00AE8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v10 = typeCopy;
+  v6 = typeCopy;
+  v7 = [allCharacteristicGroups na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -365,17 +365,17 @@ uint64_t __66__HFCharacteristicGroup_characteristicGroupForCharacteristicType___
   return v4;
 }
 
-+ (id)characteristicGroupForIdentifier:(id)a3
++ (id)characteristicGroupForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 allCharacteristicGroups];
+  identifierCopy = identifier;
+  allCharacteristicGroups = [self allCharacteristicGroups];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__HFCharacteristicGroup_characteristicGroupForIdentifier___block_invoke;
   v9[3] = &unk_277E00AE8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [allCharacteristicGroups na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -388,20 +388,20 @@ uint64_t __58__HFCharacteristicGroup_characteristicGroupForIdentifier___block_in
   return v4;
 }
 
-- (HFCharacteristicGroup)initWithID:(id)a3 title:(id)a4 characteristicTypes:(id)a5
+- (HFCharacteristicGroup)initWithID:(id)d title:(id)title characteristicTypes:(id)types
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  titleCopy = title;
+  typesCopy = types;
   v15.receiver = self;
   v15.super_class = HFCharacteristicGroup;
   v12 = [(HFCharacteristicGroup *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_title, a4);
-    objc_storeStrong(&v13->_characteristicTypes, a5);
+    objc_storeStrong(&v12->_identifier, d);
+    objc_storeStrong(&v13->_title, title);
+    objc_storeStrong(&v13->_characteristicTypes, types);
   }
 
   return v13;
@@ -409,9 +409,9 @@ uint64_t __58__HFCharacteristicGroup_characteristicGroupForIdentifier___block_in
 
 - (HFCharacteristicGroup)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithID_title_characteristicTypes_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFCharacteristicGroup.m" lineNumber:221 description:{@"%s is unavailable; use %@ instead", "-[HFCharacteristicGroup init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicGroup.m" lineNumber:221 description:{@"%s is unavailable; use %@ instead", "-[HFCharacteristicGroup init]", v5}];
 
   return 0;
 }
@@ -423,8 +423,8 @@ uint64_t __58__HFCharacteristicGroup_characteristicGroupForIdentifier___block_in
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(HFCharacteristicGroup *)self characteristicTypes];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  characteristicTypes = [(HFCharacteristicGroup *)self characteristicTypes];
+  v3 = [characteristicTypes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -436,7 +436,7 @@ uint64_t __58__HFCharacteristicGroup_characteristicGroupForIdentifier___block_in
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(characteristicTypes);
         }
 
         v8 = [MEMORY[0x277CD1970] hf_sortPriorityForCharacteristicType:*(*(&v11 + 1) + 8 * i)];
@@ -446,7 +446,7 @@ uint64_t __58__HFCharacteristicGroup_characteristicGroupForIdentifier___block_in
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [characteristicTypes countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);

@@ -1,62 +1,62 @@
 @interface _UIClickPresentationInteraction
-+ (void)_setDefaultDriverClasses:(id)a3 forIdiom:(int64_t)a4;
++ (void)_setDefaultDriverClasses:(id)classes forIdiom:(int64_t)idiom;
 - (BOOL)_canPerformPresentation;
 - (BOOL)_delegate_shouldAllowDragAfterDismiss;
 - (BOOL)_isControlledByCC;
 - (BOOL)_reachedForceThreshold;
 - (BOOL)_supportsRapidRestart;
-- (BOOL)beginDragIfPossibleWithTouch:(id)a3;
-- (BOOL)clickDriver:(id)a3 shouldBeDelayedByGestureRecognizer:(id)a4;
-- (BOOL)clickDriver:(id)a3 shouldDelayGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)beginDragIfPossibleWithTouch:(id)touch;
+- (BOOL)clickDriver:(id)driver shouldBeDelayedByGestureRecognizer:(id)recognizer;
+- (BOOL)clickDriver:(id)driver shouldDelayGestureRecognizer:(id)recognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (CAPoint3D)initialLocation;
-- (CGPoint)locationInView:(id)a3;
+- (CGPoint)locationInView:(id)view;
 - (NSArray)secondaryEffectPreviews;
 - (NSString)presentationTypeDebugString;
 - (UIDragInteraction)associatedDragInteraction;
 - (UIGestureRecognizer)gestureRecognizerForBeginningDragRelationships;
 - (UITargetedPreview)primaryEffectPreview;
 - (UIView)view;
-- (_UIClickPresentationInteraction)initWithDelegate:(id)a3;
+- (_UIClickPresentationInteraction)initWithDelegate:(id)delegate;
 - (_UIClickPresentationInteractionDelegate)delegate;
 - (id)_activeEffect;
 - (id)_candidateInteractionsForAssociation;
 - (id)_clickDragDriver;
 - (id)_clickDriverTouch;
-- (id)_dragInteractionPresentation:(id)a3 previewForCancellingItem:(id)a4 defaultPreview:(id)a5 proposedPreview:(id)a6;
+- (id)_dragInteractionPresentation:(id)presentation previewForCancellingItem:(id)item defaultPreview:(id)preview proposedPreview:(id)proposedPreview;
 - (unint64_t)activatedDriverStyle;
 - (unint64_t)inputPrecision;
 - (void)_associateWithActiveDragInteraction;
-- (void)_attemptDragLiftAtLocation:(CGPoint)a3 useDefaultLiftAnimation:(BOOL)a4;
+- (void)_attemptDragLiftAtLocation:(CGPoint)location useDefaultLiftAnimation:(BOOL)animation;
 - (void)_cancelAllDrivers;
-- (void)_cancelWithReason:(unint64_t)a3 alongsideActions:(id)a4 completion:(id)a5;
-- (void)_delegate_interactionEndedWithContext:(const InteractionEndingContext *)a3;
-- (void)_dragInteractionPresentation:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5;
-- (void)_dragInteractionPresentation:(id)a3 sessionDidEnd:(id)a4 withoutBeginning:(BOOL)a5;
+- (void)_cancelWithReason:(unint64_t)reason alongsideActions:(id)actions completion:(id)completion;
+- (void)_delegate_interactionEndedWithContext:(const InteractionEndingContext *)context;
+- (void)_dragInteractionPresentation:(id)presentation item:(id)item willAnimateCancelWithAnimator:(id)animator;
+- (void)_dragInteractionPresentation:(id)presentation sessionDidEnd:(id)end withoutBeginning:(BOOL)beginning;
 - (void)_driverEnded;
-- (void)_endInteractionDidComplete:(void *)a1 completion:(void *)a2;
+- (void)_endInteractionDidComplete:(void *)complete completion:(void *)completion;
 - (void)_endInteractionEffectIfNeeded;
-- (void)_endInteractionWithContext:(const InteractionEndingContext *)a3;
-- (void)_gestureRecognizerFailed:(id)a3;
+- (void)_endInteractionWithContext:(const InteractionEndingContext *)context;
+- (void)_gestureRecognizerFailed:(id)failed;
 - (void)_performPresentation;
 - (void)_performPreviewPresentation;
 - (void)_prepareInteractionEffect;
 - (void)_refreshAllDrivers;
-- (void)_setDelegate:(id)a3;
-- (void)_viewTraitCollectionDidChange:(id)a3;
+- (void)_setDelegate:(id)delegate;
+- (void)_viewTraitCollectionDidChange:(id)change;
 - (void)beginPanInteraction;
-- (void)clickDriver:(id)a3 didPerformEvent:(unint64_t)a4;
-- (void)clickDriver:(id)a3 didUpdateHighlightProgress:(double)a4;
-- (void)clickDriver:(id)a3 shouldBegin:(id)a4;
+- (void)clickDriver:(id)driver didPerformEvent:(unint64_t)event;
+- (void)clickDriver:(id)driver didUpdateHighlightProgress:(double)progress;
+- (void)clickDriver:(id)driver shouldBegin:(id)begin;
 - (void)dealloc;
-- (void)didMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
 - (void)endPanInteraction;
 - (void)present;
-- (void)setActiveDriver:(id)a3;
-- (void)setAssociatedDragInteraction:(id)a3;
-- (void)setOverrideDrivers:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)setActiveDriver:(id)driver;
+- (void)setAssociatedDragInteraction:(id)interaction;
+- (void)setOverrideDrivers:(id)drivers;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UIClickPresentationInteraction
@@ -65,8 +65,8 @@
 {
   if (self->_activatedFeedbackGeneratorForClick)
   {
-    v3 = [(_UIClickPresentationInteraction *)self feedbackGenerator];
-    [v3 userInteractionEnded];
+    feedbackGenerator = [(_UIClickPresentationInteraction *)self feedbackGenerator];
+    [feedbackGenerator userInteractionEnded];
 
     self->_activatedFeedbackGeneratorForClick = 0;
   }
@@ -99,8 +99,8 @@
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v3 = [(_UIClickPresentationInteraction *)self allDrivers];
-  v4 = [v3 countByEnumeratingWithState:&v42 objects:v48 count:16];
+  allDrivers = [(_UIClickPresentationInteraction *)self allDrivers];
+  v4 = [allDrivers countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (v4)
   {
     v5 = v4;
@@ -111,7 +111,7 @@
       {
         if (*v43 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allDrivers);
         }
 
         v8 = *(*(&v42 + 1) + 8 * i);
@@ -119,40 +119,40 @@
         [v8 setDelegate:0];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v42 objects:v48 count:16];
+      v5 = [allDrivers countByEnumeratingWithState:&v42 objects:v48 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [(_UIClickPresentationInteraction *)self view];
+  view = [(_UIClickPresentationInteraction *)self view];
 
-  if (v9)
+  if (view)
   {
-    v10 = [(_UIClickPresentationInteraction *)self overrideDrivers];
+    overrideDrivers = [(_UIClickPresentationInteraction *)self overrideDrivers];
 
-    if (v10)
+    if (overrideDrivers)
     {
-      v11 = [(_UIClickPresentationInteraction *)self overrideDrivers];
-      [(_UIClickPresentationInteraction *)self setAllDrivers:v11];
+      overrideDrivers2 = [(_UIClickPresentationInteraction *)self overrideDrivers];
+      [(_UIClickPresentationInteraction *)self setAllDrivers:overrideDrivers2];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DF70] array];
+      overrideDrivers2 = [MEMORY[0x1E695DF70] array];
       v12 = _driverClassesByIdiom;
       v13 = MEMORY[0x1E696AD98];
-      v14 = [(_UIClickPresentationInteraction *)self view];
-      v15 = [v14 traitCollection];
-      v16 = [v13 numberWithInteger:{objc_msgSend(v15, "userInterfaceIdiom")}];
+      view2 = [(_UIClickPresentationInteraction *)self view];
+      traitCollection = [view2 traitCollection];
+      v16 = [v13 numberWithInteger:{objc_msgSend(traitCollection, "userInterfaceIdiom")}];
       v17 = [v12 objectForKeyedSubscript:v16];
 
       if (![v17 count])
       {
         if (self->_delegateImplements.activationStyle)
         {
-          v18 = [(_UIClickPresentationInteraction *)self delegate];
-          [v18 activationStyleForClickPresentationInteraction:self];
+          delegate = [(_UIClickPresentationInteraction *)self delegate];
+          [delegate activationStyleForClickPresentationInteraction:self];
         }
 
         v19 = _UIClickInteractionDefaultDrivers();
@@ -180,13 +180,13 @@
             }
 
             v25 = objc_opt_new();
-            [v11 addObject:v25];
+            [overrideDrivers2 addObject:v25];
             if (objc_opt_respondsToSelector())
             {
               [v25 setBehavior:1];
               v26 = objc_opt_new();
               [v26 setBehavior:2];
-              [v11 addObject:v26];
+              [overrideDrivers2 addObject:v26];
             }
           }
 
@@ -196,15 +196,15 @@
         while (v22);
       }
 
-      [(_UIClickPresentationInteraction *)self setAllDrivers:v11];
+      [(_UIClickPresentationInteraction *)self setAllDrivers:overrideDrivers2];
     }
 
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v27 = [(_UIClickPresentationInteraction *)self allDrivers];
-    v28 = [v27 countByEnumeratingWithState:&v34 objects:v46 count:16];
+    allDrivers2 = [(_UIClickPresentationInteraction *)self allDrivers];
+    v28 = [allDrivers2 countByEnumeratingWithState:&v34 objects:v46 count:16];
     if (v28)
     {
       v29 = v28;
@@ -215,18 +215,18 @@
         {
           if (*v35 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(allDrivers2);
           }
 
           v32 = *(*(&v34 + 1) + 8 * k);
-          v33 = [(_UIClickPresentationInteraction *)self view];
-          [v32 setView:v33];
+          view3 = [(_UIClickPresentationInteraction *)self view];
+          [v32 setView:view3];
 
           [v32 setDelegate:self];
           [v32 setAllowableMovement:{_UIClickPresentationAllowableMovementForDriver(v32, 0)}];
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v34 objects:v46 count:16];
+        v29 = [allDrivers2 countByEnumeratingWithState:&v34 objects:v46 count:16];
       }
 
       while (v29);
@@ -241,17 +241,17 @@
     return 0;
   }
 
-  v2 = self;
-  v3 = [(_UIClickPresentationInteraction *)self delegate];
-  LOBYTE(v2) = [v3 _clickPresentationInteractionShouldAllowRapidRestart:v2];
+  selfCopy = self;
+  delegate = [(_UIClickPresentationInteraction *)self delegate];
+  LOBYTE(selfCopy) = [delegate _clickPresentationInteractionShouldAllowRapidRestart:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v3 = [(_UIClickPresentationInteraction *)self view];
-  [v3 removeInteraction:self];
+  view = [(_UIClickPresentationInteraction *)self view];
+  [view removeInteraction:self];
 
   v4.receiver = self;
   v4.super_class = _UIClickPresentationInteraction;
@@ -261,10 +261,10 @@
 - (BOOL)_canPerformPresentation
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIClickPresentationInteraction *)self view];
-  v4 = [v3 _window];
+  view = [(_UIClickPresentationInteraction *)self view];
+  _window = [view _window];
 
-  if (!v4)
+  if (!_window)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -274,9 +274,9 @@
         goto LABEL_12;
       }
 
-      v13 = [(_UIClickPresentationInteraction *)self view];
+      view2 = [(_UIClickPresentationInteraction *)self view];
       v30 = 138412290;
-      v31 = v13;
+      v31 = view2;
       _os_log_fault_impl(&dword_188A29000, v12, OS_LOG_TYPE_FAULT, "Attempting to present while the interaction's view (%@) is not in a window. Removing the interaction's view (or an ancestor) from the view hierarchy while the interaction is active is not recommended!", &v30, 0xCu);
     }
 
@@ -289,9 +289,9 @@
       }
 
       v12 = v11;
-      v13 = [(_UIClickPresentationInteraction *)self view];
+      view2 = [(_UIClickPresentationInteraction *)self view];
       v30 = 138412290;
-      v31 = v13;
+      v31 = view2;
       _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "Attempting to present while the interaction's view (%@) is not in a window. Removing the interaction's view (or an ancestor) from the view hierarchy while the interaction is active is not recommended!", &v30, 0xCu);
     }
 
@@ -299,21 +299,21 @@ LABEL_12:
     return 0;
   }
 
-  v5 = [(_UIClickPresentationInteraction *)self presentationAssistant];
+  presentationAssistant = [(_UIClickPresentationInteraction *)self presentationAssistant];
 
-  if (!v5)
+  if (!presentationAssistant)
   {
-    v6 = [(_UIClickPresentationInteraction *)self view];
-    v7 = [v6 _viewControllerForAncestor];
+    view3 = [(_UIClickPresentationInteraction *)self view];
+    _viewControllerForAncestor = [view3 _viewControllerForAncestor];
 
-    if (v7)
+    if (_viewControllerForAncestor)
     {
 LABEL_4:
-      v8 = [v7 presentedViewController];
-      v9 = v8;
-      if (!v8 || ([v8 isBeingDismissed] & 1) != 0)
+      presentedViewController = [_viewControllerForAncestor presentedViewController];
+      v9 = presentedViewController;
+      if (!presentedViewController || ([presentedViewController isBeingDismissed] & 1) != 0)
       {
-        if (!v7)
+        if (!_viewControllerForAncestor)
         {
 LABEL_7:
           v10 = 0;
@@ -323,20 +323,20 @@ LABEL_16:
         }
 
 LABEL_15:
-        v16 = [(_UIClickPresentationInteraction *)self delegate];
-        v17 = [v16 clickPresentationInteraction:self presentationForPresentingViewController:v7];
+        delegate = [(_UIClickPresentationInteraction *)self delegate];
+        v17 = [delegate clickPresentationInteraction:self presentationForPresentingViewController:_viewControllerForAncestor];
         [(_UIClickPresentationInteraction *)self setPendingPresentation:v17];
 
-        v18 = [(_UIClickPresentationInteraction *)self pendingPresentation];
-        v10 = v18 != 0;
+        pendingPresentation = [(_UIClickPresentationInteraction *)self pendingPresentation];
+        v10 = pendingPresentation != 0;
 
         goto LABEL_16;
       }
 
-      v14 = [(_UIClickPresentationInteraction *)self view];
-      v15 = [UIViewController _viewControllerForFullScreenPresentationFromView:v14];
+      view4 = [(_UIClickPresentationInteraction *)self view];
+      v15 = [UIViewController _viewControllerForFullScreenPresentationFromView:view4];
 
-      v7 = v15;
+      _viewControllerForAncestor = v15;
       if (v15)
       {
         goto LABEL_15;
@@ -350,13 +350,13 @@ LABEL_15:
           goto LABEL_29;
         }
 
-        v27 = [(_UIClickPresentationInteraction *)self view];
-        v28 = [(_UIClickPresentationInteraction *)self view];
-        v29 = [v28 window];
+        view5 = [(_UIClickPresentationInteraction *)self view];
+        view6 = [(_UIClickPresentationInteraction *)self view];
+        window = [view6 window];
         v30 = 138412546;
-        v31 = v27;
+        v31 = view5;
         v32 = 2112;
-        v33 = v29;
+        v33 = window;
         _os_log_fault_impl(&dword_188A29000, v26, OS_LOG_TYPE_FAULT, "Failed to find a presenting view controller for view (%@) in window (%@). The interaction's view (or an ancestor) must have an associated view controller inside the window's root view controller hierarchy.", &v30, 0x16u);
       }
 
@@ -369,13 +369,13 @@ LABEL_15:
         }
 
         v26 = v25;
-        v27 = [(_UIClickPresentationInteraction *)self view];
-        v28 = [(_UIClickPresentationInteraction *)self view];
-        v29 = [v28 window];
+        view5 = [(_UIClickPresentationInteraction *)self view];
+        view6 = [(_UIClickPresentationInteraction *)self view];
+        window = [view6 window];
         v30 = 138412546;
-        v31 = v27;
+        v31 = view5;
         v32 = 2112;
-        v33 = v29;
+        v33 = window;
         _os_log_impl(&dword_188A29000, v26, OS_LOG_TYPE_ERROR, "Failed to find a presenting view controller for view (%@) in window (%@). The interaction's view (or an ancestor) must have an associated view controller inside the window's root view controller hierarchy.", &v30, 0x16u);
       }
 
@@ -391,13 +391,13 @@ LABEL_29:
         goto LABEL_24;
       }
 
-      v22 = [(_UIClickPresentationInteraction *)self view];
-      v23 = [(_UIClickPresentationInteraction *)self view];
-      v24 = [v23 window];
+      view7 = [(_UIClickPresentationInteraction *)self view];
+      view8 = [(_UIClickPresentationInteraction *)self view];
+      window2 = [view8 window];
       v30 = 138412546;
-      v31 = v22;
+      v31 = view7;
       v32 = 2112;
-      v33 = v24;
+      v33 = window2;
       _os_log_fault_impl(&dword_188A29000, v21, OS_LOG_TYPE_FAULT, "Failed to find a presenting view controller for view (%@) in window (%@). The interaction's view (or an ancestor) must have an associated view controller for presentation to work.", &v30, 0x16u);
     }
 
@@ -410,13 +410,13 @@ LABEL_29:
       }
 
       v21 = v20;
-      v22 = [(_UIClickPresentationInteraction *)self view];
-      v23 = [(_UIClickPresentationInteraction *)self view];
-      v24 = [v23 window];
+      view7 = [(_UIClickPresentationInteraction *)self view];
+      view8 = [(_UIClickPresentationInteraction *)self view];
+      window2 = [view8 window];
       v30 = 138412546;
-      v31 = v22;
+      v31 = view7;
       v32 = 2112;
-      v33 = v24;
+      v33 = window2;
       _os_log_impl(&dword_188A29000, v21, OS_LOG_TYPE_ERROR, "Failed to find a presenting view controller for view (%@) in window (%@). The interaction's view (or an ancestor) must have an associated view controller for presentation to work.", &v30, 0x16u);
     }
 
@@ -434,10 +434,10 @@ LABEL_24:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(_UIClickPresentationInteraction *)self associatedDragInteraction];
-  v3 = [v2 _initiationDrivers];
+  associatedDragInteraction = [(_UIClickPresentationInteraction *)self associatedDragInteraction];
+  _initiationDrivers = [associatedDragInteraction _initiationDrivers];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [_initiationDrivers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -447,7 +447,7 @@ LABEL_24:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_initiationDrivers);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -459,7 +459,7 @@ LABEL_24:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [_initiationDrivers countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -483,39 +483,39 @@ LABEL_11:
 
 - (id)_clickDriverTouch
 {
-  v2 = [(_UIClickPresentationInteraction *)self activeDriver];
-  v3 = [v2 primaryGestureRecognizer];
-  v4 = [v3 _allActiveTouches];
-  v5 = [v4 anyObject];
+  activeDriver = [(_UIClickPresentationInteraction *)self activeDriver];
+  primaryGestureRecognizer = [activeDriver primaryGestureRecognizer];
+  _allActiveTouches = [primaryGestureRecognizer _allActiveTouches];
+  anyObject = [_allActiveTouches anyObject];
 
-  return v5;
+  return anyObject;
 }
 
 - (UITargetedPreview)primaryEffectPreview
 {
-  v3 = [(_UIClickPresentationInteraction *)self _activeEffect];
+  _activeEffect = [(_UIClickPresentationInteraction *)self _activeEffect];
   v4 = [UITargetedPreview alloc];
-  v5 = [(_UIClickPresentationInteraction *)self view];
-  v6 = [(UITargetedPreview *)v4 initWithView:v5];
-  v7 = [v3 previewForContinuingToEffectWithPreview:v6];
+  view = [(_UIClickPresentationInteraction *)self view];
+  v6 = [(UITargetedPreview *)v4 initWithView:view];
+  v7 = [_activeEffect previewForContinuingToEffectWithPreview:v6];
 
   return v7;
 }
 
 - (void)_performPresentation
 {
-  v3 = [(_UIClickPresentationInteraction *)self pendingPresentation];
-  if (v3)
+  pendingPresentation = [(_UIClickPresentationInteraction *)self pendingPresentation];
+  if (pendingPresentation)
   {
-    v4 = [(_UIClickPresentationInteraction *)self _clickDriverTouch];
+    _clickDriverTouch = [(_UIClickPresentationInteraction *)self _clickDriverTouch];
 
-    if (v4)
+    if (_clickDriverTouch)
     {
-      v5 = [(_UIClickPresentationInteraction *)self activeDriver];
-      v6 = [v5 isCurrentlyAcceleratedByForce];
+      activeDriver = [(_UIClickPresentationInteraction *)self activeDriver];
+      isCurrentlyAcceleratedByForce = [activeDriver isCurrentlyAcceleratedByForce];
 
       v7 = 1;
-      if (v6)
+      if (isCurrentlyAcceleratedByForce)
       {
         v7 = 2;
       }
@@ -540,7 +540,7 @@ LABEL_11:
       v9 = objc_opt_class();
     }
 
-    v10 = [[v9 alloc] initWithClickPresentation:v3];
+    v10 = [[v9 alloc] initWithClickPresentation:pendingPresentation];
     [(_UIClickPresentationInteraction *)self setPresentationAssistant:v10];
 
     v28[0] = MEMORY[0x1E69E9820];
@@ -548,31 +548,31 @@ LABEL_11:
     v28[2] = __55___UIClickPresentationInteraction__performPresentation__block_invoke_26;
     v28[3] = &unk_1E711B778;
     objc_copyWeak(&v29, location);
-    v11 = [(_UIClickPresentationInteraction *)self presentationAssistant];
-    [v11 setKeyboardAssertionInvalidationHandler:v28];
+    presentationAssistant = [(_UIClickPresentationInteraction *)self presentationAssistant];
+    [presentationAssistant setKeyboardAssertionInvalidationHandler:v28];
 
-    v12 = [(_UIClickPresentationInteraction *)self primaryEffectPreview];
+    primaryEffectPreview = [(_UIClickPresentationInteraction *)self primaryEffectPreview];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __55___UIClickPresentationInteraction__performPresentation__block_invoke_2;
     v25[3] = &unk_1E70FCE28;
     v25[4] = self;
-    v13 = v12;
+    v13 = primaryEffectPreview;
     v26 = v13;
     v14 = v8;
     v27 = v14;
     v15 = _Block_copy(v25);
-    v16 = [v3 viewController];
-    v17 = [v16 transitionCoordinator];
+    viewController = [pendingPresentation viewController];
+    transitionCoordinator = [viewController transitionCoordinator];
 
-    if (v17 || ([v3 presentationController], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "presentingViewController"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "transitionCoordinator"), v17 = objc_claimAutoreleasedReturnValue(), v19, v18, v17))
+    if (transitionCoordinator || ([pendingPresentation presentationController], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "presentingViewController"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "transitionCoordinator"), transitionCoordinator = objc_claimAutoreleasedReturnValue(), v19, v18, transitionCoordinator))
     {
       v20 = MEMORY[0x1E69E9820];
       v21 = 3221225472;
       v22 = __55___UIClickPresentationInteraction__performPresentation__block_invoke_5;
       v23 = &unk_1E70F3770;
       v24 = v15;
-      [v17 animateAlongsideTransition:0 completion:&v20];
+      [transitionCoordinator animateAlongsideTransition:0 completion:&v20];
     }
 
     else
@@ -600,8 +600,8 @@ LABEL_11:
 {
   if (self->_shouldAllowFeedback)
   {
-    v3 = [(_UIClickPresentationInteraction *)self feedbackGenerator];
-    [v3 userInteractionEnded];
+    feedbackGenerator = [(_UIClickPresentationInteraction *)self feedbackGenerator];
+    [feedbackGenerator userInteractionEnded];
   }
 }
 
@@ -609,21 +609,21 @@ LABEL_11:
 {
   if (self->_shouldAllowFeedback)
   {
-    v3 = [(_UIClickPresentationInteraction *)self feedbackGenerator];
-    [v3 userInteractionStarted];
+    feedbackGenerator = [(_UIClickPresentationInteraction *)self feedbackGenerator];
+    [feedbackGenerator userInteractionStarted];
   }
 }
 
-- (_UIClickPresentationInteraction)initWithDelegate:(id)a3
+- (_UIClickPresentationInteraction)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = _UIClickPresentationInteraction;
   v5 = [(_UIClickPresentationInteraction *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(_UIClickPresentationInteraction *)v5 _setDelegate:v4];
+    [(_UIClickPresentationInteraction *)v5 _setDelegate:delegateCopy];
     [(_UIClickPresentationInteraction *)v6 setInitialLocation:1.79769313e308, 1.79769313e308, 1.79769313e308];
     [(_UIClickPresentationInteraction *)v6 setFallbackDriverStyle:0];
   }
@@ -686,41 +686,41 @@ LABEL_4:
   }
 }
 
-- (void)_endInteractionDidComplete:(void *)a1 completion:(void *)a2
+- (void)_endInteractionDidComplete:(void *)complete completion:(void *)completion
 {
-  v3 = a2;
-  v4 = v3;
-  if (a1)
+  completionCopy = completion;
+  v4 = completionCopy;
+  if (complete)
   {
-    v5[0] = a1;
+    v5[0] = complete;
     v5[1] = 0;
     v6 = 0;
     v7 = 0;
     v5[2] = 0;
-    v8 = _Block_copy(v3);
-    [a1 _endInteractionWithContext:v5];
+    v8 = _Block_copy(completionCopy);
+    [complete _endInteractionWithContext:v5];
   }
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(_UIClickPresentationInteraction *)self initialLocation];
   v6 = v5;
   v8 = v7;
-  v9 = [(_UIClickPresentationInteraction *)self view];
-  if (v9)
+  view = [(_UIClickPresentationInteraction *)self view];
+  if (view)
   {
-    v10 = v9;
-    v11 = [(_UIClickPresentationInteraction *)self activeDriver];
-    if (v11)
+    v10 = view;
+    activeDriver = [(_UIClickPresentationInteraction *)self activeDriver];
+    if (activeDriver)
     {
 
       if (v6 == 1.79769313e308 && v8 == 1.79769313e308)
       {
-        v12 = [(_UIClickPresentationInteraction *)self activeDriver];
-        v13 = [(_UIClickPresentationInteraction *)self view];
-        [v12 locationInCoordinateSpace:v13];
+        activeDriver2 = [(_UIClickPresentationInteraction *)self activeDriver];
+        view2 = [(_UIClickPresentationInteraction *)self view];
+        [activeDriver2 locationInCoordinateSpace:view2];
         [(_UIClickPresentationInteraction *)self setInitialLocation:?];
 
         [(_UIClickPresentationInteraction *)self initialLocation];
@@ -739,9 +739,9 @@ LABEL_4:
   *&v18 = 1.79769313e308;
   if (!v17)
   {
-    v19 = [(_UIClickPresentationInteraction *)self view];
+    view3 = [(_UIClickPresentationInteraction *)self view];
 
-    if (v19 == v4)
+    if (view3 == viewCopy)
     {
       *&v16 = v8;
       *&v18 = v6;
@@ -749,8 +749,8 @@ LABEL_4:
 
     else
     {
-      v20 = [(_UIClickPresentationInteraction *)self view];
-      [v20 convertPoint:v4 toView:{v6, v8}];
+      view4 = [(_UIClickPresentationInteraction *)self view];
+      [view4 convertPoint:viewCopy toView:{v6, v8}];
       v18 = v21;
       v16 = v22;
     }
@@ -765,26 +765,26 @@ LABEL_4:
 
 - (unint64_t)inputPrecision
 {
-  v2 = [(_UIClickPresentationInteraction *)self activeDriver];
-  v3 = [v2 inputPrecision];
+  activeDriver = [(_UIClickPresentationInteraction *)self activeDriver];
+  inputPrecision = [activeDriver inputPrecision];
 
-  return v3;
+  return inputPrecision;
 }
 
 - (NSArray)secondaryEffectPreviews
 {
-  v2 = [(_UIClickPresentationInteraction *)self _activeEffect];
-  v3 = [v2 secondaryBodyPreviews];
+  _activeEffect = [(_UIClickPresentationInteraction *)self _activeEffect];
+  secondaryBodyPreviews = [_activeEffect secondaryBodyPreviews];
 
-  return v3;
+  return secondaryBodyPreviews;
 }
 
 - (BOOL)_reachedForceThreshold
 {
-  v2 = [(_UIClickPresentationInteraction *)self activeDriver];
-  v3 = [v2 isCurrentlyAcceleratedByForce];
+  activeDriver = [(_UIClickPresentationInteraction *)self activeDriver];
+  isCurrentlyAcceleratedByForce = [activeDriver isCurrentlyAcceleratedByForce];
 
-  return v3;
+  return isCurrentlyAcceleratedByForce;
 }
 
 - (BOOL)_delegate_shouldAllowDragAfterDismiss
@@ -794,37 +794,37 @@ LABEL_4:
     return 0;
   }
 
-  v2 = self;
-  v3 = [(_UIClickPresentationInteraction *)self delegate];
-  LOBYTE(v2) = [v3 _clickPresentationInteractionShouldAllowDragAfterDismiss:v2];
+  selfCopy = self;
+  delegate = [(_UIClickPresentationInteraction *)self delegate];
+  LOBYTE(selfCopy) = [delegate _clickPresentationInteractionShouldAllowDragAfterDismiss:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)_delegate_interactionEndedWithContext:(const InteractionEndingContext *)a3
+- (void)_delegate_interactionEndedWithContext:(const InteractionEndingContext *)context
 {
   endedForPresentation = self->_delegateImplements.endedForPresentation;
-  v6 = [(_UIClickPresentationInteraction *)self delegate];
-  v7 = v6;
+  delegate = [(_UIClickPresentationInteraction *)self delegate];
+  v7 = delegate;
   if (endedForPresentation)
   {
-    [v6 _clickPresentationInteractionEnded:self forPresentation:a3->var3 reason:a3->var2];
+    [delegate _clickPresentationInteractionEnded:self forPresentation:context->var3 reason:context->var2];
   }
 
   else
   {
-    [v6 clickPresentationInteractionEnded:self wasCancelled:!a3->var1];
+    [delegate clickPresentationInteractionEnded:self wasCancelled:!context->var1];
   }
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(_UIClickPresentationInteraction *)self allDrivers:a3];
+  v4 = [(_UIClickPresentationInteraction *)self allDrivers:view];
   v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -850,30 +850,30 @@ LABEL_4:
     while (v6);
   }
 
-  v10 = [(_UIClickPresentationInteraction *)self exclusionRelationshipGestureRecognizer];
-  v11 = [v10 view];
-  v12 = [(_UIClickPresentationInteraction *)self exclusionRelationshipGestureRecognizer];
-  [v11 removeGestureRecognizer:v12];
+  exclusionRelationshipGestureRecognizer = [(_UIClickPresentationInteraction *)self exclusionRelationshipGestureRecognizer];
+  view = [exclusionRelationshipGestureRecognizer view];
+  exclusionRelationshipGestureRecognizer2 = [(_UIClickPresentationInteraction *)self exclusionRelationshipGestureRecognizer];
+  [view removeGestureRecognizer:exclusionRelationshipGestureRecognizer2];
 
-  v13 = [(_UIClickPresentationInteraction *)self failureRelationshipGestureRecognizer];
-  v14 = [v13 view];
-  v15 = [(_UIClickPresentationInteraction *)self failureRelationshipGestureRecognizer];
-  [v14 removeGestureRecognizer:v15];
+  failureRelationshipGestureRecognizer = [(_UIClickPresentationInteraction *)self failureRelationshipGestureRecognizer];
+  view2 = [failureRelationshipGestureRecognizer view];
+  failureRelationshipGestureRecognizer2 = [(_UIClickPresentationInteraction *)self failureRelationshipGestureRecognizer];
+  [view2 removeGestureRecognizer:failureRelationshipGestureRecognizer2];
 
   [(_UIClickPresentationInteraction *)self setFeedbackGenerator:0];
   [(_UIClickPresentationInteraction *)self setAssociatedDragInteraction:0];
   objc_storeWeak(&self->_view, 0);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = objc_storeWeak(&self->_view, a3);
-  if (a3)
+  v4 = objc_storeWeak(&self->_view, view);
+  if (view)
   {
     [(_UIClickPresentationInteraction *)self _refreshAllDrivers];
-    v5 = [(_UIClickPresentationInteraction *)self exclusionRelationshipGestureRecognizer];
+    exclusionRelationshipGestureRecognizer = [(_UIClickPresentationInteraction *)self exclusionRelationshipGestureRecognizer];
 
-    if (!v5)
+    if (!exclusionRelationshipGestureRecognizer)
     {
       v6 = objc_opt_new();
       [v6 setName:@"com.apple.UIKit.clickPresentationExclusion"];
@@ -881,9 +881,9 @@ LABEL_4:
       [(_UIClickPresentationInteraction *)self setExclusionRelationshipGestureRecognizer:v6];
     }
 
-    v7 = [(_UIClickPresentationInteraction *)self failureRelationshipGestureRecognizer];
+    failureRelationshipGestureRecognizer = [(_UIClickPresentationInteraction *)self failureRelationshipGestureRecognizer];
 
-    if (!v7)
+    if (!failureRelationshipGestureRecognizer)
     {
       v8 = objc_opt_new();
       [v8 setName:@"com.apple.UIKit.clickPresentationFailure"];
@@ -892,51 +892,51 @@ LABEL_4:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v10 = [(_UIClickPresentationInteraction *)self exclusionRelationshipGestureRecognizer];
-    [WeakRetained addGestureRecognizer:v10];
+    exclusionRelationshipGestureRecognizer2 = [(_UIClickPresentationInteraction *)self exclusionRelationshipGestureRecognizer];
+    [WeakRetained addGestureRecognizer:exclusionRelationshipGestureRecognizer2];
 
     v11 = objc_loadWeakRetained(&self->_view);
-    v12 = [(_UIClickPresentationInteraction *)self failureRelationshipGestureRecognizer];
-    [v11 addGestureRecognizer:v12];
+    failureRelationshipGestureRecognizer2 = [(_UIClickPresentationInteraction *)self failureRelationshipGestureRecognizer];
+    [v11 addGestureRecognizer:failureRelationshipGestureRecognizer2];
 
     if (self->_gestureRecognizerForBeginningDragRelationships)
     {
       v13 = objc_loadWeakRetained(&self->_view);
-      v14 = [(_UIClickPresentationInteraction *)self gestureRecognizerForBeginningDragRelationships];
-      [v13 addGestureRecognizer:v14];
+      gestureRecognizerForBeginningDragRelationships = [(_UIClickPresentationInteraction *)self gestureRecognizerForBeginningDragRelationships];
+      [v13 addGestureRecognizer:gestureRecognizerForBeginningDragRelationships];
     }
 
     _UIContextMenuRegisterDefaultPlatformMetricsIfNecessary();
     v15 = objc_loadWeakRetained(&self->_view);
-    v16 = [v15 traitCollection];
-    v17 = _UIContextMenuGetPlatformMetrics([v16 userInterfaceIdiom]);
+    traitCollection = [v15 traitCollection];
+    v17 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
     v18 = [_UIClickPresentationFeedbackGenerator alloc];
-    v19 = [v17 presentationFeedbackConfiguration];
+    presentationFeedbackConfiguration = [v17 presentationFeedbackConfiguration];
     v20 = objc_loadWeakRetained(&self->_view);
-    v21 = [(_UIClickPresentationFeedbackGenerator *)v18 initWithConfiguration:v19 view:v20];
+    v21 = [(_UIClickPresentationFeedbackGenerator *)v18 initWithConfiguration:presentationFeedbackConfiguration view:v20];
     [(_UIClickPresentationInteraction *)self setFeedbackGenerator:v21];
   }
 }
 
-- (void)_viewTraitCollectionDidChange:(id)a3
+- (void)_viewTraitCollectionDidChange:(id)change
 {
-  v11 = a3;
-  v4 = [v11 forceTouchCapability];
-  v5 = [(_UIClickPresentationInteraction *)self view];
-  v6 = [v5 traitCollection];
-  if (v4 != [v6 forceTouchCapability])
+  changeCopy = change;
+  forceTouchCapability = [changeCopy forceTouchCapability];
+  view = [(_UIClickPresentationInteraction *)self view];
+  traitCollection = [view traitCollection];
+  if (forceTouchCapability != [traitCollection forceTouchCapability])
   {
 
     goto LABEL_5;
   }
 
-  v7 = [v11 userInterfaceIdiom];
-  v8 = [(_UIClickPresentationInteraction *)self view];
-  v9 = [v8 traitCollection];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom = [changeCopy userInterfaceIdiom];
+  view2 = [(_UIClickPresentationInteraction *)self view];
+  traitCollection2 = [view2 traitCollection];
+  userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
-  if (v7 != v10)
+  if (userInterfaceIdiom != userInterfaceIdiom2)
   {
 LABEL_5:
     [(_UIClickPresentationInteraction *)self _refreshAllDrivers];
@@ -950,26 +950,26 @@ LABEL_5:
     [(_UIClickPresentationInteraction *)self _prepareInteractionEffect];
   }
 
-  v3 = self;
-  handleEvent(stateMachineSpec_3, self->_currentState, 2, &v3, &self->_currentState);
+  selfCopy = self;
+  handleEvent(stateMachineSpec_3, self->_currentState, 2, &selfCopy, &self->_currentState);
 }
 
 - (unint64_t)activatedDriverStyle
 {
-  v3 = [(_UIClickPresentationInteraction *)self activeDriver];
-  if (v3 && (v4 = v3, [(_UIClickPresentationInteraction *)self activeDriver], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, v4, (v6 & 1) != 0))
+  activeDriver = [(_UIClickPresentationInteraction *)self activeDriver];
+  if (activeDriver && (v4 = activeDriver, [(_UIClickPresentationInteraction *)self activeDriver], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, v4, (v6 & 1) != 0))
   {
-    v7 = [(_UIClickPresentationInteraction *)self activeDriver];
-    v8 = [v7 driverStyle];
+    activeDriver2 = [(_UIClickPresentationInteraction *)self activeDriver];
+    driverStyle = [activeDriver2 driverStyle];
 
-    return v8;
+    return driverStyle;
   }
 
   else
   {
-    v10 = [(_UIClickPresentationInteraction *)self activeDriver];
+    activeDriver3 = [(_UIClickPresentationInteraction *)self activeDriver];
 
-    if (v10)
+    if (activeDriver3)
     {
       return 0;
     }
@@ -982,27 +982,27 @@ LABEL_5:
   }
 }
 
-- (void)clickDriver:(id)a3 shouldBegin:(id)a4
+- (void)clickDriver:(id)driver shouldBegin:(id)begin
 {
-  v6 = a3;
-  v7 = a4;
+  driverCopy = driver;
+  beginCopy = begin;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __59___UIClickPresentationInteraction_clickDriver_shouldBegin___block_invoke;
   aBlock[3] = &unk_1E70FCE28;
   aBlock[4] = self;
-  v8 = v6;
+  v8 = driverCopy;
   v19 = v8;
-  v9 = v7;
+  v9 = beginCopy;
   v20 = v9;
   v10 = _Block_copy(aBlock);
-  v11 = [(_UIClickPresentationInteraction *)self view];
-  v12 = [v11 window];
-  v13 = [v12 rootViewController];
-  v14 = [v13 presentedViewController];
-  v15 = [v14 transitionCoordinator];
+  view = [(_UIClickPresentationInteraction *)self view];
+  window = [view window];
+  rootViewController = [window rootViewController];
+  presentedViewController = [rootViewController presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
 
-  if ([(_UIClickPresentationInteraction *)self _supportsRapidRestart]|| !v15)
+  if ([(_UIClickPresentationInteraction *)self _supportsRapidRestart]|| !transitionCoordinator)
   {
     v10[2](v10);
   }
@@ -1014,49 +1014,49 @@ LABEL_5:
     v16[2] = __59___UIClickPresentationInteraction_clickDriver_shouldBegin___block_invoke_3;
     v16[3] = &unk_1E70F3770;
     v17 = v10;
-    [v15 animateAlongsideTransition:0 completion:v16];
+    [transitionCoordinator animateAlongsideTransition:0 completion:v16];
   }
 }
 
-- (void)clickDriver:(id)a3 didUpdateHighlightProgress:(double)a4
+- (void)clickDriver:(id)driver didUpdateHighlightProgress:(double)progress
 {
-  v6 = a3;
+  driverCopy = driver;
   if (!self->_unableToClick)
   {
-    v8 = v6;
+    v8 = driverCopy;
     if ([(_UIClickPresentationInteraction *)self _isActive]&& !self->_activeEffectKey)
     {
       [(_UIClickPresentationInteraction *)self _prepareInteractionEffect];
     }
 
-    v7 = [(_UIClickPresentationInteraction *)self _activeEffect];
+    _activeEffect = [(_UIClickPresentationInteraction *)self _activeEffect];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [v8 maximumEffectProgress];
-      [v7 setMaxProgress:?];
+      [_activeEffect setMaxProgress:?];
     }
 
-    [v7 updateWithProgress:a4];
+    [_activeEffect updateWithProgress:progress];
 
-    v6 = v8;
+    driverCopy = v8;
   }
 }
 
-- (void)clickDriver:(id)a3 didPerformEvent:(unint64_t)a4
+- (void)clickDriver:(id)driver didPerformEvent:(unint64_t)event
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(_UIClickPresentationInteraction *)self activeDriver];
+  driverCopy = driver;
+  activeDriver = [(_UIClickPresentationInteraction *)self activeDriver];
 
-  if (a4 == 3)
+  if (event == 3)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [(_UIClickPresentationInteraction *)self allDrivers];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    allDrivers = [(_UIClickPresentationInteraction *)self allDrivers];
+    v9 = [allDrivers countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1068,13 +1068,13 @@ LABEL_5:
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allDrivers);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * v12) primaryGestureRecognizer];
-          v14 = [(UIGestureRecognizer *)v13 _isActive];
+          primaryGestureRecognizer = [*(*(&v16 + 1) + 8 * v12) primaryGestureRecognizer];
+          _isActive = [(UIGestureRecognizer *)primaryGestureRecognizer _isActive];
 
-          if (v14)
+          if (_isActive)
           {
             v15 = 0;
             goto LABEL_13;
@@ -1084,7 +1084,7 @@ LABEL_5:
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [allDrivers countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v10)
         {
           continue;
@@ -1103,9 +1103,9 @@ LABEL_13:
     v15 = 0;
   }
 
-  if (v7 == v6 || v15)
+  if (activeDriver == driverCopy || v15)
   {
-    switch(a4)
+    switch(event)
     {
       case 3uLL:
         [(_UIClickPresentationInteraction *)self _driverEnded];
@@ -1120,12 +1120,12 @@ LABEL_13:
   }
 }
 
-- (BOOL)clickDriver:(id)a3 shouldDelayGestureRecognizer:(id)a4
+- (BOOL)clickDriver:(id)driver shouldDelayGestureRecognizer:(id)recognizer
 {
-  v4 = a4;
-  if ([v4 _isGestureType:8])
+  recognizerCopy = recognizer;
+  if ([recognizerCopy _isGestureType:8])
   {
-    v5 = [v4 state] < 1;
+    v5 = [recognizerCopy state] < 1;
   }
 
   else
@@ -1136,24 +1136,24 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)clickDriver:(id)a3 shouldBeDelayedByGestureRecognizer:(id)a4
+- (BOOL)clickDriver:(id)driver shouldBeDelayedByGestureRecognizer:(id)recognizer
 {
   if (!self->_delegateImplements.shouldBeDelayedByGestureRecognizer)
   {
     return 0;
   }
 
-  v4 = self;
-  v5 = a4;
-  v6 = [(_UIClickPresentationInteraction *)v4 delegate];
-  LOBYTE(v4) = [v6 _clickPresentationInteraction:v4 shouldBeDelayedByGestureRecognizer:v5];
+  selfCopy = self;
+  recognizerCopy = recognizer;
+  delegate = [(_UIClickPresentationInteraction *)selfCopy delegate];
+  LOBYTE(selfCopy) = [delegate _clickPresentationInteraction:selfCopy shouldBeDelayedByGestureRecognizer:recognizerCopy];
 
-  return v4;
+  return selfCopy;
 }
 
-+ (void)_setDefaultDriverClasses:(id)a3 forIdiom:(int64_t)a4
++ (void)_setDefaultDriverClasses:(id)classes forIdiom:(int64_t)idiom
 {
-  v9 = a3;
+  classesCopy = classes;
   v5 = _driverClassesByIdiom;
   if (!_driverClassesByIdiom)
   {
@@ -1164,15 +1164,15 @@ LABEL_13:
     v5 = _driverClassesByIdiom;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v5 setObject:v9 forKeyedSubscript:v8];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
+  [v5 setObject:classesCopy forKeyedSubscript:v8];
 }
 
-- (void)setOverrideDrivers:(id)a3
+- (void)setOverrideDrivers:(id)drivers
 {
-  v5 = a3;
+  driversCopy = drivers;
   overrideDrivers = self->_overrideDrivers;
-  v9 = v5;
+  v9 = driversCopy;
   v7 = overrideDrivers;
   if (v7 == v9)
   {
@@ -1191,34 +1191,34 @@ LABEL_13:
   if ((v8 & 1) == 0)
   {
 LABEL_8:
-    objc_storeStrong(&self->_overrideDrivers, a3);
+    objc_storeStrong(&self->_overrideDrivers, drivers);
     [(_UIClickPresentationInteraction *)self _refreshAllDrivers];
   }
 
 LABEL_9:
 }
 
-- (void)setActiveDriver:(id)a3
+- (void)setActiveDriver:(id)driver
 {
   p_activeDriver = &self->_activeDriver;
-  v10 = a3;
-  if (*p_activeDriver != v10)
+  driverCopy = driver;
+  if (*p_activeDriver != driverCopy)
   {
-    objc_storeStrong(&self->_activeDriver, a3);
+    objc_storeStrong(&self->_activeDriver, driver);
     if (*p_activeDriver)
     {
-      v6 = [objc_opt_class() prefersCancelsTouchesInView];
-      v7 = [(_UIClickPresentationInteraction *)self exclusionRelationshipGestureRecognizer];
-      [v7 setCancelsTouchesInView:v6];
+      prefersCancelsTouchesInView = [objc_opt_class() prefersCancelsTouchesInView];
+      exclusionRelationshipGestureRecognizer = [(_UIClickPresentationInteraction *)self exclusionRelationshipGestureRecognizer];
+      [exclusionRelationshipGestureRecognizer setCancelsTouchesInView:prefersCancelsTouchesInView];
 
-      v8 = [(_UIClickPresentationInteraction *)self failureRelationshipGestureRecognizer];
-      [v8 setCancelsTouchesInView:v6];
+      failureRelationshipGestureRecognizer = [(_UIClickPresentationInteraction *)self failureRelationshipGestureRecognizer];
+      [failureRelationshipGestureRecognizer setCancelsTouchesInView:prefersCancelsTouchesInView];
 
       [(_UIClickInteractionDriving *)self->_activeDriver setCancelsTouchesInView:0];
       if ([(_UIClickPresentationInteraction *)self _delegate_shouldAllowDragAfterDismiss])
       {
-        v9 = [(_UIClickInteractionDriving *)*p_activeDriver primaryGestureRecognizer];
-        [v9 _setKeepTouchesOnContinuation:1];
+        primaryGestureRecognizer = [(_UIClickInteractionDriving *)*p_activeDriver primaryGestureRecognizer];
+        [primaryGestureRecognizer _setKeepTouchesOnContinuation:1];
       }
     }
   }
@@ -1231,8 +1231,8 @@ LABEL_9:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(_UIClickPresentationInteraction *)self allDrivers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allDrivers = [(_UIClickPresentationInteraction *)self allDrivers];
+  v3 = [allDrivers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1244,14 +1244,14 @@ LABEL_9:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allDrivers);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) cancelInteraction];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [allDrivers countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -1262,15 +1262,15 @@ LABEL_9:
 {
   v30 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695DFA8] set];
-  v4 = [(_UIClickPresentationInteraction *)self _clickDriverTouch];
-  if (v4)
+  _clickDriverTouch = [(_UIClickPresentationInteraction *)self _clickDriverTouch];
+  if (_clickDriverTouch)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v17 = v4;
-    obj = [v4 gestureRecognizers];
+    v17 = _clickDriverTouch;
+    obj = [_clickDriverTouch gestureRecognizers];
     v5 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v5)
     {
@@ -1290,10 +1290,10 @@ LABEL_9:
           v21 = 0u;
           v22 = 0u;
           v23 = 0u;
-          v9 = [v8 view];
-          v10 = [v9 interactions];
+          view = [v8 view];
+          interactions = [view interactions];
 
-          v11 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
+          v11 = [interactions countByEnumeratingWithState:&v20 objects:v28 count:16];
           if (v11)
           {
             v12 = v11;
@@ -1304,7 +1304,7 @@ LABEL_9:
               {
                 if (*v21 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(interactions);
                 }
 
                 v15 = *(*(&v20 + 1) + 8 * j);
@@ -1314,7 +1314,7 @@ LABEL_9:
                 }
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
+              v12 = [interactions countByEnumeratingWithState:&v20 objects:v28 count:16];
             }
 
             while (v12);
@@ -1327,7 +1327,7 @@ LABEL_9:
       while (v6);
     }
 
-    v4 = v17;
+    _clickDriverTouch = v17;
   }
 
   return v3;
@@ -1335,20 +1335,20 @@ LABEL_9:
 
 - (void)_associateWithActiveDragInteraction
 {
-  v2 = self;
+  selfCopy = self;
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIClickPresentationInteraction *)self _clickDriverTouch];
+  _clickDriverTouch = [(_UIClickPresentationInteraction *)self _clickDriverTouch];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [v3 gestureRecognizers];
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  gestureRecognizers = [_clickDriverTouch gestureRecognizers];
+  v5 = [gestureRecognizers countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v5)
   {
     v6 = v5;
-    v18 = v2;
-    v19 = v3;
+    v18 = selfCopy;
+    v19 = _clickDriverTouch;
     v7 = *v25;
     do
     {
@@ -1356,7 +1356,7 @@ LABEL_9:
       {
         if (*v25 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
@@ -1366,10 +1366,10 @@ LABEL_9:
           v23 = 0u;
           v20 = 0u;
           v21 = 0u;
-          v10 = [v9 view];
-          v11 = [v10 interactions];
+          view = [v9 view];
+          interactions = [view interactions];
 
-          v12 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+          v12 = [interactions countByEnumeratingWithState:&v20 objects:v28 count:16];
           if (v12)
           {
             v13 = v12;
@@ -1380,7 +1380,7 @@ LABEL_9:
             {
               if (*v21 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(interactions);
               }
 
               v16 = *(*(&v20 + 1) + 8 * v15);
@@ -1392,7 +1392,7 @@ LABEL_9:
 
               if (v13 == ++v15)
               {
-                v13 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+                v13 = [interactions countByEnumeratingWithState:&v20 objects:v28 count:16];
                 if (v13)
                 {
                   goto LABEL_9;
@@ -1417,14 +1417,14 @@ LABEL_15:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v6 = [gestureRecognizers countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v6);
     v17 = 0;
 LABEL_20:
-    v2 = v18;
-    v3 = v19;
+    selfCopy = v18;
+    _clickDriverTouch = v19;
   }
 
   else
@@ -1432,24 +1432,24 @@ LABEL_20:
     v17 = 0;
   }
 
-  [(_UIClickPresentationInteraction *)v2 setAssociatedDragInteraction:v17];
+  [(_UIClickPresentationInteraction *)selfCopy setAssociatedDragInteraction:v17];
 }
 
-- (void)_attemptDragLiftAtLocation:(CGPoint)a3 useDefaultLiftAnimation:(BOOL)a4
+- (void)_attemptDragLiftAtLocation:(CGPoint)location useDefaultLiftAnimation:(BOOL)animation
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = [(_UIClickPresentationInteraction *)self _clickDragDriver];
-  if ([v8 canBeginLiftAtLocation:{x, y}])
+  animationCopy = animation;
+  y = location.y;
+  x = location.x;
+  _clickDragDriver = [(_UIClickPresentationInteraction *)self _clickDragDriver];
+  if ([_clickDragDriver canBeginLiftAtLocation:{x, y}])
   {
     v9 = 0.0;
     if (self->_unableToClick)
     {
-      [v8 liftDelay];
+      [_clickDragDriver liftDelay];
       v11 = v10;
-      v12 = [(_UIClickPresentationInteraction *)self activeDriver];
-      [v12 touchDuration];
+      activeDriver = [(_UIClickPresentationInteraction *)self activeDriver];
+      [activeDriver touchDuration];
       v9 = v11 - v13;
     }
 
@@ -1457,46 +1457,46 @@ LABEL_20:
     v14[1] = 3221225472;
     v14[2] = __86___UIClickPresentationInteraction__attemptDragLiftAtLocation_useDefaultLiftAnimation___block_invoke;
     v14[3] = &unk_1E70F3C60;
-    v15 = v8;
-    v16 = self;
-    [v15 beginLiftAtLocation:v4 useDefaultLiftAnimation:v14 delay:x completion:{y, v9}];
+    v15 = _clickDragDriver;
+    selfCopy = self;
+    [v15 beginLiftAtLocation:animationCopy useDefaultLiftAnimation:v14 delay:x completion:{y, v9}];
   }
 }
 
-- (BOOL)beginDragIfPossibleWithTouch:(id)a3
+- (BOOL)beginDragIfPossibleWithTouch:(id)touch
 {
-  v4 = a3;
+  touchCopy = touch;
   [(_UIRelationshipGestureRecognizer *)self->_gestureRecognizerForBeginningDragRelationships _fail];
-  if (!v4)
+  if (!touchCopy)
   {
-    v5 = [(_UIClickPresentationInteraction *)self _clickDriverTouch];
-    if (!v5)
+    _clickDriverTouch = [(_UIClickPresentationInteraction *)self _clickDriverTouch];
+    if (!_clickDriverTouch)
     {
-      LOBYTE(v7) = 0;
-      return v7;
+      LOBYTE(isLifted) = 0;
+      return isLifted;
     }
 
-    v4 = v5;
+    touchCopy = _clickDriverTouch;
   }
 
-  v6 = [(_UIClickPresentationInteraction *)self _clickDragDriver];
-  if (([v6 isLifted] & 1) == 0)
+  _clickDragDriver = [(_UIClickPresentationInteraction *)self _clickDragDriver];
+  if (([_clickDragDriver isLifted] & 1) == 0)
   {
     [(_UIClickPresentationInteraction *)self locationInView:0];
     [(_UIClickPresentationInteraction *)self _attemptDragLiftAtLocation:0 useDefaultLiftAnimation:?];
   }
 
-  v7 = [v6 isLifted];
-  if (v7)
+  isLifted = [_clickDragDriver isLifted];
+  if (isLifted)
   {
     v17[0] = 0;
     v17[1] = v17;
     v17[2] = 0x3032000000;
     v17[3] = __Block_byref_object_copy__161;
     v17[4] = __Block_byref_object_dispose__161;
-    v18 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     objc_initWeak(&location, self);
-    v8 = [MEMORY[0x1E695DFD8] setWithObject:v4];
+    v8 = [MEMORY[0x1E695DFD8] setWithObject:touchCopy];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __64___UIClickPresentationInteraction_beginDragIfPossibleWithTouch___block_invoke;
@@ -1509,22 +1509,22 @@ LABEL_20:
     v13[3] = &unk_1E711B7F0;
     v13[4] = self;
     v13[5] = v17;
-    [v6 beginDragWithTouches:v8 itemIterator:v14 beginningSessionHandler:v13];
+    [_clickDragDriver beginDragWithTouches:v8 itemIterator:v14 beginningSessionHandler:v13];
 
     if (self->_shouldAllowFeedback)
     {
-      v9 = [(_UIClickPresentationInteraction *)self feedbackGenerator];
+      feedbackGenerator = [(_UIClickPresentationInteraction *)self feedbackGenerator];
       [(_UIClickPresentationInteraction *)self locationInView:0];
-      [v9 draggedAtLocation:?];
+      [feedbackGenerator draggedAtLocation:?];
     }
 
     if (self->_unableToClick)
     {
-      v10 = [(_UIClickPresentationInteraction *)self exclusionRelationshipGestureRecognizer];
-      [v10 _succeed];
+      exclusionRelationshipGestureRecognizer = [(_UIClickPresentationInteraction *)self exclusionRelationshipGestureRecognizer];
+      [exclusionRelationshipGestureRecognizer _succeed];
 
-      v11 = [(_UIClickPresentationInteraction *)self failureRelationshipGestureRecognizer];
-      [v11 _succeed];
+      failureRelationshipGestureRecognizer = [(_UIClickPresentationInteraction *)self failureRelationshipGestureRecognizer];
+      [failureRelationshipGestureRecognizer _succeed];
     }
 
     objc_destroyWeak(&v15);
@@ -1532,18 +1532,18 @@ LABEL_20:
     _Block_object_dispose(v17, 8);
   }
 
-  return v7;
+  return isLifted;
 }
 
 - (void)_endInteractionEffectIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 _activeEffect];
-    [v2 end];
+    _activeEffect = [self _activeEffect];
+    [_activeEffect end];
 
-    v3 = a1[8];
-    a1[8] = 0;
+    v3 = self[8];
+    self[8] = 0;
   }
 }
 
@@ -1571,9 +1571,9 @@ LABEL_20:
   return v6;
 }
 
-- (void)_setDelegate:(id)a3
+- (void)_setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -1602,10 +1602,10 @@ LABEL_20:
     self->_delegateImplements.shouldPlayFeedback = objc_opt_respondsToSelector() & 1;
     self->_delegateImplements.shouldPresentWithCompletion = objc_opt_respondsToSelector() & 1;
     self->_delegateImplements.shouldBeDelayedByGestureRecognizer = objc_opt_respondsToSelector() & 1;
-    v6 = [(_UIClickPresentationInteraction *)self delegate];
+    delegate = [(_UIClickPresentationInteraction *)self delegate];
     self->_delegateImplements.secondaryPreviews = objc_opt_respondsToSelector() & 1;
 
-    v7 = [(_UIClickPresentationInteraction *)self delegate];
+    delegate2 = [(_UIClickPresentationInteraction *)self delegate];
     self->_delegateImplements.shouldMaintainKeyboardAssertion = objc_opt_respondsToSelector() & 1;
 
     v8 = objc_loadWeakRetained(&self->_delegate);
@@ -1617,29 +1617,29 @@ LABEL_20:
   }
 }
 
-- (void)_cancelWithReason:(unint64_t)a3 alongsideActions:(id)a4 completion:(id)a5
+- (void)_cancelWithReason:(unint64_t)reason alongsideActions:(id)actions completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  actionsCopy = actions;
+  completionCopy = completion;
   if (self->_currentState > 3 || ![(_UIClickPresentationInteraction *)self _supportsRapidRestart])
   {
     v10[0] = self;
     v10[1] = 0;
-    v10[2] = a3;
+    v10[2] = reason;
     v11 = 0;
-    v12 = _Block_copy(v8);
-    v13 = _Block_copy(v9);
+    v12 = _Block_copy(actionsCopy);
+    v13 = _Block_copy(completionCopy);
     [(_UIClickPresentationInteraction *)self _endInteractionWithContext:v10];
   }
 }
 
-- (void)_endInteractionWithContext:(const InteractionEndingContext *)a3
+- (void)_endInteractionWithContext:(const InteractionEndingContext *)context
 {
   currentState = self->_currentState;
   if (currentState < 2)
   {
-    v6 = [(_UIClickPresentationInteraction *)self exclusionRelationshipGestureRecognizer];
-    [v6 _fail];
+    exclusionRelationshipGestureRecognizer = [(_UIClickPresentationInteraction *)self exclusionRelationshipGestureRecognizer];
+    [exclusionRelationshipGestureRecognizer _fail];
 
     [(_UIRelationshipGestureRecognizer *)self->_gestureRecognizerForBeginningDragRelationships _fail];
     self->_unableToClick = 0;
@@ -1648,23 +1648,23 @@ LABEL_20:
   else
   {
 
-    handleEvent(stateMachineSpec_3, currentState, 3, a3, &self->_currentState);
+    handleEvent(stateMachineSpec_3, currentState, 3, context, &self->_currentState);
   }
 }
 
 - (void)_prepareInteractionEffect
 {
   v51 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIClickPresentationInteraction *)self view];
-  [(_UIClickPresentationInteraction *)self locationInView:v3];
+  view = [(_UIClickPresentationInteraction *)self view];
+  [(_UIClickPresentationInteraction *)self locationInView:view];
   v5 = v4;
   v7 = v6;
 
   if (!self->_delegateImplements.previewForHighlightingAtLocation || (-[_UIClickPresentationInteraction delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), [v8 clickPresentationInteraction:self previewForHighlightingAtLocation:{v5, v7}], v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
   {
     v10 = [UITargetedPreview alloc];
-    v11 = [(_UIClickPresentationInteraction *)self view];
-    v9 = [(UITargetedPreview *)v10 initWithView:v11];
+    view2 = [(_UIClickPresentationInteraction *)self view];
+    v9 = [(UITargetedPreview *)v10 initWithView:view2];
   }
 
   if ([(_UIClickPresentationInteraction *)self activatedDriverStyle]== 1)
@@ -1723,8 +1723,8 @@ LABEL_15:
   }
 
   v18 = objc_opt_new();
-  v19 = [(_UIClickPresentationInteraction *)self view];
-  [v18 setView:v19];
+  view3 = [(_UIClickPresentationInteraction *)self view];
+  [v18 setView:view3];
 
   [v18 setPoint:{v5, v7}];
   v20 = objc_opt_new();
@@ -1756,8 +1756,8 @@ LABEL_15:
 
   else
   {
-    v24 = [(_UIClickPresentationInteraction *)self delegate];
-    v25 = [v24 _secondaryPreviewsForClickPresentationInteraction:self];
+    delegate = [(_UIClickPresentationInteraction *)self delegate];
+    v25 = [delegate _secondaryPreviewsForClickPresentationInteraction:self];
     [v20 setSecondaryPreviews:v25];
 
     v26 = +[_UIContentEffectManager sharedManager];
@@ -1781,9 +1781,9 @@ LABEL_15:
   _Block_object_dispose(&v40, 8);
 }
 
-- (void)setAssociatedDragInteraction:(id)a3
+- (void)setAssociatedDragInteraction:(id)interaction
 {
-  obj = a3;
+  obj = interaction;
   WeakRetained = objc_loadWeakRetained(&self->_associatedDragInteraction);
 
   if (WeakRetained != obj)
@@ -1816,7 +1816,7 @@ LABEL_15:
 {
   if ([UIApp _isSpringBoard])
   {
-    v3 = [(_UIClickPresentationInteraction *)self delegate];
+    delegate = [(_UIClickPresentationInteraction *)self delegate];
     NSClassFromString(&cfstr_Ccuicontentmod.isa);
     if (objc_opt_isKindOfClass())
     {
@@ -1825,7 +1825,7 @@ LABEL_15:
 
     else
     {
-      v5 = [(_UIClickPresentationInteraction *)self delegate];
+      delegate2 = [(_UIClickPresentationInteraction *)self delegate];
       NSClassFromString(&cfstr_Ccuicontentmod_0.isa);
       isKindOfClass = objc_opt_isKindOfClass();
     }
@@ -1850,27 +1850,27 @@ LABEL_15:
   else
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(_UIClickPresentationInteraction *)self delegate];
+    delegate = [(_UIClickPresentationInteraction *)self delegate];
     v3 = [v4 stringWithFormat:@"(delegate: %@)", objc_opt_class()];
   }
 
   return v3;
 }
 
-- (void)_gestureRecognizerFailed:(id)a3
+- (void)_gestureRecognizerFailed:(id)failed
 {
-  v4 = a3;
-  v5 = [(_UIClickPresentationInteraction *)self exclusionRelationshipGestureRecognizer];
+  failedCopy = failed;
+  exclusionRelationshipGestureRecognizer = [(_UIClickPresentationInteraction *)self exclusionRelationshipGestureRecognizer];
 
-  if (v5 == v4)
+  if (exclusionRelationshipGestureRecognizer == failedCopy)
   {
     if ([(_UIClickPresentationInteraction *)self _isActive])
     {
       [(_UIClickPresentationInteraction *)self _cancelAllDrivers];
     }
 
-    v6 = [(_UIClickPresentationInteraction *)self failureRelationshipGestureRecognizer];
-    [v6 _fail];
+    failureRelationshipGestureRecognizer = [(_UIClickPresentationInteraction *)self failureRelationshipGestureRecognizer];
+    [failureRelationshipGestureRecognizer _fail];
 
     gestureRecognizerForBeginningDragRelationships = self->_gestureRecognizerForBeginningDragRelationships;
 
@@ -1878,19 +1878,19 @@ LABEL_15:
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIClickPresentationInteraction *)self exclusionRelationshipGestureRecognizer];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  exclusionRelationshipGestureRecognizer = [(_UIClickPresentationInteraction *)self exclusionRelationshipGestureRecognizer];
 
-  if (v8 != v6)
+  if (exclusionRelationshipGestureRecognizer != recognizerCopy)
   {
-    v9 = [(_UIClickPresentationInteraction *)self failureRelationshipGestureRecognizer];
+    failureRelationshipGestureRecognizer = [(_UIClickPresentationInteraction *)self failureRelationshipGestureRecognizer];
 
-    if (v9 != v6)
+    if (failureRelationshipGestureRecognizer != recognizerCopy)
     {
-      isKindOfClass = self->_gestureRecognizerForBeginningDragRelationships == v6;
+      isKindOfClass = self->_gestureRecognizerForBeginningDragRelationships == recognizerCopy;
       goto LABEL_11;
     }
 
@@ -1899,7 +1899,7 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (![v7 _isGestureType:1])
+  if (![gestureRecognizerCopy _isGestureType:1])
   {
     if (![(_UIClickPresentationInteraction *)self _isControlledByCC])
     {
@@ -1911,14 +1911,14 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if ([v7 _isGestureType:3])
+  if ([gestureRecognizerCopy _isGestureType:3])
   {
     isKindOfClass = 0;
   }
 
   else
   {
-    isKindOfClass = [v7 _prefersToBeExclusiveWithCompetingLongPressGestureRecognizers] ^ 1;
+    isKindOfClass = [gestureRecognizerCopy _prefersToBeExclusiveWithCompetingLongPressGestureRecognizers] ^ 1;
   }
 
 LABEL_11:
@@ -1926,27 +1926,27 @@ LABEL_11:
   return isKindOfClass & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIClickPresentationInteraction *)self failureRelationshipGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  failureRelationshipGestureRecognizer = [(_UIClickPresentationInteraction *)self failureRelationshipGestureRecognizer];
 
-  if (v8 != v7 || ![v6 _isGestureType:1])
+  if (failureRelationshipGestureRecognizer != recognizerCopy || ![gestureRecognizerCopy _isGestureType:1])
   {
     goto LABEL_6;
   }
 
-  v9 = [(_UIClickPresentationInteraction *)self allDrivers];
-  if (![v9 count] || objc_msgSend(v6, "_prefersNotToBePreventedByCompetingLongPressGestureRecognizers"))
+  allDrivers = [(_UIClickPresentationInteraction *)self allDrivers];
+  if (![allDrivers count] || objc_msgSend(gestureRecognizerCopy, "_prefersNotToBePreventedByCompetingLongPressGestureRecognizers"))
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v12 = [v6 name];
-  v13 = [v12 isEqualToString:@"PKSelectionDragGesture"];
+  name = [gestureRecognizerCopy name];
+  v13 = [name isEqualToString:@"PKSelectionDragGesture"];
 
   if ((v13 & 1) == 0)
   {
@@ -1961,17 +1961,17 @@ LABEL_8:
   return v10;
 }
 
-- (id)_dragInteractionPresentation:(id)a3 previewForCancellingItem:(id)a4 defaultPreview:(id)a5 proposedPreview:(id)a6
+- (id)_dragInteractionPresentation:(id)presentation previewForCancellingItem:(id)item defaultPreview:(id)preview proposedPreview:(id)proposedPreview
 {
-  v8 = a4;
-  v9 = a6;
-  v10 = [(_UIClickPresentationInteraction *)self delegate];
-  v11 = v10;
-  if (v9 && self->_delegateImplements.previewForCancellingDragItem)
+  itemCopy = item;
+  proposedPreviewCopy = proposedPreview;
+  delegate = [(_UIClickPresentationInteraction *)self delegate];
+  v11 = delegate;
+  if (proposedPreviewCopy && self->_delegateImplements.previewForCancellingDragItem)
   {
-    v12 = [v10 _clickPresentationInteraction:self previewForCancellingDragItem:v8];
-    v13 = [v9 target];
-    v14 = [v12 retargetedPreviewWithTarget:v13];
+    v12 = [delegate _clickPresentationInteraction:self previewForCancellingDragItem:itemCopy];
+    target = [proposedPreviewCopy target];
+    v14 = [v12 retargetedPreviewWithTarget:target];
 
     [v14 _setPreviewMode:3];
     [v14 _setDefaultPreview:1];
@@ -1989,7 +1989,7 @@ LABEL_8:
 
   else
   {
-    v15 = v9;
+    v15 = proposedPreviewCopy;
   }
 
   v16 = v15;
@@ -1997,32 +1997,32 @@ LABEL_8:
   return v15;
 }
 
-- (void)_dragInteractionPresentation:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5
+- (void)_dragInteractionPresentation:(id)presentation item:(id)item willAnimateCancelWithAnimator:(id)animator
 {
-  v10 = a4;
-  v7 = a5;
-  v8 = [(_UIClickPresentationInteraction *)self delegate];
-  v9 = v8;
+  itemCopy = item;
+  animatorCopy = animator;
+  delegate = [(_UIClickPresentationInteraction *)self delegate];
+  v9 = delegate;
   if (self->_delegateImplements.willAnimateDragCancelWithAnimator)
   {
-    [v8 _clickPresentationInteraction:self item:v10 willAnimateDragCancelWithAnimator:v7];
+    [delegate _clickPresentationInteraction:self item:itemCopy willAnimateDragCancelWithAnimator:animatorCopy];
   }
 }
 
-- (void)_dragInteractionPresentation:(id)a3 sessionDidEnd:(id)a4 withoutBeginning:(BOOL)a5
+- (void)_dragInteractionPresentation:(id)presentation sessionDidEnd:(id)end withoutBeginning:(BOOL)beginning
 {
-  v5 = a5;
-  v7 = a4;
+  beginningCopy = beginning;
+  endCopy = end;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __95___UIClickPresentationInteraction__dragInteractionPresentation_sessionDidEnd_withoutBeginning___block_invoke;
   v11[3] = &unk_1E70F35B8;
   v11[4] = self;
-  v12 = v7;
-  v8 = v7;
+  v12 = endCopy;
+  v8 = endCopy;
   v9 = _Block_copy(v11);
   v10 = v9;
-  if (v5)
+  if (beginningCopy)
   {
     [_UIClickPresentationInteraction _endInteractionDidComplete:v9 completion:?];
     [(_UIClickPresentationInteraction *)self _endInteractionEffectIfNeeded];

@@ -20,14 +20,14 @@
 
 - (uint64_t)TableColumnCustomizationEntry
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     type metadata accessor for [TableColumnCustomizationID : TableColumnCustomizationEntry]();
     a2();
     a3();
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;

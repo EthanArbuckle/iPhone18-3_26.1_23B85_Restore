@@ -1,20 +1,20 @@
 @interface SAPAStyleSymbolDataStore
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
-- (BOOL)addSelfToBuffer:(void *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
+- (BOOL)addSelfToBuffer:(void *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
 - (unint64_t)sizeInBytesForSerializedVersion;
-- (void)addSelfToSerializationDictionary:(id)a3;
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary;
 @end
 
 @implementation SAPAStyleSymbolDataStore
 
-- (BOOL)addSelfToBuffer:(void *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(void *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
   v5 = [SAException exceptionWithName:@"Encoding failure" reason:@"Trying to encode SAPAStyleSymbolDataStore" userInfo:0];
   objc_exception_throw(v5);
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
   v3 = [SAException exceptionWithName:@"Encoding failure" reason:@"Trying to encode SAPAStyleSymbolDataStore" userInfo:0];
   objc_exception_throw(v3);
@@ -26,9 +26,9 @@
   objc_exception_throw(v2);
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
-  if ((*a3 - 324506182) >= 3)
+  if ((*buffer - 324506182) >= 3)
   {
     v7 = [SAException exceptionWithName:@"Decoding failure" reason:@"Bad PASymbolDataStore magic" userInfo:0, v4, v5];
     objc_exception_throw(v7);
@@ -37,25 +37,25 @@
   return objc_alloc_init(SAPAStyleSymbolDataStore);
 }
 
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary
 {
   v138 = *MEMORY[0x1E69E9840];
-  v6 = *a3 - 324506182;
+  v6 = *buffer - 324506182;
   if (v6 >= 3)
   {
-    v111 = [SAException exceptionWithName:@"Decoding failure" reason:@"Bad PASymbolDataStore magic" userInfo:0, a6];
-    objc_exception_throw(v111);
+    bufferDictionary = [SAException exceptionWithName:@"Decoding failure" reason:@"Bad PASymbolDataStore magic" userInfo:0, bufferDictionary];
+    objc_exception_throw(bufferDictionary);
   }
 
-  v9 = a3;
-  v10 = a3 + qword_1E0F282B8[v6];
-  v11 = *(a3 + 1);
+  bufferCopy = buffer;
+  v10 = buffer + qword_1E0F282B8[v6];
+  v11 = *(buffer + 1);
   if (v11)
   {
     v12 = objc_opt_class();
     v13 = objc_opt_class();
-    v14 = SASerializableNewMutableDictionaryFromIndexList(v10, v11, a5, a6, v12, v13);
-    v15 = 24 * v9[1];
+    v14 = SASerializableNewMutableDictionaryFromIndexList(v10, v11, dictionary, bufferDictionary, v12, v13);
+    v15 = 24 * bufferCopy[1];
   }
 
   else
@@ -63,12 +63,12 @@
     v15 = 0;
   }
 
-  v16 = v9[2];
+  v16 = bufferCopy[2];
   if (v16)
   {
     v17 = objc_opt_class();
     v18 = objc_opt_class();
-    v19 = SASerializableNewMutableDictionaryOfArraysFromIndexList(&v10[v15], v16, a5, a6, v17, v18);
+    v19 = SASerializableNewMutableDictionaryOfArraysFromIndexList(&v10[v15], v16, dictionary, bufferDictionary, v17, v18);
   }
 
   else
@@ -76,13 +76,13 @@
     v19 = 0;
   }
 
-  if (*v9 > 0x13579246uLL)
+  if (*bufferCopy > 0x13579246uLL)
   {
-    if (*v9 != 324506183)
+    if (*bufferCopy != 324506183)
     {
-      v20 = v9[5];
+      v20 = bufferCopy[5];
       v21 = objc_opt_class();
-      v22 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v20, a5, a6, v21, 0);
+      v22 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v20, dictionary, bufferDictionary, v21, 0);
       v24 = v22;
       if (v22)
       {
@@ -97,22 +97,22 @@
       }
     }
 
-    v31 = v9[3];
+    v31 = bufferCopy[3];
     v32 = objc_opt_class();
-    Property = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v31, a5, a6, v32, 0);
+    Property = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v31, dictionary, bufferDictionary, v32, 0);
     selfa = Property;
     if (Property)
     {
       Property = objc_getProperty(Property, v34, 8, 1);
     }
 
-    v35 = [Property binary];
-    v36 = [v35 uuid];
+    binary = [Property binary];
+    uuid = [binary uuid];
 
-    v119 = v36;
-    if (v36)
+    v119 = uuid;
+    if (uuid)
     {
-      v37 = [v19 objectForKeyedSubscript:v36];
+      v37 = [v19 objectForKeyedSubscript:uuid];
       v38 = v37;
       if (v37)
       {
@@ -120,8 +120,8 @@
         v38 = v37;
         if ([v37 count])
         {
-          v112 = v9;
-          v113 = a5;
+          v112 = bufferCopy;
+          dictionaryCopy = dictionary;
           v115 = v19;
           v125 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v38, "count")}];
           v132 = 0u;
@@ -155,8 +155,8 @@
                   v44 = 0;
                 }
 
-                v45 = [v44 binary];
-                v47 = -[SABinary segmentWithCleanName:length:offsetIntoBinary:](v45, @"__TEXT", [v45 length], 0x7FFFFFFFFFFFFFFFLL);
+                binary2 = [v44 binary];
+                v47 = -[SABinary segmentWithCleanName:length:offsetIntoBinary:](binary2, @"__TEXT", [binary2 length], 0x7FFFFFFFFFFFFFFFLL);
                 if (v43)
                 {
                   v48 = objc_getProperty(v43, v46, 8, 1);
@@ -167,28 +167,28 @@
                   v48 = 0;
                 }
 
-                v50 = [v48 loadAddress];
+                loadAddress = [v48 loadAddress];
                 v51 = selfa;
                 if (selfa)
                 {
                   v51 = objc_getProperty(selfa, v49, 8, 1);
                 }
 
-                v53 = [v51 loadAddress];
+                loadAddress2 = [v51 loadAddress];
                 if (v43)
                 {
-                  v54 = [objc_getProperty(v43 v52];
+                  isInKernelAddressSpace = [objc_getProperty(v43 v52];
                   v56 = objc_getProperty(v43, v55, 8, 1);
                 }
 
                 else
                 {
-                  v54 = [0 isInKernelAddressSpace];
+                  isInKernelAddressSpace = [0 isInKernelAddressSpace];
                   v56 = 0;
                 }
 
-                v57 = [v56 exclave];
-                v58 = [SABinaryLoadInfo binaryLoadInfoWithSegment:v47 loadAddress:v53 + v50 isInKernelAddressSpace:v54 exclave:v57];
+                exclave = [v56 exclave];
+                v58 = [SABinaryLoadInfo binaryLoadInfoWithSegment:v47 loadAddress:loadAddress2 + loadAddress isInKernelAddressSpace:isInKernelAddressSpace exclave:exclave];
                 [v125 addObject:v58];
 
                 ++v42;
@@ -212,10 +212,10 @@
             v61 = 0;
           }
 
-          v62 = [v61 binary];
-          v64 = [v62 uuid];
-          a5 = v113;
-          v9 = v112;
+          binary3 = [v61 binary];
+          uuid2 = [binary3 uuid];
+          dictionary = dictionaryCopy;
+          bufferCopy = v112;
           if (selfa)
           {
             v65 = objc_getProperty(selfa, v63, 8, 1);
@@ -226,9 +226,9 @@
             v65 = 0;
           }
 
-          v66 = [v65 loadAddress];
+          loadAddress3 = [v65 loadAddress];
           v67 = [v125 copy];
-          v68 = [SASharedCache sharedCacheWithUUID:v64 slide:v66 binaryLoadInfos:v67];
+          v68 = [SASharedCache sharedCacheWithUUID:uuid2 slide:loadAddress3 binaryLoadInfos:v67];
           sharedCache64Bit = self->_sharedCache64Bit;
           self->_sharedCache64Bit = v68;
 
@@ -238,26 +238,26 @@
       }
     }
 
-    v70 = v9[4];
+    v70 = bufferCopy[4];
     v71 = objc_opt_class();
-    v72 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v70, a5, a6, v71, 0);
+    v72 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v70, dictionary, bufferDictionary, v71, 0);
     v74 = v72;
     if (v72)
     {
       v72 = objc_getProperty(v72, v73, 8, 1);
     }
 
-    v75 = [v72 binary];
-    v76 = [v75 uuid];
+    binary4 = [v72 binary];
+    uuid3 = [binary4 uuid];
 
-    if (v76)
+    if (uuid3)
     {
-      v77 = [v19 objectForKeyedSubscript:v76];
+      v77 = [v19 objectForKeyedSubscript:uuid3];
       v78 = v77;
       if (v77 && [v77 count])
       {
         v116 = v19;
-        v118 = v76;
+        v118 = uuid3;
         v126 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v78, "count")}];
         v128 = 0u;
         v129 = 0u;
@@ -291,8 +291,8 @@
                 v84 = 0;
               }
 
-              v85 = [v84 binary];
-              v87 = -[SABinary segmentWithCleanName:length:offsetIntoBinary:](v85, @"__TEXT", [v85 length], 0x7FFFFFFFFFFFFFFFLL);
+              binary5 = [v84 binary];
+              v87 = -[SABinary segmentWithCleanName:length:offsetIntoBinary:](binary5, @"__TEXT", [binary5 length], 0x7FFFFFFFFFFFFFFFLL);
               if (v83)
               {
                 v88 = objc_getProperty(v83, v86, 8, 1);
@@ -303,7 +303,7 @@
                 v88 = 0;
               }
 
-              v90 = [v88 loadAddress];
+              loadAddress4 = [v88 loadAddress];
               if (v74)
               {
                 v91 = objc_getProperty(v74, v89, 8, 1);
@@ -314,21 +314,21 @@
                 v91 = 0;
               }
 
-              v93 = [v91 loadAddress];
+              loadAddress5 = [v91 loadAddress];
               if (v83)
               {
-                v94 = [objc_getProperty(v83 v92];
+                isInKernelAddressSpace2 = [objc_getProperty(v83 v92];
                 v96 = objc_getProperty(v83, v95, 8, 1);
               }
 
               else
               {
-                v94 = [0 isInKernelAddressSpace];
+                isInKernelAddressSpace2 = [0 isInKernelAddressSpace];
                 v96 = 0;
               }
 
-              v97 = [v96 exclave];
-              v98 = [SABinaryLoadInfo binaryLoadInfoWithSegment:v87 loadAddress:v93 + v90 isInKernelAddressSpace:v94 exclave:v97];
+              exclave2 = [v96 exclave];
+              v98 = [SABinaryLoadInfo binaryLoadInfoWithSegment:v87 loadAddress:loadAddress5 + loadAddress4 isInKernelAddressSpace:isInKernelAddressSpace2 exclave:exclave2];
               [v126 addObject:v98];
 
               ++v82;
@@ -352,9 +352,9 @@
           v101 = 0;
         }
 
-        v76 = v118;
-        v102 = [v101 binary];
-        v104 = [v102 uuid];
+        uuid3 = v118;
+        binary6 = [v101 binary];
+        uuid4 = [binary6 uuid];
         if (v74)
         {
           v105 = objc_getProperty(v74, v103, 8, 1);
@@ -366,9 +366,9 @@
         }
 
         v78 = v114;
-        v106 = [v105 loadAddress];
+        loadAddress6 = [v105 loadAddress];
         v107 = [v126 copy];
-        v108 = [SASharedCache sharedCacheWithUUID:v104 slide:v106 binaryLoadInfos:v107];
+        v108 = [SASharedCache sharedCacheWithUUID:uuid4 slide:loadAddress6 binaryLoadInfos:v107];
         sharedCache32Bit = self->_sharedCache32Bit;
         self->_sharedCache32Bit = v108;
 

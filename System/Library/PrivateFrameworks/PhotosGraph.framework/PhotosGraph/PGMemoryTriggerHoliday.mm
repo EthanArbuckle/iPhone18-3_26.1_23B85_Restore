@@ -1,16 +1,16 @@
 @interface PGMemoryTriggerHoliday
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryTriggerHoliday
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 isCancelledWithProgress:0.0])
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -27,23 +27,23 @@
   else
   {
     v12 = objc_alloc_init(MEMORY[0x277D22BD0]);
-    v13 = [(PGHolidayMemoryTrigger *)self holidayService];
-    v14 = [v8 localDate];
-    v15 = [v8 localDate];
+    holidayService = [(PGHolidayMemoryTrigger *)self holidayService];
+    localDate = [contextCopy localDate];
+    localDate2 = [contextCopy localDate];
     v23 = MEMORY[0x277D85DD0];
     v24 = 3221225472;
     v25 = __79__PGMemoryTriggerHoliday_resultsTriggeredWithContext_inGraph_progressReporter___block_invoke;
     v26 = &unk_278886F98;
-    v16 = v9;
+    v16 = graphCopy;
     v27 = v16;
     v17 = v12;
     v28 = v17;
-    [v13 enumerateEventRulesForAllCountriesBetweenLocalDate:v14 andLocalDate:v15 usingBlock:&v23];
+    [holidayService enumerateEventRulesForAllCountriesBetweenLocalDate:localDate andLocalDate:localDate2 usingBlock:&v23];
 
     v18 = [PGGraphMemoryNodeCollection alloc];
     v19 = [(MAElementCollection *)v18 initWithGraph:v16 elementIdentifiers:v17, v23, v24, v25, v26];
-    v20 = [objc_opt_class() singleDayValidityIntervalWithContext:v8];
-    if ([v10 isCancelledWithProgress:1.0])
+    v20 = [objc_opt_class() singleDayValidityIntervalWithContext:contextCopy];
+    if ([reporterCopy isCancelledWithProgress:1.0])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {

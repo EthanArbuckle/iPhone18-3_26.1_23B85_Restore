@@ -1,13 +1,13 @@
 @interface NFRadioPowerSwitchServer
-- (void)runService:(id)a3 callback:(id)a4;
+- (void)runService:(id)service callback:(id)callback;
 @end
 
 @implementation NFRadioPowerSwitchServer
 
-- (void)runService:(id)a3 callback:(id)a4
+- (void)runService:(id)service callback:(id)callback
 {
-  v5 = a4;
-  v6 = [a3 valueForKey:@"PopupInterval"];
+  callbackCopy = callback;
+  v6 = [service valueForKey:@"PopupInterval"];
   objc_opt_class();
   v7 = 0.0;
   if (objc_opt_isKindOfClass())
@@ -20,8 +20,8 @@
   v10[1] = 3221225472;
   v10[2] = sub_100000E5C;
   v10[3] = &unk_100004268;
-  v11 = v5;
-  v9 = v5;
+  v11 = callbackCopy;
+  v9 = callbackCopy;
   sub_100000F34(v7, NFSettingsNotification, v10);
 }
 

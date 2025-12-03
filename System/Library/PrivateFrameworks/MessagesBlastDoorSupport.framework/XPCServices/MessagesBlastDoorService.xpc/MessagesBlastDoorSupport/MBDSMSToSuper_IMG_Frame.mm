@@ -1,15 +1,15 @@
 @interface MBDSMSToSuper_IMG_Frame
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8;
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation MBDSMSToSuper_IMG_Frame
 
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v10 = a4;
-  v12 = MBDIMCopyNormalizedAttributes(a8, 1, 0);
+  contextCopy = context;
+  v12 = MBDIMCopyNormalizedAttributes(attributes, 1, 0);
   v11 = [v12 objectForKey:@"src"];
-  [(MBDSMSToSuper_Default_Frame *)self _addAttachmentPartWithSource:v11 toContext:v10];
+  [(MBDSMSToSuper_Default_Frame *)self _addAttachmentPartWithSource:v11 toContext:contextCopy];
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface FinHealthInsightsCorrelationHelper
-+ (id)kendallCoefficientWithIndexedAmountSums:(id)a3;
-+ (id)spearmanCoefficientWithIndexedAmountSums:(id)a3;
++ (id)kendallCoefficientWithIndexedAmountSums:(id)sums;
++ (id)spearmanCoefficientWithIndexedAmountSums:(id)sums;
 @end
 
 @implementation FinHealthInsightsCorrelationHelper
 
-+ (id)kendallCoefficientWithIndexedAmountSums:(id)a3
++ (id)kendallCoefficientWithIndexedAmountSums:(id)sums
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || [v3 count] < 2)
+  sumsCopy = sums;
+  v4 = sumsCopy;
+  if (!sumsCopy || [sumsCopy count] < 2)
   {
     goto LABEL_14;
   }
@@ -68,11 +68,11 @@ LABEL_14:
   return v15;
 }
 
-+ (id)spearmanCoefficientWithIndexedAmountSums:(id)a3
++ (id)spearmanCoefficientWithIndexedAmountSums:(id)sums
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count] >= 2)
+  sumsCopy = sums;
+  v4 = sumsCopy;
+  if (sumsCopy && [sumsCopy count] >= 2)
   {
     v5 = [v4 count];
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -154,8 +154,8 @@ LABEL_14:
     }
 
 LABEL_19:
-    v27 = [*(v7 + 2432) zero];
-    v28 = v27;
+    zero = [*(v7 + 2432) zero];
+    v28 = zero;
     if (v5)
     {
       v29 = 0;
@@ -181,7 +181,7 @@ LABEL_19:
 
     else
     {
-      v36 = v27;
+      v36 = zero;
     }
 
     v37 = [objc_alloc(*(v7 + 2432)) initWithDouble:(v42 * v42 + -1.0) * v42 / 6.0];

@@ -1,26 +1,26 @@
 @interface NMSMediaPinningManager
-+ (BOOL)_playlistPIDValidForPinning:(id)a3;
++ (BOOL)_playlistPIDValidForPinning:(id)pinning;
 + (id)_cachedAlbumIdentifiersFilePath;
 + (id)_cachedAudiobookIdentifiersFilePath;
 + (id)_cachedIdentifiersDirectoryPath;
 + (id)_cachedPlaylistIdentifiersFilePath;
 + (id)_fetchMusicRecommendations;
-+ (id)_tokenForInstance:(id)a3;
++ (id)_tokenForInstance:(id)instance;
 + (id)sharedManager;
 + (unint64_t)_mediaStorageSizeForCurrentDevice;
 + (void)_mediaStorageSizeForCurrentDevice;
 + (void)_persistNewClientToken;
 - (BOOL)_deviceSupportsPodcastsPinningSettingsV2;
-- (BOOL)_isAlbumPinned:(id)a3;
-- (BOOL)_isAudiobookPinned:(id)a3;
-- (BOOL)_isPlaylistPinned:(id)a3;
+- (BOOL)_isAlbumPinned:(id)pinned;
+- (BOOL)_isAudiobookPinned:(id)pinned;
+- (BOOL)_isPlaylistPinned:(id)pinned;
 - (BOOL)_legacy_musicIsOutOfSpace;
 - (BOOL)_shouldCalculateCachedIdentifiers;
 - (BOOL)_shouldSkipQuotaManagerEvaluation;
-- (BOOL)isAlbumPinned:(id)a3;
-- (BOOL)isAudiobookPinned:(id)a3;
-- (BOOL)isItemGroupWithinQuota:(id)a3;
-- (BOOL)isPlaylistPinned:(id)a3;
+- (BOOL)isAlbumPinned:(id)pinned;
+- (BOOL)isAudiobookPinned:(id)pinned;
+- (BOOL)isItemGroupWithinQuota:(id)quota;
+- (BOOL)isPlaylistPinned:(id)pinned;
 - (BOOL)isReadingNowEnabled;
 - (BOOL)isWantToReadEnabled;
 - (BOOL)pinnedPodcastsAreUserSet;
@@ -44,35 +44,35 @@
 - (NSSet)podcastsSelectedStationUUIDs;
 - (double)_audiobookDownloadLimit;
 - (double)audiobookDownloadLimit;
-- (id)_newAudiobooksEnumeratorWithDownloadedItemsOnly:(BOOL)a3;
-- (id)_newMusicEnumeratorWithDownloadedItemsOnly:(BOOL)a3;
-- (id)downloadInfoForBundleIdentifier:(id)a3;
-- (id)downloadInfoWithinAvailableSpace:(unint64_t)a3;
-- (id)podcastsDownloadSettingsForShowFeedURL:(id)a3;
-- (id)podcastsDownloadSettingsForStationUUID:(id)a3;
+- (id)_newAudiobooksEnumeratorWithDownloadedItemsOnly:(BOOL)only;
+- (id)_newMusicEnumeratorWithDownloadedItemsOnly:(BOOL)only;
+- (id)downloadInfoForBundleIdentifier:(id)identifier;
+- (id)downloadInfoWithinAvailableSpace:(unint64_t)space;
+- (id)podcastsDownloadSettingsForShowFeedURL:(id)l;
+- (id)podcastsDownloadSettingsForStationUUID:(id)d;
 - (unint64_t)_mediaQuota;
 - (void)_fetchAudiobooksIdentifiers;
 - (void)_fetchMusicIdentifiers;
-- (void)_handleAudiobooksPinningSelectionsDidChangeNotification:(id)a3;
-- (void)_handleAudiobooksRecommendationsDidChangeNotification:(id)a3;
-- (void)_handleICAgeVerificationStateDidChangeNotification:(id)a3;
-- (void)_handleMediaLibraryDidChangeNotification:(id)a3;
-- (void)_handleMediaLibraryDynamicPropertiesDidChangeNotification:(id)a3;
-- (void)_handleMediaPinningAudiobooksContentsInvalidatedNotification:(id)a3;
-- (void)_handleMediaPinningManagerAudiobooksIdentifiersDidChangeNotification:(id)a3;
-- (void)_handleMediaPinningManagerMusicIdentifiersDidChangeNotification:(id)a3;
-- (void)_handleMediaPinningManagerPodcastsIdentifiersDidChangeNotification:(id)a3;
-- (void)_handleMediaPinningMusicContentsInvalidatedNotification:(id)a3;
-- (void)_handleMediaPinningPodcastsContentsInvalidatedNotification:(id)a3;
-- (void)_handleMusicPinningSelectionsDidChangeNotification:(id)a3;
-- (void)_handlePairedDeviceDidBecomeActiveNotification:(id)a3;
-- (void)_handlePodcastSizeInfoDidChangeNotification:(id)a3;
-- (void)_handlePodcastsPinningSelectionsDidChangeNotification:(id)a3;
-- (void)_handleRecommendationLibraryContentsDidChangeNotification:(id)a3;
-- (void)_handleRecommendationSelectionsDidChangeNotification:(id)a3;
-- (void)_handleRecommendationsDidUpdateNotification:(id)a3;
+- (void)_handleAudiobooksPinningSelectionsDidChangeNotification:(id)notification;
+- (void)_handleAudiobooksRecommendationsDidChangeNotification:(id)notification;
+- (void)_handleICAgeVerificationStateDidChangeNotification:(id)notification;
+- (void)_handleMediaLibraryDidChangeNotification:(id)notification;
+- (void)_handleMediaLibraryDynamicPropertiesDidChangeNotification:(id)notification;
+- (void)_handleMediaPinningAudiobooksContentsInvalidatedNotification:(id)notification;
+- (void)_handleMediaPinningManagerAudiobooksIdentifiersDidChangeNotification:(id)notification;
+- (void)_handleMediaPinningManagerMusicIdentifiersDidChangeNotification:(id)notification;
+- (void)_handleMediaPinningManagerPodcastsIdentifiersDidChangeNotification:(id)notification;
+- (void)_handleMediaPinningMusicContentsInvalidatedNotification:(id)notification;
+- (void)_handleMediaPinningPodcastsContentsInvalidatedNotification:(id)notification;
+- (void)_handleMusicPinningSelectionsDidChangeNotification:(id)notification;
+- (void)_handlePairedDeviceDidBecomeActiveNotification:(id)notification;
+- (void)_handlePodcastSizeInfoDidChangeNotification:(id)notification;
+- (void)_handlePodcastsPinningSelectionsDidChangeNotification:(id)notification;
+- (void)_handleRecommendationLibraryContentsDidChangeNotification:(id)notification;
+- (void)_handleRecommendationSelectionsDidChangeNotification:(id)notification;
+- (void)_handleRecommendationsDidUpdateNotification:(id)notification;
 - (void)_invalidateAddedItemsCache;
-- (void)_invalidateMediaCacheForAppIdentifiers:(unint64_t)a3;
+- (void)_invalidateMediaCacheForAppIdentifiers:(unint64_t)identifiers;
 - (void)_legacy_refreshAudiobooksIdentifiers;
 - (void)_legacy_refreshMusicIdentifiers;
 - (void)_legacy_refreshPodcastsIdentifiers;
@@ -80,38 +80,38 @@
 - (void)_refreshAudiobooksIdentifiers;
 - (void)_refreshMusicIdentifiers;
 - (void)_refreshPodcastsIdentifiers;
-- (void)_setWorkoutPlaylistID:(id)a3;
-- (void)_updateWorkoutSettingsPlaylistPIDTo:(id)a3;
+- (void)_setWorkoutPlaylistID:(id)d;
+- (void)_updateWorkoutSettingsPlaylistPIDTo:(id)to;
 - (void)dealloc;
-- (void)downloadableContentProviderDidChangeContent:(id)a3;
+- (void)downloadableContentProviderDidChangeContent:(id)content;
 - (void)extensionAccessDidChange;
 - (void)invalidateAudiobooksCache;
 - (void)invalidateMusicCache;
 - (void)invalidatePodcastsCache;
-- (void)pinAlbum:(id)a3 completionHandler:(id)a4;
-- (void)pinAudiobook:(id)a3;
-- (void)pinPlaylist:(id)a3 completionHandler:(id)a4;
-- (void)pinPodcastStationWithUUID:(id)a3;
-- (void)pinPodcastWithFeedURL:(id)a3;
-- (void)podcastsDownloadableContentControllerContentDidChange:(id)a3;
-- (void)setAudiobookDownloadLimit:(double)a3;
-- (void)setAvailableSpace:(unint64_t)a3;
-- (void)setPinnedPodcastsAreUserSet:(BOOL)a3;
-- (void)setPodcastsDownloadSettings:(id)a3 forShowFeedURL:(id)a4;
-- (void)setPodcastsDownloadSettings:(id)a3 forStationUUID:(id)a4;
-- (void)setPodcastsSavedEpisodesDownloadSettings:(id)a3;
-- (void)setPodcastsUpNextDownloadSettings:(id)a3;
-- (void)setReadingNowAudiobooks:(id)a3;
-- (void)setReadingNowEnabled:(BOOL)a3;
-- (void)setSavedEpisodesEnabled:(BOOL)a3;
-- (void)setWantToReadAudiobooks:(id)a3;
-- (void)setWantToReadEnabled:(BOOL)a3;
-- (void)setWorkoutPlaylistID:(id)a3;
-- (void)unpinAlbum:(id)a3 completionHandler:(id)a4;
-- (void)unpinAudiobook:(id)a3;
-- (void)unpinPlaylist:(id)a3 completionHandler:(id)a4;
-- (void)unpinPodcastStationWithUUID:(id)a3;
-- (void)unpinPodcastWithFeedURL:(id)a3;
+- (void)pinAlbum:(id)album completionHandler:(id)handler;
+- (void)pinAudiobook:(id)audiobook;
+- (void)pinPlaylist:(id)playlist completionHandler:(id)handler;
+- (void)pinPodcastStationWithUUID:(id)d;
+- (void)pinPodcastWithFeedURL:(id)l;
+- (void)podcastsDownloadableContentControllerContentDidChange:(id)change;
+- (void)setAudiobookDownloadLimit:(double)limit;
+- (void)setAvailableSpace:(unint64_t)space;
+- (void)setPinnedPodcastsAreUserSet:(BOOL)set;
+- (void)setPodcastsDownloadSettings:(id)settings forShowFeedURL:(id)l;
+- (void)setPodcastsDownloadSettings:(id)settings forStationUUID:(id)d;
+- (void)setPodcastsSavedEpisodesDownloadSettings:(id)settings;
+- (void)setPodcastsUpNextDownloadSettings:(id)settings;
+- (void)setReadingNowAudiobooks:(id)audiobooks;
+- (void)setReadingNowEnabled:(BOOL)enabled;
+- (void)setSavedEpisodesEnabled:(BOOL)enabled;
+- (void)setWantToReadAudiobooks:(id)audiobooks;
+- (void)setWantToReadEnabled:(BOOL)enabled;
+- (void)setWorkoutPlaylistID:(id)d;
+- (void)unpinAlbum:(id)album completionHandler:(id)handler;
+- (void)unpinAudiobook:(id)audiobook;
+- (void)unpinPlaylist:(id)playlist completionHandler:(id)handler;
+- (void)unpinPodcastStationWithUUID:(id)d;
+- (void)unpinPodcastWithFeedURL:(id)l;
 @end
 
 @implementation NMSMediaPinningManager
@@ -122,7 +122,7 @@
   block[1] = 3221225472;
   block[2] = __39__NMSMediaPinningManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -158,7 +158,7 @@ uint64_t __39__NMSMediaPinningManager_sharedManager__block_invoke(uint64_t a1)
     internalQueue = v2->_internalQueue;
     v2->_internalQueue = v6;
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     if ([(NMSMediaPinningManager *)v2 _shouldCalculateCachedIdentifiers]|| ![(NMSMediaPinningManager *)v2 _shouldSkipQuotaManagerEvaluation])
     {
       if ([(NMSMediaPinningManager *)v2 _deviceSupportsPodcastsPinningSettingsV2])
@@ -169,37 +169,37 @@ uint64_t __39__NMSMediaPinningManager_sharedManager__block_invoke(uint64_t a1)
 
         [(NMSPodcastsDownloadableContentProvider *)v2->_podcastsDownloadableContentProvider setDelegate:v2];
 LABEL_10:
-        [v8 addObserver:v2 selector:sel__handlePodcastsPinningSelectionsDidChangeNotification_ name:@"com.apple.nanomusicsync.podcasts-pinning-selections" object:0];
-        [v8 addObserver:v2 selector:sel__handleMusicPinningSelectionsDidChangeNotification_ name:@"com.apple.nanomusicsync.music-pinning-selections" object:0];
-        [v8 addObserver:v2 selector:sel__handleRecommendationLibraryContentsDidChangeNotification_ name:@"com.apple.nanomusicsync.reco-library" object:0];
-        [v8 addObserver:v2 selector:sel__handleRecommendationsDidUpdateNotification_ name:@"NMSMusicRecommendationsDidUpdateNotification" object:0];
-        [v8 addObserver:v2 selector:sel__handleAudiobooksPinningSelectionsDidChangeNotification_ name:@"com.apple.nanomusicsync.audiobooks-pinning-selections" object:0];
-        [v8 addObserver:v2 selector:sel__handleAudiobooksRecommendationsDidChangeNotification_ name:@"com.apple.nanomusicsync.audiobooks-recommendations" object:0];
-        [v8 addObserver:v2 selector:sel__handleICAgeVerificationStateDidChangeNotification_ name:*MEMORY[0x277D7F8D0] object:0];
-        [v8 addObserver:v2 selector:sel__handleRecommendationSelectionsDidChangeNotification_ name:@"com.apple.nanomusicsync.reco-selections" object:0];
-        [v8 addObserver:v2 selector:sel__handlePairedDeviceDidBecomeActiveNotification_ name:*MEMORY[0x277D2BC48] object:0];
-        [v8 addObserver:v2 selector:sel__handleMediaLibraryDidChangeNotification_ name:*MEMORY[0x277CD58D8] object:0];
-        [v8 addObserver:v2 selector:sel__handleMediaLibraryDynamicPropertiesDidChangeNotification_ name:*MEMORY[0x277CD58E8] object:0];
-        v16 = [MEMORY[0x277CD5E10] defaultMediaLibrary];
-        [v16 beginGeneratingLibraryChangeNotifications];
+        [defaultCenter addObserver:v2 selector:sel__handlePodcastsPinningSelectionsDidChangeNotification_ name:@"com.apple.nanomusicsync.podcasts-pinning-selections" object:0];
+        [defaultCenter addObserver:v2 selector:sel__handleMusicPinningSelectionsDidChangeNotification_ name:@"com.apple.nanomusicsync.music-pinning-selections" object:0];
+        [defaultCenter addObserver:v2 selector:sel__handleRecommendationLibraryContentsDidChangeNotification_ name:@"com.apple.nanomusicsync.reco-library" object:0];
+        [defaultCenter addObserver:v2 selector:sel__handleRecommendationsDidUpdateNotification_ name:@"NMSMusicRecommendationsDidUpdateNotification" object:0];
+        [defaultCenter addObserver:v2 selector:sel__handleAudiobooksPinningSelectionsDidChangeNotification_ name:@"com.apple.nanomusicsync.audiobooks-pinning-selections" object:0];
+        [defaultCenter addObserver:v2 selector:sel__handleAudiobooksRecommendationsDidChangeNotification_ name:@"com.apple.nanomusicsync.audiobooks-recommendations" object:0];
+        [defaultCenter addObserver:v2 selector:sel__handleICAgeVerificationStateDidChangeNotification_ name:*MEMORY[0x277D7F8D0] object:0];
+        [defaultCenter addObserver:v2 selector:sel__handleRecommendationSelectionsDidChangeNotification_ name:@"com.apple.nanomusicsync.reco-selections" object:0];
+        [defaultCenter addObserver:v2 selector:sel__handlePairedDeviceDidBecomeActiveNotification_ name:*MEMORY[0x277D2BC48] object:0];
+        [defaultCenter addObserver:v2 selector:sel__handleMediaLibraryDidChangeNotification_ name:*MEMORY[0x277CD58D8] object:0];
+        [defaultCenter addObserver:v2 selector:sel__handleMediaLibraryDynamicPropertiesDidChangeNotification_ name:*MEMORY[0x277CD58E8] object:0];
+        defaultMediaLibrary = [MEMORY[0x277CD5E10] defaultMediaLibrary];
+        [defaultMediaLibrary beginGeneratingLibraryChangeNotifications];
 
-        v17 = [MEMORY[0x277CCA9A0] defaultCenter];
-        [v17 addObserver:v2 selector:sel__handleMediaPinningMusicContentsInvalidatedNotification_ name:@"NMSMediaPinningMusicContentsInvalidatedNotification" object:0];
+        defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+        [defaultCenter2 addObserver:v2 selector:sel__handleMediaPinningMusicContentsInvalidatedNotification_ name:@"NMSMediaPinningMusicContentsInvalidatedNotification" object:0];
 
-        v18 = [MEMORY[0x277CCA9A0] defaultCenter];
-        [v18 addObserver:v2 selector:sel__handleMediaPinningPodcastsContentsInvalidatedNotification_ name:@"NMSMediaPinningPodcastsContentsInvalidatedNotification" object:0];
+        defaultCenter3 = [MEMORY[0x277CCA9A0] defaultCenter];
+        [defaultCenter3 addObserver:v2 selector:sel__handleMediaPinningPodcastsContentsInvalidatedNotification_ name:@"NMSMediaPinningPodcastsContentsInvalidatedNotification" object:0];
 
-        v19 = [MEMORY[0x277CCA9A0] defaultCenter];
-        [v19 addObserver:v2 selector:sel__handleMediaPinningAudiobooksContentsInvalidatedNotification_ name:@"NMSMediaPinningAudiobooksContentsInvalidatedNotification" object:0];
+        defaultCenter4 = [MEMORY[0x277CCA9A0] defaultCenter];
+        [defaultCenter4 addObserver:v2 selector:sel__handleMediaPinningAudiobooksContentsInvalidatedNotification_ name:@"NMSMediaPinningAudiobooksContentsInvalidatedNotification" object:0];
 
-        v20 = [MEMORY[0x277CCA9A0] defaultCenter];
-        [v20 addObserver:v2 selector:sel__handleMediaPinningManagerMusicIdentifiersDidChangeNotification_ name:@"NMSMediaPinningManagerMusicIdentifiersDidChangeNotification" object:0];
+        defaultCenter5 = [MEMORY[0x277CCA9A0] defaultCenter];
+        [defaultCenter5 addObserver:v2 selector:sel__handleMediaPinningManagerMusicIdentifiersDidChangeNotification_ name:@"NMSMediaPinningManagerMusicIdentifiersDidChangeNotification" object:0];
 
-        v21 = [MEMORY[0x277CCA9A0] defaultCenter];
-        [v21 addObserver:v2 selector:sel__handleMediaPinningManagerPodcastsIdentifiersDidChangeNotification_ name:@"NMSMediaPinningManagerPodcastsIdentifiersDidChangeNotification" object:0];
+        defaultCenter6 = [MEMORY[0x277CCA9A0] defaultCenter];
+        [defaultCenter6 addObserver:v2 selector:sel__handleMediaPinningManagerPodcastsIdentifiersDidChangeNotification_ name:@"NMSMediaPinningManagerPodcastsIdentifiersDidChangeNotification" object:0];
 
-        v22 = [MEMORY[0x277CCA9A0] defaultCenter];
-        [v22 addObserver:v2 selector:sel__handleMediaPinningManagerAudiobooksIdentifiersDidChangeNotification_ name:@"NMSMediaPinningManagerAudiobooksIdentifiersDidChangeNotification" object:0];
+        defaultCenter7 = [MEMORY[0x277CCA9A0] defaultCenter];
+        [defaultCenter7 addObserver:v2 selector:sel__handleMediaPinningManagerAudiobooksIdentifiersDidChangeNotification_ name:@"NMSMediaPinningManagerAudiobooksIdentifiersDidChangeNotification" object:0];
 
         goto LABEL_11;
       }
@@ -209,22 +209,22 @@ LABEL_10:
       v2->_legacy_podcastsDownloadableContentController = v14;
 
       [(NMSPodcastsDownloadableContentController_Legacy *)v2->_legacy_podcastsDownloadableContentController setDelegate:v2];
-      v9 = [MEMORY[0x277D3DAF0] sharedInstance];
-      [v9 addObserver:v2];
+      mEMORY[0x277D3DAF0] = [MEMORY[0x277D3DAF0] sharedInstance];
+      [mEMORY[0x277D3DAF0] addObserver:v2];
     }
 
     else
     {
-      v9 = NMLogForCategory(5);
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      mEMORY[0x277D3DAF0] = NMLogForCategory(5);
+      if (os_log_type_enabled(mEMORY[0x277D3DAF0], OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(NMSMediaPinningManager *)v2 _shouldCalculateCachedIdentifiers];
-        v11 = [(NMSMediaPinningManager *)v2 _shouldSkipQuotaManagerEvaluation];
+        _shouldCalculateCachedIdentifiers = [(NMSMediaPinningManager *)v2 _shouldCalculateCachedIdentifiers];
+        _shouldSkipQuotaManagerEvaluation = [(NMSMediaPinningManager *)v2 _shouldSkipQuotaManagerEvaluation];
         *buf = 67109376;
-        v27 = v10;
+        v27 = _shouldCalculateCachedIdentifiers;
         v28 = 1024;
-        v29 = v11;
-        _os_log_impl(&dword_25B27B000, v9, OS_LOG_TYPE_DEFAULT, "Not creating NMSPodcastsDownloadableContentProvider. _shouldCalculateCachedIdentifiers %x _shouldSkipQuotaManagerEvaluation %x", buf, 0xEu);
+        v29 = _shouldSkipQuotaManagerEvaluation;
+        _os_log_impl(&dword_25B27B000, mEMORY[0x277D3DAF0], OS_LOG_TYPE_DEFAULT, "Not creating NMSPodcastsDownloadableContentProvider. _shouldCalculateCachedIdentifiers %x _shouldSkipQuotaManagerEvaluation %x", buf, 0xEu);
       }
     }
 
@@ -238,25 +238,25 @@ LABEL_11:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CD5E10] defaultMediaLibrary];
-  [v3 endGeneratingLibraryChangeNotifications];
+  defaultMediaLibrary = [MEMORY[0x277CD5E10] defaultMediaLibrary];
+  [defaultMediaLibrary endGeneratingLibraryChangeNotifications];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = NMSMediaPinningManager;
   [(NMSMediaPinningManager *)&v5 dealloc];
 }
 
-- (id)downloadInfoWithinAvailableSpace:(unint64_t)a3
+- (id)downloadInfoWithinAvailableSpace:(unint64_t)space
 {
-  [(NMSMediaPinningManager *)self setAvailableSpace:a3];
+  [(NMSMediaPinningManager *)self setAvailableSpace:space];
 
   return [(NMSMediaPinningManager *)self downloadInfo];
 }
 
-- (void)setAvailableSpace:(unint64_t)a3
+- (void)setAvailableSpace:(unint64_t)space
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -264,7 +264,7 @@ LABEL_11:
   v4[2] = __44__NMSMediaPinningManager_setAvailableSpace___block_invoke;
   v4[3] = &unk_27993E520;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = space;
   dispatch_async(internalQueue, v4);
 }
 
@@ -362,10 +362,10 @@ void __38__NMSMediaPinningManager_downloadInfo__block_invoke_2(uint64_t a1)
   *(v5 + 40) = v4;
 }
 
-- (id)downloadInfoForBundleIdentifier:(id)a3
+- (id)downloadInfoForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NMSMediaPinningManager *)self _deviceSupportsPodcastsPinningSettingsV2];
+  identifierCopy = identifier;
+  _deviceSupportsPodcastsPinningSettingsV2 = [(NMSMediaPinningManager *)self _deviceSupportsPodcastsPinningSettingsV2];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -373,16 +373,16 @@ void __38__NMSMediaPinningManager_downloadInfo__block_invoke_2(uint64_t a1)
   v21 = __Block_byref_object_dispose__3;
   v22 = 0;
   internalQueue = self->_internalQueue;
-  if (v5)
+  if (_deviceSupportsPodcastsPinningSettingsV2)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __58__NMSMediaPinningManager_downloadInfoForBundleIdentifier___block_invoke_2;
     v11[3] = &unk_27993E548;
-    v12 = v4;
+    v12 = identifierCopy;
     v13 = &v17;
     v11[4] = self;
-    v7 = v4;
+    v7 = identifierCopy;
     dispatch_sync(internalQueue, v11);
     v8 = v18[5];
     v9 = v12;
@@ -394,10 +394,10 @@ void __38__NMSMediaPinningManager_downloadInfo__block_invoke_2(uint64_t a1)
     block[1] = 3221225472;
     block[2] = __58__NMSMediaPinningManager_downloadInfoForBundleIdentifier___block_invoke;
     block[3] = &unk_27993E548;
-    v15 = v4;
+    v15 = identifierCopy;
     v16 = &v17;
     block[4] = self;
-    v7 = v4;
+    v7 = identifierCopy;
     dispatch_sync(internalQueue, block);
     v8 = v18[5];
     v9 = v15;
@@ -426,34 +426,34 @@ void __58__NMSMediaPinningManager_downloadInfoForBundleIdentifier___block_invoke
   *(v3 + 40) = v2;
 }
 
-- (BOOL)isItemGroupWithinQuota:(id)a3
+- (BOOL)isItemGroupWithinQuota:(id)quota
 {
-  v4 = a3;
+  quotaCopy = quota;
   if ([(NMSMediaPinningManager *)self _deviceSupportsPodcastsPinningSettingsV2])
   {
     v5 = [(NMSMediaPinningManager *)self _quotaManagerWithDownloadedItemsOnly:0];
-    v6 = [v5 downloadInfoWithinQuota];
+    downloadInfoWithinQuota = [v5 downloadInfoWithinQuota];
 
-    v7 = [[NMSItemGroupEnumerator alloc] initWithItemGroup:v4];
-    v8 = [(NMSItemGroupEnumerator *)v7 nextItem];
-    if (v8)
+    v7 = [[NMSItemGroupEnumerator alloc] initWithItemGroup:quotaCopy];
+    nextItem = [(NMSItemGroupEnumerator *)v7 nextItem];
+    if (nextItem)
     {
-      v9 = v8;
+      v9 = nextItem;
       do
       {
-        v10 = [v6 containsItem:v9];
+        v10 = [downloadInfoWithinQuota containsItem:v9];
         v11 = v10;
         if (!v10)
         {
           break;
         }
 
-        v12 = [(NMSItemGroupEnumerator *)v7 nextItem];
+        nextItem2 = [(NMSItemGroupEnumerator *)v7 nextItem];
 
-        v9 = v12;
+        v9 = nextItem2;
       }
 
-      while (v12);
+      while (nextItem2);
     }
 
     else
@@ -475,7 +475,7 @@ void __58__NMSMediaPinningManager_downloadInfoForBundleIdentifier___block_invoke
     block[3] = &unk_27993E548;
     v17 = &v18;
     block[4] = self;
-    v16 = v4;
+    v16 = quotaCopy;
     dispatch_sync(internalQueue, block);
     v11 = *(v19 + 24);
 
@@ -623,17 +623,17 @@ void __56__NMSMediaPinningManager_podcastsUpNextDownloadSettings__block_invoke(u
   *(v3 + 40) = v2;
 }
 
-- (void)setPodcastsUpNextDownloadSettings:(id)a3
+- (void)setPodcastsUpNextDownloadSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__NMSMediaPinningManager_setPodcastsUpNextDownloadSettings___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = settingsCopy;
+  selfCopy = self;
+  v6 = settingsCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -678,17 +678,17 @@ void __63__NMSMediaPinningManager_podcastsSavedEpisodesDownloadSettings__block_i
   *(v3 + 40) = v2;
 }
 
-- (void)setPodcastsSavedEpisodesDownloadSettings:(id)a3
+- (void)setPodcastsSavedEpisodesDownloadSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__NMSMediaPinningManager_setPodcastsSavedEpisodesDownloadSettings___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = settingsCopy;
+  selfCopy = self;
+  v6 = settingsCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -702,9 +702,9 @@ void __67__NMSMediaPinningManager_setPodcastsSavedEpisodesDownloadSettings___blo
   [*(a1 + 40) _invalidateMediaCacheForAppIdentifiers:2];
 }
 
-- (id)podcastsDownloadSettingsForStationUUID:(id)a3
+- (id)podcastsDownloadSettingsForStationUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -717,9 +717,9 @@ void __67__NMSMediaPinningManager_setPodcastsSavedEpisodesDownloadSettings___blo
   block[2] = __65__NMSMediaPinningManager_podcastsDownloadSettingsForStationUUID___block_invoke;
   block[3] = &unk_27993E598;
   block[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(internalQueue, block);
   v7 = v13[5];
 
@@ -739,20 +739,20 @@ void __65__NMSMediaPinningManager_podcastsDownloadSettingsForStationUUID___block
   *(v4 + 40) = v3;
 }
 
-- (void)setPodcastsDownloadSettings:(id)a3 forStationUUID:(id)a4
+- (void)setPodcastsDownloadSettings:(id)settings forStationUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  dCopy = d;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__NMSMediaPinningManager_setPodcastsDownloadSettings_forStationUUID___block_invoke;
   block[3] = &unk_27993E5C0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = settingsCopy;
+  selfCopy = self;
+  v14 = dCopy;
+  v9 = dCopy;
+  v10 = settingsCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -794,7 +794,7 @@ void __69__NMSMediaPinningManager_setPodcastsDownloadSettings_forStationUUID___b
     v10 = 3221225472;
     v11 = __54__NMSMediaPinningManager_podcastsSelectedStationUUIDs__block_invoke_2;
     v12 = &unk_27993E570;
-    v13 = self;
+    selfCopy = self;
     v14 = v3;
     v5 = v3;
     dispatch_sync(internalQueue, &v9);
@@ -857,9 +857,9 @@ void __54__NMSMediaPinningManager_podcastsSelectedStationUUIDs__block_invoke_3(u
   }
 }
 
-- (id)podcastsDownloadSettingsForShowFeedURL:(id)a3
+- (id)podcastsDownloadSettingsForShowFeedURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -872,9 +872,9 @@ void __54__NMSMediaPinningManager_podcastsSelectedStationUUIDs__block_invoke_3(u
   block[2] = __65__NMSMediaPinningManager_podcastsDownloadSettingsForShowFeedURL___block_invoke;
   block[3] = &unk_27993E598;
   block[4] = self;
-  v10 = v4;
+  v10 = lCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = lCopy;
   dispatch_sync(internalQueue, block);
   v7 = v13[5];
 
@@ -894,20 +894,20 @@ void __65__NMSMediaPinningManager_podcastsDownloadSettingsForShowFeedURL___block
   *(v4 + 40) = v3;
 }
 
-- (void)setPodcastsDownloadSettings:(id)a3 forShowFeedURL:(id)a4
+- (void)setPodcastsDownloadSettings:(id)settings forShowFeedURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  lCopy = l;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__NMSMediaPinningManager_setPodcastsDownloadSettings_forShowFeedURL___block_invoke;
   block[3] = &unk_27993E5C0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = settingsCopy;
+  selfCopy = self;
+  v14 = lCopy;
+  v9 = lCopy;
+  v10 = settingsCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -949,7 +949,7 @@ void __69__NMSMediaPinningManager_setPodcastsDownloadSettings_forShowFeedURL___b
     v10 = 3221225472;
     v11 = __54__NMSMediaPinningManager_podcastsSelectedShowFeedURLs__block_invoke_2;
     v12 = &unk_27993E570;
-    v13 = self;
+    selfCopy = self;
     v14 = v3;
     v5 = v3;
     dispatch_sync(internalQueue, &v9);
@@ -1038,14 +1038,14 @@ uint64_t __50__NMSMediaPinningManager_pinnedPodcastsAreUserSet__block_invoke(uin
   return result;
 }
 
-- (void)setPinnedPodcastsAreUserSet:(BOOL)a3
+- (void)setPinnedPodcastsAreUserSet:(BOOL)set
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __54__NMSMediaPinningManager_setPinnedPodcastsAreUserSet___block_invoke;
   v4[3] = &unk_27993E610;
-  v5 = a3;
+  setCopy = set;
   v4[4] = self;
   dispatch_async(internalQueue, v4);
 }
@@ -1078,10 +1078,10 @@ uint64_t __54__NMSMediaPinningManager_setPinnedPodcastsAreUserSet___block_invoke
 {
   if ([(NMSMediaPinningManager *)self _deviceSupportsPodcastsPinningSettingsV2])
   {
-    v3 = [(NMSMediaPinningManager *)self podcastsSavedEpisodesDownloadSettings];
-    v4 = [v3 isEnabled];
+    podcastsSavedEpisodesDownloadSettings = [(NMSMediaPinningManager *)self podcastsSavedEpisodesDownloadSettings];
+    isEnabled = [podcastsSavedEpisodesDownloadSettings isEnabled];
 
-    return v4;
+    return isEnabled;
   }
 
   else
@@ -1116,14 +1116,14 @@ uint64_t __46__NMSMediaPinningManager_savedEpisodesEnabled__block_invoke(uint64_
   return result;
 }
 
-- (void)setSavedEpisodesEnabled:(BOOL)a3
+- (void)setSavedEpisodesEnabled:(BOOL)enabled
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __50__NMSMediaPinningManager_setSavedEpisodesEnabled___block_invoke;
   v4[3] = &unk_27993E610;
-  v5 = a3;
+  enabledCopy = enabled;
   v4[4] = self;
   dispatch_async(internalQueue, v4);
 }
@@ -1154,18 +1154,18 @@ uint64_t __50__NMSMediaPinningManager_setSavedEpisodesEnabled___block_invoke(uin
 
 - (NSArray)podcastFeedURLs
 {
-  v2 = [(NMSMediaPinningManager *)self podcastsSelectedShowFeedURLs];
-  v3 = [v2 allObjects];
+  podcastsSelectedShowFeedURLs = [(NMSMediaPinningManager *)self podcastsSelectedShowFeedURLs];
+  allObjects = [podcastsSelectedShowFeedURLs allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)podcastStationUUIDs
 {
-  v2 = [(NMSMediaPinningManager *)self podcastsSelectedStationUUIDs];
-  v3 = [v2 allObjects];
+  podcastsSelectedStationUUIDs = [(NMSMediaPinningManager *)self podcastsSelectedStationUUIDs];
+  allObjects = [podcastsSelectedStationUUIDs allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (void)_refreshPodcastsIdentifiers
@@ -1236,8 +1236,8 @@ uint64_t __50__NMSMediaPinningManager_setSavedEpisodesEnabled___block_invoke(uin
     objc_storeStrong(p_cachedShowDownloadSettings, v5);
     if (((HIDWORD(v22) | v22 | v15) & 1) != 0 || v20)
     {
-      v21 = [MEMORY[0x277CCA9A0] defaultCenter];
-      [v21 postNotificationName:@"NMSMediaPinningManagerPodcastsIdentifiersDidChangeNotification" object:0];
+      defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+      [defaultCenter postNotificationName:@"NMSMediaPinningManagerPodcastsIdentifiersDidChangeNotification" object:0];
     }
   }
 
@@ -1248,17 +1248,17 @@ uint64_t __50__NMSMediaPinningManager_setSavedEpisodesEnabled___block_invoke(uin
   }
 }
 
-- (void)pinPodcastWithFeedURL:(id)a3
+- (void)pinPodcastWithFeedURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__NMSMediaPinningManager_pinPodcastWithFeedURL___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = lCopy;
+  selfCopy = self;
+  v6 = lCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -1287,17 +1287,17 @@ void __48__NMSMediaPinningManager_pinPodcastWithFeedURL___block_invoke(uint64_t 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unpinPodcastWithFeedURL:(id)a3
+- (void)unpinPodcastWithFeedURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__NMSMediaPinningManager_unpinPodcastWithFeedURL___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = lCopy;
+  selfCopy = self;
+  v6 = lCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -1326,17 +1326,17 @@ void __50__NMSMediaPinningManager_unpinPodcastWithFeedURL___block_invoke(uint64_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pinPodcastStationWithUUID:(id)a3
+- (void)pinPodcastStationWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__NMSMediaPinningManager_pinPodcastStationWithUUID___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dCopy;
+  selfCopy = self;
+  v6 = dCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -1365,17 +1365,17 @@ void __52__NMSMediaPinningManager_pinPodcastStationWithUUID___block_invoke(uint6
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unpinPodcastStationWithUUID:(id)a3
+- (void)unpinPodcastStationWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__NMSMediaPinningManager_unpinPodcastStationWithUUID___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dCopy;
+  selfCopy = self;
+  v6 = dCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -1515,14 +1515,14 @@ uint64_t __45__NMSMediaPinningManager_isWantToReadEnabled__block_invoke(uint64_t
   return result;
 }
 
-- (void)setWantToReadEnabled:(BOOL)a3
+- (void)setWantToReadEnabled:(BOOL)enabled
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __47__NMSMediaPinningManager_setWantToReadEnabled___block_invoke;
   v4[3] = &unk_27993E610;
-  v5 = a3;
+  enabledCopy = enabled;
   v4[4] = self;
   dispatch_async(internalQueue, v4);
 }
@@ -1583,17 +1583,17 @@ void __46__NMSMediaPinningManager_wantToReadAudiobooks__block_invoke(uint64_t a1
   *(v4 + 40) = v3;
 }
 
-- (void)setWantToReadAudiobooks:(id)a3
+- (void)setWantToReadAudiobooks:(id)audiobooks
 {
-  v4 = a3;
+  audiobooksCopy = audiobooks;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__NMSMediaPinningManager_setWantToReadAudiobooks___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = audiobooksCopy;
+  selfCopy = self;
+  v6 = audiobooksCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -1659,14 +1659,14 @@ uint64_t __45__NMSMediaPinningManager_isReadingNowEnabled__block_invoke(uint64_t
   return result;
 }
 
-- (void)setReadingNowEnabled:(BOOL)a3
+- (void)setReadingNowEnabled:(BOOL)enabled
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __47__NMSMediaPinningManager_setReadingNowEnabled___block_invoke;
   v4[3] = &unk_27993E610;
-  v5 = a3;
+  enabledCopy = enabled;
   v4[4] = self;
   dispatch_async(internalQueue, v4);
 }
@@ -1727,17 +1727,17 @@ void __46__NMSMediaPinningManager_readingNowAudiobooks__block_invoke(uint64_t a1
   *(v4 + 40) = v3;
 }
 
-- (void)setReadingNowAudiobooks:(id)a3
+- (void)setReadingNowAudiobooks:(id)audiobooks
 {
-  v4 = a3;
+  audiobooksCopy = audiobooks;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__NMSMediaPinningManager_setReadingNowAudiobooks___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = audiobooksCopy;
+  selfCopy = self;
+  v6 = audiobooksCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -1809,9 +1809,9 @@ void __42__NMSMediaPinningManager_pinnedAudiobooks__block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-- (BOOL)isAudiobookPinned:(id)a3
+- (BOOL)isAudiobookPinned:(id)pinned
 {
-  v4 = a3;
+  pinnedCopy = pinned;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1821,10 +1821,10 @@ void __42__NMSMediaPinningManager_pinnedAudiobooks__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __44__NMSMediaPinningManager_isAudiobookPinned___block_invoke;
   block[3] = &unk_27993E548;
-  v9 = v4;
+  v9 = pinnedCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = pinnedCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v12 + 24);
 
@@ -1839,17 +1839,17 @@ uint64_t __44__NMSMediaPinningManager_isAudiobookPinned___block_invoke(uint64_t 
   return result;
 }
 
-- (void)pinAudiobook:(id)a3
+- (void)pinAudiobook:(id)audiobook
 {
-  v4 = a3;
+  audiobookCopy = audiobook;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__NMSMediaPinningManager_pinAudiobook___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = audiobookCopy;
+  selfCopy = self;
+  v6 = audiobookCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -1876,17 +1876,17 @@ void __39__NMSMediaPinningManager_pinAudiobook___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unpinAudiobook:(id)a3
+- (void)unpinAudiobook:(id)audiobook
 {
-  v4 = a3;
+  audiobookCopy = audiobook;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__NMSMediaPinningManager_unpinAudiobook___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = audiobookCopy;
+  selfCopy = self;
+  v6 = audiobookCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -1939,14 +1939,14 @@ uint64_t __48__NMSMediaPinningManager_audiobookDownloadLimit__block_invoke(uint6
   return result;
 }
 
-- (void)setAudiobookDownloadLimit:(double)a3
+- (void)setAudiobookDownloadLimit:(double)limit
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __52__NMSMediaPinningManager_setAudiobookDownloadLimit___block_invoke;
   v4[3] = &unk_27993E520;
-  *&v4[5] = a3;
+  *&v4[5] = limit;
   v4[4] = self;
   dispatch_async(internalQueue, v4);
 }
@@ -1984,16 +1984,16 @@ void __52__NMSMediaPinningManager_setAudiobookDownloadLimit___block_invoke(uint6
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_tokenForInstance:(id)a3
++ (id)_tokenForInstance:(id)instance
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v9[0] = @"Instance";
   v9[1] = @"Date";
-  v10[0] = a3;
+  v10[0] = instance;
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  v5 = [v3 date];
-  v10[1] = v5;
+  instanceCopy = instance;
+  date = [v3 date];
+  v10[1] = date;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -2005,9 +2005,9 @@ void __52__NMSMediaPinningManager_setAudiobookDownloadLimit___block_invoke(uint6
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = +[NMSyncDefaults sharedDefaults];
-  v4 = [v3 clientPinningSettingsToken];
+  clientPinningSettingsToken = [v3 clientPinningSettingsToken];
 
-  v5 = [v4 objectForKeyedSubscript:@"Instance"];
+  v5 = [clientPinningSettingsToken objectForKeyedSubscript:@"Instance"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -2016,7 +2016,7 @@ void __52__NMSMediaPinningManager_setAudiobookDownloadLimit___block_invoke(uint6
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v5, "unsignedLongLongValue") + 1}];
-  v7 = [a1 _tokenForInstance:v6];
+  v7 = [self _tokenForInstance:v6];
   v8 = NMLogForCategory(5);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2038,17 +2038,17 @@ void __52__NMSMediaPinningManager_setAudiobookDownloadLimit___block_invoke(uint6
   [v2 _persistNewClientToken];
 }
 
-- (void)_handleMusicPinningSelectionsDidChangeNotification:(id)a3
+- (void)_handleMusicPinningSelectionsDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__NMSMediaPinningManager__handleMusicPinningSelectionsDidChangeNotification___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -2091,17 +2091,17 @@ uint64_t __77__NMSMediaPinningManager__handleMusicPinningSelectionsDidChangeNoti
   return result;
 }
 
-- (void)_handlePodcastsPinningSelectionsDidChangeNotification:(id)a3
+- (void)_handlePodcastsPinningSelectionsDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__NMSMediaPinningManager__handlePodcastsPinningSelectionsDidChangeNotification___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -2137,17 +2137,17 @@ void __80__NMSMediaPinningManager__handlePodcastsPinningSelectionsDidChangeNotif
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAudiobooksPinningSelectionsDidChangeNotification:(id)a3
+- (void)_handleAudiobooksPinningSelectionsDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __82__NMSMediaPinningManager__handleAudiobooksPinningSelectionsDidChangeNotification___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -2190,17 +2190,17 @@ uint64_t __82__NMSMediaPinningManager__handleAudiobooksPinningSelectionsDidChang
   return result;
 }
 
-- (void)_handleAudiobooksRecommendationsDidChangeNotification:(id)a3
+- (void)_handleAudiobooksRecommendationsDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__NMSMediaPinningManager__handleAudiobooksRecommendationsDidChangeNotification___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -2243,17 +2243,17 @@ uint64_t __80__NMSMediaPinningManager__handleAudiobooksRecommendationsDidChangeN
   return result;
 }
 
-- (void)_handleRecommendationLibraryContentsDidChangeNotification:(id)a3
+- (void)_handleRecommendationLibraryContentsDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__NMSMediaPinningManager__handleRecommendationLibraryContentsDidChangeNotification___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -2274,17 +2274,17 @@ uint64_t __84__NMSMediaPinningManager__handleRecommendationLibraryContentsDidCha
   return result;
 }
 
-- (void)_handleRecommendationsDidUpdateNotification:(id)a3
+- (void)_handleRecommendationsDidUpdateNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__NMSMediaPinningManager__handleRecommendationsDidUpdateNotification___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -2305,17 +2305,17 @@ uint64_t __70__NMSMediaPinningManager__handleRecommendationsDidUpdateNotificatio
   return result;
 }
 
-- (void)_handleMediaLibraryDidChangeNotification:(id)a3
+- (void)_handleMediaLibraryDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__NMSMediaPinningManager__handleMediaLibraryDidChangeNotification___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -2336,17 +2336,17 @@ uint64_t __67__NMSMediaPinningManager__handleMediaLibraryDidChangeNotification__
   return result;
 }
 
-- (void)_handleMediaLibraryDynamicPropertiesDidChangeNotification:(id)a3
+- (void)_handleMediaLibraryDynamicPropertiesDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__NMSMediaPinningManager__handleMediaLibraryDynamicPropertiesDidChangeNotification___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -2367,17 +2367,17 @@ uint64_t __84__NMSMediaPinningManager__handleMediaLibraryDynamicPropertiesDidCha
   return result;
 }
 
-- (void)_handlePodcastSizeInfoDidChangeNotification:(id)a3
+- (void)_handlePodcastSizeInfoDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__NMSMediaPinningManager__handlePodcastSizeInfoDidChangeNotification___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -2398,17 +2398,17 @@ uint64_t __70__NMSMediaPinningManager__handlePodcastSizeInfoDidChangeNotificatio
   return result;
 }
 
-- (void)_handleICAgeVerificationStateDidChangeNotification:(id)a3
+- (void)_handleICAgeVerificationStateDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__NMSMediaPinningManager__handleICAgeVerificationStateDidChangeNotification___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -2429,17 +2429,17 @@ uint64_t __77__NMSMediaPinningManager__handleICAgeVerificationStateDidChangeNoti
   return result;
 }
 
-- (void)_handleRecommendationSelectionsDidChangeNotification:(id)a3
+- (void)_handleRecommendationSelectionsDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__NMSMediaPinningManager__handleRecommendationSelectionsDidChangeNotification___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -2475,17 +2475,17 @@ void __79__NMSMediaPinningManager__handleRecommendationSelectionsDidChangeNotifi
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handlePairedDeviceDidBecomeActiveNotification:(id)a3
+- (void)_handlePairedDeviceDidBecomeActiveNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__NMSMediaPinningManager__handlePairedDeviceDidBecomeActiveNotification___block_invoke;
   v7[3] = &unk_27993E570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -2506,7 +2506,7 @@ uint64_t __73__NMSMediaPinningManager__handlePairedDeviceDidBecomeActiveNotifica
   return result;
 }
 
-- (void)_handleMediaPinningMusicContentsInvalidatedNotification:(id)a3
+- (void)_handleMediaPinningMusicContentsInvalidatedNotification:(id)notification
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2538,7 +2538,7 @@ void __82__NMSMediaPinningManager__handleMediaPinningMusicContentsInvalidatedNot
   [v2 postNotificationName:@"NMSMediaPinningMusicContentsInvalidatedNotification" object:*(a1 + 32)];
 }
 
-- (void)_handleMediaPinningPodcastsContentsInvalidatedNotification:(id)a3
+- (void)_handleMediaPinningPodcastsContentsInvalidatedNotification:(id)notification
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2565,7 +2565,7 @@ void __85__NMSMediaPinningManager__handleMediaPinningPodcastsContentsInvalidated
   [v2 postNotificationName:@"NMSMediaPinningPodcastsContentsInvalidatedNotification" object:*(a1 + 32)];
 }
 
-- (void)_handleMediaPinningAudiobooksContentsInvalidatedNotification:(id)a3
+- (void)_handleMediaPinningAudiobooksContentsInvalidatedNotification:(id)notification
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2597,7 +2597,7 @@ void __87__NMSMediaPinningManager__handleMediaPinningAudiobooksContentsInvalidat
   [v2 postNotificationName:@"NMSMediaPinningAudiobooksContentsInvalidatedNotification" object:*(a1 + 32)];
 }
 
-- (void)_handleMediaPinningManagerMusicIdentifiersDidChangeNotification:(id)a3
+- (void)_handleMediaPinningManagerMusicIdentifiersDidChangeNotification:(id)notification
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2629,7 +2629,7 @@ void __90__NMSMediaPinningManager__handleMediaPinningManagerMusicIdentifiersDidC
   [v2 postNotificationName:@"NMSMediaPinningManagerMusicIdentifiersDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_handleMediaPinningManagerPodcastsIdentifiersDidChangeNotification:(id)a3
+- (void)_handleMediaPinningManagerPodcastsIdentifiersDidChangeNotification:(id)notification
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2656,7 +2656,7 @@ void __93__NMSMediaPinningManager__handleMediaPinningManagerPodcastsIdentifiersD
   [v2 postNotificationName:@"NMSMediaPinningManagerPodcastsIdentifiersDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_handleMediaPinningManagerAudiobooksIdentifiersDidChangeNotification:(id)a3
+- (void)_handleMediaPinningManagerAudiobooksIdentifiersDidChangeNotification:(id)notification
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -2688,9 +2688,9 @@ void __95__NMSMediaPinningManager__handleMediaPinningManagerAudiobooksIdentifier
   [v2 postNotificationName:@"NMSMediaPinningManagerAudiobooksIdentifiersDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)downloadableContentProviderDidChangeContent:(id)a3
+- (void)downloadableContentProviderDidChangeContent:(id)content
 {
-  if (self->_podcastsDownloadableContentProvider == a3)
+  if (self->_podcastsDownloadableContentProvider == content)
   {
     block[5] = v3;
     block[6] = v4;
@@ -2704,36 +2704,36 @@ void __95__NMSMediaPinningManager__handleMediaPinningManagerAudiobooksIdentifier
   }
 }
 
-- (id)_newMusicEnumeratorWithDownloadedItemsOnly:(BOOL)a3
+- (id)_newMusicEnumeratorWithDownloadedItemsOnly:(BOOL)only
 {
-  v71 = a3;
+  onlyCopy = only;
   v94 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(NMSMediaPinningManager *)self _shouldIncludeMusicManualDownloadsInQuotaEvaluation])
   {
-    v5 = [(NMSyncDefaults *)self->_sharedDefaults workoutPlaylistID];
+    workoutPlaylistID = [(NMSyncDefaults *)self->_sharedDefaults workoutPlaylistID];
     v6 = NMLogForCategory(5);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v93 = v5;
+      v93 = workoutPlaylistID;
       _os_log_impl(&dword_25B27B000, v6, OS_LOG_TYPE_DEFAULT, "_quotaManager (Music containers) workoutPlaylistID: %{public}@", buf, 0xCu);
     }
 
-    if ([v5 longLongValue])
+    if ([workoutPlaylistID longLongValue])
     {
       v7 = [NMSItemGroupEnumerator alloc];
-      v8 = [NMSMediaItemGroup itemGroupWithSyncedPlaylistID:v5 downloadedItemsOnly:v71];
+      v8 = [NMSMediaItemGroup itemGroupWithSyncedPlaylistID:workoutPlaylistID downloadedItemsOnly:onlyCopy];
       v9 = [(NMSItemGroupEnumerator *)v7 initWithItemGroup:v8];
-      [v4 addObject:v9];
+      [array addObject:v9];
     }
 
-    v10 = [(NMSyncDefaults *)self->_sharedDefaults pinnedPlaylists];
+    pinnedPlaylists = [(NMSyncDefaults *)self->_sharedDefaults pinnedPlaylists];
     v11 = NMLogForCategory(5);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v93 = v10;
+      v93 = pinnedPlaylists;
       _os_log_impl(&dword_25B27B000, v11, OS_LOG_TYPE_DEFAULT, "_quotaManager (Music containers) pinnedPlaylists %{public}@", buf, 0xCu);
     }
 
@@ -2741,7 +2741,7 @@ void __95__NMSMediaPinningManager__handleMediaPinningManagerAudiobooksIdentifier
     v87 = 0u;
     v84 = 0u;
     v85 = 0u;
-    v12 = v10;
+    v12 = pinnedPlaylists;
     v13 = [v12 countByEnumeratingWithState:&v84 objects:v91 count:16];
     if (v13)
     {
@@ -2758,9 +2758,9 @@ void __95__NMSMediaPinningManager__handleMediaPinningManagerAudiobooksIdentifier
 
           v17 = *(*(&v84 + 1) + 8 * i);
           v18 = [NMSItemGroupEnumerator alloc];
-          v19 = [NMSMediaItemGroup itemGroupWithSyncedPlaylistID:v17 downloadedItemsOnly:v71];
+          v19 = [NMSMediaItemGroup itemGroupWithSyncedPlaylistID:v17 downloadedItemsOnly:onlyCopy];
           v20 = [(NMSItemGroupEnumerator *)v18 initWithItemGroup:v19];
-          [v4 addObject:v20];
+          [array addObject:v20];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v84 objects:v91 count:16];
@@ -2769,12 +2769,12 @@ void __95__NMSMediaPinningManager__handleMediaPinningManagerAudiobooksIdentifier
       while (v14);
     }
 
-    v21 = [(NMSyncDefaults *)self->_sharedDefaults pinnedAlbums];
+    pinnedAlbums = [(NMSyncDefaults *)self->_sharedDefaults pinnedAlbums];
     v22 = NMLogForCategory(5);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v93 = v21;
+      v93 = pinnedAlbums;
       _os_log_impl(&dword_25B27B000, v22, OS_LOG_TYPE_DEFAULT, "_quotaManager (Music containers) pinnedAlbums %{public}@", buf, 0xCu);
     }
 
@@ -2782,7 +2782,7 @@ void __95__NMSMediaPinningManager__handleMediaPinningManagerAudiobooksIdentifier
     v83 = 0u;
     v80 = 0u;
     v81 = 0u;
-    v23 = v21;
+    v23 = pinnedAlbums;
     v24 = [v23 countByEnumeratingWithState:&v80 objects:v90 count:16];
     if (v24)
     {
@@ -2799,9 +2799,9 @@ void __95__NMSMediaPinningManager__handleMediaPinningManagerAudiobooksIdentifier
 
           v28 = *(*(&v80 + 1) + 8 * j);
           v29 = [NMSItemGroupEnumerator alloc];
-          v30 = [NMSMediaItemGroup itemGroupWithSyncedAlbumID:v28 downloadedItemsOnly:v71];
+          v30 = [NMSMediaItemGroup itemGroupWithSyncedAlbumID:v28 downloadedItemsOnly:onlyCopy];
           v31 = [(NMSItemGroupEnumerator *)v29 initWithItemGroup:v30];
-          [v4 addObject:v31];
+          [array addObject:v31];
         }
 
         v25 = [v23 countByEnumeratingWithState:&v80 objects:v90 count:16];
@@ -2811,13 +2811,13 @@ void __95__NMSMediaPinningManager__handleMediaPinningManagerAudiobooksIdentifier
     }
   }
 
-  v32 = [objc_opt_class() _fetchMusicRecommendations];
-  v33 = [MEMORY[0x277CBEB18] array];
+  _fetchMusicRecommendations = [objc_opt_class() _fetchMusicRecommendations];
+  array2 = [MEMORY[0x277CBEB18] array];
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  obj = v32;
+  obj = _fetchMusicRecommendations;
   v34 = [obj countByEnumeratingWithState:&v76 objects:v89 count:16];
   if (v34)
   {
@@ -2836,27 +2836,27 @@ void __95__NMSMediaPinningManager__handleMediaPinningManagerAudiobooksIdentifier
         }
 
         v39 = *(*(&v76 + 1) + 8 * v38);
-        v40 = [v39 identifier];
-        if ([v40 isEqualToString:NMSRecommendationLibraryPinsIdentifier])
+        identifier = [v39 identifier];
+        if ([identifier isEqualToString:NMSRecommendationLibraryPinsIdentifier])
         {
 
 LABEL_33:
-          [v33 addObject:v39];
+          [array2 addObject:v39];
           goto LABEL_34;
         }
 
-        v41 = [v39 identifier];
-        v42 = [v41 isEqualToString:NMSRecommendationRecentMusicIdentifier];
+        identifier2 = [v39 identifier];
+        v42 = [identifier2 isEqualToString:NMSRecommendationRecentMusicIdentifier];
 
         if (v42)
         {
           goto LABEL_33;
         }
 
-        v43 = [v39 isSelected];
+        isSelected = [v39 isSelected];
         v44 = NMLogForCategory(5);
         v45 = os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT);
-        if (v43)
+        if (isSelected)
         {
           if (v45)
           {
@@ -2866,9 +2866,9 @@ LABEL_33:
           }
 
           v46 = [NMSItemGroupEnumerator alloc];
-          v47 = [NMSMediaItemGroup itemGroupWithRecommendation:v39 downloadedItemsOnly:v71];
+          v47 = [NMSMediaItemGroup itemGroupWithRecommendation:v39 downloadedItemsOnly:onlyCopy];
           v48 = [(NMSItemGroupEnumerator *)v46 initWithItemGroup:v47];
-          [v4 addObject:v48];
+          [array addObject:v48];
         }
 
         else
@@ -2897,7 +2897,7 @@ LABEL_34:
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v50 = v33;
+  v50 = array2;
   v51 = [v50 countByEnumeratingWithState:&v72 objects:v88 count:16];
   if (v51)
   {
@@ -2915,10 +2915,10 @@ LABEL_34:
         }
 
         v56 = *(*(&v72 + 1) + 8 * k);
-        v57 = [v56 isSelected];
+        isSelected2 = [v56 isSelected];
         v58 = NMLogForCategory(5);
         v59 = os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT);
-        if (v57)
+        if (isSelected2)
         {
           if (v59)
           {
@@ -2928,9 +2928,9 @@ LABEL_34:
           }
 
           v60 = [NMSItemGroupEnumerator alloc];
-          v58 = [NMSMediaItemGroup itemGroupWithRecommendation:v56 downloadedItemsOnly:v71];
+          v58 = [NMSMediaItemGroup itemGroupWithRecommendation:v56 downloadedItemsOnly:onlyCopy];
           v61 = [(NMSItemGroupEnumerator *)v60 initWithItemGroup:v58];
-          [v4 addObject:v61];
+          [array addObject:v61];
         }
 
         else if (v59)
@@ -2948,38 +2948,38 @@ LABEL_34:
   }
 
   v62 = [NMSSequentialItemEnumerator alloc];
-  v63 = v4;
-  v64 = [v4 copy];
+  v63 = array;
+  v64 = [array copy];
   v65 = [(NMSSequentialItemEnumerator *)v62 initWithItemEnumerators:v64];
 
   v66 = *MEMORY[0x277D85DE8];
   return v65;
 }
 
-- (id)_newAudiobooksEnumeratorWithDownloadedItemsOnly:(BOOL)a3
+- (id)_newAudiobooksEnumeratorWithDownloadedItemsOnly:(BOOL)only
 {
-  v47 = a3;
+  onlyCopy = only;
   v65 = *MEMORY[0x277D85DE8];
   v4 = NMLogForCategory(5);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(NMSyncDefaults *)self->_sharedDefaults wantToReadEnabled];
-    v6 = [(NMSyncDefaults *)self->_sharedDefaults readingNowEnabled];
+    wantToReadEnabled = [(NMSyncDefaults *)self->_sharedDefaults wantToReadEnabled];
+    readingNowEnabled = [(NMSyncDefaults *)self->_sharedDefaults readingNowEnabled];
     *buf = 67109376;
-    *v64 = v5;
+    *v64 = wantToReadEnabled;
     *&v64[4] = 1024;
-    *&v64[6] = v6;
+    *&v64[6] = readingNowEnabled;
     _os_log_impl(&dword_25B27B000, v4, OS_LOG_TYPE_DEFAULT, "_quotaManager (Audiobooks containers) wantToReadEnabled: %x, readingNowEnabled: %x", buf, 0xEu);
   }
 
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   [(NMSMediaPinningManager *)self _audiobookDownloadLimit];
   v9 = v8;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v43 = self;
+  selfCopy = self;
   obj = [(NMSyncDefaults *)self->_sharedDefaults pinnedAudiobooks];
   v10 = [obj countByEnumeratingWithState:&v56 objects:v62 count:16];
   if (v10)
@@ -2997,9 +2997,9 @@ LABEL_34:
 
         v14 = *(*(&v56 + 1) + 8 * i);
         v15 = [NMSItemGroupEnumerator alloc];
-        v16 = [NMSMediaItemGroup itemGroupWithAudiobookIdentifier:v14 downloadLimit:v9 manuallyAdded:0 downloadedItemsOnly:v47];
+        v16 = [NMSMediaItemGroup itemGroupWithAudiobookIdentifier:v14 downloadLimit:v9 manuallyAdded:0 downloadedItemsOnly:onlyCopy];
         v17 = [(NMSItemGroupEnumerator *)v15 initWithItemGroup:v16];
-        [v7 addObject:v17];
+        [array addObject:v17];
 
         v18 = NMLogForCategory(5);
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -3016,14 +3016,14 @@ LABEL_34:
     while (v11);
   }
 
-  v19 = v43;
-  if ([(NMSyncDefaults *)v43->_sharedDefaults readingNowEnabled])
+  v19 = selfCopy;
+  if ([(NMSyncDefaults *)selfCopy->_sharedDefaults readingNowEnabled])
   {
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    obja = [(NMSyncDefaults *)v43->_sharedDefaults readingNowAudiobooks];
+    obja = [(NMSyncDefaults *)selfCopy->_sharedDefaults readingNowAudiobooks];
     v20 = [obja countByEnumeratingWithState:&v52 objects:v61 count:16];
     if (v20)
     {
@@ -3040,9 +3040,9 @@ LABEL_34:
 
           v24 = *(*(&v52 + 1) + 8 * j);
           v25 = [NMSItemGroupEnumerator alloc];
-          v26 = [NMSMediaItemGroup itemGroupWithAudiobookIdentifier:v24 downloadLimit:v9 manuallyAdded:0 downloadedItemsOnly:v47];
+          v26 = [NMSMediaItemGroup itemGroupWithAudiobookIdentifier:v24 downloadLimit:v9 manuallyAdded:0 downloadedItemsOnly:onlyCopy];
           v27 = [(NMSItemGroupEnumerator *)v25 initWithItemGroup:v26];
-          [v7 addObject:v27];
+          [array addObject:v27];
 
           v28 = NMLogForCategory(5);
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -3059,7 +3059,7 @@ LABEL_34:
       while (v21);
     }
 
-    v19 = v43;
+    v19 = selfCopy;
   }
 
   if ([(NMSyncDefaults *)v19->_sharedDefaults wantToReadEnabled])
@@ -3085,9 +3085,9 @@ LABEL_34:
 
           v33 = *(*(&v48 + 1) + 8 * k);
           v34 = [NMSItemGroupEnumerator alloc];
-          v35 = [NMSMediaItemGroup itemGroupWithAudiobookIdentifier:v33 downloadLimit:v9 manuallyAdded:0 downloadedItemsOnly:v47];
+          v35 = [NMSMediaItemGroup itemGroupWithAudiobookIdentifier:v33 downloadLimit:v9 manuallyAdded:0 downloadedItemsOnly:onlyCopy];
           v36 = [(NMSItemGroupEnumerator *)v34 initWithItemGroup:v35];
-          [v7 addObject:v36];
+          [array addObject:v36];
 
           v37 = NMLogForCategory(5);
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -3106,7 +3106,7 @@ LABEL_34:
   }
 
   v38 = [NMSSequentialItemEnumerator alloc];
-  v39 = [v7 copy];
+  v39 = [array copy];
   v40 = [(NMSSequentialItemEnumerator *)v38 initWithItemEnumerators:v39];
 
   v41 = *MEMORY[0x277D85DE8];
@@ -3197,16 +3197,16 @@ void __59__NMSMediaPinningManager__shouldCalculateCachedIdentifiers__block_invok
   self->_legacy_downloadedItemsQuotaManager = 0;
 }
 
-- (void)_invalidateMediaCacheForAppIdentifiers:(unint64_t)a3
+- (void)_invalidateMediaCacheForAppIdentifiers:(unint64_t)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   dispatch_assert_queue_V2(self->_internalQueue);
   if (![(NMSMediaPinningManager *)self _shouldSkipQuotaManagerEvaluation])
   {
     [(NMSMediaPinningManager *)self _invalidateAddedItemsCache];
     if ([(NMSMediaPinningManager *)self _shouldCalculateCachedIdentifiers])
     {
-      if (v3)
+      if (identifiersCopy)
       {
         v5 = NMLogForCategory(5);
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -3216,13 +3216,13 @@ void __59__NMSMediaPinningManager__shouldCalculateCachedIdentifiers__block_invok
         }
 
         [(NMSMediaPinningManager *)self _refreshMusicIdentifiers];
-        v6 = [MEMORY[0x277CCA9A0] defaultCenter];
-        [v6 postNotificationName:@"NMSMediaPinningMusicContentsInvalidatedNotification" object:0];
+        defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+        [defaultCenter postNotificationName:@"NMSMediaPinningMusicContentsInvalidatedNotification" object:0];
 
-        if ((v3 & 2) == 0)
+        if ((identifiersCopy & 2) == 0)
         {
 LABEL_5:
-          if ((v3 & 4) == 0)
+          if ((identifiersCopy & 4) == 0)
           {
 LABEL_16:
             block[0] = MEMORY[0x277D85DD0];
@@ -3243,14 +3243,14 @@ LABEL_13:
           }
 
           [(NMSMediaPinningManager *)self _refreshAudiobooksIdentifiers];
-          v10 = [MEMORY[0x277CCA9A0] defaultCenter];
-          [v10 postNotificationName:@"NMSMediaPinningAudiobooksContentsInvalidatedNotification" object:0];
+          defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+          [defaultCenter2 postNotificationName:@"NMSMediaPinningAudiobooksContentsInvalidatedNotification" object:0];
 
           goto LABEL_16;
         }
       }
 
-      else if ((v3 & 2) == 0)
+      else if ((identifiersCopy & 2) == 0)
       {
         goto LABEL_5;
       }
@@ -3263,10 +3263,10 @@ LABEL_13:
       }
 
       [(NMSMediaPinningManager *)self _refreshPodcastsIdentifiers];
-      v8 = [MEMORY[0x277CCA9A0] defaultCenter];
-      [v8 postNotificationName:@"NMSMediaPinningPodcastsContentsInvalidatedNotification" object:0];
+      defaultCenter3 = [MEMORY[0x277CCA9A0] defaultCenter];
+      [defaultCenter3 postNotificationName:@"NMSMediaPinningPodcastsContentsInvalidatedNotification" object:0];
 
-      if ((v3 & 4) == 0)
+      if ((identifiersCopy & 4) == 0)
       {
         goto LABEL_16;
       }
@@ -3282,35 +3282,35 @@ void __65__NMSMediaPinningManager__invalidateMediaCacheForAppIdentifiers___block
   [v2 postNotificationName:@"NMSMediaPinningManagerDownloadInfoDidInvalidateNotification" object:*(a1 + 32)];
 }
 
-- (BOOL)_isAlbumPinned:(id)a3
+- (BOOL)_isAlbumPinned:(id)pinned
 {
   internalQueue = self->_internalQueue;
-  v5 = a3;
+  pinnedCopy = pinned;
   dispatch_assert_queue_V2(internalQueue);
-  v6 = [(NMSyncDefaults *)self->_sharedDefaults pinnedAlbums];
-  LOBYTE(internalQueue) = [v6 containsObject:v5];
+  pinnedAlbums = [(NMSyncDefaults *)self->_sharedDefaults pinnedAlbums];
+  LOBYTE(internalQueue) = [pinnedAlbums containsObject:pinnedCopy];
 
   return internalQueue;
 }
 
-- (BOOL)_isPlaylistPinned:(id)a3
+- (BOOL)_isPlaylistPinned:(id)pinned
 {
   internalQueue = self->_internalQueue;
-  v5 = a3;
+  pinnedCopy = pinned;
   dispatch_assert_queue_V2(internalQueue);
-  v6 = [(NMSyncDefaults *)self->_sharedDefaults pinnedPlaylists];
-  LOBYTE(internalQueue) = [v6 containsObject:v5];
+  pinnedPlaylists = [(NMSyncDefaults *)self->_sharedDefaults pinnedPlaylists];
+  LOBYTE(internalQueue) = [pinnedPlaylists containsObject:pinnedCopy];
 
   return internalQueue;
 }
 
-- (BOOL)_isAudiobookPinned:(id)a3
+- (BOOL)_isAudiobookPinned:(id)pinned
 {
   internalQueue = self->_internalQueue;
-  v5 = a3;
+  pinnedCopy = pinned;
   dispatch_assert_queue_V2(internalQueue);
-  v6 = [(NMSyncDefaults *)self->_sharedDefaults pinnedAudiobooks];
-  LOBYTE(internalQueue) = [v6 containsObject:v5];
+  pinnedAudiobooks = [(NMSyncDefaults *)self->_sharedDefaults pinnedAudiobooks];
+  LOBYTE(internalQueue) = [pinnedAudiobooks containsObject:pinnedCopy];
 
   return internalQueue;
 }
@@ -3318,11 +3318,11 @@ void __65__NMSMediaPinningManager__invalidateMediaCacheForAppIdentifiers___block
 - (double)_audiobookDownloadLimit
 {
   dispatch_assert_queue_V2(self->_internalQueue);
-  v3 = [(NMSyncDefaults *)self->_sharedDefaults audiobookDownloadLimit];
-  if (v3)
+  audiobookDownloadLimit = [(NMSyncDefaults *)self->_sharedDefaults audiobookDownloadLimit];
+  if (audiobookDownloadLimit)
   {
-    v4 = [(NMSyncDefaults *)self->_sharedDefaults audiobookDownloadLimit];
-    [v4 doubleValue];
+    audiobookDownloadLimit2 = [(NMSyncDefaults *)self->_sharedDefaults audiobookDownloadLimit];
+    [audiobookDownloadLimit2 doubleValue];
     v6 = v5;
   }
 
@@ -3336,8 +3336,8 @@ void __65__NMSMediaPinningManager__invalidateMediaCacheForAppIdentifiers___block
 
 + (id)_cachedPlaylistIdentifiersFilePath
 {
-  v2 = [a1 _cachedIdentifiersDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"playlists"];
+  _cachedIdentifiersDirectoryPath = [self _cachedIdentifiersDirectoryPath];
+  v3 = [_cachedIdentifiersDirectoryPath stringByAppendingPathComponent:@"playlists"];
   v4 = [v3 stringByAppendingString:@".plist"];
 
   return v4;
@@ -3345,8 +3345,8 @@ void __65__NMSMediaPinningManager__invalidateMediaCacheForAppIdentifiers___block
 
 + (id)_cachedAlbumIdentifiersFilePath
 {
-  v2 = [a1 _cachedIdentifiersDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"albums"];
+  _cachedIdentifiersDirectoryPath = [self _cachedIdentifiersDirectoryPath];
+  v3 = [_cachedIdentifiersDirectoryPath stringByAppendingPathComponent:@"albums"];
   v4 = [v3 stringByAppendingString:@".plist"];
 
   return v4;
@@ -3354,8 +3354,8 @@ void __65__NMSMediaPinningManager__invalidateMediaCacheForAppIdentifiers___block
 
 + (id)_cachedAudiobookIdentifiersFilePath
 {
-  v2 = [a1 _cachedIdentifiersDirectoryPath];
-  v3 = [v2 stringByAppendingPathComponent:@"audiobooks"];
+  _cachedIdentifiersDirectoryPath = [self _cachedIdentifiersDirectoryPath];
+  v3 = [_cachedIdentifiersDirectoryPath stringByAppendingPathComponent:@"audiobooks"];
   v4 = [v3 stringByAppendingString:@".plist"];
 
   return v4;
@@ -3393,15 +3393,15 @@ void __57__NMSMediaPinningManager__cachedIdentifiersDirectoryPath__block_invoke(
 
 + (unint64_t)_mediaStorageSizeForCurrentDevice
 {
-  v2 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
-  v4 = [v3 valueForProperty:*MEMORY[0x277D2BC28]];
+  v4 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BC28]];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 unsignedLongLongValue];
-    _mediaStorageSizeForCurrentDevice_totalCapacity = v6;
+    unsignedLongLongValue = [v4 unsignedLongLongValue];
+    _mediaStorageSizeForCurrentDevice_totalCapacity = unsignedLongLongValue;
   }
 
   else
@@ -3412,11 +3412,11 @@ void __57__NMSMediaPinningManager__cachedIdentifiersDirectoryPath__block_invoke(
       +[NMSMediaPinningManager _mediaStorageSizeForCurrentDevice];
     }
 
-    v6 = _mediaStorageSizeForCurrentDevice_totalCapacity;
+    unsignedLongLongValue = _mediaStorageSizeForCurrentDevice_totalCapacity;
   }
 
   v8 = 16000000000;
-  if (v6 <= 0x3B9ACA000 && (v8 = 8000000000, v6 <= 0x1DCD65000))
+  if (unsignedLongLongValue <= 0x3B9ACA000 && (v8 = 8000000000, unsignedLongLongValue <= 0x1DCD65000))
   {
     v8 = _mediaStorageSizeForCurrentDevice_mediaStorageSize;
   }
@@ -3447,9 +3447,9 @@ void __57__NMSMediaPinningManager__cachedIdentifiersDirectoryPath__block_invoke(
     self->_mediaQuota = v7;
   }
 
-  v9 = [(NSNumber *)self->_mediaQuota unsignedLongLongValue];
+  unsignedLongLongValue = [(NSNumber *)self->_mediaQuota unsignedLongLongValue];
 
-  return v9;
+  return unsignedLongLongValue;
 }
 
 + (id)_fetchMusicRecommendations
@@ -3735,9 +3735,9 @@ uint64_t __41__NMSMediaPinningManager_pinnedPlaylists__block_invoke_2(uint64_t a
   return v4;
 }
 
-- (BOOL)isAlbumPinned:(id)a3
+- (BOOL)isAlbumPinned:(id)pinned
 {
-  v4 = a3;
+  pinnedCopy = pinned;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -3747,10 +3747,10 @@ uint64_t __41__NMSMediaPinningManager_pinnedPlaylists__block_invoke_2(uint64_t a
   block[1] = 3221225472;
   block[2] = __40__NMSMediaPinningManager_isAlbumPinned___block_invoke;
   block[3] = &unk_27993E548;
-  v9 = v4;
+  v9 = pinnedCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = pinnedCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v12 + 24);
 
@@ -3765,9 +3765,9 @@ uint64_t __40__NMSMediaPinningManager_isAlbumPinned___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)isPlaylistPinned:(id)a3
+- (BOOL)isPlaylistPinned:(id)pinned
 {
-  v4 = a3;
+  pinnedCopy = pinned;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -3777,10 +3777,10 @@ uint64_t __40__NMSMediaPinningManager_isAlbumPinned___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __43__NMSMediaPinningManager_isPlaylistPinned___block_invoke;
   block[3] = &unk_27993E548;
-  v9 = v4;
+  v9 = pinnedCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = pinnedCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v12 + 24);
 
@@ -3795,20 +3795,20 @@ uint64_t __43__NMSMediaPinningManager_isPlaylistPinned___block_invoke(uint64_t a
   return result;
 }
 
-- (void)pinAlbum:(id)a3 completionHandler:(id)a4
+- (void)pinAlbum:(id)album completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  albumCopy = album;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__NMSMediaPinningManager_pinAlbum_completionHandler___block_invoke;
   block[3] = &unk_27993DE68;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = albumCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = albumCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -3839,20 +3839,20 @@ void __53__NMSMediaPinningManager_pinAlbum_completionHandler___block_invoke(uint
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pinPlaylist:(id)a3 completionHandler:(id)a4
+- (void)pinPlaylist:(id)playlist completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  playlistCopy = playlist;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__NMSMediaPinningManager_pinPlaylist_completionHandler___block_invoke;
   block[3] = &unk_27993DE68;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = playlistCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = playlistCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -3907,20 +3907,20 @@ uint64_t __56__NMSMediaPinningManager_pinPlaylist_completionHandler___block_invo
   return result;
 }
 
-- (void)unpinAlbum:(id)a3 completionHandler:(id)a4
+- (void)unpinAlbum:(id)album completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  albumCopy = album;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__NMSMediaPinningManager_unpinAlbum_completionHandler___block_invoke;
   block[3] = &unk_27993DE68;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = albumCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = albumCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -3951,20 +3951,20 @@ void __55__NMSMediaPinningManager_unpinAlbum_completionHandler___block_invoke(ui
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unpinPlaylist:(id)a3 completionHandler:(id)a4
+- (void)unpinPlaylist:(id)playlist completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  playlistCopy = playlist;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__NMSMediaPinningManager_unpinPlaylist_completionHandler___block_invoke;
   block[3] = &unk_27993DE68;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = playlistCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = playlistCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -3995,20 +3995,20 @@ void __58__NMSMediaPinningManager_unpinPlaylist_completionHandler___block_invoke
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_playlistPIDValidForPinning:(id)a3
++ (BOOL)_playlistPIDValidForPinning:(id)pinning
 {
   v26[5] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pinningCopy = pinning;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  if ([v3 longLongValue])
+  if ([pinningCopy longLongValue])
   {
-    v4 = [MEMORY[0x277D2B5C0] predicateWithProperty:*MEMORY[0x277D2B498] value:v3 comparison:1];
+    v4 = [MEMORY[0x277D2B5C0] predicateWithProperty:*MEMORY[0x277D2B498] value:pinningCopy comparison:1];
     v5 = MEMORY[0x277D2B5C8];
-    v6 = [MEMORY[0x277D2B5F8] autoupdatingSharedLibrary];
-    v7 = [v5 unrestrictedQueryWithLibrary:v6 predicate:v4 orderingTerms:0];
+    autoupdatingSharedLibrary = [MEMORY[0x277D2B5F8] autoupdatingSharedLibrary];
+    v7 = [v5 unrestrictedQueryWithLibrary:autoupdatingSharedLibrary predicate:v4 orderingTerms:0];
 
     v20 = 0;
     v21[0] = &v20;
@@ -4028,7 +4028,7 @@ void __58__NMSMediaPinningManager_unpinPlaylist_completionHandler___block_invoke
     v16[2] = __54__NMSMediaPinningManager__playlistPIDValidForPinning___block_invoke;
     v16[3] = &unk_27993E6B0;
     v18 = &v20;
-    v11 = v3;
+    v11 = pinningCopy;
     v17 = v11;
     v19 = &v22;
     [v7 enumeratePersistentIDsAndProperties:v10 usingBlock:v16];
@@ -4097,14 +4097,14 @@ void __54__NMSMediaPinningManager__playlistPIDValidForPinning___block_invoke(voi
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWorkoutSettingsPlaylistPIDTo:(id)a3
+- (void)_updateWorkoutSettingsPlaylistPIDTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   v3 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.nanolifestyle.sessiontrackerapp"];
-  if ([v7 longLongValue])
+  if ([toCopy longLongValue])
   {
     [v3 setBool:1 forKey:@"EnableMusicAutoStart"];
-    [v3 setObject:v7 forKey:@"MusicPlaylistPersistentID"];
+    [v3 setObject:toCopy forKey:@"MusicPlaylistPersistentID"];
   }
 
   else
@@ -4113,22 +4113,22 @@ void __54__NMSMediaPinningManager__playlistPIDValidForPinning___block_invoke(voi
     [v3 removeObjectForKey:@"MusicPlaylistPersistentID"];
   }
 
-  v4 = [v3 synchronize];
+  synchronize = [v3 synchronize];
   v5 = objc_alloc_init(MEMORY[0x277D2BA60]);
   v6 = [MEMORY[0x277CBEB98] setWithObject:@"MusicPlaylistPersistentID"];
   [v5 synchronizeNanoDomain:@"com.apple.nanolifestyle.sessiontrackerapp" keys:v6];
 }
 
-- (void)_setWorkoutPlaylistID:(id)a3
+- (void)_setWorkoutPlaylistID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v6 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-  v7 = [v5 getAllDevicesWithArchivedAltAccountDevicesMatching:v6];
-  v8 = [v7 firstObject];
+  dCopy = d;
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  activePairedDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+  v7 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
+  firstObject = [v7 firstObject];
   v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"06FB3B8E-7CE9-4C98-A47E-87BCCCB70EC1"];
-  v10 = [v8 supportsCapability:v9];
+  v10 = [firstObject supportsCapability:v9];
 
   if (v10)
   {
@@ -4136,15 +4136,15 @@ void __54__NMSMediaPinningManager__playlistPIDValidForPinning___block_invoke(voi
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v23 = v4;
+      v23 = dCopy;
       _os_log_impl(&dword_25B27B000, v11, OS_LOG_TYPE_DEFAULT, "Setting workoutPlaylistID <%{public}@>", buf, 0xCu);
     }
 
-    [(NMSyncDefaults *)self->_sharedDefaults setWorkoutPlaylistID:v4];
-    [(NMSMediaPinningManager *)self _updateWorkoutSettingsPlaylistPIDTo:v4];
-    if (v4)
+    [(NMSyncDefaults *)self->_sharedDefaults setWorkoutPlaylistID:dCopy];
+    [(NMSMediaPinningManager *)self _updateWorkoutSettingsPlaylistPIDTo:dCopy];
+    if (dCopy)
     {
-      v12 = [MEMORY[0x277CD5EF0] nms_modelObjectWithLibraryPersistentID:{objc_msgSend(v4, "integerValue")}];
+      v12 = [MEMORY[0x277CD5EF0] nms_modelObjectWithLibraryPersistentID:{objc_msgSend(dCopy, "integerValue")}];
       v13 = objc_alloc_init(NMSKeepLocalRequestOptions);
       [(NMSKeepLocalRequestOptions *)v13 setRequiresValidation:0];
       [(NMSKeepLocalRequestOptions *)v13 setPowerPolicy:2];
@@ -4156,16 +4156,16 @@ void __54__NMSMediaPinningManager__playlistPIDValidForPinning___block_invoke(voi
       v20[1] = 3221225472;
       v20[2] = __48__NMSMediaPinningManager__setWorkoutPlaylistID___block_invoke;
       v20[3] = &unk_27993E6D8;
-      v21 = v4;
+      v21 = dCopy;
       [v14 performWithOptions:v13 completion:v20];
     }
   }
 
   else
   {
-    if ([v4 longLongValue])
+    if ([dCopy longLongValue])
     {
-      v15 = [objc_opt_class() _playlistPIDValidForPinning:v4];
+      v15 = [objc_opt_class() _playlistPIDValidForPinning:dCopy];
     }
 
     else
@@ -4183,7 +4183,7 @@ void __54__NMSMediaPinningManager__playlistPIDValidForPinning___block_invoke(voi
       }
 
       *buf = 138543618;
-      v23 = v4;
+      v23 = dCopy;
       v24 = 2112;
       v25 = v17;
       _os_log_impl(&dword_25B27B000, v16, OS_LOG_TYPE_DEFAULT, "[Pinning Validation] setWorkoutPlaylistID: <%{public}@>, valid: %@", buf, 0x16u);
@@ -4195,12 +4195,12 @@ void __54__NMSMediaPinningManager__playlistPIDValidForPinning___block_invoke(voi
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v23 = v4;
+        v23 = dCopy;
         _os_log_impl(&dword_25B27B000, v18, OS_LOG_TYPE_DEFAULT, "Setting workoutPlaylistID <%{public}@>", buf, 0xCu);
       }
 
-      [(NMSyncDefaults *)self->_sharedDefaults setWorkoutPlaylistID:v4];
-      [(NMSMediaPinningManager *)self _updateWorkoutSettingsPlaylistPIDTo:v4];
+      [(NMSyncDefaults *)self->_sharedDefaults setWorkoutPlaylistID:dCopy];
+      [(NMSMediaPinningManager *)self _updateWorkoutSettingsPlaylistPIDTo:dCopy];
       [(NMSMediaPinningManager *)self _invalidateMediaCacheForAppIdentifiers:1];
     }
   }
@@ -4221,28 +4221,28 @@ void __48__NMSMediaPinningManager__setWorkoutPlaylistID___block_invoke(uint64_t 
   }
 }
 
-- (void)setWorkoutPlaylistID:(id)a3
+- (void)setWorkoutPlaylistID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__NMSMediaPinningManager_setWorkoutPlaylistID___block_invoke;
   v7[3] = &unk_27993E570;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(internalQueue, v7);
 }
 
 - (BOOL)_deviceSupportsPodcastsPinningSettingsV2
 {
-  v2 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v3 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-  v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  activePairedDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+  v4 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
+  firstObject = [v4 firstObject];
   v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"D718E4BE-8067-432E-AF41-7342473499D5"];
-  v7 = [v5 supportsCapability:v6];
+  v7 = [firstObject supportsCapability:v6];
 
   return v7;
 }
@@ -4286,9 +4286,9 @@ LABEL_9:
     }
   }
 
-  v14 = [objc_opt_class() _cachedAlbumIdentifiersFilePath];
+  _cachedAlbumIdentifiersFilePath = [objc_opt_class() _cachedAlbumIdentifiersFilePath];
   v15 = 1;
-  [v11 writeToFile:v14 atomically:1];
+  [v11 writeToFile:_cachedAlbumIdentifiersFilePath atomically:1];
 
   objc_storeStrong(&self->_cachedAlbumIdentifiers, v5);
 LABEL_10:
@@ -4317,8 +4317,8 @@ LABEL_10:
         }
       }
 
-      v23 = [objc_opt_class() _cachedPlaylistIdentifiersFilePath];
-      [v20 writeToFile:v23 atomically:1];
+      _cachedPlaylistIdentifiersFilePath = [objc_opt_class() _cachedPlaylistIdentifiersFilePath];
+      [v20 writeToFile:_cachedPlaylistIdentifiersFilePath atomically:1];
 
       objc_storeStrong(p_cachedPlaylistIdentifiers, v7);
       goto LABEL_19;
@@ -4328,8 +4328,8 @@ LABEL_10:
   if (v15)
   {
 LABEL_19:
-    v24 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v24 postNotificationName:@"NMSMediaPinningManagerMusicIdentifiersDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter postNotificationName:@"NMSMediaPinningManagerMusicIdentifiersDidChangeNotification" object:0];
   }
 }
 
@@ -4337,9 +4337,9 @@ LABEL_19:
 {
   dispatch_assert_queue_V2(self->_internalQueue);
   obj = [(NMSyncDefaults *)self->_sharedDefaults pinnedPodcastFeedURLs];
-  v3 = [(NMSyncDefaults *)self->_sharedDefaults pinnedPodcastStationUUIDs];
-  v4 = [(NMSyncDefaults *)self->_sharedDefaults savedEpisodesEnabled];
-  v5 = [(NMSyncDefaults *)self->_sharedDefaults pinnedPodcastsAreUserSet];
+  pinnedPodcastStationUUIDs = [(NMSyncDefaults *)self->_sharedDefaults pinnedPodcastStationUUIDs];
+  savedEpisodesEnabled = [(NMSyncDefaults *)self->_sharedDefaults savedEpisodesEnabled];
+  pinnedPodcastsAreUserSet = [(NMSyncDefaults *)self->_sharedDefaults pinnedPodcastsAreUserSet];
   v6 = self->_legacy_cachedPodcastFeedURLs;
   v7 = v6;
   if (v6 == obj)
@@ -4354,26 +4354,26 @@ LABEL_19:
 
   v9 = self->_legacy_cachedPodcastStationUUIDs;
   v10 = v9;
-  if (v9 == v3)
+  if (v9 == pinnedPodcastStationUUIDs)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = [(NSArray *)v9 isEqual:v3]^ 1;
+    v11 = [(NSArray *)v9 isEqual:pinnedPodcastStationUUIDs]^ 1;
   }
 
   legacy_cachedSavedEpisodesEnabled = self->_legacy_cachedSavedEpisodesEnabled;
   legacy_cachedPinnedPodcastsAreUserSet = self->_legacy_cachedPinnedPodcastsAreUserSet;
   objc_storeStrong(&self->_legacy_cachedPodcastFeedURLs, obj);
-  objc_storeStrong(&self->_legacy_cachedPodcastStationUUIDs, v3);
-  self->_legacy_cachedSavedEpisodesEnabled = v4;
-  self->_legacy_cachedPinnedPodcastsAreUserSet = v5;
-  if (((v8 | v11) & 1) != 0 || legacy_cachedSavedEpisodesEnabled != v4 || legacy_cachedPinnedPodcastsAreUserSet != v5)
+  objc_storeStrong(&self->_legacy_cachedPodcastStationUUIDs, pinnedPodcastStationUUIDs);
+  self->_legacy_cachedSavedEpisodesEnabled = savedEpisodesEnabled;
+  self->_legacy_cachedPinnedPodcastsAreUserSet = pinnedPodcastsAreUserSet;
+  if (((v8 | v11) & 1) != 0 || legacy_cachedSavedEpisodesEnabled != savedEpisodesEnabled || legacy_cachedPinnedPodcastsAreUserSet != pinnedPodcastsAreUserSet)
   {
-    v14 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v14 postNotificationName:@"NMSMediaPinningManagerPodcastsIdentifiersDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter postNotificationName:@"NMSMediaPinningManagerPodcastsIdentifiersDidChangeNotification" object:0];
   }
 }
 
@@ -4418,12 +4418,12 @@ LABEL_8:
       }
     }
 
-    v14 = [objc_opt_class() _cachedAudiobookIdentifiersFilePath];
-    [v12 writeToFile:v14 atomically:1];
+    _cachedAudiobookIdentifiersFilePath = [objc_opt_class() _cachedAudiobookIdentifiersFilePath];
+    [v12 writeToFile:_cachedAudiobookIdentifiersFilePath atomically:1];
 
     objc_storeStrong(p_cachedAudiobookIdentifiers, v6);
-    v15 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v15 postNotificationName:@"NMSMediaPinningManagerAudiobooksIdentifiersDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter postNotificationName:@"NMSMediaPinningManagerAudiobooksIdentifiersDidChangeNotification" object:0];
 
     goto LABEL_8;
   }
@@ -4468,10 +4468,10 @@ void __51__NMSMediaPinningManager__legacy_musicIsOutOfSpace__block_invoke(uint64
 
 - (void)extensionAccessDidChange
 {
-  v3 = [MEMORY[0x277D3DAF0] sharedInstance];
-  v4 = [v3 isReady];
+  mEMORY[0x277D3DAF0] = [MEMORY[0x277D3DAF0] sharedInstance];
+  isReady = [mEMORY[0x277D3DAF0] isReady];
 
-  if (v4)
+  if (isReady)
   {
     v5 = NMLogForCategory(5);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -4484,7 +4484,7 @@ void __51__NMSMediaPinningManager__legacy_musicIsOutOfSpace__block_invoke(uint64
   }
 }
 
-- (void)podcastsDownloadableContentControllerContentDidChange:(id)a3
+- (void)podcastsDownloadableContentControllerContentDidChange:(id)change
 {
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];

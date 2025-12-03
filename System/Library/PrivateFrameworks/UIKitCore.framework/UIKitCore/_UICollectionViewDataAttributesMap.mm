@@ -1,43 +1,43 @@
 @interface _UICollectionViewDataAttributesMap
-- (__n128)indexesOfItemsInRect:(float64_t)a3;
-- (void)_setItemAttributes:(uint64_t)a3 forGlobalItemIndex:;
-- (void)_validateLayoutInRect:(CGFloat)a3;
-- (void)initWithCollectionViewData:(void *)a1;
+- (__n128)indexesOfItemsInRect:(float64_t)rect;
+- (void)_setItemAttributes:(uint64_t)attributes forGlobalItemIndex:;
+- (void)_validateLayoutInRect:(CGFloat)rect;
+- (void)initWithCollectionViewData:(void *)data;
 - (void)invalidate;
-- (void)pageInLayoutAttributes:(uint64_t)a3 forGlobalItemIndex:;
+- (void)pageInLayoutAttributes:(uint64_t)attributes forGlobalItemIndex:;
 @end
 
 @implementation _UICollectionViewDataAttributesMap
 
 - (void)invalidate
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(_UICollectionViewRTree);
-    v3 = *(a1 + 8);
-    *(a1 + 8) = v2;
+    v3 = *(self + 8);
+    *(self + 8) = v2;
 
     v4 = *(MEMORY[0x1E695F058] + 16);
-    *(a1 + 48) = *MEMORY[0x1E695F058];
-    *(a1 + 64) = v4;
-    v5 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    *(self + 48) = *MEMORY[0x1E695F058];
+    *(self + 64) = v4;
+    v5 = *(self + 32);
+    *(self + 32) = 0;
 
-    objc_storeStrong((a1 + 24), *(a1 + 32));
-    v6 = *(a1 + 24);
+    objc_storeStrong((self + 24), *(self + 32));
+    v6 = *(self + 24);
 
-    objc_storeStrong((a1 + 16), v6);
+    objc_storeStrong((self + 16), v6);
   }
 }
 
-- (void)initWithCollectionViewData:(void *)a1
+- (void)initWithCollectionViewData:(void *)data
 {
-  if (!a1)
+  if (!data)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = data;
   v8.super_class = _UICollectionViewDataAttributesMap;
   v3 = objc_msgSendSuper2(&v8, sel_init);
   v4 = v3;
@@ -52,21 +52,21 @@
   return v4;
 }
 
-- (void)_validateLayoutInRect:(CGFloat)a3
+- (void)_validateLayoutInRect:(CGFloat)rect
 {
   v110 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v10 = *(a1 + 48);
-    v11 = *(a1 + 56);
-    v13 = *(a1 + 64);
-    v12 = *(a1 + 72);
+    v10 = *(self + 48);
+    v11 = *(self + 56);
+    v13 = *(self + 64);
+    v12 = *(self + 72);
     v111.origin.x = v10;
     v111.origin.y = v11;
     v111.size.width = v13;
     v111.size.height = v12;
     v133.origin.x = a2;
-    v133.origin.y = a3;
+    v133.origin.y = rect;
     v133.size.width = a4;
     v133.size.height = a5;
     if (CGRectContainsRect(v111, v133))
@@ -81,7 +81,7 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v112.origin.x = a2;
-        v112.origin.y = a3;
+        v112.origin.y = rect;
         v112.size.width = a4;
         v112.size.height = a5;
         v16 = NSStringFromCGRect(v112);
@@ -91,7 +91,7 @@
         v113.size.height = v12;
         v17 = NSStringFromCGRect(v113);
         *buf = 134218498;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         v102 = 2112;
         v103 = v16;
         v104 = 2112;
@@ -102,7 +102,7 @@
       goto LABEL_75;
     }
 
-    v18 = *(a1 + 40);
+    v18 = *(self + 40);
     v15 = v18;
     if (!v18)
     {
@@ -123,7 +123,7 @@ LABEL_75:
     [WeakRetained _visibleBounds];
     v83 = v21;
     v23 = v22;
-    v24 = *(a1 + 40);
+    v24 = *(self + 40);
     v89 = v11;
     v90 = v12;
     v88 = v13;
@@ -145,35 +145,35 @@ LABEL_75:
 
       v92 = v27;
       v114.origin.x = a2;
-      v114.origin.y = a3;
+      v114.origin.y = rect;
       v114.size.width = a4;
       v114.size.height = a5;
       MinX = CGRectGetMinX(v114);
       v115.origin.x = v82 * floor(a2 / v82);
       rect[1] = *&v115.origin.x;
-      v115.origin.y = a3;
+      v115.origin.y = rect;
       v115.size.width = a4;
       v115.size.height = a5;
       v30 = v82 * ceil((a4 + MinX - CGRectGetMinX(v115)) / v82);
       *&v116.origin.x = rect[1];
-      v116.origin.y = a3;
+      v116.origin.y = rect;
       v116.size.width = v30;
       v116.size.height = a5;
       if (CGRectGetMaxX(v116) > v92 && (dyld_program_sdk_at_least() & 1) == 0)
       {
         *&v117.origin.x = rect[1];
-        v117.origin.y = a3;
+        v117.origin.y = rect;
         v117.size.width = v30;
         v117.size.height = a5;
         v30 = v30 - (CGRectGetMaxX(v117) - v92);
       }
 
       v118.origin.x = a2;
-      v118.origin.y = a3;
+      v118.origin.y = rect;
       v118.size.width = a4;
       v118.size.height = a5;
       MinY = CGRectGetMinY(v118);
-      v119.origin.y = v83 * floor(a3 / v83);
+      v119.origin.y = v83 * floor(rect / v83);
       *&v119.origin.x = rect[1];
       y = v119.origin.y;
       v119.size.width = v30;
@@ -201,20 +201,20 @@ LABEL_75:
         v33 = *&rect[1];
       }
 
-      v35 = y;
+      rectCopy = y;
     }
 
     else
     {
       v34 = a5;
       v32 = a4;
-      v35 = a3;
+      rectCopy = rect;
       v33 = a2;
     }
 
     *&rect[1] = v33;
     v121.origin.x = v33;
-    v121.origin.y = v35;
+    v121.origin.y = rectCopy;
     v121.size.width = v32;
     v121.size.height = v34;
     IsEmpty = CGRectIsEmpty(v121);
@@ -234,7 +234,7 @@ LABEL_75:
           if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
           {
             v122.origin.x = a2;
-            v122.origin.y = a3;
+            v122.origin.y = rect;
             v122.size.width = a4;
             v122.size.height = a5;
             v43 = NSStringFromCGRect(v122);
@@ -244,7 +244,7 @@ LABEL_75:
             v123.size.height = v90;
             v44 = NSStringFromCGRect(v123);
             *buf = 134218498;
-            *&buf[4] = a1;
+            *&buf[4] = self;
             v102 = 2112;
             v103 = v43;
             v104 = 2112;
@@ -263,17 +263,17 @@ LABEL_74:
 
     v45 = v32;
     *&v134.origin.x = rect[1];
-    v46 = v35;
-    v134.origin.y = v35;
+    v46 = rectCopy;
+    v134.origin.y = rectCopy;
     v134.size.width = v45;
     v134.size.height = v34;
-    v124 = CGRectUnion(*(a1 + 48), v134);
+    v124 = CGRectUnion(*(self + 48), v134);
     v85 = v124.origin.y;
     x = v124.origin.x;
     height = v124.size.height;
     width = v124.size.width;
     *&v124.origin.x = rect[1];
-    v124.origin.y = v35;
+    v124.origin.y = rectCopy;
     v124.size.width = v45;
     v124.size.height = v34;
     *&v135.origin.x = rect[0];
@@ -289,13 +289,13 @@ LABEL_74:
         if (os_log_type_enabled(v77, OS_LOG_TYPE_ERROR))
         {
           v129.origin.x = a2;
-          v129.origin.y = a3;
+          v129.origin.y = rect;
           v129.size.width = a4;
           v129.size.height = a5;
           v78 = NSStringFromCGRect(v129);
           *&v130.origin.x = rect[1];
           v130.size.height = v34;
-          v130.origin.y = v35;
+          v130.origin.y = rectCopy;
           v130.size.width = v45;
           v79 = NSStringFromCGRect(v130);
           *&v131.origin.x = rect[0];
@@ -309,7 +309,7 @@ LABEL_74:
           v132.size.width = width;
           v81 = NSStringFromCGRect(v132);
           *buf = 134219010;
-          *&buf[4] = a1;
+          *&buf[4] = self;
           v102 = 2112;
           v103 = v78;
           v104 = 2112;
@@ -321,14 +321,14 @@ LABEL_74:
           _os_log_impl(&dword_188A29000, v77, OS_LOG_TYPE_ERROR, "_rTreeValidate: map: %p; for query: %@, fault rect (%@) intersects with valid rect (%@). Using union (%@)", buf, 0x34u);
         }
 
-        v46 = v35;
+        v46 = rectCopy;
       }
 
       if (dyld_program_sdk_at_least())
       {
         *&v50.f64[0] = rect[1];
         v51.f64[0] = v45;
-        [(_UICollectionViewRTree *)*(a1 + 8) removeAttributesWithFramesIntersectingFrame:v50, v46, v51, v34];
+        [(_UICollectionViewRTree *)*(self + 8) removeAttributesWithFramesIntersectingFrame:v50, v46, v51, v34];
       }
     }
 
@@ -341,7 +341,7 @@ LABEL_74:
         if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
         {
           v126.origin.x = a2;
-          v126.origin.y = a3;
+          v126.origin.y = rect;
           v126.size.width = a4;
           v126.size.height = a5;
           v74 = NSStringFromCGRect(v126);
@@ -352,11 +352,11 @@ LABEL_74:
           v75 = NSStringFromCGRect(v127);
           *&v128.origin.x = rect[1];
           v128.size.height = v34;
-          v128.origin.y = v35;
+          v128.origin.y = rectCopy;
           v128.size.width = v45;
           v76 = NSStringFromCGRect(v128);
           *buf = 134218754;
-          *&buf[4] = a1;
+          *&buf[4] = self;
           v102 = 2112;
           v103 = v74;
           v104 = 2112;
@@ -365,13 +365,13 @@ LABEL_74:
           v107 = v76;
           _os_log_impl(&dword_188A29000, v73, OS_LOG_TYPE_ERROR, "_rTreeValidate: map: %p; Reinitialising rTree for query: %@; currentValidLayoutRect: %@; fault rect: %@.", buf, 0x2Au);
 
-          v46 = v35;
+          v46 = rectCopy;
         }
       }
 
       v53 = objc_alloc_init(_UICollectionViewRTree);
-      v54 = *(a1 + 8);
-      *(a1 + 8) = v53;
+      v54 = *(self + 8);
+      *(self + 8) = v53;
 
       v85 = v46;
       x = *&rect[1];
@@ -379,10 +379,10 @@ LABEL_74:
       width = v45;
     }
 
-    *(a1 + 48) = x;
-    *(a1 + 56) = v85;
-    *(a1 + 64) = width;
-    *(a1 + 72) = height;
+    *(self + 48) = x;
+    *(self + 56) = v85;
+    *(self + 64) = width;
+    *(self + 72) = height;
     [(UICollectionViewData *)v15 _layoutAttributesForElementsInRectForMapping:v46, v45, v34];
     v97 = 0u;
     v98 = 0u;
@@ -429,12 +429,12 @@ LABEL_45:
           v64 = v63;
         }
 
-        v65 = *(a1 + v64);
+        v65 = *(self + v64);
         if (!v65)
         {
           v69 = [MEMORY[0x1E695DF70] arrayWithObject:*(rect[4] + 8 * v57)];
-          v70 = *(a1 + v64);
-          *(a1 + v64) = v69;
+          v70 = *(self + v64);
+          *(self + v64) = v69;
 LABEL_69:
 
           goto LABEL_70;
@@ -445,11 +445,11 @@ LABEL_69:
 
       else
       {
-        v60 = [(UICollectionViewLayoutAttributes *)*(rect[4] + 8 * v57) __indexPath];
-        v61 = v60;
+        __indexPath = [(UICollectionViewLayoutAttributes *)*(rect[4] + 8 * v57) __indexPath];
+        v61 = __indexPath;
         if (v58 && (v58[288] & 1) != 0)
         {
-          if (![(UICollectionViewData *)v15 _isIndexPathValid:v60 validateItemCounts:0])
+          if (![(UICollectionViewData *)v15 _isIndexPathValid:__indexPath validateItemCounts:0])
           {
             v70 = *(__UILogGetCategoryCachedImpl("CollectionView", &qword_1ED4A00D8) + 8);
             if (!os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
@@ -459,13 +459,13 @@ LABEL_69:
 
 LABEL_68:
             v71 = v15[2].isa;
-            v72 = [(UICollectionViewData *)v15 dataSourceCountsDescription];
+            dataSourceCountsDescription = [(UICollectionViewData *)v15 dataSourceCountsDescription];
             *buf = 138412802;
             *&buf[4] = v58;
             v102 = 2112;
             v103 = v71;
             v104 = 2112;
-            v105 = v72;
+            v105 = dataSourceCountsDescription;
             _os_log_impl(&dword_188A29000, v70, OS_LOG_TYPE_ERROR, "Received layout attributes with an invalid index path. Attributes will be ignored. Attributes: %@; layout: %@; data source counts: %@", buf, 0x20u);
 
             goto LABEL_69;
@@ -476,13 +476,13 @@ LABEL_68:
           [v61 ui_getSectionIndex:buf itemIndex:&v99];
           v66 = [(UICollectionViewData *)v15 numberOfItemsBeforeSection:?];
           v67 = v99;
-          [(_UICollectionViewDataAttributesMap *)a1 _setItemAttributes:v58 forGlobalItemIndex:v99 + v66];
+          [(_UICollectionViewDataAttributesMap *)self _setItemAttributes:v58 forGlobalItemIndex:v99 + v66];
           [(UICollectionViewData *)v15 _attributesMapDidPageInAttributes:v58 globalItemIndex:v67 + v66, v68];
         }
 
         else
         {
-          if ([v60 section] >= (v15[14].isa - v15[13].isa) >> 3 && objc_msgSend(v61, "item") != 0x7FFFFFFFFFFFFFFFLL)
+          if ([__indexPath section] >= (v15[14].isa - v15[13].isa) >> 3 && objc_msgSend(v61, "item") != 0x7FFFFFFFFFFFFFFFLL)
           {
             v70 = *(__UILogGetCategoryCachedImpl("CollectionView", &unk_1ED4A00E0) + 8);
             if (!os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
@@ -512,14 +512,14 @@ LABEL_70:
   }
 }
 
-- (__n128)indexesOfItemsInRect:(float64_t)a3
+- (__n128)indexesOfItemsInRect:(float64_t)rect
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (CGRectIsNull(*&a2) || (v30.origin.x = a2, v30.origin.y = a3, v30.size.width = a4, v30.size.height = a5, CGRectIsEmpty(v30)) || (v31.origin.x = a2, v31.origin.y = a3, v31.size.width = a4, v31.size.height = a5, CGRectIsInfinite(v31)))
+    if (CGRectIsNull(*&a2) || (v30.origin.x = a2, v30.origin.y = rect, v30.size.width = a4, v30.size.height = a5, CGRectIsEmpty(v30)) || (v31.origin.x = a2, v31.origin.y = rect, v31.size.width = a4, v31.size.height = a5, CGRectIsInfinite(v31)))
     {
-      v5 = +[_UIFastIndexSet indexSet];
+      selfCopy = +[_UIFastIndexSet indexSet];
     }
 
     else
@@ -533,22 +533,22 @@ LABEL_70:
       v22 = &v21;
       v23 = 0x2020000000;
       v24 = 0x7FFFFFFFFFFFFFFFLL;
-      v12 = v5->n128_i64[1];
+      v12 = selfCopy->n128_i64[1];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __59___UICollectionViewDataAttributesMap_indexesOfItemsInRect___block_invoke;
       v17[3] = &unk_1E711EB40;
       v19 = &v21;
       v20 = &v25;
-      v5 = v11;
-      v18 = v5;
+      selfCopy = v11;
+      v18 = selfCopy;
       v13.f64[0] = a2;
       v14.f64[0] = a4;
-      [(_UICollectionViewRTree *)v12 enumerateAttributesWithFramesIntersectingFrame:v17 withBlock:v13, a3, v14, a5];
+      [(_UICollectionViewRTree *)v12 enumerateAttributesWithFramesIntersectingFrame:v17 withBlock:v13, rect, v14, a5];
       v16 = v26[3];
       if (v16 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        [(_UIMutableFastIndexSet *)v5 addIndexesInRange:v16, v22[3] - v16, v15];
+        [(_UIMutableFastIndexSet *)selfCopy addIndexesInRange:v16, v22[3] - v16, v15];
       }
 
       _Block_object_dispose(&v21, 8);
@@ -556,48 +556,48 @@ LABEL_70:
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)pageInLayoutAttributes:(uint64_t)a3 forGlobalItemIndex:
+- (void)pageInLayoutAttributes:(uint64_t)attributes forGlobalItemIndex:
 {
-  if (a1)
+  if (self)
   {
     if (!a2)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:sel_pageInLayoutAttributes_forGlobalItemIndex_ object:a1 file:@"_UICollectionViewDataAttributesMap.mm" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"layoutAttributes != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_pageInLayoutAttributes_forGlobalItemIndex_ object:self file:@"_UICollectionViewDataAttributesMap.mm" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"layoutAttributes != nil"}];
     }
 
-    [(_UICollectionViewDataAttributesMap *)a1 _setItemAttributes:a2 forGlobalItemIndex:a3];
+    [(_UICollectionViewDataAttributesMap *)self _setItemAttributes:a2 forGlobalItemIndex:attributes];
   }
 }
 
-- (void)_setItemAttributes:(uint64_t)a3 forGlobalItemIndex:
+- (void)_setItemAttributes:(uint64_t)attributes forGlobalItemIndex:
 {
   [a2 frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = *(a1 + 8);
-  v18 = a3;
+  v14 = *(self + 8);
+  attributesCopy = attributes;
   v19 = 0;
   v20 = 0;
   v21 = 0;
   v22 = 0;
-  LOBYTE(a3) = [(_UICollectionViewRTree *)v14 insertFrame:v6 forElement:v8, v10, v12];
+  LOBYTE(attributes) = [(_UICollectionViewRTree *)v14 insertFrame:v6 forElement:v8, v10, v12];
 
-  if ((a3 & 1) == 0)
+  if ((attributes & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v23.origin.x = v7;
     v23.origin.y = v9;
     v23.size.width = v11;
     v23.size.height = v13;
     v16 = NSStringFromCGRect(v23);
-    v17 = [(_UIHomeAffordanceObservationRecord *)*(a1 + 40) observer];
-    [v15 handleFailureInMethod:sel__setItemAttributes_forGlobalItemIndex_ object:a1 file:@"_UICollectionViewDataAttributesMap.mm" lineNumber:104 description:{@"UICollectionView received layout attributes with invalid frame (%@). Layout attributes: %@. Collection view: %@.", v16, a2, v17}];
+    observer = [(_UIHomeAffordanceObservationRecord *)*(self + 40) observer];
+    [currentHandler handleFailureInMethod:sel__setItemAttributes_forGlobalItemIndex_ object:self file:@"_UICollectionViewDataAttributesMap.mm" lineNumber:104 description:{@"UICollectionView received layout attributes with invalid frame (%@). Layout attributes: %@. Collection view: %@.", v16, a2, observer}];
   }
 }
 

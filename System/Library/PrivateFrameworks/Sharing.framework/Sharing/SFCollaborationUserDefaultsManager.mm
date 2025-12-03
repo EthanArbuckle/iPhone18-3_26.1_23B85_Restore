@@ -1,16 +1,16 @@
 @interface SFCollaborationUserDefaultsManager
-+ (id)_createRemoteDataProxyWithErrorHandler:(id)a3;
-+ (void)requestCollaborativeModeForContentIdentifier:(id)a3 completionHandler:(id)a4;
-+ (void)saveCollaborativeMode:(id)a3 forContentIdentifier:(id)a4;
++ (id)_createRemoteDataProxyWithErrorHandler:(id)handler;
++ (void)requestCollaborativeModeForContentIdentifier:(id)identifier completionHandler:(id)handler;
++ (void)saveCollaborativeMode:(id)mode forContentIdentifier:(id)identifier;
 @end
 
 @implementation SFCollaborationUserDefaultsManager
 
-+ (void)requestCollaborativeModeForContentIdentifier:(id)a3 completionHandler:(id)a4
++ (void)requestCollaborativeModeForContentIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFCollaborationUserDefaultsManager/requestCollaborativeModeForContentIdentifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     state.opaque[0] = 0;
@@ -20,13 +20,13 @@
     v12[1] = 3221225472;
     v12[2] = __101__SFCollaborationUserDefaultsManager_requestCollaborativeModeForContentIdentifier_completionHandler___block_invoke;
     v12[3] = &unk_1E788B6D8;
-    v9 = v7;
+    v9 = handlerCopy;
     v13 = v9;
-    v10 = [a1 _createRemoteDataProxyWithErrorHandler:v12];
+    v10 = [self _createRemoteDataProxyWithErrorHandler:v12];
     v11 = v10;
     if (v10)
     {
-      [v10 requestCollaborativeModeForContentIdentifier:v6 completionHandler:v9];
+      [v10 requestCollaborativeModeForContentIdentifier:identifierCopy completionHandler:v9];
     }
 
     else
@@ -50,19 +50,19 @@ void __101__SFCollaborationUserDefaultsManager_requestCollaborativeModeForConten
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)saveCollaborativeMode:(id)a3 forContentIdentifier:(id)a4
++ (void)saveCollaborativeMode:(id)mode forContentIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  modeCopy = mode;
+  identifierCopy = identifier;
   v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFCollaborationUserDefaultsManager/saveCollaborativeMode", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v11.opaque[0] = 0;
   v11.opaque[1] = 0;
   os_activity_scope_enter(v8, &v11);
-  v9 = [a1 _createRemoteDataProxyWithErrorHandler:&__block_literal_global_8];
+  v9 = [self _createRemoteDataProxyWithErrorHandler:&__block_literal_global_8];
   v10 = v9;
   if (v9)
   {
-    [v9 saveCollaborativeMode:v6 forContentIdentifier:v7];
+    [v9 saveCollaborativeMode:modeCopy forContentIdentifier:identifierCopy];
   }
 
   os_activity_scope_leave(&v11);
@@ -78,16 +78,16 @@ void __81__SFCollaborationUserDefaultsManager_saveCollaborativeMode_forContentId
   }
 }
 
-+ (id)_createRemoteDataProxyWithErrorHandler:(id)a3
++ (id)_createRemoteDataProxyWithErrorHandler:(id)handler
 {
   v3 = MEMORY[0x1E696B0B8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [[v3 alloc] initWithMachServiceName:@"com.apple.sharing.collaborationuserdefaults" options:0];
   v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F1DAE720];
   [v5 setRemoteObjectInterface:v6];
 
   [v5 resume];
-  v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v7;
 }

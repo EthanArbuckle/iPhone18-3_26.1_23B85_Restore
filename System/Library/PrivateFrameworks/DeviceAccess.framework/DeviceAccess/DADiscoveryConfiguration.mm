@@ -1,22 +1,22 @@
 @interface DADiscoveryConfiguration
-- (DADiscoveryConfiguration)initWithCoder:(id)a3;
-- (DADiscoveryConfiguration)initWithXPCObject:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (DADiscoveryConfiguration)initWithCoder:(id)coder;
+- (DADiscoveryConfiguration)initWithXPCObject:(id)object error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation DADiscoveryConfiguration
 
-- (DADiscoveryConfiguration)initWithCoder:(id)a3
+- (DADiscoveryConfiguration)initWithCoder:(id)coder
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DADiscoveryConfiguration *)self init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -140,22 +140,22 @@
 
   else
   {
-    [DADiscoveryConfiguration initWithCoder:v4];
+    [DADiscoveryConfiguration initWithCoder:coderCopy];
   }
 
   v28 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  coderCopy = coder;
+  v5 = coderCopy;
   existingDeviceIdentifier = self->_existingDeviceIdentifier;
   if (existingDeviceIdentifier)
   {
-    [v4 encodeObject:existingDeviceIdentifier forKey:@"id"];
+    [coderCopy encodeObject:existingDeviceIdentifier forKey:@"id"];
   }
 
   associationIdentifier = self->_associationIdentifier;
@@ -210,8 +210,8 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v41 + 1) + 8 * v18) data];
-        [v13 addObject:v19];
+        data = [*(*(&v41 + 1) + 8 * v18) data];
+        [v13 addObject:data];
 
         ++v18;
       }
@@ -366,22 +366,22 @@
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
   v80 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSString *)self->_existingDeviceIdentifier UTF8String];
-  if (v5)
+  objectCopy = object;
+  uTF8String = [(NSString *)self->_existingDeviceIdentifier UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(v4, "id", v5);
+    xpc_dictionary_set_string(objectCopy, "id", uTF8String);
   }
 
   associationIdentifier = self->_associationIdentifier;
-  v7 = v4;
-  v8 = [(NSString *)associationIdentifier UTF8String];
-  if (v8)
+  v7 = objectCopy;
+  uTF8String2 = [(NSString *)associationIdentifier UTF8String];
+  if (uTF8String2)
   {
-    xpc_dictionary_set_string(v7, "asdID", v8);
+    xpc_dictionary_set_string(v7, "asdID", uTF8String2);
   }
 
   bluetoothIdentifier = self->_bluetoothIdentifier;
@@ -400,10 +400,10 @@
     v13 = bluetoothCompanyPayload;
     v14 = v7;
     v15 = bluetoothCompanyPayload;
-    v16 = [(NSData *)v15 bytes];
-    if (v16)
+    bytes = [(NSData *)v15 bytes];
+    if (bytes)
     {
-      v17 = v16;
+      v17 = bytes;
     }
 
     else
@@ -422,10 +422,10 @@
     v20 = bluetoothCompanyPayloadMask;
     v21 = v7;
     v22 = bluetoothCompanyPayloadMask;
-    v23 = [(NSData *)v22 bytes];
-    if (v23)
+    bytes2 = [(NSData *)v22 bytes];
+    if (bytes2)
     {
-      v24 = v23;
+      v24 = bytes2;
     }
 
     else
@@ -451,10 +451,10 @@
     v28 = bluetoothServicePayload;
     v29 = v7;
     v30 = bluetoothServicePayload;
-    v31 = [(NSData *)v30 bytes];
-    if (v31)
+    bytes3 = [(NSData *)v30 bytes];
+    if (bytes3)
     {
-      v32 = v31;
+      v32 = bytes3;
     }
 
     else
@@ -473,10 +473,10 @@
     v35 = bluetoothServicePayloadMask;
     v36 = v7;
     v37 = bluetoothServicePayloadMask;
-    v38 = [(NSData *)v37 bytes];
-    if (v38)
+    bytes4 = [(NSData *)v37 bytes];
+    if (bytes4)
     {
-      v39 = v38;
+      v39 = bytes4;
     }
 
     else
@@ -497,10 +497,10 @@
 
   bluetoothNameSubstring = self->_bluetoothNameSubstring;
   v43 = v7;
-  v44 = [(NSString *)bluetoothNameSubstring UTF8String];
-  if (v44)
+  uTF8String3 = [(NSString *)bluetoothNameSubstring UTF8String];
+  if (uTF8String3)
   {
-    xpc_dictionary_set_string(v43, "btNS", v44);
+    xpc_dictionary_set_string(v43, "btNS", uTF8String3);
   }
 
   if (self->_allowsBluetoothPairing)
@@ -510,10 +510,10 @@
 
   bonjourServiceName = self->_bonjourServiceName;
   v46 = v43;
-  v47 = [(NSString *)bonjourServiceName UTF8String];
-  if (v47)
+  uTF8String4 = [(NSString *)bonjourServiceName UTF8String];
+  if (uTF8String4)
   {
-    xpc_dictionary_set_string(v46, "bjSn", v47);
+    xpc_dictionary_set_string(v46, "bjSn", uTF8String4);
   }
 
   bonjourServiceTypes = self->_bonjourServiceTypes;
@@ -524,10 +524,10 @@
     v50 = bonjourTXTRecordData;
     v51 = v46;
     v52 = bonjourTXTRecordData;
-    v53 = [(NSData *)v52 bytes];
-    if (v53)
+    bytes5 = [(NSData *)v52 bytes];
+    if (bytes5)
     {
-      v54 = v53;
+      v54 = bytes5;
     }
 
     else
@@ -542,10 +542,10 @@
 
   bundleID = self->_bundleID;
   v57 = v46;
-  v58 = [(NSString *)bundleID UTF8String];
-  if (v58)
+  uTF8String5 = [(NSString *)bundleID UTF8String];
+  if (uTF8String5)
   {
-    xpc_dictionary_set_string(v57, "bndI", v58);
+    xpc_dictionary_set_string(v57, "bndI", uTF8String5);
   }
 
   flags = self->_flags;
@@ -556,10 +556,10 @@
 
   networkHotspotSSID = self->_networkHotspotSSID;
   v61 = v57;
-  v62 = [(NSString *)networkHotspotSSID UTF8String];
-  if (v62)
+  uTF8String6 = [(NSString *)networkHotspotSSID UTF8String];
+  if (uTF8String6)
   {
-    xpc_dictionary_set_string(v61, "neHsd", v62);
+    xpc_dictionary_set_string(v61, "neHsd", uTF8String6);
   }
 
   hotspotSSIDs = self->_hotspotSSIDs;
@@ -568,10 +568,10 @@
   CUXPCEncodeNSArrayOfNSString();
   displayName = self->_displayName;
   v66 = v61;
-  v67 = [(NSString *)displayName UTF8String];
-  if (v67)
+  uTF8String7 = [(NSString *)displayName UTF8String];
+  if (uTF8String7)
   {
-    xpc_dictionary_set_string(v66, "name", v67);
+    xpc_dictionary_set_string(v66, "name", uTF8String7);
   }
 
   if (self->_allowsRename)
@@ -579,12 +579,12 @@
     xpc_dictionary_set_BOOL(v66, "alRn", 1);
   }
 
-  v68 = [(UTType *)self->_iconType identifier];
+  identifier = [(UTType *)self->_iconType identifier];
   v69 = v66;
-  v70 = [v68 UTF8String];
-  if (v70)
+  uTF8String8 = [identifier UTF8String];
+  if (uTF8String8)
   {
-    xpc_dictionary_set_string(v69, "dvPT", v70);
+    xpc_dictionary_set_string(v69, "dvPT", uTF8String8);
   }
 
   if (self->_presenceOnly)
@@ -600,10 +600,10 @@
 
   wifiAwareServiceName = self->_wifiAwareServiceName;
   v73 = v69;
-  v74 = [(NSString *)wifiAwareServiceName UTF8String];
-  if (v74)
+  uTF8String9 = [(NSString *)wifiAwareServiceName UTF8String];
+  if (uTF8String9)
   {
-    xpc_dictionary_set_string(v73, "wFSn", v74);
+    xpc_dictionary_set_string(v73, "wFSn", uTF8String9);
   }
 
   wifiAwareModelNameMatch = self->_wifiAwareModelNameMatch;
@@ -620,9 +620,9 @@
   v78 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = [(NSString *)self->_existingDeviceIdentifier copy];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
@@ -700,16 +700,16 @@
 
   *(v5 + 10) = self->_presenceOnly;
   *(v5 + 40) = self->_wifiAwarePairingID;
-  v40 = [(NSString *)self->_wifiAwareServiceName copyWithZone:a3];
+  v40 = [(NSString *)self->_wifiAwareServiceName copyWithZone:zone];
   v41 = *(v5 + 184);
   *(v5 + 184) = v40;
 
   *(v5 + 200) = self->_wifiAwareServiceType;
-  v42 = [(DAPropertyCompareString *)self->_wifiAwareModelNameMatch copyWithZone:a3];
+  v42 = [(DAPropertyCompareString *)self->_wifiAwareModelNameMatch copyWithZone:zone];
   v43 = *(v5 + 192);
   *(v5 + 192) = v42;
 
-  v44 = [(DAPropertyCompareString *)self->_wifiAwareVendorNameMatch copyWithZone:a3];
+  v44 = [(DAPropertyCompareString *)self->_wifiAwareVendorNameMatch copyWithZone:zone];
   v45 = *(v5 + 208);
   *(v5 + 208) = v44;
 
@@ -1017,13 +1017,13 @@
   return v72;
 }
 
-- (DADiscoveryConfiguration)initWithXPCObject:(id)a3 error:(id *)a4
+- (DADiscoveryConfiguration)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(DADiscoveryConfiguration *)self init];
   if (!v7)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_39;
     }
@@ -1032,13 +1032,13 @@
     v21 = OUTLINED_FUNCTION_8();
 LABEL_38:
     DAErrorF(v21, v22, v8, v9, v10, v11, v12, v13, v23);
-    *a4 = v19 = 0;
+    *error = v19 = 0;
     goto LABEL_33;
   }
 
-  if (MEMORY[0x24C1DC9E0](v6) != MEMORY[0x277D86468])
+  if (MEMORY[0x24C1DC9E0](objectCopy) != MEMORY[0x277D86468])
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_39;
     }

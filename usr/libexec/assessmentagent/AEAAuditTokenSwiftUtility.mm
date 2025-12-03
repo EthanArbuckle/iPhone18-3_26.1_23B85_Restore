@@ -1,22 +1,22 @@
 @interface AEAAuditTokenSwiftUtility
-+ ($115C4C562B26FF47E01F9F4EA65B5887)underlyingAuditTokenFromAuditToken:(SEL)a3;
-+ (id)auditTokenWithUnderlyingAuditToken:(id *)a3;
++ ($115C4C562B26FF47E01F9F4EA65B5887)underlyingAuditTokenFromAuditToken:(SEL)token;
++ (id)auditTokenWithUnderlyingAuditToken:(id *)token;
 @end
 
 @implementation AEAAuditTokenSwiftUtility
 
-+ (id)auditTokenWithUnderlyingAuditToken:(id *)a3
++ (id)auditTokenWithUnderlyingAuditToken:(id *)token
 {
   v4 = [AEAConcreteAuditToken alloc];
-  v5 = *&a3->var0[4];
-  v8[0] = *a3->var0;
+  v5 = *&token->var0[4];
+  v8[0] = *token->var0;
   v8[1] = v5;
   v6 = [(AEAConcreteAuditToken *)v4 initWithAuditToken:v8];
 
   return v6;
 }
 
-+ ($115C4C562B26FF47E01F9F4EA65B5887)underlyingAuditTokenFromAuditToken:(SEL)a3
++ ($115C4C562B26FF47E01F9F4EA65B5887)underlyingAuditTokenFromAuditToken:(SEL)token
 {
   v9 = a4;
   objc_opt_class();

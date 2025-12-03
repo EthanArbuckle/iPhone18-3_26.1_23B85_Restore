@@ -1,6 +1,6 @@
 @interface PopoverCatalogViewController
 - (CatalogViewController)primaryCatalogViewController;
-- (PopoverCatalogViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PopoverCatalogViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)_preferredHeightForStartPage;
 - (double)maxContentHeight;
 - (double)requiredContentWidth;
@@ -38,37 +38,37 @@
 - (id)completionsViewControllerIfLoaded
 {
   WeakRetained = objc_loadWeakRetained(&self->_primaryCatalogViewController);
-  v3 = [WeakRetained completionsViewControllerIfLoaded];
+  completionsViewControllerIfLoaded = [WeakRetained completionsViewControllerIfLoaded];
 
-  return v3;
+  return completionsViewControllerIfLoaded;
 }
 
 - (id)universalSearchFirstTimeExperienceViewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_primaryCatalogViewController);
-  v3 = [WeakRetained universalSearchFirstTimeExperienceViewController];
+  universalSearchFirstTimeExperienceViewController = [WeakRetained universalSearchFirstTimeExperienceViewController];
 
-  return v3;
+  return universalSearchFirstTimeExperienceViewController;
 }
 
 - (id)startPageViewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_primaryCatalogViewController);
-  v3 = [WeakRetained startPageViewController];
+  startPageViewController = [WeakRetained startPageViewController];
 
-  return v3;
+  return startPageViewController;
 }
 
-- (PopoverCatalogViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PopoverCatalogViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = PopoverCatalogViewController;
-  v4 = [(PopoverCatalogViewController *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(PopoverCatalogViewController *)&v9 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
-    v6 = [(PopoverCatalogViewController *)v4 traitOverrides];
-    [v6 setNSIntegerValue:1 forTrait:objc_opt_class()];
+    traitOverrides = [(PopoverCatalogViewController *)v4 traitOverrides];
+    [traitOverrides setNSIntegerValue:1 forTrait:objc_opt_class()];
 
     v7 = v5;
   }
@@ -81,39 +81,39 @@
   v20.receiver = self;
   v20.super_class = PopoverCatalogViewController;
   [(AbstractCatalogViewController *)&v20 viewWillLayoutSubviews];
-  v3 = [(PopoverCatalogViewController *)self view];
-  [v3 bounds];
+  view = [(PopoverCatalogViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(PopoverCatalogViewController *)self completionsViewControllerIfLoaded];
-  if ([(AbstractCatalogViewController *)self isResponsibleForLayoutOfViewController:v12])
+  completionsViewControllerIfLoaded = [(PopoverCatalogViewController *)self completionsViewControllerIfLoaded];
+  if ([(AbstractCatalogViewController *)self isResponsibleForLayoutOfViewController:completionsViewControllerIfLoaded])
   {
-    v13 = [v12 tableView];
-    [v13 setFrame:{v5, v7, v9, v11}];
-    [v12 updateContentInsets];
-    [v13 setScrollIndicatorInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+    tableView = [completionsViewControllerIfLoaded tableView];
+    [tableView setFrame:{v5, v7, v9, v11}];
+    [completionsViewControllerIfLoaded updateContentInsets];
+    [tableView setScrollIndicatorInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
   }
 
-  v14 = [(PopoverCatalogViewController *)self startPageViewController];
-  v15 = [(AbstractCatalogViewController *)self isResponsibleForLayoutOfViewController:v14];
+  startPageViewController = [(PopoverCatalogViewController *)self startPageViewController];
+  v15 = [(AbstractCatalogViewController *)self isResponsibleForLayoutOfViewController:startPageViewController];
 
   if (v15)
   {
-    v16 = [(PopoverCatalogViewController *)self startPageViewController];
-    v17 = [v16 view];
+    startPageViewController2 = [(PopoverCatalogViewController *)self startPageViewController];
+    view2 = [startPageViewController2 view];
 
-    [v17 setFrame:{v5, v7, v9, v11}];
+    [view2 setFrame:{v5, v7, v9, v11}];
     UIEdgeInsetsMakeWithEdges();
-    [v17 setLayoutMargins:?];
+    [view2 setLayoutMargins:?];
   }
 
-  v18 = [(PopoverCatalogViewController *)self universalSearchFirstTimeExperienceViewController];
-  if ([(AbstractCatalogViewController *)self isResponsibleForLayoutOfViewController:v18])
+  universalSearchFirstTimeExperienceViewController = [(PopoverCatalogViewController *)self universalSearchFirstTimeExperienceViewController];
+  if ([(AbstractCatalogViewController *)self isResponsibleForLayoutOfViewController:universalSearchFirstTimeExperienceViewController])
   {
-    v19 = [v18 view];
-    [v19 setFrame:{v5, v7, v9, v11}];
+    view3 = [universalSearchFirstTimeExperienceViewController view];
+    [view3 setFrame:{v5, v7, v9, v11}];
   }
 }
 
@@ -123,22 +123,22 @@
   v4 = v3;
   [(PopoverCatalogViewController *)self _preferredHeightForStartPage];
   v6 = v5;
-  v7 = [(PopoverCatalogViewController *)self startPageViewController];
-  [v7 setPreferredContentSize:{v4, v6}];
+  startPageViewController = [(PopoverCatalogViewController *)self startPageViewController];
+  [startPageViewController setPreferredContentSize:{v4, v6}];
 }
 
 - (double)_preferredHeightForStartPage
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
 
-  v4 = [(PopoverCatalogViewController *)self primaryCatalogViewController];
-  v5 = [v4 delegate];
-  v6 = [v5 catalogViewControllerPresentingInPortraitAspectRatio:v4];
+  primaryCatalogViewController = [(PopoverCatalogViewController *)self primaryCatalogViewController];
+  delegate = [primaryCatalogViewController delegate];
+  v6 = [delegate catalogViewControllerPresentingInPortraitAspectRatio:primaryCatalogViewController];
 
   if (v6)
   {
-    [v4 navigationBarHeight];
+    [primaryCatalogViewController navigationBarHeight];
     _SFRoundFloatToPixels();
     startPagePreferredHeight = v7;
   }
@@ -154,52 +154,52 @@
 - (id)completionsViewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_primaryCatalogViewController);
-  v3 = [WeakRetained completionsViewController];
+  completionsViewController = [WeakRetained completionsViewController];
 
-  return v3;
+  return completionsViewController;
 }
 
 - (void)didGainOwnershipOfCompletionsViewController
 {
-  v9 = [(PopoverCatalogViewController *)self completionsViewController];
-  [v9 setShowsWebSearchTipIfExists:1];
-  v2 = [v9 tableView];
-  v3 = [v2 separatorEffect];
+  completionsViewController = [(PopoverCatalogViewController *)self completionsViewController];
+  [completionsViewController setShowsWebSearchTipIfExists:1];
+  tableView = [completionsViewController tableView];
+  separatorEffect = [tableView separatorEffect];
   v4 = MEMORY[0x277D75D00];
-  v5 = [MEMORY[0x277D75210] _sf_defaultPopoverBackgroundEffect];
-  v6 = [v4 _effectForBlurEffect:v5 vibrancyStyle:120];
-  [v2 setSeparatorEffect:v6];
+  _sf_defaultPopoverBackgroundEffect = [MEMORY[0x277D75210] _sf_defaultPopoverBackgroundEffect];
+  v6 = [v4 _effectForBlurEffect:_sf_defaultPopoverBackgroundEffect vibrancyStyle:120];
+  [tableView setSeparatorEffect:v6];
 
-  v7 = [v2 separatorEffect];
-  LOBYTE(v5) = WBSIsEqual();
+  separatorEffect2 = [tableView separatorEffect];
+  LOBYTE(_sf_defaultPopoverBackgroundEffect) = WBSIsEqual();
 
-  if ((v5 & 1) == 0)
+  if ((_sf_defaultPopoverBackgroundEffect & 1) == 0)
   {
-    v8 = [v9 dataSource];
-    [v8 reloadVisibleRows];
+    dataSource = [completionsViewController dataSource];
+    [dataSource reloadVisibleRows];
   }
 }
 
 - (void)didGainOwnershipOfStartPageViewController
 {
-  v6 = [(PopoverCatalogViewController *)self startPageViewController];
-  [v6 setAdditionalSafeAreaInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
-  [v6 setBackgroundDisplayMode:1];
+  startPageViewController = [(PopoverCatalogViewController *)self startPageViewController];
+  [startPageViewController setAdditionalSafeAreaInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+  [startPageViewController setBackgroundDisplayMode:1];
   WeakRetained = objc_loadWeakRetained(&self->_primaryCatalogViewController);
-  v4 = [WeakRetained startPageController];
-  [v4 setShowingAsPopover:1];
+  startPageController = [WeakRetained startPageController];
+  [startPageController setShowingAsPopover:1];
 
-  [v6 setTopScrollEdgeEffectColor:0];
-  v5 = [MEMORY[0x277D759B8] automaticStyle];
-  [v6 setTopScrollEdgeEffectStyle:v5];
+  [startPageViewController setTopScrollEdgeEffectColor:0];
+  automaticStyle = [MEMORY[0x277D759B8] automaticStyle];
+  [startPageViewController setTopScrollEdgeEffectStyle:automaticStyle];
 }
 
 - (void)didGainOwnershipOfUniversalSearchFirstTimeExperienceViewController
 {
-  v4 = [(PopoverCatalogViewController *)self universalSearchFirstTimeExperienceViewController];
-  v2 = [MEMORY[0x277D75348] clearColor];
-  v3 = [v4 view];
-  [v3 setBackgroundColor:v2];
+  universalSearchFirstTimeExperienceViewController = [(PopoverCatalogViewController *)self universalSearchFirstTimeExperienceViewController];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  view = [universalSearchFirstTimeExperienceViewController view];
+  [view setBackgroundColor:clearColor];
 }
 
 - (CatalogViewController)primaryCatalogViewController

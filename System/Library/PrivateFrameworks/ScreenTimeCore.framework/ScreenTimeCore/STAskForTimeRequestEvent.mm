@@ -1,45 +1,45 @@
 @interface STAskForTimeRequestEvent
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAskForTimeRequestEvent:(id)a3;
-- (STAskForTimeRequestEvent)initWithIdentifier:(id)a3 resourceType:(int64_t)a4 timestamp:(id)a5 requesterUserID:(id)a6 requestedResourceIdentifier:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAskForTimeRequestEvent:(id)event;
+- (STAskForTimeRequestEvent)initWithIdentifier:(id)identifier resourceType:(int64_t)type timestamp:(id)timestamp requesterUserID:(id)d requestedResourceIdentifier:(id)resourceIdentifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation STAskForTimeRequestEvent
 
-- (STAskForTimeRequestEvent)initWithIdentifier:(id)a3 resourceType:(int64_t)a4 timestamp:(id)a5 requesterUserID:(id)a6 requestedResourceIdentifier:(id)a7
+- (STAskForTimeRequestEvent)initWithIdentifier:(id)identifier resourceType:(int64_t)type timestamp:(id)timestamp requesterUserID:(id)d requestedResourceIdentifier:(id)resourceIdentifier
 {
   v25.receiver = self;
   v25.super_class = STAskForTimeRequestEvent;
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
+  resourceIdentifierCopy = resourceIdentifier;
+  dCopy = d;
+  timestampCopy = timestamp;
+  identifierCopy = identifier;
   v15 = [(STAskForTimeRequestEvent *)&v25 init];
-  v16 = [v14 copy];
+  v16 = [identifierCopy copy];
 
   identifier = v15->_identifier;
   v15->_identifier = v16;
 
-  v15->_resourceType = a4;
-  v18 = [v13 copy];
+  v15->_resourceType = type;
+  v18 = [timestampCopy copy];
 
   timestamp = v15->_timestamp;
   v15->_timestamp = v18;
 
-  v20 = [v12 copy];
+  v20 = [dCopy copy];
   requesterUserID = v15->_requesterUserID;
   v15->_requesterUserID = v20;
 
-  v22 = [v11 copy];
+  v22 = [resourceIdentifierCopy copy];
   requestedResourceIdentifier = v15->_requestedResourceIdentifier;
   v15->_requestedResourceIdentifier = v22;
 
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   identifier = self->_identifier;
@@ -51,10 +51,10 @@
   return [v4 initWithIdentifier:identifier resourceType:resourceType timestamp:timestamp requesterUserID:requesterUserID requestedResourceIdentifier:requestedResourceIdentifier];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -64,7 +64,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(STAskForTimeRequestEvent *)self isEqualToAskForTimeRequestEvent:v4];
+      v5 = [(STAskForTimeRequestEvent *)self isEqualToAskForTimeRequestEvent:equalCopy];
     }
 
     else
@@ -76,31 +76,31 @@
   return v5;
 }
 
-- (BOOL)isEqualToAskForTimeRequestEvent:(id)a3
+- (BOOL)isEqualToAskForTimeRequestEvent:(id)event
 {
-  v4 = a3;
-  if (self == v4)
+  eventCopy = event;
+  if (self == eventCopy)
   {
     v14 = 1;
   }
 
   else
   {
-    v5 = [(STAskForTimeRequestEvent *)self identifier];
-    v6 = [(STAskForTimeRequestEvent *)v4 identifier];
-    if ([v5 isEqualToString:v6] && (v7 = -[STAskForTimeRequestEvent resourceType](self, "resourceType"), v7 == -[STAskForTimeRequestEvent resourceType](v4, "resourceType")))
+    identifier = [(STAskForTimeRequestEvent *)self identifier];
+    identifier2 = [(STAskForTimeRequestEvent *)eventCopy identifier];
+    if ([identifier isEqualToString:identifier2] && (v7 = -[STAskForTimeRequestEvent resourceType](self, "resourceType"), v7 == -[STAskForTimeRequestEvent resourceType](eventCopy, "resourceType")))
     {
-      v8 = [(STAskForTimeRequestEvent *)self timestamp];
-      v9 = [(STAskForTimeRequestEvent *)v4 timestamp];
-      if ([v8 isEqualToDate:v9])
+      timestamp = [(STAskForTimeRequestEvent *)self timestamp];
+      timestamp2 = [(STAskForTimeRequestEvent *)eventCopy timestamp];
+      if ([timestamp isEqualToDate:timestamp2])
       {
-        v10 = [(STAskForTimeRequestEvent *)self requesterUserID];
-        v11 = [(STAskForTimeRequestEvent *)v4 requesterUserID];
-        if ([v10 isEqualToUserID:v11])
+        requesterUserID = [(STAskForTimeRequestEvent *)self requesterUserID];
+        requesterUserID2 = [(STAskForTimeRequestEvent *)eventCopy requesterUserID];
+        if ([requesterUserID isEqualToUserID:requesterUserID2])
         {
-          v12 = [(STAskForTimeRequestEvent *)self requestedResourceIdentifier];
-          v13 = [(STAskForTimeRequestEvent *)v4 requestedResourceIdentifier];
-          v14 = [v12 isEqualToString:v13];
+          requestedResourceIdentifier = [(STAskForTimeRequestEvent *)self requestedResourceIdentifier];
+          requestedResourceIdentifier2 = [(STAskForTimeRequestEvent *)eventCopy requestedResourceIdentifier];
+          v14 = [requestedResourceIdentifier isEqualToString:requestedResourceIdentifier2];
         }
 
         else
@@ -126,15 +126,15 @@
 
 - (unint64_t)hash
 {
-  v3 = [(STAskForTimeRequestEvent *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(STAskForTimeRequestEvent *)self identifier];
+  v4 = [identifier hash];
   v5 = [(STAskForTimeRequestEvent *)self resourceType]^ v4;
-  v6 = [(STAskForTimeRequestEvent *)self timestamp];
-  v7 = [v6 hash];
-  v8 = [(STAskForTimeRequestEvent *)self requesterUserID];
-  v9 = v5 ^ v7 ^ [v8 hash];
-  v10 = [(STAskForTimeRequestEvent *)self requestedResourceIdentifier];
-  v11 = [v10 hash];
+  timestamp = [(STAskForTimeRequestEvent *)self timestamp];
+  v7 = [timestamp hash];
+  requesterUserID = [(STAskForTimeRequestEvent *)self requesterUserID];
+  v9 = v5 ^ v7 ^ [requesterUserID hash];
+  requestedResourceIdentifier = [(STAskForTimeRequestEvent *)self requestedResourceIdentifier];
+  v11 = [requestedResourceIdentifier hash];
 
   return v9 ^ v11;
 }

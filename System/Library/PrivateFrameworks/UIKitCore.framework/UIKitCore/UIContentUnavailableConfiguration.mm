@@ -2,26 +2,26 @@
 + (UIContentUnavailableConfiguration)emptyConfiguration;
 + (UIContentUnavailableConfiguration)loadingConfiguration;
 + (UIContentUnavailableConfiguration)searchConfiguration;
-+ (id)_defaultEmptyConfigurationForState:(uint64_t)a1 traitCollection:(void *)a2;
-+ (id)_defaultLoadingConfigurationForState:(uint64_t)a1 traitCollection:(void *)a2;
-+ (void)_defaultSearchConfigurationForState:(void *)a3 traitCollection:;
-- (BOOL)isEqual:(id)a3;
++ (id)_defaultEmptyConfigurationForState:(uint64_t)state traitCollection:(void *)collection;
++ (id)_defaultLoadingConfigurationForState:(uint64_t)state traitCollection:(void *)collection;
++ (void)_defaultSearchConfigurationForState:(void *)state traitCollection:;
+- (BOOL)isEqual:(id)equal;
 - (NSDirectionalEdgeInsets)directionalLayoutMargins;
 - (NSString)description;
 - (UIContentUnavailableAlignment)alignment;
-- (UIContentUnavailableConfiguration)initWithCoder:(id)a3;
-- (id)_initWithImageProperties:(void *)a3 textProperties:(void *)a4 secondaryTextProperties:(void *)a5 buttonProperties:(void *)a6 secondaryButtonProperties:(char)a7 sideBySideButtonAndSecondaryButton:(double)a8 directionalLayoutMargins:(double)a9 imageToTextPadding:(double)a10 textToSecondaryTextPadding:(double)a11 textToButtonPadding:(double)a12 buttonToSecondaryButtonPadding:(double)a13;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UIContentUnavailableConfiguration)initWithCoder:(id)coder;
+- (id)_initWithImageProperties:(void *)properties textProperties:(void *)textProperties secondaryTextProperties:(void *)secondaryTextProperties buttonProperties:(void *)buttonProperties secondaryButtonProperties:(char)secondaryButtonProperties sideBySideButtonAndSecondaryButton:(double)button directionalLayoutMargins:(double)margins imageToTextPadding:(double)self0 textToSecondaryTextPadding:(double)self1 textToButtonPadding:(double)self2 buttonToSecondaryButtonPadding:(double)self3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)makeContentView;
-- (id)updatedConfigurationForState:(id)a3;
-- (uint64_t)_isEqualToConfigurationQuick:(uint64_t)a1;
+- (id)updatedConfigurationForState:(id)state;
+- (uint64_t)_isEqualToConfigurationQuick:(uint64_t)quick;
 - (unint64_t)hash;
-- (void)_setSwiftBridgingButtonProperties:(id)a3;
-- (void)_setSwiftBridgingImageProperties:(id)a3;
-- (void)_setSwiftBridgingSecondaryButtonProperties:(id)a3;
-- (void)_setSwiftBridgingSecondaryTextProperties:(id)a3;
-- (void)_setSwiftBridgingTextProperties:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setSwiftBridgingButtonProperties:(id)properties;
+- (void)_setSwiftBridgingImageProperties:(id)properties;
+- (void)_setSwiftBridgingSecondaryButtonProperties:(id)properties;
+- (void)_setSwiftBridgingSecondaryTextProperties:(id)properties;
+- (void)_setSwiftBridgingTextProperties:(id)properties;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAlignment:(UIContentUnavailableAlignment)alignment;
 @end
 
@@ -44,7 +44,7 @@
 {
   v3 = [UIContentUnavailableConfigurationState _readonlyContentUnavailableConfigurationState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [UIContentUnavailableConfiguration _defaultEmptyConfigurationForState:a1 traitCollection:v4];
+  v5 = [UIContentUnavailableConfiguration _defaultEmptyConfigurationForState:self traitCollection:v4];
 
   return v5;
 }
@@ -67,58 +67,58 @@
 {
   v3 = [UIContentUnavailableConfigurationState _readonlyContentUnavailableConfigurationState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [UIContentUnavailableConfiguration _defaultLoadingConfigurationForState:a1 traitCollection:v4];
+  v5 = [UIContentUnavailableConfiguration _defaultLoadingConfigurationForState:self traitCollection:v4];
 
   return v5;
 }
 
-+ (id)_defaultEmptyConfigurationForState:(uint64_t)a1 traitCollection:(void *)a2
++ (id)_defaultEmptyConfigurationForState:(uint64_t)state traitCollection:(void *)collection
 {
-  v2 = a2;
+  collectionCopy = collection;
   objc_opt_self();
-  v3 = _UIContentUnavailableConstantsForTraitCollection(v2);
+  v3 = _UIContentUnavailableConstantsForTraitCollection(collectionCopy);
   v4 = objc_alloc_init(UIContentUnavailableImageProperties);
-  v6 = [v3 defaultEmptyImageSymbolConfigurationForTraitCollection:v2];
+  v6 = [v3 defaultEmptyImageSymbolConfigurationForTraitCollection:collectionCopy];
   if (v4)
   {
     objc_setProperty_nonatomic_copy(v4, v5, v6, 24);
   }
 
-  v7 = [v3 defaultEmptyImageTintColor];
-  [(UIContentUnavailableImageProperties *)v4 _setTintColor:v7];
+  defaultEmptyImageTintColor = [v3 defaultEmptyImageTintColor];
+  [(UIContentUnavailableImageProperties *)v4 _setTintColor:defaultEmptyImageTintColor];
 
   v8 = objc_alloc_init(UIContentUnavailableTextProperties);
-  v9 = [v3 defaultEmptyTextFontForTraitCollection:v2];
+  v9 = [v3 defaultEmptyTextFontForTraitCollection:collectionCopy];
   [(_UIHomeAffordanceObservationRecord *)v8 setLegacyViewServiceSessionIdentifier:v9];
 
-  v10 = [v3 defaultEmptyTextColorForTraitCollection:v2];
+  v10 = [v3 defaultEmptyTextColorForTraitCollection:collectionCopy];
   [(UIContentUnavailableImageProperties *)v8 _setTintColor:v10];
 
   v11 = objc_alloc_init(UIContentUnavailableTextProperties);
-  v12 = [v3 defaultEmptySecondaryTextFontForTraitCollection:v2];
+  v12 = [v3 defaultEmptySecondaryTextFontForTraitCollection:collectionCopy];
   [(_UIHomeAffordanceObservationRecord *)v11 setLegacyViewServiceSessionIdentifier:v12];
 
-  v13 = [v3 defaultSecondaryTextColor];
-  [(UIContentUnavailableImageProperties *)v11 _setTintColor:v13];
+  defaultSecondaryTextColor = [v3 defaultSecondaryTextColor];
+  [(UIContentUnavailableImageProperties *)v11 _setTintColor:defaultSecondaryTextColor];
 
   v14 = objc_alloc_init(UIContentUnavailableButtonProperties);
   v15 = objc_alloc_init(UIContentUnavailableButtonProperties);
-  v16 = [v3 prefersSideBySideButtonAndSecondaryButton];
-  [v3 defaultDirectionalLayoutMarginsForTraitCollection:v2];
+  prefersSideBySideButtonAndSecondaryButton = [v3 prefersSideBySideButtonAndSecondaryButton];
+  [v3 defaultDirectionalLayoutMarginsForTraitCollection:collectionCopy];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  [v3 defaultEmptyImageToTextPaddingForTraitCollection:v2];
+  [v3 defaultEmptyImageToTextPaddingForTraitCollection:collectionCopy];
   v26 = v25;
-  [v3 defaultEmptyTextToSecondaryTextPaddingForTraitCollection:v2];
+  [v3 defaultEmptyTextToSecondaryTextPaddingForTraitCollection:collectionCopy];
   v28 = v27;
-  [v3 defaultEmptyTextToButtonPaddingForTraitCollection:v2];
+  [v3 defaultEmptyTextToButtonPaddingForTraitCollection:collectionCopy];
   v30 = v29;
-  [v3 defaultEmptyButtonToSecondaryButtonPaddingForTraitCollection:v2];
+  [v3 defaultEmptyButtonToSecondaryButtonPaddingForTraitCollection:collectionCopy];
   v32 = v31;
 
-  v33 = [[UIContentUnavailableConfiguration alloc] _initWithImageProperties:v4 textProperties:v8 secondaryTextProperties:v11 buttonProperties:v14 secondaryButtonProperties:v15 sideBySideButtonAndSecondaryButton:v16 directionalLayoutMargins:v18 imageToTextPadding:v20 textToSecondaryTextPadding:v22 textToButtonPadding:v24 buttonToSecondaryButtonPadding:v26, v28, v30, v32];
+  v33 = [[UIContentUnavailableConfiguration alloc] _initWithImageProperties:v4 textProperties:v8 secondaryTextProperties:v11 buttonProperties:v14 secondaryButtonProperties:v15 sideBySideButtonAndSecondaryButton:prefersSideBySideButtonAndSecondaryButton directionalLayoutMargins:v18 imageToTextPadding:v20 textToSecondaryTextPadding:v22 textToButtonPadding:v24 buttonToSecondaryButtonPadding:v26, v28, v30, v32];
   v34 = v33;
   if (v33)
   {
@@ -128,59 +128,59 @@
   return v34;
 }
 
-+ (id)_defaultLoadingConfigurationForState:(uint64_t)a1 traitCollection:(void *)a2
++ (id)_defaultLoadingConfigurationForState:(uint64_t)state traitCollection:(void *)collection
 {
-  v2 = a2;
+  collectionCopy = collection;
   objc_opt_self();
-  v3 = _UIContentUnavailableConstantsForTraitCollection(v2);
+  v3 = _UIContentUnavailableConstantsForTraitCollection(collectionCopy);
   v4 = objc_alloc_init(UIContentUnavailableImageProperties);
-  v6 = [v3 defaultLoadingImageSymbolConfigurationForTraitCollection:v2];
+  v6 = [v3 defaultLoadingImageSymbolConfigurationForTraitCollection:collectionCopy];
   if (v4)
   {
     objc_setProperty_nonatomic_copy(v4, v5, v6, 24);
   }
 
-  v7 = [v3 defaultLoadingImageTintColor];
-  [(UIContentUnavailableImageProperties *)v4 _setTintColor:v7];
+  defaultLoadingImageTintColor = [v3 defaultLoadingImageTintColor];
+  [(UIContentUnavailableImageProperties *)v4 _setTintColor:defaultLoadingImageTintColor];
 
   v8 = objc_alloc_init(UIContentUnavailableTextProperties);
-  v9 = [v3 defaultLoadingTextFontForTraitCollection:v2];
+  v9 = [v3 defaultLoadingTextFontForTraitCollection:collectionCopy];
   [(_UIHomeAffordanceObservationRecord *)v8 setLegacyViewServiceSessionIdentifier:v9];
 
-  v10 = [v3 defaultLoadingTextColor];
-  [(UIContentUnavailableImageProperties *)v8 _setTintColor:v10];
+  defaultLoadingTextColor = [v3 defaultLoadingTextColor];
+  [(UIContentUnavailableImageProperties *)v8 _setTintColor:defaultLoadingTextColor];
 
   v11 = objc_alloc_init(UIContentUnavailableTextProperties);
-  v12 = [v3 defaultEmptySecondaryTextFontForTraitCollection:v2];
+  v12 = [v3 defaultEmptySecondaryTextFontForTraitCollection:collectionCopy];
   [(_UIHomeAffordanceObservationRecord *)v11 setLegacyViewServiceSessionIdentifier:v12];
 
-  v13 = [v3 defaultSecondaryTextColor];
-  [(UIContentUnavailableImageProperties *)v11 _setTintColor:v13];
+  defaultSecondaryTextColor = [v3 defaultSecondaryTextColor];
+  [(UIContentUnavailableImageProperties *)v11 _setTintColor:defaultSecondaryTextColor];
 
   v14 = objc_alloc_init(UIContentUnavailableButtonProperties);
   v15 = objc_alloc_init(UIContentUnavailableButtonProperties);
-  v16 = [v3 prefersSideBySideButtonAndSecondaryButton];
-  [v3 defaultDirectionalLayoutMarginsForTraitCollection:v2];
+  prefersSideBySideButtonAndSecondaryButton = [v3 prefersSideBySideButtonAndSecondaryButton];
+  [v3 defaultDirectionalLayoutMarginsForTraitCollection:collectionCopy];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  [v3 defaultLoadingImageToTextPaddingForTraitCollection:v2];
+  [v3 defaultLoadingImageToTextPaddingForTraitCollection:collectionCopy];
   v26 = v25;
-  [v3 defaultEmptyTextToSecondaryTextPaddingForTraitCollection:v2];
+  [v3 defaultEmptyTextToSecondaryTextPaddingForTraitCollection:collectionCopy];
   v28 = v27;
-  [v3 defaultEmptyTextToButtonPaddingForTraitCollection:v2];
+  [v3 defaultEmptyTextToButtonPaddingForTraitCollection:collectionCopy];
   v30 = v29;
-  [v3 defaultEmptyButtonToSecondaryButtonPaddingForTraitCollection:v2];
-  v32 = [[UIContentUnavailableConfiguration alloc] _initWithImageProperties:v4 textProperties:v8 secondaryTextProperties:v11 buttonProperties:v14 secondaryButtonProperties:v15 sideBySideButtonAndSecondaryButton:v16 directionalLayoutMargins:v18 imageToTextPadding:v20 textToSecondaryTextPadding:v22 textToButtonPadding:v24 buttonToSecondaryButtonPadding:v26, v28, v30, v31];
-  if (![v2 userInterfaceIdiom] || objc_msgSend(v2, "userInterfaceIdiom") == 1)
+  [v3 defaultEmptyButtonToSecondaryButtonPaddingForTraitCollection:collectionCopy];
+  v32 = [[UIContentUnavailableConfiguration alloc] _initWithImageProperties:v4 textProperties:v8 secondaryTextProperties:v11 buttonProperties:v14 secondaryButtonProperties:v15 sideBySideButtonAndSecondaryButton:prefersSideBySideButtonAndSecondaryButton directionalLayoutMargins:v18 imageToTextPadding:v20 textToSecondaryTextPadding:v22 textToButtonPadding:v24 buttonToSecondaryButtonPadding:v26, v28, v30, v31];
+  if (![collectionCopy userInterfaceIdiom] || objc_msgSend(collectionCopy, "userInterfaceIdiom") == 1)
   {
     v33 = _UILocalizedString(@"CONTENT_UNAVAILABLE_LOADING_TEXT", @"Default text to display whilst loading content", @"Loading...");
-    v34 = [v32 textProperties];
-    v36 = v34;
-    if (v34)
+    textProperties = [v32 textProperties];
+    v36 = textProperties;
+    if (textProperties)
     {
-      objc_setProperty_nonatomic_copy(v34, v35, v33, 16);
+      objc_setProperty_nonatomic_copy(textProperties, v35, v33, 16);
     }
   }
 
@@ -196,54 +196,54 @@
 {
   v3 = [UIContentUnavailableConfigurationState _readonlyContentUnavailableConfigurationState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIContentUnavailableConfiguration *)a1 _defaultSearchConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIContentUnavailableConfiguration *)self _defaultSearchConfigurationForState:v3 traitCollection:v4];
 
   return v5;
 }
 
-+ (void)_defaultSearchConfigurationForState:(void *)a3 traitCollection:
++ (void)_defaultSearchConfigurationForState:(void *)state traitCollection:
 {
   v4 = a2;
-  v5 = a3;
+  stateCopy = state;
   v6 = objc_opt_self();
-  v7 = [UIContentUnavailableConfiguration _defaultEmptyConfigurationForState:v6 traitCollection:v5];
+  v7 = [UIContentUnavailableConfiguration _defaultEmptyConfigurationForState:v6 traitCollection:stateCopy];
 
   v8 = [UIImage systemImageNamed:@"magnifyingglass"];
-  v9 = [v7 imageProperties];
-  [(UIBackgroundConfiguration *)v9 _setCustomView:v8];
+  imageProperties = [v7 imageProperties];
+  [(UIBackgroundConfiguration *)imageProperties _setCustomView:v8];
 
-  v10 = [v4 searchText];
-  v11 = [v10 length];
+  searchText = [v4 searchText];
+  v11 = [searchText length];
 
   if (v11)
   {
-    v12 = [v4 searchText];
-    v18 = _UILocalizedFormat(@"CONTENT_UNAVAILABLE_SEARCH_TEXT_WITH_QUERY", @"Default text to display when a search with a query returns no results", @"No Results for “%@”", v13, v14, v15, v16, v17, v12);
-    v19 = [v7 textProperties];
-    v21 = v19;
-    if (v19)
+    searchText2 = [v4 searchText];
+    v18 = _UILocalizedFormat(@"CONTENT_UNAVAILABLE_SEARCH_TEXT_WITH_QUERY", @"Default text to display when a search with a query returns no results", @"No Results for “%@”", v13, v14, v15, v16, v17, searchText2);
+    textProperties = [v7 textProperties];
+    v21 = textProperties;
+    if (textProperties)
     {
-      objc_setProperty_nonatomic_copy(v19, v20, v18, 16);
+      objc_setProperty_nonatomic_copy(textProperties, v20, v18, 16);
     }
   }
 
   else
   {
-    v12 = _UILocalizedString(@"CONTENT_UNAVAILABLE_SEARCH_TEXT", @"Default text to display when a search returns no results", @"No Results");
-    v22 = [v7 textProperties];
-    v18 = v22;
-    if (v22)
+    searchText2 = _UILocalizedString(@"CONTENT_UNAVAILABLE_SEARCH_TEXT", @"Default text to display when a search returns no results", @"No Results");
+    textProperties2 = [v7 textProperties];
+    v18 = textProperties2;
+    if (textProperties2)
     {
-      objc_setProperty_nonatomic_copy(v22, v23, v12, 16);
+      objc_setProperty_nonatomic_copy(textProperties2, v23, searchText2, 16);
     }
   }
 
   v24 = _UILocalizedString(@"CONTENT_UNAVAILABLE_SEARCH_SECONDARY_TEXT", @"Default secondary text to display when a search returns no results", @"Check the spelling or try a new search.");
-  v25 = [v7 secondaryTextProperties];
-  v27 = v25;
-  if (v25)
+  secondaryTextProperties = [v7 secondaryTextProperties];
+  v27 = secondaryTextProperties;
+  if (secondaryTextProperties)
   {
-    objc_setProperty_nonatomic_copy(v25, v26, v24, 16);
+    objc_setProperty_nonatomic_copy(secondaryTextProperties, v26, v24, 16);
   }
 
   if (v7)
@@ -254,95 +254,95 @@
   return v7;
 }
 
-- (id)_initWithImageProperties:(void *)a3 textProperties:(void *)a4 secondaryTextProperties:(void *)a5 buttonProperties:(void *)a6 secondaryButtonProperties:(char)a7 sideBySideButtonAndSecondaryButton:(double)a8 directionalLayoutMargins:(double)a9 imageToTextPadding:(double)a10 textToSecondaryTextPadding:(double)a11 textToButtonPadding:(double)a12 buttonToSecondaryButtonPadding:(double)a13
+- (id)_initWithImageProperties:(void *)properties textProperties:(void *)textProperties secondaryTextProperties:(void *)secondaryTextProperties buttonProperties:(void *)buttonProperties secondaryButtonProperties:(char)secondaryButtonProperties sideBySideButtonAndSecondaryButton:(double)button directionalLayoutMargins:(double)margins imageToTextPadding:(double)self0 textToSecondaryTextPadding:(double)self1 textToButtonPadding:(double)self2 buttonToSecondaryButtonPadding:(double)self3
 {
   v38 = a2;
-  v29 = a3;
-  v30 = a4;
-  v31 = a5;
-  v32 = a6;
-  if (a1)
+  propertiesCopy = properties;
+  textPropertiesCopy = textProperties;
+  secondaryTextPropertiesCopy = secondaryTextProperties;
+  buttonPropertiesCopy = buttonProperties;
+  if (self)
   {
-    v39.receiver = a1;
+    v39.receiver = self;
     v39.super_class = UIContentUnavailableConfiguration;
     v33 = objc_msgSendSuper2(&v39, sel_init);
-    a1 = v33;
+    self = v33;
     if (v33)
     {
       objc_storeStrong(v33 + 8, a2);
-      objc_storeStrong(a1 + 9, a3);
-      objc_storeStrong(a1 + 10, a4);
-      objc_storeStrong(a1 + 11, a5);
-      objc_storeStrong(a1 + 12, a6);
-      *(a1 + 12) = a7;
-      a1[2] = 1;
-      *(a1 + 14) = a8;
-      *(a1 + 15) = a9;
-      *(a1 + 16) = a10;
-      *(a1 + 17) = a11;
-      *(a1 + 3) = a12;
-      *(a1 + 4) = a13;
-      *(a1 + 5) = a14;
-      *(a1 + 6) = a15;
+      objc_storeStrong(self + 9, properties);
+      objc_storeStrong(self + 10, textProperties);
+      objc_storeStrong(self + 11, secondaryTextProperties);
+      objc_storeStrong(self + 12, buttonProperties);
+      *(self + 12) = secondaryButtonProperties;
+      self[2] = 1;
+      *(self + 14) = button;
+      *(self + 15) = margins;
+      *(self + 16) = padding;
+      *(self + 17) = textPadding;
+      *(self + 3) = buttonPadding;
+      *(self + 4) = secondaryButtonPadding;
+      *(self + 5) = a14;
+      *(self + 6) = a15;
       v34 = +[UIBackgroundConfiguration clearConfiguration];
-      v35 = a1[13];
-      a1[13] = v34;
+      v35 = self[13];
+      self[13] = v34;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)updatedConfigurationForState:(id)a3
+- (id)updatedConfigurationForState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = [(UIContentUnavailableConfiguration *)self copy];
   defaultStyle = self->_defaultStyle;
-  v7 = v4;
+  v7 = stateCopy;
   v8 = objc_opt_self();
   v9 = [UIContentUnavailableConfigurationState _readonlyContentUnavailableConfigurationState:v7];
   switch(defaultStyle)
   {
     case 2:
-      v10 = [v7 traitCollection];
-      v11 = [(UIContentUnavailableConfiguration *)v8 _defaultSearchConfigurationForState:v9 traitCollection:v10];
+      traitCollection = [v7 traitCollection];
+      v11 = [(UIContentUnavailableConfiguration *)v8 _defaultSearchConfigurationForState:v9 traitCollection:traitCollection];
       goto LABEL_7;
     case 1:
-      v10 = [v7 traitCollection];
-      v11 = [UIContentUnavailableConfiguration _defaultLoadingConfigurationForState:v8 traitCollection:v10];
+      traitCollection = [v7 traitCollection];
+      v11 = [UIContentUnavailableConfiguration _defaultLoadingConfigurationForState:v8 traitCollection:traitCollection];
       goto LABEL_7;
     case 0:
-      v10 = [v7 traitCollection];
-      v11 = [UIContentUnavailableConfiguration _defaultEmptyConfigurationForState:v8 traitCollection:v10];
+      traitCollection = [v7 traitCollection];
+      v11 = [UIContentUnavailableConfiguration _defaultEmptyConfigurationForState:v8 traitCollection:traitCollection];
 LABEL_7:
       v12 = v11;
       goto LABEL_9;
   }
 
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v10 handleFailureInMethod:sel__defaultConfigurationForStyle_state_ object:v8 file:@"UIContentUnavailableConfiguration.m" lineNumber:226 description:{@"Unknown style: %ld", defaultStyle}];
+  traitCollection = [MEMORY[0x1E696AAA8] currentHandler];
+  [traitCollection handleFailureInMethod:sel__defaultConfigurationForStyle_state_ object:v8 file:@"UIContentUnavailableConfiguration.m" lineNumber:226 description:{@"Unknown style: %ld", defaultStyle}];
   v12 = 0;
 LABEL_9:
 
-  v13 = [v5 imageProperties];
-  v14 = [v12 imageProperties];
-  [(UIContentUnavailableImageProperties *)v13 _applyPropertiesFromDefaultProperties:v14];
+  imageProperties = [v5 imageProperties];
+  imageProperties2 = [v12 imageProperties];
+  [(UIContentUnavailableImageProperties *)imageProperties _applyPropertiesFromDefaultProperties:imageProperties2];
 
-  v15 = [v5 textProperties];
-  v16 = [v12 textProperties];
-  [(UIContentUnavailableTextProperties *)v15 _applyPropertiesFromDefaultProperties:v16];
+  textProperties = [v5 textProperties];
+  textProperties2 = [v12 textProperties];
+  [(UIContentUnavailableTextProperties *)textProperties _applyPropertiesFromDefaultProperties:textProperties2];
 
-  v17 = [v5 secondaryTextProperties];
-  v18 = [v12 secondaryTextProperties];
-  [(UIContentUnavailableTextProperties *)v17 _applyPropertiesFromDefaultProperties:v18];
+  secondaryTextProperties = [v5 secondaryTextProperties];
+  secondaryTextProperties2 = [v12 secondaryTextProperties];
+  [(UIContentUnavailableTextProperties *)secondaryTextProperties _applyPropertiesFromDefaultProperties:secondaryTextProperties2];
 
-  v19 = [v5 buttonProperties];
-  v20 = [v12 buttonProperties];
-  [(UIContentUnavailableButtonProperties *)v19 _applyPropertiesFromDefaultProperties:v20];
+  buttonProperties = [v5 buttonProperties];
+  buttonProperties2 = [v12 buttonProperties];
+  [(UIContentUnavailableButtonProperties *)buttonProperties _applyPropertiesFromDefaultProperties:buttonProperties2];
 
-  v21 = [v5 secondaryButtonProperties];
-  v22 = [v12 secondaryButtonProperties];
-  [(UIContentUnavailableButtonProperties *)v21 _applyPropertiesFromDefaultProperties:v22];
+  secondaryButtonProperties = [v5 secondaryButtonProperties];
+  secondaryButtonProperties2 = [v12 secondaryButtonProperties];
+  [(UIContentUnavailableButtonProperties *)secondaryButtonProperties _applyPropertiesFromDefaultProperties:secondaryButtonProperties2];
 
   configurationFlags = self->_configurationFlags;
   if (configurationFlags)
@@ -533,60 +533,60 @@ LABEL_37:
   return v2;
 }
 
-- (UIContentUnavailableConfiguration)initWithCoder:(id)a3
+- (UIContentUnavailableConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = UIContentUnavailableConfiguration;
   v5 = [(UIContentUnavailableConfiguration *)&v41 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageProperties"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageProperties"];
     imageProperties = v5->_imageProperties;
     v5->_imageProperties = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textProperties"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textProperties"];
     textProperties = v5->_textProperties;
     v5->_textProperties = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryTextProperties"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryTextProperties"];
     secondaryTextProperties = v5->_secondaryTextProperties;
     v5->_secondaryTextProperties = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"buttonProperties"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"buttonProperties"];
     buttonProperties = v5->_buttonProperties;
     v5->_buttonProperties = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryButtonProperties"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryButtonProperties"];
     secondaryButtonProperties = v5->_secondaryButtonProperties;
     v5->_secondaryButtonProperties = v14;
 
-    [v4 decodeDoubleForKey:@"prefersSideBySideButtonAndSecondaryButton"];
+    [coderCopy decodeDoubleForKey:@"prefersSideBySideButtonAndSecondaryButton"];
     v5->_prefersSideBySideButtonAndSecondaryButton = v16 != 0.0;
-    v5->_axesPreservingSuperviewLayoutMargins = [v4 decodeIntegerForKey:@"axesPreservingSuperviewLayoutMargins"];
-    [v4 decodeDirectionalEdgeInsetsForKey:@"directionalLayoutMargins"];
+    v5->_axesPreservingSuperviewLayoutMargins = [coderCopy decodeIntegerForKey:@"axesPreservingSuperviewLayoutMargins"];
+    [coderCopy decodeDirectionalEdgeInsetsForKey:@"directionalLayoutMargins"];
     v5->_directionalLayoutMargins.top = v17;
     v5->_directionalLayoutMargins.leading = v18;
     v5->_directionalLayoutMargins.bottom = v19;
     v5->_directionalLayoutMargins.trailing = v20;
-    [v4 decodeDoubleForKey:@"imageToTextPadding"];
+    [coderCopy decodeDoubleForKey:@"imageToTextPadding"];
     v5->_imageToTextPadding = v21;
-    [v4 decodeDoubleForKey:@"textToSecondaryTextPadding"];
+    [coderCopy decodeDoubleForKey:@"textToSecondaryTextPadding"];
     v5->_textToSecondaryTextPadding = v22;
-    [v4 decodeDoubleForKey:@"textToButtonPadding"];
+    [coderCopy decodeDoubleForKey:@"textToButtonPadding"];
     v5->_textToButtonPadding = v23;
-    [v4 decodeDoubleForKey:@"buttonToSecondaryButtonPadding"];
+    [coderCopy decodeDoubleForKey:@"buttonToSecondaryButtonPadding"];
     v5->_buttonToSecondaryButtonPadding = v24;
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"background"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"background"];
     background = v5->_background;
     v5->_background = v25;
 
-    v5->_defaultStyle = [v4 decodeIntegerForKey:@"defaultStyle"];
+    v5->_defaultStyle = [coderCopy decodeIntegerForKey:@"defaultStyle"];
     v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"prefersSideBySideButtonAndSecondaryButton"];
-    *&v5->_configurationFlags = *&v5->_configurationFlags & 0xFE | [v4 decodeBoolForKey:v27];
+    *&v5->_configurationFlags = *&v5->_configurationFlags & 0xFE | [coderCopy decodeBoolForKey:v27];
 
     v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"axesPreservingSuperviewLayoutMargins"];
-    if ([v4 decodeBoolForKey:v28])
+    if ([coderCopy decodeBoolForKey:v28])
     {
       v29 = 2;
     }
@@ -599,7 +599,7 @@ LABEL_37:
     *&v5->_configurationFlags = *&v5->_configurationFlags & 0xFD | v29;
 
     v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"directionalLayoutMargins"];
-    if ([v4 decodeBoolForKey:v30])
+    if ([coderCopy decodeBoolForKey:v30])
     {
       v31 = 4;
     }
@@ -612,7 +612,7 @@ LABEL_37:
     *&v5->_configurationFlags = *&v5->_configurationFlags & 0xFB | v31;
 
     v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"imageToTextPadding"];
-    if ([v4 decodeBoolForKey:v32])
+    if ([coderCopy decodeBoolForKey:v32])
     {
       v33 = 8;
     }
@@ -625,7 +625,7 @@ LABEL_37:
     *&v5->_configurationFlags = *&v5->_configurationFlags & 0xF7 | v33;
 
     v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"textToSecondaryTextPadding"];
-    if ([v4 decodeBoolForKey:v34])
+    if ([coderCopy decodeBoolForKey:v34])
     {
       v35 = 16;
     }
@@ -638,7 +638,7 @@ LABEL_37:
     *&v5->_configurationFlags = *&v5->_configurationFlags & 0xEF | v35;
 
     v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"textToButtonPadding"];
-    if ([v4 decodeBoolForKey:v36])
+    if ([coderCopy decodeBoolForKey:v36])
     {
       v37 = 32;
     }
@@ -651,7 +651,7 @@ LABEL_37:
     *&v5->_configurationFlags = *&v5->_configurationFlags & 0xDF | v37;
 
     v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"buttonToSecondaryButtonPadding"];
-    if ([v4 decodeBoolForKey:v38])
+    if ([coderCopy decodeBoolForKey:v38])
     {
       v39 = 64;
     }
@@ -667,57 +667,57 @@ LABEL_37:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   imageProperties = self->_imageProperties;
-  v5 = a3;
-  [v5 encodeObject:imageProperties forKey:@"imageProperties"];
-  [v5 encodeObject:self->_textProperties forKey:@"textProperties"];
-  [v5 encodeObject:self->_secondaryTextProperties forKey:@"secondaryTextProperties"];
-  [v5 encodeObject:self->_buttonProperties forKey:@"buttonProperties"];
-  [v5 encodeObject:self->_secondaryButtonProperties forKey:@"secondaryButtonProperties"];
+  coderCopy = coder;
+  [coderCopy encodeObject:imageProperties forKey:@"imageProperties"];
+  [coderCopy encodeObject:self->_textProperties forKey:@"textProperties"];
+  [coderCopy encodeObject:self->_secondaryTextProperties forKey:@"secondaryTextProperties"];
+  [coderCopy encodeObject:self->_buttonProperties forKey:@"buttonProperties"];
+  [coderCopy encodeObject:self->_secondaryButtonProperties forKey:@"secondaryButtonProperties"];
   LOBYTE(v6) = self->_prefersSideBySideButtonAndSecondaryButton;
-  [v5 encodeDouble:@"prefersSideBySideButtonAndSecondaryButton" forKey:v6];
-  [v5 encodeInteger:self->_axesPreservingSuperviewLayoutMargins forKey:@"axesPreservingSuperviewLayoutMargins"];
-  [v5 encodeDirectionalEdgeInsets:@"directionalLayoutMargins" forKey:{self->_directionalLayoutMargins.top, self->_directionalLayoutMargins.leading, self->_directionalLayoutMargins.bottom, self->_directionalLayoutMargins.trailing}];
-  [v5 encodeDouble:@"imageToTextPadding" forKey:self->_imageToTextPadding];
-  [v5 encodeDouble:@"textToSecondaryTextPadding" forKey:self->_textToSecondaryTextPadding];
-  [v5 encodeDouble:@"textToButtonPadding" forKey:self->_textToButtonPadding];
-  [v5 encodeDouble:@"buttonToSecondaryButtonPadding" forKey:self->_buttonToSecondaryButtonPadding];
-  [v5 encodeObject:self->_background forKey:@"background"];
-  [v5 encodeInteger:self->_defaultStyle forKey:@"defaultStyle"];
+  [coderCopy encodeDouble:@"prefersSideBySideButtonAndSecondaryButton" forKey:v6];
+  [coderCopy encodeInteger:self->_axesPreservingSuperviewLayoutMargins forKey:@"axesPreservingSuperviewLayoutMargins"];
+  [coderCopy encodeDirectionalEdgeInsets:@"directionalLayoutMargins" forKey:{self->_directionalLayoutMargins.top, self->_directionalLayoutMargins.leading, self->_directionalLayoutMargins.bottom, self->_directionalLayoutMargins.trailing}];
+  [coderCopy encodeDouble:@"imageToTextPadding" forKey:self->_imageToTextPadding];
+  [coderCopy encodeDouble:@"textToSecondaryTextPadding" forKey:self->_textToSecondaryTextPadding];
+  [coderCopy encodeDouble:@"textToButtonPadding" forKey:self->_textToButtonPadding];
+  [coderCopy encodeDouble:@"buttonToSecondaryButtonPadding" forKey:self->_buttonToSecondaryButtonPadding];
+  [coderCopy encodeObject:self->_background forKey:@"background"];
+  [coderCopy encodeInteger:self->_defaultStyle forKey:@"defaultStyle"];
   configurationFlags = self->_configurationFlags;
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"prefersSideBySideButtonAndSecondaryButton"];
-  [v5 encodeBool:configurationFlags & 1 forKey:v8];
+  [coderCopy encodeBool:configurationFlags & 1 forKey:v8];
 
   v9 = (*&self->_configurationFlags >> 1) & 1;
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"axesPreservingSuperviewLayoutMargins"];
-  [v5 encodeBool:v9 forKey:v10];
+  [coderCopy encodeBool:v9 forKey:v10];
 
   v11 = (*&self->_configurationFlags >> 2) & 1;
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"directionalLayoutMargins"];
-  [v5 encodeBool:v11 forKey:v12];
+  [coderCopy encodeBool:v11 forKey:v12];
 
   v13 = (*&self->_configurationFlags >> 3) & 1;
   v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"imageToTextPadding"];
-  [v5 encodeBool:v13 forKey:v14];
+  [coderCopy encodeBool:v13 forKey:v14];
 
   v15 = (*&self->_configurationFlags >> 4) & 1;
   v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"textToSecondaryTextPadding"];
-  [v5 encodeBool:v15 forKey:v16];
+  [coderCopy encodeBool:v15 forKey:v16];
 
   v17 = (*&self->_configurationFlags >> 5) & 1;
   v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"textToButtonPadding"];
-  [v5 encodeBool:v17 forKey:v18];
+  [coderCopy encodeBool:v17 forKey:v18];
 
   v19 = (*&self->_configurationFlags >> 6) & 1;
   v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"buttonToSecondaryButtonPadding"];
-  [v5 encodeBool:v19 forKey:v20];
+  [coderCopy encodeBool:v19 forKey:v20];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v5 = [(UIContentUnavailableImageProperties *)self->_imageProperties copy];
@@ -760,16 +760,16 @@ LABEL_37:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(self) = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v7 = v6;
@@ -795,29 +795,29 @@ LABEL_37:
   return self;
 }
 
-- (uint64_t)_isEqualToConfigurationQuick:(uint64_t)a1
+- (uint64_t)_isEqualToConfigurationQuick:(uint64_t)quick
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (quick)
   {
-    if (v3 == a1)
+    if (v3 == quick)
     {
-      a1 = 1;
+      quick = 1;
     }
 
-    else if (*(a1 + 56) == v3[7] && [(UIContentUnavailableImageProperties *)*(a1 + 64) _isEqualToPropertiesQuick:1 compareImage:?]&& [(UIContentUnavailableTextProperties *)*(a1 + 72) _isEqualToPropertiesQuick:1 compareText:?]&& [(UIContentUnavailableTextProperties *)*(a1 + 80) _isEqualToPropertiesQuick:1 compareText:?]&& [(UIContentUnavailableButtonProperties *)*(a1 + 88) _isEqualToPropertiesQuick:?]&& [(UIContentUnavailableButtonProperties *)*(a1 + 96) _isEqualToPropertiesQuick:?]&& *(a1 + 12) == *(v4 + 12) && *(a1 + 16) == v4[2] && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(a1 + 112), *(v4 + 7)), vceqq_f64(*(a1 + 128), *(v4 + 8))))) & 1) != 0 && *(a1 + 24) == *(v4 + 3) && *(a1 + 32) == *(v4 + 4) && *(a1 + 40) == *(v4 + 5) && *(a1 + 48) == *(v4 + 6))
+    else if (*(quick + 56) == v3[7] && [(UIContentUnavailableImageProperties *)*(quick + 64) _isEqualToPropertiesQuick:1 compareImage:?]&& [(UIContentUnavailableTextProperties *)*(quick + 72) _isEqualToPropertiesQuick:1 compareText:?]&& [(UIContentUnavailableTextProperties *)*(quick + 80) _isEqualToPropertiesQuick:1 compareText:?]&& [(UIContentUnavailableButtonProperties *)*(quick + 88) _isEqualToPropertiesQuick:?]&& [(UIContentUnavailableButtonProperties *)*(quick + 96) _isEqualToPropertiesQuick:?]&& *(quick + 12) == *(v4 + 12) && *(quick + 16) == v4[2] && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(quick + 112), *(v4 + 7)), vceqq_f64(*(quick + 128), *(v4 + 8))))) & 1) != 0 && *(quick + 24) == *(v4 + 3) && *(quick + 32) == *(v4 + 4) && *(quick + 40) == *(v4 + 5) && *(quick + 48) == *(v4 + 6))
     {
-      a1 = [(UIBackgroundConfiguration *)*(a1 + 104) _isEqualToConfigurationQuick:?];
+      quick = [(UIBackgroundConfiguration *)*(quick + 104) _isEqualToConfigurationQuick:?];
     }
 
     else
     {
-      a1 = 0;
+      quick = 0;
     }
   }
 
-  return a1;
+  return quick;
 }
 
 - (unint64_t)hash
@@ -836,8 +836,8 @@ LABEL_37:
     if (imageProperties && imageProperties->data)
     {
       v5 = MEMORY[0x1E696AEC0];
-      v6 = [(UIContentUnavailableImageProperties *)imageProperties _shortDescription];
-      v7 = [v5 stringWithFormat:@"image = %@", v6];
+      _shortDescription = [(UIContentUnavailableImageProperties *)imageProperties _shortDescription];
+      v7 = [v5 stringWithFormat:@"image = %@", _shortDescription];
       [v3 addObject:v7];
     }
 
@@ -845,8 +845,8 @@ LABEL_37:
     if (textProperties && (textProperties->data || textProperties[1].data))
     {
       v9 = MEMORY[0x1E696AEC0];
-      v10 = [(UIContentUnavailableTextProperties *)textProperties _shortDescription];
-      v11 = [v9 stringWithFormat:@"text = %@", v10];
+      _shortDescription2 = [(UIContentUnavailableTextProperties *)textProperties _shortDescription];
+      v11 = [v9 stringWithFormat:@"text = %@", _shortDescription2];
       [v3 addObject:v11];
     }
 
@@ -854,8 +854,8 @@ LABEL_37:
     if (secondaryTextProperties && (secondaryTextProperties->data || secondaryTextProperties[1].data))
     {
       v13 = MEMORY[0x1E696AEC0];
-      v14 = [(UIContentUnavailableTextProperties *)secondaryTextProperties _shortDescription];
-      v15 = [v13 stringWithFormat:@"secondaryText = %@", v14];
+      _shortDescription3 = [(UIContentUnavailableTextProperties *)secondaryTextProperties _shortDescription];
+      v15 = [v13 stringWithFormat:@"secondaryText = %@", _shortDescription3];
       [v3 addObject:v15];
     }
 
@@ -863,8 +863,8 @@ LABEL_37:
     if (buttonProperties)
     {
       v17 = MEMORY[0x1E696AEC0];
-      v18 = [(UIContentUnavailableButtonProperties *)buttonProperties _shortDescription];
-      v19 = [v17 stringWithFormat:@"buttonProperties = %@", v18];
+      _shortDescription4 = [(UIContentUnavailableButtonProperties *)buttonProperties _shortDescription];
+      v19 = [v17 stringWithFormat:@"buttonProperties = %@", _shortDescription4];
       [v3 addObject:v19];
     }
 
@@ -872,8 +872,8 @@ LABEL_37:
     if (secondaryButtonProperties)
     {
       v21 = MEMORY[0x1E696AEC0];
-      v22 = [(UIContentUnavailableButtonProperties *)secondaryButtonProperties _shortDescription];
-      v23 = [v21 stringWithFormat:@"secondaryButtonProperties = %@", v22];
+      _shortDescription5 = [(UIContentUnavailableButtonProperties *)secondaryButtonProperties _shortDescription];
+      v23 = [v21 stringWithFormat:@"secondaryButtonProperties = %@", _shortDescription5];
       [v3 addObject:v23];
     }
 
@@ -881,9 +881,9 @@ LABEL_37:
     defaultStyle = self->_defaultStyle;
     if (defaultStyle >= 3)
     {
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v28 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *_UIContentUnavailableConfigurationStyleToString(_UIContentUnavailableConfigurationStyle)"];
-      [v27 handleFailureInFunction:v28 file:@"UIContentUnavailableConfiguration.m" lineNumber:35 description:{@"Unknown style: %ld", defaultStyle}];
+      [currentHandler handleFailureInFunction:v28 file:@"UIContentUnavailableConfiguration.m" lineNumber:35 description:{@"Unknown style: %ld", defaultStyle}];
 
       v26 = 0;
     }
@@ -955,9 +955,9 @@ LABEL_37:
   return v51;
 }
 
-- (void)_setSwiftBridgingImageProperties:(id)a3
+- (void)_setSwiftBridgingImageProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   imageProperties = self->_imageProperties;
   if (imageProperties)
   {
@@ -965,15 +965,15 @@ LABEL_37:
   }
 
   v6 = imageProperties;
-  [(UIBackgroundConfiguration *)v4 _setCustomView:v6];
+  [(UIBackgroundConfiguration *)propertiesCopy _setCustomView:v6];
 
   v7 = self->_imageProperties;
-  self->_imageProperties = v4;
+  self->_imageProperties = propertiesCopy;
 }
 
-- (void)_setSwiftBridgingTextProperties:(id)a3
+- (void)_setSwiftBridgingTextProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   textProperties = self->_textProperties;
   if (textProperties)
   {
@@ -981,9 +981,9 @@ LABEL_37:
   }
 
   v7 = textProperties;
-  if (v4)
+  if (propertiesCopy)
   {
-    objc_setProperty_nonatomic_copy(v4, v6, v7, 16);
+    objc_setProperty_nonatomic_copy(propertiesCopy, v6, v7, 16);
   }
 
   v8 = self->_textProperties;
@@ -993,18 +993,18 @@ LABEL_37:
   }
 
   v10 = v8;
-  if (v4)
+  if (propertiesCopy)
   {
-    objc_setProperty_nonatomic_copy(v4, v9, v10, 48);
+    objc_setProperty_nonatomic_copy(propertiesCopy, v9, v10, 48);
   }
 
   v11 = self->_textProperties;
-  self->_textProperties = v4;
+  self->_textProperties = propertiesCopy;
 }
 
-- (void)_setSwiftBridgingSecondaryTextProperties:(id)a3
+- (void)_setSwiftBridgingSecondaryTextProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   secondaryTextProperties = self->_secondaryTextProperties;
   if (secondaryTextProperties)
   {
@@ -1012,9 +1012,9 @@ LABEL_37:
   }
 
   v7 = secondaryTextProperties;
-  if (v4)
+  if (propertiesCopy)
   {
-    objc_setProperty_nonatomic_copy(v4, v6, v7, 16);
+    objc_setProperty_nonatomic_copy(propertiesCopy, v6, v7, 16);
   }
 
   v8 = self->_secondaryTextProperties;
@@ -1024,18 +1024,18 @@ LABEL_37:
   }
 
   v10 = v8;
-  if (v4)
+  if (propertiesCopy)
   {
-    objc_setProperty_nonatomic_copy(v4, v9, v10, 48);
+    objc_setProperty_nonatomic_copy(propertiesCopy, v9, v10, 48);
   }
 
   v11 = self->_secondaryTextProperties;
-  self->_secondaryTextProperties = v4;
+  self->_secondaryTextProperties = propertiesCopy;
 }
 
-- (void)_setSwiftBridgingButtonProperties:(id)a3
+- (void)_setSwiftBridgingButtonProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   buttonProperties = self->_buttonProperties;
   if (buttonProperties)
   {
@@ -1043,15 +1043,15 @@ LABEL_37:
   }
 
   v6 = buttonProperties;
-  [(UIBackgroundConfiguration *)v4 _setCustomView:v6];
+  [(UIBackgroundConfiguration *)propertiesCopy _setCustomView:v6];
 
   v7 = self->_buttonProperties;
-  self->_buttonProperties = v4;
+  self->_buttonProperties = propertiesCopy;
 }
 
-- (void)_setSwiftBridgingSecondaryButtonProperties:(id)a3
+- (void)_setSwiftBridgingSecondaryButtonProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   secondaryButtonProperties = self->_secondaryButtonProperties;
   if (secondaryButtonProperties)
   {
@@ -1059,10 +1059,10 @@ LABEL_37:
   }
 
   v6 = secondaryButtonProperties;
-  [(UIBackgroundConfiguration *)v4 _setCustomView:v6];
+  [(UIBackgroundConfiguration *)propertiesCopy _setCustomView:v6];
 
   v7 = self->_secondaryButtonProperties;
-  self->_secondaryButtonProperties = v4;
+  self->_secondaryButtonProperties = propertiesCopy;
 }
 
 - (void)setAlignment:(UIContentUnavailableAlignment)alignment

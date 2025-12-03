@@ -1,12 +1,12 @@
 @interface VNRecognizedPointsObservation
-- (BOOL)isEqual:(id)a3;
-- (VNRecognizedPointsObservation)initWithCoder:(id)a3;
-- (VNRecognizedPointsObservation)initWithOriginatingRequestSpecifier:(id)a3 keypointReturningObservation:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (VNRecognizedPointsObservation)initWithCoder:(id)coder;
+- (VNRecognizedPointsObservation)initWithOriginatingRequestSpecifier:(id)specifier keypointReturningObservation:(id)observation;
 - (id)debugQuickLookObject;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
-- (void)addAllJointsToPath:(CGPath *)a3 imageSize:(CGSize)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)addAllJointsToPath:(CGPath *)path imageSize:(CGSize)size;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNRecognizedPointsObservation
@@ -20,11 +20,11 @@
     v4 = Mutable;
     v10.receiver = self;
     v10.super_class = VNRecognizedPointsObservation;
-    v5 = [(VNObservation *)&v10 debugQuickLookObject];
-    v6 = v5;
-    if (v5)
+    debugQuickLookObject = [(VNObservation *)&v10 debugQuickLookObject];
+    v6 = debugQuickLookObject;
+    if (debugQuickLookObject)
     {
-      [(VNRecognizedPointsObservation *)self addAllJointsToPath:v4 imageSize:VNDebugImageSizeFromObject(v5)];
+      [(VNRecognizedPointsObservation *)self addAllJointsToPath:v4 imageSize:VNDebugImageSizeFromObject(debugQuickLookObject)];
       v11[0] = xmmword_1A6052420;
       v11[1] = unk_1A6052430;
       v7 = VNDebugColorFromValues(v11);
@@ -49,17 +49,17 @@
   return v8;
 }
 
-- (void)addAllJointsToPath:(CGPath *)a3 imageSize:(CGSize)a4
+- (void)addAllJointsToPath:(CGPath *)path imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v28 = *MEMORY[0x1E69E9840];
-  v8 = [(VNRecognizedPointsObservation *)self availableKeys];
+  availableKeys = [(VNRecognizedPointsObservation *)self availableKeys];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v9 = [availableKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -75,7 +75,7 @@
       {
         if (*v24 != v14)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(availableKeys);
         }
 
         v17 = *(*(&v23 + 1) + 8 * v15);
@@ -90,14 +90,14 @@
         v29.origin.x = v20;
         v29.size.width = v12;
         v29.size.height = v13;
-        CGPathAddEllipseInRect(a3, 0, v29);
+        CGPathAddEllipseInRect(path, 0, v29);
 
         ++v15;
         v16 = v11;
       }
 
       while (v10 != v15);
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v10 = [availableKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v10);
@@ -111,12 +111,12 @@
   return [(VNRecognizedPointsSpecifier *)self->_specifier hash]^ __ROR8__([(VNObservation *)&v3 hash], 51);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = VNRecognizedPointsObservation;
-  if ([(VNObservation *)&v8 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(VNObservation *)&v8 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = self->_specifier;
     v6 = VisionCoreEqualOrNilObjects();
@@ -134,37 +134,37 @@
 {
   v7.receiver = self;
   v7.super_class = VNRecognizedPointsObservation;
-  v3 = [(VNObservation *)&v7 vn_cloneObject];
-  if (v3)
+  vn_cloneObject = [(VNObservation *)&v7 vn_cloneObject];
+  if (vn_cloneObject)
   {
     v4 = [(VNRecognizedPointsSpecifier *)self->_specifier copy];
-    v5 = v3[12];
-    v3[12] = v4;
+    v5 = vn_cloneObject[12];
+    vn_cloneObject[12] = v4;
   }
 
-  return v3;
+  return vn_cloneObject;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v6.receiver = self;
   v6.super_class = VNRecognizedPointsObservation;
-  [(VNObservation *)&v6 encodeWithCoder:v4];
-  [v4 encodeObject:self->_specifier forKey:@"PtSpec"];
+  [(VNObservation *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_specifier forKey:@"PtSpec"];
   objc_autoreleasePoolPop(v5);
 }
 
-- (VNRecognizedPointsObservation)initWithCoder:(id)a3
+- (VNRecognizedPointsObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = VNRecognizedPointsObservation;
-  v5 = [(VNObservation *)&v9 initWithCoder:v4];
+  v5 = [(VNObservation *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PtSpec"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PtSpec"];
     specifier = v5->_specifier;
     v5->_specifier = v6;
   }
@@ -172,13 +172,13 @@
   return v5;
 }
 
-- (VNRecognizedPointsObservation)initWithOriginatingRequestSpecifier:(id)a3 keypointReturningObservation:(id)a4
+- (VNRecognizedPointsObservation)initWithOriginatingRequestSpecifier:(id)specifier keypointReturningObservation:(id)observation
 {
-  v6 = a3;
-  v7 = a4;
+  specifierCopy = specifier;
+  observationCopy = observation;
   v27.receiver = self;
   v27.super_class = VNRecognizedPointsObservation;
-  v8 = [(VNObservation *)&v27 initWithOriginatingRequestSpecifier:v6];
+  v8 = [(VNObservation *)&v27 initWithOriginatingRequestSpecifier:specifierCopy];
   if (!v8)
   {
     goto LABEL_21;
@@ -202,28 +202,28 @@
 
   v10 = v9;
   _Block_object_dispose(&v33, 8);
-  if ([v7 isMemberOfClass:objc_opt_class()])
+  if ([observationCopy isMemberOfClass:objc_opt_class()])
   {
-    v11 = v7;
-    v12 = [[VNRecognizedBodyPointsSpecifier alloc] initWithVCPPersonObservation:v11 originatingRequestSpecifier:v6];
+    v11 = observationCopy;
+    v12 = [[VNRecognizedBodyPointsSpecifier alloc] initWithVCPPersonObservation:v11 originatingRequestSpecifier:specifierCopy];
     specifier = v8->_specifier;
     v8->_specifier = &v12->super;
 
-    if ([v6 requestRevision] == 3737841664)
+    if ([specifierCopy requestRevision] == 3737841664)
     {
-      v14 = [(VNRecognizedPointsSpecifier *)v11 leftHand];
-      if (v14)
+      leftHand = [(VNRecognizedPointsSpecifier *)v11 leftHand];
+      if (leftHand)
       {
         v15 = [VNRequestSpecifier specifierForRequestClass:objc_opt_class() revision:1 error:0];
-        v16 = [(VNRecognizedPointsObservation *)[VNHumanHandPoseObservation alloc] initWithOriginatingRequestSpecifier:v15 keypointReturningObservation:v14];
+        v16 = [(VNRecognizedPointsObservation *)[VNHumanHandPoseObservation alloc] initWithOriginatingRequestSpecifier:v15 keypointReturningObservation:leftHand];
         [(VNRecognizedPointsObservation *)v8 setLeftHand:v16];
       }
 
-      v17 = [(VNRecognizedPointsSpecifier *)v11 rightHand];
-      if (v17)
+      rightHand = [(VNRecognizedPointsSpecifier *)v11 rightHand];
+      if (rightHand)
       {
         v18 = [VNRequestSpecifier specifierForRequestClass:objc_opt_class() revision:1 error:0];
-        v19 = [(VNRecognizedPointsObservation *)[VNHumanHandPoseObservation alloc] initWithOriginatingRequestSpecifier:v18 keypointReturningObservation:v17];
+        v19 = [(VNRecognizedPointsObservation *)[VNHumanHandPoseObservation alloc] initWithOriginatingRequestSpecifier:v18 keypointReturningObservation:rightHand];
         [(VNRecognizedPointsObservation *)v8 setRightHand:v19];
       }
     }
@@ -249,7 +249,7 @@
 
   v21 = v20;
   _Block_object_dispose(&v33, 8);
-  if (![v7 isMemberOfClass:objc_opt_class()])
+  if (![observationCopy isMemberOfClass:objc_opt_class()])
   {
     v33 = 0;
     v34 = &v33;
@@ -269,9 +269,9 @@
 
     v24 = v23;
     _Block_object_dispose(&v33, 8);
-    if ([v7 isMemberOfClass:objc_opt_class()])
+    if ([observationCopy isMemberOfClass:objc_opt_class()])
     {
-      v22 = [[VNRecognizedAnimalBodyPointsSpecifier alloc] initWithVCPPetsObservation:v7 originatingRequestSpecifier:v6];
+      v22 = [[VNRecognizedAnimalBodyPointsSpecifier alloc] initWithVCPPetsObservation:observationCopy originatingRequestSpecifier:specifierCopy];
       goto LABEL_19;
     }
 
@@ -280,7 +280,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v22 = [[VNRecognizedHandPointsSpecifier alloc] initWithVCPHandObservation:v7 originatingRequestSpecifier:v6];
+  v22 = [[VNRecognizedHandPointsSpecifier alloc] initWithVCPHandObservation:observationCopy originatingRequestSpecifier:specifierCopy];
 LABEL_19:
   v11 = v8->_specifier;
   v8->_specifier = &v22->super;

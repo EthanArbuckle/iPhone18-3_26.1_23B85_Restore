@@ -1,13 +1,13 @@
 @interface SleepAlarmAttribute
-- (SleepAlarmAttribute)initWithCoder:(id)a3;
-- (SleepAlarmAttribute)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (SleepAlarmAttribute)initWithCoder:(id)coder;
+- (SleepAlarmAttribute)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 @end
 
 @implementation SleepAlarmAttribute
 
-- (SleepAlarmAttribute)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (SleepAlarmAttribute)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     v6 = sub_2692C7830();
     v8 = v7;
@@ -21,7 +21,7 @@
 
   v9 = sub_2692C7830();
   v11 = v10;
-  if (a5)
+  if (hint)
   {
     v12 = sub_2692C7830();
     v14 = v13;
@@ -36,12 +36,12 @@
   return SleepAlarmAttribute.init(identifier:display:pronunciationHint:)(v6, v8, v9, v11, v12, v14);
 }
 
-- (SleepAlarmAttribute)initWithCoder:(id)a3
+- (SleepAlarmAttribute)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SleepAlarmAttribute();
-  v4 = a3;
-  v5 = [(SleepAlarmAttribute *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SleepAlarmAttribute *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,14 +1,14 @@
 @interface OFPropertyAnimation
-+ (id)animateWithDuration:(double)a3 rootLayer:(id)a4 animation:(id)a5 progress:(id)a6 completion:(id)a7;
-+ (id)interpolateValueForKey:(id)a3 animation:(id)a4 progress:(double)a5;
++ (id)animateWithDuration:(double)duration rootLayer:(id)layer animation:(id)animation progress:(id)progress completion:(id)completion;
++ (id)interpolateValueForKey:(id)key animation:(id)animation progress:(double)progress;
 - (CGPoint)animatedPoint;
 - (OFPropertyAnimation)init;
 - (double)animatedFloat;
 - (void)_cleanup;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)cancel;
 - (void)dealloc;
-- (void)handleTimer:(id)a3;
+- (void)handleTimer:(id)timer;
 @end
 
 @implementation OFPropertyAnimation
@@ -82,19 +82,19 @@
   [(OFPropertyAnimation *)&v9 dealloc];
 }
 
-+ (id)animateWithDuration:(double)a3 rootLayer:(id)a4 animation:(id)a5 progress:(id)a6 completion:(id)a7
++ (id)animateWithDuration:(double)duration rootLayer:(id)layer animation:(id)animation progress:(id)progress completion:(id)completion
 {
   v13 = objc_alloc_init(OFPropertyAnimation);
-  v13->_progressBlock = [a6 copy];
-  v13->_completionBlock = [a7 copy];
-  [a4 addSublayer:v13->_layer];
-  v14 = (*(a5 + 2))(a5, v13);
+  v13->_progressBlock = [progress copy];
+  v13->_completionBlock = [completion copy];
+  [layer addSublayer:v13->_layer];
+  v14 = (*(animation + 2))(animation, v13);
   v13->_propertyAnimation = v14;
-  [(CAPropertyAnimation *)v14 setDuration:a3];
+  [(CAPropertyAnimation *)v14 setDuration:duration];
   [(CAPropertyAnimation *)v13->_propertyAnimation setRemovedOnCompletion:1];
   [(CAPropertyAnimation *)v13->_propertyAnimation setDelegate:v13];
   [(OFPropertyAnimationLayer *)v13->_layer addAnimation:v13->_propertyAnimation forKey:v13->_animationKey];
-  v15 = a1;
+  selfCopy = self;
 
   return v13;
 }
@@ -128,15 +128,15 @@
   [(OFPropertyAnimation *)self setDestinationAnimatedFloat:?];
 }
 
-+ (id)interpolateValueForKey:(id)a3 animation:(id)a4 progress:(double)a5
++ (id)interpolateValueForKey:(id)key animation:(id)animation progress:(double)progress
 {
   v8 = objc_alloc_init(OFPropertyAnimation);
-  v9 = (*(a4 + 2))(a4, v8);
+  v9 = (*(animation + 2))(animation, v8);
   v8->_propertyAnimation = v9;
   [(CAPropertyAnimation *)v9 setDuration:1.0];
   v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:1];
-  [(CAPropertyAnimation *)v8->_propertyAnimation applyForTime:v10 presentationObject:v10 modelObject:a5];
-  v11 = [v10 valueForKey:a3];
+  [(CAPropertyAnimation *)v8->_propertyAnimation applyForTime:v10 presentationObject:v10 modelObject:progress];
+  v11 = [v10 valueForKey:key];
 
   return v11;
 }
@@ -159,9 +159,9 @@
   return result;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
+  finishedCopy = finished;
   timer = self->_timer;
   if (timer)
   {
@@ -176,15 +176,15 @@
   completionBlock = self->_completionBlock;
   if (completionBlock)
   {
-    completionBlock[2](completionBlock, self, v4);
+    completionBlock[2](completionBlock, self, finishedCopy);
   }
 
   [(OFPropertyAnimation *)self _cleanup];
 
-  v8 = self;
+  selfCopy = self;
 }
 
-- (void)handleTimer:(id)a3
+- (void)handleTimer:(id)timer
 {
   progressBlock = self->_progressBlock;
   if (progressBlock)

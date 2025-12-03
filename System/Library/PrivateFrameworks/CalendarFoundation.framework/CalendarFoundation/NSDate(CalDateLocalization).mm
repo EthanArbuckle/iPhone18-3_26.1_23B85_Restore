@@ -9,7 +9,7 @@
 {
   v4 = a3;
   v5 = +[CalChronometry activeTimeZone];
-  v6 = [a1 localizedStringWithFormat:v4 timeZone:v5];
+  v6 = [self localizedStringWithFormat:v4 timeZone:v5];
 
   return v6;
 }
@@ -37,7 +37,7 @@
       CFRelease(v12);
     }
 
-    StringWithDate = CFDateFormatterCreateStringWithDate(0, v10, a1);
+    StringWithDate = CFDateFormatterCreateStringWithDate(0, v10, self);
   }
 
   else

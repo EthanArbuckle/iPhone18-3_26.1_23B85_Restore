@@ -1,22 +1,22 @@
 @interface NTKRichComplicationBaseCircularSwiftUIView
-- (NTKRichComplicationBaseCircularSwiftUIView)initWithFamily:(int64_t)a3;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
+- (NTKRichComplicationBaseCircularSwiftUIView)initWithFamily:(int64_t)family;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 - (void)layoutSubviews;
-- (void)setPaused:(BOOL)a3;
+- (void)setPaused:(BOOL)paused;
 @end
 
 @implementation NTKRichComplicationBaseCircularSwiftUIView
 
-- (NTKRichComplicationBaseCircularSwiftUIView)initWithFamily:(int64_t)a3
+- (NTKRichComplicationBaseCircularSwiftUIView)initWithFamily:(int64_t)family
 {
   v14.receiver = self;
   v14.super_class = NTKRichComplicationBaseCircularSwiftUIView;
-  v3 = [(NTKRichComplicationCircularBaseView *)&v14 initWithFamily:a3];
+  v3 = [(NTKRichComplicationCircularBaseView *)&v14 initWithFamily:family];
   if (v3)
   {
-    v4 = [off_27877BE70 async];
+    async = [off_27877BE70 async];
     swiftUIView = v3->_swiftUIView;
-    v3->_swiftUIView = v4;
+    v3->_swiftUIView = async;
 
     [(CDComplicationHostingView *)v3->_swiftUIView setFilterProvider:v3];
     objc_initWeak(&location, v3);
@@ -48,8 +48,8 @@ void __61__NTKRichComplicationBaseCircularSwiftUIView_initWithFamily___block_inv
   v14.receiver = self;
   v14.super_class = NTKRichComplicationBaseCircularSwiftUIView;
   [(NTKRichComplicationCircularBaseView *)&v14 layoutSubviews];
-  v3 = [(NTKRichComplicationCircularBaseView *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKRichComplicationCircularBaseView *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -61,23 +61,23 @@ void __61__NTKRichComplicationBaseCircularSwiftUIView_initWithFamily___block_inv
   v15.size.width = v9;
   v15.size.height = v11;
   v12 = CGRectGetWidth(v15) * 0.5;
-  v13 = [(CDComplicationHostingView *)self->_swiftUIView layer];
-  [v13 setCornerRadius:v12];
+  layer = [(CDComplicationHostingView *)self->_swiftUIView layer];
+  [layer setCornerRadius:v12];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v5.receiver = self;
   v5.super_class = NTKRichComplicationBaseCircularSwiftUIView;
   [(CDRichComplicationView *)&v5 setPaused:?];
-  [(CDComplicationHostingView *)self->_swiftUIView setPaused:v3];
+  [(CDComplicationHostingView *)self->_swiftUIView setPaused:pausedCopy];
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v5 = [a3 contentData];
-  [(CDComplicationHostingView *)self->_swiftUIView setViewData:v5];
+  contentData = [template contentData];
+  [(CDComplicationHostingView *)self->_swiftUIView setViewData:contentData];
 }
 
 @end

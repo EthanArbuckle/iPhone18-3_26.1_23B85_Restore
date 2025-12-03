@@ -1,16 +1,16 @@
 @interface NRDevicePairingManagerMux
 - (NRDevicePairingManagerMux)init;
-- (void)checkInWithRetryCount:(id *)a1;
+- (void)checkInWithRetryCount:(id *)count;
 - (void)dealloc;
-- (void)handleUnsolicitedMessage:(uint64_t)a1;
-- (void)invalidateManagersWithError:(uint64_t)a1;
-- (void)registerPairingManager:(void *)a3 withCompletion:;
-- (void)sendAuthMethodRequestForDevice:(uint64_t)a3 authMethod:(void *)a4 pairingManager:(void *)a5 withCompletion:;
-- (void)startDiscoveryForPairingManager:(void *)a3 withCompletion:;
-- (void)startPairingForPairingManager:(void *)a3 pairingTarget:(void *)a4 withCompletion:;
-- (void)stopDiscoveryForPairingManager:(void *)a3 withCompletion:;
-- (void)stopPairingForPairingManager:(void *)a3 withCompletion:;
-- (void)unregisterPairingManager:(void *)a3 withCompletion:;
+- (void)handleUnsolicitedMessage:(uint64_t)message;
+- (void)invalidateManagersWithError:(uint64_t)error;
+- (void)registerPairingManager:(void *)manager withCompletion:;
+- (void)sendAuthMethodRequestForDevice:(uint64_t)device authMethod:(void *)method pairingManager:(void *)manager withCompletion:;
+- (void)startDiscoveryForPairingManager:(void *)manager withCompletion:;
+- (void)startPairingForPairingManager:(void *)manager pairingTarget:(void *)target withCompletion:;
+- (void)stopDiscoveryForPairingManager:(void *)manager withCompletion:;
+- (void)stopPairingForPairingManager:(void *)manager withCompletion:;
+- (void)unregisterPairingManager:(void *)manager withCompletion:;
 @end
 
 @implementation NRDevicePairingManagerMux
@@ -174,7 +174,7 @@ LABEL_25:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkInWithRetryCount:(id *)a1
+- (void)checkInWithRetryCount:(id *)count
 {
   location[1] = *MEMORY[0x277D85DE8];
   if (a2 >= 6)
@@ -204,16 +204,16 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (a1[3])
+  if (count[3])
   {
     v4 = xpc_dictionary_create(0, 0, 0);
     if (v4)
     {
       v5 = v4;
       xpc_dictionary_set_uint64(v4, "Type", 0x31uLL);
-      objc_initWeak(location, a1);
-      v6 = a1[3];
-      v7 = a1[4];
+      objc_initWeak(location, count);
+      v6 = count[3];
+      v7 = count[4];
       handler[0] = MEMORY[0x277D85DD0];
       handler[1] = 3221225472;
       handler[2] = __51__NRDevicePairingManagerMux_checkInWithRetryCount___block_invoke;
@@ -312,27 +312,27 @@ LABEL_22:
 
 LABEL_24:
   v47 = +[NRDevicePairingManager copyXPCError];
-  [(NRDevicePairingManagerMux *)a1 invalidateManagersWithError:v47];
+  [(NRDevicePairingManagerMux *)count invalidateManagersWithError:v47];
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidateManagersWithError:(uint64_t)a1
+- (void)invalidateManagersWithError:(uint64_t)error
 {
   v39 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  v4 = *(a1 + 24);
+  v4 = *(error + 24);
   if (v4)
   {
     xpc_connection_cancel(v4);
-    v5 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v5 = *(error + 24);
+    *(error + 24) = 0;
   }
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = *(a1 + 16);
+  obj = *(error + 16);
   v6 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v6)
   {
@@ -347,7 +347,7 @@ LABEL_24:
           objc_enumerationMutation(obj);
         }
 
-        v9 = [*(a1 + 16) objectForKeyedSubscript:*(*(&v33 + 1) + 8 * i)];
+        v9 = [*(error + 16) objectForKeyedSubscript:*(*(&v33 + 1) + 8 * i)];
         v10 = v9;
         if (v9)
         {
@@ -389,7 +389,7 @@ LABEL_24:
           v19 = *v30;
           if (v10)
           {
-            v20 = a1;
+            errorCopy = error;
             do
             {
               for (j = 0; j != v18; ++j)
@@ -408,7 +408,7 @@ LABEL_24:
 
             while (v18);
 
-            a1 = v20;
+            error = errorCopy;
 LABEL_30:
             [*(v10 + 40) removeAllObjects];
             v25 = *(v10 + 8);
@@ -451,7 +451,7 @@ LABEL_31:
     while (v7);
   }
 
-  [*(a1 + 16) removeAllObjects];
+  [*(error + 16) removeAllObjects];
   v26 = *MEMORY[0x277D85DE8];
 }
 
@@ -665,14 +665,14 @@ LABEL_60:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerPairingManager:(void *)a3 withCompletion:
+- (void)registerPairingManager:(void *)manager withCompletion:
 {
   location[1] = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v82 = a3;
-  if (a1)
+  managerCopy = manager;
+  if (self)
   {
-    if (*(a1 + 24))
+    if (*(self + 24))
     {
       if (v5)
       {
@@ -685,21 +685,21 @@ LABEL_60:
       }
 
       v7 = v6;
-      v8 = [v7 uuid];
+      uuid = [v7 uuid];
 
-      v9 = [*(a1 + 16) objectForKeyedSubscript:v8];
+      v9 = [*(self + 16) objectForKeyedSubscript:uuid];
       if (!v9)
       {
         v9 = [[NRDevicePairingManagerMuxEntry alloc] initWithPairingManager:v5];
-        [*(a1 + 16) setObject:v9 forKeyedSubscript:v8];
-        if ((*(a1 + 8) & 1) == 0)
+        [*(self + 16) setObject:v9 forKeyedSubscript:uuid];
+        if ((*(self + 8) & 1) == 0)
         {
           if (!v9)
           {
             goto LABEL_24;
           }
 
-          objc_setProperty_nonatomic_copy(v9, v10, v82, 24);
+          objc_setProperty_nonatomic_copy(v9, v10, managerCopy, 24);
 LABEL_23:
 
 LABEL_24:
@@ -735,15 +735,15 @@ LABEL_24:
           {
             xpc_dictionary_set_data(v15, "PairingManagerInfo", [v18 bytes], objc_msgSend(v18, "length"));
 
-            objc_initWeak(location, a1);
-            v20 = *(a1 + 24);
-            v21 = *(a1 + 32);
+            objc_initWeak(location, self);
+            v20 = *(self + 24);
+            v21 = *(self + 32);
             handler[0] = MEMORY[0x277D85DD0];
             handler[1] = 3221225472;
             handler[2] = __67__NRDevicePairingManagerMux_registerPairingManager_withCompletion___block_invoke;
             handler[3] = &unk_27996B328;
             objc_copyWeak(&v86, location);
-            v85 = v82;
+            v85 = managerCopy;
             v84 = v15;
             xpc_connection_send_message_with_reply(v20, v84, v21, handler);
 
@@ -814,7 +814,7 @@ LABEL_48:
                 {
 LABEL_52:
                   v81 = +[NRDevicePairingManager copyXPCError];
-                  (*(v82 + 2))(v82, v81);
+                  (*(managerCopy + 2))(managerCopy, v81);
 
                   goto LABEL_22;
                 }
@@ -900,7 +900,7 @@ LABEL_41:
       {
 LABEL_38:
         v44 = +[NRDevicePairingManager copyXPCError];
-        (*(v82 + 2))(v82, v44);
+        (*(managerCopy + 2))(managerCopy, v44);
 
         goto LABEL_25;
       }
@@ -1088,10 +1088,10 @@ LABEL_29:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUnsolicitedMessage:(uint64_t)a1
+- (void)handleUnsolicitedMessage:(uint64_t)message
 {
   v3 = a2;
-  if (*(a1 + 24))
+  if (*(message + 24))
   {
     v475 = v3;
     v4 = xpc_dictionary_get_value(v3, "PairingManagerOperation");
@@ -1139,7 +1139,7 @@ LABEL_154:
 
             if (v11)
             {
-              v12 = [*(a1 + 16) objectForKeyedSubscript:v11];
+              v12 = [*(message + 16) objectForKeyedSubscript:v11];
               if (!v12)
               {
                 v131 = nrCopyLogObj_1710();
@@ -1196,9 +1196,9 @@ LABEL_154:
                         v33 = v31;
                         if (v32)
                         {
-                          v34 = [v32 authRequestHandler];
+                          authRequestHandler = [v32 authRequestHandler];
 
-                          if (v34)
+                          if (authRequestHandler)
                           {
                             v35 = v32[7];
                             block = MEMORY[0x277D85DD0];
@@ -1324,9 +1324,9 @@ LABEL_101:
 
                               if (v123 == 5)
                               {
-                                v124 = [v122 candidateLostHandler];
+                                candidateLostHandler = [v122 candidateLostHandler];
 
-                                if (v124)
+                                if (candidateLostHandler)
                                 {
                                   v125 = v122[7];
                                   block = MEMORY[0x277D85DD0];
@@ -1501,8 +1501,8 @@ LABEL_69:
                         if (v84)
                         {
                           v85 = v12[2];
-                          v86 = [v84 uuid];
-                          v87 = [v85 objectForKeyedSubscript:v86];
+                          uuid = [v84 uuid];
+                          v87 = [v85 objectForKeyedSubscript:uuid];
 
                           if (v87)
                           {
@@ -1530,8 +1530,8 @@ LABEL_69:
                             }
 
                             v104 = v12[2];
-                            v105 = [v84 uuid];
-                            [v104 setObject:v84 forKeyedSubscript:v105];
+                            uuid2 = [v84 uuid];
+                            [v104 setObject:v84 forKeyedSubscript:uuid2];
 
                             v106 = v12[1];
                             v84 = v84;
@@ -1544,9 +1544,9 @@ LABEL_69:
 
                               if (v108 == 5)
                               {
-                                v109 = [v107 candidateDiscoveredHandler];
+                                candidateDiscoveredHandler = [v107 candidateDiscoveredHandler];
 
-                                if (v109)
+                                if (candidateDiscoveredHandler)
                                 {
                                   v110 = v107[7];
                                   block = MEMORY[0x277D85DD0];
@@ -1750,8 +1750,8 @@ LABEL_36:
                                       }
                                     }
 
-                                    v52 = nrCopyLogObj_1710();
-                                    _NRLogWithArgs(v52, 16, "%s%.30s:%-4d UUID is null for key %s", v341, v342, v343, v344, v345, "");
+                                    nrDeviceIdentifier = nrCopyLogObj_1710();
+                                    _NRLogWithArgs(nrDeviceIdentifier, 16, "%s%.30s:%-4d UUID is null for key %s", v341, v342, v343, v344, v345, "");
                                   }
 
                                   else
@@ -1763,9 +1763,9 @@ LABEL_36:
                                       goto LABEL_53;
                                     }
 
-                                    v52 = [v47 nrDeviceIdentifier];
+                                    nrDeviceIdentifier = [v47 nrDeviceIdentifier];
                                     v48 = v51;
-                                    if (v52)
+                                    if (nrDeviceIdentifier)
                                     {
                                       os_unfair_lock_lock(&sBluetoothUUIDToNRUUIDMappingLock);
                                       v53 = sBluetoothUUIDToNRUUIDMapping;
@@ -1780,8 +1780,8 @@ LABEL_36:
 
                                       if ([v53 count] <= 0xF)
                                       {
-                                        v56 = [v52 nrDeviceIdentifier];
-                                        [sBluetoothUUIDToNRUUIDMapping setObject:v56 forKeyedSubscript:v48];
+                                        v52NrDeviceIdentifier = [nrDeviceIdentifier nrDeviceIdentifier];
+                                        [sBluetoothUUIDToNRUUIDMapping setObject:v52NrDeviceIdentifier forKeyedSubscript:v48];
 
                                         if (nrCopyLogObj_onceToken_809 != -1)
                                         {
@@ -1791,7 +1791,7 @@ LABEL_36:
                                         if ((sNRCopyLogToStdErr & 1) != 0 || os_log_type_enabled(nrCopyLogObj_sNRLogObj_811, OS_LOG_TYPE_INFO))
                                         {
                                           v57 = nrCopyLogObj_sNRLogObj_811;
-                                          v468 = [v52 nrDeviceIdentifier];
+                                          v52NrDeviceIdentifier2 = [nrDeviceIdentifier nrDeviceIdentifier];
                                           _NRLogWithArgs(v57, 1, "%s%.30s:%-4d Adding BluetoothUUID %@ to cache for nrUUID %@", v58, v59, v60, v61, v62, "");
                                         }
                                       }
@@ -1819,8 +1819,8 @@ LABEL_36:
                                     }
                                   }
 
-                                  v52 = nrCopyLogObj_1710();
-                                  _NRLogWithArgs(v52, 16, "%s%.30s:%-4d Failed to get UUID for key %s", v328, v329, v330, v331, v332, "");
+                                  nrDeviceIdentifier = nrCopyLogObj_1710();
+                                  _NRLogWithArgs(nrDeviceIdentifier, 16, "%s%.30s:%-4d Failed to get UUID for key %s", v328, v329, v330, v331, v332, "");
                                 }
 
 LABEL_52:
@@ -2559,7 +2559,7 @@ LABEL_145:
 
 LABEL_147:
       v11 = +[NRDevicePairingManager copyXPCError];
-      [(NRDevicePairingManagerMux *)a1 invalidateManagersWithError:v11];
+      [(NRDevicePairingManagerMux *)message invalidateManagersWithError:v11];
       goto LABEL_125;
     }
 
@@ -2619,14 +2619,14 @@ LABEL_127:
   [(NRDevicePairingManagerMux *)&v10 dealloc];
 }
 
-- (void)unregisterPairingManager:(void *)a3 withCompletion:
+- (void)unregisterPairingManager:(void *)manager withCompletion:
 {
   location[1] = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v72 = a3;
-  if (a1)
+  managerCopy = manager;
+  if (self)
   {
-    if (a1[3])
+    if (self[3])
     {
       if (v5)
       {
@@ -2639,13 +2639,13 @@ LABEL_127:
       }
 
       v7 = v6;
-      v8 = [v7 uuid];
+      uuid = [v7 uuid];
 
-      v9 = [a1[2] objectForKeyedSubscript:v8];
+      v9 = [self[2] objectForKeyedSubscript:uuid];
       v10 = v9;
       if (!v9)
       {
-        v72[2](v72, 0);
+        managerCopy[2](managerCopy, 0);
 LABEL_20:
 
         goto LABEL_21;
@@ -2673,23 +2673,23 @@ LABEL_20:
         xpc_dictionary_set_uint64(v17, "PairingManagerOperation", 2uLL);
         *uuid = 0;
         v79 = 0;
-        [v8 getUUIDBytes:uuid];
+        [uuid getUUIDBytes:uuid];
         v19 = xpc_array_create(0, 0);
         v20 = v19;
         if (v19)
         {
           xpc_array_set_uuid(v19, 0xFFFFFFFFFFFFFFFFLL, uuid);
           xpc_dictionary_set_value(v18, "PairingManagers", v20);
-          objc_initWeak(location, a1);
-          v21 = a1[3];
-          v22 = a1[4];
+          objc_initWeak(location, self);
+          v21 = self[3];
+          v22 = self[4];
           handler[0] = MEMORY[0x277D85DD0];
           handler[1] = 3221225472;
           handler[2] = __69__NRDevicePairingManagerMux_unregisterPairingManager_withCompletion___block_invoke;
           handler[3] = &unk_27996B350;
           objc_copyWeak(&v77, location);
-          v74 = v8;
-          v76 = v72;
+          v74 = uuid;
+          v76 = managerCopy;
           v23 = v18;
           v75 = v23;
           xpc_connection_send_message_with_reply(v21, v23, v22, handler);
@@ -2803,7 +2803,7 @@ LABEL_33:
       {
 LABEL_30:
         v45 = +[NRDevicePairingManager copyXPCError];
-        (v72)[2](v72, v45);
+        (managerCopy)[2](managerCopy, v45);
 
         goto LABEL_21;
       }
@@ -2993,14 +2993,14 @@ LABEL_29:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startDiscoveryForPairingManager:(void *)a3 withCompletion:
+- (void)startDiscoveryForPairingManager:(void *)manager withCompletion:
 {
   v68 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  managerCopy = manager;
+  if (self)
   {
-    if (a1[3])
+    if (self[3])
     {
       if (v5)
       {
@@ -3013,13 +3013,13 @@ LABEL_29:
       }
 
       v8 = v7;
-      v9 = [v8 uuid];
+      uuid = [v8 uuid];
 
       v10 = xpc_dictionary_create(0, 0, 0);
       if (v10)
       {
         v11 = v10;
-        v12 = v9;
+        v12 = uuid;
         v13 = v12;
         if (v12)
         {
@@ -3051,15 +3051,15 @@ LABEL_29:
 
 LABEL_8:
         xpc_dictionary_set_uint64(v11, "PairingManagerOperation", 3uLL);
-        objc_initWeak(uuid, a1);
-        v14 = a1[3];
-        v15 = a1[4];
+        objc_initWeak(uuid, self);
+        v14 = self[3];
+        v15 = self[4];
         handler[0] = MEMORY[0x277D85DD0];
         handler[1] = 3221225472;
         handler[2] = __76__NRDevicePairingManagerMux_startDiscoveryForPairingManager_withCompletion___block_invoke;
         handler[3] = &unk_27996B350;
         objc_copyWeak(&v65, uuid);
-        v64 = v6;
+        v64 = managerCopy;
         v16 = v13;
         v62 = v16;
         v17 = v11;
@@ -3146,7 +3146,7 @@ LABEL_29:
       {
 LABEL_26:
         v39 = +[NRDevicePairingManager copyXPCError];
-        (*(v6 + 2))(v6, v39);
+        (*(managerCopy + 2))(managerCopy, v39);
 
         goto LABEL_17;
       }
@@ -3345,14 +3345,14 @@ LABEL_31:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopDiscoveryForPairingManager:(void *)a3 withCompletion:
+- (void)stopDiscoveryForPairingManager:(void *)manager withCompletion:
 {
   v67 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  managerCopy = manager;
+  if (self)
   {
-    if (a1[3])
+    if (self[3])
     {
       v7 = xpc_dictionary_create(0, 0, 0);
       if (v7)
@@ -3369,9 +3369,9 @@ LABEL_31:
         }
 
         v10 = v9;
-        v11 = [v10 uuid];
+        uuid = [v10 uuid];
         v12 = v8;
-        v13 = v11;
+        v13 = uuid;
         v14 = v13;
         if (v13)
         {
@@ -3403,15 +3403,15 @@ LABEL_31:
 
 LABEL_8:
         xpc_dictionary_set_uint64(v12, "PairingManagerOperation", 4uLL);
-        objc_initWeak(uuid, a1);
-        v15 = a1[3];
-        v16 = a1[4];
+        objc_initWeak(uuid, self);
+        v15 = self[3];
+        v16 = self[4];
         handler[0] = MEMORY[0x277D85DD0];
         handler[1] = 3221225472;
         handler[2] = __75__NRDevicePairingManagerMux_stopDiscoveryForPairingManager_withCompletion___block_invoke;
         handler[3] = &unk_27996B328;
         objc_copyWeak(&v64, uuid);
-        v63 = v6;
+        v63 = managerCopy;
         v17 = v12;
         v62 = v17;
         xpc_connection_send_message_with_reply(v15, v17, v16, handler);
@@ -3496,7 +3496,7 @@ LABEL_29:
       {
 LABEL_26:
         v39 = +[NRDevicePairingManager copyXPCError];
-        (*(v6 + 2))(v6, v39);
+        (*(managerCopy + 2))(managerCopy, v39);
 
         goto LABEL_17;
       }
@@ -3684,19 +3684,19 @@ LABEL_29:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendAuthMethodRequestForDevice:(uint64_t)a3 authMethod:(void *)a4 pairingManager:(void *)a5 withCompletion:
+- (void)sendAuthMethodRequestForDevice:(uint64_t)device authMethod:(void *)method pairingManager:(void *)manager withCompletion:
 {
   v87 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a4;
-  v11 = a5;
-  if (a1)
+  methodCopy = method;
+  managerCopy = manager;
+  if (self)
   {
-    if (*(a1 + 24))
+    if (*(self + 24))
     {
-      if (v10)
+      if (methodCopy)
       {
-        v12 = v10[11];
+        v12 = methodCopy[11];
       }
 
       else
@@ -3705,14 +3705,14 @@ LABEL_29:
       }
 
       v13 = v12;
-      v14 = [v13 uuid];
+      uuid = [v13 uuid];
 
-      v15 = [v9 uuid];
-      v16 = [*(a1 + 16) objectForKeyedSubscript:v14];
+      uuid2 = [v9 uuid];
+      v16 = [*(self + 16) objectForKeyedSubscript:uuid];
       v17 = v16;
       if (v16)
       {
-        v18 = [*(v16 + 40) objectForKeyedSubscript:v15];
+        v18 = [*(v16 + 40) objectForKeyedSubscript:uuid2];
 
         if (!v18)
         {
@@ -3730,7 +3730,7 @@ LABEL_29:
           if (v24)
           {
             v25 = v24;
-            v26 = v14;
+            v26 = uuid;
             v27 = v26;
             if (v26)
             {
@@ -3762,7 +3762,7 @@ LABEL_29:
 
 LABEL_15:
             v28 = v25;
-            v29 = v15;
+            v29 = uuid2;
             v30 = v29;
             if (v29)
             {
@@ -3772,10 +3772,10 @@ LABEL_15:
               xpc_dictionary_set_uuid(v28, "TargetPairingCandidate", uuid);
 LABEL_17:
 
-              xpc_dictionary_set_uint64(v28, "AuthRequestType", a3);
+              xpc_dictionary_set_uint64(v28, "AuthRequestType", device);
               xpc_dictionary_set_uint64(v28, "PairingManagerOperation", 6uLL);
-              xpc_connection_send_message(*(a1 + 24), v28);
-              v31 = MEMORY[0x25F8740C0](v11);
+              xpc_connection_send_message(*(self + 24), v28);
+              v31 = MEMORY[0x25F8740C0](managerCopy);
               [v17[5] setObject:v31 forKeyedSubscript:v30];
 
 LABEL_18:
@@ -3838,7 +3838,7 @@ LABEL_41:
         v35 = [NRDevicePairingManager copyErrorForCode:?];
 LABEL_38:
         v55 = v35;
-        v11[2](v11, v35);
+        managerCopy[2](managerCopy, v35);
 
         goto LABEL_18;
       }
@@ -3862,7 +3862,7 @@ LABEL_37:
       }
 
       v49 = nrCopyLogObj_1710();
-      _NRLogWithArgs(v49, 17, "Pairing manager %@ is not registered", v50, v51, v52, v53, v54, v14);
+      _NRLogWithArgs(v49, 17, "Pairing manager %@ is not registered", v50, v51, v52, v53, v54, uuid);
 
       goto LABEL_37;
     }
@@ -3880,8 +3880,8 @@ LABEL_37:
       if (!v40)
       {
 LABEL_34:
-        v14 = +[NRDevicePairingManager copyXPCError];
-        v11[2](v11, v14);
+        uuid = +[NRDevicePairingManager copyXPCError];
+        managerCopy[2](managerCopy, uuid);
         goto LABEL_19;
       }
     }
@@ -3897,15 +3897,15 @@ LABEL_20:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startPairingForPairingManager:(void *)a3 pairingTarget:(void *)a4 withCompletion:
+- (void)startPairingForPairingManager:(void *)manager pairingTarget:(void *)target withCompletion:
 {
   v92 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  managerCopy = manager;
+  targetCopy = target;
+  if (self)
   {
-    if (a1[3])
+    if (self[3])
     {
       v10 = xpc_dictionary_create(0, 0, 0);
       if (v10)
@@ -3922,9 +3922,9 @@ LABEL_20:
         }
 
         v13 = v12;
-        v14 = [v13 uuid];
+        uuid = [v13 uuid];
         v15 = v11;
-        v16 = v14;
+        v16 = uuid;
         v17 = v16;
         if (v16)
         {
@@ -3956,13 +3956,13 @@ LABEL_20:
 
 LABEL_8:
         xpc_dictionary_set_uint64(v15, "PairingManagerOperation", 0xAuLL);
-        if (!v8)
+        if (!managerCopy)
         {
           goto LABEL_12;
         }
 
         v18 = v15;
-        v19 = v8;
+        v19 = managerCopy;
         *uuid = 0;
         v20 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v19 requiringSecureCoding:1 error:uuid];
         v21 = *uuid;
@@ -3971,15 +3971,15 @@ LABEL_8:
           xpc_dictionary_set_data(v18, "PairingTarget", [v20 bytes], objc_msgSend(v20, "length"));
 
 LABEL_12:
-          objc_initWeak(uuid, a1);
-          v22 = a1[3];
-          v23 = a1[4];
+          objc_initWeak(uuid, self);
+          v22 = self[3];
+          v23 = self[4];
           handler[0] = MEMORY[0x277D85DD0];
           handler[1] = 3221225472;
           handler[2] = __88__NRDevicePairingManagerMux_startPairingForPairingManager_pairingTarget_withCompletion___block_invoke;
           handler[3] = &unk_27996B328;
           objc_copyWeak(&v89, uuid);
-          v88 = v9;
+          v88 = targetCopy;
           v87 = v15;
           xpc_connection_send_message_with_reply(v22, v87, v23, handler);
 
@@ -4055,7 +4055,7 @@ LABEL_41:
           {
 LABEL_45:
             v85 = +[NRDevicePairingManager copyXPCError];
-            (*(v9 + 2))(v9, v85, 1);
+            (*(targetCopy + 2))(targetCopy, v85, 1);
 
             goto LABEL_21;
           }
@@ -4110,7 +4110,7 @@ LABEL_36:
       {
 LABEL_33:
         v46 = +[NRDevicePairingManager copyXPCError];
-        (*(v9 + 2))(v9, v46, 1);
+        (*(targetCopy + 2))(targetCopy, v46, 1);
 
         goto LABEL_22;
       }
@@ -4473,14 +4473,14 @@ LABEL_29:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopPairingForPairingManager:(void *)a3 withCompletion:
+- (void)stopPairingForPairingManager:(void *)manager withCompletion:
 {
   v67 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  managerCopy = manager;
+  if (self)
   {
-    if (a1[3])
+    if (self[3])
     {
       v7 = xpc_dictionary_create(0, 0, 0);
       if (v7)
@@ -4497,9 +4497,9 @@ LABEL_29:
         }
 
         v10 = v9;
-        v11 = [v10 uuid];
+        uuid = [v10 uuid];
         v12 = v8;
-        v13 = v11;
+        v13 = uuid;
         v14 = v13;
         if (v13)
         {
@@ -4531,15 +4531,15 @@ LABEL_29:
 
 LABEL_8:
         xpc_dictionary_set_uint64(v12, "PairingManagerOperation", 0xBuLL);
-        objc_initWeak(uuid, a1);
-        v15 = a1[3];
-        v16 = a1[4];
+        objc_initWeak(uuid, self);
+        v15 = self[3];
+        v16 = self[4];
         handler[0] = MEMORY[0x277D85DD0];
         handler[1] = 3221225472;
         handler[2] = __73__NRDevicePairingManagerMux_stopPairingForPairingManager_withCompletion___block_invoke;
         handler[3] = &unk_27996B328;
         objc_copyWeak(&v64, uuid);
-        v63 = v6;
+        v63 = managerCopy;
         v17 = v12;
         v62 = v17;
         xpc_connection_send_message_with_reply(v15, v17, v16, handler);
@@ -4624,7 +4624,7 @@ LABEL_29:
       {
 LABEL_26:
         v39 = +[NRDevicePairingManager copyXPCError];
-        (*(v6 + 2))(v6, v39);
+        (*(managerCopy + 2))(managerCopy, v39);
 
         goto LABEL_17;
       }

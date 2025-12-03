@@ -1,13 +1,13 @@
 @interface NSException
-+ (void)tsu_raiseWithError:(id)a3;
++ (void)tsu_raiseWithError:(id)error;
 - (id)tsu_error;
 @end
 
 @implementation NSException
 
-+ (void)tsu_raiseWithError:(id)a3
++ (void)tsu_raiseWithError:(id)error
 {
-  if (!a3)
+  if (!error)
   {
     v4 = +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -25,23 +25,23 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v6 = [a3 localizedFailureReason];
-  if (!v6)
+  localizedFailureReason = [error localizedFailureReason];
+  if (!localizedFailureReason)
   {
-    v7 = [a3 localizedDescription];
-    if (v7)
+    localizedDescription = [error localizedDescription];
+    if (localizedDescription)
     {
-      v6 = v7;
+      localizedFailureReason = localizedDescription;
     }
 
     else
     {
-      v6 = @"NSError exception";
+      localizedFailureReason = @"NSError exception";
     }
   }
 
   v8 = @"TSUErrorExceptionUserInfoKey";
-  v9 = a3;
+  errorCopy = error;
   [+[NSException exceptionWithName:reason:userInfo:](NSException raise:@"TSUErrorException"];
 }
 

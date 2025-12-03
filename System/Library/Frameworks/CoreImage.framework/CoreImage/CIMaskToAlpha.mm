@@ -31,10 +31,10 @@
     return 0;
   }
 
-  v3 = [(CIMaskToAlpha *)self _kernel];
+  _kernel = [(CIMaskToAlpha *)self _kernel];
   [(CIImage *)self->inputImage extent];
   v9[0] = self->inputImage;
-  return [v3 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v9, 1), v4, v5, v6, v7}];
+  return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v9, 1), v4, v5, v6, v7}];
 }
 
 @end

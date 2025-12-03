@@ -1,20 +1,20 @@
 @interface NSFileManager
-- (BOOL)removeItemsUnderPath:(id)a3 error:(id *)a4;
+- (BOOL)removeItemsUnderPath:(id)path error:(id *)error;
 @end
 
 @implementation NSFileManager
 
-- (BOOL)removeItemsUnderPath:(id)a3 error:(id *)a4
+- (BOOL)removeItemsUnderPath:(id)path error:(id *)error
 {
   v21 = 0;
   v7 = [(NSFileManager *)self enumeratorAtPath:?];
   if (v7)
   {
     v8 = v7;
-    v9 = [(NSDirectoryEnumerator *)v7 nextObject];
-    if (v9)
+    nextObject = [(NSDirectoryEnumerator *)v7 nextObject];
+    if (nextObject)
     {
-      v10 = v9;
+      nextObject2 = nextObject;
       v11 = 0;
       v12 = 0;
       do
@@ -24,7 +24,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [a3 stringByAppendingPathComponent:v10];
+          v14 = [path stringByAppendingPathComponent:nextObject2];
           v15 = [(NSFileManager *)self removeItemAtPath:v14 error:&v21];
           v16 = msuSharedLogger();
           v17 = v16;
@@ -55,10 +55,10 @@
         }
 
         objc_autoreleasePoolPop(v13);
-        v10 = [(NSDirectoryEnumerator *)v8 nextObject];
+        nextObject2 = [(NSDirectoryEnumerator *)v8 nextObject];
       }
 
-      while (v10);
+      while (nextObject2);
       v18 = v11 ^ 1;
     }
 
@@ -69,9 +69,9 @@
     }
 
     v19 = v12;
-    if (a4)
+    if (error)
     {
-      *a4 = v12;
+      *error = v12;
     }
   }
 

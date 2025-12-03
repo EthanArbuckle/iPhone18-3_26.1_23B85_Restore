@@ -1,10 +1,10 @@
 @interface HideMyEmailSignupAlternateView
-- (_TtC16NewsSubscription30HideMyEmailSignupAlternateView)initWithCoder:(id)a3;
+- (_TtC16NewsSubscription30HideMyEmailSignupAlternateView)initWithCoder:(id)coder;
 @end
 
 @implementation HideMyEmailSignupAlternateView
 
-- (_TtC16NewsSubscription30HideMyEmailSignupAlternateView)initWithCoder:(id)a3
+- (_TtC16NewsSubscription30HideMyEmailSignupAlternateView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16NewsSubscription30HideMyEmailSignupAlternateView_email;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E69DCC10]) initWithFrame_];

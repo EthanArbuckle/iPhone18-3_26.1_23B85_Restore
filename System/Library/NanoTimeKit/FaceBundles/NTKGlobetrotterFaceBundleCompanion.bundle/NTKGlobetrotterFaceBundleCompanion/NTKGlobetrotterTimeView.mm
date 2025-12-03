@@ -3,41 +3,41 @@
 - (CGSize)_secondTickSize;
 - (CLLocationCoordinate2D)_northPoleCoordinate;
 - (NSArray)digitalTimeLabelFontScaleFactorForNumberSystemOverrides;
-- (NTKGlobetrotterTimeView)initWithFrame:(CGRect)a3 style:(unint64_t)a4 numberSystem:(unint64_t)a5 andDevice:(id)a6 timeZoneHourOffset:(int64_t)a7;
+- (NTKGlobetrotterTimeView)initWithFrame:(CGRect)frame style:(unint64_t)style numberSystem:(unint64_t)system andDevice:(id)device timeZoneHourOffset:(int64_t)offset;
 - (double)_minuteTickInset;
 - (id)_customDialBackgroundView;
 - (id)_digitalLabelFont;
 - (void)_applyColorToAnalogHands;
 - (void)_applyColorToDigitalLabelAndTicks;
 - (void)_setupAnalogHandsView;
-- (void)applyDataMode:(int64_t)a3;
-- (void)applyTransitionFraction:(double)a3 fromNumeralOption:(id)a4 toNumeralOption:(id)a5;
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
-- (void)astronomyVistaViewWillDisplay:(id)a3 forTime:(double)a4;
+- (void)applyDataMode:(int64_t)mode;
+- (void)applyTransitionFraction:(double)fraction fromNumeralOption:(id)option toNumeralOption:(id)numeralOption;
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
+- (void)astronomyVistaViewWillDisplay:(id)display forTime:(double)time;
 - (void)cleanupAfterEditing;
 - (void)prepareForEditing;
-- (void)setNumberSystem:(unint64_t)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setPalette:(id)a3;
+- (void)setNumberSystem:(unint64_t)system;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setPalette:(id)palette;
 @end
 
 @implementation NTKGlobetrotterTimeView
 
-- (NTKGlobetrotterTimeView)initWithFrame:(CGRect)a3 style:(unint64_t)a4 numberSystem:(unint64_t)a5 andDevice:(id)a6 timeZoneHourOffset:(int64_t)a7
+- (NTKGlobetrotterTimeView)initWithFrame:(CGRect)frame style:(unint64_t)style numberSystem:(unint64_t)system andDevice:(id)device timeZoneHourOffset:(int64_t)offset
 {
   v15.receiver = self;
   v15.super_class = NTKGlobetrotterTimeView;
-  v9 = [(NTKGlobetrotterTimeView *)&v15 initWithFrame:a4 style:a6 andDevice:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v9 = [(NTKGlobetrotterTimeView *)&v15 initWithFrame:style style:device andDevice:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v10 = v9;
   if (v9)
   {
-    [(NTKGlobetrotterTimeView *)v9 setTimeZoneHourOffset:a7 animated:0];
+    [(NTKGlobetrotterTimeView *)v9 setTimeZoneHourOffset:offset animated:0];
     v11 = +[UIColor blackColor];
-    v12 = [(NTKGlobetrotterTimeView *)v10 analogHandsView];
-    v13 = [v12 secondHandView];
-    [v13 setHandDotColor:v11];
+    analogHandsView = [(NTKGlobetrotterTimeView *)v10 analogHandsView];
+    secondHandView = [analogHandsView secondHandView];
+    [secondHandView setHandDotColor:v11];
 
-    v10->_numberSystem = a5;
+    v10->_numberSystem = system;
   }
 
   return v10;
@@ -56,24 +56,24 @@
   return digitalTimeLabelFontScaleFactorForNumberSystemOverrides;
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  objc_storeStrong(&self->_palette, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_palette, palette);
+  paletteCopy = palette;
   [(NTKGlobetrotterTimeView *)self _applyColorToAnalogHands];
   [(NTKGlobetrotterTimeView *)self _applyColorToDigitalLabelAndTicks];
-  v6 = [v5 globe];
-  v7 = [v5 globeBlend];
+  globe = [paletteCopy globe];
+  globeBlend = [paletteCopy globeBlend];
   v16 = 0.0;
   v17 = 0.0;
   v14 = 0.0;
   v15 = 0.0;
   v13 = 0.0;
-  [v6 getRed:&v16 green:&v15 blue:&v14 alpha:&v13];
-  [v7 getRed:&v17 green:0 blue:0 alpha:0];
-  v8 = [(NUNIAstronomyVistaView *)self->_astronomyVistaView scene];
+  [globe getRed:&v16 green:&v15 blue:&v14 alpha:&v13];
+  [globeBlend getRed:&v17 green:0 blue:0 alpha:0];
+  scene = [(NUNIAstronomyVistaView *)self->_astronomyVistaView scene];
 
-  v9 = [v8 spheroidOfType:3];
+  v9 = [scene spheroidOfType:3];
 
   v10.f64[0] = v16;
   v10.f64[1] = v15;
@@ -84,27 +84,27 @@
   [v9 setAnimatedFloat:11 forKey:COERCE_DOUBLE(v12)];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v7 = a3;
+  dateCopy = date;
   v8.receiver = self;
   v8.super_class = NTKGlobetrotterTimeView;
-  [(NTKGlobetrotterTimeView *)&v8 setOverrideDate:v7 duration:a4];
-  if (self->_overrideDate != v7 && ![(NSDate *)v7 isEqualToDate:?])
+  [(NTKGlobetrotterTimeView *)&v8 setOverrideDate:dateCopy duration:duration];
+  if (self->_overrideDate != dateCopy && ![(NSDate *)dateCopy isEqualToDate:?])
   {
-    objc_storeStrong(&self->_overrideDate, a3);
-    [(NUNIAstronomyVistaView *)self->_astronomyVistaView updateSunLocationAnimated:a4 > 0.0 adjustEarthRotation:0];
+    objc_storeStrong(&self->_overrideDate, date);
+    [(NUNIAstronomyVistaView *)self->_astronomyVistaView updateSunLocationAnimated:duration > 0.0 adjustEarthRotation:0];
   }
 }
 
-- (void)applyDataMode:(int64_t)a3
+- (void)applyDataMode:(int64_t)mode
 {
-  v3 = self;
-  if (a3 > 2)
+  selfCopy = self;
+  if (mode > 2)
   {
-    if (a3 != 3)
+    if (mode != 3)
     {
-      if (a3 != 4)
+      if (mode != 4)
       {
         return;
       }
@@ -117,9 +117,9 @@
 
   else
   {
-    if (a3 != 1)
+    if (mode != 1)
     {
-      if (a3 != 2)
+      if (mode != 2)
       {
         return;
       }
@@ -132,7 +132,7 @@ LABEL_7:
     }
 
     [(NUNIAstronomyVistaView *)self->_astronomyVistaView startAnimation];
-    self = v3;
+    self = selfCopy;
     v5 = 1;
   }
 
@@ -171,8 +171,8 @@ LABEL_7:
 
 - (id)_customDialBackgroundView
 {
-  v3 = [(NTKGlobetrotterTimeView *)self device];
-  v4 = [NUNIAstronomyVistaConfiguration defaultConfigurationWithDevice:v3];
+  device = [(NTKGlobetrotterTimeView *)self device];
+  v4 = [NUNIAstronomyVistaConfiguration defaultConfigurationWithDevice:device];
 
   [v4 setTextureSuffix:@"globe"];
   [v4 setRendererStyle:1];
@@ -218,18 +218,18 @@ LABEL_7:
 - (void)_setupAnalogHandsView
 {
   v3 = [NTKGlobetrotterAnalogHandsView alloc];
-  v4 = [(NTKGlobetrotterTimeView *)self device];
-  v5 = [(NTKGlobetrotterAnalogHandsView *)v3 initForDevice:v4];
+  device = [(NTKGlobetrotterTimeView *)self device];
+  v5 = [(NTKGlobetrotterAnalogHandsView *)v3 initForDevice:device];
   [(NTKGlobetrotterTimeView *)self setAnalogHandsView:v5];
 
-  v6 = [(NTKGlobetrotterTimeView *)self analogHandsView];
-  [(NTKGlobetrotterTimeView *)self addSubview:v6];
+  analogHandsView = [(NTKGlobetrotterTimeView *)self analogHandsView];
+  [(NTKGlobetrotterTimeView *)self addSubview:analogHandsView];
 }
 
 - (double)_minuteTickInset
 {
-  v2 = [(NTKGlobetrotterTimeView *)self device];
-  sub_2218(v2, v5);
+  device = [(NTKGlobetrotterTimeView *)self device];
+  sub_2218(device, v5);
   v3 = v5[0];
 
   return v3;
@@ -237,8 +237,8 @@ LABEL_7:
 
 - (CGSize)_hourTickSize
 {
-  v2 = [(NTKGlobetrotterTimeView *)self device];
-  sub_2218(v2, &v7);
+  device = [(NTKGlobetrotterTimeView *)self device];
+  sub_2218(device, &v7);
   v3 = *(&v7 + 1);
   v4 = v8;
 
@@ -251,8 +251,8 @@ LABEL_7:
 
 - (CGSize)_secondTickSize
 {
-  v2 = [(NTKGlobetrotterTimeView *)self device];
-  sub_2218(v2, &v7);
+  device = [(NTKGlobetrotterTimeView *)self device];
+  sub_2218(device, &v7);
   v3 = v8;
   v4 = v9;
 
@@ -265,22 +265,22 @@ LABEL_7:
 
 - (id)_digitalLabelFont
 {
-  v3 = [(NTKGlobetrotterTimeView *)self device];
-  sub_2218(v3, &v16);
+  device = [(NTKGlobetrotterTimeView *)self device];
+  sub_2218(device, &v16);
   v4 = v17;
 
-  v5 = [(NTKGlobetrotterTimeView *)self device];
+  device2 = [(NTKGlobetrotterTimeView *)self device];
   v6 = NTKShowIndicScriptNumerals();
 
   if (v6)
   {
     if (self->_numberSystem != -1)
     {
-      v7 = [(NTKGlobetrotterTimeView *)self digitalTimeLabelFontScaleFactorForNumberSystemOverrides];
-      v8 = [v7 objectAtIndexedSubscript:self->_numberSystem];
+      digitalTimeLabelFontScaleFactorForNumberSystemOverrides = [(NTKGlobetrotterTimeView *)self digitalTimeLabelFontScaleFactorForNumberSystemOverrides];
+      v8 = [digitalTimeLabelFontScaleFactorForNumberSystemOverrides objectAtIndexedSubscript:self->_numberSystem];
       [v8 doubleValue];
 
-      v9 = [(NTKGlobetrotterTimeView *)self device];
+      device3 = [(NTKGlobetrotterTimeView *)self device];
       CLKRoundForDevice();
       v4 = v10;
     }
@@ -290,28 +290,28 @@ LABEL_7:
 
   else
   {
-    v12 = [(NTKGlobetrotterTimeView *)self device];
-    sub_2218(v12, &v14);
+    device4 = [(NTKGlobetrotterTimeView *)self device];
+    sub_2218(device4, &v14);
     v11 = [CLKFont compactSoftFontOfSize:v15 weight:UIFontWeightMedium];
   }
 
   return v11;
 }
 
-- (void)setNumberSystem:(unint64_t)a3
+- (void)setNumberSystem:(unint64_t)system
 {
-  self->_numberSystem = a3;
-  v5 = [(NTKGlobetrotterTimeView *)self digitalTimeLabel];
-  [v5 setForcedNumberSystem:a3];
+  self->_numberSystem = system;
+  digitalTimeLabel = [(NTKGlobetrotterTimeView *)self digitalTimeLabel];
+  [digitalTimeLabel setForcedNumberSystem:system];
 
   [(NTKGlobetrotterTimeView *)self _refreshDigitalTimeLabel];
-  v6 = [(NTKGlobetrotterTimeView *)self digitalTimeLabel];
-  [v6 setNeedsLayout];
+  digitalTimeLabel2 = [(NTKGlobetrotterTimeView *)self digitalTimeLabel];
+  [digitalTimeLabel2 setNeedsLayout];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
-  if (a4 != a5)
+  if (style != toStyle)
   {
     v25 = v10;
     v26 = v9;
@@ -319,9 +319,9 @@ LABEL_7:
     v28 = v7;
     v29 = v5;
     v30 = v6;
-    v12 = [(NTKGlobetrotterTimeView *)self analogContainerView];
-    v13 = [(NTKGlobetrotterTimeView *)self analogHandsView];
-    v14 = [(NTKGlobetrotterTimeView *)self digitalContainerView];
+    analogContainerView = [(NTKGlobetrotterTimeView *)self analogContainerView];
+    analogHandsView = [(NTKGlobetrotterTimeView *)self analogHandsView];
+    digitalContainerView = [(NTKGlobetrotterTimeView *)self digitalContainerView];
     CLKCompressFraction();
     CLKInterpolateBetweenFloatsClipped();
     v16 = v15;
@@ -330,11 +330,11 @@ LABEL_7:
     memset(&v24, 0, sizeof(v24));
     CGAffineTransformMakeScale(&v24, v16, v16);
     v23 = v24;
-    [v12 setTransform:&v23];
-    [v12 setAlpha:v18];
+    [analogContainerView setTransform:&v23];
+    [analogContainerView setAlpha:v18];
     v23 = v24;
-    [v13 setTransform:&v23];
-    [v13 setAlpha:v18];
+    [analogHandsView setTransform:&v23];
+    [analogHandsView setAlpha:v18];
     CLKCompressFraction();
     CLKInterpolateBetweenFloatsClipped();
     v20 = v19;
@@ -342,17 +342,17 @@ LABEL_7:
     v22 = v21;
     CGAffineTransformMakeScale(&v23, v20, v20);
     v24 = v23;
-    [v14 setTransform:&v23];
-    [v14 setAlpha:v22];
+    [digitalContainerView setTransform:&v23];
+    [digitalContainerView setAlpha:v22];
   }
 }
 
-- (void)applyTransitionFraction:(double)a3 fromNumeralOption:(id)a4 toNumeralOption:(id)a5
+- (void)applyTransitionFraction:(double)fraction fromNumeralOption:(id)option toNumeralOption:(id)numeralOption
 {
-  v8 = a5;
-  [a4 numeralOption];
+  numeralOptionCopy = numeralOption;
+  [option numeralOption];
   v9 = CLKLocaleNumberSystemFromNumeralOption();
-  [v8 numeralOption];
+  [numeralOptionCopy numeralOption];
 
   v10 = CLKLocaleNumberSystemFromNumeralOption();
   if (v9 == v10)
@@ -363,7 +363,7 @@ LABEL_7:
 
   else
   {
-    if (a3 >= 0.5)
+    if (fraction >= 0.5)
     {
       v13 = v10;
       CLKMapFractionIntoRange();
@@ -381,19 +381,19 @@ LABEL_7:
     memset(&v20, 0, sizeof(v20));
     CGAffineTransformMakeScale(&v20, v15, v15);
     [(NTKGlobetrotterTimeView *)self setNumberSystem:v9];
-    v16 = [(NTKGlobetrotterTimeView *)self digitalTimeLabel];
-    [v16 setAlpha:v12];
+    digitalTimeLabel = [(NTKGlobetrotterTimeView *)self digitalTimeLabel];
+    [digitalTimeLabel setAlpha:v12];
 
     v19 = v20;
-    v17 = [(NTKGlobetrotterTimeView *)self digitalTimeLabel];
+    digitalTimeLabel2 = [(NTKGlobetrotterTimeView *)self digitalTimeLabel];
     v18 = v19;
-    [v17 setTransform:&v18];
+    [digitalTimeLabel2 setTransform:&v18];
   }
 }
 
-- (void)astronomyVistaViewWillDisplay:(id)a3 forTime:(double)a4
+- (void)astronomyVistaViewWillDisplay:(id)display forTime:(double)time
 {
-  v8 = [(NUNIAstronomyVistaView *)self->_astronomyVistaView scene:a3];
+  v8 = [(NUNIAstronomyVistaView *)self->_astronomyVistaView scene:display];
   v5 = [v8 spheroidOfType:3];
   v6 = [v8 isAnimating:v8 forKeys:346];
   if ((v6 | [v8 isAnimating:v5 forKeys:1024]))

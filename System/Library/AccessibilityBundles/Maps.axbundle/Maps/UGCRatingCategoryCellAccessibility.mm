@@ -1,5 +1,5 @@
 @interface UGCRatingCategoryCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -7,26 +7,26 @@
 
 @implementation UGCRatingCategoryCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UGCRatingCategoryCell" hasInstanceMethod:@"likeDislikeViewDidSelectDislike:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UGCRatingCategoryCell" hasInstanceMethod:@"likeDislikeViewDidSelectLike:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UGCRatingCategoryCell" hasInstanceMethod:@"_updateState:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"UGCRatingCategoryCell" hasInstanceMethod:@"currentState" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"UGCRatingCategoryCell" hasInstanceVariable:@"_categoryView" withType:"MUAppleRatingRowView"];
-  [v3 validateClass:@"MUAppleRatingRowView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"MUAppleRatingRowView" hasInstanceVariable:@"_subtitleLabel" withType:"UIView<MULabelViewProtocol>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UGCRatingCategoryCell" hasInstanceMethod:@"likeDislikeViewDidSelectDislike:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UGCRatingCategoryCell" hasInstanceMethod:@"likeDislikeViewDidSelectLike:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UGCRatingCategoryCell" hasInstanceMethod:@"_updateState:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"UGCRatingCategoryCell" hasInstanceMethod:@"currentState" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"UGCRatingCategoryCell" hasInstanceVariable:@"_categoryView" withType:"MUAppleRatingRowView"];
+  [validationsCopy validateClass:@"MUAppleRatingRowView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"MUAppleRatingRowView" hasInstanceVariable:@"_subtitleLabel" withType:"UIView<MULabelViewProtocol>"];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(UGCRatingCategoryCellAccessibility *)self safeValueForKey:@"_categoryView"];
   v3 = [v2 safeValueForKey:@"_titleLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [v2 safeValueForKey:@"_subtitleLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
 
   v7 = __AXStringForVariables();
 

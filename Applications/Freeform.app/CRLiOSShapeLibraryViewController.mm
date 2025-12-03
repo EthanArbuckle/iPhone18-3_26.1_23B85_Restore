@@ -1,7 +1,7 @@
 @interface CRLiOSShapeLibraryViewController
 - (BOOL)allowsInsertDrag;
-- (BOOL)insertPageViewControllerShouldAppearInSearchMode:(id)a3;
-- (BOOL)p_canInsertAndConnectBoardItemToSelectedConnectionLine:(id)a3;
+- (BOOL)insertPageViewControllerShouldAppearInSearchMode:(id)mode;
+- (BOOL)p_canInsertAndConnectBoardItemToSelectedConnectionLine:(id)line;
 - (BOOL)p_isCompact;
 - (BOOL)p_isSidebarLike;
 - (BOOL)staysOpenOnSelectionChange;
@@ -10,74 +10,74 @@
 - (CGSize)p_contentSize;
 - (CGSize)preferredContentSize;
 - (CRLiOSContentLibraryViewControllerDelegate)p_delegate;
-- (CRLiOSShapeLibraryViewController)initWithDelegate:(id)a3 shouldChangeSelectedShapes:(BOOL)a4;
-- (CRLiOSShapeLibraryViewController)initWithDelegate:(id)a3 unscaledPopoverAnchorPoint:(CGPoint)a4;
-- (id)contextWithPresetCollectionViewController:(id)a3;
-- (id)insertPageViewController:(id)a3 viewControllerAfterViewController:(id)a4;
-- (id)insertPageViewController:(id)a3 viewControllerBeforeViewController:(id)a4;
-- (id)insertPageViewController:(id)a3 viewControllerForPageAtIndex:(unint64_t)a4;
-- (id)insertPageViewControllerDefaultSearchTerm:(id)a3;
-- (id)insertPageViewControllerViewControllerForSearch:(id)a3;
-- (id)itemsForBeginningDragSessionForPresetCollectionViewController:(id)a3 forCollectionView:(id)a4 atIndexPath:(id)a5;
+- (CRLiOSShapeLibraryViewController)initWithDelegate:(id)delegate shouldChangeSelectedShapes:(BOOL)shapes;
+- (CRLiOSShapeLibraryViewController)initWithDelegate:(id)delegate unscaledPopoverAnchorPoint:(CGPoint)point;
+- (id)contextWithPresetCollectionViewController:(id)controller;
+- (id)insertPageViewController:(id)controller viewControllerAfterViewController:(id)viewController;
+- (id)insertPageViewController:(id)controller viewControllerBeforeViewController:(id)viewController;
+- (id)insertPageViewController:(id)controller viewControllerForPageAtIndex:(unint64_t)index;
+- (id)insertPageViewControllerDefaultSearchTerm:(id)term;
+- (id)insertPageViewControllerViewControllerForSearch:(id)search;
+- (id)itemsForBeginningDragSessionForPresetCollectionViewController:(id)controller forCollectionView:(id)view atIndexPath:(id)path;
 - (id)p_boardItemFactory;
-- (id)p_boardItemForPresetCollectionType:(unint64_t)a3 atIndexPath:(id)a4 context:(id)a5;
+- (id)p_boardItemForPresetCollectionType:(unint64_t)type atIndexPath:(id)path context:(id)context;
 - (id)p_createShapeInsertViewController;
 - (id)p_editingCoordinator;
 - (id)p_interactiveCanvasController;
-- (id)p_pageViewControllerWithPages:(id)a3 presetCollectionType:(unint64_t)a4;
-- (id)p_pagesForPresetCollectionType:(unint64_t)a3;
-- (id)p_pagesForSegment:(unint64_t)a3;
-- (id)p_shapeAtIndexPath:(id)a3 context:(id)a4;
-- (id)p_shapeInfoAtIndexPath:(id)a3 boardItemFactory:(id)a4 context:(id)a5;
-- (id)p_shapeWithIdentifier:(id)a3 context:(id)a4;
-- (unint64_t)insertPageViewController:(id)a3 presentationIndexForViewController:(id)a4;
-- (unint64_t)p_integerDefaultForKey:(id)a3;
-- (unint64_t)p_pageNumberForPresetCollectionViewController:(id)a3;
-- (unint64_t)p_totalNumberOfPagesNeededForPresetCollectionType:(unint64_t)a3;
-- (unint64_t)presentationCountForInsertPageViewController:(id)a3;
-- (unint64_t)selectedSubpageIndexForInsertPageViewController:(id)a3;
-- (void)insertPageViewController:(id)a3 didSelectPageNumber:(unint64_t)a4;
-- (void)insertPageViewController:(id)a3 didSelectSubpageAtIndex:(unint64_t)a4;
-- (void)insertPageViewController:(id)a3 willSearchWithText:(id)a4 inViewController:(id)a5 searchViewController:(id)a6;
-- (void)insertPageViewControllerDidBeginSearch:(id)a3;
-- (void)insertPageViewControllerDidEndSearch:(id)a3 cancelledExplicitly:(BOOL)a4;
-- (void)insertPageViewControllerWillBeginSearch:(id)a3;
-- (void)insertPageViewControllerWillDisappear:(id)a3;
-- (void)insertPageViewControllerWillEndSearch:(id)a3 cancelledExplicitly:(BOOL)a4;
-- (void)p_changeSelectedShapesToItemAtIndexPath:(id)a3 forPresetCollectionViewController:(id)a4;
-- (void)p_dismissIfNeededWithBlock:(id)a3;
-- (void)p_insertShapeAtIndexPath:(id)a3 context:(id)a4;
-- (void)p_positionAndInsertBoardItems:(id)a3;
+- (id)p_pageViewControllerWithPages:(id)pages presetCollectionType:(unint64_t)type;
+- (id)p_pagesForPresetCollectionType:(unint64_t)type;
+- (id)p_pagesForSegment:(unint64_t)segment;
+- (id)p_shapeAtIndexPath:(id)path context:(id)context;
+- (id)p_shapeInfoAtIndexPath:(id)path boardItemFactory:(id)factory context:(id)context;
+- (id)p_shapeWithIdentifier:(id)identifier context:(id)context;
+- (unint64_t)insertPageViewController:(id)controller presentationIndexForViewController:(id)viewController;
+- (unint64_t)p_integerDefaultForKey:(id)key;
+- (unint64_t)p_pageNumberForPresetCollectionViewController:(id)controller;
+- (unint64_t)p_totalNumberOfPagesNeededForPresetCollectionType:(unint64_t)type;
+- (unint64_t)presentationCountForInsertPageViewController:(id)controller;
+- (unint64_t)selectedSubpageIndexForInsertPageViewController:(id)controller;
+- (void)insertPageViewController:(id)controller didSelectPageNumber:(unint64_t)number;
+- (void)insertPageViewController:(id)controller didSelectSubpageAtIndex:(unint64_t)index;
+- (void)insertPageViewController:(id)controller willSearchWithText:(id)text inViewController:(id)viewController searchViewController:(id)searchViewController;
+- (void)insertPageViewControllerDidBeginSearch:(id)search;
+- (void)insertPageViewControllerDidEndSearch:(id)search cancelledExplicitly:(BOOL)explicitly;
+- (void)insertPageViewControllerWillBeginSearch:(id)search;
+- (void)insertPageViewControllerWillDisappear:(id)disappear;
+- (void)insertPageViewControllerWillEndSearch:(id)search cancelledExplicitly:(BOOL)explicitly;
+- (void)p_changeSelectedShapesToItemAtIndexPath:(id)path forPresetCollectionViewController:(id)controller;
+- (void)p_dismissIfNeededWithBlock:(id)block;
+- (void)p_insertShapeAtIndexPath:(id)path context:(id)context;
+- (void)p_positionAndInsertBoardItems:(id)items;
 - (void)p_reloadAllPresetCollectionViewControllers;
-- (void)p_setAllPresetCollectionViewControllersHidden:(BOOL)a3;
-- (void)p_setIntegerDefault:(unint64_t)a3 forKey:(id)a4;
-- (void)p_shapeLibraryIndexingDidFinish:(id)a3;
+- (void)p_setAllPresetCollectionViewControllersHidden:(BOOL)hidden;
+- (void)p_setIntegerDefault:(unint64_t)default forKey:(id)key;
+- (void)p_shapeLibraryIndexingDidFinish:(id)finish;
 - (void)p_updateForPresentationSemanticContext;
-- (void)p_workspaceDidActivate:(id)a3;
-- (void)p_workspaceWillDeactivate:(id)a3;
-- (void)presetCollectionViewController:(id)a3 didSelectPresetAtIndexPath:(id)a4;
-- (void)processChanges:(id)a3 forChangeSource:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)p_workspaceDidActivate:(id)activate;
+- (void)p_workspaceWillDeactivate:(id)deactivate;
+- (void)presetCollectionViewController:(id)controller didSelectPresetAtIndexPath:(id)path;
+- (void)processChanges:(id)changes forChangeSource:(id)source;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CRLiOSShapeLibraryViewController
 
-- (CRLiOSShapeLibraryViewController)initWithDelegate:(id)a3 shouldChangeSelectedShapes:(BOOL)a4
+- (CRLiOSShapeLibraryViewController)initWithDelegate:(id)delegate shouldChangeSelectedShapes:(BOOL)shapes
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = CRLiOSShapeLibraryViewController;
   v7 = [(CRLiOSShapeLibraryViewController *)&v11 initWithNibName:0 bundle:0];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
-    v8->_shouldChangeSelectedShapes = a4;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
+    v8->_shouldChangeSelectedShapes = shapes;
     v8->_unscaledPopoverAnchorPoint = xmmword_1014629F0;
     v8->_showLinesInLibrary = 1;
     v9 = +[NSNotificationCenter defaultCenter];
@@ -87,11 +87,11 @@
   return v8;
 }
 
-- (CRLiOSShapeLibraryViewController)initWithDelegate:(id)a3 unscaledPopoverAnchorPoint:(CGPoint)a4
+- (CRLiOSShapeLibraryViewController)initWithDelegate:(id)delegate unscaledPopoverAnchorPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  result = [(CRLiOSShapeLibraryViewController *)self initWithDelegate:a3 shouldChangeSelectedShapes:0];
+  y = point.y;
+  x = point.x;
+  result = [(CRLiOSShapeLibraryViewController *)self initWithDelegate:delegate shouldChangeSelectedShapes:0];
   if (result)
   {
     result->_unscaledPopoverAnchorPoint.x = x;
@@ -107,19 +107,19 @@
   v81.super_class = CRLiOSShapeLibraryViewController;
   [(CRLiOSShapeLibraryViewController *)&v81 viewDidLoad];
   v3 = +[UIColor clearColor];
-  v4 = [(CRLiOSShapeLibraryViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(CRLiOSShapeLibraryViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = +[CRLShapeLibrary sharedLibrary];
   v6 = [CRLBasicShapeLibrary alloc];
   v7 = +[CRLLocale currentLocale];
   v8 = [(CRLBasicShapeLibrary *)v6 initWithLocale:v7];
 
-  v9 = [v5 dataLoadStatus];
+  dataLoadStatus = [v5 dataLoadStatus];
   v10 = [CRLShapeCollectionDataSource alloc];
   v79 = v5;
   v80 = v8;
-  if (v9 == 2)
+  if (dataLoadStatus == 2)
   {
     v11 = [(CRLShapeCollectionDataSource *)v10 initWithShapeLibrary:v5 basicShapeLibrary:v8];
     shapeCollectionDataSource = self->_shapeCollectionDataSource;
@@ -148,8 +148,8 @@
   [v17 setBarTintColor:v18];
 
   [v17 _setHidesShadow:1];
-  v19 = [(CRLiOSShapeLibraryViewController *)self view];
-  [v19 addSubview:v17];
+  view2 = [(CRLiOSShapeLibraryViewController *)self view];
+  [view2 addSubview:v17];
 
   v20 = [UINavigationItem alloc];
   v21 = +[NSBundle mainBundle];
@@ -167,18 +167,18 @@
   v26 = [NSArray arrayWithObjects:&v87 count:1];
   [v17 setItems:v26 animated:0];
 
-  v27 = [(CRLiOSShapeLibraryViewController *)self p_createShapeInsertViewController];
-  [(CRLiOSShapeLibraryViewController *)self setP_shapeInsertViewController:v27];
-  v28 = [v27 view];
-  [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
+  p_createShapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_createShapeInsertViewController];
+  [(CRLiOSShapeLibraryViewController *)self setP_shapeInsertViewController:p_createShapeInsertViewController];
+  view3 = [p_createShapeInsertViewController view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  [(CRLiOSShapeLibraryViewController *)self addChildViewController:v27];
-  v29 = [(CRLiOSShapeLibraryViewController *)self view];
-  v30 = [v27 view];
-  [v29 addSubview:v30];
+  [(CRLiOSShapeLibraryViewController *)self addChildViewController:p_createShapeInsertViewController];
+  view4 = [(CRLiOSShapeLibraryViewController *)self view];
+  view5 = [p_createShapeInsertViewController view];
+  [view4 addSubview:view5];
 
-  v31 = [(CRLiOSShapeLibraryViewController *)self view];
-  v32 = [v31 safeAreaLayoutGuide];
+  view6 = [(CRLiOSShapeLibraryViewController *)self view];
+  safeAreaLayoutGuide = [view6 safeAreaLayoutGuide];
 
   if (+[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled])
   {
@@ -190,66 +190,66 @@
     v33 = 0.0;
   }
 
-  v76 = [v17 leadingAnchor];
-  v75 = [v32 leadingAnchor];
-  v74 = [v76 constraintEqualToAnchor:v75];
+  leadingAnchor = [v17 leadingAnchor];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v74 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v86[0] = v74;
   v68 = v17;
-  v72 = [v17 trailingAnchor];
-  v71 = [v32 trailingAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71];
+  trailingAnchor = [v17 trailingAnchor];
+  trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+  v70 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v86[1] = v70;
-  v69 = [v27 view];
-  v67 = [v69 leadingAnchor];
-  v66 = [v32 leadingAnchor];
-  [v67 constraintEqualToAnchor:v66];
-  v65 = v64 = v27;
+  view7 = [p_createShapeInsertViewController view];
+  leadingAnchor3 = [view7 leadingAnchor];
+  leadingAnchor4 = [safeAreaLayoutGuide leadingAnchor];
+  [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
+  v65 = v64 = p_createShapeInsertViewController;
   v86[2] = v65;
-  v63 = [v27 view];
-  v62 = [v63 trailingAnchor];
-  v61 = [v32 trailingAnchor];
-  v34 = [v62 constraintEqualToAnchor:v61];
+  view8 = [p_createShapeInsertViewController view];
+  trailingAnchor3 = [view8 trailingAnchor];
+  trailingAnchor4 = [safeAreaLayoutGuide trailingAnchor];
+  v34 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v86[3] = v34;
-  v35 = [v17 topAnchor];
-  v36 = v32;
-  v73 = v32;
-  v37 = [v32 topAnchor];
-  v38 = [v35 constraintEqualToAnchor:v37 constant:v33];
+  topAnchor = [v17 topAnchor];
+  v36 = safeAreaLayoutGuide;
+  v73 = safeAreaLayoutGuide;
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v38 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v33];
   v86[4] = v38;
-  v39 = [v27 view];
-  v40 = [v39 bottomAnchor];
-  v41 = [v36 bottomAnchor];
-  v42 = [v40 constraintEqualToAnchor:v41];
+  view9 = [p_createShapeInsertViewController view];
+  bottomAnchor = [view9 bottomAnchor];
+  bottomAnchor2 = [v36 bottomAnchor];
+  v42 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v86[5] = v42;
   v43 = [NSArray arrayWithObjects:v86 count:6];
   [NSLayoutConstraint activateConstraints:v43];
 
-  v44 = [v64 view];
-  v45 = [v44 topAnchor];
-  v46 = [v68 bottomAnchor];
-  v47 = [v45 constraintEqualToAnchor:v46];
+  view10 = [v64 view];
+  topAnchor3 = [view10 topAnchor];
+  bottomAnchor3 = [v68 bottomAnchor];
+  v47 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3];
   v85 = v47;
   v48 = [NSArray arrayWithObjects:&v85 count:1];
   [(CRLiOSShapeLibraryViewController *)self setP_constraintsForShowingNavigationBar:v48];
 
-  v49 = [v64 view];
-  v50 = [v49 topAnchor];
-  v51 = [v73 topAnchor];
-  v52 = [v50 constraintEqualToAnchor:v51];
+  view11 = [v64 view];
+  topAnchor4 = [view11 topAnchor];
+  topAnchor5 = [v73 topAnchor];
+  v52 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v84 = v52;
   v53 = [NSArray arrayWithObjects:&v84 count:1];
   [(CRLiOSShapeLibraryViewController *)self setP_constraintsForHidingNavigationBar:v53];
 
   [v68 setHidden:1];
-  v54 = [(CRLiOSShapeLibraryViewController *)self p_constraintsForHidingNavigationBar];
-  [NSLayoutConstraint activateConstraints:v54];
+  p_constraintsForHidingNavigationBar = [(CRLiOSShapeLibraryViewController *)self p_constraintsForHidingNavigationBar];
+  [NSLayoutConstraint activateConstraints:p_constraintsForHidingNavigationBar];
 
   [v64 didMoveToParentViewController:self];
   v55 = [[CRLAccessibilityTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
   [(CRLiOSShapeLibraryViewController *)self setP_announcementTimer:v55];
 
-  v56 = [(CRLiOSShapeLibraryViewController *)self p_announcementTimer];
-  [v56 setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
+  p_announcementTimer = [(CRLiOSShapeLibraryViewController *)self p_announcementTimer];
+  [p_announcementTimer setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
 
   v83 = objc_opt_class();
   v57 = [NSArray arrayWithObjects:&v83 count:1];
@@ -260,118 +260,118 @@
   v60 = [(CRLiOSShapeLibraryViewController *)self registerForTraitChanges:v59 withTarget:self action:"p_updateForPresentationSemanticContext"];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(CRLShapeCollectionDataSource *)self->_shapeCollectionDataSource setShowLinesInLibrary:[(CRLiOSShapeLibraryViewController *)self showLinesInLibrary]];
   v5.receiver = self;
   v5.super_class = CRLiOSShapeLibraryViewController;
-  [(CRLiOSShapeLibraryViewController *)&v5 viewWillAppear:v3];
+  [(CRLiOSShapeLibraryViewController *)&v5 viewWillAppear:appearCopy];
   [(CRLiOSShapeLibraryViewController *)self p_updateForPresentationSemanticContext];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v21.receiver = self;
   v21.super_class = CRLiOSShapeLibraryViewController;
-  [(CRLiOSShapeLibraryViewController *)&v21 viewDidAppear:a3];
+  [(CRLiOSShapeLibraryViewController *)&v21 viewDidAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
-  v5 = [(CRLiOSShapeLibraryViewController *)self view];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
+  view = [(CRLiOSShapeLibraryViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
   v8 = +[NSNotification CRLiOSSceneWillResignActive];
-  [v4 addObserver:self selector:"p_workspaceWillDeactivate:" name:v8 object:v7];
+  [v4 addObserver:self selector:"p_workspaceWillDeactivate:" name:v8 object:windowScene];
 
   v9 = +[NSNotification CRLiOSSceneDidEnterBackground];
-  [v4 addObserver:self selector:"p_workspaceDidEnterBackground:" name:v9 object:v7];
+  [v4 addObserver:self selector:"p_workspaceDidEnterBackground:" name:v9 object:windowScene];
 
   v10 = +[NSNotification CRLiOSSceneDidBecomeActive];
-  [v4 addObserver:self selector:"p_workspaceDidActivate:" name:v10 object:v7];
+  [v4 addObserver:self selector:"p_workspaceDidActivate:" name:v10 object:windowScene];
 
-  v11 = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
-  v12 = [v11 changeNotifier];
-  v13 = [(CRLiOSShapeLibraryViewController *)self associatedBoardItems];
-  v14 = [v13 anyObject];
-  v15 = [v14 parentContainerItem];
-  [v12 addObserver:self forChangeSource:v15];
+  p_interactiveCanvasController = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
+  changeNotifier = [p_interactiveCanvasController changeNotifier];
+  associatedBoardItems = [(CRLiOSShapeLibraryViewController *)self associatedBoardItems];
+  anyObject = [associatedBoardItems anyObject];
+  parentContainerItem = [anyObject parentContainerItem];
+  [changeNotifier addObserver:self forChangeSource:parentContainerItem];
 
-  v16 = [(CRLiOSShapeLibraryViewController *)self associatedBoardItems];
-  v17 = [v16 allObjects];
-  v18 = [v17 crl_firstObjectPassingTest:&stru_1018516D8];
+  associatedBoardItems2 = [(CRLiOSShapeLibraryViewController *)self associatedBoardItems];
+  allObjects = [associatedBoardItems2 allObjects];
+  v18 = [allObjects crl_firstObjectPassingTest:&stru_1018516D8];
 
-  v19 = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
-  v20 = [v19 changeNotifier];
-  [v20 addObserver:self forChangeSource:v18];
+  p_interactiveCanvasController2 = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
+  changeNotifier2 = [p_interactiveCanvasController2 changeNotifier];
+  [changeNotifier2 addObserver:self forChangeSource:v18];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(CRLiOSShapeLibraryViewController *)self view];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
+  disappearCopy = disappear;
+  view = [(CRLiOSShapeLibraryViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
   v8 = +[NSNotificationCenter defaultCenter];
   v9 = +[NSNotification CRLiOSSceneWillResignActive];
-  [v8 removeObserver:self name:v9 object:v7];
+  [v8 removeObserver:self name:v9 object:windowScene];
 
   v10 = +[NSNotification CRLiOSSceneDidEnterBackground];
-  [v8 removeObserver:self name:v10 object:v7];
+  [v8 removeObserver:self name:v10 object:windowScene];
 
   v11 = +[NSNotification CRLiOSSceneDidBecomeActive];
-  [v8 removeObserver:self name:v11 object:v7];
+  [v8 removeObserver:self name:v11 object:windowScene];
 
   v12.receiver = self;
   v12.super_class = CRLiOSShapeLibraryViewController;
-  [(CRLiOSShapeLibraryViewController *)&v12 viewWillDisappear:v3];
+  [(CRLiOSShapeLibraryViewController *)&v12 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(CRLiOSShapeLibraryViewController *)self setP_didDragOutsidePopover:0];
-  v5 = [(CRLiOSShapeLibraryViewController *)self p_shapeSearchResultsCollection];
-  [v5 setSearchTerm:0 completionHandler:0];
+  p_shapeSearchResultsCollection = [(CRLiOSShapeLibraryViewController *)self p_shapeSearchResultsCollection];
+  [p_shapeSearchResultsCollection setSearchTerm:0 completionHandler:0];
 
-  v6 = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
-  v7 = [v6 changeNotifier];
-  v8 = [(CRLiOSShapeLibraryViewController *)self associatedBoardItems];
-  v9 = [v8 anyObject];
-  v10 = [v9 parentContainerItem];
-  [v7 removeObserver:self forChangeSource:v10];
+  p_interactiveCanvasController = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
+  changeNotifier = [p_interactiveCanvasController changeNotifier];
+  associatedBoardItems = [(CRLiOSShapeLibraryViewController *)self associatedBoardItems];
+  anyObject = [associatedBoardItems anyObject];
+  parentContainerItem = [anyObject parentContainerItem];
+  [changeNotifier removeObserver:self forChangeSource:parentContainerItem];
 
-  v11 = [(CRLiOSShapeLibraryViewController *)self associatedBoardItems];
-  v12 = [v11 allObjects];
-  v13 = [v12 crl_firstObjectPassingTest:&stru_1018516F8];
+  associatedBoardItems2 = [(CRLiOSShapeLibraryViewController *)self associatedBoardItems];
+  allObjects = [associatedBoardItems2 allObjects];
+  v13 = [allObjects crl_firstObjectPassingTest:&stru_1018516F8];
 
-  v14 = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
-  v15 = [v14 changeNotifier];
-  [v15 removeObserver:self forChangeSource:v13];
+  p_interactiveCanvasController2 = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
+  changeNotifier2 = [p_interactiveCanvasController2 changeNotifier];
+  [changeNotifier2 removeObserver:self forChangeSource:v13];
 
   [(CRLiOSShapeLibraryViewController *)self setAssociatedBoardItems:0];
   v16.receiver = self;
   v16.super_class = CRLiOSShapeLibraryViewController;
-  [(CRLiOSShapeLibraryViewController *)&v16 viewDidDisappear:v3];
+  [(CRLiOSShapeLibraryViewController *)&v16 viewDidDisappear:disappearCopy];
 }
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(CRLiOSShapeLibraryViewController *)self traitCollection];
-  if ([v3 userInterfaceIdiom] == 1)
+  traitCollection = [(CRLiOSShapeLibraryViewController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 1)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CRLiOSShapeLibraryViewController *)self traitCollection];
-    v4 = [v5 userInterfaceIdiom] == 6;
+    traitCollection2 = [(CRLiOSShapeLibraryViewController *)self traitCollection];
+    v4 = [traitCollection2 userInterfaceIdiom] == 6;
   }
 
-  v6 = [(CRLiOSShapeLibraryViewController *)self presentingViewController];
+  presentingViewController = [(CRLiOSShapeLibraryViewController *)self presentingViewController];
 
-  if (v4 && v6)
+  if (v4 && presentingViewController)
   {
     v7 = 496.0;
     v8 = 375.0;
@@ -389,21 +389,21 @@
   return result;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v12.receiver = self;
   v12.super_class = CRLiOSShapeLibraryViewController;
-  [(CRLiOSShapeLibraryViewController *)&v12 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
-  v9 = [v8 isViewLoaded];
+  [(CRLiOSShapeLibraryViewController *)&v12 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  p_shapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+  isViewLoaded = [p_shapeInsertViewController isViewLoaded];
 
-  if (v9)
+  if (isViewLoaded)
   {
-    v10 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
-    [v10 viewWillTransitionToSize:v7 withTransitionCoordinator:{width, height}];
+    p_shapeInsertViewController2 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+    [p_shapeInsertViewController2 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:{width, height}];
   }
 
   v11[0] = _NSConcreteStackBlock;
@@ -411,22 +411,22 @@
   v11[2] = sub_1002B6B00;
   v11[3] = &unk_101848DD8;
   v11[4] = self;
-  [v7 animateAlongsideTransition:v11 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v11 completion:0];
 }
 
-- (void)p_workspaceWillDeactivate:(id)a3
+- (void)p_workspaceWillDeactivate:(id)deactivate
 {
-  v6 = [(CRLiOSShapeLibraryViewController *)self view];
-  [v6 frame];
+  view = [(CRLiOSShapeLibraryViewController *)self view];
+  [view frame];
   [(CRLiOSShapeLibraryViewController *)self setP_cachedViewFrameSize:v4, v5];
 }
 
-- (void)p_workspaceDidActivate:(id)a3
+- (void)p_workspaceDidActivate:(id)activate
 {
-  if (!-[CRLiOSShapeLibraryViewController p_didEnterBackground](self, "p_didEnterBackground", a3) || ((-[CRLiOSShapeLibraryViewController setP_didEnterBackground:](self, "setP_didEnterBackground:", 0), -[CRLiOSShapeLibraryViewController p_cachedViewFrameSize](self, "p_cachedViewFrameSize"), v5 = v4, v7 = v6, -[CRLiOSShapeLibraryViewController view](self, "view"), v8 = objc_claimAutoreleasedReturnValue(), [v8 frame], v10 = v9, v12 = v11, v8, v5 == v10) ? (v13 = v7 == v12) : (v13 = 0), v13))
+  if (!-[CRLiOSShapeLibraryViewController p_didEnterBackground](self, "p_didEnterBackground", activate) || ((-[CRLiOSShapeLibraryViewController setP_didEnterBackground:](self, "setP_didEnterBackground:", 0), -[CRLiOSShapeLibraryViewController p_cachedViewFrameSize](self, "p_cachedViewFrameSize"), v5 = v4, v7 = v6, -[CRLiOSShapeLibraryViewController view](self, "view"), v8 = objc_claimAutoreleasedReturnValue(), [v8 frame], v10 = v9, v12 = v11, v8, v5 == v10) ? (v13 = v7 == v12) : (v13 = 0), v13))
   {
-    v14 = [(CRLiOSShapeLibraryViewController *)self p_pages];
-    [(CRLiOSShapeLibraryViewController *)self p_reloadPagesIfNeeded:v14];
+    p_pages = [(CRLiOSShapeLibraryViewController *)self p_pages];
+    [(CRLiOSShapeLibraryViewController *)self p_reloadPagesIfNeeded:p_pages];
   }
 
   else
@@ -439,20 +439,20 @@
 
 - (void)p_updateForPresentationSemanticContext
 {
-  v3 = [(CRLiOSShapeLibraryViewController *)self traitCollection];
-  v4 = [v3 _presentationSemanticContext];
+  traitCollection = [(CRLiOSShapeLibraryViewController *)self traitCollection];
+  _presentationSemanticContext = [traitCollection _presentationSemanticContext];
 
-  if (v4 == 3)
+  if (_presentationSemanticContext == 3)
   {
     v5 = +[UIColor clearColor];
-    v6 = [(CRLiOSShapeLibraryViewController *)self view];
-    [v6 setBackgroundColor:v5];
+    view = [(CRLiOSShapeLibraryViewController *)self view];
+    [view setBackgroundColor:v5];
 
-    v7 = [(CRLiOSShapeLibraryViewController *)self p_navigationBar];
-    [v7 setHidden:1];
+    p_navigationBar = [(CRLiOSShapeLibraryViewController *)self p_navigationBar];
+    [p_navigationBar setHidden:1];
 
-    v8 = [(CRLiOSShapeLibraryViewController *)self p_constraintsForShowingNavigationBar];
-    [NSLayoutConstraint deactivateConstraints:v8];
+    p_constraintsForShowingNavigationBar = [(CRLiOSShapeLibraryViewController *)self p_constraintsForShowingNavigationBar];
+    [NSLayoutConstraint deactivateConstraints:p_constraintsForShowingNavigationBar];
 
     [(CRLiOSShapeLibraryViewController *)self p_constraintsForHidingNavigationBar];
   }
@@ -460,14 +460,14 @@
   else
   {
     v9 = +[UIColor systemGroupedBackgroundColor];
-    v10 = [(CRLiOSShapeLibraryViewController *)self view];
-    [v10 setBackgroundColor:v9];
+    view2 = [(CRLiOSShapeLibraryViewController *)self view];
+    [view2 setBackgroundColor:v9];
 
-    v11 = [(CRLiOSShapeLibraryViewController *)self p_navigationBar];
-    [v11 setHidden:0];
+    p_navigationBar2 = [(CRLiOSShapeLibraryViewController *)self p_navigationBar];
+    [p_navigationBar2 setHidden:0];
 
-    v12 = [(CRLiOSShapeLibraryViewController *)self p_constraintsForHidingNavigationBar];
-    [NSLayoutConstraint deactivateConstraints:v12];
+    p_constraintsForHidingNavigationBar = [(CRLiOSShapeLibraryViewController *)self p_constraintsForHidingNavigationBar];
+    [NSLayoutConstraint deactivateConstraints:p_constraintsForHidingNavigationBar];
 
     [(CRLiOSShapeLibraryViewController *)self p_constraintsForShowingNavigationBar];
   }
@@ -475,17 +475,17 @@
   [NSLayoutConstraint activateConstraints:?];
 }
 
-- (void)processChanges:(id)a3 forChangeSource:(id)a4
+- (void)processChanges:(id)changes forChangeSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  sourceCopy = source;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = objc_opt_class();
-    v9 = sub_100013F00(v8, v7);
-    v10 = [(CRLiOSShapeLibraryViewController *)self associatedBoardItems];
-    v11 = [v10 allObjects];
+    v9 = sub_100013F00(v8, sourceCopy);
+    associatedBoardItems = [(CRLiOSShapeLibraryViewController *)self associatedBoardItems];
+    allObjects = [associatedBoardItems allObjects];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
@@ -493,7 +493,7 @@
     v14[3] = &unk_101851720;
     v12 = v9;
     v15 = v12;
-    if (([v11 crl_allObjectsPassTest:v14] & 1) == 0)
+    if (([allObjects crl_allObjectsPassTest:v14] & 1) == 0)
     {
       [(CRLiOSShapeLibraryViewController *)self dismissViewControllerAnimated:1 completion:0];
     }
@@ -509,47 +509,47 @@
       v13[2] = sub_1002B6FE8;
       v13[3] = &unk_101851748;
       v13[4] = self;
-      [v6 enumerateObjectsUsingBlock:v13];
+      [changesCopy enumerateObjectsUsingBlock:v13];
     }
   }
 }
 
 - (id)p_editingCoordinator
 {
-  v3 = [(CRLiOSShapeLibraryViewController *)self p_delegate];
-  v4 = [v3 editingCoordinatorForContentLibraryViewController:self];
+  p_delegate = [(CRLiOSShapeLibraryViewController *)self p_delegate];
+  v4 = [p_delegate editingCoordinatorForContentLibraryViewController:self];
 
   return v4;
 }
 
 - (id)p_boardItemFactory
 {
-  v2 = [(CRLiOSShapeLibraryViewController *)self p_editingCoordinator];
-  v3 = [v2 boardItemFactory];
+  p_editingCoordinator = [(CRLiOSShapeLibraryViewController *)self p_editingCoordinator];
+  boardItemFactory = [p_editingCoordinator boardItemFactory];
 
-  return v3;
+  return boardItemFactory;
 }
 
 - (id)p_interactiveCanvasController
 {
-  v3 = [(CRLiOSShapeLibraryViewController *)self p_delegate];
-  v4 = [v3 interactiveCanvasControllerForContentLibraryViewController:self];
+  p_delegate = [(CRLiOSShapeLibraryViewController *)self p_delegate];
+  v4 = [p_delegate interactiveCanvasControllerForContentLibraryViewController:self];
 
   return v4;
 }
 
-- (id)insertPageViewController:(id)a3 viewControllerBeforeViewController:(id)a4
+- (id)insertPageViewController:(id)controller viewControllerBeforeViewController:(id)viewController
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRLiOSShapeLibraryViewController *)self p_pages];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  p_pages = [(CRLiOSShapeLibraryViewController *)self p_pages];
   v9 = objc_opt_class();
-  v10 = sub_100013F00(v9, v6);
+  v10 = sub_100013F00(v9, viewControllerCopy);
 
-  v11 = [v8 indexOfObject:v10];
-  v12 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+  v11 = [p_pages indexOfObject:v10];
+  p_shapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
 
-  if (v12 != v7)
+  if (p_shapeInsertViewController != controllerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -586,27 +586,27 @@
   else
   {
     v16 = 0;
-    if ([v8 count] >= 2 && v11)
+    if ([p_pages count] >= 2 && v11)
     {
-      v16 = [v8 objectAtIndexedSubscript:v11 - 1];
+      v16 = [p_pages objectAtIndexedSubscript:v11 - 1];
     }
   }
 
   return v16;
 }
 
-- (id)insertPageViewController:(id)a3 viewControllerAfterViewController:(id)a4
+- (id)insertPageViewController:(id)controller viewControllerAfterViewController:(id)viewController
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRLiOSShapeLibraryViewController *)self p_pages];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  p_pages = [(CRLiOSShapeLibraryViewController *)self p_pages];
   v9 = objc_opt_class();
-  v10 = sub_100013F00(v9, v6);
+  v10 = sub_100013F00(v9, viewControllerCopy);
 
-  v11 = [v8 indexOfObject:v10];
-  v12 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+  v11 = [p_pages indexOfObject:v10];
+  p_shapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
 
-  if (v12 != v7)
+  if (p_shapeInsertViewController != controllerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -635,25 +635,25 @@
     [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:439 isFatal:0 description:"Delegate callback called for unexpected insert page view controller."];
   }
 
-  if (v11 == 0x7FFFFFFFFFFFFFFFLL || [v8 count] < 2 || v11 >= objc_msgSend(v8, "count") - 1)
+  if (v11 == 0x7FFFFFFFFFFFFFFFLL || [p_pages count] < 2 || v11 >= objc_msgSend(p_pages, "count") - 1)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = [v8 objectAtIndexedSubscript:v11 + 1];
+    v16 = [p_pages objectAtIndexedSubscript:v11 + 1];
   }
 
   return v16;
 }
 
-- (id)insertPageViewController:(id)a3 viewControllerForPageAtIndex:(unint64_t)a4
+- (id)insertPageViewController:(id)controller viewControllerForPageAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+  controllerCopy = controller;
+  p_shapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
 
-  if (v7 != v6)
+  if (p_shapeInsertViewController != controllerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -682,21 +682,21 @@
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:452 isFatal:0 description:"Delegate callback called for unexpected insert page view controller."];
   }
 
-  v11 = [(CRLiOSShapeLibraryViewController *)self p_pages];
-  if ([v11 count] <= a4)
+  p_pages = [(CRLiOSShapeLibraryViewController *)self p_pages];
+  if ([p_pages count] <= index)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [v11 objectAtIndexedSubscript:a4];
+    v12 = [p_pages objectAtIndexedSubscript:index];
   }
 
   return v12;
 }
 
-- (id)insertPageViewControllerViewControllerForSearch:(id)a3
+- (id)insertPageViewControllerViewControllerForSearch:(id)search
 {
   v4 = [[CRLiOSPresetCollectionViewController alloc] initWithPresetCollectionType:0 delegate:self];
   [(CRLiOSShapeLibraryViewController *)self setP_searchViewController:v4];
@@ -704,12 +704,12 @@
   return v4;
 }
 
-- (unint64_t)presentationCountForInsertPageViewController:(id)a3
+- (unint64_t)presentationCountForInsertPageViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+  controllerCopy = controller;
+  p_shapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
 
-  if (v5 != v4)
+  if (p_shapeInsertViewController != controllerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -738,19 +738,19 @@
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:468 isFatal:0 description:"Delegate callback called for unexpected insert page view controller."];
   }
 
-  v9 = [(CRLiOSShapeLibraryViewController *)self p_pages];
-  v10 = [v9 count];
+  p_pages = [(CRLiOSShapeLibraryViewController *)self p_pages];
+  v10 = [p_pages count];
 
   return v10;
 }
 
-- (unint64_t)insertPageViewController:(id)a3 presentationIndexForViewController:(id)a4
+- (unint64_t)insertPageViewController:(id)controller presentationIndexForViewController:(id)viewController
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  p_shapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
 
-  if (v8 != v7)
+  if (p_shapeInsertViewController != controllerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -780,18 +780,18 @@
   }
 
   v12 = objc_opt_class();
-  v13 = sub_100013F00(v12, v6);
+  v13 = sub_100013F00(v12, viewControllerCopy);
 
   v14 = [(CRLiOSShapeLibraryViewController *)self p_pageNumberForPresetCollectionViewController:v13];
   return v14;
 }
 
-- (unint64_t)selectedSubpageIndexForInsertPageViewController:(id)a3
+- (unint64_t)selectedSubpageIndexForInsertPageViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+  controllerCopy = controller;
+  p_shapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
 
-  if (v5 != v4)
+  if (p_shapeInsertViewController != controllerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -823,15 +823,15 @@
   return 0;
 }
 
-- (void)insertPageViewController:(id)a3 didSelectPageNumber:(unint64_t)a4
+- (void)insertPageViewController:(id)controller didSelectPageNumber:(unint64_t)number
 {
-  v6 = a3;
-  v7 = [v6 selectedPageNumberAutosaveName];
-  [(CRLiOSShapeLibraryViewController *)self p_setIntegerDefault:a4 forKey:v7];
+  controllerCopy = controller;
+  selectedPageNumberAutosaveName = [controllerCopy selectedPageNumberAutosaveName];
+  [(CRLiOSShapeLibraryViewController *)self p_setIntegerDefault:number forKey:selectedPageNumberAutosaveName];
 
-  v8 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+  p_shapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
 
-  if (v8 != v6)
+  if (p_shapeInsertViewController != controllerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -860,18 +860,18 @@
     [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:491 isFatal:0 description:"Delegate callback called for unexpected insert page view controller."];
   }
 
-  v12 = [(CRLiOSShapeLibraryViewController *)self p_pages];
-  v13 = [v12 objectAtIndexedSubscript:a4];
+  p_pages = [(CRLiOSShapeLibraryViewController *)self p_pages];
+  v13 = [p_pages objectAtIndexedSubscript:number];
 
   [v13 accessibilityFocusFirstVisiblePreset];
 }
 
-- (void)insertPageViewController:(id)a3 didSelectSubpageAtIndex:(unint64_t)a4
+- (void)insertPageViewController:(id)controller didSelectSubpageAtIndex:(unint64_t)index
 {
-  v5 = a3;
-  v6 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+  controllerCopy = controller;
+  p_shapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
 
-  if (v6 != v5)
+  if (p_shapeInsertViewController != controllerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -901,12 +901,12 @@
   }
 }
 
-- (void)insertPageViewControllerWillBeginSearch:(id)a3
+- (void)insertPageViewControllerWillBeginSearch:(id)search
 {
-  v4 = a3;
-  v5 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+  searchCopy = search;
+  p_shapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
 
-  if (v5 != v4)
+  if (p_shapeInsertViewController != searchCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -935,16 +935,16 @@
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:503 isFatal:0 description:"Delegate callback called for unexpected insert page view controller."];
   }
 
-  v9 = [(CRLiOSShapeLibraryViewController *)self p_delegate];
-  [v9 contentLibraryViewControllerWillBeginSearch:self];
+  p_delegate = [(CRLiOSShapeLibraryViewController *)self p_delegate];
+  [p_delegate contentLibraryViewControllerWillBeginSearch:self];
 }
 
-- (void)insertPageViewControllerDidBeginSearch:(id)a3
+- (void)insertPageViewControllerDidBeginSearch:(id)search
 {
-  v4 = a3;
-  v5 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+  searchCopy = search;
+  p_shapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
 
-  if (v5 != v4)
+  if (p_shapeInsertViewController != searchCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -976,15 +976,15 @@
   [(CRLiOSShapeLibraryViewController *)self setP_searchState:1];
 }
 
-- (void)insertPageViewController:(id)a3 willSearchWithText:(id)a4 inViewController:(id)a5 searchViewController:(id)a6
+- (void)insertPageViewController:(id)controller willSearchWithText:(id)text inViewController:(id)viewController searchViewController:(id)searchViewController
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+  controllerCopy = controller;
+  textCopy = text;
+  viewControllerCopy = viewController;
+  searchViewControllerCopy = searchViewController;
+  p_shapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
 
-  if (v14 != v10)
+  if (p_shapeInsertViewController != controllerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1013,8 +1013,8 @@
     [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:517 isFatal:0 description:"Delegate callback called for unexpected insert page view controller."];
   }
 
-  v18 = [(CRLiOSShapeLibraryViewController *)self p_searchState];
-  if ([v11 length])
+  p_searchState = [(CRLiOSShapeLibraryViewController *)self p_searchState];
+  if ([textCopy length])
   {
     v19 = 2;
   }
@@ -1024,40 +1024,40 @@
     v19 = 1;
   }
 
-  v20 = [(CRLiOSShapeLibraryViewController *)self p_searchState];
-  if (v20 != v19)
+  p_searchState2 = [(CRLiOSShapeLibraryViewController *)self p_searchState];
+  if (p_searchState2 != v19)
   {
     [(CRLiOSShapeLibraryViewController *)self setP_searchState:v19];
   }
 
   objc_initWeak(&location, self);
-  v21 = [(CRLiOSShapeLibraryViewController *)self p_shapeSearchResultsCollection];
+  p_shapeSearchResultsCollection = [(CRLiOSShapeLibraryViewController *)self p_shapeSearchResultsCollection];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_1002B8A48;
   v25[3] = &unk_101851A30;
-  v30 = v20 != v19;
-  v22 = v12;
+  v30 = p_searchState2 != v19;
+  v22 = viewControllerCopy;
   v26 = v22;
-  v29[1] = v18;
+  v29[1] = p_searchState;
   v29[2] = v19;
-  v23 = v13;
+  v23 = searchViewControllerCopy;
   v27 = v23;
-  v24 = v11;
+  v24 = textCopy;
   v28 = v24;
   objc_copyWeak(v29, &location);
-  [v21 setSearchTerm:v24 completionHandler:v25];
+  [p_shapeSearchResultsCollection setSearchTerm:v24 completionHandler:v25];
 
   objc_destroyWeak(v29);
   objc_destroyWeak(&location);
 }
 
-- (void)insertPageViewControllerWillEndSearch:(id)a3 cancelledExplicitly:(BOOL)a4
+- (void)insertPageViewControllerWillEndSearch:(id)search cancelledExplicitly:(BOOL)explicitly
 {
-  v5 = a3;
-  v6 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+  searchCopy = search;
+  p_shapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
 
-  if (v6 != v5)
+  if (p_shapeInsertViewController != searchCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1087,20 +1087,20 @@
   }
 
   [(CRLiOSShapeLibraryViewController *)self setP_searchState:0];
-  v10 = [(CRLiOSShapeLibraryViewController *)self p_shapeSearchResultsCollection];
-  [v10 setSearchTerm:0 completionHandler:0];
+  p_shapeSearchResultsCollection = [(CRLiOSShapeLibraryViewController *)self p_shapeSearchResultsCollection];
+  [p_shapeSearchResultsCollection setSearchTerm:0 completionHandler:0];
 
-  v11 = [(CRLiOSShapeLibraryViewController *)self p_delegate];
-  [v11 contentLibraryViewControllerDidCancelSearch:self];
+  p_delegate = [(CRLiOSShapeLibraryViewController *)self p_delegate];
+  [p_delegate contentLibraryViewControllerDidCancelSearch:self];
 }
 
-- (void)insertPageViewControllerDidEndSearch:(id)a3 cancelledExplicitly:(BOOL)a4
+- (void)insertPageViewControllerDidEndSearch:(id)search cancelledExplicitly:(BOOL)explicitly
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+  explicitlyCopy = explicitly;
+  searchCopy = search;
+  p_shapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
 
-  if (v7 != v6)
+  if (p_shapeInsertViewController != searchCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1129,20 +1129,20 @@
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:564 isFatal:0 description:"Delegate callback called for unexpected insert page view controller."];
   }
 
-  if (v4)
+  if (explicitlyCopy)
   {
-    v11 = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
-    v12 = [v11 layerHost];
-    [v12 becomeFirstResponder];
+    p_interactiveCanvasController = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
+    layerHost = [p_interactiveCanvasController layerHost];
+    [layerHost becomeFirstResponder];
   }
 }
 
-- (BOOL)insertPageViewControllerShouldAppearInSearchMode:(id)a3
+- (BOOL)insertPageViewControllerShouldAppearInSearchMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+  modeCopy = mode;
+  p_shapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
 
-  if (v5 != v4)
+  if (p_shapeInsertViewController != modeCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1171,18 +1171,18 @@
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:574 isFatal:0 description:"Delegate callback called for unexpected insert page view controller."];
   }
 
-  v9 = [(CRLiOSShapeLibraryViewController *)self p_delegate];
-  v10 = [v9 contentLibraryViewControllerShouldAppearInSearchMode:self];
+  p_delegate = [(CRLiOSShapeLibraryViewController *)self p_delegate];
+  v10 = [p_delegate contentLibraryViewControllerShouldAppearInSearchMode:self];
 
   return v10;
 }
 
-- (void)insertPageViewControllerWillDisappear:(id)a3
+- (void)insertPageViewControllerWillDisappear:(id)disappear
 {
-  v4 = a3;
-  v5 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+  disappearCopy = disappear;
+  p_shapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
 
-  if (v5 != v4)
+  if (p_shapeInsertViewController != disappearCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1213,13 +1213,13 @@
 
   if ([(CRLiOSShapeLibraryViewController *)self p_searchState]== 2 || [(CRLiOSShapeLibraryViewController *)self p_searchState]== 1)
   {
-    v9 = [(CRLiOSShapeLibraryViewController *)self p_shapeSearchResultsCollection];
-    v10 = [v9 searchTerm];
+    p_shapeSearchResultsCollection = [(CRLiOSShapeLibraryViewController *)self p_shapeSearchResultsCollection];
+    searchTerm = [p_shapeSearchResultsCollection searchTerm];
 
     v11 = &stru_1018BCA28;
-    if (v10)
+    if (searchTerm)
     {
-      v11 = v10;
+      v11 = searchTerm;
     }
 
     v12 = v11;
@@ -1230,16 +1230,16 @@
     v12 = 0;
   }
 
-  v13 = [(CRLiOSShapeLibraryViewController *)self p_delegate];
-  [v13 contentLibraryViewController:self willDisappearWithSearchTerm:v12];
+  p_delegate = [(CRLiOSShapeLibraryViewController *)self p_delegate];
+  [p_delegate contentLibraryViewController:self willDisappearWithSearchTerm:v12];
 }
 
-- (id)insertPageViewControllerDefaultSearchTerm:(id)a3
+- (id)insertPageViewControllerDefaultSearchTerm:(id)term
 {
-  v4 = a3;
-  v5 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+  termCopy = term;
+  p_shapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
 
-  if (v5 != v4)
+  if (p_shapeInsertViewController != termCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1268,26 +1268,26 @@
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:589 isFatal:0 description:"Delegate callback called for unexpected insert page view controller."];
   }
 
-  v9 = [(CRLiOSShapeLibraryViewController *)self p_delegate];
-  v10 = [v9 contentLibraryViewControllerDefaultSearchTerm:self];
+  p_delegate = [(CRLiOSShapeLibraryViewController *)self p_delegate];
+  v10 = [p_delegate contentLibraryViewControllerDefaultSearchTerm:self];
 
   return v10;
 }
 
 - (BOOL)allowsInsertDrag
 {
-  v2 = self;
-  v3 = [(CRLiOSShapeLibraryViewController *)self p_delegate];
-  LOBYTE(v2) = [v3 contentLibraryViewControllerShouldAllowInsertDrag:v2];
+  selfCopy = self;
+  p_delegate = [(CRLiOSShapeLibraryViewController *)self p_delegate];
+  LOBYTE(selfCopy) = [p_delegate contentLibraryViewControllerShouldAllowInsertDrag:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)contextWithPresetCollectionViewController:(id)a3
+- (id)contextWithPresetCollectionViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CRLiOSShapeLibraryViewController *)self traitCollection];
-  if ([v5 userInterfaceIdiom] == 1 && (-[CRLiOSShapeLibraryViewController presentingViewController](self, "presentingViewController"), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  controllerCopy = controller;
+  traitCollection = [(CRLiOSShapeLibraryViewController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 1 && (-[CRLiOSShapeLibraryViewController presentingViewController](self, "presentingViewController"), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
     [(CRLiOSShapeLibraryViewController *)self p_contentSize];
@@ -1315,69 +1315,69 @@
   }
 
 LABEL_9:
-  v11 = [(CRLiOSShapeLibraryViewController *)self p_pageNumberForPresetCollectionViewController:v4];
+  v11 = [(CRLiOSShapeLibraryViewController *)self p_pageNumberForPresetCollectionViewController:controllerCopy];
   v12 = [(CRLiOSShapeLibraryViewController *)self p_searchState]== 2;
   v13 = [CRLiOSPresetCollectionContext alloc];
   [(CRLiOSShapeLibraryViewController *)self p_contentSize];
   v15 = v14;
   v17 = v16;
-  v18 = [(CRLiOSShapeLibraryViewController *)self p_editingCoordinator];
-  v19 = [(CRLiOSShapeLibraryViewController *)self traitCollection];
-  v20 = [(CRLiOSPresetCollectionContext *)v13 initWithContextType:v10 contentSize:v18 editingCoordinator:v12 isSearching:v11 pageIndex:0 subpageIndex:v19 traitCollection:v15, v17];
+  p_editingCoordinator = [(CRLiOSShapeLibraryViewController *)self p_editingCoordinator];
+  traitCollection2 = [(CRLiOSShapeLibraryViewController *)self traitCollection];
+  v20 = [(CRLiOSPresetCollectionContext *)v13 initWithContextType:v10 contentSize:p_editingCoordinator editingCoordinator:v12 isSearching:v11 pageIndex:0 subpageIndex:traitCollection2 traitCollection:v15, v17];
 
   return v20;
 }
 
-- (void)presetCollectionViewController:(id)a3 didSelectPresetAtIndexPath:(id)a4
+- (void)presetCollectionViewController:(id)controller didSelectPresetAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRLiOSShapeLibraryViewController *)self p_editingCoordinator];
+  controllerCopy = controller;
+  pathCopy = path;
+  p_editingCoordinator = [(CRLiOSShapeLibraryViewController *)self p_editingCoordinator];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1002B998C;
   v11[3] = &unk_101851B98;
   v11[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  [v8 canPerformUserActionUsingBlock:v11];
+  v12 = pathCopy;
+  v13 = controllerCopy;
+  v9 = controllerCopy;
+  v10 = pathCopy;
+  [p_editingCoordinator canPerformUserActionUsingBlock:v11];
 }
 
-- (void)p_changeSelectedShapesToItemAtIndexPath:(id)a3 forPresetCollectionViewController:(id)a4
+- (void)p_changeSelectedShapesToItemAtIndexPath:(id)path forPresetCollectionViewController:(id)controller
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
-  v8 = [v7 editorController];
-  v9 = [v8 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+  pathCopy = path;
+  controllerCopy = controller;
+  p_interactiveCanvasController = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
+  editorController = [p_interactiveCanvasController editorController];
+  v9 = [editorController mostSpecificCurrentEditorOfClass:objc_opt_class()];
   if (v9)
   {
-    v10 = [(CRLiOSShapeLibraryViewController *)self contextWithPresetCollectionViewController:v6];
-    v11 = [(CRLiOSShapeLibraryViewController *)self p_shapeAtIndexPath:v16 context:v10];
+    v10 = [(CRLiOSShapeLibraryViewController *)self contextWithPresetCollectionViewController:controllerCopy];
+    v11 = [(CRLiOSShapeLibraryViewController *)self p_shapeAtIndexPath:pathCopy context:v10];
     v12 = [v11 pathSourceWithSize:{100.0, 100.0}];
-    [_TtC8Freeform28CRLShapeLibraryPopoverHelper changeShapeForEditor:v9 shapePathSource:v12 interactiveCanvasController:v7];
+    [_TtC8Freeform28CRLShapeLibraryPopoverHelper changeShapeForEditor:v9 shapePathSource:v12 interactiveCanvasController:p_interactiveCanvasController];
   }
 
   [(CRLiOSShapeLibraryViewController *)self dismissViewControllerAnimated:1 completion:0];
   if ([(CRLiOSShapeLibraryViewController *)self p_isCompact])
   {
-    v13 = [v7 layerHost];
-    v14 = [v13 miniFormatterPresenter];
-    v15 = [v8 selectionPath];
-    [v14 presentMiniFormatterForSelectionPath:v15];
+    layerHost = [p_interactiveCanvasController layerHost];
+    miniFormatterPresenter = [layerHost miniFormatterPresenter];
+    selectionPath = [editorController selectionPath];
+    [miniFormatterPresenter presentMiniFormatterForSelectionPath:selectionPath];
   }
 }
 
-- (id)itemsForBeginningDragSessionForPresetCollectionViewController:(id)a3 forCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)itemsForBeginningDragSessionForPresetCollectionViewController:(id)controller forCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a3;
-  v46 = a4;
-  v9 = a5;
-  v47 = [(CRLiOSShapeLibraryViewController *)self contextWithPresetCollectionViewController:v8];
+  controllerCopy = controller;
+  viewCopy = view;
+  pathCopy = path;
+  v47 = [(CRLiOSShapeLibraryViewController *)self contextWithPresetCollectionViewController:controllerCopy];
   v10 = objc_opt_class();
-  v11 = -[CRLiOSShapeLibraryViewController p_boardItemForPresetCollectionType:atIndexPath:context:](self, "p_boardItemForPresetCollectionType:atIndexPath:context:", [v8 presetCollectionType], v9, v47);
+  v11 = -[CRLiOSShapeLibraryViewController p_boardItemForPresetCollectionType:atIndexPath:context:](self, "p_boardItemForPresetCollectionType:atIndexPath:context:", [controllerCopy presetCollectionType], pathCopy, v47);
   v12 = sub_100013F00(v10, v11);
 
   if (v12)
@@ -1385,12 +1385,12 @@ LABEL_9:
     v44 = objc_alloc_init(CRLItemProviderItemWriter);
     v56 = v12;
     v13 = [NSArray arrayWithObjects:&v56 count:1];
-    v14 = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
-    v45 = [(CRLItemProviderItemWriter *)v44 createItemProviderWithCopyOfBoardItems:v13 fromInteractiveCanvasController:v14 outCopiedBoardItems:0];
+    p_interactiveCanvasController = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
+    v45 = [(CRLItemProviderItemWriter *)v44 createItemProviderWithCopyOfBoardItems:v13 fromInteractiveCanvasController:p_interactiveCanvasController outCopiedBoardItems:0];
 
     if (v45)
     {
-      v15 = [v46 cellForItemAtIndexPath:v9];
+      v15 = [viewCopy cellForItemAtIndexPath:pathCopy];
       v16 = objc_opt_class();
       v22 = sub_100303920(v15, v16, 1, v17, v18, v19, v20, v21, &OBJC_PROTOCOL___CRLiOSPresetCollectionViewCell);
 
@@ -1399,19 +1399,19 @@ LABEL_9:
       v52[2] = 0x3032000000;
       v52[3] = sub_1002BA2B0;
       v52[4] = sub_1002BA2C0;
-      v23 = [v22 presetButton];
-      v53 = [v23 imageView];
+      presetButton = [v22 presetButton];
+      imageView = [presetButton imageView];
 
-      v24 = [(CRLiOSShapeLibraryViewController *)self p_shapeAtIndexPath:v9 context:v47];
-      v25 = [v24 shapeType];
+      v24 = [(CRLiOSShapeLibraryViewController *)self p_shapeAtIndexPath:pathCopy context:v47];
+      shapeType = [v24 shapeType];
 
       v43 = objc_alloc_init(CRLSwatchRenderingContext);
-      if (v25 <= 0x14 && ((1 << v25) & 0x1D8006) != 0)
+      if (shapeType <= 0x14 && ((1 << shapeType) & 0x1D8006) != 0)
       {
         v26 = 45.0;
       }
 
-      else if ((v25 & 0xFFFFFFFFFFFFFFEFLL) == 2 || v25 == 19)
+      else if ((shapeType & 0xFFFFFFFFFFFFFFEFLL) == 2 || shapeType == 19)
       {
         v26 = 45.0;
       }
@@ -1428,13 +1428,13 @@ LABEL_9:
       v50[4] = sub_1002BA2C0;
       v51 = 0;
       v27 = +[CRLSwatchCache swatchCache];
-      v28 = [v22 presetButton];
-      [v28 bounds];
+      presetButton2 = [v22 presetButton];
+      [presetButton2 bounds];
       v30 = v29;
       v32 = v31;
-      v33 = [v12 pathSource];
-      v34 = [(CRLiOSShapeLibraryViewController *)self p_editingCoordinator];
-      v35 = [v27 shapeItemWithPresetsForSize:v25 shapeType:v33 shapePathSource:v34 angle:v43 editingCoordinator:v30 renderingContext:{v32, v26}];
+      pathSource = [v12 pathSource];
+      p_editingCoordinator = [(CRLiOSShapeLibraryViewController *)self p_editingCoordinator];
+      v35 = [v27 shapeItemWithPresetsForSize:shapeType shapeType:pathSource shapePathSource:p_editingCoordinator angle:v43 editingCoordinator:v30 renderingContext:{v32, v26}];
 
       v55 = v35;
       v36 = [NSArray arrayWithObjects:&v55 count:1];
@@ -1444,7 +1444,7 @@ LABEL_9:
       v49[3] = &unk_101851C00;
       v49[4] = v35;
       v49[5] = v50;
-      v49[6] = v25;
+      v49[6] = shapeType;
       [CRLCanvasLayoutController temporaryLayoutControllerForInfos:v36 useInBlock:v49];
 
       v37 = [[UIDragItem alloc] initWithItemProvider:v45];
@@ -1515,42 +1515,42 @@ LABEL_9:
   }
 }
 
-- (id)p_boardItemForPresetCollectionType:(unint64_t)a3 atIndexPath:(id)a4 context:(id)a5
+- (id)p_boardItemForPresetCollectionType:(unint64_t)type atIndexPath:(id)path context:(id)context
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(CRLiOSShapeLibraryViewController *)self p_boardItemFactory];
-  if (a3)
+  pathCopy = path;
+  contextCopy = context;
+  p_boardItemFactory = [(CRLiOSShapeLibraryViewController *)self p_boardItemFactory];
+  if (type)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = [(CRLiOSShapeLibraryViewController *)self p_shapeInfoAtIndexPath:v8 boardItemFactory:v10 context:v9];
+    v11 = [(CRLiOSShapeLibraryViewController *)self p_shapeInfoAtIndexPath:pathCopy boardItemFactory:p_boardItemFactory context:contextCopy];
   }
 
   return v11;
 }
 
-- (id)p_shapeInfoAtIndexPath:(id)a3 boardItemFactory:(id)a4 context:(id)a5
+- (id)p_shapeInfoAtIndexPath:(id)path boardItemFactory:(id)factory context:(id)context
 {
-  v8 = a4;
-  v9 = [(CRLiOSShapeLibraryViewController *)self p_shapeAtIndexPath:a3 context:a5];
+  factoryCopy = factory;
+  v9 = [(CRLiOSShapeLibraryViewController *)self p_shapeAtIndexPath:path context:context];
   v10 = [v9 pathSourceWithSize:{100.0, 100.0}];
-  v11 = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
-  v12 = [v11 selectionModelTranslator];
-  v13 = [v11 editorController];
-  v14 = [v13 selectionPath];
-  v15 = [v12 infosForSelectionPath:v14];
+  p_interactiveCanvasController = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
+  selectionModelTranslator = [p_interactiveCanvasController selectionModelTranslator];
+  editorController = [p_interactiveCanvasController editorController];
+  selectionPath = [editorController selectionPath];
+  v15 = [selectionModelTranslator infosForSelectionPath:selectionPath];
 
   v16 = objc_opt_class();
-  v17 = [v15 anyObject];
-  v18 = sub_100014370(v16, v17);
+  anyObject = [v15 anyObject];
+  v18 = sub_100014370(v16, anyObject);
 
   v19 = objc_opt_class();
-  v20 = [v11 board];
-  v21 = [v18 getConnectedFromWithBoardItemOwner:v20];
+  board = [p_interactiveCanvasController board];
+  v21 = [v18 getConnectedFromWithBoardItemOwner:board];
   if (v21)
   {
     v22 = sub_100014370(v19, v21);
@@ -1558,26 +1558,26 @@ LABEL_9:
 
   else
   {
-    [v11 board];
-    v29 = v8;
+    [p_interactiveCanvasController board];
+    v29 = factoryCopy;
     v23 = v30 = v9;
     [v18 getConnectedToWithBoardItemOwner:v23];
     v25 = v24 = v10;
     v22 = sub_100014370(v19, v25);
 
     v10 = v24;
-    v8 = v29;
+    factoryCopy = v29;
     v9 = v30;
   }
 
   if (!-[CRLiOSShapeLibraryViewController showLinesInLibrary](self, "showLinesInLibrary") && v18 && v22 && [v15 count] == 1)
   {
-    v26 = [v8 makeShapeItemForDiagramWithConnectingTo:v22 with:v10 shapeType:{objc_msgSend(v9, "shapeType")}];
+    v26 = [factoryCopy makeShapeItemForDiagramWithConnectingTo:v22 with:v10 shapeType:{objc_msgSend(v9, "shapeType")}];
   }
 
   else
   {
-    v26 = [v8 makeShapeItemWithShapeType:objc_msgSend(v9 pathSource:{"shapeType"), v10}];
+    v26 = [factoryCopy makeShapeItemWithShapeType:objc_msgSend(v9 pathSource:{"shapeType"), v10}];
   }
 
   v27 = v26;
@@ -1585,35 +1585,35 @@ LABEL_9:
   return v27;
 }
 
-- (void)p_insertShapeAtIndexPath:(id)a3 context:(id)a4
+- (void)p_insertShapeAtIndexPath:(id)path context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRLiOSShapeLibraryViewController *)self p_boardItemFactory];
-  v9 = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
-  v10 = [v9 commandController];
-  [v10 openGroup];
-  [v10 enableProgressiveEnqueuingInCurrentGroup];
-  v11 = [(CRLiOSShapeLibraryViewController *)self p_shapeAtIndexPath:v7 context:v6];
-  v12 = [v11 shapeType];
+  contextCopy = context;
+  pathCopy = path;
+  p_boardItemFactory = [(CRLiOSShapeLibraryViewController *)self p_boardItemFactory];
+  p_interactiveCanvasController = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
+  commandController = [p_interactiveCanvasController commandController];
+  [commandController openGroup];
+  [commandController enableProgressiveEnqueuingInCurrentGroup];
+  v11 = [(CRLiOSShapeLibraryViewController *)self p_shapeAtIndexPath:pathCopy context:contextCopy];
+  shapeType = [v11 shapeType];
 
-  v13 = [(CRLiOSShapeLibraryViewController *)self p_shapeInfoAtIndexPath:v7 boardItemFactory:v8 context:v6];
+  v13 = [(CRLiOSShapeLibraryViewController *)self p_shapeInfoAtIndexPath:pathCopy boardItemFactory:p_boardItemFactory context:contextCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v9 canvasEditor];
-    v15 = [v14 infosToConnect];
-    v16 = [v15 count];
+    canvasEditor = [p_interactiveCanvasController canvasEditor];
+    infosToConnect = [canvasEditor infosToConnect];
+    v16 = [infosToConnect count];
 
     if (v16 == 2)
     {
-      v17 = [v9 canvasEditor];
-      v18 = [v17 connectionLineItemToUseForConnecting];
+      canvasEditor2 = [p_interactiveCanvasController canvasEditor];
+      connectionLineItemToUseForConnecting = [canvasEditor2 connectionLineItemToUseForConnecting];
 
-      if (v18)
+      if (connectionLineItemToUseForConnecting)
       {
-        v19 = [v8 makeDuplicateOfBoardItem:v18];
+        v19 = [p_boardItemFactory makeDuplicateOfBoardItem:connectionLineItemToUseForConnecting];
         v20 = v19;
         if (v19)
         {
@@ -1637,37 +1637,37 @@ LABEL_9:
   v25 = v24;
   if (v24)
   {
-    if (v12 == 21)
+    if (shapeType == 21)
     {
-      v26 = [v24 pathSource];
-      v27 = [v26 localizationKey];
+      pathSource = [v24 pathSource];
+      localizationKey = [pathSource localizationKey];
     }
 
     else
     {
-      v27 = [CRLBasicShapeLibraryShape baseNameForShapeType:v12];
+      localizationKey = [CRLBasicShapeLibraryShape baseNameForShapeType:shapeType];
     }
 
-    [_TtC8Freeform25CRLAnalyticsShapeInserted sendShapeInsertedAnalyticsWithShapeIdentifier:v27 isMiniShapePicker:0];
+    [_TtC8Freeform25CRLAnalyticsShapeInserted sendShapeInsertedAnalyticsWithShapeIdentifier:localizationKey isMiniShapePicker:0];
   }
 
-  v28 = [v9 canvasEditor];
-  v29 = [v28 infosToConnect];
-  v30 = [v8 blockToRunCommandToPostProcessWithNewBoardItem:v13 shapeType:v12 infosToConnect:v29 commandController:v10];
+  canvasEditor3 = [p_interactiveCanvasController canvasEditor];
+  infosToConnect2 = [canvasEditor3 infosToConnect];
+  v30 = [p_boardItemFactory blockToRunCommandToPostProcessWithNewBoardItem:v13 shapeType:shapeType infosToConnect:infosToConnect2 commandController:commandController];
 
   v32 = v13;
   v31 = [NSArray arrayWithObjects:&v32 count:1];
   [(CRLiOSShapeLibraryViewController *)self p_positionAndInsertBoardItems:v31];
 
   v30[2](v30);
-  [v10 closeGroup];
+  [commandController closeGroup];
   [(CRLiOSShapeLibraryViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
 - (BOOL)p_isCompact
 {
-  v3 = [(CRLiOSShapeLibraryViewController *)self p_delegate];
-  v4 = [v3 boardViewControllerTraitCollectionForContentLibraryViewController:self];
+  p_delegate = [(CRLiOSShapeLibraryViewController *)self p_delegate];
+  v4 = [p_delegate boardViewControllerTraitCollectionForContentLibraryViewController:self];
 
   if ([v4 crl_isCompactWidth])
   {
@@ -1682,19 +1682,19 @@ LABEL_9:
   return v5;
 }
 
-- (id)p_pagesForSegment:(unint64_t)a3
+- (id)p_pagesForSegment:(unint64_t)segment
 {
-  v5 = [(CRLiOSShapeLibraryViewController *)self p_allPresetCollectionViewControllers];
-  v6 = v5;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL || [v5 count] <= a3)
+  p_allPresetCollectionViewControllers = [(CRLiOSShapeLibraryViewController *)self p_allPresetCollectionViewControllers];
+  v6 = p_allPresetCollectionViewControllers;
+  if (segment == 0x7FFFFFFFFFFFFFFFLL || [p_allPresetCollectionViewControllers count] <= segment)
   {
     v8 = &__NSArray0__struct;
   }
 
   else
   {
-    v7 = [(CRLiOSShapeLibraryViewController *)self p_allPresetCollectionViewControllers];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    p_allPresetCollectionViewControllers2 = [(CRLiOSShapeLibraryViewController *)self p_allPresetCollectionViewControllers];
+    v8 = [p_allPresetCollectionViewControllers2 objectAtIndexedSubscript:segment];
   }
 
   return v8;
@@ -1711,9 +1711,9 @@ LABEL_9:
   return v4;
 }
 
-- (unint64_t)p_totalNumberOfPagesNeededForPresetCollectionType:(unint64_t)a3
+- (unint64_t)p_totalNumberOfPagesNeededForPresetCollectionType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1742,14 +1742,14 @@ LABEL_9:
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:943 isFatal:0 description:"This method only knows how to count pages of shapes."];
   }
 
-  v7 = [(CRLiOSShapeLibraryViewController *)self p_shapeCollectionDataSource];
-  v8 = [v7 categoryNames];
-  v9 = [v8 count];
+  p_shapeCollectionDataSource = [(CRLiOSShapeLibraryViewController *)self p_shapeCollectionDataSource];
+  categoryNames = [p_shapeCollectionDataSource categoryNames];
+  v9 = [categoryNames count];
 
   return v9;
 }
 
-- (id)p_pagesForPresetCollectionType:(unint64_t)a3
+- (id)p_pagesForPresetCollectionType:(unint64_t)type
 {
   v5 = [(CRLiOSShapeLibraryViewController *)self p_totalNumberOfPagesNeededForPresetCollectionType:?];
   v6 = [NSMutableArray arrayWithCapacity:v5];
@@ -1758,7 +1758,7 @@ LABEL_9:
     v7 = v5;
     do
     {
-      v8 = [[CRLiOSPresetCollectionViewController alloc] initWithPresetCollectionType:a3 delegate:self];
+      v8 = [[CRLiOSPresetCollectionViewController alloc] initWithPresetCollectionType:type delegate:self];
       [v6 addObject:v8];
 
       --v7;
@@ -1787,7 +1787,7 @@ LABEL_9:
       v21 = 1024;
       v22 = 957;
       v23 = 2048;
-      v24 = a3;
+      typeCopy = type;
       v25 = 2048;
       v26 = v5;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Insert pages are empty for type %zi! Requested %zi pages.", buf, 0x36u);
@@ -1806,38 +1806,38 @@ LABEL_9:
 
     v12 = [NSString stringWithUTF8String:"[CRLiOSShapeLibraryViewController p_pagesForPresetCollectionType:]"];
     v13 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/iOS/Views/CRLiOSShapeLibraryViewController.m"];
-    [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:957 isFatal:0 description:"Insert pages are empty for type %zi! Requested %zi pages.", a3, v5];
+    [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:957 isFatal:0 description:"Insert pages are empty for type %zi! Requested %zi pages.", type, v5];
   }
 
   return v6;
 }
 
-- (id)p_pageViewControllerWithPages:(id)a3 presetCollectionType:(unint64_t)a4
+- (id)p_pageViewControllerWithPages:(id)pages presetCollectionType:(unint64_t)type
 {
-  v6 = a3;
+  pagesCopy = pages;
   v7 = [[CRLiOSInsertPageViewController alloc] initWithTransitionStyle:1 navigationOrientation:0 options:0];
   v8 = v7;
   v9 = 0;
-  if (!a4)
+  if (!type)
   {
     [(CRLiOSInsertPageViewController *)v7 setSelectedPageNumberAutosaveName:@"CRLiOSInsertPageViewControllerSelectedPageShapes"];
     [(CRLiOSInsertPageViewController *)v8 setSelectedSubpageAutosaveName:@"CRLiOSInsertPageViewControllerSelectedSubpageShapes"];
     v9 = 0;
   }
 
-  v10 = [(CRLiOSInsertPageViewController *)v8 selectedPageNumberAutosaveName];
-  v11 = [(CRLiOSShapeLibraryViewController *)self p_integerDefaultForKey:v10];
+  selectedPageNumberAutosaveName = [(CRLiOSInsertPageViewController *)v8 selectedPageNumberAutosaveName];
+  v11 = [(CRLiOSShapeLibraryViewController *)self p_integerDefaultForKey:selectedPageNumberAutosaveName];
 
-  if (v11 != 0x7FFFFFFFFFFFFFFFLL && v11 < [v6 count])
+  if (v11 != 0x7FFFFFFFFFFFFFFFLL && v11 < [pagesCopy count])
   {
     v9 = v11;
   }
 
-  v12 = [v6 objectAtIndexedSubscript:v9];
+  v12 = [pagesCopy objectAtIndexedSubscript:v9];
   [(CRLiOSInsertPageViewController *)v8 setInsertPageViewControllerDataSource:self];
   [(CRLiOSInsertPageViewController *)v8 setInsertPageViewControllerDelegate:self];
-  v13 = [v12 layout];
-  [(CRLiOSInsertPageViewController *)v8 setInsertPageViewControllerNavigationDataSource:v13];
+  layout = [v12 layout];
+  [(CRLiOSInsertPageViewController *)v8 setInsertPageViewControllerNavigationDataSource:layout];
 
   [(CRLiOSShapeLibraryViewController *)self preferredContentSize];
   [(CRLiOSInsertPageViewController *)v8 setPreferredContentSize:?];
@@ -1848,11 +1848,11 @@ LABEL_9:
   return v8;
 }
 
-- (unint64_t)p_pageNumberForPresetCollectionViewController:(id)a3
+- (unint64_t)p_pageNumberForPresetCollectionViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CRLiOSShapeLibraryViewController *)self p_pages];
-  v6 = [v5 indexOfObject:v4];
+  controllerCopy = controller;
+  p_pages = [(CRLiOSShapeLibraryViewController *)self p_pages];
+  v6 = [p_pages indexOfObject:controllerCopy];
 
   return v6;
 }
@@ -1863,8 +1863,8 @@ LABEL_9:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(CRLiOSShapeLibraryViewController *)self p_allPresetCollectionViewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  p_allPresetCollectionViewControllers = [(CRLiOSShapeLibraryViewController *)self p_allPresetCollectionViewControllers];
+  v4 = [p_allPresetCollectionViewControllers countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1876,7 +1876,7 @@ LABEL_9:
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(p_allPresetCollectionViewControllers);
         }
 
         v8 = *(*(&v19 + 1) + 8 * v7);
@@ -1915,25 +1915,25 @@ LABEL_9:
       }
 
       while (v7 != v5);
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v5 = [p_allPresetCollectionViewControllers countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v5);
   }
 
-  v14 = [(CRLiOSShapeLibraryViewController *)self p_searchViewController];
-  [v14 reloadData];
+  p_searchViewController = [(CRLiOSShapeLibraryViewController *)self p_searchViewController];
+  [p_searchViewController reloadData];
 }
 
-- (void)p_setAllPresetCollectionViewControllersHidden:(BOOL)a3
+- (void)p_setAllPresetCollectionViewControllersHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(CRLiOSShapeLibraryViewController *)self p_allPresetCollectionViewControllers];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  p_allPresetCollectionViewControllers = [(CRLiOSShapeLibraryViewController *)self p_allPresetCollectionViewControllers];
+  v5 = [p_allPresetCollectionViewControllers countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1945,7 +1945,7 @@ LABEL_9:
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(p_allPresetCollectionViewControllers);
         }
 
         v9 = *(*(&v20 + 1) + 8 * v8);
@@ -1969,8 +1969,8 @@ LABEL_9:
                 objc_enumerationMutation(v10);
               }
 
-              v15 = [*(*(&v16 + 1) + 8 * v14) view];
-              [v15 setHidden:v3];
+              view = [*(*(&v16 + 1) + 8 * v14) view];
+              [view setHidden:hiddenCopy];
 
               v14 = v14 + 1;
             }
@@ -1986,47 +1986,47 @@ LABEL_9:
       }
 
       while (v8 != v6);
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v6 = [p_allPresetCollectionViewControllers countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)p_setIntegerDefault:(unint64_t)a3 forKey:(id)a4
+- (void)p_setIntegerDefault:(unint64_t)default forKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   v7 = +[NSUserDefaults standardUserDefaults];
-  v6 = [NSNumber numberWithUnsignedInteger:a3];
-  [v7 setObject:v6 forKey:v5];
+  v6 = [NSNumber numberWithUnsignedInteger:default];
+  [v7 setObject:v6 forKey:keyCopy];
 }
 
-- (unint64_t)p_integerDefaultForKey:(id)a3
+- (unint64_t)p_integerDefaultForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = objc_opt_class();
   v5 = +[NSUserDefaults standardUserDefaults];
-  v6 = [v5 objectForKey:v3];
+  v6 = [v5 objectForKey:keyCopy];
 
   v7 = sub_100013F00(v4, v6);
 
   if (v7)
   {
-    v8 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v8;
+  return integerValue;
 }
 
 - (CGSize)p_contentSize
 {
-  v2 = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
-  [v2 contentSize];
+  p_shapeInsertViewController = [(CRLiOSShapeLibraryViewController *)self p_shapeInsertViewController];
+  [p_shapeInsertViewController contentSize];
   v4 = v3;
   v6 = v5;
 
@@ -2042,32 +2042,32 @@ LABEL_9:
   [(CRLiOSShapeLibraryViewController *)self p_contentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(CRLiOSShapeLibraryViewController *)self traitCollection];
-  v8 = [v7 userInterfaceIdiom] == 1 && objc_msgSend(v7, "verticalSizeClass") == 2 && objc_msgSend(v7, "horizontalSizeClass") == 1 && v6 >= 736.0 && v4 <= 375.0;
+  traitCollection = [(CRLiOSShapeLibraryViewController *)self traitCollection];
+  v8 = [traitCollection userInterfaceIdiom] == 1 && objc_msgSend(traitCollection, "verticalSizeClass") == 2 && objc_msgSend(traitCollection, "horizontalSizeClass") == 1 && v6 >= 736.0 && v4 <= 375.0;
 
   return v8;
 }
 
-- (void)p_dismissIfNeededWithBlock:(id)a3
+- (void)p_dismissIfNeededWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(CRLiOSShapeLibraryViewController *)self p_isCompact])
   {
-    [(CRLiOSShapeLibraryViewController *)self dismissViewControllerAnimated:1 completion:v4];
+    [(CRLiOSShapeLibraryViewController *)self dismissViewControllerAnimated:1 completion:blockCopy];
   }
 
-  else if (v4)
+  else if (blockCopy)
   {
-    v4[2]();
+    blockCopy[2]();
   }
 }
 
-- (BOOL)p_canInsertAndConnectBoardItemToSelectedConnectionLine:(id)a3
+- (BOOL)p_canInsertAndConnectBoardItemToSelectedConnectionLine:(id)line
 {
-  v4 = a3;
-  v5 = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
-  v6 = [v5 editorController];
-  v7 = [v6 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+  lineCopy = line;
+  p_interactiveCanvasController = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
+  editorController = [p_interactiveCanvasController editorController];
+  v7 = [editorController mostSpecificCurrentEditorOfClass:objc_opt_class()];
 
   if (!v7 || (([(CRLiOSShapeLibraryViewController *)self p_unscaledPopoverAnchorPoint], v9 == INFINITY) ? (v10 = v8 == INFINITY) : (v10 = 0), v10))
   {
@@ -2076,47 +2076,47 @@ LABEL_9:
 
   else
   {
-    if (v4)
+    if (lineCopy)
     {
-      v11 = [v7 canHandleInsertAndConnectBoardItem:v4];
+      currentSelectionIsValidForInsertAndConnectBoardItem = [v7 canHandleInsertAndConnectBoardItem:lineCopy];
     }
 
     else
     {
-      v11 = [v7 currentSelectionIsValidForInsertAndConnectBoardItem];
+      currentSelectionIsValidForInsertAndConnectBoardItem = [v7 currentSelectionIsValidForInsertAndConnectBoardItem];
     }
 
-    v12 = v11;
+    v12 = currentSelectionIsValidForInsertAndConnectBoardItem;
   }
 
   return v12;
 }
 
-- (void)p_positionAndInsertBoardItems:(id)a3
+- (void)p_positionAndInsertBoardItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = +[CRLInsertionContext nonInteractiveInsertionContext];
-  v6 = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
-  v7 = [v6 editorController];
-  v8 = [v7 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+  p_interactiveCanvasController = [(CRLiOSShapeLibraryViewController *)self p_interactiveCanvasController];
+  editorController = [p_interactiveCanvasController editorController];
+  v8 = [editorController mostSpecificCurrentEditorOfClass:objc_opt_class()];
 
-  if ([v4 count] == 1)
+  if ([itemsCopy count] == 1)
   {
-    v9 = [v4 objectAtIndexedSubscript:0];
+    v9 = [itemsCopy objectAtIndexedSubscript:0];
     v10 = [(CRLiOSShapeLibraryViewController *)self p_canInsertAndConnectBoardItemToSelectedConnectionLine:v9];
 
     if (v10)
     {
-      v11 = [v4 objectAtIndexedSubscript:0];
-      v12 = [v8 anyConnectionLine];
-      v13 = v12;
+      v11 = [itemsCopy objectAtIndexedSubscript:0];
+      anyConnectionLine = [v8 anyConnectionLine];
+      v13 = anyConnectionLine;
       if (v8)
       {
-        if (v12)
+        if (anyConnectionLine)
         {
 LABEL_31:
           [v8 insertAndConnectBoardItem:v11 postProcessBlock:0];
-          [_TtC8Freeform27CRLInsertionAnimationHelper addInsertionAnimationsToInfo:v11 connectionLineLayout:v13 onInteractiveCanvasController:v6];
+          [_TtC8Freeform27CRLInsertionAnimationHelper addInsertionAnimationsToInfo:v11 connectionLineLayout:v13 onInteractiveCanvasController:p_interactiveCanvasController];
 
           goto LABEL_32;
         }
@@ -2199,60 +2199,60 @@ LABEL_31:
     }
   }
 
-  v18 = [v6 editorController];
-  v19 = [v18 mostSpecificCurrentEditorOfClass:objc_opt_class() conformingToProtocol:&OBJC_PROTOCOL___CRLBoardItemInsertionEditor];
+  editorController2 = [p_interactiveCanvasController editorController];
+  v19 = [editorController2 mostSpecificCurrentEditorOfClass:objc_opt_class() conformingToProtocol:&OBJC_PROTOCOL___CRLBoardItemInsertionEditor];
 
-  [v19 prepareGeometryForInsertingBoardItems:v4 withInsertionContext:v5];
-  [v19 insertBoardItems:v4 withInsertionContext:v5 postProcessBlock:0];
-  [_TtC8Freeform27CRLInsertionAnimationHelper addInsertionAnimationsToInfos:v4 onInteractiveCanvasController:v6];
+  [v19 prepareGeometryForInsertingBoardItems:itemsCopy withInsertionContext:v5];
+  [v19 insertBoardItems:itemsCopy withInsertionContext:v5 postProcessBlock:0];
+  [_TtC8Freeform27CRLInsertionAnimationHelper addInsertionAnimationsToInfos:itemsCopy onInteractiveCanvasController:p_interactiveCanvasController];
 
 LABEL_32:
-  v26 = [(CRLiOSShapeLibraryViewController *)self p_delegate];
-  [v26 contentLibraryViewController:self didInsertBoardItems:v4];
+  p_delegate = [(CRLiOSShapeLibraryViewController *)self p_delegate];
+  [p_delegate contentLibraryViewController:self didInsertBoardItems:itemsCopy];
 }
 
-- (id)p_shapeAtIndexPath:(id)a3 context:(id)a4
+- (id)p_shapeAtIndexPath:(id)path context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 isSearching])
+  contextCopy = context;
+  pathCopy = path;
+  if ([contextCopy isSearching])
   {
-    v8 = [(CRLiOSShapeLibraryViewController *)self p_shapeSearchResultsCollection];
-    v9 = [v8 shapeAtIndexPath:v7];
+    p_shapeSearchResultsCollection = [(CRLiOSShapeLibraryViewController *)self p_shapeSearchResultsCollection];
+    v9 = [p_shapeSearchResultsCollection shapeAtIndexPath:pathCopy];
   }
 
   else
   {
-    v8 = [(CRLiOSShapeLibraryViewController *)self p_shapeCollectionDataSource];
-    v10 = [v7 row];
+    p_shapeSearchResultsCollection = [(CRLiOSShapeLibraryViewController *)self p_shapeCollectionDataSource];
+    v10 = [pathCopy row];
 
-    v9 = [v8 shapeAtIndex:v10 categoryIndex:{objc_msgSend(v6, "pageIndex")}];
+    v9 = [p_shapeSearchResultsCollection shapeAtIndex:v10 categoryIndex:{objc_msgSend(contextCopy, "pageIndex")}];
   }
 
   return v9;
 }
 
-- (id)p_shapeWithIdentifier:(id)a3 context:(id)a4
+- (id)p_shapeWithIdentifier:(id)identifier context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRLiOSShapeLibraryViewController *)self p_shapeCollectionDataSource];
-  v9 = [v6 pageIndex];
+  contextCopy = context;
+  identifierCopy = identifier;
+  p_shapeCollectionDataSource = [(CRLiOSShapeLibraryViewController *)self p_shapeCollectionDataSource];
+  pageIndex = [contextCopy pageIndex];
 
-  v10 = [v8 shapeWithIdentifier:v7 categoryIndex:v9];
+  v10 = [p_shapeCollectionDataSource shapeWithIdentifier:identifierCopy categoryIndex:pageIndex];
 
   return v10;
 }
 
-- (void)p_shapeLibraryIndexingDidFinish:(id)a3
+- (void)p_shapeLibraryIndexingDidFinish:(id)finish
 {
   if ([(CRLiOSShapeLibraryViewController *)self p_searchState])
   {
-    v4 = [(CRLiOSShapeLibraryViewController *)self p_shapeSearchResultsCollection];
-    [v4 resetSearchResults];
+    p_shapeSearchResultsCollection = [(CRLiOSShapeLibraryViewController *)self p_shapeSearchResultsCollection];
+    [p_shapeSearchResultsCollection resetSearchResults];
 
-    v5 = [(CRLiOSShapeLibraryViewController *)self p_searchViewController];
-    [v5 reloadData];
+    p_searchViewController = [(CRLiOSShapeLibraryViewController *)self p_searchViewController];
+    [p_searchViewController reloadData];
   }
 }
 

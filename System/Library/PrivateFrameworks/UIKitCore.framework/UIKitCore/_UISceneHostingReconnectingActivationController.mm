@@ -1,13 +1,13 @@
 @interface _UISceneHostingReconnectingActivationController
 - (_UISceneHostingReconnectingActivationController)init;
 - (_UISceneHostingReconnectingActivationControllerDelegate)delegate;
-- (void)_performActivationForHostingController:(id)a3;
+- (void)_performActivationForHostingController:(id)controller;
 - (void)_setupActivationInhibitor;
-- (void)activationHandleDidUpdate:(id)a3 forHostingController:(id)a4;
-- (void)endManagingHostedSceneActivationForHostingController:(id)a3;
-- (void)hostingController:(id)a3 isMovingToParentScene:(id)a4;
-- (void)setMaxRetryCount:(unint64_t)a3;
-- (void)setRetryTimeout:(double)a3;
+- (void)activationHandleDidUpdate:(id)update forHostingController:(id)controller;
+- (void)endManagingHostedSceneActivationForHostingController:(id)controller;
+- (void)hostingController:(id)controller isMovingToParentScene:(id)scene;
+- (void)setMaxRetryCount:(unint64_t)count;
+- (void)setRetryTimeout:(double)timeout;
 @end
 
 @implementation _UISceneHostingReconnectingActivationController
@@ -31,52 +31,52 @@
 - (void)_setupActivationInhibitor
 {
   v3 = [_UISimpleTimedInhibitor alloc];
-  v4 = [(_UISceneHostingReconnectingActivationController *)self maxRetryCount];
+  maxRetryCount = [(_UISceneHostingReconnectingActivationController *)self maxRetryCount];
   [(_UISceneHostingReconnectingActivationController *)self retryTimeout];
-  v5 = [(_UISimpleTimedInhibitor *)v3 initWithClockType:0 maxAttempts:v4 inPeriod:?];
+  v5 = [(_UISimpleTimedInhibitor *)v3 initWithClockType:0 maxAttempts:maxRetryCount inPeriod:?];
   activationInhibitor = self->_activationInhibitor;
   self->_activationInhibitor = v5;
 }
 
-- (void)setMaxRetryCount:(unint64_t)a3
+- (void)setMaxRetryCount:(unint64_t)count
 {
-  if (self->_maxRetryCount != a3)
+  if (self->_maxRetryCount != count)
   {
-    self->_maxRetryCount = a3;
+    self->_maxRetryCount = count;
     [(_UISceneHostingReconnectingActivationController *)self _setupActivationInhibitor];
   }
 }
 
-- (void)setRetryTimeout:(double)a3
+- (void)setRetryTimeout:(double)timeout
 {
-  if (self->_retryTimeout != a3)
+  if (self->_retryTimeout != timeout)
   {
-    self->_retryTimeout = a3;
+    self->_retryTimeout = timeout;
     [(_UISceneHostingReconnectingActivationController *)self _setupActivationInhibitor];
   }
 }
 
-- (void)endManagingHostedSceneActivationForHostingController:(id)a3
+- (void)endManagingHostedSceneActivationForHostingController:(id)controller
 {
   activationHandle = self->_activationHandle;
   self->_activationHandle = 0;
 }
 
-- (void)hostingController:(id)a3 isMovingToParentScene:(id)a4
+- (void)hostingController:(id)controller isMovingToParentScene:(id)scene
 {
-  v7 = a3;
-  objc_storeWeak(&self->_parentScene, a4);
-  v6 = [(_UISceneHostingActivationHandle *)self->_activationHandle isActive];
-  if (a4 && !v6)
+  controllerCopy = controller;
+  objc_storeWeak(&self->_parentScene, scene);
+  isActive = [(_UISceneHostingActivationHandle *)self->_activationHandle isActive];
+  if (scene && !isActive)
   {
-    [(_UISceneHostingReconnectingActivationController *)self _performActivationForHostingController:v7];
+    [(_UISceneHostingReconnectingActivationController *)self _performActivationForHostingController:controllerCopy];
   }
 }
 
-- (void)activationHandleDidUpdate:(id)a3 forHostingController:(id)a4
+- (void)activationHandleDidUpdate:(id)update forHostingController:(id)controller
 {
-  v7 = a4;
-  if (([a3 isActive] & 1) == 0)
+  controllerCopy = controller;
+  if (([update isActive] & 1) == 0)
   {
     if ([(_UISimpleTimedInhibitor *)self->_activationInhibitor attempt])
     {
@@ -84,15 +84,15 @@
 
       if (WeakRetained)
       {
-        [(_UISceneHostingReconnectingActivationController *)self _performActivationForHostingController:v7];
+        [(_UISceneHostingReconnectingActivationController *)self _performActivationForHostingController:controllerCopy];
       }
     }
   }
 }
 
-- (void)_performActivationForHostingController:(id)a3
+- (void)_performActivationForHostingController:(id)controller
 {
-  v8 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -102,7 +102,7 @@
     if (v6)
     {
       v7 = objc_loadWeakRetained(&self->_delegate);
-      WeakRetained = [v7 transitionerForConnectingHostingController:v8];
+      WeakRetained = [v7 transitionerForConnectingHostingController:controllerCopy];
     }
 
     else

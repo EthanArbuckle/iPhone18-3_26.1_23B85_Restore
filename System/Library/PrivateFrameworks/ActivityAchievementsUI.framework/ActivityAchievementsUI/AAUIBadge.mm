@@ -1,8 +1,8 @@
 @interface AAUIBadge
 - (AAUIBadge)init;
 - (CGPoint)position;
-- (id)_newAnimatablePropertyForType:(unint64_t)a3;
-- (void)setRotationY:(double)a3;
+- (id)_newAnimatablePropertyForType:(unint64_t)type;
+- (void)setRotationY:(double)y;
 @end
 
 @implementation AAUIBadge
@@ -20,10 +20,10 @@
   return result;
 }
 
-- (id)_newAnimatablePropertyForType:(unint64_t)a3
+- (id)_newAnimatablePropertyForType:(unint64_t)type
 {
   objc_initWeak(&location, self);
-  if (a3 == 2)
+  if (type == 2)
   {
     v9 = objc_alloc(MEMORY[0x277CE8E50]);
     v14[0] = MEMORY[0x277D85DD0];
@@ -41,7 +41,7 @@
     v7 = [v9 initWithGetter:v14 setter:v12];
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
     v8 = objc_alloc(MEMORY[0x277CE8E50]);
     v18[0] = MEMORY[0x277D85DD0];
@@ -61,7 +61,7 @@
 
   else
   {
-    if (a3)
+    if (type)
     {
       v10 = 0;
       goto LABEL_9;
@@ -146,23 +146,23 @@ void __43__AAUIBadge__newAnimatablePropertyForType___block_invoke_6(uint64_t a1,
   [WeakRetained setRotationY:v4];
 }
 
-- (void)setRotationY:(double)a3
+- (void)setRotationY:(double)y
 {
   if (self->_locksRotationY)
   {
     maxRotationY = self->_maxRotationY;
-    if (-maxRotationY >= a3)
+    if (-maxRotationY >= y)
     {
-      a3 = -maxRotationY;
+      y = -maxRotationY;
     }
 
-    if (a3 >= maxRotationY)
+    if (y >= maxRotationY)
     {
-      a3 = self->_maxRotationY;
+      y = self->_maxRotationY;
     }
   }
 
-  self->_rotationY = a3;
+  self->_rotationY = y;
 }
 
 - (CGPoint)position

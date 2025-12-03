@@ -1,5 +1,5 @@
 @interface SUCoreFSMAttachedAction
-- (SUCoreFSMAttachedAction)initWithAction:(id)a3 usingDelegate:(id)a4 withInfoClass:(Class)a5;
+- (SUCoreFSMAttachedAction)initWithAction:(id)action usingDelegate:(id)delegate withInfoClass:(Class)class;
 - (id)actionDelegate;
 - (id)description;
 @end
@@ -13,19 +13,19 @@
   return WeakRetained;
 }
 
-- (SUCoreFSMAttachedAction)initWithAction:(id)a3 usingDelegate:(id)a4 withInfoClass:(Class)a5
+- (SUCoreFSMAttachedAction)initWithAction:(id)action usingDelegate:(id)delegate withInfoClass:(Class)class
 {
-  v9 = a3;
-  v10 = a4;
+  actionCopy = action;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = SUCoreFSMAttachedAction;
   v11 = [(SUCoreFSMAttachedAction *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_fsmAction, a3);
-    objc_storeWeak(&v12->_actionDelegate, v10);
-    objc_storeStrong(&v12->_eventInfoClass, a5);
+    objc_storeStrong(&v11->_fsmAction, action);
+    objc_storeWeak(&v12->_actionDelegate, delegateCopy);
+    objc_storeStrong(&v12->_eventInfoClass, class);
   }
 
   return v12;
@@ -34,9 +34,9 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(SUCoreFSMAttachedAction *)self fsmAction];
-  v5 = [(SUCoreFSMAttachedAction *)self actionDelegate];
-  v6 = [v3 initWithFormat:@"action(%@), delegate(%@), class(%@)", v4, v5, -[SUCoreFSMAttachedAction eventInfoClass](self, "eventInfoClass")];
+  fsmAction = [(SUCoreFSMAttachedAction *)self fsmAction];
+  actionDelegate = [(SUCoreFSMAttachedAction *)self actionDelegate];
+  v6 = [v3 initWithFormat:@"action(%@), delegate(%@), class(%@)", fsmAction, actionDelegate, -[SUCoreFSMAttachedAction eventInfoClass](self, "eventInfoClass")];
 
   return v6;
 }

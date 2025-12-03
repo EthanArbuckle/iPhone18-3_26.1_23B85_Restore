@@ -10,12 +10,12 @@
 - (id)description;
 - (id)navigationController;
 - (id)topViewController;
-- (int64x2_t)initWithSplitViewControllerColumn:(void *)a1;
+- (int64x2_t)initWithSplitViewControllerColumn:(void *)column;
 - (uint64_t)hasContentViewController;
-- (void)setTogglePrimaryEdgeBarButtonItem:(uint64_t)a1;
-- (void)setTogglePrimaryEdgeButtonView:(uint64_t)a1;
-- (void)setToggleSecondaryEdgeBarButtonItem:(uint64_t)a1;
-- (void)setToggleSecondaryOnlyBarButtonItem:(uint64_t)a1;
+- (void)setTogglePrimaryEdgeBarButtonItem:(uint64_t)item;
+- (void)setTogglePrimaryEdgeButtonView:(uint64_t)view;
+- (void)setToggleSecondaryEdgeBarButtonItem:(uint64_t)item;
+- (void)setToggleSecondaryOnlyBarButtonItem:(uint64_t)item;
 - (void)viewController;
 @end
 
@@ -23,27 +23,27 @@
 
 - (void)viewController
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[11];
+    v2 = self[11];
     if (!v2)
     {
-      v2 = a1[3];
+      v2 = self[3];
     }
 
-    a1 = v2;
+    self = v2;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)navigationController
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(_UISplitViewControllerAdaptiveColumn *)a1 viewController];
-    if ([v1 _isTabBarController] & 1) != 0 || (objc_msgSend(v1, "_isSplitViewController"))
+    viewController = [(_UISplitViewControllerAdaptiveColumn *)self viewController];
+    if ([viewController _isTabBarController] & 1) != 0 || (objc_msgSend(viewController, "_isSplitViewController"))
     {
       v2 = 0;
     }
@@ -51,7 +51,7 @@
     else
     {
       v4 = 0;
-      [v1 _wrapsNavigationController:&v4];
+      [viewController _wrapsNavigationController:&v4];
       v2 = v4;
     }
   }
@@ -66,31 +66,31 @@
 
 - (id)topViewController
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(_UISplitViewControllerAdaptiveColumn *)a1 viewController];
-    if ([v1 _isTabBarController])
+    viewController = [(_UISplitViewControllerAdaptiveColumn *)self viewController];
+    if ([viewController _isTabBarController])
     {
-      v2 = [v1 selectedViewController];
+      selectedViewController = [viewController selectedViewController];
 
-      v1 = v2;
+      viewController = selectedViewController;
     }
 
     v8 = 0;
-    [v1 _wrapsNavigationController:&v8];
+    [viewController _wrapsNavigationController:&v8];
     v3 = v8;
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 topViewController];
+      topViewController = [v3 topViewController];
     }
 
     else
     {
-      v5 = v1;
+      topViewController = viewController;
     }
 
-    v6 = v5;
+    v6 = topViewController;
   }
 
   else
@@ -103,15 +103,15 @@
 
 - (UIBarButtonItemGroup)primaryEdgeBarButtonItemGroup
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 8);
+    v2 = *(self + 8);
     if (!v2)
     {
       v3 = [UIBarButtonItemGroup alloc];
       v2 = [(UIBarButtonItemGroup *)v3 initWithBarButtonItems:MEMORY[0x1E695E0F0] representativeItem:0];
-      v4 = *(a1 + 8);
-      *(a1 + 8) = v2;
+      v4 = *(self + 8);
+      *(self + 8) = v2;
     }
   }
 
@@ -125,15 +125,15 @@
 
 - (UIBarButtonItemGroup)secondaryEdgeBarButtonItemGroup
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 16);
+    v2 = *(self + 16);
     if (!v2)
     {
       v3 = [UIBarButtonItemGroup alloc];
       v2 = [(UIBarButtonItemGroup *)v3 initWithBarButtonItems:MEMORY[0x1E695E0F0] representativeItem:0];
-      v4 = *(a1 + 16);
-      *(a1 + 16) = v2;
+      v4 = *(self + 16);
+      *(self + 16) = v2;
     }
   }
 
@@ -145,14 +145,14 @@
   return v2;
 }
 
-- (int64x2_t)initWithSplitViewControllerColumn:(void *)a1
+- (int64x2_t)initWithSplitViewControllerColumn:(void *)column
 {
-  if (!a1)
+  if (!column)
   {
     return 0;
   }
 
-  v11.receiver = a1;
+  v11.receiver = column;
   v11.super_class = _UISplitViewControllerAdaptiveColumn;
   v3 = objc_msgSendSuper2(&v11, sel_init);
   v4 = v3;
@@ -179,7 +179,7 @@
 - (double)absoluteInsets
 {
   result = NAN;
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -189,30 +189,30 @@
 
 - (uint64_t)hasContentViewController
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [(_UISplitViewControllerAdaptiveColumn *)a1 viewController];
-    if (([v2 _isTabBarController] & 1) != 0 || (objc_msgSend(v2, "_isSplitViewController") & 1) != 0 || *(v1 + 88))
+    viewController = [(_UISplitViewControllerAdaptiveColumn *)self viewController];
+    if (([viewController _isTabBarController] & 1) != 0 || (objc_msgSend(viewController, "_isSplitViewController") & 1) != 0 || *(selfCopy + 88))
     {
-      v1 = 1;
+      selfCopy = 1;
     }
 
     else
     {
-      v4 = [(_UISplitViewControllerAdaptiveColumn *)v1 navigationController];
-      v5 = v4;
-      v6 = v2;
-      if (v4)
+      navigationController = [(_UISplitViewControllerAdaptiveColumn *)selfCopy navigationController];
+      v5 = navigationController;
+      topViewController = viewController;
+      if (navigationController)
       {
-        v6 = [v4 topViewController];
+        topViewController = [navigationController topViewController];
       }
 
-      v1 = v6 != 0;
+      selfCopy = topViewController != 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)description
@@ -227,9 +227,9 @@
 
 - (double)preferredWidth
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 32);
+    return *(self + 32);
   }
 
   else
@@ -240,9 +240,9 @@
 
 - (double)preferredWidthFraction
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 40);
+    return *(self + 40);
   }
 
   else
@@ -253,9 +253,9 @@
 
 - (double)minimumWidth
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 48);
+    return *(self + 48);
   }
 
   else
@@ -266,9 +266,9 @@
 
 - (double)maximumWidth
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 56);
+    return *(self + 56);
   }
 
   else
@@ -279,9 +279,9 @@
 
 - (double)specifiedWidth
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 64);
+    return *(self + 64);
   }
 
   else
@@ -290,35 +290,35 @@
   }
 }
 
-- (void)setTogglePrimaryEdgeBarButtonItem:(uint64_t)a1
+- (void)setTogglePrimaryEdgeBarButtonItem:(uint64_t)item
 {
-  if (a1)
+  if (item)
   {
-    objc_storeStrong((a1 + 112), a2);
+    objc_storeStrong((item + 112), a2);
   }
 }
 
-- (void)setToggleSecondaryEdgeBarButtonItem:(uint64_t)a1
+- (void)setToggleSecondaryEdgeBarButtonItem:(uint64_t)item
 {
-  if (a1)
+  if (item)
   {
-    objc_storeStrong((a1 + 120), a2);
+    objc_storeStrong((item + 120), a2);
   }
 }
 
-- (void)setToggleSecondaryOnlyBarButtonItem:(uint64_t)a1
+- (void)setToggleSecondaryOnlyBarButtonItem:(uint64_t)item
 {
-  if (a1)
+  if (item)
   {
-    objc_storeStrong((a1 + 128), a2);
+    objc_storeStrong((item + 128), a2);
   }
 }
 
-- (void)setTogglePrimaryEdgeButtonView:(uint64_t)a1
+- (void)setTogglePrimaryEdgeButtonView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    objc_storeStrong((a1 + 136), a2);
+    objc_storeStrong((view + 136), a2);
   }
 }
 

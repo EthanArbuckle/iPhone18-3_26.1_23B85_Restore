@@ -1,64 +1,64 @@
 @interface SBBacklightController
-+ (id)_sharedInstanceCreateIfNeeded:(BOOL)a3;
++ (id)_sharedInstanceCreateIfNeeded:(BOOL)needed;
 - (BOOL)screenIsDim;
 - (BOOL)screenIsOn;
-- (BOOL)shouldTurnOnScreenForBacklightSource:(int64_t)a3;
-- (SBBacklightController)initWithContextProvider:(id)a3;
-- (float)_factorToPublishForBacklightState:(int64_t)a3;
+- (BOOL)shouldTurnOnScreenForBacklightSource:(int64_t)source;
+- (SBBacklightController)initWithContextProvider:(id)provider;
+- (float)_factorToPublishForBacklightState:(int64_t)state;
 - (int64_t)backlightState;
-- (void)_noteDigitizerDisabled:(BOOL)a3 tapToWakeEnabled:(BOOL)a4 disabledDigitizerMode:(int64_t)a5;
-- (void)_notifyObserversDidAnimateToFactor:(float)a3 source:(int64_t)a4;
-- (void)_notifyObserversDidTransitionToBacklightState:(int64_t)a3 source:(int64_t)a4;
-- (void)_notifyObserversWillAnimateToFactor:(float)a3 source:(int64_t)a4;
-- (void)_notifyObserversWillTransitionToBacklightState:(int64_t)a3 source:(int64_t)a4;
-- (void)_performBacklightChangeRequest:(id)a3 completion:(id)a4;
-- (void)_performDeferredBacklightRampWorkWithInfo:(id)a3;
-- (void)_startFadeOutAnimationFromLockSource:(int)a3;
-- (void)_undimFromSource:(int64_t)a3;
-- (void)_updateHIDUISensorModeForBacklightState:(int64_t)a3 source:(int64_t)a4;
+- (void)_noteDigitizerDisabled:(BOOL)disabled tapToWakeEnabled:(BOOL)enabled disabledDigitizerMode:(int64_t)mode;
+- (void)_notifyObserversDidAnimateToFactor:(float)factor source:(int64_t)source;
+- (void)_notifyObserversDidTransitionToBacklightState:(int64_t)state source:(int64_t)source;
+- (void)_notifyObserversWillAnimateToFactor:(float)factor source:(int64_t)source;
+- (void)_notifyObserversWillTransitionToBacklightState:(int64_t)state source:(int64_t)source;
+- (void)_performBacklightChangeRequest:(id)request completion:(id)completion;
+- (void)_performDeferredBacklightRampWorkWithInfo:(id)info;
+- (void)_startFadeOutAnimationFromLockSource:(int)source;
+- (void)_undimFromSource:(int64_t)source;
+- (void)_updateHIDUISensorModeForBacklightState:(int64_t)state source:(int64_t)source;
 - (void)_userInterfaceStyleChanged;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)allowIdleSleep;
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5;
-- (void)backlightHost:(id)a3 willTransitionToState:(int64_t)a4 forEvent:(id)a5;
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event;
+- (void)backlightHost:(id)host willTransitionToState:(int64_t)state forEvent:(id)event;
 - (void)completeStartup;
 - (void)preventIdleSleep;
-- (void)preventIdleSleepForNumberOfSeconds:(float)a3;
-- (void)removeObserver:(id)a3;
-- (void)setBacklightState:(int64_t)a3 source:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)turnOnScreenFullyWithBacklightSource:(int64_t)a3;
+- (void)preventIdleSleepForNumberOfSeconds:(float)seconds;
+- (void)removeObserver:(id)observer;
+- (void)setBacklightState:(int64_t)state source:(int64_t)source animated:(BOOL)animated completion:(id)completion;
+- (void)turnOnScreenFullyWithBacklightSource:(int64_t)source;
 @end
 
 @implementation SBBacklightController
 
 - (BOOL)screenIsDim
 {
-  v2 = [(SBBacklightControllerContextProviding *)self->_contextProvider blsBacklight];
-  v3 = [v2 backlightState] != 2;
+  blsBacklight = [(SBBacklightControllerContextProviding *)self->_contextProvider blsBacklight];
+  v3 = [blsBacklight backlightState] != 2;
 
   return v3;
 }
 
 - (BOOL)screenIsOn
 {
-  v2 = [(SBBacklightControllerContextProviding *)self->_contextProvider blsBacklight];
-  v3 = [v2 backlightState];
+  blsBacklight = [(SBBacklightControllerContextProviding *)self->_contextProvider blsBacklight];
+  backlightState = [blsBacklight backlightState];
 
-  return (v3 & 0xFFFFFFFFFFFFFFFELL) == 2;
+  return (backlightState & 0xFFFFFFFFFFFFFFFELL) == 2;
 }
 
 - (int64_t)backlightState
 {
-  v2 = [(SBBacklightControllerContextProviding *)self->_contextProvider blsBacklight];
-  v3 = [v2 backlightState];
-  if (v3 > 3)
+  blsBacklight = [(SBBacklightControllerContextProviding *)self->_contextProvider blsBacklight];
+  backlightState = [blsBacklight backlightState];
+  if (backlightState > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = qword_21F8A8A40[v3];
+    v4 = qword_21F8A8A40[backlightState];
   }
 
   return v4;
@@ -71,9 +71,9 @@
   SBWorkspaceSetPreventIdleSleepForReason(1, @"backlight");
 }
 
-+ (id)_sharedInstanceCreateIfNeeded:(BOOL)a3
++ (id)_sharedInstanceCreateIfNeeded:(BOOL)needed
 {
-  if (a3 && _sharedInstanceCreateIfNeeded__onceToken_0 != -1)
+  if (needed && _sharedInstanceCreateIfNeeded__onceToken_0 != -1)
   {
     +[SBBacklightController _sharedInstanceCreateIfNeeded:];
   }
@@ -95,25 +95,25 @@ uint64_t __55__SBBacklightController__sharedInstanceCreateIfNeeded___block_invok
   return kdebug_trace();
 }
 
-- (SBBacklightController)initWithContextProvider:(id)a3
+- (SBBacklightController)initWithContextProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v22.receiver = self;
   v22.super_class = SBBacklightController;
   v6 = [(SBBacklightController *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contextProvider, a3);
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v6->_contextProvider, provider);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     informers = v7->_informers;
-    v7->_informers = v8;
+    v7->_informers = weakObjectsHashTable;
 
-    v10 = [(SBBacklightControllerContextProviding *)v7->_contextProvider blsBacklight];
-    [v10 addObserver:v7];
+    blsBacklight = [(SBBacklightControllerContextProviding *)v7->_contextProvider blsBacklight];
+    [blsBacklight addObserver:v7];
     v11 = [SBDisplayLinkController alloc];
-    v12 = [MEMORY[0x277CD9E40] mainDisplay];
-    v13 = [(SBDisplayLinkController *)v11 initWithCADisplay:v12 backlight:v10];
+    mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+    v13 = [(SBDisplayLinkController *)v11 initWithCADisplay:mainDisplay backlight:blsBacklight];
     mainDisplayLinkController = v7->_mainDisplayLinkController;
     v7->_mainDisplayLinkController = v13;
 
@@ -122,14 +122,14 @@ uint64_t __55__SBBacklightController__sharedInstanceCreateIfNeeded___block_invok
     brightnessSystemClient = v7->_brightnessSystemClient;
     v7->_brightnessSystemClient = v15;
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v7 selector:sel__userInterfaceStyleChanged name:*MEMORY[0x277D77250] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__userInterfaceStyleChanged name:*MEMORY[0x277D77250] object:0];
 
     [(SBBacklightController *)v7 _userInterfaceStyleChanged];
     v18 = +[SBDefaults localDefaults];
-    v19 = [v18 alwaysOnDefaults];
+    alwaysOnDefaults = [v18 alwaysOnDefaults];
     alwaysOnDefaults = v7->_alwaysOnDefaults;
-    v7->_alwaysOnDefaults = v19;
+    v7->_alwaysOnDefaults = alwaysOnDefaults;
   }
 
   return v7;
@@ -137,20 +137,20 @@ uint64_t __55__SBBacklightController__sharedInstanceCreateIfNeeded___block_invok
 
 - (void)completeStartup
 {
-  v3 = [(SBBacklightControllerContextProviding *)self->_contextProvider HIDUISensorModeController];
-  v4 = [v3 addStartupHIDLockAssertion];
+  hIDUISensorModeController = [(SBBacklightControllerContextProviding *)self->_contextProvider HIDUISensorModeController];
+  addStartupHIDLockAssertion = [hIDUISensorModeController addStartupHIDLockAssertion];
 
-  [(SBBacklightController *)self setCurrentHIDUISensorModeAssertion:v4];
+  [(SBBacklightController *)self setCurrentHIDUISensorModeAssertion:addStartupHIDLockAssertion];
   [(SBBacklightController *)self _updateHIDUISensorModeForBacklightState:[(SBBacklightController *)self backlightState] source:15];
 }
 
-- (void)_undimFromSource:(int64_t)a3
+- (void)_undimFromSource:(int64_t)source
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = [(SBBacklightController *)self screenIsOn];
-  v6 = v5;
+  screenIsOn = [(SBBacklightController *)self screenIsOn];
+  v6 = screenIsOn;
   v7 = 0;
-  if (a3 != 13 && !v5)
+  if (source != 13 && !screenIsOn)
   {
     v7 = _SBLazyMutableSetAddString(0, @"only prox can use _undimFromSource when the screen is off");
   }
@@ -162,11 +162,11 @@ uint64_t __55__SBBacklightController__sharedInstanceCreateIfNeeded___block_invok
     v7 = v8;
   }
 
-  v9 = [(SBBacklightControllerContextProviding *)self->_contextProvider proximitySensorManager];
-  v10 = [v9 isObjectInProximity];
+  proximitySensorManager = [(SBBacklightControllerContextProviding *)self->_contextProvider proximitySensorManager];
+  isObjectInProximity = [proximitySensorManager isObjectInProximity];
 
-  v11 = a3 == 8 && v6;
-  if (!v11 && v10)
+  v11 = source == 8 && v6;
+  if (!v11 && isObjectInProximity)
   {
     v12 = _SBLazyMutableSetAddString(v7, @"an object is in proximity");
 
@@ -175,10 +175,10 @@ uint64_t __55__SBBacklightController__sharedInstanceCreateIfNeeded___block_invok
 
   if (![(SBBacklightController *)self screenIsOn])
   {
-    v13 = [(SBBacklightControllerContextProviding *)self->_contextProvider lockScreenManager];
-    v14 = [v13 isWaitingToLockUI];
+    lockScreenManager = [(SBBacklightControllerContextProviding *)self->_contextProvider lockScreenManager];
+    isWaitingToLockUI = [lockScreenManager isWaitingToLockUI];
 
-    if (v14)
+    if (isWaitingToLockUI)
     {
       v15 = _SBLazyMutableSetAddString(v7, @"we're in the middle of locking the UI");
 
@@ -186,10 +186,10 @@ uint64_t __55__SBBacklightController__sharedInstanceCreateIfNeeded___block_invok
     }
   }
 
-  v16 = [(SBBacklightControllerContextProviding *)self->_contextProvider screenWakeAnimationController];
-  v17 = [v16 isSleepAnimationInProgress];
+  screenWakeAnimationController = [(SBBacklightControllerContextProviding *)self->_contextProvider screenWakeAnimationController];
+  isSleepAnimationInProgress = [screenWakeAnimationController isSleepAnimationInProgress];
 
-  if (v17)
+  if (isSleepAnimationInProgress)
   {
     v18 = _SBLazyMutableSetAddString(v7, @"we're in the middle of sleep animation");
 
@@ -203,7 +203,7 @@ uint64_t __55__SBBacklightController__sharedInstanceCreateIfNeeded___block_invok
   {
     if (v21)
     {
-      v22 = SBSBacklightChangeSourceDescription(a3);
+      v22 = SBSBacklightChangeSourceDescription(source);
       v23 = [MEMORY[0x277CF0C08] descriptionForRootObject:v7];
       *buf = 138543618;
       v32 = v22;
@@ -217,71 +217,71 @@ uint64_t __55__SBBacklightController__sharedInstanceCreateIfNeeded___block_invok
   {
     if (v21)
     {
-      v24 = SBSBacklightChangeSourceDescription(a3);
+      v24 = SBSBacklightChangeSourceDescription(source);
       *buf = 138543362;
       v32 = v24;
       _os_log_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_DEFAULT, "_undimFromSource:(%{public}@): setting backlight factor to 1.0", buf, 0xCu);
     }
 
-    v25 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v26 = *MEMORY[0x277D67A08];
-    v27 = [MEMORY[0x277CCABB0] numberWithInteger:{a3, *MEMORY[0x277D67A10]}];
+    v27 = [MEMORY[0x277CCABB0] numberWithInteger:{source, *MEMORY[0x277D67A10]}];
     v30 = v27;
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-    [v25 postNotificationName:v26 object:v28];
+    [defaultCenter postNotificationName:v26 object:v28];
 
-    [(SBBacklightController *)self setBacklightState:1 source:a3];
+    [(SBBacklightController *)self setBacklightState:1 source:source];
   }
 }
 
-- (void)_performDeferredBacklightRampWorkWithInfo:(id)a3
+- (void)_performDeferredBacklightRampWorkWithInfo:(id)info
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"SBBacklightPreFadeBacklightActivationCompleteNotification" object:0];
+  infoCopy = info;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBBacklightPreFadeBacklightActivationCompleteNotification" object:0];
 
-  v5 = [v3 objectForKey:@"sendWillTurnOnNotification"];
-  v6 = [v5 BOOLValue];
+  v5 = [infoCopy objectForKey:@"sendWillTurnOnNotification"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
     v8 = *MEMORY[0x277D67A38];
     v11 = *MEMORY[0x277D67A10];
-    v9 = [v3 objectForKey:@"backlightChangeSource"];
+    v9 = [infoCopy objectForKey:@"backlightChangeSource"];
     v12[0] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    [v7 postNotificationName:v8 object:0 userInfo:v10];
+    [defaultCenter2 postNotificationName:v8 object:0 userInfo:v10];
   }
 }
 
-- (void)turnOnScreenFullyWithBacklightSource:(int64_t)a3
+- (void)turnOnScreenFullyWithBacklightSource:(int64_t)source
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v5 = [(SBBacklightControllerContextProviding *)self->_contextProvider lockScreenManager];
-  if (([v5 isUILocked] & 1) == 0 && !objc_msgSend(v5, "isLockScreenActive"))
+  lockScreenManager = [(SBBacklightControllerContextProviding *)self->_contextProvider lockScreenManager];
+  if (([lockScreenManager isUILocked] & 1) == 0 && !objc_msgSend(lockScreenManager, "isLockScreenActive"))
   {
 LABEL_8:
-    [(SBBacklightController *)self setBacklightState:1 source:a3];
+    [(SBBacklightController *)self setBacklightState:1 source:source];
     goto LABEL_9;
   }
 
-  v6 = [(SBBacklightController *)self screenIsOn];
-  v7 = [(SBBacklightControllerContextProviding *)self->_contextProvider screenWakeAnimationController];
-  v8 = [v7 isWakeAnimationInProgress];
+  screenIsOn = [(SBBacklightController *)self screenIsOn];
+  screenWakeAnimationController = [(SBBacklightControllerContextProviding *)self->_contextProvider screenWakeAnimationController];
+  isWakeAnimationInProgress = [screenWakeAnimationController isWakeAnimationInProgress];
 
-  if (!v8)
+  if (!isWakeAnimationInProgress)
   {
-    if (!v6)
+    if (!screenIsOn)
     {
-      v13 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v14 = *MEMORY[0x277D67A38];
       v17 = *MEMORY[0x277D67A10];
-      v15 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      v15 = [MEMORY[0x277CCABB0] numberWithInteger:source];
       v18 = v15;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-      [v13 postNotificationName:v14 object:0 userInfo:v16];
+      [defaultCenter postNotificationName:v14 object:0 userInfo:v16];
     }
 
     goto LABEL_8;
@@ -289,15 +289,15 @@ LABEL_8:
 
   if (![(SBBacklightController *)self screenIsOn])
   {
-    v9 = [(SBBacklightControllerContextProviding *)self->_contextProvider wakeLogger];
-    [v9 wakeDidBegin:SBWakeLoggerSourceFromBacklightChangeSource()];
+    wakeLogger = [(SBBacklightControllerContextProviding *)self->_contextProvider wakeLogger];
+    [wakeLogger wakeDidBegin:SBWakeLoggerSourceFromBacklightChangeSource()];
 
-    [(SBBacklightController *)self setBacklightState:1 source:a3 animated:1 completion:0];
+    [(SBBacklightController *)self setBacklightState:1 source:source animated:1 completion:0];
     v19[0] = @"sendWillTurnOnNotification";
-    v10 = [MEMORY[0x277CCABB0] numberWithBool:!v6];
+    v10 = [MEMORY[0x277CCABB0] numberWithBool:!screenIsOn];
     v19[1] = @"backlightChangeSource";
     v20[0] = v10;
-    v11 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v11 = [MEMORY[0x277CCABB0] numberWithInteger:source];
     v20[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
     [(SBBacklightController *)self _performDeferredBacklightRampWorkWithInfo:v12];
@@ -306,10 +306,10 @@ LABEL_8:
 LABEL_9:
 }
 
-- (BOOL)shouldTurnOnScreenForBacklightSource:(int64_t)a3
+- (BOOL)shouldTurnOnScreenForBacklightSource:(int64_t)source
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a3 <= 0x2F && ((1 << a3) & 0x80E7E01122FCLL) != 0 || !+[SBSpuriousScreenUndimmingAssertion isAnyActive])
+  if (source <= 0x2F && ((1 << source) & 0x80E7E01122FCLL) != 0 || !+[SBSpuriousScreenUndimmingAssertion isAnyActive])
   {
     v16 = 0u;
     v17 = 0u;
@@ -331,7 +331,7 @@ LABEL_9:
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          if (([v10 shouldTurnOnScreenForBacklightSource:{a3, v14}] & 1) == 0)
+          if (([v10 shouldTurnOnScreenForBacklightSource:{source, v14}] & 1) == 0)
           {
             v12 = SBLogBacklight();
             if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -374,20 +374,20 @@ LABEL_15:
   return v11;
 }
 
-- (void)_updateHIDUISensorModeForBacklightState:(int64_t)a3 source:(int64_t)a4
+- (void)_updateHIDUISensorModeForBacklightState:(int64_t)state source:(int64_t)source
 {
   v38 = *MEMORY[0x277D85DE8];
   v8 = SBLogBacklight();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if ((a3 - 1) > 3)
+    if ((state - 1) > 3)
     {
       v9 = @"unknown";
     }
 
     else
     {
-      v9 = off_2783C3E78[a3 - 1];
+      v9 = off_2783C3E78[state - 1];
     }
 
     v36 = 138543362;
@@ -395,19 +395,19 @@ LABEL_15:
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "_updateHIDUISensorModeForBacklightState: %{public}@", &v36, 0xCu);
   }
 
-  v10 = [(SBBacklightControllerContextProviding *)self->_contextProvider HIDUISensorModeController];
-  v11 = [v10 sensorModeTransactionForBacklightChangeSource:a4];
+  hIDUISensorModeController = [(SBBacklightControllerContextProviding *)self->_contextProvider HIDUISensorModeController];
+  v11 = [hIDUISensorModeController sensorModeTransactionForBacklightChangeSource:source];
   v12 = self->_currentHIDUISensorModeAssertion;
   v13 = self->_currentDisplayStateAssertion;
   currentDisplayStateAssertion = self->_currentDisplayStateAssertion;
   self->_currentDisplayStateAssertion = 0;
 
-  if ((a3 - 1) <= 1)
+  if ((state - 1) <= 1)
   {
     currentHIDUISensorModeAssertion = self->_currentHIDUISensorModeAssertion;
     self->_currentHIDUISensorModeAssertion = 0;
 
-    v16 = [v10 assertDisplayState:2 source:a4 reason:@"backlight-on"];
+    v16 = [hIDUISensorModeController assertDisplayState:2 source:source reason:@"backlight-on"];
     v17 = self->_currentDisplayStateAssertion;
     self->_currentDisplayStateAssertion = v16;
 
@@ -422,24 +422,24 @@ LABEL_27:
     return;
   }
 
-  v20 = [(SBBacklightControllerContextProviding *)self->_contextProvider idleTimerDefaults];
-  v21 = [v20 supportTapToWake];
+  idleTimerDefaults = [(SBBacklightControllerContextProviding *)self->_contextProvider idleTimerDefaults];
+  supportTapToWake = [idleTimerDefaults supportTapToWake];
 
-  if (a4 == 13)
+  if (source == 13)
   {
     v22 = 0;
   }
 
   else
   {
-    v22 = v21;
+    v22 = supportTapToWake;
   }
 
-  if (a3 == 3)
+  if (state == 3)
   {
-    v29 = [(SBAlwaysOnDefaults *)self->_alwaysOnDefaults enableTapToInteract];
+    enableTapToInteract = [(SBAlwaysOnDefaults *)self->_alwaysOnDefaults enableTapToInteract];
     v30 = 2;
-    if (v29)
+    if (enableTapToInteract)
     {
       v30 = 3;
     }
@@ -454,18 +454,18 @@ LABEL_27:
       v18 = 4;
     }
 
-    v31 = [v10 suspendProximityDetection:a4 != 13 disableDigitizer:v18 source:a4 reason:@"backlight-inactive"];
+    v31 = [hIDUISensorModeController suspendProximityDetection:source != 13 disableDigitizer:v18 source:source reason:@"backlight-inactive"];
     v32 = self->_currentHIDUISensorModeAssertion;
     self->_currentHIDUISensorModeAssertion = v31;
 
-    v25 = v10;
+    v25 = hIDUISensorModeController;
     v26 = 3;
-    v27 = a4;
+    sourceCopy2 = source;
     v28 = @"backlight-inactive";
     goto LABEL_25;
   }
 
-  if (a3 == 4)
+  if (state == 4)
   {
     if (v22)
     {
@@ -477,23 +477,23 @@ LABEL_27:
       v18 = 4;
     }
 
-    v23 = [v10 suspendProximityDetection:a4 != 13 disableDigitizer:v18 source:a4 reason:@"backlight-off"];
+    v23 = [hIDUISensorModeController suspendProximityDetection:source != 13 disableDigitizer:v18 source:source reason:@"backlight-off"];
     v24 = self->_currentHIDUISensorModeAssertion;
     self->_currentHIDUISensorModeAssertion = v23;
 
-    v25 = v10;
+    v25 = hIDUISensorModeController;
     v26 = 1;
-    v27 = a4;
+    sourceCopy2 = source;
     v28 = @"backlight-off";
 LABEL_25:
-    v33 = [v25 assertDisplayState:v26 source:v27 reason:v28];
+    v33 = [v25 assertDisplayState:v26 source:sourceCopy2 reason:v28];
     v34 = self->_currentDisplayStateAssertion;
     self->_currentDisplayStateAssertion = v33;
 
     goto LABEL_26;
   }
 
-  if (a3)
+  if (state)
   {
     v18 = 0;
 LABEL_26:
@@ -512,61 +512,61 @@ LABEL_26:
   __break(0);
 }
 
-- (void)setBacklightState:(int64_t)a3 source:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)setBacklightState:(int64_t)state source:(int64_t)source animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
+  animatedCopy = animated;
   v67 = *MEMORY[0x277D85DE8];
-  v11 = a6;
-  self->_lastBacklightChangeSource = a4;
-  v12 = [(SBBacklightController *)self backlightState];
-  if (v12 == a3)
+  completionCopy = completion;
+  self->_lastBacklightChangeSource = source;
+  backlightState = [(SBBacklightController *)self backlightState];
+  if (backlightState == state)
   {
-    if ((a3 - 1) <= 1)
+    if ((state - 1) <= 1)
     {
-      [(SBBacklightController *)self _updateHIDUISensorModeForBacklightState:a3 source:a4];
+      [(SBBacklightController *)self _updateHIDUISensorModeForBacklightState:state source:source];
     }
 
-    if (v11)
+    if (completionCopy)
     {
-      v11[2](v11);
+      completionCopy[2](completionCopy);
     }
 
     goto LABEL_27;
   }
 
-  v13 = v12;
-  [(SBBacklightController *)self _factorToPublishForBacklightState:v12];
+  v13 = backlightState;
+  [(SBBacklightController *)self _factorToPublishForBacklightState:backlightState];
   v15 = v14;
-  [(SBBacklightController *)self _factorToPublishForBacklightState:a3];
+  [(SBBacklightController *)self _factorToPublishForBacklightState:state];
   v17 = v16;
-  self->_backlightState = a3;
-  v18 = [MEMORY[0x277D0AAA0] sharedInstance];
+  self->_backlightState = state;
+  mEMORY[0x277D0AAA0] = [MEMORY[0x277D0AAA0] sharedInstance];
   v19 = SBSDisplayLayoutBacklightTransitionReasonForBacklightChangeSource();
-  v49 = [v18 transitionAssertionWithReason:v19];
+  v49 = [mEMORY[0x277D0AAA0] transitionAssertionWithReason:v19];
 
-  v50 = v18;
-  [v18 setBacklightLevel:(v17 * 100.0)];
+  v50 = mEMORY[0x277D0AAA0];
+  [mEMORY[0x277D0AAA0] setBacklightLevel:(v17 * 100.0)];
   v20 = SBLogBacklight();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v47 = a2;
-    if ((a3 - 1) > 3)
+    if ((state - 1) > 3)
     {
       v21 = @"unknown";
     }
 
     else
     {
-      v21 = off_2783C3E78[a3 - 1];
+      v21 = off_2783C3E78[state - 1];
     }
 
-    v22 = SBSBacklightChangeSourceDescription(a4);
+    v22 = SBSBacklightChangeSourceDescription(source);
     *buf = 138544130;
     v60 = v21;
     v61 = 1024;
-    v62 = v6;
+    v62 = animatedCopy;
     v63 = 2048;
-    v64 = a4;
+    sourceCopy = source;
     v65 = 2114;
     v66 = v22;
     _os_log_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_DEFAULT, "Animating backlight to state %{public}@ animated:%{BOOL}u source:%ld (%{public}@)", buf, 0x26u);
@@ -575,31 +575,31 @@ LABEL_26:
   }
 
   *&v23 = v17;
-  [(SBBacklightController *)self _notifyObserversWillAnimateToFactor:a4 source:v23];
-  [(SBBacklightController *)self _notifyObserversWillTransitionToBacklightState:a3 source:a4];
-  v48 = a3 - 1;
-  if (a3 <= 1)
+  [(SBBacklightController *)self _notifyObserversWillAnimateToFactor:source source:v23];
+  [(SBBacklightController *)self _notifyObserversWillTransitionToBacklightState:state source:source];
+  v48 = state - 1;
+  if (state <= 1)
   {
-    if (a3)
+    if (state)
     {
-      if (a3 != 1)
+      if (state != 1)
       {
-        a3 = 0;
+        state = 0;
       }
     }
 
     else
     {
-      v32 = [MEMORY[0x277CCA890] currentHandler];
-      [v32 handleFailureInMethod:a2 object:self file:@"SBBacklightController.m" lineNumber:463 description:@"State transitions to SBBacklightStateUnknown are not allowed"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBBacklightController.m" lineNumber:463 description:@"State transitions to SBBacklightStateUnknown are not allowed"];
 
-      a3 = 1;
+      state = 1;
     }
 
     goto LABEL_21;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
 LABEL_21:
     [(BLSAssertion *)self->_disableAODAssertion invalidate];
@@ -608,19 +608,19 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (a3 != 4)
+  if (state != 4)
   {
-    a3 = 0;
+    state = 0;
     goto LABEL_21;
   }
 
   v24 = MEMORY[0x277CCACA8];
-  v25 = SBSBacklightChangeSourceDescription(a4);
+  v25 = SBSBacklightChangeSourceDescription(source);
   disableAODAssertion = [v24 stringWithFormat:@"Disable AOT for backlight state Off from source %@", v25];
 
   v27 = MEMORY[0x277CF0868];
-  v28 = [MEMORY[0x277CF08F8] disableAlwaysOn];
-  v58 = v28;
+  disableAlwaysOn = [MEMORY[0x277CF08F8] disableAlwaysOn];
+  v58 = disableAlwaysOn;
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v58 count:1];
   v30 = [v27 acquireWithExplanation:disableAODAssertion observer:0 attributes:v29];
 
@@ -628,31 +628,31 @@ LABEL_21:
   v31 = self->_disableAODAssertion;
   self->_disableAODAssertion = v30;
 
-  a3 = 0;
+  state = 0;
 LABEL_22:
 
   v33 = objc_alloc(MEMORY[0x277CF0890]);
-  v34 = SBSBacklightChangeSourceDescription(a4);
+  v34 = SBSBacklightChangeSourceDescription(source);
   v35 = mach_continuous_time();
-  v36 = [v33 initWithRequestedActivityState:a3 explanation:v34 timestamp:v35 sourceEvent:BLSBacklightChangeSourceEventForSBSBacklightChangeSource(a4) sourceEventMetadata:0];
+  v36 = [v33 initWithRequestedActivityState:state explanation:v34 timestamp:v35 sourceEvent:BLSBacklightChangeSourceEventForSBSBacklightChangeSource(source) sourceEventMetadata:0];
 
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
   v51[2] = __70__SBBacklightController_setBacklightState_source_animated_completion___block_invoke;
   v51[3] = &unk_2783C3E58;
   v51[4] = self;
-  v53 = a4;
+  sourceCopy2 = source;
   v54 = v13;
   v55 = v17;
-  v52 = v11;
+  v52 = completionCopy;
   [(SBBacklightController *)self _performBacklightChangeRequest:v36 completion:v51];
-  v37 = [MEMORY[0x277D67C98] sharedInstance];
-  [v37 setLastBacklightChangeSource:self->_lastBacklightChangeSource];
+  mEMORY[0x277D67C98] = [MEMORY[0x277D67C98] sharedInstance];
+  [mEMORY[0x277D67C98] setLastBacklightChangeSource:self->_lastBacklightChangeSource];
 
-  v38 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v39 = *MEMORY[0x277D67A20];
   v56[0] = *MEMORY[0x277D67A10];
-  v40 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v40 = [MEMORY[0x277CCABB0] numberWithInteger:source];
   v57[0] = v40;
   v56[1] = *MEMORY[0x277D67A30];
   LODWORD(v41) = v15;
@@ -663,9 +663,9 @@ LABEL_22:
   v44 = [MEMORY[0x277CCABB0] numberWithFloat:v43];
   v57[2] = v44;
   v45 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:v56 count:3];
-  [v38 postNotificationName:v39 object:0 userInfo:v45];
+  [defaultCenter postNotificationName:v39 object:0 userInfo:v45];
 
-  if (a4 != 13)
+  if (source != 13)
   {
     if (v48 >= 2)
     {
@@ -721,10 +721,10 @@ uint64_t __70__SBBacklightController_setBacklightState_source_animated_completio
   return [*(a1 + 32) _notifyObserversDidTransitionToBacklightState:a2 source:*(a1 + 48)];
 }
 
-- (void)_performBacklightChangeRequest:(id)a3 completion:(id)a4
+- (void)_performBacklightChangeRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   if (self->_backlightCompletion)
   {
     v8 = SBLogBacklight();
@@ -741,24 +741,24 @@ uint64_t __70__SBBacklightController_setBacklightState_source_animated_completio
     v9[2](v9, self->_backlightState);
   }
 
-  v11 = [v7 copy];
+  v11 = [completionCopy copy];
   v12 = self->_backlightCompletion;
   self->_backlightCompletion = v11;
 
-  v13 = [(SBBacklightControllerContextProviding *)self->_contextProvider blsBacklight];
-  v14 = [v13 performChangeRequest:v6];
+  blsBacklight = [(SBBacklightControllerContextProviding *)self->_contextProvider blsBacklight];
+  v14 = [blsBacklight performChangeRequest:requestCopy];
 }
 
-- (void)_startFadeOutAnimationFromLockSource:(int)a3
+- (void)_startFadeOutAnimationFromLockSource:(int)source
 {
-  v3 = *&a3;
-  v4 = [(SBBacklightControllerContextProviding *)self->_contextProvider screenSleepCoordinator];
-  [v4 sleepAndLockUIFromSource:v3 completion:0];
+  v3 = *&source;
+  screenSleepCoordinator = [(SBBacklightControllerContextProviding *)self->_contextProvider screenSleepCoordinator];
+  [screenSleepCoordinator sleepAndLockUIFromSource:v3 completion:0];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   if (![(NSHashTable *)self->_observers containsObject:?])
   {
     observers = self->_observers;
@@ -771,31 +771,31 @@ uint64_t __70__SBBacklightController_setBacklightState_source_animated_completio
       observers = self->_observers;
     }
 
-    [(NSHashTable *)observers addObject:v7];
+    [(NSHashTable *)observers addObject:observerCopy];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if ([(NSHashTable *)self->_observers containsObject:?])
   {
-    [(NSHashTable *)self->_observers removeObject:v4];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
   }
 }
 
-- (float)_factorToPublishForBacklightState:(int64_t)a3
+- (float)_factorToPublishForBacklightState:(int64_t)state
 {
   result = -1.0;
-  if ((a3 - 1) <= 3)
+  if ((state - 1) <= 3)
   {
-    return flt_21F8A8A60[a3 - 1];
+    return flt_21F8A8A60[state - 1];
   }
 
   return result;
 }
 
-- (void)_notifyObserversWillAnimateToFactor:(float)a3 source:(int64_t)a4
+- (void)_notifyObserversWillAnimateToFactor:(float)factor source:(int64_t)source
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
@@ -821,8 +821,8 @@ uint64_t __70__SBBacklightController_setBacklightState_source_animated_completio
         v12 = *(*(&v14 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          *&v13 = a3;
-          [v12 backlightController:self willAnimateBacklightToFactor:a4 source:v13];
+          *&v13 = factor;
+          [v12 backlightController:self willAnimateBacklightToFactor:source source:v13];
         }
 
         ++v11;
@@ -836,7 +836,7 @@ uint64_t __70__SBBacklightController_setBacklightState_source_animated_completio
   }
 }
 
-- (void)_notifyObserversDidAnimateToFactor:(float)a3 source:(int64_t)a4
+- (void)_notifyObserversDidAnimateToFactor:(float)factor source:(int64_t)source
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
@@ -862,8 +862,8 @@ uint64_t __70__SBBacklightController_setBacklightState_source_animated_completio
         v12 = *(*(&v14 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          *&v13 = a3;
-          [v12 backlightController:self didAnimateBacklightToFactor:a4 source:v13];
+          *&v13 = factor;
+          [v12 backlightController:self didAnimateBacklightToFactor:source source:v13];
         }
 
         ++v11;
@@ -877,10 +877,10 @@ uint64_t __70__SBBacklightController_setBacklightState_source_animated_completio
   }
 }
 
-- (void)_notifyObserversWillTransitionToBacklightState:(int64_t)a3 source:(int64_t)a4
+- (void)_notifyObserversWillTransitionToBacklightState:(int64_t)state source:(int64_t)source
 {
   v18 = *MEMORY[0x277D85DE8];
-  self->_lastReportedWillTransitionState = a3;
+  self->_lastReportedWillTransitionState = state;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -904,7 +904,7 @@ uint64_t __70__SBBacklightController_setBacklightState_source_animated_completio
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 backlightController:self willTransitionToBacklightState:a3 source:a4];
+          [v12 backlightController:self willTransitionToBacklightState:state source:source];
         }
 
         ++v11;
@@ -918,12 +918,12 @@ uint64_t __70__SBBacklightController_setBacklightState_source_animated_completio
   }
 }
 
-- (void)_notifyObserversDidTransitionToBacklightState:(int64_t)a3 source:(int64_t)a4
+- (void)_notifyObserversDidTransitionToBacklightState:(int64_t)state source:(int64_t)source
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (self->_lastReportedWillTransitionState != a3)
+  if (self->_lastReportedWillTransitionState != state)
   {
-    [(SBBacklightController *)self _notifyObserversWillTransitionToBacklightState:a3 source:a4];
+    [(SBBacklightController *)self _notifyObserversWillTransitionToBacklightState:state source:source];
   }
 
   self->_lastReportedWillTransitionState = 0;
@@ -950,7 +950,7 @@ uint64_t __70__SBBacklightController_setBacklightState_source_animated_completio
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 backlightController:self didTransitionToBacklightState:a3 source:a4];
+          [v12 backlightController:self didTransitionToBacklightState:state source:source];
         }
 
         ++v11;
@@ -964,14 +964,14 @@ uint64_t __70__SBBacklightController_setBacklightState_source_animated_completio
   }
 }
 
-- (void)_noteDigitizerDisabled:(BOOL)a3 tapToWakeEnabled:(BOOL)a4 disabledDigitizerMode:(int64_t)a5
+- (void)_noteDigitizerDisabled:(BOOL)disabled tapToWakeEnabled:(BOOL)enabled disabledDigitizerMode:(int64_t)mode
 {
-  v5 = a4;
-  v6 = a3;
+  enabledCopy = enabled;
+  disabledCopy = disabled;
   v19 = *MEMORY[0x277D85DE8];
-  self->_digitizerDisabled = a3;
-  self->_tapToWakeEnabled = a4;
-  self->_tapToWakeRequiresHitTestSuppression = a5 == 2;
+  self->_digitizerDisabled = disabled;
+  self->_tapToWakeEnabled = enabled;
+  self->_tapToWakeRequiresHitTestSuppression = mode == 2;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -995,7 +995,7 @@ uint64_t __70__SBBacklightController_setBacklightState_source_animated_completio
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 backlightController:self didUpdateDigitizerDisabled:v6 tapToWakeEnabled:v5];
+          [v13 backlightController:self didUpdateDigitizerDisabled:disabledCopy tapToWakeEnabled:enabledCopy];
         }
 
         ++v12;
@@ -1016,22 +1016,22 @@ uint64_t __70__SBBacklightController_setBacklightState_source_animated_completio
   SBWorkspaceSetPreventIdleSleepForReason(0, @"backlight");
 }
 
-- (void)preventIdleSleepForNumberOfSeconds:(float)a3
+- (void)preventIdleSleepForNumberOfSeconds:(float)seconds
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v5 = [(SBBacklightControllerContextProviding *)self->_contextProvider blsBacklight];
-  v6 = [v5 backlightState];
+  blsBacklight = [(SBBacklightControllerContextProviding *)self->_contextProvider blsBacklight];
+  backlightState = [blsBacklight backlightState];
 
-  if (v6 <= 1)
+  if (backlightState <= 1)
   {
     [(SBBacklightController *)self preventIdleSleep];
     v8[0] = *MEMORY[0x277CBE738];
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-    [(SBBacklightController *)self performSelector:sel_allowIdleSleep withObject:0 afterDelay:v7 inModes:a3];
+    [(SBBacklightController *)self performSelector:sel_allowIdleSleep withObject:0 afterDelay:v7 inModes:seconds];
   }
 }
 
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvent:(id)event
 {
   v19 = *MEMORY[0x277D85DE8];
   v7 = SBLogBacklight();
@@ -1060,22 +1060,22 @@ uint64_t __70__SBBacklightController_setBacklightState_source_animated_completio
     self->_backlightCompletion = 0;
 
     v13 = 0;
-    if (a4 <= 3)
+    if (state <= 3)
     {
-      v13 = qword_21F8A8A40[a4];
+      v13 = qword_21F8A8A40[state];
     }
 
     v11[2](v11, v13);
   }
 
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v14 postNotificationName:@"SBBlankScreenStateChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBBlankScreenStateChangeNotification" object:0];
 }
 
-- (void)backlightHost:(id)a3 willTransitionToState:(int64_t)a4 forEvent:(id)a5
+- (void)backlightHost:(id)host willTransitionToState:(int64_t)state forEvent:(id)event
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  eventCopy = event;
   v8 = SBLogBacklight();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1085,21 +1085,21 @@ uint64_t __70__SBBacklightController_setBacklightState_source_animated_completio
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "backlight host will transition to state %@", &v15, 0xCu);
   }
 
-  if (a4 > 3)
+  if (state > 3)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = qword_21F8A8A40[a4];
+    v10 = qword_21F8A8A40[state];
   }
 
   v11 = BLSBacklightChangeSourceEventForSBSBacklightChangeSource(self->_lastBacklightChangeSource);
-  v12 = [v7 changeRequest];
+  changeRequest = [eventCopy changeRequest];
 
-  v13 = [v12 sourceEvent];
-  if (v11 == v13)
+  sourceEvent = [changeRequest sourceEvent];
+  if (v11 == sourceEvent)
   {
     lastBacklightChangeSource = self->_lastBacklightChangeSource;
   }
@@ -1114,11 +1114,11 @@ uint64_t __70__SBBacklightController_setBacklightState_source_animated_completio
 
 - (void)_userInterfaceStyleChanged
 {
-  v3 = [MEMORY[0x277D75CF0] sharedInstance];
-  v4 = [v3 currentStyle];
+  mEMORY[0x277D75CF0] = [MEMORY[0x277D75CF0] sharedInstance];
+  currentStyle = [mEMORY[0x277D75CF0] currentStyle];
 
   brightnessSystemClient = self->_brightnessSystemClient;
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:v4];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:currentStyle];
   [(BrightnessSystemClient *)brightnessSystemClient setProperty:v6 forKey:@"CBUIUserStyle"];
 }
 

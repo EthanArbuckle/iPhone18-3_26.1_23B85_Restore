@@ -20,8 +20,8 @@
 - (SRSTCallState)currentState
 {
   v3 = [SRSTCallState alloc];
-  v4 = [(_SRSTCallServer *)self->_underlyingObject currentState];
-  v5 = [(SRSTCallState *)v3 initWithUnderlyingObject:v4];
+  currentState = [(_SRSTCallServer *)self->_underlyingObject currentState];
+  v5 = [(SRSTCallState *)v3 initWithUnderlyingObject:currentState];
 
   return v5;
 }

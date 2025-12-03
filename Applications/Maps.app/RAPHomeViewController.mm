@@ -6,27 +6,27 @@
 - (void)_updateConstraints;
 - (void)_updateEmptyStateLayoutIfNeeded;
 - (void)_updateReportButtonIfNeeded;
-- (void)dataSource:(id)a3 itemTapped:(id)a4;
-- (void)dataSourceUpdated:(id)a3;
-- (void)didTapOnMoreButtonForSectionType:(unint64_t)a3 sectionTitle:(id)a4;
+- (void)dataSource:(id)source itemTapped:(id)tapped;
+- (void)dataSourceUpdated:(id)updated;
+- (void)didTapOnMoreButtonForSectionType:(unint64_t)type sectionTitle:(id)title;
 - (void)didTapOnPrivacyText;
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type;
 - (void)loadDataSource;
-- (void)tappedMenuForRAPHomeFooterToolBarView:(id)a3;
+- (void)tappedMenuForRAPHomeFooterToolBarView:(id)view;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation RAPHomeViewController
 
-- (void)didTapOnMoreButtonForSectionType:(unint64_t)a3 sectionTitle:(id)a4
+- (void)didTapOnMoreButtonForSectionType:(unint64_t)type sectionTitle:(id)title
 {
-  v6 = a4;
-  v8 = [[AllRAPHistoryViewController alloc] initWithReportSection:a3 sectionTitle:v6];
+  titleCopy = title;
+  v8 = [[AllRAPHistoryViewController alloc] initWithReportSection:type sectionTitle:titleCopy];
 
-  v7 = [(ControlContaineeViewController *)self delegate];
-  [(ControlContaineeViewController *)v8 setDelegate:v7];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [(ControlContaineeViewController *)v8 setDelegate:delegate];
 
   [(RAPHomeViewController *)self presentViewController:v8 animated:1 completion:0];
 }
@@ -38,16 +38,16 @@
   [v3 present];
 }
 
-- (void)dataSource:(id)a3 itemTapped:(id)a4
+- (void)dataSource:(id)source itemTapped:(id)tapped
 {
-  v9 = a4;
+  tappedCopy = tapped;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ControlContaineeViewController *)self delegate];
-    [v5 viewController:self presentReportDetail:v9 fromEntryPoint:39];
+    delegate = [(ControlContaineeViewController *)self delegate];
+    [delegate viewController:self presentReportDetail:tappedCopy fromEntryPoint:39];
 
-    v6 = v9;
+    v6 = tappedCopy;
     if ([v6 reportStatus] == 2)
     {
       [GEOAPPortal captureUserAction:358 target:39 value:0];
@@ -55,15 +55,15 @@
 
     else if ([v6 reportStatus] == 1)
     {
-      v7 = [v6 reportType];
-      if (v7 >= 0x16)
+      reportType = [v6 reportType];
+      if (reportType >= 0x16)
       {
-        v8 = [NSString stringWithFormat:@"(unknown: %i)", v7];
+        v8 = [NSString stringWithFormat:@"(unknown: %i)", reportType];
       }
 
       else
       {
-        v8 = *(&off_1016583A8 + v7);
+        v8 = *(&off_1016583A8 + reportType);
       }
 
       [GEOAPPortal captureUserAction:357 target:39 value:v8];
@@ -71,9 +71,9 @@
   }
 }
 
-- (void)dataSourceUpdated:(id)a3
+- (void)dataSourceUpdated:(id)updated
 {
-  if (self->_reportsDataSource == a3)
+  if (self->_reportsDataSource == updated)
   {
     [(UICollectionView *)self->_collectionView reloadData];
 
@@ -97,19 +97,19 @@
   [(DataSource *)v5 setActive:1];
 }
 
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type
 {
-  [(ContaineeViewController *)self handleDismissAction:a3, a4];
-  v5 = [(RAPHomeDataSource *)self->_reportsDataSource analyticsTarget];
+  [(ContaineeViewController *)self handleDismissAction:tapped, type];
+  analyticsTarget = [(RAPHomeDataSource *)self->_reportsDataSource analyticsTarget];
 
-  [GEOAPPortal captureUserAction:10109 target:v5 value:0];
+  [GEOAPPortal captureUserAction:10109 target:analyticsTarget value:0];
 }
 
-- (void)tappedMenuForRAPHomeFooterToolBarView:(id)a3
+- (void)tappedMenuForRAPHomeFooterToolBarView:(id)view
 {
-  v3 = [a3 _maps_mapsSceneDelegate];
-  v4 = [v3 rapPresenter];
-  v5 = [v4 presentOfflineAlertIfNecessaryWithCompletion:0];
+  _maps_mapsSceneDelegate = [view _maps_mapsSceneDelegate];
+  rapPresenter = [_maps_mapsSceneDelegate rapPresenter];
+  v5 = [rapPresenter presentOfflineAlertIfNecessaryWithCompletion:0];
 
   if (v5)
   {
@@ -126,31 +126,31 @@
 
 - (void)_updateEmptyStateLayoutIfNeeded
 {
-  v3 = [(RAPHomeDataSource *)self->_reportsDataSource isEmpty];
+  isEmpty = [(RAPHomeDataSource *)self->_reportsDataSource isEmpty];
   emptyStateView = self->_emptyStateView;
-  if (v3)
+  if (isEmpty)
   {
     if (!emptyStateView)
     {
       v5 = [[_TtC4Maps14EmptyStateView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
       [(EmptyStateView *)v5 setAccessibilityIdentifier:@"RAPReportHomeEmptyStateView"];
       [(EmptyStateView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v6 = [(ContaineeViewController *)self contentView];
-      [v6 addSubview:v5];
+      contentView = [(ContaineeViewController *)self contentView];
+      [contentView addSubview:v5];
 
-      v42 = [(EmptyStateView *)v5 centerYAnchor];
-      v41 = [(UICollectionView *)self->_collectionView centerYAnchor];
-      v40 = [v42 constraintEqualToAnchor:v41];
+      centerYAnchor = [(EmptyStateView *)v5 centerYAnchor];
+      centerYAnchor2 = [(UICollectionView *)self->_collectionView centerYAnchor];
+      v40 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v43[0] = v40;
-      v38 = [(EmptyStateView *)v5 leadingAnchor];
-      v39 = [(ContaineeViewController *)self contentView];
-      v7 = [v39 leadingAnchor];
-      v8 = [v38 constraintEqualToAnchor:v7 constant:16.0];
+      leadingAnchor = [(EmptyStateView *)v5 leadingAnchor];
+      contentView2 = [(ContaineeViewController *)self contentView];
+      leadingAnchor2 = [contentView2 leadingAnchor];
+      v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
       v43[1] = v8;
-      v9 = [(EmptyStateView *)v5 trailingAnchor];
-      v10 = [(ContaineeViewController *)self contentView];
-      v11 = [v10 trailingAnchor];
-      v12 = [v9 constraintEqualToAnchor:v11 constant:-16.0];
+      trailingAnchor = [(EmptyStateView *)v5 trailingAnchor];
+      contentView3 = [(ContaineeViewController *)self contentView];
+      trailingAnchor2 = [contentView3 trailingAnchor];
+      v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
       v43[2] = v12;
       v13 = [NSArray arrayWithObjects:v43 count:3];
       [NSLayoutConstraint activateConstraints:v13];
@@ -168,8 +168,8 @@
     v20 = [v19 imageWithRenderingMode:2];
     [v15 setImage:v20];
 
-    v21 = [v15 image];
-    [v21 size];
+    image = [v15 image];
+    [image size];
     [v15 setBounds:{0.0, -2.0, v22, v23}];
 
     v24 = [NSAttributedString attributedStringWithAttachment:v15];
@@ -220,21 +220,21 @@
     {
       v3 = [UIButton _maps_cardButtonMacCustomButtonWithSystemImageNamed:@"square.and.pencil"];
       [(UIButton *)v3 setShowsMenuAsPrimaryAction:1];
-      v4 = [(RAPHomeDataSource *)self->_reportsDataSource RAPHomeReportMenu];
-      [(UIButton *)v3 setMenu:v4];
+      rAPHomeReportMenu = [(RAPHomeDataSource *)self->_reportsDataSource RAPHomeReportMenu];
+      [(UIButton *)v3 setMenu:rAPHomeReportMenu];
 
       [(UIButton *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
       v5 = +[UIColor secondaryLabelColor];
       [(UIButton *)v3 setTintColor:v5];
 
       [(ContainerHeaderView *)self->_titleHeaderView addSubview:v3];
-      v6 = [(UIButton *)v3 trailingAnchor];
-      v7 = [(ContainerHeaderView *)self->_titleHeaderView trailingAnchor];
-      v8 = [v6 constraintEqualToAnchor:v7 constant:-52.0];
+      trailingAnchor = [(UIButton *)v3 trailingAnchor];
+      trailingAnchor2 = [(ContainerHeaderView *)self->_titleHeaderView trailingAnchor];
+      v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-52.0];
       v14[0] = v8;
-      v9 = [(UIButton *)v3 topAnchor];
-      v10 = [(ContainerHeaderView *)self->_titleHeaderView topAnchor];
-      v11 = [v9 constraintEqualToAnchor:v10 constant:12.0];
+      topAnchor = [(UIButton *)v3 topAnchor];
+      topAnchor2 = [(ContainerHeaderView *)self->_titleHeaderView topAnchor];
+      v11 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:12.0];
       v14[1] = v11;
       v12 = [NSArray arrayWithObjects:v14 count:2];
       [NSLayoutConstraint activateConstraints:v12];
@@ -263,37 +263,37 @@
   constraints = self->_constraints;
   self->_constraints = 0;
 
-  v4 = [(ContaineeViewController *)self headerView];
-  v5 = [(ContaineeViewController *)self contentView];
-  v79 = [(ContainerHeaderView *)self->_titleHeaderView topAnchor];
-  v76 = [v4 topAnchor];
-  v72 = [v79 constraintEqualToAnchor:v76];
+  headerView = [(ContaineeViewController *)self headerView];
+  contentView = [(ContaineeViewController *)self contentView];
+  topAnchor = [(ContainerHeaderView *)self->_titleHeaderView topAnchor];
+  topAnchor2 = [headerView topAnchor];
+  v72 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v91[0] = v72;
-  v68 = [(ContainerHeaderView *)self->_titleHeaderView leadingAnchor];
-  v64 = [v4 leadingAnchor];
-  v61 = [v68 constraintEqualToAnchor:v64];
+  leadingAnchor = [(ContainerHeaderView *)self->_titleHeaderView leadingAnchor];
+  leadingAnchor2 = [headerView leadingAnchor];
+  v61 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v91[1] = v61;
-  v59 = [(ContainerHeaderView *)self->_titleHeaderView trailingAnchor];
-  v57 = [v4 trailingAnchor];
-  v55 = [v59 constraintEqualToAnchor:v57];
+  trailingAnchor = [(ContainerHeaderView *)self->_titleHeaderView trailingAnchor];
+  trailingAnchor2 = [headerView trailingAnchor];
+  v55 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v91[2] = v55;
-  v53 = [(ContainerHeaderView *)self->_titleHeaderView bottomAnchor];
-  v86 = v4;
-  v51 = [v4 bottomAnchor];
-  v49 = [v53 constraintEqualToAnchor:v51];
+  bottomAnchor = [(ContainerHeaderView *)self->_titleHeaderView bottomAnchor];
+  v86 = headerView;
+  bottomAnchor2 = [headerView bottomAnchor];
+  v49 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v91[3] = v49;
-  v47 = [(UICollectionView *)self->_collectionView leadingAnchor];
-  v6 = [v5 leadingAnchor];
-  v7 = [v47 constraintEqualToAnchor:v6];
+  leadingAnchor3 = [(UICollectionView *)self->_collectionView leadingAnchor];
+  leadingAnchor4 = [contentView leadingAnchor];
+  v7 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v91[4] = v7;
-  v8 = [(UICollectionView *)self->_collectionView trailingAnchor];
-  v9 = [v5 trailingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  trailingAnchor3 = [(UICollectionView *)self->_collectionView trailingAnchor];
+  trailingAnchor4 = [contentView trailingAnchor];
+  v10 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v91[5] = v10;
-  v11 = [(UICollectionView *)self->_collectionView topAnchor];
-  v85 = v5;
-  v12 = [v5 topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  topAnchor3 = [(UICollectionView *)self->_collectionView topAnchor];
+  v85 = contentView;
+  topAnchor4 = [contentView topAnchor];
+  v13 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v91[6] = v13;
   v14 = [NSArray arrayWithObjects:v91 count:7];
   v15 = self->_constraints;
@@ -304,41 +304,41 @@
     chinaDisclaimerView = self->_chinaDisclaimerView;
     if (!chinaDisclaimerView)
     {
-      v17 = [(UICollectionView *)self->_collectionView bottomAnchor];
+      bottomAnchor3 = [(UICollectionView *)self->_collectionView bottomAnchor];
       v18 = v85;
-      v19 = [v85 bottomAnchor];
-      v27 = [v17 constraintEqualToAnchor:v19 constant:-8.0];
+      bottomAnchor4 = [v85 bottomAnchor];
+      v27 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-8.0];
       v87 = v27;
       v26 = [NSArray arrayWithObjects:&v87 count:1];
       goto LABEL_10;
     }
 
-    v66 = [(UserProfileSectionFooterView *)chinaDisclaimerView leadingAnchor];
-    v74 = [v85 leadingAnchor];
-    v81 = [v66 constraintEqualToAnchor:v74 constant:16.0];
+    leadingAnchor5 = [(UserProfileSectionFooterView *)chinaDisclaimerView leadingAnchor];
+    leadingAnchor6 = [v85 leadingAnchor];
+    v81 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:16.0];
     v88[0] = v81;
-    v77 = [(UserProfileSectionFooterView *)self->_chinaDisclaimerView trailingAnchor];
-    v70 = [v85 trailingAnchor];
-    v63 = [v77 constraintEqualToAnchor:v70 constant:-16.0];
+    trailingAnchor5 = [(UserProfileSectionFooterView *)self->_chinaDisclaimerView trailingAnchor];
+    trailingAnchor6 = [v85 trailingAnchor];
+    v63 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-16.0];
     v88[1] = v63;
-    v30 = [(UserProfileSectionFooterView *)self->_chinaDisclaimerView bottomAnchor];
-    v31 = [(RAPHomeViewController *)self view];
-    v32 = [v31 bottomAnchor];
-    v33 = [v30 constraintEqualToAnchor:v32];
+    bottomAnchor5 = [(UserProfileSectionFooterView *)self->_chinaDisclaimerView bottomAnchor];
+    view = [(RAPHomeViewController *)self view];
+    bottomAnchor6 = [view bottomAnchor];
+    v33 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     v88[2] = v33;
-    v34 = [(UICollectionView *)self->_collectionView bottomAnchor];
-    v35 = [(UserProfileSectionFooterView *)self->_chinaDisclaimerView topAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35 constant:-8.0];
+    bottomAnchor7 = [(UICollectionView *)self->_collectionView bottomAnchor];
+    topAnchor5 = [(UserProfileSectionFooterView *)self->_chinaDisclaimerView topAnchor];
+    v36 = [bottomAnchor7 constraintEqualToAnchor:topAnchor5 constant:-8.0];
     v88[3] = v36;
     v26 = [NSArray arrayWithObjects:v88 count:4];
 
     v27 = v81;
-    v17 = v66;
+    bottomAnchor3 = leadingAnchor5;
 
     v18 = v85;
-    v19 = v74;
+    bottomAnchor4 = leadingAnchor6;
 
-    v28 = v70;
+    v28 = trailingAnchor6;
   }
 
   else
@@ -346,72 +346,72 @@
     v16 = self->_chinaDisclaimerView;
     if (!v16)
     {
-      v17 = [(UICollectionView *)self->_collectionView bottomAnchor];
-      v19 = [(RAPHomeFooterToolBarView *)self->_footerToolBarView topAnchor];
-      v82 = [v17 constraintEqualToAnchor:v19 constant:-8.0];
+      bottomAnchor3 = [(UICollectionView *)self->_collectionView bottomAnchor];
+      bottomAnchor4 = [(RAPHomeFooterToolBarView *)self->_footerToolBarView topAnchor];
+      v82 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-8.0];
       v89[0] = v82;
-      v84 = [(RAPHomeFooterToolBarView *)self->_footerToolBarView leadingAnchor];
+      leadingAnchor7 = [(RAPHomeFooterToolBarView *)self->_footerToolBarView leadingAnchor];
       v18 = v85;
-      v78 = [v85 leadingAnchor];
-      v75 = [v84 constraintEqualToAnchor:v78];
+      leadingAnchor8 = [v85 leadingAnchor];
+      v75 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
       v89[1] = v75;
-      v71 = [(RAPHomeFooterToolBarView *)self->_footerToolBarView trailingAnchor];
-      v67 = [v85 trailingAnchor];
-      v40 = [v71 constraintEqualToAnchor:v67];
+      trailingAnchor7 = [(RAPHomeFooterToolBarView *)self->_footerToolBarView trailingAnchor];
+      trailingAnchor8 = [v85 trailingAnchor];
+      v40 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
       v89[2] = v40;
-      v41 = [(RAPHomeFooterToolBarView *)self->_footerToolBarView bottomAnchor];
-      v42 = [v85 safeAreaLayoutGuide];
-      v43 = [v42 bottomAnchor];
-      v44 = [v41 constraintEqualToAnchor:v43];
+      bottomAnchor8 = [(RAPHomeFooterToolBarView *)self->_footerToolBarView bottomAnchor];
+      safeAreaLayoutGuide = [v85 safeAreaLayoutGuide];
+      bottomAnchor9 = [safeAreaLayoutGuide bottomAnchor];
+      v44 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
       v89[3] = v44;
       v45 = [NSArray arrayWithObjects:v89 count:4];
 
       v26 = v45;
       v27 = v82;
 
-      v37 = v84;
+      v37 = leadingAnchor7;
       goto LABEL_8;
     }
 
-    v17 = [(UserProfileSectionFooterView *)v16 leadingAnchor];
+    bottomAnchor3 = [(UserProfileSectionFooterView *)v16 leadingAnchor];
     v18 = v85;
-    v19 = [v85 leadingAnchor];
-    v80 = [v17 constraintEqualToAnchor:v19 constant:16.0];
+    bottomAnchor4 = [v85 leadingAnchor];
+    v80 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:16.0];
     v90[0] = v80;
-    v77 = [(UserProfileSectionFooterView *)self->_chinaDisclaimerView trailingAnchor];
-    v73 = [v85 trailingAnchor];
-    v69 = [v77 constraintEqualToAnchor:v73 constant:-16.0];
+    trailingAnchor5 = [(UserProfileSectionFooterView *)self->_chinaDisclaimerView trailingAnchor];
+    trailingAnchor9 = [v85 trailingAnchor];
+    v69 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor9 constant:-16.0];
     v90[1] = v69;
-    v65 = [(UserProfileSectionFooterView *)self->_chinaDisclaimerView bottomAnchor];
-    v62 = [(RAPHomeFooterToolBarView *)self->_footerToolBarView topAnchor];
-    v60 = [v65 constraintEqualToAnchor:v62];
+    bottomAnchor10 = [(UserProfileSectionFooterView *)self->_chinaDisclaimerView bottomAnchor];
+    topAnchor6 = [(RAPHomeFooterToolBarView *)self->_footerToolBarView topAnchor];
+    v60 = [bottomAnchor10 constraintEqualToAnchor:topAnchor6];
     v90[2] = v60;
-    v83 = [(UICollectionView *)self->_collectionView bottomAnchor];
-    v58 = [(UserProfileSectionFooterView *)self->_chinaDisclaimerView topAnchor];
-    v56 = [v83 constraintEqualToAnchor:v58 constant:-8.0];
+    bottomAnchor11 = [(UICollectionView *)self->_collectionView bottomAnchor];
+    topAnchor7 = [(UserProfileSectionFooterView *)self->_chinaDisclaimerView topAnchor];
+    v56 = [bottomAnchor11 constraintEqualToAnchor:topAnchor7 constant:-8.0];
     v90[3] = v56;
-    v54 = [(RAPHomeFooterToolBarView *)self->_footerToolBarView leadingAnchor];
-    v52 = [v85 leadingAnchor];
-    v50 = [v54 constraintEqualToAnchor:v52];
+    leadingAnchor9 = [(RAPHomeFooterToolBarView *)self->_footerToolBarView leadingAnchor];
+    leadingAnchor10 = [v85 leadingAnchor];
+    v50 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
     v90[4] = v50;
-    v48 = [(RAPHomeFooterToolBarView *)self->_footerToolBarView trailingAnchor];
-    v46 = [v85 trailingAnchor];
-    v20 = [v48 constraintEqualToAnchor:v46];
+    trailingAnchor10 = [(RAPHomeFooterToolBarView *)self->_footerToolBarView trailingAnchor];
+    trailingAnchor11 = [v85 trailingAnchor];
+    v20 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11];
     v90[5] = v20;
-    v21 = [(RAPHomeFooterToolBarView *)self->_footerToolBarView bottomAnchor];
-    v22 = [v85 safeAreaLayoutGuide];
-    v23 = [v22 bottomAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23];
+    bottomAnchor12 = [(RAPHomeFooterToolBarView *)self->_footerToolBarView bottomAnchor];
+    safeAreaLayoutGuide2 = [v85 safeAreaLayoutGuide];
+    bottomAnchor13 = [safeAreaLayoutGuide2 bottomAnchor];
+    v24 = [bottomAnchor12 constraintEqualToAnchor:bottomAnchor13];
     v90[6] = v24;
     v25 = [NSArray arrayWithObjects:v90 count:7];
 
     v26 = v25;
     v27 = v80;
 
-    v28 = v73;
+    v28 = trailingAnchor9;
   }
 
-  v37 = v77;
+  v37 = trailingAnchor5;
 LABEL_8:
 
 LABEL_10:
@@ -425,10 +425,10 @@ LABEL_10:
 - (void)_updateChinaDisclaimerView
 {
   v3 = +[UserProfileReportHistoryManager sharedInstance];
-  v4 = [v3 isChinaUserOutsideOfChina];
+  isChinaUserOutsideOfChina = [v3 isChinaUserOutsideOfChina];
 
   chinaDisclaimerView = self->_chinaDisclaimerView;
-  if (v4)
+  if (isChinaUserOutsideOfChina)
   {
     if (!chinaDisclaimerView)
     {
@@ -445,8 +445,8 @@ LABEL_10:
 
       [(UserProfileSectionFooterView *)self->_chinaDisclaimerView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UserProfileSectionFooterView *)self->_chinaDisclaimerView configureWithViewModel:v15];
-      v13 = [(ContaineeViewController *)self contentView];
-      [v13 addSubview:self->_chinaDisclaimerView];
+      contentView = [(ContaineeViewController *)self contentView];
+      [contentView addSubview:self->_chinaDisclaimerView];
 
       [(RAPHomeViewController *)self _updateConstraints];
     }
@@ -464,16 +464,16 @@ LABEL_10:
 
 - (void)_setupViews
 {
-  v28 = [(ContaineeViewController *)self headerView];
-  v3 = [(ContaineeViewController *)self contentView];
+  headerView = [(ContaineeViewController *)self headerView];
+  contentView = [(ContaineeViewController *)self contentView];
   v4 = sub_10000FA08(self);
   v5 = [ContainerHeaderView alloc];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v9 = [(ContainerHeaderView *)v5 initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [(ContainerHeaderView *)v5 initWithFrame:CGRectZero.origin.x, y, width, height];
   titleHeaderView = self->_titleHeaderView;
-  self->_titleHeaderView = v9;
+  self->_titleHeaderView = height;
 
   [(ContainerHeaderView *)self->_titleHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(ContainerHeaderView *)self->_titleHeaderView setDelegate:self];
@@ -489,16 +489,16 @@ LABEL_10:
 
   [(ContainerHeaderView *)self->_titleHeaderView setHeaderSize:v11];
   [(ContainerHeaderView *)self->_titleHeaderView setHairLineAlpha:0.0];
-  [v28 addSubview:self->_titleHeaderView];
+  [headerView addSubview:self->_titleHeaderView];
   v12 = [UICollectionView alloc];
-  v13 = [(RAPHomeViewController *)self view];
-  [v13 bounds];
+  view = [(RAPHomeViewController *)self view];
+  [view bounds];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [(RAPHomeViewController *)self _createLayout];
-  v23 = [v12 initWithFrame:v22 collectionViewLayout:{v15, v17, v19, v21}];
+  _createLayout = [(RAPHomeViewController *)self _createLayout];
+  v23 = [v12 initWithFrame:_createLayout collectionViewLayout:{v15, v17, v19, v21}];
   collectionView = self->_collectionView;
   self->_collectionView = v23;
 
@@ -508,16 +508,16 @@ LABEL_10:
   [(UICollectionView *)self->_collectionView setBackgroundColor:v25];
 
   [(UICollectionView *)self->_collectionView _mapsui_resetLayoutMarginsWithPreservesSuperview:1];
-  [v3 addSubview:self->_collectionView];
+  [contentView addSubview:self->_collectionView];
   if (v4 != 5 && [(RAPHomeViewController *)self _isRAPNewUI])
   {
-    v26 = [[RAPHomeFooterToolBarView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height2 = [[RAPHomeFooterToolBarView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     footerToolBarView = self->_footerToolBarView;
-    self->_footerToolBarView = v26;
+    self->_footerToolBarView = height2;
 
     [(RAPHomeFooterToolBarView *)self->_footerToolBarView setDelegate:self];
     [(RAPHomeFooterToolBarView *)self->_footerToolBarView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v3 addSubview:self->_footerToolBarView];
+    [contentView addSubview:self->_footerToolBarView];
   }
 }
 
@@ -529,11 +529,11 @@ LABEL_10:
   [(RAPHomeViewController *)self _updateReportButtonIfNeeded];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = RAPHomeViewController;
-  [(ContaineeViewController *)&v6 viewWillAppear:a3];
+  [(ContaineeViewController *)&v6 viewWillAppear:appear];
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"[Reports] Reports" value:@"localized string not found" table:0];
   [(ContainerHeaderView *)self->_titleHeaderView setTitle:v5];
@@ -547,17 +547,17 @@ LABEL_10:
   v8.receiver = self;
   v8.super_class = RAPHomeViewController;
   [(ContaineeViewController *)&v8 viewDidLoad];
-  v3 = [(RAPHomeViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"RAPHomeView"];
+  view = [(RAPHomeViewController *)self view];
+  [view setAccessibilityIdentifier:@"RAPHomeView"];
 
-  v4 = [(RAPHomeViewController *)self view];
+  view2 = [(RAPHomeViewController *)self view];
   v5 = +[UIColor clearColor];
-  v6 = [(RAPHomeViewController *)self view];
-  [v6 setBackgroundColor:v5];
+  view3 = [(RAPHomeViewController *)self view];
+  [view3 setBackgroundColor:v5];
 
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(RAPHomeViewController *)self _setupViews];
-  v7 = [(RAPHomeViewController *)self _createLayout];
+  _createLayout = [(RAPHomeViewController *)self _createLayout];
   [(RAPHomeViewController *)self _updateConstraints];
   [(RAPHomeViewController *)self _updateChinaDisclaimerView];
 }
@@ -581,15 +581,15 @@ LABEL_10:
     v5 = NSStringFromClass(v4);
     [(RAPHomeViewController *)v2 setAccessibilityIdentifier:v5];
 
-    v6 = [(ContaineeViewController *)v2 cardPresentationController];
-    [v6 setPresentedModally:1];
+    cardPresentationController = [(ContaineeViewController *)v2 cardPresentationController];
+    [cardPresentationController setPresentedModally:1];
 
-    v7 = [(ContaineeViewController *)v2 cardPresentationController];
-    [v7 setTakesAvailableHeight:1];
+    cardPresentationController2 = [(ContaineeViewController *)v2 cardPresentationController];
+    [cardPresentationController2 setTakesAvailableHeight:1];
 
     v8 = +[UserProfileReportHistoryManager sharedInstance];
-    v9 = [v8 observers];
-    [v9 registerObserver:v2];
+    observers = [v8 observers];
+    [observers registerObserver:v2];
 
     v10 = +[NSNotificationCenter defaultCenter];
     [v10 addObserver:v2 selector:"_contentSizeChanged" name:UIContentSizeCategoryDidChangeNotification object:0];

@@ -1,21 +1,21 @@
 @interface LCFDatabaseColumn
-- (id)init:(id)a3 typeDb:(id)a4;
+- (id)init:(id)init typeDb:(id)db;
 @end
 
 @implementation LCFDatabaseColumn
 
-- (id)init:(id)a3 typeDb:(id)a4
+- (id)init:(id)init typeDb:(id)db
 {
-  v7 = a3;
-  v8 = a4;
+  initCopy = init;
+  dbCopy = db;
   v13.receiver = self;
   v13.super_class = LCFDatabaseColumn;
   v9 = [(LCFDatabaseColumn *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_typeDb, a4);
+    objc_storeStrong(&v9->_name, init);
+    objc_storeStrong(&v10->_typeDb, db);
     if ([(NSString *)v10->_typeDb isEqualToString:@"TEXT"])
     {
       v11 = 1;

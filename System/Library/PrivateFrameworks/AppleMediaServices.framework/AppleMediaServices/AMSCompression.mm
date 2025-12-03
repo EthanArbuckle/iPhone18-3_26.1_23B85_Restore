@@ -1,18 +1,18 @@
 @interface AMSCompression
-+ (id)compressedGzippedDataWithData:(id)a3;
-+ (id)decompressedDataWithGzippedData:(id)a3;
++ (id)compressedGzippedDataWithData:(id)data;
++ (id)decompressedDataWithGzippedData:(id)data;
 @end
 
 @implementation AMSCompression
 
-+ (id)compressedGzippedDataWithData:(id)a3
++ (id)compressedGzippedDataWithData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v5 = [dataCopy length];
 
   v6 = 0;
-  if (v4 && v5)
+  if (bytes && v5)
   {
     v7 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:3 * v5];
     memset(&v11.avail_in, 0, 104);
@@ -38,13 +38,13 @@
   return v6;
 }
 
-+ (id)decompressedDataWithGzippedData:(id)a3
++ (id)decompressedDataWithGzippedData:(id)data
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataCopy = data;
   memset(&strm.avail_in, 0, 104);
-  strm.avail_in = [v3 length];
-  strm.next_in = [v3 bytes];
+  strm.avail_in = [dataCopy length];
+  strm.next_in = [dataCopy bytes];
   v4 = 0;
   if (!inflateInit2_(&strm, 31, "1.2.12", 112))
   {

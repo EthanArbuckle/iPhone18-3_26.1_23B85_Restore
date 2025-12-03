@@ -1,39 +1,39 @@
 @interface AGXG18PFamilyCompiler
-- (AGXG18PFamilyCompiler)initWithDevice:(id)a3 descriptor:(id)a4;
-- (id)newBinaryFunctionWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 completionHandler:(id)a5;
-- (id)newBinaryFunctionWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 error:(id *)a5;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 completionHandler:(id)a6;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 error:(id *)a6;
-- (id)newDynamicLibrary:(id)a3 completionHandler:(id)a4;
-- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)a3 pipeline:(id)a4 completionHandler:(id)a5;
-- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)a3 pipeline:(id)a4 error:(id *)a5;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 completionHandler:(id)a6;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 error:(id *)a6;
+- (AGXG18PFamilyCompiler)initWithDevice:(id)device descriptor:(id)descriptor;
+- (id)newBinaryFunctionWithDescriptor:(id)descriptor compilerTaskOptions:(id)options completionHandler:(id)handler;
+- (id)newBinaryFunctionWithDescriptor:(id)descriptor compilerTaskOptions:(id)options error:(id *)error;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options completionHandler:(id)handler;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options error:(id *)error;
+- (id)newDynamicLibrary:(id)library completionHandler:(id)handler;
+- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)descriptor pipeline:(id)pipeline completionHandler:(id)handler;
+- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)descriptor pipeline:(id)pipeline error:(id *)error;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options completionHandler:(id)handler;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation AGXG18PFamilyCompiler
 
-- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)a3 pipeline:(id)a4 completionHandler:(id)a5
+- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)descriptor pipeline:(id)pipeline completionHandler:(id)handler
 {
   v9 = [objc_alloc(MEMORY[0x29EDBB690]) initWithCompiler:self];
-  v10 = [a4 newRenderPipelineStateBySpecializationWithDescriptor:a3 pipeline:a4 completionHandler:a5 error:0];
+  v10 = [pipeline newRenderPipelineStateBySpecializationWithDescriptor:descriptor pipeline:pipeline completionHandler:handler error:0];
   [(AGXG18PFamilyDevice *)self->_device _storeRenderPipelineState:v10];
-  (*(a5 + 2))(a5, v10, 0);
+  (*(handler + 2))(handler, v10, 0);
   [v9 setStatus:3];
   return v9;
 }
 
-- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)a3 pipeline:(id)a4 error:(id *)a5
+- (id)newRenderPipelineStateBySpecializationWithDescriptor:(id)descriptor pipeline:(id)pipeline error:(id *)error
 {
-  v6 = [a4 newRenderPipelineStateBySpecializationWithDescriptor:a3 pipeline:a4 completionHandler:0 error:a5];
+  v6 = [pipeline newRenderPipelineStateBySpecializationWithDescriptor:descriptor pipeline:pipeline completionHandler:0 error:error];
   [(AGXG18PFamilyDevice *)self->_device _storeRenderPipelineState:v6];
   return v6;
 }
 
-- (id)newBinaryFunctionWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 completionHandler:(id)a5
+- (id)newBinaryFunctionWithDescriptor:(id)descriptor compilerTaskOptions:(id)options completionHandler:(id)handler
 {
-  [(MTL4PipelineDataSetSerializer *)[(_MTL4Compiler *)self pipelineDataSetSerializer] addBinaryFunctionWithDescriptor:a3];
+  [(MTL4PipelineDataSetSerializer *)[(_MTL4Compiler *)self pipelineDataSetSerializer] addBinaryFunctionWithDescriptor:descriptor];
   v9 = [objc_alloc(MEMORY[0x29EDBB690]) initWithCompiler:self];
   binary_function_factory = self->_binary_function_factory;
   device = self->_device;
@@ -43,8 +43,8 @@
   v14[2] = __95__AGXG18PFamilyCompiler_newBinaryFunctionWithDescriptor_compilerTaskOptions_completionHandler___block_invoke;
   v14[3] = &unk_29F3413B0;
   v14[4] = v9;
-  v14[5] = a5;
-  AGX::UserBinaryFunctionFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createBinaryFunction(binary_function_factory, a3, device, harvesting_archive, a4, 0, v9, v14);
+  v14[5] = handler;
+  AGX::UserBinaryFunctionFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createBinaryFunction(binary_function_factory, descriptor, device, harvesting_archive, options, 0, v9, v14);
   return v9;
 }
 
@@ -56,19 +56,19 @@ uint64_t __95__AGXG18PFamilyCompiler_newBinaryFunctionWithDescriptor_compilerTas
   return [v2 setStatus:3];
 }
 
-- (id)newBinaryFunctionWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 error:(id *)a5
+- (id)newBinaryFunctionWithDescriptor:(id)descriptor compilerTaskOptions:(id)options error:(id *)error
 {
-  [(MTL4PipelineDataSetSerializer *)[(_MTL4Compiler *)self pipelineDataSetSerializer] addBinaryFunctionWithDescriptor:a3];
+  [(MTL4PipelineDataSetSerializer *)[(_MTL4Compiler *)self pipelineDataSetSerializer] addBinaryFunctionWithDescriptor:descriptor];
   binary_function_factory = self->_binary_function_factory;
   device = self->_device;
   harvesting_archive = self->_harvesting_archive;
 
-  return AGX::UserBinaryFunctionFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createBinaryFunction(binary_function_factory, a3, device, harvesting_archive, a4, a5, 0, 0);
+  return AGX::UserBinaryFunctionFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createBinaryFunction(binary_function_factory, descriptor, device, harvesting_archive, options, error, 0, 0);
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 completionHandler:(id)a6
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options completionHandler:(id)handler
 {
-  [(MTL4PipelineDataSetSerializer *)[(_MTL4Compiler *)self pipelineDataSetSerializer] addPipelineWithDescriptor:a3];
+  [(MTL4PipelineDataSetSerializer *)[(_MTL4Compiler *)self pipelineDataSetSerializer] addPipelineWithDescriptor:descriptor];
   v11 = [objc_alloc(MEMORY[0x29EDBB690]) initWithCompiler:self];
   pipeline_factory = self->_pipeline_factory;
   device = self->_device;
@@ -78,9 +78,9 @@ uint64_t __95__AGXG18PFamilyCompiler_newBinaryFunctionWithDescriptor_compilerTas
   v16[2] = __125__AGXG18PFamilyCompiler_newRenderPipelineStateWithDescriptor_dynamicLinkingDescriptor_compilerTaskOptions_completionHandler___block_invoke;
   v16[3] = &unk_29F341388;
   v16[5] = v11;
-  v16[6] = a6;
+  v16[6] = handler;
   v16[4] = self;
-  AGX::UserPipelineFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline(pipeline_factory, a3, a4, device, a5, harvesting_archive, 0, 0, v11, v16);
+  AGX::UserPipelineFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline(pipeline_factory, descriptor, linkingDescriptor, device, options, harvesting_archive, 0, 0, v11, v16);
   return v11;
 }
 
@@ -94,19 +94,19 @@ uint64_t __125__AGXG18PFamilyCompiler_newRenderPipelineStateWithDescriptor_dynam
   return [v4 setStatus:3];
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 error:(id *)a6
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options error:(id *)error
 {
-  [(MTL4PipelineDataSetSerializer *)[(_MTL4Compiler *)self pipelineDataSetSerializer] addPipelineWithDescriptor:a3];
+  [(MTL4PipelineDataSetSerializer *)[(_MTL4Compiler *)self pipelineDataSetSerializer] addPipelineWithDescriptor:descriptor];
   v13 = 0;
-  RenderPipeline = AGX::UserPipelineFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline(self->_pipeline_factory, a3, a4, self->_device, a5, self->_harvesting_archive, &v13, a6, 0, 0);
+  RenderPipeline = AGX::UserPipelineFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createRenderPipeline(self->_pipeline_factory, descriptor, linkingDescriptor, self->_device, options, self->_harvesting_archive, &v13, error, 0, 0);
   [RenderPipeline setReflection:v13];
   [(AGXG18PFamilyDevice *)self->_device _storeRenderPipelineState:RenderPipeline];
   return RenderPipeline;
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 completionHandler:(id)a6
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options completionHandler:(id)handler
 {
-  [(MTL4PipelineDataSetSerializer *)[(_MTL4Compiler *)self pipelineDataSetSerializer] addPipelineWithDescriptor:a3];
+  [(MTL4PipelineDataSetSerializer *)[(_MTL4Compiler *)self pipelineDataSetSerializer] addPipelineWithDescriptor:descriptor];
   v11 = [objc_alloc(MEMORY[0x29EDBB690]) initWithCompiler:self];
   pipeline_factory = self->_pipeline_factory;
   device = self->_device;
@@ -116,9 +116,9 @@ uint64_t __125__AGXG18PFamilyCompiler_newRenderPipelineStateWithDescriptor_dynam
   v16[2] = __126__AGXG18PFamilyCompiler_newComputePipelineStateWithDescriptor_dynamicLinkingDescriptor_compilerTaskOptions_completionHandler___block_invoke;
   v16[3] = &unk_29F341360;
   v16[5] = v11;
-  v16[6] = a6;
+  v16[6] = handler;
   v16[4] = self;
-  AGX::UserPipelineFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createComputePipeline(pipeline_factory, a3, a4, device, a5, harvesting_archive, 0, 0, v11, v16);
+  AGX::UserPipelineFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createComputePipeline(pipeline_factory, descriptor, linkingDescriptor, device, options, harvesting_archive, 0, 0, v11, v16);
   return v11;
 }
 
@@ -132,17 +132,17 @@ uint64_t __126__AGXG18PFamilyCompiler_newComputePipelineStateWithDescriptor_dyna
   return [v4 setStatus:3];
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 error:(id *)a6
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options error:(id *)error
 {
-  [(MTL4PipelineDataSetSerializer *)[(_MTL4Compiler *)self pipelineDataSetSerializer] addPipelineWithDescriptor:a3];
+  [(MTL4PipelineDataSetSerializer *)[(_MTL4Compiler *)self pipelineDataSetSerializer] addPipelineWithDescriptor:descriptor];
   v13 = 0;
-  ComputePipeline = AGX::UserPipelineFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createComputePipeline(self->_pipeline_factory, a3, a4, self->_device, a5, self->_harvesting_archive, &v13, a6, 0, 0);
+  ComputePipeline = AGX::UserPipelineFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createComputePipeline(self->_pipeline_factory, descriptor, linkingDescriptor, self->_device, options, self->_harvesting_archive, &v13, error, 0, 0);
   [ComputePipeline setReflection:v13];
   [(AGXG18PFamilyDevice *)self->_device _storeComputePipelineState:ComputePipeline];
   return ComputePipeline;
 }
 
-- (id)newDynamicLibrary:(id)a3 completionHandler:(id)a4
+- (id)newDynamicLibrary:(id)library completionHandler:(id)handler
 {
   v7 = [objc_alloc(MEMORY[0x29EDBB698]) initWithCompiler:self];
   dylib_factory = self->_dylib_factory;
@@ -152,8 +152,8 @@ uint64_t __126__AGXG18PFamilyCompiler_newComputePipelineStateWithDescriptor_dyna
   v11[2] = __61__AGXG18PFamilyCompiler_newDynamicLibrary_completionHandler___block_invoke;
   v11[3] = &unk_29F341338;
   v11[4] = v7;
-  v11[5] = a4;
-  AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createDynamicLibrary(dylib_factory[4], a3, 0, device, 0, 0, v7, v11);
+  v11[5] = handler;
+  AGX::UserCommonShaderFactory<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::createDynamicLibrary(dylib_factory[4], library, 0, device, 0, 0, v7, v11);
   return v7;
 }
 
@@ -230,14 +230,14 @@ uint64_t __61__AGXG18PFamilyCompiler_newDynamicLibrary_completionHandler___block
   [(_MTL4Compiler *)&v10 dealloc];
 }
 
-- (AGXG18PFamilyCompiler)initWithDevice:(id)a3 descriptor:(id)a4
+- (AGXG18PFamilyCompiler)initWithDevice:(id)device descriptor:(id)descriptor
 {
   v7.receiver = self;
   v7.super_class = AGXG18PFamilyCompiler;
-  v5 = [(_MTL4Compiler *)&v7 initWithDevice:a3 descriptor:a4];
+  v5 = [(_MTL4Compiler *)&v7 initWithDevice:device descriptor:descriptor];
   if (v5)
   {
-    v5->_device = a3;
+    v5->_device = device;
     operator new();
   }
 

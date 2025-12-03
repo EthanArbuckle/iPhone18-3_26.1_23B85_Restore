@@ -2,27 +2,27 @@
 + (id)sharedInstance;
 - (CLBIdleSleepManager)init;
 - (double)_nextLockTimeDuration;
-- (id)_configurationWithAttentionLostTimeout:(double)a3;
-- (id)_descriptionForTimeout:(double)a3;
-- (id)acquireIdleTimerAssertionWithConfiguration:(id)a3 fromClient:(id)a4 forReason:(id)a5;
+- (id)_configurationWithAttentionLostTimeout:(double)timeout;
+- (id)_descriptionForTimeout:(double)timeout;
+- (id)acquireIdleTimerAssertionWithConfiguration:(id)configuration fromClient:(id)client forReason:(id)reason;
 - (void)_allowIdleSleep;
 - (void)_disableTapToWake;
 - (void)_enableTapToWake;
 - (void)_initTapToWake;
-- (void)_powerChangedOnService:(unsigned int)a3 messageType:(unsigned int)a4 messageArgument:(void *)a5;
+- (void)_powerChangedOnService:(unsigned int)service messageType:(unsigned int)type messageArgument:(void *)argument;
 - (void)_preventIdleSleep;
-- (void)_preventIdleSleepForNumberOfSeconds:(float)a3;
-- (void)_resetIdleTimerAndUndim:(BOOL)a3 forReason:(int64_t)a4;
-- (void)_setHIDUILockedState:(BOOL)a3;
+- (void)_preventIdleSleepForNumberOfSeconds:(float)seconds;
+- (void)_resetIdleTimerAndUndim:(BOOL)undim forReason:(int64_t)reason;
+- (void)_setHIDUILockedState:(BOOL)state;
 - (void)_setUpAutoLockTime;
-- (void)_tapToWake:(id)a3;
-- (void)_undimDisplayForReason:(int64_t)a3;
+- (void)_tapToWake:(id)wake;
+- (void)_undimDisplayForReason:(int64_t)reason;
 - (void)dealloc;
 - (void)dimDisplay;
 - (void)enableIdleSleep;
-- (void)setIdleTimerDisabled:(BOOL)a3 forReason:(id)a4;
-- (void)setPreventIdleSleep:(BOOL)a3 forReason:(id)a4;
-- (void)setShouldSleepForLock:(BOOL)a3;
+- (void)setIdleTimerDisabled:(BOOL)disabled forReason:(id)reason;
+- (void)setPreventIdleSleep:(BOOL)sleep forReason:(id)reason;
+- (void)setShouldSleepForLock:(BOOL)lock;
 @end
 
 @implementation CLBIdleSleepManager
@@ -136,17 +136,17 @@
   [(CLBIdleSleepManager *)&v7 dealloc];
 }
 
-- (void)setShouldSleepForLock:(BOOL)a3
+- (void)setShouldSleepForLock:(BOOL)lock
 {
-  if (self->_shouldSleepForLock != a3)
+  if (self->_shouldSleepForLock != lock)
   {
-    v3 = a3;
-    self->_shouldSleepForLock = a3;
+    lockCopy = lock;
+    self->_shouldSleepForLock = lock;
     v5 = +[CLFLog commonLog];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6[0] = 67109120;
-      v6[1] = v3;
+      v6[1] = lockCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Should sleep for lock: %i", v6, 8u);
     }
 
@@ -154,25 +154,25 @@
   }
 }
 
-- (void)_setHIDUILockedState:(BOOL)a3
+- (void)_setHIDUILockedState:(BOOL)state
 {
-  if (byte_10032B3F0 != a3)
+  if (byte_10032B3F0 != state)
   {
-    v3 = a3;
+    stateCopy = state;
     v4 = +[CLFLog commonLog];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v5[0] = 67109120;
-      v5[1] = v3;
+      v5[1] = stateCopy;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Setting UI locked state to %d", v5, 8u);
     }
 
     BKSHIDServicesSetHIDUILockedState();
-    byte_10032B3F0 = v3;
+    byte_10032B3F0 = stateCopy;
   }
 }
 
-- (void)_undimDisplayForReason:(int64_t)a3
+- (void)_undimDisplayForReason:(int64_t)reason
 {
   if ([(CLBIdleSleepManager *)self isDisplayDim])
   {
@@ -189,7 +189,7 @@
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_enableTapToWake" object:0];
     [(CLBIdleSleepManager *)self _disableTapToWake];
     v7 = +[CLBBacklightController sharedInstance];
-    [v7 setPreferredFactor:100 forReason:a3];
+    [v7 setPreferredFactor:100 forReason:reason];
 
     [(CLBIdleSleepManager *)self setDisplayDim:0];
     attentionAwarenessClient = self->_attentionAwarenessClient;
@@ -286,23 +286,23 @@
   [(CLBIdleSleepManager *)self setPreventIdleSleep:1 forReason:@"backlight"];
 }
 
-- (void)_preventIdleSleepForNumberOfSeconds:(float)a3
+- (void)_preventIdleSleepForNumberOfSeconds:(float)seconds
 {
   if ([(CLBIdleSleepManager *)self isDisplayDim])
   {
     v5 = +[CLFLog commonLog];
-    v6 = a3;
+    secondsCopy = seconds;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v10 = v6;
+      v10 = secondsCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Preventing idle sleep for %f seconds…", buf, 0xCu);
     }
 
     [(CLBIdleSleepManager *)self _preventIdleSleep];
     v8 = NSRunLoopCommonModes;
     v7 = [NSArray arrayWithObjects:&v8 count:1];
-    [(CLBIdleSleepManager *)self performSelector:"_allowIdleSleep" withObject:0 afterDelay:v7 inModes:v6];
+    [(CLBIdleSleepManager *)self performSelector:"_allowIdleSleep" withObject:0 afterDelay:v7 inModes:secondsCopy];
   }
 }
 
@@ -315,10 +315,10 @@
   {
     [v4 doubleValue];
     self->_autoLockTime = v5;
-    v6 = [v4 intValue];
+    intValue = [v4 intValue];
     v7 = +[CLFLog commonLog];
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v6 == 0x7FFFFFFF)
+    if (intValue == 0x7FFFFFFF)
     {
       if (v8)
       {
@@ -353,18 +353,18 @@
   }
 }
 
-- (void)_powerChangedOnService:(unsigned int)a3 messageType:(unsigned int)a4 messageArgument:(void *)a5
+- (void)_powerChangedOnService:(unsigned int)service messageType:(unsigned int)type messageArgument:(void *)argument
 {
   v8 = +[CLFLog commonLog];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v16[0] = 67109120;
-    v16[1] = a4;
+    v16[1] = type;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received power notification %u", v16, 8u);
   }
 
-  HIDWORD(v10) = a4 + 536870288;
-  LODWORD(v10) = a4 + 536870288;
+  HIDWORD(v10) = type + 536870288;
+  LODWORD(v10) = type + 536870288;
   v9 = v10 >> 4;
   if (v9 > 1)
   {
@@ -440,7 +440,7 @@ LABEL_22:
 
 LABEL_23:
 
-  IOAllowPowerChange(self->_rootDomainConnect, a5);
+  IOAllowPowerChange(self->_rootDomainConnect, argument);
 }
 
 - (void)enableIdleSleep
@@ -484,25 +484,25 @@ LABEL_23:
   [(CLBIdleSleepManager *)self setFinishedBoot:1];
 }
 
-- (void)setPreventIdleSleep:(BOOL)a3 forReason:(id)a4
+- (void)setPreventIdleSleep:(BOOL)sleep forReason:(id)reason
 {
-  v4 = a3;
-  v6 = a4;
+  sleepCopy = sleep;
+  reasonCopy = reason;
   v7 = +[CLFLog commonLog];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v14[0] = 67109378;
-    v14[1] = v4;
+    v14[1] = sleepCopy;
     v15 = 2112;
-    v16 = v6;
+    v16 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Preventing idle sleep (%d) for reason: %@", v14, 0x12u);
   }
 
   [(CLBIdleSleepManager *)self finishedBoot];
-  if (v6)
+  if (reasonCopy)
   {
     v8 = qword_1003311B8;
-    if (v4)
+    if (sleepCopy)
     {
       if (!qword_1003311B8)
       {
@@ -513,14 +513,14 @@ LABEL_23:
         v8 = qword_1003311B8;
       }
 
-      [v8 addObject:v6];
+      [v8 addObject:reasonCopy];
       goto LABEL_12;
     }
 
-    [qword_1003311B8 removeObject:v6];
+    [qword_1003311B8 removeObject:reasonCopy];
   }
 
-  else if (v4)
+  else if (sleepCopy)
   {
     goto LABEL_12;
   }
@@ -562,9 +562,9 @@ LABEL_16:
 LABEL_17:
 }
 
-- (id)_descriptionForTimeout:(double)a3
+- (id)_descriptionForTimeout:(double)timeout
 {
-  if (a3 == 1.79769313e308)
+  if (timeout == 1.79769313e308)
   {
     v5 = @"infinite";
   }
@@ -580,17 +580,17 @@ LABEL_17:
 - (double)_nextLockTimeDuration
 {
   autoLockTime = self->_autoLockTime;
-  v4 = [(CLBIdleSleepManager *)self idleTimerDisabledReasons];
-  v5 = [v4 count];
+  idleTimerDisabledReasons = [(CLBIdleSleepManager *)self idleTimerDisabledReasons];
+  v5 = [idleTimerDisabledReasons count];
 
   if (v5)
   {
     v6 = +[CLFLog commonLog];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(CLBIdleSleepManager *)self idleTimerDisabledReasons];
+      idleTimerDisabledReasons2 = [(CLBIdleSleepManager *)self idleTimerDisabledReasons];
       v9 = 138412290;
-      v10 = v7;
+      v10 = idleTimerDisabledReasons2;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Idle timer should be disabled because of the following reasons: %@", &v9, 0xCu);
     }
   }
@@ -629,30 +629,30 @@ LABEL_5:
   return autoLockTime;
 }
 
-- (id)_configurationWithAttentionLostTimeout:(double)a3
+- (id)_configurationWithAttentionLostTimeout:(double)timeout
 {
   v4 = objc_alloc_init(AWAttentionAwarenessConfiguration);
   [v4 setIdentifier:@"CLBIdleTimer"];
   [v4 setEventMask:3967];
-  [v4 setAttentionLostTimeout:a3];
+  [v4 setAttentionLostTimeout:timeout];
 
   return v4;
 }
 
-- (void)_resetIdleTimerAndUndim:(BOOL)a3 forReason:(int64_t)a4
+- (void)_resetIdleTimerAndUndim:(BOOL)undim forReason:(int64_t)reason
 {
-  v5 = a3;
+  undimCopy = undim;
   v7 = +[CLFLog commonLog];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v25) = v5;
+    LODWORD(v25) = undimCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Resetting idle timer and undim %d", buf, 8u);
   }
 
-  if (v5)
+  if (undimCopy)
   {
-    [(CLBIdleSleepManager *)self _undimDisplayForReason:a4];
+    [(CLBIdleSleepManager *)self _undimDisplayForReason:reason];
   }
 
   if (![(CLBIdleSleepManager *)self isDisplayDim])
@@ -669,9 +669,9 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Setting a new attention awareness configuration with timeout: %@", buf, 0xCu);
     }
 
-    v13 = [(CLBIdleSleepManager *)self attentionAwarenessClient];
+    attentionAwarenessClient = [(CLBIdleSleepManager *)self attentionAwarenessClient];
     v23 = 0;
-    v14 = [v13 setConfiguration:v10 shouldReset:1 error:&v23];
+    v14 = [attentionAwarenessClient setConfiguration:v10 shouldReset:1 error:&v23];
     v15 = v23;
 
     if ((v14 & 1) == 0)
@@ -685,24 +685,24 @@ LABEL_5:
   }
 }
 
-- (void)setIdleTimerDisabled:(BOOL)a3 forReason:(id)a4
+- (void)setIdleTimerDisabled:(BOOL)disabled forReason:(id)reason
 {
-  v4 = a3;
-  v6 = a4;
+  disabledCopy = disabled;
+  reasonCopy = reason;
   v7 = +[CLFLog commonLog];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 67109120;
-    LODWORD(v15) = v4;
+    LODWORD(v15) = disabledCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Attempting to set idle timer disabled to %d", &v14, 8u);
   }
 
-  if (v6)
+  if (reasonCopy)
   {
-    v8 = [(CLBIdleSleepManager *)self idleTimerDisabledReasons];
-    v9 = [v8 containsObject:v6];
+    idleTimerDisabledReasons = [(CLBIdleSleepManager *)self idleTimerDisabledReasons];
+    v9 = [idleTimerDisabledReasons containsObject:reasonCopy];
 
-    if (v4)
+    if (disabledCopy)
     {
       if ((v9 & 1) == 0)
       {
@@ -710,12 +710,12 @@ LABEL_5:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
           v14 = 138412290;
-          v15 = v6;
+          v15 = reasonCopy;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Adding idle timer disabled reason: %@", &v14, 0xCu);
         }
 
-        v11 = [(CLBIdleSleepManager *)self idleTimerDisabledReasons];
-        [v11 addObject:v6];
+        idleTimerDisabledReasons2 = [(CLBIdleSleepManager *)self idleTimerDisabledReasons];
+        [idleTimerDisabledReasons2 addObject:reasonCopy];
 LABEL_16:
 
         [(CLBIdleSleepManager *)self resetIdleTimer];
@@ -728,12 +728,12 @@ LABEL_16:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v14 = 138412290;
-        v15 = v6;
+        v15 = reasonCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Removing idle timer disabled reason: %@", &v14, 0xCu);
       }
 
-      v11 = [(CLBIdleSleepManager *)self idleTimerDisabledReasons];
-      [v11 removeObject:v6];
+      idleTimerDisabledReasons2 = [(CLBIdleSleepManager *)self idleTimerDisabledReasons];
+      [idleTimerDisabledReasons2 removeObject:reasonCopy];
       goto LABEL_16;
     }
   }
@@ -776,8 +776,8 @@ LABEL_16:
     v8 = +[_UISystemGestureManager sharedInstance];
     v9 = self->_tapToWakeGestureRecognizer;
     v10 = +[FBDisplayManager mainConfiguration];
-    v11 = [v10 identity];
-    [v8 addGestureRecognizer:v9 recognitionEvent:2 toDisplayWithIdentity:v11];
+    identity = [v10 identity];
+    [v8 addGestureRecognizer:v9 recognitionEvent:2 toDisplayWithIdentity:identity];
 
     v12 = +[CLFLog commonLog];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -798,9 +798,9 @@ LABEL_16:
   }
 }
 
-- (void)_tapToWake:(id)a3
+- (void)_tapToWake:(id)wake
 {
-  if ([a3 state] == 3)
+  if ([wake state] == 3)
   {
     v4 = +[CLFLog commonLog];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -828,14 +828,14 @@ LABEL_16:
     }
 
     v5 = [BKSTouchStream alloc];
-    v6 = [(CLBIdleSleepManager *)self tapToWakeWindow];
-    v7 = [v6 _contextId];
+    tapToWakeWindow = [(CLBIdleSleepManager *)self tapToWakeWindow];
+    _contextId = [tapToWakeWindow _contextId];
     v8 = objc_alloc_init(BKSTouchStreamPolicy);
-    v9 = [v5 initWithContextID:v7 displayUUID:0 identifier:1 policy:v8];
+    v9 = [v5 initWithContextID:_contextId displayUUID:0 identifier:1 policy:v8];
     [(CLBIdleSleepManager *)self setTapToWakeTouchStream:v9];
 
-    v10 = [(CLBIdleSleepManager *)self tapToWakeGestureRecognizer];
-    [v10 setEnabled:1];
+    tapToWakeGestureRecognizer = [(CLBIdleSleepManager *)self tapToWakeGestureRecognizer];
+    [tapToWakeGestureRecognizer setEnabled:1];
 
     v11 = +[CLFLog commonLog];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -850,15 +850,15 @@ LABEL_16:
 {
   if ([(CLBIdleSleepManager *)self tapToWakeSupported]== 1)
   {
-    v3 = [(CLBIdleSleepManager *)self tapToWakeGestureRecognizer];
-    [v3 setEnabled:0];
+    tapToWakeGestureRecognizer = [(CLBIdleSleepManager *)self tapToWakeGestureRecognizer];
+    [tapToWakeGestureRecognizer setEnabled:0];
 
-    v4 = [(CLBIdleSleepManager *)self tapToWakeTouchStream];
+    tapToWakeTouchStream = [(CLBIdleSleepManager *)self tapToWakeTouchStream];
 
-    if (v4)
+    if (tapToWakeTouchStream)
     {
-      v5 = [(CLBIdleSleepManager *)self tapToWakeTouchStream];
-      [v5 invalidate];
+      tapToWakeTouchStream2 = [(CLBIdleSleepManager *)self tapToWakeTouchStream];
+      [tapToWakeTouchStream2 invalidate];
 
       [(CLBIdleSleepManager *)self setTapToWakeTouchStream:0];
     }
@@ -878,12 +878,12 @@ LABEL_16:
   }
 }
 
-- (id)acquireIdleTimerAssertionWithConfiguration:(id)a3 fromClient:(id)a4 forReason:(id)a5
+- (id)acquireIdleTimerAssertionWithConfiguration:(id)configuration fromClient:(id)client forReason:(id)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CLBIdleSleepManager *)self serviceCalloutQueue];
+  configurationCopy = configuration;
+  clientCopy = client;
+  reasonCopy = reason;
+  serviceCalloutQueue = [(CLBIdleSleepManager *)self serviceCalloutQueue];
   BSDispatchQueueAssert();
 
   v12 = +[CLFLog commonLog];
@@ -891,35 +891,35 @@ LABEL_16:
   {
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    v15 = [v9 bundleIdentifier];
+    bundleIdentifier = [clientCopy bundleIdentifier];
     *buf = 138544130;
     v30 = v14;
     v31 = 2114;
-    v32 = v8;
+    v32 = configurationCopy;
     v33 = 2114;
-    v34 = v15;
+    v34 = bundleIdentifier;
     v35 = 2114;
-    v36 = v10;
+    v36 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@ - acquireIdleTimerAssertionWithConfiguration:%{public}@ fromClient:%{public}@ forReason:%{public}@]", buf, 0x2Au);
   }
 
-  if ([v8 disablesTimer])
+  if ([configurationCopy disablesTimer])
   {
-    [(CLBIdleSleepManager *)self setIdleTimerDisabled:1 forReason:v10];
+    [(CLBIdleSleepManager *)self setIdleTimerDisabled:1 forReason:reasonCopy];
     objc_initWeak(buf, self);
-    v16 = [v9 bundleIdentifier];
-    v17 = [NSString stringWithFormat:@"%@:%@", @"IdleTimerClient", v16];
+    bundleIdentifier2 = [clientCopy bundleIdentifier];
+    v17 = [NSString stringWithFormat:@"%@:%@", @"IdleTimerClient", bundleIdentifier2];
 
     v18 = [BSSimpleAssertion alloc];
-    v19 = [(CLBIdleSleepManager *)self serviceCalloutQueue];
+    serviceCalloutQueue2 = [(CLBIdleSleepManager *)self serviceCalloutQueue];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_100024DAC;
     v26[3] = &unk_1002FCFF8;
     objc_copyWeak(&v28, buf);
     v26[4] = self;
-    v27 = v10;
-    v20 = [v18 initWithIdentifier:v17 forReason:v27 queue:v19 invalidationBlock:v26];
+    v27 = reasonCopy;
+    v20 = [v18 initWithIdentifier:v17 forReason:v27 queue:serviceCalloutQueue2 invalidationBlock:v26];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(buf);
@@ -932,13 +932,13 @@ LABEL_16:
     {
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
-      v25 = [v9 bundleIdentifier];
+      bundleIdentifier3 = [clientCopy bundleIdentifier];
       *buf = 138543874;
       v30 = v24;
       v31 = 2114;
-      v32 = v8;
+      v32 = configurationCopy;
       v33 = 2114;
-      v34 = v25;
+      v34 = bundleIdentifier3;
       _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "[%{public}@ - requested configuration: %{public}@ from client: %{public}@ is not supported.]", buf, 0x20u);
     }
 

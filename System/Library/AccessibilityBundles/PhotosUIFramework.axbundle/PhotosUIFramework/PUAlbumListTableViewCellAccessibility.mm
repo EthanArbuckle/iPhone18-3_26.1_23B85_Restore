@@ -7,20 +7,20 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(PUAlbumListTableViewCellAccessibility *)self contentView];
-  v3 = [v2 _accessibilityDescendantOfType:NSClassFromString(&cfstr_Pualbumlistcel_0.isa)];
-  v4 = [v3 accessibilityLabel];
+  contentView = [(PUAlbumListTableViewCellAccessibility *)self contentView];
+  v3 = [contentView _accessibilityDescendantOfType:NSClassFromString(&cfstr_Pualbumlistcel_0.isa)];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(PUAlbumListTableViewCellAccessibility *)self contentView];
-  v3 = [v2 _accessibilityDescendantOfType:NSClassFromString(&cfstr_Pualbumlistcel_0.isa)];
-  v4 = [v3 accessibilityValue];
+  contentView = [(PUAlbumListTableViewCellAccessibility *)self contentView];
+  v3 = [contentView _accessibilityDescendantOfType:NSClassFromString(&cfstr_Pualbumlistcel_0.isa)];
+  accessibilityValue = [v3 accessibilityValue];
 
-  return v4;
+  return accessibilityValue;
 }
 
 @end

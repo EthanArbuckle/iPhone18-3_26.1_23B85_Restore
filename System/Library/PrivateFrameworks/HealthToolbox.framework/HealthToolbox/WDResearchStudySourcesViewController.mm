@@ -22,9 +22,9 @@
   v5.receiver = self;
   v5.super_class = WDResearchStudySourcesViewController;
   [(WDSourcesViewController *)&v5 viewDidLoad];
-  v3 = [(WDResearchStudySourcesViewController *)self tableView];
+  tableView = [(WDResearchStudySourcesViewController *)self tableView];
   v4 = HKUIJoinStringsForAutomationIdentifier();
-  [v3 setAccessibilityIdentifier:v4];
+  [tableView setAccessibilityIdentifier:v4];
 }
 
 - (void)viewControllerWillEnterAdaptiveModal
@@ -40,8 +40,8 @@
   v5 = [v4 actionWithHandler:&v8];
   v6 = [v3 initWithBarButtonSystemItem:0 primaryAction:{v5, v8, v9, v10, v11}];
 
-  v7 = [(WDResearchStudySourcesViewController *)self navigationItem];
-  [v7 setLeftBarButtonItem:v6];
+  navigationItem = [(WDResearchStudySourcesViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v6];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -55,8 +55,8 @@ void __76__WDResearchStudySourcesViewController_viewControllerWillEnterAdaptiveM
 
 - (void)viewControllerDidLeaveAdaptiveModal
 {
-  v2 = [(WDResearchStudySourcesViewController *)self navigationItem];
-  [v2 setLeftBarButtonItem:0];
+  navigationItem = [(WDResearchStudySourcesViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
 }
 
 @end

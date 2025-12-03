@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v14 = TCBundle();
     v2 = [v14 localizedStringForKey:@"h" value:&stru_286EE1130 table:@"TCCompatibility"];

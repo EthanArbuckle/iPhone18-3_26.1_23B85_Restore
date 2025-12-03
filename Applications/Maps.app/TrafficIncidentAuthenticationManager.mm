@@ -5,14 +5,14 @@
 - (id)_clientDataHash;
 - (id)_keyId;
 - (id)_storedUUID;
-- (void)_attestKeyId:(id)a3 completionHandler:(id)a4;
-- (void)_generateAssertionKeyId:(id)a3 completionHandler:(id)a4;
-- (void)_generateKey:(id)a3;
+- (void)_attestKeyId:(id)id completionHandler:(id)handler;
+- (void)_generateAssertionKeyId:(id)id completionHandler:(id)handler;
+- (void)_generateKey:(id)key;
 - (void)_incrementSubmissionCount;
 - (void)_refreshStoredUUID;
-- (void)_rollOverKeyId:(id)a3 completionHandler:(id)a4;
+- (void)_rollOverKeyId:(id)id completionHandler:(id)handler;
 - (void)dealloc;
-- (void)generateAuthenticationInfoWithCompletionHandler:(id)a3;
+- (void)generateAuthenticationInfoWithCompletionHandler:(id)handler;
 - (void)rolloverAnonymousId;
 - (void)submissionDidFailAttestation;
 @end
@@ -69,9 +69,9 @@
 
 - (id)_clientDataHash
 {
-  v2 = [(TrafficIncidentAuthenticationManager *)self _storedUUID];
+  _storedUUID = [(TrafficIncidentAuthenticationManager *)self _storedUUID];
   v3 = [NSMutableData dataWithLength:32];
-  v4 = [v2 cStringUsingEncoding:1];
+  v4 = [_storedUUID cStringUsingEncoding:1];
   v5 = [NSData dataWithBytes:v4 length:strlen(v4)];
   CC_SHA256([v5 bytes], objc_msgSend(v5, "length"), objc_msgSend(v3, "mutableBytes"));
 
@@ -139,10 +139,10 @@
 - (void)_refreshStoredUUID
 {
   v2 = +[NSUUID UUID];
-  v3 = [v2 UUIDString];
+  uUIDString = [v2 UUIDString];
 
   v4 = +[NSUserDefaults standardUserDefaults];
-  [v4 setObject:v3 forKey:@"TrafficIncidentAuthenicationUUID"];
+  [v4 setObject:uUIDString forKey:@"TrafficIncidentAuthenicationUUID"];
   [v4 setInteger:0 forKey:@"TrafficIncidentAuthenicationSubmissionCount"];
   [v4 setDouble:@"TrafficIncidentAuthenicationRolloverTimestamp" forKey:CFAbsoluteTimeGetCurrent()];
   v5 = sub_10002171C();
@@ -153,10 +153,10 @@
   }
 }
 
-- (void)_rollOverKeyId:(id)a3 completionHandler:(id)a4
+- (void)_rollOverKeyId:(id)id completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  idCopy = id;
   v8 = sub_10002171C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -169,15 +169,15 @@
   v10[2] = sub_100B9E0F8;
   v10[3] = &unk_10163C010;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [(TrafficIncidentAuthenticationManager *)self _generateAssertionKeyId:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(TrafficIncidentAuthenticationManager *)self _generateAssertionKeyId:idCopy completionHandler:v10];
 }
 
-- (void)_generateAssertionKeyId:(id)a3 completionHandler:(id)a4
+- (void)_generateAssertionKeyId:(id)id completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  idCopy = id;
   v8 = sub_10002171C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -185,22 +185,22 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "TrafficIncidentAuthenticationManager: _generateAssertionKeyId:", buf, 2u);
   }
 
-  v9 = [(TrafficIncidentAuthenticationManager *)self _clientDataHash];
+  _clientDataHash = [(TrafficIncidentAuthenticationManager *)self _clientDataHash];
   v10 = +[DCAppAttestService sharedService];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100B9E384;
   v12[3] = &unk_10163BFE8;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [v10 generateAssertion:v7 clientDataHash:v9 completionHandler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [v10 generateAssertion:idCopy clientDataHash:_clientDataHash completionHandler:v12];
 }
 
-- (void)_attestKeyId:(id)a3 completionHandler:(id)a4
+- (void)_attestKeyId:(id)id completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  handlerCopy = handler;
   v8 = sub_10002171C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -208,23 +208,23 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "TrafficIncidentAuthenticationManager: _attestKeyId:", buf, 2u);
   }
 
-  v9 = [(TrafficIncidentAuthenticationManager *)self _clientDataHash];
+  _clientDataHash = [(TrafficIncidentAuthenticationManager *)self _clientDataHash];
   v10 = +[DCAppAttestService sharedService];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100B9E6B8;
   v13[3] = &unk_10163BFC0;
-  v15 = self;
-  v16 = v7;
-  v14 = v6;
-  v11 = v6;
-  v12 = v7;
-  [v10 attestKey:v11 clientDataHash:v9 completionHandler:v13];
+  selfCopy = self;
+  v16 = handlerCopy;
+  v14 = idCopy;
+  v11 = idCopy;
+  v12 = handlerCopy;
+  [v10 attestKey:v11 clientDataHash:_clientDataHash completionHandler:v13];
 }
 
-- (void)_generateKey:(id)a3
+- (void)_generateKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = sub_10002171C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -238,8 +238,8 @@
   v8[2] = sub_100B9EA68;
   v8[3] = &unk_10163BF98;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = keyCopy;
+  v7 = keyCopy;
   [v6 generateKeyWithCompletionHandler:v8];
 }
 
@@ -251,9 +251,9 @@
   [(TrafficIncidentAuthenticationManager *)self _refreshStoredUUID];
 }
 
-- (void)generateAuthenticationInfoWithCompletionHandler:(id)a3
+- (void)generateAuthenticationInfoWithCompletionHandler:(id)handler
 {
-  v10 = a3;
+  handlerCopy = handler;
   if ([(TrafficIncidentAuthenticationManager *)self isSupported])
   {
     v4 = +[NSUserDefaults standardUserDefaults];
@@ -262,54 +262,54 @@
     v7 = [v5 objectForKey:@"TrafficIncidentAuthenicationAttested"];
 
     [(TrafficIncidentAuthenticationManager *)self _incrementSubmissionCount];
-    v8 = [(TrafficIncidentAuthenticationManager *)self _isUUIDValid];
+    _isUUIDValid = [(TrafficIncidentAuthenticationManager *)self _isUUIDValid];
     if (v5 && v6)
     {
-      if (((v7 == 0) & v8) == 1)
+      if (((v7 == 0) & _isUUIDValid) == 1)
       {
-        [(TrafficIncidentAuthenticationManager *)self _attestKeyId:v6 completionHandler:v10];
+        [(TrafficIncidentAuthenticationManager *)self _attestKeyId:v6 completionHandler:handlerCopy];
       }
 
-      else if (!v7 || ((v8 ^ 1) & 1) != 0)
+      else if (!v7 || ((_isUUIDValid ^ 1) & 1) != 0)
       {
-        if ((v8 & 1) == 0)
+        if ((_isUUIDValid & 1) == 0)
         {
-          [(TrafficIncidentAuthenticationManager *)self _rollOverKeyId:v6 completionHandler:v10];
+          [(TrafficIncidentAuthenticationManager *)self _rollOverKeyId:v6 completionHandler:handlerCopy];
         }
       }
 
       else
       {
-        [(TrafficIncidentAuthenticationManager *)self _generateAssertionKeyId:v6 completionHandler:v10];
+        [(TrafficIncidentAuthenticationManager *)self _generateAssertionKeyId:v6 completionHandler:handlerCopy];
       }
     }
 
     else
     {
-      [(TrafficIncidentAuthenticationManager *)self _generateKey:v10];
+      [(TrafficIncidentAuthenticationManager *)self _generateKey:handlerCopy];
     }
   }
 
   else
   {
-    v9 = v10;
-    if (!v10)
+    v9 = handlerCopy;
+    if (!handlerCopy)
     {
       goto LABEL_11;
     }
 
-    (*(v10 + 2))(v10, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
-  v9 = v10;
+  v9 = handlerCopy;
 LABEL_11:
 }
 
 - (void)dealloc
 {
   v3 = +[UIApplication sharedMapsDelegate];
-  v4 = [v3 submissionManager];
-  [v4 removeObserver:self];
+  submissionManager = [v3 submissionManager];
+  [submissionManager removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = TrafficIncidentAuthenticationManager;

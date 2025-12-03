@@ -99,7 +99,7 @@
         v39 = 1024;
         v40 = 146;
         v41 = 2114;
-        v42 = [a4 lastPathComponent];
+        lastPathComponent = [a4 lastPathComponent];
         v43 = 2114;
         v44 = v16;
         LODWORD(v29) = 48;
@@ -144,7 +144,7 @@ LABEL_21:
         v30[4] = v18;
         v30[5] = v23;
         v30[6] = a10;
-        result = [MEMORY[0x277CCACB0] runTaskWithLaunchPath:a4 arguments:a5 timeout:v18 outputFileHandle:v26 errorFileHandle:a9 launchHandler:v30 reply:a1];
+        result = [MEMORY[0x277CCACB0] runTaskWithLaunchPath:a4 arguments:a5 timeout:v18 outputFileHandle:v26 errorFileHandle:a9 launchHandler:v30 reply:self];
 LABEL_25:
         v27 = *MEMORY[0x277D85DE8];
         return result;
@@ -164,7 +164,7 @@ LABEL_15:
     v24 = W5GetOSLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [a4 lastPathComponent];
+      lastPathComponent2 = [a4 lastPathComponent];
       v35 = 136316162;
       v36 = "+[NSTask(WiFiVelocity) runTaskWithLaunchPath:arguments:timeout:outputFilePath:errorFilePath:redirectErrorToOutput:launchHandler:reply:]";
       v37 = 2080;
@@ -172,7 +172,7 @@ LABEL_15:
       v39 = 1024;
       v40 = 160;
       v41 = 2114;
-      v42 = v25;
+      lastPathComponent = lastPathComponent2;
       v43 = 2114;
       v44 = a7;
       LODWORD(v29) = 48;
@@ -232,7 +232,7 @@ LABEL_20:
     v18[1] = 3221225472;
     v18[2] = __117__NSTask_WiFiVelocity__runTaskWithLaunchPath_arguments_timeout_outputFileHandle_errorFileHandle_launchHandler_reply___block_invoke_13;
     v18[3] = &unk_279ECD250;
-    return [MEMORY[0x277CCACB0] runTaskWithLaunchPath:a4 arguments:a5 timeout:v20 startBlock:v19 updateBlock:v18 endBlock:a1];
+    return [MEMORY[0x277CCACB0] runTaskWithLaunchPath:a4 arguments:a5 timeout:v20 startBlock:v19 updateBlock:v18 endBlock:self];
   }
 
   else
@@ -291,19 +291,19 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v17 = a4;
+  firstObject = a4;
   if ([a4 isEqualToString:@"/bin/sh"])
   {
-    v17 = [a5 firstObject];
+    firstObject = [a5 firstObject];
   }
 
-  if ((([v17 hasPrefix:@"/usr/local/"] & 1) != 0 || objc_msgSend(v17, "hasPrefix:", @"/AppleInternal/")) && (os_variant_allows_internal_security_policies() & 1) == 0)
+  if ((([firstObject hasPrefix:@"/usr/local/"] & 1) != 0 || objc_msgSend(firstObject, "hasPrefix:", @"/AppleInternal/")) && (os_variant_allows_internal_security_policies() & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v51 = [v17 UTF8String];
+      uTF8String = [firstObject UTF8String];
       *buf = 136446210;
-      v84 = v51;
+      v84 = uTF8String;
       _os_log_error_impl(&dword_274216000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "[wifivelocity] '%{public}s' not allowed on non-internal install variants, will not run task", buf, 0xCu);
     }
 
@@ -319,9 +319,9 @@ LABEL_33:
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v50 = [a4 UTF8String];
+      uTF8String2 = [a4 UTF8String];
       *buf = 136446210;
-      v84 = v50;
+      v84 = uTF8String2;
       _os_log_error_impl(&dword_274216000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "[wifivelocity] '%{public}s' does not exist, will not run task", buf, 0xCu);
     }
 
@@ -471,7 +471,7 @@ LABEL_28:
     v58[6] = v32;
     dispatch_source_set_cancel_handler(v32, v58);
     dispatch_resume(v32);
-    v33 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     [MEMORY[0x277CCABD8] mainQueue];
     v34 = *MEMORY[0x277CCA6A0];
     block[15] = MEMORY[0x277D85DD0];
@@ -489,7 +489,7 @@ LABEL_28:
     block[29] = v76;
     block[23] = v32;
     block[24] = v30;
-    v35 = [v33 addObserverForName:v34 object:? queue:? usingBlock:?];
+    v35 = [defaultCenter addObserverForName:v34 object:? queue:? usingBlock:?];
     v67[5] = v35;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -503,7 +503,7 @@ LABEL_28:
     block[9] = a5;
     block[10] = 0;
     block[11] = a6;
-    *&block[14] = a1;
+    *&block[14] = self;
     block[12] = v76;
     block[13] = v74;
     dispatch_async(MEMORY[0x277D85CD0], block);
@@ -576,7 +576,7 @@ LABEL_16:
   v25[5] = &v30;
   v25[6] = &v26;
   v25[4] = v17;
-  [MEMORY[0x277CCACB0] runTaskWithLaunchPath:a4 arguments:a5 timeout:a6 outputData:a7 errorData:a8 launchHandler:v25 reply:a1];
+  [MEMORY[0x277CCACB0] runTaskWithLaunchPath:a4 arguments:a5 timeout:a6 outputData:a7 errorData:a8 launchHandler:v25 reply:self];
   v18 = dispatch_time(0, 600000000000);
   if (dispatch_semaphore_wait(v17, v18) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -629,7 +629,7 @@ LABEL_16:
   v26[5] = &v31;
   v26[6] = &v27;
   v26[4] = v18;
-  [MEMORY[0x277CCACB0] runTaskWithLaunchPath:a4 arguments:a5 timeout:a6 outputFilePath:a7 errorFilePath:a8 redirectErrorToOutput:a9 launchHandler:a1 reply:v26];
+  [MEMORY[0x277CCACB0] runTaskWithLaunchPath:a4 arguments:a5 timeout:a6 outputFilePath:a7 errorFilePath:a8 redirectErrorToOutput:a9 launchHandler:self reply:v26];
   v19 = dispatch_time(0, 600000000000);
   if (dispatch_semaphore_wait(v18, v19) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -682,7 +682,7 @@ LABEL_16:
   v25[5] = &v30;
   v25[6] = &v26;
   v25[4] = v17;
-  [MEMORY[0x277CCACB0] runTaskWithLaunchPath:a4 arguments:a5 timeout:a6 outputFileHandle:a7 errorFileHandle:a8 launchHandler:v25 reply:a1];
+  [MEMORY[0x277CCACB0] runTaskWithLaunchPath:a4 arguments:a5 timeout:a6 outputFileHandle:a7 errorFileHandle:a8 launchHandler:v25 reply:self];
   v18 = dispatch_time(0, 600000000000);
   if (dispatch_semaphore_wait(v17, v18) >= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {

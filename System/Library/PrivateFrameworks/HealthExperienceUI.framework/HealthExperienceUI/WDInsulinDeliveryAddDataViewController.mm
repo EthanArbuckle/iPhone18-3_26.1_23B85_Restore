@@ -3,10 +3,10 @@
 - (WDAddDataManualEntrySpinner)deliveryReasonEntryItem;
 - (id)defaultMetadata;
 - (id)generateHKObjects;
-- (id)manualEntryItemsForSection:(int64_t)a3;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (void)manualEntryItemDidUpdate:(id)a3;
-- (void)validateDataWithCompletion:(id)a3;
+- (id)manualEntryItemsForSection:(int64_t)section;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (void)manualEntryItemDidUpdate:(id)update;
+- (void)validateDataWithCompletion:(id)completion;
 @end
 
 @implementation WDInsulinDeliveryAddDataViewController
@@ -16,8 +16,8 @@
   dateTimeEntryItem = self->_dateTimeEntryItem;
   if (!dateTimeEntryItem)
   {
-    v4 = [(HKDateCache *)self->super.super._dateCache endOfDayMidnight];
-    v5 = [WDAddDataManualEntryItem twoPartDateRangeItemWithMaximumEndDate:v4];
+    endOfDayMidnight = [(HKDateCache *)self->super.super._dateCache endOfDayMidnight];
+    v5 = [WDAddDataManualEntryItem twoPartDateRangeItemWithMaximumEndDate:endOfDayMidnight];
     v6 = self->_dateTimeEntryItem;
     self->_dateTimeEntryItem = v5;
 
@@ -52,38 +52,38 @@
 {
   v10.receiver = self;
   v10.super_class = WDInsulinDeliveryAddDataViewController;
-  v3 = [(WDAddDataViewController *)&v10 defaultMetadata];
-  v4 = v3;
-  if (!v3)
+  defaultMetadata = [(WDAddDataViewController *)&v10 defaultMetadata];
+  v4 = defaultMetadata;
+  if (!defaultMetadata)
   {
-    v3 = MEMORY[0x1E695E0F8];
+    defaultMetadata = MEMORY[0x1E695E0F8];
   }
 
-  v5 = [v3 mutableCopy];
+  v5 = [defaultMetadata mutableCopy];
 
   v6 = MEMORY[0x1E696AD98];
-  v7 = [(WDInsulinDeliveryAddDataViewController *)self deliveryReasonEntryItem];
-  v8 = [v6 numberWithInteger:{objc_msgSend(v7, "_wd_deliveryReason")}];
+  deliveryReasonEntryItem = [(WDInsulinDeliveryAddDataViewController *)self deliveryReasonEntryItem];
+  v8 = [v6 numberWithInteger:{objc_msgSend(deliveryReasonEntryItem, "_wd_deliveryReason")}];
   [v5 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696BB08]];
 
   return v5;
 }
 
-- (id)manualEntryItemsForSection:(int64_t)a3
+- (id)manualEntryItemsForSection:(int64_t)section
 {
   v9[3] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (section)
   {
     v3 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v5 = [(WDInsulinDeliveryAddDataViewController *)self dateTimeEntryItem];
-    v6 = [(WDDisplayTypeAddDataViewController *)self valueFieldManualEntryItem];
-    v9[1] = v6;
-    v7 = [(WDInsulinDeliveryAddDataViewController *)self deliveryReasonEntryItem];
-    v9[2] = v7;
+    dateTimeEntryItem = [(WDInsulinDeliveryAddDataViewController *)self dateTimeEntryItem];
+    valueFieldManualEntryItem = [(WDDisplayTypeAddDataViewController *)self valueFieldManualEntryItem];
+    v9[1] = valueFieldManualEntryItem;
+    deliveryReasonEntryItem = [(WDInsulinDeliveryAddDataViewController *)self deliveryReasonEntryItem];
+    v9[2] = deliveryReasonEntryItem;
     v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:3];
   }
 
@@ -93,25 +93,25 @@
 - (id)generateHKObjects
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v3 = [(WDInsulinDeliveryAddDataViewController *)self dateTimeEntryItem];
-  v4 = [v3 generateValue];
+  dateTimeEntryItem = [(WDInsulinDeliveryAddDataViewController *)self dateTimeEntryItem];
+  generateValue = [dateTimeEntryItem generateValue];
 
-  v5 = [(WDInsulinDeliveryAddDataViewController *)self defaultMetadata];
-  v6 = [(WDDisplayTypeAddDataViewController *)self valueFieldManualEntryItem];
-  v7 = [v6 generateValue];
+  defaultMetadata = [(WDInsulinDeliveryAddDataViewController *)self defaultMetadata];
+  valueFieldManualEntryItem = [(WDDisplayTypeAddDataViewController *)self valueFieldManualEntryItem];
+  generateValue2 = [valueFieldManualEntryItem generateValue];
 
-  v8 = [(HKDisplayType *)self->super.super._displayType presentation];
-  v9 = [v8 adjustedValueForClientValue:v7];
+  presentation = [(HKDisplayType *)self->super.super._displayType presentation];
+  v9 = [presentation adjustedValueForClientValue:generateValue2];
 
   v10 = [(HKUnitPreferenceController *)self->super.super._unitController unitForDisplayType:self->super.super._displayType];
   v11 = MEMORY[0x1E696C348];
   [v9 doubleValue];
   v12 = [v11 quantityWithUnit:v10 doubleValue:?];
   v13 = MEMORY[0x1E696C358];
-  v14 = [(HKDisplayType *)self->super.super._displayType sampleType];
-  v15 = [v4 startDate];
-  v16 = [v4 endDate];
-  v17 = [v13 quantitySampleWithType:v14 quantity:v12 startDate:v15 endDate:v16 metadata:v5];
+  sampleType = [(HKDisplayType *)self->super.super._displayType sampleType];
+  startDate = [generateValue startDate];
+  endDate = [generateValue endDate];
+  v17 = [v13 quantitySampleWithType:sampleType quantity:v12 startDate:startDate endDate:endDate metadata:defaultMetadata];
 
   v20[0] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
@@ -119,9 +119,9 @@
   return v18;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v4 = 0;
   }
@@ -135,44 +135,44 @@
   return v4;
 }
 
-- (void)manualEntryItemDidUpdate:(id)a3
+- (void)manualEntryItemDidUpdate:(id)update
 {
   v13.receiver = self;
   v13.super_class = WDInsulinDeliveryAddDataViewController;
-  [(WDDisplayTypeAddDataViewController *)&v13 manualEntryItemDidUpdate:a3];
-  v4 = [(WDInsulinDeliveryAddDataViewController *)self dateTimeEntryItem];
-  v5 = [v4 generateValue];
+  [(WDDisplayTypeAddDataViewController *)&v13 manualEntryItemDidUpdate:update];
+  dateTimeEntryItem = [(WDInsulinDeliveryAddDataViewController *)self dateTimeEntryItem];
+  generateValue = [dateTimeEntryItem generateValue];
 
-  v6 = [v5 endDate];
-  v7 = [v5 startDate];
-  [v6 timeIntervalSinceDate:v7];
+  endDate = [generateValue endDate];
+  startDate = [generateValue startDate];
+  [endDate timeIntervalSinceDate:startDate];
   v9 = v8;
 
   validationController = self->super.super._validationController;
-  v11 = [(HKDisplayType *)self->super.super._displayType sampleType];
-  v12 = [(HKManualEntryValidationController *)validationController validateMinimumAllowedDuration:v11 ofType:v9]!= 2;
+  sampleType = [(HKDisplayType *)self->super.super._displayType sampleType];
+  v12 = [(HKManualEntryValidationController *)validationController validateMinimumAllowedDuration:sampleType ofType:v9]!= 2;
 
   [(WDAddDataViewController *)self setSavingEnabled:v12];
 }
 
-- (void)validateDataWithCompletion:(id)a3
+- (void)validateDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WDInsulinDeliveryAddDataViewController *)self dateTimeEntryItem];
-  v6 = [v5 generateValue];
+  completionCopy = completion;
+  dateTimeEntryItem = [(WDInsulinDeliveryAddDataViewController *)self dateTimeEntryItem];
+  generateValue = [dateTimeEntryItem generateValue];
 
   objc_initWeak(&location, self);
-  v7 = [v6 startDate];
-  v8 = [v6 endDate];
+  startDate = [generateValue startDate];
+  endDate = [generateValue endDate];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __69__WDInsulinDeliveryAddDataViewController_validateDataWithCompletion___block_invoke;
   v10[3] = &unk_1E7EEB4A8;
   objc_copyWeak(&v12, &location);
-  v9 = v4;
+  v9 = completionCopy;
   v10[4] = self;
   v11 = v9;
-  [(WDAddDataViewController *)self validateMaximumAllowedDurationFor:v7 endDate:v8 competion:v10];
+  [(WDAddDataViewController *)self validateMaximumAllowedDurationFor:startDate endDate:endDate competion:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);

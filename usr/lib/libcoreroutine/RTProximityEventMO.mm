@@ -1,16 +1,16 @@
 @interface RTProximityEventMO
-+ (id)managedObjectWithEventID:(id)a3 startDate:(id)a4 endDate:(id)a5 relationship:(int64_t)a6 socialScore:(double)a7 frequency:(id)a8 recency:(id)a9 significance:(id)a10 inManagedObjectContext:(id)a11;
-+ (id)managedObjectWithProximityEvent:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithEventID:(id)d startDate:(id)date endDate:(id)endDate relationship:(int64_t)relationship socialScore:(double)score frequency:(id)frequency recency:(id)recency significance:(id)self0 inManagedObjectContext:(id)self1;
++ (id)managedObjectWithProximityEvent:(id)event inManagedObjectContext:(id)context;
 @end
 
 @implementation RTProximityEventMO
 
-+ (id)managedObjectWithProximityEvent:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithProximityEvent:(id)event inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  eventCopy = event;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!eventCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -26,18 +26,18 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [v5 eventID];
-    v9 = [v5 startDate];
-    v10 = [v5 endDate];
-    v11 = [v5 relationship];
-    [v5 socialScore];
+    eventID = [eventCopy eventID];
+    startDate = [eventCopy startDate];
+    endDate = [eventCopy endDate];
+    relationship = [eventCopy relationship];
+    [eventCopy socialScore];
     v13 = v12;
-    v14 = [v5 combinedFrequencyScores];
-    v15 = [v5 combinedRecencyScores];
-    v16 = [v5 combinedSignificanceScores];
-    v17 = [RTProximityEventMO managedObjectWithEventID:v8 startDate:v9 endDate:v10 relationship:v11 socialScore:v14 frequency:v15 recency:v13 significance:v16 inManagedObjectContext:v7];
+    combinedFrequencyScores = [eventCopy combinedFrequencyScores];
+    combinedRecencyScores = [eventCopy combinedRecencyScores];
+    combinedSignificanceScores = [eventCopy combinedSignificanceScores];
+    v17 = [RTProximityEventMO managedObjectWithEventID:eventID startDate:startDate endDate:endDate relationship:relationship socialScore:combinedFrequencyScores frequency:combinedRecencyScores recency:v13 significance:combinedSignificanceScores inManagedObjectContext:v7];
 
     goto LABEL_8;
   }
@@ -59,17 +59,17 @@ LABEL_8:
   return v17;
 }
 
-+ (id)managedObjectWithEventID:(id)a3 startDate:(id)a4 endDate:(id)a5 relationship:(int64_t)a6 socialScore:(double)a7 frequency:(id)a8 recency:(id)a9 significance:(id)a10 inManagedObjectContext:(id)a11
++ (id)managedObjectWithEventID:(id)d startDate:(id)date endDate:(id)endDate relationship:(int64_t)relationship socialScore:(double)score frequency:(id)frequency recency:(id)recency significance:(id)self0 inManagedObjectContext:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = v23;
-  if (v23)
+  dCopy = d;
+  dateCopy = date;
+  endDateCopy = endDate;
+  frequencyCopy = frequency;
+  recencyCopy = recency;
+  significanceCopy = significance;
+  contextCopy = context;
+  v24 = contextCopy;
+  if (contextCopy)
   {
     v38 = 0;
     v39 = &v38;
@@ -82,15 +82,15 @@ LABEL_8:
     v27[2] = __144__RTProximityEventMO_managedObjectWithEventID_startDate_endDate_relationship_socialScore_frequency_recency_significance_inManagedObjectContext___block_invoke;
     v27[3] = &unk_2788D2CC0;
     v35 = &v38;
-    v28 = v23;
-    v29 = v17;
-    v30 = v18;
-    v31 = v19;
-    v36 = a6;
-    v37 = a7;
-    v32 = v20;
-    v33 = v21;
-    v34 = v22;
+    v28 = contextCopy;
+    v29 = dCopy;
+    v30 = dateCopy;
+    v31 = endDateCopy;
+    relationshipCopy = relationship;
+    scoreCopy = score;
+    v32 = frequencyCopy;
+    v33 = recencyCopy;
+    v34 = significanceCopy;
     [v28 performBlockAndWait:v27];
     v25 = v39[5];
 

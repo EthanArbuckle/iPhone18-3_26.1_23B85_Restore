@@ -1,7 +1,7 @@
 @interface UARPAccessoryHardwareUSBPD
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UARPAccessoryHardwareUSBPD)init;
-- (UARPAccessoryHardwareUSBPD)initWithVendorID:(unsigned __int16)a3 productID:(unsigned __int16)a4;
+- (UARPAccessoryHardwareUSBPD)initWithVendorID:(unsigned __int16)d productID:(unsigned __int16)iD;
 - (id)description;
 @end
 
@@ -14,36 +14,36 @@
   return 0;
 }
 
-- (UARPAccessoryHardwareUSBPD)initWithVendorID:(unsigned __int16)a3 productID:(unsigned __int16)a4
+- (UARPAccessoryHardwareUSBPD)initWithVendorID:(unsigned __int16)d productID:(unsigned __int16)iD
 {
   v7.receiver = self;
   v7.super_class = UARPAccessoryHardwareUSBPD;
   result = [(UARPAccessoryHardwareID *)&v7 initWithTransport:8];
   if (result)
   {
-    result->_vendorID = a3;
-    result->_productID = a4;
+    result->_vendorID = d;
+    result->_productID = iD;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v9 = 1;
     }
 
     else
     {
-      v5 = v4;
-      v6 = [(UARPAccessoryHardwareID *)self transport];
-      if (v6 == [(UARPAccessoryHardwareID *)v5 transport]&& (vendorID = self->_vendorID, vendorID == [(UARPAccessoryHardwareUSBPD *)v5 vendorID]))
+      v5 = equalCopy;
+      transport = [(UARPAccessoryHardwareID *)self transport];
+      if (transport == [(UARPAccessoryHardwareID *)v5 transport]&& (vendorID = self->_vendorID, vendorID == [(UARPAccessoryHardwareUSBPD *)v5 vendorID]))
       {
         productID = self->_productID;
         v9 = productID == [(UARPAccessoryHardwareUSBPD *)v5 productID];

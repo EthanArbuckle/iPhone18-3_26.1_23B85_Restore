@@ -1,52 +1,52 @@
 @interface CNVisualIdentityEditablePrimaryAvatarViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_axUpdateTextFieldWithProviderItem:(id)a3;
-- (void)updateWithProviderItem:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_axUpdateTextFieldWithProviderItem:(id)item;
+- (void)updateWithProviderItem:(id)item;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation CNVisualIdentityEditablePrimaryAvatarViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNPhotoPickerProviderItem"];
-  [v3 validateClass:@"CNPhotoPickerEmojiProviderItem"];
-  [v3 validateClass:@"CNPhotoPickerMonogramProviderItem"];
-  [v3 validateClass:@"CNPhotoPickerEmojiProviderItem" isKindOfClass:@"CNPhotoPickerProviderItem"];
-  [v3 validateClass:@"CNPhotoPickerMonogramProviderItem" isKindOfClass:@"CNPhotoPickerProviderItem"];
-  [v3 validateClass:@"CNPhotoPickerEmojiProviderItem" conformsToProtocol:@"CNVisualIdentityPickerTextEditableProviderItem"];
-  [v3 validateClass:@"CNPhotoPickerMonogramProviderItem" conformsToProtocol:@"CNVisualIdentityPickerTextEditableProviderItem"];
-  [v3 validateClass:@"CNVisualIdentityEditablePrimaryAvatarViewController" hasInstanceMethod:@"providerItem" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"CNVisualIdentityPickerTextEditableProviderItem" hasRequiredInstanceMethod:@"backgroundColor"];
-  [v3 validateClass:@"CNVisualIdentityEditablePrimaryAvatarViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CNVisualIdentityEditablePrimaryAvatarViewController" hasInstanceMethod:@"textField" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNPhotoPickerProviderItem"];
+  [validationsCopy validateClass:@"CNPhotoPickerEmojiProviderItem"];
+  [validationsCopy validateClass:@"CNPhotoPickerMonogramProviderItem"];
+  [validationsCopy validateClass:@"CNPhotoPickerEmojiProviderItem" isKindOfClass:@"CNPhotoPickerProviderItem"];
+  [validationsCopy validateClass:@"CNPhotoPickerMonogramProviderItem" isKindOfClass:@"CNPhotoPickerProviderItem"];
+  [validationsCopy validateClass:@"CNPhotoPickerEmojiProviderItem" conformsToProtocol:@"CNVisualIdentityPickerTextEditableProviderItem"];
+  [validationsCopy validateClass:@"CNPhotoPickerMonogramProviderItem" conformsToProtocol:@"CNVisualIdentityPickerTextEditableProviderItem"];
+  [validationsCopy validateClass:@"CNVisualIdentityEditablePrimaryAvatarViewController" hasInstanceMethod:@"providerItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"CNVisualIdentityPickerTextEditableProviderItem" hasRequiredInstanceMethod:@"backgroundColor"];
+  [validationsCopy validateClass:@"CNVisualIdentityEditablePrimaryAvatarViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CNVisualIdentityEditablePrimaryAvatarViewController" hasInstanceMethod:@"textField" withFullSignature:{"@", 0}];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CNVisualIdentityEditablePrimaryAvatarViewControllerAccessibility;
-  [(CNVisualIdentityEditablePrimaryAvatarViewControllerAccessibility *)&v5 viewDidAppear:a3];
+  [(CNVisualIdentityEditablePrimaryAvatarViewControllerAccessibility *)&v5 viewDidAppear:appear];
   v4 = [(CNVisualIdentityEditablePrimaryAvatarViewControllerAccessibility *)self safeValueForKey:@"providerItem"];
   [(CNVisualIdentityEditablePrimaryAvatarViewControllerAccessibility *)self _axUpdateTextFieldWithProviderItem:v4];
 }
 
-- (void)updateWithProviderItem:(id)a3
+- (void)updateWithProviderItem:(id)item
 {
   v5.receiver = self;
   v5.super_class = CNVisualIdentityEditablePrimaryAvatarViewControllerAccessibility;
-  v4 = a3;
-  [(CNVisualIdentityEditablePrimaryAvatarViewControllerAccessibility *)&v5 updateWithProviderItem:v4];
-  [(CNVisualIdentityEditablePrimaryAvatarViewControllerAccessibility *)self _axUpdateTextFieldWithProviderItem:v4, v5.receiver, v5.super_class];
+  itemCopy = item;
+  [(CNVisualIdentityEditablePrimaryAvatarViewControllerAccessibility *)&v5 updateWithProviderItem:itemCopy];
+  [(CNVisualIdentityEditablePrimaryAvatarViewControllerAccessibility *)self _axUpdateTextFieldWithProviderItem:itemCopy, v5.receiver, v5.super_class];
 }
 
-- (void)_axUpdateTextFieldWithProviderItem:(id)a3
+- (void)_axUpdateTextFieldWithProviderItem:(id)item
 {
   v14 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  itemCopy = item;
   v5 = MEMORY[0x29C2D1D50](@"CNVisualIdentityPickerTextEditableProviderItem");
-  v6 = [v4 conformsToProtocol:v5];
+  v6 = [itemCopy conformsToProtocol:v5];
 
   v13[0] = 0;
   objc_opt_class();
@@ -58,7 +58,7 @@
   {
     v13[0] = 0;
     objc_opt_class();
-    v9 = [v4 safeValueForKey:@"backgroundColor"];
+    v9 = [itemCopy safeValueForKey:@"backgroundColor"];
     v10 = __UIAccessibilityCastAsClass();
 
     v11 = AXLogTemp();

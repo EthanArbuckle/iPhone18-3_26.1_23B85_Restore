@@ -1,10 +1,10 @@
 @interface MKETAProvider
 - (BOOL)_areDistanceAndETAInformationAvailable;
-- (BOOL)_shouldUpdateETAForMapView:(id)a3;
+- (BOOL)_shouldUpdateETAForMapView:(id)view;
 - (BOOL)isLikelyToReturnETA;
-- (MKETAProvider)initWithLineItem:(id)a3;
-- (MKETAProvider)initWithMapItem:(id)a3;
-- (MKETAProvider)initWithPlaceItem:(id)a3;
+- (MKETAProvider)initWithLineItem:(id)item;
+- (MKETAProvider)initWithMapItem:(id)item;
+- (MKETAProvider)initWithPlaceItem:(id)item;
 - (MKETAProviderDelegate)delegate;
 - (NSHashTable)observers;
 - (NSLock)observersLock;
@@ -16,31 +16,31 @@
 - (unint64_t)etaTransportType;
 - (void)_cancelTimer;
 - (void)_commonInit;
-- (void)_configureETAForMapItem:(id)a3;
+- (void)_configureETAForMapItem:(id)item;
 - (void)_didEnterBackground;
-- (void)_locationManagerApprovalDidChange:(id)a3;
+- (void)_locationManagerApprovalDidChange:(id)change;
 - (void)_notifyETAAllObservers;
 - (void)_notifyLocationAllObservers;
 - (void)_refreshTimer;
 - (void)_startTimer;
 - (void)_updateETA;
-- (void)_updateETADisplayWithTransportType:(unint64_t)a3 travelTime:(double)a4 distance:(double)a5;
-- (void)_updateETAHandler:(id)a3;
+- (void)_updateETADisplayWithTransportType:(unint64_t)type travelTime:(double)time distance:(double)distance;
+- (void)_updateETAHandler:(id)handler;
 - (void)_willEnterForeground;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)cancel;
-- (void)configureWithNearestStationMapItem:(id)a3;
+- (void)configureWithNearestStationMapItem:(id)item;
 - (void)dealloc;
-- (void)findDirectionsTypeForOriginCoordinate:(CLLocationCoordinate2D)a3 destinationCoordinate:(CLLocationCoordinate2D)a4 handler:(id)a5;
-- (void)locationManagerUpdatedLocation:(id)a3;
+- (void)findDirectionsTypeForOriginCoordinate:(CLLocationCoordinate2D)coordinate destinationCoordinate:(CLLocationCoordinate2D)destinationCoordinate handler:(id)handler;
+- (void)locationManagerUpdatedLocation:(id)location;
 - (void)pause;
-- (void)quickRouteManager:(id)a3 didUpdateETA:(id)a4 error:(id)a5 animated:(BOOL)a6;
-- (void)removeObserver:(id)a3;
+- (void)quickRouteManager:(id)manager didUpdateETA:(id)a error:(id)error animated:(BOOL)animated;
+- (void)removeObserver:(id)observer;
 - (void)restart;
-- (void)setAutomobileOptions:(id)a3;
-- (void)setCyclingOptions:(id)a3;
-- (void)setTransitOptions:(id)a3;
-- (void)setWalkingOptions:(id)a3;
+- (void)setAutomobileOptions:(id)options;
+- (void)setCyclingOptions:(id)options;
+- (void)setTransitOptions:(id)options;
+- (void)setWalkingOptions:(id)options;
 - (void)start;
 @end
 
@@ -53,20 +53,20 @@
   return WeakRetained;
 }
 
-- (void)findDirectionsTypeForOriginCoordinate:(CLLocationCoordinate2D)a3 destinationCoordinate:(CLLocationCoordinate2D)a4 handler:(id)a5
+- (void)findDirectionsTypeForOriginCoordinate:(CLLocationCoordinate2D)coordinate destinationCoordinate:(CLLocationCoordinate2D)destinationCoordinate handler:(id)handler
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v7 = a3.longitude;
-  v8 = a3.latitude;
-  v10 = a5;
-  if (v10)
+  longitude = destinationCoordinate.longitude;
+  latitude = destinationCoordinate.latitude;
+  v7 = coordinate.longitude;
+  v8 = coordinate.latitude;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v11 = [(MKETAProvider *)self delegate];
-    if (v11)
+    delegate = [(MKETAProvider *)self delegate];
+    if (delegate)
     {
-      v12 = [(MKETAProvider *)self delegate];
-      v13 = [v12 mapTypeForETAProvider:self];
+      delegate2 = [(MKETAProvider *)self delegate];
+      v13 = [delegate2 mapTypeForETAProvider:self];
     }
 
     else
@@ -78,9 +78,9 @@
     v39 = &v38;
     v40 = 0x2020000000;
     v41 = [MEMORY[0x1E69A1DF8] idealTransportTypeForOrigin:v13 destination:v8 mapType:{v7, latitude, longitude}];
-    v14 = [MEMORY[0x1E696AAE8] mainBundle];
-    v15 = [v14 bundleIdentifier];
-    v16 = [v15 isEqualToString:*MEMORY[0x1E69A1A78]];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v16 = [bundleIdentifier isEqualToString:*MEMORY[0x1E69A1A78]];
 
     if ((v16 & 1) == 0)
     {
@@ -95,7 +95,7 @@
         v25 = qword_1A30F7B08[v24];
       }
 
-      v10[2](v10, v25);
+      handlerCopy[2](handlerCopy, v25);
       goto LABEL_27;
     }
 
@@ -106,8 +106,8 @@
     v32 = &unk_1E76CCCA8;
     objc_copyWeak(&v36, &location);
     v35 = &v38;
-    v33 = self;
-    v34 = v10;
+    selfCopy = self;
+    v34 = handlerCopy;
     v17 = v30;
     if (GEOConfigGetBOOL())
     {
@@ -136,7 +136,7 @@
               }
 
               v21 = +[MKMapsSuggestionsPredictor sharedPredictor];
-              v22 = [v19 data];
+              data = [v19 data];
               v23 = NSDataFromCLLocationCoordinates(v8, v7);
               *buf = MEMORY[0x1E69E9820];
               v43 = 3221225472;
@@ -144,7 +144,7 @@
               v45 = &unk_1E76C6D90;
               v46 = v20;
               v47 = v48;
-              [v21 transportModeForDestinationMapItemData:v22 originCoordinateData:v23 handler:buf];
+              [v21 transportModeForDestinationMapItemData:data originCoordinateData:v23 handler:buf];
 
               _Block_object_dispose(v48, 8);
               goto LABEL_35;
@@ -417,40 +417,40 @@ void __85__MKETAProvider_findDirectionsTypeForOriginCoordinate_destinationCoordi
   (*(*(a1 + 32) + 16))(*(a1 + 32), v5);
 }
 
-- (void)quickRouteManager:(id)a3 didUpdateETA:(id)a4 error:(id)a5 animated:(BOOL)a6
+- (void)quickRouteManager:(id)manager didUpdateETA:(id)a error:(id)error animated:(BOOL)animated
 {
-  v7 = a4;
-  v8 = [v7 transportType];
-  [v7 travelTime];
+  aCopy = a;
+  transportType = [aCopy transportType];
+  [aCopy travelTime];
   v10 = v9;
-  [v7 distance];
+  [aCopy distance];
   v12 = v11;
 
-  [(MKETAProvider *)self _updateETADisplayWithTransportType:v8 travelTime:v10 distance:v12];
+  [(MKETAProvider *)self _updateETADisplayWithTransportType:transportType travelTime:v10 distance:v12];
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v11 = a3;
-  v4 = [v11 lastLocation];
-  if (v4)
+  locationCopy = location;
+  lastLocation = [locationCopy lastLocation];
+  if (lastLocation)
   {
 
 LABEL_4:
-    v6 = [v11 lastLocation];
-    v7 = v6;
-    if (v6)
+    lastLocation2 = [locationCopy lastLocation];
+    v7 = lastLocation2;
+    if (lastLocation2)
     {
-      v8 = v6;
+      lastGoodLocation = lastLocation2;
     }
 
     else
     {
-      v8 = [v11 lastGoodLocation];
+      lastGoodLocation = [locationCopy lastGoodLocation];
     }
 
     currentLocation = self->_currentLocation;
-    self->_currentLocation = v8;
+    self->_currentLocation = lastGoodLocation;
 
     v10 = +[MKLocationManager sharedLocationManager];
     [v10 stopLocationUpdateWithObserver:self];
@@ -461,9 +461,9 @@ LABEL_4:
     goto LABEL_8;
   }
 
-  v5 = [v11 lastGoodLocation];
+  lastGoodLocation2 = [locationCopy lastGoodLocation];
 
-  if (v5)
+  if (lastGoodLocation2)
   {
     goto LABEL_4;
   }
@@ -471,7 +471,7 @@ LABEL_4:
 LABEL_8:
 }
 
-- (void)_updateETADisplayWithTransportType:(unint64_t)a3 travelTime:(double)a4 distance:(double)a5
+- (void)_updateETADisplayWithTransportType:(unint64_t)type travelTime:(double)time distance:(double)distance
 {
   self->_distanceOrETAWasFound = 0;
   if (!self->_active)
@@ -479,40 +479,40 @@ LABEL_8:
     return;
   }
 
-  if (a4 > 30.0)
+  if (time > 30.0)
   {
-    self->_etaTransportType = a3;
-    self->_etaTravelTime = a4;
+    self->_etaTransportType = type;
+    self->_etaTravelTime = time;
     self->_distanceOrETAWasFound = 1;
   }
 
-  v8 = [(MKETAProvider *)self currentMapItem];
-  v9 = [_MKQuickRouteManager isLikelyToReturnETAForLocation:v8];
+  currentMapItem = [(MKETAProvider *)self currentMapItem];
+  v9 = [_MKQuickRouteManager isLikelyToReturnETAForLocation:currentMapItem];
 
   if (!v9)
   {
     v10 = +[MKLocationManager sharedLocationManager];
-    v11 = [v10 currentLocation];
+    currentLocation = [v10 currentLocation];
 
-    if (v11)
+    if (currentLocation)
     {
-      [v11 coordinate];
-      v12 = [(MKETAProvider *)self currentMapItem];
-      [v12 _coordinate];
+      [currentLocation coordinate];
+      currentMapItem2 = [(MKETAProvider *)self currentMapItem];
+      [currentMapItem2 _coordinate];
 
       GEOCalculateDistance();
-      a5 = v13;
+      distance = v13;
       self->_distanceOrETAWasFound = 1;
     }
   }
 
-  obj = [MEMORY[0x1E696AEC0] _navigation_localizedStringForDistance:0 detail:1 unitFormat:0 locale:0 useMetric:0 useYards:a5];
+  obj = [MEMORY[0x1E696AEC0] _navigation_localizedStringForDistance:0 detail:1 unitFormat:0 locale:0 useMetric:0 useYards:distance];
   objc_storeStrong(&self->_rawDistanceString, obj);
-  self->_distance = a5;
+  self->_distance = distance;
   nearestStationItem = self->_nearestStationItem;
   if (!nearestStationItem)
   {
-    if (a5 >= 3.0)
+    if (distance >= 3.0)
     {
       objc_storeStrong(&self->_distanceTextItem, obj);
       self->_distanceOrETAWasFound = 1;
@@ -526,33 +526,33 @@ LABEL_8:
     goto LABEL_23;
   }
 
-  v15 = [(MKMapItem *)nearestStationItem name];
-  v16 = [v15 length];
+  name = [(MKMapItem *)nearestStationItem name];
+  v16 = [name length];
 
-  if (a5 < 3.0)
+  if (distance < 3.0)
   {
     if (!v16)
     {
       goto LABEL_22;
     }
 
-    v17 = [(MKMapItem *)self->_nearestStationItem name];
+    name2 = [(MKMapItem *)self->_nearestStationItem name];
     goto LABEL_20;
   }
 
   if (!v16)
   {
-    v17 = obj;
+    name2 = obj;
 LABEL_20:
     distanceTextItem = self->_distanceTextItem;
-    self->_distanceTextItem = v17;
+    self->_distanceTextItem = name2;
     goto LABEL_21;
   }
 
   v18 = MEMORY[0x1E696AEC0];
   distanceTextItem = _MKLocalizedStringFromThisBundle(@"line_card_nearest_station_distance_format");
-  v20 = [(MKMapItem *)self->_nearestStationItem name];
-  v21 = [v18 localizedStringWithFormat:distanceTextItem, v20, obj];
+  name3 = [(MKMapItem *)self->_nearestStationItem name];
+  v21 = [v18 localizedStringWithFormat:distanceTextItem, name3, obj];
   v22 = self->_distanceTextItem;
   self->_distanceTextItem = v21;
 
@@ -563,8 +563,8 @@ LABEL_22:
   if (v23)
   {
 LABEL_23:
-    v24 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v24 postNotificationName:@"MapsButtonETAUpdatedNotification" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MapsButtonETAUpdatedNotification" object:self userInfo:0];
   }
 
 LABEL_24:
@@ -583,34 +583,34 @@ LABEL_24:
   {
     nearestStationItem = self->_mapItem;
 LABEL_2:
-    v3 = nearestStationItem;
+    mapItem = nearestStationItem;
     goto LABEL_5;
   }
 
-  v3 = [(_MKPlaceItem *)self->_placeItem mapItem];
+  mapItem = [(_MKPlaceItem *)self->_placeItem mapItem];
 LABEL_5:
 
-  return v3;
+  return mapItem;
 }
 
-- (void)_configureETAForMapItem:(id)a3
+- (void)_configureETAForMapItem:(id)item
 {
-  v4 = a3;
-  if (v4 && self->_active)
+  itemCopy = item;
+  if (itemCopy && self->_active)
   {
     quickRouteManager = self->_quickRouteManager;
-    v13 = v4;
+    v13 = itemCopy;
     if (!quickRouteManager)
     {
       v6 = objc_alloc_init(_MKQuickRouteManager);
       v7 = self->_quickRouteManager;
       self->_quickRouteManager = v6;
 
-      v4 = v13;
+      itemCopy = v13;
       quickRouteManager = self->_quickRouteManager;
     }
 
-    [(_MKQuickRouteManager *)quickRouteManager setMapItem:v4];
+    [(_MKQuickRouteManager *)quickRouteManager setMapItem:itemCopy];
     [(_MKQuickRouteManager *)self->_quickRouteManager setDelegate:self];
     [(_MKQuickRouteManager *)self->_quickRouteManager setTransportTypeFinder:self];
     [(_MKQuickRouteManager *)self->_quickRouteManager setView:self];
@@ -619,41 +619,41 @@ LABEL_5:
     [(_MKQuickRouteManager *)self->_quickRouteManager setTransitOptions:self->_transitOptions];
     [(_MKQuickRouteManager *)self->_quickRouteManager setCyclingOptions:self->_cyclingOptions];
     [(_MKQuickRouteManager *)self->_quickRouteManager setAllowsDistantETA:self->_allowsDistantETA];
-    v8 = [(MKETAProvider *)self _areDistanceAndETAInformationAvailable];
+    _areDistanceAndETAInformationAvailable = [(MKETAProvider *)self _areDistanceAndETAInformationAvailable];
     v9 = +[MKLocationManager sharedLocationManager];
     v10 = v9;
-    if (v8)
+    if (_areDistanceAndETAInformationAvailable)
     {
       [v9 startLocationUpdateWithObserver:self];
     }
 
     else
     {
-      v11 = [v9 isLocationServicesAuthorizationNeeded];
+      isLocationServicesAuthorizationNeeded = [v9 isLocationServicesAuthorizationNeeded];
 
-      v4 = v13;
-      if (!v11)
+      itemCopy = v13;
+      if (!isLocationServicesAuthorizationNeeded)
       {
         goto LABEL_10;
       }
 
-      v12 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v12 addObserver:self selector:sel__updateETA name:MKLocationManagerApprovalDidChangeNotification object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__updateETA name:MKLocationManagerApprovalDidChangeNotification object:0];
 
       v10 = +[MKLocationManager sharedLocationManager];
       [v10 requestWhenInUseAuthorization];
     }
 
-    v4 = v13;
+    itemCopy = v13;
   }
 
 LABEL_10:
 }
 
-- (void)_updateETAHandler:(id)a3
+- (void)_updateETAHandler:(id)handler
 {
-  v4 = [a3 object];
-  v5 = [(MKETAProvider *)self _shouldUpdateETAForMapView:v4];
+  object = [handler object];
+  v5 = [(MKETAProvider *)self _shouldUpdateETAForMapView:object];
 
   if (v5)
   {
@@ -662,10 +662,10 @@ LABEL_10:
   }
 }
 
-- (BOOL)_shouldUpdateETAForMapView:(id)a3
+- (BOOL)_shouldUpdateETAForMapView:(id)view
 {
-  v3 = a3;
-  v4 = v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (![v3 mapType] || objc_msgSend(v3, "mapType") == 105 || objc_msgSend(v3, "mapType") == 104 || objc_msgSend(v3, "mapType") == 108);
+  viewCopy = view;
+  v4 = viewCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (![viewCopy mapType] || objc_msgSend(viewCopy, "mapType") == 105 || objc_msgSend(viewCopy, "mapType") == 104 || objc_msgSend(viewCopy, "mapType") == 108);
 
   return v4;
 }
@@ -689,25 +689,25 @@ LABEL_10:
   if ([v3 isLocationServicesAvailable] && self->_quickRouteManager && self->_active)
   {
     v4 = +[MKLocationManager sharedLocationManager];
-    v5 = [v4 isAuthorizedForPreciseLocation];
+    isAuthorizedForPreciseLocation = [v4 isAuthorizedForPreciseLocation];
   }
 
   else
   {
-    v5 = 0;
+    isAuthorizedForPreciseLocation = 0;
   }
 
-  return v5;
+  return isAuthorizedForPreciseLocation;
 }
 
-- (void)setCyclingOptions:(id)a3
+- (void)setCyclingOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   p_cyclingOptions = &self->_cyclingOptions;
-  if (self->_cyclingOptions != v5)
+  if (self->_cyclingOptions != optionsCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_cyclingOptions, a3);
+    v7 = optionsCopy;
+    objc_storeStrong(p_cyclingOptions, options);
     [(_MKQuickRouteManager *)self->_quickRouteManager setCyclingOptions:v7];
     p_cyclingOptions = [(MKETAProvider *)self _updateETA];
   }
@@ -715,14 +715,14 @@ LABEL_10:
   MEMORY[0x1EEE66BE0](p_cyclingOptions);
 }
 
-- (void)setTransitOptions:(id)a3
+- (void)setTransitOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   p_transitOptions = &self->_transitOptions;
-  if (self->_transitOptions != v5)
+  if (self->_transitOptions != optionsCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_transitOptions, a3);
+    v7 = optionsCopy;
+    objc_storeStrong(p_transitOptions, options);
     [(_MKQuickRouteManager *)self->_quickRouteManager setTransitOptions:v7];
     p_transitOptions = [(MKETAProvider *)self _updateETA];
   }
@@ -730,14 +730,14 @@ LABEL_10:
   MEMORY[0x1EEE66BE0](p_transitOptions);
 }
 
-- (void)setWalkingOptions:(id)a3
+- (void)setWalkingOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   p_walkingOptions = &self->_walkingOptions;
-  if (self->_walkingOptions != v5)
+  if (self->_walkingOptions != optionsCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_walkingOptions, a3);
+    v7 = optionsCopy;
+    objc_storeStrong(p_walkingOptions, options);
     [(_MKQuickRouteManager *)self->_quickRouteManager setWalkingOptions:v7];
     p_walkingOptions = [(MKETAProvider *)self _updateETA];
   }
@@ -745,29 +745,29 @@ LABEL_10:
   MEMORY[0x1EEE66BE0](p_walkingOptions);
 }
 
-- (void)setAutomobileOptions:(id)a3
+- (void)setAutomobileOptions:(id)options
 {
-  v5 = a3;
-  if (self->_automobileOptions != v5)
+  optionsCopy = options;
+  if (self->_automobileOptions != optionsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_automobileOptions, a3);
+    v6 = optionsCopy;
+    objc_storeStrong(&self->_automobileOptions, options);
     [(_MKQuickRouteManager *)self->_quickRouteManager setAutomobileOptions:self->_automobileOptions];
     [(MKETAProvider *)self _updateETA];
-    v5 = v6;
+    optionsCopy = v6;
   }
 }
 
-- (void)configureWithNearestStationMapItem:(id)a3
+- (void)configureWithNearestStationMapItem:(id)item
 {
-  v5 = a3;
-  if (self->_nearestStationItem != v5)
+  itemCopy = item;
+  if (self->_nearestStationItem != itemCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_nearestStationItem, a3);
+    v9 = itemCopy;
+    objc_storeStrong(&self->_nearestStationItem, item);
     [(MKETAProvider *)self start];
-    v6 = [(MKMapItem *)v9 _geoMapItem];
-    if (v6)
+    _geoMapItem = [(MKMapItem *)v9 _geoMapItem];
+    if (_geoMapItem)
     {
       [(_MKQuickRouteManager *)self->_quickRouteManager updateETA];
     }
@@ -781,14 +781,14 @@ LABEL_10:
       self->_rawDistanceString = 0;
     }
 
-    v5 = v9;
+    itemCopy = v9;
   }
 }
 
 - (BOOL)isLikelyToReturnETA
 {
-  v2 = [(MKETAProvider *)self currentMapItem];
-  v3 = [_MKQuickRouteManager isLikelyToReturnETAForLocation:v2];
+  currentMapItem = [(MKETAProvider *)self currentMapItem];
+  v3 = [_MKQuickRouteManager isLikelyToReturnETAForLocation:currentMapItem];
 
   return v3;
 }
@@ -861,14 +861,14 @@ LABEL_10:
 - (void)_notifyLocationAllObservers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(MKETAProvider *)self observersLock];
-  [v3 lock];
+  observersLock = [(MKETAProvider *)self observersLock];
+  [observersLock lock];
 
-  v4 = [(MKETAProvider *)self observers];
-  v5 = [v4 copy];
+  observers = [(MKETAProvider *)self observers];
+  v5 = [observers copy];
 
-  v6 = [(MKETAProvider *)self observersLock];
-  [v6 unlock];
+  observersLock2 = [(MKETAProvider *)self observersLock];
+  [observersLock2 unlock];
 
   v15 = 0u;
   v16 = 0u;
@@ -910,14 +910,14 @@ LABEL_10:
 - (void)_notifyETAAllObservers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(MKETAProvider *)self observersLock];
-  [v3 lock];
+  observersLock = [(MKETAProvider *)self observersLock];
+  [observersLock lock];
 
-  v4 = [(MKETAProvider *)self observers];
-  v5 = [v4 copy];
+  observers = [(MKETAProvider *)self observers];
+  v5 = [observers copy];
 
-  v6 = [(MKETAProvider *)self observersLock];
-  [v6 unlock];
+  observersLock2 = [(MKETAProvider *)self observersLock];
+  [observersLock2 unlock];
 
   v15 = 0u;
   v16 = 0u;
@@ -956,35 +956,35 @@ LABEL_10:
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
-    v5 = [(MKETAProvider *)self observersLock];
-    [v5 lock];
+    observerCopy = observer;
+    observersLock = [(MKETAProvider *)self observersLock];
+    [observersLock lock];
 
-    v6 = [(MKETAProvider *)self observers];
-    [v6 removeObject:v4];
+    observers = [(MKETAProvider *)self observers];
+    [observers removeObject:observerCopy];
 
-    v7 = [(MKETAProvider *)self observersLock];
-    [v7 unlock];
+    observersLock2 = [(MKETAProvider *)self observersLock];
+    [observersLock2 unlock];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
-    v5 = [(MKETAProvider *)self observersLock];
-    [v5 lock];
+    observerCopy = observer;
+    observersLock = [(MKETAProvider *)self observersLock];
+    [observersLock lock];
 
-    v6 = [(MKETAProvider *)self observers];
-    [v6 addObject:v4];
+    observers = [(MKETAProvider *)self observers];
+    [observers addObject:observerCopy];
 
-    v7 = [(MKETAProvider *)self observersLock];
-    [v7 unlock];
+    observersLock2 = [(MKETAProvider *)self observersLock];
+    [observersLock2 unlock];
   }
 }
 
@@ -1008,9 +1008,9 @@ LABEL_10:
   observers = self->_observers;
   if (!observers)
   {
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v5 = self->_observers;
-    self->_observers = v4;
+    self->_observers = weakObjectsHashTable;
 
     observers = self->_observers;
   }
@@ -1075,7 +1075,7 @@ void __37__MKETAProvider__willEnterForeground__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_locationManagerApprovalDidChange:(id)a3
+- (void)_locationManagerApprovalDidChange:(id)change
 {
   v5 = +[MKLocationManager sharedLocationManager];
   if ([v5 isLocationServicesAvailable])
@@ -1124,23 +1124,23 @@ void __37__MKETAProvider__willEnterForeground__block_invoke(uint64_t a1)
   if (!self->_active)
   {
     self->_active = 1;
-    v4 = [(MKETAProvider *)self currentMapItem];
-    [(MKETAProvider *)self _configureETAForMapItem:v4];
+    currentMapItem = [(MKETAProvider *)self currentMapItem];
+    [(MKETAProvider *)self _configureETAForMapItem:currentMapItem];
   }
 }
 
 - (void)_commonInit
 {
   v3 = +[MKLocationManager sharedLocationManager];
-  v4 = [v3 lastGoodLocation];
+  lastGoodLocation = [v3 lastGoodLocation];
   currentLocation = self->_currentLocation;
-  self->_currentLocation = v4;
+  self->_currentLocation = lastGoodLocation;
 
-  v6 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  if (v6 || (v6 = self->_mapItem) != 0)
+  mapItem = [(_MKPlaceItem *)self->_placeItem mapItem];
+  if (mapItem || (mapItem = self->_mapItem) != 0)
   {
-    v11 = v6;
-    [(MKETAProvider *)self _configureETAForMapItem:v6];
+    v11 = mapItem;
+    [(MKETAProvider *)self _configureETAForMapItem:mapItem];
   }
 
   else
@@ -1148,17 +1148,17 @@ void __37__MKETAProvider__willEnterForeground__block_invoke(uint64_t a1)
     v11 = 0;
   }
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 addObserver:self selector:sel__locationManagerApprovalDidChange_ name:MKLocationManagerApprovalDidChangeNotification object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__locationManagerApprovalDidChange_ name:MKLocationManagerApprovalDidChangeNotification object:0];
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 addObserver:self selector:sel__updateETAHandler_ name:@"MKMapViewDidChangeMapTypeNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__updateETAHandler_ name:@"MKMapViewDidChangeMapTypeNotification" object:0];
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 addObserver:self selector:sel__willEnterForeground name:@"MKApplicationStateWillEnterForegroundNotification" object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__willEnterForeground name:@"MKApplicationStateWillEnterForegroundNotification" object:0];
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 addObserver:self selector:sel__didEnterBackground name:@"MKApplicationStateDidEnterBackgroundNotification" object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel__didEnterBackground name:@"MKApplicationStateDidEnterBackgroundNotification" object:0];
 }
 
 - (void)dealloc
@@ -1169,48 +1169,48 @@ void __37__MKETAProvider__willEnterForeground__block_invoke(uint64_t a1)
   [(MKETAProvider *)&v3 dealloc];
 }
 
-- (MKETAProvider)initWithLineItem:(id)a3
+- (MKETAProvider)initWithLineItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = MKETAProvider;
   v6 = [(MKETAProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lineItem, a3);
+    objc_storeStrong(&v6->_lineItem, item);
     [(MKETAProvider *)v7 _commonInit];
   }
 
   return v7;
 }
 
-- (MKETAProvider)initWithMapItem:(id)a3
+- (MKETAProvider)initWithMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = MKETAProvider;
   v6 = [(MKETAProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapItem, a3);
+    objc_storeStrong(&v6->_mapItem, item);
     [(MKETAProvider *)v7 _commonInit];
   }
 
   return v7;
 }
 
-- (MKETAProvider)initWithPlaceItem:(id)a3
+- (MKETAProvider)initWithPlaceItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = MKETAProvider;
   v6 = [(MKETAProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_placeItem, a3);
+    objc_storeStrong(&v6->_placeItem, item);
     [(MKETAProvider *)v7 _commonInit];
   }
 

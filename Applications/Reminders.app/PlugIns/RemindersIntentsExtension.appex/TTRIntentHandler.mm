@@ -1,14 +1,14 @@
 @interface TTRIntentHandler
-- (id)handlerForIntent:(id)a3;
+- (id)handlerForIntent:(id)intent;
 @end
 
 @implementation TTRIntentHandler
 
-- (id)handlerForIntent:(id)a3
+- (id)handlerForIntent:(id)intent
 {
-  v4 = a3;
-  v5 = self;
-  TTRIntentHandler.handler(for:)(v4, v8);
+  intentCopy = intent;
+  selfCopy = self;
+  TTRIntentHandler.handler(for:)(intentCopy, v8);
 
   sub_100008A10(v8, v8[3]);
   v6 = sub_100030D24();

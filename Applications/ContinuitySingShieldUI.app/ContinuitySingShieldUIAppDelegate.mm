@@ -1,11 +1,11 @@
 @interface ContinuitySingShieldUIAppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 @end
 
 @implementation ContinuitySingShieldUIAppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   v5 = sub_100005368();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -14,7 +14,7 @@
     v10 = 136315650;
     v11 = "[ContinuitySingShieldUIAppDelegate application:didFinishLaunchingWithOptions:]";
     v12 = 2048;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 2112;
     v15 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s: <%p> add ui state tracker %@", &v10, 0x20u);
@@ -27,7 +27,7 @@
     v10 = 136315650;
     v11 = "[ContinuitySingShieldUIAppDelegate application:didFinishLaunchingWithOptions:]";
     v12 = 2048;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 2112;
     v15 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s: <%p> add background pause event manager %@", &v10, 0x20u);
@@ -36,15 +36,15 @@
   return 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
+  sessionCopy = session;
   v6 = [UISceneConfiguration alloc];
-  v7 = [v5 role];
-  v8 = [v6 initWithName:0 sessionRole:v7];
+  role = [sessionCopy role];
+  v8 = [v6 initWithName:0 sessionRole:role];
 
-  v9 = [v5 role];
-  v10 = [v9 isEqualToString:UIWindowSceneSessionRoleApplication];
+  role2 = [sessionCopy role];
+  v10 = [role2 isEqualToString:UIWindowSceneSessionRoleApplication];
 
   if (v10)
   {
@@ -53,8 +53,8 @@
 
   else
   {
-    v12 = [v5 role];
-    v13 = [v12 isEqualToString:_UIWindowSceneSessionTypeCoverSheet];
+    role3 = [sessionCopy role];
+    v13 = [role3 isEqualToString:_UIWindowSceneSessionTypeCoverSheet];
 
     if (!v13)
     {

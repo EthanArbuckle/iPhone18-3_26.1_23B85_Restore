@@ -1,11 +1,11 @@
 @interface PXUndoActionsInvalidator
-- (PXUndoActionsInvalidator)initWithUndoManager:(id)a3 privacyController:(id)a4;
+- (PXUndoActionsInvalidator)initWithUndoManager:(id)manager privacyController:(id)controller;
 - (void)beginObservingSystemEventsForAutomaticInvalidation;
 - (void)clearUndoClearingTimer;
 - (void)clearUndoStack;
 - (void)dealloc;
 - (void)invalidateUndoTimerIfNeeded;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)startUndoClearingTimer;
 - (void)stopObservingSystemEventsForAutomaticInvalidation;
 - (void)undoClearingTimerFired;
@@ -13,9 +13,9 @@
 
 @implementation PXUndoActionsInvalidator
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 1) != 0 && ApplicationStateObservationContext_211642 == a5)
+  if ((change & 1) != 0 && ApplicationStateObservationContext_211642 == context)
   {
     px_dispatch_on_main_queue();
   }
@@ -106,8 +106,8 @@ void __57__PXUndoActionsInvalidator_observable_didChange_context___block_invoke_
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEFAULT, "[UndoActionsInvalidator] Clearing undo stack", v5, 2u);
   }
 
-  v4 = [(PXUndoActionsInvalidator *)self undoManager];
-  [v4 removeAllActions];
+  undoManager = [(PXUndoActionsInvalidator *)self undoManager];
+  [undoManager removeAllActions];
 }
 
 - (void)invalidateUndoTimerIfNeeded
@@ -134,23 +134,23 @@ void __57__PXUndoActionsInvalidator_observable_didChange_context___block_invoke_
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEFAULT, "[UndoActionsInvalidator] Undo clearing timer did fire.", v9, 2u);
   }
 
-  v4 = [(PXUndoActionsInvalidator *)self privacyController];
+  privacyController = [(PXUndoActionsInvalidator *)self privacyController];
 
-  if (v4)
+  if (privacyController)
   {
-    v5 = [(PXUndoActionsInvalidator *)self privacyController];
-    v6 = [v5 isContentPrivacyEnabled];
+    privacyController2 = [(PXUndoActionsInvalidator *)self privacyController];
+    isContentPrivacyEnabled = [privacyController2 isContentPrivacyEnabled];
   }
 
   else
   {
-    v6 = 1;
+    isContentPrivacyEnabled = 1;
   }
 
   v7 = +[PXApplicationSettings sharedInstance];
-  v8 = [v7 shouldClearUndoStackAutomatically];
+  shouldClearUndoStackAutomatically = [v7 shouldClearUndoStackAutomatically];
 
-  if (v6 && v8)
+  if (isContentPrivacyEnabled && shouldClearUndoStackAutomatically)
   {
     [(PXUndoActionsInvalidator *)self setTimerDidClearUndoStack:1];
     [(PXUndoActionsInvalidator *)self clearUndoStack];
@@ -169,10 +169,10 @@ void __57__PXUndoActionsInvalidator_observable_didChange_context___block_invoke_
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEFAULT, "[UndoActionsInvalidator] Starting undo timer", &v12, 2u);
   }
 
-  v4 = [(PXUndoActionsInvalidator *)self undoClearingTimer];
-  v5 = [v4 isValid];
+  undoClearingTimer = [(PXUndoActionsInvalidator *)self undoClearingTimer];
+  isValid = [undoClearingTimer isValid];
 
-  if (v5)
+  if (isValid)
   {
     [(PXUndoActionsInvalidator *)self clearUndoClearingTimer];
   }
@@ -193,14 +193,14 @@ void __57__PXUndoActionsInvalidator_observable_didChange_context___block_invoke_
   v10 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel_undoClearingTimerFired selector:0 userInfo:0 repeats:v8];
   [(PXUndoActionsInvalidator *)self setUndoClearingTimer:v10];
 
-  v11 = [(PXUndoActionsInvalidator *)self undoClearingTimer];
-  [v11 setTolerance:0.0];
+  undoClearingTimer2 = [(PXUndoActionsInvalidator *)self undoClearingTimer];
+  [undoClearingTimer2 setTolerance:0.0];
 }
 
 - (void)clearUndoClearingTimer
 {
-  v3 = [(PXUndoActionsInvalidator *)self undoClearingTimer];
-  [v3 invalidate];
+  undoClearingTimer = [(PXUndoActionsInvalidator *)self undoClearingTimer];
+  [undoClearingTimer invalidate];
 
   [(PXUndoActionsInvalidator *)self setUndoClearingTimer:0];
 }
@@ -238,10 +238,10 @@ void __57__PXUndoActionsInvalidator_observable_didChange_context___block_invoke_
   [(PXUndoActionsInvalidator *)&v3 dealloc];
 }
 
-- (PXUndoActionsInvalidator)initWithUndoManager:(id)a3 privacyController:(id)a4
+- (PXUndoActionsInvalidator)initWithUndoManager:(id)manager privacyController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = PXUndoActionsInvalidator;
   v9 = [(PXUndoActionsInvalidator *)&v13 init];
@@ -254,8 +254,8 @@ void __57__PXUndoActionsInvalidator_observable_didChange_context___block_invoke_
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEFAULT, "[UndoActionsInvalidator] Initializing", v12, 2u);
     }
 
-    objc_storeStrong(&v9->_undoManager, a3);
-    objc_storeStrong(&v9->_privacyController, a4);
+    objc_storeStrong(&v9->_undoManager, manager);
+    objc_storeStrong(&v9->_privacyController, controller);
   }
 
   return v9;

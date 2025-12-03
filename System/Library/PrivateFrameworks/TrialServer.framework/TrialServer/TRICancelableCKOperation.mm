@@ -1,14 +1,14 @@
 @interface TRICancelableCKOperation
 - (BOOL)isCanceled;
-- (TRICancelableCKOperation)initWithOperation:(id)a3;
-- (void)addOperation:(id)a3;
+- (TRICancelableCKOperation)initWithOperation:(id)operation;
+- (void)addOperation:(id)operation;
 @end
 
 @implementation TRICancelableCKOperation
 
-- (TRICancelableCKOperation)initWithOperation:(id)a3
+- (TRICancelableCKOperation)initWithOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v12.receiver = self;
   v12.super_class = TRICancelableCKOperation;
   v5 = [(TRICancelableCKOperation *)&v12 init];
@@ -20,9 +20,9 @@
     *(v6 + 8) = v7;
 
     *(v6 + 16) = 0;
-    if (v4)
+    if (operationCopy)
     {
-      [*(v6 + 8) addObject:v4];
+      [*(v6 + 8) addObject:operationCopy];
     }
 
     v9 = [objc_alloc(MEMORY[0x277D425F8]) initWithGuardedData:v6];
@@ -33,16 +33,16 @@
   return v5;
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__TRICancelableCKOperation_addOperation___block_invoke;
   v7[3] = &unk_279DDEF58;
-  v8 = v4;
-  v6 = v4;
+  v8 = operationCopy;
+  v6 = operationCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 

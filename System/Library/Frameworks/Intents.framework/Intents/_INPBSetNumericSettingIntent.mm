@@ -1,72 +1,72 @@
 @interface _INPBSetNumericSettingIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSetNumericSettingIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSetNumericSettingIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsAction:(id)a3;
-- (int)StringAsBoundedValue:(id)a3;
+- (int)StringAsAction:(id)action;
+- (int)StringAsBoundedValue:(id)value;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAction:(int)a3;
-- (void)setBoundedValue:(int)a3;
-- (void)setHasBoundedValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAction:(int)action;
+- (void)setBoundedValue:(int)value;
+- (void)setHasBoundedValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSetNumericSettingIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBSetNumericSettingIntent *)self hasAction])
   {
-    v4 = [(_INPBSetNumericSettingIntent *)self action];
-    if ((v4 - 1) >= 3)
+    action = [(_INPBSetNumericSettingIntent *)self action];
+    if ((action - 1) >= 3)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", action];
     }
 
     else
     {
-      v5 = *(&off_1E7287D88 + (v4 - 1));
+      v5 = *(&off_1E7287D88 + (action - 1));
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"action"];
+    [dictionary setObject:v5 forKeyedSubscript:@"action"];
   }
 
   if ([(_INPBSetNumericSettingIntent *)self hasBoundedValue])
   {
-    v6 = [(_INPBSetNumericSettingIntent *)self boundedValue];
-    if ((v6 - 1) >= 3)
+    boundedValue = [(_INPBSetNumericSettingIntent *)self boundedValue];
+    if ((boundedValue - 1) >= 3)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", boundedValue];
     }
 
     else
     {
-      v7 = *(&off_1E7287DA0 + (v6 - 1));
+      v7 = *(&off_1E7287DA0 + (boundedValue - 1));
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"boundedValue"];
+    [dictionary setObject:v7 forKeyedSubscript:@"boundedValue"];
   }
 
-  v8 = [(_INPBSetNumericSettingIntent *)self intentMetadata];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBSetNumericSettingIntent *)self intentMetadata];
+  dictionaryRepresentation = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentMetadata"];
 
-  v10 = [(_INPBSetNumericSettingIntent *)self numericValue];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"numericValue"];
+  numericValue = [(_INPBSetNumericSettingIntent *)self numericValue];
+  dictionaryRepresentation2 = [numericValue dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"numericValue"];
 
-  v12 = [(_INPBSetNumericSettingIntent *)self settingMetadata];
-  v13 = [v12 dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"settingMetadata"];
+  settingMetadata = [(_INPBSetNumericSettingIntent *)self settingMetadata];
+  dictionaryRepresentation3 = [settingMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"settingMetadata"];
 
-  v14 = [(_INPBSetNumericSettingIntent *)self temporalEventTrigger];
-  v15 = [v14 dictionaryRepresentation];
-  [v3 setObject:v15 forKeyedSubscript:@"temporalEventTrigger"];
+  temporalEventTrigger = [(_INPBSetNumericSettingIntent *)self temporalEventTrigger];
+  dictionaryRepresentation4 = [temporalEventTrigger dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"temporalEventTrigger"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -97,64 +97,64 @@
   return v7 ^ [(_INPBTemporalEventTrigger *)self->_temporalEventTrigger hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
-  v5 = [(_INPBSetNumericSettingIntent *)self hasAction];
-  if (v5 != [v4 hasAction])
+  hasAction = [(_INPBSetNumericSettingIntent *)self hasAction];
+  if (hasAction != [equalCopy hasAction])
   {
     goto LABEL_30;
   }
 
   if ([(_INPBSetNumericSettingIntent *)self hasAction])
   {
-    if ([v4 hasAction])
+    if ([equalCopy hasAction])
     {
       action = self->_action;
-      if (action != [v4 action])
+      if (action != [equalCopy action])
       {
         goto LABEL_30;
       }
     }
   }
 
-  v7 = [(_INPBSetNumericSettingIntent *)self hasBoundedValue];
-  if (v7 != [v4 hasBoundedValue])
+  hasBoundedValue = [(_INPBSetNumericSettingIntent *)self hasBoundedValue];
+  if (hasBoundedValue != [equalCopy hasBoundedValue])
   {
     goto LABEL_30;
   }
 
   if ([(_INPBSetNumericSettingIntent *)self hasBoundedValue])
   {
-    if ([v4 hasBoundedValue])
+    if ([equalCopy hasBoundedValue])
     {
       boundedValue = self->_boundedValue;
-      if (boundedValue != [v4 boundedValue])
+      if (boundedValue != [equalCopy boundedValue])
       {
         goto LABEL_30;
       }
     }
   }
 
-  v9 = [(_INPBSetNumericSettingIntent *)self intentMetadata];
-  v10 = [v4 intentMetadata];
-  if ((v9 != 0) == (v10 == 0))
+  intentMetadata = [(_INPBSetNumericSettingIntent *)self intentMetadata];
+  intentMetadata2 = [equalCopy intentMetadata];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_29;
   }
 
-  v11 = [(_INPBSetNumericSettingIntent *)self intentMetadata];
-  if (v11)
+  intentMetadata3 = [(_INPBSetNumericSettingIntent *)self intentMetadata];
+  if (intentMetadata3)
   {
-    v12 = v11;
-    v13 = [(_INPBSetNumericSettingIntent *)self intentMetadata];
-    v14 = [v4 intentMetadata];
-    v15 = [v13 isEqual:v14];
+    v12 = intentMetadata3;
+    intentMetadata4 = [(_INPBSetNumericSettingIntent *)self intentMetadata];
+    intentMetadata5 = [equalCopy intentMetadata];
+    v15 = [intentMetadata4 isEqual:intentMetadata5];
 
     if (!v15)
     {
@@ -166,20 +166,20 @@
   {
   }
 
-  v9 = [(_INPBSetNumericSettingIntent *)self numericValue];
-  v10 = [v4 numericValue];
-  if ((v9 != 0) == (v10 == 0))
+  intentMetadata = [(_INPBSetNumericSettingIntent *)self numericValue];
+  intentMetadata2 = [equalCopy numericValue];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_29;
   }
 
-  v16 = [(_INPBSetNumericSettingIntent *)self numericValue];
-  if (v16)
+  numericValue = [(_INPBSetNumericSettingIntent *)self numericValue];
+  if (numericValue)
   {
-    v17 = v16;
-    v18 = [(_INPBSetNumericSettingIntent *)self numericValue];
-    v19 = [v4 numericValue];
-    v20 = [v18 isEqual:v19];
+    v17 = numericValue;
+    numericValue2 = [(_INPBSetNumericSettingIntent *)self numericValue];
+    numericValue3 = [equalCopy numericValue];
+    v20 = [numericValue2 isEqual:numericValue3];
 
     if (!v20)
     {
@@ -191,20 +191,20 @@
   {
   }
 
-  v9 = [(_INPBSetNumericSettingIntent *)self settingMetadata];
-  v10 = [v4 settingMetadata];
-  if ((v9 != 0) == (v10 == 0))
+  intentMetadata = [(_INPBSetNumericSettingIntent *)self settingMetadata];
+  intentMetadata2 = [equalCopy settingMetadata];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_29;
   }
 
-  v21 = [(_INPBSetNumericSettingIntent *)self settingMetadata];
-  if (v21)
+  settingMetadata = [(_INPBSetNumericSettingIntent *)self settingMetadata];
+  if (settingMetadata)
   {
-    v22 = v21;
-    v23 = [(_INPBSetNumericSettingIntent *)self settingMetadata];
-    v24 = [v4 settingMetadata];
-    v25 = [v23 isEqual:v24];
+    v22 = settingMetadata;
+    settingMetadata2 = [(_INPBSetNumericSettingIntent *)self settingMetadata];
+    settingMetadata3 = [equalCopy settingMetadata];
+    v25 = [settingMetadata2 isEqual:settingMetadata3];
 
     if (!v25)
     {
@@ -216,12 +216,12 @@
   {
   }
 
-  v9 = [(_INPBSetNumericSettingIntent *)self temporalEventTrigger];
-  v10 = [v4 temporalEventTrigger];
-  if ((v9 != 0) != (v10 == 0))
+  intentMetadata = [(_INPBSetNumericSettingIntent *)self temporalEventTrigger];
+  intentMetadata2 = [equalCopy temporalEventTrigger];
+  if ((intentMetadata != 0) != (intentMetadata2 == 0))
   {
-    v26 = [(_INPBSetNumericSettingIntent *)self temporalEventTrigger];
-    if (!v26)
+    temporalEventTrigger = [(_INPBSetNumericSettingIntent *)self temporalEventTrigger];
+    if (!temporalEventTrigger)
     {
 
 LABEL_33:
@@ -229,10 +229,10 @@ LABEL_33:
       goto LABEL_31;
     }
 
-    v27 = v26;
-    v28 = [(_INPBSetNumericSettingIntent *)self temporalEventTrigger];
-    v29 = [v4 temporalEventTrigger];
-    v30 = [v28 isEqual:v29];
+    v27 = temporalEventTrigger;
+    temporalEventTrigger2 = [(_INPBSetNumericSettingIntent *)self temporalEventTrigger];
+    temporalEventTrigger3 = [equalCopy temporalEventTrigger];
+    v30 = [temporalEventTrigger2 isEqual:temporalEventTrigger3];
 
     if (v30)
     {
@@ -252,7 +252,7 @@ LABEL_31:
   return v31;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSetNumericSettingIntent allocWithZone:](_INPBSetNumericSettingIntent init];
   if ([(_INPBSetNumericSettingIntent *)self hasAction])
@@ -265,48 +265,48 @@ LABEL_31:
     [(_INPBSetNumericSettingIntent *)v5 setBoundedValue:[(_INPBSetNumericSettingIntent *)self boundedValue]];
   }
 
-  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSetNumericSettingIntent *)v5 setIntentMetadata:v6];
 
-  v7 = [(_INPBNumericSettingValue *)self->_numericValue copyWithZone:a3];
+  v7 = [(_INPBNumericSettingValue *)self->_numericValue copyWithZone:zone];
   [(_INPBSetNumericSettingIntent *)v5 setNumericValue:v7];
 
-  v8 = [(_INPBSettingMetadata *)self->_settingMetadata copyWithZone:a3];
+  v8 = [(_INPBSettingMetadata *)self->_settingMetadata copyWithZone:zone];
   [(_INPBSetNumericSettingIntent *)v5 setSettingMetadata:v8];
 
-  v9 = [(_INPBTemporalEventTrigger *)self->_temporalEventTrigger copyWithZone:a3];
+  v9 = [(_INPBTemporalEventTrigger *)self->_temporalEventTrigger copyWithZone:zone];
   [(_INPBSetNumericSettingIntent *)v5 setTemporalEventTrigger:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSetNumericSettingIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSetNumericSettingIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSetNumericSettingIntent)initWithCoder:(id)a3
+- (_INPBSetNumericSettingIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSetNumericSettingIntent *)self initWithData:v6];
+    self = [(_INPBSetNumericSettingIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
+  toCopy = to;
   if ([(_INPBSetNumericSettingIntent *)self hasAction])
   {
     action = self->_action;
@@ -319,56 +319,56 @@ LABEL_31:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(_INPBSetNumericSettingIntent *)self intentMetadata];
+  intentMetadata = [(_INPBSetNumericSettingIntent *)self intentMetadata];
 
-  if (v6)
+  if (intentMetadata)
   {
-    v7 = [(_INPBSetNumericSettingIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSetNumericSettingIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBSetNumericSettingIntent *)self numericValue];
+  numericValue = [(_INPBSetNumericSettingIntent *)self numericValue];
 
-  if (v8)
+  if (numericValue)
   {
-    v9 = [(_INPBSetNumericSettingIntent *)self numericValue];
+    numericValue2 = [(_INPBSetNumericSettingIntent *)self numericValue];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBSetNumericSettingIntent *)self settingMetadata];
+  settingMetadata = [(_INPBSetNumericSettingIntent *)self settingMetadata];
 
-  if (v10)
+  if (settingMetadata)
   {
-    v11 = [(_INPBSetNumericSettingIntent *)self settingMetadata];
+    settingMetadata2 = [(_INPBSetNumericSettingIntent *)self settingMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_INPBSetNumericSettingIntent *)self temporalEventTrigger];
+  temporalEventTrigger = [(_INPBSetNumericSettingIntent *)self temporalEventTrigger];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (temporalEventTrigger)
   {
-    v14 = [(_INPBSetNumericSettingIntent *)self temporalEventTrigger];
+    temporalEventTrigger2 = [(_INPBSetNumericSettingIntent *)self temporalEventTrigger];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
-- (int)StringAsBoundedValue:(id)a3
+- (int)StringAsBoundedValue:(id)value
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"MIN"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"MIN"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MEDIAN"])
+  else if ([valueCopy isEqualToString:@"MEDIAN"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MAX"])
+  else if ([valueCopy isEqualToString:@"MAX"])
   {
     v4 = 3;
   }
@@ -381,9 +381,9 @@ LABEL_31:
   return v4;
 }
 
-- (void)setHasBoundedValue:(BOOL)a3
+- (void)setHasBoundedValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -396,10 +396,10 @@ LABEL_31:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setBoundedValue:(int)a3
+- (void)setBoundedValue:(int)value
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (value == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -407,24 +407,24 @@ LABEL_31:
   else
   {
     *&self->_has = has | 2;
-    self->_boundedValue = a3;
+    self->_boundedValue = value;
   }
 }
 
-- (int)StringAsAction:(id)a3
+- (int)StringAsAction:(id)action
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SET"])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:@"SET"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"INCREASE"])
+  else if ([actionCopy isEqualToString:@"INCREASE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DECREASE"])
+  else if ([actionCopy isEqualToString:@"DECREASE"])
   {
     v4 = 3;
   }
@@ -437,10 +437,10 @@ LABEL_31:
   return v4;
 }
 
-- (void)setAction:(int)a3
+- (void)setAction:(int)action
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (action == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -448,7 +448,7 @@ LABEL_31:
   else
   {
     *&self->_has = has | 1;
-    self->_action = a3;
+    self->_action = action;
   }
 }
 

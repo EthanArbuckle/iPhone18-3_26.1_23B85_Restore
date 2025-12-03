@@ -1,11 +1,11 @@
 @interface FCHeadline
 + (id)emptyHeadline;
-+ (id)emptyHeadlineWithIdentifier:(id)a3;
++ (id)emptyHeadlineWithIdentifier:(id)identifier;
 - (BOOL)hasVideo;
 - (BOOL)hasVideoStillImage;
 - (BOOL)isBlockedExplicitContent;
 - (BOOL)isCoread;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExplicitContent;
 - (BOOL)isFromBlockedStorefront;
 - (BOOL)isFullTrackAvailableToAll;
@@ -17,16 +17,16 @@
 - (NSString)sourceChannelID;
 - (NSString)sourceFeedID;
 - (double)globalUserFeedback;
-- (id)contentWithContext:(id)a3;
+- (id)contentWithContext:(id)context;
 - (unint64_t)hash;
 - (unint64_t)publishDateMilliseconds;
-- (void)addSurfacedByArticleListID:(id)a3;
-- (void)applyConditionalScore:(double)a3;
-- (void)applyHeadlineMetadata:(id)a3 configuration:(id)a4;
-- (void)enumerateTopicCohortsWithBlock:(id)a3;
-- (void)enumerateTopicConversionStatsWithBlock:(id)a3;
+- (void)addSurfacedByArticleListID:(id)d;
+- (void)applyConditionalScore:(double)score;
+- (void)applyHeadlineMetadata:(id)metadata configuration:(id)configuration;
+- (void)enumerateTopicCohortsWithBlock:(id)block;
+- (void)enumerateTopicConversionStatsWithBlock:(id)block;
 - (void)markAsEvergreen;
-- (void)overrideDisplayDate:(id)a3;
+- (void)overrideDisplayDate:(id)date;
 @end
 
 @implementation FCHeadline
@@ -46,8 +46,8 @@
 
 - (BOOL)hasVideo
 {
-  v2 = [(FCHeadline *)self videoURL];
-  v3 = v2 != 0;
+  videoURL = [(FCHeadline *)self videoURL];
+  v3 = videoURL != 0;
 
   return v3;
 }
@@ -67,60 +67,60 @@
 
 - (NSString)sourceChannelID
 {
-  v2 = [(FCHeadline *)self sourceChannel];
-  v3 = [v2 identifier];
+  sourceChannel = [(FCHeadline *)self sourceChannel];
+  identifier = [sourceChannel identifier];
 
-  return v3;
+  return identifier;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
-  if (!a3 || (objc_opt_isKindOfClass() & 1) == 0)
+  if (!equal || (objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [(FCHeadline *)self identifier];
-  v6 = [a3 identifier];
+  identifier = [(FCHeadline *)self identifier];
+  identifier2 = [equal identifier];
 
-  return [(NSString *)v5 isEqualToString:v6];
+  return [(NSString *)identifier isEqualToString:identifier2];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(FCHeadline *)self identifier];
+  identifier = [(FCHeadline *)self identifier];
 
-  return [(NSString *)v2 hash];
+  return [(NSString *)identifier hash];
 }
 
 + (id)emptyHeadline
 {
-  v2 = [MEMORY[0x1E696AFB0] UUID];
-  v3 = [v2 UUIDString];
-  v4 = [FCHeadline emptyHeadlineWithIdentifier:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v4 = [FCHeadline emptyHeadlineWithIdentifier:uUIDString];
 
   return v4;
 }
 
-+ (id)emptyHeadlineWithIdentifier:(id)a3
++ (id)emptyHeadlineWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(FCHeadline);
-  [(FCHeadline *)v4 setIdentifier:v3];
-  [(FCHeadline *)v4 setArticleID:v3];
+  [(FCHeadline *)v4 setIdentifier:identifierCopy];
+  [(FCHeadline *)v4 setArticleID:identifierCopy];
 
   return v4;
 }
 
-- (id)contentWithContext:(id)a3
+- (id)contentWithContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 pptContext];
-  v5 = [v4 isRunningPPT];
+  contextCopy = context;
+  pptContext = [contextCopy pptContext];
+  isRunningPPT = [pptContext isRunningPPT];
 
-  if (!v5)
+  if (!isRunningPPT)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -159,8 +159,8 @@
 
   else
   {
-    v5 = [(FCHeadline *)self primaryAudience];
-    v4 = [v5 isEqualToString:@"MATURE"];
+    primaryAudience = [(FCHeadline *)self primaryAudience];
+    v4 = [primaryAudience isEqualToString:@"MATURE"];
   }
 
   return v4;
@@ -168,8 +168,8 @@
 
 - (BOOL)hasVideoStillImage
 {
-  v2 = [(FCHeadline *)self videoStillImage];
-  v3 = v2 != 0;
+  videoStillImage = [(FCHeadline *)self videoStillImage];
+  v3 = videoStillImage != 0;
 
   return v3;
 }
@@ -183,11 +183,11 @@
   return v2;
 }
 
-- (void)overrideDisplayDate:(id)a3
+- (void)overrideDisplayDate:(id)date
 {
-  v4 = a3;
-  [(FCHeadline *)self setDisplayDate:v4];
-  [(FCHeadline *)self setPublishDate:v4];
+  dateCopy = date;
+  [(FCHeadline *)self setDisplayDate:dateCopy];
+  [(FCHeadline *)self setPublishDate:dateCopy];
 }
 
 - (void)markAsEvergreen
@@ -197,80 +197,80 @@
     [(FCHeadline *)self setIsEvergreen:1];
     if (NFInternalBuild())
     {
-      v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v4 = [v3 BOOLForKey:@"newsfeed.content.highlight_evergreen_articles"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v4 = [standardUserDefaults BOOLForKey:@"newsfeed.content.highlight_evergreen_articles"];
 
       if (v4)
       {
-        v6 = [(FCHeadline *)self title];
-        v5 = [@"🌲" stringByAppendingString:v6];
+        title = [(FCHeadline *)self title];
+        v5 = [@"🌲" stringByAppendingString:title];
         [(FCHeadline *)self setTitle:v5];
       }
     }
   }
 }
 
-- (void)applyConditionalScore:(double)a3
+- (void)applyConditionalScore:(double)score
 {
   [(FCHeadline *)self conditionalScore];
-  if (v5 <= a3)
+  if (scoreCopy <= score)
   {
-    v5 = a3;
+    scoreCopy = score;
   }
 
-  [(FCHeadline *)self setConditionalScore:v5];
+  [(FCHeadline *)self setConditionalScore:scoreCopy];
 }
 
-- (void)addSurfacedByArticleListID:(id)a3
+- (void)addSurfacedByArticleListID:(id)d
 {
-  v7 = a3;
-  v4 = [(FCHeadline *)self surfacedByArticleListIDs];
+  dCopy = d;
+  surfacedByArticleListIDs = [(FCHeadline *)self surfacedByArticleListIDs];
 
-  if (!v4)
+  if (!surfacedByArticleListIDs)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    [(FCHeadline *)self setSurfacedByArticleListIDs:v5];
+    array = [MEMORY[0x1E695DF70] array];
+    [(FCHeadline *)self setSurfacedByArticleListIDs:array];
   }
 
-  if ([v7 hasPrefix:@"LX"])
+  if ([dCopy hasPrefix:@"LX"])
   {
     self->_isCoread = 1;
   }
 
-  v6 = [(FCHeadline *)self surfacedByArticleListIDs];
-  [v6 addObject:v7];
+  surfacedByArticleListIDs2 = [(FCHeadline *)self surfacedByArticleListIDs];
+  [surfacedByArticleListIDs2 addObject:dCopy];
 }
 
-- (void)applyHeadlineMetadata:(id)a3 configuration:(id)a4
+- (void)applyHeadlineMetadata:(id)metadata configuration:(id)configuration
 {
-  v18 = a3;
-  v6 = a4;
+  metadataCopy = metadata;
+  configurationCopy = configuration;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v18 title];
+    title = [metadataCopy title];
 
-    if (v7)
+    if (title)
     {
-      v8 = [v18 title];
-      [(FCHeadline *)self overrideTitle:v8];
+      title2 = [metadataCopy title];
+      [(FCHeadline *)self overrideTitle:title2];
     }
   }
 
-  v9 = [v18 displayDate];
+  displayDate = [metadataCopy displayDate];
 
-  if (v9)
+  if (displayDate)
   {
-    v10 = [v18 displayDate];
-    [(FCHeadline *)self overrideDisplayDate:v10];
+    displayDate2 = [metadataCopy displayDate];
+    [(FCHeadline *)self overrideDisplayDate:displayDate2];
   }
 
-  v11 = [v18 storyType];
-  v12 = [v11 length];
+  storyType = [metadataCopy storyType];
+  v12 = [storyType length];
 
-  if (v6 && v12)
+  if (configurationCopy && v12)
   {
-    v13 = [v18 storyType];
-    v14 = PBArticleStoryTypeFromString(v13);
+    storyType2 = [metadataCopy storyType];
+    v14 = PBArticleStoryTypeFromString(storyType2);
     if (v14 - 1 >= 5)
     {
       v15 = 0;
@@ -281,46 +281,46 @@
       v15 = v14;
     }
 
-    [(FCHeadline *)self assignStoryType:v15 withConfiguration:v6];
+    [(FCHeadline *)self assignStoryType:v15 withConfiguration:configurationCopy];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v16 = [v18 shortExcerpt];
+    shortExcerpt = [metadataCopy shortExcerpt];
 
-    if (v16)
+    if (shortExcerpt)
     {
-      v17 = [v18 shortExcerpt];
-      [(FCHeadline *)self overrideShortExcerpt:v17];
+      shortExcerpt2 = [metadataCopy shortExcerpt];
+      [(FCHeadline *)self overrideShortExcerpt:shortExcerpt2];
     }
   }
 }
 
 - (NSString)sourceFeedID
 {
-  v3 = [(FCHeadline *)self surfacedByChannelID];
-  v4 = v3;
-  if (v3)
+  surfacedByChannelID = [(FCHeadline *)self surfacedByChannelID];
+  v4 = surfacedByChannelID;
+  if (surfacedByChannelID)
   {
-    v5 = v3;
+    surfacedByTopicID = surfacedByChannelID;
   }
 
   else
   {
-    v5 = [(FCHeadline *)self surfacedByTopicID];
+    surfacedByTopicID = [(FCHeadline *)self surfacedByTopicID];
   }
 
-  v6 = v5;
+  v6 = surfacedByTopicID;
 
   return v6;
 }
 
 - (NSString)publisherID
 {
-  v2 = [(FCHeadline *)self sourceChannel];
-  v3 = [v2 identifier];
+  sourceChannel = [(FCHeadline *)self sourceChannel];
+  identifier = [sourceChannel identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (double)globalUserFeedback
@@ -336,36 +336,36 @@
 
 - (unint64_t)publishDateMilliseconds
 {
-  v2 = [(FCHeadline *)self publishDate];
-  v3 = [v2 fc_millisecondTimeIntervalSince1970];
+  publishDate = [(FCHeadline *)self publishDate];
+  fc_millisecondTimeIntervalSince1970 = [publishDate fc_millisecondTimeIntervalSince1970];
 
-  return v3;
+  return fc_millisecondTimeIntervalSince1970;
 }
 
 - (BOOL)isFromBlockedStorefront
 {
   v3 = +[FCRestrictions sharedInstance];
   v4 = +[FCAppleAccount sharedAccount];
-  v5 = [v4 contentStoreFrontID];
-  v6 = [(FCHeadline *)self allowedStorefrontIDs];
-  v7 = [(FCHeadline *)self blockedStorefrontIDs];
-  v8 = [v3 isContentBlockedInStorefrontID:v5 withAllowedStorefrontIDs:v6 blockedStorefrontIDs:v7];
+  contentStoreFrontID = [v4 contentStoreFrontID];
+  allowedStorefrontIDs = [(FCHeadline *)self allowedStorefrontIDs];
+  blockedStorefrontIDs = [(FCHeadline *)self blockedStorefrontIDs];
+  v8 = [v3 isContentBlockedInStorefrontID:contentStoreFrontID withAllowedStorefrontIDs:allowedStorefrontIDs blockedStorefrontIDs:blockedStorefrontIDs];
 
   return v8;
 }
 
 - (BOOL)isExplicitContent
 {
-  v2 = [(FCHeadline *)self primaryAudience];
-  v3 = [v2 isEqualToString:@"MATURE"];
+  primaryAudience = [(FCHeadline *)self primaryAudience];
+  v3 = [primaryAudience isEqualToString:@"MATURE"];
 
   return v3;
 }
 
 - (BOOL)isSportsHighlight
 {
-  v3 = [(FCHeadline *)self sportsEventIDs];
-  if ([v3 count])
+  sportsEventIDs = [(FCHeadline *)self sportsEventIDs];
+  if ([sportsEventIDs count])
   {
     v4 = 1;
   }
@@ -373,25 +373,25 @@
   else
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [(FCHeadline *)self videoType];
-    v4 = [v5 fc_string:v6 isEqualToString:@"sports-highlight"];
+    videoType = [(FCHeadline *)self videoType];
+    v4 = [v5 fc_string:videoType isEqualToString:@"sports-highlight"];
   }
 
   return v4;
 }
 
-- (void)enumerateTopicCohortsWithBlock:(id)a3
+- (void)enumerateTopicCohortsWithBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(FCHeadline *)self topics];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    topics = [(FCHeadline *)self topics];
+    v6 = [topics countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -402,16 +402,16 @@
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(topics);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 tagID];
-          v12 = [v10 cohorts];
-          v4[2](v4, v11, v12);
+          tagID = [v10 tagID];
+          cohorts = [v10 cohorts];
+          blockCopy[2](blockCopy, tagID, cohorts);
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [topics countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -421,18 +421,18 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateTopicConversionStatsWithBlock:(id)a3
+- (void)enumerateTopicConversionStatsWithBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(FCHeadline *)self topics];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    topics = [(FCHeadline *)self topics];
+    v6 = [topics countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -443,16 +443,16 @@
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(topics);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 tagID];
-          v12 = [v10 conversionStats];
-          v4[2](v4, v11, v12);
+          tagID = [v10 tagID];
+          conversionStats = [v10 conversionStats];
+          blockCopy[2](blockCopy, tagID, conversionStats);
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [topics countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -464,21 +464,21 @@
 
 - (BOOL)isFullTrackAvailableToAll
 {
-  v2 = self;
-  v3 = [(FCHeadline *)self narrativeTrack];
-  v4 = [(FCHeadline *)v2 narrativeTrackSample];
-  LOBYTE(v2) = v3 == v4;
+  selfCopy = self;
+  narrativeTrack = [(FCHeadline *)self narrativeTrack];
+  narrativeTrackSample = [(FCHeadline *)selfCopy narrativeTrackSample];
+  LOBYTE(selfCopy) = narrativeTrack == narrativeTrackSample;
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isCoread
 {
-  v2 = [(FCHeadline *)self surfacedByArticleListIDs];
-  v3 = v2;
-  if (v2)
+  surfacedByArticleListIDs = [(FCHeadline *)self surfacedByArticleListIDs];
+  v3 = surfacedByArticleListIDs;
+  if (surfacedByArticleListIDs)
   {
-    v4 = [v2 fc_containsObjectPassingTest:&__block_literal_global_35_1];
+    v4 = [surfacedByArticleListIDs fc_containsObjectPassingTest:&__block_literal_global_35_1];
   }
 
   else

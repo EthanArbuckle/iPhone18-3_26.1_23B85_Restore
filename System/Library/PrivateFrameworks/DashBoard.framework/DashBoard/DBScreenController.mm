@@ -1,5 +1,5 @@
 @interface DBScreenController
-- (DBScreenController)initWithRootScene:(id)a3 environmentConfiguration:(id)a4 defaultSceneWorkspaceIdentifier:(id)a5;
+- (DBScreenController)initWithRootScene:(id)scene environmentConfiguration:(id)configuration defaultSceneWorkspaceIdentifier:(id)identifier;
 - (UIWindow)systemGestureWindow;
 - (id)_UISceneTouchpads;
 - (void)invalidate;
@@ -7,48 +7,48 @@
 
 @implementation DBScreenController
 
-- (DBScreenController)initWithRootScene:(id)a3 environmentConfiguration:(id)a4 defaultSceneWorkspaceIdentifier:(id)a5
+- (DBScreenController)initWithRootScene:(id)scene environmentConfiguration:(id)configuration defaultSceneWorkspaceIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sceneCopy = scene;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   v46.receiver = self;
   v46.super_class = DBScreenController;
   v12 = [(DBScreenController *)&v46 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_rootScene, a3);
+    objc_storeStrong(&v12->_rootScene, scene);
     [(FBScene *)v13->_rootScene addObserver:v13];
-    v14 = [MEMORY[0x277D0AA98] sharedInstance];
-    v15 = [v14 fbsSceneForScene:v9];
+    mEMORY[0x277D0AA98] = [MEMORY[0x277D0AA98] sharedInstance];
+    v15 = [mEMORY[0x277D0AA98] fbsSceneForScene:sceneCopy];
 
     v16 = [MEMORY[0x277D75DA8] _sceneForFBSScene:v15];
     windowScene = v13->_windowScene;
     v13->_windowScene = v16;
 
-    objc_storeStrong(&v13->_environmentConfiguration, a4);
-    objc_storeStrong(&v13->_defaultSceneWorkspaceIdentifier, a5);
-    v18 = [v10 session];
-    v19 = [v18 configuration];
+    objc_storeStrong(&v13->_environmentConfiguration, configuration);
+    objc_storeStrong(&v13->_defaultSceneWorkspaceIdentifier, identifier);
+    session = [configurationCopy session];
+    configuration = [session configuration];
 
-    v20 = [v19 screens];
+    screens = [configuration screens];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __97__DBScreenController_initWithRootScene_environmentConfiguration_defaultSceneWorkspaceIdentifier___block_invoke;
     v44[3] = &unk_278F01870;
-    v21 = v10;
+    v21 = configurationCopy;
     v45 = v21;
-    v22 = [v20 bs_firstObjectPassingTest:v44];
+    v22 = [screens bs_firstObjectPassingTest:v44];
     screenInfo = v13->_screenInfo;
     v13->_screenInfo = v22;
 
-    v24 = [v19 db_displayInfoForScreenInfo:v13->_screenInfo];
+    v24 = [configuration db_displayInfoForScreenInfo:v13->_screenInfo];
     displayInfo = v13->_displayInfo;
     v13->_displayInfo = v24;
 
-    v26 = [v21 displayConfiguration];
-    [v26 bounds];
+    displayConfiguration = [v21 displayConfiguration];
+    [displayConfiguration bounds];
     v28 = v27;
     v30 = v29;
     v32 = v31;
@@ -70,7 +70,7 @@
     v41[2] = __97__DBScreenController_initWithRootScene_environmentConfiguration_defaultSceneWorkspaceIdentifier___block_invoke_2;
     v41[3] = &unk_278F03D70;
     v42 = v13;
-    v43 = v9;
+    v43 = sceneCopy;
     [(FBScene *)rootScene updateSettings:v41];
   }
 
@@ -145,22 +145,22 @@ void __97__DBScreenController_initWithRootScene_environmentConfiguration_default
 
 - (UIWindow)systemGestureWindow
 {
-  v2 = [(DBScreenController *)self environmentConfiguration];
-  v3 = [v2 displayIdentity];
+  environmentConfiguration = [(DBScreenController *)self environmentConfiguration];
+  displayIdentity = [environmentConfiguration displayIdentity];
 
-  v4 = [MEMORY[0x277D76330] sharedInstance];
-  v5 = [v4 windowForSystemGesturesForDisplayWithIdentity:v3];
+  mEMORY[0x277D76330] = [MEMORY[0x277D76330] sharedInstance];
+  v5 = [mEMORY[0x277D76330] windowForSystemGesturesForDisplayWithIdentity:displayIdentity];
 
   return v5;
 }
 
 - (void)invalidate
 {
-  v3 = [(DBScreenController *)self interestingWindow];
-  [v3 setHidden:1];
+  interestingWindow = [(DBScreenController *)self interestingWindow];
+  [interestingWindow setHidden:1];
 
-  v4 = [(DBScreenController *)self cornerRadiusWindow];
-  [v4 setHidden:1];
+  cornerRadiusWindow = [(DBScreenController *)self cornerRadiusWindow];
+  [cornerRadiusWindow setHidden:1];
 
   windowScene = self->_windowScene;
   self->_windowScene = 0;
@@ -168,12 +168,12 @@ void __97__DBScreenController_initWithRootScene_environmentConfiguration_default
 
 - (id)_UISceneTouchpads
 {
-  v2 = [(DBScreenController *)self environmentConfiguration];
-  v3 = [v2 session];
-  v4 = [v3 inputDeviceManager];
-  v5 = [v4 inputDevices];
+  environmentConfiguration = [(DBScreenController *)self environmentConfiguration];
+  session = [environmentConfiguration session];
+  inputDeviceManager = [session inputDeviceManager];
+  inputDevices = [inputDeviceManager inputDevices];
 
-  v6 = [v5 bs_compactMap:&__block_literal_global_38];
+  v6 = [inputDevices bs_compactMap:&__block_literal_global_38];
 
   return v6;
 }

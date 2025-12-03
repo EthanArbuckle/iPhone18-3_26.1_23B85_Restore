@@ -1,32 +1,32 @@
 @interface CHBArea2DType
-+ (id)chdChartTypeWithState:(id)a3;
-+ (void)readWithState:(id)a3 chartType:(id)a4;
++ (id)chdChartTypeWithState:(id)state;
++ (void)readWithState:(id)state chartType:(id)type;
 @end
 
 @implementation CHBArea2DType
 
-+ (id)chdChartTypeWithState:(id)a3
++ (id)chdChartTypeWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = [CHDArea2DType alloc];
-  v6 = [v4 chart];
-  v7 = [(CHDArea2DType *)v5 initWithChart:v6];
+  chart = [stateCopy chart];
+  v7 = [(CHDArea2DType *)v5 initWithChart:chart];
 
-  [a1 readWithState:v4 chartType:v7];
+  [self readWithState:stateCopy chartType:v7];
 
   return v7;
 }
 
-+ (void)readWithState:(id)a3 chartType:(id)a4
++ (void)readWithState:(id)state chartType:(id)type
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v9 xlCurrentPlot];
-  v7 = v6;
-  if (v6)
+  stateCopy = state;
+  typeCopy = type;
+  xlCurrentPlot = [stateCopy xlCurrentPlot];
+  v7 = xlCurrentPlot;
+  if (xlCurrentPlot)
   {
-    isStacked = XlChartArea::isStacked((v6 + 144));
-    [CHBChartTypeWithGrouping setGrouping:v5 stacked:isStacked categoryPercentage:XlChartArea::isCategoryPercentage((v7 + 144))];
+    isStacked = XlChartArea::isStacked((xlCurrentPlot + 144));
+    [CHBChartTypeWithGrouping setGrouping:typeCopy stacked:isStacked categoryPercentage:XlChartArea::isCategoryPercentage((v7 + 144))];
   }
 }
 

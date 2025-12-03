@@ -1,16 +1,16 @@
 @interface NSURL
-- (BOOL)bl_isInVolume:(id)a3;
+- (BOOL)bl_isInVolume:(id)volume;
 @end
 
 @implementation NSURL
 
-- (BOOL)bl_isInVolume:(id)a3
+- (BOOL)bl_isInVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   if ([(NSURL *)self isFileURL])
   {
-    v5 = [(NSURL *)self path];
-    v6 = [v5 bl_isInVolume:v4];
+    path = [(NSURL *)self path];
+    v6 = [path bl_isInVolume:volumeCopy];
   }
 
   else

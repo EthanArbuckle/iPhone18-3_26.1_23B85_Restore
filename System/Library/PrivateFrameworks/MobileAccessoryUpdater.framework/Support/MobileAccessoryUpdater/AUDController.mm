@@ -1,32 +1,32 @@
 @interface AUDController
-- (AUDController)initWithIdleTimeout:(int64_t)a3;
+- (AUDController)initWithIdleTimeout:(int64_t)timeout;
 - (BOOL)initializeController;
 - (BOOL)isWorkPending;
-- (BOOL)setupXPCStreamsWithPolicies:(id)a3 shouldRegister:(BOOL)a4;
+- (BOOL)setupXPCStreamsWithPolicies:(id)policies shouldRegister:(BOOL)register;
 - (id)loadPolicyForAllPlugins;
 - (id)loadPolicyForAllServices;
 - (void)beginIdleTimer;
 - (void)cancelIdleTimer;
-- (void)doDeviceCheck:(int)a3;
-- (void)handleEAOverHIDXPCStreamEvent:(id)a3 forFilterName:(id)a4;
+- (void)doDeviceCheck:(int)check;
+- (void)handleEAOverHIDXPCStreamEvent:(id)event forFilterName:(id)name;
 - (void)handleIdleTimeout;
-- (void)handleXPCAPIEvent:(id)a3;
-- (void)handleXPCStreamEvent:(id)a3;
+- (void)handleXPCAPIEvent:(id)event;
+- (void)handleXPCStreamEvent:(id)event;
 - (void)idleExit;
 - (void)initIdleTimer;
 - (void)initSignals;
-- (void)processAPIDict:(id)a3;
+- (void)processAPIDict:(id)dict;
 - (void)registerForEAMatchingNotifications;
-- (void)registerForNotifydNotification:(id)a3 filterName:(id)a4;
-- (void)setActivityForDeviceIdleLaunch:(BOOL)a3;
-- (void)setActivityForPeriodicLaunch:(BOOL)a3;
-- (void)setActivityForUARPPeriodicLaunch:(BOOL)a3;
+- (void)registerForNotifydNotification:(id)notification filterName:(id)name;
+- (void)setActivityForDeviceIdleLaunch:(BOOL)launch;
+- (void)setActivityForPeriodicLaunch:(BOOL)launch;
+- (void)setActivityForUARPPeriodicLaunch:(BOOL)launch;
 - (void)watchSharedGroup;
 @end
 
 @implementation AUDController
 
-- (AUDController)initWithIdleTimeout:(int64_t)a3
+- (AUDController)initWithIdleTimeout:(int64_t)timeout
 {
   v18.receiver = self;
   v18.super_class = AUDController;
@@ -41,7 +41,7 @@
   log = v5->_log;
   v5->_log = v6;
 
-  v5->_idleExitTimeoutSec = a3;
+  v5->_idleExitTimeoutSec = timeout;
   if (![(AUDController *)v5 initializeController])
   {
     v8 = v5->_log;
@@ -122,8 +122,8 @@
       }
 
       v13 = [NSString stringWithFormat:@"%@/%@", @"/var/db/accessoryupdater", @"remoteCheckLedger.plist"];
-      v14 = [v13 stringByStandardizingPath];
-      v15 = [FudStorage storageWithFile:v14];
+      stringByStandardizingPath = [v13 stringByStandardizingPath];
+      v15 = [FudStorage storageWithFile:stringByStandardizingPath];
       legacyUpdaterStorage = self->_legacyUpdaterStorage;
       self->_legacyUpdaterStorage = v15;
 
@@ -163,14 +163,14 @@
 
         _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, v22, buf, 2u);
 LABEL_24:
-        v26 = [(AUDController *)self loadPolicyForAllServices];
-        v27 = [(AUDController *)self loadPolicyForAllPlugins];
-        [v26 addObjectsFromArray:v27];
+        loadPolicyForAllServices = [(AUDController *)self loadPolicyForAllServices];
+        loadPolicyForAllPlugins = [(AUDController *)self loadPolicyForAllPlugins];
+        [loadPolicyForAllServices addObjectsFromArray:loadPolicyForAllPlugins];
 
-        if (v26)
+        if (loadPolicyForAllServices)
         {
-          [(FudStorage *)self->_legacyUpdaterStorage setPoliciesWithArray:v26];
-          if ([(AUDController *)self setupXPCStreamsWithPolicies:v26 shouldRegister:v19])
+          [(FudStorage *)self->_legacyUpdaterStorage setPoliciesWithArray:loadPolicyForAllServices];
+          if ([(AUDController *)self setupXPCStreamsWithPolicies:loadPolicyForAllServices shouldRegister:v19])
           {
             [(AUDController *)self setActivityForPeriodicLaunch:v19];
             [(AUDController *)self setActivityForDeviceIdleLaunch:v19];
@@ -353,10 +353,10 @@ LABEL_12:
       goto LABEL_6;
     }
 
-    v10 = [(AUDController *)self isWorkPending];
+    isWorkPending = [(AUDController *)self isWorkPending];
     v11 = self->_log;
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    if (v10)
+    if (isWorkPending)
     {
       if (v12)
       {
@@ -392,9 +392,9 @@ LABEL_12:
   dispatch_async(timeoutQueue, block);
 }
 
-- (void)processAPIDict:(id)a3
+- (void)processAPIDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v5 = qword_10009A9D8;
   processingQueue = self->_processingQueue;
   v8[0] = _NSConcreteStackBlock;
@@ -402,14 +402,14 @@ LABEL_12:
   v8[2] = sub_1000095CC;
   v8[3] = &unk_100081438;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = dictCopy;
+  v7 = dictCopy;
   dispatch_group_async(v5, processingQueue, v8);
 }
 
-- (void)handleXPCAPIEvent:(id)a3
+- (void)handleXPCAPIEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -417,9 +417,9 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "XPC message received", buf, 2u);
   }
 
-  if (v4)
+  if (eventCopy)
   {
-    v6 = xpc_copy_description(v4);
+    v6 = xpc_copy_description(eventCopy);
     v7 = self->_log;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -433,9 +433,9 @@ LABEL_12:
       free(v6);
     }
 
-    if (xpc_get_type(v4) == &_xpc_type_connection)
+    if (xpc_get_type(eventCopy) == &_xpc_type_connection)
     {
-      v8 = v4;
+      v8 = eventCopy;
       xpc_connection_set_context(v8, 0);
       xpc_connection_set_target_queue(v8, self->_processingQueue);
       handler[0] = _NSConcreteStackBlock;
@@ -468,28 +468,28 @@ LABEL_12:
     v4 = +[NSFileManager defaultManager];
     v5 = [v4 enumeratorAtURL:v3 includingPropertiesForKeys:0 options:1 errorHandler:0];
 
-    v6 = [v5 nextObject];
-    if (v6)
+    nextObject = [v5 nextObject];
+    if (nextObject)
     {
-      v7 = v6;
+      v7 = nextObject;
       do
       {
         v8 = [NSBundle bundleWithURL:v7];
         v9 = v8;
         if (v8)
         {
-          v10 = [v8 infoDictionary];
-          v11 = v10;
-          if (v10)
+          infoDictionary = [v8 infoDictionary];
+          v11 = infoDictionary;
+          if (infoDictionary)
           {
-            v12 = [v10 objectForKeyedSubscript:@"UARP Updater"];
-            v13 = [v12 BOOLValue];
+            v12 = [infoDictionary objectForKeyedSubscript:@"UARP Updater"];
+            bOOLValue = [v12 BOOLValue];
 
-            if ((v13 & 1) == 0)
+            if ((bOOLValue & 1) == 0)
             {
               v14 = [PluginPolicy alloc];
-              v15 = [v9 bundleIdentifier];
-              v16 = [(PluginPolicy *)v14 initWithPolicyDictionary:v11 pluginName:v15];
+              bundleIdentifier = [v9 bundleIdentifier];
+              v16 = [(PluginPolicy *)v14 initWithPolicyDictionary:v11 pluginName:bundleIdentifier];
 
               if (v16)
               {
@@ -543,12 +543,12 @@ LABEL_12:
           }
         }
 
-        v22 = [v5 nextObject];
+        nextObject2 = [v5 nextObject];
 
-        v7 = v22;
+        v7 = nextObject2;
       }
 
-      while (v22);
+      while (nextObject2);
     }
   }
 
@@ -576,22 +576,22 @@ LABEL_12:
     v5 = +[NSFileManager defaultManager];
     v6 = [v5 enumeratorAtURL:v3 includingPropertiesForKeys:0 options:1 errorHandler:0];
 
-    v7 = [v6 nextObject];
-    if (v7)
+    nextObject = [v6 nextObject];
+    if (nextObject)
     {
-      v8 = v7;
+      v8 = nextObject;
       do
       {
         v9 = [NSBundle bundleWithURL:v8];
         v10 = v9;
         if (v9)
         {
-          v11 = [v9 infoDictionary];
-          if (v11)
+          infoDictionary = [v9 infoDictionary];
+          if (infoDictionary)
           {
             v12 = [PluginPolicy alloc];
-            v13 = [v10 bundleIdentifier];
-            v14 = [(PluginPolicy *)v12 initWithPolicyDictionary:v11 pluginName:v13];
+            bundleIdentifier = [v10 bundleIdentifier];
+            v14 = [(PluginPolicy *)v12 initWithPolicyDictionary:infoDictionary pluginName:bundleIdentifier];
 
             if (v14)
             {
@@ -644,12 +644,12 @@ LABEL_12:
           }
         }
 
-        v20 = [v6 nextObject];
+        nextObject2 = [v6 nextObject];
 
-        v8 = v20;
+        v8 = nextObject2;
       }
 
-      while (v20);
+      while (nextObject2);
     }
   }
 
@@ -668,17 +668,17 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)setupXPCStreamsWithPolicies:(id)a3 shouldRegister:(BOOL)a4
+- (BOOL)setupXPCStreamsWithPolicies:(id)policies shouldRegister:(BOOL)register
 {
-  v35 = a4;
-  v5 = a3;
+  registerCopy = register;
+  policiesCopy = policies;
   [(AUDController *)self registerForEAMatchingNotifications];
   v36 = +[NSMutableDictionary dictionary];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v5;
+  obj = policiesCopy;
   v31 = [obj countByEnumeratingWithState:&v46 objects:v56 count:16];
   if (v31)
   {
@@ -700,8 +700,8 @@ LABEL_12:
         v44 = 0u;
         v45 = 0u;
         v33 = v7;
-        v8 = [v7 matchingFilters];
-        v9 = [v8 countByEnumeratingWithState:&v42 objects:v55 count:16];
+        matchingFilters = [v7 matchingFilters];
+        v9 = [matchingFilters countByEnumeratingWithState:&v42 objects:v55 count:16];
         if (v9)
         {
           v10 = v9;
@@ -712,21 +712,21 @@ LABEL_12:
             {
               if (*v43 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(matchingFilters);
               }
 
               v13 = *(*(&v42 + 1) + 8 * i);
-              v14 = [v13 filter];
+              filter = [v13 filter];
               v15 = _CFXPCCreateXPCObjectFromCFObject();
 
               if (v15)
               {
-                v16 = [v13 filterType];
-                v17 = [v16 cStringUsingEncoding:4];
+                filterType = [v13 filterType];
+                v17 = [filterType cStringUsingEncoding:4];
 
                 if (v17)
                 {
-                  if (v35)
+                  if (registerCopy)
                   {
                     v18 = self->_log;
                     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -734,13 +734,13 @@ LABEL_12:
                       sub_100048A08(v54, v18);
                     }
 
-                    v19 = [v13 filterName];
-                    [v19 cStringUsingEncoding:4];
+                    filterName = [v13 filterName];
+                    [filterName cStringUsingEncoding:4];
                     xpc_set_event();
                   }
 
-                  v20 = [v13 filterType];
-                  v21 = [v36 objectForKey:v20];
+                  filterType2 = [v13 filterType];
+                  v21 = [v36 objectForKey:filterType2];
 
                   if (!v21)
                   {
@@ -748,12 +748,12 @@ LABEL_12:
                     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
                     {
                       log = v22;
-                      v26 = [v33 pluginName];
-                      v27 = [v13 filterName];
+                      pluginName = [v33 pluginName];
+                      filterName2 = [v13 filterName];
                       *buf = 138543618;
-                      v51 = v26;
+                      v51 = pluginName;
                       v52 = 2114;
-                      v53 = v27;
+                      v53 = filterName2;
                       _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "Setting event handler for Plugin:%{public}@ Filter:%{public}@", buf, 0x16u);
                     }
 
@@ -765,8 +765,8 @@ LABEL_12:
                     handler[4] = self;
                     xpc_set_event_stream_handler(v17, processingQueue, handler);
                     v24 = [NSNumber numberWithBool:1];
-                    v25 = [v13 filterType];
-                    [v36 setObject:v24 forKey:v25];
+                    filterType3 = [v13 filterType];
+                    [v36 setObject:v24 forKey:filterType3];
                   }
                 }
 
@@ -782,7 +782,7 @@ LABEL_12:
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v42 objects:v55 count:16];
+            v10 = [matchingFilters countByEnumeratingWithState:&v42 objects:v55 count:16];
           }
 
           while (v10);
@@ -801,13 +801,13 @@ LABEL_12:
   return 1;
 }
 
-- (void)handleXPCStreamEvent:(id)a3
+- (void)handleXPCStreamEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    string = xpc_dictionary_get_string(v4, _xpc_event_key_name);
+    string = xpc_dictionary_get_string(eventCopy, _xpc_event_key_name);
     if (string)
     {
       v7 = string;
@@ -849,12 +849,12 @@ LABEL_12:
   }
 }
 
-- (void)handleEAOverHIDXPCStreamEvent:(id)a3 forFilterName:(id)a4
+- (void)handleEAOverHIDXPCStreamEvent:(id)event forFilterName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  eventCopy = event;
+  nameCopy = name;
+  v8 = nameCopy;
+  if (eventCopy && nameCopy)
   {
     v9 = qword_10009A9D8;
     eaOverHIDQueue = self->_eaOverHIDQueue;
@@ -862,8 +862,8 @@ LABEL_12:
     block[1] = 3221225472;
     block[2] = sub_10000B3F4;
     block[3] = &unk_1000814D8;
-    v12 = v6;
-    v13 = self;
+    v12 = eventCopy;
+    selfCopy = self;
     v14 = v8;
     dispatch_group_async(v9, eaOverHIDQueue, block);
   }
@@ -890,9 +890,9 @@ LABEL_12:
   dispatch_async(timeoutQueue, block);
 }
 
-- (void)setActivityForUARPPeriodicLaunch:(BOOL)a3
+- (void)setActivityForUARPPeriodicLaunch:(BOOL)launch
 {
-  v3 = a3;
+  launchCopy = launch;
   keyExistsAndHasValidFormat = 0;
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"uarpPeriodicFirmwareCheckInterval", @"com.apple.mobileaccessoryupdater", &keyExistsAndHasValidFormat);
   if (keyExistsAndHasValidFormat != 1 || AppIntegerValue == 0)
@@ -915,7 +915,7 @@ LABEL_12:
   v13[3] = &unk_100081460;
   v13[4] = self;
   v9 = objc_retainBlock(v13);
-  if (v3)
+  if (launchCopy)
   {
     v10 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_REPEATING, 1);
@@ -948,16 +948,16 @@ LABEL_12:
   }
 }
 
-- (void)setActivityForDeviceIdleLaunch:(BOOL)a3
+- (void)setActivityForDeviceIdleLaunch:(BOOL)launch
 {
-  v3 = a3;
+  launchCopy = launch;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000BDA0;
   v9[3] = &unk_100081460;
   v9[4] = self;
   v5 = objc_retainBlock(v9);
-  if (v3)
+  if (launchCopy)
   {
     v6 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_BOOL(v6, XPC_ACTIVITY_REQUIRE_SIGNIFICANT_USER_INACTIVITY, 1);
@@ -991,9 +991,9 @@ LABEL_12:
   }
 }
 
-- (void)setActivityForPeriodicLaunch:(BOOL)a3
+- (void)setActivityForPeriodicLaunch:(BOOL)launch
 {
-  v3 = a3;
+  launchCopy = launch;
   keyExistsAndHasValidFormat = 0;
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"periodicFirmwareCheckInterval", @"com.apple.MobileAccessoryUpdater", &keyExistsAndHasValidFormat);
   if (keyExistsAndHasValidFormat != 1 || AppIntegerValue == 0)
@@ -1016,7 +1016,7 @@ LABEL_12:
   v14[3] = &unk_100081460;
   v14[4] = self;
   v9 = objc_retainBlock(v14);
-  if (v3)
+  if (launchCopy)
   {
     v10 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_REPEATING, 1);
@@ -1052,20 +1052,20 @@ LABEL_12:
   xpc_activity_register("com.apple.MobileAccessoryUpdater.periodicFirmwareCheck", v10, v9);
 }
 
-- (void)doDeviceCheck:(int)a3
+- (void)doDeviceCheck:(int)check
 {
   self->_isDeviceIdleLaunch = 1;
-  v5 = [(FudStorage *)self->_legacyUpdaterStorage pluginToPolicy];
-  v6 = [v5 allValues];
+  pluginToPolicy = [(FudStorage *)self->_legacyUpdaterStorage pluginToPolicy];
+  allValues = [pluginToPolicy allValues];
 
-  if (v6)
+  if (allValues)
   {
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v32 = v6;
-    obj = v6;
+    v32 = allValues;
+    obj = allValues;
     v35 = [obj countByEnumeratingWithState:&v44 objects:v55 count:16];
     if (!v35)
     {
@@ -1089,8 +1089,8 @@ LABEL_12:
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v37 = [v8 matchingFilters];
-        v9 = [v37 countByEnumeratingWithState:&v40 objects:v54 count:16];
+        matchingFilters = [v8 matchingFilters];
+        v9 = [matchingFilters countByEnumeratingWithState:&v40 objects:v54 count:16];
         if (v9)
         {
           v10 = v9;
@@ -1102,14 +1102,14 @@ LABEL_12:
             {
               if (*v41 != v11)
               {
-                objc_enumerationMutation(v37);
+                objc_enumerationMutation(matchingFilters);
               }
 
               v13 = *(*(&v40 + 1) + 8 * v12);
-              v14 = [v13 needsDeviceIdleCheck];
-              if (a3 > 1)
+              needsDeviceIdleCheck = [v13 needsDeviceIdleCheck];
+              if (check > 1)
               {
-                if (a3 == 2)
+                if (check == 2)
                 {
                   if (![v13 needsInstallerCheck])
                   {
@@ -1121,7 +1121,7 @@ LABEL_12:
 
                 else
                 {
-                  if (a3 != 3)
+                  if (check != 3)
                   {
                     goto LABEL_21;
                   }
@@ -1135,7 +1135,7 @@ LABEL_12:
 
               else
               {
-                if (!a3)
+                if (!check)
                 {
                   if (([v13 needsPeriodicFirmwareCheck] & 1) == 0)
                   {
@@ -1145,10 +1145,10 @@ LABEL_12:
                   goto LABEL_27;
                 }
 
-                if (a3 != 1)
+                if (check != 1)
                 {
 LABEL_21:
-                  if (!v14)
+                  if (!needsDeviceIdleCheck)
                   {
                     goto LABEL_42;
                   }
@@ -1169,13 +1169,13 @@ LABEL_27:
                 sub_100049394(v53, log);
               }
 
-              v16 = [v13 filterType];
-              v17 = [v16 cStringUsingEncoding:4];
+              filterType = [v13 filterType];
+              v17 = [filterType cStringUsingEncoding:4];
 
               if (v17)
               {
-                v18 = [v13 filterName];
-                [v18 cStringUsingEncoding:4];
+                filterName = [v13 filterName];
+                [filterName cStringUsingEncoding:4];
                 v19 = xpc_copy_event();
 
                 if (v19)
@@ -1189,23 +1189,23 @@ LABEL_27:
                   sub_1000493F4(v52, v20);
                 }
 
-                v21 = [v13 filter];
+                filter = [v13 filter];
                 v19 = _CFXPCCreateXPCObjectFromCFObject();
 
                 if (v19)
                 {
 LABEL_34:
-                  v22 = [v13 filterName];
-                  v23 = [v22 rangeOfString:@"com.apple.MobileAccessoryUpdater.EA." options:1];
+                  filterName2 = [v13 filterName];
+                  v23 = [filterName2 rangeOfString:@"com.apple.MobileAccessoryUpdater.EA." options:1];
 
-                  v24 = [v13 filterName];
-                  v25 = [v24 cStringUsingEncoding:4];
+                  filterName3 = [v13 filterName];
+                  v25 = [filterName3 cStringUsingEncoding:4];
                   if (v23 == 0x7FFFFFFFFFFFFFFFLL)
                   {
                     xpc_set_event();
 
-                    v26 = [v13 filterName];
-                    [v26 cStringUsingEncoding:4];
+                    filterName4 = [v13 filterName];
+                    [filterName4 cStringUsingEncoding:4];
                     xpc_set_event();
                   }
 
@@ -1217,9 +1217,9 @@ LABEL_34:
                     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
                     {
                       v29 = v28;
-                      v30 = [v13 filterName];
+                      filterName5 = [v13 filterName];
                       *buf = 138543618;
-                      v49 = v30;
+                      v49 = filterName5;
                       v50 = 2114;
                       v51 = v19;
                       _os_log_debug_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "Kicking off device check event for %{public}@, xpcFilter=%{public}@", buf, 0x16u);
@@ -1253,7 +1253,7 @@ LABEL_42:
             }
 
             while (v10 != v12);
-            v31 = [v37 countByEnumeratingWithState:&v40 objects:v54 count:16];
+            v31 = [matchingFilters countByEnumeratingWithState:&v40 objects:v54 count:16];
             v10 = v31;
           }
 
@@ -1269,7 +1269,7 @@ LABEL_42:
       {
 LABEL_49:
 
-        v6 = v32;
+        allValues = v32;
         goto LABEL_52;
       }
     }
@@ -1322,9 +1322,9 @@ LABEL_52:
   legacyUpdaterStorage = self->_legacyUpdaterStorage;
   if (legacyUpdaterStorage)
   {
-    v8 = [(FudStorage *)legacyUpdaterStorage save];
+    save = [(FudStorage *)legacyUpdaterStorage save];
     log = self->_log;
-    if (v8)
+    if (save)
     {
       v7 = 0;
       if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEFAULT))
@@ -1358,12 +1358,12 @@ LABEL_52:
   exit(v7);
 }
 
-- (void)registerForNotifydNotification:(id)a3 filterName:(id)a4
+- (void)registerForNotifydNotification:(id)notification filterName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  nameCopy = name;
   v13 = @"Notification";
-  v14 = v6;
+  v14 = notificationCopy;
   v8 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
   v9 = _CFXPCCreateXPCObjectFromCFObject();
   log = self->_log;
@@ -1374,7 +1374,7 @@ LABEL_52:
       sub_1000494B4();
     }
 
-    [v7 cStringUsingEncoding:4];
+    [nameCopy cStringUsingEncoding:4];
     xpc_set_event();
     processingQueue = self->_processingQueue;
     v12[0] = _NSConcreteStackBlock;

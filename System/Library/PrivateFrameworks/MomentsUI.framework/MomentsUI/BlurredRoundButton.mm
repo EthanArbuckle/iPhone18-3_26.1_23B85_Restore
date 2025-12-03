@@ -1,14 +1,14 @@
 @interface BlurredRoundButton
 - (void)layoutSubviews;
-- (void)touchedButton:(id)a3;
+- (void)touchedButton:(id)button;
 @end
 
 @implementation BlurredRoundButton
 
-- (void)touchedButton:(id)a3
+- (void)touchedButton:(id)button
 {
   v3 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0x68);
-  v6 = self;
+  selfCopy = self;
   v4 = v3();
   if (v4)
   {
@@ -25,10 +25,10 @@
 
 - (void)layoutSubviews
 {
-  v3 = self;
-  [(BlurredRoundButton *)v3 bounds];
-  [(BlurredRoundButton *)v3 _setCornerRadius:v2 * 0.5];
-  [(BlurredRoundButton *)v3 setClipsToBounds:1];
+  selfCopy = self;
+  [(BlurredRoundButton *)selfCopy bounds];
+  [(BlurredRoundButton *)selfCopy _setCornerRadius:v2 * 0.5];
+  [(BlurredRoundButton *)selfCopy setClipsToBounds:1];
 }
 
 @end

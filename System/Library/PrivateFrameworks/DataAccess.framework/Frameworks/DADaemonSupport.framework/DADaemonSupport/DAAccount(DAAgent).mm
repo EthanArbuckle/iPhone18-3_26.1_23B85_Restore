@@ -6,9 +6,9 @@
 
 - (id)agentClass
 {
-  v2 = [MEMORY[0x277D03738] sharedInstance];
-  v3 = [a1 backingAccountInfo];
-  v4 = [v2 agentClassForACAccount:v3];
+  mEMORY[0x277D03738] = [MEMORY[0x277D03738] sharedInstance];
+  backingAccountInfo = [self backingAccountInfo];
+  v4 = [mEMORY[0x277D03738] agentClassForACAccount:backingAccountInfo];
 
   return v4;
 }

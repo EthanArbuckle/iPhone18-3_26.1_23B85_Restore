@@ -1,59 +1,59 @@
 @interface _SWActionResponse
-+ (id)responseWithDestinationResponse:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToActionResponse:(id)a3;
++ (id)responseWithDestinationResponse:(id)response;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToActionResponse:(id)response;
 - (BSActionResponse)sourceBSActionResponse;
-- (_SWActionResponse)initWithCoder:(id)a3;
-- (_SWActionResponse)initWithDestinationResponse:(id)a3;
-- (_SWActionResponse)initWithSuccess:(BOOL)a3 error:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithBSActionResponseSettings:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_SWActionResponse)initWithCoder:(id)coder;
+- (_SWActionResponse)initWithDestinationResponse:(id)response;
+- (_SWActionResponse)initWithSuccess:(BOOL)success error:(id)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithBSActionResponseSettings:(id)settings;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SWActionResponse
 
-- (_SWActionResponse)initWithSuccess:(BOOL)a3 error:(id)a4
+- (_SWActionResponse)initWithSuccess:(BOOL)success error:(id)error
 {
-  v7 = a4;
+  errorCopy = error;
   v11.receiver = self;
   v11.super_class = _SWActionResponse;
   v8 = [(_SWActionResponse *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_success = a3;
-    objc_storeStrong(&v8->_error, a4);
+    v8->_success = success;
+    objc_storeStrong(&v8->_error, error);
   }
 
   return v9;
 }
 
-- (_SWActionResponse)initWithDestinationResponse:(id)a3
+- (_SWActionResponse)initWithDestinationResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 info];
-  [v5 flagForSetting:1];
+  responseCopy = response;
+  info = [responseCopy info];
+  [info flagForSetting:1];
   IsYes = BSSettingFlagIsYes();
 
-  v7 = [v4 info];
+  info2 = [responseCopy info];
 
-  v8 = [v7 objectForSetting:1];
+  v8 = [info2 objectForSetting:1];
 
   v9 = [(_SWActionResponse *)self initWithSuccess:IsYes error:v8];
   return v9;
 }
 
-+ (id)responseWithDestinationResponse:(id)a3
++ (id)responseWithDestinationResponse:(id)response
 {
-  v3 = a3;
-  v4 = [v3 info];
-  v5 = [v4 objectForSetting:483940];
+  responseCopy = response;
+  info = [responseCopy info];
+  v5 = [info objectForSetting:483940];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = NSClassFromString(v5), [(objc_class *)v6 isSubclassOfClass:objc_opt_class()]) && [(objc_class *)v6 instancesRespondToSelector:sel_initWithDestinationResponse_])
   {
-    v7 = [[v6 alloc] initWithDestinationResponse:v3];
+    v7 = [[v6 alloc] initWithDestinationResponse:responseCopy];
   }
 
   else
@@ -64,16 +64,16 @@
   return v7;
 }
 
-- (void)encodeWithBSActionResponseSettings:(id)a3
+- (void)encodeWithBSActionResponseSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setObject:v6 forSetting:483940];
+  [settingsCopy setObject:v6 forSetting:483940];
 
-  [v4 setFlag:-[_SWActionResponse success](self forSetting:{"success"), 1}];
-  v7 = [(_SWActionResponse *)self error];
-  [v4 setObject:v7 forSetting:1];
+  [settingsCopy setFlag:-[_SWActionResponse success](self forSetting:{"success"), 1}];
+  error = [(_SWActionResponse *)self error];
+  [settingsCopy setObject:error forSetting:1];
 }
 
 - (BSActionResponse)sourceBSActionResponse
@@ -84,8 +84,8 @@
     v4 = objc_alloc_init(_SWBSActionResponseSettings);
     [(_SWActionResponse *)self encodeWithBSActionResponseSettings:v4];
     v5 = objc_alloc(MEMORY[0x1E698E600]);
-    v6 = [(_SWBSActionResponseSettings *)v4 bsSettings];
-    v7 = [v5 initWithInfo:v6 error:0];
+    bsSettings = [(_SWBSActionResponseSettings *)v4 bsSettings];
+    v7 = [v5 initWithInfo:bsSettings error:0];
     v8 = self->_sourceBSActionResponse;
     self->_sourceBSActionResponse = v7;
 
@@ -95,20 +95,20 @@
   return sourceBSActionResponse;
 }
 
-- (_SWActionResponse)initWithCoder:(id)a3
+- (_SWActionResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = _SWActionResponse;
   v5 = [(_SWActionResponse *)&v12 init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_success);
-    v5->_success = [v4 decodeBoolForKey:v6];
+    v5->_success = [coderCopy decodeBoolForKey:v6];
 
     v7 = objc_opt_class();
     v8 = NSStringFromSelector(sel_error);
-    v9 = [v4 decodeObjectOfClass:v7 forKey:v8];
+    v9 = [coderCopy decodeObjectOfClass:v7 forKey:v8];
     error = v5->_error;
     v5->_error = v9;
   }
@@ -116,57 +116,57 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_SWActionResponse *)self success];
+  coderCopy = coder;
+  success = [(_SWActionResponse *)self success];
   v6 = NSStringFromSelector(sel_success);
-  [v4 encodeBool:v5 forKey:v6];
+  [coderCopy encodeBool:success forKey:v6];
 
-  v8 = [(_SWActionResponse *)self error];
+  error = [(_SWActionResponse *)self error];
   v7 = NSStringFromSelector(sel_error);
-  [v4 encodeObject:v8 forKey:v7];
+  [coderCopy encodeObject:error forKey:v7];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setSuccess:{-[_SWActionResponse success](self, "success")}];
-  v5 = [(_SWActionResponse *)self error];
-  [v4 setError:v5];
+  error = [(_SWActionResponse *)self error];
+  [v4 setError:error];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_SWActionResponse *)self isEqualToActionResponse:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_SWActionResponse *)self isEqualToActionResponse:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToActionResponse:(id)a3
+- (BOOL)isEqualToActionResponse:(id)response
 {
-  v5 = a3;
-  if (v5 == self)
+  responseCopy = response;
+  if (responseCopy == self)
   {
     v7 = 1;
     goto LABEL_12;
   }
 
-  v6 = [(_SWActionResponse *)self success];
-  if (v6 == [(_SWActionResponse *)v5 success])
+  success = [(_SWActionResponse *)self success];
+  if (success == [(_SWActionResponse *)responseCopy success])
   {
-    v8 = [(_SWActionResponse *)self error];
-    if (v8 || ([(_SWActionResponse *)v5 error], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    error = [(_SWActionResponse *)self error];
+    if (error || ([(_SWActionResponse *)responseCopy error], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v9 = [(_SWActionResponse *)self error];
-      v10 = [(_SWActionResponse *)v5 error];
-      v7 = [v9 isEqual:v10];
+      error2 = [(_SWActionResponse *)self error];
+      error3 = [(_SWActionResponse *)responseCopy error];
+      v7 = [error2 isEqual:error3];
 
-      if (v8)
+      if (error)
       {
 LABEL_11:
 

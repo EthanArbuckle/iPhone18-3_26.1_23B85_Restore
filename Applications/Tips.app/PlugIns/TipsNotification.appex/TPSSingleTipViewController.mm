@@ -1,23 +1,23 @@
 @interface TPSSingleTipViewController
-- (BOOL)isOneLinerForText:(id)a3 maxWidth:(double)a4 font:(id)a5;
-- (TPSSingleTipViewController)initWithAppController:(id)a3 translucentBackground:(BOOL)a4;
+- (BOOL)isOneLinerForText:(id)text maxWidth:(double)width font:(id)font;
+- (TPSSingleTipViewController)initWithAppController:(id)controller translucentBackground:(BOOL)background;
 - (TPSSingleTipViewControllerDelegate)delegate;
 - (double)maxWidth;
-- (id)textView:(id)a3 menuConfigurationForTextItem:(id)a4 defaultMenu:(id)a5;
+- (id)textView:(id)view menuConfigurationForTextItem:(id)item defaultMenu:(id)menu;
 - (void)analyticsIncreaseCountForCurrentTip;
 - (void)cancelConstellationContentParserOperation;
-- (void)constellationContentParser:(id)a3 identifier:(id)a4 attributedStringUpdated:(id)a5;
+- (void)constellationContentParser:(id)parser identifier:(id)identifier attributedStringUpdated:(id)updated;
 - (void)createViews;
 - (void)dealloc;
-- (void)imageAssetViewImageUpdated:(id)a3;
+- (void)imageAssetViewImageUpdated:(id)updated;
 - (void)playVideo;
 - (void)scheduleIncreaseViewCount;
-- (void)setTip:(id)a3 visible:(BOOL)a4 completionHandler:(id)a5;
+- (void)setTip:(id)tip visible:(BOOL)visible completionHandler:(id)handler;
 - (void)setupForSnapshot;
 - (void)updateAssetsConfiguration;
 - (void)updateBodyText;
-- (void)updateImageWithCompletionHandler:(id)a3;
-- (void)updateVideoAndPlayImmediately:(BOOL)a3;
+- (void)updateImageWithCompletionHandler:(id)handler;
+- (void)updateVideoAndPlayImmediately:(BOOL)immediately;
 - (void)viewDidLoad;
 @end
 
@@ -32,17 +32,17 @@
   [(TPSSingleTipViewController *)&v3 dealloc];
 }
 
-- (TPSSingleTipViewController)initWithAppController:(id)a3 translucentBackground:(BOOL)a4
+- (TPSSingleTipViewController)initWithAppController:(id)controller translucentBackground:(BOOL)background
 {
-  v7 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = TPSSingleTipViewController;
   v8 = [(TPSSingleTipViewController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_appController, a3);
-    v9->_translucentBackground = a4;
+    objc_storeStrong(&v8->_appController, controller);
+    v9->_translucentBackground = background;
   }
 
   return v9;
@@ -114,30 +114,30 @@
     [(TPSVideoAssetView *)self->_heroAssetView setDelegate:self];
     [(TPSVideoAssetView *)self->_heroAssetView setVideoDelegate:self];
     [(TPSVideoAssetView *)self->_heroAssetView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [(TPSSingleTipViewController *)self view];
-    [v5 addSubview:self->_heroAssetView];
+    view = [(TPSSingleTipViewController *)self view];
+    [view addSubview:self->_heroAssetView];
 
-    v6 = [(TPSVideoAssetView *)self->_heroAssetView leadingAnchor];
-    v7 = [(TPSSingleTipViewController *)self view];
-    v8 = [v7 leadingAnchor];
-    v9 = [v6 constraintEqualToAnchor:v8];
+    leadingAnchor = [(TPSVideoAssetView *)self->_heroAssetView leadingAnchor];
+    view2 = [(TPSSingleTipViewController *)self view];
+    leadingAnchor2 = [view2 leadingAnchor];
+    v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v9 setActive:1];
 
-    v10 = [(TPSVideoAssetView *)self->_heroAssetView trailingAnchor];
-    v11 = [(TPSSingleTipViewController *)self view];
-    v12 = [v11 trailingAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12];
+    trailingAnchor = [(TPSVideoAssetView *)self->_heroAssetView trailingAnchor];
+    view3 = [(TPSSingleTipViewController *)self view];
+    trailingAnchor2 = [view3 trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v13 setActive:1];
 
-    v14 = [(TPSVideoAssetView *)self->_heroAssetView topAnchor];
-    v15 = [(TPSSingleTipViewController *)self view];
-    v16 = [v15 topAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16];
+    topAnchor = [(TPSVideoAssetView *)self->_heroAssetView topAnchor];
+    view4 = [(TPSSingleTipViewController *)self view];
+    topAnchor2 = [view4 topAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v17 setActive:1];
 
-    v18 = [(TPSVideoAssetView *)self->_heroAssetView heightAnchor];
-    v19 = [(TPSVideoAssetView *)self->_heroAssetView widthAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    heightAnchor = [(TPSVideoAssetView *)self->_heroAssetView heightAnchor];
+    widthAnchor = [(TPSVideoAssetView *)self->_heroAssetView widthAnchor];
+    v20 = [heightAnchor constraintEqualToAnchor:widthAnchor];
     heroAssetViewHeightConstraint = self->_heroAssetViewHeightConstraint;
     self->_heroAssetViewHeightConstraint = v20;
 
@@ -160,25 +160,25 @@
     [(UILabel *)self->_titleLabel setLineBreakMode:0];
     LODWORD(v26) = 1144750080;
     [(UILabel *)self->_titleLabel setContentHuggingPriority:1 forAxis:v26];
-    v27 = [(TPSSingleTipViewController *)self view];
-    [v27 insertSubview:self->_titleLabel belowSubview:self->_heroAssetView];
+    view5 = [(TPSSingleTipViewController *)self view];
+    [view5 insertSubview:self->_titleLabel belowSubview:self->_heroAssetView];
 
-    v28 = [(UILabel *)self->_titleLabel leadingAnchor];
-    v29 = [(TPSSingleTipViewController *)self view];
-    v30 = [v29 leadingAnchor];
-    v31 = [v28 constraintEqualToAnchor:v30];
+    leadingAnchor3 = [(UILabel *)self->_titleLabel leadingAnchor];
+    view6 = [(TPSSingleTipViewController *)self view];
+    leadingAnchor4 = [view6 leadingAnchor];
+    v31 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     titleLabelLeadingConstraint = self->_titleLabelLeadingConstraint;
     self->_titleLabelLeadingConstraint = v31;
 
     [(NSLayoutConstraint *)self->_titleLabelLeadingConstraint setActive:1];
-    v33 = [(UILabel *)self->_titleLabel trailingAnchor];
-    v34 = [(TPSVideoAssetView *)self->_heroAssetView trailingAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34 constant:-30.0];
+    trailingAnchor3 = [(UILabel *)self->_titleLabel trailingAnchor];
+    trailingAnchor4 = [(TPSVideoAssetView *)self->_heroAssetView trailingAnchor];
+    v35 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-30.0];
     [v35 setActive:1];
 
-    v36 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-    v37 = [(TPSVideoAssetView *)self->_heroAssetView bottomAnchor];
-    v38 = [v36 constraintEqualToSystemSpacingBelowAnchor:v37 multiplier:1.2];
+    firstBaselineAnchor = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+    bottomAnchor = [(TPSVideoAssetView *)self->_heroAssetView bottomAnchor];
+    v38 = [firstBaselineAnchor constraintEqualToSystemSpacingBelowAnchor:bottomAnchor multiplier:1.2];
     [v38 setActive:1];
   }
 
@@ -196,16 +196,16 @@
 
     [(UITextView *)self->_bodyTextView setEditable:0];
     [(UITextView *)self->_bodyTextView setDataDetectorTypes:0];
-    v42 = [(UITextView *)self->_bodyTextView textContainer];
-    [v42 setHeightTracksTextView:1];
+    textContainer = [(UITextView *)self->_bodyTextView textContainer];
+    [textContainer setHeightTracksTextView:1];
 
     [(UITextView *)self->_bodyTextView setDelegate:self];
-    v43 = [(UITextView *)self->_bodyTextView textContainer];
-    [v43 setLineBreakMode:4];
+    textContainer2 = [(UITextView *)self->_bodyTextView textContainer];
+    [textContainer2 setLineBreakMode:4];
 
     [(UITextView *)self->_bodyTextView setTextContainerInset:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
-    v44 = [(UITextView *)self->_bodyTextView textContainer];
-    [v44 setLineFragmentPadding:0.0];
+    textContainer3 = [(UITextView *)self->_bodyTextView textContainer];
+    [textContainer3 setLineFragmentPadding:0.0];
 
     v45 = +[TPSAppearance defaultLabelColor];
     [(UITextView *)self->_bodyTextView setTextColor:v45];
@@ -219,29 +219,29 @@
       [(UITextView *)self->_bodyTextView setLinkTextAttributes:v47];
     }
 
-    v48 = [(TPSSingleTipViewController *)self view];
-    [v48 insertSubview:self->_bodyTextView belowSubview:self->_heroAssetView];
+    view7 = [(TPSSingleTipViewController *)self view];
+    [view7 insertSubview:self->_bodyTextView belowSubview:self->_heroAssetView];
 
-    v49 = [(UITextView *)self->_bodyTextView leadingAnchor];
-    v50 = [(TPSSingleTipViewController *)self view];
-    v51 = [v50 leadingAnchor];
-    v52 = [v49 constraintEqualToAnchor:v51 constant:30.0];
+    leadingAnchor5 = [(UITextView *)self->_bodyTextView leadingAnchor];
+    view8 = [(TPSSingleTipViewController *)self view];
+    leadingAnchor6 = [view8 leadingAnchor];
+    v52 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:30.0];
     [v52 setActive:1];
 
-    v53 = [(UITextView *)self->_bodyTextView trailingAnchor];
-    v54 = [(UILabel *)self->_titleLabel trailingAnchor];
-    v55 = [v53 constraintEqualToAnchor:v54];
+    trailingAnchor5 = [(UITextView *)self->_bodyTextView trailingAnchor];
+    trailingAnchor6 = [(UILabel *)self->_titleLabel trailingAnchor];
+    v55 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     [v55 setActive:1];
 
-    v56 = [(UITextView *)self->_bodyTextView bottomAnchor];
-    v57 = [(TPSSingleTipViewController *)self view];
-    v58 = [v57 bottomAnchor];
-    v59 = [v56 constraintEqualToAnchor:v58 constant:-12.0];
+    bottomAnchor2 = [(UITextView *)self->_bodyTextView bottomAnchor];
+    view9 = [(TPSSingleTipViewController *)self view];
+    bottomAnchor3 = [view9 bottomAnchor];
+    v59 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-12.0];
     [v59 setActive:1];
 
-    v60 = [(UITextView *)self->_bodyTextView firstBaselineAnchor];
-    v61 = [(UILabel *)self->_titleLabel lastBaselineAnchor];
-    v62 = [v60 constraintEqualToSystemSpacingBelowAnchor:v61 multiplier:1.2];
+    firstBaselineAnchor2 = [(UITextView *)self->_bodyTextView firstBaselineAnchor];
+    lastBaselineAnchor = [(UILabel *)self->_titleLabel lastBaselineAnchor];
+    v62 = [firstBaselineAnchor2 constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor multiplier:1.2];
     [v62 setActive:1];
   }
 }
@@ -252,14 +252,14 @@
   tip = self->_tip;
   if (tip)
   {
-    v12 = [(TPSTip *)tip identifier];
-    v4 = [(TPSSingleTipViewController *)self collectionID];
-    v5 = [(TPSTip *)self->_tip correlationID];
-    v6 = [(TPSTip *)self->_tip clientConditionID];
+    identifier = [(TPSTip *)tip identifier];
+    collectionID = [(TPSSingleTipViewController *)self collectionID];
+    correlationID = [(TPSTip *)self->_tip correlationID];
+    clientConditionID = [(TPSTip *)self->_tip clientConditionID];
     v7 = TPSAnalyticsViewMethodNotification;
-    v8 = [(TPSSingleTipViewController *)self traitCollection];
-    v9 = [TPSAnalyticsEventContentViewed analyticsViewModeForTraitCollection:v8];
-    v10 = [TPSAnalyticsEventContentViewed eventWithContentID:v12 collectionID:v4 correlationID:v5 clientConditionID:v6 viewMethod:v7 viewMode:v9];
+    traitCollection = [(TPSSingleTipViewController *)self traitCollection];
+    v9 = [TPSAnalyticsEventContentViewed analyticsViewModeForTraitCollection:traitCollection];
+    v10 = [TPSAnalyticsEventContentViewed eventWithContentID:identifier collectionID:collectionID correlationID:correlationID clientConditionID:clientConditionID viewMethod:v7 viewMode:v9];
     [v10 log];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -267,25 +267,25 @@
   }
 }
 
-- (void)setTip:(id)a3 visible:(BOOL)a4 completionHandler:(id)a5
+- (void)setTip:(id)tip visible:(BOOL)visible completionHandler:(id)handler
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 language];
+  visibleCopy = visible;
+  tipCopy = tip;
+  handlerCopy = handler;
+  language = [tipCopy language];
   v12 = +[TPSCommonDefines sharedInstance];
-  [v12 setLanguage:v11];
+  [v12 setLanguage:language];
 
   if (self->_titleLabel)
   {
-    v13 = [v9 identifier];
-    v14 = [(TPSTip *)self->_tip identifier];
-    v15 = [v13 isEqualToString:v14];
+    identifier = [tipCopy identifier];
+    identifier2 = [(TPSTip *)self->_tip identifier];
+    v15 = [identifier isEqualToString:identifier2];
 
     if ((v15 & 1) == 0)
     {
-      v16 = [(TPSSingleTipViewController *)self assetSizes];
-      v17 = [v16 tip];
+      assetSizes = [(TPSSingleTipViewController *)self assetSizes];
+      v17 = [assetSizes tip];
 
       v18 = &selRef_respondsToSelector_;
       if (!v17)
@@ -294,8 +294,8 @@
       }
 
       v19 = +[TPSCommonDefines isPhoneUI]^ 1;
-      v20 = [(TPSSingleTipViewController *)self assetSizes];
-      v21 = [v20 tip];
+      assetSizes2 = [(TPSSingleTipViewController *)self assetSizes];
+      v21 = [assetSizes2 tip];
       [v21 heightToWidthRatioForViewMode:v19];
       v23 = v22;
 
@@ -309,10 +309,10 @@
       {
 LABEL_8:
         v25 = +[TPSCommonDefines sharedInstance];
-        v26 = [v25 assetRatioType];
+        assetRatioType = [v25 assetRatioType];
         if (+[TPSCommonDefines isPhoneUI])
         {
-          v23 = dbl_100005AD0[v26 == 1];
+          v23 = dbl_100005AD0[assetRatioType == 1];
           v24 = 0.0;
         }
 
@@ -327,19 +327,19 @@ LABEL_8:
       [(NSLayoutConstraint *)self->_heroAssetViewHeightConstraint setActive:0];
       [(NSLayoutConstraint *)self->_heroAssetViewHeightRatioConstraint setActive:0];
       v27 = *(v18 + 129);
-      v28 = [*(&self->super.super.super.isa + v27) heightAnchor];
-      v29 = [(TPSSingleTipViewController *)self view];
-      v30 = [v29 widthAnchor];
-      v31 = [v28 constraintEqualToAnchor:v30 multiplier:v23 constant:-v24];
+      heightAnchor = [*(&self->super.super.super.isa + v27) heightAnchor];
+      view = [(TPSSingleTipViewController *)self view];
+      widthAnchor = [view widthAnchor];
+      v31 = [heightAnchor constraintEqualToAnchor:widthAnchor multiplier:v23 constant:-v24];
       heroAssetViewHeightRatioConstraint = self->_heroAssetViewHeightRatioConstraint;
       self->_heroAssetViewHeightRatioConstraint = v31;
 
       [(NSLayoutConstraint *)self->_heroAssetViewHeightRatioConstraint setActive:1];
-      objc_storeStrong(&self->_tip, a3);
+      objc_storeStrong(&self->_tip, tip);
       [(TPSSingleTipViewController *)self updateAssetsConfiguration];
-      v33 = [v9 language];
+      language2 = [tipCopy language];
       v34 = +[TPSAssetCacheController sharedInstance];
-      [v34 setLanguageCode:v33];
+      [v34 setLanguageCode:language2];
 
       [*(&self->super.super.super.isa + v27) cancel];
       heroAssetFetchCompletionHandler = self->_heroAssetFetchCompletionHandler;
@@ -351,18 +351,18 @@ LABEL_8:
         [(NSLayoutConstraint *)self->_titleLabelLeadingConstraint setConstant:30.0];
       }
 
-      v37 = [(TPSTip *)self->_tip title];
-      [(UILabel *)self->_titleLabel setText:v37];
+      title = [(TPSTip *)self->_tip title];
+      [(UILabel *)self->_titleLabel setText:title];
 
       [(TPSSingleTipViewController *)self updateBodyText];
       v39[0] = _NSConcreteStackBlock;
       v39[1] = 3221225472;
       v39[2] = sub_100001F40;
       v39[3] = &unk_10000C2F8;
-      v40 = v10;
+      v40 = handlerCopy;
       [(TPSSingleTipViewController *)self updateImageWithCompletionHandler:v39];
       [*(&self->super.super.super.isa + v27) stopVideoPlayer];
-      if (v6)
+      if (visibleCopy)
       {
         [(TPSSingleTipViewController *)self updateVideoAndPlayImmediately:0];
         [(TPSSingleTipViewController *)self scheduleIncreaseViewCount];
@@ -375,22 +375,22 @@ LABEL_8:
 
   else
   {
-    objc_storeStrong(&self->_pendingTip, a3);
-    if (v10)
+    objc_storeStrong(&self->_pendingTip, tip);
+    if (handlerCopy)
     {
-      (*(v10 + 2))(v10, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 }
 
 - (void)updateAssetsConfiguration
 {
-  v15 = [(TPSSingleTipViewController *)self appController];
+  appController = [(TPSSingleTipViewController *)self appController];
   v14 = [(TPSSingleTipViewController *)self tip];
-  v13 = [v14 fullContent];
-  v3 = [v13 assets];
+  fullContent = [v14 fullContent];
+  assets = [fullContent assets];
   v4 = [(TPSSingleTipViewController *)self tip];
-  v5 = [v4 language];
+  language = [v4 language];
   if (+[TPSCommonDefines isPhoneUI])
   {
     v6 = 1;
@@ -401,12 +401,12 @@ LABEL_8:
     v6 = 2;
   }
 
-  v7 = [(TPSSingleTipViewController *)self view];
-  v8 = [v7 traitCollection];
-  v9 = [v8 userInterfaceStyle];
+  view = [(TPSSingleTipViewController *)self view];
+  traitCollection = [view traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v10 = [(TPSSingleTipViewController *)self tip];
-  v11 = [v10 assetFileInfoManager];
-  v12 = [v15 assetConfigurationForAssets:v3 language:v5 sizeClass:v6 style:v9 assetFileInfoManager:v11];
+  assetFileInfoManager = [v10 assetFileInfoManager];
+  v12 = [appController assetConfigurationForAssets:assets language:language sizeClass:v6 style:userInterfaceStyle assetFileInfoManager:assetFileInfoManager];
   [(TPSSingleTipViewController *)self setAssetsConfiguration:v12];
 }
 
@@ -421,19 +421,19 @@ LABEL_8:
   }
 }
 
-- (BOOL)isOneLinerForText:(id)a3 maxWidth:(double)a4 font:(id)a5
+- (BOOL)isOneLinerForText:(id)text maxWidth:(double)width font:(id)font
 {
-  if (!a5)
+  if (!font)
   {
     return 0;
   }
 
   v22 = NSFontAttributeName;
-  v23 = a5;
-  v7 = a5;
-  v8 = a3;
-  v9 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-  [v8 boundingRectWithSize:1 options:v9 attributes:0 context:{a4, 1.79769313e308}];
+  fontCopy = font;
+  fontCopy2 = font;
+  textCopy = text;
+  v9 = [NSDictionary dictionaryWithObjects:&fontCopy forKeys:&v22 count:1];
+  [textCopy boundingRectWithSize:1 options:v9 attributes:0 context:{width, 1.79769313e308}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -444,7 +444,7 @@ LABEL_8:
   v24.size.width = v15;
   v24.size.height = v17;
   Height = CGRectGetHeight(v24);
-  [v7 lineHeight];
+  [fontCopy2 lineHeight];
   v20 = v19;
 
   return Height == v20;
@@ -452,8 +452,8 @@ LABEL_8:
 
 - (double)maxWidth
 {
-  v2 = [(TPSSingleTipViewController *)self view];
-  [v2 bounds];
+  view = [(TPSSingleTipViewController *)self view];
+  [view bounds];
   Width = CGRectGetWidth(v5);
 
   return Width;
@@ -470,28 +470,28 @@ LABEL_8:
   v47[1] = v32;
   v3 = [NSDictionary dictionaryWithObjects:v47 forKeys:v46 count:2];
   v4 = [(TPSSingleTipViewController *)self tip];
-  v5 = [v4 bodyText];
+  bodyText = [v4 bodyText];
 
-  if (v5)
+  if (bodyText)
   {
-    v6 = [[NSAttributedString alloc] initWithString:v5 attributes:v3];
-    v7 = [(TPSSingleTipViewController *)self bodyTextView];
-    [v7 setAttributedText:v6];
+    bodyContent = [[NSAttributedString alloc] initWithString:bodyText attributes:v3];
+    bodyTextView = [(TPSSingleTipViewController *)self bodyTextView];
+    [bodyTextView setAttributedText:bodyContent];
 LABEL_7:
 
     goto LABEL_8;
   }
 
   v8 = [(TPSSingleTipViewController *)self tip];
-  v6 = [v8 bodyContent];
+  bodyContent = [v8 bodyContent];
 
-  if (v6)
+  if (bodyContent)
   {
     v9 = objc_alloc_init(TPSConstellationContentParser);
     [v9 setDelegate:self];
-    v10 = [(TPSSingleTipViewController *)self view];
-    v11 = [v10 traitCollection];
-    [v9 setTraitCollection:v11];
+    view = [(TPSSingleTipViewController *)self view];
+    traitCollection = [view traitCollection];
+    [v9 setTraitCollection:traitCollection];
 
     [v9 setIgnoreLinks:!self->_supportInlineLinks];
     if (!self->_attributedStringOperationQueue)
@@ -505,21 +505,21 @@ LABEL_7:
 
     objc_initWeak(&location, self);
     v14 = [(TPSSingleTipViewController *)self tip];
-    v15 = [v14 identifier];
-    objc_initWeak(&from, v15);
+    identifier = [v14 identifier];
+    objc_initWeak(&from, identifier);
 
     v16 = [(TPSSingleTipViewController *)self tip];
-    v30 = [v16 identifier];
+    identifier2 = [v16 identifier];
 
     v17 = [(TPSSingleTipViewController *)self tip];
-    v29 = [v17 language];
+    language = [v17 language];
 
     v18 = [(TPSSingleTipViewController *)self tip];
-    v19 = [v18 fullContentAssets];
-    v20 = [v19 baseURL];
+    fullContentAssets = [v18 fullContentAssets];
+    baseURL = [fullContentAssets baseURL];
 
     v21 = [(TPSSingleTipViewController *)self tip];
-    v22 = [v21 assetFileInfoManager];
+    assetFileInfoManager = [v21 assetFileInfoManager];
 
     v23 = objc_alloc_init(NSBlockOperation);
     contentTextOperation = self->_contentTextOperation;
@@ -530,18 +530,18 @@ LABEL_7:
     v34[1] = 3221225472;
     v34[2] = sub_10000276C;
     v34[3] = &unk_10000C348;
-    v7 = v9;
-    v35 = v7;
-    v6 = v6;
-    v36 = v6;
+    bodyTextView = v9;
+    v35 = bodyTextView;
+    bodyContent = bodyContent;
+    v36 = bodyContent;
     v37 = v3;
-    v28 = v30;
+    v28 = identifier2;
     v38 = v28;
-    v31 = v29;
+    v31 = language;
     v39 = v31;
-    v26 = v20;
+    v26 = baseURL;
     v40 = v26;
-    v27 = v22;
+    v27 = assetFileInfoManager;
     v41 = v27;
     objc_copyWeak(&v42, &location);
     objc_copyWeak(&v43, &from);
@@ -558,24 +558,24 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)updateImageWithCompletionHandler:(id)a3
+- (void)updateImageWithCompletionHandler:(id)handler
 {
-  v13 = a3;
-  v4 = [(TPSSingleTipViewController *)self assetsConfiguration];
-  v5 = [TPSContentURLController assetPathFromAssetConfiguration:v4 type:0];
+  handlerCopy = handler;
+  assetsConfiguration = [(TPSSingleTipViewController *)self assetsConfiguration];
+  v5 = [TPSContentURLController assetPathFromAssetConfiguration:assetsConfiguration type:0];
 
   heroAssetView = self->_heroAssetView;
   if (v5)
   {
-    v7 = [(TPSVideoAssetView *)heroAssetView currentImagePath];
-    v8 = [v5 isEqualToString:v7];
+    currentImagePath = [(TPSVideoAssetView *)heroAssetView currentImagePath];
+    v8 = [v5 isEqualToString:currentImagePath];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(TPSSingleTipViewController *)self assetsConfiguration];
-      v10 = [v9 cacheIdentifierForType:0];
+      assetsConfiguration2 = [(TPSSingleTipViewController *)self assetsConfiguration];
+      v10 = [assetsConfiguration2 cacheIdentifierForType:0];
 
-      v11 = [v13 copy];
+      v11 = [handlerCopy copy];
       heroAssetFetchCompletionHandler = self->_heroAssetFetchCompletionHandler;
       self->_heroAssetFetchCompletionHandler = v11;
 
@@ -590,21 +590,21 @@ LABEL_8:
     [(TPSVideoAssetView *)self->_heroAssetView setImage:0];
   }
 
-  (*(v13 + 2))(v13, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0);
 LABEL_6:
 }
 
-- (void)updateVideoAndPlayImmediately:(BOOL)a3
+- (void)updateVideoAndPlayImmediately:(BOOL)immediately
 {
-  v3 = a3;
-  v5 = [(TPSSingleTipViewController *)self assetsConfiguration];
-  v10 = [v5 cacheIdentifierForType:1];
+  immediatelyCopy = immediately;
+  assetsConfiguration = [(TPSSingleTipViewController *)self assetsConfiguration];
+  v10 = [assetsConfiguration cacheIdentifierForType:1];
 
-  v6 = [(TPSSingleTipViewController *)self assetsConfiguration];
-  v7 = [TPSContentURLController assetPathFromAssetConfiguration:v6 type:1];
+  assetsConfiguration2 = [(TPSSingleTipViewController *)self assetsConfiguration];
+  v7 = [TPSContentURLController assetPathFromAssetConfiguration:assetsConfiguration2 type:1];
 
-  v8 = [(TPSVideoAssetView *)self->_heroAssetView videoPath];
-  v9 = [v7 isEqualToString:v8];
+  videoPath = [(TPSVideoAssetView *)self->_heroAssetView videoPath];
+  v9 = [v7 isEqualToString:videoPath];
 
   if ((v9 & 1) == 0)
   {
@@ -613,49 +613,49 @@ LABEL_6:
     goto LABEL_5;
   }
 
-  if (v3)
+  if (immediatelyCopy)
   {
 LABEL_5:
     [(TPSVideoAssetView *)self->_heroAssetView playVideo];
   }
 }
 
-- (void)constellationContentParser:(id)a3 identifier:(id)a4 attributedStringUpdated:(id)a5
+- (void)constellationContentParser:(id)parser identifier:(id)identifier attributedStringUpdated:(id)updated
 {
-  v12 = a5;
-  v7 = a4;
+  updatedCopy = updated;
+  identifierCopy = identifier;
   v8 = [(TPSSingleTipViewController *)self tip];
-  v9 = [v8 identifier];
-  v10 = [v7 isEqualToString:v9];
+  identifier = [v8 identifier];
+  v10 = [identifierCopy isEqualToString:identifier];
 
   if (v10)
   {
-    v11 = [(TPSSingleTipViewController *)self bodyTextView];
-    [v11 setAttributedText:v12];
+    bodyTextView = [(TPSSingleTipViewController *)self bodyTextView];
+    [bodyTextView setAttributedText:updatedCopy];
   }
 }
 
-- (void)imageAssetViewImageUpdated:(id)a3
+- (void)imageAssetViewImageUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   heroAssetFetchCompletionHandler = self->_heroAssetFetchCompletionHandler;
-  if (heroAssetFetchCompletionHandler && self->_heroAssetView == v4)
+  if (heroAssetFetchCompletionHandler && self->_heroAssetView == updatedCopy)
   {
-    v8 = v4;
-    v6 = [(TPSVideoAssetView *)v4 image];
-    heroAssetFetchCompletionHandler[2](heroAssetFetchCompletionHandler, v6 != 0);
+    v8 = updatedCopy;
+    image = [(TPSVideoAssetView *)updatedCopy image];
+    heroAssetFetchCompletionHandler[2](heroAssetFetchCompletionHandler, image != 0);
 
     v7 = self->_heroAssetFetchCompletionHandler;
     self->_heroAssetFetchCompletionHandler = 0;
 
-    v4 = v8;
+    updatedCopy = v8;
   }
 }
 
-- (id)textView:(id)a3 menuConfigurationForTextItem:(id)a4 defaultMenu:(id)a5
+- (id)textView:(id)view menuConfigurationForTextItem:(id)item defaultMenu:(id)menu
 {
-  v6 = a4;
-  if (![v6 contentType])
+  itemCopy = item;
+  if (![itemCopy contentType])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v8 = objc_opt_respondsToSelector();
@@ -663,8 +663,8 @@ LABEL_5:
     if (v8)
     {
       v9 = objc_loadWeakRetained(&self->_delegate);
-      v10 = [v6 link];
-      [v9 singleTipViewController:self handleURL:v10];
+      link = [itemCopy link];
+      [v9 singleTipViewController:self handleURL:link];
     }
   }
 

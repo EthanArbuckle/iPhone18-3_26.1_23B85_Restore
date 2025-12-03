@@ -1,14 +1,14 @@
 @interface SKGDomainEdge
-+ (id)edgeFromDomain:(id)a3 toNode:(id)a4;
++ (id)edgeFromDomain:(id)domain toNode:(id)node;
 @end
 
 @implementation SKGDomainEdge
 
-+ (id)edgeFromDomain:(id)a3 toNode:(id)a4
++ (id)edgeFromDomain:(id)domain toNode:(id)node
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [(SKGEdge *)[SKGDomainEdge alloc] initWithSourceNode:v5 targetNode:v6];
+  domainCopy = domain;
+  nodeCopy = node;
+  v7 = [(SKGEdge *)[SKGDomainEdge alloc] initWithSourceNode:domainCopy targetNode:nodeCopy];
 
   return v7;
 }

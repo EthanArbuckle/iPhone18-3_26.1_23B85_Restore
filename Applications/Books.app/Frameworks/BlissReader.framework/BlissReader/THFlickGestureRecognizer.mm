@@ -1,23 +1,23 @@
 @interface THFlickGestureRecognizer
-- (CGPoint)initialLocationInView:(id)a3;
-- (CGPoint)translationInView:(id)a3;
-- (THFlickGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (CGPoint)initialLocationInView:(id)view;
+- (CGPoint)translationInView:(id)view;
+- (THFlickGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)dealloc;
 - (void)p_invalidateTimer;
-- (void)p_killTimerFired:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)p_killTimerFired:(id)fired;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation THFlickGestureRecognizer
 
-- (THFlickGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (THFlickGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v5.receiver = self;
   v5.super_class = THFlickGestureRecognizer;
-  return [(THFlickGestureRecognizer *)&v5 initWithTarget:a3 action:a4];
+  return [(THFlickGestureRecognizer *)&v5 initWithTarget:target action:action];
 }
 
 - (void)dealloc
@@ -28,22 +28,22 @@
   [(THFlickGestureRecognizer *)&v3 dealloc];
 }
 
-- (CGPoint)initialLocationInView:(id)a3
+- (CGPoint)initialLocationInView:(id)view
 {
   x = self->_startLocation.x;
   y = self->_startLocation.y;
   v6 = [-[THFlickGestureRecognizer view](self "view")];
 
-  [a3 convertPoint:v6 fromView:{x, y}];
+  [view convertPoint:v6 fromView:{x, y}];
   result.y = v8;
   result.x = v7;
   return result;
 }
 
-- (CGPoint)translationInView:(id)a3
+- (CGPoint)translationInView:(id)view
 {
-  [a3 convertPoint:objc_msgSend(-[THFlickGestureRecognizer view](self fromView:{"view"), "window"), self->_startLocation.x, self->_startLocation.y}];
-  [a3 convertPoint:objc_msgSend(-[THFlickGestureRecognizer view](self fromView:{"view"), "window"), self->_endLocation.x, self->_endLocation.y}];
+  [view convertPoint:objc_msgSend(-[THFlickGestureRecognizer view](self fromView:{"view"), "window"), self->_startLocation.x, self->_startLocation.y}];
+  [view convertPoint:objc_msgSend(-[THFlickGestureRecognizer view](self fromView:{"view"), "window"), self->_endLocation.x, self->_endLocation.y}];
 
   TSDSubtractPoints();
   result.y = v6;
@@ -51,11 +51,11 @@
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  if ([a3 count] < 2 || -[THFlickGestureRecognizer state](self, "state"))
+  if ([began count] < 2 || -[THFlickGestureRecognizer state](self, "state"))
   {
-    [objc_msgSend(a3 "anyObject")];
+    [objc_msgSend(began "anyObject")];
     self->_startLocation.x = v6;
     self->_startLocation.y = v7;
     +[NSDate timeIntervalSinceReferenceDate];
@@ -72,18 +72,18 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  [objc_msgSend(a3 "anyObject")];
+  [objc_msgSend(moved "anyObject")];
   self->_endLocation.x = v5;
   self->_endLocation.y = v6;
   +[NSDate timeIntervalSinceReferenceDate];
   self->_endInterval = v7;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  [(THFlickGestureRecognizer *)self p_invalidateTimer:a3];
+  [(THFlickGestureRecognizer *)self p_invalidateTimer:ended];
   if (![(THFlickGestureRecognizer *)self state])
   {
     [(THFlickGestureRecognizer *)self translationInView:[(THFlickGestureRecognizer *)self view]];
@@ -102,9 +102,9 @@
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  if (![(THFlickGestureRecognizer *)self state:a3])
+  if (![(THFlickGestureRecognizer *)self state:cancelled])
   {
 
     [(THFlickGestureRecognizer *)self setState:4];
@@ -118,7 +118,7 @@
   self->_killTimer = 0;
 }
 
-- (void)p_killTimerFired:(id)a3
+- (void)p_killTimerFired:(id)fired
 {
   if (![(THFlickGestureRecognizer *)self state])
   {

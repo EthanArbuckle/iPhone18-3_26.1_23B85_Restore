@@ -1,18 +1,18 @@
 @interface PRLexiconCompletion
-- (PRLexiconCompletion)initWithTokenID:(unsigned int)a3 score:(double)a4;
+- (PRLexiconCompletion)initWithTokenID:(unsigned int)d score:(double)score;
 @end
 
 @implementation PRLexiconCompletion
 
-- (PRLexiconCompletion)initWithTokenID:(unsigned int)a3 score:(double)a4
+- (PRLexiconCompletion)initWithTokenID:(unsigned int)d score:(double)score
 {
   v7.receiver = self;
   v7.super_class = PRLexiconCompletion;
   result = [(PRLexiconCompletion *)&v7 init];
   if (result)
   {
-    result->_tokenID = a3;
-    result->_score = a4;
+    result->_tokenID = d;
+    result->_score = score;
   }
 
   return result;

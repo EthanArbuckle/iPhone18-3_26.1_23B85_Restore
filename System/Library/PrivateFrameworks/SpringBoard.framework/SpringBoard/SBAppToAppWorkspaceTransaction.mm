@@ -3,23 +3,23 @@
 - (BOOL)_hasPostAnimationTasks;
 - (BOOL)_hasPreAnimationTasks;
 - (BOOL)_shouldResignActiveForAnimation;
-- (BOOL)canInterruptForTransitionRequest:(id)a3;
-- (SBAppToAppWorkspaceTransaction)initWithTransitionRequest:(id)a3;
+- (BOOL)canInterruptForTransitionRequest:(id)request;
+- (SBAppToAppWorkspaceTransaction)initWithTransitionRequest:(id)request;
 - (id)_setupAnimation;
-- (id)_setupAnimationFrom:(id)a3 to:(id)a4;
+- (id)_setupAnimationFrom:(id)from to:(id)to;
 - (id)debugDescription;
 - (unint64_t)_concurrentOverlayDismissalOptions;
 - (unint64_t)_serialOverlayPreDismissalOptions;
-- (void)_animationWillBegin:(BOOL)a3;
+- (void)_animationWillBegin:(BOOL)begin;
 - (void)_begin;
 - (void)_beginTransition;
 - (void)_cleanUpAfterAnimation;
 - (void)_clearAnimation;
 - (void)_didComplete;
-- (void)_handleApplicationDidNotChange:(id)a3;
-- (void)_handleApplicationUpdateScenesTransactionFailed:(id)a3;
-- (void)_performPostAnimationTasksWithCompletion:(id)a3;
-- (void)_performPreAnimationTasksWithCompletion:(id)a3;
+- (void)_handleApplicationDidNotChange:(id)change;
+- (void)_handleApplicationUpdateScenesTransactionFailed:(id)failed;
+- (void)_performPostAnimationTasksWithCompletion:(id)completion;
+- (void)_performPreAnimationTasksWithCompletion:(id)completion;
 - (void)dealloc;
 @end
 
@@ -37,20 +37,20 @@
 {
   v5.receiver = self;
   v5.super_class = SBAppToAppWorkspaceTransaction;
-  v3 = [(SBToAppsWorkspaceTransaction *)&v5 _shouldResignActiveForAnimation];
-  if (v3)
+  _shouldResignActiveForAnimation = [(SBToAppsWorkspaceTransaction *)&v5 _shouldResignActiveForAnimation];
+  if (_shouldResignActiveForAnimation)
   {
-    LOBYTE(v3) = [(SBToAppsWorkspaceTransaction *)self toAndFromAppsDiffer];
+    LOBYTE(_shouldResignActiveForAnimation) = [(SBToAppsWorkspaceTransaction *)self toAndFromAppsDiffer];
   }
 
-  return v3;
+  return _shouldResignActiveForAnimation;
 }
 
 - (id)_setupAnimation
 {
-  v3 = [(SBToAppsWorkspaceTransaction *)self fromApplicationSceneEntities];
-  v4 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
-  v5 = [(SBAppToAppWorkspaceTransaction *)self _setupAnimationFrom:v3 to:v4];
+  fromApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)self fromApplicationSceneEntities];
+  toApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
+  v5 = [(SBAppToAppWorkspaceTransaction *)self _setupAnimationFrom:fromApplicationSceneEntities to:toApplicationSceneEntities];
 
   objc_storeStrong(&self->_animation, v5);
 
@@ -59,16 +59,16 @@
 
 - (unint64_t)_serialOverlayPreDismissalOptions
 {
-  v3 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v4 = [v3 applicationContext];
-  v5 = [v4 retainsSiri];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  applicationContext = [transitionRequest applicationContext];
+  retainsSiri = [applicationContext retainsSiri];
 
-  v6 = [(SBWorkspaceTransaction *)self windowScene];
-  v7 = [v6 assistantController];
-  v8 = [v7 presentationContext];
-  v9 = [v8 hasVisionModality];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  assistantController = [windowScene assistantController];
+  presentationContext = [assistantController presentationContext];
+  hasVisionModality = [presentationContext hasVisionModality];
 
-  if (v9 & 1 | ((v5 & 1) == 0))
+  if (hasVisionModality & 1 | ((retainsSiri & 1) == 0))
   {
     v10 = -1;
   }
@@ -78,26 +78,26 @@
     v10 = -9;
   }
 
-  if ([v3 shouldPreventEmergencyNotificationBannerDismissal])
+  if ([transitionRequest shouldPreventEmergencyNotificationBannerDismissal])
   {
-    v11 = [SBApp notificationDispatcher];
-    v12 = [v11 bannerDestination];
-    v13 = [v12 isPresentingEmergencyNotification];
+    notificationDispatcher = [SBApp notificationDispatcher];
+    bannerDestination = [notificationDispatcher bannerDestination];
+    isPresentingEmergencyNotification = [bannerDestination isPresentingEmergencyNotification];
 
-    if (v13)
+    if (isPresentingEmergencyNotification)
     {
       v10 &= ~0x20uLL;
     }
   }
 
-  if ([v3 source] == 56 || objc_msgSend(v3, "source") == 69)
+  if ([transitionRequest source] == 56 || objc_msgSend(transitionRequest, "source") == 69)
   {
     v10 &= ~0x20uLL;
   }
 
-  v14 = [v3 source];
-  v15 = [v3 source];
-  if (v14 == 64 || v15 == 65)
+  source = [transitionRequest source];
+  source2 = [transitionRequest source];
+  if (source == 64 || source2 == 65)
   {
     v17 = v10 & 0xFFFFFFFFFFFFFFFELL;
   }
@@ -107,9 +107,9 @@
     v17 = v10;
   }
 
-  v18 = [v3 source];
-  v19 = [v3 source];
-  if (v18 == 37 || v19 == 70)
+  source3 = [transitionRequest source];
+  source4 = [transitionRequest source];
+  if (source3 == 37 || source4 == 70)
   {
     v21 = 0;
   }
@@ -119,7 +119,7 @@
     v21 = v17;
   }
 
-  if ([v3 source] == 71)
+  if ([transitionRequest source] == 71)
   {
     v21 &= ~0x20uLL;
   }
@@ -129,13 +129,13 @@
 
 - (unint64_t)_concurrentOverlayDismissalOptions
 {
-  v3 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v4 = [v3 source];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  source = [transitionRequest source];
 
-  v5 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v6 = [v5 source];
+  transitionRequest2 = [(SBWorkspaceTransaction *)self transitionRequest];
+  source2 = [transitionRequest2 source];
 
-  v8 = v6 == 70 || v4 == 37;
+  v8 = source2 == 70 || source == 37;
   return v8 << 63 >> 63;
 }
 
@@ -147,8 +147,8 @@
     return 0;
   }
 
-  v4 = [(SBAutoPIPWorkspaceTransaction *)autoPIPTransaction entityToPIP];
-  if (v4)
+  entityToPIP = [(SBAutoPIPWorkspaceTransaction *)autoPIPTransaction entityToPIP];
+  if (entityToPIP)
   {
     v5 = self->_autoPIPTransitionOrder == 0;
   }
@@ -163,24 +163,24 @@
 
 - (void)_beginTransition
 {
-  v3 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v4 = [v3 applicationContext];
-  v5 = [v4 disablesAutoPIP];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  applicationContext = [transitionRequest applicationContext];
+  disablesAutoPIP = [applicationContext disablesAutoPIP];
 
-  if ((v5 & 1) == 0)
+  if ((disablesAutoPIP & 1) == 0)
   {
     v29 = 0;
-    v6 = [(SBWorkspaceTransaction *)self transitionRequest];
-    v7 = [SBAutoPIPWorkspaceTransaction shouldAutoPIPEnteringBackgroundForRequest:v6 tetheringMode:&v29 reason:2];
+    transitionRequest2 = [(SBWorkspaceTransaction *)self transitionRequest];
+    v7 = [SBAutoPIPWorkspaceTransaction shouldAutoPIPEnteringBackgroundForRequest:transitionRequest2 tetheringMode:&v29 reason:2];
 
-    v8 = [(SBToAppsWorkspaceTransaction *)self isGoingToMainSwitcher];
+    isGoingToMainSwitcher = [(SBToAppsWorkspaceTransaction *)self isGoingToMainSwitcher];
     if ([(SBToAppsWorkspaceTransaction *)self isGoingToLauncher])
     {
-      v9 = [(SBWorkspaceTransaction *)self transitionRequest];
-      v10 = [v9 source];
+      transitionRequest3 = [(SBWorkspaceTransaction *)self transitionRequest];
+      source = [transitionRequest3 source];
 
       LOBYTE(v11) = 0;
-      if (v10 == 11 && v29 != 1)
+      if (source == 11 && v29 != 1)
       {
         v11 = !SBReduceMotion();
       }
@@ -191,7 +191,7 @@
       LOBYTE(v11) = 0;
     }
 
-    if (!v8 && v7 && !v11)
+    if (!isGoingToMainSwitcher && v7 && !v11)
     {
       [(SBAutoPIPWorkspaceTransaction *)self->_autoPIPTransaction setCompletionBlock:0];
       if ([(SBAutoPIPWorkspaceTransaction *)self->_autoPIPTransaction isRunning])
@@ -200,8 +200,8 @@
       }
 
       v12 = [SBAutoPIPWorkspaceTransaction alloc];
-      v13 = [(SBWorkspaceTransaction *)self transitionRequest];
-      v14 = [(SBAutoPIPWorkspaceTransaction *)v12 initWithTransitionRequest:v13 includeActiveAppEntity:0 reason:2];
+      transitionRequest4 = [(SBWorkspaceTransaction *)self transitionRequest];
+      v14 = [(SBAutoPIPWorkspaceTransaction *)v12 initWithTransitionRequest:transitionRequest4 includeActiveAppEntity:0 reason:2];
       autoPIPTransaction = self->_autoPIPTransaction;
       self->_autoPIPTransaction = v14;
 
@@ -209,9 +209,9 @@
       pipDuringSwitchTransitionTasksGroup = self->_pipDuringSwitchTransitionTasksGroup;
       self->_pipDuringSwitchTransitionTasksGroup = v16;
 
-      v18 = [(SBAutoPIPWorkspaceTransaction *)self->_autoPIPTransaction transitionStyle];
+      transitionStyle = [(SBAutoPIPWorkspaceTransaction *)self->_autoPIPTransaction transitionStyle];
       v19 = 1;
-      if (v18 == 2)
+      if (transitionStyle == 2)
       {
         v19 = 2;
       }
@@ -220,22 +220,22 @@
     }
   }
 
-  v20 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v21 = [v20 source];
+  transitionRequest5 = [(SBWorkspaceTransaction *)self transitionRequest];
+  source2 = [transitionRequest5 source];
 
-  if (v21 == 53)
+  if (source2 == 53)
   {
     v29 = 0;
     v30 = &v29;
     v31 = 0x2020000000;
     v32 = -1;
-    v22 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
+    toApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __50__SBAppToAppWorkspaceTransaction__beginTransition__block_invoke;
     v28[3] = &unk_2783A9D88;
     v28[4] = &v29;
-    [v22 enumerateObjectsUsingBlock:v28];
+    [toApplicationSceneEntities enumerateObjectsUsingBlock:v28];
 
     if (v30[3] != -1)
     {
@@ -243,8 +243,8 @@
       v24 = [v23 pipControllerForType:v30[3]];
 
       v25 = MEMORY[0x277CBEB98];
-      v26 = [v24 hostedAppSceneHandles];
-      v27 = [v25 setWithArray:v26];
+      hostedAppSceneHandles = [v24 hostedAppSceneHandles];
+      v27 = [v25 setWithArray:hostedAppSceneHandles];
 
       [v24 handleDestructionRequestForSceneHandles:v27];
     }
@@ -271,8 +271,8 @@
     return 0;
   }
 
-  v5 = [(SBAutoPIPWorkspaceTransaction *)self->_autoPIPTransaction entityToPIP];
-  if (v5)
+  entityToPIP = [(SBAutoPIPWorkspaceTransaction *)self->_autoPIPTransaction entityToPIP];
+  if (entityToPIP)
   {
     v4 = self->_autoPIPTransitionOrder - 1 < 2;
   }
@@ -296,15 +296,15 @@
 - (void)_didComplete
 {
   [(SBAppToAppWorkspaceTransaction *)self _cleanUpAfterAnimation];
-  v3 = [(SBWorkspaceTransaction *)self windowScene];
-  v4 = [v3 homeScreenController];
-  v5 = [v4 homeScreenViewController];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  homeScreenController = [windowScene homeScreenController];
+  homeScreenViewController = [homeScreenController homeScreenViewController];
 
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 setAllowIconRotation:1 forReason:v7];
+  [homeScreenViewController setAllowIconRotation:1 forReason:v7];
 
-  [v5 setHomeScreenAutorotatesEvenWhenIconIsDragging:0];
+  [homeScreenViewController setHomeScreenAutorotatesEvenWhenIconIsDragging:0];
   if (![(SBAppToAppWorkspaceTransaction *)self preventWhitePointAdaptationStrengthUpdateOnComplete])
   {
     v8 = +[SBSceneLayoutWhitePointAdaptationController sharedInstance];
@@ -324,21 +324,21 @@
   [(SBToAppsWorkspaceTransaction *)self performToAppStateCleanup];
 }
 
-- (SBAppToAppWorkspaceTransaction)initWithTransitionRequest:(id)a3
+- (SBAppToAppWorkspaceTransaction)initWithTransitionRequest:(id)request
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v16.receiver = self;
   v16.super_class = SBAppToAppWorkspaceTransaction;
-  v5 = [(SBToAppsWorkspaceTransaction *)&v16 initWithTransitionRequest:v4];
-  if (v5 && SBMainWorkspaceTransitionSourceIsUserEventDriven([v4 source]))
+  v5 = [(SBToAppsWorkspaceTransaction *)&v16 initWithTransitionRequest:requestCopy];
+  if (v5 && SBMainWorkspaceTransitionSourceIsUserEventDriven([requestCopy source]))
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(SBToAppsWorkspaceTransaction *)v5 allLayoutTransactions];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    allLayoutTransactions = [(SBToAppsWorkspaceTransaction *)v5 allLayoutTransactions];
+    v7 = [allLayoutTransactions countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -350,7 +350,7 @@
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allLayoutTransactions);
           }
 
           [*(*(&v12 + 1) + 8 * v10) setOptions:{objc_msgSend(*(*(&v12 + 1) + 8 * v10), "options") | 2}];
@@ -358,7 +358,7 @@
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v8 = [allLayoutTransactions countByEnumeratingWithState:&v12 objects:v17 count:16];
       }
 
       while (v8);
@@ -373,11 +373,11 @@
   v10.receiver = self;
   v10.super_class = SBAppToAppWorkspaceTransaction;
   v3 = [(SBAppToAppWorkspaceTransaction *)&v10 debugDescription];
-  v4 = [(SBToAppsWorkspaceTransaction *)self fromApplicationSceneEntities];
-  v5 = v4;
-  if (v4)
+  fromApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)self fromApplicationSceneEntities];
+  v5 = fromApplicationSceneEntities;
+  if (fromApplicationSceneEntities)
   {
-    v6 = v4;
+    v6 = fromApplicationSceneEntities;
   }
 
   else
@@ -385,8 +385,8 @@
     v6 = @"SpringBoard";
   }
 
-  v7 = [(SBToAppsWorkspaceTransaction *)self animationController];
-  v8 = [v3 stringByAppendingFormat:@"\n\tfromApps = %@\n\tanimation = %@", v6, v7];
+  animationController = [(SBToAppsWorkspaceTransaction *)self animationController];
+  v8 = [v3 stringByAppendingFormat:@"\n\tfromApps = %@\n\tanimation = %@", v6, animationController];
 
   return v8;
 }
@@ -398,16 +398,16 @@
     return 1;
   }
 
-  v4 = [(SBToAppsWorkspaceTransaction *)self animationController];
-  v3 = v4 == 0;
+  animationController = [(SBToAppsWorkspaceTransaction *)self animationController];
+  v3 = animationController == 0;
 
   return v3;
 }
 
-- (BOOL)canInterruptForTransitionRequest:(id)a3
+- (BOOL)canInterruptForTransitionRequest:(id)request
 {
-  v4 = a3;
-  LOBYTE(self) = [objc_opt_class() canInterruptTransaction:self forTransitionRequest:v4];
+  requestCopy = request;
+  LOBYTE(self) = [objc_opt_class() canInterruptTransaction:self forTransitionRequest:requestCopy];
 
   return self;
 }
@@ -428,14 +428,14 @@ void __50__SBAppToAppWorkspaceTransaction__beginTransition__block_invoke(uint64_
   }
 }
 
-- (void)_performPreAnimationTasksWithCompletion:(id)a3
+- (void)_performPreAnimationTasksWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   autoPIPTransaction = self->_autoPIPTransaction;
   if (autoPIPTransaction)
   {
-    v6 = [(SBAutoPIPWorkspaceTransaction *)autoPIPTransaction entityToPIP];
-    if (v6)
+    entityToPIP = [(SBAutoPIPWorkspaceTransaction *)autoPIPTransaction entityToPIP];
+    if (entityToPIP)
     {
       autoPIPTransitionOrder = self->_autoPIPTransitionOrder;
 
@@ -446,7 +446,7 @@ void __50__SBAppToAppWorkspaceTransaction__beginTransition__block_invoke(uint64_
         v9[1] = 3221225472;
         v9[2] = __74__SBAppToAppWorkspaceTransaction__performPreAnimationTasksWithCompletion___block_invoke;
         v9[3] = &unk_2783A9C70;
-        v10 = v4;
+        v10 = completionCopy;
         [(SBAutoPIPWorkspaceTransaction *)v8 setCompletionBlock:v9];
         [(SBAppToAppWorkspaceTransaction *)self addChildTransaction:self->_autoPIPTransaction];
       }
@@ -465,14 +465,14 @@ uint64_t __74__SBAppToAppWorkspaceTransaction__performPreAnimationTasksWithCompl
   return result;
 }
 
-- (void)_performPostAnimationTasksWithCompletion:(id)a3
+- (void)_performPostAnimationTasksWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   autoPIPTransaction = self->_autoPIPTransaction;
   if (autoPIPTransaction)
   {
-    v6 = [(SBAutoPIPWorkspaceTransaction *)autoPIPTransaction entityToPIP];
-    if (v6)
+    entityToPIP = [(SBAutoPIPWorkspaceTransaction *)autoPIPTransaction entityToPIP];
+    if (entityToPIP)
     {
       autoPIPTransitionOrder = self->_autoPIPTransitionOrder;
 
@@ -483,7 +483,7 @@ uint64_t __74__SBAppToAppWorkspaceTransaction__performPreAnimationTasksWithCompl
         block[1] = 3221225472;
         block[2] = __75__SBAppToAppWorkspaceTransaction__performPostAnimationTasksWithCompletion___block_invoke;
         block[3] = &unk_2783A9348;
-        v19 = v4;
+        v19 = completionCopy;
         dispatch_group_notify(pipDuringSwitchTransitionTasksGroup, MEMORY[0x277D85CD0], block);
         v9 = v19;
 LABEL_8:
@@ -492,8 +492,8 @@ LABEL_8:
       }
     }
 
-    v10 = [(SBAutoPIPWorkspaceTransaction *)self->_autoPIPTransaction entityToPIP];
-    if (v10)
+    entityToPIP2 = [(SBAutoPIPWorkspaceTransaction *)self->_autoPIPTransaction entityToPIP];
+    if (entityToPIP2)
     {
       v11 = self->_autoPIPTransitionOrder;
 
@@ -504,7 +504,7 @@ LABEL_8:
         v14 = 3221225472;
         v15 = __75__SBAppToAppWorkspaceTransaction__performPostAnimationTasksWithCompletion___block_invoke_2;
         v16 = &unk_2783A9C70;
-        v17 = v4;
+        v17 = completionCopy;
         [(SBAutoPIPWorkspaceTransaction *)v12 setCompletionBlock:&v13];
         [(SBAppToAppWorkspaceTransaction *)self addChildTransaction:self->_autoPIPTransaction, v13, v14, v15, v16];
         v9 = v17;
@@ -513,9 +513,9 @@ LABEL_8:
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_11:
@@ -543,16 +543,16 @@ uint64_t __75__SBAppToAppWorkspaceTransaction__performPostAnimationTasksWithComp
   return result;
 }
 
-- (void)_handleApplicationDidNotChange:(id)a3
+- (void)_handleApplicationDidNotChange:(id)change
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  toApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
+  v6 = [toApplicationSceneEntities countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -563,25 +563,25 @@ uint64_t __75__SBAppToAppWorkspaceTransaction__performPostAnimationTasksWithComp
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(toApplicationSceneEntities);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         if ([v10 BOOLForActivationSetting:42] & 1) != 0 || (objc_msgSend(v10, "BOOLForActivationSetting:", 55))
         {
-          v11 = [SBApp windowSceneManager];
-          v12 = [v10 sceneHandle];
-          v13 = [v11 windowSceneForSceneHandle:v12];
+          windowSceneManager = [SBApp windowSceneManager];
+          sceneHandle = [v10 sceneHandle];
+          v13 = [windowSceneManager windowSceneForSceneHandle:sceneHandle];
 
-          v14 = [SBApp bannerManager];
-          [v14 dismissAllBannersInWindowScene:v13 animated:1 reason:@"appToAppFromBanner"];
+          bannerManager = [SBApp bannerManager];
+          [bannerManager dismissAllBannersInWindowScene:v13 animated:1 reason:@"appToAppFromBanner"];
 
-          v5 = v13;
+          toApplicationSceneEntities = v13;
           goto LABEL_12;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [toApplicationSceneEntities countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -595,28 +595,28 @@ LABEL_12:
 
   v15.receiver = self;
   v15.super_class = SBAppToAppWorkspaceTransaction;
-  [(SBToAppsWorkspaceTransaction *)&v15 _handleApplicationDidNotChange:v4];
+  [(SBToAppsWorkspaceTransaction *)&v15 _handleApplicationDidNotChange:changeCopy];
 }
 
-- (void)_handleApplicationUpdateScenesTransactionFailed:(id)a3
+- (void)_handleApplicationUpdateScenesTransactionFailed:(id)failed
 {
-  v4 = [(SBToAppsWorkspaceTransaction *)self animationController];
-  if ([v4 waitingToStart])
+  animationController = [(SBToAppsWorkspaceTransaction *)self animationController];
+  if ([animationController waitingToStart])
   {
-    [v4 interrupt];
+    [animationController interrupt];
     [(SBAppToAppWorkspaceTransaction *)self _cleanUpAfterAnimation];
   }
 }
 
-- (void)_animationWillBegin:(BOOL)a3
+- (void)_animationWillBegin:(BOOL)begin
 {
-  if (a3)
+  if (begin)
   {
-    v4 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
-    if ([v4 count])
+    toApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
+    if ([toApplicationSceneEntities count])
     {
-      v5 = [(SBToAppsWorkspaceTransaction *)self fromApplicationSceneEntities];
-      v6 = [v5 count];
+      fromApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)self fromApplicationSceneEntities];
+      v6 = [fromApplicationSceneEntities count];
 
       if (!v6)
       {
@@ -628,11 +628,11 @@ LABEL_12:
     {
     }
 
-    v7 = [(SBToAppsWorkspaceTransaction *)self fromApplicationSceneEntities];
-    if ([v7 count])
+    fromApplicationSceneEntities2 = [(SBToAppsWorkspaceTransaction *)self fromApplicationSceneEntities];
+    if ([fromApplicationSceneEntities2 count])
     {
-      v8 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
-      v9 = [v8 count];
+      toApplicationSceneEntities2 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
+      v9 = [toApplicationSceneEntities2 count];
 
       if (!v9)
       {
@@ -648,8 +648,8 @@ LABEL_12:
   autoPIPTransaction = self->_autoPIPTransaction;
   if (autoPIPTransaction)
   {
-    v11 = [(SBAutoPIPWorkspaceTransaction *)autoPIPTransaction entityToPIP];
-    if (v11)
+    entityToPIP = [(SBAutoPIPWorkspaceTransaction *)autoPIPTransaction entityToPIP];
+    if (entityToPIP)
     {
       autoPIPTransitionOrder = self->_autoPIPTransitionOrder;
 
@@ -671,9 +671,9 @@ LABEL_12:
   }
 }
 
-- (id)_setupAnimationFrom:(id)a3 to:(id)a4
+- (id)_setupAnimationFrom:(id)from to:(id)to
 {
-  v5 = [(SBWorkspaceTransaction *)self suggestedAnimationController:a3];
+  v5 = [(SBWorkspaceTransaction *)self suggestedAnimationController:from];
   if (v5)
   {
     [(SBWorkspaceTransaction *)self setSuggestedAnimationController:0];
@@ -682,17 +682,17 @@ LABEL_12:
 
   else
   {
-    v7 = [(SBToAppsWorkspaceTransaction *)self _transitionContext];
-    v8 = [(SBWorkspaceTransaction *)self windowScene];
-    v9 = [v8 homeScreenController];
-    v10 = [v9 homeScreenViewController];
+    _transitionContext = [(SBToAppsWorkspaceTransaction *)self _transitionContext];
+    windowScene = [(SBWorkspaceTransaction *)self windowScene];
+    homeScreenController = [windowScene homeScreenController];
+    homeScreenViewController = [homeScreenController homeScreenViewController];
 
     if ([(SBToAppsWorkspaceTransaction *)self isGoingToLauncher])
     {
-      [v10 setHomeScreenAutorotatesEvenWhenIconIsDragging:1];
-      [SBApp updateNativeOrientationWithOrientation:objc_msgSend(v7 logMessage:{"interfaceOrientationOrPreferredOrientation"), @"AppToApp setting up animation to launcher / switcher"}];
+      [homeScreenViewController setHomeScreenAutorotatesEvenWhenIconIsDragging:1];
+      [SBApp updateNativeOrientationWithOrientation:objc_msgSend(_transitionContext logMessage:{"interfaceOrientationOrPreferredOrientation"), @"AppToApp setting up animation to launcher / switcher"}];
       v11 = objc_opt_class();
-      v12 = [v7 previousEntityForLayoutRole:1];
+      v12 = [_transitionContext previousEntityForLayoutRole:1];
       v13 = SBSafeCast(v11, v12);
 
       v14 = [v13 objectForDeactivationSetting:2];
@@ -729,31 +729,31 @@ LABEL_12:
     {
       if ([(SBToAppsWorkspaceTransaction *)self isGoingToMainSwitcher])
       {
-        [v10 setHomeScreenAutorotatesEvenWhenIconIsDragging:1];
-        [SBApp updateNativeOrientationWithOrientation:objc_msgSend(v7 logMessage:{"interfaceOrientationOrPreferredOrientation"), @"AppToApp setting up animation to launcher / switcher"}];
+        [homeScreenViewController setHomeScreenAutorotatesEvenWhenIconIsDragging:1];
+        [SBApp updateNativeOrientationWithOrientation:objc_msgSend(_transitionContext logMessage:{"interfaceOrientationOrPreferredOrientation"), @"AppToApp setting up animation to launcher / switcher"}];
       }
 
       v20 = objc_opt_class();
       v13 = NSStringFromClass(v20);
-      [v10 setAllowIconRotation:0 forReason:v13];
+      [homeScreenViewController setAllowIconRotation:0 forReason:v13];
     }
 
-    v23 = [v8 switcherController];
-    v24 = [v23 switcherCoordinator];
+    switcherController = [windowScene switcherController];
+    switcherCoordinator = [switcherController switcherCoordinator];
 
-    v25 = [(SBWorkspaceTransaction *)self transitionRequest];
-    v26 = [(SBToAppsWorkspaceTransaction *)self ancillaryTransitionRequests];
-    v6 = [v24 animationControllerForTransitionRequest:v25 ancillaryTransitionRequests:v26];
+    transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+    ancillaryTransitionRequests = [(SBToAppsWorkspaceTransaction *)self ancillaryTransitionRequests];
+    v6 = [switcherCoordinator animationControllerForTransitionRequest:transitionRequest ancillaryTransitionRequests:ancillaryTransitionRequests];
 
-    v27 = [(SBWorkspaceTransaction *)self transitionRequest];
-    v28 = [v6 transitionCoordinator];
+    transitionRequest2 = [(SBWorkspaceTransaction *)self transitionRequest];
+    transitionCoordinator = [v6 transitionCoordinator];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __57__SBAppToAppWorkspaceTransaction__setupAnimationFrom_to___block_invoke;
     v31[3] = &unk_2783BE428;
-    v32 = v27;
-    v29 = v27;
-    [v28 animateAlongsideTransition:v31 completion:0];
+    v32 = transitionRequest2;
+    v29 = transitionRequest2;
+    [transitionCoordinator animateAlongsideTransition:v31 completion:0];
   }
 
   return v6;

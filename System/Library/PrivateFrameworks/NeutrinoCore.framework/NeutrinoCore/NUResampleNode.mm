@@ -1,27 +1,27 @@
 @interface NUResampleNode
 - ($0AC6E346AE4835514AAA8AC86D8F4844)_additionalScale;
-- (NUResampleNode)initWithInput:(id)a3 settings:(id)a4;
-- (NUResampleNode)initWithPreparedInput:(id)a3 subsampleNode:(id)a4;
-- (NUResampleNode)initWithSubsampleFactor:(int64_t)a3 sampleMode:(int64_t)a4 source:(id)a5 subsampleNode:(id)a6;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateImageGeometry:(id *)a3;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
+- (NUResampleNode)initWithInput:(id)input settings:(id)settings;
+- (NUResampleNode)initWithPreparedInput:(id)input subsampleNode:(id)node;
+- (NUResampleNode)initWithSubsampleFactor:(int64_t)factor sampleMode:(int64_t)mode source:(id)source subsampleNode:(id)node;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateImageGeometry:(id *)geometry;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUResampleNode
 
-- (id)_evaluateImageGeometry:(id *)a3
+- (id)_evaluateImageGeometry:(id *)geometry
 {
-  v5 = [(NUAbstractScaleNode *)self inputNode];
-  v6 = [v5 outputImageGeometry:a3];
+  inputNode = [(NUAbstractScaleNode *)self inputNode];
+  v6 = [inputNode outputImageGeometry:geometry];
 
   if (v6)
   {
     if ([(NUResampleNode *)self subsampleFactor])
     {
-      v7 = [(NUResampleNode *)self subsampleFactor];
-      v8 = [v6 renderScale];
-      v10 = NUScaleMultiply(1, v7, v8, v9);
+      subsampleFactor = [(NUResampleNode *)self subsampleFactor];
+      renderScale = [v6 renderScale];
+      v10 = NUScaleMultiply(1, subsampleFactor, renderScale, v9);
       v12 = v11;
       v13 = [NUImageGeometry alloc];
       [v6 extent];
@@ -44,25 +44,25 @@
   return v15;
 }
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
-  v5 = [(NUAbstractScaleNode *)self inputNode];
-  v6 = [v5 outputImage:a3];
+  inputNode = [(NUAbstractScaleNode *)self inputNode];
+  v6 = [inputNode outputImage:image];
 
   if (v6)
   {
-    v7 = [(NUResampleNode *)self _additionalScale];
+    _additionalScale = [(NUResampleNode *)self _additionalScale];
     v9 = v8;
-    if (!NUScaleEqual(v7, v8, NUScaleOne, *(&NUScaleOne + 1)))
+    if (!NUScaleEqual(_additionalScale, v8, NUScaleOne, *(&NUScaleOne + 1)))
     {
-      v10 = [(NURenderNode *)self outputImageGeometry:a3];
+      v10 = [(NURenderNode *)self outputImageGeometry:image];
       if (v10)
       {
         v11 = v10;
-        v12 = [(NURenderNode *)self resamplingColorSpace];
+        resamplingColorSpace = [(NURenderNode *)self resamplingColorSpace];
         sampleMode = self->_sampleMode;
         [v11 physicalScaledExtent];
-        v14 = [NURenderNode resampleImage:v6 by:v7 sampleMode:v9 extent:sampleMode colorSpace:&v16, v12];
+        v14 = [NURenderNode resampleImage:v6 by:_additionalScale sampleMode:v9 extent:sampleMode colorSpace:&v16, resamplingColorSpace];
 
         v6 = v11;
       }
@@ -82,8 +82,8 @@
 - ($0AC6E346AE4835514AAA8AC86D8F4844)_additionalScale
 {
   v48 = *MEMORY[0x1E69E9840];
-  v3 = [(NUSubsampleNode *)self->_subsampleNode appliedSubsampleFactor];
-  if (v3 <= 0)
+  appliedSubsampleFactor = [(NUSubsampleNode *)self->_subsampleNode appliedSubsampleFactor];
+  if (appliedSubsampleFactor <= 0)
   {
     v11 = NUAssertLogger_13707();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -104,8 +104,8 @@
         v25 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v25;
         v46 = 2114;
@@ -116,8 +116,8 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -126,7 +126,7 @@
     _NUAssertFailHandler("[NUResampleNode _additionalScale]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Scale.m", 628, @"Bad subsample factor", v30, v31, v32, v33, v43);
   }
 
-  v4 = v3;
+  v4 = appliedSubsampleFactor;
   if (![(NUResampleNode *)self subsampleFactor])
   {
     v18 = NUAssertLogger_13707();
@@ -148,8 +148,8 @@
         v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v35 callStackSymbols];
+        v38 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v34;
         v46 = 2114;
@@ -160,8 +160,8 @@
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -170,12 +170,12 @@
     _NUAssertFailHandler("[NUResampleNode _additionalScale]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Scale.m", 631, @"%@: invalid subsample factor", v39, v40, v41, v42, self);
   }
 
-  v5 = [(NUResampleNode *)self subsampleFactor];
+  subsampleFactor = [(NUResampleNode *)self subsampleFactor];
   v7 = *(&NUScaleOne + 1);
   v6 = NUScaleOne;
-  if (NUScaleCompare(1, v4, 1, v5) >= 1)
+  if (NUScaleCompare(1, v4, 1, subsampleFactor) >= 1)
   {
-    v6 = NUScaleDivide(1, v5, 1, v4);
+    v6 = NUScaleDivide(1, subsampleFactor, 1, v4);
     v7 = v8;
   }
 
@@ -186,12 +186,12 @@
   return result;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v9 scale] < 1 || v10 <= 0)
+  cacheCopy = cache;
+  stateCopy = state;
+  if ([stateCopy scale] < 1 || v10 <= 0)
   {
     v19 = NUAssertLogger_13707();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -212,8 +212,8 @@
         v26 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v35 = 138543618;
         *&v35[4] = v26;
         v36 = 2114;
@@ -224,8 +224,8 @@
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v35 = 138543362;
       *&v35[4] = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v35, 0xCu);
@@ -234,8 +234,8 @@
     _NUAssertFailHandler("[NUResampleNode nodeByReplayingAgainstCache:pipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Scale.m", 584, @"Invalid render scale", v31, v32, v33, v34, *v35);
   }
 
-  v11 = [(NUAbstractScaleNode *)self inputNode];
-  v12 = [(NUSubsampleNode *)v11 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+  inputNode = [(NUAbstractScaleNode *)self inputNode];
+  v12 = [(NUSubsampleNode *)inputNode nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
   v13 = v12;
   if (!v12)
   {
@@ -243,30 +243,30 @@
     goto LABEL_15;
   }
 
-  if ([v12 isPlaceholderNode] || !-[NUAbstractScaleNode shouldCacheNodeForPipelineState:](self, "shouldCacheNodeForPipelineState:", v9))
+  if ([v12 isPlaceholderNode] || !-[NUAbstractScaleNode shouldCacheNodeForPipelineState:](self, "shouldCacheNodeForPipelineState:", stateCopy))
   {
     v16 = v13;
     goto LABEL_15;
   }
 
   subsampleNode = self->_subsampleNode;
-  if (v11 == subsampleNode)
+  if (inputNode == subsampleNode)
   {
     v15 = v13;
 LABEL_12:
-    v16 = [v15 resolveSubsampleFactorForPipelineState:v9 error:a5];
+    v16 = [v15 resolveSubsampleFactorForPipelineState:stateCopy error:error];
     if (v16)
     {
-      v17 = -[NUResampleNode initWithSubsampleFactor:sampleMode:source:subsampleNode:]([NUResampleNode alloc], "initWithSubsampleFactor:sampleMode:source:subsampleNode:", v16, [v9 sampleMode], v13, v15);
-      v16 = [NURenderNode nodeFromCache:v17 cache:v8];
+      v17 = -[NUResampleNode initWithSubsampleFactor:sampleMode:source:subsampleNode:]([NUResampleNode alloc], "initWithSubsampleFactor:sampleMode:source:subsampleNode:", v16, [stateCopy sampleMode], v13, v15);
+      v16 = [NURenderNode nodeFromCache:v17 cache:cacheCopy];
 
-      [v16 setEvaluatedForMode:{objc_msgSend(v9, "evaluationMode")}];
+      [v16 setEvaluatedForMode:{objc_msgSend(stateCopy, "evaluationMode")}];
     }
 
     goto LABEL_14;
   }
 
-  v15 = [(NUSubsampleNode *)subsampleNode nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+  v15 = [(NUSubsampleNode *)subsampleNode nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
   if (v15)
   {
     goto LABEL_12;
@@ -280,12 +280,12 @@ LABEL_15:
   return v16;
 }
 
-- (NUResampleNode)initWithSubsampleFactor:(int64_t)a3 sampleMode:(int64_t)a4 source:(id)a5 subsampleNode:(id)a6
+- (NUResampleNode)initWithSubsampleFactor:(int64_t)factor sampleMode:(int64_t)mode source:(id)source subsampleNode:(id)node
 {
   v74 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  if (a3 < 0)
+  sourceCopy = source;
+  nodeCopy = node;
+  if (factor < 0)
   {
     v19 = NUAssertLogger_13707();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -306,8 +306,8 @@ LABEL_15:
         v40 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v41 = MEMORY[0x1E696AF00];
         v42 = v40;
-        v43 = [v41 callStackSymbols];
-        v44 = [v43 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v41 callStackSymbols];
+        v44 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v71 = v40;
         v72 = 2114;
@@ -318,8 +318,8 @@ LABEL_15:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v71 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -328,7 +328,7 @@ LABEL_15:
     _NUAssertFailHandler("[NUResampleNode initWithSubsampleFactor:sampleMode:source:subsampleNode:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Scale.m", 555, @"Invalid parameter not satisfying: %s", v45, v46, v47, v48, "subsampleFactor >= 0");
   }
 
-  if (!a4)
+  if (!mode)
   {
     v26 = NUAssertLogger_13707();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -349,8 +349,8 @@ LABEL_15:
         v49 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v50 = MEMORY[0x1E696AF00];
         v51 = v49;
-        v52 = [v50 callStackSymbols];
-        v53 = [v52 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v50 callStackSymbols];
+        v53 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v71 = v49;
         v72 = 2114;
@@ -361,8 +361,8 @@ LABEL_15:
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v32 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v71 = v32;
       _os_log_error_impl(&dword_1C0184000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -371,8 +371,8 @@ LABEL_15:
     _NUAssertFailHandler("[NUResampleNode initWithSubsampleFactor:sampleMode:source:subsampleNode:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Scale.m", 556, @"Invalid parameter not satisfying: %s", v54, v55, v56, v57, "sampleMode != NUSampleModeDefault");
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = nodeCopy;
+  if (!nodeCopy)
   {
     v33 = NUAssertLogger_13707();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -393,8 +393,8 @@ LABEL_15:
         v58 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v59 = MEMORY[0x1E696AF00];
         v60 = v58;
-        v61 = [v59 callStackSymbols];
-        v62 = [v61 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v59 callStackSymbols];
+        v62 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v71 = v58;
         v72 = 2114;
@@ -405,8 +405,8 @@ LABEL_15:
 
     else if (v37)
     {
-      v38 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v39 = [v38 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v39 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v71 = v39;
       _os_log_error_impl(&dword_1C0184000, v36, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -416,30 +416,30 @@ LABEL_15:
   }
 
   v68[0] = @"sampleMode";
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
   v68[1] = @"subsampleFactor";
   v69[0] = v13;
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:factor];
   v69[1] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v69 forKeys:v68 count:2];
 
   v67.receiver = self;
   v67.super_class = NUResampleNode;
-  v16 = [(NUAbstractScaleNode *)&v67 initWithInput:v10 settings:v15];
-  v16->_subsampleFactor = a3;
-  v16->_sampleMode = a4;
+  v16 = [(NUAbstractScaleNode *)&v67 initWithInput:sourceCopy settings:v15];
+  v16->_subsampleFactor = factor;
+  v16->_sampleMode = mode;
   subsampleNode = v16->_subsampleNode;
   v16->_subsampleNode = v12;
 
   return v16;
 }
 
-- (NUResampleNode)initWithPreparedInput:(id)a3 subsampleNode:(id)a4
+- (NUResampleNode)initWithPreparedInput:(id)input subsampleNode:(id)node
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  inputCopy = input;
+  nodeCopy = node;
+  if (!nodeCopy)
   {
     v12 = NUAssertLogger_13707();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -460,8 +460,8 @@ LABEL_15:
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v30 = v19;
         v31 = 2114;
@@ -472,8 +472,8 @@ LABEL_15:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -482,21 +482,21 @@ LABEL_15:
     _NUAssertFailHandler("[NUResampleNode initWithPreparedInput:subsampleNode:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Scale.m", 544, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "subsampleNode != nil");
   }
 
-  v8 = v7;
+  v8 = nodeCopy;
   v28.receiver = self;
   v28.super_class = NUResampleNode;
-  v9 = [(NUAbstractScaleNode *)&v28 initWithInput:v6 settings:MEMORY[0x1E695E0F8]];
+  v9 = [(NUAbstractScaleNode *)&v28 initWithInput:inputCopy settings:MEMORY[0x1E695E0F8]];
   subsampleNode = v9->_subsampleNode;
   v9->_subsampleNode = v8;
 
   return v9;
 }
 
-- (NUResampleNode)initWithInput:(id)a3 settings:(id)a4
+- (NUResampleNode)initWithInput:(id)input settings:(id)settings
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  inputCopy = input;
+  settingsCopy = settings;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_13724);
@@ -540,8 +540,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -557,8 +557,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;

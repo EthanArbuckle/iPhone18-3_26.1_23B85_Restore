@@ -10,24 +10,24 @@
 
 - (id)_lp_simplifiedURLStringForFuzzyMatching
 {
-  v1 = [a1 _lp_URLByDeletingCommonIndexPageNames];
-  v2 = [v1 _lp_URLBySortingQueryItems];
-  v3 = [v2 absoluteString];
-  v4 = [v3 _lp_stringByTrimmingWhitespace];
-  v5 = [v4 _lp_stringByDeletingUsernameAndPassword];
-  v6 = [v5 _lp_stringByDeletingTrailingSlash];
+  _lp_URLByDeletingCommonIndexPageNames = [self _lp_URLByDeletingCommonIndexPageNames];
+  _lp_URLBySortingQueryItems = [_lp_URLByDeletingCommonIndexPageNames _lp_URLBySortingQueryItems];
+  absoluteString = [_lp_URLBySortingQueryItems absoluteString];
+  _lp_stringByTrimmingWhitespace = [absoluteString _lp_stringByTrimmingWhitespace];
+  _lp_stringByDeletingUsernameAndPassword = [_lp_stringByTrimmingWhitespace _lp_stringByDeletingUsernameAndPassword];
+  _lp_stringByDeletingTrailingSlash = [_lp_stringByDeletingUsernameAndPassword _lp_stringByDeletingTrailingSlash];
 
-  v7 = [v6 _lp_simplifiedUserVisibleURLStringWithSimplifications:2031 forDisplayOnly:0];
+  v7 = [_lp_stringByDeletingTrailingSlash _lp_simplifiedUserVisibleURLStringWithSimplifications:2031 forDisplayOnly:0];
 
   return v7;
 }
 
 - (BOOL)_lp_isHTTPFamilyURL
 {
-  v1 = [a1 scheme];
-  if ([v1 compare:@"http" options:3])
+  scheme = [self scheme];
+  if ([scheme compare:@"http" options:3])
   {
-    v2 = [v1 compare:@"https" options:3] == 0;
+    v2 = [scheme compare:@"https" options:3] == 0;
   }
 
   else
@@ -41,20 +41,20 @@
 - (BOOL)_lp_userVisibleStringUsesEncodedHost
 {
   v3 = 0;
-  v1 = userVisibleStringForURL(a1, &v3);
+  v1 = userVisibleStringForURL(self, &v3);
   return v3;
 }
 
 - (id)_lp_highLevelDomain
 {
-  v1 = [a1 host];
-  v2 = encodeHostName(v1);
+  host = [self host];
+  v2 = encodeHostName(host);
 
-  v3 = [v2 _lp_highLevelDomainFromHost];
-  v4 = v3;
-  if (v3)
+  _lp_highLevelDomainFromHost = [v2 _lp_highLevelDomainFromHost];
+  v4 = _lp_highLevelDomainFromHost;
+  if (_lp_highLevelDomainFromHost)
   {
-    v5 = decodeHostName(v3);
+    v5 = decodeHostName(_lp_highLevelDomainFromHost);
   }
 
   else
@@ -73,7 +73,7 @@
   {
     v9 = v8;
     v10 = [v9 dataUsingEncoding:4];
-    v11 = [v10 bytes];
+    bytes = [v10 bytes];
     v12 = [v10 length];
     v13 = v12;
     v14 = 0;
@@ -92,7 +92,7 @@
         v18 = v15;
         do
         {
-          v20 = *v11++;
+          v20 = *bytes++;
           v19 = v20;
           if (v20 - 127 > 0xFFFFFFA1)
           {

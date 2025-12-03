@@ -1,6 +1,6 @@
 @interface CDPFollowUpController
-- (BOOL)clearFollowUpWithContext:(id)a3 error:(id *)a4;
-- (BOOL)postFollowUpWithContext:(id)a3 error:(id *)a4;
+- (BOOL)clearFollowUpWithContext:(id)context error:(id *)error;
+- (BOOL)postFollowUpWithContext:(id)context error:(id *)error;
 - (CDPFollowUpController)init;
 - (void)dealloc;
 - (void)invalidate;
@@ -23,9 +23,9 @@
   return v2;
 }
 
-- (BOOL)postFollowUpWithContext:(id)a3 error:(id *)a4
+- (BOOL)postFollowUpWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v7 = _os_activity_create(&dword_1DED99000, "cdp: post follow up", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -53,10 +53,10 @@
   v12[3] = &unk_1E869DAA0;
   v12[4] = &v14;
   v12[5] = &v18;
-  [v9 postFollowUpWithContext:v6 completion:v12];
-  if (a4)
+  [v9 postFollowUpWithContext:contextCopy completion:v12];
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v10 = *(v15 + 24);
@@ -101,9 +101,9 @@ void __55__CDPFollowUpController_postFollowUpWithContext_error___block_invoke_17
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)clearFollowUpWithContext:(id)a3 error:(id *)a4
+- (BOOL)clearFollowUpWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v7 = _os_activity_create(&dword_1DED99000, "cdp: clear follow up", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -131,10 +131,10 @@ void __55__CDPFollowUpController_postFollowUpWithContext_error___block_invoke_17
   v12[3] = &unk_1E869DAA0;
   v12[4] = &v14;
   v12[5] = &v18;
-  [v9 clearFollowUpWithContext:v6 completion:v12];
-  if (a4)
+  [v9 clearFollowUpWithContext:contextCopy completion:v12];
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v10 = *(v15 + 24);
@@ -198,8 +198,8 @@ void __56__CDPFollowUpController_clearFollowUpWithContext_error___block_invoke_1
   daemonConn = self->_daemonConn;
   if (daemonConn)
   {
-    v5 = [(CDPDaemonConnection *)daemonConn connection];
-    [v5 invalidate];
+    connection = [(CDPDaemonConnection *)daemonConn connection];
+    [connection invalidate];
 
     v6 = self->_daemonConn;
     self->_daemonConn = 0;

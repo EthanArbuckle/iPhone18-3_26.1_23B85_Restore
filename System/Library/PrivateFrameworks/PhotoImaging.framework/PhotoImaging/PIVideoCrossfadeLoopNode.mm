@@ -1,13 +1,13 @@
 @interface PIVideoCrossfadeLoopNode
 - ($2FE3C3292E52C4A5B67D27538456EAD9)loopTimeRange;
-- (PIVideoCrossfadeLoopNode)initWithInput:(id)a3 timeRange:(id *)a4 crossfadeDuration:(id *)a5 startTime:(id *)a6;
-- (PIVideoCrossfadeLoopNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)_evaluateAudioMix:(id *)a3;
-- (id)_evaluateVideo:(id *)a3;
-- (id)_evaluateVideoComposition:(id *)a3;
+- (PIVideoCrossfadeLoopNode)initWithInput:(id)input timeRange:(id *)range crossfadeDuration:(id *)duration startTime:(id *)time;
+- (PIVideoCrossfadeLoopNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)_evaluateAudioMix:(id *)mix;
+- (id)_evaluateVideo:(id *)video;
+- (id)_evaluateVideoComposition:(id *)composition;
 - (id)input;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation PIVideoCrossfadeLoopNode
@@ -21,10 +21,10 @@
   return self;
 }
 
-- (id)_evaluateAudioMix:(id *)a3
+- (id)_evaluateAudioMix:(id *)mix
 {
   v45 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!mix)
   {
     v24 = NUAssertLogger_3150();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -46,8 +46,8 @@
         v32 = dispatch_get_specific(*v26);
         v33 = MEMORY[0x1E696AF00];
         v34 = v32;
-        v35 = [v33 callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v33 callStackSymbols];
+        v36 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(rhs.start.value) = 138543618;
         *(&rhs.start.value + 4) = v32;
         LOWORD(rhs.start.flags) = 2114;
@@ -58,8 +58,8 @@
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(rhs.start.value) = 138543362;
       *(&rhs.start.value + 4) = v31;
       _os_log_error_impl(&dword_1C7694000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &rhs, 0xCu);
@@ -68,18 +68,18 @@
     _NUAssertFailHandler();
   }
 
-  v5 = [(PIVideoCrossfadeLoopNode *)self input];
-  v6 = [v5 outputVideo:a3];
+  input = [(PIVideoCrossfadeLoopNode *)self input];
+  v6 = [input outputVideo:mix];
 
   if (v6)
   {
-    v7 = [MEMORY[0x1E69B3D40] firstEnabledVideoTrackInAsset:v6 error:a3];
+    v7 = [MEMORY[0x1E69B3D40] firstEnabledVideoTrackInAsset:v6 error:mix];
     v8 = v7;
     if (v7)
     {
       [v7 timeRange];
       v42 = v41;
-      v9 = [(NURenderNode *)self outputVideo:a3];
+      v9 = [(NURenderNode *)self outputVideo:mix];
       v10 = v9;
       if (v9)
       {
@@ -117,43 +117,43 @@
           CMTimeRangeMake(&rhs, &start, &time);
           LODWORD(v21) = 1.0;
           [v18 setVolumeRampFromStartVolume:&rhs toEndVolume:0.0 timeRange:v21];
-          v12 = [MEMORY[0x1E6988038] audioMix];
+          audioMix = [MEMORY[0x1E6988038] audioMix];
           v43[0] = v15;
           v43[1] = v18;
           v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:2];
-          [v12 setInputParameters:v22];
+          [audioMix setInputParameters:v22];
         }
 
         else
         {
-          v12 = [MEMORY[0x1E6988038] audioMix];
+          audioMix = [MEMORY[0x1E6988038] audioMix];
         }
       }
 
       else
       {
-        v12 = 0;
+        audioMix = 0;
       }
     }
 
     else
     {
-      v12 = 0;
+      audioMix = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    audioMix = 0;
   }
 
-  return v12;
+  return audioMix;
 }
 
-- (id)_evaluateVideoComposition:(id *)a3
+- (id)_evaluateVideoComposition:(id *)composition
 {
   v74 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!composition)
   {
     v37 = NUAssertLogger_3150();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -175,8 +175,8 @@
         v45 = dispatch_get_specific(*v39);
         v46 = MEMORY[0x1E696AF00];
         v47 = v45;
-        v48 = [v46 callStackSymbols];
-        v49 = [v48 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v46 callStackSymbols];
+        v49 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(buf.start.value) = 138543618;
         *(&buf.start.value + 4) = v45;
         LOWORD(buf.start.flags) = 2114;
@@ -187,8 +187,8 @@
 
     else if (v42)
     {
-      v43 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v44 = [v43 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v44 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(buf.start.value) = 138543362;
       *(&buf.start.value + 4) = v44;
       _os_log_error_impl(&dword_1C7694000, v41, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &buf, 0xCu);
@@ -197,29 +197,29 @@
     _NUAssertFailHandler();
   }
 
-  v5 = [(PIVideoCrossfadeLoopNode *)self input];
-  v6 = [v5 outputVideo:a3];
+  input = [(PIVideoCrossfadeLoopNode *)self input];
+  v6 = [input outputVideo:composition];
 
   if (v6)
   {
-    v7 = [MEMORY[0x1E69B3D40] firstEnabledVideoTrackInAsset:v6 error:a3];
+    v7 = [MEMORY[0x1E69B3D40] firstEnabledVideoTrackInAsset:v6 error:composition];
     if (v7)
     {
-      v8 = [(NURenderNode *)self outputVideo:a3];
+      v8 = [(NURenderNode *)self outputVideo:composition];
       v9 = v8;
       if (v8)
       {
         v10 = [v8 tracksWithMediaType:*MEMORY[0x1E6987608]];
-        v11 = [(NURenderNode *)self inputs];
-        v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+        inputs = [(NURenderNode *)self inputs];
+        v12 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
-        v13 = [v12 outputVideoComposition:a3];
+        v13 = [v12 outputVideoComposition:composition];
         v14 = v13;
         if (v13)
         {
           v54 = v12;
-          v15 = [v13 instructions];
-          v16 = [v15 count];
+          instructions = [v13 instructions];
+          v16 = [instructions count];
 
           if (v16 == 1)
           {
@@ -331,8 +331,8 @@
           else
           {
             v34 = MEMORY[0x1E69B3A48];
-            v35 = [v14 instructions];
-            *a3 = [v34 unsupportedError:@"Unsupported video configuration" object:v35];
+            instructions2 = [v14 instructions];
+            *composition = [v34 unsupportedError:@"Unsupported video configuration" object:instructions2];
 
             v33 = 0;
           }
@@ -366,10 +366,10 @@
   return v33;
 }
 
-- (id)_evaluateVideo:(id *)a3
+- (id)_evaluateVideo:(id *)video
 {
   v124 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!video)
   {
     v75 = NUAssertLogger_3150();
     if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
@@ -391,8 +391,8 @@
         v83 = dispatch_get_specific(*v77);
         v84 = MEMORY[0x1E696AF00];
         v85 = v83;
-        v86 = [v84 callStackSymbols];
-        v87 = [v86 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v84 callStackSymbols];
+        v87 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(buf.start.value) = 138543618;
         *(&buf.start.value + 4) = v83;
         LOWORD(buf.start.flags) = 2114;
@@ -403,8 +403,8 @@
 
     else if (v80)
     {
-      v81 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v82 = [v81 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v82 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(buf.start.value) = 138543362;
       *(&buf.start.value + 4) = v82;
       _os_log_error_impl(&dword_1C7694000, v79, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &buf, 0xCu);
@@ -413,8 +413,8 @@
     _NUAssertFailHandler();
   }
 
-  v5 = [(PIVideoCrossfadeLoopNode *)self input];
-  v6 = [v5 outputVideo:a3];
+  input = [(PIVideoCrossfadeLoopNode *)self input];
+  v6 = [input outputVideo:video];
 
   if (!v6)
   {
@@ -425,11 +425,11 @@
   v7 = objc_alloc_init(MEMORY[0x1E6988048]);
   if (v7)
   {
-    v8 = [MEMORY[0x1E69B3D40] firstEnabledVideoTrackInAsset:v6 error:a3];
+    v8 = [MEMORY[0x1E69B3D40] firstEnabledVideoTrackInAsset:v6 error:video];
     if (!v8)
     {
-      [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"No input video track found" object:self underlyingError:*a3];
-      *a3 = v13 = 0;
+      [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"No input video track found" object:self underlyingError:*video];
+      *video = v13 = 0;
 LABEL_48:
 
       goto LABEL_49;
@@ -437,12 +437,12 @@ LABEL_48:
 
     v9 = *MEMORY[0x1E69875A0];
     v10 = [v6 tracksWithMediaType:*MEMORY[0x1E69875A0]];
-    v11 = [v10 firstObject];
+    firstObject = [v10 firstObject];
 
     v12 = *MEMORY[0x1E6987608];
     [v7 addMutableTrackWithMediaType:*MEMORY[0x1E6987608] preferredTrackID:0];
-    v105 = v104 = v11;
-    if (v11)
+    v105 = v104 = firstObject;
+    if (firstObject)
     {
       v100 = [v7 addMutableTrackWithMediaType:v9 preferredTrackID:2];
     }
@@ -510,7 +510,7 @@ LABEL_48:
         lhs.start.epoch = v14;
         v22 = NUStringFromTime();
         [MEMORY[0x1E69B3D40] debugDescriptionOfAssetTrack:v105];
-        v95 = self;
+        selfCopy = self;
         v23 = v6;
         v24 = v7;
         v26 = v25 = v8;
@@ -520,7 +520,7 @@ LABEL_48:
         v7 = v24;
         v6 = v23;
 
-        *a3 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:v27 object:v95 underlyingError:v17];
+        *video = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:v27 object:selfCopy underlyingError:v17];
 
         v13 = 0;
         v28 = v100;
@@ -569,7 +569,7 @@ LABEL_48:
           v7 = v56;
           v6 = v55;
 
-          *a3 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:v58 object:self underlyingError:v19];
+          *video = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:v58 object:self underlyingError:v19];
 
           v13 = 0;
           v8 = v97;
@@ -651,7 +651,7 @@ LABEL_46:
             rhs.start.epoch = v36;
             v70 = NUStringFromTime();
             [MEMORY[0x1E69B3D40] debugDescriptionOfAssetTrack:v100];
-            v96 = self;
+            selfCopy2 = self;
             v71 = v6;
             v73 = v72 = v7;
             v74 = [v94 stringWithFormat:@"Failed to update audio track when inserting the post-crossfade content with source range %@ from track %@ to time %@ in track %@.", v68, v69, v70, v73];
@@ -660,7 +660,7 @@ LABEL_46:
             v6 = v71;
             v28 = v100;
 
-            *a3 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:v74 object:v96 underlyingError:v66];
+            *video = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:v74 object:selfCopy2 underlyingError:v66];
 
             v13 = 0;
             v19 = v66;
@@ -692,7 +692,7 @@ LABEL_46:
       v51 = [v46 stringWithFormat:@"Failed to update video track when inserting the post-crossfade content with source range %@ from track %@ to time %@ in track %@.", v47, v48, v49, v50];
 
       v19 = v91;
-      *a3 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:v51 object:self underlyingError:v91];
+      *video = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:v51 object:self underlyingError:v91];
 
       v13 = 0;
       v8 = v37;
@@ -769,7 +769,7 @@ LABEL_30:
       v64 = [v103 stringWithFormat:@"Failed to update audio track when inserting the crossfade content with source range %@ from track %@ to time %@ in track %@.", v59, v60, v61, v62];
 
       v19 = v93;
-      *a3 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:v64 object:self underlyingError:v93];
+      *video = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:v64 object:self underlyingError:v93];
 
       v30 = v88;
     }
@@ -786,7 +786,7 @@ LABEL_30:
       v33 = [v41 stringWithFormat:@"Failed to update video track when inserting the crossfade content with source range %@ from track %@ to time %@ in track %@.", v42, v43, v44, v45];
 
       v19 = v90;
-      *a3 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:v33 object:self underlyingError:v90];
+      *video = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:v33 object:self underlyingError:v90];
     }
 
     v13 = 0;
@@ -796,7 +796,7 @@ LABEL_30:
   }
 
   [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"[[AVMutableComposition alloc] init] failed." object:self];
-  *a3 = v13 = 0;
+  *video = v13 = 0;
 LABEL_49:
 
 LABEL_50:
@@ -804,12 +804,12 @@ LABEL_50:
   return v13;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v81 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  cacheCopy = cache;
+  stateCopy = state;
+  if (!error)
   {
     v44 = NUAssertLogger_3150();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
@@ -834,8 +834,8 @@ LABEL_50:
       v52 = dispatch_get_specific(*v46);
       v53 = MEMORY[0x1E696AF00];
       v51 = v52;
-      v54 = [v53 callStackSymbols];
-      v55 = [v54 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v53 callStackSymbols];
+      v55 = [callStackSymbols componentsJoinedByString:@"\n"];
       LODWORD(buf.start.value) = 138543618;
       *(&buf.start.value + 4) = v52;
       LOWORD(buf.start.flags) = 2114;
@@ -850,8 +850,8 @@ LABEL_50:
         goto LABEL_48;
       }
 
-      v50 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v51 = [v50 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v51 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(buf.start.value) = 138543362;
       *(&buf.start.value + 4) = v51;
       _os_log_error_impl(&dword_1C7694000, v48, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &buf, 0xCu);
@@ -861,17 +861,17 @@ LABEL_48:
     _NUAssertFailHandler();
   }
 
-  v10 = v9;
-  v11 = [v9 evaluationMode];
-  if ((v11 & 0xFFFFFFFFFFFFFFFDLL) != 1)
+  v10 = stateCopy;
+  evaluationMode = [stateCopy evaluationMode];
+  if ((evaluationMode & 0xFFFFFFFFFFFFFFFDLL) != 1)
   {
     v71.receiver = self;
     v71.super_class = PIVideoCrossfadeLoopNode;
-    v19 = [(NURenderNode *)&v71 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+    v19 = [(NURenderNode *)&v71 nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
     goto LABEL_36;
   }
 
-  v12 = v11;
+  v12 = evaluationMode;
   [(PIVideoCrossfadeLoopNode *)self startTime];
   [(PIVideoCrossfadeLoopNode *)self crossfadeDuration];
   memset(&buf, 0, sizeof(buf));
@@ -882,8 +882,8 @@ LABEL_48:
     [v10 time];
   }
 
-  v13 = [(PIVideoCrossfadeLoopNode *)self input];
-  v14 = [v13 outputVideo:a5];
+  input = [(PIVideoCrossfadeLoopNode *)self input];
+  v14 = [input outputVideo:error];
 
   if (v14)
   {
@@ -902,13 +902,13 @@ LABEL_48:
     v57 = v15;
     if (v12 == 3)
     {
-      v16 = [v10 videoFrames];
-      v17 = [v16 objectForKeyedSubscript:@"primary"];
+      videoFrames = [v10 videoFrames];
+      v17 = [videoFrames objectForKeyedSubscript:@"primary"];
 
       if (!v17)
       {
         [MEMORY[0x1E69B3A48] missingError:@"Missing primary video frame" object:v10];
-        *a5 = v19 = 0;
+        *error = v19 = 0;
 LABEL_34:
 
         goto LABEL_35;
@@ -973,8 +973,8 @@ LABEL_34:
       v15 = v57;
     }
 
-    v21 = [(PIVideoCrossfadeLoopNode *)self input];
-    v22 = [v21 nodeByReplayingAgainstCache:v8 pipelineState:v15 error:a5];
+    input2 = [(PIVideoCrossfadeLoopNode *)self input];
+    v22 = [input2 nodeByReplayingAgainstCache:cacheCopy pipelineState:v15 error:error];
 
     if (v22)
     {
@@ -994,13 +994,13 @@ LABEL_34:
         if (v12 == 3)
         {
           v56 = v14;
-          v26 = [v10 videoFrames];
-          v27 = [v26 objectForKeyedSubscript:@"secondary"];
+          videoFrames2 = [v10 videoFrames];
+          v27 = [videoFrames2 objectForKeyedSubscript:@"secondary"];
 
           if (!v27)
           {
             [MEMORY[0x1E69B3A48] missingError:@"Missing secondary video frame" object:v10];
-            *a5 = v19 = 0;
+            *error = v19 = 0;
             v14 = v56;
 LABEL_32:
 
@@ -1026,8 +1026,8 @@ LABEL_32:
           v14 = v56;
         }
 
-        v29 = [(PIVideoCrossfadeLoopNode *)self input];
-        v30 = [v29 nodeByReplayingAgainstCache:v8 pipelineState:v25 error:a5];
+        input3 = [(PIVideoCrossfadeLoopNode *)self input];
+        v30 = [input3 nodeByReplayingAgainstCache:cacheCopy pipelineState:v25 error:error];
 
         if (v30)
         {
@@ -1053,7 +1053,7 @@ LABEL_32:
           v25 = v40;
           v14 = v37;
 
-          v19 = [MEMORY[0x1E69B3C28] nodeFromCache:v42 cache:v8];
+          v19 = [MEMORY[0x1E69B3C28] nodeFromCache:v42 cache:cacheCopy];
           [v19 setEvaluatedForMode:{objc_msgSend(v10, "evaluationMode")}];
         }
 
@@ -1086,11 +1086,11 @@ LABEL_36:
   return v19;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v13.receiver = self;
   v13.super_class = PIVideoCrossfadeLoopNode;
-  v7 = [(NURenderNode *)&v13 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v7 = [(NURenderNode *)&v13 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
   v8 = *&self->_crossfadeDuration.value;
   *(v7 + 208) = self->_crossfadeDuration.epoch;
   *(v7 + 192) = v8;
@@ -1108,17 +1108,17 @@ LABEL_36:
 
 - (id)input
 {
-  v2 = [(NURenderNode *)self inputs];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v3 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
   return v3;
 }
 
-- (PIVideoCrossfadeLoopNode)initWithInput:(id)a3 timeRange:(id *)a4 crossfadeDuration:(id *)a5 startTime:(id *)a6
+- (PIVideoCrossfadeLoopNode)initWithInput:(id)input timeRange:(id *)range crossfadeDuration:(id *)duration startTime:(id *)time
 {
   v65 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if (!v10)
+  inputCopy = input;
+  if (!inputCopy)
   {
     v32 = NUAssertLogger_3150();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -1129,7 +1129,7 @@ LABEL_36:
       _os_log_error_impl(&dword_1C7694000, v32, OS_LOG_TYPE_ERROR, "Fail: %{public}@", &time, 0xCu);
     }
 
-    v27 = MEMORY[0x1E69B38E8];
+    callStackSymbols2 = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v29 = NUAssertLogger_3150();
     v35 = os_log_type_enabled(v29, OS_LOG_TYPE_ERROR);
@@ -1137,10 +1137,10 @@ LABEL_36:
     {
       if (v35)
       {
-        v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v27 = [v36 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols2 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(time.start.value) = 138543362;
-        *(&time.start.value + 4) = v27;
+        *(&time.start.value + 4) = callStackSymbols2;
         _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &time, 0xCu);
       }
 
@@ -1150,11 +1150,11 @@ LABEL_36:
 LABEL_30:
     if (v35)
     {
-      v47 = dispatch_get_specific(*v27);
+      v47 = dispatch_get_specific(*callStackSymbols2);
       v48 = MEMORY[0x1E696AF00];
       v49 = v47;
-      v27 = [v48 callStackSymbols];
-      v50 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v48 callStackSymbols];
+      v50 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(time.start.value) = 138543618;
       *(&time.start.value + 4) = v47;
       LOWORD(time.start.flags) = 2114;
@@ -1168,7 +1168,7 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  if ((a5->var2 & 1) == 0)
+  if ((duration->var2 & 1) == 0)
   {
     v37 = NUAssertLogger_3150();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -1179,7 +1179,7 @@ LABEL_32:
       _os_log_error_impl(&dword_1C7694000, v37, OS_LOG_TYPE_ERROR, "Fail: %{public}@", &time, 0xCu);
     }
 
-    v27 = MEMORY[0x1E69B38E8];
+    callStackSymbols2 = MEMORY[0x1E69B38E8];
     v39 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v29 = NUAssertLogger_3150();
     v40 = os_log_type_enabled(v29, OS_LOG_TYPE_ERROR);
@@ -1187,8 +1187,8 @@ LABEL_32:
     {
       if (v40)
       {
-        v41 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v42 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v42 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         LODWORD(time.start.value) = 138543362;
         *(&time.start.value + 4) = v42;
         _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &time, 0xCu);
@@ -1202,11 +1202,11 @@ LABEL_35:
 LABEL_33:
     if (v40)
     {
-      v51 = dispatch_get_specific(*v27);
+      v51 = dispatch_get_specific(*callStackSymbols2);
       v52 = MEMORY[0x1E696AF00];
       v53 = v51;
-      v54 = [v52 callStackSymbols];
-      v55 = [v54 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v52 callStackSymbols];
+      v55 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       LODWORD(time.start.value) = 138543618;
       *(&time.start.value + 4) = v51;
       LOWORD(time.start.flags) = 2114;
@@ -1217,7 +1217,7 @@ LABEL_33:
     goto LABEL_35;
   }
 
-  if ((a4->var0.var2 & 1) == 0 || (a4->var1.var2 & 1) == 0 || a4->var1.var3 || a4->var1.var0 < 0)
+  if ((range->var0.var2 & 1) == 0 || (range->var1.var2 & 1) == 0 || range->var1.var3 || range->var1.var0 < 0)
   {
     v25 = NUAssertLogger_3150();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -1228,7 +1228,7 @@ LABEL_33:
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Fail: %{public}@", &time, 0xCu);
     }
 
-    v27 = MEMORY[0x1E69B38E8];
+    callStackSymbols2 = MEMORY[0x1E69B38E8];
     v28 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v29 = NUAssertLogger_3150();
     v30 = os_log_type_enabled(v29, OS_LOG_TYPE_ERROR);
@@ -1236,11 +1236,11 @@ LABEL_33:
     {
       if (v30)
       {
-        v43 = dispatch_get_specific(*v27);
+        v43 = dispatch_get_specific(*callStackSymbols2);
         v44 = MEMORY[0x1E696AF00];
         v45 = v43;
-        v27 = [v44 callStackSymbols];
-        v46 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [v44 callStackSymbols];
+        v46 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         LODWORD(time.start.value) = 138543618;
         *(&time.start.value + 4) = v43;
         LOWORD(time.start.flags) = 2114;
@@ -1251,10 +1251,10 @@ LABEL_33:
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols2 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       LODWORD(time.start.value) = 138543362;
-      *(&time.start.value + 4) = v27;
+      *(&time.start.value + 4) = callStackSymbols2;
       _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &time, 0xCu);
     }
 
@@ -1262,22 +1262,22 @@ LABEL_33:
     goto LABEL_30;
   }
 
-  v11 = v10;
+  v11 = inputCopy;
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  *&time.start.value = *&a5->var0;
-  time.start.epoch = a5->var3;
+  *&time.start.value = *&duration->var0;
+  time.start.epoch = duration->var3;
   v13 = CMTimeCopyAsDictionary(&time.start, 0);
   [v12 setObject:v13 forKeyedSubscript:@"crossfadeDuration"];
 
-  *&time.start.value = *&a6->var0;
-  time.start.epoch = a6->var3;
+  *&time.start.value = *&time->var0;
+  time.start.epoch = time->var3;
   v14 = CMTimeCopyAsDictionary(&time.start, 0);
   [v12 setObject:v14 forKeyedSubscript:@"startTime"];
 
-  v15 = *&a4->var0.var3;
-  *&time.start.value = *&a4->var0.var0;
+  v15 = *&range->var0.var3;
+  *&time.start.value = *&range->var0.var0;
   *&time.start.epoch = v15;
-  *&time.duration.timescale = *&a4->var1.var1;
+  *&time.duration.timescale = *&range->var1.var1;
   v16 = CMTimeRangeCopyAsDictionary(&time, 0);
   [v12 setObject:v16 forKeyedSubscript:@"loopTimeRange"];
 
@@ -1290,47 +1290,47 @@ LABEL_33:
 
   if (v18)
   {
-    var3 = a5->var3;
-    *(v18 + 12) = *&a5->var0;
+    var3 = duration->var3;
+    *(v18 + 12) = *&duration->var0;
     *(v18 + 26) = var3;
-    v20 = *&a4->var1.var1;
-    v21 = *&a4->var0.var0;
-    *(v18 + 232) = *&a4->var0.var3;
+    v20 = *&range->var1.var1;
+    v21 = *&range->var0.var0;
+    *(v18 + 232) = *&range->var0.var3;
     *(v18 + 248) = v20;
     *(v18 + 216) = v21;
     memset(&v60, 0, sizeof(v60));
     CMTimeMake(&v60, 1, 600);
     memset(&v59, 0, sizeof(v59));
-    v22 = *&a4->var0.var3;
-    *&time.start.value = *&a4->var0.var0;
+    v22 = *&range->var0.var3;
+    *&time.start.value = *&range->var0.var0;
     *&time.start.epoch = v22;
-    *&time.duration.timescale = *&a4->var1.var1;
+    *&time.duration.timescale = *&range->var1.var1;
     CMTimeRangeGetEnd(&time2, &time);
-    lhs = *a5;
+    lhs = *duration;
     rhs = v60;
     CMTimeAdd(&time.start, &lhs, &rhs);
     CMTimeSubtract(&v59, &time2, &time.start);
-    *&time.start.value = *&a6->var0;
-    time.start.epoch = a6->var3;
+    *&time.start.value = *&time->var0;
+    time.start.epoch = time->var3;
     time2 = v59;
     if ((CMTimeCompare(&time.start, &time2) & 0x80000000) == 0)
     {
-      *a6 = v59;
+      *time = v59;
     }
 
-    v23 = a6->var3;
-    *(v18 + 168) = *&a6->var0;
+    v23 = time->var3;
+    *(v18 + 168) = *&time->var0;
     *(v18 + 23) = v23;
   }
 
   return v18;
 }
 
-- (PIVideoCrossfadeLoopNode)initWithSettings:(id)a3 inputs:(id)a4
+- (PIVideoCrossfadeLoopNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   v8 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -1369,8 +1369,8 @@ LABEL_11:
           v25 = MEMORY[0x1E696AF00];
           v26 = specific;
           v27 = v23;
-          v28 = [v25 callStackSymbols];
-          v29 = [v28 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v25 callStackSymbols];
+          v29 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v32 = specific;
           v33 = 2114;
@@ -1397,8 +1397,8 @@ LABEL_11:
     {
       v19 = MEMORY[0x1E696AF00];
       v20 = v18;
-      v21 = [v19 callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v19 callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v22;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

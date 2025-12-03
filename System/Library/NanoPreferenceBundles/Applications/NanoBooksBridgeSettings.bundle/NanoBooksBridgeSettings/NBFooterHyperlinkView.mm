@@ -1,14 +1,14 @@
 @interface NBFooterHyperlinkView
-- (NBFooterHyperlinkView)initWithReuseIdentifier:(id)a3;
+- (NBFooterHyperlinkView)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation NBFooterHyperlinkView
 
-- (NBFooterHyperlinkView)initWithReuseIdentifier:(id)a3
+- (NBFooterHyperlinkView)initWithReuseIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = NBFooterHyperlinkView;
-  v3 = [(NBFooterHyperlinkView *)&v6 initWithReuseIdentifier:a3];
+  v3 = [(NBFooterHyperlinkView *)&v6 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = +[UIColor secondarySystemGroupedBackgroundColor];

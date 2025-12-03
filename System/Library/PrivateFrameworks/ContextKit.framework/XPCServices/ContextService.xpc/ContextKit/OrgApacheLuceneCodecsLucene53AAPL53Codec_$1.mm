@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneCodecsLucene53AAPL53Codec_$1
-- (OrgApacheLuceneCodecsLucene53AAPL53Codec_$1)initWithOrgApacheLuceneCodecsLucene53AAPL53Codec:(id)a3;
+- (OrgApacheLuceneCodecsLucene53AAPL53Codec_$1)initWithOrgApacheLuceneCodecsLucene53AAPL53Codec:(id)codec;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneCodecsLucene53AAPL53Codec_$1
 
-- (OrgApacheLuceneCodecsLucene53AAPL53Codec_$1)initWithOrgApacheLuceneCodecsLucene53AAPL53Codec:(id)a3
+- (OrgApacheLuceneCodecsLucene53AAPL53Codec_$1)initWithOrgApacheLuceneCodecsLucene53AAPL53Codec:(id)codec
 {
-  JreStrongAssign(&self->this$0_, a3);
+  JreStrongAssign(&self->this$0_, codec);
   OrgApacheLuceneCodecsPerfieldPerFieldPostingsFormat_init(self);
   return self;
 }

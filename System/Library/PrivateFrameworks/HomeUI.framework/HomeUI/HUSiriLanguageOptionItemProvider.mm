@@ -1,7 +1,7 @@
 @interface HUSiriLanguageOptionItemProvider
-- (HUSiriLanguageOptionItemProvider)initWithAdapter:(id)a3 optionStyle:(unint64_t)a4;
-- (HUSiriLanguageOptionItemProvider)initWithSiriLanguageOptionsManager:(id)a3 sourceItem:(id)a4 optionStyle:(unint64_t)a5;
-- (id)_createSiriLanguageOptionItems:(id)a3;
+- (HUSiriLanguageOptionItemProvider)initWithAdapter:(id)adapter optionStyle:(unint64_t)style;
+- (HUSiriLanguageOptionItemProvider)initWithSiriLanguageOptionsManager:(id)manager sourceItem:(id)item optionStyle:(unint64_t)style;
+- (id)_createSiriLanguageOptionItems:(id)items;
 - (id)_reloadItemsWithAdapter;
 - (id)_reloadItemsWithSiriLanguageOptionsManager;
 - (id)reloadItems;
@@ -9,27 +9,27 @@
 
 @implementation HUSiriLanguageOptionItemProvider
 
-- (HUSiriLanguageOptionItemProvider)initWithAdapter:(id)a3 optionStyle:(unint64_t)a4
+- (HUSiriLanguageOptionItemProvider)initWithAdapter:(id)adapter optionStyle:(unint64_t)style
 {
-  v7 = a3;
+  adapterCopy = adapter;
   v24.receiver = self;
   v24.super_class = HUSiriLanguageOptionItemProvider;
   v8 = [(HFItemProvider *)&v24 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_adapter, a3);
-    v10 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v11 = [v10 homeManager];
-    v12 = [v11 hasOptedToHH2];
+    objc_storeStrong(&v8->_adapter, adapter);
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    homeManager = [mEMORY[0x277D146E8] homeManager];
+    hasOptedToHH2 = [homeManager hasOptedToHH2];
 
-    if (v12)
+    if (hasOptedToHH2)
     {
       objc_opt_class();
-      v13 = [v7 homeKitSettingsVendor];
+      homeKitSettingsVendor = [adapterCopy homeKitSettingsVendor];
       if (objc_opt_isKindOfClass())
       {
-        v14 = v13;
+        v14 = homeKitSettingsVendor;
       }
 
       else
@@ -40,10 +40,10 @@
       v15 = v14;
 
       objc_opt_class();
-      v16 = [v7 homeKitSettingsVendor];
+      homeKitSettingsVendor2 = [adapterCopy homeKitSettingsVendor];
       if (objc_opt_isKindOfClass())
       {
-        v17 = v16;
+        v17 = homeKitSettingsVendor2;
       }
 
       else
@@ -63,11 +63,11 @@
         v19 = v18;
       }
 
-      v20 = [v19 hf_siriLanguageOptionsManager];
-      objc_storeStrong(&v9->_siriLanguageOptionsManager, v20);
+      hf_siriLanguageOptionsManager = [v19 hf_siriLanguageOptionsManager];
+      objc_storeStrong(&v9->_siriLanguageOptionsManager, hf_siriLanguageOptionsManager);
     }
 
-    v9->_optionStyle = a4;
+    v9->_optionStyle = style;
     v21 = [MEMORY[0x277CBEB98] set];
     items = v9->_items;
     v9->_items = v21;
@@ -76,19 +76,19 @@
   return v9;
 }
 
-- (HUSiriLanguageOptionItemProvider)initWithSiriLanguageOptionsManager:(id)a3 sourceItem:(id)a4 optionStyle:(unint64_t)a5
+- (HUSiriLanguageOptionItemProvider)initWithSiriLanguageOptionsManager:(id)manager sourceItem:(id)item optionStyle:(unint64_t)style
 {
-  v9 = a3;
-  v10 = a4;
+  managerCopy = manager;
+  itemCopy = item;
   v16.receiver = self;
   v16.super_class = HUSiriLanguageOptionItemProvider;
   v11 = [(HFItemProvider *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_siriLanguageOptionsManager, a3);
-    objc_storeStrong(&v12->_sourceItem, a4);
-    v12->_optionStyle = a5;
+    objc_storeStrong(&v11->_siriLanguageOptionsManager, manager);
+    objc_storeStrong(&v12->_sourceItem, item);
+    v12->_optionStyle = style;
     v13 = [MEMORY[0x277CBEB98] set];
     items = v12->_items;
     v12->_items = v13;
@@ -99,9 +99,9 @@
 
 - (id)reloadItems
 {
-  v3 = [(HUSiriLanguageOptionItemProvider *)self siriLanguageOptionsManager];
+  siriLanguageOptionsManager = [(HUSiriLanguageOptionItemProvider *)self siriLanguageOptionsManager];
 
-  if (v3)
+  if (siriLanguageOptionsManager)
   {
     [(HUSiriLanguageOptionItemProvider *)self _reloadItemsWithSiriLanguageOptionsManager];
   }
@@ -208,19 +208,19 @@ LABEL_9:
   return v5;
 }
 
-- (id)_createSiriLanguageOptionItems:(id)a3
+- (id)_createSiriLanguageOptionItems:(id)items
 {
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __67__HUSiriLanguageOptionItemProvider__createSiriLanguageOptionItems___block_invoke;
   aBlock[3] = &unk_277DC0218;
   aBlock[4] = self;
-  v4 = a3;
+  itemsCopy = items;
   v5 = _Block_copy(aBlock);
-  v6 = [v4 allObjects];
-  v7 = [v6 na_dictionaryWithKeyGenerator:v5];
+  allObjects = [itemsCopy allObjects];
+  v7 = [allObjects na_dictionaryWithKeyGenerator:v5];
 
-  v8 = [v4 allObjects];
+  allObjects2 = [itemsCopy allObjects];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -233,12 +233,12 @@ LABEL_9:
   v19[2] = __67__HUSiriLanguageOptionItemProvider__createSiriLanguageOptionItems___block_invoke_3;
   v19[3] = &unk_277DC0268;
   v19[4] = self;
-  v10 = [(HFItemProvider *)self reloadItemsWithObjects:v8 keyAdaptor:v9 itemAdaptor:v20 filter:0 itemMap:v19];
+  v10 = [(HFItemProvider *)self reloadItemsWithObjects:allObjects2 keyAdaptor:v9 itemAdaptor:v20 filter:0 itemMap:v19];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __67__HUSiriLanguageOptionItemProvider__createSiriLanguageOptionItems___block_invoke_4;
   v15[3] = &unk_277DC02B8;
-  v17 = self;
+  selfCopy = self;
   v18 = v9;
   v16 = v7;
   v11 = v9;

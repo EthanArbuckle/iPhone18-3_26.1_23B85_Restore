@@ -1,28 +1,28 @@
 @interface ODDSiriSchemaODDDictationExperimentDigest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDDictationExperimentDigest)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDDictationExperimentDigest)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDDictationExperimentDigest)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDDictationExperimentDigest)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addTurnIds:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTurnIds:(id)ids;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDDictationExperimentDigest
 
-- (ODDSiriSchemaODDDictationExperimentDigest)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDDictationExperimentDigest)initWithDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = ODDSiriSchemaODDDictationExperimentDigest;
   v5 = [(ODDSiriSchemaODDDictationExperimentDigest *)&v28 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dimensions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"dimensions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(ODDSiriSchemaODDDictationExperimentDigest *)v5 setDimensions:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"counts"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"counts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(ODDSiriSchemaODDDictationExperimentDigest *)v5 setCounts:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"tuples"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"tuples"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(ODDSiriSchemaODDDictationExperimentDigest *)v5 setTuples:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"turnIds"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"turnIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,30 +96,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDDictationExperimentDigest)initWithJSON:(id)a3
+- (ODDSiriSchemaODDDictationExperimentDigest)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDDictationExperimentDigest *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDDictationExperimentDigest *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDDictationExperimentDigest *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -133,58 +133,58 @@
 - (id)dictionaryRepresentation
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_counts)
   {
-    v4 = [(ODDSiriSchemaODDDictationExperimentDigest *)self counts];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    counts = [(ODDSiriSchemaODDDictationExperimentDigest *)self counts];
+    dictionaryRepresentation = [counts dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"counts"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"counts"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"counts"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"counts"];
     }
   }
 
   if (self->_dimensions)
   {
-    v7 = [(ODDSiriSchemaODDDictationExperimentDigest *)self dimensions];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    dimensions = [(ODDSiriSchemaODDDictationExperimentDigest *)self dimensions];
+    dictionaryRepresentation2 = [dimensions dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"dimensions"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"dimensions"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"dimensions"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"dimensions"];
     }
   }
 
   if (self->_tuples)
   {
-    v10 = [(ODDSiriSchemaODDDictationExperimentDigest *)self tuples];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    tuples = [(ODDSiriSchemaODDDictationExperimentDigest *)self tuples];
+    dictionaryRepresentation3 = [tuples dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"tuples"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"tuples"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"tuples"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"tuples"];
     }
   }
 
   if ([(NSArray *)self->_turnIds count])
   {
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -204,16 +204,16 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
-          if (v19)
+          dictionaryRepresentation4 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation4)
           {
-            [v13 addObject:v19];
+            [array addObject:dictionaryRepresentation4];
           }
 
           else
           {
-            v20 = [MEMORY[0x1E695DFB0] null];
-            [v13 addObject:v20];
+            null4 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null4];
           }
         }
 
@@ -223,12 +223,12 @@
       while (v16);
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"turnIds"];
+    [dictionary setObject:array forKeyedSubscript:@"turnIds"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v22];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v22];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -239,28 +239,28 @@
   return v4 ^ v5 ^ [(NSArray *)self->_turnIds hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(ODDSiriSchemaODDDictationExperimentDigest *)self dimensions];
-  v6 = [v4 dimensions];
-  if ((v5 != 0) == (v6 == 0))
+  dimensions = [(ODDSiriSchemaODDDictationExperimentDigest *)self dimensions];
+  dimensions2 = [equalCopy dimensions];
+  if ((dimensions != 0) == (dimensions2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(ODDSiriSchemaODDDictationExperimentDigest *)self dimensions];
-  if (v7)
+  dimensions3 = [(ODDSiriSchemaODDDictationExperimentDigest *)self dimensions];
+  if (dimensions3)
   {
-    v8 = v7;
-    v9 = [(ODDSiriSchemaODDDictationExperimentDigest *)self dimensions];
-    v10 = [v4 dimensions];
-    v11 = [v9 isEqual:v10];
+    v8 = dimensions3;
+    dimensions4 = [(ODDSiriSchemaODDDictationExperimentDigest *)self dimensions];
+    dimensions5 = [equalCopy dimensions];
+    v11 = [dimensions4 isEqual:dimensions5];
 
     if (!v11)
     {
@@ -272,20 +272,20 @@
   {
   }
 
-  v5 = [(ODDSiriSchemaODDDictationExperimentDigest *)self counts];
-  v6 = [v4 counts];
-  if ((v5 != 0) == (v6 == 0))
+  dimensions = [(ODDSiriSchemaODDDictationExperimentDigest *)self counts];
+  dimensions2 = [equalCopy counts];
+  if ((dimensions != 0) == (dimensions2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(ODDSiriSchemaODDDictationExperimentDigest *)self counts];
-  if (v12)
+  counts = [(ODDSiriSchemaODDDictationExperimentDigest *)self counts];
+  if (counts)
   {
-    v13 = v12;
-    v14 = [(ODDSiriSchemaODDDictationExperimentDigest *)self counts];
-    v15 = [v4 counts];
-    v16 = [v14 isEqual:v15];
+    v13 = counts;
+    counts2 = [(ODDSiriSchemaODDDictationExperimentDigest *)self counts];
+    counts3 = [equalCopy counts];
+    v16 = [counts2 isEqual:counts3];
 
     if (!v16)
     {
@@ -297,20 +297,20 @@
   {
   }
 
-  v5 = [(ODDSiriSchemaODDDictationExperimentDigest *)self tuples];
-  v6 = [v4 tuples];
-  if ((v5 != 0) == (v6 == 0))
+  dimensions = [(ODDSiriSchemaODDDictationExperimentDigest *)self tuples];
+  dimensions2 = [equalCopy tuples];
+  if ((dimensions != 0) == (dimensions2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(ODDSiriSchemaODDDictationExperimentDigest *)self tuples];
-  if (v17)
+  tuples = [(ODDSiriSchemaODDDictationExperimentDigest *)self tuples];
+  if (tuples)
   {
-    v18 = v17;
-    v19 = [(ODDSiriSchemaODDDictationExperimentDigest *)self tuples];
-    v20 = [v4 tuples];
-    v21 = [v19 isEqual:v20];
+    v18 = tuples;
+    tuples2 = [(ODDSiriSchemaODDDictationExperimentDigest *)self tuples];
+    tuples3 = [equalCopy tuples];
+    v21 = [tuples2 isEqual:tuples3];
 
     if (!v21)
     {
@@ -322,12 +322,12 @@
   {
   }
 
-  v5 = [(ODDSiriSchemaODDDictationExperimentDigest *)self turnIds];
-  v6 = [v4 turnIds];
-  if ((v5 != 0) != (v6 == 0))
+  dimensions = [(ODDSiriSchemaODDDictationExperimentDigest *)self turnIds];
+  dimensions2 = [equalCopy turnIds];
+  if ((dimensions != 0) != (dimensions2 == 0))
   {
-    v22 = [(ODDSiriSchemaODDDictationExperimentDigest *)self turnIds];
-    if (!v22)
+    turnIds = [(ODDSiriSchemaODDDictationExperimentDigest *)self turnIds];
+    if (!turnIds)
     {
 
 LABEL_25:
@@ -335,10 +335,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(ODDSiriSchemaODDDictationExperimentDigest *)self turnIds];
-    v25 = [v4 turnIds];
-    v26 = [v24 isEqual:v25];
+    v23 = turnIds;
+    turnIds2 = [(ODDSiriSchemaODDDictationExperimentDigest *)self turnIds];
+    turnIds3 = [equalCopy turnIds];
+    v26 = [turnIds2 isEqual:turnIds3];
 
     if (v26)
     {
@@ -358,31 +358,31 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ODDSiriSchemaODDDictationExperimentDigest *)self dimensions];
+  toCopy = to;
+  dimensions = [(ODDSiriSchemaODDDictationExperimentDigest *)self dimensions];
 
-  if (v5)
+  if (dimensions)
   {
-    v6 = [(ODDSiriSchemaODDDictationExperimentDigest *)self dimensions];
+    dimensions2 = [(ODDSiriSchemaODDDictationExperimentDigest *)self dimensions];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(ODDSiriSchemaODDDictationExperimentDigest *)self counts];
+  counts = [(ODDSiriSchemaODDDictationExperimentDigest *)self counts];
 
-  if (v7)
+  if (counts)
   {
-    v8 = [(ODDSiriSchemaODDDictationExperimentDigest *)self counts];
+    counts2 = [(ODDSiriSchemaODDDictationExperimentDigest *)self counts];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(ODDSiriSchemaODDDictationExperimentDigest *)self tuples];
+  tuples = [(ODDSiriSchemaODDDictationExperimentDigest *)self tuples];
 
-  if (v9)
+  if (tuples)
   {
-    v10 = [(ODDSiriSchemaODDDictationExperimentDigest *)self tuples];
+    tuples2 = [(ODDSiriSchemaODDDictationExperimentDigest *)self tuples];
     PBDataWriterWriteSubmessage();
   }
 
@@ -418,64 +418,64 @@ LABEL_23:
   }
 }
 
-- (void)addTurnIds:(id)a3
+- (void)addTurnIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   turnIds = self->_turnIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!turnIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_turnIds;
-    self->_turnIds = v6;
+    self->_turnIds = array;
 
-    v4 = v8;
+    idsCopy = v8;
     turnIds = self->_turnIds;
   }
 
-  [(NSArray *)turnIds addObject:v4];
+  [(NSArray *)turnIds addObject:idsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v18.receiver = self;
   v18.super_class = ODDSiriSchemaODDDictationExperimentDigest;
-  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:8])
+  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:8])
   {
     [(ODDSiriSchemaODDDictationExperimentDigest *)self deleteTurnIds];
   }
 
-  v6 = [(ODDSiriSchemaODDDictationExperimentDigest *)self dimensions];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  dimensions = [(ODDSiriSchemaODDDictationExperimentDigest *)self dimensions];
+  v7 = [dimensions applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODDSiriSchemaODDDictationExperimentDigest *)self deleteDimensions];
   }
 
-  v9 = [(ODDSiriSchemaODDDictationExperimentDigest *)self counts];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  counts = [(ODDSiriSchemaODDDictationExperimentDigest *)self counts];
+  v10 = [counts applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ODDSiriSchemaODDDictationExperimentDigest *)self deleteCounts];
   }
 
-  v12 = [(ODDSiriSchemaODDDictationExperimentDigest *)self tuples];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  tuples = [(ODDSiriSchemaODDDictationExperimentDigest *)self tuples];
+  v13 = [tuples applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(ODDSiriSchemaODDDictationExperimentDigest *)self deleteTuples];
   }
 
-  v15 = [(ODDSiriSchemaODDDictationExperimentDigest *)self turnIds];
-  v16 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v15 underConditions:v4];
+  turnIds = [(ODDSiriSchemaODDDictationExperimentDigest *)self turnIds];
+  v16 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:turnIds underConditions:policyCopy];
   [(ODDSiriSchemaODDDictationExperimentDigest *)self setTurnIds:v16];
 
   return v5;

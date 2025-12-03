@@ -1,12 +1,12 @@
 @interface HUICCBackgroundSoundsButton
 - (BOOL)shouldIncludeIconViewInFooterViews;
-- (HUICCBackgroundSoundsButton)initWithFrame:(CGRect)a3;
+- (HUICCBackgroundSoundsButton)initWithFrame:(CGRect)frame;
 - (id)_subtitleAttributes;
 - (id)accessibilityCustomActions;
 - (void)_updateButtonView;
 - (void)buttonTapped;
-- (void)setSubtitleAttributedText:(id)a3;
-- (void)setSubtitleText:(id)a3;
+- (void)setSubtitleAttributedText:(id)text;
+- (void)setSubtitleText:(id)text;
 - (void)subscribeListeners;
 - (void)unsubscribeListeners;
 - (void)updateValue;
@@ -14,11 +14,11 @@
 
 @implementation HUICCBackgroundSoundsButton
 
-- (HUICCBackgroundSoundsButton)initWithFrame:(CGRect)a3
+- (HUICCBackgroundSoundsButton)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = HUICCBackgroundSoundsButton;
-  v3 = [(HUICCCapsuleButton *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUICCCapsuleButton *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = HUICCButtonVCWithSystemImageName(@"music.quarternote.3");
@@ -28,96 +28,96 @@
     v6 = hearingLocString();
     [(CCUILabeledRoundButtonViewController *)v3->_buttonVC setTitle:v6];
 
-    v7 = [(CCUILabeledRoundButtonViewController *)v3->_buttonVC button];
-    [v7 addTarget:v3 action:sel_buttonTapped forControlEvents:64];
+    button = [(CCUILabeledRoundButtonViewController *)v3->_buttonVC button];
+    [button addTarget:v3 action:sel_buttonTapped forControlEvents:64];
 
-    v8 = [(CCUILabeledRoundButtonViewController *)v3->_buttonVC button];
-    [(HUICCCapsuleButton *)v3 setIconView:v8];
+    button2 = [(CCUILabeledRoundButtonViewController *)v3->_buttonVC button];
+    [(HUICCCapsuleButton *)v3 setIconView:button2];
 
     v9 = objc_alloc(MEMORY[0x277CE6950]);
     v10 = [v9 initWithTargetSerialQueue:MEMORY[0x277D85CD0]];
     [(HUICCBackgroundSoundsButton *)v3 setCountdownTimer:v10];
 
-    v11 = [(HUICCBackgroundSoundsButton *)v3 countdownTimer];
-    [v11 setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
+    countdownTimer = [(HUICCBackgroundSoundsButton *)v3 countdownTimer];
+    [countdownTimer setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
   }
 
   return v3;
 }
 
-- (void)setSubtitleText:(id)a3
+- (void)setSubtitleText:(id)text
 {
-  v4 = a3;
-  v5 = [(HUICCCapsuleButton *)self subtitleLabel];
-  v6 = [v5 text];
-  if (v6)
+  textCopy = text;
+  subtitleLabel = [(HUICCCapsuleButton *)self subtitleLabel];
+  text = [subtitleLabel text];
+  if (text)
   {
-    v7 = [(HUICCCapsuleButton *)self subtitleLabel];
-    v8 = [v7 text];
-    v9 = [v8 isEqualToString:v4];
+    subtitleLabel2 = [(HUICCCapsuleButton *)self subtitleLabel];
+    text2 = [subtitleLabel2 text];
+    v9 = [text2 isEqualToString:textCopy];
   }
 
   else
   {
-    v9 = v4 == 0;
+    v9 = textCopy == 0;
   }
 
   v11.receiver = self;
   v11.super_class = HUICCBackgroundSoundsButton;
-  [(HUICCCapsuleButton *)&v11 setSubtitleText:v4];
+  [(HUICCCapsuleButton *)&v11 setSubtitleText:textCopy];
   if ((v9 & 1) == 0)
   {
-    v10 = [(HUICCCapsuleButton *)self delegate];
-    [v10 updateHeight];
+    delegate = [(HUICCCapsuleButton *)self delegate];
+    [delegate updateHeight];
   }
 }
 
-- (void)setSubtitleAttributedText:(id)a3
+- (void)setSubtitleAttributedText:(id)text
 {
-  v12 = a3;
-  v4 = [(HUICCCapsuleButton *)self subtitleLabel];
-  v5 = [v4 text];
-  if (v5)
+  textCopy = text;
+  subtitleLabel = [(HUICCCapsuleButton *)self subtitleLabel];
+  text = [subtitleLabel text];
+  if (text)
   {
-    v6 = [(HUICCCapsuleButton *)self subtitleLabel];
-    v7 = [v6 text];
-    v8 = [v12 string];
-    v9 = [v7 isEqualToString:v8];
+    subtitleLabel2 = [(HUICCCapsuleButton *)self subtitleLabel];
+    text2 = [subtitleLabel2 text];
+    string = [textCopy string];
+    v9 = [text2 isEqualToString:string];
   }
 
   else
   {
-    v9 = v12 == 0;
+    v9 = textCopy == 0;
   }
 
-  v10 = [(HUICCCapsuleButton *)self subtitleLabel];
-  [v10 setAttributedText:v12];
+  subtitleLabel3 = [(HUICCCapsuleButton *)self subtitleLabel];
+  [subtitleLabel3 setAttributedText:textCopy];
 
   if ((v9 & 1) == 0)
   {
-    v11 = [(HUICCCapsuleButton *)self delegate];
-    [v11 updateHeight];
+    delegate = [(HUICCCapsuleButton *)self delegate];
+    [delegate updateHeight];
   }
 }
 
 - (id)_subtitleAttributes
 {
   v13[3] = *MEMORY[0x277D85DE8];
-  v3 = [(HUICCCapsuleButton *)self subtitleLabel];
-  v4 = [v3 font];
+  subtitleLabel = [(HUICCCapsuleButton *)self subtitleLabel];
+  font = [subtitleLabel font];
 
-  v5 = [(HUICCCapsuleButton *)self subtitleLabel];
-  v6 = [v5 textColor];
+  subtitleLabel2 = [(HUICCCapsuleButton *)self subtitleLabel];
+  textColor = [subtitleLabel2 textColor];
 
   v7 = objc_alloc_init(MEMORY[0x277D74240]);
-  v8 = [(HUICCCapsuleButton *)self subtitleLabel];
-  [v7 setAlignment:{objc_msgSend(v8, "textAlignment")}];
+  subtitleLabel3 = [(HUICCCapsuleButton *)self subtitleLabel];
+  [v7 setAlignment:{objc_msgSend(subtitleLabel3, "textAlignment")}];
 
   v9 = *MEMORY[0x277D740C0];
   v12[0] = *MEMORY[0x277D740A8];
   v12[1] = v9;
-  v13[0] = v4;
-  v13[1] = v6;
+  v13[0] = font;
+  v13[1] = textColor;
   v12[2] = *MEMORY[0x277D74118];
   v13[2] = v7;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:3];
@@ -130,14 +130,14 @@
   v6.receiver = self;
   v6.super_class = HUICCBackgroundSoundsButton;
   [(HUICCCapsuleButton *)&v6 updateValue];
-  v3 = [MEMORY[0x277D12E38] sharedUtilities];
-  v4 = [v3 routingQueue];
+  mEMORY[0x277D12E38] = [MEMORY[0x277D12E38] sharedUtilities];
+  routingQueue = [mEMORY[0x277D12E38] routingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__HUICCBackgroundSoundsButton_updateValue__block_invoke;
   block[3] = &unk_2796F6D90;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(routingQueue, block);
 }
 
 void __42__HUICCBackgroundSoundsButton_updateValue__block_invoke(uint64_t a1)
@@ -264,8 +264,8 @@ uint64_t __42__HUICCBackgroundSoundsButton_updateValue__block_invoke_3(uint64_t 
   v4.receiver = self;
   v4.super_class = HUICCBackgroundSoundsButton;
   [(HUICCCapsuleButton *)&v4 buttonTapped];
-  v3 = [(HUICCBackgroundSoundsButton *)self countdownTimer];
-  [v3 cancel];
+  countdownTimer = [(HUICCBackgroundSoundsButton *)self countdownTimer];
+  [countdownTimer cancel];
 
   [(HUICCBackgroundSoundsButton *)self updateValue];
 }
@@ -273,24 +273,24 @@ uint64_t __42__HUICCBackgroundSoundsButton_updateValue__block_invoke_3(uint64_t 
 - (void)_updateButtonView
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D12E18] sharedInstance];
-  v4 = [v3 comfortSoundsEnabled];
+  mEMORY[0x277D12E18] = [MEMORY[0x277D12E18] sharedInstance];
+  comfortSoundsEnabled = [mEMORY[0x277D12E18] comfortSoundsEnabled];
 
-  if (v4)
+  if (comfortSoundsEnabled)
   {
-    v5 = [MEMORY[0x277D75348] systemBlueColor];
-    v18[0] = v5;
-    v6 = [MEMORY[0x277D75348] blackColor];
-    v18[1] = v6;
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    v18[0] = systemBlueColor;
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v18[1] = blackColor;
     v7 = v18;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] whiteColor];
-    v17[0] = v5;
-    v6 = [MEMORY[0x277D75348] whiteColor];
-    v17[1] = v6;
+    systemBlueColor = [MEMORY[0x277D75348] whiteColor];
+    v17[0] = systemBlueColor;
+    blackColor = [MEMORY[0x277D75348] whiteColor];
+    v17[1] = blackColor;
     v7 = v17;
   }
 
@@ -304,7 +304,7 @@ uint64_t __42__HUICCBackgroundSoundsButton_updateValue__block_invoke_3(uint64_t 
   block[3] = &unk_2796F7008;
   block[4] = self;
   v14 = v9;
-  v16 = v4;
+  v16 = comfortSoundsEnabled;
   v15 = v10;
   v11 = v10;
   v12 = v9;
@@ -339,13 +339,13 @@ void __48__HUICCBackgroundSoundsButton__updateButtonView__block_invoke(uint64_t 
   }
 
   objc_initWeak(buf, self);
-  v4 = [MEMORY[0x277D12DE8] sharedInstance];
+  mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __49__HUICCBackgroundSoundsButton_subscribeListeners__block_invoke;
   v5[3] = &unk_2796F7898;
   objc_copyWeak(&v6, buf);
-  [v4 registerListener:self forLiveListenLevelsHandler:v5];
+  [mEMORY[0x277D12DE8] registerListener:self forLiveListenLevelsHandler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(buf);
@@ -382,8 +382,8 @@ void __49__HUICCBackgroundSoundsButton_subscribeListeners__block_invoke_2(uint64
     _os_log_impl(&dword_252166000, v3, OS_LOG_TYPE_DEFAULT, "BS button: Unregistering Live Listen listener", v5, 2u);
   }
 
-  v4 = [MEMORY[0x277D12DE8] sharedInstance];
-  [v4 unregisterLiveListenLevelListener:self];
+  mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
+  [mEMORY[0x277D12DE8] unregisterLiveListenLevelListener:self];
 
   [(HUICCBackgroundSoundsButton *)self setIsListening:0];
 }
@@ -393,15 +393,15 @@ void __49__HUICCBackgroundSoundsButton_subscribeListeners__block_invoke_2(uint64
   v3 = MEMORY[0x277CBEB18];
   v18.receiver = self;
   v18.super_class = HUICCBackgroundSoundsButton;
-  v4 = [(HUICCCapsuleButton *)&v18 accessibilityCustomActions];
-  v5 = [v3 arrayWithArray:v4];
+  accessibilityCustomActions = [(HUICCCapsuleButton *)&v18 accessibilityCustomActions];
+  v5 = [v3 arrayWithArray:accessibilityCustomActions];
 
-  v6 = [(HUICCCapsuleButton *)self iconView];
+  iconView = [(HUICCCapsuleButton *)self iconView];
 
-  if (v6)
+  if (iconView)
   {
-    v7 = [MEMORY[0x277D12E18] sharedInstance];
-    [v7 comfortSoundsEnabled];
+    mEMORY[0x277D12E18] = [MEMORY[0x277D12E18] sharedInstance];
+    [mEMORY[0x277D12E18] comfortSoundsEnabled];
 
     v8 = hearingLocString();
     objc_initWeak(&location, self);
@@ -431,8 +431,8 @@ uint64_t __57__HUICCBackgroundSoundsButton_accessibilityCustomActions__block_inv
 
 - (BOOL)shouldIncludeIconViewInFooterViews
 {
-  v2 = [(HUICCCapsuleButton *)self iconView];
-  v3 = v2 != 0;
+  iconView = [(HUICCCapsuleButton *)self iconView];
+  v3 = iconView != 0;
 
   return v3;
 }

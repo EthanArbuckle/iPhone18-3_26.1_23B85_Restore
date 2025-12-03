@@ -3,11 +3,11 @@
 - (NIServerFindingServicePool)init;
 - (id).cxx_construct;
 - (id)allServicesPrintableState;
-- (id)serviceForToken:(id)a3 createIfNotExists:(BOOL)a4;
+- (id)serviceForToken:(id)token createIfNotExists:(BOOL)exists;
 - (id)servicePoolPrintableState;
-- (void)logSessionEvent:(id)a3;
-- (void)logSessionSummary:(id)a3;
-- (void)setService:(id)a3 forToken:(id)a4;
+- (void)logSessionEvent:(id)event;
+- (void)logSessionSummary:(id)summary;
+- (void)setService:(id)service forToken:(id)token;
 @end
 
 @implementation NIServerFindingServicePool
@@ -48,33 +48,33 @@
   return v3;
 }
 
-- (void)setService:(id)a3 forToken:(id)a4
+- (void)setService:(id)service forToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  serviceCopy = service;
+  tokenCopy = token;
+  if (tokenCopy)
   {
     std::mutex::lock((self + 112));
-    if (!v6)
+    if (!serviceCopy)
     {
       v11 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138543362;
-        v14 = v7;
+        v14 = tokenCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "#find-ses,FindingServicePool remove service for token: %{public}@", &v13, 0xCu);
       }
 
-      [*(self + 1) removeObjectForKey:v7];
+      [*(self + 1) removeObjectForKey:tokenCopy];
       goto LABEL_13;
     }
 
-    v8 = [*(self + 1) objectForKeyedSubscript:v7];
+    v8 = [*(self + 1) objectForKeyedSubscript:tokenCopy];
 
     if (v8)
     {
-      v9 = [*(self + 1) objectForKeyedSubscript:v7];
-      v10 = [v9 isEqual:v6];
+      v9 = [*(self + 1) objectForKeyedSubscript:tokenCopy];
+      v10 = [v9 isEqual:serviceCopy];
 
       if (v10)
       {
@@ -95,34 +95,34 @@ LABEL_13:
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138543362;
-        v14 = v7;
+        v14 = tokenCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "#find-ses,FindingServicePool replace nil service for token: %{public}@. Race condition (OK)", &v13, 0xCu);
       }
     }
 
-    [*(self + 1) setObject:v6 forKey:v7];
+    [*(self + 1) setObject:serviceCopy forKey:tokenCopy];
     goto LABEL_13;
   }
 
 LABEL_14:
 }
 
-- (id)serviceForToken:(id)a3 createIfNotExists:(BOOL)a4
+- (id)serviceForToken:(id)token createIfNotExists:(BOOL)exists
 {
-  v6 = a3;
+  tokenCopy = token;
   std::mutex::lock((self + 112));
-  if (a4)
+  if (exists)
   {
     v7 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = v6;
+      v17 = tokenCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#find-ses,FindingServicePool provide service for token: %{public}@", buf, 0xCu);
     }
 
     v8 = (self + 8);
-    v9 = [*(self + 1) objectForKeyedSubscript:v6];
+    v9 = [*(self + 1) objectForKeyedSubscript:tokenCopy];
     v10 = v9 == 0;
 
     if (v10)
@@ -136,7 +136,7 @@ LABEL_14:
       }
 
       v13 = [[NIServerFindingService alloc] initWithLabel:v12];
-      [*v8 setObject:v13 forKeyedSubscript:v6];
+      [*v8 setObject:v13 forKeyedSubscript:tokenCopy];
     }
   }
 
@@ -145,25 +145,25 @@ LABEL_14:
     v8 = (self + 8);
   }
 
-  v14 = [*v8 objectForKeyedSubscript:v6];
+  v14 = [*v8 objectForKeyedSubscript:tokenCopy];
   std::mutex::unlock((self + 112));
 
   return v14;
 }
 
-- (void)logSessionEvent:(id)a3
+- (void)logSessionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   std::mutex::lock((self + 176));
-  sub_1003466C0(v4, self + 2);
+  sub_1003466C0(eventCopy, self + 2);
   std::mutex::unlock((self + 176));
 }
 
-- (void)logSessionSummary:(id)a3
+- (void)logSessionSummary:(id)summary
 {
-  v4 = a3;
+  summaryCopy = summary;
   std::mutex::lock((self + 176));
-  sub_1003466C0(v4, self + 8);
+  sub_1003466C0(summaryCopy, self + 8);
   std::mutex::unlock((self + 176));
 }
 
@@ -174,18 +174,18 @@ LABEL_14:
   v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Active sessions (%d)", [*(self + 1) count]);
   [v3 addObject:v4];
 
-  v5 = [*(self + 1) allKeys];
-  v6 = sub_100346A18(v5, 10, 1);
+  allKeys = [*(self + 1) allKeys];
+  v6 = sub_100346A18(allKeys, 10, 1);
   [v3 addObjectsFromArray:v6];
 
   std::mutex::unlock((self + 112));
   v7 = +[NIServerFindingServiceObserverRelay sharedInstance];
-  v8 = [v7 observerTokens];
+  observerTokens = [v7 observerTokens];
 
-  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Observers (%d)", [v8 count]);
+  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Observers (%d)", [observerTokens count]);
   [v3 addObject:v9];
 
-  v10 = sub_100346A18(v8, 10, 1);
+  v10 = sub_100346A18(observerTokens, 10, 1);
   [v3 addObjectsFromArray:v10];
 
   std::mutex::lock((self + 176));
@@ -200,7 +200,7 @@ LABEL_14:
     v15 = *(v12 + 8 * ((*(self + 13) + v13) / 0xAA)) + 24 * ((*(self + 13) + v13) % 0xAA);
     if (v14 != v15)
     {
-      v35 = v8;
+      v35 = observerTokens;
       v16 = 0;
       v17 = (v12 + 8 * (v13 / 0xAA));
       do
@@ -259,7 +259,7 @@ LABEL_14:
       }
 
       while (v14 != v15);
-      v8 = v35;
+      observerTokens = v35;
       if (v16)
       {
         [v3 addObject:@"-----"];

@@ -1,7 +1,7 @@
 @interface PCCKey
 - (PCCKey)init;
-- (id)decrypt:(id)a3;
-- (id)encrypt:(id)a3;
+- (id)decrypt:(id)decrypt;
+- (id)encrypt:(id)encrypt;
 - (void)dealloc;
 @end
 
@@ -20,11 +20,11 @@
   return v2;
 }
 
-- (id)encrypt:(id)a3
+- (id)encrypt:(id)encrypt
 {
-  v4 = a3;
-  v7 = objc_msgSend_length(v4, v5, v6);
-  v8 = v4;
+  encryptCopy = encrypt;
+  v7 = objc_msgSend_length(encryptCopy, v5, v6);
+  v8 = encryptCopy;
   v11 = objc_msgSend_bytes(v8, v9, v10);
 
   v16 = v7 + 32;
@@ -47,11 +47,11 @@
   return v12;
 }
 
-- (id)decrypt:(id)a3
+- (id)decrypt:(id)decrypt
 {
-  v4 = a3;
-  v7 = objc_msgSend_length(v4, v5, v6);
-  v8 = v4;
+  decryptCopy = decrypt;
+  v7 = objc_msgSend_length(decryptCopy, v5, v6);
+  v8 = decryptCopy;
   v11 = objc_msgSend_bytes(v8, v9, v10);
 
   if (v7 >= 0x20)

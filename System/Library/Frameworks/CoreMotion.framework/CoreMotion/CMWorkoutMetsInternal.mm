@@ -1,6 +1,6 @@
 @interface CMWorkoutMetsInternal
 - (CMWorkoutMetsInternal)init;
-- (void)_queryWorkoutMetsWithSessionId:(id)a3 handler:(id)a4;
+- (void)_queryWorkoutMetsWithSessionId:(id)id handler:(id)handler;
 - (void)_teardown;
 - (void)dealloc;
 @end
@@ -47,7 +47,7 @@
   self->fLocationdConnection = 0;
 }
 
-- (void)_queryWorkoutMetsWithSessionId:(id)a3 handler:(id)a4
+- (void)_queryWorkoutMetsWithSessionId:(id)id handler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2808 != -1)
@@ -59,7 +59,7 @@
   if (os_log_type_enabled(qword_1EAFE2830, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = objc_msgSend_UUIDString(a3, v8, v9);
+    v20 = objc_msgSend_UUIDString(id, v8, v9);
     _os_log_impl(&dword_19B41C000, v7, OS_LOG_TYPE_DEFAULT, "Workout Mets query for session: %@", buf, 0xCu);
   }
 
@@ -73,7 +73,7 @@
     }
 
     v17 = 138412290;
-    v18 = objc_msgSend_UUIDString(a3, v11, v12);
+    v18 = objc_msgSend_UUIDString(id, v11, v12);
     v13 = _os_log_send_and_compose_impl();
     sub_19B6BB7CC("Generic", 1, 0, 2, "[CMWorkoutMetsInternal _queryWorkoutMetsWithSessionId:handler:]", "CoreLocation: %s\n", v13);
     if (v13 != buf)
@@ -88,8 +88,8 @@
   block[2] = sub_19B73B914;
   block[3] = &unk_1E7532C80;
   block[5] = self;
-  block[6] = a4;
-  block[4] = a3;
+  block[6] = handler;
+  block[4] = id;
   dispatch_async(fInternalQueue, block);
   v15 = *MEMORY[0x1E69E9840];
 }

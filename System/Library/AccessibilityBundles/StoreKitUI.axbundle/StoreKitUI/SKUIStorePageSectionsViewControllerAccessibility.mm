@@ -1,17 +1,17 @@
 @interface SKUIStorePageSectionsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
 @end
 
 @implementation SKUIStorePageSectionsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIStorePageSectionsViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SKUIStorePageSectionsViewController" hasInstanceVariable:@"_collectionView" withType:"SKUICollectionView"];
-  [v3 validateClass:@"UIViewController" hasInstanceVariable:@"_title" withType:"NSString"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIStorePageSectionsViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SKUIStorePageSectionsViewController" hasInstanceVariable:@"_collectionView" withType:"SKUICollectionView"];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceVariable:@"_title" withType:"NSString"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,33 +1,33 @@
 @interface SBHFileStackIcon
-- (SBHFileStackIcon)initWithLeafIdentifier:(id)a3 applicationBundleID:(id)a4;
+- (SBHFileStackIcon)initWithLeafIdentifier:(id)identifier applicationBundleID:(id)d;
 - (SBHFileStackIcon)initWithUniqueLeafIdentifier;
 - (id)displayName;
 - (id)uninstallAlertCancelTitle;
 - (id)uninstallAlertConfirmTitle;
 - (id)uninstallAlertTitle;
 - (void)displayName;
-- (void)setCurrentSortOrderAscending:(BOOL)a3;
-- (void)setDataSourceUniqueIdentifier:(id)a3;
-- (void)setDisplayMode:(id)a3;
-- (void)setSortOrder:(id)a3;
+- (void)setCurrentSortOrderAscending:(BOOL)ascending;
+- (void)setDataSourceUniqueIdentifier:(id)identifier;
+- (void)setDisplayMode:(id)mode;
+- (void)setSortOrder:(id)order;
 @end
 
 @implementation SBHFileStackIcon
 
 - (SBHFileStackIcon)initWithUniqueLeafIdentifier
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v5 = [(SBHFileStackIcon *)self initWithLeafIdentifier:v4 applicationBundleID:0];
+  v5 = [(SBHFileStackIcon *)self initWithLeafIdentifier:uUIDString applicationBundleID:0];
   return v5;
 }
 
-- (SBHFileStackIcon)initWithLeafIdentifier:(id)a3 applicationBundleID:(id)a4
+- (SBHFileStackIcon)initWithLeafIdentifier:(id)identifier applicationBundleID:(id)d
 {
   v15.receiver = self;
   v15.super_class = SBHFileStackIcon;
-  v4 = [(SBLeafIcon *)&v15 initWithLeafIdentifier:a3 applicationBundleID:a4];
+  v4 = [(SBLeafIcon *)&v15 initWithLeafIdentifier:identifier applicationBundleID:d];
   if (v4)
   {
     v5 = objc_alloc_init(SBHFileStackIconImageProviderDocumentManagerDataSource);
@@ -37,14 +37,14 @@
 
     [(SBHFileStackIconImageProvider *)v4->_imageProvider setDelegate:v4];
     [(SBIcon *)v4 setGridSizeClass:@"SBHIconGridSizeClassDefault"];
-    v8 = [MEMORY[0x1E699A418] defaultSortOrder];
+    defaultSortOrder = [MEMORY[0x1E699A418] defaultSortOrder];
     sortOrder = v4->_sortOrder;
-    v4->_sortOrder = v8;
+    v4->_sortOrder = defaultSortOrder;
 
     v4->_currentSortOrderAscending = [(DOCSBFolderSortOrder *)v4->_sortOrder isSortAscending];
-    v10 = [MEMORY[0x1E699A418] defaultDisplayMode];
+    defaultDisplayMode = [MEMORY[0x1E699A418] defaultDisplayMode];
     displayMode = v4->_displayMode;
-    v4->_displayMode = v10;
+    v4->_displayMode = defaultDisplayMode;
 
     v12 = objc_alloc_init(MEMORY[0x1E696AFB0]);
     dataSourceUniqueIdentifier = v4->_dataSourceUniqueIdentifier;
@@ -54,24 +54,24 @@
   return v4;
 }
 
-- (void)setSortOrder:(id)a3
+- (void)setSortOrder:(id)order
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(DOCSBFolderSortOrder *)self->_sortOrder identifier];
-  v7 = [v5 isEqualToString:v6];
+  orderCopy = order;
+  identifier = [orderCopy identifier];
+  identifier2 = [(DOCSBFolderSortOrder *)self->_sortOrder identifier];
+  v7 = [identifier isEqualToString:identifier2];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [MEMORY[0x1E699A418] supportedSortOrders];
-    v21 = v4;
-    v9 = [v4 identifier];
+    supportedSortOrders = [MEMORY[0x1E699A418] supportedSortOrders];
+    v21 = orderCopy;
+    identifier3 = [orderCopy identifier];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v10 = v8;
+    v10 = supportedSortOrders;
     v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
     {
@@ -87,8 +87,8 @@
           }
 
           v15 = *(*(&v22 + 1) + 8 * i);
-          v16 = [v15 identifier];
-          v17 = [v9 isEqualToString:v16];
+          identifier4 = [v15 identifier];
+          v17 = [identifier3 isEqualToString:identifier4];
 
           if (v17)
           {
@@ -115,36 +115,36 @@
     v18 = SBLogIcon();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v4 = v21;
+      orderCopy = v21;
       [SBHFileStackIcon setSortOrder:v21];
     }
 
     else
     {
 LABEL_13:
-      v4 = v21;
+      orderCopy = v21;
     }
   }
 }
 
-- (void)setDisplayMode:(id)a3
+- (void)setDisplayMode:(id)mode
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(DOCSBFolderDisplayMode *)self->_displayMode identifier];
-  v7 = [v5 isEqualToString:v6];
+  modeCopy = mode;
+  identifier = [modeCopy identifier];
+  identifier2 = [(DOCSBFolderDisplayMode *)self->_displayMode identifier];
+  v7 = [identifier isEqualToString:identifier2];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [MEMORY[0x1E699A418] supportedDisplayModes];
-    v21 = v4;
-    v9 = [v4 identifier];
+    supportedDisplayModes = [MEMORY[0x1E699A418] supportedDisplayModes];
+    v21 = modeCopy;
+    identifier3 = [modeCopy identifier];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v10 = v8;
+    v10 = supportedDisplayModes;
     v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
     {
@@ -160,8 +160,8 @@ LABEL_13:
           }
 
           v15 = *(*(&v22 + 1) + 8 * i);
-          v16 = [v15 identifier];
-          v17 = [v9 isEqualToString:v16];
+          identifier4 = [v15 identifier];
+          v17 = [identifier3 isEqualToString:identifier4];
 
           if (v17)
           {
@@ -188,33 +188,33 @@ LABEL_13:
     v18 = SBLogIcon();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v4 = v21;
+      modeCopy = v21;
       [SBHFileStackIcon setDisplayMode:v21];
     }
 
     else
     {
 LABEL_13:
-      v4 = v21;
+      modeCopy = v21;
     }
   }
 }
 
-- (void)setCurrentSortOrderAscending:(BOOL)a3
+- (void)setCurrentSortOrderAscending:(BOOL)ascending
 {
-  if (self->_currentSortOrderAscending != a3)
+  if (self->_currentSortOrderAscending != ascending)
   {
-    self->_currentSortOrderAscending = a3;
+    self->_currentSortOrderAscending = ascending;
     [(SBIcon *)self archivableStateDidChange];
   }
 }
 
-- (void)setDataSourceUniqueIdentifier:(id)a3
+- (void)setDataSourceUniqueIdentifier:(id)identifier
 {
-  v6 = a3;
-  if (([v6 isEqual:self->_dataSourceUniqueIdentifier] & 1) == 0)
+  identifierCopy = identifier;
+  if (([identifierCopy isEqual:self->_dataSourceUniqueIdentifier] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [identifierCopy copy];
     dataSourceUniqueIdentifier = self->_dataSourceUniqueIdentifier;
     self->_dataSourceUniqueIdentifier = v4;
 
@@ -255,8 +255,8 @@ LABEL_13:
   v3 = MEMORY[0x1E696AEC0];
   v4 = SBHBundle();
   v5 = [v4 localizedStringForKey:@"REMOVE_FROM_DOCK_ICON_TITLE_WITH_NAME" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-  v6 = [(SBHFileStackIcon *)self displayName];
-  v7 = [v3 stringWithFormat:v5, v6];
+  displayName = [(SBHFileStackIcon *)self displayName];
+  v7 = [v3 stringWithFormat:v5, displayName];
 
   return v7;
 }
@@ -293,7 +293,7 @@ LABEL_13:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1BEB18000, a2, OS_LOG_TYPE_ERROR, "Error in retrieving localized name from URL. Error: %{public}@", &v2, 0xCu);
 }
 

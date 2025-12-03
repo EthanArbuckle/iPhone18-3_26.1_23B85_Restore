@@ -1,30 +1,30 @@
 @interface ATXPOICategoryEnterAndExitEvents
-- (ATXPOICategoryEnterAndExitEvents)initWithCategoryEvents:(id)a3 exitEvent:(id)a4;
-- (id)visitEventAllowingMissingExit:(BOOL)a3;
+- (ATXPOICategoryEnterAndExitEvents)initWithCategoryEvents:(id)events exitEvent:(id)event;
+- (id)visitEventAllowingMissingExit:(BOOL)exit;
 @end
 
 @implementation ATXPOICategoryEnterAndExitEvents
 
-- (ATXPOICategoryEnterAndExitEvents)initWithCategoryEvents:(id)a3 exitEvent:(id)a4
+- (ATXPOICategoryEnterAndExitEvents)initWithCategoryEvents:(id)events exitEvent:(id)event
 {
-  v7 = a3;
-  v8 = a4;
+  eventsCopy = events;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = ATXPOICategoryEnterAndExitEvents;
   v9 = [(ATXPOICategoryEnterAndExitEvents *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_categoryEnterEvents, a3);
-    objc_storeStrong(&v10->_exitEvent, a4);
+    objc_storeStrong(&v9->_categoryEnterEvents, events);
+    objc_storeStrong(&v10->_exitEvent, event);
   }
 
   return v10;
 }
 
-- (id)visitEventAllowingMissingExit:(BOOL)a3
+- (id)visitEventAllowingMissingExit:(BOOL)exit
 {
-  if (!a3 && !self->_exitEvent || (categoryEnterEvents = self->_categoryEnterEvents) == 0)
+  if (!exit && !self->_exitEvent || (categoryEnterEvents = self->_categoryEnterEvents) == 0)
   {
 LABEL_11:
     v16 = 0;
@@ -43,23 +43,23 @@ LABEL_11:
   }
 
   v5 = [(NSArray *)self->_categoryEnterEvents objectAtIndexedSubscript:0];
-  v6 = [v5 eventBody];
-  v7 = [v6 timestamp];
+  eventBody = [v5 eventBody];
+  timestamp = [eventBody timestamp];
 
-  v8 = v7;
+  v8 = timestamp;
   exitEvent = self->_exitEvent;
-  v10 = v8;
+  timestamp2 = v8;
   if (exitEvent)
   {
-    v11 = [(BMStoreEvent *)exitEvent eventBody];
-    v10 = [v11 timestamp];
+    eventBody2 = [(BMStoreEvent *)exitEvent eventBody];
+    timestamp2 = [eventBody2 timestamp];
   }
 
   v12 = [(NSArray *)self->_categoryEnterEvents sortedArrayUsingComparator:&__block_literal_global_27];
   v13 = [v12 _pas_mappedArrayWithTransform:&__block_literal_global_30];
   v14 = [ATXPOICategoryVisitEvent alloc];
   v15 = [objc_alloc(MEMORY[0x277CBEB70]) initWithArray:v13];
-  v16 = [(ATXPOICategoryVisitEvent *)v14 initWithPossibleCategoryNames:v15 startDate:v8 endDate:v10 hasExited:self->_exitEvent != 0];
+  v16 = [(ATXPOICategoryVisitEvent *)v14 initWithPossibleCategoryNames:v15 startDate:v8 endDate:timestamp2 hasExited:self->_exitEvent != 0];
 
 LABEL_12:
 

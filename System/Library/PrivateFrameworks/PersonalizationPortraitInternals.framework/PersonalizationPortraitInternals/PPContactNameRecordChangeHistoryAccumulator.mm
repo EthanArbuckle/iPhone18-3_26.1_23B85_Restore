@@ -1,18 +1,18 @@
 @interface PPContactNameRecordChangeHistoryAccumulator
-- (PPInternalContactNameRecord)_nameRecordWithContactIdentifier:(unsigned int)a3 changeType:;
-- (void)visitAddContactEvent:(id)a3;
-- (void)visitDeleteContactEvent:(id)a3;
-- (void)visitUpdateContactEvent:(id)a3;
+- (PPInternalContactNameRecord)_nameRecordWithContactIdentifier:(unsigned int)identifier changeType:;
+- (void)visitAddContactEvent:(id)event;
+- (void)visitDeleteContactEvent:(id)event;
+- (void)visitUpdateContactEvent:(id)event;
 @end
 
 @implementation PPContactNameRecordChangeHistoryAccumulator
 
-- (void)visitDeleteContactEvent:(id)a3
+- (void)visitDeleteContactEvent:(id)event
 {
   if (!self->_truncated)
   {
-    v5 = [a3 contactIdentifier];
-    v7 = [(PPContactNameRecordChangeHistoryAccumulator *)self _nameRecordWithContactIdentifier:v5 changeType:3u];
+    contactIdentifier = [event contactIdentifier];
+    v7 = [(PPContactNameRecordChangeHistoryAccumulator *)self _nameRecordWithContactIdentifier:contactIdentifier changeType:3u];
 
     v6 = v7;
     if (v7)
@@ -23,23 +23,23 @@
   }
 }
 
-- (PPInternalContactNameRecord)_nameRecordWithContactIdentifier:(unsigned int)a3 changeType:
+- (PPInternalContactNameRecord)_nameRecordWithContactIdentifier:(unsigned int)identifier changeType:
 {
   v37 = *MEMORY[0x277D85DE8];
   v31 = a2;
-  if (a1)
+  if (self)
   {
-    if (a3 == 3)
+    if (identifier == 3)
     {
-      v28 = 3;
+      identifierCopy = 3;
       v5 = 0;
       v27 = 0;
     }
 
     else
     {
-      v6 = *(a1 + 8);
-      v7 = *(a1 + 16);
+      v6 = *(self + 8);
+      v7 = *(self + 16);
       v32 = 0;
       v5 = [v6 unifiedContactWithIdentifier:v31 keysToFetch:v7 error:&v32];
       v8 = v32;
@@ -61,28 +61,28 @@
         goto LABEL_7;
       }
 
-      v28 = a3;
+      identifierCopy = identifier;
       v27 = v8;
     }
 
     v25 = [PPInternalContactNameRecord alloc];
-    v26 = [MEMORY[0x277CCAD78] UUID];
-    v24 = [v26 UUIDString];
-    v23 = [v5 givenName];
-    v22 = [v5 phoneticGivenName];
-    v30 = [v5 middleName];
-    v21 = [v5 phoneticMiddleName];
-    v20 = [v5 familyName];
-    v10 = [v5 phoneticFamilyName];
-    v11 = [v5 organizationName];
-    v19 = [v5 jobTitle];
-    v12 = [v5 nickname];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    givenName = [v5 givenName];
+    phoneticGivenName = [v5 phoneticGivenName];
+    middleName = [v5 middleName];
+    phoneticMiddleName = [v5 phoneticMiddleName];
+    familyName = [v5 familyName];
+    phoneticFamilyName = [v5 phoneticFamilyName];
+    organizationName = [v5 organizationName];
+    jobTitle = [v5 jobTitle];
+    nickname = [v5 nickname];
     v13 = PPRelatedNamesForContact(v5);
     v14 = PPStreetNamesForContact(v5);
     v15 = PPCityNamesForContact(v5);
-    v29 = [(PPInternalContactNameRecord *)v25 initWithIdentifier:v24 score:1 source:v31 sourceIdentifier:v28 changeType:v23 firstName:v22 phoneticFirstName:0.0 middleName:v30 phoneticMiddleName:v21 lastName:v20 phoneticLastName:v10 organizationName:v11 jobTitle:v19 nickname:v12 relatedNames:v13 streetNames:v14 cityNames:v15];
+    v29 = [(PPInternalContactNameRecord *)v25 initWithIdentifier:uUIDString score:1 source:v31 sourceIdentifier:identifierCopy changeType:givenName firstName:phoneticGivenName phoneticFirstName:0.0 middleName:middleName phoneticMiddleName:phoneticMiddleName lastName:familyName phoneticLastName:phoneticFamilyName organizationName:organizationName jobTitle:jobTitle nickname:nickname relatedNames:v13 streetNames:v14 cityNames:v15];
 
-    v16 = v26;
+    v16 = uUID;
     v9 = v27;
 LABEL_7:
 
@@ -97,13 +97,13 @@ LABEL_8:
   return v29;
 }
 
-- (void)visitUpdateContactEvent:(id)a3
+- (void)visitUpdateContactEvent:(id)event
 {
   if (!self->_truncated)
   {
-    v5 = [a3 contact];
-    v6 = [v5 identifier];
-    v8 = [(PPContactNameRecordChangeHistoryAccumulator *)self _nameRecordWithContactIdentifier:v6 changeType:2u];
+    contact = [event contact];
+    identifier = [contact identifier];
+    v8 = [(PPContactNameRecordChangeHistoryAccumulator *)self _nameRecordWithContactIdentifier:identifier changeType:2u];
 
     v7 = v8;
     if (v8)
@@ -114,13 +114,13 @@ LABEL_8:
   }
 }
 
-- (void)visitAddContactEvent:(id)a3
+- (void)visitAddContactEvent:(id)event
 {
   if (!self->_truncated)
   {
-    v5 = [a3 contact];
-    v6 = [v5 identifier];
-    v8 = [(PPContactNameRecordChangeHistoryAccumulator *)self _nameRecordWithContactIdentifier:v6 changeType:1u];
+    contact = [event contact];
+    identifier = [contact identifier];
+    v8 = [(PPContactNameRecordChangeHistoryAccumulator *)self _nameRecordWithContactIdentifier:identifier changeType:1u];
 
     v7 = v8;
     if (v8)

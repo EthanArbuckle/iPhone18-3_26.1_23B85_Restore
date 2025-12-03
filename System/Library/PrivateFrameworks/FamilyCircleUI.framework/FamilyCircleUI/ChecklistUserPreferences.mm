@@ -1,10 +1,10 @@
 @interface ChecklistUserPreferences
-- (void)handleChangeWithNotification:(id)a3;
+- (void)handleChangeWithNotification:(id)notification;
 @end
 
 @implementation ChecklistUserPreferences
 
-- (void)handleChangeWithNotification:(id)a3
+- (void)handleChangeWithNotification:(id)notification
 {
   v3 = sub_21BE2581C();
   v4 = *(v3 - 8);

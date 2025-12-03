@@ -1,27 +1,27 @@
 @interface NSComparisonPredicateOperator
-- (BOOL)isEqual:(id)a3;
-- (BOOL)performPrimitiveOperationUsingObject:(id)a3 andObject:(id)a4;
-- (NSComparisonPredicateOperator)initWithCoder:(id)a3;
-- (NSComparisonPredicateOperator)initWithOperatorType:(unint64_t)a3 modifier:(unint64_t)a4 variant:(unint64_t)a5;
-- (NSComparisonPredicateOperator)initWithOperatorType:(unint64_t)a3 modifier:(unint64_t)a4 variant:(unint64_t)a5 options:(unint64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)performPrimitiveOperationUsingObject:(id)object andObject:(id)andObject;
+- (NSComparisonPredicateOperator)initWithCoder:(id)coder;
+- (NSComparisonPredicateOperator)initWithOperatorType:(unint64_t)type modifier:(unint64_t)modifier variant:(unint64_t)variant;
+- (NSComparisonPredicateOperator)initWithOperatorType:(unint64_t)type modifier:(unint64_t)modifier variant:(unint64_t)variant options:(unint64_t)options;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)predicateFormat;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSComparisonPredicateOperator
 
 - (id)predicateFormat
 {
-  v3 = [(NSPredicateOperator *)self symbol];
+  symbol = [(NSPredicateOperator *)self symbol];
   if (self->_options)
   {
-    v4 = [v3 mutableCopy];
+    v4 = [symbol mutableCopy];
   }
 
   else
   {
-    v4 = v3;
+    v4 = symbol;
   }
 
   v5 = v4;
@@ -82,50 +82,50 @@ LABEL_11:
   return v5;
 }
 
-- (NSComparisonPredicateOperator)initWithOperatorType:(unint64_t)a3 modifier:(unint64_t)a4 variant:(unint64_t)a5
+- (NSComparisonPredicateOperator)initWithOperatorType:(unint64_t)type modifier:(unint64_t)modifier variant:(unint64_t)variant
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = NSComparisonPredicateOperator;
-  result = [(NSPredicateOperator *)&v7 initWithOperatorType:a3 modifier:a4];
+  result = [(NSPredicateOperator *)&v7 initWithOperatorType:type modifier:modifier];
   if (result)
   {
-    result->_variant = a5;
+    result->_variant = variant;
   }
 
   return result;
 }
 
-- (NSComparisonPredicateOperator)initWithOperatorType:(unint64_t)a3 modifier:(unint64_t)a4 variant:(unint64_t)a5 options:(unint64_t)a6
+- (NSComparisonPredicateOperator)initWithOperatorType:(unint64_t)type modifier:(unint64_t)modifier variant:(unint64_t)variant options:(unint64_t)options
 {
-  result = [(NSComparisonPredicateOperator *)self initWithOperatorType:a3 modifier:a4 variant:a5];
+  result = [(NSComparisonPredicateOperator *)self initWithOperatorType:type modifier:modifier variant:variant];
   if (result)
   {
-    result->_options = a6;
+    result->_options = options;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   v5.receiver = self;
   v5.super_class = NSComparisonPredicateOperator;
-  [(NSPredicateOperator *)&v5 encodeWithCoder:a3];
-  [a3 encodeInteger:self->_variant forKey:@"NSVariant"];
-  [a3 encodeInteger:self->_options forKey:@"NSOptions"];
+  [(NSPredicateOperator *)&v5 encodeWithCoder:coder];
+  [coder encodeInteger:self->_variant forKey:@"NSVariant"];
+  [coder encodeInteger:self->_options forKey:@"NSOptions"];
 }
 
-- (NSComparisonPredicateOperator)initWithCoder:(id)a3
+- (NSComparisonPredicateOperator)initWithCoder:(id)coder
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be decoded by non-keyed archivers" userInfo:0]);
@@ -133,65 +133,65 @@ LABEL_11:
 
   v7.receiver = self;
   v7.super_class = NSComparisonPredicateOperator;
-  v5 = [(NSPredicateOperator *)&v7 initWithCoder:a3];
+  v5 = [(NSPredicateOperator *)&v7 initWithCoder:coder];
   if (v5)
   {
-    v5->_variant = [a3 decodeIntegerForKey:@"NSVariant"];
-    v5->_options = [a3 decodeIntegerForKey:@"NSOptions"];
+    v5->_variant = [coder decodeIntegerForKey:@"NSVariant"];
+    v5->_options = [coder decodeIntegerForKey:@"NSOptions"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(NSPredicateOperator *)self operatorType];
-  v6 = [(NSPredicateOperator *)self modifier];
+  operatorType = [(NSPredicateOperator *)self operatorType];
+  modifier = [(NSPredicateOperator *)self modifier];
   variant = self->_variant;
   options = self->_options;
 
-  return [v4 initWithOperatorType:v5 modifier:v6 variant:variant options:options];
+  return [v4 initWithOperatorType:operatorType modifier:modifier variant:variant options:options];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [(NSPredicateOperator *)self operatorType];
-  if (v5 != [a3 operatorType])
+  operatorType = [(NSPredicateOperator *)self operatorType];
+  if (operatorType != [equal operatorType])
   {
     return 0;
   }
 
-  v6 = [(NSPredicateOperator *)self modifier];
-  if (v6 != [a3 modifier])
+  modifier = [(NSPredicateOperator *)self modifier];
+  if (modifier != [equal modifier])
   {
     return 0;
   }
 
-  v7 = [(NSComparisonPredicateOperator *)self variant];
-  if (v7 != [a3 variant])
+  variant = [(NSComparisonPredicateOperator *)self variant];
+  if (variant != [equal variant])
   {
     return 0;
   }
 
-  v8 = [(NSComparisonPredicateOperator *)self options];
-  return v8 == [a3 options];
+  options = [(NSComparisonPredicateOperator *)self options];
+  return options == [equal options];
 }
 
-- (BOOL)performPrimitiveOperationUsingObject:(id)a3 andObject:(id)a4
+- (BOOL)performPrimitiveOperationUsingObject:(id)object andObject:(id)andObject
 {
-  if (!(a3 | a4))
+  if (!(object | andObject))
   {
     return ((self->_variant - 1) & 0xFFFFFFFFFFFFFFFDLL) == 0;
   }
 
   result = 0;
-  if (a3 && a4)
+  if (object && andObject)
   {
     if (self->_options && _NSIsNSString() && _NSIsNSString())
     {
@@ -225,14 +225,14 @@ LABEL_11:
         v15 = 0;
       }
 
-      v16.length = [a3 length];
+      v16.length = [object length];
       v16.location = 0;
-      v12 = CFStringCompareWithOptionsAndLocale(a3, a4, v16, v11, v15);
+      v12 = CFStringCompareWithOptionsAndLocale(object, andObject, v16, v11, v15);
     }
 
     else
     {
-      v12 = [a3 -[NSPredicateOperator selector](self];
+      v12 = [object -[NSPredicateOperator selector](self];
     }
 
     variant = self->_variant;

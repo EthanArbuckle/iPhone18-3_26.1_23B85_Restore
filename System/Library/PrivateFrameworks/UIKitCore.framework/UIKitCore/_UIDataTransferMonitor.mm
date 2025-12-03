@@ -11,11 +11,11 @@
 - (void)_transferQueue_sendFinishedCallback;
 - (void)cancelOutstandingRequests;
 - (void)dealloc;
-- (void)itemProvider:(id)a3 beganDataTransferTransactionUUID:(id)a4 progress:(id)a5;
-- (void)itemProvider:(id)a3 finishedDataTransferTransactionUUID:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)itemProvider:(id)provider beganDataTransferTransactionUUID:(id)d progress:(id)progress;
+- (void)itemProvider:(id)provider finishedDataTransferTransactionUUID:(id)d;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)sendDelegateEventsIfNeeded;
-- (void)setSuppressEventsUntilRequested:(BOOL)a3;
+- (void)setSuppressEventsUntilRequested:(BOOL)requested;
 @end
 
 @implementation _UIDataTransferMonitor
@@ -27,9 +27,9 @@
   v2 = [(_UIDataTransferMonitor *)&v20 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     transferQueue_requestsBySourceItemUUID = v2->_transferQueue_requestsBySourceItemUUID;
-    v2->_transferQueue_requestsBySourceItemUUID = v3;
+    v2->_transferQueue_requestsBySourceItemUUID = dictionary;
 
     v5 = [MEMORY[0x1E695DFA8] set];
     transferQueue_requestsInProgress = v2->_transferQueue_requestsInProgress;
@@ -50,9 +50,9 @@
     v17 = &unk_1E70F5A28;
     objc_copyWeak(&v18, &location);
     [(NSProgress *)v2->_transferQueue_masterProgress setCancellationHandler:&v14];
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     transferQueue_childProgresses = v2->_transferQueue_childProgresses;
-    v2->_transferQueue_childProgresses = v11;
+    v2->_transferQueue_childProgresses = array;
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -61,7 +61,7 @@
   return v2;
 }
 
-- (void)setSuppressEventsUntilRequested:(BOOL)a3
+- (void)setSuppressEventsUntilRequested:(BOOL)requested
 {
   v5 = _transferQueue();
   v6[0] = MEMORY[0x1E69E9820];
@@ -69,7 +69,7 @@
   v6[2] = __58___UIDataTransferMonitor_setSuppressEventsUntilRequested___block_invoke;
   v6[3] = &unk_1E70F35E0;
   v6[4] = self;
-  v7 = a3;
+  requestedCopy = requested;
   dispatch_sync(v5, v6);
 }
 
@@ -215,11 +215,11 @@
   dispatch_sync(v3, block);
 }
 
-- (void)itemProvider:(id)a3 beganDataTransferTransactionUUID:(id)a4 progress:(id)a5
+- (void)itemProvider:(id)provider beganDataTransferTransactionUUID:(id)d progress:(id)progress
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  dCopy = d;
+  progressCopy = progress;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -229,13 +229,13 @@
   block[1] = 3221225472;
   block[2] = __81___UIDataTransferMonitor_itemProvider_beganDataTransferTransactionUUID_progress___block_invoke;
   block[3] = &unk_1E7106908;
-  v12 = v8;
+  v12 = providerCopy;
   v16 = v12;
-  v13 = v9;
+  v13 = dCopy;
   v17 = v13;
-  v14 = v10;
+  v14 = progressCopy;
   v18 = v14;
-  v19 = self;
+  selfCopy = self;
   v20 = &v21;
   dispatch_sync(v11, block);
 
@@ -297,14 +297,14 @@
   _dispatchCallback(v13);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if ((isKindOfClass & 1) != 0 && [v8 isEqualToString:@"fractionCompleted"])
+  if ((isKindOfClass & 1) != 0 && [pathCopy isEqualToString:@"fractionCompleted"])
   {
     v11 = _transferQueue();
     block[0] = MEMORY[0x1E69E9820];
@@ -316,10 +316,10 @@
   }
 }
 
-- (void)itemProvider:(id)a3 finishedDataTransferTransactionUUID:(id)a4
+- (void)itemProvider:(id)provider finishedDataTransferTransactionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  dCopy = d;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -335,9 +335,9 @@
   block[3] = &unk_1E7105AE0;
   v17 = &v23;
   block[4] = self;
-  v9 = v6;
+  v9 = providerCopy;
   v15 = v9;
-  v10 = v7;
+  v10 = dCopy;
   v16 = v10;
   v18 = &v19;
   dispatch_sync(v8, block);
@@ -415,8 +415,8 @@
                 objc_enumerationMutation(v8);
               }
 
-              v13 = [*(*(&v16 + 1) + 8 * v12) progress];
-              [v13 removeObserver:self forKeyPath:@"fractionCompleted"];
+              progress = [*(*(&v16 + 1) + 8 * v12) progress];
+              [progress removeObserver:self forKeyPath:@"fractionCompleted"];
 
               ++v12;
             }

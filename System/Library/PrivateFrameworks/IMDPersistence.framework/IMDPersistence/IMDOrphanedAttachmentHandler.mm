@@ -1,9 +1,9 @@
 @interface IMDOrphanedAttachmentHandler
 - (IMDOrphanedAttachmentHandler)init;
-- (IMDOrphanedAttachmentHandler)initWithFileManager:(id)a3;
-- (void)_cleanseOrphanedAttachmentsWithEnumerator:(id)a3 atPath:(id)a4;
+- (IMDOrphanedAttachmentHandler)initWithFileManager:(id)manager;
+- (void)_cleanseOrphanedAttachmentsWithEnumerator:(id)enumerator atPath:(id)path;
 - (void)cleanseOrphanedAttachments;
-- (void)cleanseOrphanedAttachmentsInDirectoryAtPath:(id)a3;
+- (void)cleanseOrphanedAttachmentsInDirectoryAtPath:(id)path;
 - (void)dealloc;
 @end
 
@@ -22,14 +22,14 @@
   return v2;
 }
 
-- (IMDOrphanedAttachmentHandler)initWithFileManager:(id)a3
+- (IMDOrphanedAttachmentHandler)initWithFileManager:(id)manager
 {
   v6.receiver = self;
   v6.super_class = IMDOrphanedAttachmentHandler;
   v4 = [(IMDOrphanedAttachmentHandler *)&v6 init];
   if (v4)
   {
-    v4->_fileManager = a3;
+    v4->_fileManager = manager;
   }
 
   return v4;
@@ -42,10 +42,10 @@
   [(IMDOrphanedAttachmentHandler *)&v3 dealloc];
 }
 
-- (void)_cleanseOrphanedAttachmentsWithEnumerator:(id)a3 atPath:(id)a4
+- (void)_cleanseOrphanedAttachmentsWithEnumerator:(id)enumerator atPath:(id)path
 {
   *(&v92[2] + 2) = *MEMORY[0x1E69E9840];
-  Object = objc_msgSend_nextObject(a3, a2, a3);
+  Object = objc_msgSend_nextObject(enumerator, a2, enumerator);
   if (Object)
   {
     v8 = Object;
@@ -63,8 +63,8 @@
         block[2] = sub_1B7B2E280;
         block[3] = &unk_1E7CB7708;
         objc_copyWeak(&v87, buf);
-        block[4] = a3;
-        block[5] = a4;
+        block[4] = enumerator;
+        block[5] = path;
         IMDPersistencePerformBlock(block, 0, v79);
         objc_destroyWeak(&v87);
         objc_destroyWeak(buf);
@@ -72,10 +72,10 @@
       }
 
       v10 = objc_autoreleasePoolPush();
-      v15 = objc_msgSend_level(a3, v11, v12);
+      v15 = objc_msgSend_level(enumerator, v11, v12);
       if (v15 == 3)
       {
-        if (objc_msgSend_level(a3, v13, v14) == 3)
+        if (objc_msgSend_level(enumerator, v13, v14) == 3)
         {
           PathComponent = objc_msgSend_lastPathComponent(v8, v16, v17);
           v19 = IMAttachmentsLogHandle();
@@ -101,7 +101,7 @@
 
             v23 = IMDAttachmentRecordCopyFilename(v83, v20, 0);
             v24 = IMDAttachmentRecordCopyFilename(v83, v20, 1);
-            v26 = objc_msgSend_stringByAppendingPathComponent_(a4, v25, v8);
+            v26 = objc_msgSend_stringByAppendingPathComponent_(path, v25, v8);
             v29 = objc_msgSend_fileManager(self, v27, v28);
             v31 = objc_msgSend_enumeratorAtPath_(v29, v30, v26);
             for (i = objc_msgSend_nextObject(v31, v32, v33); ; i = objc_msgSend_nextObject(v31, v63, v64))
@@ -149,7 +149,7 @@
           }
 
           v88 = 0;
-          v71 = objc_msgSend_stringByAppendingPathComponent_(a4, v21, v8);
+          v71 = objc_msgSend_stringByAppendingPathComponent_(path, v21, v8);
           v72 = IMAttachmentsLogHandle();
           if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
           {
@@ -196,7 +196,7 @@ LABEL_25:
 
 LABEL_27:
       objc_autoreleasePoolPop(v10);
-      v8 = objc_msgSend_nextObject(a3, v69, v70);
+      v8 = objc_msgSend_nextObject(enumerator, v69, v70);
       ++v9;
     }
 
@@ -228,12 +228,12 @@ LABEL_36:
   objc_msgSend_cleanseOrphanedAttachmentsInDirectoryAtPath_(self, v7, v6);
 }
 
-- (void)cleanseOrphanedAttachmentsInDirectoryAtPath:(id)a3
+- (void)cleanseOrphanedAttachmentsInDirectoryAtPath:(id)path
 {
-  v5 = objc_msgSend_fileManager(self, a2, a3);
-  v8 = objc_msgSend_enumeratorAtPath_(v5, v6, a3);
+  v5 = objc_msgSend_fileManager(self, a2, path);
+  v8 = objc_msgSend_enumeratorAtPath_(v5, v6, path);
 
-  objc_msgSend__cleanseOrphanedAttachmentsWithEnumerator_atPath_(self, v7, v8, a3);
+  objc_msgSend__cleanseOrphanedAttachmentsWithEnumerator_atPath_(self, v7, v8, path);
 }
 
 @end

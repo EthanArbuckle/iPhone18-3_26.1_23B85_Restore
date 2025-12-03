@@ -1,29 +1,29 @@
 @interface NSDate
-+ (id)_maps_dateDescriptionShort:(BOOL)a3 timeZone:(id)a4 bookingDate:(id)a5;
-+ (id)_maps_dayDescriptionStringShortDescription:(BOOL)a3 timeZone:(id)a4 bookingDate:(id)a5;
++ (id)_maps_dateDescriptionShort:(BOOL)short timeZone:(id)zone bookingDate:(id)date;
++ (id)_maps_dayDescriptionStringShortDescription:(BOOL)description timeZone:(id)zone bookingDate:(id)date;
 @end
 
 @implementation NSDate
 
-+ (id)_maps_dateDescriptionShort:(BOOL)a3 timeZone:(id)a4 bookingDate:(id)a5
++ (id)_maps_dateDescriptionShort:(BOOL)short timeZone:(id)zone bookingDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
+  shortCopy = short;
+  zoneCopy = zone;
+  dateCopy = date;
   if (qword_100085670 != -1)
   {
     sub_10004E5F4();
   }
 
-  [qword_100085668 setTimeZone:v7];
-  v9 = [NSDate _maps_dayDescriptionStringShortDescription:v6 timeZone:v7 bookingDate:v8];
-  v10 = [qword_100085668 stringFromDate:v8];
+  [qword_100085668 setTimeZone:zoneCopy];
+  v9 = [NSDate _maps_dayDescriptionStringShortDescription:shortCopy timeZone:zoneCopy bookingDate:dateCopy];
+  v10 = [qword_100085668 stringFromDate:dateCopy];
   v11 = +[NSCalendar currentCalendar];
-  v12 = [v11 componentsInTimeZone:v7 fromDate:v8];
+  v12 = [v11 componentsInTimeZone:zoneCopy fromDate:dateCopy];
 
   if ([v12 hour] == 1)
   {
-    if (!v6)
+    if (!shortCopy)
     {
       goto LABEL_11;
     }
@@ -31,10 +31,10 @@
     goto LABEL_8;
   }
 
-  v13 = [v12 hour];
-  if (v6)
+  hour = [v12 hour];
+  if (shortCopy)
   {
-    if (v13 != 13)
+    if (hour != 13)
     {
       block = _NSConcreteStackBlock;
       v22 = 3221225472;
@@ -92,11 +92,11 @@ LABEL_18:
   return v19;
 }
 
-+ (id)_maps_dayDescriptionStringShortDescription:(BOOL)a3 timeZone:(id)a4 bookingDate:(id)a5
++ (id)_maps_dayDescriptionStringShortDescription:(BOOL)description timeZone:(id)zone bookingDate:(id)date
 {
-  v34 = a3;
-  v6 = a4;
-  v7 = a5;
+  descriptionCopy = description;
+  zoneCopy = zone;
+  dateCopy = date;
   if (qword_100085680 != -1)
   {
     sub_10004E608();
@@ -104,15 +104,15 @@ LABEL_18:
 
   [qword_100085678 setDateStyle:0];
   [qword_100085678 setTimeStyle:1];
-  [qword_100085678 setTimeZone:v6];
+  [qword_100085678 setTimeZone:zoneCopy];
   v8 = +[NSCalendar currentCalendar];
   v9 = +[NSDate date];
-  v10 = [v8 componentsInTimeZone:v6 fromDate:v9];
+  v10 = [v8 componentsInTimeZone:zoneCopy fromDate:v9];
 
   v35 = v8;
-  v11 = [v8 componentsInTimeZone:v6 fromDate:v7];
-  v12 = [v10 year];
-  if (v12 == [v11 year] && (v13 = objc_msgSend(v10, "month"), v13 == objc_msgSend(v11, "month")))
+  v11 = [v8 componentsInTimeZone:zoneCopy fromDate:dateCopy];
+  year = [v10 year];
+  if (year == [v11 year] && (v13 = objc_msgSend(v10, "month"), v13 == objc_msgSend(v11, "month")))
   {
     v14 = [v10 day];
     v15 = v14 == [v11 day];
@@ -123,8 +123,8 @@ LABEL_18:
     v15 = 0;
   }
 
-  v16 = [v10 year];
-  if (v16 != [v11 year])
+  year2 = [v10 year];
+  if (year2 != [v11 year])
   {
     v18 = 0;
     if (!v15)
@@ -137,8 +137,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v17 = [v10 weekOfYear];
-  v18 = v17 == [v11 weekOfYear];
+  weekOfYear = [v10 weekOfYear];
+  v18 = weekOfYear == [v11 weekOfYear];
   if (v15)
   {
     goto LABEL_11;
@@ -149,11 +149,11 @@ LABEL_9:
 LABEL_12:
   v20 = [v10 copy];
   [v20 setDay:{objc_msgSend(v20, "day") + 1}];
-  v21 = [v20 year];
-  if (v21 == [v11 year])
+  year3 = [v20 year];
+  if (year3 == [v11 year])
   {
-    v22 = [v20 month];
-    if (v22 == [v11 month])
+    month = [v20 month];
+    if (month == [v11 month])
     {
       v23 = [v20 day];
       v24 = v23 == [v11 day];
@@ -229,7 +229,7 @@ LABEL_23:
 
   if (v18)
   {
-    if (v34)
+    if (descriptionCopy)
     {
       v31 = @"EE";
     }
@@ -242,7 +242,7 @@ LABEL_23:
     [qword_100085678 setDateFormat:v31];
   }
 
-  else if (v34)
+  else if (descriptionCopy)
   {
     v32 = +[NSLocale currentLocale];
     v33 = [NSDateFormatter dateFormatFromTemplate:@"MMMdd" options:0 locale:v32];
@@ -256,7 +256,7 @@ LABEL_23:
     [qword_100085678 setTimeStyle:0];
   }
 
-  v29 = [qword_100085678 stringFromDate:v7];
+  v29 = [qword_100085678 stringFromDate:dateCopy];
 LABEL_24:
 
   return v29;

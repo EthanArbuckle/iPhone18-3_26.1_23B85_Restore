@@ -1,20 +1,20 @@
 @interface DictationFooterView
 + (id)dictationAutoPunctuationText;
-- (DictationFooterView)initWithSpecifier:(id)a3;
-- (id)explanationSuffixTextWithOfflineDictationStatus:(id)a3 privacyLinkText:(id)a4 lowStorage:(BOOL)a5;
-- (id)offlineExplanationSuffixTextWithOfflineDictationStatus:(id)a3 privacyLinkText:(id)a4;
+- (DictationFooterView)initWithSpecifier:(id)specifier;
+- (id)explanationSuffixTextWithOfflineDictationStatus:(id)status privacyLinkText:(id)text lowStorage:(BOOL)storage;
+- (id)offlineExplanationSuffixTextWithOfflineDictationStatus:(id)status privacyLinkText:(id)text;
 @end
 
 @implementation DictationFooterView
 
-- (DictationFooterView)initWithSpecifier:(id)a3
+- (DictationFooterView)initWithSpecifier:(id)specifier
 {
   v23.receiver = self;
   v23.super_class = DictationFooterView;
   v4 = [(PSFooterMultiHyperlinkView *)&v23 initWithSpecifier:?];
   if (v4)
   {
-    v5 = [a3 target];
+    target = [specifier target];
     v6 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"DICTATION_ON_DEVICE_ABOUT_LINK", &stru_28679E3A8, @"Keyboard"}];
     v7 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"DICTATION_ON_DEVICE_MANAGE_STORAGE_LINK", &stru_28679E3A8, @"Keyboard"}];
     v8 = +[DictationFooterView dictationAutoPunctuationText];
@@ -25,17 +25,17 @@
     }
 
     [(PSFooterMultiHyperlinkView *)v4 setText:v9];
-    v10 = [v5 lowStorageOnDeviceAssetStringWithLinkString:v7];
+    v10 = [target lowStorageOnDeviceAssetStringWithLinkString:v7];
     v11 = AFDeviceHighestLanguageModelCapabilityIdentifier();
-    v12 = [v5 offlineStatusForLanguage];
+    offlineStatusForLanguage = [target offlineStatusForLanguage];
     if (v11 == 10)
     {
-      v13 = [(DictationFooterView *)v4 explanationSuffixTextWithOfflineDictationStatus:v12 privacyLinkText:v9 lowStorage:v10 != 0];
+      v13 = [(DictationFooterView *)v4 explanationSuffixTextWithOfflineDictationStatus:offlineStatusForLanguage privacyLinkText:v9 lowStorage:v10 != 0];
     }
 
     else
     {
-      v13 = [(DictationFooterView *)v4 offlineExplanationSuffixTextWithOfflineDictationStatus:v12 privacyLinkText:v9];
+      v13 = [(DictationFooterView *)v4 offlineExplanationSuffixTextWithOfflineDictationStatus:offlineStatusForLanguage privacyLinkText:v9];
     }
 
     v14 = v13;
@@ -44,33 +44,33 @@
       [(PSFooterMultiHyperlinkView *)v4 setText:v13];
     }
 
-    v15 = [(PSFooterMultiHyperlinkView *)v4 text];
+    text = [(PSFooterMultiHyperlinkView *)v4 text];
     if (v10)
     {
-      [(PSFooterMultiHyperlinkView *)v4 setText:[(NSString *)v15 stringByAppendingFormat:@"\n\n%@", v10]];
-      v16 = [(PSFooterMultiHyperlinkView *)v4 text];
-      [a3 setProperty:v16 forKey:*MEMORY[0x277D3FF88]];
+      [(PSFooterMultiHyperlinkView *)v4 setText:[(NSString *)text stringByAppendingFormat:@"\n\n%@", v10]];
+      text2 = [(PSFooterMultiHyperlinkView *)v4 text];
+      [specifier setProperty:text2 forKey:*MEMORY[0x277D3FF88]];
       v17 = [(NSString *)[(PSFooterMultiHyperlinkView *)v4 text] rangeOfString:v6];
-      [a3 addFooterHyperlinkWithRange:v17 target:v18 action:{v5, sel_presentPrivacySheet_}];
+      [specifier addFooterHyperlinkWithRange:v17 target:v18 action:{target, sel_presentPrivacySheet_}];
       v19 = &selRef_launchManageStorage_;
     }
 
     else
     {
-      [a3 setProperty:v15 forKey:*MEMORY[0x277D3FF88]];
+      [specifier setProperty:text forKey:*MEMORY[0x277D3FF88]];
       v19 = &selRef_presentPrivacySheet_;
       v7 = v6;
     }
 
     v20 = [(NSString *)[(PSFooterMultiHyperlinkView *)v4 text] rangeOfString:v7];
-    [a3 addFooterHyperlinkWithRange:v20 target:v21 action:{v5, *v19}];
-    [(PSFooterMultiHyperlinkView *)v4 refreshContentsWithSpecifier:a3];
+    [specifier addFooterHyperlinkWithRange:v20 target:v21 action:{target, *v19}];
+    [(PSFooterMultiHyperlinkView *)v4 refreshContentsWithSpecifier:specifier];
   }
 
   return v4;
 }
 
-- (id)offlineExplanationSuffixTextWithOfflineDictationStatus:(id)a3 privacyLinkText:(id)a4
+- (id)offlineExplanationSuffixTextWithOfflineDictationStatus:(id)status privacyLinkText:(id)text
 {
   v19 = 0;
   v20 = &v19;
@@ -88,7 +88,7 @@
   v14[3] = &unk_2797F9CA8;
   v14[4] = &v19;
   v14[5] = &v15;
-  [a3 enumerateKeysAndObjectsUsingBlock:v14];
+  [status enumerateKeysAndObjectsUsingBlock:v14];
   if ([v20[5] count])
   {
     v6 = MEMORY[0x277CCACA8];
@@ -112,7 +112,7 @@
     if (*(v16 + 24) != 1)
     {
 LABEL_10:
-      v12 = 0;
+      text = 0;
       goto LABEL_11;
     }
 
@@ -125,11 +125,11 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v10, a4];
+  text = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v10, text];
 LABEL_11:
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&v19, 8);
-  return v12;
+  return text;
 }
 
 uint64_t __94__DictationFooterView_offlineExplanationSuffixTextWithOfflineDictationStatus_privacyLinkText___block_invoke(uint64_t a1, void *a2)
@@ -151,7 +151,7 @@ uint64_t __94__DictationFooterView_offlineExplanationSuffixTextWithOfflineDictat
   return result;
 }
 
-- (id)explanationSuffixTextWithOfflineDictationStatus:(id)a3 privacyLinkText:(id)a4 lowStorage:(BOOL)a5
+- (id)explanationSuffixTextWithOfflineDictationStatus:(id)status privacyLinkText:(id)text lowStorage:(BOOL)storage
 {
   v32[1] = *MEMORY[0x277D85DE8];
   v8 = [objc_msgSend(MEMORY[0x277D75688] "sharedInputModeController")];
@@ -184,7 +184,7 @@ uint64_t __94__DictationFooterView_offlineExplanationSuffixTextWithOfflineDictat
       v13 = v11;
     }
 
-    [a3 objectForKeyedSubscript:v13];
+    [status objectForKeyedSubscript:v13];
     if (AFOfflineDictationStatusStringIsHighQualityModelSupported())
     {
       IsInstalled = AFOfflineDictationStatusStringIsInstalled();
@@ -204,8 +204,8 @@ uint64_t __94__DictationFooterView_offlineExplanationSuffixTextWithOfflineDictat
 
         v18 = MEMORY[0x277CCACA8];
         v19 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"DICTATION_ON_DEVICE_PRIVATE_PROCESSING", &stru_28679E3A8, @"Keyboard"}];
-        v30 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", v17, &stru_28679E3A8, @"Keyboard"}];
-        v31 = a4;
+        textCopy3 = [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", v17, &stru_28679E3A8, @"Keyboard"}];
+        textCopy = text;
         v29 = v19;
         v20 = @"%@ %@ %@";
         goto LABEL_28;
@@ -216,20 +216,20 @@ uint64_t __94__DictationFooterView_offlineExplanationSuffixTextWithOfflineDictat
       v25 = v24;
       if (IsInstalling)
       {
-        if (!a5)
+        if (!storage)
         {
           v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v27 = @"DICTATION_ON_DEVICE_SUPPORT_DOWNLOADING";
 LABEL_27:
-          v30 = a4;
-          v31 = [v26 localizedStringForKey:v27 value:&stru_28679E3A8 table:@"Keyboard"];
+          textCopy3 = text;
+          textCopy = [v26 localizedStringForKey:v27 value:&stru_28679E3A8 table:@"Keyboard"];
           v29 = v25;
           v20 = @"%@ %@\n\n%@";
           goto LABEL_28;
         }
       }
 
-      else if (!a5)
+      else if (!storage)
       {
         v28 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v27 = SFLocalizableWAPIStringKeyForKey();
@@ -238,23 +238,23 @@ LABEL_27:
       }
 
       v29 = v24;
-      v30 = a4;
+      textCopy3 = text;
       v20 = @"%@ %@";
 LABEL_28:
-      v21 = [v18 stringWithFormat:v20, v29, v30, v31];
+      textCopy = [v18 stringWithFormat:v20, v29, textCopy3, textCopy];
       goto LABEL_19;
     }
 
-    v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"DICTATION_ON_DEVICE_SERVER", &stru_28679E3A8, @"Keyboard", a4, v31];
+    textCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"DICTATION_ON_DEVICE_SERVER", &stru_28679E3A8, @"Keyboard", text, textCopy];
   }
 
   else
   {
-    v21 = 0;
+    textCopy = 0;
   }
 
 LABEL_19:
-  result = v21;
+  result = textCopy;
   v23 = *MEMORY[0x277D85DE8];
   return result;
 }
@@ -265,28 +265,28 @@ LABEL_19:
   [MEMORY[0x277CEF368] sharedPreferences];
   if (objc_opt_respondsToSelector())
   {
-    v2 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v3 = [MEMORY[0x277CCA940] set];
-    v4 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v5 = [objc_msgSend(objc_msgSend(MEMORY[0x277CEF368] "sharedPreferences")];
-    v6 = [MEMORY[0x277CBEA60] array];
+    array3 = [MEMORY[0x277CBEA60] array];
     v7 = [objc_msgSend(MEMORY[0x277D75688] "sharedInputModeController")];
     if ((DictationIsEnabled() & (v7 != 0)) != 0)
     {
-      v6 = v7;
+      array3 = v7;
     }
 
-    if (v5 && [objc_msgSend(MEMORY[0x277CEF368] "sharedPreferences")] && (objc_msgSend(v6, "containsObject:", v5) & 1) == 0)
+    if (v5 && [objc_msgSend(MEMORY[0x277CEF368] "sharedPreferences")] && (objc_msgSend(array3, "containsObject:", v5) & 1) == 0)
     {
-      v6 = [v6 arrayByAddingObject:v5];
+      array3 = [array3 arrayByAddingObject:v5];
     }
 
-    v29 = v2;
+    v29 = array;
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v8 = [v6 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    v8 = [array3 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v8)
     {
       v9 = v8;
@@ -298,7 +298,7 @@ LABEL_19:
         {
           if (*v35 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(array3);
           }
 
           v12 = *(*(&v34 + 1) + 8 * i);
@@ -321,7 +321,7 @@ LABEL_19:
           }
         }
 
-        v9 = [v6 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v9 = [array3 countByEnumeratingWithState:&v34 objects:v39 count:16];
       }
 
       while (v9);
@@ -353,7 +353,7 @@ LABEL_19:
           v20 = *(*(&v30 + 1) + 8 * j);
           if ([v3 countForObject:v20] >= 2)
           {
-            [v4 addObject:v20];
+            [array2 addObject:v20];
           }
         }
 
@@ -389,7 +389,7 @@ LABEL_19:
         v26 = [@"DICTATION_AUTO_PUNCTUATION_EXPLANATION_SUFFIX_WITH_LANGUAGE" stringByAppendingString:@"S"];
       }
 
-      v23 = [v24 stringWithFormat:objc_msgSend(v25, "localizedStringForKey:value:table:", v26, &stru_28679E3A8, @"Keyboard", +[KSKeyboardController localizedListForInputModes:forDictation:duplicatedBaseLanguages:](KSKeyboardController, "localizedListForInputModes:forDictation:duplicatedBaseLanguages:", v29, 1, v4)];
+      v23 = [v24 stringWithFormat:objc_msgSend(v25, "localizedStringForKey:value:table:", v26, &stru_28679E3A8, @"Keyboard", +[KSKeyboardController localizedListForInputModes:forDictation:duplicatedBaseLanguages:](KSKeyboardController, "localizedListForInputModes:forDictation:duplicatedBaseLanguages:", v29, 1, array2)];
     }
 
     result = v23;

@@ -1,23 +1,23 @@
 @interface NUZoomFactorScalePolicy
-- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)a3;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)size;
 - (NUZoomFactorScalePolicy)init;
-- (NUZoomFactorScalePolicy)initWithZoomFactor:(double)a3;
+- (NUZoomFactorScalePolicy)initWithZoomFactor:(double)factor;
 @end
 
 @implementation NUZoomFactorScalePolicy
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)scaleForImageSize:(id)size
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   zoomFactor = self->_zoomFactor;
-  v6 = vcvtpd_s64_f64(zoomFactor * a3.var0);
-  v7 = vcvtpd_s64_f64(zoomFactor * a3.var1);
+  v6 = vcvtpd_s64_f64(zoomFactor * size.var0);
+  v7 = vcvtpd_s64_f64(zoomFactor * size.var1);
   if ((v6 | v7) < 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NUPixelSize NUPixelSizeMake(NSInteger, NSInteger)"}];
-    [v12 handleFailureInFunction:v13 file:@"NUGeometryPrimitives.h" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"(width >= 0) && (height >= 0)"}];
+    [currentHandler handleFailureInFunction:v13 file:@"NUGeometryPrimitives.h" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"(width >= 0) && (height >= 0)"}];
   }
 
   v8 = NUScaleCompare(v6, var0, v7, var1);
@@ -47,10 +47,10 @@
   return result;
 }
 
-- (NUZoomFactorScalePolicy)initWithZoomFactor:(double)a3
+- (NUZoomFactorScalePolicy)initWithZoomFactor:(double)factor
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a3 <= 0.0)
+  if (factor <= 0.0)
   {
     v6 = NUAssertLogger_27066();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -71,8 +71,8 @@
         v13 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v14 = MEMORY[0x1E696AF00];
         v15 = v13;
-        v16 = [v14 callStackSymbols];
-        v17 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v14 callStackSymbols];
+        v17 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v24 = v13;
         v25 = 2114;
@@ -83,8 +83,8 @@
 
     else if (v10)
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -96,13 +96,13 @@
   v22.receiver = self;
   v22.super_class = NUZoomFactorScalePolicy;
   result = [(NUZoomFactorScalePolicy *)&v22 init];
-  v5 = 1.0;
-  if (a3 <= 1.0)
+  factorCopy = 1.0;
+  if (factor <= 1.0)
   {
-    v5 = a3;
+    factorCopy = factor;
   }
 
-  result->_zoomFactor = v5;
+  result->_zoomFactor = factorCopy;
   return result;
 }
 
@@ -152,8 +152,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -169,8 +169,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

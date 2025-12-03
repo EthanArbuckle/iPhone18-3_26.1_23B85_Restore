@@ -1,18 +1,18 @@
 @interface SUMoreNavigationController
-- (BOOL)window:(id)a3 shouldAutorotateToInterfaceOrientation:(int64_t)a4;
-- (SUMoreNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)window:(id)window shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
+- (SUMoreNavigationController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)copyScriptViewController;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SUMoreNavigationController
 
-- (SUMoreNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (SUMoreNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = SUMoreNavigationController;
-  v4 = [(SUMoreNavigationController *)&v6 initWithNibName:a3 bundle:a4];
+  v4 = [(SUMoreNavigationController *)&v6 initWithNibName:name bundle:bundle];
   if (v4)
   {
     [(SUMoreNavigationController *)v4 setNavigationBarClass:objc_opt_class()];
@@ -43,30 +43,30 @@
   return 2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(SUMoreNavigationController *)self tabBarController];
+  appearCopy = appear;
+  tabBarController = [(SUMoreNavigationController *)self tabBarController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [objc_msgSend(objc_msgSend(v5 "clientInterface")];
+    [objc_msgSend(objc_msgSend(tabBarController "clientInterface")];
   }
 
   v6.receiver = self;
   v6.super_class = SUMoreNavigationController;
-  [(SUMoreNavigationController *)&v6 viewWillAppear:v3];
+  [(SUMoreNavigationController *)&v6 viewWillAppear:appearCopy];
 }
 
-- (BOOL)window:(id)a3 shouldAutorotateToInterfaceOrientation:(int64_t)a4
+- (BOOL)window:(id)window shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   v11.receiver = self;
   v11.super_class = SUMoreNavigationController;
   v7 = [SUMoreNavigationController window:sel_window_shouldAutorotateToInterfaceOrientation_ shouldAutorotateToInterfaceOrientation:?];
-  v8 = [(SUMoreNavigationController *)self topViewController];
+  topViewController = [(SUMoreNavigationController *)self topViewController];
   if (v7)
   {
-    v9 = v8 == 0;
+    v9 = topViewController == 0;
   }
 
   else
@@ -76,7 +76,7 @@
 
   if (!v9)
   {
-    LOBYTE(v7) = [v8 window:a3 shouldAutorotateToInterfaceOrientation:a4];
+    LOBYTE(v7) = [topViewController window:window shouldAutorotateToInterfaceOrientation:orientation];
   }
 
   return v7;

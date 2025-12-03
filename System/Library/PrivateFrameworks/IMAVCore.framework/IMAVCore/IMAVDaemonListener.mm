@@ -1,9 +1,9 @@
 @interface IMAVDaemonListener
 - (IMAVDaemonListener)init;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)addHandler:(id)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)removeHandler:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)addHandler:(id)handler;
+- (void)forwardInvocation:(id)invocation;
+- (void)removeHandler:(id)handler;
 @end
 
 @implementation IMAVDaemonListener
@@ -23,10 +23,10 @@
   return v3;
 }
 
-- (void)addHandler:(id)a3
+- (void)addHandler:(id)handler
 {
-  v13 = a3;
-  if ((objc_msgSend_containsObjectIdenticalTo_(self->_handlers, v4, v13, v5, v6) & 1) == 0)
+  handlerCopy = handler;
+  if ((objc_msgSend_containsObjectIdenticalTo_(self->_handlers, v4, handlerCopy, v5, v6) & 1) == 0)
   {
     handlers = self->_handlers;
     if (!handlers)
@@ -38,13 +38,13 @@
       handlers = self->_handlers;
     }
 
-    objc_msgSend_addObject_(handlers, v7, v13, v8, v9);
+    objc_msgSend_addObject_(handlers, v7, handlerCopy, v8, v9);
   }
 }
 
-- (void)removeHandler:(id)a3
+- (void)removeHandler:(id)handler
 {
-  objc_msgSend_removeObjectIdenticalTo_(self->_handlers, a2, a3, v3, v4);
+  objc_msgSend_removeObjectIdenticalTo_(self->_handlers, a2, handler, v3, v4);
   if (!objc_msgSend_count(self->_handlers, v6, v7, v8, v9))
   {
     handlers = self->_handlers;
@@ -52,18 +52,18 @@
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  types = protocol_getMethodDescription(&unk_28669E058, a3, 1, 1).types;
+  types = protocol_getMethodDescription(&unk_28669E058, selector, 1, 1).types;
   v6 = MEMORY[0x277CBEB08];
 
   return MEMORY[0x2821F9670](v6, sel_signatureWithObjCTypes_, types, v4, v5);
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  invocationCopy = invocation;
   v5 = objc_autoreleasePoolPush();
   v10 = objc_msgSend__copyForEnumerating(self->_handlers, v6, v7, v8, v9);
   v26 = 0u;
@@ -85,11 +85,11 @@
         }
 
         v20 = *(*(&v26 + 1) + 8 * i);
-        objc_msgSend_selector(v4, v13, v14, v15, v16);
+        objc_msgSend_selector(invocationCopy, v13, v14, v15, v16);
         if (objc_opt_respondsToSelector())
         {
           v21 = objc_autoreleasePoolPush();
-          objc_msgSend_invokeWithTarget_(v4, v22, v20, v23, v24);
+          objc_msgSend_invokeWithTarget_(invocationCopy, v22, v20, v23, v24);
           objc_autoreleasePoolPop(v21);
         }
       }

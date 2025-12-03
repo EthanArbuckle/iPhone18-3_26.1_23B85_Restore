@@ -10,23 +10,23 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 mutableString];
-  v9 = [v8 replaceOccurrencesOfString:v7 withString:v6 options:0 range:{0, objc_msgSend(v8, "length")}];
+  mutableString = [self mutableString];
+  v9 = [mutableString replaceOccurrencesOfString:v7 withString:v6 options:0 range:{0, objc_msgSend(mutableString, "length")}];
 
   return v9;
 }
 
 - (id)attributedStringByTrimmingEmptySpaceEdges
 {
-  v2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v3 = [v2 invertedSet];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  invertedSet = [whitespaceAndNewlineCharacterSet invertedSet];
 
-  v4 = [a1 string];
-  v5 = [v4 rangeOfCharacterFromSet:v3];
+  string = [self string];
+  v5 = [string rangeOfCharacterFromSet:invertedSet];
   v7 = v6;
 
-  v8 = [a1 string];
-  v9 = [v8 rangeOfCharacterFromSet:v3 options:4];
+  string2 = [self string];
+  v9 = [string2 rangeOfCharacterFromSet:invertedSet options:4];
   v11 = v10;
 
   if (v11)
@@ -36,7 +36,7 @@
 
   else
   {
-    v12 = [a1 length];
+    v12 = [self length];
   }
 
   if (v7)
@@ -49,7 +49,7 @@
     v13 = 0;
   }
 
-  v14 = [a1 attributedSubstringFromRange:{v13, v12 - v13}];
+  v14 = [self attributedSubstringFromRange:{v13, v12 - v13}];
 
   return v14;
 }
@@ -62,7 +62,7 @@
     v5 = a3;
     v6 = [[v4 alloc] initWithString:v5];
 
-    [a1 appendAttributedString:v6];
+    [self appendAttributedString:v6];
   }
 }
 

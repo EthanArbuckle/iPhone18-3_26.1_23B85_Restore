@@ -1,30 +1,30 @@
 @interface SKUIIPhoneSlideshowViewController
-- (SKUIIPhoneSlideshowViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SKUIIPhoneSlideshowViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SKUISlideshowViewControllerDataSource)dataSource;
 - (SKUISlideshowViewControllerDelegate)delegate;
-- (id)_imageAtIndex:(int64_t)a3;
-- (id)_placeholderImageAtIndex:(int64_t)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)_imageAtIndex:(int64_t)index;
+- (id)_placeholderImageAtIndex:(int64_t)index;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (int64_t)currentIndex;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_doneAction:(id)a3;
+- (void)_doneAction:(id)action;
 - (void)_reloadPageControl;
 - (void)_reloadSize;
-- (void)_setImage:(id)a3 atIndex:(int64_t)a4;
+- (void)_setImage:(id)image atIndex:(int64_t)index;
 - (void)dealloc;
 - (void)loadView;
 - (void)reloadData;
-- (void)setCurrentIndex:(int64_t)a3;
-- (void)setDataSource:(id)a3;
+- (void)setCurrentIndex:(int64_t)index;
+- (void)setDataSource:(id)source;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation SKUIIPhoneSlideshowViewController
 
-- (SKUIIPhoneSlideshowViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SKUIIPhoneSlideshowViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIIPhoneSlideshowViewController initWithNibName:bundle:];
@@ -32,7 +32,7 @@
 
   v18.receiver = self;
   v18.super_class = SKUIIPhoneSlideshowViewController;
-  v8 = [(SKUIIPhoneSlideshowViewController *)&v18 initWithNibName:v6 bundle:v7];
+  v8 = [(SKUIIPhoneSlideshowViewController *)&v18 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -49,9 +49,9 @@
     v8->_placeholderQueue = v13;
 
     [(NSOperationQueue *)v8->_placeholderQueue setMaxConcurrentOperationCount:2];
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     placeholderImages = v8->_placeholderImages;
-    v8->_placeholderImages = v15;
+    v8->_placeholderImages = dictionary;
 
     v8->_indexToScrollToOnLoadView = 0x7FFFFFFFFFFFFFFFLL;
     [(SKUIIPhoneSlideshowViewController *)v8 setModalPresentationStyle:2];
@@ -68,8 +68,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSOperationQueue *)self->_operationQueue operations];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  operations = [(NSOperationQueue *)self->_operationQueue operations];
+  v4 = [operations countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -81,14 +81,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(operations);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) setOutputBlock:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [operations countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -109,8 +109,8 @@
   v6 = *(MEMORY[0x277CBF3A0] + 16);
   v7 = *(MEMORY[0x277CBF3A0] + 24);
   v42 = [(SKUIScrollForwardingView *)v3 initWithFrame:*MEMORY[0x277CBF3A0], v5, v6, v7];
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [(SKUIScrollForwardingView *)v42 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(SKUIScrollForwardingView *)v42 setBackgroundColor:clearColor];
 
   [(SKUIIPhoneSlideshowViewController *)self setView:v42];
   v9 = [objc_alloc(MEMORY[0x277D75DE8]) initWithPrivateStyle:10060];
@@ -119,19 +119,19 @@
   [v9 setFrame:?];
   [(SKUIScrollForwardingView *)v42 addSubview:v9];
   v10 = objc_alloc_init(SKUIItemGridCollectionViewLayout);
-  v11 = [MEMORY[0x277D75348] clearColor];
-  [(SKUIItemGridCollectionViewLayout *)v10 setOddRowBackgroundColor:v11];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  [(SKUIItemGridCollectionViewLayout *)v10 setOddRowBackgroundColor:clearColor2];
 
-  v12 = [MEMORY[0x277D75348] clearColor];
-  [(SKUIItemGridCollectionViewLayout *)v10 setEvenRowBackgroundColor:v12];
+  clearColor3 = [MEMORY[0x277D75348] clearColor];
+  [(SKUIItemGridCollectionViewLayout *)v10 setEvenRowBackgroundColor:clearColor3];
 
   [(UICollectionViewFlowLayout *)v10 setScrollDirection:1];
   [(UICollectionViewFlowLayout *)v10 setMinimumLineSpacing:0.0];
-  v13 = [MEMORY[0x277D759A0] mainScreen];
-  [v13 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v15 = v14 + -54.0;
-  v16 = [MEMORY[0x277D759A0] mainScreen];
-  [v16 bounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   [(UICollectionViewFlowLayout *)v10 setItemSize:v15, v17 + -64.0];
 
   v18 = [[SKUIGiftThemeCollectionView alloc] initWithFrame:v10 collectionViewLayout:v4, v5, v6, v7];
@@ -139,8 +139,8 @@
   self->_collectionView = v18;
 
   v20 = self->_collectionView;
-  v21 = [MEMORY[0x277D75348] clearColor];
-  [(SKUIGiftThemeCollectionView *)v20 setBackgroundColor:v21];
+  clearColor4 = [MEMORY[0x277D75348] clearColor];
+  [(SKUIGiftThemeCollectionView *)v20 setBackgroundColor:clearColor4];
 
   [(SKUIGiftThemeCollectionView *)self->_collectionView setVisibleBoundsInsets:0.0, -27.0, 0.0, -27.0];
   [(SKUIGiftThemeCollectionView *)self->_collectionView setDataSource:self];
@@ -152,11 +152,11 @@
   [(SKUIGiftThemeCollectionView *)self->_collectionView setClipsToBounds:0];
   [(SKUIGiftThemeCollectionView *)self->_collectionView setPagingEnabled:1];
   v22 = self->_collectionView;
-  v23 = [MEMORY[0x277D759A0] mainScreen];
-  [v23 bounds];
+  mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen3 bounds];
   v25 = v24 + -54.0;
-  v26 = [MEMORY[0x277D759A0] mainScreen];
-  [v26 bounds];
+  mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen4 bounds];
   [(SKUIGiftThemeCollectionView *)v22 setFrame:27.0, 0.0, v25, v27 + -64.0];
 
   [(SKUIScrollForwardingView *)v42 addSubview:self->_collectionView];
@@ -166,8 +166,8 @@
   self->_pageControl = v28;
 
   v30 = self->_pageControl;
-  v31 = [(UIPageControl *)v30 tintColor];
-  [(UIPageControl *)v30 setCurrentPageIndicatorTintColor:v31];
+  tintColor = [(UIPageControl *)v30 tintColor];
+  [(UIPageControl *)v30 setCurrentPageIndicatorTintColor:tintColor];
 
   v32 = self->_pageControl;
   v33 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.3];
@@ -180,8 +180,8 @@
   [(UIPageControl *)self->_pageControl setUserInteractionEnabled:0];
   [(SKUIScrollForwardingView *)v42 addSubview:self->_pageControl];
   [(SKUIIPhoneSlideshowViewController *)self _reloadPageControl];
-  v35 = [(SKUIIPhoneSlideshowViewController *)self navigationItem];
-  [v35 setHidesBackButton:1];
+  navigationItem = [(SKUIIPhoneSlideshowViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
   v36 = objc_alloc_init(MEMORY[0x277D751E0]);
   [v36 setAction:sel__doneAction_];
   [v36 setTarget:self];
@@ -199,10 +199,10 @@
   [v36 setTitle:v38];
 
   [v36 setStyle:2];
-  [v35 setRightBarButtonItem:v36];
-  v39 = [(SKUIIPhoneSlideshowViewController *)self title];
+  [navigationItem setRightBarButtonItem:v36];
+  title = [(SKUIIPhoneSlideshowViewController *)self title];
 
-  if (!v39)
+  if (!title)
   {
     v40 = self->_clientContext;
     if (v40)
@@ -283,20 +283,20 @@
       [v10 imageSize];
       v12 = v11;
       v14 = v13;
-      v15 = [MEMORY[0x277D75418] currentDevice];
-      v16 = [v15 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      v17 = v16 & 0xFFFFFFFFFFFFFFFBLL;
+      v17 = userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL;
       v18 = 250.0;
       if (v17 != 1)
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 bounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen bounds];
         v18 = v19 + -70.0;
       }
 
-      v20 = [MEMORY[0x277D759A0] mainScreen];
-      [v20 bounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 bounds];
       v22 = v21;
 
       if (v17 != 1)
@@ -306,9 +306,9 @@
       v23 = v22 + -125.0;
       if (v12 > v18 || v14 > v23)
       {
-        v24 = [v10 forcesPortrait];
+        forcesPortrait = [v10 forcesPortrait];
         v25 = v12 > v14;
-        if ((v24 & v25) != 0)
+        if ((forcesPortrait & v25) != 0)
         {
           v26 = v14;
         }
@@ -318,7 +318,7 @@
           v26 = v12;
         }
 
-        if ((v24 & v25) != 0)
+        if ((forcesPortrait & v25) != 0)
         {
           v27 = v12;
         }
@@ -358,8 +358,8 @@
 
 LABEL_19:
       images = self->_images;
-      v31 = [MEMORY[0x277CBEB68] null];
-      [(NSMutableArray *)images addObject:v31];
+      null = [MEMORY[0x277CBEB68] null];
+      [(NSMutableArray *)images addObject:null];
     }
   }
 
@@ -390,27 +390,27 @@ void __47__SKUIIPhoneSlideshowViewController_reloadData__block_invoke_2(uint64_t
   [WeakRetained _setImage:*(a1 + 32) atIndex:*(a1 + 48)];
 }
 
-- (void)setCurrentIndex:(int64_t)a3
+- (void)setCurrentIndex:(int64_t)index
 {
   collectionView = self->_collectionView;
   if (collectionView)
   {
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    [v8 bounds];
-    v7 = (v6 + -54.0) * a3;
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
+    v7 = (v6 + -54.0) * index;
     [(SKUIGiftThemeCollectionView *)self->_collectionView contentOffset];
     [(SKUIGiftThemeCollectionView *)collectionView setContentOffset:v7];
   }
 
   else
   {
-    self->_indexToScrollToOnLoadView = a3;
+    self->_indexToScrollToOnLoadView = index;
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -422,13 +422,13 @@ void __47__SKUIIPhoneSlideshowViewController_reloadData__block_invoke_2(uint64_t
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   collectionView = self->_collectionView;
-  v6 = a4;
-  v7 = [(SKUIGiftThemeCollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:@"a" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [(SKUIGiftThemeCollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:@"a" forIndexPath:pathCopy];
   [v7 setImageSize:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   v9 = [(SKUIIPhoneSlideshowViewController *)self _imageAtIndex:v8];
   [v7 setImage:v9];
@@ -436,12 +436,12 @@ void __47__SKUIIPhoneSlideshowViewController_reloadData__block_invoke_2(uint64_t
   return v7;
 }
 
-- (void)_doneAction:(id)a3
+- (void)_doneAction:(id)action
 {
-  v4 = [(SKUIIPhoneSlideshowViewController *)self delegate];
+  delegate = [(SKUIIPhoneSlideshowViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 slideshowViewControllerDidFinish:self];
+    [delegate slideshowViewControllerDidFinish:self];
   }
 
   else
@@ -450,14 +450,14 @@ void __47__SKUIIPhoneSlideshowViewController_reloadData__block_invoke_2(uint64_t
   }
 }
 
-- (id)_imageAtIndex:(int64_t)a3
+- (id)_imageAtIndex:(int64_t)index
 {
   v5 = [(NSMutableArray *)self->_images objectAtIndex:?];
-  v6 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (v5 == v6)
+  if (v5 == null)
   {
-    v7 = [(SKUIIPhoneSlideshowViewController *)self _placeholderImageAtIndex:a3];
+    v7 = [(SKUIIPhoneSlideshowViewController *)self _placeholderImageAtIndex:index];
 
     v5 = v7;
   }
@@ -465,14 +465,14 @@ void __47__SKUIIPhoneSlideshowViewController_reloadData__block_invoke_2(uint64_t
   return v5;
 }
 
-- (id)_placeholderImageAtIndex:(int64_t)a3
+- (id)_placeholderImageAtIndex:(int64_t)index
 {
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v6 = [WeakRetained slideshowViewController:self dataConsumerAtIndex:a3];
+  v6 = [WeakRetained slideshowViewController:self dataConsumerAtIndex:index];
 
   v7 = objc_loadWeakRetained(&self->_dataSource);
-  v8 = [v7 slideshowViewController:self placeholderImageAtIndex:a3];
+  v8 = [v7 slideshowViewController:self placeholderImageAtIndex:index];
 
   if (v8)
   {
@@ -483,8 +483,8 @@ void __47__SKUIIPhoneSlideshowViewController_reloadData__block_invoke_2(uint64_t
     v21 = &unk_2781FF4B8;
     v22 = v6;
     v23 = v8;
-    v24 = self;
-    v25[1] = a3;
+    selfCopy = self;
+    v25[1] = index;
     objc_copyWeak(v25, &location);
     v10 = [v9 blockOperationWithBlock:&v18];
     [(NSOperationQueue *)self->_placeholderQueue addOperation:v10, v18, v19, v20, v21];
@@ -493,7 +493,7 @@ void __47__SKUIIPhoneSlideshowViewController_reloadData__block_invoke_2(uint64_t
   }
 
   placeholderImages = self->_placeholderImages;
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:index];
   v13 = [(NSMutableDictionary *)placeholderImages objectForKey:v12];
 
   if (!v13)
@@ -502,7 +502,7 @@ void __47__SKUIIPhoneSlideshowViewController_reloadData__block_invoke_2(uint64_t
     v13 = [v6 imageForColor:v14];
 
     v15 = self->_placeholderImages;
-    v16 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v16 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     [(NSMutableDictionary *)v15 setObject:v13 forKey:v16];
   }
 
@@ -543,18 +543,18 @@ void __62__SKUIIPhoneSlideshowViewController__placeholderImageAtIndex___block_in
   }
 }
 
-- (void)_setImage:(id)a3 atIndex:(int64_t)a4
+- (void)_setImage:(id)image atIndex:(int64_t)index
 {
-  if (a3)
+  if (image)
   {
     images = self->_images;
-    v7 = a3;
-    [(NSMutableArray *)images replaceObjectAtIndex:a4 withObject:v7];
+    imageCopy = image;
+    [(NSMutableArray *)images replaceObjectAtIndex:index withObject:imageCopy];
     collectionView = self->_collectionView;
-    v9 = [MEMORY[0x277CCAA70] indexPathForItem:a4 inSection:0];
+    v9 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:0];
     v10 = [(SKUIGiftThemeCollectionView *)collectionView cellForItemAtIndexPath:v9];
 
-    [v10 setImage:v7];
+    [v10 setImage:imageCopy];
   }
 }
 
@@ -569,22 +569,22 @@ void __62__SKUIIPhoneSlideshowViewController__placeholderImageAtIndex___block_in
 
 - (void)_reloadSize
 {
-  v3 = [(SKUIIPhoneSlideshowViewController *)self view];
-  [v3 frame];
+  view = [(SKUIIPhoneSlideshowViewController *)self view];
+  [view frame];
   v5 = v4 + -54.0;
 
-  v6 = [(SKUIIPhoneSlideshowViewController *)self view];
-  [v6 frame];
+  view2 = [(SKUIIPhoneSlideshowViewController *)self view];
+  [view2 frame];
   v8 = v7 + -64.0;
 
-  v9 = [(SKUIGiftThemeCollectionView *)self->_collectionView collectionViewLayout];
-  [v9 setItemSize:{v5, v8}];
+  collectionViewLayout = [(SKUIGiftThemeCollectionView *)self->_collectionView collectionViewLayout];
+  [collectionViewLayout setItemSize:{v5, v8}];
 
   [(SKUIGiftThemeCollectionView *)self->_collectionView setFrame:27.0, 32.0, v5, v8];
   indexToScrollToOnLoadView = self->_indexToScrollToOnLoadView;
   collectionView = self->_collectionView;
-  v12 = [MEMORY[0x277D759A0] mainScreen];
-  [v12 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v14 = v13 + -54.0;
   if (indexToScrollToOnLoadView == 0x7FFFFFFFFFFFFFFFLL)
   {

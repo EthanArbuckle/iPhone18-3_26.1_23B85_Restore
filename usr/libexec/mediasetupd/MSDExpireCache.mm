@@ -1,13 +1,13 @@
 @interface MSDExpireCache
-- (MSDExpireCache)initWithExpiration:(double)a3 countLimit:(unint64_t)a4;
-- (id)objectForKey:(id)a3;
+- (MSDExpireCache)initWithExpiration:(double)expiration countLimit:(unint64_t)limit;
+- (id)objectForKey:(id)key;
 - (unint64_t)count;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation MSDExpireCache
 
-- (MSDExpireCache)initWithExpiration:(double)a3 countLimit:(unint64_t)a4
+- (MSDExpireCache)initWithExpiration:(double)expiration countLimit:(unint64_t)limit
 {
   v11.receiver = self;
   v11.super_class = MSDExpireCache;
@@ -15,21 +15,21 @@
   v7 = v6;
   if (v6)
   {
-    v6->_expiration = a3;
+    v6->_expiration = expiration;
     v8 = objc_opt_new();
     storage = v7->_storage;
     v7->_storage = v8;
 
-    [(NSCache *)v7->_storage setCountLimit:a4];
+    [(NSCache *)v7->_storage setCountLimit:limit];
   }
 
   return v7;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSCache *)self->_storage objectForKey:v4];
+  keyCopy = key;
+  v5 = [(NSCache *)self->_storage objectForKey:keyCopy];
   if (!v5)
   {
     goto LABEL_4;
@@ -41,31 +41,31 @@
   [(MSDExpireCache *)self expiration];
   if (v8 + v9 < Current)
   {
-    [(NSCache *)self->_storage removeObjectForKey:v4];
+    [(NSCache *)self->_storage removeObjectForKey:keyCopy];
 LABEL_4:
-    v10 = 0;
+    value = 0;
     goto LABEL_6;
   }
 
-  v10 = [v5 value];
+  value = [v5 value];
 LABEL_6:
 
-  return v10;
+  return value;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_MSDExpireCacheEntry alloc] initWithValue:v7];
+  keyCopy = key;
+  objectCopy = object;
+  v8 = [[_MSDExpireCacheEntry alloc] initWithValue:objectCopy];
 
-  [(NSCache *)self->_storage setObject:v8 forKey:v6];
+  [(NSCache *)self->_storage setObject:v8 forKey:keyCopy];
 }
 
 - (unint64_t)count
 {
-  v2 = [(NSCache *)self->_storage allObjects];
-  v3 = [v2 count];
+  allObjects = [(NSCache *)self->_storage allObjects];
+  v3 = [allObjects count];
 
   return v3;
 }

@@ -1,33 +1,33 @@
 @interface PKRecognitionSessionCache
 + (id)_recognitionSessions;
-+ (id)recognitionSessionForUUID:(uint64_t)a1;
-+ (void)addRecognitionSession:(void *)a3 forUUID:;
++ (id)recognitionSessionForUUID:(uint64_t)d;
++ (void)addRecognitionSession:(void *)session forUUID:;
 @end
 
 @implementation PKRecognitionSessionCache
 
-+ (id)recognitionSessionForUUID:(uint64_t)a1
++ (id)recognitionSessionForUUID:(uint64_t)d
 {
   v2 = a2;
   objc_opt_self();
   objc_opt_self();
   os_unfair_lock_lock(&_recognitionSessionsLock);
   v3 = +[PKRecognitionSessionCache _recognitionSessions];
-  v4 = [v3 objectEnumerator];
+  objectEnumerator = [v3 objectEnumerator];
 
-  v5 = [v4 nextObject];
-  if (v5)
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    v6 = nextObject;
     do
     {
       [(PKRecognitionSessionManager *)v6 cleanupSessionIfNecessary];
-      v7 = [v4 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v6 = v7;
+      v6 = nextObject2;
     }
 
-    while (v7);
+    while (nextObject2);
   }
 
   os_unfair_lock_unlock(&_recognitionSessionsLock);
@@ -62,16 +62,16 @@
   return v0;
 }
 
-+ (void)addRecognitionSession:(void *)a3 forUUID:
++ (void)addRecognitionSession:(void *)session forUUID:
 {
   v6 = a2;
-  v4 = a3;
+  sessionCopy = session;
   objc_opt_self();
-  if (v6 && v4)
+  if (v6 && sessionCopy)
   {
     os_unfair_lock_lock(&_recognitionSessionsLock);
     v5 = +[PKRecognitionSessionCache _recognitionSessions];
-    [v5 setObject:v6 forKey:v4];
+    [v5 setObject:v6 forKey:sessionCopy];
 
     os_unfair_lock_unlock(&_recognitionSessionsLock);
   }

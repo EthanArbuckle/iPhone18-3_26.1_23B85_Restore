@@ -1,18 +1,18 @@
 @interface VISBoxScorerConfig
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (VISBoxScorerConfig)initWithDictionary:(id)a3;
-- (VISBoxScorerConfig)initWithJSON:(id)a3;
+- (VISBoxScorerConfig)initWithDictionary:(id)dictionary;
+- (VISBoxScorerConfig)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VISBoxScorerConfig
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(VISBoxScorerConfig *)self granularity])
   {
     PBDataWriterWriteInt32Field();
@@ -31,21 +31,21 @@
   }
 
   [(VISBoxScorerConfig *)self std];
-  v6 = v8;
+  v6 = toCopy;
   if (v7 != 0.0)
   {
     PBDataWriterWriteDoubleField();
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (granularity = self->_granularity, granularity == objc_msgSend(v4, "granularity")) && (xmean = self->_xmean, objc_msgSend(v4, "xmean"), xmean == v7) && (ymean = self->_ymean, objc_msgSend(v4, "ymean"), ymean == v9))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (granularity = self->_granularity, granularity == objc_msgSend(equalCopy, "granularity")) && (xmean = self->_xmean, objc_msgSend(equalCopy, "xmean"), xmean == v7) && (ymean = self->_ymean, objc_msgSend(equalCopy, "ymean"), ymean == v9))
   {
     std = self->_std;
-    [v4 std];
+    [equalCopy std];
     v10 = std == v13;
   }
 
@@ -165,11 +165,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_granularity)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[VISBoxScorerConfig granularity](self, "granularity")}];
-    [v3 setObject:v4 forKeyedSubscript:@"granularity"];
+    [dictionary setObject:v4 forKeyedSubscript:@"granularity"];
   }
 
   if (self->_std != 0.0)
@@ -177,7 +177,7 @@
     v5 = MEMORY[0x1E696AD98];
     [(VISBoxScorerConfig *)self std];
     v6 = [v5 numberWithDouble:?];
-    [v3 setObject:v6 forKeyedSubscript:@"std"];
+    [dictionary setObject:v6 forKeyedSubscript:@"std"];
   }
 
   if (self->_xmean != 0.0)
@@ -185,7 +185,7 @@
     v7 = MEMORY[0x1E696AD98];
     [(VISBoxScorerConfig *)self xmean];
     v8 = [v7 numberWithDouble:?];
-    [v3 setObject:v8 forKeyedSubscript:@"xmean"];
+    [dictionary setObject:v8 forKeyedSubscript:@"xmean"];
   }
 
   if (self->_ymean != 0.0)
@@ -193,18 +193,18 @@
     v9 = MEMORY[0x1E696AD98];
     [(VISBoxScorerConfig *)self ymean];
     v10 = [v9 numberWithDouble:?];
-    [v3 setObject:v10 forKeyedSubscript:@"ymean"];
+    [dictionary setObject:v10 forKeyedSubscript:@"ymean"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(VISBoxScorerConfig *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(VISBoxScorerConfig *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -215,40 +215,40 @@
   return v3;
 }
 
-- (VISBoxScorerConfig)initWithJSON:(id)a3
+- (VISBoxScorerConfig)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(VISBoxScorerConfig *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (VISBoxScorerConfig)initWithDictionary:(id)a3
+- (VISBoxScorerConfig)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = VISBoxScorerConfig;
   v5 = [(VISBoxScorerConfig *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"granularity"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"granularity"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[VISBoxScorerConfig setGranularity:](v5, "setGranularity:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"xmean"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"xmean"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -256,7 +256,7 @@
       [(VISBoxScorerConfig *)v5 setXmean:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"ymean"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ymean"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -264,7 +264,7 @@
       [(VISBoxScorerConfig *)v5 setYmean:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"std"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"std"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

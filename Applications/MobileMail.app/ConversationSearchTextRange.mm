@@ -1,24 +1,24 @@
 @interface ConversationSearchTextRange
 - (BOOL)isEmpty;
-- (ConversationSearchTextRange)initWithWebkitRange:(id)a3 documentID:(id)a4;
+- (ConversationSearchTextRange)initWithWebkitRange:(id)range documentID:(id)d;
 - (id)end;
 - (id)start;
 @end
 
 @implementation ConversationSearchTextRange
 
-- (ConversationSearchTextRange)initWithWebkitRange:(id)a3 documentID:(id)a4
+- (ConversationSearchTextRange)initWithWebkitRange:(id)range documentID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  rangeCopy = range;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = ConversationSearchTextRange;
   v9 = [(ConversationSearchTextRange *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_webkitRange, a3);
-    objc_storeStrong(&v10->_documentID, a4);
+    objc_storeStrong(&v9->_webkitRange, range);
+    objc_storeStrong(&v10->_documentID, d);
   }
 
   return v10;
@@ -41,9 +41,9 @@
     self = self->_webkitRange;
   }
 
-  v2 = [(ConversationSearchTextRange *)self start];
+  start = [(ConversationSearchTextRange *)self start];
 
-  return v2;
+  return start;
 }
 
 - (id)end

@@ -1,13 +1,13 @@
 @interface FTAggregateWidgetEventTracker
 - (FTAggregateWidgetEventTracker)init;
-- (FTAggregateWidgetEventTracker)initWithEventTrackers:(id)a3;
-- (id)_eventTrackersRespondingToSelector:(SEL)a3;
-- (void)submitEventsIfNeededWithCompletion:(id)a3;
-- (void)userEngagedWithWidgetAtDate:(id)a3 actionURL:(id)a4 trackableWidgetState:(id)a5;
-- (void)visibleItemsDidChangeAtDate:(id)a3 withTriggerEvent:(unint64_t)a4 trackableWidgetState:(id)a5;
-- (void)widgetDidAppearAtDate:(id)a3 withTrackableWidgetState:(id)a4;
-- (void)widgetDidDisappearAtDate:(id)a3 withTrackableWidgetState:(id)a4;
-- (void)widgetPerformedUpdateWithTodayResults:(id)a3 fetchInfo:(id)a4 error:(id)a5 updateFetchDuration:(double)a6;
+- (FTAggregateWidgetEventTracker)initWithEventTrackers:(id)trackers;
+- (id)_eventTrackersRespondingToSelector:(SEL)selector;
+- (void)submitEventsIfNeededWithCompletion:(id)completion;
+- (void)userEngagedWithWidgetAtDate:(id)date actionURL:(id)l trackableWidgetState:(id)state;
+- (void)visibleItemsDidChangeAtDate:(id)date withTriggerEvent:(unint64_t)event trackableWidgetState:(id)state;
+- (void)widgetDidAppearAtDate:(id)date withTrackableWidgetState:(id)state;
+- (void)widgetDidDisappearAtDate:(id)date withTrackableWidgetState:(id)state;
+- (void)widgetPerformedUpdateWithTodayResults:(id)results fetchInfo:(id)info error:(id)error updateFetchDuration:(double)duration;
 @end
 
 @implementation FTAggregateWidgetEventTracker
@@ -35,10 +35,10 @@
   objc_exception_throw(v4);
 }
 
-- (FTAggregateWidgetEventTracker)initWithEventTrackers:(id)a3
+- (FTAggregateWidgetEventTracker)initWithEventTrackers:(id)trackers
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  trackersCopy = trackers;
+  if (!trackersCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10009F960();
   }
@@ -48,7 +48,7 @@
   v5 = [(FTAggregateWidgetEventTracker *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [trackersCopy copy];
     eventTrackers = v5->_eventTrackers;
     v5->_eventTrackers = v6;
 
@@ -60,11 +60,11 @@
   return v5;
 }
 
-- (void)widgetDidAppearAtDate:(id)a3 withTrackableWidgetState:(id)a4
+- (void)widgetDidAppearAtDate:(id)date withTrackableWidgetState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  dateCopy = date;
+  stateCopy = state;
+  if (!stateCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10009FA40();
   }
@@ -88,7 +88,7 @@
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v14 + 1) + 8 * i) widgetDidAppearAtDate:v7 withTrackableWidgetState:v8];
+        [*(*(&v14 + 1) + 8 * i) widgetDidAppearAtDate:dateCopy withTrackableWidgetState:stateCopy];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -98,10 +98,10 @@
   }
 }
 
-- (void)widgetDidDisappearAtDate:(id)a3 withTrackableWidgetState:(id)a4
+- (void)widgetDidDisappearAtDate:(id)date withTrackableWidgetState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  stateCopy = state;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -122,7 +122,7 @@
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v14 + 1) + 8 * v13) widgetDidDisappearAtDate:v7 withTrackableWidgetState:v8];
+        [*(*(&v14 + 1) + 8 * v13) widgetDidDisappearAtDate:dateCopy withTrackableWidgetState:stateCopy];
         v13 = v13 + 1;
       }
 
@@ -134,11 +134,11 @@
   }
 }
 
-- (void)widgetPerformedUpdateWithTodayResults:(id)a3 fetchInfo:(id)a4 error:(id)a5 updateFetchDuration:(double)a6
+- (void)widgetPerformedUpdateWithTodayResults:(id)results fetchInfo:(id)info error:(id)error updateFetchDuration:(double)duration
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  resultsCopy = results;
+  infoCopy = info;
+  errorCopy = error;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -159,7 +159,7 @@
           objc_enumerationMutation(v14);
         }
 
-        [*(*(&v19 + 1) + 8 * v18) widgetPerformedUpdateWithTodayResults:v11 fetchInfo:v12 error:v13 updateFetchDuration:a6];
+        [*(*(&v19 + 1) + 8 * v18) widgetPerformedUpdateWithTodayResults:resultsCopy fetchInfo:infoCopy error:errorCopy updateFetchDuration:duration];
         v18 = v18 + 1;
       }
 
@@ -171,10 +171,10 @@
   }
 }
 
-- (void)visibleItemsDidChangeAtDate:(id)a3 withTriggerEvent:(unint64_t)a4 trackableWidgetState:(id)a5
+- (void)visibleItemsDidChangeAtDate:(id)date withTriggerEvent:(unint64_t)event trackableWidgetState:(id)state
 {
-  v9 = a3;
-  v10 = a5;
+  dateCopy = date;
+  stateCopy = state;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -195,7 +195,7 @@
           objc_enumerationMutation(v11);
         }
 
-        [*(*(&v16 + 1) + 8 * v15) visibleItemsDidChangeAtDate:v9 withTriggerEvent:a4 trackableWidgetState:v10];
+        [*(*(&v16 + 1) + 8 * v15) visibleItemsDidChangeAtDate:dateCopy withTriggerEvent:event trackableWidgetState:stateCopy];
         v15 = v15 + 1;
       }
 
@@ -207,11 +207,11 @@
   }
 }
 
-- (void)userEngagedWithWidgetAtDate:(id)a3 actionURL:(id)a4 trackableWidgetState:(id)a5
+- (void)userEngagedWithWidgetAtDate:(id)date actionURL:(id)l trackableWidgetState:(id)state
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  lCopy = l;
+  stateCopy = state;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -232,7 +232,7 @@
           objc_enumerationMutation(v12);
         }
 
-        [*(*(&v17 + 1) + 8 * v16) userEngagedWithWidgetAtDate:v9 actionURL:v10 trackableWidgetState:v11];
+        [*(*(&v17 + 1) + 8 * v16) userEngagedWithWidgetAtDate:dateCopy actionURL:lCopy trackableWidgetState:stateCopy];
         v16 = v16 + 1;
       }
 
@@ -244,9 +244,9 @@
   }
 }
 
-- (void)submitEventsIfNeededWithCompletion:(id)a3
+- (void)submitEventsIfNeededWithCompletion:(id)completion
 {
-  block = a3;
+  block = completion;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -267,8 +267,8 @@
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [(FTAggregateWidgetEventTracker *)self submissionGroup];
-        dispatch_group_enter(v11);
+        submissionGroup = [(FTAggregateWidgetEventTracker *)self submissionGroup];
+        dispatch_group_enter(submissionGroup);
 
         v12 = NTSharedLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -293,19 +293,19 @@
     while (v7);
   }
 
-  v13 = [(FTAggregateWidgetEventTracker *)self submissionGroup];
-  dispatch_group_notify(v13, &_dispatch_main_q, block);
+  submissionGroup2 = [(FTAggregateWidgetEventTracker *)self submissionGroup];
+  dispatch_group_notify(submissionGroup2, &_dispatch_main_q, block);
 }
 
-- (id)_eventTrackersRespondingToSelector:(SEL)a3
+- (id)_eventTrackersRespondingToSelector:(SEL)selector
 {
-  v4 = [(FTAggregateWidgetEventTracker *)self eventTrackers];
+  eventTrackers = [(FTAggregateWidgetEventTracker *)self eventTrackers];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100010904;
   v7[3] = &unk_1000D71E0;
-  v7[4] = a3;
-  v5 = [v4 fc_arrayOfObjectsPassingTest:v7];
+  v7[4] = selector;
+  v5 = [eventTrackers fc_arrayOfObjectsPassingTest:v7];
 
   return v5;
 }

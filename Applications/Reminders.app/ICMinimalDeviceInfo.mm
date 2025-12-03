@@ -1,16 +1,16 @@
 @interface ICMinimalDeviceInfo
-- (ICMinimalDeviceInfo)initWithName:(id)a3 upgradable:(BOOL)a4 upgraded:(BOOL)a5;
+- (ICMinimalDeviceInfo)initWithName:(id)name upgradable:(BOOL)upgradable upgraded:(BOOL)upgraded;
 - (id)debugDescription;
 - (id)description;
 @end
 
 @implementation ICMinimalDeviceInfo
 
-- (ICMinimalDeviceInfo)initWithName:(id)a3 upgradable:(BOOL)a4 upgraded:(BOOL)a5
+- (ICMinimalDeviceInfo)initWithName:(id)name upgradable:(BOOL)upgradable upgraded:(BOOL)upgraded
 {
   v6.receiver = self;
   v6.super_class = ICMinimalDeviceInfo;
-  return [(ICMigrationDeviceInfo *)&v6 initWithName:a3 upgradable:a4 upgraded:a5];
+  return [(ICMigrationDeviceInfo *)&v6 initWithName:name upgradable:upgradable upgraded:upgraded];
 }
 
 - (id)debugDescription
@@ -18,7 +18,7 @@
   v9.receiver = self;
   v9.super_class = ICMinimalDeviceInfo;
   v3 = [(ICMinimalDeviceInfo *)&v9 description];
-  v4 = [(ICMigrationDeviceInfo *)self name];
+  name = [(ICMigrationDeviceInfo *)self name];
   if ([(ICMigrationDeviceInfo *)self upgradable])
   {
     v5 = @"YES";
@@ -39,7 +39,7 @@
     v6 = @"NO";
   }
 
-  v7 = [NSString stringWithFormat:@"%@ <name: %@, Upgradable: %@, Upgraded: %@", v3, v4, v5, v6];
+  v7 = [NSString stringWithFormat:@"%@ <name: %@, Upgradable: %@, Upgraded: %@", v3, name, v5, v6];
 
   return v7;
 }

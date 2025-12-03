@@ -1,20 +1,20 @@
 @interface CLKComplicationDescriptor
 + (id)allowedDictionaryClasses;
 + (id)legacyComplicationDescriptor;
-+ (id)legacyComplicationDescriptorWithSupportedFamilies:(id)a3;
++ (id)legacyComplicationDescriptorWithSupportedFamilies:(id)families;
 - (BOOL)hasUserInfo;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualForIdNameAndLocale:(id)a3;
-- (CLKComplicationDescriptor)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualForIdNameAndLocale:(id)locale;
+- (CLKComplicationDescriptor)initWithCoder:(id)coder;
 - (CLKComplicationDescriptor)initWithIdentifier:(NSString *)identifier displayName:(NSString *)displayName supportedFamilies:(NSArray *)supportedFamilies;
 - (CLKComplicationDescriptor)initWithIdentifier:(NSString *)identifier displayName:(NSString *)displayName supportedFamilies:(NSArray *)supportedFamilies userActivity:(NSUserActivity *)userActivity;
 - (CLKComplicationDescriptor)initWithIdentifier:(NSString *)identifier displayName:(NSString *)displayName supportedFamilies:(NSArray *)supportedFamilies userInfo:(NSDictionary *)userInfo;
-- (CLKComplicationDescriptor)initWithJSONObjectRepresentation:(id)a3;
+- (CLKComplicationDescriptor)initWithJSONObjectRepresentation:(id)representation;
 - (id)JSONObjectRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)validate;
 @end
 
@@ -42,9 +42,9 @@
     v17 = v11->_supportedFamilies;
     v11->_supportedFamilies = v16;
 
-    v18 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
     locale = v11->_locale;
-    v11->_locale = v18;
+    v11->_locale = currentLocale;
   }
 
   return v11;
@@ -81,15 +81,15 @@
 + (id)legacyComplicationDescriptor
 {
   v3 = CLKAllComplicationFamilies();
-  v4 = [a1 legacyComplicationDescriptorWithSupportedFamilies:v3];
+  v4 = [self legacyComplicationDescriptorWithSupportedFamilies:v3];
 
   return v4;
 }
 
-+ (id)legacyComplicationDescriptorWithSupportedFamilies:(id)a3
++ (id)legacyComplicationDescriptorWithSupportedFamilies:(id)families
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentifier:@"CLKDefaultComplicationIdentifier" displayName:&stru_284A20458 supportedFamilies:v4];
+  familiesCopy = families;
+  v5 = [[self alloc] initWithIdentifier:@"CLKDefaultComplicationIdentifier" displayName:&stru_284A20458 supportedFamilies:familiesCopy];
 
   return v5;
 }
@@ -103,8 +103,8 @@
 
 - (BOOL)hasUserInfo
 {
-  v3 = [(CLKComplicationDescriptor *)self identifier];
-  if (![v3 isEqualToString:@"CLKDefaultComplicationIdentifier"] || self->_userInfo)
+  identifier = [(CLKComplicationDescriptor *)self identifier];
+  if (![identifier isEqualToString:@"CLKDefaultComplicationIdentifier"] || self->_userInfo)
   {
 
     return 1;
@@ -149,10 +149,10 @@
   clkUserActivity = self->_clkUserActivity;
   if (clkUserActivity)
   {
-    v10 = [(CLKUserActivity *)clkUserActivity userActivity];
-    v8 = [v10 userInfo];
+    userActivity = [(CLKUserActivity *)clkUserActivity userActivity];
+    userInfo = [userActivity userInfo];
     v9 = +[CLKComplicationDescriptor allowedDictionaryClasses];
-    CLKRecursivelyValidateDictionary(v8, v9);
+    CLKRecursivelyValidateDictionary(userInfo, v9);
   }
 }
 
@@ -183,22 +183,22 @@ uint64_t __53__CLKComplicationDescriptor_allowedDictionaryClasses__block_invoke(
   return MEMORY[0x2821F96F8](v6, v7);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_displayName copyWithZone:a3];
+  v8 = [(NSString *)self->_displayName copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSArray *)self->_supportedFamilies copyWithZone:a3];
+  v10 = [(NSArray *)self->_supportedFamilies copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(NSDictionary *)self->_userInfo copyWithZone:a3];
+  v12 = [(NSDictionary *)self->_userInfo copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
@@ -212,15 +212,15 @@ uint64_t __53__CLKComplicationDescriptor_allowedDictionaryClasses__block_invoke(
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CLKComplicationDescriptor *)self identifier];
-    v6 = [v4 identifier];
-    v7 = [v5 isEqualToString:v6];
+    identifier = [(CLKComplicationDescriptor *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v7 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -231,16 +231,16 @@ uint64_t __53__CLKComplicationDescriptor_allowedDictionaryClasses__block_invoke(
   return v7;
 }
 
-- (BOOL)isEqualForIdNameAndLocale:(id)a3
+- (BOOL)isEqualForIdNameAndLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  localeCopy = locale;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:localeCopy ofExpectedClass:objc_opt_class()];
   identifier = self->_identifier;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __55__CLKComplicationDescriptor_isEqualForIdNameAndLocale___block_invoke;
   v20[3] = &unk_278A1F118;
-  v7 = v4;
+  v7 = localeCopy;
   v21 = v7;
   v8 = [v5 appendString:identifier counterpart:v20];
   displayName = self->_displayName;
@@ -266,47 +266,47 @@ uint64_t __53__CLKComplicationDescriptor_allowedDictionaryClasses__block_invoke(
 
 - (unint64_t)hash
 {
-  v2 = [(CLKComplicationDescriptor *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(CLKComplicationDescriptor *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (CLKComplicationDescriptor)initWithCoder:(id)a3
+- (CLKComplicationDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = CLKComplicationDescriptor;
   v5 = [(CLKComplicationDescriptor *)&v28 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v8;
 
     v10 = MEMORY[0x277CBEB98];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"supportedFamilies"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"supportedFamilies"];
     supportedFamilies = v5->_supportedFamilies;
     v5->_supportedFamilies = v13;
 
     v15 = +[CLKComplicationDescriptor allowedDictionaryClasses];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"userInfo"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"userInfo"];
     userInfo = v5->_userInfo;
     v5->_userInfo = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userActivity"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userActivity"];
     v19 = [[CLKUserActivity alloc] initWithEncodedUserActivity:v18];
     clkUserActivity = v5->_clkUserActivity;
     v5->_clkUserActivity = v19;
 
-    v5->_needsAppNotify = [v4 decodeBoolForKey:@"needsAppNotify"];
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
+    v5->_needsAppNotify = [coderCopy decodeBoolForKey:@"needsAppNotify"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
     if (v21)
     {
       v22 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v21];
@@ -314,7 +314,7 @@ uint64_t __53__CLKComplicationDescriptor_allowedDictionaryClasses__block_invoke(
       v5->_locale = v22;
     }
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"widgetDescriptor"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"widgetDescriptor"];
     widgetDescriptor = v5->_widgetDescriptor;
     v5->_widgetDescriptor = v24;
 
@@ -324,22 +324,22 @@ uint64_t __53__CLKComplicationDescriptor_allowedDictionaryClasses__block_invoke(
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v7 = a3;
-  [v7 encodeObject:identifier forKey:@"identifier"];
-  [v7 encodeObject:self->_displayName forKey:@"displayName"];
-  [v7 encodeObject:self->_supportedFamilies forKey:@"supportedFamilies"];
-  [v7 encodeObject:self->_userInfo forKey:@"userInfo"];
-  v5 = [(CLKUserActivity *)self->_clkUserActivity encodedUserActivity];
-  [v7 encodeObject:v5 forKey:@"userActivity"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_supportedFamilies forKey:@"supportedFamilies"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"userInfo"];
+  encodedUserActivity = [(CLKUserActivity *)self->_clkUserActivity encodedUserActivity];
+  [coderCopy encodeObject:encodedUserActivity forKey:@"userActivity"];
 
-  [v7 encodeBool:self->_needsAppNotify forKey:@"needsAppNotify"];
-  v6 = [(NSLocale *)self->_locale localeIdentifier];
-  [v7 encodeObject:v6 forKey:@"locale"];
+  [coderCopy encodeBool:self->_needsAppNotify forKey:@"needsAppNotify"];
+  localeIdentifier = [(NSLocale *)self->_locale localeIdentifier];
+  [coderCopy encodeObject:localeIdentifier forKey:@"locale"];
 
-  [v7 encodeObject:self->_widgetDescriptor forKey:@"widgetDescriptor"];
+  [coderCopy encodeObject:self->_widgetDescriptor forKey:@"widgetDescriptor"];
 }
 
 - (id)JSONObjectRepresentation
@@ -379,8 +379,8 @@ uint64_t __53__CLKComplicationDescriptor_allowedDictionaryClasses__block_invoke(
   clkUserActivity = self->_clkUserActivity;
   if (clkUserActivity)
   {
-    v10 = [(CLKUserActivity *)clkUserActivity encodedUserActivity];
-    [v6 setObject:v10 forKeyedSubscript:@"userActivity"];
+    encodedUserActivity = [(CLKUserActivity *)clkUserActivity encodedUserActivity];
+    [v6 setObject:encodedUserActivity forKeyedSubscript:@"userActivity"];
   }
 
   if (self->_needsAppNotify)
@@ -389,24 +389,24 @@ uint64_t __53__CLKComplicationDescriptor_allowedDictionaryClasses__block_invoke(
     [v6 setObject:v11 forKeyedSubscript:@"needsAppNotify"];
   }
 
-  v12 = [(NSLocale *)self->_locale localeIdentifier];
-  [v6 setObject:v12 forKeyedSubscript:@"locale"];
+  localeIdentifier = [(NSLocale *)self->_locale localeIdentifier];
+  [v6 setObject:localeIdentifier forKeyedSubscript:@"locale"];
 
-  v13 = [(CLKWidgetComplicationDescriptor *)self->_widgetDescriptor JSONObjectRepresentation];
-  [v6 setObject:v13 forKeyedSubscript:@"widgetDescriptor"];
+  jSONObjectRepresentation = [(CLKWidgetComplicationDescriptor *)self->_widgetDescriptor JSONObjectRepresentation];
+  [v6 setObject:jSONObjectRepresentation forKeyedSubscript:@"widgetDescriptor"];
 
   return v6;
 }
 
-- (CLKComplicationDescriptor)initWithJSONObjectRepresentation:(id)a3
+- (CLKComplicationDescriptor)initWithJSONObjectRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v33.receiver = self;
   v33.super_class = CLKComplicationDescriptor;
   v5 = [(CLKComplicationDescriptor *)&v33 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"identifier"];
+    v6 = [representationCopy objectForKeyedSubscript:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
@@ -424,7 +424,7 @@ uint64_t __53__CLKComplicationDescriptor_allowedDictionaryClasses__block_invoke(
     if (!v5->_identifier)
     {
 LABEL_6:
-      v8 = [v4 objectForKeyedSubscript:@"type"];
+      v8 = [representationCopy objectForKeyedSubscript:@"type"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -449,34 +449,34 @@ LABEL_6:
       v5->_identifier = &v9->isa;
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"displayName"];
+    v11 = [representationCopy objectForKeyedSubscript:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v11;
 
     if (!v5->_displayName)
     {
-      v13 = [v4 objectForKeyedSubscript:@"localizedDisplayName"];
+      v13 = [representationCopy objectForKeyedSubscript:@"localizedDisplayName"];
       v14 = v5->_displayName;
       v5->_displayName = v13;
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"supportedFamilies"];
+    v15 = [representationCopy objectForKeyedSubscript:@"supportedFamilies"];
     supportedFamilies = v5->_supportedFamilies;
     v5->_supportedFamilies = v15;
 
-    v17 = [v4 objectForKeyedSubscript:@"userInfo"];
+    v17 = [representationCopy objectForKeyedSubscript:@"userInfo"];
     userInfo = v5->_userInfo;
     v5->_userInfo = v17;
 
-    v19 = [v4 objectForKeyedSubscript:@"userActivity"];
+    v19 = [representationCopy objectForKeyedSubscript:@"userActivity"];
     v20 = [[CLKUserActivity alloc] initWithEncodedUserActivity:v19];
     clkUserActivity = v5->_clkUserActivity;
     v5->_clkUserActivity = v20;
 
-    v22 = [v4 objectForKeyedSubscript:@"needsAppNotify"];
+    v22 = [representationCopy objectForKeyedSubscript:@"needsAppNotify"];
     v5->_needsAppNotify = [v22 BOOLValue];
 
-    v23 = [v4 objectForKeyedSubscript:@"locale"];
+    v23 = [representationCopy objectForKeyedSubscript:@"locale"];
     if (v23)
     {
       v24 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v23];
@@ -484,12 +484,12 @@ LABEL_6:
       v5->_locale = v24;
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"widgetDescriptor"];
+    v26 = [representationCopy objectForKeyedSubscript:@"widgetDescriptor"];
 
     if (v26)
     {
       v27 = [CLKWidgetComplicationDescriptor alloc];
-      v28 = [v4 objectForKeyedSubscript:@"widgetDescriptor"];
+      v28 = [representationCopy objectForKeyedSubscript:@"widgetDescriptor"];
       v29 = [(CLKWidgetComplicationDescriptor *)v27 initWithJSONObjectRepresentation:v28];
       widgetDescriptor = v5->_widgetDescriptor;
       v5->_widgetDescriptor = v29;

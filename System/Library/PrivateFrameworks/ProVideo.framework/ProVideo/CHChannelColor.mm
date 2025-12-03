@@ -1,14 +1,14 @@
 @interface CHChannelColor
-- (double)alphaCurveValueAtTime:(id *)a3;
-- (double)alphaValueAtTime:(id *)a3;
+- (double)alphaCurveValueAtTime:(id *)time;
+- (double)alphaValueAtTime:(id *)time;
 - (id)alphaChannel;
-- (void)getColorAtTime:(id *)a3 curveRed:(double *)a4 curveGreen:(double *)a5 curveBlue:(double *)a6 curveAlpha:(double *)a7;
-- (void)getColorAtTime:(id *)a3 red:(double *)a4 green:(double *)a5 blue:(double *)a6 alpha:(double *)a7 inColorSpace:(CGColorSpace *)a8;
-- (void)getDefaultCurveRed:(double *)a3 curveGreen:(double *)a4 curveBlue:(double *)a5 curveAlpha:(double *)a6;
+- (void)getColorAtTime:(id *)time curveRed:(double *)red curveGreen:(double *)green curveBlue:(double *)blue curveAlpha:(double *)alpha;
+- (void)getColorAtTime:(id *)time red:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha inColorSpace:(CGColorSpace *)space;
+- (void)getDefaultCurveRed:(double *)red curveGreen:(double *)green curveBlue:(double *)blue curveAlpha:(double *)alpha;
 - (void)ozChannel;
-- (void)setAlphaAtTime:(id *)a3 curveAlpha:(double)a4 options:(unsigned int)a5;
-- (void)setColorAtTime:(id *)a3 curveRed:(double)a4 curveGreen:(double)a5 curveBlue:(double)a6 curveAlpha:(double)a7 options:(unsigned int)a8;
-- (void)setDefaultCurveRed:(double)a3 curveGreen:(double)a4 curveBlue:(double)a5 curveAlpha:(double)a6;
+- (void)setAlphaAtTime:(id *)time curveAlpha:(double)alpha options:(unsigned int)options;
+- (void)setColorAtTime:(id *)time curveRed:(double)red curveGreen:(double)green curveBlue:(double)blue curveAlpha:(double)alpha options:(unsigned int)options;
+- (void)setDefaultCurveRed:(double)red curveGreen:(double)green curveBlue:(double)blue curveAlpha:(double)alpha;
 @end
 
 @implementation CHChannelColor
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (void)setDefaultCurveRed:(double)a3 curveGreen:(double)a4 curveBlue:(double)a5 curveAlpha:(double)a6
+- (void)setDefaultCurveRed:(double)red curveGreen:(double)green curveBlue:(double)blue curveAlpha:(double)alpha
 {
   pOZChannel = self->super.super.super.super._pOZChannel;
   if (pOZChannel)
@@ -36,22 +36,22 @@
   }
 
   OZChannelColorNoAlpha::getPCColorSpace(v11, &v16);
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  PCColor::PCColor(&v16.var1, v12, v13, v14, v15, &v16);
+  redCopy = red;
+  greenCopy = green;
+  blueCopy = blue;
+  alphaCopy = alpha;
+  PCColor::PCColor(&v16.var1, redCopy, greenCopy, blueCopy, alphaCopy, &v16);
   PCCFRef<CGColorSpace *>::~PCCFRef(&v16);
   (*(*v11 + 848))(v11, &v16.var1);
   PCCFRef<CGColorSpace *>::~PCCFRef(&v16.var7);
 }
 
-- (void)getDefaultCurveRed:(double *)a3 curveGreen:(double *)a4 curveBlue:(double *)a5 curveAlpha:(double *)a6
+- (void)getDefaultCurveRed:(double *)red curveGreen:(double *)green curveBlue:(double *)blue curveAlpha:(double *)alpha
 {
   pOZChannel = self->super.super.super.super._pOZChannel;
   if (pOZChannel)
   {
-    if (!a3)
+    if (!red)
     {
       goto LABEL_4;
     }
@@ -60,30 +60,30 @@
   }
 
   v11 = 0;
-  if (a3)
+  if (red)
   {
 LABEL_3:
-    *a3 = OZChannel::getDefaultValue((v11 + 136));
+    *red = OZChannel::getDefaultValue((v11 + 136));
   }
 
 LABEL_4:
-  if (a4)
+  if (green)
   {
-    *a4 = OZChannel::getDefaultValue((v11 + 288));
+    *green = OZChannel::getDefaultValue((v11 + 288));
   }
 
-  if (a5)
+  if (blue)
   {
-    *a5 = OZChannel::getDefaultValue((v11 + 440));
+    *blue = OZChannel::getDefaultValue((v11 + 440));
   }
 
-  if (a6)
+  if (alpha)
   {
-    *a6 = OZChannel::getDefaultValue((v11 + 1008));
+    *alpha = OZChannel::getDefaultValue((v11 + 1008));
   }
 }
 
-- (void)getColorAtTime:(id *)a3 red:(double *)a4 green:(double *)a5 blue:(double *)a6 alpha:(double *)a7 inColorSpace:(CGColorSpace *)a8
+- (void)getColorAtTime:(id *)time red:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha inColorSpace:(CGColorSpace *)space
 {
   pOZChannel = self->super.super.super.super._pOZChannel;
   if (pOZChannel)
@@ -96,13 +96,13 @@ LABEL_4:
   }
 
   PCColor::PCColor(&v19);
-  (*(*v15 + 336))(v18, v15, a3);
+  (*(*v15 + 336))(v18, v15, time);
   (*(*v15 + 832))(v15, v18, &v19);
   v16 = 0;
   v17 = 0;
-  if (a8)
+  if (space)
   {
-    PCColor::getRGBA(&v19, &v17 + 1, &v17, &v16 + 1, &v16, a8);
+    PCColor::getRGBA(&v19, &v17 + 1, &v17, &v16 + 1, &v16, space);
   }
 
   else
@@ -112,14 +112,14 @@ LABEL_4:
     PCCFRef<CGColorSpace *>::~PCCFRef(v18);
   }
 
-  *a4 = *(&v17 + 1);
-  *a5 = *&v17;
-  *a6 = *(&v16 + 1);
-  *a7 = *&v16;
+  *red = *(&v17 + 1);
+  *green = *&v17;
+  *blue = *(&v16 + 1);
+  *alpha = *&v16;
   PCCFRef<CGColorSpace *>::~PCCFRef(&v19.var1._obj);
 }
 
-- (double)alphaValueAtTime:(id *)a3
+- (double)alphaValueAtTime:(id *)time
 {
   pOZChannel = self->super.super.super.super._pOZChannel;
   if (pOZChannel)
@@ -131,17 +131,17 @@ LABEL_4:
     v5 = 0;
   }
 
-  (*(*v5 + 336))(&v7, v5, a3);
+  (*(*v5 + 336))(&v7, v5, time);
   OZChannel::getValueAsDouble((v5 + 1008), &v7, 0.0);
   return result;
 }
 
-- (void)getColorAtTime:(id *)a3 curveRed:(double *)a4 curveGreen:(double *)a5 curveBlue:(double *)a6 curveAlpha:(double *)a7
+- (void)getColorAtTime:(id *)time curveRed:(double *)red curveGreen:(double *)green curveBlue:(double *)blue curveAlpha:(double *)alpha
 {
   pOZChannel = self->super.super.super.super._pOZChannel;
   if (pOZChannel)
   {
-    if (!a4)
+    if (!red)
     {
       goto LABEL_4;
     }
@@ -150,38 +150,38 @@ LABEL_4:
   }
 
   v13 = 0;
-  if (a4)
+  if (red)
   {
 LABEL_3:
-    *a4 = OZChannel::getCurveValue((v13 + 136), a3, 0);
+    *red = OZChannel::getCurveValue((v13 + 136), time, 0);
   }
 
 LABEL_4:
-  if (a5)
+  if (green)
   {
-    *a5 = OZChannel::getCurveValue((v13 + 288), a3, 0);
+    *green = OZChannel::getCurveValue((v13 + 288), time, 0);
   }
 
-  if (a6)
+  if (blue)
   {
-    *a6 = OZChannel::getCurveValue((v13 + 440), a3, 0);
+    *blue = OZChannel::getCurveValue((v13 + 440), time, 0);
   }
 
-  if (a7)
+  if (alpha)
   {
-    *a7 = OZChannel::getCurveValue((v13 + 1008), a3, 0);
+    *alpha = OZChannel::getCurveValue((v13 + 1008), time, 0);
   }
 }
 
-- (double)alphaCurveValueAtTime:(id *)a3
+- (double)alphaCurveValueAtTime:(id *)time
 {
 
-  return OZChannel::getCurveValue(v4, a3, 0);
+  return OZChannel::getCurveValue(v4, time, 0);
 }
 
-- (void)setColorAtTime:(id *)a3 curveRed:(double)a4 curveGreen:(double)a5 curveBlue:(double)a6 curveAlpha:(double)a7 options:(unsigned int)a8
+- (void)setColorAtTime:(id *)time curveRed:(double)red curveGreen:(double)green curveBlue:(double)blue curveAlpha:(double)alpha options:(unsigned int)options
 {
-  v8 = a8;
+  optionsCopy = options;
   pOZChannel = self->super.super.super.super._pOZChannel;
   if (pOZChannel)
   {
@@ -193,32 +193,32 @@ LABEL_4:
     v15 = 0;
   }
 
-  if ((~a3->var2 & 0x11) == 0)
+  if ((~time->var2 & 0x11) == 0)
   {
     v16 = *MEMORY[0x277CC08F0];
-    a3->var3 = *(MEMORY[0x277CC08F0] + 16);
-    *&a3->var0 = v16;
+    time->var3 = *(MEMORY[0x277CC08F0] + 16);
+    *&time->var0 = v16;
   }
 
   Instance = OZCoreGlobals::getInstance(pOZChannel);
   v18 = *(Instance + 8);
-  *(OZCoreGlobals::getInstance(Instance) + 8) = v8 & 1;
+  *(OZCoreGlobals::getInstance(Instance) + 8) = optionsCopy & 1;
   OZChannelColorNoAlpha::getPCColorSpace(v15, &v24);
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  PCColor::PCColor(&v24.var3, v19, v20, v21, v22, &v24);
+  redCopy = red;
+  greenCopy = green;
+  blueCopy = blue;
+  alphaCopy = alpha;
+  PCColor::PCColor(&v24.var3, redCopy, greenCopy, blueCopy, alphaCopy, &v24);
   PCCFRef<CGColorSpace *>::~PCCFRef(&v24);
-  (*(*v15 + 336))(&v24, v15, a3);
+  (*(*v15 + 336))(&v24, v15, time);
   v23 = (*(*v15 + 840))(v15, &v24, &v24.var3, 0);
   *(OZCoreGlobals::getInstance(v23) + 8) = v18;
   PCCFRef<CGColorSpace *>::~PCCFRef(&v24.var9);
 }
 
-- (void)setAlphaAtTime:(id *)a3 curveAlpha:(double)a4 options:(unsigned int)a5
+- (void)setAlphaAtTime:(id *)time curveAlpha:(double)alpha options:(unsigned int)options
 {
-  v5 = a5;
+  optionsCopy = options;
   pOZChannel = self->super.super.super.super._pOZChannel;
   if (pOZChannel)
   {
@@ -230,18 +230,18 @@ LABEL_4:
     v9 = 0;
   }
 
-  if ((~a3->var2 & 0x11) == 0)
+  if ((~time->var2 & 0x11) == 0)
   {
     v10 = *MEMORY[0x277CC08F0];
-    a3->var3 = *(MEMORY[0x277CC08F0] + 16);
-    *&a3->var0 = v10;
+    time->var3 = *(MEMORY[0x277CC08F0] + 16);
+    *&time->var0 = v10;
   }
 
   Instance = OZCoreGlobals::getInstance(pOZChannel);
   v12 = *(Instance + 8);
-  *(OZCoreGlobals::getInstance(Instance) + 8) = v5 & 1;
-  (*(*v9 + 336))(v14, v9, a3);
-  v13 = (*(v9[126] + 712))(v9 + 126, v14, 0, a4);
+  *(OZCoreGlobals::getInstance(Instance) + 8) = optionsCopy & 1;
+  (*(*v9 + 336))(v14, v9, time);
+  v13 = (*(v9[126] + 712))(v9 + 126, v14, 0, alpha);
   *(OZCoreGlobals::getInstance(v13) + 8) = v12;
 }
 

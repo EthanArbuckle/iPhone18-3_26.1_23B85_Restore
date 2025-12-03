@@ -1,20 +1,20 @@
 @interface APPBBorderStyle
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasWidth:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasWidth:(BOOL)width;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBBorderStyle
 
-- (void)setHasWidth:(BOOL)a3
+- (void)setHasWidth:(BOOL)width
 {
-  if (a3)
+  if (width)
   {
     v3 = 2;
   }
@@ -32,8 +32,8 @@
   v7.receiver = self;
   v7.super_class = APPBBorderStyle;
   v3 = [(APPBBorderStyle *)&v7 description];
-  v4 = [(APPBBorderStyle *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBBorderStyle *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -44,8 +44,8 @@
   color = self->_color;
   if (color)
   {
-    v6 = [(APPBColor *)color dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"color"];
+    dictionaryRepresentation = [(APPBColor *)color dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"color"];
   }
 
   has = self->_has;
@@ -68,60 +68,60 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_color)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if (has)
   {
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_color)
   {
-    v6 = v4;
-    [v4 setColor:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setColor:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 5) = LODWORD(self->_width);
-    *(v4 + 24) |= 2u;
+    *(toCopy + 5) = LODWORD(self->_width);
+    *(toCopy + 24) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 4) = LODWORD(self->_cornerRadius);
-    *(v4 + 24) |= 1u;
+    *(toCopy + 4) = LODWORD(self->_cornerRadius);
+    *(toCopy + 24) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(APPBColor *)self->_color copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(APPBColor *)self->_color copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -142,16 +142,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   color = self->_color;
-  if (color | *(v4 + 1))
+  if (color | *(equalCopy + 1))
   {
     if (![(APPBColor *)color isEqual:?])
     {
@@ -161,23 +161,23 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_width != *(v4 + 5))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_width != *(equalCopy + 5))
     {
       goto LABEL_13;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
 LABEL_13:
     v6 = 0;
     goto LABEL_14;
   }
 
-  v6 = (*(v4 + 24) & 1) == 0;
+  v6 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_cornerRadius != *(v4 + 4))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_cornerRadius != *(equalCopy + 4))
     {
       goto LABEL_13;
     }
@@ -263,11 +263,11 @@ LABEL_14:
   return v6 ^ v3 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   color = self->_color;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (color)
   {
     if (!v6)
@@ -275,7 +275,7 @@ LABEL_14:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     [(APPBColor *)color mergeFrom:?];
   }
 
@@ -286,23 +286,23 @@ LABEL_14:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     [(APPBBorderStyle *)self setColor:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  v7 = *(v4 + 24);
+  v7 = *(fromCopy + 24);
   if ((v7 & 2) != 0)
   {
-    self->_width = *(v4 + 5);
+    self->_width = *(fromCopy + 5);
     *&self->_has |= 2u;
-    v7 = *(v4 + 24);
+    v7 = *(fromCopy + 24);
   }
 
   if (v7)
   {
-    self->_cornerRadius = *(v4 + 4);
+    self->_cornerRadius = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 

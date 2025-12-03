@@ -1,36 +1,36 @@
 @interface CHWorkoutDetailFourColumnSplitTableViewCell
-- (CHWorkoutDetailFourColumnSplitTableViewCell)initWithCoder:(id)a3;
-- (CHWorkoutDetailFourColumnSplitTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)configureHeaderWithActivityType:(id)a3 includeHeartRate:(BOOL)a4;
-- (void)configureWithSwimmingSplit:(id)a3 splitIndex:(int64_t)a4 isLastCell:(BOOL)a5 formattingManager:(id)a6;
-- (void)configureWithWorkout:(id)a3 workoutActivity:(id)a4 unit:(id)a5 split:(id)a6 splitIndex:(int64_t)a7 splitDistance:(double)a8 includeHeartRate:(BOOL)a9 isLastCell:(BOOL)a10 dataCalculator:(id)a11 formattingManager:(id)a12;
+- (CHWorkoutDetailFourColumnSplitTableViewCell)initWithCoder:(id)coder;
+- (CHWorkoutDetailFourColumnSplitTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)configureHeaderWithActivityType:(id)type includeHeartRate:(BOOL)rate;
+- (void)configureWithSwimmingSplit:(id)split splitIndex:(int64_t)index isLastCell:(BOOL)cell formattingManager:(id)manager;
+- (void)configureWithWorkout:(id)workout workoutActivity:(id)activity unit:(id)unit split:(id)split splitIndex:(int64_t)index splitDistance:(double)distance includeHeartRate:(BOOL)rate isLastCell:(BOOL)self0 dataCalculator:(id)self1 formattingManager:(id)self2;
 @end
 
 @implementation CHWorkoutDetailFourColumnSplitTableViewCell
 
-- (void)configureHeaderWithActivityType:(id)a3 includeHeartRate:(BOOL)a4
+- (void)configureHeaderWithActivityType:(id)type includeHeartRate:(BOOL)rate
 {
-  v6 = a3;
-  v7 = self;
-  sub_1003C14C0(v6, a4);
+  typeCopy = type;
+  selfCopy = self;
+  sub_1003C14C0(typeCopy, rate);
 }
 
-- (void)configureWithWorkout:(id)a3 workoutActivity:(id)a4 unit:(id)a5 split:(id)a6 splitIndex:(int64_t)a7 splitDistance:(double)a8 includeHeartRate:(BOOL)a9 isLastCell:(BOOL)a10 dataCalculator:(id)a11 formattingManager:(id)a12
+- (void)configureWithWorkout:(id)workout workoutActivity:(id)activity unit:(id)unit split:(id)split splitIndex:(int64_t)index splitDistance:(double)distance includeHeartRate:(BOOL)rate isLastCell:(BOOL)self0 dataCalculator:(id)self1 formattingManager:(id)self2
 {
-  v24 = a9;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a11;
-  v22 = a12;
-  v23 = self;
-  sub_1003C2C68(v17, a4, v20, a7, v24, a10, v21, v22);
+  rateCopy = rate;
+  workoutCopy = workout;
+  activityCopy = activity;
+  unitCopy = unit;
+  splitCopy = split;
+  calculatorCopy = calculator;
+  managerCopy = manager;
+  selfCopy = self;
+  sub_1003C2C68(workoutCopy, activity, splitCopy, index, rateCopy, cell, calculatorCopy, managerCopy);
 }
 
-- (CHWorkoutDetailFourColumnSplitTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHWorkoutDetailFourColumnSplitTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = String._bridgeToObjectiveC()();
@@ -43,17 +43,17 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for WorkoutDetailFourColumnSplitTableViewCell();
-  v7 = [(CHWorkoutDetailFourColumnTableViewCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(CHWorkoutDetailFourColumnTableViewCell *)&v9 initWithStyle:style reuseIdentifier:v6];
 
   return v7;
 }
 
-- (CHWorkoutDetailFourColumnSplitTableViewCell)initWithCoder:(id)a3
+- (CHWorkoutDetailFourColumnSplitTableViewCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for WorkoutDetailFourColumnSplitTableViewCell();
-  v4 = a3;
-  v5 = [(CHWorkoutDetailFourColumnTableViewCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CHWorkoutDetailFourColumnTableViewCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -62,12 +62,12 @@
   return v5;
 }
 
-- (void)configureWithSwimmingSplit:(id)a3 splitIndex:(int64_t)a4 isLastCell:(BOOL)a5 formattingManager:(id)a6
+- (void)configureWithSwimmingSplit:(id)split splitIndex:(int64_t)index isLastCell:(BOOL)cell formattingManager:(id)manager
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = self;
-  sub_1003C25BC(v10, a4, a5, v11);
+  splitCopy = split;
+  managerCopy = manager;
+  selfCopy = self;
+  sub_1003C25BC(splitCopy, index, cell, managerCopy);
 }
 
 @end

@@ -10,42 +10,42 @@
 
 - (NSData)pairingData
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 pairingData];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  pairingData = [underlyingCodableMessage pairingData];
 
-  return v3;
+  return pairingData;
 }
 
 - (int)status
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 status];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  status = [underlyingCodableMessage status];
 
-  return v3;
+  return status;
 }
 
 - (BOOL)isRetrying
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 isRetrying];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  isRetrying = [underlyingCodableMessage isRetrying];
 
-  return v3;
+  return isRetrying;
 }
 
 - (BOOL)isUsingSystemPairing
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 isUsingSystemPairing];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  isUsingSystemPairing = [underlyingCodableMessage isUsingSystemPairing];
 
-  return v3;
+  return isUsingSystemPairing;
 }
 
 - (unint64_t)state
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 state];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  state = [underlyingCodableMessage state];
 
-  return v3;
+  return state;
 }
 
 @end

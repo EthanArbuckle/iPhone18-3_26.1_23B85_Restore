@@ -1,30 +1,30 @@
 @interface IMSyncErrorAnalyzer
 + (id)sharedInstance;
-- (BOOL)CKPartialError:(id)a3 hasErrorCode:(id)a4;
-- (BOOL)CKPartialError:(id)a3 onlyHasErrorCodes:(id)a4;
-- (BOOL)acceptableErrorCodeWhileDeleting:(id)a3;
-- (BOOL)errorIndicatesAssetWasNotAvailable:(id)a3;
-- (BOOL)errorIndicatesBatchFailure:(id)a3;
-- (BOOL)errorIndicatesBatchSizeFailure:(id)a3;
-- (BOOL)errorIndicatesDeviceConditionsDontAllowSync:(id)a3;
-- (BOOL)errorIndicatesDeviceDoesNotHaveKeysToSync:(id)a3;
-- (BOOL)errorIndicatesDuplicateRecordWasFound:(id)a3;
-- (BOOL)errorIndicatesIdentityWasLost:(id)a3;
-- (BOOL)errorIndicatesItemWasUnknown:(id)a3;
-- (BOOL)errorIndicatesMaxAttemptsFailed:(id)a3;
-- (BOOL)errorIndicatesQuotaExceeded:(id)a3;
-- (BOOL)errorIndicatesRecordSizeFailure:(id)a3;
-- (BOOL)errorIndicatesRecordWasAlreadyChanged:(id)a3;
-- (BOOL)errorIndicatesRecordWasArchived:(id)a3;
-- (BOOL)errorIndicatesTokenWasExpired:(id)a3;
-- (BOOL)errorIndicatesUserDeletedZone:(id)a3;
-- (BOOL)errorIndicatesZoneNotCreated:(id)a3;
-- (BOOL)errorIndicatesZoneNotFound:(id)a3;
-- (id)_errorsFromPartialError:(id)a3;
-- (id)extractRecordIDsDeletedFromCKPartialError:(id)a3;
-- (id)extractRecordIDsNotFoundFromCKPartialError:(id)a3;
-- (int64_t)responseForError:(id)a3 attempt:(unint64_t)a4 retryInterval:(id *)a5;
-- (unint64_t)calculateDelay:(unint64_t)a3 forAttempt:(unint64_t)a4 maxInterval:(unint64_t)a5;
+- (BOOL)CKPartialError:(id)error hasErrorCode:(id)code;
+- (BOOL)CKPartialError:(id)error onlyHasErrorCodes:(id)codes;
+- (BOOL)acceptableErrorCodeWhileDeleting:(id)deleting;
+- (BOOL)errorIndicatesAssetWasNotAvailable:(id)available;
+- (BOOL)errorIndicatesBatchFailure:(id)failure;
+- (BOOL)errorIndicatesBatchSizeFailure:(id)failure;
+- (BOOL)errorIndicatesDeviceConditionsDontAllowSync:(id)sync;
+- (BOOL)errorIndicatesDeviceDoesNotHaveKeysToSync:(id)sync;
+- (BOOL)errorIndicatesDuplicateRecordWasFound:(id)found;
+- (BOOL)errorIndicatesIdentityWasLost:(id)lost;
+- (BOOL)errorIndicatesItemWasUnknown:(id)unknown;
+- (BOOL)errorIndicatesMaxAttemptsFailed:(id)failed;
+- (BOOL)errorIndicatesQuotaExceeded:(id)exceeded;
+- (BOOL)errorIndicatesRecordSizeFailure:(id)failure;
+- (BOOL)errorIndicatesRecordWasAlreadyChanged:(id)changed;
+- (BOOL)errorIndicatesRecordWasArchived:(id)archived;
+- (BOOL)errorIndicatesTokenWasExpired:(id)expired;
+- (BOOL)errorIndicatesUserDeletedZone:(id)zone;
+- (BOOL)errorIndicatesZoneNotCreated:(id)created;
+- (BOOL)errorIndicatesZoneNotFound:(id)found;
+- (id)_errorsFromPartialError:(id)error;
+- (id)extractRecordIDsDeletedFromCKPartialError:(id)error;
+- (id)extractRecordIDsNotFoundFromCKPartialError:(id)error;
+- (int64_t)responseForError:(id)error attempt:(unint64_t)attempt retryInterval:(id *)interval;
+- (unint64_t)calculateDelay:(unint64_t)delay forAttempt:(unint64_t)attempt maxInterval:(unint64_t)interval;
 @end
 
 @implementation IMSyncErrorAnalyzer
@@ -35,7 +35,7 @@
   block[1] = 3221225472;
   block[2] = sub_1A864A098;
   block[3] = &unk_1E7826200;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED8CA2D0 != -1)
   {
     dispatch_once(&qword_1ED8CA2D0, block);
@@ -46,24 +46,24 @@
   return v2;
 }
 
-- (id)_errorsFromPartialError:(id)a3
+- (id)_errorsFromPartialError:(id)error
 {
-  v3 = [a3 userInfo];
+  userInfo = [error userInfo];
   v4 = sub_1A864A178();
-  v5 = [v3 valueForKey:v4];
-  v6 = [v5 allValues];
+  v5 = [userInfo valueForKey:v4];
+  allValues = [v5 allValues];
 
-  return v6;
+  return allValues;
 }
 
-- (BOOL)CKPartialError:(id)a3 onlyHasErrorCodes:(id)a4
+- (BOOL)CKPartialError:(id)error onlyHasErrorCodes:(id)codes
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (-[IMSyncErrorAnalyzer _isCKErrorPartialFailure:](self, "_isCKErrorPartialFailure:", v6) && [v7 count])
+  errorCopy = error;
+  codesCopy = codes;
+  if (-[IMSyncErrorAnalyzer _isCKErrorPartialFailure:](self, "_isCKErrorPartialFailure:", errorCopy) && [codesCopy count])
   {
-    v8 = [(IMSyncErrorAnalyzer *)self _errorsFromPartialError:v6];
+    v8 = [(IMSyncErrorAnalyzer *)self _errorsFromPartialError:errorCopy];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -83,7 +83,7 @@
           }
 
           v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(*(*(&v17 + 1) + 8 * i), "code")}];
-          v14 = [v7 containsObject:v13];
+          v14 = [codesCopy containsObject:v13];
 
           v11 &= v14;
         }
@@ -102,13 +102,13 @@
 
   else
   {
-    if (v6 && IMOSLoggingEnabled())
+    if (errorCopy && IMOSLoggingEnabled())
     {
       v15 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v22 = v6;
+        v22 = errorCopy;
         _os_log_impl(&dword_1A85E5000, v15, OS_LOG_TYPE_INFO, "******** IMDCKUtilities not a partial error %@", buf, 0xCu);
       }
     }
@@ -119,32 +119,32 @@
   return v11;
 }
 
-- (BOOL)CKPartialError:(id)a3 hasErrorCode:(id)a4
+- (BOOL)CKPartialError:(id)error hasErrorCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMSyncErrorAnalyzer *)self _isCKErrorPartialFailure:v6];
-  if (!v7 || !v8)
+  errorCopy = error;
+  codeCopy = code;
+  v8 = [(IMSyncErrorAnalyzer *)self _isCKErrorPartialFailure:errorCopy];
+  if (!codeCopy || !v8)
   {
     goto LABEL_7;
   }
 
-  v9 = [(IMSyncErrorAnalyzer *)self _errorsFromPartialError:v6];
+  v9 = [(IMSyncErrorAnalyzer *)self _errorsFromPartialError:errorCopy];
   if ([v9 count] != 1)
   {
 
     goto LABEL_7;
   }
 
-  v10 = [v9 lastObject];
-  v11 = [v10 code];
-  v12 = [v7 integerValue];
+  lastObject = [v9 lastObject];
+  code = [lastObject code];
+  integerValue = [codeCopy integerValue];
 
-  if (v11 != v12)
+  if (code != integerValue)
   {
 LABEL_7:
-    v14 = [v6 code];
-    v13 = v14 == [v7 integerValue];
+    code2 = [errorCopy code];
+    v13 = code2 == [codeCopy integerValue];
     goto LABEL_8;
   }
 
@@ -154,24 +154,24 @@ LABEL_8:
   return v13;
 }
 
-- (BOOL)errorIndicatesZoneNotCreated:(id)a3
+- (BOOL)errorIndicatesZoneNotCreated:(id)created
 {
-  v4 = a3;
-  if (v4)
+  createdCopy = created;
+  if (createdCopy)
   {
     v5 = IMSingleObjectArray();
-    if ([(IMSyncErrorAnalyzer *)self CKPartialError:v4 onlyHasErrorCodes:v5])
+    if ([(IMSyncErrorAnalyzer *)self CKPartialError:createdCopy onlyHasErrorCodes:v5])
     {
       v6 = 1;
     }
 
     else
     {
-      v7 = [v4 domain];
+      domain = [createdCopy domain];
       v8 = sub_1A864A6F0();
-      if ([v7 isEqualToString:v8])
+      if ([domain isEqualToString:v8])
       {
-        v6 = [v4 code] == 26;
+        v6 = [createdCopy code] == 26;
       }
 
       else
@@ -180,10 +180,10 @@ LABEL_8:
       }
     }
 
-    v9 = [v4 domain];
-    if ([v9 isEqualToString:@"com.apple.Messages.ChatSyncErrorDomain"])
+    domain2 = [createdCopy domain];
+    if ([domain2 isEqualToString:@"com.apple.Messages.ChatSyncErrorDomain"])
     {
-      v10 = [v4 code] == 1;
+      v10 = [createdCopy code] == 1;
 
       v6 |= v10;
     }
@@ -192,10 +192,10 @@ LABEL_8:
     {
     }
 
-    v11 = [v4 domain];
-    if ([v11 isEqualToString:@"com.apple.Messages.MessageSyncErrorDomain"])
+    domain3 = [createdCopy domain];
+    if ([domain3 isEqualToString:@"com.apple.Messages.MessageSyncErrorDomain"])
     {
-      v12 = [v4 code] == 1;
+      v12 = [createdCopy code] == 1;
 
       v6 |= v12;
     }
@@ -204,10 +204,10 @@ LABEL_8:
     {
     }
 
-    v13 = [v4 domain];
-    if ([v13 isEqualToString:@"com.apple.IMCore.IMDCKAttachmentSyncController"])
+    domain4 = [createdCopy domain];
+    if ([domain4 isEqualToString:@"com.apple.IMCore.IMDCKAttachmentSyncController"])
     {
-      v14 = [v4 code] == 0;
+      v14 = [createdCopy code] == 0;
 
       v6 |= v14;
     }
@@ -225,15 +225,15 @@ LABEL_8:
   return v6 & 1;
 }
 
-- (BOOL)errorIndicatesZoneNotFound:(id)a3
+- (BOOL)errorIndicatesZoneNotFound:(id)found
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  foundCopy = found;
+  v4 = foundCopy;
+  if (foundCopy)
   {
-    v5 = [v3 domain];
+    domain = [foundCopy domain];
     v6 = sub_1A864A6F0();
-    if ([v5 isEqualToString:v6])
+    if ([domain isEqualToString:v6])
     {
       v7 = [v4 code] == 26;
     }
@@ -252,18 +252,18 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)errorIndicatesUserDeletedZone:(id)a3
+- (BOOL)errorIndicatesUserDeletedZone:(id)zone
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  zoneCopy = zone;
+  v5 = zoneCopy;
+  if (!zoneCopy)
   {
     goto LABEL_7;
   }
 
-  v6 = [v4 domain];
+  domain = [zoneCopy domain];
   v7 = sub_1A864A6F0();
-  v8 = [v6 isEqualToString:v7];
+  v8 = [domain isEqualToString:v7];
 
   if (!v8)
   {
@@ -273,9 +273,9 @@ LABEL_8:
   v9 = IMSingleObjectArray();
   if (![(IMSyncErrorAnalyzer *)self CKPartialError:v5 onlyHasErrorCodes:v9])
   {
-    v10 = [v5 code];
+    code = [v5 code];
 
-    if (v10 == 28)
+    if (code == 28)
     {
       goto LABEL_6;
     }
@@ -292,15 +292,15 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)errorIndicatesDeviceConditionsDontAllowSync:(id)a3
+- (BOOL)errorIndicatesDeviceConditionsDontAllowSync:(id)sync
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:@"com.apple.Messages.MessageSyncErrorDomain"])
+  syncCopy = sync;
+  domain = [syncCopy domain];
+  if ([domain isEqualToString:@"com.apple.Messages.MessageSyncErrorDomain"])
   {
-    v5 = [v3 code];
+    code = [syncCopy code];
 
-    if (v5 == 2)
+    if (code == 2)
     {
       goto LABEL_11;
     }
@@ -310,12 +310,12 @@ LABEL_8:
   {
   }
 
-  v6 = [v3 domain];
-  if ([v6 isEqualToString:@"com.apple.Messages.ChatSyncErrorDomain"])
+  domain2 = [syncCopy domain];
+  if ([domain2 isEqualToString:@"com.apple.Messages.ChatSyncErrorDomain"])
   {
-    v7 = [v3 code];
+    code2 = [syncCopy code];
 
-    if (v7 == 3)
+    if (code2 == 3)
     {
       goto LABEL_11;
     }
@@ -325,16 +325,16 @@ LABEL_8:
   {
   }
 
-  v8 = [v3 domain];
-  if (![v8 isEqualToString:@"com.apple.IMCore.IMDCKAttachmentSyncController"])
+  domain3 = [syncCopy domain];
+  if (![domain3 isEqualToString:@"com.apple.IMCore.IMDCKAttachmentSyncController"])
   {
 
     goto LABEL_13;
   }
 
-  v9 = [v3 code];
+  code3 = [syncCopy code];
 
-  if (v9 != 4)
+  if (code3 != 4)
   {
 LABEL_13:
     v10 = 0;
@@ -348,15 +348,15 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)errorIndicatesMaxAttemptsFailed:(id)a3
+- (BOOL)errorIndicatesMaxAttemptsFailed:(id)failed
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:@"com.apple.Messages.ChatSyncErrorDomain"])
+  failedCopy = failed;
+  domain = [failedCopy domain];
+  if ([domain isEqualToString:@"com.apple.Messages.ChatSyncErrorDomain"])
   {
-    v5 = [v3 code];
+    code = [failedCopy code];
 
-    if (v5 == 6)
+    if (code == 6)
     {
       goto LABEL_7;
     }
@@ -366,16 +366,16 @@ LABEL_14:
   {
   }
 
-  v6 = [v3 domain];
-  if (![v6 isEqualToString:@"com.apple.IMCore.IMDCKAttachmentSyncController"])
+  domain2 = [failedCopy domain];
+  if (![domain2 isEqualToString:@"com.apple.IMCore.IMDCKAttachmentSyncController"])
   {
 
     goto LABEL_9;
   }
 
-  v7 = [v3 code];
+  code2 = [failedCopy code];
 
-  if (v7 != 1)
+  if (code2 != 1)
   {
 LABEL_9:
     v8 = 0;
@@ -389,18 +389,18 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)errorIndicatesQuotaExceeded:(id)a3
+- (BOOL)errorIndicatesQuotaExceeded:(id)exceeded
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(IMSyncErrorAnalyzer *)self _isCKErrorPartialFailure:v4])
+  exceededCopy = exceeded;
+  if ([(IMSyncErrorAnalyzer *)self _isCKErrorPartialFailure:exceededCopy])
   {
-    v5 = [(IMSyncErrorAnalyzer *)self _errorsFromPartialError:v4];
+    domain = [(IMSyncErrorAnalyzer *)self _errorsFromPartialError:exceededCopy];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v6 = [domain countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -412,13 +412,13 @@ LABEL_10:
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(domain);
           }
 
           v8 |= [*(*(&v13 + 1) + 8 * i) code] == 25;
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [domain countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
@@ -432,11 +432,11 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v5 = [v4 domain];
+  domain = [exceededCopy domain];
   v11 = sub_1A864A6F0();
-  if ([v5 isEqualToString:v11])
+  if ([domain isEqualToString:v11])
   {
-    v8 = [v4 code] == 25;
+    v8 = [exceededCopy code] == 25;
 
 LABEL_14:
     goto LABEL_15;
@@ -448,18 +448,18 @@ LABEL_15:
   return v8 & 1;
 }
 
-- (BOOL)errorIndicatesTokenWasExpired:(id)a3
+- (BOOL)errorIndicatesTokenWasExpired:(id)expired
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(IMSyncErrorAnalyzer *)self _isCKErrorPartialFailure:v4])
+  expiredCopy = expired;
+  if ([(IMSyncErrorAnalyzer *)self _isCKErrorPartialFailure:expiredCopy])
   {
-    v5 = [(IMSyncErrorAnalyzer *)self _errorsFromPartialError:v4];
+    domain = [(IMSyncErrorAnalyzer *)self _errorsFromPartialError:expiredCopy];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v6 = [domain countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -471,13 +471,13 @@ LABEL_15:
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(domain);
           }
 
           v8 |= [*(*(&v13 + 1) + 8 * i) code] == 21;
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [domain countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
@@ -491,11 +491,11 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v5 = [v4 domain];
+  domain = [expiredCopy domain];
   v11 = sub_1A864A6F0();
-  if ([v5 isEqualToString:v11])
+  if ([domain isEqualToString:v11])
   {
-    v8 = [v4 code] == 21;
+    v8 = [expiredCopy code] == 21;
 
 LABEL_14:
     goto LABEL_15;
@@ -507,15 +507,15 @@ LABEL_15:
   return v8 & 1;
 }
 
-- (BOOL)errorIndicatesBatchFailure:(id)a3
+- (BOOL)errorIndicatesBatchFailure:(id)failure
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  failureCopy = failure;
+  v4 = failureCopy;
+  if (failureCopy)
   {
-    v5 = [v3 domain];
+    domain = [failureCopy domain];
     v6 = sub_1A864A6F0();
-    if ([v5 isEqualToString:v6])
+    if ([domain isEqualToString:v6])
     {
       v7 = [v4 code] == 22;
     }
@@ -534,15 +534,15 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)errorIndicatesRecordWasArchived:(id)a3
+- (BOOL)errorIndicatesRecordWasArchived:(id)archived
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  archivedCopy = archived;
+  v4 = archivedCopy;
+  if (archivedCopy)
   {
-    v5 = [v3 domain];
+    domain = [archivedCopy domain];
     v6 = sub_1A864A6F0();
-    if ([v5 isEqualToString:v6])
+    if ([domain isEqualToString:v6])
     {
       v7 = [v4 code] == 100 || objc_msgSend(v4, "code") == 2050;
     }
@@ -561,31 +561,31 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)errorIndicatesDuplicateRecordWasFound:(id)a3
+- (BOOL)errorIndicatesDuplicateRecordWasFound:(id)found
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  foundCopy = found;
+  v4 = foundCopy;
+  if (foundCopy)
   {
-    v5 = [v3 domain];
+    domain = [foundCopy domain];
     v6 = sub_1A864A6F0();
-    if ([v5 isEqualToString:v6] && objc_msgSend(v4, "code") == 12)
+    if ([domain isEqualToString:v6] && objc_msgSend(v4, "code") == 12)
     {
-      v7 = [v4 userInfo];
-      if (v7)
+      userInfo = [v4 userInfo];
+      if (userInfo)
       {
-        v8 = [v4 userInfo];
+        userInfo2 = [v4 userInfo];
         v9 = sub_1A864B0B0();
-        v10 = [v8 objectForKey:v9];
+        v10 = [userInfo2 objectForKey:v9];
         if (v10)
         {
-          v11 = [v4 userInfo];
+          userInfo3 = [v4 userInfo];
           v12 = sub_1A864B0B0();
-          [v11 objectForKey:v12];
-          v13 = v16 = v8;
+          [userInfo3 objectForKey:v12];
+          v13 = v16 = userInfo2;
           v14 = [v13 containsString:@"You can't save the same record twice"];
 
-          v8 = v16;
+          userInfo2 = v16;
         }
 
         else
@@ -614,15 +614,15 @@ LABEL_15:
   return v14;
 }
 
-- (BOOL)errorIndicatesRecordWasAlreadyChanged:(id)a3
+- (BOOL)errorIndicatesRecordWasAlreadyChanged:(id)changed
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  changedCopy = changed;
+  v4 = changedCopy;
+  if (changedCopy)
   {
-    v5 = [v3 domain];
+    domain = [changedCopy domain];
     v6 = sub_1A864A6F0();
-    if ([v5 isEqualToString:v6])
+    if ([domain isEqualToString:v6])
     {
       v7 = [v4 code] == 14;
     }
@@ -641,15 +641,15 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)errorIndicatesAssetWasNotAvailable:(id)a3
+- (BOOL)errorIndicatesAssetWasNotAvailable:(id)available
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  availableCopy = available;
+  v4 = availableCopy;
+  if (availableCopy)
   {
-    v5 = [v3 domain];
+    domain = [availableCopy domain];
     v6 = sub_1A864A6F0();
-    if ([v5 isEqualToString:v6])
+    if ([domain isEqualToString:v6])
     {
       v7 = [v4 code] == 35;
     }
@@ -668,15 +668,15 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)errorIndicatesItemWasUnknown:(id)a3
+- (BOOL)errorIndicatesItemWasUnknown:(id)unknown
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  unknownCopy = unknown;
+  v4 = unknownCopy;
+  if (unknownCopy)
   {
-    v5 = [v3 domain];
+    domain = [unknownCopy domain];
     v6 = sub_1A864A6F0();
-    if ([v5 isEqualToString:v6])
+    if ([domain isEqualToString:v6])
     {
       v7 = [v4 code] == 11;
     }
@@ -695,17 +695,17 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)errorIndicatesBatchSizeFailure:(id)a3
+- (BOOL)errorIndicatesBatchSizeFailure:(id)failure
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  failureCopy = failure;
+  userInfo = [failureCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
   if (v5 && ([v5 domain], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", *MEMORY[0x1E695B838]), v6, v7))
   {
-    v8 = [v3 domain];
+    domain = [failureCopy domain];
     v9 = sub_1A864A6F0();
-    v10 = [v8 isEqualToString:v9] && objc_msgSend(v3, "code") == 27 && objc_msgSend(v5, "code") == 1020;
+    v10 = [domain isEqualToString:v9] && objc_msgSend(failureCopy, "code") == 27 && objc_msgSend(v5, "code") == 1020;
   }
 
   else
@@ -716,17 +716,17 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)errorIndicatesRecordSizeFailure:(id)a3
+- (BOOL)errorIndicatesRecordSizeFailure:(id)failure
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  failureCopy = failure;
+  userInfo = [failureCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
   if (v5 && ([v5 domain], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", *MEMORY[0x1E695B838]), v6, v7))
   {
-    v8 = [v3 domain];
+    domain = [failureCopy domain];
     v9 = sub_1A864A6F0();
-    v10 = [v8 isEqualToString:v9] && objc_msgSend(v3, "code") == 27 && objc_msgSend(v5, "code") == 2023;
+    v10 = [domain isEqualToString:v9] && objc_msgSend(failureCopy, "code") == 27 && objc_msgSend(v5, "code") == 2023;
   }
 
   else
@@ -737,32 +737,32 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)acceptableErrorCodeWhileDeleting:(id)a3
+- (BOOL)acceptableErrorCodeWhileDeleting:(id)deleting
 {
-  v4 = a3;
+  deletingCopy = deleting;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:{&unk_1F1BFA568, &unk_1F1BFA580, 0}];
-  v6 = !v4 || -[IMSyncErrorAnalyzer CKPartialError:onlyHasErrorCodes:](self, "CKPartialError:onlyHasErrorCodes:", v4, v5) || [v4 code] == 26 || objc_msgSend(v4, "code") == 28;
+  v6 = !deletingCopy || -[IMSyncErrorAnalyzer CKPartialError:onlyHasErrorCodes:](self, "CKPartialError:onlyHasErrorCodes:", deletingCopy, v5) || [deletingCopy code] == 26 || objc_msgSend(deletingCopy, "code") == 28;
 
   return v6;
 }
 
-- (id)extractRecordIDsDeletedFromCKPartialError:(id)a3
+- (id)extractRecordIDsDeletedFromCKPartialError:(id)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v4 && [(IMSyncErrorAnalyzer *)self _isCKErrorPartialFailure:v4])
+  if (errorCopy && [(IMSyncErrorAnalyzer *)self _isCKErrorPartialFailure:errorCopy])
   {
-    v6 = [v4 userInfo];
+    userInfo = [errorCopy userInfo];
     v7 = sub_1A864A178();
-    v8 = [v6 objectForKeyedSubscript:v7];
+    v8 = [userInfo objectForKeyedSubscript:v7];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [v8 allKeys];
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    allKeys = [v8 allKeys];
+    v10 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (!v10)
     {
       goto LABEL_19;
@@ -776,7 +776,7 @@ LABEL_15:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
@@ -794,18 +794,18 @@ LABEL_15:
           goto LABEL_17;
         }
 
-        v17 = [v14 recordName];
+        recordName = [v14 recordName];
 
-        if (v17)
+        if (recordName)
         {
-          v18 = [v14 recordName];
-          CFArrayAppendValue(v5, v18);
+          recordName2 = [v14 recordName];
+          CFArrayAppendValue(v5, recordName2);
         }
 
 LABEL_17:
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (!v11)
       {
 LABEL_19:
@@ -818,23 +818,23 @@ LABEL_19:
   return v5;
 }
 
-- (id)extractRecordIDsNotFoundFromCKPartialError:(id)a3
+- (id)extractRecordIDsNotFoundFromCKPartialError:(id)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v4 && [(IMSyncErrorAnalyzer *)self _isCKErrorPartialFailure:v4])
+  if (errorCopy && [(IMSyncErrorAnalyzer *)self _isCKErrorPartialFailure:errorCopy])
   {
-    v6 = [v4 userInfo];
+    userInfo = [errorCopy userInfo];
     v7 = sub_1A864A178();
-    v8 = [v6 objectForKeyedSubscript:v7];
+    v8 = [userInfo objectForKeyedSubscript:v7];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [v8 allKeys];
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    allKeys = [v8 allKeys];
+    v10 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -845,24 +845,24 @@ LABEL_19:
         {
           if (*v21 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allKeys);
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
           v15 = [v8 objectForKeyedSubscript:v14];
           if ([v15 code] == 11 && v5 != 0)
           {
-            v17 = [v14 recordName];
+            recordName = [v14 recordName];
 
-            if (v17)
+            if (recordName)
             {
-              v18 = [v14 recordName];
-              CFArrayAppendValue(v5, v18);
+              recordName2 = [v14 recordName];
+              CFArrayAppendValue(v5, recordName2);
             }
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v11 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v11);
@@ -872,20 +872,20 @@ LABEL_19:
   return v5;
 }
 
-- (BOOL)errorIndicatesIdentityWasLost:(id)a3
+- (BOOL)errorIndicatesIdentityWasLost:(id)lost
 {
-  v4 = a3;
-  v5 = [v4 domain];
+  lostCopy = lost;
+  domain = [lostCopy domain];
   v6 = sub_1A864A6F0();
-  if (![v5 isEqualToString:v6])
+  if (![domain isEqualToString:v6])
   {
 
     goto LABEL_5;
   }
 
-  if ([v4 code] != 112)
+  if ([lostCopy code] != 112)
   {
-    v8 = [(IMSyncErrorAnalyzer *)self CKPartialError:v4 onlyHasErrorCodes:&unk_1F1BFACA0];
+    v8 = [(IMSyncErrorAnalyzer *)self CKPartialError:lostCopy onlyHasErrorCodes:&unk_1F1BFACA0];
 
     if (v8)
     {
@@ -914,11 +914,11 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)errorIndicatesDeviceDoesNotHaveKeysToSync:(id)a3
+- (BOOL)errorIndicatesDeviceDoesNotHaveKeysToSync:(id)sync
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ([v4 domain], v6 = objc_claimAutoreleasedReturnValue(), sub_1A864A6F0(), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isEqualToString:", v7), v7, v6, (v8 & 1) == 0))
+  syncCopy = sync;
+  v5 = syncCopy;
+  if (!syncCopy || ([syncCopy domain], v6 = objc_claimAutoreleasedReturnValue(), sub_1A864A6F0(), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isEqualToString:", v7), v7, v6, (v8 & 1) == 0))
   {
     if (IMOSLoggingEnabled())
     {
@@ -1000,22 +1000,22 @@ LABEL_16:
   return v11;
 }
 
-- (unint64_t)calculateDelay:(unint64_t)a3 forAttempt:(unint64_t)a4 maxInterval:(unint64_t)a5
+- (unint64_t)calculateDelay:(unint64_t)delay forAttempt:(unint64_t)attempt maxInterval:(unint64_t)interval
 {
-  v6 = exp2(a4) * a3;
-  if (v6 >= a5)
+  v6 = exp2(attempt) * delay;
+  if (v6 >= interval)
   {
-    return a5;
+    return interval;
   }
 
   return v6;
 }
 
-- (int64_t)responseForError:(id)a3 attempt:(unint64_t)a4 retryInterval:(id *)a5
+- (int64_t)responseForError:(id)error attempt:(unint64_t)attempt retryInterval:(id *)interval
 {
   v66[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!v8 && IMOSLoggingEnabled())
+  errorCopy = error;
+  if (!errorCopy && IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -1025,22 +1025,22 @@ LABEL_16:
     }
   }
 
-  v10 = [v8 domain];
+  domain = [errorCopy domain];
   v11 = sub_1A864A6F0();
-  v12 = [v10 isEqualToString:v11];
+  v12 = [domain isEqualToString:v11];
 
   if (!v12)
   {
-    v15 = [v8 domain];
-    v16 = [v15 isEqualToString:@"com.apple.Messages.MiC"];
+    domain2 = [errorCopy domain];
+    v16 = [domain2 isEqualToString:@"com.apple.Messages.MiC"];
 
     if (v16)
     {
-      v17 = [v8 code];
+      code = [errorCopy code];
       v18 = 1;
-      if (v17 > 2)
+      if (code > 2)
       {
-        switch(v17)
+        switch(code)
         {
           case 3:
             v18 = 5;
@@ -1056,9 +1056,9 @@ LABEL_16:
         goto LABEL_99;
       }
 
-      if (v17)
+      if (code)
       {
-        if (v17 == 2)
+        if (code == 2)
         {
           v18 = 4;
         }
@@ -1069,29 +1069,29 @@ LABEL_16:
       goto LABEL_42;
     }
 
-    v23 = [v8 domain];
-    v24 = [v23 isEqualToString:@"kCFErrorDomainCFNetwork"];
+    domain3 = [errorCopy domain];
+    v24 = [domain3 isEqualToString:@"kCFErrorDomainCFNetwork"];
 
-    if (v24 & 1) != 0 || ([v8 domain], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToString:", *MEMORY[0x1E696A250]), v25, (v26))
+    if (v24 & 1) != 0 || ([errorCopy domain], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToString:", *MEMORY[0x1E696A250]), v25, (v26))
     {
       v18 = 2;
       goto LABEL_99;
     }
 
-    v28 = [v8 domain];
-    v29 = [v28 isEqualToString:*MEMORY[0x1E696A798]];
+    domain4 = [errorCopy domain];
+    v29 = [domain4 isEqualToString:*MEMORY[0x1E696A798]];
 
     if (v29)
     {
       goto LABEL_42;
     }
 
-    v30 = [v8 domain];
-    v31 = [v30 isEqualToString:@"FileTransferFileURLRetrievalErrorDomain"];
+    domain5 = [errorCopy domain];
+    v31 = [domain5 isEqualToString:@"FileTransferFileURLRetrievalErrorDomain"];
 
     if (v31)
     {
-      if ([v8 code] == 10)
+      if ([errorCopy code] == 10)
       {
         v18 = 8;
       }
@@ -1104,31 +1104,31 @@ LABEL_16:
 
     else
     {
-      v37 = [v8 domain];
-      v38 = [v37 isEqualToString:@"FileTransferErrorDomain"];
+      domain6 = [errorCopy domain];
+      v38 = [domain6 isEqualToString:@"FileTransferErrorDomain"];
 
       if ((v38 & 1) == 0)
       {
-        if ([(IMSyncErrorAnalyzer *)self errorIndicatesZoneNotCreated:v8]&& IMOSLoggingEnabled())
+        if ([(IMSyncErrorAnalyzer *)self errorIndicatesZoneNotCreated:errorCopy]&& IMOSLoggingEnabled())
         {
           v54 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            *&buf[4] = v8;
+            *&buf[4] = errorCopy;
             _os_log_impl(&dword_1A85E5000, v54, OS_LOG_TYPE_INFO, "Error: zone creation failed %@, is not recoverable", buf, 0xCu);
           }
         }
 
-        if (![(IMSyncErrorAnalyzer *)self errorIndicatesDeviceConditionsDontAllowSync:v8])
+        if (![(IMSyncErrorAnalyzer *)self errorIndicatesDeviceConditionsDontAllowSync:errorCopy])
         {
-          if ([(IMSyncErrorAnalyzer *)self errorIndicatesMaxAttemptsFailed:v8]&& IMOSLoggingEnabled())
+          if ([(IMSyncErrorAnalyzer *)self errorIndicatesMaxAttemptsFailed:errorCopy]&& IMOSLoggingEnabled())
           {
             v59 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v59, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              *&buf[4] = v8;
+              *&buf[4] = errorCopy;
               _os_log_impl(&dword_1A85E5000, v59, OS_LOG_TYPE_INFO, "Error: exceeded attempts %@, is not recoverable", buf, 0xCu);
             }
           }
@@ -1143,7 +1143,7 @@ LABEL_16:
           if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            *&buf[4] = v8;
+            *&buf[4] = errorCopy;
             _os_log_impl(&dword_1A85E5000, v55, OS_LOG_TYPE_INFO, "Error: Conditions no longer good for sync %@, is not recoverable, will defer to DAS if possible", buf, 0xCu);
           }
         }
@@ -1157,18 +1157,18 @@ LABEL_42:
     }
 
 LABEL_99:
-    v48 = [(IMSyncErrorAnalyzer *)self calculateDelay:15 forAttempt:a4 maxInterval:300];
+    v48 = [(IMSyncErrorAnalyzer *)self calculateDelay:15 forAttempt:attempt maxInterval:300];
     if (IMOSLoggingEnabled())
     {
       v51 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        *&buf[4] = v8;
+        *&buf[4] = errorCopy;
         *&buf[12] = 2048;
         *&buf[14] = v48;
         *&buf[22] = 2048;
-        v65 = a4;
+        attemptCopy2 = attempt;
         _os_log_impl(&dword_1A85E5000, v51, OS_LOG_TYPE_INFO, "No retry interval found for error %@, calculated interval %lu for attempt %lu", buf, 0x20u);
       }
     }
@@ -1176,14 +1176,14 @@ LABEL_99:
     goto LABEL_103;
   }
 
-  if ([v8 code] == 2)
+  if ([errorCopy code] == 2)
   {
-    v13 = [(IMSyncErrorAnalyzer *)self _errorsFromPartialError:v8];
+    v13 = [(IMSyncErrorAnalyzer *)self _errorsFromPartialError:errorCopy];
     if ([v13 count] == 1)
     {
-      v14 = [v13 firstObject];
+      firstObject = [v13 firstObject];
 
-      v8 = v14;
+      errorCopy = firstObject;
     }
   }
 
@@ -1192,29 +1192,29 @@ LABEL_99:
     v13 = 0;
   }
 
-  v19 = [v8 userInfo];
-  v20 = [v19 objectForKey:*MEMORY[0x1E696AA08]];
+  userInfo = [errorCopy userInfo];
+  v20 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
-  v21 = [v8 code];
+  code2 = [errorCopy code];
   v18 = 1;
-  if (v21 > 110)
+  if (code2 > 110)
   {
-    if (v21 <= 130)
+    if (code2 <= 130)
     {
-      if (v21 == 111)
+      if (code2 == 111)
       {
         v18 = 5;
       }
 
-      else if (v21 == 112)
+      else if (code2 == 112)
       {
         v18 = 6;
       }
     }
 
-    else if ((v21 - 131) >= 2)
+    else if ((code2 - 131) >= 2)
     {
-      if (v21 == 140)
+      if (code2 == 140)
       {
         if (IMOSLoggingEnabled())
         {
@@ -1222,7 +1222,7 @@ LABEL_99:
           if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            *&buf[4] = v8;
+            *&buf[4] = errorCopy;
             _os_log_impl(&dword_1A85E5000, v22, OS_LOG_TYPE_INFO, "Error: Low Disk Space %@, is not recoverable", buf, 0xCu);
           }
 
@@ -1243,7 +1243,7 @@ LABEL_28:
 
   else
   {
-    switch(v21)
+    switch(code2)
     {
       case 1:
       case 25:
@@ -1256,7 +1256,7 @@ LABEL_28:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          *&buf[4] = v8;
+          *&buf[4] = errorCopy;
           _os_log_impl(&dword_1A85E5000, v22, OS_LOG_TYPE_INFO, "Error %@ is not recoverable", buf, 0xCu);
         }
 
@@ -1279,7 +1279,7 @@ LABEL_28:
           if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            *&buf[4] = v8;
+            *&buf[4] = errorCopy;
             _os_log_impl(&dword_1A85E5000, v36, OS_LOG_TYPE_INFO, "Error: Network unavailable error %@, should defer activity; xpc_activity_will invoke us again later.", buf, 0xCu);
           }
         }
@@ -1298,7 +1298,7 @@ LABEL_28:
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          *&buf[4] = v8;
+          *&buf[4] = errorCopy;
           _os_log_impl(&dword_1A85E5000, v27, OS_LOG_TYPE_INFO, "Error: Throttle or Network Failure %@, retrying", buf, 0xCu);
         }
 
@@ -1321,7 +1321,7 @@ LABEL_28:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          *&buf[4] = v8;
+          *&buf[4] = errorCopy;
           _os_log_impl(&dword_1A85E5000, v22, OS_LOG_TYPE_INFO, "Error! Unexpected %@, not recoverable", buf, 0xCu);
         }
 
@@ -1340,7 +1340,7 @@ LABEL_28:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          *&buf[4] = v8;
+          *&buf[4] = errorCopy;
           _os_log_impl(&dword_1A85E5000, v22, OS_LOG_TYPE_INFO, "Error: Failed to successfuly sync changes up %@, not recoverable", buf, 0xCu);
         }
 
@@ -1355,15 +1355,15 @@ LABEL_28:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          *&buf[4] = v8;
+          *&buf[4] = errorCopy;
           _os_log_impl(&dword_1A85E5000, v22, OS_LOG_TYPE_INFO, "Error: Unexpected App Version! %@, not recoverable", buf, 0xCu);
         }
 
         goto LABEL_78;
       case 20:
-        v33 = [v20 domain];
+        domain7 = [v20 domain];
         v34 = *MEMORY[0x1E695B778];
-        if ([v33 isEqualToString:*MEMORY[0x1E695B778]])
+        if ([domain7 isEqualToString:*MEMORY[0x1E695B778]])
         {
           v35 = [v20 code] == 1026;
 
@@ -1377,8 +1377,8 @@ LABEL_28:
         {
         }
 
-        v39 = [v20 domain];
-        if ([v39 isEqualToString:v34])
+        domain8 = [v20 domain];
+        if ([domain8 isEqualToString:v34])
         {
           v40 = [v20 code] == 1025;
 
@@ -1392,9 +1392,9 @@ LABEL_28:
         {
         }
 
-        v56 = [v20 domain];
+        domain9 = [v20 domain];
         v57 = sub_1A864A6F0();
-        if ([v56 isEqualToString:v57])
+        if ([domain9 isEqualToString:v57])
         {
           v58 = [v20 code] == 131;
 
@@ -1424,7 +1424,7 @@ LABEL_40:
         v18 = 2;
         break;
       default:
-        if (v21 == 110)
+        if (code2 == 110)
         {
 LABEL_62:
           if (IMOSLoggingEnabled())
@@ -1433,7 +1433,7 @@ LABEL_62:
             if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              *&buf[4] = v8;
+              *&buf[4] = errorCopy;
               _os_log_impl(&dword_1A85E5000, v32, OS_LOG_TYPE_INFO, "Error: NonHSA2/No user/restricted %@.", buf, 0xCu);
             }
           }
@@ -1445,7 +1445,7 @@ LABEL_62:
     }
   }
 
-  v41 = [v8 userInfo];
+  userInfo2 = [errorCopy userInfo];
   v60 = 0;
   v61 = &v60;
   v62 = 0x2020000000;
@@ -1456,7 +1456,7 @@ LABEL_62:
     *buf = MEMORY[0x1E69E9820];
     *&buf[8] = 3221225472;
     *&buf[16] = sub_1A864CDF8;
-    v65 = &unk_1E78261C8;
+    attemptCopy2 = &unk_1E78261C8;
     v66[0] = &v60;
     v43 = sub_1A864CBE4();
     v44 = dlsym(v43, "CKErrorRetryAfterKey");
@@ -1472,7 +1472,7 @@ LABEL_62:
     __break(1u);
   }
 
-  v45 = [v41 objectForKey:*v42];
+  v45 = [userInfo2 objectForKey:*v42];
 
   if (v45)
   {
@@ -1523,16 +1523,16 @@ LABEL_103:
       *&buf[12] = 2048;
       *&buf[14] = v48;
       *&buf[22] = 2048;
-      v65 = a4;
+      attemptCopy2 = attempt;
       LOWORD(v66[0]) = 2112;
-      *(v66 + 2) = v8;
+      *(v66 + 2) = errorCopy;
       _os_log_impl(&dword_1A85E5000, v52, OS_LOG_TYPE_INFO, "Error analysis: response %lu interval %lu for attempt %lu error %@", buf, 0x2Au);
     }
   }
 
-  if (a5)
+  if (interval)
   {
-    *a5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v48];
+    *interval = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v48];
   }
 
   return v18;

@@ -1,11 +1,11 @@
 @interface DefaultGKViceroyNATObserver
 + (id)syncQueue;
-- (BOOL)isValidSettings:(id)a3;
+- (BOOL)isValidSettings:(id)settings;
 - (DefaultGKViceroyNATObserver)init;
-- (void)_getNATTypeWithNATSettings:(id)a3 completionHandler:(id)a4;
+- (void)_getNATTypeWithNATSettings:(id)settings completionHandler:(id)handler;
 - (void)dealloc;
-- (void)getNATTypeWithNATSettings:(id)a3 completionHandler:(id)a4;
-- (void)performAsync:(id)a3;
+- (void)getNATTypeWithNATSettings:(id)settings completionHandler:(id)handler;
+- (void)performAsync:(id)async;
 - (void)teardown;
 @end
 
@@ -70,33 +70,33 @@ uint64_t __40__DefaultGKViceroyNATObserver_syncQueue__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)performAsync:(id)a3
+- (void)performAsync:(id)async
 {
-  v3 = a3;
-  v4 = [objc_opt_class() syncQueue];
-  dispatch_async(v4, v3);
+  asyncCopy = async;
+  syncQueue = [objc_opt_class() syncQueue];
+  dispatch_async(syncQueue, asyncCopy);
 }
 
-- (void)getNATTypeWithNATSettings:(id)a3 completionHandler:(id)a4
+- (void)getNATTypeWithNATSettings:(id)settings completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __75__DefaultGKViceroyNATObserver_getNATTypeWithNATSettings_completionHandler___block_invoke;
   v10[3] = &unk_2785DE948;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = settingsCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = settingsCopy;
   [(DefaultGKViceroyNATObserver *)self performAsync:v10];
 }
 
-- (BOOL)isValidSettings:(id)a3
+- (BOOL)isValidSettings:(id)settings
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  settingsCopy = settings;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -117,7 +117,7 @@ uint64_t __40__DefaultGKViceroyNATObserver_syncQueue__block_invoke()
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v3 objectForKey:v9];
+        v10 = [settingsCopy objectForKey:v9];
 
         if (!v10)
         {
@@ -154,19 +154,19 @@ LABEL_15:
   return v11;
 }
 
-- (void)_getNATTypeWithNATSettings:(id)a3 completionHandler:(id)a4
+- (void)_getNATTypeWithNATSettings:(id)settings completionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  handlerCopy = handler;
   if ([(DefaultGKViceroyNATObserver *)self natType])
   {
 LABEL_2:
-    v7[2](v7, [(DefaultGKViceroyNATObserver *)self natType]);
+    handlerCopy[2](handlerCopy, [(DefaultGKViceroyNATObserver *)self natType]);
     goto LABEL_20;
   }
 
-  if (v6 && [(DefaultGKViceroyNATObserver *)self isValidSettings:v6])
+  if (settingsCopy && [(DefaultGKViceroyNATObserver *)self isValidSettings:settingsCopy])
   {
     if (!os_log_GKGeneral)
     {
@@ -178,9 +178,9 @@ LABEL_2:
       [DefaultGKViceroyNATObserver _getNATTypeWithNATSettings:completionHandler:];
     }
 
-    [GKViceroyNATConfiguration applySettings:v6];
-    v9 = [(DefaultGKViceroyNATObserver *)self natObserver];
-    [v9 setDelegate:self];
+    [GKViceroyNATConfiguration applySettings:settingsCopy];
+    natObserver = [(DefaultGKViceroyNATObserver *)self natObserver];
+    [natObserver setDelegate:self];
 
     natSemaphore = self->_natSemaphore;
     v11 = dispatch_time(0, 3000000000);
@@ -215,7 +215,7 @@ LABEL_2:
       [DefaultGKViceroyNATObserver _getNATTypeWithNATSettings:completionHandler:];
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
     [(DefaultGKViceroyNATObserver *)self teardown];
   }
 
@@ -231,7 +231,7 @@ LABEL_2:
       [DefaultGKViceroyNATObserver _getNATTypeWithNATSettings:completionHandler:];
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
 LABEL_20:
@@ -252,12 +252,12 @@ LABEL_20:
   }
 
   self->_natType = 0;
-  v4 = [(DefaultGKViceroyNATObserver *)self natObserver];
+  natObserver = [(DefaultGKViceroyNATObserver *)self natObserver];
 
-  if (v4)
+  if (natObserver)
   {
-    v5 = [(DefaultGKViceroyNATObserver *)self natObserver];
-    [v5 setDelegate:0];
+    natObserver2 = [(DefaultGKViceroyNATObserver *)self natObserver];
+    [natObserver2 setDelegate:0];
 
     natObserver = self->_natObserver;
     self->_natObserver = 0;

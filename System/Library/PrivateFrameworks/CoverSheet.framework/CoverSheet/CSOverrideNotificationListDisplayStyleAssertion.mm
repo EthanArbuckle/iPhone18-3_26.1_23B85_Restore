@@ -1,5 +1,5 @@
 @interface CSOverrideNotificationListDisplayStyleAssertion
-- (CSOverrideNotificationListDisplayStyleAssertion)initWithNotificationListDisplayStyle:(int64_t)a3 hideNotificationCount:(BOOL)a4 reason:(id)a5 invalidationHandler:(id)a6;
+- (CSOverrideNotificationListDisplayStyleAssertion)initWithNotificationListDisplayStyle:(int64_t)style hideNotificationCount:(BOOL)count reason:(id)reason invalidationHandler:(id)handler;
 - (NSString)description;
 - (void)dealloc;
 - (void)invalidate;
@@ -7,15 +7,15 @@
 
 @implementation CSOverrideNotificationListDisplayStyleAssertion
 
-- (CSOverrideNotificationListDisplayStyleAssertion)initWithNotificationListDisplayStyle:(int64_t)a3 hideNotificationCount:(BOOL)a4 reason:(id)a5 invalidationHandler:(id)a6
+- (CSOverrideNotificationListDisplayStyleAssertion)initWithNotificationListDisplayStyle:(int64_t)style hideNotificationCount:(BOOL)count reason:(id)reason invalidationHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v11)
+  reasonCopy = reason;
+  handlerCopy = handler;
+  v13 = handlerCopy;
+  if (reasonCopy)
   {
-    if (v12)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -38,9 +38,9 @@ LABEL_3:
   v15 = v14;
   if (v14)
   {
-    v14->_displayStyle = a3;
-    v14->_hideNotificationCount = a4;
-    v16 = [v11 copy];
+    v14->_displayStyle = style;
+    v14->_hideNotificationCount = count;
+    v16 = [reasonCopy copy];
     reason = v15->_reason;
     v15->_reason = v16;
 
@@ -77,7 +77,7 @@ LABEL_3:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138543362;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21EB05000, v3, OS_LOG_TYPE_DEFAULT, "Invalidating notification list display style override assertion: %{public}@", &v5, 0xCu);
     }
 

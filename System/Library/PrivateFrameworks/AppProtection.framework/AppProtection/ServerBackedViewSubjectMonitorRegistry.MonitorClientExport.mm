@@ -1,6 +1,6 @@
 @interface ServerBackedViewSubjectMonitorRegistry.MonitorClientExport
 - (_TtCC13AppProtection38ServerBackedViewSubjectMonitorRegistryP33_AEF08B296327CA843F853682A2B6132219MonitorClientExport)init;
-- (void)viewSubjectMonitorWithUUID:(id)a3 lockedStatusUpdate:(BOOL)a4;
+- (void)viewSubjectMonitorWithUUID:(id)d lockedStatusUpdate:(BOOL)update;
 @end
 
 @implementation ServerBackedViewSubjectMonitorRegistry.MonitorClientExport
@@ -13,7 +13,7 @@
   return [(ServerBackedViewSubjectMonitorRegistry.MonitorClientExport *)&v4 init];
 }
 
-- (void)viewSubjectMonitorWithUUID:(id)a3 lockedStatusUpdate:(BOOL)a4
+- (void)viewSubjectMonitorWithUUID:(id)d lockedStatusUpdate:(BOOL)update
 {
   v6 = sub_185B67AFC();
   v7 = *(v6 - 8);
@@ -23,8 +23,8 @@
   sub_185B67ADC();
   if (swift_weakLoadStrong())
   {
-    v12 = self;
-    sub_185AE44AC(v11, a4);
+    selfCopy = self;
+    sub_185AE44AC(v11, update);
   }
 
   (*(v7 + 8))(v11, v6);

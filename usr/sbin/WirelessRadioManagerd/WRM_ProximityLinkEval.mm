@@ -1,11 +1,11 @@
 @interface WRM_ProximityLinkEval
 - (WRM_ProximityLinkEval)init;
-- (id)filterDevices:(id)a3;
-- (id)nameForNetworkType:(id)a3;
+- (id)filterDevices:(id)devices;
+- (id)nameForNetworkType:(id)type;
 - (id)submitMetrics;
-- (id)submitMetrics:(id)a3;
-- (void)session:(id)a3 updatedFoundDevices:(id)a4;
-- (void)updateWiFiRadioMetrics:(int)a3 signalQuality:(int)a4 load:(int)a5 pointOFInterest:(int)a6;
+- (id)submitMetrics:(id)metrics;
+- (void)session:(id)session updatedFoundDevices:(id)devices;
+- (void)updateWiFiRadioMetrics:(int)metrics signalQuality:(int)quality load:(int)load pointOFInterest:(int)interest;
 @end
 
 @implementation WRM_ProximityLinkEval
@@ -55,16 +55,16 @@
   return v2;
 }
 
-- (id)submitMetrics:(id)a3
+- (id)submitMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->mHotspotDict valueForKey:v4];
+  metricsCopy = metrics;
+  v5 = [(NSMutableDictionary *)self->mHotspotDict valueForKey:metricsCopy];
   if (!v5)
   {
     v5 = +[NSMutableDictionary dictionary];
   }
 
-  v6 = [(NSMutableDictionary *)self->mRSSIDict valueForKey:v4];
+  v6 = [(NSMutableDictionary *)self->mRSSIDict valueForKey:metricsCopy];
   v7 = v6;
   if (v6)
   {
@@ -74,7 +74,7 @@
 
   if (![v5 count])
   {
-    [WCM_Logging logLevel:24 message:@"ProximityLinkEval:submitMetrics: Metrics not collected for deviceID %@", v4];
+    [WCM_Logging logLevel:24 message:@"ProximityLinkEval:submitMetrics: Metrics not collected for deviceID %@", metricsCopy];
   }
 
   v12[0] = _NSConcreteStackBlock;
@@ -83,9 +83,9 @@
   v12[3] = &unk_1002402B0;
   v9 = v5;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   [WRM_CAInterface sendCAEventLazy:@"com.apple.Telephony.wrmCompanionRecommendation" payloadBuilder:v12];
-  [WCM_Logging logLevel:24 message:@"ProximityLinkEval:submitMetrics: Metrics submitted for deviceID %@", v4];
+  [WCM_Logging logLevel:24 message:@"ProximityLinkEval:submitMetrics: Metrics submitted for deviceID %@", metricsCopy];
   v10 = v9;
 
   return v9;
@@ -93,28 +93,28 @@
 
 - (id)submitMetrics
 {
-  v3 = [(NSMutableSet *)self->mIPhoneIDSet anyObject];
-  if (!v3)
+  anyObject = [(NSMutableSet *)self->mIPhoneIDSet anyObject];
+  if (!anyObject)
   {
     [WCM_Logging logLevel:24 message:@"ProximityLinkEval:submitMetrics: Metrics not collected for any iPhone device %@", self->mIPhoneIDSet];
   }
 
-  [WCM_Logging logLevel:24 message:@"ProximityLinkEval:submitMetrics: Calling submitMetrics for deviceID %@", v3];
-  v4 = [(WRM_ProximityLinkEval *)self submitMetrics:v3];
+  [WCM_Logging logLevel:24 message:@"ProximityLinkEval:submitMetrics: Calling submitMetrics for deviceID %@", anyObject];
+  v4 = [(WRM_ProximityLinkEval *)self submitMetrics:anyObject];
 
   return v4;
 }
 
-- (id)filterDevices:(id)a3
+- (id)filterDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->mRSSIDict allValues];
-  v6 = [NSPredicate predicateWithFormat:@"(model contains[cd] %@)", v4];
-  v7 = [v5 filteredArrayUsingPredicate:v6];
+  devicesCopy = devices;
+  allValues = [(NSMutableDictionary *)self->mRSSIDict allValues];
+  devicesCopy = [NSPredicate predicateWithFormat:@"(model contains[cd] %@)", devicesCopy];
+  v7 = [allValues filteredArrayUsingPredicate:devicesCopy];
 
-  v8 = [(NSMutableDictionary *)self->mHotspotDict allValues];
-  v9 = [NSPredicate predicateWithFormat:@"(model contains[cd] %@)", v4];
-  v10 = [v8 filteredArrayUsingPredicate:v9];
+  allValues2 = [(NSMutableDictionary *)self->mHotspotDict allValues];
+  devicesCopy2 = [NSPredicate predicateWithFormat:@"(model contains[cd] %@)", devicesCopy];
+  v10 = [allValues2 filteredArrayUsingPredicate:devicesCopy2];
 
   v11 = [[NSMutableSet alloc] initWithCapacity:2];
   v29 = 0u;
@@ -175,29 +175,29 @@
     while (v20);
   }
 
-  [WCM_Logging logLevel:24 message:@"ProximityLinkEval:filterDevices: For modelString: %@: deviceIDs: %@", v4, v11, v25];
+  [WCM_Logging logLevel:24 message:@"ProximityLinkEval:filterDevices: For modelString: %@: deviceIDs: %@", devicesCopy, v11, v25];
 
   return v11;
 }
 
-- (id)nameForNetworkType:(id)a3
+- (id)nameForNetworkType:(id)type
 {
-  v3 = [a3 intValue];
-  if (v3 > 8)
+  intValue = [type intValue];
+  if (intValue > 8)
   {
     return @"INVALID";
   }
 
   else
   {
-    return off_1002402F8[v3];
+    return off_1002402F8[intValue];
   }
 }
 
-- (void)session:(id)a3 updatedFoundDevices:(id)a4
+- (void)session:(id)session updatedFoundDevices:(id)devices
 {
-  v5 = a4;
-  [WCM_Logging logLevel:24 message:@"Found hotspots %@", v5];
+  devicesCopy = devices;
+  [WCM_Logging logLevel:24 message:@"Found hotspots %@", devicesCopy];
   objc_initWeak(&location, self);
   mLinkEvalManagerQueue = self->mLinkEvalManagerQueue;
   block[0] = _NSConcreteStackBlock;
@@ -205,20 +205,20 @@
   block[2] = sub_1000A87E0;
   block[3] = &unk_1002402D8;
   objc_copyWeak(&v10, &location);
-  v9 = v5;
-  v7 = v5;
+  v9 = devicesCopy;
+  v7 = devicesCopy;
   dispatch_async(mLinkEvalManagerQueue, block);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)updateWiFiRadioMetrics:(int)a3 signalQuality:(int)a4 load:(int)a5 pointOFInterest:(int)a6
+- (void)updateWiFiRadioMetrics:(int)metrics signalQuality:(int)quality load:(int)load pointOFInterest:(int)interest
 {
-  self->mWiFiRSSI = a3;
-  self->mWiFiSNR = a4;
-  self->mCCA = a5;
-  self->mPOI = a6;
+  self->mWiFiRSSI = metrics;
+  self->mWiFiSNR = quality;
+  self->mCCA = load;
+  self->mPOI = interest;
 }
 
 @end

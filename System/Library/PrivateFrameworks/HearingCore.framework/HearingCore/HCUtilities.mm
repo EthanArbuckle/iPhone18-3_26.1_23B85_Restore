@@ -22,10 +22,10 @@
 + (BOOL)isLEAudioEnabled;
 + (BOOL)supportsAlwaysListening;
 + (BOOL)supportsLEA2;
-+ (double)roundToPercentageValue:(double)a3;
++ (double)roundToPercentageValue:(double)value;
 + (id)bluetoothManagerQueue;
 + (id)comfortSoundsAudioQueue;
-+ (id)messagePayloadFromDictionary:(id)a3 andIdentifier:(unint64_t)a4;
++ (id)messagePayloadFromDictionary:(id)dictionary andIdentifier:(unint64_t)identifier;
 + (int64_t)systemBootTime;
 + (void)deviceIsMultiUser;
 @end
@@ -220,15 +220,15 @@ void __42__HCUtilities_currentProcessIsPreferences__block_invoke()
   return result;
 }
 
-+ (id)messagePayloadFromDictionary:(id)a3 andIdentifier:(unint64_t)a4
++ (id)messagePayloadFromDictionary:(id)dictionary andIdentifier:(unint64_t)identifier
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 count])
+  dictionaryCopy = dictionary;
+  v6 = dictionaryCopy;
+  if (dictionaryCopy && [dictionaryCopy count])
   {
     v11[0] = @"axha_messageID";
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:identifier];
     v11[1] = @"axha_payload";
     v12[0] = v7;
     v12[1] = v6;
@@ -566,20 +566,20 @@ uint64_t __34__HCUtilities_deviceHasHomeButton__block_invoke()
   return result;
 }
 
-+ (double)roundToPercentageValue:(double)a3
++ (double)roundToPercentageValue:(double)value
 {
-  if (a3 < 0.0)
+  if (value < 0.0)
   {
-    a3 = 0.0;
+    value = 0.0;
   }
 
-  return llround(fmin(a3, 1.0) * 100.0) / 100.0;
+  return llround(fmin(value, 1.0) * 100.0) / 100.0;
 }
 
 + (void)deviceIsMultiUser
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v4 = 138412290;
   v5 = v2;
   _os_log_error_impl(&dword_1D952C000, a2, OS_LOG_TYPE_ERROR, "could not ascertain whether device is multi-user: %@", &v4, 0xCu);

@@ -1,24 +1,24 @@
 @interface CLSBusinessItemGenericQueryPerformer
-+ (id)queryWithTemplate:(id)a3 forRegions:(id)a4;
++ (id)queryWithTemplate:(id)template forRegions:(id)regions;
 - ($06626BA963112C91E7E52BBD3AECAE4D)statistics;
-- (BOOL)shouldQueryItemsForRegion:(id)a3 selectedRegions:(id)a4;
-- (CLSBusinessItemGenericQueryPerformer)initWithBusinessCategoryCache:(id)a3 locationCache:(id)a4;
-- (CLSBusinessItemGenericQueryPerformer)initWithRegions:(id)a3 categories:(id)a4 precision:(double)a5 businessCategoryCache:(id)a6 locationCache:(id)a7;
-- (unint64_t)cacheItems:(id)a3;
+- (BOOL)shouldQueryItemsForRegion:(id)region selectedRegions:(id)regions;
+- (CLSBusinessItemGenericQueryPerformer)initWithBusinessCategoryCache:(id)cache locationCache:(id)locationCache;
+- (CLSBusinessItemGenericQueryPerformer)initWithRegions:(id)regions categories:(id)categories precision:(double)precision businessCategoryCache:(id)cache locationCache:(id)locationCache;
+- (unint64_t)cacheItems:(id)items;
 - (void)cancel;
-- (void)logGeoLookupCounterAndDurationWithLookupDuration:(id)a3;
+- (void)logGeoLookupCounterAndDurationWithLookupDuration:(id)duration;
 - (void)logGeoLookupFailureResult;
-- (void)setStatistics:(id *)a3;
-- (void)submitWithHandler:(id)a3;
+- (void)setStatistics:(id *)statistics;
+- (void)submitWithHandler:(id)handler;
 @end
 
 @implementation CLSBusinessItemGenericQueryPerformer
 
-- (void)setStatistics:(id *)a3
+- (void)setStatistics:(id *)statistics
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var2;
-  self->_statistics.batchSize = a3->var4;
+  v3 = *&statistics->var0;
+  v4 = *&statistics->var2;
+  self->_statistics.batchSize = statistics->var4;
   *&self->_statistics.numberOfUnneededLocations = v4;
   *&self->_statistics.numberOfLocations = v3;
 }
@@ -42,31 +42,31 @@
   [v2 sendEvent:@"com.apple.Photos.GraphGeoService" withPayload:v3];
 }
 
-- (void)logGeoLookupCounterAndDurationWithLookupDuration:(id)a3
+- (void)logGeoLookupCounterAndDurationWithLookupDuration:(id)duration
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (duration)
   {
     v3 = MEMORY[0x277CF6EC0];
     v7[0] = @"spatialLookupCount";
     v7[1] = @"spatialLookupDelay";
     v8[0] = &unk_28449B7B8;
-    v8[1] = a3;
+    v8[1] = duration;
     v4 = MEMORY[0x277CBEAC0];
-    v5 = a3;
+    durationCopy = duration;
     v6 = [v4 dictionaryWithObjects:v8 forKeys:v7 count:2];
     [v3 sendEvent:@"com.apple.Photos.GraphGeoService" withPayload:v6];
   }
 }
 
-- (unint64_t)cacheItems:(id)a3
+- (unint64_t)cacheItems:(id)items
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v43 = self;
-  v5 = [(CLSBusinessItemGenericQueryPerformer *)self loggingConnection];
-  v6 = os_signpost_id_generate(v5);
-  v7 = v5;
+  itemsCopy = items;
+  selfCopy = self;
+  loggingConnection = [(CLSBusinessItemGenericQueryPerformer *)self loggingConnection];
+  v6 = os_signpost_id_generate(loggingConnection);
+  v7 = loggingConnection;
   v8 = v7;
   v38 = v6 - 1;
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
@@ -81,14 +81,14 @@
   info = 0;
   mach_timebase_info(&info);
   v36 = mach_absolute_time();
-  v40 = [(CLSBusinessItemGenericQueryPerformer *)v43 businessCategoryCache];
-  v46 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-  v45 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  businessCategoryCache = [(CLSBusinessItemGenericQueryPerformer *)selfCopy businessCategoryCache];
+  v46 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
+  v45 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v4;
+  obj = itemsCopy;
   v44 = [obj countByEnumeratingWithState:&v55 objects:v65 count:16];
   if (v44)
   {
@@ -108,36 +108,36 @@
 
         v12 = *(*(&v55 + 1) + 8 * i);
         context = objc_autoreleasePoolPush();
-        v13 = [v12 allKeys];
-        v14 = [v13 firstObject];
+        allKeys = [v12 allKeys];
+        firstObject = [allKeys firstObject];
 
-        v47 = [(CLSLocationCache *)v43->_locationCache placemarksForLocation:v14];
-        v15 = [v47 firstObject];
-        v16 = [v15 ISOcountryCode];
+        v47 = [(CLSLocationCache *)selfCopy->_locationCache placemarksForLocation:firstObject];
+        firstObject2 = [v47 firstObject];
+        iSOcountryCode = [firstObject2 ISOcountryCode];
 
-        if (!v16)
+        if (!iSOcountryCode)
         {
           v17 = +[CLSLogging sharedLogging];
-          v18 = [v17 loggingConnection];
+          loggingConnection2 = [v17 loggingConnection];
 
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
           {
             *buf = 0;
-            _os_log_error_impl(&dword_22F907000, v18, OS_LOG_TYPE_ERROR, "[GeoMapService BusinessItemQuery] Not able to hit the cache, business item will have an empty isoCountryCode", buf, 2u);
+            _os_log_error_impl(&dword_22F907000, loggingConnection2, OS_LOG_TYPE_ERROR, "[GeoMapService BusinessItemQuery] Not able to hit the cache, business item will have an empty isoCountryCode", buf, 2u);
           }
         }
 
-        v48 = v14;
-        v19 = [v12 allValues];
-        v20 = [v19 firstObject];
+        v48 = firstObject;
+        allValues = [v12 allValues];
+        firstObject3 = [allValues firstObject];
 
-        v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v20, "count")}];
-        v22 = [v20 count];
+        v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(firstObject3, "count")}];
+        v22 = [firstObject3 count];
         v51 = 0u;
         v52 = 0u;
         v53 = 0u;
         v54 = 0u;
-        v23 = v20;
+        v23 = firstObject3;
         v24 = [v23 countByEnumeratingWithState:&v51 objects:v64 count:16];
         if (v24)
         {
@@ -152,7 +152,7 @@
                 objc_enumerationMutation(v23);
               }
 
-              v28 = [[CLSBusinessItem alloc] initFromMapItem:*(*(&v51 + 1) + 8 * j) isoCountryCode:v16 categoryOnly:1];
+              v28 = [[CLSBusinessItem alloc] initFromMapItem:*(*(&v51 + 1) + 8 * j) isoCountryCode:iSOcountryCode categoryOnly:1];
               if (v28)
               {
                 [v21 addObject:v28];
@@ -171,8 +171,8 @@
         [v45 addObject:v48];
         if ((v22 + v50) >= 0xC8)
         {
-          [v40 insertBatchesOfBusinessItems:v46 forRegions:v45];
-          [v40 invalidateMemoryCaches];
+          [businessCategoryCache insertBatchesOfBusinessItems:v46 forRegions:v45];
+          [businessCategoryCache invalidateMemoryCaches];
           [v46 removeAllObjects];
           [v45 removeAllObjects];
           v9 = 0;
@@ -193,8 +193,8 @@
     v10 = 0;
   }
 
-  [v40 insertBatchesOfBusinessItems:v46 forRegions:v45];
-  [v40 invalidateMemoryCaches];
+  [businessCategoryCache insertBatchesOfBusinessItems:v46 forRegions:v45];
+  [businessCategoryCache invalidateMemoryCaches];
   v29 = mach_absolute_time();
   numer = info.numer;
   denom = info.denom;
@@ -218,16 +218,16 @@
   return v10;
 }
 
-- (BOOL)shouldQueryItemsForRegion:(id)a3 selectedRegions:(id)a4
+- (BOOL)shouldQueryItemsForRegion:(id)region selectedRegions:(id)regions
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  regionCopy = region;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  regionsCopy = regions;
+  v8 = [regionsCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
     v9 = v8;
@@ -238,18 +238,18 @@
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(regionsCopy);
         }
 
-        if ([CLSLocationCache cachedRegion:*(*(&v23 + 1) + 8 * i) isMatchingOtherRegion:v6, v23])
+        if ([CLSLocationCache cachedRegion:*(*(&v23 + 1) + 8 * i) isMatchingOtherRegion:regionCopy, v23])
         {
           LOBYTE(v21) = 0;
-          v12 = v7;
+          businessCategoryCache = regionsCopy;
           goto LABEL_11;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v9 = [regionsCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v9)
       {
         continue;
@@ -259,16 +259,16 @@
     }
   }
 
-  v12 = [(CLSBusinessItemGenericQueryPerformer *)self businessCategoryCache];
+  businessCategoryCache = [(CLSBusinessItemGenericQueryPerformer *)self businessCategoryCache];
   v13 = objc_alloc(MEMORY[0x277CBFBC8]);
-  [v6 center];
+  [regionCopy center];
   v15 = v14;
   v17 = v16;
   precision = self->_precision;
-  v19 = [v6 identifier];
-  v20 = [v13 initWithCenter:v19 radius:v15 identifier:{v17, precision}];
+  identifier = [regionCopy identifier];
+  v20 = [v13 initWithCenter:identifier radius:v15 identifier:{v17, precision}];
 
-  v21 = [v12 hasRegion:v20] ^ 1;
+  v21 = [businessCategoryCache hasRegion:v20] ^ 1;
 LABEL_11:
 
   return v21;
@@ -276,27 +276,27 @@ LABEL_11:
 
 - (void)cancel
 {
-  v3 = [(CLSBusinessItemGenericQueryPerformer *)self businessGenericTicket];
-  [v3 cancel];
+  businessGenericTicket = [(CLSBusinessItemGenericQueryPerformer *)self businessGenericTicket];
+  [businessGenericTicket cancel];
 
   self->_isCancelled = 1;
 }
 
-- (void)submitWithHandler:(id)a3
+- (void)submitWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_autoreleasePoolPush();
   objc_initWeak(&location, self);
-  v6 = [(CLSBusinessItemGenericQueryPerformer *)self businessGenericTicket];
+  businessGenericTicket = [(CLSBusinessItemGenericQueryPerformer *)self businessGenericTicket];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__CLSBusinessItemGenericQueryPerformer_submitWithHandler___block_invoke;
   v9[3] = &unk_2788A7F20;
-  v7 = v4;
+  v7 = handlerCopy;
   v10 = v7;
   objc_copyWeak(&v11, &location);
   v8 = +[CLSGeoMapQueryHelper auditToken];
-  [v6 submitWithHandler:v9 auditToken:v8 networkActivity:0];
+  [businessGenericTicket submitWithHandler:v9 auditToken:v8 networkActivity:0];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -439,25 +439,25 @@ void __58__CLSBusinessItemGenericQueryPerformer_submitWithHandler___block_invoke
   objc_autoreleasePoolPop(v4);
 }
 
-- (CLSBusinessItemGenericQueryPerformer)initWithRegions:(id)a3 categories:(id)a4 precision:(double)a5 businessCategoryCache:(id)a6 locationCache:(id)a7
+- (CLSBusinessItemGenericQueryPerformer)initWithRegions:(id)regions categories:(id)categories precision:(double)precision businessCategoryCache:(id)cache locationCache:(id)locationCache
 {
   v43 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v12 = a4;
-  v35 = a6;
-  v36 = a7;
-  v13 = [(CLSBusinessItemGenericQueryPerformer *)self initWithBusinessCategoryCache:v35 locationCache:?];
+  regionsCopy = regions;
+  categoriesCopy = categories;
+  cacheCopy = cache;
+  locationCacheCopy = locationCache;
+  v13 = [(CLSBusinessItemGenericQueryPerformer *)self initWithBusinessCategoryCache:cacheCopy locationCache:?];
   v14 = v13;
   if (v13)
   {
-    v13->_precision = a5;
+    v13->_precision = precision;
     v15 = +[CLSLocationShifter sharedLocationShifter];
-    v16 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v17 = v37;
+    v17 = regionsCopy;
     v18 = [v17 countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v18)
     {
@@ -476,8 +476,8 @@ void __58__CLSBusinessItemGenericQueryPerformer_submitWithHandler___block_invoke
           v23 = v22;
           [v21 center];
           [v15 shiftedCoordinateForOriginalCoordinate:v23];
-          v26 = [objc_alloc(MEMORY[0x277D0ED60]) initWithCoordinate:v12 radius:v24 categories:{v25, a5}];
-          [v16 addObject:v26];
+          v26 = [objc_alloc(MEMORY[0x277D0ED60]) initWithCoordinate:categoriesCopy radius:v24 categories:{v25, precision}];
+          [array addObject:v26];
         }
 
         v18 = [v17 countByEnumeratingWithState:&v38 objects:v42 count:16];
@@ -486,17 +486,17 @@ void __58__CLSBusinessItemGenericQueryPerformer_submitWithHandler___block_invoke
       while (v18);
     }
 
-    v27 = [MEMORY[0x277CBEA60] arrayWithArray:v16];
+    v27 = [MEMORY[0x277CBEA60] arrayWithArray:array];
     locationGeoParameters = v14->_locationGeoParameters;
     v14->_locationGeoParameters = v27;
 
-    v29 = [MEMORY[0x277D0EBD0] sharedService];
-    objc_sync_enter(v29);
-    v30 = [v29 ticketForSpatialLookupParameters:v14->_locationGeoParameters traits:0];
+    mEMORY[0x277D0EBD0] = [MEMORY[0x277D0EBD0] sharedService];
+    objc_sync_enter(mEMORY[0x277D0EBD0]);
+    v30 = [mEMORY[0x277D0EBD0] ticketForSpatialLookupParameters:v14->_locationGeoParameters traits:0];
     businessGenericTicket = v14->_businessGenericTicket;
     v14->_businessGenericTicket = v30;
 
-    objc_sync_exit(v29);
+    objc_sync_exit(mEMORY[0x277D0EBD0]);
     v32 = [v17 copy];
     regions = v14->_regions;
     v14->_regions = v32;
@@ -505,10 +505,10 @@ void __58__CLSBusinessItemGenericQueryPerformer_submitWithHandler___block_invoke
   return v14;
 }
 
-- (CLSBusinessItemGenericQueryPerformer)initWithBusinessCategoryCache:(id)a3 locationCache:(id)a4
+- (CLSBusinessItemGenericQueryPerformer)initWithBusinessCategoryCache:(id)cache locationCache:(id)locationCache
 {
-  v7 = a3;
-  v8 = a4;
+  cacheCopy = cache;
+  locationCacheCopy = locationCache;
   v13.receiver = self;
   v13.super_class = CLSBusinessItemGenericQueryPerformer;
   v9 = [(CLSBusinessItemGenericQueryPerformer *)&v13 init];
@@ -521,25 +521,25 @@ void __58__CLSBusinessItemGenericQueryPerformer_submitWithHandler___block_invoke
     *&v10->_statistics.numberOfLocations = 0u;
     *&v10->_statistics.numberOfUnneededLocations = 0u;
     v10->_statistics.batchSize = 0;
-    objc_storeStrong(&v10->_businessCategoryCache, a3);
-    objc_storeStrong(&v10->_locationCache, a4);
+    objc_storeStrong(&v10->_businessCategoryCache, cache);
+    objc_storeStrong(&v10->_locationCache, locationCache);
   }
 
   return v10;
 }
 
-+ (id)queryWithTemplate:(id)a3 forRegions:(id)a4
++ (id)queryWithTemplate:(id)template forRegions:(id)regions
 {
-  v5 = a4;
-  v6 = a3;
+  regionsCopy = regions;
+  templateCopy = template;
   v7 = objc_alloc(objc_opt_class());
-  v8 = [objc_opt_class() categories];
-  [v6 precision];
+  categories = [objc_opt_class() categories];
+  [templateCopy precision];
   v10 = v9;
-  v11 = [v6 businessCategoryCache];
-  v12 = [v6 locationCache];
+  businessCategoryCache = [templateCopy businessCategoryCache];
+  locationCache = [templateCopy locationCache];
 
-  v13 = [v7 initWithRegions:v5 categories:v8 precision:v11 businessCategoryCache:v12 locationCache:v10];
+  v13 = [v7 initWithRegions:regionsCopy categories:categories precision:businessCategoryCache businessCategoryCache:locationCache locationCache:v10];
 
   return v13;
 }

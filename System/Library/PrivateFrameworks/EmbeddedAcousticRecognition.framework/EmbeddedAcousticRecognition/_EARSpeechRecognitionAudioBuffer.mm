@@ -3,11 +3,11 @@
 - (double)bufferedAudioDuration;
 - (double)consumedAudioDuration;
 - (id).cxx_construct;
-- (id)_initWithAudioBuffer:(shared_ptr<quasar:(id)a4 :RecogAudioBufferBase>)a3 speechRecognizer:;
-- (unint64_t)packetArrivalTimestampFromAudioTime:(float)a3;
-- (void)_setUnderlyingBuffer:(shared_ptr<quasar::RecogAudioBufferBase>)a3;
-- (void)addAudio2SampleData:(id)a3 withCompletion:(id)a4;
-- (void)addAudio2Samples:(const signed __int16 *)a3 count:(unint64_t)a4 withCompletion:(id)a5;
+- (id)_initWithAudioBuffer:(shared_ptr<quasar:(id)buffer :RecogAudioBufferBase>)a3 speechRecognizer:;
+- (unint64_t)packetArrivalTimestampFromAudioTime:(float)time;
+- (void)_setUnderlyingBuffer:(shared_ptr<quasar::RecogAudioBufferBase>)buffer;
+- (void)addAudio2SampleData:(id)data withCompletion:(id)completion;
+- (void)addAudio2Samples:(const signed __int16 *)samples count:(unint64_t)count withCompletion:(id)completion;
 - (void)cancelRecognition;
 - (void)endAudio;
 - (void)stopAudioDecoding;
@@ -19,14 +19,14 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (id)_initWithAudioBuffer:(shared_ptr<quasar:(id)a4 :RecogAudioBufferBase>)a3 speechRecognizer:
+- (id)_initWithAudioBuffer:(shared_ptr<quasar:(id)buffer :RecogAudioBufferBase>)a3 speechRecognizer:
 {
   ptr = a3.__ptr_;
   v6 = a3.__cntrl_;
@@ -61,27 +61,27 @@
   return v8;
 }
 
-- (void)addAudio2Samples:(const signed __int16 *)a3 count:(unint64_t)a4 withCompletion:(id)a5
+- (void)addAudio2Samples:(const signed __int16 *)samples count:(unint64_t)count withCompletion:(id)completion
 {
-  v9 = a5;
-  v8 = [MEMORY[0x1E695DEF0] dataWithBytes:a3 length:2 * a4];
-  [(_EARSpeechRecognitionAudioBuffer *)self addAudio2SampleData:v8 withCompletion:v9];
+  completionCopy = completion;
+  v8 = [MEMORY[0x1E695DEF0] dataWithBytes:samples length:2 * count];
+  [(_EARSpeechRecognitionAudioBuffer *)self addAudio2SampleData:v8 withCompletion:completionCopy];
 }
 
-- (void)addAudio2SampleData:(id)a3 withCompletion:(id)a4
+- (void)addAudio2SampleData:(id)data withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71___EARSpeechRecognitionAudioBuffer_addAudio2SampleData_withCompletion___block_invoke;
   block[3] = &unk_1E7C1A7C8;
-  v12 = v6;
-  v13 = v7;
+  v12 = dataCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dataCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -129,15 +129,15 @@
   dispatch_async(queue, block);
 }
 
-- (void)_setUnderlyingBuffer:(shared_ptr<quasar::RecogAudioBufferBase>)a3
+- (void)_setUnderlyingBuffer:(shared_ptr<quasar::RecogAudioBufferBase>)buffer
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3321888768;
   block[2] = __57___EARSpeechRecognitionAudioBuffer__setUnderlyingBuffer___block_invoke;
   block[3] = &unk_1F2D08608;
-  v6 = *a3.__ptr_;
-  v5 = *(a3.__ptr_ + 1);
+  v6 = *buffer.__ptr_;
+  v5 = *(buffer.__ptr_ + 1);
   block[4] = self;
   block[5] = v6;
   v8 = v5;
@@ -191,7 +191,7 @@
   return v3;
 }
 
-- (unint64_t)packetArrivalTimestampFromAudioTime:(float)a3
+- (unint64_t)packetArrivalTimestampFromAudioTime:(float)time
 {
   v8 = 0;
   v9 = &v8;
@@ -204,7 +204,7 @@
   block[3] = &unk_1E7C1A7F0;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  timeCopy = time;
   dispatch_sync(queue, block);
   v4 = v9[3];
   _Block_object_dispose(&v8, 8);

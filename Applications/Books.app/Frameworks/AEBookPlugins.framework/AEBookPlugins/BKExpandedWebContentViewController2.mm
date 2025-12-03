@@ -1,8 +1,8 @@
 @interface BKExpandedWebContentViewController2
-+ (BOOL)supportsResource:(id)a3;
++ (BOOL)supportsResource:(id)resource;
 - (BEContentCleanupJSOptions)cleanupOptions;
-- (BKExpandedWebContentViewController2)initWithResource:(id)a3;
-- (BOOL)navigationHandler:(id)a3 handleInternalLoadRequest:(id)a4;
+- (BKExpandedWebContentViewController2)initWithResource:(id)resource;
+- (BOOL)navigationHandler:(id)handler handleInternalLoadRequest:(id)request;
 - (double)_viewportWidth;
 - (id)_stylesheetSet;
 - (id)_titleForPage;
@@ -10,28 +10,28 @@
 - (id)contentView;
 - (id)leftToolbarItems;
 - (id)previewCssTemplate;
-- (void)_applyImageFilter:(BOOL)a3;
-- (void)_prepareImageShowOriginal:(BOOL)a3;
+- (void)_applyImageFilter:(BOOL)filter;
+- (void)_prepareImageShowOriginal:(BOOL)original;
 - (void)_swapImageProtocols;
 - (void)_updateContent;
 - (void)_updateMetaViewportArguments;
-- (void)handler:(id)a3 presentAlertController:(id)a4 completion:(id)a5;
-- (void)navigationHandler:(id)a3 didFinishLoadOfURL:(id)a4;
-- (void)navigationHandler:(id)a3 handleExternalLoadRequest:(id)a4 likelyUserInitiated:(BOOL)a5;
-- (void)navigationHandler:(id)a3 handleInternalLoadRequestForNewWindow:(id)a4;
-- (void)navigationHandler:(id)a3 handleUserRequestForFrameToLoadExternalURL:(id)a4 completion:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)handler:(id)handler presentAlertController:(id)controller completion:(id)completion;
+- (void)navigationHandler:(id)handler didFinishLoadOfURL:(id)l;
+- (void)navigationHandler:(id)handler handleExternalLoadRequest:(id)request likelyUserInitiated:(BOOL)initiated;
+- (void)navigationHandler:(id)handler handleInternalLoadRequestForNewWindow:(id)window;
+- (void)navigationHandler:(id)handler handleUserRequestForFrameToLoadExternalURL:(id)l completion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)releaseViews;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BKExpandedWebContentViewController2
 
-+ (BOOL)supportsResource:(id)a3
++ (BOOL)supportsResource:(id)resource
 {
-  v3 = [a3 resource];
+  resource = [resource resource];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -47,21 +47,21 @@
   return isKindOfClass & 1;
 }
 
-- (BKExpandedWebContentViewController2)initWithResource:(id)a3
+- (BKExpandedWebContentViewController2)initWithResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v12.receiver = self;
   v12.super_class = BKExpandedWebContentViewController2;
-  v5 = [(BKExpandedContentViewController *)&v12 initWithResource:v4];
+  v5 = [(BKExpandedContentViewController *)&v12 initWithResource:resourceCopy];
   v6 = v5;
   if (v5)
   {
     v5->_showOriginal = 1;
-    v7 = [v4 resource];
+    resource = [resourceCopy resource];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = resource;
       url = v6->_url;
       v6->_url = v8;
     }
@@ -76,10 +76,10 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      objc_storeStrong(&v6->_content, v7);
-      v10 = [v4 contentType];
+      objc_storeStrong(&v6->_content, resource);
+      contentType = [resourceCopy contentType];
       url = v6->_contentType;
-      v6->_contentType = v10;
+      v6->_contentType = contentType;
     }
 
     goto LABEL_7;
@@ -98,29 +98,29 @@ LABEL_8:
   [(BKExpandedWebContentViewController2 *)self setModalPresentationStyle:4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = BKExpandedWebContentViewController2;
-  [(BKExpandedContentViewController *)&v6 viewDidAppear:a3];
-  v4 = [(BKExpandedWebContentViewController2 *)self webView];
-  v5 = [v4 scrollView];
-  [v5 flashScrollIndicators];
+  [(BKExpandedContentViewController *)&v6 viewDidAppear:appear];
+  webView = [(BKExpandedWebContentViewController2 *)self webView];
+  scrollView = [webView scrollView];
+  [scrollView flashScrollIndicators];
 
   [(BKExpandedWebContentViewController2 *)self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(BKExpandedWebContentViewController2 *)self view];
-  [v8 setNeedsUpdateConstraints];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  view = [(BKExpandedWebContentViewController2 *)self view];
+  [view setNeedsUpdateConstraints];
 
   v9.receiver = self;
   v9.super_class = BKExpandedWebContentViewController2;
-  [(BKExpandedWebContentViewController2 *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(BKExpandedWebContentViewController2 *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 - (void)releaseViews
@@ -128,8 +128,8 @@ LABEL_8:
   v4.receiver = self;
   v4.super_class = BKExpandedWebContentViewController2;
   [(BKExpandedContentViewController *)&v4 releaseViews];
-  v3 = [(BKExpandedWebContentViewController2 *)self webView];
-  [v3 removeObserver:self forKeyPath:@"title" context:off_22B480];
+  webView = [(BKExpandedWebContentViewController2 *)self webView];
+  [webView removeObserver:self forKeyPath:@"title" context:off_22B480];
 
   [(BKExpandedWebContentViewController2 *)self setWebView:0];
 }
@@ -139,21 +139,21 @@ LABEL_8:
   webView = self->_webView;
   if (!webView)
   {
-    v4 = [(BKExpandedContentViewController *)self resource];
-    v5 = [(BKExpandedWebContentViewController2 *)self view];
-    [v5 bounds];
+    resource = [(BKExpandedContentViewController *)self resource];
+    view = [(BKExpandedWebContentViewController2 *)self view];
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(BKExpandedWebContentViewController2 *)self allowsRemoteInspection];
-    v15 = [v4 bookID];
-    v28 = v4;
+    allowsRemoteInspection = [(BKExpandedWebContentViewController2 *)self allowsRemoteInspection];
+    bookID = [resource bookID];
+    v28 = resource;
     imageFilteringEnabled = self->_imageFilteringEnabled;
-    v17 = [v4 cacheItem];
-    v18 = [(BKExpandedWebContentViewController2 *)self cleanupOptions];
-    v19 = [(BKExpandedWebContentViewController2 *)self _stylesheetSet];
-    v20 = [BEWebViewFactory viewConfiguredForPreview:v14 enableDeveloperExtras:v15 bookID:imageFilteringEnabled imageFilterMode:v17 protocolCacheItem:v18 cleanupOptions:v19 stylesheetSet:v7, v9, v11, v13];
+    cacheItem = [resource cacheItem];
+    cleanupOptions = [(BKExpandedWebContentViewController2 *)self cleanupOptions];
+    _stylesheetSet = [(BKExpandedWebContentViewController2 *)self _stylesheetSet];
+    v20 = [BEWebViewFactory viewConfiguredForPreview:allowsRemoteInspection enableDeveloperExtras:bookID bookID:imageFilteringEnabled imageFilterMode:cacheItem protocolCacheItem:cleanupOptions cleanupOptions:_stylesheetSet stylesheetSet:v7, v9, v11, v13];
     v21 = self->_webView;
     self->_webView = v20;
 
@@ -162,11 +162,11 @@ LABEL_8:
     [(WKWebView *)self->_webView setBackgroundColor:v22];
 
     [(WKWebView *)self->_webView setOpaque:0];
-    v23 = [(WKWebView *)self->_webView be_navigationHandler];
-    [v23 setDelegate:self];
+    be_navigationHandler = [(WKWebView *)self->_webView be_navigationHandler];
+    [be_navigationHandler setDelegate:self];
 
-    v24 = [(WKWebView *)self->_webView be_uiHandler];
-    [v24 setDelegate:self];
+    be_uiHandler = [(WKWebView *)self->_webView be_uiHandler];
+    [be_uiHandler setDelegate:self];
 
     [(WKWebView *)self->_webView addObserver:self forKeyPath:@"title" options:0 context:off_22B480];
     if (self->_imageFilteringEnabled)
@@ -174,13 +174,13 @@ LABEL_8:
       [(BKExpandedWebContentViewController2 *)self _swapImageProtocols];
     }
 
-    v25 = [(WKWebView *)self->_webView scrollView];
-    [v25 _setShowsBackgroundShadow:0];
-    [v25 setShowsHorizontalScrollIndicator:0];
+    scrollView = [(WKWebView *)self->_webView scrollView];
+    [scrollView _setShowsBackgroundShadow:0];
+    [scrollView setShowsHorizontalScrollIndicator:0];
     v26 = +[UIColor clearColor];
-    [v25 setBackgroundColor:v26];
+    [scrollView setBackgroundColor:v26];
 
-    [v25 setOpaque:0];
+    [scrollView setOpaque:0];
     [(BKExpandedWebContentViewController2 *)self _updateMetaViewportArguments];
     [(BKExpandedWebContentViewController2 *)self _updateContent];
     [(BKExpandedContentViewController *)self setInnerView:self->_webView];
@@ -193,9 +193,9 @@ LABEL_8:
 
 - (void)_swapImageProtocols
 {
-  v3 = [(BKExpandedWebContentViewController2 *)self webView];
+  webView = [(BKExpandedWebContentViewController2 *)self webView];
   v2 = +[BEContentSupportJS javascriptForSwappingAllImages];
-  [v3 evaluateJavaScript:v2 completionHandler:&stru_1E4B68];
+  [webView evaluateJavaScript:v2 completionHandler:&stru_1E4B68];
 }
 
 - (id)leftToolbarItems
@@ -218,23 +218,23 @@ LABEL_8:
   return v6;
 }
 
-- (void)_prepareImageShowOriginal:(BOOL)a3
+- (void)_prepareImageShowOriginal:(BOOL)original
 {
-  if (self->_imageFilteringEnabled && self->_showOriginal != a3)
+  if (self->_imageFilteringEnabled && self->_showOriginal != original)
   {
-    self->_showOriginal = a3;
-    [(BKExpandedWebContentViewController2 *)self _applyImageFilter:!a3];
+    self->_showOriginal = original;
+    [(BKExpandedWebContentViewController2 *)self _applyImageFilter:!original];
   }
 }
 
-- (void)_applyImageFilter:(BOOL)a3
+- (void)_applyImageFilter:(BOOL)filter
 {
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
-  v5 = [v4 stringValue];
-  v7 = [NSString stringWithFormat:@"__ibooks_image_filter.refetchVisibleImages(%@)", v5];
+  v4 = [NSNumber numberWithUnsignedInteger:filter];
+  stringValue = [v4 stringValue];
+  v7 = [NSString stringWithFormat:@"__ibooks_image_filter.refetchVisibleImages(%@)", stringValue];
 
-  v6 = [(BKExpandedWebContentViewController2 *)self webView];
-  [v6 evaluateJavaScript:v7 completionHandler:&stru_1E4B88];
+  webView = [(BKExpandedWebContentViewController2 *)self webView];
+  [webView evaluateJavaScript:v7 completionHandler:&stru_1E4B88];
 }
 
 - (BEContentCleanupJSOptions)cleanupOptions
@@ -262,21 +262,21 @@ LABEL_8:
 
 - (id)_stylesheetSet
 {
-  v3 = [(BKExpandedWebContentViewController2 *)self theme];
-  v4 = [v3 backgroundColorForTraitEnvironment:self];
+  theme = [(BKExpandedWebContentViewController2 *)self theme];
+  v4 = [theme backgroundColorForTraitEnvironment:self];
 
   v5 = +[NSMutableDictionary dictionary];
   [v5 setObject:v4 forKey:@"contentBackgroundColor"];
-  v6 = [(BKExpandedWebContentViewController2 *)self theme];
-  v7 = [v6 contentTextColor];
-  [v5 setObject:v7 forKey:@"contentColor"];
+  theme2 = [(BKExpandedWebContentViewController2 *)self theme];
+  contentTextColor = [theme2 contentTextColor];
+  [v5 setObject:contentTextColor forKey:@"contentColor"];
 
-  v8 = [(BKExpandedWebContentViewController2 *)self theme];
-  v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 shouldInvertContent]);
+  theme3 = [(BKExpandedWebContentViewController2 *)self theme];
+  v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [theme3 shouldInvertContent]);
   [v5 setObject:v9 forKey:@"shouldInvertContent"];
 
-  v10 = [(BKExpandedWebContentViewController2 *)self previewCssTemplate];
-  v11 = [v10 evaluateWithData:v5 error:0];
+  previewCssTemplate = [(BKExpandedWebContentViewController2 *)self previewCssTemplate];
+  v11 = [previewCssTemplate evaluateWithData:v5 error:0];
 
   v12 = [BEWebViewFactoryStylesheetSet alloc];
   if ([v11 length])
@@ -304,36 +304,36 @@ LABEL_8:
 
 - (void)_updateContent
 {
-  v14 = [(BKExpandedWebContentViewController2 *)self _titleForPage];
+  _titleForPage = [(BKExpandedWebContentViewController2 *)self _titleForPage];
   [(BKExpandedContentViewController *)self setPreviewTitle:?];
-  v3 = [(BKExpandedWebContentViewController2 *)self content];
+  content = [(BKExpandedWebContentViewController2 *)self content];
 
-  if (v3)
+  if (content)
   {
-    v4 = [(BKExpandedWebContentViewController2 *)self content];
-    v5 = [v4 dataUsingEncoding:4];
+    content2 = [(BKExpandedWebContentViewController2 *)self content];
+    _urlToLoad = [content2 dataUsingEncoding:4];
 
     webView = self->_webView;
-    v7 = [(BKExpandedWebContentViewController2 *)self contentType];
+    contentType = [(BKExpandedWebContentViewController2 *)self contentType];
     v8 = BEUTF8StringEncodingName;
-    v9 = [(BKExpandedContentViewController *)self resource];
-    v10 = [v9 sourceURL];
-    v11 = [(WKWebView *)webView loadData:v5 MIMEType:v7 characterEncodingName:v8 baseURL:v10];
+    resource = [(BKExpandedContentViewController *)self resource];
+    sourceURL = [resource sourceURL];
+    v11 = [(WKWebView *)webView loadData:_urlToLoad MIMEType:contentType characterEncodingName:v8 baseURL:sourceURL];
   }
 
   else
   {
     v12 = self->_webView;
-    v5 = [(BKExpandedWebContentViewController2 *)self _urlToLoad];
-    v7 = [NSURLRequest requestWithURL:v5];
-    v13 = [(WKWebView *)v12 loadRequest:v7];
+    _urlToLoad = [(BKExpandedWebContentViewController2 *)self _urlToLoad];
+    contentType = [NSURLRequest requestWithURL:_urlToLoad];
+    v13 = [(WKWebView *)v12 loadRequest:contentType];
   }
 }
 
 - (double)_viewportWidth
 {
-  v2 = [(BKExpandedContentViewController *)self resource];
-  [v2 contentSize];
+  resource = [(BKExpandedContentViewController *)self resource];
+  [resource contentSize];
   if (v3 <= 0.0)
   {
     v4 = 980.0;
@@ -342,10 +342,10 @@ LABEL_8:
   else
   {
     v4 = v3;
-    [v2 zoomScale];
+    [resource zoomScale];
     if (v5 != 0.0)
     {
-      [v2 zoomScale];
+      [resource zoomScale];
       v4 = v4 * v6;
     }
   }
@@ -359,8 +359,8 @@ LABEL_8:
   webView = self->_webView;
   v7[0] = @"width";
   v4 = [NSNumber numberWithDouble:?];
-  v5 = [v4 stringValue];
-  v8[0] = v5;
+  stringValue = [v4 stringValue];
+  v8[0] = stringValue;
   v8[1] = @"10";
   v7[1] = @"maximum-scale";
   v7[2] = @"minimum-scale";
@@ -373,43 +373,43 @@ LABEL_8:
 
 - (id)_titleForPage
 {
-  v3 = [(WKWebView *)self->_webView title];
-  if (![v3 length])
+  title = [(WKWebView *)self->_webView title];
+  if (![title length])
   {
-    v4 = [(BKExpandedContentViewController *)self resource];
-    v5 = [v4 title];
+    resource = [(BKExpandedContentViewController *)self resource];
+    title2 = [resource title];
 
-    v3 = v5;
+    title = title2;
   }
 
   v6 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v7 = [v3 stringByTrimmingCharactersInSet:v6];
+  capitalizedString = [title stringByTrimmingCharactersInSet:v6];
 
-  if (![v7 length])
+  if (![capitalizedString length])
   {
-    v8 = [(BKExpandedWebContentViewController2 *)self _urlToLoad];
-    v9 = [v8 lastPathComponent];
+    _urlToLoad = [(BKExpandedWebContentViewController2 *)self _urlToLoad];
+    lastPathComponent = [_urlToLoad lastPathComponent];
 
-    if (![v9 length])
+    if (![lastPathComponent length])
     {
-      v10 = [(BKExpandedContentViewController *)self resource];
-      v11 = [v10 sourceURL];
-      v12 = [v11 lastPathComponent];
+      resource2 = [(BKExpandedContentViewController *)self resource];
+      sourceURL = [resource2 sourceURL];
+      lastPathComponent2 = [sourceURL lastPathComponent];
 
-      v9 = v12;
+      lastPathComponent = lastPathComponent2;
     }
 
-    v13 = [v9 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    v7 = [v13 capitalizedString];
+    capitalizedString = [stringByDeletingPathExtension capitalizedString];
   }
 
-  return v7;
+  return capitalizedString;
 }
 
-- (void)navigationHandler:(id)a3 didFinishLoadOfURL:(id)a4
+- (void)navigationHandler:(id)handler didFinishLoadOfURL:(id)l
 {
-  v12 = [(BKExpandedContentViewController *)self delegate:a3];
+  v12 = [(BKExpandedContentViewController *)self delegate:handler];
   if (objc_opt_respondsToSelector())
   {
     [v12 expandedContentViewDidFinishLoad:self];
@@ -417,48 +417,48 @@ LABEL_8:
 
   [(BKExpandedWebContentViewController2 *)self _viewportWidth];
   v6 = v5 * 0.95;
-  v7 = [(BKExpandedWebContentViewController2 *)self cleanupOptions];
-  v8 = [BEContentCleanupJS updateScriptWithOptions:v7 pageLength:v6 gapBetweenPages:0.0];
+  cleanupOptions = [(BKExpandedWebContentViewController2 *)self cleanupOptions];
+  v8 = [BEContentCleanupJS updateScriptWithOptions:cleanupOptions pageLength:v6 gapBetweenPages:0.0];
 
-  v9 = [(BKExpandedWebContentViewController2 *)self webView];
-  [v9 evaluateJavaScript:v8 completionHandler:&stru_1E4BA8];
+  webView = [(BKExpandedWebContentViewController2 *)self webView];
+  [webView evaluateJavaScript:v8 completionHandler:&stru_1E4BA8];
 
-  v10 = [(BKExpandedWebContentViewController2 *)self webView];
-  v11 = [v10 scrollView];
-  [v11 flashScrollIndicators];
+  webView2 = [(BKExpandedWebContentViewController2 *)self webView];
+  scrollView = [webView2 scrollView];
+  [scrollView flashScrollIndicators];
 
   [(BKExpandedContentViewController *)self stopActivityIndicator:1];
 }
 
-- (void)navigationHandler:(id)a3 handleUserRequestForFrameToLoadExternalURL:(id)a4 completion:(id)a5
+- (void)navigationHandler:(id)handler handleUserRequestForFrameToLoadExternalURL:(id)l completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(BKExpandedContentViewController *)self delegate];
+  completionCopy = completion;
+  lCopy = l;
+  delegate = [(BKExpandedContentViewController *)self delegate];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_867AC;
   v11[3] = &unk_1E4BD0;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
-  [v9 expandedContentViewController:self handleUserRequestForFrameToLoadExternalURL:v8 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [delegate expandedContentViewController:self handleUserRequestForFrameToLoadExternalURL:lCopy completion:v11];
 }
 
-- (void)navigationHandler:(id)a3 handleExternalLoadRequest:(id)a4 likelyUserInitiated:(BOOL)a5
+- (void)navigationHandler:(id)handler handleExternalLoadRequest:(id)request likelyUserInitiated:(BOOL)initiated
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [(BKExpandedContentViewController *)self delegate];
-  [v8 expandedContentViewController:self handleExternalLoadRequest:v7 likelyUserInitiated:v5];
+  initiatedCopy = initiated;
+  requestCopy = request;
+  delegate = [(BKExpandedContentViewController *)self delegate];
+  [delegate expandedContentViewController:self handleExternalLoadRequest:requestCopy likelyUserInitiated:initiatedCopy];
 }
 
-- (BOOL)navigationHandler:(id)a3 handleInternalLoadRequest:(id)a4
+- (BOOL)navigationHandler:(id)handler handleInternalLoadRequest:(id)request
 {
-  v5 = [a4 absoluteURL];
-  v6 = [(BKExpandedContentViewController *)self resource];
-  v7 = [v6 sourceURL];
-  if ([v5 be_isEquivalentToURL:v7 ignoringFragment:1])
+  absoluteURL = [request absoluteURL];
+  resource = [(BKExpandedContentViewController *)self resource];
+  sourceURL = [resource sourceURL];
+  if ([absoluteURL be_isEquivalentToURL:sourceURL ignoringFragment:1])
   {
 
     v8 = 1;
@@ -467,14 +467,14 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [(BKExpandedWebContentViewController2 *)self _urlToLoad];
+  _urlToLoad = [(BKExpandedWebContentViewController2 *)self _urlToLoad];
   v8 = 1;
-  v10 = [v5 be_isEquivalentToURL:v9 ignoringFragment:1];
+  v10 = [absoluteURL be_isEquivalentToURL:_urlToLoad ignoringFragment:1];
 
   if ((v10 & 1) == 0)
   {
-    v6 = [(BKExpandedContentViewController *)self delegate];
-    v8 = [v6 expandedContentViewController:self handleInternalLoadRequest:v5];
+    resource = [(BKExpandedContentViewController *)self delegate];
+    v8 = [resource expandedContentViewController:self handleInternalLoadRequest:absoluteURL];
     goto LABEL_5;
   }
 
@@ -483,24 +483,24 @@ LABEL_6:
   return v8;
 }
 
-- (void)navigationHandler:(id)a3 handleInternalLoadRequestForNewWindow:(id)a4
+- (void)navigationHandler:(id)handler handleInternalLoadRequestForNewWindow:(id)window
 {
-  v5 = a4;
-  v6 = [(BKExpandedContentViewController *)self delegate];
-  [v6 expandedContentViewController:self handleInternalLoadRequestForNewWindow:v5];
+  windowCopy = window;
+  delegate = [(BKExpandedContentViewController *)self delegate];
+  [delegate expandedContentViewController:self handleInternalLoadRequestForNewWindow:windowCopy];
 }
 
-- (void)handler:(id)a3 presentAlertController:(id)a4 completion:(id)a5
+- (void)handler:(id)handler presentAlertController:(id)controller completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(BKExpandedContentViewController *)self delegate];
-  [v9 expandedContentViewController:self presentAlertController:v8 completion:v7];
+  completionCopy = completion;
+  controllerCopy = controller;
+  delegate = [(BKExpandedContentViewController *)self delegate];
+  [delegate expandedContentViewController:self presentAlertController:controllerCopy completion:completionCopy];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_22B480 == a6)
+  if (off_22B480 == context)
   {
     objc_initWeak(&location, self);
     block[0] = _NSConcreteStackBlock;
@@ -517,7 +517,7 @@ LABEL_6:
   {
     v6.receiver = self;
     v6.super_class = BKExpandedWebContentViewController2;
-    [(BKExpandedWebContentViewController2 *)&v6 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(BKExpandedWebContentViewController2 *)&v6 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

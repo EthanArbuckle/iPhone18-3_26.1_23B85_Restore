@@ -1,5 +1,5 @@
 @interface SDSeedProgramMigrator
-+ (BOOL)_enrollInSeedProgram:(int64_t)a3;
++ (BOOL)_enrollInSeedProgram:(int64_t)program;
 + (BOOL)_enrollInSeedProgramFromCookie;
 + (BOOL)fixupSeedProgramSettings;
 @end
@@ -28,7 +28,7 @@
   return 0;
 }
 
-+ (BOOL)_enrollInSeedProgram:(int64_t)a3
++ (BOOL)_enrollInSeedProgram:(int64_t)program
 {
   v3 = +[SDSeedingLogging migrateHandle];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))

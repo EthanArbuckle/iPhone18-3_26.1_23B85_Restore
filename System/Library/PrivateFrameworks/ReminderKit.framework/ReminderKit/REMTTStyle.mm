@@ -1,17 +1,17 @@
 @interface REMTTStyle
-+ (id)attributeNameForStyle:(int64_t)a3;
++ (id)attributeNameForStyle:(int64_t)style;
 @end
 
 @implementation REMTTStyle
 
-+ (id)attributeNameForStyle:(int64_t)a3
++ (id)attributeNameForStyle:(int64_t)style
 {
-  if (a3 <= 2)
+  if (style <= 2)
   {
-    a1 = *off_1E7508A20[a3];
+    self = *off_1E7508A20[style];
   }
 
-  return a1;
+  return self;
 }
 
 @end

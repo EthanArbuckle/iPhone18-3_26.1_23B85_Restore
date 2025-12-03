@@ -1,13 +1,13 @@
 @interface AVMediaSelectionGroup
-+ (AVMediaSelectionGroup)mediaSelectionGroupWithAsset:(id)a3 dictionary:(id)a4;
++ (AVMediaSelectionGroup)mediaSelectionGroupWithAsset:(id)asset dictionary:(id)dictionary;
 + (NSArray)mediaSelectionOptionsFromArray:(NSArray *)mediaSelectionOptions filteredAndSortedAccordingToPreferredLanguages:(NSArray *)preferredLanguages;
 + (NSArray)mediaSelectionOptionsFromArray:(NSArray *)mediaSelectionOptions withLocale:(NSLocale *)locale;
 + (NSArray)mediaSelectionOptionsFromArray:(NSArray *)mediaSelectionOptions withMediaCharacteristics:(NSArray *)mediaCharacteristics;
 + (NSArray)mediaSelectionOptionsFromArray:(NSArray *)mediaSelectionOptions withoutMediaCharacteristics:(NSArray *)mediaCharacteristics;
 + (NSArray)playableMediaSelectionOptionsFromArray:(NSArray *)mediaSelectionOptions;
-+ (id)mediaSelectionOptionsFromArray:(id)a3 withAnyMediaCharacteristicFromArray:(id)a4;
++ (id)mediaSelectionOptionsFromArray:(id)array withAnyMediaCharacteristicFromArray:(id)fromArray;
 - (AVMediaSelectionGroup)init;
-- (BOOL)_matchesGroupID:(id)a3 mediaType:(id)a4;
+- (BOOL)_matchesGroupID:(id)d mediaType:(id)type;
 - (BOOL)allowsEmptySelection;
 - (NSArray)mediaSelectionOptionsWithEnhancedIntelligibilityOfSpeech;
 - (id)_groupID;
@@ -15,16 +15,16 @@
 - (id)_groupMediaType;
 - (id)_primaryMediaCharacteristic;
 - (id)description;
-- (id)mediaSelectionOptionComplementaryToOption:(id)a3 forMediaCharacteristic:(id)a4;
+- (id)mediaSelectionOptionComplementaryToOption:(id)option forMediaCharacteristic:(id)characteristic;
 - (void)dealloc;
-- (void)setCurrentBundleIdentifier:(id)a3;
+- (void)setCurrentBundleIdentifier:(id)identifier;
 @end
 
 @implementation AVMediaSelectionGroup
 
-+ (AVMediaSelectionGroup)mediaSelectionGroupWithAsset:(id)a3 dictionary:(id)a4
++ (AVMediaSelectionGroup)mediaSelectionGroupWithAsset:(id)asset dictionary:(id)dictionary
 {
-  v4 = [[AVAssetMediaSelectionGroup alloc] initWithAsset:a3 dictionary:a4];
+  v4 = [[AVAssetMediaSelectionGroup alloc] initWithAsset:asset dictionary:dictionary];
 
   return v4;
 }
@@ -74,21 +74,21 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(AVMediaSelectionGroup *)self options];
-  v7 = [(AVMediaSelectionGroup *)self allowsEmptySelection];
+  options = [(AVMediaSelectionGroup *)self options];
+  allowsEmptySelection = [(AVMediaSelectionGroup *)self allowsEmptySelection];
   v8 = @"NO";
-  if (v7)
+  if (allowsEmptySelection)
   {
     v8 = @"YES";
   }
 
-  return [v3 stringWithFormat:@"<%@: %p, options = %@, allowsEmptySelection = %@>", v5, self, v6, v8];
+  return [v3 stringWithFormat:@"<%@: %p, options = %@, allowsEmptySelection = %@>", v5, self, options, v8];
 }
 
 - (BOOL)allowsEmptySelection
 {
-  v2 = [(AVMediaSelectionGroup *)self dictionary];
-  v3 = [v2 objectForKey:*MEMORY[0x1E6973738]];
+  dictionary = [(AVMediaSelectionGroup *)self dictionary];
+  v3 = [dictionary objectForKey:*MEMORY[0x1E6973738]];
   if (!v3)
   {
     return 1;
@@ -99,59 +99,59 @@
 
 - (id)_groupID
 {
-  v2 = [(AVMediaSelectionGroup *)self dictionary];
+  dictionary = [(AVMediaSelectionGroup *)self dictionary];
   v3 = *MEMORY[0x1E6973740];
 
-  return [v2 objectForKey:v3];
+  return [dictionary objectForKey:v3];
 }
 
 - (id)_groupMediaType
 {
-  v2 = [(AVMediaSelectionGroup *)self dictionary];
+  dictionary = [(AVMediaSelectionGroup *)self dictionary];
   v3 = *MEMORY[0x1E6973750];
 
-  return [v2 objectForKey:v3];
+  return [dictionary objectForKey:v3];
 }
 
 - (id)_groupMediaCharacteristics
 {
-  v2 = [(AVMediaSelectionGroup *)self dictionary];
+  dictionary = [(AVMediaSelectionGroup *)self dictionary];
   v3 = *MEMORY[0x1E6973748];
 
-  return [v2 objectForKey:v3];
+  return [dictionary objectForKey:v3];
 }
 
 - (id)_primaryMediaCharacteristic
 {
-  v2 = [(AVMediaSelectionGroup *)self _groupMediaCharacteristics];
+  _groupMediaCharacteristics = [(AVMediaSelectionGroup *)self _groupMediaCharacteristics];
   v3 = @"AVMediaCharacteristicAudible";
-  if ([v2 containsObject:@"AVMediaCharacteristicAudible"])
+  if ([_groupMediaCharacteristics containsObject:@"AVMediaCharacteristicAudible"])
   {
     return v3;
   }
 
   v3 = @"AVMediaCharacteristicLegible";
-  if ([v2 containsObject:@"AVMediaCharacteristicLegible"])
+  if ([_groupMediaCharacteristics containsObject:@"AVMediaCharacteristicLegible"])
   {
     return v3;
   }
 
   v3 = @"AVMediaCharacteristicVisual";
-  if ([v2 containsObject:@"AVMediaCharacteristicVisual"])
+  if ([_groupMediaCharacteristics containsObject:@"AVMediaCharacteristicVisual"])
   {
     return v3;
   }
 
-  return [v2 firstObject];
+  return [_groupMediaCharacteristics firstObject];
 }
 
-- (BOOL)_matchesGroupID:(id)a3 mediaType:(id)a4
+- (BOOL)_matchesGroupID:(id)d mediaType:(id)type
 {
-  v7 = [(AVMediaSelectionGroup *)self _groupID];
-  v8 = [(AVMediaSelectionGroup *)self _groupMediaType];
-  if (v7 == a3 || (v9 = [v7 isEqual:a3]) != 0)
+  _groupID = [(AVMediaSelectionGroup *)self _groupID];
+  _groupMediaType = [(AVMediaSelectionGroup *)self _groupMediaType];
+  if (_groupID == d || (v9 = [_groupID isEqual:d]) != 0)
   {
-    if (v8 == a4)
+    if (_groupMediaType == type)
     {
       LOBYTE(v9) = 1;
     }
@@ -159,7 +159,7 @@
     else
     {
 
-      LOBYTE(v9) = [v8 isEqualToString:a4];
+      LOBYTE(v9) = [_groupMediaType isEqualToString:type];
     }
   }
 
@@ -188,7 +188,7 @@ uint64_t __64__AVMediaSelectionGroup_playableMediaSelectionOptionsFromArray___bl
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v7[0] = [(NSLocale *)locale localeIdentifier];
-  return [a1 mediaSelectionOptionsFromArray:mediaSelectionOptions filteredAndSortedAccordingToPreferredLanguages:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v7, 1)}];
+  return [self mediaSelectionOptionsFromArray:mediaSelectionOptions filteredAndSortedAccordingToPreferredLanguages:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v7, 1)}];
 }
 
 + (NSArray)mediaSelectionOptionsFromArray:(NSArray *)mediaSelectionOptions filteredAndSortedAccordingToPreferredLanguages:(NSArray *)preferredLanguages
@@ -228,8 +228,8 @@ uint64_t __64__AVMediaSelectionGroup_playableMediaSelectionOptionsFromArray___bl
   }
 
   v12 = FigCopyRankedLanguagesAccordingToPreferredLanguages();
-  v13 = [MEMORY[0x1E695DF70] array];
-  v14 = [MEMORY[0x1E696AD50] indexSet];
+  array = [MEMORY[0x1E695DF70] array];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -259,11 +259,11 @@ uint64_t __64__AVMediaSelectionGroup_playableMediaSelectionOptionsFromArray___bl
         v22[1] = 3221225472;
         v22[2] = __103__AVMediaSelectionGroup_mediaSelectionOptionsFromArray_filteredAndSortedAccordingToPreferredLanguages___block_invoke_2;
         v22[3] = &unk_1E7461B90;
-        v22[4] = v14;
-        v22[5] = v13;
+        v22[4] = indexSet;
+        v22[5] = array;
         v22[6] = mediaSelectionOptions;
         [(NSIndexSet *)v20 enumerateIndexesUsingBlock:v22];
-        [v14 addIndexes:v20];
+        [indexSet addIndexes:v20];
       }
 
       v16 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -272,7 +272,7 @@ uint64_t __64__AVMediaSelectionGroup_playableMediaSelectionOptionsFromArray___bl
     while (v16);
   }
 
-  return v13;
+  return array;
 }
 
 uint64_t __103__AVMediaSelectionGroup_mediaSelectionOptionsFromArray_filteredAndSortedAccordingToPreferredLanguages___block_invoke(uint64_t a1, void *a2)
@@ -374,14 +374,14 @@ LABEL_4:
   }
 }
 
-+ (id)mediaSelectionOptionsFromArray:(id)a3 withAnyMediaCharacteristicFromArray:(id)a4
++ (id)mediaSelectionOptionsFromArray:(id)array withAnyMediaCharacteristicFromArray:(id)fromArray
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __92__AVMediaSelectionGroup_mediaSelectionOptionsFromArray_withAnyMediaCharacteristicFromArray___block_invoke;
   v5[3] = &unk_1E7461B68;
-  v5[4] = a4;
-  return [a3 objectsAtIndexes:{objc_msgSend(a3, "indexesOfObjectsPassingTest:", v5)}];
+  v5[4] = fromArray;
+  return [array objectsAtIndexes:{objc_msgSend(array, "indexesOfObjectsPassingTest:", v5)}];
 }
 
 + (NSArray)mediaSelectionOptionsFromArray:(NSArray *)mediaSelectionOptions withoutMediaCharacteristics:(NSArray *)mediaCharacteristics
@@ -444,32 +444,32 @@ LABEL_4:
   return 1;
 }
 
-- (id)mediaSelectionOptionComplementaryToOption:(id)a3 forMediaCharacteristic:(id)a4
+- (id)mediaSelectionOptionComplementaryToOption:(id)option forMediaCharacteristic:(id)characteristic
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v7 = [a3 extendedLanguageTag];
-  v8 = [v7 isEqualToString:@"und"];
-  v9 = [(AVMediaSelectionGroup *)self options];
+  extendedLanguageTag = [option extendedLanguageTag];
+  v8 = [extendedLanguageTag isEqualToString:@"und"];
+  options = [(AVMediaSelectionGroup *)self options];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __90__AVMediaSelectionGroup_mediaSelectionOptionComplementaryToOption_forMediaCharacteristic___block_invoke;
   v17[3] = &unk_1E7465118;
-  v17[4] = v7;
+  v17[4] = extendedLanguageTag;
   v18 = v8;
-  v10 = [(NSArray *)[(AVMediaSelectionGroup *)self options] objectsAtIndexes:[(NSArray *)v9 indexesOfObjectsPassingTest:v17]];
-  v11 = [objc_msgSend(a3 "mediaCharacteristics")];
-  [v11 removeObject:a4];
-  v12 = [&unk_1F0AD3978 objectForKey:a4];
+  v10 = [(NSArray *)[(AVMediaSelectionGroup *)self options] objectsAtIndexes:[(NSArray *)options indexesOfObjectsPassingTest:v17]];
+  v11 = [objc_msgSend(option "mediaCharacteristics")];
+  [v11 removeObject:characteristic];
+  v12 = [&unk_1F0AD3978 objectForKey:characteristic];
   if (v12)
   {
     [v11 removeObjectsInArray:v12];
   }
 
   v13 = [AVMediaSelectionGroup mediaSelectionOptionsFromArray:v10 withMediaCharacteristics:v11];
-  if (![a3 hasMediaCharacteristic:a4])
+  if (![option hasMediaCharacteristic:characteristic])
   {
-    v19 = a4;
-    v15 = +[AVMediaSelectionGroup mediaSelectionOptionsFromArray:withMediaCharacteristics:](AVMediaSelectionGroup, "mediaSelectionOptionsFromArray:withMediaCharacteristics:", v13, [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1]);
+    characteristicCopy = characteristic;
+    v15 = +[AVMediaSelectionGroup mediaSelectionOptionsFromArray:withMediaCharacteristics:](AVMediaSelectionGroup, "mediaSelectionOptionsFromArray:withMediaCharacteristics:", v13, [MEMORY[0x1E695DEC8] arrayWithObjects:&characteristicCopy count:1]);
 LABEL_10:
     v14 = v15;
     return [(NSArray *)v14 firstObject];
@@ -487,7 +487,7 @@ LABEL_10:
 
   if (![(NSArray *)v14 count])
   {
-    v20[0] = a4;
+    v20[0] = characteristic;
     v15 = +[AVMediaSelectionGroup mediaSelectionOptionsFromArray:withoutMediaCharacteristics:](AVMediaSelectionGroup, "mediaSelectionOptionsFromArray:withoutMediaCharacteristics:", v13, [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1]);
     goto LABEL_10;
   }
@@ -516,19 +516,19 @@ uint64_t __90__AVMediaSelectionGroup_mediaSelectionOptionComplementaryToOption_f
   return [v3 isEqualToString:@"und"];
 }
 
-- (void)setCurrentBundleIdentifier:(id)a3
+- (void)setCurrentBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
 
   self->_mediaSelectionGroup->currentBundleIdentifier = v4;
 }
 
 - (NSArray)mediaSelectionOptionsWithEnhancedIntelligibilityOfSpeech
 {
-  v2 = [(AVMediaSelectionGroup *)self options];
+  options = [(AVMediaSelectionGroup *)self options];
   TaggedMediaCharacteristicsForEnhancedSpeechIntelligibility = FigMediaCharacteristicsGetTaggedMediaCharacteristicsForEnhancedSpeechIntelligibility();
 
-  return [AVMediaSelectionGroup mediaSelectionOptionsFromArray:v2 withAnyMediaCharacteristicFromArray:TaggedMediaCharacteristicsForEnhancedSpeechIntelligibility];
+  return [AVMediaSelectionGroup mediaSelectionOptionsFromArray:options withAnyMediaCharacteristicFromArray:TaggedMediaCharacteristicsForEnhancedSpeechIntelligibility];
 }
 
 @end

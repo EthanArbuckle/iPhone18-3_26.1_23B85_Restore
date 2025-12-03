@@ -1,25 +1,25 @@
 @interface CAFTestAccRequestWithResParamsControl
 + (void)load;
-- (BOOL)_didRequestWithValue:(id)a3 response:(id)a4;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (BOOL)_didRequestWithValue:(id)value response:(id)response;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFTestAccRequestWithResParamsControl
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFTestAccRequestWithResParamsControl;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABC08])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABC08])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -32,12 +32,12 @@
   [(CAFControl *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABC08])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABC08])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -50,23 +50,23 @@
   [(CAFControl *)&v6 unregisterObserver:v5];
 }
 
-- (BOOL)_didRequestWithValue:(id)a3 response:(id)a4
+- (BOOL)_didRequestWithValue:(id)value response:(id)response
 {
-  v5 = a4;
-  v6 = [(CAFTestAccRequestWithResParamsControl *)self handler];
+  responseCopy = response;
+  handler = [(CAFTestAccRequestWithResParamsControl *)self handler];
 
-  if (v6)
+  if (handler)
   {
-    v7 = [(CAFTestAccRequestWithResParamsControl *)self handler];
+    handler2 = [(CAFTestAccRequestWithResParamsControl *)self handler];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __71__CAFTestAccRequestWithResParamsControl__didRequestWithValue_response___block_invoke;
     v9[3] = &unk_27890F1A8;
-    v10 = v5;
-    (v7)[2](v7, v9);
+    v10 = responseCopy;
+    (handler2)[2](handler2, v9);
   }
 
-  return v6 != 0;
+  return handler != 0;
 }
 
 void __71__CAFTestAccRequestWithResParamsControl__didRequestWithValue_response___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)

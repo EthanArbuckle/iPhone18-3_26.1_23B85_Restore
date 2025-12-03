@@ -1,7 +1,7 @@
 @interface SLGracePeriodTimer
-+ (id)timerWithQueue:(id)a3 delay:(double)a4 action:(id)a5;
++ (id)timerWithQueue:(id)queue delay:(double)delay action:(id)action;
 - (BOOL)isValid;
-- (SLGracePeriodTimer)initWithQueue:(id)a3 delay:(double)a4 action:(id)a5;
+- (SLGracePeriodTimer)initWithQueue:(id)queue delay:(double)delay action:(id)action;
 - (id)description;
 - (void)_createTimer;
 - (void)arm;
@@ -11,28 +11,28 @@
 
 @implementation SLGracePeriodTimer
 
-+ (id)timerWithQueue:(id)a3 delay:(double)a4 action:(id)a5
++ (id)timerWithQueue:(id)queue delay:(double)delay action:(id)action
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[SLGracePeriodTimer alloc] initWithQueue:v8 delay:v7 action:a4];
+  actionCopy = action;
+  queueCopy = queue;
+  v9 = [[SLGracePeriodTimer alloc] initWithQueue:queueCopy delay:actionCopy action:delay];
 
   return v9;
 }
 
-- (SLGracePeriodTimer)initWithQueue:(id)a3 delay:(double)a4 action:(id)a5
+- (SLGracePeriodTimer)initWithQueue:(id)queue delay:(double)delay action:(id)action
 {
-  v9 = a3;
-  v10 = a5;
+  queueCopy = queue;
+  actionCopy = action;
   v16.receiver = self;
   v16.super_class = SLGracePeriodTimer;
   v11 = [(SLGracePeriodTimer *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_callbackQueue, a3);
-    v12->_delay = a4;
-    v13 = _Block_copy(v10);
+    objc_storeStrong(&v11->_callbackQueue, queue);
+    v12->_delay = delay;
+    v13 = _Block_copy(actionCopy);
     action = v12->_action;
     v12->_action = v13;
   }
@@ -50,10 +50,10 @@
 
 - (BOOL)isValid
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_timer != 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_timer != 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -135,12 +135,12 @@ void __34__SLGracePeriodTimer__createTimer__block_invoke(uint64_t a1)
 
 - (id)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_timer)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_timer)
   {
     v3 = MEMORY[0x277CCACA8];
-    expectedFiringTimeSinceReferenceDate = v2->_expectedFiringTimeSinceReferenceDate;
+    expectedFiringTimeSinceReferenceDate = selfCopy->_expectedFiringTimeSinceReferenceDate;
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v6 = [v3 stringWithFormat:@"armed, firing in %.1gs", expectedFiringTimeSinceReferenceDate - v5];
   }
@@ -150,7 +150,7 @@ void __34__SLGracePeriodTimer__createTimer__block_invoke(uint64_t a1)
     v6 = @"not running";
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

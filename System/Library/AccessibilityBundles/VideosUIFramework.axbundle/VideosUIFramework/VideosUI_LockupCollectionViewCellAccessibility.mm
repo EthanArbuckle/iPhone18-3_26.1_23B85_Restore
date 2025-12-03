@@ -1,11 +1,11 @@
 @interface VideosUI_LockupCollectionViewCellAccessibility
 + (id)specialCharacters;
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityOverlayView;
 - (id)_accessibilityStackingPosterView;
-- (id)_accessibilityTextBadge:(id)a3;
-- (id)_axAttributedLabelFromComponentsOfStackingPosterView:(id)a3 overlayView:(id)a4;
-- (id)_axLabelFromComponentsOfStackingPosterView:(id)a3 overlayView:(id)a4;
+- (id)_accessibilityTextBadge:(id)badge;
+- (id)_axAttributedLabelFromComponentsOfStackingPosterView:(id)view overlayView:(id)overlayView;
+- (id)_axLabelFromComponentsOfStackingPosterView:(id)view overlayView:(id)overlayView;
 - (id)accessibilityAttributedLabel;
 - (id)accessibilityHint;
 - (id)accessibilityValue;
@@ -14,20 +14,20 @@
 
 @implementation VideosUI_LockupCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUIStackingPosterView"];
-  [v3 validateClass:@"VUIStackingPosterView" hasProperty:@"mainImageComponent" withType:"@"];
-  [v3 validateClass:@"VUIStackingPosterView" hasProperty:@"components" withType:"@"];
-  [v3 validateClass:@"VideosUI.LockupCollectionViewCell" hasSwiftField:@"stackingPosterView" withSwiftType:"VUIStackingPosterView"];
-  [v3 validateClass:@"VideosUI.UnifiedOverlayView" hasSwiftField:@"selectionView" withSwiftType:"Optional<VUIImageView>"];
-  [v3 validateClass:@"VideosUI.UnifiedOverlayView" hasSwiftField:@"isLockupSelected" withSwiftType:"Bool"];
-  [v3 validateClass:@"VideosUI.UnifiedOverlayView" hasSwiftField:@"scorecardView" withSwiftType:"Optional<_UIHostingView<ScoreboardImageWrapper>>"];
-  [v3 validateClass:@"VUIBaseCollectionViewCell" hasInstanceMethod:@"vuiCollectionViewCellInteractor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VideosUI.MultiViewPlayerHUDTemplateController"];
-  [v3 validateClass:@"VideosUI.MultiPlayerViewController"];
-  [v3 validateClass:@"VideosUI.PageSwipeUpView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUIStackingPosterView"];
+  [validationsCopy validateClass:@"VUIStackingPosterView" hasProperty:@"mainImageComponent" withType:"@"];
+  [validationsCopy validateClass:@"VUIStackingPosterView" hasProperty:@"components" withType:"@"];
+  [validationsCopy validateClass:@"VideosUI.LockupCollectionViewCell" hasSwiftField:@"stackingPosterView" withSwiftType:"VUIStackingPosterView"];
+  [validationsCopy validateClass:@"VideosUI.UnifiedOverlayView" hasSwiftField:@"selectionView" withSwiftType:"Optional<VUIImageView>"];
+  [validationsCopy validateClass:@"VideosUI.UnifiedOverlayView" hasSwiftField:@"isLockupSelected" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"VideosUI.UnifiedOverlayView" hasSwiftField:@"scorecardView" withSwiftType:"Optional<_UIHostingView<ScoreboardImageWrapper>>"];
+  [validationsCopy validateClass:@"VUIBaseCollectionViewCell" hasInstanceMethod:@"vuiCollectionViewCellInteractor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VideosUI.MultiViewPlayerHUDTemplateController"];
+  [validationsCopy validateClass:@"VideosUI.MultiPlayerViewController"];
+  [validationsCopy validateClass:@"VideosUI.PageSwipeUpView"];
 }
 
 + (id)specialCharacters
@@ -46,10 +46,10 @@
 {
   v8.receiver = self;
   v8.super_class = VideosUI_LockupCollectionViewCellAccessibility;
-  v3 = [(VideosUI_LockupCollectionViewCellAccessibility *)&v8 accessibilityTraits];
-  v4 = [(VideosUI_LockupCollectionViewCellAccessibility *)self _accessibilityOverlayView];
-  v5 = [v4 safeSwiftValueForKey:@"selectionView"];
-  if (((v5 != 0) & [v4 safeSwiftBoolForKey:@"isLockupSelected"]) != 0)
+  accessibilityTraits = [(VideosUI_LockupCollectionViewCellAccessibility *)&v8 accessibilityTraits];
+  _accessibilityOverlayView = [(VideosUI_LockupCollectionViewCellAccessibility *)self _accessibilityOverlayView];
+  v5 = [_accessibilityOverlayView safeSwiftValueForKey:@"selectionView"];
+  if (((v5 != 0) & [_accessibilityOverlayView safeSwiftBoolForKey:@"isLockupSelected"]) != 0)
   {
     v6 = *MEMORY[0x29EDC7FC0];
   }
@@ -59,22 +59,22 @@
     v6 = 0;
   }
 
-  return v6 | v3;
+  return v6 | accessibilityTraits;
 }
 
 - (id)accessibilityAttributedLabel
 {
-  v3 = [(VideosUI_LockupCollectionViewCellAccessibility *)self _accessibilityStackingPosterView];
-  v4 = [(VideosUI_LockupCollectionViewCellAccessibility *)self _accessibilityOverlayView];
-  v5 = [(VideosUI_LockupCollectionViewCellAccessibility *)self _axAttributedLabelFromComponentsOfStackingPosterView:v3 overlayView:v4];
+  _accessibilityStackingPosterView = [(VideosUI_LockupCollectionViewCellAccessibility *)self _accessibilityStackingPosterView];
+  _accessibilityOverlayView = [(VideosUI_LockupCollectionViewCellAccessibility *)self _accessibilityOverlayView];
+  v5 = [(VideosUI_LockupCollectionViewCellAccessibility *)self _axAttributedLabelFromComponentsOfStackingPosterView:_accessibilityStackingPosterView overlayView:_accessibilityOverlayView];
 
   if (![v5 length])
   {
     v8.receiver = self;
     v8.super_class = VideosUI_LockupCollectionViewCellAccessibility;
-    v6 = [(VideosUI_LockupCollectionViewCellAccessibility *)&v8 accessibilityAttributedLabel];
+    accessibilityAttributedLabel = [(VideosUI_LockupCollectionViewCellAccessibility *)&v8 accessibilityAttributedLabel];
 
-    v5 = v6;
+    v5 = accessibilityAttributedLabel;
   }
 
   return v5;
@@ -83,17 +83,17 @@
 - (id)accessibilityValue
 {
   v31 = *MEMORY[0x29EDCA608];
-  v3 = [(VideosUI_LockupCollectionViewCellAccessibility *)self _accessibilityOverlayView];
-  v4 = [(VideosUI_LockupCollectionViewCellAccessibility *)self _accessibilityStackingPosterView];
-  v5 = [(VideosUI_LockupCollectionViewCellAccessibility *)self _axLabelFromComponentsOfStackingPosterView:v4 overlayView:v3];
+  _accessibilityOverlayView = [(VideosUI_LockupCollectionViewCellAccessibility *)self _accessibilityOverlayView];
+  _accessibilityStackingPosterView = [(VideosUI_LockupCollectionViewCellAccessibility *)self _accessibilityStackingPosterView];
+  v5 = [(VideosUI_LockupCollectionViewCellAccessibility *)self _axLabelFromComponentsOfStackingPosterView:_accessibilityStackingPosterView overlayView:_accessibilityOverlayView];
 
-  v6 = [MEMORY[0x29EDB8E10] orderedSet];
+  orderedSet = [MEMORY[0x29EDB8E10] orderedSet];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [objc_opt_class() specialCharacters];
-  v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  specialCharacters = [objc_opt_class() specialCharacters];
+  v8 = [specialCharacters countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
     v9 = v8;
@@ -104,28 +104,28 @@
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(specialCharacters);
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
         if ([v5 containsString:v12])
         {
-          v13 = [objc_opt_class() specialCharacters];
-          v14 = [v13 objectForKey:v12];
+          specialCharacters2 = [objc_opt_class() specialCharacters];
+          v14 = [specialCharacters2 objectForKey:v12];
 
           v15 = accessibilityLocalizedString(v14);
-          [v6 addObject:v15];
+          [orderedSet addObject:v15];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v9 = [specialCharacters countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v9);
   }
 
-  v16 = [v3 accessibilityValue];
-  if ([v16 length])
+  accessibilityValue = [_accessibilityOverlayView accessibilityValue];
+  if ([accessibilityValue length])
   {
     v25 = 0;
     objc_opt_class();
@@ -136,40 +136,40 @@
     if (objc_opt_isKindOfClass())
     {
       v19 = accessibilityLocalizedString(@"multiview.selected.cell");
-      [v6 addObject:v19];
+      [orderedSet addObject:v19];
     }
 
     else
     {
-      [v6 addObject:v16];
+      [orderedSet addObject:accessibilityValue];
     }
   }
 
-  if ([v6 count])
+  if ([orderedSet count])
   {
-    v20 = [v6 array];
-    v21 = [v20 componentsJoinedByString:{@", "}];
+    array = [orderedSet array];
+    accessibilityValue2 = [array componentsJoinedByString:{@", "}];
   }
 
   else
   {
     v24.receiver = self;
     v24.super_class = VideosUI_LockupCollectionViewCellAccessibility;
-    v21 = [(VideosUI_LockupCollectionViewCellAccessibility *)&v24 accessibilityValue];
+    accessibilityValue2 = [(VideosUI_LockupCollectionViewCellAccessibility *)&v24 accessibilityValue];
   }
 
   v22 = *MEMORY[0x29EDCA608];
 
-  return v21;
+  return accessibilityValue2;
 }
 
 - (id)accessibilityHint
 {
   v4.receiver = self;
   v4.super_class = VideosUI_LockupCollectionViewCellAccessibility;
-  v2 = [(VideosUI_LockupCollectionViewCellAccessibility *)&v4 accessibilityHint];
+  accessibilityHint = [(VideosUI_LockupCollectionViewCellAccessibility *)&v4 accessibilityHint];
 
-  return v2;
+  return accessibilityHint;
 }
 
 - (id)_accessibilityStackingPosterView
@@ -206,21 +206,21 @@
 
 - (id)_accessibilityOverlayView
 {
-  v2 = [(VideosUI_LockupCollectionViewCellAccessibility *)self _accessibilityStackingPosterView];
-  v3 = [v2 safeValueForKey:@"_mainImageComponent"];
+  _accessibilityStackingPosterView = [(VideosUI_LockupCollectionViewCellAccessibility *)self _accessibilityStackingPosterView];
+  v3 = [_accessibilityStackingPosterView safeValueForKey:@"_mainImageComponent"];
 
   v4 = [v3 _accessibilityFindSubviewDescendant:&__block_literal_global_361];
 
   return v4;
 }
 
-- (id)_accessibilityTextBadge:(id)a3
+- (id)_accessibilityTextBadge:(id)badge
 {
-  v4 = a3;
-  v5 = [v4 safeUIViewForKey:@"accessibilityTextBadge"];
+  badgeCopy = badge;
+  v5 = [badgeCopy safeUIViewForKey:@"accessibilityTextBadge"];
   if (!v5)
   {
-    v5 = [v4 safeSwiftValueForKey:@"textBadge"];
+    v5 = [badgeCopy safeSwiftValueForKey:@"textBadge"];
     if (!v5)
     {
       v5 = [(VideosUI_LockupCollectionViewCellAccessibility *)self _accessibilityDescendantOfType:MEMORY[0x29ED3FF70](@"VUITextBadgeView")];
@@ -232,31 +232,31 @@
   return v6;
 }
 
-- (id)_axLabelFromComponentsOfStackingPosterView:(id)a3 overlayView:(id)a4
+- (id)_axLabelFromComponentsOfStackingPosterView:(id)view overlayView:(id)overlayView
 {
   v49 = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x29EDB8E10] orderedSet];
-  v8 = [v5 safeValueForKey:@"animatedLabel"];
-  v9 = [v8 accessibilityLabel];
+  viewCopy = view;
+  overlayViewCopy = overlayView;
+  orderedSet = [MEMORY[0x29EDB8E10] orderedSet];
+  v8 = [viewCopy safeValueForKey:@"animatedLabel"];
+  accessibilityLabel = [v8 accessibilityLabel];
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 length])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [accessibilityLabel length])
   {
-    [v7 addObject:v9];
+    [orderedSet addObject:accessibilityLabel];
   }
 
-  v10 = [v5 safeValueForKey:@"mainImageComponent"];
-  v11 = [v10 accessibilityLabel];
+  v10 = [viewCopy safeValueForKey:@"mainImageComponent"];
+  accessibilityLabel2 = [v10 accessibilityLabel];
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 length])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [accessibilityLabel2 length])
   {
-    [v7 addObject:v11];
+    [orderedSet addObject:accessibilityLabel2];
   }
 
-  [v5 safeArrayForKey:@"components"];
+  [viewCopy safeArrayForKey:@"components"];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -270,18 +270,18 @@
     {
       for (i = 0; i != v14; ++i)
       {
-        v17 = v11;
+        v17 = accessibilityLabel2;
         if (*v45 != v15)
         {
           objc_enumerationMutation(v12);
         }
 
-        v11 = [*(*(&v44 + 1) + 8 * i) accessibilityLabel];
+        accessibilityLabel2 = [*(*(&v44 + 1) + 8 * i) accessibilityLabel];
 
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 length])
+        if ((objc_opt_isKindOfClass() & 1) != 0 && [accessibilityLabel2 length])
         {
-          [v7 addObject:v11];
+          [orderedSet addObject:accessibilityLabel2];
         }
       }
 
@@ -291,39 +291,39 @@
     while (v14);
   }
 
-  v18 = [v6 safeValueForKey:@"accessibilityTitleLabel"];
-  v19 = [v18 accessibilityLabel];
+  v18 = [overlayViewCopy safeValueForKey:@"accessibilityTitleLabel"];
+  accessibilityLabel3 = [v18 accessibilityLabel];
 
-  if ([v19 length])
+  if ([accessibilityLabel3 length])
   {
-    [v7 addObject:v19];
+    [orderedSet addObject:accessibilityLabel3];
   }
 
-  v20 = [v6 safeValueForKey:@"accessibilitySubtitleLabel"];
+  v20 = [overlayViewCopy safeValueForKey:@"accessibilitySubtitleLabel"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v20 length])
   {
-    [v7 addObject:v20];
+    [orderedSet addObject:v20];
   }
 
-  v21 = [v6 safeUIViewForKey:@"accessibilityAppImageView"];
-  v22 = [v21 accessibilityLabel];
+  v21 = [overlayViewCopy safeUIViewForKey:@"accessibilityAppImageView"];
+  accessibilityLabel4 = [v21 accessibilityLabel];
 
-  if ([v22 length])
+  if ([accessibilityLabel4 length])
   {
-    [v7 addObject:v22];
+    [orderedSet addObject:accessibilityLabel4];
   }
 
-  v23 = [v6 safeUIViewForKey:@"accessibilityLogoImageView"];
-  v24 = [v23 accessibilityLabel];
+  v23 = [overlayViewCopy safeUIViewForKey:@"accessibilityLogoImageView"];
+  accessibilityLabel5 = [v23 accessibilityLabel];
 
-  if ([v24 length])
+  if ([accessibilityLabel5 length])
   {
-    [v7 addObject:v24];
+    [orderedSet addObject:accessibilityLabel5];
   }
 
-  v25 = [v6 safeValueForKey:@"accessibilityProgressView"];
+  v25 = [overlayViewCopy safeValueForKey:@"accessibilityProgressView"];
   [v25 safeCGFloatForKey:@"accessibilityProgress"];
   v27 = v26;
 
@@ -339,60 +339,60 @@
     v30 = AXFormatFloatWithPercentage();
     v31 = [v28 stringWithFormat:v29, v30];
 
-    v24 = v29;
+    accessibilityLabel5 = v29;
   }
 
   if ([v31 length])
   {
-    [v7 addObject:v31];
+    [orderedSet addObject:v31];
   }
 
-  v32 = [v6 safeUIViewForKey:@"accessibilityBadgeView"];
-  v33 = [v32 accessibilityLabel];
+  v32 = [overlayViewCopy safeUIViewForKey:@"accessibilityBadgeView"];
+  accessibilityLabel6 = [v32 accessibilityLabel];
 
-  if ([v33 length])
+  if ([accessibilityLabel6 length])
   {
-    [v7 addObject:v33];
+    [orderedSet addObject:accessibilityLabel6];
   }
 
-  v34 = [(VideosUI_LockupCollectionViewCellAccessibility *)self _accessibilityTextBadge:v6];
-  v35 = [v34 accessibilityLabel];
+  v34 = [(VideosUI_LockupCollectionViewCellAccessibility *)self _accessibilityTextBadge:overlayViewCopy];
+  accessibilityLabel7 = [v34 accessibilityLabel];
 
-  if ([v35 length])
+  if ([accessibilityLabel7 length])
   {
-    [v7 addObject:v35];
+    [orderedSet addObject:accessibilityLabel7];
   }
 
   objc_opt_class();
-  v36 = [v6 safeSwiftValueForKey:@"scorecardView"];
+  v36 = [overlayViewCopy safeSwiftValueForKey:@"scorecardView"];
   v37 = __UIAccessibilityCastAsClass();
 
-  v38 = [v37 accessibilityLabel];
+  accessibilityLabel8 = [v37 accessibilityLabel];
 
-  if ([v38 length])
+  if ([accessibilityLabel8 length])
   {
-    [v7 addObject:v38];
+    [orderedSet addObject:accessibilityLabel8];
   }
 
-  v39 = [v7 array];
-  v40 = [v39 componentsJoinedByString:{@", "}];
+  array = [orderedSet array];
+  v40 = [array componentsJoinedByString:{@", "}];
 
   v41 = *MEMORY[0x29EDCA608];
 
   return v40;
 }
 
-- (id)_axAttributedLabelFromComponentsOfStackingPosterView:(id)a3 overlayView:(id)a4
+- (id)_axAttributedLabelFromComponentsOfStackingPosterView:(id)view overlayView:(id)overlayView
 {
   v30 = *MEMORY[0x29EDCA608];
-  v6 = a4;
-  v7 = [(VideosUI_LockupCollectionViewCellAccessibility *)self _axLabelFromComponentsOfStackingPosterView:a3 overlayView:v6];
+  overlayViewCopy = overlayView;
+  v7 = [(VideosUI_LockupCollectionViewCellAccessibility *)self _axLabelFromComponentsOfStackingPosterView:view overlayView:overlayViewCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = [objc_opt_class() specialCharacters];
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  specialCharacters = [objc_opt_class() specialCharacters];
+  v9 = [specialCharacters countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
@@ -405,7 +405,7 @@
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(specialCharacters);
         }
 
         v7 = [v13 stringByReplacingOccurrencesOfString:*(*(&v23 + 1) + 8 * v12) withString:&stru_2A23A0858];
@@ -415,19 +415,19 @@
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v29 count:16];
+      v10 = [specialCharacters countByEnumeratingWithState:&v23 objects:v29 count:16];
     }
 
     while (v10);
   }
 
   v14 = [objc_alloc(MEMORY[0x29EDBA038]) initWithString:v7];
-  v15 = [v6 safeUIViewForKey:@"accessibilityLogoImageView"];
-  v16 = [v15 accessibilityLabel];
+  v15 = [overlayViewCopy safeUIViewForKey:@"accessibilityLogoImageView"];
+  accessibilityLabel = [v15 accessibilityLabel];
 
-  if (v16)
+  if (accessibilityLabel)
   {
-    v17 = [v7 rangeOfString:v16];
+    v17 = [v7 rangeOfString:accessibilityLabel];
     v19 = v18;
     v27 = *MEMORY[0x29EDC7F38];
     v28 = MEMORY[0x29EDB8EB0];

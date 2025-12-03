@@ -1,14 +1,14 @@
 @interface LASerialSchedulerInternal
 - (LASerialSchedulerInternal)init;
-- (LASerialSchedulerInternal)initWithQueue:(id)a3;
+- (LASerialSchedulerInternal)initWithQueue:(id)queue;
 - (void)_performPendingOperations;
-- (void)_performPendingOperationsWithCompletion:(id)a3;
+- (void)_performPendingOperationsWithCompletion:(id)completion;
 - (void)_resume;
-- (void)_schedule:(id)a3;
+- (void)_schedule:(id)_schedule;
 - (void)resume;
-- (void)schedule:(id)a3;
+- (void)schedule:(id)schedule;
 - (void)unsafeResume;
-- (void)unsafeSchedule:(id)a3;
+- (void)unsafeSchedule:(id)schedule;
 @end
 
 @implementation LASerialSchedulerInternal
@@ -24,9 +24,9 @@
   return v7;
 }
 
-- (LASerialSchedulerInternal)initWithQueue:(id)a3
+- (LASerialSchedulerInternal)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = LASerialSchedulerInternal;
   v6 = [(LASerialSchedulerInternal *)&v10 init];
@@ -36,15 +36,15 @@
     pendingOperations = v6->_pendingOperations;
     v6->_pendingOperations = v7;
 
-    objc_storeStrong(&v6->_workQueue, a3);
+    objc_storeStrong(&v6->_workQueue, queue);
   }
 
   return v6;
 }
 
-- (void)schedule:(id)a3
+- (void)schedule:(id)schedule
 {
-  v4 = a3;
+  scheduleCopy = schedule;
   objc_initWeak(&location, self);
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -52,8 +52,8 @@
   block[2] = __38__LASerialSchedulerInternal_schedule___block_invoke;
   block[3] = &unk_1E86B5C98;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = scheduleCopy;
+  v6 = scheduleCopy;
   dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v9);
@@ -96,12 +96,12 @@ void __35__LASerialSchedulerInternal_resume__block_invoke(uint64_t a1)
   }
 }
 
-- (void)unsafeSchedule:(id)a3
+- (void)unsafeSchedule:(id)schedule
 {
   workQueue = self->_workQueue;
-  v5 = a3;
+  scheduleCopy = schedule;
   dispatch_assert_queue_V2(workQueue);
-  [(LASerialSchedulerInternal *)self _schedule:v5];
+  [(LASerialSchedulerInternal *)self _schedule:scheduleCopy];
 }
 
 - (void)unsafeResume
@@ -111,13 +111,13 @@ void __35__LASerialSchedulerInternal_resume__block_invoke(uint64_t a1)
   [(LASerialSchedulerInternal *)self _resume];
 }
 
-- (void)_schedule:(id)a3
+- (void)_schedule:(id)_schedule
 {
   workQueue = self->_workQueue;
-  v5 = a3;
+  _scheduleCopy = _schedule;
   dispatch_assert_queue_V2(workQueue);
   pendingOperations = self->_pendingOperations;
-  v7 = MEMORY[0x1E12D4BC0](v5);
+  v7 = MEMORY[0x1E12D4BC0](_scheduleCopy);
 
   [(NSMutableArray *)pendingOperations addObject:v7];
   if (self->_running)
@@ -162,13 +162,13 @@ void __54__LASerialSchedulerInternal__performPendingOperations__block_invoke(uin
   }
 }
 
-- (void)_performPendingOperationsWithCompletion:(id)a3
+- (void)_performPendingOperationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_workQueue);
   if ([(NSMutableArray *)self->_pendingOperations count])
   {
-    v5 = [(NSMutableArray *)self->_pendingOperations firstObject];
+    firstObject = [(NSMutableArray *)self->_pendingOperations firstObject];
     [(NSMutableArray *)self->_pendingOperations removeObjectAtIndex:0];
     objc_initWeak(&location, self);
     v6[0] = MEMORY[0x1E69E9820];
@@ -176,8 +176,8 @@ void __54__LASerialSchedulerInternal__performPendingOperations__block_invoke(uin
     v6[2] = __69__LASerialSchedulerInternal__performPendingOperationsWithCompletion___block_invoke;
     v6[3] = &unk_1E86B5C98;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
-    (v5)[2](v5, v6);
+    v7 = completionCopy;
+    (firstObject)[2](firstObject, v6);
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -185,7 +185,7 @@ void __54__LASerialSchedulerInternal__performPendingOperations__block_invoke(uin
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 

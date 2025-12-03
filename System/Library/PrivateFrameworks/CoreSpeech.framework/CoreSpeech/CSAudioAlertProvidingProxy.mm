@@ -1,16 +1,16 @@
 @interface CSAudioAlertProvidingProxy
 - (CSAudioAlertProviding)audioAlertProvider;
-- (CSAudioAlertProvidingProxy)initWithXPCConnection:(id)a3;
+- (CSAudioAlertProvidingProxy)initWithXPCConnection:(id)connection;
 - (CSClientXPCConnection)xpcConnection;
-- (void)_handleAlertProvidingRequestTypeAlertStartTimeMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleAlertProvidingRequestTypeConfigureAlertBehavior:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleAlertProvidingRequestTypePlayAlertSoundMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleAlertProvidingRequestTypePlayRecordStartingAlertAndResetEndpointerMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleAlertProvidingRequestTypeSetAlertSoundMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_sendDelegateMessageToClient:(id)a3;
-- (void)_sendReplyMessageWithResult:(BOOL)a3 event:(id)a4 client:(id)a5;
-- (void)audioAlertProvidingDidFinishAlertPlayback:(id)a3 ofType:(int64_t)a4 error:(id)a5;
-- (void)handleXPCMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
+- (void)_handleAlertProvidingRequestTypeAlertStartTimeMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)_handleAlertProvidingRequestTypeConfigureAlertBehavior:(id)behavior messageBody:(id)body client:(id)client;
+- (void)_handleAlertProvidingRequestTypePlayAlertSoundMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)_handleAlertProvidingRequestTypePlayRecordStartingAlertAndResetEndpointerMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)_handleAlertProvidingRequestTypeSetAlertSoundMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)_sendDelegateMessageToClient:(id)client;
+- (void)_sendReplyMessageWithResult:(BOOL)result event:(id)event client:(id)client;
+- (void)audioAlertProvidingDidFinishAlertPlayback:(id)playback ofType:(int64_t)type error:(id)error;
+- (void)handleXPCMessage:(id)message messageBody:(id)body client:(id)client;
 @end
 
 @implementation CSAudioAlertProvidingProxy
@@ -29,26 +29,26 @@
   return WeakRetained;
 }
 
-- (void)_sendDelegateMessageToClient:(id)a3
+- (void)_sendDelegateMessageToClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   *keys = *off_100252E40;
   v9[0] = xpc_int64_create(7);
-  v5 = v4;
+  v5 = clientCopy;
   v9[1] = v5;
   v6 = xpc_dictionary_create(keys, v9, 2uLL);
-  v7 = [(CSAudioAlertProvidingProxy *)self xpcConnection];
-  [v7 sendMessageToClient:v6];
+  xpcConnection = [(CSAudioAlertProvidingProxy *)self xpcConnection];
+  [xpcConnection sendMessageToClient:v6];
 
   for (i = 1; i != -1; --i)
   {
   }
 }
 
-- (void)audioAlertProvidingDidFinishAlertPlayback:(id)a3 ofType:(int64_t)a4 error:(id)a5
+- (void)audioAlertProvidingDidFinishAlertPlayback:(id)playback ofType:(int64_t)type error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  playbackCopy = playback;
+  errorCopy = error;
   v10 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -59,15 +59,15 @@
 
   *buf = *off_100252E30;
   v15[0] = xpc_int64_create(1);
-  v15[1] = xpc_int64_create(a4);
+  v15[1] = xpc_int64_create(type);
   v11 = xpc_dictionary_create(buf, v15, 2uLL);
-  if (v9)
+  if (errorCopy)
   {
-    v12 = [v9 domain];
-    v13 = v12;
-    xpc_dictionary_set_string(v11, "errorDomain", [v12 UTF8String]);
+    domain = [errorCopy domain];
+    v13 = domain;
+    xpc_dictionary_set_string(v11, "errorDomain", [domain UTF8String]);
 
-    xpc_dictionary_set_int64(v11, "errorCode", [v9 code]);
+    xpc_dictionary_set_int64(v11, "errorCode", [errorCopy code]);
   }
 
   [(CSAudioAlertProvidingProxy *)self _sendDelegateMessageToClient:v11, v15[0]];
@@ -77,17 +77,17 @@
   }
 }
 
-- (void)_sendReplyMessageWithResult:(BOOL)a3 event:(id)a4 client:(id)a5
+- (void)_sendReplyMessageWithResult:(BOOL)result event:(id)event client:(id)client
 {
-  v7 = a5;
-  message = xpc_dictionary_create_reply(a4);
-  xpc_dictionary_set_BOOL(message, "result", a3);
-  xpc_connection_send_message(v7, message);
+  clientCopy = client;
+  message = xpc_dictionary_create_reply(event);
+  xpc_dictionary_set_BOOL(message, "result", result);
+  xpc_connection_send_message(clientCopy, message);
 }
 
-- (void)_handleAlertProvidingRequestTypeConfigureAlertBehavior:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleAlertProvidingRequestTypeConfigureAlertBehavior:(id)behavior messageBody:(id)body client:(id)client
 {
-  v6 = xpc_dictionary_get_dictionary(a4, "alertBehavior");
+  v6 = xpc_dictionary_get_dictionary(body, "alertBehavior");
   if (v6)
   {
     v7 = [NSDictionary alloc];
@@ -135,17 +135,17 @@
   }
 }
 
-- (void)_handleAlertProvidingRequestTypeAlertStartTimeMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleAlertProvidingRequestTypeAlertStartTimeMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v7 = a3;
-  v8 = a5;
+  messageCopy = message;
+  clientCopy = client;
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = sub_10014EB74;
   v20 = &unk_100252E10;
-  v9 = v7;
+  v9 = messageCopy;
   v21 = v9;
-  v10 = v8;
+  v10 = clientCopy;
   v22 = v10;
   v11 = objc_retainBlock(&v17);
   WeakRetained = objc_loadWeakRetained(&self->_audioAlertProvider);
@@ -153,7 +153,7 @@
   if (WeakRetained)
   {
     v13 = objc_loadWeakRetained(&self->_audioAlertProvider);
-    v14 = [v13 alertStartTime];
+    alertStartTime = [v13 alertStartTime];
 
     v15 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -161,11 +161,11 @@
       *buf = 136315394;
       v24 = "[CSAudioAlertProvidingProxy _handleAlertProvidingRequestTypeAlertStartTimeMessage:messageBody:client:]";
       v25 = 2050;
-      v26 = v14;
+      v26 = alertStartTime;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s alertStartTime = %{public}llu", buf, 0x16u);
     }
 
-    (v11[2])(v11, 1, v14);
+    (v11[2])(v11, 1, alertStartTime);
   }
 
   else
@@ -182,16 +182,16 @@
   }
 }
 
-- (void)_handleAlertProvidingRequestTypePlayRecordStartingAlertAndResetEndpointerMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleAlertProvidingRequestTypePlayRecordStartingAlertAndResetEndpointerMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  bodyCopy = body;
+  clientCopy = client;
+  messageCopy = message;
   WeakRetained = objc_loadWeakRetained(&self->_audioAlertProvider);
 
   if (WeakRetained)
   {
-    int64 = xpc_dictionary_get_int64(v8, "startAlertOverride");
+    int64 = xpc_dictionary_get_int64(bodyCopy, "startAlertOverride");
     v13 = objc_loadWeakRetained(&self->_audioAlertProvider);
     v14 = [v13 playRecordStartingAlertAndResetEndpointerWithAlertOverride:int64];
 
@@ -227,14 +227,14 @@
     v14 = 0;
   }
 
-  [(CSAudioAlertProvidingProxy *)self _sendReplyMessageWithResult:v14 event:v10 client:v9, *v18];
+  [(CSAudioAlertProvidingProxy *)self _sendReplyMessageWithResult:v14 event:messageCopy client:clientCopy, *v18];
 }
 
-- (void)_handleAlertProvidingRequestTypePlayAlertSoundMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleAlertProvidingRequestTypePlayAlertSoundMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a3;
-  v9 = a5;
-  int64 = xpc_dictionary_get_int64(a4, "alertType");
+  messageCopy = message;
+  clientCopy = client;
+  int64 = xpc_dictionary_get_int64(body, "alertType");
   v11 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -282,15 +282,15 @@
     v14 = 0;
   }
 
-  [(CSAudioAlertProvidingProxy *)self _sendReplyMessageWithResult:v14 event:v8 client:v9];
+  [(CSAudioAlertProvidingProxy *)self _sendReplyMessageWithResult:v14 event:messageCopy client:clientCopy];
 }
 
-- (void)_handleAlertProvidingRequestTypeSetAlertSoundMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleAlertProvidingRequestTypeSetAlertSoundMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  string = xpc_dictionary_get_string(v10, "soundPath");
+  messageCopy = message;
+  clientCopy = client;
+  bodyCopy = body;
+  string = xpc_dictionary_get_string(bodyCopy, "soundPath");
   if (string)
   {
     v12 = [NSString stringWithUTF8String:string];
@@ -302,8 +302,8 @@
     v13 = 0;
   }
 
-  int64 = xpc_dictionary_get_int64(v10, "alertType");
-  v15 = xpc_dictionary_get_BOOL(v10, "forceSetAlert");
+  int64 = xpc_dictionary_get_int64(bodyCopy, "alertType");
+  v15 = xpc_dictionary_get_BOOL(bodyCopy, "forceSetAlert");
 
   v16 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -362,15 +362,15 @@
     v20 = 0;
   }
 
-  [(CSAudioAlertProvidingProxy *)self _sendReplyMessageWithResult:v20 event:v8 client:v9, *v24, *&v24[16]];
+  [(CSAudioAlertProvidingProxy *)self _sendReplyMessageWithResult:v20 event:messageCopy client:clientCopy, *v24, *&v24[16]];
 }
 
-- (void)handleXPCMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)handleXPCMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  int64 = xpc_dictionary_get_int64(v9, "type");
+  messageCopy = message;
+  bodyCopy = body;
+  clientCopy = client;
+  int64 = xpc_dictionary_get_int64(bodyCopy, "type");
   v12 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -385,13 +385,13 @@
   {
     if (int64 == 1)
     {
-      [(CSAudioAlertProvidingProxy *)self _handleAlertProvidingRequestTypeSetAlertSoundMessage:v8 messageBody:v9 client:v10];
+      [(CSAudioAlertProvidingProxy *)self _handleAlertProvidingRequestTypeSetAlertSoundMessage:messageCopy messageBody:bodyCopy client:clientCopy];
       goto LABEL_16;
     }
 
     if (int64 == 2)
     {
-      [(CSAudioAlertProvidingProxy *)self _handleAlertProvidingRequestTypePlayAlertSoundMessage:v8 messageBody:v9 client:v10];
+      [(CSAudioAlertProvidingProxy *)self _handleAlertProvidingRequestTypePlayAlertSoundMessage:messageCopy messageBody:bodyCopy client:clientCopy];
       goto LABEL_16;
     }
   }
@@ -401,13 +401,13 @@
     switch(int64)
     {
       case 3:
-        [(CSAudioAlertProvidingProxy *)self _handleAlertProvidingRequestTypePlayRecordStartingAlertAndResetEndpointerMessage:v8 messageBody:v9 client:v10];
+        [(CSAudioAlertProvidingProxy *)self _handleAlertProvidingRequestTypePlayRecordStartingAlertAndResetEndpointerMessage:messageCopy messageBody:bodyCopy client:clientCopy];
         goto LABEL_16;
       case 4:
-        [(CSAudioAlertProvidingProxy *)self _handleAlertProvidingRequestTypeAlertStartTimeMessage:v8 messageBody:v9 client:v10];
+        [(CSAudioAlertProvidingProxy *)self _handleAlertProvidingRequestTypeAlertStartTimeMessage:messageCopy messageBody:bodyCopy client:clientCopy];
         goto LABEL_16;
       case 5:
-        [(CSAudioAlertProvidingProxy *)self _handleAlertProvidingRequestTypeConfigureAlertBehavior:v8 messageBody:v9 client:v10];
+        [(CSAudioAlertProvidingProxy *)self _handleAlertProvidingRequestTypeConfigureAlertBehavior:messageCopy messageBody:bodyCopy client:clientCopy];
         goto LABEL_16;
     }
   }
@@ -425,16 +425,16 @@
 LABEL_16:
 }
 
-- (CSAudioAlertProvidingProxy)initWithXPCConnection:(id)a3
+- (CSAudioAlertProvidingProxy)initWithXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = CSAudioAlertProvidingProxy;
   v5 = [(CSAudioAlertProvidingProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CSAudioAlertProvidingProxy *)v5 setXpcConnection:v4];
+    [(CSAudioAlertProvidingProxy *)v5 setXpcConnection:connectionCopy];
   }
 
   return v6;

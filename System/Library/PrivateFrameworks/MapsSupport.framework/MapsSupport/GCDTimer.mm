@@ -1,5 +1,5 @@
 @interface GCDTimer
-- (GCDTimer)initWithTimeInterval:(double)a3 queue:(id)a4 repeating:(BOOL)a5 block:(id)a6;
+- (GCDTimer)initWithTimeInterval:(double)interval queue:(id)queue repeating:(BOOL)repeating block:(id)block;
 - (id)description;
 - (void)dealloc;
 - (void)invalidate;
@@ -29,31 +29,31 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (GCDTimer)initWithTimeInterval:(double)a3 queue:(id)a4 repeating:(BOOL)a5 block:(id)a6
+- (GCDTimer)initWithTimeInterval:(double)interval queue:(id)queue repeating:(BOOL)repeating block:(id)block
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a6;
+  repeatingCopy = repeating;
+  queueCopy = queue;
+  blockCopy = block;
   v26.receiver = self;
   v26.super_class = GCDTimer;
   v12 = [(GCDTimer *)&v26 init];
   v13 = v12;
   if (v12)
   {
-    v12->_repeating = v7;
-    v14 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v10);
+    v12->_repeating = repeatingCopy;
+    v14 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queueCopy);
     source = v13->_source;
     v13->_source = v14;
 
     v13->_lock._os_unfair_lock_opaque = 0;
-    v16 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a3];
+    v16 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:interval];
     fireDate = v13->_fireDate;
     v13->_fireDate = v16;
 
-    v18 = dispatch_time(0, (a3 * 1000000000.0));
-    if (v7)
+    v18 = dispatch_time(0, (interval * 1000000000.0));
+    if (repeatingCopy)
     {
-      v19 = (a3 * 1000000000.0);
+      v19 = (interval * 1000000000.0);
     }
 
     else
@@ -69,8 +69,8 @@
     v22[2] = __55__GCDTimer_initWithTimeInterval_queue_repeating_block___block_invoke;
     v22[3] = &unk_279865E60;
     objc_copyWeak(v24, &location);
-    v24[1] = *&a3;
-    v23 = v11;
+    v24[1] = *&interval;
+    v23 = blockCopy;
     dispatch_source_set_event_handler(v20, v22);
 
     objc_destroyWeak(v24);
@@ -119,8 +119,8 @@ void __55__GCDTimer_initWithTimeInterval_queue_repeating_block___block_invoke(ui
     v5 = "NO";
   }
 
-  v6 = [(GCDTimer *)self fireDate];
-  v7 = [v3 stringWithFormat:@"%@ <repeating: %s, next fire: %@>", v4, v5, v6];
+  fireDate = [(GCDTimer *)self fireDate];
+  v7 = [v3 stringWithFormat:@"%@ <repeating: %s, next fire: %@>", v4, v5, fireDate];
 
   return v7;
 }

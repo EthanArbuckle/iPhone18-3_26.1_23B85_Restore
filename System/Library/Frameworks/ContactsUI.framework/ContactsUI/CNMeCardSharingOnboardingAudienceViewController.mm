@@ -1,12 +1,12 @@
 @interface CNMeCardSharingOnboardingAudienceViewController
 + (id)headerText;
-- (CNMeCardSharingOnboardingAudienceViewController)initWithSelectedSharingAudience:(unint64_t)a3;
+- (CNMeCardSharingOnboardingAudienceViewController)initWithSelectedSharingAudience:(unint64_t)audience;
 - (CNMeCardSharingOnboardingAudienceViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)handleConfirmButtonTapped;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -19,41 +19,41 @@
   return WeakRetained;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(CNMeCardSharingAudienceDataSource *)self->_sharingAudienceDataSource selectedIndex];
-  -[CNMeCardSharingAudienceDataSource didSelectItemAtIndex:](self->_sharingAudienceDataSource, "didSelectItemAtIndex:", [v6 row]);
-  v8 = [MEMORY[0x1E696AC88] indexPathForRow:v7 inSection:{objc_msgSend(v6, "section")}];
-  LOBYTE(v7) = [v8 isEqual:v6];
-  [v10 deselectRowAtIndexPath:v6 animated:0];
-  if ((v7 & 1) == 0)
+  viewCopy = view;
+  pathCopy = path;
+  selectedIndex = [(CNMeCardSharingAudienceDataSource *)self->_sharingAudienceDataSource selectedIndex];
+  -[CNMeCardSharingAudienceDataSource didSelectItemAtIndex:](self->_sharingAudienceDataSource, "didSelectItemAtIndex:", [pathCopy row]);
+  v8 = [MEMORY[0x1E696AC88] indexPathForRow:selectedIndex inSection:{objc_msgSend(pathCopy, "section")}];
+  LOBYTE(selectedIndex) = [v8 isEqual:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
+  if ((selectedIndex & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AC90] indexSetWithIndex:{objc_msgSend(v6, "section")}];
-    [v10 reloadSections:v9 withRowAnimation:0];
+    v9 = [MEMORY[0x1E696AC90] indexSetWithIndex:{objc_msgSend(pathCopy, "section")}];
+    [viewCopy reloadSections:v9 withRowAnimation:0];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:pathCopy];
   sharingAudienceDataSource = self->_sharingAudienceDataSource;
-  v9 = [v6 row];
+  v9 = [pathCopy row];
 
   v10 = [(CNMeCardSharingAudienceDataSource *)sharingAudienceDataSource itemForIndex:v9];
-  v11 = [v10 label];
-  v12 = [v7 textLabel];
-  [v12 setText:v11];
+  label = [v10 label];
+  textLabel = [v7 textLabel];
+  [textLabel setText:label];
 
   [v7 setSelectionStyle:0];
-  v13 = [v10 accessoryView];
+  accessoryView = [v10 accessoryView];
 
-  if (v13)
+  if (accessoryView)
   {
-    v14 = [v10 accessoryView];
-    [v7 setAccessoryView:v14];
+    accessoryView2 = [v10 accessoryView];
+    [v7 setAccessoryView:accessoryView2];
   }
 
   else
@@ -76,18 +76,18 @@
   return v7;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CNMeCardSharingAudienceDataSource *)self->_sharingAudienceDataSource selectedIndex];
-  if (v6 == [v5 row])
+  pathCopy = path;
+  selectedIndex = [(CNMeCardSharingAudienceDataSource *)self->_sharingAudienceDataSource selectedIndex];
+  if (selectedIndex == [pathCopy row])
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v5;
+    v7 = pathCopy;
   }
 
   return v7;
@@ -95,8 +95,8 @@
 
 - (void)handleConfirmButtonTapped
 {
-  v3 = [(CNMeCardSharingOnboardingAudienceViewController *)self delegate];
-  [v3 meCardSharingOnboardingAudienceViewControllerDidFinish:self withSharingAudience:{-[CNMeCardSharingAudienceDataSource selectedSharingAudience](self->_sharingAudienceDataSource, "selectedSharingAudience")}];
+  delegate = [(CNMeCardSharingOnboardingAudienceViewController *)self delegate];
+  [delegate meCardSharingOnboardingAudienceViewControllerDidFinish:self withSharingAudience:{-[CNMeCardSharingAudienceDataSource selectedSharingAudience](self->_sharingAudienceDataSource, "selectedSharingAudience")}];
 }
 
 - (void)viewDidLoad
@@ -104,39 +104,39 @@
   v7.receiver = self;
   v7.super_class = CNMeCardSharingOnboardingAudienceViewController;
   [(CNMeCardSharingOnboardingViewController *)&v7 viewDidLoad];
-  v3 = [(OBTableWelcomeController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"Cell"];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"Cell"];
 
-  v4 = [(OBTableWelcomeController *)self tableView];
-  [v4 setDelegate:self];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setDelegate:self];
 
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 setDataSource:self];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setDataSource:self];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CNMeCardSharingOnboardingAudienceViewController;
   [(CNMeCardSharingOnboardingAudienceViewController *)&v4 dealloc];
 }
 
-- (CNMeCardSharingOnboardingAudienceViewController)initWithSelectedSharingAudience:(unint64_t)a3
+- (CNMeCardSharingOnboardingAudienceViewController)initWithSelectedSharingAudience:(unint64_t)audience
 {
-  v5 = [objc_opt_class() headerText];
+  headerText = [objc_opt_class() headerText];
   v11.receiver = self;
   v11.super_class = CNMeCardSharingOnboardingAudienceViewController;
-  v6 = [(OBTableWelcomeController *)&v11 initWithTitle:v5 detailText:0 icon:0 adoptTableViewScrollView:0];
+  v6 = [(OBTableWelcomeController *)&v11 initWithTitle:headerText detailText:0 icon:0 adoptTableViewScrollView:0];
 
   if (v6)
   {
-    v7 = [[CNMeCardSharingAudienceDataSource alloc] initWithSelectedSharingAudience:a3];
+    v7 = [[CNMeCardSharingAudienceDataSource alloc] initWithSelectedSharingAudience:audience];
     sharingAudienceDataSource = v6->_sharingAudienceDataSource;
     v6->_sharingAudienceDataSource = v7;
 

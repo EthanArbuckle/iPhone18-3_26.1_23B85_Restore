@@ -1,8 +1,8 @@
 @interface SCATActionRepeatPickerViewController
 - (BOOL)numericalPreferenceEnabled;
 - (double)numericalPreferenceValue;
-- (void)setNumericalPreferenceEnabledFromUser:(BOOL)a3;
-- (void)setNumericalPreferenceValueFromUser:(double)a3;
+- (void)setNumericalPreferenceEnabledFromUser:(BOOL)user;
+- (void)setNumericalPreferenceValueFromUser:(double)user;
 @end
 
 @implementation SCATActionRepeatPickerViewController
@@ -16,25 +16,25 @@
   return v4;
 }
 
-- (void)setNumericalPreferenceValueFromUser:(double)a3
+- (void)setNumericalPreferenceValueFromUser:(double)user
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setAssistiveTouchActionRepeatInterval:a3];
+  [v4 setAssistiveTouchActionRepeatInterval:user];
 }
 
 - (BOOL)numericalPreferenceEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchActionRepeatEnabled];
+  assistiveTouchActionRepeatEnabled = [v2 assistiveTouchActionRepeatEnabled];
 
-  return v3;
+  return assistiveTouchActionRepeatEnabled;
 }
 
-- (void)setNumericalPreferenceEnabledFromUser:(BOOL)a3
+- (void)setNumericalPreferenceEnabledFromUser:(BOOL)user
 {
-  v3 = a3;
+  userCopy = user;
   v4 = +[AXSettings sharedInstance];
-  [v4 setAssistiveTouchActionRepeatEnabled:v3];
+  [v4 setAssistiveTouchActionRepeatEnabled:userCopy];
 }
 
 @end

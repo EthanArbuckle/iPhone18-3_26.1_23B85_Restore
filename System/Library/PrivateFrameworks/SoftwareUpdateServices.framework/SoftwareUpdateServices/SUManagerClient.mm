@@ -1,152 +1,152 @@
 @interface SUManagerClient
 + (BOOL)_isMultiUserAppleId;
 + (BOOL)_shouldDisallowAvailabilityNotifications;
-- (BOOL)cancelUpdate:(id)a3;
-- (BOOL)cancelUpdateForKey:(id)a3 withError:(id *)a4;
-- (BOOL)createInstallationKeybagWithOptions:(id)a3;
+- (BOOL)cancelUpdate:(id)update;
+- (BOOL)cancelUpdateForKey:(id)key withError:(id *)error;
+- (BOOL)createInstallationKeybagWithOptions:(id)options;
 - (BOOL)isAnyClientInUserInteraction;
 - (BOOL)isAutoUpdateScheduled;
 - (BOOL)isAutomaticDownloadEnabled;
 - (BOOL)isAutomaticUpdateV2Enabled;
 - (BOOL)isInstallationKeybagRequired;
-- (BOOL)isInstallationKeybagRequiredForDescriptor:(id)a3;
-- (BOOL)isSplatOnlyUpdateRollbackAllowed:(id *)a3;
+- (BOOL)isInstallationKeybagRequiredForDescriptor:(id)descriptor;
+- (BOOL)isSplatOnlyUpdateRollbackAllowed:(id *)allowed;
 - (BOOL)isSplatOnlyUpdateRollbackSuggested;
-- (BOOL)scheduleUpdate:(id)a3 withError:(id *)a4;
-- (BOOL)securityResponseRollbackSuggested:(id)a3 error:(id *)a4;
-- (BOOL)setGlobalSettings:(id)a3 withError:(id *)a4;
-- (BOOL)setLastRollbackDescriptor:(id)a3;
+- (BOOL)scheduleUpdate:(id)update withError:(id *)error;
+- (BOOL)securityResponseRollbackSuggested:(id)suggested error:(id *)error;
+- (BOOL)setGlobalSettings:(id)settings withError:(id *)error;
+- (BOOL)setLastRollbackDescriptor:(id)descriptor;
 - (BOOL)shouldDisableAutoDownloadIOSUpdatesToggle;
 - (BOOL)shouldDisableAutoInstallIOSUpdatesToggle;
 - (BOOL)shouldDisableAutoInstallRSRToggle;
 - (BOOL)writeKeepAliveFile;
 - (NSString)description;
 - (SUManagerClientDelegate)delegate;
-- (id)_getExistingAutoInstallOperationFromModel:(id)a3;
+- (id)_getExistingAutoInstallOperationFromModel:(id)model;
 - (id)_identifier;
 - (id)_remoteInterface;
-- (id)_remoteInterfaceWithErrorHandler:(id)a3 connectIfNecessary:(BOOL)a4;
-- (id)_remoteSynchronousInterfaceWithErrorHandler:(id)a3 connectIfNecessary:(BOOL)a4;
-- (id)declarationsWithError:(id *)a3;
+- (id)_remoteInterfaceWithErrorHandler:(id)handler connectIfNecessary:(BOOL)necessary;
+- (id)_remoteSynchronousInterfaceWithErrorHandler:(id)handler connectIfNecessary:(BOOL)necessary;
+- (id)declarationsWithError:(id *)error;
 - (id)getDDMUpdateDescriptor;
-- (id)getMandatorySoftwareUpdateDictionaryWithError:(id *)a3;
-- (id)globalSettingsDeclarationWithError:(id *)a3;
-- (id)observeInstallationConstraintChangesForDownload:(id)a3 observer:(id)a4;
+- (id)getMandatorySoftwareUpdateDictionaryWithError:(id *)error;
+- (id)globalSettingsDeclarationWithError:(id *)error;
+- (id)observeInstallationConstraintChangesForDownload:(id)download observer:(id)observer;
 - (id)rvGetCurrentNeRDInfo;
-- (void)_cancelAutoInstallOperation:(id)a3 withResult:(id)a4;
-- (void)_consentAutoInstallOperation:(id)a3 withResult:(id)a4;
+- (void)_cancelAutoInstallOperation:(id)operation withResult:(id)result;
+- (void)_consentAutoInstallOperation:(id)operation withResult:(id)result;
 - (void)_invalidateAllInstallationConstraintObserversForDownload;
 - (void)_invalidateConnection;
-- (void)_invalidateConstraintObserver:(id)a3 withError:(id)a4;
-- (void)_registerAutoInstallOperationClientHandler:(id)a3;
+- (void)_invalidateConstraintObserver:(id)observer withError:(id)error;
+- (void)_registerAutoInstallOperationClientHandler:(id)handler;
 - (void)_setClientType;
-- (void)_unregisterAutoInstallOperationClientHandler:(id)a3;
-- (void)areUpdatesDownloadableWithOptions:(id)a3 alternateUpdateOptions:(id)a4 preferredUpdateDownloadable:(BOOL *)a5 alternateUpdateDownloadable:(BOOL *)a6 preferredUpdateError:(id *)a7 alternateUpdateError:(id *)a8;
-- (void)autoInstallOperationDidConsent:(id)a3;
-- (void)autoInstallOperationDidExpire:(id)a3 withError:(id)a4;
-- (void)autoInstallOperationIsReadyToInstall:(id)a3 withResult:(id)a4;
-- (void)autoInstallOperationPasscodePolicyChanged:(id)a3 passcodePolicyType:(unint64_t)a4;
-- (void)autoInstallOperationWasCancelled:(id)a3;
-- (void)autoScanAndDownloadIfAvailable:(id)a3;
-- (void)automaticDownloadDidFailToStartForNewUpdateAvailable:(id)a3 withError:(id)a4;
-- (void)cancelDownload:(id)a3;
-- (void)cancelDownloadWithOptions:(id)a3 withResult:(id)a4;
+- (void)_unregisterAutoInstallOperationClientHandler:(id)handler;
+- (void)areUpdatesDownloadableWithOptions:(id)options alternateUpdateOptions:(id)updateOptions preferredUpdateDownloadable:(BOOL *)downloadable alternateUpdateDownloadable:(BOOL *)updateDownloadable preferredUpdateError:(id *)error alternateUpdateError:(id *)updateError;
+- (void)autoInstallOperationDidConsent:(id)consent;
+- (void)autoInstallOperationDidExpire:(id)expire withError:(id)error;
+- (void)autoInstallOperationIsReadyToInstall:(id)install withResult:(id)result;
+- (void)autoInstallOperationPasscodePolicyChanged:(id)changed passcodePolicyType:(unint64_t)type;
+- (void)autoInstallOperationWasCancelled:(id)cancelled;
+- (void)autoScanAndDownloadIfAvailable:(id)available;
+- (void)automaticDownloadDidFailToStartForNewUpdateAvailable:(id)available withError:(id)error;
+- (void)cancelDownload:(id)download;
+- (void)cancelDownloadWithOptions:(id)options withResult:(id)result;
 - (void)connectToServerIfNecessary;
-- (void)currentAutoInstallOperationForecast:(id)a3;
-- (void)currentPasscodePolicy:(id)a3;
+- (void)currentAutoInstallOperationForecast:(id)forecast;
+- (void)currentPasscodePolicy:(id)policy;
 - (void)dealloc;
-- (void)delayEndDate:(id)a3;
-- (void)descriptor:(id)a3;
-- (void)descriptors:(id)a3;
+- (void)delayEndDate:(id)date;
+- (void)descriptor:(id)descriptor;
+- (void)descriptors:(id)descriptors;
 - (void)destroyInstallationKeybag;
-- (void)deviceBootedAfterRollback:(id)a3;
+- (void)deviceBootedAfterRollback:(id)rollback;
 - (void)deviceBootedAfterSplatUpdate;
-- (void)deviceHasSufficientSpaceForDownload:(id)a3;
-- (void)deviceHasSufficientSpaceForDownloads:(id)a3;
-- (void)download:(id)a3;
-- (void)downloadAndInstallState:(id)a3;
-- (void)downloadDidFail:(id)a3 withError:(id)a4;
-- (void)downloadDidFinish:(id)a3;
-- (void)downloadDidFinish:(id)a3 withInstallPolicy:(id)a4;
-- (void)downloadDidStart:(id)a3;
-- (void)downloadProgressDidChange:(id)a3;
-- (void)downloadWasInvalidatedForNewUpdateAvailable:(id)a3;
-- (void)downloadWasInvalidatedForNewUpdatesAvailable:(id)a3;
-- (void)eligibleRollbackWithOptions:(id)a3 withResult:(id)a4;
-- (void)extraSpaceNeededForDownloadWithoutAppPurging:(id)a3;
-- (void)fetchInstallHistory:(id)a3;
-- (void)getDDMDeclarationWithHandler:(id)a3;
-- (void)getDDMStatusWithKeys:(id)a3 completion:(id)a4;
-- (void)getMandatorySoftwareUpdateDictionary:(id)a3;
-- (void)handleDDMDeclaration:(id)a3 withResult:(id)a4;
-- (void)handleUIForDDMDeclaration:(id)a3;
-- (void)handleUIForDDMGlobalSettings:(id)a3;
-- (void)inUserInteraction:(id)a3;
-- (void)installDidFail:(id)a3 withError:(id)a4;
-- (void)installDidFinish:(id)a3;
-- (void)installDidStart:(id)a3;
-- (void)installPolicyDidChange:(id)a3;
+- (void)deviceHasSufficientSpaceForDownload:(id)download;
+- (void)deviceHasSufficientSpaceForDownloads:(id)downloads;
+- (void)download:(id)download;
+- (void)downloadAndInstallState:(id)state;
+- (void)downloadDidFail:(id)fail withError:(id)error;
+- (void)downloadDidFinish:(id)finish;
+- (void)downloadDidFinish:(id)finish withInstallPolicy:(id)policy;
+- (void)downloadDidStart:(id)start;
+- (void)downloadProgressDidChange:(id)change;
+- (void)downloadWasInvalidatedForNewUpdateAvailable:(id)available;
+- (void)downloadWasInvalidatedForNewUpdatesAvailable:(id)available;
+- (void)eligibleRollbackWithOptions:(id)options withResult:(id)result;
+- (void)extraSpaceNeededForDownloadWithoutAppPurging:(id)purging;
+- (void)fetchInstallHistory:(id)history;
+- (void)getDDMDeclarationWithHandler:(id)handler;
+- (void)getDDMStatusWithKeys:(id)keys completion:(id)completion;
+- (void)getMandatorySoftwareUpdateDictionary:(id)dictionary;
+- (void)handleDDMDeclaration:(id)declaration withResult:(id)result;
+- (void)handleUIForDDMDeclaration:(id)declaration;
+- (void)handleUIForDDMGlobalSettings:(id)settings;
+- (void)inUserInteraction:(id)interaction;
+- (void)installDidFail:(id)fail withError:(id)error;
+- (void)installDidFinish:(id)finish;
+- (void)installDidStart:(id)start;
+- (void)installPolicyDidChange:(id)change;
 - (void)installServerConfiguration;
-- (void)installUpdate:(id)a3;
-- (void)installUpdateWithInstallOptions:(id)a3 withResult:(id)a4;
-- (void)installUpdateWithOptions:(id)a3 withResult:(id)a4;
-- (void)installWantsToStart:(id)a3 completion:(id)a4;
-- (void)installationConstraintObserverDidRemoveAllObserverBlocks:(id)a3;
+- (void)installUpdate:(id)update;
+- (void)installUpdateWithInstallOptions:(id)options withResult:(id)result;
+- (void)installUpdateWithOptions:(id)options withResult:(id)result;
+- (void)installWantsToStart:(id)start completion:(id)completion;
+- (void)installationConstraintObserverDidRemoveAllObserverBlocks:(id)blocks;
 - (void)invalidate;
-- (void)isAutoUpdateEnabled:(id)a3;
-- (void)isAutoUpdateScheduled:(id)a3;
-- (void)isClearingSpaceForDownload:(id)a3;
-- (void)isDelayingUpdates:(id)a3;
-- (void)isDownloading:(id)a3;
-- (void)isRollingBack:(id)a3;
-- (void)isScanning:(id)a3;
-- (void)isSoftwareUpdateInProgress:(id)a3;
-- (void)isUpdateReadyForInstallation:(id)a3;
-- (void)isUpdateReadyForInstallationWithOptions:(id)a3 withResult:(id)a4;
-- (void)managedInstallationRequested:(id)a3;
+- (void)isAutoUpdateEnabled:(id)enabled;
+- (void)isAutoUpdateScheduled:(id)scheduled;
+- (void)isClearingSpaceForDownload:(id)download;
+- (void)isDelayingUpdates:(id)updates;
+- (void)isDownloading:(id)downloading;
+- (void)isRollingBack:(id)back;
+- (void)isScanning:(id)scanning;
+- (void)isSoftwareUpdateInProgress:(id)progress;
+- (void)isUpdateReadyForInstallation:(id)installation;
+- (void)isUpdateReadyForInstallationWithOptions:(id)options withResult:(id)result;
+- (void)managedInstallationRequested:(id)requested;
 - (void)networkMonitorDetectOverrides;
 - (void)noteConnectionDropped;
-- (void)overrideSoftwareUpdateReserve:(id)a3 systemGrowthMarginSize:(id)a4 completion:(id)a5;
-- (void)pauseDownload:(id)a3;
-- (void)preferences:(id)a3 didChangePreference:(id)a4 toValue:(id)a5;
-- (void)presentAutoUpdateBanner:(id)a3;
-- (void)previousRollbackWithOptions:(id)a3 withResult:(id)a4;
-- (void)purgeDownload:(id)a3;
-- (void)purgeDownloadWithOptions:(id)a3 withResult:(id)a4;
-- (void)recordSUAnalyticsEvent:(id)a3;
-- (void)registerCSInstallPredicatesOnDate:(id)a3;
+- (void)overrideSoftwareUpdateReserve:(id)reserve systemGrowthMarginSize:(id)size completion:(id)completion;
+- (void)pauseDownload:(id)download;
+- (void)preferences:(id)preferences didChangePreference:(id)preference toValue:(id)value;
+- (void)presentAutoUpdateBanner:(id)banner;
+- (void)previousRollbackWithOptions:(id)options withResult:(id)result;
+- (void)purgeDownload:(id)download;
+- (void)purgeDownloadWithOptions:(id)options withResult:(id)result;
+- (void)recordSUAnalyticsEvent:(id)event;
+- (void)registerCSInstallPredicatesOnDate:(id)date;
 - (void)resetState;
-- (void)resumeDownload:(id)a3;
-- (void)rollbackDidFail:(id)a3 withError:(id)a4;
-- (void)rollbackDidFinish:(id)a3;
-- (void)rollbackDidStart:(id)a3;
-- (void)rollbackReadyForReboot:(id)a3;
-- (void)rollbackReadyToStart:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)rollbackSuggested:(id)a3 info:(id)a4;
-- (void)rollbackUpdateWithOptions:(id)a3 withResult:(id)a4;
-- (void)rvTriggerNeRDUpdate:(id)a3;
-- (void)scanDidCompleteForOptions:(id)a3 results:(id)a4 error:(id)a5;
-- (void)scanDidCompleteWithNewUpdateAvailable:(id)a3 error:(id)a4;
-- (void)scanForUpdates:(id)a3 withResult:(id)a4;
-- (void)scanForUpdates:(id)a3 withScanResults:(id)a4;
-- (void)scanRequestDidFinishForOptions:(id)a3 results:(id)a4 error:(id)a5;
-- (void)scanRequestDidFinishForOptions:(id)a3 update:(id)a4 error:(id)a5;
-- (void)scanRequestDidStartForOptions:(id)a3;
-- (void)scheduleRollbackRebootForLater:(id)a3;
-- (void)setClientType:(int)a3;
-- (void)setMandatorySoftwareUpdateDictionary:(id)a3;
-- (void)slaVersion:(id)a3;
-- (void)softwareUpdatePathRestriction:(id)a3;
-- (void)softwareUpdateReserveSizes:(id)a3;
-- (void)startDownload:(id)a3;
-- (void)startDownloadWithMetadata:(id)a3 withResult:(id)a4;
-- (void)startDownloadWithOptions:(id)a3 withResult:(id)a4;
+- (void)resumeDownload:(id)download;
+- (void)rollbackDidFail:(id)fail withError:(id)error;
+- (void)rollbackDidFinish:(id)finish;
+- (void)rollbackDidStart:(id)start;
+- (void)rollbackReadyForReboot:(id)reboot;
+- (void)rollbackReadyToStart:(id)start options:(id)options completion:(id)completion;
+- (void)rollbackSuggested:(id)suggested info:(id)info;
+- (void)rollbackUpdateWithOptions:(id)options withResult:(id)result;
+- (void)rvTriggerNeRDUpdate:(id)update;
+- (void)scanDidCompleteForOptions:(id)options results:(id)results error:(id)error;
+- (void)scanDidCompleteWithNewUpdateAvailable:(id)available error:(id)error;
+- (void)scanForUpdates:(id)updates withResult:(id)result;
+- (void)scanForUpdates:(id)updates withScanResults:(id)results;
+- (void)scanRequestDidFinishForOptions:(id)options results:(id)results error:(id)error;
+- (void)scanRequestDidFinishForOptions:(id)options update:(id)update error:(id)error;
+- (void)scanRequestDidStartForOptions:(id)options;
+- (void)scheduleRollbackRebootForLater:(id)later;
+- (void)setClientType:(int)type;
+- (void)setMandatorySoftwareUpdateDictionary:(id)dictionary;
+- (void)slaVersion:(id)version;
+- (void)softwareUpdatePathRestriction:(id)restriction;
+- (void)softwareUpdateReserveSizes:(id)sizes;
+- (void)startDownload:(id)download;
+- (void)startDownloadWithMetadata:(id)metadata withResult:(id)result;
+- (void)startDownloadWithOptions:(id)options withResult:(id)result;
 - (void)submitAllSUAnalyticsEvents;
-- (void)submitSUAnalyticsEvent:(id)a3;
-- (void)submitSUAnalyticsEventsWithName:(id)a3;
-- (void)updateDownloadMetadata:(id)a3 withResult:(id)a4;
-- (void)updateDownloadOptions:(id)a3 withResult:(id)a4;
-- (void)updatesDownloadableWithOptions:(id)a3 alternateDownloadOptions:(id)a4 replyHandler:(id)a5;
+- (void)submitSUAnalyticsEvent:(id)event;
+- (void)submitSUAnalyticsEventsWithName:(id)name;
+- (void)updateDownloadMetadata:(id)metadata withResult:(id)result;
+- (void)updateDownloadOptions:(id)options withResult:(id)result;
+- (void)updatesDownloadableWithOptions:(id)options alternateDownloadOptions:(id)downloadOptions replyHandler:(id)handler;
 - (void)userAskedToDeferInstall;
 - (void)userWantsToDeferInstall;
 @end
@@ -261,11 +261,11 @@ void __33__SUManagerClient__setClientType__block_invoke_2(uint64_t a1, void *a2)
 LABEL_9:
 }
 
-- (void)setClientType:(int)a3
+- (void)setClientType:(int)type
 {
-  if (self->_clientType != a3)
+  if (self->_clientType != type)
   {
-    self->_clientType = a3;
+    self->_clientType = type;
     obj = self;
     objc_sync_enter(obj);
     if (obj->_connected)
@@ -282,16 +282,16 @@ LABEL_9:
   }
 }
 
-- (void)isScanning:(id)a3
+- (void)isScanning:(id)scanning
 {
-  v4 = a3;
+  scanningCopy = scanning;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __30__SUManagerClient_isScanning___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = scanningCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -371,17 +371,17 @@ void __30__SUManagerClient_isScanning___block_invoke_2(uint64_t a1, unsigned int
   }
 }
 
-- (void)scanForUpdates:(id)a3 withScanResults:(id)a4
+- (void)scanForUpdates:(id)updates withScanResults:(id)results
 {
-  v6 = a4;
-  v7 = a3;
+  resultsCopy = results;
+  updatesCopy = updates;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __50__SUManagerClient_scanForUpdates_withScanResults___block_invoke;
   v20[3] = &unk_279CAC238;
   v20[4] = self;
-  v15 = v6;
+  v15 = resultsCopy;
   v21 = v15;
   v16 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v20];
   v18[0] = MEMORY[0x277D85DD0];
@@ -391,7 +391,7 @@ void __30__SUManagerClient_isScanning___block_invoke_2(uint64_t a1, unsigned int
   v18[4] = self;
   v19 = v15;
   v17 = v15;
-  [v16 scanForUpdates:v7 withResult:v18];
+  [v16 scanForUpdates:updatesCopy withResult:v18];
 }
 
 uint64_t __50__SUManagerClient_scanForUpdates_withScanResults___block_invoke(uint64_t a1, void *a2)
@@ -452,17 +452,17 @@ void __50__SUManagerClient_scanForUpdates_withScanResults___block_invoke_2(uint6
   }
 }
 
-- (void)scanForUpdates:(id)a3 withResult:(id)a4
+- (void)scanForUpdates:(id)updates withResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  updatesCopy = updates;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __45__SUManagerClient_scanForUpdates_withResult___block_invoke;
   v20[3] = &unk_279CAC238;
   v20[4] = self;
-  v15 = v6;
+  v15 = resultCopy;
   v21 = v15;
   v16 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v20];
   v18[0] = MEMORY[0x277D85DD0];
@@ -472,7 +472,7 @@ void __50__SUManagerClient_scanForUpdates_withScanResults___block_invoke_2(uint6
   v18[4] = self;
   v19 = v15;
   v17 = v15;
-  [v16 scanForUpdates:v7 withResult:v18];
+  [v16 scanForUpdates:updatesCopy withResult:v18];
 }
 
 uint64_t __45__SUManagerClient_scanForUpdates_withResult___block_invoke(uint64_t a1, void *a2)
@@ -534,16 +534,16 @@ void __45__SUManagerClient_scanForUpdates_withResult___block_invoke_2(uint64_t a
   }
 }
 
-- (void)autoScanAndDownloadIfAvailable:(id)a3
+- (void)autoScanAndDownloadIfAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __50__SUManagerClient_autoScanAndDownloadIfAvailable___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = availableCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -672,16 +672,16 @@ void __54__SUManagerClient_autoScanAndDownloadNow_IfAvailable___block_invoke_2(u
   }
 }
 
-- (void)descriptors:(id)a3
+- (void)descriptors:(id)descriptors
 {
-  v4 = a3;
+  descriptorsCopy = descriptors;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __31__SUManagerClient_descriptors___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = descriptorsCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -758,16 +758,16 @@ void __31__SUManagerClient_descriptors___block_invoke_2(uint64_t a1, void *a2, v
   }
 }
 
-- (void)descriptor:(id)a3
+- (void)descriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __30__SUManagerClient_descriptor___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = descriptorCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -844,16 +844,16 @@ void __30__SUManagerClient_descriptor___block_invoke_2(uint64_t a1, void *a2, vo
   }
 }
 
-- (void)isClearingSpaceForDownload:(id)a3
+- (void)isClearingSpaceForDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __46__SUManagerClient_isClearingSpaceForDownload___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = downloadCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -1000,18 +1000,18 @@ void __50__SUManagerClient_disableReserveSpace_completion___block_invoke_2(uint6
   }
 }
 
-- (void)overrideSoftwareUpdateReserve:(id)a3 systemGrowthMarginSize:(id)a4 completion:(id)a5
+- (void)overrideSoftwareUpdateReserve:(id)reserve systemGrowthMarginSize:(id)size completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  sizeCopy = size;
+  reserveCopy = reserve;
   SULogInfo(@"%@ called %s", v11, v12, v13, v14, v15, v16, v17, self);
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __83__SUManagerClient_overrideSoftwareUpdateReserve_systemGrowthMarginSize_completion___block_invoke;
   v23[3] = &unk_279CAC238;
   v23[4] = self;
-  v18 = v8;
+  v18 = completionCopy;
   v24 = v18;
   v19 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v23];
   v21[0] = MEMORY[0x277D85DD0];
@@ -1021,7 +1021,7 @@ void __50__SUManagerClient_disableReserveSpace_completion___block_invoke_2(uint6
   v21[4] = self;
   v22 = v18;
   v20 = v18;
-  [v19 overrideSoftwareUpdateReserve:v10 systemGrowthMarginSize:v9 withResult:v21];
+  [v19 overrideSoftwareUpdateReserve:reserveCopy systemGrowthMarginSize:sizeCopy withResult:v21];
 }
 
 uint64_t __83__SUManagerClient_overrideSoftwareUpdateReserve_systemGrowthMarginSize_completion___block_invoke(uint64_t a1, void *a2)
@@ -1091,16 +1091,16 @@ void __83__SUManagerClient_overrideSoftwareUpdateReserve_systemGrowthMarginSize_
   }
 }
 
-- (void)softwareUpdateReserveSizes:(id)a3
+- (void)softwareUpdateReserveSizes:(id)sizes
 {
-  v4 = a3;
+  sizesCopy = sizes;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __46__SUManagerClient_softwareUpdateReserveSizes___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = sizesCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -1171,16 +1171,16 @@ void __46__SUManagerClient_softwareUpdateReserveSizes___block_invoke_2(uint64_t 
   }
 }
 
-- (void)isDownloading:(id)a3
+- (void)isDownloading:(id)downloading
 {
-  v4 = a3;
+  downloadingCopy = downloading;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __33__SUManagerClient_isDownloading___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = downloadingCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -1260,16 +1260,16 @@ void __33__SUManagerClient_isDownloading___block_invoke_2(uint64_t a1, unsigned 
   }
 }
 
-- (void)startDownload:(id)a3
+- (void)startDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __33__SUManagerClient_startDownload___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = downloadCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -1349,17 +1349,17 @@ void __33__SUManagerClient_startDownload___block_invoke_2(uint64_t a1, unsigned 
   }
 }
 
-- (void)startDownloadWithOptions:(id)a3 withResult:(id)a4
+- (void)startDownloadWithOptions:(id)options withResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  optionsCopy = options;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __55__SUManagerClient_startDownloadWithOptions_withResult___block_invoke;
   v20[3] = &unk_279CAC238;
   v20[4] = self;
-  v15 = v6;
+  v15 = resultCopy;
   v21 = v15;
   v16 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v20];
   v18[0] = MEMORY[0x277D85DD0];
@@ -1369,7 +1369,7 @@ void __33__SUManagerClient_startDownload___block_invoke_2(uint64_t a1, unsigned 
   v18[4] = self;
   v19 = v15;
   v17 = v15;
-  [v16 startDownloadWithOptions:v7 withResult:v18];
+  [v16 startDownloadWithOptions:optionsCopy withResult:v18];
 }
 
 uint64_t __55__SUManagerClient_startDownloadWithOptions_withResult___block_invoke(uint64_t a1, void *a2)
@@ -1439,17 +1439,17 @@ void __55__SUManagerClient_startDownloadWithOptions_withResult___block_invoke_2(
   }
 }
 
-- (void)startDownloadWithMetadata:(id)a3 withResult:(id)a4
+- (void)startDownloadWithMetadata:(id)metadata withResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  metadataCopy = metadata;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __56__SUManagerClient_startDownloadWithMetadata_withResult___block_invoke;
   v20[3] = &unk_279CAC238;
   v20[4] = self;
-  v15 = v6;
+  v15 = resultCopy;
   v21 = v15;
   v16 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v20];
   v18[0] = MEMORY[0x277D85DD0];
@@ -1459,7 +1459,7 @@ void __55__SUManagerClient_startDownloadWithOptions_withResult___block_invoke_2(
   v18[4] = self;
   v19 = v15;
   v17 = v15;
-  [v16 startDownloadWithMetadata:v7 withResult:v18];
+  [v16 startDownloadWithMetadata:metadataCopy withResult:v18];
 }
 
 uint64_t __56__SUManagerClient_startDownloadWithMetadata_withResult___block_invoke(uint64_t a1, void *a2)
@@ -1529,17 +1529,17 @@ void __56__SUManagerClient_startDownloadWithMetadata_withResult___block_invoke_2
   }
 }
 
-- (void)cancelDownloadWithOptions:(id)a3 withResult:(id)a4
+- (void)cancelDownloadWithOptions:(id)options withResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  optionsCopy = options;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __56__SUManagerClient_cancelDownloadWithOptions_withResult___block_invoke;
   v20[3] = &unk_279CAC238;
   v20[4] = self;
-  v15 = v6;
+  v15 = resultCopy;
   v21 = v15;
   v16 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v20];
   v18[0] = MEMORY[0x277D85DD0];
@@ -1549,7 +1549,7 @@ void __56__SUManagerClient_startDownloadWithMetadata_withResult___block_invoke_2
   v18[4] = self;
   v19 = v15;
   v17 = v15;
-  [v16 cancelDownloadWithOptions:v7 withResult:v18];
+  [v16 cancelDownloadWithOptions:optionsCopy withResult:v18];
 }
 
 uint64_t __56__SUManagerClient_cancelDownloadWithOptions_withResult___block_invoke(uint64_t a1, void *a2)
@@ -1619,16 +1619,16 @@ void __56__SUManagerClient_cancelDownloadWithOptions_withResult___block_invoke_2
   }
 }
 
-- (void)cancelDownload:(id)a3
+- (void)cancelDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __34__SUManagerClient_cancelDownload___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = downloadCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -1708,16 +1708,16 @@ void __34__SUManagerClient_cancelDownload___block_invoke_2(uint64_t a1, unsigned
   }
 }
 
-- (void)pauseDownload:(id)a3
+- (void)pauseDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __33__SUManagerClient_pauseDownload___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = downloadCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -1797,16 +1797,16 @@ void __33__SUManagerClient_pauseDownload___block_invoke_2(uint64_t a1, unsigned 
   }
 }
 
-- (void)resumeDownload:(id)a3
+- (void)resumeDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __34__SUManagerClient_resumeDownload___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = downloadCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -1886,17 +1886,17 @@ void __34__SUManagerClient_resumeDownload___block_invoke_2(uint64_t a1, unsigned
   }
 }
 
-- (void)updateDownloadOptions:(id)a3 withResult:(id)a4
+- (void)updateDownloadOptions:(id)options withResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  optionsCopy = options;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __52__SUManagerClient_updateDownloadOptions_withResult___block_invoke;
   v20[3] = &unk_279CAC238;
   v20[4] = self;
-  v15 = v6;
+  v15 = resultCopy;
   v21 = v15;
   v16 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v20];
   v18[0] = MEMORY[0x277D85DD0];
@@ -1906,7 +1906,7 @@ void __34__SUManagerClient_resumeDownload___block_invoke_2(uint64_t a1, unsigned
   v18[4] = self;
   v19 = v15;
   v17 = v15;
-  [v16 updateDownloadOptions:v7 withResult:v18];
+  [v16 updateDownloadOptions:optionsCopy withResult:v18];
 }
 
 uint64_t __52__SUManagerClient_updateDownloadOptions_withResult___block_invoke(uint64_t a1, void *a2)
@@ -1976,17 +1976,17 @@ void __52__SUManagerClient_updateDownloadOptions_withResult___block_invoke_2(uin
   }
 }
 
-- (void)updateDownloadMetadata:(id)a3 withResult:(id)a4
+- (void)updateDownloadMetadata:(id)metadata withResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  metadataCopy = metadata;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __53__SUManagerClient_updateDownloadMetadata_withResult___block_invoke;
   v20[3] = &unk_279CAC238;
   v20[4] = self;
-  v15 = v6;
+  v15 = resultCopy;
   v21 = v15;
   v16 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v20];
   v18[0] = MEMORY[0x277D85DD0];
@@ -1996,7 +1996,7 @@ void __52__SUManagerClient_updateDownloadOptions_withResult___block_invoke_2(uin
   v18[4] = self;
   v19 = v15;
   v17 = v15;
-  [v16 updateDownloadMetadata:v7 withResult:v18];
+  [v16 updateDownloadMetadata:metadataCopy withResult:v18];
 }
 
 uint64_t __53__SUManagerClient_updateDownloadMetadata_withResult___block_invoke(uint64_t a1, void *a2)
@@ -2066,17 +2066,17 @@ void __53__SUManagerClient_updateDownloadMetadata_withResult___block_invoke_2(ui
   }
 }
 
-- (void)purgeDownloadWithOptions:(id)a3 withResult:(id)a4
+- (void)purgeDownloadWithOptions:(id)options withResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  optionsCopy = options;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __55__SUManagerClient_purgeDownloadWithOptions_withResult___block_invoke;
   v20[3] = &unk_279CAC238;
   v20[4] = self;
-  v15 = v6;
+  v15 = resultCopy;
   v21 = v15;
   v16 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v20];
   v18[0] = MEMORY[0x277D85DD0];
@@ -2086,7 +2086,7 @@ void __53__SUManagerClient_updateDownloadMetadata_withResult___block_invoke_2(ui
   v18[4] = self;
   v19 = v15;
   v17 = v15;
-  [v16 purgeDownloadWithOptions:v7 withResult:v18];
+  [v16 purgeDownloadWithOptions:optionsCopy withResult:v18];
 }
 
 uint64_t __55__SUManagerClient_purgeDownloadWithOptions_withResult___block_invoke(uint64_t a1, void *a2)
@@ -2156,16 +2156,16 @@ void __55__SUManagerClient_purgeDownloadWithOptions_withResult___block_invoke_2(
   }
 }
 
-- (void)purgeDownload:(id)a3
+- (void)purgeDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __33__SUManagerClient_purgeDownload___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = downloadCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -2245,29 +2245,29 @@ void __33__SUManagerClient_purgeDownload___block_invoke_2(uint64_t a1, unsigned 
   }
 }
 
-- (void)download:(id)a3
+- (void)download:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __28__SUManagerClient_download___block_invoke;
   v13[3] = &unk_279CAC460;
-  v14 = v4;
-  v12 = v4;
+  v14 = downloadCopy;
+  v12 = downloadCopy;
   [(SUManagerClient *)self downloadAndInstallState:v13];
 }
 
-- (void)downloadAndInstallState:(id)a3
+- (void)downloadAndInstallState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __43__SUManagerClient_downloadAndInstallState___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = stateCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -2349,18 +2349,18 @@ void __43__SUManagerClient_downloadAndInstallState___block_invoke_2(uint64_t a1,
   }
 }
 
-- (void)updatesDownloadableWithOptions:(id)a3 alternateDownloadOptions:(id)a4 replyHandler:(id)a5
+- (void)updatesDownloadableWithOptions:(id)options alternateDownloadOptions:(id)downloadOptions replyHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  downloadOptionsCopy = downloadOptions;
+  optionsCopy = options;
   SULogInfo(@"%@ called %s", v11, v12, v13, v14, v15, v16, v17, self);
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __88__SUManagerClient_updatesDownloadableWithOptions_alternateDownloadOptions_replyHandler___block_invoke;
   v23[3] = &unk_279CAC238;
   v23[4] = self;
-  v18 = v8;
+  v18 = handlerCopy;
   v24 = v18;
   v19 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v23];
   v21[0] = MEMORY[0x277D85DD0];
@@ -2370,7 +2370,7 @@ void __43__SUManagerClient_downloadAndInstallState___block_invoke_2(uint64_t a1,
   v21[4] = self;
   v22 = v18;
   v20 = v18;
-  [v19 updatesDownloadableWithOptions:v10 alternateDownloadOptions:v9 replyHandler:v21];
+  [v19 updatesDownloadableWithOptions:optionsCopy alternateDownloadOptions:downloadOptionsCopy replyHandler:v21];
 }
 
 uint64_t __88__SUManagerClient_updatesDownloadableWithOptions_alternateDownloadOptions_replyHandler___block_invoke(uint64_t a1, void *a2)
@@ -2431,10 +2431,10 @@ void __88__SUManagerClient_updatesDownloadableWithOptions_alternateDownloadOptio
   }
 }
 
-- (void)areUpdatesDownloadableWithOptions:(id)a3 alternateUpdateOptions:(id)a4 preferredUpdateDownloadable:(BOOL *)a5 alternateUpdateDownloadable:(BOOL *)a6 preferredUpdateError:(id *)a7 alternateUpdateError:(id *)a8
+- (void)areUpdatesDownloadableWithOptions:(id)options alternateUpdateOptions:(id)updateOptions preferredUpdateDownloadable:(BOOL *)downloadable alternateUpdateDownloadable:(BOOL *)updateDownloadable preferredUpdateError:(id *)error alternateUpdateError:(id *)updateError
 {
-  v14 = a3;
-  v15 = a4;
+  optionsCopy = options;
+  updateOptionsCopy = updateOptions;
   SULogInfo(@"%@ called %s", v16, v17, v18, v19, v20, v21, v22, self);
   v42 = 0;
   v43 = &v42;
@@ -2470,26 +2470,26 @@ void __88__SUManagerClient_updatesDownloadableWithOptions_alternateDownloadOptio
   v24[5] = &v38;
   v24[6] = &v32;
   v24[7] = &v26;
-  [v23 updatesDownloadableWithOptions:v14 alternateDownloadOptions:v15 replyHandler:v24];
+  [v23 updatesDownloadableWithOptions:optionsCopy alternateDownloadOptions:updateOptionsCopy replyHandler:v24];
 
-  if (a5)
+  if (downloadable)
   {
-    *a5 = *(v43 + 24);
+    *downloadable = *(v43 + 24);
   }
 
-  if (a6)
+  if (updateDownloadable)
   {
-    *a6 = *(v39 + 24);
+    *updateDownloadable = *(v39 + 24);
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = v33[5];
+    *error = v33[5];
   }
 
-  if (a8)
+  if (updateError)
   {
-    *a8 = v27[5];
+    *updateError = v27[5];
   }
 
   _Block_object_dispose(&v26, 8);
@@ -2618,42 +2618,42 @@ void __37__SUManagerClient_writeKeepAliveFile__block_invoke(uint64_t a1, void *a
 LABEL_9:
 }
 
-- (void)deviceHasSufficientSpaceForDownloads:(id)a3
+- (void)deviceHasSufficientSpaceForDownloads:(id)downloads
 {
-  v12 = a3;
+  downloadsCopy = downloads;
   SULogInfo(@"%@ called %s", v4, v5, v6, v7, v8, v9, v10, self);
-  if (v12)
+  if (downloadsCopy)
   {
     v11 = [SUUtility errorWithCode:60];
-    (*(v12 + 2))(v12, 0, 0, v11, v11);
+    (*(downloadsCopy + 2))(downloadsCopy, 0, 0, v11, v11);
   }
 }
 
-- (void)deviceHasSufficientSpaceForDownload:(id)a3
+- (void)deviceHasSufficientSpaceForDownload:(id)download
 {
-  v12 = a3;
+  downloadCopy = download;
   SULogInfo(@"%@ called %s", v4, v5, v6, v7, v8, v9, v10, self);
-  if (v12)
+  if (downloadCopy)
   {
     v11 = [SUUtility errorWithCode:60];
-    v12[2](v12, 0, v11);
+    downloadCopy[2](downloadCopy, 0, v11);
   }
 }
 
-- (void)extraSpaceNeededForDownloadWithoutAppPurging:(id)a3
+- (void)extraSpaceNeededForDownloadWithoutAppPurging:(id)purging
 {
-  v12 = a3;
+  purgingCopy = purging;
   SULogInfo(@"%@ called %s", v4, v5, v6, v7, v8, v9, v10, self);
-  if (v12)
+  if (purgingCopy)
   {
     v11 = [SUUtility errorWithCode:60];
-    v12[2](v12, 0, v11);
+    purgingCopy[2](purgingCopy, 0, v11);
   }
 }
 
-- (BOOL)scheduleUpdate:(id)a3 withError:(id *)a4
+- (BOOL)scheduleUpdate:(id)update withError:(id *)error
 {
-  v6 = a3;
+  updateCopy = update;
   SULogInfo(@"%@ called %s", v7, v8, v9, v10, v11, v12, v13, self);
   v25 = 0;
   v26 = &v25;
@@ -2677,11 +2677,11 @@ LABEL_9:
   v17[3] = &unk_279CAC500;
   v17[4] = &v25;
   v17[5] = &v19;
-  [v14 handleDDMDeclaration:v6 withResult:v17];
+  [v14 handleDDMDeclaration:updateCopy withResult:v17];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v15 = *(v26 + 24);
@@ -2730,17 +2730,17 @@ void __44__SUManagerClient_scheduleUpdate_withError___block_invoke(uint64_t a1, 
 LABEL_9:
 }
 
-- (void)getDDMStatusWithKeys:(id)a3 completion:(id)a4
+- (void)getDDMStatusWithKeys:(id)keys completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  keysCopy = keys;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __51__SUManagerClient_getDDMStatusWithKeys_completion___block_invoke;
   v20[3] = &unk_279CAC238;
   v20[4] = self;
-  v15 = v6;
+  v15 = completionCopy;
   v21 = v15;
   v16 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v20];
   v18[0] = MEMORY[0x277D85DD0];
@@ -2750,7 +2750,7 @@ LABEL_9:
   v18[4] = self;
   v19 = v15;
   v17 = v15;
-  [v16 getDDMStatusWithKeys:v7 completion:v18];
+  [v16 getDDMStatusWithKeys:keysCopy completion:v18];
 }
 
 uint64_t __51__SUManagerClient_getDDMStatusWithKeys_completion___block_invoke(uint64_t a1, void *a2)
@@ -2808,9 +2808,9 @@ void __51__SUManagerClient_getDDMStatusWithKeys_completion___block_invoke_2(uint
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)cancelUpdate:(id)a3
+- (BOOL)cancelUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v16 = 0;
   v17 = &v16;
@@ -2827,7 +2827,7 @@ void __51__SUManagerClient_getDDMStatusWithKeys_completion___block_invoke_2(uint
   v14[2] = __32__SUManagerClient_cancelUpdate___block_invoke_2;
   v14[3] = &unk_279CAB678;
   v14[4] = &v16;
-  [v12 cancelDDMDeclaration:v4 withResult:v14];
+  [v12 cancelDDMDeclaration:updateCopy withResult:v14];
 
   LOBYTE(v12) = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
@@ -2874,9 +2874,9 @@ void __32__SUManagerClient_cancelUpdate___block_invoke(uint64_t a1, void *a2)
 LABEL_9:
 }
 
-- (BOOL)cancelUpdateForKey:(id)a3 withError:(id *)a4
+- (BOOL)cancelUpdateForKey:(id)key withError:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   SULogInfo(@"%@ called %s", v7, v8, v9, v10, v11, v12, v13, self);
   v25 = 0;
   v26 = &v25;
@@ -2900,11 +2900,11 @@ LABEL_9:
   v17[3] = &unk_279CAC500;
   v17[4] = &v25;
   v17[5] = &v19;
-  [v14 cancelDDMDeclarationForKey:v6 completion:v17];
+  [v14 cancelDDMDeclarationForKey:keyCopy completion:v17];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v15 = *(v26 + 24);
@@ -2953,10 +2953,10 @@ void __48__SUManagerClient_cancelUpdateForKey_withError___block_invoke(uint64_t 
 LABEL_9:
 }
 
-- (void)handleDDMDeclaration:(id)a3 withResult:(id)a4
+- (void)handleDDMDeclaration:(id)declaration withResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  declarationCopy = declaration;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
   SULogDebug(@"%@: [DDM] Sending declaration: %@", v15, v16, v17, v18, v19, v20, v21, self);
   v27[0] = MEMORY[0x277D85DD0];
@@ -2964,7 +2964,7 @@ LABEL_9:
   v27[2] = __51__SUManagerClient_handleDDMDeclaration_withResult___block_invoke;
   v27[3] = &unk_279CAC238;
   v27[4] = self;
-  v22 = v6;
+  v22 = resultCopy;
   v28 = v22;
   v23 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v27];
   v25[0] = MEMORY[0x277D85DD0];
@@ -2974,7 +2974,7 @@ LABEL_9:
   v25[4] = self;
   v26 = v22;
   v24 = v22;
-  [v23 handleDDMDeclaration:v7 withResult:v25];
+  [v23 handleDDMDeclaration:declarationCopy withResult:v25];
 }
 
 uint64_t __51__SUManagerClient_handleDDMDeclaration_withResult___block_invoke(uint64_t a1, void *a2)
@@ -3031,16 +3031,16 @@ void __51__SUManagerClient_handleDDMDeclaration_withResult___block_invoke_2(uint
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getDDMDeclarationWithHandler:(id)a3
+- (void)getDDMDeclarationWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __48__SUManagerClient_getDDMDeclarationWithHandler___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = handlerCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -3186,9 +3186,9 @@ void __41__SUManagerClient_getDDMUpdateDescriptor__block_invoke_2(uint64_t a1, v
   *(v10 + 40) = v12;
 }
 
-- (id)declarationsWithError:(id *)a3
+- (id)declarationsWithError:(id *)error
 {
-  SULogInfo(@"%@ called %s", a2, a3, v3, v4, v5, v6, v7, self);
+  SULogInfo(@"%@ called %s", a2, error, v3, v4, v5, v6, v7, self);
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -3215,9 +3215,9 @@ void __41__SUManagerClient_getDDMUpdateDescriptor__block_invoke_2(uint64_t a1, v
   v13[5] = &v15;
   [v10 getAllDeclarationsWithHandler:v13];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v16[5];
+    *error = v16[5];
   }
 
   v11 = v22[5];
@@ -3281,9 +3281,9 @@ void __41__SUManagerClient_declarationsWithError___block_invoke_2(uint64_t a1, v
   *(v9 + 40) = v6;
 }
 
-- (BOOL)setGlobalSettings:(id)a3 withError:(id *)a4
+- (BOOL)setGlobalSettings:(id)settings withError:(id *)error
 {
-  v6 = a3;
+  settingsCopy = settings;
   SULogInfo(@"%@ called %s", v7, v8, v9, v10, v11, v12, v13, self);
   v25 = 0;
   v26 = &v25;
@@ -3307,11 +3307,11 @@ void __41__SUManagerClient_declarationsWithError___block_invoke_2(uint64_t a1, v
   v17[3] = &unk_279CAC500;
   v17[4] = &v25;
   v17[5] = &v19;
-  [v14 setDDMGlobalSettings:v6 completion:v17];
+  [v14 setDDMGlobalSettings:settingsCopy completion:v17];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v15 = *(v26 + 24);
@@ -3360,9 +3360,9 @@ void __47__SUManagerClient_setGlobalSettings_withError___block_invoke(uint64_t a
 LABEL_9:
 }
 
-- (id)globalSettingsDeclarationWithError:(id *)a3
+- (id)globalSettingsDeclarationWithError:(id *)error
 {
-  SULogInfo(@"%@ called %s", a2, a3, v3, v4, v5, v6, v7, self);
+  SULogInfo(@"%@ called %s", a2, error, v3, v4, v5, v6, v7, self);
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -3389,9 +3389,9 @@ LABEL_9:
   v13[5] = &v15;
   [v10 getDDMGlobalSettingsWithHandler:v13];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v16[5];
+    *error = v16[5];
   }
 
   v11 = v22[5];
@@ -3686,16 +3686,16 @@ void __52__SUManagerClient_shouldDisableAutoInstallRSRToggle__block_invoke_2(uin
   }
 }
 
-- (void)currentAutoInstallOperationForecast:(id)a3
+- (void)currentAutoInstallOperationForecast:(id)forecast
 {
-  v4 = a3;
+  forecastCopy = forecast;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __55__SUManagerClient_currentAutoInstallOperationForecast___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = forecastCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -3831,16 +3831,16 @@ void __58__SUManagerClient_currentAutoInstallOperation_withResult___block_invoke
   }
 }
 
-- (void)currentPasscodePolicy:(id)a3
+- (void)currentPasscodePolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __41__SUManagerClient_currentPasscodePolicy___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = policyCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -3910,16 +3910,16 @@ void __41__SUManagerClient_currentPasscodePolicy___block_invoke_2(uint64_t a1, u
   }
 }
 
-- (void)isAutoUpdateEnabled:(id)a3
+- (void)isAutoUpdateEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __39__SUManagerClient_isAutoUpdateEnabled___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = enabledCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -3989,16 +3989,16 @@ void __39__SUManagerClient_isAutoUpdateEnabled___block_invoke_2(uint64_t a1, uin
   }
 }
 
-- (void)isAutoUpdateScheduled:(id)a3
+- (void)isAutoUpdateScheduled:(id)scheduled
 {
-  v4 = a3;
+  scheduledCopy = scheduled;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __41__SUManagerClient_isAutoUpdateScheduled___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = scheduledCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -4132,16 +4132,16 @@ void __40__SUManagerClient_isAutoUpdateScheduled__block_invoke(uint64_t a1, void
 LABEL_9:
 }
 
-- (void)presentAutoUpdateBanner:(id)a3
+- (void)presentAutoUpdateBanner:(id)banner
 {
-  v4 = a3;
+  bannerCopy = banner;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __43__SUManagerClient_presentAutoUpdateBanner___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = bannerCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -4211,16 +4211,16 @@ void __43__SUManagerClient_presentAutoUpdateBanner___block_invoke_2(uint64_t a1,
   }
 }
 
-- (id)_getExistingAutoInstallOperationFromModel:(id)a3
+- (id)_getExistingAutoInstallOperationFromModel:(id)model
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  modelCopy = model;
+  v5 = modelCopy;
+  if (modelCopy)
   {
     installOperationIDsToOperationHandler = self->_installOperationIDsToOperationHandler;
-    v7 = [v4 id];
-    v8 = [v7 UUIDString];
-    v9 = [(NSMutableDictionary *)installOperationIDsToOperationHandler objectForKey:v8];
+    v7 = [modelCopy id];
+    uUIDString = [v7 UUIDString];
+    v9 = [(NSMutableDictionary *)installOperationIDsToOperationHandler objectForKey:uUIDString];
 
     if (!v9)
     {
@@ -4237,19 +4237,19 @@ void __43__SUManagerClient_presentAutoUpdateBanner___block_invoke_2(uint64_t a1,
   return v9;
 }
 
-- (id)observeInstallationConstraintChangesForDownload:(id)a3 observer:(id)a4
+- (id)observeInstallationConstraintChangesForDownload:(id)download observer:(id)observer
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  downloadCopy = download;
+  observerCopy = observer;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
-  v49 = v6;
-  v15 = [v6 progress];
-  v16 = [v15 isDone];
+  v49 = downloadCopy;
+  progress = [downloadCopy progress];
+  isDone = [progress isDone];
 
-  if (v16)
+  if (isDone)
   {
-    v48 = v7;
+    v48 = observerCopy;
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
@@ -4259,7 +4259,7 @@ void __43__SUManagerClient_presentAutoUpdateBanner___block_invoke_2(uint64_t a1,
     if (v18)
     {
       v19 = v18;
-      v47 = self;
+      selfCopy = self;
       v20 = 0;
       v21 = *v53;
       do
@@ -4272,10 +4272,10 @@ void __43__SUManagerClient_presentAutoUpdateBanner___block_invoke_2(uint64_t a1,
           }
 
           v23 = *(*(&v52 + 1) + 8 * i);
-          v24 = [v23 download];
-          v25 = [v24 descriptor];
-          v26 = [v49 descriptor];
-          v27 = [v25 isEqual:v26];
+          download = [v23 download];
+          descriptor = [download descriptor];
+          descriptor2 = [v49 descriptor];
+          v27 = [descriptor isEqual:descriptor2];
 
           if (v27)
           {
@@ -4290,8 +4290,8 @@ void __43__SUManagerClient_presentAutoUpdateBanner___block_invoke_2(uint64_t a1,
 
       while (v19);
 
-      self = v47;
-      v7 = v48;
+      self = selfCopy;
+      observerCopy = v48;
       if (v20)
       {
         goto LABEL_16;
@@ -4315,7 +4315,7 @@ LABEL_16:
       v50[2] = __76__SUManagerClient_observeInstallationConstraintChangesForDownload_observer___block_invoke;
       v50[3] = &unk_279CAC668;
       v50[4] = self;
-      v51 = v7;
+      v51 = observerCopy;
       v43 = [(SUInstallationConstraintObserver *)v20 registerObserverBlock:v50];
 
       goto LABEL_19;
@@ -4349,24 +4349,24 @@ void __76__SUManagerClient_observeInstallationConstraintChangesForDownload_obser
   dispatch_async(v8, v11);
 }
 
-- (void)registerCSInstallPredicatesOnDate:(id)a3
+- (void)registerCSInstallPredicatesOnDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
-  v12 = [(SUManagerClient *)self _remoteInterface];
-  [v12 registerCSInstallPredicatesOnDate:v4];
+  _remoteInterface = [(SUManagerClient *)self _remoteInterface];
+  [_remoteInterface registerCSInstallPredicatesOnDate:dateCopy];
 }
 
-- (void)isUpdateReadyForInstallation:(id)a3
+- (void)isUpdateReadyForInstallation:(id)installation
 {
-  v4 = a3;
+  installationCopy = installation;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __48__SUManagerClient_isUpdateReadyForInstallation___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = installationCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -4446,17 +4446,17 @@ void __48__SUManagerClient_isUpdateReadyForInstallation___block_invoke_2(uint64_
   }
 }
 
-- (void)isUpdateReadyForInstallationWithOptions:(id)a3 withResult:(id)a4
+- (void)isUpdateReadyForInstallationWithOptions:(id)options withResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  optionsCopy = options;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __70__SUManagerClient_isUpdateReadyForInstallationWithOptions_withResult___block_invoke;
   v20[3] = &unk_279CAC238;
   v20[4] = self;
-  v15 = v6;
+  v15 = resultCopy;
   v21 = v15;
   v16 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v20];
   v18[0] = MEMORY[0x277D85DD0];
@@ -4466,7 +4466,7 @@ void __48__SUManagerClient_isUpdateReadyForInstallation___block_invoke_2(uint64_
   v18[4] = self;
   v19 = v15;
   v17 = v15;
-  [v16 isUpdateReadyForInstallationWithOptions:v7 withResult:v18];
+  [v16 isUpdateReadyForInstallationWithOptions:optionsCopy withResult:v18];
 }
 
 uint64_t __70__SUManagerClient_isUpdateReadyForInstallationWithOptions_withResult___block_invoke(uint64_t a1, void *a2)
@@ -4536,17 +4536,17 @@ void __70__SUManagerClient_isUpdateReadyForInstallationWithOptions_withResult___
   }
 }
 
-- (void)installUpdateWithInstallOptions:(id)a3 withResult:(id)a4
+- (void)installUpdateWithInstallOptions:(id)options withResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  optionsCopy = options;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __62__SUManagerClient_installUpdateWithInstallOptions_withResult___block_invoke;
   v20[3] = &unk_279CAC238;
   v20[4] = self;
-  v15 = v6;
+  v15 = resultCopy;
   v21 = v15;
   v16 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v20];
   v18[0] = MEMORY[0x277D85DD0];
@@ -4556,7 +4556,7 @@ void __70__SUManagerClient_isUpdateReadyForInstallationWithOptions_withResult___
   v18[4] = self;
   v19 = v15;
   v17 = v15;
-  [v16 installUpdateWithInstallOptions:v7 withResult:v18];
+  [v16 installUpdateWithInstallOptions:optionsCopy withResult:v18];
 }
 
 uint64_t __62__SUManagerClient_installUpdateWithInstallOptions_withResult___block_invoke(uint64_t a1, void *a2)
@@ -4626,17 +4626,17 @@ void __62__SUManagerClient_installUpdateWithInstallOptions_withResult___block_in
   }
 }
 
-- (void)installUpdateWithOptions:(id)a3 withResult:(id)a4
+- (void)installUpdateWithOptions:(id)options withResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  optionsCopy = options;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __55__SUManagerClient_installUpdateWithOptions_withResult___block_invoke;
   v20[3] = &unk_279CAC238;
   v20[4] = self;
-  v15 = v6;
+  v15 = resultCopy;
   v21 = v15;
   v16 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v20];
   v18[0] = MEMORY[0x277D85DD0];
@@ -4646,7 +4646,7 @@ void __62__SUManagerClient_installUpdateWithInstallOptions_withResult___block_in
   v18[4] = self;
   v19 = v15;
   v17 = v15;
-  [v16 installUpdateWithOptions:v7 withResult:v18];
+  [v16 installUpdateWithOptions:optionsCopy withResult:v18];
 }
 
 uint64_t __55__SUManagerClient_installUpdateWithOptions_withResult___block_invoke(uint64_t a1, void *a2)
@@ -4716,16 +4716,16 @@ void __55__SUManagerClient_installUpdateWithOptions_withResult___block_invoke_2(
   }
 }
 
-- (void)installUpdate:(id)a3
+- (void)installUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __33__SUManagerClient_installUpdate___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = updateCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -4805,16 +4805,16 @@ void __33__SUManagerClient_installUpdate___block_invoke_2(uint64_t a1, unsigned 
   }
 }
 
-- (void)fetchInstallHistory:(id)a3
+- (void)fetchInstallHistory:(id)history
 {
-  v4 = a3;
+  historyCopy = history;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __39__SUManagerClient_fetchInstallHistory___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = historyCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -4936,17 +4936,17 @@ void __42__SUManagerClient_userAskedToDeferInstall__block_invoke(uint64_t a1, vo
 LABEL_9:
 }
 
-- (void)eligibleRollbackWithOptions:(id)a3 withResult:(id)a4
+- (void)eligibleRollbackWithOptions:(id)options withResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  optionsCopy = options;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __58__SUManagerClient_eligibleRollbackWithOptions_withResult___block_invoke;
   v20[3] = &unk_279CAC238;
   v20[4] = self;
-  v15 = v6;
+  v15 = resultCopy;
   v21 = v15;
   v16 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v20];
   v18[0] = MEMORY[0x277D85DD0];
@@ -4956,7 +4956,7 @@ LABEL_9:
   v18[4] = self;
   v19 = v15;
   v17 = v15;
-  [v16 eligibleRollbackWithOptions:v7 withResult:v18];
+  [v16 eligibleRollbackWithOptions:optionsCopy withResult:v18];
 }
 
 uint64_t __58__SUManagerClient_eligibleRollbackWithOptions_withResult___block_invoke(uint64_t a1, void *a2)
@@ -5017,17 +5017,17 @@ void __58__SUManagerClient_eligibleRollbackWithOptions_withResult___block_invoke
   }
 }
 
-- (void)rollbackUpdateWithOptions:(id)a3 withResult:(id)a4
+- (void)rollbackUpdateWithOptions:(id)options withResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  optionsCopy = options;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __56__SUManagerClient_rollbackUpdateWithOptions_withResult___block_invoke;
   v20[3] = &unk_279CAC238;
   v20[4] = self;
-  v15 = v6;
+  v15 = resultCopy;
   v21 = v15;
   v16 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v20];
   v18[0] = MEMORY[0x277D85DD0];
@@ -5037,7 +5037,7 @@ void __58__SUManagerClient_eligibleRollbackWithOptions_withResult___block_invoke
   v18[4] = self;
   v19 = v15;
   v17 = v15;
-  [v16 rollbackUpdateWithOptions:v7 withResult:v18];
+  [v16 rollbackUpdateWithOptions:optionsCopy withResult:v18];
 }
 
 uint64_t __56__SUManagerClient_rollbackUpdateWithOptions_withResult___block_invoke(uint64_t a1, void *a2)
@@ -5098,17 +5098,17 @@ void __56__SUManagerClient_rollbackUpdateWithOptions_withResult___block_invoke_2
   }
 }
 
-- (void)previousRollbackWithOptions:(id)a3 withResult:(id)a4
+- (void)previousRollbackWithOptions:(id)options withResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
+  resultCopy = result;
+  optionsCopy = options;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __58__SUManagerClient_previousRollbackWithOptions_withResult___block_invoke;
   v20[3] = &unk_279CAC238;
   v20[4] = self;
-  v15 = v6;
+  v15 = resultCopy;
   v21 = v15;
   v16 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v20];
   v18[0] = MEMORY[0x277D85DD0];
@@ -5118,7 +5118,7 @@ void __56__SUManagerClient_rollbackUpdateWithOptions_withResult___block_invoke_2
   v18[4] = self;
   v19 = v15;
   v17 = v15;
-  [v16 previousRollback:v7 withResult:v18];
+  [v16 previousRollback:optionsCopy withResult:v18];
 }
 
 uint64_t __58__SUManagerClient_previousRollbackWithOptions_withResult___block_invoke(uint64_t a1, void *a2)
@@ -5179,16 +5179,16 @@ void __58__SUManagerClient_previousRollbackWithOptions_withResult___block_invoke
   }
 }
 
-- (void)isRollingBack:(id)a3
+- (void)isRollingBack:(id)back
 {
-  v4 = a3;
+  backCopy = back;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __33__SUManagerClient_isRollingBack___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = backCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -5259,16 +5259,16 @@ void __33__SUManagerClient_isRollingBack___block_invoke_2(uint64_t a1, uint64_t 
   }
 }
 
-- (void)scheduleRollbackRebootForLater:(id)a3
+- (void)scheduleRollbackRebootForLater:(id)later
 {
-  v4 = a3;
+  laterCopy = later;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __50__SUManagerClient_scheduleRollbackRebootForLater___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = laterCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -5338,9 +5338,9 @@ void __50__SUManagerClient_scheduleRollbackRebootForLater___block_invoke_2(uint6
   }
 }
 
-- (BOOL)setLastRollbackDescriptor:(id)a3
+- (BOOL)setLastRollbackDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v21 = 0;
   v22 = &v21;
@@ -5363,7 +5363,7 @@ void __50__SUManagerClient_scheduleRollbackRebootForLater___block_invoke_2(uint6
   v15[4] = self;
   v15[5] = &v17;
   v15[6] = &v21;
-  [v12 setLastRollbackDescriptor:v4 withResult:v15];
+  [v12 setLastRollbackDescriptor:descriptorCopy withResult:v15];
 
   if (v18[3])
   {
@@ -5437,9 +5437,9 @@ void __45__SUManagerClient_setLastRollbackDescriptor___block_invoke_2(uint64_t a
   *(*(*(a1 + v9) + 8) + 24) = a2;
 }
 
-- (BOOL)securityResponseRollbackSuggested:(id)a3 error:(id *)a4
+- (BOOL)securityResponseRollbackSuggested:(id)suggested error:(id *)error
 {
-  v6 = a3;
+  suggestedCopy = suggested;
   SULogInfo(@"%@ called %s", v7, v8, v9, v10, v11, v12, v13, self);
   v25 = 0;
   v26 = &v25;
@@ -5463,11 +5463,11 @@ void __45__SUManagerClient_setLastRollbackDescriptor___block_invoke_2(uint64_t a
   v17[3] = &unk_279CAC500;
   v17[4] = &v25;
   v17[5] = &v19;
-  [v14 securityResponseRollbackSuggested:v6 withResult:v17];
+  [v14 securityResponseRollbackSuggested:suggestedCopy withResult:v17];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v15 = *(v26 + 24);
@@ -5516,9 +5516,9 @@ void __59__SUManagerClient_securityResponseRollbackSuggested_error___block_invok
 LABEL_9:
 }
 
-- (BOOL)createInstallationKeybagWithOptions:(id)a3
+- (BOOL)createInstallationKeybagWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v21 = 0;
   v22 = &v21;
@@ -5541,7 +5541,7 @@ LABEL_9:
   v15[4] = self;
   v15[5] = &v17;
   v15[6] = &v21;
-  [v12 createInstallationKeybag:v4 withResult:v15];
+  [v12 createInstallationKeybag:optionsCopy withResult:v15];
 
   if (v18[3])
   {
@@ -5679,9 +5679,9 @@ void __47__SUManagerClient_isInstallationKeybagRequired__block_invoke(uint64_t a
 LABEL_9:
 }
 
-- (BOOL)isInstallationKeybagRequiredForDescriptor:(id)a3
+- (BOOL)isInstallationKeybagRequiredForDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v16 = 0;
   v17 = &v16;
@@ -5698,7 +5698,7 @@ LABEL_9:
   v14[2] = __61__SUManagerClient_isInstallationKeybagRequiredForDescriptor___block_invoke_2;
   v14[3] = &unk_279CAB678;
   v14[4] = &v16;
-  [v12 isInstallationKeybagRequiredForDescriptor:v4 result:v14];
+  [v12 isInstallationKeybagRequiredForDescriptor:descriptorCopy result:v14];
 
   LOBYTE(v12) = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
@@ -5796,16 +5796,16 @@ void __44__SUManagerClient_destroyInstallationKeybag__block_invoke(uint64_t a1, 
 LABEL_9:
 }
 
-- (void)slaVersion:(id)a3
+- (void)slaVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __30__SUManagerClient_slaVersion___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = versionCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -5876,9 +5876,9 @@ void __30__SUManagerClient_slaVersion___block_invoke_2(uint64_t a1, void *a2, vo
   }
 }
 
-- (void)setMandatorySoftwareUpdateDictionary:(id)a3
+- (void)setMandatorySoftwareUpdateDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -5886,7 +5886,7 @@ void __30__SUManagerClient_slaVersion___block_invoke_2(uint64_t a1, void *a2, vo
   v13[3] = &unk_279CABA10;
   v13[4] = self;
   v12 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v13];
-  [v12 setMandatorySoftwareUpdateDictionary:v4];
+  [v12 setMandatorySoftwareUpdateDictionary:dictionaryCopy];
 }
 
 void __56__SUManagerClient_setMandatorySoftwareUpdateDictionary___block_invoke(uint64_t a1, void *a2)
@@ -5931,16 +5931,16 @@ void __56__SUManagerClient_setMandatorySoftwareUpdateDictionary___block_invoke(u
 LABEL_9:
 }
 
-- (void)getMandatorySoftwareUpdateDictionary:(id)a3
+- (void)getMandatorySoftwareUpdateDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __56__SUManagerClient_getMandatorySoftwareUpdateDictionary___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = dictionaryCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -6007,9 +6007,9 @@ uint64_t __56__SUManagerClient_getMandatorySoftwareUpdateDictionary___block_invo
   return result;
 }
 
-- (id)getMandatorySoftwareUpdateDictionaryWithError:(id *)a3
+- (id)getMandatorySoftwareUpdateDictionaryWithError:(id *)error
 {
-  SULogInfo(@"%@ called %s", a2, a3, v3, v4, v5, v6, v7, self);
+  SULogInfo(@"%@ called %s", a2, error, v3, v4, v5, v6, v7, self);
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -6036,9 +6036,9 @@ uint64_t __56__SUManagerClient_getMandatorySoftwareUpdateDictionary___block_invo
   v13[5] = &v15;
   [v10 getMandatorySoftwareUpdateDictionary:v13];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v16[5];
+    *error = v16[5];
   }
 
   v11 = v22[5];
@@ -6378,18 +6378,18 @@ void __47__SUManagerClient_isAnyClientInUserInteraction__block_invoke(uint64_t a
 LABEL_9:
 }
 
-- (void)isSoftwareUpdateInProgress:(id)a3
+- (void)isSoftwareUpdateInProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
-  if (v4)
+  if (progressCopy)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __46__SUManagerClient_isSoftwareUpdateInProgress___block_invoke;
     v16[3] = &unk_279CAC238;
     v16[4] = self;
-    v12 = v4;
+    v12 = progressCopy;
     v17 = v12;
     v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v16];
     v14[0] = MEMORY[0x277D85DD0];
@@ -6463,16 +6463,16 @@ void __46__SUManagerClient_isSoftwareUpdateInProgress___block_invoke_2(uint64_t 
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)softwareUpdatePathRestriction:(id)a3
+- (void)softwareUpdatePathRestriction:(id)restriction
 {
-  v4 = a3;
+  restrictionCopy = restriction;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __49__SUManagerClient_softwareUpdatePathRestriction___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = restrictionCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -6542,16 +6542,16 @@ void __49__SUManagerClient_softwareUpdatePathRestriction___block_invoke_2(uint64
   }
 }
 
-- (void)isDelayingUpdates:(id)a3
+- (void)isDelayingUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __37__SUManagerClient_isDelayingUpdates___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = updatesCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -6631,16 +6631,16 @@ void __37__SUManagerClient_isDelayingUpdates___block_invoke_2(uint64_t a1, unsig
   }
 }
 
-- (void)delayEndDate:(id)a3
+- (void)delayEndDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __32__SUManagerClient_delayEndDate___block_invoke;
   v17[3] = &unk_279CAC238;
   v17[4] = self;
-  v12 = v4;
+  v12 = dateCopy;
   v18 = v12;
   v13 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v17];
   v15[0] = MEMORY[0x277D85DD0];
@@ -6717,9 +6717,9 @@ void __32__SUManagerClient_delayEndDate___block_invoke_2(uint64_t a1, void *a2, 
   }
 }
 
-- (BOOL)isSplatOnlyUpdateRollbackAllowed:(id *)a3
+- (BOOL)isSplatOnlyUpdateRollbackAllowed:(id *)allowed
 {
-  SULogInfo(@"%@ called %s", a2, a3, v3, v4, v5, v6, v7, self);
+  SULogInfo(@"%@ called %s", a2, allowed, v3, v4, v5, v6, v7, self);
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -6744,9 +6744,9 @@ void __32__SUManagerClient_delayEndDate___block_invoke_2(uint64_t a1, void *a2, 
   v13[5] = &v15;
   [v10 splatRollbackAllowed:v13];
 
-  if (a3)
+  if (allowed)
   {
-    *a3 = v16[5];
+    *allowed = v16[5];
   }
 
   v11 = *(v22 + 24);
@@ -6861,11 +6861,11 @@ LABEL_9:
 
 + (BOOL)_isMultiUserAppleId
 {
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  if ([v2 isMultiUser])
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  if ([mEMORY[0x277D77BF8] isMultiUser])
   {
-    v3 = [v2 currentUser];
-    v4 = [v3 userType] == 1;
+    currentUser = [mEMORY[0x277D77BF8] currentUser];
+    v4 = [currentUser userType] == 1;
   }
 
   else
@@ -6880,46 +6880,46 @@ LABEL_9:
 {
   v3 = +[SUPreferences sharedInstance];
   [v3 reload];
-  v4 = [v3 disableAvailabilityAlerts];
-  LOBYTE(a1) = [a1 _isMultiUserAppleId] | v4;
+  disableAvailabilityAlerts = [v3 disableAvailabilityAlerts];
+  LOBYTE(self) = [self _isMultiUserAppleId] | disableAvailabilityAlerts;
 
-  return a1 & 1;
+  return self & 1;
 }
 
-- (void)_registerAutoInstallOperationClientHandler:(id)a3
+- (void)_registerAutoInstallOperationClientHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   installOperationIDsToOperationHandler = self->_installOperationIDsToOperationHandler;
-  v13 = [v4 uniqueIdentifier];
-  [(NSMutableDictionary *)installOperationIDsToOperationHandler setValue:v4 forKey:v13];
+  uniqueIdentifier = [handlerCopy uniqueIdentifier];
+  [(NSMutableDictionary *)installOperationIDsToOperationHandler setValue:handlerCopy forKey:uniqueIdentifier];
 }
 
-- (void)_unregisterAutoInstallOperationClientHandler:(id)a3
+- (void)_unregisterAutoInstallOperationClientHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   installOperationIDsToOperationHandler = self->_installOperationIDsToOperationHandler;
-  v13 = [v4 uniqueIdentifier];
-  [(NSMutableDictionary *)installOperationIDsToOperationHandler setValue:v4 forKey:v13];
+  uniqueIdentifier = [handlerCopy uniqueIdentifier];
+  [(NSMutableDictionary *)installOperationIDsToOperationHandler setValue:handlerCopy forKey:uniqueIdentifier];
 }
 
-- (void)_consentAutoInstallOperation:(id)a3 withResult:(id)a4
+- (void)_consentAutoInstallOperation:(id)operation withResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  resultCopy = result;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
-  if (v6)
+  if (operationCopy)
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __59__SUManagerClient__consentAutoInstallOperation_withResult___block_invoke;
     v20[3] = &unk_279CAC238;
     v20[4] = self;
-    v15 = v7;
+    v15 = resultCopy;
     v21 = v15;
     v16 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v20];
-    v17 = [v6 id];
+    v17 = [operationCopy id];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __59__SUManagerClient__consentAutoInstallOperation_withResult___block_invoke_2;
@@ -6987,22 +6987,22 @@ void __59__SUManagerClient__consentAutoInstallOperation_withResult___block_invok
   }
 }
 
-- (void)_cancelAutoInstallOperation:(id)a3 withResult:(id)a4
+- (void)_cancelAutoInstallOperation:(id)operation withResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  resultCopy = result;
   SULogInfo(@"%@ called %s", v8, v9, v10, v11, v12, v13, v14, self);
-  if (v6)
+  if (operationCopy)
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __58__SUManagerClient__cancelAutoInstallOperation_withResult___block_invoke;
     v20[3] = &unk_279CAC238;
     v20[4] = self;
-    v15 = v7;
+    v15 = resultCopy;
     v21 = v15;
     v16 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v20];
-    v17 = [v6 id];
+    v17 = [operationCopy id];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __58__SUManagerClient__cancelAutoInstallOperation_withResult___block_invoke_2;
@@ -7163,47 +7163,47 @@ void __39__SUManagerClient_setExclusiveControl___block_invoke(uint64_t a1, void 
 LABEL_9:
 }
 
-- (void)recordSUAnalyticsEvent:(id)a3
+- (void)recordSUAnalyticsEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
-  v12 = [(SUManagerClient *)self _remoteInterface];
-  [v12 recordSUAnalyticsEvent:v4];
+  _remoteInterface = [(SUManagerClient *)self _remoteInterface];
+  [_remoteInterface recordSUAnalyticsEvent:eventCopy];
 }
 
-- (void)submitSUAnalyticsEvent:(id)a3
+- (void)submitSUAnalyticsEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
-  v12 = [(SUManagerClient *)self _remoteInterface];
-  [v12 submitSUAnalyticsEvent:v4];
+  _remoteInterface = [(SUManagerClient *)self _remoteInterface];
+  [_remoteInterface submitSUAnalyticsEvent:eventCopy];
 }
 
 - (void)submitAllSUAnalyticsEvents
 {
   SULogInfo(@"%@ called %s", a2, v2, v3, v4, v5, v6, v7, self);
-  v9 = [(SUManagerClient *)self _remoteInterface];
-  [v9 submitAllSUAnalyticsEvents];
+  _remoteInterface = [(SUManagerClient *)self _remoteInterface];
+  [_remoteInterface submitAllSUAnalyticsEvents];
 }
 
-- (void)submitSUAnalyticsEventsWithName:(id)a3
+- (void)submitSUAnalyticsEventsWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
-  v12 = [(SUManagerClient *)self _remoteInterface];
-  [v12 submitSUAnalyticsEventsWithName:v4];
+  _remoteInterface = [(SUManagerClient *)self _remoteInterface];
+  [_remoteInterface submitSUAnalyticsEventsWithName:nameCopy];
 }
 
 - (void)networkMonitorDetectOverrides
 {
-  v2 = [(SUManagerClient *)self _remoteInterface];
-  [v2 networkMonitorDetectOverrides];
+  _remoteInterface = [(SUManagerClient *)self _remoteInterface];
+  [_remoteInterface networkMonitorDetectOverrides];
 }
 
-- (void)installationConstraintObserverDidRemoveAllObserverBlocks:(id)a3
+- (void)installationConstraintObserverDidRemoveAllObserverBlocks:(id)blocks
 {
-  v5 = a3;
-  if (!v5)
+  blocksCopy = blocks;
+  if (!blocksCopy)
   {
     [(SUManagerClient *)a2 installationConstraintObserverDidRemoveAllObserverBlocks:?];
   }
@@ -7214,8 +7214,8 @@ LABEL_9:
   v8[2] = __76__SUManagerClient_installationConstraintObserverDidRemoveAllObserverBlocks___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = blocksCopy;
+  v7 = blocksCopy;
   dispatch_async(queue, v8);
 }
 
@@ -7226,7 +7226,7 @@ void __76__SUManagerClient_installationConstraintObserverDidRemoveAllObserverBlo
   SULogInfo(@"installationConstraintObserverDidRemoveAllObserverBlocks: %@: observers: %@", v2, v3, v4, v5, v6, v7, v8, *(a1 + 40));
 }
 
-- (void)preferences:(id)a3 didChangePreference:(id)a4 toValue:(id)a5
+- (void)preferences:(id)preferences didChangePreference:(id)preference toValue:(id)value
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -7260,8 +7260,8 @@ void __59__SUManagerClient_preferences_didChangePreference_toValue___block_invok
 - (void)_invalidateAllInstallationConstraintObserversForDownload
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v17 = 0u;
   v18 = 0u;
@@ -7305,24 +7305,24 @@ void __59__SUManagerClient_preferences_didChangePreference_toValue___block_invok
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invalidateConstraintObserver:(id)a3 withError:(id)a4
+- (void)_invalidateConstraintObserver:(id)observer withError:(id)error
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v7);
+  errorCopy = error;
+  observerCopy = observer;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v8)
+  if (errorCopy)
   {
-    [v6 invalidateWithError:v8];
+    [observerCopy invalidateWithError:errorCopy];
   }
 
   else
   {
-    [v6 invalidate];
+    [observerCopy invalidate];
   }
 
-  [(NSMutableSet *)self->_installationConstraintObservers removeObject:v6];
+  [(NSMutableSet *)self->_installationConstraintObservers removeObject:observerCopy];
 }
 
 - (id)_identifier
@@ -7356,45 +7356,45 @@ void __30__SUManagerClient__identifier__block_invoke()
 
 - (id)_remoteInterface
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(SUManagerClient *)v2 connectToServerIfNecessary];
-  v3 = [(NSXPCConnection *)v2->_serverConnection remoteObjectProxy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SUManagerClient *)selfCopy connectToServerIfNecessary];
+  remoteObjectProxy = [(NSXPCConnection *)selfCopy->_serverConnection remoteObjectProxy];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (id)_remoteInterfaceWithErrorHandler:(id)a3 connectIfNecessary:(BOOL)a4
+- (id)_remoteInterfaceWithErrorHandler:(id)handler connectIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (v4)
+  necessaryCopy = necessary;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (necessaryCopy)
   {
-    [(SUManagerClient *)v7 connectToServerIfNecessary];
+    [(SUManagerClient *)selfCopy connectToServerIfNecessary];
   }
 
-  v8 = [(NSXPCConnection *)v7->_serverConnection remoteObjectProxyWithErrorHandler:v6];
-  objc_sync_exit(v7);
+  v8 = [(NSXPCConnection *)selfCopy->_serverConnection remoteObjectProxyWithErrorHandler:handlerCopy];
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (id)_remoteSynchronousInterfaceWithErrorHandler:(id)a3 connectIfNecessary:(BOOL)a4
+- (id)_remoteSynchronousInterfaceWithErrorHandler:(id)handler connectIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (v4)
+  necessaryCopy = necessary;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (necessaryCopy)
   {
-    [(SUManagerClient *)v7 connectToServerIfNecessary];
+    [(SUManagerClient *)selfCopy connectToServerIfNecessary];
   }
 
-  v8 = [(NSXPCConnection *)v7->_serverConnection synchronousRemoteObjectProxyWithErrorHandler:v6];
-  objc_sync_exit(v7);
+  v8 = [(NSXPCConnection *)selfCopy->_serverConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
@@ -7420,38 +7420,38 @@ void __30__SUManagerClient__identifier__block_invoke()
 
 - (void)connectToServerIfNecessary
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_connected)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_connected)
   {
-    SULogDebug(@"%@: establishing connection to softwareupdateservicesd.", v3, v4, v5, v6, v7, v8, v9, v2);
-    [(SUManagerClient *)v2 _invalidateConnection];
+    SULogDebug(@"%@: establishing connection to softwareupdateservicesd.", v3, v4, v5, v6, v7, v8, v9, selfCopy);
+    [(SUManagerClient *)selfCopy _invalidateConnection];
     v10 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.softwareupdateservicesd" options:4096];
-    serverConnection = v2->_serverConnection;
-    v2->_serverConnection = v10;
+    serverConnection = selfCopy->_serverConnection;
+    selfCopy->_serverConnection = v10;
 
-    [(NSXPCConnection *)v2->_serverConnection _setQueue:v2->_queue];
+    [(NSXPCConnection *)selfCopy->_serverConnection _setQueue:selfCopy->_queue];
     v12 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_287B77600];
     v13 = MEMORY[0x277CBEB98];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
     [v12 setClasses:v15 forSelector:sel_getAllDeclarationsWithHandler_ argumentIndex:0 ofReply:1];
 
-    [(NSXPCConnection *)v2->_serverConnection setRemoteObjectInterface:v12];
-    v16 = v2->_serverConnection;
+    [(NSXPCConnection *)selfCopy->_serverConnection setRemoteObjectInterface:v12];
+    v16 = selfCopy->_serverConnection;
     v17 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_287B7E918];
     [(NSXPCConnection *)v16 setExportedInterface:v17];
 
-    [(NSXPCConnection *)v2->_serverConnection setExportedObject:v2];
-    objc_initWeak(&location, v2);
+    [(NSXPCConnection *)selfCopy->_serverConnection setExportedObject:selfCopy];
+    objc_initWeak(&location, selfCopy);
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __45__SUManagerClient_connectToServerIfNecessary__block_invoke;
     v31[3] = &unk_279CAC7D0;
     objc_copyWeak(&v32, &location);
     v18 = MEMORY[0x26D668B30](v31);
-    [(NSXPCConnection *)v2->_serverConnection setInvalidationHandler:v18];
-    v19 = v2->_serverConnection;
+    [(NSXPCConnection *)selfCopy->_serverConnection setInvalidationHandler:v18];
+    v19 = selfCopy->_serverConnection;
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __45__SUManagerClient_connectToServerIfNecessary__block_invoke_2;
@@ -7460,17 +7460,17 @@ void __30__SUManagerClient__identifier__block_invoke()
     v20 = v18;
     v29 = v20;
     [(NSXPCConnection *)v19 setInterruptionHandler:v28];
-    [(NSXPCConnection *)v2->_serverConnection activate];
-    [(SUManagerClient *)v2 _setClientType];
-    *&v2->_connected = 1;
-    SULogDebug(@"%@: connection established to softwareupdateservicesd.", v21, v22, v23, v24, v25, v26, v27, v2);
+    [(NSXPCConnection *)selfCopy->_serverConnection activate];
+    [(SUManagerClient *)selfCopy _setClientType];
+    *&selfCopy->_connected = 1;
+    SULogDebug(@"%@: connection established to softwareupdateservicesd.", v21, v22, v23, v24, v25, v26, v27, selfCopy);
 
     objc_destroyWeak(&v30);
     objc_destroyWeak(&v32);
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __45__SUManagerClient_connectToServerIfNecessary__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8, uint64_t a9)
@@ -7519,11 +7519,11 @@ uint64_t __45__SUManagerClient_connectToServerIfNecessary__block_invoke_2(uint64
   objc_sync_exit(obj);
 }
 
-- (void)scanRequestDidStartForOptions:(id)a3
+- (void)scanRequestDidStartForOptions:(id)options
 {
-  v17 = a3;
-  v4 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v4);
+  optionsCopy = options;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -7535,20 +7535,20 @@ uint64_t __45__SUManagerClient_connectToServerIfNecessary__block_invoke_2(uint64
     if (v15)
     {
       v16 = objc_loadWeakRetained(&self->_delegate);
-      [v16 client:self scanRequestDidStartForOptions:v17];
+      [v16 client:self scanRequestDidStartForOptions:optionsCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v6, v7, v8, v9, v10, v11, v12, "[SUManagerClient scanRequestDidStartForOptions:]");
 }
 
-- (void)scanRequestDidFinishForOptions:(id)a3 results:(id)a4 error:(id)a5
+- (void)scanRequestDidFinishForOptions:(id)options results:(id)results error:(id)error
 {
-  v23 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v10);
+  optionsCopy = options;
+  resultsCopy = results;
+  errorCopy = error;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -7560,20 +7560,20 @@ uint64_t __45__SUManagerClient_connectToServerIfNecessary__block_invoke_2(uint64
     if (v21)
     {
       v22 = objc_loadWeakRetained(&self->_delegate);
-      [v22 client:self scanRequestDidFinishForOptions:v23 results:v8 error:v9];
+      [v22 client:self scanRequestDidFinishForOptions:optionsCopy results:resultsCopy error:errorCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v12, v13, v14, v15, v16, v17, v18, "[SUManagerClient scanRequestDidFinishForOptions:results:error:]");
 }
 
-- (void)scanDidCompleteForOptions:(id)a3 results:(id)a4 error:(id)a5
+- (void)scanDidCompleteForOptions:(id)options results:(id)results error:(id)error
 {
-  v23 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v10);
+  optionsCopy = options;
+  resultsCopy = results;
+  errorCopy = error;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -7585,20 +7585,20 @@ uint64_t __45__SUManagerClient_connectToServerIfNecessary__block_invoke_2(uint64
     if (v21)
     {
       v22 = objc_loadWeakRetained(&self->_delegate);
-      [v22 client:self scanRequestDidFinishForOptions:v23 results:v8 error:v9];
+      [v22 client:self scanRequestDidFinishForOptions:optionsCopy results:resultsCopy error:errorCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v12, v13, v14, v15, v16, v17, v18, "[SUManagerClient scanDidCompleteForOptions:results:error:]");
 }
 
-- (void)scanRequestDidFinishForOptions:(id)a3 update:(id)a4 error:(id)a5
+- (void)scanRequestDidFinishForOptions:(id)options update:(id)update error:(id)error
 {
-  v23 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v10);
+  optionsCopy = options;
+  updateCopy = update;
+  errorCopy = error;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -7610,19 +7610,19 @@ uint64_t __45__SUManagerClient_connectToServerIfNecessary__block_invoke_2(uint64
     if (v21)
     {
       v22 = objc_loadWeakRetained(&self->_delegate);
-      [v22 client:self scanRequestDidFinishForOptions:v23 update:v8 error:v9];
+      [v22 client:self scanRequestDidFinishForOptions:optionsCopy update:updateCopy error:errorCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v12, v13, v14, v15, v16, v17, v18, "[SUManagerClient scanRequestDidFinishForOptions:update:error:]");
 }
 
-- (void)scanDidCompleteWithNewUpdateAvailable:(id)a3 error:(id)a4
+- (void)scanDidCompleteWithNewUpdateAvailable:(id)available error:(id)error
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v7);
+  availableCopy = available;
+  errorCopy = error;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -7634,19 +7634,19 @@ uint64_t __45__SUManagerClient_connectToServerIfNecessary__block_invoke_2(uint64
     if (v18)
     {
       v19 = objc_loadWeakRetained(&self->_delegate);
-      [v19 client:self scanDidCompleteWithNewUpdateAvailable:v20 error:v6];
+      [v19 client:self scanDidCompleteWithNewUpdateAvailable:availableCopy error:errorCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v9, v10, v11, v12, v13, v14, v15, "[SUManagerClient scanDidCompleteWithNewUpdateAvailable:error:]");
 }
 
-- (void)automaticDownloadDidFailToStartForNewUpdateAvailable:(id)a3 withError:(id)a4
+- (void)automaticDownloadDidFailToStartForNewUpdateAvailable:(id)available withError:(id)error
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v7);
+  availableCopy = available;
+  errorCopy = error;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -7658,18 +7658,18 @@ uint64_t __45__SUManagerClient_connectToServerIfNecessary__block_invoke_2(uint64
     if (v18)
     {
       v19 = objc_loadWeakRetained(&self->_delegate);
-      [v19 client:self automaticDownloadDidFailToStartForNewUpdateAvailable:v20 withError:v6];
+      [v19 client:self automaticDownloadDidFailToStartForNewUpdateAvailable:availableCopy withError:errorCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v9, v10, v11, v12, v13, v14, v15, "[SUManagerClient automaticDownloadDidFailToStartForNewUpdateAvailable:withError:]");
 }
 
-- (void)downloadDidStart:(id)a3
+- (void)downloadDidStart:(id)start
 {
-  v17 = a3;
-  v4 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v4);
+  startCopy = start;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(SUManagerClient *)self _invalidateAllInstallationConstraintObserversForDownload];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -7682,18 +7682,18 @@ uint64_t __45__SUManagerClient_connectToServerIfNecessary__block_invoke_2(uint64
     if (v15)
     {
       v16 = objc_loadWeakRetained(&self->_delegate);
-      [v16 client:self downloadDidStart:v17];
+      [v16 client:self downloadDidStart:startCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v6, v7, v8, v9, v10, v11, v12, "[SUManagerClient downloadDidStart:]");
 }
 
-- (void)downloadProgressDidChange:(id)a3
+- (void)downloadProgressDidChange:(id)change
 {
-  v17 = a3;
-  v4 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v4);
+  changeCopy = change;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -7705,19 +7705,19 @@ uint64_t __45__SUManagerClient_connectToServerIfNecessary__block_invoke_2(uint64
     if (v15)
     {
       v16 = objc_loadWeakRetained(&self->_delegate);
-      [v16 client:self downloadProgressDidChange:v17];
+      [v16 client:self downloadProgressDidChange:changeCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v6, v7, v8, v9, v10, v11, v12, "[SUManagerClient downloadProgressDidChange:]");
 }
 
-- (void)downloadDidFail:(id)a3 withError:(id)a4
+- (void)downloadDidFail:(id)fail withError:(id)error
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v7);
+  failCopy = fail;
+  errorCopy = error;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(SUManagerClient *)self _invalidateAllInstallationConstraintObserversForDownload];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -7730,18 +7730,18 @@ uint64_t __45__SUManagerClient_connectToServerIfNecessary__block_invoke_2(uint64
     if (v18)
     {
       v19 = objc_loadWeakRetained(&self->_delegate);
-      [v19 client:self downloadDidFail:v20 withError:v6];
+      [v19 client:self downloadDidFail:failCopy withError:errorCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v9, v10, v11, v12, v13, v14, v15, "[SUManagerClient downloadDidFail:withError:]");
 }
 
-- (void)downloadDidFinish:(id)a3
+- (void)downloadDidFinish:(id)finish
 {
-  v17 = a3;
-  v4 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v4);
+  finishCopy = finish;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(SUManagerClient *)self _invalidateAllInstallationConstraintObserversForDownload];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -7754,19 +7754,19 @@ uint64_t __45__SUManagerClient_connectToServerIfNecessary__block_invoke_2(uint64
     if (v15)
     {
       v16 = objc_loadWeakRetained(&self->_delegate);
-      [v16 client:self downloadDidFinish:v17];
+      [v16 client:self downloadDidFinish:finishCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v6, v7, v8, v9, v10, v11, v12, "[SUManagerClient downloadDidFinish:]");
 }
 
-- (void)downloadDidFinish:(id)a3 withInstallPolicy:(id)a4
+- (void)downloadDidFinish:(id)finish withInstallPolicy:(id)policy
 {
-  v21 = a3;
-  v6 = a4;
-  v7 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v7);
+  finishCopy = finish;
+  policyCopy = policy;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(SUManagerClient *)self _invalidateAllInstallationConstraintObserversForDownload];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -7780,7 +7780,7 @@ uint64_t __45__SUManagerClient_connectToServerIfNecessary__block_invoke_2(uint64
     v19 = v18;
     if (v17)
     {
-      [v18 client:self downloadDidFinish:v21 withInstallPolicy:v6];
+      [v18 client:self downloadDidFinish:finishCopy withInstallPolicy:policyCopy];
     }
 
     else
@@ -7793,7 +7793,7 @@ uint64_t __45__SUManagerClient_connectToServerIfNecessary__block_invoke_2(uint64
       }
 
       v19 = objc_loadWeakRetained(&self->_delegate);
-      [v19 client:self downloadDidFinish:v21];
+      [v19 client:self downloadDidFinish:finishCopy];
     }
   }
 
@@ -7801,11 +7801,11 @@ LABEL_7:
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v9, v10, v11, v12, v13, v14, v15, "[SUManagerClient downloadDidFinish:withInstallPolicy:]");
 }
 
-- (void)downloadWasInvalidatedForNewUpdatesAvailable:(id)a3
+- (void)downloadWasInvalidatedForNewUpdatesAvailable:(id)available
 {
-  v22 = a3;
-  v4 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v4);
+  availableCopy = available;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(SUManagerClient *)self _invalidateAllInstallationConstraintObserversForDownload];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -7818,7 +7818,7 @@ LABEL_7:
     if (v8)
     {
       v9 = objc_loadWeakRetained(&self->_delegate);
-      [v9 client:self downloadWasInvalidatedForNewUpdatesAvailable:v22];
+      [v9 client:self downloadWasInvalidatedForNewUpdatesAvailable:availableCopy];
 LABEL_7:
 
       goto LABEL_8;
@@ -7835,8 +7835,8 @@ LABEL_7:
     if (v20)
     {
       v9 = objc_loadWeakRetained(&self->_delegate);
-      v21 = [v22 preferredDescriptor];
-      [v9 client:self downloadWasInvalidatedForNewUpdateAvailable:v21];
+      preferredDescriptor = [availableCopy preferredDescriptor];
+      [v9 client:self downloadWasInvalidatedForNewUpdateAvailable:preferredDescriptor];
 
       goto LABEL_7;
     }
@@ -7846,11 +7846,11 @@ LABEL_8:
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v11, v12, v13, v14, v15, v16, v17, "[SUManagerClient downloadWasInvalidatedForNewUpdatesAvailable:]");
 }
 
-- (void)downloadWasInvalidatedForNewUpdateAvailable:(id)a3
+- (void)downloadWasInvalidatedForNewUpdateAvailable:(id)available
 {
-  v17 = a3;
-  v4 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v4);
+  availableCopy = available;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(SUManagerClient *)self _invalidateAllInstallationConstraintObserversForDownload];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -7863,7 +7863,7 @@ LABEL_8:
     if (v15)
     {
       v16 = objc_loadWeakRetained(&self->_delegate);
-      [v16 client:self downloadWasInvalidatedForNewUpdateAvailable:v17];
+      [v16 client:self downloadWasInvalidatedForNewUpdateAvailable:availableCopy];
     }
   }
 
@@ -7872,8 +7872,8 @@ LABEL_8:
 
 - (void)userWantsToDeferInstall
 {
-  v3 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -7892,12 +7892,12 @@ LABEL_8:
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v5, v6, v7, v8, v9, v10, v11, "[SUManagerClient userWantsToDeferInstall]");
 }
 
-- (void)installWantsToStart:(id)a3 completion:(id)a4
+- (void)installWantsToStart:(id)start completion:(id)completion
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v7);
+  startCopy = start;
+  completionCopy = completion;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -7909,21 +7909,21 @@ LABEL_8:
     if (v18)
     {
       v19 = objc_loadWeakRetained(&self->_delegate);
-      [v19 client:self installWantsToStart:v20 completion:v6];
+      [v19 client:self installWantsToStart:startCopy completion:completionCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v9, v10, v11, v12, v13, v14, v15, "[SUManagerClient installWantsToStart:completion:]");
 }
 
-- (void)installDidStart:(id)a3
+- (void)installDidStart:(id)start
 {
-  v17 = a3;
-  v4 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v4);
+  startCopy = start;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   self->_installing = 1;
-  [(SUManagerClient *)self setInstallDescriptor:v17];
+  [(SUManagerClient *)self setInstallDescriptor:startCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -7934,19 +7934,19 @@ LABEL_8:
     if (v15)
     {
       v16 = objc_loadWeakRetained(&self->_delegate);
-      [v16 client:self installDidStart:v17];
+      [v16 client:self installDidStart:startCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v6, v7, v8, v9, v10, v11, v12, "[SUManagerClient installDidStart:]");
 }
 
-- (void)installDidFail:(id)a3 withError:(id)a4
+- (void)installDidFail:(id)fail withError:(id)error
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v7);
+  failCopy = fail;
+  errorCopy = error;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   self->_installing = 0;
   [(SUManagerClient *)self setInstallDescriptor:0];
@@ -7960,18 +7960,18 @@ LABEL_8:
     if (v18)
     {
       v19 = objc_loadWeakRetained(&self->_delegate);
-      [v19 client:self installDidFail:v20 withError:v6];
+      [v19 client:self installDidFail:failCopy withError:errorCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v9, v10, v11, v12, v13, v14, v15, "[SUManagerClient installDidFail:withError:]");
 }
 
-- (void)installDidFinish:(id)a3
+- (void)installDidFinish:(id)finish
 {
-  v17 = a3;
-  v4 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v4);
+  finishCopy = finish;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   self->_installing = 0;
   [(SUManagerClient *)self setInstallDescriptor:0];
@@ -7985,18 +7985,18 @@ LABEL_8:
     if (v15)
     {
       v16 = objc_loadWeakRetained(&self->_delegate);
-      [v16 client:self installDidFinish:v17];
+      [v16 client:self installDidFinish:finishCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v6, v7, v8, v9, v10, v11, v12, "[SUManagerClient installDidFinish:]");
 }
 
-- (void)installPolicyDidChange:(id)a3
+- (void)installPolicyDidChange:(id)change
 {
-  v17 = a3;
-  v4 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v4);
+  changeCopy = change;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -8008,7 +8008,7 @@ LABEL_8:
     if (v15)
     {
       v16 = objc_loadWeakRetained(&self->_delegate);
-      [v16 client:self installPolicyDidChange:v17];
+      [v16 client:self installPolicyDidChange:changeCopy];
     }
   }
 
@@ -8017,8 +8017,8 @@ LABEL_8:
 
 - (void)deviceBootedAfterSplatUpdate
 {
-  v3 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -8037,9 +8037,9 @@ LABEL_8:
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v5, v6, v7, v8, v9, v10, v11, "[SUManagerClient deviceBootedAfterSplatUpdate]");
 }
 
-- (void)managedInstallationRequested:(id)a3
+- (void)managedInstallationRequested:(id)requested
 {
-  v23 = a3;
+  requestedCopy = requested;
   SULogInfo(@"%@ called %s", v4, v5, v6, v7, v8, v9, v10, self);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -8051,16 +8051,16 @@ LABEL_8:
     if (v21)
     {
       v22 = objc_loadWeakRetained(&self->_delegate);
-      [v22 client:self managedInstallationRequested:v23];
+      [v22 client:self managedInstallationRequested:requestedCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v12, v13, v14, v15, v16, v17, v18, "[SUManagerClient managedInstallationRequested:]");
 }
 
-- (void)handleUIForDDMDeclaration:(id)a3
+- (void)handleUIForDDMDeclaration:(id)declaration
 {
-  v16 = a3;
+  declarationCopy = declaration;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -8071,16 +8071,16 @@ LABEL_8:
     if (v14)
     {
       v15 = objc_loadWeakRetained(&self->_delegate);
-      [v15 client:self handleUIForDDMDeclaration:v16];
+      [v15 client:self handleUIForDDMDeclaration:declarationCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v5, v6, v7, v8, v9, v10, v11, "[SUManagerClient handleUIForDDMDeclaration:]");
 }
 
-- (void)handleUIForDDMGlobalSettings:(id)a3
+- (void)handleUIForDDMGlobalSettings:(id)settings
 {
-  v16 = a3;
+  settingsCopy = settings;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -8091,18 +8091,18 @@ LABEL_8:
     if (v14)
     {
       v15 = objc_loadWeakRetained(&self->_delegate);
-      [v15 client:self handleUIForDDMGlobalSettings:v16];
+      [v15 client:self handleUIForDDMGlobalSettings:settingsCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v5, v6, v7, v8, v9, v10, v11, "[SUManagerClient handleUIForDDMGlobalSettings:]");
 }
 
-- (void)rollbackReadyToStart:(id)a3 options:(id)a4 completion:(id)a5
+- (void)rollbackReadyToStart:(id)start options:(id)options completion:(id)completion
 {
-  v22 = a3;
-  v8 = a4;
-  v9 = a5;
+  startCopy = start;
+  optionsCopy = options;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -8113,16 +8113,16 @@ LABEL_8:
     if (v20)
     {
       v21 = objc_loadWeakRetained(&self->_delegate);
-      [v21 client:self rollbackReadyToStart:v22 options:v8 completion:v9];
+      [v21 client:self rollbackReadyToStart:startCopy options:optionsCopy completion:completionCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v11, v12, v13, v14, v15, v16, v17, "[SUManagerClient rollbackReadyToStart:options:completion:]");
 }
 
-- (void)rollbackDidStart:(id)a3
+- (void)rollbackDidStart:(id)start
 {
-  v16 = a3;
+  startCopy = start;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -8133,17 +8133,17 @@ LABEL_8:
     if (v14)
     {
       v15 = objc_loadWeakRetained(&self->_delegate);
-      [v15 client:self rollbackDidStart:v16];
+      [v15 client:self rollbackDidStart:startCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v5, v6, v7, v8, v9, v10, v11, "[SUManagerClient rollbackDidStart:]");
 }
 
-- (void)rollbackDidFail:(id)a3 withError:(id)a4
+- (void)rollbackDidFail:(id)fail withError:(id)error
 {
-  v19 = a3;
-  v6 = a4;
+  failCopy = fail;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -8154,16 +8154,16 @@ LABEL_8:
     if (v17)
     {
       v18 = objc_loadWeakRetained(&self->_delegate);
-      [v18 client:self rollbackDidFail:v19 withError:v6];
+      [v18 client:self rollbackDidFail:failCopy withError:errorCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v8, v9, v10, v11, v12, v13, v14, "[SUManagerClient rollbackDidFail:withError:]");
 }
 
-- (void)rollbackDidFinish:(id)a3
+- (void)rollbackDidFinish:(id)finish
 {
-  v16 = a3;
+  finishCopy = finish;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -8174,16 +8174,16 @@ LABEL_8:
     if (v14)
     {
       v15 = objc_loadWeakRetained(&self->_delegate);
-      [v15 client:self rollbackDidFinish:v16];
+      [v15 client:self rollbackDidFinish:finishCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v5, v6, v7, v8, v9, v10, v11, "[SUManagerClient rollbackDidFinish:]");
 }
 
-- (void)rollbackReadyForReboot:(id)a3
+- (void)rollbackReadyForReboot:(id)reboot
 {
-  v16 = a3;
+  rebootCopy = reboot;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -8194,18 +8194,18 @@ LABEL_8:
     if (v14)
     {
       v15 = objc_loadWeakRetained(&self->_delegate);
-      [v15 client:self scheduledRollbackReadyForReboot:v16];
+      [v15 client:self scheduledRollbackReadyForReboot:rebootCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v5, v6, v7, v8, v9, v10, v11, "[SUManagerClient rollbackReadyForReboot:]");
 }
 
-- (void)deviceBootedAfterRollback:(id)a3
+- (void)deviceBootedAfterRollback:(id)rollback
 {
-  v17 = a3;
-  v4 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v4);
+  rollbackCopy = rollback;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -8217,18 +8217,18 @@ LABEL_8:
     if (v15)
     {
       v16 = objc_loadWeakRetained(&self->_delegate);
-      [v16 deviceBootedAfterSplatOnlyRollback:self rollbackDescriptor:v17];
+      [v16 deviceBootedAfterSplatOnlyRollback:self rollbackDescriptor:rollbackCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v6, v7, v8, v9, v10, v11, v12, "[SUManagerClient deviceBootedAfterRollback:]");
 }
 
-- (void)rollbackSuggested:(id)a3 info:(id)a4
+- (void)rollbackSuggested:(id)suggested info:(id)info
 {
-  v26 = a3;
-  v6 = a4;
-  SULogInfo(@"rollbackSuggested with info: %@", v7, v8, v9, v10, v11, v12, v13, v6);
+  suggestedCopy = suggested;
+  infoCopy = info;
+  SULogInfo(@"rollbackSuggested with info: %@", v7, v8, v9, v10, v11, v12, v13, infoCopy);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -8239,18 +8239,18 @@ LABEL_8:
     if (v24)
     {
       v25 = objc_loadWeakRetained(&self->_delegate);
-      [v25 client:self rollbackSuggested:v26 info:v6];
+      [v25 client:self rollbackSuggested:suggestedCopy info:infoCopy];
     }
   }
 
   SULogInfo(@"%s: Client delegate %@ receive status - %d", v15, v16, v17, v18, v19, v20, v21, "[SUManagerClient rollbackSuggested:info:]");
 }
 
-- (void)autoInstallOperationWasCancelled:(id)a3
+- (void)autoInstallOperationWasCancelled:(id)cancelled
 {
   installOperationIDsToOperationHandler = self->_installOperationIDsToOperationHandler;
-  v5 = [a3 UUIDString];
-  v6 = [(NSMutableDictionary *)installOperationIDsToOperationHandler objectForKey:v5];
+  uUIDString = [cancelled UUIDString];
+  v6 = [(NSMutableDictionary *)installOperationIDsToOperationHandler objectForKey:uUIDString];
 
   if (v6)
   {
@@ -8259,25 +8259,25 @@ LABEL_8:
   }
 }
 
-- (void)autoInstallOperationDidExpire:(id)a3 withError:(id)a4
+- (void)autoInstallOperationDidExpire:(id)expire withError:(id)error
 {
-  v9 = a4;
+  errorCopy = error;
   installOperationIDsToOperationHandler = self->_installOperationIDsToOperationHandler;
-  v7 = [a3 UUIDString];
-  v8 = [(NSMutableDictionary *)installOperationIDsToOperationHandler objectForKey:v7];
+  uUIDString = [expire UUIDString];
+  v8 = [(NSMutableDictionary *)installOperationIDsToOperationHandler objectForKey:uUIDString];
 
   if (v8)
   {
-    [v8 _noteAutoInstallOperationDidExpireWithError:v9];
+    [v8 _noteAutoInstallOperationDidExpireWithError:errorCopy];
     [(SUManagerClient *)self _unregisterAutoInstallOperationClientHandler:v8];
   }
 }
 
-- (void)autoInstallOperationDidConsent:(id)a3
+- (void)autoInstallOperationDidConsent:(id)consent
 {
   installOperationIDsToOperationHandler = self->_installOperationIDsToOperationHandler;
-  v4 = [a3 UUIDString];
-  v6 = [(NSMutableDictionary *)installOperationIDsToOperationHandler objectForKey:v4];
+  uUIDString = [consent UUIDString];
+  v6 = [(NSMutableDictionary *)installOperationIDsToOperationHandler objectForKey:uUIDString];
 
   v5 = v6;
   if (v6)
@@ -8287,38 +8287,38 @@ LABEL_8:
   }
 }
 
-- (void)autoInstallOperationIsReadyToInstall:(id)a3 withResult:(id)a4
+- (void)autoInstallOperationIsReadyToInstall:(id)install withResult:(id)result
 {
-  v9 = a4;
+  resultCopy = result;
   installOperationIDsToOperationHandler = self->_installOperationIDsToOperationHandler;
-  v7 = [a3 UUIDString];
-  v8 = [(NSMutableDictionary *)installOperationIDsToOperationHandler objectForKey:v7];
+  uUIDString = [install UUIDString];
+  v8 = [(NSMutableDictionary *)installOperationIDsToOperationHandler objectForKey:uUIDString];
 
   if (v8)
   {
-    [v8 _noteAutoInstallOperationIsReadyToInstall:v9];
+    [v8 _noteAutoInstallOperationIsReadyToInstall:resultCopy];
   }
 }
 
-- (void)autoInstallOperationPasscodePolicyChanged:(id)a3 passcodePolicyType:(unint64_t)a4
+- (void)autoInstallOperationPasscodePolicyChanged:(id)changed passcodePolicyType:(unint64_t)type
 {
   installOperationIDsToOperationHandler = self->_installOperationIDsToOperationHandler;
-  v6 = [a3 UUIDString];
-  v8 = [(NSMutableDictionary *)installOperationIDsToOperationHandler objectForKey:v6];
+  uUIDString = [changed UUIDString];
+  v8 = [(NSMutableDictionary *)installOperationIDsToOperationHandler objectForKey:uUIDString];
 
   v7 = v8;
   if (v8)
   {
-    [v8 _noteAutoInstallOperationPasscodePolicyChanged:a4];
+    [v8 _noteAutoInstallOperationPasscodePolicyChanged:type];
     v7 = v8;
   }
 }
 
-- (void)inUserInteraction:(id)a3
+- (void)inUserInteraction:(id)interaction
 {
-  v17 = a3;
-  v4 = [(SUManagerClient *)self queue];
-  dispatch_assert_queue_V2(v4);
+  interactionCopy = interaction;
+  queue = [(SUManagerClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -8330,7 +8330,7 @@ LABEL_8:
     if (v15)
     {
       v16 = objc_loadWeakRetained(&self->_delegate);
-      [v16 client:self inUserInteraction:v17];
+      [v16 client:self inUserInteraction:interactionCopy];
     }
   }
 
@@ -8468,9 +8468,9 @@ void __39__SUManagerClient_rvGetCurrentNeRDInfo__block_invoke_2(uint64_t a1, voi
   }
 }
 
-- (void)rvTriggerNeRDUpdate:(id)a3
+- (void)rvTriggerNeRDUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   SULogInfo(@"%@ called %s", v5, v6, v7, v8, v9, v10, v11, self);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -8478,7 +8478,7 @@ void __39__SUManagerClient_rvGetCurrentNeRDInfo__block_invoke_2(uint64_t a1, voi
   v13[3] = &unk_279CABA10;
   v13[4] = self;
   v12 = [(SUManagerClient *)self _remoteInterfaceWithErrorHandler:v13];
-  [v12 rvTriggerNeRDUpdate:v4];
+  [v12 rvTriggerNeRDUpdate:updateCopy];
 }
 
 void __39__SUManagerClient_rvTriggerNeRDUpdate___block_invoke(uint64_t a1, void *a2)
@@ -8525,8 +8525,8 @@ LABEL_9:
 
 - (NSString)description
 {
-  v3 = [(SUManagerClient *)self _identifier];
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"SUManagerClient [%@:<%p>]", v3, self];
+  _identifier = [(SUManagerClient *)self _identifier];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"SUManagerClient [%@:<%p>]", _identifier, self];
 
   return v4;
 }

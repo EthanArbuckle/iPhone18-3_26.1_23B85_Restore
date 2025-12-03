@@ -1,15 +1,15 @@
 @interface SFTabGroupTitleViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SFTabGroupTitleViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFTabGroupTitleView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"SFTabGroupTitleView" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFTabGroupTitleView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"SFTabGroupTitleView" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
 }
 
 - (id)accessibilityLabel
@@ -18,13 +18,13 @@
   v3 = [(SFTabGroupTitleViewAccessibility *)self safeUIViewForKey:@"_titleLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 text];
+  text = [v4 text];
 
   objc_opt_class();
   v6 = [(SFTabGroupTitleViewAccessibility *)self safeUIViewForKey:@"_subtitleLabel"];
   v7 = __UIAccessibilityCastAsClass();
 
-  v8 = [v7 text];
+  text2 = [v7 text];
 
   v11 = accessibilityMobileSafariLocalizedString(@"tab.group");
   v9 = __UIAXStringForVariables();

@@ -2,26 +2,26 @@
 - (IOHIDObsoleteDeviceClass)init;
 - (IOHIDOutputTransactionInterface)allocOutputTransaction;
 - (IOHIDQueueInterface)allocQueue;
-- (int)copyMatchingElements:(__CFDictionary *)a3 element:(const __CFArray *)a4;
-- (int)queryInterface:(id)a3 outInterface:(void *)a4;
-- (int)setInterruptReportHandlerCallback:(void *)a3 reportBufferSize:(unsigned int)a4 callback:(void *)a5 callbackTarget:(void *)a6 callbackRefcon:(void *)a7;
-- (int)setRemovalCallback:(void *)a3 removalTarget:(void *)a4 removalRefcon:(void *)a5;
+- (int)copyMatchingElements:(__CFDictionary *)elements element:(const __CFArray *)element;
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface;
+- (int)setInterruptReportHandlerCallback:(void *)callback reportBufferSize:(unsigned int)size callback:(void *)a5 callbackTarget:(void *)target callbackRefcon:(void *)refcon;
+- (int)setRemovalCallback:(void *)callback removalTarget:(void *)target removalRefcon:(void *)refcon;
 - (void)dealloc;
 @end
 
 @implementation IOHIDObsoleteDeviceClass
 
-- (int)queryInterface:(id)a3 outInterface:(void *)a4
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface
 {
-  v5 = *&a3.var8;
-  v6 = *&a3.var0;
-  v8 = CFUUIDCreateFromUUIDBytes(0, a3);
+  v5 = *&interface.var8;
+  v6 = *&interface.var0;
+  v8 = CFUUIDCreateFromUUIDBytes(0, interface);
   v9 = CFUUIDGetConstantUUIDWithBytes(*MEMORY[0x29EDB8EF0], 0, 0, 0, 0, 0, 0, 0, 0, 0xC0u, 0, 0, 0, 0, 0, 0, 0x46u);
   if (CFEqual(v8, v9) || (v10 = CFUUIDGetConstantUUIDWithBytes(0, 0xC2u, 0x44u, 0xE8u, 0x58u, 0x10u, 0x9Cu, 0x11u, 0xD4u, 0x91u, 0xD4u, 0, 0x50u, 0xE4u, 0xC6u, 0x42u, 0x6Fu), CFEqual(v8, v10)))
   {
     v11 = 16;
 LABEL_4:
-    *a4 = self + v11;
+    *outInterface = self + v11;
     CFRetain(self);
     Interface_outInterface = 0;
     goto LABEL_5;
@@ -41,7 +41,7 @@ LABEL_4:
 LABEL_15:
     v19 = [v17 alloc];
     v21 = objc_msgSend_initWithDevice_(v19, v20, self);
-    Interface_outInterface = objc_msgSend_queryInterface_outInterface_(v21, v22, v6, v5, a4);
+    Interface_outInterface = objc_msgSend_queryInterface_outInterface_(v21, v22, v6, v5, outInterface);
 
     goto LABEL_5;
   }
@@ -63,11 +63,11 @@ LABEL_5:
   return Interface_outInterface;
 }
 
-- (int)setRemovalCallback:(void *)a3 removalTarget:(void *)a4 removalRefcon:(void *)a5
+- (int)setRemovalCallback:(void *)callback removalTarget:(void *)target removalRefcon:(void *)refcon
 {
-  self->_removalTarget = a4;
-  self->_removalRefcon = a5;
-  self->_removalCallback = a3;
+  self->_removalTarget = target;
+  self->_removalRefcon = refcon;
+  self->_removalCallback = callback;
   if (self->_notification)
   {
     return 0;
@@ -97,19 +97,19 @@ LABEL_5:
   return v6;
 }
 
-- (int)copyMatchingElements:(__CFDictionary *)a3 element:(const __CFArray *)a4
+- (int)copyMatchingElements:(__CFDictionary *)elements element:(const __CFArray *)element
 {
   v5.receiver = self;
   v5.super_class = IOHIDObsoleteDeviceClass;
-  return [(IOHIDDeviceClass *)&v5 copyMatchingElements:a3 elements:a4 options:1];
+  return [(IOHIDDeviceClass *)&v5 copyMatchingElements:elements elements:element options:1];
 }
 
-- (int)setInterruptReportHandlerCallback:(void *)a3 reportBufferSize:(unsigned int)a4 callback:(void *)a5 callbackTarget:(void *)a6 callbackRefcon:(void *)a7
+- (int)setInterruptReportHandlerCallback:(void *)callback reportBufferSize:(unsigned int)size callback:(void *)a5 callbackTarget:(void *)target callbackRefcon:(void *)refcon
 {
-  self->_reportCallbackTarget = a6;
-  self->_reportCallbackRefcon = a7;
+  self->_reportCallbackTarget = target;
+  self->_reportCallbackRefcon = refcon;
   self->_reportCallback = a5;
-  return MEMORY[0x2A1C70FE8](self, sel_setInputReportCallback_reportLength_callback_context_options_, a3);
+  return MEMORY[0x2A1C70FE8](self, sel_setInputReportCallback_reportLength_callback_context_options_, callback);
 }
 
 - (IOHIDObsoleteDeviceClass)init

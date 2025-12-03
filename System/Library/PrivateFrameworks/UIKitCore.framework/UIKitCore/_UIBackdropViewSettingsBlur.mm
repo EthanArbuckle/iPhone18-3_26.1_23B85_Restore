@@ -1,5 +1,5 @@
 @interface _UIBackdropViewSettingsBlur
-- (void)computeOutputSettingsUsingModel:(id)a3;
+- (void)computeOutputSettingsUsingModel:(id)model;
 - (void)setDefaultValues;
 @end
 
@@ -27,15 +27,15 @@
   [(_UIBackdropViewSettings *)self setLegibleColor:v3];
 }
 
-- (void)computeOutputSettingsUsingModel:(id)a3
+- (void)computeOutputSettingsUsingModel:(id)model
 {
   v9.receiver = self;
   v9.super_class = _UIBackdropViewSettingsBlur;
-  v4 = a3;
-  [(_UIBackdropViewSettings *)&v9 computeOutputSettingsUsingModel:v4];
-  v5 = [v4 colorSettings];
+  modelCopy = model;
+  [(_UIBackdropViewSettings *)&v9 computeOutputSettingsUsingModel:modelCopy];
+  colorSettings = [modelCopy colorSettings];
 
-  _UIBackdropViewComputeLegibleColorWithColorSettings(v5);
+  _UIBackdropViewComputeLegibleColorWithColorSettings(colorSettings);
   v7 = v6;
 
   v8 = [UIColor colorWithWhite:v7 alpha:1.0];

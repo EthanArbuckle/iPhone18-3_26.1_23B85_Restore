@@ -1,24 +1,24 @@
 @interface _HKRemoteChartDataEntry
-- (_HKRemoteChartDataEntry)initWithSeriesData:(id)a3 dataSourceForMapping:(id)a4 seriesDataSourceContext:(id)a5;
+- (_HKRemoteChartDataEntry)initWithSeriesData:(id)data dataSourceForMapping:(id)mapping seriesDataSourceContext:(id)context;
 - (id)seriesDataWithMappingApplied;
 @end
 
 @implementation _HKRemoteChartDataEntry
 
-- (_HKRemoteChartDataEntry)initWithSeriesData:(id)a3 dataSourceForMapping:(id)a4 seriesDataSourceContext:(id)a5
+- (_HKRemoteChartDataEntry)initWithSeriesData:(id)data dataSourceForMapping:(id)mapping seriesDataSourceContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  mappingCopy = mapping;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = _HKRemoteChartDataEntry;
   v12 = [(_HKRemoteChartDataEntry *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_seriesData, a3);
-    objc_storeStrong(&v13->_dataSourceForMapping, a4);
-    objc_storeStrong(&v13->_seriesDataSourceContext, a5);
+    objc_storeStrong(&v12->_seriesData, data);
+    objc_storeStrong(&v13->_dataSourceForMapping, mapping);
+    objc_storeStrong(&v13->_seriesDataSourceContext, context);
   }
 
   return v13;
@@ -26,31 +26,31 @@
 
 - (id)seriesDataWithMappingApplied
 {
-  v3 = [(_HKRemoteChartDataEntry *)self dataSourceForMapping];
+  dataSourceForMapping = [(_HKRemoteChartDataEntry *)self dataSourceForMapping];
 
-  if (v3)
+  if (dataSourceForMapping)
   {
-    v4 = [(_HKRemoteChartDataEntry *)self dataSourceForMapping];
-    v5 = [(_HKRemoteChartDataEntry *)self seriesDataSourceContext];
-    v6 = [v4 mappingFunctionForContext:v5];
+    dataSourceForMapping2 = [(_HKRemoteChartDataEntry *)self dataSourceForMapping];
+    seriesDataSourceContext = [(_HKRemoteChartDataEntry *)self seriesDataSourceContext];
+    v6 = [dataSourceForMapping2 mappingFunctionForContext:seriesDataSourceContext];
 
     [(_HKRemoteChartDataEntry *)self seriesData];
     if (v6)
       v7 = {;
-      v8 = (v6)[2](v6, v7);
+      seriesData = (v6)[2](v6, v7);
     }
 
     else
-      v8 = {;
+      seriesData = {;
     }
   }
 
   else
   {
-    v8 = [(_HKRemoteChartDataEntry *)self seriesData];
+    seriesData = [(_HKRemoteChartDataEntry *)self seriesData];
   }
 
-  return v8;
+  return seriesData;
 }
 
 @end

@@ -1,133 +1,133 @@
 @interface NAUAnalyticsEnvelopeTracker
-+ (void)_registerContentTypes:(id)a3 withEventName:(id)a4;
-+ (void)_registerEnvelopes:(id)a3 withEventName:(id)a4;
-+ (void)registerEnvelopeContentTypesAsDropped:(id)a3 forReason:(unint64_t)a4 withError:(id)a5;
-+ (void)registerEnvelopeContentTypesAsPreparedForUpload:(id)a3;
-+ (void)registerEnvelopeContentTypesAsRetainedForUploadRetry:(id)a3;
-+ (void)registerEnvelopeContentTypesAsUploaded:(id)a3;
-+ (void)registerEnvelopesAsCreated:(id)a3;
-+ (void)registerEnvelopesAsReceivedByUploader:(id)a3;
-+ (void)registerEnvelopesAsSubmittedToUploader:(id)a3;
++ (void)_registerContentTypes:(id)types withEventName:(id)name;
++ (void)_registerEnvelopes:(id)envelopes withEventName:(id)name;
++ (void)registerEnvelopeContentTypesAsDropped:(id)dropped forReason:(unint64_t)reason withError:(id)error;
++ (void)registerEnvelopeContentTypesAsPreparedForUpload:(id)upload;
++ (void)registerEnvelopeContentTypesAsRetainedForUploadRetry:(id)retry;
++ (void)registerEnvelopeContentTypesAsUploaded:(id)uploaded;
++ (void)registerEnvelopesAsCreated:(id)created;
++ (void)registerEnvelopesAsReceivedByUploader:(id)uploader;
++ (void)registerEnvelopesAsSubmittedToUploader:(id)uploader;
 @end
 
 @implementation NAUAnalyticsEnvelopeTracker
 
-+ (void)registerEnvelopesAsCreated:(id)a3
++ (void)registerEnvelopesAsCreated:(id)created
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  createdCopy = created;
+  if (!createdCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[NAUAnalyticsEnvelopeTracker registerEnvelopesAsCreated:];
   }
 
-  if ([v4 fc_containsObjectPassingTest:&__block_literal_global_4] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if ([createdCopy fc_containsObjectPassingTest:&__block_literal_global_4] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[NAUAnalyticsEnvelopeTracker registerEnvelopesAsCreated:];
   }
 
-  [a1 _registerEnvelopes:v4 withEventName:@"created"];
+  [self _registerEnvelopes:createdCopy withEventName:@"created"];
 }
 
-+ (void)registerEnvelopesAsSubmittedToUploader:(id)a3
++ (void)registerEnvelopesAsSubmittedToUploader:(id)uploader
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  uploaderCopy = uploader;
+  if (!uploaderCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[NAUAnalyticsEnvelopeTracker registerEnvelopesAsSubmittedToUploader:];
   }
 
-  if ([v4 fc_containsObjectPassingTest:&__block_literal_global_21] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if ([uploaderCopy fc_containsObjectPassingTest:&__block_literal_global_21] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[NAUAnalyticsEnvelopeTracker registerEnvelopesAsSubmittedToUploader:];
   }
 
-  [a1 _registerEnvelopes:v4 withEventName:@"submitted"];
+  [self _registerEnvelopes:uploaderCopy withEventName:@"submitted"];
 }
 
-+ (void)registerEnvelopesAsReceivedByUploader:(id)a3
++ (void)registerEnvelopesAsReceivedByUploader:(id)uploader
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  uploaderCopy = uploader;
+  if (!uploaderCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[NAUAnalyticsEnvelopeTracker registerEnvelopesAsReceivedByUploader:];
   }
 
-  if ([v4 fc_containsObjectPassingTest:&__block_literal_global_26] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if ([uploaderCopy fc_containsObjectPassingTest:&__block_literal_global_26] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[NAUAnalyticsEnvelopeTracker registerEnvelopesAsReceivedByUploader:];
   }
 
-  [a1 _registerEnvelopes:v4 withEventName:@"received"];
+  [self _registerEnvelopes:uploaderCopy withEventName:@"received"];
 }
 
-+ (void)registerEnvelopeContentTypesAsPreparedForUpload:(id)a3
++ (void)registerEnvelopeContentTypesAsPreparedForUpload:(id)upload
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  uploadCopy = upload;
+  if (!uploadCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[NAUAnalyticsEnvelopeTracker registerEnvelopeContentTypesAsPreparedForUpload:];
   }
 
-  if ([v4 fc_containsObjectPassingTest:&__block_literal_global_33] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if ([uploadCopy fc_containsObjectPassingTest:&__block_literal_global_33] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[NAUAnalyticsEnvelopeTracker registerEnvelopeContentTypesAsPreparedForUpload:];
   }
 
-  [a1 _registerContentTypes:v4 withEventName:@"prepared"];
+  [self _registerContentTypes:uploadCopy withEventName:@"prepared"];
 }
 
-+ (void)registerEnvelopeContentTypesAsRetainedForUploadRetry:(id)a3
++ (void)registerEnvelopeContentTypesAsRetainedForUploadRetry:(id)retry
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  retryCopy = retry;
+  if (!retryCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[NAUAnalyticsEnvelopeTracker registerEnvelopeContentTypesAsRetainedForUploadRetry:];
   }
 
-  if ([v4 fc_containsObjectPassingTest:&__block_literal_global_39] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if ([retryCopy fc_containsObjectPassingTest:&__block_literal_global_39] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[NAUAnalyticsEnvelopeTracker registerEnvelopeContentTypesAsRetainedForUploadRetry:];
   }
 
-  [a1 _registerContentTypes:v4 withEventName:@"retained"];
+  [self _registerContentTypes:retryCopy withEventName:@"retained"];
 }
 
-+ (void)registerEnvelopeContentTypesAsUploaded:(id)a3
++ (void)registerEnvelopeContentTypesAsUploaded:(id)uploaded
 {
   v32[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  uploadedCopy = uploaded;
+  if (!uploadedCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[NAUAnalyticsEnvelopeTracker registerEnvelopeContentTypesAsUploaded:];
   }
 
-  v5 = [v4 allKeys];
-  v6 = [v5 fc_containsObjectPassingTest:&__block_literal_global_45];
+  allKeys = [uploadedCopy allKeys];
+  v6 = [allKeys fc_containsObjectPassingTest:&__block_literal_global_45];
 
   if (v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[NAUAnalyticsEnvelopeTracker registerEnvelopeContentTypesAsUploaded:];
   }
 
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [MEMORY[0x277CBEBB0] localTimeZone];
-  v25 = [v8 componentsInTimeZone:v9 fromDate:v7];
+  date = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  v25 = [currentCalendar componentsInTimeZone:localTimeZone fromDate:date];
 
-  v24 = [v25 hour];
+  hour = [v25 hour];
   v10 = [MEMORY[0x277D41DA0] propertyWithName:@"localHour" range:{0, 24}];
   v11 = objc_alloc(MEMORY[0x277D41DB8]);
-  v12 = [a1 _contentTypeProperty];
-  v32[0] = v12;
-  v13 = [a1 _daysSinceSubmissionDateProperty];
-  v32[1] = v13;
+  _contentTypeProperty = [self _contentTypeProperty];
+  v32[0] = _contentTypeProperty;
+  _daysSinceSubmissionDateProperty = [self _daysSinceSubmissionDateProperty];
+  v32[1] = _daysSinceSubmissionDateProperty;
   v32[2] = v10;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:3];
   v15 = [v11 initWithFeatureId:@"newsenvelopetracker" event:@"uploaded" registerProperties:v14];
 
   v16 = objc_alloc(MEMORY[0x277D41D98]);
-  v17 = [a1 _contentTypeProperty];
-  v31 = v17;
+  _contentTypeProperty2 = [self _contentTypeProperty];
+  v31 = _contentTypeProperty2;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
   v19 = [v16 initWithFeatureId:@"newsenvelopetracker" event:@"uploaded_interval" registerProperties:v18];
 
@@ -136,13 +136,13 @@
   v26[2] = __70__NAUAnalyticsEnvelopeTracker_registerEnvelopeContentTypesAsUploaded___block_invoke_62;
   v26[3] = &unk_27997ABD8;
   v27 = v15;
-  v28 = v7;
+  v28 = date;
   v29 = v19;
-  v30 = v24;
+  v30 = hour;
   v20 = v19;
-  v21 = v7;
+  v21 = date;
   v22 = v15;
-  [v4 enumerateKeysAndObjectsUsingBlock:v26];
+  [uploadedCopy enumerateKeysAndObjectsUsingBlock:v26];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -188,20 +188,20 @@ void __70__NAUAnalyticsEnvelopeTracker_registerEnvelopeContentTypesAsUploaded___
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)registerEnvelopeContentTypesAsDropped:(id)a3 forReason:(unint64_t)a4 withError:(id)a5
++ (void)registerEnvelopeContentTypesAsDropped:(id)dropped forReason:(unint64_t)reason withError:(id)error
 {
   v59[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v44 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  droppedCopy = dropped;
+  errorCopy = error;
+  if (!droppedCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[NAUAnalyticsEnvelopeTracker registerEnvelopeContentTypesAsDropped:forReason:withError:];
   }
 
-  v9 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v10 = objc_alloc(MEMORY[0x277D41DB8]);
-  v11 = [a1 _contentTypeProperty];
-  v59[0] = v11;
+  _contentTypeProperty = [self _contentTypeProperty];
+  v59[0] = _contentTypeProperty;
   v12 = MEMORY[0x277D41DA0];
   v57[0] = &unk_286D79210;
   v57[1] = &unk_286D79228;
@@ -214,8 +214,8 @@ void __70__NAUAnalyticsEnvelopeTracker_registerEnvelopeContentTypesAsUploaded___
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v58 forKeys:v57 count:4];
   v14 = [v12 propertyWithName:@"reason" enumMapping:v13];
   v59[1] = v14;
-  v15 = [a1 _daysSinceSubmissionDateProperty];
-  v59[2] = v15;
+  _daysSinceSubmissionDateProperty = [self _daysSinceSubmissionDateProperty];
+  v59[2] = _daysSinceSubmissionDateProperty;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:3];
   v17 = [v10 initWithFeatureId:@"newsenvelopetracker" event:@"dropped" registerProperties:v16];
 
@@ -223,31 +223,31 @@ void __70__NAUAnalyticsEnvelopeTracker_registerEnvelopeContentTypesAsUploaded___
   v50[1] = 3221225472;
   v50[2] = __89__NAUAnalyticsEnvelopeTracker_registerEnvelopeContentTypesAsDropped_forReason_withError___block_invoke;
   v50[3] = &unk_27997AC28;
-  v18 = v9;
+  v18 = date;
   v51 = v18;
   v19 = v17;
   v52 = v19;
-  v53 = a4;
-  [v8 enumerateKeysAndObjectsUsingBlock:v50];
-  v20 = a4 == 2;
-  v21 = v44;
-  if (v20 && v44)
+  reasonCopy = reason;
+  [droppedCopy enumerateKeysAndObjectsUsingBlock:v50];
+  v20 = reason == 2;
+  v21 = errorCopy;
+  if (v20 && errorCopy)
   {
     v22 = *MEMORY[0x277D309B8];
     v56[0] = *MEMORY[0x277CCA738];
     v56[1] = v22;
     v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:2];
-    v23 = [v44 domain];
-    v42 = v23;
-    v24 = [v43 containsObject:v23];
+    domain = [errorCopy domain];
+    v42 = domain;
+    v24 = [v43 containsObject:domain];
     v25 = @"unknown";
     if (v24)
     {
-      v25 = v23;
+      v25 = domain;
     }
 
     v41 = v25;
-    v26 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v44, "code")}];
+    v26 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     v40 = [&unk_286D79378 containsObject:v26];
     v27 = [MEMORY[0x277D41DA0] freeValuedPropertyWithName:@"errorDomain"];
     v28 = MEMORY[0x277D41DA0];
@@ -258,8 +258,8 @@ void __70__NAUAnalyticsEnvelopeTracker_registerEnvelopeContentTypesAsUploaded___
 
     v31 = [MEMORY[0x277D41DA0] freeValuedPropertyWithName:@"errorCode"];
     v32 = objc_alloc(MEMORY[0x277D41DB8]);
-    v33 = [a1 _contentTypeProperty];
-    v54[0] = v33;
+    _contentTypeProperty2 = [self _contentTypeProperty];
+    v54[0] = _contentTypeProperty2;
     v54[1] = v27;
     v54[2] = v30;
     v54[3] = v31;
@@ -277,9 +277,9 @@ void __70__NAUAnalyticsEnvelopeTracker_registerEnvelopeContentTypesAsUploaded___
     v36 = v26;
     v37 = v41;
     v38 = v35;
-    [v8 enumerateKeysAndObjectsUsingBlock:v45];
+    [droppedCopy enumerateKeysAndObjectsUsingBlock:v45];
 
-    v21 = v44;
+    v21 = errorCopy;
   }
 
   v39 = *MEMORY[0x277D85DE8];
@@ -345,20 +345,20 @@ void __89__NAUAnalyticsEnvelopeTracker_registerEnvelopeContentTypesAsDropped_for
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_registerEnvelopes:(id)a3 withEventName:(id)a4
++ (void)_registerEnvelopes:(id)envelopes withEventName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  envelopesCopy = envelopes;
+  nameCopy = name;
+  if (!envelopesCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[NAUAnalyticsEnvelopeTracker _registerEnvelopes:withEventName:];
-    if (v7)
+    if (nameCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (nameCopy)
   {
     goto LABEL_6;
   }
@@ -369,8 +369,8 @@ void __89__NAUAnalyticsEnvelopeTracker_registerEnvelopeContentTypesAsDropped_for
   }
 
 LABEL_6:
-  v8 = [v6 fc_arrayByTransformingWithBlock:&__block_literal_global_139];
-  [a1 _registerContentTypes:v8 withEventName:v7];
+  v8 = [envelopesCopy fc_arrayByTransformingWithBlock:&__block_literal_global_139];
+  [self _registerContentTypes:v8 withEventName:nameCopy];
 }
 
 uint64_t __64__NAUAnalyticsEnvelopeTracker__registerEnvelopes_withEventName___block_invoke(uint64_t a1, void *a2)
@@ -381,21 +381,21 @@ uint64_t __64__NAUAnalyticsEnvelopeTracker__registerEnvelopes_withEventName___bl
   return [v2 numberWithInt:v3];
 }
 
-+ (void)_registerContentTypes:(id)a3 withEventName:(id)a4
++ (void)_registerContentTypes:(id)types withEventName:(id)name
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  typesCopy = types;
+  nameCopy = name;
+  if (!typesCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     +[NAUAnalyticsEnvelopeTracker _registerContentTypes:withEventName:];
-    if (v7)
+    if (nameCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (nameCopy)
   {
     goto LABEL_6;
   }
@@ -407,16 +407,16 @@ uint64_t __64__NAUAnalyticsEnvelopeTracker__registerEnvelopes_withEventName___bl
 
 LABEL_6:
   v8 = objc_alloc(MEMORY[0x277D41DB8]);
-  v9 = [a1 _contentTypeProperty];
-  v27[0] = v9;
+  _contentTypeProperty = [self _contentTypeProperty];
+  v27[0] = _contentTypeProperty;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
-  v11 = [v8 initWithFeatureId:@"newsenvelopetracker" event:v7 registerProperties:v10];
+  v11 = [v8 initWithFeatureId:@"newsenvelopetracker" event:nameCopy registerProperties:v10];
 
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = [objc_alloc(MEMORY[0x277CCA940]) initWithArray:v6];
+  v12 = [objc_alloc(MEMORY[0x277CCA940]) initWithArray:typesCopy];
   v13 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v13)
   {

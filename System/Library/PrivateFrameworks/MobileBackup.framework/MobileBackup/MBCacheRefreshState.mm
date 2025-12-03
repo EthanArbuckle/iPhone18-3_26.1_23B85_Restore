@@ -1,16 +1,16 @@
 @interface MBCacheRefreshState
-+ (BOOL)saveRefreshState:(id)a3 toCache:(id)a4 error:(id *)a5;
-+ (id)loadFromCache:(id)a3;
-- (BOOL)hasRefreshedSnapshotID:(id)a3;
++ (BOOL)saveRefreshState:(id)state toCache:(id)cache error:(id *)error;
++ (id)loadFromCache:(id)cache;
+- (BOOL)hasRefreshedSnapshotID:(id)d;
 - (BOOL)isExpired;
 - (MBCacheRefreshState)init;
-- (MBCacheRefreshState)initWithCoder:(id)a3;
+- (MBCacheRefreshState)initWithCoder:(id)coder;
 - (id)description;
-- (id)queryCursorForSnapshotID:(id)a3;
-- (void)addQueryCursor:(id)a3 forSnapshotID:(id)a4;
-- (void)addRefreshedSnapshotID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)forgetSnapshotID:(id)a3;
+- (id)queryCursorForSnapshotID:(id)d;
+- (void)addQueryCursor:(id)cursor forSnapshotID:(id)d;
+- (void)addRefreshedSnapshotID:(id)d;
+- (void)encodeWithCoder:(id)coder;
+- (void)forgetSnapshotID:(id)d;
 @end
 
 @implementation MBCacheRefreshState
@@ -38,9 +38,9 @@
   return v2;
 }
 
-- (MBCacheRefreshState)initWithCoder:(id)a3
+- (MBCacheRefreshState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = MBCacheRefreshState;
   v5 = [(MBCacheRefreshState *)&v17 init];
@@ -51,7 +51,7 @@
     v19[2] = objc_opt_class();
     v6 = [NSArray arrayWithObjects:v19 count:3];
     v7 = [NSSet setWithArray:v6];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"queryCursorsBySnapshotIDs"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"queryCursorsBySnapshotIDs"];
     queryCursorsBySnapshotIDs = v5->_queryCursorsBySnapshotIDs;
     v5->_queryCursorsBySnapshotIDs = v8;
 
@@ -59,11 +59,11 @@
     v18[1] = objc_opt_class();
     v10 = [NSArray arrayWithObjects:v18 count:2];
     v11 = [NSSet setWithArray:v10];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"refreshedSnapshotIDs"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"refreshedSnapshotIDs"];
     refreshedSnapshotIDs = v5->_refreshedSnapshotIDs;
     v5->_refreshedSnapshotIDs = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expiryDate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expiryDate"];
     expiryDate = v5->_expiryDate;
     v5->_expiryDate = v14;
   }
@@ -71,13 +71,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   queryCursorsBySnapshotIDs = self->_queryCursorsBySnapshotIDs;
-  v5 = a3;
-  [v5 encodeObject:queryCursorsBySnapshotIDs forKey:@"queryCursorsBySnapshotIDs"];
-  [v5 encodeObject:self->_refreshedSnapshotIDs forKey:@"refreshedSnapshotIDs"];
-  [v5 encodeObject:self->_expiryDate forKey:@"expiryDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:queryCursorsBySnapshotIDs forKey:@"queryCursorsBySnapshotIDs"];
+  [coderCopy encodeObject:self->_refreshedSnapshotIDs forKey:@"refreshedSnapshotIDs"];
+  [coderCopy encodeObject:self->_expiryDate forKey:@"expiryDate"];
 }
 
 - (BOOL)isExpired
@@ -89,107 +89,107 @@
   return self;
 }
 
-- (void)forgetSnapshotID:(id)a3
+- (void)forgetSnapshotID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
     __assert_rtn("[MBCacheRefreshState forgetSnapshotID:]", "MBCacheRefreshState.m", 55, "snapshotID");
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableDictionary *)v4->_queryCursorsBySnapshotIDs removeObjectForKey:v5];
-  [(NSMutableSet *)v4->_refreshedSnapshotIDs removeObject:v5];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_queryCursorsBySnapshotIDs removeObjectForKey:dCopy];
+  [(NSMutableSet *)selfCopy->_refreshedSnapshotIDs removeObject:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addRefreshedSnapshotID:(id)a3
+- (void)addRefreshedSnapshotID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
     __assert_rtn("[MBCacheRefreshState addRefreshedSnapshotID:]", "MBCacheRefreshState.m", 63, "snapshotID");
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableDictionary *)v4->_queryCursorsBySnapshotIDs removeObjectForKey:v5];
-  [(NSMutableSet *)v4->_refreshedSnapshotIDs addObject:v5];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_queryCursorsBySnapshotIDs removeObjectForKey:dCopy];
+  [(NSMutableSet *)selfCopy->_refreshedSnapshotIDs addObject:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)hasRefreshedSnapshotID:(id)a3
+- (BOOL)hasRefreshedSnapshotID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     __assert_rtn("[MBCacheRefreshState hasRefreshedSnapshotID:]", "MBCacheRefreshState.m", 71, "snapshotID");
   }
 
-  v5 = v4;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(NSMutableSet *)v6->_refreshedSnapshotIDs containsObject:v5];
-  objc_sync_exit(v6);
+  v5 = dCopy;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [(NSMutableSet *)selfCopy->_refreshedSnapshotIDs containsObject:v5];
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)addQueryCursor:(id)a3 forSnapshotID:(id)a4
+- (void)addQueryCursor:(id)cursor forSnapshotID:(id)d
 {
-  v8 = a3;
-  v6 = a4;
-  if (!v8)
+  cursorCopy = cursor;
+  dCopy = d;
+  if (!cursorCopy)
   {
     __assert_rtn("[MBCacheRefreshState addQueryCursor:forSnapshotID:]", "MBCacheRefreshState.m", 78, "queryCursor");
   }
 
-  if (!v6)
+  if (!dCopy)
   {
     __assert_rtn("[MBCacheRefreshState addQueryCursor:forSnapshotID:]", "MBCacheRefreshState.m", 79, "snapshotID");
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  [(NSMutableSet *)v7->_refreshedSnapshotIDs removeObject:v6];
-  [(NSMutableDictionary *)v7->_queryCursorsBySnapshotIDs setObject:v8 forKeyedSubscript:v6];
-  objc_sync_exit(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_refreshedSnapshotIDs removeObject:dCopy];
+  [(NSMutableDictionary *)selfCopy->_queryCursorsBySnapshotIDs setObject:cursorCopy forKeyedSubscript:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)queryCursorForSnapshotID:(id)a3
+- (id)queryCursorForSnapshotID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     __assert_rtn("[MBCacheRefreshState queryCursorForSnapshotID:]", "MBCacheRefreshState.m", 87, "snapshotID");
   }
 
-  v5 = v4;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(NSMutableDictionary *)v6->_queryCursorsBySnapshotIDs objectForKeyedSubscript:v5];
-  objc_sync_exit(v6);
+  v5 = dCopy;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [(NSMutableDictionary *)selfCopy->_queryCursorsBySnapshotIDs objectForKeyedSubscript:v5];
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (id)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = objc_opt_class();
-  refreshedSnapshotIDs = v2->_refreshedSnapshotIDs;
-  v5 = [NSString stringWithFormat:@"<%@: %p expiryDate=%@, refreshedSnapshotIDs=%@, queryCursors=%@", v3, v2, v2->_expiryDate, refreshedSnapshotIDs, v2->_queryCursorsBySnapshotIDs];;
-  objc_sync_exit(v2);
+  refreshedSnapshotIDs = selfCopy->_refreshedSnapshotIDs;
+  v5 = [NSString stringWithFormat:@"<%@: %p expiryDate=%@, refreshedSnapshotIDs=%@, queryCursors=%@", v3, selfCopy, selfCopy->_expiryDate, refreshedSnapshotIDs, selfCopy->_queryCursorsBySnapshotIDs];;
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-+ (id)loadFromCache:(id)a3
++ (id)loadFromCache:(id)cache
 {
   v17 = 0;
-  v3 = [a3 propertyForKey:@"CacheRefreshState" error:&v17];
+  v3 = [cache propertyForKey:@"CacheRefreshState" error:&v17];
   v4 = v17;
   if (!v4)
   {
@@ -205,10 +205,10 @@
     v10 = v16;
     if (v9)
     {
-      v11 = [v9 isExpired];
+      isExpired = [v9 isExpired];
       v12 = MBGetDefaultLog();
       v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-      if (!v11)
+      if (!isExpired)
       {
         if (v13)
         {
@@ -267,34 +267,34 @@ LABEL_19:
   return v7;
 }
 
-+ (BOOL)saveRefreshState:(id)a3 toCache:(id)a4 error:(id *)a5
++ (BOOL)saveRefreshState:(id)state toCache:(id)cache error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  cacheCopy = cache;
   v9 = MBGetDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v23 = v7;
+    v23 = stateCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Saving cache refresh state: %@", buf, 0xCu);
     _MBLog();
   }
 
-  if (v7)
+  if (stateCopy)
   {
     v21 = 0;
-    v10 = [NSKeyedArchiver archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v21];
+    v10 = [NSKeyedArchiver archivedDataWithRootObject:stateCopy requiringSecureCoding:1 error:&v21];
     v11 = v21;
     if (v10)
     {
       v12 = [v10 base64EncodedStringWithOptions:0];
-      v13 = [v8 setProperty:v12 forKey:@"CacheRefreshState"];
+      v13 = [cacheCopy setProperty:v12 forKey:@"CacheRefreshState"];
 
       v14 = v13 == 0;
-      if (a5 && v13)
+      if (error && v13)
       {
         v15 = v13;
-        *a5 = v13;
+        *error = v13;
       }
     }
 
@@ -304,18 +304,18 @@ LABEL_19:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v23 = v7;
+        v23 = stateCopy;
         v24 = 2112;
         v25 = v11;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Failed to serialize %@: %@", buf, 0x16u);
         _MBLog();
       }
 
-      if (a5)
+      if (error)
       {
         v19 = v11;
         v14 = 0;
-        *a5 = v11;
+        *error = v11;
       }
 
       else
@@ -329,12 +329,12 @@ LABEL_19:
 
   else
   {
-    v16 = [v8 setProperty:0 forKey:@"CacheRefreshState"];
+    v16 = [cacheCopy setProperty:0 forKey:@"CacheRefreshState"];
     v13 = v16;
-    if (a5)
+    if (error)
     {
       v17 = v16;
-      *a5 = v13;
+      *error = v13;
     }
 
     v14 = v13 == 0;

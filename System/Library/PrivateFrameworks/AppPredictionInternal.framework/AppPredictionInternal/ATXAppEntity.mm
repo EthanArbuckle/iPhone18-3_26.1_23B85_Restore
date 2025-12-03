@@ -1,6 +1,6 @@
 @interface ATXAppEntity
 - (ATXAppEntity)init;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
 - (NSString)description;
 - (int64_t)hash;
@@ -8,11 +8,11 @@
 
 @implementation ATXAppEntity
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_226836878();
     swift_unknownObjectRelease();
@@ -21,7 +21,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_2267BCCF8(v8);
@@ -35,13 +35,13 @@
   sub_226836C58();
   v3 = *(&self->super.isa + OBJC_IVAR___ATXAppEntity_identifier);
   v4 = *&self->bundleID[OBJC_IVAR___ATXAppEntity_identifier];
-  v5 = self;
+  selfCopy = self;
   sub_226836498();
-  v6 = *(&v5->super.isa + OBJC_IVAR___ATXAppEntity_bundleID);
-  v7 = *&v5->bundleID[OBJC_IVAR___ATXAppEntity_bundleID];
+  v6 = *(&selfCopy->super.isa + OBJC_IVAR___ATXAppEntity_bundleID);
+  v7 = *&selfCopy->bundleID[OBJC_IVAR___ATXAppEntity_bundleID];
   sub_226836498();
-  v8 = *(&v5->super.isa + OBJC_IVAR___ATXAppEntity_type);
-  v9 = *&v5->bundleID[OBJC_IVAR___ATXAppEntity_type];
+  v8 = *(&selfCopy->super.isa + OBJC_IVAR___ATXAppEntity_type);
+  v9 = *&selfCopy->bundleID[OBJC_IVAR___ATXAppEntity_type];
   sub_226836498();
   v10 = sub_226836C38();
 
@@ -57,7 +57,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_2267BD088();
 
   v3 = sub_2268363F8();

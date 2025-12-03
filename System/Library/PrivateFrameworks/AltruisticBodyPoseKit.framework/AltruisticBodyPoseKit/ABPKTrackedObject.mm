@@ -1,30 +1,30 @@
 @interface ABPKTrackedObject
-- (ABPKTrackedObject)initWithObjectID:(unint64_t)a3 category:(id)a4 boundingBox:(CGRect)a5 confidence:(unint64_t)a6;
+- (ABPKTrackedObject)initWithObjectID:(unint64_t)d category:(id)category boundingBox:(CGRect)box confidence:(unint64_t)confidence;
 - (CGRect)boundingBox;
 @end
 
 @implementation ABPKTrackedObject
 
-- (ABPKTrackedObject)initWithObjectID:(unint64_t)a3 category:(id)a4 boundingBox:(CGRect)a5 confidence:(unint64_t)a6
+- (ABPKTrackedObject)initWithObjectID:(unint64_t)d category:(id)category boundingBox:(CGRect)box confidence:(unint64_t)confidence
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a4;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  categoryCopy = category;
   v18.receiver = self;
   v18.super_class = ABPKTrackedObject;
   v15 = [(ABPKTrackedObject *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    v15->_objectID = a3;
-    objc_storeStrong(&v15->_category, a4);
+    v15->_objectID = d;
+    objc_storeStrong(&v15->_category, category);
     v16->_boundingBox.origin.x = x;
     v16->_boundingBox.origin.y = y;
     v16->_boundingBox.size.width = width;
     v16->_boundingBox.size.height = height;
-    v16->_confidence = a6;
+    v16->_confidence = confidence;
   }
 
   return v16;

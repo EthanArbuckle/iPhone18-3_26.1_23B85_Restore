@@ -1,44 +1,44 @@
 @interface PTDomainInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)uniqueIdentifier;
-- (PTDomainInfo)initWithCoder:(id)a3;
-- (PTDomainInfo)initWithDomain:(id)a3;
+- (PTDomainInfo)initWithCoder:(id)coder;
+- (PTDomainInfo)initWithDomain:(id)domain;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)loadSettingsClassBundleIfNecessary;
 @end
 
 @implementation PTDomainInfo
 
-- (PTDomainInfo)initWithDomain:(id)a3
+- (PTDomainInfo)initWithDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v19.receiver = self;
   v19.super_class = PTDomainInfo;
   v5 = [(PTDomainInfo *)&v19 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v6 domainGroupName];
+    domainGroupName = [v6 domainGroupName];
     domainGroupName = v5->_domainGroupName;
-    v5->_domainGroupName = v7;
+    v5->_domainGroupName = domainGroupName;
 
-    v9 = [v6 domainName];
+    domainName = [v6 domainName];
     domainName = v5->_domainName;
-    v5->_domainName = v9;
+    v5->_domainName = domainName;
 
-    v11 = [v6 rootSettingsClass];
-    if (v11)
+    rootSettingsClass = [v6 rootSettingsClass];
+    if (rootSettingsClass)
     {
-      v12 = v11;
-      v13 = NSStringFromClass(v11);
+      v12 = rootSettingsClass;
+      v13 = NSStringFromClass(rootSettingsClass);
       settingsClassName = v5->_settingsClassName;
       v5->_settingsClassName = v13;
 
       v15 = [MEMORY[0x277CCA8D8] bundleForClass:v12];
-      v16 = [v15 bundlePath];
+      bundlePath = [v15 bundlePath];
       settingsFrameworkBundlePath = v5->_settingsFrameworkBundlePath;
-      v5->_settingsFrameworkBundlePath = v16;
+      v5->_settingsFrameworkBundlePath = bundlePath;
     }
   }
 
@@ -50,11 +50,11 @@
   uniqueIdentifier = self->_uniqueIdentifier;
   if (!uniqueIdentifier)
   {
-    v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v5 = [(NSString *)self->_domainGroupName componentsSeparatedByCharactersInSet:v4];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v5 = [(NSString *)self->_domainGroupName componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
     v6 = [v5 componentsJoinedByString:&stru_282FA6D50];
 
-    v7 = [(NSString *)self->_domainName componentsSeparatedByCharactersInSet:v4];
+    v7 = [(NSString *)self->_domainName componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
     v8 = [v7 componentsJoinedByString:&stru_282FA6D50];
 
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v6, v8];
@@ -70,20 +70,20 @@
 - (void)loadSettingsClassBundleIfNecessary
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  v3 = [(PTDomainInfo *)v2 settingsClassName];
-  v4 = v3;
-  if (v3 && !NSClassFromString(v3))
+  selfCopy = self;
+  settingsClassName = [(PTDomainInfo *)selfCopy settingsClassName];
+  v4 = settingsClassName;
+  if (settingsClassName && !NSClassFromString(settingsClassName))
   {
-    v5 = [(PTDomainInfo *)v2 settingsFrameworkBundlePath];
-    if (!v5)
+    settingsFrameworkBundlePath = [(PTDomainInfo *)selfCopy settingsFrameworkBundlePath];
+    if (!settingsFrameworkBundlePath)
     {
 LABEL_18:
 
       goto LABEL_19;
     }
 
-    v6 = [MEMORY[0x277CCA8D8] bundleWithPath:v5];
+    v6 = [MEMORY[0x277CCA8D8] bundleWithPath:settingsFrameworkBundlePath];
     v7 = v6;
     if (!v6)
     {
@@ -93,7 +93,7 @@ LABEL_18:
         *buf = 138412546;
         v19 = v4;
         v20 = 2112;
-        v21 = v5;
+        v21 = settingsFrameworkBundlePath;
         _os_log_impl(&dword_21E61D000, v9, OS_LOG_TYPE_DEFAULT, "No bundle found for settings class '%@' at path %@", buf, 0x16u);
       }
 
@@ -108,11 +108,11 @@ LABEL_18:
       v11 = PTLogObjectForTopic(2);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v9 localizedDescription];
+        localizedDescription = [v9 localizedDescription];
         *buf = 138412546;
-        v19 = v5;
+        v19 = settingsFrameworkBundlePath;
         v20 = 2112;
-        v21 = v16;
+        v21 = localizedDescription;
         _os_log_impl(&dword_21E61D000, v11, OS_LOG_TYPE_DEFAULT, "Unable to load settings bundle at path %@: %@", buf, 0x16u);
       }
 
@@ -141,7 +141,7 @@ LABEL_15:
       *buf = 138412546;
       v19 = v4;
       v20 = 2112;
-      v21 = v5;
+      v21 = settingsFrameworkBundlePath;
       v13 = "Unable to find settings class '%@' even after loading bundle at path %@";
       v14 = v11;
       v15 = 22;
@@ -157,9 +157,9 @@ LABEL_17:
 LABEL_19:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && BSEqualStrings() && BSEqualStrings() && BSEqualStrings())
   {
@@ -176,47 +176,47 @@ LABEL_19:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendString:self->_domainGroupName];
-  v5 = [v3 appendString:self->_domainName];
-  v6 = [v3 appendString:self->_settingsClassName];
-  v7 = [v3 appendString:self->_settingsFrameworkBundlePath];
-  v8 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendString:self->_domainGroupName];
+  v5 = [builder appendString:self->_domainName];
+  v6 = [builder appendString:self->_settingsClassName];
+  v7 = [builder appendString:self->_settingsFrameworkBundlePath];
+  v8 = [builder hash];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   domainName = self->_domainName;
-  v5 = a3;
-  [v5 encodeObject:domainName forKey:@"domainName"];
-  [v5 encodeObject:self->_settingsClassName forKey:@"settingsClassName"];
-  [v5 encodeObject:self->_settingsFrameworkBundlePath forKey:@"settingsBundlePath"];
-  [v5 encodeObject:self->_domainGroupName forKey:@"groupName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:domainName forKey:@"domainName"];
+  [coderCopy encodeObject:self->_settingsClassName forKey:@"settingsClassName"];
+  [coderCopy encodeObject:self->_settingsFrameworkBundlePath forKey:@"settingsBundlePath"];
+  [coderCopy encodeObject:self->_domainGroupName forKey:@"groupName"];
 }
 
-- (PTDomainInfo)initWithCoder:(id)a3
+- (PTDomainInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PTDomainInfo;
   v5 = [(PTDomainInfo *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domainName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domainName"];
     domainName = v5->_domainName;
     v5->_domainName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"settingsClassName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"settingsClassName"];
     settingsClassName = v5->_settingsClassName;
     v5->_settingsClassName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"settingsBundlePath"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"settingsBundlePath"];
     settingsFrameworkBundlePath = v5->_settingsFrameworkBundlePath;
     v5->_settingsFrameworkBundlePath = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
     domainGroupName = v5->_domainGroupName;
     v5->_domainGroupName = v12;
   }

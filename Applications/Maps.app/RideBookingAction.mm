@@ -1,5 +1,5 @@
 @interface RideBookingAction
-- (RideBookingAction)initWithActivity:(id)a3 application:(id)a4;
+- (RideBookingAction)initWithActivity:(id)activity application:(id)application;
 - (RideBookingApplication)application;
 - (void)perform;
 @end
@@ -19,20 +19,20 @@
   [WeakRetained openWithActivity:self->_activity];
 }
 
-- (RideBookingAction)initWithActivity:(id)a3 application:(id)a4
+- (RideBookingAction)initWithActivity:(id)activity application:(id)application
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  applicationCopy = application;
   v12.receiver = self;
   v12.super_class = RideBookingAction;
   v8 = [(RideBookingAction *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [activityCopy copy];
     activity = v8->_activity;
     v8->_activity = v9;
 
-    objc_storeWeak(&v8->_application, v7);
+    objc_storeWeak(&v8->_application, applicationCopy);
   }
 
   return v8;

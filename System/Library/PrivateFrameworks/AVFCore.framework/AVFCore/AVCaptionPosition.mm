@@ -1,16 +1,16 @@
 @interface AVCaptionPosition
 - (AVCaptionPosition)init;
-- (AVCaptionPosition)initWithCellPositionX:(int64_t)a3 andY:(int64_t)a4;
-- (AVCaptionPosition)initWithCoder:(id)a3;
-- (AVCaptionPosition)initWithRelativeToEnclosingRegionX:(float)a3 andY:(float)a4;
-- (BOOL)isEqual:(id)a3;
+- (AVCaptionPosition)initWithCellPositionX:(int64_t)x andY:(int64_t)y;
+- (AVCaptionPosition)initWithCoder:(id)coder;
+- (AVCaptionPosition)initWithRelativeToEnclosingRegionX:(float)x andY:(float)y;
+- (BOOL)isEqual:(id)equal;
 - (float)relativeToEnclosingRegionX;
 - (float)relativeToEnclosingRegionY;
 - (id)description;
 - (int64_t)cellX;
 - (int64_t)cellY;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVCaptionPosition
@@ -24,7 +24,7 @@
   objc_exception_throw(v12);
 }
 
-- (AVCaptionPosition)initWithCellPositionX:(int64_t)a3 andY:(int64_t)a4
+- (AVCaptionPosition)initWithCellPositionX:(int64_t)x andY:(int64_t)y
 {
   v9.receiver = self;
   v9.super_class = AVCaptionPosition;
@@ -35,8 +35,8 @@
     v6->_internal = v7;
     if (v7)
     {
-      v7->x.cell = a3;
-      v6->_internal->y.cell = a4;
+      v7->x.cell = x;
+      v6->_internal->y.cell = y;
       v6->_internal->unitType = 0;
     }
 
@@ -50,7 +50,7 @@
   return v6;
 }
 
-- (AVCaptionPosition)initWithRelativeToEnclosingRegionX:(float)a3 andY:(float)a4
+- (AVCaptionPosition)initWithRelativeToEnclosingRegionX:(float)x andY:(float)y
 {
   v9.receiver = self;
   v9.super_class = AVCaptionPosition;
@@ -61,8 +61,8 @@
     v6->_internal = v7;
     if (v7)
     {
-      v7->x.relativeToEnclosingRegion = a3;
-      v6->_internal->y.relativeToEnclosingRegion = a4;
+      v7->x.relativeToEnclosingRegion = x;
+      v6->_internal->y.relativeToEnclosingRegion = y;
       v6->_internal->unitType = 1;
     }
 
@@ -76,21 +76,21 @@
   return v6;
 }
 
-- (AVCaptionPosition)initWithCoder:(id)a3
+- (AVCaptionPosition)initWithCoder:(id)coder
 {
-  if ([a3 containsValueForKey:@"AVCaptionPositionArchiveKeyCellX"] && objc_msgSend(a3, "containsValueForKey:", @"AVCaptionPositionArchiveKeyCellY"))
+  if ([coder containsValueForKey:@"AVCaptionPositionArchiveKeyCellX"] && objc_msgSend(coder, "containsValueForKey:", @"AVCaptionPositionArchiveKeyCellY"))
   {
-    v5 = [a3 decodeIntegerForKey:@"AVCaptionPositionArchiveKeyCellX"];
-    v6 = [a3 decodeIntegerForKey:@"AVCaptionPositionArchiveKeyCellY"];
+    v5 = [coder decodeIntegerForKey:@"AVCaptionPositionArchiveKeyCellX"];
+    v6 = [coder decodeIntegerForKey:@"AVCaptionPositionArchiveKeyCellY"];
 
     return [(AVCaptionPosition *)self initWithCellPositionX:v5 andY:v6];
   }
 
-  else if ([a3 containsValueForKey:@"AVCaptionPositionArchiveKeyRelativeToEnclosingRegionX"] && objc_msgSend(a3, "containsValueForKey:", @"AVCaptionPositionArchiveKeyRelativeToEnclosingRegionY"))
+  else if ([coder containsValueForKey:@"AVCaptionPositionArchiveKeyRelativeToEnclosingRegionX"] && objc_msgSend(coder, "containsValueForKey:", @"AVCaptionPositionArchiveKeyRelativeToEnclosingRegionY"))
   {
-    [a3 decodeFloatForKey:@"AVCaptionPositionArchiveKeyRelativeToEnclosingRegionX"];
+    [coder decodeFloatForKey:@"AVCaptionPositionArchiveKeyRelativeToEnclosingRegionX"];
     v9 = v8;
-    [a3 decodeFloatForKey:@"AVCaptionPositionArchiveKeyRelativeToEnclosingRegionY"];
+    [coder decodeFloatForKey:@"AVCaptionPositionArchiveKeyRelativeToEnclosingRegionY"];
     LODWORD(v10) = LODWORD(v11);
     LODWORD(v11) = v9;
 
@@ -104,25 +104,25 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInteger:2 forKey:@"AVCaptionPositionArchiveKeyVersion"];
+  [coder encodeInteger:2 forKey:@"AVCaptionPositionArchiveKeyVersion"];
   unitType = self->_internal->unitType;
   if (unitType == 1)
   {
     [(AVCaptionPosition *)self relativeToEnclosingRegionX];
-    [a3 encodeFloat:@"AVCaptionPositionArchiveKeyRelativeToEnclosingRegionX" forKey:?];
+    [coder encodeFloat:@"AVCaptionPositionArchiveKeyRelativeToEnclosingRegionX" forKey:?];
     [(AVCaptionPosition *)self relativeToEnclosingRegionY];
 
-    [a3 encodeFloat:@"AVCaptionPositionArchiveKeyRelativeToEnclosingRegionY" forKey:?];
+    [coder encodeFloat:@"AVCaptionPositionArchiveKeyRelativeToEnclosingRegionY" forKey:?];
   }
 
   else if (!unitType)
   {
-    [a3 encodeInteger:-[AVCaptionPosition cellX](self forKey:{"cellX"), @"AVCaptionPositionArchiveKeyCellX"}];
-    v6 = [(AVCaptionPosition *)self cellY];
+    [coder encodeInteger:-[AVCaptionPosition cellX](self forKey:{"cellX"), @"AVCaptionPositionArchiveKeyCellX"}];
+    cellY = [(AVCaptionPosition *)self cellY];
 
-    [a3 encodeInteger:v6 forKey:@"AVCaptionPositionArchiveKeyCellY"];
+    [coder encodeInteger:cellY forKey:@"AVCaptionPositionArchiveKeyCellY"];
   }
 }
 
@@ -133,9 +133,9 @@
   [(AVCaptionPosition *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -151,11 +151,11 @@
   {
     [(AVCaptionPosition *)self relativeToEnclosingRegionX];
     v10 = (v9 * 1000.0);
-    [a3 relativeToEnclosingRegionX];
+    [equal relativeToEnclosingRegionX];
     v12 = (v11 * 1000.0);
     [(AVCaptionPosition *)self relativeToEnclosingRegionY];
     v14 = v13;
-    [a3 relativeToEnclosingRegionY];
+    [equal relativeToEnclosingRegionY];
     return v10 == v12 && (v14 * 1000.0) == (v15 * 1000.0);
   }
 
@@ -164,11 +164,11 @@
     return 1;
   }
 
-  v6 = [(AVCaptionPosition *)self cellX];
-  if (v6 == [a3 cellX])
+  cellX = [(AVCaptionPosition *)self cellX];
+  if (cellX == [equal cellX])
   {
-    v7 = [(AVCaptionPosition *)self cellY];
-    if (v7 == [a3 cellY])
+    cellY = [(AVCaptionPosition *)self cellY];
+    if (cellY == [equal cellY])
     {
       return 1;
     }

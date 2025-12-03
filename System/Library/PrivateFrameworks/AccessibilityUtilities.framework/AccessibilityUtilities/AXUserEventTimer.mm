@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (AXUserEventTimer)init;
 - (BOOL)_canUseIdleTimerServices;
-- (id)acquireAssertionToDisableIdleTimerWithReason:(id)a3;
-- (void)_startTrackingPoorMansAssertion:(id)a3;
-- (void)_stopTrackingPoorMansAssertion:(id)a3;
+- (id)acquireAssertionToDisableIdleTimerWithReason:(id)reason;
+- (void)_startTrackingPoorMansAssertion:(id)assertion;
+- (void)_stopTrackingPoorMansAssertion:(id)assertion;
 - (void)userEventOccurred;
 @end
 
@@ -109,16 +109,16 @@ void *__37__AXUserEventTimer_userEventOccurred__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)_startTrackingPoorMansAssertion:(id)a3
+- (void)_startTrackingPoorMansAssertion:(id)assertion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = AXLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 reason];
+    reason = [assertionCopy reason];
     *buf = 138412290;
-    v12 = v6;
+    v12 = reason;
     _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_DEFAULT, "AXUserEventTimer: Now disabling idle timer for reason: %@", buf, 0xCu);
   }
 
@@ -128,8 +128,8 @@ void *__37__AXUserEventTimer_userEventOccurred__block_invoke_2(uint64_t a1)
   v9[2] = __52__AXUserEventTimer__startTrackingPoorMansAssertion___block_invoke;
   v9[3] = &unk_1E71EA128;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = assertionCopy;
+  v8 = assertionCopy;
   dispatch_async(assertionQueue, v9);
 }
 
@@ -155,16 +155,16 @@ void __52__AXUserEventTimer__startTrackingPoorMansAssertion___block_invoke(uint6
   }
 }
 
-- (void)_stopTrackingPoorMansAssertion:(id)a3
+- (void)_stopTrackingPoorMansAssertion:(id)assertion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = AXLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 reason];
+    reason = [assertionCopy reason];
     *buf = 138412290;
-    v12 = v6;
+    v12 = reason;
     _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_DEFAULT, "AXUserEventTimer: No longer disabling idle timer for reason: %@", buf, 0xCu);
   }
 
@@ -174,8 +174,8 @@ void __52__AXUserEventTimer__startTrackingPoorMansAssertion___block_invoke(uint6
   v9[2] = __51__AXUserEventTimer__stopTrackingPoorMansAssertion___block_invoke;
   v9[3] = &unk_1E71EA128;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = assertionCopy;
+  v8 = assertionCopy;
   dispatch_async(assertionQueue, v9);
 }
 
@@ -190,18 +190,18 @@ void __51__AXUserEventTimer__stopTrackingPoorMansAssertion___block_invoke(uint64
   }
 }
 
-- (id)acquireAssertionToDisableIdleTimerWithReason:(id)a3
+- (id)acquireAssertionToDisableIdleTimerWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if (![(AXUserEventTimer *)self _canUseIdleTimerServices])
   {
     goto LABEL_7;
   }
 
-  v5 = [MEMORY[0x1E69A8AB8] sharedInstance];
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Accessibility-%@", v4];
+  mEMORY[0x1E69A8AB8] = [MEMORY[0x1E69A8AB8] sharedInstance];
+  reasonCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Accessibility-%@", reasonCopy];
   v15 = 0;
-  v7 = [v5 newAssertionToDisableIdleTimerForReason:v6 error:&v15];
+  v7 = [mEMORY[0x1E69A8AB8] newAssertionToDisableIdleTimerForReason:reasonCopy error:&v15];
   v8 = v15;
 
   if (v8)
@@ -209,7 +209,7 @@ void __51__AXUserEventTimer__stopTrackingPoorMansAssertion___block_invoke(uint64
     v9 = AXLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(AXUserEventTimer *)v8 acquireAssertionToDisableIdleTimerWithReason:v4, v9];
+      [(AXUserEventTimer *)v8 acquireAssertionToDisableIdleTimerWithReason:reasonCopy, v9];
     }
   }
 
@@ -223,7 +223,7 @@ LABEL_7:
     v12[2] = __65__AXUserEventTimer_acquireAssertionToDisableIdleTimerWithReason___block_invoke;
     v12[3] = &unk_1E71EA750;
     objc_copyWeak(&v13, &location);
-    v7 = [v10 initWithIdentifier:@"AccessibilityDisableIdleTimer" forReason:v4 invalidationBlock:v12];
+    v7 = [v10 initWithIdentifier:@"AccessibilityDisableIdleTimer" forReason:reasonCopy invalidationBlock:v12];
     [(AXUserEventTimer *)self _startTrackingPoorMansAssertion:v7];
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);

@@ -1,28 +1,28 @@
 @interface HDCPSUpdateGatewaysOperation
-- (HDCPSUpdateGatewaysOperation)initWithManager:(id)a3 profile:(id)a4;
-- (HDCPSUpdateGatewaysOperation)initWithManager:(id)a3 profile:(id)a4 batchID:(id)a5 externalIDs:(id)a6;
+- (HDCPSUpdateGatewaysOperation)initWithManager:(id)manager profile:(id)profile;
+- (HDCPSUpdateGatewaysOperation)initWithManager:(id)manager profile:(id)profile batchID:(id)d externalIDs:(id)ds;
 - (id)debugDescription;
-- (void)_failWithError:(id)a3 step:(id)a4;
-- (void)didRefreshGateways:(id)a3;
+- (void)_failWithError:(id)error step:(id)step;
+- (void)didRefreshGateways:(id)gateways;
 - (void)main;
 @end
 
 @implementation HDCPSUpdateGatewaysOperation
 
-- (HDCPSUpdateGatewaysOperation)initWithManager:(id)a3 profile:(id)a4 batchID:(id)a5 externalIDs:(id)a6
+- (HDCPSUpdateGatewaysOperation)initWithManager:(id)manager profile:(id)profile batchID:(id)d externalIDs:(id)ds
 {
-  v10 = a5;
-  v11 = a6;
+  dCopy = d;
+  dsCopy = ds;
   v18.receiver = self;
   v18.super_class = HDCPSUpdateGatewaysOperation;
-  v12 = [(HDCPSOperation *)&v18 initWithManager:a3 profile:a4];
+  v12 = [(HDCPSOperation *)&v18 initWithManager:manager profile:profile];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [dCopy copy];
     batchID = v12->_batchID;
     v12->_batchID = v13;
 
-    v15 = [v11 copy];
+    v15 = [dsCopy copy];
     externalIDs = v12->_externalIDs;
     v12->_externalIDs = v15;
   }
@@ -30,7 +30,7 @@
   return v12;
 }
 
-- (HDCPSUpdateGatewaysOperation)initWithManager:(id)a3 profile:(id)a4
+- (HDCPSUpdateGatewaysOperation)initWithManager:(id)manager profile:(id)profile
 {
   v5 = NSStringFromSelector(a2);
   [NSException raise:NSInvalidArgumentException format:@"The -%@ method is not available on %@", v5, objc_opt_class()];
@@ -40,23 +40,23 @@
 
 - (void)main
 {
-  v3 = [(HDCPSOperation *)self providerServiceManager];
-  if (v3)
+  providerServiceManager = [(HDCPSOperation *)self providerServiceManager];
+  if (providerServiceManager)
   {
-    v4 = [(HDCPSUpdateGatewaysOperation *)self batchID];
-    v5 = [(HDCPSUpdateGatewaysOperation *)self externalIDs];
+    batchID = [(HDCPSUpdateGatewaysOperation *)self batchID];
+    externalIDs = [(HDCPSUpdateGatewaysOperation *)self externalIDs];
     v13 = 0;
-    v6 = [v3 remoteGatewaysWithBatchID:v4 externalIDs:v5 error:&v13];
+    v6 = [providerServiceManager remoteGatewaysWithBatchID:batchID externalIDs:externalIDs error:&v13];
     v7 = v13;
 
     if (v6)
     {
-      v8 = [(HDCPSOperation *)self profile];
-      if (v8)
+      profile = [(HDCPSOperation *)self profile];
+      if (profile)
       {
 
         v12 = 0;
-        v9 = [HDClinicalGatewayEntity updateGateways:v6 profile:v8 error:&v12];
+        v9 = [HDClinicalGatewayEntity updateGateways:v6 profile:profile error:&v12];
         v7 = v12;
         if (v9)
         {
@@ -89,43 +89,43 @@
   }
 }
 
-- (void)didRefreshGateways:(id)a3
+- (void)didRefreshGateways:(id)gateways
 {
-  v4 = [a3 copy];
+  v4 = [gateways copy];
   gateways = self->_gateways;
   self->_gateways = v4;
 
   _objc_release_x1();
 }
 
-- (void)_failWithError:(id)a3 step:(id)a4
+- (void)_failWithError:(id)error step:(id)step
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  stepCopy = step;
   _HKInitializeLogging();
   v8 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_ERROR))
   {
     v11 = v8;
     v12 = objc_opt_class();
-    v13 = [(HDCPSUpdateGatewaysOperation *)self batchID];
-    v14 = [(HDCPSUpdateGatewaysOperation *)self externalIDs];
+    batchID = [(HDCPSUpdateGatewaysOperation *)self batchID];
+    externalIDs = [(HDCPSUpdateGatewaysOperation *)self externalIDs];
     v15 = 138544642;
     v16 = v12;
     v17 = 2050;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v13;
+    v20 = batchID;
     v21 = 2112;
-    v22 = v14;
+    v22 = externalIDs;
     v23 = 2114;
-    v24 = v7;
+    v24 = stepCopy;
     v25 = 2114;
-    v26 = v6;
+    v26 = errorCopy;
     _os_log_error_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, "<%{public}@: %{public}p; batchID: %@; externalIDs: %@;> failure during %{public}@: %{public}@", &v15, 0x3Eu);
   }
 
-  v9 = [v6 copy];
+  v9 = [errorCopy copy];
   error = self->_error;
   self->_error = v9;
 }
@@ -134,9 +134,9 @@
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(HDCPSUpdateGatewaysOperation *)self batchID];
+  batchID = [(HDCPSUpdateGatewaysOperation *)self batchID];
   v6 = HKSensitiveLogItem();
-  v7 = [(HDCPSUpdateGatewaysOperation *)self externalIDs];
+  externalIDs = [(HDCPSUpdateGatewaysOperation *)self externalIDs];
   v8 = HKSensitiveLogItem();
   v9 = [v3 initWithFormat:@"<%@: %p; batchID: %@; externalIDs: %@;>", v4, self, v6, v8, 0];
 

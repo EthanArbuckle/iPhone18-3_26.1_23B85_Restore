@@ -1,19 +1,19 @@
 @interface ATXHeuristicActionProducer
-+ (double)generateScoreForHeuristic:(id)a3;
++ (double)generateScoreForHeuristic:(id)heuristic;
 + (id)sharedInstance;
-+ (unint64_t)actionExperienceForScoredHeuristicAction:(id)a3;
++ (unint64_t)actionExperienceForScoredHeuristicAction:(id)action;
 - (ATXHeuristicActionProducer)init;
-- (BOOL)isActionBlacklisted:(id)a3;
-- (BOOL)userAlreadyEngagedWithAction:(id)a3;
-- (id)_criteriaForJobOnDate:(id)a3;
-- (id)bundleIdForAction:(id)a3;
-- (id)firstUpdateDateForActions:(id)a3;
+- (BOOL)isActionBlacklisted:(id)blacklisted;
+- (BOOL)userAlreadyEngagedWithAction:(id)action;
+- (id)_criteriaForJobOnDate:(id)date;
+- (id)bundleIdForAction:(id)action;
+- (id)firstUpdateDateForActions:(id)actions;
 - (id)produceActions;
 - (void)coalescedProduceActions;
 - (void)dealloc;
-- (void)invalidateOnGlobalQueueWithDelay:(double)a3;
-- (void)scheduleNextHeuristicRefreshGivenActions:(id)a3;
-- (void)setUpdateJobForCriteria:(id)a3;
+- (void)invalidateOnGlobalQueueWithDelay:(double)delay;
+- (void)scheduleNextHeuristicRefreshGivenActions:(id)actions;
+- (void)setUpdateJobForCriteria:(id)criteria;
 @end
 
 @implementation ATXHeuristicActionProducer
@@ -63,7 +63,7 @@ void __34__ATXHeuristicActionProducer_init__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __44__ATXHeuristicActionProducer_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[ATXHeuristicActionProducer sharedInstance]::_pasOnceToken2 != -1)
   {
     dispatch_once(&+[ATXHeuristicActionProducer sharedInstance]::_pasOnceToken2, block);
@@ -121,7 +121,7 @@ LABEL_6:
   return v6;
 }
 
-- (void)invalidateOnGlobalQueueWithDelay:(double)a3
+- (void)invalidateOnGlobalQueueWithDelay:(double)delay
 {
   v5 = MEMORY[0x277D425A0];
   v6 = dispatch_get_global_queue(9, 0);
@@ -130,7 +130,7 @@ LABEL_6:
   v7[2] = __63__ATXHeuristicActionProducer_invalidateOnGlobalQueueWithDelay___block_invoke;
   v7[3] = &unk_27859AED0;
   v7[4] = self;
-  [v5 runAsyncOnQueue:v6 afterDelaySeconds:v7 block:a3];
+  [v5 runAsyncOnQueue:v6 afterDelaySeconds:v7 block:delay];
 }
 
 uint64_t __63__ATXHeuristicActionProducer_invalidateOnGlobalQueueWithDelay___block_invoke(uint64_t a1)
@@ -147,61 +147,61 @@ uint64_t __63__ATXHeuristicActionProducer_invalidateOnGlobalQueueWithDelay___blo
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_expireNotificationHandle];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_expireNotificationHandle];
 
   v4.receiver = self;
   v4.super_class = ATXHeuristicActionProducer;
   [(ATXHeuristicActionProducer *)&v4 dealloc];
 }
 
-- (id)bundleIdForAction:(id)a3
+- (id)bundleIdForAction:(id)action
 {
-  v3 = a3;
-  v4 = [v3 _bundleIdForDisplay];
-  v5 = v4;
-  if (v4)
+  actionCopy = action;
+  _bundleIdForDisplay = [actionCopy _bundleIdForDisplay];
+  v5 = _bundleIdForDisplay;
+  if (_bundleIdForDisplay)
   {
-    v6 = v4;
+    bundleId = _bundleIdForDisplay;
   }
 
   else
   {
-    v6 = [v3 bundleId];
+    bundleId = [actionCopy bundleId];
   }
 
-  v7 = v6;
+  v7 = bundleId;
 
   v8 = ATXBundleIdReplacementForBundleId();
 
   return v8;
 }
 
-- (BOOL)isActionBlacklisted:(id)a3
+- (BOOL)isActionBlacklisted:(id)blacklisted
 {
-  v4 = [(ATXHeuristicActionProducer *)self bundleIdForAction:a3];
-  v5 = [(ATXHeuristicActionProducer *)self digitalHealthBlacklist];
-  v6 = [v5 blacklistedBundleIds];
-  if ([v6 containsObject:v4])
+  v4 = [(ATXHeuristicActionProducer *)self bundleIdForAction:blacklisted];
+  digitalHealthBlacklist = [(ATXHeuristicActionProducer *)self digitalHealthBlacklist];
+  blacklistedBundleIds = [digitalHealthBlacklist blacklistedBundleIds];
+  if ([blacklistedBundleIds containsObject:v4])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [(ATXHeuristicActionProducer *)self actionPredictionBlacklist];
-    v7 = [v8 isBundleIdBlacklisted:v4];
+    actionPredictionBlacklist = [(ATXHeuristicActionProducer *)self actionPredictionBlacklist];
+    v7 = [actionPredictionBlacklist isBundleIdBlacklisted:v4];
   }
 
   return v7;
 }
 
-- (BOOL)userAlreadyEngagedWithAction:(id)a3
+- (BOOL)userAlreadyEngagedWithAction:(id)action
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CEB7E0] sharedInstance];
-  v5 = [v4 recentActions];
-  v6 = [v5 containsObject:v3];
+  actionCopy = action;
+  mEMORY[0x277CEB7E0] = [MEMORY[0x277CEB7E0] sharedInstance];
+  recentActions = [mEMORY[0x277CEB7E0] recentActions];
+  v6 = [recentActions containsObject:actionCopy];
 
   return v6;
 }
@@ -235,8 +235,8 @@ void __53__ATXHeuristicActionProducer_coalescedProduceActions__block_invoke(uint
   v3 = objc_opt_new();
   v4 = MEMORY[0x277CE8980];
   v40 = v3;
-  v5 = [MEMORY[0x277D41BF8] sharedInstance];
-  v38 = [v4 actionsWithLocationManager:v5];
+  mEMORY[0x277D41BF8] = [MEMORY[0x277D41BF8] sharedInstance];
+  v38 = [v4 actionsWithLocationManager:mEMORY[0x277D41BF8]];
 
   v6 = __atxlog_handle_heuristic();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -299,8 +299,8 @@ LABEL_21:
       {
         v14 = objc_alloc(MEMORY[0x277CEB7F0]);
         v15 = objc_opt_class();
-        v16 = [v11 heuristic];
-        [v15 generateScoreForHeuristic:v16];
+        heuristic = [v11 heuristic];
+        [v15 generateScoreForHeuristic:heuristic];
         *&v17 = v17;
         v12 = [v14 initWithPredictedItem:v11 score:v17];
 
@@ -317,8 +317,8 @@ LABEL_21:
         }
 
         while (v20 != 3328);
-        v21 = [v11 heuristic];
-        v22 = [v21 isEqualToString:@"bestAppHandoff:unknown"];
+        heuristic2 = [v11 heuristic];
+        v22 = [heuristic2 isEqualToString:@"bestAppHandoff:unknown"];
 
         if ((v22 & 1) == 0)
         {
@@ -363,12 +363,12 @@ LABEL_24:
 
   v26 = ATXSortedActionResults(v40);
   v27 = +[_ATXGlobals sharedInstance];
-  v28 = [v27 maxHeuristicAppActionCount];
+  maxHeuristicAppActionCount = [v27 maxHeuristicAppActionCount];
 
   v29 = [v40 count];
-  if (v29 >= v28)
+  if (v29 >= maxHeuristicAppActionCount)
   {
-    v30 = v28;
+    v30 = maxHeuristicAppActionCount;
   }
 
   else
@@ -389,8 +389,8 @@ LABEL_24:
     _os_log_impl(&dword_2263AA000, v32, OS_LOG_TYPE_DEFAULT, "Got %tu action results after sorting and filtering: %@", buf, 0x16u);
   }
 
-  v34 = [MEMORY[0x277CEB7E0] sharedInstance];
-  [v34 clearRecentHeuristicEngagementsExceptForActions:v41];
+  mEMORY[0x277CEB7E0] = [MEMORY[0x277CEB7E0] sharedInstance];
+  [mEMORY[0x277CEB7E0] clearRecentHeuristicEngagementsExceptForActions:v41];
 
   [ATXActionBlendingUpdater updateBlendingLayerWithHeuristicPredictions:v31];
   [(ATXHeuristicActionProducer *)self scheduleNextHeuristicRefreshGivenActions:v31];
@@ -401,11 +401,11 @@ LABEL_33:
   return v31;
 }
 
-+ (unint64_t)actionExperienceForScoredHeuristicAction:(id)a3
++ (unint64_t)actionExperienceForScoredHeuristicAction:(id)action
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v8[0] = v3;
+  actionCopy = action;
+  v8[0] = actionCopy;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   v5 = [ATXDisplayCacheLockscreenFilter _getPredictionConfidenceForActions:v4];
 
@@ -413,17 +413,17 @@ LABEL_33:
   return v5;
 }
 
-+ (double)generateScoreForHeuristic:(id)a3
++ (double)generateScoreForHeuristic:(id)heuristic
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  heuristicCopy = heuristic;
   v4 = +[_ATXGlobals sharedInstance];
   v5 = +[_ATXAppLaunchHistogramManager sharedInstance];
   v6 = [v5 histogramForLaunchType:35];
   v7 = [v5 histogramForLaunchType:36];
-  if (v3)
+  if (heuristicCopy)
   {
-    v34[0] = v3;
+    v34[0] = heuristicCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
   }
 
@@ -444,7 +444,7 @@ LABEL_33:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v24 = 138544386;
-    v25 = v3;
+    v25 = heuristicCopy;
     v26 = 2048;
     v27 = v10;
     v28 = 2048;
@@ -465,10 +465,10 @@ LABEL_33:
   return v19 * v21;
 }
 
-- (void)scheduleNextHeuristicRefreshGivenActions:(id)a3
+- (void)scheduleNextHeuristicRefreshGivenActions:(id)actions
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = [(ATXHeuristicActionProducer *)self firstUpdateDateForActions:a3];
+  v4 = [(ATXHeuristicActionProducer *)self firstUpdateDateForActions:actions];
   if (v4)
   {
     v5 = __atxlog_handle_heuristic();
@@ -486,14 +486,14 @@ LABEL_33:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUpdateJobForCriteria:(id)a3
+- (void)setUpdateJobForCriteria:(id)criteria
 {
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __54__ATXHeuristicActionProducer_setUpdateJobForCriteria___block_invoke;
   handler[3] = &unk_27859AEF8;
   handler[4] = self;
-  xpc_activity_register("com.apple.duetexpertd.heuristicactionproducer-refresh", a3, handler);
+  xpc_activity_register("com.apple.duetexpertd.heuristicactionproducer-refresh", criteria, handler);
 }
 
 void __54__ATXHeuristicActionProducer_setUpdateJobForCriteria___block_invoke(uint64_t a1, void *a2)
@@ -514,10 +514,10 @@ void __54__ATXHeuristicActionProducer_setUpdateJobForCriteria___block_invoke(uin
   }
 }
 
-- (id)firstUpdateDateForActions:(id)a3
+- (id)firstUpdateDateForActions:(id)actions
 {
   v34 = *MEMORY[0x277D85DE8];
-  v19 = a3;
+  actionsCopy = actions;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -533,14 +533,14 @@ void __54__ATXHeuristicActionProducer_setUpdateJobForCriteria___block_invoke(uin
   v25 = v4;
   v26 = &v27;
   v5 = _Block_copy(aBlock);
-  v6 = [MEMORY[0x277CE8980] nextCacheExpirationDate];
-  v5[2](v5, v6);
+  nextCacheExpirationDate = [MEMORY[0x277CE8980] nextCacheExpirationDate];
+  v5[2](v5, nextCacheExpirationDate);
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v19;
+  v7 = actionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v33 count:16];
   if (v8)
   {
@@ -554,15 +554,15 @@ void __54__ATXHeuristicActionProducer_setUpdateJobForCriteria___block_invoke(uin
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v20 + 1) + 8 * i) scoredAction];
-        v12 = [v11 predictedItem];
-        v13 = [v12 criteria];
+        scoredAction = [*(*(&v20 + 1) + 8 * i) scoredAction];
+        predictedItem = [scoredAction predictedItem];
+        criteria = [predictedItem criteria];
 
-        v14 = [v13 startDate];
-        v5[2](v5, v14);
+        startDate = [criteria startDate];
+        v5[2](v5, startDate);
 
-        v15 = [v13 endDate];
-        v5[2](v5, v15);
+        endDate = [criteria endDate];
+        v5[2](v5, endDate);
       }
 
       v8 = [v7 countByEnumeratingWithState:&v20 objects:v33 count:16];
@@ -612,9 +612,9 @@ uint64_t __56__ATXHeuristicActionProducer_firstUpdateDateForActions___block_invo
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (id)_criteriaForJobOnDate:(id)a3
+- (id)_criteriaForJobOnDate:(id)date
 {
-  [a3 timeIntervalSinceNow];
+  [date timeIntervalSinceNow];
   v4 = v3;
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v5, *MEMORY[0x277D86250], v4);

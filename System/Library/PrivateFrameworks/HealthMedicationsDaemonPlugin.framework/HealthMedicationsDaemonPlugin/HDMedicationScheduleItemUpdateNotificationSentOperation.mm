@@ -1,8 +1,8 @@
 @interface HDMedicationScheduleItemUpdateNotificationSentOperation
 - (HDMedicationScheduleItemUpdateNotificationSentOperation)init;
-- (HDMedicationScheduleItemUpdateNotificationSentOperation)initWithCoder:(id)a3;
-- (HDMedicationScheduleItemUpdateNotificationSentOperation)initWithScheduleItemIdentifier:(id)a3 notificationSent:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (HDMedicationScheduleItemUpdateNotificationSentOperation)initWithCoder:(id)coder;
+- (HDMedicationScheduleItemUpdateNotificationSentOperation)initWithScheduleItemIdentifier:(id)identifier notificationSent:(BOOL)sent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDMedicationScheduleItemUpdateNotificationSentOperation
@@ -17,43 +17,43 @@
   return 0;
 }
 
-- (HDMedicationScheduleItemUpdateNotificationSentOperation)initWithScheduleItemIdentifier:(id)a3 notificationSent:(BOOL)a4
+- (HDMedicationScheduleItemUpdateNotificationSentOperation)initWithScheduleItemIdentifier:(id)identifier notificationSent:(BOOL)sent
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = HDMedicationScheduleItemUpdateNotificationSentOperation;
   v8 = [(HDMedicationScheduleItemUpdateNotificationSentOperation *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_itemIdentifier, a3);
-    v9->_notificationSent = a4;
+    objc_storeStrong(&v8->_itemIdentifier, identifier);
+    v9->_notificationSent = sent;
   }
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   itemIdentifier = self->_itemIdentifier;
-  v5 = a3;
-  [v5 encodeObject:itemIdentifier forKey:@"item_identifier"];
-  [v5 encodeBool:self->_notificationSent forKey:@"notification_sent"];
+  coderCopy = coder;
+  [coderCopy encodeObject:itemIdentifier forKey:@"item_identifier"];
+  [coderCopy encodeBool:self->_notificationSent forKey:@"notification_sent"];
 }
 
-- (HDMedicationScheduleItemUpdateNotificationSentOperation)initWithCoder:(id)a3
+- (HDMedicationScheduleItemUpdateNotificationSentOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HDMedicationScheduleItemUpdateNotificationSentOperation;
   v5 = [(HDMedicationScheduleItemUpdateNotificationSentOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"item_identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"item_identifier"];
     itemIdentifier = v5->_itemIdentifier;
     v5->_itemIdentifier = v6;
 
-    v5->_notificationSent = [v4 decodeBoolForKey:@"notification_sent"];
+    v5->_notificationSent = [coderCopy decodeBoolForKey:@"notification_sent"];
   }
 
   return v5;

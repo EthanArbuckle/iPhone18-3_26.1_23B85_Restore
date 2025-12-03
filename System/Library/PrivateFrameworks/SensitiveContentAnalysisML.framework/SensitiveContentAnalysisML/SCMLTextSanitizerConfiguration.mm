@@ -1,14 +1,14 @@
 @interface SCMLTextSanitizerConfiguration
-- (BOOL)isEqual:(id)a3;
-- (SCMLTextSanitizerConfiguration)initWithModelManagerServicesUseCaseID:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SCMLTextSanitizerConfiguration)initWithModelManagerServicesUseCaseID:(id)d;
 - (unint64_t)hash;
 @end
 
 @implementation SCMLTextSanitizerConfiguration
 
-- (SCMLTextSanitizerConfiguration)initWithModelManagerServicesUseCaseID:(id)a3
+- (SCMLTextSanitizerConfiguration)initWithModelManagerServicesUseCaseID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8.receiver = self;
   v8.super_class = SCMLTextSanitizerConfiguration;
   v5 = [(SCMLTextSanitizerConfiguration *)&v8 init];
@@ -23,17 +23,17 @@
     [(SCMLTextSanitizerConfiguration *)v5 setGranularity:0];
     [(SCMLTextSanitizerConfiguration *)v5 setThrowInAdapterAsyncHandler:0];
     [(SCMLTextSanitizerConfiguration *)v5 setOnBehalfOfProcessID:0xFFFFFFFFLL];
-    [(SCMLTextSanitizerConfiguration *)v5 setModelManagerServicesUseCaseID:v4];
+    [(SCMLTextSanitizerConfiguration *)v5 setModelManagerServicesUseCaseID:dCopy];
     [(SCMLTextSanitizerConfiguration *)v5 setRegion:0];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -43,7 +43,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       locale = self->_locale;
       v7 = v5->_locale;
       v8 = (locale == v7 || v7 && [(NSLocale *)locale isEqual:?]) && self->_trackPerformance == v5->_trackPerformance && self->_granularity == v5->_granularity && self->_mode == v5->_mode && self->_backends == v5->_backends && self->_throwInAdapterAsyncHandler == v5->_throwInAdapterAsyncHandler && self->_region == v5->_region && [(NSString *)self->_modelManagerServicesUseCaseID isEqualToString:v5->_modelManagerServicesUseCaseID]&& self->_onBehalfOfProcessID == v5->_onBehalfOfProcessID;

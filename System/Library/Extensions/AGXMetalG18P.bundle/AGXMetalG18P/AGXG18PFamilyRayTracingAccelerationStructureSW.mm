@@ -1,7 +1,7 @@
 @interface AGXG18PFamilyRayTracingAccelerationStructureSW
-- (AGXG18PFamilyRayTracingAccelerationStructureSW)initWithBuffer:(id)a3 offset:(unint64_t)a4 device:(id)a5 resourceIndex:(unint64_t)a6;
-- (AGXG18PFamilyRayTracingAccelerationStructureSW)initWithDevice:(id)a3 length:(unint64_t)a4 resourceIndex:(unint64_t)a5 storageMode:(unint64_t)a6;
-- (AGXG18PFamilyRayTracingAccelerationStructureSW)initWithDevice:(id)a3 src:(id)a4;
+- (AGXG18PFamilyRayTracingAccelerationStructureSW)initWithBuffer:(id)buffer offset:(unint64_t)offset device:(id)device resourceIndex:(unint64_t)index;
+- (AGXG18PFamilyRayTracingAccelerationStructureSW)initWithDevice:(id)device length:(unint64_t)length resourceIndex:(unint64_t)index storageMode:(unint64_t)mode;
+- (AGXG18PFamilyRayTracingAccelerationStructureSW)initWithDevice:(id)device src:(id)src;
 - (id).cxx_construct;
 - (unint64_t)accelerationStructureUniqueIdentifier;
 - (void)dealloc;
@@ -24,13 +24,13 @@
   [(IOGPUMetalAccelerationStructure *)&v2 dealloc];
 }
 
-- (AGXG18PFamilyRayTracingAccelerationStructureSW)initWithDevice:(id)a3 length:(unint64_t)a4 resourceIndex:(unint64_t)a5 storageMode:(unint64_t)a6
+- (AGXG18PFamilyRayTracingAccelerationStructureSW)initWithDevice:(id)device length:(unint64_t)length resourceIndex:(unint64_t)index storageMode:(unint64_t)mode
 {
-  v9 = [a3 newBufferWithLength:a4 options:16 * a6];
-  if (v9)
+  mode = [device newBufferWithLength:length options:16 * mode];
+  if (mode)
   {
-    v10 = v9;
-    v11 = [(AGXG18PFamilyRayTracingAccelerationStructureSW *)self initWithBuffer:v9 offset:0 device:a3 resourceIndex:a5];
+    v10 = mode;
+    v11 = [(AGXG18PFamilyRayTracingAccelerationStructureSW *)self initWithBuffer:mode offset:0 device:device resourceIndex:index];
 
     return v11;
   }
@@ -42,14 +42,14 @@
   }
 }
 
-- (AGXG18PFamilyRayTracingAccelerationStructureSW)initWithDevice:(id)a3 src:(id)a4
+- (AGXG18PFamilyRayTracingAccelerationStructureSW)initWithDevice:(id)device src:(id)src
 {
-  v7 = [a4 buffer];
-  v8 = [a4 bufferOffset];
+  buffer = [src buffer];
+  bufferOffset = [src bufferOffset];
   v9 = *MEMORY[0x29EDC5638];
-  v10 = *(v7 + v9 + 8);
-  v11 = *(a3 + 106);
-  v12 = [a4 size];
+  v10 = *(buffer + v9 + 8);
+  v11 = *(device + 106);
+  v12 = [src size];
   AGX::Mempool<16u,0u,true,0u,0u,unsigned long long>::RangeAllocation::RangeAllocation(&v23, v11 + 2552, 0);
   v27 = v12;
   v13 = v25;
@@ -61,7 +61,7 @@
   os_unfair_lock_unlock(v13 + 194);
   v22.receiver = self;
   v22.super_class = AGXG18PFamilyRayTracingAccelerationStructureSW;
-  result = [(IOGPUMetalAccelerationStructure *)&v22 initWithBuffer:v7 offset:v8 resourceIndex:v23];
+  result = [(IOGPUMetalAccelerationStructure *)&v22 initWithBuffer:buffer offset:bufferOffset resourceIndex:v23];
   if (result)
   {
     gpu = result->_impl.bvh_heap_allocation.buffer_.address.gpu;
@@ -95,13 +95,13 @@
   return result;
 }
 
-- (AGXG18PFamilyRayTracingAccelerationStructureSW)initWithBuffer:(id)a3 offset:(unint64_t)a4 device:(id)a5 resourceIndex:(unint64_t)a6
+- (AGXG18PFamilyRayTracingAccelerationStructureSW)initWithBuffer:(id)buffer offset:(unint64_t)offset device:(id)device resourceIndex:(unint64_t)index
 {
-  v6 = a6;
+  indexCopy = index;
   v11 = *MEMORY[0x29EDC5638];
-  v12 = *(a3 + v11 + 8);
-  v13 = [a3 length];
-  AGX::Mempool<16u,0u,true,0u,0u,unsigned long long>::RangeAllocation::RangeAllocation(&v24, (*(a5 + 106) + 10208), v6);
+  v12 = *(buffer + v11 + 8);
+  v13 = [buffer length];
+  AGX::Mempool<16u,0u,true,0u,0u,unsigned long long>::RangeAllocation::RangeAllocation(&v24, (*(device + 106) + 10208), indexCopy);
   v28 = v13;
   v14 = v26;
   os_unfair_lock_lock(v26 + 194);
@@ -112,7 +112,7 @@
   os_unfair_lock_unlock(v14 + 194);
   v23.receiver = self;
   v23.super_class = AGXG18PFamilyRayTracingAccelerationStructureSW;
-  result = [(IOGPUMetalAccelerationStructure *)&v23 initWithBuffer:a3 offset:a4 resourceIndex:v24];
+  result = [(IOGPUMetalAccelerationStructure *)&v23 initWithBuffer:buffer offset:offset resourceIndex:v24];
   if (result)
   {
     gpu = result->_impl.bvh_heap_allocation.buffer_.address.gpu;

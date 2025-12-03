@@ -10,9 +10,9 @@
   v11 = *MEMORY[0x1E69E9840];
   memset(&c, 0, sizeof(c));
   CC_MD5_Init(&c);
-  CC_MD5_Update(&c, [a1 bytes], objc_msgSend(a1, "length"));
+  CC_MD5_Update(&c, [self bytes], objc_msgSend(self, "length"));
   CC_MD5_Final(md, &c);
-  v2 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   for (i = 0; i != 16; ++i)
   {
     v4 = md[i];
@@ -39,15 +39,15 @@
       v7 = v6 | 0x30;
     }
 
-    [v2 appendFormat:@"%c%c", v5, v7];
+    [string appendFormat:@"%c%c", v5, v7];
   }
 
-  return v2;
+  return string;
 }
 
 - (id)vk_stringValue
 {
-  v1 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:a1 encoding:4];
+  v1 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:self encoding:4];
 
   return v1;
 }

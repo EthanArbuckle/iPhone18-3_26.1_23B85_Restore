@@ -1,32 +1,32 @@
 @interface LNFetchSuggestedFocusActionsConnectionOperation
-- (LNFetchSuggestedFocusActionsConnectionOperation)initWithConnectionInterface:(id)a3 actionMetadata:(id)a4 suggestionContext:(id)a5 queue:(id)a6 completionHandler:(id)a7;
-- (void)finishWithError:(id)a3;
+- (LNFetchSuggestedFocusActionsConnectionOperation)initWithConnectionInterface:(id)interface actionMetadata:(id)metadata suggestionContext:(id)context queue:(id)queue completionHandler:(id)handler;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
 @implementation LNFetchSuggestedFocusActionsConnectionOperation
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(LNFetchSuggestedFocusActionsConnectionOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(LNFetchSuggestedFocusActionsConnectionOperation *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(LNFetchSuggestedFocusActionsConnectionOperation *)self results];
-    v7 = [(LNConnectionOperation *)self validatingResult:v6 error:v4];
+    results = [(LNFetchSuggestedFocusActionsConnectionOperation *)self results];
+    v7 = [(LNConnectionOperation *)self validatingResult:results error:errorCopy];
 
-    v8 = [(LNFetchSuggestedFocusActionsConnectionOperation *)self completionHandler];
-    v9 = [(LNFetchSuggestedFocusActionsConnectionOperation *)self results];
-    (v8)[2](v8, v9, v7);
+    completionHandler2 = [(LNFetchSuggestedFocusActionsConnectionOperation *)self completionHandler];
+    results2 = [(LNFetchSuggestedFocusActionsConnectionOperation *)self results];
+    (completionHandler2)[2](completionHandler2, results2, v7);
 
     [(LNFetchSuggestedFocusActionsConnectionOperation *)self setCompletionHandler:0];
-    v4 = v7;
+    errorCopy = v7;
   }
 
   v10.receiver = self;
   v10.super_class = LNFetchSuggestedFocusActionsConnectionOperation;
-  [(LNConnectionOperation *)&v10 finishWithError:v4];
+  [(LNConnectionOperation *)&v10 finishWithError:errorCopy];
 }
 
 - (void)start
@@ -38,22 +38,22 @@
   v3 = getLNLogCategoryConnection();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(LNFetchSuggestedFocusActionsConnectionOperation *)self actionMetadata];
-    v5 = [v4 identifier];
+    actionMetadata = [(LNFetchSuggestedFocusActionsConnectionOperation *)self actionMetadata];
+    identifier = [actionMetadata identifier];
     *buf = 138412290;
-    v13 = v5;
+    v13 = identifier;
     _os_log_impl(&dword_19763D000, v3, OS_LOG_TYPE_INFO, "Fetching suggested focus actions %@", buf, 0xCu);
   }
 
-  v6 = [(LNInterfaceConnectionOperation *)self connectionInterface];
-  v7 = [(LNFetchSuggestedFocusActionsConnectionOperation *)self actionMetadata];
-  v8 = [(LNFetchSuggestedFocusActionsConnectionOperation *)self suggestionContext];
+  connectionInterface = [(LNInterfaceConnectionOperation *)self connectionInterface];
+  actionMetadata2 = [(LNFetchSuggestedFocusActionsConnectionOperation *)self actionMetadata];
+  suggestionContext = [(LNFetchSuggestedFocusActionsConnectionOperation *)self suggestionContext];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56__LNFetchSuggestedFocusActionsConnectionOperation_start__block_invoke;
   v10[3] = &unk_1E74B1F78;
   v10[4] = self;
-  [v6 fetchSuggestedFocusActionsForActionMetadata:v7 suggestionContext:v8 completionHandler:v10];
+  [connectionInterface fetchSuggestedFocusActionsForActionMetadata:actionMetadata2 suggestionContext:suggestionContext completionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -70,17 +70,17 @@ void __56__LNFetchSuggestedFocusActionsConnectionOperation_start__block_invoke(u
   os_activity_scope_leave(&v8);
 }
 
-- (LNFetchSuggestedFocusActionsConnectionOperation)initWithConnectionInterface:(id)a3 actionMetadata:(id)a4 suggestionContext:(id)a5 queue:(id)a6 completionHandler:(id)a7
+- (LNFetchSuggestedFocusActionsConnectionOperation)initWithConnectionInterface:(id)interface actionMetadata:(id)metadata suggestionContext:(id)context queue:(id)queue completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = v17;
-  if (v14)
+  interfaceCopy = interface;
+  metadataCopy = metadata;
+  contextCopy = context;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v18 = handlerCopy;
+  if (metadataCopy)
   {
-    if (v17)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -88,8 +88,8 @@ void __56__LNFetchSuggestedFocusActionsConnectionOperation_start__block_invoke(u
 
   else
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"LNFetchSuggestedFocusActionsConnectionOperation.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"actionMetadata"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNFetchSuggestedFocusActionsConnectionOperation.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"actionMetadata"}];
 
     if (v18)
     {
@@ -97,19 +97,19 @@ void __56__LNFetchSuggestedFocusActionsConnectionOperation_start__block_invoke(u
     }
   }
 
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"LNFetchSuggestedFocusActionsConnectionOperation.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNFetchSuggestedFocusActionsConnectionOperation.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  v19 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v27.receiver = self;
   v27.super_class = LNFetchSuggestedFocusActionsConnectionOperation;
-  v20 = [(LNInterfaceConnectionOperation *)&v27 initWithIdentifier:v19 connectionInterface:v13 priority:1 queue:v16 activity:&__block_literal_global_9251];
+  v20 = [(LNInterfaceConnectionOperation *)&v27 initWithIdentifier:uUID connectionInterface:interfaceCopy priority:1 queue:queueCopy activity:&__block_literal_global_9251];
 
   if (v20)
   {
-    objc_storeStrong(&v20->_actionMetadata, a4);
-    objc_storeStrong(&v20->_suggestionContext, a5);
+    objc_storeStrong(&v20->_actionMetadata, metadata);
+    objc_storeStrong(&v20->_suggestionContext, context);
     v21 = [v18 copy];
     completionHandler = v20->_completionHandler;
     v20->_completionHandler = v21;

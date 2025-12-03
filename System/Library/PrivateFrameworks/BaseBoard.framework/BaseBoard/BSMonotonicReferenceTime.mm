@@ -3,8 +3,8 @@
 + (id)distantFuture;
 + (id)distantPast;
 + (id)now;
-+ (id)referenceTimeForDate:(id)a3;
-+ (id)referenceTimeWithTimeIntervalSinceNow:(double)a3;
++ (id)referenceTimeForDate:(id)date;
++ (id)referenceTimeWithTimeIntervalSinceNow:(double)now;
 - (id)date;
 @end
 
@@ -12,7 +12,7 @@
 
 + (id)now
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[BSMonotonicReferenceTime _timeIntervalSinceInternalClockReference];
   if (v2)
   {
@@ -49,7 +49,7 @@
   block[1] = 3221225472;
   block[2] = __39__BSMonotonicReferenceTime_distantPast__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_30 != -1)
   {
     dispatch_once(&_MergedGlobals_30, block);
@@ -73,7 +73,7 @@ void __39__BSMonotonicReferenceTime_distantPast__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __41__BSMonotonicReferenceTime_distantFuture__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED44FFC0 != -1)
   {
     dispatch_once(&qword_1ED44FFC0, block);
@@ -91,10 +91,10 @@ void __41__BSMonotonicReferenceTime_distantFuture__block_invoke(uint64_t a1)
   qword_1ED44FFC8 = v1;
 }
 
-+ (id)referenceTimeWithTimeIntervalSinceNow:(double)a3
++ (id)referenceTimeWithTimeIntervalSinceNow:(double)now
 {
   v5 = +[BSMonotonicReferenceTime _timeIntervalSinceInternalClockReference];
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   if (v6)
   {
     v8.receiver = v6;
@@ -102,18 +102,18 @@ void __41__BSMonotonicReferenceTime_distantFuture__block_invoke(uint64_t a1)
     v6 = objc_msgSendSuper2(&v8, sel_init);
     if (v6)
     {
-      v6[1] = v5 + a3;
+      v6[1] = v5 + now;
     }
   }
 
   return v6;
 }
 
-+ (id)referenceTimeForDate:(id)a3
++ (id)referenceTimeForDate:(id)date
 {
-  v4 = a3;
-  [v4 timeIntervalSinceNow];
-  v5 = [a1 referenceTimeWithTimeIntervalSinceNow:?];
+  dateCopy = date;
+  [dateCopy timeIntervalSinceNow];
+  v5 = [self referenceTimeWithTimeIntervalSinceNow:?];
 
   return v5;
 }

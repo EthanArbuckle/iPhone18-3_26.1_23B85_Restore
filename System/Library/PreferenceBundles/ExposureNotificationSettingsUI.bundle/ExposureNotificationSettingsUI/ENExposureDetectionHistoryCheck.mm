@@ -1,50 +1,50 @@
 @interface ENExposureDetectionHistoryCheck
-- (id)enui_jsonSerializationWithDateFormatter:(id)a3;
+- (id)enui_jsonSerializationWithDateFormatter:(id)formatter;
 @end
 
 @implementation ENExposureDetectionHistoryCheck
 
-- (id)enui_jsonSerializationWithDateFormatter:(id)a3
+- (id)enui_jsonSerializationWithDateFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v5 = [NSMutableDictionary alloc];
   v29[0] = @"Timestamp";
-  v6 = [(ENExposureDetectionHistoryCheck *)self session];
-  v7 = [v6 date];
-  v8 = [v4 stringFromDate:v7];
+  session = [(ENExposureDetectionHistoryCheck *)self session];
+  date = [session date];
+  v8 = [formatterCopy stringFromDate:date];
   v29[1] = @"Files";
   v30[0] = v8;
-  v9 = [(ENExposureDetectionHistoryCheck *)self files];
+  files = [(ENExposureDetectionHistoryCheck *)self files];
   v24 = _NSConcreteStackBlock;
   v25 = 3221225472;
   v26 = sub_11984;
   v27 = &unk_2D050;
-  v10 = v4;
+  v10 = formatterCopy;
   v28 = v10;
-  v11 = [v9 enui_map:&v24];
+  v11 = [files enui_map:&v24];
   v30[1] = v11;
   v12 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:2, v24, v25, v26, v27];
   v13 = [v5 initWithDictionary:v12];
 
-  v14 = [(ENExposureDetectionHistoryCheck *)self session];
-  v15 = [v14 appBundleIdentifier];
+  session2 = [(ENExposureDetectionHistoryCheck *)self session];
+  appBundleIdentifier = [session2 appBundleIdentifier];
 
-  if (v15)
+  if (appBundleIdentifier)
   {
-    v16 = [(ENExposureDetectionHistoryCheck *)self session];
-    v17 = [v16 appBundleIdentifier];
-    [v13 setObject:v17 forKey:@"AppBundleIdentifier"];
+    session3 = [(ENExposureDetectionHistoryCheck *)self session];
+    appBundleIdentifier2 = [session3 appBundleIdentifier];
+    [v13 setObject:appBundleIdentifier2 forKey:@"AppBundleIdentifier"];
   }
 
-  v18 = [(ENExposureDetectionHistoryCheck *)self session];
-  v19 = [v18 region];
+  session4 = [(ENExposureDetectionHistoryCheck *)self session];
+  region = [session4 region];
 
-  if (v19)
+  if (region)
   {
-    v20 = [(ENExposureDetectionHistoryCheck *)self session];
-    v21 = [v20 region];
-    v22 = [v21 regionCode];
-    [v13 setObject:v22 forKey:@"RegionCode"];
+    session5 = [(ENExposureDetectionHistoryCheck *)self session];
+    region2 = [session5 region];
+    regionCode = [region2 regionCode];
+    [v13 setObject:regionCode forKey:@"RegionCode"];
   }
 
   return v13;

@@ -1,36 +1,36 @@
 @interface _INPBGetRideStatusIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBGetRideStatusIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBGetRideStatusIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBGetRideStatusIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBGetRideStatusIntentResponse *)self rideStatus];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"rideStatus"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  rideStatus = [(_INPBGetRideStatusIntentResponse *)self rideStatus];
+  dictionaryRepresentation = [rideStatus dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"rideStatus"];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBGetRideStatusIntentResponse *)self rideStatus];
-    v6 = [v4 rideStatus];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    rideStatus = [(_INPBGetRideStatusIntentResponse *)self rideStatus];
+    rideStatus2 = [equalCopy rideStatus];
+    v7 = rideStatus2;
+    if ((rideStatus != 0) != (rideStatus2 == 0))
     {
-      v8 = [(_INPBGetRideStatusIntentResponse *)self rideStatus];
-      if (!v8)
+      rideStatus3 = [(_INPBGetRideStatusIntentResponse *)self rideStatus];
+      if (!rideStatus3)
       {
 
 LABEL_10:
@@ -38,10 +38,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_INPBGetRideStatusIntentResponse *)self rideStatus];
-      v11 = [v4 rideStatus];
-      v12 = [v10 isEqual:v11];
+      v9 = rideStatus3;
+      rideStatus4 = [(_INPBGetRideStatusIntentResponse *)self rideStatus];
+      rideStatus5 = [equalCopy rideStatus];
+      v12 = [rideStatus4 isEqual:rideStatus5];
 
       if (v12)
       {
@@ -60,47 +60,47 @@ LABEL_8:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBGetRideStatusIntentResponse allocWithZone:](_INPBGetRideStatusIntentResponse init];
-  v6 = [(_INPBRideStatus *)self->_rideStatus copyWithZone:a3];
+  v6 = [(_INPBRideStatus *)self->_rideStatus copyWithZone:zone];
   [(_INPBGetRideStatusIntentResponse *)v5 setRideStatus:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBGetRideStatusIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBGetRideStatusIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBGetRideStatusIntentResponse)initWithCoder:(id)a3
+- (_INPBGetRideStatusIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBGetRideStatusIntentResponse *)self initWithData:v6];
+    self = [(_INPBGetRideStatusIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_INPBGetRideStatusIntentResponse *)self rideStatus];
+  toCopy = to;
+  rideStatus = [(_INPBGetRideStatusIntentResponse *)self rideStatus];
 
-  if (v4)
+  if (rideStatus)
   {
-    v5 = [(_INPBGetRideStatusIntentResponse *)self rideStatus];
+    rideStatus2 = [(_INPBGetRideStatusIntentResponse *)self rideStatus];
     PBDataWriterWriteSubmessage();
   }
 }

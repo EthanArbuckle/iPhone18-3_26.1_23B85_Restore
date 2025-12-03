@@ -1,7 +1,7 @@
 @interface PUAssetReference
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PUAssetReference)initWithAsset:(id)a3 assetCollection:(id)a4 indexPath:(id)a5 dataSourceIdentifier:(id)a6;
+- (PUAssetReference)initWithAsset:(id)asset assetCollection:(id)collection indexPath:(id)path dataSourceIdentifier:(id)identifier;
 - (PXAssetReference)pxAssetReference;
 - (PXSimpleIndexPath)simpleIndexPath;
 - (unint64_t)hash;
@@ -16,14 +16,14 @@
     dispatch_once(&pxAssetReference_onceToken, &__block_literal_global_10797);
   }
 
-  v3 = [(PUAssetReference *)self indexPath];
+  indexPath = [(PUAssetReference *)self indexPath];
   PXSimpleIndexPathFromIndexPath();
 
   v4 = objc_alloc(MEMORY[0x1E69C4498]);
-  v5 = [(PUAssetReference *)self assetCollection];
-  v6 = [(PUAssetReference *)self asset];
+  assetCollection = [(PUAssetReference *)self assetCollection];
+  asset = [(PUAssetReference *)self asset];
   memset(v9, 0, sizeof(v9));
-  v7 = [v4 initWithSectionObject:v5 itemObject:v6 subitemObject:0 indexPath:v9];
+  v7 = [v4 initWithSectionObject:assetCollection itemObject:asset subitemObject:0 indexPath:v9];
 
   return v7;
 }
@@ -37,7 +37,7 @@ uint64_t __36__PUAssetReference_pxAssetReference__block_invoke()
 
 - (PXSimpleIndexPath)simpleIndexPath
 {
-  v5 = [(PUAssetReference *)self indexPath];
+  indexPath = [(PUAssetReference *)self indexPath];
   *&retstr->var0 = 0u;
   *&retstr->var2 = 0u;
   PXSimpleIndexPathFromIndexPath();
@@ -50,22 +50,22 @@ uint64_t __36__PUAssetReference_pxAssetReference__block_invoke()
   v10.receiver = self;
   v10.super_class = PUAssetReference;
   v3 = [(PUAssetReference *)&v10 description];
-  v4 = [(PUAssetReference *)self asset];
-  v5 = [(PUAssetReference *)self assetCollection];
-  v6 = [(PUAssetReference *)self indexPath];
-  v7 = [(PUAssetReference *)self dataSourceIdentifier];
-  v8 = [v3 stringByAppendingFormat:@" asset=%@ assetCollection=%@ indexPath=%@ dataSourceIdentifier=%@", v4, v5, v6, v7];
+  asset = [(PUAssetReference *)self asset];
+  assetCollection = [(PUAssetReference *)self assetCollection];
+  indexPath = [(PUAssetReference *)self indexPath];
+  dataSourceIdentifier = [(PUAssetReference *)self dataSourceIdentifier];
+  v8 = [v3 stringByAppendingFormat:@" asset=%@ assetCollection=%@ indexPath=%@ dataSourceIdentifier=%@", asset, assetCollection, indexPath, dataSourceIdentifier];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSIndexPath *)self->_indexPath isEqual:v4[3]]&& [(NSString *)self->_dataSourceIdentifier isEqual:v4[4]])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSIndexPath *)self->_indexPath isEqual:equalCopy[3]]&& [(NSString *)self->_dataSourceIdentifier isEqual:equalCopy[4]])
   {
-    v5 = [(PUDisplayAsset *)self->_asset isEqual:v4[1]];
+    v5 = [(PUDisplayAsset *)self->_asset isEqual:equalCopy[1]];
   }
 
   else
@@ -78,39 +78,39 @@ uint64_t __36__PUAssetReference_pxAssetReference__block_invoke()
 
 - (unint64_t)hash
 {
-  v2 = [(PUAssetReference *)self asset];
-  v3 = [v2 hash];
+  asset = [(PUAssetReference *)self asset];
+  v3 = [asset hash];
 
   return v3;
 }
 
-- (PUAssetReference)initWithAsset:(id)a3 assetCollection:(id)a4 indexPath:(id)a5 dataSourceIdentifier:(id)a6
+- (PUAssetReference)initWithAsset:(id)asset assetCollection:(id)collection indexPath:(id)path dataSourceIdentifier:(id)identifier
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  assetCopy = asset;
+  collectionCopy = collection;
+  pathCopy = path;
+  identifierCopy = identifier;
   v25.receiver = self;
   v25.super_class = PUAssetReference;
   v16 = [(PUAssetReference *)&v25 init];
   if (v16)
   {
-    if (!v12)
+    if (!assetCopy)
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v23 handleFailureInMethod:a2 object:v16 file:@"PUAssetReference.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"asset != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v16 file:@"PUAssetReference.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"asset != nil"}];
     }
 
-    objc_storeStrong(&v16->_asset, a3);
-    if (v15)
+    objc_storeStrong(&v16->_asset, asset);
+    if (identifierCopy)
     {
-      if (!v14)
+      if (!pathCopy)
       {
-        v24 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v24 handleFailureInMethod:a2 object:v16 file:@"PUAssetReference.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:v16 file:@"PUAssetReference.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"indexPath != nil"}];
       }
 
-      v17 = v15;
+      v17 = identifierCopy;
       dataSourceIdentifier = v16->_dataSourceIdentifier;
       v16->_dataSourceIdentifier = v17;
     }
@@ -118,14 +118,14 @@ uint64_t __36__PUAssetReference_pxAssetReference__block_invoke()
     else
     {
       dataSourceIdentifier = [MEMORY[0x1E696AFB0] UUID];
-      v19 = [dataSourceIdentifier UUIDString];
-      v20 = [@"random-" stringByAppendingString:v19];
+      uUIDString = [dataSourceIdentifier UUIDString];
+      v20 = [@"random-" stringByAppendingString:uUIDString];
       v21 = v16->_dataSourceIdentifier;
       v16->_dataSourceIdentifier = v20;
     }
 
-    objc_storeStrong(&v16->_assetCollection, a4);
-    objc_storeStrong(&v16->_indexPath, a5);
+    objc_storeStrong(&v16->_assetCollection, collection);
+    objc_storeStrong(&v16->_indexPath, path);
   }
 
   return v16;

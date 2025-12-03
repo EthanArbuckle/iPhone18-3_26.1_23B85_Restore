@@ -1,43 +1,43 @@
 @interface CKTranscriptAbstractLabelCell
-+ (CGSize)sizeThatFits:(CGSize)a3 attributedText:(id)a4 displayScale:(double)a5;
++ (CGSize)sizeThatFits:(CGSize)fits attributedText:(id)text displayScale:(double)scale;
 - (CGRect)contentAlignmentRect;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKTranscriptAbstractLabelCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKTranscriptAbstractLabelCell)initWithFrame:(CGRect)frame;
 - (NSAttributedString)attributedText;
 - (id)cellView;
-- (void)addFilter:(id)a3;
+- (void)addFilter:(id)filter;
 - (void)clearFilters;
 - (void)layoutSubviewsForAlignmentContents;
 - (void)layoutSubviewsForContents;
 - (void)prepareForReuse;
-- (void)setAttributedText:(id)a3;
-- (void)setWantsContactImageLayout:(BOOL)a3;
-- (void)setWantsOffsetForReplyLine:(BOOL)a3;
+- (void)setAttributedText:(id)text;
+- (void)setWantsContactImageLayout:(BOOL)layout;
+- (void)setWantsOffsetForReplyLine:(BOOL)line;
 @end
 
 @implementation CKTranscriptAbstractLabelCell
 
-- (CKTranscriptAbstractLabelCell)initWithFrame:(CGRect)a3
+- (CKTranscriptAbstractLabelCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CKTranscriptAbstractLabelCell;
-  v3 = [(CKTranscriptCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTranscriptCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[CKUIBehavior sharedBehaviors];
-    v5 = [v4 transcriptTextVibrancyEffect];
-    [(CKEditableCollectionViewCell *)v3 setEffect:v5];
+    transcriptTextVibrancyEffect = [v4 transcriptTextVibrancyEffect];
+    [(CKEditableCollectionViewCell *)v3 setEffect:transcriptTextVibrancyEffect];
   }
 
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CKTranscriptAbstractLabelCell *)self cellView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  cellView = [(CKTranscriptAbstractLabelCell *)self cellView];
+  [cellView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -103,8 +103,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKTranscriptAbstractLabelCell *)self cellView];
-  [v11 sizeThatFits:{v8, 1.79769313e308}];
+  cellView = [(CKTranscriptAbstractLabelCell *)self cellView];
+  [cellView sizeThatFits:{v8, 1.79769313e308}];
   v13 = v12;
   v15 = v14;
 
@@ -126,12 +126,12 @@
   v17 = floor((v6 + (v10 - v15) * 0.5) * v16);
   v18 = *(MEMORY[0x1E69DC5C0] + 8);
   v19 = *(MEMORY[0x1E69DC5C0] + 24);
-  v20 = [(CKTranscriptAbstractLabelCell *)self cellView];
+  cellView2 = [(CKTranscriptAbstractLabelCell *)self cellView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v22 = [(CKTranscriptAbstractLabelCell *)self cellView];
-  v23 = v22;
+  cellView3 = [(CKTranscriptAbstractLabelCell *)self cellView];
+  v23 = cellView3;
   if ((isKindOfClass & 1) == 0)
   {
     objc_opt_class();
@@ -142,19 +142,19 @@
       goto LABEL_12;
     }
 
-    v22 = [(CKTranscriptAbstractLabelCell *)self cellView];
-    v23 = v22;
+    cellView3 = [(CKTranscriptAbstractLabelCell *)self cellView];
+    v23 = cellView3;
   }
 
-  v25 = [v22 configuration];
-  v26 = [v25 background];
-  [v26 cornerRadius];
+  configuration = [cellView3 configuration];
+  background = [configuration background];
+  [background cornerRadius];
   v28 = v27;
 
   if (v28 > 0.0)
   {
-    v29 = [v23 configuration];
-    [v29 contentInsets];
+    configuration2 = [v23 configuration];
+    [configuration2 contentInsets];
     v18 = v30;
     v19 = v31;
   }
@@ -188,7 +188,7 @@ LABEL_12:
     v37 = v39 + v40 - v18;
   }
 
-  v41 = [(CKTranscriptAbstractLabelCell *)self cellView];
+  cellView4 = [(CKTranscriptAbstractLabelCell *)self cellView];
   if (CKMainScreenScale_once_83 != -1)
   {
     [CKTranscriptAbstractLabelCell layoutSubviewsForAlignmentContents];
@@ -204,7 +204,7 @@ LABEL_12:
     v42 = *&CKMainScreenScale_sMainScreenScale_83;
   }
 
-  [v41 setFrame:{round(v37 * v42) / v42, round(v17 / v16 * v42) / v42, round(v13 * v42) / v42, round(v15 * v42) / v42}];
+  [cellView4 setFrame:{round(v37 * v42) / v42, round(v17 / v16 * v42) / v42, round(v13 * v42) / v42, round(v15 * v42) / v42}];
 }
 
 - (CGRect)contentAlignmentRect
@@ -237,14 +237,14 @@ LABEL_12:
   return result;
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
   v8.receiver = self;
   v8.super_class = CKTranscriptAbstractLabelCell;
-  v4 = a3;
-  [(CKEditableCollectionViewCell *)&v8 addFilter:v4];
+  filterCopy = filter;
+  [(CKEditableCollectionViewCell *)&v8 addFilter:filterCopy];
   v5 = [(CKTranscriptAbstractLabelCell *)self cellView:v8.receiver];
-  [v4 contentAlpha];
+  [filterCopy contentAlpha];
   v7 = v6;
 
   [v5 setAlpha:v7];
@@ -255,24 +255,24 @@ LABEL_12:
   v4.receiver = self;
   v4.super_class = CKTranscriptAbstractLabelCell;
   [(CKEditableCollectionViewCell *)&v4 clearFilters];
-  v3 = [(CKTranscriptAbstractLabelCell *)self cellView];
-  [v3 setAlpha:1.0];
+  cellView = [(CKTranscriptAbstractLabelCell *)self cellView];
+  [cellView setAlpha:1.0];
 }
 
-- (void)setWantsContactImageLayout:(BOOL)a3
+- (void)setWantsContactImageLayout:(BOOL)layout
 {
-  if (self->_wantsContactImageLayout != a3)
+  if (self->_wantsContactImageLayout != layout)
   {
-    self->_wantsContactImageLayout = a3;
+    self->_wantsContactImageLayout = layout;
     [(CKTranscriptAbstractLabelCell *)self setNeedsLayout];
   }
 }
 
-- (void)setWantsOffsetForReplyLine:(BOOL)a3
+- (void)setWantsOffsetForReplyLine:(BOOL)line
 {
-  if (self->_wantsOffsetForReplyLine != a3)
+  if (self->_wantsOffsetForReplyLine != line)
   {
-    self->_wantsOffsetForReplyLine = a3;
+    self->_wantsOffsetForReplyLine = line;
     [(CKTranscriptAbstractLabelCell *)self setNeedsLayout];
   }
 }
@@ -285,9 +285,9 @@ LABEL_12:
   [(CKTranscriptAbstractLabelCell *)self setWantsOffsetForReplyLine:0];
 }
 
-+ (CGSize)sizeThatFits:(CGSize)a3 attributedText:(id)a4 displayScale:(double)a5
++ (CGSize)sizeThatFits:(CGSize)fits attributedText:(id)text displayScale:(double)scale
 {
-  v6 = a4;
+  textCopy = text;
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D930];
   v9 = MEMORY[0x1E696AEC0];
@@ -299,9 +299,9 @@ LABEL_12:
   objc_exception_throw(v12);
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = MEMORY[0x1E696AEC0];

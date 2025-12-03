@@ -24,8 +24,8 @@
     v6 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_283CC3E60];
     [(NSXPCConnection *)v3->_connection setRemoteObjectInterface:v6];
 
-    v7 = [(NSXPCConnection *)v3->_connection remoteObjectInterface];
-    v8 = [v7 hk_setArrayOfClass:objc_opt_class() forSelector:sel_handleJournaledSharingEntries_completion_ argumentIndex:0 ofReply:0];
+    remoteObjectInterface = [(NSXPCConnection *)v3->_connection remoteObjectInterface];
+    v8 = [remoteObjectInterface hk_setArrayOfClass:objc_opt_class() forSelector:sel_handleJournaledSharingEntries_completion_ argumentIndex:0 ofReply:0];
   }
 
   return v3;

@@ -1,26 +1,26 @@
 @interface SBHorizontalScrollFailureTriangleView
-- (SBHorizontalScrollFailureTriangleView)initWithStyle:(int)a3 recognizer:(id)a4 forPoint:(CGPoint)a5 withMaxVerticalOffset:(double)a6 inView:(id)a7 pointingRight:(BOOL)a8;
-- (void)drawRect:(CGRect)a3;
-- (void)setContentColor:(id)a3;
+- (SBHorizontalScrollFailureTriangleView)initWithStyle:(int)style recognizer:(id)recognizer forPoint:(CGPoint)point withMaxVerticalOffset:(double)offset inView:(id)view pointingRight:(BOOL)right;
+- (void)drawRect:(CGRect)rect;
+- (void)setContentColor:(id)color;
 @end
 
 @implementation SBHorizontalScrollFailureTriangleView
 
-- (SBHorizontalScrollFailureTriangleView)initWithStyle:(int)a3 recognizer:(id)a4 forPoint:(CGPoint)a5 withMaxVerticalOffset:(double)a6 inView:(id)a7 pointingRight:(BOOL)a8
+- (SBHorizontalScrollFailureTriangleView)initWithStyle:(int)style recognizer:(id)recognizer forPoint:(CGPoint)point withMaxVerticalOffset:(double)offset inView:(id)view pointingRight:(BOOL)right
 {
-  y = a5.y;
-  x = a5.x;
-  v15 = a4;
-  v16 = a7;
+  y = point.y;
+  x = point.x;
+  recognizerCopy = recognizer;
+  viewCopy = view;
   v28.receiver = self;
   v28.super_class = SBHorizontalScrollFailureTriangleView;
   v17 = [(SBHorizontalScrollFailureTriangleView *)&v28 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v18 = v17;
   if (v17)
   {
-    v17->_style = a3;
-    v17->_pointingRight = a8;
-    [v16 bounds];
+    v17->_style = style;
+    v17->_pointingRight = right;
+    [viewCopy bounds];
     if (v18->_pointingRight)
     {
       v20 = v19 - x;
@@ -38,41 +38,41 @@
 
     if (v18->_style)
     {
-      [v15 _effectiveBottomAngle];
+      [recognizerCopy _effectiveBottomAngle];
       v22 = v20 * tan(v21 * 0.0174532925);
-      v23 = y + a6;
+      v23 = y + offset;
     }
 
     else
     {
-      [v15 _effectiveTopAngle];
+      [recognizerCopy _effectiveTopAngle];
       v22 = v20 * tan(v24 * 0.0174532925);
-      v23 = y - a6 - v22;
+      v23 = y - offset - v22;
     }
 
     [(SBHorizontalScrollFailureTriangleView *)v18 setFrame:x, v23, v20, v22];
-    v25 = [MEMORY[0x277D75348] clearColor];
-    [(SBHorizontalScrollFailureTriangleView *)v18 setBackgroundColor:v25];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SBHorizontalScrollFailureTriangleView *)v18 setBackgroundColor:clearColor];
 
-    v26 = [MEMORY[0x277D75348] yellowColor];
-    [(SBHorizontalScrollFailureTriangleView *)v18 setContentColor:v26];
+    yellowColor = [MEMORY[0x277D75348] yellowColor];
+    [(SBHorizontalScrollFailureTriangleView *)v18 setContentColor:yellowColor];
   }
 
   return v18;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v4 = [MEMORY[0x277D75208] bezierPath];
+  bezierPath = [MEMORY[0x277D75208] bezierPath];
   pointingRight = self->_pointingRight;
-  v20 = v4;
+  v20 = bezierPath;
   if (self->_style)
   {
     if (self->_pointingRight)
     {
       v6 = 0.0;
 LABEL_6:
-      [v4 moveToPoint:{0.0, v6}];
+      [bezierPath moveToPoint:{0.0, v6}];
       [(SBHorizontalScrollFailureTriangleView *)self bounds];
       v10 = v9;
       [(SBHorizontalScrollFailureTriangleView *)self bounds];
@@ -94,7 +94,7 @@ LABEL_6:
     [(SBHorizontalScrollFailureTriangleView *)self bounds];
     if (pointingRight)
     {
-      v4 = v20;
+      bezierPath = v20;
       v6 = v8;
       goto LABEL_6;
     }
@@ -115,12 +115,12 @@ LABEL_10:
   [v20 fill];
 }
 
-- (void)setContentColor:(id)a3
+- (void)setContentColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_contentColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_contentColor, a3);
+    objc_storeStrong(&self->_contentColor, color);
     [(SBHorizontalScrollFailureTriangleView *)self setNeedsDisplay];
   }
 }

@@ -1,16 +1,16 @@
 @interface KGMutableGraph
-- (BOOL)_applyEdgeChangeRequests:(id)a3 error:(id *)a4;
-- (BOOL)_applyNodeChangeRequests:(id)a3 error:(id *)a4;
-- (BOOL)_performChangesAndWait:(id)a3 error:(id *)a4;
-- (BOOL)performChangesAndWait:(id)a3 error:(id *)a4;
-- (KGMutableGraph)initWithMutableImplementation:(id)a3 entityFactory:(id)a4;
+- (BOOL)_applyEdgeChangeRequests:(id)requests error:(id *)error;
+- (BOOL)_applyNodeChangeRequests:(id)requests error:(id *)error;
+- (BOOL)_performChangesAndWait:(id)wait error:(id *)error;
+- (BOOL)performChangesAndWait:(id)wait error:(id *)error;
+- (KGMutableGraph)initWithMutableImplementation:(id)implementation entityFactory:(id)factory;
 @end
 
 @implementation KGMutableGraph
 
-- (BOOL)performChangesAndWait:(id)a3 error:(id *)a4
+- (BOOL)performChangesAndWait:(id)wait error:(id *)error
 {
-  v6 = a3;
+  waitCopy = wait;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -28,14 +28,14 @@
   v12[3] = &unk_2797FFB88;
   v14 = &v22;
   v12[4] = self;
-  v8 = v6;
+  v8 = waitCopy;
   v13 = v8;
   v15 = &v16;
   dispatch_sync(transactionQueue, v12);
   v9 = v23;
-  if (a4 && (v23[3] & 1) == 0)
+  if (error && (v23[3] & 1) == 0)
   {
-    *a4 = v17[5];
+    *error = v17[5];
     v9 = v23;
   }
 
@@ -58,56 +58,56 @@ void __46__KGMutableGraph_performChangesAndWait_error___block_invoke(void *a1)
   *(*(a1[6] + 8) + 24) = v5;
 }
 
-- (BOOL)_performChangesAndWait:(id)a3 error:(id *)a4
+- (BOOL)_performChangesAndWait:(id)wait error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(KGMutableGraph *)self mutableImplementation];
-  v8 = [v6 nodesToInsert];
-  v9 = [v7 addNodes:v8 error:a4];
+  waitCopy = wait;
+  mutableImplementation = [(KGMutableGraph *)self mutableImplementation];
+  nodesToInsert = [waitCopy nodesToInsert];
+  v9 = [mutableImplementation addNodes:nodesToInsert error:error];
 
   if (!v9)
   {
     goto LABEL_8;
   }
 
-  v10 = [(KGMutableGraph *)self mutableImplementation];
-  v11 = [v6 edgesToInsert];
-  v12 = [v10 addEdges:v11 error:a4];
+  mutableImplementation2 = [(KGMutableGraph *)self mutableImplementation];
+  edgesToInsert = [waitCopy edgesToInsert];
+  v12 = [mutableImplementation2 addEdges:edgesToInsert error:error];
 
   if (!v12)
   {
     goto LABEL_8;
   }
 
-  v13 = [v6 nodeUpdates];
-  v14 = [(KGMutableGraph *)self _applyNodeChangeRequests:v13 error:a4];
+  nodeUpdates = [waitCopy nodeUpdates];
+  v14 = [(KGMutableGraph *)self _applyNodeChangeRequests:nodeUpdates error:error];
 
   if (!v14)
   {
     goto LABEL_8;
   }
 
-  v15 = [v6 edgeUpdates];
-  v16 = [(KGMutableGraph *)self _applyEdgeChangeRequests:v15 error:a4];
+  edgeUpdates = [waitCopy edgeUpdates];
+  v16 = [(KGMutableGraph *)self _applyEdgeChangeRequests:edgeUpdates error:error];
 
   if (!v16)
   {
     goto LABEL_8;
   }
 
-  v17 = [(KGMutableGraph *)self mutableImplementation];
-  v18 = [v6 edgeIdentifiersToRemove];
-  v19 = [v17 removeEdgesForIdentifiers:v18 error:a4];
+  mutableImplementation3 = [(KGMutableGraph *)self mutableImplementation];
+  edgeIdentifiersToRemove = [waitCopy edgeIdentifiersToRemove];
+  v19 = [mutableImplementation3 removeEdgesForIdentifiers:edgeIdentifiersToRemove error:error];
 
   if (!v19)
   {
     goto LABEL_8;
   }
 
-  v20 = [(KGMutableGraph *)self mutableImplementation];
-  v21 = [v6 nodeIdentifiersToRemove];
-  v22 = [v20 removeNodesForIdentifiers:v21 error:a4];
+  mutableImplementation4 = [(KGMutableGraph *)self mutableImplementation];
+  nodeIdentifiersToRemove = [waitCopy nodeIdentifiersToRemove];
+  v22 = [mutableImplementation4 removeNodesForIdentifiers:nodeIdentifiersToRemove error:error];
 
   if (v22)
   {
@@ -120,7 +120,7 @@ LABEL_8:
     v24 = KGLoggingConnection();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v27 = *a4;
+      v27 = *error;
       v28 = 138412290;
       v29 = v27;
       _os_log_error_impl(&dword_255870000, v24, OS_LOG_TYPE_ERROR, "Error with applying mutations (%@)", &v28, 0xCu);
@@ -129,21 +129,21 @@ LABEL_8:
     v23 = 0;
   }
 
-  [v6 setResolved];
+  [waitCopy setResolved];
 
   v25 = *MEMORY[0x277D85DE8];
   return v23;
 }
 
-- (BOOL)_applyEdgeChangeRequests:(id)a3 error:(id *)a4
+- (BOOL)_applyEdgeChangeRequests:(id)requests error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  requestsCopy = requests;
+  v7 = [requestsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -154,19 +154,19 @@ LABEL_8:
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(requestsCopy);
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 edge];
-        v13 = [v12 identifier];
+        edge = [v11 edge];
+        identifier = [edge identifier];
 
-        v14 = [v11 properties];
-        if (v14)
+        properties = [v11 properties];
+        if (properties)
         {
-          v15 = v14;
-          v16 = [(KGMutableGraph *)self mutableImplementation];
-          v17 = [v16 updateEdgeForIdentifier:v13 withProperties:v15 error:a4];
+          v15 = properties;
+          mutableImplementation = [(KGMutableGraph *)self mutableImplementation];
+          v17 = [mutableImplementation updateEdgeForIdentifier:identifier withProperties:v15 error:error];
 
           if (!v17)
           {
@@ -176,7 +176,7 @@ LABEL_8:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [requestsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v8)
       {
         continue;
@@ -193,15 +193,15 @@ LABEL_12:
   return v18;
 }
 
-- (BOOL)_applyNodeChangeRequests:(id)a3 error:(id *)a4
+- (BOOL)_applyNodeChangeRequests:(id)requests error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  requestsCopy = requests;
+  v7 = [requestsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -212,19 +212,19 @@ LABEL_12:
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(requestsCopy);
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 node];
-        v13 = [v12 identifier];
+        node = [v11 node];
+        identifier = [node identifier];
 
-        v14 = [v11 properties];
-        if (v14)
+        properties = [v11 properties];
+        if (properties)
         {
-          v15 = v14;
-          v16 = [(KGMutableGraph *)self mutableImplementation];
-          v17 = [v16 updateNodeForIdentifier:v13 withProperties:v15 error:a4];
+          v15 = properties;
+          mutableImplementation = [(KGMutableGraph *)self mutableImplementation];
+          v17 = [mutableImplementation updateNodeForIdentifier:identifier withProperties:v15 error:error];
 
           if (!v17)
           {
@@ -234,7 +234,7 @@ LABEL_12:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [requestsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v8)
       {
         continue;
@@ -251,11 +251,11 @@ LABEL_12:
   return v18;
 }
 
-- (KGMutableGraph)initWithMutableImplementation:(id)a3 entityFactory:(id)a4
+- (KGMutableGraph)initWithMutableImplementation:(id)implementation entityFactory:(id)factory
 {
   v8.receiver = self;
   v8.super_class = KGMutableGraph;
-  v4 = [(KGGraph *)&v8 initWithImplementation:a3 entityFactory:a4];
+  v4 = [(KGGraph *)&v8 initWithImplementation:implementation entityFactory:factory];
   if (v4)
   {
     v5 = dispatch_queue_create("com.apple.kgdb.changes", 0);

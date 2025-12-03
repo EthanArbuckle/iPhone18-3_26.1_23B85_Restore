@@ -1,10 +1,10 @@
 @interface HDMedicationsCloudSyncStateEntity
-+ (BOOL)updateDataWithStateStorage:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6;
++ (BOOL)updateDataWithStateStorage:(id)storage profile:(id)profile transaction:(id)transaction error:(id *)error;
 + (HDStateSyncEntitySchema)stateEntitySchema;
-+ (__CFString)_stringFromSyncResult:(uint64_t)a1;
++ (__CFString)_stringFromSyncResult:(uint64_t)result;
 + (id)_timeWindow;
 + (id)_windowUpdaterConfiguration;
-+ (void)syncDidFinishWithResult:(int64_t)a3 stateStore:(id)a4 profile:(id)a5;
++ (void)syncDidFinishWithResult:(int64_t)result stateStore:(id)store profile:(id)profile;
 - (HDMedicationsCloudSyncStateEntity)init;
 @end
 
@@ -38,35 +38,35 @@
   return v5;
 }
 
-+ (BOOL)updateDataWithStateStorage:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)updateDataWithStateStorage:(id)storage profile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v62 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storageCopy = storage;
+  profileCopy = profile;
+  transactionCopy = transaction;
   v12 = objc_alloc_init(HDCloudSyncStateUpdaterMedicationDelegate);
   v55 = 0;
-  v13 = [MEMORY[0x277D10600] updateDataWithStateStore:v9 delegate:v12 profile:v10 transaction:v11 error:&v55];
+  v13 = [MEMORY[0x277D10600] updateDataWithStateStore:storageCopy delegate:v12 profile:profileCopy transaction:transactionCopy error:&v55];
   v14 = v55;
   if (v13)
   {
-    v51 = a6;
+    errorCopy = error;
     v15 = objc_alloc_init(HDCloudSyncStateUpdaterMedsListDelegate);
     v54 = 0;
-    v16 = [MEMORY[0x277D10600] updateDataWithStateStore:v9 delegate:v15 profile:v10 transaction:v11 error:&v54];
+    v16 = [MEMORY[0x277D10600] updateDataWithStateStore:storageCopy delegate:v15 profile:profileCopy transaction:transactionCopy error:&v54];
     v17 = v54;
     v52 = v17;
     if (v16)
     {
       v18 = objc_alloc_init(HDCloudSyncStateUpdaterMedicationScheduleDelegate);
       v53 = 0;
-      v19 = [MEMORY[0x277D10600] updateDataWithStateStore:v9 delegate:v18 profile:v10 transaction:v11 error:&v53];
+      v19 = [MEMORY[0x277D10600] updateDataWithStateStore:storageCopy delegate:v18 profile:profileCopy transaction:transactionCopy error:&v53];
       v20 = v53;
       v50 = v20;
       if (v19)
       {
         v48 = +[HDMedicationsCloudSyncStateEntity _windowUpdaterConfiguration];
-        v21 = [MEMORY[0x277D105F0] updateDataWithStateStorage:v9 configuration:? profile:? transaction:? error:?];
+        v21 = [MEMORY[0x277D105F0] updateDataWithStateStorage:storageCopy configuration:? profile:? transaction:? error:?];
         v49 = 0;
         _HKInitializeLogging();
         v22 = HKLogMedication();
@@ -100,10 +100,10 @@
           v23 = v36;
           if (v36)
           {
-            if (v51)
+            if (errorCopy)
             {
               v37 = v36;
-              *v51 = v23;
+              *errorCopy = v23;
             }
 
             else
@@ -138,11 +138,11 @@
       v34 = v33;
       if (v33)
       {
-        if (v51)
+        if (errorCopy)
         {
           v35 = v33;
           v21 = 0;
-          *v51 = v34;
+          *errorCopy = v34;
 LABEL_35:
 
           goto LABEL_36;
@@ -175,11 +175,11 @@ LABEL_35:
     v18 = v29;
     if (v29)
     {
-      if (v51)
+      if (errorCopy)
       {
         v30 = v29;
         v21 = 0;
-        *v51 = v18;
+        *errorCopy = v18;
 LABEL_36:
 
         goto LABEL_37;
@@ -196,12 +196,12 @@ LABEL_36:
   v25 = HKLogMedication();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
-    v38 = a6;
+    errorCopy2 = error;
     v39 = objc_opt_class();
     v40 = objc_opt_class();
     *buf = 138543874;
     v57 = v39;
-    a6 = v38;
+    error = errorCopy2;
     v58 = 2114;
     v59 = v40;
     v60 = 2114;
@@ -215,7 +215,7 @@ LABEL_36:
     goto LABEL_23;
   }
 
-  if (!a6)
+  if (!error)
   {
     _HKLogDroppedError();
 LABEL_23:
@@ -225,7 +225,7 @@ LABEL_23:
 
   v26 = v15;
   v21 = 0;
-  *a6 = v15;
+  *error = v15;
 LABEL_37:
 
   v43 = *MEMORY[0x277D85DE8];
@@ -236,39 +236,39 @@ LABEL_37:
 {
   objc_opt_self();
   v0 = objc_alloc(MEMORY[0x277D105F8]);
-  v1 = [MEMORY[0x277CCD658] medicationDoseEventType];
-  v2 = [MEMORY[0x277D106A8] medicationDoseEventSyncEntityClass];
+  medicationDoseEventType = [MEMORY[0x277CCD658] medicationDoseEventType];
+  medicationDoseEventSyncEntityClass = [MEMORY[0x277D106A8] medicationDoseEventSyncEntityClass];
   v3 = +[HDMedicationsCloudSyncStateEntity _timeWindow];
   v4 = HKLogMedication();
-  v5 = [v0 initWithDomain:@"CloudSyncStateEntityDomainMedications" key:@"MedicationsCloudSyncStateEntityDoseEventWindowKey" sampleOriginKey:@"MedicationsCloudSyncStateEntitySampleOriginKey" sampleType:v1 syncEntityClass:v2 timeWindow:v3 loggingCategory:v4 sampleUUIDsFunction:MEMORY[0x277D10438]];
+  v5 = [v0 initWithDomain:@"CloudSyncStateEntityDomainMedications" key:@"MedicationsCloudSyncStateEntityDoseEventWindowKey" sampleOriginKey:@"MedicationsCloudSyncStateEntitySampleOriginKey" sampleType:medicationDoseEventType syncEntityClass:medicationDoseEventSyncEntityClass timeWindow:v3 loggingCategory:v4 sampleUUIDsFunction:MEMORY[0x277D10438]];
 
   return v5;
 }
 
-+ (void)syncDidFinishWithResult:(int64_t)a3 stateStore:(id)a4 profile:(id)a5
++ (void)syncDidFinishWithResult:(int64_t)result stateStore:(id)store profile:(id)profile
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  profileCopy = profile;
   _HKInitializeLogging();
   v8 = HKLogMedication();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
-    v10 = [(HDMedicationsCloudSyncStateEntity *)a1 _stringFromSyncResult:a3];
-    v11 = [v7 profileIdentifier];
+    v10 = [(HDMedicationsCloudSyncStateEntity *)self _stringFromSyncResult:result];
+    profileIdentifier = [profileCopy profileIdentifier];
     v13 = 138543874;
     v14 = v9;
     v15 = 2114;
     v16 = v10;
     v17 = 2114;
-    v18 = v11;
+    v18 = profileIdentifier;
     _os_log_impl(&dword_25181C000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] state sync result '%{public}@' for %{public}@", &v13, 0x20u);
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (__CFString)_stringFromSyncResult:(uint64_t)a1
++ (__CFString)_stringFromSyncResult:(uint64_t)result
 {
   objc_opt_self();
   if (a2 == 1)
@@ -292,8 +292,8 @@ LABEL_37:
 + (id)_timeWindow
 {
   objc_opt_self();
-  v0 = [MEMORY[0x277CBEAA8] date];
-  v1 = [v0 dateByAddingTimeInterval:-172800.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v1 = [date dateByAddingTimeInterval:-172800.0];
   v2 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v1 duration:172800.0];
 
   return v2;

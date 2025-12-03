@@ -2,7 +2,7 @@
 - (CGFloat)rotation;
 - (CGFloat)velocity;
 - (CGPoint)anchorPoint;
-- (CGPoint)locationInView:(id)a3;
+- (CGPoint)locationInView:(id)view;
 - (double)_postRecognitionWeight;
 - (double)_preRecognitionWeight;
 - (id)_driver;
@@ -112,15 +112,15 @@
   }
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v5 = [(UIGestureRecognizer *)self _activeTouchesEvent];
+  _activeTouchesEvent = [(UIGestureRecognizer *)self _activeTouchesEvent];
 
-  if (v5)
+  if (_activeTouchesEvent)
   {
     v12.receiver = self;
     v12.super_class = UIRotationGestureRecognizer;
-    [(UIGestureRecognizer *)&v12 locationInView:a3];
+    [(UIGestureRecognizer *)&v12 locationInView:view];
   }
 
   else
@@ -139,7 +139,7 @@
       v10 = 0.0;
     }
 
-    [(UIGestureRecognizer *)self _convertPoint:a3 fromSceneReferenceCoordinatesToView:v10, v11];
+    [(UIGestureRecognizer *)self _convertPoint:view fromSceneReferenceCoordinatesToView:v10, v11];
   }
 
   result.y = v7;

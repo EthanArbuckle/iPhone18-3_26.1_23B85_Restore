@@ -1,15 +1,15 @@
 @interface SXComponentViewEngine
-- (SXComponentViewEngine)initWithPostProcessorManager:(id)a3;
-- (id)componentViewForComponent:(id)a3;
-- (void)addFactory:(id)a3;
-- (void)removeFactory:(id)a3;
+- (SXComponentViewEngine)initWithPostProcessorManager:(id)manager;
+- (id)componentViewForComponent:(id)component;
+- (void)addFactory:(id)factory;
+- (void)removeFactory:(id)factory;
 @end
 
 @implementation SXComponentViewEngine
 
-- (SXComponentViewEngine)initWithPostProcessorManager:(id)a3
+- (SXComponentViewEngine)initWithPostProcessorManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = SXComponentViewEngine;
   v6 = [(SXComponentViewEngine *)&v10 init];
@@ -19,47 +19,47 @@
     factoryMatching = v6->_factoryMatching;
     v6->_factoryMatching = v7;
 
-    objc_storeStrong(&v6->_postProcessorManager, a3);
+    objc_storeStrong(&v6->_postProcessorManager, manager);
   }
 
   return v6;
 }
 
-- (id)componentViewForComponent:(id)a3
+- (id)componentViewForComponent:(id)component
 {
-  v4 = a3;
-  v5 = [(SXComponentViewEngine *)self factoryMatching];
-  v6 = [v4 type];
-  v7 = +[SXComponentTypeDescribing descriptionWithType:role:](SXComponentTypeDescribing, "descriptionWithType:role:", v6, [v4 role]);
-  v8 = [v5 match:v7];
+  componentCopy = component;
+  factoryMatching = [(SXComponentViewEngine *)self factoryMatching];
+  type = [componentCopy type];
+  v7 = +[SXComponentTypeDescribing descriptionWithType:role:](SXComponentTypeDescribing, "descriptionWithType:role:", type, [componentCopy role]);
+  v8 = [factoryMatching match:v7];
 
-  v9 = [v8 componentViewForComponent:v4];
+  v9 = [v8 componentViewForComponent:componentCopy];
   if (v9)
   {
-    v10 = [(SXComponentViewEngine *)self postProcessorManager];
-    [v10 processComponent:v4 view:v9];
+    postProcessorManager = [(SXComponentViewEngine *)self postProcessorManager];
+    [postProcessorManager processComponent:componentCopy view:v9];
   }
 
   return v9;
 }
 
-- (void)addFactory:(id)a3
+- (void)addFactory:(id)factory
 {
-  if (a3)
+  if (factory)
   {
-    v4 = a3;
-    v5 = [(SXComponentViewEngine *)self factoryMatching];
-    [v5 addDescription:v4];
+    factoryCopy = factory;
+    factoryMatching = [(SXComponentViewEngine *)self factoryMatching];
+    [factoryMatching addDescription:factoryCopy];
   }
 }
 
-- (void)removeFactory:(id)a3
+- (void)removeFactory:(id)factory
 {
-  if (a3)
+  if (factory)
   {
-    v4 = a3;
-    v5 = [(SXComponentViewEngine *)self factoryMatching];
-    [v5 addDescription:v4];
+    factoryCopy = factory;
+    factoryMatching = [(SXComponentViewEngine *)self factoryMatching];
+    [factoryMatching addDescription:factoryCopy];
   }
 }
 

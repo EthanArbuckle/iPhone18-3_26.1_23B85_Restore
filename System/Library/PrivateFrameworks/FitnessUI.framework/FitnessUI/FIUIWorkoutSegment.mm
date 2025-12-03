@@ -1,28 +1,28 @@
 @interface FIUIWorkoutSegment
 + (id)_decimalNumberFormatter;
 - (id)description;
-- (id)formattedActiveEnergyValueForUnit:(id)a3;
-- (id)formattedDistanceValueForUnit:(id)a3;
-- (id)formattedDurationValueWithFormattingManager:(id)a3;
-- (id)formattedPaceUsingFormatType:(int64_t)a3 formattingManager:(id)a4 distanceType:(unint64_t)a5;
+- (id)formattedActiveEnergyValueForUnit:(id)unit;
+- (id)formattedDistanceValueForUnit:(id)unit;
+- (id)formattedDurationValueWithFormattingManager:(id)manager;
+- (id)formattedPaceUsingFormatType:(int64_t)type formattingManager:(id)manager distanceType:(unint64_t)distanceType;
 @end
 
 @implementation FIUIWorkoutSegment
 
-- (id)formattedDurationValueWithFormattingManager:(id)a3
+- (id)formattedDurationValueWithFormattingManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   [(FIUIWorkoutSegment *)self elapsedTime];
-  v5 = [v4 stringWithDuration:3 durationFormat:?];
+  v5 = [managerCopy stringWithDuration:3 durationFormat:?];
 
   return v5;
 }
 
-- (id)formattedActiveEnergyValueForUnit:(id)a3
+- (id)formattedActiveEnergyValueForUnit:(id)unit
 {
-  v4 = a3;
-  v5 = [(FIUIWorkoutSegment *)self activeEnergy];
-  [v5 doubleValueForUnit:v4];
+  unitCopy = unit;
+  activeEnergy = [(FIUIWorkoutSegment *)self activeEnergy];
+  [activeEnergy doubleValueForUnit:unitCopy];
   v7 = v6;
 
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:v7];
@@ -56,35 +56,35 @@ uint64_t __45__FIUIWorkoutSegment__decimalNumberFormatter__block_invoke()
   return [v2 setNumberStyle:1];
 }
 
-- (id)formattedDistanceValueForUnit:(id)a3
+- (id)formattedDistanceValueForUnit:(id)unit
 {
-  v4 = a3;
-  v5 = [(FIUIWorkoutSegment *)self distance];
-  [v5 doubleValueForUnit:v4];
+  unitCopy = unit;
+  distance = [(FIUIWorkoutSegment *)self distance];
+  [distance doubleValueForUnit:unitCopy];
   v7 = v6;
 
-  v8 = [objc_opt_class() _decimalNumberFormatter];
+  _decimalNumberFormatter = [objc_opt_class() _decimalNumberFormatter];
   v9 = [MEMORY[0x1E696AD98] numberWithDouble:v7];
-  v10 = [v8 stringFromNumber:v9];
+  v10 = [_decimalNumberFormatter stringFromNumber:v9];
 
   return v10;
 }
 
-- (id)formattedPaceUsingFormatType:(int64_t)a3 formattingManager:(id)a4 distanceType:(unint64_t)a5
+- (id)formattedPaceUsingFormatType:(int64_t)type formattingManager:(id)manager distanceType:(unint64_t)distanceType
 {
-  v8 = a4;
+  managerCopy = manager;
   [(FIUIWorkoutSegment *)self elapsedTime];
   v10 = v9;
   if (fabs(v9) < 2.22044605e-16)
   {
-    v11 = [(FIUIWorkoutSegment *)self endDate];
-    v12 = [(FIUIWorkoutSegment *)self startDate];
-    [v11 timeIntervalSinceDate:v12];
+    endDate = [(FIUIWorkoutSegment *)self endDate];
+    startDate = [(FIUIWorkoutSegment *)self startDate];
+    [endDate timeIntervalSinceDate:startDate];
     v10 = v13;
   }
 
-  v14 = [(FIUIWorkoutSegment *)self distance];
-  v15 = [v8 localizedPaceStringWithDistance:v14 overDuration:a3 paceFormat:a5 distanceType:v10];
+  distance = [(FIUIWorkoutSegment *)self distance];
+  v15 = [managerCopy localizedPaceStringWithDistance:distance overDuration:type paceFormat:distanceType distanceType:v10];
 
   return v15;
 }
@@ -98,10 +98,10 @@ uint64_t __45__FIUIWorkoutSegment__decimalNumberFormatter__block_invoke()
   v5 = MEMORY[0x1E696AD98];
   [(FIUIWorkoutSegment *)self elapsedTime];
   v7 = [v5 numberWithDouble:v6 / 60.0];
-  v8 = [MEMORY[0x1E696C510] kilocalorieUnit];
-  v9 = [(FIUIWorkoutSegment *)self formattedActiveEnergyValueForUnit:v8];
-  v10 = [MEMORY[0x1E696C510] mileUnit];
-  v11 = [(FIUIWorkoutSegment *)self formattedDistanceValueForUnit:v10];
+  kilocalorieUnit = [MEMORY[0x1E696C510] kilocalorieUnit];
+  v9 = [(FIUIWorkoutSegment *)self formattedActiveEnergyValueForUnit:kilocalorieUnit];
+  mileUnit = [MEMORY[0x1E696C510] mileUnit];
+  v11 = [(FIUIWorkoutSegment *)self formattedDistanceValueForUnit:mileUnit];
   v12 = [v3 stringWithFormat:@"%@: Duration: %@ min Energy: %@; Distance: %@", v4, v7, v9, v11];;
 
   return v12;

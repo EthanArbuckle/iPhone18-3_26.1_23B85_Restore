@@ -1,37 +1,37 @@
 @interface GLKEffect
-+ (BOOL)parseXMLFile:(id)a3 rootNode:(id)a4;
-+ (id)programInfoLogForName:(unsigned int)a3 effectLabel:(id)a4 msg:(const char *)a5;
-+ (id)shaderInfoLogForName:(unsigned int)a3 effectLabel:(id)a4 msg:(const char *)a5;
++ (BOOL)parseXMLFile:(id)file rootNode:(id)node;
++ (id)programInfoLogForName:(unsigned int)name effectLabel:(id)label msg:(const char *)msg;
++ (id)shaderInfoLogForName:(unsigned int)name effectLabel:(id)label msg:(const char *)msg;
 + (void)initialize;
 + (void)initializeStaticMasks;
-+ (void)setStaticMasksWithVshRoot:(id)a3 fshRoot:(id)a4;
-+ (void)unrollLoopNodesForStaticTreeWithRoot:(id)a3;
-- (BOOL)includeFshShaderTextForRootNode:(id)a3;
-- (BOOL)includeShaderTextForRootNode:(id)a3;
-- (BOOL)includeVshShaderTextForRootNode:(id)a3;
++ (void)setStaticMasksWithVshRoot:(id)root fshRoot:(id)fshRoot;
++ (void)unrollLoopNodesForStaticTreeWithRoot:(id)root;
+- (BOOL)includeFshShaderTextForRootNode:(id)node;
+- (BOOL)includeShaderTextForRootNode:(id)node;
+- (BOOL)includeVshShaderTextForRootNode:(id)node;
 - (BOOL)useTexCoordAttrib;
 - (GLKBigInt_s)prevFshMask;
 - (GLKBigInt_s)prevVshMask;
 - (GLKEffect)init;
-- (GLKEffect)initWithPropertyArray:(id)a3;
+- (GLKEffect)initWithPropertyArray:(id)array;
 - (_GLKVector4)baseLightingColor;
 - (_GLKVector4)lightModelAmbientColor;
 - (void)addTransformProperty;
 - (void)bind;
-- (void)createAndUseProgramWithShadingHash:(id)a3;
+- (void)createAndUseProgramWithShadingHash:(id)hash;
 - (void)dealloc;
 - (void)initializeMasks;
-- (void)setBaseLightingColor:(_GLKVector4)a3;
-- (void)setColorMaterialEnabled:(unsigned __int8)a3;
-- (void)setLightModelAmbientColor:(_GLKVector4)a3;
-- (void)setLightModelTwoSided:(unsigned __int8)a3;
-- (void)setPerPixelLightingEnabled:(unsigned __int8)a3;
-- (void)setPerVertexLightingEnabled:(unsigned __int8)a3;
+- (void)setBaseLightingColor:(_GLKVector4)color;
+- (void)setColorMaterialEnabled:(unsigned __int8)enabled;
+- (void)setLightModelAmbientColor:(_GLKVector4)color;
+- (void)setLightModelTwoSided:(unsigned __int8)sided;
+- (void)setPerPixelLightingEnabled:(unsigned __int8)enabled;
+- (void)setPerVertexLightingEnabled:(unsigned __int8)enabled;
 - (void)setShaderBindings;
 - (void)setTextureIndices;
-- (void)setTextureOrder:(id)a3;
-- (void)updateFshStringsWithRoot:(id)a3 enabled:(GLKBigInt_s)a4;
-- (void)updateVshStringsWithRoot:(id)a3 enabled:(GLKBigInt_s)a4;
+- (void)setTextureOrder:(id)order;
+- (void)updateFshStringsWithRoot:(id)root enabled:(GLKBigInt_s)enabled;
+- (void)updateVshStringsWithRoot:(id)root enabled:(GLKBigInt_s)enabled;
 @end
 
 @implementation GLKEffect
@@ -154,28 +154,28 @@
   xmmword_27DF40500 = 0u;
 }
 
-+ (BOOL)parseXMLFile:(id)a3 rootNode:(id)a4
++ (BOOL)parseXMLFile:(id)file rootNode:(id)node
 {
-  v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:a3];
+  v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:file];
   v7 = [objc_alloc(MEMORY[0x277CCAE70]) initWithContentsOfURL:v6];
-  [v7 setDelegate:a4];
+  [v7 setDelegate:node];
   [v7 setShouldResolveExternalEntities:1];
-  v8 = [v7 parse];
+  parse = [v7 parse];
 
-  if (v8)
+  if (parse)
   {
-    [a1 unrollLoopNodesForStaticTreeWithRoot:a4];
+    [self unrollLoopNodesForStaticTreeWithRoot:node];
   }
 
-  return v8;
+  return parse;
 }
 
-+ (void)unrollLoopNodesForStaticTreeWithRoot:(id)a3
++ (void)unrollLoopNodesForStaticTreeWithRoot:(id)root
 {
   v39 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = 0x278A57000uLL;
-  [GLKShaderBlockNode buildUnrollNodeArray:a3 array:v4];
+  [GLKShaderBlockNode buildUnrollNodeArray:root array:v4];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
@@ -197,36 +197,36 @@
 
         v30 = v7;
         v8 = *(*(&v34 + 1) + 8 * v7);
-        v9 = [v8 label];
+        label = [v8 label];
         v32 = v8;
-        v10 = [v8 unrollCt];
-        if (v10 >= 2)
+        unrollCt = [v8 unrollCt];
+        if (unrollCt >= 2)
         {
           v11 = 1;
           v12 = v8;
-          v31 = v10;
+          v31 = unrollCt;
           do
           {
             v33 = v12;
             v12 = [*(v5 + 3056) copyTreeWithRootButNotSiblings:v32 parent:{objc_msgSend(v32, "parent")}];
             [v12 setIndex:v11];
             [v12 setPropertyClass:{objc_msgSend(v32, "propertyClass") + v11}];
-            [v12 setLabel:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", v6, v9, v11)}];
+            [v12 setLabel:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", v6, label, v11)}];
             [v12 setType:1];
             v13 = *(v5 + 3056);
             v14 = v5;
-            v15 = [v12 children];
-            v16 = v9;
+            children = [v12 children];
+            v16 = label;
             v17 = v6;
-            v18 = [v32 loopVar];
-            v19 = [v32 propertyClass];
+            loopVar = [v32 loopVar];
+            propertyClass = [v32 propertyClass];
             v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", v11];
-            v21 = v15;
+            v21 = children;
             v5 = v14;
-            v22 = v18;
+            v22 = loopVar;
             v6 = v17;
-            v9 = v16;
-            [v13 setIndicesForRoot:v21 andReplaceLoopVar:v22 baseLabel:v16 basePropertyClass:v19 usingIndex:v11 indexString:v20];
+            label = v16;
+            [v13 setIndicesForRoot:v21 andReplaceLoopVar:v22 baseLabel:v16 basePropertyClass:propertyClass usingIndex:v11 indexString:v20];
             [*(v14 + 3056) insertNode:v12 afterSibling:v33];
             v11 = (v11 + 1);
           }
@@ -235,10 +235,10 @@
         }
 
         v23 = *(v5 + 3056);
-        v24 = [v32 children];
-        v25 = [v32 loopVar];
-        v26 = [v32 propertyClass];
-        [v23 setIndicesForRoot:v24 andReplaceLoopVar:v25 baseLabel:v9 basePropertyClass:v26 usingIndex:0 indexString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%d", 0)}];
+        children2 = [v32 children];
+        loopVar2 = [v32 loopVar];
+        propertyClass2 = [v32 propertyClass];
+        [v23 setIndicesForRoot:children2 andReplaceLoopVar:loopVar2 baseLabel:label basePropertyClass:propertyClass2 usingIndex:0 indexString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%d", 0)}];
         [v32 setLabel:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", v6, objc_msgSend(v32, "label"), 0)}];
         [v32 setType:1];
         v7 = v30 + 1;
@@ -254,7 +254,7 @@
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (GLKEffect)initWithPropertyArray:(id)a3
+- (GLKEffect)initWithPropertyArray:(id)array
 {
   v35 = *MEMORY[0x277D85DE8];
   v4 = [(GLKEffect *)self init];
@@ -270,7 +270,7 @@
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  v5 = [array countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v5)
   {
     v6 = v5;
@@ -287,7 +287,7 @@
       {
         if (*v30 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(array);
         }
 
         v12 = *(*(&v29 + 1) + 8 * v10);
@@ -359,7 +359,7 @@
       }
 
       while (v6 != v10);
-      v6 = [a3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v6 = [array countByEnumeratingWithState:&v29 objects:v34 count:16];
       v7 = v23;
       if (v6)
       {
@@ -432,11 +432,11 @@ LABEL_31:
   return v4;
 }
 
-- (void)setTextureOrder:(id)a3
+- (void)setTextureOrder:(id)order
 {
-  if (a3)
+  if (order)
   {
-    v5 = [a3 count];
+    v5 = [order count];
     textureOrder = self->_textureOrder;
     if (!textureOrder || (v5 == [(NSArray *)textureOrder count]? (v7 = v5 == 0) : (v7 = 1), v7))
     {
@@ -453,7 +453,7 @@ LABEL_31:
       v10 = 0;
       while (1)
       {
-        v11 = [a3 objectAtIndex:v9];
+        v11 = [order objectAtIndex:v9];
         if (v11 != [(NSArray *)self->_textureOrder objectAtIndex:v9])
         {
           break;
@@ -479,7 +479,7 @@ LABEL_16:
       }
     }
 
-    self->_textureOrder = a3;
+    self->_textureOrder = order;
     goto LABEL_18;
   }
 
@@ -645,56 +645,56 @@ LABEL_11:
   return v3;
 }
 
-+ (id)programInfoLogForName:(unsigned int)a3 effectLabel:(id)a4 msg:(const char *)a5
++ (id)programInfoLogForName:(unsigned int)name effectLabel:(id)label msg:(const char *)msg
 {
   params = 0;
-  glGetProgramiv(a3, 0x8B84u, &params);
+  glGetProgramiv(name, 0x8B84u, &params);
   if (!params)
   {
     return 0;
   }
 
   v8 = malloc_type_malloc(params, 0x100004077774924uLL);
-  glGetProgramInfoLog(a3, params, &params, v8);
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"GLKEffect programInfoLogForName - %s\nEffect: %@\nInformation log:\n%s", a5, a4, v8];
+  glGetProgramInfoLog(name, params, &params, v8);
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"GLKEffect programInfoLogForName - %s\nEffect: %@\nInformation log:\n%s", msg, label, v8];
   free(v8);
   return v9;
 }
 
-+ (id)shaderInfoLogForName:(unsigned int)a3 effectLabel:(id)a4 msg:(const char *)a5
++ (id)shaderInfoLogForName:(unsigned int)name effectLabel:(id)label msg:(const char *)msg
 {
   params = 0;
-  glGetShaderiv(a3, 0x8B84u, &params);
+  glGetShaderiv(name, 0x8B84u, &params);
   if (!params)
   {
     return 0;
   }
 
   v8 = malloc_type_malloc(params, 0x100004077774924uLL);
-  glGetShaderInfoLog(a3, params, &params, v8);
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"GLKEffect shaderInfoLogForName - %s\nEffect: %@\nInformation log:\n%s", a5, a4, v8];
+  glGetShaderInfoLog(name, params, &params, v8);
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"GLKEffect shaderInfoLogForName - %s\nEffect: %@\nInformation log:\n%s", msg, label, v8];
   free(v8);
   return v9;
 }
 
-- (void)setLightModelAmbientColor:(_GLKVector4)a3
+- (void)setLightModelAmbientColor:(_GLKVector4)color
 {
   self->_lightModelAmbientColor.x = v3;
   self->_lightModelAmbientColor.y = v4;
   self->_lightModelAmbientColor.z = v5;
   self->_lightModelAmbientColor.w = v6;
-  v8 = [(GLKEffect *)self dirtyUniforms:*&a3.x]| 2;
+  v8 = [(GLKEffect *)self dirtyUniforms:*&color.x]| 2;
 
   [(GLKEffect *)self setDirtyUniforms:v8];
 }
 
-- (void)setColorMaterialEnabled:(unsigned __int8)a3
+- (void)setColorMaterialEnabled:(unsigned __int8)enabled
 {
-  if (self->_colorMaterialEnabled != a3 || !self->_masksInitialized)
+  if (self->_colorMaterialEnabled != enabled || !self->_masksInitialized)
   {
-    self->_colorMaterialEnabled = a3;
+    self->_colorMaterialEnabled = enabled;
     v3 = &__vshMasks;
-    if (a3)
+    if (enabled)
     {
       v4 = &__vshMasks;
     }
@@ -708,7 +708,7 @@ LABEL_11:
     vshMask = self->_vshMask;
     n1 = vshMask->n1;
     vshMask->n0 |= *v4;
-    if (a3)
+    if (enabled)
     {
       v8 = &__vshMasks + 1;
     }
@@ -719,7 +719,7 @@ LABEL_11:
     }
 
     vshMask->n1 = n1 | *v8;
-    if (a3)
+    if (enabled)
     {
       v9 = &__fshMasks;
     }
@@ -731,7 +731,7 @@ LABEL_11:
 
     v10 = fshMask->n1;
     fshMask->n0 |= *v9;
-    if (a3)
+    if (enabled)
     {
       v11 = &__fshMasks + 1;
     }
@@ -742,14 +742,14 @@ LABEL_11:
     }
 
     fshMask->n1 = v10 | *v11;
-    if (a3)
+    if (enabled)
     {
       v3 = &qword_27DF403D0;
     }
 
     v12 = vshMask->n1;
     vshMask->n0 &= ~*v3;
-    if (a3)
+    if (enabled)
     {
       v13 = &qword_27DF403D8;
     }
@@ -760,7 +760,7 @@ LABEL_11:
     }
 
     vshMask->n1 = v12 & ~*v13;
-    if (a3)
+    if (enabled)
     {
       v14 = &qword_27DF40470;
     }
@@ -772,7 +772,7 @@ LABEL_11:
 
     v15 = fshMask->n1;
     fshMask->n0 &= ~*v14;
-    if (a3)
+    if (enabled)
     {
       v16 = &qword_27DF40478;
     }
@@ -786,26 +786,26 @@ LABEL_11:
   }
 }
 
-- (void)setLightModelTwoSided:(unsigned __int8)a3
+- (void)setLightModelTwoSided:(unsigned __int8)sided
 {
-  if (self->_lightModelTwoSided != a3 || !self->_masksInitialized)
+  if (self->_lightModelTwoSided != sided || !self->_masksInitialized)
   {
-    self->_lightModelTwoSided = a3;
+    self->_lightModelTwoSided = sided;
     _lightModelTwoSidedMask(self);
   }
 }
 
-- (void)setPerVertexLightingEnabled:(unsigned __int8)a3
+- (void)setPerVertexLightingEnabled:(unsigned __int8)enabled
 {
-  if (self->_perVertexLightingEnabled != a3 || !self->_masksInitialized)
+  if (self->_perVertexLightingEnabled != enabled || !self->_masksInitialized)
   {
     _lightStateChanged(self);
   }
 }
 
-- (void)setPerPixelLightingEnabled:(unsigned __int8)a3
+- (void)setPerPixelLightingEnabled:(unsigned __int8)enabled
 {
-  if (self->_perPixelLightingEnabled != a3 || !self->_masksInitialized)
+  if (self->_perPixelLightingEnabled != enabled || !self->_masksInitialized)
   {
     _lightStateChanged(self);
   }
@@ -820,65 +820,65 @@ LABEL_11:
   [(GLKEffect *)self dirtyAllUniforms];
 }
 
-- (void)updateVshStringsWithRoot:(id)a3 enabled:(GLKBigInt_s)a4
+- (void)updateVshStringsWithRoot:(id)root enabled:(GLKBigInt_s)enabled
 {
-  n1 = a4.n1;
-  n0 = a4.n0;
-  if ([a3 propertyClass] == 21 || objc_msgSend(a3, "type") == 2 || (effectShaderArray = self->_effectShaderArray, effectShaderArray[objc_msgSend(a3, "propertyClass")]) && objc_msgSend(self->_effectShaderArray[objc_msgSend(a3, "propertyClass")], "includeVshShaderTextForRootNode:", a3))
+  n1 = enabled.n1;
+  n0 = enabled.n0;
+  if ([root propertyClass] == 21 || objc_msgSend(root, "type") == 2 || (effectShaderArray = self->_effectShaderArray, effectShaderArray[objc_msgSend(root, "propertyClass")]) && objc_msgSend(self->_effectShaderArray[objc_msgSend(root, "propertyClass")], "includeVshShaderTextForRootNode:", root))
   {
-    if ([a3 blockText])
+    if ([root blockText])
     {
-      v9 = [objc_msgSend(a3 "blockText")];
+      v9 = [objc_msgSend(root "blockText")];
       vshStrings = self->_vshStrings;
       numVshStrings = self->_numVshStrings;
       self->_numVshStrings = numVshStrings + 1;
       vshStrings[numVshStrings] = v9;
     }
 
-    if ([a3 children])
+    if ([root children])
     {
-      -[GLKEffect updateVshStringsWithRoot:enabled:](self, "updateVshStringsWithRoot:enabled:", [a3 children], n0, n1);
+      -[GLKEffect updateVshStringsWithRoot:enabled:](self, "updateVshStringsWithRoot:enabled:", [root children], n0, n1);
     }
   }
 
-  if ([a3 next])
+  if ([root next])
   {
-    v12 = [a3 next];
+    next = [root next];
 
-    [(GLKEffect *)self updateVshStringsWithRoot:v12 enabled:n0, n1];
+    [(GLKEffect *)self updateVshStringsWithRoot:next enabled:n0, n1];
   }
 }
 
-- (void)updateFshStringsWithRoot:(id)a3 enabled:(GLKBigInt_s)a4
+- (void)updateFshStringsWithRoot:(id)root enabled:(GLKBigInt_s)enabled
 {
-  n1 = a4.n1;
-  n0 = a4.n0;
-  if ([a3 propertyClass] == 21 || objc_msgSend(a3, "type") == 2 || (effectShaderArray = self->_effectShaderArray, effectShaderArray[objc_msgSend(a3, "propertyClass")]) && objc_msgSend(self->_effectShaderArray[objc_msgSend(a3, "propertyClass")], "includeFshShaderTextForRootNode:", a3))
+  n1 = enabled.n1;
+  n0 = enabled.n0;
+  if ([root propertyClass] == 21 || objc_msgSend(root, "type") == 2 || (effectShaderArray = self->_effectShaderArray, effectShaderArray[objc_msgSend(root, "propertyClass")]) && objc_msgSend(self->_effectShaderArray[objc_msgSend(root, "propertyClass")], "includeFshShaderTextForRootNode:", root))
   {
-    if ([a3 blockText])
+    if ([root blockText])
     {
-      v9 = [objc_msgSend(a3 "blockText")];
+      v9 = [objc_msgSend(root "blockText")];
       fshStrings = self->_fshStrings;
       numFshStrings = self->_numFshStrings;
       self->_numFshStrings = numFshStrings + 1;
       fshStrings[numFshStrings] = v9;
     }
 
-    if ([a3 children])
+    if ([root children])
     {
-      -[GLKEffect updateFshStringsWithRoot:enabled:](self, "updateFshStringsWithRoot:enabled:", [a3 children], n0, n1);
+      -[GLKEffect updateFshStringsWithRoot:enabled:](self, "updateFshStringsWithRoot:enabled:", [root children], n0, n1);
     }
   }
 
-  if ([a3 next])
+  if ([root next])
   {
-    v12 = [a3 next];
+    next = [root next];
 
-    [(GLKEffect *)self updateFshStringsWithRoot:v12 enabled:n0, n1];
+    [(GLKEffect *)self updateFshStringsWithRoot:next enabled:n0, n1];
   }
 }
 
-- (void)createAndUseProgramWithShadingHash:(id)a3
+- (void)createAndUseProgramWithShadingHash:(id)hash
 {
   v74 = *MEMORY[0x277D85DE8];
   if (!self->_masksInitialized)
@@ -893,32 +893,32 @@ LABEL_11:
   {
     params = 0;
     glGetIntegerv(0x8B8Du, &params);
-    v5 = [(NSMutableDictionary *)self->_programHash keyEnumerator];
-    v6 = [v5 nextObject];
-    if (v6)
+    keyEnumerator = [(NSMutableDictionary *)self->_programHash keyEnumerator];
+    nextObject = [keyEnumerator nextObject];
+    if (nextObject)
     {
-      v7 = v6;
+      nextObject2 = nextObject;
       do
       {
-        v8 = [-[NSMutableDictionary objectForKey:](self->_programHash objectForKey:{v7), "intValue"}];
+        v8 = [-[NSMutableDictionary objectForKey:](self->_programHash objectForKey:{nextObject2), "intValue"}];
         if (v8 != params)
         {
           glDeleteProgram(v8);
         }
 
-        v7 = [v5 nextObject];
+        nextObject2 = [keyEnumerator nextObject];
       }
 
-      while (v7);
+      while (nextObject2);
     }
 
     [(NSMutableDictionary *)self->_programHash removeAllObjects];
-    [a3 purgeAllShaders];
+    [hash purgeAllShaders];
     __hashedShaders = 0;
   }
 
   v9 = [[GLKHashableBigInt alloc] initWithBigInt:self->_vshMask];
-  v10 = [a3 compiledVshForKey:v9];
+  v10 = [hash compiledVshForKey:v9];
   if (v10)
   {
     self->_vshName = [v10 intValue];
@@ -946,12 +946,12 @@ LABEL_57:
       goto LABEL_58;
     }
 
-    [a3 setCompiledVsh:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithLong:", self->_vshName), v9}];
+    [hash setCompiledVsh:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithLong:", self->_vshName), v9}];
     ++__hashedShaders;
   }
 
   v12 = [[GLKHashableBigInt alloc] initWithBigInt:self->_fshMask];
-  v13 = [a3 compiledFshForKey:v12];
+  v13 = [hash compiledFshForKey:v12];
   if (v13)
   {
     fshName = [v13 intValue];
@@ -977,7 +977,7 @@ LABEL_57:
     goto LABEL_57;
   }
 
-  [a3 setCompiledFsh:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithLong:", self->_fshName), v12}];
+  [hash setCompiledFsh:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithLong:", self->_fshName), v12}];
   ++__hashedShaders;
   fshName = self->_fshName;
 LABEL_25:
@@ -987,9 +987,9 @@ LABEL_25:
   v17 = [(NSMutableDictionary *)self->_programHash objectForKey:v16];
   if (v17)
   {
-    v18 = [v17 intValue];
-    self->_programName = v18;
-    glUseProgram(v18);
+    intValue = [v17 intValue];
+    self->_programName = intValue;
+    glUseProgram(intValue);
     [(GLKEffect *)self setShaderBindings];
     v64 = 0u;
     v65 = 0u;
@@ -1215,8 +1215,8 @@ LABEL_58:
 
   else
   {
-    v6 = [MEMORY[0x277CD9388] currentContext];
-    if (!v6)
+    currentContext = [MEMORY[0x277CD9388] currentContext];
+    if (!currentContext)
     {
       if (self->_label)
       {
@@ -1231,7 +1231,7 @@ LABEL_58:
       goto LABEL_46;
     }
 
-    v7 = [v6 sharegroup];
+    sharegroup = [currentContext sharegroup];
     *params = 0;
     *&params[2] = params;
     v67 = 0x3052000000;
@@ -1244,7 +1244,7 @@ LABEL_58:
     block[3] = &unk_278A57DA8;
     block[5] = self;
     block[6] = params;
-    block[4] = v7;
+    block[4] = sharegroup;
     dispatch_sync(__sharegroupQueue, block);
     self->_textureOrderStale = 0;
     fshMask = self->_fshMask;
@@ -1522,45 +1522,45 @@ uint64_t __17__GLKEffect_bind__block_invoke(uint64_t a1)
   [(GLKEffect *)self setMasksInitialized:1];
 }
 
-- (BOOL)includeShaderTextForRootNode:(id)a3
+- (BOOL)includeShaderTextForRootNode:(id)node
 {
   v50 = *MEMORY[0x277D85DE8];
-  if ([objc_msgSend(a3 "label")])
+  if ([objc_msgSend(node "label")])
   {
     goto LABEL_2;
   }
 
-  if ([objc_msgSend(a3 "label")])
+  if ([objc_msgSend(node "label")])
   {
 LABEL_4:
     perVertexLightingEnabled = self->_perVertexLightingEnabled;
     goto LABEL_5;
   }
 
-  if ([objc_msgSend(a3 "label")])
+  if ([objc_msgSend(node "label")])
   {
     goto LABEL_8;
   }
 
-  if ([objc_msgSend(a3 "label")])
+  if ([objc_msgSend(node "label")])
   {
     perVertexLightingEnabled = self->_texturingEnabled;
     goto LABEL_5;
   }
 
-  if ([objc_msgSend(a3 "label")])
+  if ([objc_msgSend(node "label")])
   {
     perVertexLightingEnabled = self->_colorMaterialEnabled;
     goto LABEL_5;
   }
 
-  if ([objc_msgSend(a3 "label")])
+  if ([objc_msgSend(node "label")])
   {
     colorMaterialEnabled = self->_colorMaterialEnabled;
     goto LABEL_9;
   }
 
-  if ([objc_msgSend(a3 "label")])
+  if ([objc_msgSend(node "label")])
   {
     if (self->_lightModelTwoSided)
     {
@@ -1572,7 +1572,7 @@ LABEL_18:
     goto LABEL_6;
   }
 
-  if ([objc_msgSend(a3 "label")])
+  if ([objc_msgSend(node "label")])
   {
     if (self->_lightModelTwoSided)
     {
@@ -1586,7 +1586,7 @@ LABEL_9:
     goto LABEL_21;
   }
 
-  if ([objc_msgSend(a3 "label")])
+  if ([objc_msgSend(node "label")])
   {
     if (self->_lightModelTwoSided)
     {
@@ -1602,7 +1602,7 @@ LABEL_6:
     goto LABEL_18;
   }
 
-  if ([objc_msgSend(a3 "label")])
+  if ([objc_msgSend(node "label")])
   {
     if (self->_lightModelTwoSided)
     {
@@ -1613,9 +1613,9 @@ LABEL_6:
     goto LABEL_21;
   }
 
-  if (![objc_msgSend(a3 "label")])
+  if (![objc_msgSend(node "label")])
   {
-    if ([objc_msgSend(a3 "label")])
+    if ([objc_msgSend(node "label")])
     {
       if (!self->_perVertexLightingEnabled && !self->_perPixelLightingEnabled)
       {
@@ -1663,7 +1663,7 @@ LABEL_37:
       goto LABEL_21;
     }
 
-    if ([objc_msgSend(a3 "label")])
+    if ([objc_msgSend(node "label")])
     {
       v40 = 0u;
       v41 = 0u;
@@ -1761,7 +1761,7 @@ LABEL_21:
       goto LABEL_6;
     }
 
-    if ([objc_msgSend(a3 "label")])
+    if ([objc_msgSend(node "label")])
     {
       if (!self->_perPixelLightingEnabled)
       {
@@ -1809,7 +1809,7 @@ LABEL_68:
       goto LABEL_21;
     }
 
-    if ([objc_msgSend(a3 "label")])
+    if ([objc_msgSend(node "label")])
     {
       if (!self->_perVertexLightingEnabled)
       {
@@ -1819,7 +1819,7 @@ LABEL_68:
       goto LABEL_77;
     }
 
-    if ([objc_msgSend(a3 "label")])
+    if ([objc_msgSend(node "label")])
     {
       if (!self->_perVertexLightingEnabled)
       {
@@ -1829,7 +1829,7 @@ LABEL_68:
 
     else
     {
-      if ([objc_msgSend(a3 "label")])
+      if ([objc_msgSend(node "label")])
       {
         if (!self->_perPixelLightingEnabled)
         {
@@ -1845,7 +1845,7 @@ LABEL_77:
         goto LABEL_21;
       }
 
-      if (![objc_msgSend(a3 "label")] || !self->_perPixelLightingEnabled)
+      if (![objc_msgSend(node "label")] || !self->_perPixelLightingEnabled)
       {
         goto LABEL_21;
       }
@@ -1865,63 +1865,63 @@ LABEL_77:
   return v6;
 }
 
-- (BOOL)includeFshShaderTextForRootNode:(id)a3
+- (BOOL)includeFshShaderTextForRootNode:(id)node
 {
-  v3 = *(a3 + 1);
-  result = (__fshMasks & v3) == 0 && (v4 = *(a3 + 2), (*(&__fshMasks + 1) & v4) == 0) && (qword_27DF40470 & v3) == 0 && (qword_27DF40478 & v4) == 0 && (xmmword_27DF40480 & v3) == 0 && (*(&xmmword_27DF40480 + 1) & v4) == 0 && (xmmword_27DF40490 & v3) == 0 && (*(&xmmword_27DF40490 + 1) & v4) == 0 && (xmmword_27DF404A0 & v3) == 0 && (*(&xmmword_27DF404A0 + 1) & v4) == 0 && (qword_27DF404B0 & v3) == 0 && (qword_27DF404B8 & v4) == 0 && (xmmword_27DF404C0 & v3) == 0 && (*(&xmmword_27DF404C0 + 1) & v4) == 0 && (xmmword_27DF404D0 & v3) == 0 && (*(&xmmword_27DF404D0 + 1) & v4) == 0 && (xmmword_27DF404E0 & v3) == 0 && (*(&xmmword_27DF404E0 + 1) & v4) == 0 && (xmmword_27DF404F0 & v3) == 0 && (*(&xmmword_27DF404F0 + 1) & v4) == 0 && (xmmword_27DF40500 & v3) == 0 && (*(&xmmword_27DF40500 + 1) & v4) == 0 || (fshMask = self->_fshMask, (fshMask->n0 & v3) != 0) || (*(a3 + 2) & fshMask->n1) != 0;
+  v3 = *(node + 1);
+  result = (__fshMasks & v3) == 0 && (v4 = *(node + 2), (*(&__fshMasks + 1) & v4) == 0) && (qword_27DF40470 & v3) == 0 && (qword_27DF40478 & v4) == 0 && (xmmword_27DF40480 & v3) == 0 && (*(&xmmword_27DF40480 + 1) & v4) == 0 && (xmmword_27DF40490 & v3) == 0 && (*(&xmmword_27DF40490 + 1) & v4) == 0 && (xmmword_27DF404A0 & v3) == 0 && (*(&xmmword_27DF404A0 + 1) & v4) == 0 && (qword_27DF404B0 & v3) == 0 && (qword_27DF404B8 & v4) == 0 && (xmmword_27DF404C0 & v3) == 0 && (*(&xmmword_27DF404C0 + 1) & v4) == 0 && (xmmword_27DF404D0 & v3) == 0 && (*(&xmmword_27DF404D0 + 1) & v4) == 0 && (xmmword_27DF404E0 & v3) == 0 && (*(&xmmword_27DF404E0 + 1) & v4) == 0 && (xmmword_27DF404F0 & v3) == 0 && (*(&xmmword_27DF404F0 + 1) & v4) == 0 && (xmmword_27DF40500 & v3) == 0 && (*(&xmmword_27DF40500 + 1) & v4) == 0 || (fshMask = self->_fshMask, (fshMask->n0 & v3) != 0) || (*(node + 2) & fshMask->n1) != 0;
   return result;
 }
 
-- (BOOL)includeVshShaderTextForRootNode:(id)a3
+- (BOOL)includeVshShaderTextForRootNode:(id)node
 {
-  v3 = *(a3 + 1);
-  result = (__vshMasks & v3) == 0 && (v4 = *(a3 + 2), (*(&__vshMasks + 1) & v4) == 0) && (qword_27DF403D0 & v3) == 0 && (qword_27DF403D8 & v4) == 0 && (xmmword_27DF403E0 & v3) == 0 && (*(&xmmword_27DF403E0 + 1) & v4) == 0 && (xmmword_27DF403F0 & v3) == 0 && (*(&xmmword_27DF403F0 + 1) & v4) == 0 && (xmmword_27DF40400 & v3) == 0 && (*(&xmmword_27DF40400 + 1) & v4) == 0 && (xmmword_27DF40410 & v3) == 0 && (*(&xmmword_27DF40410 + 1) & v4) == 0 && (xmmword_27DF40420 & v3) == 0 && (*(&xmmword_27DF40420 + 1) & v4) == 0 && (xmmword_27DF40430 & v3) == 0 && (*(&xmmword_27DF40430 + 1) & v4) == 0 && (xmmword_27DF40440 & v3) == 0 && (*(&xmmword_27DF40440 + 1) & v4) == 0 && (xmmword_27DF40450 & v3) == 0 && (*(&xmmword_27DF40450 + 1) & v4) == 0 || (vshMask = self->_vshMask, (vshMask->n0 & v3) != 0) || (*(a3 + 2) & vshMask->n1) != 0;
+  v3 = *(node + 1);
+  result = (__vshMasks & v3) == 0 && (v4 = *(node + 2), (*(&__vshMasks + 1) & v4) == 0) && (qword_27DF403D0 & v3) == 0 && (qword_27DF403D8 & v4) == 0 && (xmmword_27DF403E0 & v3) == 0 && (*(&xmmword_27DF403E0 + 1) & v4) == 0 && (xmmword_27DF403F0 & v3) == 0 && (*(&xmmword_27DF403F0 + 1) & v4) == 0 && (xmmword_27DF40400 & v3) == 0 && (*(&xmmword_27DF40400 + 1) & v4) == 0 && (xmmword_27DF40410 & v3) == 0 && (*(&xmmword_27DF40410 + 1) & v4) == 0 && (xmmword_27DF40420 & v3) == 0 && (*(&xmmword_27DF40420 + 1) & v4) == 0 && (xmmword_27DF40430 & v3) == 0 && (*(&xmmword_27DF40430 + 1) & v4) == 0 && (xmmword_27DF40440 & v3) == 0 && (*(&xmmword_27DF40440 + 1) & v4) == 0 && (xmmword_27DF40450 & v3) == 0 && (*(&xmmword_27DF40450 + 1) & v4) == 0 || (vshMask = self->_vshMask, (vshMask->n0 & v3) != 0) || (*(node + 2) & vshMask->n1) != 0;
   return result;
 }
 
-+ (void)setStaticMasksWithVshRoot:(id)a3 fshRoot:(id)a4
++ (void)setStaticMasksWithVshRoot:(id)root fshRoot:(id)fshRoot
 {
-  *&__vshMasks = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"color material enabled", a3, [a3 index]);
+  *&__vshMasks = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"color material enabled", root, [root index]);
   *(&__vshMasks + 1) = v6;
-  qword_27DF403D0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"color material disabled", a3, [a3 index]);
+  qword_27DF403D0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"color material disabled", root, [root index]);
   qword_27DF403D8 = v7;
-  *&__fshMasks = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"color material enabled", a4, [a4 index]);
+  *&__fshMasks = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"color material enabled", fshRoot, [fshRoot index]);
   *(&__fshMasks + 1) = v8;
-  qword_27DF40470 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"color material disabled", a4, [a4 index]);
+  qword_27DF40470 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"color material disabled", fshRoot, [fshRoot index]);
   qword_27DF40478 = v9;
-  *&xmmword_27DF403E0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"light model two-sided per-vertex enabled", a3, [a3 index]);
+  *&xmmword_27DF403E0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"light model two-sided per-vertex enabled", root, [root index]);
   *(&xmmword_27DF403E0 + 1) = v10;
-  *&xmmword_27DF40480 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"light model two-sided per-vertex enabled", a4, [a4 index]);
+  *&xmmword_27DF40480 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"light model two-sided per-vertex enabled", fshRoot, [fshRoot index]);
   *(&xmmword_27DF40480 + 1) = v11;
-  *&xmmword_27DF40490 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"light model two-sided per-vertex disabled", a4, [a4 index]);
+  *&xmmword_27DF40490 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"light model two-sided per-vertex disabled", fshRoot, [fshRoot index]);
   *(&xmmword_27DF40490 + 1) = v12;
-  *&xmmword_27DF404A0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"light model two-sided per-pixel enabled", a4, [a4 index]);
+  *&xmmword_27DF404A0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"light model two-sided per-pixel enabled", fshRoot, [fshRoot index]);
   *(&xmmword_27DF404A0 + 1) = v13;
-  qword_27DF404B0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"light model two-sided per-pixel disabled", a4, [a4 index]);
+  qword_27DF404B0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"light model two-sided per-pixel disabled", fshRoot, [fshRoot index]);
   qword_27DF404B8 = v14;
-  *&xmmword_27DF404C0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"per-pixel lighting enabled", a4, [a4 index]);
+  *&xmmword_27DF404C0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"per-pixel lighting enabled", fshRoot, [fshRoot index]);
   *(&xmmword_27DF404C0 + 1) = v15;
-  *&xmmword_27DF403F0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"per-vertex lighting enabled", a3, [a3 index]);
+  *&xmmword_27DF403F0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"per-vertex lighting enabled", root, [root index]);
   *(&xmmword_27DF403F0 + 1) = v16;
-  *&xmmword_27DF40400 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"use tex coord attrib", a3, [a3 index]);
+  *&xmmword_27DF40400 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"use tex coord attrib", root, [root index]);
   *(&xmmword_27DF40400 + 1) = v17;
-  *&xmmword_27DF404D0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"use tex coord attrib", a4, [a4 index]);
+  *&xmmword_27DF404D0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"use tex coord attrib", fshRoot, [fshRoot index]);
   *(&xmmword_27DF404D0 + 1) = v18;
-  *&xmmword_27DF40410 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"texturing enabled", a3, [a3 index]);
+  *&xmmword_27DF40410 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"texturing enabled", root, [root index]);
   *(&xmmword_27DF40410 + 1) = v19;
-  *&xmmword_27DF404E0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"texturing enabled", a4, [a4 index]);
+  *&xmmword_27DF404E0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"texturing enabled", fshRoot, [fshRoot index]);
   *(&xmmword_27DF404E0 + 1) = v20;
-  *&xmmword_27DF40420 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"normalized normals", a3, [a3 index]);
+  *&xmmword_27DF40420 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"normalized normals", root, [root index]);
   *(&xmmword_27DF40420 + 1) = v21;
-  *&xmmword_27DF40430 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"v_positionEye", a3, [a3 index]);
+  *&xmmword_27DF40430 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"v_positionEye", root, [root index]);
   *(&xmmword_27DF40430 + 1) = v22;
-  *&xmmword_27DF404F0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"v_positionEye", a4, [a4 index]);
+  *&xmmword_27DF404F0 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"v_positionEye", fshRoot, [fshRoot index]);
   *(&xmmword_27DF404F0 + 1) = v23;
-  *&xmmword_27DF40440 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"v_normalEye", a3, [a3 index]);
+  *&xmmword_27DF40440 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"v_normalEye", root, [root index]);
   *(&xmmword_27DF40440 + 1) = v24;
-  *&xmmword_27DF40500 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"v_normalEye", a4, [a4 index]);
+  *&xmmword_27DF40500 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"v_normalEye", fshRoot, [fshRoot index]);
   *(&xmmword_27DF40500 + 1) = v25;
-  *&xmmword_27DF40450 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"modelview matrix", a3, [a3 index]);
+  *&xmmword_27DF40450 = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", @"modelview matrix", root, [root index]);
   *(&xmmword_27DF40450 + 1) = v26;
 }
 
@@ -1933,16 +1933,16 @@ LABEL_77:
   free(self->_fshStrings);
   free(self->_effectShaderArray);
 
-  v3 = [(NSMutableDictionary *)self->_programHash objectEnumerator];
-  for (i = v3; ; v3 = i)
+  objectEnumerator = [(NSMutableDictionary *)self->_programHash objectEnumerator];
+  for (i = objectEnumerator; ; objectEnumerator = i)
   {
-    v5 = [v3 nextObject];
-    if (!v5)
+    nextObject = [objectEnumerator nextObject];
+    if (!nextObject)
     {
       break;
     }
 
-    glDeleteProgram([v5 intValue]);
+    glDeleteProgram([nextObject intValue]);
   }
 
   v6.receiver = self;
@@ -1972,7 +1972,7 @@ LABEL_77:
   return result;
 }
 
-- (void)setBaseLightingColor:(_GLKVector4)a3
+- (void)setBaseLightingColor:(_GLKVector4)color
 {
   self->_baseLightingColor.x = v3;
   self->_baseLightingColor.y = v4;

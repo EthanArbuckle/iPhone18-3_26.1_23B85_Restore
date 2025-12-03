@@ -1,30 +1,30 @@
 @interface HKLocationFetcher
-- (BOOL)_routesAreSmoothed:(id)a3;
-- (HKLocationFetcher)initWithHealthStore:(id)a3;
+- (BOOL)_routesAreSmoothed:(id)smoothed;
+- (HKLocationFetcher)initWithHealthStore:(id)store;
 - (_HKLocationShifter)shifter;
-- (id)_workoutRoutesQueryForWorkout:(id)a3 withUpdateHandler:(id)a4;
-- (void)_handleAndShiftLocations:(id)a3 forWorkout:(id)a4 withSamplesHandler:(id)a5;
-- (void)_processQueryResultForRoutes:(id)a3 error:(id)a4 workout:(id)a5 withUpdateHandler:(id)a6;
-- (void)_requeryRoutesForWorkout:(id)a3 withUpdateHandler:(id)a4;
+- (id)_workoutRoutesQueryForWorkout:(id)workout withUpdateHandler:(id)handler;
+- (void)_handleAndShiftLocations:(id)locations forWorkout:(id)workout withSamplesHandler:(id)handler;
+- (void)_processQueryResultForRoutes:(id)routes error:(id)error workout:(id)workout withUpdateHandler:(id)handler;
+- (void)_requeryRoutesForWorkout:(id)workout withUpdateHandler:(id)handler;
 - (void)dealloc;
-- (void)fetchLocationsFromWorkout:(id)a3 applyThreshold:(BOOL)a4 withSamplesHandler:(id)a5;
-- (void)fetchLocationsFromWorkout:(id)a3 workoutActivity:(id)a4 samplesHandler:(id)a5;
-- (void)fetchRoutesFromWorkout:(id)a3 withUpdateHandler:(id)a4;
+- (void)fetchLocationsFromWorkout:(id)workout applyThreshold:(BOOL)threshold withSamplesHandler:(id)handler;
+- (void)fetchLocationsFromWorkout:(id)workout workoutActivity:(id)activity samplesHandler:(id)handler;
+- (void)fetchRoutesFromWorkout:(id)workout withUpdateHandler:(id)handler;
 @end
 
 @implementation HKLocationFetcher
 
-- (HKLocationFetcher)initWithHealthStore:(id)a3
+- (HKLocationFetcher)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = HKLocationFetcher;
   v6 = [(HKLocationFetcher *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
-    v8 = [objc_alloc(MEMORY[0x1E696C680]) initWithHealthStore:v5];
+    objc_storeStrong(&v6->_healthStore, store);
+    v8 = [objc_alloc(MEMORY[0x1E696C680]) initWithHealthStore:storeCopy];
     routesStore = v7->_routesStore;
     v7->_routesStore = v8;
 
@@ -63,25 +63,25 @@
   return shifter;
 }
 
-- (void)fetchLocationsFromWorkout:(id)a3 applyThreshold:(BOOL)a4 withSamplesHandler:(id)a5
+- (void)fetchLocationsFromWorkout:(id)workout applyThreshold:(BOOL)threshold withSamplesHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  workoutCopy = workout;
+  handlerCopy = handler;
   _HKInitializeLogging();
   v10 = *MEMORY[0x1E696B9A8];
   if (os_log_type_enabled(*MEMORY[0x1E696B9A8], OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [v8 startDate];
-    v13 = [v8 workoutActivityType];
-    v14 = [v8 UUID];
+    startDate = [workoutCopy startDate];
+    workoutActivityType = [workoutCopy workoutActivityType];
+    uUID = [workoutCopy UUID];
     *buf = 138412802;
-    v23 = v12;
+    v23 = startDate;
     v24 = 2048;
-    v25 = v13;
+    v25 = workoutActivityType;
     v26 = 2114;
-    v27 = v14;
+    v27 = uUID;
     _os_log_impl(&dword_1C3942000, v11, OS_LOG_TYPE_DEFAULT, "[routes] Request route on day %@ for workout of type %zd %{public}@", buf, 0x20u);
   }
 
@@ -90,12 +90,12 @@
   v17[1] = 3221225472;
   v17[2] = __81__HKLocationFetcher_fetchLocationsFromWorkout_applyThreshold_withSamplesHandler___block_invoke;
   v17[3] = &unk_1E81B9A48;
-  v15 = v9;
+  v15 = handlerCopy;
   v19 = v15;
   objc_copyWeak(&v20, buf);
-  v16 = v8;
+  v16 = workoutCopy;
   v18 = v16;
-  v21 = a4;
+  thresholdCopy = threshold;
   [(HKLocationFetcher *)self fetchRoutesFromWorkout:v16 withUpdateHandler:v17];
 
   objc_destroyWeak(&v20);
@@ -160,34 +160,34 @@ void __81__HKLocationFetcher_fetchLocationsFromWorkout_applyThreshold_withSample
   }
 }
 
-- (void)fetchLocationsFromWorkout:(id)a3 workoutActivity:(id)a4 samplesHandler:(id)a5
+- (void)fetchLocationsFromWorkout:(id)workout workoutActivity:(id)activity samplesHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  workoutCopy = workout;
+  activityCopy = activity;
+  handlerCopy = handler;
   v11 = objc_alloc(MEMORY[0x1E696AB80]);
-  v12 = [v9 startDate];
-  v13 = [v9 endDate];
-  v14 = [v11 initWithStartDate:v12 endDate:v13];
+  startDate = [activityCopy startDate];
+  endDate = [activityCopy endDate];
+  v14 = [v11 initWithStartDate:startDate endDate:endDate];
 
   _HKInitializeLogging();
   v15 = *MEMORY[0x1E696B9A8];
   if (os_log_type_enabled(*MEMORY[0x1E696B9A8], OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
-    v17 = [v8 startDate];
-    v18 = [v9 workoutConfiguration];
-    v19 = [v18 activityType];
-    v20 = [v8 UUID];
+    startDate2 = [workoutCopy startDate];
+    workoutConfiguration = [activityCopy workoutConfiguration];
+    activityType = [workoutConfiguration activityType];
+    uUID = [workoutCopy UUID];
     *buf = 138413058;
-    v32 = v17;
+    v32 = startDate2;
     v33 = 2112;
     v34 = v14;
     v35 = 2048;
-    v36 = v19;
+    v36 = activityType;
     v37 = 2114;
-    v38 = v20;
+    v38 = uUID;
     _os_log_impl(&dword_1C3942000, v16, OS_LOG_TYPE_DEFAULT, "[routes] Request route on day %@ (interval %@) for activity of type %zd and workout %{public}@", buf, 0x2Au);
   }
 
@@ -197,11 +197,11 @@ void __81__HKLocationFetcher_fetchLocationsFromWorkout_applyThreshold_withSample
   v25[2] = __78__HKLocationFetcher_fetchLocationsFromWorkout_workoutActivity_samplesHandler___block_invoke;
   v25[3] = &unk_1E81B9AC0;
   objc_copyWeak(&v30, buf);
-  v21 = v10;
+  v21 = handlerCopy;
   v29 = v21;
-  v22 = v8;
+  v22 = workoutCopy;
   v26 = v22;
-  v23 = v9;
+  v23 = activityCopy;
   v27 = v23;
   v24 = v14;
   v28 = v24;
@@ -418,15 +418,15 @@ void __78__HKLocationFetcher_fetchLocationsFromWorkout_workoutActivity_samplesHa
   os_unfair_lock_unlock((*(*(a1 + 56) + 8) + 32));
 }
 
-- (BOOL)_routesAreSmoothed:(id)a3
+- (BOOL)_routesAreSmoothed:(id)smoothed
 {
   v25 = *MEMORY[0x1E69E9840];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  smoothedCopy = smoothed;
+  v4 = [smoothedCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -439,26 +439,26 @@ void __78__HKLocationFetcher_fetchLocationsFromWorkout_workoutActivity_samplesHa
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(smoothedCopy);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 metadata];
-        v12 = [v11 objectForKeyedSubscript:v7];
-        v13 = [v12 integerValue];
+        metadata = [v10 metadata];
+        v12 = [metadata objectForKeyedSubscript:v7];
+        integerValue = [v12 integerValue];
 
-        v14 = [v10 metadata];
-        v15 = [v14 objectForKeyedSubscript:v8];
-        v16 = [v15 BOOLValue];
+        metadata2 = [v10 metadata];
+        v15 = [metadata2 objectForKeyedSubscript:v8];
+        bOOLValue = [v15 BOOLValue];
 
-        if (v13 <= 1 && v16 == 0)
+        if (integerValue <= 1 && bOOLValue == 0)
         {
           v18 = 0;
           goto LABEL_14;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v5 = [smoothedCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v5)
       {
         continue;
@@ -474,32 +474,32 @@ LABEL_14:
   return v18;
 }
 
-- (void)_handleAndShiftLocations:(id)a3 forWorkout:(id)a4 withSamplesHandler:(id)a5
+- (void)_handleAndShiftLocations:(id)locations forWorkout:(id)workout withSamplesHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  locationsCopy = locations;
+  workoutCopy = workout;
+  handlerCopy = handler;
   v11 = MEMORY[0x1E696C640];
-  v12 = [v8 allValidLocations];
-  LOBYTE(v11) = [v11 isShiftRequiredForLocations:v12];
+  allValidLocations = [locationsCopy allValidLocations];
+  LOBYTE(v11) = [v11 isShiftRequiredForLocations:allValidLocations];
 
   if (v11)
   {
-    v13 = [(HKLocationFetcher *)self shifter];
-    v14 = [v8 allValidLocations];
+    shifter = [(HKLocationFetcher *)self shifter];
+    allValidLocations2 = [locationsCopy allValidLocations];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __76__HKLocationFetcher__handleAndShiftLocations_forWorkout_withSamplesHandler___block_invoke;
     v15[3] = &unk_1E81B93D0;
-    v16 = v9;
-    v17 = v8;
-    v18 = v10;
-    [v13 shiftLocations:v14 withCompletion:v15];
+    v16 = workoutCopy;
+    v17 = locationsCopy;
+    v18 = handlerCopy;
+    [shifter shiftLocations:allValidLocations2 withCompletion:v15];
   }
 
   else
   {
-    (*(v10 + 2))(v10, v8);
+    (*(handlerCopy + 2))(handlerCopy, locationsCopy);
   }
 }
 
@@ -511,11 +511,11 @@ void __76__HKLocationFetcher__handleAndShiftLocations_forWorkout_withSamplesHand
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchRoutesFromWorkout:(id)a3 withUpdateHandler:(id)a4
+- (void)fetchRoutesFromWorkout:(id)workout withUpdateHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKLocationFetcher *)self _workoutRoutesQueryForWorkout:v6 withUpdateHandler:v7];
+  workoutCopy = workout;
+  handlerCopy = handler;
+  v8 = [(HKLocationFetcher *)self _workoutRoutesQueryForWorkout:workoutCopy withUpdateHandler:handlerCopy];
   routesQuery = self->_routesQuery;
   self->_routesQuery = v8;
 
@@ -525,9 +525,9 @@ void __76__HKLocationFetcher__handleAndShiftLocations_forWorkout_withSamplesHand
   v14 = 3221225472;
   v15 = __62__HKLocationFetcher_fetchRoutesFromWorkout_withUpdateHandler___block_invoke;
   v16 = &unk_1E81B9AE8;
-  v11 = v7;
+  v11 = handlerCopy;
   v18 = v11;
-  v12 = v6;
+  v12 = workoutCopy;
   v17 = v12;
   objc_copyWeak(&v19, &location);
   [(HKAnchoredObjectQuery *)v10 setUpdateHandler:&v13];
@@ -571,11 +571,11 @@ void __62__HKLocationFetcher_fetchRoutesFromWorkout_withUpdateHandler___block_in
   }
 }
 
-- (id)_workoutRoutesQueryForWorkout:(id)a3 withUpdateHandler:(id)a4
+- (id)_workoutRoutesQueryForWorkout:(id)workout withUpdateHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696C378] predicateForObjectsFromWorkout:v6];
+  workoutCopy = workout;
+  handlerCopy = handler;
+  v8 = [MEMORY[0x1E696C378] predicateForObjectsFromWorkout:workoutCopy];
   v9 = [MEMORY[0x1E696C3D0] dataTypeWithCode:102];
   objc_initWeak(&location, self);
   v10 = objc_alloc(MEMORY[0x1E696BF08]);
@@ -584,9 +584,9 @@ void __62__HKLocationFetcher_fetchRoutesFromWorkout_withUpdateHandler___block_in
   v15[2] = __69__HKLocationFetcher__workoutRoutesQueryForWorkout_withUpdateHandler___block_invoke;
   v15[3] = &unk_1E81B9B10;
   objc_copyWeak(&v18, &location);
-  v11 = v6;
+  v11 = workoutCopy;
   v16 = v11;
-  v12 = v7;
+  v12 = handlerCopy;
   v17 = v12;
   v13 = [v10 initWithType:v9 predicate:v8 anchor:0 limit:0 resultsHandler:v15];
 
@@ -604,25 +604,25 @@ void __69__HKLocationFetcher__workoutRoutesQueryForWorkout_withUpdateHandler___b
   [WeakRetained _processQueryResultForRoutes:v9 error:v8 workout:*(a1 + 32) withUpdateHandler:*(a1 + 40)];
 }
 
-- (void)_requeryRoutesForWorkout:(id)a3 withUpdateHandler:(id)a4
+- (void)_requeryRoutesForWorkout:(id)workout withUpdateHandler:(id)handler
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  workoutCopy = workout;
+  handlerCopy = handler;
   _HKInitializeLogging();
   v8 = *MEMORY[0x1E696B9A8];
   if (os_log_type_enabled(*MEMORY[0x1E696B9A8], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v6 UUID];
+    uUID = [workoutCopy UUID];
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v10;
+    *(&buf + 4) = uUID;
     _os_log_impl(&dword_1C3942000, v9, OS_LOG_TYPE_DEFAULT, "[routes] Querying for all routes for workout %{public}@", &buf, 0xCu);
   }
 
   v11 = dispatch_group_create();
   v12 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v28 = v7;
+  v28 = handlerCopy;
   *&buf = 0;
   *(&buf + 1) = &buf;
   v49 = 0x3032000000;
@@ -631,14 +631,14 @@ void __69__HKLocationFetcher__workoutRoutesQueryForWorkout_withUpdateHandler___b
   v52 = 0;
   v30 = [MEMORY[0x1E696C3D0] dataTypeWithCode:102];
   dispatch_group_enter(v11);
-  v29 = [MEMORY[0x1E696C378] predicateForObjectsFromWorkout:v6];
+  v29 = [MEMORY[0x1E696C378] predicateForObjectsFromWorkout:workoutCopy];
   v13 = objc_alloc(MEMORY[0x1E696BF08]);
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
   v43[2] = __64__HKLocationFetcher__requeryRoutesForWorkout_withUpdateHandler___block_invoke;
   v43[3] = &unk_1E81B9B60;
   v43[4] = self;
-  v14 = v6;
+  v14 = workoutCopy;
   v44 = v14;
   v15 = v12;
   v45 = v15;
@@ -839,34 +839,34 @@ uint64_t __64__HKLocationFetcher__requeryRoutesForWorkout_withUpdateHandler___bl
   return v7;
 }
 
-- (void)_processQueryResultForRoutes:(id)a3 error:(id)a4 workout:(id)a5 withUpdateHandler:(id)a6
+- (void)_processQueryResultForRoutes:(id)routes error:(id)error workout:(id)workout withUpdateHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  routesCopy = routes;
+  errorCopy = error;
+  workoutCopy = workout;
+  handlerCopy = handler;
+  if (errorCopy)
   {
     _HKInitializeLogging();
     v14 = *MEMORY[0x1E696B928];
     if (os_log_type_enabled(*MEMORY[0x1E696B928], OS_LOG_TYPE_ERROR))
     {
-      [HKLocationFetcher _processQueryResultForRoutes:v11 error:v14 workout:? withUpdateHandler:?];
+      [HKLocationFetcher _processQueryResultForRoutes:errorCopy error:v14 workout:? withUpdateHandler:?];
     }
 
     goto LABEL_4;
   }
 
-  if (![v10 count])
+  if (![routesCopy count])
   {
 LABEL_4:
-    (*(v13 + 2))(v13, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
     goto LABEL_5;
   }
 
-  v15 = [(HKLocationFetcher *)self routesStore];
-  v16 = [v15 containsSameValuesAs:v10];
+  routesStore = [(HKLocationFetcher *)self routesStore];
+  v16 = [routesStore containsSameValuesAs:routesCopy];
 
   if ((v16 & 1) == 0)
   {
@@ -875,24 +875,24 @@ LABEL_4:
     if (os_log_type_enabled(*MEMORY[0x1E696B9A8], OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [v10 count];
-      v20 = [v10 firstObject];
-      v21 = [v20 UUID];
-      v22 = [v12 UUID];
+      v19 = [routesCopy count];
+      firstObject = [routesCopy firstObject];
+      uUID = [firstObject UUID];
+      uUID2 = [workoutCopy UUID];
       v26 = 134218498;
       v27 = v19;
       v28 = 2112;
-      v29 = v21;
+      v29 = uUID;
       v30 = 2114;
-      v31 = v22;
+      v31 = uUID2;
       _os_log_impl(&dword_1C3942000, v18, OS_LOG_TYPE_DEFAULT, "[routes] Fetched %zd new samples (first: %@) for workout %{public}@", &v26, 0x20u);
     }
 
-    v23 = [v12 sourceRevision];
-    v24 = [v23 source];
-    v25 = [v24 _isAppleWatch];
+    sourceRevision = [workoutCopy sourceRevision];
+    source = [sourceRevision source];
+    _isAppleWatch = [source _isAppleWatch];
 
-    (*(v13 + 2))(v13, v10, [(HKLocationFetcher *)self _routesAreSmoothed:v10]|| (v25 & 1) == 0);
+    (*(handlerCopy + 2))(handlerCopy, routesCopy, [(HKLocationFetcher *)self _routesAreSmoothed:routesCopy]|| (_isAppleWatch & 1) == 0);
   }
 
 LABEL_5:

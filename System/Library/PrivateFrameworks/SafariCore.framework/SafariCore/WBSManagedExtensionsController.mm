@@ -1,18 +1,18 @@
 @interface WBSManagedExtensionsController
 + (NSURL)managedExtensionsConfigurationURL;
 + (id)sharedController;
-- (BOOL)_domainIsManaged:(id)a3 byManagedDomainSet:(id)a4;
-- (BOOL)allDomainsAreManagedForComposedIdentifier:(id)a3;
-- (BOOL)anyDomainIsManagedForComposedIdentifier:(id)a3;
-- (BOOL)domainIsDenied:(id)a3 forComposedIdentifier:(id)a4;
-- (BOOL)domainIsManaged:(id)a3 forComposedIdentifier:(id)a4;
+- (BOOL)_domainIsManaged:(id)managed byManagedDomainSet:(id)set;
+- (BOOL)allDomainsAreManagedForComposedIdentifier:(id)identifier;
+- (BOOL)anyDomainIsManagedForComposedIdentifier:(id)identifier;
+- (BOOL)domainIsDenied:(id)denied forComposedIdentifier:(id)identifier;
+- (BOOL)domainIsManaged:(id)managed forComposedIdentifier:(id)identifier;
 - (BOOL)hasAnyExtensionManagement;
 - (WBSManagedExtensionsController)init;
-- (id)allowedDomainsForComposedIdentifier:(id)a3;
-- (id)deniedDomainsForComposedIdentifier:(id)a3;
-- (int64_t)managedExtensionPrivateBrowsingStateForComposedIdentifier:(id)a3;
-- (int64_t)managedExtensionStateForComposedIdentifier:(id)a3;
-- (void)_managedExtensionConfigurationDidChange:(id)a3;
+- (id)allowedDomainsForComposedIdentifier:(id)identifier;
+- (id)deniedDomainsForComposedIdentifier:(id)identifier;
+- (int64_t)managedExtensionPrivateBrowsingStateForComposedIdentifier:(id)identifier;
+- (int64_t)managedExtensionStateForComposedIdentifier:(id)identifier;
+- (void)_managedExtensionConfigurationDidChange:(id)change;
 - (void)_readManagedExtensionsStateFromDisk;
 @end
 
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __50__WBSManagedExtensionsController_sharedController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedController_once != -1)
   {
     dispatch_once(&sharedController_once, block);
@@ -52,8 +52,8 @@ void __50__WBSManagedExtensionsController_sharedController__block_invoke(uint64_
   if (v2)
   {
     [(WBSManagedExtensionsController *)v2 _readManagedExtensionsStateFromDisk];
-    v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v4 addObserver:v3 selector:sel__managedExtensionConfigurationDidChange_ name:@"ManagedExtensionsConfigurationDidChange" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__managedExtensionConfigurationDidChange_ name:@"ManagedExtensionsConfigurationDidChange" object:0];
 
     v5 = v3;
   }
@@ -64,8 +64,8 @@ void __50__WBSManagedExtensionsController_sharedController__block_invoke(uint64_
 - (void)_readManagedExtensionsStateFromDisk
 {
   v3 = MEMORY[0x1E695DF20];
-  v4 = [objc_opt_class() managedExtensionsConfigurationURL];
-  v9 = [v3 dictionaryWithContentsOfURL:v4];
+  managedExtensionsConfigurationURL = [objc_opt_class() managedExtensionsConfigurationURL];
+  v9 = [v3 dictionaryWithContentsOfURL:managedExtensionsConfigurationURL];
 
   v5 = [v9 safari_dictionaryForKey:@"ExtensionSettings"];
   v6 = [v5 safari_dictionaryForKey:@"Payload"];
@@ -76,14 +76,14 @@ void __50__WBSManagedExtensionsController_sharedController__block_invoke(uint64_
 
 + (NSURL)managedExtensionsConfigurationURL
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 safari_mobileSafariContainerDirectoryURL];
-  v4 = [v3 URLByAppendingPathComponent:@"Library/Safari"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  safari_mobileSafariContainerDirectoryURL = [defaultManager safari_mobileSafariContainerDirectoryURL];
+  v4 = [safari_mobileSafariContainerDirectoryURL URLByAppendingPathComponent:@"Library/Safari"];
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v5 safari_ensureDirectoryExists:v4];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    v6 = [defaultManager2 safari_ensureDirectoryExists:v4];
   }
 
   v7 = [v4 URLByAppendingPathComponent:@"SafariExtensionsManagedConfiguration.plist"];
@@ -93,15 +93,15 @@ void __50__WBSManagedExtensionsController_sharedController__block_invoke(uint64_
 
 - (BOOL)hasAnyExtensionManagement
 {
-  v2 = [(NSDictionary *)self->_managedExtensionsState allKeys];
-  v3 = [v2 count] != 0;
+  allKeys = [(NSDictionary *)self->_managedExtensionsState allKeys];
+  v3 = [allKeys count] != 0;
 
   return v3;
 }
 
-- (int64_t)managedExtensionStateForComposedIdentifier:(id)a3
+- (int64_t)managedExtensionStateForComposedIdentifier:(id)identifier
 {
-  v4 = [(NSDictionary *)self->_managedExtensionsState safari_dictionaryForKey:a3];
+  v4 = [(NSDictionary *)self->_managedExtensionsState safari_dictionaryForKey:identifier];
   v5 = [v4 safari_stringForKey:@"State"];
   v6 = v5;
   if (v5)
@@ -128,9 +128,9 @@ void __50__WBSManagedExtensionsController_sharedController__block_invoke(uint64_
   return v7;
 }
 
-- (int64_t)managedExtensionPrivateBrowsingStateForComposedIdentifier:(id)a3
+- (int64_t)managedExtensionPrivateBrowsingStateForComposedIdentifier:(id)identifier
 {
-  v4 = [(NSDictionary *)self->_managedExtensionsState safari_dictionaryForKey:a3];
+  v4 = [(NSDictionary *)self->_managedExtensionsState safari_dictionaryForKey:identifier];
   v5 = [v4 safari_stringForKey:@"PrivateBrowsing"];
   v6 = v5;
   if (v5)
@@ -157,9 +157,9 @@ void __50__WBSManagedExtensionsController_sharedController__block_invoke(uint64_
   return v7;
 }
 
-- (id)allowedDomainsForComposedIdentifier:(id)a3
+- (id)allowedDomainsForComposedIdentifier:(id)identifier
 {
-  v3 = [(NSDictionary *)self->_managedExtensionsState safari_dictionaryForKey:a3];
+  v3 = [(NSDictionary *)self->_managedExtensionsState safari_dictionaryForKey:identifier];
   v4 = MEMORY[0x1E695DFD8];
   v5 = [v3 safari_arrayForKey:@"AllowedDomains"];
   v6 = [v4 setWithArray:v5];
@@ -167,9 +167,9 @@ void __50__WBSManagedExtensionsController_sharedController__block_invoke(uint64_
   return v6;
 }
 
-- (id)deniedDomainsForComposedIdentifier:(id)a3
+- (id)deniedDomainsForComposedIdentifier:(id)identifier
 {
-  v3 = [(NSDictionary *)self->_managedExtensionsState safari_dictionaryForKey:a3];
+  v3 = [(NSDictionary *)self->_managedExtensionsState safari_dictionaryForKey:identifier];
   v4 = MEMORY[0x1E695DFD8];
   v5 = [v3 safari_arrayForKey:@"DeniedDomains"];
   v6 = [v4 setWithArray:v5];
@@ -177,18 +177,18 @@ void __50__WBSManagedExtensionsController_sharedController__block_invoke(uint64_
   return v6;
 }
 
-- (BOOL)_domainIsManaged:(id)a3 byManagedDomainSet:(id)a4
+- (BOOL)_domainIsManaged:(id)managed byManagedDomainSet:(id)set
 {
-  v5 = a3;
+  managedCopy = managed;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__WBSManagedExtensionsController__domainIsManaged_byManagedDomainSet___block_invoke;
   v8[3] = &unk_1E7CF1818;
-  v9 = v5;
-  v6 = v5;
-  LOBYTE(a4) = [a4 safari_containsObjectPassingTest:v8];
+  v9 = managedCopy;
+  v6 = managedCopy;
+  LOBYTE(set) = [set safari_containsObjectPassingTest:v8];
 
-  return a4;
+  return set;
 }
 
 uint64_t __70__WBSManagedExtensionsController__domainIsManaged_byManagedDomainSet___block_invoke(uint64_t a1, void *a2)
@@ -219,11 +219,11 @@ uint64_t __70__WBSManagedExtensionsController__domainIsManaged_byManagedDomainSe
   return v4;
 }
 
-- (BOOL)domainIsManaged:(id)a3 forComposedIdentifier:(id)a4
+- (BOOL)domainIsManaged:(id)managed forComposedIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WBSManagedExtensionsController *)self allowedDomainsForComposedIdentifier:v6];
+  identifierCopy = identifier;
+  managedCopy = managed;
+  v8 = [(WBSManagedExtensionsController *)self allowedDomainsForComposedIdentifier:identifierCopy];
   v9 = v8;
   if (v8)
   {
@@ -237,7 +237,7 @@ uint64_t __70__WBSManagedExtensionsController__domainIsManaged_byManagedDomainSe
 
   v11 = v10;
 
-  v12 = [(WBSManagedExtensionsController *)self deniedDomainsForComposedIdentifier:v6];
+  v12 = [(WBSManagedExtensionsController *)self deniedDomainsForComposedIdentifier:identifierCopy];
 
   v13 = v12;
   if (!v12)
@@ -251,23 +251,23 @@ uint64_t __70__WBSManagedExtensionsController__domainIsManaged_byManagedDomainSe
   {
   }
 
-  v15 = [(WBSManagedExtensionsController *)self _domainIsManaged:v7 byManagedDomainSet:v14];
+  v15 = [(WBSManagedExtensionsController *)self _domainIsManaged:managedCopy byManagedDomainSet:v14];
   return v15;
 }
 
-- (BOOL)domainIsDenied:(id)a3 forComposedIdentifier:(id)a4
+- (BOOL)domainIsDenied:(id)denied forComposedIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [(WBSManagedExtensionsController *)self deniedDomainsForComposedIdentifier:a4];
-  LOBYTE(self) = [(WBSManagedExtensionsController *)self _domainIsManaged:v6 byManagedDomainSet:v7];
+  deniedCopy = denied;
+  v7 = [(WBSManagedExtensionsController *)self deniedDomainsForComposedIdentifier:identifier];
+  LOBYTE(self) = [(WBSManagedExtensionsController *)self _domainIsManaged:deniedCopy byManagedDomainSet:v7];
 
   return self;
 }
 
-- (BOOL)anyDomainIsManagedForComposedIdentifier:(id)a3
+- (BOOL)anyDomainIsManagedForComposedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WBSManagedExtensionsController *)self allowedDomainsForComposedIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(WBSManagedExtensionsController *)self allowedDomainsForComposedIdentifier:identifierCopy];
   if ([v5 count])
   {
     v6 = 1;
@@ -275,17 +275,17 @@ uint64_t __70__WBSManagedExtensionsController__domainIsManaged_byManagedDomainSe
 
   else
   {
-    v7 = [(WBSManagedExtensionsController *)self deniedDomainsForComposedIdentifier:v4];
+    v7 = [(WBSManagedExtensionsController *)self deniedDomainsForComposedIdentifier:identifierCopy];
     v6 = [v7 count] != 0;
   }
 
   return v6;
 }
 
-- (BOOL)allDomainsAreManagedForComposedIdentifier:(id)a3
+- (BOOL)allDomainsAreManagedForComposedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WBSManagedExtensionsController *)self allowedDomainsForComposedIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(WBSManagedExtensionsController *)self allowedDomainsForComposedIdentifier:identifierCopy];
   v6 = v5;
   if (v5)
   {
@@ -299,7 +299,7 @@ uint64_t __70__WBSManagedExtensionsController__domainIsManaged_byManagedDomainSe
 
   v8 = v7;
 
-  v9 = [(WBSManagedExtensionsController *)self deniedDomainsForComposedIdentifier:v4];
+  v9 = [(WBSManagedExtensionsController *)self deniedDomainsForComposedIdentifier:identifierCopy];
 
   v10 = v9;
   if (!v9)
@@ -317,7 +317,7 @@ uint64_t __70__WBSManagedExtensionsController__domainIsManaged_byManagedDomainSe
   return v12;
 }
 
-- (void)_managedExtensionConfigurationDidChange:(id)a3
+- (void)_managedExtensionConfigurationDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

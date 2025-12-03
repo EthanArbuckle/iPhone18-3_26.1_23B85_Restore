@@ -1,19 +1,19 @@
 @interface CPLProcessStagedScopesTask
-- (id)enumerateScopesForTaskInTransaction:(id)a3;
-- (id)newScopedTaskWithScope:(id)a3 session:(id)a4 transportScope:(id)a5 clientCacheIdentifier:(id)a6;
-- (void)taskDidFinishWithError:(id)a3;
+- (id)enumerateScopesForTaskInTransaction:(id)transaction;
+- (id)newScopedTaskWithScope:(id)scope session:(id)session transportScope:(id)transportScope clientCacheIdentifier:(id)identifier;
+- (void)taskDidFinishWithError:(id)error;
 @end
 
 @implementation CPLProcessStagedScopesTask
 
-- (void)taskDidFinishWithError:(id)a3
+- (void)taskDidFinishWithError:(id)error
 {
-  v4 = a3;
-  if (v4 || !self->_hasProcessedStagedScopes)
+  errorCopy = error;
+  if (errorCopy || !self->_hasProcessedStagedScopes)
   {
     v8.receiver = self;
     v8.super_class = CPLProcessStagedScopesTask;
-    [(CPLEngineSyncTask *)&v8 taskDidFinishWithError:v4];
+    [(CPLEngineSyncTask *)&v8 taskDidFinishWithError:errorCopy];
   }
 
   else
@@ -28,8 +28,8 @@
       }
     }
 
-    v6 = [(CPLEngineSyncTask *)self session];
-    [v6 requestSyncStateAtEndOfSyncSession:2 reschedule:1];
+    session = [(CPLEngineSyncTask *)self session];
+    [session requestSyncStateAtEndOfSyncSession:2 reschedule:1];
 
     v7 = [CPLErrors cplErrorWithCode:10000 description:@"Need to clean-up staged scopes"];
     v9.receiver = self;
@@ -38,30 +38,30 @@
   }
 }
 
-- (id)newScopedTaskWithScope:(id)a3 session:(id)a4 transportScope:(id)a5 clientCacheIdentifier:(id)a6
+- (id)newScopedTaskWithScope:(id)scope session:(id)session transportScope:(id)transportScope clientCacheIdentifier:(id)identifier
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  identifierCopy = identifier;
+  transportScopeCopy = transportScope;
+  sessionCopy = session;
+  scopeCopy = scope;
   v14 = [CPLProcessStagedScopesScopeTask alloc];
-  v15 = [(CPLEngineSyncTask *)self engineLibrary];
-  v16 = [(CPLProcessStagedScopesScopeTask *)v14 initWithEngineLibrary:v15 session:v12 clientCacheIdentifier:v10 scope:v13 transportScope:v11];
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  v16 = [(CPLProcessStagedScopesScopeTask *)v14 initWithEngineLibrary:engineLibrary session:sessionCopy clientCacheIdentifier:identifierCopy scope:scopeCopy transportScope:transportScopeCopy];
 
   return v16;
 }
 
-- (id)enumerateScopesForTaskInTransaction:(id)a3
+- (id)enumerateScopesForTaskInTransaction:(id)transaction
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CPLEngineMultiscopeSyncTask *)self scopes];
-  v4 = [v3 primaryScope];
-  if (v4)
+  scopes = [(CPLEngineMultiscopeSyncTask *)self scopes];
+  primaryScope = [scopes primaryScope];
+  if (primaryScope)
   {
-    v5 = [v3 sharingScopeForScope:v4];
+    v5 = [scopes sharingScopeForScope:primaryScope];
     if (v5)
     {
-      v6 = [v3 stagingScopeForScope:v5];
+      v6 = [scopes stagingScopeForScope:v5];
 
       if (v6)
       {
@@ -72,10 +72,10 @@ LABEL_4:
         goto LABEL_13;
       }
 
-      v8 = [v3 scopeChangeForScope:v5];
+      v8 = [scopes scopeChangeForScope:v5];
       if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v8 areSomeUsersExiting] & 1) != 0)
       {
-        v9 = [v3 valueForFlag:4 forScope:v5];
+        v9 = [scopes valueForFlag:4 forScope:v5];
 
         if (!v9)
         {

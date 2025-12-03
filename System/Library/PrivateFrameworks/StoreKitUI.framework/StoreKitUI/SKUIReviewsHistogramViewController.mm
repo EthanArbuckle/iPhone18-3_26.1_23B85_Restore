@@ -7,29 +7,29 @@
 - (int64_t)selectedSegmentIndex;
 - (void)_reloadHistogram;
 - (void)loadView;
-- (void)setPersonalStarRating:(int64_t)a3;
-- (void)setReviewList:(id)a3;
-- (void)setSegmentedControlTitles:(id)a3;
-- (void)setSelectedSegmentIndex:(int64_t)a3;
-- (void)setVersionString:(id)a3;
+- (void)setPersonalStarRating:(int64_t)rating;
+- (void)setReviewList:(id)list;
+- (void)setSegmentedControlTitles:(id)titles;
+- (void)setSelectedSegmentIndex:(int64_t)index;
+- (void)setVersionString:(id)string;
 @end
 
 @implementation SKUIReviewsHistogramViewController
 
 - (UIControl)appSupportButton
 {
-  v2 = [(SKUIReviewsHistogramViewController *)self _histogramView];
-  v3 = [v2 appSupportButton];
+  _histogramView = [(SKUIReviewsHistogramViewController *)self _histogramView];
+  appSupportButton = [_histogramView appSupportButton];
 
-  return v3;
+  return appSupportButton;
 }
 
 - (UIControl)segmentedControl
 {
-  v2 = [(SKUIReviewsHistogramViewController *)self _histogramView];
-  v3 = [v2 segmentedControl];
+  _histogramView = [(SKUIReviewsHistogramViewController *)self _histogramView];
+  segmentedControl = [_histogramView segmentedControl];
 
-  return v3;
+  return segmentedControl;
 }
 
 - (int64_t)selectedSegmentIndex
@@ -46,64 +46,64 @@
   }
 }
 
-- (void)setPersonalStarRating:(int64_t)a3
+- (void)setPersonalStarRating:(int64_t)rating
 {
-  v4 = [(SKUIReviewsHistogramViewController *)self _histogramView];
-  [v4 setPersonalStarRating:a3];
+  _histogramView = [(SKUIReviewsHistogramViewController *)self _histogramView];
+  [_histogramView setPersonalStarRating:rating];
 }
 
-- (void)setReviewList:(id)a3
+- (void)setReviewList:(id)list
 {
-  v5 = a3;
-  if (self->_reviewList != v5)
+  listCopy = list;
+  if (self->_reviewList != listCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_reviewList, a3);
+    v6 = listCopy;
+    objc_storeStrong(&self->_reviewList, list);
     [(SKUIReviewsHistogramViewController *)self _reloadHistogram];
-    v5 = v6;
+    listCopy = v6;
   }
 }
 
-- (void)setSegmentedControlTitles:(id)a3
+- (void)setSegmentedControlTitles:(id)titles
 {
-  v4 = a3;
-  v5 = [(SKUIReviewsHistogramViewController *)self _histogramView];
-  [v5 setSegmentedControlTitles:v4];
+  titlesCopy = titles;
+  _histogramView = [(SKUIReviewsHistogramViewController *)self _histogramView];
+  [_histogramView setSegmentedControlTitles:titlesCopy];
 }
 
-- (void)setSelectedSegmentIndex:(int64_t)a3
+- (void)setSelectedSegmentIndex:(int64_t)index
 {
-  v4 = [(SKUIReviewsHistogramViewController *)self _histogramView];
-  [v4 setSelectedSegmentIndex:a3];
+  _histogramView = [(SKUIReviewsHistogramViewController *)self _histogramView];
+  [_histogramView setSelectedSegmentIndex:index];
 }
 
-- (void)setVersionString:(id)a3
+- (void)setVersionString:(id)string
 {
-  v4 = a3;
-  v5 = [(SKUIReviewsHistogramViewController *)self _histogramView];
-  [v5 setVersionString:v4];
+  stringCopy = string;
+  _histogramView = [(SKUIReviewsHistogramViewController *)self _histogramView];
+  [_histogramView setVersionString:stringCopy];
 }
 
 - (UIControl)starRatingControl
 {
-  v2 = [(SKUIReviewsHistogramViewController *)self _histogramView];
-  v3 = [v2 starRatingControl];
+  _histogramView = [(SKUIReviewsHistogramViewController *)self _histogramView];
+  starRatingControl = [_histogramView starRatingControl];
 
-  return v3;
+  return starRatingControl;
 }
 
 - (UIControl)writeAReviewButton
 {
-  v2 = [(SKUIReviewsHistogramViewController *)self _histogramView];
-  v3 = [v2 writeAReviewButton];
+  _histogramView = [(SKUIReviewsHistogramViewController *)self _histogramView];
+  writeAReviewButton = [_histogramView writeAReviewButton];
 
-  return v3;
+  return writeAReviewButton;
 }
 
 - (void)loadView
 {
-  v3 = [(SKUIReviewsHistogramViewController *)self _histogramView];
-  [(SKUIReviewsHistogramViewController *)self setView:v3];
+  _histogramView = [(SKUIReviewsHistogramViewController *)self _histogramView];
+  [(SKUIReviewsHistogramViewController *)self setView:_histogramView];
 }
 
 - (id)_histogramView
@@ -149,11 +149,11 @@
 - (void)_reloadHistogram
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = [(SKUIReviewList *)self->_reviewList ratingCount];
-  v8 = v7;
-  [(SKUIReviewsHistogramView *)self->_histogramView setNumberOfUserRatings:v7];
+  ratingCount = [(SKUIReviewList *)self->_reviewList ratingCount];
+  v8 = ratingCount;
+  [(SKUIReviewsHistogramView *)self->_histogramView setNumberOfUserRatings:ratingCount];
   histogramView = self->_histogramView;
-  if (v7)
+  if (ratingCount)
   {
     v9 = MEMORY[0x277CCABB0];
     *&v10 = [(SKUIReviewList *)self->_reviewList oneStarRatingCount]/ v8;
@@ -189,7 +189,7 @@
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:5];
   [(SKUIReviewsHistogramView *)histogramView setHistogramValues:v20];
 
-  if (v7)
+  if (ratingCount)
   {
   }
 

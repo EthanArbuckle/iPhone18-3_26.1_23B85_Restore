@@ -1,5 +1,5 @@
 @interface SGDatabaseJournalFile
-- (SGDatabaseJournalFile)initWithPath:(id)a3;
+- (SGDatabaseJournalFile)initWithPath:(id)path;
 - (id)description;
 - (id)read;
 - (void)clear;
@@ -7,7 +7,7 @@
 - (void)destroy;
 - (void)destroyAndUnlinkIfEmpty;
 - (void)unlink;
-- (void)write:(id)a3;
+- (void)write:(id)write;
 @end
 
 @implementation SGDatabaseJournalFile
@@ -24,8 +24,8 @@
   v18 = *MEMORY[0x277D85DE8];
   if (self->_dead)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"SGDatabaseJournalFile.m" lineNumber:171 description:{@"Invalid parameter not satisfying: %@", @"!_dead"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDatabaseJournalFile.m" lineNumber:171 description:{@"Invalid parameter not satisfying: %@", @"!_dead"}];
   }
 
   fd = self->_fd;
@@ -66,8 +66,8 @@
 {
   if (self->_dead)
   {
-    v4 = [MEMORY[0x277CCA890] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"SGDatabaseJournalFile.m" lineNumber:161 description:{@"Invalid parameter not satisfying: %@", @"!_dead"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDatabaseJournalFile.m" lineNumber:161 description:{@"Invalid parameter not satisfying: %@", @"!_dead"}];
   }
 
   if (self->_len)
@@ -83,8 +83,8 @@
   v34 = *MEMORY[0x277D85DE8];
   if (self->_dead)
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"SGDatabaseJournalFile.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"!_dead"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDatabaseJournalFile.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"!_dead"}];
   }
 
   len = self->_len;
@@ -229,36 +229,36 @@ LABEL_13:
   return len;
 }
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  writeCopy = write;
   if (self->_len)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"SGDatabaseJournalFile.m" lineNumber:81 description:@"Can not overwrite journal file"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDatabaseJournalFile.m" lineNumber:81 description:@"Can not overwrite journal file"];
   }
 
-  if ([v5 length] >> 32)
+  if ([writeCopy length] >> 32)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"SGDatabaseJournalFile.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"data.length <= UINT32_MAX"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGDatabaseJournalFile.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"data.length <= UINT32_MAX"}];
   }
 
   if (self->_dead)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"SGDatabaseJournalFile.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"!_dead"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"SGDatabaseJournalFile.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"!_dead"}];
   }
 
-  v6 = adler32(0, [v5 bytes], objc_msgSend(v5, "length"));
+  v6 = adler32(0, [writeCopy bytes], objc_msgSend(writeCopy, "length"));
   v16[0] = -1347426410;
-  v16[1] = [v5 length];
+  v16[1] = [writeCopy length];
   v16[2] = v6;
   v23.iov_base = v16;
   v23.iov_len = 12;
-  v24 = [v5 bytes];
-  v25 = [v5 length];
+  bytes = [writeCopy bytes];
+  v25 = [writeCopy length];
   if (writev(self->_fd, &v23, 2) < 0)
   {
     v7 = sgLogHandle();
@@ -280,7 +280,7 @@ LABEL_13:
 
   else
   {
-    self->_len = [v5 length] + 12;
+    self->_len = [writeCopy length] + 12;
     self->_written = 1;
   }
 
@@ -316,10 +316,10 @@ LABEL_13:
   self->_dead = 1;
 }
 
-- (SGDatabaseJournalFile)initWithPath:(id)a3
+- (SGDatabaseJournalFile)initWithPath:(id)path
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  pathCopy = path;
   v22.receiver = self;
   v22.super_class = SGDatabaseJournalFile;
   v6 = [(SGDatabaseJournalFile *)&v22 init];
@@ -329,8 +329,8 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  objc_storeStrong(&v6->_path, a3);
-  v8 = open_dprotected_np([v5 UTF8String], 514, 2, 0, 384);
+  objc_storeStrong(&v6->_path, path);
+  v8 = open_dprotected_np([pathCopy UTF8String], 514, 2, 0, 384);
   v7->_fd = v8;
   if (v8 < 0)
   {

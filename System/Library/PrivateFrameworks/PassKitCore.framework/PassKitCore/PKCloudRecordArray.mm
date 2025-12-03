@@ -1,19 +1,19 @@
 @interface PKCloudRecordArray
 - (PKCloudRecordArray)init;
-- (PKCloudRecordArray)initWithCoder:(id)a3;
-- (id)_descriptionWithDetailedOutput:(BOOL)a3 includeItem:(BOOL)a4;
+- (PKCloudRecordArray)initWithCoder:(id)coder;
+- (id)_descriptionWithDetailedOutput:(BOOL)output includeItem:(BOOL)item;
 - (id)allItems;
 - (id)allObjects;
 - (id)allObjectsByDatabaseIdentifier;
 - (id)allRecordIDs;
 - (id)allRecordNames;
-- (id)allRecordsWithRecordType:(id)a3;
+- (id)allRecordsWithRecordType:(id)type;
 - (int64_t)count;
-- (void)addCloudRecord:(id)a3 forContainerDatabaseIdentifier:(id)a4;
-- (void)addTransactionSyncReportItem:(id)a3 forAccountIdentifier:(id)a4;
-- (void)addTransactionSyncReportItems:(id)a3 forAccountIdentifier:(id)a4;
-- (void)applyCloudRecordArray:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addCloudRecord:(id)record forContainerDatabaseIdentifier:(id)identifier;
+- (void)addTransactionSyncReportItem:(id)item forAccountIdentifier:(id)identifier;
+- (void)addTransactionSyncReportItems:(id)items forAccountIdentifier:(id)identifier;
+- (void)applyCloudRecordArray:(id)array;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCloudRecordArray
@@ -39,9 +39,9 @@
   return v2;
 }
 
-- (PKCloudRecordArray)initWithCoder:(id)a3
+- (PKCloudRecordArray)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = PKCloudRecordArray;
   v5 = [(PKCloudRecordArray *)&v20 init];
@@ -51,7 +51,7 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"cloudRecordByDatabase"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"cloudRecordByDatabase"];
     cloudRecordByDatabase = v5->_cloudRecordByDatabase;
     v5->_cloudRecordByDatabase = v10;
 
@@ -60,26 +60,26 @@
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v12 setWithObjects:{v13, v14, v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"reportItemsByAccountIdentifier"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"reportItemsByAccountIdentifier"];
     reportItemsByAccountIdentifier = v5->_reportItemsByAccountIdentifier;
     v5->_reportItemsByAccountIdentifier = v17;
 
-    v5->_recordsFetchedCount = [v4 decodeIntegerForKey:@"recordsFetchedCount"];
+    v5->_recordsFetchedCount = [coderCopy decodeIntegerForKey:@"recordsFetchedCount"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   cloudRecordByDatabase = self->_cloudRecordByDatabase;
-  v5 = a3;
-  [v5 encodeObject:cloudRecordByDatabase forKey:@"cloudRecordByDatabase"];
-  [v5 encodeObject:self->_reportItemsByAccountIdentifier forKey:@"reportItemsByAccountIdentifier"];
-  [v5 encodeInteger:self->_recordsFetchedCount forKey:@"recordsFetchedCount"];
+  coderCopy = coder;
+  [coderCopy encodeObject:cloudRecordByDatabase forKey:@"cloudRecordByDatabase"];
+  [coderCopy encodeObject:self->_reportItemsByAccountIdentifier forKey:@"reportItemsByAccountIdentifier"];
+  [coderCopy encodeInteger:self->_recordsFetchedCount forKey:@"recordsFetchedCount"];
 }
 
-- (id)_descriptionWithDetailedOutput:(BOOL)a3 includeItem:(BOOL)a4
+- (id)_descriptionWithDetailedOutput:(BOOL)output includeItem:(BOOL)item
 {
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -95,8 +95,8 @@
   v27[3] = &unk_1E79D29A0;
   v11 = v7;
   v28 = v11;
-  v32 = a3;
-  v33 = a4;
+  outputCopy = output;
+  itemCopy = item;
   v12 = v8;
   v29 = v12;
   v13 = v9;
@@ -203,47 +203,47 @@ uint64_t __27__PKCloudRecordArray_count__block_invoke(uint64_t a1, uint64_t a2, 
   return result;
 }
 
-- (void)addCloudRecord:(id)a3 forContainerDatabaseIdentifier:(id)a4
+- (void)addCloudRecord:(id)record forContainerDatabaseIdentifier:(id)identifier
 {
-  if (a3 && a4)
+  if (record && identifier)
   {
     cloudRecordByDatabase = self->_cloudRecordByDatabase;
-    v7 = a4;
-    v8 = a3;
-    v9 = [(NSMutableDictionary *)cloudRecordByDatabase objectForKey:v7];
+    identifierCopy = identifier;
+    recordCopy = record;
+    v9 = [(NSMutableDictionary *)cloudRecordByDatabase objectForKey:identifierCopy];
     if (!v9)
     {
-      v9 = [[PKCloudRecordArrayDatabase alloc] initWithIdentifier:v7];
+      v9 = [[PKCloudRecordArrayDatabase alloc] initWithIdentifier:identifierCopy];
     }
 
     v10 = v9;
-    [(NSMutableDictionary *)self->_cloudRecordByDatabase setObject:v9 forKey:v7];
+    [(NSMutableDictionary *)self->_cloudRecordByDatabase setObject:v9 forKey:identifierCopy];
 
-    [(PKCloudRecordArrayDatabase *)v10 addCloudRecord:v8];
+    [(PKCloudRecordArrayDatabase *)v10 addCloudRecord:recordCopy];
   }
 }
 
-- (void)applyCloudRecordArray:(id)a3
+- (void)applyCloudRecordArray:(id)array
 {
-  v4 = a3;
-  v5 = [v4 cloudRecordByDatabase];
+  arrayCopy = array;
+  cloudRecordByDatabase = [arrayCopy cloudRecordByDatabase];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__PKCloudRecordArray_applyCloudRecordArray___block_invoke;
   v9[3] = &unk_1E79D2A40;
   v9[4] = self;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [cloudRecordByDatabase enumerateKeysAndObjectsUsingBlock:v9];
 
-  v6 = [v4 reportItemsByAccountIdentifier];
+  reportItemsByAccountIdentifier = [arrayCopy reportItemsByAccountIdentifier];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__PKCloudRecordArray_applyCloudRecordArray___block_invoke_2;
   v8[3] = &unk_1E79D2A68;
   v8[4] = self;
-  [v6 enumerateKeysAndObjectsUsingBlock:v8];
+  [reportItemsByAccountIdentifier enumerateKeysAndObjectsUsingBlock:v8];
 
-  v7 = [v4 recordsFetchedCount];
-  self->_recordsFetchedCount += v7;
+  recordsFetchedCount = [arrayCopy recordsFetchedCount];
+  self->_recordsFetchedCount += recordsFetchedCount;
 }
 
 void __44__PKCloudRecordArray_applyCloudRecordArray___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -265,38 +265,38 @@ void __44__PKCloudRecordArray_applyCloudRecordArray___block_invoke(uint64_t a1, 
   [*(*(a1 + 32) + 8) setObject:v7 forKey:v8];
 }
 
-- (void)addTransactionSyncReportItem:(id)a3 forAccountIdentifier:(id)a4
+- (void)addTransactionSyncReportItem:(id)item forAccountIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (item)
   {
-    if (a4)
+    if (identifier)
     {
-      v10 = a3;
+      itemCopy = item;
       v6 = MEMORY[0x1E695DEC8];
-      v7 = a4;
-      v8 = a3;
-      v9 = [v6 arrayWithObjects:&v10 count:1];
+      identifierCopy = identifier;
+      itemCopy2 = item;
+      v9 = [v6 arrayWithObjects:&itemCopy count:1];
 
-      [(PKCloudRecordArray *)self addTransactionSyncReportItems:v9 forAccountIdentifier:v7, v10, v11];
+      [(PKCloudRecordArray *)self addTransactionSyncReportItems:v9 forAccountIdentifier:identifierCopy, itemCopy, v11];
     }
   }
 }
 
-- (void)addTransactionSyncReportItems:(id)a3 forAccountIdentifier:(id)a4
+- (void)addTransactionSyncReportItems:(id)items forAccountIdentifier:(id)identifier
 {
-  v8 = a3;
-  v6 = a4;
-  if (v6 && [v8 count])
+  itemsCopy = items;
+  identifierCopy = identifier;
+  if (identifierCopy && [itemsCopy count])
   {
-    v7 = [(NSMutableDictionary *)self->_reportItemsByAccountIdentifier objectForKey:v6];
+    v7 = [(NSMutableDictionary *)self->_reportItemsByAccountIdentifier objectForKey:identifierCopy];
     if (!v7)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      [(NSMutableDictionary *)self->_reportItemsByAccountIdentifier setObject:v7 forKey:v6];
+      [(NSMutableDictionary *)self->_reportItemsByAccountIdentifier setObject:v7 forKey:identifierCopy];
     }
 
-    [v7 addObjectsFromArray:v8];
+    [v7 addObjectsFromArray:itemsCopy];
   }
 }
 
@@ -369,9 +369,9 @@ void __52__PKCloudRecordArray_allObjectsByDatabaseIdentifier__block_invoke(uint6
   [v4 setObject:v6 forKey:v5];
 }
 
-- (id)allRecordsWithRecordType:(id)a3
+- (id)allRecordsWithRecordType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   cloudRecordByDatabase = self->_cloudRecordByDatabase;
   v11 = MEMORY[0x1E69E9820];
@@ -379,8 +379,8 @@ void __52__PKCloudRecordArray_allObjectsByDatabaseIdentifier__block_invoke(uint6
   v13 = __47__PKCloudRecordArray_allRecordsWithRecordType___block_invoke;
   v14 = &unk_1E79D2A90;
   v15 = v5;
-  v16 = v4;
-  v7 = v4;
+  v16 = typeCopy;
+  v7 = typeCopy;
   v8 = v5;
   [(NSMutableDictionary *)cloudRecordByDatabase enumerateKeysAndObjectsUsingBlock:&v11];
   v9 = [v8 copy];

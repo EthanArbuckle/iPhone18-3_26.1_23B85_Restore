@@ -1,21 +1,21 @@
 @interface NSArray
-+ (id)arrayFromShellCommandString:(id)a3;
-+ (id)graphicInfoArrayFromArray:(id)a3;
++ (id)arrayFromShellCommandString:(id)string;
++ (id)graphicInfoArrayFromArray:(id)array;
 @end
 
 @implementation NSArray
 
-+ (id)graphicInfoArrayFromArray:(id)a3
++ (id)graphicInfoArrayFromArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v7 = objc_alloc_init(NSMutableArray);
-  if (v3)
+  if (arrayCopy)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = v3;
+    v8 = arrayCopy;
     v9 = [v8 countByEnumeratingWithState:&v26 objects:v32 count:16];
     if (v9)
     {
@@ -90,42 +90,42 @@ LABEL_16:
   return v23;
 }
 
-+ (id)arrayFromShellCommandString:(id)a3
++ (id)arrayFromShellCommandString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(NSMutableArray);
-  if (v3)
+  if (stringCopy)
   {
-    v28 = v3;
-    v5 = [v3 UTF8String];
-    v6 = strlen(v5);
+    v28 = stringCopy;
+    uTF8String = [stringCopy UTF8String];
+    v6 = strlen(uTF8String);
     if (v6 >= 1)
     {
       v10 = 0;
-      v11 = &v5[v6];
-      v12 = &v5[v6];
-      while (*v5 == 32)
+      v11 = &uTF8String[v6];
+      v12 = &uTF8String[v6];
+      while (*uTF8String == 32)
       {
-        v13 = v5;
+        v13 = uTF8String;
 LABEL_41:
-        v5 = v13 + 1;
+        uTF8String = v13 + 1;
         if ((v13 + 1) >= v11)
         {
           goto LABEL_42;
         }
       }
 
-      if (v5 >= v11)
+      if (uTF8String >= v11)
       {
         v14 = 0;
-        v13 = v5;
+        v13 = uTF8String;
       }
 
       else
       {
         v14 = 0;
-        v15 = v12 - v5;
-        v13 = v5;
+        v15 = v12 - uTF8String;
+        v13 = uTF8String;
         do
         {
           v16 = *v13;
@@ -155,26 +155,26 @@ LABEL_41:
 
       if (v10)
       {
-        v3 = v28;
+        stringCopy = v28;
         ZhuGeLog(1040, "/Library/Caches/com.apple.xbs/Sources/ZhuGe_Service/ZhuGeCommon/NSArray+ZhuGe.m", "+[NSArray(ZhuGe) arrayFromShellCommandString:]", 98, @"Quotation %c is not paired in command %@!", v7, v8, v9, v10);
         goto LABEL_44;
       }
 
 LABEL_26:
-      v20 = v13 - v5;
-      v21 = [NSMutableData dataWithLength:v13 - v5 + 1];
-      v22 = [v21 mutableBytes];
+      v20 = v13 - uTF8String;
+      v21 = [NSMutableData dataWithLength:v13 - uTF8String + 1];
+      mutableBytes = [v21 mutableBytes];
 
-      bzero(v22, v13 - v5 + 1);
+      bzero(mutableBytes, v13 - uTF8String + 1);
       if (v14)
       {
-        if (v5 < v13)
+        if (uTF8String < v13)
         {
           v10 = 0;
-          v23 = v22;
+          v23 = mutableBytes;
           while (1)
           {
-            v24 = *v5;
+            v24 = *uTF8String;
             if (v24 != 39 && v24 != 34)
             {
               break;
@@ -192,11 +192,11 @@ LABEL_26:
 
             else
             {
-              v10 = *v5;
+              v10 = *uTF8String;
             }
 
 LABEL_36:
-            ++v5;
+            ++uTF8String;
             if (!--v20)
             {
               goto LABEL_40;
@@ -210,12 +210,12 @@ LABEL_36:
 
       else
       {
-        memcpy(v22, v5, v13 - v5);
+        memcpy(mutableBytes, uTF8String, v13 - uTF8String);
       }
 
       v10 = 0;
 LABEL_40:
-      v25 = [NSString stringWithUTF8String:v22];
+      v25 = [NSString stringWithUTF8String:mutableBytes];
       [v4 addObject:v25];
 
       goto LABEL_41;
@@ -223,7 +223,7 @@ LABEL_40:
 
 LABEL_42:
     v26 = v4;
-    v3 = v28;
+    stringCopy = v28;
   }
 
   else

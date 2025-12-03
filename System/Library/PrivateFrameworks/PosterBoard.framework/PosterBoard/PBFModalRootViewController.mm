@@ -2,75 +2,75 @@
 + (PREditingSceneViewControllerTopButtonLayout)_topButtonLayout;
 + (void)prewarmTopButtonLayout;
 - (BOOL)_isPhotosEntryPoint;
-- (BOOL)ambientEditingCollectionViewControllerDidPressDone:(id)a3;
-- (BOOL)posterRackCollectionViewControllerDidPressDone:(id)a3;
+- (BOOL)ambientEditingCollectionViewControllerDidPressDone:(id)done;
+- (BOOL)posterRackCollectionViewControllerDidPressDone:(id)done;
 - (PBFAmbientEditingCollectionViewController)ambientEditingController;
-- (PBFModalRootViewController)initWithScene:(id)a3;
-- (PBFModalRootViewController)initWithScene:(id)a3 dataStore:(id)a4;
+- (PBFModalRootViewController)initWithScene:(id)scene;
+- (PBFModalRootViewController)initWithScene:(id)scene dataStore:(id)store;
 - (PBFPosterGalleryPreviewViewController)galleryController;
-- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)a3;
-- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForFocusPosterSelectionViewController:(SEL)a3;
-- (id)_actionHandlersForScene:(id)a3;
-- (id)_posterLimitExceededAlertWithButtonActionHandler:(id)a3;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
-- (id)_settingsDiffActionsForScene:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)galleryViewController:(id)a3 willUseAnimationController:(id)a4 forDismissingEditingViewControllerWithAction:(int64_t)a5;
+- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)controller;
+- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForFocusPosterSelectionViewController:(SEL)controller;
+- (id)_actionHandlersForScene:(id)scene;
+- (id)_posterLimitExceededAlertWithButtonActionHandler:(id)handler;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
+- (id)_settingsDiffActionsForScene:(id)scene;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)galleryViewController:(id)controller willUseAnimationController:(id)animationController forDismissingEditingViewControllerWithAction:(int64_t)action;
 - (id)succinctDescription;
-- (void)_createLegacyMigrationHelperWithConfiguration:(id)a3;
-- (void)_displayViewControllerAsSheet:(id)a3;
-- (void)_galleryEditingSceneViewController:(id)a3 userDidDismissWithAction:(int64_t)a4 updatedConfiguration:(id)a5 updatedConfiguredProperties:(id)a6 completion:(id)a7;
-- (void)_handleNotificationForwardAction:(id)a3;
-- (void)_handleSheetDidDismissWithResponse:(id)a3;
-- (void)_handleSheetWillDismissWithResponse:(id)a3;
-- (void)_logEditWithEditingViewController:(id)a3 posterUUID:(id)a4 lastModifiedDate:(id)a5;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_createLegacyMigrationHelperWithConfiguration:(id)configuration;
+- (void)_displayViewControllerAsSheet:(id)sheet;
+- (void)_galleryEditingSceneViewController:(id)controller userDidDismissWithAction:(int64_t)action updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties completion:(id)completion;
+- (void)_handleNotificationForwardAction:(id)action;
+- (void)_handleSheetDidDismissWithResponse:(id)response;
+- (void)_handleSheetWillDismissWithResponse:(id)response;
+- (void)_logEditWithEditingViewController:(id)controller posterUUID:(id)d lastModifiedDate:(id)date;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 - (void)_performLegacyMigration;
-- (void)_presentEditingForNewPosterFromConfiguration:(id)a3;
-- (void)_presentEditingForPosterConfiguration:(id)a3;
-- (void)_presentEditingForPosterConfiguration:(id)a3 sessionInfo:(id)a4;
-- (void)_presentEditingSceneViewController:(id)a3;
+- (void)_presentEditingForNewPosterFromConfiguration:(id)configuration;
+- (void)_presentEditingForPosterConfiguration:(id)configuration;
+- (void)_presentEditingForPosterConfiguration:(id)configuration sessionInfo:(id)info;
+- (void)_presentEditingSceneViewController:(id)controller;
 - (void)_presentGallery;
 - (void)_presentLegacyAddNewAlert;
 - (void)_presentLegacyMigrationAlert;
 - (void)_presentLegacyMigrationFailedAlert;
 - (void)_presentPartialMigrationPrompt;
 - (void)_reload;
-- (void)_setScene:(id)a3;
+- (void)_setScene:(id)scene;
 - (void)_setupGalleryDataProviderIfNeeded;
-- (void)_standaloneEditingSceneViewController:(id)a3 userDidDismissWithAction:(int64_t)a4 updatedConfiguration:(id)a5 updatedConfiguredProperties:(id)a6 completion:(id)a7;
+- (void)_standaloneEditingSceneViewController:(id)controller userDidDismissWithAction:(int64_t)action updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties completion:(id)completion;
 - (void)dealloc;
-- (void)editingIngestionManager:(id)a3 didAccept:(id)a4 userChoice:(int64_t)a5;
-- (void)editingSceneViewController:(id)a3 userDidDismissWithAction:(int64_t)a4 updatedConfiguration:(id)a5 updatedConfiguredProperties:(id)a6 completion:(id)a7;
-- (void)galleryViewController:(id)a3 didSelectPreview:(id)a4 fromPreviewView:(id)a5;
+- (void)editingIngestionManager:(id)manager didAccept:(id)accept userChoice:(int64_t)choice;
+- (void)editingSceneViewController:(id)controller userDidDismissWithAction:(int64_t)action updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties completion:(id)completion;
+- (void)galleryViewController:(id)controller didSelectPreview:(id)preview fromPreviewView:(id)view;
 - (void)invalidate;
-- (void)posterExtensionDataStore:(id)a3 didUpdateGalleryConfiguration:(id)a4;
-- (void)posterRackCollectionViewControllerDidPressCancel:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)posterExtensionDataStore:(id)store didUpdateGalleryConfiguration:(id)configuration;
+- (void)posterRackCollectionViewControllerDidPressCancel:(id)cancel;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PBFModalRootViewController
 
-- (PBFModalRootViewController)initWithScene:(id)a3
+- (PBFModalRootViewController)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = +[PBFPosterExtensionDataStoreXPCServiceGlue sharedInstance];
-  v6 = [v5 dataStore];
-  v7 = [(PBFModalRootViewController *)self initWithScene:v4 dataStore:v6];
+  dataStore = [v5 dataStore];
+  v7 = [(PBFModalRootViewController *)self initWithScene:sceneCopy dataStore:dataStore];
 
   return v7;
 }
 
-- (PBFModalRootViewController)initWithScene:(id)a3 dataStore:(id)a4
+- (PBFModalRootViewController)initWithScene:(id)scene dataStore:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  sceneCopy = scene;
+  storeCopy = store;
+  v10 = sceneCopy;
   NSClassFromString(&cfstr_Uiscene.isa);
   if (!v10)
   {
@@ -82,7 +82,7 @@
     [PBFModalRootViewController initWithScene:a2 dataStore:?];
   }
 
-  v11 = v9;
+  v11 = storeCopy;
   NSClassFromString(&cfstr_Pbfposterexten.isa);
   if (!v11)
   {
@@ -100,15 +100,15 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_parentScene, a3);
+    objc_storeStrong(&v12->_parentScene, scene);
     parentScene = v13->_parentScene;
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
     [(UIScene *)parentScene _registerSceneComponent:v13 forKey:v16];
 
-    objc_storeStrong(&v13->_dataStore, a4);
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v13 selector:sel_dataStoreDidTearDown_ name:PBFPosterExtensionDataStoreDidTearDownNotification object:0];
+    objc_storeStrong(&v13->_dataStore, store);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel_dataStoreDidTearDown_ name:PBFPosterExtensionDataStoreDidTearDownNotification object:0];
   }
 
   return v13;
@@ -120,8 +120,8 @@
   {
     self->_invalidated = 1;
     [(UIViewController *)self dismissPresentedViewControllersAnimated:0 dismissHandler:0 completion:0];
-    v8 = [(PBFModalRootViewController *)self ambientEditingController];
-    [v8 invalidate];
+    ambientEditingController = [(PBFModalRootViewController *)self ambientEditingController];
+    [ambientEditingController invalidate];
     [(PBFModalRootViewController *)self setAmbientEditingController:0];
     parentScene = self->_parentScene;
     v5 = objc_opt_class();
@@ -140,7 +140,7 @@
   v4[1] = 3221225472;
   v4[2] = __52__PBFModalRootViewController_prewarmTopButtonLayout__block_invoke;
   v4[3] = &__block_descriptor_40_e5_v8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   PBFDispatchAsyncWithString(v3, QOS_CLASS_UTILITY, v4);
 }
 
@@ -149,42 +149,42 @@
   v5.receiver = self;
   v5.super_class = PBFModalRootViewController;
   [(PBFModalRootViewController *)&v5 viewDidLoad];
-  v3 = [(PBFModalRootViewController *)self view];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PBFModalRootViewController *)self view];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [view setBackgroundColor:clearColor];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v76.receiver = self;
   v76.super_class = PBFModalRootViewController;
-  [(PBFModalRootViewController *)&v76 viewDidAppear:a3];
+  [(PBFModalRootViewController *)&v76 viewDidAppear:appear];
   if (!self->_didAppearOnce)
   {
     self->_didAppearOnce = 1;
-    v4 = [(UIScene *)self->_parentScene _FBSScene];
-    v5 = [v4 settings];
-    v6 = [v5 otherSettings];
+    _FBSScene = [(UIScene *)self->_parentScene _FBSScene];
+    settings = [_FBSScene settings];
+    otherSettings = [settings otherSettings];
 
-    v7 = [v6 objectForSetting:2606278161];
+    v7 = [otherSettings objectForSetting:2606278161];
     entryPoint = self->_entryPoint;
     self->_entryPoint = v7;
 
-    v9 = [v6 BOOLForSetting:2606278162];
+    v9 = [otherSettings BOOLForSetting:2606278162];
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
       [(PBFModalRootViewController *)self _setupGalleryDataProviderIfNeeded];
-      v10 = [(PBFModalRootViewController *)self view];
-      v11 = [v10 window];
-      v12 = [v11 _rootSheetPresentationController];
-      [v12 _setShouldScaleDownBehindDescendantSheets:0];
+      view = [(PBFModalRootViewController *)self view];
+      window = [view window];
+      _rootSheetPresentationController = [window _rootSheetPresentationController];
+      [_rootSheetPresentationController _setShouldScaleDownBehindDescendantSheets:0];
 
       v13 = self->_entryPoint;
       v14 = [PBFFocusPosterSelectionViewController alloc];
-      v15 = [(PRUISModalEntryPoint *)v13 activityUUID];
-      v16 = [(PRUISModalEntryPoint *)v13 activityIdentifier];
-      v17 = [(PBFFocusPosterSelectionViewController *)v14 initWithActivityUUID:v15 activityIdentifier:v16 galleryDataProvider:self->_galleryDataProvider dataStore:self->_dataStore];
+      activityUUID = [(PRUISModalEntryPoint *)v13 activityUUID];
+      activityIdentifier = [(PRUISModalEntryPoint *)v13 activityIdentifier];
+      v17 = [(PBFFocusPosterSelectionViewController *)v14 initWithActivityUUID:activityUUID activityIdentifier:activityIdentifier galleryDataProvider:self->_galleryDataProvider dataStore:self->_dataStore];
 LABEL_5:
       v18 = v17;
 
@@ -199,16 +199,16 @@ LABEL_6:
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
       [(PBFModalRootViewController *)self _setupGalleryDataProviderIfNeeded];
-      v19 = [(PBFModalRootViewController *)self view];
-      v20 = [v19 window];
-      v21 = [v20 _rootSheetPresentationController];
-      [v21 _setShouldScaleDownBehindDescendantSheets:0];
+      view2 = [(PBFModalRootViewController *)self view];
+      window2 = [view2 window];
+      _rootSheetPresentationController2 = [window2 _rootSheetPresentationController];
+      [_rootSheetPresentationController2 _setShouldScaleDownBehindDescendantSheets:0];
 
       v13 = self->_entryPoint;
       v22 = [PBFPosterSelectionViewController alloc];
-      v15 = [(PRUISModalEntryPoint *)v13 allowedConfigurationUUIDs];
-      v16 = [(PRUISModalEntryPoint *)v13 selectedConfigurationUUID];
-      v17 = [(PBFPosterSelectionViewController *)v22 initWithAllowedConfigurationUUIDs:v15 selectedConfigurationUUID:v16 galleryDataProvider:self->_galleryDataProvider dataStore:self->_dataStore];
+      activityUUID = [(PRUISModalEntryPoint *)v13 allowedConfigurationUUIDs];
+      activityIdentifier = [(PRUISModalEntryPoint *)v13 selectedConfigurationUUID];
+      v17 = [(PBFPosterSelectionViewController *)v22 initWithAllowedConfigurationUUIDs:activityUUID selectedConfigurationUUID:activityIdentifier galleryDataProvider:self->_galleryDataProvider dataStore:self->_dataStore];
       goto LABEL_5;
     }
 
@@ -231,10 +231,10 @@ LABEL_27:
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          v32 = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
-          v33 = [v32 activeConfiguration];
+          switcherConfiguration = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
+          activeConfiguration = [switcherConfiguration activeConfiguration];
 
-          if ([v33 pbf_isLegacy])
+          if ([activeConfiguration pbf_isLegacy])
           {
             [(PBFModalRootViewController *)self _presentLegacyAddNewAlert];
           }
@@ -266,8 +266,8 @@ LABEL_27:
         {
           v37 = self->_entryPoint;
           v38 = objc_alloc(MEMORY[0x277D3ED58]);
-          v39 = [(PRUISModalEntryPoint *)v37 serverPosterPath];
-          v40 = [v38 _initWithPath:v39];
+          serverPosterPath = [(PRUISModalEntryPoint *)v37 serverPosterPath];
+          v40 = [v38 _initWithPath:serverPosterPath];
 
           if ([v40 pbf_isLegacy])
           {
@@ -278,11 +278,11 @@ LABEL_27:
           {
             v70 = v40;
             v41 = [[PBFSinglePosterConfigurationFilter alloc] initWithConfiguration:v40];
-            v42 = [(PRUISModalEntryPoint *)v37 transitionOverlayRenderId];
-            v43 = [(PRUISModalEntryPoint *)v37 transitionOverlayContextId];
-            if (v42)
+            transitionOverlayRenderId = [(PRUISModalEntryPoint *)v37 transitionOverlayRenderId];
+            transitionOverlayContextId = [(PRUISModalEntryPoint *)v37 transitionOverlayContextId];
+            if (transitionOverlayRenderId)
             {
-              v44 = v43 == 0;
+              v44 = transitionOverlayContextId == 0;
             }
 
             else
@@ -299,12 +299,12 @@ LABEL_27:
 
             else
             {
-              v46 = v43;
+              v46 = transitionOverlayContextId;
               v47 = objc_alloc_init(MEMORY[0x277D76180]);
               [v47 portalLayer];
               v48 = v69 = v41;
               [v48 setSourceContextId:v46];
-              [v48 setSourceLayerRenderId:v42];
+              [v48 setSourceLayerRenderId:transitionOverlayRenderId];
               [v48 setAllowsGroupOpacity:1];
               [v47 setName:@"com.apple.PosterBoard.homeScreenPortalView"];
               [v47 setAllowsHitTesting:0];
@@ -357,39 +357,39 @@ LABEL_27:
         {
           v53 = self->_entryPoint;
           v54 = objc_alloc(MEMORY[0x277D3ED58]);
-          v55 = [(PRUISModalEntryPoint *)v53 serverPosterPath];
-          v56 = [v54 _initWithPath:v55];
+          serverPosterPath2 = [(PRUISModalEntryPoint *)v53 serverPosterPath];
+          v56 = [v54 _initWithPath:serverPosterPath2];
 
           v57 = [[PBFAmbientEditingCollectionViewController alloc] init:v56];
           [v57 setAmbientEditingDelegate:self];
           if (v9)
           {
-            v58 = [(UIScene *)self->_parentScene _FBSScene];
-            v59 = [v58 settings];
-            v60 = [v59 displayConfiguration];
+            _FBSScene2 = [(UIScene *)self->_parentScene _FBSScene];
+            settings2 = [_FBSScene2 settings];
+            displayConfiguration = [settings2 displayConfiguration];
 
-            [v57 setDisplayConfiguration:v60];
+            [v57 setDisplayConfiguration:displayConfiguration];
           }
 
           [v57 setModalTransitionStyle:2];
           objc_storeStrong(&self->_displayConfigurationObserver, v57);
           IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
-          v62 = [(PRUISModalEntryPoint *)v53 transitionOverlayRenderId];
-          v63 = [(PRUISModalEntryPoint *)v53 transitionOverlayContextId];
-          if (!IsReduceMotionEnabled && v62)
+          transitionOverlayRenderId2 = [(PRUISModalEntryPoint *)v53 transitionOverlayRenderId];
+          transitionOverlayContextId2 = [(PRUISModalEntryPoint *)v53 transitionOverlayContextId];
+          if (!IsReduceMotionEnabled && transitionOverlayRenderId2)
           {
-            v64 = v63;
-            if (v63)
+            v64 = transitionOverlayContextId2;
+            if (transitionOverlayContextId2)
             {
               v65 = objc_alloc_init(MEMORY[0x277D76180]);
-              v66 = [v65 portalLayer];
-              [v66 setSourceContextId:v64];
+              portalLayer = [v65 portalLayer];
+              [portalLayer setSourceContextId:v64];
 
-              v67 = [v65 portalLayer];
-              [v67 setSourceLayerRenderId:v62];
+              portalLayer2 = [v65 portalLayer];
+              [portalLayer2 setSourceLayerRenderId:transitionOverlayRenderId2];
 
-              v68 = [v65 portalLayer];
-              [v68 setAllowsGroupOpacity:1];
+              portalLayer3 = [v65 portalLayer];
+              [portalLayer3 setAllowsGroupOpacity:1];
 
               [v65 setName:@"com.apple.PosterBoard.transitionOverlayView"];
               [v65 setAllowsHitTesting:0];
@@ -408,12 +408,12 @@ LABEL_27:
     }
 
     v23 = self->_entryPoint;
-    v24 = [(PRUISModalEntryPoint *)v23 editingType];
-    if (v24 <= 1)
+    editingType = [(PRUISModalEntryPoint *)v23 editingType];
+    if (editingType <= 1)
     {
-      if (v24)
+      if (editingType)
       {
-        if (v24 == 1)
+        if (editingType == 1)
         {
           [(PBFModalRootViewController *)self _presentEditingForNewPosterFromConfiguration:v23];
         }
@@ -421,26 +421,26 @@ LABEL_27:
 
       else
       {
-        v28 = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
-        v29 = [v28 activeConfiguration];
-        [(PBFModalRootViewController *)self _presentEditingForPosterConfiguration:v29];
+        switcherConfiguration2 = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
+        activeConfiguration2 = [switcherConfiguration2 activeConfiguration];
+        [(PBFModalRootViewController *)self _presentEditingForPosterConfiguration:activeConfiguration2];
       }
 
       goto LABEL_26;
     }
 
-    if (v24 == 3)
+    if (editingType == 3)
     {
       v30 = objc_alloc(MEMORY[0x277D3ED58]);
-      v26 = [(PRUISModalEntryPoint *)v23 serverPosterPath];
-      v27 = [v30 _initWithPath:v26];
-      v31 = [(PRUISModalEntryPoint *)v23 updateSessionInfo];
-      [(PBFModalRootViewController *)self _presentEditingForPosterConfiguration:v27 sessionInfo:v31];
+      serverPosterPath3 = [(PRUISModalEntryPoint *)v23 serverPosterPath];
+      v27 = [v30 _initWithPath:serverPosterPath3];
+      updateSessionInfo = [(PRUISModalEntryPoint *)v23 updateSessionInfo];
+      [(PBFModalRootViewController *)self _presentEditingForPosterConfiguration:v27 sessionInfo:updateSessionInfo];
     }
 
     else
     {
-      if (v24 != 2)
+      if (editingType != 2)
       {
 LABEL_26:
 
@@ -448,8 +448,8 @@ LABEL_26:
       }
 
       v25 = objc_alloc(MEMORY[0x277D3ED58]);
-      v26 = [(PRUISModalEntryPoint *)v23 serverPosterPath];
-      v27 = [v25 _initWithPath:v26];
+      serverPosterPath3 = [(PRUISModalEntryPoint *)v23 serverPosterPath];
+      v27 = [v25 _initWithPath:serverPosterPath3];
       [(PBFModalRootViewController *)self _presentEditingForPosterConfiguration:v27];
     }
 
@@ -457,23 +457,23 @@ LABEL_26:
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = PBFModalRootViewController;
-  [(PBFModalRootViewController *)&v3 viewDidDisappear:a3];
+  [(PBFModalRootViewController *)&v3 viewDidDisappear:disappear];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = PBFModalRootViewController;
-  v7 = a4;
-  [(PBFModalRootViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(PBFModalRootViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   WeakRetained = objc_loadWeakRetained(&self->_galleryController);
-  [WeakRetained updatePreferredContentSizeForSize:v7 withTransitionCoordinator:{width, height, v9.receiver, v9.super_class}];
+  [WeakRetained updatePreferredContentSizeForSize:coordinatorCopy withTransitionCoordinator:{width, height, v9.receiver, v9.super_class}];
 }
 
 - (void)dealloc
@@ -483,14 +483,14 @@ LABEL_26:
   [(PBFModalRootViewController *)&v2 dealloc];
 }
 
-- (void)_presentEditingForPosterConfiguration:(id)a3
+- (void)_presentEditingForPosterConfiguration:(id)configuration
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  configurationCopy = configuration;
+  v6 = configurationCopy;
+  if (configurationCopy)
   {
-    if ([v5 pbf_isLegacy])
+    if ([configurationCopy pbf_isLegacy])
     {
       [(PBFModalRootViewController *)self _createLegacyMigrationHelperWithConfiguration:v6];
       if ([(PBFLegacyPosterMigrationHelper *)self->_legacyMigrationHelper canMigrateLegacyPoster])
@@ -505,8 +505,8 @@ LABEL_26:
 
       else
       {
-        v28 = [(PBFLegacyPosterMigrationHelper *)self->_legacyMigrationHelper migrationInfo];
-        [PBFLegacyMigrationAnalyticsReporter recordWithEvent:2 migrationInfo:v28 duration:0 errorCode:-1.0];
+        migrationInfo = [(PBFLegacyPosterMigrationHelper *)self->_legacyMigrationHelper migrationInfo];
+        [PBFLegacyMigrationAnalyticsReporter recordWithEvent:2 migrationInfo:migrationInfo duration:0 errorCode:-1.0];
 
         legacyMigrationHelper = self->_legacyMigrationHelper;
         self->_legacyMigrationHelper = 0;
@@ -517,9 +517,9 @@ LABEL_26:
 
     else
     {
-      v7 = [v6 _path];
+      _path = [v6 _path];
       NSClassFromString(&cfstr_Pfserverposter_0.isa);
-      if (!v7)
+      if (!_path)
       {
         [PBFModalRootViewController _presentEditingForPosterConfiguration:a2];
       }
@@ -529,29 +529,29 @@ LABEL_26:
         [PBFModalRootViewController _presentEditingForPosterConfiguration:a2];
       }
 
-      v8 = [v6 _path];
-      v36 = [(PBFPosterExtensionDataStore *)self->_dataStore providerForPath:v8];
-      if (v8 && v36)
+      _path2 = [v6 _path];
+      v36 = [(PBFPosterExtensionDataStore *)self->_dataStore providerForPath:_path2];
+      if (_path2 && v36)
       {
         v9 = MEMORY[0x277D3EB78];
-        v10 = [v36 identity];
-        v11 = [MEMORY[0x277CCAD78] UUID];
-        v12 = [v9 extensionInstanceForIdentity:v10 instanceIdentifier:v11];
+        identity = [v36 identity];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        v12 = [v9 extensionInstanceForIdentity:identity instanceIdentifier:uUID];
 
-        v13 = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
-        v14 = [v13 activeConfiguration];
+        switcherConfiguration = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
+        activeConfiguration = [switcherConfiguration activeConfiguration];
 
-        v15 = [v14 _path];
-        v16 = [v15 identity];
-        v17 = [v16 posterUUID];
-        v18 = [v8 identity];
-        v19 = [v18 posterUUID];
-        v35 = v8;
+        _path3 = [activeConfiguration _path];
+        identity2 = [_path3 identity];
+        posterUUID = [identity2 posterUUID];
+        identity3 = [_path2 identity];
+        posterUUID2 = [identity3 posterUUID];
+        v35 = _path2;
         v20 = v12;
-        v21 = v14;
-        LODWORD(v14) = [v17 isEqual:v19];
+        v21 = activeConfiguration;
+        LODWORD(activeConfiguration) = [posterUUID isEqual:posterUUID2];
 
-        if (v14)
+        if (activeConfiguration)
         {
           v37 = 0;
           v38 = &v37;
@@ -560,7 +560,7 @@ LABEL_26:
           v40 = getSBSWallpaperServiceClass_softClass;
           v23 = v21;
           v24 = v20;
-          v8 = v35;
+          _path2 = v35;
           if (!getSBSWallpaperServiceClass_softClass)
           {
             *&buf = MEMORY[0x277D85DD0];
@@ -577,16 +577,16 @@ LABEL_26:
           v26 = objc_alloc_init(v22);
           if (objc_opt_respondsToSelector())
           {
-            v27 = [v26 posterSignificantEventsCounter];
+            posterSignificantEventsCounter = [v26 posterSignificantEventsCounter];
           }
 
           else
           {
-            v27 = 0;
+            posterSignificantEventsCounter = 0;
           }
 
           v41 = *MEMORY[0x277D3EF00];
-          v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v27];
+          v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:posterSignificantEventsCounter];
           v42 = v33;
           v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
 
@@ -602,10 +602,10 @@ LABEL_26:
           v32 = 0;
           v23 = v21;
           v24 = v20;
-          v8 = v35;
+          _path2 = v35;
         }
 
-        v34 = [objc_alloc(MEMORY[0x277D3ECC0]) initWithProvider:v24 contents:v8 configurableOptions:v31 configuredProperties:v30 additionalInfo:v32];
+        v34 = [objc_alloc(MEMORY[0x277D3ECC0]) initWithProvider:v24 contents:_path2 configurableOptions:v31 configuredProperties:v30 additionalInfo:v32];
         [(PBFModalRootViewController *)self _presentEditingSceneViewController:v34];
       }
 
@@ -615,7 +615,7 @@ LABEL_26:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           LODWORD(buf) = 138412290;
-          *(&buf + 4) = v8;
+          *(&buf + 4) = _path2;
           _os_log_impl(&dword_21B526000, v24, OS_LOG_TYPE_DEFAULT, "Could not find extension for path: %@", &buf, 0xCu);
         }
       }
@@ -623,34 +623,34 @@ LABEL_26:
   }
 }
 
-- (void)_presentEditingSceneViewController:(id)a3
+- (void)_presentEditingSceneViewController:(id)controller
 {
-  v5 = a3;
-  [v5 setDelegate:self];
-  [v5 addObserver:self];
-  [v5 setModalPresentationStyle:0];
-  v4 = [v5 view];
-  [v4 setTag:1];
+  controllerCopy = controller;
+  [controllerCopy setDelegate:self];
+  [controllerCopy addObserver:self];
+  [controllerCopy setModalPresentationStyle:0];
+  view = [controllerCopy view];
+  [view setTag:1];
 
-  [(PBFModalRootViewController *)self presentViewController:v5 animated:1 completion:0];
+  [(PBFModalRootViewController *)self presentViewController:controllerCopy animated:1 completion:0];
 }
 
-- (void)_presentEditingForPosterConfiguration:(id)a3 sessionInfo:(id)a4
+- (void)_presentEditingForPosterConfiguration:(id)configuration sessionInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  configurationCopy = configuration;
+  infoCopy = info;
+  if (configurationCopy)
   {
-    if ([v7 pbf_isLegacy])
+    if ([configurationCopy pbf_isLegacy])
     {
       [(PBFModalRootViewController *)self _presentLegacyAddNewAlert];
     }
 
     else
     {
-      v9 = [v7 _path];
+      _path = [configurationCopy _path];
       NSClassFromString(&cfstr_Pfserverposter_0.isa);
-      if (!v9)
+      if (!_path)
       {
         [PBFModalRootViewController _presentEditingForPosterConfiguration:a2 sessionInfo:?];
       }
@@ -660,23 +660,23 @@ LABEL_26:
         [PBFModalRootViewController _presentEditingForPosterConfiguration:a2 sessionInfo:?];
       }
 
-      v10 = [v7 _path];
-      v11 = [(PBFPosterExtensionDataStore *)self->_dataStore providerForPath:v10];
+      _path2 = [configurationCopy _path];
+      v11 = [(PBFPosterExtensionDataStore *)self->_dataStore providerForPath:_path2];
       v12 = v11;
-      if (v10 && v11)
+      if (_path2 && v11)
       {
-        v13 = [MEMORY[0x277D3E9C8] posterUpdatesForDecoratedSessionInfo:v8];
+        v13 = [MEMORY[0x277D3E9C8] posterUpdatesForDecoratedSessionInfo:infoCopy];
         dataStore = self->_dataStore;
-        v15 = [v10 serverIdentity];
-        v16 = [v15 posterUUID];
+        serverIdentity = [_path2 serverIdentity];
+        posterUUID = [serverIdentity posterUUID];
         v17[0] = MEMORY[0x277D85DD0];
         v17[1] = 3221225472;
         v17[2] = __80__PBFModalRootViewController__presentEditingForPosterConfiguration_sessionInfo___block_invoke;
         v17[3] = &unk_2782C7638;
         v18 = v12;
-        v19 = self;
-        v20 = v10;
-        [(PBFPosterExtensionDataStore *)dataStore createTemporaryPosterConfigurationForPosterMatchingUUID:v16 andApplyUpdates:v13 completion:v17];
+        selfCopy = self;
+        v20 = _path2;
+        [(PBFPosterExtensionDataStore *)dataStore createTemporaryPosterConfigurationForPosterMatchingUUID:posterUUID andApplyUpdates:v13 completion:v17];
       }
     }
   }
@@ -754,46 +754,46 @@ void __80__PBFModalRootViewController__presentEditingForPosterConfiguration_sess
   }
 }
 
-- (void)_presentEditingForNewPosterFromConfiguration:(id)a3
+- (void)_presentEditingForNewPosterFromConfiguration:(id)configuration
 {
   v76 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 configuration];
-  v6 = [v4 extensionIdentifier];
+  configurationCopy = configuration;
+  configuration = [configurationCopy configuration];
+  extensionIdentifier = [configurationCopy extensionIdentifier];
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [(PBFPosterExtensionDataStore *)self->_dataStore providerForExtensionIdentifier:v6];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [(PBFPosterExtensionDataStore *)self->_dataStore providerForExtensionIdentifier:extensionIdentifier];
   v9 = v8;
   if (v8)
   {
-    v62 = v5;
+    v62 = configuration;
     v10 = MEMORY[0x277D3EB78];
     v60 = v8;
-    v11 = [v8 identity];
-    v12 = [MEMORY[0x277CCAD78] UUID];
-    v59 = [v10 extensionInstanceForIdentity:v11 instanceIdentifier:v12];
+    identity = [v8 identity];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v59 = [v10 extensionInstanceForIdentity:identity instanceIdentifier:uUID];
 
     v13 = *MEMORY[0x277D3EEF0];
     v14 = MEMORY[0x277D3ED00];
-    v15 = [MEMORY[0x277CCAD78] UUID];
-    v16 = [v15 UUIDString];
-    v17 = [v14 mutableDescriptorWithIdentifier:v16 role:v13];
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID2 UUIDString];
+    v17 = [v14 mutableDescriptorWithIdentifier:uUIDString role:v13];
 
     v18 = MEMORY[0x277D3EB98];
-    v19 = [MEMORY[0x277CCAD78] UUID];
+    uUID3 = [MEMORY[0x277CCAD78] UUID];
     v61 = v13;
-    v20 = [v18 incomingConfigurationIdentityWithProvider:v6 role:v13 posterUUID:v19 version:1 supplement:0];
+    v20 = [v18 incomingConfigurationIdentityWithProvider:extensionIdentifier role:v13 posterUUID:uUID3 version:1 supplement:0];
 
     v21 = MEMORY[0x277D3EBA0];
-    v22 = [v17 _path];
-    v23 = [v22 contentsURL];
+    _path = [v17 _path];
+    contentsURL = [_path contentsURL];
     v58 = v20;
-    v24 = [v21 pathWithContainerURL:v23 identity:v20];
+    v24 = [v21 pathWithContainerURL:contentsURL identity:v20];
 
     v71 = 0;
-    LOBYTE(v22) = [v24 ensureContentsURLIsReachableAndReturnError:&v71];
+    LOBYTE(_path) = [v24 ensureContentsURLIsReachableAndReturnError:&v71];
     v25 = v71;
-    if ((v22 & 1) == 0)
+    if ((_path & 1) == 0)
     {
       v26 = PBFLogModal();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -802,9 +802,9 @@ void __80__PBFModalRootViewController__presentEditingForPosterConfiguration_sess
       }
     }
 
-    v27 = [v24 contentsURL];
+    contentsURL2 = [v24 contentsURL];
     v70 = 0;
-    v28 = [v7 removeItemAtURL:v27 error:&v70];
+    v28 = [defaultManager removeItemAtURL:contentsURL2 error:&v70];
     v29 = v70;
 
     if ((v28 & 1) == 0)
@@ -816,11 +816,11 @@ void __80__PBFModalRootViewController__presentEditingForPosterConfiguration_sess
       }
     }
 
-    v31 = [v62 _path];
-    v32 = [v31 contentsURL];
-    v33 = [v24 contentsURL];
+    _path2 = [v62 _path];
+    contentsURL3 = [_path2 contentsURL];
+    contentsURL4 = [v24 contentsURL];
     v69 = 0;
-    v34 = [v7 copyItemAtURL:v32 toURL:v33 error:&v69];
+    v34 = [defaultManager copyItemAtURL:contentsURL3 toURL:contentsURL4 error:&v69];
     v35 = v69;
 
     if ((v34 & 1) == 0)
@@ -832,14 +832,14 @@ void __80__PBFModalRootViewController__presentEditingForPosterConfiguration_sess
       }
     }
 
-    v37 = [MEMORY[0x277D3EDB0] defaultHomeScreenConfigurationForProvider:v6 role:v61];
-    v38 = [v24 supplementURL];
+    v37 = [MEMORY[0x277D3EDB0] defaultHomeScreenConfigurationForProvider:extensionIdentifier role:v61];
+    supplementURL = [v24 supplementURL];
     v39 = PFFileProtectionNoneAttributes();
     v68 = 0;
-    v40 = [v7 createDirectoryAtURL:v38 withIntermediateDirectories:1 attributes:v39 error:&v68];
+    v40 = [defaultManager createDirectoryAtURL:supplementURL withIntermediateDirectories:1 attributes:v39 error:&v68];
     v41 = v68;
 
-    v56 = v7;
+    v56 = defaultManager;
     v57 = v37;
     if (v40)
     {
@@ -862,18 +862,18 @@ LABEL_25:
         v50 = [objc_alloc(MEMORY[0x277D3ECC0]) initWithProvider:v59 contents:v24 configurableOptions:0 configuredProperties:0 additionalInfo:v49];
         [v50 setDelegate:self];
         [v50 addObserver:self];
-        v51 = [v50 view];
-        [v51 setTag:1];
+        view = [v50 view];
+        [view setTag:1];
 
         v52 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v50];
         [v52 setNavigationBarHidden:1 animated:0];
         [v52 setModalPresentationStyle:0];
-        v53 = [(PBFPosterExtensionDataStore *)self->_dataStore canPersistNewPosterConfiguration];
+        canPersistNewPosterConfiguration = [(PBFPosterExtensionDataStore *)self->_dataStore canPersistNewPosterConfiguration];
         v63[0] = MEMORY[0x277D85DD0];
         v63[1] = 3221225472;
         v63[2] = __75__PBFModalRootViewController__presentEditingForNewPosterFromConfiguration___block_invoke;
         v63[3] = &unk_2782C7660;
-        v66 = v53;
+        v66 = canPersistNewPosterConfiguration;
         v63[4] = self;
         v64 = v50;
         v65 = v52;
@@ -881,9 +881,9 @@ LABEL_25:
         v55 = v50;
         [(PBFModalRootViewController *)self presentViewController:v54 animated:1 completion:v63];
 
-        v5 = v62;
+        configuration = v62;
         v9 = v60;
-        v7 = v56;
+        defaultManager = v56;
         goto LABEL_26;
       }
 
@@ -914,7 +914,7 @@ LABEL_25:
   if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v75 = v6;
+    v75 = extensionIdentifier;
     _os_log_impl(&dword_21B526000, v45, OS_LOG_TYPE_DEFAULT, "Could not find extension with id: %@", buf, 0xCu);
   }
 
@@ -936,28 +936,28 @@ void __75__PBFModalRootViewController__presentEditingForNewPosterFromConfigurati
   }
 }
 
-- (void)posterRackCollectionViewControllerDidPressCancel:(id)a3
+- (void)posterRackCollectionViewControllerDidPressCancel:(id)cancel
 {
-  v4 = [MEMORY[0x277D3EAF0] cancel];
-  [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:v4];
+  cancel = [MEMORY[0x277D3EAF0] cancel];
+  [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:cancel];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __79__PBFModalRootViewController_posterRackCollectionViewControllerDidPressCancel___block_invoke;
   v6[3] = &unk_2782C58B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = cancel;
+  v5 = cancel;
   [(PBFModalRootViewController *)self dismissViewControllerAnimated:1 completion:v6];
 }
 
-- (BOOL)posterRackCollectionViewControllerDidPressDone:(id)a3
+- (BOOL)posterRackCollectionViewControllerDidPressDone:(id)done
 {
-  v4 = [(PBFModalRootViewController *)self _isPhotosEntryPoint];
-  v5 = [MEMORY[0x277D3EAF0] done];
-  [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:v5];
-  if (v4)
+  _isPhotosEntryPoint = [(PBFModalRootViewController *)self _isPhotosEntryPoint];
+  done = [MEMORY[0x277D3EAF0] done];
+  [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:done];
+  if (_isPhotosEntryPoint)
   {
-    [(PBFModalRootViewController *)self _handleSheetDidDismissWithResponse:v5];
+    [(PBFModalRootViewController *)self _handleSheetDidDismissWithResponse:done];
   }
 
   else
@@ -967,15 +967,15 @@ void __75__PBFModalRootViewController__presentEditingForNewPosterFromConfigurati
     v7[2] = __77__PBFModalRootViewController_posterRackCollectionViewControllerDidPressDone___block_invoke;
     v7[3] = &unk_2782C58B0;
     v7[4] = self;
-    v8 = v5;
-    v5 = v5;
+    v8 = done;
+    done = done;
     [(PBFModalRootViewController *)self dismissViewControllerAnimated:1 completion:v7];
   }
 
   return 1;
 }
 
-- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)a3
+- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)controller
 {
   result = objc_opt_class();
   if (result)
@@ -995,25 +995,25 @@ void __75__PBFModalRootViewController__presentEditingForNewPosterFromConfigurati
   return result;
 }
 
-- (void)editingSceneViewController:(id)a3 userDidDismissWithAction:(int64_t)a4 updatedConfiguration:(id)a5 updatedConfiguredProperties:(id)a6 completion:(id)a7
+- (void)editingSceneViewController:(id)controller userDidDismissWithAction:(int64_t)action updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties completion:(id)completion
 {
-  v19 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  [v19 addObserver:self];
-  v16 = [v19 view];
-  v17 = [v16 tag];
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  propertiesCopy = properties;
+  completionCopy = completion;
+  [controllerCopy addObserver:self];
+  view = [controllerCopy view];
+  v17 = [view tag];
 
   if (v17 == 1)
   {
-    [(PBFModalRootViewController *)self _standaloneEditingSceneViewController:v19 userDidDismissWithAction:a4 updatedConfiguration:v13 updatedConfiguredProperties:v14 completion:v15];
+    [(PBFModalRootViewController *)self _standaloneEditingSceneViewController:controllerCopy userDidDismissWithAction:action updatedConfiguration:configurationCopy updatedConfiguredProperties:propertiesCopy completion:completionCopy];
     goto LABEL_5;
   }
 
   if (!v17)
   {
-    [(PBFModalRootViewController *)self _galleryEditingSceneViewController:v19 userDidDismissWithAction:a4 updatedConfiguration:v13 updatedConfiguredProperties:v14 completion:v15];
+    [(PBFModalRootViewController *)self _galleryEditingSceneViewController:controllerCopy userDidDismissWithAction:action updatedConfiguration:configurationCopy updatedConfiguredProperties:propertiesCopy completion:completionCopy];
 LABEL_5:
 
     return;
@@ -1030,50 +1030,50 @@ LABEL_5:
   __break(0);
 }
 
-- (void)_galleryEditingSceneViewController:(id)a3 userDidDismissWithAction:(int64_t)a4 updatedConfiguration:(id)a5 updatedConfiguredProperties:(id)a6 completion:(id)a7
+- (void)_galleryEditingSceneViewController:(id)controller userDidDismissWithAction:(int64_t)action updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  if (a4 == 1)
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  propertiesCopy = properties;
+  if (action == 1)
   {
-    v47 = a7;
-    v15 = [v14 suggestionMetadata];
-    v48 = [v15 lastModifiedDate];
+    completionCopy = completion;
+    suggestionMetadata = [propertiesCopy suggestionMetadata];
+    lastModifiedDate = [suggestionMetadata lastModifiedDate];
 
-    v16 = [v14 suggestionMetadata];
-    v17 = [v16 metadataBySettingLastModifiedDateToNow];
+    suggestionMetadata2 = [propertiesCopy suggestionMetadata];
+    metadataBySettingLastModifiedDateToNow = [suggestionMetadata2 metadataBySettingLastModifiedDateToNow];
 
-    if (!v17)
+    if (!metadataBySettingLastModifiedDateToNow)
     {
       v18 = objc_alloc(MEMORY[0x277D3EE20]);
-      v19 = [MEMORY[0x277CBEAA8] date];
-      v17 = [v18 initWithSuggestedGalleryItem:0 suggestedComplicationsByIdentifier:MEMORY[0x277CBEC10] lastModifiedDate:v19];
+      date = [MEMORY[0x277CBEAA8] date];
+      metadataBySettingLastModifiedDateToNow = [v18 initWithSuggestedGalleryItem:0 suggestedComplicationsByIdentifier:MEMORY[0x277CBEC10] lastModifiedDate:date];
     }
 
-    v49 = v14;
-    v20 = [v14 mutableCopy];
-    [v20 setSuggestionMetadata:v17];
+    v49 = propertiesCopy;
+    v20 = [propertiesCopy mutableCopy];
+    [v20 setSuggestionMetadata:metadataBySettingLastModifiedDateToNow];
     v21 = objc_alloc_init(PBFPosterEditingIngestionManager);
     [(PBFPosterEditingIngestionManager *)v21 setDelegate:self];
     v46 = v21;
-    v22 = [(PBFPosterEditingIngestionManager *)v21 ingestConfiguration:v13 updatedConfiguredProperties:v20 editingViewController:v12 galleryViewController:0 showEditingConfirmation:1];
-    v23 = v12;
-    v24 = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
-    v25 = [v24 mutableCopy];
+    v22 = [(PBFPosterEditingIngestionManager *)v21 ingestConfiguration:configurationCopy updatedConfiguredProperties:v20 editingViewController:controllerCopy galleryViewController:0 showEditingConfirmation:1];
+    v23 = controllerCopy;
+    switcherConfiguration = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
+    v25 = [switcherConfiguration mutableCopy];
 
-    v26 = [v25 configurations];
-    v27 = [v26 lastObject];
+    configurations = [v25 configurations];
+    lastObject = [configurations lastObject];
 
-    [v25 setSelectedConfiguration:v27];
-    [v25 setDesiredActiveConfiguration:v27];
+    [v25 setSelectedConfiguration:lastObject];
+    [v25 setDesiredActiveConfiguration:lastObject];
     dataStore = self->_dataStore;
     v50 = 0;
     v29 = [(PBFPosterExtensionDataStore *)dataStore updateDataStoreForSwitcherConfiguration:v25 reason:@"update poster from modal gallery" error:&v50];
-    v30 = v17;
+    v30 = metadataBySettingLastModifiedDateToNow;
     v31 = v50;
 
-    v32 = self;
+    selfCopy2 = self;
     if (!v29)
     {
       v33 = PBFLogModal();
@@ -1082,27 +1082,27 @@ LABEL_5:
         [PBFModalRootViewController _galleryEditingSceneViewController:userDidDismissWithAction:updatedConfiguration:updatedConfiguredProperties:completion:];
       }
 
-      v32 = self;
+      selfCopy2 = self;
     }
 
     v44 = v20;
     v45 = v30;
-    v34 = [v27 _path];
-    [v34 serverIdentity];
-    v36 = v35 = v13;
-    v37 = [v36 posterUUID];
-    v38 = [v37 UUIDString];
-    v39 = v32;
+    _path = [lastObject _path];
+    [_path serverIdentity];
+    v36 = v35 = configurationCopy;
+    posterUUID = [v36 posterUUID];
+    uUIDString = [posterUUID UUIDString];
+    v39 = selfCopy2;
     v40 = v23;
     v41 = v23;
-    v42 = v48;
-    [(PBFModalRootViewController *)v39 _logEditWithEditingViewController:v41 posterUUID:v38 lastModifiedDate:v48];
+    v42 = lastModifiedDate;
+    [(PBFModalRootViewController *)v39 _logEditWithEditingViewController:v41 posterUUID:uUIDString lastModifiedDate:lastModifiedDate];
 
-    v13 = v35;
-    v47[2](v47, v31);
+    configurationCopy = v35;
+    completionCopy[2](completionCopy, v31);
 
-    v12 = v40;
-    v14 = v49;
+    controllerCopy = v40;
+    propertiesCopy = v49;
   }
 
   else
@@ -1111,22 +1111,22 @@ LABEL_5:
     v51[1] = 3221225472;
     v51[2] = __150__PBFModalRootViewController__galleryEditingSceneViewController_userDidDismissWithAction_updatedConfiguration_updatedConfiguredProperties_completion___block_invoke;
     v51[3] = &unk_2782C5888;
-    v52 = v12;
-    v43 = a7;
+    v52 = controllerCopy;
+    completionCopy2 = completion;
     [v52 dismissViewControllerAnimated:1 completion:v51];
-    v43[2](v43, 0);
+    completionCopy2[2](completionCopy2, 0);
 
     v42 = v52;
   }
 }
 
-- (void)_standaloneEditingSceneViewController:(id)a3 userDidDismissWithAction:(int64_t)a4 updatedConfiguration:(id)a5 updatedConfiguredProperties:(id)a6 completion:(id)a7
+- (void)_standaloneEditingSceneViewController:(id)controller userDidDismissWithAction:(int64_t)action updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties completion:(id)completion
 {
   v102 = *MEMORY[0x277D85DE8];
-  v75 = a3;
-  v69 = a5;
-  v74 = a6;
-  v71 = a7;
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  propertiesCopy = properties;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __153__PBFModalRootViewController__standaloneEditingSceneViewController_userDidDismissWithAction_updatedConfiguration_updatedConfiguredProperties_completion___block_invoke;
@@ -1146,45 +1146,45 @@ LABEL_5:
   }
 
   v72 = self->_entryPoint;
-  if (a4 == 1)
+  if (action == 1)
   {
-    v14 = [v74 suggestionMetadata];
-    v73 = [v14 lastModifiedDate];
+    suggestionMetadata = [propertiesCopy suggestionMetadata];
+    lastModifiedDate = [suggestionMetadata lastModifiedDate];
 
-    v15 = [v74 suggestionMetadata];
-    v16 = [v15 metadataBySettingLastModifiedDateToNow];
+    suggestionMetadata2 = [propertiesCopy suggestionMetadata];
+    metadataBySettingLastModifiedDateToNow = [suggestionMetadata2 metadataBySettingLastModifiedDateToNow];
 
-    if (!v16)
+    if (!metadataBySettingLastModifiedDateToNow)
     {
       v17 = objc_alloc(MEMORY[0x277D3EE20]);
-      v18 = [MEMORY[0x277CBEAA8] date];
-      v16 = [v17 initWithSuggestedGalleryItem:0 suggestedComplicationsByIdentifier:MEMORY[0x277CBEC10] lastModifiedDate:v18];
+      date = [MEMORY[0x277CBEAA8] date];
+      metadataBySettingLastModifiedDateToNow = [v17 initWithSuggestedGalleryItem:0 suggestedComplicationsByIdentifier:MEMORY[0x277CBEC10] lastModifiedDate:date];
     }
 
-    v68 = [v74 mutableCopy];
-    [v68 setSuggestionMetadata:v16];
-    v67 = [v75 contentsIdentity];
-    v19 = [(PRUISModalEntryPoint *)v72 editingType];
-    if ((v19 - 2) >= 2 && v19)
+    v68 = [propertiesCopy mutableCopy];
+    [v68 setSuggestionMetadata:metadataBySettingLastModifiedDateToNow];
+    contentsIdentity = [controllerCopy contentsIdentity];
+    editingType = [(PRUISModalEntryPoint *)v72 editingType];
+    if ((editingType - 2) >= 2 && editingType)
     {
-      if (v19 != 1)
+      if (editingType != 1)
       {
 LABEL_46:
 
         goto LABEL_47;
       }
 
-      v20 = objc_alloc_init(PBFPosterEditingIngestionManager);
-      [(PBFPosterEditingIngestionManager *)v20 setDelegate:self];
-      v21 = [(PBFPosterEditingIngestionManager *)v20 ingestConfiguration:v69 updatedConfiguredProperties:v68 editingViewController:v75 galleryViewController:0 showEditingConfirmation:1];
-      v22 = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
-      v23 = [v22 mutableCopy];
+      uUIDString2 = objc_alloc_init(PBFPosterEditingIngestionManager);
+      [(PBFPosterEditingIngestionManager *)uUIDString2 setDelegate:self];
+      v21 = [(PBFPosterEditingIngestionManager *)uUIDString2 ingestConfiguration:configurationCopy updatedConfiguredProperties:v68 editingViewController:controllerCopy galleryViewController:0 showEditingConfirmation:1];
+      switcherConfiguration = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
+      v23 = [switcherConfiguration mutableCopy];
 
-      v24 = [v23 configurations];
-      v25 = [v24 lastObject];
+      configurations = [v23 configurations];
+      lastObject = [configurations lastObject];
 
-      [v23 setSelectedConfiguration:v25];
-      [v23 setDesiredActiveConfiguration:v25];
+      [v23 setSelectedConfiguration:lastObject];
+      [v23 setDesiredActiveConfiguration:lastObject];
       dataStore = self->_dataStore;
       v93 = 0;
       v27 = [(PBFPosterExtensionDataStore *)dataStore updateDataStoreForSwitcherConfiguration:v23 reason:@"Modal New Poster" error:&v93];
@@ -1198,41 +1198,41 @@ LABEL_46:
         }
       }
 
-      v30 = [v25 _path];
-      v31 = [v30 serverIdentity];
-      v32 = [v31 posterUUID];
-      v33 = [v32 UUIDString];
+      _path = [lastObject _path];
+      serverIdentity = [_path serverIdentity];
+      posterUUID = [serverIdentity posterUUID];
+      uUIDString = [posterUUID UUIDString];
 
-      [(PBFModalRootViewController *)self _logEditWithEditingViewController:v75 posterUUID:v33 lastModifiedDate:v73];
-      v71[2](v71, 0);
+      [(PBFModalRootViewController *)self _logEditWithEditingViewController:controllerCopy posterUUID:uUIDString lastModifiedDate:lastModifiedDate];
+      completionCopy[2](completionCopy, 0);
     }
 
     else
     {
       if (self->_legacyMigrationHelper)
       {
-        v39 = [MEMORY[0x277CBEAA8] date];
+        date2 = [MEMORY[0x277CBEAA8] date];
         v40 = objc_alloc_init(PBFPosterEditingIngestionManager);
         [(PBFPosterEditingIngestionManager *)v40 setDelegate:self];
-        v41 = [(PBFPosterEditingIngestionManager *)v40 ingestConfiguration:v69 updatedConfiguredProperties:v68 editingViewController:v75 galleryViewController:0 showEditingConfirmation:0];
+        v41 = [(PBFPosterEditingIngestionManager *)v40 ingestConfiguration:configurationCopy updatedConfiguredProperties:v68 editingViewController:controllerCopy galleryViewController:0 showEditingConfirmation:0];
         if (v41)
         {
-          [v75 addLongSaveOperationIndicator];
+          [controllerCopy addLongSaveOperationIndicator];
           objc_initWeak(&buf, self);
           legacyMigrationHelper = self->_legacyMigrationHelper;
-          v43 = [v41 configurationUUID];
+          configurationUUID = [v41 configurationUUID];
           v85[0] = MEMORY[0x277D85DD0];
           v85[1] = 3221225472;
           v85[2] = __153__PBFModalRootViewController__standaloneEditingSceneViewController_userDidDismissWithAction_updatedConfiguration_updatedConfiguredProperties_completion___block_invoke_2_119;
           v85[3] = &unk_2782C76B0;
           objc_copyWeak(&v90, &buf);
-          v86 = v75;
-          v39 = v39;
-          v87 = v39;
+          v86 = controllerCopy;
+          date2 = date2;
+          v87 = date2;
           v41 = v41;
           v88 = v41;
-          v89 = self;
-          [(PBFLegacyPosterMigrationHelper *)legacyMigrationHelper migrateHomePosterAndAssociateToConfiguration:v43 completion:v85];
+          selfCopy = self;
+          [(PBFLegacyPosterMigrationHelper *)legacyMigrationHelper migrateHomePosterAndAssociateToConfiguration:configurationUUID completion:v85];
 
           objc_destroyWeak(&v90);
           objc_destroyWeak(&buf);
@@ -1240,11 +1240,11 @@ LABEL_46:
 
         else
         {
-          v48 = [MEMORY[0x277CBEAA8] date];
-          [v48 timeIntervalSinceDate:v39];
+          date3 = [MEMORY[0x277CBEAA8] date];
+          [date3 timeIntervalSinceDate:date2];
           v50 = v49;
-          v51 = [(PBFLegacyPosterMigrationHelper *)self->_legacyMigrationHelper migrationInfo];
-          [PBFLegacyMigrationAnalyticsReporter recordWithEvent:3 migrationInfo:v51 duration:0 errorCode:v50];
+          migrationInfo = [(PBFLegacyPosterMigrationHelper *)self->_legacyMigrationHelper migrationInfo];
+          [PBFLegacyMigrationAnalyticsReporter recordWithEvent:3 migrationInfo:migrationInfo duration:0 errorCode:v50];
 
           v52 = PBFLogLegacyPosterMigration();
           if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
@@ -1268,40 +1268,40 @@ LABEL_46:
 
       else
       {
-        v44 = [v67 type] == 3;
+        v44 = [contentsIdentity type] == 3;
         v45 = objc_alloc(MEMORY[0x277D3ECE0]);
-        v46 = [v69 _path];
+        _path2 = [configurationCopy _path];
         if (v44)
         {
-          v47 = [v67 posterUUID];
-          v39 = [v45 initWithUpdatedPath:v46 updatedPosterUUID:v47 sourceIdentity:v67 configuredProperties:v68 attributes:0];
+          posterUUID2 = [contentsIdentity posterUUID];
+          date2 = [v45 initWithUpdatedPath:_path2 updatedPosterUUID:posterUUID2 sourceIdentity:contentsIdentity configuredProperties:v68 attributes:0];
         }
 
         else
         {
-          v39 = [v45 initWithNewPath:v46 destinationPosterUUID:0 sourceIdentity:v67 configuredProperties:v68 attributes:0];
+          date2 = [v45 initWithNewPath:_path2 destinationPosterUUID:0 sourceIdentity:contentsIdentity configuredProperties:v68 attributes:0];
         }
 
-        v54 = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
-        v40 = [v54 mutableCopy];
+        switcherConfiguration2 = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
+        v40 = [switcherConfiguration2 mutableCopy];
 
-        [(PBFPosterEditingIngestionManager *)v40 ingestNewPosterConfiguration:v39];
-        v55 = [(PBFPosterConfigurationUpdateResult *)self->_temporaryConfigurationUpdateResult incomingAssocPosterConfiguration];
+        [(PBFPosterEditingIngestionManager *)v40 ingestNewPosterConfiguration:date2];
+        incomingAssocPosterConfiguration = [(PBFPosterConfigurationUpdateResult *)self->_temporaryConfigurationUpdateResult incomingAssocPosterConfiguration];
 
-        if (v55)
+        if (incomingAssocPosterConfiguration)
         {
-          v56 = [(PBFPosterConfigurationUpdateResult *)self->_temporaryConfigurationUpdateResult incomingAssocPosterConfiguration];
-          v57 = [v75 contentsIdentity];
-          v58 = [v57 posterUUID];
-          [(PBFPosterEditingIngestionManager *)v40 ingestNewPosterConfiguration:v56 toBeAssociatedWithUUID:v58];
+          incomingAssocPosterConfiguration2 = [(PBFPosterConfigurationUpdateResult *)self->_temporaryConfigurationUpdateResult incomingAssocPosterConfiguration];
+          contentsIdentity2 = [controllerCopy contentsIdentity];
+          posterUUID3 = [contentsIdentity2 posterUUID];
+          [(PBFPosterEditingIngestionManager *)v40 ingestNewPosterConfiguration:incomingAssocPosterConfiguration2 toBeAssociatedWithUUID:posterUUID3];
         }
 
         v83 = 0u;
         v84 = 0u;
         v81 = 0u;
         v82 = 0u;
-        v59 = [(PBFPosterConfigurationUpdateResult *)self->_temporaryConfigurationUpdateResult postersToDelete];
-        v60 = [v59 countByEnumeratingWithState:&v81 objects:v101 count:16];
+        postersToDelete = [(PBFPosterConfigurationUpdateResult *)self->_temporaryConfigurationUpdateResult postersToDelete];
+        v60 = [postersToDelete countByEnumeratingWithState:&v81 objects:v101 count:16];
         if (v60)
         {
           v61 = *v82;
@@ -1311,13 +1311,13 @@ LABEL_46:
             {
               if (*v82 != v61)
               {
-                objc_enumerationMutation(v59);
+                objc_enumerationMutation(postersToDelete);
               }
 
               [(PBFPosterEditingIngestionManager *)v40 removeConfiguration:*(*(&v81 + 1) + 8 * i)];
             }
 
-            v60 = [v59 countByEnumeratingWithState:&v81 objects:v101 count:16];
+            v60 = [postersToDelete countByEnumeratingWithState:&v81 objects:v101 count:16];
           }
 
           while (v60);
@@ -1327,30 +1327,30 @@ LABEL_46:
         v80 = 0;
         v64 = [(PBFPosterExtensionDataStore *)v63 updateDataStoreForSwitcherConfiguration:v40 reason:@"Modal Select Active Poster" error:&v80];
         v28 = v80;
-        v65 = [MEMORY[0x277D3EAF0] done];
-        [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:v65];
+        done = [MEMORY[0x277D3EAF0] done];
+        [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:done];
         v76[0] = MEMORY[0x277D85DD0];
         v76[1] = 3221225472;
         v76[2] = __153__PBFModalRootViewController__standaloneEditingSceneViewController_userDidDismissWithAction_updatedConfiguration_updatedConfiguredProperties_completion___block_invoke_2_127;
         v76[3] = &unk_2782C6180;
         v79 = v70;
-        v77 = v65;
-        v78 = v75;
-        v41 = v65;
+        v77 = done;
+        v78 = controllerCopy;
+        v41 = done;
         [v78 dismissViewControllerAnimated:1 completion:v76];
       }
 
-      v66 = [v67 posterUUID];
-      v20 = [v66 UUIDString];
+      posterUUID4 = [contentsIdentity posterUUID];
+      uUIDString2 = [posterUUID4 UUIDString];
 
-      [(PBFModalRootViewController *)self _logEditWithEditingViewController:v75 posterUUID:v20 lastModifiedDate:v73];
-      (v71)[2](v71, v28);
+      [(PBFModalRootViewController *)self _logEditWithEditingViewController:controllerCopy posterUUID:uUIDString2 lastModifiedDate:lastModifiedDate];
+      (completionCopy)[2](completionCopy, v28);
     }
 
     goto LABEL_46;
   }
 
-  v73 = [MEMORY[0x277D3EAF0] cancel];
+  lastModifiedDate = [MEMORY[0x277D3EAF0] cancel];
   if (self->_legacyMigrationHelper)
   {
     v34 = PBFLogLegacyPosterMigration();
@@ -1364,39 +1364,39 @@ LABEL_46:
     self->_legacyMigrationHelper = 0;
   }
 
-  v36 = [(PRUISModalEntryPoint *)v72 editingType];
-  if ((v36 - 2) < 2 || !v36)
+  editingType2 = [(PRUISModalEntryPoint *)v72 editingType];
+  if ((editingType2 - 2) < 2 || !editingType2)
   {
-    [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:v73];
+    [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:lastModifiedDate];
     v94[0] = MEMORY[0x277D85DD0];
     v94[1] = 3221225472;
     v94[2] = __153__PBFModalRootViewController__standaloneEditingSceneViewController_userDidDismissWithAction_updatedConfiguration_updatedConfiguredProperties_completion___block_invoke_2;
     v94[3] = &unk_2782C6180;
     v97 = v70;
-    v95 = v73;
-    v96 = v75;
+    v95 = lastModifiedDate;
+    v96 = controllerCopy;
     [v96 dismissViewControllerAnimated:1 completion:v94];
-    v71[2](v71, 0);
+    completionCopy[2](completionCopy, 0);
 
     v38 = &v97;
     goto LABEL_23;
   }
 
-  if (v36 == 1)
+  if (editingType2 == 1)
   {
-    [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:v73];
-    (*(v70 + 2))(v70, v73);
-    v71[2](v71, 0);
+    [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:lastModifiedDate];
+    (*(v70 + 2))(v70, lastModifiedDate);
+    completionCopy[2](completionCopy, 0);
     v37 = dispatch_time(0, 500000000);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __153__PBFModalRootViewController__standaloneEditingSceneViewController_userDidDismissWithAction_updatedConfiguration_updatedConfiguredProperties_completion___block_invoke_114;
     block[3] = &unk_2782C5888;
     v38 = &v99;
-    v99 = v75;
+    v99 = controllerCopy;
     dispatch_after(v37, MEMORY[0x277D85CD0], block);
 LABEL_23:
-    v16 = *v38;
+    metadataBySettingLastModifiedDateToNow = *v38;
 LABEL_47:
   }
 }
@@ -1513,7 +1513,7 @@ uint64_t __153__PBFModalRootViewController__standaloneEditingSceneViewController
   return [v2 invalidate];
 }
 
-- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForFocusPosterSelectionViewController:(SEL)a3
+- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForFocusPosterSelectionViewController:(SEL)controller
 {
   result = objc_opt_class();
   if (result)
@@ -1533,30 +1533,30 @@ uint64_t __153__PBFModalRootViewController__standaloneEditingSceneViewController
   return result;
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v4 = [MEMORY[0x277D3EAF0] cancel];
-  [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:v4];
+  cancel = [MEMORY[0x277D3EAF0] cancel];
+  [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:cancel];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [MEMORY[0x277D3EAF0] cancel];
-  [(PBFModalRootViewController *)self _handleSheetDidDismissWithResponse:v4];
+  cancel = [MEMORY[0x277D3EAF0] cancel];
+  [(PBFModalRootViewController *)self _handleSheetDidDismissWithResponse:cancel];
 }
 
-- (BOOL)ambientEditingCollectionViewControllerDidPressDone:(id)a3
+- (BOOL)ambientEditingCollectionViewControllerDidPressDone:(id)done
 {
-  v4 = [MEMORY[0x277D3EAF0] done];
-  [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:v4];
+  done = [MEMORY[0x277D3EAF0] done];
+  [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:done];
   IsReduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __81__PBFModalRootViewController_ambientEditingCollectionViewControllerDidPressDone___block_invoke;
   v8[3] = &unk_2782C58B0;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = done;
+  v6 = done;
   [(PBFModalRootViewController *)self dismissViewControllerAnimated:IsReduceMotionEnabled completion:v8];
 
   return 1;
@@ -1589,38 +1589,38 @@ double __46__PBFModalRootViewController__topButtonLayout__block_invoke()
   return result;
 }
 
-- (void)_displayViewControllerAsSheet:(id)a3
+- (void)_displayViewControllerAsSheet:(id)sheet
 {
   v4 = MEMORY[0x277D757A0];
-  v5 = a3;
-  v7 = [[v4 alloc] initWithRootViewController:v5];
+  sheetCopy = sheet;
+  v7 = [[v4 alloc] initWithRootViewController:sheetCopy];
 
   [v7 setModalPresentationStyle:2];
-  v6 = [v7 sheetPresentationController];
-  [v6 setDelegate:self];
+  sheetPresentationController = [v7 sheetPresentationController];
+  [sheetPresentationController setDelegate:self];
   [(PBFModalRootViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)_handleSheetWillDismissWithResponse:(id)a3
+- (void)_handleSheetWillDismissWithResponse:(id)response
 {
   v4 = MEMORY[0x277D3EB50];
-  v5 = a3;
-  v8 = [[v4 alloc] initWithResponse:v5];
+  responseCopy = response;
+  v8 = [[v4 alloc] initWithResponse:responseCopy];
 
-  v6 = [(UIScene *)self->_parentScene _FBSScene];
+  _FBSScene = [(UIScene *)self->_parentScene _FBSScene];
   v7 = [MEMORY[0x277CBEB98] setWithObject:v8];
-  [v6 sendActions:v7];
+  [_FBSScene sendActions:v7];
 }
 
-- (void)_handleSheetDidDismissWithResponse:(id)a3
+- (void)_handleSheetDidDismissWithResponse:(id)response
 {
   v4 = MEMORY[0x277D3EA78];
-  v5 = a3;
-  v8 = [[v4 alloc] initWithResponse:v5];
+  responseCopy = response;
+  v8 = [[v4 alloc] initWithResponse:responseCopy];
 
-  v6 = [(UIScene *)self->_parentScene _FBSScene];
+  _FBSScene = [(UIScene *)self->_parentScene _FBSScene];
   v7 = [MEMORY[0x277CBEB98] setWithObject:v8];
-  [v6 sendActions:v7];
+  [_FBSScene sendActions:v7];
 }
 
 void __51__PBFModalRootViewController_dataStoreDidTearDown___block_invoke(uint64_t a1)
@@ -1835,16 +1835,16 @@ void __64__PBFModalRootViewController__presentLegacyMigrationFailedAlert__block_
 
 - (void)_reload
 {
-  v3 = [(PBFPosterExtensionDataStore *)self->_dataStore currentGalleryConfiguration];
-  [(PBFGalleryMutableDataProvider *)self->_galleryDataProvider configureForGallery:v3];
+  currentGalleryConfiguration = [(PBFPosterExtensionDataStore *)self->_dataStore currentGalleryConfiguration];
+  [(PBFGalleryMutableDataProvider *)self->_galleryDataProvider configureForGallery:currentGalleryConfiguration];
 }
 
 - (void)_presentGallery
 {
-  v3 = [(PBFModalRootViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 _rootSheetPresentationController];
-  [v5 _setShouldScaleDownBehindDescendantSheets:0];
+  view = [(PBFModalRootViewController *)self view];
+  window = [view window];
+  _rootSheetPresentationController = [window _rootSheetPresentationController];
+  [_rootSheetPresentationController _setShouldScaleDownBehindDescendantSheets:0];
 
   [(PBFModalRootViewController *)self _setupGalleryDataProviderIfNeeded];
   obj = [[PBFPosterGalleryPreviewViewController alloc] initWithNibName:0 bundle:0];
@@ -1853,29 +1853,29 @@ void __64__PBFModalRootViewController__presentLegacyMigrationFailedAlert__block_
   [(PBFPosterGalleryPreviewViewController *)obj setDataProvider:self->_galleryDataProvider];
   PFCurrentDeviceClass();
   [(PBFPosterGalleryPreviewViewController *)obj setModalPresentationStyle:2];
-  v6 = [(PBFPosterGalleryPreviewViewController *)obj sheetPresentationController];
-  [PBFPosterGalleryPreviewViewController configureSheetPresentationController:v6];
-  [v6 setDelegate:self];
+  sheetPresentationController = [(PBFPosterGalleryPreviewViewController *)obj sheetPresentationController];
+  [PBFPosterGalleryPreviewViewController configureSheetPresentationController:sheetPresentationController];
+  [sheetPresentationController setDelegate:self];
   [(PBFModalRootViewController *)self presentViewController:obj animated:1 completion:0];
 
   objc_storeWeak(&self->_galleryController, obj);
-  v7 = [(PBFPosterExtensionDataStore *)self->_dataStore currentGalleryConfiguration];
-  v8 = [v7 suggestedLayout];
-  v9 = [v8 proactiveRepresentation];
+  currentGalleryConfiguration = [(PBFPosterExtensionDataStore *)self->_dataStore currentGalleryConfiguration];
+  suggestedLayout = [currentGalleryConfiguration suggestedLayout];
+  proactiveRepresentation = [suggestedLayout proactiveRepresentation];
 
-  if (v9)
+  if (proactiveRepresentation)
   {
-    v10 = [MEMORY[0x277CEB530] sharedInstance];
-    [v10 logFaceGalleryDidAppearWithFaceGalleryConfiguration:v9];
+    mEMORY[0x277CEB530] = [MEMORY[0x277CEB530] sharedInstance];
+    [mEMORY[0x277CEB530] logFaceGalleryDidAppearWithFaceGalleryConfiguration:proactiveRepresentation];
   }
 }
 
-- (void)_createLegacyMigrationHelperWithConfiguration:(id)a3
+- (void)_createLegacyMigrationHelperWithConfiguration:(id)configuration
 {
-  if (a3 && !self->_legacyMigrationHelper)
+  if (configuration && !self->_legacyMigrationHelper)
   {
-    v4 = a3;
-    v7 = [[PBFPosterPair alloc] initWithConfiguration:v4 associatedConfiguration:0];
+    configurationCopy = configuration;
+    v7 = [[PBFPosterPair alloc] initWithConfiguration:configurationCopy associatedConfiguration:0];
 
     v5 = [[PBFLegacyPosterMigrationHelper alloc] initWithDataStore:self->_dataStore legacyPosterPair:v7];
     legacyMigrationHelper = self->_legacyMigrationHelper;
@@ -1885,12 +1885,12 @@ void __64__PBFModalRootViewController__presentLegacyMigrationFailedAlert__block_
 
 - (void)_performLegacyMigration
 {
-  v3 = [(PBFLegacyPosterMigrationHelper *)self->_legacyMigrationHelper lockScreenMigrationViewController];
-  if (v3)
+  lockScreenMigrationViewController = [(PBFLegacyPosterMigrationHelper *)self->_legacyMigrationHelper lockScreenMigrationViewController];
+  if (lockScreenMigrationViewController)
   {
-    v4 = v3;
-    [(PBFModalRootViewController *)self _presentEditingSceneViewController:v3];
-    v3 = v4;
+    v4 = lockScreenMigrationViewController;
+    [(PBFModalRootViewController *)self _presentEditingSceneViewController:lockScreenMigrationViewController];
+    lockScreenMigrationViewController = v4;
   }
 }
 
@@ -1919,40 +1919,40 @@ void __64__PBFModalRootViewController__presentLegacyMigrationFailedAlert__block_
 
   v6 = v5;
 
-  v7 = [(PRUISModalEntryPoint *)v6 editingType];
-  return v7 == 1;
+  editingType = [(PRUISModalEntryPoint *)v6 editingType];
+  return editingType == 1;
 }
 
-- (void)_logEditWithEditingViewController:(id)a3 posterUUID:(id)a4 lastModifiedDate:(id)a5
+- (void)_logEditWithEditingViewController:(id)controller posterUUID:(id)d lastModifiedDate:(id)date
 {
-  v33 = a3;
-  v8 = a5;
-  v32 = a4;
+  controllerCopy = controller;
+  dateCopy = date;
+  dCopy = d;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v9 = [(PRUISModalEntryPoint *)self->_entryPoint editingType];
+    editingType = [(PRUISModalEntryPoint *)self->_entryPoint editingType];
     v10 = @"unknown";
     v11 = @"modalEditingEditPosterFromConfiguration";
     v12 = @"modalEditingEditPosterFromConfigurationWithUpdateSessionInfo";
-    if (v9 != 3)
+    if (editingType != 3)
     {
       v12 = @"unknown";
     }
 
-    if (v9 != 2)
+    if (editingType != 2)
     {
       v11 = v12;
     }
 
-    if (v9 == 1)
+    if (editingType == 1)
     {
       v10 = @"modalEditingNewPosterFromConfiguration";
     }
 
-    if (v9)
+    if (editingType)
     {
-      v13 = v9 == 1;
+      v13 = editingType == 1;
     }
 
     else
@@ -1960,14 +1960,14 @@ void __64__PBFModalRootViewController__presentLegacyMigrationFailedAlert__block_
       v13 = 0;
     }
 
-    if (!v9)
+    if (!editingType)
     {
       v10 = @"modalEditingActivePosterConfiguration";
     }
 
-    v14 = v9 <= 1 && v13;
+    v14 = editingType <= 1 && v13;
     v31 = v14;
-    if (v9 > 1)
+    if (editingType > 1)
     {
       v10 = v11;
     }
@@ -1992,28 +1992,28 @@ LABEL_19:
   v30 = @"modalGallery";
   v31 = 1;
 LABEL_20:
-  v15 = [v33 modifications];
+  modifications = [controllerCopy modifications];
   v16 = objc_alloc(MEMORY[0x277CEB7B8]);
-  [v8 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   v18 = v17;
 
-  v19 = [v15 colorModified];
-  v20 = [v15 fontModified];
-  v21 = [v15 numberingSystemModified];
-  v22 = [v15 posterContentModified];
-  v23 = [v15 widgetsModified];
-  v24 = [v15 containedWidgetsBeforeEdit];
-  v25 = [v15 startDate];
-  [v25 timeIntervalSinceNow];
-  BYTE4(v29) = v24;
-  BYTE3(v29) = v23;
-  BYTE2(v29) = v22;
-  BYTE1(v29) = v21;
-  LOBYTE(v29) = v20;
-  v27 = [v16 initWithLockscreenId:v32 entryPoint:v30 newlyCreated:v31 secondsSinceLastEdit:-v18 outcome:@"accepted" userChangedColor:v19 userChangedFont:v29 userChangedNumberingSystem:-v26 userChangedPosterContent:? userChangedWidgets:? didLockscreenHaveWidgetsBeforeEdit:? duration:?];
+  colorModified = [modifications colorModified];
+  fontModified = [modifications fontModified];
+  numberingSystemModified = [modifications numberingSystemModified];
+  posterContentModified = [modifications posterContentModified];
+  widgetsModified = [modifications widgetsModified];
+  containedWidgetsBeforeEdit = [modifications containedWidgetsBeforeEdit];
+  startDate = [modifications startDate];
+  [startDate timeIntervalSinceNow];
+  BYTE4(v29) = containedWidgetsBeforeEdit;
+  BYTE3(v29) = widgetsModified;
+  BYTE2(v29) = posterContentModified;
+  BYTE1(v29) = numberingSystemModified;
+  LOBYTE(v29) = fontModified;
+  v27 = [v16 initWithLockscreenId:dCopy entryPoint:v30 newlyCreated:v31 secondsSinceLastEdit:-v18 outcome:@"accepted" userChangedColor:colorModified userChangedFont:v29 userChangedNumberingSystem:-v26 userChangedPosterContent:? userChangedWidgets:? didLockscreenHaveWidgetsBeforeEdit:? duration:?];
 
-  v28 = [MEMORY[0x277CEB530] sharedInstance];
-  [v28 logPosterEdit:v27 completion:&__block_literal_global_206];
+  mEMORY[0x277CEB530] = [MEMORY[0x277CEB530] sharedInstance];
+  [mEMORY[0x277CEB530] logPosterEdit:v27 completion:&__block_literal_global_206];
 }
 
 void __92__PBFModalRootViewController__logEditWithEditingViewController_posterUUID_lastModifiedDate___block_invoke(uint64_t a1, void *a2)
@@ -2029,9 +2029,9 @@ void __92__PBFModalRootViewController__logEditWithEditingViewController_posterUU
   }
 }
 
-- (id)_posterLimitExceededAlertWithButtonActionHandler:(id)a3
+- (id)_posterLimitExceededAlertWithButtonActionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = MEMORY[0x277D75110];
   v5 = PBFLocalizedString(@"TOO_MANY_CONFIGURATIONS_TITLE");
   v6 = PBFLocalizedString(@"TOO_MANY_CONFIGURATIONS_MESSAGE");
@@ -2043,8 +2043,8 @@ void __92__PBFModalRootViewController__logEditWithEditingViewController_posterUU
   v13[1] = 3221225472;
   v13[2] = __79__PBFModalRootViewController__posterLimitExceededAlertWithButtonActionHandler___block_invoke;
   v13[3] = &unk_2782C7700;
-  v14 = v3;
-  v10 = v3;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
   v11 = [v8 actionWithTitle:v9 style:0 handler:v13];
   [v7 addAction:v11];
 
@@ -2062,37 +2062,37 @@ uint64_t __79__PBFModalRootViewController__posterLimitExceededAlertWithButtonAct
   return result;
 }
 
-- (void)_handleNotificationForwardAction:(id)a3
+- (void)_handleNotificationForwardAction:(id)action
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [a3 notificationName];
-  v5 = [(PBFModalRootViewController *)self presentedViewController];
+  notificationName = [action notificationName];
+  presentedViewController = [(PBFModalRootViewController *)self presentedViewController];
   if (objc_opt_respondsToSelector())
   {
     v6 = PBFLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543618;
-      v8 = v4;
+      v8 = notificationName;
       v9 = 2114;
-      v10 = v5;
+      v10 = presentedViewController;
       _os_log_impl(&dword_21B526000, v6, OS_LOG_TYPE_DEFAULT, "Forwarding appearance notification %{public}@ to presented view controller: %{public}@", &v7, 0x16u);
     }
 
-    [v5 forwardAppearanceNotificationName:v4];
+    [presentedViewController forwardAppearanceNotificationName:notificationName];
   }
 }
 
-- (void)_setScene:(id)a3
+- (void)_setScene:(id)scene
 {
-  v5 = a3;
-  if (v5 && self->_parentScene != v5)
+  sceneCopy = scene;
+  if (sceneCopy && self->_parentScene != sceneCopy)
   {
     [PBFModalRootViewController _setScene:a2];
   }
 }
 
-- (id)_settingsDiffActionsForScene:(id)a3
+- (id)_settingsDiffActionsForScene:(id)scene
 {
   v5[1] = *MEMORY[0x277D85DE8];
   v5[0] = self;
@@ -2101,7 +2101,7 @@ uint64_t __79__PBFModalRootViewController__posterLimitExceededAlertWithButtonAct
   return v3;
 }
 
-- (id)_actionHandlersForScene:(id)a3
+- (id)_actionHandlersForScene:(id)scene
 {
   v5[1] = *MEMORY[0x277D85DE8];
   v5[0] = self;
@@ -2110,11 +2110,11 @@ uint64_t __79__PBFModalRootViewController__posterLimitExceededAlertWithButtonAct
   return v3;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v15 = [a4 settings];
-  v9 = [v15 otherSettings];
-  v10 = [v9 BOOLForSetting:2606278162];
+  settings = [sScene settings];
+  otherSettings = [settings otherSettings];
+  v10 = [otherSettings BOOLForSetting:2606278162];
 
   if (self->_displayConfigurationObserver)
   {
@@ -2128,25 +2128,25 @@ uint64_t __79__PBFModalRootViewController__posterLimitExceededAlertWithButtonAct
 
   if (!v11)
   {
-    v12 = [(UIScene *)self->_parentScene _FBSScene];
-    v13 = [v12 settings];
-    v14 = [v13 displayConfiguration];
+    _FBSScene = [(UIScene *)self->_parentScene _FBSScene];
+    settings2 = [_FBSScene settings];
+    displayConfiguration = [settings2 displayConfiguration];
 
-    [(PBFDisplayConfigurationUpdatable *)self->_displayConfigurationObserver setDisplayConfiguration:v14];
+    [(PBFDisplayConfigurationUpdatable *)self->_displayConfigurationObserver setDisplayConfiguration:displayConfiguration];
   }
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
-  v7 = a3;
-  v8 = [v7 bs_firstObjectPassingTest:&__block_literal_global_224];
+  actionsCopy = actions;
+  v8 = [actionsCopy bs_firstObjectPassingTest:&__block_literal_global_224];
   if (v8)
   {
-    v9 = [(PBFModalRootViewController *)self presentedViewController];
+    presentedViewController = [(PBFModalRootViewController *)self presentedViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v9 dismiss];
+      [presentedViewController dismiss];
     }
 
     else
@@ -2154,32 +2154,32 @@ uint64_t __79__PBFModalRootViewController__posterLimitExceededAlertWithButtonAct
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v9 dismissWithAction:0];
+        [presentedViewController dismissWithAction:0];
       }
 
       else
       {
-        v10 = [MEMORY[0x277D3EAF0] cancel];
-        [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:v10];
+        cancel = [MEMORY[0x277D3EAF0] cancel];
+        [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:cancel];
         v14 = MEMORY[0x277D85DD0];
         v15 = 3221225472;
         v16 = __92__PBFModalRootViewController__respondToActions_forFBSScene_inUIScene_fromTransitionContext___block_invoke_2;
         v17 = &unk_2782C58B0;
-        v18 = self;
-        v19 = v10;
-        v11 = v10;
+        selfCopy = self;
+        v19 = cancel;
+        v11 = cancel;
         [(PBFModalRootViewController *)self dismissViewControllerAnimated:1 completion:&v14];
       }
     }
   }
 
-  v12 = [v7 bs_firstObjectPassingTest:{&__block_literal_global_227, v14, v15, v16, v17, v18}];
+  v12 = [actionsCopy bs_firstObjectPassingTest:{&__block_literal_global_227, v14, v15, v16, v17, selfCopy}];
   if (v12)
   {
     [(PBFModalRootViewController *)self _handleNotificationForwardAction:v12];
   }
 
-  return v7;
+  return actionsCopy;
 }
 
 uint64_t __92__PBFModalRootViewController__respondToActions_forFBSScene_inUIScene_fromTransitionContext___block_invoke(uint64_t a1, void *a2)
@@ -2209,33 +2209,33 @@ uint64_t __92__PBFModalRootViewController__respondToActions_forFBSScene_inUIScen
   return isKindOfClass & 1;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PBFModalRootViewController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PBFModalRootViewController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(PBFModalRootViewController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PBFModalRootViewController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (void)posterExtensionDataStore:(id)a3 didUpdateGalleryConfiguration:(id)a4
+- (void)posterExtensionDataStore:(id)store didUpdateGalleryConfiguration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__PBFModalRootViewController_posterExtensionDataStore_didUpdateGalleryConfiguration___block_invoke;
   block[3] = &unk_2782C70C0;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v9);
@@ -2253,45 +2253,45 @@ void __85__PBFModalRootViewController_posterExtensionDataStore_didUpdateGalleryC
   }
 }
 
-- (void)galleryViewController:(id)a3 didSelectPreview:(id)a4 fromPreviewView:(id)a5
+- (void)galleryViewController:(id)controller didSelectPreview:(id)preview fromPreviewView:(id)view
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  controllerCopy = controller;
+  previewCopy = preview;
+  viewCopy = view;
   if ([(PBFPosterExtensionDataStore *)self->_dataStore canPersistNewPosterConfiguration])
   {
-    [v11 presentPreview:v8 withMode:2 fromView:v9];
+    [controllerCopy presentPreview:previewCopy withMode:2 fromView:viewCopy];
   }
 
   else
   {
     v10 = [(PBFModalRootViewController *)self _posterLimitExceededAlertWithButtonActionHandler:0];
-    [v11 presentViewController:v10 animated:1 completion:0];
+    [controllerCopy presentViewController:v10 animated:1 completion:0];
   }
 }
 
-- (id)galleryViewController:(id)a3 willUseAnimationController:(id)a4 forDismissingEditingViewControllerWithAction:(int64_t)a5
+- (id)galleryViewController:(id)controller willUseAnimationController:(id)animationController forDismissingEditingViewControllerWithAction:(int64_t)action
 {
-  if (a5 == 1)
+  if (action == 1)
   {
     return 0;
   }
 
   else
   {
-    return a4;
+    return animationController;
   }
 }
 
-- (void)editingIngestionManager:(id)a3 didAccept:(id)a4 userChoice:(int64_t)a5
+- (void)editingIngestionManager:(id)manager didAccept:(id)accept userChoice:(int64_t)choice
 {
-  v9 = a3;
-  v10 = a4;
+  managerCopy = manager;
+  acceptCopy = accept;
   if (!self->_legacyMigrationHelper)
   {
-    if (a5)
+    if (choice)
     {
-      [v9 dismissViewController];
+      [managerCopy dismissViewController];
       v11 = objc_opt_class();
       if (v11)
       {
@@ -2303,18 +2303,18 @@ void __85__PBFModalRootViewController_posterExtensionDataStore_didUpdateGalleryC
         memset(v20, 0, sizeof(v20));
       }
 
-      v14 = [PBFPosterRackCollectionViewController simplifiedHomeScreenSwitcherFor:v10 delegate:self topButtonLayout:v20];
-      v15 = [v9 editingViewController];
-      v16 = [v15 navigationController];
+      v14 = [PBFPosterRackCollectionViewController simplifiedHomeScreenSwitcherFor:acceptCopy delegate:self topButtonLayout:v20];
+      editingViewController = [managerCopy editingViewController];
+      navigationController = [editingViewController navigationController];
 
-      if (!v16)
+      if (!navigationController)
       {
         [PBFModalRootViewController editingIngestionManager:a2 didAccept:? userChoice:?];
       }
 
-      v17 = [v9 editingViewController];
-      v18 = [v17 navigationController];
-      [v18 pushViewController:v14 animated:1];
+      editingViewController2 = [managerCopy editingViewController];
+      navigationController2 = [editingViewController2 navigationController];
+      [navigationController2 pushViewController:v14 animated:1];
     }
 
     else
@@ -2324,22 +2324,22 @@ void __85__PBFModalRootViewController_posterExtensionDataStore_didUpdateGalleryC
         temporaryDescriptor = self->_temporaryDescriptor;
         self->_temporaryDescriptor = 0;
 
-        v13 = [MEMORY[0x277D3EAF0] done];
-        [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:v13];
-        [(PBFModalRootViewController *)self _handleSheetDidDismissWithResponse:v13];
+        done = [MEMORY[0x277D3EAF0] done];
+        [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:done];
+        [(PBFModalRootViewController *)self _handleSheetDidDismissWithResponse:done];
       }
 
       else
       {
-        v19 = [MEMORY[0x277D3EAF0] done];
-        [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:v19];
+        done2 = [MEMORY[0x277D3EAF0] done];
+        [(PBFModalRootViewController *)self _handleSheetWillDismissWithResponse:done2];
         v21[0] = MEMORY[0x277D85DD0];
         v21[1] = 3221225472;
         v21[2] = __75__PBFModalRootViewController_editingIngestionManager_didAccept_userChoice___block_invoke;
         v21[3] = &unk_2782C58B0;
         v21[4] = self;
-        v22 = v19;
-        v13 = v19;
+        v22 = done2;
+        done = done2;
         [(PBFModalRootViewController *)self dismissViewControllerAnimated:1 completion:v21];
       }
     }

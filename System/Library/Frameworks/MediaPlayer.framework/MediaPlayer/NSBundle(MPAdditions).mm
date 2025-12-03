@@ -11,7 +11,7 @@
   v4[2] = __42__NSBundle_MPAdditions__mediaPlayerBundle__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
   v4[4] = a2;
-  v4[5] = a1;
+  v4[5] = self;
   if (mediaPlayerBundle___once != -1)
   {
     dispatch_once(&mediaPlayerBundle___once, v4);

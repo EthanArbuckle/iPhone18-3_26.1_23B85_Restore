@@ -1,24 +1,24 @@
 @interface RMMigrationStatusPath
-- (BOOL)_migrateStatusDirectory:(id)a3 error:(id *)a4;
-- (BOOL)_moveDirectoryFromURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-- (BOOL)executeReturningError:(id *)a3;
+- (BOOL)_migrateStatusDirectory:(id)directory error:(id *)error;
+- (BOOL)_moveDirectoryFromURL:(id)l toURL:(id)rL error:(id *)error;
+- (BOOL)executeReturningError:(id *)error;
 - (id)_configurationTypePrefixes;
-- (id)_transformName:(id)a3;
-- (void)_migrateURL:(id)a3;
+- (id)_transformName:(id)name;
+- (void)_migrateURL:(id)l;
 @end
 
 @implementation RMMigrationStatusPath
 
-- (BOOL)executeReturningError:(id *)a3
+- (BOOL)executeReturningError:(id *)error
 {
   v5 = [RMLocations statusDirectoryURLCreateIfNeeded:0];
   v6 = +[NSFileManager defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7 isDirectory:0];
+  path = [v5 path];
+  v8 = [v6 fileExistsAtPath:path isDirectory:0];
 
   if (v8)
   {
-    v9 = [(RMMigrationStatusPath *)self _migrateStatusDirectory:v5 error:a3];
+    v9 = [(RMMigrationStatusPath *)self _migrateStatusDirectory:v5 error:error];
   }
 
   else
@@ -35,13 +35,13 @@
   return v9;
 }
 
-- (BOOL)_migrateStatusDirectory:(id)a3 error:(id *)a4
+- (BOOL)_migrateStatusDirectory:(id)directory error:(id *)error
 {
-  v6 = a3;
+  directoryCopy = directory;
   v7 = +[NSFileManager defaultManager];
-  v8 = [v6 path];
+  path = [directoryCopy path];
   v24 = 0;
-  v9 = [v7 contentsOfDirectoryAtPath:v8 error:&v24];
+  v9 = [v7 contentsOfDirectoryAtPath:path error:&v24];
   v10 = v24;
 
   if (v9)
@@ -66,7 +66,7 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [v6 URLByAppendingPathComponent:{*(*(&v20 + 1) + 8 * v15), v20}];
+          v16 = [directoryCopy URLByAppendingPathComponent:{*(*(&v20 + 1) + 8 * v15), v20}];
           [(RMMigrationStatusPath *)self _migrateURL:v16];
 
           v15 = v15 + 1;
@@ -88,23 +88,23 @@
       sub_100055300();
     }
 
-    if (a4 && v10)
+    if (error && v10)
     {
       v18 = v10;
-      *a4 = v10;
+      *error = v10;
     }
   }
 
   return v9 != 0;
 }
 
-- (void)_migrateURL:(id)a3
+- (void)_migrateURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[NSFileManager defaultManager];
-  v6 = [v4 path];
+  path = [lCopy path];
   v26 = 0;
-  v7 = [v5 contentsOfDirectoryAtPath:v6 error:&v26];
+  v7 = [v5 contentsOfDirectoryAtPath:path error:&v26];
   v8 = v26;
 
   if (v7)
@@ -130,13 +130,13 @@
             objc_enumerationMutation(obj);
           }
 
-          v13 = [v4 URLByAppendingPathComponent:{*(*(&v22 + 1) + 8 * i), v19, v20}];
-          v14 = [v13 pathComponents];
-          v15 = [v14 mutableCopy];
+          v13 = [lCopy URLByAppendingPathComponent:{*(*(&v22 + 1) + 8 * i), v19, v20}];
+          pathComponents = [v13 pathComponents];
+          v15 = [pathComponents mutableCopy];
 
-          v16 = [v15 lastObject];
+          lastObject = [v15 lastObject];
           [v15 removeLastObject];
-          v17 = [(RMMigrationStatusPath *)self _transformName:v16];
+          v17 = [(RMMigrationStatusPath *)self _transformName:lastObject];
           if (v17)
           {
             [v15 addObject:v17];
@@ -187,15 +187,15 @@
   return v3;
 }
 
-- (id)_transformName:(id)a3
+- (id)_transformName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(RMMigrationStatusPath *)self _configurationTypePrefixes];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _configurationTypePrefixes = [(RMMigrationStatusPath *)self _configurationTypePrefixes];
+  v6 = [_configurationTypePrefixes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -205,18 +205,18 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_configurationTypePrefixes);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([v4 hasPrefix:v9])
+        if ([nameCopy hasPrefix:v9])
         {
-          v6 = [v4 substringFromIndex:{objc_msgSend(v9, "length")}];
+          v6 = [nameCopy substringFromIndex:{objc_msgSend(v9, "length")}];
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [_configurationTypePrefixes countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -231,13 +231,13 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)_moveDirectoryFromURL:(id)a3 toURL:(id)a4 error:(id *)a5
+- (BOOL)_moveDirectoryFromURL:(id)l toURL:(id)rL error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v9 = +[NSFileManager defaultManager];
   v16 = 0;
-  v10 = [v9 moveItemAtURL:v7 toURL:v8 error:&v16];
+  v10 = [v9 moveItemAtURL:lCopy toURL:rLCopy error:&v16];
   v11 = v16;
 
   v12 = +[RMLog migrationStatusPath];
@@ -257,10 +257,10 @@ LABEL_11:
       sub_10005537C();
     }
 
-    if (a5 && v11)
+    if (error && v11)
     {
       v14 = v11;
-      *a5 = v11;
+      *error = v11;
     }
   }
 

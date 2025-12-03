@@ -2,14 +2,14 @@
 - (NSString)debugDescription;
 - (NSString)description;
 - (_TtC9DashBoardP33_21D9A798E2D51C24F8F346867CF839AF17_DBFocusAssertion)init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)invalidate;
-- (void)invalidateWithHeading:(unint64_t)a3 focusedFrame:(CGRect)a4;
-- (void)scene:(id)a3 clientDidConnect:(id)a4;
-- (void)sceneContentStateDidChange:(id)a3;
+- (void)invalidateWithHeading:(unint64_t)heading focusedFrame:(CGRect)frame;
+- (void)scene:(id)scene clientDidConnect:(id)connect;
+- (void)sceneContentStateDidChange:(id)change;
 @end
 
 @implementation _DBFocusAssertion
@@ -20,14 +20,14 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
-    sub_24814D350(v5, 0, 0.0, 0.0, 0.0, 0.0);
+    selfCopy = self;
+    sub_24814D350(selfCopy, 0, 0.0, 0.0, 0.0, 0.0);
   }
 }
 
 - (id)succinctDescriptionBuilder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24814FD30();
 
   return v3;
@@ -35,8 +35,8 @@
 
 - (NSString)description
 {
-  v2 = self;
-  result = [(_DBFocusAssertion *)v2 succinctDescription];
+  selfCopy = self;
+  result = [(_DBFocusAssertion *)selfCopy succinctDescription];
   if (result)
   {
     v4 = result;
@@ -54,14 +54,14 @@
 
 - (id)succinctDescription
 {
-  v2 = self;
-  result = [(_DBFocusAssertion *)v2 succinctDescriptionBuilder];
+  selfCopy = self;
+  result = [(_DBFocusAssertion *)selfCopy succinctDescriptionBuilder];
   if (result)
   {
     v4 = result;
-    v5 = [result build];
+    build = [result build];
 
-    if (v5)
+    if (build)
     {
       sub_248383960();
 
@@ -85,10 +85,10 @@
   return result;
 }
 
-- (void)sceneContentStateDidChange:(id)a3
+- (void)sceneContentStateDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_248163D50();
 }
 
@@ -101,8 +101,8 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
-  result = [(_DBFocusAssertion *)v2 descriptionWithMultilinePrefix:0];
+  selfCopy = self;
+  result = [(_DBFocusAssertion *)selfCopy descriptionWithMultilinePrefix:0];
   if (result)
   {
     v4 = result;
@@ -118,9 +118,9 @@
   return result;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  if (a3)
+  if (prefix)
   {
     v4 = sub_248383960();
     v6 = v5;
@@ -132,7 +132,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_2482968AC(v4, v6);
   v9 = v8;
 
@@ -149,34 +149,34 @@
   return v10;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_DBFocusAssertion *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(_DBFocusAssertion *)self succinctDescriptionBuilder];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
-- (void)invalidateWithHeading:(unint64_t)a3 focusedFrame:(CGRect)a4
+- (void)invalidateWithHeading:(unint64_t)heading focusedFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v11 = Strong;
-    v12 = self;
-    sub_24814D350(v12, a3, x, y, width, height);
+    selfCopy = self;
+    sub_24814D350(selfCopy, heading, x, y, width, height);
   }
 }
 
-- (void)scene:(id)a3 clientDidConnect:(id)a4
+- (void)scene:(id)scene clientDidConnect:(id)connect
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_248296F34(v6);
+  sceneCopy = scene;
+  connectCopy = connect;
+  selfCopy = self;
+  sub_248296F34(sceneCopy);
 }
 
 @end

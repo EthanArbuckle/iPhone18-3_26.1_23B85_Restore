@@ -1,19 +1,19 @@
 @interface TVPVideoView
-+ (id)preservedVideoViewsForPlayer:(id)a3 identifier:(id)a4;
-+ (void)_playerStateDidChange:(id)a3;
-+ (void)_purgePreservedVideoViewsForPlayer:(id)a3;
++ (id)preservedVideoViewsForPlayer:(id)player identifier:(id)identifier;
++ (void)_playerStateDidChange:(id)change;
++ (void)_purgePreservedVideoViewsForPlayer:(id)player;
 + (void)initialize;
-+ (void)preserveVideoViewForReuse:(id)a3 identifier:(id)a4;
-- (TVPVideoView)initWithFrame:(CGRect)a3;
++ (void)preserveVideoViewForReuse:(id)reuse identifier:(id)identifier;
+- (TVPVideoView)initWithFrame:(CGRect)frame;
 - (id)AVPlayer;
 - (int64_t)videoGravity;
-- (void)_playerStillImageDidChange:(id)a3;
+- (void)_playerStillImageDidChange:(id)change;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setAVPlayer:(id)a3;
-- (void)setIsPrimarySubtitleDisplayer:(BOOL)a3;
-- (void)setPlayer:(id)a3;
-- (void)setVideoGravity:(int64_t)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setAVPlayer:(id)player;
+- (void)setIsPrimarySubtitleDisplayer:(BOOL)displayer;
+- (void)setPlayer:(id)player;
+- (void)setVideoGravity:(int64_t)gravity;
 @end
 
 @implementation TVPVideoView
@@ -33,32 +33,32 @@ uint64_t __26__TVPVideoView_initialize__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)preserveVideoViewForReuse:(id)a3 identifier:(id)a4
++ (void)preserveVideoViewForReuse:(id)reuse identifier:(id)identifier
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 player];
-  v9 = v8;
-  if (!v6)
+  reuseCopy = reuse;
+  identifierCopy = identifier;
+  player = [reuseCopy player];
+  v9 = player;
+  if (!reuseCopy)
   {
     goto LABEL_19;
   }
 
-  if (!v7)
+  if (!identifierCopy)
   {
     goto LABEL_19;
   }
 
-  if (!v8)
+  if (!player)
   {
     goto LABEL_19;
   }
 
-  v10 = [v8 state];
+  state = [player state];
   v11 = +[TVPPlaybackState stopped];
 
-  if (v10 == v11)
+  if (state == v11)
   {
     goto LABEL_19;
   }
@@ -68,8 +68,8 @@ uint64_t __26__TVPVideoView_initialize__block_invoke()
   v23 = 0u;
   v24 = 0u;
   p_cache = TVPPlaybackState.cache;
-  v13 = [sPreservedVideoViews allKeys];
-  v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  allKeys = [sPreservedVideoViews allKeys];
+  v14 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v14)
   {
     v15 = v14;
@@ -81,14 +81,14 @@ uint64_t __26__TVPVideoView_initialize__block_invoke()
       {
         if (*v24 != v17)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allKeys);
         }
 
-        v19 = [a1 preservedVideoViewsForPlayer:v9 identifier:*(*(&v23 + 1) + 8 * i)];
+        v19 = [self preservedVideoViewsForPlayer:v9 identifier:*(*(&v23 + 1) + 8 * i)];
         v16 += [v19 count];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v15 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v15);
@@ -104,32 +104,32 @@ uint64_t __26__TVPVideoView_initialize__block_invoke()
   {
   }
 
-  v20 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v20 addObserver:a1 selector:sel__playerStateDidChange_ name:@"TVPPlaybackStateDidChangeNotification" object:v9];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__playerStateDidChange_ name:@"TVPPlaybackStateDidChangeNotification" object:v9];
 
 LABEL_16:
-  v21 = [p_cache[127] objectForKey:v7];
+  v21 = [p_cache[127] objectForKey:identifierCopy];
   if (!v21)
   {
     v21 = objc_alloc_init(MEMORY[0x277CBEB58]);
   }
 
-  [v21 addObject:v6];
-  [p_cache[127] setObject:v21 forKey:v7];
+  [v21 addObject:reuseCopy];
+  [p_cache[127] setObject:v21 forKey:identifierCopy];
 
 LABEL_19:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)preservedVideoViewsForPlayer:(id)a3 identifier:(id)a4
++ (id)preservedVideoViewsForPlayer:(id)player identifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  playerCopy = player;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v5 && v6)
+  if (playerCopy && identifierCopy)
   {
-    v8 = [sPreservedVideoViews objectForKey:v6];
+    v8 = [sPreservedVideoViews objectForKey:identifierCopy];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -149,9 +149,9 @@ LABEL_19:
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          v14 = [v13 player];
+          player = [v13 player];
 
-          if (v14 == v5)
+          if (player == playerCopy)
           {
             [v7 addObject:v13];
           }
@@ -169,18 +169,18 @@ LABEL_19:
   return v7;
 }
 
-- (void)setVideoGravity:(int64_t)a3
+- (void)setVideoGravity:(int64_t)gravity
 {
-  self->_videoGravity = a3;
+  self->_videoGravity = gravity;
   v9 = *MEMORY[0x277CE5DD0];
-  if (a3 == 2)
+  if (gravity == 2)
   {
     v5 = MEMORY[0x277CE5DC8];
   }
 
   else
   {
-    if (a3 != 1)
+    if (gravity != 1)
     {
       goto LABEL_6;
     }
@@ -192,53 +192,53 @@ LABEL_19:
 
   v9 = v6;
 LABEL_6:
-  v7 = [(TVPVideoView *)self playerLayerView];
-  v8 = [v7 avPlayerLayer];
-  [v8 setVideoGravity:v9];
+  playerLayerView = [(TVPVideoView *)self playerLayerView];
+  avPlayerLayer = [playerLayerView avPlayerLayer];
+  [avPlayerLayer setVideoGravity:v9];
 }
 
 - (int64_t)videoGravity
 {
-  v2 = [(TVPVideoView *)self playerLayerView];
-  v3 = [v2 avPlayerLayer];
-  v4 = [v3 videoGravity];
+  playerLayerView = [(TVPVideoView *)self playerLayerView];
+  avPlayerLayer = [playerLayerView avPlayerLayer];
+  videoGravity = [avPlayerLayer videoGravity];
 
-  if ([v4 isEqualToString:*MEMORY[0x277CE5DC8]])
+  if ([videoGravity isEqualToString:*MEMORY[0x277CE5DC8]])
   {
     v5 = 2;
   }
 
-  else if ([v4 isEqualToString:*MEMORY[0x277CE5DD0]])
+  else if ([videoGravity isEqualToString:*MEMORY[0x277CE5DD0]])
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:*MEMORY[0x277CE5DD8]];
+    v5 = [videoGravity isEqualToString:*MEMORY[0x277CE5DD8]];
   }
 
   return v5;
 }
 
-+ (void)_playerStateDidChange:(id)a3
++ (void)_playerStateDidChange:(id)change
 {
-  v7 = [a3 object];
-  v4 = [v7 state];
+  object = [change object];
+  state = [object state];
   v5 = +[TVPPlaybackState stopped];
 
-  if (v4 == v5)
+  if (state == v5)
   {
-    [a1 _purgePreservedVideoViewsForPlayer:v7];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 removeObserver:a1 name:@"TVPPlaybackStateDidChangeNotification" object:v7];
+    [self _purgePreservedVideoViewsForPlayer:object];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"TVPPlaybackStateDidChangeNotification" object:object];
   }
 }
 
-+ (void)_purgePreservedVideoViewsForPlayer:(id)a3
++ (void)_purgePreservedVideoViewsForPlayer:(id)player
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  playerCopy = player;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -279,9 +279,9 @@ LABEL_6:
               }
 
               v13 = *(*(&v18 + 1) + 8 * j);
-              v14 = [v13 player];
+              player = [v13 player];
 
-              if (v14 == v3)
+              if (player == playerCopy)
               {
                 [v7 removeObject:v13];
               }
@@ -303,11 +303,11 @@ LABEL_6:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (TVPVideoView)initWithFrame:(CGRect)a3
+- (TVPVideoView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = TVPVideoView;
-  v3 = [(TVPVideoView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TVPVideoView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -321,8 +321,8 @@ LABEL_6:
     [(TVPPlayerLayerView *)v4->_playerLayerView addObserver:v4 forKeyPath:@"avPlayerLayer.readyForDisplay" options:0 context:AVPlayerLayerReadyForDisplayKVOContext];
     [(TVPPlayerLayerView *)v4->_playerLayerView setAutoresizingMask:18];
     v8 = v4->_playerLayerView;
-    v9 = [MEMORY[0x277D75348] blackColor];
-    [(TVPPlayerLayerView *)v8 setBackgroundColor:v9];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(TVPPlayerLayerView *)v8 setBackgroundColor:blackColor];
 
     [(TVPVideoView *)v4 addSubview:v4->_playerLayerView];
     [(TVPVideoView *)v4 setClipsToBounds:1];
@@ -333,8 +333,8 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(TVPPlayerLayerView *)self->_playerLayerView removeObserver:self forKeyPath:@"avPlayerLayer.readyForDisplay" context:AVPlayerLayerReadyForDisplayKVOContext];
   v4.receiver = self;
@@ -342,11 +342,11 @@ LABEL_6:
   [(TVPVideoView *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (AVPlayerLayerReadyForDisplayKVOContext == a6)
+  if (AVPlayerLayerReadyForDisplayKVOContext == context)
   {
-    v7 = [(TVPPlayerLayerView *)self->_playerLayerView avPlayerLayer:a3];
+    v7 = [(TVPPlayerLayerView *)self->_playerLayerView avPlayerLayer:path];
     -[TVPVideoView setReadyForDisplay:](self, "setReadyForDisplay:", [v7 isReadyForDisplay]);
   }
 
@@ -354,21 +354,21 @@ LABEL_6:
   {
     v8.receiver = self;
     v8.super_class = TVPVideoView;
-    [(TVPVideoView *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(TVPVideoView *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   player = self->_player;
-  v11 = v5;
-  if (player != v5)
+  v11 = playerCopy;
+  if (player != playerCopy)
   {
     if (player)
     {
-      v7 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v7 removeObserver:self name:@"TVPPlayerStillImageDidChangeNotification" object:self->_player];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self name:@"TVPPlayerStillImageDidChangeNotification" object:self->_player];
 
       v8 = self->_player;
     }
@@ -379,75 +379,75 @@ LABEL_6:
     }
 
     [(TVPAVFPlayback *)v8 removeWeakReferenceToVideoView:self];
-    objc_storeStrong(&self->_player, a3);
+    objc_storeStrong(&self->_player, player);
     [(TVPAVFPlayback *)self->_player addWeakReferenceToVideoView:self];
-    v9 = [(TVPAVFPlayback *)self->_player avPlayer];
-    [(TVPVideoView *)self setAVPlayer:v9];
+    avPlayer = [(TVPAVFPlayback *)self->_player avPlayer];
+    [(TVPVideoView *)self setAVPlayer:avPlayer];
 
     if (self->_player)
     {
-      v10 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v10 addObserver:self selector:sel__playerStillImageDidChange_ name:@"TVPPlayerStillImageDidChangeNotification" object:self->_player];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel__playerStillImageDidChange_ name:@"TVPPlayerStillImageDidChangeNotification" object:self->_player];
     }
   }
 }
 
-- (void)setIsPrimarySubtitleDisplayer:(BOOL)a3
+- (void)setIsPrimarySubtitleDisplayer:(BOOL)displayer
 {
-  self->_isPrimarySubtitleDisplayer = a3;
-  if (!a3)
+  self->_isPrimarySubtitleDisplayer = displayer;
+  if (!displayer)
   {
-    v4 = [(TVPPlayerLayerView *)self->_playerLayerView avPlayerLayer];
-    [v4 setLanczosFilterDownscalingEnabled:1];
-    [v4 setLanczosFilterDownscaleFactor:3];
+    avPlayerLayer = [(TVPPlayerLayerView *)self->_playerLayerView avPlayerLayer];
+    [avPlayerLayer setLanczosFilterDownscalingEnabled:1];
+    [avPlayerLayer setLanczosFilterDownscaleFactor:3];
   }
 }
 
-- (void)setAVPlayer:(id)a3
+- (void)setAVPlayer:(id)player
 {
   playerLayerView = self->_playerLayerView;
-  v4 = a3;
-  v5 = [(TVPPlayerLayerView *)playerLayerView avPlayerLayer];
-  [v5 setPlayer:v4];
+  playerCopy = player;
+  avPlayerLayer = [(TVPPlayerLayerView *)playerLayerView avPlayerLayer];
+  [avPlayerLayer setPlayer:playerCopy];
 }
 
 - (id)AVPlayer
 {
-  v2 = [(TVPPlayerLayerView *)self->_playerLayerView avPlayerLayer];
-  v3 = [v2 player];
+  avPlayerLayer = [(TVPPlayerLayerView *)self->_playerLayerView avPlayerLayer];
+  player = [avPlayerLayer player];
 
-  return v3;
+  return player;
 }
 
-- (void)_playerStillImageDidChange:(id)a3
+- (void)_playerStillImageDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v10 = [v4 objectForKey:@"TVPPlayerStillImageKey"];
+  userInfo = [change userInfo];
+  v10 = [userInfo objectForKey:@"TVPPlayerStillImageKey"];
 
-  v5 = [(TVPVideoView *)self stillImageView];
+  stillImageView = [(TVPVideoView *)self stillImageView];
   if (v10)
   {
-    if (!v5)
+    if (!stillImageView)
     {
       v6 = objc_alloc(MEMORY[0x277D755E8]);
       [(TVPVideoView *)self bounds];
-      v5 = [v6 initWithFrame:?];
-      v7 = [MEMORY[0x277D75348] blackColor];
-      [v5 setBackgroundColor:v7];
+      stillImageView = [v6 initWithFrame:?];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [stillImageView setBackgroundColor:blackColor];
 
-      [v5 setContentMode:1];
-      [(TVPVideoView *)self setStillImageView:v5];
-      v8 = [(TVPVideoView *)self playerLayerView];
-      [(TVPVideoView *)self insertSubview:v5 aboveSubview:v8];
+      [stillImageView setContentMode:1];
+      [(TVPVideoView *)self setStillImageView:stillImageView];
+      playerLayerView = [(TVPVideoView *)self playerLayerView];
+      [(TVPVideoView *)self insertSubview:stillImageView aboveSubview:playerLayerView];
     }
 
-    v9 = [(TVPVideoView *)self stillImageView];
-    [v9 setImage:v10];
+    stillImageView2 = [(TVPVideoView *)self stillImageView];
+    [stillImageView2 setImage:v10];
   }
 
   else
   {
-    [v5 removeFromSuperview];
+    [stillImageView removeFromSuperview];
 
     [(TVPVideoView *)self setStillImageView:0];
   }

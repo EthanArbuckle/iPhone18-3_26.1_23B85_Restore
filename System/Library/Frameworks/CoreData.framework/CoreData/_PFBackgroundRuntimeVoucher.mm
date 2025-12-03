@@ -1,10 +1,10 @@
 @interface _PFBackgroundRuntimeVoucher
-+ (id)_beginPowerAssertionNamed:(id)a3;
-+ (void)_endPowerAssertionWithVoucher:(id)a3;
++ (id)_beginPowerAssertionNamed:(id)named;
++ (void)_endPowerAssertionWithVoucher:(id)voucher;
 + (void)initialize;
 - (NSString)name;
 - (_PFBackgroundRuntimeVoucher)init;
-- (_PFBackgroundRuntimeVoucher)initWithTask:(id)a3;
+- (_PFBackgroundRuntimeVoucher)initWithTask:(id)task;
 - (__CFString)statusName;
 - (id)createPayload;
 - (void)_notifyEndAssertion;
@@ -38,7 +38,7 @@
 {
   v27 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  if (objc_opt_class() != a1)
+  if (objc_opt_class() != self)
   {
     goto LABEL_2;
   }
@@ -56,12 +56,12 @@
   {
     if (objc_opt_respondsToSelector())
     {
-      v5 = [qword_1ED4BEB60 sharedApplication];
+      sharedApplication = [qword_1ED4BEB60 sharedApplication];
     }
 
     else
     {
-      v5 = 0;
+      sharedApplication = 0;
     }
 
     v26 = 0;
@@ -79,7 +79,7 @@
 LABEL_27:
       if (v6)
       {
-        qword_1ED4BEB70 = v5;
+        qword_1ED4BEB70 = sharedApplication;
         if (byte_1ED4BEECF == 1)
         {
           byte_1ED4BEB49 = 1;
@@ -111,7 +111,7 @@ LABEL_27:
           *buf = 134218498;
           v15 = qword_1ED4BEB60;
           v16 = 2048;
-          v17 = v5;
+          v17 = sharedApplication;
           v18 = 2112;
           v19 = v9;
           v10 = "CoreData: error: Registration for _beginPowerAssertionNamed completed with class %p on app %p and result %@\n";
@@ -138,7 +138,7 @@ LABEL_37:
           *buf = 134218498;
           v15 = qword_1ED4BEB60;
           v16 = 2048;
-          v17 = v5;
+          v17 = sharedApplication;
           v18 = 2112;
           v19 = v13;
           v10 = "CoreData: warning: Registration for _beginPowerAssertionNamed completed with class %p on app %p and result %@\n";
@@ -167,7 +167,7 @@ LABEL_37:
       v12 = 2;
     }
 
-    _NSCoreDataLog_console(v12, "Registration for _beginPowerAssertionNamed completed with class %p on app %p and result %@", qword_1ED4BEB60, v5, v11);
+    _NSCoreDataLog_console(v12, "Registration for _beginPowerAssertionNamed completed with class %p on app %p and result %@", qword_1ED4BEB60, sharedApplication, v11);
     objc_autoreleasePoolPop(v7);
     goto LABEL_27;
   }
@@ -189,14 +189,14 @@ LABEL_2:
   return 0;
 }
 
-- (_PFBackgroundRuntimeVoucher)initWithTask:(id)a3
+- (_PFBackgroundRuntimeVoucher)initWithTask:(id)task
 {
   v7.receiver = self;
   v7.super_class = _PFBackgroundRuntimeVoucher;
   v4 = [(_PFBackgroundRuntimeVoucher *)&v7 init];
   if (v4)
   {
-    v4->_taskName = [a3 copy];
+    v4->_taskName = [task copy];
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v4->_beginTime = v5;
     v4->_status = 0;
@@ -205,7 +205,7 @@ LABEL_2:
   return v4;
 }
 
-+ (id)_beginPowerAssertionNamed:(id)a3
++ (id)_beginPowerAssertionNamed:(id)named
 {
   if (byte_1ED4BEB49)
   {
@@ -217,16 +217,16 @@ LABEL_2:
     v3 = off_1E6EC0C50;
   }
 
-  return [(__objc2_class *)*v3 _beginPowerAssertionNamed:a3];
+  return [(__objc2_class *)*v3 _beginPowerAssertionNamed:named];
 }
 
-+ (void)_endPowerAssertionWithVoucher:(id)a3
++ (void)_endPowerAssertionWithVoucher:(id)voucher
 {
-  if (a3)
+  if (voucher)
   {
     v4 = objc_opt_class();
 
-    [v4 _endPowerAssertionWithVoucher:a3];
+    [v4 _endPowerAssertionWithVoucher:voucher];
   }
 }
 
@@ -234,15 +234,15 @@ LABEL_2:
 {
   if (result)
   {
-    v1 = [(__CFString *)result status];
-    if ((v1 - 1) > 4)
+    status = [(__CFString *)result status];
+    if ((status - 1) > 4)
     {
       return @"_PFBackgroundRuntimeVoucherStatusUninitialized";
     }
 
     else
     {
-      return off_1E6EC5520[v1 - 1];
+      return off_1E6EC5520[status - 1];
     }
   }
 
@@ -252,8 +252,8 @@ LABEL_2:
 - (NSString)name
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(_PFBackgroundRuntimeVoucher *)self status];
-  switch(v3)
+  status = [(_PFBackgroundRuntimeVoucher *)self status];
+  switch(status)
   {
     case 1uLL:
       result = @"com.apple.coredata.assertions.uikit.denied";
@@ -269,16 +269,16 @@ LABEL_2:
       if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
       {
         v9 = 138412290;
-        v10 = [(_PFBackgroundRuntimeVoucher *)self statusName];
+        statusName = [(_PFBackgroundRuntimeVoucher *)self statusName];
         _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Voucher status %@ does not correspond to one of the expected CoreAnalytics event names. Was a new event type added?\n", &v9, 0xCu);
       }
 
       v6 = _PFLogGetLogStream(17);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
       {
-        v8 = [(_PFBackgroundRuntimeVoucher *)self statusName];
+        statusName2 = [(_PFBackgroundRuntimeVoucher *)self statusName];
         v9 = 138412290;
-        v10 = v8;
+        statusName = statusName2;
         _os_log_fault_impl(&dword_18565F000, v6, OS_LOG_TYPE_FAULT, "CoreData: Voucher status %@ does not correspond to one of the expected CoreAnalytics event names. Was a new event type added?", &v9, 0xCu);
       }
 
@@ -312,14 +312,14 @@ LABEL_2:
   v10[2] = @"background_time_remaining";
   v11[2] = [MEMORY[0x1E696AD98] numberWithDouble:self->_backgroundTimeRemaining];
   v5 = [v3 initWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v11, v10, 3)}];
-  v6 = [(_PFBackgroundRuntimeVoucher *)self status];
-  if (v6 == 3)
+  status = [(_PFBackgroundRuntimeVoucher *)self status];
+  if (status == 3)
   {
     v7 = 48;
     goto LABEL_7;
   }
 
-  if (v6 == 4)
+  if (status == 4)
   {
     v7 = 40;
 LABEL_7:

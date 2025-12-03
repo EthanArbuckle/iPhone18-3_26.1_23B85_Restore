@@ -37,11 +37,11 @@
         v12 = dateFromRFC1123__rfc850;
         dateFromRFC1123__rfc850 = v11;
 
-        v13 = [dateFromRFC1123__rfc1123 locale];
-        [dateFromRFC1123__rfc850 setLocale:v13];
+        locale = [dateFromRFC1123__rfc1123 locale];
+        [dateFromRFC1123__rfc850 setLocale:locale];
 
-        v14 = [dateFromRFC1123__rfc1123 timeZone];
-        [dateFromRFC1123__rfc850 setTimeZone:v14];
+        timeZone = [dateFromRFC1123__rfc1123 timeZone];
+        [dateFromRFC1123__rfc850 setTimeZone:timeZone];
 
         [dateFromRFC1123__rfc850 setDateFormat:@"EEEE', ' dd'-'MMM'-'yy HH':'mm':'ss z"];
         v10 = dateFromRFC1123__rfc850;
@@ -57,11 +57,11 @@
           v17 = dateFromRFC1123__asctime;
           dateFromRFC1123__asctime = v16;
 
-          v18 = [dateFromRFC1123__rfc1123 locale];
-          [dateFromRFC1123__asctime setLocale:v18];
+          locale2 = [dateFromRFC1123__rfc1123 locale];
+          [dateFromRFC1123__asctime setLocale:locale2];
 
-          v19 = [dateFromRFC1123__rfc1123 timeZone];
-          [dateFromRFC1123__asctime setTimeZone:v19];
+          timeZone2 = [dateFromRFC1123__rfc1123 timeZone];
+          [dateFromRFC1123__asctime setTimeZone:timeZone2];
 
           [dateFromRFC1123__asctime setDateFormat:@"EEE MMM d HH':'mm':'ss yyyy"];
           v15 = dateFromRFC1123__asctime;
@@ -101,7 +101,7 @@
     v2 = rfc1123String_df;
   }
 
-  return [v2 stringFromDate:a1];
+  return [v2 stringFromDate:self];
 }
 
 @end

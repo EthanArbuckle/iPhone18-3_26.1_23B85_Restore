@@ -22,8 +22,8 @@
     _os_log_impl(&_mh_execute_header, v1, v2, "XPC observer: didChangeEnvironment, resetting session cache.", v3, 2u);
   }
 
-  v4 = [objc_opt_self() sharedSession];
-  [v4 resetSessionCache];
+  sharedSession = [objc_opt_self() sharedSession];
+  [sharedSession resetSessionCache];
 }
 
 @end

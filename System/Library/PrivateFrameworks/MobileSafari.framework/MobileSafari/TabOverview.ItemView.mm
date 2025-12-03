@@ -1,11 +1,11 @@
 @interface TabOverview.ItemView
-- (_TtCC12MobileSafari11TabOverview8ItemView)initWithCoder:(id)a3;
+- (_TtCC12MobileSafari11TabOverview8ItemView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation TabOverview.ItemView
 
-- (_TtCC12MobileSafari11TabOverview8ItemView)initWithCoder:(id)a3
+- (_TtCC12MobileSafari11TabOverview8ItemView)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtCC12MobileSafari11TabOverview8ItemView_closeHandler);
   *v4 = CGRectMake;
@@ -15,8 +15,8 @@
   v5[1] = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for TabOverview.ItemView();
-  v6 = a3;
-  v7 = [(SFFluidTabOverviewReusableView *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(SFFluidTabOverviewReusableView *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

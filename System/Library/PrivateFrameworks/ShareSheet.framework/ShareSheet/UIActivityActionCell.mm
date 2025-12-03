@@ -1,18 +1,18 @@
 @interface UIActivityActionCell
-- (UIActivityActionCell)initWithFrame:(CGRect)a3;
+- (UIActivityActionCell)initWithFrame:(CGRect)frame;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UIActivityActionCell
 
-- (UIActivityActionCell)initWithFrame:(CGRect)a3
+- (UIActivityActionCell)initWithFrame:(CGRect)frame
 {
   v60[1] = *MEMORY[0x1E69E9840];
   v59.receiver = self;
   v59.super_class = UIActivityActionCell;
-  v3 = [(UIActivityActionCell *)&v59 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIActivityActionCell *)&v59 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (!v3)
   {
@@ -20,8 +20,8 @@
   }
 
   [(UIActivityActionCell *)v3 setDisabled:0];
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  if (![v5 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if (![currentDevice userInterfaceIdiom])
   {
 
     if ((_ShareSheetSolariumEnabled() & 1) == 0)
@@ -32,11 +32,11 @@
     goto LABEL_9;
   }
 
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
   v8 = _ShareSheetSolariumEnabled();
-  if (v7 == 1)
+  if (userInterfaceIdiom == 1)
   {
     if (!v8)
     {
@@ -44,22 +44,22 @@ LABEL_5:
       v9 = [MEMORY[0x1E69DC730] effectWithStyle:18];
       v10 = [MEMORY[0x1E69DD248] _effectForBlurEffect:v9 vibrancyStyle:112];
       v11 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v10];
-      v12 = [MEMORY[0x1E69DC888] whiteColor];
-      v13 = [v11 contentView];
-      [v13 setBackgroundColor:v12];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      contentView = [v11 contentView];
+      [contentView setBackgroundColor:whiteColor];
 
       [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
       [v11 setClipsToBounds:1];
       [(UIActivityActionCell *)v4 setEffectView:v11];
 
       v14 = objc_alloc_init(MEMORY[0x1E69DD250]);
-      v15 = [MEMORY[0x1E69DC888] blackColor];
-      [v14 setBackgroundColor:v15];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      [v14 setBackgroundColor:blackColor];
 
-      v16 = [(UIActivityActionCell *)v4 traitCollection];
-      v17 = [v16 userInterfaceStyle];
+      traitCollection = [(UIActivityActionCell *)v4 traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
       v18 = 0.27;
-      if (v17 != 2)
+      if (userInterfaceStyle != 2)
       {
         v18 = 0.0;
       }
@@ -92,70 +92,70 @@ LABEL_9:
   }
 
 LABEL_13:
-  v22 = [(UIActivityActionCell *)v4 contentView];
-  [v22 setClipsToBounds:1];
-  v23 = [MEMORY[0x1E695DF70] array];
+  contentView2 = [(UIActivityActionCell *)v4 contentView];
+  [contentView2 setClipsToBounds:1];
+  array = [MEMORY[0x1E695DF70] array];
   if (v4->_fillView)
   {
-    v24 = [(UIActivityActionCell *)v4 fillView];
-    [v22 addSubview:v24];
+    fillView = [(UIActivityActionCell *)v4 fillView];
+    [contentView2 addSubview:fillView];
 
-    v25 = [(UIActivityActionCell *)v4 fillView];
-    v26 = [v25 widthAnchor];
-    v27 = [v22 widthAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
-    [v23 addObject:v28];
+    fillView2 = [(UIActivityActionCell *)v4 fillView];
+    widthAnchor = [fillView2 widthAnchor];
+    widthAnchor2 = [contentView2 widthAnchor];
+    v28 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
+    [array addObject:v28];
 
-    v29 = [(UIActivityActionCell *)v4 fillView];
-    v30 = [v29 heightAnchor];
-    v31 = [v22 heightAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
-    [v23 addObject:v32];
+    fillView3 = [(UIActivityActionCell *)v4 fillView];
+    heightAnchor = [fillView3 heightAnchor];
+    heightAnchor2 = [contentView2 heightAnchor];
+    v32 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
+    [array addObject:v32];
 
-    v33 = [(UIActivityActionCell *)v4 fillView];
-    v34 = [v33 centerXAnchor];
-    v35 = [v22 centerXAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
-    [v23 addObject:v36];
+    fillView4 = [(UIActivityActionCell *)v4 fillView];
+    centerXAnchor = [fillView4 centerXAnchor];
+    centerXAnchor2 = [contentView2 centerXAnchor];
+    v36 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    [array addObject:v36];
 
-    v37 = [(UIActivityActionCell *)v4 fillView];
-    v38 = [v37 centerYAnchor];
-    v39 = [v22 centerYAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
-    [v23 addObject:v40];
+    fillView5 = [(UIActivityActionCell *)v4 fillView];
+    centerYAnchor = [fillView5 centerYAnchor];
+    centerYAnchor2 = [contentView2 centerYAnchor];
+    v40 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v40];
   }
 
   if (v4->_effectView)
   {
-    v41 = [(UIActivityActionCell *)v4 effectView];
-    [v22 addSubview:v41];
+    effectView = [(UIActivityActionCell *)v4 effectView];
+    [contentView2 addSubview:effectView];
 
-    v42 = [(UIActivityActionCell *)v4 effectView];
-    v43 = [v42 widthAnchor];
-    v44 = [v22 widthAnchor];
-    v45 = [v43 constraintEqualToAnchor:v44];
-    [v23 addObject:v45];
+    effectView2 = [(UIActivityActionCell *)v4 effectView];
+    widthAnchor3 = [effectView2 widthAnchor];
+    widthAnchor4 = [contentView2 widthAnchor];
+    v45 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
+    [array addObject:v45];
 
-    v46 = [(UIActivityActionCell *)v4 effectView];
-    v47 = [v46 heightAnchor];
-    v48 = [v22 heightAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48];
-    [v23 addObject:v49];
+    effectView3 = [(UIActivityActionCell *)v4 effectView];
+    heightAnchor3 = [effectView3 heightAnchor];
+    heightAnchor4 = [contentView2 heightAnchor];
+    v49 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
+    [array addObject:v49];
 
-    v50 = [(UIActivityActionCell *)v4 effectView];
-    v51 = [v50 centerXAnchor];
-    v52 = [v22 centerXAnchor];
-    v53 = [v51 constraintEqualToAnchor:v52];
-    [v23 addObject:v53];
+    effectView4 = [(UIActivityActionCell *)v4 effectView];
+    centerXAnchor3 = [effectView4 centerXAnchor];
+    centerXAnchor4 = [contentView2 centerXAnchor];
+    v53 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
+    [array addObject:v53];
 
-    v54 = [(UIActivityActionCell *)v4 effectView];
-    v55 = [v54 centerYAnchor];
-    v56 = [v22 centerYAnchor];
-    v57 = [v55 constraintEqualToAnchor:v56];
-    [v23 addObject:v57];
+    effectView5 = [(UIActivityActionCell *)v4 effectView];
+    centerYAnchor3 = [effectView5 centerYAnchor];
+    centerYAnchor4 = [contentView2 centerYAnchor];
+    v57 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+    [array addObject:v57];
   }
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v23];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
 
   return v4;
 }
@@ -168,31 +168,31 @@ LABEL_13:
   [(UIActivityActionCell *)self setDisabled:0];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v13.receiver = self;
   v13.super_class = UIActivityActionCell;
   [(UIActivityActionCell *)&v13 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
-    v5 = [MEMORY[0x1E69DC888] tableCellDefaultSelectionTintColor];
-    v6 = [v5 colorWithAlphaComponent:0.6];
-    v7 = [(UIActivityActionCell *)self fillView];
-    [v7 setBackgroundColor:v6];
+    tableCellDefaultSelectionTintColor = [MEMORY[0x1E69DC888] tableCellDefaultSelectionTintColor];
+    v6 = [tableCellDefaultSelectionTintColor colorWithAlphaComponent:0.6];
+    fillView = [(UIActivityActionCell *)self fillView];
+    [fillView setBackgroundColor:v6];
 
-    v8 = [(UIActivityActionCell *)self fillView];
-    [v8 setAlpha:1.0];
+    fillView2 = [(UIActivityActionCell *)self fillView];
+    [fillView2 setAlpha:1.0];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69DC888] blackColor];
-    v10 = [(UIActivityActionCell *)self fillView];
-    [v10 setBackgroundColor:v9];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    fillView3 = [(UIActivityActionCell *)self fillView];
+    [fillView3 setBackgroundColor:blackColor];
 
-    v8 = [(UIActivityActionCell *)self traitCollection];
-    if ([v8 userInterfaceStyle] == 2)
+    fillView2 = [(UIActivityActionCell *)self traitCollection];
+    if ([fillView2 userInterfaceStyle] == 2)
     {
       v11 = 0.27;
     }
@@ -202,18 +202,18 @@ LABEL_13:
       v11 = 0.0;
     }
 
-    v12 = [(UIActivityActionCell *)self fillView];
-    [v12 setAlpha:v11];
+    fillView4 = [(UIActivityActionCell *)self fillView];
+    [fillView4 setAlpha:v11];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = UIActivityActionCell;
-  [(UIActivityActionCell *)&v7 traitCollectionDidChange:a3];
-  v4 = [(UIActivityActionCell *)self traitCollection];
-  if ([v4 userInterfaceStyle] == 2)
+  [(UIActivityActionCell *)&v7 traitCollectionDidChange:change];
+  traitCollection = [(UIActivityActionCell *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 2)
   {
     v5 = 0.27;
   }
@@ -223,8 +223,8 @@ LABEL_13:
     v5 = 0.0;
   }
 
-  v6 = [(UIActivityActionCell *)self fillView];
-  [v6 setAlpha:v5];
+  fillView = [(UIActivityActionCell *)self fillView];
+  [fillView setAlpha:v5];
 }
 
 @end

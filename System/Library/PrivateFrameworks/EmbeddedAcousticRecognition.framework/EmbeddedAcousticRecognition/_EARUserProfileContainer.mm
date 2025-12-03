@@ -2,9 +2,9 @@
 + (void)initialize;
 - (NSData)data;
 - (NSSet)experimentIds;
-- (_EARUserProfileContainer)initWithPath:(id)a3 userId:(id)a4 error:(id *)a5;
+- (_EARUserProfileContainer)initWithPath:(id)path userId:(id)id error:(id *)error;
 - (id).cxx_construct;
-- (id)categoriesForOrthography:(id)a3;
+- (id)categoriesForOrthography:(id)orthography;
 - (shared_ptr<const)lmeData;
 @end
 
@@ -13,35 +13,35 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (_EARUserProfileContainer)initWithPath:(id)a3 userId:(id)a4 error:(id *)a5
+- (_EARUserProfileContainer)initWithPath:(id)path userId:(id)id error:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  idCopy = id;
   v14.receiver = self;
   v14.super_class = _EARUserProfileContainer;
   v9 = [(_EARUserProfileContainer *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    if (v7)
+    if (pathCopy)
     {
       v11 = EARLogger::QuasarOSLogger(v9);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         *buf = 138477827;
-        *&buf[4] = v7;
+        *&buf[4] = pathCopy;
         _os_log_impl(&dword_1B501D000, v11, OS_LOG_TYPE_INFO, "Reading user profile: path %{private}@", buf, 0xCu);
       }
 
-      [v7 ear_toString];
+      [pathCopy ear_toString];
       std::allocate_shared[abi:ne200100]<std::ifstream,std::allocator<std::ifstream>,std::string,0>();
     }
 
@@ -164,11 +164,11 @@
   return v3;
 }
 
-- (id)categoriesForOrthography:(id)a3
+- (id)categoriesForOrthography:(id)orthography
 {
-  v4 = a3;
+  orthographyCopy = orthography;
   v5 = 0;
-  if (v4 && *(self + 11))
+  if (orthographyCopy && *(self + 11))
   {
     std::mutex::lock((self + 24));
     v6 = *(self + 13);
@@ -177,7 +177,7 @@
       operator new();
     }
 
-    [v4 ear_toString];
+    [orthographyCopy ear_toString];
     quasar::LmeDataSearch::getCategoriesForOrthography(v6, &__p, v10);
     if (v9 < 0)
     {

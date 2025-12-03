@@ -1,10 +1,10 @@
 @interface ATXDigitalHealthBlacklist
 + (ATXDigitalHealthBlacklist)sharedInstance;
 - (ATXDigitalHealthBlacklist)init;
-- (BOOL)_updateBlacklistWithNewBlacklistedBundleIds:(id)a3 whitelistedBundleIds:(id)a4;
+- (BOOL)_updateBlacklistWithNewBlacklistedBundleIds:(id)ids whitelistedBundleIds:(id)bundleIds;
 - (id)blacklistedBundleIds;
 - (void)dealloc;
-- (void)deviceManagementPolicyDidChange:(id)a3;
+- (void)deviceManagementPolicyDidChange:(id)change;
 @end
 
 @implementation ATXDigitalHealthBlacklist
@@ -66,8 +66,8 @@ void __43__ATXDigitalHealthBlacklist_sharedInstance__block_invoke()
     v2->_lock = v5;
 
     v7 = objc_autoreleasePoolPush();
-    v8 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v8 addObserver:v2];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace addObserver:v2];
 
     objc_autoreleasePoolPop(v7);
   }
@@ -77,25 +77,25 @@ void __43__ATXDigitalHealthBlacklist_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ATXDigitalHealthBlacklist;
   [(ATXDigitalHealthBlacklist *)&v4 dealloc];
 }
 
-- (void)deviceManagementPolicyDidChange:(id)a3
+- (void)deviceManagementPolicyDidChange:(id)change
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v4;
+  v7 = changeCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -111,9 +111,9 @@ void __43__ATXDigitalHealthBlacklist_sharedInstance__block_invoke()
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 deviceManagementPolicy];
-        v14 = [v12 bundleIdentifier];
-        if (v13)
+        deviceManagementPolicy = [v12 deviceManagementPolicy];
+        bundleIdentifier = [v12 bundleIdentifier];
+        if (deviceManagementPolicy)
         {
           v15 = v5;
         }
@@ -123,7 +123,7 @@ void __43__ATXDigitalHealthBlacklist_sharedInstance__block_invoke()
           v15 = v6;
         }
 
-        [v15 addObject:v14];
+        [v15 addObject:bundleIdentifier];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -141,11 +141,11 @@ void __43__ATXDigitalHealthBlacklist_sharedInstance__block_invoke()
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_updateBlacklistWithNewBlacklistedBundleIds:(id)a3 whitelistedBundleIds:(id)a4
+- (BOOL)_updateBlacklistWithNewBlacklistedBundleIds:(id)ids whitelistedBundleIds:(id)bundleIds
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] || objc_msgSend(v7, "count"))
+  idsCopy = ids;
+  bundleIdsCopy = bundleIds;
+  if ([idsCopy count] || objc_msgSend(bundleIdsCopy, "count"))
   {
     v15 = 0;
     v16 = &v15;
@@ -156,8 +156,8 @@ void __43__ATXDigitalHealthBlacklist_sharedInstance__block_invoke()
     v11[1] = 3221225472;
     v11[2] = __94__ATXDigitalHealthBlacklist__updateBlacklistWithNewBlacklistedBundleIds_whitelistedBundleIds___block_invoke;
     v11[3] = &unk_27859C2E8;
-    v12 = v6;
-    v13 = v7;
+    v12 = idsCopy;
+    v13 = bundleIdsCopy;
     v14 = &v15;
     [(_PASLock *)lock runWithLockAcquired:v11];
     v9 = *(v16 + 24);

@@ -1,26 +1,26 @@
 @interface REUIElementDonatedActionAction
-- (BOOL)siriActionsPerformer:(id)a3 wantsToPresentViewController:(id)a4;
-- (REUIElementDonatedActionAction)initWithProperties:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)siriActionsPerformerWantsAlertBackgroundImage:(id)a3;
-- (id)siriActionsPerformerWantsBackgroundViewToBlur:(id)a3;
+- (BOOL)siriActionsPerformer:(id)performer wantsToPresentViewController:(id)controller;
+- (REUIElementDonatedActionAction)initWithProperties:(id)properties;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)siriActionsPerformerWantsAlertBackgroundImage:(id)image;
+- (id)siriActionsPerformerWantsBackgroundViewToBlur:(id)blur;
 - (void)dealloc;
-- (void)siriActionsPerformer:(id)a3 didFailWithError:(id)a4;
-- (void)siriActionsPerformerDidSucceed:(id)a3;
+- (void)siriActionsPerformer:(id)performer didFailWithError:(id)error;
+- (void)siriActionsPerformerDidSucceed:(id)succeed;
 @end
 
 @implementation REUIElementDonatedActionAction
 
-- (REUIElementDonatedActionAction)initWithProperties:(id)a3
+- (REUIElementDonatedActionAction)initWithProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   v9.receiver = self;
   v9.super_class = REUIElementDonatedActionAction;
   v6 = [(REUIElementDonatedActionAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_properties, a3);
+    objc_storeStrong(&v6->_properties, properties);
   }
 
   return v7;
@@ -34,13 +34,13 @@
   [(REUIElementDonatedActionAction *)&v3 dealloc];
 }
 
-- (id)siriActionsPerformerWantsAlertBackgroundImage:(id)a3
+- (id)siriActionsPerformerWantsAlertBackgroundImage:(id)image
 {
-  v4 = [(REElementAction *)self delegate];
+  delegate = [(REElementAction *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(REElementAction *)self delegate];
-    v6 = [v5 intentActionWantsBackgroundImageForAlert:self];
+    delegate2 = [(REElementAction *)self delegate];
+    v6 = [delegate2 intentActionWantsBackgroundImageForAlert:self];
   }
 
   else
@@ -51,13 +51,13 @@
   return v6;
 }
 
-- (id)siriActionsPerformerWantsBackgroundViewToBlur:(id)a3
+- (id)siriActionsPerformerWantsBackgroundViewToBlur:(id)blur
 {
-  v4 = [(REElementAction *)self delegate];
+  delegate = [(REElementAction *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(REElementAction *)self delegate];
-    v6 = [v5 intentActionWantsBackgroundToBlurForAlert:self];
+    delegate2 = [(REElementAction *)self delegate];
+    v6 = [delegate2 intentActionWantsBackgroundToBlurForAlert:self];
   }
 
   else
@@ -68,7 +68,7 @@
   return v6;
 }
 
-- (void)siriActionsPerformerDidSucceed:(id)a3
+- (void)siriActionsPerformerDidSucceed:(id)succeed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -93,7 +93,7 @@ void __65__REUIElementDonatedActionAction_siriActionsPerformerDidSucceed___block
   [*(a1 + 32) setPerformer:0];
 }
 
-- (void)siriActionsPerformer:(id)a3 didFailWithError:(id)a4
+- (void)siriActionsPerformer:(id)performer didFailWithError:(id)error
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -118,24 +118,24 @@ void __72__REUIElementDonatedActionAction_siriActionsPerformer_didFailWithError_
   [*(a1 + 32) setPerformer:0];
 }
 
-- (BOOL)siriActionsPerformer:(id)a3 wantsToPresentViewController:(id)a4
+- (BOOL)siriActionsPerformer:(id)performer wantsToPresentViewController:(id)controller
 {
-  v5 = a4;
-  v6 = [(REElementAction *)self delegate];
+  controllerCopy = controller;
+  delegate = [(REElementAction *)self delegate];
   v7 = objc_opt_respondsToSelector();
   if (v7)
   {
-    v8 = [(REElementAction *)self delegate];
-    [v8 elementAction:self wantsViewControllerDisplayed:v5];
+    delegate2 = [(REElementAction *)self delegate];
+    [delegate2 elementAction:self wantsViewControllerDisplayed:controllerCopy];
   }
 
   return v7 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(REUIDonatedElementProperties *)self->_properties copyWithZone:a3];
+  v6 = [(REUIDonatedElementProperties *)self->_properties copyWithZone:zone];
   v7 = [v5 initWithProperties:v6];
 
   return v7;

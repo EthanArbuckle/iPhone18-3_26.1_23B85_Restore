@@ -1,46 +1,46 @@
 @interface TSWPHighlight
-+ (id)defaultHighlightWithContext:(id)a3 includeCommentWithAuthor:(id)a4;
-+ (id)highlightTextColorForHighlights:(id)a3;
++ (id)defaultHighlightWithContext:(id)context includeCommentWithAuthor:(id)author;
++ (id)highlightTextColorForHighlights:(id)highlights;
 - (BOOL)isCommentEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentToObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentToObject:(id)object;
 - (BOOL)isHighlight;
 - (BOOL)isInDocument;
 - (NSDate)date;
 - (NSString)description;
 - (NSString)parentUUID;
 - (TSKAnnotationAuthor)author;
-- (TSWPHighlight)initWithContext:(id)a3;
-- (TSWPHighlight)initWithContext:(id)a3 commentStorage:(id)a4;
-- (TSWPHighlight)initWithContext:(id)a3 commentStorage:(id)a4 annotationUUID:(id)a5;
+- (TSWPHighlight)initWithContext:(id)context;
+- (TSWPHighlight)initWithContext:(id)context commentStorage:(id)storage;
+- (TSWPHighlight)initWithContext:(id)context commentStorage:(id)storage annotationUUID:(id)d;
 - (TSWPStorage)parentStorage;
-- (id)copyWithContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int)annotationDisplayStringType;
 - (unint64_t)hash;
 - (void)commentWillBeAddedToDocumentRoot;
-- (void)i_setTextAttributeUUIDString:(id)a3;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)p_invalidateAnnotationResultsForDocumentRoot:(id)a3 key:(id)a4;
+- (void)i_setTextAttributeUUIDString:(id)string;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)p_invalidateAnnotationResultsForDocumentRoot:(id)root key:(id)key;
 - (void)resetTextAttributeUUIDString;
-- (void)saveToArchiver:(id)a3;
-- (void)setAuthor:(id)a3;
-- (void)setCommentStorage:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)saveToArchiver:(id)archiver;
+- (void)setAuthor:(id)author;
+- (void)setCommentStorage:(id)storage;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation TSWPHighlight
 
-+ (id)highlightTextColorForHighlights:(id)a3
++ (id)highlightTextColorForHighlights:(id)highlights
 {
   v77 = *MEMORY[0x277D85DE8];
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  obj = a3;
+  obj = highlights;
   v4 = 0;
   v5 = 0;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v3, &v72, v76, 16);
@@ -126,11 +126,11 @@ LABEL_15:
   return v5;
 }
 
-+ (id)defaultHighlightWithContext:(id)a3 includeCommentWithAuthor:(id)a4
++ (id)defaultHighlightWithContext:(id)context includeCommentWithAuthor:(id)author
 {
-  v5 = a3;
-  v7 = a4;
-  if (!v7)
+  contextCopy = context;
+  authorCopy = author;
+  if (!authorCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "+[TSWPHighlight defaultHighlightWithContext:includeCommentWithAuthor:]");
@@ -142,18 +142,18 @@ LABEL_15:
 
   v15 = objc_alloc(objc_opt_class());
   v16 = objc_alloc(MEMORY[0x277D80200]);
-  v18 = objc_msgSend_initWithContext_author_(v16, v17, v5, v7);
-  v20 = objc_msgSend_initWithContext_commentStorage_(v15, v19, v5, v18);
+  v18 = objc_msgSend_initWithContext_author_(v16, v17, contextCopy, authorCopy);
+  v20 = objc_msgSend_initWithContext_commentStorage_(v15, v19, contextCopy, v18);
 
   return v20;
 }
 
-- (TSWPHighlight)initWithContext:(id)a3
+- (TSWPHighlight)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = TSWPHighlight;
-  v7 = [(TSWPHighlight *)&v17 initWithContext:v4];
+  v7 = [(TSWPHighlight *)&v17 initWithContext:contextCopy];
   if (v7)
   {
     v8 = objc_msgSend_UUID(MEMORY[0x277CCAD78], v5, v6);
@@ -166,63 +166,63 @@ LABEL_15:
   return v7;
 }
 
-- (TSWPHighlight)initWithContext:(id)a3 commentStorage:(id)a4
+- (TSWPHighlight)initWithContext:(id)context commentStorage:(id)storage
 {
-  v7 = a4;
-  v9 = objc_msgSend_initWithContext_(self, v8, a3);
+  storageCopy = storage;
+  v9 = objc_msgSend_initWithContext_(self, v8, context);
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong((v9 + 64), a4);
+    objc_storeStrong((v9 + 64), storage);
   }
 
   return v10;
 }
 
-- (TSWPHighlight)initWithContext:(id)a3 commentStorage:(id)a4 annotationUUID:(id)a5
+- (TSWPHighlight)initWithContext:(id)context commentStorage:(id)storage annotationUUID:(id)d
 {
-  v9 = a5;
-  v11 = objc_msgSend_initWithContext_commentStorage_(self, v10, a3, a4);
+  dCopy = d;
+  v11 = objc_msgSend_initWithContext_commentStorage_(self, v10, context, storage);
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong((v11 + 80), a5);
+    objc_storeStrong((v11 + 80), d);
   }
 
   return v12;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v7 = objc_msgSend_commentStorage(self, v5, v6);
-  v9 = objc_msgSend_copyWithContext_(v7, v8, v4);
+  v9 = objc_msgSend_copyWithContext_(v7, v8, contextCopy);
 
   v10 = objc_alloc(objc_opt_class());
-  v12 = objc_msgSend_initWithContext_commentStorage_(v10, v11, v4, v9);
+  v12 = objc_msgSend_initWithContext_commentStorage_(v10, v11, contextCopy, v9);
   v15 = objc_msgSend_textAttributeUUIDString(self, v13, v14);
   objc_msgSend_i_setTextAttributeUUIDString_(v12, v16, v15);
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_context(self, a2, a3);
+  v4 = objc_msgSend_context(self, a2, zone);
   v6 = objc_msgSend_copyWithContext_(self, v5, v4);
 
   return v6;
 }
 
-- (void)i_setTextAttributeUUIDString:(id)a3
+- (void)i_setTextAttributeUUIDString:(id)string
 {
-  v10 = a3;
+  stringCopy = string;
   v7 = objc_msgSend_textAttributeUUIDString(self, v5, v6);
 
-  if (v7 != v10)
+  if (v7 != stringCopy)
   {
     objc_msgSend_willModify(self, v8, v9);
-    objc_storeStrong(&self->_textAttributeUUIDString, a3);
+    objc_storeStrong(&self->_textAttributeUUIDString, string);
   }
 }
 
@@ -284,16 +284,16 @@ LABEL_15:
   objc_msgSend_i_setTextAttributeUUIDString_(self, v7, v6);
 }
 
-- (BOOL)isEquivalentToObject:(id)a3
+- (BOOL)isEquivalentToObject:(id)object
 {
-  v4 = a3;
-  v6 = v4;
-  if (self == v4)
+  objectCopy = object;
+  v6 = objectCopy;
+  if (self == objectCopy)
   {
     isEqualToString = 1;
   }
 
-  else if (v4 && (objc_msgSend_conformsToProtocol_(v4, v5, &unk_288643E30) & 1) != 0)
+  else if (objectCopy && (objc_msgSend_conformsToProtocol_(objectCopy, v5, &unk_288643E30) & 1) != 0)
   {
     v9 = objc_msgSend_textAttributeUUIDString(v6, v7, v8);
     v12 = objc_msgSend_textAttributeUUIDString(self, v10, v11);
@@ -336,16 +336,16 @@ LABEL_15:
   return isEqualToString;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isEquivalentToObject = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     isEquivalentToObject = objc_msgSend_isEquivalentToObject_(self, v6, v5);
   }
@@ -366,30 +366,30 @@ LABEL_15:
   return v6;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  v7 = v6;
-  v8 = *(a3 + 4);
+  unarchiverCopy = unarchiver;
+  v7 = unarchiverCopy;
+  v8 = *(archive + 4);
   if ((v8 & 2) != 0)
   {
-    v9 = *(a3 + 4);
+    v9 = *(archive + 4);
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = sub_276E429AC;
     v17[3] = &unk_27A6F5AD8;
     v17[4] = self;
-    v10 = v6;
+    v10 = unarchiverCopy;
     v11 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v10, v12, v9, v11, 0, v17);
 
-    v8 = *(a3 + 4);
+    v8 = *(archive + 4);
   }
 
   if (v8)
   {
     v13 = objc_alloc(MEMORY[0x277CCACA8]);
-    v16 = objc_msgSend_tsp_initWithProtobufString_(v13, v14, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+    v16 = objc_msgSend_tsp_initWithProtobufString_(v13, v14, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL);
     if (v16)
     {
       objc_msgSend_i_setTextAttributeUUIDString_(self, v15, v16);
@@ -397,21 +397,21 @@ LABEL_15:
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812DC408[20]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812DC408[20]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_276E434C0, off_2812DC408[20]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_276E434C0, off_2812DC408[20]);
 
   v9 = objc_msgSend_commentStorage(self, v7, v8);
 
@@ -432,7 +432,7 @@ LABEL_15:
       *(v6 + 32) = v14;
     }
 
-    objc_msgSend_setStrongReference_message_(v4, v12, v13, v14);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v12, v13, v14);
   }
 
   v16 = objc_msgSend_textAttributeUUIDString(self, v10, v11);
@@ -450,13 +450,13 @@ LABEL_15:
   }
 }
 
-- (void)setCommentStorage:(id)a3
+- (void)setCommentStorage:(id)storage
 {
-  v7 = a3;
-  if (self->_commentStorage != v7)
+  storageCopy = storage;
+  if (self->_commentStorage != storageCopy)
   {
     objc_msgSend_willModify(self, v5, v6);
-    objc_storeStrong(&self->_commentStorage, a3);
+    objc_storeStrong(&self->_commentStorage, storage);
   }
 }
 
@@ -477,11 +477,11 @@ LABEL_15:
   return v6;
 }
 
-- (void)setAuthor:(id)a3
+- (void)setAuthor:(id)author
 {
-  v10 = a3;
+  authorCopy = author;
   v6 = objc_msgSend_commentStorage(self, v4, v5);
-  v8 = objc_msgSend_copyWithAuthor_(v6, v7, v10);
+  v8 = objc_msgSend_copyWithAuthor_(v6, v7, authorCopy);
   objc_msgSend_setCommentStorage_(self, v9, v8);
 }
 
@@ -519,18 +519,18 @@ LABEL_15:
   return v9;
 }
 
-- (void)p_invalidateAnnotationResultsForDocumentRoot:(id)a3 key:(id)a4
+- (void)p_invalidateAnnotationResultsForDocumentRoot:(id)root key:(id)key
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  keyCopy = key;
   v18[0] = self;
   v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v8, v18, 1);
-  v16 = v7;
+  v16 = keyCopy;
   v17 = v9;
   v11 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v10, &v17, &v16, 1);
   v14 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], v12, v13);
-  objc_msgSend_postNotificationName_object_userInfo_(v14, v15, *MEMORY[0x277D805B0], v6, v11);
+  objc_msgSend_postNotificationName_object_userInfo_(v14, v15, *MEMORY[0x277D805B0], rootCopy, v11);
 }
 
 - (void)commentWillBeAddedToDocumentRoot
@@ -544,20 +544,20 @@ LABEL_15:
   }
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v10 = a3;
-  v7 = objc_msgSend_context(v10, v5, v6);
+  rootCopy = root;
+  v7 = objc_msgSend_context(rootCopy, v5, v6);
   objc_msgSend_wasAddedToDocumentWithContext_(self, v8, v7);
 
-  objc_msgSend_p_invalidateAnnotationResultsForDocumentRoot_key_(self, v9, v10, *MEMORY[0x277D805B8]);
+  objc_msgSend_p_invalidateAnnotationResultsForDocumentRoot_key_(self, v9, rootCopy, *MEMORY[0x277D805B8]);
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
-  v9 = a3;
-  objc_msgSend_p_invalidateAnnotationResultsForDocumentRoot_key_(self, v4, v9, *MEMORY[0x277D805C8]);
-  v7 = objc_msgSend_context(v9, v5, v6);
+  rootCopy = root;
+  objc_msgSend_p_invalidateAnnotationResultsForDocumentRoot_key_(self, v4, rootCopy, *MEMORY[0x277D805C8]);
+  v7 = objc_msgSend_context(rootCopy, v5, v6);
   objc_msgSend_willBeRemovedFromDocumentWithContext_(self, v8, v7);
 }
 

@@ -1,109 +1,109 @@
 @interface CDMVocUsoGraphMapper
-+ (id)buildAppNameUSOGraphWithIdentifier:(id)a3 withSemantic:(id)a4 withInput:(id)a5 withStartCharIndex:(unsigned int)a6 withEndCharIndex:(unsigned int)a7 withTokenCount:(unsigned int)a8;
-+ (id)buildContactTypeUSOGraphWithIdentifier:(id)a3 withSemantic:(id)a4 withInput:(id)a5 withStartCharIndex:(unsigned int)a6 withEndCharIndex:(unsigned int)a7 withTokenCount:(unsigned int)a8;
-+ (id)buildDeviceCategoryUSOGraphWithIdentifier:(id)a3 withSemantic:(id)a4 withInput:(id)a5 withStartCharIndex:(unsigned int)a6 withEndCharIndex:(unsigned int)a7 withTokenCount:(unsigned int)a8;
-+ (id)buildEmailContactUSOGraphWithIdentifier:(id)a3 withSemantic:(id)a4 withInput:(id)a5 withStartCharIndex:(unsigned int)a6 withEndCharIndex:(unsigned int)a7 withTokenCount:(unsigned int)a8;
-+ (id)buildEmergencyPhoneNumberUSOGraphWithIdentifier:(id)a3 withSemantic:(id)a4 withInput:(id)a5 withStartCharIndex:(unsigned int)a6 withEndCharIndex:(unsigned int)a7 withTokenCount:(unsigned int)a8;
-+ (id)buildEmergencyPhonePersonUSOGraphWithIdentifier:(id)a3 withSemantic:(id)a4 withInput:(id)a5 withStartCharIndex:(unsigned int)a6 withEndCharIndex:(unsigned int)a7 withTokenCount:(unsigned int)a8;
-+ (id)buildPersonRelationshipUSOGraphWithIdentifier:(id)a3 withSemantic:(id)a4 withInput:(id)a5 withStartCharIndex:(unsigned int)a6 withEndCharIndex:(unsigned int)a7 withTokenCount:(unsigned int)a8;
-+ (id)buildPhoneContactUSOGraphWithIdentifier:(id)a3 withSemantic:(id)a4 withInput:(id)a5 withStartCharIndex:(unsigned int)a6 withEndCharIndex:(unsigned int)a7 withTokenCount:(unsigned int)a8;
-+ (id)buildSettingUSOGraphWithIdentifier:(id)a3 withSemantic:(id)a4 withInput:(id)a5 withStartCharIndex:(unsigned int)a6 withEndCharIndex:(unsigned int)a7 withTokenCount:(unsigned int)a8;
++ (id)buildAppNameUSOGraphWithIdentifier:(id)identifier withSemantic:(id)semantic withInput:(id)input withStartCharIndex:(unsigned int)index withEndCharIndex:(unsigned int)charIndex withTokenCount:(unsigned int)count;
++ (id)buildContactTypeUSOGraphWithIdentifier:(id)identifier withSemantic:(id)semantic withInput:(id)input withStartCharIndex:(unsigned int)index withEndCharIndex:(unsigned int)charIndex withTokenCount:(unsigned int)count;
++ (id)buildDeviceCategoryUSOGraphWithIdentifier:(id)identifier withSemantic:(id)semantic withInput:(id)input withStartCharIndex:(unsigned int)index withEndCharIndex:(unsigned int)charIndex withTokenCount:(unsigned int)count;
++ (id)buildEmailContactUSOGraphWithIdentifier:(id)identifier withSemantic:(id)semantic withInput:(id)input withStartCharIndex:(unsigned int)index withEndCharIndex:(unsigned int)charIndex withTokenCount:(unsigned int)count;
++ (id)buildEmergencyPhoneNumberUSOGraphWithIdentifier:(id)identifier withSemantic:(id)semantic withInput:(id)input withStartCharIndex:(unsigned int)index withEndCharIndex:(unsigned int)charIndex withTokenCount:(unsigned int)count;
++ (id)buildEmergencyPhonePersonUSOGraphWithIdentifier:(id)identifier withSemantic:(id)semantic withInput:(id)input withStartCharIndex:(unsigned int)index withEndCharIndex:(unsigned int)charIndex withTokenCount:(unsigned int)count;
++ (id)buildPersonRelationshipUSOGraphWithIdentifier:(id)identifier withSemantic:(id)semantic withInput:(id)input withStartCharIndex:(unsigned int)index withEndCharIndex:(unsigned int)charIndex withTokenCount:(unsigned int)count;
++ (id)buildPhoneContactUSOGraphWithIdentifier:(id)identifier withSemantic:(id)semantic withInput:(id)input withStartCharIndex:(unsigned int)index withEndCharIndex:(unsigned int)charIndex withTokenCount:(unsigned int)count;
++ (id)buildSettingUSOGraphWithIdentifier:(id)identifier withSemantic:(id)semantic withInput:(id)input withStartCharIndex:(unsigned int)index withEndCharIndex:(unsigned int)charIndex withTokenCount:(unsigned int)count;
 + (id)emergencyPhoneNumberSemantic;
 + (id)emergencyPhonePersonSemantic;
 + (id)listPositionSemantic;
 + (id)ordinalsSemantic;
 + (id)settingVocLabel;
-+ (unique_ptr<siri::ontology::UsoEntitySpan,)buildEntitySpanWithSemantic:(id)a3 withVocLabel:(id)a4 withStartIndex:(unsigned int)a5 withEndIndex:(unsigned int)a6 withTokenCount:(unsigned int)a7;
-+ (unique_ptr<siri::ontology::UsoIdentifier,)buildIdentifierWithSemantic:(id)a3 withVocLabel:(id)a4;
++ (unique_ptr<siri::ontology::UsoEntitySpan,)buildEntitySpanWithSemantic:(id)semantic withVocLabel:(id)label withStartIndex:(unsigned int)index withEndIndex:(unsigned int)endIndex withTokenCount:(unsigned int)count;
++ (unique_ptr<siri::ontology::UsoIdentifier,)buildIdentifierWithSemantic:(id)semantic withVocLabel:(id)label;
 @end
 
 @implementation CDMVocUsoGraphMapper
 
-+ (unique_ptr<siri::ontology::UsoEntitySpan,)buildEntitySpanWithSemantic:(id)a3 withVocLabel:(id)a4 withStartIndex:(unsigned int)a5 withEndIndex:(unsigned int)a6 withTokenCount:(unsigned int)a7
++ (unique_ptr<siri::ontology::UsoEntitySpan,)buildEntitySpanWithSemantic:(id)semantic withVocLabel:(id)label withStartIndex:(unsigned int)index withEndIndex:(unsigned int)endIndex withTokenCount:(unsigned int)count
 {
-  v8 = a3;
-  v9 = a4;
+  semanticCopy = semantic;
+  labelCopy = label;
   _ZNSt3__111make_uniqueB8ne200100IN4siri8ontology13UsoEntitySpanEJELi0EEENS_10unique_ptrIT_NS_14default_deleteIS5_EEEEDpOT0_();
 }
 
-+ (unique_ptr<siri::ontology::UsoIdentifier,)buildIdentifierWithSemantic:(id)a3 withVocLabel:(id)a4
++ (unique_ptr<siri::ontology::UsoIdentifier,)buildIdentifierWithSemantic:(id)semantic withVocLabel:(id)label
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 UTF8String];
+  semanticCopy = semantic;
+  labelCopy = label;
+  [semanticCopy UTF8String];
   appName();
   operator new();
 }
 
-+ (id)buildEmergencyPhonePersonUSOGraphWithIdentifier:(id)a3 withSemantic:(id)a4 withInput:(id)a5 withStartCharIndex:(unsigned int)a6 withEndCharIndex:(unsigned int)a7 withTokenCount:(unsigned int)a8
++ (id)buildEmergencyPhonePersonUSOGraphWithIdentifier:(id)identifier withSemantic:(id)semantic withInput:(id)input withStartCharIndex:(unsigned int)index withEndCharIndex:(unsigned int)charIndex withTokenCount:(unsigned int)count
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  semanticCopy = semantic;
+  inputCopy = input;
   operator new();
 }
 
-+ (id)buildEmergencyPhoneNumberUSOGraphWithIdentifier:(id)a3 withSemantic:(id)a4 withInput:(id)a5 withStartCharIndex:(unsigned int)a6 withEndCharIndex:(unsigned int)a7 withTokenCount:(unsigned int)a8
++ (id)buildEmergencyPhoneNumberUSOGraphWithIdentifier:(id)identifier withSemantic:(id)semantic withInput:(id)input withStartCharIndex:(unsigned int)index withEndCharIndex:(unsigned int)charIndex withTokenCount:(unsigned int)count
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  semanticCopy = semantic;
+  inputCopy = input;
   operator new();
 }
 
-+ (id)buildDeviceCategoryUSOGraphWithIdentifier:(id)a3 withSemantic:(id)a4 withInput:(id)a5 withStartCharIndex:(unsigned int)a6 withEndCharIndex:(unsigned int)a7 withTokenCount:(unsigned int)a8
++ (id)buildDeviceCategoryUSOGraphWithIdentifier:(id)identifier withSemantic:(id)semantic withInput:(id)input withStartCharIndex:(unsigned int)index withEndCharIndex:(unsigned int)charIndex withTokenCount:(unsigned int)count
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  semanticCopy = semantic;
+  inputCopy = input;
   operator new();
 }
 
-+ (id)buildPersonRelationshipUSOGraphWithIdentifier:(id)a3 withSemantic:(id)a4 withInput:(id)a5 withStartCharIndex:(unsigned int)a6 withEndCharIndex:(unsigned int)a7 withTokenCount:(unsigned int)a8
++ (id)buildPersonRelationshipUSOGraphWithIdentifier:(id)identifier withSemantic:(id)semantic withInput:(id)input withStartCharIndex:(unsigned int)index withEndCharIndex:(unsigned int)charIndex withTokenCount:(unsigned int)count
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  semanticCopy = semantic;
+  inputCopy = input;
   operator new();
 }
 
-+ (id)buildSettingUSOGraphWithIdentifier:(id)a3 withSemantic:(id)a4 withInput:(id)a5 withStartCharIndex:(unsigned int)a6 withEndCharIndex:(unsigned int)a7 withTokenCount:(unsigned int)a8
++ (id)buildSettingUSOGraphWithIdentifier:(id)identifier withSemantic:(id)semantic withInput:(id)input withStartCharIndex:(unsigned int)index withEndCharIndex:(unsigned int)charIndex withTokenCount:(unsigned int)count
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  semanticCopy = semantic;
+  inputCopy = input;
   operator new();
 }
 
-+ (id)buildAppNameUSOGraphWithIdentifier:(id)a3 withSemantic:(id)a4 withInput:(id)a5 withStartCharIndex:(unsigned int)a6 withEndCharIndex:(unsigned int)a7 withTokenCount:(unsigned int)a8
++ (id)buildAppNameUSOGraphWithIdentifier:(id)identifier withSemantic:(id)semantic withInput:(id)input withStartCharIndex:(unsigned int)index withEndCharIndex:(unsigned int)charIndex withTokenCount:(unsigned int)count
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  semanticCopy = semantic;
+  inputCopy = input;
   operator new();
 }
 
-+ (id)buildPhoneContactUSOGraphWithIdentifier:(id)a3 withSemantic:(id)a4 withInput:(id)a5 withStartCharIndex:(unsigned int)a6 withEndCharIndex:(unsigned int)a7 withTokenCount:(unsigned int)a8
++ (id)buildPhoneContactUSOGraphWithIdentifier:(id)identifier withSemantic:(id)semantic withInput:(id)input withStartCharIndex:(unsigned int)index withEndCharIndex:(unsigned int)charIndex withTokenCount:(unsigned int)count
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  semanticCopy = semantic;
+  inputCopy = input;
   operator new();
 }
 
-+ (id)buildEmailContactUSOGraphWithIdentifier:(id)a3 withSemantic:(id)a4 withInput:(id)a5 withStartCharIndex:(unsigned int)a6 withEndCharIndex:(unsigned int)a7 withTokenCount:(unsigned int)a8
++ (id)buildEmailContactUSOGraphWithIdentifier:(id)identifier withSemantic:(id)semantic withInput:(id)input withStartCharIndex:(unsigned int)index withEndCharIndex:(unsigned int)charIndex withTokenCount:(unsigned int)count
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  semanticCopy = semantic;
+  inputCopy = input;
   operator new();
 }
 
-+ (id)buildContactTypeUSOGraphWithIdentifier:(id)a3 withSemantic:(id)a4 withInput:(id)a5 withStartCharIndex:(unsigned int)a6 withEndCharIndex:(unsigned int)a7 withTokenCount:(unsigned int)a8
++ (id)buildContactTypeUSOGraphWithIdentifier:(id)identifier withSemantic:(id)semantic withInput:(id)input withStartCharIndex:(unsigned int)index withEndCharIndex:(unsigned int)charIndex withTokenCount:(unsigned int)count
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  semanticCopy = semantic;
+  inputCopy = input;
   operator new();
 }
 

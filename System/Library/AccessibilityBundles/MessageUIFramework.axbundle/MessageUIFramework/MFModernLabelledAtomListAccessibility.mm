@@ -1,17 +1,17 @@
 @interface MFModernLabelledAtomListAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySpeakThisString;
 - (id)accessibilityElements;
 @end
 
 @implementation MFModernLabelledAtomListAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFModernLabelledAtomList" hasInstanceMethod:@"labelText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFModernLabelledAtomList" hasInstanceMethod:@"atomDisplayStrings" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFModernLabelledAtomList" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFModernLabelledAtomList" hasInstanceMethod:@"labelText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFModernLabelledAtomList" hasInstanceMethod:@"atomDisplayStrings" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFModernLabelledAtomList" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilitySpeakThisString
@@ -30,8 +30,8 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 subviews];
-  v4 = [v3 mutableCopy];
+  subviews = [v2 subviews];
+  v4 = [subviews mutableCopy];
 
   v5 = [v2 safeUIViewForKey:@"label"];
   if (v5)

@@ -1,23 +1,23 @@
 @interface EMThreadReloadSummaryHelper
-- (id)summariesToReloadForChanges:(id)a3 mailboxScope:(id)a4;
+- (id)summariesToReloadForChanges:(id)changes mailboxScope:(id)scope;
 @end
 
 @implementation EMThreadReloadSummaryHelper
 
-- (id)summariesToReloadForChanges:(id)a3 mailboxScope:(id)a4
+- (id)summariesToReloadForChanges:(id)changes mailboxScope:(id)scope
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  changesCopy = changes;
+  scopeCopy = scope;
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(changesCopy, "count")}];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__EMThreadReloadSummaryHelper_summariesToReloadForChanges_mailboxScope___block_invoke;
   v13[3] = &unk_1E826FBA0;
-  v8 = v6;
+  v8 = scopeCopy;
   v14 = v8;
   v9 = v7;
   v15 = v9;
-  [v5 enumerateKeysAndObjectsUsingBlock:v13];
+  [changesCopy enumerateKeysAndObjectsUsingBlock:v13];
   v10 = v15;
   v11 = v9;
 

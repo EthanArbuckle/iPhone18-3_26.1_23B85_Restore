@@ -1,120 +1,120 @@
 @interface _UIInputViewControllerOutput
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)inputModeListFromLocation;
 - (CGPoint)inputModeListUpdatePoint;
 - (_NSRange)selectedRange;
-- (_UIInputViewControllerOutput)initWithCoder:(id)a3;
+- (_UIInputViewControllerOutput)initWithCoder:(id)coder;
 - (id)_currentKeyboardOutput;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)_pushNewKeyboardOutput;
-- (void)adjustTextPositionByCharacterOffset:(int64_t)a3;
+- (void)adjustTextPositionByCharacterOffset:(int64_t)offset;
 - (void)deleteBackward;
-- (void)encodeWithCoder:(id)a3;
-- (void)insertText:(id)a3;
-- (void)setInputModeList:(int64_t)a3 touchBegan:(double)a4 fromLocation:(CGPoint)a5 updatePoint:(CGPoint)a6;
+- (void)encodeWithCoder:(id)coder;
+- (void)insertText:(id)text;
+- (void)setInputModeList:(int64_t)list touchBegan:(double)began fromLocation:(CGPoint)location updatePoint:(CGPoint)point;
 @end
 
 @implementation _UIInputViewControllerOutput
 
 - (void)_pushNewKeyboardOutput
 {
-  v3 = [(_UIInputViewControllerOutput *)self keyboardOutputs];
+  keyboardOutputs = [(_UIInputViewControllerOutput *)self keyboardOutputs];
 
-  if (!v3)
+  if (!keyboardOutputs)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    [(_UIInputViewControllerOutput *)self setKeyboardOutputs:v4];
+    array = [MEMORY[0x1E695DF70] array];
+    [(_UIInputViewControllerOutput *)self setKeyboardOutputs:array];
   }
 
-  v6 = [(_UIInputViewControllerOutput *)self keyboardOutputs];
+  keyboardOutputs2 = [(_UIInputViewControllerOutput *)self keyboardOutputs];
   v5 = objc_alloc_init(_UIInputViewKeyboardOutput);
-  [v6 addObject:v5];
+  [keyboardOutputs2 addObject:v5];
 }
 
 - (id)_currentKeyboardOutput
 {
-  v3 = [(_UIInputViewControllerOutput *)self keyboardOutputs];
-  v4 = [v3 count];
+  keyboardOutputs = [(_UIInputViewControllerOutput *)self keyboardOutputs];
+  v4 = [keyboardOutputs count];
 
   if (!v4)
   {
     [(_UIInputViewControllerOutput *)self _pushNewKeyboardOutput];
   }
 
-  v5 = [(_UIInputViewControllerOutput *)self keyboardOutputs];
-  v6 = [v5 lastObject];
+  keyboardOutputs2 = [(_UIInputViewControllerOutput *)self keyboardOutputs];
+  lastObject = [keyboardOutputs2 lastObject];
 
-  return v6;
+  return lastObject;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
-  v5 = [(_UIInputViewControllerOutput *)self _currentKeyboardOutput];
-  [v5 insertText:v4];
+  textCopy = text;
+  _currentKeyboardOutput = [(_UIInputViewControllerOutput *)self _currentKeyboardOutput];
+  [_currentKeyboardOutput insertText:textCopy];
 }
 
 - (void)deleteBackward
 {
-  v7 = [(_UIInputViewControllerOutput *)self _currentKeyboardOutput];
-  v3 = [v7 insertionText];
-  v4 = [v3 length];
+  _currentKeyboardOutput = [(_UIInputViewControllerOutput *)self _currentKeyboardOutput];
+  insertionText = [_currentKeyboardOutput insertionText];
+  v4 = [insertionText length];
 
   if (v4)
   {
     [(_UIInputViewControllerOutput *)self _pushNewKeyboardOutput];
-    v5 = [(_UIInputViewControllerOutput *)self _currentKeyboardOutput];
+    _currentKeyboardOutput2 = [(_UIInputViewControllerOutput *)self _currentKeyboardOutput];
 
-    v6 = v5;
+    v6 = _currentKeyboardOutput2;
   }
 
   else
   {
-    v6 = v7;
+    v6 = _currentKeyboardOutput;
   }
 
   v8 = v6;
   [v6 deleteBackward];
 }
 
-- (void)adjustTextPositionByCharacterOffset:(int64_t)a3
+- (void)adjustTextPositionByCharacterOffset:(int64_t)offset
 {
-  v9 = [(_UIInputViewControllerOutput *)self _currentKeyboardOutput];
-  v5 = [v9 insertionText];
-  if ([v5 length])
+  _currentKeyboardOutput = [(_UIInputViewControllerOutput *)self _currentKeyboardOutput];
+  insertionText = [_currentKeyboardOutput insertionText];
+  if ([insertionText length])
   {
 
 LABEL_4:
     [(_UIInputViewControllerOutput *)self _pushNewKeyboardOutput];
-    v7 = [(_UIInputViewControllerOutput *)self _currentKeyboardOutput];
+    _currentKeyboardOutput2 = [(_UIInputViewControllerOutput *)self _currentKeyboardOutput];
 
-    v8 = v7;
+    v8 = _currentKeyboardOutput2;
     goto LABEL_5;
   }
 
-  v6 = [v9 deletionCount];
+  deletionCount = [_currentKeyboardOutput deletionCount];
 
-  if (v6)
+  if (deletionCount)
   {
     goto LABEL_4;
   }
 
-  v8 = v9;
+  v8 = _currentKeyboardOutput;
 LABEL_5:
   v10 = v8;
-  [v8 setPositionOffset:{objc_msgSend(v8, "positionOffset") + a3}];
+  [v8 setPositionOffset:{objc_msgSend(v8, "positionOffset") + offset}];
 }
 
-- (void)setInputModeList:(int64_t)a3 touchBegan:(double)a4 fromLocation:(CGPoint)a5 updatePoint:(CGPoint)a6
+- (void)setInputModeList:(int64_t)list touchBegan:(double)began fromLocation:(CGPoint)location updatePoint:(CGPoint)point
 {
-  self->_inputModeListTouchPhase = a3;
-  self->_inputModeListTouchBegan = a4;
-  self->_inputModeListFromLocation = a5;
-  self->_inputModeListUpdatePoint = a6;
+  self->_inputModeListTouchPhase = list;
+  self->_inputModeListTouchBegan = began;
+  self->_inputModeListFromLocation = location;
+  self->_inputModeListUpdatePoint = point;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(_UIInputViewControllerOutput);
   if (v4)
@@ -148,9 +148,9 @@ LABEL_5:
   return v4;
 }
 
-- (_UIInputViewControllerOutput)initWithCoder:(id)a3
+- (_UIInputViewControllerOutput)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = _UIInputViewControllerOutput;
   v5 = [(_UIInputViewControllerOutput *)&v23 init];
@@ -159,80 +159,80 @@ LABEL_5:
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"keyboardOutputs"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"keyboardOutputs"];
     keyboardOutputs = v5->_keyboardOutputs;
     v5->_keyboardOutputs = v9;
 
-    v5->_shouldDismiss = [v4 decodeBoolForKey:@"shouldDismiss"];
-    v5->_proceedShouldReturn = [v4 decodeBoolForKey:@"proceedShouldReturn"];
-    v5->_shouldAdvanceInputMode = [v4 decodeBoolForKey:@"shouldAdvanceInputMode"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hasDictation"];
+    v5->_shouldDismiss = [coderCopy decodeBoolForKey:@"shouldDismiss"];
+    v5->_proceedShouldReturn = [coderCopy decodeBoolForKey:@"proceedShouldReturn"];
+    v5->_shouldAdvanceInputMode = [coderCopy decodeBoolForKey:@"shouldAdvanceInputMode"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hasDictation"];
     hasDictation = v5->_hasDictation;
     v5->_hasDictation = v11;
 
-    v5->_inputModeListTouchPhase = [v4 decodeIntegerForKey:@"setInputModeListTouchPhase"];
-    [v4 decodeFloatForKey:@"setInputModeListTouchBegan"];
+    v5->_inputModeListTouchPhase = [coderCopy decodeIntegerForKey:@"setInputModeListTouchPhase"];
+    [coderCopy decodeFloatForKey:@"setInputModeListTouchBegan"];
     v5->_inputModeListTouchBegan = v13;
-    [v4 decodeFloatForKey:@"setInputModeListFromLocationX"];
+    [coderCopy decodeFloatForKey:@"setInputModeListFromLocationX"];
     v5->_inputModeListFromLocation.x = v14;
-    [v4 decodeFloatForKey:@"setInputModeListFromLocationY"];
+    [coderCopy decodeFloatForKey:@"setInputModeListFromLocationY"];
     v5->_inputModeListFromLocation.y = v15;
-    [v4 decodeFloatForKey:@"setInputModeUpdatePointX"];
+    [coderCopy decodeFloatForKey:@"setInputModeUpdatePointX"];
     v5->_inputModeListUpdatePoint.x = v16;
-    [v4 decodeFloatForKey:@"setInputModeUpdatePointY"];
+    [coderCopy decodeFloatForKey:@"setInputModeUpdatePointY"];
     v5->_inputModeListUpdatePoint.y = v17;
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryLanguage"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryLanguage"];
     primaryLanguage = v5->_primaryLanguage;
     v5->_primaryLanguage = v18;
 
-    v5->_setMarkedText = [v4 decodeBoolForKey:@"setMarkedText"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"markedText"];
+    v5->_setMarkedText = [coderCopy decodeBoolForKey:@"setMarkedText"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"markedText"];
     markedText = v5->_markedText;
     v5->_markedText = v20;
 
-    v5->_selectedRange.location = [v4 decodeIntegerForKey:@"selectedRangeLocation"];
-    v5->_selectedRange.length = [v4 decodeIntegerForKey:@"selectedRangeLength"];
-    v5->_unmarkText = [v4 decodeBoolForKey:@"unmarkText"];
-    v5->_source = [v4 decodeIntegerForKey:@"source"];
+    v5->_selectedRange.location = [coderCopy decodeIntegerForKey:@"selectedRangeLocation"];
+    v5->_selectedRange.length = [coderCopy decodeIntegerForKey:@"selectedRangeLength"];
+    v5->_unmarkText = [coderCopy decodeBoolForKey:@"unmarkText"];
+    v5->_source = [coderCopy decodeIntegerForKey:@"source"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   keyboardOutputs = self->_keyboardOutputs;
-  v14 = v4;
+  v14 = coderCopy;
   if (keyboardOutputs)
   {
-    [v4 encodeObject:keyboardOutputs forKey:@"keyboardOutputs"];
-    v4 = v14;
+    [coderCopy encodeObject:keyboardOutputs forKey:@"keyboardOutputs"];
+    coderCopy = v14;
   }
 
   if (self->_shouldDismiss)
   {
     [v14 encodeBool:1 forKey:@"shouldDismiss"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   if (self->_proceedShouldReturn)
   {
     [v14 encodeBool:1 forKey:@"proceedShouldReturn"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   hasDictation = self->_hasDictation;
   if (hasDictation)
   {
     [v14 encodeObject:hasDictation forKey:@"hasDictation"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   if (self->_shouldAdvanceInputMode)
   {
     [v14 encodeBool:1 forKey:@"shouldAdvanceInputMode"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   if (self->_inputModeListTouchBegan != 0.0)
@@ -253,14 +253,14 @@ LABEL_5:
     v11 = self->_inputModeListUpdatePoint.y;
     *&v11 = v11;
     [v14 encodeFloat:@"setInputModeUpdatePointY" forKey:v11];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   primaryLanguage = self->_primaryLanguage;
   if (primaryLanguage)
   {
     [v14 encodeObject:primaryLanguage forKey:@"primaryLanguage"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   if (self->_setMarkedText)
@@ -269,61 +269,61 @@ LABEL_5:
     [v14 encodeObject:self->_markedText forKey:@"markedText"];
     [v14 encodeInteger:self->_selectedRange.location forKey:@"selectedRangeLocation"];
     [v14 encodeInteger:self->_selectedRange.length forKey:@"selectedRangeLength"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   if (self->_unmarkText)
   {
     [v14 encodeBool:1 forKey:@"unmarkText"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   source = self->_source;
   if (source)
   {
     [v14 encodeInteger:source forKey:@"source"];
-    v4 = v14;
+    coderCopy = v14;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(_UIInputViewControllerOutput *)self keyboardOutputs];
-    v7 = [v5 keyboardOutputs];
-    v8 = [v6 isEqual:v7];
+    v5 = equalCopy;
+    keyboardOutputs = [(_UIInputViewControllerOutput *)self keyboardOutputs];
+    keyboardOutputs2 = [v5 keyboardOutputs];
+    v8 = [keyboardOutputs isEqual:keyboardOutputs2];
 
     if (!v8)
     {
       goto LABEL_27;
     }
 
-    v9 = [(_UIInputViewControllerOutput *)self shouldDismiss];
-    if (v9 != [v5 shouldDismiss])
+    shouldDismiss = [(_UIInputViewControllerOutput *)self shouldDismiss];
+    if (shouldDismiss != [v5 shouldDismiss])
     {
       goto LABEL_27;
     }
 
-    v10 = [(_UIInputViewControllerOutput *)self proceedShouldReturn];
-    if (v10 != [v5 proceedShouldReturn])
+    proceedShouldReturn = [(_UIInputViewControllerOutput *)self proceedShouldReturn];
+    if (proceedShouldReturn != [v5 proceedShouldReturn])
     {
       goto LABEL_27;
     }
 
-    v11 = [(_UIInputViewControllerOutput *)self hasDictation];
-    v12 = [v5 hasDictation];
-    v13 = [v11 isEqual:v12];
+    hasDictation = [(_UIInputViewControllerOutput *)self hasDictation];
+    hasDictation2 = [v5 hasDictation];
+    v13 = [hasDictation isEqual:hasDictation2];
 
     if (!v13)
     {
       goto LABEL_27;
     }
 
-    v14 = [(_UIInputViewControllerOutput *)self shouldAdvanceInputMode];
-    if (v14 != [v5 shouldAdvanceInputMode])
+    shouldAdvanceInputMode = [(_UIInputViewControllerOutput *)self shouldAdvanceInputMode];
+    if (shouldAdvanceInputMode != [v5 shouldAdvanceInputMode])
     {
       goto LABEL_27;
     }
@@ -339,8 +339,8 @@ LABEL_5:
     [(_UIInputViewControllerOutput *)self inputModeListTouchBegan];
     if (v18 != 0.0)
     {
-      v19 = [(_UIInputViewControllerOutput *)self inputModeListTouchPhase];
-      if (v19 != [v5 inputModeListTouchPhase])
+      inputModeListTouchPhase = [(_UIInputViewControllerOutput *)self inputModeListTouchPhase];
+      if (inputModeListTouchPhase != [v5 inputModeListTouchPhase])
       {
         goto LABEL_27;
       }
@@ -371,18 +371,18 @@ LABEL_5:
       }
     }
 
-    v33 = [(_UIInputViewControllerOutput *)self primaryLanguage];
-    v34 = [v5 primaryLanguage];
-    v35 = v34;
-    if (v33 == v34)
+    primaryLanguage = [(_UIInputViewControllerOutput *)self primaryLanguage];
+    primaryLanguage2 = [v5 primaryLanguage];
+    v35 = primaryLanguage2;
+    if (primaryLanguage == primaryLanguage2)
     {
     }
 
     else
     {
-      v36 = [(_UIInputViewControllerOutput *)self primaryLanguage];
-      v37 = [v5 primaryLanguage];
-      v38 = [v36 isEqualToString:v37];
+      primaryLanguage3 = [(_UIInputViewControllerOutput *)self primaryLanguage];
+      primaryLanguage4 = [v5 primaryLanguage];
+      v38 = [primaryLanguage3 isEqualToString:primaryLanguage4];
 
       if (!v38)
       {
@@ -390,21 +390,21 @@ LABEL_5:
       }
     }
 
-    v39 = [(_UIInputViewControllerOutput *)self setMarkedText];
-    if (v39 == [v5 setMarkedText])
+    setMarkedText = [(_UIInputViewControllerOutput *)self setMarkedText];
+    if (setMarkedText == [v5 setMarkedText])
     {
-      v40 = [(_UIInputViewControllerOutput *)self markedText];
-      v41 = [v5 markedText];
-      v42 = v41;
-      if (v40 == v41)
+      markedText = [(_UIInputViewControllerOutput *)self markedText];
+      markedText2 = [v5 markedText];
+      v42 = markedText2;
+      if (markedText == markedText2)
       {
       }
 
       else
       {
-        v43 = [(_UIInputViewControllerOutput *)self markedText];
-        v44 = [v5 markedText];
-        v45 = [v43 isEqualToString:v44];
+        markedText3 = [(_UIInputViewControllerOutput *)self markedText];
+        markedText4 = [v5 markedText];
+        v45 = [markedText3 isEqualToString:markedText4];
 
         if (!v45)
         {
@@ -412,19 +412,19 @@ LABEL_5:
         }
       }
 
-      v46 = [(_UIInputViewControllerOutput *)self selectedRange];
+      selectedRange = [(_UIInputViewControllerOutput *)self selectedRange];
       v48 = v47;
       v25 = 0;
-      if (v46 != [v5 selectedRange] || v48 != v49)
+      if (selectedRange != [v5 selectedRange] || v48 != v49)
       {
         goto LABEL_28;
       }
 
-      v50 = [(_UIInputViewControllerOutput *)self unmarkText];
-      if (v50 == [v5 unmarkText])
+      unmarkText = [(_UIInputViewControllerOutput *)self unmarkText];
+      if (unmarkText == [v5 unmarkText])
       {
-        v52 = [(_UIInputViewControllerOutput *)self source];
-        v25 = v52 == [v5 source];
+        source = [(_UIInputViewControllerOutput *)self source];
+        v25 = source == [v5 source];
         goto LABEL_28;
       }
     }
@@ -445,8 +445,8 @@ LABEL_29:
 - (id)description
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p", objc_opt_class(), self];
-  v4 = [(_UIInputViewControllerOutput *)self keyboardOutputs];
-  [v3 appendFormat:@"; keyboardOutputs = %@", v4];
+  keyboardOutputs = [(_UIInputViewControllerOutput *)self keyboardOutputs];
+  [v3 appendFormat:@"; keyboardOutputs = %@", keyboardOutputs];
 
   if ([(_UIInputViewControllerOutput *)self shouldDismiss])
   {
@@ -470,8 +470,8 @@ LABEL_29:
   }
 
   [v3 appendFormat:@"; proceedShouldReturn = %s", v6];
-  v7 = [(_UIInputViewControllerOutput *)self hasDictation];
-  if ([v7 BOOLValue])
+  hasDictation = [(_UIInputViewControllerOutput *)self hasDictation];
+  if ([hasDictation BOOLValue])
   {
     v8 = "YES";
   }
@@ -505,8 +505,8 @@ LABEL_29:
   v15 = v14;
   [(_UIInputViewControllerOutput *)self inputModeListUpdatePoint];
   [v3 appendFormat:@"; inputModeListUpdatePoint = %f:%f", v15, v16];
-  v17 = [(_UIInputViewControllerOutput *)self primaryLanguage];
-  [v3 appendFormat:@"; primaryLanguage = %@", v17];
+  primaryLanguage = [(_UIInputViewControllerOutput *)self primaryLanguage];
+  [v3 appendFormat:@"; primaryLanguage = %@", primaryLanguage];
 
   if ([(_UIInputViewControllerOutput *)self setMarkedText])
   {
@@ -519,12 +519,12 @@ LABEL_29:
   }
 
   [v3 appendFormat:@"; setMarkedText = %s", v18];
-  v19 = [(_UIInputViewControllerOutput *)self markedText];
-  [v3 appendFormat:@"; markedText = %@", v19];
+  markedText = [(_UIInputViewControllerOutput *)self markedText];
+  [v3 appendFormat:@"; markedText = %@", markedText];
 
-  v20 = [(_UIInputViewControllerOutput *)self selectedRange];
+  selectedRange = [(_UIInputViewControllerOutput *)self selectedRange];
   [(_UIInputViewControllerOutput *)self selectedRange];
-  [v3 appendFormat:@"; selectedRange location = %ld length = %ld", v20, v21];
+  [v3 appendFormat:@"; selectedRange location = %ld length = %ld", selectedRange, v21];
   if ([(_UIInputViewControllerOutput *)self unmarkText])
   {
     v22 = "YES";

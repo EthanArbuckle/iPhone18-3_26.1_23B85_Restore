@@ -1,19 +1,19 @@
 @interface UIImage
-- (CGRect)bk_frameForImageFittedInFrame:(CGRect)a3;
+- (CGRect)bk_frameForImageFittedInFrame:(CGRect)frame;
 @end
 
 @implementation UIImage
 
-- (CGRect)bk_frameForImageFittedInFrame:(CGRect)a3
+- (CGRect)bk_frameForImageFittedInFrame:(CGRect)frame
 {
-  v3 = self;
-  [(UIImage *)v3 size];
+  selfCopy = self;
+  [(UIImage *)selfCopy size];
   CGRectMakeWithSize();
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [(UIImage *)v3 alignmentRectInsets];
+  [(UIImage *)selfCopy alignmentRectInsets];
   sub_1002840F0(v5, v7, v9, v11, v12, v13);
   BCNormalizedInsetsForRects();
   CGRectFitRectInRectAbsoluteNoRounding();

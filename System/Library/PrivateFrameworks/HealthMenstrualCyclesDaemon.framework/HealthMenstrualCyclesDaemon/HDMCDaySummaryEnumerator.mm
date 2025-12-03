@@ -1,46 +1,46 @@
 @interface HDMCDaySummaryEnumerator
-+ (id)daySummariesInIndexRange:(id)a3 profile:(id)a4 calendarCache:(id)a5 error:(id *)a6;
-+ (id)daySummaryAtIndex:(int64_t)a3 profile:(id)a4 calendarCache:(id)a5 error:(id *)a6;
-- (BOOL)enumerateWithError:(id *)a3 handler:(id)a4;
-- (HDMCDaySummaryEnumerator)initWithProfile:(id)a3 calendarCache:(id)a4 dayIndexRange:(id)a5 ascending:(BOOL)a6 includeFactors:(BOOL)a7 includeWristTemperature:(BOOL)a8;
-- (void)_addSample:(id)a3 toBuilders:(id)a4 atDayIndex:(int64_t)a5;
-- (void)_addSample:(id)a3 toBuilders:(id)a4 inRange:(id)a5;
-- (void)_addSample:(id)a3 toBuilders:(id)a4 sampleRange:(id)a5;
-- (void)_closeBuilders:(id)a3 withIndexes:(id)a4 handler:(id)a5 stop:(BOOL *)a6;
++ (id)daySummariesInIndexRange:(id)range profile:(id)profile calendarCache:(id)cache error:(id *)error;
++ (id)daySummaryAtIndex:(int64_t)index profile:(id)profile calendarCache:(id)cache error:(id *)error;
+- (BOOL)enumerateWithError:(id *)error handler:(id)handler;
+- (HDMCDaySummaryEnumerator)initWithProfile:(id)profile calendarCache:(id)cache dayIndexRange:(id)range ascending:(BOOL)ascending includeFactors:(BOOL)factors includeWristTemperature:(BOOL)temperature;
+- (void)_addSample:(id)sample toBuilders:(id)builders atDayIndex:(int64_t)index;
+- (void)_addSample:(id)sample toBuilders:(id)builders inRange:(id)range;
+- (void)_addSample:(id)sample toBuilders:(id)builders sampleRange:(id)range;
+- (void)_closeBuilders:(id)builders withIndexes:(id)indexes handler:(id)handler stop:(BOOL *)stop;
 @end
 
 @implementation HDMCDaySummaryEnumerator
 
-- (HDMCDaySummaryEnumerator)initWithProfile:(id)a3 calendarCache:(id)a4 dayIndexRange:(id)a5 ascending:(BOOL)a6 includeFactors:(BOOL)a7 includeWristTemperature:(BOOL)a8
+- (HDMCDaySummaryEnumerator)initWithProfile:(id)profile calendarCache:(id)cache dayIndexRange:(id)range ascending:(BOOL)ascending includeFactors:(BOOL)factors includeWristTemperature:(BOOL)temperature
 {
-  v8 = a7;
-  v9 = a6;
-  var1 = a5.var1;
-  var0 = a5.var0;
+  factorsCopy = factors;
+  ascendingCopy = ascending;
+  var1 = range.var1;
+  var0 = range.var0;
   v59[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
+  profileCopy = profile;
+  cacheCopy = cache;
   v55.receiver = self;
   v55.super_class = HDMCDaySummaryEnumerator;
   v16 = [(HDMCDaySummaryEnumerator *)&v55 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_profile, v14);
-    objc_storeStrong(&v17->_calendarCache, a4);
+    objc_storeWeak(&v16->_profile, profileCopy);
+    objc_storeStrong(&v17->_calendarCache, cache);
     v17->_dayIndexRange.start = var0;
     v17->_dayIndexRange.duration = var1;
-    v17->_ascending = v9;
-    v53 = v14;
-    v51 = v9;
-    if (a8)
+    v17->_ascending = ascendingCopy;
+    v53 = profileCopy;
+    v51 = ascendingCopy;
+    if (temperature)
     {
-      v50 = v8;
+      v50 = factorsCopy;
       WeakRetained = objc_loadWeakRetained(&v17->_profile);
-      v19 = [WeakRetained sourceOrderManager];
+      sourceOrderManager = [WeakRetained sourceOrderManager];
       v20 = _HKMCAppleSleepingWristTemperatureType();
       v54 = 0;
-      v21 = [v19 orderedSourcesForObjectType:v20 error:&v54];
+      v21 = [sourceOrderManager orderedSourcesForObjectType:v20 error:&v54];
       v22 = v54;
       orderedWatchSources = v17->_orderedWatchSources;
       v17->_orderedWatchSources = v21;
@@ -55,7 +55,7 @@
         }
       }
 
-      v8 = v50;
+      factorsCopy = v50;
     }
 
     v58 = *MEMORY[0x277D10400];
@@ -72,8 +72,8 @@
     }
 
     v28 = HKMCDaySummaryCategoryTypes();
-    v52 = v15;
-    if (v8)
+    v52 = cacheCopy;
+    if (factorsCopy)
     {
       v29 = HKMCCycleFactorsTypes();
       v30 = [v28 arrayByAddingObjectsFromArray:v29];
@@ -105,22 +105,22 @@
     v56 = v42;
     v44 = [MEMORY[0x277CBEA60] arrayWithObjects:&v56 count:1];
     v45 = v43;
-    v14 = v53;
+    profileCopy = v53;
     v46 = [v45 initWithQueryDescriptors:v38 includeDeletedObjects:0 anchor:0 sortDescriptors:v44 bufferSize:100 profile:v53];
     iterator = v17->_iterator;
     v17->_iterator = v46;
 
-    v15 = v52;
+    cacheCopy = v52;
   }
 
   v48 = *MEMORY[0x277D85DE8];
   return v17;
 }
 
-- (BOOL)enumerateWithError:(id *)a3 handler:(id)a4
+- (BOOL)enumerateWithError:(id *)error handler:(id)handler
 {
   v60 = *MEMORY[0x277D85DE8];
-  v52 = a4;
+  handlerCopy = handler;
   v6 = _HKLogPersistedSignposts();
   v7 = _HKLogSignpostIDGenerate();
 
@@ -156,64 +156,64 @@
     v20 = 0;
     v37 = v18;
 LABEL_21:
-    v38 = [v15 allKeys];
-    [(HDMCDaySummaryEnumerator *)self _closeBuilders:v15 withIndexes:v38 handler:v52 stop:&v55];
+    allKeys = [v15 allKeys];
+    [(HDMCDaySummaryEnumerator *)self _closeBuilders:v15 withIndexes:allKeys handler:handlerCopy stop:&v55];
 
     goto LABEL_22;
   }
 
-  v50 = a3;
+  errorCopy = error;
   v20 = 0;
   do
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = [(HDMultiTypeSortedSampleIterator *)self->_iterator sample];
-    if (([v22 hkmc_isNotPresentSymptom] & 1) == 0)
+    sample = [(HDMultiTypeSortedSampleIterator *)self->_iterator sample];
+    if (([sample hkmc_isNotPresentSymptom] & 1) == 0)
     {
       if (self->_ascending)
       {
-        v23 = [v22 startDate];
-        v24 = [v23 hk_earliestPossibleDayIndex];
+        startDate = [sample startDate];
+        hk_earliestPossibleDayIndex = [startDate hk_earliestPossibleDayIndex];
       }
 
       else
       {
-        v23 = [v22 endDate];
-        v24 = [v23 hk_latestPossibleDayIndex];
+        startDate = [sample endDate];
+        hk_earliestPossibleDayIndex = [startDate hk_latestPossibleDayIndex];
       }
 
-      v25 = v24;
+      v25 = hk_earliestPossibleDayIndex;
 
-      v26 = [v15 allKeys];
+      allKeys2 = [v15 allKeys];
       v53[0] = MEMORY[0x277D85DD0];
       v53[1] = 3221225472;
       v53[2] = __55__HDMCDaySummaryEnumerator_enumerateWithError_handler___block_invoke;
       v53[3] = &unk_27865AEA0;
       v53[4] = self;
       v53[5] = v25;
-      v27 = [v26 hk_filter:v53];
+      v27 = [allKeys2 hk_filter:v53];
 
-      [(HDMCDaySummaryEnumerator *)self _closeBuilders:v15 withIndexes:v27 handler:v52 stop:&v55];
+      [(HDMCDaySummaryEnumerator *)self _closeBuilders:v15 withIndexes:v27 handler:handlerCopy stop:&v55];
       calendarCache = self->_calendarCache;
-      v29 = [v22 _timeZone];
-      v30 = [(HKCalendarCache *)calendarCache calendarForTimeZone:v29];
+      _timeZone = [sample _timeZone];
+      v30 = [(HKCalendarCache *)calendarCache calendarForTimeZone:_timeZone];
 
-      if ([v22 hkmc_isSleepDependentSample])
+      if ([sample hkmc_isSleepDependentSample])
       {
-        v31 = [v22 endDate];
-        v32 = [v31 hk_morningIndexWithCalendar:v30];
+        endDate = [sample endDate];
+        v32 = [endDate hk_morningIndexWithCalendar:v30];
 
         v33 = 1;
       }
 
       else
       {
-        v32 = [v22 hk_dayIndexRangeWithCalendar:v30];
+        v32 = [sample hk_dayIndexRangeWithCalendar:v30];
         v33 = v34;
       }
 
       ++v20;
-      [(HDMCDaySummaryEnumerator *)self _addSample:v22 toBuilders:v15 sampleRange:v32, v33, v50];
+      [(HDMCDaySummaryEnumerator *)self _addSample:sample toBuilders:v15 sampleRange:v32, v33, errorCopy];
     }
 
     objc_autoreleasePoolPop(v21);
@@ -231,7 +231,7 @@ LABEL_21:
   }
 
   while (!v55);
-  a3 = v50;
+  error = errorCopy;
   if (!v55)
   {
     goto LABEL_21;
@@ -261,11 +261,11 @@ LABEL_22:
 
   if (v37 && ([v37 hk_isHealthKitErrorWithCode:900] & 1) == 0)
   {
-    if (a3)
+    if (error)
     {
       v47 = v37;
       v46 = 0;
-      *a3 = v37;
+      *error = v37;
     }
 
     else
@@ -303,15 +303,15 @@ uint64_t __55__HDMCDaySummaryEnumerator_enumerateWithError_handler___block_invok
   }
 }
 
-- (void)_closeBuilders:(id)a3 withIndexes:(id)a4 handler:(id)a5 stop:(BOOL *)a6
+- (void)_closeBuilders:(id)builders withIndexes:(id)indexes handler:(id)handler stop:(BOOL *)stop
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  buildersCopy = builders;
+  indexesCopy = indexes;
+  handlerCopy = handler;
   context = objc_autoreleasePoolPush();
-  v25 = v11;
-  v13 = [v11 sortedArrayUsingSelector:sel_compare_];
+  v25 = indexesCopy;
+  v13 = [indexesCopy sortedArrayUsingSelector:sel_compare_];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -319,16 +319,16 @@ uint64_t __55__HDMCDaySummaryEnumerator_enumerateWithError_handler___block_invok
   v23 = v13;
   if (self->_ascending)
   {
-    v14 = v13;
+    reverseObjectEnumerator = v13;
   }
 
   else
   {
-    v14 = [v13 reverseObjectEnumerator];
+    reverseObjectEnumerator = [v13 reverseObjectEnumerator];
   }
 
-  obj = v14;
-  v15 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  obj = reverseObjectEnumerator;
+  v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v15)
   {
     v16 = v15;
@@ -343,15 +343,15 @@ LABEL_6:
       }
 
       v18 = *(*(&v28 + 1) + 8 * v17);
-      v19 = [v10 objectForKeyedSubscript:v18];
-      v20 = [MEMORY[0x277CCD2E8] localDevice];
-      v21 = [v19 createDaySummaryWithDevice:v20];
+      v19 = [buildersCopy objectForKeyedSubscript:v18];
+      localDevice = [MEMORY[0x277CCD2E8] localDevice];
+      v21 = [v19 createDaySummaryWithDevice:localDevice];
 
-      v12[2](v12, v21, a6);
-      [v10 setObject:0 forKeyedSubscript:v18];
-      LOBYTE(v20) = *a6;
+      handlerCopy[2](handlerCopy, v21, stop);
+      [buildersCopy setObject:0 forKeyedSubscript:v18];
+      LOBYTE(localDevice) = *stop;
 
-      if (v20)
+      if (localDevice)
       {
         break;
       }
@@ -373,36 +373,36 @@ LABEL_6:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addSample:(id)a3 toBuilders:(id)a4 atDayIndex:(int64_t)a5
+- (void)_addSample:(id)sample toBuilders:(id)builders atDayIndex:(int64_t)index
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  sampleCopy = sample;
+  buildersCopy = builders;
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:index];
+  v10 = [buildersCopy objectForKeyedSubscript:v9];
 
   if (!v10)
   {
     v11 = [HDMCDaySummaryBuilder alloc];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v10 = [(HDMCDaySummaryBuilder *)v11 initWithProfile:WeakRetained dayIndex:a5 orderedWatchSources:self->_orderedWatchSources calendarCache:self->_calendarCache];
+    v10 = [(HDMCDaySummaryBuilder *)v11 initWithProfile:WeakRetained dayIndex:index orderedWatchSources:self->_orderedWatchSources calendarCache:self->_calendarCache];
 
-    v13 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
-    [v8 setObject:v10 forKeyedSubscript:v13];
+    v13 = [MEMORY[0x277CCABB0] numberWithInteger:index];
+    [buildersCopy setObject:v10 forKeyedSubscript:v13];
   }
 
-  [(HDMCDaySummaryBuilder *)v10 addCycleTrackingSample:v14];
+  [(HDMCDaySummaryBuilder *)v10 addCycleTrackingSample:sampleCopy];
 }
 
-- (void)_addSample:(id)a3 toBuilders:(id)a4 sampleRange:(id)a5
+- (void)_addSample:(id)sample toBuilders:(id)builders sampleRange:(id)range
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v22 = a3;
-  v9 = a4;
-  v10 = [v22 hkmc_isCycleFactorSample];
+  var1 = range.var1;
+  var0 = range.var0;
+  sampleCopy = sample;
+  buildersCopy = builders;
+  hkmc_isCycleFactorSample = [sampleCopy hkmc_isCycleFactorSample];
   start = self->_dayIndexRange.start;
   duration = self->_dayIndexRange.duration;
-  if (v10)
+  if (hkmc_isCycleFactorSample)
   {
     v15 = var0 >= start && var0 - start < duration || start == *MEMORY[0x277CCBBF8] && duration == *(MEMORY[0x277CCBBF8] + 8);
     if (var1 <= 0)
@@ -416,16 +416,16 @@ LABEL_6:
     }
 
     v19 = (v18 < start || v18 - start >= duration) && (start != *MEMORY[0x277CCBBF8] || duration != *(MEMORY[0x277CCBBF8] + 8));
-    v21 = v22;
+    v21 = sampleCopy;
     if (v15)
     {
-      [(HDMCDaySummaryEnumerator *)self _addSample:v22 toBuilders:v9 atDayIndex:var0];
-      v21 = v22;
+      [(HDMCDaySummaryEnumerator *)self _addSample:sampleCopy toBuilders:buildersCopy atDayIndex:var0];
+      v21 = sampleCopy;
     }
 
     if ((([v21 hasUndeterminedDuration] | v19) & 1) == 0)
     {
-      [(HDMCDaySummaryEnumerator *)self _addSample:v22 toBuilders:v9 atDayIndex:v18];
+      [(HDMCDaySummaryEnumerator *)self _addSample:sampleCopy toBuilders:buildersCopy atDayIndex:v18];
     }
   }
 
@@ -437,23 +437,23 @@ LABEL_6:
       var1 = v17;
     }
 
-    [(HDMCDaySummaryEnumerator *)self _addSample:v22 toBuilders:v9 inRange:var0, var1];
+    [(HDMCDaySummaryEnumerator *)self _addSample:sampleCopy toBuilders:buildersCopy inRange:var0, var1];
   }
 }
 
-- (void)_addSample:(id)a3 toBuilders:(id)a4 inRange:(id)a5
+- (void)_addSample:(id)sample toBuilders:(id)builders inRange:(id)range
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v16 = a3;
-  v9 = a4;
+  var1 = range.var1;
+  var0 = range.var0;
+  sampleCopy = sample;
+  buildersCopy = builders;
   if (var1 >= 1)
   {
     v10 = var0 + var1;
     do
     {
       v11 = [MEMORY[0x277CCABB0] numberWithInteger:var0];
-      v12 = [v9 objectForKeyedSubscript:v11];
+      v12 = [buildersCopy objectForKeyedSubscript:v11];
 
       if (!v12)
       {
@@ -462,10 +462,10 @@ LABEL_6:
         v12 = [(HDMCDaySummaryBuilder *)v13 initWithProfile:WeakRetained dayIndex:var0 orderedWatchSources:self->_orderedWatchSources calendarCache:self->_calendarCache];
 
         v15 = [MEMORY[0x277CCABB0] numberWithInteger:var0];
-        [v9 setObject:v12 forKeyedSubscript:v15];
+        [buildersCopy setObject:v12 forKeyedSubscript:v15];
       }
 
-      [(HDMCDaySummaryBuilder *)v12 addCycleTrackingSample:v16];
+      [(HDMCDaySummaryBuilder *)v12 addCycleTrackingSample:sampleCopy];
 
       ++var0;
     }
@@ -474,12 +474,12 @@ LABEL_6:
   }
 }
 
-+ (id)daySummaryAtIndex:(int64_t)a3 profile:(id)a4 calendarCache:(id)a5 error:(id *)a6
++ (id)daySummaryAtIndex:(int64_t)index profile:(id)profile calendarCache:(id)cache error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
+  profileCopy = profile;
+  cacheCopy = cache;
   LOBYTE(v14) = 0;
-  v11 = [[HDMCDaySummaryEnumerator alloc] initWithProfile:v9 calendarCache:v10 dayIndexRange:a3 ascending:1 includeFactors:1 includeWristTemperature:0, v14];
+  v11 = [[HDMCDaySummaryEnumerator alloc] initWithProfile:profileCopy calendarCache:cacheCopy dayIndexRange:index ascending:1 includeFactors:1 includeWristTemperature:0, v14];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -491,23 +491,23 @@ LABEL_6:
   v15[2] = __74__HDMCDaySummaryEnumerator_daySummaryAtIndex_profile_calendarCache_error___block_invoke;
   v15[3] = &unk_27865A998;
   v15[4] = &v16;
-  [(HDMCDaySummaryEnumerator *)v11 enumerateWithError:a6 handler:v15];
+  [(HDMCDaySummaryEnumerator *)v11 enumerateWithError:error handler:v15];
   v12 = v17[5];
   _Block_object_dispose(&v16, 8);
 
   return v12;
 }
 
-+ (id)daySummariesInIndexRange:(id)a3 profile:(id)a4 calendarCache:(id)a5 error:(id *)a6
++ (id)daySummariesInIndexRange:(id)range profile:(id)profile calendarCache:(id)cache error:(id *)error
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v10 = MEMORY[0x277CBEB18];
-  v11 = a5;
-  v12 = a4;
+  cacheCopy = cache;
+  profileCopy = profile;
   v13 = [v10 arrayWithCapacity:var1];
   LOBYTE(v18) = 0;
-  v14 = [[HDMCDaySummaryEnumerator alloc] initWithProfile:v12 calendarCache:v11 dayIndexRange:var0 ascending:var1 includeFactors:1 includeWristTemperature:0, v18];
+  v14 = [[HDMCDaySummaryEnumerator alloc] initWithProfile:profileCopy calendarCache:cacheCopy dayIndexRange:var0 ascending:var1 includeFactors:1 includeWristTemperature:0, v18];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -515,7 +515,7 @@ LABEL_6:
   v19[3] = &unk_27865AEC8;
   v20 = v13;
   v15 = v13;
-  [(HDMCDaySummaryEnumerator *)v14 enumerateWithError:a6 handler:v19];
+  [(HDMCDaySummaryEnumerator *)v14 enumerateWithError:error handler:v19];
   v16 = [v15 copy];
 
   return v16;

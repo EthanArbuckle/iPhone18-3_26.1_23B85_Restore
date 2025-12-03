@@ -1,12 +1,12 @@
 @interface ATXAVRoutingUtils
-+ (BOOL)isTVExperienceAppWithBundleId:(id)a3;
++ (BOOL)isTVExperienceAppWithBundleId:(id)id;
 @end
 
 @implementation ATXAVRoutingUtils
 
-+ (BOOL)isTVExperienceAppWithBundleId:(id)a3
++ (BOOL)isTVExperienceAppWithBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2050000000;
@@ -25,8 +25,8 @@
 
   v5 = v4;
   _Block_object_dispose(&v10, 8);
-  v6 = [v4 sharedAVSystemController];
-  v7 = [v6 hasRouteSharingPolicyLongFormVideo:v3];
+  sharedAVSystemController = [v4 sharedAVSystemController];
+  v7 = [sharedAVSystemController hasRouteSharingPolicyLongFormVideo:idCopy];
 
   return v7;
 }

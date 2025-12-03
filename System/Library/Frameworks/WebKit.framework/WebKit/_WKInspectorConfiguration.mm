@@ -1,11 +1,11 @@
 @interface _WKInspectorConfiguration
 - (WKProcessPool)processPool;
 - (_WKInspectorConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)applyToWebViewConfiguration:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)applyToWebViewConfiguration:(id)configuration;
 - (void)dealloc;
-- (void)setProcessPool:(id)a3;
-- (void)setURLSchemeHandler:(id)a3 forURLScheme:(id)a4;
+- (void)setProcessPool:(id)pool;
+- (void)setURLSchemeHandler:(id)handler forURLScheme:(id)scheme;
 @end
 
 @implementation _WKInspectorConfiguration
@@ -19,15 +19,15 @@
   if (v2)
   {
     v4 = API::Object::apiObjectsUnderConstruction(v2);
-    v5 = [(_WKInspectorConfiguration *)v3 _apiObject];
+    _apiObject = [(_WKInspectorConfiguration *)v3 _apiObject];
     v11 = v3;
-    v12 = v5;
+    v12 = _apiObject;
     WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v4, &v12, &v11, v10);
-    v6 = [(_WKInspectorConfiguration *)v3 _apiObject];
-    *v6 = 0u;
-    *(v6 + 16) = 0u;
-    *(v6 + 32) = 0;
-    v7 = API::Object::Object(v6);
+    _apiObject2 = [(_WKInspectorConfiguration *)v3 _apiObject];
+    *_apiObject2 = 0u;
+    *(_apiObject2 + 16) = 0u;
+    *(_apiObject2 + 32) = 0;
+    v7 = API::Object::Object(_apiObject2);
     *v7 = &unk_1F111B510;
     *(v7 + 3) = 0;
     *(v7 + 4) = 0;
@@ -49,11 +49,11 @@
   }
 }
 
-- (void)setURLSchemeHandler:(id)a3 forURLScheme:(id)a4
+- (void)setURLSchemeHandler:(id)handler forURLScheme:(id)scheme
 {
-  WebKit::WebURLSchemeHandlerCocoa::create(a3, &v9);
+  WebKit::WebURLSchemeHandlerCocoa::create(handler, &v9);
   v10 = v9;
-  MEMORY[0x19EB02040](&v8, a4);
+  MEMORY[0x19EB02040](&v8, scheme);
   API::InspectorConfiguration::addURLSchemeHandler(&self->_configuration, &v10, &v8);
   v7 = v8;
   v8 = 0;
@@ -76,11 +76,11 @@
   }
 }
 
-- (void)setProcessPool:(id)a3
+- (void)setProcessPool:(id)pool
 {
-  if (a3)
+  if (pool)
   {
-    v3 = (a3 + 8);
+    v3 = (pool + 8);
   }
 
   else
@@ -113,7 +113,7 @@
   return v3;
 }
 
-- (void)applyToWebViewConfiguration:(id)a3
+- (void)applyToWebViewConfiguration:(id)configuration
 {
   v5 = *&self->_configuration.m_storage.data[28];
   if (v5)
@@ -154,7 +154,7 @@
         v12 = &stru_1F1147748;
       }
 
-      [a3 setURLSchemeHandler:v10 forURLScheme:v16];
+      [configuration setURLSchemeHandler:v10 forURLScheme:v16];
       v13 = v16;
       v16 = 0;
       if (v13)
@@ -199,22 +199,22 @@ LABEL_14:
     while (v6 != v7);
   }
 
-  v14 = [(_WKInspectorConfiguration *)self processPool];
-  if (v14)
+  processPool = [(_WKInspectorConfiguration *)self processPool];
+  if (processPool)
   {
-    [a3 setProcessPool:v14];
+    [configuration setProcessPool:processPool];
   }
 
-  v15 = [(_WKInspectorConfiguration *)self groupIdentifier];
-  if (v15)
+  groupIdentifier = [(_WKInspectorConfiguration *)self groupIdentifier];
+  if (groupIdentifier)
   {
-    [a3 _setGroupIdentifier:v15];
+    [configuration _setGroupIdentifier:groupIdentifier];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = *&self->_configuration.m_storage.data[28];
   if (v5)
   {
@@ -300,16 +300,16 @@ LABEL_14:
     while (v6 != v7);
   }
 
-  v15 = [(_WKInspectorConfiguration *)self processPool];
-  if (v15)
+  processPool = [(_WKInspectorConfiguration *)self processPool];
+  if (processPool)
   {
-    [v4 setProcessPool:v15];
+    [v4 setProcessPool:processPool];
   }
 
-  v16 = [(_WKInspectorConfiguration *)self groupIdentifier];
-  if (v16)
+  groupIdentifier = [(_WKInspectorConfiguration *)self groupIdentifier];
+  if (groupIdentifier)
   {
-    [v4 setGroupIdentifier:v16];
+    [v4 setGroupIdentifier:groupIdentifier];
   }
 
   return v4;

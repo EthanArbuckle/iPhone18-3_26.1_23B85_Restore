@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __57__NSComparisonPredicate_EFSQLGeneratorPredicateNode__log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_6 != -1)
   {
     dispatch_once(&log_onceToken_6, block);
@@ -27,66 +27,66 @@
   v32 = *MEMORY[0x1E69E9840];
   v7 = a3;
   v8 = a4;
-  v9 = [a1 leftExpression];
-  v10 = [v9 keyPath];
+  leftExpression = [self leftExpression];
+  keyPath = [leftExpression keyPath];
 
-  v11 = [v7 keyPathMappers];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  keyPathMappers = [v7 keyPathMappers];
+  v12 = [keyPathMappers objectForKeyedSubscript:keyPath];
 
   if (!v12)
   {
     v13 = [MEMORY[0x1E696AB18] log];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [a1 ef_publicDescription];
-      [(NSComparisonPredicate(EFSQLGeneratorPredicateNode) *)v10 predicateNodeFromPropertyMapper:v14 addingTablesUsed:buf, v13];
+      ef_publicDescription = [self ef_publicDescription];
+      [(NSComparisonPredicate(EFSQLGeneratorPredicateNode) *)keyPath predicateNodeFromPropertyMapper:ef_publicDescription addingTablesUsed:buf, v13];
     }
 
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"EFSQLGeneratorPredicateNode.m" lineNumber:131 description:{@"Couldn't map keypath %@ from predicate", v10}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFSQLGeneratorPredicateNode.m" lineNumber:131 description:{@"Couldn't map keypath %@ from predicate", keyPath}];
   }
 
-  v16 = [v12 tableName];
-  [v8 ef_addOptionalObject:v16];
-  v17 = [a1 rightExpression];
-  if ([v17 expressionType])
+  tableName = [v12 tableName];
+  [v8 ef_addOptionalObject:tableName];
+  rightExpression = [self rightExpression];
+  if ([rightExpression expressionType])
   {
-    if ([v17 expressionType] != 3)
+    if ([rightExpression expressionType] != 3)
     {
-      v30 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v30 handleFailureInMethod:a2 object:a1 file:@"EFSQLGeneratorPredicateNode.m" lineNumber:142 description:{@"Comparison expression to an invalid type: %lu", objc_msgSend(v17, "expressionType")}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"EFSQLGeneratorPredicateNode.m" lineNumber:142 description:{@"Comparison expression to an invalid type: %lu", objc_msgSend(rightExpression, "expressionType")}];
     }
 
-    v18 = [a1 rightExpression];
-    v19 = [v18 keyPath];
+    rightExpression2 = [self rightExpression];
+    keyPath2 = [rightExpression2 keyPath];
 
-    v20 = [v7 keyPathMappers];
-    v21 = [v20 objectForKeyedSubscript:v19];
+    keyPathMappers2 = [v7 keyPathMappers];
+    v21 = [keyPathMappers2 objectForKeyedSubscript:keyPath2];
 
-    v22 = [v21 tableName];
-    [v8 addObject:v22];
+    tableName2 = [v21 tableName];
+    [v8 addObject:tableName2];
 
-    v23 = -[EFSQLGeneratorComparisonPredicateNode initWithValueSource:predicateOperator:comparisonSource:]([EFSQLGeneratorComparisonPredicateNode alloc], "initWithValueSource:predicateOperator:comparisonSource:", v12, [a1 predicateOperatorType], v21);
+    v23 = -[EFSQLGeneratorComparisonPredicateNode initWithValueSource:predicateOperator:comparisonSource:]([EFSQLGeneratorComparisonPredicateNode alloc], "initWithValueSource:predicateOperator:comparisonSource:", v12, [self predicateOperatorType], v21);
   }
 
   else
   {
-    v24 = [a1 rightExpression];
-    v25 = [v24 constantValue];
-    v26 = v25;
-    if (v25)
+    rightExpression3 = [self rightExpression];
+    constantValue = [rightExpression3 constantValue];
+    v26 = constantValue;
+    if (constantValue)
     {
-      v27 = v25;
+      null = constantValue;
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v19 = v27;
+    keyPath2 = null;
 
-    v23 = -[EFSQLGeneratorComparisonPredicateNode initWithValueSource:predicateOperator:constantValue:]([EFSQLGeneratorComparisonPredicateNode alloc], "initWithValueSource:predicateOperator:constantValue:", v12, [a1 predicateOperatorType], v19);
+    v23 = -[EFSQLGeneratorComparisonPredicateNode initWithValueSource:predicateOperator:constantValue:]([EFSQLGeneratorComparisonPredicateNode alloc], "initWithValueSource:predicateOperator:constantValue:", v12, [self predicateOperatorType], keyPath2);
   }
 
   v28 = *MEMORY[0x1E69E9840];

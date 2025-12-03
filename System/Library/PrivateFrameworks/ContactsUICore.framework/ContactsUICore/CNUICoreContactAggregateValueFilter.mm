@@ -1,24 +1,24 @@
 @interface CNUICoreContactAggregateValueFilter
 - (CNUICoreContactAggregateValueFilter)init;
-- (CNUICoreContactAggregateValueFilter)initWithValueFilters:(id)a3;
+- (CNUICoreContactAggregateValueFilter)initWithValueFilters:(id)filters;
 - (NSString)description;
-- (id)contactByFilteringOutPropertyValueOfContact:(id)a3;
-- (void)filterPropertyValuesFromContact:(id)a3;
+- (id)contactByFilteringOutPropertyValueOfContact:(id)contact;
+- (void)filterPropertyValuesFromContact:(id)contact;
 @end
 
 @implementation CNUICoreContactAggregateValueFilter
 
 - (CNUICoreContactAggregateValueFilter)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNUICoreContactAggregateValueFilter)initWithValueFilters:(id)a3
+- (CNUICoreContactAggregateValueFilter)initWithValueFilters:(id)filters
 {
-  v5 = a3;
-  if (!v5)
+  filtersCopy = filters;
+  if (!filtersCopy)
   {
     if (CNGuardOSLog_cn_once_token_0 != -1)
     {
@@ -38,17 +38,17 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_valueFilters, a3);
+    objc_storeStrong(&v7->_valueFilters, filters);
     v9 = v8;
   }
 
   return v8;
 }
 
-- (id)contactByFilteringOutPropertyValueOfContact:(id)a3
+- (id)contactByFilteringOutPropertyValueOfContact:(id)contact
 {
-  v4 = a3;
-  if (!v4)
+  contactCopy = contact;
+  if (!contactCopy)
   {
     if (CNGuardOSLog_cn_once_token_0 != -1)
     {
@@ -62,34 +62,34 @@
     }
   }
 
-  v6 = [v4 mutableCopy];
+  v6 = [contactCopy mutableCopy];
   [(CNUICoreContactAggregateValueFilter *)self filterPropertyValuesFromContact:v6];
 
   return v6;
 }
 
-- (void)filterPropertyValuesFromContact:(id)a3
+- (void)filterPropertyValuesFromContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNUICoreContactAggregateValueFilter *)self valueFilters];
+  contactCopy = contact;
+  valueFilters = [(CNUICoreContactAggregateValueFilter *)self valueFilters];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__CNUICoreContactAggregateValueFilter_filterPropertyValuesFromContact___block_invoke;
   v7[3] = &unk_1E76E7828;
-  v8 = v4;
-  v6 = v4;
-  [v5 _cn_each:v7];
+  v8 = contactCopy;
+  v6 = contactCopy;
+  [valueFilters _cn_each:v7];
 }
 
 - (NSString)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNUICoreContactAggregateValueFilter *)self valueFilters];
-  v5 = [v3 appendName:@"valueFilters" object:v4];
+  valueFilters = [(CNUICoreContactAggregateValueFilter *)self valueFilters];
+  v5 = [v3 appendName:@"valueFilters" object:valueFilters];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

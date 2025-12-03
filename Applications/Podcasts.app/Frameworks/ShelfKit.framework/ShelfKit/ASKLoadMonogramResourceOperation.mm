@@ -1,5 +1,5 @@
 @interface ASKLoadMonogramResourceOperation
-- (ASKLoadMonogramResourceOperation)initWithMonogramResourceURL:(id)a3 size:(CGSize)a4;
+- (ASKLoadMonogramResourceOperation)initWithMonogramResourceURL:(id)l size:(CGSize)size;
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
 - (BOOL)isRTL;
@@ -8,21 +8,21 @@
 
 @implementation ASKLoadMonogramResourceOperation
 
-- (ASKLoadMonogramResourceOperation)initWithMonogramResourceURL:(id)a3 size:(CGSize)a4
+- (ASKLoadMonogramResourceOperation)initWithMonogramResourceURL:(id)l size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = ASKLoadMonogramResourceOperation;
   v8 = [(ASKLoadMonogramResourceOperation *)&v12 init];
   if (v8)
   {
-    v9 = [MTMonogramConfig monogramWithURL:v7];
+    v9 = [MTMonogramConfig monogramWithURL:lCopy];
     [(ASKLoadMonogramResourceOperation *)v8 setMonogramConfig:v9];
 
-    v10 = [(ASKLoadMonogramResourceOperation *)v8 monogramConfig];
-    [v10 setSize:{width, height}];
+    monogramConfig = [(ASKLoadMonogramResourceOperation *)v8 monogramConfig];
+    [monogramConfig setSize:{width, height}];
   }
 
   return v8;
@@ -30,13 +30,13 @@
 
 - (BOOL)isExecuting
 {
-  v3 = [(ASKLoadMonogramResourceOperation *)self isRendering];
-  if (v3)
+  isRendering = [(ASKLoadMonogramResourceOperation *)self isRendering];
+  if (isRendering)
   {
-    LOBYTE(v3) = [(ASKLoadMonogramResourceOperation *)self isCancelled]^ 1;
+    LOBYTE(isRendering) = [(ASKLoadMonogramResourceOperation *)self isCancelled]^ 1;
   }
 
-  return v3;
+  return isRendering;
 }
 
 - (BOOL)isFinished
@@ -52,11 +52,11 @@
 - (BOOL)isRTL
 {
   v2 = +[NSLocale preferredLanguages];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = [NSLocale characterDirectionForLanguage:v3]== &dword_0 + 2;
+    v4 = [NSLocale characterDirectionForLanguage:firstObject]== &dword_0 + 2;
   }
 
   else
@@ -69,32 +69,32 @@
 
 - (void)start
 {
-  v3 = [(ASKLoadMonogramResourceOperation *)self monogramConfig];
-  if (v3 && ![(ASKLoadMonogramResourceOperation *)self isCancelled])
+  monogramConfig = [(ASKLoadMonogramResourceOperation *)self monogramConfig];
+  if (monogramConfig && ![(ASKLoadMonogramResourceOperation *)self isCancelled])
   {
-    v4 = [(ASKLoadMonogramResourceOperation *)self monogramConfig];
-    v5 = [v4 formattedValue];
+    monogramConfig2 = [(ASKLoadMonogramResourceOperation *)self monogramConfig];
+    formattedValue = [monogramConfig2 formattedValue];
 
-    if (v5)
+    if (formattedValue)
     {
       [(ASKLoadMonogramResourceOperation *)self setIsRendering:1];
       v6 = [CNAvatarImageRenderer alloc];
       v7 = +[CNAvatarImageRendererSettings defaultSettings];
       v8 = [v6 initWithSettings:v7];
 
-      v9 = [(ASKLoadMonogramResourceOperation *)self monogramConfig];
-      [v9 size];
+      monogramConfig3 = [(ASKLoadMonogramResourceOperation *)self monogramConfig];
+      [monogramConfig3 size];
       v12 = [CNAvatarImageRenderingScope scopeWithPointSize:[(ASKLoadMonogramResourceOperation *)self isRTL] scale:0 rightToLeft:v10 style:v11, 1.0];
 
       objc_initWeak(&location, self);
-      v13 = [(ASKLoadMonogramResourceOperation *)self monogramConfig];
-      v14 = [v13 formattedValue];
+      monogramConfig4 = [(ASKLoadMonogramResourceOperation *)self monogramConfig];
+      formattedValue2 = [monogramConfig4 formattedValue];
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
       v16[2] = __41__ASKLoadMonogramResourceOperation_start__block_invoke;
       v16[3] = &unk_4AF400;
       objc_copyWeak(&v17, &location);
-      v15 = [v8 renderMonogramForString:v14 scope:v12 imageHandler:v16];
+      v15 = [v8 renderMonogramForString:formattedValue2 scope:v12 imageHandler:v16];
 
       objc_destroyWeak(&v17);
       objc_destroyWeak(&location);

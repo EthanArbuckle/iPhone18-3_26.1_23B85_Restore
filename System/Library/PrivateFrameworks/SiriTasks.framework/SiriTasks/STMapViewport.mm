@@ -1,38 +1,38 @@
 @interface STMapViewport
-- (STMapViewport)initWithCoder:(id)a3;
+- (STMapViewport)initWithCoder:(id)coder;
 - (id)_aceContextObjectValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STMapViewport
 
-- (STMapViewport)initWithCoder:(id)a3
+- (STMapViewport)initWithCoder:(id)coder
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = STMapViewport;
-  v5 = [(STSiriModelObject *)&v19 initWithCoder:v4];
+  v5 = [(STSiriModelObject *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"_eastLongitude"];
+    [coderCopy decodeDoubleForKey:@"_eastLongitude"];
     v5->_eastLongitude = v6;
-    [v4 decodeDoubleForKey:@"_westLongitude"];
+    [coderCopy decodeDoubleForKey:@"_westLongitude"];
     v5->_westLongitude = v7;
-    [v4 decodeDoubleForKey:@"_northLatitude"];
+    [coderCopy decodeDoubleForKey:@"_northLatitude"];
     v5->_northLatitude = v8;
-    [v4 decodeDoubleForKey:@"_southLatitude"];
+    [coderCopy decodeDoubleForKey:@"_southLatitude"];
     v5->_southLatitude = v9;
-    [v4 decodeDoubleForKey:@"_timeSinceViewportChanged"];
+    [coderCopy decodeDoubleForKey:@"_timeSinceViewportChanged"];
     v5->_timeSinceViewportChanged = v10;
-    [v4 decodeDoubleForKey:@"_timeSinceViewportEnteredForeground"];
+    [coderCopy decodeDoubleForKey:@"_timeSinceViewportEnteredForeground"];
     v5->_timeSinceViewportEnteredForeground = v11;
     v12 = MEMORY[0x277CBEB98];
     v20[0] = objc_opt_class();
     v20[1] = objc_opt_class();
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
     v14 = [v12 setWithArray:v13];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"_viewportVertices"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"_viewportVertices"];
     viewportVertices = v5->_viewportVertices;
     v5->_viewportVertices = v15;
   }
@@ -41,19 +41,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STMapViewport;
-  v4 = a3;
-  [(STSiriModelObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeDouble:@"_eastLongitude" forKey:{self->_eastLongitude, v5.receiver, v5.super_class}];
-  [v4 encodeDouble:@"_westLongitude" forKey:self->_westLongitude];
-  [v4 encodeDouble:@"_northLatitude" forKey:self->_northLatitude];
-  [v4 encodeDouble:@"_southLatitude" forKey:self->_southLatitude];
-  [v4 encodeDouble:@"_timeSinceViewportChanged" forKey:self->_timeSinceViewportChanged];
-  [v4 encodeDouble:@"_timeSinceViewportEnteredForeground" forKey:self->_timeSinceViewportEnteredForeground];
-  [v4 encodeObject:self->_viewportVertices forKey:@"_viewportVertices"];
+  coderCopy = coder;
+  [(STSiriModelObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeDouble:@"_eastLongitude" forKey:{self->_eastLongitude, v5.receiver, v5.super_class}];
+  [coderCopy encodeDouble:@"_westLongitude" forKey:self->_westLongitude];
+  [coderCopy encodeDouble:@"_northLatitude" forKey:self->_northLatitude];
+  [coderCopy encodeDouble:@"_southLatitude" forKey:self->_southLatitude];
+  [coderCopy encodeDouble:@"_timeSinceViewportChanged" forKey:self->_timeSinceViewportChanged];
+  [coderCopy encodeDouble:@"_timeSinceViewportEnteredForeground" forKey:self->_timeSinceViewportEnteredForeground];
+  [coderCopy encodeObject:self->_viewportVertices forKey:@"_viewportVertices"];
 }
 
 - (id)_aceContextObjectValue

@@ -1,12 +1,12 @@
 @interface TSDFrameSpec
-+ (TSDFrameSpec)frameSpecWithName:(id)a3;
++ (TSDFrameSpec)frameSpecWithName:(id)name;
 + (id)p_imageKeys;
 + (void)initialize;
 - (CGPoint)i_adornmentPosition;
 - (CGSize)i_adornmentSize;
-- (TSDFrameSpec)initWithBundle:(id)a3;
-- (id)i_providerForIndex:(int)a3 mask:(BOOL)a4;
-- (id)p_imageDataForKey:(id)a3;
+- (TSDFrameSpec)initWithBundle:(id)bundle;
+- (id)i_providerForIndex:(int)index mask:(BOOL)mask;
+- (id)p_imageDataForKey:(id)key;
 - (id)p_infoDictionary;
 - (void)i_removeInterestInProviders;
 - (void)p_loadImageMetrics;
@@ -16,7 +16,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = dispatch_queue_create("TSDFrameSpec frame dictionary", 0);
     v3 = qword_280A4CA58;
@@ -31,9 +31,9 @@
   }
 }
 
-+ (TSDFrameSpec)frameSpecWithName:(id)a3
++ (TSDFrameSpec)frameSpecWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -45,9 +45,9 @@
   v8[1] = 3221225472;
   v8[2] = sub_27679E118;
   v8[3] = &unk_27A6CDB08;
-  v9 = v3;
+  v9 = nameCopy;
   v10 = &v11;
-  v5 = v3;
+  v5 = nameCopy;
   dispatch_sync(v4, v8);
   v6 = v12[5];
 
@@ -56,10 +56,10 @@
   return v6;
 }
 
-- (TSDFrameSpec)initWithBundle:(id)a3
+- (TSDFrameSpec)initWithBundle:(id)bundle
 {
-  v6 = a3;
-  if (!v6)
+  bundleCopy = bundle;
+  if (!bundleCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSDFrameSpec initWithBundle:]");
@@ -75,7 +75,7 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->mBundle, a3);
+    objc_storeStrong(&v14->mBundle, bundle);
     v18 = objc_msgSend_p_infoDictionary(v15, v16, v17);
     objc_opt_class();
     v20 = objc_msgSend_objectForKey_(v18, v19, @"name");
@@ -83,7 +83,7 @@
 
     if (!v21)
     {
-      v24 = objc_msgSend_bundlePath(v6, v22, v23);
+      v24 = objc_msgSend_bundlePath(bundleCopy, v22, v23);
       v27 = objc_msgSend_lastPathComponent(v24, v25, v26);
       v21 = objc_msgSend_stringByDeletingPathExtension(v27, v28, v29);
     }
@@ -204,11 +204,11 @@
   return v3;
 }
 
-- (id)p_imageDataForKey:(id)a3
+- (id)p_imageDataForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_p_infoDictionary(self, v5, v6);
-  v9 = objc_msgSend_objectForKey_(v7, v8, v4);
+  v9 = objc_msgSend_objectForKey_(v7, v8, keyCopy);
 
   if (!v9 || (objc_msgSend_resourceURL(self->mBundle, v10, v11), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend_URLByAppendingPathComponent_(v12, v13, v9), v14 = objc_claimAutoreleasedReturnValue(), v12, objc_msgSend_readOnlyDataFromURL_(MEMORY[0x277D80828], v15, v14), v16 = objc_claimAutoreleasedReturnValue(), v14, !v16))
   {
@@ -218,7 +218,7 @@
     mFrameName = self->mFrameName;
     v24 = objc_msgSend_resourceURL(self->mBundle, v22, v23);
     v26 = objc_msgSend_URLByAppendingPathComponent_(v24, v25, v9);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v17, v27, v18, v20, 304, 0, "Unable to find image data for frame %{public}@ for key %{public}@. Filename %{public}@, URL %{public}@", mFrameName, v4, v9, v26);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v17, v27, v18, v20, 304, 0, "Unable to find image data for frame %{public}@ for key %{public}@. Filename %{public}@, URL %{public}@", mFrameName, keyCopy, v9, v26);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29);
     v16 = 0;
@@ -243,13 +243,13 @@
   v19 = *MEMORY[0x277D85DE8];
   if (atomic_fetch_add(&self->mInterest, 0xFFFFFFFF) == 1)
   {
-    v2 = self;
-    objc_sync_enter(v2);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = objc_msgSend_allValues(v2->mProvidersByKey, v3, v4, 0);
+    v5 = objc_msgSend_allValues(selfCopy->mProvidersByKey, v3, v4, 0);
     v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v14, v18, 16);
     if (v9)
     {
@@ -274,15 +274,15 @@
       while (v9);
     }
 
-    objc_msgSend_removeAllObjects(v2->mProvidersByKey, v12, v13);
-    objc_sync_exit(v2);
+    objc_msgSend_removeAllObjects(selfCopy->mProvidersByKey, v12, v13);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (id)i_providerForIndex:(int)a3 mask:(BOOL)a4
+- (id)i_providerForIndex:(int)index mask:(BOOL)mask
 {
-  v4 = a4;
-  if (a3 == 8 && a4)
+  maskCopy = mask;
+  if (index == 8 && mask)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDFrameSpec(Internal) i_providerForIndex:mask:]");
@@ -294,21 +294,21 @@
 
   v14 = objc_opt_class();
   v17 = objc_msgSend_p_imageKeys(v14, v15, v16);
-  v19 = objc_msgSend_objectAtIndex_(v17, v18, a3);
+  v19 = objc_msgSend_objectAtIndex_(v17, v18, index);
 
-  if (v4)
+  if (maskCopy)
   {
     v21 = objc_msgSend_stringByAppendingString_(v19, v20, @" Mask");
 
     v19 = v21;
   }
 
-  v22 = self;
-  objc_sync_enter(v22);
-  v25 = objc_msgSend_objectForKey_(v22->mProvidersByKey, v23, v19);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v25 = objc_msgSend_objectForKey_(selfCopy->mProvidersByKey, v23, v19);
   if (!v25)
   {
-    v26 = objc_msgSend_p_imageDataForKey_(v22, v24, v19);
+    v26 = objc_msgSend_p_imageDataForKey_(selfCopy, v24, v19);
     if (!v26)
     {
       v61 = MEMORY[0x277D81150];
@@ -332,23 +332,23 @@
     {
       if (objc_msgSend_isValid(v31, v32, v33))
       {
-        mProvidersByKey = v22->mProvidersByKey;
+        mProvidersByKey = selfCopy->mProvidersByKey;
         if (!mProvidersByKey)
         {
           v37 = objc_alloc_init(MEMORY[0x277CBEB38]);
-          v38 = v22->mProvidersByKey;
-          v22->mProvidersByKey = v37;
+          v38 = selfCopy->mProvidersByKey;
+          selfCopy->mProvidersByKey = v37;
 
-          mProvidersByKey = v22->mProvidersByKey;
+          mProvidersByKey = selfCopy->mProvidersByKey;
         }
 
         objc_msgSend_setObject_forKey_(mProvidersByKey, v34, v25, v19);
-        if (v22->mProviderWasInvalid)
+        if (selfCopy->mProviderWasInvalid)
         {
           v92 = MEMORY[0x277D81150];
           v96 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v39, "[TSDFrameSpec(Internal) i_providerForIndex:mask:]");
           v94 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v40, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDFrameSpec.m");
-          v43 = objc_msgSend_frameName(v22, v41, v42);
+          v43 = objc_msgSend_frameName(selfCopy, v41, v42);
           v44 = objc_opt_class();
           v45 = NSStringFromClass(v44);
           v48 = objc_msgSend_filename(v26, v46, v47);
@@ -358,7 +358,7 @@
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v92, v58, v96, v94, 430, 0, "Frame %@ had invalid image datas that have become valid within the same process. data <%{public}@: filename=%@, anonymousUniqueIdentifier=%{public}@, digestString=%@> ", v43, v45, v48, v54, v57);
 
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v59, v60);
-          v22->mProviderWasInvalid = 0;
+          selfCopy->mProviderWasInvalid = 0;
         }
 
         goto LABEL_19;
@@ -381,11 +381,11 @@
     v76 = objc_msgSend_anonymousUniqueIdentifier(v26, v74, v75);
     v79 = objc_msgSend_UUIDString(v76, v77, v78);
     v82 = objc_msgSend_digestString(v26, v80, v81);
-    v85 = objc_msgSend_frameName(v22, v83, v84);
+    v85 = objc_msgSend_frameName(selfCopy, v83, v84);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v91, v86, v97, v95, 422, 0, "Unable to make a valid image provider for image data <%{public}@: filename=%@, anonymousUniqueIdentifier=%{public}@, digestString=%@>  for frame %@. validation status %zu ", v70, v73, v79, v82, v85, v93);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v87, v88);
-    v22->mProviderWasInvalid = 1;
+    selfCopy->mProviderWasInvalid = 1;
 LABEL_19:
 
     goto LABEL_20;
@@ -393,7 +393,7 @@ LABEL_19:
 
   v26 = 0;
 LABEL_20:
-  objc_sync_exit(v22);
+  objc_sync_exit(selfCopy);
 
   v89 = v25;
   return v25;

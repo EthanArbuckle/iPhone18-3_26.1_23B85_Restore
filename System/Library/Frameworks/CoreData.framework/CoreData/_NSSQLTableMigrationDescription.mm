@@ -1,46 +1,46 @@
 @interface _NSSQLTableMigrationDescription
 - (id)_sourceRootEntity;
-- (id)createDefaultValuePopulationStatementsForAddedColumnsEntityMigration:(uint64_t)a3 migrationContext:;
-- (id)createFEKUpdateStatementsForEntityMigration:(uint64_t)a1 migrationContext:(uint64_t)a2;
+- (id)createDefaultValuePopulationStatementsForAddedColumnsEntityMigration:(uint64_t)migration migrationContext:;
+- (id)createFEKUpdateStatementsForEntityMigration:(uint64_t)migration migrationContext:(uint64_t)context;
 - (id)description;
-- (uint64_t)_doAttributesHaveChangesRequiringCopyForMigration:(uint64_t)a3 withContext:;
-- (uint64_t)_doRelationshipsHaveChangesRequiringCopyForMigration:(uint64_t)a3 inContext:;
-- (uint64_t)_ownSourceRootTableNeedsRenameInMigrationContext:(uint64_t)a1;
+- (uint64_t)_doAttributesHaveChangesRequiringCopyForMigration:(uint64_t)migration withContext:;
+- (uint64_t)_doRelationshipsHaveChangesRequiringCopyForMigration:(uint64_t)migration inContext:;
+- (uint64_t)_ownSourceRootTableNeedsRenameInMigrationContext:(uint64_t)context;
 - (uint64_t)_transformedManyToManys;
 - (uint64_t)addEntityMigrationDescription:(uint64_t)result;
-- (uint64_t)appendStatementsToCompleteMigration:(uint64_t)a3 migrationContext:;
-- (uint64_t)appendStatementsToCreateOrDropTables:(uint64_t)a3 migrationContext:;
-- (uint64_t)appendStatementsToRenameTables:(uint64_t)a3 migrationContext:;
-- (uint64_t)createUpdateStatementForEntityMigration:(uint64_t)a1 migrationContext:(uint64_t)a2;
-- (uint64_t)newCloudKitMetadataUpdateStatements:(uint64_t)a1;
-- (uint64_t)newCopyAndInsertStatementForToOne:(void *)a1 toManyToMany:(__CFString *)a2 fromTableName:(uint64_t)a3 invertColumns:(int)a4 migrationContext:(uint64_t)a5;
-- (void)_determineSchemaTransformationComplexityInMigrationContext:(id *)a1;
-- (void)_retainedRemovedSubEntitiesOfEntity:(uint64_t)a1;
-- (void)_sourceRootTableNameInMigrationContext:(uint64_t)a1;
-- (void)_tempNameForTableName:(uint64_t)a1;
-- (void)appendDefaultValueStatementsToCompleteMigration:(uint64_t)a3 migrationContext:;
-- (void)appendStatementsToPerformMigration:(uint64_t)a3 migrationContext:;
-- (void)createInsertStatementForEntityMigration:(uint64_t)a3 migrationContext:;
+- (uint64_t)appendStatementsToCompleteMigration:(uint64_t)migration migrationContext:;
+- (uint64_t)appendStatementsToCreateOrDropTables:(uint64_t)tables migrationContext:;
+- (uint64_t)appendStatementsToRenameTables:(uint64_t)tables migrationContext:;
+- (uint64_t)createUpdateStatementForEntityMigration:(uint64_t)migration migrationContext:(uint64_t)context;
+- (uint64_t)newCloudKitMetadataUpdateStatements:(uint64_t)statements;
+- (uint64_t)newCopyAndInsertStatementForToOne:(void *)one toManyToMany:(__CFString *)many fromTableName:(uint64_t)name invertColumns:(int)columns migrationContext:(uint64_t)context;
+- (void)_determineSchemaTransformationComplexityInMigrationContext:(id *)context;
+- (void)_retainedRemovedSubEntitiesOfEntity:(uint64_t)entity;
+- (void)_sourceRootTableNameInMigrationContext:(uint64_t)context;
+- (void)_tempNameForTableName:(uint64_t)name;
+- (void)appendDefaultValueStatementsToCompleteMigration:(uint64_t)migration migrationContext:;
+- (void)appendStatementsToPerformMigration:(uint64_t)migration migrationContext:;
+- (void)createInsertStatementForEntityMigration:(uint64_t)migration migrationContext:;
 - (void)dealloc;
-- (void)initWithRootEntity:(int)a3 migrationType:;
+- (void)initWithRootEntity:(int)entity migrationType:;
 @end
 
 @implementation _NSSQLTableMigrationDescription
 
-- (void)initWithRootEntity:(int)a3 migrationType:
+- (void)initWithRootEntity:(int)entity migrationType:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = _NSSQLTableMigrationDescription;
   v5 = objc_msgSendSuper2(&v7, sel_init);
   if (v5)
   {
     v5[1] = a2;
-    *(v5 + 6) = a3;
+    *(v5 + 6) = entity;
     v5[8] = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:8];
     v5[12] = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:4];
     v5[14] = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -113,15 +113,15 @@
   {
     if (*(a2 + 48) == 1)
     {
-      v4 = [a2 sourceEntity];
+      sourceEntity = [a2 sourceEntity];
     }
 
     else
     {
-      v4 = *(a2 + 32);
+      sourceEntity = *(a2 + 32);
     }
 
-    [*(v3 + 64) setObject:a2 forKey:{objc_msgSend(v4, "name")}];
+    [*(v3 + 64) setObject:a2 forKey:{objc_msgSend(sourceEntity, "name")}];
     if (*(a2 + 96) == 1 && !*(v3 + 104))
     {
       *(v3 + 104) = [MEMORY[0x1E696AD98] numberWithBool:1];
@@ -199,7 +199,7 @@ LABEL_24:
   return [v6 addObject:a2];
 }
 
-- (uint64_t)_doAttributesHaveChangesRequiringCopyForMigration:(uint64_t)a3 withContext:
+- (uint64_t)_doAttributesHaveChangesRequiringCopyForMigration:(uint64_t)migration withContext:
 {
   v39 = *MEMORY[0x1E69E9840];
   if (a2)
@@ -212,7 +212,7 @@ LABEL_24:
     v4 = 0;
   }
 
-  v5 = [a2 sourceEntity];
+  sourceEntity = [a2 sourceEntity];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -246,13 +246,13 @@ LABEL_24:
         v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", objc_msgSend(objc_msgSend(v9, "propertyDescription"), "_namespace"), v10];
       }
 
-      v11 = [(NSSQLEntity *)v5 _sqlPropertyWithRenamingIdentifier:v10];
+      v11 = [(NSSQLEntity *)sourceEntity _sqlPropertyWithRenamingIdentifier:v10];
       if (v11)
       {
         v12 = v9;
 LABEL_18:
-        v14 = [v11 propertyType];
-        if (v14 != [v12 propertyType] || objc_msgSend(v11, "propertyType") == 1 && objc_msgSend(v12, "propertyType") == 1 && objc_msgSend(objc_msgSend(v11, "attributeDescription"), "attributeType") == 1800 && objc_msgSend(objc_msgSend(v12, "attributeDescription"), "attributeType") == 2200)
+        propertyType = [v11 propertyType];
+        if (propertyType != [v12 propertyType] || objc_msgSend(v11, "propertyType") == 1 && objc_msgSend(v12, "propertyType") == 1 && objc_msgSend(objc_msgSend(v11, "attributeDescription"), "attributeType") == 1800 && objc_msgSend(objc_msgSend(v12, "attributeDescription"), "attributeType") == 2200)
         {
           goto LABEL_52;
         }
@@ -276,7 +276,7 @@ LABEL_18:
             goto LABEL_52;
           }
 
-          v17 = *(a1 + 128);
+          v17 = *(self + 128);
           v37[0] = v11;
           v37[1] = v12;
           [v17 addObject:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v37, 2)}];
@@ -299,11 +299,11 @@ LABEL_18:
 
         if (v15 && [objc_msgSend(v11 "propertyDescription")] && (objc_msgSend(objc_msgSend(v12, "propertyDescription"), "isOptional") & 1) == 0)
         {
-          v19 = *(a1 + 168);
+          v19 = *(self + 168);
           if (!v19)
           {
             v19 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-            *(a1 + 168) = v19;
+            *(self + 168) = v19;
           }
 
           [v19 addObject:v12];
@@ -312,23 +312,23 @@ LABEL_18:
         continue;
       }
 
-      v12 = [(NSSQLEntity *)v5 subhierarchyColumnMatching:v9];
+      v12 = [(NSSQLEntity *)sourceEntity subhierarchyColumnMatching:v9];
       if (v12)
       {
-        v13 = *(a1 + 144);
+        v13 = *(self + 144);
         if (!v13)
         {
           v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-          *(a1 + 144) = v13;
+          *(self + 144) = v13;
         }
 
         [v13 addObject:v12];
         goto LABEL_18;
       }
 
-      if (a3)
+      if (migration)
       {
-        v20 = *(a3 + 48);
+        v20 = *(migration + 48);
         if (v20)
         {
           v27 = 0;
@@ -337,14 +337,14 @@ LABEL_18:
           v30 = __Block_byref_object_copy__35;
           v31 = __Block_byref_object_dispose__35;
           v32 = 0;
-          v21 = [(NSSQLiteConnection *)v20 fetchTableCreationSQL];
+          fetchTableCreationSQL = [(NSSQLiteConnection *)v20 fetchTableCreationSQL];
           v26[0] = MEMORY[0x1E69E9820];
           v26[1] = 3221225472;
           v26[2] = __97___NSSQLTableMigrationDescription__doAttributesHaveChangesRequiringCopyForMigration_withContext___block_invoke;
           v26[3] = &unk_1E6EC4608;
-          v26[4] = v5;
+          v26[4] = sourceEntity;
           v26[5] = &v27;
-          [v21 enumerateObjectsUsingBlock:v26];
+          [fetchTableCreationSQL enumerateObjectsUsingBlock:v26];
           v22 = v28[5];
           {
             _Block_object_dispose(&v27, 8);
@@ -357,7 +357,7 @@ LABEL_52:
         }
       }
 
-      [*(a1 + 112) addObject:v9];
+      [*(self + 112) addObject:v9];
     }
 
     v6 = [v4 countByEnumeratingWithState:&v33 objects:v38 count:16];
@@ -375,7 +375,7 @@ LABEL_53:
   return result;
 }
 
-- (uint64_t)_doRelationshipsHaveChangesRequiringCopyForMigration:(uint64_t)a3 inContext:
+- (uint64_t)_doRelationshipsHaveChangesRequiringCopyForMigration:(uint64_t)migration inContext:
 {
   v72 = *MEMORY[0x1E69E9840];
   if (a2)
@@ -388,10 +388,10 @@ LABEL_53:
     v4 = 0;
   }
 
-  v5 = [a2 sourceEntity];
-  if (a3)
+  sourceEntity = [a2 sourceEntity];
+  if (migration)
   {
-    v6 = *(a3 + 32);
+    v6 = *(migration + 32);
   }
 
   else
@@ -415,11 +415,11 @@ LABEL_53:
   }
 
   result = [v7 countByEnumeratingWithState:&v62 objects:v71 count:16];
-  v9 = a1;
+  selfCopy5 = self;
   if (result)
   {
     v10 = result;
-    v57 = a3;
+    migrationCopy = migration;
     v61 = *v63;
     v59 = v7;
     do
@@ -433,7 +433,7 @@ LABEL_53:
         }
 
         v12 = *(*(&v62 + 1) + 8 * v11);
-        v13 = -[NSSQLEntity _sqlPropertyWithRenamingIdentifier:](v5, [objc_msgSend(v12 "propertyDescription")]);
+        v13 = -[NSSQLEntity _sqlPropertyWithRenamingIdentifier:](sourceEntity, [objc_msgSend(v12 "propertyDescription")]);
         if (!v13)
         {
           if ([v12 propertyType] != 7)
@@ -456,11 +456,11 @@ LABEL_53:
             goto LABEL_38;
           }
 
-          v32 = [v12 name];
-          if (!v5 || (v13 = [*(v5 + 40) objectForKey:v32]) == 0)
+          name = [v12 name];
+          if (!sourceEntity || (v13 = [*(sourceEntity + 40) objectForKey:name]) == 0)
           {
             v33 = *(v12 + 56);
-            v34 = [-[_NSSQLiteStoreMigrator entityMigrationDescriptionForEntity:](v57 objc_msgSend(v33];
+            v34 = [-[_NSSQLiteStoreMigrator entityMigrationDescriptionForEntity:](migrationCopy objc_msgSend(v33];
             v35 = [objc_msgSend(v33 "propertyDescription")];
             v36 = v34;
             v7 = v59;
@@ -473,15 +473,15 @@ LABEL_53:
 LABEL_38:
             if (*(v12 + 24) == 7)
             {
-              [*(v9 + 112) addObject:{objc_msgSend(v12, "foreignKey")}];
+              [*(selfCopy5 + 112) addObject:{objc_msgSend(v12, "foreignKey")}];
               if (*(v12 + 72))
               {
-                [*(v9 + 112) addObject:?];
+                [*(selfCopy5 + 112) addObject:?];
               }
 
               if (*(v12 + 80))
               {
-                [*(v9 + 112) addObject:?];
+                [*(selfCopy5 + 112) addObject:?];
               }
             }
 
@@ -490,47 +490,47 @@ LABEL_38:
         }
 
         v14 = v13;
-        v15 = [v13 propertyType];
-        if (v15 != [v12 propertyType])
+        propertyType = [v13 propertyType];
+        if (propertyType != [v12 propertyType])
         {
           goto LABEL_84;
         }
 
-        v16 = [v12 destinationEntity];
-        v17 = [v14 destinationEntity];
-        if (v15 == 7)
+        destinationEntity = [v12 destinationEntity];
+        destinationEntity2 = [v14 destinationEntity];
+        if (propertyType == 7)
         {
-          v18 = v17;
+          v18 = destinationEntity2;
           if ([objc_msgSend(v14 "propertyDescription")] && !objc_msgSend(objc_msgSend(v12, "propertyDescription"), "isOptional"))
           {
             goto LABEL_84;
           }
 
-          v19 = [v14 foreignKey];
-          v20 = [v12 foreignKey];
-          if (v19)
+          foreignKey = [v14 foreignKey];
+          foreignKey2 = [v12 foreignKey];
+          if (foreignKey)
           {
-            v21 = v20;
-            if (v20)
+            v21 = foreignKey2;
+            if (foreignKey2)
             {
-              v22 = [v19 columnName];
-              v23 = [v21 columnName];
-              v24 = v22;
-              v9 = a1;
-              if (([v24 isEqual:v23] & 1) == 0)
+              columnName = [foreignKey columnName];
+              columnName2 = [v21 columnName];
+              v24 = columnName;
+              selfCopy5 = self;
+              if (([v24 isEqual:columnName2] & 1) == 0)
               {
-                v25 = *(a1 + 128);
-                v70[0] = v19;
+                v25 = *(self + 128);
+                v70[0] = foreignKey;
                 v70[1] = v21;
                 v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:2];
                 v27 = v25;
-                v9 = a1;
+                selfCopy5 = self;
                 [v27 addObject:v26];
               }
             }
           }
 
-          if (v16 && *(v16 + 188) != *(v16 + 184))
+          if (destinationEntity && *(destinationEntity + 188) != *(destinationEntity + 184))
           {
             if (v18)
             {
@@ -554,7 +554,7 @@ LABEL_38:
                 v30 = 0;
               }
 
-              v31 = *(v9 + 112);
+              v31 = *(selfCopy5 + 112);
               goto LABEL_55;
             }
 
@@ -566,18 +566,18 @@ LABEL_38:
                 v40 = *(v12 + 72);
                 if (v40)
                 {
-                  v41 = [v14[9] columnName];
-                  v42 = [v40 columnName];
-                  v43 = v41;
-                  v9 = a1;
-                  if (([v43 isEqual:v42] & 1) == 0)
+                  columnName3 = [v14[9] columnName];
+                  columnName4 = [v40 columnName];
+                  v43 = columnName3;
+                  selfCopy5 = self;
+                  if (([v43 isEqual:columnName4] & 1) == 0)
                   {
-                    v44 = *(a1 + 128);
+                    v44 = *(self + 128);
                     v68[0] = v39;
                     v68[1] = v40;
                     v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:2];
                     v46 = v44;
-                    v9 = a1;
+                    selfCopy5 = self;
                     [v46 addObject:v45];
                   }
                 }
@@ -609,7 +609,7 @@ LABEL_84:
                 goto LABEL_85;
               }
 
-              v29 = *(v9 + 176);
+              v29 = *(selfCopy5 + 176);
               v69 = v14[9];
               v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v69 count:1];
               v31 = v29;
@@ -626,7 +626,7 @@ LABEL_57:
               v50 = v49 != 0;
               if (!v47 && v49)
               {
-                [*(v9 + 112) addObject:v49];
+                [*(selfCopy5 + 112) addObject:v49];
 LABEL_75:
                 if (*(v12 + 88) == 1)
                 {
@@ -660,7 +660,7 @@ LABEL_64:
 
                 if ((v55 & 1) == 0 && ([objc_msgSend(v47 "columnName")] & 1) == 0)
                 {
-                  v51 = *(v9 + 128);
+                  v51 = *(selfCopy5 + 128);
                   v66[0] = v47;
                   v66[1] = v49;
                   v52 = MEMORY[0x1E695DEC8];
@@ -677,7 +677,7 @@ LABEL_64:
                   goto LABEL_84;
                 }
 
-                v51 = *(v9 + 176);
+                v51 = *(selfCopy5 + 176);
                 v67 = v47;
                 v52 = MEMORY[0x1E695DEC8];
                 v53 = &v67;
@@ -719,36 +719,36 @@ LABEL_85:
   return result;
 }
 
-- (void)_determineSchemaTransformationComplexityInMigrationContext:(id *)a1
+- (void)_determineSchemaTransformationComplexityInMigrationContext:(id *)context
 {
   v93 = *MEMORY[0x1E69E9840];
-  if (a1[13])
+  if (context[13])
   {
     goto LABEL_114;
   }
 
-  if (([objc_msgSend(a1[1] "tableName")] & 1) == 0)
+  if (([objc_msgSend(context[1] "tableName")] & 1) == 0)
   {
-    if (![objc_msgSend(objc_msgSend(a1[1] "entityDescription")])
+    if (![objc_msgSend(objc_msgSend(context[1] "entityDescription")])
     {
       v51 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:1];
       goto LABEL_100;
     }
 
-    v3 = a1[15];
-    v92 = vextq_s8(*(a1 + 1), *(a1 + 1), 8uLL);
+    v3 = context[15];
+    v92 = vextq_s8(*(context + 1), *(context + 1), 8uLL);
     [v3 addObject:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v92, 2)}];
   }
 
-  if (![a1[5] count] || objc_msgSend(a1[4], "count") || objc_msgSend(a1[7], "count") || objc_msgSend(a1[6], "count"))
+  if (![context[5] count] || objc_msgSend(context[4], "count") || objc_msgSend(context[7], "count") || objc_msgSend(context[6], "count"))
   {
-    a1[19] = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    a1[20] = objc_alloc_init(MEMORY[0x1E695DFA8]);
+    context[19] = objc_alloc_init(MEMORY[0x1E695DFA8]);
+    context[20] = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
     v84 = 0u;
-    v4 = a1[5];
+    v4 = context[5];
     v5 = [v4 countByEnumeratingWithState:&v81 objects:v91 count:16];
     if (v5)
     {
@@ -762,18 +762,18 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v81 + 1) + 8 * v7) sourceEntity];
-        v9 = v8;
-        v10 = v8 ? [(NSSQLEntity *)v8 entitySpecificPropertiesPassing:?]: 0;
+        sourceEntity = [*(*(&v81 + 1) + 8 * v7) sourceEntity];
+        v9 = sourceEntity;
+        v10 = sourceEntity ? [(NSSQLEntity *)sourceEntity entitySpecificPropertiesPassing:?]: 0;
         if ([v10 count])
         {
           break;
         }
 
         v11 = [objc_msgSend(objc_msgSend(v9 "entityDescription")];
-        if (!v11 || (v12 = [objc_msgSend(v9 "name")], v13 = a1 + 20, (v12 & 1) == 0))
+        if (!v11 || (v12 = [objc_msgSend(v9 "name")], v13 = context + 20, (v12 & 1) == 0))
         {
-          v13 = a1 + 19;
+          v13 = context + 19;
         }
 
         [*v13 addObject:v9];
@@ -794,13 +794,13 @@ LABEL_11:
     else
     {
 LABEL_24:
-      if (![a1[4] count] || objc_msgSend(a1[5], "count") || objc_msgSend(a1[7], "count") || objc_msgSend(a1[6], "count"))
+      if (![context[4] count] || objc_msgSend(context[5], "count") || objc_msgSend(context[7], "count") || objc_msgSend(context[6], "count"))
       {
         v79 = 0u;
         v80 = 0u;
         v77 = 0u;
         v78 = 0u;
-        obj = a1[4];
+        obj = context[4];
         v15 = [obj countByEnumeratingWithState:&v77 objects:v90 count:16];
         if (v15)
         {
@@ -868,17 +868,17 @@ LABEL_24:
 
                       if (v24 == 7)
                       {
-                        [a1[14] addObject:{objc_msgSend(*(*(&v73 + 1) + 8 * i), "foreignKey")}];
+                        [context[14] addObject:{objc_msgSend(*(*(&v73 + 1) + 8 * i), "foreignKey")}];
                         if (*(v23 + 72))
                         {
-                          [a1[14] addObject:?];
+                          [context[14] addObject:?];
                         }
 
                         v23 = *(v23 + 80);
                         if (v23)
                         {
 LABEL_47:
-                          [a1[14] addObject:v23];
+                          [context[14] addObject:v23];
                         }
                       }
                     }
@@ -905,7 +905,7 @@ LABEL_47:
         v72 = 0u;
         v69 = 0u;
         v70 = 0u;
-        v26 = a1[6];
+        v26 = context[6];
         v27 = [v26 countByEnumeratingWithState:&v69 objects:v88 count:16];
         if (v27)
         {
@@ -920,7 +920,7 @@ LABEL_47:
               }
 
               v30 = *(*(&v69 + 1) + 8 * j);
-              if ([(_NSSQLTableMigrationDescription *)a1 _doAttributesHaveChangesRequiringCopyForMigration:v30 withContext:a2]|| [(_NSSQLTableMigrationDescription *)a1 _doRelationshipsHaveChangesRequiringCopyForMigration:v30 inContext:a2])
+              if ([(_NSSQLTableMigrationDescription *)context _doAttributesHaveChangesRequiringCopyForMigration:v30 withContext:a2]|| [(_NSSQLTableMigrationDescription *)context _doRelationshipsHaveChangesRequiringCopyForMigration:v30 inContext:a2])
               {
                 v51 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:1];
                 goto LABEL_100;
@@ -941,7 +941,7 @@ LABEL_47:
         v68 = 0u;
         v65 = 0u;
         v66 = 0u;
-        v31 = a1[7];
+        v31 = context[7];
         v32 = [v31 countByEnumeratingWithState:&v65 objects:v87 count:16];
         if (v32)
         {
@@ -970,16 +970,16 @@ LABEL_47:
                 v37 = 0;
               }
 
-              v38 = [*(*(&v65 + 1) + 8 * v35) sourceEntity];
+              sourceEntity2 = [*(*(&v65 + 1) + 8 * v35) sourceEntity];
               v63 = 0u;
               v64 = 0u;
               v61 = 0u;
               v62 = 0u;
               v59 = v35;
               v39 = v34;
-              if (v38)
+              if (sourceEntity2)
               {
-                v40 = [(NSSQLEntity *)v38 entitySpecificPropertiesPassing:v34];
+                v40 = [(NSSQLEntity *)sourceEntity2 entitySpecificPropertiesPassing:v34];
               }
 
               else
@@ -1026,7 +1026,7 @@ LABEL_47:
                         goto LABEL_121;
                       }
 
-                      v47 = a1[22];
+                      v47 = context[22];
                       v85 = v44;
                       [v47 addObject:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v85, 1)}];
                     }
@@ -1045,7 +1045,7 @@ LABEL_47:
 
               v34 = v39;
               v33 = obja;
-              if ([(_NSSQLTableMigrationDescription *)a1 _doAttributesHaveChangesRequiringCopyForMigration:v36 withContext:a2]|| [(_NSSQLTableMigrationDescription *)a1 _doRelationshipsHaveChangesRequiringCopyForMigration:v36 inContext:a2])
+              if ([(_NSSQLTableMigrationDescription *)context _doAttributesHaveChangesRequiringCopyForMigration:v36 withContext:a2]|| [(_NSSQLTableMigrationDescription *)context _doRelationshipsHaveChangesRequiringCopyForMigration:v36 inContext:a2])
               {
 LABEL_121:
                 v51 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:1];
@@ -1083,27 +1083,27 @@ LABEL_121:
 
 LABEL_100:
   v50 = 0;
-  a1[13] = v51;
+  context[13] = v51;
 LABEL_101:
-  if (([a1[13] BOOLValue] & 1) != 0 || !objc_msgSend(a1[19], "count") && !objc_msgSend(a1[14], "count") && !objc_msgSend(a1[15], "count") && !objc_msgSend(a1[16], "count") && !objc_msgSend(a1[21], "count") && !objc_msgSend(a1[18], "count") && !objc_msgSend(a1[20], "count") && !objc_msgSend(a1[22], "count"))
+  if (([context[13] BOOLValue] & 1) != 0 || !objc_msgSend(context[19], "count") && !objc_msgSend(context[14], "count") && !objc_msgSend(context[15], "count") && !objc_msgSend(context[16], "count") && !objc_msgSend(context[21], "count") && !objc_msgSend(context[18], "count") && !objc_msgSend(context[20], "count") && !objc_msgSend(context[22], "count"))
   {
 
-    a1[19] = 0;
-    a1[14] = 0;
+    context[19] = 0;
+    context[14] = 0;
 
-    a1[15] = 0;
-    a1[16] = 0;
+    context[15] = 0;
+    context[16] = 0;
 
-    a1[21] = 0;
-    a1[18] = 0;
+    context[21] = 0;
+    context[18] = 0;
 
-    a1[20] = 0;
-    a1[22] = 0;
+    context[20] = 0;
+    context[22] = 0;
   }
 
-  if ((v50 & 1) != 0 && !a1[13])
+  if ((v50 & 1) != 0 && !context[13])
   {
-    a1[13] = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:0];
+    context[13] = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:0];
   }
 
 LABEL_114:
@@ -1113,17 +1113,17 @@ LABEL_114:
 - (id)_sourceRootEntity
 {
   v14 = *MEMORY[0x1E69E9840];
-  result = *(a1 + 16);
+  result = *(self + 16);
   if (!result)
   {
-    v3 = [objc_msgSend(*(a1 + 64) objectForKey:{objc_msgSend(*(a1 + 8), "name")), "sourceEntity"}];
+    v3 = [objc_msgSend(*(self + 64) objectForKey:{objc_msgSend(*(self + 8), "name")), "sourceEntity"}];
     if (!v3)
     {
       v11 = 0u;
       v12 = 0u;
       v9 = 0u;
       v10 = 0u;
-      v5 = *(a1 + 64);
+      v5 = *(self + 64);
       v3 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
@@ -1138,7 +1138,7 @@ LABEL_7:
             objc_enumerationMutation(v5);
           }
 
-          v3 = [objc_msgSend(*(a1 + 64) objectForKey:{*(*(&v9 + 1) + 8 * v8)), "sourceEntity"}];
+          v3 = [objc_msgSend(*(self + 64) objectForKey:{*(*(&v9 + 1) + 8 * v8)), "sourceEntity"}];
           if (v3)
           {
             break;
@@ -1160,75 +1160,75 @@ LABEL_7:
     }
 
     result = [v3 rootEntity];
-    *(a1 + 16) = result;
+    *(self + 16) = result;
   }
 
   v4 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (uint64_t)_ownSourceRootTableNeedsRenameInMigrationContext:(uint64_t)a1
+- (uint64_t)_ownSourceRootTableNeedsRenameInMigrationContext:(uint64_t)context
 {
-  if (*(a1 + 24) < 2u)
+  if (*(context + 24) < 2u)
   {
     return 0;
   }
 
-  v5 = *(a1 + 104);
+  v5 = *(context + 104);
   if (!v5)
   {
-    [(_NSSQLTableMigrationDescription *)a1 _determineSchemaTransformationComplexityInMigrationContext:a2];
-    v5 = *(a1 + 104);
+    [(_NSSQLTableMigrationDescription *)context _determineSchemaTransformationComplexityInMigrationContext:a2];
+    v5 = *(context + 104);
   }
 
   return [v5 BOOLValue];
 }
 
-- (void)_sourceRootTableNameInMigrationContext:(uint64_t)a1
+- (void)_sourceRootTableNameInMigrationContext:(uint64_t)context
 {
   do
   {
-    if (!a1)
+    if (!context)
     {
       return 0;
     }
 
-    v3 = a1;
-    v4 = [(_NSSQLTableMigrationDescription *)a1 _sourceRootEntity];
-    a1 = [(_NSSQLiteStoreMigrator *)a2 tableMigrationDescriptionForEntity:v4];
+    contextCopy = context;
+    _sourceRootEntity = [(_NSSQLTableMigrationDescription *)context _sourceRootEntity];
+    context = [(_NSSQLiteStoreMigrator *)a2 tableMigrationDescriptionForEntity:_sourceRootEntity];
   }
 
-  while (a1 != v3);
-  v5 = [v4 tableName];
-  if (![(_NSSQLTableMigrationDescription *)v3 _ownSourceRootTableNeedsRenameInMigrationContext:a2])
+  while (context != contextCopy);
+  tableName = [_sourceRootEntity tableName];
+  if (![(_NSSQLTableMigrationDescription *)contextCopy _ownSourceRootTableNeedsRenameInMigrationContext:a2])
   {
-    return v5;
+    return tableName;
   }
 
-  return [(_NSSQLTableMigrationDescription *)v3 _tempNameForTableName:v5];
+  return [(_NSSQLTableMigrationDescription *)contextCopy _tempNameForTableName:tableName];
 }
 
-- (void)_tempNameForTableName:(uint64_t)a1
+- (void)_tempNameForTableName:(uint64_t)name
 {
-  v4 = [*(a1 + 96) objectForKey:a2];
+  v4 = [*(name + 96) objectForKey:a2];
   if (!v4)
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"_T_%@", a2];
-    [*(a1 + 96) setObject:v4 forKey:a2];
+    [*(name + 96) setObject:v4 forKey:a2];
   }
 
   return v4;
 }
 
-- (uint64_t)appendStatementsToRenameTables:(uint64_t)a3 migrationContext:
+- (uint64_t)appendStatementsToRenameTables:(uint64_t)tables migrationContext:
 {
   v154 = *MEMORY[0x1E69E9840];
   if (result)
   {
     v5 = result;
-    if (a3)
+    if (tables)
     {
-      v108 = *(a3 + 32);
+      v108 = *(tables + 32);
     }
 
     else
@@ -1236,15 +1236,15 @@ LABEL_7:
       v108 = 0;
     }
 
-    v6 = [(_NSSQLTableMigrationDescription *)result _sourceRootEntity];
+    _sourceRootEntity = [(_NSSQLTableMigrationDescription *)result _sourceRootEntity];
     v104 = v5;
-    if ([(_NSSQLiteStoreMigrator *)a3 tableMigrationDescriptionForEntity:v6]== v5)
+    if ([(_NSSQLiteStoreMigrator *)tables tableMigrationDescriptionForEntity:_sourceRootEntity]== v5)
     {
-      if ([(_NSSQLTableMigrationDescription *)v5 _ownSourceRootTableNeedsRenameInMigrationContext:a3])
+      if ([(_NSSQLTableMigrationDescription *)v5 _ownSourceRootTableNeedsRenameInMigrationContext:tables])
       {
-        v52 = [-[_NSSQLTableMigrationDescription _sourceRootEntity](v5) tableName];
-        v53 = [(_NSSQLTableMigrationDescription *)v5 _tempNameForTableName:v52];
-        v54 = [(NSSQLiteAdapter *)v108 newRenameTableStatementFrom:v52 to:v53];
+        tableName = [-[_NSSQLTableMigrationDescription _sourceRootEntity](v5) tableName];
+        v53 = [(_NSSQLTableMigrationDescription *)v5 _tempNameForTableName:tableName];
+        v54 = [(NSSQLiteAdapter *)v108 newRenameTableStatementFrom:tableName to:v53];
         [a2 addObject:v54];
 
         v139 = 0u;
@@ -1287,10 +1287,10 @@ LABEL_7:
       {
         if ([*(v5 + 176) count])
         {
-          v107 = a3;
+          tablesCopy = tables;
           v61 = [objc_msgSend(objc_msgSend(MEMORY[0x1E696AFB0] "UUID")];
-          v62 = [(_NSSQLTableMigrationDescription *)v5 _sourceRootEntity];
-          v63 = [v62 tableName];
+          _sourceRootEntity2 = [(_NSSQLTableMigrationDescription *)v5 _sourceRootEntity];
+          tableName2 = [_sourceRootEntity2 tableName];
           v133 = 0u;
           v134 = 0u;
           v135 = 0u;
@@ -1310,8 +1310,8 @@ LABEL_7:
                   objc_enumerationMutation(obja);
                 }
 
-                v68 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"ALTER TABLE %@ RENAME COLUMN %@ TO _DEFERRED_%@__%@", v63, objc_msgSend(objc_msgSend(*(*(&v133 + 1) + 8 * j), "firstObject"), "columnName"), v61, objc_msgSend(objc_msgSend(*(*(&v133 + 1) + 8 * j), "firstObject"), "columnName")];
-                v69 = [[NSSQLiteStatement alloc] initWithEntity:v62 sqlString:v68];
+                v68 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"ALTER TABLE %@ RENAME COLUMN %@ TO _DEFERRED_%@__%@", tableName2, objc_msgSend(objc_msgSend(*(*(&v133 + 1) + 8 * j), "firstObject"), "columnName"), v61, objc_msgSend(objc_msgSend(*(*(&v133 + 1) + 8 * j), "firstObject"), "columnName")];
+                v69 = [[NSSQLiteStatement alloc] initWithEntity:_sourceRootEntity2 sqlString:v68];
 
                 [a2 addObject:v69];
               }
@@ -1323,9 +1323,9 @@ LABEL_7:
           }
 
           v5 = v104;
-          if (v107)
+          if (tablesCopy)
           {
-            *(v107 + 217) = 1;
+            *(tablesCopy + 217) = 1;
           }
         }
 
@@ -1370,8 +1370,8 @@ LABEL_7:
         {
           if ([v77 count])
           {
-            v78 = [v104 rootEntity];
-            v79 = [v78 tableName];
+            rootEntity = [v104 rootEntity];
+            tableName3 = [rootEntity tableName];
             v80 = [objc_msgSend(*(v104 + 128) sortedArrayUsingDescriptors:{MEMORY[0x1E695E0F0]), "sortedArrayUsingComparator:", &__block_literal_global_20}];
             v125 = 0u;
             v126 = 0u;
@@ -1393,16 +1393,16 @@ LABEL_7:
                   }
 
                   v85 = *(*(&v125 + 1) + 8 * m);
-                  v86 = [v85 firstObject];
-                  v87 = [v85 lastObject];
-                  if ([v86 propertyType] == 3)
+                  firstObject = [v85 firstObject];
+                  lastObject = [v85 lastObject];
+                  if ([firstObject propertyType] == 3)
                   {
-                    v88 = [(NSSQLiteAdapter *)v108 newDropIndexStatementForColumn:v86];
+                    v88 = [(NSSQLiteAdapter *)v108 newDropIndexStatementForColumn:firstObject];
                     [a2 addObject:v88];
                   }
 
-                  v89 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"ALTER TABLE %@ RENAME COLUMN %@ TO %@", v79, objc_msgSend(v86, "columnName"), objc_msgSend(v87, "columnName")];
-                  v90 = [[NSSQLiteStatement alloc] initWithEntity:v78 sqlString:v89];
+                  v89 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"ALTER TABLE %@ RENAME COLUMN %@ TO %@", tableName3, objc_msgSend(firstObject, "columnName"), objc_msgSend(lastObject, "columnName")];
+                  v90 = [[NSSQLiteStatement alloc] initWithEntity:rootEntity sqlString:v89];
 
                   [a2 addObject:v90];
                 }
@@ -1421,8 +1421,8 @@ LABEL_7:
         {
           if ([v91 count])
           {
-            v92 = [v104 rootEntity];
-            v93 = [v92 tableName];
+            rootEntity2 = [v104 rootEntity];
+            tableName4 = [rootEntity2 tableName];
             v121 = 0u;
             v122 = 0u;
             v123 = 0u;
@@ -1442,8 +1442,8 @@ LABEL_7:
                     objc_enumerationMutation(objc);
                   }
 
-                  v98 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"ALTER TABLE %@ ADD COLUMN %@ %@", v93, objc_msgSend(*(*(&v121 + 1) + 8 * n), "columnName"), NSSQLiteAdapter_typeStringForSQLType(objc_msgSend(*(*(&v121 + 1) + 8 * n), "sqlType"))];
-                  v99 = [[NSSQLiteStatement alloc] initWithEntity:v92 sqlString:v98];
+                  v98 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"ALTER TABLE %@ ADD COLUMN %@ %@", tableName4, objc_msgSend(*(*(&v121 + 1) + 8 * n), "columnName"), NSSQLiteAdapter_typeStringForSQLType(objc_msgSend(*(*(&v121 + 1) + 8 * n), "sqlType"))];
+                  v99 = [[NSSQLiteStatement alloc] initWithEntity:rootEntity2 sqlString:v98];
 
                   [a2 addObject:v99];
                 }
@@ -1463,8 +1463,8 @@ LABEL_7:
     v120 = 0u;
     v117 = 0u;
     v118 = 0u;
-    v7 = [(_NSSQLTableMigrationDescription *)v5 _transformedManyToManys];
-    result = [v7 countByEnumeratingWithState:&v117 objects:v148 count:16];
+    _transformedManyToManys = [(_NSSQLTableMigrationDescription *)v5 _transformedManyToManys];
+    result = [_transformedManyToManys countByEnumeratingWithState:&v117 objects:v148 count:16];
     if (result)
     {
       v8 = result;
@@ -1472,7 +1472,7 @@ LABEL_7:
       v10 = &OBJC_IVAR____PFFetchPlanHeader_sql_model;
       v11 = *v118;
       v106 = *v118;
-      v103 = v7;
+      v103 = _transformedManyToManys;
       do
       {
         v12 = 0;
@@ -1481,7 +1481,7 @@ LABEL_7:
         {
           if (*v118 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(_transformedManyToManys);
           }
 
           v13 = *(*(&v117 + 1) + 8 * v12);
@@ -1583,28 +1583,28 @@ LABEL_37:
                   v147[0] = [(__CFString *)v13 columnName];
                   if (v29)
                   {
-                    v31 = [v15 columnName];
+                    columnName = [v15 columnName];
                   }
 
                   else
                   {
-                    v31 = [(NSSQLManyToMany *)v15 inverseColumnName];
+                    columnName = [(NSSQLManyToMany *)v15 inverseColumnName];
                   }
 
-                  v147[1] = v31;
+                  v147[1] = columnName;
                   [v30 addObject:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v147, 2)}];
                   v146[0] = [(NSSQLManyToMany *)v13 inverseColumnName];
                   if (v29)
                   {
-                    v32 = [(NSSQLManyToMany *)v15 inverseColumnName];
+                    inverseColumnName = [(NSSQLManyToMany *)v15 inverseColumnName];
                   }
 
                   else
                   {
-                    v32 = [v15 columnName];
+                    inverseColumnName = [v15 columnName];
                   }
 
-                  v146[1] = v32;
+                  v146[1] = inverseColumnName;
                   [v30 addObject:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v146, 2)}];
                   if (v13[2].data)
                   {
@@ -1613,23 +1613,23 @@ LABEL_37:
                       v145[0] = v13[2].data;
                       if (v29)
                       {
-                        v33 = *(v15 + 10);
-                        if (!v33)
+                        columnName2 = *(v15 + 10);
+                        if (!columnName2)
                         {
-                          v33 = [v15 columnName];
+                          columnName2 = [v15 columnName];
                         }
                       }
 
                       else
                       {
-                        v33 = [(NSSQLManyToMany *)v15 inverseOrderColumnName];
-                        if (!v33)
+                        columnName2 = [(NSSQLManyToMany *)v15 inverseOrderColumnName];
+                        if (!columnName2)
                         {
-                          v33 = [(NSSQLManyToMany *)v15 inverseColumnName];
+                          columnName2 = [(NSSQLManyToMany *)v15 inverseColumnName];
                         }
                       }
 
-                      v145[1] = v33;
+                      v145[1] = columnName2;
                       v34 = v145;
                     }
 
@@ -1643,32 +1643,32 @@ LABEL_37:
                     [v30 addObject:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v34, 2)}];
                   }
 
-                  v35 = [(NSSQLManyToMany *)v13 inverseOrderColumnName];
-                  if (v35)
+                  inverseOrderColumnName = [(NSSQLManyToMany *)v13 inverseOrderColumnName];
+                  if (inverseOrderColumnName)
                   {
-                    v36 = v35;
+                    v36 = inverseOrderColumnName;
                     if ([(NSSQLManyToMany *)v15 inverseOrderColumnName])
                     {
                       v143[0] = v36;
                       if (v29)
                       {
-                        v37 = [(NSSQLManyToMany *)v15 inverseOrderColumnName];
-                        if (!v37)
+                        inverseOrderColumnName2 = [(NSSQLManyToMany *)v15 inverseOrderColumnName];
+                        if (!inverseOrderColumnName2)
                         {
-                          v37 = [(NSSQLManyToMany *)v15 inverseColumnName];
+                          inverseOrderColumnName2 = [(NSSQLManyToMany *)v15 inverseColumnName];
                         }
                       }
 
                       else
                       {
-                        v37 = *(v15 + 10);
-                        if (!v37)
+                        inverseOrderColumnName2 = *(v15 + 10);
+                        if (!inverseOrderColumnName2)
                         {
-                          v37 = [v15 columnName];
+                          inverseOrderColumnName2 = [v15 columnName];
                         }
                       }
 
-                      v143[1] = v37;
+                      v143[1] = inverseOrderColumnName2;
                       v38 = v143;
                     }
 
@@ -1706,15 +1706,15 @@ LABEL_37:
                         {
                           v45 = [objc_msgSend(v44 "lastObject")];
                           v46 = objc_alloc(MEMORY[0x1E696AEC0]);
-                          v47 = [(__CFString *)v13 correlationTableName];
+                          correlationTableName = [(__CFString *)v13 correlationTableName];
                           if (v45)
                           {
-                            v48 = [v46 initWithFormat:@"ALTER TABLE %@ RENAME COLUMN %@ TO %@", v47, objc_msgSend(v44, "lastObject"), objc_msgSend(v44, "firstObject")];
+                            v48 = [v46 initWithFormat:@"ALTER TABLE %@ RENAME COLUMN %@ TO %@", correlationTableName, objc_msgSend(v44, "lastObject"), objc_msgSend(v44, "firstObject")];
                           }
 
                           else
                           {
-                            v48 = [v46 initWithFormat:@"ALTER TABLE %@ ADD COLUMN %@ %@", v47, objc_msgSend(v44, "firstObject"), @"INTEGER"];
+                            v48 = [v46 initWithFormat:@"ALTER TABLE %@ ADD COLUMN %@ %@", correlationTableName, objc_msgSend(v44, "firstObject"), @"INTEGER"];
                           }
 
                           v49 = v48;
@@ -1732,7 +1732,7 @@ LABEL_37:
 
                   v5 = v104;
                   [*(v104 + 136) addObject:v13];
-                  v7 = v103;
+                  _transformedManyToManys = v103;
                   v8 = v105;
                   v9 = 0x1EA8C5000;
                 }
@@ -1761,7 +1761,7 @@ LABEL_80:
         }
 
         while (v12 != v8);
-        result = [v7 countByEnumeratingWithState:&v117 objects:v148 count:16];
+        result = [_transformedManyToManys countByEnumeratingWithState:&v117 objects:v148 count:16];
         v8 = result;
       }
 
@@ -1776,16 +1776,16 @@ LABEL_80:
 - (uint64_t)_transformedManyToManys
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (*(a1 + 24) >= 2u)
+  if (*(self + 24) >= 2u)
   {
-    if (!*(a1 + 88))
+    if (!*(self + 88))
     {
-      *(a1 + 88) = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:8];
+      *(self + 88) = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:8];
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v3 = *(a1 + 48);
+      v3 = *(self + 48);
       v4 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
       if (v4)
       {
@@ -1800,7 +1800,7 @@ LABEL_80:
               objc_enumerationMutation(v3);
             }
 
-            [*(a1 + 88) addObjectsFromArray:-[_NSSQLEntityMigrationDescription transformedManyToManys](*(*(&v18 + 1) + 8 * i))];
+            [*(self + 88) addObjectsFromArray:-[_NSSQLEntityMigrationDescription transformedManyToManys](*(*(&v18 + 1) + 8 * i))];
           }
 
           v5 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
@@ -1813,7 +1813,7 @@ LABEL_80:
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v8 = *(a1 + 56);
+      v8 = *(self + 56);
       v9 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
       if (v9)
       {
@@ -1828,7 +1828,7 @@ LABEL_80:
               objc_enumerationMutation(v8);
             }
 
-            [*(a1 + 88) addObjectsFromArray:-[_NSSQLEntityMigrationDescription transformedManyToManys](*(*(&v14 + 1) + 8 * j))];
+            [*(self + 88) addObjectsFromArray:-[_NSSQLEntityMigrationDescription transformedManyToManys](*(*(&v14 + 1) + 8 * j))];
           }
 
           v10 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
@@ -1838,7 +1838,7 @@ LABEL_80:
       }
     }
 
-    result = *(a1 + 88);
+    result = *(self + 88);
   }
 
   else
@@ -1850,17 +1850,17 @@ LABEL_80:
   return result;
 }
 
-- (uint64_t)appendStatementsToCreateOrDropTables:(uint64_t)a3 migrationContext:
+- (uint64_t)appendStatementsToCreateOrDropTables:(uint64_t)tables migrationContext:
 {
   v100 = *MEMORY[0x1E69E9840];
   if (result)
   {
-    v3 = a3;
+    tablesCopy2 = tables;
     v4 = a2;
     v5 = result;
-    if (a3)
+    if (tables)
     {
-      v6 = *(a3 + 32);
+      v6 = *(tables + 32);
     }
 
     else
@@ -1895,13 +1895,13 @@ LABEL_80:
                 objc_enumerationMutation(obj);
               }
 
-              v8 = [*(*(&v90 + 1) + 8 * i) sourceEntity];
+              sourceEntity = [*(*(&v90 + 1) + 8 * i) sourceEntity];
               v86 = 0u;
               v87 = 0u;
               v88 = 0u;
               v89 = 0u;
-              v9 = [v8 manyToManyRelationships];
-              v10 = [v9 countByEnumeratingWithState:&v86 objects:v98 count:16];
+              manyToManyRelationships = [sourceEntity manyToManyRelationships];
+              v10 = [manyToManyRelationships countByEnumeratingWithState:&v86 objects:v98 count:16];
               if (v10)
               {
                 v11 = v10;
@@ -1912,17 +1912,17 @@ LABEL_80:
                   {
                     if (*v87 != v12)
                     {
-                      objc_enumerationMutation(v9);
+                      objc_enumerationMutation(manyToManyRelationships);
                     }
 
                     v14 = *(*(&v86 + 1) + 8 * j);
-                    if (v14 && *(v14 + 64) && [*(*(&v86 + 1) + 8 * j) entity] == v8)
+                    if (v14 && *(v14 + 64) && [*(*(&v86 + 1) + 8 * j) entity] == sourceEntity)
                     {
                       [*(v5 + 80) addObject:v14];
                     }
                   }
 
-                  v11 = [v9 countByEnumeratingWithState:&v86 objects:v98 count:16];
+                  v11 = [manyToManyRelationships countByEnumeratingWithState:&v86 objects:v98 count:16];
                 }
 
                 while (v11);
@@ -1966,7 +1966,7 @@ LABEL_80:
       }
 
       v20 = *(v5 + 80);
-      v3 = a3;
+      tablesCopy2 = tables;
     }
 
     else
@@ -2005,11 +2005,11 @@ LABEL_80:
     v27 = *(v5 + 104);
     if (!v27)
     {
-      [(_NSSQLTableMigrationDescription *)v5 _determineSchemaTransformationComplexityInMigrationContext:v3];
+      [(_NSSQLTableMigrationDescription *)v5 _determineSchemaTransformationComplexityInMigrationContext:tablesCopy2];
       v27 = *(v5 + 104);
     }
 
-    v28 = [v27 BOOLValue];
+    bOOLValue = [v27 BOOLValue];
     v29 = *(v5 + 24);
     if (v29 == 1)
     {
@@ -2018,7 +2018,7 @@ LABEL_80:
 
     else
     {
-      v30 = v28;
+      v30 = bOOLValue;
     }
 
     if (!v29 || v30)
@@ -2078,8 +2078,8 @@ LABEL_80:
               v89 = 0u;
               v86 = 0u;
               v87 = 0u;
-              v36 = [v35 manyToManyRelationships];
-              v37 = [v36 countByEnumeratingWithState:&v86 objects:v98 count:16];
+              manyToManyRelationships2 = [v35 manyToManyRelationships];
+              v37 = [manyToManyRelationships2 countByEnumeratingWithState:&v86 objects:v98 count:16];
               if (v37)
               {
                 v38 = v37;
@@ -2090,7 +2090,7 @@ LABEL_80:
                   {
                     if (*v87 != v39)
                     {
-                      objc_enumerationMutation(v36);
+                      objc_enumerationMutation(manyToManyRelationships2);
                     }
 
                     v41 = *(*(&v86 + 1) + 8 * n);
@@ -2100,7 +2100,7 @@ LABEL_80:
                     }
                   }
 
-                  v38 = [v36 countByEnumeratingWithState:&v86 objects:v98 count:16];
+                  v38 = [manyToManyRelationships2 countByEnumeratingWithState:&v86 objects:v98 count:16];
                 }
 
                 while (v38);
@@ -2182,8 +2182,8 @@ LABEL_80:
     v73 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v54 = [(_NSSQLTableMigrationDescription *)v5 _transformedManyToManys];
-    result = [v54 countByEnumeratingWithState:&v70 objects:v94 count:16];
+    _transformedManyToManys = [(_NSSQLTableMigrationDescription *)v5 _transformedManyToManys];
+    result = [_transformedManyToManys countByEnumeratingWithState:&v70 objects:v94 count:16];
     if (result)
     {
       v55 = result;
@@ -2195,7 +2195,7 @@ LABEL_80:
         {
           if (*v71 != v56)
           {
-            objc_enumerationMutation(v54);
+            objc_enumerationMutation(_transformedManyToManys);
           }
 
           v58 = *(*(&v70 + 1) + 8 * v57);
@@ -2209,7 +2209,7 @@ LABEL_80:
         }
 
         while (v55 != v57);
-        result = [v54 countByEnumeratingWithState:&v70 objects:v94 count:16];
+        result = [_transformedManyToManys countByEnumeratingWithState:&v70 objects:v94 count:16];
         v55 = result;
       }
 
@@ -2221,32 +2221,32 @@ LABEL_80:
   return result;
 }
 
-- (void)appendStatementsToPerformMigration:(uint64_t)a3 migrationContext:
+- (void)appendStatementsToPerformMigration:(uint64_t)migration migrationContext:
 {
   v101 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_98;
   }
 
-  v3 = *(a1 + 24);
+  v3 = *(self + 24);
   if (!v3)
   {
     goto LABEL_98;
   }
 
-  v4 = a3;
+  migrationCopy = migration;
   if (v3 != 1)
   {
     v66 = objc_alloc_init(MEMORY[0x1E695DF70]);
     obj = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v65 = a2;
-    if ([*(a1 + 40) count])
+    if ([*(self + 40) count])
     {
-      v8 = *(a1 + 40);
+      v8 = *(self + 40);
       v9 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"DELETE FROM "];
-      [v9 appendString:{objc_msgSend(*(a1 + 8), "tableName")}];
+      [v9 appendString:{objc_msgSend(*(self + 8), "tableName")}];
       [v9 appendString:@" WHERE "];
       [v9 appendString:@"Z_ENT"];
       objc_msgSend(v9, "appendString:", @" IN (");
@@ -2269,10 +2269,10 @@ LABEL_80:
               objc_enumerationMutation(v8);
             }
 
-            v14 = [*(*(&v91 + 1) + 8 * v13) sourceEntity];
-            if (v14)
+            sourceEntity = [*(*(&v91 + 1) + 8 * v13) sourceEntity];
+            if (sourceEntity)
             {
-              v15 = *(v14 + 184);
+              v15 = *(sourceEntity + 184);
             }
 
             else
@@ -2296,9 +2296,9 @@ LABEL_80:
 
       a2 = v65;
       [v9 appendString:@""]);
-      if (v4)
+      if (migrationCopy)
       {
-        sqlString = v4->_sqlString;
+        sqlString = migrationCopy->_sqlString;
       }
 
       else
@@ -2311,22 +2311,22 @@ LABEL_80:
       [v66 addObject:v18];
     }
 
-    v19 = *(a1 + 104);
+    v19 = *(self + 104);
     if (!v19)
     {
-      [(_NSSQLTableMigrationDescription *)a1 _determineSchemaTransformationComplexityInMigrationContext:v4];
-      v19 = *(a1 + 104);
+      [(_NSSQLTableMigrationDescription *)self _determineSchemaTransformationComplexityInMigrationContext:migrationCopy];
+      v19 = *(self + 104);
     }
 
     if ([v19 BOOLValue])
     {
-      if ([*(a1 + 56) count])
+      if ([*(self + 56) count])
       {
         v89 = 0u;
         v90 = 0u;
         v87 = 0u;
         v88 = 0u;
-        v20 = *(a1 + 56);
+        v20 = *(self + 56);
         v21 = [v20 countByEnumeratingWithState:&v87 objects:v99 count:16];
         if (v21)
         {
@@ -2341,10 +2341,10 @@ LABEL_80:
               }
 
               v24 = *(*(&v87 + 1) + 8 * i);
-              v25 = [(_NSSQLTableMigrationDescription *)a1 createInsertStatementForEntityMigration:v24 migrationContext:v4];
+              v25 = [(_NSSQLTableMigrationDescription *)self createInsertStatementForEntityMigration:v24 migrationContext:migrationCopy];
               [v66 addObject:v25];
 
-              v26 = [_NSSQLTableMigrationDescription createFEKUpdateStatementsForEntityMigration:v24 migrationContext:v4];
+              v26 = [_NSSQLTableMigrationDescription createFEKUpdateStatementsForEntityMigration:v24 migrationContext:migrationCopy];
               if (v26)
               {
                 [obj addObjectsFromArray:v26];
@@ -2352,7 +2352,7 @@ LABEL_80:
 
               while (1)
               {
-                v27 = [_NSSQLTableMigrationDescription createUpdateStatementForEntityMigration:v24 migrationContext:v4];
+                v27 = [_NSSQLTableMigrationDescription createUpdateStatementForEntityMigration:v24 migrationContext:migrationCopy];
                 if (!v27)
                 {
                   break;
@@ -2373,7 +2373,7 @@ LABEL_80:
       v86 = 0u;
       v83 = 0u;
       v84 = 0u;
-      v28 = *(a1 + 48);
+      v28 = *(self + 48);
       v29 = [v28 countByEnumeratingWithState:&v83 objects:v98 count:16];
       if (v29)
       {
@@ -2387,7 +2387,7 @@ LABEL_80:
               objc_enumerationMutation(v28);
             }
 
-            v32 = [(_NSSQLTableMigrationDescription *)a1 createInsertStatementForEntityMigration:v4 migrationContext:?];
+            v32 = [(_NSSQLTableMigrationDescription *)self createInsertStatementForEntityMigration:migrationCopy migrationContext:?];
             [v66 addObject:v32];
           }
 
@@ -2405,7 +2405,7 @@ LABEL_80:
       v82 = 0u;
       v79 = 0u;
       v80 = 0u;
-      v33 = *(a1 + 48);
+      v33 = *(self + 48);
       v34 = [v33 countByEnumeratingWithState:&v79 objects:v97 count:16];
       if (v34)
       {
@@ -2422,10 +2422,10 @@ LABEL_80:
             v37 = *(*(&v79 + 1) + 8 * k);
             if (v37 && !*(v37 + 16))
             {
-              [(_NSSQLEntityMigrationDescription *)*(*(&v79 + 1) + 8 * k) _generateSQLValueMappingsWithMigrationContext:v4];
+              [(_NSSQLEntityMigrationDescription *)*(*(&v79 + 1) + 8 * k) _generateSQLValueMappingsWithMigrationContext:migrationCopy];
             }
 
-            v38 = [_NSSQLTableMigrationDescription createFEKUpdateStatementsForEntityMigration:v37 migrationContext:v4];
+            v38 = [_NSSQLTableMigrationDescription createFEKUpdateStatementsForEntityMigration:v37 migrationContext:migrationCopy];
             if (v38)
             {
               [obj addObjectsFromArray:v38];
@@ -2442,7 +2442,7 @@ LABEL_80:
       v78 = 0u;
       v75 = 0u;
       v76 = 0u;
-      v39 = *(a1 + 56);
+      v39 = *(self + 56);
       v40 = [v39 countByEnumeratingWithState:&v75 objects:v96 count:16];
       if (v40)
       {
@@ -2459,10 +2459,10 @@ LABEL_80:
             v43 = *(*(&v75 + 1) + 8 * m);
             if (v43 && !*(v43 + 16))
             {
-              [(_NSSQLEntityMigrationDescription *)*(*(&v75 + 1) + 8 * m) _generateSQLValueMappingsWithMigrationContext:v4];
+              [(_NSSQLEntityMigrationDescription *)*(*(&v75 + 1) + 8 * m) _generateSQLValueMappingsWithMigrationContext:migrationCopy];
             }
 
-            v44 = [_NSSQLTableMigrationDescription createFEKUpdateStatementsForEntityMigration:v43 migrationContext:v4];
+            v44 = [_NSSQLTableMigrationDescription createFEKUpdateStatementsForEntityMigration:v43 migrationContext:migrationCopy];
             if (v44)
             {
               [obj addObjectsFromArray:v44];
@@ -2470,7 +2470,7 @@ LABEL_80:
 
             while (1)
             {
-              v45 = [_NSSQLTableMigrationDescription createUpdateStatementForEntityMigration:v43 migrationContext:v4];
+              v45 = [_NSSQLTableMigrationDescription createUpdateStatementForEntityMigration:v43 migrationContext:migrationCopy];
               if (!v45)
               {
                 break;
@@ -2495,7 +2495,7 @@ LABEL_80:
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    obja = [(_NSSQLTableMigrationDescription *)a1 _transformedManyToManys];
+    obja = [(_NSSQLTableMigrationDescription *)self _transformedManyToManys];
     v46 = [obja countByEnumeratingWithState:&v71 objects:v95 count:16];
     if (v46)
     {
@@ -2513,22 +2513,22 @@ LABEL_80:
           v49 = *(*(&v71 + 1) + 8 * v48);
           if (v49 && v49[2].isa)
           {
-            v50 = -[NSSQLEntity _sqlPropertyWithRenamingIdentifier:]([objc_msgSend(*(a1 + 64) objectForKey:{objc_msgSend(objc_msgSend(*(*(&v71 + 1) + 8 * v48), "entity"), "name")), "sourceEntity"}], objc_msgSend(-[__CFString propertyDescription](v49, "propertyDescription"), "renamingIdentifier"));
+            v50 = -[NSSQLEntity _sqlPropertyWithRenamingIdentifier:]([objc_msgSend(*(self + 64) objectForKey:{objc_msgSend(objc_msgSend(*(*(&v71 + 1) + 8 * v48), "entity"), "name")), "sourceEntity"}], objc_msgSend(-[__CFString propertyDescription](v49, "propertyDescription"), "renamingIdentifier"));
             v51 = v50;
             if (v50)
             {
               if (LOBYTE(v50->length) == 9)
               {
-                if ([*(a1 + 136) containsObject:v49])
+                if ([*(self + 136) containsObject:v49])
                 {
                   goto LABEL_92;
                 }
 
-                v52 = [(_NSSQLTableMigrationDescription *)a1 _tempNameForTableName:?];
+                v52 = [(_NSSQLTableMigrationDescription *)self _tempNameForTableName:?];
                 v53 = [objc_msgSend(-[__CFString propertyDescription](v51 "propertyDescription")];
-                if (v4)
+                if (migrationCopy)
                 {
-                  v54 = v4->_sqlString;
+                  v54 = migrationCopy->_sqlString;
                 }
 
                 else
@@ -2551,8 +2551,8 @@ LABEL_80:
                 goto LABEL_99;
               }
 
-              v59 = [(_NSSQLTableMigrationDescription *)a1 _sourceRootTableNameInMigrationContext:v4];
-              v55 = [_NSSQLTableMigrationDescription newCopyAndInsertStatementForToOne:v51 toManyToMany:v49 fromTableName:v59 invertColumns:0 migrationContext:v4];
+              v59 = [(_NSSQLTableMigrationDescription *)self _sourceRootTableNameInMigrationContext:migrationCopy];
+              v55 = [_NSSQLTableMigrationDescription newCopyAndInsertStatementForToOne:v51 toManyToMany:v49 fromTableName:v59 invertColumns:0 migrationContext:migrationCopy];
             }
 
             else
@@ -2567,9 +2567,9 @@ LABEL_99:
 
               length = 0;
 LABEL_88:
-              v57 = -[_NSSQLiteStoreMigrator tableMigrationDescriptionForEntity:](v4, [length entity]);
-              v58 = [(_NSSQLTableMigrationDescription *)v57 _sourceRootTableNameInMigrationContext:v4];
-              v55 = [_NSSQLTableMigrationDescription newCopyAndInsertStatementForToOne:v49 toManyToMany:v58 fromTableName:1 invertColumns:v4 migrationContext:?];
+              v57 = -[_NSSQLiteStoreMigrator tableMigrationDescriptionForEntity:](migrationCopy, [length entity]);
+              v58 = [(_NSSQLTableMigrationDescription *)v57 _sourceRootTableNameInMigrationContext:migrationCopy];
+              v55 = [_NSSQLTableMigrationDescription newCopyAndInsertStatementForToOne:v49 toManyToMany:v58 fromTableName:1 invertColumns:migrationCopy migrationContext:?];
             }
 
 LABEL_91:
@@ -2594,17 +2594,17 @@ LABEL_98:
     return;
   }
 
-  if (a3)
+  if (migration)
   {
-    v4 = *(a3 + 32);
+    migrationCopy = *(migration + 32);
   }
 
-  v70 = -[NSSQLiteAdapter newDropTableStatementOrFailForTableNamed:](v4, [*(a1 + 8) tableName]);
+  v70 = -[NSSQLiteAdapter newDropTableStatementOrFailForTableNamed:](migrationCopy, [*(self + 8) tableName]);
   [a2 addObject:?];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createInsertStatementForEntityMigration:(uint64_t)a3 migrationContext:
+- (void)createInsertStatementForEntityMigration:(uint64_t)migration migrationContext:
 {
   v79 = *MEMORY[0x1E69E9840];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -2620,10 +2620,10 @@ LABEL_98:
     v8 = 0;
   }
 
-  v9 = [a2 sourceEntity];
-  v10 = *(a1 + 8);
-  v64 = a1;
-  v65 = a3;
+  sourceEntity = [a2 sourceEntity];
+  v10 = *(self + 8);
+  selfCopy = self;
+  migrationCopy = migration;
   v66 = a2;
   if (v10)
   {
@@ -2667,18 +2667,18 @@ LABEL_7:
       if (!v17)
       {
 LABEL_18:
-        v20 = [*(*(&v73 + 1) + 8 * v16) entity];
+        entity = [*(*(&v73 + 1) + 8 * v16) entity];
         if (v8)
         {
           v21 = v8[46];
-          if (v20)
+          if (entity)
           {
-            if (v21 < *(v20 + 184))
+            if (v21 < *(entity + 184))
             {
               goto LABEL_23;
             }
 
-            v22 = *(v20 + 188);
+            v22 = *(entity + 188);
           }
 
           else
@@ -2688,17 +2688,17 @@ LABEL_18:
 
           if (v21 <= v22)
           {
-            v26 = [v17 columnName];
+            columnName = [v17 columnName];
             if (!v66)
             {
               goto LABEL_42;
             }
 
-            v27 = v26;
+            v27 = columnName;
             v28 = *(v66 + 16);
             if (!v28)
             {
-              [(_NSSQLEntityMigrationDescription *)v66 _generateSQLValueMappingsWithMigrationContext:v65];
+              [(_NSSQLEntityMigrationDescription *)v66 _generateSQLValueMappingsWithMigrationContext:migrationCopy];
               v28 = *(v66 + 16);
             }
 
@@ -2747,7 +2747,7 @@ LABEL_23:
         case 6:
           [v6 addObject:{objc_msgSend(*(*(&v73 + 1) + 8 * v16), "columnName")}];
           v19 = &OBJC_IVAR___NSSQLEntity__optLockKey;
-          if (!v9)
+          if (!sourceEntity)
           {
             goto LABEL_32;
           }
@@ -2756,7 +2756,7 @@ LABEL_23:
         case 5:
           [v6 addObject:{objc_msgSend(*(*(&v73 + 1) + 8 * v16), "columnName")}];
           v19 = &OBJC_IVAR___NSSQLEntity__entityKey;
-          if (!v9)
+          if (!sourceEntity)
           {
             goto LABEL_32;
           }
@@ -2765,7 +2765,7 @@ LABEL_23:
         case 2:
           [v6 addObject:{objc_msgSend(*(*(&v73 + 1) + 8 * v16), "columnName")}];
           v19 = &OBJC_IVAR___NSSQLEntity__primaryKey;
-          if (!v9)
+          if (!sourceEntity)
           {
 LABEL_32:
             v25 = 0;
@@ -2777,7 +2777,7 @@ LABEL_32:
           goto LABEL_18;
       }
 
-      v25 = *(v9 + *v19);
+      v25 = *(sourceEntity + *v19);
 LABEL_28:
       [v7 addObject:{objc_msgSend(v25, "columnName")}];
 LABEL_29:
@@ -2797,8 +2797,8 @@ LABEL_29:
 
 LABEL_43:
   v33 = v8;
-  v35 = v64;
-  v34 = v65;
+  v35 = selfCopy;
+  v34 = migrationCopy;
   while (v33)
   {
     v36 = v33;
@@ -2844,9 +2844,9 @@ LABEL_52:
   {
 LABEL_53:
     v63 = [v6 componentsJoinedByString:{@", "}];
-    v67 = [(_NSSQLTableMigrationDescription *)v64 _sourceRootTableNameInMigrationContext:v65];
+    v67 = [(_NSSQLTableMigrationDescription *)selfCopy _sourceRootTableNameInMigrationContext:migrationCopy];
     v45 = 0x1E696A000uLL;
-    if (v9 && (*(v9 + 160) || (v56 = *(v9 + 152)) != 0 && [v56 count]))
+    if (sourceEntity && (*(sourceEntity + 160) || (v56 = *(sourceEntity + 152)) != 0 && [v56 count]))
     {
       v46 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@" WHERE "];
       [v46 appendString:v67];
@@ -2863,7 +2863,7 @@ LABEL_53:
       v72 = 0u;
       v69 = 0u;
       v70 = 0u;
-      v48 = *(v9 + 152);
+      v48 = *(sourceEntity + 152);
       v49 = [v48 countByEnumeratingWithState:&v69 objects:v77 count:16];
       if (!v49)
       {
@@ -2915,12 +2915,12 @@ LABEL_53:
       if (!v50)
       {
 LABEL_71:
-        v50 = *(v9 + 184);
+        v50 = *(sourceEntity + 184);
       }
 
       [v46 appendFormat:@"%d", v50];
-      v35 = v64;
-      v34 = v65;
+      v35 = selfCopy;
+      v34 = migrationCopy;
     }
 
     else
@@ -2969,12 +2969,12 @@ LABEL_71:
   return v44;
 }
 
-- (id)createFEKUpdateStatementsForEntityMigration:(uint64_t)a1 migrationContext:(uint64_t)a2
+- (id)createFEKUpdateStatementsForEntityMigration:(uint64_t)migration migrationContext:(uint64_t)context
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (migration)
   {
-    v4 = *(a1 + 24);
+    v4 = *(migration + 24);
   }
 
   else
@@ -2989,9 +2989,9 @@ LABEL_71:
   }
 
   v28 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (a1)
+  if (migration)
   {
-    v5 = *(a1 + 32);
+    v5 = *(migration + 32);
     if (v5)
     {
       v27 = v5[5];
@@ -3006,7 +3006,7 @@ LABEL_71:
 
   v27 = 0;
 LABEL_7:
-  v6 = [v5 tableName];
+  tableName = [v5 tableName];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -3029,7 +3029,7 @@ LABEL_7:
         v10 = *(*(&v29 + 1) + 8 * v9);
         v11 = [v4 objectForKey:v10];
         v12 = [v27 objectForKey:v10];
-        v13 = [v12 foreignKey];
+        foreignKey = [v12 foreignKey];
         if (v12)
         {
           v14 = v12[9];
@@ -3040,7 +3040,7 @@ LABEL_7:
           v14 = 0;
         }
 
-        v15 = [(_NSSQLiteStoreMigrator *)a2 tableMigrationDescriptionForEntity:v11];
+        v15 = [(_NSSQLiteStoreMigrator *)context tableMigrationDescriptionForEntity:v11];
         if (!v15)
         {
           goto LABEL_19;
@@ -3050,7 +3050,7 @@ LABEL_7:
         v17 = *(v15 + 104);
         if (!v17)
         {
-          [(_NSSQLTableMigrationDescription *)v16 _determineSchemaTransformationComplexityInMigrationContext:a2];
+          [(_NSSQLTableMigrationDescription *)v16 _determineSchemaTransformationComplexityInMigrationContext:context];
           v17 = *(v16 + 104);
         }
 
@@ -3067,7 +3067,7 @@ LABEL_19:
 
         v19 = v18;
         v20 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"UPDATE OR FAIL "];
-        [v20 appendString:v6];
+        [v20 appendString:tableName];
         [v20 appendString:@" SET "];
         [v20 appendString:{objc_msgSend(v14, "columnName")}];
         objc_msgSend(v20, "appendString:", @" = (SELECT _EKT.");
@@ -3075,15 +3075,15 @@ LABEL_19:
         [v20 appendString:@" FROM "];
         [v20 appendString:v19];
         [v20 appendString:@" _EKT WHERE "];
-        [v20 appendString:v6];
+        [v20 appendString:tableName];
         [v20 appendString:@"."];
-        [v20 appendString:{objc_msgSend(v13, "columnName")}];
+        [v20 appendString:{objc_msgSend(foreignKey, "columnName")}];
         [v20 appendString:@" = _EKT."];
         [v20 appendString:@"Z_PK"];
         [v20 appendString:@""]);
-        if (a2)
+        if (context)
         {
-          v21 = *(a2 + 32);
+          v21 = *(context + 32);
         }
 
         else
@@ -3110,53 +3110,53 @@ LABEL_29:
   return v28;
 }
 
-- (uint64_t)createUpdateStatementForEntityMigration:(uint64_t)a1 migrationContext:(uint64_t)a2
+- (uint64_t)createUpdateStatementForEntityMigration:(uint64_t)migration migrationContext:(uint64_t)context
 {
-  v3 = a1;
-  v4 = [(_NSSQLEntityMigrationDescription *)a1 nextPropertyTransform];
-  if (!v4)
+  migrationCopy = migration;
+  nextPropertyTransform = [(_NSSQLEntityMigrationDescription *)migration nextPropertyTransform];
+  if (!nextPropertyTransform)
   {
     return 0;
   }
 
-  v5 = v4;
-  if (v3)
+  v5 = nextPropertyTransform;
+  if (migrationCopy)
   {
-    v6 = v3[4];
-    v7 = [v3 sourceEntity];
+    v6 = migrationCopy[4];
+    sourceEntity = [migrationCopy sourceEntity];
     if (v6)
     {
-      v3 = [*(v6 + 40) objectForKey:*(v5 + 16)];
+      migrationCopy = [*(v6 + 40) objectForKey:*(v5 + 16)];
       v8 = 0;
       goto LABEL_5;
     }
 
-    v3 = 0;
+    migrationCopy = 0;
   }
 
   else
   {
-    v7 = [0 sourceEntity];
+    sourceEntity = [0 sourceEntity];
     v6 = 0;
   }
 
   v8 = 1;
 LABEL_5:
   v9 = *(v5 + 8);
-  v10 = [v9 expressionType];
-  if (v10 != 3)
+  expressionType = [v9 expressionType];
+  if (expressionType != 3)
   {
-    if (!v10)
+    if (!expressionType)
     {
-      v11 = -[NSSQLBindVariable initWithValue:sqlType:propertyDescription:]([NSSQLBindVariable alloc], "initWithValue:sqlType:propertyDescription:", [v9 constantValue], objc_msgSend(v3, "sqlType"), 0);
-      v12 = @"?";
+      v11 = -[NSSQLBindVariable initWithValue:sqlType:propertyDescription:]([NSSQLBindVariable alloc], "initWithValue:sqlType:propertyDescription:", [v9 constantValue], objc_msgSend(migrationCopy, "sqlType"), 0);
+      columnName = @"?";
       goto LABEL_12;
     }
 
     return 0;
   }
 
-  v14 = [v9 keyPath];
+  keyPath = [v9 keyPath];
   if (v8)
   {
     v15 = 0;
@@ -3164,15 +3164,15 @@ LABEL_5:
 
   else
   {
-    v15 = [*(v6 + 40) objectForKey:v14];
+    v15 = [*(v6 + 40) objectForKey:keyPath];
   }
 
-  v12 = [v15 columnName];
+  columnName = [v15 columnName];
   v11 = 0;
 LABEL_12:
   if (*(v5 + 32) == 1)
   {
-    v16 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@" WHERE %@ is NULL", objc_msgSend(v3, "columnName"), 0];
+    v16 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@" WHERE %@ is NULL", objc_msgSend(migrationCopy, "columnName"), 0];
     if (v8)
     {
       goto LABEL_23;
@@ -3193,9 +3193,9 @@ LABEL_12:
 LABEL_20:
       [v16 appendString:@"Z_ENT"];
       [v16 appendString:@" = "];
-      if (v7)
+      if (sourceEntity)
       {
-        v17 = *(v7 + 184);
+        v17 = *(sourceEntity + 184);
       }
 
       else
@@ -3234,17 +3234,17 @@ LABEL_23:
   v18 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"UPDATE OR FAIL "];
   [v18 appendString:{objc_msgSend(v6, "tableName")}];
   [v18 appendString:@" SET "];
-  [v18 appendString:{objc_msgSend(v3, "columnName")}];
+  [v18 appendString:{objc_msgSend(migrationCopy, "columnName")}];
   [v18 appendString:@" = "];
-  [v18 appendString:v12];
+  [v18 appendString:columnName];
   if (v16)
   {
     [v18 appendString:v16];
   }
 
-  if (a2)
+  if (context)
   {
-    v19 = *(a2 + 32);
+    v19 = *(context + 32);
   }
 
   else
@@ -3266,15 +3266,15 @@ LABEL_23:
   return v13;
 }
 
-- (uint64_t)newCopyAndInsertStatementForToOne:(void *)a1 toManyToMany:(__CFString *)a2 fromTableName:(uint64_t)a3 invertColumns:(int)a4 migrationContext:(uint64_t)a5
+- (uint64_t)newCopyAndInsertStatementForToOne:(void *)one toManyToMany:(__CFString *)many fromTableName:(uint64_t)name invertColumns:(int)columns migrationContext:(uint64_t)context
 {
   v60 = *MEMORY[0x1E69E9840];
   v10 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"INSERT INTO "];
-  [v10 appendString:{-[__CFString correlationTableName](a2, "correlationTableName")}];
+  [v10 appendString:{-[__CFString correlationTableName](many, "correlationTableName")}];
   objc_msgSend(v10, "appendString:", @" (");
-  if (a2)
+  if (many)
   {
-    data = a2[2].data;
+    data = many[2].data;
   }
 
   else
@@ -3282,16 +3282,16 @@ LABEL_23:
     data = 0;
   }
 
-  v12 = [(NSSQLManyToMany *)a2 inverseOrderColumnName];
-  if (a4)
+  inverseOrderColumnName = [(NSSQLManyToMany *)many inverseOrderColumnName];
+  if (columns)
   {
-    [v10 appendString:-[NSSQLManyToMany inverseColumnName](a2)];
+    [v10 appendString:-[NSSQLManyToMany inverseColumnName](many)];
     [v10 appendString:{@", "}];
-    [v10 appendString:{-[__CFString columnName](a2, "columnName")}];
-    if (v12)
+    [v10 appendString:{-[__CFString columnName](many, "columnName")}];
+    if (inverseOrderColumnName)
     {
       [v10 appendString:{@", "}];
-      [v10 appendString:v12];
+      [v10 appendString:inverseOrderColumnName];
     }
 
     v13 = data;
@@ -3306,37 +3306,37 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  [v10 appendString:{-[__CFString columnName](a2, "columnName")}];
+  [v10 appendString:{-[__CFString columnName](many, "columnName")}];
   [v10 appendString:{@", "}];
-  [v10 appendString:-[NSSQLManyToMany inverseColumnName](a2)];
+  [v10 appendString:-[NSSQLManyToMany inverseColumnName](many)];
   if (data)
   {
     [v10 appendString:{@", "}];
     [v10 appendString:data];
   }
 
-  v13 = v12;
-  if (v12)
+  v13 = inverseOrderColumnName;
+  if (inverseOrderColumnName)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
-  v14 = [a1 entity];
-  if (v14)
+  entity = [one entity];
+  if (entity)
   {
-    v14 = v14[16];
+    entity = entity[16];
   }
 
-  v15 = [v14 columnName];
+  columnName = [entity columnName];
   [v10 appendString:@" SELECT "]);
-  [v10 appendString:v15];
+  [v10 appendString:columnName];
   [v10 appendString:{@", "}];
-  v16 = [objc_msgSend(a1 "foreignKey")];
+  v16 = [objc_msgSend(one "foreignKey")];
   [v10 appendString:v16];
-  if (a1)
+  if (one)
   {
-    v17 = a1[10];
+    v17 = one[10];
   }
 
   else
@@ -3344,10 +3344,10 @@ LABEL_12:
     v17 = 0;
   }
 
-  v18 = [v17 columnName];
+  columnName2 = [v17 columnName];
   if (data)
   {
-    v19 = v18;
+    v19 = columnName2;
     [v10 appendString:{@", "}];
     if (v19)
     {
@@ -3356,37 +3356,37 @@ LABEL_12:
 
     else
     {
-      v20 = v15;
+      v20 = columnName;
     }
 
     [v10 appendString:v20];
   }
 
-  if (v12)
+  if (inverseOrderColumnName)
   {
     [v10 appendString:{@", 2000"}];
   }
 
   [v10 appendString:@" FROM "];
-  [v10 appendString:a3];
+  [v10 appendString:name];
   [v10 appendString:@" WHERE "];
   [v10 appendString:v16];
   [v10 appendString:@" IS NOT NULL"];
-  v21 = -[_NSSQLiteStoreMigrator tableMigrationDescriptionForEntity:](a5, [a1 entity]);
-  v22 = -[_NSSQLTableMigrationDescription _retainedRemovedSubEntitiesOfEntity:](v21, [a1 entity]);
-  v49 = a5;
+  v21 = -[_NSSQLiteStoreMigrator tableMigrationDescriptionForEntity:](context, [one entity]);
+  v22 = -[_NSSQLTableMigrationDescription _retainedRemovedSubEntitiesOfEntity:](v21, [one entity]);
+  contextCopy = context;
   if ([v22 count])
   {
-    v23 = [a1 entity];
-    v48 = a1;
-    if (v23)
+    entity2 = [one entity];
+    oneCopy = one;
+    if (entity2)
     {
-      v23 = v23[17];
+      entity2 = entity2[17];
     }
 
-    v24 = [v23 columnName];
+    columnName3 = [entity2 columnName];
     [v10 appendString:@" AND "];
-    [v10 appendString:v24];
+    [v10 appendString:columnName3];
     objc_msgSend(v10, "appendString:", @" NOT IN (");
     v56 = 0u;
     v57 = 0u;
@@ -3438,17 +3438,17 @@ LABEL_12:
     }
 
     [v10 appendString:@""]);
-    a1 = v48;
-    a5 = v49;
+    one = oneCopy;
+    context = contextCopy;
   }
 
-  if (a1)
+  if (one)
   {
-    v33 = a1[9];
+    v33 = one[9];
     if (v33)
     {
-      v34 = -[_NSSQLiteStoreMigrator tableMigrationDescriptionForEntity:](a5, [a1 destinationEntity]);
-      v35 = -[_NSSQLTableMigrationDescription _retainedRemovedSubEntitiesOfEntity:](v34, [a1 destinationEntity]);
+      v34 = -[_NSSQLiteStoreMigrator tableMigrationDescriptionForEntity:](context, [one destinationEntity]);
+      v35 = -[_NSSQLTableMigrationDescription _retainedRemovedSubEntitiesOfEntity:](v34, [one destinationEntity]);
       if ([v35 count])
       {
         [v10 appendString:@" AND "];
@@ -3504,14 +3504,14 @@ LABEL_12:
         }
 
         [v10 appendString:@""]);
-        a5 = v49;
+        context = contextCopy;
       }
     }
   }
 
-  if (a5)
+  if (context)
   {
-    v44 = *(a5 + 32);
+    v44 = *(context + 32);
   }
 
   else
@@ -3525,7 +3525,7 @@ LABEL_12:
   return v45;
 }
 
-- (uint64_t)appendStatementsToCompleteMigration:(uint64_t)a3 migrationContext:
+- (uint64_t)appendStatementsToCompleteMigration:(uint64_t)migration migrationContext:
 {
   v17 = *MEMORY[0x1E69E9840];
   if (result)
@@ -3534,8 +3534,8 @@ LABEL_12:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [*(result + 96) allValues];
-    result = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allValues = [*(result + 96) allValues];
+    result = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (result)
     {
       v6 = result;
@@ -3547,12 +3547,12 @@ LABEL_12:
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
-          if (a3)
+          if (migration)
           {
-            v9 = *(a3 + 32);
+            v9 = *(migration + 32);
           }
 
           else
@@ -3567,7 +3567,7 @@ LABEL_12:
         }
 
         while (v6 != v8);
-        result = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        result = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
         v6 = result;
       }
 
@@ -3579,17 +3579,17 @@ LABEL_12:
   return result;
 }
 
-- (void)appendDefaultValueStatementsToCompleteMigration:(uint64_t)a3 migrationContext:
+- (void)appendDefaultValueStatementsToCompleteMigration:(uint64_t)migration migrationContext:
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (a1 && *(a1 + 24) >= 2u)
+  if (self && *(self + 24) >= 2u)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v7 = *(a1 + 104);
+    v7 = *(self + 104);
     if (!v7)
     {
-      [(_NSSQLTableMigrationDescription *)a1 _determineSchemaTransformationComplexityInMigrationContext:a3];
-      v7 = *(a1 + 104);
+      [(_NSSQLTableMigrationDescription *)self _determineSchemaTransformationComplexityInMigrationContext:migration];
+      v7 = *(self + 104);
     }
 
     if (([v7 BOOLValue] & 1) == 0)
@@ -3598,7 +3598,7 @@ LABEL_12:
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v8 = *(a1 + 56);
+      v8 = *(self + 56);
       v9 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
       if (v9)
       {
@@ -3612,7 +3612,7 @@ LABEL_12:
               objc_enumerationMutation(v8);
             }
 
-            v12 = [(_NSSQLTableMigrationDescription *)a1 createDefaultValuePopulationStatementsForAddedColumnsEntityMigration:a3 migrationContext:?];
+            v12 = [(_NSSQLTableMigrationDescription *)self createDefaultValuePopulationStatementsForAddedColumnsEntityMigration:migration migrationContext:?];
             v13 = v12;
             if (v12)
             {
@@ -3633,7 +3633,7 @@ LABEL_12:
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v14 = *(a1 + 112);
+      v14 = *(self + 112);
       v15 = [v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
       if (v15)
       {
@@ -3652,7 +3652,7 @@ LABEL_12:
             {
               if (v18[24] == 10)
               {
-                v19 = -[_NSSQLTableMigrationDescription createDefaultValuePopulationStatementsForAddedColumnsEntityMigration:migrationContext:](a1, [*(a1 + 64) objectForKey:{objc_msgSend(objc_msgSend(v18, "entity"), "name")}], a3);
+                v19 = -[_NSSQLTableMigrationDescription createDefaultValuePopulationStatementsForAddedColumnsEntityMigration:migrationContext:](self, [*(self + 64) objectForKey:{objc_msgSend(objc_msgSend(v18, "entity"), "name")}], migration);
                 v20 = v19;
                 if (v19)
                 {
@@ -3678,13 +3678,13 @@ LABEL_12:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (id)createDefaultValuePopulationStatementsForAddedColumnsEntityMigration:(uint64_t)a3 migrationContext:
+- (id)createDefaultValuePopulationStatementsForAddedColumnsEntityMigration:(uint64_t)migration migrationContext:
 {
   v59 = *MEMORY[0x1E69E9840];
   v47 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v48 = a1;
-  v6 = *(a1 + 112);
+  selfCopy = self;
+  v6 = *(self + 112);
   if (v6)
   {
     v7 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v6, "count")}];
@@ -3692,8 +3692,8 @@ LABEL_12:
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v8 = *(a1 + 112);
-    v9 = [*(v48 + 112) countByEnumeratingWithState:&v53 objects:v58 count:16];
+    v8 = *(self + 112);
+    v9 = [*(selfCopy + 112) countByEnumeratingWithState:&v53 objects:v58 count:16];
     if (v9)
     {
       v10 = v9;
@@ -3726,13 +3726,13 @@ LABEL_12:
     }
   }
 
-  v14 = *(v48 + 168);
+  v14 = *(selfCopy + 168);
   if (v14)
   {
     [v5 addObjectsFromArray:{objc_msgSend(v14, "allObjects")}];
   }
 
-  v15 = *(v48 + 144);
+  v15 = *(selfCopy + 144);
   if (v15)
   {
     [v5 addObjectsFromArray:{objc_msgSend(v15, "allObjects")}];
@@ -3766,14 +3766,14 @@ LABEL_12:
           v21 = v20[24];
           if (v21 == 10 || v21 == 1)
           {
-            v23 = [*(*(&v49 + 1) + 8 * v19) columnName];
+            columnName = [*(*(&v49 + 1) + 8 * v19) columnName];
             if (a2)
             {
-              v24 = v23;
+              v24 = columnName;
               v25 = *(a2 + 16);
               if (!v25)
               {
-                [(_NSSQLEntityMigrationDescription *)a2 _generateSQLValueMappingsWithMigrationContext:a3];
+                [(_NSSQLEntityMigrationDescription *)a2 _generateSQLValueMappingsWithMigrationContext:migration];
                 v25 = *(a2 + 16);
               }
 
@@ -3782,20 +3782,20 @@ LABEL_12:
               {
                 v27 = v26;
                 v28 = [objc_msgSend(v20 "entity")];
-                v29 = [v28 tableName];
-                v30 = [MEMORY[0x1E696AD60] stringWithFormat:@"UPDATE %@ SET ", v29];
+                tableName = [v28 tableName];
+                v30 = [MEMORY[0x1E696AD60] stringWithFormat:@"UPDATE %@ SET ", tableName];
                 objc_opt_class();
                 isKindOfClass = objc_opt_isKindOfClass();
-                v32 = [v20 columnName];
+                columnName2 = [v20 columnName];
                 if (isKindOfClass)
                 {
-                  [v30 appendFormat:@"%@ = ?", v32];
+                  [v30 appendFormat:@"%@ = ?", columnName2];
                   v33 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v27, 0}];
                 }
 
                 else
                 {
-                  [v30 appendFormat:@"%@ = %@", v32, v27];
+                  [v30 appendFormat:@"%@ = %@", columnName2, v27];
                   v33 = 0;
                 }
 
@@ -3810,7 +3810,7 @@ LABEL_12:
                   if (!v34 || ![v34 count])
                   {
                     v35 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@" WHERE "];
-                    [v35 appendString:v29];
+                    [v35 appendString:tableName];
                     [v35 appendString:@"."];
                     [v35 appendString:@"Z_ENT"];
                     [v35 appendString:@" = "];
@@ -3824,11 +3824,11 @@ LABEL_12:
                   v35 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@" WHERE "];
                   [v35 appendFormat:@"%d", *(v28 + 184)];
                   [v35 appendString:@" <= "];
-                  [v35 appendString:v29];
+                  [v35 appendString:tableName];
                   [v35 appendString:@"."];
                   [v35 appendString:@"Z_ENT"];
                   [v35 appendString:@" AND "];
-                  [v35 appendString:v29];
+                  [v35 appendString:tableName];
                   [v35 appendString:@"."];
                   v17 = v43;
                   [v35 appendString:@"Z_ENT"];
@@ -3844,7 +3844,7 @@ LABEL_49:
                   v35 = 0;
                 }
 
-                if ([*(v48 + 168) containsObject:v20])
+                if ([*(selfCopy + 168) containsObject:v20])
                 {
                   if (v35)
                   {
@@ -3894,10 +3894,10 @@ LABEL_49:
   return v47;
 }
 
-- (void)_retainedRemovedSubEntitiesOfEntity:(uint64_t)a1
+- (void)_retainedRemovedSubEntitiesOfEntity:(uint64_t)entity
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (!a1 || (v19 = 0u, v20 = 0u, v17 = 0u, v18 = 0u, v4 = *(a1 + 40), (v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16]) == 0))
+  if (!entity || (v19 = 0u, v20 = 0u, v17 = 0u, v18 = 0u, v4 = *(entity + 40), (v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16]) == 0))
   {
     v7 = 0;
     goto LABEL_21;
@@ -3916,11 +3916,11 @@ LABEL_49:
         objc_enumerationMutation(v4);
       }
 
-      v10 = [*(*(&v17 + 1) + 8 * v9) sourceEntity];
-      if (v10)
+      sourceEntity = [*(*(&v17 + 1) + 8 * v9) sourceEntity];
+      if (sourceEntity)
       {
-        v11 = v10;
-        v12 = *(v10 + 184);
+        v11 = sourceEntity;
+        v12 = *(sourceEntity + 184);
         if (a2)
         {
           if (v12 < *(a2 + 184))
@@ -3940,7 +3940,7 @@ LABEL_49:
         {
           if (!v7)
           {
-            v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(*(a1 + 40), "count")}];
+            v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(*(entity + 40), "count")}];
           }
 
           [v7 addObject:v11];
@@ -3962,17 +3962,17 @@ LABEL_21:
   return v7;
 }
 
-- (uint64_t)newCloudKitMetadataUpdateStatements:(uint64_t)a1
+- (uint64_t)newCloudKitMetadataUpdateStatements:(uint64_t)statements
 {
   v94 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!statements)
   {
     v61 = 0;
     goto LABEL_88;
   }
 
   v69 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (*(a1 + 24) == 1)
+  if (*(statements + 24) == 1)
   {
     v3 = objc_autoreleasePoolPush();
     _pflogInitialize(4);
@@ -3983,9 +3983,9 @@ LABEL_21:
         LogStream = _PFLogGetLogStream(1);
         if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
         {
-          v5 = [*(a1 + 8) tableName];
+          tableName = [*(statements + 8) tableName];
           *buf = 138412290;
-          v93 = v5;
+          v93 = tableName;
           _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: Migration: CloudKit tables detected. Adding migration statements for removed table: %@\n", buf, 0xCu);
         }
       }
@@ -3995,31 +3995,31 @@ LABEL_21:
         v40 = _PFLogGetLogStream(4);
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
         {
-          v41 = [*(a1 + 8) tableName];
+          tableName2 = [*(statements + 8) tableName];
           *buf = 138412290;
-          v93 = v41;
+          v93 = tableName2;
           _os_log_impl(&dword_18565F000, v40, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: Migration: CloudKit tables detected. Adding migration statements for removed table: %@\n", buf, 0xCu);
         }
       }
     }
 
-    v42 = *(a1 + 8);
+    v42 = *(statements + 8);
     if (_pflogging_catastrophic_mode)
     {
-      v43 = [v42 tableName];
+      tableName3 = [v42 tableName];
       v44 = 1;
     }
 
     else
     {
-      v43 = [v42 tableName];
+      tableName3 = [v42 tableName];
       v44 = 4;
     }
 
-    _NSCoreDataLog_console(v44, "Migration: CloudKit tables detected. Adding migration statements for removed table: %@", v43);
+    _NSCoreDataLog_console(v44, "Migration: CloudKit tables detected. Adding migration statements for removed table: %@", tableName3);
     objc_autoreleasePoolPop(v3);
     v45 = objc_alloc(MEMORY[0x1E695DF70]);
-    v46 = *(a1 + 8);
+    v46 = *(statements + 8);
     if (v46)
     {
       v47 = *(v46 + 152);
@@ -4031,7 +4031,7 @@ LABEL_21:
     }
 
     v48 = [v45 initWithCapacity:{objc_msgSend(v47, "count") + 1}];
-    v49 = *(a1 + 8);
+    v49 = *(statements + 8);
     if (v49)
     {
       v50 = *(v49 + 184);
@@ -4047,7 +4047,7 @@ LABEL_21:
     v85 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v51 = *(a1 + 8);
+    v51 = *(statements + 8);
     if (v51)
     {
       v52 = *(v51 + 152);
@@ -4102,13 +4102,13 @@ LABEL_21:
     goto LABEL_87;
   }
 
-  if ([*(a1 + 56) count])
+  if ([*(statements + 56) count])
   {
     v80 = 0u;
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    obj = *(a1 + 56);
+    obj = *(statements + 56);
     v6 = [obj countByEnumeratingWithState:&v78 objects:v90 count:16];
     if (v6)
     {
@@ -4127,10 +4127,10 @@ LABEL_21:
 
           v9 = *(*(&v78 + 1) + 8 * v8);
           [v9 validateCloudKitEntityMigration];
-          v10 = [v9 sourceEntity];
-          if (v10)
+          sourceEntity = [v9 sourceEntity];
+          if (sourceEntity)
           {
-            v11 = *(v10 + *(v7 + 3424));
+            v11 = *(sourceEntity + *(v7 + 3424));
             if (!v9)
             {
               goto LABEL_35;
@@ -4158,10 +4158,10 @@ LABEL_18:
           if (v11 != v12)
           {
             v13 = MEMORY[0x1E696AD98];
-            v14 = [v9 sourceEntity];
-            if (v14)
+            sourceEntity2 = [v9 sourceEntity];
+            if (sourceEntity2)
             {
-              v15 = *(v14 + *(v7 + 3424));
+              v15 = *(sourceEntity2 + *(v7 + 3424));
             }
 
             else
@@ -4189,8 +4189,8 @@ LABEL_18:
           v77 = 0u;
           v74 = 0u;
           v75 = 0u;
-          v18 = [(_NSSQLEntityMigrationDescription *)v9 removedManyToManys];
-          v19 = [v18 countByEnumeratingWithState:&v74 objects:v88 count:16];
+          removedManyToManys = [(_NSSQLEntityMigrationDescription *)v9 removedManyToManys];
+          v19 = [removedManyToManys countByEnumeratingWithState:&v74 objects:v88 count:16];
           if (v19)
           {
             v20 = *v75;
@@ -4200,7 +4200,7 @@ LABEL_18:
               {
                 if (*v75 != v20)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(removedManyToManys);
                 }
 
                 v22 = *(*(&v74 + 1) + 8 * i);
@@ -4209,7 +4209,7 @@ LABEL_18:
                 [v69 addObject:v24];
               }
 
-              v19 = [v18 countByEnumeratingWithState:&v74 objects:v88 count:16];
+              v19 = [removedManyToManys countByEnumeratingWithState:&v74 objects:v88 count:16];
             }
 
             while (v19);
@@ -4228,13 +4228,13 @@ LABEL_18:
     }
   }
 
-  if ([*(a1 + 48) count])
+  if ([*(statements + 48) count])
   {
     v72 = 0u;
     v73 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v26 = *(a1 + 48);
+    v26 = *(statements + 48);
     v27 = [v26 countByEnumeratingWithState:&v70 objects:v87 count:16];
     if (v27)
     {
@@ -4251,10 +4251,10 @@ LABEL_18:
 
           v30 = *(*(&v70 + 1) + 8 * v29);
           [v30 validateCloudKitEntityMigration];
-          v31 = [v30 sourceEntity];
-          if (v31)
+          sourceEntity3 = [v30 sourceEntity];
+          if (sourceEntity3)
           {
-            v32 = *(v31 + 184);
+            v32 = *(sourceEntity3 + 184);
             if (!v30)
             {
               goto LABEL_59;
@@ -4282,10 +4282,10 @@ LABEL_49:
           if (v32 != v33)
           {
             v34 = MEMORY[0x1E696AD98];
-            v35 = [v30 sourceEntity];
-            if (v35)
+            sourceEntity4 = [v30 sourceEntity];
+            if (sourceEntity4)
             {
-              v36 = *(v35 + 184);
+              v36 = *(sourceEntity4 + 184);
             }
 
             else

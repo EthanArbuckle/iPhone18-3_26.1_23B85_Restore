@@ -5,17 +5,17 @@
 - (NSArray)pairedDevices;
 - (NSString)deviceNameToRestore;
 - (id)compatiblePairedDevices;
-- (id)removeIncompatibleBackups:(id)a3;
-- (id)sortBackups:(id)a3;
-- (id)sortDevices:(id)a3;
+- (id)removeIncompatibleBackups:(id)backups;
+- (id)sortBackups:(id)backups;
+- (id)sortDevices:(id)devices;
 - (unint64_t)shouldOfferToRestore;
 - (void)loadBackups;
 - (void)loadiCloudBackups;
 - (void)reloadBackups;
 - (void)reset;
-- (void)restoreFromBackup:(id)a3 toDevice:(id)a4 completionHandler:(id)a5;
-- (void)restoreFromDevice:(id)a3 toDevice:(id)a4 completionHandler:(id)a5;
-- (void)setMinWatchOSVersion:(id)a3;
+- (void)restoreFromBackup:(id)backup toDevice:(id)device completionHandler:(id)handler;
+- (void)restoreFromDevice:(id)device toDevice:(id)toDevice completionHandler:(id)handler;
+- (void)setMinWatchOSVersion:(id)version;
 - (void)updateCompatiblePairedOrArchivedDeviceListIfNeeded;
 @end
 
@@ -91,15 +91,15 @@
 
 - (void)loadBackups
 {
-  v3 = [UIApp bridgeController];
-  v4 = [v3 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
 
   v5 = objc_opt_new();
   localBackups = self->_localBackups;
   self->_localBackups = v5;
 
   self->_loadBackupsStarted = 1;
-  if (v4)
+  if (isTinkerPairing)
   {
     if (PBLogPerformanceMetrics())
     {
@@ -129,15 +129,15 @@
   }
 }
 
-- (void)setMinWatchOSVersion:(id)a3
+- (void)setMinWatchOSVersion:(id)version
 {
-  v5 = a3;
-  objc_storeStrong(&self->_minWatchOSVersion, a3);
+  versionCopy = version;
+  objc_storeStrong(&self->_minWatchOSVersion, version);
   v6 = pbb_setupflow_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = versionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "setMinWatchOSVersion to: %@", &v7, 0xCu);
   }
 
@@ -168,8 +168,8 @@
 
 - (unint64_t)shouldOfferToRestore
 {
-  v3 = [UIApp bridgeController];
-  v4 = [v3 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
 
   loadBackupsStarted = self->_loadBackupsStarted;
   v6 = pbb_setupflow_log();
@@ -186,7 +186,7 @@
     return 0;
   }
 
-  if (v4)
+  if (isTinkerPairing)
   {
     if (v7)
     {
@@ -233,8 +233,8 @@
     return 1;
   }
 
-  v17 = [(COSBackupManager *)self pairedDevices];
-  v18 = [v17 count];
+  pairedDevices = [(COSBackupManager *)self pairedDevices];
+  v18 = [pairedDevices count];
 
   if (v18)
   {
@@ -267,43 +267,43 @@ LABEL_7:
   return compatiblePairedOrArchivedDevices;
 }
 
-- (void)restoreFromBackup:(id)a3 toDevice:(id)a4 completionHandler:(id)a5
+- (void)restoreFromBackup:(id)backup toDevice:(id)device completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  backupCopy = backup;
+  deviceCopy = device;
+  handlerCopy = handler;
   backupController = self->_backupController;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000BB8A0;
   v15[3] = &unk_10026AFC0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = backupCopy;
+  v17 = deviceCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = deviceCopy;
+  v14 = backupCopy;
   [(NBManager *)backupController restoreFromBackup:v14 forDevice:v13 completionHandler:v15];
 }
 
-- (void)restoreFromDevice:(id)a3 toDevice:(id)a4 completionHandler:(id)a5
+- (void)restoreFromDevice:(id)device toDevice:(id)toDevice completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  toDeviceCopy = toDevice;
+  handlerCopy = handler;
   backupController = self->_backupController;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000BBA34;
   v15[3] = &unk_10026AFC0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = deviceCopy;
+  v17 = toDeviceCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = toDeviceCopy;
+  v14 = deviceCopy;
   [(NBManager *)backupController restoreFromDevice:v14 forDevice:v13 completionHandler:v15];
 }
 
@@ -333,7 +333,7 @@ LABEL_7:
 - (id)compatiblePairedDevices
 {
   v3 = +[COSBackupManager sharedBackupManager];
-  v4 = [v3 minWatchOSVersion];
+  minWatchOSVersion = [v3 minWatchOSVersion];
   v5 = NRWatchOSVersion();
 
   v6 = objc_opt_new();
@@ -341,8 +341,8 @@ LABEL_7:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(COSBackupManager *)self pairedDevices];
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  pairedDevices = [(COSBackupManager *)self pairedDevices];
+  v8 = [pairedDevices countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -354,7 +354,7 @@ LABEL_7:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(pairedDevices);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
@@ -386,7 +386,7 @@ LABEL_7:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v9 = [pairedDevices countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v9);
@@ -395,13 +395,13 @@ LABEL_7:
   return v6;
 }
 
-- (id)removeIncompatibleBackups:(id)a3
+- (id)removeIncompatibleBackups:(id)backups
 {
-  v4 = a3;
+  backupsCopy = backups;
   v5 = [COSTinkerHealthSharingSetupDelegate tinkerDevice]_0();
   v6 = [v5 valueForProperty:NRDevicePropertyChipID];
   v7 = [(NSDictionary *)self->_chipIDToLastSupportedPrefix objectForKeyedSubscript:v6];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
 
   v9 = pbb_setupflow_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -422,8 +422,8 @@ LABEL_7:
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v29 = v4;
-    obj = v4;
+    v29 = backupsCopy;
+    obj = backupsCopy;
     v11 = [obj countByEnumeratingWithState:&v32 objects:v40 count:16];
     if (v11)
     {
@@ -439,34 +439,34 @@ LABEL_7:
           }
 
           v15 = *(*(&v32 + 1) + 8 * i);
-          v16 = [v15 systemVersion];
-          v17 = [v16 componentsSeparatedByString:@"."];
+          systemVersion = [v15 systemVersion];
+          v17 = [systemVersion componentsSeparatedByString:@"."];
           v18 = [v17 objectAtIndexedSubscript:0];
-          v19 = [v18 integerValue];
+          integerValue2 = [v18 integerValue];
 
           v20 = pbb_setupflow_log();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134218240;
-            v37 = v19;
+            v37 = integerValue2;
             v38 = 2048;
-            v39 = v8;
+            v39 = integerValue;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "comparing %ld to %ld", buf, 0x16u);
           }
 
           v21 = pbb_setupflow_log();
           v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-          if (v19 <= v8)
+          if (integerValue2 <= integerValue)
           {
             if (v22)
             {
-              v23 = [v15 uuid];
-              v24 = [v23 UUIDString];
-              v25 = [v15 backupType];
+              uuid = [v15 uuid];
+              uUIDString = [uuid UUIDString];
+              backupType = [v15 backupType];
               *buf = 138412546;
-              v37 = v24;
+              v37 = uUIDString;
               v38 = 1024;
-              LODWORD(v39) = v25 == 1;
+              LODWORD(v39) = backupType == 1;
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Adding backup with id: %@ fromCloud: %{BOOL}d", buf, 0x12u);
             }
 
@@ -491,30 +491,30 @@ LABEL_7:
     }
 
     v5 = v28;
-    v4 = v29;
+    backupsCopy = v29;
     v6 = v27;
   }
 
   else
   {
-    v30 = v4;
+    v30 = backupsCopy;
   }
 
   return v30;
 }
 
-- (id)sortBackups:(id)a3
+- (id)sortBackups:(id)backups
 {
-  v3 = [NSMutableArray arrayWithArray:a3];
+  v3 = [NSMutableArray arrayWithArray:backups];
   [v3 sortUsingComparator:&stru_10026B000];
   v4 = [NSArray arrayWithArray:v3];
 
   return v4;
 }
 
-- (id)sortDevices:(id)a3
+- (id)sortDevices:(id)devices
 {
-  v3 = [NSMutableArray arrayWithArray:a3];
+  v3 = [NSMutableArray arrayWithArray:devices];
   [v3 sortUsingComparator:&stru_10026B020];
 
   return v3;
@@ -524,15 +524,15 @@ LABEL_7:
 {
   if (!self->_isCompatiblePairedDeviceListCurrent)
   {
-    v2 = self;
+    selfCopy = self;
     self->_isCompatiblePairedDeviceListCurrent = 1;
-    v3 = [UIApp bridgeController];
-    v4 = [v3 isTinkerPairing];
+    bridgeController = [UIApp bridgeController];
+    isTinkerPairing = [bridgeController isTinkerPairing];
 
-    if (v4)
+    if (isTinkerPairing)
     {
-      compatiblePairedOrArchivedDevices = v2->_compatiblePairedOrArchivedDevices;
-      v2->_compatiblePairedOrArchivedDevices = 0;
+      compatiblePairedOrArchivedDevices = selfCopy->_compatiblePairedOrArchivedDevices;
+      selfCopy->_compatiblePairedOrArchivedDevices = 0;
     }
 
     else
@@ -540,8 +540,8 @@ LABEL_7:
       v6 = objc_opt_new();
       v32 = [COSTinkerHealthSharingSetupDelegate tinkerDevice]_0();
       v37 = [v32 valueForProperty:NRDevicePropertyChipID];
-      v7 = [(NSDictionary *)v2->_chipIDToLastSupportedPrefix objectForKeyedSubscript:?];
-      v36 = [v7 integerValue];
+      v7 = [(NSDictionary *)selfCopy->_chipIDToLastSupportedPrefix objectForKeyedSubscript:?];
+      integerValue = [v7 integerValue];
 
       v44 = 0u;
       v45 = 0u;
@@ -571,33 +571,33 @@ LABEL_7:
 
             if (!v15)
             {
-              v16 = [(NSDictionary *)v2->_chipIDToLastSupportedPrefix objectForKeyedSubscript:v37];
+              v16 = [(NSDictionary *)selfCopy->_chipIDToLastSupportedPrefix objectForKeyedSubscript:v37];
 
               if (!v16)
               {
                 goto LABEL_16;
               }
 
-              v17 = v2;
+              v17 = selfCopy;
               v18 = [v14 valueForProperty:v33];
               v19 = [v18 componentsSeparatedByString:@"."];
               v20 = [v19 objectAtIndexedSubscript:0];
-              v21 = [v20 integerValue];
+              integerValue2 = [v20 integerValue];
 
               v22 = pbb_setupflow_log();
               if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 134218240;
-                v48 = v21;
+                v48 = integerValue2;
                 v49 = 2048;
-                v50 = v36;
+                v50 = integerValue;
                 _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "comparing(device) %ld to %ld", buf, 0x16u);
               }
 
-              v2 = v17;
+              selfCopy = v17;
               v8 = v34;
               v6 = v35;
-              if (v21 <= v36)
+              if (integerValue2 <= integerValue)
               {
 LABEL_16:
                 [v6 addObject:v14];
@@ -642,9 +642,9 @@ LABEL_16:
         while (v27);
       }
 
-      v30 = [(COSBackupManager *)v2 sortDevices:v6];
-      v31 = v2->_compatiblePairedOrArchivedDevices;
-      v2->_compatiblePairedOrArchivedDevices = v30;
+      v30 = [(COSBackupManager *)selfCopy sortDevices:v6];
+      v31 = selfCopy->_compatiblePairedOrArchivedDevices;
+      selfCopy->_compatiblePairedOrArchivedDevices = v30;
     }
   }
 }

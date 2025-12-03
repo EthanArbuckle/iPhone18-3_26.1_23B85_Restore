@@ -1,44 +1,44 @@
 @interface NMUDownloadWaitingAlertController
-- (NMUDownloadWaitingAlertController)initWithModelObject:(id)a3 status:(unint64_t)a4 downloadPauseReason:(unint64_t)a5 options:(id)a6 presentingViewController:(id)a7;
-- (void)presentWithCompletion:(id)a3;
+- (NMUDownloadWaitingAlertController)initWithModelObject:(id)object status:(unint64_t)status downloadPauseReason:(unint64_t)reason options:(id)options presentingViewController:(id)controller;
+- (void)presentWithCompletion:(id)completion;
 @end
 
 @implementation NMUDownloadWaitingAlertController
 
-- (NMUDownloadWaitingAlertController)initWithModelObject:(id)a3 status:(unint64_t)a4 downloadPauseReason:(unint64_t)a5 options:(id)a6 presentingViewController:(id)a7
+- (NMUDownloadWaitingAlertController)initWithModelObject:(id)object status:(unint64_t)status downloadPauseReason:(unint64_t)reason options:(id)options presentingViewController:(id)controller
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  objectCopy = object;
+  optionsCopy = options;
+  controllerCopy = controller;
   v19.receiver = self;
   v19.super_class = NMUDownloadWaitingAlertController;
   v16 = [(NMUDownloadWaitingAlertController *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_modelObject, a3);
-    v17->_status = a4;
-    v17->_downloadPauseReason = a5;
-    objc_storeStrong(&v17->_keepLocalRequestOptions, a6);
-    objc_storeStrong(&v17->_presentingViewController, a7);
+    objc_storeStrong(&v16->_modelObject, object);
+    v17->_status = status;
+    v17->_downloadPauseReason = reason;
+    objc_storeStrong(&v17->_keepLocalRequestOptions, options);
+    objc_storeStrong(&v17->_presentingViewController, controller);
   }
 
   return v17;
 }
 
-- (void)presentWithCompletion:(id)a3
+- (void)presentWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[NMUDownloadWaitingAlertConfiguration alloc] initWithModelObject:self->_modelObject status:self->_status downloadPauseReason:self->_downloadPauseReason options:self->_keepLocalRequestOptions];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__NMUDownloadWaitingAlertController_presentWithCompletion___block_invoke;
   v9[3] = &unk_27993BE08;
   v10 = v5;
-  v11 = v4;
+  v11 = completionCopy;
   v9[4] = self;
   v6 = v5;
-  v7 = v4;
+  v7 = completionCopy;
   v8 = [(NMUKeepLocalAlertConfiguration *)v6 alertViewControllerWithKeepLocalBlock:v9];
   [(UIViewController *)self->_presentingViewController presentViewController:v8 animated:1 completion:0];
 }

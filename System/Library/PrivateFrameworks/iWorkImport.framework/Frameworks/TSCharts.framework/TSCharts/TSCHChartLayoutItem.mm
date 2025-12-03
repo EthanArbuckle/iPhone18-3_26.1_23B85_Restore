@@ -1,12 +1,12 @@
 @interface TSCHChartLayoutItem
 + (Class)radarAreaLayoutItem;
-+ (double)halfProtrusionForRegularPolygonWithSides:(int64_t)a3 strokeWidth:(double)a4;
-+ (id)chartLayoutWithChartInfo:(id)a3 styleProvidingSource:(id)a4;
++ (double)halfProtrusionForRegularPolygonWithSides:(int64_t)sides strokeWidth:(double)width;
++ (id)chartLayoutWithChartInfo:(id)info styleProvidingSource:(id)source;
 - ($6BF1DF173A55784CAE4B3BED4B6FCF3F)layoutSettings;
 - (BOOL)isInResize;
-- (BOOL)stopIteratingItemsContainingPoint:(CGPoint)a3 withBlock:(id)a4;
+- (BOOL)stopIteratingItemsContainingPoint:(CGPoint)point withBlock:(id)block;
 - (CGAffineTransform)transformToRoot;
-- (CGPath)newDragAndDropHighlightPathForSelection:(id)a3;
+- (CGPath)newDragAndDropHighlightPathForSelection:(id)selection;
 - (CGPoint)layoutOffset;
 - (CGRect)calcDrawingRect;
 - (CGRect)calcOverhangRect;
@@ -26,18 +26,18 @@
 - (CGSize)startingSize;
 - (TSCHChartInfo)chart;
 - (TSCHChartInfo)chartInfo;
-- (TSCHChartLayoutItem)initWithParent:(id)a3;
+- (TSCHChartLayoutItem)initWithParent:(id)parent;
 - (TSCHChartLayoutItem)parent;
 - (TSCHChartModel)model;
 - (TSCHChartRootLayoutItem)root;
 - (TSWPStyleProviding)styleProvidingSource;
-- (double)overhangMagnitudeForEdge:(unsigned int)a3;
+- (double)overhangMagnitudeForEdge:(unsigned int)edge;
 - (id)description;
-- (id)hitChartElements:(CGPoint)a3 passingTest:(id)a4;
+- (id)hitChartElements:(CGPoint)elements passingTest:(id)test;
 - (id)p_description;
-- (id)renderersWithRep:(id)a3;
-- (id)subselectionHaloPositionsForSelections:(id)a3;
-- (id)subselectionKnobPositionsForSelection:(id)a3;
+- (id)renderersWithRep:(id)rep;
+- (id)subselectionHaloPositionsForSelections:(id)selections;
+- (id)subselectionKnobPositionsForSelection:(id)selection;
 - (unint64_t)dataSetIndex;
 - (void)buildSubTree;
 - (void)clearAll;
@@ -47,35 +47,35 @@
 - (void)clearOverhangRect;
 - (void)layoutInward;
 - (void)layoutOutward;
-- (void)layoutUsingMethod:(int)a3;
-- (void)p_iterateChildrenWithBlock:(id)a3;
-- (void)setLayoutRect:(CGRect)a3;
-- (void)setLayoutSettings:(id *)a3;
-- (void)setLayoutSize:(CGSize)a3;
+- (void)layoutUsingMethod:(int)method;
+- (void)p_iterateChildrenWithBlock:(id)block;
+- (void)setLayoutRect:(CGRect)rect;
+- (void)setLayoutSettings:(id *)settings;
+- (void)setLayoutSize:(CGSize)size;
 @end
 
 @implementation TSCHChartLayoutItem
 
-+ (id)chartLayoutWithChartInfo:(id)a3 styleProvidingSource:(id)a4
++ (id)chartLayoutWithChartInfo:(id)info styleProvidingSource:(id)source
 {
-  v5 = a4;
-  v6 = a3;
+  sourceCopy = source;
+  infoCopy = info;
   v7 = [TSCHChartRootLayoutItem alloc];
-  v12 = objc_msgSend_initWithChartInfo_styleProvidingSource_(v7, v8, v9, v10, v11, v6, v5);
+  v12 = objc_msgSend_initWithChartInfo_styleProvidingSource_(v7, v8, v9, v10, v11, infoCopy, sourceCopy);
 
   return v12;
 }
 
-- (TSCHChartLayoutItem)initWithParent:(id)a3
+- (TSCHChartLayoutItem)initWithParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   v12.receiver = self;
   v12.super_class = TSCHChartLayoutItem;
   v5 = [(TSCHChartLayoutItem *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_parent, v4);
+    objc_storeWeak(&v5->_parent, parentCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEA60]);
     children = v6->_children;
     v6->_children = v7;
@@ -173,13 +173,13 @@
   return result;
 }
 
-- (void)setLayoutSettings:(id *)a3
+- (void)setLayoutSettings:(id *)settings
 {
   v8 = objc_msgSend_parent(self, a2, v3, v4, v5);
 
   if (v8)
   {
-    v13 = objc_msgSend_parent(self, v9, *&a3->var0, v11, v12, *&a3->var0, a3->var8, a3->var9);
+    v13 = objc_msgSend_parent(self, v9, *&settings->var0, v11, v12, *&settings->var0, settings->var8, settings->var9);
     objc_msgSend_setLayoutSettings_(v13, v14, v15, v16, v17, &v34);
   }
 
@@ -272,11 +272,11 @@
   return result;
 }
 
-- (void)setLayoutSize:(CGSize)a3
+- (void)setLayoutSize:(CGSize)size
 {
-  self->_layoutSize = a3;
+  self->_layoutSize = size;
   self->_layoutSizeSet = 1;
-  objc_msgSend_clearDrawingRect(self, a2, a3.width, a3.height, v3);
+  objc_msgSend_clearDrawingRect(self, a2, size.width, size.height, v3);
 
   objc_msgSend_clearOverhangRect(self, v5, v6, v7, v8);
 }
@@ -333,11 +333,11 @@
   return result;
 }
 
-- (void)setLayoutRect:(CGRect)a3
+- (void)setLayoutRect:(CGRect)rect
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  objc_msgSend_setLayoutSize_(self, a2, a3.size.width, a3.size.height, a3.size.width);
+  y = rect.origin.y;
+  x = rect.origin.x;
+  objc_msgSend_setLayoutSize_(self, a2, rect.size.width, rect.size.height, rect.size.width);
 
   objc_msgSend_setLayoutOffset_(self, v6, x, y, v7);
 }
@@ -837,17 +837,17 @@
   objc_msgSend_setLayoutOffset_(self, v6, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v7, v21);
 }
 
-- (void)layoutUsingMethod:(int)a3
+- (void)layoutUsingMethod:(int)method
 {
-  if (a3)
+  if (method)
   {
-    if (a3 == 1)
+    if (method == 1)
     {
 
       objc_msgSend_layoutOutward(self, a2, v3, v4, v5);
     }
 
-    else if (a3 == 2)
+    else if (method == 2)
     {
 
       objc_msgSend_layoutInward(self, a2, v3, v4, v5);
@@ -869,10 +869,10 @@
   }
 }
 
-- (id)renderersWithRep:(id)a3
+- (id)renderersWithRep:(id)rep
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  repCopy = rep;
   v5 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
@@ -893,7 +893,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v19 = objc_msgSend_renderersWithRep_(*(*(&v25 + 1) + 8 * i), v12, v13, v14, v15, v4, v25);
+        v19 = objc_msgSend_renderersWithRep_(*(*(&v25 + 1) + 8 * i), v12, v13, v14, v15, repCopy, v25);
         objc_msgSend_addObjectsFromArray_(v5, v20, v21, v22, v23, v19);
       }
 
@@ -906,7 +906,7 @@
   return v5;
 }
 
-- (double)overhangMagnitudeForEdge:(unsigned int)a3
+- (double)overhangMagnitudeForEdge:(unsigned int)edge
 {
   objc_msgSend_layoutSize(self, a2, v3, v4, v5);
   TSURectWithSize();
@@ -919,9 +919,9 @@
   v23 = v19;
   v24 = v20;
   v25 = v21;
-  if (a3 > 1)
+  if (edge > 1)
   {
-    if (a3 == 2)
+    if (edge == 2)
     {
       MaxX = CGRectGetMaxX(*&v18);
       v52.origin.x = v9;
@@ -933,7 +933,7 @@
 
     else
     {
-      if (a3 != 3)
+      if (edge != 3)
       {
         goto LABEL_8;
       }
@@ -950,7 +950,7 @@
     return fmax(v45, 0.0);
   }
 
-  if (!a3)
+  if (!edge)
   {
     v50.origin.x = v9;
     v50.origin.y = v11;
@@ -965,7 +965,7 @@
     goto LABEL_10;
   }
 
-  if (a3 == 1)
+  if (edge == 1)
   {
     v47.origin.x = v9;
     v47.origin.y = v11;
@@ -1081,17 +1081,17 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)stopIteratingItemsContainingPoint:(CGPoint)a3 withBlock:(id)a4
+- (BOOL)stopIteratingItemsContainingPoint:(CGPoint)point withBlock:(id)block
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  blockCopy = block;
   v31 = 0;
   objc_msgSend_rootedDrawingRect(self, v8, v9, v10, v11);
   v34.x = x;
   v34.y = y;
-  if (!CGRectContainsPoint(v35, v34) || (v7[2](v7, self, &v31), (v31 & 1) == 0))
+  if (!CGRectContainsPoint(v35, v34) || (blockCopy[2](blockCopy, self, &v31), (v31 & 1) == 0))
   {
     v29 = 0u;
     v30 = 0u;
@@ -1112,7 +1112,7 @@ LABEL_5:
           objc_enumerationMutation(v12);
         }
 
-        v31 = objc_msgSend_stopIteratingItemsContainingPoint_withBlock_(*(*(&v27 + 1) + 8 * v22), v18, x, y, v19, v7, v27);
+        v31 = objc_msgSend_stopIteratingItemsContainingPoint_withBlock_(*(*(&v27 + 1) + 8 * v22), v18, x, y, v19, blockCopy, v27);
         if (v31)
         {
           break;
@@ -1137,11 +1137,11 @@ LABEL_5:
   return v25;
 }
 
-- (void)p_iterateChildrenWithBlock:(id)a3
+- (void)p_iterateChildrenWithBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v22 = 0;
     v18 = 0u;
@@ -1163,7 +1163,7 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v18 + 1) + 8 * v13), &v22);
+        blockCopy[2](blockCopy, *(*(&v18 + 1) + 8 * v13), &v22);
         if (v22)
         {
           break;
@@ -1184,11 +1184,11 @@ LABEL_4:
   }
 }
 
-- (id)hitChartElements:(CGPoint)a3 passingTest:(id)a4
+- (id)hitChartElements:(CGPoint)elements passingTest:(id)test
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = elements.y;
+  x = elements.x;
+  testCopy = test;
   v12 = objc_msgSend_array(MEMORY[0x277CBEB18], v8, v9, v10, v11);
   v18 = objc_msgSend_arrayWithObject_(MEMORY[0x277CBEB18], v13, v14, v15, v16, self);
   v44 = 0;
@@ -1209,7 +1209,7 @@ LABEL_4:
     v40[1] = 3221225472;
     v40[2] = sub_276285AE0;
     v40[3] = &unk_27A6B7298;
-    v42 = v7;
+    v42 = testCopy;
     v41 = v12;
     v43 = &v44;
     objc_msgSend_iterateHitChartElements_withBlock_(v26, v31, x, y, v32, v40);
@@ -1230,9 +1230,9 @@ LABEL_4:
   return v12;
 }
 
-- (id)subselectionKnobPositionsForSelection:(id)a3
+- (id)subselectionKnobPositionsForSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -1243,7 +1243,7 @@ LABEL_4:
   v12[1] = 3221225472;
   v12[2] = sub_276285CE0;
   v12[3] = &unk_27A6B72E8;
-  v5 = v4;
+  v5 = selectionCopy;
   v13 = v5;
   v14 = &v15;
   objc_msgSend_p_iterateChildrenWithBlock_(self, v6, v7, v8, v9, v12);
@@ -1254,9 +1254,9 @@ LABEL_4:
   return v10;
 }
 
-- (id)subselectionHaloPositionsForSelections:(id)a3
+- (id)subselectionHaloPositionsForSelections:(id)selections
 {
-  v4 = a3;
+  selectionsCopy = selections;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -1267,7 +1267,7 @@ LABEL_4:
   v12[1] = 3221225472;
   v12[2] = sub_276285E9C;
   v12[3] = &unk_27A6B72E8;
-  v5 = v4;
+  v5 = selectionsCopy;
   v13 = v5;
   v14 = &v15;
   objc_msgSend_p_iterateChildrenWithBlock_(self, v6, v7, v8, v9, v12);
@@ -1278,9 +1278,9 @@ LABEL_4:
   return v10;
 }
 
-- (CGPath)newDragAndDropHighlightPathForSelection:(id)a3
+- (CGPath)newDragAndDropHighlightPathForSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1289,7 +1289,7 @@ LABEL_4:
   v12[1] = 3221225472;
   v12[2] = sub_276286014;
   v12[3] = &unk_27A6B72E8;
-  v5 = v4;
+  v5 = selectionCopy;
   v13 = v5;
   v14 = &v15;
   objc_msgSend_p_iterateChildrenWithBlock_(self, v6, v7, v8, v9, v12);
@@ -1360,19 +1360,19 @@ LABEL_4:
   return swift_getObjCClassFromMetadata();
 }
 
-+ (double)halfProtrusionForRegularPolygonWithSides:(int64_t)a3 strokeWidth:(double)a4
++ (double)halfProtrusionForRegularPolygonWithSides:(int64_t)sides strokeWidth:(double)width
 {
-  if (a3 <= 1)
+  if (sides <= 1)
   {
-    v4 = 1;
+    sidesCopy = 1;
   }
 
   else
   {
-    v4 = a3;
+    sidesCopy = sides;
   }
 
-  return a4 * 0.5 / sin(fmax((v4 + -2.0) * 3.14159265 / v4, 1.04719755) * 0.5);
+  return width * 0.5 / sin(fmax((sidesCopy + -2.0) * 3.14159265 / sidesCopy, 1.04719755) * 0.5);
 }
 
 @end

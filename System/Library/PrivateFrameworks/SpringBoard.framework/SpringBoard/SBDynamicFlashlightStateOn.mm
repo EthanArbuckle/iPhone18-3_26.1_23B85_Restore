@@ -1,28 +1,28 @@
 @interface SBDynamicFlashlightStateOn
-- (BOOL)isEqual:(id)a3;
-- (SBDynamicFlashlightStateOn)initWithInitialIntensity:(double)a3 width:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (SBDynamicFlashlightStateOn)initWithInitialIntensity:(double)intensity width:(double)width;
 @end
 
 @implementation SBDynamicFlashlightStateOn
 
-- (SBDynamicFlashlightStateOn)initWithInitialIntensity:(double)a3 width:(double)a4
+- (SBDynamicFlashlightStateOn)initWithInitialIntensity:(double)intensity width:(double)width
 {
   v7.receiver = self;
   v7.super_class = SBDynamicFlashlightStateOn;
   result = [(SBDynamicFlashlightStateOn *)&v7 init];
   if (result)
   {
-    result->_initialIntensity = a3;
-    result->_initialWidth = a4;
+    result->_initialIntensity = intensity;
+    result->_initialWidth = width;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -32,7 +32,7 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
+      v7 = equalCopy;
       initialIntensity = self->_initialIntensity;
       [(SBDynamicFlashlightStateOn *)v7 initialIntensity];
       if (initialIntensity == v9)

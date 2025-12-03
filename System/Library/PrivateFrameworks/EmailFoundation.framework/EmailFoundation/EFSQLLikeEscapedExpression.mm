@@ -1,24 +1,24 @@
 @interface EFSQLLikeEscapedExpression
-- (EFSQLLikeEscapedExpression)initWithValue:(id)a3 pattern:(unint64_t)a4 escapeCharacter:(unsigned __int16)a5;
+- (EFSQLLikeEscapedExpression)initWithValue:(id)value pattern:(unint64_t)pattern escapeCharacter:(unsigned __int16)character;
 - (NSString)ef_SQLExpression;
-- (id)_stringForPattern:(void *)a3 literal:;
-- (void)ef_renderSQLExpressionInto:(id)a3;
+- (id)_stringForPattern:(void *)pattern literal:;
+- (void)ef_renderSQLExpressionInto:(id)into;
 @end
 
 @implementation EFSQLLikeEscapedExpression
 
-- (EFSQLLikeEscapedExpression)initWithValue:(id)a3 pattern:(unint64_t)a4 escapeCharacter:(unsigned __int16)a5
+- (EFSQLLikeEscapedExpression)initWithValue:(id)value pattern:(unint64_t)pattern escapeCharacter:(unsigned __int16)character
 {
-  v9 = a3;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = EFSQLLikeEscapedExpression;
   v10 = [(EFSQLLikeEscapedExpression *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_value, a3);
-    v11->_escapeCharacter = a5;
-    v11->_pattern = a4;
+    objc_storeStrong(&v10->_value, value);
+    v11->_escapeCharacter = character;
+    v11->_pattern = pattern;
   }
 
   return v11;
@@ -26,25 +26,25 @@
 
 - (NSString)ef_SQLExpression
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [(EFSQLLikeEscapedExpression *)self ef_renderSQLExpressionInto:v3];
+  string = [MEMORY[0x1E696AD60] string];
+  [(EFSQLLikeEscapedExpression *)self ef_renderSQLExpressionInto:string];
 
-  return v3;
+  return string;
 }
 
-- (void)ef_renderSQLExpressionInto:(id)a3
+- (void)ef_renderSQLExpressionInto:(id)into
 {
-  v5 = a3;
+  intoCopy = into;
   v4 = [(EFSQLLikeEscapedExpression *)self _stringForPattern:self->_value literal:?];
-  [v4 ef_renderSQLExpressionInto:v5];
-  [v5 appendFormat:@" ESCAPE '%C'", self->_escapeCharacter];
+  [v4 ef_renderSQLExpressionInto:intoCopy];
+  [intoCopy appendFormat:@" ESCAPE '%C'", self->_escapeCharacter];
 }
 
-- (id)_stringForPattern:(void *)a3 literal:
+- (id)_stringForPattern:(void *)pattern literal:
 {
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  patternCopy = pattern;
+  v7 = patternCopy;
+  if (self)
   {
     if (a2 <= 1)
     {
@@ -56,14 +56,14 @@
         }
 
         v8 = MEMORY[0x1E696AEC0];
-        v9 = [v6 ef_stringByEscapingSQLLikeSpecialCharactersWithEscapeCharater:{objc_msgSend(a1, "escapeCharacter")}];
+        v9 = [patternCopy ef_stringByEscapingSQLLikeSpecialCharactersWithEscapeCharater:{objc_msgSend(self, "escapeCharacter")}];
         v10 = [v8 stringWithFormat:@"%%%@%%", v9];
       }
 
       else
       {
         v11 = MEMORY[0x1E696AEC0];
-        v9 = [v6 ef_stringByEscapingSQLLikeSpecialCharactersWithEscapeCharater:{objc_msgSend(a1, "escapeCharacter")}];
+        v9 = [patternCopy ef_stringByEscapingSQLLikeSpecialCharactersWithEscapeCharater:{objc_msgSend(self, "escapeCharacter")}];
         v10 = [v11 stringWithFormat:@"%@%%", v9];
       }
 
@@ -73,7 +73,7 @@
     if (a2 == 2)
     {
       v12 = MEMORY[0x1E696AEC0];
-      v9 = [v6 ef_stringByEscapingSQLLikeSpecialCharactersWithEscapeCharater:{objc_msgSend(a1, "escapeCharacter")}];
+      v9 = [patternCopy ef_stringByEscapingSQLLikeSpecialCharactersWithEscapeCharater:{objc_msgSend(self, "escapeCharacter")}];
       v10 = [v12 stringWithFormat:@"%%%@", v9];
 LABEL_11:
       v3 = v10;
@@ -83,7 +83,7 @@ LABEL_11:
 
     if (a2 == 3)
     {
-      v3 = v6;
+      v3 = patternCopy;
     }
   }
 

@@ -1,23 +1,23 @@
 @interface AMSEngagementObserverInfo
-- (AMSEngagementObserverInfo)initWithQueue:(id)a3;
+- (AMSEngagementObserverInfo)initWithQueue:(id)queue;
 - (NSSet)placements;
 - (NSSet)serviceTypes;
-- (void)addPlacements:(id)a3;
-- (void)addServiceType:(id)a3;
-- (void)removePlacement:(id)a3;
-- (void)removeServiceType:(id)a3;
+- (void)addPlacements:(id)placements;
+- (void)addServiceType:(id)type;
+- (void)removePlacement:(id)placement;
+- (void)removeServiceType:(id)type;
 @end
 
 @implementation AMSEngagementObserverInfo
 
-- (AMSEngagementObserverInfo)initWithQueue:(id)a3
+- (AMSEngagementObserverInfo)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v6 = [(AMSEngagementObserverInfo *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatchQueue, a3);
+    objc_storeStrong(&v6->_dispatchQueue, queue);
     v8 = [MEMORY[0x1E695DFA8] set];
     underlyingPlacements = v7->_underlyingPlacements;
     v7->_underlyingPlacements = v8;
@@ -32,66 +32,66 @@
 
 - (NSSet)placements
 {
-  v3 = [(AMSEngagementObserverInfo *)self underlyingPlacements];
-  v4 = [v3 count];
+  underlyingPlacements = [(AMSEngagementObserverInfo *)self underlyingPlacements];
+  v4 = [underlyingPlacements count];
 
   if (v4)
   {
-    v5 = [(AMSEngagementObserverInfo *)self underlyingPlacements];
+    underlyingPlacements2 = [(AMSEngagementObserverInfo *)self underlyingPlacements];
   }
 
   else
   {
-    v5 = 0;
+    underlyingPlacements2 = 0;
   }
 
-  return v5;
+  return underlyingPlacements2;
 }
 
 - (NSSet)serviceTypes
 {
-  v3 = [(AMSEngagementObserverInfo *)self underlyingServiceTypes];
-  v4 = [v3 count];
+  underlyingServiceTypes = [(AMSEngagementObserverInfo *)self underlyingServiceTypes];
+  v4 = [underlyingServiceTypes count];
 
   if (v4)
   {
-    v5 = [(AMSEngagementObserverInfo *)self underlyingServiceTypes];
+    underlyingServiceTypes2 = [(AMSEngagementObserverInfo *)self underlyingServiceTypes];
   }
 
   else
   {
-    v5 = 0;
+    underlyingServiceTypes2 = 0;
   }
 
-  return v5;
+  return underlyingServiceTypes2;
 }
 
-- (void)addPlacements:(id)a3
+- (void)addPlacements:(id)placements
 {
-  v4 = a3;
-  v5 = [(AMSEngagementObserverInfo *)self underlyingPlacements];
-  [v5 unionSet:v4];
+  placementsCopy = placements;
+  underlyingPlacements = [(AMSEngagementObserverInfo *)self underlyingPlacements];
+  [underlyingPlacements unionSet:placementsCopy];
 }
 
-- (void)removePlacement:(id)a3
+- (void)removePlacement:(id)placement
 {
-  v4 = a3;
-  v5 = [(AMSEngagementObserverInfo *)self underlyingPlacements];
-  [v5 removeObject:v4];
+  placementCopy = placement;
+  underlyingPlacements = [(AMSEngagementObserverInfo *)self underlyingPlacements];
+  [underlyingPlacements removeObject:placementCopy];
 }
 
-- (void)addServiceType:(id)a3
+- (void)addServiceType:(id)type
 {
-  v4 = a3;
-  v5 = [(AMSEngagementObserverInfo *)self underlyingServiceTypes];
-  [v5 addObject:v4];
+  typeCopy = type;
+  underlyingServiceTypes = [(AMSEngagementObserverInfo *)self underlyingServiceTypes];
+  [underlyingServiceTypes addObject:typeCopy];
 }
 
-- (void)removeServiceType:(id)a3
+- (void)removeServiceType:(id)type
 {
-  v4 = a3;
-  v5 = [(AMSEngagementObserverInfo *)self underlyingPlacements];
-  [v5 removeObject:v4];
+  typeCopy = type;
+  underlyingPlacements = [(AMSEngagementObserverInfo *)self underlyingPlacements];
+  [underlyingPlacements removeObject:typeCopy];
 }
 
 @end

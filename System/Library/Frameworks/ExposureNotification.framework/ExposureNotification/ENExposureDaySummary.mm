@@ -1,34 +1,34 @@
 @interface ENExposureDaySummary
-- (ENExposureDaySummary)initWithXPCObject:(id)a3 error:(id *)a4;
+- (ENExposureDaySummary)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 - (void)roundDurations;
 @end
 
 @implementation ENExposureDaySummary
 
-- (ENExposureDaySummary)initWithXPCObject:(id)a3 error:(id *)a4
+- (ENExposureDaySummary)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v21.receiver = self;
   v21.super_class = ENExposureDaySummary;
   v7 = [(ENExposureDaySummary *)&v21 init];
   if (!v7)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_18;
     }
 
 LABEL_22:
     ENErrorF(2);
-    *a4 = v19 = 0;
+    *error = v19 = 0;
     goto LABEL_16;
   }
 
-  if (MEMORY[0x2383EE9C0](v6) != MEMORY[0x277D86468])
+  if (MEMORY[0x2383EE9C0](objectCopy) != MEMORY[0x277D86468])
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_18;
     }
@@ -43,10 +43,10 @@ LABEL_18:
     goto LABEL_16;
   }
 
-  v8 = xpc_dictionary_get_dictionary(v6, "siCT");
+  v8 = xpc_dictionary_get_dictionary(objectCopy, "siCT");
   if (v8)
   {
-    v9 = [[ENExposureSummaryItem alloc] initWithXPCObject:v8 error:a4];
+    v9 = [[ENExposureSummaryItem alloc] initWithXPCObject:v8 error:error];
     confirmedTestSummary = v7->_confirmedTestSummary;
     v7->_confirmedTestSummary = v9;
 
@@ -56,10 +56,10 @@ LABEL_18:
     }
   }
 
-  v8 = xpc_dictionary_get_dictionary(v6, "siCC");
+  v8 = xpc_dictionary_get_dictionary(objectCopy, "siCC");
   if (v8)
   {
-    v11 = [[ENExposureSummaryItem alloc] initWithXPCObject:v8 error:a4];
+    v11 = [[ENExposureSummaryItem alloc] initWithXPCObject:v8 error:error];
     confirmedClinicalDiagnosisSummary = v7->_confirmedClinicalDiagnosisSummary;
     v7->_confirmedClinicalDiagnosisSummary = v11;
 
@@ -69,10 +69,10 @@ LABEL_18:
     }
   }
 
-  v8 = xpc_dictionary_get_dictionary(v6, "siRC");
+  v8 = xpc_dictionary_get_dictionary(objectCopy, "siRC");
   if (v8)
   {
-    v13 = [[ENExposureSummaryItem alloc] initWithXPCObject:v8 error:a4];
+    v13 = [[ENExposureSummaryItem alloc] initWithXPCObject:v8 error:error];
     recursiveSummary = v7->_recursiveSummary;
     v7->_recursiveSummary = v13;
 
@@ -82,10 +82,10 @@ LABEL_18:
     }
   }
 
-  v8 = xpc_dictionary_get_dictionary(v6, "siSR");
+  v8 = xpc_dictionary_get_dictionary(objectCopy, "siSR");
   if (v8)
   {
-    v15 = [[ENExposureSummaryItem alloc] initWithXPCObject:v8 error:a4];
+    v15 = [[ENExposureSummaryItem alloc] initWithXPCObject:v8 error:error];
     selfReportedSummary = v7->_selfReportedSummary;
     v7->_selfReportedSummary = v15;
 
@@ -97,10 +97,10 @@ LABEL_17:
     }
   }
 
-  v8 = xpc_dictionary_get_dictionary(v6, "siDay");
+  v8 = xpc_dictionary_get_dictionary(objectCopy, "siDay");
   if (v8)
   {
-    v17 = [[ENExposureSummaryItem alloc] initWithXPCObject:v8 error:a4];
+    v17 = [[ENExposureSummaryItem alloc] initWithXPCObject:v8 error:error];
     if (v17)
     {
       daySummary = v7->_daySummary;
@@ -120,9 +120,9 @@ LABEL_16:
   return v19;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  xdict = a3;
+  xdict = object;
   v4 = self->_date;
   v5 = v4;
   if (v4)

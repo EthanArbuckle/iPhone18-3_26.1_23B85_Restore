@@ -1,16 +1,16 @@
 @interface TTRITreeViewContextMenuItemIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC9Reminders37TTRITreeViewContextMenuItemIdentifier)init;
 - (int64_t)hash;
 @end
 
 @implementation TTRITreeViewContextMenuItemIdentifier
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -19,7 +19,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_10056C570(v8);
@@ -30,7 +30,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AnyHashable.hashValue.getter();
 
   return v3;

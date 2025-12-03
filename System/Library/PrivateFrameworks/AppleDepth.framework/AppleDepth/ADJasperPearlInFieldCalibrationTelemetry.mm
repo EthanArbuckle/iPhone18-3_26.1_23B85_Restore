@@ -1,43 +1,43 @@
 @interface ADJasperPearlInFieldCalibrationTelemetry
-+ (void)reportTelemetry:(id)a3 firstTimeEvent:(BOOL)a4;
-+ (void)reportTriggeringTelemetry:(id)a3;
++ (void)reportTelemetry:(id)telemetry firstTimeEvent:(BOOL)event;
++ (void)reportTriggeringTelemetry:(id)telemetry;
 @end
 
 @implementation ADJasperPearlInFieldCalibrationTelemetry
 
-+ (void)reportTriggeringTelemetry:(id)a3
++ (void)reportTriggeringTelemetry:(id)telemetry
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 caCurrentTriggerEndReasonIsConvergence] & 1) != 0 || (objc_msgSend(v3, "caCurrentTriggerEndReasonIsMaxFrameCount") & 1) != 0 || (objc_msgSend(v3, "caCurrentTriggerEndReasonIsOutputValidationMetricIncreased"))
+  telemetryCopy = telemetry;
+  if ([telemetryCopy caCurrentTriggerEndReasonIsConvergence] & 1) != 0 || (objc_msgSend(telemetryCopy, "caCurrentTriggerEndReasonIsMaxFrameCount") & 1) != 0 || (objc_msgSend(telemetryCopy, "caCurrentTriggerEndReasonIsOutputValidationMetricIncreased"))
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    [v3 caCurrentTriggerFirstFrameTimestamp];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [telemetryCopy caCurrentTriggerFirstFrameTimestamp];
     v6 = v5;
-    [v3 caLastTriggerLastFrameTimestamp];
+    [telemetryCopy caLastTriggerLastFrameTimestamp];
     v8 = [MEMORY[0x277CCABB0] numberWithDouble:v6 - v7];
-    [v4 setObject:v8 forKeyedSubscript:@"TriggerTimeDifference"];
+    [dictionary setObject:v8 forKeyedSubscript:@"TriggerTimeDifference"];
 
-    [v3 caCurrentTriggerFirstFrameTemperature];
+    [telemetryCopy caCurrentTriggerFirstFrameTemperature];
     LODWORD(v6) = v9;
-    [v3 caLastTriggerLastFrameTemperature];
+    [telemetryCopy caLastTriggerLastFrameTemperature];
     *&v11 = *&v6 - v10;
     v12 = [MEMORY[0x277CCABB0] numberWithFloat:v11];
-    [v4 setObject:v12 forKeyedSubscript:@"TriggerTemperatureDifference"];
+    [dictionary setObject:v12 forKeyedSubscript:@"TriggerTemperatureDifference"];
 
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(v3, "caCurrentTriggerFrameCount")}];
-    [v4 setObject:v13 forKeyedSubscript:@"CurrentTriggerNumberOfFrames"];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(telemetryCopy, "caCurrentTriggerFrameCount")}];
+    [dictionary setObject:v13 forKeyedSubscript:@"CurrentTriggerNumberOfFrames"];
 
-    v14 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "caCurrentTriggerEndReasonIsConvergence")}];
-    [v4 setObject:v14 forKeyedSubscript:@"CurrentTriggerEndReasonIsConvergence"];
+    v14 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(telemetryCopy, "caCurrentTriggerEndReasonIsConvergence")}];
+    [dictionary setObject:v14 forKeyedSubscript:@"CurrentTriggerEndReasonIsConvergence"];
 
-    v15 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "caCurrentTriggerEndReasonIsMaxFrameCount")}];
-    [v4 setObject:v15 forKeyedSubscript:@"CurrentTriggerEndReasonIsMaxFrameCount"];
+    v15 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(telemetryCopy, "caCurrentTriggerEndReasonIsMaxFrameCount")}];
+    [dictionary setObject:v15 forKeyedSubscript:@"CurrentTriggerEndReasonIsMaxFrameCount"];
 
-    v16 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "caCurrentTriggerEndReasonIsOutputValidationMetricIncreased")}];
-    [v4 setObject:v16 forKeyedSubscript:@"CurrentTriggerEndReasonIsJasperMisalignmentIncreased"];
+    v16 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(telemetryCopy, "caCurrentTriggerEndReasonIsOutputValidationMetricIncreased")}];
+    [dictionary setObject:v16 forKeyedSubscript:@"CurrentTriggerEndReasonIsJasperMisalignmentIncreased"];
 
-    v17 = v4;
+    v17 = dictionary;
     if (AnalyticsSendEventLazy())
     {
       if (ADDebugUtilsADVerboseLogsEnabled == 1)
@@ -82,191 +82,191 @@
   }
 }
 
-+ (void)reportTelemetry:(id)a3 firstTimeEvent:(BOOL)a4
++ (void)reportTelemetry:(id)telemetry firstTimeEvent:(BOOL)event
 {
-  v4 = a4;
+  eventCopy = event;
   v206 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"0x%0X", objc_msgSend(v5, "jpcErrorCode")];
-  [v6 setObject:v7 forKeyedSubscript:@"JPCErrorCode"];
+  telemetryCopy = telemetry;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"0x%0X", objc_msgSend(telemetryCopy, "jpcErrorCode")];
+  [dictionary setObject:v7 forKeyedSubscript:@"JPCErrorCode"];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v5, "gmcjErrorCode")}];
-  [v6 setObject:v8 forKeyedSubscript:@"GMCJErrorCode"];
+  v8 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(telemetryCopy, "gmcjErrorCode")}];
+  [dictionary setObject:v8 forKeyedSubscript:@"GMCJErrorCode"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v5, "gmcjOutputValidationErrorCode")}];
-  [v6 setObject:v9 forKeyedSubscript:@"GMCJOutputValidationErrorCode"];
+  v9 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(telemetryCopy, "gmcjOutputValidationErrorCode")}];
+  [dictionary setObject:v9 forKeyedSubscript:@"GMCJOutputValidationErrorCode"];
 
-  if ([v5 isAssignedPipelineCurrent])
+  if ([telemetryCopy isAssignedPipelineCurrent])
   {
-    v10 = [v5 pceCalib];
+    pceCalib = [telemetryCopy pceCalib];
 
-    if (v10)
+    if (pceCalib)
     {
-      v11 = [v5 pceCalib];
-      v12 = [v11 bytes];
+      pceCalib2 = [telemetryCopy pceCalib];
+      bytes = [pceCalib2 bytes];
 
-      v13 = v12[3];
+      v13 = bytes[3];
       v14 = MEMORY[0x277CCABB0];
-      [v5 newEfl];
+      [telemetryCopy newEfl];
       v15 = v13;
       v16 = v15;
-      v18 = [v14 numberWithDouble:(v17 * v15 / v12[4] + -1.0) * 100.0];
-      [v6 setObject:v18 forKeyedSubscript:@"IRCamScaleChangePercentFromT0"];
+      v18 = [v14 numberWithDouble:(v17 * v15 / bytes[4] + -1.0) * 100.0];
+      [dictionary setObject:v18 forKeyedSubscript:@"IRCamScaleChangePercentFromT0"];
 
       v19 = MEMORY[0x277CCABB0];
-      [v5 newPPX];
-      v21 = [v19 numberWithDouble:-(v12[5] - v20 * v16) * 1000.0];
-      [v6 setObject:v21 forKeyedSubscript:@"IRCamPPXChangeMicronFromT0"];
+      [telemetryCopy newPPX];
+      v21 = [v19 numberWithDouble:-(bytes[5] - v20 * v16) * 1000.0];
+      [dictionary setObject:v21 forKeyedSubscript:@"IRCamPPXChangeMicronFromT0"];
 
       v22 = MEMORY[0x277CCABB0];
-      [v5 newPPY];
-      v24 = [v22 numberWithDouble:-(v12[6] - v23 * v16) * 1000.0];
-      [v6 setObject:v24 forKeyedSubscript:@"IRCamPPYChangeMicronFromT0"];
+      [telemetryCopy newPPY];
+      v24 = [v22 numberWithDouble:-(bytes[6] - v23 * v16) * 1000.0];
+      [dictionary setObject:v24 forKeyedSubscript:@"IRCamPPYChangeMicronFromT0"];
 
       v25 = MEMORY[0x277CCABB0];
-      [v5 newRotX];
+      [telemetryCopy newRotX];
       v26 = [v25 numberWithFloat:?];
-      [v6 setObject:v26 forKeyedSubscript:@"IRCamIRProjRotXChangeFromT0"];
+      [dictionary setObject:v26 forKeyedSubscript:@"IRCamIRProjRotXChangeFromT0"];
 
       v27 = MEMORY[0x277CCABB0];
-      [v5 newRotY];
+      [telemetryCopy newRotY];
       v28 = [v27 numberWithFloat:?];
-      [v6 setObject:v28 forKeyedSubscript:@"IRCamIRProjRotYChangeFromT0"];
+      [dictionary setObject:v28 forKeyedSubscript:@"IRCamIRProjRotYChangeFromT0"];
 
       v29 = MEMORY[0x277CCABB0];
-      [v5 newRotZ];
+      [telemetryCopy newRotZ];
       v30 = [v29 numberWithFloat:?];
-      [v6 setObject:v30 forKeyedSubscript:@"IRCamIRProjRotZChangeFromT0"];
+      [dictionary setObject:v30 forKeyedSubscript:@"IRCamIRProjRotZChangeFromT0"];
     }
   }
 
-  if ([v5 isAssignedPipelinePrevious])
+  if ([telemetryCopy isAssignedPipelinePrevious])
   {
-    v31 = [v5 pceCalib];
+    pceCalib3 = [telemetryCopy pceCalib];
 
-    if (v31)
+    if (pceCalib3)
     {
-      v32 = [v5 pceCalib];
-      v33 = [v32 bytes];
+      pceCalib4 = [telemetryCopy pceCalib];
+      bytes2 = [pceCalib4 bytes];
 
-      v34 = *(v33 + 24);
+      v34 = *(bytes2 + 24);
       v35 = MEMORY[0x277CCABB0];
-      [v5 newEfl];
+      [telemetryCopy newEfl];
       v37 = v36;
-      [v5 prevEfl];
+      [telemetryCopy prevEfl];
       *&v34 = v34;
       v39 = [v35 numberWithDouble:(v37 * *&v34 / v38 + -1.0) * 100.0];
-      [v6 setObject:v39 forKeyedSubscript:@"IRCamScaleChangePercentFromPrevCalib"];
+      [dictionary setObject:v39 forKeyedSubscript:@"IRCamScaleChangePercentFromPrevCalib"];
 
       v40 = MEMORY[0x277CCABB0];
-      [v5 newPPX];
+      [telemetryCopy newPPX];
       v42 = v41;
-      [v5 prevPPX];
+      [telemetryCopy prevPPX];
       v43 = (*&v34 * 1000.0);
       v45 = [v40 numberWithDouble:(v42 - v44) * v43];
-      [v6 setObject:v45 forKeyedSubscript:@"IRCamPPXChangeMicronFromPrevCalib"];
+      [dictionary setObject:v45 forKeyedSubscript:@"IRCamPPXChangeMicronFromPrevCalib"];
 
       v46 = MEMORY[0x277CCABB0];
-      [v5 newPPY];
+      [telemetryCopy newPPY];
       v48 = v47;
-      [v5 prevPPY];
+      [telemetryCopy prevPPY];
       v50 = [v46 numberWithDouble:(v48 - v49) * v43];
-      [v6 setObject:v50 forKeyedSubscript:@"IRCamPPYChangeMicronFromPrevCalib"];
+      [dictionary setObject:v50 forKeyedSubscript:@"IRCamPPYChangeMicronFromPrevCalib"];
 
       v51 = MEMORY[0x277CCABB0];
-      [v5 newRotX];
+      [telemetryCopy newRotX];
       LODWORD(v48) = v52;
-      [v5 prevRotX];
+      [telemetryCopy prevRotX];
       *&v54 = *&v48 - v53;
       v55 = [v51 numberWithFloat:v54];
-      [v6 setObject:v55 forKeyedSubscript:@"IRCamIRProjRotXChangeFromPrevCalib"];
+      [dictionary setObject:v55 forKeyedSubscript:@"IRCamIRProjRotXChangeFromPrevCalib"];
 
       v56 = MEMORY[0x277CCABB0];
-      [v5 newRotY];
+      [telemetryCopy newRotY];
       LODWORD(v48) = v57;
-      [v5 prevRotY];
+      [telemetryCopy prevRotY];
       *&v59 = *&v48 - v58;
       v60 = [v56 numberWithFloat:v59];
-      [v6 setObject:v60 forKeyedSubscript:@"IRCamIRProjRotYChangeFromPrevCalib"];
+      [dictionary setObject:v60 forKeyedSubscript:@"IRCamIRProjRotYChangeFromPrevCalib"];
 
       v61 = MEMORY[0x277CCABB0];
-      [v5 newRotZ];
+      [telemetryCopy newRotZ];
       LODWORD(v48) = v62;
-      [v5 prevRotZ];
+      [telemetryCopy prevRotZ];
       *&v64 = *&v48 - v63;
       v65 = [v61 numberWithFloat:v64];
-      [v6 setObject:v65 forKeyedSubscript:@"IRCamIRProjRotZChangeFromPrevCalib"];
+      [dictionary setObject:v65 forKeyedSubscript:@"IRCamIRProjRotZChangeFromPrevCalib"];
     }
   }
 
-  if ([v5 isAssignedJasperReflectionsFrameFilter])
+  if ([telemetryCopy isAssignedJasperReflectionsFrameFilter])
   {
-    v66 = [MEMORY[0x277CCABB0] numberWithShort:{objc_msgSend(v5, "numJasperSpotsFlaggedAsReflectiveSurface")}];
-    [v6 setObject:v66 forKeyedSubscript:@"NumSpotsFlaggedAsReflectiveSurface"];
+    v66 = [MEMORY[0x277CCABB0] numberWithShort:{objc_msgSend(telemetryCopy, "numJasperSpotsFlaggedAsReflectiveSurface")}];
+    [dictionary setObject:v66 forKeyedSubscript:@"NumSpotsFlaggedAsReflectiveSurface"];
 
-    v67 = [MEMORY[0x277CCABB0] numberWithShort:{objc_msgSend(v5, "numJasperSpotsFlaggedAsGlare")}];
-    [v6 setObject:v67 forKeyedSubscript:@"NumSpotsFlaggedAsGlare"];
+    v67 = [MEMORY[0x277CCABB0] numberWithShort:{objc_msgSend(telemetryCopy, "numJasperSpotsFlaggedAsGlare")}];
+    [dictionary setObject:v67 forKeyedSubscript:@"NumSpotsFlaggedAsGlare"];
   }
 
-  [v5 depthDiffThresholdAboveMedian];
+  [telemetryCopy depthDiffThresholdAboveMedian];
   if (v68 > 0.0)
   {
     v69 = MEMORY[0x277CCABB0];
-    [v5 depthDiffThresholdAboveMedian];
+    [telemetryCopy depthDiffThresholdAboveMedian];
     v70 = [v69 numberWithFloat:?];
-    [v6 setObject:v70 forKeyedSubscript:@"IFA_DepthDiffThresholdAboveMedian"];
+    [dictionary setObject:v70 forKeyedSubscript:@"IFA_DepthDiffThresholdAboveMedian"];
   }
 
-  if ([v5 numPearlJasperCorrespondencesPreIFA])
+  if ([telemetryCopy numPearlJasperCorrespondencesPreIFA])
   {
-    v71 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v5, "numPearlJasperCorrespondencesPreIFA") - objc_msgSend(v5, "numPearlJasperCorrespondencesPostPJWorkDistOverlapFilter")}];
-    [v6 setObject:v71 forKeyedSubscript:@"IFA_NumSpotsFiltered_WorkDistOverlap"];
+    v71 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(telemetryCopy, "numPearlJasperCorrespondencesPreIFA") - objc_msgSend(telemetryCopy, "numPearlJasperCorrespondencesPostPJWorkDistOverlapFilter")}];
+    [dictionary setObject:v71 forKeyedSubscript:@"IFA_NumSpotsFiltered_WorkDistOverlap"];
 
-    v72 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v5, "numPearlJasperCorrespondencesPostPJWorkDistOverlapFilter") - objc_msgSend(v5, "numPearlJasperCorrespondencesPostPJDepthDiffFilter")}];
-    [v6 setObject:v72 forKeyedSubscript:@"IFA_NumSpotsFiltered_DepthDiff"];
+    v72 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(telemetryCopy, "numPearlJasperCorrespondencesPostPJWorkDistOverlapFilter") - objc_msgSend(telemetryCopy, "numPearlJasperCorrespondencesPostPJDepthDiffFilter")}];
+    [dictionary setObject:v72 forKeyedSubscript:@"IFA_NumSpotsFiltered_DepthDiff"];
 
-    v73 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v5, "numPearlJasperCorrespondencesPostPJDepthDiffFilter") - objc_msgSend(v5, "numPearlJasperCorrespondencesPostLocalDepthVarFilter")}];
-    [v6 setObject:v73 forKeyedSubscript:@"IFA_NumSpotsFiltered_LocalDepthVar"];
+    v73 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(telemetryCopy, "numPearlJasperCorrespondencesPostPJDepthDiffFilter") - objc_msgSend(telemetryCopy, "numPearlJasperCorrespondencesPostLocalDepthVarFilter")}];
+    [dictionary setObject:v73 forKeyedSubscript:@"IFA_NumSpotsFiltered_LocalDepthVar"];
 
-    v74 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(v5, "numPearlJasperCorrespondencesPostLocalDepthVarFilter")}];
-    [v6 setObject:v74 forKeyedSubscript:@"IFA_NumSpotsAdded_JasperPearl"];
+    v74 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(telemetryCopy, "numPearlJasperCorrespondencesPostLocalDepthVarFilter")}];
+    [dictionary setObject:v74 forKeyedSubscript:@"IFA_NumSpotsAdded_JasperPearl"];
   }
 
-  if ([v5 numPearlOnlyCorrespondencesPreIFA])
+  if ([telemetryCopy numPearlOnlyCorrespondencesPreIFA])
   {
-    v75 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v5, "numPearlOnlyCorrespondencesPreIFA") - objc_msgSend(v5, "numPearlOnlyCorrespondencesPostSpatialCoverageFilter")}];
-    [v6 setObject:v75 forKeyedSubscript:@"IFA_NumSpotsFiltered_SpatialCoverage"];
+    v75 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(telemetryCopy, "numPearlOnlyCorrespondencesPreIFA") - objc_msgSend(telemetryCopy, "numPearlOnlyCorrespondencesPostSpatialCoverageFilter")}];
+    [dictionary setObject:v75 forKeyedSubscript:@"IFA_NumSpotsFiltered_SpatialCoverage"];
 
-    v76 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(v5, "numPearlOnlyCorrespondencesPostSpatialCoverageFilter")}];
-    [v6 setObject:v76 forKeyedSubscript:@"IFA_NumSpotsAdded_Pearl"];
+    v76 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(telemetryCopy, "numPearlOnlyCorrespondencesPostSpatialCoverageFilter")}];
+    [dictionary setObject:v76 forKeyedSubscript:@"IFA_NumSpotsAdded_Pearl"];
   }
 
-  if ([v5 isAssignedIFABlock])
+  if ([telemetryCopy isAssignedIFABlock])
   {
-    v77 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(v5, "pearlCalibSetSize")}];
-    [v6 setObject:v77 forKeyedSubscript:@"PearlCalibSetSize"];
+    v77 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(telemetryCopy, "pearlCalibSetSize")}];
+    [dictionary setObject:v77 forKeyedSubscript:@"PearlCalibSetSize"];
 
-    v78 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(v5, "pearlJapserCalibSetSize")}];
-    [v6 setObject:v78 forKeyedSubscript:@"PearlJapserCalibSetSize"];
+    v78 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(telemetryCopy, "pearlJapserCalibSetSize")}];
+    [dictionary setObject:v78 forKeyedSubscript:@"PearlJapserCalibSetSize"];
 
-    v79 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(v5, "pearlJapserCalibSetSize") + objc_msgSend(v5, "pearlCalibSetSize")}];
-    [v6 setObject:v79 forKeyedSubscript:@"SumOfPearlJapserCalibSetSizes"];
+    v79 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(telemetryCopy, "pearlJapserCalibSetSize") + objc_msgSend(telemetryCopy, "pearlCalibSetSize")}];
+    [dictionary setObject:v79 forKeyedSubscript:@"SumOfPearlJapserCalibSetSizes"];
   }
 
-  [v5 irCamFOVCoveragePercent];
+  [telemetryCopy irCamFOVCoveragePercent];
   if (v80 > -1.0)
   {
     v81 = MEMORY[0x277CCABB0];
-    [v5 irCamFOVCoveragePercent];
+    [telemetryCopy irCamFOVCoveragePercent];
     v82 = [v81 numberWithDouble:?];
-    [v6 setObject:v82 forKeyedSubscript:@"IRCamFOVCoveragePercent"];
+    [dictionary setObject:v82 forKeyedSubscript:@"IRCamFOVCoveragePercent"];
 
     {
       BucketsFilters::BucketsFilters(BucketsFilters::Buckets(void)::inst);
     }
 
-    [v5 irCamFOVCoveragePercent];
+    [telemetryCopy irCamFOVCoveragePercent];
     v84 = v83;
     v85 = &qword_27E4B4230;
     v86 = *qword_27E4B4238;
@@ -301,22 +301,22 @@ LABEL_30:
       }
     }
 
-    [v6 setObject:v90 forKeyedSubscript:@"IRCamFOVCoveragePercentBucket"];
+    [dictionary setObject:v90 forKeyedSubscript:@"IRCamFOVCoveragePercentBucket"];
   }
 
-  [v5 pearlToLastJasperBankTranslation];
+  [telemetryCopy pearlToLastJasperBankTranslation];
   if (v93 > -1.0)
   {
     v94 = MEMORY[0x277CCABB0];
-    [v5 pearlToLastJasperBankTranslation];
+    [telemetryCopy pearlToLastJasperBankTranslation];
     v95 = [v94 numberWithDouble:?];
-    [v6 setObject:v95 forKeyedSubscript:@"PearlToLastJasperBankTranslation"];
+    [dictionary setObject:v95 forKeyedSubscript:@"PearlToLastJasperBankTranslation"];
 
     {
       BucketsFilters::BucketsFilters(BucketsFilters::Buckets(void)::inst);
     }
 
-    [v5 pearlToLastJasperBankTranslation];
+    [telemetryCopy pearlToLastJasperBankTranslation];
     v97 = v96;
     v98 = &qword_27E4B4390;
     v99 = *qword_27E4B4398;
@@ -350,22 +350,22 @@ LABEL_45:
       }
     }
 
-    [v6 setObject:v103 forKeyedSubscript:@"PearlToLastJasperBankTranslationBucket"];
+    [dictionary setObject:v103 forKeyedSubscript:@"PearlToLastJasperBankTranslationBucket"];
   }
 
-  [v5 pearlToLastJasperBankRotation];
+  [telemetryCopy pearlToLastJasperBankRotation];
   if (v106 > -1.0)
   {
     v107 = MEMORY[0x277CCABB0];
-    [v5 pearlToLastJasperBankRotation];
+    [telemetryCopy pearlToLastJasperBankRotation];
     v108 = [v107 numberWithDouble:?];
-    [v6 setObject:v108 forKeyedSubscript:@"PearlToLastJasperBankRotation"];
+    [dictionary setObject:v108 forKeyedSubscript:@"PearlToLastJasperBankRotation"];
 
     {
       BucketsFilters::BucketsFilters(BucketsFilters::Buckets(void)::inst);
     }
 
-    [v5 pearlToLastJasperBankRotation];
+    [telemetryCopy pearlToLastJasperBankRotation];
     v110 = v109;
     v111 = &qword_27E4B43E8;
     v112 = *qword_27E4B43F0;
@@ -399,22 +399,22 @@ LABEL_60:
       }
     }
 
-    [v6 setObject:v116 forKeyedSubscript:@"PearlToLastJasperBankRotationBucket"];
+    [dictionary setObject:v116 forKeyedSubscript:@"PearlToLastJasperBankRotationBucket"];
   }
 
-  if ([v5 numOfUniqueTOFSpots] != -1)
+  if ([telemetryCopy numOfUniqueTOFSpots] != -1)
   {
-    v119 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(v5, "numOfUniqueTOFSpots")}];
-    [v6 setObject:v119 forKeyedSubscript:@"TOFUniqueSpotsNum"];
+    v119 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(telemetryCopy, "numOfUniqueTOFSpots")}];
+    [dictionary setObject:v119 forKeyedSubscript:@"TOFUniqueSpotsNum"];
 
     {
       BucketsFilters::BucketsFilters(BucketsFilters::Buckets(void)::inst);
     }
 
-    v120 = [v5 numOfUniqueTOFSpots];
+    numOfUniqueTOFSpots = [telemetryCopy numOfUniqueTOFSpots];
     v121 = &qword_27E4B41D8;
     v122 = *qword_27E4B41E0;
-    if (*qword_27E4B41E0 >= v120 || (v121 = &qword_27E4B41D0, *(qword_27E4B41E8 - 4) < v120))
+    if (*qword_27E4B41E0 >= numOfUniqueTOFSpots || (v121 = &qword_27E4B41D0, *(qword_27E4B41E8 - 4) < numOfUniqueTOFSpots))
     {
 LABEL_75:
       v126 = *v121;
@@ -434,9 +434,9 @@ LABEL_75:
       while (v125 != v123)
       {
         v127 = v123++;
-        v92 = v122 < v120;
+        v92 = v122 < numOfUniqueTOFSpots;
         v122 = *(qword_27E4B41E0 + 4 + 4 * v127);
-        if (v92 && v122 >= v120)
+        if (v92 && v122 >= numOfUniqueTOFSpots)
         {
           v121 = (BucketsFilters::Buckets(void)::inst[0] + 8 * v127);
           goto LABEL_75;
@@ -444,22 +444,22 @@ LABEL_75:
       }
     }
 
-    [v6 setObject:v126 forKeyedSubscript:@"TOFUniqueSpotsNumBucket"];
+    [dictionary setObject:v126 forKeyedSubscript:@"TOFUniqueSpotsNumBucket"];
   }
 
-  if ([v5 numOfAggregatedFrames])
+  if ([telemetryCopy numOfAggregatedFrames])
   {
-    v129 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(v5, "numOfAggregatedFrames")}];
-    [v6 setObject:v129 forKeyedSubscript:@"NumOfAggregatedFrames"];
+    v129 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(telemetryCopy, "numOfAggregatedFrames")}];
+    [dictionary setObject:v129 forKeyedSubscript:@"NumOfAggregatedFrames"];
 
     {
       BucketsFilters::BucketsFilters(BucketsFilters::Buckets(void)::inst);
     }
 
-    v130 = [v5 numOfAggregatedFrames];
+    numOfAggregatedFrames = [telemetryCopy numOfAggregatedFrames];
     v131 = &qword_27E4B4288;
     v132 = *qword_27E4B4290;
-    if (*qword_27E4B4290 >= v130 || (v131 = &qword_27E4B4280, *(qword_27E4B4298 - 4) < v130))
+    if (*qword_27E4B4290 >= numOfAggregatedFrames || (v131 = &qword_27E4B4280, *(qword_27E4B4298 - 4) < numOfAggregatedFrames))
     {
 LABEL_90:
       v136 = *v131;
@@ -479,9 +479,9 @@ LABEL_90:
       while (v135 != v133)
       {
         v137 = v133++;
-        v92 = v132 < v130;
+        v92 = v132 < numOfAggregatedFrames;
         v132 = *(qword_27E4B4290 + 4 + 4 * v137);
-        if (v92 && v132 >= v130)
+        if (v92 && v132 >= numOfAggregatedFrames)
         {
           v131 = (qword_27E4B4250 + 8 * v137);
           goto LABEL_90;
@@ -489,33 +489,33 @@ LABEL_90:
       }
     }
 
-    [v6 setObject:v136 forKeyedSubscript:@"NumOfAggregatedFramesBucket"];
+    [dictionary setObject:v136 forKeyedSubscript:@"NumOfAggregatedFramesBucket"];
 
     v139 = MEMORY[0x277CCABB0];
-    [v5 intervalBetweenIFAFrames];
+    [telemetryCopy intervalBetweenIFAFrames];
     v140 = [v139 numberWithDouble:?];
-    [v6 setObject:v140 forKeyedSubscript:@"IntervalBetweenIFAFrames"];
+    [dictionary setObject:v140 forKeyedSubscript:@"IntervalBetweenIFAFrames"];
 
     v141 = MEMORY[0x277CCABB0];
-    v142 = [v5 maxIRCamTemperature];
-    [v142 floatValue];
+    maxIRCamTemperature = [telemetryCopy maxIRCamTemperature];
+    [maxIRCamTemperature floatValue];
     v144 = v143;
-    v145 = [v5 minIRCamTemperature];
-    [v145 floatValue];
+    minIRCamTemperature = [telemetryCopy minIRCamTemperature];
+    [minIRCamTemperature floatValue];
     *&v147 = v144 - v146;
     v148 = [v141 numberWithFloat:v147];
-    [v6 setObject:v148 forKeyedSubscript:@"TemperatureDeltaBetweenIFAFrames"];
+    [dictionary setObject:v148 forKeyedSubscript:@"TemperatureDeltaBetweenIFAFrames"];
 
     v149 = MEMORY[0x277CCABB0];
-    [v5 pearlTemperature];
+    [telemetryCopy pearlTemperature];
     v150 = [v149 numberWithFloat:?];
-    [v6 setObject:v150 forKeyedSubscript:@"Temperature"];
+    [dictionary setObject:v150 forKeyedSubscript:@"Temperature"];
 
     {
       BucketsFilters::BucketsFilters(BucketsFilters::Buckets(void)::inst);
     }
 
-    [v5 pearlTemperature];
+    [telemetryCopy pearlTemperature];
     v152 = &qword_27E4B4338;
     v153 = *qword_27E4B4340;
     if (*qword_27E4B4340 >= v151 || (v152 = &qword_27E4B4330, *(qword_27E4B4348 - 4) < v151))
@@ -548,36 +548,36 @@ LABEL_103:
       }
     }
 
-    [v6 setObject:v157 forKeyedSubscript:@"TemperatureBucket"];
+    [dictionary setObject:v157 forKeyedSubscript:@"TemperatureBucket"];
   }
 
-  if ([v5 isAssignedGMCJValidation])
+  if ([telemetryCopy isAssignedGMCJValidation])
   {
     v160 = MEMORY[0x277CCABB0];
-    [v5 reprojectionErrorBefore];
+    [telemetryCopy reprojectionErrorBefore];
     v161 = [v160 numberWithDouble:?];
-    [v6 setObject:v161 forKeyedSubscript:@"ReprojectionErrorBeforeGMCJ"];
+    [dictionary setObject:v161 forKeyedSubscript:@"ReprojectionErrorBeforeGMCJ"];
 
     v162 = MEMORY[0x277CCABB0];
-    [v5 reprojectionErrorAfter];
+    [telemetryCopy reprojectionErrorAfter];
     v163 = [v162 numberWithDouble:?];
-    [v6 setObject:v163 forKeyedSubscript:@"ReprojectionErrorAfterGMCJ"];
+    [dictionary setObject:v163 forKeyedSubscript:@"ReprojectionErrorAfterGMCJ"];
 
     v164 = MEMORY[0x277CCABB0];
-    [v5 jasperMisalignmentBefore];
+    [telemetryCopy jasperMisalignmentBefore];
     v165 = [v164 numberWithDouble:?];
-    [v6 setObject:v165 forKeyedSubscript:@"JasperMisalignmentBeforeGMCJ"];
+    [dictionary setObject:v165 forKeyedSubscript:@"JasperMisalignmentBeforeGMCJ"];
 
     v166 = MEMORY[0x277CCABB0];
-    [v5 jasperMisalignmentAfter];
+    [telemetryCopy jasperMisalignmentAfter];
     v167 = [v166 numberWithDouble:?];
-    [v6 setObject:v167 forKeyedSubscript:@"JasperMisalignmentAfterGMCJ"];
+    [dictionary setObject:v167 forKeyedSubscript:@"JasperMisalignmentAfterGMCJ"];
 
     {
       BucketsFilters::BucketsFilters(BucketsFilters::Buckets(void)::inst);
     }
 
-    [v5 reprojectionErrorAfter];
+    [telemetryCopy reprojectionErrorAfter];
     v169 = v168;
     v170 = &qword_27E4B42E0;
     v171 = *qword_27E4B42E8;
@@ -611,73 +611,73 @@ LABEL_118:
       }
     }
 
-    [v6 setObject:v175 forKeyedSubscript:@"ReprojectionErrorAfterBucket"];
+    [dictionary setObject:v175 forKeyedSubscript:@"ReprojectionErrorAfterBucket"];
   }
 
-  if ([v5 isAssignedGMCJBlock])
+  if ([telemetryCopy isAssignedGMCJBlock])
   {
     v178 = MEMORY[0x277CCABB0];
-    [v5 gmcjScaleChangePercentFromT0];
+    [telemetryCopy gmcjScaleChangePercentFromT0];
     v179 = [v178 numberWithDouble:?];
-    [v6 setObject:v179 forKeyedSubscript:@"IRCamScaleChangePercentFromT0_GMCJ"];
+    [dictionary setObject:v179 forKeyedSubscript:@"IRCamScaleChangePercentFromT0_GMCJ"];
 
     v180 = MEMORY[0x277CCABB0];
-    [v5 gmcjPPXChangeMicronFromT0];
+    [telemetryCopy gmcjPPXChangeMicronFromT0];
     v181 = [v180 numberWithDouble:?];
-    [v6 setObject:v181 forKeyedSubscript:@"IRCamPPXChangeMicronFromT0_GMCJ"];
+    [dictionary setObject:v181 forKeyedSubscript:@"IRCamPPXChangeMicronFromT0_GMCJ"];
 
     v182 = MEMORY[0x277CCABB0];
-    [v5 gmcjPPYChangeMicronFromT0];
+    [telemetryCopy gmcjPPYChangeMicronFromT0];
     v183 = [v182 numberWithDouble:?];
-    [v6 setObject:v183 forKeyedSubscript:@"IRCamPPYChangeMicronFromT0_GMCJ"];
+    [dictionary setObject:v183 forKeyedSubscript:@"IRCamPPYChangeMicronFromT0_GMCJ"];
 
     v184 = MEMORY[0x277CCABB0];
-    [v5 gmcjProjRotXChangeFromT0];
+    [telemetryCopy gmcjProjRotXChangeFromT0];
     v185 = [v184 numberWithFloat:?];
-    [v6 setObject:v185 forKeyedSubscript:@"IRCamIRProjRotXChangeFromT0_GMCJ"];
+    [dictionary setObject:v185 forKeyedSubscript:@"IRCamIRProjRotXChangeFromT0_GMCJ"];
 
     v186 = MEMORY[0x277CCABB0];
-    [v5 gmcjProjRotYChangeFromT0];
+    [telemetryCopy gmcjProjRotYChangeFromT0];
     v187 = [v186 numberWithFloat:?];
-    [v6 setObject:v187 forKeyedSubscript:@"IRCamIRProjRotYChangeFromT0_GMCJ"];
+    [dictionary setObject:v187 forKeyedSubscript:@"IRCamIRProjRotYChangeFromT0_GMCJ"];
 
     v188 = MEMORY[0x277CCABB0];
-    [v5 gmcjProjRotZChangeFromT0];
+    [telemetryCopy gmcjProjRotZChangeFromT0];
     v189 = [v188 numberWithFloat:?];
-    [v6 setObject:v189 forKeyedSubscript:@"IRCamIRProjRotZChangeFromT0_GMCJ"];
+    [dictionary setObject:v189 forKeyedSubscript:@"IRCamIRProjRotZChangeFromT0_GMCJ"];
 
     v190 = MEMORY[0x277CCABB0];
-    [v5 gmcjScaleChangePercentFromPrev];
+    [telemetryCopy gmcjScaleChangePercentFromPrev];
     v191 = [v190 numberWithDouble:?];
-    [v6 setObject:v191 forKeyedSubscript:@"IRCamScaleChangePercentFromPrevCalib_GMCJ"];
+    [dictionary setObject:v191 forKeyedSubscript:@"IRCamScaleChangePercentFromPrevCalib_GMCJ"];
 
     v192 = MEMORY[0x277CCABB0];
-    [v5 gmcjPPXChangeMicronFromPrev];
+    [telemetryCopy gmcjPPXChangeMicronFromPrev];
     v193 = [v192 numberWithDouble:?];
-    [v6 setObject:v193 forKeyedSubscript:@"IRCamPPXChangeMicronFromPrevCalib_GMCJ"];
+    [dictionary setObject:v193 forKeyedSubscript:@"IRCamPPXChangeMicronFromPrevCalib_GMCJ"];
 
     v194 = MEMORY[0x277CCABB0];
-    [v5 gmcjPPYChangeMicronFromPrev];
+    [telemetryCopy gmcjPPYChangeMicronFromPrev];
     v195 = [v194 numberWithDouble:?];
-    [v6 setObject:v195 forKeyedSubscript:@"IRCamPPYChangeMicronFromPrevCalib_GMCJ"];
+    [dictionary setObject:v195 forKeyedSubscript:@"IRCamPPYChangeMicronFromPrevCalib_GMCJ"];
 
     v196 = MEMORY[0x277CCABB0];
-    [v5 gmcjProjRotXChangeFromPrev];
+    [telemetryCopy gmcjProjRotXChangeFromPrev];
     v197 = [v196 numberWithFloat:?];
-    [v6 setObject:v197 forKeyedSubscript:@"IRCamIRProjRotXChangeFromPrevCalib_GMCJ"];
+    [dictionary setObject:v197 forKeyedSubscript:@"IRCamIRProjRotXChangeFromPrevCalib_GMCJ"];
 
     v198 = MEMORY[0x277CCABB0];
-    [v5 gmcjProjRotYChangeFromPrev];
+    [telemetryCopy gmcjProjRotYChangeFromPrev];
     v199 = [v198 numberWithFloat:?];
-    [v6 setObject:v199 forKeyedSubscript:@"IRCamIRProjRotYChangeFromPrevCalib_GMCJ"];
+    [dictionary setObject:v199 forKeyedSubscript:@"IRCamIRProjRotYChangeFromPrevCalib_GMCJ"];
 
     v200 = MEMORY[0x277CCABB0];
-    [v5 gmcjProjRotZChangeFromPrev];
+    [telemetryCopy gmcjProjRotZChangeFromPrev];
     v201 = [v200 numberWithFloat:?];
-    [v6 setObject:v201 forKeyedSubscript:@"IRCamIRProjRotZChangeFromPrevCalib_GMCJ"];
+    [dictionary setObject:v201 forKeyedSubscript:@"IRCamIRProjRotZChangeFromPrevCalib_GMCJ"];
   }
 
-  if (v4)
+  if (eventCopy)
   {
     v202 = @"com.apple.applecamerad.JasperPearlCalibrationFirstTimeEvent";
   }
@@ -687,7 +687,7 @@ LABEL_118:
     v202 = @"com.apple.applecamerad.JasperPearlCalibration";
   }
 
-  v203 = v6;
+  v203 = dictionary;
   if (AnalyticsSendEventLazy())
   {
     if (ADDebugUtilsADVerboseLogsEnabled == 1)

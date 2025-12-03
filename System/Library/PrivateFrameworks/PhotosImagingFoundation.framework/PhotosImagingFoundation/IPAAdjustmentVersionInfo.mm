@@ -3,27 +3,27 @@
 + (id)currentVersionInfo;
 + (id)frameworkVersion;
 + (id)systemBuildVersion;
-+ (id)versionInfoFromArchivalRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToVersionInfo:(id)a3;
++ (id)versionInfoFromArchivalRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToVersionInfo:(id)info;
 - (id)archivalRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation IPAAdjustmentVersionInfo
 
-- (BOOL)isEqualToVersionInfo:(id)a3
+- (BOOL)isEqualToVersionInfo:(id)info
 {
-  v5 = a3;
-  v6 = [(IPAAdjustmentVersionInfo *)self platform];
-  if (v6 || ([v5 platform], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  infoCopy = info;
+  platform = [(IPAAdjustmentVersionInfo *)self platform];
+  if (platform || ([infoCopy platform], (appVersion2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [v5 platform];
-    v8 = [(IPAAdjustmentVersionInfo *)self platform];
-    v9 = [v7 isEqual:v8];
+    platform2 = [infoCopy platform];
+    platform3 = [(IPAAdjustmentVersionInfo *)self platform];
+    v9 = [platform2 isEqual:platform3];
 
-    if (v6)
+    if (platform)
     {
 
       if (!v9)
@@ -42,14 +42,14 @@
     }
   }
 
-  v10 = [(IPAAdjustmentVersionInfo *)self buildNumber];
-  if (v10 || ([v5 buildNumber], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  buildNumber = [(IPAAdjustmentVersionInfo *)self buildNumber];
+  if (buildNumber || ([infoCopy buildNumber], (appVersion2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v11 = [v5 buildNumber];
-    v12 = [(IPAAdjustmentVersionInfo *)self buildNumber];
-    v13 = [v11 isEqual:v12];
+    buildNumber2 = [infoCopy buildNumber];
+    buildNumber3 = [(IPAAdjustmentVersionInfo *)self buildNumber];
+    v13 = [buildNumber2 isEqual:buildNumber3];
 
-    if (v10)
+    if (buildNumber)
     {
 
       if (!v13)
@@ -68,21 +68,21 @@
     }
   }
 
-  v14 = [(IPAAdjustmentVersionInfo *)self appVersion];
-  if (!v14)
+  appVersion = [(IPAAdjustmentVersionInfo *)self appVersion];
+  if (!appVersion)
   {
-    v3 = [v5 appVersion];
-    if (!v3)
+    appVersion2 = [infoCopy appVersion];
+    if (!appVersion2)
     {
       goto LABEL_17;
     }
   }
 
-  v15 = [v5 appVersion];
-  v16 = [(IPAAdjustmentVersionInfo *)self appVersion];
-  v17 = [v15 isEqual:v16];
+  appVersion3 = [infoCopy appVersion];
+  appVersion4 = [(IPAAdjustmentVersionInfo *)self appVersion];
+  v17 = [appVersion3 isEqual:appVersion4];
 
-  if (!v14)
+  if (!appVersion)
   {
 
     if (v17)
@@ -101,18 +101,18 @@ LABEL_19:
   }
 
 LABEL_17:
-  v18 = [v5 schemaRevision];
-  v19 = v18 == [(IPAAdjustmentVersionInfo *)self schemaRevision];
+  schemaRevision = [infoCopy schemaRevision];
+  v19 = schemaRevision == [(IPAAdjustmentVersionInfo *)self schemaRevision];
 LABEL_20:
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IPAAdjustmentVersionInfo *)self isEqualToVersionInfo:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IPAAdjustmentVersionInfo *)self isEqualToVersionInfo:equalCopy];
 
   return v5;
 }
@@ -120,28 +120,28 @@ LABEL_20:
 - (id)archivalRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(IPAAdjustmentVersionInfo *)self platform];
+  platform = [(IPAAdjustmentVersionInfo *)self platform];
 
-  if (v4)
+  if (platform)
   {
-    v5 = [(IPAAdjustmentVersionInfo *)self platform];
-    [v3 setObject:v5 forKeyedSubscript:@"platform"];
+    platform2 = [(IPAAdjustmentVersionInfo *)self platform];
+    [v3 setObject:platform2 forKeyedSubscript:@"platform"];
   }
 
-  v6 = [(IPAAdjustmentVersionInfo *)self buildNumber];
+  buildNumber = [(IPAAdjustmentVersionInfo *)self buildNumber];
 
-  if (v6)
+  if (buildNumber)
   {
-    v7 = [(IPAAdjustmentVersionInfo *)self buildNumber];
-    [v3 setObject:v7 forKeyedSubscript:@"buildNumber"];
+    buildNumber2 = [(IPAAdjustmentVersionInfo *)self buildNumber];
+    [v3 setObject:buildNumber2 forKeyedSubscript:@"buildNumber"];
   }
 
-  v8 = [(IPAAdjustmentVersionInfo *)self appVersion];
+  appVersion = [(IPAAdjustmentVersionInfo *)self appVersion];
 
-  if (v8)
+  if (appVersion)
   {
-    v9 = [(IPAAdjustmentVersionInfo *)self appVersion];
-    [v3 setObject:v9 forKeyedSubscript:@"appVersion"];
+    appVersion2 = [(IPAAdjustmentVersionInfo *)self appVersion];
+    [v3 setObject:appVersion2 forKeyedSubscript:@"appVersion"];
   }
 
   if ([(IPAAdjustmentVersionInfo *)self schemaRevision])
@@ -153,17 +153,17 @@ LABEL_20:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(IPAAdjustmentVersionInfo *)self platform];
-  [v4 setPlatform:v5];
+  platform = [(IPAAdjustmentVersionInfo *)self platform];
+  [v4 setPlatform:platform];
 
-  v6 = [(IPAAdjustmentVersionInfo *)self buildNumber];
-  [v4 setBuildNumber:v6];
+  buildNumber = [(IPAAdjustmentVersionInfo *)self buildNumber];
+  [v4 setBuildNumber:buildNumber];
 
-  v7 = [(IPAAdjustmentVersionInfo *)self appVersion];
-  [v4 setAppVersion:v7];
+  appVersion = [(IPAAdjustmentVersionInfo *)self appVersion];
+  [v4 setAppVersion:appVersion];
 
   [v4 setSchemaRevision:{-[IPAAdjustmentVersionInfo schemaRevision](self, "schemaRevision")}];
   return v4;
@@ -173,43 +173,43 @@ LABEL_20:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(IPAAdjustmentVersionInfo *)self platform];
-  v6 = [(IPAAdjustmentVersionInfo *)self buildNumber];
-  v7 = [(IPAAdjustmentVersionInfo *)self appVersion];
-  v8 = [v3 stringWithFormat:@"<%@:%p platform=%@ buildNumber=%@ appVersion=%@ schemaRevision=%ld>", v4, self, v5, v6, v7, -[IPAAdjustmentVersionInfo schemaRevision](self, "schemaRevision")];
+  platform = [(IPAAdjustmentVersionInfo *)self platform];
+  buildNumber = [(IPAAdjustmentVersionInfo *)self buildNumber];
+  appVersion = [(IPAAdjustmentVersionInfo *)self appVersion];
+  v8 = [v3 stringWithFormat:@"<%@:%p platform=%@ buildNumber=%@ appVersion=%@ schemaRevision=%ld>", v4, self, platform, buildNumber, appVersion, -[IPAAdjustmentVersionInfo schemaRevision](self, "schemaRevision")];
 
   return v8;
 }
 
-+ (id)versionInfoFromArchivalRepresentation:(id)a3
++ (id)versionInfoFromArchivalRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = objc_opt_new();
-    v5 = [v3 objectForKeyedSubscript:@"platform"];
+    v5 = [representationCopy objectForKeyedSubscript:@"platform"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [v4 setPlatform:v5];
     }
 
-    v6 = [v3 objectForKeyedSubscript:@"buildNumber"];
+    v6 = [representationCopy objectForKeyedSubscript:@"buildNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [v4 setBuildNumber:v6];
     }
 
-    v7 = [v3 objectForKeyedSubscript:@"appVersion"];
+    v7 = [representationCopy objectForKeyedSubscript:@"appVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [v4 setAppVersion:v7];
     }
 
-    v8 = [v3 objectForKeyedSubscript:@"schemaRevision"];
+    v8 = [representationCopy objectForKeyedSubscript:@"schemaRevision"];
     if (objc_opt_respondsToSelector())
     {
       [v4 setSchemaRevision:{objc_msgSend(v8, "integerValue")}];
@@ -227,7 +227,7 @@ LABEL_20:
 + (id)_frameworkVersion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCA8D8] bundleForClass:a1];
+  v3 = [MEMORY[0x277CCA8D8] bundleForClass:self];
   v4 = v3;
   if (!v3)
   {
@@ -235,18 +235,18 @@ LABEL_20:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_25E5BB000, v6, OS_LOG_TYPE_ERROR, "Bundle not found for class: %@", &v13, 0xCu);
     }
 
     goto LABEL_13;
   }
 
-  v5 = [v3 infoDictionary];
-  v6 = v5;
-  if (v5)
+  infoDictionary = [v3 infoDictionary];
+  v6 = infoDictionary;
+  if (infoDictionary)
   {
-    v7 = [v5 objectForKey:*MEMORY[0x277CBED58]];
+    v7 = [infoDictionary objectForKey:*MEMORY[0x277CBED58]];
     if (v7)
     {
       v8 = v7;
@@ -259,9 +259,9 @@ LABEL_20:
       goto LABEL_12;
     }
 
-    v10 = [v4 bundlePath];
+    bundlePath = [v4 bundlePath];
     v13 = 138412290;
-    v14 = v10;
+    selfCopy = bundlePath;
     v11 = "Failed to get version for bundle at path: %@";
     goto LABEL_11;
   }
@@ -269,9 +269,9 @@ LABEL_20:
   v9 = IPAAdjustmentGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v10 = [v4 bundlePath];
+    bundlePath = [v4 bundlePath];
     v13 = 138412290;
-    v14 = v10;
+    selfCopy = bundlePath;
     v11 = "Failed to load Info.plist for bundle at path: %@";
 LABEL_11:
     _os_log_impl(&dword_25E5BB000, v9, OS_LOG_TYPE_ERROR, v11, &v13, 0xCu);
@@ -292,7 +292,7 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __44__IPAAdjustmentVersionInfo_frameworkVersion__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (frameworkVersion_onceToken != -1)
   {
     dispatch_once(&frameworkVersion_onceToken, block);
@@ -333,11 +333,11 @@ uint64_t __46__IPAAdjustmentVersionInfo_systemBuildVersion__block_invoke()
 {
   v3 = objc_opt_new();
   [v3 setPlatform:@"OSX"];
-  v4 = [a1 systemBuildVersion];
-  [v3 setBuildNumber:v4];
+  systemBuildVersion = [self systemBuildVersion];
+  [v3 setBuildNumber:systemBuildVersion];
 
-  v5 = [a1 frameworkVersion];
-  [v3 setAppVersion:v5];
+  frameworkVersion = [self frameworkVersion];
+  [v3 setAppVersion:frameworkVersion];
 
   [v3 setSchemaRevision:1];
 

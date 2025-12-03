@@ -1,25 +1,25 @@
 @interface HUHomePodStereoSwapperCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (HUHomePodStereoSwapperCellAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (HUHomePodStereoSwapperCellAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation HUHomePodStereoSwapperCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUHomePodStereoSwapperCell" hasInstanceVariable:@"_swapButton" withType:"UIButton"];
-  [v3 validateClass:@"HUHomePodStereoSwapperCell" hasInstanceVariable:@"_leftHomePod" withType:"HUHomePodDetailView"];
-  [v3 validateClass:@"HUHomePodStereoSwapperCell" hasInstanceVariable:@"_rightHomePod" withType:"HUHomePodDetailView"];
-  [v3 validateClass:@"HUHomePodStereoSwapperCell" hasInstanceMethod:@"initWithStyle:reuseIdentifier:" withFullSignature:{"q", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUHomePodStereoSwapperCell" hasInstanceVariable:@"_swapButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"HUHomePodStereoSwapperCell" hasInstanceVariable:@"_leftHomePod" withType:"HUHomePodDetailView"];
+  [validationsCopy validateClass:@"HUHomePodStereoSwapperCell" hasInstanceVariable:@"_rightHomePod" withType:"HUHomePodDetailView"];
+  [validationsCopy validateClass:@"HUHomePodStereoSwapperCell" hasInstanceMethod:@"initWithStyle:reuseIdentifier:" withFullSignature:{"q", "@", 0}];
 }
 
-- (HUHomePodStereoSwapperCellAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUHomePodStereoSwapperCellAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = HUHomePodStereoSwapperCellAccessibility;
-  v4 = [(HUHomePodStereoSwapperCellAccessibility *)&v6 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUHomePodStereoSwapperCellAccessibility *)&v6 initWithStyle:style reuseIdentifier:identifier];
   [(HUHomePodStereoSwapperCellAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
   return v4;
 }

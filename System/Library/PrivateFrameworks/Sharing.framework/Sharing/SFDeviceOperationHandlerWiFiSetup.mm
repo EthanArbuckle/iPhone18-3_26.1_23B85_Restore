@@ -1,18 +1,18 @@
 @interface SFDeviceOperationHandlerWiFiSetup
 - (SFDeviceOperationHandlerWiFiSetup)init;
-- (id)createWiFiRetryMetricEvent:(id)a3 duration:(double)a4 channel:(int)a5 isScan:(BOOL)a6;
-- (id)createWiFiRetryMetricEventForIPAssign:(id)a3 duration:(double)a4;
+- (id)createWiFiRetryMetricEvent:(id)event duration:(double)duration channel:(int)channel isScan:(BOOL)scan;
+- (id)createWiFiRetryMetricEventForIPAssign:(id)assign duration:(double)duration;
 - (void)_activate;
 - (void)_cleanupOldWiFiNetworks;
-- (void)_completeError:(id)a3;
-- (void)_handleRequestBonjourTestDone:(id)a3 responseHandler:(id)a4;
-- (void)_handleRequestBonjourTestStart:(id)a3 responseHandler:(id)a4;
-- (void)_handleWiFiSetupRequest:(id)a3 responseHandler:(id)a4;
+- (void)_completeError:(id)error;
+- (void)_handleRequestBonjourTestDone:(id)done responseHandler:(id)handler;
+- (void)_handleRequestBonjourTestStart:(id)start responseHandler:(id)handler;
+- (void)_handleWiFiSetupRequest:(id)request responseHandler:(id)handler;
 - (void)_run;
 - (void)_runIP4AvailableStart;
 - (void)_runReachabilityStart;
 - (void)activate;
-- (void)addRetryMetric:(id)a3;
+- (void)addRetryMetric:(id)metric;
 - (void)invalidate;
 @end
 
@@ -134,10 +134,10 @@ void __47__SFDeviceOperationHandlerWiFiSetup_invalidate__block_invoke(uint64_t a
   *(v17 + 280) = 0;
 }
 
-- (void)_completeError:(id)a3
+- (void)_completeError:(id)error
 {
-  v14 = a3;
-  if (v14)
+  errorCopy = error;
+  if (errorCopy)
   {
     if (gLogCategory_SFDeviceOperationWiFiSetup <= 60 && (gLogCategory_SFDeviceOperationWiFiSetup != -1 || _LogCategory_Initialize()))
     {
@@ -156,9 +156,9 @@ void __47__SFDeviceOperationHandlerWiFiSetup_invalidate__block_invoke(uint64_t a
   self->_state = 0;
   v4 = objc_opt_new();
   [v4 setObject:self->_wiFiRetryMetrics forKeyedSubscript:@"wifiRM"];
-  if ([v14 code])
+  if ([errorCopy code])
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v14, "code")}];
+    v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     [v4 setObject:v5 forKeyedSubscript:@"wifiEC"];
   }
 
@@ -167,11 +167,11 @@ void __47__SFDeviceOperationHandlerWiFiSetup_invalidate__block_invoke(uint64_t a
     [v4 setObject:0 forKeyedSubscript:@"wifiEC"];
   }
 
-  v6 = [v14 domain];
-  if (v6)
+  domain = [errorCopy domain];
+  if (domain)
   {
-    v7 = [v14 domain];
-    [v4 setObject:v7 forKeyedSubscript:@"wifiED"];
+    domain2 = [errorCopy domain];
+    [v4 setObject:domain2 forKeyedSubscript:@"wifiED"];
   }
 
   else
@@ -179,10 +179,10 @@ void __47__SFDeviceOperationHandlerWiFiSetup_invalidate__block_invoke(uint64_t a
     [v4 setObject:@"Unknown" forKeyedSubscript:@"wifiED"];
   }
 
-  v8 = [v14 description];
+  v8 = [errorCopy description];
   if (v8)
   {
-    v9 = [v14 description];
+    v9 = [errorCopy description];
     [v4 setObject:v9 forKeyedSubscript:@"wifiEL"];
   }
 
@@ -236,11 +236,11 @@ void __47__SFDeviceOperationHandlerWiFiSetup_invalidate__block_invoke(uint64_t a
   }
 }
 
-- (void)_handleRequestBonjourTestStart:(id)a3 responseHandler:(id)a4
+- (void)_handleRequestBonjourTestStart:(id)start responseHandler:(id)handler
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  startCopy = start;
+  handlerCopy = handler;
   if (gLogCategory_SFDeviceOperationWiFiSetup <= 30 && (gLogCategory_SFDeviceOperationWiFiSetup != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceOperationHandlerWiFiSetup _handleRequestBonjourTestStart:responseHandler:];
@@ -267,7 +267,7 @@ void __47__SFDeviceOperationHandlerWiFiSetup_invalidate__block_invoke(uint64_t a
     [(CUBonjourAdvertiser *)self->_bonjourAdvertiser setTxtDictionary:v11];
 
     [(CUBonjourAdvertiser *)self->_bonjourAdvertiser activate];
-    (*(v7 + 2))(v7, 0, 0, MEMORY[0x1E695E0F8]);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, MEMORY[0x1E695E0F8]);
   }
 
   else
@@ -278,16 +278,16 @@ void __47__SFDeviceOperationHandlerWiFiSetup_invalidate__block_invoke(uint64_t a
       [SFDeviceOperationHandlerWiFiSetup _handleRequestBonjourTestStart:responseHandler:];
     }
 
-    (*(v7 + 2))(v7, v12, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, v12, 0, 0);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleRequestBonjourTestDone:(id)a3 responseHandler:(id)a4
+- (void)_handleRequestBonjourTestDone:(id)done responseHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
+  doneCopy = done;
+  handlerCopy = handler;
   if (gLogCategory_SFDeviceOperationWiFiSetup <= 30 && (gLogCategory_SFDeviceOperationWiFiSetup != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceOperationHandlerWiFiSetup _handleRequestBonjourTestDone:responseHandler:];
@@ -297,14 +297,14 @@ void __47__SFDeviceOperationHandlerWiFiSetup_invalidate__block_invoke(uint64_t a
   bonjourAdvertiser = self->_bonjourAdvertiser;
   self->_bonjourAdvertiser = 0;
 
-  (*(v6 + 2))(v6, 0, 0, MEMORY[0x1E695E0F8]);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, MEMORY[0x1E695E0F8]);
 }
 
-- (void)_handleWiFiSetupRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleWiFiSetupRequest:(id)request responseHandler:(id)handler
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (self->_state)
   {
     [(SFDeviceOperationHandlerWiFiSetup *)&v29 _handleWiFiSetupRequest:v30 responseHandler:&v28];
@@ -315,11 +315,11 @@ void __47__SFDeviceOperationHandlerWiFiSetup_invalidate__block_invoke(uint64_t a
   {
     self->_wifiChannel = CFDictionaryGetInt64Ranged();
     self->_wifiDirected = CFDictionaryGetInt64() != 0;
-    v8 = [v6 objectForKeyedSubscript:@"wifiEAPConfig"];
+    v8 = [requestCopy objectForKeyedSubscript:@"wifiEAPConfig"];
     wifiEAPConfig = self->_wifiEAPConfig;
     self->_wifiEAPConfig = v8;
 
-    v10 = [v6 objectForKeyedSubscript:@"wifiEAPTE"];
+    v10 = [requestCopy objectForKeyedSubscript:@"wifiEAPTE"];
     wifiEAPTrustExceptions = self->_wifiEAPTrustExceptions;
     self->_wifiEAPTrustExceptions = v10;
 
@@ -371,7 +371,7 @@ LABEL_11:
               if (gLogCategory_SFDeviceOperationWiFiSetup > 30)
               {
 LABEL_19:
-                v19 = _Block_copy(v7);
+                v19 = _Block_copy(handlerCopy);
                 responseHandler = self->_responseHandler;
                 self->_responseHandler = v19;
 
@@ -423,14 +423,14 @@ LABEL_15:
     v21 = NSErrorWithOSStatusF();
   }
 
-  if (v7 && v21)
+  if (handlerCopy && v21)
   {
     if (gLogCategory_SFDeviceOperationWiFiSetup <= 60 && (gLogCategory_SFDeviceOperationWiFiSetup != -1 || _LogCategory_Initialize()))
     {
       [SFDeviceOperationHandlerWiFiSetup _handleWiFiSetupRequest:responseHandler:];
     }
 
-    (*(v7 + 2))(v7, v21, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, v21, 0, 0);
   }
 
 LABEL_20:
@@ -468,13 +468,13 @@ LABEL_20:
           stepError = self->_stepError;
         }
 
-        v6 = self;
+        selfCopy2 = self;
         goto LABEL_23;
       case 4:
-        v6 = self;
+        selfCopy2 = self;
         stepError = 0;
 LABEL_23:
-        [(SFDeviceOperationHandlerWiFiSetup *)v6 _completeError:stepError, v18, v19];
+        [(SFDeviceOperationHandlerWiFiSetup *)selfCopy2 _completeError:stepError, v18, v19];
         goto LABEL_61;
       case 11:
         v8 = dispatch_time(0, 2000000000);
@@ -1214,22 +1214,22 @@ void __58__SFDeviceOperationHandlerWiFiSetup__runReachabilityStart__block_invoke
 
 - (void)_cleanupOldWiFiNetworks
 {
-  v1 = [a1 networkName];
+  networkName = [self networkName];
   v2 = CUPrintNSError();
   LogPrintF();
 }
 
-- (id)createWiFiRetryMetricEvent:(id)a3 duration:(double)a4 channel:(int)a5 isScan:(BOOL)a6
+- (id)createWiFiRetryMetricEvent:(id)event duration:(double)duration channel:(int)channel isScan:(BOOL)scan
 {
-  v6 = a6;
-  v10 = a3;
+  scanCopy = scan;
+  eventCopy = event;
   v11 = objc_opt_new();
-  v12 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v12 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
   [v11 setObject:v12 forKeyedSubscript:@"wifiDN"];
 
-  if ([v10 code])
+  if ([eventCopy code])
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v10, "code")}];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(eventCopy, "code")}];
     [v11 setObject:v13 forKeyedSubscript:@"wifiEC"];
   }
 
@@ -1238,11 +1238,11 @@ void __58__SFDeviceOperationHandlerWiFiSetup__runReachabilityStart__block_invoke
     [v11 setObject:0 forKeyedSubscript:@"wifiEC"];
   }
 
-  v14 = [v10 domain];
-  if (v14)
+  domain = [eventCopy domain];
+  if (domain)
   {
-    v15 = [v10 domain];
-    [v11 setObject:v15 forKeyedSubscript:@"wifiED"];
+    domain2 = [eventCopy domain];
+    [v11 setObject:domain2 forKeyedSubscript:@"wifiED"];
   }
 
   else
@@ -1250,10 +1250,10 @@ void __58__SFDeviceOperationHandlerWiFiSetup__runReachabilityStart__block_invoke
     [v11 setObject:@"Unknown" forKeyedSubscript:@"wifiED"];
   }
 
-  v16 = [v10 description];
+  v16 = [eventCopy description];
   if (v16)
   {
-    v17 = [v10 description];
+    v17 = [eventCopy description];
     [v11 setObject:v17 forKeyedSubscript:@"wifiEL"];
   }
 
@@ -1263,13 +1263,13 @@ void __58__SFDeviceOperationHandlerWiFiSetup__runReachabilityStart__block_invoke
   }
 
   v18 = 200;
-  if (v6)
+  if (scanCopy)
   {
     v18 = 208;
   }
 
   v19 = 184;
-  if (v6)
+  if (scanCopy)
   {
     v19 = 192;
     v20 = 168;
@@ -1281,18 +1281,18 @@ void __58__SFDeviceOperationHandlerWiFiSetup__runReachabilityStart__block_invoke
   }
 
   v21 = 3;
-  if (v6)
+  if (scanCopy)
   {
     v21 = 1;
   }
 
   v22 = 2;
-  if (v6)
+  if (scanCopy)
   {
     v22 = 0;
   }
 
-  if (a5)
+  if (channel)
   {
     v18 = v19;
     v23 = v22;
@@ -1309,7 +1309,7 @@ void __58__SFDeviceOperationHandlerWiFiSetup__runReachabilityStart__block_invoke
   v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:*(&self->super.isa + v20)];
   [v11 setObject:v25 forKeyedSubscript:@"wifiLT"];
 
-  v26 = [MEMORY[0x1E696AD98] numberWithInt:v10 == 0];
+  v26 = [MEMORY[0x1E696AD98] numberWithInt:eventCopy == 0];
   [v11 setObject:v26 forKeyedSubscript:@"wifiSUCC"];
 
   v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v23];
@@ -1320,16 +1320,16 @@ void __58__SFDeviceOperationHandlerWiFiSetup__runReachabilityStart__block_invoke
   return v28;
 }
 
-- (id)createWiFiRetryMetricEventForIPAssign:(id)a3 duration:(double)a4
+- (id)createWiFiRetryMetricEventForIPAssign:(id)assign duration:(double)duration
 {
-  v5 = a3;
+  assignCopy = assign;
   v6 = objc_opt_new();
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
   [v6 setObject:v7 forKeyedSubscript:@"wifiDN"];
 
-  if ([v5 code])
+  if ([assignCopy code])
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v5, "code")}];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(assignCopy, "code")}];
     [v6 setObject:v8 forKeyedSubscript:@"wifiEC"];
   }
 
@@ -1338,11 +1338,11 @@ void __58__SFDeviceOperationHandlerWiFiSetup__runReachabilityStart__block_invoke
     [v6 setObject:0 forKeyedSubscript:@"wifiEC"];
   }
 
-  v9 = [v5 domain];
-  if (v9)
+  domain = [assignCopy domain];
+  if (domain)
   {
-    v10 = [v5 domain];
-    [v6 setObject:v10 forKeyedSubscript:@"wifiED"];
+    domain2 = [assignCopy domain];
+    [v6 setObject:domain2 forKeyedSubscript:@"wifiED"];
   }
 
   else
@@ -1350,10 +1350,10 @@ void __58__SFDeviceOperationHandlerWiFiSetup__runReachabilityStart__block_invoke
     [v6 setObject:@"Unknown" forKeyedSubscript:@"wifiED"];
   }
 
-  v11 = [v5 description];
+  v11 = [assignCopy description];
   if (v11)
   {
-    v12 = [v5 description];
+    v12 = [assignCopy description];
     [v6 setObject:v12 forKeyedSubscript:@"wifiEL"];
   }
 
@@ -1362,7 +1362,7 @@ void __58__SFDeviceOperationHandlerWiFiSetup__runReachabilityStart__block_invoke
     [v6 setObject:@"Unknown" forKeyedSubscript:@"wifiEL"];
   }
 
-  v13 = [MEMORY[0x1E696AD98] numberWithInt:v5 == 0];
+  v13 = [MEMORY[0x1E696AD98] numberWithInt:assignCopy == 0];
   [v6 setObject:v13 forKeyedSubscript:@"wifiSUCC"];
 
   [v6 setObject:&unk_1F1D7CE80 forKeyedSubscript:@"wifiRT"];
@@ -1371,22 +1371,22 @@ void __58__SFDeviceOperationHandlerWiFiSetup__runReachabilityStart__block_invoke
   return v14;
 }
 
-- (void)addRetryMetric:(id)a3
+- (void)addRetryMetric:(id)metric
 {
-  v4 = a3;
+  metricCopy = metric;
   wiFiRetryMetrics = self->_wiFiRetryMetrics;
-  v8 = v4;
+  v8 = metricCopy;
   if (!wiFiRetryMetrics)
   {
     v6 = objc_opt_new();
     v7 = self->_wiFiRetryMetrics;
     self->_wiFiRetryMetrics = v6;
 
-    v4 = v8;
+    metricCopy = v8;
     wiFiRetryMetrics = self->_wiFiRetryMetrics;
   }
 
-  [(NSMutableArray *)wiFiRetryMetrics addObject:v4];
+  [(NSMutableArray *)wiFiRetryMetrics addObject:metricCopy];
 }
 
 - (void)_handleWiFiSetupRequest:(uint64_t *)a3 responseHandler:.cold.1(void *a1, __CFString **a2, uint64_t *a3)

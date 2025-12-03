@@ -1,34 +1,34 @@
 @interface MultilineButton
-- (_TtC28HealthExposureNotificationUI15MultilineButton)initWithCoder:(id)a3;
-- (_TtC28HealthExposureNotificationUI15MultilineButton)initWithFrame:(CGRect)a3;
+- (_TtC28HealthExposureNotificationUI15MultilineButton)initWithCoder:(id)coder;
+- (_TtC28HealthExposureNotificationUI15MultilineButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MultilineButton
 
-- (_TtC28HealthExposureNotificationUI15MultilineButton)initWithFrame:(CGRect)a3
+- (_TtC28HealthExposureNotificationUI15MultilineButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v14.receiver = self;
   v14.super_class = type metadata accessor for MultilineButton();
-  v7 = [(MultilineButton *)&v14 initWithFrame:x, y, width, height];
-  v8 = [(MultilineButton *)v7 titleLabel];
-  if (v8)
+  height = [(MultilineButton *)&v14 initWithFrame:x, y, width, height];
+  titleLabel = [(MultilineButton *)height titleLabel];
+  if (titleLabel)
   {
-    v9 = v8;
-    v10 = [(MultilineButton *)v7 heightAnchor];
-    v11 = [v9 heightAnchor];
-    v12 = [v10 constraintGreaterThanOrEqualToAnchor_];
+    v9 = titleLabel;
+    heightAnchor = [(MultilineButton *)height heightAnchor];
+    heightAnchor2 = [v9 heightAnchor];
+    constraintGreaterThanOrEqualToAnchor_ = [heightAnchor constraintGreaterThanOrEqualToAnchor_];
 
-    [v12 setActive_];
+    [constraintGreaterThanOrEqualToAnchor_ setActive_];
   }
 
-  return v7;
+  return height;
 }
 
-- (_TtC28HealthExposureNotificationUI15MultilineButton)initWithCoder:(id)a3
+- (_TtC28HealthExposureNotificationUI15MultilineButton)initWithCoder:(id)coder
 {
   result = sub_251703584();
   __break(1u);

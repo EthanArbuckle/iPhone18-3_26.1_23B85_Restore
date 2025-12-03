@@ -1,26 +1,26 @@
 @interface SHHapticsProviderUtilities
-+ (BOOL)isValidAppleArchiveFileURL:(id)a3;
++ (BOOL)isValidAppleArchiveFileURL:(id)l;
 + (id)availableHapticAlgorithms;
-+ (id)cachedHapticTracksForMediaItem:(id)a3;
-+ (id)decompressionDirectoryForMediaItem:(id)a3;
-+ (id)folderNameForMediaItem:(id)a3;
-+ (id)hapticFromResponse:(id)a3;
-+ (id)hapticTracksForMediaItem:(id)a3 inDirectory:(id)a4;
-+ (id)hapticsFromDownloadResponses:(id)a3;
++ (id)cachedHapticTracksForMediaItem:(id)item;
++ (id)decompressionDirectoryForMediaItem:(id)item;
++ (id)folderNameForMediaItem:(id)item;
++ (id)hapticFromResponse:(id)response;
++ (id)hapticTracksForMediaItem:(id)item inDirectory:(id)directory;
++ (id)hapticsFromDownloadResponses:(id)responses;
 + (id)musicHapticsRootDirectory;
 @end
 
 @implementation SHHapticsProviderUtilities
 
-+ (id)hapticsFromDownloadResponses:(id)a3
++ (id)hapticsFromDownloadResponses:(id)responses
 {
-  v4 = a3;
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  responsesCopy = responses;
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [responsesCopy count]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = responsesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -35,7 +35,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 hapticFromResponse:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self hapticFromResponse:{*(*(&v14 + 1) + 8 * i), v14}];
         [v5 addObject:v11];
       }
 
@@ -50,15 +50,15 @@
   return v12;
 }
 
-+ (id)cachedHapticTracksForMediaItem:(id)a3
++ (id)cachedHapticTracksForMediaItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 appleMusicID];
+  itemCopy = item;
+  appleMusicID = [itemCopy appleMusicID];
 
-  if (v5)
+  if (appleMusicID)
   {
-    v6 = [a1 decompressionDirectoryForMediaItem:v4];
-    v7 = [a1 hapticTracksForMediaItem:v4 inDirectory:v6];
+    v6 = [self decompressionDirectoryForMediaItem:itemCopy];
+    v7 = [self hapticTracksForMediaItem:itemCopy inDirectory:v6];
   }
 
   else
@@ -69,57 +69,57 @@
   return v7;
 }
 
-+ (id)hapticFromResponse:(id)a3
++ (id)hapticFromResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 networkDownloadResponse];
-  v6 = [v5 error];
+  responseCopy = response;
+  networkDownloadResponse = [responseCopy networkDownloadResponse];
+  error = [networkDownloadResponse error];
 
-  v7 = [v4 networkDownloadResponse];
-  v8 = [v7 downloadedFileLocation];
+  networkDownloadResponse2 = [responseCopy networkDownloadResponse];
+  downloadedFileLocation = [networkDownloadResponse2 downloadedFileLocation];
 
   v9 = sh_log_object();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v4 mediaItem];
-    v11 = [v10 appleMusicID];
-    v12 = [v4 mediaItem];
-    v13 = [v12 isrc];
+    mediaItem = [responseCopy mediaItem];
+    appleMusicID = [mediaItem appleMusicID];
+    mediaItem2 = [responseCopy mediaItem];
+    isrc = [mediaItem2 isrc];
     *buf = 138412546;
-    v35 = v11;
+    v35 = appleMusicID;
     v36 = 2112;
-    v37 = v13;
+    v37 = isrc;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Validating spatial information of Adam ID %@, ISRC: %@", buf, 0x16u);
   }
 
-  v14 = [v4 spatialTrackInformation];
-  if ([SHHapticSpatialTrackValidator isValidSpatialTrackInformation:v14])
+  spatialTrackInformation = [responseCopy spatialTrackInformation];
+  if ([SHHapticSpatialTrackValidator isValidSpatialTrackInformation:spatialTrackInformation])
   {
-    v15 = [v4 spatialTrackInformation];
+    spatialTrackInformation2 = [responseCopy spatialTrackInformation];
   }
 
   else
   {
-    v15 = 0;
+    spatialTrackInformation2 = 0;
   }
 
-  if ([a1 isValidAppleArchiveFileURL:v8])
+  if ([self isValidAppleArchiveFileURL:downloadedFileLocation])
   {
-    v16 = [v4 mediaItem];
-    v17 = [a1 decompressionDirectoryForMediaItem:v16];
+    mediaItem3 = [responseCopy mediaItem];
+    mediaItem6 = [self decompressionDirectoryForMediaItem:mediaItem3];
 
-    v31 = v6;
-    v18 = [SHCompression decompressAppleArchiveAtURL:v8 toDirectoryURL:v17 error:&v31];
+    v31 = error;
+    v18 = [SHCompression decompressAppleArchiveAtURL:downloadedFileLocation toDirectoryURL:mediaItem6 error:&v31];
     v19 = v31;
 
-    v20 = [v4 mediaItem];
-    v21 = [a1 hapticTracksForMediaItem:v20 inDirectory:v17];
+    mediaItem4 = [responseCopy mediaItem];
+    v21 = [self hapticTracksForMediaItem:mediaItem4 inDirectory:mediaItem6];
 
     if (v18 && [v21 count])
     {
       v22 = [SHHaptic alloc];
-      v23 = [v4 mediaItem];
-      v24 = [v22 initWithHapticTracks:v21 representingMediaItem:v23 spatialTrackInformation:v15 error:0];
+      mediaItem5 = [responseCopy mediaItem];
+      v24 = [v22 initWithHapticTracks:v21 representingMediaItem:mediaItem5 spatialTrackInformation:spatialTrackInformation2 error:0];
 
       goto LABEL_15;
     }
@@ -146,8 +146,8 @@
 
   else
   {
-    v19 = v6;
-    if (!v6)
+    v19 = error;
+    if (!error)
     {
 LABEL_11:
       v32 = NSDebugDescriptionErrorKey;
@@ -168,26 +168,26 @@ LABEL_11:
   }
 
   v27 = [SHHaptic alloc];
-  v17 = [v4 mediaItem];
-  v24 = [v27 initWithHapticTracks:0 representingMediaItem:v17 spatialTrackInformation:v15 error:v19];
+  mediaItem6 = [responseCopy mediaItem];
+  v24 = [v27 initWithHapticTracks:0 representingMediaItem:mediaItem6 spatialTrackInformation:spatialTrackInformation2 error:v19];
 LABEL_15:
 
   return v24;
 }
 
-+ (id)hapticTracksForMediaItem:(id)a3 inDirectory:(id)a4
++ (id)hapticTracksForMediaItem:(id)item inDirectory:(id)directory
 {
-  v6 = a3;
-  v32 = a4;
-  v7 = [a1 availableHapticAlgorithms];
-  v30 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
+  itemCopy = item;
+  directoryCopy = directory;
+  availableHapticAlgorithms = [self availableHapticAlgorithms];
+  v30 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [availableHapticAlgorithms count]);
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v29 = a1;
-  obj = [a1 availableHapticAlgorithms];
+  selfCopy = self;
+  obj = [self availableHapticAlgorithms];
   v8 = [obj countByEnumeratingWithState:&v33 objects:v43 count:16];
   if (v8)
   {
@@ -205,10 +205,10 @@ LABEL_15:
         }
 
         v13 = *(*(&v33 + 1) + 8 * i);
-        v14 = [v32 URLByAppendingPathComponent:v13 conformingToType:{UTTypeAHAP, v28}];
+        v14 = [directoryCopy URLByAppendingPathComponent:v13 conformingToType:{UTTypeAHAP, v28}];
         v15 = +[NSFileManager defaultManager];
-        v16 = [v14 path];
-        v17 = [v15 fileExistsAtPath:v16];
+        path = [v14 path];
+        v17 = [v15 fileExistsAtPath:path];
 
         v18 = sh_log_object();
         v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG);
@@ -216,23 +216,23 @@ LABEL_15:
         {
           if (v19)
           {
-            v20 = [v6 appleMusicID];
-            v21 = [v6 isrc];
+            appleMusicID = [itemCopy appleMusicID];
+            isrc = [itemCopy isrc];
             *buf = v28;
             v38 = v13;
             v39 = 2112;
-            v40 = v20;
+            v40 = appleMusicID;
             v41 = 2112;
-            v42 = v21;
+            v42 = isrc;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "Downloaded variant: %@ for media item. AdamID: %@, ISRC: %@", buf, 0x20u);
           }
 
           v18 = [NSData dataWithContentsOfURL:v14];
           v22 = [SHHapticTrack alloc];
-          v23 = [v29 folderNameForMediaItem:v6];
-          v24 = [v22 initWithFileIdentifier:v23 hapticData:v18 algorithm:v13];
+          v23 = [selfCopy folderNameForMediaItem:itemCopy];
+          appleMusicID2 = [v22 initWithFileIdentifier:v23 hapticData:v18 algorithm:v13];
 
-          [v30 addObject:v24];
+          [v30 addObject:appleMusicID2];
         }
 
         else
@@ -242,14 +242,14 @@ LABEL_15:
             goto LABEL_13;
           }
 
-          v24 = [v6 appleMusicID];
-          v25 = [v6 isrc];
+          appleMusicID2 = [itemCopy appleMusicID];
+          isrc2 = [itemCopy isrc];
           *buf = v28;
           v38 = v13;
           v39 = 2112;
-          v40 = v24;
+          v40 = appleMusicID2;
           v41 = 2112;
-          v42 = v25;
+          v42 = isrc2;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "No variant: %@ downloaded for media item. AdamID: %@, ISRC: %@", buf, 0x20u);
         }
 
@@ -267,87 +267,87 @@ LABEL_13:
   return v26;
 }
 
-+ (BOOL)isValidAppleArchiveFileURL:(id)a3
++ (BOOL)isValidAppleArchiveFileURL:(id)l
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  lCopy = l;
+  v4 = lCopy;
+  if (lCopy)
   {
-    v5 = [v3 pathExtension];
+    pathExtension = [lCopy pathExtension];
 
-    if (v5)
+    if (pathExtension)
     {
-      v6 = [v4 pathExtension];
-      v7 = [UTType typeWithFilenameExtension:v6];
+      pathExtension2 = [v4 pathExtension];
+      v7 = [UTType typeWithFilenameExtension:pathExtension2];
 
-      LOBYTE(v5) = v7 == UTTypeAppleArchive;
+      LOBYTE(pathExtension) = v7 == UTTypeAppleArchive;
     }
   }
 
   else
   {
-    LOBYTE(v5) = 0;
+    LOBYTE(pathExtension) = 0;
   }
 
-  return v5;
+  return pathExtension;
 }
 
-+ (id)decompressionDirectoryForMediaItem:(id)a3
++ (id)decompressionDirectoryForMediaItem:(id)item
 {
-  v4 = a3;
-  v5 = [a1 musicHapticsRootDirectory];
-  v6 = [a1 folderNameForMediaItem:v4];
+  itemCopy = item;
+  musicHapticsRootDirectory = [self musicHapticsRootDirectory];
+  v6 = [self folderNameForMediaItem:itemCopy];
 
-  v7 = [v5 URLByAppendingPathComponent:v6];
+  v7 = [musicHapticsRootDirectory URLByAppendingPathComponent:v6];
 
   return v7;
 }
 
-+ (id)folderNameForMediaItem:(id)a3
++ (id)folderNameForMediaItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 appleMusicID];
-  if (v4)
+  itemCopy = item;
+  appleMusicID = [itemCopy appleMusicID];
+  if (appleMusicID)
   {
-    v5 = v4;
+    isrc = appleMusicID;
     goto LABEL_4;
   }
 
-  v5 = [v3 isrc];
-  if (v5)
+  isrc = [itemCopy isrc];
+  if (isrc)
   {
 LABEL_4:
-    v6 = v5;
-    if (![v5 isEqualToString:&stru_10007EB10])
+    uUIDString2 = isrc;
+    if (![isrc isEqualToString:&stru_10007EB10])
     {
       goto LABEL_11;
     }
   }
 
-  v7 = [v3 identifier];
-  v8 = [v7 UUIDString];
-  v9 = v8;
-  if (v8)
+  identifier = [itemCopy identifier];
+  uUIDString = [identifier UUIDString];
+  v9 = uUIDString;
+  if (uUIDString)
   {
-    v6 = v8;
+    uUIDString2 = uUIDString;
   }
 
   else
   {
     v10 = +[NSUUID UUID];
-    v6 = [v10 UUIDString];
+    uUIDString2 = [v10 UUIDString];
 
-    v5 = v10;
+    isrc = v10;
   }
 
   v11 = sh_log_object();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v3 properties];
+    properties = [itemCopy properties];
     v17 = 138412546;
-    v18 = v6;
+    v18 = uUIDString2;
     v19 = 2112;
-    v20 = v12;
+    v20 = properties;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Setting haptics folder name: %@ using media item identifier in media item: %@", &v17, 0x16u);
   }
 
@@ -355,18 +355,18 @@ LABEL_11:
   v13 = sh_log_object();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [v3 appleMusicID];
-    v15 = [v3 isrc];
+    appleMusicID2 = [itemCopy appleMusicID];
+    isrc2 = [itemCopy isrc];
     v17 = 138412802;
-    v18 = v6;
+    v18 = uUIDString2;
     v19 = 2112;
-    v20 = v14;
+    v20 = appleMusicID2;
     v21 = 2112;
-    v22 = v15;
+    v22 = isrc2;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Returning haptics folder name: %@, MusicID: %@, ISRC:%@", &v17, 0x20u);
   }
 
-  return v6;
+  return uUIDString2;
 }
 
 + (id)musicHapticsRootDirectory

@@ -1,14 +1,14 @@
 @interface WLKSearchWatchListResponse
 - (WLKSearchWatchListResponse)init;
-- (WLKSearchWatchListResponse)initWithDictionary:(id)a3;
+- (WLKSearchWatchListResponse)initWithDictionary:(id)dictionary;
 @end
 
 @implementation WLKSearchWatchListResponse
 
-- (WLKSearchWatchListResponse)initWithDictionary:(id)a3
+- (WLKSearchWatchListResponse)initWithDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = WLKSearchWatchListResponse;
   v6 = [(WLKSearchWatchListResponse *)&v28 init];
@@ -16,9 +16,9 @@
   if (v6)
   {
     v23 = v6;
-    objc_storeStrong(&v6->_dictionary, a3);
+    objc_storeStrong(&v6->_dictionary, dictionary);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v22 = [v5 wlk_dictionaryForKey:@"data"];
+    v22 = [dictionaryCopy wlk_dictionaryForKey:@"data"];
     v9 = [v22 wlk_arrayForKey:@"items"];
     v10 = v9;
     if (v9)

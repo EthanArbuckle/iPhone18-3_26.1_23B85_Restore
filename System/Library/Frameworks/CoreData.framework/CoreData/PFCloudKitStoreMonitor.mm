@@ -1,17 +1,17 @@
 @interface PFCloudKitStoreMonitor
 - (NSManagedObjectContext)newBackgroundContextForMonitoredCoordinator;
-- (id)initForStore:(id)a3;
+- (id)initForStore:(id)store;
 - (uint64_t)retainedMonitoredStore;
-- (void)coordinatorWillRemoveStore:(id)a3;
+- (void)coordinatorWillRemoveStore:(id)store;
 - (void)dealloc;
-- (void)performBlock:(uint64_t)a1;
+- (void)performBlock:(uint64_t)block;
 @end
 
 @implementation PFCloudKitStoreMonitor
 
 - (uint64_t)retainedMonitoredStore
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -22,9 +22,9 @@
   v10 = __Block_byref_object_copy__51;
   v11 = __Block_byref_object_dispose__51;
   v12 = 0;
-  if (*(a1 + 20) == 1 && (*(a1 + 21) & 1) == 0)
+  if (*(self + 20) == 1 && (*(self + 21) & 1) == 0)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
+    WeakRetained = objc_loadWeakRetained((self + 32));
     v5 = WeakRetained;
     if (WeakRetained)
     {
@@ -32,7 +32,7 @@
       v6[1] = 3221225472;
       v6[2] = __48__PFCloudKitStoreMonitor_retainedMonitoredStore__block_invoke;
       v6[3] = &unk_1E6EC23F0;
-      v6[5] = a1;
+      v6[5] = self;
       v6[6] = &v7;
       v6[4] = WeakRetained;
       [WeakRetained performBlockAndWait:v6];
@@ -42,8 +42,8 @@
     if (!v2)
     {
       os_unfair_lock_lock_with_options();
-      *(a1 + 20) = 256;
-      os_unfair_lock_unlock((a1 + 16));
+      *(self + 20) = 256;
+      os_unfair_lock_unlock((self + 16));
       v2 = v8[5];
     }
   }
@@ -67,14 +67,14 @@ id __48__PFCloudKitStoreMonitor_retainedMonitoredStore__block_invoke(uint64_t a1
 - (NSManagedObjectContext)newBackgroundContextForMonitoredCoordinator
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v2 = 0;
     goto LABEL_22;
   }
 
   v2 = [[NSManagedObjectContext alloc] initWithConcurrencyType:1];
-  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  WeakRetained = objc_loadWeakRetained((self + 32));
   if (WeakRetained)
   {
     [(NSManagedObjectContext *)v2 setPersistentStoreCoordinator:WeakRetained];
@@ -85,7 +85,7 @@ id __48__PFCloudKitStoreMonitor_retainedMonitoredStore__block_invoke(uint64_t a1
     }
 
     [(NSManagedObjectContext *)v2 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-    if (!*(a1 + 48))
+    if (!*(self + 48))
     {
       LogStream = _PFLogGetLogStream(17);
       if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
@@ -107,7 +107,7 @@ id __48__PFCloudKitStoreMonitor_retainedMonitoredStore__block_invoke(uint64_t a1
       goto LABEL_24;
     }
 
-    v18[0] = *(a1 + 48);
+    v18[0] = *(self + 48);
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
     if (v2)
     {
@@ -116,7 +116,7 @@ id __48__PFCloudKitStoreMonitor_retainedMonitoredStore__block_invoke(uint64_t a1
       v2->_persistentStoreIdentifiers = v5;
     }
 
-    if ([WeakRetained persistentStoreForIdentifier:*(a1 + 48)])
+    if ([WeakRetained persistentStoreForIdentifier:*(self + 48)])
     {
       goto LABEL_21;
     }
@@ -125,7 +125,7 @@ id __48__PFCloudKitStoreMonitor_retainedMonitoredStore__block_invoke(uint64_t a1
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v16 = 138412290;
-      v17 = a1;
+      selfCopy4 = self;
       _os_log_error_impl(&dword_18565F000, v6, OS_LOG_TYPE_ERROR, "CoreData: fault: Called after the store is dead. This method needs to be called inside a performBlock on the store monitor: %@\n", &v16, 0xCu);
     }
 
@@ -136,7 +136,7 @@ id __48__PFCloudKitStoreMonitor_retainedMonitoredStore__block_invoke(uint64_t a1
     }
 
     v16 = 138412290;
-    v17 = a1;
+    selfCopy4 = self;
     v8 = "CoreData: Called after the store is dead. This method needs to be called inside a performBlock on the store monitor: %@";
   }
 
@@ -146,7 +146,7 @@ id __48__PFCloudKitStoreMonitor_retainedMonitoredStore__block_invoke(uint64_t a1
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v16 = 138412290;
-      v17 = a1;
+      selfCopy4 = self;
       _os_log_error_impl(&dword_18565F000, v9, OS_LOG_TYPE_ERROR, "CoreData: fault: Called after the store is dead. This method needs to be called inside a performBlock on the store monitor: %@\n", &v16, 0xCu);
     }
 
@@ -157,7 +157,7 @@ id __48__PFCloudKitStoreMonitor_retainedMonitoredStore__block_invoke(uint64_t a1
     }
 
     v16 = 138412290;
-    v17 = a1;
+    selfCopy4 = self;
     v8 = "CoreData: Called after the store is dead. This method needs to be called inside a performBlock on the store monitor: %@";
   }
 
@@ -182,7 +182,7 @@ LABEL_22:
   [(PFCloudKitStoreMonitor *)&v3 dealloc];
 }
 
-- (id)initForStore:(id)a3
+- (id)initForStore:(id)store
 {
   v17.receiver = self;
   v17.super_class = PFCloudKitStoreMonitor;
@@ -194,30 +194,30 @@ LABEL_22:
     v4->_monitorGroup = dispatch_group_create();
     v5->_aliveLock._os_unfair_lock_opaque = 0;
     *&v5->_retryCount = 0xA00000000;
-    v5->_storeIdentifier = [a3 identifier];
+    v5->_storeIdentifier = [store identifier];
     v6 = objc_autoreleasePoolPush();
     v13 = 0;
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 0;
     storeIdentifier = v5->_storeIdentifier;
-    v8 = [a3 URL];
-    v9 = [a3 persistentStoreCoordinator];
+    v8 = [store URL];
+    persistentStoreCoordinator = [store persistentStoreCoordinator];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __39__PFCloudKitStoreMonitor_initForStore___block_invoke;
     v12[3] = &unk_1E6EC28A8;
     v12[4] = v5;
-    v12[5] = v9;
+    v12[5] = persistentStoreCoordinator;
     v12[6] = storeIdentifier;
     v12[7] = &v13;
-    [v9 performBlockAndWait:v12];
+    [persistentStoreCoordinator performBlockAndWait:v12];
     v10 = *(v14 + 24);
     v5->_storeIsAlive = v10;
     if (v10 == 1)
     {
-      objc_storeWeak(&v5->_monitoredCoordinator, v9);
-      objc_storeWeak(&v5->_monitoredStore, a3);
+      objc_storeWeak(&v5->_monitoredCoordinator, persistentStoreCoordinator);
+      objc_storeWeak(&v5->_monitoredStore, store);
     }
 
     _Block_object_dispose(&v13, 8);
@@ -239,10 +239,10 @@ uint64_t __39__PFCloudKitStoreMonitor_initForStore___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)coordinatorWillRemoveStore:(id)a3
+- (void)coordinatorWillRemoveStore:(id)store
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = [objc_msgSend(a3 "userInfo")];
+  v4 = [objc_msgSend(store "userInfo")];
   if (-[NSString isEqualToString:](self->_storeIdentifier, "isEqualToString:", [v4 identifier]) && objc_loadWeak(&self->_monitoredStore) == v4)
   {
     os_unfair_lock_lock_with_options();
@@ -279,7 +279,7 @@ uint64_t __39__PFCloudKitStoreMonitor_initForStore___block_invoke(uint64_t a1)
       {
         v15 = self->_retryCount;
         *buf = v24;
-        v26 = "[PFCloudKitStoreMonitor pfcloudstoremonitor_is_holding_your_store_open_waiting_for_cloudkit_activity_to_finish]";
+        selfCopy2 = "[PFCloudKitStoreMonitor pfcloudstoremonitor_is_holding_your_store_open_waiting_for_cloudkit_activity_to_finish]";
         v27 = 1024;
         *v28 = 128;
         *&v28[4] = 2112;
@@ -326,7 +326,7 @@ uint64_t __39__PFCloudKitStoreMonitor_initForStore___block_invoke(uint64_t a1)
     {
       v18 = self->_retryCount;
       *buf = v24;
-      v26 = "[PFCloudKitStoreMonitor pfcloudstoremonitor_is_holding_your_store_open_waiting_for_cloudkit_activity_to_finish]";
+      selfCopy2 = "[PFCloudKitStoreMonitor pfcloudstoremonitor_is_holding_your_store_open_waiting_for_cloudkit_activity_to_finish]";
       v27 = 1024;
       *v28 = 125;
       *&v28[4] = 2112;
@@ -345,7 +345,7 @@ LABEL_24:
       {
         storeIdentifier = self->_storeIdentifier;
         *buf = 138412546;
-        v26 = self;
+        selfCopy2 = self;
         v27 = 2112;
         *v28 = storeIdentifier;
         _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: PFCloudKitStoreMonitor failed to tear down gracefully, this means requests are probably about to fail: %@ - %@\n", buf, 0x16u);
@@ -356,7 +356,7 @@ LABEL_24:
       {
         v23 = self->_storeIdentifier;
         *buf = 138412546;
-        v26 = self;
+        selfCopy2 = self;
         v27 = 2112;
         *v28 = v23;
         _os_log_fault_impl(&dword_18565F000, v20, OS_LOG_TYPE_FAULT, "CoreData: PFCloudKitStoreMonitor failed to tear down gracefully, this means requests are probably about to fail: %@ - %@", buf, 0x16u);
@@ -376,17 +376,17 @@ LABEL_24:
   }
 }
 
-- (void)performBlock:(uint64_t)a1
+- (void)performBlock:(uint64_t)block
 {
-  if (a1)
+  if (block)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696AAC8]);
     if (a2)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 32));
-      dispatch_group_enter(*(a1 + 8));
+      WeakRetained = objc_loadWeakRetained((block + 32));
+      dispatch_group_enter(*(block + 8));
       (*(a2 + 16))(a2);
-      dispatch_group_leave(*(a1 + 8));
+      dispatch_group_leave(*(block + 8));
     }
 
     else

@@ -1,6 +1,6 @@
 @interface MBServiceEncryptionManager
-- (MBServiceEncryptionManager)initWithSettingsContext:(id)a3;
-- (id)loadRestoreKeyBagsByIDWithError:(id *)a3;
+- (MBServiceEncryptionManager)initWithSettingsContext:(id)context;
+- (id)loadRestoreKeyBagsByIDWithError:(id *)error;
 - (void)_exportKeychain;
 - (void)dealloc;
 - (void)keybagIsLocking;
@@ -9,14 +9,14 @@
 
 @implementation MBServiceEncryptionManager
 
-- (MBServiceEncryptionManager)initWithSettingsContext:(id)a3
+- (MBServiceEncryptionManager)initWithSettingsContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = MBServiceEncryptionManager;
   v4 = [(MBServiceEncryptionManager *)&v6 init];
   if (v4)
   {
-    v4->_settingsContext = a3;
+    v4->_settingsContext = context;
   }
 
   return v4;
@@ -29,7 +29,7 @@
   [(MBServiceEncryptionManager *)&v3 dealloc];
 }
 
-- (id)loadRestoreKeyBagsByIDWithError:(id *)a3
+- (id)loadRestoreKeyBagsByIDWithError:(id *)error
 {
   v28 = 0;
   v4 = +[NSMutableDictionary dictionary];
@@ -44,7 +44,7 @@
   v6 = [NSData dataWithContentsOfFile:@"/var/mobile/Library/Backup/RestoreKeyBag.plist" options:0 error:&v28];
   if (!v6)
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -57,17 +57,17 @@
   if (!v7)
   {
     v4 = 0;
-    if (!a3 || !v28)
+    if (!error || !v28)
     {
       return v4;
     }
 
-    v20 = 1;
+    code = 1;
 LABEL_27:
-    v19 = [MBError errorWithCode:"errorWithCode:error:format:" error:v20 format:?];
+    v19 = [MBError errorWithCode:"errorWithCode:error:format:" error:code format:?];
 LABEL_28:
     v4 = 0;
-    *a3 = v19;
+    *error = v19;
     return v4;
   }
 
@@ -85,7 +85,7 @@ LABEL_28:
   }
 
   v12 = v11;
-  v22 = a3;
+  errorCopy = error;
   v13 = *v24;
   while (2)
   {
@@ -102,14 +102,14 @@ LABEL_28:
       if (!v17)
       {
         v4 = 0;
-        a3 = v22;
-        if (!v22 || !v28)
+        error = errorCopy;
+        if (!errorCopy || !v28)
         {
           return v4;
         }
 
 LABEL_26:
-        v20 = [v28 code];
+        code = [v28 code];
         goto LABEL_27;
       }
 
@@ -117,8 +117,8 @@ LABEL_26:
       if (([v17 unlockWithSecret:v9 error:&v28] & 1) == 0)
       {
         v4 = 0;
-        a3 = v22;
-        if (!v22 || !v28)
+        error = errorCopy;
+        if (!errorCopy || !v28)
         {
           return v4;
         }

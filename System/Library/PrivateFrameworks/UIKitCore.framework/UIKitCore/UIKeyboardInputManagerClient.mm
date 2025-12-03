@@ -1,14 +1,14 @@
 @interface UIKeyboardInputManagerClient
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (UIKeyboardInputManagerClient)initWithImplProxy:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isKindOfClass:(Class)class;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (UIKeyboardInputManagerClient)initWithImplProxy:(id)proxy;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
-- (void)handleError:(id)a3 forRequest:(id)a4;
-- (void)handleRequest:(id)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)handleError:(id)error forRequest:(id)request;
+- (void)handleRequest:(id)request;
 @end
 
 @implementation UIKeyboardInputManagerClient
@@ -21,9 +21,9 @@
   [(UIKeyboardInputManagerClient *)&v3 dealloc];
 }
 
-- (UIKeyboardInputManagerClient)initWithImplProxy:(id)a3
+- (UIKeyboardInputManagerClient)initWithImplProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v14.receiver = self;
   v14.super_class = UIKeyboardInputManagerClient;
   v5 = [(UIKeyboardInputManagerClient *)&v14 init];
@@ -33,10 +33,10 @@
     connection = v5->_connection;
     v5->_connection = v6;
 
-    v8 = [MEMORY[0x1E69D9610] serverInterface];
-    [(NSXPCConnection *)v5->_connection setRemoteObjectInterface:v8];
+    serverInterface = [MEMORY[0x1E69D9610] serverInterface];
+    [(NSXPCConnection *)v5->_connection setRemoteObjectInterface:serverInterface];
 
-    [(NSXPCConnection *)v5->_connection setExportedObject:v4];
+    [(NSXPCConnection *)v5->_connection setExportedObject:proxyCopy];
     v9 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1EFF1D660];
     [(NSXPCConnection *)v5->_connection setExportedInterface:v9];
 
@@ -56,9 +56,9 @@
   return v5;
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___UIKeyboardInputManagerClient;
   if (objc_msgSendSuper2(&v5, sel_instancesRespondToSelector_))
   {
@@ -67,11 +67,11 @@
 
   else
   {
-    return [MEMORY[0x1E69D9610] instancesRespondToSelector:a3];
+    return [MEMORY[0x1E69D9610] instancesRespondToSelector:selector];
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v5.receiver = self;
   v5.super_class = UIKeyboardInputManagerClient;
@@ -82,11 +82,11 @@
 
   else
   {
-    return [MEMORY[0x1E69D9610] instancesRespondToSelector:a3];
+    return [MEMORY[0x1E69D9610] instancesRespondToSelector:selector];
   }
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = UIKeyboardInputManagerClient;
@@ -97,29 +97,29 @@
 
   else
   {
-    return [(objc_class *)a3 isSubclassOfClass:objc_opt_class()];
+    return [(objc_class *)class isSubclassOfClass:objc_opt_class()];
   }
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v7.receiver = self;
   v7.super_class = UIKeyboardInputManagerClient;
-  if ([(UIKeyboardInputManagerClient *)&v7 conformsToProtocol:v4])
+  if ([(UIKeyboardInputManagerClient *)&v7 conformsToProtocol:protocolCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69D9610] conformsToProtocol:v4];
+    v5 = [MEMORY[0x1E69D9610] conformsToProtocol:protocolCopy];
   }
 
   return v5;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v9.receiver = self;
   v9.super_class = UIKeyboardInputManagerClient;
@@ -132,7 +132,7 @@
 
   else
   {
-    v6 = [MEMORY[0x1E69D9610] instanceMethodSignatureForSelector:a3];
+    v6 = [MEMORY[0x1E69D9610] instanceMethodSignatureForSelector:selector];
   }
 
   v7 = v6;
@@ -140,12 +140,12 @@
   return v7;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  if ([MEMORY[0x1E69D9610] instancesRespondToSelector:{objc_msgSend(v4, "selector")}])
+  invocationCopy = invocation;
+  if ([MEMORY[0x1E69D9610] instancesRespondToSelector:{objc_msgSend(invocationCopy, "selector")}])
   {
-    v5 = [[UIKeyboardInputManagerClientRequest alloc] initWithInvocation:v4];
+    v5 = [[UIKeyboardInputManagerClientRequest alloc] initWithInvocation:invocationCopy];
     [(UIKeyboardInputManagerClient *)self handleRequest:v5];
   }
 
@@ -153,61 +153,61 @@
   {
     v6.receiver = self;
     v6.super_class = UIKeyboardInputManagerClient;
-    [(UIKeyboardInputManagerClient *)&v6 forwardInvocation:v4];
+    [(UIKeyboardInputManagerClient *)&v6 forwardInvocation:invocationCopy];
   }
 }
 
-- (void)handleRequest:(id)a3
+- (void)handleRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(UIKeyboardInputManagerClient *)self connection];
+  requestCopy = request;
+  connection = [(UIKeyboardInputManagerClient *)self connection];
 
-  if (v5)
+  if (connection)
   {
-    v6 = [v4 invocation];
-    v7 = [(UIKeyboardInputManagerClient *)self connection];
+    invocation = [requestCopy invocation];
+    connection2 = [(UIKeyboardInputManagerClient *)self connection];
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
     v13 = __46__UIKeyboardInputManagerClient_handleRequest___block_invoke;
     v14 = &unk_1E7109F48;
-    v15 = self;
-    v16 = v4;
-    v8 = [v7 remoteObjectProxyWithErrorHandler:&v11];
-    [v6 invokeWithTarget:{v8, v11, v12, v13, v14, v15}];
+    selfCopy = self;
+    v16 = requestCopy;
+    v8 = [connection2 remoteObjectProxyWithErrorHandler:&v11];
+    [invocation invokeWithTarget:{v8, v11, v12, v13, v14, selfCopy}];
   }
 
   else
   {
     v9 = objc_opt_new();
-    v10 = [v4 invocation];
-    [v10 invokeWithTarget:v9];
+    invocation2 = [requestCopy invocation];
+    [invocation2 invokeWithTarget:v9];
   }
 }
 
-- (void)handleError:(id)a3 forRequest:(id)a4
+- (void)handleError:(id)error forRequest:(id)request
 {
-  v10 = a3;
-  v6 = a4;
-  [v6 setErrorCount:{objc_msgSend(v6, "errorCount") + 1}];
-  if ([v6 errorCount] > 1)
+  errorCopy = error;
+  requestCopy = request;
+  [requestCopy setErrorCount:{objc_msgSend(requestCopy, "errorCount") + 1}];
+  if ([requestCopy errorCount] > 1)
   {
-    v9 = [(UIKeyboardInputManagerClient *)self connection];
-    [v9 invalidate];
+    connection = [(UIKeyboardInputManagerClient *)self connection];
+    [connection invalidate];
 
     [(UIKeyboardInputManagerClient *)self setConnection:0];
-    v7 = [v6 invocation];
-    v8 = NSStringFromSelector([v7 selector]);
+    invocation = [requestCopy invocation];
+    v8 = NSStringFromSelector([invocation selector]);
     NSLog(&cfstr_PleaseCheckFor.isa, "[UIKeyboardInputManagerClient handleError:forRequest:]", v8);
   }
 
   else
   {
-    v7 = [v6 invocation];
-    v8 = NSStringFromSelector([v7 selector]);
-    NSLog(&cfstr_SWillRetrySend.isa, "[UIKeyboardInputManagerClient handleError:forRequest:]", v8, v10);
+    invocation = [requestCopy invocation];
+    v8 = NSStringFromSelector([invocation selector]);
+    NSLog(&cfstr_SWillRetrySend.isa, "[UIKeyboardInputManagerClient handleError:forRequest:]", v8, errorCopy);
   }
 
-  [(UIKeyboardInputManagerClient *)self handleRequest:v6];
+  [(UIKeyboardInputManagerClient *)self handleRequest:requestCopy];
 }
 
 @end

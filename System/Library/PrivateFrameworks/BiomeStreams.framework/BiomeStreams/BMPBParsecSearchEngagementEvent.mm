@@ -1,33 +1,33 @@
 @interface BMPBParsecSearchEngagementEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addEntities:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addEntities:(id)entities;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBParsecSearchEngagementEvent
 
-- (void)addEntities:(id)a3
+- (void)addEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   entities = self->_entities;
-  v8 = v4;
+  v8 = entitiesCopy;
   if (!entities)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_entities;
     self->_entities = v6;
 
-    v4 = v8;
+    entitiesCopy = v8;
     entities = self->_entities;
   }
 
-  [(NSMutableArray *)entities addObject:v4];
+  [(NSMutableArray *)entities addObject:entitiesCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = BMPBParsecSearchEngagementEvent;
   v4 = [(BMPBParsecSearchEngagementEvent *)&v8 description];
-  v5 = [(BMPBParsecSearchEngagementEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBParsecSearchEngagementEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   resultId = self->_resultId;
   if (resultId)
   {
-    [v3 setObject:resultId forKey:@"resultId"];
+    [dictionary setObject:resultId forKey:@"resultId"];
   }
 
   domainId = self->_domainId;
@@ -99,8 +99,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -135,10 +135,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_resultId)
   {
     PBDataWriterWriteStringField();
@@ -215,26 +215,26 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_resultId)
   {
-    [v4 setResultId:?];
-    v4 = v10;
+    [toCopy setResultId:?];
+    toCopy = v10;
   }
 
   if (self->_domainId)
   {
     [v10 setDomainId:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_absoluteTimestamp;
-    *(v4 + 80) |= 1u;
+    *(toCopy + 1) = *&self->_absoluteTimestamp;
+    *(toCopy + 80) |= 1u;
   }
 
   if (self->_userInput)
@@ -250,10 +250,10 @@
   if ([(BMPBParsecSearchEngagementEvent *)self entitiesCount])
   {
     [v10 clearEntities];
-    v5 = [(BMPBParsecSearchEngagementEvent *)self entitiesCount];
-    if (v5)
+    entitiesCount = [(BMPBParsecSearchEngagementEvent *)self entitiesCount];
+    if (entitiesCount)
     {
-      v6 = v5;
+      v6 = entitiesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(BMPBParsecSearchEngagementEvent *)self entitiesAtIndex:i];
@@ -281,15 +281,15 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_resultId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_resultId copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
-  v8 = [(NSString *)self->_domainId copyWithZone:a3];
+  v8 = [(NSString *)self->_domainId copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -299,11 +299,11 @@
     *(v5 + 80) |= 1u;
   }
 
-  v10 = [(NSString *)self->_userInput copyWithZone:a3];
+  v10 = [(NSString *)self->_userInput copyWithZone:zone];
   v11 = *(v5 + 72);
   *(v5 + 72) = v10;
 
-  v12 = [(NSString *)self->_completedQuery copyWithZone:a3];
+  v12 = [(NSString *)self->_completedQuery copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
@@ -327,7 +327,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v28 + 1) + 8 * v18) copyWithZone:{a3, v28}];
+        v19 = [*(*(&v28 + 1) + 8 * v18) copyWithZone:{zone, v28}];
         [v5 addEntities:v19];
 
         ++v18;
@@ -340,15 +340,15 @@
     while (v16);
   }
 
-  v20 = [(NSString *)self->_uniqueId copyWithZone:a3];
+  v20 = [(NSString *)self->_uniqueId copyWithZone:zone];
   v21 = *(v5 + 64);
   *(v5 + 64) = v20;
 
-  v22 = [(NSString *)self->_contentProtection copyWithZone:a3];
+  v22 = [(NSString *)self->_contentProtection copyWithZone:zone];
   v23 = *(v5 + 24);
   *(v5 + 24) = v22;
 
-  v24 = [(NSString *)self->_personaId copyWithZone:a3];
+  v24 = [(NSString *)self->_personaId copyWithZone:zone];
   v25 = *(v5 + 48);
   *(v5 + 48) = v24;
 
@@ -356,16 +356,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   resultId = self->_resultId;
-  if (resultId | *(v4 + 7))
+  if (resultId | *(equalCopy + 7))
   {
     if (![(NSString *)resultId isEqual:?])
     {
@@ -374,7 +374,7 @@
   }
 
   domainId = self->_domainId;
-  if (domainId | *(v4 + 4))
+  if (domainId | *(equalCopy + 4))
   {
     if (![(NSString *)domainId isEqual:?])
     {
@@ -382,16 +382,16 @@
     }
   }
 
-  v7 = *(v4 + 80);
+  v7 = *(equalCopy + 80);
   if (*&self->_has)
   {
-    if ((*(v4 + 80) & 1) == 0 || self->_absoluteTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 80) & 1) == 0 || self->_absoluteTimestamp != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
 LABEL_23:
     v14 = 0;
@@ -399,13 +399,13 @@ LABEL_23:
   }
 
   userInput = self->_userInput;
-  if (userInput | *(v4 + 9) && ![(NSString *)userInput isEqual:?])
+  if (userInput | *(equalCopy + 9) && ![(NSString *)userInput isEqual:?])
   {
     goto LABEL_23;
   }
 
   completedQuery = self->_completedQuery;
-  if (completedQuery | *(v4 + 2))
+  if (completedQuery | *(equalCopy + 2))
   {
     if (![(NSString *)completedQuery isEqual:?])
     {
@@ -414,7 +414,7 @@ LABEL_23:
   }
 
   entities = self->_entities;
-  if (entities | *(v4 + 5))
+  if (entities | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)entities isEqual:?])
     {
@@ -423,7 +423,7 @@ LABEL_23:
   }
 
   uniqueId = self->_uniqueId;
-  if (uniqueId | *(v4 + 8))
+  if (uniqueId | *(equalCopy + 8))
   {
     if (![(NSString *)uniqueId isEqual:?])
     {
@@ -432,7 +432,7 @@ LABEL_23:
   }
 
   contentProtection = self->_contentProtection;
-  if (contentProtection | *(v4 + 3))
+  if (contentProtection | *(equalCopy + 3))
   {
     if (![(NSString *)contentProtection isEqual:?])
     {
@@ -441,7 +441,7 @@ LABEL_23:
   }
 
   personaId = self->_personaId;
-  if (personaId | *(v4 + 6))
+  if (personaId | *(equalCopy + 6))
   {
     v14 = [(NSString *)personaId isEqual:?];
   }
@@ -501,32 +501,32 @@ LABEL_24:
   return v14 ^ v15 ^ [(NSString *)self->_personaId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 7))
+  fromCopy = from;
+  if (*(fromCopy + 7))
   {
     [(BMPBParsecSearchEngagementEvent *)self setResultId:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBParsecSearchEngagementEvent *)self setDomainId:?];
   }
 
-  if (*(v4 + 80))
+  if (*(fromCopy + 80))
   {
-    self->_absoluteTimestamp = *(v4 + 1);
+    self->_absoluteTimestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(BMPBParsecSearchEngagementEvent *)self setUserInput:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BMPBParsecSearchEngagementEvent *)self setCompletedQuery:?];
   }
@@ -535,7 +535,7 @@ LABEL_24:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 5);
+  v5 = *(fromCopy + 5);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -559,17 +559,17 @@ LABEL_24:
     while (v7);
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(BMPBParsecSearchEngagementEvent *)self setUniqueId:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BMPBParsecSearchEngagementEvent *)self setContentProtection:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(BMPBParsecSearchEngagementEvent *)self setPersonaId:?];
   }

@@ -1,19 +1,19 @@
 @interface QSSelectionHighlightDetailedView
 - (CGRect)displayRect;
-- (void)drawRect:(CGRect)a3;
-- (void)setDisplayRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setDisplayRect:(CGRect)rect;
 @end
 
 @implementation QSSelectionHighlightDetailedView
 
-- (void)setDisplayRect:(CGRect)a3
+- (void)setDisplayRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_displayRect = &self->_displayRect;
-  v9 = CGRectEqualToRect(self->_displayRect, a3);
+  v9 = CGRectEqualToRect(self->_displayRect, rect);
   p_displayRect->origin.x = x;
   p_displayRect->origin.y = y;
   p_displayRect->size.width = width;
@@ -26,89 +26,89 @@
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [MEMORY[0x1E6989890] sharedInstance];
-  v9 = [v8 quickSpeakHighlightOption];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  mEMORY[0x1E6989890] = [MEMORY[0x1E6989890] sharedInstance];
+  quickSpeakHighlightOption = [mEMORY[0x1E6989890] quickSpeakHighlightOption];
 
   if ([(QSSelectionHighlightDetailedView *)self sentenceHighlight])
   {
-    if ((v9 & 0xFFFFFFFFFFFFFFFELL) != 2)
+    if ((quickSpeakHighlightOption & 0xFFFFFFFFFFFFFFFELL) != 2)
     {
       return;
     }
 
-    v10 = [MEMORY[0x1E6989890] sharedInstance];
-    v11 = [v10 quickSpeakSentenceHighlightOption];
+    mEMORY[0x1E6989890]2 = [MEMORY[0x1E6989890] sharedInstance];
+    quickSpeakSentenceHighlightOption = [mEMORY[0x1E6989890]2 quickSpeakSentenceHighlightOption];
 
-    if (v11 == 2)
+    if (quickSpeakSentenceHighlightOption == 2)
     {
-      if (v9 == 2)
+      if (quickSpeakHighlightOption == 2)
       {
-        v15 = [(QSSelectionHighlightDetailedView *)self selectionColor];
+        selectionColor = [(QSSelectionHighlightDetailedView *)self selectionColor];
       }
 
       else
       {
-        v16 = [MEMORY[0x1E6989890] sharedInstance];
-        v17 = [v16 quickSpeakSentenceHighlightColor];
+        mEMORY[0x1E6989890]3 = [MEMORY[0x1E6989890] sharedInstance];
+        quickSpeakSentenceHighlightColor = [mEMORY[0x1E6989890]3 quickSpeakSentenceHighlightColor];
 
-        v15 = [(QSSelectionHighlightDetailedView *)self selectionColor];
-        if (!v17)
+        selectionColor = [(QSSelectionHighlightDetailedView *)self selectionColor];
+        if (!quickSpeakSentenceHighlightColor)
         {
-          v24 = v15;
-          v18 = v15;
-          v19 = [v24 CGColor];
+          v24 = selectionColor;
+          v18 = selectionColor;
+          cGColor = [v24 CGColor];
 
-          if (CGColorGetNumberOfComponents(v19) < 3)
+          if (CGColorGetNumberOfComponents(cGColor) < 3)
           {
-            v21 = [(QSSelectionHighlightDetailedView *)self selectionColor];
-            v25 = [v21 colorWithAlphaComponent:0.8];
+            selectionColor2 = [(QSSelectionHighlightDetailedView *)self selectionColor];
+            v25 = [selectionColor2 colorWithAlphaComponent:0.8];
 
-            v15 = v25;
+            selectionColor = v25;
           }
 
           else
           {
-            Components = CGColorGetComponents(v19);
-            v15 = [MEMORY[0x1E69DC888] colorWithRed:1.0 - *Components green:1.0 - Components[1] blue:1.0 - Components[2] alpha:CGColorGetAlpha(v19) + 0.1];
+            Components = CGColorGetComponents(cGColor);
+            selectionColor = [MEMORY[0x1E69DC888] colorWithRed:1.0 - *Components green:1.0 - Components[1] blue:1.0 - Components[2] alpha:CGColorGetAlpha(cGColor) + 0.1];
           }
         }
       }
 
-      if (!v15)
+      if (!selectionColor)
       {
         goto LABEL_9;
       }
 
-      v23 = v15;
-      [v15 setFill];
+      bezierPath = selectionColor;
+      [selectionColor setFill];
       v22 = [MEMORY[0x1E69DC728] bezierPathWithRect:{x, y, width, height}];
       [v22 fill];
     }
 
     else
     {
-      if (v11 != 1)
+      if (quickSpeakSentenceHighlightOption != 1)
       {
         return;
       }
 
-      v12 = [(QSSelectionHighlightDetailedView *)self underlineColor];
-      [v12 setStroke];
+      underlineColor = [(QSSelectionHighlightDetailedView *)self underlineColor];
+      [underlineColor setStroke];
 
-      v23 = [MEMORY[0x1E69DC728] bezierPath];
-      [v23 setLineWidth:1.0];
-      [v23 setLineCapStyle:1];
+      bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+      [bezierPath setLineWidth:1.0];
+      [bezierPath setLineCapStyle:1];
       v27.origin.x = x;
       v27.origin.y = y;
       v27.size.width = width;
       v27.size.height = height;
-      [v23 moveToPoint:{x, CGRectGetMaxY(v27) + -1.0}];
+      [bezierPath moveToPoint:{x, CGRectGetMaxY(v27) + -1.0}];
       v28.origin.x = x;
       v28.origin.y = y;
       v28.size.width = width;
@@ -118,26 +118,26 @@
       v29.origin.y = y;
       v29.size.width = width;
       v29.size.height = height;
-      [v23 addLineToPoint:{MaxX, CGRectGetMaxY(v29) + -1.0}];
-      [v23 stroke];
+      [bezierPath addLineToPoint:{MaxX, CGRectGetMaxY(v29) + -1.0}];
+      [bezierPath stroke];
     }
   }
 
   else
   {
-    if ((v9 & 0xFFFFFFFFFFFFFFFDLL) != 1)
+    if ((quickSpeakHighlightOption & 0xFFFFFFFFFFFFFFFDLL) != 1)
     {
       return;
     }
 
-    v14 = [(QSSelectionHighlightDetailedView *)self selectionColor];
-    [v14 setFill];
+    selectionColor3 = [(QSSelectionHighlightDetailedView *)self selectionColor];
+    [selectionColor3 setFill];
 
-    v23 = [MEMORY[0x1E69DC728] bezierPathWithRect:{x, y, width, height}];
-    [v23 fill];
+    bezierPath = [MEMORY[0x1E69DC728] bezierPathWithRect:{x, y, width, height}];
+    [bezierPath fill];
   }
 
-  v15 = v23;
+  selectionColor = bezierPath;
 LABEL_9:
 }
 

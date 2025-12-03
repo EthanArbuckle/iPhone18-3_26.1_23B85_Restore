@@ -1,37 +1,37 @@
 @interface VKAnalyticsTextEvent
 - (SEL)macOSKBNavigationSelector;
-- (VKAnalyticsTextEvent)initWithSelectionLength:(unint64_t)a3 totalLength:(unint64_t)a4 selectionWordCount:(unint64_t)a5 macOSSelector:(SEL)a6 includesRichPasteBoardContent:(BOOL)a7 eventType:(int64_t)a8 source:(int64_t)a9 customIdentifier:(id)a10;
+- (VKAnalyticsTextEvent)initWithSelectionLength:(unint64_t)length totalLength:(unint64_t)totalLength selectionWordCount:(unint64_t)count macOSSelector:(SEL)selector includesRichPasteBoardContent:(BOOL)content eventType:(int64_t)type source:(int64_t)source customIdentifier:(id)self0;
 - (id)coreAnalyticsDictionary;
 - (id)description;
-- (void)setMacOSKBNavigationSelector:(SEL)a3;
+- (void)setMacOSKBNavigationSelector:(SEL)selector;
 @end
 
 @implementation VKAnalyticsTextEvent
 
-- (VKAnalyticsTextEvent)initWithSelectionLength:(unint64_t)a3 totalLength:(unint64_t)a4 selectionWordCount:(unint64_t)a5 macOSSelector:(SEL)a6 includesRichPasteBoardContent:(BOOL)a7 eventType:(int64_t)a8 source:(int64_t)a9 customIdentifier:(id)a10
+- (VKAnalyticsTextEvent)initWithSelectionLength:(unint64_t)length totalLength:(unint64_t)totalLength selectionWordCount:(unint64_t)count macOSSelector:(SEL)selector includesRichPasteBoardContent:(BOOL)content eventType:(int64_t)type source:(int64_t)source customIdentifier:(id)self0
 {
   v18.receiver = self;
   v18.super_class = VKAnalyticsTextEvent;
-  result = [(VKAnalyticsEvent *)&v18 initWithCustomIdentifier:a10];
+  result = [(VKAnalyticsEvent *)&v18 initWithCustomIdentifier:identifier];
   if (result)
   {
-    result->_selectionLength = a3;
-    result->_totalLength = a4;
-    result->_selectionWordCount = a5;
-    result->_eventType = a8;
-    if (a6)
+    result->_selectionLength = length;
+    result->_totalLength = totalLength;
+    result->_selectionWordCount = count;
+    result->_eventType = type;
+    if (selector)
     {
-      v17 = a6;
+      selectorCopy = selector;
     }
 
     else
     {
-      v17 = 0;
+      selectorCopy = 0;
     }
 
-    result->_macOSKBNavigationSelector = v17;
-    result->_includesRichPasteboardContent = a7;
-    result->_source = a9;
+    result->_macOSKBNavigationSelector = selectorCopy;
+    result->_includesRichPasteboardContent = content;
+    result->_source = source;
   }
 
   return result;
@@ -71,8 +71,8 @@
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[VKAnalyticsEvent isPerformingAutomatedTest](self, "isPerformingAutomatedTest")}];
   v14[6] = v9;
   v13[7] = @"bundleIdentifier";
-  v10 = [(VKAnalyticsEvent *)self bundleIdentifier];
-  v14[7] = v10;
+  bundleIdentifier = [(VKAnalyticsEvent *)self bundleIdentifier];
+  v14[7] = bundleIdentifier;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:8];
 
   return v11;
@@ -86,12 +86,12 @@
   v4 = [(VKAnalyticsTextEvent *)&v16 description];
   v5 = VKMUIStringForVKAnalyticsTextEventType([(VKAnalyticsTextEvent *)self textEventType]);
   v6 = VKMUIStringForVKAnalyticsEventSource([(VKAnalyticsTextEvent *)self source]);
-  v7 = [(VKAnalyticsTextEvent *)self selectionLength];
-  v8 = [(VKAnalyticsTextEvent *)self selectionWordCount];
-  v9 = [(VKAnalyticsTextEvent *)self totalLength];
+  selectionLength = [(VKAnalyticsTextEvent *)self selectionLength];
+  selectionWordCount = [(VKAnalyticsTextEvent *)self selectionWordCount];
+  totalLength = [(VKAnalyticsTextEvent *)self totalLength];
   v10 = VKMUIStringForBool([(VKAnalyticsEvent *)self isPerformingAutomatedTest]);
-  v11 = [(VKAnalyticsEvent *)self bundleIdentifier];
-  v12 = [v3 stringWithFormat:@"%@ \n textEventType: %@ \n source: %@ \n selectionLength: %lu \n selectionWordCount: %lu \n totalLength: %lu \n automatedTest: %@ \n bundleIdentifier: %@ ", v4, v5, v6, v7, v8, v9, v10, v11];
+  bundleIdentifier = [(VKAnalyticsEvent *)self bundleIdentifier];
+  v12 = [v3 stringWithFormat:@"%@ \n textEventType: %@ \n source: %@ \n selectionLength: %lu \n selectionWordCount: %lu \n totalLength: %lu \n automatedTest: %@ \n bundleIdentifier: %@ ", v4, v5, v6, selectionLength, selectionWordCount, totalLength, v10, bundleIdentifier];
 
   if ([(VKAnalyticsTextEvent *)self macOSKBNavigationSelector])
   {
@@ -117,19 +117,19 @@
   }
 }
 
-- (void)setMacOSKBNavigationSelector:(SEL)a3
+- (void)setMacOSKBNavigationSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_macOSKBNavigationSelector = v3;
+  self->_macOSKBNavigationSelector = selectorCopy;
 }
 
 @end

@@ -1,36 +1,36 @@
 @interface WFFocusConfigurationUIState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (WFFocusConfigurationUIState)initWithCoder:(id)a3;
-- (WFFocusConfigurationUIState)initWithEnabled:(BOOL)a3 uiValidity:(BOOL)a4 action:(id)a5 displayRepresentation:(id)a6;
-- (WFFocusConfigurationUIState)initWithEnabled:(BOOL)a3 uiValidity:(BOOL)a4 contextualAction:(id)a5;
+- (WFFocusConfigurationUIState)initWithCoder:(id)coder;
+- (WFFocusConfigurationUIState)initWithEnabled:(BOOL)enabled uiValidity:(BOOL)validity action:(id)action displayRepresentation:(id)representation;
+- (WFFocusConfigurationUIState)initWithEnabled:(BOOL)enabled uiValidity:(BOOL)validity contextualAction:(id)action;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFFocusConfigurationUIState
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[WFFocusConfigurationUIState isEnabled](self forKey:{"isEnabled"), @"isEnabled"}];
-  [v4 encodeBool:-[WFFocusConfigurationUIState isUIValid](self forKey:{"isUIValid"), @"isUIValid"}];
-  v5 = [(WFFocusConfigurationUIState *)self action];
-  [v4 encodeObject:v5 forKey:@"action"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[WFFocusConfigurationUIState isEnabled](self forKey:{"isEnabled"), @"isEnabled"}];
+  [coderCopy encodeBool:-[WFFocusConfigurationUIState isUIValid](self forKey:{"isUIValid"), @"isUIValid"}];
+  action = [(WFFocusConfigurationUIState *)self action];
+  [coderCopy encodeObject:action forKey:@"action"];
 
-  v6 = [(WFFocusConfigurationUIState *)self displayRepresentation];
-  [v4 encodeObject:v6 forKey:@"displayRepresentation"];
+  displayRepresentation = [(WFFocusConfigurationUIState *)self displayRepresentation];
+  [coderCopy encodeObject:displayRepresentation forKey:@"displayRepresentation"];
 
-  v7 = [(WFFocusConfigurationUIState *)self contextualAction];
-  [v4 encodeObject:v7 forKey:@"contextualAction"];
+  contextualAction = [(WFFocusConfigurationUIState *)self contextualAction];
+  [coderCopy encodeObject:contextualAction forKey:@"contextualAction"];
 }
 
-- (WFFocusConfigurationUIState)initWithCoder:(id)a3
+- (WFFocusConfigurationUIState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"isEnabled"];
-  v6 = [v4 decodeBoolForKey:@"isUIValid"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"isEnabled"];
+  v6 = [coderCopy decodeBoolForKey:@"isUIValid"];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2050000000;
@@ -49,7 +49,7 @@
 
   v8 = v7;
   _Block_object_dispose(&v21, 8);
-  v9 = [v4 decodeObjectOfClass:v7 forKey:@"action"];
+  v9 = [coderCopy decodeObjectOfClass:v7 forKey:@"action"];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2050000000;
@@ -68,7 +68,7 @@
 
   v11 = v10;
   _Block_object_dispose(&v21, 8);
-  v12 = [v4 decodeObjectOfClass:v10 forKey:@"displayRepresentation"];
+  v12 = [coderCopy decodeObjectOfClass:v10 forKey:@"displayRepresentation"];
   if (v9 | v12)
   {
     v13 = [(WFFocusConfigurationUIState *)self initWithEnabled:v5 uiValidity:v6 action:v9 displayRepresentation:v12];
@@ -76,27 +76,27 @@
 
   else
   {
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contextualAction"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contextualAction"];
     v13 = [(WFFocusConfigurationUIState *)self initWithEnabled:v5 uiValidity:v6 contextualAction:v14];
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(WFFocusConfigurationUIState *)self isEnabled];
-        if (v7 != [(WFFocusConfigurationUIState *)v6 isEnabled]|| (v8 = [(WFFocusConfigurationUIState *)self isUIValid], v8 != [(WFFocusConfigurationUIState *)v6 isUIValid]))
+        isEnabled = [(WFFocusConfigurationUIState *)self isEnabled];
+        if (isEnabled != [(WFFocusConfigurationUIState *)v6 isEnabled]|| (v8 = [(WFFocusConfigurationUIState *)self isUIValid], v8 != [(WFFocusConfigurationUIState *)v6 isUIValid]))
         {
           LOBYTE(v9) = 0;
 LABEL_11:
@@ -104,10 +104,10 @@ LABEL_11:
           goto LABEL_12;
         }
 
-        v12 = [(WFFocusConfigurationUIState *)self action];
-        v13 = [(WFFocusConfigurationUIState *)v6 action];
-        v10 = v12;
-        v14 = v13;
+        action = [(WFFocusConfigurationUIState *)self action];
+        action2 = [(WFFocusConfigurationUIState *)v6 action];
+        v10 = action;
+        v14 = action2;
         v15 = v14;
         if (v10 == v14)
         {
@@ -134,10 +134,10 @@ LABEL_33:
           }
         }
 
-        v19 = [(WFFocusConfigurationUIState *)self displayRepresentation];
-        v20 = [(WFFocusConfigurationUIState *)v6 displayRepresentation];
-        v17 = v19;
-        v21 = v20;
+        displayRepresentation = [(WFFocusConfigurationUIState *)self displayRepresentation];
+        displayRepresentation2 = [(WFFocusConfigurationUIState *)v6 displayRepresentation];
+        v17 = displayRepresentation;
+        v21 = displayRepresentation2;
         v16 = v21;
         if (v17 == v21)
         {
@@ -164,10 +164,10 @@ LABEL_32:
           }
         }
 
-        v24 = [(WFFocusConfigurationUIState *)self contextualAction];
-        v25 = [(WFFocusConfigurationUIState *)v6 contextualAction];
-        v23 = v24;
-        v26 = v25;
+        contextualAction = [(WFFocusConfigurationUIState *)self contextualAction];
+        contextualAction2 = [(WFFocusConfigurationUIState *)v6 contextualAction];
+        v23 = contextualAction;
+        v26 = contextualAction2;
         v22 = v26;
         if (v23 == v26)
         {
@@ -231,12 +231,12 @@ LABEL_12:
   }
 
   v5 = v4 ^ v3;
-  v6 = [(WFFocusConfigurationUIState *)self action];
-  v7 = [v6 hash];
-  v8 = [(WFFocusConfigurationUIState *)self displayRepresentation];
-  v9 = v7 ^ [v8 hash];
-  v10 = [(WFFocusConfigurationUIState *)self contextualAction];
-  v11 = v9 ^ [v10 hash];
+  action = [(WFFocusConfigurationUIState *)self action];
+  v7 = [action hash];
+  displayRepresentation = [(WFFocusConfigurationUIState *)self displayRepresentation];
+  v9 = v7 ^ [displayRepresentation hash];
+  contextualAction = [(WFFocusConfigurationUIState *)self contextualAction];
+  v11 = v9 ^ [contextualAction hash];
 
   return v5 ^ v11;
 }
@@ -276,50 +276,50 @@ LABEL_12:
     v8 = @"NO";
   }
 
-  v9 = [(WFFocusConfigurationUIState *)self action];
-  v10 = [v9 identifier];
-  v11 = [(WFFocusConfigurationUIState *)self displayRepresentation];
-  v12 = [(WFFocusConfigurationUIState *)self contextualAction];
-  v13 = [v3 stringWithFormat:@"<%@: %p, isValid: %@, Enabled: %@, isUIValid: %@, link action: %@, link displayRepresentation: %@, contextual action: %@>", v5, self, v6, v7, v8, v10, v11, v12];
+  action = [(WFFocusConfigurationUIState *)self action];
+  identifier = [action identifier];
+  displayRepresentation = [(WFFocusConfigurationUIState *)self displayRepresentation];
+  contextualAction = [(WFFocusConfigurationUIState *)self contextualAction];
+  v13 = [v3 stringWithFormat:@"<%@: %p, isValid: %@, Enabled: %@, isUIValid: %@, link action: %@, link displayRepresentation: %@, contextual action: %@>", v5, self, v6, v7, v8, identifier, displayRepresentation, contextualAction];
 
   return v13;
 }
 
-- (WFFocusConfigurationUIState)initWithEnabled:(BOOL)a3 uiValidity:(BOOL)a4 contextualAction:(id)a5
+- (WFFocusConfigurationUIState)initWithEnabled:(BOOL)enabled uiValidity:(BOOL)validity contextualAction:(id)action
 {
-  v9 = a5;
+  actionCopy = action;
   v14.receiver = self;
   v14.super_class = WFFocusConfigurationUIState;
   v10 = [(WFFocusConfigurationUIState *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    v10->_enabled = a3;
-    v10->_isUIValid = a4;
-    objc_storeStrong(&v10->_contextualAction, a5);
+    v10->_enabled = enabled;
+    v10->_isUIValid = validity;
+    objc_storeStrong(&v10->_contextualAction, action);
     v12 = v11;
   }
 
   return v11;
 }
 
-- (WFFocusConfigurationUIState)initWithEnabled:(BOOL)a3 uiValidity:(BOOL)a4 action:(id)a5 displayRepresentation:(id)a6
+- (WFFocusConfigurationUIState)initWithEnabled:(BOOL)enabled uiValidity:(BOOL)validity action:(id)action displayRepresentation:(id)representation
 {
-  v10 = a5;
-  v11 = a6;
+  actionCopy = action;
+  representationCopy = representation;
   v20.receiver = self;
   v20.super_class = WFFocusConfigurationUIState;
   v12 = [(WFFocusConfigurationUIState *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    v12->_enabled = a3;
-    v12->_isUIValid = a4;
-    v14 = [v10 copy];
+    v12->_enabled = enabled;
+    v12->_isUIValid = validity;
+    v14 = [actionCopy copy];
     action = v13->_action;
     v13->_action = v14;
 
-    v16 = [v11 copy];
+    v16 = [representationCopy copy];
     displayRepresentation = v13->_displayRepresentation;
     v13->_displayRepresentation = v16;
 
@@ -336,16 +336,16 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [(WFFocusConfigurationUIState *)self action];
-  if (v3)
+  action = [(WFFocusConfigurationUIState *)self action];
+  if (action)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(WFFocusConfigurationUIState *)self contextualAction];
-    v4 = v5 != 0;
+    contextualAction = [(WFFocusConfigurationUIState *)self contextualAction];
+    v4 = contextualAction != 0;
   }
 
   return v4;

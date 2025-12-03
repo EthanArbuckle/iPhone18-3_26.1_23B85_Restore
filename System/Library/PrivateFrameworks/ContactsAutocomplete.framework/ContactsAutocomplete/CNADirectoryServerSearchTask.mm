@@ -1,6 +1,6 @@
 @interface CNADirectoryServerSearchTask
-- (CNADirectoryServerSearchTask)initWithRequest:(id)a3 contactStore:(id)a4 cancelationToken:(id)a5;
-- (id)makeQueryForContainer:(id)a3 withLatch:(id)a4 andCollectConsumers:(id)a5;
+- (CNADirectoryServerSearchTask)initWithRequest:(id)request contactStore:(id)store cancelationToken:(id)token;
+- (id)makeQueryForContainer:(id)container withLatch:(id)latch andCollectConsumers:(id)consumers;
 - (id)run;
 - (void)convertResults;
 - (void)createReturnValue;
@@ -11,20 +11,20 @@
 
 @implementation CNADirectoryServerSearchTask
 
-- (CNADirectoryServerSearchTask)initWithRequest:(id)a3 contactStore:(id)a4 cancelationToken:(id)a5
+- (CNADirectoryServerSearchTask)initWithRequest:(id)request contactStore:(id)store cancelationToken:(id)token
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  storeCopy = store;
+  tokenCopy = token;
   v16.receiver = self;
   v16.super_class = CNADirectoryServerSearchTask;
   v12 = [(CNTask *)&v16 initWithName:@"com.apple.contacts.autocomplete.directory-server-search"];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_contactStore, a4);
-    objc_storeStrong(&v13->_cancelationToken, a5);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_contactStore, store);
+    objc_storeStrong(&v13->_cancelationToken, token);
     v14 = v13;
   }
 
@@ -46,8 +46,8 @@
 - (void)validateRequest
 {
   v3 = *MEMORY[0x277CFBD30];
-  v4 = [(CNAutocompleteFetchRequest *)self->_request searchString];
-  LODWORD(v3) = (*(v3 + 16))(v3, v4);
+  searchString = [(CNAutocompleteFetchRequest *)self->_request searchString];
+  LODWORD(v3) = (*(v3 + 16))(v3, searchString);
 
   if (v3)
   {
@@ -63,9 +63,9 @@
 {
   if (([(CNCancelationToken *)self->_cancelationToken isCanceled]& 1) == 0)
   {
-    v3 = [(CNADirectoryServerSearchTask *)self contactStore];
+    contactStore = [(CNADirectoryServerSearchTask *)self contactStore];
     v9 = 0;
-    v4 = [v3 serverSearchContainersMatchingPredicate:0 error:&v9];
+    v4 = [contactStore serverSearchContainersMatchingPredicate:0 error:&v9];
     v5 = v9;
     containers = self->_containers;
     self->_containers = v4;
@@ -114,10 +114,10 @@ LABEL_12:
 
           v8 = *(*(&v26 + 1) + 8 * i);
           v9 = [(CNADirectoryServerSearchTask *)self makeQueryForContainer:v8 withLatch:v23 andCollectConsumers:v3];
-          v10 = [MEMORY[0x277CFBE10] currentEnvironment];
-          v11 = [v10 dataAccessConnection];
-          v12 = [v8 accountIdentifier];
-          [v11 performServerContactsSearch:v9 forAccountWithID:v12];
+          currentEnvironment = [MEMORY[0x277CFBE10] currentEnvironment];
+          dataAccessConnection = [currentEnvironment dataAccessConnection];
+          accountIdentifier = [v8 accountIdentifier];
+          [dataAccessConnection performServerContactsSearch:v9 forAccountWithID:accountIdentifier];
 
           cancelationToken = self->_cancelationToken;
           v24[0] = MEMORY[0x277D85DD0];
@@ -159,20 +159,20 @@ void __54__CNADirectoryServerSearchTask_searchServerContainers__block_invoke(uin
   [v2 cancelServerContactsSearch:*(a1 + 32)];
 }
 
-- (id)makeQueryForContainer:(id)a3 withLatch:(id)a4 andCollectConsumers:(id)a5
+- (id)makeQueryForContainer:(id)container withLatch:(id)latch andCollectConsumers:(id)consumers
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 externalIdentifier];
-  v12 = [v10 externalModificationTag];
+  consumersCopy = consumers;
+  latchCopy = latch;
+  containerCopy = container;
+  externalIdentifier = [containerCopy externalIdentifier];
+  externalModificationTag = [containerCopy externalModificationTag];
 
-  v13 = [[CNDASearchQueryConsumer alloc] initWithLatch:v9];
-  [v8 addObject:v13];
+  v13 = [[CNDASearchQueryConsumer alloc] initWithLatch:latchCopy];
+  [consumersCopy addObject:v13];
 
   v14 = MEMORY[0x277D03920];
-  v15 = [(CNAutocompleteFetchRequest *)self->_request searchString];
-  v16 = [v14 contactsSearchQueryWithSearchString:v15 searchBase:v11 searchScope:v12 consumer:v13];
+  searchString = [(CNAutocompleteFetchRequest *)self->_request searchString];
+  v16 = [v14 contactsSearchQueryWithSearchString:searchString searchBase:externalIdentifier searchScope:externalModificationTag consumer:v13];
 
   [v16 setTimeLimit:30];
   [v16 setIncludePhotos:0];
@@ -185,10 +185,10 @@ void __54__CNADirectoryServerSearchTask_searchServerContainers__block_invoke(uin
 {
   if (([(CNCancelationToken *)self->_cancelationToken isCanceled]& 1) == 0 && !self->_returnValue)
   {
-    v3 = [(CNAutocompleteFetchRequest *)self->_request priorityDomainForSorting];
-    v4 = [(CNAutocompleteFetchRequest *)self->_request fetchContext];
-    v5 = [v4 sendingAddress];
-    v10 = [CNAutocompleteResultFactory factoryWithPriorityDomain:v3 sendingAddress:v5];
+    priorityDomainForSorting = [(CNAutocompleteFetchRequest *)self->_request priorityDomainForSorting];
+    fetchContext = [(CNAutocompleteFetchRequest *)self->_request fetchContext];
+    sendingAddress = [fetchContext sendingAddress];
+    v10 = [CNAutocompleteResultFactory factoryWithPriorityDomain:priorityDomainForSorting sendingAddress:sendingAddress];
 
     daResults = self->_daResults;
     v7 = [CNADASearchResultConverter resultTransformForRequest:self->_request factory:v10];

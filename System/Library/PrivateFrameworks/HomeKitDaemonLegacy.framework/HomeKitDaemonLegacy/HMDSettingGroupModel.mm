@@ -1,19 +1,19 @@
 @interface HMDSettingGroupModel
 + (id)hmbProperties;
-- (id)copyWithNewParentModelID:(id)a3;
+- (id)copyWithNewParentModelID:(id)d;
 @end
 
 @implementation HMDSettingGroupModel
 
-- (id)copyWithNewParentModelID:(id)a3
+- (id)copyWithNewParentModelID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [HMDSettingGroupModel alloc];
-  v6 = [(HMBModel *)self hmbModelID];
-  v7 = [(HMBModel *)v5 initWithModelID:v6 parentModelID:v4];
+  hmbModelID = [(HMBModel *)self hmbModelID];
+  v7 = [(HMBModel *)v5 initWithModelID:hmbModelID parentModelID:dCopy];
 
-  v8 = [(HMDSettingGroupModel *)self name];
-  [(HMDSettingGroupModel *)v7 setName:v8];
+  name = [(HMDSettingGroupModel *)self name];
+  [(HMDSettingGroupModel *)v7 setName:name];
 
   return v7;
 }

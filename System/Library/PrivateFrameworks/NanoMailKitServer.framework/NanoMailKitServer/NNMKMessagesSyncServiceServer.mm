@@ -1,37 +1,37 @@
 @interface NNMKMessagesSyncServiceServer
-- (NNMKMessagesSyncServiceServer)initWithQueue:(id)a3;
+- (NNMKMessagesSyncServiceServer)initWithQueue:(id)queue;
 - (NNMKMessagesSyncServiceServerDelegate)delegate;
-- (id)addMessages:(id)a3 notificationPriority:(BOOL)a4;
-- (id)deleteMessages:(id)a3 notificationPriority:(BOOL)a4;
-- (id)notifyInitialMessageSyncFailed:(id)a3;
-- (id)sendBatchedFetchResult:(id)a3;
-- (id)sendBatchedInitialMessagesSync:(id)a3;
-- (id)sendCoalescedBatchedFetchResult:(id)a3;
-- (id)sendInitialMessagesSync:(id)a3;
-- (id)sendMoreMessages:(id)a3;
-- (id)sendMoreMessagesForConversation:(id)a3;
-- (id)updateMailboxSelection:(id)a3;
-- (id)updateMessagesStatus:(id)a3 notificationPriority:(BOOL)a4;
+- (id)addMessages:(id)messages notificationPriority:(BOOL)priority;
+- (id)deleteMessages:(id)messages notificationPriority:(BOOL)priority;
+- (id)notifyInitialMessageSyncFailed:(id)failed;
+- (id)sendBatchedFetchResult:(id)result;
+- (id)sendBatchedInitialMessagesSync:(id)sync;
+- (id)sendCoalescedBatchedFetchResult:(id)result;
+- (id)sendInitialMessagesSync:(id)sync;
+- (id)sendMoreMessages:(id)messages;
+- (id)sendMoreMessagesForConversation:(id)conversation;
+- (id)updateMailboxSelection:(id)selection;
+- (id)updateMessagesStatus:(id)status notificationPriority:(BOOL)priority;
 - (void)connectivityChanged;
-- (void)failedSendingProtobufWithIDSIdentifier:(id)a3 errorCode:(int64_t)a4;
-- (void)readProtobufData:(id)a3 type:(unint64_t)a4;
-- (void)readResourceAtURL:(id)a3 metadata:(id)a4;
+- (void)failedSendingProtobufWithIDSIdentifier:(id)identifier errorCode:(int64_t)code;
+- (void)readProtobufData:(id)data type:(unint64_t)type;
+- (void)readResourceAtURL:(id)l metadata:(id)metadata;
 - (void)spaceBecameAvailable;
-- (void)successfullySentProtobufWithIDSIdentifier:(id)a3;
+- (void)successfullySentProtobufWithIDSIdentifier:(id)identifier;
 @end
 
 @implementation NNMKMessagesSyncServiceServer
 
-- (NNMKMessagesSyncServiceServer)initWithQueue:(id)a3
+- (NNMKMessagesSyncServiceServer)initWithQueue:(id)queue
 {
   v4.receiver = self;
   v4.super_class = NNMKMessagesSyncServiceServer;
-  return [(NNMKSyncServiceEndpoint *)&v4 initWithIDSServiceName:@"com.apple.private.alloy.mail.sync.messages" queue:a3];
+  return [(NNMKSyncServiceEndpoint *)&v4 initWithIDSServiceName:@"com.apple.private.alloy.mail.sync.messages" queue:queue];
 }
 
-- (id)updateMessagesStatus:(id)a3 notificationPriority:(BOOL)a4
+- (id)updateMessagesStatus:(id)status notificationPriority:(BOOL)priority
 {
-  if (a4)
+  if (priority)
   {
     v5 = 300;
   }
@@ -41,15 +41,15 @@
     v5 = 200;
   }
 
-  v6 = [a3 data];
-  v7 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v6 type:1 priority:v5 timeoutCategory:0 allowCloudDelivery:0];
+  data = [status data];
+  v7 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:1 priority:v5 timeoutCategory:0 allowCloudDelivery:0];
 
   return v7;
 }
 
-- (id)deleteMessages:(id)a3 notificationPriority:(BOOL)a4
+- (id)deleteMessages:(id)messages notificationPriority:(BOOL)priority
 {
-  if (a4)
+  if (priority)
   {
     v5 = 300;
   }
@@ -59,15 +59,15 @@
     v5 = 200;
   }
 
-  v6 = [a3 data];
-  v7 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v6 type:2 priority:v5 timeoutCategory:0 allowCloudDelivery:0];
+  data = [messages data];
+  v7 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:2 priority:v5 timeoutCategory:0 allowCloudDelivery:0];
 
   return v7;
 }
 
-- (id)addMessages:(id)a3 notificationPriority:(BOOL)a4
+- (id)addMessages:(id)messages notificationPriority:(BOOL)priority
 {
-  if (a4)
+  if (priority)
   {
     v5 = 300;
   }
@@ -77,109 +77,109 @@
     v5 = 200;
   }
 
-  v6 = [a3 data];
-  v7 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v6 type:3 priority:v5 timeoutCategory:1 allowCloudDelivery:0];
+  data = [messages data];
+  v7 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:3 priority:v5 timeoutCategory:1 allowCloudDelivery:0];
 
   return v7;
 }
 
-- (id)sendInitialMessagesSync:(id)a3
+- (id)sendInitialMessagesSync:(id)sync
 {
-  v4 = [a3 data];
-  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v4 type:4 priority:200 timeoutCategory:1 allowCloudDelivery:1];
+  data = [sync data];
+  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:4 priority:200 timeoutCategory:1 allowCloudDelivery:1];
 
   return v5;
 }
 
-- (id)notifyInitialMessageSyncFailed:(id)a3
+- (id)notifyInitialMessageSyncFailed:(id)failed
 {
-  v4 = [a3 data];
-  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v4 type:11 priority:200 timeoutCategory:0 allowCloudDelivery:1];
+  data = [failed data];
+  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:11 priority:200 timeoutCategory:0 allowCloudDelivery:1];
 
   return v5;
 }
 
-- (id)sendBatchedInitialMessagesSync:(id)a3
+- (id)sendBatchedInitialMessagesSync:(id)sync
 {
-  v4 = [a3 data];
-  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v4 type:9 priority:200 timeoutCategory:1 allowCloudDelivery:1];
+  data = [sync data];
+  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:9 priority:200 timeoutCategory:1 allowCloudDelivery:1];
 
   return v5;
 }
 
-- (id)sendMoreMessages:(id)a3
+- (id)sendMoreMessages:(id)messages
 {
-  v4 = [a3 data];
-  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v4 type:5 priority:200 timeoutCategory:1 allowCloudDelivery:1];
+  data = [messages data];
+  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:5 priority:200 timeoutCategory:1 allowCloudDelivery:1];
 
   return v5;
 }
 
-- (id)sendMoreMessagesForConversation:(id)a3
+- (id)sendMoreMessagesForConversation:(id)conversation
 {
-  v4 = [a3 data];
-  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v4 type:6 priority:200 timeoutCategory:1 allowCloudDelivery:1];
+  data = [conversation data];
+  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:6 priority:200 timeoutCategory:1 allowCloudDelivery:1];
 
   return v5;
 }
 
-- (id)sendBatchedFetchResult:(id)a3
+- (id)sendBatchedFetchResult:(id)result
 {
-  v4 = [a3 data];
-  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v4 type:7 priority:200 timeoutCategory:1 allowCloudDelivery:1];
+  data = [result data];
+  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:7 priority:200 timeoutCategory:1 allowCloudDelivery:1];
 
   return v5;
 }
 
-- (id)sendCoalescedBatchedFetchResult:(id)a3
+- (id)sendCoalescedBatchedFetchResult:(id)result
 {
-  v4 = [a3 data];
-  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v4 type:10 priority:200 timeoutCategory:2 allowCloudDelivery:1];
+  data = [result data];
+  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:10 priority:200 timeoutCategory:2 allowCloudDelivery:1];
 
   return v5;
 }
 
-- (id)updateMailboxSelection:(id)a3
+- (id)updateMailboxSelection:(id)selection
 {
-  v4 = [a3 data];
-  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:v4 type:8 priority:200 timeoutCategory:0 allowCloudDelivery:1];
+  data = [selection data];
+  v5 = [(NNMKSyncServiceEndpoint *)self sendProtobufData:data type:8 priority:200 timeoutCategory:0 allowCloudDelivery:1];
 
   return v5;
 }
 
-- (void)successfullySentProtobufWithIDSIdentifier:(id)a3
+- (void)successfullySentProtobufWithIDSIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained messagesSyncServiceServer:self didSendProtobufSuccessfullyWithIDSIdentifier:v4];
+  [WeakRetained messagesSyncServiceServer:self didSendProtobufSuccessfullyWithIDSIdentifier:identifierCopy];
 }
 
-- (void)failedSendingProtobufWithIDSIdentifier:(id)a3 errorCode:(int64_t)a4
+- (void)failedSendingProtobufWithIDSIdentifier:(id)identifier errorCode:(int64_t)code
 {
-  v6 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained messagesSyncServiceServer:self didFailSendingProtobufWithIDSIdentifier:v6 errorCode:a4];
+  [WeakRetained messagesSyncServiceServer:self didFailSendingProtobufWithIDSIdentifier:identifierCopy errorCode:code];
 }
 
-- (void)readProtobufData:(id)a3 type:(unint64_t)a4
+- (void)readProtobufData:(id)data type:(unint64_t)type
 {
-  v8 = a3;
-  if (a4 <= 3)
+  dataCopy = data;
+  if (type <= 3)
   {
-    switch(a4)
+    switch(type)
     {
       case 1uLL:
-        v6 = [[NNMKProtoMessageStatusUpdates alloc] initWithData:v8];
+        v6 = [[NNMKProtoMessageStatusUpdates alloc] initWithData:dataCopy];
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         [WeakRetained messagesSyncServiceServer:self didUpdateMessagesStatus:v6];
         break;
       case 2uLL:
-        v6 = [[NNMKProtoMessageDeletions alloc] initWithData:v8];
+        v6 = [[NNMKProtoMessageDeletions alloc] initWithData:dataCopy];
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         [WeakRetained messagesSyncServiceServer:self didDeleteMessages:v6];
         break;
       case 3uLL:
-        v6 = [[NNMKProtoCompactMessagesRequest alloc] initWithData:v8];
+        v6 = [[NNMKProtoCompactMessagesRequest alloc] initWithData:dataCopy];
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         [WeakRetained messagesSyncServiceServer:self didRequestCompactMessages:v6];
         break;
@@ -188,38 +188,38 @@
     }
   }
 
-  else if (a4 > 5)
+  else if (type > 5)
   {
-    if (a4 == 6)
+    if (type == 6)
     {
-      v6 = [[NNMKProtoMailboxSelection alloc] initWithData:v8];
+      v6 = [[NNMKProtoMailboxSelection alloc] initWithData:dataCopy];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained messagesSyncServiceServer:self didUpdateMailboxSelection:v6];
     }
 
     else
     {
-      if (a4 != 7)
+      if (type != 7)
       {
         goto LABEL_17;
       }
 
-      v6 = [[NNMKProtoMessageMailboxMoves alloc] initWithData:v8];
+      v6 = [[NNMKProtoMessageMailboxMoves alloc] initWithData:dataCopy];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained messagesSyncServiceServer:self didMoveMessages:v6];
     }
   }
 
-  else if (a4 == 4)
+  else if (type == 4)
   {
-    v6 = [[NNMKProtoMessagesFilteredOutWarning alloc] initWithData:v8];
+    v6 = [[NNMKProtoMessagesFilteredOutWarning alloc] initWithData:dataCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained messagesSyncServiceServer:self didWarnMessagesFilteredOut:v6];
   }
 
   else
   {
-    v6 = [[NNMKProtoSendMessageRequest alloc] initWithData:v8];
+    v6 = [[NNMKProtoSendMessageRequest alloc] initWithData:dataCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained messagesSyncServiceServer:self didRequestSendMessage:v6];
   }
@@ -227,21 +227,21 @@
 LABEL_17:
 }
 
-- (void)readResourceAtURL:(id)a3 metadata:(id)a4
+- (void)readResourceAtURL:(id)l metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:@"type"];
-  v9 = [v8 unsignedIntValue];
+  lCopy = l;
+  metadataCopy = metadata;
+  v8 = [metadataCopy objectForKeyedSubscript:@"type"];
+  unsignedIntValue = [v8 unsignedIntValue];
 
-  v10 = [v7 objectForKeyedSubscript:@"messageId"];
+  v10 = [metadataCopy objectForKeyedSubscript:@"messageId"];
 
-  v11 = [v10 stringValue];
+  stringValue = [v10 stringValue];
 
-  if (v9 == 1)
+  if (unsignedIntValue == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained messagesSyncServiceServer:self didRecieveAttachmentsAtURL:v6 composedMessageId:v11];
+    [WeakRetained messagesSyncServiceServer:self didRecieveAttachmentsAtURL:lCopy composedMessageId:stringValue];
   }
 
   else
@@ -249,7 +249,7 @@ LABEL_17:
     v13 = qword_28144D620;
     if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_ERROR))
     {
-      [NNMKMessagesSyncServiceServer readResourceAtURL:v9 metadata:v13];
+      [NNMKMessagesSyncServiceServer readResourceAtURL:unsignedIntValue metadata:v13];
     }
   }
 }

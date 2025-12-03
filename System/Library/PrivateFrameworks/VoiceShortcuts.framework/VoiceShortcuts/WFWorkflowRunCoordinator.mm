@@ -1,49 +1,49 @@
 @interface WFWorkflowRunCoordinator
 + (id)errorWithActionCategory;
-+ (int64_t)outOfProcessWorkflowControllerPresentationModeFromVCShortcutPresentationMode:(unint64_t)a3;
++ (int64_t)outOfProcessWorkflowControllerPresentationModeFromVCShortcutPresentationMode:(unint64_t)mode;
 - (WFToastManager)toastManager;
-- (WFWorkflowRunCoordinator)initWithUserNotificationManager:(id)a3 databaseProvider:(id)a4;
-- (id)unsupportedDialogResponseWithRequest:(id)a3;
-- (void)dismissToastedSessionKitSessionsWithReason:(id)a3 completion:(id)a4;
-- (void)handleRemovedIgnoredNotifications:(id)a3;
-- (void)postNotificationAboutFailure:(id)a3 inWorkflow:(id)a4 dialogAttribution:(id)a5 runningContext:(id)a6;
-- (void)presentationManager:(id)a3 updateSmartPromptStateData:(id)a4 actionUUID:(id)a5 context:(id)a6 reference:(id)a7;
-- (void)showSingleStepCompletionWithWebClipMetadata:(id)a3 completion:(id)a4;
-- (void)toastManager:(id)a3 didDismissToastedSessionWithIdentifier:(id)a4;
-- (void)toastManager:(id)a3 didFailToToastSessionWithIdentifier:(id)a4 error:(id)a5;
-- (void)toastManager:(id)a3 didToastSessionWithIdentifier:(id)a4 duration:(double)a5;
-- (void)toastSessionKitSessionWithIdentifier:(id)a3 forDuration:(id)a4 completion:(id)a5;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (WFWorkflowRunCoordinator)initWithUserNotificationManager:(id)manager databaseProvider:(id)provider;
+- (id)unsupportedDialogResponseWithRequest:(id)request;
+- (void)dismissToastedSessionKitSessionsWithReason:(id)reason completion:(id)completion;
+- (void)handleRemovedIgnoredNotifications:(id)notifications;
+- (void)postNotificationAboutFailure:(id)failure inWorkflow:(id)workflow dialogAttribution:(id)attribution runningContext:(id)context;
+- (void)presentationManager:(id)manager updateSmartPromptStateData:(id)data actionUUID:(id)d context:(id)context reference:(id)reference;
+- (void)showSingleStepCompletionWithWebClipMetadata:(id)metadata completion:(id)completion;
+- (void)toastManager:(id)manager didDismissToastedSessionWithIdentifier:(id)identifier;
+- (void)toastManager:(id)manager didFailToToastSessionWithIdentifier:(id)identifier error:(id)error;
+- (void)toastManager:(id)manager didToastSessionWithIdentifier:(id)identifier duration:(double)duration;
+- (void)toastSessionKitSessionWithIdentifier:(id)identifier forDuration:(id)duration completion:(id)completion;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation WFWorkflowRunCoordinator
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v22 = a5;
-  v6 = [a4 notification];
-  v7 = [v6 request];
-  v8 = [v7 content];
+  handlerCopy = handler;
+  notification = [response notification];
+  request = [notification request];
+  content = [request content];
 
-  v9 = [objc_opt_class() errorWithActionCategory];
-  v10 = [v9 identifier];
+  errorWithActionCategory = [objc_opt_class() errorWithActionCategory];
+  identifier = [errorWithActionCategory identifier];
 
-  v11 = [v8 categoryIdentifier];
-  LOBYTE(v7) = [v11 isEqualToString:v10];
+  categoryIdentifier = [content categoryIdentifier];
+  LOBYTE(request) = [categoryIdentifier isEqualToString:identifier];
 
-  if (v7)
+  if (request)
   {
     v12 = objc_alloc_init(MEMORY[0x277CCACE0]);
     [v12 setScheme:@"shortcuts"];
-    v13 = [v8 categoryIdentifier];
-    v14 = [v13 isEqualToString:v10];
+    categoryIdentifier2 = [content categoryIdentifier];
+    v14 = [categoryIdentifier2 isEqualToString:identifier];
 
     if (v14)
     {
       [v12 setHost:@"open-shortcut"];
       v15 = MEMORY[0x277CBEBC0];
-      v16 = [v8 userInfo];
-      v17 = [v15 dc_queryItemsFromQueryDictionary:v16];
+      userInfo = [content userInfo];
+      v17 = [v15 dc_queryItemsFromQueryDictionary:userInfo];
       [v12 setQueryItems:v17];
     }
 
@@ -51,26 +51,26 @@
     v19 = [v12 URL];
     v20 = [v18 requestWithURL:v19];
 
-    v21 = [MEMORY[0x277D7C548] sharedManager];
-    [v21 performRequest:v20];
+    mEMORY[0x277D7C548] = [MEMORY[0x277D7C548] sharedManager];
+    [mEMORY[0x277D7C548] performRequest:v20];
 
-    v22[2]();
+    handlerCopy[2]();
   }
 
   else
   {
-    v22[2]();
+    handlerCopy[2]();
   }
 }
 
-- (void)postNotificationAboutFailure:(id)a3 inWorkflow:(id)a4 dialogAttribution:(id)a5 runningContext:(id)a6
+- (void)postNotificationAboutFailure:(id)failure inWorkflow:(id)workflow dialogAttribution:(id)attribution runningContext:(id)context
 {
   v94 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v11;
+  failureCopy = failure;
+  workflowCopy = workflow;
+  attributionCopy = attribution;
+  contextCopy = context;
+  v14 = workflowCopy;
   if (v14)
   {
     objc_opt_class();
@@ -82,7 +82,7 @@
     }
   }
 
-  v17 = [v13 runSource];
+  runSource = [contextCopy runSource];
   IsSpotlight = WFRunSourceIsSpotlight();
 
   if (IsSpotlight)
@@ -90,9 +90,9 @@
     goto LABEL_17;
   }
 
-  v19 = [v13 runSource];
+  runSource2 = [contextCopy runSource];
   v20 = *MEMORY[0x277D7A820];
-  v21 = v19;
+  v21 = runSource2;
   v22 = v21;
   if (v21 != v20)
   {
@@ -110,9 +110,9 @@
     {
     }
 
-    v24 = [v13 runSource];
+    runSource3 = [contextCopy runSource];
     v25 = *MEMORY[0x277D7A860];
-    v26 = v24;
+    v26 = runSource3;
     v22 = v26;
     if (v26 != v25)
     {
@@ -148,25 +148,25 @@ LABEL_19:
       *buf = 136315650;
       v89 = "[WFWorkflowRunCoordinator postNotificationAboutFailure:inWorkflow:dialogAttribution:runningContext:]";
       v90 = 2112;
-      v91 = v10;
+      v91 = failureCopy;
       v92 = 2112;
       v93 = v16;
       _os_log_impl(&dword_23103C000, v28, OS_LOG_TYPE_ERROR, "%s Posting notification for error (%@) when running workflow: %@", buf, 0x20u);
     }
 
-    v29 = [MEMORY[0x277CCAD78] UUID];
-    v30 = [v29 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v79 = v13;
-    v80 = v12;
-    v78 = v30;
+    v79 = contextCopy;
+    v80 = attributionCopy;
+    v78 = uUIDString;
     if (v15)
     {
       v31 = MEMORY[0x277CE1FB0];
-      if (v12)
+      if (attributionCopy)
       {
-        v32 = [v12 appBundleIdentifier];
-        v82 = [v31 iconForApplicationIdentifier:v32];
+        appBundleIdentifier = [attributionCopy appBundleIdentifier];
+        v82 = [v31 iconForApplicationIdentifier:appBundleIdentifier];
       }
 
       else
@@ -174,31 +174,31 @@ LABEL_19:
         v82 = [MEMORY[0x277CE1FB0] iconForApplicationIdentifier:*MEMORY[0x277D7A338]];
       }
 
-      v40 = WFLocalizedString(@"your shortcut");
+      name = WFLocalizedString(@"your shortcut");
     }
 
     else
     {
-      v33 = [MEMORY[0x277CFC538] proposedTemporaryFileURLForFilename:v30];
-      v34 = [MEMORY[0x277D79F18] currentDevice];
-      [v34 screenScale];
+      v33 = [MEMORY[0x277CFC538] proposedTemporaryFileURLForFilename:uUIDString];
+      currentDevice = [MEMORY[0x277D79F18] currentDevice];
+      [currentDevice screenScale];
       v36 = [v16 attributionIconWithSize:0 scale:48.0 rounded:{48.0, v35}];
 
-      v37 = [v36 PNGRepresentation];
-      [v37 writeToURL:v33 atomically:0];
+      pNGRepresentation = [v36 PNGRepresentation];
+      [pNGRepresentation writeToURL:v33 atomically:0];
 
       v38 = MEMORY[0x277CE1FB0];
-      v39 = [v33 path];
-      v82 = [v38 iconAtPath:v39];
+      path = [v33 path];
+      v82 = [v38 iconAtPath:path];
 
-      v40 = [v16 name];
+      name = [v16 name];
     }
 
-    v81 = v40;
-    v41 = [v10 domain];
-    if ([v41 isEqualToString:*MEMORY[0x277D7A540]])
+    v81 = name;
+    domain = [failureCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x277D7A540]])
     {
-      v42 = [v10 code] == 3 || objc_msgSend(v10, "code") == 4;
+      v42 = [failureCopy code] == 3 || objc_msgSend(failureCopy, "code") == 4;
     }
 
     else
@@ -206,10 +206,10 @@ LABEL_19:
       v42 = 0;
     }
 
-    v43 = [v10 userInfo];
-    v44 = [v43 objectForKey:*MEMORY[0x277CCA450]];
+    userInfo = [failureCopy userInfo];
+    v44 = [userInfo objectForKey:*MEMORY[0x277CCA450]];
 
-    v83 = self;
+    selfCopy = self;
     if (v42)
     {
       v84 = 0;
@@ -217,46 +217,46 @@ LABEL_19:
 
     else
     {
-      v45 = [v10 userInfo];
-      v84 = [v45 objectForKey:*MEMORY[0x277CCA470]];
+      userInfo2 = [failureCopy userInfo];
+      v84 = [userInfo2 objectForKey:*MEMORY[0x277CCA470]];
     }
 
     v46 = v15;
     v47 = MEMORY[0x277CCACA8];
     v48 = WFLocalizedString(@"An error occurred while running %@. (%@, %i)");
-    v49 = [v10 domain];
-    v85 = [v47 stringWithFormat:v48, v81, v49, objc_msgSend(v10, "code")];
+    domain2 = [failureCopy domain];
+    v85 = [v47 stringWithFormat:v48, v81, domain2, objc_msgSend(failureCopy, "code")];
 
     v50 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v51 = [v16 identifier];
+    identifier = [v16 identifier];
 
-    if (v51)
+    if (identifier)
     {
-      v52 = [v16 identifier];
-      [v50 setObject:v52 forKey:*MEMORY[0x277D7CF48]];
+      identifier2 = [v16 identifier];
+      [v50 setObject:identifier2 forKey:*MEMORY[0x277D7CF48]];
     }
 
-    v53 = [v10 userInfo];
-    v54 = [v53 objectForKey:*MEMORY[0x277D7D098]];
+    userInfo3 = [failureCopy userInfo];
+    v54 = [userInfo3 objectForKey:*MEMORY[0x277D7D098]];
 
     if (v54)
     {
       [v50 setObject:v54 forKey:*MEMORY[0x277D7CDC8]];
-      v55 = [v10 localizedDescription];
-      [v50 setObject:v55 forKey:*MEMORY[0x277D7CDC0]];
+      localizedDescription = [failureCopy localizedDescription];
+      [v50 setObject:localizedDescription forKey:*MEMORY[0x277D7CDC0]];
     }
 
     v56 = objc_alloc_init(MEMORY[0x277CE1F60]);
-    v57 = [v16 attributionTitle];
-    if (v57)
+    attributionTitle = [v16 attributionTitle];
+    if (attributionTitle)
     {
-      [v56 setTitle:v57];
+      [v56 setTitle:attributionTitle];
     }
 
     else
     {
-      v58 = [v80 title];
-      [v56 setTitle:v58];
+      title = [v80 title];
+      [v56 setTitle:title];
     }
 
     [v56 setIcon:v82];
@@ -276,15 +276,15 @@ LABEL_19:
     [v56 setUserInfo:v50];
     if (v46)
     {
-      v60 = [MEMORY[0x277CCAD78] UUID];
-      [v60 UUIDString];
+      uUID2 = [MEMORY[0x277CCAD78] UUID];
+      [uUID2 UUIDString];
     }
 
     else
     {
       v61 = MEMORY[0x277CCACA8];
-      v60 = [v16 identifier];
-      [v61 stringWithFormat:@"workflow-error: %@", v60];
+      uUID2 = [v16 identifier];
+      [v61 stringWithFormat:@"workflow-error: %@", uUID2];
     }
     v62 = ;
     [v56 setThreadIdentifier:v62];
@@ -320,25 +320,25 @@ LABEL_19:
       [v68 errorWithActionCategory];
     }
     v69 = ;
-    v70 = [v69 identifier];
-    [v56 setCategoryIdentifier:v70];
+    identifier3 = [v69 identifier];
+    [v56 setCategoryIdentifier:identifier3];
 
     v71 = MEMORY[0x277CE1FC0];
-    v72 = [MEMORY[0x277CCAD78] UUID];
-    v73 = [v72 UUIDString];
-    v74 = [v71 requestWithIdentifier:v73 content:v56 trigger:0 destinations:7];
+    uUID3 = [MEMORY[0x277CCAD78] UUID];
+    uUIDString2 = [uUID3 UUIDString];
+    v74 = [v71 requestWithIdentifier:uUIDString2 content:v56 trigger:0 destinations:7];
 
-    v75 = [(WFWorkflowRunCoordinator *)v83 userNotificationManager];
-    v76 = [v75 notificationCenter];
+    userNotificationManager = [(WFWorkflowRunCoordinator *)selfCopy userNotificationManager];
+    notificationCenter = [userNotificationManager notificationCenter];
     v86[0] = MEMORY[0x277D85DD0];
     v86[1] = 3221225472;
     v86[2] = __101__WFWorkflowRunCoordinator_postNotificationAboutFailure_inWorkflow_dialogAttribution_runningContext___block_invoke;
     v86[3] = &unk_2788FEEC0;
-    v87 = v10;
-    [v76 addNotificationRequest:v74 withCompletionHandler:v86];
+    v87 = failureCopy;
+    [notificationCenter addNotificationRequest:v74 withCompletionHandler:v86];
 
-    v13 = v79;
-    v12 = v80;
+    contextCopy = v79;
+    attributionCopy = v80;
   }
 
 LABEL_60:
@@ -369,42 +369,42 @@ void __101__WFWorkflowRunCoordinator_postNotificationAboutFailure_inWorkflow_dia
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)toastManager:(id)a3 didFailToToastSessionWithIdentifier:(id)a4 error:(id)a5
+- (void)toastManager:(id)manager didFailToToastSessionWithIdentifier:(id)identifier error:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a5;
+  identifierCopy = identifier;
+  errorCopy = error;
   v8 = getWFWorkflowExecutionLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     v10 = 136315650;
     v11 = "[WFWorkflowRunCoordinator toastManager:didFailToToastSessionWithIdentifier:error:]";
     v12 = 2112;
-    v13 = v6;
+    v13 = identifierCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = errorCopy;
     _os_log_impl(&dword_23103C000, v8, OS_LOG_TYPE_ERROR, "%s Failed to toast session with identifier %{identifier}@: %@", &v10, 0x20u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)toastManager:(id)a3 didDismissToastedSessionWithIdentifier:(id)a4
+- (void)toastManager:(id)manager didDismissToastedSessionWithIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = getWFWorkflowExecutionLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[WFWorkflowRunCoordinator toastManager:didDismissToastedSessionWithIdentifier:]";
     v11 = 2114;
-    v12 = v5;
+    v12 = identifierCopy;
     _os_log_impl(&dword_23103C000, v6, OS_LOG_TYPE_DEFAULT, "%s Toasted session with identifier %{public}@ is dismissed, let's resume dialog presentation", &v9, 0x16u);
   }
 
-  v7 = [(WFWorkflowRunCoordinator *)self userInterfacePresenter];
-  [v7 resumeDialogPresentationWithCompletionHandler:&__block_literal_global_214];
+  userInterfacePresenter = [(WFWorkflowRunCoordinator *)self userInterfacePresenter];
+  [userInterfacePresenter resumeDialogPresentationWithCompletionHandler:&__block_literal_global_214];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -446,28 +446,28 @@ LABEL_6:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)toastManager:(id)a3 didToastSessionWithIdentifier:(id)a4 duration:(double)a5
+- (void)toastManager:(id)manager didToastSessionWithIdentifier:(id)identifier duration:(double)duration
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  identifierCopy = identifier;
   v8 = getWFWorkflowExecutionLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v14 = "[WFWorkflowRunCoordinator toastManager:didToastSessionWithIdentifier:duration:]";
     v15 = 2114;
-    v16 = v7;
+    v16 = identifierCopy;
     _os_log_impl(&dword_23103C000, v8, OS_LOG_TYPE_DEFAULT, "%s Toasted session with identifier %{public}@", buf, 0x16u);
   }
 
-  v9 = [(WFWorkflowRunCoordinator *)self userInterfacePresenter];
-  v10 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  userInterfacePresenter = [(WFWorkflowRunCoordinator *)self userInterfacePresenter];
+  v10 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __80__WFWorkflowRunCoordinator_toastManager_didToastSessionWithIdentifier_duration___block_invoke;
   v12[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  *&v12[4] = a5;
-  [v9 pauseDialogPresentationForDuration:v10 withCompletionHandler:v12];
+  *&v12[4] = duration;
+  [userInterfacePresenter pauseDialogPresentationForDuration:v10 withCompletionHandler:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -503,20 +503,20 @@ void __80__WFWorkflowRunCoordinator_toastManager_didToastSessionWithIdentifier_d
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentationManager:(id)a3 updateSmartPromptStateData:(id)a4 actionUUID:(id)a5 context:(id)a6 reference:(id)a7
+- (void)presentationManager:(id)manager updateSmartPromptStateData:(id)data actionUUID:(id)d context:(id)context reference:(id)reference
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a7;
-  v13 = [(WFWorkflowRunCoordinator *)self databaseProvider];
-  v14 = [v13 databaseWithError:0];
+  dataCopy = data;
+  dCopy = d;
+  referenceCopy = reference;
+  databaseProvider = [(WFWorkflowRunCoordinator *)self databaseProvider];
+  v14 = [databaseProvider databaseWithError:0];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v15 = v10;
+  v15 = dataCopy;
   v16 = [v15 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v16)
   {
@@ -536,7 +536,7 @@ void __80__WFWorkflowRunCoordinator_toastManager_didToastSessionWithIdentifier_d
 
         v21 = *(*(&v27 + 1) + 8 * v20);
         v26 = 0;
-        [v14 saveSmartPromptStateData:v21 actionUUID:v11 reference:v12 error:{&v26, v25}];
+        [v14 saveSmartPromptStateData:v21 actionUUID:dCopy reference:referenceCopy error:{&v26, v25}];
         v22 = v26;
         if (v22)
         {
@@ -564,9 +564,9 @@ void __80__WFWorkflowRunCoordinator_toastManager_didToastSessionWithIdentifier_d
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)unsupportedDialogResponseWithRequest:(id)a3
+- (id)unsupportedDialogResponseWithRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -583,45 +583,45 @@ void __80__WFWorkflowRunCoordinator_toastManager_didToastSessionWithIdentifier_d
   return v5;
 }
 
-- (void)dismissToastedSessionKitSessionsWithReason:(id)a3 completion:(id)a4
+- (void)dismissToastedSessionKitSessionsWithReason:(id)reason completion:(id)completion
 {
-  v10 = a3;
-  v7 = a4;
-  if (!v10)
+  reasonCopy = reason;
+  completionCopy = completion;
+  if (!reasonCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"WFWorkflowRunCoordinator.m" lineNumber:155 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkflowRunCoordinator.m" lineNumber:155 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
   }
 
-  v8 = [(WFWorkflowRunCoordinator *)self toastManager];
-  [v8 eatTheToastWithReason:v10];
+  toastManager = [(WFWorkflowRunCoordinator *)self toastManager];
+  [toastManager eatTheToastWithReason:reasonCopy];
 
-  v7[2](v7);
+  completionCopy[2](completionCopy);
 }
 
-- (void)toastSessionKitSessionWithIdentifier:(id)a3 forDuration:(id)a4 completion:(id)a5
+- (void)toastSessionKitSessionWithIdentifier:(id)identifier forDuration:(id)duration completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  durationCopy = duration;
+  completionCopy = completion;
   v11 = getWFSessionKitLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    [v9 doubleValue];
+    [durationCopy doubleValue];
     v17 = 136315650;
     v18 = "[WFWorkflowRunCoordinator toastSessionKitSessionWithIdentifier:forDuration:completion:]";
     v19 = 2112;
-    v20 = v8;
+    v20 = identifierCopy;
     v21 = 2048;
     v22 = v12;
     _os_log_impl(&dword_23103C000, v11, OS_LOG_TYPE_INFO, "%s Toasting SessionKit session with identifier: %@ for duration: %f", &v17, 0x20u);
   }
 
-  v13 = [(WFWorkflowRunCoordinator *)self toastManager];
-  if (v9)
+  toastManager = [(WFWorkflowRunCoordinator *)self toastManager];
+  if (durationCopy)
   {
-    [v9 doubleValue];
+    [durationCopy doubleValue];
   }
 
   else
@@ -629,27 +629,27 @@ void __80__WFWorkflowRunCoordinator_toastManager_didToastSessionWithIdentifier_d
     v14 = -1.0;
   }
 
-  v15 = [v13 toastSessionWithIdentifier:v8 forDuration:v14];
+  v15 = [toastManager toastSessionWithIdentifier:identifierCopy forDuration:v14];
 
-  v10[2](v10, v15);
+  completionCopy[2](completionCopy, v15);
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showSingleStepCompletionWithWebClipMetadata:(id)a3 completion:(id)a4
+- (void)showSingleStepCompletionWithWebClipMetadata:(id)metadata completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFWorkflowRunCoordinator *)self queue];
+  metadataCopy = metadata;
+  completionCopy = completion;
+  queue = [(WFWorkflowRunCoordinator *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__WFWorkflowRunCoordinator_showSingleStepCompletionWithWebClipMetadata_completion___block_invoke;
   block[3] = &unk_2788FFF98;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = metadataCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = metadataCopy;
+  dispatch_async(queue, block);
 }
 
 void __83__WFWorkflowRunCoordinator_showSingleStepCompletionWithWebClipMetadata_completion___block_invoke(id *a1)
@@ -706,26 +706,26 @@ void __83__WFWorkflowRunCoordinator_showSingleStepCompletionWithWebClipMetadata_
   return toastManager;
 }
 
-- (void)handleRemovedIgnoredNotifications:(id)a3
+- (void)handleRemovedIgnoredNotifications:(id)notifications
 {
-  v4 = a3;
-  v5 = [(WFWorkflowRunCoordinator *)self dialogPresentationManager];
-  [v5 handleRemovedIgnoredNotifications:v4];
+  notificationsCopy = notifications;
+  dialogPresentationManager = [(WFWorkflowRunCoordinator *)self dialogPresentationManager];
+  [dialogPresentationManager handleRemovedIgnoredNotifications:notificationsCopy];
 }
 
-- (WFWorkflowRunCoordinator)initWithUserNotificationManager:(id)a3 databaseProvider:(id)a4
+- (WFWorkflowRunCoordinator)initWithUserNotificationManager:(id)manager databaseProvider:(id)provider
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  providerCopy = provider;
   v33.receiver = self;
   v33.super_class = WFWorkflowRunCoordinator;
   v9 = [(WFWorkflowRunCoordinator *)&v33 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_databaseProvider, a4);
-    objc_storeStrong(&v10->_userNotificationManager, a3);
+    objc_storeStrong(&v9->_databaseProvider, provider);
+    objc_storeStrong(&v10->_userNotificationManager, manager);
     userNotificationManager = v10->_userNotificationManager;
     v12 = +[WFWorkflowRunCoordinator errorCategory];
     v34[0] = v12;
@@ -792,16 +792,16 @@ void __77__WFWorkflowRunCoordinator_initWithUserNotificationManager_databaseProv
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (int64_t)outOfProcessWorkflowControllerPresentationModeFromVCShortcutPresentationMode:(unint64_t)a3
++ (int64_t)outOfProcessWorkflowControllerPresentationModeFromVCShortcutPresentationMode:(unint64_t)mode
 {
-  if (a3 - 1 > 3)
+  if (mode - 1 > 3)
   {
     return 2;
   }
 
   else
   {
-    return qword_231166938[a3 - 1];
+    return qword_231166938[mode - 1];
   }
 }
 

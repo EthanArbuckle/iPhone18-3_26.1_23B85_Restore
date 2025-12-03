@@ -1,7 +1,7 @@
 @interface HMDMediaSessionRequestMessageInformation
 + (id)logCategory;
 - (HMDDevice)remoteSourceDevice;
-- (HMDMediaSessionRequestMessageInformation)initWithMessage:(id)a3;
+- (HMDMediaSessionRequestMessageInformation)initWithMessage:(id)message;
 - (NSUUID)messageIdentifier;
 - (id)attributeDescriptions;
 @end
@@ -12,12 +12,12 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDMediaSessionRequestMessageInformation *)self messageIdentifier];
-  v5 = [v3 initWithName:@"messageIdentifier" value:v4];
+  messageIdentifier = [(HMDMediaSessionRequestMessageInformation *)self messageIdentifier];
+  v5 = [v3 initWithName:@"messageIdentifier" value:messageIdentifier];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDMediaSessionRequestMessageInformation *)self remoteSourceDevice];
-  v8 = [v6 initWithName:@"remoteSourceDevice" value:v7];
+  remoteSourceDevice = [(HMDMediaSessionRequestMessageInformation *)self remoteSourceDevice];
+  v8 = [v6 initWithName:@"remoteSourceDevice" value:remoteSourceDevice];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -28,11 +28,11 @@
 
 - (HMDDevice)remoteSourceDevice
 {
-  v2 = [(HMDMediaSessionRequestMessageInformation *)self message];
+  message = [(HMDMediaSessionRequestMessageInformation *)self message];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = message;
   }
 
   else
@@ -44,11 +44,11 @@
 
   if (v4)
   {
-    v5 = [v4 destination];
+    destination = [v4 destination];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = destination;
     }
 
     else
@@ -60,44 +60,44 @@
 
     if (v7)
     {
-      v8 = [v7 device];
+      device = [v7 device];
     }
 
     else
     {
-      v8 = 0;
+      device = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    device = 0;
   }
 
-  return v8;
+  return device;
 }
 
 - (NSUUID)messageIdentifier
 {
-  v2 = [(HMDMediaSessionRequestMessageInformation *)self message];
-  v3 = [v2 identifier];
+  message = [(HMDMediaSessionRequestMessageInformation *)self message];
+  identifier = [message identifier];
 
-  return v3;
+  return identifier;
 }
 
-- (HMDMediaSessionRequestMessageInformation)initWithMessage:(id)a3
+- (HMDMediaSessionRequestMessageInformation)initWithMessage:(id)message
 {
-  v5 = a3;
-  if (v5)
+  messageCopy = message;
+  if (messageCopy)
   {
-    v6 = v5;
+    v6 = messageCopy;
     v12.receiver = self;
     v12.super_class = HMDMediaSessionRequestMessageInformation;
     v7 = [(HMDMediaSessionRequestMessageInformation *)&v12 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_message, a3);
+      objc_storeStrong(&v7->_message, message);
     }
 
     return v8;

@@ -1,14 +1,14 @@
 @interface ImagePickerTypeCell
-- (void)handleTap:(id)a3;
+- (void)handleTap:(id)tap;
 @end
 
 @implementation ImagePickerTypeCell
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  sub_274781764(v4);
+  tapCopy = tap;
+  selfCopy = self;
+  sub_274781764(tapCopy);
 }
 
 @end

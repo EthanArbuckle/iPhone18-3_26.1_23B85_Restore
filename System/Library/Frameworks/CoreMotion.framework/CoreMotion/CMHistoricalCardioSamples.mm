@@ -1,14 +1,14 @@
 @interface CMHistoricalCardioSamples
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CMHistoricalCardioSamples)init;
-- (CMHistoricalCardioSamples)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (CMHistoricalCardioSamples)initWithCoder:(id)a3;
+- (CMHistoricalCardioSamples)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (CMHistoricalCardioSamples)initWithCoder:(id)coder;
 - (NSString)description;
 - (id)binarySampleRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMHistoricalCardioSamples
@@ -67,21 +67,21 @@
   [(CMHistoricalCardioSamples *)&v11 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->_cardioFitnessInputs, @"kCMHistoricalCardioSamplesCodingKeyCardioFitnessInputs");
-  objc_msgSend_encodeObject_forKey_(a3, v5, self->_cardioSessionMetrics, @"kCMHistoricalCardioSamplesCodingKeyCardioSessionMetrics");
-  objc_msgSend_encodeObject_forKey_(a3, v6, self->_cardioFitnessResults, @"kCMHistoricalCardioSamplesCodingKeyCardioFitnessResults");
-  objc_msgSend_encodeObject_forKey_(a3, v7, self->_cardioFitnessSummary, @"kCMHistoricalCardioSamplesCodingKeyCardioFitnessSummary");
-  objc_msgSend_encodeObject_forKey_(a3, v8, self->_recoveryHeartRate, @"kCMHistoricalCardioSamplesCodingKeyRecoveryHeartRate");
-  objc_msgSend_encodeObject_forKey_(a3, v9, self->_recoveryWorkRate, @"kCMHistoricalCardioSamplesCodingKeyRecoveryWorkRate");
-  objc_msgSend_encodeObject_forKey_(a3, v10, self->_recoverySessions, @"kCMHistoricalCardioSamplesCodingKeyRecoverySessions");
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->_cardioFitnessInputs, @"kCMHistoricalCardioSamplesCodingKeyCardioFitnessInputs");
+  objc_msgSend_encodeObject_forKey_(coder, v5, self->_cardioSessionMetrics, @"kCMHistoricalCardioSamplesCodingKeyCardioSessionMetrics");
+  objc_msgSend_encodeObject_forKey_(coder, v6, self->_cardioFitnessResults, @"kCMHistoricalCardioSamplesCodingKeyCardioFitnessResults");
+  objc_msgSend_encodeObject_forKey_(coder, v7, self->_cardioFitnessSummary, @"kCMHistoricalCardioSamplesCodingKeyCardioFitnessSummary");
+  objc_msgSend_encodeObject_forKey_(coder, v8, self->_recoveryHeartRate, @"kCMHistoricalCardioSamplesCodingKeyRecoveryHeartRate");
+  objc_msgSend_encodeObject_forKey_(coder, v9, self->_recoveryWorkRate, @"kCMHistoricalCardioSamplesCodingKeyRecoveryWorkRate");
+  objc_msgSend_encodeObject_forKey_(coder, v10, self->_recoverySessions, @"kCMHistoricalCardioSamplesCodingKeyRecoverySessions");
   pedestrianGrade = self->_pedestrianGrade;
 
-  objc_msgSend_encodeObject_forKey_(a3, v11, pedestrianGrade, @"kCMHistoricalCardioSamplesCodingKeyPedestrianGrade");
+  objc_msgSend_encodeObject_forKey_(coder, v11, pedestrianGrade, @"kCMHistoricalCardioSamplesCodingKeyPedestrianGrade");
 }
 
-- (CMHistoricalCardioSamples)initWithCoder:(id)a3
+- (CMHistoricalCardioSamples)initWithCoder:(id)coder
 {
   v22.receiver = self;
   v22.super_class = CMHistoricalCardioSamples;
@@ -89,30 +89,30 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->_cardioFitnessInputs = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(a3, v6, v5, @"kCMHistoricalCardioSamplesCodingKeyCardioFitnessInputs");
+    v4->_cardioFitnessInputs = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(coder, v6, v5, @"kCMHistoricalCardioSamplesCodingKeyCardioFitnessInputs");
     v7 = objc_opt_class();
-    v4->_cardioSessionMetrics = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(a3, v8, v7, @"kCMHistoricalCardioSamplesCodingKeyCardioSessionMetrics");
+    v4->_cardioSessionMetrics = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(coder, v8, v7, @"kCMHistoricalCardioSamplesCodingKeyCardioSessionMetrics");
     v9 = objc_opt_class();
-    v4->_cardioFitnessResults = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(a3, v10, v9, @"kCMHistoricalCardioSamplesCodingKeyCardioFitnessResults");
+    v4->_cardioFitnessResults = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(coder, v10, v9, @"kCMHistoricalCardioSamplesCodingKeyCardioFitnessResults");
     v11 = objc_opt_class();
-    v4->_cardioFitnessSummary = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(a3, v12, v11, @"kCMHistoricalCardioSamplesCodingKeyCardioFitnessSummary");
+    v4->_cardioFitnessSummary = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(coder, v12, v11, @"kCMHistoricalCardioSamplesCodingKeyCardioFitnessSummary");
     v13 = objc_opt_class();
-    v4->_recoveryHeartRate = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(a3, v14, v13, @"kCMHistoricalCardioSamplesCodingKeyRecoveryHeartRate");
+    v4->_recoveryHeartRate = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(coder, v14, v13, @"kCMHistoricalCardioSamplesCodingKeyRecoveryHeartRate");
     v15 = objc_opt_class();
-    v4->_recoveryWorkRate = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(a3, v16, v15, @"kCMHistoricalCardioSamplesCodingKeyRecoveryWorkRate");
+    v4->_recoveryWorkRate = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(coder, v16, v15, @"kCMHistoricalCardioSamplesCodingKeyRecoveryWorkRate");
     v17 = objc_opt_class();
-    v4->_recoverySessions = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(a3, v18, v17, @"kCMHistoricalCardioSamplesCodingKeyRecoverySessions");
+    v4->_recoverySessions = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(coder, v18, v17, @"kCMHistoricalCardioSamplesCodingKeyRecoverySessions");
     v19 = objc_opt_class();
-    v4->_pedestrianGrade = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(a3, v20, v19, @"kCMHistoricalCardioSamplesCodingKeyPedestrianGrade");
+    v4->_pedestrianGrade = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(coder, v20, v19, @"kCMHistoricalCardioSamplesCodingKeyPedestrianGrade");
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v10[1] = objc_msgSend_copy(self->_cardioFitnessInputs, v11, v12);
   v10[2] = objc_msgSend_copy(self->_cardioSessionMetrics, v13, v14);
@@ -141,7 +141,7 @@
   return objc_msgSend_stringWithFormat_(v3, v30, @"%@, <cardioFitnessInputs, %@, cardioSessionMetrics, %@, cardioFitnessResults, %@, cardioFitnessSummary, %@, recoveryHR, %@, recoveryWR, %@, recoverySessions, %@, pedestrianGrade, %@>", v5, v8, v11, v14, v17, v20, v23, v26, v29);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -150,56 +150,56 @@
   }
 
   v7 = objc_msgSend_cardioFitnessInputs(self, v5, v6);
-  v10 = objc_msgSend_cardioFitnessInputs(a3, v8, v9);
+  v10 = objc_msgSend_cardioFitnessInputs(equal, v8, v9);
   if (!objc_msgSend_isEqualToArray_(v7, v11, v10))
   {
     return 0;
   }
 
   v14 = objc_msgSend_cardioSessionMetrics(self, v12, v13);
-  v17 = objc_msgSend_cardioSessionMetrics(a3, v15, v16);
+  v17 = objc_msgSend_cardioSessionMetrics(equal, v15, v16);
   if (!objc_msgSend_isEqualToArray_(v14, v18, v17))
   {
     return 0;
   }
 
   v21 = objc_msgSend_cardioFitnessResults(self, v19, v20);
-  v24 = objc_msgSend_cardioFitnessResults(a3, v22, v23);
+  v24 = objc_msgSend_cardioFitnessResults(equal, v22, v23);
   if (!objc_msgSend_isEqualToArray_(v21, v25, v24))
   {
     return 0;
   }
 
   v28 = objc_msgSend_cardioFitnessSummary(self, v26, v27);
-  v31 = objc_msgSend_cardioFitnessSummary(a3, v29, v30);
+  v31 = objc_msgSend_cardioFitnessSummary(equal, v29, v30);
   if (!objc_msgSend_isEqualToArray_(v28, v32, v31))
   {
     return 0;
   }
 
   v35 = objc_msgSend_recoveryHeartRate(self, v33, v34);
-  v38 = objc_msgSend_recoveryHeartRate(a3, v36, v37);
+  v38 = objc_msgSend_recoveryHeartRate(equal, v36, v37);
   if (!objc_msgSend_isEqualToArray_(v35, v39, v38))
   {
     return 0;
   }
 
   v42 = objc_msgSend_recoveryWorkRate(self, v40, v41);
-  v45 = objc_msgSend_recoveryWorkRate(a3, v43, v44);
+  v45 = objc_msgSend_recoveryWorkRate(equal, v43, v44);
   if (!objc_msgSend_isEqualToArray_(v42, v46, v45))
   {
     return 0;
   }
 
   v49 = objc_msgSend_recoverySessions(self, v47, v48);
-  v52 = objc_msgSend_recoverySessions(a3, v50, v51);
+  v52 = objc_msgSend_recoverySessions(equal, v50, v51);
   if (!objc_msgSend_isEqualToArray_(v49, v53, v52))
   {
     return 0;
   }
 
   v56 = objc_msgSend_pedestrianGrade(self, v54, v55);
-  v60 = objc_msgSend_pedestrianGrade(a3, v57, v58);
+  v60 = objc_msgSend_pedestrianGrade(equal, v57, v58);
 
   return objc_msgSend_isEqualToArray_(v56, v59, v60);
 }
@@ -256,10 +256,10 @@
   return v2;
 }
 
-- (CMHistoricalCardioSamples)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (CMHistoricalCardioSamples)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (!objc_msgSend_length(a3, a2, a3, a4, a5))
+  if (!objc_msgSend_length(representation, a2, representation, metadata, timestamp))
   {
 LABEL_15:
 
@@ -275,7 +275,7 @@ LABEL_15:
     v21 = 0;
     v7 = MEMORY[0x1E696ACD0];
     v8 = objc_opt_class();
-    v10 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v7, v9, v8, a3, &v21);
+    v10 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v7, v9, v8, representation, &v21);
     if (v21)
     {
       if (qword_1EAFE2AA8 != -1)

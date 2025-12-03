@@ -1,20 +1,20 @@
 @interface RoutePlanningWaypointCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)automationElements;
 @end
 
 @implementation RoutePlanningWaypointCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"RoutePlanningWaypointCell" isKindOfClass:@"UITableViewCell"];
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"_reorderControlImage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RoutePlanningWaypointCell" hasInstanceMethod:@"currentText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RoutePlanningWaypointCell" hasInstanceVariable:@"_iconView" withType:"UIImageView"];
-  [v3 validateClass:@"RoutePlanningWaypointCell" hasInstanceVariable:@"_titleTextField" withType:"RoutePlanningWaypointTextField"];
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"_accessibilityTextElementText" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"RoutePlanningWaypointCell" isKindOfClass:@"UITableViewCell"];
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"_reorderControlImage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RoutePlanningWaypointCell" hasInstanceMethod:@"currentText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RoutePlanningWaypointCell" hasInstanceVariable:@"_iconView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"RoutePlanningWaypointCell" hasInstanceVariable:@"_titleTextField" withType:"RoutePlanningWaypointTextField"];
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"_accessibilityTextElementText" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilitySupplementaryFooterViews

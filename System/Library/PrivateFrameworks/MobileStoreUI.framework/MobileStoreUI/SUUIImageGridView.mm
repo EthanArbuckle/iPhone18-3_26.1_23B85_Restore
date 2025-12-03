@@ -1,46 +1,46 @@
 @interface SUUIImageGridView
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
 - (CGSize)size;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)contentInset;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setColumnCount:(int64_t)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setImageViews:(id)a3;
-- (void)setSize:(CGSize)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setColumnCount:(int64_t)count;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setImageViews:(id)views;
+- (void)setSize:(CGSize)size;
 @end
 
 @implementation SUUIImageGridView
 
-- (void)setColumnCount:(int64_t)a3
+- (void)setColumnCount:(int64_t)count
 {
-  if (self->_columnCount != a3)
+  if (self->_columnCount != count)
   {
-    self->_columnCount = a3;
+    self->_columnCount = count;
     [(SUUIImageGridView *)self setNeedsLayout];
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SUUIImageGridView *)self setNeedsLayout];
   }
 }
 
-- (void)setImageViews:(id)a3
+- (void)setImageViews:(id)views
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![(NSArray *)self->_imageViews isEqualToArray:v5])
+  viewsCopy = views;
+  if (![(NSArray *)self->_imageViews isEqualToArray:viewsCopy])
   {
     v22 = 0u;
     v23 = 0u;
@@ -76,7 +76,7 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v11 = v5;
+    v11 = viewsCopy;
     v12 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
     if (v12)
     {
@@ -102,40 +102,40 @@
       while (v13);
     }
 
-    objc_storeStrong(&self->_imageViews, a3);
+    objc_storeStrong(&self->_imageViews, views);
     [(SUUIImageGridView *)self setNeedsLayout];
   }
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  if (self->_size.width != a3.width || self->_size.height != a3.height)
+  if (self->_size.width != size.width || self->_size.height != size.height)
   {
-    self->_size = a3;
+    self->_size = size;
     [(SUUIImageGridView *)self setNeedsLayout];
   }
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  [SUUIImageGridViewReuseView preferredSizeForViewElement:a3 context:a4];
+  [SUUIImageGridViewReuseView preferredSizeForViewElement:element context:context];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  [SUUIImageGridViewReuseView sizeThatFitsWidth:a4 viewElement:a5 context:a3];
+  [SUUIImageGridViewReuseView sizeThatFitsWidth:element viewElement:context context:width];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v13 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   reuseView = self->_reuseView;
   if (!reuseView)
   {
@@ -146,21 +146,21 @@
     reuseView = self->_reuseView;
   }
 
-  [(SUUIImageGridViewReuseView *)reuseView reloadWithViewElement:v13 width:v8 context:a4];
-  -[SUUIImageGridView setColumnCount:](self, "setColumnCount:", [v13 columnCount]);
-  [v13 contentInset];
+  [(SUUIImageGridViewReuseView *)reuseView reloadWithViewElement:elementCopy width:contextCopy context:width];
+  -[SUUIImageGridView setColumnCount:](self, "setColumnCount:", [elementCopy columnCount]);
+  [elementCopy contentInset];
   [(SUUIImageGridView *)self setContentInset:?];
-  v12 = [(SUUIImageGridViewReuseView *)self->_reuseView imageViews];
-  [(SUUIImageGridView *)self setImageViews:v12];
+  imageViews = [(SUUIImageGridViewReuseView *)self->_reuseView imageViews];
+  [(SUUIImageGridView *)self setImageViews:imageViews];
 
-  [v13 size];
+  [elementCopy size];
   [(SUUIImageGridView *)self setSize:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = [(SUUIImageGridView *)self columnCount:a3.width];
+  v4 = [(SUUIImageGridView *)self columnCount:fits.width];
   if (v4 <= 1)
   {
     v5 = 1;
@@ -171,11 +171,11 @@
     v5 = v4;
   }
 
-  v6 = [(SUUIImageGridView *)self imageViews];
-  v7 = [v6 count] / v5;
+  imageViews = [(SUUIImageGridView *)self imageViews];
+  v7 = [imageViews count] / v5;
 
-  v8 = [(SUUIImageGridView *)self imageViews];
-  v9 = [v8 count] % v5;
+  imageViews2 = [(SUUIImageGridView *)self imageViews];
+  v9 = [imageViews2 count] % v5;
 
   if (v9)
   {
@@ -199,9 +199,9 @@
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v30 = self;
-  v13 = [(SUUIImageGridView *)self imageViews];
-  v14 = [v13 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  selfCopy = self;
+  imageViews3 = [(SUUIImageGridView *)self imageViews];
+  v14 = [imageViews3 countByEnumeratingWithState:&v31 objects:v35 count:16];
   width = *MEMORY[0x277CBF3A8];
   height = *(MEMORY[0x277CBF3A8] + 8);
   if (v14)
@@ -216,7 +216,7 @@
       {
         if (*v32 != v20)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(imageViews3);
         }
 
         [*(*(&v31 + 1) + 8 * i) sizeThatFits:{width, height}];
@@ -247,7 +247,7 @@
         }
       }
 
-      v17 = [v13 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v17 = [imageViews3 countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v17);
@@ -271,14 +271,14 @@
     while (v10);
   }
 
-  if (width < v30->_size.width)
+  if (width < selfCopy->_size.width)
   {
-    width = v30->_size.width;
+    width = selfCopy->_size.width;
   }
 
-  if (height < v30->_size.height)
+  if (height < selfCopy->_size.height)
   {
-    height = v30->_size.height;
+    height = selfCopy->_size.height;
   }
 
   free(v11);
@@ -296,23 +296,23 @@
   v69.receiver = self;
   v69.super_class = SUUIImageGridView;
   [(SUUIImageGridView *)&v69 layoutSubviews];
-  v3 = [(SUUIImageGridView *)self columnCount];
-  if (v3 <= 1)
+  columnCount = [(SUUIImageGridView *)self columnCount];
+  if (columnCount <= 1)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = v3;
+    v4 = columnCount;
   }
 
-  v5 = [(SUUIImageGridView *)self imageViews];
-  v6 = [v5 count] / v4;
+  imageViews = [(SUUIImageGridView *)self imageViews];
+  v6 = [imageViews count] / v4;
 
-  v60 = self;
-  v7 = [(SUUIImageGridView *)self imageViews];
-  v8 = [v7 count] % v4;
+  selfCopy = self;
+  imageViews2 = [(SUUIImageGridView *)self imageViews];
+  v8 = [imageViews2 count] % v4;
 
   if (v8)
   {
@@ -336,8 +336,8 @@
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v12 = [(SUUIImageGridView *)v60 imageViews];
-  v13 = [v12 countByEnumeratingWithState:&v65 objects:v71 count:16];
+  imageViews3 = [(SUUIImageGridView *)selfCopy imageViews];
+  v13 = [imageViews3 countByEnumeratingWithState:&v65 objects:v71 count:16];
   if (v13)
   {
     v14 = v13;
@@ -352,7 +352,7 @@
       {
         if (*v66 != v17)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(imageViews3);
         }
 
         [*(*(&v65 + 1) + 8 * i) sizeThatFits:{v18, v19}];
@@ -378,15 +378,15 @@
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v65 objects:v71 count:16];
+      v14 = [imageViews3 countByEnumeratingWithState:&v65 objects:v71 count:16];
     }
 
     while (v14);
   }
 
-  [(SUUIImageGridView *)v60 bounds];
+  [(SUUIImageGridView *)selfCopy bounds];
   v24 = v23;
-  [(SUUIImageGridView *)v60 bounds];
+  [(SUUIImageGridView *)selfCopy bounds];
   v26 = v25;
   for (j = 0; j != v4; ++j)
   {
@@ -407,13 +407,13 @@
     while (v9);
   }
 
-  [(SUUIImageGridView *)v60 contentInset];
+  [(SUUIImageGridView *)selfCopy contentInset];
   v32 = v26 - v31;
-  [(SUUIImageGridView *)v60 contentInset];
+  [(SUUIImageGridView *)selfCopy contentInset];
   v34 = v32 - v33;
-  [(SUUIImageGridView *)v60 contentInset];
+  [(SUUIImageGridView *)selfCopy contentInset];
   v36 = v24 - v35;
-  [(SUUIImageGridView *)v60 contentInset];
+  [(SUUIImageGridView *)selfCopy contentInset];
   v38 = v36 - v37;
   v39 = v34 / v28;
   v40 = floorf(v39);
@@ -439,16 +439,16 @@
     v44 = 0.0;
   }
 
-  [(SUUIImageGridView *)v60 contentInset];
+  [(SUUIImageGridView *)selfCopy contentInset];
   v46 = v45;
-  [(SUUIImageGridView *)v60 contentInset];
+  [(SUUIImageGridView *)selfCopy contentInset];
   v48 = v47;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v49 = [(SUUIImageGridView *)v60 imageViews];
-  v50 = [v49 countByEnumeratingWithState:&v61 objects:v70 count:16];
+  imageViews4 = [(SUUIImageGridView *)selfCopy imageViews];
+  v50 = [imageViews4 countByEnumeratingWithState:&v61 objects:v70 count:16];
   if (v50)
   {
     v51 = v50;
@@ -461,7 +461,7 @@
       {
         if (*v62 != v54)
         {
-          objc_enumerationMutation(v49);
+          objc_enumerationMutation(imageViews4);
         }
 
         v56 = *(*(&v61 + 1) + 8 * k);
@@ -470,7 +470,7 @@
         [v56 setFrame:{v46, v48, v57, v58}];
         if (v53 + 1 >= v4)
         {
-          [(SUUIImageGridView *)v60 contentInset];
+          [(SUUIImageGridView *)selfCopy contentInset];
           v46 = v59;
           v53 = 0;
           v48 = v43 + v48 + *(v11 + v52++);
@@ -482,7 +482,7 @@
         }
       }
 
-      v51 = [v49 countByEnumeratingWithState:&v61 objects:v70 count:16];
+      v51 = [imageViews4 countByEnumeratingWithState:&v61 objects:v70 count:16];
     }
 
     while (v51);

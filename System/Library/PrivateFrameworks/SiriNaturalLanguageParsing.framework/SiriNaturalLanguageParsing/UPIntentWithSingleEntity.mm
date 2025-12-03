@@ -1,20 +1,20 @@
 @interface UPIntentWithSingleEntity
-- (BOOL)isEqualToIntentWithSingleEntity:(id)a3;
-- (UPIntentWithSingleEntity)initWithIntent:(id)a3 singleEntity:(id)a4;
+- (BOOL)isEqualToIntentWithSingleEntity:(id)entity;
+- (UPIntentWithSingleEntity)initWithIntent:(id)intent singleEntity:(id)entity;
 @end
 
 @implementation UPIntentWithSingleEntity
 
-- (BOOL)isEqualToIntentWithSingleEntity:(id)a3
+- (BOOL)isEqualToIntentWithSingleEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   intent = self->_intent;
-  v6 = [v4 intent];
-  if ([(NSString *)intent isEqualToString:v6])
+  intent = [entityCopy intent];
+  if ([(NSString *)intent isEqualToString:intent])
   {
     entity = self->_entity;
-    v8 = [v4 entity];
-    v9 = [(UPEntityWithValue *)entity isEqualToEntityWithValue:v8];
+    entity = [entityCopy entity];
+    v9 = [(UPEntityWithValue *)entity isEqualToEntityWithValue:entity];
   }
 
   else
@@ -25,18 +25,18 @@
   return v9;
 }
 
-- (UPIntentWithSingleEntity)initWithIntent:(id)a3 singleEntity:(id)a4
+- (UPIntentWithSingleEntity)initWithIntent:(id)intent singleEntity:(id)entity
 {
-  v7 = a3;
-  v8 = a4;
+  intentCopy = intent;
+  entityCopy = entity;
   v12.receiver = self;
   v12.super_class = UPIntentWithSingleEntity;
   v9 = [(UPIntentWithSingleEntity *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_intent, a3);
-    objc_storeStrong(&v10->_entity, a4);
+    objc_storeStrong(&v9->_intent, intent);
+    objc_storeStrong(&v10->_entity, entity);
   }
 
   return v10;

@@ -6,9 +6,9 @@
 
 - (BOOL)isValid
 {
-  v2 = [(TSPPackageConverter *)self package];
-  v3 = [v2 zipArchive];
-  v4 = [TSPFilePackage isValidPackageAtZipArchive:v3];
+  package = [(TSPPackageConverter *)self package];
+  zipArchive = [package zipArchive];
+  v4 = [TSPFilePackage isValidPackageAtZipArchive:zipArchive];
 
   return v4;
 }

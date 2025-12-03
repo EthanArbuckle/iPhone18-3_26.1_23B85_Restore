@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (BOOL)_checkSiriInCallEnabled;
 - (CSSiriInCallEnabledMonitor)init;
-- (void)_didReceiveSiriInCallChangedInQueue:(BOOL)a3;
+- (void)_didReceiveSiriInCallChangedInQueue:(BOOL)queue;
 - (void)_siriInCallEnabledDidChangeEnabledDidChange;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
@@ -38,19 +38,19 @@
   if (AFSupportsSiriInCall())
   {
     v2 = +[AFPreferences sharedPreferences];
-    v3 = [v2 siriInCallEnabled];
+    siriInCallEnabled = [v2 siriInCallEnabled];
   }
 
   else
   {
-    v3 = 0;
+    siriInCallEnabled = 0;
   }
 
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"NO";
-    if (v3)
+    if (siriInCallEnabled)
     {
       v5 = @"YES";
     }
@@ -62,17 +62,17 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s Siri in Call enabled = %{public}@", &v7, 0x16u);
   }
 
-  return v3;
+  return siriInCallEnabled;
 }
 
-- (void)_didReceiveSiriInCallChangedInQueue:(BOOL)a3
+- (void)_didReceiveSiriInCallChangedInQueue:(BOOL)queue
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100123DA8;
   v3[3] = &unk_1002537E8;
   v3[4] = self;
-  v4 = a3;
+  queueCopy = queue;
   [(CSSiriInCallEnabledMonitor *)self enumerateObserversInQueue:v3];
 }
 
@@ -93,7 +93,7 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   if (AFDeviceSupportsFullSiriUOD() && +[AFFeatureFlags isBlushingPhantomEnabled])
   {
@@ -116,7 +116,7 @@
 {
   if ((+[CSUtils isDarwinOS]& 1) != 0)
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -134,10 +134,10 @@
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

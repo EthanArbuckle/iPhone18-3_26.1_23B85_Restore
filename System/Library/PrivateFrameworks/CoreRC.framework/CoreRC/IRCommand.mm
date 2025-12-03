@@ -1,12 +1,12 @@
 @interface IRCommand
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setSequence:(unint64_t *)a3 withCount:(unint64_t)a4;
-- (IRCommand)initWithCoder:(id)a3;
-- (IRCommand)initWithProtocol:(id)a3 payload:(unint64_t)a4 repeat:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setSequence:(unint64_t *)sequence withCount:(unint64_t)count;
+- (IRCommand)initWithCoder:(id)coder;
+- (IRCommand)initWithProtocol:(id)protocol payload:(unint64_t)payload repeat:(BOOL)repeat;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IRCommand
@@ -24,9 +24,9 @@
   [(IRCommand *)&v4 dealloc];
 }
 
-- (IRCommand)initWithProtocol:(id)a3 payload:(unint64_t)a4 repeat:(BOOL)a5
+- (IRCommand)initWithProtocol:(id)protocol payload:(unint64_t)payload repeat:(BOOL)repeat
 {
-  if (a3)
+  if (protocol)
   {
     v11.receiver = self;
     v11.super_class = IRCommand;
@@ -34,9 +34,9 @@
     v9 = v8;
     if (v8)
     {
-      v8->_payload = a4;
-      v8->_isRepeat = a5;
-      v8->_protocol = a3;
+      v8->_payload = payload;
+      v8->_isRepeat = repeat;
+      v8->_protocol = protocol;
       v9->_timestamp = mach_absolute_time();
     }
   }
@@ -50,7 +50,7 @@
   return v9;
 }
 
-- (IRCommand)initWithCoder:(id)a3
+- (IRCommand)initWithCoder:(id)coder
 {
   v15.receiver = self;
   v15.super_class = IRCommand;
@@ -59,7 +59,7 @@
   {
     v5 = MEMORY[0x277CBEB98];
     v6 = objc_opt_class();
-    v7 = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"commandSequence"}];
+    v7 = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"commandSequence"}];
     if ([v7 count])
     {
       v8 = malloc_type_calloc([v7 count], 8uLL, 0x100004000313F17uLL);
@@ -91,15 +91,15 @@
       }
     }
 
-    v4->_isRepeat = [a3 decodeBoolForKey:@"commandIsRepeat"];
-    v4->_protocol = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"commandProtocol"];
-    v4->_timestamp = [a3 decodeInt64ForKey:@"commandTimestamp"];
+    v4->_isRepeat = [coder decodeBoolForKey:@"commandIsRepeat"];
+    v4->_protocol = [coder decodeObjectOfClass:objc_opt_class() forKey:@"commandProtocol"];
+    v4->_timestamp = [coder decodeInt64ForKey:@"commandTimestamp"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = objc_opt_new();
   if (self->_sequenceCount)
@@ -113,15 +113,15 @@
     while (v5 < self->_sequenceCount);
   }
 
-  [a3 encodeObject:self->_protocol forKey:@"commandProtocol"];
-  [a3 encodeObject:v6 forKey:@"commandSequence"];
-  [a3 encodeBool:self->_isRepeat forKey:@"commandIsRepeat"];
-  [a3 encodeInt64:self->_timestamp forKey:@"commandTimestamp"];
+  [coder encodeObject:self->_protocol forKey:@"commandProtocol"];
+  [coder encodeObject:v6 forKey:@"commandSequence"];
+  [coder encodeBool:self->_isRepeat forKey:@"commandIsRepeat"];
+  [coder encodeInt64:self->_timestamp forKey:@"commandTimestamp"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithProtocol:payload:repeat:", -[IRCommand protocol](self, "protocol"), -[IRCommand payload](self, "payload"), -[IRCommand isRepeat](self, "isRepeat")}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithProtocol:payload:repeat:", -[IRCommand protocol](self, "protocol"), -[IRCommand payload](self, "payload"), -[IRCommand isRepeat](self, "isRepeat")}];
   if (v4)
   {
     [v4 setTimestamp:{-[IRCommand timestamp](self, "timestamp")}];
@@ -170,9 +170,9 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
   }
@@ -185,14 +185,14 @@
       goto LABEL_7;
     }
 
-    v5 = -[IRProtocol isEqual:](-[IRCommand protocol](self, "protocol"), "isEqual:", [a3 protocol]);
+    v5 = -[IRProtocol isEqual:](-[IRCommand protocol](self, "protocol"), "isEqual:", [equal protocol]);
     if (!v5)
     {
       return v5;
     }
 
-    v6 = [(IRCommand *)self sequenceCount];
-    if (v6 != [a3 sequenceCount])
+    sequenceCount = [(IRCommand *)self sequenceCount];
+    if (sequenceCount != [equal sequenceCount])
     {
 LABEL_7:
       LOBYTE(v5) = 0;
@@ -201,13 +201,13 @@ LABEL_7:
 
     if ([(IRCommand *)self sequenceCount])
     {
-      v7 = memcmp(-[IRCommand sequence](self, "sequence"), [a3 sequence], 8 * -[IRCommand sequenceCount](self, "sequenceCount")) == 0;
+      v7 = memcmp(-[IRCommand sequence](self, "sequence"), [equal sequence], 8 * -[IRCommand sequenceCount](self, "sequenceCount")) == 0;
     }
 
     else
     {
-      v8 = [(IRCommand *)self payload];
-      v7 = v8 == [a3 payload];
+      payload = [(IRCommand *)self payload];
+      v7 = payload == [equal payload];
     }
 
     LOBYTE(v5) = v7;
@@ -216,18 +216,18 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)setSequence:(unint64_t *)a3 withCount:(unint64_t)a4
+- (BOOL)setSequence:(unint64_t *)sequence withCount:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
     if (!self->_sequence)
     {
-      v7 = malloc_type_calloc(a4, 8uLL, 0x100004000313F17uLL);
+      v7 = malloc_type_calloc(count, 8uLL, 0x100004000313F17uLL);
       self->_sequence = v7;
       if (v7)
       {
-        self->_sequenceCount = a4;
-        memcpy(v7, a3, 8 * a4);
+        self->_sequenceCount = count;
+        memcpy(v7, sequence, 8 * count);
         self->_payload = *self->_sequence;
       }
     }

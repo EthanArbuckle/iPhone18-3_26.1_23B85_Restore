@@ -1,30 +1,30 @@
 @interface IKTextParser
-+ (id)textWithAttributedString:(id)a3;
-+ (id)textWithDOMElement:(id)a3 usingParseBlock:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)textWithAttributedString:(id)string;
++ (id)textWithDOMElement:(id)element usingParseBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (NSString)string;
-- (id)_attributedStringFromDomElement:(id)a3 usingParseBlock:(id)a4;
-- (id)_attributedStringWithDefaultAttributes:(id)a3 fontHandler:(id)a4 style:(id)a5;
-- (id)_attributesWithFont:(id)a3 style:(id)a4;
-- (id)_attributesWithFont:(id)a3 style:(id)a4 foregroundColor:(id)a5 textAlignment:(int64_t)a6;
-- (id)_stringFromDateElement:(id)a3 unformattedString:(id)a4;
-- (id)_stringFromDurationElement:(id)a3 unformattedString:(id)a4;
-- (id)_stringFromNumberElement:(id)a3 unformattedString:(id)a4;
-- (id)attributedStringWithFont:(id)a3 foregroundColor:(id)a4 textAlignment:(int64_t)a5 style:(id)a6;
-- (id)attributedStringWithFont:(id)a3 style:(id)a4;
-- (id)attributedStringWithFontHandler:(id)a3 style:(id)a4 defaultAttributes:(id *)a5;
-- (id)attributedStringWithFontHandler:(id)a3 style:(id)a4 foregroundColor:(id)a5 textAlignment:(int64_t)a6 defaultAttributes:(id *)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_attributedStringFromDomElement:(id)element usingParseBlock:(id)block;
+- (id)_attributedStringWithDefaultAttributes:(id)attributes fontHandler:(id)handler style:(id)style;
+- (id)_attributesWithFont:(id)font style:(id)style;
+- (id)_attributesWithFont:(id)font style:(id)style foregroundColor:(id)color textAlignment:(int64_t)alignment;
+- (id)_stringFromDateElement:(id)element unformattedString:(id)string;
+- (id)_stringFromDurationElement:(id)element unformattedString:(id)string;
+- (id)_stringFromNumberElement:(id)element unformattedString:(id)string;
+- (id)attributedStringWithFont:(id)font foregroundColor:(id)color textAlignment:(int64_t)alignment style:(id)style;
+- (id)attributedStringWithFont:(id)font style:(id)style;
+- (id)attributedStringWithFontHandler:(id)handler style:(id)style defaultAttributes:(id *)attributes;
+- (id)attributedStringWithFontHandler:(id)handler style:(id)style foregroundColor:(id)color textAlignment:(int64_t)alignment defaultAttributes:(id *)attributes;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation IKTextParser
 
-+ (id)textWithDOMElement:(id)a3 usingParseBlock:(id)a4
++ (id)textWithDOMElement:(id)element usingParseBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  v9 = [v8 _attributedStringFromDomElement:v7 usingParseBlock:v6];
+  blockCopy = block;
+  elementCopy = element;
+  v8 = objc_alloc_init(self);
+  v9 = [v8 _attributedStringFromDomElement:elementCopy usingParseBlock:blockCopy];
 
   v10 = v8[1];
   v8[1] = v9;
@@ -32,137 +32,137 @@
   return v8;
 }
 
-+ (id)textWithAttributedString:(id)a3
++ (id)textWithAttributedString:(id)string
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  stringCopy = string;
+  v5 = objc_alloc_init(self);
   v6 = v5[1];
-  v5[1] = v4;
+  v5[1] = stringCopy;
 
   return v5;
 }
 
 - (NSString)string
 {
-  v2 = [(IKTextParser *)self attributedString];
-  v3 = [v2 string];
+  attributedString = [(IKTextParser *)self attributedString];
+  string = [attributedString string];
 
-  return v3;
+  return string;
 }
 
-- (id)attributedStringWithFont:(id)a3 style:(id)a4
+- (id)attributedStringWithFont:(id)font style:(id)style
 {
-  v6 = a4;
-  v7 = [(IKTextParser *)self _attributesWithFont:a3 style:v6];
-  v8 = [(IKTextParser *)self _attributedStringWithDefaultAttributes:v7 fontHandler:0 style:v6];
+  styleCopy = style;
+  v7 = [(IKTextParser *)self _attributesWithFont:font style:styleCopy];
+  v8 = [(IKTextParser *)self _attributedStringWithDefaultAttributes:v7 fontHandler:0 style:styleCopy];
 
   return v8;
 }
 
-- (id)attributedStringWithFont:(id)a3 foregroundColor:(id)a4 textAlignment:(int64_t)a5 style:(id)a6
+- (id)attributedStringWithFont:(id)font foregroundColor:(id)color textAlignment:(int64_t)alignment style:(id)style
 {
-  v10 = a6;
-  v11 = [(IKTextParser *)self _attributesWithFont:a3 style:v10 foregroundColor:a4 textAlignment:a5];
-  v12 = [(IKTextParser *)self _attributedStringWithDefaultAttributes:v11 fontHandler:0 style:v10];
+  styleCopy = style;
+  v11 = [(IKTextParser *)self _attributesWithFont:font style:styleCopy foregroundColor:color textAlignment:alignment];
+  v12 = [(IKTextParser *)self _attributedStringWithDefaultAttributes:v11 fontHandler:0 style:styleCopy];
 
   return v12;
 }
 
-- (id)attributedStringWithFontHandler:(id)a3 style:(id)a4 defaultAttributes:(id *)a5
+- (id)attributedStringWithFontHandler:(id)handler style:(id)style defaultAttributes:(id *)attributes
 {
-  v8 = *(a3 + 2);
-  v9 = a4;
-  v10 = a3;
+  v8 = *(handler + 2);
+  styleCopy = style;
+  handlerCopy = handler;
   v11 = v8();
-  v12 = [(IKTextParser *)self _attributesWithFont:v11 style:v9];
+  v12 = [(IKTextParser *)self _attributesWithFont:v11 style:styleCopy];
 
-  if (a5)
+  if (attributes)
   {
     v13 = v12;
-    *a5 = v12;
+    *attributes = v12;
   }
 
-  v14 = [(IKTextParser *)self _attributedStringWithDefaultAttributes:v12 fontHandler:v10 style:v9];
+  v14 = [(IKTextParser *)self _attributedStringWithDefaultAttributes:v12 fontHandler:handlerCopy style:styleCopy];
 
   return v14;
 }
 
-- (id)attributedStringWithFontHandler:(id)a3 style:(id)a4 foregroundColor:(id)a5 textAlignment:(int64_t)a6 defaultAttributes:(id *)a7
+- (id)attributedStringWithFontHandler:(id)handler style:(id)style foregroundColor:(id)color textAlignment:(int64_t)alignment defaultAttributes:(id *)attributes
 {
-  v12 = *(a3 + 2);
-  v13 = a5;
-  v14 = a4;
-  v15 = v12(a3, v14);
-  v16 = [(IKTextParser *)self _attributesWithFont:v15 style:v14 foregroundColor:v13 textAlignment:a6];
+  v12 = *(handler + 2);
+  colorCopy = color;
+  styleCopy = style;
+  v15 = v12(handler, styleCopy);
+  v16 = [(IKTextParser *)self _attributesWithFont:v15 style:styleCopy foregroundColor:colorCopy textAlignment:alignment];
 
-  if (a7)
+  if (attributes)
   {
     v17 = v16;
-    *a7 = v16;
+    *attributes = v16;
   }
 
-  v18 = [(IKTextParser *)self _attributedStringWithDefaultAttributes:v16 fontHandler:0 style:v14];
+  v18 = [(IKTextParser *)self _attributedStringWithDefaultAttributes:v16 fontHandler:0 style:styleCopy];
 
   return v18;
 }
 
-- (id)_attributesWithFont:(id)a3 style:(id)a4
+- (id)_attributesWithFont:(id)font style:(id)style
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 ikColor];
-  v9 = [v8 color];
+  styleCopy = style;
+  fontCopy = font;
+  ikColor = [styleCopy ikColor];
+  color = [ikColor color];
 
-  v10 = [v6 textAlignment];
-  if ((v10 - 1) >= 4)
+  textAlignment = [styleCopy textAlignment];
+  if ((textAlignment - 1) >= 4)
   {
     v11 = 4;
   }
 
   else
   {
-    v11 = v10 - 1;
+    v11 = textAlignment - 1;
   }
 
-  v12 = [(IKTextParser *)self _attributesWithFont:v7 style:v6 foregroundColor:v9 textAlignment:v11];
+  v12 = [(IKTextParser *)self _attributesWithFont:fontCopy style:styleCopy foregroundColor:color textAlignment:v11];
 
   return v12;
 }
 
-- (id)_attributesWithFont:(id)a3 style:(id)a4 foregroundColor:(id)a5 textAlignment:(int64_t)a6
+- (id)_attributesWithFont:(id)font style:(id)style foregroundColor:(id)color textAlignment:(int64_t)alignment
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x277CBEB38] dictionary];
-  v13 = v12;
-  if (v9)
+  fontCopy = font;
+  styleCopy = style;
+  colorCopy = color;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v13 = dictionary;
+  if (fontCopy)
   {
-    [v12 setObject:v9 forKeyedSubscript:*MEMORY[0x277D740A8]];
+    [dictionary setObject:fontCopy forKeyedSubscript:*MEMORY[0x277D740A8]];
   }
 
-  if (v11)
+  if (colorCopy)
   {
-    [v13 setObject:v11 forKeyedSubscript:*MEMORY[0x277D740C0]];
+    [v13 setObject:colorCopy forKeyedSubscript:*MEMORY[0x277D740C0]];
   }
 
-  v14 = [v10 textShadow];
-  v15 = [v10 letterSpacing];
-  if (v14)
+  textShadow = [styleCopy textShadow];
+  letterSpacing = [styleCopy letterSpacing];
+  if (textShadow)
   {
-    [v13 setObject:v14 forKeyedSubscript:*MEMORY[0x277D74138]];
+    [v13 setObject:textShadow forKeyedSubscript:*MEMORY[0x277D74138]];
   }
 
-  if (v15)
+  if (letterSpacing)
   {
-    [v13 setObject:v15 forKeyedSubscript:*MEMORY[0x277D740D0]];
+    [v13 setObject:letterSpacing forKeyedSubscript:*MEMORY[0x277D740D0]];
   }
 
-  v16 = [MEMORY[0x277D74248] defaultParagraphStyle];
-  v17 = [v16 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+  v17 = [defaultParagraphStyle mutableCopy];
 
-  [v17 ik_applyViewElementStyle:v10];
-  [v17 setAlignment:a6];
+  [v17 ik_applyViewElementStyle:styleCopy];
+  [v17 setAlignment:alignment];
   [v17 setLineBreakMode:4];
   [v13 setObject:v17 forKeyedSubscript:*MEMORY[0x277D74118]];
   v18 = [v13 copy];
@@ -170,18 +170,18 @@
   return v18;
 }
 
-- (id)_attributedStringWithDefaultAttributes:(id)a3 fontHandler:(id)a4 style:(id)a5
+- (id)_attributedStringWithDefaultAttributes:(id)attributes fontHandler:(id)handler style:(id)style
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(IKTextParser *)self attributedString];
-  v12 = [v11 mutableCopy];
+  handlerCopy = handler;
+  styleCopy = style;
+  attributesCopy = attributes;
+  attributedString = [(IKTextParser *)self attributedString];
+  v12 = [attributedString mutableCopy];
 
   v13 = [v12 length];
-  [v12 addAttributes:v10 range:{0, v13}];
-  v14 = [v10 objectForKeyedSubscript:*MEMORY[0x277D740A8]];
-  v15 = [v10 objectForKeyedSubscript:*MEMORY[0x277D740C0]];
+  [v12 addAttributes:attributesCopy range:{0, v13}];
+  v14 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D740A8]];
+  v15 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D740C0]];
 
   if (v14)
   {
@@ -190,9 +190,9 @@
     v19[1] = 3221225472;
     v19[2] = __73__IKTextParser__attributedStringWithDefaultAttributes_fontHandler_style___block_invoke;
     v19[3] = &unk_27979B4C8;
-    v20 = v9;
+    v20 = styleCopy;
     v21 = v14;
-    v24 = v8;
+    v24 = handlerCopy;
     v22 = v15;
     v23 = v12;
     [(NSAttributedString *)attributedString enumerateAttributesInRange:0 options:v13 usingBlock:0, v19];
@@ -313,17 +313,17 @@ LABEL_15:
   }
 }
 
-- (id)_attributedStringFromDomElement:(id)a3 usingParseBlock:(id)a4
+- (id)_attributedStringFromDomElement:(id)element usingParseBlock:(id)block
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  blockCopy = block;
   v8 = objc_alloc_init(MEMORY[0x277CCAB48]);
   v37 = 1;
-  v9 = [v6 childNodesAsArray];
-  if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  childNodesAsArray = [elementCopy childNodesAsArray];
+  if (blockCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v10 = v7[2](v7, self, v6, &v37);
+    v10 = blockCopy[2](blockCopy, self, elementCopy, &v37);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -339,7 +339,7 @@ LABEL_15:
     if ((v37 & 1) == 0)
     {
 
-      v9 = 0;
+      childNodesAsArray = 0;
     }
   }
 
@@ -352,15 +352,15 @@ LABEL_15:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && v37 == 1)
   {
-    v12 = [v6 textContent];
+    textContent = [elementCopy textContent];
 
-    v10 = v12;
+    v10 = textContent;
   }
 
-  v13 = [v6 nodeName];
-  v32 = v6;
-  v30 = v13;
-  if ([v13 isEqualToString:@"b"])
+  nodeName = [elementCopy nodeName];
+  v32 = elementCopy;
+  v30 = nodeName;
+  if ([nodeName isEqualToString:@"b"])
   {
     v45 = @"bold";
     v46[0] = MEMORY[0x277CBEC38];
@@ -372,7 +372,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ([v13 isEqualToString:@"i"])
+  if ([nodeName isEqualToString:@"i"])
   {
     v43 = @"italic";
     v44 = MEMORY[0x277CBEC38];
@@ -382,7 +382,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if ([v13 isEqualToString:@"span"])
+  if ([nodeName isEqualToString:@"span"])
   {
     v41 = @"span";
     v42 = MEMORY[0x277CBEC38];
@@ -392,7 +392,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if ([v13 isEqualToString:@"strike"])
+  if ([nodeName isEqualToString:@"strike"])
   {
     v39 = @"strike";
     v40 = MEMORY[0x277CBEC38];
@@ -402,21 +402,21 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if ([v13 isEqualToString:@"date"])
+  if ([nodeName isEqualToString:@"date"])
   {
-    v27 = [(IKTextParser *)self _stringFromDateElement:v6 unformattedString:v10];
+    v27 = [(IKTextParser *)self _stringFromDateElement:elementCopy unformattedString:v10];
   }
 
-  else if ([v13 isEqualToString:@"duration"])
+  else if ([nodeName isEqualToString:@"duration"])
   {
-    v27 = [(IKTextParser *)self _stringFromDurationElement:v6 unformattedString:v10];
+    v27 = [(IKTextParser *)self _stringFromDurationElement:elementCopy unformattedString:v10];
   }
 
   else
   {
-    if (![v13 isEqualToString:@"number"])
+    if (![nodeName isEqualToString:@"number"])
     {
-      if ([v13 isEqualToString:@"br"])
+      if ([nodeName isEqualToString:@"br"])
       {
 
         v17 = 0;
@@ -431,7 +431,7 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v27 = [(IKTextParser *)self _stringFromNumberElement:v6 unformattedString:v10];
+    v27 = [(IKTextParser *)self _stringFromNumberElement:elementCopy unformattedString:v10];
   }
 
   v28 = v27;
@@ -443,7 +443,7 @@ LABEL_20:
   }
 
   v17 = 0;
-  v9 = 0;
+  childNodesAsArray = 0;
 LABEL_21:
   v31 = v10;
   if ([(__CFString *)v10 length])
@@ -466,7 +466,7 @@ LABEL_21:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v19 = v9;
+  v19 = childNodesAsArray;
   v20 = [v19 countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v20)
   {
@@ -481,7 +481,7 @@ LABEL_21:
           objc_enumerationMutation(v19);
         }
 
-        v24 = [(IKTextParser *)self _attributedStringFromDomElement:*(*(&v33 + 1) + 8 * i) usingParseBlock:v7];
+        v24 = [(IKTextParser *)self _attributedStringFromDomElement:*(*(&v33 + 1) + 8 * i) usingParseBlock:blockCopy];
         [v8 appendAttributedString:v24];
       }
 
@@ -501,10 +501,10 @@ LABEL_21:
   return v8;
 }
 
-- (id)_stringFromDateElement:(id)a3 unformattedString:(id)a4
+- (id)_stringFromDateElement:(id)element unformattedString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  stringCopy = string;
   if (!_stringFromDateElement_unformattedString__sSimpleInputFormatter)
   {
     v7 = objc_alloc_init(MEMORY[0x277CCA968]);
@@ -514,7 +514,7 @@ LABEL_21:
     [_stringFromDateElement_unformattedString__sSimpleInputFormatter setDateFormat:@"yyyy-MM-dd"];
   }
 
-  v9 = [v5 getAttribute:@"locale"];
+  v9 = [elementCopy getAttribute:@"locale"];
   if ([v9 length])
   {
     [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v9];
@@ -526,25 +526,25 @@ LABEL_21:
   }
   v10 = ;
   [_stringFromDateElement_unformattedString__sSimpleInputFormatter setLocale:v10];
-  if (!v6)
+  if (!stringCopy)
   {
-    v6 = [v5 textContent];
+    stringCopy = [elementCopy textContent];
   }
 
-  v11 = [_stringFromDateElement_unformattedString__sSimpleInputFormatter dateFromString:v6];
+  v11 = [_stringFromDateElement_unformattedString__sSimpleInputFormatter dateFromString:stringCopy];
   if (v11)
   {
     v12 = v11;
 LABEL_12:
     v15 = +[IKFormatting sharedInstance];
-    v16 = [v5 getAttribute:@"format"];
+    v16 = [elementCopy getAttribute:@"format"];
     v17 = [v15 formatDate:v12 format:v16];
 
     goto LABEL_13;
   }
 
   v13 = +[IKFormatting isoDateFormatter];
-  v12 = [v13 dateFromString:v6];
+  v12 = [v13 dateFromString:stringCopy];
 
   if (v12)
   {
@@ -552,7 +552,7 @@ LABEL_12:
   }
 
   v14 = +[IKFormatting rfc1123DateFormatter];
-  v12 = [v14 dateFromString:v6];
+  v12 = [v14 dateFromString:stringCopy];
 
   if (v12)
   {
@@ -568,7 +568,7 @@ LABEL_13:
 
   else
   {
-    v18 = v6;
+    v18 = stringCopy;
   }
 
   v19 = v18;
@@ -576,14 +576,14 @@ LABEL_13:
   return v18;
 }
 
-- (id)_stringFromDurationElement:(id)a3 unformattedString:(id)a4
+- (id)_stringFromDurationElement:(id)element unformattedString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  elementCopy = element;
+  stringCopy = string;
+  textContent = stringCopy;
   if (_stringFromDurationElement_unformattedString__sInputFormatter)
   {
-    if (v6)
+    if (stringCopy)
     {
       goto LABEL_3;
     }
@@ -595,15 +595,15 @@ LABEL_13:
     v12 = _stringFromDurationElement_unformattedString__sInputFormatter;
     _stringFromDurationElement_unformattedString__sInputFormatter = v11;
 
-    if (v7)
+    if (textContent)
     {
       goto LABEL_3;
     }
   }
 
-  v7 = [v5 textContent];
+  textContent = [elementCopy textContent];
 LABEL_3:
-  v8 = [_stringFromDurationElement_unformattedString__sInputFormatter numberFromString:v7];
+  v8 = [_stringFromDurationElement_unformattedString__sInputFormatter numberFromString:textContent];
   if (v8)
   {
     v9 = +[IKFormatting sharedInstance];
@@ -622,7 +622,7 @@ LABEL_3:
 
   else
   {
-    v13 = v7;
+    v13 = textContent;
   }
 
   v14 = v13;
@@ -630,14 +630,14 @@ LABEL_3:
   return v13;
 }
 
-- (id)_stringFromNumberElement:(id)a3 unformattedString:(id)a4
+- (id)_stringFromNumberElement:(id)element unformattedString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  elementCopy = element;
+  stringCopy = string;
+  textContent = stringCopy;
   if (_stringFromNumberElement_unformattedString__sInputFormatter)
   {
-    if (v6)
+    if (stringCopy)
     {
       goto LABEL_3;
     }
@@ -649,21 +649,21 @@ LABEL_3:
     v15 = _stringFromNumberElement_unformattedString__sInputFormatter;
     _stringFromNumberElement_unformattedString__sInputFormatter = v14;
 
-    if (v7)
+    if (textContent)
     {
       goto LABEL_3;
     }
   }
 
-  v7 = [v5 textContent];
+  textContent = [elementCopy textContent];
 LABEL_3:
-  v8 = [_stringFromNumberElement_unformattedString__sInputFormatter numberFromString:v7];
+  v8 = [_stringFromNumberElement_unformattedString__sInputFormatter numberFromString:textContent];
   if (v8)
   {
     v9 = +[IKFormatting sharedInstance];
-    v10 = [v5 getAttribute:@"style"];
-    v11 = [v5 getAttribute:@"postiveFormat"];
-    v12 = [v5 getAttribute:@"negativeFormat"];
+    v10 = [elementCopy getAttribute:@"style"];
+    v11 = [elementCopy getAttribute:@"postiveFormat"];
+    v12 = [elementCopy getAttribute:@"negativeFormat"];
     v13 = [v9 formatNumber:v8 style:v10 postiveFormat:v11 negativeFormat:v12];
   }
 
@@ -679,7 +679,7 @@ LABEL_3:
 
   else
   {
-    v16 = v7;
+    v16 = textContent;
   }
 
   v17 = v16;
@@ -687,10 +687,10 @@ LABEL_3:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_5;
   }
@@ -703,7 +703,7 @@ LABEL_3:
   }
 
   attributedString = self->_attributedString;
-  if (attributedString == v4->_attributedString)
+  if (attributedString == equalCopy->_attributedString)
   {
 LABEL_5:
     v6 = 1;
@@ -719,10 +719,10 @@ LABEL_7:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [(NSAttributedString *)self->_attributedString mutableCopyWithZone:a3];
+  v6 = [(NSAttributedString *)self->_attributedString mutableCopyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 

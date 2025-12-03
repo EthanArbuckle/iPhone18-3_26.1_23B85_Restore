@@ -1,12 +1,12 @@
 @interface PrivacyCategoryCollectionViewCell
-- (_TtC8AppStore33PrivacyCategoryCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore33PrivacyCategoryCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation PrivacyCategoryCollectionViewCell
 
-- (_TtC8AppStore33PrivacyCategoryCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore33PrivacyCategoryCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore33PrivacyCategoryCollectionViewCell_privacyCategoryView;
   *(&self->super.super.super.super.super.isa + v4) = [objc_allocWithZone(type metadata accessor for PrivacyCategoryView()) initWithFrame:{0.0, 0.0, 0.0, 0.0}];
@@ -26,8 +26,8 @@
   v2 = v13.receiver;
   [(PrivacyCategoryCollectionViewCell *)&v13 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC8AppStore33PrivacyCategoryCollectionViewCell_privacyCategoryView];
-  v4 = [v2 contentView];
-  [v4 bounds];
+  contentView = [v2 contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -38,7 +38,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_100391920();
 }
 

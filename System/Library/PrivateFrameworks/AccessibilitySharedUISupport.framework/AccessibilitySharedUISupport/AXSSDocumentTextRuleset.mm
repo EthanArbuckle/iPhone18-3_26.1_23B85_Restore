@@ -1,8 +1,8 @@
 @interface AXSSDocumentTextRuleset
 - (AXSSDocumentTextRuleset)init;
 - (NSArray)allRules;
-- (id)rulesForGranularity:(int64_t)a3;
-- (void)addRule:(id)a3;
+- (id)rulesForGranularity:(int64_t)granularity;
+- (void)addRule:(id)rule;
 @end
 
 @implementation AXSSDocumentTextRuleset
@@ -22,22 +22,22 @@
   return v2;
 }
 
-- (void)addRule:(id)a3
+- (void)addRule:(id)rule
 {
-  v4 = a3;
-  v5 = [(AXSSDocumentTextRuleset *)self _rules];
-  [v5 addObject:v4];
+  ruleCopy = rule;
+  _rules = [(AXSSDocumentTextRuleset *)self _rules];
+  [_rules addObject:ruleCopy];
 }
 
 - (NSArray)allRules
 {
-  v2 = [(AXSSDocumentTextRuleset *)self _rules];
-  v3 = [v2 copy];
+  _rules = [(AXSSDocumentTextRuleset *)self _rules];
+  v3 = [_rules copy];
 
   return v3;
 }
 
-- (id)rulesForGranularity:(int64_t)a3
+- (id)rulesForGranularity:(int64_t)granularity
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
@@ -45,8 +45,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(AXSSDocumentTextRuleset *)self allRules];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allRules = [(AXSSDocumentTextRuleset *)self allRules];
+  v7 = [allRules countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -57,17 +57,17 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allRules);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([v11 granularity] == a3)
+        if ([v11 granularity] == granularity)
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [allRules countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);

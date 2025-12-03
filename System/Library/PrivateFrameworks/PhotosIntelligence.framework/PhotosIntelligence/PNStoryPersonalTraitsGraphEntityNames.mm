@@ -15,9 +15,9 @@
   v2 = [(PNStoryPersonalTraitsGraphEntityNames *)&v6 init];
   if (v2)
   {
-    v3 = [objc_opt_class() _loadPersonalTraitEntityConfiguration];
+    _loadPersonalTraitEntityConfiguration = [objc_opt_class() _loadPersonalTraitEntityConfiguration];
     personalTraitEntityConfiguration = v2->_personalTraitEntityConfiguration;
-    v2->_personalTraitEntityConfiguration = v3;
+    v2->_personalTraitEntityConfiguration = _loadPersonalTraitEntityConfiguration;
   }
 
   return v2;
@@ -101,8 +101,8 @@ void __67__PNStoryPersonalTraitsGraphEntityNames_dominantRequiredSceneNames__blo
 {
   v2 = [(NSDictionary *)self->_personalTraitEntityConfiguration objectForKeyedSubscript:@"scenes"];
   v3 = MEMORY[0x1E695DFD8];
-  v4 = [v2 allKeys];
-  v5 = [v3 setWithArray:v4];
+  allKeys = [v2 allKeys];
+  v5 = [v3 setWithArray:allKeys];
 
   return v5;
 }
@@ -110,9 +110,9 @@ void __67__PNStoryPersonalTraitsGraphEntityNames_dominantRequiredSceneNames__blo
 - (int64_t)configurationVersion
 {
   v2 = [(NSDictionary *)self->_personalTraitEntityConfiguration objectForKeyedSubscript:@"version"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 @end

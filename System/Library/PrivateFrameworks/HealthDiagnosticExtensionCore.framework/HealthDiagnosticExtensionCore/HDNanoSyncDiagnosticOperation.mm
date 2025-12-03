@@ -1,14 +1,14 @@
 @interface HDNanoSyncDiagnosticOperation
-- (id)_reportDetailsForDevice:(id)a3 database:(id)a4;
+- (id)_reportDetailsForDevice:(id)device database:(id)database;
 - (id)_sortedPairedDevices;
 - (id)nanoSyncDatabaseURL;
-- (int64_t)_countOfMessagesForDeviceIdentifier:(id)a3 description:(id)a4 predicateSQL:(id)a5 date:(id)a6 database:(id)a7;
+- (int64_t)_countOfMessagesForDeviceIdentifier:(id)identifier description:(id)description predicateSQL:(id)l date:(id)date database:(id)database;
 - (void)_collectNanoSyncMessageDatabase;
-- (void)_reportIDSSummaryForDeviceIdentifier:(id)a3 database:(id)a4;
-- (void)_reportMostRecentMessageDateWithDeviceIdentifier:(id)a3 description:(id)a4 field:(id)a5 predicateSQL:(id)a6 database:(id)a7;
-- (void)_reportMostRecentMessageErrorsWithDeviceIdentifier:(id)a3 database:(id)a4;
-- (void)_reportQuickSwitchSummaryWithDevicesByPairingID:(id)a3;
-- (void)_reportSummaryWithDevices:(id)a3;
+- (void)_reportIDSSummaryForDeviceIdentifier:(id)identifier database:(id)database;
+- (void)_reportMostRecentMessageDateWithDeviceIdentifier:(id)identifier description:(id)description field:(id)field predicateSQL:(id)l database:(id)database;
+- (void)_reportMostRecentMessageErrorsWithDeviceIdentifier:(id)identifier database:(id)database;
+- (void)_reportQuickSwitchSummaryWithDevicesByPairingID:(id)d;
+- (void)_reportSummaryWithDevices:(id)devices;
 - (void)run;
 @end
 
@@ -16,8 +16,8 @@
 
 - (id)nanoSyncDatabaseURL
 {
-  v2 = [(HDDiagnosticOperation *)self healthDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"NanoSync" isDirectory:1];
+  healthDirectoryURL = [(HDDiagnosticOperation *)self healthDirectoryURL];
+  v3 = [healthDirectoryURL URLByAppendingPathComponent:@"NanoSync" isDirectory:1];
 
   v4 = [v3 URLByAppendingPathComponent:@"com.apple.private.alloy.health.sync.db" isDirectory:0];
 
@@ -28,13 +28,13 @@
 {
   v38 = *MEMORY[0x277D85DE8];
   [(HDNanoSyncDiagnosticOperation *)self _collectNanoSyncMessageDatabase];
-  v3 = [(HDNanoSyncDiagnosticOperation *)self _sortedPairedDevices];
+  _sortedPairedDevices = [(HDNanoSyncDiagnosticOperation *)self _sortedPairedDevices];
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = v3;
+  v5 = _sortedPairedDevices;
   v6 = [v5 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v6)
   {
@@ -66,13 +66,13 @@
     -[HDDiagnosticOperation log:](self, "log:", @"Found %lu paired devices", [v5 count]);
     [(HDNanoSyncDiagnosticOperation *)self _reportSummaryWithDevices:v5];
     [(HDNanoSyncDiagnosticOperation *)self _reportQuickSwitchSummaryWithDevicesByPairingID:v4];
-    v13 = [(HDDiagnosticOperation *)self healthDirectoryURL];
-    v14 = [v13 URLByAppendingPathComponent:@"healthdb.sqlite" isDirectory:0];
+    healthDirectoryURL = [(HDDiagnosticOperation *)self healthDirectoryURL];
+    v14 = [healthDirectoryURL URLByAppendingPathComponent:@"healthdb.sqlite" isDirectory:0];
 
     v27 = v14;
     v15 = [(HDDiagnosticOperation *)self openReadOnlyDatabaseAtURL:v14];
-    v16 = [(HDNanoSyncDiagnosticOperation *)self nanoSyncDatabaseURL];
-    v17 = [(HDDiagnosticOperation *)self openReadOnlyDatabaseAtURL:v16];
+    nanoSyncDatabaseURL = [(HDNanoSyncDiagnosticOperation *)self nanoSyncDatabaseURL];
+    v17 = [(HDDiagnosticOperation *)self openReadOnlyDatabaseAtURL:nanoSyncDatabaseURL];
 
     v30 = 0u;
     v31 = 0u;
@@ -132,18 +132,18 @@
 
 - (void)_collectNanoSyncMessageDatabase
 {
-  v10 = [(HDNanoSyncDiagnosticOperation *)self nanoSyncDatabaseURL];
+  nanoSyncDatabaseURL = [(HDNanoSyncDiagnosticOperation *)self nanoSyncDatabaseURL];
   v3 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v4 = [v10 path];
-  v5 = [v3 fileExistsAtPath:v4];
+  path = [nanoSyncDatabaseURL path];
+  v5 = [v3 fileExistsAtPath:path];
 
   if (v5)
   {
     [(HDDiagnosticOperation *)self log:@"Collecting and analyzing NanoSync message database..."];
-    v6 = [(HDDiagnosticOperation *)self attachmentDirectoryURL];
-    v7 = [v6 URLByAppendingPathComponent:@"com.apple.private.alloy.health.sync.db" isDirectory:0];
+    attachmentDirectoryURL = [(HDDiagnosticOperation *)self attachmentDirectoryURL];
+    path2 = [attachmentDirectoryURL URLByAppendingPathComponent:@"com.apple.private.alloy.health.sync.db" isDirectory:0];
 
-    if ([(HDDiagnosticOperation *)self copyDatabaseFromURL:v10 toURL:v7])
+    if ([(HDDiagnosticOperation *)self copyDatabaseFromURL:nanoSyncDatabaseURL toURL:path2])
     {
       goto LABEL_6;
     }
@@ -153,8 +153,8 @@
 
   else
   {
-    v7 = [v10 path];
-    v9 = v7;
+    path2 = [nanoSyncDatabaseURL path];
+    v9 = path2;
     v8 = @"No NanoSync message database present at %@; skipping sync collection and analysis.";
   }
 
@@ -164,10 +164,10 @@ LABEL_6:
 
 - (id)_sortedPairedDevices
 {
-  v2 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v3 = [v2 getSetupCompletedDevices];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getSetupCompletedDevices = [mEMORY[0x277D2BCF8] getSetupCompletedDevices];
 
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_0];
+  v4 = [getSetupCompletedDevices sortedArrayUsingComparator:&__block_literal_global_0];
 
   return v4;
 }
@@ -201,16 +201,16 @@ uint64_t __53__HDNanoSyncDiagnosticOperation__sortedPairedDevices__block_invoke(
   return v14;
 }
 
-- (void)_reportSummaryWithDevices:(id)a3
+- (void)_reportSummaryWithDevices:(id)devices
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  -[HDDiagnosticOperation appendFormat:](self, "appendFormat:", @"%lu Paired Devices:", [v4 count]);
+  devicesCopy = devices;
+  -[HDDiagnosticOperation appendFormat:](self, "appendFormat:", @"%lu Paired Devices:", [devicesCopy count]);
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v4;
+  obj = devicesCopy;
   v30 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v30)
   {
@@ -233,7 +233,7 @@ uint64_t __53__HDNanoSyncDiagnosticOperation__sortedPairedDevices__block_invoke(
 
         v8 = *(*(&v31 + 1) + 8 * i);
         v9 = [v8 valueForProperty:v28];
-        v10 = [v9 BOOLValue];
+        bOOLValue = [v9 BOOLValue];
 
         v11 = [v8 valueForProperty:v27];
         v12 = [v8 valueForProperty:v26];
@@ -244,7 +244,7 @@ uint64_t __53__HDNanoSyncDiagnosticOperation__sortedPairedDevices__block_invoke(
         v16 = [v8 valueForProperty:v6];
         v17 = [(HDDiagnosticOperation *)self stringFromDate:v16];
 
-        if (v10)
+        if (bOOLValue)
         {
           [MEMORY[0x277CCACA8] stringWithFormat:@"(active since %@)", v15, v22];
         }
@@ -282,24 +282,24 @@ uint64_t __53__HDNanoSyncDiagnosticOperation__sortedPairedDevices__block_invoke(
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportQuickSwitchSummaryWithDevicesByPairingID:(id)a3
+- (void)_reportQuickSwitchSummaryWithDevicesByPairingID:(id)d
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D2BCF8] sharedInstance];
+  dCopy = d;
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
   v11 = 0;
-  [v5 switchIndex];
+  [mEMORY[0x277D2BCF8] switchIndex];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__HDNanoSyncDiagnosticOperation__reportQuickSwitchSummaryWithDevicesByPairingID___block_invoke;
   v7[3] = &unk_2796C0F20;
   v9 = v10;
   v7[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v8 = v6;
-  [v5 getSwitchEventsFromIndex:0 inlineCallback:v7];
+  [mEMORY[0x277D2BCF8] getSwitchEventsFromIndex:0 inlineCallback:v7];
 
   _Block_object_dispose(v10, 8);
 }
@@ -332,32 +332,32 @@ void __81__HDNanoSyncDiagnosticOperation__reportQuickSwitchSummaryWithDevicesByP
   [v11 appendFormat:@"\tSwitched to %@ %@ at %@", v12, v9, v10];
 }
 
-- (id)_reportDetailsForDevice:(id)a3 database:(id)a4
+- (id)_reportDetailsForDevice:(id)device database:(id)database
 {
   v61[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  databaseCopy = database;
   v7 = *MEMORY[0x277D2BBB8];
-  v8 = a3;
-  v9 = [v8 valueForProperty:v7];
-  v10 = [v8 valueForProperty:*MEMORY[0x277D2BB20]];
-  v51 = [v10 BOOLValue];
+  deviceCopy = device;
+  v9 = [deviceCopy valueForProperty:v7];
+  v10 = [deviceCopy valueForProperty:*MEMORY[0x277D2BB20]];
+  bOOLValue = [v10 BOOLValue];
 
-  v11 = [v8 valueForProperty:*MEMORY[0x277D2BC08]];
-  v12 = [v8 valueForProperty:*MEMORY[0x277D2BBC0]];
-  v13 = [v8 valueForProperty:*MEMORY[0x277D2BBA8]];
-  v14 = [v8 valueForProperty:*MEMORY[0x277D2BB50]];
+  v11 = [deviceCopy valueForProperty:*MEMORY[0x277D2BC08]];
+  v12 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBC0]];
+  v13 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBA8]];
+  v14 = [deviceCopy valueForProperty:*MEMORY[0x277D2BB50]];
   v15 = [(HDDiagnosticOperation *)self stringFromDate:v14];
 
-  v16 = [v8 valueForProperty:*MEMORY[0x277D2BB58]];
+  v16 = [deviceCopy valueForProperty:*MEMORY[0x277D2BB58]];
   v54 = [(HDDiagnosticOperation *)self stringFromDate:v16];
 
-  v17 = [v8 valueForProperty:*MEMORY[0x277D2BBB0]];
+  v17 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB0]];
 
   v52 = [(HDDiagnosticOperation *)self stringFromDate:v17];
 
   v55 = 0;
-  v53 = v6;
-  v18 = [MEMORY[0x277D10790] nanoPairingEntityWithRegistryUUID:v9 database:v6 error:&v55];
+  v53 = databaseCopy;
+  v18 = [MEMORY[0x277D10790] nanoPairingEntityWithRegistryUUID:v9 database:databaseCopy error:&v55];
   v19 = v55;
   v20 = v19;
   if (v18)
@@ -365,7 +365,7 @@ void __81__HDNanoSyncDiagnosticOperation__reportQuickSwitchSummaryWithDevicesByP
     v49 = v19;
     v50 = v12;
     v21 = " (inactive)";
-    if (v51)
+    if (bOOLValue)
     {
       v21 = "";
       v22 = @"    Active:";
@@ -380,7 +380,7 @@ void __81__HDNanoSyncDiagnosticOperation__reportQuickSwitchSummaryWithDevicesByP
     v23 = [objc_alloc(MEMORY[0x277CCDA90]) initWithColumnTitles:0];
     v61[0] = v22;
     v24 = v15;
-    if ((v51 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - %@", v15, v54];
     }
@@ -389,22 +389,22 @@ void __81__HDNanoSyncDiagnosticOperation__reportQuickSwitchSummaryWithDevicesByP
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:2];
     [v23 appendRow:v25];
 
-    if ((v51 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
     }
 
     v60[0] = @"    Pairing ID:";
-    v26 = [v9 UUIDString];
-    v60[1] = v26;
+    uUIDString = [v9 UUIDString];
+    v60[1] = uUIDString;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:2];
     [v23 appendRow:v27];
 
     v59[0] = @"    IDS ID:";
-    v28 = [v18 deviceIdentifier];
-    v29 = v28;
-    if (v28)
+    deviceIdentifier = [v18 deviceIdentifier];
+    v29 = deviceIdentifier;
+    if (deviceIdentifier)
     {
-      v30 = v28;
+      v30 = deviceIdentifier;
     }
 
     else
@@ -423,11 +423,11 @@ void __81__HDNanoSyncDiagnosticOperation__reportQuickSwitchSummaryWithDevicesByP
     [v23 appendRow:v33];
 
     v57[0] = @"    Source:";
-    v34 = [v18 defaultSourceBundleIdentifier];
-    v35 = v34;
-    if (v34)
+    defaultSourceBundleIdentifier = [v18 defaultSourceBundleIdentifier];
+    v35 = defaultSourceBundleIdentifier;
+    if (defaultSourceBundleIdentifier)
     {
-      v36 = v34;
+      v36 = defaultSourceBundleIdentifier;
     }
 
     else
@@ -440,9 +440,9 @@ void __81__HDNanoSyncDiagnosticOperation__reportQuickSwitchSummaryWithDevicesByP
     [v23 appendRow:v37];
 
     v56[0] = @"    Restore Complete:";
-    v38 = [v18 isRestoreComplete];
+    isRestoreComplete = [v18 isRestoreComplete];
     v39 = @"NO";
-    if (v38)
+    if (isRestoreComplete)
     {
       v39 = @"YES";
     }
@@ -452,17 +452,17 @@ void __81__HDNanoSyncDiagnosticOperation__reportQuickSwitchSummaryWithDevicesByP
     [v23 appendRow:v40];
 
     [(HDDiagnosticOperation *)self appendNewline];
-    v41 = [v23 formattedTable];
-    [(HDDiagnosticOperation *)self appendString:v41];
+    formattedTable = [v23 formattedTable];
+    [(HDDiagnosticOperation *)self appendString:formattedTable];
 
     [(HDDiagnosticOperation *)self appendNewline];
     [(HDDiagnosticOperation *)self appendNewline];
     v42 = MEMORY[0x277D108D0];
-    v43 = [v18 syncProvenance];
+    syncProvenance = [v18 syncProvenance];
     v44 = v42;
     v45 = v53;
-    [v44 hde_reportSyncAnchorsForSyncProvenance:v43 diagnosticOperation:self database:v53];
-    v46 = [v18 deviceIdentifier];
+    [v44 hde_reportSyncAnchorsForSyncProvenance:syncProvenance diagnosticOperation:self database:v53];
+    deviceIdentifier2 = [v18 deviceIdentifier];
 
     v12 = v50;
     v20 = v49;
@@ -471,35 +471,35 @@ void __81__HDNanoSyncDiagnosticOperation__reportQuickSwitchSummaryWithDevicesByP
   else
   {
     [(HDDiagnosticOperation *)self log:@"Failed to find sync store for NRDevice %@: %@", v9, v19];
-    v46 = 0;
+    deviceIdentifier2 = 0;
     v32 = v52;
     v45 = v53;
   }
 
   v47 = *MEMORY[0x277D85DE8];
 
-  return v46;
+  return deviceIdentifier2;
 }
 
-- (void)_reportIDSSummaryForDeviceIdentifier:(id)a3 database:(id)a4
+- (void)_reportIDSSummaryForDeviceIdentifier:(id)identifier database:(id)database
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  databaseCopy = database;
   [(HDDiagnosticOperation *)self appendNewline];
   [(HDDiagnosticOperation *)self appendFormat:@"IDS Message Statistics (last 7 days):"];
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [MEMORY[0x277CBEAA8] date];
-  v10 = [v8 hk_dateBySubtractingDays:7 fromDate:v9];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v10 = [currentCalendar hk_dateBySubtractingDays:7 fromDate:date];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __79__HDNanoSyncDiagnosticOperation__reportIDSSummaryForDeviceIdentifier_database___block_invoke;
   v21[3] = &unk_2796C0F48;
   v21[4] = self;
-  v11 = v6;
+  v11 = identifierCopy;
   v22 = v11;
   v23 = v10;
-  v12 = v7;
+  v12 = databaseCopy;
   v24 = v12;
   v13 = v10;
   v14 = MEMORY[0x25307B760](v21);
@@ -526,26 +526,26 @@ void __81__HDNanoSyncDiagnosticOperation__reportQuickSwitchSummaryWithDevicesByP
   [(HDNanoSyncDiagnosticOperation *)self _reportMostRecentMessageErrorsWithDeviceIdentifier:v16 database:v15];
 }
 
-- (int64_t)_countOfMessagesForDeviceIdentifier:(id)a3 description:(id)a4 predicateSQL:(id)a5 date:(id)a6 database:(id)a7
+- (int64_t)_countOfMessagesForDeviceIdentifier:(id)identifier description:(id)description predicateSQL:(id)l date:(id)date database:(id)database
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  descriptionCopy = description;
+  lCopy = l;
+  dateCopy = date;
+  databaseCopy = database;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
-  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT COUNT(*) FROM message_records WHERE device_id LIKE ? AND timestamp > ? AND %@", v14];
+  lCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT COUNT(*) FROM message_records WHERE device_id LIKE ? AND timestamp > ? AND %@", lCopy];
   v32 = 0;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __108__HDNanoSyncDiagnosticOperation__countOfMessagesForDeviceIdentifier_description_predicateSQL_date_database___block_invoke;
   v29[3] = &unk_2796C0F98;
-  v18 = v12;
+  v18 = identifierCopy;
   v30 = v18;
-  v19 = v15;
+  v19 = dateCopy;
   v31 = v19;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -553,9 +553,9 @@ void __81__HDNanoSyncDiagnosticOperation__reportQuickSwitchSummaryWithDevicesByP
   v26[3] = &unk_2796C0FC0;
   v28 = &v33;
   v26[4] = self;
-  v20 = v13;
+  v20 = descriptionCopy;
   v27 = v20;
-  v21 = [v16 executeSQL:v17 error:&v32 bindingHandler:v29 enumerationHandler:v26];
+  v21 = [databaseCopy executeSQL:lCopy error:&v32 bindingHandler:v29 enumerationHandler:v26];
   v22 = v32;
   v23 = v22;
   if ((v21 & 1) == 0)
@@ -589,35 +589,35 @@ uint64_t __108__HDNanoSyncDiagnosticOperation__countOfMessagesForDeviceIdentifie
   return 0;
 }
 
-- (void)_reportMostRecentMessageDateWithDeviceIdentifier:(id)a3 description:(id)a4 field:(id)a5 predicateSQL:(id)a6 database:(id)a7
+- (void)_reportMostRecentMessageDateWithDeviceIdentifier:(id)identifier description:(id)description field:(id)field predicateSQL:(id)l database:(id)database
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  identifierCopy = identifier;
+  descriptionCopy = description;
+  fieldCopy = field;
   v15 = MEMORY[0x277CCACA8];
-  v16 = a7;
-  v17 = [v15 stringWithFormat:@"SELECT %@ FROM message_records WHERE device_id LIKE ? AND %@ ORDER BY %@ DESC LIMIT 1", v14, a6, v14];
+  databaseCopy = database;
+  fieldCopy = [v15 stringWithFormat:@"SELECT %@ FROM message_records WHERE device_id LIKE ? AND %@ ORDER BY %@ DESC LIMIT 1", fieldCopy, l, fieldCopy];
   v26 = 0;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __122__HDNanoSyncDiagnosticOperation__reportMostRecentMessageDateWithDeviceIdentifier_description_field_predicateSQL_database___block_invoke;
   v24[3] = &unk_2796C0FE8;
-  v18 = v12;
+  v18 = identifierCopy;
   v25 = v18;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __122__HDNanoSyncDiagnosticOperation__reportMostRecentMessageDateWithDeviceIdentifier_description_field_predicateSQL_database___block_invoke_2;
   v22[3] = &unk_2796C0D28;
   v22[4] = self;
-  v19 = v13;
+  v19 = descriptionCopy;
   v23 = v19;
-  LOBYTE(v12) = [v16 executeSQL:v17 error:&v26 bindingHandler:v24 enumerationHandler:v22];
+  LOBYTE(identifierCopy) = [databaseCopy executeSQL:fieldCopy error:&v26 bindingHandler:v24 enumerationHandler:v22];
 
   v20 = v26;
   v21 = v20;
-  if ((v12 & 1) == 0)
+  if ((identifierCopy & 1) == 0)
   {
-    [(HDDiagnosticOperation *)self log:@"Failed to get latest %@ value in table 'message_records': %@", v14, v20];
+    [(HDDiagnosticOperation *)self log:@"Failed to get latest %@ value in table 'message_records': %@", fieldCopy, v20];
   }
 }
 
@@ -635,22 +635,22 @@ uint64_t __122__HDNanoSyncDiagnosticOperation__reportMostRecentMessageDateWithDe
   return 0;
 }
 
-- (void)_reportMostRecentMessageErrorsWithDeviceIdentifier:(id)a3 database:(id)a4
+- (void)_reportMostRecentMessageErrorsWithDeviceIdentifier:(id)identifier database:(id)database
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v14 = 0;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __93__HDNanoSyncDiagnosticOperation__reportMostRecentMessageErrorsWithDeviceIdentifier_database___block_invoke;
   v12[3] = &unk_2796C0FE8;
-  v7 = v6;
+  v7 = identifierCopy;
   v13 = v7;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __93__HDNanoSyncDiagnosticOperation__reportMostRecentMessageErrorsWithDeviceIdentifier_database___block_invoke_2;
   v11[3] = &unk_2796C0D00;
   v11[4] = self;
-  v8 = [a4 executeSQL:@"SELECT uuid error:timestamp bindingHandler:error_domain enumerationHandler:{error_code FROM message_records WHERE device_id LIKE ? AND error_code IS NOT NULL ORDER BY error_timestamp DESC LIMIT 5", &v14, v12, v11}];
+  v8 = [database executeSQL:@"SELECT uuid error:timestamp bindingHandler:error_domain enumerationHandler:{error_code FROM message_records WHERE device_id LIKE ? AND error_code IS NOT NULL ORDER BY error_timestamp DESC LIMIT 5", &v14, v12, v11}];
   v9 = v14;
   v10 = v9;
   if ((v8 & 1) == 0)

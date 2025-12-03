@@ -1,12 +1,12 @@
 @interface CKSQLiteUnsetPropertySentinel
-+ (id)forwardingTargetForSelector:(SEL)a3;
++ (id)forwardingTargetForSelector:(SEL)selector;
 @end
 
 @implementation CKSQLiteUnsetPropertySentinel
 
-+ (id)forwardingTargetForSelector:(SEL)a3
++ (id)forwardingTargetForSelector:(SEL)selector
 {
-  v3 = objc_msgSend_currentHandler(CKSignificantIssueHandler, a2, a3);
+  v3 = objc_msgSend_currentHandler(CKSignificantIssueHandler, a2, selector);
   v4 = [CKSignificantIssue alloc];
   v5 = [CKSourceCodeLocation alloc];
   v7 = objc_msgSend_initWithFilePath_lineNumber_(v5, v6, @"/Library/Caches/com.apple.xbs/Sources/CloudKit/Sources/CloudKit/SQLite/CKSQLiteTable.m", 291);

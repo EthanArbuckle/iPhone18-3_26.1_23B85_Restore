@@ -1,11 +1,11 @@
 @interface PXStoryComposabilityScoresArray
-- ($94F468A8D4C62B317260615823C2B210)composabilityScoresAtIndex:(unint64_t)a3;
+- ($94F468A8D4C62B317260615823C2B210)composabilityScoresAtIndex:(unint64_t)index;
 - (NSString)debugDescription;
-- (PXStoryComposabilityScoresArray)initWithCapacity:(unint64_t)a3;
-- (PXStoryComposabilityScoresArray)initWithComposabilityResults:(id)a3;
+- (PXStoryComposabilityScoresArray)initWithCapacity:(unint64_t)capacity;
+- (PXStoryComposabilityScoresArray)initWithComposabilityResults:(id)results;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXStoryComposabilityScoresArray
@@ -18,9 +18,9 @@
   return self;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [PXStoryComposabilityScoresMutableArray allocWithZone:a3];
+  v4 = [PXStoryComposabilityScoresMutableArray allocWithZone:zone];
   v5 = v4;
   if (v4 != self)
   {
@@ -30,9 +30,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PXStoryComposabilityScoresArray allocWithZone:a3];
+  v4 = [PXStoryComposabilityScoresArray allocWithZone:zone];
   v5 = v4;
   if (v4 != self)
   {
@@ -42,9 +42,9 @@
   return v5;
 }
 
-- ($94F468A8D4C62B317260615823C2B210)composabilityScoresAtIndex:(unint64_t)a3
+- ($94F468A8D4C62B317260615823C2B210)composabilityScoresAtIndex:(unint64_t)index
 {
-  v3 = (self->_scores.__begin_ + 8 * a3);
+  v3 = (self->_scores.__begin_ + 8 * index);
   v4 = *v3;
   v5 = v3[1];
   result.var1 = v5;
@@ -71,15 +71,15 @@
   return v12;
 }
 
-- (PXStoryComposabilityScoresArray)initWithComposabilityResults:(id)a3
+- (PXStoryComposabilityScoresArray)initWithComposabilityResults:(id)results
 {
-  v4 = a3;
-  v5 = -[PXStoryComposabilityScoresArray initWithCapacity:](self, "initWithCapacity:", [v4 count]);
+  resultsCopy = results;
+  v5 = -[PXStoryComposabilityScoresArray initWithCapacity:](self, "initWithCapacity:", [resultsCopy count]);
   if (v5)
   {
-    for (i = 0; i < [v4 count]; ++i)
+    for (i = 0; i < [resultsCopy count]; ++i)
     {
-      [v4 composabilityScoresAtIndex:i];
+      [resultsCopy composabilityScoresAtIndex:i];
       end = v5->_scores.__end_;
       cap = v5->_scores.__cap_;
       if (end >= cap)
@@ -145,16 +145,16 @@
   return v5;
 }
 
-- (PXStoryComposabilityScoresArray)initWithCapacity:(unint64_t)a3
+- (PXStoryComposabilityScoresArray)initWithCapacity:(unint64_t)capacity
 {
   v5.receiver = self;
   v5.super_class = PXStoryComposabilityScoresArray;
   result = [(PXStoryComposabilityScoresArray *)&v5 init];
-  if (result && a3 > (result->_scores.__cap_ - result->_scores.__begin_) >> 3)
+  if (result && capacity > (result->_scores.__cap_ - result->_scores.__begin_) >> 3)
   {
-    if (!(a3 >> 61))
+    if (!(capacity >> 61))
     {
-      std::__allocate_at_least[abi:ne200100]<std::allocator<PXStoryAutoEditComposabilityScores>>(a3);
+      std::__allocate_at_least[abi:ne200100]<std::allocator<PXStoryAutoEditComposabilityScores>>(capacity);
     }
 
     std::vector<PXStoryAutoEditComposabilityScores>::__throw_length_error[abi:ne200100]();

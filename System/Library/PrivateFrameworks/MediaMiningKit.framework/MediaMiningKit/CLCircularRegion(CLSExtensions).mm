@@ -7,7 +7,7 @@
 
 - (double)clsHorizontalAccuracy
 {
-  v1 = objc_getAssociatedObject(a1, "clsHorizontalAccuracy");
+  v1 = objc_getAssociatedObject(self, "clsHorizontalAccuracy");
   v2 = v1;
   if (v1)
   {
@@ -26,7 +26,7 @@
 - (void)setClsHorizontalAccuracy:()CLSExtensions
 {
   v2 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-  objc_setAssociatedObject(a1, "clsHorizontalAccuracy", v2, 1);
+  objc_setAssociatedObject(self, "clsHorizontalAccuracy", v2, 1);
 }
 
 @end

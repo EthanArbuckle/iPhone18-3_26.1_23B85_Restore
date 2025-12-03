@@ -1,61 +1,61 @@
 @interface PKInterpolateColorAnimation
-- (char)colorAtTime:(char *)a1;
-- (uint64_t)initWithStartColor:(void *)a3 endColor:(double)a4 startTime:(double)a5 duration:;
+- (char)colorAtTime:(char *)time;
+- (uint64_t)initWithStartColor:(void *)color endColor:(double)endColor startTime:(double)time duration:;
 @end
 
 @implementation PKInterpolateColorAnimation
 
-- (uint64_t)initWithStartColor:(void *)a3 endColor:(double)a4 startTime:(double)a5 duration:
+- (uint64_t)initWithStartColor:(void *)color endColor:(double)endColor startTime:(double)time duration:
 {
-  v10 = a3;
-  if (a1)
+  colorCopy = color;
+  if (self)
   {
-    *(a1 + 72) = a4;
-    *(a1 + 80) = a5;
-    v11 = [a2 getRed:a1 + 8 green:a1 + 16 blue:a1 + 24 alpha:a1 + 32];
-    v12 = [v10 getRed:a1 + 40 green:a1 + 48 blue:a1 + 56 alpha:a1 + 64];
+    *(self + 72) = endColor;
+    *(self + 80) = time;
+    v11 = [a2 getRed:self + 8 green:self + 16 blue:self + 24 alpha:self + 32];
+    v12 = [colorCopy getRed:self + 40 green:self + 48 blue:self + 56 alpha:self + 64];
     if (!v11 || (v12 & 1) == 0)
     {
-      objc_storeStrong((a1 + 88), a3);
+      objc_storeStrong((self + 88), color);
     }
 
-    v13 = a1;
+    selfCopy = self;
   }
 
-  return a1;
+  return self;
 }
 
-- (char)colorAtTime:(char *)a1
+- (char)colorAtTime:(char *)time
 {
-  if (a1)
+  if (time)
   {
-    v3 = *(a1 + 11);
+    v3 = *(time + 11);
     if (v3)
     {
-      a1 = v3;
+      time = v3;
     }
 
     else
     {
-      v4 = *(a1 + 10);
-      v5 = a2 - *(a1 + 9);
+      v4 = *(time + 10);
+      v5 = a2 - *(time + 9);
       v6 = 0.0;
       if (v5 >= 0.0)
       {
         v6 = v5;
         if (v5 > v4)
         {
-          v6 = *(a1 + 10);
+          v6 = *(time + 10);
         }
       }
 
-      a1 = [MEMORY[0x1E69DC888] colorWithRed:vmlaq_n_f64(*(a1 + 8) green:vsubq_f64(*(a1 + 40) blue:*(a1 + 8)) alpha:{v6 / v4), vmlaq_n_f64(*(a1 + 24), vsubq_f64(*(a1 + 56), *(a1 + 24)), v6 / v4)}];
+      time = [MEMORY[0x1E69DC888] colorWithRed:vmlaq_n_f64(*(time + 8) green:vsubq_f64(*(time + 40) blue:*(time + 8)) alpha:{v6 / v4), vmlaq_n_f64(*(time + 24), vsubq_f64(*(time + 56), *(time + 24)), v6 / v4)}];
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return time;
 }
 
 @end

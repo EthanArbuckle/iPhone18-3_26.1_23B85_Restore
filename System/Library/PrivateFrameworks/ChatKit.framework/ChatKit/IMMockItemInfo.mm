@@ -1,10 +1,10 @@
 @interface IMMockItemInfo
-+ (id)decodedMockItemInfoArray:(id)a3;
++ (id)decodedMockItemInfoArray:(id)array;
 + (id)defaultMockInfoArray;
-+ (id)encodedMockItemInfoArray:(id)a3;
-- (IMMockItemInfo)initWithCoder:(id)a3;
-- (IMMockItemInfo)initWithMockItemType:(int64_t)a3 outgoing:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)encodedMockItemInfoArray:(id)array;
+- (IMMockItemInfo)initWithCoder:(id)coder;
+- (IMMockItemInfo)initWithMockItemType:(int64_t)type outgoing:(BOOL)outgoing;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMMockItemInfo
@@ -21,22 +21,22 @@
   return v2;
 }
 
-+ (id)encodedMockItemInfoArray:(id)a3
++ (id)encodedMockItemInfoArray:(id)array
 {
-  v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+  v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:array requiringSecureCoding:1 error:0];
   v4 = [v3 base64EncodedStringWithOptions:32];
 
   return v4;
 }
 
-+ (id)decodedMockItemInfoArray:(id)a3
++ (id)decodedMockItemInfoArray:(id)array
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (array)
   {
     v3 = MEMORY[0x1E695DEF0];
-    v4 = a3;
-    v5 = [[v3 alloc] initWithBase64EncodedString:v4 options:1];
+    arrayCopy = array;
+    v5 = [[v3 alloc] initWithBase64EncodedString:arrayCopy options:1];
 
     if (v5)
     {
@@ -70,32 +70,32 @@
   return v11;
 }
 
-- (IMMockItemInfo)initWithMockItemType:(int64_t)a3 outgoing:(BOOL)a4
+- (IMMockItemInfo)initWithMockItemType:(int64_t)type outgoing:(BOOL)outgoing
 {
   v7.receiver = self;
   v7.super_class = IMMockItemInfo;
   result = [(IMMockItemInfo *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_outgoing = a4;
+    result->_type = type;
+    result->_outgoing = outgoing;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[IMMockItemInfo type](self forKey:{"type"), @"type"}];
-  [v4 encodeBool:-[IMMockItemInfo outgoing](self forKey:{"outgoing"), @"outgoing"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[IMMockItemInfo type](self forKey:{"type"), @"type"}];
+  [coderCopy encodeBool:-[IMMockItemInfo outgoing](self forKey:{"outgoing"), @"outgoing"}];
 }
 
-- (IMMockItemInfo)initWithCoder:(id)a3
+- (IMMockItemInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
-  v6 = [v4 decodeBoolForKey:@"outgoing"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
+  v6 = [coderCopy decodeBoolForKey:@"outgoing"];
 
   return [(IMMockItemInfo *)self initWithMockItemType:v5 outgoing:v6];
 }

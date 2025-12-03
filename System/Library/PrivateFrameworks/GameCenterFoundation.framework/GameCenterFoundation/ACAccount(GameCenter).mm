@@ -17,12 +17,12 @@
 
 - (uint64_t)_gkIsPrimaryForEnvironment:()GameCenter
 {
-  v5 = [a1 accountPropertyForKey:@"playerID"];
+  v5 = [self accountPropertyForKey:@"playerID"];
   if (v5)
   {
-    v6 = [a1 _gkCredentialsForEnvironment:a3];
-    v7 = [v6 firstObject];
-    v8 = ([v7 scope] >> 2) & 1;
+    v6 = [self _gkCredentialsForEnvironment:a3];
+    firstObject = [v6 firstObject];
+    v8 = ([firstObject scope] >> 2) & 1;
   }
 
   else
@@ -37,23 +37,23 @@
 {
   if (a3 == 5)
   {
-    v4 = [a1 credential];
-    v5 = [v4 token];
-    if ([v5 isEqualToString:@"<gone>"])
+    credential = [self credential];
+    token = [credential token];
+    if ([token isEqualToString:@"<gone>"])
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = v5;
+      v6 = token;
     }
   }
 
   else
   {
-    v4 = GKTokenKeyForEnvironment(a3);
-    v6 = [a1 accountPropertyForKey:v4];
+    credential = GKTokenKeyForEnvironment(a3);
+    v6 = [self accountPropertyForKey:credential];
   }
 
   return v6;
@@ -63,9 +63,9 @@
 {
   v6 = a3;
   v7 = +[GKPreferences shared];
-  v8 = [v7 isInternalBuild];
+  isInternalBuild = [v7 isInternalBuild];
 
-  if (v8)
+  if (isInternalBuild)
   {
     if (!os_log_GKGeneral)
     {
@@ -80,10 +80,10 @@
 
   if (a4 == 5)
   {
-    v10 = [a1 credential];
-    if (!v10)
+    credential = [self credential];
+    if (!credential)
     {
-      v10 = objc_alloc_init(MEMORY[0x277CB8F38]);
+      credential = objc_alloc_init(MEMORY[0x277CB8F38]);
     }
 
     if (![(__CFString *)v6 length])
@@ -92,40 +92,40 @@
       v6 = @"<gone>";
     }
 
-    [v10 setToken:v6];
-    [a1 setCredential:v10];
+    [credential setToken:v6];
+    [self setCredential:credential];
   }
 
   else
   {
-    v10 = GKTokenKeyForEnvironment(a4);
-    [a1 setAccountProperty:v6 forKey:v10];
+    credential = GKTokenKeyForEnvironment(a4);
+    [self setAccountProperty:v6 forKey:credential];
   }
 }
 
 - (id)_gkPerEnvironmentTokens
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   for (i = 0; i != 12; ++i)
   {
-    v4 = [a1 _gkTokenForEnvironment:i];
+    v4 = [self _gkTokenForEnvironment:i];
     if ([v4 length])
     {
       v5 = [MEMORY[0x277CCABB0] numberWithInteger:i];
-      [v2 setObject:v4 forKey:v5];
+      [dictionary setObject:v4 forKey:v5];
     }
   }
 
-  return v2;
+  return dictionary;
 }
 
 - (id)_gkPlayerInternal
 {
-  v2 = [a1 accountPropertyForKey:@"GKPlayerInternal"];
+  v2 = [self accountPropertyForKey:@"GKPlayerInternal"];
   if (!v2)
   {
 LABEL_22:
-    v13 = [a1 accountPropertyForKey:@"playerID"];
+    v13 = [self accountPropertyForKey:@"playerID"];
     if (v13)
     {
       v11 = +[(GKInternalRepresentation *)GKLocalPlayerInternal];
@@ -209,12 +209,12 @@ LABEL_26:
 - (void)_gkSetPlayerInternal:()GameCenter
 {
   v4 = a3;
-  v5 = [v4 contactsAssociationID];
+  contactsAssociationID = [v4 contactsAssociationID];
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "contactsIntegrationConsent")}];
-  v7 = [v4 serviceLastUpdatedTimestamp];
-  v8 = [v4 minimalInternal];
+  serviceLastUpdatedTimestamp = [v4 serviceLastUpdatedTimestamp];
+  minimalInternal = [v4 minimalInternal];
 
-  if (v7)
+  if (serviceLastUpdatedTimestamp)
   {
     if (!os_log_GKGeneral)
     {
@@ -228,9 +228,9 @@ LABEL_26:
       _os_log_impl(&dword_227904000, v10, OS_LOG_TYPE_INFO, "Updating contacts assocationID", v16, 2u);
     }
 
-    if ([v5 length])
+    if ([contactsAssociationID length])
     {
-      v11 = v5;
+      v11 = contactsAssociationID;
     }
 
     else
@@ -238,18 +238,18 @@ LABEL_26:
       v11 = 0;
     }
 
-    [a1 setAccountProperty:v11 forKey:@"GKContactsAssociationID"];
-    [a1 setAccountProperty:v6 forKey:@"GKContactsSharingState"];
-    [a1 setAccountProperty:v7 forKey:@"GKContactsLastUpdated"];
+    [self setAccountProperty:v11 forKey:@"GKContactsAssociationID"];
+    [self setAccountProperty:v6 forKey:@"GKContactsSharingState"];
+    [self setAccountProperty:serviceLastUpdatedTimestamp forKey:@"GKContactsLastUpdated"];
   }
 
-  v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
-  [a1 setAccountProperty:v12 forKey:@"GKPlayerInternal"];
-  v13 = [v8 playerID];
-  v14 = v13;
-  if (v13)
+  v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:minimalInternal requiringSecureCoding:1 error:0];
+  [self setAccountProperty:v12 forKey:@"GKPlayerInternal"];
+  playerID = [minimalInternal playerID];
+  v14 = playerID;
+  if (playerID)
   {
-    v15 = v13;
+    v15 = playerID;
   }
 
   else
@@ -257,19 +257,19 @@ LABEL_26:
     v15 = &stru_283AFD1E0;
   }
 
-  [a1 setAccountProperty:v15 forKey:@"playerID"];
+  [self setAccountProperty:v15 forKey:@"playerID"];
 }
 
 - (id)_gkCredentialsForEnvironment:()GameCenter
 {
-  v5 = [a1 credential];
-  if (v5)
+  credential = [self credential];
+  if (credential)
   {
-    v6 = [a1 accountPropertyForKey:@"playerID"];
+    v6 = [self accountPropertyForKey:@"playerID"];
     if ([v6 length])
     {
-      v7 = [a1 _gkPerEnvironmentTokens];
-      if ([v7 count])
+      _gkPerEnvironmentTokens = [self _gkPerEnvironmentTokens];
+      if ([_gkPerEnvironmentTokens count])
       {
         v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:8];
         v22[0] = MEMORY[0x277D85DD0];
@@ -277,11 +277,11 @@ LABEL_26:
         v22[2] = __54__ACAccount_GameCenter___gkCredentialsForEnvironment___block_invoke;
         v22[3] = &unk_2785E07F8;
         v25 = a3;
-        v22[4] = a1;
+        v22[4] = self;
         v23 = v6;
         v9 = v8;
         v24 = v9;
-        [v7 enumerateKeysAndObjectsUsingBlock:v22];
+        [_gkPerEnvironmentTokens enumerateKeysAndObjectsUsingBlock:v22];
         v10 = v24;
         v11 = v9;
       }
@@ -289,9 +289,9 @@ LABEL_26:
       else
       {
         v18 = +[GKPreferences shared];
-        v19 = [v18 isInternalBuild];
+        isInternalBuild = [v18 isInternalBuild];
 
-        if (v19)
+        if (isInternalBuild)
         {
           if (!os_log_GKGeneral)
           {
@@ -311,9 +311,9 @@ LABEL_26:
     else
     {
       v15 = +[GKPreferences shared];
-      v16 = [v15 isInternalBuild];
+      isInternalBuild2 = [v15 isInternalBuild];
 
-      if (v16)
+      if (isInternalBuild2)
       {
         if (!os_log_GKGeneral)
         {
@@ -333,9 +333,9 @@ LABEL_26:
   else
   {
     v12 = +[GKPreferences shared];
-    v13 = [v12 isInternalBuild];
+    isInternalBuild3 = [v12 isInternalBuild];
 
-    if (v13)
+    if (isInternalBuild3)
     {
       if (!os_log_GKGeneral)
       {
@@ -362,14 +362,14 @@ LABEL_26:
   v11 = __Block_byref_object_copy__11;
   v12 = __Block_byref_object_dispose__11;
   v13 = 0;
-  v4 = [a1 _gkCredentials];
+  _gkCredentials = [self _gkCredentials];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__ACAccount_GameCenter___gkCredentialForEnvironment___block_invoke;
   v7[3] = &unk_2785E0820;
   v7[4] = &v8;
   v7[5] = a3;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [_gkCredentials enumerateObjectsUsingBlock:v7];
   v5 = v9[5];
 
   _Block_object_dispose(&v8, 8);
@@ -380,7 +380,7 @@ LABEL_26:
 - (id)_gkModifiedDateForProperty:()GameCenter environment:
 {
   v5 = [a3 stringByAppendingFormat:@"-%d-mod-date", a4];
-  v6 = [a1 accountPropertyForKey:v5];
+  v6 = [self accountPropertyForKey:v5];
 
   return v6;
 }
@@ -388,7 +388,7 @@ LABEL_26:
 - (id)_gkPropertyForKey:()GameCenter environment:
 {
   v5 = [a3 stringByAppendingFormat:@"-%d", a4];
-  v6 = [a1 accountPropertyForKey:v5];
+  v6 = [self accountPropertyForKey:v5];
 
   return v6;
 }
@@ -398,12 +398,12 @@ LABEL_26:
   v8 = a4;
   v9 = a3;
   v10 = [v8 stringByAppendingFormat:@"-%d", a5];
-  [a1 setAccountProperty:v9 forKey:v10];
+  [self setAccountProperty:v9 forKey:v10];
 
   v12 = [v8 stringByAppendingFormat:@"-%d-mod-date", a5];
 
-  v11 = [MEMORY[0x277CBEAA8] date];
-  [a1 setAccountProperty:v11 forKey:v12];
+  date = [MEMORY[0x277CBEAA8] date];
+  [self setAccountProperty:date forKey:v12];
 }
 
 - (void)_gkSetToken:()GameCenter forEnvironment:.cold.1()

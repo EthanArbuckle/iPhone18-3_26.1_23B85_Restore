@@ -1,37 +1,37 @@
 @interface MailUserNotificationCenterDelegate
 - (MailAlertSuppressionContextProvider)alertSuppressionContextProvider;
-- (MailUserNotificationCenterDelegate)initWithAlertSuppressionContextProvider:(id)a3;
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5;
+- (MailUserNotificationCenterDelegate)initWithAlertSuppressionContextProvider:(id)provider;
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler;
 @end
 
 @implementation MailUserNotificationCenterDelegate
 
-- (MailUserNotificationCenterDelegate)initWithAlertSuppressionContextProvider:(id)a3
+- (MailUserNotificationCenterDelegate)initWithAlertSuppressionContextProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = MailUserNotificationCenterDelegate;
   v5 = [(MailUserNotificationCenterDelegate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_alertSuppressionContextProvider, v4);
+    objc_storeWeak(&v5->_alertSuppressionContextProvider, providerCopy);
   }
 
   return v6;
 }
 
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 request];
-  v10 = [v9 content];
+  notificationCopy = notification;
+  handlerCopy = handler;
+  request = [notificationCopy request];
+  content = [request content];
 
-  v24 = v10;
-  v11 = [v10 userInfo];
+  v24 = content;
+  userInfo = [content userInfo];
   v12 = +[NSSet set];
-  v13 = [v11 objectForKeyedSubscript:MSUserNotificationContentKeySuppressionContext];
+  v13 = [userInfo objectForKeyedSubscript:MSUserNotificationContentKeySuppressionContext];
   if ([v13 length])
   {
     v14 = [v13 componentsSeparatedByString:{@", "}];
@@ -40,9 +40,9 @@
     v12 = v15;
   }
 
-  v16 = [(MailUserNotificationCenterDelegate *)self alertSuppressionContextProvider];
-  v17 = [v16 currentAlertSuppressionContexts];
-  v18 = [v12 intersectsSet:v17];
+  alertSuppressionContextProvider = [(MailUserNotificationCenterDelegate *)self alertSuppressionContextProvider];
+  currentAlertSuppressionContexts = [alertSuppressionContextProvider currentAlertSuppressionContexts];
+  v18 = [v12 intersectsSet:currentAlertSuppressionContexts];
 
   if (v18)
   {
@@ -58,18 +58,18 @@
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v21 = [NSNumber numberWithUnsignedInteger:v19];
-    v22 = [v7 request];
-    v23 = [v22 identifier];
+    request2 = [notificationCopy request];
+    identifier = [request2 identifier];
     *buf = 138543874;
     v26 = v21;
     v27 = 2114;
-    v28 = v23;
+    v28 = identifier;
     v29 = 2112;
-    v30 = v7;
+    v30 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Will present notification with options = %{public}@, notification identifier = %{public}@, notification = %@", buf, 0x20u);
   }
 
-  v8[2](v8, v19);
+  handlerCopy[2](handlerCopy, v19);
 }
 
 - (MailAlertSuppressionContextProvider)alertSuppressionContextProvider

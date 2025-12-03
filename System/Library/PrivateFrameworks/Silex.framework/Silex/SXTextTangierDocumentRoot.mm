@@ -1,6 +1,6 @@
 @interface SXTextTangierDocumentRoot
 - (SXTextTangierDocumentRoot)init;
-- (SXTextTangierDocumentRoot)initWithContext:(id)a3;
+- (SXTextTangierDocumentRoot)initWithContext:(id)context;
 - (UIViewController)viewController;
 @end
 
@@ -14,15 +14,15 @@
   return v4;
 }
 
-- (SXTextTangierDocumentRoot)initWithContext:(id)a3
+- (SXTextTangierDocumentRoot)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = SXTextTangierDocumentRoot;
-  v5 = [(TSKDocumentRoot *)&v9 initWithContext:v4];
+  v5 = [(TSKDocumentRoot *)&v9 initWithContext:contextCopy];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69D56B0]) initWithContext:v4];
+    v6 = [objc_alloc(MEMORY[0x1E69D56B0]) initWithContext:contextCopy];
     aStylesheet = v5->_aStylesheet;
     v5->_aStylesheet = v6;
 

@@ -36,7 +36,7 @@
   if (!v3)
   {
     v21 = OBJC_IVAR___PSListController__specifiers;
-    v26 = self;
+    selfCopy = self;
     v4 = objc_opt_new();
     v5 = +[COSSettingsListController unavailableWatchKitApps];
     v6 = [PSSpecifier groupSpecifierWithID:@"UNAVAILABLE_APP_ID"];
@@ -73,7 +73,7 @@
           v14 = [v25 objectForKeyedSubscript:*(*(&v27 + 1) + 8 * v13)];
           v15 = [v14 objectForKeyedSubscript:v11];
           v16 = [v14 objectForKeyedSubscript:v12];
-          v17 = [PSSpecifier preferenceSpecifierNamed:v15 target:v26 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+          v17 = [PSSpecifier preferenceSpecifierNamed:v15 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
           [v17 setProperty:v16 forKey:@"COSUnavailableApplicationBundleID"];
           [v17 setProperty:v14 forKey:@"COSUnavailableApplicationInfoID"];
           [v24 addObject:v17];
@@ -88,10 +88,10 @@
       while (v10);
     }
 
-    v18 = *&v26->BPSListController_opaque[v21];
-    *&v26->BPSListController_opaque[v21] = v24;
+    v18 = *&selfCopy->BPSListController_opaque[v21];
+    *&selfCopy->BPSListController_opaque[v21] = v24;
 
-    v3 = *&v26->BPSListController_opaque[v21];
+    v3 = *&selfCopy->BPSListController_opaque[v21];
   }
 
   return v3;

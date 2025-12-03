@@ -1,73 +1,73 @@
 @interface HULockCategorySettingsItemManager
-- (HULockCategorySettingsItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (HULockCategorySettingsItemManager)initWithDelegate:(id)a3 topic:(id)a4 home:(id)a5;
-- (HULockCategorySettingsItemManager)initWithDelegate:(id)a3 topic:(id)a4 pinCodeManager:(id)a5 home:(id)a6;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HULockCategorySettingsItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (HULockCategorySettingsItemManager)initWithDelegate:(id)delegate topic:(id)topic home:(id)home;
+- (HULockCategorySettingsItemManager)initWithDelegate:(id)delegate topic:(id)topic pinCodeManager:(id)manager home:(id)home;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)_homeFuture;
 - (void)_registerForExternalUpdates;
 - (void)_unregisterForExternalUpdates;
-- (void)pinCodeManagerDidUpdate:(id)a3 pinCodes:(id)a4;
+- (void)pinCodeManagerDidUpdate:(id)update pinCodes:(id)codes;
 @end
 
 @implementation HULockCategorySettingsItemManager
 
-- (HULockCategorySettingsItemManager)initWithDelegate:(id)a3 topic:(id)a4 home:(id)a5
+- (HULockCategorySettingsItemManager)initWithDelegate:(id)delegate topic:(id)topic home:(id)home
 {
-  v9 = a4;
-  v10 = a5;
+  topicCopy = topic;
+  homeCopy = home;
   v14.receiver = self;
   v14.super_class = HULockCategorySettingsItemManager;
-  v11 = [(HFItemManager *)&v14 initWithDelegate:a3 sourceItem:0];
+  v11 = [(HFItemManager *)&v14 initWithDelegate:delegate sourceItem:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_topic, a4);
-    objc_storeStrong(&v12->_overrideHome, a5);
+    objc_storeStrong(&v11->_topic, topic);
+    objc_storeStrong(&v12->_overrideHome, home);
   }
 
   return v12;
 }
 
-- (HULockCategorySettingsItemManager)initWithDelegate:(id)a3 topic:(id)a4 pinCodeManager:(id)a5 home:(id)a6
+- (HULockCategorySettingsItemManager)initWithDelegate:(id)delegate topic:(id)topic pinCodeManager:(id)manager home:(id)home
 {
-  v10 = a5;
-  v11 = [(HULockCategorySettingsItemManager *)self initWithDelegate:a3 topic:a4 home:a6];
+  managerCopy = manager;
+  v11 = [(HULockCategorySettingsItemManager *)self initWithDelegate:delegate topic:topic home:home];
   pinCodeManager = v11->_pinCodeManager;
-  v11->_pinCodeManager = v10;
+  v11->_pinCodeManager = managerCopy;
 
   return v11;
 }
 
-- (HULockCategorySettingsItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HULockCategorySettingsItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithDelegate_topic_home_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HULockCategorySettingsItemManager.m" lineNumber:53 description:{@"%s is unavailable; use %@ instead", "-[HULockCategorySettingsItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HULockCategorySettingsItemManager.m" lineNumber:53 description:{@"%s is unavailable; use %@ instead", "-[HULockCategorySettingsItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   objc_initWeak(&location, self);
-  v5 = [(HFItemManager *)self home];
-  v6 = [v5 hasOnboardedForAccessCode];
+  home = [(HFItemManager *)self home];
+  hasOnboardedForAccessCode = [home hasOnboardedForAccessCode];
 
-  if (v6)
+  if (hasOnboardedForAccessCode)
   {
-    v7 = [objc_alloc(MEMORY[0x277D14CA0]) initWithHome:v4];
+    v7 = [objc_alloc(MEMORY[0x277D14CA0]) initWithHome:homeCopy];
     [(HULockCategorySettingsItemManager *)self setUserItemProvider:v7];
 
-    v8 = [(HULockCategorySettingsItemManager *)self userItemProvider];
-    [v8 setIncludeCurrentUser:1];
+    userItemProvider = [(HULockCategorySettingsItemManager *)self userItemProvider];
+    [userItemProvider setIncludeCurrentUser:1];
 
-    v9 = [(HFItemManager *)self home];
-    v10 = [v9 hf_currentUserIsAdministrator];
-    v11 = [(HULockCategorySettingsItemManager *)self userItemProvider];
-    [v11 setIncludeOtherUsers:v10];
+    home2 = [(HFItemManager *)self home];
+    hf_currentUserIsAdministrator = [home2 hf_currentUserIsAdministrator];
+    userItemProvider2 = [(HULockCategorySettingsItemManager *)self userItemProvider];
+    [userItemProvider2 setIncludeOtherUsers:hf_currentUserIsAdministrator];
   }
 
   v12 = objc_alloc(MEMORY[0x277D14AD0]);
@@ -75,7 +75,7 @@
   v38[0] = *MEMORY[0x277CD0EA8];
   v38[1] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
-  v15 = [v12 initWithHome:v4 serviceTypes:v14];
+  v15 = [v12 initWithHome:homeCopy serviceTypes:v14];
   [(HULockCategorySettingsItemManager *)self setLockServiceItemProvider:v15];
 
   v16 = HFLogForCategory();
@@ -92,36 +92,36 @@
   v32[2] = __64__HULockCategorySettingsItemManager__buildItemProvidersForHome___block_invoke;
   v32[3] = &unk_277DB8670;
   objc_copyWeak(&v34, &location);
-  v18 = v4;
+  v18 = homeCopy;
   v33 = v18;
   v19 = [v17 initWithResultsBlock:v32];
   [(HULockCategorySettingsItemManager *)self setGuestsItem:v19];
 
   v20 = objc_alloc(MEMORY[0x277D14B48]);
   v21 = MEMORY[0x277CBEB98];
-  v22 = [(HULockCategorySettingsItemManager *)self guestsItem];
-  v23 = [v21 setWithObject:v22];
+  guestsItem = [(HULockCategorySettingsItemManager *)self guestsItem];
+  v23 = [v21 setWithObject:guestsItem];
   v24 = [v20 initWithItems:v23];
   [(HULockCategorySettingsItemManager *)self setStaticItemProvider:v24];
 
   v25 = [MEMORY[0x277CBEB98] setWithObject:*MEMORY[0x277D13B88]];
-  v26 = [(HULockCategorySettingsItemManager *)self staticItemProvider];
-  [v26 setClientInvalidationReasons:v25];
+  staticItemProvider = [(HULockCategorySettingsItemManager *)self staticItemProvider];
+  [staticItemProvider setClientInvalidationReasons:v25];
 
-  v27 = [MEMORY[0x277CBEB18] array];
-  v28 = [(HULockCategorySettingsItemManager *)self userItemProvider];
-  [v27 na_safeAddObject:v28];
+  array = [MEMORY[0x277CBEB18] array];
+  userItemProvider3 = [(HULockCategorySettingsItemManager *)self userItemProvider];
+  [array na_safeAddObject:userItemProvider3];
 
-  v29 = [(HULockCategorySettingsItemManager *)self staticItemProvider];
-  [v27 na_safeAddObject:v29];
+  staticItemProvider2 = [(HULockCategorySettingsItemManager *)self staticItemProvider];
+  [array na_safeAddObject:staticItemProvider2];
 
-  v30 = [(HULockCategorySettingsItemManager *)self lockServiceItemProvider];
-  [v27 na_safeAddObject:v30];
+  lockServiceItemProvider = [(HULockCategorySettingsItemManager *)self lockServiceItemProvider];
+  [array na_safeAddObject:lockServiceItemProvider];
 
   objc_destroyWeak(&v34);
   objc_destroyWeak(&location);
 
-  return v27;
+  return array;
 }
 
 id __64__HULockCategorySettingsItemManager__buildItemProvidersForHome___block_invoke(uint64_t a1)
@@ -259,41 +259,41 @@ id __64__HULockCategorySettingsItemManager__buildItemProvidersForHome___block_in
   return v6;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
   v6 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HULockCategorySettingsLockListSection"];
-  v7 = [(HULockCategorySettingsItemManager *)self lockServiceItemProvider];
-  v8 = [v7 items];
-  v9 = [v8 allObjects];
-  v10 = [MEMORY[0x277D14778] defaultItemComparator];
-  v11 = [v9 sortedArrayUsingComparator:v10];
+  lockServiceItemProvider = [(HULockCategorySettingsItemManager *)self lockServiceItemProvider];
+  items = [lockServiceItemProvider items];
+  allObjects = [items allObjects];
+  defaultItemComparator = [MEMORY[0x277D14778] defaultItemComparator];
+  v11 = [allObjects sortedArrayUsingComparator:defaultItemComparator];
   [v6 setItems:v11];
 
   [v5 addObject:v6];
-  v12 = [(HULockCategorySettingsItemManager *)self userItemProvider];
+  userItemProvider = [(HULockCategorySettingsItemManager *)self userItemProvider];
 
-  if (v12)
+  if (userItemProvider)
   {
     v13 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HULockCategorySettingsPeopleSection"];
-    v27 = self;
-    v14 = [(HULockCategorySettingsItemManager *)self userItemProvider];
-    v15 = [v14 items];
-    v16 = [v15 allObjects];
+    selfCopy = self;
+    userItemProvider2 = [(HULockCategorySettingsItemManager *)self userItemProvider];
+    items2 = [userItemProvider2 items];
+    allObjects2 = [items2 allObjects];
     [MEMORY[0x277D14778] defaultItemComparator];
     v17 = v5;
     v18 = v6;
-    v20 = v19 = v4;
-    v21 = [v16 sortedArrayUsingComparator:v20];
+    v20 = v19 = itemsCopy;
+    v21 = [allObjects2 sortedArrayUsingComparator:v20];
     v22 = [v21 mutableCopy];
 
-    v4 = v19;
+    itemsCopy = v19;
     v6 = v18;
     v5 = v17;
 
-    v23 = [(HULockCategorySettingsItemManager *)v27 guestsItem];
-    [v22 na_safeAddObject:v23];
+    guestsItem = [(HULockCategorySettingsItemManager *)selfCopy guestsItem];
+    [v22 na_safeAddObject:guestsItem];
 
     [v13 setItems:v22];
     v24 = _HULocalizedStringWithDefaultValue(@"HULockCategorySettingsPeopleSectionTitle", @"HULockCategorySettingsPeopleSectionTitle", 1);
@@ -302,7 +302,7 @@ id __64__HULockCategorySettingsItemManager__buildItemProvidersForHome___block_in
     [v17 addObject:v13];
   }
 
-  v25 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:v4];
+  v25 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:itemsCopy];
 
   return v25;
 }
@@ -310,8 +310,8 @@ id __64__HULockCategorySettingsItemManager__buildItemProvidersForHome___block_in
 - (id)_homeFuture
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HULockCategorySettingsItemManager *)self overrideHome];
-  v4 = [v2 futureWithResult:v3];
+  overrideHome = [(HULockCategorySettingsItemManager *)self overrideHome];
+  v4 = [v2 futureWithResult:overrideHome];
 
   return v4;
 }
@@ -321,8 +321,8 @@ id __64__HULockCategorySettingsItemManager__buildItemProvidersForHome___block_in
   v4.receiver = self;
   v4.super_class = HULockCategorySettingsItemManager;
   [(HFItemManager *)&v4 _registerForExternalUpdates];
-  v3 = [(HULockCategorySettingsItemManager *)self pinCodeManager];
-  [v3 addObserver:self];
+  pinCodeManager = [(HULockCategorySettingsItemManager *)self pinCodeManager];
+  [pinCodeManager addObserver:self];
 }
 
 - (void)_unregisterForExternalUpdates
@@ -330,11 +330,11 @@ id __64__HULockCategorySettingsItemManager__buildItemProvidersForHome___block_in
   v4.receiver = self;
   v4.super_class = HULockCategorySettingsItemManager;
   [(HFItemManager *)&v4 _unregisterForExternalUpdates];
-  v3 = [(HULockCategorySettingsItemManager *)self pinCodeManager];
-  [v3 removeObserver:self];
+  pinCodeManager = [(HULockCategorySettingsItemManager *)self pinCodeManager];
+  [pinCodeManager removeObserver:self];
 }
 
-- (void)pinCodeManagerDidUpdate:(id)a3 pinCodes:(id)a4
+- (void)pinCodeManagerDidUpdate:(id)update pinCodes:(id)codes
 {
   v16 = *MEMORY[0x277D85DE8];
   v6 = HFLogForCategory();
@@ -342,14 +342,14 @@ id __64__HULockCategorySettingsItemManager__buildItemProvidersForHome___block_in
   {
     v7 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v7;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@: %@ Reloading PIN Code related items...", buf, 0x16u);
   }
 
-  v8 = [(HULockCategorySettingsItemManager *)self staticItemProvider];
-  v11 = v8;
+  staticItemProvider = [(HULockCategorySettingsItemManager *)self staticItemProvider];
+  v11 = staticItemProvider;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v11 count:1];
   v10 = [(HFItemManager *)self reloadAndUpdateItemsForProviders:v9 senderSelector:a2];
 }

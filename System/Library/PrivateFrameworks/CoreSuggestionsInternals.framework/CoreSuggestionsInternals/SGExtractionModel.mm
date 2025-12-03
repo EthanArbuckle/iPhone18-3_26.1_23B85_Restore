@@ -1,43 +1,43 @@
 @interface SGExtractionModel
-+ (id)argMaxForLastOutput:(id)a3;
-+ (id)argMaxForOutputIndex:(id)a3 index:(int)a4 shape:(id)a5;
-+ (id)argMaxForSequence:(id)a3;
-+ (id)enrichTaggedCharacterRangesWithModelOutput:(id)a3 usingInputCharacterRanges:(id)a4;
-+ (id)inputDictFromTaggedCharacterRanges:(id)a3 usingTokenMapping:(id)a4 forModel:(id)a5;
-+ (id)inputDictFromTaggedCharacterRanges:(id)a3 usingTokenMapping:(id)a4 forModel:(id)a5 pflTraining:(BOOL)a6 hasEvent:(BOOL)a7;
-+ (id)loadLazyPlistWithBasename:(id)a3;
-+ (id)modelOutputFromOutputMapping:(id)a3 modelOutput:(id)a4 modelInput:(id)a5;
-+ (unint64_t)featureDimensionForInputSection:(id)a3 forModel:(id)a4;
-+ (void)cleanLegacyModelsDirectoryOfModelsNamed:(id)a3;
++ (id)argMaxForLastOutput:(id)output;
++ (id)argMaxForOutputIndex:(id)index index:(int)a4 shape:(id)shape;
++ (id)argMaxForSequence:(id)sequence;
++ (id)enrichTaggedCharacterRangesWithModelOutput:(id)output usingInputCharacterRanges:(id)ranges;
++ (id)inputDictFromTaggedCharacterRanges:(id)ranges usingTokenMapping:(id)mapping forModel:(id)model;
++ (id)inputDictFromTaggedCharacterRanges:(id)ranges usingTokenMapping:(id)mapping forModel:(id)model pflTraining:(BOOL)training hasEvent:(BOOL)event;
++ (id)loadLazyPlistWithBasename:(id)basename;
++ (id)modelOutputFromOutputMapping:(id)mapping modelOutput:(id)output modelInput:(id)input;
++ (unint64_t)featureDimensionForInputSection:(id)section forModel:(id)model;
++ (void)cleanLegacyModelsDirectoryOfModelsNamed:(id)named;
 + (void)cleanModelAssets;
-+ (void)cleanModelsDirectoryOfModelsNamed:(id)a3;
++ (void)cleanModelsDirectoryOfModelsNamed:(id)named;
 + (void)writeDummyRecordInStore;
-+ (void)writeToBiomeStreamWithInput:(id)a3;
-- (id)currentModelURLForModelName:(id)a3;
++ (void)writeToBiomeStreamWithInput:(id)input;
+- (id)currentModelURLForModelName:(id)name;
 @end
 
 @implementation SGExtractionModel
 
-+ (void)cleanLegacyModelsDirectoryOfModelsNamed:(id)a3
++ (void)cleanLegacyModelsDirectoryOfModelsNamed:(id)named
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  namedCopy = named;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v5 = [SGPaths suggestionsDirectoryAfterCreatingIfNeeded:0];
-  v6 = [v4 enumeratorAtPath:v5];
-  v7 = [v6 nextObject];
-  if (v7)
+  v6 = [defaultManager enumeratorAtPath:v5];
+  nextObject = [v6 nextObject];
+  if (nextObject)
   {
-    v9 = v7;
+    v9 = nextObject;
     *&v8 = 138412290;
     v16 = v8;
     do
     {
-      if ([v9 containsString:{v3, v16}] && ((objc_msgSend(v9, "containsString:", @"mlmodel") & 1) != 0 || objc_msgSend(v9, "containsString:", @"mlmodelc")))
+      if ([v9 containsString:{namedCopy, v16}] && ((objc_msgSend(v9, "containsString:", @"mlmodel") & 1) != 0 || objc_msgSend(v9, "containsString:", @"mlmodelc")))
       {
         v10 = [v5 stringByAppendingPathComponent:v9];
         v17 = 0;
-        v11 = [v4 removeItemAtPath:v10 error:&v17];
+        v11 = [defaultManager removeItemAtPath:v10 error:&v17];
         v12 = v17;
 
         if (!v11 || v12)
@@ -52,41 +52,41 @@
         }
       }
 
-      v14 = [v6 nextObject];
+      nextObject2 = [v6 nextObject];
 
-      v9 = v14;
+      v9 = nextObject2;
     }
 
-    while (v14);
+    while (nextObject2);
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)cleanModelsDirectoryOfModelsNamed:(id)a3
++ (void)cleanModelsDirectoryOfModelsNamed:(id)named
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [a1 modelsDirectoryName];
-  v7 = [SGPaths suggestionsSubdirectory:v6 creatingDirectoriesIfNeeded:0];
+  namedCopy = named;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  modelsDirectoryName = [self modelsDirectoryName];
+  v7 = [SGPaths suggestionsSubdirectory:modelsDirectoryName creatingDirectoriesIfNeeded:0];
 
-  if ([v5 fileExistsAtPath:v7])
+  if ([defaultManager fileExistsAtPath:v7])
   {
-    v8 = [v5 enumeratorAtPath:v7];
-    v9 = [v8 nextObject];
-    if (v9)
+    v8 = [defaultManager enumeratorAtPath:v7];
+    nextObject = [v8 nextObject];
+    if (nextObject)
     {
-      v11 = v9;
+      v11 = nextObject;
       *&v10 = 138412290;
       v18 = v10;
       do
       {
-        if ([v11 containsString:{v4, v18}])
+        if ([v11 containsString:{namedCopy, v18}])
         {
           v12 = [v7 stringByAppendingPathComponent:v11];
           v19 = 0;
-          v13 = [v5 removeItemAtPath:v12 error:&v19];
+          v13 = [defaultManager removeItemAtPath:v12 error:&v19];
           v14 = v19;
 
           if (!v13 || v14)
@@ -101,12 +101,12 @@
           }
         }
 
-        v16 = [v8 nextObject];
+        nextObject2 = [v8 nextObject];
 
-        v11 = v16;
+        v11 = nextObject2;
       }
 
-      while (v16);
+      while (nextObject2);
     }
   }
 
@@ -139,8 +139,8 @@
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
-        [a1 cleanLegacyModelsDirectoryOfModelsNamed:v8];
-        [a1 cleanModelsDirectoryOfModelsNamed:v8];
+        [self cleanLegacyModelsDirectoryOfModelsNamed:v8];
+        [self cleanModelsDirectoryOfModelsNamed:v8];
       }
 
       v5 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
@@ -152,20 +152,20 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)enrichTaggedCharacterRangesWithModelOutput:(id)a3 usingInputCharacterRanges:(id)a4
++ (id)enrichTaggedCharacterRangesWithModelOutput:(id)output usingInputCharacterRanges:(id)ranges
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  outputCopy = output;
+  rangesCopy = ranges;
   v32 = objc_opt_new();
   v7 = objc_opt_new();
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v5;
+  obj = outputCopy;
   v8 = off_278949000;
-  v9 = v6;
+  v9 = rangesCopy;
   v37 = [obj countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v37)
   {
@@ -204,7 +204,7 @@
               [v16 addObject:v20];
 
               v8 = off_278949000;
-              v6 = v9;
+              rangesCopy = v9;
             }
 
             ++v12;
@@ -226,20 +226,20 @@
     do
     {
       v33 = objc_alloc(v8[59]);
-      v38 = [v6 objectAtIndexedSubscript:v21];
-      v36 = [v38 tags];
+      v38 = [rangesCopy objectAtIndexedSubscript:v21];
+      tags = [v38 tags];
       v34 = [v7 objectAtIndexedSubscript:v21];
-      v22 = [v36 arrayByAddingObjectsFromArray:v34];
-      v23 = [v6 objectAtIndexedSubscript:v21];
-      v24 = [v23 range];
+      v22 = [tags arrayByAddingObjectsFromArray:v34];
+      v23 = [rangesCopy objectAtIndexedSubscript:v21];
+      range = [v23 range];
       v26 = v25;
       v27 = [v9 objectAtIndexedSubscript:v21];
-      v28 = [v27 text];
-      v29 = [v33 initWithAnnotationType:4 tags:v22 range:v24 text:{v26, v28}];
+      text = [v27 text];
+      v29 = [v33 initWithAnnotationType:4 tags:v22 range:range text:{v26, text}];
       [v32 addObject:v29];
 
       v8 = off_278949000;
-      v6 = v9;
+      rangesCopy = v9;
 
       ++v21;
     }
@@ -252,12 +252,12 @@
   return v32;
 }
 
-+ (id)argMaxForOutputIndex:(id)a3 index:(int)a4 shape:(id)a5
++ (id)argMaxForOutputIndex:(id)index index:(int)a4 shape:(id)shape
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a5;
-  v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v7, "count") > 1}];
+  indexCopy = index;
+  shapeCopy = shape;
+  v8 = [shapeCopy objectAtIndexedSubscript:{objc_msgSend(shapeCopy, "count") > 1}];
   if ([v8 integerValue] < 1)
   {
     v21 = -1;
@@ -270,12 +270,12 @@
     v21 = -1;
     do
     {
-      if ([v7 count] < 2)
+      if ([shapeCopy count] < 2)
       {
         v11 = [MEMORY[0x277CCABB0] numberWithInt:v9];
         v22 = v11;
         v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
-        v14 = [v6 objectForKeyedSubscript:v12];
+        v14 = [indexCopy objectForKeyedSubscript:v12];
       }
 
       else
@@ -285,7 +285,7 @@
         v12 = [MEMORY[0x277CCABB0] numberWithInt:v9];
         v23[1] = v12;
         v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
-        v14 = [v6 objectForKeyedSubscript:v13];
+        v14 = [indexCopy objectForKeyedSubscript:v13];
       }
 
       [v14 doubleValue];
@@ -309,60 +309,60 @@
   return v17;
 }
 
-+ (id)argMaxForLastOutput:(id)a3
++ (id)argMaxForLastOutput:(id)output
 {
-  v4 = a3;
-  v5 = [v4 shape];
-  v6 = [a1 argMaxForOutputIndex:v4 index:0xFFFFFFFFLL shape:v5];
+  outputCopy = output;
+  shape = [outputCopy shape];
+  v6 = [self argMaxForOutputIndex:outputCopy index:0xFFFFFFFFLL shape:shape];
 
   return v6;
 }
 
-+ (id)argMaxForSequence:(id)a3
++ (id)argMaxForSequence:(id)sequence
 {
-  v4 = a3;
-  v5 = [v4 shape];
-  v6 = [v5 count];
+  sequenceCopy = sequence;
+  shape = [sequenceCopy shape];
+  v6 = [shape count];
   v7 = objc_alloc(MEMORY[0x277CBEB18]);
   if (v6 == 2)
   {
-    v8 = [v5 objectAtIndexedSubscript:0];
+    v8 = [shape objectAtIndexedSubscript:0];
     v9 = [v7 initWithCapacity:{objc_msgSend(v8, "integerValue")}];
 
-    v10 = [v5 objectAtIndexedSubscript:0];
-    v11 = [v10 integerValue];
+    v10 = [shape objectAtIndexedSubscript:0];
+    integerValue = [v10 integerValue];
 
-    if (v11 >= 1)
+    if (integerValue >= 1)
     {
       v12 = 0;
       do
       {
-        v13 = [a1 argMaxForOutputIndex:v4 index:v12 shape:v5];
+        v13 = [self argMaxForOutputIndex:sequenceCopy index:v12 shape:shape];
         [v9 setObject:v13 atIndexedSubscript:v12];
 
         ++v12;
-        v14 = [v5 objectAtIndexedSubscript:0];
-        v15 = [v14 integerValue];
+        v14 = [shape objectAtIndexedSubscript:0];
+        integerValue2 = [v14 integerValue];
       }
 
-      while (v15 > v12);
+      while (integerValue2 > v12);
     }
   }
 
   else
   {
-    v16 = [a1 argMaxForOutputIndex:v4 index:0 shape:v5];
+    v16 = [self argMaxForOutputIndex:sequenceCopy index:0 shape:shape];
     v9 = [v7 initWithObjects:{v16, 0}];
   }
 
   return v9;
 }
 
-+ (id)modelOutputFromOutputMapping:(id)a3 modelOutput:(id)a4 modelInput:(id)a5
++ (id)modelOutputFromOutputMapping:(id)mapping modelOutput:(id)output modelInput:(id)input
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  mappingCopy = mapping;
+  outputCopy = output;
+  inputCopy = input;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -373,13 +373,13 @@
   v15[1] = 3221225472;
   v15[2] = __73__SGExtractionModel_modelOutputFromOutputMapping_modelOutput_modelInput___block_invoke;
   v15[3] = &unk_27894CDD8;
-  v11 = v9;
+  v11 = outputCopy;
   v18 = &v20;
-  v19 = a1;
+  selfCopy = self;
   v16 = v11;
-  v12 = v10;
+  v12 = inputCopy;
   v17 = v12;
-  [v8 enumerateKeysAndObjectsUsingBlock:v15];
+  [mappingCopy enumerateKeysAndObjectsUsingBlock:v15];
   v13 = v21[5];
 
   _Block_object_dispose(&v20, 8);
@@ -495,20 +495,20 @@ void __73__SGExtractionModel_modelOutputFromOutputMapping_modelOutput_modelInput
   v33 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)featureDimensionForInputSection:(id)a3 forModel:(id)a4
++ (unint64_t)featureDimensionForInputSection:(id)section forModel:(id)model
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 modelDescription];
-  v7 = [v6 inputDescriptionsByName];
-  v8 = [v7 objectForKeyedSubscript:v5];
-  v9 = [v8 multiArrayConstraint];
-  v10 = [v9 shape];
+  sectionCopy = section;
+  modelDescription = [model modelDescription];
+  inputDescriptionsByName = [modelDescription inputDescriptionsByName];
+  v8 = [inputDescriptionsByName objectForKeyedSubscript:sectionCopy];
+  multiArrayConstraint = [v8 multiArrayConstraint];
+  shape = [multiArrayConstraint shape];
 
-  if (v10)
+  if (shape)
   {
-    v11 = [v10 objectAtIndexedSubscript:0];
-    v12 = [v11 unsignedIntValue];
+    v11 = [shape objectAtIndexedSubscript:0];
+    unsignedIntValue = [v11 unsignedIntValue];
   }
 
   else
@@ -517,15 +517,15 @@ void __73__SGExtractionModel_modelOutputFromOutputMapping_modelOutput_modelInput
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v16 = 138412290;
-      v17 = v5;
+      v17 = sectionCopy;
       _os_log_error_impl(&dword_231E60000, v13, OS_LOG_TYPE_ERROR, "featureDimensionForInputSection: Model doesn't have description for inputSection: %@", &v16, 0xCu);
     }
 
-    v12 = 1;
+    unsignedIntValue = 1;
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return v12;
+  return unsignedIntValue;
 }
 
 + (void)writeDummyRecordInStore
@@ -609,13 +609,13 @@ void __44__SGExtractionModel_writeDummyRecordInStore__block_invoke(uint64_t a1, 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)writeToBiomeStreamWithInput:(id)a3
++ (void)writeToBiomeStreamWithInput:(id)input
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  inputCopy = input;
   v4 = MEMORY[0x277D42570];
   v25 = 0;
-  v5 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v3 options:0 error:&v25];
+  v5 = [MEMORY[0x277CCAAA0] dataWithJSONObject:inputCopy options:0 error:&v25];
   v6 = v25;
   v7 = [v5 copy];
   v8 = [v4 compress:v7 lowMemory:1];
@@ -634,7 +634,7 @@ void __44__SGExtractionModel_writeDummyRecordInStore__block_invoke(uint64_t a1, 
 
     v10 = [MEMORY[0x277CF17F8] newPrivateStreamDefaultConfigurationWithStoreBasePath:@"/private/var/mobile/Library/PrivateBiomeStream/SemlPlugin/"];
     v12 = [objc_alloc(MEMORY[0x277CF1B30]) initWithPrivateStreamIdentifier:@"ExamplePrivateStream" storeConfig:v10];
-    v13 = [v12 source];
+    source = [v12 source];
     *&buf = 0;
     *(&buf + 1) = &buf;
     v27 = 0x2020000000;
@@ -663,7 +663,7 @@ void __44__SGExtractionModel_writeDummyRecordInStore__block_invoke(uint64_t a1, 
     }
 
     v17 = [ExampleEvent eventWithData:v8 dataVersion:1];
-    [v13 sendEvent:v17];
+    [source sendEvent:v17];
 
     _Block_object_dispose(&v21, 8);
     _Block_object_dispose(&buf, 8);
@@ -687,22 +687,22 @@ uint64_t __49__SGExtractionModel_writeToBiomeStreamWithInput___block_invoke_2(ui
   return result;
 }
 
-+ (id)inputDictFromTaggedCharacterRanges:(id)a3 usingTokenMapping:(id)a4 forModel:(id)a5 pflTraining:(BOOL)a6 hasEvent:(BOOL)a7
++ (id)inputDictFromTaggedCharacterRanges:(id)ranges usingTokenMapping:(id)mapping forModel:(id)model pflTraining:(BOOL)training hasEvent:(BOOL)event
 {
-  v44 = a7;
-  v50 = a6;
+  eventCopy = event;
+  trainingCopy = training;
   v81 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  rangesCopy = ranges;
+  mappingCopy = mapping;
+  modelCopy = model;
   v76[0] = 0;
   v76[1] = v76;
   v76[2] = 0x3032000000;
   v76[3] = __Block_byref_object_copy__9697;
   v76[4] = __Block_byref_object_dispose__9698;
   v77 = 0;
-  v47 = v9;
-  v12 = [v9 count];
+  v47 = rangesCopy;
+  v12 = [rangesCopy count];
   v13 = objc_opt_new();
   v14 = objc_opt_new();
   v72 = 0;
@@ -713,16 +713,16 @@ uint64_t __49__SGExtractionModel_writeToBiomeStreamWithInput___block_invoke_2(ui
   v62[1] = 3221225472;
   v62[2] = __104__SGExtractionModel_inputDictFromTaggedCharacterRanges_usingTokenMapping_forModel_pflTraining_hasEvent___block_invoke;
   v62[3] = &unk_27894CD38;
-  v69 = a1;
+  selfCopy = self;
   v70 = v12;
-  v53 = v11;
+  v53 = modelCopy;
   v63 = v53;
   v67 = v76;
-  v64 = v10;
+  v64 = mappingCopy;
   v68 = &v72;
   v49 = v13;
   v65 = v49;
-  v71 = v50;
+  v71 = trainingCopy;
   v48 = v14;
   v66 = v48;
   v55 = v64;
@@ -744,15 +744,15 @@ LABEL_3:
     v58 = 0u;
     v59 = 0u;
     v45 = v15;
-    v16 = [v15 tags];
-    v17 = [v16 countByEnumeratingWithState:&v58 objects:v80 count:16];
+    tags = [v15 tags];
+    v17 = [tags countByEnumeratingWithState:&v58 objects:v80 count:16];
     if (!v17)
     {
       goto LABEL_20;
     }
 
     v56 = *v59;
-    obj = v16;
+    obj = tags;
     while (1)
     {
       v18 = 0;
@@ -771,7 +771,7 @@ LABEL_3:
         if (v22)
         {
           v23 = objc_autoreleasePoolPush();
-          v24 = [a1 featureDimensionForInputSection:v21 forModel:v53];
+          v24 = [self featureDimensionForInputSection:v21 forModel:v53];
           v25 = [v19 substringFromIndex:2];
           v26 = [v22 objectForKeyedSubscript:v25];
 
@@ -787,7 +787,7 @@ LABEL_3:
               v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v78 count:3];
               [v34 setObject:v26 forKeyedSubscript:v36];
 
-              if (v50)
+              if (trainingCopy)
               {
                 v31 = [v48 objectForKeyedSubscript:v21];
                 v32 = [v31 objectAtIndexedSubscript:v52];
@@ -807,12 +807,12 @@ LABEL_16:
               v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v79 count:3];
               [v27 setObject:&unk_284749428 forKeyedSubscript:v30];
 
-              if (v50)
+              if (trainingCopy)
               {
                 v31 = [v48 objectForKeyedSubscript:v21];
                 v32 = [v31 objectAtIndexedSubscript:v52];
-                v33 = [v32 firstObject];
-                [v33 setObject:&unk_284749428 atIndexedSubscript:{objc_msgSend(v26, "unsignedIntValue")}];
+                firstObject = [v32 firstObject];
+                [firstObject setObject:&unk_284749428 atIndexedSubscript:{objc_msgSend(v26, "unsignedIntValue")}];
 
                 goto LABEL_16;
               }
@@ -827,7 +827,7 @@ LABEL_16:
       }
 
       while (v57 != v18);
-      v16 = obj;
+      tags = obj;
       v17 = [obj countByEnumeratingWithState:&v58 objects:v80 count:16];
       if (!v17)
       {
@@ -840,14 +840,14 @@ LABEL_20:
     }
   }
 
-  if (v50)
+  if (trainingCopy)
   {
     v38 = objc_opt_new();
     [v48 setObject:v38 forKeyedSubscript:@"polarity_true"];
 
     v39 = [v48 objectForKeyedSubscript:@"polarity_true"];
     v40 = v39;
-    if (v44)
+    if (eventCopy)
     {
       v41 = &unk_284749428;
     }
@@ -859,8 +859,8 @@ LABEL_20:
 
     [v39 addObject:v41];
 
-    [a1 writeDummyRecordInStore];
-    [a1 writeToBiomeStreamWithInput:v48];
+    [self writeDummyRecordInStore];
+    [self writeToBiomeStreamWithInput:v48];
   }
 
   v37 = v49;
@@ -1046,24 +1046,24 @@ void __104__SGExtractionModel_inputDictFromTaggedCharacterRanges_usingTokenMappi
   v39 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)inputDictFromTaggedCharacterRanges:(id)a3 usingTokenMapping:(id)a4 forModel:(id)a5
++ (id)inputDictFromTaggedCharacterRanges:(id)ranges usingTokenMapping:(id)mapping forModel:(id)model
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() inputDictFromTaggedCharacterRanges:v9 usingTokenMapping:v8 forModel:v7 pflTraining:0 hasEvent:0];
+  modelCopy = model;
+  mappingCopy = mapping;
+  rangesCopy = ranges;
+  v10 = [objc_opt_class() inputDictFromTaggedCharacterRanges:rangesCopy usingTokenMapping:mappingCopy forModel:modelCopy pflTraining:0 hasEvent:0];
 
   return v10;
 }
 
-+ (id)loadLazyPlistWithBasename:(id)a3
++ (id)loadLazyPlistWithBasename:(id)basename
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [a3 stringByAppendingPathExtension:@"plplist"];
+  v5 = [basename stringByAppendingPathExtension:@"plplist"];
   if (!v5)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"SGExtractionModel.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"relPath"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGExtractionModel.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"relPath"}];
   }
 
   v6 = +[SGAsset localeAsset];
@@ -1109,11 +1109,11 @@ LABEL_11:
   return v8;
 }
 
-- (id)currentModelURLForModelName:(id)a3
+- (id)currentModelURLForModelName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[SGAsset localeAsset];
-  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@.%@", v3, @"mlmodelc"];
+  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@.%@", nameCopy, @"mlmodelc"];
 
   v6 = [v4 filesystemPathForAssetDataRelativePath:v5];
 

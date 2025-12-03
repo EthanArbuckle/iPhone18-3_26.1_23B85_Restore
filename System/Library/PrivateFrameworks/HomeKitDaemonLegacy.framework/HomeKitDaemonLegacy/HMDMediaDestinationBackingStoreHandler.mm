@@ -1,20 +1,20 @@
 @interface HMDMediaDestinationBackingStoreHandler
-+ (id)backingStoreObjectForMediaDestination:(id)a3;
++ (id)backingStoreObjectForMediaDestination:(id)destination;
 + (id)logCategory;
-- (HMDMediaDestinationBackingStoreHandler)initWithDestination:(id)a3 backingStore:(id)a4 metricsDispatcher:(id)a5 delegate:(id)a6;
+- (HMDMediaDestinationBackingStoreHandler)initWithDestination:(id)destination backingStore:(id)store metricsDispatcher:(id)dispatcher delegate:(id)delegate;
 - (HMDMediaDestinationBackingStoreHandlerDelegate)delegate;
 - (HMMediaDestination)destination;
-- (void)mergeDestination:(id)a3;
-- (void)migrateWithCurrentCloudRecord:(id)a3 home:(id)a4 cloudZone:(id)a5 migrationQueue:(id)a6 completion:(id)a7;
-- (void)migrateWithHome:(id)a3 cloudZone:(id)a4 migrationQueue:(id)a5 completion:(id)a6;
-- (void)recoverDueToInvalidRecordInCloudWithHome:(id)a3 migrationQueue:(id)a4 completion:(id)a5;
-- (void)recoverDueToNoRecordInCloudWithHome:(id)a3 migrationQueue:(id)a4 completion:(id)a5;
-- (void)setAudioGroupIdentifier:(id)a3;
-- (void)setSupportedOptions:(unint64_t)a3;
-- (void)transactionObjectRemoved:(id)a3 message:(id)a4;
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
-- (void)updateAudioGroupIdentifier:(id)a3 completion:(id)a4;
-- (void)updateSupportedOptions:(unint64_t)a3 completion:(id)a4;
+- (void)mergeDestination:(id)destination;
+- (void)migrateWithCurrentCloudRecord:(id)record home:(id)home cloudZone:(id)zone migrationQueue:(id)queue completion:(id)completion;
+- (void)migrateWithHome:(id)home cloudZone:(id)zone migrationQueue:(id)queue completion:(id)completion;
+- (void)recoverDueToInvalidRecordInCloudWithHome:(id)home migrationQueue:(id)queue completion:(id)completion;
+- (void)recoverDueToNoRecordInCloudWithHome:(id)home migrationQueue:(id)queue completion:(id)completion;
+- (void)setAudioGroupIdentifier:(id)identifier;
+- (void)setSupportedOptions:(unint64_t)options;
+- (void)transactionObjectRemoved:(id)removed message:(id)message;
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message;
+- (void)updateAudioGroupIdentifier:(id)identifier completion:(id)completion;
+- (void)updateSupportedOptions:(unint64_t)options completion:(id)completion;
 @end
 
 @implementation HMDMediaDestinationBackingStoreHandler
@@ -26,13 +26,13 @@
   return WeakRetained;
 }
 
-- (void)transactionObjectRemoved:(id)a3 message:(id)a4
+- (void)transactionObjectRemoved:(id)removed message:(id)message
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  removedCopy = removed;
+  messageCopy = message;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -40,25 +40,25 @@
     v14 = 138543618;
     v15 = v11;
     v16 = 2112;
-    v17 = v6;
+    v17 = removedCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_ERROR, "%{public}@Failed to remove unknown transaction object: %@", &v14, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
   v12 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-  [v7 respondWithError:v12];
+  [messageCopy respondWithError:v12];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message
 {
   v54 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updatedCopy = updated;
+  valuesCopy = values;
+  messageCopy = message;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -66,7 +66,7 @@
     *buf = 138543618;
     v49 = v14;
     v50 = 2112;
-    v51 = v9;
+    v51 = valuesCopy;
     _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, "%{public}@Handling transaction object updated with new object: %@", buf, 0x16u);
   }
 
@@ -74,7 +74,7 @@
   if (isFeatureHomeTheaterQFAEnabledForTests && [isFeatureHomeTheaterQFAEnabledForTests BOOLValue])
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v12;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -89,7 +89,7 @@
 
   else
   {
-    v19 = v9;
+    v19 = valuesCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,12 +105,12 @@
 
     if (v21)
     {
-      v22 = [(HMDMediaDestinationBackingStoreHandler *)v12 destination];
-      v23 = v22;
-      if (v22 && ([v22 uniqueIdentifier], v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "uuid"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v24, "hmf_isEqualToUUID:", v25), v25, v24, (v26 & 1) == 0))
+      destination = [(HMDMediaDestinationBackingStoreHandler *)selfCopy destination];
+      v23 = destination;
+      if (destination && ([destination uniqueIdentifier], v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "uuid"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v24, "hmf_isEqualToUUID:", v25), v25, v24, (v26 & 1) == 0))
       {
         v42 = objc_autoreleasePoolPush();
-        v43 = v12;
+        v43 = selfCopy;
         v44 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
         {
@@ -127,25 +127,25 @@
 
       else
       {
-        v27 = [v21 setProperties];
-        if ([v27 containsObject:@"supportedOptions"])
+        setProperties = [v21 setProperties];
+        if ([setProperties containsObject:@"supportedOptions"])
         {
-          v28 = [v21 supportedOptions];
-          -[HMDMediaDestinationBackingStoreHandler setSupportedOptions:](v12, "setSupportedOptions:", [v28 unsignedIntegerValue]);
+          supportedOptions = [v21 supportedOptions];
+          -[HMDMediaDestinationBackingStoreHandler setSupportedOptions:](selfCopy, "setSupportedOptions:", [supportedOptions unsignedIntegerValue]);
         }
 
-        if ([v27 containsObject:@"audioGroupIdentifier"])
+        if ([setProperties containsObject:@"audioGroupIdentifier"])
         {
-          v29 = [v21 audioGroupIdentifier];
-          [(HMDMediaDestinationBackingStoreHandler *)v12 setAudioGroupIdentifier:v29];
+          audioGroupIdentifier = [v21 audioGroupIdentifier];
+          [(HMDMediaDestinationBackingStoreHandler *)selfCopy setAudioGroupIdentifier:audioGroupIdentifier];
         }
 
-        v30 = [(HMDMediaDestinationBackingStoreHandler *)v12 destination];
+        destination2 = [(HMDMediaDestinationBackingStoreHandler *)selfCopy destination];
         if ((HMFEqualObjects() & 1) == 0)
         {
-          v47 = v8;
+          v47 = updatedCopy;
           v31 = objc_autoreleasePoolPush();
-          v32 = v12;
+          v32 = selfCopy;
           v33 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
           {
@@ -155,31 +155,31 @@
             v50 = 2112;
             v51 = v23;
             v52 = 2112;
-            v53 = v30;
+            v53 = destination2;
             _os_log_impl(&dword_2531F8000, v33, OS_LOG_TYPE_INFO, "%{public}@Updated audio destination: %@ new audio destination: %@", buf, 0x20u);
           }
 
           objc_autoreleasePoolPop(v31);
-          v35 = [v10 transactionResult];
-          [v35 markChanged];
+          transactionResult = [messageCopy transactionResult];
+          [transactionResult markChanged];
 
-          v36 = [v10 transactionResult];
-          [v36 markSaveToAssistant];
+          transactionResult2 = [messageCopy transactionResult];
+          [transactionResult2 markSaveToAssistant];
 
-          v37 = [(HMDMediaDestinationBackingStoreHandler *)v32 delegate];
-          [v37 mediaDestinationBackingStoreHandler:v32 didUpdateDestination:v30];
+          delegate = [(HMDMediaDestinationBackingStoreHandler *)v32 delegate];
+          [delegate mediaDestinationBackingStoreHandler:v32 didUpdateDestination:destination2];
 
-          v8 = v47;
+          updatedCopy = v47;
         }
 
-        [v10 respondWithSuccess];
+        [messageCopy respondWithSuccess];
       }
     }
 
     else
     {
       v38 = objc_autoreleasePoolPush();
-      v39 = v12;
+      v39 = selfCopy;
       v40 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
       {
@@ -193,25 +193,25 @@
 
       objc_autoreleasePoolPop(v38);
       v23 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-      [v10 respondWithError:v23];
+      [messageCopy respondWithError:v23];
     }
   }
 
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAudioGroupIdentifier:(id)a3
+- (void)setAudioGroupIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  [(HMMutableMediaDestination *)self->_destination setAudioGroupIdentifier:v4];
+  [(HMMutableMediaDestination *)self->_destination setAudioGroupIdentifier:identifierCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setSupportedOptions:(unint64_t)a3
+- (void)setSupportedOptions:(unint64_t)options
 {
   os_unfair_lock_lock_with_options();
-  [(HMMutableMediaDestination *)self->_destination setSupportedOptions:a3];
+  [(HMMutableMediaDestination *)self->_destination setSupportedOptions:options];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -225,14 +225,14 @@
   return v3;
 }
 
-- (void)recoverDueToInvalidRecordInCloudWithHome:(id)a3 migrationQueue:(id)a4 completion:(id)a5
+- (void)recoverDueToInvalidRecordInCloudWithHome:(id)home migrationQueue:(id)queue completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  homeCopy = home;
+  queueCopy = queue;
+  completionCopy = completion;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -243,16 +243,16 @@
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = [(HMDMediaDestinationBackingStoreHandler *)v12 destination];
-  v16 = [v15 uniqueIdentifier];
+  destination = [(HMDMediaDestinationBackingStoreHandler *)selfCopy destination];
+  uniqueIdentifier = [destination uniqueIdentifier];
 
-  [v8 dropAllChangesWithObjectID:v16];
+  [homeCopy dropAllChangesWithObjectID:uniqueIdentifier];
   v17 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-  v18 = [(HMDMediaDestinationBackingStoreHandler *)v12 metricsDispatcher];
-  [v18 submitFailureEventWithFailureCode:3 error:v17];
+  metricsDispatcher = [(HMDMediaDestinationBackingStoreHandler *)selfCopy metricsDispatcher];
+  [metricsDispatcher submitFailureEventWithFailureCode:3 error:v17];
 
-  v19 = [(HMDMediaDestinationBackingStoreHandler *)v12 destination];
-  v20 = [HMDMediaDestinationBackingStoreHandler backingStoreObjectForMediaDestination:v19];
+  destination2 = [(HMDMediaDestinationBackingStoreHandler *)selfCopy destination];
+  v20 = [HMDMediaDestinationBackingStoreHandler backingStoreObjectForMediaDestination:destination2];
 
   [v20 setObjectChangeType:2];
   v24[0] = MEMORY[0x277D85DD0];
@@ -260,10 +260,10 @@
   v24[2] = __109__HMDMediaDestinationBackingStoreHandler_recoverDueToInvalidRecordInCloudWithHome_migrationQueue_completion___block_invoke;
   v24[3] = &unk_279735738;
   v25 = v20;
-  v26 = v10;
+  v26 = completionCopy;
   v21 = v20;
-  v22 = v10;
-  dispatch_async(v9, v24);
+  v22 = completionCopy;
+  dispatch_async(queueCopy, v24);
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -279,19 +279,19 @@ void __109__HMDMediaDestinationBackingStoreHandler_recoverDueToInvalidRecordInCl
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)migrateWithCurrentCloudRecord:(id)a3 home:(id)a4 cloudZone:(id)a5 migrationQueue:(id)a6 completion:(id)a7
+- (void)migrateWithCurrentCloudRecord:(id)record home:(id)home cloudZone:(id)zone migrationQueue:(id)queue completion:(id)completion
 {
   v53 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 extractObjectChange];
+  recordCopy = record;
+  homeCopy = home;
+  zoneCopy = zone;
+  queueCopy = queue;
+  completionCopy = completion;
+  extractObjectChange = [recordCopy extractObjectChange];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = v17;
+    v18 = extractObjectChange;
   }
 
   else
@@ -303,30 +303,30 @@ void __109__HMDMediaDestinationBackingStoreHandler_recoverDueToInvalidRecordInCl
 
   if (v19)
   {
-    v42 = v13;
-    v20 = [(HMDMediaDestinationBackingStoreHandler *)self destination];
-    v21 = [v19 supportedOptions];
-    v22 = [v21 integerValue];
-    if (v22 == [v20 supportedOptions])
+    v42 = homeCopy;
+    destination = [(HMDMediaDestinationBackingStoreHandler *)self destination];
+    supportedOptions = [v19 supportedOptions];
+    integerValue = [supportedOptions integerValue];
+    if (integerValue == [destination supportedOptions])
     {
-      v23 = [v19 audioGroupIdentifier];
-      [v20 audioGroupIdentifier];
-      v24 = v20;
-      v25 = self;
+      audioGroupIdentifier = [v19 audioGroupIdentifier];
+      [destination audioGroupIdentifier];
+      v24 = destination;
+      selfCopy = self;
       v26 = v19;
-      v27 = v16;
-      v28 = v15;
-      v29 = v12;
-      v31 = v30 = v14;
+      v27 = completionCopy;
+      v28 = queueCopy;
+      v29 = recordCopy;
+      v31 = v30 = zoneCopy;
       v41 = HMFEqualObjects();
 
-      v14 = v30;
-      v12 = v29;
-      v15 = v28;
-      v16 = v27;
+      zoneCopy = v30;
+      recordCopy = v29;
+      queueCopy = v28;
+      completionCopy = v27;
       v19 = v26;
-      self = v25;
-      v20 = v24;
+      self = selfCopy;
+      destination = v24;
 
       if (v41)
       {
@@ -334,10 +334,10 @@ void __109__HMDMediaDestinationBackingStoreHandler_recoverDueToInvalidRecordInCl
         block[1] = 3221225472;
         block[2] = __113__HMDMediaDestinationBackingStoreHandler_migrateWithCurrentCloudRecord_home_cloudZone_migrationQueue_completion___block_invoke_2;
         block[3] = &unk_2797348C0;
-        v44 = v16;
-        dispatch_async(v15, block);
+        v44 = completionCopy;
+        dispatch_async(queueCopy, block);
 
-        v13 = v42;
+        homeCopy = v42;
         goto LABEL_15;
       }
     }
@@ -347,7 +347,7 @@ void __109__HMDMediaDestinationBackingStoreHandler_recoverDueToInvalidRecordInCl
     }
 
     v36 = objc_autoreleasePoolPush();
-    v37 = self;
+    selfCopy2 = self;
     v38 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
     {
@@ -357,19 +357,19 @@ void __109__HMDMediaDestinationBackingStoreHandler_recoverDueToInvalidRecordInCl
       v49 = 2112;
       v50 = v19;
       v51 = 2112;
-      v52 = v20;
+      v52 = destination;
       _os_log_impl(&dword_2531F8000, v38, OS_LOG_TYPE_INFO, "%{public}@Recovering due to miss matched model: %@ destination: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v36);
-    v13 = v42;
-    [(HMDMediaDestinationBackingStoreHandler *)v37 recoverDueToInvalidRecordInCloudWithHome:v42 migrationQueue:v15 completion:v16];
+    homeCopy = v42;
+    [(HMDMediaDestinationBackingStoreHandler *)selfCopy2 recoverDueToInvalidRecordInCloudWithHome:v42 migrationQueue:queueCopy completion:completionCopy];
   }
 
   else
   {
     v32 = objc_autoreleasePoolPush();
-    v33 = self;
+    selfCopy3 = self;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
@@ -377,7 +377,7 @@ void __109__HMDMediaDestinationBackingStoreHandler_recoverDueToInvalidRecordInCl
       *buf = 138543618;
       v48 = v35;
       v49 = 2112;
-      v50 = v12;
+      v50 = recordCopy;
       _os_log_impl(&dword_2531F8000, v34, OS_LOG_TYPE_ERROR, "%{public}@Failed to migrate due to unknown model extracted from record: %@", buf, 0x16u);
     }
 
@@ -386,9 +386,9 @@ void __109__HMDMediaDestinationBackingStoreHandler_recoverDueToInvalidRecordInCl
     v45[1] = 3221225472;
     v45[2] = __113__HMDMediaDestinationBackingStoreHandler_migrateWithCurrentCloudRecord_home_cloudZone_migrationQueue_completion___block_invoke;
     v45[3] = &unk_2797348C0;
-    v46 = v16;
-    dispatch_async(v15, v45);
-    v20 = v46;
+    v46 = completionCopy;
+    dispatch_async(queueCopy, v45);
+    destination = v46;
   }
 
 LABEL_15:
@@ -396,14 +396,14 @@ LABEL_15:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recoverDueToNoRecordInCloudWithHome:(id)a3 migrationQueue:(id)a4 completion:(id)a5
+- (void)recoverDueToNoRecordInCloudWithHome:(id)home migrationQueue:(id)queue completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  homeCopy = home;
+  queueCopy = queue;
+  completionCopy = completion;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -414,19 +414,19 @@ LABEL_15:
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = [(HMDMediaDestinationBackingStoreHandler *)v12 destination];
-  v16 = [v15 uniqueIdentifier];
+  destination = [(HMDMediaDestinationBackingStoreHandler *)selfCopy destination];
+  uniqueIdentifier = [destination uniqueIdentifier];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __104__HMDMediaDestinationBackingStoreHandler_recoverDueToNoRecordInCloudWithHome_migrationQueue_completion___block_invoke;
   v20[3] = &unk_27972F8D8;
-  v20[4] = v12;
-  v21 = v9;
-  v22 = v10;
-  v17 = v10;
-  v18 = v9;
-  [v8 cleanChangesIfNoAddChangeObjectID:v16 completion:v20];
+  v20[4] = selfCopy;
+  v21 = queueCopy;
+  v22 = completionCopy;
+  v17 = completionCopy;
+  v18 = queueCopy;
+  [homeCopy cleanChangesIfNoAddChangeObjectID:uniqueIdentifier completion:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -495,29 +495,29 @@ void __104__HMDMediaDestinationBackingStoreHandler_recoverDueToNoRecordInCloudWi
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)migrateWithHome:(id)a3 cloudZone:(id)a4 migrationQueue:(id)a5 completion:(id)a6
+- (void)migrateWithHome:(id)home cloudZone:(id)zone migrationQueue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDMediaDestinationBackingStoreHandler *)self destination];
-  v15 = [v14 uniqueIdentifier];
+  homeCopy = home;
+  zoneCopy = zone;
+  queueCopy = queue;
+  completionCopy = completion;
+  destination = [(HMDMediaDestinationBackingStoreHandler *)self destination];
+  uniqueIdentifier = [destination uniqueIdentifier];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __94__HMDMediaDestinationBackingStoreHandler_migrateWithHome_cloudZone_migrationQueue_completion___block_invoke;
   v20[3] = &unk_279725398;
   v20[4] = self;
-  v21 = v10;
-  v23 = v11;
-  v24 = v13;
-  v22 = v12;
-  v16 = v11;
-  v17 = v13;
-  v18 = v12;
-  v19 = v10;
-  [v16 cloudRecordWithObjectID:v15 completionHandler:v20];
+  v21 = homeCopy;
+  v23 = zoneCopy;
+  v24 = completionCopy;
+  v22 = queueCopy;
+  v16 = zoneCopy;
+  v17 = completionCopy;
+  v18 = queueCopy;
+  v19 = homeCopy;
+  [v16 cloudRecordWithObjectID:uniqueIdentifier completionHandler:v20];
 }
 
 uint64_t __94__HMDMediaDestinationBackingStoreHandler_migrateWithHome_cloudZone_migrationQueue_completion___block_invoke(void *a1, uint64_t a2)
@@ -534,13 +534,13 @@ uint64_t __94__HMDMediaDestinationBackingStoreHandler_migrateWithHome_cloudZone_
   }
 }
 
-- (void)updateAudioGroupIdentifier:(id)a3 completion:(id)a4
+- (void)updateAudioGroupIdentifier:(id)identifier completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -548,22 +548,22 @@ uint64_t __94__HMDMediaDestinationBackingStoreHandler_migrateWithHome_cloudZone_
     v29 = 138543618;
     v30 = v11;
     v31 = 2112;
-    v32 = v6;
+    v32 = identifierCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Updating to audio group identifier: %@", &v29, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  if (v7)
+  if (completionCopy)
   {
     v12 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-    v13 = [(HMDMediaDestinationBackingStoreHandler *)v9 destination];
-    v14 = [v13 audioGroupIdentifier];
-    v15 = [v6 hmf_isEqualToUUID:v14];
+    destination = [(HMDMediaDestinationBackingStoreHandler *)selfCopy destination];
+    audioGroupIdentifier = [destination audioGroupIdentifier];
+    v15 = [identifierCopy hmf_isEqualToUUID:audioGroupIdentifier];
 
     if (v15)
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = v9;
+      v17 = selfCopy;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
@@ -580,17 +580,17 @@ uint64_t __94__HMDMediaDestinationBackingStoreHandler_migrateWithHome_cloudZone_
     }
 
     v21 = [HMDMediaDestinationModel alloc];
-    v22 = [(HMDMediaDestinationBackingStoreHandler *)v9 destination];
-    v23 = [(HMDMediaDestinationModel *)v21 initWithDestination:v22 changeType:2];
+    destination2 = [(HMDMediaDestinationBackingStoreHandler *)selfCopy destination];
+    v23 = [(HMDMediaDestinationModel *)v21 initWithDestination:destination2 changeType:2];
 
-    [(HMDMediaDestinationModel *)v23 setAudioGroupIdentifier:v6];
-    [(HMDBackingStoreHandler *)v9 runTransactionWithModel:v23 options:v12 reason:@"UpdateAudioGroupIdentifier" completion:v7];
+    [(HMDMediaDestinationModel *)v23 setAudioGroupIdentifier:identifierCopy];
+    [(HMDBackingStoreHandler *)selfCopy runTransactionWithModel:v23 options:v12 reason:@"UpdateAudioGroupIdentifier" completion:completionCopy];
   }
 
   else
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = v9;
+    v25 = selfCopy;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -606,13 +606,13 @@ uint64_t __94__HMDMediaDestinationBackingStoreHandler_migrateWithHome_cloudZone_
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSupportedOptions:(unint64_t)a3 completion:(id)a4
+- (void)updateSupportedOptions:(unint64_t)options completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = HMMediaDestinationSupportOptionsAsString();
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -625,13 +625,13 @@ uint64_t __94__HMDMediaDestinationBackingStoreHandler_migrateWithHome_cloudZone_
   }
 
   objc_autoreleasePoolPop(v8);
-  if (v6)
+  if (completionCopy)
   {
-    v12 = [(HMDMediaDestinationBackingStoreHandler *)v9 destination];
-    if ([v12 supportedOptions] == a3)
+    destination = [(HMDMediaDestinationBackingStoreHandler *)selfCopy destination];
+    if ([destination supportedOptions] == options)
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = v9;
+      v14 = selfCopy;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
@@ -642,27 +642,27 @@ uint64_t __94__HMDMediaDestinationBackingStoreHandler_migrateWithHome_cloudZone_
       }
 
       objc_autoreleasePoolPop(v13);
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
     {
       v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", @"UpdateSupportedOptions", v7];
       v22 = [HMDMediaDestinationModel alloc];
-      v23 = [(HMDMediaDestinationBackingStoreHandler *)v9 destination];
-      v24 = [(HMDMediaDestinationModel *)v22 initWithDestination:v23 changeType:2];
+      destination2 = [(HMDMediaDestinationBackingStoreHandler *)selfCopy destination];
+      v24 = [(HMDMediaDestinationModel *)v22 initWithDestination:destination2 changeType:2];
 
-      v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:options];
       [(HMDMediaDestinationModel *)v24 setSupportedOptions:v25];
 
-      [(HMDBackingStoreHandler *)v9 runTransactionWithModel:v24 reason:v21 completion:v6];
+      [(HMDBackingStoreHandler *)selfCopy runTransactionWithModel:v24 reason:v21 completion:completionCopy];
     }
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = v9;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -678,25 +678,25 @@ uint64_t __94__HMDMediaDestinationBackingStoreHandler_migrateWithHome_cloudZone_
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mergeDestination:(id)a3
+- (void)mergeDestination:(id)destination
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  destinationCopy = destination;
   os_unfair_lock_lock_with_options();
-  if (([(HMMutableMediaDestination *)self->_destination isEqual:v4]& 1) != 0)
+  if (([(HMMutableMediaDestination *)self->_destination isEqual:destinationCopy]& 1) != 0)
   {
     os_unfair_lock_unlock(&self->_lock);
   }
 
   else
   {
-    v5 = [v4 mutableCopy];
+    v5 = [destinationCopy mutableCopy];
     destination = self->_destination;
     self->_destination = v5;
 
     os_unfair_lock_unlock(&self->_lock);
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -704,7 +704,7 @@ uint64_t __94__HMDMediaDestinationBackingStoreHandler_migrateWithHome_cloudZone_
       v12 = 138543618;
       v13 = v10;
       v14 = 2112;
-      v15 = v4;
+      v15 = destinationCopy;
       _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@Merged destination: %@", &v12, 0x16u);
     }
 
@@ -714,46 +714,46 @@ uint64_t __94__HMDMediaDestinationBackingStoreHandler_migrateWithHome_cloudZone_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMediaDestinationBackingStoreHandler)initWithDestination:(id)a3 backingStore:(id)a4 metricsDispatcher:(id)a5 delegate:(id)a6
+- (HMDMediaDestinationBackingStoreHandler)initWithDestination:(id)destination backingStore:(id)store metricsDispatcher:(id)dispatcher delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  destinationCopy = destination;
+  storeCopy = store;
+  dispatcherCopy = dispatcher;
+  delegateCopy = delegate;
+  if (!destinationCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v11)
+  if (!storeCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v12)
+  if (!dispatcherCopy)
   {
 LABEL_9:
     v20 = _HMFPreconditionFailure();
     return +[(HMDMediaDestinationBackingStoreHandler *)v20];
   }
 
-  v14 = v13;
-  v15 = [v10 uniqueIdentifier];
+  v14 = delegateCopy;
+  uniqueIdentifier = [destinationCopy uniqueIdentifier];
   v22.receiver = self;
   v22.super_class = HMDMediaDestinationBackingStoreHandler;
-  v16 = [(HMDBackingStoreHandler *)&v22 initWithIdentifier:v15 backingStore:v11];
+  v16 = [(HMDBackingStoreHandler *)&v22 initWithIdentifier:uniqueIdentifier backingStore:storeCopy];
 
   if (v16)
   {
     objc_storeWeak(&v16->_delegate, v14);
-    v17 = [v10 mutableCopy];
+    v17 = [destinationCopy mutableCopy];
     destination = v16->_destination;
     v16->_destination = v17;
 
-    objc_storeStrong(&v16->_metricsDispatcher, a5);
+    objc_storeStrong(&v16->_metricsDispatcher, dispatcher);
   }
 
   return v16;
@@ -781,16 +781,16 @@ uint64_t __53__HMDMediaDestinationBackingStoreHandler_logCategory__block_invoke(
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (id)backingStoreObjectForMediaDestination:(id)a3
++ (id)backingStoreObjectForMediaDestination:(id)destination
 {
-  v3 = a3;
-  v4 = [[HMDMediaDestinationModel alloc] initWithDestination:v3 changeType:0];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "supportedOptions")}];
+  destinationCopy = destination;
+  v4 = [[HMDMediaDestinationModel alloc] initWithDestination:destinationCopy changeType:0];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(destinationCopy, "supportedOptions")}];
   [(HMDMediaDestinationModel *)v4 setSupportedOptions:v5];
 
-  v6 = [v3 audioGroupIdentifier];
+  audioGroupIdentifier = [destinationCopy audioGroupIdentifier];
 
-  [(HMDMediaDestinationModel *)v4 setAudioGroupIdentifier:v6];
+  [(HMDMediaDestinationModel *)v4 setAudioGroupIdentifier:audioGroupIdentifier];
 
   return v4;
 }

@@ -11,37 +11,37 @@
   v7 = a4;
   if (!v6)
   {
-    v17 = [a1 changeDetailsWithNoChanges];
+    changeDetailsWithNoChanges = [self changeDetailsWithNoChanges];
 LABEL_9:
-    v18 = v17;
+    v18 = changeDetailsWithNoChanges;
     goto LABEL_13;
   }
 
   if (([v6 hasIncrementalChanges] & 1) == 0)
   {
-    v17 = [a1 changeDetailsWithNoIncrementalChanges];
+    changeDetailsWithNoChanges = [self changeDetailsWithNoIncrementalChanges];
     goto LABEL_9;
   }
 
-  v8 = [v6 changedIndexes];
-  v9 = [v8 count];
+  changedIndexes = [v6 changedIndexes];
+  v9 = [changedIndexes count];
 
   v10 = 0;
   if (v7 && v9)
   {
     v11 = objc_alloc_init(MEMORY[0x1E696AD50]);
-    v12 = [v6 fetchResultAfterChanges];
-    v13 = [v6 changedIndexes];
+    fetchResultAfterChanges = [v6 fetchResultAfterChanges];
+    changedIndexes2 = [v6 changedIndexes];
     v26 = MEMORY[0x1E69E9820];
     v27 = 3221225472;
     v28 = __94__PXArrayChangeDetails_PhotoKit__changeDetailsFromFetchResultChangeDetails_originatingChange___block_invoke;
     v29 = &unk_1E774C1B0;
-    v14 = v12;
+    v14 = fetchResultAfterChanges;
     v30 = v14;
     v31 = v7;
     v15 = v11;
     v32 = v15;
-    [v13 enumerateIndexesUsingBlock:&v26];
+    [changedIndexes2 enumerateIndexesUsingBlock:&v26];
 
     if ([v15 count])
     {
@@ -57,13 +57,13 @@ LABEL_9:
     }
   }
 
-  v19 = [a1 alloc];
-  v20 = [v6 removedIndexes];
-  v21 = [v6 insertedIndexes];
-  v22 = [v6 movedIndexes];
-  v23 = [v6 movedFromIndexes];
-  v24 = [v6 changedIndexes];
-  v18 = [v19 initWithIncrementalChangeDetailsRemovedIndexes:v20 insertedIndexes:v21 movesToIndexes:v22 movesFromIndexes:v23 changedIndexes:v24 indexesWithChangesByProperty:v10];
+  v19 = [self alloc];
+  removedIndexes = [v6 removedIndexes];
+  insertedIndexes = [v6 insertedIndexes];
+  movedIndexes = [v6 movedIndexes];
+  movedFromIndexes = [v6 movedFromIndexes];
+  changedIndexes3 = [v6 changedIndexes];
+  v18 = [v19 initWithIncrementalChangeDetailsRemovedIndexes:removedIndexes insertedIndexes:insertedIndexes movesToIndexes:movedIndexes movesFromIndexes:movedFromIndexes changedIndexes:changedIndexes3 indexesWithChangesByProperty:v10];
 
 LABEL_13:
 

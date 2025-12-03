@@ -1,11 +1,11 @@
 @interface _PASLPArray
-- (BOOL)isEqualToArray:(id)a3;
-- (_PASLPArray)initWithCoder:(id)a3;
-- (_PASLPArray)initWithLazyPlistReader:(id)a3 context:(id)a4;
-- (_PASLPArray)initWithObjects:(const void *)a3 count:(unint64_t)a4;
+- (BOOL)isEqualToArray:(id)array;
+- (_PASLPArray)initWithCoder:(id)coder;
+- (_PASLPArray)initWithLazyPlistReader:(id)reader context:(id)context;
+- (_PASLPArray)initWithObjects:(const void *)objects count:(unint64_t)count;
 - (id)_pas_overrideUnlazyArray;
 - (unint64_t)count;
-- (void)getObjects:(id *)a3 range:(_NSRange)a4;
+- (void)getObjects:(id *)objects range:(_NSRange)range;
 @end
 
 @implementation _PASLPArray
@@ -40,7 +40,7 @@
   return DeepCopy;
 }
 
-- (void)getObjects:(id *)a3 range:(_NSRange)a4
+- (void)getObjects:(id *)objects range:(_NSRange)range
 {
   context = self->_context;
   if (context)
@@ -48,33 +48,33 @@
     context = context->_count;
   }
 
-  if (a4.location + a4.length > context)
+  if (range.location + range.length > context)
   {
     v7.receiver = self;
     v7.super_class = _PASLPArray;
-    [(_PASLPArray *)&v7 getObjects:a3 range:?];
+    [(_PASLPArray *)&v7 getObjects:objects range:?];
     __break(1u);
   }
 
-  else if (a4.length)
+  else if (range.length)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __32___PASLPArray_getObjects_range___block_invoke;
     v5[3] = &unk_1E77F24F0;
     v5[4] = self;
-    v5[5] = a3;
-    v6 = a4;
+    v5[5] = objects;
+    rangeCopy = range;
     pthread_mutex_lock(&runWithGlobalPLPLock_lock);
     __32___PASLPArray_getObjects_range___block_invoke(v5);
     pthread_mutex_unlock(&runWithGlobalPLPLock_lock);
   }
 }
 
-- (BOOL)isEqualToArray:(id)a3
+- (BOOL)isEqualToArray:(id)array
 {
-  v4 = a3;
-  if (v4 == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_reader == v4->_reader && [(_PASLPArrayContext *)self->_context isEqual:v4->_context])
+  arrayCopy = array;
+  if (arrayCopy == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_reader == arrayCopy->_reader && [(_PASLPArrayContext *)self->_context isEqual:arrayCopy->_context])
   {
     v5 = 1;
   }
@@ -83,34 +83,34 @@
   {
     v7.receiver = self;
     v7.super_class = _PASLPArray;
-    v5 = [(_PASLazyArrayBase *)&v7 isEqualToArray:v4];
+    v5 = [(_PASLazyArrayBase *)&v7 isEqualToArray:arrayCopy];
   }
 
   return v5;
 }
 
-- (_PASLPArray)initWithCoder:(id)a3
+- (_PASLPArray)initWithCoder:(id)coder
 {
-  result = a3;
+  result = coder;
   __break(1u);
   return result;
 }
 
-- (_PASLPArray)initWithObjects:(const void *)a3 count:(unint64_t)a4
+- (_PASLPArray)initWithObjects:(const void *)objects count:(unint64_t)count
 {
-  v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:a3 count:a4];
+  v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:objects count:count];
 
   return v5;
 }
 
-- (_PASLPArray)initWithLazyPlistReader:(id)a3 context:(id)a4
+- (_PASLPArray)initWithLazyPlistReader:(id)reader context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  readerCopy = reader;
+  contextCopy = context;
+  v10 = contextCopy;
+  if (readerCopy)
   {
-    if (v9)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -118,8 +118,8 @@
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"_PASLPArray.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"reader"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLPArray.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"reader"}];
 
     if (v10)
     {
@@ -127,8 +127,8 @@
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"_PASLPArray.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASLPArray.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
 LABEL_3:
   v16.receiver = self;
@@ -137,8 +137,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_reader, a3);
-    objc_storeStrong(&v12->_context, a4);
+    objc_storeStrong(&v11->_reader, reader);
+    objc_storeStrong(&v12->_context, context);
   }
 
   return v12;

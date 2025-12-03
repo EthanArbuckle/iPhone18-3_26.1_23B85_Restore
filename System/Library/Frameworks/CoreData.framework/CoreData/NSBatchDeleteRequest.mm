@@ -1,5 +1,5 @@
 @interface NSBatchDeleteRequest
-+ (id)decodeFromXPCArchive:(id)a3 withContext:(id)a4 withPolicy:(id)a5;
++ (id)decodeFromXPCArchive:(id)archive withContext:(id)context withPolicy:(id)policy;
 - (NSBatchDeleteRequest)initWithFetchRequest:(NSFetchRequest *)fetch;
 - (NSBatchDeleteRequest)initWithObjectIDs:(NSArray *)objects;
 - (NSFetchRequest)fetchRequest;
@@ -32,18 +32,18 @@
   [v3 setDelegate:objc_opt_class()];
   [v3 encodeObject:v2 forKey:@"root"];
   [v3 finishEncoding];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v4;
+  return encodedData;
 }
 
-+ (id)decodeFromXPCArchive:(id)a3 withContext:(id)a4 withPolicy:(id)a5
++ (id)decodeFromXPCArchive:(id)archive withContext:(id)context withPolicy:(id)policy
 {
-  v7 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:a3 error:0];
-  [v7 setDelegate:a4];
+  v7 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:archive error:0];
+  [v7 setDelegate:context];
   v8 = [v7 decodeObjectOfClass:objc_opt_class() forKey:@"root"];
 
-  v9 = -[NSBatchDeleteRequest initWithFetchRequest:]([NSBatchDeleteRequest alloc], "initWithFetchRequest:", +[NSFetchRequest decodeFromXPCArchive:withContext:andPolicy:](NSFetchRequest, "decodeFromXPCArchive:withContext:andPolicy:", [v8 fetchData], a4, a5));
+  v9 = -[NSBatchDeleteRequest initWithFetchRequest:]([NSBatchDeleteRequest alloc], "initWithFetchRequest:", +[NSFetchRequest decodeFromXPCArchive:withContext:andPolicy:](NSFetchRequest, "decodeFromXPCArchive:withContext:andPolicy:", [v8 fetchData], context, policy));
   -[NSBatchDeleteRequest setResultType:](v9, "setResultType:", [v8 resultType]);
   -[NSBatchDeleteRequest _setSecureOperation:](v9, "_setSecureOperation:", [v8 secure]);
 
@@ -64,23 +64,23 @@ LABEL_16:
     objc_exception_throw([v19 exceptionWithName:v20 reason:v18 userInfo:v17]);
   }
 
-  v5 = [-[NSArray lastObject](objects "lastObject")];
-  if (v5)
+  superentity = [-[NSArray lastObject](objects "lastObject")];
+  if (superentity)
   {
-    if (atomic_load((v5 + 124)))
+    if (atomic_load((superentity + 124)))
     {
-      v7 = *(v5 + 72);
+      v7 = *(superentity + 72);
     }
 
     else
     {
       do
       {
-        v7 = v5;
-        v5 = [v5 superentity];
+        v7 = superentity;
+        superentity = [superentity superentity];
       }
 
-      while (v5);
+      while (superentity);
     }
   }
 

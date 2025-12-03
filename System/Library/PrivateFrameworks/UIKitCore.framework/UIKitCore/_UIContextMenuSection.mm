@@ -1,51 +1,51 @@
 @interface _UIContextMenuSection
-+ (id)sectionWithMenu:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (int64_t)cellSizeGivenTraits:(id)a3;
++ (id)sectionWithMenu:(id)menu;
+- (BOOL)isEqual:(id)equal;
+- (int64_t)cellSizeGivenTraits:(id)traits;
 @end
 
 @implementation _UIContextMenuSection
 
-+ (id)sectionWithMenu:(id)a3
++ (id)sectionWithMenu:(id)menu
 {
   v71 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  menuCopy = menu;
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v6 = *(v4 + 8);
-  *(v4 + 8) = v5;
+  *(v4 + 8) = uUID;
 
-  if ([v3 _omitsInlineTitle])
+  if ([menuCopy _omitsInlineTitle])
   {
     v7 = *(v4 + 24);
     *(v4 + 24) = &stru_1EFB14550;
 
-    v8 = 0;
+    _accessoryAction = 0;
   }
 
   else
   {
-    v9 = [v3 title];
+    title = [menuCopy title];
     v10 = *(v4 + 24);
-    *(v4 + 24) = v9;
+    *(v4 + 24) = title;
 
-    v8 = [v3 _accessoryAction];
+    _accessoryAction = [menuCopy _accessoryAction];
   }
 
   v11 = *(v4 + 32);
-  *(v4 + 32) = v8;
+  *(v4 + 32) = _accessoryAction;
 
   v12 = +[UIDevice currentDevice];
   v13 = _UIContextMenuGetPlatformMetrics([v12 userInterfaceIdiom]);
 
   v65 = [v13 leadingDecorationMarginAppliesPerSection] ^ 1;
-  v14 = [v3 _resolvedElementSize];
-  if (([v3 options] & 0x80) != 0)
+  _resolvedElementSize = [menuCopy _resolvedElementSize];
+  if (([menuCopy options] & 0x80) != 0)
   {
     v63 = v4;
     if ([v13 supportsLargePaletteMenus])
     {
-      v31 = v14;
+      v31 = _resolvedElementSize;
     }
 
     else
@@ -55,15 +55,15 @@
 
     v64 = _UIContextMenuCellSizeForElementSize(v31);
     v62 = v13;
-    v32 = [v13 gradientMaskingConfiguration];
-    v61 = v32 != 0;
+    gradientMaskingConfiguration = [v13 gradientMaskingConfiguration];
+    v61 = gradientMaskingConfiguration != 0;
 
     v68 = 0u;
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v33 = [v3 children];
-    v34 = [v33 countByEnumeratingWithState:&v66 objects:v70 count:16];
+    children = [menuCopy children];
+    v34 = [children countByEnumeratingWithState:&v66 objects:v70 count:16];
     if (v34)
     {
       v35 = v34;
@@ -74,17 +74,17 @@
         {
           if (*v67 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(children);
           }
 
           v38 = *(*(&v66 + 1) + 8 * i);
-          v39 = [v38 image];
-          if ([v39 _isSymbolImage])
+          image = [v38 image];
+          if ([image _isSymbolImage])
           {
-            v40 = [v38 image];
-            v41 = [v40 symbolConfiguration];
-            v42 = [v41 _colors];
-            v43 = [v42 count];
+            image2 = [v38 image];
+            symbolConfiguration = [image2 symbolConfiguration];
+            _colors = [symbolConfiguration _colors];
+            v43 = [_colors count];
 
             if (v43)
             {
@@ -98,7 +98,7 @@
           }
         }
 
-        v35 = [v33 countByEnumeratingWithState:&v66 objects:v70 count:16];
+        v35 = [children countByEnumeratingWithState:&v66 objects:v70 count:16];
       }
 
       while (v35);
@@ -116,15 +116,15 @@ LABEL_47:
 
   else
   {
-    v15 = [v13 overrideElementSize];
+    overrideElementSize = [v13 overrideElementSize];
 
-    if (v15)
+    if (overrideElementSize)
     {
-      v16 = [v13 overrideElementSize];
-      v14 = v16[2](v16, v14);
+      overrideElementSize2 = [v13 overrideElementSize];
+      _resolvedElementSize = overrideElementSize2[2](overrideElementSize2, _resolvedElementSize);
     }
 
-    v17 = _UIContextMenuCellSizeForElementSize(v14);
+    v17 = _UIContextMenuCellSizeForElementSize(_resolvedElementSize);
     v18 = 3;
     if (v17 != 1)
     {
@@ -142,16 +142,16 @@ LABEL_47:
       v19 = 4;
     }
 
-    if (v19 && ([v3 children], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "count"), v20, v21))
+    if (v19 && ([menuCopy children], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "count"), v20, v21))
     {
       v22 = 0;
       do
       {
-        v23 = [v3 children];
-        v24 = [v23 objectAtIndexedSubscript:v22];
+        children2 = [menuCopy children];
+        v24 = [children2 objectAtIndexedSubscript:v22];
 
-        v25 = [v24 title];
-        v26 = [v25 length];
+        title2 = [v24 title];
+        v26 = [title2 length];
         v27 = v26 != 0;
 
         if (v26)
@@ -160,8 +160,8 @@ LABEL_47:
         }
 
         ++v22;
-        v28 = [v3 children];
-        v29 = [v28 count];
+        children3 = [menuCopy children];
+        v29 = [children3 count];
 
         v30 = v19 >= v29 ? v29 : v19;
       }
@@ -174,10 +174,10 @@ LABEL_47:
       v27 = 0;
     }
 
-    v44 = [v3 children];
-    v45 = [v44 count];
+    children4 = [menuCopy children];
+    v45 = [children4 count];
 
-    if (v45 <= v19 || ([v3 children], v46 = objc_claimAutoreleasedReturnValue(), v47 = objc_msgSend(v46, "count"), v46, v19 >= v47))
+    if (v45 <= v19 || ([menuCopy children], v46 = objc_claimAutoreleasedReturnValue(), v47 = objc_msgSend(v46, "count"), v46, v19 >= v47))
     {
       v57 = 0;
       v49 = 0;
@@ -190,12 +190,12 @@ LABEL_47:
       v49 = 0;
       while (1)
       {
-        v50 = [v3 children];
-        v51 = [v50 objectAtIndexedSubscript:v19];
+        children5 = [menuCopy children];
+        v51 = [children5 objectAtIndexedSubscript:v19];
 
-        v52 = [v51 image];
+        image3 = [v51 image];
 
-        v53 = v52 != 0;
+        v53 = image3 != 0;
         v54 = [v51 _isLeaf] ? (objc_msgSend(v51, "state") != 0) | v65 : v65;
         v49 |= v53;
 
@@ -206,8 +206,8 @@ LABEL_47:
 
         v65 = v54;
         ++v19;
-        v55 = [v3 children];
-        v56 = [v55 count];
+        children6 = [menuCopy children];
+        v56 = [children6 count];
 
         if (v19 >= v56)
         {
@@ -230,8 +230,8 @@ LABEL_52:
   *(v4 + 40) = v64;
   *(v4 + 18) = v58;
   *(v4 + 16) = v27;
-  v59 = [v3 displayPreferences];
-  *(v4 + 56) = [v59 maximumNumberOfTitleLines];
+  displayPreferences = [menuCopy displayPreferences];
+  *(v4 + 56) = [displayPreferences maximumNumberOfTitleLines];
 
   *(v4 + 20) = v49 & 1;
   *(v4 + 21) = v65 & 1;
@@ -239,15 +239,15 @@ LABEL_52:
   return v4;
 }
 
-- (int64_t)cellSizeGivenTraits:(id)a3
+- (int64_t)cellSizeGivenTraits:(id)traits
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuSection *)self preferredCellSize];
-  v6 = v5;
-  if (self->_overridesCellSizeForLargeText && v5 == 1)
+  traitsCopy = traits;
+  preferredCellSize = [(_UIContextMenuSection *)self preferredCellSize];
+  v6 = preferredCellSize;
+  if (self->_overridesCellSizeForLargeText && preferredCellSize == 1)
   {
-    v8 = [v4 preferredContentSizeCategory];
-    IsAccessibilityContentSizeCategory = _UIContentSizeCategoryIsAccessibilityContentSizeCategory(v8, v9);
+    preferredContentSizeCategory = [traitsCopy preferredContentSizeCategory];
+    IsAccessibilityContentSizeCategory = _UIContentSizeCategoryIsAccessibilityContentSizeCategory(preferredContentSizeCategory, v9);
 
     if (IsAccessibilityContentSizeCategory)
     {
@@ -263,13 +263,13 @@ LABEL_52:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSUUID *)self->_identifier isEqual:v4[1]];
+    v5 = [(NSUUID *)self->_identifier isEqual:equalCopy[1]];
   }
 
   else

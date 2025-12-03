@@ -1,6 +1,6 @@
 @interface Plugin
 - (_TtC22DonationAccountWatcher6Plugin)init;
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6;
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount;
 - (void)dealloc;
 @end
 
@@ -31,20 +31,20 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC22DonationAccountWatcher6Plugin_logger);
-  v3 = self;
+  selfCopy = self;
   [v2 pluginUnloaded];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for Plugin();
   [(Plugin *)&v4 dealloc];
 }
 
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = self;
-  sub_29C8BA834(a3, a6);
+  accountCopy = account;
+  storeCopy = store;
+  oldAccountCopy = oldAccount;
+  selfCopy = self;
+  sub_29C8BA834(account, oldAccount);
 }
 
 @end

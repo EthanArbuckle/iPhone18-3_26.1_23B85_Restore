@@ -1,26 +1,26 @@
 @interface HSFairPlayInfo
-- (BOOL)_getHardwareInfo:(FairPlayHWInfo_ *)a3;
+- (BOOL)_getHardwareInfo:(FairPlayHWInfo_ *)info;
 - (HSFairPlayInfo)init;
 - (NSString)deviceGUID;
-- (id)_hexStringForData:(id)a3;
-- (id)beginNegotiationWithSAPVersion:(unsigned int)a3;
-- (id)continueNegotationWithSAPVersion:(unsigned int)a3 data:(id)a4 isComplete:(BOOL *)a5;
-- (id)securityInfoForURL:(id)a3;
+- (id)_hexStringForData:(id)data;
+- (id)beginNegotiationWithSAPVersion:(unsigned int)version;
+- (id)continueNegotationWithSAPVersion:(unsigned int)version data:(id)data isComplete:(BOOL *)complete;
+- (id)securityInfoForURL:(id)l;
 - (void)dealloc;
 - (void)endSecuritySession;
 @end
 
 @implementation HSFairPlayInfo
 
-- (id)_hexStringForData:(id)a3
+- (id)_hexStringForData:(id)data
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{2 * objc_msgSend(v3, "length")}];
-  v5 = [v3 length];
-  v6 = [v3 bytes];
+  dataCopy = data;
+  v4 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{2 * objc_msgSend(dataCopy, "length")}];
+  v5 = [dataCopy length];
+  bytes = [dataCopy bytes];
   if (v5)
   {
-    v7 = v6;
+    v7 = bytes;
     do
     {
       v8 = *v7++;
@@ -34,9 +34,9 @@
   return v4;
 }
 
-- (BOOL)_getHardwareInfo:(FairPlayHWInfo_ *)a3
+- (BOOL)_getHardwareInfo:(FairPlayHWInfo_ *)info
 {
-  if (!a3)
+  if (!info)
   {
     return 0;
   }
@@ -47,13 +47,13 @@
   return HardwareInfoFromDeviceUDID == 0;
 }
 
-- (id)securityInfoForURL:(id)a3
+- (id)securityInfoForURL:(id)l
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 absoluteString];
-  v6 = [v4 path];
-  v7 = [v5 substringFromIndex:{objc_msgSend(v5, "rangeOfString:", v6)}];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  path = [lCopy path];
+  v7 = [absoluteString substringFromIndex:{objc_msgSend(absoluteString, "rangeOfString:", path)}];
 
   v8 = [v7 dataUsingEncoding:4];
   v31 = 0;
@@ -61,9 +61,9 @@
   v33 = 0x2020000000;
   v34 = malloc_type_malloc(0x10uLL, 0x38CC30E1uLL);
   v9 = v8;
-  v10 = [v8 bytes];
+  bytes = [v8 bytes];
   v11 = [v8 length];
-  CC_MD5(v10, v11, v32[3]);
+  CC_MD5(bytes, v11, v32[3]);
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -131,10 +131,10 @@
   }
 }
 
-- (id)continueNegotationWithSAPVersion:(unsigned int)a3 data:(id)a4 isComplete:(BOOL *)a5
+- (id)continueNegotationWithSAPVersion:(unsigned int)version data:(id)data isComplete:(BOOL *)complete
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  dataCopy = data;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -156,10 +156,10 @@
   block[1] = 3221225472;
   block[2] = __67__HSFairPlayInfo_continueNegotationWithSAPVersion_data_isComplete___block_invoke;
   block[3] = &unk_27977A248;
-  v22 = a3;
+  versionCopy = version;
   v18 = &v23;
   block[4] = self;
-  v10 = v8;
+  v10 = dataCopy;
   v17 = v10;
   v19 = &v35;
   v20 = &v31;
@@ -184,9 +184,9 @@ LABEL_5:
 
   if (*(v28 + 24) != 1)
   {
-    if (a5 && !*(v28 + 24))
+    if (complete && !*(v28 + 24))
     {
-      *a5 = 1;
+      *complete = 1;
     }
 
     v15 = v36[3];
@@ -209,7 +209,7 @@ LABEL_6:
   return v13;
 }
 
-- (id)beginNegotiationWithSAPVersion:(unsigned int)a3
+- (id)beginNegotiationWithSAPVersion:(unsigned int)version
 {
   v29 = *MEMORY[0x277D85DE8];
   v23 = 0;
@@ -235,7 +235,7 @@ LABEL_6:
   v9[3] = &unk_27977A220;
   v9[4] = self;
   v9[5] = &v11;
-  v10 = a3;
+  versionCopy = version;
   v9[6] = &v23;
   v9[7] = &v19;
   v9[8] = &v15;

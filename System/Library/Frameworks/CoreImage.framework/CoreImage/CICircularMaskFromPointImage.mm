@@ -49,7 +49,7 @@
     v8 = v7;
     [(NSNumber *)self->inputInnerRadius floatValue];
     v10 = v8 * v9;
-    v11 = [(CICircularMaskFromPointImage *)self _kernelDraw];
+    _kernelDraw = [(CICircularMaskFromPointImage *)self _kernelDraw];
     v12 = *MEMORY[0x1E695F040];
     v13 = *(MEMORY[0x1E695F040] + 8);
     v14 = *(MEMORY[0x1E695F040] + 16);
@@ -57,7 +57,7 @@
     v20[0] = [(CIImage *)self->inputCoordinate imageByClampingToExtent];
     *&v16 = v10;
     v20[1] = [MEMORY[0x1E696AD98] numberWithFloat:v16];
-    v17 = [v11 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v20, 2), v12, v13, v14, v15}];
+    v17 = [_kernelDraw applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v20, 2), v12, v13, v14, v15}];
     [(NSNumber *)self->inputOuterRadius floatValue];
     if (v18 > 0.0001)
     {

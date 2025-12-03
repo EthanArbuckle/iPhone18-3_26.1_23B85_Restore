@@ -1,19 +1,19 @@
 @interface BKLibraryDataSourceATAsset
 - (BKLibraryDataSourceATAsset)init;
 - (BKLibraryManager)libraryManager;
-- (BOOL)prioritizeImport:(id)a3 completion:(id)a4;
+- (BOOL)prioritizeImport:(id)import completion:(id)completion;
 - (void)_syncDidFinish;
 - (void)_syncDidStart;
 - (void)airTrafficEnded;
-- (void)assetForLibraryAsset:(id)a3 completion:(id)a4;
-- (void)bookCoverForLibraryAssetProperties:(id)a3 size:(CGSize)a4 completion:(id)a5;
-- (void)connection:(id)a3 updatedAssets:(id)a4;
-- (void)connection:(id)a3 updatedProgress:(id)a4;
+- (void)assetForLibraryAsset:(id)asset completion:(id)completion;
+- (void)bookCoverForLibraryAssetProperties:(id)properties size:(CGSize)size completion:(id)completion;
+- (void)connection:(id)connection updatedAssets:(id)assets;
+- (void)connection:(id)connection updatedProgress:(id)progress;
 - (void)dealloc;
-- (void)deleteAssets:(id)a3 exhaustive:(BOOL)a4 completion:(id)a5;
-- (void)fetchAssetsWithCompletion:(id)a3;
-- (void)pushCoverForAssets:(id)a3;
-- (void)resolveLibraryAsset:(id)a3 options:(id)a4 completion:(id)a5;
+- (void)deleteAssets:(id)assets exhaustive:(BOOL)exhaustive completion:(id)completion;
+- (void)fetchAssetsWithCompletion:(id)completion;
+- (void)pushCoverForAssets:(id)assets;
+- (void)resolveLibraryAsset:(id)asset options:(id)options completion:(id)completion;
 @end
 
 @implementation BKLibraryDataSourceATAsset
@@ -65,29 +65,29 @@
   [(BKLibraryDataSourceATAsset *)&v3 dealloc];
 }
 
-- (void)fetchAssetsWithCompletion:(id)a3
+- (void)fetchAssetsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKLibraryDataSourceATAsset *)self queue];
+  completionCopy = completion;
+  queue = [(BKLibraryDataSourceATAsset *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001BBD60;
   v7[3] = &unk_100A03A58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)pushCoverForAssets:(id)a3
+- (void)pushCoverForAssets:(id)assets
 {
-  v3 = a3;
+  assetsCopy = assets;
   v4 = +[NSMutableDictionary dictionary];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -103,27 +103,27 @@
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 assetID];
-        v12 = v11;
-        if (v11)
+        assetID = [v10 assetID];
+        v12 = assetID;
+        if (assetID)
         {
-          v13 = v11;
+          temporaryAssetID = assetID;
         }
 
         else
         {
-          v13 = [v10 temporaryAssetID];
+          temporaryAssetID = [v10 temporaryAssetID];
         }
 
-        v14 = v13;
+        v14 = temporaryAssetID;
 
-        v15 = [v10 atAsset];
-        v16 = [v15 icon];
-        v17 = [v16 path];
+        atAsset = [v10 atAsset];
+        icon = [atAsset icon];
+        path = [icon path];
 
-        if (v14 && [v17 length])
+        if (v14 && [path length])
         {
-          [v4 setObject:v17 forKeyedSubscript:v14];
+          [v4 setObject:path forKeyedSubscript:v14];
         }
       }
 
@@ -140,9 +140,9 @@
   }
 }
 
-- (void)bookCoverForLibraryAssetProperties:(id)a3 size:(CGSize)a4 completion:(id)a5
+- (void)bookCoverForLibraryAssetProperties:(id)properties size:(CGSize)size completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;
@@ -151,11 +151,11 @@
   }
 }
 
-- (void)deleteAssets:(id)a3 exhaustive:(BOOL)a4 completion:(id)a5
+- (void)deleteAssets:(id)assets exhaustive:(BOOL)exhaustive completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  if (!a4)
+  assetsCopy = assets;
+  completionCopy = completion;
+  if (!exhaustive)
   {
     v9 = BKATAssetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -164,7 +164,7 @@
     }
   }
 
-  v10 = objc_retainBlock(v8);
+  v10 = objc_retainBlock(completionCopy);
   v11 = v10;
   if (v10)
   {
@@ -172,9 +172,9 @@
   }
 }
 
-- (void)resolveLibraryAsset:(id)a3 options:(id)a4 completion:(id)a5
+- (void)resolveLibraryAsset:(id)asset options:(id)options completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;
@@ -183,26 +183,26 @@
   }
 }
 
-- (void)assetForLibraryAsset:(id)a3 completion:(id)a4
+- (void)assetForLibraryAsset:(id)asset completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 temporaryAssetID];
-  if (v7)
+  completionCopy = completion;
+  temporaryAssetID = [asset temporaryAssetID];
+  if (temporaryAssetID)
   {
-    v8 = [(BKLibraryDataSourceATAsset *)self queue];
+    queue = [(BKLibraryDataSourceATAsset *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001BC240;
     block[3] = &unk_100A049A0;
     block[4] = self;
-    v12 = v7;
-    v13 = v6;
-    dispatch_async(v8, block);
+    v12 = temporaryAssetID;
+    v13 = completionCopy;
+    dispatch_async(queue, block);
   }
 
   else
   {
-    v9 = objc_retainBlock(v6);
+    v9 = objc_retainBlock(completionCopy);
     v10 = v9;
     if (v9)
     {
@@ -211,45 +211,45 @@
   }
 }
 
-- (BOOL)prioritizeImport:(id)a3 completion:(id)a4
+- (BOOL)prioritizeImport:(id)import completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKLibraryDataSourceATAsset *)self queue];
+  importCopy = import;
+  completionCopy = completion;
+  queue = [(BKLibraryDataSourceATAsset *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001BC3C8;
   block[3] = &unk_100A049A0;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v13 = importCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = importCopy;
+  dispatch_async(queue, block);
 
   return 1;
 }
 
-- (void)connection:(id)a3 updatedProgress:(id)a4
+- (void)connection:(id)connection updatedProgress:(id)progress
 {
-  v5 = a4;
-  v6 = [v5 objectForKeyedSubscript:@"Dataclass"];
+  progressCopy = progress;
+  v6 = [progressCopy objectForKeyedSubscript:@"Dataclass"];
   v7 = [(BKLibraryDataSourceATAsset *)self _supportsDataclass:v6 assetType:0];
   v8 = BKATAssetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100793750(v5, v7, v8);
+    sub_100793750(progressCopy, v7, v8);
   }
 
   if ((v7 & 1) != 0 || [(BKLibraryDataSourceATAsset *)self isSyncing])
   {
-    v9 = [v5 objectForKeyedSubscript:@"Enabled"];
-    v10 = [v9 BOOLValue];
+    v9 = [progressCopy objectForKeyedSubscript:@"Enabled"];
+    bOOLValue = [v9 BOOLValue];
 
-    if (v10 != [(BKLibraryDataSourceATAsset *)self isSyncing])
+    if (bOOLValue != [(BKLibraryDataSourceATAsset *)self isSyncing])
     {
-      [(BKLibraryDataSourceATAsset *)self setSyncing:v10];
-      if (v10)
+      [(BKLibraryDataSourceATAsset *)self setSyncing:bOOLValue];
+      if (bOOLValue)
       {
         [(BKLibraryDataSourceATAsset *)self _syncDidStart];
       }
@@ -262,14 +262,14 @@
   }
 }
 
-- (void)connection:(id)a3 updatedAssets:(id)a4
+- (void)connection:(id)connection updatedAssets:(id)assets
 {
-  v5 = a4;
-  v6 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v5 count]);
+  assetsCopy = assets;
+  v6 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [assetsCopy count]);
   v7 = BKATAssetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    sub_100793878(v5, v7);
+    sub_100793878(assetsCopy, v7);
   }
 
   v8 = +[NSMutableSet set];
@@ -291,7 +291,7 @@
   v37 = v15;
   v16 = v9;
   v38 = v16;
-  [v5 enumerateObjectsUsingBlock:v33];
+  [assetsCopy enumerateObjectsUsingBlock:v33];
   if ([v14 isSubsetOfSet:v15])
   {
     [v14 minusSet:v15];
@@ -299,7 +299,7 @@
 
   v17 = +[NSMutableSet set];
   v18 = +[NSMutableSet set];
-  v19 = [(BKLibraryDataSourceATAsset *)self queue];
+  queue = [(BKLibraryDataSourceATAsset *)self queue];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_1001BC9D8;
@@ -317,7 +317,7 @@
   v23 = v18;
   v24 = v16;
   v25 = v17;
-  dispatch_sync(v19, v26);
+  dispatch_sync(queue, v26);
 }
 
 - (void)airTrafficEnded
@@ -349,13 +349,13 @@
 
 - (void)_syncDidFinish
 {
-  v3 = [(BKLibraryDataSourceATAsset *)self queue];
+  queue = [(BKLibraryDataSourceATAsset *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001BD53C;
   block[3] = &unk_100A033C8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (BKLibraryManager)libraryManager

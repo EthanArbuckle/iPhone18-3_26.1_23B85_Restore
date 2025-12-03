@@ -8,9 +8,9 @@
 {
   v4 = a3;
   v5 = +[BKUIDevice sharedInstance];
-  v6 = [v5 isIdiomPad];
+  isIdiomPad = [v5 isIdiomPad];
 
-  if (v6)
+  if (isIdiomPad)
   {
     v7 = @"ipad";
   }
@@ -20,10 +20,10 @@
     v7 = @"iphone";
   }
 
-  v8 = [MEMORY[0x277D75C80] _currentTraitCollection];
-  v9 = [v8 userInterfaceStyle];
+  _currentTraitCollection = [MEMORY[0x277D75C80] _currentTraitCollection];
+  userInterfaceStyle = [_currentTraitCollection userInterfaceStyle];
 
-  if (v9 == 2)
+  if (userInterfaceStyle == 2)
   {
     v10 = @"-dark";
   }
@@ -34,7 +34,7 @@
   }
 
   v11 = [(__CFString *)v7 stringByAppendingString:v10];
-  v12 = [a1 imageNamed:v11 inBundle:v4];
+  v12 = [self imageNamed:v11 inBundle:v4];
 
   return v12;
 }

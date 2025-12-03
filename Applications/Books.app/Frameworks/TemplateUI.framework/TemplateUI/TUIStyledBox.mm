@@ -10,15 +10,15 @@
 - (double)cornerRadius;
 - (double)shadowOpacity;
 - (double)shadowRadius;
-- (void)setAllowsGroupBlending:(BOOL)a3;
-- (void)setBorderWidth:(double)a3;
-- (void)setClipsToBounds:(BOOL)a3;
-- (void)setContinuousCorners:(BOOL)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setInsets:(UIEdgeInsets)a3;
-- (void)setShadowOffset:(CGSize)a3;
-- (void)setShadowOpacity:(double)a3;
-- (void)setShadowRadius:(double)a3;
+- (void)setAllowsGroupBlending:(BOOL)blending;
+- (void)setBorderWidth:(double)width;
+- (void)setClipsToBounds:(BOOL)bounds;
+- (void)setContinuousCorners:(BOOL)corners;
+- (void)setCornerRadius:(double)radius;
+- (void)setInsets:(UIEdgeInsets)insets;
+- (void)setShadowOffset:(CGSize)offset;
+- (void)setShadowOpacity:(double)opacity;
+- (void)setShadowRadius:(double)radius;
 @end
 
 @implementation TUIStyledBox
@@ -36,12 +36,12 @@
   return result;
 }
 
-- (void)setInsets:(UIEdgeInsets)a3
+- (void)setInsets:(UIEdgeInsets)insets
 {
-  top = a3.top;
-  left = a3.left;
-  bottom = a3.bottom;
-  right = a3.right;
+  top = insets.top;
+  left = insets.left;
+  bottom = insets.bottom;
+  right = insets.right;
   if (TUIInsets32Equal(top, left, bottom, right, 0.0, 0.0, 0.0, 0.0))
   {
     v8 = TUI::Util::PartialStruct::Storage::dataForKey(&self->super.super._storage, 0x1Fu);
@@ -96,10 +96,10 @@
   return ObjectForKey;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = a3;
-  if (v4 == 0.0)
+  radiusCopy = radius;
+  if (radiusCopy == 0.0)
   {
     v5 = TUI::Util::PartialStruct::Storage::dataForKey(&self->super.super._storage, 0x14u);
     if (!v5)
@@ -120,7 +120,7 @@
     }
   }
 
-  *DataForKey = v4;
+  *DataForKey = radiusCopy;
 }
 
 - (double)cornerRadius
@@ -144,10 +144,10 @@
   return ObjectForKey;
 }
 
-- (void)setShadowOffset:(CGSize)a3
+- (void)setShadowOffset:(CGSize)offset
 {
-  width = a3.width;
-  height = a3.height;
+  width = offset.width;
+  height = offset.height;
   if (TUISize32Equal(width, height, 0.0, 0.0))
   {
     v6 = TUI::Util::PartialStruct::Storage::dataForKey(&self->super.super._storage, 0x1Bu);
@@ -189,10 +189,10 @@
   return result;
 }
 
-- (void)setShadowOpacity:(double)a3
+- (void)setShadowOpacity:(double)opacity
 {
-  v4 = a3;
-  if (v4 == 1.0)
+  opacityCopy = opacity;
+  if (opacityCopy == 1.0)
   {
     v5 = TUI::Util::PartialStruct::Storage::dataForKey(&self->super.super._storage, 7u);
     if (!v5)
@@ -213,7 +213,7 @@
     }
   }
 
-  *DataForKey = v4;
+  *DataForKey = opacityCopy;
 }
 
 - (double)shadowOpacity
@@ -244,9 +244,9 @@
   return ObjectForKey;
 }
 
-- (void)setContinuousCorners:(BOOL)a3
+- (void)setContinuousCorners:(BOOL)corners
 {
-  if (a3)
+  if (corners)
   {
     v3 = 0x10000000;
   }
@@ -259,9 +259,9 @@
   *&self->super.super._flags = *&self->super.super._flags & 0xEFFFFFFF | v3;
 }
 
-- (void)setClipsToBounds:(BOOL)a3
+- (void)setClipsToBounds:(BOOL)bounds
 {
-  if (a3)
+  if (bounds)
   {
     v3 = 16;
   }
@@ -274,9 +274,9 @@
   *(&self->super.super._flags + 2) = *(&self->super.super._flags + 2) & 0xFFEF | v3;
 }
 
-- (void)setAllowsGroupBlending:(BOOL)a3
+- (void)setAllowsGroupBlending:(BOOL)blending
 {
-  if (a3)
+  if (blending)
   {
     v3 = 32;
   }
@@ -289,10 +289,10 @@
   *(&self->super.super._flags + 2) = *(&self->super.super._flags + 2) & 0xFFDF | v3;
 }
 
-- (void)setShadowRadius:(double)a3
+- (void)setShadowRadius:(double)radius
 {
-  v4 = a3;
-  if (v4 == 0.0)
+  radiusCopy = radius;
+  if (radiusCopy == 0.0)
   {
     v5 = TUI::Util::PartialStruct::Storage::dataForKey(&self->super.super._storage, 0x1Au);
     if (!v5)
@@ -313,7 +313,7 @@
     }
   }
 
-  *DataForKey = v4;
+  *DataForKey = radiusCopy;
 }
 
 - (double)shadowRadius
@@ -330,10 +330,10 @@
   }
 }
 
-- (void)setBorderWidth:(double)a3
+- (void)setBorderWidth:(double)width
 {
-  v4 = a3;
-  if (v4 == 0.0)
+  widthCopy = width;
+  if (widthCopy == 0.0)
   {
     v5 = TUI::Util::PartialStruct::Storage::dataForKey(&self->super.super._storage, 0x15u);
     if (!v5)
@@ -354,7 +354,7 @@
     }
   }
 
-  *DataForKey = v4;
+  *DataForKey = widthCopy;
 }
 
 - (double)borderWidth

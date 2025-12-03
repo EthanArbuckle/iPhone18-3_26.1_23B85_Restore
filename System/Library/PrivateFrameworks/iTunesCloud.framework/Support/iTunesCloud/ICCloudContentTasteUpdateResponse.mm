@@ -1,37 +1,37 @@
 @interface ICCloudContentTasteUpdateResponse
-+ (id)eTagValueFromContentTasteResponse:(id)a3;
-- (ICCloudContentTasteUpdateResponse)initWithContentTasteResponse:(id)a3;
++ (id)eTagValueFromContentTasteResponse:(id)response;
+- (ICCloudContentTasteUpdateResponse)initWithContentTasteResponse:(id)response;
 @end
 
 @implementation ICCloudContentTasteUpdateResponse
 
-- (ICCloudContentTasteUpdateResponse)initWithContentTasteResponse:(id)a3
+- (ICCloudContentTasteUpdateResponse)initWithContentTasteResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v8.receiver = self;
   v8.super_class = ICCloudContentTasteUpdateResponse;
   v5 = [(ICCloudContentTasteUpdateResponse *)&v8 init];
   if (v5)
   {
-    v6 = [ICCloudContentTasteUpdateResponse eTagValueFromContentTasteResponse:v4];
+    v6 = [ICCloudContentTasteUpdateResponse eTagValueFromContentTasteResponse:responseCopy];
     v5->_responseRevisionID = [v6 longLongValue];
   }
 
   return v5;
 }
 
-+ (id)eTagValueFromContentTasteResponse:(id)a3
++ (id)eTagValueFromContentTasteResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 allHeaderFields];
-    v5 = [v4 objectForKey:@"ETag"];
+    allHeaderFields = [responseCopy allHeaderFields];
+    v5 = [allHeaderFields objectForKey:@"ETag"];
     if (!v5)
     {
-      v6 = [@"ETag" lowercaseString];
-      v5 = [v4 objectForKey:v6];
+      lowercaseString = [@"ETag" lowercaseString];
+      v5 = [allHeaderFields objectForKey:lowercaseString];
     }
   }
 

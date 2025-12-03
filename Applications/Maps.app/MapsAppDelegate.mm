@@ -1,14 +1,14 @@
 @interface MapsAppDelegate
 + (BOOL)mapsIsLaunchedForTesting;
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
 - (AppCoordinator)appCoordinator;
 - (ApplicationSessionController)appSessionController;
 - (BOOL)_isShowingLocationServicesAuthorizationPrompt;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options;
 - (BOOL)canPlayTrace;
-- (BOOL)dismissCurrentInterruptionOfKind:(int64_t)a3;
+- (BOOL)dismissCurrentInterruptionOfKind:(int64_t)kind;
 - (FeedbackSubmissionManager)submissionManager;
 - (IOSChromeViewController)chromeViewController;
 - (IdleTimerController)idleTimerController;
@@ -17,7 +17,7 @@
 - (POISearchManager)poiSearchManager;
 - (PlatformController)platformController;
 - (double)timeIntervalSinceLastBackgrounded;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 - (id)entryPointsCoordinator;
 - (id)hardwareModel;
 - (id)legacyDataMigrator;
@@ -26,44 +26,44 @@
 - (id)testCoordinator;
 - (id)visibleMapViewFromCarPlay;
 - (int64_t)currentInterruptionKind;
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4;
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window;
 - (void)_acquireDoubleHeightStatusBarAssertionIfNeeded;
-- (void)_acquireProcessAssertionForTurnByTurn:(BOOL)a3;
+- (void)_acquireProcessAssertionForTurnByTurn:(BOOL)turn;
 - (void)_acquireSecureAppAssertion;
 - (void)_cleanupAfterLocationServicesAlertController;
 - (void)_clearDoubleHeightStatusBar;
-- (void)_locationManagerApprovalDidChange:(id)a3;
-- (void)_maps_applicationDidBecomeActive:(id)a3;
-- (void)_maps_applicationDidEnterBackground:(id)a3;
-- (void)_maps_applicationWillEnterForeground:(id)a3;
-- (void)_maps_applicationWillResignActive:(id)a3;
+- (void)_locationManagerApprovalDidChange:(id)change;
+- (void)_maps_applicationDidBecomeActive:(id)active;
+- (void)_maps_applicationDidEnterBackground:(id)background;
+- (void)_maps_applicationWillEnterForeground:(id)foreground;
+- (void)_maps_applicationWillResignActive:(id)active;
 - (void)_performPostExtendedLaunchInitialization;
-- (void)_presentLocationServicesAlertController:(id)a3;
+- (void)_presentLocationServicesAlertController:(id)controller;
 - (void)_registerDefaults;
 - (void)_releaseProcessAssertion;
 - (void)_releaseSecureAppAssertion;
-- (void)_setCanShowInLockscreen:(BOOL)a3;
-- (void)_setCurrentInterruptionHandle:(id)a3;
-- (void)_setShowingLocationServicesAuthorizationPrompt:(BOOL)a3;
+- (void)_setCanShowInLockscreen:(BOOL)lockscreen;
+- (void)_setCurrentInterruptionHandle:(id)handle;
+- (void)_setShowingLocationServicesAuthorizationPrompt:(BOOL)prompt;
 - (void)_setupSharedLocationManager;
-- (void)_share:(id)a3;
+- (void)_share:(id)_share;
 - (void)_startLegacyDataMigration;
 - (void)_suppressNetworkFlags;
 - (void)_unsuppressNetworkFlags;
 - (void)_updateSecureAppAssertion;
-- (void)application:(id)a3 didFailToRegisterForRemoteNotificationsWithError:(id)a4;
-- (void)application:(id)a3 didReceiveRemoteNotification:(id)a4 fetchCompletionHandler:(id)a5;
-- (void)application:(id)a3 didRegisterForRemoteNotificationsWithDeviceToken:(id)a4;
-- (void)application:(id)a3 handleEventsForBackgroundURLSession:(id)a4 completionHandler:(id)a5;
-- (void)applicationDidReceiveMemoryWarning:(id)a3;
-- (void)applicationDidRemoveDeactivationReason:(id)a3;
-- (void)applicationWillAddDeactivationReason:(id)a3;
-- (void)applicationWillTerminate:(id)a3;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)carDisplayControllerDidUpdateNavigationVisibility:(id)a3;
+- (void)application:(id)application didFailToRegisterForRemoteNotificationsWithError:(id)error;
+- (void)application:(id)application didReceiveRemoteNotification:(id)notification fetchCompletionHandler:(id)handler;
+- (void)application:(id)application didRegisterForRemoteNotificationsWithDeviceToken:(id)token;
+- (void)application:(id)application handleEventsForBackgroundURLSession:(id)session completionHandler:(id)handler;
+- (void)applicationDidReceiveMemoryWarning:(id)warning;
+- (void)applicationDidRemoveDeactivationReason:(id)reason;
+- (void)applicationWillAddDeactivationReason:(id)reason;
+- (void)applicationWillTerminate:(id)terminate;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)carDisplayControllerDidUpdateNavigationVisibility:(id)visibility;
 - (void)checkCoreRoutineEnabledState;
-- (void)chromeViewController:(id)a3 didMoveFromContextStack:(id)a4 toContextStack:(id)a5;
-- (void)chromeViewController:(id)a3 willMoveFromContextStack:(id)a4 toContextStack:(id)a5;
+- (void)chromeViewController:(id)controller didMoveFromContextStack:(id)stack toContextStack:(id)contextStack;
+- (void)chromeViewController:(id)controller willMoveFromContextStack:(id)stack toContextStack:(id)contextStack;
 - (void)collectRadarAttachments;
 - (void)createSubmissionManagerIfNeeded;
 - (void)dealloc;
@@ -71,48 +71,48 @@
 - (void)doPostLaunchTestSetup;
 - (void)endBackgroundNavigation;
 - (void)endTransitTurnByTurn;
-- (void)endTurnByTurn:(id)a3;
-- (void)fetchNotificationAuthUndetermined:(id)a3;
-- (void)interruptApplicationWithKind:(int64_t)a3 userInfo:(id)a4 completionHandler:(id)a5;
-- (void)interruptConvertToNavigableSavedRouteID:(id)a3 routeName:(id)a4 error:(id)a5 directionsError:(id)a6;
-- (void)migrateARPConsentDefaults:(id)a3;
-- (void)migrateNavigoDefaults:(id)a3;
-- (void)navigationService:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didEnableGuidancePrompts:(BOOL)a4;
-- (void)navigationService:(id)a3 didFailWithError:(id)a4;
-- (void)navigationService:(id)a3 didResumeNavigatingFromWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5 reason:(unint64_t)a6;
-- (void)navigationService:(id)a3 willChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
+- (void)endTurnByTurn:(id)turn;
+- (void)fetchNotificationAuthUndetermined:(id)undetermined;
+- (void)interruptApplicationWithKind:(int64_t)kind userInfo:(id)info completionHandler:(id)handler;
+- (void)interruptConvertToNavigableSavedRouteID:(id)d routeName:(id)name error:(id)error directionsError:(id)directionsError;
+- (void)migrateARPConsentDefaults:(id)defaults;
+- (void)migrateNavigoDefaults:(id)defaults;
+- (void)navigationService:(id)service didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didEnableGuidancePrompts:(BOOL)prompts;
+- (void)navigationService:(id)service didFailWithError:(id)error;
+- (void)navigationService:(id)service didResumeNavigatingFromWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index reason:(unint64_t)reason;
+- (void)navigationService:(id)service willChangeFromState:(unint64_t)state toState:(unint64_t)toState;
 - (void)newScene;
-- (void)notificationButtonPressedWithCompletionHandler:(id)a3;
-- (void)preferencesPrivacyControllerDidDismiss:(id)a3;
-- (void)prepareBackgroundNavigationWithMessage:(id)a3;
+- (void)notificationButtonPressedWithCompletionHandler:(id)handler;
+- (void)preferencesPrivacyControllerDidDismiss:(id)dismiss;
+- (void)prepareBackgroundNavigationWithMessage:(id)message;
 - (void)prepareForCarPlayLaunch;
 - (void)presentAboutAndPrivacyScreen;
 - (void)presentAddAMissingPlace;
-- (void)presentAddAMissingPlaceWith:(id)a3;
-- (void)presentMacPreferencesTabWithType:(int64_t)a3;
+- (void)presentAddAMissingPlaceWith:(id)with;
+- (void)presentMacPreferencesTabWithType:(int64_t)type;
 - (void)presentRAP;
 - (void)presentRadar;
 - (void)presentRatingsAndPhotosPrivacyScreen;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4;
-- (void)promptLocationServicesAuthorizationWithHandler:(id)a3;
+- (void)presentViewController:(id)controller animated:(BOOL)animated;
+- (void)promptLocationServicesAuthorizationWithHandler:(id)handler;
 - (void)promptLocationServicesOff;
 - (void)promptPreciseLocationOff;
 - (void)receivedFullyDrawnNotification;
 - (void)sendDidEnterBackgroundNotification;
-- (void)setMapsIsShowingTour:(BOOL)a3;
-- (void)setTrackingMode:(int64_t)a3 monitorBatteryState:(BOOL)a4;
-- (void)showLocationServicesAlertWithError:(id)a3;
+- (void)setMapsIsShowingTour:(BOOL)tour;
+- (void)setTrackingMode:(int64_t)mode monitorBatteryState:(BOOL)state;
+- (void)showLocationServicesAlertWithError:(id)error;
 - (void)showNavigationAdvisoryIfNeeded;
-- (void)startPreparedBackgroundNavigationWithMessage:(id)a3;
+- (void)startPreparedBackgroundNavigationWithMessage:(id)message;
 - (void)startTransitTurnByTurn;
-- (void)startTurnByTurn:(id)a3;
+- (void)startTurnByTurn:(id)turn;
 - (void)toggleDisableMenuSharing;
 - (void)toggleScrollingOpensPlacecard;
 - (void)toggleSidebarSelection;
-- (void)updateWithGuidance:(id)a3;
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5;
+- (void)updateWithGuidance:(id)guidance;
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler;
 @end
 
 @implementation MapsAppDelegate
@@ -297,12 +297,12 @@
 
 - (id)mainVKMapView
 {
-  v2 = [(MapsAppDelegate *)self sceneDelegateForTesting];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 mapView];
-  v5 = [v4 _mapLayer];
+  sceneDelegateForTesting = [(MapsAppDelegate *)self sceneDelegateForTesting];
+  chromeViewController = [sceneDelegateForTesting chromeViewController];
+  mapView = [chromeViewController mapView];
+  _mapLayer = [mapView _mapLayer];
 
-  return v5;
+  return _mapLayer;
 }
 
 - (id)sceneDelegateForTesting
@@ -369,8 +369,8 @@ LABEL_8:
 
 - (void)_startLegacyDataMigration
 {
-  v2 = [(MapsAppDelegate *)self legacyDataMigrator];
-  [v2 performMigration];
+  legacyDataMigrator = [(MapsAppDelegate *)self legacyDataMigrator];
+  [legacyDataMigrator performMigration];
 
   v3 = +[UIApplication sharedApplication];
   [v3 registerForRemoteNotifications];
@@ -405,11 +405,11 @@ LABEL_8:
 - (IOSChromeViewController)chromeViewController
 {
   v2 = +[UIApplication _maps_keyMapsSceneDelegate];
-  v3 = [v2 chromeViewController];
+  chromeViewController = [v2 chromeViewController];
 
   v4 = sub_1008B9228();
   v5 = v4;
-  if (v3)
+  if (chromeViewController)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
@@ -417,7 +417,7 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Found chrome view controller from key maps scene delegate", buf, 2u);
     }
 
-    v6 = v3;
+    v6 = chromeViewController;
   }
 
   else
@@ -429,7 +429,7 @@ LABEL_8:
     }
   }
 
-  return v3;
+  return chromeViewController;
 }
 
 - (void)presentAboutAndPrivacyScreen
@@ -480,41 +480,41 @@ LABEL_8:
   }
 }
 
-- (void)notificationButtonPressedWithCompletionHandler:(id)a3
+- (void)notificationButtonPressedWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[UNUserNotificationCenter currentNotificationCenter];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1008B84C0;
   v6[3] = &unk_1016588E8;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [v4 getNotificationSettingsWithCompletionHandler:v6];
 }
 
-- (void)fetchNotificationAuthUndetermined:(id)a3
+- (void)fetchNotificationAuthUndetermined:(id)undetermined
 {
-  v3 = a3;
+  undeterminedCopy = undetermined;
   v4 = +[UNUserNotificationCenter currentNotificationCenter];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1008B8854;
   v6[3] = &unk_1016588E8;
-  v7 = v3;
-  v5 = v3;
+  v7 = undeterminedCopy;
+  v5 = undeterminedCopy;
   [v4 getNotificationSettingsWithCompletionHandler:v6];
 }
 
-- (void)preferencesPrivacyControllerDidDismiss:(id)a3
+- (void)preferencesPrivacyControllerDidDismiss:(id)dismiss
 {
   privacyController = self->_privacyController;
   self->_privacyController = 0;
 }
 
-- (void)presentMacPreferencesTabWithType:(int64_t)a3
+- (void)presentMacPreferencesTabWithType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 2:
       [(MapsAppDelegate *)self presentMacARPPreferences];
@@ -528,81 +528,81 @@ LABEL_8:
   }
 }
 
-- (void)_share:(id)a3
+- (void)_share:(id)_share
 {
-  v4 = [(MapsAppDelegate *)self chromeViewController];
-  v10 = [v4 currentShareItemSource];
+  chromeViewController = [(MapsAppDelegate *)self chromeViewController];
+  currentShareItemSource = [chromeViewController currentShareItemSource];
 
-  v5 = [[MapsActivityViewController alloc] initWithShareItem:v10];
-  v6 = [(MapsAppDelegate *)self chromeViewController];
-  v7 = [v6 view];
-  v8 = [(MapsActivityViewController *)v5 popoverPresentationController];
-  [v8 setSourceItem:v7];
+  v5 = [[MapsActivityViewController alloc] initWithShareItem:currentShareItemSource];
+  chromeViewController2 = [(MapsAppDelegate *)self chromeViewController];
+  view = [chromeViewController2 view];
+  popoverPresentationController = [(MapsActivityViewController *)v5 popoverPresentationController];
+  [popoverPresentationController setSourceItem:view];
 
-  v9 = [(MapsAppDelegate *)self chromeViewController];
-  [v9 _maps_topMostPresentViewController:v5 animated:1 completion:0];
+  chromeViewController3 = [(MapsAppDelegate *)self chromeViewController];
+  [chromeViewController3 _maps_topMostPresentViewController:v5 animated:1 completion:0];
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v14 = a3;
-  v4 = [v14 system];
+  builderCopy = builder;
+  system = [builderCopy system];
   v5 = +[UIMenuSystem mainSystem];
 
-  v6 = v14;
-  if (v4 == v5)
+  v6 = builderCopy;
+  if (system == v5)
   {
     v7 = +[UIScreen mainScreen];
     v8 = sub_10000FA08(v7);
 
     if (self->_didSkipInitialUIKitBuildMenuCall || v8 != 5)
     {
-      v9 = [(MapsAppDelegate *)self chromeViewController];
-      v10 = [v9 currentShareItemSource];
+      chromeViewController = [(MapsAppDelegate *)self chromeViewController];
+      currentShareItemSource = [chromeViewController currentShareItemSource];
 
       v11 = 0;
-      if (v8 == 5 && v10)
+      if (v8 == 5 && currentShareItemSource)
       {
-        v12 = [(MapsAppDelegate *)self chromeViewController];
-        v13 = [v12 currentCollectionShareItemSource];
-        v11 = v13 == 0;
+        chromeViewController2 = [(MapsAppDelegate *)self chromeViewController];
+        currentCollectionShareItemSource = [chromeViewController2 currentCollectionShareItemSource];
+        v11 = currentCollectionShareItemSource == 0;
       }
 
-      [MapsMenuBuilder buildMenuWithBuilder:v14 sendToDeviceEnabled:v11];
+      [MapsMenuBuilder buildMenuWithBuilder:builderCopy sendToDeviceEnabled:v11];
     }
 
     self->_didSkipInitialUIKitBuildMenuCall = 1;
-    v6 = v14;
+    v6 = builderCopy;
   }
 }
 
 - (id)testCoordinator
 {
-  v2 = [(MapsAppDelegate *)self sceneDelegateForTesting];
-  v3 = [v2 testCoordinator];
+  sceneDelegateForTesting = [(MapsAppDelegate *)self sceneDelegateForTesting];
+  testCoordinator = [sceneDelegateForTesting testCoordinator];
 
-  return v3;
+  return testCoordinator;
 }
 
 - (id)visibleMapViewFromCarPlay
 {
   v2 = +[CarDisplayController sharedInstance];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 mapView];
+  chromeViewController = [v2 chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  return v4;
+  return mapView;
 }
 
 - (NSArray)allVisibleMapViewsButNotCarPlay
 {
-  v2 = [(MapsAppDelegate *)self allVisibleMapViews];
-  v3 = [v2 mutableCopy];
+  allVisibleMapViews = [(MapsAppDelegate *)self allVisibleMapViews];
+  v3 = [allVisibleMapViews mutableCopy];
 
   v4 = +[CarDisplayController sharedInstance];
-  v5 = [v4 chromeViewController];
-  v6 = [v5 mapView];
+  chromeViewController = [v4 chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  [v3 removeObject:v6];
+  [v3 removeObject:mapView];
 
   return v3;
 }
@@ -610,14 +610,14 @@ LABEL_8:
 - (NSArray)allVisibleMapViews
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 connectedScenes];
+  connectedScenes = [v2 connectedScenes];
 
-  v17 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  v17 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [connectedScenes count]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = v3;
+  v4 = connectedScenes;
   v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -637,16 +637,16 @@ LABEL_8:
         if (objc_opt_isKindOfClass())
         {
           v10 = v9;
-          v11 = [v10 delegate];
+          delegate = [v10 delegate];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v13 = [v10 delegate];
-            v14 = [v13 chromeViewController];
-            v15 = [v14 mapView];
-            [v17 addObject:v15];
+            delegate2 = [v10 delegate];
+            chromeViewController = [delegate2 chromeViewController];
+            mapView = [chromeViewController mapView];
+            [v17 addObject:mapView];
           }
         }
       }
@@ -660,74 +660,74 @@ LABEL_8:
   return v17;
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4
+- (void)presentViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if (v5)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v14 = v5;
-    v6 = [v5 presentingViewController];
+    v14 = controllerCopy;
+    presentingViewController = [controllerCopy presentingViewController];
 
-    v5 = v14;
-    if (!v6)
+    controllerCopy = v14;
+    if (!presentingViewController)
     {
       v7 = +[UIApplication _maps_keyMapsWindow];
-      v8 = [v7 rootViewController];
+      rootViewController = [v7 rootViewController];
 
-      v9 = [v8 presentedViewController];
+      presentedViewController = [rootViewController presentedViewController];
 
-      if (v9)
+      if (presentedViewController)
       {
         do
         {
-          v10 = [v8 presentedViewController];
+          presentedViewController2 = [rootViewController presentedViewController];
 
-          v11 = [v10 presentedViewController];
+          v10PresentedViewController = [presentedViewController2 presentedViewController];
 
-          v8 = v10;
+          rootViewController = presentedViewController2;
         }
 
-        while (v11);
+        while (v10PresentedViewController);
       }
 
       else
       {
-        v10 = v8;
+        presentedViewController2 = rootViewController;
       }
 
-      if ([v10 isViewLoaded])
+      if ([presentedViewController2 isViewLoaded])
       {
-        v12 = [v10 view];
-        v13 = [v12 window];
+        view = [presentedViewController2 view];
+        window = [view window];
 
-        if (v13)
+        if (window)
         {
           [v14 setModalPresentationStyle:2];
-          [v10 presentViewController:v14 animated:v4 completion:0];
+          [presentedViewController2 presentViewController:v14 animated:animatedCopy completion:0];
         }
       }
 
-      v5 = v14;
+      controllerCopy = v14;
     }
   }
 }
 
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a5;
-  v8 = [v6 request];
-  v9 = [v8 shouldShowIfAppInForeground];
+  notificationCopy = notification;
+  handlerCopy = handler;
+  request = [notificationCopy request];
+  shouldShowIfAppInForeground = [request shouldShowIfAppInForeground];
 
   v10 = sub_10079857C();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
-  if (v9)
+  if (shouldShowIfAppInForeground)
   {
     if (v11)
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = notificationCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Will present notification - %@", &v13, 0xCu);
     }
 
@@ -739,14 +739,14 @@ LABEL_8:
     if (v11)
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = notificationCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Skipping showing notification since app in FG - %@", &v13, 0xCu);
     }
 
     v12 = 0;
   }
 
-  v7[2](v7, v12);
+  handlerCopy[2](handlerCopy, v12);
 }
 
 - (void)endBackgroundNavigation
@@ -758,45 +758,45 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Will end background navigation", v7, 2u);
   }
 
-  v4 = [(MapsAppDelegate *)self appSessionController];
-  v5 = [v4 currentlyNavigatingPlatformController];
-  [v5 clearSessions];
+  appSessionController = [(MapsAppDelegate *)self appSessionController];
+  currentlyNavigatingPlatformController = [appSessionController currentlyNavigatingPlatformController];
+  [currentlyNavigatingPlatformController clearSessions];
 
   v6 = +[MNNavigationService sharedService];
   [(MapsAppDelegate *)self endTurnByTurn:v6];
 }
 
-- (void)updateWithGuidance:(id)a3
+- (void)updateWithGuidance:(id)guidance
 {
   navigationIdleTimerProvider = self->_navigationIdleTimerProvider;
-  v5 = a3;
-  [(NavigationIdleTimerProvider *)navigationIdleTimerProvider updateGuidanceState:v5];
-  [(NavigationIdleTimerProvider *)self->_transitIdleTimerProvider updateGuidanceState:v5];
+  guidanceCopy = guidance;
+  [(NavigationIdleTimerProvider *)navigationIdleTimerProvider updateGuidanceState:guidanceCopy];
+  [(NavigationIdleTimerProvider *)self->_transitIdleTimerProvider updateGuidanceState:guidanceCopy];
 }
 
-- (void)startPreparedBackgroundNavigationWithMessage:(id)a3
+- (void)startPreparedBackgroundNavigationWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(MapsAppDelegate *)self platformController];
-  v6 = v5;
-  if (v5)
+  messageCopy = message;
+  platformController = [(MapsAppDelegate *)self platformController];
+  v6 = platformController;
+  if (platformController)
   {
-    v7 = v5;
+    primaryPlatformController = platformController;
   }
 
   else
   {
-    v8 = [(MapsAppDelegate *)self appSessionController];
-    v7 = [v8 primaryPlatformController];
+    appSessionController = [(MapsAppDelegate *)self appSessionController];
+    primaryPlatformController = [appSessionController primaryPlatformController];
   }
 
-  v9 = [(MapsAppDelegate *)self platformController];
-  v10 = [v9 currentSession];
+  platformController2 = [(MapsAppDelegate *)self platformController];
+  currentSession = [platformController2 currentSession];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = currentSession;
   }
 
   else
@@ -806,14 +806,14 @@ LABEL_8:
 
   v12 = v11;
 
-  v13 = [(MapsAppDelegate *)self appSessionController];
-  v14 = [v13 primaryPlatformController];
-  v15 = [v14 currentSession];
+  appSessionController2 = [(MapsAppDelegate *)self appSessionController];
+  primaryPlatformController2 = [appSessionController2 primaryPlatformController];
+  currentSession2 = [primaryPlatformController2 currentSession];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v15;
+    v16 = currentSession2;
   }
 
   else
@@ -823,11 +823,11 @@ LABEL_8:
 
   v61 = v16;
 
-  v17 = [v7 currentSession];
+  currentSession3 = [primaryPlatformController currentSession];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = v17;
+    v18 = currentSession3;
   }
 
   else
@@ -838,19 +838,19 @@ LABEL_8:
   v19 = v18;
 
   v59 = v19;
-  v20 = [v19 currentRouteCollection];
-  v58 = v7;
-  v21 = [v7 iosBasedChromeViewController];
-  v22 = [v21 appCoordinator];
+  currentRouteCollection = [v19 currentRouteCollection];
+  v58 = primaryPlatformController;
+  iosBasedChromeViewController = [primaryPlatformController iosBasedChromeViewController];
+  appCoordinator = [iosBasedChromeViewController appCoordinator];
 
-  v62 = [v4 routeID];
-  v57 = [v4 routeIndex];
-  v23 = [v4 loadDirectionsMessage];
-  v24 = [v23 routePersistentData];
+  routeID = [messageCopy routeID];
+  routeIndex = [messageCopy routeIndex];
+  loadDirectionsMessage = [messageCopy loadDirectionsMessage];
+  routePersistentData = [loadDirectionsMessage routePersistentData];
 
-  if (v24)
+  if (routePersistentData)
   {
-    v60 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v24 error:0];
+    v60 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:routePersistentData error:0];
   }
 
   else
@@ -863,9 +863,9 @@ LABEL_8:
   {
     v26 = v12 != 0;
     [v12 currentRouteCollection];
-    v27 = v55 = v4;
+    v27 = v55 = messageCopy;
     [v61 currentRouteCollection];
-    v56 = v24;
+    v56 = routePersistentData;
     v29 = v28 = v12;
     *buf = 67109890;
     *&buf[4] = v26;
@@ -878,9 +878,9 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Will start prepared background navigation.  platformController hasSession: %d, routes: %@, primaryPlatformController hasSession: %d, routes: %@", buf, 0x22u);
 
     v12 = v28;
-    v24 = v56;
+    routePersistentData = v56;
 
-    v4 = v55;
+    messageCopy = v55;
   }
 
   v68[0] = _NSConcreteStackBlock;
@@ -888,13 +888,13 @@ LABEL_8:
   v68[2] = sub_1008B9AB8;
   v68[3] = &unk_10162D488;
   v68[4] = self;
-  v30 = v4;
+  v30 = messageCopy;
   v69 = v30;
-  v31 = v22;
+  v31 = appCoordinator;
   v70 = v31;
   v32 = objc_retainBlock(v68);
-  v33 = [v30 originIsWatch];
-  if (v24 && v33 && !v20)
+  originIsWatch = [v30 originIsWatch];
+  if (routePersistentData && originIsWatch && !currentRouteCollection)
   {
     v34 = sub_1008B9228();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
@@ -903,20 +903,20 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "Will recreate a navigable route from provided persistent data", buf, 2u);
     }
 
-    v35 = [GEOComposedRoute _maps_composedRouteWithPersistentData:v60];
-    if (v35)
+    currentRouteCollection2 = [GEOComposedRoute _maps_composedRouteWithPersistentData:v60];
+    if (currentRouteCollection2)
     {
       [(MapsAppDelegate *)self chromeViewController];
       v37 = v36 = v12;
-      v38 = [v37 currentTraits];
+      currentTraits = [v37 currentTraits];
       v65[0] = _NSConcreteStackBlock;
       v65[1] = 3221225472;
       v65[2] = sub_1008B9B88;
       v65[3] = &unk_10162D4F0;
       v67 = v32;
-      v35 = v35;
-      v66 = v35;
-      v39 = [v35 _maps_convertToNavigableRouteWithTraits:v38 errorHandler:&stru_10162D4C8 completionHandler:v65];
+      currentRouteCollection2 = currentRouteCollection2;
+      v66 = currentRouteCollection2;
+      v39 = [currentRouteCollection2 _maps_convertToNavigableRouteWithTraits:currentTraits errorHandler:&stru_10162D4C8 completionHandler:v65];
 
       v12 = v36;
     }
@@ -924,22 +924,22 @@ LABEL_8:
     goto LABEL_43;
   }
 
-  if (!v20)
+  if (!currentRouteCollection)
   {
-    v35 = +[IPCServer sharedServer];
-    [v35 navigationStateDidChangeTo:3 reason:@"No routes available"];
+    currentRouteCollection2 = +[IPCServer sharedServer];
+    [currentRouteCollection2 navigationStateDidChangeTo:3 reason:@"No routes available"];
     goto LABEL_43;
   }
 
   p_cache = (&OBJC_METACLASS___RoutePlanningFeatureDiscoveryProvider + 16);
-  if (v62)
+  if (routeID)
   {
     *buf = 0;
     *v72 = 0;
-    [v62 getBytes:buf length:{objc_msgSend(v62, "length")}];
+    [routeID getBytes:buf length:{objc_msgSend(routeID, "length")}];
     v41 = [[NSUUID alloc] initWithUUIDBytes:buf];
-    [v20 routes];
-    v42 = v20;
+    [currentRouteCollection routes];
+    v42 = currentRouteCollection;
     v44 = v43 = v12;
     v63[0] = _NSConcreteStackBlock;
     v63[1] = 3221225472;
@@ -948,14 +948,14 @@ LABEL_8:
     v64 = v41;
     v45 = v32;
     v46 = v41;
-    v47 = [v44 indexOfObjectPassingTest:v63];
+    currentRouteIndex = [v44 indexOfObjectPassingTest:v63];
 
     v12 = v43;
-    v20 = v42;
+    currentRouteCollection = v42;
 
     v32 = v45;
     p_cache = &OBJC_METACLASS___RoutePlanningFeatureDiscoveryProvider.cache;
-    if (v47 != 0x7FFFFFFFFFFFFFFFLL)
+    if (currentRouteIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_36;
     }
@@ -971,22 +971,22 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_ERROR, "This IPC request is not the same as the last Siri/Watch request we got, so we fail.", buf, 2u);
     }
 
-    v50 = [p_cache + 118 sharedServer];
-    [v50 navigationStateDidChangeTo:2 reason:@"Request to start navigation doesn't match prepared directions."];
+    sharedServer = [p_cache + 118 sharedServer];
+    [sharedServer navigationStateDidChangeTo:2 reason:@"Request to start navigation doesn't match prepared directions."];
 
     v32 = v48;
   }
 
-  v47 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v57 == 0x7FFFFFFFFFFFFFFFLL)
+  currentRouteIndex = 0x7FFFFFFFFFFFFFFFLL;
+  if (routeIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_36;
   }
 
-  v47 = v57;
-  if (v57 >= [v20 count])
+  currentRouteIndex = routeIndex;
+  if (routeIndex >= [currentRouteCollection count])
   {
-    v47 = 0x7FFFFFFFFFFFFFFFLL;
+    currentRouteIndex = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_36:
     [p_cache + 118 sharedServer];
     v52 = v51 = v32;
@@ -995,16 +995,16 @@ LABEL_36:
     v32 = v51;
   }
 
-  if (v47 == 0x7FFFFFFFFFFFFFFFLL)
+  if (currentRouteIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v47 = [v20 currentRouteIndex];
+    currentRouteIndex = [currentRouteCollection currentRouteIndex];
   }
 
-  [v59 setSelectedRouteIndex:v47 forTransportType:{objc_msgSend(v59, "currentTransportType", v55)}];
-  v35 = [v59 currentRouteCollection];
-  if (v35)
+  [v59 setSelectedRouteIndex:currentRouteIndex forTransportType:{objc_msgSend(v59, "currentTransportType", v55)}];
+  currentRouteCollection2 = [v59 currentRouteCollection];
+  if (currentRouteCollection2)
   {
-    (v32[2])(v32, v35);
+    (v32[2])(v32, currentRouteCollection2);
   }
 
   else
@@ -1019,25 +1019,25 @@ LABEL_36:
 LABEL_43:
 }
 
-- (void)prepareBackgroundNavigationWithMessage:(id)a3
+- (void)prepareBackgroundNavigationWithMessage:(id)message
 {
-  v5 = a3;
-  objc_storeStrong(&self->_lastPrepareNavigationMessage, a3);
+  messageCopy = message;
+  objc_storeStrong(&self->_lastPrepareNavigationMessage, message);
   v6 = +[UIApplication _maps_keyMapsSceneDelegate];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    delegate = v6;
   }
 
   else
   {
     v9 = +[UIApplication _maps_applicationScenes];
-    v10 = [v9 firstObject];
-    v8 = [v10 delegate];
+    firstObject = [v9 firstObject];
+    delegate = [firstObject delegate];
   }
 
-  v11 = v8;
+  v11 = delegate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1052,18 +1052,18 @@ LABEL_43:
   v13 = v12;
 
   v37 = v13;
-  v14 = [v13 entryPointsCoordinator];
-  v15 = v14;
-  if (v14)
+  entryPointsCoordinator = [v13 entryPointsCoordinator];
+  v15 = entryPointsCoordinator;
+  if (entryPointsCoordinator)
   {
-    v16 = v14;
+    entryPointsCoordinator2 = entryPointsCoordinator;
   }
 
   else
   {
-    v17 = [(MapsAppDelegate *)self appSessionController];
-    v18 = [v17 primaryPlatformController];
-    v16 = [v18 entryPointsCoordinator];
+    appSessionController = [(MapsAppDelegate *)self appSessionController];
+    primaryPlatformController = [appSessionController primaryPlatformController];
+    entryPointsCoordinator2 = [primaryPlatformController entryPointsCoordinator];
   }
 
   v19 = sub_1008B9228();
@@ -1072,21 +1072,21 @@ LABEL_43:
     *buf = 138412546;
     v41 = v11;
     v42 = 2112;
-    v43 = v16;
+    v43 = entryPointsCoordinator2;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Will prepare background navigation, sceneDelegate: %@, entryPointsCoordinator: %@", buf, 0x16u);
   }
 
   v36 = v11;
 
-  [v16 prepareBackgroundNavigation];
+  [entryPointsCoordinator2 prepareBackgroundNavigation];
   v20 = +[MKLocationManager sharedLocationManager];
   [v20 resetAfterResumeIfNecessary];
 
-  v21 = [v5 routeContextData];
-  v22 = v16;
-  if (v21)
+  routeContextData = [messageCopy routeContextData];
+  v22 = entryPointsCoordinator2;
+  if (routeContextData)
   {
-    v23 = [[GEOCompanionRouteContext alloc] initWithData:{v21, v36}];
+    v23 = [[GEOCompanionRouteContext alloc] initWithData:{routeContextData, v36}];
   }
 
   else
@@ -1094,21 +1094,21 @@ LABEL_43:
     v23 = 0;
   }
 
-  v24 = [[MKURLContext alloc] initWithOriginatedFromWatch:objc_msgSend(v5 companionRouteContext:{"originIsWatch"), v23}];
+  v24 = [[MKURLContext alloc] initWithOriginatedFromWatch:objc_msgSend(messageCopy companionRouteContext:{"originIsWatch"), v23}];
   v25 = +[UIApplication sharedApplication];
-  v26 = [v25 windows];
-  v27 = [v26 firstObject];
-  [v27 windowScene];
-  v29 = v28 = v5;
+  windows = [v25 windows];
+  firstObject2 = [windows firstObject];
+  [firstObject2 windowScene];
+  v29 = v28 = messageCopy;
 
   v30 = [v28 url];
-  v31 = [v29 session];
+  session = [v29 session];
   v38 = @"MKURLContext";
   v39 = v24;
   v32 = [NSDictionary dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-  v33 = [v29 coordinateSpace];
-  [v33 bounds];
-  [v22 openURL:v30 session:v31 sceneOptions:0 mkOptions:v32 windowSize:{v34, v35}];
+  coordinateSpace = [v29 coordinateSpace];
+  [coordinateSpace bounds];
+  [v22 openURL:v30 session:session sceneOptions:0 mkOptions:v32 windowSize:{v34, v35}];
 }
 
 - (id)hardwareModel
@@ -1118,33 +1118,33 @@ LABEL_43:
   return v2;
 }
 
-- (void)navigationService:(id)a3 didFailWithError:(id)a4
+- (void)navigationService:(id)service didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = +[IPCServer sharedServer];
-  v7 = [v5 description];
+  v7 = [errorCopy description];
   [v6 navigationStateDidChangeTo:3 reason:v7];
 
   v8 = +[GEOPlatform sharedPlatform];
-  if ([v8 isInternalInstall] && objc_msgSend(v5, "code") == 10)
+  if ([v8 isInternalInstall] && objc_msgSend(errorCopy, "code") == 10)
   {
     v9 = dispatch_time(0, 1000000000);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1008BA294;
     block[3] = &unk_101661A40;
-    v11 = v5;
-    v12 = self;
+    v11 = errorCopy;
+    selfCopy = self;
     v13 = v8;
     dispatch_after(v9, &_dispatch_main_q, block);
   }
 }
 
-- (void)navigationService:(id)a3 didEnableGuidancePrompts:(BOOL)a4
+- (void)navigationService:(id)service didEnableGuidancePrompts:(BOOL)prompts
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  promptsCopy = prompts;
+  serviceCopy = service;
+  if (promptsCopy)
   {
     [(MapsAppDelegate *)self _acquireDoubleHeightStatusBarAssertionIfNeeded];
     [(MapsAppDelegate *)self _updateSecureAppAssertion];
@@ -1153,56 +1153,56 @@ LABEL_43:
   else
   {
     [(MapsAppDelegate *)self _clearDoubleHeightStatusBar];
-    if (![v6 navigationState])
+    if (![serviceCopy navigationState])
     {
       [(MapsAppDelegate *)self _releaseSecureAppAssertion];
     }
   }
 }
 
-- (void)navigationService:(id)a3 didResumeNavigatingFromWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5 reason:(unint64_t)a6
+- (void)navigationService:(id)service didResumeNavigatingFromWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index reason:(unint64_t)reason
 {
-  v7 = a4;
+  waypointCopy = waypoint;
   v8 = sub_100035E6C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v7 shortDescription];
+    shortDescription = [waypointCopy shortDescription];
     v10 = 138412290;
-    v11 = v9;
+    v11 = shortDescription;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Did resume from waypoint: %@; update idle timer state", &v10, 0xCu);
   }
 
   [(NavigationIdleTimerProvider *)self->_navigationIdleTimerProvider updateConfiguration];
 }
 
-- (void)navigationService:(id)a3 didArriveAtWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5
+- (void)navigationService:(id)service didArriveAtWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index
 {
-  v7 = [a3 route];
-  LODWORD(a5) = [v7 isLegIndexOfLastLeg:a5];
+  route = [service route];
+  LODWORD(index) = [route isLegIndexOfLastLeg:index];
 
-  if (a5)
+  if (index)
   {
 
     [(MapsAppDelegate *)self _clearDoubleHeightStatusBar];
   }
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v15 = a3;
+  serviceCopy = service;
   if (MNNavigationServiceStateChangedToNavigating())
   {
     v7 = +[MapsLightLevelController sharedController];
     [v7 reloadForChangedLightLevelTrackers];
 
-    if ([v15 desiredNavigationType] == 2)
+    if ([serviceCopy desiredNavigationType] == 2)
     {
       v8 = @"Stepping navigation started";
     }
 
     else
     {
-      if ([v15 desiredNavigationType] != 3)
+      if ([serviceCopy desiredNavigationType] != 3)
       {
 LABEL_11:
         if (self->_foregroundDataActivationPopupAssertion)
@@ -1225,9 +1225,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!a5)
+  if (!toState)
   {
-    [(MapsAppDelegate *)self endTurnByTurn:v15];
+    [(MapsAppDelegate *)self endTurnByTurn:serviceCopy];
   }
 
   v9 = self->_foregroundDataActivationPopupAssertion;
@@ -1241,24 +1241,24 @@ LABEL_13:
 
 LABEL_14:
   v13 = +[IPCServer sharedServer];
-  [v13 setEtaOnlyNavMode:a5 == 5];
+  [v13 setEtaOnlyNavMode:toState == 5];
 
   v14 = +[IPCServer sharedServer];
-  [v14 setRoutePreviewGuidanceNavMode:a5 == 3];
+  [v14 setRoutePreviewGuidanceNavMode:toState == 3];
 }
 
-- (void)navigationService:(id)a3 willChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service willChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v10 = a3;
+  serviceCopy = service;
   if (!MNNavigationServiceStateChangedToNavigating())
   {
-    v8 = v10;
-    if (a5)
+    v8 = serviceCopy;
+    if (toState)
     {
       goto LABEL_15;
     }
 
-    if ([v10 navigationType] == 2)
+    if ([serviceCopy navigationType] == 2)
     {
       [(MapsAppDelegate *)self endTransitTurnByTurn];
       [(MapsAppDelegate *)self _releaseProcessAssertion];
@@ -1266,9 +1266,9 @@ LABEL_14:
       [(MapsAppDelegate *)self _unsuppressNetworkFlagsIfNecessary];
     }
 
-    if ([v10 navigationType] == 3)
+    if ([serviceCopy navigationType] == 3)
     {
-      [(MapsAppDelegate *)self endTurnByTurn:v10];
+      [(MapsAppDelegate *)self endTurnByTurn:serviceCopy];
     }
 
     [(MapsAppDelegate *)self _clearDoubleHeightStatusBar];
@@ -1276,12 +1276,12 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if ([v10 desiredNavigationType] == 2)
+  if ([serviceCopy desiredNavigationType] == 2)
   {
     [(MapsAppDelegate *)self _suppressNetworkFlags];
-    v7 = [(MapsAppDelegate *)self _supportsModernTransitNavigation:v10];
+    v7 = [(MapsAppDelegate *)self _supportsModernTransitNavigation:serviceCopy];
     [(MapsAppDelegate *)self _setCanShowInLockscreen:v7];
-    v8 = v10;
+    v8 = serviceCopy;
     if (!v7)
     {
       goto LABEL_15;
@@ -1292,14 +1292,14 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v9 = [v10 desiredNavigationType] == 3;
-  v8 = v10;
+  v9 = [serviceCopy desiredNavigationType] == 3;
+  v8 = serviceCopy;
   if (v9)
   {
-    [(MapsAppDelegate *)self startTurnByTurn:v10];
+    [(MapsAppDelegate *)self startTurnByTurn:serviceCopy];
     [(MapsAppDelegate *)self _acquireDoubleHeightStatusBarAssertionIfNeeded];
 LABEL_14:
-    v8 = v10;
+    v8 = serviceCopy;
   }
 
 LABEL_15:
@@ -1307,18 +1307,18 @@ LABEL_15:
 
 - (void)_releaseProcessAssertion
 {
-  v3 = [(MapsAppDelegate *)self priorityAssertion];
+  priorityAssertion = [(MapsAppDelegate *)self priorityAssertion];
 
-  if (v3)
+  if (priorityAssertion)
   {
-    v4 = [(MapsAppDelegate *)self priorityAssertion];
+    priorityAssertion2 = [(MapsAppDelegate *)self priorityAssertion];
     [(MapsAppDelegate *)self setPriorityAssertion:0];
     v5 = sub_1008B9228();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 explanation];
+      explanation = [priorityAssertion2 explanation];
       *buf = 138412546;
-      v12 = v6;
+      v12 = explanation;
       v13 = 2048;
       v14 = 0x4014000000000000;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Will invalidate priority assertion %@ in %#.1lfs", buf, 0x16u);
@@ -1329,23 +1329,23 @@ LABEL_15:
     block[1] = 3221225472;
     block[2] = sub_1008BAD7C;
     block[3] = &unk_101661B18;
-    v10 = v4;
-    v8 = v4;
+    v10 = priorityAssertion2;
+    v8 = priorityAssertion2;
     dispatch_after(v7, &_dispatch_main_q, block);
   }
 }
 
-- (void)_acquireProcessAssertionForTurnByTurn:(BOOL)a3
+- (void)_acquireProcessAssertionForTurnByTurn:(BOOL)turn
 {
-  v3 = a3;
-  v5 = [(MapsAppDelegate *)self priorityAssertion];
+  turnCopy = turn;
+  priorityAssertion = [(MapsAppDelegate *)self priorityAssertion];
 
-  if (!v5)
+  if (!priorityAssertion)
   {
     v6 = +[NSBundle mainBundle];
-    v7 = [v6 bundleIdentifier];
-    v8 = v7;
-    if (v3)
+    bundleIdentifier = [v6 bundleIdentifier];
+    v8 = bundleIdentifier;
+    if (turnCopy)
     {
       v9 = @".Navigation.TurnByTurn";
     }
@@ -1355,7 +1355,7 @@ LABEL_15:
       v9 = @".Navigation.Stepping";
     }
 
-    v10 = [v7 stringByAppendingString:v9];
+    v10 = [bundleIdentifier stringByAppendingString:v9];
 
     v11 = [RBSDomainAttribute attributeWithDomain:@"com.apple.maps" name:@"ActiveNavigation"];
     v25 = v11;
@@ -1396,47 +1396,47 @@ LABEL_15:
   }
 }
 
-- (void)chromeViewController:(id)a3 didMoveFromContextStack:(id)a4 toContextStack:(id)a5
+- (void)chromeViewController:(id)controller didMoveFromContextStack:(id)stack toContextStack:(id)contextStack
 {
   if (self->_canShowInLockscreen)
   {
-    v7 = [a5 lastObject];
-    if ([v7 conformsToProtocol:&OBJC_PROTOCOL___LockScreenProtocol] && ((objc_opt_respondsToSelector() & 1) == 0 || objc_msgSend(v7, "supportsLockscreen")))
+    lastObject = [contextStack lastObject];
+    if ([lastObject conformsToProtocol:&OBJC_PROTOCOL___LockScreenProtocol] && ((objc_opt_respondsToSelector() & 1) == 0 || objc_msgSend(lastObject, "supportsLockscreen")))
     {
       [(MapsAppDelegate *)self _updateSecureAppAssertion];
     }
   }
 }
 
-- (void)chromeViewController:(id)a3 willMoveFromContextStack:(id)a4 toContextStack:(id)a5
+- (void)chromeViewController:(id)controller willMoveFromContextStack:(id)stack toContextStack:(id)contextStack
 {
   if (self->_canShowInLockscreen)
   {
-    v7 = [a5 lastObject];
-    if (![v7 conformsToProtocol:&OBJC_PROTOCOL___LockScreenProtocol] || (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(v7, "supportsLockscreen") & 1) == 0)
+    lastObject = [contextStack lastObject];
+    if (![lastObject conformsToProtocol:&OBJC_PROTOCOL___LockScreenProtocol] || (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(lastObject, "supportsLockscreen") & 1) == 0)
     {
       [(MapsAppDelegate *)self _updateSecureAppAssertion];
     }
   }
 }
 
-- (void)endTurnByTurn:(id)a3
+- (void)endTurnByTurn:(id)turn
 {
   self->_isNavigatingTurnByTurn = 0;
   navigationIdleTimerProvider = self->_navigationIdleTimerProvider;
   self->_navigationIdleTimerProvider = 0;
 
-  v5 = [(MapsAppDelegate *)self idleTimerController];
-  [v5 setDesiredIdleTimerState:0 forReason:2];
+  idleTimerController = [(MapsAppDelegate *)self idleTimerController];
+  [idleTimerController setDesiredIdleTimerState:0 forReason:2];
 
   thermalWarningController = self->_thermalWarningController;
   self->_thermalWarningController = 0;
 
   v11 = +[IPCServer sharedServer];
   v7 = +[MNNavigationService sharedService];
-  v8 = [v11 externalGuidanceSource];
+  externalGuidanceSource = [v11 externalGuidanceSource];
 
-  if (v8 == v7)
+  if (externalGuidanceSource == v7)
   {
     [v11 setExternalGuidanceSource:0];
   }
@@ -1474,12 +1474,12 @@ LABEL_15:
   self->_transitIdleTimerProvider = 0;
 }
 
-- (void)startTurnByTurn:(id)a3
+- (void)startTurnByTurn:(id)turn
 {
-  v4 = a3;
+  turnCopy = turn;
   self->_isNavigatingTurnByTurn = 1;
-  v5 = [(MapsAppDelegate *)self idleTimerController];
-  objc_initWeak(&location, v5);
+  idleTimerController = [(MapsAppDelegate *)self idleTimerController];
+  objc_initWeak(&location, idleTimerController);
 
   v6 = [NavigationIdleTimerProvider alloc];
   v24[0] = _NSConcreteStackBlock;
@@ -1504,17 +1504,17 @@ LABEL_15:
   [(NavigationThermalWarningController *)self->_thermalWarningController setChangeHandler:&v18];
   v11 = [IPCServer sharedServer:v18];
   v12 = +[MNNavigationService sharedService];
-  v13 = [v11 externalGuidanceSource];
+  externalGuidanceSource = [v11 externalGuidanceSource];
 
-  if (v13 != v12)
+  if (externalGuidanceSource != v12)
   {
     [v11 setExternalGuidanceSource:v12];
   }
 
   v14 = +[VGVirtualGarageService sharedService];
-  v15 = [v11 virtualGarageSource];
+  virtualGarageSource = [v11 virtualGarageSource];
 
-  if (v15 != v14)
+  if (virtualGarageSource != v14)
   {
     [v11 setVirtualGarageSource:v14];
   }
@@ -1636,14 +1636,14 @@ LABEL_14:
 {
   if (self->_canShowInLockscreen)
   {
-    v3 = [(MapsAppDelegate *)self appSessionController];
-    v4 = [v3 currentlyNavigatingCoverSheetSceneAssociation];
-    v5 = [v4 mapsScene];
-    v6 = [v5 delegate];
+    appSessionController = [(MapsAppDelegate *)self appSessionController];
+    currentlyNavigatingCoverSheetSceneAssociation = [appSessionController currentlyNavigatingCoverSheetSceneAssociation];
+    mapsScene = [currentlyNavigatingCoverSheetSceneAssociation mapsScene];
+    delegate = [mapsScene delegate];
 
-    v7 = [v6 chromeViewController];
+    chromeViewController = [delegate chromeViewController];
 
-    if (!v7)
+    if (!chromeViewController)
     {
       v17 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -1656,7 +1656,7 @@ LABEL_14:
       goto LABEL_45;
     }
 
-    v8 = [v6 chromeViewController];
+    chromeViewController2 = [delegate chromeViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1665,25 +1665,25 @@ LABEL_14:
       v18 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [v6 chromeViewController];
+        chromeViewController3 = [delegate chromeViewController];
         *buf = 138412290;
-        v33 = v19;
+        v33 = chromeViewController3;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Chrome not ready to take secure app assertion: %@", buf, 0xCu);
       }
 
       goto LABEL_45;
     }
 
-    v10 = [v6 chromeViewController];
-    v11 = [v10 topIOSBasedContext];
-    if ([v11 conformsToProtocol:&OBJC_PROTOCOL___LockScreenProtocol])
+    chromeViewController4 = [delegate chromeViewController];
+    topIOSBasedContext = [chromeViewController4 topIOSBasedContext];
+    if ([topIOSBasedContext conformsToProtocol:&OBJC_PROTOCOL___LockScreenProtocol])
     {
-      if (objc_opt_respondsToSelector() & 1) == 0 || ([v11 supportsLockscreen])
+      if (objc_opt_respondsToSelector() & 1) == 0 || ([topIOSBasedContext supportsLockscreen])
       {
         v12 = +[CarDisplayController sharedInstance];
-        v13 = [v12 isAnyCarSceneHostingNavigation];
+        isAnyCarSceneHostingNavigation = [v12 isAnyCarSceneHostingNavigation];
 
-        if (v13)
+        if (isAnyCarSceneHostingNavigation)
         {
           v14 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -1724,7 +1724,7 @@ LABEL_45:
       v14 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v26 = v11;
+        v26 = topIOSBasedContext;
         if (!v26)
         {
           v25 = @"<nil>";
@@ -1766,7 +1766,7 @@ LABEL_42:
       goto LABEL_42;
     }
 
-    v20 = v11;
+    v20 = topIOSBasedContext;
     if (!v20)
     {
       v25 = @"<nil>";
@@ -1810,21 +1810,21 @@ LABEL_41:
   [(MapsAppDelegate *)self _releaseSecureAppAssertion];
 }
 
-- (void)_setCanShowInLockscreen:(BOOL)a3
+- (void)_setCanShowInLockscreen:(BOOL)lockscreen
 {
-  if (self->_canShowInLockscreen != a3)
+  if (self->_canShowInLockscreen != lockscreen)
   {
-    self->_canShowInLockscreen = a3;
-    v4 = [(MapsAppDelegate *)self appSessionController];
-    v5 = [v4 currentlyNavigatingCoverSheetSceneAssociation];
-    v6 = [v5 mapsScene];
-    v7 = [v6 delegate];
+    self->_canShowInLockscreen = lockscreen;
+    appSessionController = [(MapsAppDelegate *)self appSessionController];
+    currentlyNavigatingCoverSheetSceneAssociation = [appSessionController currentlyNavigatingCoverSheetSceneAssociation];
+    mapsScene = [currentlyNavigatingCoverSheetSceneAssociation mapsScene];
+    delegate = [mapsScene delegate];
 
-    v8 = [v7 chromeViewController];
+    chromeViewController = [delegate chromeViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = chromeViewController;
     }
 
     else
@@ -1874,13 +1874,13 @@ LABEL_41:
   }
 }
 
-- (void)setMapsIsShowingTour:(BOOL)a3
+- (void)setMapsIsShowingTour:(BOOL)tour
 {
   isShowingTour = self->_isShowingTour;
-  self->_isShowingTour = a3;
-  if (!a3 || isShowingTour)
+  self->_isShowingTour = tour;
+  if (!tour || isShowingTour)
   {
-    if (!a3 && isShowingTour)
+    if (!tour && isShowingTour)
     {
       v5 = dispatch_time(0, 10000000000);
       block[0] = _NSConcreteStackBlock;
@@ -1894,25 +1894,25 @@ LABEL_41:
 
   else
   {
-    v6 = [(MapsAppDelegate *)self idleTimerController];
-    [v6 setDesiredIdleTimerState:1 forReason:1];
+    idleTimerController = [(MapsAppDelegate *)self idleTimerController];
+    [idleTimerController setDesiredIdleTimerState:1 forReason:1];
   }
 }
 
-- (void)setTrackingMode:(int64_t)a3 monitorBatteryState:(BOOL)a4
+- (void)setTrackingMode:(int64_t)mode monitorBatteryState:(BOOL)state
 {
   isTrackingLocation = self->_isTrackingLocation;
-  v6 = a3 != 0;
+  v6 = mode != 0;
   self->_isTrackingLocation = v6;
   if (isTrackingLocation != v6)
   {
     v7 = 1;
-    if (a4)
+    if (state)
     {
       v7 = 2;
     }
 
-    if (a3)
+    if (mode)
     {
       v8 = v7;
     }
@@ -1922,8 +1922,8 @@ LABEL_41:
       v8 = 0;
     }
 
-    v9 = [(MapsAppDelegate *)self idleTimerController];
-    [v9 setDesiredIdleTimerState:v8 forReason:0];
+    idleTimerController = [(MapsAppDelegate *)self idleTimerController];
+    [idleTimerController setDesiredIdleTimerState:v8 forReason:0];
   }
 }
 
@@ -1974,28 +1974,28 @@ LABEL_41:
   _SBSetApplicationNetworkFlags(v2, 0, 0);
 }
 
-- (void)carDisplayControllerDidUpdateNavigationVisibility:(id)a3
+- (void)carDisplayControllerDidUpdateNavigationVisibility:(id)visibility
 {
-  v4 = a3;
+  visibilityCopy = visibility;
   v5 = +[MapsLightLevelController sharedController];
   [v5 reloadForChangedLightLevelTrackers];
 
-  v6 = [v4 isAnyCarSceneHostingDrivingNavigation];
+  isAnyCarSceneHostingDrivingNavigation = [visibilityCopy isAnyCarSceneHostingDrivingNavigation];
   v7 = sub_1008B9228();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v15 = v6;
+    v15 = isAnyCarSceneHostingDrivingNavigation;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "carDisplayControllerDidUpdateNavigationVisibility: %d", buf, 8u);
   }
 
-  if (self->_carNavigationWasVisible != v6)
+  if (self->_carNavigationWasVisible != isAnyCarSceneHostingDrivingNavigation)
   {
-    self->_carNavigationWasVisible = v6;
-    if (v6)
+    self->_carNavigationWasVisible = isAnyCarSceneHostingDrivingNavigation;
+    if (isAnyCarSceneHostingDrivingNavigation)
     {
-      v8 = [(MapsAppDelegate *)self appCoordinator];
-      [v8 showFullscreenDirectionsList];
+      appCoordinator = [(MapsAppDelegate *)self appCoordinator];
+      [appCoordinator showFullscreenDirectionsList];
 
       [(MapsAppDelegate *)self _releaseSecureAppAssertion];
     }
@@ -2033,47 +2033,47 @@ LABEL_41:
   }
 }
 
-- (void)migrateARPConsentDefaults:(id)a3
+- (void)migrateARPConsentDefaults:(id)defaults
 {
-  v3 = a3;
-  if (([v3 BOOLForKey:@"MigratedARPConsentPreference"] & 1) == 0)
+  defaultsCopy = defaults;
+  if (([defaultsCopy BOOLForKey:@"MigratedARPConsentPreference"] & 1) == 0)
   {
     GEOConfigGetBOOL();
     GEOConfigSetInteger();
-    [v3 setBool:1 forKey:@"MigratedARPConsentPreference"];
+    [defaultsCopy setBool:1 forKey:@"MigratedARPConsentPreference"];
     _GEOConfigRemoveValue();
   }
 }
 
-- (void)migrateNavigoDefaults:(id)a3
+- (void)migrateNavigoDefaults:(id)defaults
 {
-  v4 = a3;
-  if (([v4 BOOLForKey:@"MigratedNavigoAppPreferences"] & 1) == 0)
+  defaultsCopy = defaults;
+  if (([defaultsCopy BOOLForKey:@"MigratedNavigoAppPreferences"] & 1) == 0)
   {
-    v3 = [v4 objectForKey:@"DefaultsDistanceUnits"];
+    v3 = [defaultsCopy objectForKey:@"DefaultsDistanceUnits"];
     if (([v3 isEqualToString:@"Imperial"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"Metric"))
     {
       [MapsSettings setValue:v3 forDefaultsKey:@"DistanceUnits" bundleID:0 syncToNano:0];
     }
 
-    [v4 setBool:1 forKey:@"MigratedNavigoAppPreferences"];
+    [defaultsCopy setBool:1 forKey:@"MigratedNavigoAppPreferences"];
   }
 }
 
-- (void)applicationDidRemoveDeactivationReason:(id)a3
+- (void)applicationDidRemoveDeactivationReason:(id)reason
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:_UIApplicationDeactivationReasonUserInfoKey];
-  v5 = [v4 integerValue];
+  userInfo = [reason userInfo];
+  v4 = [userInfo objectForKeyedSubscript:_UIApplicationDeactivationReasonUserInfoKey];
+  integerValue = [v4 integerValue];
 
-  if (v5 == 2)
+  if (integerValue == 2)
   {
     v6 = 709;
   }
 
   else
   {
-    if (v5 != 1)
+    if (integerValue != 1)
     {
       return;
     }
@@ -2085,20 +2085,20 @@ LABEL_41:
   [v7 captureUserAction:27 onTarget:v6 eventValue:0];
 }
 
-- (void)applicationWillAddDeactivationReason:(id)a3
+- (void)applicationWillAddDeactivationReason:(id)reason
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:_UIApplicationDeactivationReasonUserInfoKey];
-  v5 = [v4 integerValue];
+  userInfo = [reason userInfo];
+  v4 = [userInfo objectForKeyedSubscript:_UIApplicationDeactivationReasonUserInfoKey];
+  integerValue = [v4 integerValue];
 
-  if (v5 == 2)
+  if (integerValue == 2)
   {
     v6 = 709;
   }
 
   else
   {
-    if (v5 != 1)
+    if (integerValue != 1)
     {
       return;
     }
@@ -2110,7 +2110,7 @@ LABEL_41:
   [v7 captureUserAction:26 onTarget:v6 eventValue:0];
 }
 
-- (void)_maps_applicationDidEnterBackground:(id)a3
+- (void)_maps_applicationDidEnterBackground:(id)background
 {
   v3 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -2123,7 +2123,7 @@ LABEL_41:
   [v4 setDouble:@"LastSuspendTime" forKey:CFAbsoluteTimeGetCurrent()];
 }
 
-- (void)_maps_applicationWillEnterForeground:(id)a3
+- (void)_maps_applicationWillEnterForeground:(id)foreground
 {
   v3 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -2135,7 +2135,7 @@ LABEL_41:
   +[MapsSettings clearSelectedViewModeIfExpired];
 }
 
-- (void)_maps_applicationWillResignActive:(id)a3
+- (void)_maps_applicationWillResignActive:(id)active
 {
   v3 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -2148,9 +2148,9 @@ LABEL_41:
   [v4 closeConnection];
 }
 
-- (void)_maps_applicationDidBecomeActive:(id)a3
+- (void)_maps_applicationDidBecomeActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2191,39 +2191,39 @@ LABEL_41:
   }
 }
 
-- (void)application:(id)a3 didReceiveRemoteNotification:(id)a4 fetchCompletionHandler:(id)a5
+- (void)application:(id)application didReceiveRemoteNotification:(id)notification fetchCompletionHandler:(id)handler
 {
-  v6 = a5;
-  v6[2](v6, 2 * ([a3 applicationState] == 2));
+  handlerCopy = handler;
+  handlerCopy[2](handlerCopy, 2 * ([application applicationState] == 2));
 }
 
-- (void)application:(id)a3 didFailToRegisterForRemoteNotificationsWithError:(id)a4
+- (void)application:(id)application didFailToRegisterForRemoteNotificationsWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = 138477827;
-    v7 = v4;
+    v7 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Could not register for sync push notifications with error: %{private}@", &v6, 0xCu);
   }
 }
 
-- (void)application:(id)a3 didRegisterForRemoteNotificationsWithDeviceToken:(id)a4
+- (void)application:(id)application didRegisterForRemoteNotificationsWithDeviceToken:(id)token
 {
-  v4 = a4;
+  tokenCopy = token;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = 138477827;
-    v7 = v4;
+    v7 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Registered for sync push notifications with token: %{private}@", &v6, 0xCu);
   }
 }
 
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window
 {
-  if (![(MapsAppDelegate *)self lockedOrientations:a3])
+  if (![(MapsAppDelegate *)self lockedOrientations:application])
   {
     return 30;
   }
@@ -2231,48 +2231,48 @@ LABEL_41:
   return [(MapsAppDelegate *)self lockedOrientations];
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v6 = a4;
-  v7 = a5;
+  sessionCopy = session;
+  optionsCopy = options;
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v23 = 138412546;
-    v24 = v6;
+    v24 = sessionCopy;
     v25 = 2112;
-    v26 = v7;
+    v26 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "application:configurationForConnectingSceneSession: %@, options: %@", &v23, 0x16u);
   }
 
-  v9 = [v6 role];
-  v10 = [UISceneConfiguration configurationWithName:0 sessionRole:v9];
+  role = [sessionCopy role];
+  v10 = [UISceneConfiguration configurationWithName:0 sessionRole:role];
 
-  v11 = [v6 role];
-  v12 = [v11 isEqualToString:UIWindowSceneSessionRoleApplication];
+  role2 = [sessionCopy role];
+  v12 = [role2 isEqualToString:UIWindowSceneSessionRoleApplication];
 
   if (v12)
   {
-    v13 = [v7 userActivities];
-    v14 = [v13 anyObject];
-    v15 = [v14 activityType];
-    [v15 isEqualToString:@"com.apple.Maps.MacPlacePhotoViewer"];
+    userActivities = [optionsCopy userActivities];
+    anyObject = [userActivities anyObject];
+    activityType = [anyObject activityType];
+    [activityType isEqualToString:@"com.apple.Maps.MacPlacePhotoViewer"];
 
 LABEL_7:
     [v10 setDelegateClass:objc_opt_class()];
     goto LABEL_8;
   }
 
-  v16 = [v6 role];
-  v17 = [v16 isEqualToString:_UIWindowSceneSessionTypeCoverSheet];
+  role3 = [sessionCopy role];
+  v17 = [role3 isEqualToString:_UIWindowSceneSessionTypeCoverSheet];
 
   if (v17)
   {
     goto LABEL_7;
   }
 
-  v18 = [v6 role];
-  v19 = [v18 isEqualToString:_UIWindowSceneSessionRoleCarPlay];
+  role4 = [sessionCopy role];
+  v19 = [role4 isEqualToString:_UIWindowSceneSessionRoleCarPlay];
 
   if (v19)
   {
@@ -2283,18 +2283,18 @@ LABEL_8:
   v20 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
-    v21 = [v10 delegateClass];
+    delegateClass = [v10 delegateClass];
     v23 = 138412546;
     v24 = v10;
     v25 = 2112;
-    v26 = v21;
+    v26 = delegateClass;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "application:configurationForConnectingSceneSession:options: sceneConfiguration: %@, delegateClass: %@", &v23, 0x16u);
   }
 
   return v10;
 }
 
-- (void)applicationDidReceiveMemoryWarning:(id)a3
+- (void)applicationDidReceiveMemoryWarning:(id)warning
 {
   v3 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -2304,7 +2304,7 @@ LABEL_8:
   }
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
   v4 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -2332,14 +2332,14 @@ LABEL_8:
   [v9 unregisterObserver:self];
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v5 = a4;
+  optionsCopy = options;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v18 = 138412290;
-    v19 = v5;
+    v19 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "application:didFinishLaunchingWithOptions: %@", &v18, 0xCu);
   }
 
@@ -2358,7 +2358,7 @@ LABEL_8:
   }
 
   v9 = +[CarDisplayController sharedInstance];
-  [v9 didFinishLaunchingSuspendedWithOptions:v5];
+  [v9 didFinishLaunchingSuspendedWithOptions:optionsCopy];
 
   v10 = sub_100005610();
   if (os_signpost_enabled(v10))
@@ -2409,15 +2409,15 @@ LABEL_8:
   return 1;
 }
 
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  optionsCopy = options;
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v73 = v7;
+    v73 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "application:willFinishLaunchingWithOptions: %@", buf, 0xCu);
   }
 
@@ -2428,10 +2428,10 @@ LABEL_8:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "WillFinishLaunching", "", buf, 2u);
   }
 
-  byte_10195DC48 = [v6 launchedToTest];
+  byte_10195DC48 = [applicationCopy launchedToTest];
   v10 = +[NSBundle mainBundle];
-  v11 = [v10 bundleIdentifier];
-  v12 = [NSSet setWithObjects:v11, 0];
+  bundleIdentifier = [v10 bundleIdentifier];
+  v12 = [NSSet setWithObjects:bundleIdentifier, 0];
   SBSSetAlertSuppressionContexts();
 
   [GEOUserSession setInitialShareSessionWithMaps:1];
@@ -2451,13 +2451,13 @@ LABEL_8:
   }
 
   v15 = +[GEOPlatform sharedPlatform];
-  v16 = [v15 hardwareIdentifier];
+  hardwareIdentifier = [v15 hardwareIdentifier];
 
   v17 = +[GEOMapService sharedService];
-  [v17 setDefaultTraitsHardwareIdentifier:v16];
+  [v17 setDefaultTraitsHardwareIdentifier:hardwareIdentifier];
 
   v18 = +[GEOPlatform sharedPlatform];
-  [v18 setClientCapabilitiesHardwareIdentifier:v16];
+  [v18 setClientCapabilitiesHardwareIdentifier:hardwareIdentifier];
 
   v19 = sub_100005610();
   if (os_signpost_enabled(v19))
@@ -2742,27 +2742,27 @@ LABEL_8:
   return 1;
 }
 
-- (void)application:(id)a3 handleEventsForBackgroundURLSession:(id)a4 completionHandler:(id)a5
+- (void)application:(id)application handleEventsForBackgroundURLSession:(id)session completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  if ([FeedbackSubmissionManager canHandleSessionIdentifier:v7])
+  sessionCopy = session;
+  handlerCopy = handler;
+  if ([FeedbackSubmissionManager canHandleSessionIdentifier:sessionCopy])
   {
     v9 = sub_10002E924();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v7;
+      v12 = sessionCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Received a call from the app delegate with identifier %@", &v11, 0xCu);
     }
 
-    v10 = [(MapsAppDelegate *)self submissionManager];
-    [v10 updateEventsForBackgroundURLSessionWithCompletionHandler:v8];
+    submissionManager = [(MapsAppDelegate *)self submissionManager];
+    [submissionManager updateEventsForBackgroundURLSessionWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -2872,11 +2872,11 @@ LABEL_8:
 - (id)entryPointsCoordinator
 {
   v2 = +[UIApplication _maps_keyMapsSceneDelegate];
-  v3 = [v2 entryPointsCoordinator];
+  entryPointsCoordinator = [v2 entryPointsCoordinator];
 
   v4 = sub_1008B9228();
   v5 = v4;
-  if (v3)
+  if (entryPointsCoordinator)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
@@ -2884,7 +2884,7 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Found entry points coordinator from key maps scene delegate", buf, 2u);
     }
 
-    v6 = v3;
+    v6 = entryPointsCoordinator;
   }
 
   else
@@ -2896,22 +2896,22 @@ LABEL_8:
     }
   }
 
-  return v3;
+  return entryPointsCoordinator;
 }
 
 - (AppCoordinator)appCoordinator
 {
   v3 = +[UIApplication _maps_keyMapsSceneDelegate];
-  v4 = [v3 appCoordinator];
+  appCoordinator = [v3 appCoordinator];
 
-  if (!v4)
+  if (!appCoordinator)
   {
     v7 = +[UIApplication _maps_lockScreenSceneDelegate];
-    v8 = [v7 platformController];
-    v9 = [v8 iosChromeViewController];
-    v10 = [v9 appCoordinator];
+    platformController = [v7 platformController];
+    iosChromeViewController = [platformController iosChromeViewController];
+    appCoordinator2 = [iosChromeViewController appCoordinator];
 
-    if (v10)
+    if (appCoordinator2)
     {
       v11 = sub_1008B9228();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -2926,14 +2926,14 @@ LABEL_11:
 
     else
     {
-      v14 = [(MapsAppDelegate *)self appSessionController];
-      v15 = [v14 primaryPlatformController];
-      v16 = [v15 iosChromeViewController];
-      v10 = [v16 appCoordinator];
+      appSessionController = [(MapsAppDelegate *)self appSessionController];
+      primaryPlatformController = [appSessionController primaryPlatformController];
+      iosChromeViewController2 = [primaryPlatformController iosChromeViewController];
+      appCoordinator2 = [iosChromeViewController2 appCoordinator];
 
       v17 = sub_1008B9228();
       v11 = v17;
-      if (!v10)
+      if (!appCoordinator2)
       {
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
@@ -2954,7 +2954,7 @@ LABEL_11:
       }
     }
 
-    v6 = v10;
+    v6 = appCoordinator2;
 LABEL_13:
 
     goto LABEL_14;
@@ -2967,7 +2967,7 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Found app coordinator from key maps scene delegate", buf, 2u);
   }
 
-  v6 = v4;
+  v6 = appCoordinator;
 LABEL_14:
 
   return v6;
@@ -2976,9 +2976,9 @@ LABEL_14:
 - (PlatformController)platformController
 {
   v2 = +[UIApplication _maps_keyMapsSceneDelegate];
-  v3 = [v2 platformController];
+  platformController = [v2 platformController];
 
-  return v3;
+  return platformController;
 }
 
 - (void)dealloc
@@ -3008,27 +3008,27 @@ LABEL_14:
 
 + (BOOL)mapsIsLaunchedForTesting
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = byte_10195DC48;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)interruptConvertToNavigableSavedRouteID:(id)a3 routeName:(id)a4 error:(id)a5 directionsError:(id)a6
+- (void)interruptConvertToNavigableSavedRouteID:(id)d routeName:(id)name error:(id)error directionsError:(id)directionsError
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  nameCopy = name;
+  errorCopy = error;
+  directionsErrorCopy = directionsError;
   v14 = sub_100CD25CC();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    v15 = self;
-    if (!v15)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v20 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -3036,40 +3036,40 @@ LABEL_14:
     v17 = NSStringFromClass(v16);
     if (objc_opt_respondsToSelector())
     {
-      v18 = [(MapsAppDelegate *)v15 performSelector:"accessibilityIdentifier"];
+      v18 = [(MapsAppDelegate *)selfCopy performSelector:"accessibilityIdentifier"];
       v19 = v18;
       if (v18 && ![v18 isEqualToString:v17])
       {
-        v20 = [NSString stringWithFormat:@"%@<%p, %@>", v17, v15, v19];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v17, selfCopy, v19];
 
         goto LABEL_8;
       }
     }
 
-    v20 = [NSString stringWithFormat:@"%@<%p>", v17, v15];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v17, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138544386;
-    v40 = v20;
+    v40 = selfCopy;
     v41 = 2112;
-    v42 = v11;
+    v42 = nameCopy;
     v43 = 2114;
-    v44 = v10;
+    v44 = dCopy;
     v45 = 2114;
-    v46 = v12;
+    v46 = errorCopy;
     v47 = 2114;
-    v48 = v13;
+    v48 = directionsErrorCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "[%{public}@] interrupting navigable conversion for %@ (%{public}@) with error: %{public}@ directionsError: %{public}@", buf, 0x34u);
   }
 
   v21 = objc_opt_new();
   v22 = +[MapsOfflineUIHelper sharedHelper];
-  v23 = [v22 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v22 isUsingOfflineMaps];
 
   v24 = +[NSBundle mainBundle];
   v25 = v24;
-  if (v23)
+  if (isUsingOfflineMaps)
   {
     v26 = [v24 localizedStringForKey:@"[Interruption] Offline Custom Route Error Title" value:@"localized string not found" table:0];
     [v21 setObject:v26 forKeyedSubscript:@"kMapsInterruptionTitle"];
@@ -3079,8 +3079,8 @@ LABEL_10:
     [v21 setObject:v28 forKeyedSubscript:@"kMapsInterruptionMessage"];
 
 LABEL_17:
-    v33 = [(MapsAppDelegate *)self chromeViewController];
-    v34 = [v33 presentInterruptionOfKind:3 userInfo:v21 completionHandler:0];
+    chromeViewController = [(MapsAppDelegate *)self chromeViewController];
+    v34 = [chromeViewController presentInterruptionOfKind:3 userInfo:v21 completionHandler:0];
     goto LABEL_18;
   }
 
@@ -3091,31 +3091,31 @@ LABEL_17:
   v31 = [v30 localizedStringForKey:@"[Interruption] Generic Error Message" value:@"localized string not found" table:0];
   [v21 setObject:v31 forKeyedSubscript:@"kMapsInterruptionMessage"];
 
-  [v21 setObject:v11 forKeyedSubscript:@"kMapsInterruptionRouteNameKey"];
-  [v21 setObject:v10 forKeyedSubscript:@"kMapsInterruptionRouteStorageIDKey"];
-  if (![v13 problemDetailsCount])
+  [v21 setObject:nameCopy forKeyedSubscript:@"kMapsInterruptionRouteNameKey"];
+  [v21 setObject:dCopy forKeyedSubscript:@"kMapsInterruptionRouteStorageIDKey"];
+  if (![directionsErrorCopy problemDetailsCount])
   {
     goto LABEL_17;
   }
 
   v32 = 0;
-  while ([v13 problemDetailAtIndex:v32] != 8)
+  while ([directionsErrorCopy problemDetailAtIndex:v32] != 8)
   {
-    if (++v32 >= [v13 problemDetailsCount])
+    if (++v32 >= [directionsErrorCopy problemDetailsCount])
     {
       goto LABEL_17;
     }
   }
 
-  v35 = [(MapsAppDelegate *)self chromeViewController];
+  chromeViewController2 = [(MapsAppDelegate *)self chromeViewController];
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
   v37[2] = sub_100CD2620;
   v37[3] = &unk_10165F3A0;
-  v38 = v10;
-  v36 = [v35 presentInterruptionOfKind:22 userInfo:v21 completionHandler:v37];
+  v38 = dCopy;
+  v36 = [chromeViewController2 presentInterruptionOfKind:22 userInfo:v21 completionHandler:v37];
 
-  v33 = v38;
+  chromeViewController = v38;
 LABEL_18:
 }
 
@@ -3148,7 +3148,7 @@ LABEL_18:
   v11 = [v10 localizedStringForKey:@"Keep Precise Off" value:@"localized string not found" table:0];
 
   v12 = [UIAlertController alertControllerWithTitle:v5 message:v7 preferredStyle:1];
-  v20 = self;
+  selfCopy = self;
   objc_initWeak(location, self);
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"Allow Once" value:@"localized string not found" table:0];
@@ -3189,7 +3189,7 @@ LABEL_18:
   v23 = 688;
   v18 = [UIAlertAction actionWithTitle:v11 style:0 handler:v21];
   [v12 addAction:v18];
-  [(MapsAppDelegate *)v20 _presentLocationServicesAlertController:v12];
+  [(MapsAppDelegate *)selfCopy _presentLocationServicesAlertController:v12];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&v26);
@@ -3200,9 +3200,9 @@ LABEL_18:
 - (void)promptLocationServicesOff
 {
   v3 = +[MKLocationManager sharedLocationManager];
-  v4 = [v3 isLocationServicesAuthorizationNeeded];
+  isLocationServicesAuthorizationNeeded = [v3 isLocationServicesAuthorizationNeeded];
 
-  if ((v4 & 1) == 0)
+  if ((isLocationServicesAuthorizationNeeded & 1) == 0)
   {
     v7 = +[MKLocationManager sharedLocationManager];
     v35[0] = 0;
@@ -3211,8 +3211,8 @@ LABEL_18:
 
     if ((v8 & 1) == 0)
     {
-      v9 = [v6 domain];
-      if ([v9 isEqualToString:MKLocationErrorDomain])
+      domain = [v6 domain];
+      if ([domain isEqualToString:MKLocationErrorDomain])
       {
         v10 = [v6 code] != 0;
 
@@ -3243,7 +3243,7 @@ LABEL_8:
 
   v26 = v15;
   v20 = [UIAlertController alertControllerWithTitle:v13 message:v15 preferredStyle:1];
-  v21 = self;
+  selfCopy = self;
   objc_initWeak(&location, self);
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
@@ -3264,36 +3264,36 @@ LABEL_8:
   v29 = 0;
   v25 = [UIAlertAction actionWithTitle:v19 style:0 handler:v27];
   [v20 addAction:v25];
-  [(MapsAppDelegate *)v21 _presentLocationServicesAlertController:v20];
+  [(MapsAppDelegate *)selfCopy _presentLocationServicesAlertController:v20];
 
   objc_destroyWeak(&v28);
   objc_destroyWeak(&v32);
   objc_destroyWeak(&location);
 }
 
-- (void)_presentLocationServicesAlertController:(id)a3
+- (void)_presentLocationServicesAlertController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[MKLocationManager sharedLocationManager];
-  v6 = [v5 isLocationServicesApproved];
+  isLocationServicesApproved = [v5 isLocationServicesApproved];
 
   v7 = +[MKLocationManager sharedLocationManager];
-  v8 = [v7 isAuthorizedForPreciseLocation];
+  isAuthorizedForPreciseLocation = [v7 isAuthorizedForPreciseLocation];
 
-  objc_setAssociatedObject(self, off_101934B18, v4, 1);
+  objc_setAssociatedObject(self, off_101934B18, controllerCopy, 1);
   v9 = off_101934B20;
-  v10 = [NSNumber numberWithBool:v6];
+  v10 = [NSNumber numberWithBool:isLocationServicesApproved];
   objc_setAssociatedObject(self, v9, v10, 3);
 
   v11 = off_101934B28;
-  v12 = [NSNumber numberWithBool:v8];
+  v12 = [NSNumber numberWithBool:isAuthorizedForPreciseLocation];
   objc_setAssociatedObject(self, v11, v12, 3);
 
   v13 = +[NSNotificationCenter defaultCenter];
   [v13 addObserver:self selector:"_locationManagerApprovalDidChange:" name:MKLocationManagerApprovalDidChangeNotification object:0];
 
-  v14 = [(MapsAppDelegate *)self chromeViewController];
-  [v14 _maps_topMostPresentViewController:v4 animated:1 completion:0];
+  chromeViewController = [(MapsAppDelegate *)self chromeViewController];
+  [chromeViewController _maps_topMostPresentViewController:controllerCopy animated:1 completion:0];
 }
 
 - (void)_cleanupAfterLocationServicesAlertController
@@ -3305,26 +3305,26 @@ LABEL_8:
   [v3 removeObserver:self name:MKLocationManagerApprovalDidChangeNotification object:0];
 }
 
-- (void)_locationManagerApprovalDidChange:(id)a3
+- (void)_locationManagerApprovalDidChange:(id)change
 {
   v4 = objc_getAssociatedObject(self, off_101934B18);
   if (v4)
   {
     v13 = v4;
     v5 = +[MKLocationManager sharedLocationManager];
-    v6 = [v5 isLocationServicesApproved];
+    isLocationServicesApproved = [v5 isLocationServicesApproved];
 
     v7 = objc_getAssociatedObject(self, off_101934B20);
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
 
     v9 = +[MKLocationManager sharedLocationManager];
-    v10 = [v9 isAuthorizedForPreciseLocation];
+    isAuthorizedForPreciseLocation = [v9 isAuthorizedForPreciseLocation];
 
     v11 = objc_getAssociatedObject(self, off_101934B28);
-    v12 = [v11 BOOLValue];
+    bOOLValue2 = [v11 BOOLValue];
 
     v4 = v13;
-    if (v6 != v8 || v10 != v12)
+    if (isLocationServicesApproved != bOOLValue || isAuthorizedForPreciseLocation != bOOLValue2)
     {
       [v13 dismissViewControllerAnimated:1 completion:0];
       [(MapsAppDelegate *)self _cleanupAfterLocationServicesAlertController];
@@ -3333,14 +3333,14 @@ LABEL_8:
   }
 }
 
-- (void)promptLocationServicesAuthorizationWithHandler:(id)a3
+- (void)promptLocationServicesAuthorizationWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_100CD25CC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"handler";
-    if (!v4)
+    if (!handlerCopy)
     {
       v6 = @"no handler";
     }
@@ -3357,21 +3357,21 @@ LABEL_8:
     v7[1] = 3221225472;
     v7[2] = sub_100CD37AC;
     v7[3] = &unk_101657DA0;
-    v8 = v4;
+    v8 = handlerCopy;
     [(MapsAppDelegate *)self interruptApplicationWithKind:5 userInfo:0 completionHandler:v7];
   }
 }
 
-- (void)showLocationServicesAlertWithError:(id)a3
+- (void)showLocationServicesAlertWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_getAssociatedObject(self, off_101934B10);
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 domain];
-  v8 = [v7 isEqualToString:MKLocationErrorDomain];
+  domain = [errorCopy domain];
+  v8 = [domain isEqualToString:MKLocationErrorDomain];
 
-  if (v8 && (v6 & 1) == 0)
+  if (v8 && (bOOLValue & 1) == 0)
   {
     objc_setAssociatedObject(self, off_101934B10, &__kCFBooleanTrue, 3);
     v9 = +[NSBundle mainBundle];
@@ -3384,9 +3384,9 @@ LABEL_8:
       [v11 setObject:v10 forKeyedSubscript:@"kMapsInterruptionTitle"];
     }
 
-    if (v4)
+    if (errorCopy)
     {
-      [v12 setObject:v4 forKeyedSubscript:@"kMapsInterruptionError"];
+      [v12 setObject:errorCopy forKeyedSubscript:@"kMapsInterruptionError"];
     }
 
     v13[0] = _NSConcreteStackBlock;
@@ -3398,20 +3398,20 @@ LABEL_8:
   }
 }
 
-- (void)interruptApplicationWithKind:(int64_t)a3 userInfo:(id)a4 completionHandler:(id)a5
+- (void)interruptApplicationWithKind:(int64_t)kind userInfo:(id)info completionHandler:(id)handler
 {
-  v56 = a4;
-  v7 = a5;
+  infoCopy = info;
+  handlerCopy = handler;
   v8 = sub_100CD25CC();
   if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     goto LABEL_14;
   }
 
-  v9 = self;
-  if (!v9)
+  selfCopy = self;
+  if (!selfCopy)
   {
-    v14 = @"<nil>";
+    selfCopy = @"<nil>";
     goto LABEL_10;
   }
 
@@ -3419,32 +3419,32 @@ LABEL_8:
   v11 = NSStringFromClass(v10);
   if (objc_opt_respondsToSelector())
   {
-    v12 = [(MapsAppDelegate *)v9 performSelector:"accessibilityIdentifier"];
+    v12 = [(MapsAppDelegate *)selfCopy performSelector:"accessibilityIdentifier"];
     v13 = v12;
     if (v12 && ![v12 isEqualToString:v11])
     {
-      v14 = [NSString stringWithFormat:@"%@<%p, %@>", v11, v9, v13];
+      selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v11, selfCopy, v13];
 
       goto LABEL_8;
     }
   }
 
-  v14 = [NSString stringWithFormat:@"%@<%p>", v11, v9];
+  selfCopy = [NSString stringWithFormat:@"%@<%p>", v11, selfCopy];
 LABEL_8:
 
 LABEL_10:
-  if ((a3 - 1) > 0x16)
+  if ((kind - 1) > 0x16)
   {
     v15 = @"kMapsInterruptionNone";
   }
 
   else
   {
-    v15 = off_1016507E0[a3 - 1];
+    v15 = off_1016507E0[kind - 1];
   }
 
   *buf = 138543618;
-  *&buf[4] = v14;
+  *&buf[4] = selfCopy;
   *&buf[12] = 2112;
   *&buf[14] = v15;
   _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Showing interrupt with kind: %@", buf, 0x16u);
@@ -3457,9 +3457,9 @@ LABEL_14:
   v16 = objc_alloc_init(DismissalHandle);
   v17 = objc_alloc_init(DismissalHandle);
   v18 = objc_alloc_init(InterruptionHandle);
-  [(InterruptionHandle *)v18 setInterruptionKind:a3];
+  [(InterruptionHandle *)v18 setInterruptionKind:kind];
   [(MapsAppDelegate *)self _setCurrentInterruptionHandle:v18];
-  v19 = [v56 objectForKeyedSubscript:@"kMapsInterruptionActions"];
+  v19 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionActions"];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -3475,7 +3475,7 @@ LABEL_14:
   v73 = v74;
   v54 = v19;
   v69 = v54;
-  v53 = v7;
+  v53 = handlerCopy;
   v72 = v53;
   v21 = v17;
   v70 = v21;
@@ -3493,12 +3493,12 @@ LABEL_14:
   v66 = buf;
   [(DismissalHandle *)v20 setDismissalBlock:v63];
   v25 = +[UIApplication sharedMapsDelegate];
-  v26 = [v25 chromeViewController];
+  chromeViewController = [v25 chromeViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v27 = v26;
+    v27 = chromeViewController;
   }
 
   else
@@ -3522,17 +3522,17 @@ LABEL_14:
     {
 LABEL_36:
 
-      v44 = [v28 presentInterruptionOfKind:a3 userInfo:v56 completionHandler:v29];
+      v44 = [v28 presentInterruptionOfKind:kind userInfo:infoCopy completionHandler:v29];
       [(DismissalHandle *)v23 setDismissalBlock:v44];
 
       v37 = v61;
       goto LABEL_39;
     }
 
-    v31 = self;
-    if (!v31)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v36 = @"<nil>";
+      selfCopy2 = @"<nil>";
       goto LABEL_35;
     }
 
@@ -3540,22 +3540,22 @@ LABEL_36:
     v33 = NSStringFromClass(v32);
     if (objc_opt_respondsToSelector())
     {
-      v34 = [(MapsAppDelegate *)v31 performSelector:"accessibilityIdentifier"];
+      v34 = [(MapsAppDelegate *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v35 = v34;
       if (v34 && ([v34 isEqualToString:v33] & 1) == 0)
       {
-        v36 = [NSString stringWithFormat:@"%@<%p, %@>", v33, v31, v35];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v33, selfCopy2, v35];
 
         goto LABEL_25;
       }
     }
 
-    v36 = [NSString stringWithFormat:@"%@<%p>", v33, v31];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v33, selfCopy2];
 LABEL_25:
 
 LABEL_35:
     *v76 = 138543362;
-    v77 = v36;
+    v77 = selfCopy2;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "[%{public}@] Showing interruption on iOS", v76, 0xCu);
 
     goto LABEL_36;
@@ -3564,10 +3564,10 @@ LABEL_35:
   v37 = sub_100CD25CC();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
-    v38 = self;
-    if (!v38)
+    selfCopy3 = self;
+    if (!selfCopy3)
     {
-      v43 = @"<nil>";
+      selfCopy3 = @"<nil>";
       goto LABEL_38;
     }
 
@@ -3575,30 +3575,30 @@ LABEL_35:
     v40 = NSStringFromClass(v39);
     if (objc_opt_respondsToSelector())
     {
-      v41 = [(MapsAppDelegate *)v38 performSelector:"accessibilityIdentifier"];
+      v41 = [(MapsAppDelegate *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v42 = v41;
       if (v41 && ([v41 isEqualToString:v40] & 1) == 0)
       {
-        v43 = [NSString stringWithFormat:@"%@<%p, %@>", v40, v38, v42];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v40, selfCopy3, v42];
 
         goto LABEL_33;
       }
     }
 
-    v43 = [NSString stringWithFormat:@"%@<%p>", v40, v38];
+    selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v40, selfCopy3];
 LABEL_33:
 
 LABEL_38:
-    v45 = v43;
-    v46 = [(MapsAppDelegate *)v38 appSessionController];
-    v47 = [(MapsAppDelegate *)v38 appSessionController];
-    v48 = [v47 primaryPlatformController];
+    v45 = selfCopy3;
+    appSessionController = [(MapsAppDelegate *)selfCopy3 appSessionController];
+    appSessionController2 = [(MapsAppDelegate *)selfCopy3 appSessionController];
+    primaryPlatformController = [appSessionController2 primaryPlatformController];
     *v76 = 138543874;
     v77 = v45;
     v78 = 2112;
-    v79 = v46;
+    v79 = appSessionController;
     v80 = 2112;
-    v81 = v48;
+    v81 = primaryPlatformController;
     _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "[%{public}@] Will NOT show interrupt on iOS; appSessionController: %@; primaryPlatformController: %@", v76, 0x20u);
   }
 
@@ -3613,22 +3613,22 @@ LABEL_39:
   v58 = v50;
   v59 = buf;
   v51 = objc_retainBlock(v57);
-  v52 = [v49 presentInterruptionOfKind:a3 userInfo:v56 completionHandler:v51];
+  v52 = [v49 presentInterruptionOfKind:kind userInfo:infoCopy completionHandler:v51];
   [(DismissalHandle *)v24 setDismissalBlock:v52];
 
   _Block_object_dispose(buf, 8);
   _Block_object_dispose(v74, 8);
 }
 
-- (BOOL)dismissCurrentInterruptionOfKind:(int64_t)a3
+- (BOOL)dismissCurrentInterruptionOfKind:(int64_t)kind
 {
-  v5 = [(MapsAppDelegate *)self currentInterruptionKind];
-  if (v5 == a3)
+  currentInterruptionKind = [(MapsAppDelegate *)self currentInterruptionKind];
+  if (currentInterruptionKind == kind)
   {
     [(MapsAppDelegate *)self dismissCurrentInterruption];
   }
 
-  return v5 == a3;
+  return currentInterruptionKind == kind;
 }
 
 - (void)dismissCurrentInterruption
@@ -3636,15 +3636,15 @@ LABEL_39:
   v3 = sub_100CD25CC();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MapsAppDelegate *)self currentInterruptionKind];
-    if ((v4 - 1) > 0x16)
+    currentInterruptionKind = [(MapsAppDelegate *)self currentInterruptionKind];
+    if ((currentInterruptionKind - 1) > 0x16)
     {
       v5 = @"kMapsInterruptionNone";
     }
 
     else
     {
-      v5 = off_1016507E0[v4 - 1];
+      v5 = off_1016507E0[currentInterruptionKind - 1];
     }
 
     *buf = 138412290;
@@ -3652,12 +3652,12 @@ LABEL_39:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Dismissing the current interruption with kind: %@", buf, 0xCu);
   }
 
-  v6 = [(MapsAppDelegate *)self _currentInterruptionHandle];
-  v7 = v6;
-  if (v6)
+  _currentInterruptionHandle = [(MapsAppDelegate *)self _currentInterruptionHandle];
+  v7 = _currentInterruptionHandle;
+  if (_currentInterruptionHandle)
   {
-    v8 = [v6 dismissalBlock];
-    v9 = [v8 copy];
+    dismissalBlock = [_currentInterruptionHandle dismissalBlock];
+    v9 = [dismissalBlock copy];
 
     if (v9)
     {
@@ -3676,34 +3676,34 @@ LABEL_39:
   v10 = +[CarDisplayController sharedInstance];
   if ([v10 isChromeAvailable])
   {
-    v11 = [v10 chromeViewController];
-    [v11 dismissInterruption];
+    chromeViewController = [v10 chromeViewController];
+    [chromeViewController dismissInterruption];
   }
 }
 
 - (int64_t)currentInterruptionKind
 {
-  v2 = [(MapsAppDelegate *)self _currentInterruptionHandle];
-  v3 = v2;
-  if (v2)
+  _currentInterruptionHandle = [(MapsAppDelegate *)self _currentInterruptionHandle];
+  v3 = _currentInterruptionHandle;
+  if (_currentInterruptionHandle)
   {
-    v4 = [v2 interruptionKind];
+    interruptionKind = [_currentInterruptionHandle interruptionKind];
   }
 
   else
   {
-    v4 = 0;
+    interruptionKind = 0;
   }
 
-  return v4;
+  return interruptionKind;
 }
 
-- (void)_setShowingLocationServicesAuthorizationPrompt:(BOOL)a3
+- (void)_setShowingLocationServicesAuthorizationPrompt:(BOOL)prompt
 {
-  v3 = a3;
+  promptCopy = prompt;
   v5 = sub_100CD25CC();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (promptCopy)
   {
     if (v6)
     {
@@ -3731,7 +3731,7 @@ LABEL_39:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"NO";
-    if (v3)
+    if (promptCopy)
     {
       v9 = @"YES";
     }
@@ -3741,7 +3741,7 @@ LABEL_39:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Setting value of kIsShowingLocationServicesAuthorizationPromptKey to %@", &v11, 0xCu);
   }
 
-  v10 = [NSNumber numberWithBool:v3];
+  v10 = [NSNumber numberWithBool:promptCopy];
   objc_setAssociatedObject(self, &unk_10195EEA9, v10, 1);
 }
 
@@ -3759,12 +3759,12 @@ LABEL_39:
     v3 = 0;
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
   v5 = sub_100CD25CC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v4)
+    if (bOOLValue)
     {
       v6 = @"YES";
     }
@@ -3779,25 +3779,25 @@ LABEL_39:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Current value of kIsShowingLocationServicesAuthorizationPromptKey => %@", &v8, 0xCu);
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)_setCurrentInterruptionHandle:(id)a3
+- (void)_setCurrentInterruptionHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v5 = NSStringFromSelector("_currentInterruptionHandle");
   [(MapsAppDelegate *)self willChangeValueForKey:v5];
 
-  objc_setAssociatedObject(self, &unk_10195EEA8, v4, 1);
+  objc_setAssociatedObject(self, &unk_10195EEA8, handleCopy, 1);
   v6 = NSStringFromSelector("_currentInterruptionHandle");
   [(MapsAppDelegate *)self didChangeValueForKey:v6];
 }
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = NSStringFromSelector("currentInterruptionKind");
-  v6 = [v4 isEqualToString:v5];
+  v6 = [keyCopy isEqualToString:v5];
 
   if (v6)
   {
@@ -3807,19 +3807,19 @@ LABEL_39:
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___MapsAppDelegate;
-    v8 = objc_msgSendSuper2(&v10, "keyPathsForValuesAffectingValueForKey:", v4);
+    v8 = objc_msgSendSuper2(&v10, "keyPathsForValuesAffectingValueForKey:", keyCopy);
   }
 
   return v8;
 }
 
-- (void)presentAddAMissingPlaceWith:(id)a3
+- (void)presentAddAMissingPlaceWith:(id)with
 {
   v4 = +[UIApplication _maps_keyMapsSceneDelegate];
-  v3 = [v4 rapPresenter];
-  [v3 presentAddAPlaceWithCompletion:0];
+  rapPresenter = [v4 rapPresenter];
+  [rapPresenter presentAddAPlaceWithCompletion:0];
 }
 
 - (void)newScene
@@ -3836,10 +3836,10 @@ LABEL_39:
   v3 = sub_100E883E0();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -3847,22 +3847,22 @@ LABEL_39:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(MapsAppDelegate *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(MapsAppDelegate *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v12 = v9;
+    v12 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Collecting Radar attachments", buf, 0xCu);
   }
 
@@ -3880,10 +3880,10 @@ LABEL_10:
   v5 = sub_100E883E0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -3891,22 +3891,22 @@ LABEL_10:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(MapsAppDelegate *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(MapsAppDelegate *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v14 = v11;
+    v14 = selfCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Launching TTR", buf, 0xCu);
   }
 
@@ -3954,33 +3954,33 @@ LABEL_10:
 - (void)presentAddAMissingPlace
 {
   v3 = +[UIApplication _maps_keyMapsSceneDelegate];
-  v2 = [v3 rapPresenter];
-  [v2 presentAddAPlaceWithCompletion:0];
+  rapPresenter = [v3 rapPresenter];
+  [rapPresenter presentAddAPlaceWithCompletion:0];
 }
 
 - (void)presentRAP
 {
   v3 = +[UIApplication _maps_keyMapsSceneDelegate];
-  v2 = [v3 rapPresenter];
-  [v2 presentReportAProblemWithCompletion:0];
+  rapPresenter = [v3 rapPresenter];
+  [rapPresenter presentReportAProblemWithCompletion:0];
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  applicationCopy = application;
+  testCopy = test;
+  optionsCopy = options;
   notify_post("com.apple.Maps.PPT.start");
-  v10 = [v9 _mapstest_isUsingSampleProactiveData];
+  _mapstest_isUsingSampleProactiveData = [optionsCopy _mapstest_isUsingSampleProactiveData];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100F3BDD8;
   v15[3] = &unk_10165DB58;
-  v16 = v7;
-  v17 = v8;
-  v11 = v8;
-  v12 = v7;
-  v13 = [_MapsApplicationDelegateTestingCoordinator application:v12 testName:v11 options:v9 shouldLoadSampleProactiveData:v10 shouldRaiseExceptionIfNeeded:0 runTest:v15];
+  v16 = applicationCopy;
+  v17 = testCopy;
+  v11 = testCopy;
+  v12 = applicationCopy;
+  v13 = [_MapsApplicationDelegateTestingCoordinator application:v12 testName:v11 options:optionsCopy shouldLoadSampleProactiveData:_mapstest_isUsingSampleProactiveData shouldRaiseExceptionIfNeeded:0 runTest:v15];
 
   return v13;
 }

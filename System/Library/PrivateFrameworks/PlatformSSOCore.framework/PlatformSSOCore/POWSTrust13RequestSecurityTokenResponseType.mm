@@ -6,7 +6,7 @@
 
 + (id)definition
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___POWSTrust13RequestSecurityTokenResponseType;
   v2 = objc_msgSendSuper2(&v4, sel_definition);
   [v2 addNamespaceWithURI:@"http://docs.oasis-open.org/ws-sx/ws-trust/200512"];

@@ -1,19 +1,19 @@
 @interface CADisplayMode
-+ (CADisplayMode)displayModeWithWidth:(unint64_t)a3 height:(unint64_t)a4 refreshRate:(double)a5 isVRR:(BOOL)a6;
-+ (id)_displayModeWithMode:(Mode)a3 display:(id)a4 rates:(id)a5 perMode:(PerModeInfo)a6 maxSourceBandwidthPerPipe:(unsigned int)a7;
++ (CADisplayMode)displayModeWithWidth:(unint64_t)width height:(unint64_t)height refreshRate:(double)rate isVRR:(BOOL)r;
++ (id)_displayModeWithMode:(Mode)mode display:(id)display rates:(id)rates perMode:(PerModeInfo)perMode maxSourceBandwidthPerPipe:(unsigned int)pipe;
 - (BOOL)colorModeIsYCbCr;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (Mode)_mode;
 - (NSString)colorGamut;
 - (NSString)colorMode;
 - (NSString)hdrMode;
 - (__CFData)copyPrivateRepresentation;
 - (double)refreshRate;
-- (id)_initWithMode:(Mode)a3 display:(id)a4 rates:(id)a5 perMode:(PerModeInfo)a6 maxSourceBandwidthPerPipe:(unsigned int)a7;
+- (id)_initWithMode:(Mode)mode display:(id)display rates:(id)rates perMode:(PerModeInfo)perMode maxSourceBandwidthPerPipe:(unsigned int)pipe;
 - (id)description;
 - (unint64_t)bitDepth;
 - (unint64_t)preferredScale;
-- (void)_setWidth:(unint64_t)a3 height:(unint64_t)a4;
+- (void)_setWidth:(unint64_t)width height:(unint64_t)height;
 - (void)dealloc;
 @end
 
@@ -114,8 +114,8 @@
 
   v4 = off_1E6DEC0E0[(var1 >> 60) & 3];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(CADisplayMode *)self width];
-  v7 = [(CADisplayMode *)self height];
+  width = [(CADisplayMode *)self width];
+  height = [(CADisplayMode *)self height];
   v8 = ((*&self->_priv->var0.var0.var0 >> 55) & 0x1F) - 1;
   if (v8 > 0x1B)
   {
@@ -127,18 +127,18 @@
     v9 = off_1E6DED668[v8];
   }
 
-  return [v5 stringWithFormat:@"<CADisplayMode %d x %d fmt:%s range:%s>", v6, v7, v9, v4];
+  return [v5 stringWithFormat:@"<CADisplayMode %d x %d fmt:%s range:%s>", width, height, v9, v4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
   objc_opt_class();
-  result = (objc_opt_isKindOfClass() & 1) != 0 && ((v5 = *(a3 + 1), priv = self->_priv, v5->i64[0] == priv->var0.var0.var1) || (v7 = vshrn_n_s64(*v5, 0x1DuLL), v8.i64[0] = v7.i32[0] & 0x1FFFFFF, v8.i64[1] = v7.i32[1] & 0x1FFFFFF, v9 = vbslq_s8(vdupq_n_s64(0x3FFFFFE0000000uLL), vshlq_n_s64(vcvtq_u64_f64(vmulq_f64(vrndaq_f64(vmulq_f64(vcvtq_f64_u64(v8), vdupq_n_s64(0x3F59000000000000uLL))), vdupq_n_s64(0x40847AE147AE147BuLL))), 0x1DuLL), *v5), (vmovn_s64(vceqq_s64(v9, vdupq_laneq_s64(v9, 1))).u8[0] & 1) != 0)) && v5->i64[1] == *(&priv->var0.var0.var1 + 1) && v5[1].i64[0] == priv->var1 && v5[1].i64[1] == priv->var2;
+  result = (objc_opt_isKindOfClass() & 1) != 0 && ((v5 = *(equal + 1), priv = self->_priv, v5->i64[0] == priv->var0.var0.var1) || (v7 = vshrn_n_s64(*v5, 0x1DuLL), v8.i64[0] = v7.i32[0] & 0x1FFFFFF, v8.i64[1] = v7.i32[1] & 0x1FFFFFF, v9 = vbslq_s8(vdupq_n_s64(0x3FFFFFE0000000uLL), vshlq_n_s64(vcvtq_u64_f64(vmulq_f64(vrndaq_f64(vmulq_f64(vcvtq_f64_u64(v8), vdupq_n_s64(0x3F59000000000000uLL))), vdupq_n_s64(0x40847AE147AE147BuLL))), 0x1DuLL), *v5), (vmovn_s64(vceqq_s64(v9, vdupq_laneq_s64(v9, 1))).u8[0] & 1) != 0)) && v5->i64[1] == *(&priv->var0.var0.var1 + 1) && v5[1].i64[0] == priv->var1 && v5[1].i64[1] == priv->var2;
   return result;
 }
 
@@ -311,11 +311,11 @@ LABEL_22:
   return result;
 }
 
-- (void)_setWidth:(unint64_t)a3 height:(unint64_t)a4
+- (void)_setWidth:(unint64_t)width height:(unint64_t)height
 {
   priv = self->_priv;
-  priv->var1 = a3;
-  priv->var2 = a4;
+  priv->var1 = width;
+  priv->var2 = height;
 }
 
 - (Mode)_mode
@@ -326,12 +326,12 @@ LABEL_22:
   return result;
 }
 
-- (id)_initWithMode:(Mode)a3 display:(id)a4 rates:(id)a5 perMode:(PerModeInfo)a6 maxSourceBandwidthPerPipe:(unsigned int)a7
+- (id)_initWithMode:(Mode)mode display:(id)display rates:(id)rates perMode:(PerModeInfo)perMode maxSourceBandwidthPerPipe:(unsigned int)pipe
 {
-  v7 = *&a6.var2;
-  var0 = a6.var0;
-  v10 = *(&a3.var0.var1 + 1);
-  var1 = a3.var0.var1;
+  v7 = *&perMode.var2;
+  var0 = perMode.var0;
+  v10 = *(&mode.var0.var1 + 1);
+  var1 = mode.var0.var1;
   v18 = *MEMORY[0x1E69E9840];
   v13 = malloc_type_malloc(0x40uLL, 0x1080040D897DFA0uLL);
   self->_priv = v13;
@@ -342,7 +342,7 @@ LABEL_22:
   priv->var1 = (var1 & 0x3FFF);
   priv->var2 = (var1 >> 14) & 0x3FFF;
   LODWORD(priv->var3) = 0;
-  priv->var5 = a5;
+  priv->var5 = rates;
   priv->var6.var0 = var0;
   self->_priv->var6.var1 = v7;
   v17.receiver = self;
@@ -350,21 +350,21 @@ LABEL_22:
   return [(CADisplayMode *)&v17 init];
 }
 
-+ (CADisplayMode)displayModeWithWidth:(unint64_t)a3 height:(unint64_t)a4 refreshRate:(double)a5 isVRR:(BOOL)a6
++ (CADisplayMode)displayModeWithWidth:(unint64_t)width height:(unint64_t)height refreshRate:(double)rate isVRR:(BOOL)r
 {
-  v6 = a3 & 0x3FFF | ((a4 & 0x3FFF) << 14) | ((vcvtd_n_u64_f64(a5, 0x10uLL) & 0x1FFFFFF) << 29);
+  v6 = width & 0x3FFF | ((height & 0x3FFF) << 14) | ((vcvtd_n_u64_f64(rate, 0x10uLL) & 0x1FFFFFF) << 29);
   v7 = 0x8000000000000000;
-  if (!a6)
+  if (!r)
   {
     v7 = 0;
   }
 
-  return [a1 _displayModeWithMode:v6 | v7 | 0x1080000000000000 display:0 rates:0 perMode:0 maxSourceBandwidthPerPipe:{0, 0}];
+  return [self _displayModeWithMode:v6 | v7 | 0x1080000000000000 display:0 rates:0 perMode:0 maxSourceBandwidthPerPipe:{0, 0}];
 }
 
-+ (id)_displayModeWithMode:(Mode)a3 display:(id)a4 rates:(id)a5 perMode:(PerModeInfo)a6 maxSourceBandwidthPerPipe:(unsigned int)a7
++ (id)_displayModeWithMode:(Mode)mode display:(id)display rates:(id)rates perMode:(PerModeInfo)perMode maxSourceBandwidthPerPipe:(unsigned int)pipe
 {
-  v7 = [[a1 alloc] _initWithMode:a3.var0.var1 display:*(&a3.var0.var1 + 1) rates:a4 perMode:a5 maxSourceBandwidthPerPipe:{a6.var0, *&a6.var2}];
+  v7 = [[self alloc] _initWithMode:mode.var0.var1 display:*(&mode.var0.var1 + 1) rates:display perMode:rates maxSourceBandwidthPerPipe:{perMode.var0, *&perMode.var2}];
 
   return v7;
 }

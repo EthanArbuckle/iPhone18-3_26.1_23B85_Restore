@@ -1,27 +1,27 @@
 @interface PDSHeartbeatTracker
 - (BOOL)isPassedTrackedHeartbeatDate;
 - (NSDate)trackedHeartbeatDate;
-- (PDSHeartbeatTracker)initWithDelegate:(id)a3 queue:(id)a4 kvStoreBlock:(id)a5 serverBag:(id)a6;
+- (PDSHeartbeatTracker)initWithDelegate:(id)delegate queue:(id)queue kvStoreBlock:(id)block serverBag:(id)bag;
 - (PDSHeartbeatTrackerDelegate)delegate;
 - (void)_handleHeartbeatFired;
-- (void)_markNextCheckpointTimeWithTTL:(double)a3;
+- (void)_markNextCheckpointTimeWithTTL:(double)l;
 - (void)_setupMaintenanceActivity;
 - (void)noteShouldNotTrackHeartbeat;
 - (void)noteShouldTrackHeartbeat;
-- (void)noteUpdatedHeartbeatTTL:(double)a3;
+- (void)noteUpdatedHeartbeatTTL:(double)l;
 @end
 
 @implementation PDSHeartbeatTracker
 
-- (PDSHeartbeatTracker)initWithDelegate:(id)a3 queue:(id)a4 kvStoreBlock:(id)a5 serverBag:(id)a6
+- (PDSHeartbeatTracker)initWithDelegate:(id)delegate queue:(id)queue kvStoreBlock:(id)block serverBag:(id)bag
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  blockCopy = block;
+  bagCopy = bag;
+  if (delegateCopy)
   {
-    if (v11)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -30,17 +30,17 @@
   else
   {
     [PDSHeartbeatTracker initWithDelegate:queue:kvStoreBlock:serverBag:];
-    if (v11)
+    if (queueCopy)
     {
 LABEL_3:
-      if (v12)
+      if (blockCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
       [PDSHeartbeatTracker initWithDelegate:queue:kvStoreBlock:serverBag:];
-      if (v13)
+      if (bagCopy)
       {
         goto LABEL_5;
       }
@@ -50,13 +50,13 @@ LABEL_10:
   }
 
   [PDSHeartbeatTracker initWithDelegate:queue:kvStoreBlock:serverBag:];
-  if (!v12)
+  if (!blockCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v13)
+  if (bagCopy)
   {
     goto LABEL_5;
   }
@@ -70,13 +70,13 @@ LABEL_5:
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_delegate, v10);
-    objc_storeStrong(&v15->_queue, a4);
-    v16 = MEMORY[0x25F8A7090](v12);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    objc_storeStrong(&v15->_queue, queue);
+    v16 = MEMORY[0x25F8A7090](blockCopy);
     kvStoreBlock = v15->_kvStoreBlock;
     v15->_kvStoreBlock = v16;
 
-    objc_storeStrong(&v15->_serverBag, a6);
+    objc_storeStrong(&v15->_serverBag, bag);
   }
 
   return v15;
@@ -84,22 +84,22 @@ LABEL_5:
 
 - (void)_handleHeartbeatFired
 {
-  v3 = [(PDSHeartbeatTracker *)self delegate];
-  [v3 heartbeatFiredForTracker:self];
+  delegate = [(PDSHeartbeatTracker *)self delegate];
+  [delegate heartbeatFiredForTracker:self];
 }
 
-- (void)noteUpdatedHeartbeatTTL:(double)a3
+- (void)noteUpdatedHeartbeatTTL:(double)l
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = [(PDSHeartbeatTracker *)self serverBag];
-  v6 = arc4random_uniform([v5 ttlWindowFromBag]);
+  serverBag = [(PDSHeartbeatTracker *)self serverBag];
+  v6 = arc4random_uniform([serverBag ttlWindowFromBag]);
 
-  v7 = [(PDSHeartbeatTracker *)self serverBag];
-  v8 = [v7 ttlGracePeriodFromBag];
+  serverBag2 = [(PDSHeartbeatTracker *)self serverBag];
+  ttlGracePeriodFromBag = [serverBag2 ttlGracePeriodFromBag];
 
-  if (a3 - v8 - v6 >= 3600.0)
+  if (l - ttlGracePeriodFromBag - v6 >= 3600.0)
   {
-    v9 = a3 - v8 - v6;
+    v9 = l - ttlGracePeriodFromBag - v6;
   }
 
   else
@@ -204,17 +204,17 @@ uint64_t __48__PDSHeartbeatTracker__setupMaintenanceActivity__block_invoke_22(ui
 {
   xpc_activity_unregister(*MEMORY[0x277D37AF0]);
   [(PDSHeartbeatTracker *)self setScheduledActivity:0];
-  v3 = [(PDSHeartbeatTracker *)self heartbeatTimer];
-  [v3 invalidate];
+  heartbeatTimer = [(PDSHeartbeatTracker *)self heartbeatTimer];
+  [heartbeatTimer invalidate];
 
   [(PDSHeartbeatTracker *)self setHeartbeatTimer:0];
 }
 
 - (void)noteShouldTrackHeartbeat
 {
-  v3 = [(PDSHeartbeatTracker *)self trackedHeartbeatDate];
-  v4 = [(PDSHeartbeatTracker *)self delegate];
-  v5 = [v4 shouldScheduleHeartbeatForTracker:self];
+  trackedHeartbeatDate = [(PDSHeartbeatTracker *)self trackedHeartbeatDate];
+  delegate = [(PDSHeartbeatTracker *)self delegate];
+  v5 = [delegate shouldScheduleHeartbeatForTracker:self];
 
   if (v5)
   {
@@ -223,7 +223,7 @@ uint64_t __48__PDSHeartbeatTracker__setupMaintenanceActivity__block_invoke_22(ui
     self->_heartbeatTimer = 0;
 
     v7 = [MEMORY[0x277CBEAA8] now];
-    [v3 timeIntervalSinceDate:v7];
+    [trackedHeartbeatDate timeIntervalSinceDate:v7];
     v9 = v8;
 
     v10 = arc4random_uniform(0x3Cu) + 21600.0;
@@ -234,13 +234,13 @@ uint64_t __48__PDSHeartbeatTracker__setupMaintenanceActivity__block_invoke_22(ui
 
     v11 = fmax(v10, 3600.0);
     v12 = objc_alloc(MEMORY[0x277D19240]);
-    v13 = [(PDSHeartbeatTracker *)self queue];
+    queue = [(PDSHeartbeatTracker *)self queue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __47__PDSHeartbeatTracker_noteShouldTrackHeartbeat__block_invoke;
     v16[3] = &unk_2799F85C0;
     v16[4] = self;
-    v14 = [v12 initWithQueue:v13 interval:v11 repeats:0 handlerBlock:v16];
+    v14 = [v12 initWithQueue:queue interval:v11 repeats:0 handlerBlock:v16];
     v15 = self->_heartbeatTimer;
     self->_heartbeatTimer = v14;
 
@@ -260,18 +260,18 @@ void __47__PDSHeartbeatTracker_noteShouldTrackHeartbeat__block_invoke(uint64_t a
 - (BOOL)isPassedTrackedHeartbeatDate
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [(PDSHeartbeatTracker *)self trackedHeartbeatDate];
+  trackedHeartbeatDate = [(PDSHeartbeatTracker *)self trackedHeartbeatDate];
   v3 = pds_defaultLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v2;
+    v12 = trackedHeartbeatDate;
     _os_log_impl(&dword_25DED8000, v3, OS_LOG_TYPE_DEFAULT, "Next checkpoint time %@", &v11, 0xCu);
   }
 
-  if (v2)
+  if (trackedHeartbeatDate)
   {
-    [v2 timeIntervalSinceReferenceDate];
+    [trackedHeartbeatDate timeIntervalSinceReferenceDate];
     v5 = v4 + -300.0;
     v6 = [MEMORY[0x277CBEAA8] now];
     [v6 timeIntervalSinceReferenceDate];
@@ -296,8 +296,8 @@ void __47__PDSHeartbeatTracker_noteShouldTrackHeartbeat__block_invoke(uint64_t a
 
 - (NSDate)trackedHeartbeatDate
 {
-  v2 = [(PDSHeartbeatTracker *)self kvStoreBlock];
-  v3 = v2[2]();
+  kvStoreBlock = [(PDSHeartbeatTracker *)self kvStoreBlock];
+  v3 = kvStoreBlock[2]();
 
   v4 = [v3 numberForKey:@"kPDSNextCheckpointTime"];
   v5 = MEMORY[0x277CBEAA8];
@@ -307,14 +307,14 @@ void __47__PDSHeartbeatTracker_noteShouldTrackHeartbeat__block_invoke(uint64_t a
   return v6;
 }
 
-- (void)_markNextCheckpointTimeWithTTL:(double)a3
+- (void)_markNextCheckpointTimeWithTTL:(double)l
 {
-  v4 = [(PDSHeartbeatTracker *)self kvStoreBlock];
-  v9 = v4[2]();
+  kvStoreBlock = [(PDSHeartbeatTracker *)self kvStoreBlock];
+  v9 = kvStoreBlock[2]();
 
   v5 = MEMORY[0x277CCABB0];
   v6 = [MEMORY[0x277CBEAA8] now];
-  v7 = [v6 dateByAddingTimeInterval:a3];
+  v7 = [v6 dateByAddingTimeInterval:l];
   [v7 timeIntervalSince1970];
   v8 = [v5 numberWithDouble:?];
   [v9 setNumber:v8 forKey:@"kPDSNextCheckpointTime"];

@@ -1,14 +1,14 @@
 @interface CameraViewController
-- (void)effectBrowserViewController:(id)a3 didDismissPickerForEffectType:(id)a4;
-- (void)effectBrowserViewController:(id)a3 didSelectAppWithIdentifier:(id)a4;
-- (void)effectBrowserViewController:(id)a3 didSelectEffect:(id)a4;
+- (void)effectBrowserViewController:(id)controller didDismissPickerForEffectType:(id)type;
+- (void)effectBrowserViewController:(id)controller didSelectAppWithIdentifier:(id)identifier;
+- (void)effectBrowserViewController:(id)controller didSelectEffect:(id)effect;
 @end
 
 @implementation CameraViewController
 
-- (void)effectBrowserViewController:(id)a3 didSelectAppWithIdentifier:(id)a4
+- (void)effectBrowserViewController:(id)controller didSelectAppWithIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -20,25 +20,25 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
-  CameraViewController.effectBrowserViewController(_:didSelectAppWith:)(v9, v6, v8);
+  controllerCopy = controller;
+  selfCopy = self;
+  CameraViewController.effectBrowserViewController(_:didSelectAppWith:)(controllerCopy, v6, v8);
 }
 
-- (void)effectBrowserViewController:(id)a3 didSelectEffect:(id)a4
+- (void)effectBrowserViewController:(id)controller didSelectEffect:(id)effect
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CameraViewController.effectBrowserViewController(_:didSelect:)(v6, v7);
+  controllerCopy = controller;
+  effectCopy = effect;
+  selfCopy = self;
+  CameraViewController.effectBrowserViewController(_:didSelect:)(controllerCopy, effectCopy);
 }
 
-- (void)effectBrowserViewController:(id)a3 didDismissPickerForEffectType:(id)a4
+- (void)effectBrowserViewController:(id)controller didDismissPickerForEffectType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CameraViewController.effectBrowserViewController(_:didDismissPickerFor:)(v8, v7);
+  controllerCopy = controller;
+  typeCopy = type;
+  selfCopy = self;
+  CameraViewController.effectBrowserViewController(_:didDismissPickerFor:)(selfCopy, typeCopy);
 }
 
 @end

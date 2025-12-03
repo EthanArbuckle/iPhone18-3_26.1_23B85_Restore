@@ -1,7 +1,7 @@
 @interface DEDAttachmentGroup
 + (id)archivedClasses;
-+ (id)groupWithDEGroup:(id)a3 identifier:(id)a4;
-+ (id)groupWithDictionary:(id)a3;
++ (id)groupWithDEGroup:(id)group identifier:(id)identifier;
++ (id)groupWithDictionary:(id)dictionary;
 - (BOOL)isLocal;
 - (DEDExtensionIdentifier)dedExtensionIdentifier;
 - (NSString)description;
@@ -12,34 +12,34 @@
 
 @implementation DEDAttachmentGroup
 
-+ (id)groupWithDictionary:(id)a3
++ (id)groupWithDictionary:(id)dictionary
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
   if (v4)
   {
     v5 = MEMORY[0x277CBEBC0];
-    v6 = [v3 objectForKeyedSubscript:@"rootURL"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"rootURL"];
     v7 = [v5 fileURLWithPath:v6];
     [v4 setRootURL:v7];
 
-    v8 = [v3 objectForKeyedSubscript:@"displayName"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"displayName"];
     v9 = stringIfNil(v8);
     [v4 setDisplayName:v9];
 
-    v10 = [v3 objectForKeyedSubscript:@"extensionID"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"extensionID"];
     v11 = stringIfNil(v10);
     [v4 setExtensionID:v11];
 
-    v12 = [v3 objectForKeyedSubscript:@"deviceID"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"deviceID"];
     v13 = stringIfNil(v12);
     [v4 setDeviceID:v13];
 
-    v14 = [v3 objectForKeyedSubscript:@"attachmentItems"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"attachmentItems"];
     if (v14)
     {
-      v15 = [v3 objectForKeyedSubscript:@"attachmentItems"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"attachmentItems"];
     }
 
     else
@@ -86,46 +86,46 @@
   return v4;
 }
 
-+ (id)groupWithDEGroup:(id)a3 identifier:(id)a4
++ (id)groupWithDEGroup:(id)group identifier:(id)identifier
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  groupCopy = group;
+  identifierCopy = identifier;
   v7 = objc_opt_new();
   if (v7)
   {
-    v8 = [v5 rootURL];
-    [v7 setRootURL:v8];
+    rootURL = [groupCopy rootURL];
+    [v7 setRootURL:rootURL];
 
-    v9 = [v5 displayName];
-    if (v9)
+    displayName = [groupCopy displayName];
+    if (displayName)
     {
-      v10 = [v5 displayName];
-      [v7 setDisplayName:v10];
+      displayName2 = [groupCopy displayName];
+      [v7 setDisplayName:displayName2];
     }
 
     else
     {
-      v10 = [v7 rootURL];
-      v11 = [v10 lastPathComponent];
-      [v7 setDisplayName:v11];
+      displayName2 = [v7 rootURL];
+      lastPathComponent = [displayName2 lastPathComponent];
+      [v7 setDisplayName:lastPathComponent];
     }
 
-    [v7 setExtensionID:v6];
+    [v7 setExtensionID:identifierCopy];
     v12 = +[DEDDevice currentDevice];
-    v13 = [v12 identifier];
-    [v7 setDeviceID:v13];
+    identifier = [v12 identifier];
+    [v7 setDeviceID:identifier];
 
     v14 = MEMORY[0x277CBEB18];
-    v15 = [v5 attachmentItems];
-    v16 = [v14 arrayWithCapacity:{objc_msgSend(v15, "count")}];
+    attachmentItems = [groupCopy attachmentItems];
+    v16 = [v14 arrayWithCapacity:{objc_msgSend(attachmentItems, "count")}];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v17 = [v5 attachmentItems];
-    v18 = [v17 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    attachmentItems2 = [groupCopy attachmentItems];
+    v18 = [attachmentItems2 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v18)
     {
       v19 = v18;
@@ -136,14 +136,14 @@
         {
           if (*v27 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(attachmentItems2);
           }
 
           v22 = [DEDAttachmentItem itemWithDEItem:*(*(&v26 + 1) + 8 * i)];
           [v16 addObject:v22];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v19 = [attachmentItems2 countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v19);
@@ -165,8 +165,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(DEDAttachmentGroup *)self attachmentItems];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  attachmentItems = [(DEDAttachmentGroup *)self attachmentItems];
+  v3 = [attachmentItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -178,14 +178,14 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(attachmentItems);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) fileSize];
-        v5 += [v8 integerValue];
+        fileSize = [*(*(&v12 + 1) + 8 * i) fileSize];
+        v5 += [fileSize integerValue];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [attachmentItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);
@@ -204,35 +204,35 @@
 
 - (id)archiveName
 {
-  v3 = [(DEDAttachmentGroup *)self extensionID];
+  extensionID = [(DEDAttachmentGroup *)self extensionID];
 
-  if (v3)
+  if (extensionID)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(DEDAttachmentGroup *)self extensionID];
-    [v4 stringWithFormat:@"%@.tar.gz", v5];
+    extensionID2 = [(DEDAttachmentGroup *)self extensionID];
+    [v4 stringWithFormat:@"%@.tar.gz", extensionID2];
   }
 
   else
   {
-    v6 = [(DEDAttachmentGroup *)self attachmentItems];
-    v7 = [v6 count];
+    attachmentItems = [(DEDAttachmentGroup *)self attachmentItems];
+    v7 = [attachmentItems count];
 
     if (v7)
     {
-      v8 = [(DEDAttachmentGroup *)self attachmentItems];
-      v9 = [v8 firstObject];
-      v10 = [v9 attachedPath];
-      v5 = [v10 lastPathComponent];
+      attachmentItems2 = [(DEDAttachmentGroup *)self attachmentItems];
+      firstObject = [attachmentItems2 firstObject];
+      attachedPath = [firstObject attachedPath];
+      extensionID2 = [attachedPath lastPathComponent];
     }
 
     else
     {
-      v8 = [MEMORY[0x277CCAD78] UUID];
-      v5 = [v8 UUIDString];
+      attachmentItems2 = [MEMORY[0x277CCAD78] UUID];
+      extensionID2 = [attachmentItems2 UUIDString];
     }
 
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@.tar.gz", v5];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@.tar.gz", extensionID2];
   }
   v11 = ;
 
@@ -243,15 +243,15 @@
 {
   v37 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(DEDAttachmentGroup *)self attachmentItems];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  attachmentItems = [(DEDAttachmentGroup *)self attachmentItems];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(attachmentItems, "count")}];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = [(DEDAttachmentGroup *)self attachmentItems];
-  v7 = [v6 countByEnumeratingWithState:&v30 objects:v36 count:16];
+  attachmentItems2 = [(DEDAttachmentGroup *)self attachmentItems];
+  v7 = [attachmentItems2 countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v7)
   {
     v8 = v7;
@@ -262,14 +262,14 @@
       {
         if (*v31 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(attachmentItems2);
         }
 
-        v11 = [*(*(&v30 + 1) + 8 * i) serialize];
-        [v5 addObject:v11];
+        serialize = [*(*(&v30 + 1) + 8 * i) serialize];
+        [v5 addObject:serialize];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v30 objects:v36 count:16];
+      v8 = [attachmentItems2 countByEnumeratingWithState:&v30 objects:v36 count:16];
     }
 
     while (v8);
@@ -277,26 +277,26 @@
 
   v12 = [MEMORY[0x277CBEA60] arrayWithArray:v5];
   v34[0] = @"rootURL";
-  v29 = [(DEDAttachmentGroup *)self rootURL];
-  v28 = [v29 path];
-  v27 = stringIfNil(v28);
+  rootURL = [(DEDAttachmentGroup *)self rootURL];
+  path = [rootURL path];
+  v27 = stringIfNil(path);
   v35[0] = v27;
   v34[1] = @"displayName";
-  v26 = [(DEDAttachmentGroup *)self displayName];
-  v13 = stringIfNil(v26);
+  displayName = [(DEDAttachmentGroup *)self displayName];
+  v13 = stringIfNil(displayName);
   v35[1] = v13;
   v34[2] = @"extensionID";
-  v14 = [(DEDAttachmentGroup *)self extensionID];
-  v15 = stringIfNil(v14);
+  extensionID = [(DEDAttachmentGroup *)self extensionID];
+  v15 = stringIfNil(extensionID);
   v35[2] = v15;
   v34[3] = @"deviceID";
-  v16 = [(DEDAttachmentGroup *)self deviceID];
-  v17 = stringIfNil(v16);
+  deviceID = [(DEDAttachmentGroup *)self deviceID];
+  v17 = stringIfNil(deviceID);
   v35[3] = v17;
   v34[4] = @"DEDExtensionID";
-  v18 = [(DEDAttachmentGroup *)self dedExtensionIdentifier];
-  v19 = [v18 stringValue];
-  v20 = stringIfNil(v19);
+  dedExtensionIdentifier = [(DEDAttachmentGroup *)self dedExtensionIdentifier];
+  stringValue = [dedExtensionIdentifier stringValue];
+  v20 = stringIfNil(stringValue);
   v21 = v20;
   v34[5] = @"attachmentItems";
   v22 = MEMORY[0x277CBEBF8];
@@ -320,9 +320,9 @@
   if (!dedExtensionIdentifier)
   {
     v4 = [DEDExtensionIdentifier alloc];
-    v5 = [(DEDAttachmentGroup *)self rootURL];
-    v6 = [v5 lastPathComponent];
-    v7 = [(DEDExtensionIdentifier *)v4 initWithString:v6];
+    rootURL = [(DEDAttachmentGroup *)self rootURL];
+    lastPathComponent = [rootURL lastPathComponent];
+    v7 = [(DEDExtensionIdentifier *)v4 initWithString:lastPathComponent];
     v8 = self->_dedExtensionIdentifier;
     self->_dedExtensionIdentifier = v7;
 
@@ -337,17 +337,17 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(DEDAttachmentGroup *)self serialize];
-  v7 = [v3 stringWithFormat:@"%@: %@", v5, v6];
+  serialize = [(DEDAttachmentGroup *)self serialize];
+  v7 = [v3 stringWithFormat:@"%@: %@", v5, serialize];
 
   return v7;
 }
 
 - (BOOL)isLocal
 {
-  v3 = [(DEDAttachmentGroup *)self deviceID];
+  deviceID = [(DEDAttachmentGroup *)self deviceID];
 
-  if (!v3)
+  if (!deviceID)
   {
     v4 = +[DEDUtils sharedLog];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -357,10 +357,10 @@
   }
 
   v5 = +[DEDDevice currentDevice];
-  v6 = [v5 identifier];
+  identifier = [v5 identifier];
 
-  v7 = [(DEDAttachmentGroup *)self deviceID];
-  LOBYTE(v5) = [v7 isEqualToString:v6];
+  deviceID2 = [(DEDAttachmentGroup *)self deviceID];
+  LOBYTE(v5) = [deviceID2 isEqualToString:identifier];
 
   return v5;
 }

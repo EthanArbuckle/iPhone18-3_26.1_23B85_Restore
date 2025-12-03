@@ -1,49 +1,49 @@
 @interface XRSpace
-+ (void)runWhenOperationFinishes:(id)a3 block:(id)a4;
++ (void)runWhenOperationFinishes:(id)finishes block:(id)block;
 - (BOOL)currentlyInThisSpace;
 - (XRSpace)init;
-- (XRSpace)initWithQueue:(id)a3;
-- (id)_scheduleOperationFromCurrentQueue:(id)a3;
-- (id)afterOperation:(id)a3 block:(id)a4;
-- (id)afterOperation:(id)a3 priority:(int64_t)a4 spaceBlock:(id)a5;
-- (id)afterOperation:(id)a3 spaceBlock:(id)a4;
-- (id)afterOperations:(id)a3 priority:(int64_t)a4 spaceBlock:(id)a5;
-- (id)afterOperationsRunBlock:(id)a3;
-- (id)storeUserData:(id)a3;
-- (id)userDataForToken:(id)a3;
+- (XRSpace)initWithQueue:(id)queue;
+- (id)_scheduleOperationFromCurrentQueue:(id)queue;
+- (id)afterOperation:(id)operation block:(id)block;
+- (id)afterOperation:(id)operation priority:(int64_t)priority spaceBlock:(id)block;
+- (id)afterOperation:(id)operation spaceBlock:(id)block;
+- (id)afterOperations:(id)operations priority:(int64_t)priority spaceBlock:(id)block;
+- (id)afterOperationsRunBlock:(id)block;
+- (id)storeUserData:(id)data;
+- (id)userDataForToken:(id)token;
 - (void)_postQueueStateChanged;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)receiveMobileAgent:(id)a3;
-- (void)removeUserDataForToken:(id)a3;
-- (void)replaceUserData:(id)a3 forToken:(id)a4;
-- (void)requestLocalNotification:(id)a3 object:(id)a4 observer:(id)a5 block:(id)a6;
-- (void)stopObservationsOfObject:(id)a3 forObserver:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)receiveMobileAgent:(id)agent;
+- (void)removeUserDataForToken:(id)token;
+- (void)replaceUserData:(id)data forToken:(id)token;
+- (void)requestLocalNotification:(id)notification object:(id)object observer:(id)observer block:(id)block;
+- (void)stopObservationsOfObject:(id)object forObserver:(id)observer;
 @end
 
 @implementation XRSpace
 
-+ (void)runWhenOperationFinishes:(id)a3 block:(id)a4
++ (void)runWhenOperationFinishes:(id)finishes block:(id)block
 {
-  v18 = a3;
-  v9 = a4;
-  if (v18 && !objc_msgSend_isFinished(v18, v5, v6, v7, v8))
+  finishesCopy = finishes;
+  blockCopy = block;
+  if (finishesCopy && !objc_msgSend_isFinished(finishesCopy, v5, v6, v7, v8))
   {
     v11 = [XRFollowUpBlock alloc];
-    v10 = objc_msgSend_initWithBlock_operation_(v11, v12, v9, v18, v13);
+    v10 = objc_msgSend_initWithBlock_operation_(v11, v12, blockCopy, finishesCopy, v13);
     objc_msgSend_go(v10, v14, v15, v16, v17);
   }
 
   else
   {
     v10 = dispatch_get_global_queue(21, 0);
-    dispatch_async(v10, v9);
+    dispatch_async(v10, blockCopy);
   }
 }
 
-- (XRSpace)initWithQueue:(id)a3
+- (XRSpace)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v51.receiver = self;
   v51.super_class = XRSpace;
   v6 = [(XRSpace *)&v51 init];
@@ -53,7 +53,7 @@
     v6->_supportsOpNames = objc_msgSend_instancesRespondToSelector_(v7, v8, sel_name, v9, v10);
     v11 = objc_opt_class();
     v6->_overridesQoS = objc_msgSend_instancesRespondToSelector_(v11, v12, sel_setQualityOfService_, v13, v14);
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     objc_msgSend_addObserver_forKeyPath_options_context_(v6->_queue, v15, v6, @"operationCount", 1, 0);
     v24 = objc_msgSend_spaceName(v6, v16, v17, v18, v19);
     if (v24)
@@ -130,12 +130,12 @@
   objc_msgSend_enqueueNotification_postingStyle_coalesceMask_forModes_(v20, v18, v17, 1, 3, qword_27EE86720);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (objc_msgSend_isEqual_(v10, v13, @"operationCount", v14, v15) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (objc_msgSend_isEqual_(pathCopy, v13, @"operationCount", v14, v15) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     objc_msgSend_performSelectorOnMainThread_withObject_waitUntilDone_(self, v16, sel__postQueueStateChanged, 0, 0);
   }
@@ -144,66 +144,66 @@
   {
     v17.receiver = self;
     v17.super_class = XRSpace;
-    [(XRSpace *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(XRSpace *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (id)_scheduleOperationFromCurrentQueue:(id)a3
+- (id)_scheduleOperationFromCurrentQueue:(id)queue
 {
-  v4 = a3;
-  if ((objc_msgSend_isOpValidForSpace_(self, v5, v4, v6, v7) & 1) == 0)
+  queueCopy = queue;
+  if ((objc_msgSend_isOpValidForSpace_(self, v5, queueCopy, v6, v7) & 1) == 0)
   {
-    objc_msgSend_raise_format_(MEMORY[0x277CBEAD8], v8, @"XRInvalidOperationForSpaceException", @"%@ is invalid in %@", v11, v4, self);
+    objc_msgSend_raise_format_(MEMORY[0x277CBEAD8], v8, @"XRInvalidOperationForSpaceException", @"%@ is invalid in %@", v11, queueCopy, self);
   }
 
   if (self->_supportsOpNames)
   {
-    v12 = objc_msgSend_name(v4, v8, v9, v10, v11);
+    v12 = objc_msgSend_name(queueCopy, v8, v9, v10, v11);
 
     if (!v12)
     {
-      objc_msgSend_setName_(v4, v8, self->_opName, v10, v11);
+      objc_msgSend_setName_(queueCopy, v8, self->_opName, v10, v11);
     }
   }
 
-  objc_msgSend_addOperation_(self->_queue, v8, v4, v10, v11);
+  objc_msgSend_addOperation_(self->_queue, v8, queueCopy, v10, v11);
 
-  return v4;
+  return queueCopy;
 }
 
-- (id)afterOperation:(id)a3 block:(id)a4
+- (id)afterOperation:(id)operation block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_24808B880;
   v11[3] = &unk_278EFA348;
-  v12 = v6;
-  v7 = v6;
-  v9 = objc_msgSend_afterOperation_priority_spaceBlock_(self, v8, a3, 0, v11);
+  v12 = blockCopy;
+  v7 = blockCopy;
+  v9 = objc_msgSend_afterOperation_priority_spaceBlock_(self, v8, operation, 0, v11);
 
   return v9;
 }
 
-- (id)afterOperation:(id)a3 spaceBlock:(id)a4
+- (id)afterOperation:(id)operation spaceBlock:(id)block
 {
-  v4 = objc_msgSend_afterOperation_priority_spaceBlock_(self, a2, a3, 0, a4);
+  v4 = objc_msgSend_afterOperation_priority_spaceBlock_(self, a2, operation, 0, block);
 
   return v4;
 }
 
-- (id)afterOperations:(id)a3 priority:(int64_t)a4 spaceBlock:(id)a5
+- (id)afterOperations:(id)operations priority:(int64_t)priority spaceBlock:(id)block
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  operationsCopy = operations;
+  blockCopy = block;
   v10 = [XRSpaceBlockOp alloc];
-  v14 = objc_msgSend_initWithSpaceBlock_(v10, v11, v9, v12, v13);
+  v14 = objc_msgSend_initWithSpaceBlock_(v10, v11, blockCopy, v12, v13);
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v15 = v8;
+  v15 = operationsCopy;
   v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v16, &v32, v36, 16);
   if (v20)
   {
@@ -226,7 +226,7 @@
     while (v20);
   }
 
-  objc_msgSend_setQueuePriority_(v14, v23, a4, v24, v25);
+  objc_msgSend_setQueuePriority_(v14, v23, priority, v24, v25);
   v29 = objc_msgSend__scheduleOperationFromCurrentQueue_(self, v26, v14, v27, v28);
 
   v30 = *MEMORY[0x277D85DE8];
@@ -234,25 +234,25 @@
   return v29;
 }
 
-- (id)afterOperation:(id)a3 priority:(int64_t)a4 spaceBlock:(id)a5
+- (id)afterOperation:(id)operation priority:(int64_t)priority spaceBlock:(id)block
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v11 = a5;
-  if (v8)
+  operationCopy = operation;
+  blockCopy = block;
+  if (operationCopy)
   {
-    v17[0] = v8;
+    v17[0] = operationCopy;
     v12 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v9, v17, 1, v10);
-    objc_msgSend_afterOperations_priority_spaceBlock_(self, v13, v12, a4, v11);
+    objc_msgSend_afterOperations_priority_spaceBlock_(self, v13, v12, priority, blockCopy);
   }
 
   else
   {
     v12 = 0;
-    objc_msgSend_afterOperations_priority_spaceBlock_(self, v9, 0, a4, v11);
+    objc_msgSend_afterOperations_priority_spaceBlock_(self, v9, 0, priority, blockCopy);
   }
   v14 = ;
-  if (v8)
+  if (operationCopy)
   {
   }
 
@@ -261,9 +261,9 @@
   return v14;
 }
 
-- (id)afterOperationsRunBlock:(id)a3
+- (id)afterOperationsRunBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v34 = 0;
   objc_opt_class();
   v28 = 0;
@@ -286,7 +286,7 @@
   v6 = v29[5];
   v29[5] = v5;
 
-  v7 = v4;
+  v7 = blockCopy;
   v11 = v7;
   v12 = v7;
   if (*(v25 + 24) == 1)
@@ -346,9 +346,9 @@ LABEL_14:
   return v21;
 }
 
-- (id)storeUserData:(id)a3
+- (id)storeUserData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -372,7 +372,7 @@ LABEL_14:
     seqNum = self->_seqNum;
     self->_seqNum = seqNum + 1;
     v15 = objc_msgSend_initWithSpaceTag_sequenceID_(v10, v13, tag, seqNum, v14);
-    objc_msgSend_setObject_forKey_(self->_userDataByToken, v16, v4, v15, v17);
+    objc_msgSend_setObject_forKey_(self->_userDataByToken, v16, dataCopy, v15, v17);
     objc_sync_exit(v9);
   }
 
@@ -386,10 +386,10 @@ LABEL_14:
   return v15;
 }
 
-- (void)replaceUserData:(id)a3 forToken:(id)a4
+- (void)replaceUserData:(id)data forToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  tokenCopy = token;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -408,9 +408,9 @@ LABEL_14:
   {
     v12 = self->_userDataByToken;
     objc_sync_enter(v12);
-    if (v7)
+    if (tokenCopy)
     {
-      objc_msgSend_setObject_forKey_(self->_userDataByToken, v13, v6, v7, v14);
+      objc_msgSend_setObject_forKey_(self->_userDataByToken, v13, dataCopy, tokenCopy, v14);
     }
 
     objc_sync_exit(v12);
@@ -419,9 +419,9 @@ LABEL_14:
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)removeUserDataForToken:(id)a3
+- (void)removeUserDataForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -440,9 +440,9 @@ LABEL_14:
   {
     v9 = self->_userDataByToken;
     objc_sync_enter(v9);
-    if (v4)
+    if (tokenCopy)
     {
-      objc_msgSend_removeObjectForKey_(self->_userDataByToken, v10, v4, v11, v12);
+      objc_msgSend_removeObjectForKey_(self->_userDataByToken, v10, tokenCopy, v11, v12);
     }
 
     objc_sync_exit(v9);
@@ -451,9 +451,9 @@ LABEL_14:
   _Block_object_dispose(&v14, 8);
 }
 
-- (id)userDataForToken:(id)a3
+- (id)userDataForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -472,9 +472,9 @@ LABEL_14:
   {
     v9 = self->_userDataByToken;
     objc_sync_enter(v9);
-    if (v4)
+    if (tokenCopy)
     {
-      v13 = objc_msgSend_objectForKey_(self->_userDataByToken, v10, v4, v11, v12);
+      v13 = objc_msgSend_objectForKey_(self->_userDataByToken, v10, tokenCopy, v11, v12);
     }
 
     else
@@ -503,28 +503,28 @@ LABEL_14:
   return self;
 }
 
-- (void)requestLocalNotification:(id)a3 object:(id)a4 observer:(id)a5 block:(id)a6
+- (void)requestLocalNotification:(id)notification object:(id)object observer:(id)observer block:(id)block
 {
   v69 = *MEMORY[0x277D85DE8];
-  v58 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (_DVTIURuntimeCheckForBlockCaptureOfObject(v12, v11))
+  notificationCopy = notification;
+  objectCopy = object;
+  observerCopy = observer;
+  blockCopy = block;
+  if (_DVTIURuntimeCheckForBlockCaptureOfObject(blockCopy, observerCopy))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
     {
       sub_2480B359C();
     }
 
-    _DVTIUInvalidBlockCaptureBreak(v12, v11);
+    _DVTIUInvalidBlockCaptureBreak(blockCopy, observerCopy);
   }
 
   v66 = 0u;
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v17 = objc_msgSend_copy(self->_notificationShims, v13, v14, v15, v16, v58);
+  v17 = objc_msgSend_copy(self->_notificationShims, v13, v14, v15, v16, notificationCopy);
   v23 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v64, v68, 16);
   if (v23)
   {
@@ -567,10 +567,10 @@ LABEL_13:
   }
 
   v32 = objc_opt_new();
-  objc_msgSend_setObserver_(v32, v33, v11, v34, v35);
-  if (v10)
+  objc_msgSend_setObserver_(v32, v33, observerCopy, v34, v35);
+  if (objectCopy)
   {
-    objc_msgSend_setTarget_(v32, v36, v10, v37, v38);
+    objc_msgSend_setTarget_(v32, v36, objectCopy, v37, v38);
     objc_msgSend_setTargetIsSet_(v32, v39, 1, v40, v41);
   }
 
@@ -582,9 +582,9 @@ LABEL_13:
   v60[2] = sub_24808C908;
   v60[3] = &unk_278EFA3C0;
   objc_copyWeak(&v62, &location);
-  v48 = v12;
+  v48 = blockCopy;
   v61 = v48;
-  v50 = objc_msgSend_addObserverForName_object_queue_usingBlock_(v46, v49, v59, v10, queue, v60);
+  v50 = objc_msgSend_addObserverForName_object_queue_usingBlock_(v46, v49, v59, objectCopy, queue, v60);
   objc_msgSend_setToken_(v32, v51, v50, v52, v53);
 
   objc_msgSend_addObject_(self->_notificationShims, v54, v32, v55, v56);
@@ -594,11 +594,11 @@ LABEL_13:
   v57 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopObservationsOfObject:(id)a3 forObserver:(id)a4
+- (void)stopObservationsOfObject:(id)object forObserver:(id)observer
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  observerCopy = observer;
   v12 = objc_msgSend_set(MEMORY[0x277CBEB58], v8, v9, v10, v11);
   v42 = 0u;
   v43 = 0u;
@@ -620,11 +620,11 @@ LABEL_13:
 
         v22 = *(*(&v40 + 1) + 8 * i);
         v23 = objc_msgSend_observer(v22, v15, v16, v17, v18);
-        v24 = v23 == v7;
+        v24 = v23 == observerCopy;
 
         if (v24)
         {
-          if (!v6 || objc_msgSend_targetIsSet(v22, v15, v16, v17, v18) && (objc_msgSend_target(v22, v15, v16, v17, v18), v25 = objc_claimAutoreleasedReturnValue(), v26 = v25 == v6, v25, v26))
+          if (!objectCopy || objc_msgSend_targetIsSet(v22, v15, v16, v17, v18) && (objc_msgSend_target(v22, v15, v16, v17, v18), v25 = objc_claimAutoreleasedReturnValue(), v26 = v25 == objectCopy, v25, v26))
           {
             objc_msgSend_addObject_(v12, v15, v22, v17, v18);
           }
@@ -667,15 +667,15 @@ LABEL_13:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receiveMobileAgent:(id)a3
+- (void)receiveMobileAgent:(id)agent
 {
-  v4 = a3;
-  v9 = objc_msgSend_ticket(v4, v5, v6, v7, v8);
+  agentCopy = agent;
+  v9 = objc_msgSend_ticket(agentCopy, v5, v6, v7, v8);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_24808CD64;
   v14[3] = &unk_278EFA3E8;
-  v10 = v4;
+  v10 = agentCopy;
   v15 = v10;
   v13 = objc_msgSend_afterOperation_block_(self, v11, v9, v14, v12);
 }

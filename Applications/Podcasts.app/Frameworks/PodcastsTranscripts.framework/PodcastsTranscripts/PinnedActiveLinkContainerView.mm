@@ -1,5 +1,5 @@
 @interface PinnedActiveLinkContainerView
-- (_TtC19PodcastsTranscripts29PinnedActiveLinkContainerView)initWithFrame:(CGRect)a3;
+- (_TtC19PodcastsTranscripts29PinnedActiveLinkContainerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_19C24();
 }
 
-- (_TtC19PodcastsTranscripts29PinnedActiveLinkContainerView)initWithFrame:(CGRect)a3
+- (_TtC19PodcastsTranscripts29PinnedActiveLinkContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

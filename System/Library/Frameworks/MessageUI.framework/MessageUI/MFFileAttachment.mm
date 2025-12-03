@@ -1,13 +1,13 @@
 @interface MFFileAttachment
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation MFFileAttachment
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -17,15 +17,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (v5)
       {
-        v7 = [(MFFileAttachment *)v5 attachmentContentIDURL];
-        if ([v7 isEqual:self->_attachmentContentIDURL])
+        attachmentContentIDURL = [(MFFileAttachment *)v5 attachmentContentIDURL];
+        if ([attachmentContentIDURL isEqual:self->_attachmentContentIDURL])
         {
-          v8 = [(MFFileAttachment *)v6 attachmentName];
-          if ([v8 isEqual:self->_attachmentName])
+          attachmentName = [(MFFileAttachment *)v6 attachmentName];
+          if ([attachmentName isEqual:self->_attachmentName])
           {
             v9 = [(MFFileAttachment *)v6 attachmentType]== self->_attachmentType;
           }

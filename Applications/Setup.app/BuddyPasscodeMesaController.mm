@@ -1,8 +1,8 @@
 @interface BuddyPasscodeMesaController
 - (BOOL)controllerNeedsToRun;
-- (BOOL)passcodeViewControllerAllowSkip:(id)a3;
-- (id)passcodeViewControllerCustomFirstEntryInstructions:(id)a3;
-- (void)passcodeViewController:(id)a3 didFinishWithPasscodeCreation:(id)a4;
+- (BOOL)passcodeViewControllerAllowSkip:(id)skip;
+- (id)passcodeViewControllerCustomFirstEntryInstructions:(id)instructions;
+- (void)passcodeViewController:(id)controller didFinishWithPasscodeCreation:(id)creation;
 @end
 
 @implementation BuddyPasscodeMesaController
@@ -10,24 +10,24 @@
 - (BOOL)controllerNeedsToRun
 {
   v12 = 0;
-  v2 = [(BuddyPasscodeController *)self capabilities];
-  v3 = [(BYCapabilities *)v2 supportsTouchID];
+  capabilities = [(BuddyPasscodeController *)self capabilities];
+  supportsTouchID = [(BYCapabilities *)capabilities supportsTouchID];
 
-  if (v3)
+  if (supportsTouchID)
   {
-    v4 = [(BuddyPasscodeController *)self capabilities];
-    v12 = [(BYCapabilities *)v4 isTouchIDEnrolled]& 1;
+    capabilities2 = [(BuddyPasscodeController *)self capabilities];
+    v12 = [(BYCapabilities *)capabilities2 isTouchIDEnrolled]& 1;
   }
 
   else
   {
-    v5 = [(BuddyPasscodeController *)self capabilities];
-    v6 = [(BYCapabilities *)v5 supportsPearl];
+    capabilities3 = [(BuddyPasscodeController *)self capabilities];
+    supportsPearl = [(BYCapabilities *)capabilities3 supportsPearl];
 
-    if (v6)
+    if (supportsPearl)
     {
-      v7 = [(BuddyPasscodeController *)self capabilities];
-      v12 = [(BYCapabilities *)v7 isPearlEnrolled]& 1;
+      capabilities4 = [(BuddyPasscodeController *)self capabilities];
+      v12 = [(BYCapabilities *)capabilities4 isPearlEnrolled]& 1;
     }
   }
 
@@ -35,9 +35,9 @@
   v8 = 0;
   if (v12)
   {
-    v11 = [(BuddyPasscodeController *)self managedConfiguration];
+    managedConfiguration = [(BuddyPasscodeController *)self managedConfiguration];
     v10 = 1;
-    v8 = [(MCProfileConnection *)v11 isPasscodeSet]^ 1;
+    v8 = [(MCProfileConnection *)managedConfiguration isPasscodeSet]^ 1;
   }
 
   v14 = v8 & 1;
@@ -48,17 +48,17 @@
   return v14;
 }
 
-- (id)passcodeViewControllerCustomFirstEntryInstructions:(id)a3
+- (id)passcodeViewControllerCustomFirstEntryInstructions:(id)instructions
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyPasscodeController *)v9 capabilities];
-  v4 = [(BYCapabilities *)v3 supportsPearl];
+  objc_storeStrong(location, instructions);
+  capabilities = [(BuddyPasscodeController *)selfCopy capabilities];
+  supportsPearl = [(BYCapabilities *)capabilities supportsPearl];
 
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  if (v4)
+  if (supportsPearl)
   {
     v10 = [(NSBundle *)v5 localizedStringForKey:@"ENTER_PASSCODE_SUBTITLE_FACEID" value:&stru_10032F900 table:@"Localizable"];
   }
@@ -74,30 +74,30 @@
   return v6;
 }
 
-- (void)passcodeViewController:(id)a3 didFinishWithPasscodeCreation:(id)a4
+- (void)passcodeViewController:(id)controller didFinishWithPasscodeCreation:(id)creation
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  v5 = [(BuddyPasscodeController *)v9 managedConfiguration];
-  [(MCProfileConnection *)v5 setFingerprintUnlockAllowed:1 passcode:v7 completion:0];
+  objc_storeStrong(&v7, creation);
+  managedConfiguration = [(BuddyPasscodeController *)selfCopy managedConfiguration];
+  [(MCProfileConnection *)managedConfiguration setFingerprintUnlockAllowed:1 passcode:v7 completion:0];
 
-  v6.receiver = v9;
+  v6.receiver = selfCopy;
   v6.super_class = BuddyPasscodeMesaController;
   [(BuddyPasscodeController *)&v6 passcodeViewController:location[0] didFinishWithPasscodeCreation:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)passcodeViewControllerAllowSkip:(id)a3
+- (BOOL)passcodeViewControllerAllowSkip:(id)skip
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, skip);
   objc_storeStrong(location, 0);
   return 0;
 }

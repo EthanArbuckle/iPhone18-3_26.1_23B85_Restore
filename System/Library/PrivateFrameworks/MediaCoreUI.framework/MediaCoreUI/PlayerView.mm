@@ -1,6 +1,6 @@
 @interface PlayerView
 + (Class)layerClass;
-- (_TtC11MediaCoreUIP33_5C0FCAEC7E121FD01840555B36210BDC10PlayerView)initWithCoder:(id)a3;
+- (_TtC11MediaCoreUIP33_5C0FCAEC7E121FD01840555B36210BDC10PlayerView)initWithCoder:(id)coder;
 @end
 
 @implementation PlayerView
@@ -12,12 +12,12 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC11MediaCoreUIP33_5C0FCAEC7E121FD01840555B36210BDC10PlayerView)initWithCoder:(id)a3
+- (_TtC11MediaCoreUIP33_5C0FCAEC7E121FD01840555B36210BDC10PlayerView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PlayerView();
-  v4 = a3;
-  v5 = [(GeometryTrackingView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(GeometryTrackingView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

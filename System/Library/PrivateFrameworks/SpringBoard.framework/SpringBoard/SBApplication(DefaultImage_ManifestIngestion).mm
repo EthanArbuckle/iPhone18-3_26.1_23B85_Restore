@@ -6,7 +6,7 @@
 
 - (void)_resetLaunchImageIngestionStatus
 {
-  v1 = [a1 bundleIdentifier];
+  bundleIdentifier = [self bundleIdentifier];
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_13(&dword_21ED4E000, v2, v3, "[.png ingestor] [%{public}@] Resetting ingestion status.", v4, v5, v6, v7, v8);
 }

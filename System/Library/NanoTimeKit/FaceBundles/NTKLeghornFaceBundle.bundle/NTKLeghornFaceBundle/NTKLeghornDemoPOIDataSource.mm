@@ -1,24 +1,24 @@
 @interface NTKLeghornDemoPOIDataSource
-+ (id)_filterWaypoints:(id)a3 userGuides:(id)a4 location:(id)a5 radius:(double)a6 poiFilter:(id)a7;
-+ (id)_relativePOIS:(id *)a3 count:(unsigned int)a4 atLocation:(id)a5 filterBy:(id)a6 filterRadius:(double)a7 ensureNorthPOI:(BOOL)a8 useMetric:(BOOL)a9 userGuides:(id *)a10;
-+ (id)_relativePOIS:(id *)a3 count:(unsigned int)a4 atLocation:(id)a5 useMetric:(BOOL)a6 userGuides:(id *)a7;
++ (id)_filterWaypoints:(id)waypoints userGuides:(id)guides location:(id)location radius:(double)radius poiFilter:(id)filter;
++ (id)_relativePOIS:(id *)s count:(unsigned int)count atLocation:(id)location filterBy:(id)by filterRadius:(double)radius ensureNorthPOI:(BOOL)i useMetric:(BOOL)metric userGuides:(id *)self0;
++ (id)_relativePOIS:(id *)s count:(unsigned int)count atLocation:(id)location useMetric:(BOOL)metric userGuides:(id *)guides;
 - (NSArray)waypoints;
-- (NTKLeghornDemoPOIDataSource)initWithDataSet:(const NTKLeghornPOIDataSet *)a3;
-- (void)fetchUserGuidesWithCompletion:(id)a3;
-- (void)setQueryCenterLocation:(id)a3 radius:(double)a4 poiFilter:(id)a5 completion:(id)a6;
+- (NTKLeghornDemoPOIDataSource)initWithDataSet:(const NTKLeghornPOIDataSet *)set;
+- (void)fetchUserGuidesWithCompletion:(id)completion;
+- (void)setQueryCenterLocation:(id)location radius:(double)radius poiFilter:(id)filter completion:(id)completion;
 @end
 
 @implementation NTKLeghornDemoPOIDataSource
 
-+ (id)_relativePOIS:(id *)a3 count:(unsigned int)a4 atLocation:(id)a5 useMetric:(BOOL)a6 userGuides:(id *)a7
++ (id)_relativePOIS:(id *)s count:(unsigned int)count atLocation:(id)location useMetric:(BOOL)metric userGuides:(id *)guides
 {
-  v56 = a6;
-  v58 = a5;
+  metricCopy = metric;
+  locationCopy = location;
   v57 = objc_opt_new();
   v55 = objc_opt_new();
-  if (a4)
+  if (count)
   {
-    v11 = a4;
+    countCopy = count;
     do
     {
       v64 = 0;
@@ -26,14 +26,14 @@
       v63 = 0u;
       v60 = 0u;
       v61 = 0u;
-      sub_23BEDDCE8(&v60, a3);
+      sub_23BEDDCE8(&v60, s);
       v13 = &v63 + 1;
-      if (v56)
+      if (metricCopy)
       {
         v13 = &v63;
       }
 
-      v59 = objc_msgSend_ntk_locationAtDistance_bearing_(v58, v12, *v13, *(&v62 + 1));
+      v59 = objc_msgSend_ntk_locationAtDistance_bearing_(locationCopy, v12, *v13, *(&v62 + 1));
       v14 = NTKFoghornFaceLocalizedString(*(&v60 + 1));
       v15 = sub_23BEDDD60(*(&v61 + 1));
       v16 = sub_23BEDDD60(v62);
@@ -55,7 +55,7 @@
       }
 
       objc_msgSend_addObject_(v57, v32, v33, v31);
-      v37 = v11;
+      v37 = countCopy;
       if (v19)
       {
         v38 = NTKFoghornFaceLocalizedString(v19);
@@ -69,21 +69,21 @@
 
         objc_msgSend_addPoi_(v42, v41, v43, v31);
 
-        v37 = v11;
+        v37 = countCopy;
       }
 
       sub_23BEDE070(&v60);
-      ++a3;
-      v11 = v37 - 1;
+      ++s;
+      countCopy = v37 - 1;
     }
 
     while (v37 != 1);
   }
 
-  if (a7)
+  if (guides)
   {
     v49 = objc_msgSend_allValues(v55, v9, v10);
-    *a7 = objc_msgSend_copy(v49, v50, v51);
+    *guides = objc_msgSend_copy(v49, v50, v51);
   }
 
   v52 = objc_msgSend_copy(v57, v9, v10);
@@ -91,25 +91,25 @@
   return v52;
 }
 
-+ (id)_relativePOIS:(id *)a3 count:(unsigned int)a4 atLocation:(id)a5 filterBy:(id)a6 filterRadius:(double)a7 ensureNorthPOI:(BOOL)a8 useMetric:(BOOL)a9 userGuides:(id *)a10
++ (id)_relativePOIS:(id *)s count:(unsigned int)count atLocation:(id)location filterBy:(id)by filterRadius:(double)radius ensureNorthPOI:(BOOL)i useMetric:(BOOL)metric userGuides:(id *)self0
 {
-  v10 = a9;
-  v11 = a8;
-  v16 = a10;
-  v17 = a5;
-  v18 = a6;
-  v19 = a4;
-  v20 = malloc_type_calloc(a4, 0x48uLL, 0x108004074F8D4EEuLL);
-  v21 = v18;
-  if (!a4)
+  metricCopy = metric;
+  iCopy = i;
+  guidesCopy4 = guides;
+  locationCopy = location;
+  byCopy = by;
+  countCopy = count;
+  v20 = malloc_type_calloc(count, 0x48uLL, 0x108004074F8D4EEuLL);
+  v21 = byCopy;
+  if (!count)
   {
     v22 = 0;
 LABEL_18:
-    v27 = a1;
+    selfCopy2 = self;
     goto LABEL_19;
   }
 
-  v32 = v11;
+  v32 = iCopy;
   v22 = 0;
   v23 = 0;
   do
@@ -118,20 +118,20 @@ LABEL_18:
     v35 = 0u;
     v36 = 0u;
     memset(v34, 0, sizeof(v34));
-    sub_23BEDDCE8(v34, a3);
-    if (a7 == 0.0)
+    sub_23BEDDCE8(v34, s);
+    if (radius == 0.0)
     {
       goto LABEL_26;
     }
 
     v26 = 56;
-    if (v10)
+    if (metricCopy)
     {
       v26 = 48;
     }
 
     v25 = *(v34 + v26);
-    if (v25 <= a7)
+    if (v25 <= radius)
     {
 LABEL_26:
       if (!v21 || objc_msgSend_includesCategory_(v21, v24, v25, *&v34[0]))
@@ -147,21 +147,21 @@ LABEL_26:
     }
 
     sub_23BEDE070(v34);
-    ++a3;
-    --v19;
+    ++s;
+    --countCopy;
   }
 
-  while (v19);
+  while (countCopy);
   if (v23)
   {
-    v16 = a10;
+    guidesCopy4 = guides;
     goto LABEL_18;
   }
 
-  v27 = a1;
+  selfCopy2 = self;
   if (v32)
   {
-    v16 = a10;
+    guidesCopy4 = guides;
     if (v22)
     {
       qsort(v20, v22, 0x48uLL, sub_23BEDE9F0);
@@ -171,18 +171,18 @@ LABEL_26:
 
   else
   {
-    v16 = a10;
+    guidesCopy4 = guides;
   }
 
 LABEL_19:
 
-  v30 = objc_msgSend__relativePOIS_count_atLocation_useMetric_userGuides_(v27, v28, v29, v20, v22, v17, v10, v16);
+  v30 = objc_msgSend__relativePOIS_count_atLocation_useMetric_userGuides_(selfCopy2, v28, v29, v20, v22, locationCopy, metricCopy, guidesCopy4);
   free(v20);
 
   return v30;
 }
 
-- (NTKLeghornDemoPOIDataSource)initWithDataSet:(const NTKLeghornPOIDataSet *)a3
+- (NTKLeghornDemoPOIDataSource)initWithDataSet:(const NTKLeghornPOIDataSet *)set
 {
   v9.receiver = self;
   v9.super_class = NTKLeghornDemoPOIDataSource;
@@ -196,7 +196,7 @@ LABEL_19:
     allWaypoints = v5->_allWaypoints;
     v5->_allWaypoints = 0;
 
-    v5->_dataSet = a3;
+    v5->_dataSet = set;
   }
 
   return v5;
@@ -218,17 +218,17 @@ LABEL_19:
   return v4;
 }
 
-+ (id)_filterWaypoints:(id)a3 userGuides:(id)a4 location:(id)a5 radius:(double)a6 poiFilter:(id)a7
++ (id)_filterWaypoints:(id)waypoints userGuides:(id)guides location:(id)location radius:(double)radius poiFilter:(id)filter
 {
   v70 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = v14;
-  if (a6 <= 0.0 && v14 == 0)
+  waypointsCopy = waypoints;
+  guidesCopy = guides;
+  locationCopy = location;
+  filterCopy = filter;
+  v15 = filterCopy;
+  if (radius <= 0.0 && filterCopy == 0)
   {
-    v56 = v11;
+    v56 = waypointsCopy;
   }
 
   else
@@ -238,8 +238,8 @@ LABEL_19:
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v59 = v11;
-    v18 = v11;
+    v59 = waypointsCopy;
+    v18 = waypointsCopy;
     v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v18, v19, v20, &v64, v69, 16);
     if (v21)
     {
@@ -258,7 +258,7 @@ LABEL_19:
           v28 = objc_msgSend_waypointCategory(v27, v22, v23);
           if (objc_msgSend_includesCategory_(v15, v29, v30, v28))
           {
-            if (a6 <= 0.0 || (objc_msgSend_waypointLocation(v27, v22, v23), v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend_distanceFromLocation_(v13, v32, v33, v31), v35 = v34, v31, v35 <= a6))
+            if (radius <= 0.0 || (objc_msgSend_waypointLocation(v27, v22, v23), v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend_distanceFromLocation_(locationCopy, v32, v33, v31), v35 = v34, v31, v35 <= radius))
             {
               objc_msgSend_addObject_(v17, v22, v23, v27);
             }
@@ -275,8 +275,8 @@ LABEL_19:
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v58 = v12;
-    v36 = v12;
+    v58 = guidesCopy;
+    v36 = guidesCopy;
     v39 = objc_msgSend_countByEnumeratingWithState_objects_count_(v36, v37, v38, &v60, v68, 16);
     if (v39)
     {
@@ -312,18 +312,18 @@ LABEL_19:
 
     v56 = objc_msgSend_allObjects(v17, v54, v55);
 
-    v12 = v58;
-    v11 = v59;
+    guidesCopy = v58;
+    waypointsCopy = v59;
   }
 
   return v56;
 }
 
-- (void)setQueryCenterLocation:(id)a3 radius:(double)a4 poiFilter:(id)a5 completion:(id)a6
+- (void)setQueryCenterLocation:(id)location radius:(double)radius poiFilter:(id)filter completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v13 = a6;
+  locationCopy = location;
+  filterCopy = filter;
+  completionCopy = completion;
   if (!self->_allWaypoints)
   {
     v15 = objc_msgSend_currentLocale(MEMORY[0x277CBEAF8], v12, v14);
@@ -333,7 +333,7 @@ LABEL_19:
     v22 = objc_opt_class();
     dataSet = self->_dataSet;
     v42 = 0;
-    v26 = objc_msgSend_demoPOIsFromDataSet_relativeToLocation_useMetric_userGuides_(v22, v24, v25, dataSet, v10, v21, &v42);
+    v26 = objc_msgSend_demoPOIsFromDataSet_relativeToLocation_useMetric_userGuides_(v22, v24, v25, dataSet, locationCopy, v21, &v42);
     v27 = v42;
     allWaypoints = self->_allWaypoints;
     self->_allWaypoints = v26;
@@ -343,26 +343,26 @@ LABEL_19:
   }
 
   v30 = self->_currentQuery;
-  objc_msgSend_coordinate(v10, v31, v32);
-  v35 = objc_msgSend_queryWithCenterCoordinate_radius_poiFilter_(NTKLeghornWaypointQuery, v33, v34, v11);
+  objc_msgSend_coordinate(locationCopy, v31, v32);
+  v35 = objc_msgSend_queryWithCenterCoordinate_radius_poiFilter_(NTKLeghornWaypointQuery, v33, v34, filterCopy);
   if (!objc_msgSend_matchesQuery_(v30, v36, v37, v35))
   {
     objc_storeStrong(&self->_currentQuery, v35);
     v38 = objc_opt_class();
-    v40 = objc_msgSend__filterWaypoints_userGuides_location_radius_poiFilter_(v38, v39, a4, self->_allWaypoints, self->_allUserGuides, v10, v11);
+    v40 = objc_msgSend__filterWaypoints_userGuides_location_radius_poiFilter_(v38, v39, radius, self->_allWaypoints, self->_allUserGuides, locationCopy, filterCopy);
     waypoints = self->_waypoints;
     self->_waypoints = v40;
   }
 
-  if (v13)
+  if (completionCopy)
   {
-    v13[2](v13, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
-- (void)fetchUserGuidesWithCompletion:(id)a3
+- (void)fetchUserGuidesWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
     allUserGuides = self->_allUserGuides;
     if (!allUserGuides)
@@ -370,7 +370,7 @@ LABEL_19:
       allUserGuides = MEMORY[0x277CBEBF8];
     }
 
-    (*(a3 + 2))(a3, 0, allUserGuides);
+    (*(completion + 2))(completion, 0, allUserGuides);
   }
 }
 

@@ -1,14 +1,14 @@
 @interface _SBRootFolderLayoutWrapperView
 - (CGSize)extendedSize;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)_updateLayout;
 - (void)layoutSubviews;
-- (void)setExtendedSize:(CGSize)a3;
-- (void)setHeaderOffset:(double)a3;
-- (void)setStatusBarHeightAdjustment:(double)a3;
-- (void)setWrappedView:(id)a3;
+- (void)setExtendedSize:(CGSize)size;
+- (void)setHeaderOffset:(double)offset;
+- (void)setStatusBarHeightAdjustment:(double)adjustment;
+- (void)setWrappedView:(id)view;
 @end
 
 @implementation _SBRootFolderLayoutWrapperView
@@ -39,77 +39,77 @@
   [(_SBRootFolderLayoutWrapperView *)self _updateLayout];
 }
 
-- (void)setHeaderOffset:(double)a3
+- (void)setHeaderOffset:(double)offset
 {
-  if (self->_headerOffset != a3)
+  if (self->_headerOffset != offset)
   {
-    self->_headerOffset = a3;
+    self->_headerOffset = offset;
     [(_SBRootFolderLayoutWrapperView *)self _updateLayout];
   }
 }
 
-- (void)setExtendedSize:(CGSize)a3
+- (void)setExtendedSize:(CGSize)size
 {
-  if (self->_extendedSize.width != a3.width || self->_extendedSize.height != a3.height)
+  if (self->_extendedSize.width != size.width || self->_extendedSize.height != size.height)
   {
-    self->_extendedSize = a3;
+    self->_extendedSize = size;
     [(_SBRootFolderLayoutWrapperView *)self _updateLayout];
   }
 }
 
-- (void)setStatusBarHeightAdjustment:(double)a3
+- (void)setStatusBarHeightAdjustment:(double)adjustment
 {
-  if (self->_statusBarHeightAdjustment != a3)
+  if (self->_statusBarHeightAdjustment != adjustment)
   {
-    self->_statusBarHeightAdjustment = a3;
+    self->_statusBarHeightAdjustment = adjustment;
     [(_SBRootFolderLayoutWrapperView *)self _updateLayout];
   }
 }
 
-- (void)setWrappedView:(id)a3
+- (void)setWrappedView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   wrappedView = self->_wrappedView;
-  if (wrappedView != v5)
+  if (wrappedView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)wrappedView removeFromSuperview];
-    objc_storeStrong(&self->_wrappedView, a3);
+    objc_storeStrong(&self->_wrappedView, view);
     [(_SBRootFolderLayoutWrapperView *)self addSubview:self->_wrappedView];
     wrappedView = [(_SBRootFolderLayoutWrapperView *)self _updateLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](wrappedView, v5);
+  MEMORY[0x1EEE66BB8](wrappedView, viewCopy);
 }
 
 - (id)succinctDescription
 {
-  v2 = [(_SBRootFolderLayoutWrapperView *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_SBRootFolderLayoutWrapperView *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_SBRootFolderLayoutWrapperView *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_SBRootFolderLayoutWrapperView *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(_SBRootFolderLayoutWrapperView *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(_SBRootFolderLayoutWrapperView *)self succinctDescriptionBuilder];
   [(_SBRootFolderLayoutWrapperView *)self frame];
-  v5 = [v4 appendRect:@"frame" withName:?];
-  v6 = [v4 appendFloat:@"statusBarHeightAdjustment" withName:self->_statusBarHeightAdjustment];
-  v7 = [v4 appendFloat:@"headerOffset" withName:self->_headerOffset];
-  v8 = [v4 appendSize:@"extendedSize" withName:{self->_extendedSize.width, self->_extendedSize.height}];
-  v9 = [v4 appendObject:self->_wrappedView withName:@"wrappedView"];
+  v5 = [succinctDescriptionBuilder appendRect:@"frame" withName:?];
+  v6 = [succinctDescriptionBuilder appendFloat:@"statusBarHeightAdjustment" withName:self->_statusBarHeightAdjustment];
+  v7 = [succinctDescriptionBuilder appendFloat:@"headerOffset" withName:self->_headerOffset];
+  v8 = [succinctDescriptionBuilder appendSize:@"extendedSize" withName:{self->_extendedSize.width, self->_extendedSize.height}];
+  v9 = [succinctDescriptionBuilder appendObject:self->_wrappedView withName:@"wrappedView"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (CGSize)extendedSize

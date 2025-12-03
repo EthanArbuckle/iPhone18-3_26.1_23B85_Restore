@@ -1,22 +1,22 @@
 @interface GSStorageManager
-+ (BOOL)generationStorageIsDisabledForStatFSInfo:(statfs *)a3 fd:(int)a4;
-+ (void)invalidateLibrary:(id)a3;
++ (BOOL)generationStorageIsDisabledForStatFSInfo:(statfs *)info fd:(int)fd;
++ (void)invalidateLibrary:(id)library;
 + (void)shutdownLibraries;
 + (void)startLibraries;
 @end
 
 @implementation GSStorageManager
 
-+ (void)invalidateLibrary:(id)a3
++ (void)invalidateLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   v4 = qword_10004C970;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100003B98;
   block[3] = &unk_100040B00;
-  v7 = v3;
-  v5 = v3;
+  v7 = libraryCopy;
+  v5 = libraryCopy;
   dispatch_async(v4, block);
 }
 
@@ -67,9 +67,9 @@
   dword_10004C698 = v21.f_fsid.val[0];
   v10 = [GSStorageManager createLibraryForDevice:"createLibraryForDevice:error:" error:?];
   v11 = +[UMUserManager sharedManager];
-  v12 = [v11 isMultiUser];
+  isMultiUser = [v11 isMultiUser];
 
-  if (v12)
+  if (isMultiUser)
   {
     v22[0] = 0;
     v22[1] = 0x10000000000;
@@ -120,14 +120,14 @@
   v2 = dispatch_group_create();
   pthread_rwlock_wrlock(&stru_10004C5D0);
   byte_10004C978 = 1;
-  v3 = [qword_10004C980 allValues];
+  allValues = [qword_10004C980 allValues];
   [qword_10004C980 removeAllObjects];
   pthread_rwlock_unlock(&stru_10004C5D0);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v3;
+  v4 = allValues;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -187,15 +187,15 @@
   }
 }
 
-+ (BOOL)generationStorageIsDisabledForStatFSInfo:(statfs *)a3 fd:(int)a4
++ (BOOL)generationStorageIsDisabledForStatFSInfo:(statfs *)info fd:(int)fd
 {
-  if (a3->f_fsid.val[0] != dword_10004C698)
+  if (info->f_fsid.val[0] != dword_10004C698)
   {
     v6 = 0;
     while (1)
     {
       v7 = strlen(off_100040C40[v6]);
-      if (!strncmp(a3->f_mntonname, off_100040C40[v6], v7))
+      if (!strncmp(info->f_mntonname, off_100040C40[v6], v7))
       {
         break;
       }
@@ -209,7 +209,7 @@
 
   memset(&v10, 0, sizeof(v10));
   APFSVolumeRole();
-  if (fstatat(a4, ".DocumentRevisionsDisabled", &v10, 32))
+  if (fstatat(fd, ".DocumentRevisionsDisabled", &v10, 32))
   {
     if (*__error() == 2)
     {
@@ -223,7 +223,7 @@
     }
   }
 
-  else if ((a3->f_flags & 0x4000) != 0)
+  else if ((info->f_flags & 0x4000) != 0)
   {
     return *&v10.st_uid == 0;
   }

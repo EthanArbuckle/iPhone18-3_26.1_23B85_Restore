@@ -3,32 +3,32 @@
 - (CGRect)primaryDockFrame;
 - (CGRect)secondaryDockFrame;
 - (NSNumber)persistentElements;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CRSUIClimateOverlaySceneSettings
 
 - (BOOL)hasPhysicalControlBars
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:141334465];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:141334465];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSNumber)persistentElements
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:141334466];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:141334466];
 
   return v3;
 }
 
 - (CGRect)primaryDockFrame
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:141334467];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:141334467];
   [v3 CGRectValue];
   v5 = v4;
   v7 = v6;
@@ -48,8 +48,8 @@
 
 - (CGRect)secondaryDockFrame
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:141334468];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:141334468];
   [v3 CGRectValue];
   v5 = v4;
   v7 = v6;
@@ -67,7 +67,7 @@
   return result;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CRSUIMutableClimateOverlaySceneSettings alloc];
 

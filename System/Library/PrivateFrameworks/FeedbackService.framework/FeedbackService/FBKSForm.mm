@@ -1,21 +1,21 @@
 @interface FBKSForm
-- (FBKSForm)initWithIdentifier:(id)a3;
+- (FBKSForm)initWithIdentifier:(id)identifier;
 - (NSString)identifier;
-- (void)prefill:(id)a3 answer:(id)a4;
-- (void)setAuthenticationMethod:(int64_t)a3;
+- (void)prefill:(id)prefill answer:(id)answer;
+- (void)setAuthenticationMethod:(int64_t)method;
 @end
 
 @implementation FBKSForm
 
-- (FBKSForm)initWithIdentifier:(id)a3
+- (FBKSForm)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = FBKSForm;
   v5 = [(FBKSForm *)&v9 init];
   if (v5)
   {
-    v6 = [[FBKSForm_FrameworkPrivateName alloc] initWithIdentifier:v4];
+    v6 = [[FBKSForm_FrameworkPrivateName alloc] initWithIdentifier:identifierCopy];
     swiftObject = v5->_swiftObject;
     v5->_swiftObject = v6;
   }
@@ -25,26 +25,26 @@
 
 - (NSString)identifier
 {
-  v2 = [(FBKSForm *)self swiftObject];
-  v3 = [v2 identifier];
+  swiftObject = [(FBKSForm *)self swiftObject];
+  identifier = [swiftObject identifier];
 
-  return v3;
+  return identifier;
 }
 
-- (void)setAuthenticationMethod:(int64_t)a3
+- (void)setAuthenticationMethod:(int64_t)method
 {
-  v5 = [(FBKSForm *)self swiftObject];
-  [v5 setAuthenticationMethod:a3];
+  swiftObject = [(FBKSForm *)self swiftObject];
+  [swiftObject setAuthenticationMethod:method];
 
-  self->_authenticationMethod = a3;
+  self->_authenticationMethod = method;
 }
 
-- (void)prefill:(id)a3 answer:(id)a4
+- (void)prefill:(id)prefill answer:(id)answer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FBKSForm *)self swiftObject];
-  [v8 prefillWithQuestion:v7 answer:v6];
+  answerCopy = answer;
+  prefillCopy = prefill;
+  swiftObject = [(FBKSForm *)self swiftObject];
+  [swiftObject prefillWithQuestion:prefillCopy answer:answerCopy];
 }
 
 @end

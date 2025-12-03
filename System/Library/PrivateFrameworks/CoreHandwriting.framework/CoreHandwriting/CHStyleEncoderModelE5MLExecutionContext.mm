@@ -1,18 +1,18 @@
 @interface CHStyleEncoderModelE5MLExecutionContext
-- (id)predictionFromFeatureProvider:(id)a3 error:(id *)a4;
+- (id)predictionFromFeatureProvider:(id)provider error:(id *)error;
 @end
 
 @implementation CHStyleEncoderModelE5MLExecutionContext
 
-- (id)predictionFromFeatureProvider:(id)a3 error:(id *)a4
+- (id)predictionFromFeatureProvider:(id)provider error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = objc_msgSend_createInputSurfacesForFeatureProvider_(CHE5MLUtilities, a2, a3, a4, v4, v5);
+  v8 = objc_msgSend_createInputSurfacesForFeatureProvider_(CHE5MLUtilities, a2, provider, error, v4, v5);
   v14 = objc_msgSend_functionDescriptor(self, v9, v10, v11, v12, v13);
-  v17 = objc_msgSend_newInputsForFunctionDescriptor_surfaces_error_(CHE5MLUtilities, v15, v14, v8, a4, v16);
+  v17 = objc_msgSend_newInputsForFunctionDescriptor_surfaces_error_(CHE5MLUtilities, v15, v14, v8, error, v16);
 
   v48 = v17;
-  v21 = objc_msgSend_predictionFromInputObjects_error_(self, v18, v17, a4, v19, v20);
+  v21 = objc_msgSend_predictionFromInputObjects_error_(self, v18, v17, error, v19, v20);
   if (v21)
   {
     v51 = 0u;
@@ -46,7 +46,7 @@
     }
 
     v44 = objc_msgSend_functionDescriptor(self, v39, v40, v41, v42, v43);
-    v46 = objc_msgSend_featureProviderForE5RTOutputs_functionDescriptor_dataType_error_(CHE5MLUtilities, v45, v21, v44, 65568, a4);
+    v46 = objc_msgSend_featureProviderForE5RTOutputs_functionDescriptor_dataType_error_(CHE5MLUtilities, v45, v21, v44, 65568, error);
   }
 
   else

@@ -1,6 +1,6 @@
 @interface PKDeallocationGuard
 - (BOOL)invalidate;
-- (PKDeallocationGuard)initWithBlock:(id)a3;
+- (PKDeallocationGuard)initWithBlock:(id)block;
 - (void)dealloc;
 @end
 
@@ -10,13 +10,13 @@
 {
   if (self)
   {
-    v2 = self;
+    selfCopy = self;
     p_invalidated = &self->_invalidated;
     LOBYTE(self) = 1;
     if ((atomic_exchange(&p_invalidated->_Value, 1u) & 1) == 0)
     {
-      block = v2->_block;
-      v2->_block = 0;
+      block = selfCopy->_block;
+      selfCopy->_block = 0;
 
       LOBYTE(self) = 0;
     }
@@ -37,9 +37,9 @@
   [(PKDeallocationGuard *)&v3 dealloc];
 }
 
-- (PKDeallocationGuard)initWithBlock:(id)a3
+- (PKDeallocationGuard)initWithBlock:(id)block
 {
-  result = a3;
+  result = block;
   if (result)
   {
     v5 = result;

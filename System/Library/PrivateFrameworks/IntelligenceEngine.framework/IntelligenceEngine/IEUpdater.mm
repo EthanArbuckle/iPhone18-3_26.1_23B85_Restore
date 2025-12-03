@@ -1,27 +1,27 @@
 @interface IEUpdater
-- (BOOL)isUpdateAvailable:(id)a3;
-- (BOOL)updateToLatest:(id)a3;
-- (id)getFileVersion:(id)a3;
-- (id)getHighestVersionWithinRelease:(id)a3;
+- (BOOL)isUpdateAvailable:(id)available;
+- (BOOL)updateToLatest:(id)latest;
+- (id)getFileVersion:(id)version;
+- (id)getHighestVersionWithinRelease:(id)release;
 @end
 
 @implementation IEUpdater
 
-- (id)getFileVersion:(id)a3
+- (id)getFileVersion:(id)version
 {
-  v3 = a3;
-  if (v3)
+  versionCopy = version;
+  if (versionCopy)
   {
-    std::string::basic_string[abi:ne200100]<0>(__p, [v3 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(__p, [versionCopy UTF8String]);
     siri::intelligence::Updater::GetFileVersion(__p);
   }
 
   return &stru_28671CC40;
 }
 
-- (BOOL)updateToLatest:(id)a3
+- (BOOL)updateToLatest:(id)latest
 {
-  v3 = a3;
+  latestCopy = latest;
   if ((atomic_load_explicit(&qword_280AF4F48, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF4F48))
   {
     _MergedGlobals_27 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -55,9 +55,9 @@ void __28__IEUpdater_updateToLatest___block_invoke(siri::intelligence::Utils *a1
   }
 }
 
-- (BOOL)isUpdateAvailable:(id)a3
+- (BOOL)isUpdateAvailable:(id)available
 {
-  v3 = a3;
+  availableCopy = available;
   if ((atomic_load_explicit(&qword_280AF4F58, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF4F58))
   {
     qword_280AF4F50 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");
@@ -91,9 +91,9 @@ void __31__IEUpdater_isUpdateAvailable___block_invoke(siri::intelligence::Utils 
   }
 }
 
-- (id)getHighestVersionWithinRelease:(id)a3
+- (id)getHighestVersionWithinRelease:(id)release
 {
-  v3 = a3;
+  releaseCopy = release;
   if ((atomic_load_explicit(&qword_280AF4F68, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_280AF4F68))
   {
     qword_280AF4F60 = os_log_create("com.apple.siri.AuthoredFlow", "FlowEngine");

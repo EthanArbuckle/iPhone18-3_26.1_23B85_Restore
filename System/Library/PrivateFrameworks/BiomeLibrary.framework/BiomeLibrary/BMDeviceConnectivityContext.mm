@@ -1,15 +1,15 @@
 @interface BMDeviceConnectivityContext
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDeviceConnectivityContext)initWithGeohash:(id)a3 counter:(id)a4 event:(id)a5 ratType:(id)a6 rrcState:(id)a7 cellNsaEnabled:(id)a8 isFR1:(id)a9 cellARFCN:(id)a10 cellBandInfo:(id)a11 cellChannelBW:(id)a12 cellRsrp:(id)a13 cellSinr:(id)a14 cellLteRSRQ:(id)a15 cellNrRSRP:(id)a16 cellNrRSRQ:(id)a17 cellNrSNR:(id)a18 maxDLCAConfigured:(id)a19 totalConfiguredBw:(id)a20 nrConfiguredBw:(id)a21 nrTotalScheduledMimoLayers:(id)a22 totalConfiguredMimoLayers:(id)a23 lteMaxScheduledMimoLayersInACell:(id)a24 nrMaxDlModulation:(id)a25 actualHighBandwidth:(id)a26 actualLowBandwidth:(id)a27 pActualLowBandwidth:(id)a28 maxOfActualLowBandwidth:(id)a29 estimatedHighBandwidth:(id)a30 estimatedLowBandwidth:(id)a31 movingAvgHighBandwidth:(id)a32 movingAvgLowBandwidth:(id)a33 cmDataSentCount:(id)a34 cmDataSentDuration:(id)a35 tcpRTTAvg:(id)a36 tcpRTTvar:(id)a37 videoStreamingStallTime:(id)a38 numStall:(id)a39 stallDuration:(id)a40 cellEstimatedBW:(id)a41 cellLoad:(id)a42 cellModelConfidenceLevel:(id)a43 mlPredictedCellBW:(id)a44 qbssLoad:(id)a45 lqmScorecellular:(id)a46;
-- (BMDeviceConnectivityContext)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMDeviceConnectivityContext)initWithGeohash:(id)geohash counter:(id)counter event:(id)event ratType:(id)type rrcState:(id)state cellNsaEnabled:(id)enabled isFR1:(id)r1 cellARFCN:(id)self0 cellBandInfo:(id)self1 cellChannelBW:(id)self2 cellRsrp:(id)self3 cellSinr:(id)self4 cellLteRSRQ:(id)self5 cellNrRSRP:(id)self6 cellNrRSRQ:(id)self7 cellNrSNR:(id)self8 maxDLCAConfigured:(id)self9 totalConfiguredBw:(id)bw nrConfiguredBw:(id)configuredBw nrTotalScheduledMimoLayers:(id)layers totalConfiguredMimoLayers:(id)mimoLayers lteMaxScheduledMimoLayersInACell:(id)cell nrMaxDlModulation:(id)modulation actualHighBandwidth:(id)bandwidth actualLowBandwidth:(id)lowBandwidth pActualLowBandwidth:(id)actualLowBandwidth maxOfActualLowBandwidth:(id)ofActualLowBandwidth estimatedHighBandwidth:(id)geohash0 estimatedLowBandwidth:(id)geohash1 movingAvgHighBandwidth:(id)geohash2 movingAvgLowBandwidth:(id)geohash3 cmDataSentCount:(id)geohash4 cmDataSentDuration:(id)geohash5 tcpRTTAvg:(id)geohash6 tcpRTTvar:(id)geohash7 videoStreamingStallTime:(id)geohash8 numStall:(id)geohash9 stallDuration:(id)counter0 cellEstimatedBW:(id)counter1 cellLoad:(id)counter2 cellModelConfidenceLevel:(id)counter3 mlPredictedCellBW:(id)counter4 qbssLoad:(id)counter5 lqmScorecellular:(id)counter6;
+- (BMDeviceConnectivityContext)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDeviceConnectivityContext
@@ -112,25 +112,25 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMDeviceConnectivityContext *)self geohash];
-    v7 = [v5 geohash];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    geohash = [(BMDeviceConnectivityContext *)self geohash];
+    geohash2 = [v5 geohash];
+    v8 = geohash2;
+    if (geohash == geohash2)
     {
     }
 
     else
     {
-      v9 = [(BMDeviceConnectivityContext *)self geohash];
-      v10 = [v5 geohash];
-      v11 = [v9 isEqual:v10];
+      geohash3 = [(BMDeviceConnectivityContext *)self geohash];
+      geohash4 = [v5 geohash];
+      v11 = [geohash3 isEqual:geohash4];
 
       if (!v11)
       {
@@ -150,8 +150,8 @@
         goto LABEL_221;
       }
 
-      v13 = [(BMDeviceConnectivityContext *)self counter];
-      if (v13 != [v5 counter])
+      counter = [(BMDeviceConnectivityContext *)self counter];
+      if (counter != [v5 counter])
       {
         goto LABEL_221;
       }
@@ -169,25 +169,25 @@
         goto LABEL_221;
       }
 
-      v14 = [(BMDeviceConnectivityContext *)self event];
-      if (v14 != [v5 event])
+      event = [(BMDeviceConnectivityContext *)self event];
+      if (event != [v5 event])
       {
         goto LABEL_221;
       }
     }
 
-    v15 = [(BMDeviceConnectivityContext *)self ratType];
-    v16 = [v5 ratType];
-    v17 = v16;
-    if (v15 == v16)
+    ratType = [(BMDeviceConnectivityContext *)self ratType];
+    ratType2 = [v5 ratType];
+    v17 = ratType2;
+    if (ratType == ratType2)
     {
     }
 
     else
     {
-      v18 = [(BMDeviceConnectivityContext *)self ratType];
-      v19 = [v5 ratType];
-      v20 = [v18 isEqual:v19];
+      ratType3 = [(BMDeviceConnectivityContext *)self ratType];
+      ratType4 = [v5 ratType];
+      v20 = [ratType3 isEqual:ratType4];
 
       if (!v20)
       {
@@ -281,8 +281,8 @@
 
                                                                                   if (-[BMDeviceConnectivityContext hasLqmScorecellular](self, "hasLqmScorecellular") && [v5 hasLqmScorecellular])
                                                                                   {
-                                                                                    v60 = [(BMDeviceConnectivityContext *)self lqmScorecellular];
-                                                                                    v12 = v60 == [v5 lqmScorecellular];
+                                                                                    lqmScorecellular = [(BMDeviceConnectivityContext *)self lqmScorecellular];
+                                                                                    v12 = lqmScorecellular == [v5 lqmScorecellular];
 LABEL_222:
 
                                                                                     goto LABEL_223;
@@ -341,7 +341,7 @@ LABEL_223:
 - (id)jsonDictionary
 {
   v143[44] = *MEMORY[0x1E69E9840];
-  v3 = [(BMDeviceConnectivityContext *)self geohash];
+  geohash = [(BMDeviceConnectivityContext *)self geohash];
   if ([(BMDeviceConnectivityContext *)self hasCounter])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceConnectivityContext counter](self, "counter")}];
@@ -362,7 +362,7 @@ LABEL_223:
     v105 = 0;
   }
 
-  v5 = [(BMDeviceConnectivityContext *)self ratType];
+  ratType = [(BMDeviceConnectivityContext *)self ratType];
   if ([(BMDeviceConnectivityContext *)self hasRrcState])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceConnectivityContext rrcState](self, "rrcState")}];
@@ -755,412 +755,412 @@ LABEL_223:
 
   if ([(BMDeviceConnectivityContext *)self hasLqmScorecellular])
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceConnectivityContext lqmScorecellular](self, "lqmScorecellular")}];
+    null44 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceConnectivityContext lqmScorecellular](self, "lqmScorecellular")}];
   }
 
   else
   {
-    v9 = 0;
+    null44 = 0;
   }
 
   v142[0] = @"geohash";
-  v10 = v3;
-  if (!v3)
+  null = geohash;
+  if (!geohash)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v96 = v10;
-  v143[0] = v10;
+  v96 = null;
+  v143[0] = null;
   v142[1] = @"counter";
-  v11 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v95 = v11;
-  v143[1] = v11;
+  v95 = null2;
+  v143[1] = null2;
   v142[2] = @"event";
-  v12 = v105;
+  null3 = v105;
   if (!v105)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v94 = v12;
-  v143[2] = v12;
+  v94 = null3;
+  v143[2] = null3;
   v142[3] = @"ratType";
-  v13 = v5;
-  if (!v5)
+  null4 = ratType;
+  if (!ratType)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v93 = v13;
-  v143[3] = v13;
+  v93 = null4;
+  v143[3] = null4;
   v142[4] = @"rrcState";
-  v14 = v6;
+  null5 = v6;
   if (!v6)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v92 = v14;
-  v143[4] = v14;
+  v92 = null5;
+  v143[4] = null5;
   v142[5] = @"cellNsaEnabled";
-  v15 = v7;
+  null6 = v7;
   if (!v7)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v91 = v15;
-  v143[5] = v15;
+  v91 = null6;
+  v143[5] = null6;
   v142[6] = @"isFR1";
-  v16 = v8;
+  null7 = v8;
   if (!v8)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v90 = v16;
-  v143[6] = v16;
+  v90 = null7;
+  v143[6] = null7;
   v142[7] = @"cellARFCN";
-  v17 = v141;
+  null8 = v141;
   if (!v141)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v143[7] = v17;
+  v143[7] = null8;
   v142[8] = @"cellBandInfo";
-  v18 = v140;
+  null9 = v140;
   if (!v140)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v143[8] = v18;
+  v143[8] = null9;
   v142[9] = @"cellChannelBW";
-  v19 = v139;
+  null10 = v139;
   if (!v139)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v5;
-  v99 = v19;
-  v143[9] = v19;
+  v20 = ratType;
+  v99 = null10;
+  v143[9] = null10;
   v142[10] = @"cellRsrp";
-  v21 = v138;
+  null11 = v138;
   if (!v138)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v3;
-  v98 = v21;
-  v143[10] = v21;
+  v22 = geohash;
+  v98 = null11;
+  v143[10] = null11;
   v142[11] = @"cellSinr";
-  v23 = v137;
+  null12 = v137;
   if (!v137)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null12 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v23;
-  v143[11] = v23;
+  v24 = null12;
+  v143[11] = null12;
   v142[12] = @"cellLteRSRQ";
-  v25 = v136;
+  null13 = v136;
   if (!v136)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v87 = v25;
-  v143[12] = v25;
+  v87 = null13;
+  v143[12] = null13;
   v142[13] = @"cellNrRSRP";
-  v26 = v135;
+  null14 = v135;
   if (!v135)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null14 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v86 = v26;
-  v143[13] = v26;
+  v86 = null14;
+  v143[13] = null14;
   v142[14] = @"cellNrRSRQ";
-  v27 = v134;
+  null15 = v134;
   if (!v134)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null15 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v85 = v27;
-  v143[14] = v27;
+  v85 = null15;
+  v143[14] = null15;
   v142[15] = @"cellNrSNR";
-  v28 = v133;
+  null16 = v133;
   if (!v133)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null16 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v84 = v28;
-  v143[15] = v28;
+  v84 = null16;
+  v143[15] = null16;
   v142[16] = @"maxDLCAConfigured";
-  v29 = v132;
+  null17 = v132;
   if (!v132)
   {
-    v29 = [MEMORY[0x1E695DFB0] null];
+    null17 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v83 = v29;
-  v143[16] = v29;
+  v83 = null17;
+  v143[16] = null17;
   v142[17] = @"totalConfiguredBw";
-  v30 = v131;
+  null18 = v131;
   if (!v131)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
+    null18 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v82 = v30;
-  v143[17] = v30;
+  v82 = null18;
+  v143[17] = null18;
   v142[18] = @"nrConfiguredBw";
-  v31 = v130;
+  null19 = v130;
   if (!v130)
   {
-    v31 = [MEMORY[0x1E695DFB0] null];
+    null19 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v81 = v31;
-  v143[18] = v31;
+  v81 = null19;
+  v143[18] = null19;
   v142[19] = @"nrTotalScheduledMimoLayers";
-  v32 = v129;
+  null20 = v129;
   if (!v129)
   {
-    v32 = [MEMORY[0x1E695DFB0] null];
+    null20 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v80 = v32;
-  v143[19] = v32;
+  v80 = null20;
+  v143[19] = null20;
   v142[20] = @"totalConfiguredMimoLayers";
-  v33 = v128;
+  null21 = v128;
   if (!v128)
   {
-    v33 = [MEMORY[0x1E695DFB0] null];
+    null21 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v79 = v33;
-  v143[20] = v33;
+  v79 = null21;
+  v143[20] = null21;
   v142[21] = @"lteMaxScheduledMimoLayersInACell";
-  v34 = v127;
+  null22 = v127;
   if (!v127)
   {
-    v34 = [MEMORY[0x1E695DFB0] null];
+    null22 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v78 = v34;
-  v143[21] = v34;
+  v78 = null22;
+  v143[21] = null22;
   v142[22] = @"nrMaxDlModulation";
-  v35 = v126;
+  null23 = v126;
   if (!v126)
   {
-    v35 = [MEMORY[0x1E695DFB0] null];
+    null23 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v77 = v35;
-  v143[22] = v35;
+  v77 = null23;
+  v143[22] = null23;
   v142[23] = @"actualHighBandwidth";
-  v36 = v125;
+  null24 = v125;
   if (!v125)
   {
-    v36 = [MEMORY[0x1E695DFB0] null];
+    null24 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v76 = v36;
-  v143[23] = v36;
+  v76 = null24;
+  v143[23] = null24;
   v142[24] = @"actualLowBandwidth";
-  v37 = v124;
+  null25 = v124;
   if (!v124)
   {
-    v37 = [MEMORY[0x1E695DFB0] null];
+    null25 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v75 = v37;
-  v143[24] = v37;
+  v75 = null25;
+  v143[24] = null25;
   v142[25] = @"pActualLowBandwidth";
-  v38 = v123;
+  null26 = v123;
   if (!v123)
   {
-    v38 = [MEMORY[0x1E695DFB0] null];
+    null26 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v74 = v38;
-  v143[25] = v38;
+  v74 = null26;
+  v143[25] = null26;
   v142[26] = @"maxOfActualLowBandwidth";
-  v39 = v122;
+  null27 = v122;
   if (!v122)
   {
-    v39 = [MEMORY[0x1E695DFB0] null];
+    null27 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v73 = v39;
-  v143[26] = v39;
+  v73 = null27;
+  v143[26] = null27;
   v142[27] = @"estimatedHighBandwidth";
-  v40 = v121;
+  null28 = v121;
   if (!v121)
   {
-    v40 = [MEMORY[0x1E695DFB0] null];
+    null28 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v72 = v40;
-  v143[27] = v40;
+  v72 = null28;
+  v143[27] = null28;
   v142[28] = @"estimatedLowBandwidth";
-  v41 = v120;
+  null29 = v120;
   if (!v120)
   {
-    v41 = [MEMORY[0x1E695DFB0] null];
+    null29 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v71 = v41;
-  v143[28] = v41;
+  v71 = null29;
+  v143[28] = null29;
   v142[29] = @"movingAvgHighBandwidth";
-  v42 = v119;
+  null30 = v119;
   if (!v119)
   {
-    v42 = [MEMORY[0x1E695DFB0] null];
+    null30 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v70 = v42;
-  v143[29] = v42;
+  v70 = null30;
+  v143[29] = null30;
   v142[30] = @"movingAvgLowBandwidth";
-  v43 = v118;
+  null31 = v118;
   if (!v118)
   {
-    v43 = [MEMORY[0x1E695DFB0] null];
+    null31 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v69 = v43;
-  v143[30] = v43;
+  v69 = null31;
+  v143[30] = null31;
   v142[31] = @"cmDataSentCount";
-  v44 = v117;
+  null32 = v117;
   if (!v117)
   {
-    v44 = [MEMORY[0x1E695DFB0] null];
+    null32 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v68 = v44;
-  v143[31] = v44;
+  v68 = null32;
+  v143[31] = null32;
   v142[32] = @"cmDataSentDuration";
-  v45 = v116;
+  null33 = v116;
   if (!v116)
   {
-    v45 = [MEMORY[0x1E695DFB0] null];
+    null33 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v67 = v45;
-  v143[32] = v45;
+  v67 = null33;
+  v143[32] = null33;
   v142[33] = @"tcpRTTAvg";
-  v46 = v115;
+  null34 = v115;
   if (!v115)
   {
-    v46 = [MEMORY[0x1E695DFB0] null];
+    null34 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v66 = v46;
-  v143[33] = v46;
+  v66 = null34;
+  v143[33] = null34;
   v142[34] = @"tcpRTTvar";
-  v47 = v114;
+  null35 = v114;
   if (!v114)
   {
-    v47 = [MEMORY[0x1E695DFB0] null];
+    null35 = [MEMORY[0x1E695DFB0] null];
   }
 
   v103 = v4;
-  v65 = v47;
-  v143[34] = v47;
+  v65 = null35;
+  v143[34] = null35;
   v142[35] = @"videoStreamingStallTime";
-  v48 = v113;
+  null36 = v113;
   if (!v113)
   {
-    v48 = [MEMORY[0x1E695DFB0] null];
+    null36 = [MEMORY[0x1E695DFB0] null];
   }
 
   v102 = v6;
-  v64 = v48;
-  v143[35] = v48;
+  v64 = null36;
+  v143[35] = null36;
   v142[36] = @"numStall";
-  v49 = v112;
+  null37 = v112;
   if (!v112)
   {
-    v49 = [MEMORY[0x1E695DFB0] null];
+    null37 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v89 = v17;
-  v63 = v49;
-  v143[36] = v49;
+  v89 = null8;
+  v63 = null37;
+  v143[36] = null37;
   v142[37] = @"stallDuration";
-  v50 = v111;
+  null38 = v111;
   if (!v111)
   {
-    v50 = [MEMORY[0x1E695DFB0] null];
+    null38 = [MEMORY[0x1E695DFB0] null];
   }
 
   v101 = v7;
-  v61 = v50;
-  v143[37] = v50;
+  v61 = null38;
+  v143[37] = null38;
   v142[38] = @"cellEstimatedBW";
-  v51 = v110;
+  null39 = v110;
   if (!v110)
   {
-    v51 = [MEMORY[0x1E695DFB0] null];
+    null39 = [MEMORY[0x1E695DFB0] null];
   }
 
   v100 = v22;
-  v143[38] = v51;
+  v143[38] = null39;
   v142[39] = @"cellLoad";
-  v52 = v109;
+  null40 = v109;
   if (!v109)
   {
-    v52 = [MEMORY[0x1E695DFB0] null];
+    null40 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v88 = v18;
-  v104 = v9;
-  v143[39] = v52;
+  v88 = null9;
+  v104 = null44;
+  v143[39] = null40;
   v142[40] = @"cellModelConfidenceLevel";
-  v53 = v108;
+  null41 = v108;
   if (!v108)
   {
-    v53 = [MEMORY[0x1E695DFB0] null];
+    null41 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v143[40] = v53;
+  v143[40] = null41;
   v142[41] = @"mlPredictedCellBW";
-  v54 = v107;
+  null42 = v107;
   if (!v107)
   {
-    v54 = [MEMORY[0x1E695DFB0] null];
+    null42 = [MEMORY[0x1E695DFB0] null];
   }
 
   v55 = v8;
-  v143[41] = v54;
+  v143[41] = null42;
   v142[42] = @"qbssLoad";
-  v56 = v106;
+  null43 = v106;
   if (!v106)
   {
-    v56 = [MEMORY[0x1E695DFB0] null];
+    null43 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v143[42] = v56;
+  v143[42] = null43;
   v142[43] = @"lqmScorecellular";
-  v57 = v9;
-  if (!v9)
+  v57 = null44;
+  if (!null44)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null44 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v143[43] = v9;
+  v143[43] = null44;
   v97 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v143 forKeys:v142 count:{44, v61}];
   if (!v57)
   {
@@ -1470,11 +1470,11 @@ LABEL_295:
   return v97;
 }
 
-- (BMDeviceConnectivityContext)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMDeviceConnectivityContext)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v492[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v404 = [v6 objectForKeyedSubscript:@"geohash"];
+  dictionaryCopy = dictionary;
+  v404 = [dictionaryCopy objectForKeyedSubscript:@"geohash"];
   if (!v404 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v402 = 0;
@@ -1486,7 +1486,7 @@ LABEL_295:
   {
     v402 = v404;
 LABEL_4:
-    v403 = [v6 objectForKeyedSubscript:@"counter"];
+    v403 = [dictionaryCopy objectForKeyedSubscript:@"counter"];
     if (!v403 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v401 = 0;
@@ -1498,21 +1498,21 @@ LABEL_4:
     {
       v401 = v403;
 LABEL_7:
-      v7 = [v6 objectForKeyedSubscript:@"event"];
+      v7 = [dictionaryCopy objectForKeyedSubscript:@"event"];
       if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v8 = a4;
-        a4 = 0;
+        errorCopy2 = error;
+        error = 0;
         goto LABEL_10;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = a4;
-        a4 = v7;
+        errorCopy2 = error;
+        error = v7;
 LABEL_10:
-        v9 = [v6 objectForKeyedSubscript:@"ratType"];
+        v9 = [dictionaryCopy objectForKeyedSubscript:@"ratType"];
         if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v399 = 0;
@@ -1524,8 +1524,8 @@ LABEL_10:
         {
           v399 = v9;
 LABEL_13:
-          v10 = [v6 objectForKeyedSubscript:@"rrcState"];
-          v396 = self;
+          v10 = [dictionaryCopy objectForKeyedSubscript:@"rrcState"];
+          selfCopy = self;
           if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             v393 = v10;
@@ -1539,7 +1539,7 @@ LABEL_13:
             v393 = v10;
             v397 = v10;
 LABEL_16:
-            v400 = [v6 objectForKeyedSubscript:@"cellNsaEnabled"];
+            v400 = [dictionaryCopy objectForKeyedSubscript:@"cellNsaEnabled"];
             if (!v400 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
               v395 = 0;
@@ -1551,8 +1551,8 @@ LABEL_16:
             {
               v395 = v400;
 LABEL_19:
-              v398 = [v6 objectForKeyedSubscript:@"isFR1"];
-              v390 = a4;
+              v398 = [dictionaryCopy objectForKeyedSubscript:@"isFR1"];
+              errorCopy3 = error;
               if (!v398 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
                 v392 = 0;
@@ -1564,7 +1564,7 @@ LABEL_19:
               {
                 v392 = v398;
 LABEL_22:
-                v11 = [v6 objectForKeyedSubscript:@"cellARFCN"];
+                v11 = [dictionaryCopy objectForKeyedSubscript:@"cellARFCN"];
                 v391 = v11;
                 if (!v11 || (v12 = v11, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                 {
@@ -1577,7 +1577,7 @@ LABEL_22:
                 {
                   v389 = v12;
 LABEL_25:
-                  v13 = [v6 objectForKeyedSubscript:@"cellBandInfo"];
+                  v13 = [dictionaryCopy objectForKeyedSubscript:@"cellBandInfo"];
                   v350 = v13;
                   if (!v13 || (v14 = v13, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                   {
@@ -1590,13 +1590,13 @@ LABEL_25:
                   {
                     v349 = v14;
 LABEL_28:
-                    v15 = [v6 objectForKeyedSubscript:@"cellChannelBW"];
+                    v15 = [dictionaryCopy objectForKeyedSubscript:@"cellChannelBW"];
                     v347 = v15;
                     if (!v15 || (v16 = v15, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                     {
                       v346 = 0;
 LABEL_31:
-                      v17 = [v6 objectForKeyedSubscript:@"cellRsrp"];
+                      v17 = [dictionaryCopy objectForKeyedSubscript:@"cellRsrp"];
                       v345 = v17;
                       if (!v17)
                       {
@@ -1615,8 +1615,8 @@ LABEL_31:
                       {
                         v17 = v17;
 LABEL_69:
-                        [v6 objectForKeyedSubscript:@"cellSinr"];
-                        v49 = v48 = v8;
+                        [dictionaryCopy objectForKeyedSubscript:@"cellSinr"];
+                        v49 = v48 = errorCopy2;
                         v343 = v17;
                         if (!v49 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                         {
@@ -1629,7 +1629,7 @@ LABEL_69:
                         {
                           v342 = v49;
 LABEL_72:
-                          v50 = [v6 objectForKeyedSubscript:@"cellLteRSRQ"];
+                          v50 = [dictionaryCopy objectForKeyedSubscript:@"cellLteRSRQ"];
                           v344 = v50;
                           if (!v50 || (v51 = v50, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                           {
@@ -1642,7 +1642,7 @@ LABEL_72:
                           {
                             v337 = v51;
 LABEL_75:
-                            v52 = [v6 objectForKeyedSubscript:@"cellNrRSRP"];
+                            v52 = [dictionaryCopy objectForKeyedSubscript:@"cellNrRSRP"];
                             v338 = v52;
                             if (!v52 || (v53 = v52, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                             {
@@ -1657,7 +1657,7 @@ LABEL_75:
                               v54 = v49;
                               v339 = v53;
 LABEL_78:
-                              v55 = [v6 objectForKeyedSubscript:@"cellNrRSRQ"];
+                              v55 = [dictionaryCopy objectForKeyedSubscript:@"cellNrRSRQ"];
                               v334 = v54;
                               v336 = v55;
                               if (!v55 || (v56 = v55, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -1671,7 +1671,7 @@ LABEL_78:
                               {
                                 v57 = v56;
 LABEL_81:
-                                v58 = [v6 objectForKeyedSubscript:@"cellNrSNR"];
+                                v58 = [dictionaryCopy objectForKeyedSubscript:@"cellNrSNR"];
                                 v335 = v58;
                                 if (!v58 || (v59 = v58, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                 {
@@ -1679,7 +1679,7 @@ LABEL_81:
                                   v340 = 0;
 LABEL_84:
                                   v331 = v57;
-                                  v60 = [v6 objectForKeyedSubscript:@"maxDLCAConfigured"];
+                                  v60 = [dictionaryCopy objectForKeyedSubscript:@"maxDLCAConfigured"];
                                   v332 = v60;
                                   if (!v60)
                                   {
@@ -1704,13 +1704,13 @@ LABEL_84:
                                     v63 = v340;
                                     v333 = v61;
 LABEL_119:
-                                    v89 = [v6 objectForKeyedSubscript:@"totalConfiguredBw"];
+                                    v89 = [dictionaryCopy objectForKeyedSubscript:@"totalConfiguredBw"];
                                     v329 = v89;
                                     if (!v89 || (v90 = v89, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                     {
                                       v91 = 0;
 LABEL_122:
-                                      [v6 objectForKeyedSubscript:@"nrConfiguredBw"];
+                                      [dictionaryCopy objectForKeyedSubscript:@"nrConfiguredBw"];
                                       v92 = v62 = v63;
                                       v328 = v92;
                                       v341 = v62;
@@ -1732,14 +1732,14 @@ LABEL_122:
                                         v92 = v92;
 LABEL_137:
                                         v101 = v91;
-                                        v102 = [v6 objectForKeyedSubscript:@"nrTotalScheduledMimoLayers"];
+                                        v102 = [dictionaryCopy objectForKeyedSubscript:@"nrTotalScheduledMimoLayers"];
                                         v326 = v102;
                                         v327 = v92;
                                         if (!v102 || (v103 = v102, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                         {
                                           v325 = 0;
 LABEL_140:
-                                          v104 = [v6 objectForKeyedSubscript:@"totalConfiguredMimoLayers"];
+                                          v104 = [dictionaryCopy objectForKeyedSubscript:@"totalConfiguredMimoLayers"];
                                           v105 = v101;
                                           v324 = v104;
                                           if (!v104)
@@ -1763,7 +1763,7 @@ LABEL_140:
                                           {
                                             v323 = v106;
 LABEL_156:
-                                            v115 = [v6 objectForKeyedSubscript:@"lteMaxScheduledMimoLayersInACell"];
+                                            v115 = [dictionaryCopy objectForKeyedSubscript:@"lteMaxScheduledMimoLayersInACell"];
                                             v322 = v115;
                                             if (!v115 || (v116 = v115, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                             {
@@ -1776,7 +1776,7 @@ LABEL_156:
                                             {
                                               v321 = v116;
 LABEL_159:
-                                              v117 = [v6 objectForKeyedSubscript:@"nrMaxDlModulation"];
+                                              v117 = [dictionaryCopy objectForKeyedSubscript:@"nrMaxDlModulation"];
                                               v320 = v117;
                                               if (!v117 || (v118 = v117, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                               {
@@ -1789,7 +1789,7 @@ LABEL_159:
                                               {
                                                 v319 = v118;
 LABEL_162:
-                                                v119 = [v6 objectForKeyedSubscript:@"actualHighBandwidth"];
+                                                v119 = [dictionaryCopy objectForKeyedSubscript:@"actualHighBandwidth"];
                                                 v318 = v119;
                                                 if (!v119 || (v120 = v119, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                 {
@@ -1802,7 +1802,7 @@ LABEL_162:
                                                 {
                                                   v317 = v120;
 LABEL_165:
-                                                  v121 = [v6 objectForKeyedSubscript:@"actualLowBandwidth"];
+                                                  v121 = [dictionaryCopy objectForKeyedSubscript:@"actualLowBandwidth"];
                                                   v316 = v121;
                                                   if (!v121 || (v122 = v121, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                   {
@@ -1815,7 +1815,7 @@ LABEL_165:
                                                   {
                                                     v315 = v122;
 LABEL_168:
-                                                    v123 = [v6 objectForKeyedSubscript:@"pActualLowBandwidth"];
+                                                    v123 = [dictionaryCopy objectForKeyedSubscript:@"pActualLowBandwidth"];
                                                     v314 = v123;
                                                     if (!v123 || (v124 = v123, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                     {
@@ -1828,7 +1828,7 @@ LABEL_168:
                                                     {
                                                       v313 = v124;
 LABEL_171:
-                                                      v125 = [v6 objectForKeyedSubscript:@"maxOfActualLowBandwidth"];
+                                                      v125 = [dictionaryCopy objectForKeyedSubscript:@"maxOfActualLowBandwidth"];
                                                       v312 = v125;
                                                       if (!v125 || (v126 = v125, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                       {
@@ -1841,7 +1841,7 @@ LABEL_171:
                                                       {
                                                         v311 = v126;
 LABEL_174:
-                                                        v127 = [v6 objectForKeyedSubscript:@"estimatedHighBandwidth"];
+                                                        v127 = [dictionaryCopy objectForKeyedSubscript:@"estimatedHighBandwidth"];
                                                         v310 = v127;
                                                         if (!v127 || (v128 = v127, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                         {
@@ -1854,7 +1854,7 @@ LABEL_174:
                                                         {
                                                           v309 = v128;
 LABEL_177:
-                                                          v129 = [v6 objectForKeyedSubscript:@"estimatedLowBandwidth"];
+                                                          v129 = [dictionaryCopy objectForKeyedSubscript:@"estimatedLowBandwidth"];
                                                           v308 = v129;
                                                           if (!v129 || (v130 = v129, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                           {
@@ -1867,7 +1867,7 @@ LABEL_177:
                                                           {
                                                             v307 = v130;
 LABEL_180:
-                                                            v131 = [v6 objectForKeyedSubscript:@"movingAvgHighBandwidth"];
+                                                            v131 = [dictionaryCopy objectForKeyedSubscript:@"movingAvgHighBandwidth"];
                                                             v306 = v131;
                                                             if (!v131 || (v132 = v131, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                             {
@@ -1880,7 +1880,7 @@ LABEL_180:
                                                             {
                                                               v305 = v132;
 LABEL_183:
-                                                              v133 = [v6 objectForKeyedSubscript:@"movingAvgLowBandwidth"];
+                                                              v133 = [dictionaryCopy objectForKeyedSubscript:@"movingAvgLowBandwidth"];
                                                               v304 = v133;
                                                               if (!v133 || (v134 = v133, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                               {
@@ -1893,7 +1893,7 @@ LABEL_183:
                                                               {
                                                                 v303 = v134;
 LABEL_186:
-                                                                v135 = [v6 objectForKeyedSubscript:@"cmDataSentCount"];
+                                                                v135 = [dictionaryCopy objectForKeyedSubscript:@"cmDataSentCount"];
                                                                 v301 = v135;
                                                                 if (!v135 || (v136 = v135, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                 {
@@ -1906,7 +1906,7 @@ LABEL_186:
                                                                 {
                                                                   v302 = v136;
 LABEL_189:
-                                                                  v137 = [v6 objectForKeyedSubscript:@"cmDataSentDuration"];
+                                                                  v137 = [dictionaryCopy objectForKeyedSubscript:@"cmDataSentDuration"];
                                                                   v299 = v137;
                                                                   if (!v137 || (v138 = v137, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                   {
@@ -1919,13 +1919,13 @@ LABEL_189:
                                                                   {
                                                                     v300 = v138;
 LABEL_192:
-                                                                    v139 = [v6 objectForKeyedSubscript:@"tcpRTTAvg"];
+                                                                    v139 = [dictionaryCopy objectForKeyedSubscript:@"tcpRTTAvg"];
                                                                     v297 = v139;
                                                                     if (!v139 || (v140 = v139, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                     {
                                                                       v298 = 0;
 LABEL_195:
-                                                                      v141 = [v6 objectForKeyedSubscript:@"tcpRTTvar"];
+                                                                      v141 = [dictionaryCopy objectForKeyedSubscript:@"tcpRTTvar"];
                                                                       v295 = v141;
                                                                       if (v141 && (v142 = v141, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                       {
@@ -1979,7 +1979,7 @@ LABEL_365:
                                                                         v296 = 0;
                                                                       }
 
-                                                                      v143 = [v6 objectForKeyedSubscript:@"videoStreamingStallTime"];
+                                                                      v143 = [dictionaryCopy objectForKeyedSubscript:@"videoStreamingStallTime"];
                                                                       v292 = v143;
                                                                       if (v143 && (v144 = v143, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                       {
@@ -2033,7 +2033,7 @@ LABEL_363:
                                                                         v294 = 0;
                                                                       }
 
-                                                                      v145 = [v6 objectForKeyedSubscript:@"numStall"];
+                                                                      v145 = [dictionaryCopy objectForKeyedSubscript:@"numStall"];
                                                                       v290 = v145;
                                                                       if (v145 && (v146 = v145, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                       {
@@ -2076,7 +2076,7 @@ LABEL_363:
                                                                         v293 = 0;
                                                                       }
 
-                                                                      v147 = [v6 objectForKeyedSubscript:@"stallDuration"];
+                                                                      v147 = [dictionaryCopy objectForKeyedSubscript:@"stallDuration"];
                                                                       v289 = v147;
                                                                       if (!v147 || (v148 = v147, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                       {
@@ -2089,7 +2089,7 @@ LABEL_363:
                                                                       {
                                                                         v291 = v148;
 LABEL_207:
-                                                                        v149 = [v6 objectForKeyedSubscript:@"cellEstimatedBW"];
+                                                                        v149 = [dictionaryCopy objectForKeyedSubscript:@"cellEstimatedBW"];
                                                                         v287 = v149;
                                                                         if (!v149 || (v150 = v149, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                         {
@@ -2102,7 +2102,7 @@ LABEL_207:
                                                                         {
                                                                           v288 = v150;
 LABEL_210:
-                                                                          v151 = [v6 objectForKeyedSubscript:@"cellLoad"];
+                                                                          v151 = [dictionaryCopy objectForKeyedSubscript:@"cellLoad"];
                                                                           v285 = v151;
                                                                           if (!v151 || (v152 = v151, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                           {
@@ -2115,13 +2115,13 @@ LABEL_210:
                                                                           {
                                                                             v286 = v152;
 LABEL_213:
-                                                                            v153 = [v6 objectForKeyedSubscript:@"cellModelConfidenceLevel"];
+                                                                            v153 = [dictionaryCopy objectForKeyedSubscript:@"cellModelConfidenceLevel"];
                                                                             v282 = v153;
                                                                             if (!v153 || (v154 = v153, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                             {
                                                                               v284 = 0;
 LABEL_216:
-                                                                              v155 = [v6 objectForKeyedSubscript:@"mlPredictedCellBW"];
+                                                                              v155 = [dictionaryCopy objectForKeyedSubscript:@"mlPredictedCellBW"];
                                                                               v281 = v155;
                                                                               if (v155 && (v156 = v155, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                                                                               {
@@ -2161,13 +2161,13 @@ LABEL_216:
                                                                                 v283 = 0;
                                                                               }
 
-                                                                              v157 = [v6 objectForKeyedSubscript:@"qbssLoad"];
+                                                                              v157 = [dictionaryCopy objectForKeyedSubscript:@"qbssLoad"];
                                                                               v348 = v157;
                                                                               if (!v157 || (v158 = v157, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                                                                               {
                                                                                 v394 = 0;
 LABEL_222:
-                                                                                v159 = [v6 objectForKeyedSubscript:@"lqmScorecellular"];
+                                                                                v159 = [dictionaryCopy objectForKeyedSubscript:@"lqmScorecellular"];
                                                                                 v57 = v331;
                                                                                 v280 = v159;
                                                                                 if (v159)
@@ -2213,8 +2213,8 @@ LABEL_222:
                                                                                 v279 = v159;
                                                                                 v48 = v337;
                                                                                 v82 = v342;
-                                                                                v20 = [(BMDeviceConnectivityContext *)v396 initWithGeohash:v402 counter:v401 event:v390 ratType:v399 rrcState:v397 cellNsaEnabled:v395 isFR1:v392 cellARFCN:v389 cellBandInfo:v349 cellChannelBW:v346 cellRsrp:v343 cellSinr:v342 cellLteRSRQ:v337 cellNrRSRP:v339 cellNrRSRQ:v331 cellNrSNR:v62 maxDLCAConfigured:v333 totalConfiguredBw:v105 nrConfiguredBw:v327 nrTotalScheduledMimoLayers:v325 totalConfiguredMimoLayers:v323 lteMaxScheduledMimoLayersInACell:v321 nrMaxDlModulation:v319 actualHighBandwidth:v317 actualLowBandwidth:v315 pActualLowBandwidth:v313 maxOfActualLowBandwidth:v311 estimatedHighBandwidth:v309 estimatedLowBandwidth:v307 movingAvgHighBandwidth:v305 movingAvgLowBandwidth:v303 cmDataSentCount:v302 cmDataSentDuration:v300 tcpRTTAvg:v298 tcpRTTvar:v296 videoStreamingStallTime:v294 numStall:v293 stallDuration:v291 cellEstimatedBW:v288 cellLoad:v286 cellModelConfidenceLevel:v284 mlPredictedCellBW:v283 qbssLoad:v394 lqmScorecellular:v159];
-                                                                                v396 = v20;
+                                                                                v20 = [(BMDeviceConnectivityContext *)selfCopy initWithGeohash:v402 counter:v401 event:errorCopy3 ratType:v399 rrcState:v397 cellNsaEnabled:v395 isFR1:v392 cellARFCN:v389 cellBandInfo:v349 cellChannelBW:v346 cellRsrp:v343 cellSinr:v342 cellLteRSRQ:v337 cellNrRSRP:v339 cellNrRSRQ:v331 cellNrSNR:v62 maxDLCAConfigured:v333 totalConfiguredBw:v105 nrConfiguredBw:v327 nrTotalScheduledMimoLayers:v325 totalConfiguredMimoLayers:v323 lteMaxScheduledMimoLayersInACell:v321 nrMaxDlModulation:v319 actualHighBandwidth:v317 actualLowBandwidth:v315 pActualLowBandwidth:v313 maxOfActualLowBandwidth:v311 estimatedHighBandwidth:v309 estimatedLowBandwidth:v307 movingAvgHighBandwidth:v305 movingAvgLowBandwidth:v303 cmDataSentCount:v302 cmDataSentDuration:v300 tcpRTTAvg:v298 tcpRTTvar:v296 videoStreamingStallTime:v294 numStall:v293 stallDuration:v291 cellEstimatedBW:v288 cellLoad:v286 cellModelConfidenceLevel:v284 mlPredictedCellBW:v283 qbssLoad:v394 lqmScorecellular:v159];
+                                                                                selfCopy = v20;
 LABEL_354:
 
 LABEL_355:
@@ -3163,8 +3163,8 @@ LABEL_389:
                         goto LABEL_390;
                       }
 
-                      v17 = v8;
-                      if (v8)
+                      v17 = errorCopy2;
+                      if (errorCopy2)
                       {
                         v80 = objc_alloc(MEMORY[0x1E696ABC0]);
                         v357 = v9;
@@ -3196,7 +3196,7 @@ LABEL_390:
                       goto LABEL_31;
                     }
 
-                    if (v8)
+                    if (errorCopy2)
                     {
                       v76 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v356 = v9;
@@ -3210,7 +3210,7 @@ LABEL_390:
                       v345 = v78;
                       v346 = 0;
                       v20 = 0;
-                      *v8 = [v76 initWithDomain:v79 code:2 userInfo:?];
+                      *errorCopy2 = [v76 initWithDomain:v79 code:2 userInfo:?];
                       goto LABEL_153;
                     }
 
@@ -3223,7 +3223,7 @@ LABEL_391:
                     goto LABEL_392;
                   }
 
-                  if (v8)
+                  if (errorCopy2)
                   {
                     v72 = objc_alloc(MEMORY[0x1E696ABC0]);
                     v355 = v9;
@@ -3237,7 +3237,7 @@ LABEL_391:
                     v347 = v74;
                     v349 = 0;
                     v20 = 0;
-                    *v8 = [v72 initWithDomain:v75 code:2 userInfo:?];
+                    *errorCopy2 = [v72 initWithDomain:v75 code:2 userInfo:?];
                     goto LABEL_146;
                   }
 
@@ -3250,7 +3250,7 @@ LABEL_392:
                   goto LABEL_393;
                 }
 
-                if (v8)
+                if (errorCopy2)
                 {
                   v68 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v354 = v9;
@@ -3264,7 +3264,7 @@ LABEL_392:
                   v350 = v70;
                   v389 = 0;
                   v20 = 0;
-                  *v8 = [v68 initWithDomain:v71 code:2 userInfo:?];
+                  *errorCopy2 = [v68 initWithDomain:v71 code:2 userInfo:?];
                   goto LABEL_134;
                 }
 
@@ -3274,11 +3274,11 @@ LABEL_128:
                 v37 = v393;
 LABEL_393:
 
-                a4 = v390;
+                error = errorCopy3;
                 goto LABEL_394;
               }
 
-              if (v8)
+              if (errorCopy2)
               {
                 v64 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v353 = v9;
@@ -3292,7 +3292,7 @@ LABEL_393:
                 v391 = v66;
                 v392 = 0;
                 v20 = 0;
-                *v8 = [v64 initWithDomain:v67 code:2 userInfo:?];
+                *errorCopy2 = [v64 initWithDomain:v67 code:2 userInfo:?];
                 goto LABEL_128;
               }
 
@@ -3305,7 +3305,7 @@ LABEL_394:
               goto LABEL_395;
             }
 
-            if (v8)
+            if (errorCopy2)
             {
               v44 = objc_alloc(MEMORY[0x1E696ABC0]);
               v352 = v9;
@@ -3319,7 +3319,7 @@ LABEL_394:
               v398 = v46;
               v395 = 0;
               v20 = 0;
-              *v8 = [v44 initWithDomain:v47 code:2 userInfo:?];
+              *errorCopy2 = [v44 initWithDomain:v47 code:2 userInfo:?];
               goto LABEL_116;
             }
 
@@ -3328,14 +3328,14 @@ LABEL_394:
             v37 = v393;
 LABEL_395:
 
-            self = v396;
+            self = selfCopy;
             goto LABEL_396;
           }
 
           v37 = v10;
-          if (v8)
+          if (errorCopy2)
           {
-            v38 = a4;
+            errorCopy4 = error;
             v39 = objc_alloc(MEMORY[0x1E696ABC0]);
             v351 = v9;
             v40 = *MEMORY[0x1E698F240];
@@ -3344,13 +3344,13 @@ LABEL_395:
             v484 = v395;
             v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v484 forKeys:&v483 count:1];
             v42 = v39;
-            a4 = v38;
+            error = errorCopy4;
             v43 = v40;
             v9 = v351;
             v400 = v41;
             v397 = 0;
             v20 = 0;
-            *v8 = [v42 initWithDomain:v43 code:2 userInfo:?];
+            *errorCopy2 = [v42 initWithDomain:v43 code:2 userInfo:?];
             goto LABEL_395;
           }
 
@@ -3362,7 +3362,7 @@ LABEL_396:
         }
 
         v32 = v9;
-        if (v8)
+        if (errorCopy2)
         {
           v33 = objc_alloc(MEMORY[0x1E696ABC0]);
           v34 = *MEMORY[0x1E698F240];
@@ -3374,7 +3374,7 @@ LABEL_396:
           v37 = v35;
           v399 = 0;
           v20 = 0;
-          *v8 = [v33 initWithDomain:v36 code:2 userInfo:v35];
+          *errorCopy2 = [v33 initWithDomain:v36 code:2 userInfo:v35];
           v9 = v32;
           goto LABEL_396;
         }
@@ -3386,11 +3386,11 @@ LABEL_397:
         goto LABEL_398;
       }
 
-      if (a4)
+      if (error)
       {
-        v25 = a4;
+        errorCopy5 = error;
         v26 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v27 = self;
+        selfCopy2 = self;
         v28 = *MEMORY[0x1E698F240];
         v487 = *MEMORY[0x1E696A578];
         v399 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"event"];
@@ -3399,10 +3399,10 @@ LABEL_397:
         v30 = v26;
         v9 = v29;
         v31 = v28;
-        self = v27;
-        a4 = 0;
+        self = selfCopy2;
+        error = 0;
         v20 = 0;
-        *v25 = [v30 initWithDomain:v31 code:2 userInfo:v29];
+        *errorCopy5 = [v30 initWithDomain:v31 code:2 userInfo:v29];
         goto LABEL_397;
       }
 
@@ -3412,7 +3412,7 @@ LABEL_398:
       goto LABEL_399;
     }
 
-    if (a4)
+    if (error)
     {
       v21 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E698F240];
@@ -3420,11 +3420,11 @@ LABEL_398:
       v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"counter"];
       v490 = v23;
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v490 forKeys:&v489 count:1];
-      v24 = a4;
-      a4 = v23;
+      errorCopy6 = error;
+      error = v23;
       v401 = 0;
       v20 = 0;
-      *v24 = [v21 initWithDomain:v22 code:2 userInfo:v7];
+      *errorCopy6 = [v21 initWithDomain:v22 code:2 userInfo:v7];
       goto LABEL_398;
     }
 
@@ -3435,7 +3435,7 @@ LABEL_399:
     goto LABEL_400;
   }
 
-  if (a4)
+  if (error)
   {
     v18 = objc_alloc(MEMORY[0x1E696ABC0]);
     v19 = *MEMORY[0x1E698F240];
@@ -3445,7 +3445,7 @@ LABEL_399:
     v403 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v492 forKeys:&v491 count:1];
     v402 = 0;
     v20 = 0;
-    *a4 = [v18 initWithDomain:v19 code:2 userInfo:?];
+    *error = [v18 initWithDomain:v19 code:2 userInfo:?];
     goto LABEL_399;
   }
 
@@ -3461,330 +3461,330 @@ LABEL_400:
 {
   v3 = objc_opt_new();
   [(BMDeviceConnectivityContext *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v47 = v4;
+  toCopy = to;
+  v47 = toCopy;
   if (self->_geohash)
   {
     PBDataWriterWriteStringField();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasCounter)
   {
     counter = self->_counter;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasEvent)
   {
     event = self->_event;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_ratType)
   {
     PBDataWriterWriteStringField();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasRrcState)
   {
     rrcState = self->_rrcState;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasCellNsaEnabled)
   {
     cellNsaEnabled = self->_cellNsaEnabled;
     PBDataWriterWriteBOOLField();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasIsFR1)
   {
     isFR1 = self->_isFR1;
     PBDataWriterWriteBOOLField();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasCellARFCN)
   {
     cellARFCN = self->_cellARFCN;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasCellBandInfo)
   {
     cellBandInfo = self->_cellBandInfo;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasCellChannelBW)
   {
     cellChannelBW = self->_cellChannelBW;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasCellRsrp)
   {
     cellRsrp = self->_cellRsrp;
     PBDataWriterWriteInt32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasCellSinr)
   {
     cellSinr = self->_cellSinr;
     PBDataWriterWriteInt32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasCellLteRSRQ)
   {
     cellLteRSRQ = self->_cellLteRSRQ;
     PBDataWriterWriteInt32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasCellNrRSRP)
   {
     cellNrRSRP = self->_cellNrRSRP;
     PBDataWriterWriteInt32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasCellNrRSRQ)
   {
     cellNrRSRQ = self->_cellNrRSRQ;
     PBDataWriterWriteInt32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasCellNrSNR)
   {
     cellNrSNR = self->_cellNrSNR;
     PBDataWriterWriteInt32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasMaxDLCAConfigured)
   {
     maxDLCAConfigured = self->_maxDLCAConfigured;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasTotalConfiguredBw)
   {
     totalConfiguredBw = self->_totalConfiguredBw;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasNrConfiguredBw)
   {
     nrConfiguredBw = self->_nrConfiguredBw;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasNrTotalScheduledMimoLayers)
   {
     nrTotalScheduledMimoLayers = self->_nrTotalScheduledMimoLayers;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasTotalConfiguredMimoLayers)
   {
     totalConfiguredMimoLayers = self->_totalConfiguredMimoLayers;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasLteMaxScheduledMimoLayersInACell)
   {
     lteMaxScheduledMimoLayersInACell = self->_lteMaxScheduledMimoLayersInACell;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasNrMaxDlModulation)
   {
     nrMaxDlModulation = self->_nrMaxDlModulation;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasActualHighBandwidth)
   {
     actualHighBandwidth = self->_actualHighBandwidth;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasActualLowBandwidth)
   {
     actualLowBandwidth = self->_actualLowBandwidth;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasPActualLowBandwidth)
   {
     pActualLowBandwidth = self->_pActualLowBandwidth;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasMaxOfActualLowBandwidth)
   {
     maxOfActualLowBandwidth = self->_maxOfActualLowBandwidth;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasEstimatedHighBandwidth)
   {
     estimatedHighBandwidth = self->_estimatedHighBandwidth;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasEstimatedLowBandwidth)
   {
     estimatedLowBandwidth = self->_estimatedLowBandwidth;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasMovingAvgHighBandwidth)
   {
     movingAvgHighBandwidth = self->_movingAvgHighBandwidth;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasMovingAvgLowBandwidth)
   {
     movingAvgLowBandwidth = self->_movingAvgLowBandwidth;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasCmDataSentCount)
   {
     cmDataSentCount = self->_cmDataSentCount;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasCmDataSentDuration)
   {
     cmDataSentDuration = self->_cmDataSentDuration;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasTcpRTTAvg)
   {
     tcpRTTAvg = self->_tcpRTTAvg;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasTcpRTTvar)
   {
     tcpRTTvar = self->_tcpRTTvar;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasVideoStreamingStallTime)
   {
     videoStreamingStallTime = self->_videoStreamingStallTime;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasNumStall)
   {
     numStall = self->_numStall;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasStallDuration)
   {
     stallDuration = self->_stallDuration;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasCellEstimatedBW)
   {
     cellEstimatedBW = self->_cellEstimatedBW;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasCellLoad)
   {
     cellLoad = self->_cellLoad;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasCellModelConfidenceLevel)
   {
     cellModelConfidenceLevel = self->_cellModelConfidenceLevel;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasMlPredictedCellBW)
   {
     mlPredictedCellBW = self->_mlPredictedCellBW;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasQbssLoad)
   {
     qbssLoad = self->_qbssLoad;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 
   if (self->_hasLqmScorecellular)
   {
     lqmScorecellular = self->_lqmScorecellular;
     PBDataWriterWriteUint32Field();
-    v4 = v47;
+    toCopy = v47;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v9.receiver = self;
   v9.super_class = BMDeviceConnectivityContext;
   v5 = [(BMEventBase *)&v9 init];
   v6 = v5;
-  if (v5 && !BMDeviceConnectivityContextReadFrom(v5, v4))
+  if (v5 && !BMDeviceConnectivityContextReadFrom(v5, fromCopy))
   {
     v7 = 0;
   }
@@ -3800,10 +3800,10 @@ LABEL_400:
 - (NSString)description
 {
   v19 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v48 = [(BMDeviceConnectivityContext *)self geohash];
+  geohash = [(BMDeviceConnectivityContext *)self geohash];
   v45 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceConnectivityContext counter](self, "counter")}];
   v47 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceConnectivityContext event](self, "event")}];
-  v49 = [(BMDeviceConnectivityContext *)self ratType];
+  ratType = [(BMDeviceConnectivityContext *)self ratType];
   v44 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceConnectivityContext rrcState](self, "rrcState")}];
   v46 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMDeviceConnectivityContext cellNsaEnabled](self, "cellNsaEnabled")}];
   v41 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMDeviceConnectivityContext isFR1](self, "isFR1")}];
@@ -3844,58 +3844,58 @@ LABEL_400:
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceConnectivityContext mlPredictedCellBW](self, "mlPredictedCellBW")}];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceConnectivityContext qbssLoad](self, "qbssLoad")}];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceConnectivityContext lqmScorecellular](self, "lqmScorecellular")}];
-  v20 = [v19 initWithFormat:@"BMDeviceConnectivityContext with geohash: %@, counter: %@, event: %@, ratType: %@, rrcState: %@, cellNsaEnabled: %@, isFR1: %@, cellARFCN: %@, cellBandInfo: %@, cellChannelBW: %@, cellRsrp: %@, cellSinr: %@, cellLteRSRQ: %@, cellNrRSRP: %@, cellNrRSRQ: %@, cellNrSNR: %@, maxDLCAConfigured: %@, totalConfiguredBw: %@, nrConfiguredBw: %@, nrTotalScheduledMimoLayers: %@, totalConfiguredMimoLayers: %@, lteMaxScheduledMimoLayersInACell: %@, nrMaxDlModulation: %@, actualHighBandwidth: %@, actualLowBandwidth: %@, pActualLowBandwidth: %@, maxOfActualLowBandwidth: %@, estimatedHighBandwidth: %@, estimatedLowBandwidth: %@, movingAvgHighBandwidth: %@, movingAvgLowBandwidth: %@, cmDataSentCount: %@, cmDataSentDuration: %@, tcpRTTAvg: %@, tcpRTTvar: %@, videoStreamingStallTime: %@, numStall: %@, stallDuration: %@, cellEstimatedBW: %@, cellLoad: %@, cellModelConfidenceLevel: %@, mlPredictedCellBW: %@, qbssLoad: %@, lqmScorecellular: %@", v48, v45, v47, v49, v44, v46, v41, v43, v40, v38, v42, v39, v35, v37, v34, v32, v36, v31, v33, v29, v30, v27, v26, v28, v25, v23, v24, v18, v22, v17, v16, v21, v15, v12, v14, v11, v13, v10, v9, v8, v3, v4, v5, v6];
+  v20 = [v19 initWithFormat:@"BMDeviceConnectivityContext with geohash: %@, counter: %@, event: %@, ratType: %@, rrcState: %@, cellNsaEnabled: %@, isFR1: %@, cellARFCN: %@, cellBandInfo: %@, cellChannelBW: %@, cellRsrp: %@, cellSinr: %@, cellLteRSRQ: %@, cellNrRSRP: %@, cellNrRSRQ: %@, cellNrSNR: %@, maxDLCAConfigured: %@, totalConfiguredBw: %@, nrConfiguredBw: %@, nrTotalScheduledMimoLayers: %@, totalConfiguredMimoLayers: %@, lteMaxScheduledMimoLayersInACell: %@, nrMaxDlModulation: %@, actualHighBandwidth: %@, actualLowBandwidth: %@, pActualLowBandwidth: %@, maxOfActualLowBandwidth: %@, estimatedHighBandwidth: %@, estimatedLowBandwidth: %@, movingAvgHighBandwidth: %@, movingAvgLowBandwidth: %@, cmDataSentCount: %@, cmDataSentDuration: %@, tcpRTTAvg: %@, tcpRTTvar: %@, videoStreamingStallTime: %@, numStall: %@, stallDuration: %@, cellEstimatedBW: %@, cellLoad: %@, cellModelConfidenceLevel: %@, mlPredictedCellBW: %@, qbssLoad: %@, lqmScorecellular: %@", geohash, v45, v47, ratType, v44, v46, v41, v43, v40, v38, v42, v39, v35, v37, v34, v32, v36, v31, v33, v29, v30, v27, v26, v28, v25, v23, v24, v18, v22, v17, v16, v21, v15, v12, v14, v11, v13, v10, v9, v8, v3, v4, v5, v6];
 
   return v20;
 }
 
-- (BMDeviceConnectivityContext)initWithGeohash:(id)a3 counter:(id)a4 event:(id)a5 ratType:(id)a6 rrcState:(id)a7 cellNsaEnabled:(id)a8 isFR1:(id)a9 cellARFCN:(id)a10 cellBandInfo:(id)a11 cellChannelBW:(id)a12 cellRsrp:(id)a13 cellSinr:(id)a14 cellLteRSRQ:(id)a15 cellNrRSRP:(id)a16 cellNrRSRQ:(id)a17 cellNrSNR:(id)a18 maxDLCAConfigured:(id)a19 totalConfiguredBw:(id)a20 nrConfiguredBw:(id)a21 nrTotalScheduledMimoLayers:(id)a22 totalConfiguredMimoLayers:(id)a23 lteMaxScheduledMimoLayersInACell:(id)a24 nrMaxDlModulation:(id)a25 actualHighBandwidth:(id)a26 actualLowBandwidth:(id)a27 pActualLowBandwidth:(id)a28 maxOfActualLowBandwidth:(id)a29 estimatedHighBandwidth:(id)a30 estimatedLowBandwidth:(id)a31 movingAvgHighBandwidth:(id)a32 movingAvgLowBandwidth:(id)a33 cmDataSentCount:(id)a34 cmDataSentDuration:(id)a35 tcpRTTAvg:(id)a36 tcpRTTvar:(id)a37 videoStreamingStallTime:(id)a38 numStall:(id)a39 stallDuration:(id)a40 cellEstimatedBW:(id)a41 cellLoad:(id)a42 cellModelConfidenceLevel:(id)a43 mlPredictedCellBW:(id)a44 qbssLoad:(id)a45 lqmScorecellular:(id)a46
+- (BMDeviceConnectivityContext)initWithGeohash:(id)geohash counter:(id)counter event:(id)event ratType:(id)type rrcState:(id)state cellNsaEnabled:(id)enabled isFR1:(id)r1 cellARFCN:(id)self0 cellBandInfo:(id)self1 cellChannelBW:(id)self2 cellRsrp:(id)self3 cellSinr:(id)self4 cellLteRSRQ:(id)self5 cellNrRSRP:(id)self6 cellNrRSRQ:(id)self7 cellNrSNR:(id)self8 maxDLCAConfigured:(id)self9 totalConfiguredBw:(id)bw nrConfiguredBw:(id)configuredBw nrTotalScheduledMimoLayers:(id)layers totalConfiguredMimoLayers:(id)mimoLayers lteMaxScheduledMimoLayersInACell:(id)cell nrMaxDlModulation:(id)modulation actualHighBandwidth:(id)bandwidth actualLowBandwidth:(id)lowBandwidth pActualLowBandwidth:(id)actualLowBandwidth maxOfActualLowBandwidth:(id)ofActualLowBandwidth estimatedHighBandwidth:(id)geohash0 estimatedLowBandwidth:(id)geohash1 movingAvgHighBandwidth:(id)geohash2 movingAvgLowBandwidth:(id)geohash3 cmDataSentCount:(id)geohash4 cmDataSentDuration:(id)geohash5 tcpRTTAvg:(id)geohash6 tcpRTTvar:(id)geohash7 videoStreamingStallTime:(id)geohash8 numStall:(id)geohash9 stallDuration:(id)counter0 cellEstimatedBW:(id)counter1 cellLoad:(id)counter2 cellModelConfidenceLevel:(id)counter3 mlPredictedCellBW:(id)counter4 qbssLoad:(id)counter5 lqmScorecellular:(id)counter6
 {
-  v106 = a3;
-  v140 = a4;
-  v136 = a5;
-  v103 = a6;
-  v105 = a6;
-  v137 = a7;
-  v139 = a8;
-  v135 = a9;
-  v134 = a10;
-  v133 = a11;
-  v132 = a12;
-  v131 = a13;
-  v50 = a14;
-  v51 = a15;
-  v52 = a16;
-  v53 = a17;
-  v54 = a18;
-  v55 = a19;
-  v56 = a20;
-  v57 = a21;
-  v58 = a22;
-  v130 = a23;
-  v129 = a24;
-  v128 = a25;
-  v127 = a26;
-  v126 = a27;
-  v125 = a28;
-  v124 = a29;
-  v123 = a30;
-  v122 = a31;
-  v121 = a32;
-  v120 = a33;
-  v119 = a34;
-  v118 = a35;
-  v117 = a36;
-  v116 = a37;
-  v115 = a38;
-  v114 = a39;
-  v113 = a40;
-  v112 = a41;
-  v111 = a42;
-  v110 = a43;
-  v109 = a44;
-  v108 = a45;
-  v107 = a46;
+  geohashCopy = geohash;
+  counterCopy = counter;
+  eventCopy = event;
+  typeCopy = type;
+  typeCopy2 = type;
+  stateCopy = state;
+  enabledCopy = enabled;
+  r1Copy = r1;
+  nCopy = n;
+  infoCopy = info;
+  wCopy = w;
+  rsrpCopy = rsrp;
+  sinrCopy = sinr;
+  qCopy = q;
+  pCopy = p;
+  rQCopy = rQ;
+  rCopy = r;
+  configuredCopy = configured;
+  bwCopy = bw;
+  configuredBwCopy = configuredBw;
+  layersCopy = layers;
+  mimoLayersCopy = mimoLayers;
+  cellCopy = cell;
+  modulationCopy = modulation;
+  bandwidthCopy = bandwidth;
+  lowBandwidthCopy = lowBandwidth;
+  actualLowBandwidthCopy = actualLowBandwidth;
+  ofActualLowBandwidthCopy = ofActualLowBandwidth;
+  highBandwidthCopy = highBandwidth;
+  estimatedLowBandwidthCopy = estimatedLowBandwidth;
+  avgHighBandwidthCopy = avgHighBandwidth;
+  avgLowBandwidthCopy = avgLowBandwidth;
+  countCopy = count;
+  durationCopy = duration;
+  avgCopy = avg;
+  tvarCopy = tvar;
+  timeCopy = time;
+  stallCopy = stall;
+  stallDurationCopy = stallDuration;
+  bWCopy = bW;
+  loadCopy = load;
+  levelCopy = level;
+  cellBWCopy = cellBW;
+  qbssLoadCopy = qbssLoad;
+  scorecellularCopy = scorecellular;
   v141.receiver = self;
   v141.super_class = BMDeviceConnectivityContext;
   v59 = [(BMEventBase *)&v141 init];
@@ -3903,51 +3903,51 @@ LABEL_400:
   if (v59)
   {
     v59->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v59->_geohash, a3);
-    if (v140)
+    objc_storeStrong(&v59->_geohash, geohash);
+    if (counterCopy)
     {
       v59->_hasCounter = 1;
-      v60 = [v140 unsignedIntValue];
+      unsignedIntValue = [counterCopy unsignedIntValue];
     }
 
     else
     {
-      v60 = 0;
+      unsignedIntValue = 0;
       v59->_hasCounter = 0;
     }
 
-    v59->_counter = v60;
-    if (v136)
+    v59->_counter = unsignedIntValue;
+    if (eventCopy)
     {
       v59->_hasEvent = 1;
-      v61 = [v136 unsignedIntValue];
+      unsignedIntValue2 = [eventCopy unsignedIntValue];
     }
 
     else
     {
-      v61 = 0;
+      unsignedIntValue2 = 0;
       v59->_hasEvent = 0;
     }
 
-    v59->_event = v61;
-    objc_storeStrong(&v59->_ratType, v103);
-    if (v137)
+    v59->_event = unsignedIntValue2;
+    objc_storeStrong(&v59->_ratType, typeCopy);
+    if (stateCopy)
     {
       v59->_hasRrcState = 1;
-      v62 = [v137 unsignedIntValue];
+      unsignedIntValue3 = [stateCopy unsignedIntValue];
     }
 
     else
     {
-      v62 = 0;
+      unsignedIntValue3 = 0;
       v59->_hasRrcState = 0;
     }
 
-    v59->_rrcState = v62;
-    if (v139)
+    v59->_rrcState = unsignedIntValue3;
+    if (enabledCopy)
     {
       v59->_hasCellNsaEnabled = 1;
-      v59->_cellNsaEnabled = [v139 BOOLValue];
+      v59->_cellNsaEnabled = [enabledCopy BOOLValue];
     }
 
     else
@@ -3956,10 +3956,10 @@ LABEL_400:
       v59->_cellNsaEnabled = 0;
     }
 
-    if (v135)
+    if (r1Copy)
     {
       v59->_hasIsFR1 = 1;
-      v59->_isFR1 = [v135 BOOLValue];
+      v59->_isFR1 = [r1Copy BOOLValue];
     }
 
     else
@@ -3968,11 +3968,11 @@ LABEL_400:
       v59->_isFR1 = 0;
     }
 
-    v63 = v134;
-    if (v134)
+    unsignedIntValue4 = nCopy;
+    if (nCopy)
     {
       v59->_hasCellARFCN = 1;
-      v63 = [v134 unsignedIntValue];
+      unsignedIntValue4 = [nCopy unsignedIntValue];
     }
 
     else
@@ -3980,12 +3980,12 @@ LABEL_400:
       v59->_hasCellARFCN = 0;
     }
 
-    v59->_cellARFCN = v63;
-    v64 = v133;
-    if (v133)
+    v59->_cellARFCN = unsignedIntValue4;
+    unsignedIntValue5 = infoCopy;
+    if (infoCopy)
     {
       v59->_hasCellBandInfo = 1;
-      v64 = [v133 unsignedIntValue];
+      unsignedIntValue5 = [infoCopy unsignedIntValue];
     }
 
     else
@@ -3993,12 +3993,12 @@ LABEL_400:
       v59->_hasCellBandInfo = 0;
     }
 
-    v59->_cellBandInfo = v64;
-    v65 = v132;
-    if (v132)
+    v59->_cellBandInfo = unsignedIntValue5;
+    unsignedIntValue6 = wCopy;
+    if (wCopy)
     {
       v59->_hasCellChannelBW = 1;
-      v65 = [v132 unsignedIntValue];
+      unsignedIntValue6 = [wCopy unsignedIntValue];
     }
 
     else
@@ -4006,142 +4006,142 @@ LABEL_400:
       v59->_hasCellChannelBW = 0;
     }
 
-    v59->_cellChannelBW = v65;
-    if (v131)
+    v59->_cellChannelBW = unsignedIntValue6;
+    if (rsrpCopy)
     {
       v59->_hasCellRsrp = 1;
-      v66 = [v131 intValue];
+      intValue = [rsrpCopy intValue];
     }
 
     else
     {
       v59->_hasCellRsrp = 0;
-      v66 = -1;
+      intValue = -1;
     }
 
-    v59->_cellRsrp = v66;
-    if (v50)
+    v59->_cellRsrp = intValue;
+    if (sinrCopy)
     {
       v59->_hasCellSinr = 1;
-      v67 = [v50 intValue];
+      intValue2 = [sinrCopy intValue];
     }
 
     else
     {
       v59->_hasCellSinr = 0;
-      v67 = -1;
+      intValue2 = -1;
     }
 
-    v59->_cellSinr = v67;
-    if (v51)
+    v59->_cellSinr = intValue2;
+    if (qCopy)
     {
       v59->_hasCellLteRSRQ = 1;
-      v68 = [v51 intValue];
+      intValue3 = [qCopy intValue];
     }
 
     else
     {
       v59->_hasCellLteRSRQ = 0;
-      v68 = -1;
+      intValue3 = -1;
     }
 
-    v59->_cellLteRSRQ = v68;
-    if (v52)
+    v59->_cellLteRSRQ = intValue3;
+    if (pCopy)
     {
       v59->_hasCellNrRSRP = 1;
-      v69 = [v52 intValue];
+      intValue4 = [pCopy intValue];
     }
 
     else
     {
       v59->_hasCellNrRSRP = 0;
-      v69 = -1;
+      intValue4 = -1;
     }
 
-    v59->_cellNrRSRP = v69;
-    if (v53)
+    v59->_cellNrRSRP = intValue4;
+    if (rQCopy)
     {
       v59->_hasCellNrRSRQ = 1;
-      v70 = [v53 intValue];
+      intValue5 = [rQCopy intValue];
     }
 
     else
     {
       v59->_hasCellNrRSRQ = 0;
-      v70 = -1;
+      intValue5 = -1;
     }
 
-    v59->_cellNrRSRQ = v70;
-    if (v54)
+    v59->_cellNrRSRQ = intValue5;
+    if (rCopy)
     {
       v59->_hasCellNrSNR = 1;
-      v71 = [v54 intValue];
+      intValue6 = [rCopy intValue];
     }
 
     else
     {
       v59->_hasCellNrSNR = 0;
-      v71 = -1;
+      intValue6 = -1;
     }
 
-    v59->_cellNrSNR = v71;
-    if (v55)
+    v59->_cellNrSNR = intValue6;
+    if (configuredCopy)
     {
       v59->_hasMaxDLCAConfigured = 1;
-      v72 = [v55 unsignedIntValue];
+      unsignedIntValue7 = [configuredCopy unsignedIntValue];
     }
 
     else
     {
-      v72 = 0;
+      unsignedIntValue7 = 0;
       v59->_hasMaxDLCAConfigured = 0;
     }
 
-    v59->_maxDLCAConfigured = v72;
-    if (v56)
+    v59->_maxDLCAConfigured = unsignedIntValue7;
+    if (bwCopy)
     {
       v59->_hasTotalConfiguredBw = 1;
-      v73 = [v56 unsignedIntValue];
+      unsignedIntValue8 = [bwCopy unsignedIntValue];
     }
 
     else
     {
-      v73 = 0;
+      unsignedIntValue8 = 0;
       v59->_hasTotalConfiguredBw = 0;
     }
 
-    v59->_totalConfiguredBw = v73;
-    if (v57)
+    v59->_totalConfiguredBw = unsignedIntValue8;
+    if (configuredBwCopy)
     {
       v59->_hasNrConfiguredBw = 1;
-      v74 = [v57 unsignedIntValue];
+      unsignedIntValue9 = [configuredBwCopy unsignedIntValue];
     }
 
     else
     {
-      v74 = 0;
+      unsignedIntValue9 = 0;
       v59->_hasNrConfiguredBw = 0;
     }
 
-    v59->_nrConfiguredBw = v74;
-    if (v58)
+    v59->_nrConfiguredBw = unsignedIntValue9;
+    if (layersCopy)
     {
       v59->_hasNrTotalScheduledMimoLayers = 1;
-      v75 = [v58 unsignedIntValue];
+      unsignedIntValue10 = [layersCopy unsignedIntValue];
     }
 
     else
     {
-      v75 = 0;
+      unsignedIntValue10 = 0;
       v59->_hasNrTotalScheduledMimoLayers = 0;
     }
 
-    v59->_nrTotalScheduledMimoLayers = v75;
-    v76 = v130;
-    if (v130)
+    v59->_nrTotalScheduledMimoLayers = unsignedIntValue10;
+    unsignedIntValue11 = mimoLayersCopy;
+    if (mimoLayersCopy)
     {
       v59->_hasTotalConfiguredMimoLayers = 1;
-      v76 = [v130 unsignedIntValue];
+      unsignedIntValue11 = [mimoLayersCopy unsignedIntValue];
     }
 
     else
@@ -4149,12 +4149,12 @@ LABEL_400:
       v59->_hasTotalConfiguredMimoLayers = 0;
     }
 
-    v59->_totalConfiguredMimoLayers = v76;
-    v77 = v129;
-    if (v129)
+    v59->_totalConfiguredMimoLayers = unsignedIntValue11;
+    unsignedIntValue12 = cellCopy;
+    if (cellCopy)
     {
       v59->_hasLteMaxScheduledMimoLayersInACell = 1;
-      v77 = [v129 unsignedIntValue];
+      unsignedIntValue12 = [cellCopy unsignedIntValue];
     }
 
     else
@@ -4162,12 +4162,12 @@ LABEL_400:
       v59->_hasLteMaxScheduledMimoLayersInACell = 0;
     }
 
-    v59->_lteMaxScheduledMimoLayersInACell = v77;
-    v78 = v128;
-    if (v128)
+    v59->_lteMaxScheduledMimoLayersInACell = unsignedIntValue12;
+    unsignedIntValue13 = modulationCopy;
+    if (modulationCopy)
     {
       v59->_hasNrMaxDlModulation = 1;
-      v78 = [v128 unsignedIntValue];
+      unsignedIntValue13 = [modulationCopy unsignedIntValue];
     }
 
     else
@@ -4175,12 +4175,12 @@ LABEL_400:
       v59->_hasNrMaxDlModulation = 0;
     }
 
-    v59->_nrMaxDlModulation = v78;
-    v79 = v127;
-    if (v127)
+    v59->_nrMaxDlModulation = unsignedIntValue13;
+    unsignedIntValue14 = bandwidthCopy;
+    if (bandwidthCopy)
     {
       v59->_hasActualHighBandwidth = 1;
-      v79 = [v127 unsignedIntValue];
+      unsignedIntValue14 = [bandwidthCopy unsignedIntValue];
     }
 
     else
@@ -4188,12 +4188,12 @@ LABEL_400:
       v59->_hasActualHighBandwidth = 0;
     }
 
-    v59->_actualHighBandwidth = v79;
-    v80 = v126;
-    if (v126)
+    v59->_actualHighBandwidth = unsignedIntValue14;
+    unsignedIntValue15 = lowBandwidthCopy;
+    if (lowBandwidthCopy)
     {
       v59->_hasActualLowBandwidth = 1;
-      v80 = [v126 unsignedIntValue];
+      unsignedIntValue15 = [lowBandwidthCopy unsignedIntValue];
     }
 
     else
@@ -4201,12 +4201,12 @@ LABEL_400:
       v59->_hasActualLowBandwidth = 0;
     }
 
-    v59->_actualLowBandwidth = v80;
-    v81 = v125;
-    if (v125)
+    v59->_actualLowBandwidth = unsignedIntValue15;
+    unsignedIntValue16 = actualLowBandwidthCopy;
+    if (actualLowBandwidthCopy)
     {
       v59->_hasPActualLowBandwidth = 1;
-      v81 = [v125 unsignedIntValue];
+      unsignedIntValue16 = [actualLowBandwidthCopy unsignedIntValue];
     }
 
     else
@@ -4214,12 +4214,12 @@ LABEL_400:
       v59->_hasPActualLowBandwidth = 0;
     }
 
-    v59->_pActualLowBandwidth = v81;
-    v82 = v124;
-    if (v124)
+    v59->_pActualLowBandwidth = unsignedIntValue16;
+    unsignedIntValue17 = ofActualLowBandwidthCopy;
+    if (ofActualLowBandwidthCopy)
     {
       v59->_hasMaxOfActualLowBandwidth = 1;
-      v82 = [v124 unsignedIntValue];
+      unsignedIntValue17 = [ofActualLowBandwidthCopy unsignedIntValue];
     }
 
     else
@@ -4227,12 +4227,12 @@ LABEL_400:
       v59->_hasMaxOfActualLowBandwidth = 0;
     }
 
-    v59->_maxOfActualLowBandwidth = v82;
-    v83 = v123;
-    if (v123)
+    v59->_maxOfActualLowBandwidth = unsignedIntValue17;
+    unsignedIntValue18 = highBandwidthCopy;
+    if (highBandwidthCopy)
     {
       v59->_hasEstimatedHighBandwidth = 1;
-      v83 = [v123 unsignedIntValue];
+      unsignedIntValue18 = [highBandwidthCopy unsignedIntValue];
     }
 
     else
@@ -4240,12 +4240,12 @@ LABEL_400:
       v59->_hasEstimatedHighBandwidth = 0;
     }
 
-    v59->_estimatedHighBandwidth = v83;
-    v84 = v122;
-    if (v122)
+    v59->_estimatedHighBandwidth = unsignedIntValue18;
+    unsignedIntValue19 = estimatedLowBandwidthCopy;
+    if (estimatedLowBandwidthCopy)
     {
       v59->_hasEstimatedLowBandwidth = 1;
-      v84 = [v122 unsignedIntValue];
+      unsignedIntValue19 = [estimatedLowBandwidthCopy unsignedIntValue];
     }
 
     else
@@ -4253,12 +4253,12 @@ LABEL_400:
       v59->_hasEstimatedLowBandwidth = 0;
     }
 
-    v59->_estimatedLowBandwidth = v84;
-    v85 = v121;
-    if (v121)
+    v59->_estimatedLowBandwidth = unsignedIntValue19;
+    unsignedIntValue20 = avgHighBandwidthCopy;
+    if (avgHighBandwidthCopy)
     {
       v59->_hasMovingAvgHighBandwidth = 1;
-      v85 = [v121 unsignedIntValue];
+      unsignedIntValue20 = [avgHighBandwidthCopy unsignedIntValue];
     }
 
     else
@@ -4266,12 +4266,12 @@ LABEL_400:
       v59->_hasMovingAvgHighBandwidth = 0;
     }
 
-    v59->_movingAvgHighBandwidth = v85;
-    v86 = v120;
-    if (v120)
+    v59->_movingAvgHighBandwidth = unsignedIntValue20;
+    unsignedIntValue21 = avgLowBandwidthCopy;
+    if (avgLowBandwidthCopy)
     {
       v59->_hasMovingAvgLowBandwidth = 1;
-      v86 = [v120 unsignedIntValue];
+      unsignedIntValue21 = [avgLowBandwidthCopy unsignedIntValue];
     }
 
     else
@@ -4279,12 +4279,12 @@ LABEL_400:
       v59->_hasMovingAvgLowBandwidth = 0;
     }
 
-    v59->_movingAvgLowBandwidth = v86;
-    v87 = v119;
-    if (v119)
+    v59->_movingAvgLowBandwidth = unsignedIntValue21;
+    unsignedIntValue22 = countCopy;
+    if (countCopy)
     {
       v59->_hasCmDataSentCount = 1;
-      v87 = [v119 unsignedIntValue];
+      unsignedIntValue22 = [countCopy unsignedIntValue];
     }
 
     else
@@ -4292,12 +4292,12 @@ LABEL_400:
       v59->_hasCmDataSentCount = 0;
     }
 
-    v59->_cmDataSentCount = v87;
-    v88 = v118;
-    if (v118)
+    v59->_cmDataSentCount = unsignedIntValue22;
+    unsignedIntValue23 = durationCopy;
+    if (durationCopy)
     {
       v59->_hasCmDataSentDuration = 1;
-      v88 = [v118 unsignedIntValue];
+      unsignedIntValue23 = [durationCopy unsignedIntValue];
     }
 
     else
@@ -4305,12 +4305,12 @@ LABEL_400:
       v59->_hasCmDataSentDuration = 0;
     }
 
-    v59->_cmDataSentDuration = v88;
-    v89 = v117;
-    if (v117)
+    v59->_cmDataSentDuration = unsignedIntValue23;
+    unsignedIntValue24 = avgCopy;
+    if (avgCopy)
     {
       v59->_hasTcpRTTAvg = 1;
-      v89 = [v117 unsignedIntValue];
+      unsignedIntValue24 = [avgCopy unsignedIntValue];
     }
 
     else
@@ -4318,12 +4318,12 @@ LABEL_400:
       v59->_hasTcpRTTAvg = 0;
     }
 
-    v59->_tcpRTTAvg = v89;
-    v90 = v116;
-    if (v116)
+    v59->_tcpRTTAvg = unsignedIntValue24;
+    unsignedIntValue25 = tvarCopy;
+    if (tvarCopy)
     {
       v59->_hasTcpRTTvar = 1;
-      v90 = [v116 unsignedIntValue];
+      unsignedIntValue25 = [tvarCopy unsignedIntValue];
     }
 
     else
@@ -4331,12 +4331,12 @@ LABEL_400:
       v59->_hasTcpRTTvar = 0;
     }
 
-    v59->_tcpRTTvar = v90;
-    v91 = v115;
-    if (v115)
+    v59->_tcpRTTvar = unsignedIntValue25;
+    unsignedIntValue26 = timeCopy;
+    if (timeCopy)
     {
       v59->_hasVideoStreamingStallTime = 1;
-      v91 = [v115 unsignedIntValue];
+      unsignedIntValue26 = [timeCopy unsignedIntValue];
     }
 
     else
@@ -4344,12 +4344,12 @@ LABEL_400:
       v59->_hasVideoStreamingStallTime = 0;
     }
 
-    v59->_videoStreamingStallTime = v91;
-    v92 = v114;
-    if (v114)
+    v59->_videoStreamingStallTime = unsignedIntValue26;
+    unsignedIntValue27 = stallCopy;
+    if (stallCopy)
     {
       v59->_hasNumStall = 1;
-      v92 = [v114 unsignedIntValue];
+      unsignedIntValue27 = [stallCopy unsignedIntValue];
     }
 
     else
@@ -4357,12 +4357,12 @@ LABEL_400:
       v59->_hasNumStall = 0;
     }
 
-    v59->_numStall = v92;
-    v93 = v113;
-    if (v113)
+    v59->_numStall = unsignedIntValue27;
+    unsignedIntValue28 = stallDurationCopy;
+    if (stallDurationCopy)
     {
       v59->_hasStallDuration = 1;
-      v93 = [v113 unsignedIntValue];
+      unsignedIntValue28 = [stallDurationCopy unsignedIntValue];
     }
 
     else
@@ -4370,12 +4370,12 @@ LABEL_400:
       v59->_hasStallDuration = 0;
     }
 
-    v59->_stallDuration = v93;
-    v94 = v112;
-    if (v112)
+    v59->_stallDuration = unsignedIntValue28;
+    unsignedIntValue29 = bWCopy;
+    if (bWCopy)
     {
       v59->_hasCellEstimatedBW = 1;
-      v94 = [v112 unsignedIntValue];
+      unsignedIntValue29 = [bWCopy unsignedIntValue];
     }
 
     else
@@ -4383,12 +4383,12 @@ LABEL_400:
       v59->_hasCellEstimatedBW = 0;
     }
 
-    v59->_cellEstimatedBW = v94;
-    v95 = v111;
-    if (v111)
+    v59->_cellEstimatedBW = unsignedIntValue29;
+    unsignedIntValue30 = loadCopy;
+    if (loadCopy)
     {
       v59->_hasCellLoad = 1;
-      v95 = [v111 unsignedIntValue];
+      unsignedIntValue30 = [loadCopy unsignedIntValue];
     }
 
     else
@@ -4396,12 +4396,12 @@ LABEL_400:
       v59->_hasCellLoad = 0;
     }
 
-    v59->_cellLoad = v95;
-    v96 = v110;
-    if (v110)
+    v59->_cellLoad = unsignedIntValue30;
+    unsignedIntValue31 = levelCopy;
+    if (levelCopy)
     {
       v59->_hasCellModelConfidenceLevel = 1;
-      v96 = [v110 unsignedIntValue];
+      unsignedIntValue31 = [levelCopy unsignedIntValue];
     }
 
     else
@@ -4409,12 +4409,12 @@ LABEL_400:
       v59->_hasCellModelConfidenceLevel = 0;
     }
 
-    v59->_cellModelConfidenceLevel = v96;
-    v97 = v109;
-    if (v109)
+    v59->_cellModelConfidenceLevel = unsignedIntValue31;
+    unsignedIntValue32 = cellBWCopy;
+    if (cellBWCopy)
     {
       v59->_hasMlPredictedCellBW = 1;
-      v97 = [v109 unsignedIntValue];
+      unsignedIntValue32 = [cellBWCopy unsignedIntValue];
     }
 
     else
@@ -4422,12 +4422,12 @@ LABEL_400:
       v59->_hasMlPredictedCellBW = 0;
     }
 
-    v59->_mlPredictedCellBW = v97;
-    v98 = v108;
-    if (v108)
+    v59->_mlPredictedCellBW = unsignedIntValue32;
+    unsignedIntValue33 = qbssLoadCopy;
+    if (qbssLoadCopy)
     {
       v59->_hasQbssLoad = 1;
-      v98 = [v108 unsignedIntValue];
+      unsignedIntValue33 = [qbssLoadCopy unsignedIntValue];
     }
 
     else
@@ -4435,12 +4435,12 @@ LABEL_400:
       v59->_hasQbssLoad = 0;
     }
 
-    v59->_qbssLoad = v98;
-    v99 = v107;
-    if (v107)
+    v59->_qbssLoad = unsignedIntValue33;
+    unsignedIntValue34 = scorecellularCopy;
+    if (scorecellularCopy)
     {
       v59->_hasLqmScorecellular = 1;
-      v99 = [v107 unsignedIntValue];
+      unsignedIntValue34 = [scorecellularCopy unsignedIntValue];
     }
 
     else
@@ -4448,7 +4448,7 @@ LABEL_400:
       v59->_hasLqmScorecellular = 0;
     }
 
-    v59->_lqmScorecellular = v99;
+    v59->_lqmScorecellular = unsignedIntValue34;
   }
 
   v100 = v59;
@@ -4554,9 +4554,9 @@ LABEL_400:
   return v14;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -4564,8 +4564,8 @@ LABEL_400:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDeviceConnectivityContext alloc] initByReadFrom:v7];
     v4 = v8;

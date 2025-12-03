@@ -6,17 +6,17 @@
 
 - (id)in_labeledValue
 {
-  if ([a1 isPhoneNumber])
+  if ([self isPhoneNumber])
   {
-    v2 = [a1 labeledValue];
+    labeledValue = [self labeledValue];
   }
 
   else
   {
-    v2 = 0;
+    labeledValue = 0;
   }
 
-  return v2;
+  return labeledValue;
 }
 
 @end

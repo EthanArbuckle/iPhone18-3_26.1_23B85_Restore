@@ -1,15 +1,15 @@
 @interface BUIOUtils
-+ (CGDataProvider)newCGDataProviderForInputStream:(id)a3;
-+ (CGDataProvider)newCGDataProviderForReadChannel:(id)a3;
-+ (void)readAllFromChannel:(id)a3 offset:(int64_t)a4 length:(unint64_t)a5 completion:(id)a6;
++ (CGDataProvider)newCGDataProviderForInputStream:(id)stream;
++ (CGDataProvider)newCGDataProviderForReadChannel:(id)channel;
++ (void)readAllFromChannel:(id)channel offset:(int64_t)offset length:(unint64_t)length completion:(id)completion;
 @end
 
 @implementation BUIOUtils
 
-+ (void)readAllFromChannel:(id)a3 offset:(int64_t)a4 length:(unint64_t)a5 completion:(id)a6
++ (void)readAllFromChannel:(id)channel offset:(int64_t)offset length:(unint64_t)length completion:(id)completion
 {
-  v9 = a3;
-  v10 = a6;
+  channelCopy = channel;
+  completionCopy = completion;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
@@ -23,41 +23,41 @@
   v15[2] = sub_241DB2A3C;
   v15[3] = &unk_278D1D1E0;
   v17 = v18;
-  v13 = v10;
+  v13 = completionCopy;
   v16 = v13;
-  objc_msgSend_readFromOffset_length_handler_(v9, v14, a4, a5, v15);
+  objc_msgSend_readFromOffset_length_handler_(channelCopy, v14, offset, length, v15);
 
   _Block_object_dispose(v18, 8);
 }
 
-+ (CGDataProvider)newCGDataProviderForInputStream:(id)a3
++ (CGDataProvider)newCGDataProviderForInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     return 0;
   }
 
-  v3 = a3;
-  CFRetain(v3);
-  Sequential = CGDataProviderCreateSequential(v3, &stru_2853F2A00);
+  streamCopy = stream;
+  CFRetain(streamCopy);
+  Sequential = CGDataProviderCreateSequential(streamCopy, &stru_2853F2A00);
 
   return Sequential;
 }
 
-+ (CGDataProvider)newCGDataProviderForReadChannel:(id)a3
++ (CGDataProvider)newCGDataProviderForReadChannel:(id)channel
 {
-  if (!a3)
+  if (!channel)
   {
     return 0;
   }
 
-  v4 = a3;
+  channelCopy = channel;
   v5 = [BUReadChannelInputStreamAdapter alloc];
-  Channel = objc_msgSend_initWithReadChannel_(v5, v6, v4);
+  Channel = objc_msgSend_initWithReadChannel_(v5, v6, channelCopy);
 
   if (objc_msgSend_canSeek(Channel, v8, v9))
   {
-    v11 = objc_msgSend_newCGDataProviderForInputStream_(a1, v10, Channel);
+    v11 = objc_msgSend_newCGDataProviderForInputStream_(self, v10, Channel);
   }
 
   else

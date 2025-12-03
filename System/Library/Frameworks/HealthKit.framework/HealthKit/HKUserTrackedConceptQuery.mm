@@ -1,30 +1,30 @@
 @interface HKUserTrackedConceptQuery
-+ (void)configureClientInterface:(id)a3;
-- (HKUserTrackedConceptQuery)initWithUserTrackedConceptType:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5 resultsHandler:(id)a6;
-- (void)_enumerateUserTrackedConceptsWithHandler:(id)a3 handler:(id)a4;
-- (void)client_deliverUserTrackedConcepts:(id)a3 queryUUID:(id)a4;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
++ (void)configureClientInterface:(id)interface;
+- (HKUserTrackedConceptQuery)initWithUserTrackedConceptType:(id)type predicate:(id)predicate sortDescriptors:(id)descriptors resultsHandler:(id)handler;
+- (void)_enumerateUserTrackedConceptsWithHandler:(id)handler handler:(id)a4;
+- (void)client_deliverUserTrackedConcepts:(id)concepts queryUUID:(id)d;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
 @implementation HKUserTrackedConceptQuery
 
-- (HKUserTrackedConceptQuery)initWithUserTrackedConceptType:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5 resultsHandler:(id)a6
+- (HKUserTrackedConceptQuery)initWithUserTrackedConceptType:(id)type predicate:(id)predicate sortDescriptors:(id)descriptors resultsHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  descriptorsCopy = descriptors;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = HKUserTrackedConceptQuery;
-  v12 = [(HKQuery *)&v18 _initWithObjectType:a3 predicate:a4];
+  v12 = [(HKQuery *)&v18 _initWithObjectType:type predicate:predicate];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [descriptorsCopy copy];
     sortDescriptors = v12->_sortDescriptors;
     v12->_sortDescriptors = v13;
 
-    v15 = [v11 copy];
+    v15 = [handlerCopy copy];
     handler = v12->_handler;
     v12->_handler = v15;
   }
@@ -32,21 +32,21 @@
   return v12;
 }
 
-- (void)client_deliverUserTrackedConcepts:(id)a3 queryUUID:(id)a4
+- (void)client_deliverUserTrackedConcepts:(id)concepts queryUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKQuery *)self queue];
+  conceptsCopy = concepts;
+  dCopy = d;
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__HKUserTrackedConceptQuery_client_deliverUserTrackedConcepts_queryUUID___block_invoke;
   block[3] = &unk_1E7376640;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = conceptsCopy;
+  v9 = conceptsCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __73__HKUserTrackedConceptQuery_client_deliverUserTrackedConcepts_queryUUID___block_invoke(uint64_t a1)
@@ -67,64 +67,64 @@ void __73__HKUserTrackedConceptQuery_client_deliverUserTrackedConcepts_queryUUID
   }
 }
 
-- (void)_enumerateUserTrackedConceptsWithHandler:(id)a3 handler:(id)a4
+- (void)_enumerateUserTrackedConceptsWithHandler:(id)handler handler:(id)a4
 {
-  v10 = a3;
+  handlerCopy = handler;
   v6 = a4;
-  if ([v10 count])
+  if ([handlerCopy count])
   {
     v7 = v6;
-    v8 = self;
-    v9 = v10;
+    selfCopy2 = self;
+    v9 = handlerCopy;
   }
 
   else
   {
     v9 = MEMORY[0x1E695E0F0];
     v7 = v6;
-    v8 = self;
+    selfCopy2 = self;
   }
 
-  (*(v6 + 2))(v7, v8, v9, 0);
+  (*(v6 + 2))(v7, selfCopy2, v9, 0);
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = HKUserTrackedConceptQuery;
-  v4 = a3;
-  [(HKQuery *)&v5 queue_populateConfiguration:v4];
-  [v4 setSortDescriptors:{self->_sortDescriptors, v5.receiver, v5.super_class}];
+  configurationCopy = configuration;
+  [(HKQuery *)&v5 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setSortDescriptors:{self->_sortDescriptors, v5.receiver, v5.super_class}];
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v4 = a3;
-  v6.receiver = a1;
+  interfaceCopy = interface;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___HKUserTrackedConceptQuery;
-  objc_msgSendSuper2(&v6, sel_configureClientInterface_, v4);
-  v5 = [v4 hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverUserTrackedConcepts_queryUUID_ argumentIndex:0 ofReply:0];
+  objc_msgSendSuper2(&v6, sel_configureClientInterface_, interfaceCopy);
+  v5 = [interfaceCopy hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverUserTrackedConcepts_queryUUID_ argumentIndex:0 ofReply:0];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
   v10[3] = __Block_byref_object_copy__48;
   v10[4] = __Block_byref_object_dispose__48;
   v11 = _Block_copy(self->_handler);
-  v5 = [(HKQuery *)self clientQueue];
+  clientQueue = [(HKQuery *)self clientQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__HKUserTrackedConceptQuery_queue_deliverError___block_invoke;
   block[3] = &unk_1E7378280;
-  v8 = v4;
+  v8 = errorCopy;
   v9 = v10;
   block[4] = self;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v6 = errorCopy;
+  dispatch_async(clientQueue, block);
 
   _Block_object_dispose(v10, 8);
 }
@@ -140,11 +140,11 @@ void __73__HKUserTrackedConceptQuery_client_deliverUserTrackedConcepts_queryUUID
   }
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKUserTrackedConceptQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   handler = self->_handler;
   self->_handler = 0;
 }

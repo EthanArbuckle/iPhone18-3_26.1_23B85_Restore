@@ -1,5 +1,5 @@
 @interface ASKMobileGestalt
-+ (BOOL)hasCapabilitiesIncludingCompatibilityCheck:(id)a3 isVisionOSCompatibleIOSApp:(BOOL)a4;
++ (BOOL)hasCapabilitiesIncludingCompatibilityCheck:(id)check isVisionOSCompatibleIOSApp:(BOOL)app;
 + (BOOL)isChinaSKUDevice;
 + (CGSize)mainScreenSize;
 + (NSString)activePairedSystemVersion;
@@ -49,16 +49,16 @@ void __45__ASKMobileGestalt_activePairedSystemVersion__block_invoke()
   activePairedSystemVersion_systemVersion = v2;
 }
 
-+ (BOOL)hasCapabilitiesIncludingCompatibilityCheck:(id)a3 isVisionOSCompatibleIOSApp:(BOOL)a4
++ (BOOL)hasCapabilitiesIncludingCompatibilityCheck:(id)check isVisionOSCompatibleIOSApp:(BOOL)app
 {
-  v4 = a4;
+  appCopy = app;
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  checkCopy = check;
+  v6 = [checkCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -70,12 +70,12 @@ void __45__ASKMobileGestalt_activePairedSystemVersion__block_invoke()
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(checkCopy);
         }
 
         if (([*(*(&v15 + 1) + 8 * i) isEqualToString:{&stru_1F5C65700, v15}] & 1) == 0)
         {
-          v11 = (v4 ? _MGCopyAnswerWithMode() : MGCopyAnswer());
+          v11 = (appCopy ? _MGCopyAnswerWithMode() : MGCopyAnswer());
           v12 = v11;
           if (v11)
           {
@@ -90,7 +90,7 @@ void __45__ASKMobileGestalt_activePairedSystemVersion__block_invoke()
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [checkCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -112,7 +112,7 @@ LABEL_17:
   block[1] = 3221225472;
   block[2] = __34__ASKMobileGestalt_mainScreenSize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (mainScreenSize_once != -1)
   {
     dispatch_once(&mainScreenSize_once, block);

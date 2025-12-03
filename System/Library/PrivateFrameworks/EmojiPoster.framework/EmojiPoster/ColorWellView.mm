@@ -6,10 +6,10 @@
 
 - (void)layoutSubviews
 {
-  v4 = self;
-  v2 = [(ColorWellView *)v4 layer];
-  [(ColorWellView *)v4 bounds];
-  [v2 setCornerRadius_];
+  selfCopy = self;
+  layer = [(ColorWellView *)selfCopy layer];
+  [(ColorWellView *)selfCopy bounds];
+  [layer setCornerRadius_];
 }
 
 @end

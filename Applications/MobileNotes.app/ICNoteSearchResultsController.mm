@@ -1,10 +1,10 @@
 @interface ICNoteSearchResultsController
-- (BOOL)isUpToDateForInput:(id)a3 accountIdentifier:(id)a4;
+- (BOOL)isUpToDateForInput:(id)input accountIdentifier:(id)identifier;
 - (ICNoteSearchResultsController)init;
 - (void)cancelSearchQuery;
 - (void)donateSearchIntent;
-- (void)donateSearchIntentForSearchString:(id)a3;
-- (void)performSearchWithInput:(id)a3 suggestionsResponder:(id)a4 accountIdentifier:(id)a5 modernResultsOnly:(BOOL)a6 updateHandler:(id)a7;
+- (void)donateSearchIntentForSearchString:(id)string;
+- (void)performSearchWithInput:(id)input suggestionsResponder:(id)responder accountIdentifier:(id)identifier modernResultsOnly:(BOOL)only updateHandler:(id)handler;
 @end
 
 @implementation ICNoteSearchResultsController
@@ -30,11 +30,11 @@
 
 - (void)cancelSearchQuery
 {
-  v3 = [(ICNoteSearchResultsController *)self queryOperationQueue];
-  [v3 cancelAllOperations];
+  queryOperationQueue = [(ICNoteSearchResultsController *)self queryOperationQueue];
+  [queryOperationQueue cancelAllOperations];
 
-  v4 = [(ICNoteSearchResultsController *)self searchDonationDelayer];
-  [v4 cancelPreviousFireRequests];
+  searchDonationDelayer = [(ICNoteSearchResultsController *)self searchDonationDelayer];
+  [searchDonationDelayer cancelPreviousFireRequests];
 
   [(ICNoteSearchResultsController *)self setDonationSearchString:0];
   [(ICNoteSearchResultsController *)self setPreviousSearchInput:0];
@@ -42,35 +42,35 @@
   [(ICNoteSearchResultsController *)self setPreviousAccountIdentifier:0];
 }
 
-- (BOOL)isUpToDateForInput:(id)a3 accountIdentifier:(id)a4
+- (BOOL)isUpToDateForInput:(id)input accountIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICNoteSearchResultsController *)self previousSearchInput];
-  v9 = [v8 isEqual:v7];
+  identifierCopy = identifier;
+  inputCopy = input;
+  previousSearchInput = [(ICNoteSearchResultsController *)self previousSearchInput];
+  v9 = [previousSearchInput isEqual:inputCopy];
 
   if (v9)
   {
-    v10 = [(ICNoteSearchResultsController *)self previousAccountIdentifier];
-    if (kCFNull == v6)
+    previousAccountIdentifier = [(ICNoteSearchResultsController *)self previousAccountIdentifier];
+    if (kCFNull == identifierCopy)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = v6;
+      v11 = identifierCopy;
     }
 
     v12 = v11;
-    if (kCFNull == v10)
+    if (kCFNull == previousAccountIdentifier)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = v10;
+      v13 = previousAccountIdentifier;
     }
 
     v14 = v13;
@@ -107,34 +107,34 @@
   return v9;
 }
 
-- (void)performSearchWithInput:(id)a3 suggestionsResponder:(id)a4 accountIdentifier:(id)a5 modernResultsOnly:(BOOL)a6 updateHandler:(id)a7
+- (void)performSearchWithInput:(id)input suggestionsResponder:(id)responder accountIdentifier:(id)identifier modernResultsOnly:(BOOL)only updateHandler:(id)handler
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (![(ICNoteSearchResultsController *)self isUpToDateForInput:v12 accountIdentifier:v14])
+  onlyCopy = only;
+  inputCopy = input;
+  responderCopy = responder;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (![(ICNoteSearchResultsController *)self isUpToDateForInput:inputCopy accountIdentifier:identifierCopy])
   {
     [(ICNoteSearchResultsController *)self cancelSearchQuery];
-    v16 = [v12 copy];
+    v16 = [inputCopy copy];
     [(ICNoteSearchResultsController *)self setPreviousSearchInput:v16];
 
-    [(ICNoteSearchResultsController *)self setPreviousAccountIdentifier:v14];
-    if (([v12 isEmpty] & 1) == 0)
+    [(ICNoteSearchResultsController *)self setPreviousAccountIdentifier:identifierCopy];
+    if (([inputCopy isEmpty] & 1) == 0)
     {
-      v17 = [v12 searchString];
-      v18 = v17;
+      searchString = [inputCopy searchString];
+      v18 = searchString;
       v19 = &stru_100661CF0;
-      if (v17)
+      if (searchString)
       {
-        v19 = v17;
+        v19 = searchString;
       }
 
       v20 = v19;
 
       [(ICNoteSearchResultsController *)self donateSearchIntentForSearchString:v20];
-      v21 = [[ICSearchQueryOperation alloc] initWithSearchSuggestionsResponder:v13 userInput:v12 performNLSearch:1 performTopHitSearch:1 modernResultsOnly:v8];
+      v21 = [[ICSearchQueryOperation alloc] initWithSearchSuggestionsResponder:responderCopy userInput:inputCopy performNLSearch:1 performTopHitSearch:1 modernResultsOnly:onlyCopy];
       [ICSearchProfiler logProfilingWithMessage:@"ICSearchViewController startSearchQueryWithString: start" searchQueryOperation:v21];
       objc_initWeak(&location, v21);
       v23[0] = _NSConcreteStackBlock;
@@ -143,11 +143,11 @@
       v23[3] = &unk_100647338;
       objc_copyWeak(&v27, &location);
       v25 = &stru_1006472C0;
-      v24 = v14;
-      v26 = v15;
+      v24 = identifierCopy;
+      v26 = handlerCopy;
       [v21 setFoundItemsHandler:v23];
-      v22 = [(ICNoteSearchResultsController *)self queryOperationQueue];
-      [v22 addOperation:v21];
+      queryOperationQueue = [(ICNoteSearchResultsController *)self queryOperationQueue];
+      [queryOperationQueue addOperation:v21];
 
       [ICSearchProfiler logProfilingWithMessage:@"ICSearchViewController startSearchQueryWithString: end" searchQueryOperation:v21];
       objc_destroyWeak(&v27);
@@ -156,19 +156,19 @@
   }
 }
 
-- (void)donateSearchIntentForSearchString:(id)a3
+- (void)donateSearchIntentForSearchString:(id)string
 {
-  [(ICNoteSearchResultsController *)self setDonationSearchString:a3];
-  v4 = [(ICNoteSearchResultsController *)self searchDonationDelayer];
-  [v4 requestFire];
+  [(ICNoteSearchResultsController *)self setDonationSearchString:string];
+  searchDonationDelayer = [(ICNoteSearchResultsController *)self searchDonationDelayer];
+  [searchDonationDelayer requestFire];
 }
 
 - (void)donateSearchIntent
 {
-  v4 = [(ICNoteSearchResultsController *)self donationSearchString];
-  if ([v4 length])
+  donationSearchString = [(ICNoteSearchResultsController *)self donationSearchString];
+  if ([donationSearchString length])
   {
-    v3 = [ICIntentsUtilities interactionForSearchString:v4];
+    v3 = [ICIntentsUtilities interactionForSearchString:donationSearchString];
     [ICIntentsUtilities donateInteraction:v3];
   }
 

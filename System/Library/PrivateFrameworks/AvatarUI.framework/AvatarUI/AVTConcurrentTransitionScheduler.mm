@@ -1,5 +1,5 @@
 @interface AVTConcurrentTransitionScheduler
-- (AVTConcurrentTransitionScheduler)initWithEventHandler:(id)a3 delay:(double)a4;
+- (AVTConcurrentTransitionScheduler)initWithEventHandler:(id)handler delay:(double)delay;
 - (void)scheduleEvent;
 - (void)scheduleTransitionTimer;
 - (void)stop;
@@ -7,19 +7,19 @@
 
 @implementation AVTConcurrentTransitionScheduler
 
-- (AVTConcurrentTransitionScheduler)initWithEventHandler:(id)a3 delay:(double)a4
+- (AVTConcurrentTransitionScheduler)initWithEventHandler:(id)handler delay:(double)delay
 {
-  v6 = a3;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = AVTConcurrentTransitionScheduler;
   v7 = [(AVTConcurrentTransitionScheduler *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [handlerCopy copy];
     eventHandler = v7->_eventHandler;
     v7->_eventHandler = v8;
 
-    v7->_delay = a4;
+    v7->_delay = delay;
   }
 
   return v7;
@@ -27,29 +27,29 @@
 
 - (void)scheduleEvent
 {
-  v3 = [(AVTConcurrentTransitionScheduler *)self transitionTimer];
+  transitionTimer = [(AVTConcurrentTransitionScheduler *)self transitionTimer];
 
-  if (!v3)
+  if (!transitionTimer)
   {
     [(AVTConcurrentTransitionScheduler *)self scheduleTransitionTimer];
-    v4 = [(AVTConcurrentTransitionScheduler *)self eventHandler];
-    v4[2]();
+    eventHandler = [(AVTConcurrentTransitionScheduler *)self eventHandler];
+    eventHandler[2]();
   }
 }
 
 - (void)stop
 {
-  v3 = [(AVTConcurrentTransitionScheduler *)self transitionTimer];
-  [v3 invalidate];
+  transitionTimer = [(AVTConcurrentTransitionScheduler *)self transitionTimer];
+  [transitionTimer invalidate];
 
   [(AVTConcurrentTransitionScheduler *)self setTransitionTimer:0];
 }
 
 - (void)scheduleTransitionTimer
 {
-  v3 = [(AVTConcurrentTransitionScheduler *)self transitionTimer];
+  transitionTimer = [(AVTConcurrentTransitionScheduler *)self transitionTimer];
 
-  if (v3)
+  if (transitionTimer)
   {
     v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Calling schedule transition timer while timer is already running" userInfo:0];
     [v4 raise];
@@ -65,8 +65,8 @@
   v13 = &unk_1E7F3B938;
   objc_copyWeak(&v14, &location);
   v8 = [v5 timerWithTimeInterval:1 repeats:&v10 block:v7];
-  v9 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [v9 addTimer:v8 forMode:*MEMORY[0x1E695DA28]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [mainRunLoop addTimer:v8 forMode:*MEMORY[0x1E695DA28]];
 
   [(AVTConcurrentTransitionScheduler *)self setTransitionTimer:v8];
   objc_destroyWeak(&v14);

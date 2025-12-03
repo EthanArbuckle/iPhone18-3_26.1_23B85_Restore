@@ -1,13 +1,13 @@
 @interface PXCuratedLibraryGridLayoutGenerator
 - (CGSize)estimatedSize;
 - (CGSize)size;
-- (PXCuratedLibraryGridLayoutGenerator)initWithMetrics:(id)a3;
-- (_NSRange)geometriesRangeCoveringRect:(CGRect)a3;
+- (PXCuratedLibraryGridLayoutGenerator)initWithMetrics:(id)metrics;
+- (_NSRange)geometriesRangeCoveringRect:(CGRect)rect;
 - (_PXCornerSpriteIndexes)cornerSpriteIndexes;
-- (void)_prepareGeometriesBufferForCount:(unint64_t)a3;
+- (void)_prepareGeometriesBufferForCount:(unint64_t)count;
 - (void)_prepareIfNeeded;
 - (void)dealloc;
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5;
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind;
 - (void)invalidate;
 @end
 
@@ -25,16 +25,16 @@
   return result;
 }
 
-- (_NSRange)geometriesRangeCoveringRect:(CGRect)a3
+- (_NSRange)geometriesRangeCoveringRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(PXCuratedLibraryGridLayoutGenerator *)self _prepareIfNeeded];
-  v8 = [(PXCuratedLibraryGridLayoutGenerator *)self itemCount];
-  v9 = v8 - 1;
-  if (v8 < 1)
+  itemCount = [(PXCuratedLibraryGridLayoutGenerator *)self itemCount];
+  v9 = itemCount - 1;
+  if (itemCount < 1)
   {
     goto LABEL_8;
   }
@@ -49,17 +49,17 @@
   v22.size.width = width;
   v22.size.height = height;
   v11 = (ceil((CGRectGetMaxY(v22) - self->_insets.top) / (self->_itemSize.height + self->_interItemSpacing)) + -1.0);
-  v12 = [(PXCuratedLibraryGridLayoutGenerator *)self metrics];
-  v13 = [v12 numberOfColumns];
+  metrics = [(PXCuratedLibraryGridLayoutGenerator *)self metrics];
+  numberOfColumns = [metrics numberOfColumns];
 
-  v14 = v13 * v10;
-  if ((v13 * v10) >= v9)
+  v14 = numberOfColumns * v10;
+  if ((numberOfColumns * v10) >= v9)
   {
     v14 = v9;
   }
 
   v15 = v14 & ~(v14 >> 63);
-  v16 = v13 + v13 * v11 - 1;
+  v16 = numberOfColumns + numberOfColumns * v11 - 1;
   if (v16 >= v9)
   {
     v16 = v9;
@@ -84,12 +84,12 @@ LABEL_8:
   return result;
 }
 
-- (void)_prepareGeometriesBufferForCount:(unint64_t)a3
+- (void)_prepareGeometriesBufferForCount:(unint64_t)count
 {
-  if (self->_geometriesCount < a3)
+  if (self->_geometriesCount < count)
   {
-    self->_geometries = malloc_type_realloc(self->_geometries, 152 * a3, 0x100004050011849uLL);
-    self->_geometriesCount = a3;
+    self->_geometries = malloc_type_realloc(self->_geometries, 152 * count, 0x100004050011849uLL);
+    self->_geometriesCount = count;
   }
 }
 
@@ -98,29 +98,29 @@ LABEL_8:
   if (!self->_isPrepared)
   {
     self->_isPrepared = 1;
-    v4 = [(PXCuratedLibraryGridLayoutGenerator *)self itemCount];
-    v5 = [(PXCuratedLibraryGridLayoutGenerator *)self keyItemIndex];
-    if (v4 <= 1)
+    itemCount = [(PXCuratedLibraryGridLayoutGenerator *)self itemCount];
+    keyItemIndex = [(PXCuratedLibraryGridLayoutGenerator *)self keyItemIndex];
+    if (itemCount <= 1)
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = v4;
+      v6 = itemCount;
     }
 
     v7 = v6 - 1;
-    [(PXCuratedLibraryGridLayoutGenerator *)self _prepareGeometriesBufferForCount:v4];
-    v30 = [(PXCuratedLibraryGridLayoutGenerator *)self metrics];
-    v8 = [v30 numberOfColumns];
-    [v30 referenceSize];
+    [(PXCuratedLibraryGridLayoutGenerator *)self _prepareGeometriesBufferForCount:itemCount];
+    metrics = [(PXCuratedLibraryGridLayoutGenerator *)self metrics];
+    numberOfColumns = [metrics numberOfColumns];
+    [metrics referenceSize];
     top = self->_insets.top;
     height = self->_itemSize.height;
     interItemSpacing = self->_interItemSpacing;
-    if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+    if (keyItemIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v13 = v4;
+      v13 = itemCount;
     }
 
     else
@@ -130,28 +130,28 @@ LABEL_8:
 
     bottom = self->_insets.bottom;
     v27 = v13;
-    if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+    if (keyItemIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
       v14 = v9 - self->_insets.left - self->_insets.right;
-      [v30 headerAspectRatio];
+      [metrics headerAspectRatio];
       top = top + v14 / v15 + self->_interItemSpacing;
     }
 
-    v16 = [v30 numberOfPrecedingAssets];
-    if (v16 == 0x7FFFFFFFFFFFFFFFLL)
+    numberOfPrecedingAssets = [metrics numberOfPrecedingAssets];
+    if (numberOfPrecedingAssets == 0x7FFFFFFFFFFFFFFFLL)
     {
       v29 = 0;
     }
 
     else
     {
-      v29 = v16 % v8;
+      v29 = numberOfPrecedingAssets % numberOfColumns;
     }
 
     v26 = height + interItemSpacing;
-    if (v4 >= 1)
+    if (itemCount >= 1)
     {
-      if (!v5)
+      if (!keyItemIndex)
       {
         PXRectGetCenter();
       }
@@ -159,7 +159,7 @@ LABEL_8:
       PXRectGetCenter();
     }
 
-    v17 = (v8 + v29 + v27 - 1) / v8;
+    v17 = (numberOfColumns + v29 + v27 - 1) / numberOfColumns;
     v18 = 0.0;
     if (v17 > 0)
     {
@@ -167,10 +167,10 @@ LABEL_8:
     }
 
     v19 = bottom + top + v17 * v26 - v18;
-    [v30 referenceSize];
+    [metrics referenceSize];
     self->_actualSize.width = v20;
     self->_actualSize.height = v19;
-    if ((v29 + v27) % v8 <= 0)
+    if ((v29 + v27) % numberOfColumns <= 0)
     {
       v21 = 0.0;
     }
@@ -181,45 +181,45 @@ LABEL_8:
     }
 
     self->_lastFullRowBottomEdge = v19 - bottom - v21;
-    if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+    if (keyItemIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v22 = v8 - v29;
+      v22 = numberOfColumns - v29;
     }
 
     else
     {
-      v22 = v5;
+      v22 = keyItemIndex;
     }
 
-    if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+    if (keyItemIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       v23 = v29;
     }
 
     else
     {
-      v23 = v5;
+      v23 = keyItemIndex;
     }
 
     self->_cornerSpriteIndexes.topLeft = v23;
     self->_cornerSpriteIndexes.topRight = v22;
     if (v17)
     {
-      self->_cornerSpriteIndexes.bottomLeft = (v17 - 1) * v8 - v29;
-      self->_cornerSpriteIndexes.bottomRight = v4;
-      if (v5 <= ((v17 - 1) * v8 - v29))
+      self->_cornerSpriteIndexes.bottomLeft = (v17 - 1) * numberOfColumns - v29;
+      self->_cornerSpriteIndexes.bottomRight = itemCount;
+      if (keyItemIndex <= ((v17 - 1) * numberOfColumns - v29))
       {
-        self->_cornerSpriteIndexes.bottomLeft = (v17 - 1) * v8 - v29 + 1;
+        self->_cornerSpriteIndexes.bottomLeft = (v17 - 1) * numberOfColumns - v29 + 1;
       }
 
-      v24 = v30;
-      if (v5 <= v4)
+      v24 = metrics;
+      if (keyItemIndex <= itemCount)
       {
-        v25 = (v4 - 1);
+        v25 = (itemCount - 1);
         self->_cornerSpriteIndexes.bottomRight = v25;
-        if (v5 == v25)
+        if (keyItemIndex == v25)
         {
-          self->_cornerSpriteIndexes.bottomRight = v4 - 2;
+          self->_cornerSpriteIndexes.bottomRight = itemCount - 2;
         }
       }
     }
@@ -228,22 +228,22 @@ LABEL_8:
     {
       self->_cornerSpriteIndexes.bottomLeft = v23;
       self->_cornerSpriteIndexes.bottomRight = v23;
-      v24 = v30;
+      v24 = metrics;
     }
   }
 }
 
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind
 {
-  if (!a5)
+  if (!kind)
   {
-    length = a4.length;
-    location = a4.location;
-    v10 = a4.location + a4.length;
-    if (a4.location + a4.length > [(PXCuratedLibraryGridLayoutGenerator *)self itemCount])
+    length = range.length;
+    location = range.location;
+    v10 = range.location + range.length;
+    if (range.location + range.length > [(PXCuratedLibraryGridLayoutGenerator *)self itemCount])
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryGridLayoutGenerator.m" lineNumber:143 description:@"the range must be <= to the number of itemCount"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryGridLayoutGenerator.m" lineNumber:143 description:@"the range must be <= to the number of itemCount"];
     }
 
     [(PXCuratedLibraryGridLayoutGenerator *)self _prepareIfNeeded];
@@ -252,7 +252,7 @@ LABEL_8:
       v11 = location;
       do
       {
-        v12 = &a3[v11];
+        v12 = &geometries[v11];
         v13 = &self->_geometries[v11];
         v15 = *&v13->var6.origin.y;
         v14 = *&v13->var6.size.height;
@@ -293,11 +293,11 @@ LABEL_8:
 
 - (CGSize)estimatedSize
 {
-  v3 = [(PXCuratedLibraryGridLayoutGenerator *)self metrics];
-  v4 = [v3 numberOfColumns];
+  metrics = [(PXCuratedLibraryGridLayoutGenerator *)self metrics];
+  numberOfColumns = [metrics numberOfColumns];
   __asm { FMOV            V4.2D, #3.0 }
 
-  _Q4.f64[0] = v4;
+  _Q4.f64[0] = numberOfColumns;
   v10 = vmlaq_f64(vdupq_lane_s64(COERCE__INT64(-self->_interItemSpacing), 0), vaddq_f64(vdupq_lane_s64(*&self->_interItemSpacing, 0), self->_itemSize), _Q4);
   v13 = vaddq_f64(*&self->_insets.bottom, vaddq_f64(*&self->_insets.top, vmaxnmq_f64(vextq_s8(v10, v10, 8uLL), 0)));
 
@@ -324,37 +324,37 @@ LABEL_8:
   [(PXCuratedLibraryGridLayoutGenerator *)&v3 dealloc];
 }
 
-- (PXCuratedLibraryGridLayoutGenerator)initWithMetrics:(id)a3
+- (PXCuratedLibraryGridLayoutGenerator)initWithMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v24.receiver = self;
   v24.super_class = PXCuratedLibraryGridLayoutGenerator;
-  v5 = [(PXCuratedLibraryGridLayoutGenerator *)&v24 initWithMetrics:v4];
+  v5 = [(PXCuratedLibraryGridLayoutGenerator *)&v24 initWithMetrics:metricsCopy];
   if (v5)
   {
-    [v4 padding];
+    [metricsCopy padding];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    [v4 referenceSize];
+    [metricsCopy referenceSize];
     v15 = v14 - v9 - v13;
-    v16 = [v4 numberOfColumns];
-    [v4 interitemSpacing];
+    numberOfColumns = [metricsCopy numberOfColumns];
+    [metricsCopy interitemSpacing];
     v18 = v17;
-    v19 = [v4 style];
-    if (v19 == 1)
+    style = [metricsCopy style];
+    if (style == 1)
     {
-      [v4 screenScale];
+      [metricsCopy screenScale];
       v25 = 0.0;
       v26 = 0.0;
-      [off_1E7721798 bestItemSizeForAvailableWidth:v16 screenScale:&v26 columns:&v25 bestSpacing:v15 bestInset:v22];
+      [off_1E7721798 bestItemSizeForAvailableWidth:numberOfColumns screenScale:&v26 columns:&v25 bestSpacing:v15 bestInset:v22];
       v18 = v26;
       v9 = v9 + v25;
       v13 = v13 + v25;
     }
 
-    else if (v19)
+    else if (style)
     {
       v7 = *off_1E7721FA8;
       v9 = *(off_1E7721FA8 + 1);
@@ -366,7 +366,7 @@ LABEL_8:
 
     else
     {
-      v20 = (v15 - (v16 - 1) * v18) / v16;
+      v20 = (v15 - (numberOfColumns - 1) * v18) / numberOfColumns;
       v21 = v20;
     }
 

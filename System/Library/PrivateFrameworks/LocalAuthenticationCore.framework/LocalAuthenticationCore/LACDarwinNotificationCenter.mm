@@ -1,21 +1,21 @@
 @interface LACDarwinNotificationCenter
 + (LACDarwinNotificationCenter)sharedInstance;
-- (BOOL)_hasSubscriptionToNotification:(__CFString *)a3;
-- (BOOL)hasObserver:(id)a3;
+- (BOOL)_hasSubscriptionToNotification:(__CFString *)notification;
+- (BOOL)hasObserver:(id)observer;
 - (LACDarwinNotificationCenter)init;
 - (int64_t)observerCount;
-- (void)_addSubscriptionToNotification:(__CFString *)a3;
-- (void)_notifyObserversAboutNotification:(__CFString *)a3;
-- (void)_postNotification:(__CFString *)a3;
-- (void)_startObservingNotification:(__CFString *)a3;
+- (void)_addSubscriptionToNotification:(__CFString *)notification;
+- (void)_notifyObserversAboutNotification:(__CFString *)notification;
+- (void)_postNotification:(__CFString *)notification;
+- (void)_startObservingNotification:(__CFString *)notification;
 - (void)_stopObservingAllNotifications;
-- (void)_synchronizedObservers:(id)a3;
-- (void)_synchronizedSubscriptions:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)addObserver:(id)a3 notification:(__CFString *)a4;
+- (void)_synchronizedObservers:(id)observers;
+- (void)_synchronizedSubscriptions:(id)subscriptions;
+- (void)addObserver:(id)observer;
+- (void)addObserver:(id)observer notification:(__CFString *)notification;
 - (void)listenToLaunchNotifications;
-- (void)postNotification:(__CFString *)a3;
-- (void)removeObserver:(id)a3;
+- (void)postNotification:(__CFString *)notification;
+- (void)removeObserver:(id)observer;
 - (void)stopListeningToAllNotifications;
 @end
 
@@ -40,9 +40,9 @@ void __58__LACDarwinNotificationCenter_listenToLaunchNotifications__block_invoke
   v2 = [(LACDarwinNotificationCenter *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     subscriptions = v2->_subscriptions;
@@ -118,24 +118,24 @@ uint64_t __44__LACDarwinNotificationCenter_observerCount__block_invoke(uint64_t 
   objc_destroyWeak(&location);
 }
 
-- (void)postNotification:(__CFString *)a3
+- (void)postNotification:(__CFString *)notification
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = LACLogNotifications();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = a3;
+    notificationCopy = notification;
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "Will post %{public}@", &v7, 0xCu);
   }
 
-  [(LACDarwinNotificationCenter *)self _postNotification:a3];
+  [(LACDarwinNotificationCenter *)self _postNotification:notification];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)hasObserver:(id)a3
+- (BOOL)hasObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -145,7 +145,7 @@ uint64_t __44__LACDarwinNotificationCenter_observerCount__block_invoke(uint64_t 
   v7[2] = __43__LACDarwinNotificationCenter_hasObserver___block_invoke;
   v7[3] = &unk_1E7A96EC0;
   v9 = &v10;
-  v5 = v4;
+  v5 = observerCopy;
   v8 = v5;
   [(LACDarwinNotificationCenter *)self _synchronizedObservers:v7];
   LOBYTE(self) = *(v11 + 24);
@@ -161,15 +161,15 @@ uint64_t __43__LACDarwinNotificationCenter_hasObserver___block_invoke(uint64_t a
   return result;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__LACDarwinNotificationCenter_addObserver___block_invoke;
   v8[3] = &unk_1E7A96EE8;
-  v5 = v4;
+  v5 = observerCopy;
   v9 = v5;
   [(LACDarwinNotificationCenter *)self _synchronizedObservers:v8];
   v6 = LACLogNotifications();
@@ -183,40 +183,40 @@ uint64_t __43__LACDarwinNotificationCenter_hasObserver___block_invoke(uint64_t a
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObserver:(id)a3 notification:(__CFString *)a4
+- (void)addObserver:(id)observer notification:(__CFString *)notification
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  observerCopy = observer;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56__LACDarwinNotificationCenter_addObserver_notification___block_invoke;
   v10[3] = &unk_1E7A96EE8;
-  v7 = v6;
+  v7 = observerCopy;
   v11 = v7;
   [(LACDarwinNotificationCenter *)self _synchronizedObservers:v10];
-  [(LACDarwinNotificationCenter *)self _startObservingNotification:a4];
+  [(LACDarwinNotificationCenter *)self _startObservingNotification:notification];
   v8 = LACLogNotifications();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v13 = v7;
     v14 = 2112;
-    v15 = a4;
+    notificationCopy = notification;
     _os_log_impl(&dword_1B0233000, v8, OS_LOG_TYPE_DEFAULT, "Did register observer %@ of notification %@", buf, 0x16u);
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__LACDarwinNotificationCenter_removeObserver___block_invoke;
   v8[3] = &unk_1E7A96EE8;
-  v5 = v4;
+  v5 = observerCopy;
   v9 = v5;
   [(LACDarwinNotificationCenter *)self _synchronizedObservers:v8];
   v6 = LACLogNotifications();
@@ -230,14 +230,14 @@ uint64_t __43__LACDarwinNotificationCenter_hasObserver___block_invoke(uint64_t a
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyObserversAboutNotification:(__CFString *)a3
+- (void)_notifyObserversAboutNotification:(__CFString *)notification
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = LACLogNotifications();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = a3;
+    *(&buf + 4) = notification;
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "Did receive notification %{public}@", &buf, 0xCu);
   }
 
@@ -272,7 +272,7 @@ uint64_t __43__LACDarwinNotificationCenter_hasObserver___block_invoke(uint64_t a
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) notificationCenter:self didReceiveNotification:{a3, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) notificationCenter:self didReceiveNotification:{notification, v11}];
       }
 
       while (v7 != v9);
@@ -296,23 +296,23 @@ uint64_t __65__LACDarwinNotificationCenter__notifyObserversAboutNotification___b
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_postNotification:(__CFString *)a3
+- (void)_postNotification:(__CFString *)notification
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
-  CFNotificationCenterPostNotification(DarwinNotifyCenter, a3, 0, 0, 1u);
+  CFNotificationCenterPostNotification(DarwinNotifyCenter, notification, 0, 0, 1u);
 }
 
-- (void)_startObservingNotification:(__CFString *)a3
+- (void)_startObservingNotification:(__CFString *)notification
 {
   if (![(LACDarwinNotificationCenter *)self _hasSubscriptionToNotification:?])
   {
-    [(LACDarwinNotificationCenter *)self _addSubscriptionToNotification:a3];
+    [(LACDarwinNotificationCenter *)self _addSubscriptionToNotification:notification];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, a3, 0);
+    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, notification, 0);
     v6 = CFNotificationCenterGetDarwinNotifyCenter();
 
-    CFNotificationCenterAddObserver(v6, self, LACDarwinNotificationCenterCallBack, a3, 0, 0);
+    CFNotificationCenterAddObserver(v6, self, LACDarwinNotificationCenterCallBack, notification, 0, 0);
   }
 }
 
@@ -323,7 +323,7 @@ uint64_t __65__LACDarwinNotificationCenter__notifyObserversAboutNotification___b
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
 }
 
-- (BOOL)_hasSubscriptionToNotification:(__CFString *)a3
+- (BOOL)_hasSubscriptionToNotification:(__CFString *)notification
 {
   v6 = 0;
   v7 = &v6;
@@ -334,7 +334,7 @@ uint64_t __65__LACDarwinNotificationCenter__notifyObserversAboutNotification___b
   v5[2] = __62__LACDarwinNotificationCenter__hasSubscriptionToNotification___block_invoke;
   v5[3] = &unk_1E7A96F10;
   v5[4] = &v6;
-  v5[5] = a3;
+  v5[5] = notification;
   [(LACDarwinNotificationCenter *)self _synchronizedSubscriptions:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
@@ -348,30 +348,30 @@ uint64_t __62__LACDarwinNotificationCenter__hasSubscriptionToNotification___bloc
   return result;
 }
 
-- (void)_addSubscriptionToNotification:(__CFString *)a3
+- (void)_addSubscriptionToNotification:(__CFString *)notification
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __62__LACDarwinNotificationCenter__addSubscriptionToNotification___block_invoke;
   v3[3] = &__block_descriptor_40_e22_v16__0__NSMutableSet_8l;
-  v3[4] = a3;
+  v3[4] = notification;
   [(LACDarwinNotificationCenter *)self _synchronizedSubscriptions:v3];
 }
 
-- (void)_synchronizedObservers:(id)a3
+- (void)_synchronizedObservers:(id)observers
 {
-  v4 = a3;
+  observersCopy = observers;
   os_unfair_lock_lock(&self->_observersLock);
-  v4[2](v4, self->_observers);
+  observersCopy[2](observersCopy, self->_observers);
 
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (void)_synchronizedSubscriptions:(id)a3
+- (void)_synchronizedSubscriptions:(id)subscriptions
 {
-  v4 = a3;
+  subscriptionsCopy = subscriptions;
   os_unfair_lock_lock(&self->_subscriptionsLock);
-  v4[2](v4, self->_subscriptions);
+  subscriptionsCopy[2](subscriptionsCopy, self->_subscriptions);
 
   os_unfair_lock_unlock(&self->_subscriptionsLock);
 }

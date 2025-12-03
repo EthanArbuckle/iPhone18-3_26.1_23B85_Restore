@@ -1,47 +1,47 @@
 @interface HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator
 + (BOOL)ckUseAnonymousAccount;
 + (NSString)ckContainerIdentifier;
-+ (id)__createProcessingOptionsWithLabel:(id)a3 qualityOfService:(int64_t)a4;
-+ (id)__jsonFromRecords:(id)a3 validateWithPublicKeys:(id)a4 rawOutput:(BOOL)a5 error:(id *)a6;
-+ (id)__jsonStringFromDictionary:(id)a3 rawOutput:(BOOL)a4 error:(id *)a5;
-+ (id)__jsonValueForCKRecordValue:(id)a3;
-+ (id)__networkDeclarationDataDictionaryFromOverrideObjectDictionary:(id)a3;
-+ (id)__networkDeclarationDataDictionaryFromRecordDictionary:(id)a3;
-+ (id)__networkDeclarationsFromRecord:(id)a3 recordKey:(id)a4 identifier:(id)a5;
-+ (id)__pairedMetadataDataDictionaryFromRecordDictionary:(id)a3;
-+ (id)__pairedMetadataDictionaryFromOverrideObjectDictionary:(id)a3;
-+ (id)__pairedMetadataFromRecord:(id)a3 recordKey:(id)a4 identifier:(id)a5;
++ (id)__createProcessingOptionsWithLabel:(id)label qualityOfService:(int64_t)service;
++ (id)__jsonFromRecords:(id)records validateWithPublicKeys:(id)keys rawOutput:(BOOL)output error:(id *)error;
++ (id)__jsonStringFromDictionary:(id)dictionary rawOutput:(BOOL)output error:(id *)error;
++ (id)__jsonValueForCKRecordValue:(id)value;
++ (id)__networkDeclarationDataDictionaryFromOverrideObjectDictionary:(id)dictionary;
++ (id)__networkDeclarationDataDictionaryFromRecordDictionary:(id)dictionary;
++ (id)__networkDeclarationsFromRecord:(id)record recordKey:(id)key identifier:(id)identifier;
++ (id)__pairedMetadataDataDictionaryFromRecordDictionary:(id)dictionary;
++ (id)__pairedMetadataDictionaryFromOverrideObjectDictionary:(id)dictionary;
++ (id)__pairedMetadataFromRecord:(id)record recordKey:(id)key identifier:(id)identifier;
 + (id)logCategory;
 + (int64_t)ckContainerEnvironment;
 - (BOOL)isRunning;
-- (BOOL)removeAllLocalRulesWithError:(id *)a3;
-- (BOOL)removeAllOverridesWithError:(id *)a3;
-- (BOOL)removeOverridesForProductGroup:(id)a3 productNumber:(id)a4 error:(id *)a5;
-- (HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator)initWithFirewallRuleManager:(id)a3 notificationCenter:(id)a4 cloudFetchInterval:(double)a5 cloudFetchRetryInterval:(double)a6 ownerQueue:(id)a7;
-- (HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator)initWithFirewallRuleManager:(id)a3 notificationCenter:(id)a4 cloudFetchScheduler:(id)a5 ownerQueue:(id)a6;
-- (HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator)initWithFirewallRuleManager:(id)a3 notificationCenter:(id)a4 ownerQueue:(id)a5;
+- (BOOL)removeAllLocalRulesWithError:(id *)error;
+- (BOOL)removeAllOverridesWithError:(id *)error;
+- (BOOL)removeOverridesForProductGroup:(id)group productNumber:(id)number error:(id *)error;
+- (HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator)initWithFirewallRuleManager:(id)manager notificationCenter:(id)center cloudFetchInterval:(double)interval cloudFetchRetryInterval:(double)retryInterval ownerQueue:(id)queue;
+- (HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator)initWithFirewallRuleManager:(id)manager notificationCenter:(id)center cloudFetchScheduler:(id)scheduler ownerQueue:(id)queue;
+- (HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator)initWithFirewallRuleManager:(id)manager notificationCenter:(id)center ownerQueue:(id)queue;
 - (HMDNetworkRouterFirewallRuleManagerBackingStoreMirror)mirror;
 - (HMDNetworkRouterFirewallRuleManagerInternal)firewallRuleManager;
-- (id)_fetchAllDataForProductGroup:(id)a3 productNumber:(id)a4 options:(id)a5 error:(id *)a6;
-- (id)_fetchAllOverridesForProductGroup:(id)a3 productNumber:(id)a4 options:(id)a5 error:(id *)a6;
-- (id)_fetchNetworkDeclarationsForRecordIDs:(id)a3 options:(id)a4 ignoreOverrides:(BOOL)a5 error:(id *)a6;
-- (id)_fetchPairedMetadataForAccessories:(id)a3 options:(id)a4 ignoreOverrides:(BOOL)a5 error:(id *)a6;
-- (id)pairedMetadataVersionConfigurationForAccessory:(id)a3 pairedMetadata:(id)a4;
-- (id)ruleConfigurationForAccessory:(id)a3 declarations:(id)a4;
-- (void)__cloudFetchSchedulerFired:(id)a3;
+- (id)_fetchAllDataForProductGroup:(id)group productNumber:(id)number options:(id)options error:(id *)error;
+- (id)_fetchAllOverridesForProductGroup:(id)group productNumber:(id)number options:(id)options error:(id *)error;
+- (id)_fetchNetworkDeclarationsForRecordIDs:(id)ds options:(id)options ignoreOverrides:(BOOL)overrides error:(id *)error;
+- (id)_fetchPairedMetadataForAccessories:(id)accessories options:(id)options ignoreOverrides:(BOOL)overrides error:(id *)error;
+- (id)pairedMetadataVersionConfigurationForAccessory:(id)accessory pairedMetadata:(id)metadata;
+- (id)ruleConfigurationForAccessory:(id)accessory declarations:(id)declarations;
+- (void)__cloudFetchSchedulerFired:(id)fired;
 - (void)__maybeStartOrStopCloudFetchScheduler;
-- (void)__startupWithMirror:(id)a3 completion:(id)a4;
-- (void)__startupWithMirroredLocalZone:(id)a3 completion:(id)a4;
+- (void)__startupWithMirror:(id)mirror completion:(id)completion;
+- (void)__startupWithMirroredLocalZone:(id)zone completion:(id)completion;
 - (void)__stopCloudFetchScheduler;
-- (void)_dumpCloudRecordsForProductGroup:(id)a3 productNumber:(id)a4 rawOutput:(BOOL)a5 verifySignatures:(BOOL)a6 completion:(id)a7;
-- (void)_fetchCloudChangesIfNeededForRecordIDs:(id)a3 completion:(id)a4;
-- (void)_listCloudRecordsForProductGroup:(id)a3 rawOutput:(BOOL)a4 completion:(id)a5;
-- (void)cloudFetchSchedulerFired:(id)a3 completion:(id)a4;
-- (void)fetchRulesForAccessories:(id)a3 qualityOfService:(int64_t)a4 ignoreOverrides:(BOOL)a5 completion:(id)a6;
+- (void)_dumpCloudRecordsForProductGroup:(id)group productNumber:(id)number rawOutput:(BOOL)output verifySignatures:(BOOL)signatures completion:(id)completion;
+- (void)_fetchCloudChangesIfNeededForRecordIDs:(id)ds completion:(id)completion;
+- (void)_listCloudRecordsForProductGroup:(id)group rawOutput:(BOOL)output completion:(id)completion;
+- (void)cloudFetchSchedulerFired:(id)fired completion:(id)completion;
+- (void)fetchRulesForAccessories:(id)accessories qualityOfService:(int64_t)service ignoreOverrides:(BOOL)overrides completion:(id)completion;
 - (void)firewallRuleManagerClientsDidChange;
-- (void)setMirror:(id)a3;
-- (void)shutdownWithCompletion:(id)a3;
-- (void)startupWithLocalDatabase:(id)a3 completion:(id)a4;
+- (void)setMirror:(id)mirror;
+- (void)shutdownWithCompletion:(id)completion;
+- (void)startupWithLocalDatabase:(id)database completion:(id)completion;
 @end
 
 @implementation HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator
@@ -53,29 +53,29 @@
   return WeakRetained;
 }
 
-- (void)cloudFetchSchedulerFired:(id)a3 completion:(id)a4
+- (void)cloudFetchSchedulerFired:(id)fired completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  completionCopy = completion;
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __98__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_cloudFetchSchedulerFired_completion___block_invoke;
   v8[3] = &unk_279735738;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(ownerQueue, v8);
 }
 
-- (void)__cloudFetchSchedulerFired:(id)a3
+- (void)__cloudFetchSchedulerFired:(id)fired
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v5);
+  firedCopy = fired;
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -86,13 +86,13 @@
   }
 
   objc_autoreleasePoolPop(v6);
-  if ([(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)v7 isRunning])
+  if ([(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)selfCopy isRunning])
   {
-    v10 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)v7 cloudFetchScheduler];
+    cloudFetchScheduler = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)selfCopy cloudFetchScheduler];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = cloudFetchScheduler;
     }
 
     else
@@ -104,21 +104,21 @@
 
     if (v12)
     {
-      v13 = [v12 runningActivity];
+      runningActivity = [v12 runningActivity];
     }
 
     else
     {
-      v13 = 0;
+      runningActivity = 0;
     }
 
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __89__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___cloudFetchSchedulerFired___block_invoke;
     v15[3] = &unk_27972DF20;
-    v15[4] = v7;
-    v16 = v4;
-    [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)v7 _fetchCloudChangesWithQualityOfService:9 ignoreLastFetchedAccessories:1 forceChangeNotifications:0 requiredRecordIDs:0 schedulerXpcActivity:v13 completion:v15];
+    v15[4] = selfCopy;
+    v16 = firedCopy;
+    [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)selfCopy _fetchCloudChangesWithQualityOfService:9 ignoreLastFetchedAccessories:1 forceChangeNotifications:0 requiredRecordIDs:0 schedulerXpcActivity:runningActivity completion:v15];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -167,11 +167,11 @@ void __89__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___cloudFet
 - (void)__stopCloudFetchScheduler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v3);
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -182,8 +182,8 @@ void __89__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___cloudFet
   }
 
   objc_autoreleasePoolPop(v4);
-  v8 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)v5 cloudFetchScheduler];
-  [v8 stop];
+  cloudFetchScheduler = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)selfCopy cloudFetchScheduler];
+  [cloudFetchScheduler stop];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -191,8 +191,8 @@ void __89__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___cloudFet
 - (void)__maybeStartOrStopCloudFetchScheduler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v3);
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
   if ([(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self isRunning])
   {
@@ -200,26 +200,26 @@ void __89__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___cloudFet
     *(&v24 + 1) = &v24;
     v25 = 0x2020000000;
     v26 = 0;
-    v4 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self firewallRuleManager];
-    v5 = [v4 activeClients];
+    firewallRuleManager = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self firewallRuleManager];
+    activeClients = [firewallRuleManager activeClients];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __99__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___maybeStartOrStopCloudFetchScheduler__block_invoke;
     v21[3] = &unk_27972BEB8;
     v21[4] = &v24;
-    [v5 hmf_enumerateWithAutoreleasePoolUsingBlock:v21];
+    [activeClients hmf_enumerateWithAutoreleasePoolUsingBlock:v21];
 
-    v6 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self cloudFetchScheduler];
-    v7 = v6;
+    cloudFetchScheduler = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self cloudFetchScheduler];
+    v7 = cloudFetchScheduler;
     if (*(*(&v24 + 1) + 24) != 1)
     {
       goto LABEL_19;
     }
 
-    if (![v6 isRunning])
+    if (![cloudFetchScheduler isRunning])
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
@@ -240,7 +240,7 @@ LABEL_19:
       if ([v7 isRunning])
       {
         v8 = objc_autoreleasePoolPush();
-        v9 = self;
+        selfCopy2 = self;
         v10 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
@@ -262,7 +262,7 @@ LABEL_15:
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy3 = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -289,17 +289,17 @@ uint64_t __99__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___mayb
   return result;
 }
 
-- (BOOL)removeOverridesForProductGroup:(id)a3 productNumber:(id)a4 error:(id *)a5
+- (BOOL)removeOverridesForProductGroup:(id)group productNumber:(id)number error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v10);
+  numberCopy = number;
+  groupCopy = group;
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
   v11 = [HMDNetworkRouterFirewallRuleAccessoryIdentifier alloc];
-  if (v8)
+  if (numberCopy)
   {
-    v12 = v8;
+    v12 = numberCopy;
   }
 
   else
@@ -307,31 +307,31 @@ uint64_t __99__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___mayb
     v12 = @"00000000";
   }
 
-  v13 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v11 initWithProductGroup:v9 productNumber:v12 firmwareVersion:0];
+  v13 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v11 initWithProductGroup:groupCopy productNumber:v12 firmwareVersion:0];
 
-  v14 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v13 cloudKitZoneName];
-  if (v8)
+  cloudKitZoneName = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v13 cloudKitZoneName];
+  if (numberCopy)
   {
-    v8 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v13 cloudKitRecordName];
+    numberCopy = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v13 cloudKitRecordName];
   }
 
   v15 = [objc_opt_class() __createProcessingOptionsWithLabel:@"RemoveOverrides"];
-  v16 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
-  v17 = [v16 removeOverridesForZoneName:v14 recordName:v8 options:v15 error:a5];
+  mirror = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
+  v17 = [mirror removeOverridesForZoneName:cloudKitZoneName recordName:numberCopy options:v15 error:error];
 
   return v17;
 }
 
-- (BOOL)removeAllOverridesWithError:(id *)a3
+- (BOOL)removeAllOverridesWithError:(id *)error
 {
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v5);
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
   v6 = [objc_opt_class() __createProcessingOptionsWithLabel:@"RemoveAllOverrides"];
-  v7 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
-  LOBYTE(a3) = [v7 removeAllOverridesWithOptions:v6 error:a3];
+  mirror = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
+  LOBYTE(error) = [mirror removeAllOverridesWithOptions:v6 error:error];
 
-  return a3;
+  return error;
 }
 
 void __89__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_addOverrides_replace_error___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)
@@ -403,69 +403,69 @@ void __89__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_addOverrid
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_fetchAllOverridesForProductGroup:(id)a3 productNumber:(id)a4 options:(id)a5 error:(id *)a6
+- (id)_fetchAllOverridesForProductGroup:(id)group productNumber:(id)number options:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v13);
+  groupCopy = group;
+  numberCopy = number;
+  optionsCopy = options;
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
-  if (v10 && v11)
+  if (groupCopy && numberCopy)
   {
-    v14 = [[HMDNetworkRouterFirewallRuleAccessoryIdentifier alloc] initWithProductGroup:v10 productNumber:v11 firmwareVersion:0];
-    v15 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
+    mirror2 = [[HMDNetworkRouterFirewallRuleAccessoryIdentifier alloc] initWithProductGroup:groupCopy productNumber:numberCopy firmwareVersion:0];
+    mirror = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
     v16 = MEMORY[0x277CBEB98];
-    v17 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v14 cloudKitRecordID];
-    v18 = [v16 setWithObject:v17];
-    v19 = [v15 fetchOverridesForRecordIDs:v18 options:v12 error:a6];
+    cloudKitRecordID = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)mirror2 cloudKitRecordID];
+    v18 = [v16 setWithObject:cloudKitRecordID];
+    v19 = [mirror fetchOverridesForRecordIDs:v18 options:optionsCopy error:error];
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  if (v10)
+  if (groupCopy)
   {
-    v14 = [[HMDNetworkRouterFirewallRuleAccessoryIdentifier alloc] initWithProductGroup:v10 productNumber:@"00000000" firmwareVersion:0];
-    v15 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
-    v20 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v14 cloudKitZoneName];
-    v19 = [v15 fetchOverridesForZoneName:v20 options:v12 error:a6];
+    mirror2 = [[HMDNetworkRouterFirewallRuleAccessoryIdentifier alloc] initWithProductGroup:groupCopy productNumber:@"00000000" firmwareVersion:0];
+    mirror = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
+    cloudKitZoneName = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)mirror2 cloudKitZoneName];
+    v19 = [mirror fetchOverridesForZoneName:cloudKitZoneName options:optionsCopy error:error];
 
     goto LABEL_6;
   }
 
-  v14 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
-  v19 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v14 fetchAllOverridesWithOptions:v12 error:a6];
+  mirror2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
+  v19 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)mirror2 fetchAllOverridesWithOptions:optionsCopy error:error];
 LABEL_7:
 
   return v19;
 }
 
-- (BOOL)removeAllLocalRulesWithError:(id *)a3
+- (BOOL)removeAllLocalRulesWithError:(id *)error
 {
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v5);
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
   v6 = [objc_opt_class() __createProcessingOptionsWithLabel:@"RemoveAllLocalRules"];
-  v7 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
-  LOBYTE(a3) = [v7 removeAllLocalRulesWithOptions:v6 error:a3];
+  mirror = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
+  LOBYTE(error) = [mirror removeAllLocalRulesWithOptions:v6 error:error];
 
-  return a3;
+  return error;
 }
 
-- (void)_dumpCloudRecordsForProductGroup:(id)a3 productNumber:(id)a4 rawOutput:(BOOL)a5 verifySignatures:(BOOL)a6 completion:(id)a7
+- (void)_dumpCloudRecordsForProductGroup:(id)group productNumber:(id)number rawOutput:(BOOL)output verifySignatures:(BOOL)signatures completion:(id)completion
 {
   v52 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v14);
+  groupCopy = group;
+  numberCopy = number;
+  completionCopy = completion;
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
   v15 = [HMDNetworkRouterFirewallRuleAccessoryIdentifier alloc];
-  if (v12)
+  if (numberCopy)
   {
-    v16 = v12;
+    v16 = numberCopy;
   }
 
   else
@@ -473,13 +473,13 @@ LABEL_7:
     v16 = @"00000000";
   }
 
-  v17 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v15 initWithProductGroup:v36 productNumber:v16 firmwareVersion:0];
-  v18 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v17 cloudKitRecordID];
-  v19 = [v18 zoneID];
-  if (!v12)
+  v17 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v15 initWithProductGroup:groupCopy productNumber:v16 firmwareVersion:0];
+  cloudKitRecordID = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v17 cloudKitRecordID];
+  zoneID = [cloudKitRecordID zoneID];
+  if (!numberCopy)
   {
 
-    v18 = 0;
+    cloudKitRecordID = 0;
   }
 
   v20 = [objc_opt_class() __createProcessingOptionsWithLabel:@"DumpCloudRecords"];
@@ -494,25 +494,25 @@ LABEL_7:
   aBlock[2] = __147__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator__dumpCloudRecordsForProductGroup_productNumber_rawOutput_verifySignatures_completion___block_invoke;
   aBlock[3] = &unk_27972BE40;
   aBlock[4] = self;
-  v21 = v19;
+  v21 = zoneID;
   v42 = v21;
-  v22 = v18;
+  v22 = cloudKitRecordID;
   v43 = v22;
   v23 = v20;
   v44 = v23;
-  v24 = v13;
+  v24 = completionCopy;
   v45 = v24;
   v46 = v48;
-  v47 = a5;
+  outputCopy = output;
   v25 = _Block_copy(aBlock);
   v26 = v25;
-  if (a6)
+  if (signatures)
   {
-    v27 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
+    mirror = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v28 = v27;
+      v28 = mirror;
     }
 
     else
@@ -540,7 +540,7 @@ LABEL_7:
     else
     {
       context = objc_autoreleasePoolPush();
-      v31 = self;
+      selfCopy = self;
       v32 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
@@ -685,36 +685,36 @@ void __147__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator__dumpClou
   }
 }
 
-- (void)_listCloudRecordsForProductGroup:(id)a3 rawOutput:(BOOL)a4 completion:(id)a5
+- (void)_listCloudRecordsForProductGroup:(id)group rawOutput:(BOOL)output completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v10);
+  groupCopy = group;
+  completionCopy = completion;
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
-  if (v8)
+  if (groupCopy)
   {
-    v11 = [[HMDNetworkRouterFirewallRuleAccessoryIdentifier alloc] initWithProductGroup:v8 productNumber:@"00000000" firmwareVersion:0];
-    v12 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v11 cloudKitRecordID];
-    v13 = [v12 zoneID];
+    v11 = [[HMDNetworkRouterFirewallRuleAccessoryIdentifier alloc] initWithProductGroup:groupCopy productNumber:@"00000000" firmwareVersion:0];
+    cloudKitRecordID = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v11 cloudKitRecordID];
+    zoneID = [cloudKitRecordID zoneID];
   }
 
   else
   {
-    v13 = 0;
+    zoneID = 0;
   }
 
   v14 = [objc_opt_class() __createProcessingOptionsWithLabel:@"ListCloudRecords"];
-  v15 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
+  mirror = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __116__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator__listCloudRecordsForProductGroup_rawOutput_completion___block_invoke;
   v17[3] = &unk_27972BDF0;
-  v19 = a4;
+  outputCopy = output;
   v17[4] = self;
-  v18 = v9;
-  v16 = v9;
-  [v15 fetchCloudRecordIDsForZoneID:v13 options:v14 completion:v17];
+  v18 = completionCopy;
+  v16 = completionCopy;
+  [mirror fetchCloudRecordIDsForZoneID:zoneID options:v14 completion:v17];
 }
 
 void __116__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator__listCloudRecordsForProductGroup_rawOutput_completion___block_invoke(uint64_t a1, void *a2)
@@ -823,17 +823,17 @@ void __116__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator__listClou
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchCloudChangesIfNeededForRecordIDs:(id)a3 completion:(id)a4
+- (void)_fetchCloudChangesIfNeededForRecordIDs:(id)ds completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v8);
+  dsCopy = ds;
+  completionCopy = completion;
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
-  v9 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
+  mirror = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
   v20 = 0;
-  v10 = [v9 cloudFetchNeededForRecordIDs:v6 error:&v20];
+  v10 = [mirror cloudFetchNeededForRecordIDs:dsCopy error:&v20];
   v11 = v20;
 
   if (v10)
@@ -841,7 +841,7 @@ void __116__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator__listClou
     if ([v10 BOOLValue])
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
@@ -849,7 +849,7 @@ void __116__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator__listClou
         *buf = 138543618;
         v22 = v15;
         v23 = 2112;
-        v24 = v6;
+        v24 = dsCopy;
         _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_DEBUG, "%{public}@Cloud fetch is needed for (some of) %@", buf, 0x16u);
       }
 
@@ -858,25 +858,25 @@ void __116__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator__listClou
       v18[1] = 3221225472;
       v18[2] = __112__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator__fetchCloudChangesIfNeededForRecordIDs_completion___block_invoke;
       v18[3] = &unk_27972D2A0;
-      v19 = v7;
-      [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)v13 _fetchCloudChangesWithQualityOfService:17 ignoreLastFetchedAccessories:0 forceChangeNotifications:0 requiredRecordIDs:v6 schedulerXpcActivity:0 completion:v18];
+      v19 = completionCopy;
+      [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)selfCopy _fetchCloudChangesWithQualityOfService:17 ignoreLastFetchedAccessories:0 forceChangeNotifications:0 requiredRecordIDs:dsCopy schedulerXpcActivity:0 completion:v18];
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
   else if (v11)
   {
-    (*(v7 + 2))(v7, v11);
+    (*(completionCopy + 2))(completionCopy, v11);
   }
 
   else
   {
     v16 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
-    (*(v7 + 2))(v7, v16);
+    (*(completionCopy + 2))(completionCopy, v16);
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -907,20 +907,20 @@ LABEL_4:
 LABEL_5:
 }
 
-- (id)ruleConfigurationForAccessory:(id)a3 declarations:(id)a4
+- (id)ruleConfigurationForAccessory:(id)accessory declarations:(id)declarations
 {
   v71 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v54 = self;
-  v8 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v8);
+  accessoryCopy = accessory;
+  declarationsCopy = declarations;
+  selfCopy = self;
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
-  v59 = [v6 firmwareVersion];
-  if (!v59)
+  firmwareVersion = [accessoryCopy firmwareVersion];
+  if (!firmwareVersion)
   {
     v47 = objc_autoreleasePoolPush();
-    v48 = self;
+    selfCopy2 = self;
     v49 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_FAULT))
     {
@@ -928,22 +928,22 @@ LABEL_5:
       *buf = 138543618;
       v65 = v50;
       v66 = 2112;
-      v67 = v6;
+      v67 = accessoryCopy;
       _os_log_impl(&dword_2531F8000, v49, OS_LOG_TYPE_FAULT, "%{public}@Submitting ABC event for failure: Must have firmware version on %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v47);
-    v51 = [[HMDAssertionLogEvent alloc] initWithReason:@"Must have firmware version on %@", v6];
+    accessoryCopy = [[HMDAssertionLogEvent alloc] initWithReason:@"Must have firmware version on %@", accessoryCopy];
     v52 = +[HMDMetricsManager sharedLogEventSubmitter];
-    [v52 submitLogEvent:v51];
+    [v52 submitLogEvent:accessoryCopy];
   }
 
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v53 = v7;
-  obj = [v7 ruleConfigurations];
+  v53 = declarationsCopy;
+  obj = [declarationsCopy ruleConfigurations];
   v58 = [obj countByEnumeratingWithState:&v60 objects:v70 count:16];
   if (!v58)
   {
@@ -966,14 +966,14 @@ LABEL_5:
       }
 
       v11 = *(*(&v60 + 1) + 8 * v10);
-      v12 = [v11 accessoryIdentifier];
-      v13 = [v12 productGroup];
-      v14 = [v6 productGroup];
-      if ([v13 isEqualToString:v14])
+      accessoryIdentifier = [v11 accessoryIdentifier];
+      productGroup = [accessoryIdentifier productGroup];
+      productGroup2 = [accessoryCopy productGroup];
+      if ([productGroup isEqualToString:productGroup2])
       {
-        v15 = [v12 productNumber];
-        v16 = [v6 productNumber];
-        v17 = [v15 isEqualToString:v16];
+        productNumber = [accessoryIdentifier productNumber];
+        productNumber2 = [accessoryCopy productNumber];
+        v17 = [productNumber isEqualToString:productNumber2];
 
         if (v17)
         {
@@ -986,7 +986,7 @@ LABEL_5:
       }
 
       v18 = objc_autoreleasePoolPush();
-      v19 = v54;
+      v19 = selfCopy;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
@@ -994,29 +994,29 @@ LABEL_5:
         *buf = 138543874;
         v65 = v21;
         v66 = 2112;
-        v67 = v12;
+        v67 = accessoryIdentifier;
         v68 = 2112;
-        v69 = v6;
+        v69 = accessoryCopy;
         _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_FAULT, "%{public}@Submitting ABC event for failure: Rule configuration contains identifier %@ that does not match requested identifier %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v18);
-      v22 = [[HMDAssertionLogEvent alloc] initWithReason:@"Rule configuration contains identifier %@ that does not match requested identifier %@", v12, v6];
+      accessoryCopy2 = [[HMDAssertionLogEvent alloc] initWithReason:@"Rule configuration contains identifier %@ that does not match requested identifier %@", accessoryIdentifier, accessoryCopy];
       v23 = +[HMDMetricsManager sharedLogEventSubmitter];
-      [v23 submitLogEvent:v22];
+      [v23 submitLogEvent:accessoryCopy2];
 
 LABEL_12:
-      v24 = [v11 accessoryIdentifier];
-      v25 = [v24 firmwareVersion];
+      accessoryIdentifier2 = [v11 accessoryIdentifier];
+      firmwareVersion2 = [accessoryIdentifier2 firmwareVersion];
 
-      v26 = [v25 compare:v59];
+      v26 = [firmwareVersion2 compare:firmwareVersion];
       if (v26 == -1)
       {
         if (v9)
         {
-          v33 = [v9 accessoryIdentifier];
-          v34 = [v33 firmwareVersion];
-          v35 = [v25 compare:v34];
+          accessoryIdentifier3 = [v9 accessoryIdentifier];
+          firmwareVersion3 = [accessoryIdentifier3 firmwareVersion];
+          v35 = [firmwareVersion2 compare:firmwareVersion3];
 
           if (v35 != 1)
           {
@@ -1026,7 +1026,7 @@ LABEL_12:
             }
 
             v30 = objc_autoreleasePoolPush();
-            v31 = v54;
+            v31 = selfCopy;
             v32 = HMFGetOSLogHandle();
             if (!os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
             {
@@ -1038,12 +1038,12 @@ LABEL_23:
             *buf = 138543618;
             v65 = v36;
             v66 = 2112;
-            v67 = v12;
+            v67 = accessoryIdentifier;
             _os_log_impl(&dword_2531F8000, v32, OS_LOG_TYPE_FAULT, "%{public}@Submitting ABC event for failure: Multiple rule configurations with the same version for %@", buf, 0x16u);
 
 LABEL_24:
             objc_autoreleasePoolPop(v30);
-            v37 = [[HMDAssertionLogEvent alloc] initWithReason:@"Multiple rule configurations with the same version for %@", v12];
+            v37 = [[HMDAssertionLogEvent alloc] initWithReason:@"Multiple rule configurations with the same version for %@", accessoryIdentifier];
             v38 = +[HMDMetricsManager sharedLogEventSubmitter];
             [v38 submitLogEvent:v37];
 
@@ -1073,9 +1073,9 @@ LABEL_24:
 
         if (v56)
         {
-          v27 = [v56 accessoryIdentifier];
-          v28 = [v27 firmwareVersion];
-          v29 = [v25 compare:v28];
+          accessoryIdentifier4 = [v56 accessoryIdentifier];
+          firmwareVersion4 = [accessoryIdentifier4 firmwareVersion];
+          v29 = [firmwareVersion2 compare:firmwareVersion4];
 
           if (v29 != -1)
           {
@@ -1085,7 +1085,7 @@ LABEL_24:
             }
 
             v30 = objc_autoreleasePoolPush();
-            v31 = v54;
+            v31 = selfCopy;
             v32 = HMFGetOSLogHandle();
             if (!os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
             {
@@ -1138,19 +1138,19 @@ LABEL_40:
   return v42;
 }
 
-- (void)fetchRulesForAccessories:(id)a3 qualityOfService:(int64_t)a4 ignoreOverrides:(BOOL)a5 completion:(id)a6
+- (void)fetchRulesForAccessories:(id)accessories qualityOfService:(int64_t)service ignoreOverrides:(BOOL)overrides completion:(id)completion
 {
   v54 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
-  v11 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v11);
+  accessoriesCopy = accessories;
+  completionCopy = completion;
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v12 = v9;
+  v12 = accessoriesCopy;
   v13 = [v12 countByEnumeratingWithState:&v44 objects:v53 count:16];
   if (v13)
   {
@@ -1166,12 +1166,12 @@ LABEL_40:
         }
 
         v17 = *(*(&v44 + 1) + 8 * i);
-        v18 = [v17 firmwareVersion];
+        firmwareVersion = [v17 firmwareVersion];
 
-        if (!v18)
+        if (!firmwareVersion)
         {
           v28 = objc_autoreleasePoolPush();
-          v29 = self;
+          selfCopy = self;
           v30 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
           {
@@ -1185,7 +1185,7 @@ LABEL_40:
 
           objc_autoreleasePoolPop(v28);
           v27 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-          v10[2](v10, 0, v27);
+          completionCopy[2](completionCopy, 0, v27);
           v26 = v12;
           goto LABEL_20;
         }
@@ -1221,8 +1221,8 @@ LABEL_40:
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v40 + 1) + 8 * j) cloudKitRecordID];
-        [v19 addObject:v25];
+        cloudKitRecordID = [*(*(&v40 + 1) + 8 * j) cloudKitRecordID];
+        [v19 addObject:cloudKitRecordID];
       }
 
       v22 = [v20 countByEnumeratingWithState:&v40 objects:v48 count:16];
@@ -1235,11 +1235,11 @@ LABEL_40:
   v34[1] = 3221225472;
   v34[2] = __131__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_fetchRulesForAccessories_qualityOfService_ignoreOverrides_completion___block_invoke;
   v34[3] = &unk_279730F40;
-  v37 = v10;
-  v38 = a4;
+  v37 = completionCopy;
+  serviceCopy = service;
   v34[4] = self;
   v35 = v19;
-  v39 = a5;
+  overridesCopy = overrides;
   v36 = v20;
   v26 = v19;
   [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self _fetchCloudChangesIfNeededForRecordIDs:v26 completion:v34];
@@ -1470,20 +1470,20 @@ void __131__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_fetchRule
   v52 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_fetchPairedMetadataForAccessories:(id)a3 options:(id)a4 ignoreOverrides:(BOOL)a5 error:(id *)a6
+- (id)_fetchPairedMetadataForAccessories:(id)accessories options:(id)options ignoreOverrides:(BOOL)overrides error:(id *)error
 {
   v100 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v12);
+  accessoriesCopy = accessories;
+  optionsCopy = options;
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
-  v13 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v10, "count")}];
+  v13 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(accessoriesCopy, "count")}];
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
-  obj = v10;
+  obj = accessoriesCopy;
   v14 = [obj countByEnumeratingWithState:&v88 objects:v99 count:16];
   if (v14)
   {
@@ -1498,8 +1498,8 @@ void __131__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_fetchRule
           objc_enumerationMutation(obj);
         }
 
-        v18 = [*(*(&v88 + 1) + 8 * i) cloudKitRecordID];
-        [v13 addObject:v18];
+        cloudKitRecordID = [*(*(&v88 + 1) + 8 * i) cloudKitRecordID];
+        [v13 addObject:cloudKitRecordID];
       }
 
       v15 = [obj countByEnumeratingWithState:&v88 objects:v99 count:16];
@@ -1508,21 +1508,21 @@ void __131__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_fetchRule
     while (v15);
   }
 
-  v19 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
+  mirror = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
   v87 = 0;
-  v73 = [v19 fetchAllDataForRecordIDs:v13 options:v11 error:&v87];
+  v73 = [mirror fetchAllDataForRecordIDs:v13 options:optionsCopy error:&v87];
   v20 = v87;
 
   if (v20)
   {
-    if (a6)
+    if (error)
     {
       v21 = v20;
-      *a6 = v20;
+      *error = v20;
     }
 
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -1540,7 +1540,7 @@ void __131__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_fetchRule
   }
 
   v27 = objc_autoreleasePoolPush();
-  v28 = self;
+  selfCopy2 = self;
   v29 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
@@ -1553,10 +1553,10 @@ void __131__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_fetchRule
   }
 
   objc_autoreleasePoolPop(v27);
-  if (a5)
+  if (overrides)
   {
-    v76 = v28;
-    v71 = v11;
+    v76 = selfCopy2;
+    v71 = optionsCopy;
     v78 = MEMORY[0x277CBEC10];
 LABEL_27:
     v75 = [MEMORY[0x277CBEB58] setWithCapacity:{-[__CFString count](v73, "count")}];
@@ -1667,12 +1667,12 @@ LABEL_44:
       {
 LABEL_52:
 
-        v11 = v71;
+        optionsCopy = v71;
         if ([v72 count])
         {
-          v62 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)v76 mirror];
+          mirror2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)v76 mirror];
           v81 = 0;
-          v63 = [v62 removeOverridesForRecordIDs:v72 options:v71 error:&v81];
+          v63 = [mirror2 removeOverridesForRecordIDs:v72 options:v71 error:&v81];
           v64 = v81;
 
           if ((v63 & 1) == 0)
@@ -1703,16 +1703,16 @@ LABEL_52:
     }
   }
 
-  v31 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)v28 mirror];
+  mirror3 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)selfCopy2 mirror];
   v86 = 0;
-  v32 = [v31 fetchOverridesForRecordIDs:v13 options:v11 error:&v86];
+  v32 = [mirror3 fetchOverridesForRecordIDs:v13 options:optionsCopy error:&v86];
   v20 = v86;
 
   if (!v20)
   {
     v78 = [objc_opt_class() __pairedMetadataDictionaryFromOverrideObjectDictionary:v32];
     v38 = objc_autoreleasePoolPush();
-    v39 = v28;
+    v39 = selfCopy2;
     v40 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
     {
@@ -1724,21 +1724,21 @@ LABEL_52:
       _os_log_impl(&dword_2531F8000, v40, OS_LOG_TYPE_INFO, "%{public}@Fetched overrides dictionary %@", buf, 0x16u);
     }
 
-    v76 = v28;
-    v71 = v11;
+    v76 = selfCopy2;
+    v71 = optionsCopy;
 
     objc_autoreleasePoolPop(v38);
     goto LABEL_27;
   }
 
-  if (a6)
+  if (error)
   {
     v33 = v20;
-    *a6 = v20;
+    *error = v20;
   }
 
   v34 = objc_autoreleasePoolPush();
-  v35 = v28;
+  v35 = selfCopy2;
   v36 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
   {
@@ -1760,20 +1760,20 @@ LABEL_60:
   return v26;
 }
 
-- (id)pairedMetadataVersionConfigurationForAccessory:(id)a3 pairedMetadata:(id)a4
+- (id)pairedMetadataVersionConfigurationForAccessory:(id)accessory pairedMetadata:(id)metadata
 {
   v76 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v59 = self;
-  v8 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v8);
+  accessoryCopy = accessory;
+  metadataCopy = metadata;
+  selfCopy = self;
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
-  v64 = [v6 firmwareVersion];
-  if (!v64)
+  firmwareVersion = [accessoryCopy firmwareVersion];
+  if (!firmwareVersion)
   {
     v52 = objc_autoreleasePoolPush();
-    v53 = self;
+    selfCopy2 = self;
     v54 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_FAULT))
     {
@@ -1781,22 +1781,22 @@ LABEL_60:
       *buf = 138543618;
       v70 = v55;
       v71 = 2112;
-      v72 = v6;
+      v72 = accessoryCopy;
       _os_log_impl(&dword_2531F8000, v54, OS_LOG_TYPE_FAULT, "%{public}@Submitting ABC event for failure: Must have firmware version on %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v52);
-    v56 = [[HMDAssertionLogEvent alloc] initWithReason:@"Must have firmware version on %@", v6];
+    accessoryCopy = [[HMDAssertionLogEvent alloc] initWithReason:@"Must have firmware version on %@", accessoryCopy];
     v57 = +[HMDMetricsManager sharedLogEventSubmitter];
-    [v57 submitLogEvent:v56];
+    [v57 submitLogEvent:accessoryCopy];
   }
 
   v67 = 0u;
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v58 = v7;
-  obj = [v7 versionConfigurations];
+  v58 = metadataCopy;
+  obj = [metadataCopy versionConfigurations];
   v63 = [obj countByEnumeratingWithState:&v65 objects:v75 count:16];
   if (!v63)
   {
@@ -1819,14 +1819,14 @@ LABEL_60:
       }
 
       v11 = *(*(&v65 + 1) + 8 * v10);
-      v12 = [v11 accessoryIdentifier];
-      v13 = [v12 productGroup];
-      v14 = [v6 productGroup];
-      if ([v13 isEqualToString:v14])
+      accessoryIdentifier = [v11 accessoryIdentifier];
+      productGroup = [accessoryIdentifier productGroup];
+      productGroup2 = [accessoryCopy productGroup];
+      if ([productGroup isEqualToString:productGroup2])
       {
-        v15 = [v12 productNumber];
-        v16 = [v6 productNumber];
-        v17 = [v15 isEqualToString:v16];
+        productNumber = [accessoryIdentifier productNumber];
+        productNumber2 = [accessoryCopy productNumber];
+        v17 = [productNumber isEqualToString:productNumber2];
 
         if (v17)
         {
@@ -1839,7 +1839,7 @@ LABEL_60:
       }
 
       v18 = objc_autoreleasePoolPush();
-      v19 = v59;
+      v19 = selfCopy;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
@@ -1847,29 +1847,29 @@ LABEL_60:
         *buf = 138543874;
         v70 = v21;
         v71 = 2112;
-        v72 = v12;
+        v72 = accessoryIdentifier;
         v73 = 2112;
-        v74 = v6;
+        v74 = accessoryCopy;
         _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_FAULT, "%{public}@Submitting ABC event for failure: Version configuration contains identifier %@ that does not match requested identifier %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v18);
-      v22 = [[HMDAssertionLogEvent alloc] initWithReason:@"Version configuration contains identifier %@ that does not match requested identifier %@", v12, v6];
+      accessoryCopy2 = [[HMDAssertionLogEvent alloc] initWithReason:@"Version configuration contains identifier %@ that does not match requested identifier %@", accessoryIdentifier, accessoryCopy];
       v23 = +[HMDMetricsManager sharedLogEventSubmitter];
-      [v23 submitLogEvent:v22];
+      [v23 submitLogEvent:accessoryCopy2];
 
 LABEL_12:
-      v24 = [v11 accessoryIdentifier];
-      v25 = [v24 firmwareVersion];
+      accessoryIdentifier2 = [v11 accessoryIdentifier];
+      firmwareVersion2 = [accessoryIdentifier2 firmwareVersion];
 
-      v26 = [v25 compare:v64];
+      v26 = [firmwareVersion2 compare:firmwareVersion];
       if (v26 == -1)
       {
         if (v9)
         {
-          v35 = [v9 accessoryIdentifier];
-          v36 = [v35 firmwareVersion];
-          v37 = [v25 compare:v36];
+          accessoryIdentifier3 = [v9 accessoryIdentifier];
+          firmwareVersion3 = [accessoryIdentifier3 firmwareVersion];
+          v37 = [firmwareVersion2 compare:firmwareVersion3];
 
           if (v37 != 1)
           {
@@ -1879,7 +1879,7 @@ LABEL_12:
             }
 
             v38 = objc_autoreleasePoolPush();
-            v39 = v59;
+            v39 = selfCopy;
             v40 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v40, OS_LOG_TYPE_FAULT))
             {
@@ -1887,12 +1887,12 @@ LABEL_12:
               *buf = 138543618;
               v70 = v41;
               v71 = 2112;
-              v72 = v12;
+              v72 = accessoryIdentifier;
               _os_log_impl(&dword_2531F8000, v40, OS_LOG_TYPE_FAULT, "%{public}@Submitting ABC event for failure: Multiple rule configurations with the same version for %@", buf, 0x16u);
             }
 
             objc_autoreleasePoolPop(v38);
-            v34 = [[HMDAssertionLogEvent alloc] initWithReason:@"Multiple rule configurations with the same version for %@", v12];
+            v34 = [[HMDAssertionLogEvent alloc] initWithReason:@"Multiple rule configurations with the same version for %@", accessoryIdentifier];
             goto LABEL_26;
           }
 
@@ -1919,9 +1919,9 @@ LABEL_12:
 
         if (v61)
         {
-          v27 = [v61 accessoryIdentifier];
-          v28 = [v27 firmwareVersion];
-          v29 = [v25 compare:v28];
+          accessoryIdentifier4 = [v61 accessoryIdentifier];
+          firmwareVersion4 = [accessoryIdentifier4 firmwareVersion];
+          v29 = [firmwareVersion2 compare:firmwareVersion4];
 
           if (v29 != -1)
           {
@@ -1931,7 +1931,7 @@ LABEL_12:
             }
 
             v30 = objc_autoreleasePoolPush();
-            v31 = v59;
+            v31 = selfCopy;
             v32 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
             {
@@ -1939,12 +1939,12 @@ LABEL_12:
               *buf = 138543618;
               v70 = v33;
               v71 = 2112;
-              v72 = v12;
+              v72 = accessoryIdentifier;
               _os_log_impl(&dword_2531F8000, v32, OS_LOG_TYPE_FAULT, "%{public}@Submitting ABC event for failure: Multiple version configurations with the same version for %@", buf, 0x16u);
             }
 
             objc_autoreleasePoolPop(v30);
-            v34 = [[HMDAssertionLogEvent alloc] initWithReason:@"Multiple version configurations with the same version for %@", v12];
+            v34 = [[HMDAssertionLogEvent alloc] initWithReason:@"Multiple version configurations with the same version for %@", accessoryIdentifier];
 LABEL_26:
             v42 = v34;
             v43 = +[HMDMetricsManager sharedLogEventSubmitter];
@@ -1996,26 +1996,26 @@ LABEL_42:
   return v47;
 }
 
-- (id)_fetchNetworkDeclarationsForRecordIDs:(id)a3 options:(id)a4 ignoreOverrides:(BOOL)a5 error:(id *)a6
+- (id)_fetchNetworkDeclarationsForRecordIDs:(id)ds options:(id)options ignoreOverrides:(BOOL)overrides error:(id *)error
 {
   v75 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v12);
+  dsCopy = ds;
+  optionsCopy = options;
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
-  v13 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
+  mirror = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
   v67 = 0;
-  v55 = [v13 fetchAllDataForRecordIDs:v10 options:v11 error:&v67];
+  v55 = [mirror fetchAllDataForRecordIDs:dsCopy options:optionsCopy error:&v67];
   v14 = v67;
 
   if (v14)
   {
-    if (a6)
+    if (error)
     {
       v15 = v14;
       v16 = 0;
-      *a6 = v14;
+      *error = v14;
     }
 
     else
@@ -2026,27 +2026,27 @@ LABEL_42:
     goto LABEL_44;
   }
 
-  if (a5)
+  if (overrides)
   {
-    v58 = self;
-    v51 = v11;
+    selfCopy2 = self;
+    v51 = optionsCopy;
     v17 = MEMORY[0x277CBEC10];
   }
 
   else
   {
-    v18 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
+    mirror2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
     v66 = 0;
-    v17 = [v18 fetchOverridesForRecordIDs:v10 options:v11 error:&v66];
+    v17 = [mirror2 fetchOverridesForRecordIDs:dsCopy options:optionsCopy error:&v66];
     v14 = v66;
 
     if (v14)
     {
-      if (a6)
+      if (error)
       {
         v19 = v14;
         v16 = 0;
-        *a6 = v14;
+        *error = v14;
       }
 
       else
@@ -2057,8 +2057,8 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    v51 = v11;
-    v58 = self;
+    v51 = optionsCopy;
+    selfCopy2 = self;
     v20 = [objc_opt_class() __networkDeclarationDataDictionaryFromOverrideObjectDictionary:v17];
 
     v17 = v20;
@@ -2070,8 +2070,8 @@ LABEL_42:
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v53 = v10;
-  obj = v10;
+  v53 = dsCopy;
+  obj = dsCopy;
   v60 = [obj countByEnumeratingWithState:&v62 objects:v74 count:16];
   if (!v60)
   {
@@ -2097,7 +2097,7 @@ LABEL_42:
         v26 = [HMDNetworkRouterFirewallRuleAccessoryIdentifier identifierFromRecordID:v22];
         v27 = [[HMDNetworkRouterFirewallRuleCloudNetworkDeclarations alloc] initWithBaseAccessoryIdentifier:v26 data:v24 allowUnzippedData:v23 != 0];
         v28 = objc_autoreleasePoolPush();
-        v29 = v58;
+        v29 = selfCopy2;
         v30 = HMFGetOSLogHandle();
         v31 = v30;
         if (v27)
@@ -2175,19 +2175,19 @@ LABEL_28:
 LABEL_36:
 
   v41 = v54;
-  v11 = v52;
-  v10 = v53;
+  optionsCopy = v52;
+  dsCopy = v53;
   if ([v54 count])
   {
-    v42 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)v58 mirror];
+    mirror3 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)selfCopy2 mirror];
     v61 = 0;
-    v43 = [v42 removeOverridesForRecordIDs:v54 options:v52 error:&v61];
+    v43 = [mirror3 removeOverridesForRecordIDs:v54 options:v52 error:&v61];
     v44 = v61;
 
     if ((v43 & 1) == 0)
     {
       v45 = objc_autoreleasePoolPush();
-      v46 = v58;
+      v46 = selfCopy2;
       v47 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
       {
@@ -2216,39 +2216,39 @@ LABEL_44:
   return v16;
 }
 
-- (id)_fetchAllDataForProductGroup:(id)a3 productNumber:(id)a4 options:(id)a5 error:(id *)a6
+- (id)_fetchAllDataForProductGroup:(id)group productNumber:(id)number options:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v13);
+  groupCopy = group;
+  numberCopy = number;
+  optionsCopy = options;
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
-  if (v10 && v11)
+  if (groupCopy && numberCopy)
   {
-    v14 = [[HMDNetworkRouterFirewallRuleAccessoryIdentifier alloc] initWithProductGroup:v10 productNumber:v11 firmwareVersion:0];
-    v15 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
+    mirror2 = [[HMDNetworkRouterFirewallRuleAccessoryIdentifier alloc] initWithProductGroup:groupCopy productNumber:numberCopy firmwareVersion:0];
+    mirror = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
     v16 = MEMORY[0x277CBEB98];
-    v17 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v14 cloudKitRecordID];
-    v18 = [v16 setWithObject:v17];
-    v19 = [v15 fetchAllDataForRecordIDs:v18 options:v12 error:a6];
+    cloudKitRecordID = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)mirror2 cloudKitRecordID];
+    v18 = [v16 setWithObject:cloudKitRecordID];
+    v19 = [mirror fetchAllDataForRecordIDs:v18 options:optionsCopy error:error];
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  if (v10)
+  if (groupCopy)
   {
-    v14 = [[HMDNetworkRouterFirewallRuleAccessoryIdentifier alloc] initWithProductGroup:v10 productNumber:@"00000000" firmwareVersion:0];
-    v15 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
-    v20 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v14 cloudKitZoneName];
-    v19 = [v15 fetchAllDataForZoneName:v20 options:v12 error:a6];
+    mirror2 = [[HMDNetworkRouterFirewallRuleAccessoryIdentifier alloc] initWithProductGroup:groupCopy productNumber:@"00000000" firmwareVersion:0];
+    mirror = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
+    cloudKitZoneName = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)mirror2 cloudKitZoneName];
+    v19 = [mirror fetchAllDataForZoneName:cloudKitZoneName options:optionsCopy error:error];
 
     goto LABEL_6;
   }
 
-  v14 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
-  v19 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)v14 fetchAllDataWithOptions:v12 error:a6];
+  mirror2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
+  v19 = [(HMDNetworkRouterFirewallRuleAccessoryIdentifier *)mirror2 fetchAllDataWithOptions:optionsCopy error:error];
 LABEL_7:
 
   return v19;
@@ -2361,49 +2361,49 @@ void __165__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_fetchClou
 
 - (void)firewallRuleManagerClientsDidChange
 {
-  v3 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v3);
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
   [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self __maybeStartOrStopCloudFetchScheduler];
 }
 
-- (void)shutdownWithCompletion:(id)a3
+- (void)shutdownWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
   if ([(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self isRunning])
   {
-    v6 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
+    mirror = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
     [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self setMirror:0];
-    v7 = [v6 shutdownFuture];
+    shutdownFuture = [mirror shutdownFuture];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __85__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_shutdownWithCompletion___block_invoke_2;
     v18[3] = &unk_27972BD00;
     v18[4] = self;
-    v19 = v4;
-    v8 = [v7 addCompletionBlock:v18];
+    v19 = completionCopy;
+    v8 = [shutdownFuture addCompletionBlock:v18];
 
-    v9 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirroredLocalZone];
+    mirroredLocalZone = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirroredLocalZone];
 
-    if (v9)
+    if (mirroredLocalZone)
     {
-      v10 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirroredLocalZone];
+      mirroredLocalZone2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirroredLocalZone];
       [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self setMirroredLocalZone:0];
-      v11 = [v10 shutdown];
+      shutdown = [mirroredLocalZone2 shutdown];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __85__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_shutdownWithCompletion___block_invoke_4;
       v17[3] = &unk_279733BC0;
       v17[4] = self;
-      v12 = [v11 addCompletionBlock:v17];
+      v12 = [shutdown addCompletionBlock:v17];
     }
 
     else
     {
-      v14 = v6;
+      v14 = mirror;
       if ([v14 conformsToProtocol:&unk_286700D38])
       {
         v15 = v14;
@@ -2414,23 +2414,23 @@ void __165__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_fetchClou
         v15 = 0;
       }
 
-      v10 = v15;
+      mirroredLocalZone2 = v15;
 
-      v16 = [v10 shutdown];
+      shutdown2 = [mirroredLocalZone2 shutdown];
     }
   }
 
   else
   {
-    v13 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+    ownerQueue2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __85__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_shutdownWithCompletion___block_invoke;
     block[3] = &unk_2797348C0;
-    v21 = v4;
-    dispatch_async(v13, block);
+    v21 = completionCopy;
+    dispatch_async(ownerQueue2, block);
 
-    v6 = v21;
+    mirror = v21;
   }
 }
 
@@ -2475,16 +2475,16 @@ void __85__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_shutdownWi
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__startupWithMirror:(id)a3 completion:(id)a4
+- (void)__startupWithMirror:(id)mirror completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v8);
+  mirrorCopy = mirror;
+  completionCopy = completion;
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
   if ([(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self isRunning])
   {
-    v9 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
+    mirror = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirror];
     v10 = HMFEqualObjects();
 
     if (v10)
@@ -2497,30 +2497,30 @@ void __85__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_shutdownWi
       v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:15];
     }
 
-    v14 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+    ownerQueue2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __93__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___startupWithMirror_completion___block_invoke;
     block[3] = &unk_279735738;
     v23 = v11;
-    v24 = v7;
+    v24 = completionCopy;
     v15 = v11;
-    dispatch_async(v14, block);
+    dispatch_async(ownerQueue2, block);
   }
 
   else
   {
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v6);
-    v12 = [v6 startupFuture];
+    objc_initWeak(&from, mirrorCopy);
+    startupFuture = [mirrorCopy startupFuture];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __93__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___startupWithMirror_completion___block_invoke_2;
     v16[3] = &unk_27972BCD8;
     objc_copyWeak(&v18, &location);
-    v17 = v7;
+    v17 = completionCopy;
     objc_copyWeak(&v19, &from);
-    v13 = [v12 addCompletionBlock:v16];
+    v13 = [startupFuture addCompletionBlock:v16];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&v18);
@@ -2587,16 +2587,16 @@ void __93__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___startupW
   }
 }
 
-- (void)__startupWithMirroredLocalZone:(id)a3 completion:(id)a4
+- (void)__startupWithMirroredLocalZone:(id)zone completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v8);
+  zoneCopy = zone;
+  completionCopy = completion;
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
   if ([(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self isRunning])
   {
-    v9 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirroredLocalZone];
+    mirroredLocalZone = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self mirroredLocalZone];
     v10 = HMFEqualObjects();
 
     if (v10)
@@ -2609,24 +2609,24 @@ void __93__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___startupW
       v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:15];
     }
 
-    v15 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+    ownerQueue2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __104__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___startupWithMirroredLocalZone_completion___block_invoke;
     block[3] = &unk_279735738;
     v21 = v11;
-    v22 = v7;
+    v22 = completionCopy;
     v14 = v11;
-    dispatch_async(v15, block);
+    dispatch_async(ownerQueue2, block);
 
     v16 = v22;
     goto LABEL_12;
   }
 
-  v12 = [v6 mirror];
-  if ([v12 conformsToProtocol:&unk_286700B60])
+  mirror = [zoneCopy mirror];
+  if ([mirror conformsToProtocol:&unk_286700B60])
   {
-    v13 = v12;
+    v13 = mirror;
   }
 
   else
@@ -2638,13 +2638,13 @@ void __93__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___startupW
 
   if (!v14)
   {
-    v17 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+    ownerQueue3 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __104__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___startupWithMirroredLocalZone_completion___block_invoke_2;
     v18[3] = &unk_2797348C0;
-    v19 = v7;
-    dispatch_async(v17, v18);
+    v19 = completionCopy;
+    dispatch_async(ownerQueue3, v18);
 
     v16 = v19;
 LABEL_12:
@@ -2652,8 +2652,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self setMirroredLocalZone:v6];
-  [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self __startupWithMirror:v14 completion:v7];
+  [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self setMirroredLocalZone:zoneCopy];
+  [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self __startupWithMirror:v14 completion:completionCopy];
 LABEL_13:
 }
 
@@ -2664,22 +2664,22 @@ void __104__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___startup
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)startupWithLocalDatabase:(id)a3 completion:(id)a4
+- (void)startupWithLocalDatabase:(id)database completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v8);
+  databaseCopy = database;
+  completionCopy = completion;
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
   if ([(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self isRunning])
   {
-    v9 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+    ownerQueue2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __98__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_startupWithLocalDatabase_completion___block_invoke;
     block[3] = &unk_2797348C0;
-    v36 = v7;
-    dispatch_async(v9, block);
+    v36 = completionCopy;
+    dispatch_async(ownerQueue2, block);
 
     v10 = v36;
   }
@@ -2687,43 +2687,43 @@ void __104__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___startup
   else
   {
     v11 = objc_alloc(MEMORY[0x277CBC220]);
-    v12 = [objc_opt_class() ckContainerIdentifier];
-    v10 = [v11 initWithContainerIdentifier:v12 environment:{objc_msgSend(objc_opt_class(), "ckContainerEnvironment")}];
+    ckContainerIdentifier = [objc_opt_class() ckContainerIdentifier];
+    v10 = [v11 initWithContainerIdentifier:ckContainerIdentifier environment:{objc_msgSend(objc_opt_class(), "ckContainerEnvironment")}];
 
     v13 = [objc_alloc(MEMORY[0x277D17050]) initWithContainerID:v10];
     v34 = 0;
-    v14 = [objc_alloc(MEMORY[0x277D17048]) initWithLocalDatabase:v6 configuration:v13 error:&v34];
+    v14 = [objc_alloc(MEMORY[0x277D17048]) initWithLocalDatabase:databaseCopy configuration:v13 error:&v34];
     v15 = v34;
     v16 = v15;
     if (v14)
     {
       v26 = v15;
       v17 = [HMDNetworkRouterFirewallRuleManagerBackingStoreMirror alloc];
-      v18 = [objc_opt_class() ckUseAnonymousAccount];
-      v19 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-      v20 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v17 initWithLocalDatabase:v6 cloudDatabase:v14 useAnonymousRequests:v18 ownerQueue:v19];
+      ckUseAnonymousAccount = [objc_opt_class() ckUseAnonymousAccount];
+      ownerQueue3 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+      v20 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v17 initWithLocalDatabase:databaseCopy cloudDatabase:v14 useAnonymousRequests:ckUseAnonymousAccount ownerQueue:ownerQueue3];
 
       v21 = objc_alloc_init(MEMORY[0x277D170F8]);
       [v21 setCreateIfNeeded:1];
       v30 = 0;
-      v22 = [v6 openZoneWithMirror:v20 configuration:v21 error:&v30];
+      v22 = [databaseCopy openZoneWithMirror:v20 configuration:v21 error:&v30];
       v23 = v30;
       if (v22)
       {
         [v22 startUp];
-        [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self __startupWithMirroredLocalZone:v22 completion:v7];
+        [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self __startupWithMirroredLocalZone:v22 completion:completionCopy];
       }
 
       else
       {
-        v25 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+        ownerQueue4 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
         v27[0] = MEMORY[0x277D85DD0];
         v27[1] = 3221225472;
         v27[2] = __98__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_startupWithLocalDatabase_completion___block_invoke_3;
         v27[3] = &unk_279735738;
-        v29 = v7;
+        v29 = completionCopy;
         v28 = v23;
-        dispatch_async(v25, v27);
+        dispatch_async(ownerQueue4, v27);
       }
 
       v16 = v26;
@@ -2731,30 +2731,30 @@ void __104__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___startup
 
     else
     {
-      v24 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+      ownerQueue5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __98__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator_startupWithLocalDatabase_completion___block_invoke_2;
       v31[3] = &unk_279735738;
-      v33 = v7;
+      v33 = completionCopy;
       v32 = v16;
-      dispatch_async(v24, v31);
+      dispatch_async(ownerQueue5, v31);
 
       v20 = v33;
     }
   }
 }
 
-- (void)setMirror:(id)a3
+- (void)setMirror:(id)mirror
 {
-  v4 = a3;
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v5);
+  mirrorCopy = mirror;
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
   mirror = self->_mirror;
-  self->_mirror = v4;
+  self->_mirror = mirrorCopy;
 
-  if (v4)
+  if (mirrorCopy)
   {
 
     [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self __maybeStartOrStopCloudFetchScheduler];
@@ -2769,8 +2769,8 @@ void __104__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___startup
 
 - (HMDNetworkRouterFirewallRuleManagerBackingStoreMirror)mirror
 {
-  v3 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v3);
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
   mirror = self->_mirror;
 
@@ -2779,64 +2779,64 @@ void __104__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___startup
 
 - (BOOL)isRunning
 {
-  v3 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
-  dispatch_assert_queue_V2(v3);
+  ownerQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self ownerQueue];
+  dispatch_assert_queue_V2(ownerQueue);
 
   return self->_mirror != 0;
 }
 
-- (HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator)initWithFirewallRuleManager:(id)a3 notificationCenter:(id)a4 cloudFetchInterval:(double)a5 cloudFetchRetryInterval:(double)a6 ownerQueue:(id)a7
+- (HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator)initWithFirewallRuleManager:(id)manager notificationCenter:(id)center cloudFetchInterval:(double)interval cloudFetchRetryInterval:(double)retryInterval ownerQueue:(id)queue
 {
-  v9 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self initWithFirewallRuleManager:a3 notificationCenter:a4 ownerQueue:a7];
-  v10 = [[HMDNetworkRouterFirewallRuleManagerBackingStoreCloudFetchScheduler alloc] initWithIdentifier:@"com.apple.homed.firewall-rule-manager.cloud-fetch-scheduler" interval:v9 retryInterval:a5 delegate:a6];
+  v9 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self initWithFirewallRuleManager:manager notificationCenter:center ownerQueue:queue];
+  v10 = [[HMDNetworkRouterFirewallRuleManagerBackingStoreCloudFetchScheduler alloc] initWithIdentifier:@"com.apple.homed.firewall-rule-manager.cloud-fetch-scheduler" interval:v9 retryInterval:interval delegate:retryInterval];
   cloudFetchScheduler = v9->_cloudFetchScheduler;
   v9->_cloudFetchScheduler = v10;
 
   return v9;
 }
 
-- (HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator)initWithFirewallRuleManager:(id)a3 notificationCenter:(id)a4 cloudFetchScheduler:(id)a5 ownerQueue:(id)a6
+- (HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator)initWithFirewallRuleManager:(id)manager notificationCenter:(id)center cloudFetchScheduler:(id)scheduler ownerQueue:(id)queue
 {
-  v10 = a5;
-  v11 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self initWithFirewallRuleManager:a3 notificationCenter:a4 ownerQueue:a6];
+  schedulerCopy = scheduler;
+  v11 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)self initWithFirewallRuleManager:manager notificationCenter:center ownerQueue:queue];
   cloudFetchScheduler = v11->_cloudFetchScheduler;
-  v11->_cloudFetchScheduler = v10;
+  v11->_cloudFetchScheduler = schedulerCopy;
 
   return v11;
 }
 
-- (HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator)initWithFirewallRuleManager:(id)a3 notificationCenter:(id)a4 ownerQueue:(id)a5
+- (HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator)initWithFirewallRuleManager:(id)manager notificationCenter:(id)center ownerQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  centerCopy = center;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator;
   v11 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_firewallRuleManager, v8);
-    objc_storeStrong(&v12->_notificationCenter, a4);
-    objc_storeStrong(&v12->_ownerQueue, a5);
+    objc_storeWeak(&v11->_firewallRuleManager, managerCopy);
+    objc_storeStrong(&v12->_notificationCenter, center);
+    objc_storeStrong(&v12->_ownerQueue, queue);
     v13 = v12;
   }
 
   return v12;
 }
 
-+ (id)__pairedMetadataDataDictionaryFromRecordDictionary:(id)a3
++ (id)__pairedMetadataDataDictionaryFromRecordDictionary:(id)dictionary
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
+  dictionaryCopy = dictionary;
+  dictionary = [v3 dictionary];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __113__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___pairedMetadataDataDictionaryFromRecordDictionary___block_invoke;
   v9[3] = &unk_27972BDC8;
-  v10 = v5;
-  v6 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  v10 = dictionary;
+  v6 = dictionary;
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   v7 = [v6 copy];
 
@@ -2856,18 +2856,18 @@ void __113__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___pairedM
   }
 }
 
-+ (id)__networkDeclarationDataDictionaryFromRecordDictionary:(id)a3
++ (id)__networkDeclarationDataDictionaryFromRecordDictionary:(id)dictionary
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
+  dictionaryCopy = dictionary;
+  dictionary = [v3 dictionary];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __117__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___networkDeclarationDataDictionaryFromRecordDictionary___block_invoke;
   v9[3] = &unk_27972BDC8;
-  v10 = v5;
-  v6 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  v10 = dictionary;
+  v6 = dictionary;
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   v7 = [v6 copy];
 
@@ -2887,18 +2887,18 @@ void __117__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___network
   }
 }
 
-+ (id)__pairedMetadataDictionaryFromOverrideObjectDictionary:(id)a3
++ (id)__pairedMetadataDictionaryFromOverrideObjectDictionary:(id)dictionary
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
+  dictionaryCopy = dictionary;
+  dictionary = [v3 dictionary];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __117__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___pairedMetadataDictionaryFromOverrideObjectDictionary___block_invoke;
   v9[3] = &unk_27972BDC8;
-  v6 = v5;
+  v6 = dictionary;
   v10 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   if ([v6 count])
   {
@@ -2926,18 +2926,18 @@ void __117__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___pairedM
   }
 }
 
-+ (id)__networkDeclarationDataDictionaryFromOverrideObjectDictionary:(id)a3
++ (id)__networkDeclarationDataDictionaryFromOverrideObjectDictionary:(id)dictionary
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
+  dictionaryCopy = dictionary;
+  dictionary = [v3 dictionary];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __125__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___networkDeclarationDataDictionaryFromOverrideObjectDictionary___block_invoke;
   v9[3] = &unk_27972BDC8;
-  v6 = v5;
+  v6 = dictionary;
   v10 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   if ([v6 count])
   {
@@ -2965,35 +2965,35 @@ void __125__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___network
   }
 }
 
-+ (id)__createProcessingOptionsWithLabel:(id)a3 qualityOfService:(int64_t)a4
++ (id)__createProcessingOptionsWithLabel:(id)label qualityOfService:(int64_t)service
 {
-  v5 = [MEMORY[0x277D17108] optionsWithLabel:a3];
+  v5 = [MEMORY[0x277D17108] optionsWithLabel:label];
   [v5 setShouldEnqueueMirrorOutput:0];
-  [v5 setQualityOfService:a4];
+  [v5 setQualityOfService:service];
 
   return v5;
 }
 
-+ (id)__jsonFromRecords:(id)a3 validateWithPublicKeys:(id)a4 rawOutput:(BOOL)a5 error:(id *)a6
++ (id)__jsonFromRecords:(id)records validateWithPublicKeys:(id)keys rawOutput:(BOOL)output error:(id *)error
 {
-  v64 = a5;
+  outputCopy = output;
   v77 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  recordsCopy = records;
+  keysCopy = keys;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v10 = v7;
-  v11 = v9;
+  v10 = recordsCopy;
+  v11 = dictionary;
   obj = v10;
   v55 = [v10 countByEnumeratingWithState:&v71 objects:v76 count:16];
   if (v55)
   {
-    v53 = v8;
+    v53 = keysCopy;
     v54 = *v72;
-    v52 = v9;
+    v52 = dictionary;
     do
     {
       for (i = 0; i != v55; ++i)
@@ -3004,50 +3004,50 @@ void __125__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___network
         }
 
         v13 = *(*(&v71 + 1) + 8 * i);
-        v14 = [v13 recordID];
-        v15 = [v14 zoneID];
-        v16 = [v15 zoneName];
+        recordID = [v13 recordID];
+        zoneID = [recordID zoneID];
+        zoneName = [zoneID zoneName];
 
-        v17 = [v14 recordName];
-        v60 = v14;
-        v18 = [HMDNetworkRouterFirewallRuleAccessoryIdentifier identifierFromRecordID:v14];
+        recordName = [recordID recordName];
+        v60 = recordID;
+        v18 = [HMDNetworkRouterFirewallRuleAccessoryIdentifier identifierFromRecordID:recordID];
         v19 = v18;
-        if (!v64)
+        if (!outputCopy)
         {
-          v20 = [v18 productGroup];
+          productGroup = [v18 productGroup];
 
-          v21 = [v19 productNumber];
+          productNumber = [v19 productNumber];
 
-          v17 = v21;
-          v16 = v20;
+          recordName = productNumber;
+          zoneName = productGroup;
         }
 
         v62 = v19;
-        v22 = [v11 objectForKeyedSubscript:v16];
-        if (!v22)
+        dictionary2 = [v11 objectForKeyedSubscript:zoneName];
+        if (!dictionary2)
         {
-          v22 = [MEMORY[0x277CBEB38] dictionary];
-          [v11 setObject:v22 forKeyedSubscript:v16];
+          dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+          [v11 setObject:dictionary2 forKeyedSubscript:zoneName];
         }
 
-        v59 = v16;
-        v23 = [MEMORY[0x277CBEB38] dictionary];
-        v58 = v17;
-        [v22 setObject:v23 forKeyedSubscript:v17];
+        v59 = zoneName;
+        dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+        v58 = recordName;
+        [dictionary2 setObject:dictionary3 forKeyedSubscript:recordName];
         v69 = 0u;
         v70 = 0u;
         v67 = 0u;
         v68 = 0u;
-        v63 = [v13 allKeys];
-        v24 = [v63 countByEnumeratingWithState:&v67 objects:v75 count:16];
+        allKeys = [v13 allKeys];
+        v24 = [allKeys countByEnumeratingWithState:&v67 objects:v75 count:16];
         if (!v24)
         {
-          v37 = v17;
+          v37 = recordName;
           goto LABEL_50;
         }
 
         v25 = v24;
-        v56 = v22;
+        v56 = dictionary2;
         v57 = i;
         v61 = 0;
         v26 = 0;
@@ -3059,19 +3059,19 @@ void __125__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___network
           {
             if (*v68 != v27)
             {
-              objc_enumerationMutation(v63);
+              objc_enumerationMutation(allKeys);
             }
 
             v29 = *(*(&v67 + 1) + 8 * v28);
             if (([v29 isEqualToString:@"CD_networkDeclarations_ckAsset"] & 1) != 0 || objc_msgSend(v29, "isEqualToString:", @"CD_networkDeclarations"))
             {
-              if (!v64)
+              if (!outputCopy)
               {
                 v30 = [objc_opt_class() __networkDeclarationsFromRecord:v13 recordKey:v29 identifier:v62];
                 if (v30)
                 {
                   v31 = v30;
-                  v32 = [v30 prettyJSONDictionary];
+                  prettyJSONDictionary = [v30 prettyJSONDictionary];
                   v26 = 1;
                   goto LABEL_22;
                 }
@@ -3083,7 +3083,7 @@ void __125__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___network
 
             if ([v29 isEqualToString:@"CD_pairedMetadata_ckAsset"])
             {
-              if (v64)
+              if (outputCopy)
               {
                 goto LABEL_31;
               }
@@ -3092,7 +3092,7 @@ void __125__HMDNetworkRouterFirewallRuleManagerBackingStoreCoordinator___network
             else
             {
               v34 = [v29 isEqualToString:@"CD_pairedMetadata"];
-              if (!v34 || v64)
+              if (!v34 || outputCopy)
               {
                 v61 |= v34;
                 goto LABEL_21;
@@ -3107,27 +3107,27 @@ LABEL_31:
 LABEL_21:
               v33 = objc_opt_class();
               v31 = [v13 objectForKeyedSubscript:v29];
-              v32 = [v33 __jsonValueForCKRecordValue:v31];
+              prettyJSONDictionary = [v33 __jsonValueForCKRecordValue:v31];
               goto LABEL_22;
             }
 
             v31 = v35;
-            v32 = [v35 prettyJSONDictionary];
+            prettyJSONDictionary = [v35 prettyJSONDictionary];
             v61 = 1;
 LABEL_22:
-            [v23 setObject:v32 forKeyedSubscript:v29];
+            [dictionary3 setObject:prettyJSONDictionary forKeyedSubscript:v29];
 
             ++v28;
           }
 
           while (v25 != v28);
-          v36 = [v63 countByEnumeratingWithState:&v67 objects:v75 count:16];
+          v36 = [allKeys countByEnumeratingWithState:&v67 objects:v75 count:16];
           v25 = v36;
         }
 
         while (v36);
 
-        v8 = v53;
+        keysCopy = v53;
         if (v53)
         {
           i = v57;
@@ -3151,7 +3151,7 @@ LABEL_22:
             }
 
             v41 = [@"CD_networkDeclarationsSignature" stringByAppendingString:@"[VALIDATION_RESULT]"];
-            [v23 setObject:v40 forKeyedSubscript:v41];
+            [dictionary3 setObject:v40 forKeyedSubscript:v41];
 
             if (!v38)
             {
@@ -3168,21 +3168,21 @@ LABEL_22:
           v37 = v58;
         }
 
-        v22 = v56;
+        dictionary2 = v56;
         if (v53 && ((v61 ^ 1) & 1) == 0)
         {
           v65 = 0;
           v42 = [HMDNetworkRouterFirewallRuleCloudZone verifyPairedMetadataFromRecord:v13 signatureVerificationPublicKeys:v53 error:&v65];
-          v63 = v65;
+          allKeys = v65;
           v43 = @"VALID";
           if (!v42)
           {
-            v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"INVALID: %@", v63];
+            v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"INVALID: %@", allKeys];
             v49 = v43;
           }
 
           v44 = [@"CD_pairedMetadataSignature" stringByAppendingString:@"[VALIDATION_RESULT]"];
-          [v23 setObject:v43 forKeyedSubscript:v44];
+          [dictionary3 setObject:v43 forKeyedSubscript:v44];
 
           if (!v42)
           {
@@ -3198,21 +3198,21 @@ LABEL_50:
     while (v55);
   }
 
-  v45 = [objc_opt_class() __jsonStringFromDictionary:v11 rawOutput:v64 error:a6];
+  v45 = [objc_opt_class() __jsonStringFromDictionary:v11 rawOutput:outputCopy error:error];
 
   v46 = *MEMORY[0x277D85DE8];
 
   return v45;
 }
 
-+ (id)__pairedMetadataFromRecord:(id)a3 recordKey:(id)a4 identifier:(id)a5
++ (id)__pairedMetadataFromRecord:(id)record recordKey:(id)key identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 isEqualToString:@"CD_pairedMetadata_ckAsset"])
+  recordCopy = record;
+  keyCopy = key;
+  identifierCopy = identifier;
+  if ([keyCopy isEqualToString:@"CD_pairedMetadata_ckAsset"])
   {
-    v10 = [v7 objectForKeyedSubscript:v8];
+    v10 = [recordCopy objectForKeyedSubscript:keyCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -3233,20 +3233,20 @@ LABEL_50:
     }
 
     v13 = MEMORY[0x277CBEA90];
-    v14 = [(HMDCloudPairedMetadata *)v12 fileURL];
-    v15 = [v13 dataWithContentsOfURL:v14];
+    fileURL = [(HMDCloudPairedMetadata *)v12 fileURL];
+    v15 = [v13 dataWithContentsOfURL:fileURL];
   }
 
   else
   {
-    if (![v8 isEqualToString:@"CD_pairedMetadata"])
+    if (![keyCopy isEqualToString:@"CD_pairedMetadata"])
     {
 LABEL_14:
       v12 = 0;
       goto LABEL_17;
     }
 
-    v12 = [v7 objectForKeyedSubscript:v8];
+    v12 = [recordCopy objectForKeyedSubscript:keyCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -3266,7 +3266,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v12 = [[HMDCloudPairedMetadata alloc] initWithBaseAccessoryIdentifier:v9 data:v15];
+  v12 = [[HMDCloudPairedMetadata alloc] initWithBaseAccessoryIdentifier:identifierCopy data:v15];
 LABEL_16:
 
 LABEL_17:
@@ -3274,14 +3274,14 @@ LABEL_17:
   return v12;
 }
 
-+ (id)__networkDeclarationsFromRecord:(id)a3 recordKey:(id)a4 identifier:(id)a5
++ (id)__networkDeclarationsFromRecord:(id)record recordKey:(id)key identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 isEqualToString:@"CD_networkDeclarations_ckAsset"])
+  recordCopy = record;
+  keyCopy = key;
+  identifierCopy = identifier;
+  if ([keyCopy isEqualToString:@"CD_networkDeclarations_ckAsset"])
   {
-    v10 = [v7 objectForKeyedSubscript:v8];
+    v10 = [recordCopy objectForKeyedSubscript:keyCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -3302,20 +3302,20 @@ LABEL_17:
     }
 
     v13 = MEMORY[0x277CBEA90];
-    v14 = [(HMDNetworkRouterFirewallRuleCloudNetworkDeclarations *)v12 fileURL];
-    v15 = [v13 dataWithContentsOfURL:v14];
+    fileURL = [(HMDNetworkRouterFirewallRuleCloudNetworkDeclarations *)v12 fileURL];
+    v15 = [v13 dataWithContentsOfURL:fileURL];
   }
 
   else
   {
-    if (![v8 isEqualToString:@"CD_networkDeclarations"])
+    if (![keyCopy isEqualToString:@"CD_networkDeclarations"])
     {
 LABEL_14:
       v12 = 0;
       goto LABEL_17;
     }
 
-    v12 = [v7 objectForKeyedSubscript:v8];
+    v12 = [recordCopy objectForKeyedSubscript:keyCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -3335,7 +3335,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v12 = [[HMDNetworkRouterFirewallRuleCloudNetworkDeclarations alloc] initWithBaseAccessoryIdentifier:v9 data:v15];
+  v12 = [[HMDNetworkRouterFirewallRuleCloudNetworkDeclarations alloc] initWithBaseAccessoryIdentifier:identifierCopy data:v15];
 LABEL_16:
 
 LABEL_17:
@@ -3471,9 +3471,9 @@ LABEL_12:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)__jsonStringFromDictionary:(id)a3 rawOutput:(BOOL)a4 error:(id *)a5
++ (id)__jsonStringFromDictionary:(id)dictionary rawOutput:(BOOL)output error:(id *)error
 {
-  if (a4)
+  if (output)
   {
     v5 = 2;
   }
@@ -3483,7 +3483,7 @@ LABEL_12:
     v5 = 3;
   }
 
-  v6 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a3 options:v5 error:a5];
+  v6 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionary options:v5 error:error];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v6 encoding:4];
@@ -3497,20 +3497,20 @@ LABEL_12:
   return v7;
 }
 
-+ (id)__jsonValueForCKRecordValue:(id)a3
++ (id)__jsonValueForCKRecordValue:(id)value
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v5 = v4;
+    v5 = valueCopy;
 LABEL_4:
     v6 = v5;
     goto LABEL_5;
   }
 
-  v9 = v4;
+  v9 = valueCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -3619,7 +3619,7 @@ LABEL_19:
             objc_enumerationMutation(v17);
           }
 
-          v30 = [a1 __jsonValueForCKRecordValue:{*(*(&v31 + 1) + 8 * i), v31}];
+          v30 = [self __jsonValueForCKRecordValue:{*(*(&v31 + 1) + 8 * i), v31}];
           [v25 addObject:v30];
         }
 
@@ -3634,10 +3634,10 @@ LABEL_19:
   }
 
   v20 = MEMORY[0x277CBEA90];
-  v21 = [v11 fileURL];
-  v13 = [v20 dataWithContentsOfURL:v21];
+  fileURL = [v11 fileURL];
+  v13 = [v20 dataWithContentsOfURL:fileURL];
 
-  v14 = [a1 __jsonValueForCKRecordValue:v13];
+  v14 = [self __jsonValueForCKRecordValue:v13];
 LABEL_26:
   v6 = v14;
 
@@ -3649,8 +3649,8 @@ LABEL_5:
 
 + (BOOL)ckUseAnonymousAccount
 {
-  v2 = [a1 ckContainerIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.willow.engrave"];
+  ckContainerIdentifier = [self ckContainerIdentifier];
+  v3 = [ckContainerIdentifier isEqualToString:@"com.apple.willow.engrave"];
 
   return v3;
 }
@@ -3658,23 +3658,23 @@ LABEL_5:
 + (int64_t)ckContainerEnvironment
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v4 = [v3 preferenceForKey:@"engraveContainerEnvironment"];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v4 = [mEMORY[0x277D0F8D0] preferenceForKey:@"engraveContainerEnvironment"];
 
   if (!v4)
   {
 LABEL_6:
-    v6 = 1;
+    integerValue = 1;
     goto LABEL_7;
   }
 
-  v5 = [v4 numberValue];
-  v6 = [v5 integerValue];
+  numberValue = [v4 numberValue];
+  integerValue = [numberValue integerValue];
 
-  if ((v6 - 1) >= 2)
+  if ((integerValue - 1) >= 2)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = a1;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -3682,7 +3682,7 @@ LABEL_6:
       v13 = 138543618;
       v14 = v10;
       v15 = 2048;
-      v16 = v6;
+      v16 = integerValue;
       _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@Unknown container environment value %ld, ignoring", &v13, 0x16u);
     }
 
@@ -3693,14 +3693,14 @@ LABEL_6:
 LABEL_7:
 
   v11 = *MEMORY[0x277D85DE8];
-  return v6;
+  return integerValue;
 }
 
 + (NSString)ckContainerIdentifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v4 = [v3 preferenceForKey:@"engraveContainerIdentifier"];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v4 = [mEMORY[0x277D0F8D0] preferenceForKey:@"engraveContainerIdentifier"];
 
   if (!v4 || ([v4 numberValue], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "unsignedIntegerValue"), v5, !v6))
   {
@@ -3712,7 +3712,7 @@ LABEL_8:
   if (v6 != 1)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {

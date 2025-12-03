@@ -1,12 +1,12 @@
 @interface WFImageContentItemCell
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (WFImageContentItemCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (WFImageContentItemCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (WFImageContentItemCellDelegate)delegate;
-- (void)imageViewTapped:(id)a3;
+- (void)imageViewTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setItems:(id)a3;
-- (void)setSelected:(BOOL)a3 atIndex:(unint64_t)a4;
+- (void)setItems:(id)items;
+- (void)setSelected:(BOOL)selected atIndex:(unint64_t)index;
 @end
 
 @implementation WFImageContentItemCell
@@ -18,10 +18,10 @@
   return WeakRetained;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -38,38 +38,38 @@
   return v8;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)imageViewTapped:(id)a3
+- (void)imageViewTapped:(id)tapped
 {
   imageViews = self->_imageViews;
-  v5 = [a3 view];
-  v6 = [(NSMutableArray *)imageViews indexOfObject:v5];
+  view = [tapped view];
+  v6 = [(NSMutableArray *)imageViews indexOfObject:view];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(WFImageContentItemCell *)self delegate];
+    delegate = [(WFImageContentItemCell *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(WFImageContentItemCell *)self delegate];
-      [v9 cell:self didSelectImageViewAtIndex:v6];
+      delegate2 = [(WFImageContentItemCell *)self delegate];
+      [delegate2 cell:self didSelectImageViewAtIndex:v6];
     }
   }
 }
 
-- (void)setSelected:(BOOL)a3 atIndex:(unint64_t)a4
+- (void)setSelected:(BOOL)selected atIndex:(unint64_t)index
 {
-  v5 = a3;
-  v7 = [(NSMutableArray *)self->_selectedImageViews objectAtIndex:a4];
+  selectedCopy = selected;
+  v7 = [(NSMutableArray *)self->_selectedImageViews objectAtIndex:index];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -83,7 +83,7 @@
 
   v12 = v8;
 
-  if (v5)
+  if (selectedCopy)
   {
     if (!v12)
     {
@@ -91,7 +91,7 @@
       [(WFImageContentItemCell *)self addSubview:v7];
     }
 
-    [(NSMutableArray *)self->_selectedImageViews replaceObjectAtIndex:a4 withObject:v7];
+    [(NSMutableArray *)self->_selectedImageViews replaceObjectAtIndex:index withObject:v7];
     [(WFImageContentItemCell *)self setNeedsLayout];
     v9 = v7;
   }
@@ -100,18 +100,18 @@
   {
     [v12 removeFromSuperview];
     selectedImageViews = self->_selectedImageViews;
-    v11 = [MEMORY[0x277CBEB68] null];
-    [(NSMutableArray *)selectedImageViews replaceObjectAtIndex:a4 withObject:v11];
+    null = [MEMORY[0x277CBEB68] null];
+    [(NSMutableArray *)selectedImageViews replaceObjectAtIndex:index withObject:null];
 
     v9 = v12;
   }
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 copy];
+  itemsCopy = items;
+  v5 = [itemsCopy copy];
   items = self->_items;
   self->_items = v5;
 
@@ -121,7 +121,7 @@
     while (1)
     {
       v8 = [(NSMutableArray *)imageViews count];
-      if (v8 >= [v4 count])
+      if (v8 >= [itemsCopy count])
       {
         break;
       }
@@ -156,14 +156,14 @@
       }
 
       v12 = [(NSMutableArray *)v14 count];
-      if (v12 <= [v4 count])
+      if (v12 <= [itemsCopy count])
       {
         break;
       }
 
-      v13 = [(NSMutableArray *)self->_imageViews lastObject];
-      [v13 removeFromSuperview];
-      [(NSMutableArray *)self->_imageViews removeObject:v13];
+      lastObject = [(NSMutableArray *)self->_imageViews lastObject];
+      [lastObject removeFromSuperview];
+      [(NSMutableArray *)self->_imageViews removeObject:lastObject];
     }
   }
 
@@ -207,22 +207,22 @@ LABEL_8:
 
   [(NSMutableArray *)self->_selectedImageViews removeAllObjects];
   v21 = [(NSMutableArray *)self->_selectedImageViews count];
-  if (v21 < [v4 count])
+  if (v21 < [itemsCopy count])
   {
     do
     {
       selectedImageViews = self->_selectedImageViews;
-      v23 = [MEMORY[0x277CBEB68] null];
-      [(NSMutableArray *)selectedImageViews addObject:v23];
+      null = [MEMORY[0x277CBEB68] null];
+      [(NSMutableArray *)selectedImageViews addObject:null];
 
       v24 = [(NSMutableArray *)self->_selectedImageViews count];
     }
 
-    while (v24 < [v4 count]);
+    while (v24 < [itemsCopy count]);
   }
 
-  v25 = [MEMORY[0x277D759A0] mainScreen];
-  [v25 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v27 = v26;
 
   v29[0] = MEMORY[0x277D85DD0];
@@ -231,7 +231,7 @@ LABEL_8:
   v29[3] = &unk_278C36E88;
   v29[4] = self;
   v29[5] = v27;
-  [v4 enumerateObjectsUsingBlock:v29];
+  [itemsCopy enumerateObjectsUsingBlock:v29];
   [(WFImageContentItemCell *)self setNeedsLayout];
 
   v28 = *MEMORY[0x277D85DE8];
@@ -537,35 +537,35 @@ void __40__WFImageContentItemCell_layoutSubviews__block_invoke()
   UIGraphicsEndImageContext();
 }
 
-- (WFImageContentItemCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WFImageContentItemCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v16.receiver = self;
   v16.super_class = WFImageContentItemCell;
-  v4 = [(WFImageContentItemCell *)&v16 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WFImageContentItemCell *)&v16 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(WFImageContentItemCell *)v4 setSelectionStyle:0];
-    v6 = [(WFImageContentItemCell *)v5 textLabel];
-    [v6 setHidden:1];
+    textLabel = [(WFImageContentItemCell *)v5 textLabel];
+    [textLabel setHidden:1];
 
-    v7 = [(WFImageContentItemCell *)v5 detailTextLabel];
-    [v7 setHidden:1];
+    detailTextLabel = [(WFImageContentItemCell *)v5 detailTextLabel];
+    [detailTextLabel setHidden:1];
 
-    v8 = [(WFImageContentItemCell *)v5 imageView];
-    [v8 setHidden:1];
+    imageView = [(WFImageContentItemCell *)v5 imageView];
+    [imageView setHidden:1];
 
-    v9 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
     activityIndicators = v5->_activityIndicators;
-    v5->_activityIndicators = v9;
+    v5->_activityIndicators = weakToWeakObjectsMapTable;
 
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     imageViews = v5->_imageViews;
-    v5->_imageViews = v11;
+    v5->_imageViews = array;
 
-    v13 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     selectedImageViews = v5->_selectedImageViews;
-    v5->_selectedImageViews = v13;
+    v5->_selectedImageViews = array2;
   }
 
   return v5;

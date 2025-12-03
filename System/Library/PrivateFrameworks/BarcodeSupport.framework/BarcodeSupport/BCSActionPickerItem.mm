@@ -1,59 +1,59 @@
 @interface BCSActionPickerItem
-+ (id)actionPickerItemWithLabel:(id)a3 actionHandler:(id)a4;
-- (BCSActionPickerItem)initWithAction:(id)a3;
-- (BCSActionPickerItem)initWithLabel:(id)a3 action:(id)a4;
-- (BCSActionPickerItem)initWithLabel:(id)a3 actionHandler:(id)a4;
++ (id)actionPickerItemWithLabel:(id)label actionHandler:(id)handler;
+- (BCSActionPickerItem)initWithAction:(id)action;
+- (BCSActionPickerItem)initWithLabel:(id)label action:(id)action;
+- (BCSActionPickerItem)initWithLabel:(id)label actionHandler:(id)handler;
 - (BCSActionPickerItemDelegate)actionPickerItemDelegate;
 - (int64_t)dataType;
 - (void)didPerformAction;
-- (void)performActionWithFBOptions:(id)a3;
+- (void)performActionWithFBOptions:(id)options;
 @end
 
 @implementation BCSActionPickerItem
 
-+ (id)actionPickerItemWithLabel:(id)a3 actionHandler:(id)a4
++ (id)actionPickerItemWithLabel:(id)label actionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithLabel:v7 actionHandler:v6];
+  handlerCopy = handler;
+  labelCopy = label;
+  v8 = [[self alloc] initWithLabel:labelCopy actionHandler:handlerCopy];
 
   return v8;
 }
 
-- (BCSActionPickerItem)initWithLabel:(id)a3 action:(id)a4
+- (BCSActionPickerItem)initWithLabel:(id)label action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  actionCopy = action;
   v13.receiver = self;
   v13.super_class = BCSActionPickerItem;
   v8 = [(BCSActionPickerItem *)&v13 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [labelCopy copy];
     label = v8->_label;
     v8->_label = v9;
 
-    objc_storeStrong(&v8->_action, a4);
+    objc_storeStrong(&v8->_action, action);
     v11 = v8;
   }
 
   return v8;
 }
 
-- (BCSActionPickerItem)initWithLabel:(id)a3 actionHandler:(id)a4
+- (BCSActionPickerItem)initWithLabel:(id)label actionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = BCSActionPickerItem;
   v8 = [(BCSActionPickerItem *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [labelCopy copy];
     label = v8->_label;
     v8->_label = v9;
 
-    v11 = [v7 copy];
+    v11 = [handlerCopy copy];
     actionHandler = v8->_actionHandler;
     v8->_actionHandler = v11;
 
@@ -63,18 +63,18 @@
   return v8;
 }
 
-- (BCSActionPickerItem)initWithAction:(id)a3
+- (BCSActionPickerItem)initWithAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 localizedDefaultActionDescription];
-  v6 = [(BCSActionPickerItem *)self initWithLabel:v5 action:v4];
+  actionCopy = action;
+  localizedDefaultActionDescription = [actionCopy localizedDefaultActionDescription];
+  v6 = [(BCSActionPickerItem *)self initWithLabel:localizedDefaultActionDescription action:actionCopy];
 
   return v6;
 }
 
-- (void)performActionWithFBOptions:(id)a3
+- (void)performActionWithFBOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if (self->_actionHandler)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -89,7 +89,7 @@
   action = self->_action;
   if (action)
   {
-    [(BCSAction *)action performActionWithOptions:v4 completion:&__block_literal_global];
+    [(BCSAction *)action performActionWithOptions:optionsCopy completion:&__block_literal_global];
   }
 
   [(BCSActionPickerItem *)self didPerformAction];
@@ -108,10 +108,10 @@
 
 - (int64_t)dataType
 {
-  v2 = [(BCSAction *)self->_action data];
-  v3 = [v2 type];
+  data = [(BCSAction *)self->_action data];
+  type = [data type];
 
-  return v3;
+  return type;
 }
 
 - (BCSActionPickerItemDelegate)actionPickerItemDelegate

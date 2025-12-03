@@ -1,14 +1,14 @@
 @interface AKAppleIDAuthenticationCommandLineContext
-+ (id)_findMatchingElementWithName:(id)a3 inElement:(id)a4;
-+ (id)ruiElementsAttributesWithName:(id)a3 data:(id)a4 error:(id *)a5;
++ (id)_findMatchingElementWithName:(id)name inElement:(id)element;
++ (id)ruiElementsAttributesWithName:(id)name data:(id)data error:(id *)error;
 - (AKAppleIDAuthenticationCommandLineContext)init;
-- (AKAppleIDAuthenticationCommandLineContext)initWithVerificationType:(int64_t)a3;
-- (id)_accountCreationRequestBodyFromResponseDictionary:(id)a3 shouldIncludePhoneNumber:(BOOL)a4 shouldIncludeForSecurityCode:(BOOL)a5;
+- (AKAppleIDAuthenticationCommandLineContext)initWithVerificationType:(int64_t)type;
+- (id)_accountCreationRequestBodyFromResponseDictionary:(id)dictionary shouldIncludePhoneNumber:(BOOL)number shouldIncludeForSecurityCode:(BOOL)code;
 - (id)_accountDictionary;
-- (id)_createContextDictionaryFromResponse:(id)a3;
-- (id)_jsonPostbackDictionaryForCode:(id)a3 numberId:(id)a4;
-- (id)_parseHeaderTitleForPasscodeView:(id)a3;
-- (id)_parseTrustedPhoneNumberFromResponseDictionary:(id)a3;
+- (id)_createContextDictionaryFromResponse:(id)response;
+- (id)_jsonPostbackDictionaryForCode:(id)code numberId:(id)id;
+- (id)_parseHeaderTitleForPasscodeView:(id)view;
+- (id)_parseTrustedPhoneNumberFromResponseDictionary:(id)dictionary;
 - (id)_promptForBirthday;
 - (id)_promptForCountryCode;
 - (id)_promptForFirstName;
@@ -16,32 +16,32 @@
 - (id)_promptForPassword;
 - (id)_promptForPhoneNumber;
 - (id)_promptForUsername;
-- (id)_promptForVerificationCodeWithSecureEntry:(BOOL)a3 forTrustedNumber:(id)a4;
-- (id)_promptUserForSelectionWithTrustedNumbers:(id)a3;
-- (id)_promptUserForTermsWithResponseDictionary:(id)a3;
+- (id)_promptForVerificationCodeWithSecureEntry:(BOOL)entry forTrustedNumber:(id)number;
+- (id)_promptUserForSelectionWithTrustedNumbers:(id)numbers;
+- (id)_promptUserForTermsWithResponseDictionary:(id)dictionary;
 - (id)_rootPath;
-- (id)_xmlUIRequestForURL:(id)a3 withPostbackDictionary:(id)a4;
-- (id)_xmlUIRequestForURL:(id)a3 withServerInfo:(id)a4;
-- (void)_beginDataTaskWithRequest:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)_collectAndHandleTermsAndConditionsWithResponseDictionary:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)_collectAndPostSecondFactorCodeWithRequestBody:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)_handleServerUIBirthdayVerificationWithResponseDictionary:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)_handleServerUIPasswordVerificationWithResponseDictionary:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)_handleServerUIPhoneVerificationWithResponseDictionary:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)_handleServerUISMSVerificationWithResponseDictionary:(id)a3 statusCode:(int64_t)a4 configuration:(id)a5 completion:(id)a6;
-- (void)_handleServerUISecondFactorWithObjectModel:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)_handleServerUIWithDictionary:(id)a3 statusCode:(int64_t)a4 configuration:(id)a5 completion:(id)a6;
-- (void)_presentServerUIWithConfiguration:(id)a3 completion:(id)a4;
-- (void)_verifySecondFactorCodeWithRequest:(id)a3 completion:(id)a4;
-- (void)dismissBasicLoginUIWithCompletion:(id)a3;
-- (void)dismissSecondFactorUIWithCompletion:(id)a3;
-- (void)dismissServerProvidedUIWithCompletion:(id)a3;
-- (void)presentBasicLoginUIWithCompletion:(id)a3;
-- (void)presentLoginAlertWithError:(id)a3 title:(id)a4 message:(id)a5 completion:(id)a6;
-- (void)presentSecondFactorAlertWithError:(id)a3 title:(id)a4 message:(id)a5 completion:(id)a6;
-- (void)presentSecondFactorUIWithCompletion:(id)a3;
-- (void)presentServerProvidedUIWithConfiguration:(id)a3 completion:(id)a4;
-- (void)setNeedsNewAppleID:(BOOL)a3;
+- (id)_xmlUIRequestForURL:(id)l withPostbackDictionary:(id)dictionary;
+- (id)_xmlUIRequestForURL:(id)l withServerInfo:(id)info;
+- (void)_beginDataTaskWithRequest:(id)request configuration:(id)configuration completion:(id)completion;
+- (void)_collectAndHandleTermsAndConditionsWithResponseDictionary:(id)dictionary configuration:(id)configuration completion:(id)completion;
+- (void)_collectAndPostSecondFactorCodeWithRequestBody:(id)body configuration:(id)configuration completion:(id)completion;
+- (void)_handleServerUIBirthdayVerificationWithResponseDictionary:(id)dictionary configuration:(id)configuration completion:(id)completion;
+- (void)_handleServerUIPasswordVerificationWithResponseDictionary:(id)dictionary configuration:(id)configuration completion:(id)completion;
+- (void)_handleServerUIPhoneVerificationWithResponseDictionary:(id)dictionary configuration:(id)configuration completion:(id)completion;
+- (void)_handleServerUISMSVerificationWithResponseDictionary:(id)dictionary statusCode:(int64_t)code configuration:(id)configuration completion:(id)completion;
+- (void)_handleServerUISecondFactorWithObjectModel:(id)model configuration:(id)configuration completion:(id)completion;
+- (void)_handleServerUIWithDictionary:(id)dictionary statusCode:(int64_t)code configuration:(id)configuration completion:(id)completion;
+- (void)_presentServerUIWithConfiguration:(id)configuration completion:(id)completion;
+- (void)_verifySecondFactorCodeWithRequest:(id)request completion:(id)completion;
+- (void)dismissBasicLoginUIWithCompletion:(id)completion;
+- (void)dismissSecondFactorUIWithCompletion:(id)completion;
+- (void)dismissServerProvidedUIWithCompletion:(id)completion;
+- (void)presentBasicLoginUIWithCompletion:(id)completion;
+- (void)presentLoginAlertWithError:(id)error title:(id)title message:(id)message completion:(id)completion;
+- (void)presentSecondFactorAlertWithError:(id)error title:(id)title message:(id)message completion:(id)completion;
+- (void)presentSecondFactorUIWithCompletion:(id)completion;
+- (void)presentServerProvidedUIWithConfiguration:(id)configuration completion:(id)completion;
+- (void)setNeedsNewAppleID:(BOOL)d;
 @end
 
 @implementation AKAppleIDAuthenticationCommandLineContext
@@ -55,10 +55,10 @@
   return v3;
 }
 
-- (AKAppleIDAuthenticationCommandLineContext)initWithVerificationType:(int64_t)a3
+- (AKAppleIDAuthenticationCommandLineContext)initWithVerificationType:(int64_t)type
 {
   v11 = a2;
-  v10 = a3;
+  typeCopy = type;
   v12 = 0;
   v9.receiver = self;
   v9.super_class = AKAppleIDAuthenticationCommandLineContext;
@@ -70,10 +70,10 @@
     utility = v12->_utility;
     v12->_utility = v3;
     MEMORY[0x1E69E5920](utility);
-    v12->_verificationType = v10;
-    v5 = [(AKAppleIDAuthenticationCommandLineContext *)v12 _rootPath];
+    v12->_verificationType = typeCopy;
+    _rootPath = [(AKAppleIDAuthenticationCommandLineContext *)v12 _rootPath];
     rootPath = v12->_rootPath;
-    v12->_rootPath = v5;
+    v12->_rootPath = _rootPath;
     MEMORY[0x1E69E5920](rootPath);
     if (!v12->_verificationType)
     {
@@ -86,17 +86,17 @@
   return v8;
 }
 
-- (void)setNeedsNewAppleID:(BOOL)a3
+- (void)setNeedsNewAppleID:(BOOL)d
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  dCopy = d;
   v5.receiver = self;
   v5.super_class = AKAppleIDAuthenticationCommandLineContext;
-  [(AKAppleIDAuthenticationContext *)&v5 setNeedsNewAppleID:a3];
-  v3 = [(AKAppleIDAuthenticationCommandLineContext *)v8 _rootPath];
-  rootPath = v8->_rootPath;
-  v8->_rootPath = v3;
+  [(AKAppleIDAuthenticationContext *)&v5 setNeedsNewAppleID:d];
+  _rootPath = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _rootPath];
+  rootPath = selfCopy->_rootPath;
+  selfCopy->_rootPath = _rootPath;
   MEMORY[0x1E69E5920](rootPath);
 }
 
@@ -115,71 +115,71 @@
   return v3;
 }
 
-- (void)presentBasicLoginUIWithCompletion:(id)a3
+- (void)presentBasicLoginUIWithCompletion:(id)completion
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKAppleIDAuthenticationCommandLineContext *)v6 _promptForUsername];
-  v3 = [(AKAppleIDAuthenticationCommandLineContext *)v6 _promptForPassword];
-  (*(location[0] + 2))(location[0], v4, v3, 0);
-  objc_storeStrong(&v3, 0);
-  objc_storeStrong(&v4, 0);
+  objc_storeStrong(location, completion);
+  _promptForUsername = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _promptForUsername];
+  _promptForPassword = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _promptForPassword];
+  (*(location[0] + 2))(location[0], _promptForUsername, _promptForPassword, 0);
+  objc_storeStrong(&_promptForPassword, 0);
+  objc_storeStrong(&_promptForUsername, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissBasicLoginUIWithCompletion:(id)a3
+- (void)dismissBasicLoginUIWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   (*(location[0] + 2))(location[0], 1, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)presentLoginAlertWithError:(id)a3 title:(id)a4 message:(id)a5 completion:(id)a6
+- (void)presentLoginAlertWithError:(id)error title:(id)title message:(id)message completion:(id)completion
 {
-  obj = a4;
-  v7 = a5;
-  v8 = a6;
-  v19 = self;
+  obj = title;
+  messageCopy = message;
+  completionCopy = completion;
+  selfCopy = self;
   location[1] = a2;
   v13 = location;
   v14 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v12 = &v17;
   v17 = 0;
   objc_storeStrong(&v17, obj);
   v11 = &v16;
   v16 = 0;
-  objc_storeStrong(&v16, v7);
+  objc_storeStrong(&v16, messageCopy);
   v10 = &v15;
   v15 = 0;
-  objc_storeStrong(&v15, v8);
-  v9 = [location[0] localizedDescription];
-  AKPrintLine(@"Failed to validate username and password combination: %@", v9);
-  MEMORY[0x1E69E5920](v9);
-  [(AKAppleIDAuthenticationContext *)v19 _setPassword:v14];
-  [(AKAppleIDAuthenticationCommandLineContext *)v19 presentBasicLoginUIWithCompletion:v15];
+  objc_storeStrong(&v15, completionCopy);
+  localizedDescription = [location[0] localizedDescription];
+  AKPrintLine(@"Failed to validate username and password combination: %@", localizedDescription);
+  MEMORY[0x1E69E5920](localizedDescription);
+  [(AKAppleIDAuthenticationContext *)selfCopy _setPassword:v14];
+  [(AKAppleIDAuthenticationCommandLineContext *)selfCopy presentBasicLoginUIWithCompletion:v15];
   objc_storeStrong(v10, v14);
   objc_storeStrong(v11, v14);
   objc_storeStrong(v12, v14);
   objc_storeStrong(v13, v14);
 }
 
-- (void)presentSecondFactorUIWithCompletion:(id)a3
+- (void)presentSecondFactorUIWithCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = [(AKAppleIDAuthenticationCommandLineContext *)v12 secondFactorCode];
-  if (v10)
+  objc_storeStrong(location, completion);
+  secondFactorCode = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy secondFactorCode];
+  if (secondFactorCode)
   {
-    (*(location[0] + 2))(location[0], v10, 0);
+    (*(location[0] + 2))(location[0], secondFactorCode, 0);
     v9 = 1;
   }
 
@@ -190,12 +190,12 @@
     if (v8)
     {
       v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "integerValue")}];
-      [(AKAppleIDAuthenticationCommandLineContext *)v12 setSecondFactorCode:?];
+      [(AKAppleIDAuthenticationCommandLineContext *)selfCopy setSecondFactorCode:?];
       MEMORY[0x1E69E5920](v5);
       v6 = location[0];
-      v7 = [(AKAppleIDAuthenticationCommandLineContext *)v12 secondFactorCode];
+      secondFactorCode2 = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy secondFactorCode];
       v6[2]();
-      MEMORY[0x1E69E5920](v7);
+      MEMORY[0x1E69E5920](secondFactorCode2);
     }
 
     else
@@ -211,62 +211,62 @@
     v9 = 0;
   }
 
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&secondFactorCode, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissSecondFactorUIWithCompletion:(id)a3
+- (void)dismissSecondFactorUIWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   (*(location[0] + 2))(location[0], 1, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)presentSecondFactorAlertWithError:(id)a3 title:(id)a4 message:(id)a5 completion:(id)a6
+- (void)presentSecondFactorAlertWithError:(id)error title:(id)title message:(id)message completion:(id)completion
 {
-  obj = a4;
-  v7 = a5;
-  v8 = a6;
-  v19 = self;
+  obj = title;
+  messageCopy = message;
+  completionCopy = completion;
+  selfCopy = self;
   location[1] = a2;
   v13 = location;
   v14 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v12 = &v17;
   v17 = 0;
   objc_storeStrong(&v17, obj);
   v11 = &v16;
   v16 = 0;
-  objc_storeStrong(&v16, v7);
+  objc_storeStrong(&v16, messageCopy);
   v10 = &v15;
   v15 = 0;
-  objc_storeStrong(&v15, v8);
-  v9 = [location[0] localizedDescription];
-  AKPrintLine(@"Failed to validate code: %@", v9);
-  MEMORY[0x1E69E5920](v9);
-  [(AKAppleIDAuthenticationCommandLineContext *)v19 presentSecondFactorUIWithCompletion:v15];
+  objc_storeStrong(&v15, completionCopy);
+  localizedDescription = [location[0] localizedDescription];
+  AKPrintLine(@"Failed to validate code: %@", localizedDescription);
+  MEMORY[0x1E69E5920](localizedDescription);
+  [(AKAppleIDAuthenticationCommandLineContext *)selfCopy presentSecondFactorUIWithCompletion:v15];
   objc_storeStrong(v10, v14);
   objc_storeStrong(v11, v14);
   objc_storeStrong(v12, v14);
   objc_storeStrong(v13, v14);
 }
 
-- (void)presentServerProvidedUIWithConfiguration:(id)a3 completion:(id)a4
+- (void)presentServerProvidedUIWithConfiguration:(id)configuration completion:(id)completion
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configuration);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v10 = [location[0] requestType];
-  if (v10)
+  objc_storeStrong(&v11, completion);
+  requestType = [location[0] requestType];
+  if (requestType)
   {
-    if (v10 == 1)
+    if (requestType == 1)
     {
       AKPrintLine(@"IDP second factor-authentication is not supported!");
       v7 = v11;
@@ -277,7 +277,7 @@
 
     else
     {
-      v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10];
+      v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:requestType];
       AKPrintLine(@"Unexpected second-factor authentication (%@)!", v4);
       MEMORY[0x1E69E5920](v4);
       v5 = v11;
@@ -290,64 +290,64 @@
   else
   {
     AKPrintLine(@"Requesting second-factor ServerUI...");
-    [(AKAppleIDAuthenticationCommandLineContext *)v13 _presentServerUIWithConfiguration:location[0] completion:v11];
+    [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _presentServerUIWithConfiguration:location[0] completion:v11];
   }
 
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissServerProvidedUIWithCompletion:(id)a3
+- (void)dismissServerProvidedUIWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   (*(location[0] + 2))(location[0], 1, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_presentServerUIWithConfiguration:(id)a3 completion:(id)a4
+- (void)_presentServerUIWithConfiguration:(id)configuration completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configuration);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
-  if ([(AKAppleIDAuthenticationContext *)v28 needsCredentialRecovery])
+  objc_storeStrong(&v26, completion);
+  if ([(AKAppleIDAuthenticationContext *)selfCopy needsCredentialRecovery])
   {
     AKPrintLine(@"Begin iForgot password flow");
-    if (!v28->_forgotPasswordController)
+    if (!selfCopy->_forgotPasswordController)
     {
       v4 = objc_alloc_init(AKForgotPasswordController);
-      forgotPasswordController = v28->_forgotPasswordController;
-      v28->_forgotPasswordController = v4;
+      forgotPasswordController = selfCopy->_forgotPasswordController;
+      selfCopy->_forgotPasswordController = v4;
       MEMORY[0x1E69E5920](forgotPasswordController);
     }
 
     v6 = [AKAccountRecoveryModel alloc];
-    v25 = [(AKAccountRecoveryModel *)v6 initWithContext:v28 configuration:location[0] utilities:v28->_utility];
-    [(AKAppleIDRecoveryController *)v28->_forgotPasswordController beginAccountRecoveryWithModel:v25 completion:v26];
+    v25 = [(AKAccountRecoveryModel *)v6 initWithContext:selfCopy configuration:location[0] utilities:selfCopy->_utility];
+    [(AKAppleIDRecoveryController *)selfCopy->_forgotPasswordController beginAccountRecoveryWithModel:v25 completion:v26];
     v24 = 1;
     objc_storeStrong(&v25, 0);
   }
 
-  else if ([(AKAppleIDAuthenticationContext *)v28 needsPasswordChange])
+  else if ([(AKAppleIDAuthenticationContext *)selfCopy needsPasswordChange])
   {
     AKPrintLine(@"Begin change password flow");
-    if (!v28->_changePasswordController)
+    if (!selfCopy->_changePasswordController)
     {
       v7 = objc_alloc_init(AKChangePasswordController);
-      changePasswordController = v28->_changePasswordController;
-      v28->_changePasswordController = v7;
+      changePasswordController = selfCopy->_changePasswordController;
+      selfCopy->_changePasswordController = v7;
       MEMORY[0x1E69E5920](changePasswordController);
     }
 
     v9 = [AKAccountRecoveryModel alloc];
-    v23 = [(AKAccountRecoveryModel *)v9 initWithContext:v28 configuration:location[0] utilities:v28->_utility];
-    [(AKAppleIDRecoveryController *)v28->_changePasswordController beginAccountRecoveryWithModel:v23 completion:v26];
+    v23 = [(AKAccountRecoveryModel *)v9 initWithContext:selfCopy configuration:location[0] utilities:selfCopy->_utility];
+    [(AKAppleIDRecoveryController *)selfCopy->_changePasswordController beginAccountRecoveryWithModel:v23 completion:v26];
     v24 = 1;
     objc_storeStrong(&v23, 0);
   }
@@ -355,26 +355,26 @@
   else
   {
     v22 = 0;
-    verificationType = v28->_verificationType;
+    verificationType = selfCopy->_verificationType;
     if (verificationType)
     {
       if (verificationType == 1)
       {
-        v18 = [(AKAppleIDAuthenticationCommandLineContext *)v28 utility];
-        v17 = [(AKAppleIDAuthenticationCommandLineContext *)v28 rootPath];
-        v10 = [(AKCommandLineUtilities *)v18 mutableJSONRequestForPath:?];
+        utility = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy utility];
+        rootPath = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy rootPath];
+        v10 = [(AKCommandLineUtilities *)utility mutableJSONRequestForPath:?];
         v11 = v22;
         v22 = v10;
         MEMORY[0x1E69E5920](v11);
-        MEMORY[0x1E69E5920](v17);
-        MEMORY[0x1E69E5920](v18);
+        MEMORY[0x1E69E5920](rootPath);
+        MEMORY[0x1E69E5920](utility);
         v21 = _AKLogSystem();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          v16 = [location[0] request];
-          __os_log_helper_16_2_1_8_64(v29, v16);
+          request = [location[0] request];
+          __os_log_helper_16_2_1_8_64(v29, request);
           _os_log_error_impl(&dword_193225000, v21, OS_LOG_TYPE_ERROR, "request: %@", v29, 0xCu);
-          MEMORY[0x1E69E5920](v16);
+          MEMORY[0x1E69E5920](request);
         }
 
         objc_storeStrong(&v21, 0);
@@ -388,18 +388,18 @@
 
     else
     {
-      v15 = [location[0] request];
-      v12 = [v15 mutableCopy];
+      request2 = [location[0] request];
+      v12 = [request2 mutableCopy];
       v13 = v22;
       v22 = v12;
       MEMORY[0x1E69E5920](v13);
-      MEMORY[0x1E69E5920](v15);
+      MEMORY[0x1E69E5920](request2);
     }
 
-    v14 = [location[0] resourceLoadDelegate];
-    [v14 signRequest:v22];
-    MEMORY[0x1E69E5920](v14);
-    [(AKAppleIDAuthenticationCommandLineContext *)v28 _beginDataTaskWithRequest:v22 configuration:location[0] completion:v26];
+    resourceLoadDelegate = [location[0] resourceLoadDelegate];
+    [resourceLoadDelegate signRequest:v22];
+    MEMORY[0x1E69E5920](resourceLoadDelegate);
+    [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _beginDataTaskWithRequest:v22 configuration:location[0] completion:v26];
     objc_storeStrong(&v22, 0);
     v24 = 0;
   }
@@ -409,16 +409,16 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleServerUISecondFactorWithObjectModel:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)_handleServerUISecondFactorWithObjectModel:(id)model configuration:(id)configuration completion:(id)completion
 {
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
+  objc_storeStrong(&v39, configuration);
   v38 = 0;
-  objc_storeStrong(&v38, a5);
+  objc_storeStrong(&v38, completion);
   v31 = MEMORY[0x1E69E9820];
   v32 = -1073741824;
   v33 = 0;
@@ -426,64 +426,64 @@
   v35 = &unk_1E73D92F8;
   v36 = MEMORY[0x1E69E5928](v38);
   v37 = MEMORY[0x193B165F0](&v31);
-  v15 = [location[0] allPages];
-  v30 = [v15 firstObject];
-  MEMORY[0x1E69E5920](v15);
-  if (v30)
+  allPages = [location[0] allPages];
+  firstObject = [allPages firstObject];
+  MEMORY[0x1E69E5920](allPages);
+  if (firstObject)
   {
-    v28 = [v30 passcodeViewOM];
-    if (v28)
+    passcodeViewOM = [firstObject passcodeViewOM];
+    if (passcodeViewOM)
     {
-      v27 = [v28 identifier];
-      if (v27)
+      identifier = [passcodeViewOM identifier];
+      if (identifier)
       {
-        v11 = [v28 attributes];
-        v26 = [v11 objectForKeyedSubscript:@"url"];
-        MEMORY[0x1E69E5920](v11);
+        attributes = [passcodeViewOM attributes];
+        v26 = [attributes objectForKeyedSubscript:@"url"];
+        MEMORY[0x1E69E5920](attributes);
         if (v26)
         {
-          v10 = [v28 attributes];
-          v25 = [v10 objectForKeyedSubscript:@"httpMethod"];
-          MEMORY[0x1E69E5920](v10);
+          attributes2 = [passcodeViewOM attributes];
+          v25 = [attributes2 objectForKeyedSubscript:@"httpMethod"];
+          MEMORY[0x1E69E5920](attributes2);
           if (v25)
           {
-            v24 = [v30 navTitle];
-            if (v24)
+            navTitle = [firstObject navTitle];
+            if (navTitle)
             {
-              AKPrintLine(@"%@", v24);
+              AKPrintLine(@"%@", navTitle);
             }
 
-            v23 = [(AKAppleIDAuthenticationCommandLineContext *)v41 _parseHeaderTitleForPasscodeView:v28];
+            v23 = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _parseHeaderTitleForPasscodeView:passcodeViewOM];
             if (v23)
             {
               AKPrint(v23);
             }
 
-            v6 = [v28 attributes];
-            v5 = [v6 objectForKeyedSubscript:@"secure"];
-            v7 = [v5 BOOLValue];
+            attributes3 = [passcodeViewOM attributes];
+            v5 = [attributes3 objectForKeyedSubscript:@"secure"];
+            bOOLValue = [v5 BOOLValue];
             MEMORY[0x1E69E5920](v5);
-            MEMORY[0x1E69E5920](v6);
-            v22 = v7;
-            v21 = [(AKAppleIDAuthenticationCommandLineContext *)v41 _promptForVerificationCodeWithSecureEntry:v7 & 1 forTrustedNumber:?];
+            MEMORY[0x1E69E5920](attributes3);
+            v22 = bOOLValue;
+            v21 = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _promptForVerificationCodeWithSecureEntry:bOOLValue & 1 forTrustedNumber:?];
             v20 = objc_alloc_init(MEMORY[0x1E695DF90]);
-            [v20 setObject:v21 forKeyedSubscript:v27];
-            v8 = [location[0] serverInfo];
+            [v20 setObject:v21 forKeyedSubscript:identifier];
+            serverInfo = [location[0] serverInfo];
             [v20 setObject:? forKeyedSubscript:?];
-            MEMORY[0x1E69E5920](v8);
+            MEMORY[0x1E69E5920](serverInfo);
             v19 = [location[0] absoluteURLWithString:v26];
-            v18 = [(AKAppleIDAuthenticationCommandLineContext *)v41 _xmlUIRequestForURL:v19 withPostbackDictionary:v20];
+            v18 = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _xmlUIRequestForURL:v19 withPostbackDictionary:v20];
             [v18 setHTTPMethod:v25];
-            v9 = [v39 resourceLoadDelegate];
-            [v9 signRequest:v18];
-            MEMORY[0x1E69E5920](v9);
-            [(AKAppleIDAuthenticationCommandLineContext *)v41 _verifySecondFactorCodeWithRequest:v18 completion:v38];
+            resourceLoadDelegate = [v39 resourceLoadDelegate];
+            [resourceLoadDelegate signRequest:v18];
+            MEMORY[0x1E69E5920](resourceLoadDelegate);
+            [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _verifySecondFactorCodeWithRequest:v18 completion:v38];
             objc_storeStrong(&v18, 0);
             objc_storeStrong(&v19, 0);
             objc_storeStrong(&v20, 0);
             objc_storeStrong(&v21, 0);
             objc_storeStrong(&v23, 0);
-            objc_storeStrong(&v24, 0);
+            objc_storeStrong(&navTitle, 0);
             v29 = 0;
           }
 
@@ -511,7 +511,7 @@
         v29 = 1;
       }
 
-      objc_storeStrong(&v27, 0);
+      objc_storeStrong(&identifier, 0);
     }
 
     else
@@ -520,27 +520,27 @@
       v29 = 1;
     }
 
-    objc_storeStrong(&v28, 0);
+    objc_storeStrong(&passcodeViewOM, 0);
   }
 
   else
   {
-    v14 = [location[0] primaryAlert];
-    MEMORY[0x1E69E5920](v14);
-    if (v14)
+    primaryAlert = [location[0] primaryAlert];
+    MEMORY[0x1E69E5920](primaryAlert);
+    if (primaryAlert)
     {
-      v13 = [location[0] primaryAlert];
-      v12 = [v13 message];
-      AKPrintLine(v12);
-      MEMORY[0x1E69E5920](v12);
-      MEMORY[0x1E69E5920](v13);
+      primaryAlert2 = [location[0] primaryAlert];
+      message = [primaryAlert2 message];
+      AKPrintLine(message);
+      MEMORY[0x1E69E5920](message);
+      MEMORY[0x1E69E5920](primaryAlert2);
     }
 
     (*(v37 + 2))(v37, @"missing page");
     v29 = 1;
   }
 
-  objc_storeStrong(&v30, 0);
+  objc_storeStrong(&firstObject, 0);
   objc_storeStrong(&v37, 0);
   objc_storeStrong(&v36, 0);
   objc_storeStrong(&v38, 0);
@@ -561,35 +561,35 @@ void __113__AKAppleIDAuthenticationCommandLineContext__handleServerUISecondFacto
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleServerUIWithDictionary:(id)a3 statusCode:(int64_t)a4 configuration:(id)a5 completion:(id)a6
+- (void)_handleServerUIWithDictionary:(id)dictionary statusCode:(int64_t)code configuration:(id)configuration completion:(id)completion
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v19 = a4;
+  objc_storeStrong(location, dictionary);
+  codeCopy = code;
   v18 = 0;
-  objc_storeStrong(&v18, a5);
+  objc_storeStrong(&v18, configuration);
   v17 = 0;
-  objc_storeStrong(&v17, a6);
-  if ([(AKAppleIDAuthenticationContext *)v21 needsNewAppleID])
+  objc_storeStrong(&v17, completion);
+  if ([(AKAppleIDAuthenticationContext *)selfCopy needsNewAppleID])
   {
-    if (v19 < 200 || v19 >= 300)
+    if (codeCopy < 200 || codeCopy >= 300)
     {
-      v12 = [(AKAppleIDAuthenticationCommandLineContext *)v21 utility];
-      v16 = [(AKCommandLineUtilities *)v12 errorFromServerResponseBody:location[0]];
-      MEMORY[0x1E69E5920](v12);
+      utility = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy utility];
+      v16 = [(AKCommandLineUtilities *)utility errorFromServerResponseBody:location[0]];
+      MEMORY[0x1E69E5920](utility);
       if (v16)
       {
-        v11 = [v16 userInfo];
-        v10 = [v11 objectForKeyedSubscript:*MEMORY[0x1E696A578]];
-        v9 = [v16 userInfo];
-        v8 = [v9 objectForKeyedSubscript:*MEMORY[0x1E696A588]];
+        userInfo = [v16 userInfo];
+        v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A578]];
+        userInfo2 = [v16 userInfo];
+        v8 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696A588]];
         AKPrintError(@"Error creating an account: %@.\n%@", v10, v8);
         MEMORY[0x1E69E5920](v8);
-        MEMORY[0x1E69E5920](v9);
+        MEMORY[0x1E69E5920](userInfo2);
         MEMORY[0x1E69E5920](v10);
-        MEMORY[0x1E69E5920](v11);
+        MEMORY[0x1E69E5920](userInfo);
       }
 
       v6 = v17;
@@ -601,13 +601,13 @@ void __113__AKAppleIDAuthenticationCommandLineContext__handleServerUISecondFacto
 
     else
     {
-      [(AKAppleIDAuthenticationCommandLineContext *)v21 _handleServerUIBirthdayVerificationWithResponseDictionary:location[0] configuration:v18 completion:v17];
+      [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _handleServerUIBirthdayVerificationWithResponseDictionary:location[0] configuration:v18 completion:v17];
     }
   }
 
   else
   {
-    [(AKAppleIDAuthenticationCommandLineContext *)v21 _handleServerUISMSVerificationWithResponseDictionary:location[0] statusCode:v19 configuration:v18 completion:v17];
+    [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _handleServerUISMSVerificationWithResponseDictionary:location[0] statusCode:codeCopy configuration:v18 completion:v17];
   }
 
   objc_storeStrong(&v17, 0);
@@ -615,14 +615,14 @@ void __113__AKAppleIDAuthenticationCommandLineContext__handleServerUISecondFacto
   objc_storeStrong(location, 0);
 }
 
-- (void)_verifySecondFactorCodeWithRequest:(id)a3 completion:(id)a4
+- (void)_verifySecondFactorCodeWithRequest:(id)request completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, completion);
   AKPrintLine(@"Verifying code…");
   v6 = +[AKURLSession sharedURLSession];
   v5 = location[0];
@@ -670,20 +670,20 @@ void __91__AKAppleIDAuthenticationCommandLineContext__verifySecondFactorCodeWith
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleServerUIBirthdayVerificationWithResponseDictionary:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)_handleServerUIBirthdayVerificationWithResponseDictionary:(id)dictionary configuration:(id)configuration completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, configuration);
   v28 = 0;
-  objc_storeStrong(&v28, a5);
-  v27 = [(AKAppleIDAuthenticationCommandLineContext *)v31 _accountCreationRequestBodyFromResponseDictionary:location[0] shouldIncludePhoneNumber:0 shouldIncludeForSecurityCode:0];
-  v11 = [(AKAppleIDAuthenticationCommandLineContext *)v31 rootPath];
-  v26 = [(NSString *)v11 stringByAppendingPathComponent:@"/birthday"];
-  MEMORY[0x1E69E5920](v11);
+  objc_storeStrong(&v28, completion);
+  v27 = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _accountCreationRequestBodyFromResponseDictionary:location[0] shouldIncludePhoneNumber:0 shouldIncludeForSecurityCode:0];
+  rootPath = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy rootPath];
+  v26 = [(NSString *)rootPath stringByAppendingPathComponent:@"/birthday"];
+  MEMORY[0x1E69E5920](rootPath);
   v25 = _AKLogSystem();
   v24 = 2;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -696,8 +696,8 @@ void __91__AKAppleIDAuthenticationCommandLineContext__verifySecondFactorCodeWith
 
   objc_storeStrong(&v25, 0);
   AKPrintLine(@"☾ Verifying Birthday with server…");
-  objc_initWeak(&from, v31);
-  v8 = [(AKAppleIDAuthenticationCommandLineContext *)v31 utility];
+  objc_initWeak(&from, selfCopy);
+  utility = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy utility];
   v5 = v26;
   v6 = v27;
   v7 = v29;
@@ -709,8 +709,8 @@ void __91__AKAppleIDAuthenticationCommandLineContext__verifySecondFactorCodeWith
   objc_copyWeak(v21, &from);
   v19 = MEMORY[0x1E69E5928](v29);
   v20 = MEMORY[0x1E69E5928](v28);
-  [(AKCommandLineUtilities *)v8 createAndExecuteRequestForPath:v5 requestBody:v6 httpMethod:@"POST" configuration:v7 completion:&v14];
-  MEMORY[0x1E69E5920](v8);
+  [(AKCommandLineUtilities *)utility createAndExecuteRequestForPath:v5 requestBody:v6 httpMethod:@"POST" configuration:v7 completion:&v14];
+  MEMORY[0x1E69E5920](utility);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v19, 0);
   objc_destroyWeak(v21);
@@ -748,20 +748,20 @@ void __128__AKAppleIDAuthenticationCommandLineContext__handleServerUIBirthdayVer
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleServerUIPasswordVerificationWithResponseDictionary:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)_handleServerUIPasswordVerificationWithResponseDictionary:(id)dictionary configuration:(id)configuration completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, configuration);
   v28 = 0;
-  objc_storeStrong(&v28, a5);
-  v27 = [(AKAppleIDAuthenticationCommandLineContext *)v31 _accountCreationRequestBodyFromResponseDictionary:location[0] shouldIncludePhoneNumber:0 shouldIncludeForSecurityCode:0];
-  v11 = [(AKAppleIDAuthenticationCommandLineContext *)v31 rootPath];
-  v26 = [(NSString *)v11 stringByAppendingPathComponent:@"/password"];
-  MEMORY[0x1E69E5920](v11);
+  objc_storeStrong(&v28, completion);
+  v27 = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _accountCreationRequestBodyFromResponseDictionary:location[0] shouldIncludePhoneNumber:0 shouldIncludeForSecurityCode:0];
+  rootPath = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy rootPath];
+  v26 = [(NSString *)rootPath stringByAppendingPathComponent:@"/password"];
+  MEMORY[0x1E69E5920](rootPath);
   v25 = _AKLogSystem();
   v24 = 2;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -774,8 +774,8 @@ void __128__AKAppleIDAuthenticationCommandLineContext__handleServerUIBirthdayVer
 
   objc_storeStrong(&v25, 0);
   AKPrintLine(@"⊛ Verifying Password with server…");
-  objc_initWeak(&from, v31);
-  v8 = [(AKAppleIDAuthenticationCommandLineContext *)v31 utility];
+  objc_initWeak(&from, selfCopy);
+  utility = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy utility];
   v5 = v26;
   v6 = v27;
   v7 = v29;
@@ -787,8 +787,8 @@ void __128__AKAppleIDAuthenticationCommandLineContext__handleServerUIBirthdayVer
   objc_copyWeak(v21, &from);
   v19 = MEMORY[0x1E69E5928](v29);
   v20 = MEMORY[0x1E69E5928](v28);
-  [(AKCommandLineUtilities *)v8 createAndExecuteRequestForPath:v5 requestBody:v6 httpMethod:@"POST" configuration:v7 completion:&v14];
-  MEMORY[0x1E69E5920](v8);
+  [(AKCommandLineUtilities *)utility createAndExecuteRequestForPath:v5 requestBody:v6 httpMethod:@"POST" configuration:v7 completion:&v14];
+  MEMORY[0x1E69E5920](utility);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v19, 0);
   objc_destroyWeak(v21);
@@ -826,17 +826,17 @@ void __128__AKAppleIDAuthenticationCommandLineContext__handleServerUIPasswordVer
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleServerUIPhoneVerificationWithResponseDictionary:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)_handleServerUIPhoneVerificationWithResponseDictionary:(id)dictionary configuration:(id)configuration completion:(id)completion
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
+  objc_storeStrong(&v27, configuration);
   v26 = 0;
-  objc_storeStrong(&v26, a5);
-  objc_initWeak(&v25, v29);
+  objc_storeStrong(&v26, completion);
+  objc_initWeak(&v25, selfCopy);
   v16 = MEMORY[0x1E69E9820];
   v17 = -1073741824;
   v18 = 0;
@@ -846,10 +846,10 @@ void __128__AKAppleIDAuthenticationCommandLineContext__handleServerUIPasswordVer
   v21 = MEMORY[0x1E69E5928](v27);
   v22 = MEMORY[0x1E69E5928](v26);
   v24 = MEMORY[0x193B165F0](&v16);
-  v15 = [(AKAppleIDAuthenticationCommandLineContext *)v29 _accountCreationRequestBodyFromResponseDictionary:location[0] shouldIncludePhoneNumber:1 shouldIncludeForSecurityCode:0];
-  v8 = [(AKAppleIDAuthenticationCommandLineContext *)v29 rootPath];
-  v14 = [(NSString *)v8 stringByAppendingPathComponent:@"/verify/phone"];
-  MEMORY[0x1E69E5920](v8);
+  v15 = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _accountCreationRequestBodyFromResponseDictionary:location[0] shouldIncludePhoneNumber:1 shouldIncludeForSecurityCode:0];
+  rootPath = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy rootPath];
+  v14 = [(NSString *)rootPath stringByAppendingPathComponent:@"/verify/phone"];
+  MEMORY[0x1E69E5920](rootPath);
   oslog = _AKLogSystem();
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
@@ -862,9 +862,9 @@ void __128__AKAppleIDAuthenticationCommandLineContext__handleServerUIPasswordVer
 
   objc_storeStrong(&oslog, 0);
   AKPrintLine(@"☏ Verifying Phone Number with server…");
-  v5 = [(AKAppleIDAuthenticationCommandLineContext *)v29 utility];
-  [(AKCommandLineUtilities *)v5 createAndExecuteRequestForPath:v14 requestBody:v15 httpMethod:@"PUT" configuration:v27 completion:v24];
-  MEMORY[0x1E69E5920](v5);
+  utility = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy utility];
+  [(AKCommandLineUtilities *)utility createAndExecuteRequestForPath:v14 requestBody:v15 httpMethod:@"PUT" configuration:v27 completion:v24];
+  MEMORY[0x1E69E5920](utility);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v24, 0);
@@ -915,30 +915,30 @@ void __125__AKAppleIDAuthenticationCommandLineContext__handleServerUIPhoneVerifi
   objc_storeStrong(location, 0);
 }
 
-- (void)_collectAndHandleTermsAndConditionsWithResponseDictionary:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)_collectAndHandleTermsAndConditionsWithResponseDictionary:(id)dictionary configuration:(id)configuration completion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, configuration);
   v27 = 0;
-  objc_storeStrong(&v27, a5);
-  objc_initWeak(&v26, v30);
+  objc_storeStrong(&v27, completion);
+  objc_initWeak(&v26, selfCopy);
   v17 = MEMORY[0x1E69E9820];
   v18 = -1073741824;
   v19 = 0;
   v20 = __128__AKAppleIDAuthenticationCommandLineContext__collectAndHandleTermsAndConditionsWithResponseDictionary_configuration_completion___block_invoke;
   v21 = &unk_1E73D9320;
   objc_copyWeak(&v24, &v26);
-  v22 = MEMORY[0x1E69E5928](v30);
+  v22 = MEMORY[0x1E69E5928](selfCopy);
   v23 = MEMORY[0x1E69E5928](v27);
   v25 = MEMORY[0x193B165F0](&v17);
-  v10 = [(AKAppleIDAuthenticationCommandLineContext *)v30 _accountCreationRequestBodyFromResponseDictionary:location[0] shouldIncludePhoneNumber:1 shouldIncludeForSecurityCode:1];
+  v10 = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _accountCreationRequestBodyFromResponseDictionary:location[0] shouldIncludePhoneNumber:1 shouldIncludeForSecurityCode:1];
   v16 = [v10 mutableCopy];
   MEMORY[0x1E69E5920](v10);
-  v9 = [(AKAppleIDAuthenticationCommandLineContext *)v30 _promptUserForTermsWithResponseDictionary:location[0]];
+  v9 = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _promptUserForTermsWithResponseDictionary:location[0]];
   [v16 addEntriesFromDictionary:?];
   MEMORY[0x1E69E5920](v9);
   v15 = _AKLogSystem();
@@ -953,11 +953,11 @@ void __125__AKAppleIDAuthenticationCommandLineContext__handleServerUIPhoneVerifi
 
   objc_storeStrong(&v15, 0);
   AKPrintLine(@"✓ Final verification with server…");
-  v6 = [(AKAppleIDAuthenticationCommandLineContext *)v30 utility];
-  v5 = [(AKAppleIDAuthenticationCommandLineContext *)v30 rootPath];
-  [AKCommandLineUtilities createAndExecuteRequestForPath:v6 requestBody:"createAndExecuteRequestForPath:requestBody:httpMethod:configuration:completion:" httpMethod:? configuration:? completion:?];
-  MEMORY[0x1E69E5920](v5);
-  MEMORY[0x1E69E5920](v6);
+  utility = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy utility];
+  rootPath = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy rootPath];
+  [AKCommandLineUtilities createAndExecuteRequestForPath:utility requestBody:"createAndExecuteRequestForPath:requestBody:httpMethod:configuration:completion:" httpMethod:? configuration:? completion:?];
+  MEMORY[0x1E69E5920](rootPath);
+  MEMORY[0x1E69E5920](utility);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v23, 0);
@@ -1019,25 +1019,25 @@ void __128__AKAppleIDAuthenticationCommandLineContext__collectAndHandleTermsAndC
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleServerUISMSVerificationWithResponseDictionary:(id)a3 statusCode:(int64_t)a4 configuration:(id)a5 completion:(id)a6
+- (void)_handleServerUISMSVerificationWithResponseDictionary:(id)dictionary statusCode:(int64_t)code configuration:(id)configuration completion:(id)completion
 {
   v88 = *MEMORY[0x1E69E9840];
-  v86 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v84 = a4;
+  objc_storeStrong(location, dictionary);
+  codeCopy = code;
   v83 = 0;
-  objc_storeStrong(&v83, a5);
+  objc_storeStrong(&v83, configuration);
   v82 = 0;
-  objc_storeStrong(&v82, a6);
+  objc_storeStrong(&v82, completion);
   v73 = MEMORY[0x1E69E9820];
   v74 = -1073741824;
   v75 = 0;
   v76 = __134__AKAppleIDAuthenticationCommandLineContext__handleServerUISMSVerificationWithResponseDictionary_statusCode_configuration_completion___block_invoke;
   v77 = &unk_1E73D9348;
   v80 = MEMORY[0x1E69E5928](v82);
-  v78 = MEMORY[0x1E69E5928](v86);
+  v78 = MEMORY[0x1E69E5928](selfCopy);
   v79 = MEMORY[0x1E69E5928](v83);
   v81 = MEMORY[0x193B165F0](&v73);
   oslog = _AKLogSystem();
@@ -1073,9 +1073,9 @@ void __128__AKAppleIDAuthenticationCommandLineContext__collectAndHandleTermsAndC
       v66 = [(AKTrustedPhoneNumber *)v6 initWithJSONDictionary:v68];
       v30 = v66;
       v31 = v69;
-      v32 = [(AKTrustedPhoneNumber *)v66 identifier];
+      identifier = [(AKTrustedPhoneNumber *)v66 identifier];
       [v31 setObject:v30 forKeyedSubscript:?];
-      MEMORY[0x1E69E5920](v32);
+      MEMORY[0x1E69E5920](identifier);
       objc_storeStrong(&v66, 0);
       ++v35;
       if (v33 + 1 >= v36)
@@ -1096,7 +1096,7 @@ void __128__AKAppleIDAuthenticationCommandLineContext__collectAndHandleTermsAndC
   if (v65)
   {
     AKPrintLine(@"Multiple trusted numbers found!\n");
-    v7 = [(AKAppleIDAuthenticationCommandLineContext *)v86 _promptUserForSelectionWithTrustedNumbers:v69];
+    v7 = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _promptUserForSelectionWithTrustedNumbers:v69];
     v8 = v64;
     v64 = v7;
     MEMORY[0x1E69E5920](v8);
@@ -1136,33 +1136,33 @@ void __128__AKAppleIDAuthenticationCommandLineContext__collectAndHandleTermsAndC
 
     objc_storeStrong(&v59, 0);
     v21 = v69;
-    v23 = [v69 allKeys];
-    v22 = [v23 firstObject];
+    allKeys = [v69 allKeys];
+    firstObject = [allKeys firstObject];
     v9 = [v21 objectForKey:?];
     v10 = v64;
     v64 = v9;
     MEMORY[0x1E69E5920](v10);
-    MEMORY[0x1E69E5920](v22);
-    MEMORY[0x1E69E5920](v23);
+    MEMORY[0x1E69E5920](firstObject);
+    MEMORY[0x1E69E5920](allKeys);
   }
 
-  if (v65 || v84 >= 200 && v84 < 300)
+  if (v65 || codeCopy >= 200 && codeCopy < 300)
   {
-    v16 = [(AKAppleIDAuthenticationCommandLineContext *)v86 rootPath];
-    v56 = [(NSString *)v16 stringByAppendingPathComponent:@"/verify/phone"];
-    MEMORY[0x1E69E5920](v16);
-    v17 = [(AKAppleIDAuthenticationCommandLineContext *)v86 utility];
-    v55 = [(AKCommandLineUtilities *)v17 mutableJSONRequestForPath:v56];
-    MEMORY[0x1E69E5920](v17);
-    v18 = v86;
-    v19 = [v64 identifier];
+    rootPath = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy rootPath];
+    v56 = [(NSString *)rootPath stringByAppendingPathComponent:@"/verify/phone"];
+    MEMORY[0x1E69E5920](rootPath);
+    utility = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy utility];
+    v55 = [(AKCommandLineUtilities *)utility mutableJSONRequestForPath:v56];
+    MEMORY[0x1E69E5920](utility);
+    v18 = selfCopy;
+    identifier2 = [v64 identifier];
     v54 = [(AKAppleIDAuthenticationCommandLineContext *)v18 _jsonPostbackDictionaryForCode:0 numberId:?];
-    MEMORY[0x1E69E5920](v19);
+    MEMORY[0x1E69E5920](identifier2);
     [v55 ak_setJSONBodyWithParameters:v54];
     [v55 setHTTPMethod:@"PUT"];
-    v20 = [v83 resourceLoadDelegate];
-    [v20 signRequest:v55];
-    MEMORY[0x1E69E5920](v20);
+    resourceLoadDelegate = [v83 resourceLoadDelegate];
+    [resourceLoadDelegate signRequest:v55];
+    MEMORY[0x1E69E5920](resourceLoadDelegate);
     v53 = _AKLogSystem();
     v52 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
@@ -1290,35 +1290,35 @@ void __134__AKAppleIDAuthenticationCommandLineContext__handleServerUISMSVerifica
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_collectAndPostSecondFactorCodeWithRequestBody:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)_collectAndPostSecondFactorCodeWithRequestBody:(id)body configuration:(id)configuration completion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, body);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, configuration);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
-  objc_initWeak(&v21, v25);
+  objc_storeStrong(&v22, completion);
+  objc_initWeak(&v21, selfCopy);
   v10 = MEMORY[0x1E69E9820];
   v11 = -1073741824;
   v12 = 0;
   v13 = __117__AKAppleIDAuthenticationCommandLineContext__collectAndPostSecondFactorCodeWithRequestBody_configuration_completion___block_invoke;
   v14 = &unk_1E73D9370;
   objc_copyWeak(&v19, &v21);
-  v15 = MEMORY[0x1E69E5928](v25);
+  v15 = MEMORY[0x1E69E5928](selfCopy);
   v16 = MEMORY[0x1E69E5928](location[0]);
   v17 = MEMORY[0x1E69E5928](v23);
   v18 = MEMORY[0x1E69E5928](v22);
   v20 = MEMORY[0x193B165F0](&v10);
-  v6 = [(AKAppleIDAuthenticationCommandLineContext *)v25 rootPath];
-  v9 = [(NSString *)v6 stringByAppendingPathComponent:@"/verify/phone/securitycode"];
-  MEMORY[0x1E69E5920](v6);
+  rootPath = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy rootPath];
+  v9 = [(NSString *)rootPath stringByAppendingPathComponent:@"/verify/phone/securitycode"];
+  MEMORY[0x1E69E5920](rootPath);
   AKPrintLine(@"Verifying code...");
-  v5 = [(AKAppleIDAuthenticationCommandLineContext *)v25 utility];
-  [(AKCommandLineUtilities *)v5 createAndExecuteRequestForPath:v9 requestBody:location[0] httpMethod:@"POST" configuration:v23 completion:v20];
-  MEMORY[0x1E69E5920](v5);
+  utility = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy utility];
+  [(AKCommandLineUtilities *)utility createAndExecuteRequestForPath:v9 requestBody:location[0] httpMethod:@"POST" configuration:v23 completion:v20];
+  MEMORY[0x1E69E5920](utility);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v18, 0);
@@ -1385,22 +1385,22 @@ void __117__AKAppleIDAuthenticationCommandLineContext__collectAndPostSecondFacto
   objc_storeStrong(location, 0);
 }
 
-- (id)_promptUserForSelectionWithTrustedNumbers:(id)a3
+- (id)_promptUserForSelectionWithTrustedNumbers:(id)numbers
 {
   v15 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, numbers);
   [location[0] enumerateKeysAndObjectsUsingBlock:&__block_literal_global_53];
   AKPrintLine(@"Please select a trusted number: ");
   v5 = MEMORY[0x1E696AD98];
   v6 = AKReadLine(10);
   v11 = [v5 numberWithInt:{objc_msgSend(v6, "intValue")}];
   MEMORY[0x1E69E5920](v6);
-  v7 = [location[0] allKeys];
-  v8 = [v7 containsObject:v11];
-  MEMORY[0x1E69E5920](v7);
+  allKeys = [location[0] allKeys];
+  v8 = [allKeys containsObject:v11];
+  MEMORY[0x1E69E5920](allKeys);
   if (v8)
   {
     v13 = [location[0] objectForKey:v11];
@@ -1455,12 +1455,12 @@ void __87__AKAppleIDAuthenticationCommandLineContext__promptUserForSelectionWith
   objc_storeStrong(v11, v12);
 }
 
-- (id)_parseTrustedPhoneNumberFromResponseDictionary:(id)a3
+- (id)_parseTrustedPhoneNumberFromResponseDictionary:(id)dictionary
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   v11 = 0;
   v10 = [location[0] objectForKeyedSubscript:@"phoneNumberVerification"];
   v9 = [v10 objectForKeyedSubscript:@"phoneNumber"];
@@ -1470,13 +1470,13 @@ void __87__AKAppleIDAuthenticationCommandLineContext__promptUserForSelectionWith
     v4 = v11;
     v11 = v3;
     MEMORY[0x1E69E5920](v4);
-    v8 = [(AKTrustedPhoneNumber *)v11 number];
-    MEMORY[0x1E69E5920](v8);
-    if (v8)
+    number = [(AKTrustedPhoneNumber *)v11 number];
+    MEMORY[0x1E69E5920](number);
+    if (number)
     {
-      v7 = [(AKTrustedPhoneNumber *)v11 number];
-      [(AKAppleIDAuthenticationCommandLineContext *)v13 setPhoneNumber:?];
-      MEMORY[0x1E69E5920](v7);
+      number2 = [(AKTrustedPhoneNumber *)v11 number];
+      [(AKAppleIDAuthenticationCommandLineContext *)selfCopy setPhoneNumber:?];
+      MEMORY[0x1E69E5920](number2);
     }
   }
 
@@ -1489,33 +1489,33 @@ void __87__AKAppleIDAuthenticationCommandLineContext__promptUserForSelectionWith
   return v6;
 }
 
-- (id)_accountCreationRequestBodyFromResponseDictionary:(id)a3 shouldIncludePhoneNumber:(BOOL)a4 shouldIncludeForSecurityCode:(BOOL)a5
+- (id)_accountCreationRequestBodyFromResponseDictionary:(id)dictionary shouldIncludePhoneNumber:(BOOL)number shouldIncludeForSecurityCode:(BOOL)code
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v26 = a4;
-  v25 = a5;
-  v24 = [(AKAppleIDAuthenticationCommandLineContext *)v28 _accountDictionary];
-  v23 = [(AKAppleIDAuthenticationCommandLineContext *)v28 _createContextDictionaryFromResponse:location[0]];
+  objc_storeStrong(location, dictionary);
+  numberCopy = number;
+  codeCopy = code;
+  _accountDictionary = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _accountDictionary];
+  v23 = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _createContextDictionaryFromResponse:location[0]];
   v39[0] = @"account";
-  v40[0] = v24;
+  v40[0] = _accountDictionary;
   v39[1] = @"createContext";
   v40[1] = v23;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:2];
   v22 = [v16 mutableCopy];
   MEMORY[0x1E69E5920](v16);
-  if (a4)
+  if (number)
   {
     v37[0] = @"phoneNumber";
     v35[0] = @"number";
-    v15 = [(AKAppleIDAuthenticationCommandLineContext *)v28 _promptForPhoneNumber];
-    v36[0] = v15;
+    _promptForPhoneNumber = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _promptForPhoneNumber];
+    v36[0] = _promptForPhoneNumber;
     v35[1] = @"countryCode";
-    v14 = [(AKAppleIDAuthenticationCommandLineContext *)v28 _promptForCountryCode];
-    v36[1] = v14;
+    _promptForCountryCode = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _promptForCountryCode];
+    v36[1] = _promptForCountryCode;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:?];
     v38[0] = v13;
     v37[1] = @"mode";
@@ -1524,12 +1524,12 @@ void __87__AKAppleIDAuthenticationCommandLineContext__promptUserForSelectionWith
     v21 = [v12 mutableCopy];
     MEMORY[0x1E69E5920](v12);
     MEMORY[0x1E69E5920](v13);
-    MEMORY[0x1E69E5920](v14);
-    MEMORY[0x1E69E5920](v15);
-    if (v25)
+    MEMORY[0x1E69E5920](_promptForCountryCode);
+    MEMORY[0x1E69E5920](_promptForPhoneNumber);
+    if (codeCopy)
     {
-      v20 = [(AKAppleIDAuthenticationCommandLineContext *)v28 _parseTrustedPhoneNumberFromResponseDictionary:location[0]];
-      v19 = [(AKAppleIDAuthenticationCommandLineContext *)v28 _promptForVerificationCodeWithSecureEntry:0 forTrustedNumber:v20];
+      v20 = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _parseTrustedPhoneNumberFromResponseDictionary:location[0]];
+      v19 = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _promptForVerificationCodeWithSecureEntry:0 forTrustedNumber:v20];
       v33 = @"securityCode";
       v31 = @"code";
       if (v19)
@@ -1565,20 +1565,20 @@ void __87__AKAppleIDAuthenticationCommandLineContext__promptUserForSelectionWith
   v6 = MEMORY[0x1E69E5928](v22);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v23, 0);
-  objc_storeStrong(&v24, 0);
+  objc_storeStrong(&_accountDictionary, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 
   return v6;
 }
 
-- (id)_createContextDictionaryFromResponse:(id)a3
+- (id)_createContextDictionaryFromResponse:(id)response
 {
   v10[2] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v7 = [location[0] objectForKeyedSubscript:@"createContext"];
   v9[0] = @"token";
   v6 = [v7 objectForKeyedSubscript:@"token"];
@@ -1661,16 +1661,16 @@ void __63__AKAppleIDAuthenticationCommandLineContext__accountDictionary__block_i
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_beginDataTaskWithRequest:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)_beginDataTaskWithRequest:(id)request configuration:(id)configuration completion:(id)completion
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, configuration);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
+  objc_storeStrong(&v19, completion);
   v7 = +[AKURLSession sharedURLSession];
   v6 = location[0];
   v10 = MEMORY[0x1E69E9820];
@@ -1678,7 +1678,7 @@ void __63__AKAppleIDAuthenticationCommandLineContext__accountDictionary__block_i
   v12 = 0;
   v13 = __96__AKAppleIDAuthenticationCommandLineContext__beginDataTaskWithRequest_configuration_completion___block_invoke;
   v14 = &unk_1E73D93E0;
-  v15 = MEMORY[0x1E69E5928](v22);
+  v15 = MEMORY[0x1E69E5928](selfCopy);
   v16 = MEMORY[0x1E69E5928](v20);
   v18 = MEMORY[0x1E69E5928](v19);
   v17 = MEMORY[0x1E69E5928](location[0]);
@@ -1849,13 +1849,13 @@ void __96__AKAppleIDAuthenticationCommandLineContext__beginDataTaskWithRequest_c
   }
 }
 
-- (id)_parseHeaderTitleForPasscodeView:(id)a3
+- (id)_parseHeaderTitleForPasscodeView:(id)view
 {
   v23[1] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v19[1] = NSSelectorFromString(&cfstr_Htmlcontent.isa);
   v19[0] = [location[0] HTMLHeader];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -1917,7 +1917,7 @@ void __96__AKAppleIDAuthenticationCommandLineContext__beginDataTaskWithRequest_c
 
   if (v16)
   {
-    v21 = [v16 string];
+    string = [v16 string];
     v11 = 1;
   }
 
@@ -1938,32 +1938,32 @@ LABEL_17:
   if (!v11)
   {
 LABEL_19:
-    v21 = 0;
+    string = 0;
   }
 
   objc_storeStrong(v19, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
-  v3 = v21;
+  v3 = string;
 
   return v3;
 }
 
-- (id)_xmlUIRequestForURL:(id)a3 withServerInfo:(id)a4
+- (id)_xmlUIRequestForURL:(id)l withServerInfo:(id)info
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, info);
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if (v8)
   {
     [v7 setObject:v8 forKeyedSubscript:@"serverInfo"];
   }
 
-  v5 = [(AKAppleIDAuthenticationCommandLineContext *)v10 _xmlUIRequestForURL:location[0] withPostbackDictionary:v7];
+  v5 = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _xmlUIRequestForURL:location[0] withPostbackDictionary:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
@@ -1971,14 +1971,14 @@ LABEL_19:
   return v5;
 }
 
-- (id)_xmlUIRequestForURL:(id)a3 withPostbackDictionary:(id)a4
+- (id)_xmlUIRequestForURL:(id)l withPostbackDictionary:(id)dictionary
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, dictionary);
   v4 = objc_alloc(MEMORY[0x1E695AC18]);
   v8 = [v4 initWithURL:location[0]];
   [v8 ak_setBodyWithParameters:v9];
@@ -1993,16 +1993,16 @@ LABEL_19:
   return v7;
 }
 
-+ (id)ruiElementsAttributesWithName:(id)a3 data:(id)a4 error:(id *)a5
++ (id)ruiElementsAttributesWithName:(id)name data:(id)data error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v31 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
-  v28[1] = a5;
+  objc_storeStrong(&v29, data);
+  v28[1] = error;
   v5 = objc_alloc(MEMORY[0x1E696B0A8]);
   v28[0] = [v5 initWithData:v29];
   if (RemoteUILibraryCore(0))
@@ -2018,8 +2018,8 @@ LABEL_19:
   v27 = v6;
   [v28[0] setDelegate:v6];
   [v28[0] parse];
-  v26 = [v27 xmlElement];
-  v25 = [v31 _findMatchingElementWithName:location[0] inElement:v26];
+  xmlElement = [v27 xmlElement];
+  v25 = [selfCopy _findMatchingElementWithName:location[0] inElement:xmlElement];
   v24 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v25, "count")}];
   memset(__b, 0, sizeof(__b));
   v17 = MEMORY[0x1E69E5928](v25);
@@ -2038,17 +2038,17 @@ LABEL_19:
       }
 
       v23 = *(__b[1] + 8 * v15);
-      v11 = [v23 attributtes];
-      v21 = [v11 mutableCopy];
-      MEMORY[0x1E69E5920](v11);
-      v12 = [v23 stringValue];
-      MEMORY[0x1E69E5920](v12);
-      if (v12)
+      attributtes = [v23 attributtes];
+      v21 = [attributtes mutableCopy];
+      MEMORY[0x1E69E5920](attributtes);
+      stringValue = [v23 stringValue];
+      MEMORY[0x1E69E5920](stringValue);
+      if (stringValue)
       {
         v9 = v21;
-        v10 = [v23 stringValue];
+        stringValue2 = [v23 stringValue];
         [v9 setObject:? forKey:?];
-        MEMORY[0x1E69E5920](v10);
+        MEMORY[0x1E69E5920](stringValue2);
       }
 
       [v24 addObject:v21];
@@ -2070,7 +2070,7 @@ LABEL_19:
   v8 = MEMORY[0x1E69E5928](v24);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(&v25, 0);
-  objc_storeStrong(&v26, 0);
+  objc_storeStrong(&xmlElement, 0);
   objc_storeStrong(&v27, 0);
   objc_storeStrong(v28, 0);
   objc_storeStrong(&v29, 0);
@@ -2080,21 +2080,21 @@ LABEL_19:
   return v8;
 }
 
-+ (id)_findMatchingElementWithName:(id)a3 inElement:(id)a4
++ (id)_findMatchingElementWithName:(id)name inElement:(id)element
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v25 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, element);
   if (location[0] && [location[0] length])
   {
     v14 = location[0];
-    v15 = [v23 name];
+    name = [v23 name];
     v16 = [v14 isEqualToString:?];
-    MEMORY[0x1E69E5920](v15);
+    MEMORY[0x1E69E5920](name);
     if (v16)
     {
       v28[0] = v23;
@@ -2106,8 +2106,8 @@ LABEL_19:
     {
       v21 = MEMORY[0x1E69E5928](MEMORY[0x1E695E0F0]);
       memset(__b, 0, sizeof(__b));
-      v12 = [v23 children];
-      v13 = [v12 countByEnumeratingWithState:__b objects:v27 count:16];
+      children = [v23 children];
+      v13 = [children countByEnumeratingWithState:__b objects:v27 count:16];
       if (v13)
       {
         v9 = *__b[2];
@@ -2118,11 +2118,11 @@ LABEL_19:
           v8 = v10;
           if (*__b[2] != v9)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(children);
           }
 
           v20 = *(__b[1] + 8 * v10);
-          v18 = [v25 _findMatchingElementWithName:location[0] inElement:v20];
+          v18 = [selfCopy _findMatchingElementWithName:location[0] inElement:v20];
           v4 = [v21 arrayByAddingObjectsFromArray:v18];
           v5 = v21;
           v21 = v4;
@@ -2132,7 +2132,7 @@ LABEL_19:
           if (v8 + 1 >= v11)
           {
             v10 = 0;
-            v11 = [v12 countByEnumeratingWithState:__b objects:v27 count:16];
+            v11 = [children countByEnumeratingWithState:__b objects:v27 count:16];
             if (!v11)
             {
               break;
@@ -2141,7 +2141,7 @@ LABEL_19:
         }
       }
 
-      MEMORY[0x1E69E5920](v12);
+      MEMORY[0x1E69E5920](children);
       v26 = MEMORY[0x1E69E5928](v21);
       v22 = 1;
       objc_storeStrong(&v21, 0);
@@ -2162,43 +2162,43 @@ LABEL_19:
   return v6;
 }
 
-- (id)_promptForVerificationCodeWithSecureEntry:(BOOL)a3 forTrustedNumber:(id)a4
+- (id)_promptForVerificationCodeWithSecureEntry:(BOOL)entry forTrustedNumber:(id)number
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
-  v16 = a3;
+  entryCopy = entry;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v14 = [(AKAppleIDAuthenticationCommandLineContext *)v18 smsSecurityCode];
-  if (![v14 length])
+  objc_storeStrong(&location, number);
+  smsSecurityCode = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy smsSecurityCode];
+  if (![smsSecurityCode length])
   {
     if (location)
     {
       v6 = MEMORY[0x1E696AEC0];
-      v9 = [location numberWithDialCode];
-      v8 = [location pushMode];
-      v7 = [v6 stringWithFormat:@"A second factor code was send to %@ via %@", v9, v8];
+      numberWithDialCode = [location numberWithDialCode];
+      pushMode = [location pushMode];
+      v7 = [v6 stringWithFormat:@"A second factor code was send to %@ via %@", numberWithDialCode, pushMode];
       AKPrintLine(v7);
       MEMORY[0x1E69E5920](v7);
-      MEMORY[0x1E69E5920](v8);
-      MEMORY[0x1E69E5920](v9);
+      MEMORY[0x1E69E5920](pushMode);
+      MEMORY[0x1E69E5920](numberWithDialCode);
     }
 
     AKPrint(@"Enter second factor code: ");
     v12 = 0;
     v10 = 0;
-    if (v16)
+    if (entryCopy)
     {
       v13 = AKReadLineSecure(10);
       v12 = 1;
-      objc_storeStrong(&v14, v13);
+      objc_storeStrong(&smsSecurityCode, v13);
     }
 
     else
     {
       v11 = AKReadLine(10);
       v10 = 1;
-      objc_storeStrong(&v14, v11);
+      objc_storeStrong(&smsSecurityCode, v11);
     }
 
     if (v10)
@@ -2211,14 +2211,14 @@ LABEL_19:
       MEMORY[0x1E69E5920](v13);
     }
 
-    if (v14)
+    if (smsSecurityCode)
     {
-      [(AKAppleIDAuthenticationCommandLineContext *)v18 setSmsSecurityCode:v14];
+      [(AKAppleIDAuthenticationCommandLineContext *)selfCopy setSmsSecurityCode:smsSecurityCode];
     }
   }
 
-  v5 = MEMORY[0x1E69E5928](v14);
-  objc_storeStrong(&v14, 0);
+  v5 = MEMORY[0x1E69E5928](smsSecurityCode);
+  objc_storeStrong(&smsSecurityCode, 0);
   objc_storeStrong(&location, 0);
 
   return v5;
@@ -2227,23 +2227,23 @@ LABEL_19:
 - (id)_promptForBirthday
 {
   v26 = *MEMORY[0x1E69E9840];
-  v24 = self;
+  selfCopy = self;
   v23[1] = a2;
   v23[0] = 0;
-  v19 = [(AKAppleIDAuthenticationCommandLineContext *)self birthday];
-  MEMORY[0x1E69E5920](v19);
-  if (v19)
+  birthday = [(AKAppleIDAuthenticationCommandLineContext *)self birthday];
+  MEMORY[0x1E69E5920](birthday);
+  if (birthday)
   {
-    v18 = [(AKAppleIDAuthenticationCommandLineContext *)v24 utility];
-    v17 = [(AKCommandLineUtilities *)v18 dateFormatter];
-    v16 = [(AKAppleIDAuthenticationCommandLineContext *)v24 birthday];
-    v2 = [(NSDateFormatter *)v17 stringFromDate:?];
+    utility = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy utility];
+    dateFormatter = [(AKCommandLineUtilities *)utility dateFormatter];
+    birthday2 = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy birthday];
+    v2 = [(NSDateFormatter *)dateFormatter stringFromDate:?];
     v3 = v23[0];
     v23[0] = v2;
     MEMORY[0x1E69E5920](v3);
-    MEMORY[0x1E69E5920](v16);
-    MEMORY[0x1E69E5920](v17);
-    MEMORY[0x1E69E5920](v18);
+    MEMORY[0x1E69E5920](birthday2);
+    MEMORY[0x1E69E5920](dateFormatter);
+    MEMORY[0x1E69E5920](utility);
   }
 
   if (![v23[0] length])
@@ -2262,30 +2262,30 @@ LABEL_19:
     }
 
     objc_storeStrong(&location, 0);
-    v15 = [(AKAppleIDAuthenticationCommandLineContext *)v24 utility];
-    v14 = [(AKCommandLineUtilities *)v15 dateFormatter];
-    v20 = [(NSDateFormatter *)v14 dateFromString:v23[0]];
-    MEMORY[0x1E69E5920](v14);
-    MEMORY[0x1E69E5920](v15);
+    utility2 = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy utility];
+    dateFormatter2 = [(AKCommandLineUtilities *)utility2 dateFormatter];
+    v20 = [(NSDateFormatter *)dateFormatter2 dateFromString:v23[0]];
+    MEMORY[0x1E69E5920](dateFormatter2);
+    MEMORY[0x1E69E5920](utility2);
     if (v20)
     {
-      [(AKAppleIDAuthenticationCommandLineContext *)v24 setBirthday:v20];
+      [(AKAppleIDAuthenticationCommandLineContext *)selfCopy setBirthday:v20];
     }
 
     else
     {
-      v13 = [(AKAppleIDAuthenticationCommandLineContext *)v24 utility];
-      v12 = [(AKCommandLineUtilities *)v13 dateFormatter];
-      v11 = [MEMORY[0x1E695DF00] date];
-      v10 = [(NSDateFormatter *)v12 stringFromDate:?];
+      utility3 = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy utility];
+      dateFormatter3 = [(AKCommandLineUtilities *)utility3 dateFormatter];
+      date = [MEMORY[0x1E695DF00] date];
+      v10 = [(NSDateFormatter *)dateFormatter3 stringFromDate:?];
       AKPrintError(@"Please enter a valid birthday(%@)!", v10);
       MEMORY[0x1E69E5920](v10);
-      MEMORY[0x1E69E5920](v11);
-      MEMORY[0x1E69E5920](v12);
-      MEMORY[0x1E69E5920](v13);
-      v6 = [(AKAppleIDAuthenticationCommandLineContext *)v24 _promptForBirthday];
+      MEMORY[0x1E69E5920](date);
+      MEMORY[0x1E69E5920](dateFormatter3);
+      MEMORY[0x1E69E5920](utility3);
+      _promptForBirthday = [(AKAppleIDAuthenticationCommandLineContext *)selfCopy _promptForBirthday];
       v7 = v23[0];
-      v23[0] = v6;
+      v23[0] = _promptForBirthday;
       MEMORY[0x1E69E5920](v7);
     }
 
@@ -2301,7 +2301,7 @@ LABEL_19:
 
 - (id)_promptForPassword
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v6[0] = [(AKAppleIDAuthenticationContext *)self _password];
   if (![v6[0] length])
@@ -2313,7 +2313,7 @@ LABEL_19:
     MEMORY[0x1E69E5920](v3);
     if (v6[0])
     {
-      [(AKAppleIDAuthenticationContext *)v7 _setPassword:v6[0]];
+      [(AKAppleIDAuthenticationContext *)selfCopy _setPassword:v6[0]];
     }
   }
 
@@ -2325,7 +2325,7 @@ LABEL_19:
 
 - (id)_promptForUsername
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v6[0] = [(AKAppleIDAuthenticationContext *)self username];
   if (![v6[0] length])
@@ -2337,7 +2337,7 @@ LABEL_19:
     MEMORY[0x1E69E5920](v3);
     if (v6[0])
     {
-      [(AKAppleIDAuthenticationContext *)v7 setUsername:v6[0]];
+      [(AKAppleIDAuthenticationContext *)selfCopy setUsername:v6[0]];
     }
   }
 
@@ -2349,7 +2349,7 @@ LABEL_19:
 
 - (id)_promptForPhoneNumber
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v6[0] = [(AKAppleIDAuthenticationCommandLineContext *)self phoneNumber];
   if (![v6[0] length])
@@ -2361,7 +2361,7 @@ LABEL_19:
     MEMORY[0x1E69E5920](v3);
     if (v6[0])
     {
-      [(AKAppleIDAuthenticationCommandLineContext *)v7 setPhoneNumber:v6[0]];
+      [(AKAppleIDAuthenticationCommandLineContext *)selfCopy setPhoneNumber:v6[0]];
     }
   }
 
@@ -2373,7 +2373,7 @@ LABEL_19:
 
 - (id)_promptForCountryCode
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v6[0] = [(AKAppleIDAuthenticationCommandLineContext *)self countryCode];
   if (![v6[0] length])
@@ -2385,7 +2385,7 @@ LABEL_19:
     MEMORY[0x1E69E5920](v3);
     if (v6[0])
     {
-      [(AKAppleIDAuthenticationCommandLineContext *)v7 setCountryCode:v6[0]];
+      [(AKAppleIDAuthenticationCommandLineContext *)selfCopy setCountryCode:v6[0]];
     }
   }
 
@@ -2397,7 +2397,7 @@ LABEL_19:
 
 - (id)_promptForFirstName
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v6[0] = [(AKAppleIDAuthenticationCommandLineContext *)self firstName];
   if (![v6[0] length])
@@ -2409,7 +2409,7 @@ LABEL_19:
     MEMORY[0x1E69E5920](v3);
     if (v6[0])
     {
-      [(AKAppleIDAuthenticationCommandLineContext *)v7 setFirstName:v6[0]];
+      [(AKAppleIDAuthenticationCommandLineContext *)selfCopy setFirstName:v6[0]];
     }
   }
 
@@ -2421,7 +2421,7 @@ LABEL_19:
 
 - (id)_promptForLastName
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v6[0] = [(AKAppleIDAuthenticationCommandLineContext *)self lastName];
   if (![v6[0] length])
@@ -2433,7 +2433,7 @@ LABEL_19:
     MEMORY[0x1E69E5920](v3);
     if (v6[0])
     {
-      [(AKAppleIDAuthenticationCommandLineContext *)v7 setLastName:v6[0]];
+      [(AKAppleIDAuthenticationCommandLineContext *)selfCopy setLastName:v6[0]];
     }
   }
 
@@ -2443,19 +2443,19 @@ LABEL_19:
   return v5;
 }
 
-- (id)_promptUserForTermsWithResponseDictionary:(id)a3
+- (id)_promptUserForTermsWithResponseDictionary:(id)dictionary
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   v27 = MEMORY[0x1E69E5928](MEMORY[0x1E695E0F8]);
   v26 = [location[0] objectForKeyedSubscript:@"termsList"];
-  v25 = [v26 firstObject];
-  if (v25)
+  firstObject = [v26 firstObject];
+  if (firstObject)
   {
-    if (![(AKAppleIDAuthenticationCommandLineContext *)v29 termsAccepted])
+    if (![(AKAppleIDAuthenticationCommandLineContext *)selfCopy termsAccepted])
     {
       AKPrintLine(@"Do you agree to terms and conditions?");
       AKPrint(@"Y to agree / READ to print out the terms (please just say yess!): ");
@@ -2464,7 +2464,7 @@ LABEL_19:
       {
         AKPrintLine(@"OK here we go…");
         AKPrintLine(&stru_1F0781300);
-        v23 = [v25 objectForKeyedSubscript:@"termsPageDetails"];
+        v23 = [firstObject objectForKeyedSubscript:@"termsPageDetails"];
         v16 = [v23 objectForKeyedSubscript:@"title"];
         AKPrintLine(v16);
         MEMORY[0x1E69E5920](v16);
@@ -2481,15 +2481,15 @@ LABEL_19:
         v4 = v24;
         v24 = v3;
         MEMORY[0x1E69E5920](v4);
-        v19 = [v24 lowercaseString];
-        v5 = [v19 substringToIndex:1];
+        lowercaseString = [v24 lowercaseString];
+        v5 = [lowercaseString substringToIndex:1];
         v6 = v24;
         v24 = v5;
         MEMORY[0x1E69E5920](v6);
-        MEMORY[0x1E69E5920](v19);
+        MEMORY[0x1E69E5920](lowercaseString);
         if ([v24 isEqualToString:@"y"])
         {
-          [(AKAppleIDAuthenticationCommandLineContext *)v29 setTermsAccepted:1];
+          [(AKAppleIDAuthenticationCommandLineContext *)selfCopy setTermsAccepted:1];
         }
 
         objc_storeStrong(&v23, 0);
@@ -2498,7 +2498,7 @@ LABEL_19:
       objc_storeStrong(&v24, 0);
     }
 
-    if ([(AKAppleIDAuthenticationCommandLineContext *)v29 termsAccepted])
+    if ([(AKAppleIDAuthenticationCommandLineContext *)selfCopy termsAccepted])
     {
       v22 = _AKLogSystem();
       v21 = OS_LOG_TYPE_DEFAULT;
@@ -2514,10 +2514,10 @@ LABEL_19:
       AKPrintLine(@"⚖ Terms and Conditions Accepted…");
       v32 = @"acceptedTerms";
       v30[0] = @"versions";
-      v13 = [v25 objectForKeyedSubscript:@"versions"];
+      v13 = [firstObject objectForKeyedSubscript:@"versions"];
       v31[0] = v13;
       v30[1] = @"deviceVersions";
-      v12 = [v25 objectForKeyedSubscript:@"deviceVersions"];
+      v12 = [firstObject objectForKeyedSubscript:@"deviceVersions"];
       v31[1] = v12;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:2];
       v33[0] = v11;
@@ -2532,7 +2532,7 @@ LABEL_19:
   }
 
   v10 = MEMORY[0x1E69E5928](v27);
-  objc_storeStrong(&v25, 0);
+  objc_storeStrong(&firstObject, 0);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(&v27, 0);
   objc_storeStrong(location, 0);
@@ -2541,15 +2541,15 @@ LABEL_19:
   return v10;
 }
 
-- (id)_jsonPostbackDictionaryForCode:(id)a3 numberId:(id)a4
+- (id)_jsonPostbackDictionaryForCode:(id)code numberId:(id)id
 {
   v17[1] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, code);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, id);
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if (v11)
   {

@@ -1,23 +1,23 @@
 @interface STAskForTimeApplicationResource
-- (STAskForTimeApplicationResource)initWithBundleIdentifier:(id)a3 changeHandler:(id)a4;
-- (id)_fetchParentBundleIdentifierForBundleIdentifier:(id)a3;
-- (id)_fetchParentBundleIdentifiersForBundleIdentifier:(id)a3;
+- (STAskForTimeApplicationResource)initWithBundleIdentifier:(id)identifier changeHandler:(id)handler;
+- (id)_fetchParentBundleIdentifierForBundleIdentifier:(id)identifier;
+- (id)_fetchParentBundleIdentifiersForBundleIdentifier:(id)identifier;
 @end
 
 @implementation STAskForTimeApplicationResource
 
-- (STAskForTimeApplicationResource)initWithBundleIdentifier:(id)a3 changeHandler:(id)a4
+- (STAskForTimeApplicationResource)initWithBundleIdentifier:(id)identifier changeHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = MEMORY[0x1E69635F8];
-  v8 = a4;
+  handlerCopy = handler;
   v19 = 0;
-  v9 = [[v7 alloc] initWithBundleIdentifier:v6 allowPlaceholder:1 error:&v19];
+  v9 = [[v7 alloc] initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:&v19];
   v10 = v19;
   if (v9)
   {
-    v11 = [v9 localizedName];
+    localizedName = [v9 localizedName];
   }
 
   else
@@ -26,33 +26,33 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v21 = v6;
+      v21 = identifierCopy;
       v22 = 2114;
       v23 = v10;
       _os_log_impl(&dword_1B831F000, v12, OS_LOG_TYPE_INFO, "Failed to get application record for %{public}@ %{public}@", buf, 0x16u);
     }
 
-    v13 = [v6 componentsSeparatedByString:@"."];
-    v11 = [v13 lastObject];
+    v13 = [identifierCopy componentsSeparatedByString:@"."];
+    localizedName = [v13 lastObject];
   }
 
-  v14 = [(STAskForTimeApplicationResource *)self _fetchParentBundleIdentifierForBundleIdentifier:v6];
+  v14 = [(STAskForTimeApplicationResource *)self _fetchParentBundleIdentifierForBundleIdentifier:identifierCopy];
 
   v18.receiver = self;
   v18.super_class = STAskForTimeApplicationResource;
-  v15 = [(STAskForTimeResource *)&v18 initWithResourceIdentifier:v14 resourceDisplayName:v11 usageType:0 changeHandler:v8];
+  v15 = [(STAskForTimeResource *)&v18 initWithResourceIdentifier:v14 resourceDisplayName:localizedName usageType:0 changeHandler:handlerCopy];
 
   v16 = *MEMORY[0x1E69E9840];
   return v15;
 }
 
-- (id)_fetchParentBundleIdentifierForBundleIdentifier:(id)a3
+- (id)_fetchParentBundleIdentifierForBundleIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(STAskForTimeApplicationResource *)self _fetchParentBundleIdentifiersForBundleIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(STAskForTimeApplicationResource *)self _fetchParentBundleIdentifiersForBundleIdentifier:identifierCopy];
   v6 = [v5 count];
-  v7 = v4;
+  v7 = identifierCopy;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -104,26 +104,26 @@
   return v7;
 }
 
-- (id)_fetchParentBundleIdentifiersForBundleIdentifier:(id)a3
+- (id)_fetchParentBundleIdentifiersForBundleIdentifier:(id)identifier
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
   v25 = 0;
-  v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v25];
+  v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:&v25];
   v6 = v25;
   v7 = v6;
   if (v5)
   {
     v20 = v6;
-    v8 = [v5 appClipMetadata];
-    v9 = [v8 parentApplicationIdentifiers];
+    appClipMetadata = [v5 appClipMetadata];
+    parentApplicationIdentifiers = [appClipMetadata parentApplicationIdentifiers];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = v9;
+    v10 = parentApplicationIdentifiers;
     v11 = [v10 countByEnumeratingWithState:&v21 objects:v30 count:16];
     if (v11)
     {
@@ -146,7 +146,7 @@
             if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
-              v27 = v3;
+              v27 = identifierCopy;
               v28 = 2114;
               v29 = v15;
               _os_log_error_impl(&dword_1B831F000, v16, OS_LOG_TYPE_ERROR, "Failed looking up parent bundle identifier for app: %{public}@ with parent application identifier %{public}@", buf, 0x16u);
@@ -172,7 +172,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v27 = v3;
+      v27 = identifierCopy;
       v28 = 2114;
       v29 = v7;
       _os_log_impl(&dword_1B831F000, v10, OS_LOG_TYPE_DEFAULT, "No application record for bundle identifier: %{public}@ with error: %{public}@", buf, 0x16u);

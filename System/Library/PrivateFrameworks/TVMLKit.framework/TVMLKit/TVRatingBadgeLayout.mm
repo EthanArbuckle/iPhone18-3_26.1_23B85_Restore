@@ -1,61 +1,61 @@
 @interface TVRatingBadgeLayout
-+ (id)layoutWithLayout:(id)a3 element:(id)a4;
++ (id)layoutWithLayout:(id)layout element:(id)element;
 @end
 
 @implementation TVRatingBadgeLayout
 
-+ (id)layoutWithLayout:(id)a3 element:(id)a4
++ (id)layoutWithLayout:(id)layout element:(id)element
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  layoutCopy = layout;
+  elementCopy = element;
+  v8 = layoutCopy;
   v9 = v8;
   if (!v8)
   {
     v9 = objc_opt_new();
   }
 
-  v21.receiver = a1;
+  v21.receiver = self;
   v21.super_class = &OBJC_METACLASS___TVRatingBadgeLayout;
-  v10 = objc_msgSendSuper2(&v21, sel_layoutWithLayout_element_, v9, v7);
-  v11 = [v7 style];
-  v12 = [v9 tintColor];
+  v10 = objc_msgSendSuper2(&v21, sel_layoutWithLayout_element_, v9, elementCopy);
+  style = [elementCopy style];
+  tintColor = [v9 tintColor];
 
-  if (!v12)
+  if (!tintColor)
   {
-    v13 = [MEMORY[0x277D75348] whiteColor];
-    [v9 setTintColor:v13];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v9 setTintColor:whiteColor];
   }
 
-  v14 = [v11 tv_tintColor2];
-  v15 = [v14 color];
+  tv_tintColor2 = [style tv_tintColor2];
+  color = [tv_tintColor2 color];
 
-  if (v15)
+  if (color)
   {
-    [v9 setFillColor:v15];
+    [v9 setFillColor:color];
   }
 
-  v16 = [v9 fillColor];
+  fillColor = [v9 fillColor];
 
-  if (!v16)
+  if (!fillColor)
   {
-    v17 = [MEMORY[0x277D75348] blackColor];
-    [v9 setFillColor:v17];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [v9 setFillColor:blackColor];
   }
 
-  v18 = [v11 tv_ratingStyle];
-  if (v18)
+  tv_ratingStyle = [style tv_ratingStyle];
+  if (tv_ratingStyle)
   {
-    [v9 setRatingStyle:v18];
-    [v9 setRatingStyleAXSmall:v18];
-    [v9 setRatingStyleAXLarge:v18];
+    [v9 setRatingStyle:tv_ratingStyle];
+    [v9 setRatingStyleAXSmall:tv_ratingStyle];
+    [v9 setRatingStyleAXLarge:tv_ratingStyle];
   }
 
-  v19 = [v11 tv_valueForStyle:@"tv-interitem-spacing"];
+  v19 = [style tv_valueForStyle:@"tv-interitem-spacing"];
 
   if (v19)
   {
-    [v11 tv_interitemSpacing];
+    [style tv_interitemSpacing];
     [v9 setInteritemSpacing:?];
     [v9 interitemSpacing];
     [v9 setInteritemSpacingAXSmall:?];

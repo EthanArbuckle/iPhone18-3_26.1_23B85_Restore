@@ -1,8 +1,8 @@
 @interface _HDKeyValueEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (_HDKeyValueEntityEncoder)initWithHealthEntityClass:(Class)a3 profile:(id)a4 transaction:(id)a5 purpose:(int64_t)a6 encodingOptions:(id)a7 authorizationFilter:(id)a8;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (_HDKeyValueEntityEncoder)initWithHealthEntityClass:(Class)class profile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
 - (id)orderedProperties;
 @end
 
@@ -20,26 +20,26 @@
   return v2;
 }
 
-- (_HDKeyValueEntityEncoder)initWithHealthEntityClass:(Class)a3 profile:(id)a4 transaction:(id)a5 purpose:(int64_t)a6 encodingOptions:(id)a7 authorizationFilter:(id)a8
+- (_HDKeyValueEntityEncoder)initWithHealthEntityClass:(Class)class profile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  if (a6 == 1)
+  profileCopy = profile;
+  transactionCopy = transaction;
+  optionsCopy = options;
+  filterCopy = filter;
+  if (purpose == 1)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:1292 description:{@"Invalid parameter not satisfying: %@", @"purpose != HDEntityEncodingPurposeObjectInstantiation"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:1292 description:{@"Invalid parameter not satisfying: %@", @"purpose != HDEntityEncodingPurposeObjectInstantiation"}];
   }
 
   v22.receiver = self;
   v22.super_class = _HDKeyValueEntityEncoder;
-  v19 = [(HDEntityEncoder *)&v22 initWithHealthEntityClass:a3 profile:v15 transaction:v16 purpose:a6 encodingOptions:v17 authorizationFilter:v18];
+  v19 = [(HDEntityEncoder *)&v22 initWithHealthEntityClass:class profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v19;
 }
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
   v5 = objc_alloc_init(HDCodableTimestampedKeyValuePair);
   v6 = HDSQLiteColumnWithNameAsNaturalType();
@@ -52,18 +52,18 @@
   return v5;
 }
 
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:1328 description:{@"Invalid parameter not satisfying: %@", @"NO"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:1328 description:{@"Invalid parameter not satisfying: %@", @"NO"}];
 
   return 0;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:1337 description:{@"Invalid parameter not satisfying: %@", @"NO"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HDKeyValueEntity.m" lineNumber:1337 description:{@"Invalid parameter not satisfying: %@", @"NO"}];
 
   return 0;
 }

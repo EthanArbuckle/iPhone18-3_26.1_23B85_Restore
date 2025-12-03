@@ -1,32 +1,32 @@
 @interface PHLCDViewTextField
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (PHLCDViewTextField)initWithFrame:(CGRect)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (PHLCDViewTextField)initWithFrame:(CGRect)frame;
 - (PHLCDViewTextFieldDelegate)lcdViewTextFieldDelegate;
-- (void)_textFieldDidUpdate:(id)a3;
-- (void)buildMenuWithBuilder:(id)a3;
+- (void)_textFieldDidUpdate:(id)update;
+- (void)buildMenuWithBuilder:(id)builder;
 - (void)dealloc;
 - (void)deleteBackward;
-- (void)paste:(id)a3;
+- (void)paste:(id)paste;
 - (void)reformatText;
-- (void)replaceRange:(id)a3 withText:(id)a4;
-- (void)setText:(id)a3;
+- (void)replaceRange:(id)range withText:(id)text;
+- (void)setText:(id)text;
 @end
 
 @implementation PHLCDViewTextField
 
-- (PHLCDViewTextField)initWithFrame:(CGRect)a3
+- (PHLCDViewTextField)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = PHLCDViewTextField;
-  v3 = [(PHLCDViewTextField *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHLCDViewTextField *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel__textFieldDidUpdate_ name:*MEMORY[0x277D770B0] object:v3];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__textFieldDidUpdate_ name:*MEMORY[0x277D770B0] object:v3];
 
-    v5 = [MEMORY[0x277CCA900] unicodeDirectionalCharactersSet];
+    unicodeDirectionalCharactersSet = [MEMORY[0x277CCA900] unicodeDirectionalCharactersSet];
     unicodeDirectionalCharactersSet = v3->_unicodeDirectionalCharactersSet;
-    v3->_unicodeDirectionalCharactersSet = v5;
+    v3->_unicodeDirectionalCharactersSet = unicodeDirectionalCharactersSet;
 
     v7 = [(NSCharacterSet *)v3->_unicodeDirectionalCharactersSet mutableCopy];
     v8 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@" -./()"];
@@ -35,8 +35,8 @@
     specialDialerCharacters = v3->_specialDialerCharacters;
     v3->_specialDialerCharacters = v7;
 
-    v10 = [(PHLCDViewTextField *)v3 textInputTraits];
-    [v10 setContentsIsSingleValue:1];
+    textInputTraits = [(PHLCDViewTextField *)v3 textInputTraits];
+    [textInputTraits setContentsIsSingleValue:1];
 
     [(PHLCDViewTextField *)v3 setNonEditingLinebreakMode:3];
     [(PHLCDViewTextField *)v3 setWritingToolsBehavior:-1];
@@ -47,8 +47,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PHLCDViewTextField;
@@ -57,8 +57,8 @@
 
 - (void)reformatText
 {
-  v3 = [(PHLCDViewTextField *)self text];
-  if ([v3 length])
+  text = [(PHLCDViewTextField *)self text];
+  if ([text length])
   {
     if ([(PHLCDViewTextField *)self isEditing])
     {
@@ -66,7 +66,7 @@
     }
 
     v17 = 0;
-    v4 = [(PHLCDViewTextField *)self previousTextSuggestion];
+    previousTextSuggestion = [(PHLCDViewTextField *)self previousTextSuggestion];
     v5 = TUNetworkCountryCode();
     if (v5)
     {
@@ -93,7 +93,7 @@
         v9 = PNCreateFormattedStringWithCountry();
       }
 
-      if (([v3 isEqualToString:v9] & 1) == 0)
+      if (([text isEqualToString:v9] & 1) == 0)
       {
         v16.receiver = self;
         v16.super_class = PHLCDViewTextField;
@@ -107,11 +107,11 @@
           }
 
           v12 = MEMORY[0x277CCABB0];
-          v13 = [MEMORY[0x277CCA900] unicodeDirectionalCharactersSet];
-          v14 = [v12 numberWithBool:{objc_msgSend(v13, "characterIsMember:", objc_msgSend(v9, "characterAtIndex:", 0))}];
-          v15 = [v14 integerValue];
+          unicodeDirectionalCharactersSet = [MEMORY[0x277CCA900] unicodeDirectionalCharactersSet];
+          v14 = [v12 numberWithBool:{objc_msgSend(unicodeDirectionalCharactersSet, "characterIsMember:", objc_msgSend(v9, "characterAtIndex:", 0))}];
+          integerValue = [v14 integerValue];
 
-          [(PHLCDViewTextField *)self setSelectionRange:v15 + Length, 0];
+          [(PHLCDViewTextField *)self setSelectionRange:integerValue + Length, 0];
         }
       }
 
@@ -121,41 +121,41 @@
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4.receiver = self;
   v4.super_class = PHLCDViewTextField;
-  [(PHLCDViewTextField *)&v4 setText:a3];
+  [(PHLCDViewTextField *)&v4 setText:text];
   [(PHLCDViewTextField *)self reformatText];
 }
 
-- (void)replaceRange:(id)a3 withText:(id)a4
+- (void)replaceRange:(id)range withText:(id)text
 {
   v5.receiver = self;
   v5.super_class = PHLCDViewTextField;
-  [(PHLCDViewTextField *)&v5 replaceRange:a3 withText:a4];
+  [(PHLCDViewTextField *)&v5 replaceRange:range withText:text];
   [(PHLCDViewTextField *)self reformatText];
 }
 
 - (void)deleteBackward
 {
-  v3 = [(PHLCDViewTextField *)self selectedTextRange];
-  v4 = [v3 isEmpty];
+  selectedTextRange = [(PHLCDViewTextField *)self selectedTextRange];
+  isEmpty = [selectedTextRange isEmpty];
 
-  if (v4)
+  if (isEmpty)
   {
-    v5 = [(PHLCDViewTextField *)self beginningOfDocument];
-    v6 = [(PHLCDViewTextField *)self selectedTextRange];
-    v7 = [v6 end];
-    v8 = [(PHLCDViewTextField *)self textRangeFromPosition:v5 toPosition:v7];
-    v9 = [(PHLCDViewTextField *)self textInRange:v8];
+    beginningOfDocument = [(PHLCDViewTextField *)self beginningOfDocument];
+    selectedTextRange2 = [(PHLCDViewTextField *)self selectedTextRange];
+    v7 = [selectedTextRange2 end];
+    v8 = [(PHLCDViewTextField *)self textRangeFromPosition:beginningOfDocument toPosition:v7];
+    selectedTextRange3 = [(PHLCDViewTextField *)self textInRange:v8];
 
-    v10 = [(PHLCDViewTextField *)self specialDialerCharacters];
-    v11 = [v10 invertedSet];
-    v12 = [v9 rangeOfCharacterFromSet:v11 options:4];
+    specialDialerCharacters = [(PHLCDViewTextField *)self specialDialerCharacters];
+    invertedSet = [specialDialerCharacters invertedSet];
+    v12 = [selectedTextRange3 rangeOfCharacterFromSet:invertedSet options:4];
 
-    v13 = [(PHLCDViewTextField *)self beginningOfDocument];
-    v14 = [(PHLCDViewTextField *)self positionFromPosition:v13 offset:v12 + 1];
+    beginningOfDocument2 = [(PHLCDViewTextField *)self beginningOfDocument];
+    v14 = [(PHLCDViewTextField *)self positionFromPosition:beginningOfDocument2 offset:v12 + 1];
 
     v15 = [(PHLCDViewTextField *)self textRangeFromPosition:v14 toPosition:v14];
     [(PHLCDViewTextField *)self setSelectedTextRange:v15];
@@ -166,19 +166,19 @@
 
   else
   {
-    v9 = [(PHLCDViewTextField *)self selectedTextRange];
-    [(PHLCDViewTextField *)self replaceRange:v9 withText:&stru_285532CB8];
+    selectedTextRange3 = [(PHLCDViewTextField *)self selectedTextRange];
+    [(PHLCDViewTextField *)self replaceRange:selectedTextRange3 withText:&stru_285532CB8];
   }
 
   [(PHLCDViewTextField *)self reformatText];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   v7.receiver = self;
   v7.super_class = PHLCDViewTextField;
-  v5 = [(PHLCDViewTextField *)&v7 canPerformAction:a3 withSender:a4];
-  if (NSSelectorFromString(&cfstr_Define.isa) == a3 || NSSelectorFromString(&cfstr_Translate.isa) == a3 || NSSelectorFromString(&cfstr_Capturetextfro.isa) == a3 || NSSelectorFromString(&cfstr_Showwritingtoo.isa) == a3)
+  v5 = [(PHLCDViewTextField *)&v7 canPerformAction:action withSender:sender];
+  if (NSSelectorFromString(&cfstr_Define.isa) == action || NSSelectorFromString(&cfstr_Translate.isa) == action || NSSelectorFromString(&cfstr_Capturetextfro.isa) == action || NSSelectorFromString(&cfstr_Showwritingtoo.isa) == action)
   {
     return 0;
   }
@@ -186,32 +186,32 @@
   return v5;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   v4.receiver = self;
   v4.super_class = PHLCDViewTextField;
-  v3 = a3;
-  [(PHLCDViewTextField *)&v4 buildMenuWithBuilder:v3];
-  [v3 removeMenuForIdentifier:{*MEMORY[0x277D76C98], v4.receiver, v4.super_class}];
+  builderCopy = builder;
+  [(PHLCDViewTextField *)&v4 buildMenuWithBuilder:builderCopy];
+  [builderCopy removeMenuForIdentifier:{*MEMORY[0x277D76C98], v4.receiver, v4.super_class}];
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
-  v4 = [MEMORY[0x277D75810] generalPasteboard];
-  v5 = [v4 string];
-  v8 = [v5 encodedDialerString];
+  generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+  string = [generalPasteboard string];
+  encodedDialerString = [string encodedDialerString];
 
   WeakRetained = objc_loadWeakRetained(&self->_lcdViewTextFieldDelegate);
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  LOBYTE(string) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (string)
   {
     v7 = objc_loadWeakRetained(&self->_lcdViewTextFieldDelegate);
-    [v7 textField:self didPasteString:v8];
+    [v7 textField:self didPasteString:encodedDialerString];
   }
 }
 
-- (void)_textFieldDidUpdate:(id)a3
+- (void)_textFieldDidUpdate:(id)update
 {
   WeakRetained = objc_loadWeakRetained(&self->_lcdViewTextFieldDelegate);
   v5 = objc_opt_respondsToSelector();
@@ -219,16 +219,16 @@
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_lcdViewTextFieldDelegate);
-    v7 = [(PHLCDViewTextField *)self text];
-    [v6 textField:self didUpdateString:v7];
+    text = [(PHLCDViewTextField *)self text];
+    [v6 textField:self didUpdateString:text];
   }
 
-  v18 = [(PHLCDViewTextField *)self selectedTextRange];
-  if ([v18 isEmpty])
+  selectedTextRange = [(PHLCDViewTextField *)self selectedTextRange];
+  if ([selectedTextRange isEmpty])
   {
-    v8 = [v18 end];
-    v9 = [(PHLCDViewTextField *)self endOfDocument];
-    v10 = [v8 isEqual:v9];
+    v8 = [selectedTextRange end];
+    endOfDocument = [(PHLCDViewTextField *)self endOfDocument];
+    v10 = [v8 isEqual:endOfDocument];
 
     if (v10)
     {
@@ -237,10 +237,10 @@
 
     else
     {
-      v11 = [(PHLCDViewTextField *)self selectedTextRange];
-      v12 = [v11 end];
-      v13 = [(PHLCDViewTextField *)self endOfDocument];
-      v14 = [(PHLCDViewTextField *)self textRangeFromPosition:v12 toPosition:v13];
+      selectedTextRange2 = [(PHLCDViewTextField *)self selectedTextRange];
+      v12 = [selectedTextRange2 end];
+      endOfDocument2 = [(PHLCDViewTextField *)self endOfDocument];
+      v14 = [(PHLCDViewTextField *)self textRangeFromPosition:v12 toPosition:endOfDocument2];
       v15 = [(PHLCDViewTextField *)self textInRange:v14];
 
       v16 = [v15 stringByRemovingCharactersFromSet:self->_unicodeDirectionalCharactersSet];

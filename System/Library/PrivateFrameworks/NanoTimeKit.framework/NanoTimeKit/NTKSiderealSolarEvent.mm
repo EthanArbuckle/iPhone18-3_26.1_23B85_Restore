@@ -1,54 +1,54 @@
 @interface NTKSiderealSolarEvent
-+ (id)eventWithType:(int64_t)a3 degree:(double)a4;
-+ (id)eventWithType:(int64_t)a3 time:(id)a4 degree:(double)a5;
-- (BOOL)isEqual:(id)a3;
-- (NTKSiderealSolarEvent)initWithCoder:(id)a3;
++ (id)eventWithType:(int64_t)type degree:(double)degree;
++ (id)eventWithType:(int64_t)type time:(id)time degree:(double)degree;
+- (BOOL)isEqual:(id)equal;
+- (NTKSiderealSolarEvent)initWithCoder:(id)coder;
 - (double)angle;
-- (id)debugNameForType:(int64_t)a3;
+- (id)debugNameForType:(int64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKSiderealSolarEvent
 
-+ (id)eventWithType:(int64_t)a3 time:(id)a4 degree:(double)a5
++ (id)eventWithType:(int64_t)type time:(id)time degree:(double)degree
 {
-  v7 = a4;
+  timeCopy = time;
   v8 = objc_alloc_init(NTKSiderealSolarEvent);
   time = v8->_time;
-  v8->_time = v7;
-  v8->_type = a3;
+  v8->_time = timeCopy;
+  v8->_type = type;
 
-  v8->_degree = a5;
+  v8->_degree = degree;
 
   return v8;
 }
 
-+ (id)eventWithType:(int64_t)a3 degree:(double)a4
++ (id)eventWithType:(int64_t)type degree:(double)degree
 {
   v6 = objc_alloc_init(NTKSiderealSolarEvent);
-  v6->_type = a3;
-  v6->_degree = a4;
+  v6->_type = type;
+  v6->_degree = degree;
 
   return v6;
 }
 
-- (NTKSiderealSolarEvent)initWithCoder:(id)a3
+- (NTKSiderealSolarEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = NTKSiderealSolarEvent;
   v5 = [(NTKSiderealSolarEvent *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"time"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"time"];
     time = v5->_time;
     v5->_time = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = [v8 integerValue];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"degree"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"degree"];
     [v9 doubleValue];
     v5->_degree = v10;
   }
@@ -56,16 +56,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   time = self->_time;
-  v5 = a3;
-  [v5 encodeObject:time forKey:@"time"];
+  coderCopy = coder;
+  [coderCopy encodeObject:time forKey:@"time"];
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:self->_type];
-  [v5 encodeObject:v6 forKey:@"type"];
+  [coderCopy encodeObject:v6 forKey:@"type"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_degree];
-  [v5 encodeObject:v7 forKey:@"degree"];
+  [coderCopy encodeObject:v7 forKey:@"degree"];
 }
 
 - (double)angle
@@ -87,33 +87,33 @@
   return v7;
 }
 
-- (id)debugNameForType:(int64_t)a3
+- (id)debugNameForType:(int64_t)type
 {
-  if (a3 > 9)
+  if (type > 9)
   {
     return @"Day";
   }
 
   else
   {
-    return off_278787108[a3];
+    return off_278787108[type];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     type = self->_type;
     if (type == [v5 type] && self->_time && (objc_msgSend(v5, "time"), v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
     {
-      v8 = [MEMORY[0x277CBEA80] currentCalendar];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
       time = self->_time;
-      v10 = [v5 time];
-      v11 = [v8 isDate:time equalToDate:v10 toUnitGranularity:64];
+      time = [v5 time];
+      v11 = [currentCalendar isDate:time equalToDate:time toUnitGranularity:64];
     }
 
     else

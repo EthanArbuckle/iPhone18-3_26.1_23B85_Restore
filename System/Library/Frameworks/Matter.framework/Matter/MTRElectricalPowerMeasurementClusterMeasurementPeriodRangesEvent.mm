@@ -1,6 +1,6 @@
 @interface MTRElectricalPowerMeasurementClusterMeasurementPeriodRangesEvent
 - (MTRElectricalPowerMeasurementClusterMeasurementPeriodRangesEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,19 +13,19 @@
   v2 = [(MTRElectricalPowerMeasurementClusterMeasurementPeriodRangesEvent *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     ranges = v2->_ranges;
-    v2->_ranges = v3;
+    v2->_ranges = array;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRElectricalPowerMeasurementClusterMeasurementPeriodRangesEvent);
-  v5 = [(MTRElectricalPowerMeasurementClusterMeasurementPeriodRangesEvent *)self ranges];
-  [(MTRElectricalPowerMeasurementClusterMeasurementPeriodRangesEvent *)v4 setRanges:v5];
+  ranges = [(MTRElectricalPowerMeasurementClusterMeasurementPeriodRangesEvent *)self ranges];
+  [(MTRElectricalPowerMeasurementClusterMeasurementPeriodRangesEvent *)v4 setRanges:ranges];
 
   return v4;
 }

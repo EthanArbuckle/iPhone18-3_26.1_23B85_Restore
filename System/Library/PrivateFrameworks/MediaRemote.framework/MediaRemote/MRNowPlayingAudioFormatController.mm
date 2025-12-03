@@ -3,15 +3,15 @@
 - (MRNowPlayingAudioFormatControllerDelegate)delegate;
 - (NSString)bundleID;
 - (NSString)displayName;
-- (id)contentInfoForBundleID:(id)a3 contentInfos:(id)a4;
-- (id)displayNameForBundleID:(id)a3;
+- (id)contentInfoForBundleID:(id)d contentInfos:(id)infos;
+- (id)displayNameForBundleID:(id)d;
 - (id)faceTimeBundleSet;
-- (id)firstContentInfoMatchingSet:(id)a3 contentInfos:(id)a4;
-- (id)firstEligibleContentInfoFor:(id)a3;
+- (id)firstContentInfoMatchingSet:(id)set contentInfos:(id)infos;
+- (id)firstEligibleContentInfoFor:(id)for;
 - (void)dealloc;
-- (void)setActiveClient:(id)a3;
-- (void)setContentInfos:(id)a3;
-- (void)setForegroundBundleID:(id)a3;
+- (void)setActiveClient:(id)client;
+- (void)setContentInfos:(id)infos;
+- (void)setForegroundBundleID:(id)d;
 - (void)updateActiveClient;
 - (void)updateAudioFormatContentInfo;
 - (void)updateDeprecatedApplication;
@@ -117,16 +117,16 @@ void __61__MRNowPlayingAudioFormatController_updateForegroundBundleID__block_inv
 - (void)updateForegroundBundleID
 {
   objc_initWeak(&location, self);
-  v3 = [(FBSDisplayLayoutMonitor *)self->_layoutMonitor currentLayout];
-  v4 = [v3 elements];
+  currentLayout = [(FBSDisplayLayoutMonitor *)self->_layoutMonitor currentLayout];
+  elements = [currentLayout elements];
 
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__MRNowPlayingAudioFormatController_updateForegroundBundleID__block_invoke;
   block[3] = &unk_1E769F950;
-  v8 = v4;
-  v6 = v4;
+  v8 = elements;
+  v6 = elements;
   objc_copyWeak(&v9, &location);
   dispatch_async(queue, block);
   objc_destroyWeak(&v9);
@@ -152,8 +152,8 @@ void __61__MRNowPlayingAudioFormatController_updateForegroundBundleID__block_inv
 
   v12 = self->_activeClient;
   v13 = self->_foregroundBundleID;
-  v14 = [(MRNowPlayingAudioFormatController *)self faceTimeBundleSet];
-  LODWORD(v8) = [v14 containsObject:v13];
+  faceTimeBundleSet = [(MRNowPlayingAudioFormatController *)self faceTimeBundleSet];
+  LODWORD(v8) = [faceTimeBundleSet containsObject:v13];
 
   if (!v8 || ([(MRNowPlayingAudioFormatController *)self faceTimeBundleSet], v15 = objc_claimAutoreleasedReturnValue(), [(MRNowPlayingAudioFormatController *)self firstContentInfoMatchingSet:v15 contentInfos:v11], v16 = objc_claimAutoreleasedReturnValue(), v15, !v16))
   {
@@ -165,8 +165,8 @@ LABEL_4:
       goto LABEL_6;
     }
 
-    v18 = [(MRClient *)v12 bundleIdentifier];
-    v16 = [(MRNowPlayingAudioFormatController *)self contentInfoForBundleID:v18 contentInfos:v11];
+    bundleIdentifier = [(MRClient *)v12 bundleIdentifier];
+    v16 = [(MRNowPlayingAudioFormatController *)self contentInfoForBundleID:bundleIdentifier contentInfos:v11];
 
     if (!v16)
     {
@@ -176,56 +176,56 @@ LABEL_4:
         goto LABEL_4;
       }
 
-      v49 = [(MRNowPlayingAudioFormatController *)self faceTimeBundleSet];
-      v16 = [(MRNowPlayingAudioFormatController *)self firstContentInfoMatchingSet:v49 contentInfos:v11];
+      faceTimeBundleSet2 = [(MRNowPlayingAudioFormatController *)self faceTimeBundleSet];
+      v16 = [(MRNowPlayingAudioFormatController *)self firstContentInfoMatchingSet:faceTimeBundleSet2 contentInfos:v11];
     }
   }
 
 LABEL_6:
-  v19 = [(MRClient *)v12 bundleIdentifier];
-  v20 = [(MRNowPlayingAudioFormatContentInfo *)v16 bundleID];
-  v21 = [v19 isEqualToString:v20];
+  bundleIdentifier2 = [(MRClient *)v12 bundleIdentifier];
+  bundleID = [(MRNowPlayingAudioFormatContentInfo *)v16 bundleID];
+  v21 = [bundleIdentifier2 isEqualToString:bundleID];
 
   if (v21)
   {
-    v22 = [(MRClient *)v12 representedBundleID];
-    v23 = v22;
-    if (v22)
+    representedBundleID = [(MRClient *)v12 representedBundleID];
+    v23 = representedBundleID;
+    if (representedBundleID)
     {
-      v24 = v22;
+      bundleID2 = representedBundleID;
     }
 
     else
     {
-      v24 = [(MRNowPlayingAudioFormatContentInfo *)v16 bundleID];
+      bundleID2 = [(MRNowPlayingAudioFormatContentInfo *)v16 bundleID];
     }
 
-    v25 = v24;
+    bundleID3 = bundleID2;
 
-    v28 = [(MRClient *)v12 displayName];
+    displayName = [(MRClient *)v12 displayName];
   }
 
   else
   {
-    v25 = [(MRNowPlayingAudioFormatContentInfo *)v16 bundleID];
-    v26 = [(MRNowPlayingAudioFormatController *)self faceTimeBundleSet];
-    v27 = [v26 containsObject:v25];
+    bundleID3 = [(MRNowPlayingAudioFormatContentInfo *)v16 bundleID];
+    faceTimeBundleSet3 = [(MRNowPlayingAudioFormatController *)self faceTimeBundleSet];
+    v27 = [faceTimeBundleSet3 containsObject:bundleID3];
 
     if (v27)
     {
 
-      v25 = @"com.apple.facetime";
+      bundleID3 = @"com.apple.facetime";
       [(MRNowPlayingAudioFormatContentInfo *)v16 setBundleID:@"com.apple.facetime"];
     }
 
-    v28 = [(MRNowPlayingAudioFormatController *)self displayNameForBundleID:v25];
+    displayName = [(MRNowPlayingAudioFormatController *)self displayNameForBundleID:bundleID3];
   }
 
-  v29 = v28;
+  v29 = displayName;
   v51 = v11;
-  if (-[__CFString length](v25, "length") && [v29 length])
+  if (-[__CFString length](bundleID3, "length") && [v29 length])
   {
-    v30 = [[MRNowPlayingAudioFormatApplication alloc] initWithBundleID:v25 displayName:v29];
+    v30 = [[MRNowPlayingAudioFormatApplication alloc] initWithBundleID:bundleID3 displayName:v29];
   }
 
   else
@@ -299,19 +299,19 @@ LABEL_31:
 
   v40 = 0;
 LABEL_32:
-  v45 = [(MRNowPlayingAudioFormatController *)self delegate];
+  delegate = [(MRNowPlayingAudioFormatController *)self delegate];
   objc_initWeak(buf, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__MRNowPlayingAudioFormatController_updateSelectedContentInfo__block_invoke;
   block[3] = &unk_1E769F978;
   v57 = v33;
-  v53 = v45;
-  v46 = v45;
+  v53 = delegate;
+  v46 = delegate;
   objc_copyWeak(&v56, buf);
   v58 = v40;
   v54 = v30;
-  v55 = self;
+  selfCopy = self;
   v47 = v30;
   dispatch_sync(MEMORY[0x1E69E96A0], block);
 
@@ -373,37 +373,37 @@ void __62__MRNowPlayingAudioFormatController_updateSelectedContentInfo__block_in
 
 - (void)updateDeprecatedApplication
 {
-  v5 = [(MRNowPlayingAudioFormatController *)self delegate];
+  delegate = [(MRNowPlayingAudioFormatController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(MRNowPlayingAudioFormatController *)self bundleID];
-    v4 = [(MRNowPlayingAudioFormatController *)self displayName];
-    [v5 nowPlayingAudioFormatController:self didChangeBundleID:v3 displayName:v4];
+    bundleID = [(MRNowPlayingAudioFormatController *)self bundleID];
+    displayName = [(MRNowPlayingAudioFormatController *)self displayName];
+    [delegate nowPlayingAudioFormatController:self didChangeBundleID:bundleID displayName:displayName];
   }
 }
 
 - (void)updateDeprecatedContentInfo
 {
-  v4 = [(MRNowPlayingAudioFormatController *)self delegate];
+  delegate = [(MRNowPlayingAudioFormatController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(MRNowPlayingAudioFormatController *)self audioFormatDescription];
-    [v4 nowPlayingAudioFormatController:self didChangeAudioFormatDescription:v3];
+    audioFormatDescription = [(MRNowPlayingAudioFormatController *)self audioFormatDescription];
+    [delegate nowPlayingAudioFormatController:self didChangeAudioFormatDescription:audioFormatDescription];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 nowPlayingAudioFormatController:self didChangeMultichannel:{-[MRNowPlayingAudioFormatController isMultichannel](self, "isMultichannel")}];
+    [delegate nowPlayingAudioFormatController:self didChangeMultichannel:{-[MRNowPlayingAudioFormatController isMultichannel](self, "isMultichannel")}];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 nowPlayingAudioFormatController:self didChangeBestAvailableAudioFormat:-[MRNowPlayingAudioFormatController bestAvailableAudioFormat](self, "bestAvailableAudioFormat")];
+    [delegate nowPlayingAudioFormatController:self didChangeBestAvailableAudioFormat:-[MRNowPlayingAudioFormatController bestAvailableAudioFormat](self, "bestAvailableAudioFormat")];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 nowPlayingAudioFormatController:self didChangeIsEligibleForSpatialization:{-[MRNowPlayingAudioFormatController isEligibleForSpatialization](self, "isEligibleForSpatialization")}];
+    [delegate nowPlayingAudioFormatController:self didChangeIsEligibleForSpatialization:{-[MRNowPlayingAudioFormatController isEligibleForSpatialization](self, "isEligibleForSpatialization")}];
   }
 }
 
@@ -461,11 +461,11 @@ void __65__MRNowPlayingAudioFormatController_updateAudioFormatContentInfo__block
     queue = v2->_queue;
     v2->_queue = v5;
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v2 selector:sel_contentInfoDidChange_ name:@"kMRMediaRemoteAudioFormatContentInfoDidChange" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_contentInfoDidChange_ name:@"kMRMediaRemoteAudioFormatContentInfoDidChange" object:0];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v2 selector:sel_activeClientDidChange_ name:@"kMRMediaRemoteActivePlayerPathsDidChange" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_activeClientDidChange_ name:@"kMRMediaRemoteActivePlayerPathsDidChange" object:0];
 
     objc_initWeak(&location, v2);
     v26 = 0;
@@ -486,13 +486,13 @@ void __65__MRNowPlayingAudioFormatController_updateAudioFormatContentInfo__block
 
     v10 = v9;
     _Block_object_dispose(&v26, 8);
-    v11 = [v9 configurationForDefaultMainDisplayMonitor];
+    configurationForDefaultMainDisplayMonitor = [v9 configurationForDefaultMainDisplayMonitor];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __41__MRNowPlayingAudioFormatController_init__block_invoke;
     v17[3] = &unk_1E769F900;
     objc_copyWeak(&v18, &location);
-    [v11 setTransitionHandler:v17];
+    [configurationForDefaultMainDisplayMonitor setTransitionHandler:v17];
     v26 = 0;
     v27 = &v26;
     v28 = 0x2050000000;
@@ -511,7 +511,7 @@ void __65__MRNowPlayingAudioFormatController_updateAudioFormatContentInfo__block
 
     v13 = v12;
     _Block_object_dispose(&v26, 8);
-    v14 = [v12 monitorWithConfiguration:v11];
+    v14 = [v12 monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
     layoutMonitor = v2->_layoutMonitor;
     v2->_layoutMonitor = v14;
 
@@ -534,40 +534,40 @@ void __65__MRNowPlayingAudioFormatController_updateAudioFormatContentInfo__block
   [(MRNowPlayingAudioFormatController *)&v3 dealloc];
 }
 
-- (void)setActiveClient:(id)a3
+- (void)setActiveClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   if (![(MRClient *)self->_activeClient isEqual:?])
   {
-    objc_storeStrong(&self->_activeClient, a3);
+    objc_storeStrong(&self->_activeClient, client);
     [(MRNowPlayingAudioFormatController *)self updateSelectedContentInfo];
   }
 }
 
-- (void)setContentInfos:(id)a3
+- (void)setContentInfos:(id)infos
 {
-  v5 = a3;
+  infosCopy = infos;
   if (![(NSArray *)self->_contentInfos isEqualToArray:?])
   {
-    objc_storeStrong(&self->_contentInfos, a3);
+    objc_storeStrong(&self->_contentInfos, infos);
     [(MRNowPlayingAudioFormatController *)self updateSelectedContentInfo];
   }
 }
 
-- (void)setForegroundBundleID:(id)a3
+- (void)setForegroundBundleID:(id)d
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([(NSString *)self->_foregroundBundleID isEqual:v5]& 1) == 0)
+  dCopy = d;
+  if (([(NSString *)self->_foregroundBundleID isEqual:dCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_foregroundBundleID, a3);
+    objc_storeStrong(&self->_foregroundBundleID, d);
     v6 = _MRLogForCategory(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543618;
       v9 = objc_opt_class();
       v10 = 2114;
-      v11 = v5;
+      v11 = dCopy;
       _os_log_impl(&dword_1A2860000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ foreground bundle id changed: %{public}@", &v8, 0x16u);
     }
 
@@ -616,19 +616,19 @@ void __55__MRNowPlayingAudioFormatController_updateActiveClient__block_invoke(ui
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)contentInfoForBundleID:(id)a3 contentInfos:(id)a4
+- (id)contentInfoForBundleID:(id)d contentInfos:(id)infos
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  dCopy = d;
+  infosCopy = infos;
+  v7 = infosCopy;
+  if (dCopy)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v6;
+    v8 = infosCopy;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -643,12 +643,12 @@ void __55__MRNowPlayingAudioFormatController_updateActiveClient__block_invoke(ui
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 bundleID];
-          if ([v13 isEqualToString:v5])
+          bundleID = [v12 bundleID];
+          if ([bundleID isEqualToString:dCopy])
           {
-            v14 = [v12 isEligibleForSpatialization];
+            isEligibleForSpatialization = [v12 isEligibleForSpatialization];
 
-            if (v14)
+            if (isEligibleForSpatialization)
             {
               v9 = v12;
               goto LABEL_15;
@@ -679,18 +679,18 @@ LABEL_15:
   return v9;
 }
 
-- (id)firstContentInfoMatchingSet:(id)a3 contentInfos:(id)a4
+- (id)firstContentInfoMatchingSet:(id)set contentInfos:(id)infos
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  setCopy = set;
+  infosCopy = infos;
+  if ([setCopy count])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = v6;
+    v7 = infosCopy;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -705,8 +705,8 @@ LABEL_15:
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 bundleID];
-          v13 = [v5 containsObject:v12];
+          bundleID = [v11 bundleID];
+          v13 = [setCopy containsObject:bundleID];
 
           if (v13)
           {
@@ -738,15 +738,15 @@ LABEL_12:
   return v8;
 }
 
-- (id)firstEligibleContentInfoFor:(id)a3
+- (id)firstEligibleContentInfoFor:(id)for
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  forCopy = for;
+  v4 = [forCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -756,7 +756,7 @@ LABEL_12:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(forCopy);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -767,7 +767,7 @@ LABEL_12:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [forCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -784,13 +784,13 @@ LABEL_11:
   return v4;
 }
 
-- (id)displayNameForBundleID:(id)a3
+- (id)displayNameForBundleID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v10 = 0;
-    v5 = [MEMORY[0x1E69635F8] bundleRecordWithApplicationIdentifier:v4 error:&v10];
+    v5 = [MEMORY[0x1E69635F8] bundleRecordWithApplicationIdentifier:dCopy error:&v10];
     v6 = v10;
     if (v6)
     {
@@ -801,15 +801,15 @@ LABEL_11:
       }
     }
 
-    v8 = [v5 localizedName];
+    localizedName = [v5 localizedName];
   }
 
   else
   {
-    v8 = 0;
+    localizedName = 0;
   }
 
-  return v8;
+  return localizedName;
 }
 
 void __54__MRNowPlayingAudioFormatController_faceTimeBundleSet__block_invoke()
@@ -821,11 +821,11 @@ void __54__MRNowPlayingAudioFormatController_faceTimeBundleSet__block_invoke()
 
 - (NSString)bundleID
 {
-  v2 = [(MRNowPlayingAudioFormatApplication *)self->_audioFormatApplication bundleID];
-  v3 = v2;
-  if (v2)
+  bundleID = [(MRNowPlayingAudioFormatApplication *)self->_audioFormatApplication bundleID];
+  v3 = bundleID;
+  if (bundleID)
   {
-    v4 = v2;
+    v4 = bundleID;
   }
 
   else
@@ -840,11 +840,11 @@ void __54__MRNowPlayingAudioFormatController_faceTimeBundleSet__block_invoke()
 
 - (NSString)displayName
 {
-  v2 = [(MRNowPlayingAudioFormatApplication *)self->_audioFormatApplication displayName];
-  v3 = v2;
-  if (v2)
+  displayName = [(MRNowPlayingAudioFormatApplication *)self->_audioFormatApplication displayName];
+  v3 = displayName;
+  if (displayName)
   {
-    v4 = v2;
+    v4 = displayName;
   }
 
   else

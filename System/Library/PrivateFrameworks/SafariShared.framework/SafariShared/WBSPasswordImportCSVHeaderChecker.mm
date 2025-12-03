@@ -1,12 +1,12 @@
 @interface WBSPasswordImportCSVHeaderChecker
-- (id)columnIndicesForHeaderFields:(id)a3;
+- (id)columnIndicesForHeaderFields:(id)fields;
 @end
 
 @implementation WBSPasswordImportCSVHeaderChecker
 
-- (id)columnIndicesForHeaderFields:(id)a3
+- (id)columnIndicesForHeaderFields:(id)fields
 {
-  v3 = a3;
+  fieldsCopy = fields;
   if (columnIndicesForHeaderFields__onceToken != -1)
   {
     [WBSPasswordImportCSVHeaderChecker columnIndicesForHeaderFields:];
@@ -46,7 +46,7 @@
   v11[7] = &v20;
   v11[8] = &v16;
   v11[9] = &v12;
-  [v3 enumerateObjectsUsingBlock:v11];
+  [fieldsCopy enumerateObjectsUsingBlock:v11];
   if (v33[3] == 0x7FFFFFFFFFFFFFFFLL || v29[3] == 0x7FFFFFFFFFFFFFFFLL || v25[3] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;

@@ -1,12 +1,12 @@
 @interface _SFLocationManager
 + (id)sharedLocationManager;
 - (_SFLocationManager)init;
-- (void)_handleApplicationStateChange:(id)a3;
-- (void)_setApplication:(id)a3 isForeground:(BOOL)a4;
+- (void)_handleApplicationStateChange:(id)change;
+- (void)_setApplication:(id)application isForeground:(BOOL)foreground;
 - (void)_updateApplicationsToMonitor;
 - (void)_updateAssertion;
-- (void)addClientForApplication:(id)a3;
-- (void)removeClientForApplication:(id)a3;
+- (void)addClientForApplication:(id)application;
+- (void)removeClientForApplication:(id)application;
 @end
 
 @implementation _SFLocationManager
@@ -86,19 +86,19 @@
   self->_assertion = v5;
 }
 
-- (void)_handleApplicationStateChange:(id)a3
+- (void)_handleApplicationStateChange:(id)change
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  changeCopy = change;
+  v5 = changeCopy;
+  if (changeCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E698CFF8]];
+    v6 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E698CFF8]];
     v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698D010]];
-    v8 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-    if (v8 <= 0x20)
+    if (unsignedIntegerValue <= 0x20)
     {
-      if (((1 << v8) & 0x10015) != 0)
+      if (((1 << unsignedIntegerValue) & 0x10015) != 0)
       {
 LABEL_4:
         v9 = 0;
@@ -108,13 +108,13 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      if (((1 << v8) & 0x100000100) != 0)
+      if (((1 << unsignedIntegerValue) & 0x100000100) != 0)
       {
         v9 = 1;
         goto LABEL_7;
       }
 
-      if (v8 == 1)
+      if (unsignedIntegerValue == 1)
       {
         if ([(NSCountedSet *)self->_clients containsObject:v6])
         {
@@ -133,7 +133,7 @@ LABEL_7:
     v10 = WBS_LOG_CHANNEL_PREFIXViewService();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(_SFLocationManager *)v8 _handleApplicationStateChange:v10];
+      [(_SFLocationManager *)unsignedIntegerValue _handleApplicationStateChange:v10];
     }
 
     goto LABEL_4;
@@ -142,21 +142,21 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_setApplication:(id)a3 isForeground:(BOOL)a4
+- (void)_setApplication:(id)application isForeground:(BOOL)foreground
 {
-  v4 = a4;
-  v7 = a3;
-  if ([(NSMutableSet *)self->_foregroundApplications containsObject:?]!= v4 && [(NSCountedSet *)self->_clients containsObject:v7])
+  foregroundCopy = foreground;
+  applicationCopy = application;
+  if ([(NSMutableSet *)self->_foregroundApplications containsObject:?]!= foregroundCopy && [(NSCountedSet *)self->_clients containsObject:applicationCopy])
   {
     foregroundApplications = self->_foregroundApplications;
-    if (v4)
+    if (foregroundCopy)
     {
-      [(NSMutableSet *)foregroundApplications addObject:v7];
+      [(NSMutableSet *)foregroundApplications addObject:applicationCopy];
     }
 
     else
     {
-      [(NSMutableSet *)foregroundApplications removeObject:v7];
+      [(NSMutableSet *)foregroundApplications removeObject:applicationCopy];
     }
 
     [(_SFLocationManager *)self _updateAssertion];
@@ -176,41 +176,41 @@ LABEL_8:
   }
 
   stateMonitor = self->_stateMonitor;
-  v5 = [(NSCountedSet *)self->_clients allObjects];
-  [(BKSApplicationStateMonitor *)stateMonitor updateInterestedBundleIDs:v5 states:v3];
+  allObjects = [(NSCountedSet *)self->_clients allObjects];
+  [(BKSApplicationStateMonitor *)stateMonitor updateInterestedBundleIDs:allObjects states:v3];
 }
 
-- (void)addClientForApplication:(id)a3
+- (void)addClientForApplication:(id)application
 {
-  v7 = a3;
-  v4 = [(NSCountedSet *)self->_clients containsObject:v7];
-  [(NSCountedSet *)self->_clients addObject:v7];
+  applicationCopy = application;
+  v4 = [(NSCountedSet *)self->_clients containsObject:applicationCopy];
+  [(NSCountedSet *)self->_clients addObject:applicationCopy];
   if ((v4 & 1) == 0)
   {
     [(_SFLocationManager *)self _updateApplicationsToMonitor];
   }
 
   stateMonitor = self->_stateMonitor;
-  v6 = [(BKSApplicationStateMonitor *)stateMonitor handler];
-  [(BKSApplicationStateMonitor *)stateMonitor applicationInfoForApplication:v7 completion:v6];
+  handler = [(BKSApplicationStateMonitor *)stateMonitor handler];
+  [(BKSApplicationStateMonitor *)stateMonitor applicationInfoForApplication:applicationCopy completion:handler];
 }
 
-- (void)removeClientForApplication:(id)a3
+- (void)removeClientForApplication:(id)application
 {
-  v6 = a3;
-  v4 = [(NSCountedSet *)self->_clients containsObject:v6];
-  v5 = v6;
+  applicationCopy = application;
+  v4 = [(NSCountedSet *)self->_clients containsObject:applicationCopy];
+  v5 = applicationCopy;
   if (v4)
   {
-    [(NSCountedSet *)self->_clients removeObject:v6];
-    if (([(NSCountedSet *)self->_clients containsObject:v6]& 1) == 0)
+    [(NSCountedSet *)self->_clients removeObject:applicationCopy];
+    if (([(NSCountedSet *)self->_clients containsObject:applicationCopy]& 1) == 0)
     {
-      [(NSMutableSet *)self->_foregroundApplications removeObject:v6];
+      [(NSMutableSet *)self->_foregroundApplications removeObject:applicationCopy];
       [(_SFLocationManager *)self _updateApplicationsToMonitor];
     }
 
     [(_SFLocationManager *)self _updateAssertion];
-    v5 = v6;
+    v5 = applicationCopy;
   }
 }
 

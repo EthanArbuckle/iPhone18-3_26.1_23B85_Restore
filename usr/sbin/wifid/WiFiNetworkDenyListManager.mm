@@ -1,13 +1,13 @@
 @interface WiFiNetworkDenyListManager
-- (BOOL)retrieveBatteryInfo:(BOOL *)a3 batteryLevel:(unsigned int *)a4;
-- (WiFiNetworkDenyListManager)initWithArgs:(__WiFiDeviceManager *)a3 interfaceName:(id)a4;
+- (BOOL)retrieveBatteryInfo:(BOOL *)info batteryLevel:(unsigned int *)level;
+- (WiFiNetworkDenyListManager)initWithArgs:(__WiFiDeviceManager *)args interfaceName:(id)name;
 - (void)dealloc;
 - (void)denyListDidUpdate;
 @end
 
 @implementation WiFiNetworkDenyListManager
 
-- (WiFiNetworkDenyListManager)initWithArgs:(__WiFiDeviceManager *)a3 interfaceName:(id)a4
+- (WiFiNetworkDenyListManager)initWithArgs:(__WiFiDeviceManager *)args interfaceName:(id)name
 {
   v11.receiver = self;
   v11.super_class = WiFiNetworkDenyListManager;
@@ -39,8 +39,8 @@ LABEL_9:
   }
 
   v8 = v7;
-  [(WiFiNetworkDenyListManager *)v6 setDeviceMgr:a3];
-  [(WiFiNetworkDenyListManager *)v6 setIfName:a4];
+  [(WiFiNetworkDenyListManager *)v6 setDeviceMgr:args];
+  [(WiFiNetworkDenyListManager *)v6 setIfName:name];
   [v8 setEnabled:1];
   [(WiFiNetworkDenyListManager *)v6 setNetworkDenyList:v8];
 
@@ -54,16 +54,16 @@ LABEL_9:
   [(WiFiNetworkDenyListManager *)&v3 dealloc];
 }
 
-- (BOOL)retrieveBatteryInfo:(BOOL *)a3 batteryLevel:(unsigned int *)a4
+- (BOOL)retrieveBatteryInfo:(BOOL *)info batteryLevel:(unsigned int *)level
 {
   v12 = 0;
   v11 = 0;
-  if (!a3 || !a4)
+  if (!info || !level)
   {
     v7 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:4 message:{"%s Batterylevel:%p. externalPowerSupply:%p", "-[WiFiNetworkDenyListManager retrieveBatteryInfo:batteryLevel:]", a4, a3}];
+      [off_100298C40 WFLog:4 message:{"%s Batterylevel:%p. externalPowerSupply:%p", "-[WiFiNetworkDenyListManager retrieveBatteryInfo:batteryLevel:]", level, info}];
     }
 
     goto LABEL_11;
@@ -89,8 +89,8 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v7);
-  *a3 = v12 != 0;
-  *a4 = v11;
+  *info = v12 != 0;
+  *level = v11;
   return 1;
 }
 

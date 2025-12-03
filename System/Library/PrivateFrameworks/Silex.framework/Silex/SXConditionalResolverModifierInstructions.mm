@@ -6,24 +6,24 @@
 - (BOOL)shouldResolveComponents;
 - (BOOL)shouldResolveDocumentStyle;
 - (BOOL)shouldResolveTextStyles;
-- (SXConditionalResolverModifierInstructions)initWithDocumentProvider:(id)a3 hintsConfigurationOptionProvider:(id)a4;
+- (SXConditionalResolverModifierInstructions)initWithDocumentProvider:(id)provider hintsConfigurationOptionProvider:(id)optionProvider;
 - (id)hints;
 @end
 
 @implementation SXConditionalResolverModifierInstructions
 
-- (SXConditionalResolverModifierInstructions)initWithDocumentProvider:(id)a3 hintsConfigurationOptionProvider:(id)a4
+- (SXConditionalResolverModifierInstructions)initWithDocumentProvider:(id)provider hintsConfigurationOptionProvider:(id)optionProvider
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  optionProviderCopy = optionProvider;
   v12.receiver = self;
   v12.super_class = SXConditionalResolverModifierInstructions;
   v9 = [(SXConditionalResolverModifierInstructions *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_documentProvider, a3);
-    objc_storeStrong(&v10->_hintsConfigurationOptionProvider, a4);
+    objc_storeStrong(&v9->_documentProvider, provider);
+    objc_storeStrong(&v10->_hintsConfigurationOptionProvider, optionProvider);
   }
 
   return v10;
@@ -31,11 +31,11 @@
 
 - (BOOL)shouldResolveAutoplacement
 {
-  v2 = [(SXConditionalResolverModifierInstructions *)self hints];
-  v3 = v2;
-  if (v2)
+  hints = [(SXConditionalResolverModifierInstructions *)self hints];
+  v3 = hints;
+  if (hints)
   {
-    v4 = [v2 autoplacement] != 0;
+    v4 = [hints autoplacement] != 0;
   }
 
   else
@@ -48,11 +48,11 @@
 
 - (BOOL)shouldResolveComponents
 {
-  v2 = [(SXConditionalResolverModifierInstructions *)self hints];
-  v3 = v2;
-  if (v2)
+  hints = [(SXConditionalResolverModifierInstructions *)self hints];
+  v3 = hints;
+  if (hints)
   {
-    v4 = [v2 components] != 0;
+    v4 = [hints components] != 0;
   }
 
   else
@@ -65,11 +65,11 @@
 
 - (BOOL)shouldResolveComponentLayouts
 {
-  v2 = [(SXConditionalResolverModifierInstructions *)self hints];
-  v3 = v2;
-  if (v2)
+  hints = [(SXConditionalResolverModifierInstructions *)self hints];
+  v3 = hints;
+  if (hints)
   {
-    v4 = [v2 componentLayouts] != 0;
+    v4 = [hints componentLayouts] != 0;
   }
 
   else
@@ -82,11 +82,11 @@
 
 - (BOOL)shouldResolveComponentStyles
 {
-  v2 = [(SXConditionalResolverModifierInstructions *)self hints];
-  v3 = v2;
-  if (v2)
+  hints = [(SXConditionalResolverModifierInstructions *)self hints];
+  v3 = hints;
+  if (hints)
   {
-    v4 = [v2 componentStyles] != 0;
+    v4 = [hints componentStyles] != 0;
   }
 
   else
@@ -99,11 +99,11 @@
 
 - (BOOL)shouldResolveComponentTextStyles
 {
-  v2 = [(SXConditionalResolverModifierInstructions *)self hints];
-  v3 = v2;
-  if (v2)
+  hints = [(SXConditionalResolverModifierInstructions *)self hints];
+  v3 = hints;
+  if (hints)
   {
-    v4 = [v2 componentTextStyles] != 0;
+    v4 = [hints componentTextStyles] != 0;
   }
 
   else
@@ -116,11 +116,11 @@
 
 - (BOOL)shouldResolveDocumentStyle
 {
-  v2 = [(SXConditionalResolverModifierInstructions *)self hints];
-  v3 = v2;
-  if (v2)
+  hints = [(SXConditionalResolverModifierInstructions *)self hints];
+  v3 = hints;
+  if (hints)
   {
-    v4 = [v2 documentStyle] != 0;
+    v4 = [hints documentStyle] != 0;
   }
 
   else
@@ -133,11 +133,11 @@
 
 - (BOOL)shouldResolveTextStyles
 {
-  v2 = [(SXConditionalResolverModifierInstructions *)self hints];
-  v3 = v2;
-  if (v2)
+  hints = [(SXConditionalResolverModifierInstructions *)self hints];
+  v3 = hints;
+  if (hints)
   {
-    v4 = [v2 textStyles] != 0;
+    v4 = [hints textStyles] != 0;
   }
 
   else
@@ -150,22 +150,22 @@
 
 - (id)hints
 {
-  v3 = [(SXHintsConfigurationOptionProvider *)self->_hintsConfigurationOptionProvider hints];
-  v4 = [v3 ignoreConditionalHints];
+  hints = [(SXHintsConfigurationOptionProvider *)self->_hintsConfigurationOptionProvider hints];
+  ignoreConditionalHints = [hints ignoreConditionalHints];
 
-  if (v4)
+  if (ignoreConditionalHints)
   {
-    v5 = 0;
+    conditionals = 0;
   }
 
   else
   {
-    v6 = [(SXDocumentProviding *)self->_documentProvider document];
-    v7 = [v6 hints];
-    v5 = [v7 conditionals];
+    document = [(SXDocumentProviding *)self->_documentProvider document];
+    hints2 = [document hints];
+    conditionals = [hints2 conditionals];
   }
 
-  return v5;
+  return conditionals;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface CNAutocompleteNetworkActivityPolicy
 + (id)policyWithNoDelay;
-+ (id)policyWithThrottlingDelayForString:(id)a3;
++ (id)policyWithThrottlingDelayForString:(id)string;
 @end
 
 @implementation CNAutocompleteNetworkActivityPolicy
@@ -12,10 +12,10 @@
   return v2;
 }
 
-+ (id)policyWithThrottlingDelayForString:(id)a3
++ (id)policyWithThrottlingDelayForString:(id)string
 {
-  v3 = a3;
-  v4 = [[CNAutocompleteNetworkActivityThrottlingPolicy alloc] initWithString:v3];
+  stringCopy = string;
+  v4 = [[CNAutocompleteNetworkActivityThrottlingPolicy alloc] initWithString:stringCopy];
 
   return v4;
 }

@@ -1,6 +1,6 @@
 @interface MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct
 - (MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct);
-  v5 = [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct *)self importedResetTimestamp];
-  [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct *)v4 setImportedResetTimestamp:v5];
+  importedResetTimestamp = [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct *)self importedResetTimestamp];
+  [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct *)v4 setImportedResetTimestamp:importedResetTimestamp];
 
-  v6 = [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct *)self exportedResetTimestamp];
-  [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct *)v4 setExportedResetTimestamp:v6];
+  exportedResetTimestamp = [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct *)self exportedResetTimestamp];
+  [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct *)v4 setExportedResetTimestamp:exportedResetTimestamp];
 
-  v7 = [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct *)self importedResetSystime];
-  [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct *)v4 setImportedResetSystime:v7];
+  importedResetSystime = [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct *)self importedResetSystime];
+  [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct *)v4 setImportedResetSystime:importedResetSystime];
 
-  v8 = [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct *)self exportedResetSystime];
-  [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct *)v4 setExportedResetSystime:v8];
+  exportedResetSystime = [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct *)self exportedResetSystime];
+  [(MTRElectricalEnergyMeasurementClusterCumulativeEnergyResetStruct *)v4 setExportedResetSystime:exportedResetSystime];
 
   return v4;
 }

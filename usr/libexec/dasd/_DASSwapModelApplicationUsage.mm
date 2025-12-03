@@ -1,10 +1,10 @@
 @interface _DASSwapModelApplicationUsage
 - (_DASSwapModelApplicationUsage)init;
-- (double)scoreForApplication:(id)a3 atDate:(id)a4;
-- (id)prewarmLaunchAppFromBundleID:(id)a3;
-- (id)scoresForAllApplicationsAtDate:(id)a3;
-- (void)convertTimelineToApplicationDictionaries:(id)a3;
-- (void)prewarmLaunchAppsFromTimeline:(id)a3;
+- (double)scoreForApplication:(id)application atDate:(id)date;
+- (id)prewarmLaunchAppFromBundleID:(id)d;
+- (id)scoresForAllApplicationsAtDate:(id)date;
+- (void)convertTimelineToApplicationDictionaries:(id)dictionaries;
+- (void)prewarmLaunchAppsFromTimeline:(id)timeline;
 - (void)updateTimeline;
 @end
 
@@ -33,9 +33,9 @@
     {
       if (v10)
       {
-        v11 = [v8 BOOLeanValue];
+        bOOLeanValue = [v8 BOOLeanValue];
         *buf = 67109120;
-        v15 = v11;
+        v15 = bOOLeanValue;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Trial: Prewarm disabled set to %d", buf, 8u);
       }
 
@@ -55,19 +55,19 @@
   return v2;
 }
 
-- (void)convertTimelineToApplicationDictionaries:(id)a3
+- (void)convertTimelineToApplicationDictionaries:(id)dictionaries
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dictionariesCopy = dictionaries;
+  v5 = dictionariesCopy;
+  if (dictionariesCopy)
   {
-    v6 = [v4 transitionDates];
-    v7 = [v6 firstObject];
-    [(_DASSwapModelApplicationUsage *)self setTransitionDate:v7];
+    transitionDates = [dictionariesCopy transitionDates];
+    firstObject = [transitionDates firstObject];
+    [(_DASSwapModelApplicationUsage *)self setTransitionDate:firstObject];
 
     v8 = +[NSMutableSet set];
-    v9 = [v5 startDate];
-    v44 = [v5 valueAtDate:v9];
+    startDate = [v5 startDate];
+    v44 = [v5 valueAtDate:startDate];
 
     v43 = [v5 valueAtDate:self->_transitionDate];
     log = self->_log;
@@ -76,7 +76,7 @@
       sub_100129EFC(v44, log);
     }
 
-    v38 = self;
+    selfCopy = self;
     v39 = v5;
     v11 = self->_log;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -84,11 +84,11 @@
       sub_100129F74(v43, v11);
     }
 
-    v12 = [v44 allKeys];
-    [v8 addObjectsFromArray:v12];
+    allKeys = [v44 allKeys];
+    [v8 addObjectsFromArray:allKeys];
 
-    v13 = [v43 allKeys];
-    [v8 addObjectsFromArray:v13];
+    allKeys2 = [v43 allKeys];
+    [v8 addObjectsFromArray:allKeys2];
 
     v42 = +[NSMutableDictionary dictionary];
     v41 = +[NSMutableDictionary dictionary];
@@ -114,10 +114,10 @@
           v18 = *(*(&v45 + 1) + 8 * i);
           v19 = objc_autoreleasePoolPush();
           v20 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v18 allowPlaceholder:0 error:0];
-          v21 = [v20 compatibilityObject];
+          compatibilityObject = [v20 compatibilityObject];
 
-          v22 = [v21 bundleExecutable];
-          if (v22)
+          bundleExecutable = [compatibilityObject bundleExecutable];
+          if (bundleExecutable)
           {
             v23 = [v44 objectForKeyedSubscript:v18];
             [v23 doubleValue];
@@ -131,7 +131,7 @@
               v25 = v23;
             }
 
-            [v42 setObject:v25 forKeyedSubscript:v22];
+            [v42 setObject:v25 forKeyedSubscript:bundleExecutable];
             v26 = [v43 objectForKeyedSubscript:v18];
 
             [v26 doubleValue];
@@ -145,7 +145,7 @@
               v28 = v26;
             }
 
-            [v41 setObject:v28 forKeyedSubscript:v22];
+            [v41 setObject:v28 forKeyedSubscript:bundleExecutable];
           }
 
           objc_autoreleasePoolPop(v19);
@@ -158,29 +158,29 @@
     }
 
     v29 = [v42 copy];
-    [(_DASSwapModelApplicationUsage *)v38 setCurrentProbabilities:v29];
+    [(_DASSwapModelApplicationUsage *)selfCopy setCurrentProbabilities:v29];
 
     v30 = [v41 copy];
-    [(_DASSwapModelApplicationUsage *)v38 setNextProbabilities:v30];
+    [(_DASSwapModelApplicationUsage *)selfCopy setNextProbabilities:v30];
 
-    v31 = v38->_log;
+    v31 = selfCopy->_log;
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
       v32 = v31;
-      v33 = [(_DASSwapModelApplicationUsage *)v38 currentProbabilities];
+      currentProbabilities = [(_DASSwapModelApplicationUsage *)selfCopy currentProbabilities];
       *buf = 138412290;
-      v50 = v33;
+      v50 = currentProbabilities;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Current Probabilities: %@", buf, 0xCu);
     }
 
-    v34 = v38->_log;
+    v34 = selfCopy->_log;
     v5 = v39;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
       v35 = v34;
-      v36 = [(_DASSwapModelApplicationUsage *)v38 nextProbabilities];
+      nextProbabilities = [(_DASSwapModelApplicationUsage *)selfCopy nextProbabilities];
       *buf = 138412290;
-      v50 = v36;
+      v50 = nextProbabilities;
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Next Probabilities: %@", buf, 0xCu);
     }
   }
@@ -194,16 +194,16 @@
   }
 }
 
-- (id)prewarmLaunchAppFromBundleID:(id)a3
+- (id)prewarmLaunchAppFromBundleID:(id)d
 {
-  v4 = a3;
-  if ([_APRSPrewarmRecommendation appPreventsPrewarm:v4])
+  dCopy = d;
+  if ([_APRSPrewarmRecommendation appPreventsPrewarm:dCopy])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v30 = v4;
+      v30 = dCopy;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "DASPREWARM Refusing to prewarm %@ because it not allowed by developer", buf, 0xCu);
     }
 
@@ -213,7 +213,7 @@
   else
   {
     v7 = objc_alloc_init(RBSLaunchContext);
-    v8 = [RBSProcessIdentity identityForEmbeddedApplicationIdentifier:v4];
+    v8 = [RBSProcessIdentity identityForEmbeddedApplicationIdentifier:dCopy];
     [v7 setIdentity:v8];
 
     [v7 setExplanation:@"DAS Prewarm launch"];
@@ -238,7 +238,7 @@
       if (v17)
       {
         *buf = 138412290;
-        v30 = v4;
+        v30 = dCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "DASDPREWARM Prewarm app success: %@", buf, 0xCu);
       }
 
@@ -251,17 +251,17 @@
         v25 = v13;
         [v25 monitorForDeath:&v21];
         v18 = [_APRSPrewarmInterface sharedInstance:v21];
-        [v18 appendPrewarmAssertion:v4 withAssertion:v14];
+        [v18 appendPrewarmAssertion:dCopy withAssertion:v14];
       }
 
       v19 = +[_APRSMetricRecorder sharedInstance];
-      [v19 startLoggingForApp:v4 pid:objc_msgSend(v13 forEvent:{"pid"), 0}];
+      [v19 startLoggingForApp:dCopy pid:objc_msgSend(v13 forEvent:{"pid"), 0}];
     }
 
     else if (v17)
     {
       *buf = 138412546;
-      v30 = v4;
+      v30 = dCopy;
       v31 = 2112;
       v32 = v15;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "DASDPREWARM Encountered error launching %@: %@", buf, 0x16u);
@@ -273,9 +273,9 @@
   return v6;
 }
 
-- (void)prewarmLaunchAppsFromTimeline:(id)a3
+- (void)prewarmLaunchAppsFromTimeline:(id)timeline
 {
-  if (a3)
+  if (timeline)
   {
     v4 = [_APRSPrewarmRecommendation evaluateRecommendationsFromTimeline:?];
     log = self->_log;
@@ -376,12 +376,12 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (double)scoreForApplication:(id)a3 atDate:(id)a4
+- (double)scoreForApplication:(id)application atDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_DASSwapModelApplicationUsage *)self transitionDate];
-  [v6 timeIntervalSinceDate:v8];
+  dateCopy = date;
+  applicationCopy = application;
+  transitionDate = [(_DASSwapModelApplicationUsage *)self transitionDate];
+  [dateCopy timeIntervalSinceDate:transitionDate];
   v10 = v9;
 
   if (v10 <= 0.0)
@@ -394,7 +394,7 @@
     [(_DASSwapModelApplicationUsage *)self nextProbabilities];
   }
   v11 = ;
-  v12 = [v11 objectForKeyedSubscript:v7];
+  v12 = [v11 objectForKeyedSubscript:applicationCopy];
 
   [v12 doubleValue];
   v14 = v13;
@@ -402,11 +402,11 @@
   return v14;
 }
 
-- (id)scoresForAllApplicationsAtDate:(id)a3
+- (id)scoresForAllApplicationsAtDate:(id)date
 {
-  v4 = a3;
-  v5 = [(_DASSwapModelApplicationUsage *)self transitionDate];
-  [v4 timeIntervalSinceDate:v5];
+  dateCopy = date;
+  transitionDate = [(_DASSwapModelApplicationUsage *)self transitionDate];
+  [dateCopy timeIntervalSinceDate:transitionDate];
   v7 = v6;
 
   if (v7 <= 0.0)

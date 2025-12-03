@@ -1,14 +1,14 @@
 @interface PCMediaTransferObserver
 - (PCMediaTransferObserver)init;
-- (PCMediaTransferObserver)initWithCoder:(id)a3;
+- (PCMediaTransferObserver)initWithCoder:(id)coder;
 - (void)_interrupted;
-- (void)_invalidateWithError:(id)a3;
+- (void)_invalidateWithError:(id)error;
 - (void)_xpcEnsureStarted;
 - (void)_xpcEnsureStopped;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)transferBeganWithContext:(id)a3;
+- (void)transferBeganWithContext:(id)context;
 - (void)transferEnded;
 @end
 
@@ -105,17 +105,17 @@ void __44__PCMediaTransferObserver__xpcEnsureStarted__block_invoke_2(uint64_t a1
   }
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__PCMediaTransferObserver_activateWithCompletion___block_invoke;
   v7[3] = &unk_279AD19E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -242,15 +242,15 @@ void __50__PCMediaTransferObserver_activateWithCompletion___block_invoke_3(uint6
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_invalidateWithError:(id)a3
+- (void)_invalidateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self->_invalidated)
   {
     goto LABEL_9;
   }
 
-  v9 = v4;
+  v9 = errorCopy;
   var0 = self->_ucat->var0;
   if (var0 <= 30)
   {
@@ -278,11 +278,11 @@ LABEL_6:
     (*(v6 + 16))(v6, v9);
   }
 
-  v4 = v9;
+  errorCopy = v9;
 LABEL_9:
 }
 
-- (PCMediaTransferObserver)initWithCoder:(id)a3
+- (PCMediaTransferObserver)initWithCoder:(id)coder
 {
   v3 = [(PCMediaTransferObserver *)self init];
   v4 = v3;
@@ -294,9 +294,9 @@ LABEL_9:
   return v4;
 }
 
-- (void)transferBeganWithContext:(id)a3
+- (void)transferBeganWithContext:(id)context
 {
-  v8 = a3;
+  contextCopy = context;
   var0 = self->_ucat->var0;
   if (var0 <= 30)
   {
@@ -319,7 +319,7 @@ LABEL_5:
   v6 = v5;
   if (v5)
   {
-    (*(v5 + 16))(v5, v8);
+    (*(v5 + 16))(v5, contextCopy);
   }
 }
 

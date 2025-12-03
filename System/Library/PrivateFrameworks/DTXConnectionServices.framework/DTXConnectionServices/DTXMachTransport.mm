@@ -1,31 +1,31 @@
 @interface DTXMachTransport
-+ (id)_legacyFileDescriptorHandshakeWithReceivePort:(unsigned int)a3;
-+ (id)_legacyFileDescriptorHandshakeWithSendPort:(unsigned int)a3;
-+ (id)fileDescriptorHandshakeWithReceivePort:(unsigned int)a3;
-+ (id)fileDescriptorHandshakeWithSendPort:(unsigned int)a3;
-- (DTXMachTransport)initWithRemoteAddress:(id)a3;
-- (DTXMachTransport)initWithXPCRepresentation:(id)a3;
++ (id)_legacyFileDescriptorHandshakeWithReceivePort:(unsigned int)port;
++ (id)_legacyFileDescriptorHandshakeWithSendPort:(unsigned int)port;
++ (id)fileDescriptorHandshakeWithReceivePort:(unsigned int)port;
++ (id)fileDescriptorHandshakeWithSendPort:(unsigned int)port;
+- (DTXMachTransport)initWithRemoteAddress:(id)address;
+- (DTXMachTransport)initWithXPCRepresentation:(id)representation;
 - (id)localAddresses;
 - (id)serializedXPCRepresentation;
-- (unint64_t)transmit:(const void *)a3 ofLength:(unint64_t)a4;
+- (unint64_t)transmit:(const void *)transmit ofLength:(unint64_t)length;
 - (void)dealloc;
 - (void)disconnect;
 @end
 
 @implementation DTXMachTransport
 
-- (DTXMachTransport)initWithRemoteAddress:(id)a3
+- (DTXMachTransport)initWithRemoteAddress:(id)address
 {
   v88 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  addressCopy = address;
   v84.receiver = self;
   v84.super_class = DTXMachTransport;
-  v6 = [(DTXTransport *)&v84 initWithRemoteAddress:v5];
+  v6 = [(DTXTransport *)&v84 initWithRemoteAddress:addressCopy];
   v7 = v6;
   if (v6)
   {
     sub_247F400FC(v6);
-    v10 = objc_msgSend_host(v5, v8, v9);
+    v10 = objc_msgSend_host(addressCopy, v8, v9);
     v13 = objc_msgSend_intValue(v10, v11, v12);
 
     p_sendPort = &v7->_sendPort;
@@ -36,7 +36,7 @@
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v18 = objc_msgSend_pathComponents(v5, v16, v17);
+    v18 = objc_msgSend_pathComponents(addressCopy, v16, v17);
     v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(v18, v19, &v80, v87, 16);
     if (v20)
     {
@@ -73,7 +73,7 @@
       v28 = objc_opt_class();
       v29 = NSStringFromClass(v28);
       v30 = NSStringFromSelector(a2);
-      NSLog(&cfstr_InvalidPortsIn.isa, v29, v30, v5);
+      NSLog(&cfstr_InvalidPortsIn.isa, v29, v30, addressCopy);
 
 LABEL_16:
 LABEL_17:
@@ -99,7 +99,7 @@ LABEL_17:
         v37 = objc_opt_class();
         v38 = NSStringFromClass(v37);
         v39 = NSStringFromSelector(a2);
-        NSLog(&cfstr_UnableToConnec.isa, v38, v39, v13, v5);
+        NSLog(&cfstr_UnableToConnec.isa, v38, v39, v13, addressCopy);
 
         goto LABEL_16;
       }
@@ -354,12 +354,12 @@ LABEL_18:
   return v7;
 }
 
-- (DTXMachTransport)initWithXPCRepresentation:(id)a3
+- (DTXMachTransport)initWithXPCRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v13.receiver = self;
   v13.super_class = DTXMachTransport;
-  v5 = [(DTXTransport *)&v13 initWithXPCRepresentation:v4];
+  v5 = [(DTXTransport *)&v13 initWithXPCRepresentation:representationCopy];
   v6 = v5;
   if (v5)
   {
@@ -422,30 +422,30 @@ LABEL_18:
   [(DTXTransport *)&v4 dealloc];
 }
 
-- (unint64_t)transmit:(const void *)a3 ofLength:(unint64_t)a4
+- (unint64_t)transmit:(const void *)transmit ofLength:(unint64_t)length
 {
   if (self->_sendPort + 1 >= 2)
   {
-    v6 = a4;
-    v7 = a3;
+    lengthCopy = length;
+    transmitCopy = transmit;
     v5 = 0;
     bufferedLength = self->_bufferedLength;
     do
     {
-      if (v6 >= 32672 - bufferedLength)
+      if (lengthCopy >= 32672 - bufferedLength)
       {
         v9 = 32672 - bufferedLength;
       }
 
       else
       {
-        v9 = v6;
+        v9 = lengthCopy;
       }
 
-      memcpy(&self->_sendBuffer->var1[bufferedLength], v7, v9);
+      memcpy(&self->_sendBuffer->var1[bufferedLength], transmitCopy, v9);
       bufferedLength = self->_bufferedLength + v9;
       self->_bufferedLength = bufferedLength;
-      if (!v6 || bufferedLength == 32672)
+      if (!lengthCopy || bufferedLength == 32672)
       {
         sendBuffer = self->_sendBuffer;
         *&sendBuffer->var0.var0.var0 = 0;
@@ -466,19 +466,19 @@ LABEL_18:
         self->_bufferedLength = 0;
       }
 
-      v7 += v9;
+      transmitCopy += v9;
       v5 += v9;
-      v6 -= v9;
+      lengthCopy -= v9;
     }
 
-    while (v6);
+    while (lengthCopy);
   }
 
   else
   {
     v5 = 0;
 LABEL_3:
-    objc_msgSend_disconnect(self, a2, a3, a4);
+    objc_msgSend_disconnect(self, a2, transmit, length);
   }
 
   return v5;
@@ -527,12 +527,12 @@ LABEL_3:
   return v10;
 }
 
-+ (id)fileDescriptorHandshakeWithReceivePort:(unsigned int)a3
++ (id)fileDescriptorHandshakeWithReceivePort:(unsigned int)port
 {
   v49 = *MEMORY[0x277D85DE8];
   v24 = -1;
   v25 = -1;
-  if (a3 - 1 >= 0xFFFFFFFE)
+  if (port - 1 >= 0xFFFFFFFE)
   {
     v6 = 1;
   }
@@ -552,7 +552,7 @@ LABEL_3:
     v31 = &v24;
     v5 = v26;
     bzero(&msg, 0x324uLL);
-    if (mach_msg(&msg, 2, 0, 0x324u, a3, 0, 0) || msg_20 == 70)
+    if (mach_msg(&msg, 2, 0, 0x324u, port, 0, 0) || msg_20 == 70)
     {
       LODWORD(v39[0]) = 0;
       LODWORD(v38[0]) = 4;
@@ -652,10 +652,10 @@ LABEL_13:
   return v10;
 }
 
-+ (id)fileDescriptorHandshakeWithSendPort:(unsigned int)a3
++ (id)fileDescriptorHandshakeWithSendPort:(unsigned int)port
 {
   v57 = *MEMORY[0x277D85DE8];
-  if (a3 - 1 >= 0xFFFFFFFE)
+  if (port - 1 >= 0xFFFFFFFE)
   {
     v5 = 1;
     goto LABEL_21;
@@ -724,7 +724,7 @@ LABEL_5:
   bzero(buf, 0x31CuLL);
   v21 = 0;
   LODWORD(v50) = 796;
-  HIDWORD(v50) = a3;
+  HIDWORD(v50) = port;
   HIDWORD(v54) = 2;
   v22 = 5139;
   v23 = &v37;
@@ -842,7 +842,7 @@ LABEL_24:
   return v11;
 }
 
-+ (id)_legacyFileDescriptorHandshakeWithReceivePort:(unsigned int)a3
++ (id)_legacyFileDescriptorHandshakeWithReceivePort:(unsigned int)port
 {
   v14 = 0;
   v15 = &v14;
@@ -853,7 +853,7 @@ LABEL_24:
   v13[2] = sub_247F41DFC;
   v13[3] = &unk_278EEE750;
   v13[4] = &v14;
-  v3 = sub_247F41C04(a3, v13);
+  v3 = sub_247F41C04(port, v13);
   v4 = v3;
   if ((v3 & 0x80000000) == 0)
   {
@@ -887,7 +887,7 @@ LABEL_8:
   return v8;
 }
 
-+ (id)_legacyFileDescriptorHandshakeWithSendPort:(unsigned int)a3
++ (id)_legacyFileDescriptorHandshakeWithSendPort:(unsigned int)port
 {
   v44 = *MEMORY[0x277D85DE8];
   v27 = 0;
@@ -900,14 +900,14 @@ LABEL_8:
   v25[1] = 3221225472;
   v25[2] = sub_247F424F4;
   v25[3] = &unk_278EEE7A0;
-  v26 = a3;
+  portCopy = port;
   v25[4] = &v27;
   v4 = v25;
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v34 = sub_247F42878;
   v35 = &unk_278EEE818;
-  v37 = a3;
+  portCopy2 = port;
   v5 = v4;
   v36 = v5;
   v6 = v33;

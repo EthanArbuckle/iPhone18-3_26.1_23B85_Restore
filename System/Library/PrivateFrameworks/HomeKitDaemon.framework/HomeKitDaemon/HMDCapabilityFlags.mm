@@ -1,43 +1,43 @@
 @interface HMDCapabilityFlags
-- (BOOL)hasCapabilities:(id)a3;
-- (HMDCapabilityFlags)initWithCapabilities:(id)a3;
-- (HMDCapabilityFlags)initWithCapabilityOptions:(unint64_t)a3;
-- (HMDCapabilityFlags)initWithCoder:(id)a3;
-- (HMDCapabilityFlags)initWithData:(id)a3;
+- (BOOL)hasCapabilities:(id)capabilities;
+- (HMDCapabilityFlags)initWithCapabilities:(id)capabilities;
+- (HMDCapabilityFlags)initWithCapabilityOptions:(unint64_t)options;
+- (HMDCapabilityFlags)initWithCoder:(id)coder;
+- (HMDCapabilityFlags)initWithData:(id)data;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDCapabilityFlags
 
-- (BOOL)hasCapabilities:(id)a3
+- (BOOL)hasCapabilities:(id)capabilities
 {
-  v4 = a3;
-  v5 = [v4 bytesData];
-  v6 = [v5 bytes];
+  capabilitiesCopy = capabilities;
+  bytesData = [capabilitiesCopy bytesData];
+  bytes = [bytesData bytes];
 
-  v7 = [(HMDCapabilityFlags *)self bytesData];
-  v8 = [v7 bytes];
+  bytesData2 = [(HMDCapabilityFlags *)self bytesData];
+  bytes2 = [bytesData2 bytes];
 
-  v9 = [v4 bytesData];
-  v10 = [v9 length];
+  bytesData3 = [capabilitiesCopy bytesData];
+  v10 = [bytesData3 length];
 
   if (v10)
   {
     v11 = 0;
     while (1)
     {
-      v12 = [(HMDCapabilityFlags *)self bytesData];
-      v13 = [v12 length];
+      bytesData4 = [(HMDCapabilityFlags *)self bytesData];
+      v13 = [bytesData4 length];
 
-      if (v11 >= v13 || (*(v6 + v11) & ~*(v8 + v11)) != 0)
+      if (v11 >= v13 || (*(bytes + v11) & ~*(bytes2 + v11)) != 0)
       {
         break;
       }
 
       ++v11;
-      v14 = [v4 bytesData];
-      v15 = [v14 length];
+      bytesData5 = [capabilitiesCopy bytesData];
+      v15 = [bytesData5 length];
 
       if (v11 >= v15)
       {
@@ -57,37 +57,37 @@ LABEL_6:
   return v16;
 }
 
-- (HMDCapabilityFlags)initWithData:(id)a3
+- (HMDCapabilityFlags)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = HMDCapabilityFlags;
   v6 = [(HMDCapabilityFlags *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bytesData, a3);
+    objc_storeStrong(&v6->_bytesData, data);
   }
 
   return v7;
 }
 
-- (HMDCapabilityFlags)initWithCapabilities:(id)a3
+- (HMDCapabilityFlags)initWithCapabilities:(id)capabilities
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 sortedArrayUsingSelector:sel_compare_];
+  capabilitiesCopy = capabilities;
+  v5 = [capabilitiesCopy sortedArrayUsingSelector:sel_compare_];
   v6 = [v5 valueForKeyPath:@"@max.self"];
-  v7 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  if ((v7 & 7) == 0 && v7 >= 8)
+  if ((unsignedIntegerValue & 7) == 0 && unsignedIntegerValue >= 8)
   {
-    v9 = v7 >> 3;
+    v9 = unsignedIntegerValue >> 3;
   }
 
   else
   {
-    v9 = (v7 >> 3) + 1;
+    v9 = (unsignedIntegerValue >> 3) + 1;
   }
 
   if (v9 >= 9)
@@ -126,8 +126,8 @@ LABEL_6:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v24 + 1) + 8 * i) unsignedIntegerValue];
-        *(v13 + (v19 >> 3)) |= 1 << (v19 & 7);
+        unsignedIntegerValue2 = [*(*(&v24 + 1) + 8 * i) unsignedIntegerValue];
+        *(v13 + (unsignedIntegerValue2 >> 3)) |= 1 << (unsignedIntegerValue2 & 7);
       }
 
       v16 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -143,19 +143,19 @@ LABEL_6:
   return v21;
 }
 
-- (HMDCapabilityFlags)initWithCapabilityOptions:(unint64_t)a3
+- (HMDCapabilityFlags)initWithCapabilityOptions:(unint64_t)options
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = 0;
   v7 = 0;
   for (i = 0; i != 8; ++i)
   {
-    if ((a3 >> v6))
+    if ((options >> v6))
     {
       v7 = i;
     }
 
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:(a3 >> v6)];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:(options >> v6)];
     [v5 addObject:v9];
 
     v6 += 8;
@@ -187,36 +187,36 @@ LABEL_6:
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDCapabilityFlags *)self bytesData];
-  v4 = [v2 stringWithFormat:@"[HMDCapabilityFlags %@]", v3];
+  bytesData = [(HMDCapabilityFlags *)self bytesData];
+  v4 = [v2 stringWithFormat:@"[HMDCapabilityFlags %@]", bytesData];
 
   return v4;
 }
 
-- (HMDCapabilityFlags)initWithCoder:(id)a3
+- (HMDCapabilityFlags)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMD.rqcp"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMD.rqcp"];
 
   if (v5)
   {
     self = [(HMDCapabilityFlags *)self initWithData:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDCapabilityFlags *)self bytesData];
-  [v4 encodeObject:v5 forKey:@"HMD.rqcp"];
+  coderCopy = coder;
+  bytesData = [(HMDCapabilityFlags *)self bytesData];
+  [coderCopy encodeObject:bytesData forKey:@"HMD.rqcp"];
 }
 
 @end

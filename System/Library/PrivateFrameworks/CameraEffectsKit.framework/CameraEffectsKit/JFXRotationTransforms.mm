@@ -1,22 +1,22 @@
 @interface JFXRotationTransforms
-+ (CGAffineTransform)transformFromCaptureDevicePosition:(SEL)a3 captureVideoOrientation:(int64_t)a4 toInterfaceOrientation:(int64_t)a5;
-+ (CGAffineTransform)transformFromTopLeftCaptureDevicePivotPosition:(SEL)a3 captureVideoOrientation:(int64_t)a4 toInterfaceOrientation:(int64_t)a5 size:(int64_t)a6;
-+ (int)rotationFromCaptureDevicePosition:(int64_t)a3 captureVideoOrientation:(int64_t)a4 toInterfaceOrientation:(int64_t)a5;
-+ (int)rotationFromUIInterfaceOrientation:(int64_t)a3 toUIInterfaceOrientation:(int64_t)a4;
++ (CGAffineTransform)transformFromCaptureDevicePosition:(SEL)position captureVideoOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation;
++ (CGAffineTransform)transformFromTopLeftCaptureDevicePivotPosition:(SEL)position captureVideoOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation size:(int64_t)size;
++ (int)rotationFromCaptureDevicePosition:(int64_t)position captureVideoOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation;
++ (int)rotationFromUIInterfaceOrientation:(int64_t)orientation toUIInterfaceOrientation:(int64_t)interfaceOrientation;
 @end
 
 @implementation JFXRotationTransforms
 
-+ (CGAffineTransform)transformFromCaptureDevicePosition:(SEL)a3 captureVideoOrientation:(int64_t)a4 toInterfaceOrientation:(int64_t)a5
++ (CGAffineTransform)transformFromCaptureDevicePosition:(SEL)position captureVideoOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation
 {
-  result = [a2 rotationFromCaptureDevicePosition:a4 captureVideoOrientation:a5 toInterfaceOrientation:a6];
+  result = [a2 rotationFromCaptureDevicePosition:orientation captureVideoOrientation:interfaceOrientation toInterfaceOrientation:a6];
   v9 = result;
   v10 = MEMORY[0x277CBF2C0];
   v11 = *(MEMORY[0x277CBF2C0] + 16);
   *&retstr->a = *MEMORY[0x277CBF2C0];
   *&retstr->c = v11;
   *&retstr->tx = *(v10 + 32);
-  if (a4 == 2)
+  if (orientation == 2)
   {
     result = CGAffineTransformMakeScale(retstr, -1.0, 1.0);
   }
@@ -38,11 +38,11 @@
   return result;
 }
 
-+ (CGAffineTransform)transformFromTopLeftCaptureDevicePivotPosition:(SEL)a3 captureVideoOrientation:(int64_t)a4 toInterfaceOrientation:(int64_t)a5 size:(int64_t)a6
++ (CGAffineTransform)transformFromTopLeftCaptureDevicePivotPosition:(SEL)position captureVideoOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation size:(int64_t)size
 {
   height = a7.height;
   width = a7.width;
-  v11 = [a2 rotationFromCaptureDevicePosition:a4 captureVideoOrientation:a5 toInterfaceOrientation:a6];
+  v11 = [a2 rotationFromCaptureDevicePosition:orientation captureVideoOrientation:interfaceOrientation toInterfaceOrientation:size];
   memset(&v26, 0, sizeof(v26));
   CGAffineTransformMakeScale(&v26, -1.0, 1.0);
   memset(&v25, 0, sizeof(v25));
@@ -65,7 +65,7 @@
   *&retstr->a = *&v24.a;
   *&retstr->c = v14;
   *&retstr->tx = *&v24.tx;
-  if (a4 == 2)
+  if (orientation == 2)
   {
     t1 = v24;
     t2 = v26;
@@ -95,9 +95,9 @@
   return result;
 }
 
-+ (int)rotationFromCaptureDevicePosition:(int64_t)a3 captureVideoOrientation:(int64_t)a4 toInterfaceOrientation:(int64_t)a5
++ (int)rotationFromCaptureDevicePosition:(int64_t)position captureVideoOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation
 {
-  if (!a5)
+  if (!interfaceOrientation)
   {
     return 0;
   }
@@ -107,54 +107,54 @@
     +[JFXRotationTransforms rotationFromCaptureDevicePosition:captureVideoOrientation:toInterfaceOrientation:];
   }
 
-  if ((a4 - 2) > 2)
+  if ((orientation - 2) > 2)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = qword_242B5CD40[a4 - 2];
+    v8 = qword_242B5CD40[orientation - 2];
   }
 
-  if ((a5 - 2) > 2)
+  if ((interfaceOrientation - 2) > 2)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = qword_242B5CD40[a5 - 2];
+    v10 = qword_242B5CD40[interfaceOrientation - 2];
   }
 
-  return *(*(rotationFromCaptureDevicePosition_captureVideoOrientation_toInterfaceOrientation__MASTER_LOOKUP + ((32 * (a3 != 2)) | (8 * v8))) + 4 * v10);
+  return *(*(rotationFromCaptureDevicePosition_captureVideoOrientation_toInterfaceOrientation__MASTER_LOOKUP + ((32 * (position != 2)) | (8 * v8))) + 4 * v10);
 }
 
-+ (int)rotationFromUIInterfaceOrientation:(int64_t)a3 toUIInterfaceOrientation:(int64_t)a4
++ (int)rotationFromUIInterfaceOrientation:(int64_t)orientation toUIInterfaceOrientation:(int64_t)interfaceOrientation
 {
   if (rotationFromUIInterfaceOrientation_toUIInterfaceOrientation__onceToken != -1)
   {
     +[JFXRotationTransforms rotationFromUIInterfaceOrientation:toUIInterfaceOrientation:];
   }
 
-  if ((a3 - 2) > 2)
+  if ((orientation - 2) > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = qword_242B5CD58[a3 - 2];
+    v6 = qword_242B5CD58[orientation - 2];
   }
 
-  if ((a4 - 2) > 2)
+  if ((interfaceOrientation - 2) > 2)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = qword_242B5CD58[a4 - 2];
+    v7 = qword_242B5CD58[interfaceOrientation - 2];
   }
 
   return *(*(rotationFromUIInterfaceOrientation_toUIInterfaceOrientation__MASTER_LOOKUP + 8 * v6) + 4 * v7);

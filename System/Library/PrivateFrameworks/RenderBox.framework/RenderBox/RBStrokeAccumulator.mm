@@ -3,22 +3,22 @@
 - (RBStrokeAccumulator)init;
 - (float)borderWidth;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (uint64_t)addPath:(uint64_t)a1 transform:(uint64_t)a2;
-- (void)addElement:(unsigned __int8)a3 args:(const float *)a4;
-- (void)addPath:(CGPath *)a3 transform:(CGAffineTransform *)a4;
-- (void)applyFunction:(void *)a3 info:(void *)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (uint64_t)addPath:(uint64_t)path transform:(uint64_t)transform;
+- (void)addElement:(unsigned __int8)element args:(const float *)args;
+- (void)addPath:(CGPath *)path transform:(CGAffineTransform *)transform;
+- (void)applyFunction:(void *)function info:(void *)info;
 - (void)removeAllElements;
-- (void)setBlendMode:(int)a3;
-- (void)setImage:(CGImage *)a3;
-- (void)setImageCount:(unint64_t)a3;
-- (void)setImageScale:(float)a3;
-- (void)setLineCap:(int)a3;
-- (void)setLineJoin:(int)a3;
-- (void)setMiterLimit:(float)a3;
-- (void)setRotatesImage:(BOOL)a3;
-- (void)setSeed:(int64_t)a3;
-- (void)setStrokeType:(int)a3;
+- (void)setBlendMode:(int)mode;
+- (void)setImage:(CGImage *)image;
+- (void)setImageCount:(unint64_t)count;
+- (void)setImageScale:(float)scale;
+- (void)setLineCap:(int)cap;
+- (void)setLineJoin:(int)join;
+- (void)setMiterLimit:(float)limit;
+- (void)setRotatesImage:(BOOL)image;
+- (void)setSeed:(int64_t)seed;
+- (void)setStrokeType:(int)type;
 @end
 
 @implementation RBStrokeAccumulator
@@ -40,7 +40,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(RBStrokeAccumulator);
   v5 = v4;
@@ -149,14 +149,14 @@ LABEL_10:
   return v5;
 }
 
-- (void)addElement:(unsigned __int8)a3 args:(const float *)a4
+- (void)addElement:(unsigned __int8)element args:(const float *)args
 {
   if (self->_committed)
   {
     [RBStrokeAccumulator addElement:a2 args:?];
   }
 
-  v5 = a3;
+  elementCopy = element;
   size = self->_elements._size;
   v8 = size + 1;
   if (self->_elements._capacity < size + 1)
@@ -166,12 +166,12 @@ LABEL_10:
     v8 = size + 1;
   }
 
-  self->_elements._p[size] = v5;
+  self->_elements._p[size] = elementCopy;
   self->_elements._size = v8;
-  if (v5 <= 0xF && v5 != 4)
+  if (elementCopy <= 0xF && elementCopy != 4)
   {
     v9 = 0;
-    v10 = RB::Stroke::element_args(RBStrokeElement)::elts[v5];
+    v10 = RB::Stroke::element_args(RBStrokeElement)::elts[elementCopy];
     v11 = self->_values._size;
     do
     {
@@ -183,19 +183,19 @@ LABEL_10:
         v12 = v11 + 1;
       }
 
-      self->_values._p[v11] = a4[v9];
+      self->_values._p[v11] = args[v9];
       self->_values._size = v12;
       ++v9;
       v11 = v12;
     }
 
     while (v10 != v9);
-    if (v5 == 5)
+    if (elementCopy == 5)
     {
       maxLineWidth = self->_maxLineWidth;
-      if (maxLineWidth < *a4)
+      if (maxLineWidth < *args)
       {
-        maxLineWidth = *a4;
+        maxLineWidth = *args;
       }
 
       self->_maxLineWidth = maxLineWidth;
@@ -203,7 +203,7 @@ LABEL_10:
   }
 }
 
-- (void)addPath:(CGPath *)a3 transform:(CGAffineTransform *)a4
+- (void)addPath:(CGPath *)path transform:(CGAffineTransform *)transform
 {
   if (self->_committed)
   {
@@ -211,11 +211,11 @@ LABEL_10:
   }
 
   info = self;
-  v4 = *&a4->c;
-  v6 = *&a4->a;
+  v4 = *&transform->c;
+  v6 = *&transform->a;
   v7 = v4;
-  v8 = *&a4->tx;
-  CGPathApply(a3, &info, [RBStrokeAccumulator addPath:transform:]::$_0::__invoke);
+  v8 = *&transform->tx;
+  CGPathApply(path, &info, [RBStrokeAccumulator addPath:transform:]::$_0::__invoke);
 }
 
 - (void)removeAllElements
@@ -230,17 +230,17 @@ LABEL_10:
   self->_maxLineWidth = 0.0;
 }
 
-- (void)setStrokeType:(int)a3
+- (void)setStrokeType:(int)type
 {
   if (self->_committed)
   {
     [RBStrokeAccumulator addElement:a2 args:?];
   }
 
-  self->_strokeType = a3;
+  self->_strokeType = type;
 }
 
-- (void)setImage:(CGImage *)a3
+- (void)setImage:(CGImage *)image
 {
   if (self->_committed)
   {
@@ -248,16 +248,16 @@ LABEL_10:
   }
 
   p = self->_image._p;
-  if (p != a3)
+  if (p != image)
   {
     if (p)
     {
       CFRelease(p);
     }
 
-    if (a3)
+    if (image)
     {
-      v6 = CFRetain(a3);
+      v6 = CFRetain(image);
     }
 
     else
@@ -269,84 +269,84 @@ LABEL_10:
   }
 }
 
-- (void)setImageScale:(float)a3
+- (void)setImageScale:(float)scale
 {
   if (self->_committed)
   {
     [RBStrokeAccumulator addElement:a2 args:?];
   }
 
-  self->_imageScale = a3;
+  self->_imageScale = scale;
 }
 
-- (void)setImageCount:(unint64_t)a3
+- (void)setImageCount:(unint64_t)count
 {
   if (self->_committed)
   {
     [RBStrokeAccumulator addElement:a2 args:?];
   }
 
-  self->_imageCount = a3;
+  self->_imageCount = count;
 }
 
-- (void)setRotatesImage:(BOOL)a3
+- (void)setRotatesImage:(BOOL)image
 {
   if (self->_committed)
   {
     [RBStrokeAccumulator addElement:a2 args:?];
   }
 
-  self->_rotatesImage = a3;
+  self->_rotatesImage = image;
 }
 
-- (void)setBlendMode:(int)a3
+- (void)setBlendMode:(int)mode
 {
   if (self->_committed)
   {
     [RBStrokeAccumulator addElement:a2 args:?];
   }
 
-  self->_blendMode = a3;
+  self->_blendMode = mode;
 }
 
-- (void)setLineCap:(int)a3
+- (void)setLineCap:(int)cap
 {
   if (self->_committed)
   {
     [RBStrokeAccumulator addElement:a2 args:?];
   }
 
-  self->_lineCap = a3;
+  self->_lineCap = cap;
 }
 
-- (void)setLineJoin:(int)a3
+- (void)setLineJoin:(int)join
 {
   if (self->_committed)
   {
     [RBStrokeAccumulator addElement:a2 args:?];
   }
 
-  self->_lineJoin = a3;
+  self->_lineJoin = join;
 }
 
-- (void)setMiterLimit:(float)a3
+- (void)setMiterLimit:(float)limit
 {
   if (self->_committed)
   {
     [RBStrokeAccumulator addElement:a2 args:?];
   }
 
-  self->_miterLimit = a3;
+  self->_miterLimit = limit;
 }
 
-- (void)setSeed:(int64_t)a3
+- (void)setSeed:(int64_t)seed
 {
   if (self->_committed)
   {
     [RBStrokeAccumulator addElement:a2 args:?];
   }
 
-  self->_seed = a3;
+  self->_seed = seed;
 }
 
 - (CGRect)boundingRect
@@ -391,12 +391,12 @@ LABEL_10:
   return self->_borderWidth;
 }
 
-- (void)applyFunction:(void *)a3 info:(void *)a4
+- (void)applyFunction:(void *)function info:(void *)info
 {
   size = self->_elements._size;
   if (size)
   {
-    (a3)(size, self->_elements._p, self->_values._p, a4);
+    (function)(size, self->_elements._p, self->_values._p, info);
   }
 }
 
@@ -409,17 +409,17 @@ LABEL_10:
   return self;
 }
 
-- (uint64_t)addPath:(uint64_t)a1 transform:(uint64_t)a2
+- (uint64_t)addPath:(uint64_t)path transform:(uint64_t)transform
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = *a2;
-  if (*a2 <= 1)
+  v2 = *transform;
+  if (*transform <= 1)
   {
     if (v2)
     {
       if (v2 == 1)
       {
-        *v12.f32 = vcvt_f32_f64(vmlaq_n_f64(vmlaq_n_f64(*(a1 + 40), *(a1 + 8), **(a2 + 8)), *(a1 + 24), *(*(a2 + 8) + 8)));
+        *v12.f32 = vcvt_f32_f64(vmlaq_n_f64(vmlaq_n_f64(*(path + 40), *(path + 8), **(transform + 8)), *(path + 24), *(*(transform + 8) + 8)));
         v3 = 1;
       }
 
@@ -432,7 +432,7 @@ LABEL_10:
     else
     {
       v3 = 0;
-      *v12.f32 = vcvt_f32_f64(vmlaq_n_f64(vmlaq_n_f64(*(a1 + 40), *(a1 + 8), **(a2 + 8)), *(a1 + 24), *(*(a2 + 8) + 8)));
+      *v12.f32 = vcvt_f32_f64(vmlaq_n_f64(vmlaq_n_f64(*(path + 40), *(path + 8), **(transform + 8)), *(path + 24), *(*(transform + 8) + 8)));
     }
   }
 
@@ -441,17 +441,17 @@ LABEL_10:
     switch(v2)
     {
       case 2:
-        v4 = *(a2 + 8);
-        v12 = vcvt_hight_f32_f64(vcvt_f32_f64(vmlaq_n_f64(vmlaq_n_f64(*(a1 + 40), *(a1 + 24), v4[1]), *(a1 + 8), *v4)), vmlaq_n_f64(vmlaq_n_f64(*(a1 + 40), *(a1 + 8), v4[2]), *(a1 + 24), v4[3]));
+        v4 = *(transform + 8);
+        v12 = vcvt_hight_f32_f64(vcvt_f32_f64(vmlaq_n_f64(vmlaq_n_f64(*(path + 40), *(path + 24), v4[1]), *(path + 8), *v4)), vmlaq_n_f64(vmlaq_n_f64(*(path + 40), *(path + 8), v4[2]), *(path + 24), v4[3]));
         v3 = 2;
         break;
       case 3:
-        v5 = *(a2 + 8);
-        v6 = *(a1 + 8);
+        v5 = *(transform + 8);
+        v6 = *(path + 8);
         v7 = v5[4];
         v8 = v5[5];
-        v9 = *(a1 + 24);
-        v10 = *(a1 + 40);
+        v9 = *(path + 24);
+        v10 = *(path + 40);
         v12 = vcvt_hight_f32_f64(vcvt_f32_f64(vmlaq_n_f64(vmlaq_n_f64(v10, v9, v5[1]), v6, *v5)), vmlaq_n_f64(vmlaq_n_f64(v10, v6, v5[2]), v9, v5[3]));
         v13 = vcvt_f32_f64(vmlaq_n_f64(vmlaq_n_f64(v10, v6, v7), v9, v8));
         v3 = 3;
@@ -465,7 +465,7 @@ LABEL_10:
     }
   }
 
-  return [*a1 addElement:v3 args:&v12];
+  return [*path addElement:v3 args:&v12];
 }
 
 @end

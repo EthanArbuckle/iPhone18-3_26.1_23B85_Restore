@@ -1,19 +1,19 @@
 @interface BCSCloudKitQueryProvider
-- (id)_shardRecordNameForType:(int64_t)a3 index:(int64_t)a4 count:(int64_t)a5;
-- (id)_shardRecordTypeForType:(int64_t)a3;
-- (id)queryForFetchConfigItemWithType:(int64_t)a3;
-- (id)queryForFetchItemsWithStartIndex:(int64_t)a3 endIndex:(int64_t)a4 type:(int64_t)a5;
-- (id)queryForFetchShardIdentifier:(id)a3;
+- (id)_shardRecordNameForType:(int64_t)type index:(int64_t)index count:(int64_t)count;
+- (id)_shardRecordTypeForType:(int64_t)type;
+- (id)queryForFetchConfigItemWithType:(int64_t)type;
+- (id)queryForFetchItemsWithStartIndex:(int64_t)index endIndex:(int64_t)endIndex type:(int64_t)type;
+- (id)queryForFetchShardIdentifier:(id)identifier;
 @end
 
 @implementation BCSCloudKitQueryProvider
 
-- (id)queryForFetchConfigItemWithType:(int64_t)a3
+- (id)queryForFetchConfigItemWithType:(int64_t)type
 {
   v3 = 0;
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v4 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:@"config-v1"];
       v5 = [objc_alloc(MEMORY[0x277CBC620]) initWithRecordID:v4 action:0];
@@ -24,7 +24,7 @@
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_13;
       }
@@ -39,7 +39,7 @@
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
         v4 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:@"caller-id-config-v1"];
@@ -74,30 +74,30 @@ LABEL_13:
   return v3;
 }
 
-- (id)queryForFetchShardIdentifier:(id)a3
+- (id)queryForFetchShardIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = -[BCSCloudKitQueryProvider _shardRecordNameForType:index:count:](self, "_shardRecordNameForType:index:count:", [v4 type], objc_msgSend(v4, "startIndex"), objc_msgSend(v4, "shardCount"));
+  identifierCopy = identifier;
+  v5 = -[BCSCloudKitQueryProvider _shardRecordNameForType:index:count:](self, "_shardRecordNameForType:index:count:", [identifierCopy type], objc_msgSend(identifierCopy, "startIndex"), objc_msgSend(identifierCopy, "shardCount"));
   v6 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v5];
   v7 = [objc_alloc(MEMORY[0x277CBC620]) initWithRecordID:v6 action:0];
   v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"recordID", v7];
   v9 = objc_alloc(MEMORY[0x277CBC578]);
-  v10 = [v4 type];
+  type = [identifierCopy type];
 
-  v11 = [(BCSCloudKitQueryProvider *)self _shardRecordTypeForType:v10];
+  v11 = [(BCSCloudKitQueryProvider *)self _shardRecordTypeForType:type];
   v12 = [v9 initWithRecordType:v11 predicate:v8];
 
   return v12;
 }
 
-- (id)queryForFetchItemsWithStartIndex:(int64_t)a3 endIndex:(int64_t)a4 type:(int64_t)a5
+- (id)queryForFetchItemsWithStartIndex:(int64_t)index endIndex:(int64_t)endIndex type:(int64_t)type
 {
-  switch(a5)
+  switch(type)
   {
     case 3:
       v15 = MEMORY[0x277CCAC30];
-      v16 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
-      v17 = [MEMORY[0x277CCABB0] numberWithLongLong:a4];
+      v16 = [MEMORY[0x277CCABB0] numberWithLongLong:index];
+      v17 = [MEMORY[0x277CCABB0] numberWithLongLong:endIndex];
       v9 = [v15 predicateWithFormat:@"%K >= %@ AND %K <= %@", @"hash", v16, @"hash", v17];
 
       v10 = objc_alloc(MEMORY[0x277CBC578]);
@@ -105,8 +105,8 @@ LABEL_13:
       goto LABEL_7;
     case 2:
       v12 = MEMORY[0x277CCAC30];
-      v13 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
-      v14 = [MEMORY[0x277CCABB0] numberWithLongLong:a4];
+      v13 = [MEMORY[0x277CCABB0] numberWithLongLong:index];
+      v14 = [MEMORY[0x277CCABB0] numberWithLongLong:endIndex];
       v9 = [v12 predicateWithFormat:@"%K >= %@ AND %K <= %@", @"hashPrefix", v13, @"hashPrefix", v14];
 
       v10 = objc_alloc(MEMORY[0x277CBC578]);
@@ -114,8 +114,8 @@ LABEL_13:
       goto LABEL_7;
     case 1:
       v6 = MEMORY[0x277CCAC30];
-      v7 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
-      v8 = [MEMORY[0x277CCABB0] numberWithLongLong:a4];
+      v7 = [MEMORY[0x277CCABB0] numberWithLongLong:index];
+      v8 = [MEMORY[0x277CCABB0] numberWithLongLong:endIndex];
       v9 = [v6 predicateWithFormat:@"%K >= %@ AND %K <= %@", @"hash", v7, @"hash", v8];
 
       v10 = objc_alloc(MEMORY[0x277CBC578]);
@@ -132,26 +132,26 @@ LABEL_9:
   return v18;
 }
 
-- (id)_shardRecordNameForType:(int64_t)a3 index:(int64_t)a4 count:(int64_t)a5
+- (id)_shardRecordNameForType:(int64_t)type index:(int64_t)index count:(int64_t)count
 {
-  if ((a3 - 1) <= 5)
+  if ((type - 1) <= 5)
   {
-    self = [MEMORY[0x277CCACA8] stringWithFormat:off_278D39D48[a3 - 1], a4, a5, v5];
+    self = [MEMORY[0x277CCACA8] stringWithFormat:off_278D39D48[type - 1], index, count, v5];
   }
 
   return self;
 }
 
-- (id)_shardRecordTypeForType:(int64_t)a3
+- (id)_shardRecordTypeForType:(int64_t)type
 {
-  if ((a3 - 2) > 4)
+  if ((type - 2) > 4)
   {
     return @"ChatSuggestFilter";
   }
 
   else
   {
-    return off_278D39D78[a3 - 2];
+    return off_278D39D78[type - 2];
   }
 }
 

@@ -1,29 +1,29 @@
 @interface GKGradient
-+ (id)gradientWithColors:(id)a3 atLocations:(const double *)a4;
-- (GKGradient)initWithColors:(id)a3 atLocations:(const double *)a4;
++ (id)gradientWithColors:(id)colors atLocations:(const double *)locations;
+- (GKGradient)initWithColors:(id)colors atLocations:(const double *)locations;
 - (void)dealloc;
 @end
 
 @implementation GKGradient
 
-- (GKGradient)initWithColors:(id)a3 atLocations:(const double *)a4
+- (GKGradient)initWithColors:(id)colors atLocations:(const double *)locations
 {
-  v6 = a3;
+  colorsCopy = colors;
   v14.receiver = self;
   v14.super_class = GKGradient;
   v7 = [(GKGradient *)&v14 init];
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(colorsCopy, "count")}];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __41__GKGradient_initWithColors_atLocations___block_invoke;
     v12[3] = &unk_27967F228;
     v13 = v8;
     v9 = v8;
-    [v6 enumerateObjectsUsingBlock:v12];
+    [colorsCopy enumerateObjectsUsingBlock:v12];
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
-    v7->_CGGradient = CGGradientCreateWithColors(DeviceRGB, v9, a4);
+    v7->_CGGradient = CGGradientCreateWithColors(DeviceRGB, v9, locations);
     CFRelease(DeviceRGB);
   }
 
@@ -39,10 +39,10 @@ uint64_t __41__GKGradient_initWithColors_atLocations___block_invoke(uint64_t a1,
   return [v3 addObject:v5];
 }
 
-+ (id)gradientWithColors:(id)a3 atLocations:(const double *)a4
++ (id)gradientWithColors:(id)colors atLocations:(const double *)locations
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithColors:v6 atLocations:a4];
+  colorsCopy = colors;
+  v7 = [[self alloc] initWithColors:colorsCopy atLocations:locations];
 
   return v7;
 }

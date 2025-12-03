@@ -1,16 +1,16 @@
 @interface PXSidebarDataManagerFactory
-+ (id)makeBookmarksDataSectionManagerWithLibrary:(id)a3 topLevelIdentifier:(id)a4;
-+ (id)makeMacSyncedDataSectionManagerWithLibrary:(id)a3 topLevelIdentifier:(id)a4;
-+ (id)makeMediaTypesDataSectionManagerWithLibrary:(id)a3 topLevelIdentifier:(id)a4;
-+ (id)makeUtilitiesDataSectionManagerWithLibrary:(id)a3 topLevelIdentifier:(id)a4 forPicker:(BOOL)a5 excludeHiddenAlbum:(BOOL)a6;
++ (id)makeBookmarksDataSectionManagerWithLibrary:(id)library topLevelIdentifier:(id)identifier;
++ (id)makeMacSyncedDataSectionManagerWithLibrary:(id)library topLevelIdentifier:(id)identifier;
++ (id)makeMediaTypesDataSectionManagerWithLibrary:(id)library topLevelIdentifier:(id)identifier;
++ (id)makeUtilitiesDataSectionManagerWithLibrary:(id)library topLevelIdentifier:(id)identifier forPicker:(BOOL)picker excludeHiddenAlbum:(BOOL)album;
 - (PXSidebarDataManagerFactory)init;
 @end
 
 @implementation PXSidebarDataManagerFactory
 
-+ (id)makeBookmarksDataSectionManagerWithLibrary:(id)a3 topLevelIdentifier:(id)a4
++ (id)makeBookmarksDataSectionManagerWithLibrary:(id)library topLevelIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v5 = sub_1A524C674();
     v7 = v6;
@@ -22,15 +22,15 @@
     v7 = 0;
   }
 
-  v8 = a3;
+  libraryCopy = library;
   v9 = PHPhotoLibrary.lemonadeBookmarksManager.getter();
   type metadata accessor for LemonadeBookmarksDataSectionManager();
   sub_1A46D5FC4(v9, v5, v7);
 }
 
-+ (id)makeUtilitiesDataSectionManagerWithLibrary:(id)a3 topLevelIdentifier:(id)a4 forPicker:(BOOL)a5 excludeHiddenAlbum:(BOOL)a6
++ (id)makeUtilitiesDataSectionManagerWithLibrary:(id)library topLevelIdentifier:(id)identifier forPicker:(BOOL)picker excludeHiddenAlbum:(BOOL)album
 {
-  if (a4)
+  if (identifier)
   {
     v9 = sub_1A524C674();
     v11 = v10;
@@ -42,21 +42,21 @@
     v11 = 0;
   }
 
-  sub_1A44DDDC8(a3, v9, v11, a5, a6);
+  sub_1A44DDDC8(library, v9, v11, picker, album);
 }
 
-+ (id)makeMediaTypesDataSectionManagerWithLibrary:(id)a3 topLevelIdentifier:(id)a4
++ (id)makeMediaTypesDataSectionManagerWithLibrary:(id)library topLevelIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_1A524C674();
   }
 
   type metadata accessor for LemonadePhotoLibraryContext();
-  v5 = a3;
-  v6 = LemonadePhotoLibraryContext.__allocating_init(photoLibrary:pickerConfiguration:bookmarksManager:)(v5, 0, 0);
+  libraryCopy = library;
+  v6 = LemonadePhotoLibraryContext.__allocating_init(photoLibrary:pickerConfiguration:bookmarksManager:)(libraryCopy, 0, 0);
   type metadata accessor for LemonadeMediaTypesItemListManager();
-  v7 = v5;
+  v7 = libraryCopy;
 
   v8 = sub_1A3C5A374();
   v9 = sub_1A3C5A374();
@@ -64,15 +64,15 @@
   sub_1A4A19AF0(v7, v6, v8 & 1, v9 & 1);
 }
 
-+ (id)makeMacSyncedDataSectionManagerWithLibrary:(id)a3 topLevelIdentifier:(id)a4
++ (id)makeMacSyncedDataSectionManagerWithLibrary:(id)library topLevelIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_1A524C674();
   }
 
   type metadata accessor for LemonadePhotoLibraryContext();
-  v5 = LemonadePhotoLibraryContext.__allocating_init(photoLibrary:pickerConfiguration:bookmarksManager:)(a3, 0, 0);
+  v5 = LemonadePhotoLibraryContext.__allocating_init(photoLibrary:pickerConfiguration:bookmarksManager:)(library, 0, 0);
   v6 = sub_1A3C5A374();
   v7 = sub_1A43D7BB4(v5, 0, v6 & 1, 0, 1);
   sub_1A44DE1D8();

@@ -5,84 +5,84 @@
 + (BOOL)shouldProcessContextStoreNotificationForDict;
 + (BOOL)shouldProcessContextStoreNotificationForNumber;
 + (BOOL)usesContextStoreForRealTimeNotifications;
-+ (Class)anchorClassFromAnchorTypeString:(id)a3;
++ (Class)anchorClassFromAnchorTypeString:(id)string;
 + (Class)supportedDuetDataProviderClass;
 + (NSArray)duetEventsPredicates;
-+ (double)durationOfAnchorEvent:(id)a3;
++ (double)durationOfAnchorEvent:(id)event;
 + (double)secondsOfInfluence;
 + (id)allAnchorClasses;
-+ (id)anchorOccurenceDateFromDuetEvent:(id)a3;
-+ (id)anchorTypeStringToClassName:(id)a3;
-+ (id)anchorTypeToAnchorClassName:(int64_t)a3;
-+ (id)anchorTypeToString:(int64_t)a3;
-+ (id)candidateQueryStartDateFromDuetEvent:(id)a3;
-+ (id)fetchAnchorOccurrencesBetweenStartDate:(id)a3 endDate:(id)a4;
++ (id)anchorOccurenceDateFromDuetEvent:(id)event;
++ (id)anchorTypeStringToClassName:(id)name;
++ (id)anchorTypeToAnchorClassName:(int64_t)name;
++ (id)anchorTypeToString:(int64_t)string;
++ (id)candidateQueryStartDateFromDuetEvent:(id)event;
++ (id)fetchAnchorOccurrencesBetweenStartDate:(id)date endDate:(id)endDate;
 + (id)filterBlock;
 + (id)invalidationPredicateForContextStoreRegistration;
 + (id)keyPathForContextStore;
 + (id)predicateForContextStoreRegistration;
 + (id)sampleEvent;
-+ (int)pbAnchorEventTypeFromDuetEvent:(id)a3;
++ (int)pbAnchorEventTypeFromDuetEvent:(id)event;
 + (int64_t)anchorType;
-+ (int64_t)stringToAnchorType:(id)a3;
-+ (void)registerForNotificationsWithoutUsingContextStoreForObserver:(id)a3 enterSelector:(SEL)a4 exitSelector:(SEL)a5;
-+ (void)registerWithContextStoreForAnchorEntranceWithCallback:(id)a3 notificationId:(id)a4 registrationPersistenceContext:(id)a5;
-+ (void)registerWithContextStoreForAnchorExitWithCallback:(id)a3 notificationId:(id)a4 registrationPersistenceContext:(id)a5;
-+ (void)unregisterForNotificationsWithoutUsingContextStoreForObserver:(id)a3;
-- (ATXAnchor)initWithCoder:(id)a3;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
++ (int64_t)stringToAnchorType:(id)type;
++ (void)registerForNotificationsWithoutUsingContextStoreForObserver:(id)observer enterSelector:(SEL)selector exitSelector:(SEL)exitSelector;
++ (void)registerWithContextStoreForAnchorEntranceWithCallback:(id)callback notificationId:(id)id registrationPersistenceContext:(id)context;
++ (void)registerWithContextStoreForAnchorExitWithCallback:(id)callback notificationId:(id)id registrationPersistenceContext:(id)context;
++ (void)unregisterForNotificationsWithoutUsingContextStoreForObserver:(id)observer;
+- (ATXAnchor)initWithCoder:(id)coder;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
 - (id)anchorTypeString;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXAnchor
 
 + (Class)supportedDuetDataProviderClass
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ATXAnchor.m" lineNumber:28 description:@"Should be implemented by subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAnchor.m" lineNumber:28 description:@"Should be implemented by subclasses"];
 
   return 0;
 }
 
 + (NSArray)duetEventsPredicates
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ATXAnchor.m" lineNumber:34 description:@"Should be implemented by subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAnchor.m" lineNumber:34 description:@"Should be implemented by subclasses"];
 
   return 0;
 }
 
 + (id)filterBlock
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ATXAnchor.m" lineNumber:40 description:@"Should be implemented by subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAnchor.m" lineNumber:40 description:@"Should be implemented by subclasses"];
 
   return 0;
 }
 
 + (int64_t)anchorType
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ATXAnchor.m" lineNumber:46 description:@"Should be implemented by subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAnchor.m" lineNumber:46 description:@"Should be implemented by subclasses"];
 
   return 0;
 }
 
 + (double)secondsOfInfluence
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ATXAnchor.m" lineNumber:57 description:@"Should be implemented by subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAnchor.m" lineNumber:57 description:@"Should be implemented by subclasses"];
 
   return 0.0;
 }
 
 + (BOOL)shouldPredicateOnStartDate
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ATXAnchor.m" lineNumber:63 description:@"Should be implemented by subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAnchor.m" lineNumber:63 description:@"Should be implemented by subclasses"];
 
   return 1;
 }
@@ -90,47 +90,47 @@
 - (id)anchorTypeString
 {
   v2 = objc_opt_class();
-  v3 = [objc_opt_class() anchorType];
+  anchorType = [objc_opt_class() anchorType];
 
-  return [v2 anchorTypeToString:v3];
+  return [v2 anchorTypeToString:anchorType];
 }
 
-+ (id)anchorOccurenceDateFromDuetEvent:(id)a3
++ (id)anchorOccurenceDateFromDuetEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   if ([objc_opt_class() shouldPredicateOnStartDate])
   {
-    [v3 startDate];
+    [eventCopy startDate];
   }
 
   else
   {
-    [v3 endDate];
+    [eventCopy endDate];
   }
   v4 = ;
 
   return v4;
 }
 
-+ (id)candidateQueryStartDateFromDuetEvent:(id)a3
++ (id)candidateQueryStartDateFromDuetEvent:(id)event
 {
-  v3 = a3;
-  v4 = [objc_opt_class() anchorOccurenceDateFromDuetEvent:v3];
+  eventCopy = event;
+  v4 = [objc_opt_class() anchorOccurenceDateFromDuetEvent:eventCopy];
 
   return v4;
 }
 
-+ (double)durationOfAnchorEvent:(id)a3
++ (double)durationOfAnchorEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([objc_opt_class() shouldPredicateOnStartDate])
   {
-    v5 = [v4 endDate];
-    v6 = [v4 startDate];
-    [v5 timeIntervalSinceDate:v6];
+    endDate = [eventCopy endDate];
+    startDate = [eventCopy startDate];
+    [endDate timeIntervalSinceDate:startDate];
     v8 = v7;
 
-    [a1 secondsOfInfluence];
+    [self secondsOfInfluence];
     v10 = v9;
     if (v8 >= 1.0 && v8 < v9)
     {
@@ -140,7 +140,7 @@
 
   else
   {
-    [a1 secondsOfInfluence];
+    [self secondsOfInfluence];
     v10 = v11;
   }
 
@@ -149,117 +149,117 @@
 
 + (BOOL)usesContextStoreForRealTimeNotifications
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ATXAnchor.m" lineNumber:106 description:@"Should be implemented by subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAnchor.m" lineNumber:106 description:@"Should be implemented by subclasses"];
 
   return 0;
 }
 
-+ (void)registerWithContextStoreForAnchorEntranceWithCallback:(id)a3 notificationId:(id)a4 registrationPersistenceContext:(id)a5
++ (void)registerWithContextStoreForAnchorEntranceWithCallback:(id)callback notificationId:(id)id registrationPersistenceContext:(id)context
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  contextCopy = context;
+  idCopy = id;
+  callbackCopy = callback;
   if (([objc_opt_class() usesContextStoreForRealTimeNotifications] & 1) == 0)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    [v12 handleFailureInMethod:a2 object:a1 file:@"ATXAnchor.m" lineNumber:115 description:{@"Anchor %@ doesn't use ContextStore but received request to register with context store.", v14}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAnchor.m" lineNumber:115 description:{@"Anchor %@ doesn't use ContextStore but received request to register with context store.", v14}];
   }
 
   v15 = MEMORY[0x277CFE350];
-  v16 = [objc_opt_class() predicateForContextStoreRegistration];
-  v17 = [v15 localWakingRegistrationWithIdentifier:v10 contextualPredicate:v16 clientIdentifier:@"com.apple.duetexpertd.cdidentifier" callback:v11];
+  predicateForContextStoreRegistration = [objc_opt_class() predicateForContextStoreRegistration];
+  v17 = [v15 localWakingRegistrationWithIdentifier:idCopy contextualPredicate:predicateForContextStoreRegistration clientIdentifier:@"com.apple.duetexpertd.cdidentifier" callback:callbackCopy];
 
-  [v9 registerCallback:v17];
+  [contextCopy registerCallback:v17];
 }
 
-+ (void)registerWithContextStoreForAnchorExitWithCallback:(id)a3 notificationId:(id)a4 registrationPersistenceContext:(id)a5
++ (void)registerWithContextStoreForAnchorExitWithCallback:(id)callback notificationId:(id)id registrationPersistenceContext:(id)context
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  contextCopy = context;
+  idCopy = id;
+  callbackCopy = callback;
   if (([objc_opt_class() usesContextStoreForRealTimeNotifications] & 1) == 0)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    [v12 handleFailureInMethod:a2 object:a1 file:@"ATXAnchor.m" lineNumber:130 description:{@"Anchor %@ doesn't use ContextStore but received request to register with context store.", v14}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAnchor.m" lineNumber:130 description:{@"Anchor %@ doesn't use ContextStore but received request to register with context store.", v14}];
   }
 
   v15 = MEMORY[0x277CFE350];
-  v16 = [objc_opt_class() invalidationPredicateForContextStoreRegistration];
-  v17 = [v15 localWakingRegistrationWithIdentifier:v10 contextualPredicate:v16 clientIdentifier:@"com.apple.duetexpertd.cdidentifier" callback:v11];
+  invalidationPredicateForContextStoreRegistration = [objc_opt_class() invalidationPredicateForContextStoreRegistration];
+  v17 = [v15 localWakingRegistrationWithIdentifier:idCopy contextualPredicate:invalidationPredicateForContextStoreRegistration clientIdentifier:@"com.apple.duetexpertd.cdidentifier" callback:callbackCopy];
 
-  [v9 registerCallback:v17];
+  [contextCopy registerCallback:v17];
 }
 
-+ (void)registerForNotificationsWithoutUsingContextStoreForObserver:(id)a3 enterSelector:(SEL)a4 exitSelector:(SEL)a5
++ (void)registerForNotificationsWithoutUsingContextStoreForObserver:(id)observer enterSelector:(SEL)selector exitSelector:(SEL)exitSelector
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:a1 file:@"ATXAnchor.m" lineNumber:144 description:@"Should be implemented by subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAnchor.m" lineNumber:144 description:@"Should be implemented by subclasses"];
 }
 
-+ (void)unregisterForNotificationsWithoutUsingContextStoreForObserver:(id)a3
++ (void)unregisterForNotificationsWithoutUsingContextStoreForObserver:(id)observer
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:a1 file:@"ATXAnchor.m" lineNumber:150 description:@"Should be implemented by subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAnchor.m" lineNumber:150 description:@"Should be implemented by subclasses"];
 }
 
 + (id)keyPathForContextStore
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ATXAnchor.m" lineNumber:156 description:@"Should be implemented by subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAnchor.m" lineNumber:156 description:@"Should be implemented by subclasses"];
 
   return 0;
 }
 
 + (id)predicateForContextStoreRegistration
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ATXAnchor.m" lineNumber:162 description:@"Should be implemented by subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAnchor.m" lineNumber:162 description:@"Should be implemented by subclasses"];
 
   return 0;
 }
 
 + (id)invalidationPredicateForContextStoreRegistration
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ATXAnchor.m" lineNumber:168 description:@"Should be implemented by subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAnchor.m" lineNumber:168 description:@"Should be implemented by subclasses"];
 
   return 0;
 }
 
 + (BOOL)shouldProcessContextStoreNotification
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ATXAnchor.m" lineNumber:174 description:@"Should be implemented by subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAnchor.m" lineNumber:174 description:@"Should be implemented by subclasses"];
 
   return 0;
 }
 
 + (BOOL)isActive
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ATXAnchor.m" lineNumber:180 description:@"Should be implemented by subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAnchor.m" lineNumber:180 description:@"Should be implemented by subclasses"];
 
   return 0;
 }
 
 + (id)sampleEvent
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"ATXAnchor.m" lineNumber:186 description:@"Should be implemented by subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ATXAnchor.m" lineNumber:186 description:@"Should be implemented by subclasses"];
 
   return 0;
 }
 
 + (BOOL)shouldProcessContextStoreNotificationForDict
 {
-  v2 = [MEMORY[0x277CFE318] userContext];
-  v3 = [objc_opt_class() keyPathForContextStore];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  keyPathForContextStore = [objc_opt_class() keyPathForContextStore];
+  v4 = [userContext objectForKeyedSubscript:keyPathForContextStore];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -268,36 +268,36 @@
 
 + (BOOL)shouldProcessContextStoreNotificationForNumber
 {
-  v2 = [MEMORY[0x277CFE318] userContext];
-  v3 = [objc_opt_class() keyPathForContextStore];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  keyPathForContextStore = [objc_opt_class() keyPathForContextStore];
+  v4 = [userContext objectForKeyedSubscript:keyPathForContextStore];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-+ (id)fetchAnchorOccurrencesBetweenStartDate:(id)a3 endDate:(id)a4
++ (id)fetchAnchorOccurrencesBetweenStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a3;
+  dateCopy = date;
   v7 = MEMORY[0x277CBEB18];
-  v8 = a4;
+  endDateCopy = endDate;
   v9 = [v7 alloc];
-  v10 = [objc_opt_class() duetEventsPredicates];
-  v11 = [v9 initWithArray:v10];
+  duetEventsPredicates = [objc_opt_class() duetEventsPredicates];
+  v11 = [v9 initWithArray:duetEventsPredicates];
 
   [objc_opt_class() supportedDuetDataProviderClass];
   v12 = objc_opt_new();
   v13 = [v11 copy];
-  v14 = [v12 fetchEventsBetweenStartDate:v6 andEndDate:v8 withPredicates:v13];
+  v14 = [v12 fetchEventsBetweenStartDate:dateCopy andEndDate:endDateCopy withPredicates:v13];
 
-  if ([a1 shouldPredicateOnStartDate])
+  if ([self shouldPredicateOnStartDate])
   {
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __60__ATXAnchor_fetchAnchorOccurrencesBetweenStartDate_endDate___block_invoke;
     v17[3] = &unk_2785A0D70;
-    v18 = v6;
+    v18 = dateCopy;
     v15 = [v14 _pas_filteredArrayWithTest:v17];
   }
 
@@ -320,10 +320,10 @@ BOOL __60__ATXAnchor_fetchAnchorOccurrencesBetweenStartDate_endDate___block_invo
   return v5 != v6;
 }
 
-+ (int)pbAnchorEventTypeFromDuetEvent:(id)a3
++ (int)pbAnchorEventTypeFromDuetEvent:(id)event
 {
-  v3 = a3;
-  if (([objc_opt_class() anchorType] - 1) > 1 || (v4 = objc_msgSend(v3, "deviceType"), v4 > 4))
+  eventCopy = event;
+  if (([objc_opt_class() anchorType] - 1) > 1 || (v4 = objc_msgSend(eventCopy, "deviceType"), v4 > 4))
   {
     v5 = 0;
   }
@@ -336,128 +336,128 @@ BOOL __60__ATXAnchor_fetchAnchorOccurrencesBetweenStartDate_endDate___block_invo
   return v5;
 }
 
-+ (id)anchorTypeToString:(int64_t)a3
++ (id)anchorTypeToString:(int64_t)string
 {
-  if ((a3 - 1) > 0x15)
+  if ((string - 1) > 0x15)
   {
     return @"UnknownAnchor";
   }
 
   else
   {
-    return off_2785A0D90[a3 - 1];
+    return off_2785A0D90[string - 1];
   }
 }
 
-+ (int64_t)stringToAnchorType:(id)a3
++ (int64_t)stringToAnchorType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"BluetoothConnectedAnchor"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"BluetoothConnectedAnchor"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"BluetoothDisconnectedAnchor"])
+  else if ([typeCopy isEqualToString:@"BluetoothDisconnectedAnchor"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"IdleTimeBeginAnchor"])
+  else if ([typeCopy isEqualToString:@"IdleTimeBeginAnchor"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"IdleTimeEndAnchor"])
+  else if ([typeCopy isEqualToString:@"IdleTimeEndAnchor"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CarPlayConnectedAnchor"])
+  else if ([typeCopy isEqualToString:@"CarPlayConnectedAnchor"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"CarPlayDisconnectedAnchor"])
+  else if ([typeCopy isEqualToString:@"CarPlayDisconnectedAnchor"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"LOIEntranceAnchor"])
+  else if ([typeCopy isEqualToString:@"LOIEntranceAnchor"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"LOIExitAnchor"])
+  else if ([typeCopy isEqualToString:@"LOIExitAnchor"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"WorkoutStartAnchor"])
+  else if ([typeCopy isEqualToString:@"WorkoutStartAnchor"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"WorkoutEndAnchor"])
+  else if ([typeCopy isEqualToString:@"WorkoutEndAnchor"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"HeadingHomeAnchor"])
+  else if ([typeCopy isEqualToString:@"HeadingHomeAnchor"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"HeadingToWorkAnchor"])
+  else if ([typeCopy isEqualToString:@"HeadingToWorkAnchor"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"FirstCalendarEventOfDayAnchor"])
+  else if ([typeCopy isEqualToString:@"FirstCalendarEventOfDayAnchor"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"LastCalendarEventOfDayAnchor"])
+  else if ([typeCopy isEqualToString:@"LastCalendarEventOfDayAnchor"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"UpcomingSemanticEventAnchor"])
+  else if ([typeCopy isEqualToString:@"UpcomingSemanticEventAnchor"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"WiredAudioDeviceConnectedAnchor"])
+  else if ([typeCopy isEqualToString:@"WiredAudioDeviceConnectedAnchor"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"WiredAudioDeviceDisconnectedAnchor"])
+  else if ([typeCopy isEqualToString:@"WiredAudioDeviceDisconnectedAnchor"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"ChargerConnectedAnchor"])
+  else if ([typeCopy isEqualToString:@"ChargerConnectedAnchor"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"MicrolocationVisitAnchor"])
+  else if ([typeCopy isEqualToString:@"MicrolocationVisitAnchor"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"UpcomingCommuteToWorkAnchor"])
+  else if ([typeCopy isEqualToString:@"UpcomingCommuteToWorkAnchor"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"UpcomingCommuteFromWorkAnchor"])
+  else if ([typeCopy isEqualToString:@"UpcomingCommuteFromWorkAnchor"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"GymArrivalAnchor"])
+  else if ([typeCopy isEqualToString:@"GymArrivalAnchor"])
   {
     v4 = 22;
   }
@@ -470,20 +470,20 @@ BOOL __60__ATXAnchor_fetchAnchorOccurrencesBetweenStartDate_endDate___block_invo
   return v4;
 }
 
-+ (id)anchorTypeStringToClassName:(id)a3
++ (id)anchorTypeStringToClassName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_opt_class();
-  v5 = [objc_opt_class() stringToAnchorType:v3];
+  v5 = [objc_opt_class() stringToAnchorType:nameCopy];
 
   return [v4 anchorTypeToAnchorClassName:v5];
 }
 
-+ (Class)anchorClassFromAnchorTypeString:(id)a3
++ (Class)anchorClassFromAnchorTypeString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 anchorTypeToString:1];
-  v6 = [v4 isEqualToString:v5];
+  stringCopy = string;
+  v5 = [self anchorTypeToString:1];
+  v6 = [stringCopy isEqualToString:v5];
 
   if (v6)
   {
@@ -494,8 +494,8 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v8 = [a1 anchorTypeToString:2];
-  v9 = [v4 isEqualToString:v8];
+  v8 = [self anchorTypeToString:2];
+  v9 = [stringCopy isEqualToString:v8];
 
   if (v9)
   {
@@ -503,8 +503,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v10 = [a1 anchorTypeToString:4];
-  v11 = [v4 isEqualToString:v10];
+  v10 = [self anchorTypeToString:4];
+  v11 = [stringCopy isEqualToString:v10];
 
   if (v11)
   {
@@ -512,8 +512,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v12 = [a1 anchorTypeToString:5];
-  v13 = [v4 isEqualToString:v12];
+  v12 = [self anchorTypeToString:5];
+  v13 = [stringCopy isEqualToString:v12];
 
   if (v13)
   {
@@ -521,8 +521,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v14 = [a1 anchorTypeToString:6];
-  v15 = [v4 isEqualToString:v14];
+  v14 = [self anchorTypeToString:6];
+  v15 = [stringCopy isEqualToString:v14];
 
   if (v15)
   {
@@ -530,8 +530,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v16 = [a1 anchorTypeToString:16];
-  v17 = [v4 isEqualToString:v16];
+  v16 = [self anchorTypeToString:16];
+  v17 = [stringCopy isEqualToString:v16];
 
   if (v17)
   {
@@ -539,8 +539,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v18 = [a1 anchorTypeToString:17];
-  v19 = [v4 isEqualToString:v18];
+  v18 = [self anchorTypeToString:17];
+  v19 = [stringCopy isEqualToString:v18];
 
   if (v19)
   {
@@ -548,8 +548,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v20 = [a1 anchorTypeToString:19];
-  v21 = [v4 isEqualToString:v20];
+  v20 = [self anchorTypeToString:19];
+  v21 = [stringCopy isEqualToString:v20];
 
   if (v21)
   {
@@ -557,8 +557,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v22 = [a1 anchorTypeToString:18];
-  v23 = [v4 isEqualToString:v22];
+  v22 = [self anchorTypeToString:18];
+  v23 = [stringCopy isEqualToString:v22];
 
   if (v23)
   {
@@ -566,8 +566,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v24 = [a1 anchorTypeToString:7];
-  v25 = [v4 isEqualToString:v24];
+  v24 = [self anchorTypeToString:7];
+  v25 = [stringCopy isEqualToString:v24];
 
   if (v25)
   {
@@ -575,8 +575,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v26 = [a1 anchorTypeToString:8];
-  v27 = [v4 isEqualToString:v26];
+  v26 = [self anchorTypeToString:8];
+  v27 = [stringCopy isEqualToString:v26];
 
   if (v27)
   {
@@ -584,8 +584,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v28 = [a1 anchorTypeToString:3];
-  v29 = [v4 isEqualToString:v28];
+  v28 = [self anchorTypeToString:3];
+  v29 = [stringCopy isEqualToString:v28];
 
   if (v29)
   {
@@ -593,8 +593,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v30 = [a1 anchorTypeToString:20];
-  v31 = [v4 isEqualToString:v30];
+  v30 = [self anchorTypeToString:20];
+  v31 = [stringCopy isEqualToString:v30];
 
   if (v31)
   {
@@ -602,8 +602,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v32 = [a1 anchorTypeToString:21];
-  v33 = [v4 isEqualToString:v32];
+  v32 = [self anchorTypeToString:21];
+  v33 = [stringCopy isEqualToString:v32];
 
   if (v33)
   {
@@ -611,8 +611,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v34 = [a1 anchorTypeToString:22];
-  v35 = [v4 isEqualToString:v34];
+  v34 = [self anchorTypeToString:22];
+  v35 = [stringCopy isEqualToString:v34];
 
   if (v35)
   {
@@ -626,10 +626,10 @@ LABEL_32:
   return v37;
 }
 
-+ (id)anchorTypeToAnchorClassName:(int64_t)a3
++ (id)anchorTypeToAnchorClassName:(int64_t)name
 {
-  v4 = a3 - 1;
-  if (a3 - 1) <= 0x15 && ((0x3F80FFu >> v4))
+  v4 = name - 1;
+  if (name - 1) <= 0x15 && ((0x3F80FFu >> v4))
   {
     v5 = *off_2785A0E40[v4];
     v6 = objc_opt_class();
@@ -669,10 +669,10 @@ LABEL_32:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -682,11 +682,11 @@ LABEL_32:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [objc_opt_class() anchorType];
+      v5 = equalCopy;
+      anchorType = [objc_opt_class() anchorType];
       v7 = objc_opt_class();
 
-      v8 = v6 == [v7 anchorType];
+      v8 = anchorType == [v7 anchorType];
     }
 
     else
@@ -698,42 +698,42 @@ LABEL_32:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(ATXAnchor *)self anchorEventIdentifier];
-  [v4 setAnchorEventIdentifier:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  anchorEventIdentifier = [(ATXAnchor *)self anchorEventIdentifier];
+  [v4 setAnchorEventIdentifier:anchorEventIdentifier];
 
   return v4;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x277CCA9B8]);
       v22 = *MEMORY[0x277CCA450];
-      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -745,22 +745,22 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXAnchor *)self anchorEventIdentifier];
-  [v4 encodeObject:v5 forKey:@"codingKeyForAnchorEventId"];
+  coderCopy = coder;
+  anchorEventIdentifier = [(ATXAnchor *)self anchorEventIdentifier];
+  [coderCopy encodeObject:anchorEventIdentifier forKey:@"codingKeyForAnchorEventId"];
 }
 
-- (ATXAnchor)initWithCoder:(id)a3
+- (ATXAnchor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForAnchorEventId"];
-  v6 = [(ATXAnchor *)self checkAndReportDecodingFailureIfNeededForid:v5 key:@"codingKeyForAnchorEventId" coder:v4 errorDomain:@"com.apple.proactive.ATXAnchor" errorCode:-1];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codingKeyForAnchorEventId"];
+  v6 = [(ATXAnchor *)self checkAndReportDecodingFailureIfNeededForid:v5 key:@"codingKeyForAnchorEventId" coder:coderCopy errorDomain:@"com.apple.proactive.ATXAnchor" errorCode:-1];
 
   if (v6)
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -775,10 +775,10 @@ LABEL_7:
     }
 
     self = v9;
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

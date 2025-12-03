@@ -1,17 +1,17 @@
 @interface RPRecordSession
 - (id)dispatchCaptureQueue;
 - (id)outputPath;
-- (void)captureDidFailWithError:(id)a3;
-- (void)discardInAppRecordingWithHandler:(id)a3;
+- (void)captureDidFailWithError:(id)error;
+- (void)discardInAppRecordingWithHandler:(id)handler;
 - (void)handleClientApplicationDidEnterBackground;
 - (void)handleClientApplicationDidEnterForeground;
 - (void)handleDeviceLockedWarning;
 - (void)handleDeviceRestrictionWarning;
 - (void)handleDisplayWarning;
-- (void)handleResumeCaptureWithCompletionHandler:(id)a3;
+- (void)handleResumeCaptureWithCompletionHandler:(id)handler;
 - (void)handleResumeContextIDFailure;
 - (void)pauseSession;
-- (void)stopRecordingWithHandler:(id)a3;
+- (void)stopRecordingWithHandler:(id)handler;
 @end
 
 @implementation RPRecordSession
@@ -19,15 +19,15 @@
 - (id)outputPath
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(RPSession *)self bundleID];
-  v5 = [v3 outputPath:0 bundleID:v4];
+  bundleID = [(RPSession *)self bundleID];
+  v5 = [v3 outputPath:0 bundleID:bundleID];
 
   return v5;
 }
 
-- (void)stopRecordingWithHandler:(id)a3
+- (void)stopRecordingWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446978;
@@ -35,9 +35,9 @@
     v12 = 1024;
     v13 = 85;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 1024;
-    v17 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p stopping in session state %d", buf, 0x22u);
   }
 
@@ -45,9 +45,9 @@
   {
     v5 = [NSError _rpUserErrorForCode:-5829 userInfo:0];
     [(RPSession *)self reportSessionEndReason:v5];
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4, 0, v5);
+      handlerCopy[2](handlerCopy, 0, v5);
     }
   }
 
@@ -65,7 +65,7 @@
       v8[2] = sub_10005CE70;
       v8[3] = &unk_1000A1868;
       v8[4] = self;
-      v9 = v4;
+      v9 = handlerCopy;
       [(RPMovieWriter *)movieWriter finishWritingWithHandler:v8];
     }
 
@@ -82,9 +82,9 @@
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d no movie writer instance when attempting to stop", buf, 0x12u);
       }
 
-      if (v4)
+      if (handlerCopy)
       {
-        v4[2](v4, 0, 0);
+        handlerCopy[2](handlerCopy, 0, 0);
       }
     }
   }
@@ -99,9 +99,9 @@
     v7 = 1024;
     v8 = 131;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 1024;
-    v12 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p pausing in session state %d", buf, 0x22u);
   }
 
@@ -118,9 +118,9 @@
   }
 }
 
-- (void)discardInAppRecordingWithHandler:(id)a3
+- (void)discardInAppRecordingWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(RPSession *)self sessionState]== 3 && self->_currentRecordingURL)
   {
     v5 = +[NSFileManager defaultManager];
@@ -130,7 +130,7 @@
     v7[2] = sub_10005D254;
     v7[3] = &unk_1000A1840;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     [v5 _srRemoveFile:currentRecordingURL completion:v7];
   }
 }
@@ -147,21 +147,21 @@
   return v3;
 }
 
-- (void)captureDidFailWithError:(id)a3
+- (void)captureDidFailWithError:(id)error
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10005DA60;
   v5[3] = &unk_1000A29B0;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  errorCopy = error;
+  selfCopy = self;
+  v4 = errorCopy;
   [(RPRecordSession *)self stopRecordingWithHandler:v5];
 }
 
-- (void)handleResumeCaptureWithCompletionHandler:(id)a3
+- (void)handleResumeCaptureWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446978;
@@ -169,9 +169,9 @@
     v19 = 1024;
     v20 = 277;
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     v23 = 1024;
-    v24 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p resuming in session state %d", buf, 0x22u);
   }
 
@@ -179,20 +179,20 @@
   [(RPMovieWriter *)self->_movieWriter notifyRecordingResumed];
   v5 = +[RPCaptureManager sharedInstance];
   callingPID = self->super._callingPID;
-  v7 = [(RPSession *)self microphoneEnabled];
+  microphoneEnabled = [(RPSession *)self microphoneEnabled];
   [(RPSession *)self windowSize];
   v9 = v8;
   v11 = v10;
-  v12 = [(RPSession *)self contextID];
-  v13 = [NSArray arrayWithObject:v12];
+  contextID = [(RPSession *)self contextID];
+  v13 = [NSArray arrayWithObject:contextID];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10005DD28;
   v15[3] = &unk_1000A1840;
   v15[4] = self;
-  v16 = v4;
-  v14 = v4;
-  [v5 startCaptureForDelegate:self forProcessID:callingPID shouldStartMicrophoneCapture:v7 windowSize:0 captureType:v13 contextIDs:v15 didStartHandler:{v9, v11}];
+  v16 = handlerCopy;
+  v14 = handlerCopy;
+  [v5 startCaptureForDelegate:self forProcessID:callingPID shouldStartMicrophoneCapture:microphoneEnabled windowSize:0 captureType:v13 contextIDs:v15 didStartHandler:{v9, v11}];
 }
 
 - (void)handleClientApplicationDidEnterBackground
@@ -204,7 +204,7 @@
     v5 = 1024;
     v6 = 300;
     v7 = 1024;
-    v8 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d session state %d", &v3, 0x18u);
   }
 
@@ -220,7 +220,7 @@
     v5 = 1024;
     v6 = 307;
     v7 = 1024;
-    v8 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d session state %d", &v3, 0x18u);
   }
 
@@ -239,7 +239,7 @@
     v6 = 1024;
     v7 = 317;
     v8 = 1024;
-    v9 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d session state %d", buf, 0x18u);
   }
 
@@ -263,7 +263,7 @@
     v5 = 1024;
     v6 = 328;
     v7 = 1024;
-    v8 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d session state %d", &v3, 0x18u);
   }
 }
@@ -277,7 +277,7 @@
     v6 = 1024;
     v7 = 346;
     v8 = 1024;
-    v9 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d session state %d", buf, 0x18u);
   }
 
@@ -301,7 +301,7 @@
     v6 = 1024;
     v7 = 358;
     v8 = 1024;
-    v9 = [(RPSession *)self sessionState];
+    sessionState = [(RPSession *)self sessionState];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d session state %d", buf, 0x18u);
   }
 

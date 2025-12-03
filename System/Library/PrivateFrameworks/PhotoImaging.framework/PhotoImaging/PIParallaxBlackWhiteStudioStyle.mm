@@ -1,16 +1,16 @@
 @interface PIParallaxBlackWhiteStudioStyle
-+ (id)styleWithColorAnalysis:(id)a3;
-- (id)defaultDominantColorWithAnalysis:(id)a3;
++ (id)styleWithColorAnalysis:(id)analysis;
+- (id)defaultDominantColorWithAnalysis:(id)analysis;
 - (id)recipeIdentifier;
 @end
 
 @implementation PIParallaxBlackWhiteStudioStyle
 
-- (id)defaultDominantColorWithAnalysis:(id)a3
+- (id)defaultDominantColorWithAnalysis:(id)analysis
 {
-  [a3 luminance];
+  [analysis luminance];
   v5 = v4;
-  v6 = [(PIParallaxStudioStyle *)self tonality];
+  tonality = [(PIParallaxStudioStyle *)self tonality];
   v7 = 0.8;
   if (v5 >= 0.8)
   {
@@ -18,7 +18,7 @@
   }
 
   v8 = fmin(v5, 0.4);
-  if (v6 == 3)
+  if (tonality == 3)
   {
     v9 = v7;
   }
@@ -48,23 +48,23 @@
   return v2;
 }
 
-+ (id)styleWithColorAnalysis:(id)a3
++ (id)styleWithColorAnalysis:(id)analysis
 {
-  [a3 backgroundLuminance];
+  [analysis backgroundLuminance];
   if (v4 < 0.35)
   {
-    v5 = [MEMORY[0x1E69C0750] whiteColor];
+    whiteColor = [MEMORY[0x1E69C0750] whiteColor];
     v6 = 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69C0750] blackColor];
+    whiteColor = [MEMORY[0x1E69C0750] blackColor];
     v6 = 3;
   }
 
-  v7 = [a1 alloc];
-  v8 = [v7 initWithClockColor:v5 colorSuggestions:MEMORY[0x1E695E0F0]];
+  v7 = [self alloc];
+  v8 = [v7 initWithClockColor:whiteColor colorSuggestions:MEMORY[0x1E695E0F0]];
   [v8 setTonality:v6];
 
   return v8;

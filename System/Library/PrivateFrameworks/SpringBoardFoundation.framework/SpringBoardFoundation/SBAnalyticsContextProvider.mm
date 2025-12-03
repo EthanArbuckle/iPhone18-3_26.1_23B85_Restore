@@ -1,22 +1,22 @@
 @interface SBAnalyticsContextProvider
 - (NSString)description;
-- (SBAnalyticsContextProvider)initWithEventPayload:(id)a3 backend:(id)a4;
-- (void)stateForQueryName:(unint64_t)a3 completion:(id)a4;
+- (SBAnalyticsContextProvider)initWithEventPayload:(id)payload backend:(id)backend;
+- (void)stateForQueryName:(unint64_t)name completion:(id)completion;
 @end
 
 @implementation SBAnalyticsContextProvider
 
-- (SBAnalyticsContextProvider)initWithEventPayload:(id)a3 backend:(id)a4
+- (SBAnalyticsContextProvider)initWithEventPayload:(id)payload backend:(id)backend
 {
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  backendCopy = backend;
   v16.receiver = self;
   v16.super_class = SBAnalyticsContextProvider;
   v8 = [(SBAnalyticsContextProvider *)&v16 init];
   if (v8)
   {
     v9 = CACurrentMediaTime();
-    v10 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69D4550]];
+    v10 = [payloadCopy objectForKeyedSubscript:*MEMORY[0x1E69D4550]];
     v11 = v10;
     if (v10)
     {
@@ -24,11 +24,11 @@
       v9 = v12;
     }
 
-    v13 = [MEMORY[0x1E69D4188] withTimestamp:v6 payload:v9];
+    v13 = [MEMORY[0x1E69D4188] withTimestamp:payloadCopy payload:v9];
     eventPayload = v8->_eventPayload;
     v8->_eventPayload = v13;
 
-    objc_storeStrong(&v8->_backend, a4);
+    objc_storeStrong(&v8->_backend, backend);
   }
 
   return v8;
@@ -37,25 +37,25 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(SBAnalyticsContextProvider *)self eventPayload];
-  v5 = [v3 appendObject:v4 withName:@"eventPayload"];
+  eventPayload = [(SBAnalyticsContextProvider *)self eventPayload];
+  v5 = [v3 appendObject:eventPayload withName:@"eventPayload"];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (void)stateForQueryName:(unint64_t)a3 completion:(id)a4
+- (void)stateForQueryName:(unint64_t)name completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   backend = self->_backend;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__SBAnalyticsContextProvider_stateForQueryName_completion___block_invoke;
   v9[3] = &unk_1E807FC88;
-  v10 = v6;
-  v8 = v6;
-  [(SBFAnalyticsBackend *)backend stateForQueryName:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(SBFAnalyticsBackend *)backend stateForQueryName:name completion:v9];
 }
 
 void __59__SBAnalyticsContextProvider_stateForQueryName_completion___block_invoke(uint64_t a1, void *a2)

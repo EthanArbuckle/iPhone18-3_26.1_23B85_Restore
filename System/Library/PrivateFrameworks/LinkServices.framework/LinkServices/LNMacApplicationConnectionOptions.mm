@@ -1,23 +1,23 @@
 @interface LNMacApplicationConnectionOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (LNMacApplicationConnectionOptions)init;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation LNMacApplicationConnectionOptions
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v8) = 1;
     goto LABEL_10;
   }
 
-  v6 = v4;
+  v6 = equalCopy;
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -34,8 +34,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [(LNMacApplicationConnectionOptions *)self isBackground];
-  v8 = v7 ^ [(LNMacApplicationConnectionOptions *)v6 isBackground]^ 1;
+  isBackground = [(LNMacApplicationConnectionOptions *)self isBackground];
+  v8 = isBackground ^ [(LNMacApplicationConnectionOptions *)v6 isBackground]^ 1;
 LABEL_8:
 
 LABEL_10:
@@ -47,9 +47,9 @@ LABEL_10:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNConnectionOptions *)self authenticationPolicy];
+  authenticationPolicy = [(LNConnectionOptions *)self authenticationPolicy];
   v7 = @"Force Unlock";
-  if (!v6)
+  if (!authenticationPolicy)
   {
     v7 = @"Default";
   }
@@ -80,11 +80,11 @@ LABEL_10:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = LNMacApplicationConnectionOptions;
-  v4 = [(LNConnectionOptions *)&v6 copyWithZone:a3];
+  v4 = [(LNConnectionOptions *)&v6 copyWithZone:zone];
   [v4 setBackground:{-[LNMacApplicationConnectionOptions isBackground](self, "isBackground")}];
   return v4;
 }

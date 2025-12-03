@@ -1,8 +1,8 @@
 @interface SBSwitcherWindowingSnapPaddingSettings
 + (id)settingsControllerModule;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SBSwitcherWindowingSnapPaddingSettings)initWithDefaultValues;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -12,11 +12,11 @@
 {
   v9.receiver = self;
   v9.super_class = SBSwitcherWindowingSnapPaddingSettings;
-  v2 = [(PTSettings *)&v9 initWithDefaultValues];
-  v3 = v2;
-  if (v2)
+  initWithDefaultValues = [(PTSettings *)&v9 initWithDefaultValues];
+  v3 = initWithDefaultValues;
+  if (initWithDefaultValues)
   {
-    [(SBSwitcherWindowingSnapPaddingSettings *)v2 setEdgePadding:45.0];
+    [(SBSwitcherWindowingSnapPaddingSettings *)initWithDefaultValues setEdgePadding:45.0];
     [(SBSwitcherWindowingSnapPaddingSettings *)v3 edgePadding];
     [(SBSwitcherWindowingSnapPaddingSettings *)v3 setSingleAppCenterPadding:v4 + v4];
     [(SBSwitcherWindowingSnapPaddingSettings *)v3 edgePadding];
@@ -30,10 +30,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -43,7 +43,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(SBSwitcherWindowingSnapPaddingSettings *)v5 edgePadding];
       if (BSFloatEqualToFloat() && ([(SBSwitcherWindowingSnapPaddingSettings *)v5 multiAppCenterPadding], BSFloatEqualToFloat()) && ([(SBSwitcherWindowingSnapPaddingSettings *)v5 singleAppCenterPadding], BSFloatEqualToFloat()) && ([(SBSwitcherWindowingSnapPaddingSettings *)v5 fullScreenSnapPadding], BSFloatEqualToFloat()))
       {
@@ -80,7 +80,7 @@
   return (v10 + v11 * 1.0e15);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setEdgePadding:self->_edgePadding];

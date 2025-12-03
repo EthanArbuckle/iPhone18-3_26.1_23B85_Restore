@@ -1,15 +1,15 @@
 @interface HUAudioAnalysisSettingsItemModuleController
-- (Class)cellClassForItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (Class)cellClassForItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUAudioAnalysisSettingsItemModuleController
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   objc_opt_isKindOfClass();
 
@@ -18,14 +18,14 @@
   return v4;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
+  cellCopy = cell;
   v13.receiver = self;
   v13.super_class = HUAudioAnalysisSettingsItemModuleController;
-  [(HUItemModuleController *)&v13 setupCell:v6 forItem:a4];
+  [(HUItemModuleController *)&v13 setupCell:cellCopy forItem:item];
   objc_opt_class();
-  v7 = v6;
+  v7 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -63,16 +63,16 @@
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v38.receiver = self;
   v38.super_class = HUAudioAnalysisSettingsItemModuleController;
-  [(HUItemModuleController *)&v38 updateCell:v8 forItem:v9 animated:v5];
+  [(HUItemModuleController *)&v38 updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
   objc_opt_class();
-  v10 = v8;
+  v10 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -88,7 +88,7 @@
   if (v12)
   {
     objc_opt_class();
-    v13 = v9;
+    v13 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v14 = v13;
@@ -102,10 +102,10 @@
     v15 = v14;
 
     objc_opt_class();
-    v16 = [v15 sourceItem];
+    sourceItem = [v15 sourceItem];
     if (objc_opt_isKindOfClass())
     {
-      v17 = v16;
+      v17 = sourceItem;
     }
 
     else
@@ -128,16 +128,16 @@
 
     v21 = v20;
 
-    v22 = [v21 accessories];
+    accessories = [v21 accessories];
 
-    v23 = [v22 anyObject];
-    v24 = [v23 home];
-    v25 = [v24 hf_currentUserIsAdministrator];
+    anyObject = [accessories anyObject];
+    home = [anyObject home];
+    hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-    v26 = [v15 sourceItem];
-    if ([v26 conformsToProtocol:&unk_28251AE08])
+    sourceItem2 = [v15 sourceItem];
+    if ([sourceItem2 conformsToProtocol:&unk_28251AE08])
     {
-      v27 = v26;
+      v27 = sourceItem2;
     }
 
     else
@@ -150,7 +150,7 @@
     if (v28)
     {
       [v12 setOn:{objc_msgSend(v28, "isAudioAnalysisEnabled")}];
-      [v12 setDisabled:v25 ^ 1u];
+      [v12 setDisabled:hf_currentUserIsAdministrator ^ 1u];
       [v12 setIconDisplayStyle:1];
       v29 = +[HUIconCellContentMetrics compactMetrics];
       [v12 setContentMetrics:v29];
@@ -173,31 +173,31 @@
 
   if (v32)
   {
-    v33 = v9;
-    v34 = [v33 home];
-    v35 = [v34 audioAnalysisClassifierOptions];
-    v36 = [v33 audioDetectionType] & v35;
-    v37 = [v33 audioDetectionType];
+    v33 = itemCopy;
+    home2 = [v33 home];
+    audioAnalysisClassifierOptions = [home2 audioAnalysisClassifierOptions];
+    v36 = [v33 audioDetectionType] & audioAnalysisClassifierOptions;
+    audioDetectionType = [v33 audioDetectionType];
 
-    [v32 setOn:v36 == v37];
+    [v32 setOn:v36 == audioDetectionType];
   }
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 item];
+  onCopy = on;
+  cellCopy = cell;
+  item = [cellCopy item];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     objc_opt_class();
-    v9 = [(HUItemModuleController *)self module];
+    module = [(HUItemModuleController *)self module];
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
+      v10 = module;
     }
 
     else
@@ -207,15 +207,15 @@
 
     v11 = v10;
 
-    v12 = [v6 item];
-    v13 = [v11 updateAudioAnalysisDetectionSettings:v4 forItem:v12];
+    item2 = [cellCopy item];
+    v13 = [v11 updateAudioAnalysisDetectionSettings:onCopy forItem:item2];
 
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __68__HUAudioAnalysisSettingsItemModuleController_switchCell_didTurnOn___block_invoke;
     v33[3] = &unk_277DB7EB8;
-    v34 = v6;
-    v35 = v4;
+    v34 = cellCopy;
+    v35 = onCopy;
     v14 = [v13 addCompletionBlock:v33];
     v15 = v34;
   }
@@ -223,7 +223,7 @@
   else
   {
     objc_opt_class();
-    v16 = v6;
+    v16 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v17 = v16;
@@ -237,10 +237,10 @@
     v13 = v17;
 
     objc_opt_class();
-    v18 = [(HUItemModuleController *)self module];
+    module2 = [(HUItemModuleController *)self module];
     if (objc_opt_isKindOfClass())
     {
-      v19 = v18;
+      v19 = module2;
     }
 
     else
@@ -251,10 +251,10 @@
     v15 = v19;
 
     objc_opt_class();
-    v20 = [v13 item];
+    item3 = [v13 item];
     if (objc_opt_isKindOfClass())
     {
-      v21 = v20;
+      v21 = item3;
     }
 
     else
@@ -265,10 +265,10 @@
     v22 = v21;
 
     objc_opt_class();
-    v23 = [v22 sourceItem];
+    sourceItem = [v22 sourceItem];
     if (objc_opt_isKindOfClass())
     {
-      v24 = v23;
+      v24 = sourceItem;
     }
 
     else
@@ -277,11 +277,11 @@
     }
 
     objc_opt_class();
-    v25 = [v22 sourceItem];
+    sourceItem2 = [v22 sourceItem];
 
     if (objc_opt_isKindOfClass())
     {
-      v26 = v25;
+      v26 = sourceItem2;
     }
 
     else
@@ -291,15 +291,15 @@
 
     if (v24 | v26)
     {
-      v27 = [v13 item];
-      v28 = [v15 enableAudioAnalysisSetting:v4 forItem:v27];
+      item4 = [v13 item];
+      v28 = [v15 enableAudioAnalysisSetting:onCopy forItem:item4];
 
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __68__HUAudioAnalysisSettingsItemModuleController_switchCell_didTurnOn___block_invoke_2;
       v30[3] = &unk_277DB7EB8;
       v31 = v16;
-      v32 = v4;
+      v32 = onCopy;
       v29 = [v28 addCompletionBlock:v30];
     }
   }

@@ -2,18 +2,18 @@
 - (BOOL)isPregnant;
 - (FIPregnancyStateProvider)init;
 - (void)activate;
-- (void)notifyObservers:(id)a3;
-- (void)pregnancyModelDidChangeWithModel:(id)a3;
+- (void)notifyObservers:(id)observers;
+- (void)pregnancyModelDidChangeWithModel:(id)model;
 - (void)stopQuery;
 @end
 
 @implementation FIPregnancyStateProvider
 
-- (void)pregnancyModelDidChangeWithModel:(id)a3
+- (void)pregnancyModelDidChangeWithModel:(id)model
 {
-  v4 = a3;
-  v5 = self;
-  sub_24B3639A4(v4);
+  modelCopy = model;
+  selfCopy = self;
+  sub_24B3639A4(modelCopy);
 }
 
 - (BOOL)isPregnant
@@ -27,22 +27,22 @@
   return v2;
 }
 
-- (void)notifyObservers:(id)a3
+- (void)notifyObservers:(id)observers
 {
-  v4 = a3;
-  v5 = self;
-  sub_24B39CAA8(v4);
+  observersCopy = observers;
+  selfCopy = self;
+  sub_24B39CAA8(observersCopy);
 }
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   sub_24B39CC88();
 }
 
 - (void)stopQuery
 {
-  v2 = self;
+  selfCopy = self;
   sub_24B39CF0C();
 }
 

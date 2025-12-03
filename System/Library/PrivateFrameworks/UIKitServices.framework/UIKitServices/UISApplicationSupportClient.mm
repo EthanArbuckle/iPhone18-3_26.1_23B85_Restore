@@ -2,11 +2,11 @@
 - (UISApplicationSupportClient)init;
 - (id)_applicationSupportServiceEndpoint;
 - (id)_remoteTarget;
-- (id)applicationInitializationContextWithParameters:(id)a3;
+- (id)applicationInitializationContextWithParameters:(id)parameters;
 - (void)dealloc;
-- (void)destroyScenesWithPersistentIdentifiers:(id)a3 animationType:(unint64_t)a4 destroySessions:(BOOL)a5 completion:(id)a6;
+- (void)destroyScenesWithPersistentIdentifiers:(id)identifiers animationType:(unint64_t)type destroySessions:(BOOL)sessions completion:(id)completion;
 - (void)invalidate;
-- (void)requestPasscodeUnlockUIWithCompletion:(id)a3;
+- (void)requestPasscodeUnlockUIWithCompletion:(id)completion;
 @end
 
 @implementation UISApplicationSupportClient
@@ -143,8 +143,8 @@ void __41__UISApplicationSupportClient_invalidate__block_invoke(uint64_t a1)
 {
   if (!self->_queue_invalidated)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"UISApplicationSupportClient.m" lineNumber:43 description:@"UISApplicationSupportClient must be invalidated before deallocation."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISApplicationSupportClient.m" lineNumber:43 description:@"UISApplicationSupportClient must be invalidated before deallocation."];
   }
 
   v5.receiver = self;
@@ -152,26 +152,26 @@ void __41__UISApplicationSupportClient_invalidate__block_invoke(uint64_t a1)
   [(UISApplicationSupportClient *)&v5 dealloc];
 }
 
-- (void)requestPasscodeUnlockUIWithCompletion:(id)a3
+- (void)requestPasscodeUnlockUIWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UISApplicationSupportClient.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISApplicationSupportClient.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
-  v6 = [(UISApplicationSupportClient *)self _remoteTarget];
-  if (v6)
+  _remoteTarget = [(UISApplicationSupportClient *)self _remoteTarget];
+  if (_remoteTarget)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __69__UISApplicationSupportClient_requestPasscodeUnlockUIWithCompletion___block_invoke;
     v14[3] = &unk_1E7459270;
     v7 = &v15;
-    v15 = v5;
-    v8 = v5;
-    [v6 requestPasscodeUnlockUIWithCompletion:v14];
+    v15 = completionCopy;
+    v8 = completionCopy;
+    [_remoteTarget requestPasscodeUnlockUIWithCompletion:v14];
   }
 
   else
@@ -182,8 +182,8 @@ void __41__UISApplicationSupportClient_invalidate__block_invoke(uint64_t a1)
     block[2] = __69__UISApplicationSupportClient_requestPasscodeUnlockUIWithCompletion___block_invoke_3;
     block[3] = &unk_1E7459298;
     v7 = &v13;
-    v13 = v5;
-    v10 = v5;
+    v13 = completionCopy;
+    v10 = completionCopy;
     dispatch_async(v9, block);
   }
 }
@@ -224,9 +224,9 @@ uint64_t __69__UISApplicationSupportClient_requestPasscodeUnlockUIWithCompletion
   return v3(v1, v2);
 }
 
-- (id)applicationInitializationContextWithParameters:(id)a3
+- (id)applicationInitializationContextWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -239,9 +239,9 @@ uint64_t __69__UISApplicationSupportClient_requestPasscodeUnlockUIWithCompletion
   v13 = 0;
   do
   {
-    v5 = [(UISApplicationSupportClient *)self _remoteTarget];
-    v6 = v5;
-    if (v5)
+    _remoteTarget = [(UISApplicationSupportClient *)self _remoteTarget];
+    v6 = _remoteTarget;
+    if (_remoteTarget)
     {
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
@@ -249,7 +249,7 @@ uint64_t __69__UISApplicationSupportClient_requestPasscodeUnlockUIWithCompletion
       v9[3] = &unk_1E74592C0;
       v9[4] = &v14;
       v9[5] = &v10;
-      [v5 initializeClientWithParameters:v4 completion:v9];
+      [_remoteTarget initializeClientWithParameters:parametersCopy completion:v9];
     }
 
     else
@@ -277,17 +277,17 @@ void __78__UISApplicationSupportClient_applicationInitializationContextWithParam
   *(*(*(a1 + 40) + 8) + 24) = v4;
 }
 
-- (void)destroyScenesWithPersistentIdentifiers:(id)a3 animationType:(unint64_t)a4 destroySessions:(BOOL)a5 completion:(id)a6
+- (void)destroyScenesWithPersistentIdentifiers:(id)identifiers animationType:(unint64_t)type destroySessions:(BOOL)sessions completion:(id)completion
 {
-  v7 = a5;
+  sessionsCopy = sessions;
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v12 = [identifiersCopy countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v12)
   {
     v13 = v12;
@@ -299,38 +299,38 @@ void __78__UISApplicationSupportClient_applicationInitializationContextWithParam
       {
         if (*v29 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v16 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         }
 
         ++v15;
       }
 
       while (v13 != v15);
-      v13 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v13 = [identifiersCopy countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v13);
   }
 
-  v17 = [(UISApplicationSupportClient *)self _remoteTarget];
-  if (v17)
+  _remoteTarget = [(UISApplicationSupportClient *)self _remoteTarget];
+  if (_remoteTarget)
   {
-    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    v19 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+    v19 = [MEMORY[0x1E696AD98] numberWithBool:sessionsCopy];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __111__UISApplicationSupportClient_destroyScenesWithPersistentIdentifiers_animationType_destroySessions_completion___block_invoke;
     v26[3] = &unk_1E7459270;
     v20 = &v27;
-    v27 = v11;
-    v21 = v11;
-    [v17 destroyScenesPersistentIdentifiers:v10 animationType:v18 destroySessions:v19 completion:v26];
+    v27 = completionCopy;
+    v21 = completionCopy;
+    [_remoteTarget destroyScenesPersistentIdentifiers:identifiersCopy animationType:v18 destroySessions:v19 completion:v26];
   }
 
   else
@@ -341,8 +341,8 @@ void __78__UISApplicationSupportClient_applicationInitializationContextWithParam
     block[2] = __111__UISApplicationSupportClient_destroyScenesWithPersistentIdentifiers_animationType_destroySessions_completion___block_invoke_3;
     block[3] = &unk_1E7459298;
     v20 = &v25;
-    v25 = v11;
-    v22 = v11;
+    v25 = completionCopy;
+    v22 = completionCopy;
     dispatch_async(v18, block);
   }
 }

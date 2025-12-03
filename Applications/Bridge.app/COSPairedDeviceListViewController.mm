@@ -1,48 +1,48 @@
 @interface COSPairedDeviceListViewController
 - (BOOL)_activeWatchNeedsUpdate;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (COSPairedDeviceListViewController)init;
 - (id)_specifierForActiveWatch;
-- (id)findMigratingDeviceCell:(id)a3;
+- (id)findMigratingDeviceCell:(id)cell;
 - (void)_configureBackButtonBehavior;
 - (void)_doneButtonTapped;
-- (void)_showBackButtonBehavior:(unint64_t)a3 animated:(BOOL)a4;
-- (void)_switchToDeviceWithSpecifier:(id)a3 atIndex:(id)a4 successCompletion:(id)a5;
+- (void)_showBackButtonBehavior:(unint64_t)behavior animated:(BOOL)animated;
+- (void)_switchToDeviceWithSpecifier:(id)specifier atIndex:(id)index successCompletion:(id)completion;
 - (void)_tinkerConnectionFinished;
-- (void)beginMigrationWithAltDevice:(id)a3;
+- (void)beginMigrationWithAltDevice:(id)device;
 - (void)cancelTinkerConnectionTimeout;
-- (void)cancelTinkerSwitchAttempt:(id)a3;
+- (void)cancelTinkerSwitchAttempt:(id)attempt;
 - (void)dealloc;
-- (void)deviceBecameActive:(id)a3;
-- (void)didBTConnectDevice:(id)a3;
-- (void)didIDSConnectDevice:(id)a3;
-- (void)didUpdateAsDisconnectedDevice:(id)a3;
+- (void)deviceBecameActive:(id)active;
+- (void)didBTConnectDevice:(id)device;
+- (void)didIDSConnectDevice:(id)device;
+- (void)didUpdateAsDisconnectedDevice:(id)device;
 - (void)disableBackButton;
-- (void)displaySoftwareUpdatePane:(id)a3;
-- (void)handleTinkerMigrationFailureCase:(unint64_t)a3 forDevice:(id)a4;
-- (void)manager:(id)a3 didFailDownload:(id)a4 withError:(id)a5;
-- (void)manager:(id)a3 didFailInstallation:(id)a4 withError:(id)a5;
-- (void)manager:(id)a3 didFinishInstallation:(id)a4;
-- (void)migrationProgressUpdate:(unint64_t)a3 percentageComplete:(double)a4 migratingDevice:(id)a5;
-- (void)nanoRegistryStatusCodeChanged:(id)a3;
-- (void)presentGenericMigrationFailureMessage:(id)a3;
+- (void)displaySoftwareUpdatePane:(id)pane;
+- (void)handleTinkerMigrationFailureCase:(unint64_t)case forDevice:(id)device;
+- (void)manager:(id)manager didFailDownload:(id)download withError:(id)error;
+- (void)manager:(id)manager didFailInstallation:(id)installation withError:(id)error;
+- (void)manager:(id)manager didFinishInstallation:(id)installation;
+- (void)migrationProgressUpdate:(unint64_t)update percentageComplete:(double)complete migratingDevice:(id)device;
+- (void)nanoRegistryStatusCodeChanged:(id)changed;
+- (void)presentGenericMigrationFailureMessage:(id)message;
 - (void)presentSoftwareUpdatePane;
-- (void)presentTinkerConnectFailedAlert:(id)a3;
-- (void)presentTinkerMigrationAvailabilityFailure:(id)a3 title:(id)a4 detail:(id)a5;
+- (void)presentTinkerConnectFailedAlert:(id)alert;
+- (void)presentTinkerMigrationAvailabilityFailure:(id)failure title:(id)title detail:(id)detail;
 - (void)presentUnpairInstructionsController;
 - (void)pushActiveDeviceDetails;
-- (void)pushCellDetailForRowWithIndexPath:(id)a3 animate:(BOOL)a4;
+- (void)pushCellDetailForRowWithIndexPath:(id)path animate:(BOOL)animate;
 - (void)reloadSpecifiers;
-- (void)selectDeviceWithSpecifier:(id)a3 successCompletion:(id)a4;
-- (void)selectRowWithSpecifier:(id)a3;
-- (void)setShowTinkerSwitchCancelOption:(BOOL)a3;
-- (void)setSpecifierDataSource:(id)a3;
-- (void)showBlockSwitchDialog:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)selectDeviceWithSpecifier:(id)specifier successCompletion:(id)completion;
+- (void)selectRowWithSpecifier:(id)specifier;
+- (void)setShowTinkerSwitchCancelOption:(BOOL)option;
+- (void)setSpecifierDataSource:(id)source;
+- (void)showBlockSwitchDialog:(id)dialog;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateDeviceStates;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation COSPairedDeviceListViewController
@@ -84,20 +84,20 @@
   return v2;
 }
 
-- (void)setSpecifierDataSource:(id)a3
+- (void)setSpecifierDataSource:(id)source
 {
-  v4 = a3;
-  [v4 setMigrationManager:self->_migrationManager];
+  sourceCopy = source;
+  [sourceCopy setMigrationManager:self->_migrationManager];
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000D8810;
   v6[3] = &unk_10026B628;
   objc_copyWeak(&v7, &location);
-  [v4 setDisplaySoftwareUpdate:v6];
+  [sourceCopy setDisplaySoftwareUpdate:v6];
   v5.receiver = self;
   v5.super_class = COSPairedDeviceListViewController;
-  [(COSPairedDeviceListViewController *)&v5 setSpecifierDataSource:v4];
+  [(COSPairedDeviceListViewController *)&v5 setSpecifierDataSource:sourceCopy];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
@@ -112,9 +112,9 @@
   [(COSPairedDeviceListViewController *)&v4 dealloc];
 }
 
-- (void)showBlockSwitchDialog:(id)a3
+- (void)showBlockSwitchDialog:(id)dialog
 {
-  v4 = a3;
+  dialogCopy = dialog;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -127,9 +127,9 @@
   v7 = [v6 localizedStringForKey:@"GUARDIAN_SIGNED_OUT_BLOCK_SWITCH_TITLE" value:&stru_10026E598 table:@"Localizable-tinker"];
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"GUARDIAN_SIGNED_OUT_BLOCK_SWITCH_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-  v10 = [NSString stringWithFormat:v9, v4];
+  dialogCopy = [NSString stringWithFormat:v9, dialogCopy];
 
-  v11 = [UIAlertController alertControllerWithTitle:v7 message:v10 preferredStyle:1];
+  v11 = [UIAlertController alertControllerWithTitle:v7 message:dialogCopy preferredStyle:1];
 
   v12 = +[NSBundle mainBundle];
   v13 = [v12 localizedStringForKey:@"OPEN_SETTINGS" value:&stru_10026E598 table:@"Localizable"];
@@ -149,11 +149,11 @@
   v9.receiver = self;
   v9.super_class = COSPairedDeviceListViewController;
   [(COSPairedDeviceListViewController *)&v9 viewDidLoad];
-  v3 = [(COSPairedDeviceListViewController *)self specifierDataSource];
-  v4 = [v3 tinkerOnly];
+  specifierDataSource = [(COSPairedDeviceListViewController *)self specifierDataSource];
+  tinkerOnly = [specifierDataSource tinkerOnly];
   v5 = +[NSBundle mainBundle];
   v6 = v5;
-  if (v4)
+  if (tinkerOnly)
   {
     v7 = @"DEVICE_PICKER_FAMILY_WATCHES_ONLY_TITLE";
   }
@@ -169,11 +169,11 @@
   [(COSPairedDeviceListViewController *)self _showBackButtonBehavior:0 animated:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v25.receiver = self;
   v25.super_class = COSPairedDeviceListViewController;
-  [(COSPairedDeviceListViewController *)&v25 viewWillAppear:a3];
+  [(COSPairedDeviceListViewController *)&v25 viewWillAppear:appear];
   updateController = self->_updateController;
   self->_updateController = 0;
 
@@ -182,9 +182,9 @@
 
   if ([(COSPairedDeviceListViewController *)self _activeWatchNeedsUpdate])
   {
-    v6 = [(COSPairedDeviceListViewController *)self _specifierForActiveWatch];
+    _specifierForActiveWatch = [(COSPairedDeviceListViewController *)self _specifierForActiveWatch];
     selectedDeviceSpecifierPriorToUpdate = self->_selectedDeviceSpecifierPriorToUpdate;
-    self->_selectedDeviceSpecifierPriorToUpdate = v6;
+    self->_selectedDeviceSpecifierPriorToUpdate = _specifierForActiveWatch;
 
     if (!self->_subManager)
     {
@@ -200,7 +200,7 @@
     v21 = sub_1000D8F84;
     v22 = &unk_10026B670;
     objc_copyWeak(&v24, location);
-    v23 = self;
+    selfCopy = self;
     [(SUBManager *)v10 managerState:&v19];
     objc_destroyWeak(&v24);
     objc_destroyWeak(location);
@@ -225,9 +225,9 @@
     self->_selectedDeviceSpecifierPriorToUpdate = 0;
 
     v15 = [(PSSpecifier *)v13 propertyForKey:@"COSDeviceState"];
-    v16 = [v15 integerValue];
+    integerValue = [v15 integerValue];
 
-    if (v16 == 6)
+    if (integerValue == 6)
     {
       v17 = pbb_bridge_log();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -247,27 +247,27 @@
   else
   {
     [(COSPairedDeviceListViewController *)self updateDeviceStates];
-    v18 = [(COSPairedDeviceListViewController *)self specifierDataSource];
-    [v18 reloadSpecifiers];
+    specifierDataSource = [(COSPairedDeviceListViewController *)self specifierDataSource];
+    [specifierDataSource reloadSpecifiers];
 
     [(COSPairedDeviceListViewController *)self is_addGestureRecognizer];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = COSPairedDeviceListViewController;
-  [(COSPairedDeviceListViewController *)&v3 viewWillDisappear:a3];
+  [(COSPairedDeviceListViewController *)&v3 viewWillDisappear:disappear];
   [UIApp setDevicePickerPresented:0];
 }
 
 - (void)_configureBackButtonBehavior
 {
   v3 = +[NRPairedDeviceRegistry sharedInstance];
-  v4 = [v3 status];
+  status = [v3 status];
 
-  if (v4 != 2)
+  if (status != 2)
   {
     v6 = pbb_bridge_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -275,7 +275,7 @@
       *v11 = 136315394;
       *&v11[4] = "[COSPairedDeviceListViewController _configureBackButtonBehavior]";
       *&v11[12] = 2048;
-      *&v11[14] = v4;
+      *&v11[14] = status;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s - Paired device registry not ready. State: %lu.", v11, 0x16u);
     }
 
@@ -350,14 +350,14 @@ LABEL_18:
 
 - (BOOL)_activeWatchNeedsUpdate
 {
-  v2 = [(COSPairedDeviceListViewController *)self _specifierForActiveWatch];
-  v3 = v2;
-  if (v2)
+  _specifierForActiveWatch = [(COSPairedDeviceListViewController *)self _specifierForActiveWatch];
+  v3 = _specifierForActiveWatch;
+  if (_specifierForActiveWatch)
   {
-    v4 = [v2 propertyForKey:@"COSDeviceState"];
-    v5 = [v4 integerValue];
+    v4 = [_specifierForActiveWatch propertyForKey:@"COSDeviceState"];
+    integerValue = [v4 integerValue];
 
-    v6 = (v5 & 0xFFFFFFFFFFFFFFFELL) == 6;
+    v6 = (integerValue & 0xFFFFFFFFFFFFFFFELL) == 6;
   }
 
   else
@@ -375,9 +375,9 @@ LABEL_18:
   [(COSPairedDeviceListViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)presentTinkerConnectFailedAlert:(id)a3
+- (void)presentTinkerConnectFailedAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -390,8 +390,8 @@ LABEL_18:
   v7 = [v6 localizedStringForKey:@"TINKER_SWITCH_TIMEOUT_TITLE" value:&stru_10026E598 table:@"Localizable-tinker"];
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"TINKER_SWITCH_TIMEOUT_MESSAGE_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-  v10 = [NSString stringWithFormat:v9, v4];
-  v11 = [UIAlertController alertControllerWithTitle:v7 message:v10 preferredStyle:1];
+  alertCopy = [NSString stringWithFormat:v9, alertCopy];
+  v11 = [UIAlertController alertControllerWithTitle:v7 message:alertCopy preferredStyle:1];
 
   objc_initWeak(buf, self);
   v12 = +[NSBundle mainBundle];
@@ -434,9 +434,9 @@ LABEL_18:
         v8 = *(*(&v14 + 1) + 8 * i);
         v9 = [v8 propertyForKey:{@"COSAssociatedDevice", v14}];
         v10 = [v9 valueForProperty:v6];
-        v11 = [v10 BOOLValue];
+        bOOLValue = [v10 BOOLValue];
 
-        if (v11)
+        if (bOOLValue)
         {
           v12 = v8;
 
@@ -460,10 +460,10 @@ LABEL_11:
   return v12;
 }
 
-- (void)selectDeviceWithSpecifier:(id)a3 successCompletion:(id)a4
+- (void)selectDeviceWithSpecifier:(id)specifier successCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  specifierCopy = specifier;
+  completionCopy = completion;
   if (self->_tinkerConnectionTimeout)
   {
     v8 = pbb_bridge_log();
@@ -482,37 +482,37 @@ LABEL_11:
   connectionTracker = self->_connectionTracker;
   self->_connectionTracker = 0;
 
-  v11 = [v6 propertyForKey:@"COSAssociatedDevice"];
-  v12 = [v6 propertyForKey:@"COSDeviceState"];
-  v13 = [v12 integerValue];
+  v11 = [specifierCopy propertyForKey:@"COSAssociatedDevice"];
+  v12 = [specifierCopy propertyForKey:@"COSDeviceState"];
+  integerValue = [v12 integerValue];
 
   v14 = pbb_bridge_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v11 _bridgeConciseDebugDescription];
+    _bridgeConciseDebugDescription = [v11 _bridgeConciseDebugDescription];
     *buf = 136315650;
     v45 = "[COSPairedDeviceListViewController selectDeviceWithSpecifier:successCompletion:]";
     v46 = 2112;
-    v47 = v15;
+    v47 = _bridgeConciseDebugDescription;
     v48 = 2048;
-    v49 = v6;
+    v49 = specifierCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s: Select Device -> %@ (specifier=%p)", buf, 0x20u);
   }
 
   v16 = [v11 valueForProperty:NRDevicePropertyIsAltAccount];
   v17 = [v11 valueForProperty:NRDevicePropertyIsActive];
-  v18 = [v17 BOOLValue];
+  bOOLValue = [v17 BOOLValue];
 
-  if (!((v13 != 6) | v18 & 1))
+  if (!((integerValue != 6) | bOOLValue & 1))
   {
-    v19 = [(COSPairedDeviceListViewController *)self _specifierForActiveWatch];
+    _specifierForActiveWatch = [(COSPairedDeviceListViewController *)self _specifierForActiveWatch];
     selectedDeviceSpecifierPriorToUpdate = self->_selectedDeviceSpecifierPriorToUpdate;
-    self->_selectedDeviceSpecifierPriorToUpdate = v19;
+    self->_selectedDeviceSpecifierPriorToUpdate = _specifierForActiveWatch;
   }
 
-  v21 = [v16 BOOLValue];
+  bOOLValue2 = [v16 BOOLValue];
   v22 = self->_connectionTracker;
-  if (v21)
+  if (bOOLValue2)
   {
     if (!v22)
     {
@@ -537,12 +537,12 @@ LABEL_11:
       v43 = v11;
       dispatch_source_set_event_handler(v25, handler);
       dispatch_resume(v25);
-      v27 = v7;
+      v27 = completionCopy;
       v28 = self->_tinkerConnectionTimeout;
       self->_tinkerConnectionTimeout = v25;
       v29 = v25;
 
-      v7 = v27;
+      completionCopy = v27;
     }
 
     [(BPSTinkerConnectionTracker *)self->_connectionTracker setSelectedDevice:v11];
@@ -580,7 +580,7 @@ LABEL_11:
   objc_copyWeak(&v38, buf);
   v33 = v32;
   v36 = v33;
-  v34 = v7;
+  v34 = completionCopy;
   v37 = v34;
   [v31 setActiveWatch:v33 startedBlock:v39 completionBlock:v35];
 
@@ -589,38 +589,38 @@ LABEL_11:
   objc_destroyWeak(buf);
 }
 
-- (void)selectRowWithSpecifier:(id)a3
+- (void)selectRowWithSpecifier:(id)specifier
 {
-  v5 = [(COSPairedDeviceListViewController *)self indexPathForSpecifier:a3];
-  v4 = [(COSPairedDeviceListViewController *)self table];
-  [(COSPairedDeviceListViewController *)self tableView:v4 didSelectRowAtIndexPath:v5];
+  v5 = [(COSPairedDeviceListViewController *)self indexPathForSpecifier:specifier];
+  table = [(COSPairedDeviceListViewController *)self table];
+  [(COSPairedDeviceListViewController *)self tableView:table didSelectRowAtIndexPath:v5];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = [(COSPairedDeviceListViewController *)self specifierAtIndex:[(COSPairedDeviceListViewController *)self indexForIndexPath:a4]];
+  v4 = [(COSPairedDeviceListViewController *)self specifierAtIndex:[(COSPairedDeviceListViewController *)self indexForIndexPath:path]];
   v5 = [v4 propertyForKey:@"COSPairedDeviceListTableCellEnabled"];
   v6 = (v5 == 0) | [v5 BOOLValue];
 
   return v6 & 1;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v30.receiver = self;
   v30.super_class = COSPairedDeviceListViewController;
-  [(COSPairedDeviceListViewController *)&v30 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(COSPairedDeviceListViewController *)self specifierAtIndexPath:v6];
+  [(COSPairedDeviceListViewController *)&v30 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(COSPairedDeviceListViewController *)self specifierAtIndexPath:pathCopy];
   v8 = [v7 propertyForKey:@"COSAssociatedDevice"];
   v9 = [v8 valueForProperty:NRDevicePropertyIsArchived];
   v10 = [v8 valueForProperty:NRDevicePropertyIsAltAccount];
   v11 = [v8 valueForProperty:NRDevicePropertyName];
-  v12 = [(COSPairedDeviceListViewController *)self specifierDataSource];
-  v13 = [v12 _deviceRequiresUpdate:v8];
+  specifierDataSource = [(COSPairedDeviceListViewController *)self specifierDataSource];
+  v13 = [specifierDataSource _deviceRequiresUpdate:v8];
 
-  v14 = [v7 identifier];
-  v15 = [v14 isEqualToString:@"PairNewWatchSpecifier"];
+  identifier = [v7 identifier];
+  v15 = [identifier isEqualToString:@"PairNewWatchSpecifier"];
 
   if (v15)
   {
@@ -637,8 +637,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v18 = [v7 identifier];
-  v19 = [v18 isEqualToString:@"MagicSwitchSpecifier"];
+  identifier2 = [v7 identifier];
+  v19 = [identifier2 isEqualToString:@"MagicSwitchSpecifier"];
 
   if (v19)
   {
@@ -655,8 +655,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v20 = [v7 identifier];
-  v21 = [v20 isEqualToString:@"FinishPairing"];
+  identifier3 = [v7 identifier];
+  v21 = [identifier3 isEqualToString:@"FinishPairing"];
 
   if (v21)
   {
@@ -688,7 +688,7 @@ LABEL_8:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v32 = v6;
+    v32 = pathCopy;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Select ip=%@", buf, 0xCu);
   }
 
@@ -700,38 +700,38 @@ LABEL_8:
     v24[2] = sub_1000DAA1C;
     v24[3] = &unk_10026B6C0;
     v25 = v8;
-    v26 = self;
+    selfCopy = self;
     v27 = v11;
     [v23 isPhoneReadyToMigrateDevice:v25 withCompletion:v24];
   }
 
   else
   {
-    [(COSPairedDeviceListViewController *)self _switchToDeviceWithSpecifier:v7 atIndex:v6 successCompletion:0];
+    [(COSPairedDeviceListViewController *)self _switchToDeviceWithSpecifier:v7 atIndex:pathCopy successCompletion:0];
   }
 
 LABEL_9:
 }
 
-- (void)_switchToDeviceWithSpecifier:(id)a3 atIndex:(id)a4 successCompletion:(id)a5
+- (void)_switchToDeviceWithSpecifier:(id)specifier atIndex:(id)index successCompletion:(id)completion
 {
-  v8 = a3;
-  obj = a4;
-  v33 = a4;
-  v32 = a5;
-  v9 = [v8 propertyForKey:@"COSDeviceState"];
-  v10 = [v9 integerValue];
+  specifierCopy = specifier;
+  obj = index;
+  indexCopy = index;
+  completionCopy = completion;
+  v9 = [specifierCopy propertyForKey:@"COSDeviceState"];
+  integerValue = [v9 integerValue];
 
-  v11 = [v8 propertyForKey:@"COSAssociatedDevice"];
+  v11 = [specifierCopy propertyForKey:@"COSAssociatedDevice"];
   v12 = [v11 valueForProperty:NRDevicePropertyIsActive];
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
 
   v14 = [v11 valueForProperty:NRDevicePropertyIsAltAccount];
-  LODWORD(a4) = [v14 BOOLValue];
+  LODWORD(index) = [v14 BOOLValue];
 
   v15 = [v11 valueForProperty:_NRDevicePropertyPairingParentAltDSID];
   v16 = [v11 valueForProperty:_NRDevicePropertyPairingParentAccountIdentifier];
-  if (!a4)
+  if (!index)
   {
     v19 = 0;
     goto LABEL_16;
@@ -788,9 +788,9 @@ LABEL_16:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    *v35 = v13;
+    *v35 = bOOLValue;
     *&v35[4] = 2048;
-    *&v35[6] = v10;
+    *&v35[6] = integerValue;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "watchIsAlreadyActive: %{BOOL}d deviceState %ld", buf, 0x12u);
   }
 
@@ -800,23 +800,23 @@ LABEL_16:
   {
     [(COSPairedDeviceListViewController *)self showBlockSwitchDialog:v16];
 LABEL_27:
-    v25 = v33;
+    v25 = indexCopy;
     goto LABEL_28;
   }
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFELL) != 4)
+  if ((integerValue & 0xFFFFFFFFFFFFFFFELL) != 4)
   {
-    if ((v13 & 1) == 0 && ([v23 isEqualToSpecifier:v8] & 1) == 0)
+    if ((bOOLValue & 1) == 0 && ([v23 isEqualToSpecifier:specifierCopy] & 1) == 0)
     {
       objc_storeStrong(&self->_selectedIndexPath, obj);
-      v28 = [(COSPairedDeviceListViewController *)self specifierDataSource];
-      [v28 setLoadingDevice:v11];
+      specifierDataSource = [(COSPairedDeviceListViewController *)self specifierDataSource];
+      [specifierDataSource setLoadingDevice:v11];
 
       [(COSPairedDeviceListViewController *)self updateDeviceStates];
-      v29 = self;
-      v27 = v32;
-      [(COSPairedDeviceListViewController *)v29 selectDeviceWithSpecifier:v8 successCompletion:v32];
-      v25 = v33;
+      selfCopy = self;
+      v27 = completionCopy;
+      [(COSPairedDeviceListViewController *)selfCopy selectDeviceWithSpecifier:specifierCopy successCompletion:completionCopy];
+      v25 = indexCopy;
       goto LABEL_29;
     }
 
@@ -830,23 +830,23 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v25 = v33;
-  [(COSPairedDeviceListViewController *)self pushCellDetailForRowWithIndexPath:v33 animate:1];
+  v25 = indexCopy;
+  [(COSPairedDeviceListViewController *)self pushCellDetailForRowWithIndexPath:indexCopy animate:1];
 LABEL_28:
-  v27 = v32;
+  v27 = completionCopy;
 LABEL_29:
 }
 
-- (void)handleTinkerMigrationFailureCase:(unint64_t)a3 forDevice:(id)a4
+- (void)handleTinkerMigrationFailureCase:(unint64_t)case forDevice:(id)device
 {
-  v21 = a4;
-  if (a3 > 2)
+  deviceCopy = device;
+  if (case > 2)
   {
-    if (a3 == 5)
+    if (case == 5)
     {
       v17 = +[NSBundle mainBundle];
       v18 = [v17 localizedStringForKey:@"ALREADY_MIGRATING_TITLE_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-      v7 = [NSString stringWithFormat:v18, v21];
+      deviceCopy = [NSString stringWithFormat:v18, deviceCopy];
 
       v8 = +[NSBundle mainBundle];
       v9 = v8;
@@ -854,13 +854,13 @@ LABEL_29:
       goto LABEL_11;
     }
 
-    if (a3 == 3)
+    if (case == 3)
     {
       v11 = +[NSBundle mainBundle];
       v12 = [v11 localizedStringForKey:@"CANNOT_MIGRATE_YET_TITLE_%@_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
       v13 = +[UIDevice currentDevice];
-      v14 = [v13 name];
-      v7 = [NSString stringWithFormat:v12, v21, v14];
+      name = [v13 name];
+      deviceCopy = [NSString stringWithFormat:v12, deviceCopy, name];
 
       v8 = +[NSBundle mainBundle];
       v9 = v8;
@@ -870,15 +870,15 @@ LABEL_29:
 
 LABEL_8:
     v9 = +[NSBundle mainBundle];
-    v7 = [v9 localizedStringForKey:@"CANNOT_MIGRATE_TITLE" value:&stru_10026E598 table:@"Localizable-tinker"];
+    deviceCopy = [v9 localizedStringForKey:@"CANNOT_MIGRATE_TITLE" value:&stru_10026E598 table:@"Localizable-tinker"];
     v15 = 0;
     goto LABEL_12;
   }
 
-  if (a3 == 1)
+  if (case == 1)
   {
     v16 = +[NSBundle mainBundle];
-    v7 = [v16 localizedStringForKey:@"ENABLE_KEYCHAIN_TITLE" value:&stru_10026E598 table:@"Localizable-tinker"];
+    deviceCopy = [v16 localizedStringForKey:@"ENABLE_KEYCHAIN_TITLE" value:&stru_10026E598 table:@"Localizable-tinker"];
 
     v8 = +[NSBundle mainBundle];
     v9 = v8;
@@ -886,13 +886,13 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (a3 != 2)
+  if (case != 2)
   {
     goto LABEL_8;
   }
 
   v6 = +[NSBundle mainBundle];
-  v7 = [v6 localizedStringForKey:@"ENABLE_BLUETOOTH_TITLE" value:&stru_10026E598 table:@"Localizable-tinker"];
+  deviceCopy = [v6 localizedStringForKey:@"ENABLE_BLUETOOTH_TITLE" value:&stru_10026E598 table:@"Localizable-tinker"];
 
   v8 = +[NSBundle mainBundle];
   v9 = v8;
@@ -903,24 +903,24 @@ LABEL_12:
 
   if (sub_100009A74())
   {
-    v19 = sub_1000DB304(a3);
-    v20 = [NSString stringWithFormat:@"%@ - [Internal] availability code %lu : %@", v15, a3, v19];
+    v19 = sub_1000DB304(case);
+    v20 = [NSString stringWithFormat:@"%@ - [Internal] availability code %lu : %@", v15, case, v19];
 
     v15 = v20;
   }
 
-  [(COSPairedDeviceListViewController *)self presentTinkerMigrationAvailabilityFailure:v21 title:v7 detail:v15];
+  [(COSPairedDeviceListViewController *)self presentTinkerMigrationAvailabilityFailure:deviceCopy title:deviceCopy detail:v15];
 }
 
-- (void)presentGenericMigrationFailureMessage:(id)a3
+- (void)presentGenericMigrationFailureMessage:(id)message
 {
-  v3 = [NSString stringWithFormat:@"[Internal] error: %@", a3];
+  message = [NSString stringWithFormat:@"[Internal] error: %@", message];
   BPSPresentGizmoUnreachableOrLockedServiceAlertWithDismissalHandler();
 }
 
-- (void)presentTinkerMigrationAvailabilityFailure:(id)a3 title:(id)a4 detail:(id)a5
+- (void)presentTinkerMigrationAvailabilityFailure:(id)failure title:(id)title detail:(id)detail
 {
-  v9 = [UIAlertController alertControllerWithTitle:a4 message:a5 preferredStyle:1];
+  v9 = [UIAlertController alertControllerWithTitle:title message:detail preferredStyle:1];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"OK" value:&stru_10026E598 table:@"Localizable"];
   v8 = [UIAlertAction actionWithTitle:v7 style:0 handler:&stru_10026B720];
@@ -945,10 +945,10 @@ LABEL_12:
   [(COSWatchUnpairInstructionsController *)unpairInstructionsController presentWithController:self];
 }
 
-- (void)pushCellDetailForRowWithIndexPath:(id)a3 animate:(BOOL)a4
+- (void)pushCellDetailForRowWithIndexPath:(id)path animate:(BOOL)animate
 {
-  v4 = a4;
-  v6 = [(COSPairedDeviceListViewController *)self indexForIndexPath:a3];
+  animateCopy = animate;
+  v6 = [(COSPairedDeviceListViewController *)self indexForIndexPath:path];
   v7 = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v6];
   v8 = objc_alloc_init(*&v7[OBJC_IVAR___PSSpecifier_detailControllerClass]);
   if (v8)
@@ -961,7 +961,7 @@ LABEL_12:
     v10 = [v7 propertyForKey:@"COSAssociatedDevice"];
     v11 = [v10 valueForProperty:NRDevicePropertyIsAltAccount];
     +[PBBridgeCAReporter recordAllWatchesDetailButtonVisit:](PBBridgeCAReporter, "recordAllWatchesDetailButtonVisit:", [v11 BOOLValue]);
-    [(COSPairedDeviceListViewController *)self showController:v8 animate:v4];
+    [(COSPairedDeviceListViewController *)self showController:v8 animate:animateCopy];
   }
 
   else
@@ -979,15 +979,15 @@ LABEL_12:
   }
 }
 
-- (void)beginMigrationWithAltDevice:(id)a3
+- (void)beginMigrationWithAltDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[NRMigrator sharedMigrator];
   objc_initWeak(&location, v5);
   objc_initWeak(&from, self);
-  [(COSMigrationManager *)self->_migrationManager tinkerMigrationStarted:v4];
-  v6 = [(COSPairedDeviceListViewController *)self specifierDataSource];
-  [v6 setLoadingDevice:v4];
+  [(COSMigrationManager *)self->_migrationManager tinkerMigrationStarted:deviceCopy];
+  specifierDataSource = [(COSPairedDeviceListViewController *)self specifierDataSource];
+  [specifierDataSource setLoadingDevice:deviceCopy];
 
   [(COSPairedDeviceListViewController *)self _showBackButtonBehavior:1 animated:1];
   block[0] = _NSConcreteStackBlock;
@@ -995,7 +995,7 @@ LABEL_12:
   block[2] = sub_1000DB9F8;
   block[3] = &unk_100268458;
   objc_copyWeak(&v16, &from);
-  v7 = v4;
+  v7 = deviceCopy;
   v15 = v7;
   dispatch_async(&_dispatch_main_q, block);
   v9[0] = _NSConcreteStackBlock;
@@ -1006,7 +1006,7 @@ LABEL_12:
   objc_copyWeak(&v13, &from);
   v8 = v7;
   v10 = v8;
-  v11 = self;
+  selfCopy = self;
   [v5 setMigrationConsented:1 forDevice:v8 withBlock:v9];
 
   objc_destroyWeak(&v13);
@@ -1017,7 +1017,7 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)cancelTinkerSwitchAttempt:(id)a3
+- (void)cancelTinkerSwitchAttempt:(id)attempt
 {
   v4 = pbb_setup_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1042,19 +1042,19 @@ LABEL_12:
   self->_userInitiatedTinkerSwitch = 0;
 }
 
-- (void)setShowTinkerSwitchCancelOption:(BOOL)a3
+- (void)setShowTinkerSwitchCancelOption:(BOOL)option
 {
   showTinkerSwitchCancelOption = self->_showTinkerSwitchCancelOption;
-  self->_showTinkerSwitchCancelOption = a3;
-  if (showTinkerSwitchCancelOption != a3)
+  self->_showTinkerSwitchCancelOption = option;
+  if (showTinkerSwitchCancelOption != option)
   {
     [(COSPairedDeviceListViewController *)self _showBackButtonBehavior:self->_currentBackButtonBehavior animated:0];
   }
 }
 
-- (void)_showBackButtonBehavior:(unint64_t)a3 animated:(BOOL)a4
+- (void)_showBackButtonBehavior:(unint64_t)behavior animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if (!+[NSThread isMainThread])
   {
     block[0] = _NSConcreteStackBlock;
@@ -1062,8 +1062,8 @@ LABEL_12:
     block[2] = sub_1000DC1E8;
     block[3] = &unk_100269EC0;
     block[4] = self;
-    block[5] = a3;
-    v28 = v4;
+    block[5] = behavior;
+    v28 = animatedCopy;
     dispatch_async(&_dispatch_main_q, block);
     return;
   }
@@ -1072,17 +1072,17 @@ LABEL_12:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349056;
-    v30 = a3;
+    behaviorCopy = behavior;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Setting back button to %{public}lu", buf, 0xCu);
   }
 
-  self->_currentBackButtonBehavior = a3;
-  v8 = [(COSPairedDeviceListViewController *)self specifierDataSource];
-  v9 = [v8 loadingDevice];
+  self->_currentBackButtonBehavior = behavior;
+  specifierDataSource = [(COSPairedDeviceListViewController *)self specifierDataSource];
+  loadingDevice = [specifierDataSource loadingDevice];
 
-  if (a3 != 1)
+  if (behavior != 1)
   {
-    if (!v9)
+    if (!loadingDevice)
     {
       goto LABEL_18;
     }
@@ -1095,13 +1095,13 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Paired device list wants to clear spinner but a loading device was still specified, clearing.", buf, 2u);
     }
 
-    v13 = 0;
+    lastObject = 0;
     v14 = 0;
     goto LABEL_22;
   }
 
   v10 = sub_100009A24();
-  if ((v10 & 1) == 0 && !v9)
+  if ((v10 & 1) == 0 && !loadingDevice)
   {
     v11 = pbb_bridge_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1113,12 +1113,12 @@ LABEL_19:
     v12 = [COSTinkerHealthSharingSetupDelegate tinkerDevice]_0();
     if (v12)
     {
-      v13 = v12;
+      lastObject = v12;
       v14 = 1;
-      v9 = v12;
+      loadingDevice = v12;
 LABEL_23:
-      v17 = [(COSPairedDeviceListViewController *)self specifierDataSource];
-      [v17 setLoadingDevice:v13];
+      specifierDataSource2 = [(COSPairedDeviceListViewController *)self specifierDataSource];
+      [specifierDataSource2 setLoadingDevice:lastObject];
 
 LABEL_24:
       [(COSPairedDeviceListViewController *)self updateDeviceStates];
@@ -1128,25 +1128,25 @@ LABEL_24:
     v24 = sub_100009350();
     v16 = [v24 sortedArrayUsingComparator:&stru_10026B788];
 
-    v13 = [v16 lastObject];
+    lastObject = [v16 lastObject];
     v25 = pbb_bridge_log();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [v13 valueForProperty:NRDevicePropertyName];
+      v26 = [lastObject valueForProperty:NRDevicePropertyName];
       *buf = 138412290;
-      v30 = v26;
+      behaviorCopy = v26;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "No active device, using last active standard paired device as loading device: %@", buf, 0xCu);
     }
 
     v14 = 1;
-    v9 = v13;
+    loadingDevice = lastObject;
 LABEL_22:
 
     goto LABEL_23;
   }
 
   v15 = v10 ^ 1;
-  if (!v9)
+  if (!loadingDevice)
   {
     v15 = 1;
   }
@@ -1169,11 +1169,11 @@ LABEL_25:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v9;
+    behaviorCopy = loadingDevice;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Device picker loading device: %@", buf, 0xCu);
   }
 
-  if (a3 == 2)
+  if (behavior == 2)
   {
     v19 = 1;
   }
@@ -1193,8 +1193,8 @@ LABEL_25:
     v20 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_doneButtonTapped"];
   }
 
-  v21 = [(COSPairedDeviceListViewController *)self navigationController];
-  [v21 setModalInPresentation:v19];
+  navigationController = [(COSPairedDeviceListViewController *)self navigationController];
+  [navigationController setModalInPresentation:v19];
 
   if (self->_showTinkerSwitchCancelOption)
   {
@@ -1203,26 +1203,26 @@ LABEL_25:
     v20 = v22;
   }
 
-  v23 = [(COSPairedDeviceListViewController *)self navigationItem];
-  [v23 setRightBarButtonItem:v20 animated:v4];
+  navigationItem = [(COSPairedDeviceListViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v20 animated:animatedCopy];
 }
 
-- (void)nanoRegistryStatusCodeChanged:(id)a3
+- (void)nanoRegistryStatusCodeChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315394;
     v14 = "[COSPairedDeviceListViewController nanoRegistryStatusCodeChanged:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = changedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s - %@", &v13, 0x16u);
   }
 
-  v6 = [(__CFString *)v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:NRPairedDeviceRegistryStatusKey];
-  v8 = [v7 integerValue];
+  userInfo = [(__CFString *)changedCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:NRPairedDeviceRegistryStatusKey];
+  integerValue = [v7 integerValue];
 
   v9 = sub_10000DB38();
 
@@ -1230,7 +1230,7 @@ LABEL_25:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"NO";
-    if (v8 == 2)
+    if (integerValue == 2)
     {
       v12 = @"YES";
     }
@@ -1262,16 +1262,16 @@ LABEL_25:
 
 - (void)updateDeviceStates
 {
-  v3 = [(COSPairedDeviceListViewController *)self specifierDataSource];
-  [v3 updateSelectedWatch];
+  specifierDataSource = [(COSPairedDeviceListViewController *)self specifierDataSource];
+  [specifierDataSource updateSelectedWatch];
 
   [(COSPairedDeviceListViewController *)self reloadSpecifiers];
 }
 
-- (void)deviceBecameActive:(id)a3
+- (void)deviceBecameActive:(id)active
 {
-  v4 = [(COSPairedDeviceListViewController *)self specifierDataSource];
-  [v4 deviceBecameActive];
+  specifierDataSource = [(COSPairedDeviceListViewController *)self specifierDataSource];
+  [specifierDataSource deviceBecameActive];
 
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1339,16 +1339,16 @@ LABEL_25:
   }
 
   self->_userInitiatedTinkerSwitch = 0;
-  v4 = [(COSPairedDeviceListViewController *)self specifierDataSource];
-  [v4 setLoadingDevice:0];
+  specifierDataSource = [(COSPairedDeviceListViewController *)self specifierDataSource];
+  [specifierDataSource setLoadingDevice:0];
 
   [(COSPairedDeviceListViewController *)self updateDeviceStates];
   [(COSPairedDeviceListViewController *)self _showBackButtonBehavior:0 animated:1];
 }
 
-- (void)didIDSConnectDevice:(id)a3
+- (void)didIDSConnectDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   connectionTracker = self->_connectionTracker;
   self->_connectionTracker = 0;
 
@@ -1356,11 +1356,11 @@ LABEL_25:
   v6 = pbb_bridge_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 pairingID];
+    pairingID = [deviceCopy pairingID];
     v8 = 136315394;
     v9 = "[COSPairedDeviceListViewController didIDSConnectDevice:]";
     v10 = 2112;
-    v11 = v7;
+    v11 = pairingID;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s - %@", &v8, 0x16u);
   }
 
@@ -1368,39 +1368,39 @@ LABEL_25:
   [(COSPairedDeviceListViewController *)self _tinkerConnectionFinished];
 }
 
-- (void)didBTConnectDevice:(id)a3
+- (void)didBTConnectDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 pairingID];
+    pairingID = [deviceCopy pairingID];
     v6 = 136315394;
     v7 = "[COSPairedDeviceListViewController didBTConnectDevice:]";
     v8 = 2112;
-    v9 = v5;
+    v9 = pairingID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s - %@", &v6, 0x16u);
   }
 }
 
-- (void)didUpdateAsDisconnectedDevice:(id)a3
+- (void)didUpdateAsDisconnectedDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 pairingID];
+    pairingID = [deviceCopy pairingID];
     v6 = 136315394;
     v7 = "[COSPairedDeviceListViewController didUpdateAsDisconnectedDevice:]";
     v8 = 2112;
-    v9 = v5;
+    v9 = pairingID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s - %@", &v6, 0x16u);
   }
 }
 
-- (id)findMigratingDeviceCell:(id)a3
+- (id)findMigratingDeviceCell:(id)cell
 {
-  v19 = a3;
+  cellCopy = cell;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -1423,15 +1423,15 @@ LABEL_25:
 
         v8 = *(*(&v20 + 1) + 8 * i);
         v9 = [v8 propertyForKey:@"COSAssociatedDevice"];
-        v10 = [v9 pairingID];
-        v11 = [v19 pairingID];
-        v12 = [v10 isEqual:v11];
+        pairingID = [v9 pairingID];
+        pairingID2 = [cellCopy pairingID];
+        v12 = [pairingID isEqual:pairingID2];
 
         if (v12)
         {
           v13 = [(COSPairedDeviceListViewController *)self indexPathForSpecifier:v8];
-          v14 = [(COSPairedDeviceListViewController *)self table];
-          v15 = [(COSPairedDeviceListViewController *)self tableView:v14 cellForRowAtIndexPath:v13];
+          table = [(COSPairedDeviceListViewController *)self table];
+          v15 = [(COSPairedDeviceListViewController *)self tableView:table cellForRowAtIndexPath:v13];
 
           v18 = v15;
         }
@@ -1451,38 +1451,38 @@ LABEL_25:
   return v18;
 }
 
-- (void)migrationProgressUpdate:(unint64_t)a3 percentageComplete:(double)a4 migratingDevice:(id)a5
+- (void)migrationProgressUpdate:(unint64_t)update percentageComplete:(double)complete migratingDevice:(id)device
 {
-  v8 = a5;
+  deviceCopy = device;
   v9 = pbb_bridge_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 pairingID];
+    pairingID = [deviceCopy pairingID];
     *buf = 134218498;
-    v26 = a4;
+    completeCopy = complete;
     v27 = 2048;
-    v28 = a3;
+    updateCopy = update;
     v29 = 2112;
-    v30 = v10;
+    v30 = pairingID;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Migration progress update(COSPairedDeviceListViewController) %f %lu %@", buf, 0x20u);
   }
 
-  if (a3 != 4)
+  if (update != 4)
   {
     [(COSPairedDeviceListViewController *)self _configureBackButtonBehavior];
-    v11 = [(COSPairedDeviceListViewController *)self specifierDataSource];
-    v12 = [v11 pairNew];
+    specifierDataSource = [(COSPairedDeviceListViewController *)self specifierDataSource];
+    pairNew = [specifierDataSource pairNew];
 
-    v13 = [(COSMigrationManager *)self->_migrationManager currentState];
+    currentState = [(COSMigrationManager *)self->_migrationManager currentState];
     v14 = PSEnabledKey;
-    v15 = [v12 propertyForKey:PSEnabledKey];
-    v16 = [v15 BOOLValue];
+    v15 = [pairNew propertyForKey:PSEnabledKey];
+    bOOLValue = [v15 BOOLValue];
 
-    if (v13)
+    if (currentState)
     {
-      if (v16)
+      if (bOOLValue)
       {
-        [v12 setProperty:&__kCFBooleanFalse forKey:v14];
+        [pairNew setProperty:&__kCFBooleanFalse forKey:v14];
         v17 = v23;
         v23[0] = _NSConcreteStackBlock;
         v23[1] = 3221225472;
@@ -1491,14 +1491,14 @@ LABEL_10:
         v17[2] = v18;
         v17[3] = &unk_100268358;
         v17[4] = self;
-        v17[5] = v12;
+        v17[5] = pairNew;
         dispatch_async(&_dispatch_main_q, v17);
       }
     }
 
-    else if ((v16 & 1) == 0)
+    else if ((bOOLValue & 1) == 0)
     {
-      [v12 setProperty:&__kCFBooleanTrue forKey:v14];
+      [pairNew setProperty:&__kCFBooleanTrue forKey:v14];
       v17 = v22;
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
@@ -1512,9 +1512,9 @@ LABEL_10:
     v19[2] = sub_1000DD0C0;
     v19[3] = &unk_10026B7B0;
     objc_copyWeak(v21, buf);
-    v20 = v8;
-    v21[1] = a3;
-    v21[2] = *&a4;
+    v20 = deviceCopy;
+    v21[1] = update;
+    v21[2] = *&complete;
     dispatch_async(&_dispatch_main_q, v19);
 
     objc_destroyWeak(v21);
@@ -1542,59 +1542,59 @@ LABEL_12:
   [(COSPairedDeviceListViewController *)&v4 reloadSpecifiers];
 }
 
-- (void)displaySoftwareUpdatePane:(id)a3
+- (void)displaySoftwareUpdatePane:(id)pane
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"COSAssociatedDevice"];
+  paneCopy = pane;
+  v5 = [paneCopy propertyForKey:@"COSAssociatedDevice"];
   v6 = [v5 valueForProperty:NRDevicePropertyIsActive];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
   v8 = [v5 valueForProperty:NRDevicePropertyIsAltAccount];
   [v8 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     [(COSPairedDeviceListViewController *)self presentSoftwareUpdatePane];
   }
 
   else
   {
-    v9 = [(COSPairedDeviceListViewController *)self indexPathForSpecifier:v4];
+    v9 = [(COSPairedDeviceListViewController *)self indexPathForSpecifier:paneCopy];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000DD33C;
     v10[3] = &unk_1002682F0;
     v10[4] = self;
-    [(COSPairedDeviceListViewController *)self _switchToDeviceWithSpecifier:v4 atIndex:v9 successCompletion:v10];
+    [(COSPairedDeviceListViewController *)self _switchToDeviceWithSpecifier:paneCopy atIndex:v9 successCompletion:v10];
   }
 }
 
 - (void)presentSoftwareUpdatePane
 {
-  v3 = [(COSPairedDeviceListViewController *)self updateController];
+  updateController = [(COSPairedDeviceListViewController *)self updateController];
 
-  if (!v3)
+  if (!updateController)
   {
     v4 = objc_opt_new();
     [(COSPairedDeviceListViewController *)self setUpdateController:v4];
   }
 
   objc_initWeak(&location, self);
-  v5 = [(COSPairedDeviceListViewController *)self updateController];
+  updateController2 = [(COSPairedDeviceListViewController *)self updateController];
   v6 = [COSTinkerHealthSharingSetupDelegate tinkerDevice]_0();
-  v7 = [(COSPairedDeviceListViewController *)self navigationController];
+  navigationController = [(COSPairedDeviceListViewController *)self navigationController];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000DD4FC;
   v8[3] = &unk_1002686A0;
   objc_copyWeak(&v9, &location);
-  [v5 presentModalForDevice:v6 userForcedUpdate:0 withController:v7 unpairOnExit:0 animated:1 completion:v8];
+  [updateController2 presentModalForDevice:v6 userForcedUpdate:0 withController:navigationController unpairOnExit:0 animated:1 completion:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)manager:(id)a3 didFailInstallation:(id)a4 withError:(id)a5
+- (void)manager:(id)manager didFailInstallation:(id)installation withError:(id)error
 {
   v6 = pbb_bridge_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1615,7 +1615,7 @@ LABEL_12:
   objc_destroyWeak(buf);
 }
 
-- (void)manager:(id)a3 didFinishInstallation:(id)a4
+- (void)manager:(id)manager didFinishInstallation:(id)installation
 {
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1636,7 +1636,7 @@ LABEL_12:
   objc_destroyWeak(buf);
 }
 
-- (void)manager:(id)a3 didFailDownload:(id)a4 withError:(id)a5
+- (void)manager:(id)manager didFailDownload:(id)download withError:(id)error
 {
   v6 = pbb_bridge_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))

@@ -1,47 +1,47 @@
 @interface WFLinkSnippetEnvironmentDialogRequest
-- (WFLinkSnippetEnvironmentDialogRequest)initWithAttribution:(id)a3 prompt:(id)a4 siriRequest:(BOOL)a5 hasDialog:(BOOL)a6;
-- (WFLinkSnippetEnvironmentDialogRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFLinkSnippetEnvironmentDialogRequest)initWithAttribution:(id)attribution prompt:(id)prompt siriRequest:(BOOL)request hasDialog:(BOOL)dialog;
+- (WFLinkSnippetEnvironmentDialogRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFLinkSnippetEnvironmentDialogRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WFLinkSnippetEnvironmentDialogRequest;
-  v4 = a3;
-  [(WFDialogRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[WFLinkSnippetEnvironmentDialogRequest siriRequest](self forKey:{"siriRequest", v5.receiver, v5.super_class), @"siriRequest"}];
-  [v4 encodeBool:-[WFLinkSnippetEnvironmentDialogRequest hasDialog](self forKey:{"hasDialog"), @"hasDialog"}];
+  coderCopy = coder;
+  [(WFDialogRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[WFLinkSnippetEnvironmentDialogRequest siriRequest](self forKey:{"siriRequest", v5.receiver, v5.super_class), @"siriRequest"}];
+  [coderCopy encodeBool:-[WFLinkSnippetEnvironmentDialogRequest hasDialog](self forKey:{"hasDialog"), @"hasDialog"}];
 }
 
-- (WFLinkSnippetEnvironmentDialogRequest)initWithCoder:(id)a3
+- (WFLinkSnippetEnvironmentDialogRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = WFLinkSnippetEnvironmentDialogRequest;
-  v5 = [(WFDialogRequest *)&v8 initWithCoder:v4];
+  v5 = [(WFDialogRequest *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_siriRequest = [v4 decodeBoolForKey:@"siriRequest"];
-    v5->_hasDialog = [v4 decodeBoolForKey:@"hasDialog"];
+    v5->_siriRequest = [coderCopy decodeBoolForKey:@"siriRequest"];
+    v5->_hasDialog = [coderCopy decodeBoolForKey:@"hasDialog"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (WFLinkSnippetEnvironmentDialogRequest)initWithAttribution:(id)a3 prompt:(id)a4 siriRequest:(BOOL)a5 hasDialog:(BOOL)a6
+- (WFLinkSnippetEnvironmentDialogRequest)initWithAttribution:(id)attribution prompt:(id)prompt siriRequest:(BOOL)request hasDialog:(BOOL)dialog
 {
   v12.receiver = self;
   v12.super_class = WFLinkSnippetEnvironmentDialogRequest;
-  v8 = [(WFDialogRequest *)&v12 initWithAttribution:a3 prompt:a4];
+  v8 = [(WFDialogRequest *)&v12 initWithAttribution:attribution prompt:prompt];
   v9 = v8;
   if (v8)
   {
-    v8->_siriRequest = a5;
-    v8->_hasDialog = a6;
+    v8->_siriRequest = request;
+    v8->_hasDialog = dialog;
     v10 = v8;
   }
 

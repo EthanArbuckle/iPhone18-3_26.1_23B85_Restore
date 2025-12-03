@@ -1,10 +1,10 @@
 @interface NTKDateComplicationLabel
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CDComplicationDisplayObserver)displayObserver;
 - (CGSize)_highlightInset;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NTKDateComplicationLabel)initWithSizeStyle:(int64_t)a3 accentType:(int64_t)a4 forDevice:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NTKDateComplicationLabel)initWithSizeStyle:(int64_t)style accentType:(int64_t)type forDevice:(id)device;
 - (UIEdgeInsets)touchEdgeInsets;
 - (double)_cornerRadius;
 - (double)_firstLineBaselineFrameOriginY;
@@ -12,29 +12,29 @@
 - (double)_lastLineBaseline;
 - (double)_lastLineBaselineFrameOriginY;
 - (double)_legibtilityShadowRadius;
-- (id)_attributedStringAccentingNumbersInString:(id)a3;
+- (id)_attributedStringAccentingNumbersInString:(id)string;
 - (void)_applyAccentColorAttributes;
 - (void)_invalidateInternalLabelSize;
-- (void)_setFirstLineBaselineFrameOriginY:(double)a3;
-- (void)_setFont:(id)a3;
-- (void)_setLastLineBaselineFrameOriginY:(double)a3;
-- (void)_setText:(id)a3;
+- (void)_setFirstLineBaselineFrameOriginY:(double)y;
+- (void)_setFont:(id)font;
+- (void)_setLastLineBaselineFrameOriginY:(double)y;
+- (void)_setText:(id)text;
 - (void)layoutSubviews;
-- (void)setAccentColor:(id)a3;
-- (void)setDateComplicationText:(id)a3 withDayRange:(_NSRange)a4 forDateStyle:(unint64_t)a5;
-- (void)setFont:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLegibilityHidden:(BOOL)a3;
-- (void)setTextColor:(id)a3;
-- (void)setUsesLegibility:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAccentColor:(id)color;
+- (void)setDateComplicationText:(id)text withDayRange:(_NSRange)range forDateStyle:(unint64_t)style;
+- (void)setFont:(id)font;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLegibilityHidden:(BOOL)hidden;
+- (void)setTextColor:(id)color;
+- (void)setUsesLegibility:(BOOL)legibility;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NTKDateComplicationLabel
 
-- (NTKDateComplicationLabel)initWithSizeStyle:(int64_t)a3 accentType:(int64_t)a4 forDevice:(id)a5
+- (NTKDateComplicationLabel)initWithSizeStyle:(int64_t)style accentType:(int64_t)type forDevice:(id)device
 {
-  v9 = a5;
+  deviceCopy = device;
   v23.receiver = self;
   v23.super_class = NTKDateComplicationLabel;
   v10 = [(NTKDateComplicationLabel *)&v23 init];
@@ -42,9 +42,9 @@
   if (v10)
   {
     v10->_frozen = 0;
-    v10->_sizeStyle = a3;
-    v10->_accentType = a4;
-    objc_storeStrong(&v10->_device, a5);
+    v10->_sizeStyle = style;
+    v10->_accentType = type;
+    objc_storeStrong(&v10->_device, device);
     v12 = objc_alloc(MEMORY[0x277D75D18]);
     v13 = [v12 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     highlightView = v11->_highlightView;
@@ -56,9 +56,9 @@
 
     [(UIView *)v11->_highlightView setUserInteractionEnabled:0];
     [(UIView *)v11->_highlightView setAlpha:0.0];
-    v17 = [(UIView *)v11->_highlightView layer];
+    layer = [(UIView *)v11->_highlightView layer];
     [(NTKDateComplicationLabel *)v11 _cornerRadius];
-    [v17 setCornerRadius:?];
+    [layer setCornerRadius:?];
 
     [(NTKDateComplicationLabel *)v11 addSubview:v11->_highlightView];
     v18 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -67,8 +67,8 @@
 
     [(UILabel *)v11->_internalLabel setTextAlignment:1];
     v20 = v11->_internalLabel;
-    v21 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v20 setTextColor:v21];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v20 setTextColor:whiteColor];
 
     [(NTKDateComplicationLabel *)v11 addSubview:v11->_internalLabel];
     [(NTKDateComplicationLabel *)v11 _computeTextColor];
@@ -111,13 +111,13 @@
   [(UIView *)self->_highlightView setFrame:v21.origin.x, v21.origin.y, v21.size.width, v21.size.height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   cachedFittingSizes = self->_cachedFittingSizes;
-  v24 = a3;
-  v7 = [MEMORY[0x277CCAE60] valueWithBytes:&v24 objCType:"{CGSize=dd}"];
+  fitsCopy = fits;
+  v7 = [MEMORY[0x277CCAE60] valueWithBytes:&fitsCopy objCType:"{CGSize=dd}"];
   v8 = [(NSMutableDictionary *)cachedFittingSizes objectForKey:v7];
 
   if (v8)
@@ -135,9 +135,9 @@
     v15 = self->_cachedFittingSizes;
     if (!v15)
     {
-      v16 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v17 = self->_cachedFittingSizes;
-      self->_cachedFittingSizes = v16;
+      self->_cachedFittingSizes = dictionary;
 
       v15 = self->_cachedFittingSizes;
     }
@@ -166,27 +166,27 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v7.receiver = self;
   v7.super_class = NTKDateComplicationLabel;
-  [(NTKDateComplicationLabel *)&v7 traitCollectionDidChange:v4];
-  v5 = [(NTKDateComplicationLabel *)self traitCollection];
-  v6 = [v5 legibilityWeight];
-  if (v6 != [v4 legibilityWeight])
+  [(NTKDateComplicationLabel *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [(NTKDateComplicationLabel *)self traitCollection];
+  legibilityWeight = [traitCollection legibilityWeight];
+  if (legibilityWeight != [changeCopy legibilityWeight])
   {
-    [(UILabel *)self->_internalLabel traitCollectionDidChange:v4];
+    [(UILabel *)self->_internalLabel traitCollectionDidChange:changeCopy];
     [(NTKDateComplicationLabel *)self _invalidateInternalLabelSize];
   }
 }
 
-- (void)setDateComplicationText:(id)a3 withDayRange:(_NSRange)a4 forDateStyle:(unint64_t)a5
+- (void)setDateComplicationText:(id)text withDayRange:(_NSRange)range forDateStyle:(unint64_t)style
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  objc_storeStrong(&self->_currentDateText, a3);
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  objc_storeStrong(&self->_currentDateText, text);
   self->_dayTextRange.location = location;
   self->_dayTextRange.length = length;
   if (!self->_frozen)
@@ -195,21 +195,21 @@
   }
 }
 
-- (id)_attributedStringAccentingNumbersInString:(id)a3
+- (id)_attributedStringAccentingNumbersInString:(id)string
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v4];
+    v5 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:stringCopy];
     accentColor = self->_accentColor;
     if (accentColor)
     {
       v17 = *MEMORY[0x277D740C0];
       v18[0] = accentColor;
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-      v8 = [(NTKDateComplicationLabel *)self accentType];
-      if (v8 == 1)
+      accentType = [(NTKDateComplicationLabel *)self accentType];
+      if (accentType == 1)
       {
         if (self->_dayTextRange.location != 0x7FFFFFFFFFFFFFFFLL && self->_dayTextRange.length)
         {
@@ -217,14 +217,14 @@
         }
       }
 
-      else if (!v8 && [v4 length])
+      else if (!accentType && [stringCopy length])
       {
         v9 = 0;
         do
         {
-          v10 = [v4 length] - v9;
-          v11 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-          v12 = [v4 rangeOfCharacterFromSet:v11 options:0 range:{v9, v10}];
+          v10 = [stringCopy length] - v9;
+          decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+          v12 = [stringCopy rangeOfCharacterFromSet:decimalDigitCharacterSet options:0 range:{v9, v10}];
           v14 = v13;
 
           if (v12 == 0x7FFFFFFFFFFFFFFFLL || v14 == 0)
@@ -236,7 +236,7 @@
           v9 = v12 + v14;
         }
 
-        while (v9 < [v4 length]);
+        while (v9 < [stringCopy length]);
       }
     }
   }
@@ -249,36 +249,36 @@
   return v5;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  objc_storeStrong(&self->_font, a3);
-  v5 = a3;
-  [(NTKDateComplicationLabel *)self _setFont:v5];
+  objc_storeStrong(&self->_font, font);
+  fontCopy = font;
+  [(NTKDateComplicationLabel *)self _setFont:fontCopy];
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  objc_storeStrong(&self->_textColor, a3);
+  objc_storeStrong(&self->_textColor, color);
   [(NTKDateComplicationLabel *)self _computeTextColor];
 
   [(NTKDateComplicationLabel *)self _updateTextColor];
 }
 
-- (void)setAccentColor:(id)a3
+- (void)setAccentColor:(id)color
 {
-  objc_storeStrong(&self->_accentColor, a3);
+  objc_storeStrong(&self->_accentColor, color);
 
   [(NTKDateComplicationLabel *)self _applyAccentColorAttributes];
 }
 
-- (void)setLegibilityHidden:(BOOL)a3
+- (void)setLegibilityHidden:(BOOL)hidden
 {
-  self->_legibilityHidden = a3;
+  self->_legibilityHidden = hidden;
   if (self->_usesLegibility)
   {
     internalLabel = self->_internalLabel;
     v5 = 0.1;
-    if (!a3)
+    if (!hidden)
     {
       v5 = 0.6;
     }
@@ -288,12 +288,12 @@
   }
 }
 
-- (void)setUsesLegibility:(BOOL)a3
+- (void)setUsesLegibility:(BOOL)legibility
 {
-  if (self->_usesLegibility != a3)
+  if (self->_usesLegibility != legibility)
   {
-    self->_usesLegibility = a3;
-    if (a3)
+    self->_usesLegibility = legibility;
+    if (legibility)
     {
       [(NTKDateComplicationLabel *)self setLegibilityHidden:self->_legibilityHidden];
       [(UILabel *)self->_internalLabel setShadowOffset:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
@@ -327,7 +327,7 @@
   return v5 + v4;
 }
 
-- (void)_setFirstLineBaselineFrameOriginY:(double)a3
+- (void)_setFirstLineBaselineFrameOriginY:(double)y
 {
   [(NTKDateComplicationLabel *)self frame];
   v6 = v5;
@@ -335,7 +335,7 @@
   v10 = v9;
   [(NTKDateComplicationLabel *)self _firstLineBaselineOffsetFromBoundsTop];
 
-  [(NTKDateComplicationLabel *)self setFrame:v6, a3 - v11, v8, v10];
+  [(NTKDateComplicationLabel *)self setFrame:v6, y - v11, v8, v10];
 }
 
 - (double)_lastLineBaseline
@@ -354,7 +354,7 @@
   return v5 + v4;
 }
 
-- (void)_setLastLineBaselineFrameOriginY:(double)a3
+- (void)_setLastLineBaselineFrameOriginY:(double)y
 {
   [(NTKDateComplicationLabel *)self frame];
   v6 = v5;
@@ -362,12 +362,12 @@
   v10 = v9;
   [(NTKDateComplicationLabel *)self _lastLineBaseline];
 
-  [(NTKDateComplicationLabel *)self setFrame:v6, a3 - v11, v8, v10];
+  [(NTKDateComplicationLabel *)self setFrame:v6, y - v11, v8, v10];
 }
 
-- (void)_setText:(id)a3
+- (void)_setText:(id)text
 {
-  v4 = [(NTKDateComplicationLabel *)self _attributedStringAccentingNumbersInString:a3];
+  v4 = [(NTKDateComplicationLabel *)self _attributedStringAccentingNumbersInString:text];
   [(UILabel *)self->_internalLabel setAttributedText:v4];
   [(NTKDateComplicationLabel *)self _invalidateInternalLabelSize];
 }
@@ -375,27 +375,27 @@
 - (void)_applyAccentColorAttributes
 {
   internalLabel = self->_internalLabel;
-  v5 = [(UILabel *)internalLabel text];
-  v4 = [(NTKDateComplicationLabel *)self _attributedStringAccentingNumbersInString:v5];
+  text = [(UILabel *)internalLabel text];
+  v4 = [(NTKDateComplicationLabel *)self _attributedStringAccentingNumbersInString:text];
   [(UILabel *)internalLabel setAttributedText:v4];
 }
 
-- (void)_setFont:(id)a3
+- (void)_setFont:(id)font
 {
-  [(UILabel *)self->_internalLabel setFont:a3];
+  [(UILabel *)self->_internalLabel setFont:font];
 
   [(NTKDateComplicationLabel *)self _invalidateInternalLabelSize];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v8.receiver = self;
   v8.super_class = NTKDateComplicationLabel;
   [(NTKDateComplicationLabel *)&v8 setHighlighted:?];
   v5 = 0.2;
   v6 = 0.0;
-  if (v3)
+  if (highlightedCopy)
   {
     v5 = 0.0;
   }
@@ -404,7 +404,7 @@
   v7[0] = MEMORY[0x277D85DD0];
   v7[2] = __43__NTKDateComplicationLabel_setHighlighted___block_invoke;
   v7[3] = &unk_2787805D8;
-  if (v3)
+  if (highlightedCopy)
   {
     v6 = 1.0;
   }
@@ -419,14 +419,14 @@
   [(NSMutableDictionary *)self->_cachedFittingSizes removeAllObjects];
   [(NTKDateComplicationLabel *)self sizeToFit];
   [(NTKDateComplicationLabel *)self setNeedsLayout];
-  v3 = [(NTKDateComplicationLabel *)self displayObserver];
-  [v3 complicationDisplayNeedsResize:self];
+  displayObserver = [(NTKDateComplicationLabel *)self displayObserver];
+  [displayObserver complicationDisplayNeedsResize:self];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(NTKDateComplicationLabel *)self bounds];
   top = self->_touchEdgeInsets.top;
   left = self->_touchEdgeInsets.left;

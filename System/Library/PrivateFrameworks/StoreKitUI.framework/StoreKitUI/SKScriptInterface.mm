@@ -1,14 +1,14 @@
 @interface SKScriptInterface
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (SKProductPageViewController)parentProductPageViewController;
 - (id)makeStoreSheetRequest;
-- (void)showStoreSheetWithRequest:(id)a3 animated:(BOOL)a4;
+- (void)showStoreSheetWithRequest:(id)request animated:(BOOL)animated;
 @end
 
 @implementation SKScriptInterface
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
@@ -18,9 +18,9 @@
   v5 = SUWebScriptNameForSelector2();
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SKScriptInterface;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, a3);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, selector);
   }
 
   return v5;
@@ -60,9 +60,9 @@
   return v11;
 }
 
-- (void)showStoreSheetWithRequest:(id)a3 animated:(BOOL)a4
+- (void)showStoreSheetWithRequest:(id)request animated:(BOOL)animated
 {
-  v6 = a3;
+  requestCopy = request;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -78,15 +78,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [v6 newNativeStorePageRequest];
+    newNativeStorePageRequest = [requestCopy newNativeStorePageRequest];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __83__SKScriptInterface_SKScriptStoreSheetRequest__showStoreSheetWithRequest_animated___block_invoke;
     v20[3] = &unk_2781F9570;
     v20[4] = self;
-    v21 = v15;
-    v22 = a4;
-    v16 = v15;
+    v21 = newNativeStorePageRequest;
+    animatedCopy = animated;
+    v16 = newNativeStorePageRequest;
     v17 = SKUIWebCoreFramework();
     v18 = SKUIWeakLinkedSymbolForString("WebThreadRunOnMainThread", v17);
     if (v18)

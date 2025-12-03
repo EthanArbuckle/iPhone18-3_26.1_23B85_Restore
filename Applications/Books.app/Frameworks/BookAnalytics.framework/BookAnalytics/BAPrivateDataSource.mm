@@ -2,11 +2,11 @@
 - (BAPrivateDataSource)init;
 - (BAPrivateDataSourceDelegate)delegate;
 - (id)generatePrivateData;
-- (void)_BCCloudSecureUserDataManagerChanged:(id)a3;
+- (void)_BCCloudSecureUserDataManagerChanged:(id)changed;
 - (void)dealloc;
-- (void)fetchPrivateData:(id)a3;
-- (void)fetchPrivateDataForKey:(id)a3 completion:(id)a4;
-- (void)syncPrivateData:(id)a3 toCloudWithCompletion:(id)a4;
+- (void)fetchPrivateData:(id)data;
+- (void)fetchPrivateDataForKey:(id)key completion:(id)completion;
+- (void)syncPrivateData:(id)data toCloudWithCompletion:(id)completion;
 @end
 
 @implementation BAPrivateDataSource
@@ -40,46 +40,46 @@
   [(BAPrivateDataSource *)&v4 dealloc];
 }
 
-- (void)_BCCloudSecureUserDataManagerChanged:(id)a3
+- (void)_BCCloudSecureUserDataManagerChanged:(id)changed
 {
-  v4 = [(BAPrivateDataSource *)self workQueue];
+  workQueue = [(BAPrivateDataSource *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_204C;
   block[3] = &unk_25EBD0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
-- (void)fetchPrivateData:(id)a3
+- (void)fetchPrivateData:(id)data
 {
-  v4 = a3;
-  v5 = [(BAPrivateDataSource *)self workQueue];
+  dataCopy = data;
+  workQueue = [(BAPrivateDataSource *)self workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_27AC;
   v7[3] = &unk_25EC48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dataCopy;
+  v6 = dataCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)fetchPrivateDataForKey:(id)a3 completion:(id)a4
+- (void)fetchPrivateDataForKey:(id)key completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v7 = +[BDSSecureManager sharedManager];
-  v8 = [v7 userDataManager];
+  userDataManager = [v7 userDataManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_2B70;
   v11[3] = &unk_25EC98;
-  v12 = v5;
-  v13 = v6;
-  v9 = v6;
-  v10 = v5;
-  [v8 userDatumForKey:v10 completion:v11];
+  v12 = keyCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = keyCopy;
+  [userDataManager userDatumForKey:v10 completion:v11];
 }
 
 - (id)generatePrivateData
@@ -110,13 +110,13 @@
         v10 = *(*(&v17 + 1) + 8 * i);
         if ([v10 isEqualToString:{@"userPrivateSeed", v16, v17}] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"contentPrivateSeed"))
         {
-          v11 = BAGenerateSeed();
+          uUIDString = BAGenerateSeed();
         }
 
         else
         {
           v12 = +[NSUUID UUID];
-          v11 = [v12 UUIDString];
+          uUIDString = [v12 UUIDString];
         }
 
         v13 = BALog();
@@ -125,11 +125,11 @@
           *buf = v16;
           v22 = v10;
           v23 = 2112;
-          v24 = v11;
+          v24 = uUIDString;
           _os_log_impl(&dword_0, v13, OS_LOG_TYPE_INFO, "generatePrivateData: key: %@ value: %@", buf, 0x16u);
         }
 
-        [v3 setObject:v11 forKeyedSubscript:v10];
+        [v3 setObject:uUIDString forKeyedSubscript:v10];
       }
 
       v7 = [v4 countByEnumeratingWithState:&v17 objects:v25 count:16];
@@ -143,21 +143,21 @@
   return v14;
 }
 
-- (void)syncPrivateData:(id)a3 toCloudWithCompletion:(id)a4
+- (void)syncPrivateData:(id)data toCloudWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BAPrivateDataSource *)self workQueue];
+  dataCopy = data;
+  completionCopy = completion;
+  workQueue = [(BAPrivateDataSource *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_31CC;
   block[3] = &unk_25ED38;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dataCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = dataCopy;
+  dispatch_async(workQueue, block);
 }
 
 - (BAPrivateDataSourceDelegate)delegate

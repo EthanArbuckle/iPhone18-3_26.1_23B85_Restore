@@ -1,17 +1,17 @@
 @interface RTWorkoutMetricsManager
-+ (id)stringFromWorkoutMetricsEvent:(unint64_t)a3;
-- (BOOL)_computeMetricsForClustersEventWithData:(id)a3 error:(id *)a4;
-- (BOOL)_computeMetricsForEvent:(unint64_t)a3 data:(id)a4 error:(id *)a5;
-- (BOOL)_computeMetricsForProcessNewWorkoutEventWithData:(id)a3 error:(id *)a4;
-- (BOOL)_computeMetricsForProcessWorkoutsEventWithData:(id)a3 error:(id *)a4;
-- (BOOL)_computeMetricsForUpdateRelevanceScoresEventWithData:(id)a3 error:(id *)a4;
-- (BOOL)_doesMandatoryKeysExist:(unint64_t)a3 data:(id)a4 error:(id *)a5;
-- (BOOL)_submitMetricsForEvent:(unint64_t)a3 data:(id)a4 error:(id *)a5;
-- (BOOL)_updateNSNumberMetricsData:(id)a3 key:(id)a4 binsStart:(id)a5 binsEnd:(id)a6 gap:(id)a7 error:(id *)a8;
-- (BOOL)submitMetricsForEvent:(unint64_t)a3 data:(id)a4 error:(id *)a5;
++ (id)stringFromWorkoutMetricsEvent:(unint64_t)event;
+- (BOOL)_computeMetricsForClustersEventWithData:(id)data error:(id *)error;
+- (BOOL)_computeMetricsForEvent:(unint64_t)event data:(id)data error:(id *)error;
+- (BOOL)_computeMetricsForProcessNewWorkoutEventWithData:(id)data error:(id *)error;
+- (BOOL)_computeMetricsForProcessWorkoutsEventWithData:(id)data error:(id *)error;
+- (BOOL)_computeMetricsForUpdateRelevanceScoresEventWithData:(id)data error:(id *)error;
+- (BOOL)_doesMandatoryKeysExist:(unint64_t)exist data:(id)data error:(id *)error;
+- (BOOL)_submitMetricsForEvent:(unint64_t)event data:(id)data error:(id *)error;
+- (BOOL)_updateNSNumberMetricsData:(id)data key:(id)key binsStart:(id)start binsEnd:(id)end gap:(id)gap error:(id *)error;
+- (BOOL)submitMetricsForEvent:(unint64_t)event data:(id)data error:(id *)error;
 - (RTWorkoutMetricsManager)init;
-- (RTWorkoutMetricsManager)initWithManagedConfiguration:(id)a3;
-- (id)_mandatoryMetricKeysForEvent:(unint64_t)a3 error:(id *)a4;
+- (RTWorkoutMetricsManager)initWithManagedConfiguration:(id)configuration;
+- (id)_mandatoryMetricKeysForEvent:(unint64_t)event error:(id *)error;
 @end
 
 @implementation RTWorkoutMetricsManager
@@ -24,10 +24,10 @@
   return v4;
 }
 
-- (RTWorkoutMetricsManager)initWithManagedConfiguration:(id)a3
+- (RTWorkoutMetricsManager)initWithManagedConfiguration:(id)configuration
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (configuration)
   {
     v10.receiver = self;
     v10.super_class = RTWorkoutMetricsManager;
@@ -39,8 +39,8 @@
       v4->_managedConfiguration = v5;
     }
 
-    v3 = v4;
-    v7 = v3;
+    selfCopy = v4;
+    v7 = selfCopy;
   }
 
   else
@@ -58,40 +58,40 @@
   return v7;
 }
 
-+ (id)stringFromWorkoutMetricsEvent:(unint64_t)a3
++ (id)stringFromWorkoutMetricsEvent:(unint64_t)event
 {
-  if (a3 - 1 > 3)
+  if (event - 1 > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2788CEF40[a3 - 1];
+    return off_2788CEF40[event - 1];
   }
 }
 
-- (BOOL)submitMetricsForEvent:(unint64_t)a3 data:(id)a4 error:(id *)a5
+- (BOOL)submitMetricsForEvent:(unint64_t)event data:(id)data error:(id *)error
 {
   v80 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [(RTWorkoutMetricsManager *)self managedConfiguration];
-  v10 = [v9 isHealthDataSubmissionAllowed];
+  dataCopy = data;
+  managedConfiguration = [(RTWorkoutMetricsManager *)self managedConfiguration];
+  isHealthDataSubmissionAllowed = [managedConfiguration isHealthDataSubmissionAllowed];
 
-  if (v10)
+  if (isHealthDataSubmissionAllowed)
   {
-    v56 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v11 = v8;
+    v11 = dataCopy;
     v58 = [v11 countByEnumeratingWithState:&v63 objects:v79 count:16];
     if (v58)
     {
       v59 = *v64;
-      v53 = a5;
-      v54 = v8;
+      errorCopy = error;
+      v54 = dataCopy;
       v55 = v11;
 LABEL_4:
       v12 = 0;
@@ -106,7 +106,7 @@ LABEL_4:
         v14 = *(*(&v63 + 1) + 8 * v12);
         v15 = objc_autoreleasePoolPush();
         v62 = 0;
-        v16 = [(RTWorkoutMetricsManager *)self _doesMandatoryKeysExist:a3 data:v14 error:&v62];
+        v16 = [(RTWorkoutMetricsManager *)self _doesMandatoryKeysExist:event data:v14 error:&v62];
         v17 = v62;
         if (v17)
         {
@@ -114,8 +114,8 @@ LABEL_27:
           v35 = v17;
 LABEL_39:
           objc_autoreleasePoolPop(v15);
-          a5 = v53;
-          v8 = v54;
+          error = errorCopy;
+          dataCopy = v54;
           goto LABEL_40;
         }
 
@@ -125,7 +125,7 @@ LABEL_39:
         }
 
         v61 = 0;
-        v16 = [(RTWorkoutMetricsManager *)self _computeMetricsForEvent:a3 data:v14 error:&v61];
+        v16 = [(RTWorkoutMetricsManager *)self _computeMetricsForEvent:event data:v14 error:&v61];
         v17 = v61;
         if (v17)
         {
@@ -140,7 +140,7 @@ LABEL_39:
             v49 = objc_opt_class();
             v50 = NSStringFromClass(v49);
             v51 = NSStringFromSelector(a2);
-            v52 = [objc_opt_class() stringFromWorkoutMetricsEvent:a3];
+            v52 = [objc_opt_class() stringFromWorkoutMetricsEvent:event];
             *buf = 138412802;
             v68 = v50;
             v69 = 2112;
@@ -150,7 +150,7 @@ LABEL_39:
             _os_log_error_impl(&dword_2304B3000, v43, OS_LOG_TYPE_ERROR, "%@, %@, metrics computation for event, %@, failed", buf, 0x20u);
           }
 
-          v36 = v53;
+          v36 = errorCopy;
           goto LABEL_35;
         }
 
@@ -162,7 +162,7 @@ LABEL_39:
             v19 = objc_opt_class();
             v20 = NSStringFromClass(v19);
             v21 = NSStringFromSelector(a2);
-            v22 = [objc_opt_class() stringFromWorkoutMetricsEvent:a3];
+            v22 = [objc_opt_class() stringFromWorkoutMetricsEvent:event];
             v23 = [v14 count];
             *buf = 138413058;
             v68 = v20;
@@ -179,7 +179,7 @@ LABEL_39:
         }
 
         v60 = 0;
-        [(RTWorkoutMetricsManager *)self _submitMetricsForEvent:a3 data:v14 error:&v60];
+        [(RTWorkoutMetricsManager *)self _submitMetricsForEvent:event data:v14 error:&v60];
         v24 = v60;
         if (v24)
         {
@@ -196,10 +196,10 @@ LABEL_39:
             v26 = objc_opt_class();
             v27 = NSStringFromClass(v26);
             v28 = NSStringFromSelector(a2);
-            v29 = [objc_opt_class() stringFromWorkoutMetricsEvent:a3];
+            v29 = [objc_opt_class() stringFromWorkoutMetricsEvent:event];
             v30 = [v14 count];
-            v31 = [MEMORY[0x277CBEAA8] date];
-            [v31 timeIntervalSinceDate:v56];
+            date2 = [MEMORY[0x277CBEAA8] date];
+            [date2 timeIntervalSinceDate:date];
             v33 = v32;
             +[RTRuntime footprint];
             *buf = 138413570;
@@ -226,8 +226,8 @@ LABEL_39:
         {
           v35 = 0;
           v16 = 1;
-          a5 = v53;
-          v8 = v54;
+          error = errorCopy;
+          dataCopy = v54;
           v58 = [v11 countByEnumeratingWithState:&v63 objects:v79 count:16];
           if (v58)
           {
@@ -238,7 +238,7 @@ LABEL_39:
         }
       }
 
-      v36 = v53;
+      v36 = errorCopy;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v37 = _rt_log_facility_get_os_log(RTLogFacilityMetric);
@@ -247,7 +247,7 @@ LABEL_39:
           v38 = objc_opt_class();
           v39 = NSStringFromClass(v38);
           v40 = NSStringFromSelector(a2);
-          v41 = [objc_opt_class() stringFromWorkoutMetricsEvent:a3];
+          v41 = [objc_opt_class() stringFromWorkoutMetricsEvent:event];
           v42 = [v14 count];
           *buf = 138413314;
           v68 = v39;
@@ -273,7 +273,7 @@ LABEL_35:
 
       v35 = 0;
       v16 = 0;
-      v8 = v54;
+      dataCopy = v54;
     }
 
     else
@@ -282,10 +282,10 @@ LABEL_35:
       v16 = 1;
 LABEL_40:
 
-      if (a5)
+      if (error)
       {
         v44 = v35;
-        *a5 = v35;
+        *error = v35;
       }
     }
   }
@@ -311,16 +311,16 @@ LABEL_40:
   return v16;
 }
 
-- (BOOL)_doesMandatoryKeysExist:(unint64_t)a3 data:(id)a4 error:(id *)a5
+- (BOOL)_doesMandatoryKeysExist:(unint64_t)exist data:(id)data error:(id *)error
 {
-  v6 = a4;
-  if (v6)
+  dataCopy = data;
+  if (dataCopy)
   {
-    if (a5)
+    if (error)
     {
       v7 = 0;
 LABEL_8:
-      *a5 = v7;
+      *error = v7;
     }
   }
 
@@ -333,59 +333,59 @@ LABEL_8:
       _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: data", v10, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v7 = _RTErrorInvalidParameterCreate(@"data");
       goto LABEL_8;
     }
   }
 
-  return v6 != 0;
+  return dataCopy != 0;
 }
 
-- (BOOL)_computeMetricsForEvent:(unint64_t)a3 data:(id)a4 error:(id *)a5
+- (BOOL)_computeMetricsForEvent:(unint64_t)event data:(id)data error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  if (v9)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v10 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     LOBYTE(v11) = 0;
     v12 = 0;
-    if (a3 > 2)
+    if (event > 2)
     {
-      if (a3 == 3)
+      if (event == 3)
       {
         v31 = 0;
         v13 = &v31;
-        v14 = [(RTWorkoutMetricsManager *)self _computeMetricsForProcessWorkoutsEventWithData:v9 error:&v31];
+        v14 = [(RTWorkoutMetricsManager *)self _computeMetricsForProcessWorkoutsEventWithData:dataCopy error:&v31];
         goto LABEL_16;
       }
 
-      if (a3 == 4)
+      if (event == 4)
       {
         v30 = 0;
         v13 = &v30;
-        v14 = [(RTWorkoutMetricsManager *)self _computeMetricsForUpdateRelevanceScoresEventWithData:v9 error:&v30];
+        v14 = [(RTWorkoutMetricsManager *)self _computeMetricsForUpdateRelevanceScoresEventWithData:dataCopy error:&v30];
         goto LABEL_16;
       }
     }
 
     else
     {
-      if (a3 == 1)
+      if (event == 1)
       {
         v33 = 0;
         v13 = &v33;
-        v14 = [(RTWorkoutMetricsManager *)self _computeMetricsForClustersEventWithData:v9 error:&v33];
+        v14 = [(RTWorkoutMetricsManager *)self _computeMetricsForClustersEventWithData:dataCopy error:&v33];
         goto LABEL_16;
       }
 
-      if (a3 == 2)
+      if (event == 2)
       {
         v32 = 0;
         v13 = &v32;
-        v14 = [(RTWorkoutMetricsManager *)self _computeMetricsForProcessNewWorkoutEventWithData:v9 error:&v32];
+        v14 = [(RTWorkoutMetricsManager *)self _computeMetricsForProcessNewWorkoutEventWithData:dataCopy error:&v32];
 LABEL_16:
         v11 = v14;
         v12 = *v13;
@@ -397,7 +397,7 @@ LABEL_16:
             v17 = objc_opt_class();
             v29 = NSStringFromClass(v17);
             v18 = NSStringFromSelector(a2);
-            v19 = [objc_opt_class() stringFromWorkoutMetricsEvent:a3];
+            v19 = [objc_opt_class() stringFromWorkoutMetricsEvent:event];
             v20 = @"NO";
             if (v11)
             {
@@ -405,9 +405,9 @@ LABEL_16:
             }
 
             v28 = v20;
-            v27 = [v9 count];
-            v21 = [MEMORY[0x277CBEAA8] date];
-            [v21 timeIntervalSinceDate:v10];
+            v27 = [dataCopy count];
+            date2 = [MEMORY[0x277CBEAA8] date];
+            [date2 timeIntervalSinceDate:date];
             v23 = v22;
             +[RTRuntime footprint];
             *buf = 138413826;
@@ -428,10 +428,10 @@ LABEL_16:
           }
         }
 
-        if (a5)
+        if (error)
         {
           v25 = v12;
-          *a5 = v12;
+          *error = v12;
         }
       }
     }
@@ -446,10 +446,10 @@ LABEL_16:
     _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: data", buf, 2u);
   }
 
-  if (a5)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"data");
-    *a5 = LOBYTE(v11) = 0;
+    *error = LOBYTE(v11) = 0;
   }
 
   else
@@ -462,22 +462,22 @@ LABEL_25:
   return v11;
 }
 
-- (BOOL)_submitMetricsForEvent:(unint64_t)a3 data:(id)a4 error:(id *)a5
+- (BOOL)_submitMetricsForEvent:(unint64_t)event data:(id)data error:(id *)error
 {
-  v7 = a4;
-  if (v7)
+  dataCopy = data;
+  if (dataCopy)
   {
     v8 = 0;
-    if (a3 > 2)
+    if (event > 2)
     {
-      if (a3 == 3)
+      if (event == 3)
       {
         v9 = objc_alloc(MEMORY[0x277CCACA8]);
         v10 = RTAnalyticsEventWorkoutRouteManagerProcessWorkouts;
         goto LABEL_16;
       }
 
-      if (a3 == 4)
+      if (event == 4)
       {
         v9 = objc_alloc(MEMORY[0x277CCACA8]);
         v10 = RTAnalyticsEventWorkoutRouteManagerUpdateRelevanceScores;
@@ -485,23 +485,23 @@ LABEL_25:
       }
     }
 
-    else if (a3 == 1)
+    else if (event == 1)
     {
       v12 = objc_alloc(MEMORY[0x277CCACA8]);
       v8 = 1;
       v13 = [v12 initWithCString:RTAnalyticsEventWorkoutRouteManagerClusters encoding:1];
-      log_analytics_submission(v13, v7);
+      log_analytics_submission(v13, dataCopy);
       v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v13];
       AnalyticsSendEvent();
     }
 
-    else if (a3 == 2)
+    else if (event == 2)
     {
       v9 = objc_alloc(MEMORY[0x277CCACA8]);
       v10 = RTAnalyticsEventWorkoutRouteManagerProcessNewWorkout;
 LABEL_16:
       v15 = [v9 initWithCString:v10 encoding:1];
-      log_analytics_submission(v15, v7);
+      log_analytics_submission(v15, dataCopy);
       v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v15];
       AnalyticsSendEvent();
 
@@ -518,10 +518,10 @@ LABEL_16:
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: data", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"data");
-      *a5 = v8 = 0;
+      *error = v8 = 0;
     }
 
     else
@@ -533,13 +533,13 @@ LABEL_16:
   return v8;
 }
 
-- (id)_mandatoryMetricKeysForEvent:(unint64_t)a3 error:(id *)a4
+- (id)_mandatoryMetricKeysForEvent:(unint64_t)event error:(id *)error
 {
   v15[7] = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  if (a3 > 2)
+  if (event > 2)
   {
-    if (a3 == 3)
+    if (event == 3)
     {
       v13[0] = @"clustering_average_cluster_size";
       v13[1] = @"clustering_count_clusters";
@@ -643,7 +643,7 @@ LABEL_16:
       goto LABEL_11;
     }
 
-    if (a3 == 4)
+    if (event == 4)
     {
       v12[0] = @"count_clusters_existing";
       v12[1] = @"count_clusters_existing_zero_relevance";
@@ -665,11 +665,11 @@ LABEL_16:
     }
 
 LABEL_8:
-    v9 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     goto LABEL_12;
   }
 
-  if (a3 == 1)
+  if (event == 1)
   {
     v15[0] = @"activity_type";
     v15[1] = @"is_decimated";
@@ -684,7 +684,7 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (a3 != 2)
+  if (event != 2)
   {
     goto LABEL_8;
   }
@@ -701,42 +701,42 @@ LABEL_8:
   v7 = v14;
   v8 = 8;
 LABEL_11:
-  v9 = [v6 arrayWithObjects:v7 count:v8];
+  array = [v6 arrayWithObjects:v7 count:v8];
 LABEL_12:
-  v10 = v9;
+  v10 = array;
   objc_autoreleasePoolPop(v5);
 
   return v10;
 }
 
-- (BOOL)_computeMetricsForClustersEventWithData:(id)a3 error:(id *)a4
+- (BOOL)_computeMetricsForClustersEventWithData:(id)data error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  dataCopy = data;
+  if (dataCopy)
   {
     v7 = objc_autoreleasePoolPush();
     v16 = 0;
-    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"count_workouts" binsStart:&unk_28459F078 binsEnd:&unk_28459F090 gap:&unk_28459F0A8 error:&v16];
+    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"count_workouts" binsStart:&unk_28459F078 binsEnd:&unk_28459F090 gap:&unk_28459F0A8 error:&v16];
     v8 = v16;
     if (!v8)
     {
       v15 = 0;
-      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"duration" binsStart:&unk_28459F078 binsEnd:&unk_28459F0C0 gap:&unk_28459F0A8 error:&v15];
+      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"duration" binsStart:&unk_28459F078 binsEnd:&unk_28459F0C0 gap:&unk_28459F0A8 error:&v15];
       v8 = v15;
       if (!v8)
       {
         v14 = 0;
-        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"total_distance" binsStart:&unk_28459F078 binsEnd:&unk_28459F0D8 gap:&unk_28459F0A8 error:&v14];
+        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"total_distance" binsStart:&unk_28459F078 binsEnd:&unk_28459F0D8 gap:&unk_28459F0A8 error:&v14];
         v8 = v14;
       }
     }
 
     v9 = v8;
     objc_autoreleasePoolPop(v7);
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v9;
+      *error = v9;
     }
 
     v11 = v9 == 0;
@@ -751,10 +751,10 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: data", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"data");
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -766,34 +766,34 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)_computeMetricsForProcessNewWorkoutEventWithData:(id)a3 error:(id *)a4
+- (BOOL)_computeMetricsForProcessNewWorkoutEventWithData:(id)data error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  dataCopy = data;
+  if (dataCopy)
   {
     v7 = objc_autoreleasePoolPush();
     v16 = 0;
-    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"footprint_delta" binsStart:&unk_28459F078 binsEnd:&unk_28459F0F0 gap:&unk_28459F0A8 error:&v16];
+    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"footprint_delta" binsStart:&unk_28459F078 binsEnd:&unk_28459F0F0 gap:&unk_28459F0A8 error:&v16];
     v8 = v16;
     if (!v8)
     {
       v15 = 0;
-      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"time_elapsed_mini_worldbuild_check" binsStart:&unk_28459F078 binsEnd:&unk_28459F108 gap:&unk_28459F0A8 error:&v15];
+      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"time_elapsed_mini_worldbuild_check" binsStart:&unk_28459F078 binsEnd:&unk_28459F108 gap:&unk_28459F0A8 error:&v15];
       v8 = v15;
       if (!v8)
       {
         v14 = 0;
-        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"time_elapsed_reference_route_cluster_check" binsStart:&unk_28459F078 binsEnd:&unk_28459F108 gap:&unk_28459F0A8 error:&v14];
+        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"time_elapsed_reference_route_cluster_check" binsStart:&unk_28459F078 binsEnd:&unk_28459F108 gap:&unk_28459F0A8 error:&v14];
         v8 = v14;
       }
     }
 
     v9 = v8;
     objc_autoreleasePoolPop(v7);
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v9;
+      *error = v9;
     }
 
     v11 = v9 == 0;
@@ -808,10 +808,10 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: data", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"data");
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -823,434 +823,434 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)_computeMetricsForProcessWorkoutsEventWithData:(id)a3 error:(id *)a4
+- (BOOL)_computeMetricsForProcessWorkoutsEventWithData:(id)data error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  dataCopy = data;
+  if (dataCopy)
   {
     v7 = objc_autoreleasePoolPush();
     v98 = 0;
-    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"clustering_average_cluster_size" binsStart:&unk_28459F078 binsEnd:&unk_28459F090 gap:&unk_28459F0A8 error:&v98];
+    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"clustering_average_cluster_size" binsStart:&unk_28459F078 binsEnd:&unk_28459F090 gap:&unk_28459F0A8 error:&v98];
     v8 = v98;
     if (!v8)
     {
       v97 = 0;
-      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"clustering_count_clusters" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v97];
+      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"clustering_count_clusters" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v97];
       v8 = v97;
       if (!v8)
       {
         v96 = 0;
-        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"clustering_footprint_delta" binsStart:&unk_28459F078 binsEnd:&unk_28459F0F0 gap:&unk_28459F0A8 error:&v96];
+        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"clustering_footprint_delta" binsStart:&unk_28459F078 binsEnd:&unk_28459F0F0 gap:&unk_28459F0A8 error:&v96];
         v8 = v96;
         if (!v8)
         {
           v95 = 0;
-          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"clustering_max_cluster_size" binsStart:&unk_28459F078 binsEnd:&unk_28459F090 gap:&unk_28459F0A8 error:&v95];
+          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"clustering_max_cluster_size" binsStart:&unk_28459F078 binsEnd:&unk_28459F090 gap:&unk_28459F0A8 error:&v95];
           v8 = v95;
           if (!v8)
           {
             v94 = 0;
-            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"clustering_min_cluster_size" binsStart:&unk_28459F078 binsEnd:&unk_28459F090 gap:&unk_28459F0A8 error:&v94];
+            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"clustering_min_cluster_size" binsStart:&unk_28459F078 binsEnd:&unk_28459F090 gap:&unk_28459F0A8 error:&v94];
             v8 = v94;
             if (!v8)
             {
               v93 = 0;
-              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"clustering_percentage_workouts_clustered" binsStart:&unk_28459F078 binsEnd:&unk_28459F138 gap:&unk_28459F0A8 error:&v93];
+              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"clustering_percentage_workouts_clustered" binsStart:&unk_28459F078 binsEnd:&unk_28459F138 gap:&unk_28459F0A8 error:&v93];
               v8 = v93;
               if (!v8)
               {
                 v92 = 0;
-                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"clustering_time_elapsed" binsStart:&unk_28459F078 binsEnd:&unk_28459F108 gap:&unk_28459F0A8 error:&v92];
+                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"clustering_time_elapsed" binsStart:&unk_28459F078 binsEnd:&unk_28459F108 gap:&unk_28459F0A8 error:&v92];
                 v8 = v92;
                 if (!v8)
                 {
                   v91 = 0;
-                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matric_count_prefiltercache" binsStart:&unk_28459F078 binsEnd:&unk_28459F090 gap:&unk_28459F0A8 error:&v91];
+                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matric_count_prefiltercache" binsStart:&unk_28459F078 binsEnd:&unk_28459F090 gap:&unk_28459F0A8 error:&v91];
                   v8 = v91;
                   if (!v8)
                   {
                     v90 = 0;
-                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_average_time_already_computed" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v90];
+                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_average_time_already_computed" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v90];
                     v8 = v90;
                     if (!v8)
                     {
                       v89 = 0;
-                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_average_time_exceeded_dtw" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v89];
+                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_average_time_exceeded_dtw" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v89];
                       v8 = v89;
                       if (!v8)
                       {
                         v88 = 0;
-                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_average_time_exceeded_quicksimilarity" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v88];
+                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_average_time_exceeded_quicksimilarity" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v88];
                         v8 = v88;
                         if (!v8)
                         {
                           v87 = 0;
-                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_average_time_lessthan_orequal_dtw" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v87];
+                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_average_time_lessthan_orequal_dtw" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v87];
                           v8 = v87;
                           if (!v8)
                           {
                             v86 = 0;
-                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_average_time_lessthan_orequal_quicksimilarity" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v86];
+                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_average_time_lessthan_orequal_quicksimilarity" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v86];
                             v8 = v86;
                             if (!v8)
                             {
                               v85 = 0;
-                              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_average_time_prefiltered_centroid" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v85];
+                              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_average_time_prefiltered_centroid" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v85];
                               v8 = v85;
                               if (!v8)
                               {
                                 v84 = 0;
-                                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_average_time_prefiltered_firstlocation" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v84];
+                                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_average_time_prefiltered_firstlocation" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v84];
                                 v8 = v84;
                                 if (!v8)
                                 {
                                   v83 = 0;
-                                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_average_time_prefiltered_iou" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v83];
+                                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_average_time_prefiltered_iou" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v83];
                                   v8 = v83;
                                   if (!v8)
                                   {
                                     v82 = 0;
-                                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_average_time_prefiltered_lastlocation" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v82];
+                                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_average_time_prefiltered_lastlocation" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v82];
                                     v8 = v82;
                                     if (!v8)
                                     {
                                       v81 = 0;
-                                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_average_time_prefiltered_locationscount" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v81];
+                                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_average_time_prefiltered_locationscount" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v81];
                                       v8 = v81;
                                       if (!v8)
                                       {
                                         v80 = 0;
-                                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_average_time_prefiltered_metadata" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v80];
+                                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_average_time_prefiltered_metadata" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v80];
                                         v8 = v80;
                                         if (!v8)
                                         {
                                           v79 = 0;
-                                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_count_already_computed" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v79];
+                                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_count_already_computed" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v79];
                                           v8 = v79;
                                           if (!v8)
                                           {
                                             v78 = 0;
-                                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_count_both_workouts_decimated" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v78];
+                                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_count_both_workouts_decimated" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v78];
                                             v8 = v78;
                                             if (!v8)
                                             {
                                               v77 = 0;
-                                              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_count_exceeded_dtw" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v77];
+                                              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_count_exceeded_dtw" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v77];
                                               v8 = v77;
                                               if (!v8)
                                               {
                                                 v76 = 0;
-                                                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_count_exceeded_quicksimilarity" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v76];
+                                                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_count_exceeded_quicksimilarity" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v76];
                                                 v8 = v76;
                                                 if (!v8)
                                                 {
                                                   v75 = 0;
-                                                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_count_lessthan_orequal_dtw" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v75];
+                                                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_count_lessthan_orequal_dtw" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v75];
                                                   v8 = v75;
                                                   if (!v8)
                                                   {
                                                     v74 = 0;
-                                                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_count_lessthan_orequal_quicksimilarity" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v74];
+                                                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_count_lessthan_orequal_quicksimilarity" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v74];
                                                     v8 = v74;
                                                     if (!v8)
                                                     {
                                                       v73 = 0;
-                                                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_count_no_workout_decimated" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v73];
+                                                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_count_no_workout_decimated" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v73];
                                                       v8 = v73;
                                                       if (!v8)
                                                       {
                                                         v72 = 0;
-                                                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_count_prefiltered_centroid" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v72];
+                                                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_count_prefiltered_centroid" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v72];
                                                         v8 = v72;
                                                         if (!v8)
                                                         {
                                                           v71 = 0;
-                                                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_count_prefiltered_firstlocation" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v71];
+                                                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_count_prefiltered_firstlocation" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v71];
                                                           v8 = v71;
                                                           if (!v8)
                                                           {
                                                             v70 = 0;
-                                                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_count_prefiltered_iou" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v70];
+                                                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_count_prefiltered_iou" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v70];
                                                             v8 = v70;
                                                             if (!v8)
                                                             {
                                                               v69 = 0;
-                                                              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_count_prefiltered_lastlocation" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v69];
+                                                              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_count_prefiltered_lastlocation" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v69];
                                                               v8 = v69;
                                                               if (!v8)
                                                               {
                                                                 v68 = 0;
-                                                                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_count_prefiltered_locationscount" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v68];
+                                                                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_count_prefiltered_locationscount" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v68];
                                                                 v8 = v68;
                                                                 if (!v8)
                                                                 {
                                                                   v67 = 0;
-                                                                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_count_prefiltered_metadata" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v67];
+                                                                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_count_prefiltered_metadata" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v67];
                                                                   v8 = v67;
                                                                   if (!v8)
                                                                   {
                                                                     v66 = 0;
-                                                                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_count_single_workout_decimated" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v66];
+                                                                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_count_single_workout_decimated" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v66];
                                                                     v8 = v66;
                                                                     if (!v8)
                                                                     {
                                                                       v65 = 0;
-                                                                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_final_size" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v65];
+                                                                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_final_size" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v65];
                                                                       v8 = v65;
                                                                       if (!v8)
                                                                       {
                                                                         v64 = 0;
-                                                                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_footprint_delta" binsStart:&unk_28459F078 binsEnd:&unk_28459F0F0 gap:&unk_28459F0A8 error:&v64];
+                                                                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_footprint_delta" binsStart:&unk_28459F078 binsEnd:&unk_28459F0F0 gap:&unk_28459F0A8 error:&v64];
                                                                         v8 = v64;
                                                                         if (!v8)
                                                                         {
                                                                           v63 = 0;
-                                                                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_initial_size" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v63];
+                                                                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_initial_size" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v63];
                                                                           v8 = v63;
                                                                           if (!v8)
                                                                           {
                                                                             v62 = 0;
-                                                                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_max_time_already_computed" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v62];
+                                                                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_max_time_already_computed" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v62];
                                                                             v8 = v62;
                                                                             if (!v8)
                                                                             {
                                                                               v61 = 0;
-                                                                              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_max_time_exceeded_dtw" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v61];
+                                                                              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_max_time_exceeded_dtw" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v61];
                                                                               v8 = v61;
                                                                               if (!v8)
                                                                               {
                                                                                 v60 = 0;
-                                                                                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_max_time_exceeded_quicksimilarity" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v60];
+                                                                                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_max_time_exceeded_quicksimilarity" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v60];
                                                                                 v8 = v60;
                                                                                 if (!v8)
                                                                                 {
                                                                                   v59 = 0;
-                                                                                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_max_time_lessthan_orequal_dtw" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v59];
+                                                                                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_max_time_lessthan_orequal_dtw" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v59];
                                                                                   v8 = v59;
                                                                                   if (!v8)
                                                                                   {
                                                                                     v58 = 0;
-                                                                                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_max_time_lessthan_orequal_quicksimilarity" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v58];
+                                                                                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_max_time_lessthan_orequal_quicksimilarity" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v58];
                                                                                     v8 = v58;
                                                                                     if (!v8)
                                                                                     {
                                                                                       v57 = 0;
-                                                                                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_max_time_prefiltered_centroid" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v57];
+                                                                                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_max_time_prefiltered_centroid" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v57];
                                                                                       v8 = v57;
                                                                                       if (!v8)
                                                                                       {
                                                                                         v56 = 0;
-                                                                                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_max_time_prefiltered_firstlocation" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v56];
+                                                                                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_max_time_prefiltered_firstlocation" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v56];
                                                                                         v8 = v56;
                                                                                         if (!v8)
                                                                                         {
                                                                                           v55 = 0;
-                                                                                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_max_time_prefiltered_iou" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v55];
+                                                                                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_max_time_prefiltered_iou" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v55];
                                                                                           v8 = v55;
                                                                                           if (!v8)
                                                                                           {
                                                                                             v54 = 0;
-                                                                                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_max_time_prefiltered_lastlocation" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v54];
+                                                                                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_max_time_prefiltered_lastlocation" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v54];
                                                                                             v8 = v54;
                                                                                             if (!v8)
                                                                                             {
                                                                                               v53 = 0;
-                                                                                              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_max_time_prefiltered_locationscount" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v53];
+                                                                                              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_max_time_prefiltered_locationscount" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v53];
                                                                                               v8 = v53;
                                                                                               if (!v8)
                                                                                               {
                                                                                                 v52 = 0;
-                                                                                                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_max_time_prefiltered_metadata" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v52];
+                                                                                                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_max_time_prefiltered_metadata" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v52];
                                                                                                 v8 = v52;
                                                                                                 if (!v8)
                                                                                                 {
                                                                                                   v51 = 0;
-                                                                                                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_min_time_already_computed" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v51];
+                                                                                                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_min_time_already_computed" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v51];
                                                                                                   v8 = v51;
                                                                                                   if (!v8)
                                                                                                   {
                                                                                                     v50 = 0;
-                                                                                                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_min_time_exceeded_dtw" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v50];
+                                                                                                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_min_time_exceeded_dtw" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v50];
                                                                                                     v8 = v50;
                                                                                                     if (!v8)
                                                                                                     {
                                                                                                       v49 = 0;
-                                                                                                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_min_time_exceeded_quicksimilarity" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v49];
+                                                                                                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_min_time_exceeded_quicksimilarity" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v49];
                                                                                                       v8 = v49;
                                                                                                       if (!v8)
                                                                                                       {
                                                                                                         v48 = 0;
-                                                                                                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_min_time_lessthan_orequal_dtw" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v48];
+                                                                                                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_min_time_lessthan_orequal_dtw" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v48];
                                                                                                         v8 = v48;
                                                                                                         if (!v8)
                                                                                                         {
                                                                                                           v47 = 0;
-                                                                                                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_min_time_lessthan_orequal_quicksimilarity" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v47];
+                                                                                                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_min_time_lessthan_orequal_quicksimilarity" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v47];
                                                                                                           v8 = v47;
                                                                                                           if (!v8)
                                                                                                           {
                                                                                                             v46 = 0;
-                                                                                                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_min_time_prefiltered_centroid" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v46];
+                                                                                                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_min_time_prefiltered_centroid" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v46];
                                                                                                             v8 = v46;
                                                                                                             if (!v8)
                                                                                                             {
                                                                                                               v45 = 0;
-                                                                                                              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_min_time_prefiltered_firstlocation" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v45];
+                                                                                                              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_min_time_prefiltered_firstlocation" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v45];
                                                                                                               v8 = v45;
                                                                                                               if (!v8)
                                                                                                               {
                                                                                                                 v44 = 0;
-                                                                                                                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_min_time_prefiltered_iou" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v44];
+                                                                                                                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_min_time_prefiltered_iou" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v44];
                                                                                                                 v8 = v44;
                                                                                                                 if (!v8)
                                                                                                                 {
                                                                                                                   v43 = 0;
-                                                                                                                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_min_time_prefiltered_lastlocation" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v43];
+                                                                                                                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_min_time_prefiltered_lastlocation" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v43];
                                                                                                                   v8 = v43;
                                                                                                                   if (!v8)
                                                                                                                   {
                                                                                                                     v42 = 0;
-                                                                                                                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_min_time_prefiltered_locationscount" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v42];
+                                                                                                                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_min_time_prefiltered_locationscount" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v42];
                                                                                                                     v8 = v42;
                                                                                                                     if (!v8)
                                                                                                                     {
                                                                                                                       v41 = 0;
-                                                                                                                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_min_time_prefiltered_metadata" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v41];
+                                                                                                                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_min_time_prefiltered_metadata" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v41];
                                                                                                                       v8 = v41;
                                                                                                                       if (!v8)
                                                                                                                       {
                                                                                                                         v40 = 0;
-                                                                                                                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_time_elapsed" binsStart:&unk_28459F078 binsEnd:&unk_28459F108 gap:&unk_28459F0A8 error:&v40];
+                                                                                                                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_time_elapsed" binsStart:&unk_28459F078 binsEnd:&unk_28459F108 gap:&unk_28459F0A8 error:&v40];
                                                                                                                         v8 = v40;
                                                                                                                         if (!v8)
                                                                                                                         {
                                                                                                                           v39 = 0;
-                                                                                                                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"distance_matrix_total_number_of_comparisons" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v39];
+                                                                                                                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"distance_matrix_total_number_of_comparisons" binsStart:&unk_28459F078 binsEnd:&unk_28459F168 gap:&unk_28459F138 error:&v39];
                                                                                                                           v8 = v39;
                                                                                                                           if (!v8)
                                                                                                                           {
                                                                                                                             v38 = 0;
-                                                                                                                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"number_of_workouts_cycling" binsStart:&unk_28459F078 binsEnd:&unk_28459F090 gap:&unk_28459F0A8 error:&v38];
+                                                                                                                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"number_of_workouts_cycling" binsStart:&unk_28459F078 binsEnd:&unk_28459F090 gap:&unk_28459F0A8 error:&v38];
                                                                                                                             v8 = v38;
                                                                                                                             if (!v8)
                                                                                                                             {
                                                                                                                               v37 = 0;
-                                                                                                                              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"number_of_workouts_running" binsStart:&unk_28459F078 binsEnd:&unk_28459F090 gap:&unk_28459F0A8 error:&v37];
+                                                                                                                              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"number_of_workouts_running" binsStart:&unk_28459F078 binsEnd:&unk_28459F090 gap:&unk_28459F0A8 error:&v37];
                                                                                                                               v8 = v37;
                                                                                                                               if (!v8)
                                                                                                                               {
                                                                                                                                 v36 = 0;
-                                                                                                                                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"number_of_workouts_wheel_chair_run_pace" binsStart:&unk_28459F078 binsEnd:&unk_28459F090 gap:&unk_28459F0A8 error:&v36];
+                                                                                                                                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"number_of_workouts_wheel_chair_run_pace" binsStart:&unk_28459F078 binsEnd:&unk_28459F090 gap:&unk_28459F0A8 error:&v36];
                                                                                                                                 v8 = v36;
                                                                                                                                 if (!v8)
                                                                                                                                 {
                                                                                                                                   v35 = 0;
-                                                                                                                                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"parameter_distance_threshold" binsStart:&unk_28459F078 binsEnd:&unk_28459F180 gap:&unk_28459F0A8 error:&v35];
+                                                                                                                                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"parameter_distance_threshold" binsStart:&unk_28459F078 binsEnd:&unk_28459F180 gap:&unk_28459F0A8 error:&v35];
                                                                                                                                   v8 = v35;
                                                                                                                                   if (!v8)
                                                                                                                                   {
                                                                                                                                     v34 = 0;
-                                                                                                                                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"parameter_filter_size" binsStart:&unk_28459F078 binsEnd:&unk_28459F090 gap:&unk_28459F0A8 error:&v34];
+                                                                                                                                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"parameter_filter_size" binsStart:&unk_28459F078 binsEnd:&unk_28459F090 gap:&unk_28459F0A8 error:&v34];
                                                                                                                                     v8 = v34;
                                                                                                                                     if (!v8)
                                                                                                                                     {
                                                                                                                                       v33 = 0;
-                                                                                                                                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_from_healthkit_count_final_local_clusters" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v33];
+                                                                                                                                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_from_healthkit_count_final_local_clusters" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v33];
                                                                                                                                       v8 = v33;
                                                                                                                                       if (!v8)
                                                                                                                                       {
                                                                                                                                         v32 = 0;
-                                                                                                                                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_from_healthkit_count_final_remote_clusters" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v32];
+                                                                                                                                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_from_healthkit_count_final_remote_clusters" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v32];
                                                                                                                                         v8 = v32;
                                                                                                                                         if (!v8)
                                                                                                                                         {
                                                                                                                                           v31 = 0;
-                                                                                                                                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_from_healthkit_count_local_clusters" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v31];
+                                                                                                                                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_from_healthkit_count_local_clusters" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v31];
                                                                                                                                           v8 = v31;
                                                                                                                                           if (!v8)
                                                                                                                                           {
                                                                                                                                             v30 = 0;
-                                                                                                                                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_from_healthkit_count_remote_clusters" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v30];
+                                                                                                                                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_from_healthkit_count_remote_clusters" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v30];
                                                                                                                                             v8 = v30;
                                                                                                                                             if (!v8)
                                                                                                                                             {
                                                                                                                                               v29 = 0;
-                                                                                                                                              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_from_healthkit_footprint_delta" binsStart:&unk_28459F078 binsEnd:&unk_28459F0F0 gap:&unk_28459F0A8 error:&v29];
+                                                                                                                                              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_from_healthkit_footprint_delta" binsStart:&unk_28459F078 binsEnd:&unk_28459F0F0 gap:&unk_28459F0A8 error:&v29];
                                                                                                                                               v8 = v29;
                                                                                                                                               if (!v8)
                                                                                                                                               {
                                                                                                                                                 v28 = 0;
-                                                                                                                                                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_from_healthkit_time_elapsed" binsStart:&unk_28459F078 binsEnd:&unk_28459F108 gap:&unk_28459F0A8 error:&v28];
+                                                                                                                                                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_from_healthkit_time_elapsed" binsStart:&unk_28459F078 binsEnd:&unk_28459F108 gap:&unk_28459F0A8 error:&v28];
                                                                                                                                                 v8 = v28;
                                                                                                                                                 if (!v8)
                                                                                                                                                 {
                                                                                                                                                   v27 = 0;
-                                                                                                                                                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_to_healthkit_average_time_save_new_cluster" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v27];
+                                                                                                                                                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_to_healthkit_average_time_save_new_cluster" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v27];
                                                                                                                                                   v8 = v27;
                                                                                                                                                   if (!v8)
                                                                                                                                                   {
                                                                                                                                                     v26 = 0;
-                                                                                                                                                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_to_healthkit_average_time_snapshot" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v26];
+                                                                                                                                                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_to_healthkit_average_time_snapshot" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v26];
                                                                                                                                                     v8 = v26;
                                                                                                                                                     if (!v8)
                                                                                                                                                     {
                                                                                                                                                       v25 = 0;
-                                                                                                                                                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_to_healthkit_average_time_update_cluster" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v25];
+                                                                                                                                                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_to_healthkit_average_time_update_cluster" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v25];
                                                                                                                                                       v8 = v25;
                                                                                                                                                       if (!v8)
                                                                                                                                                       {
                                                                                                                                                         v24 = 0;
-                                                                                                                                                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_to_healthkit_footprint_delta" binsStart:&unk_28459F078 binsEnd:&unk_28459F0F0 gap:&unk_28459F0A8 error:&v24];
+                                                                                                                                                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_to_healthkit_footprint_delta" binsStart:&unk_28459F078 binsEnd:&unk_28459F0F0 gap:&unk_28459F0A8 error:&v24];
                                                                                                                                                         v8 = v24;
                                                                                                                                                         if (!v8)
                                                                                                                                                         {
                                                                                                                                                           v23 = 0;
-                                                                                                                                                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_to_healthkit_max_time_save_new_cluster" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v23];
+                                                                                                                                                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_to_healthkit_max_time_save_new_cluster" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v23];
                                                                                                                                                           v8 = v23;
                                                                                                                                                           if (!v8)
                                                                                                                                                           {
                                                                                                                                                             v22 = 0;
-                                                                                                                                                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_to_healthkit_max_time_snapshot" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v22];
+                                                                                                                                                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_to_healthkit_max_time_snapshot" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v22];
                                                                                                                                                             v8 = v22;
                                                                                                                                                             if (!v8)
                                                                                                                                                             {
                                                                                                                                                               v21 = 0;
-                                                                                                                                                              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_to_healthkit_max_time_update_cluster" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v21];
+                                                                                                                                                              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_to_healthkit_max_time_update_cluster" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v21];
                                                                                                                                                               v8 = v21;
                                                                                                                                                               if (!v8)
                                                                                                                                                               {
                                                                                                                                                                 v20 = 0;
-                                                                                                                                                                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_to_healthkit_min_time_save_new_cluster" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v20];
+                                                                                                                                                                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_to_healthkit_min_time_save_new_cluster" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v20];
                                                                                                                                                                 v8 = v20;
                                                                                                                                                                 if (!v8)
                                                                                                                                                                 {
                                                                                                                                                                   v19 = 0;
-                                                                                                                                                                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_to_healthkit_min_time_snapshot" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v19];
+                                                                                                                                                                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_to_healthkit_min_time_snapshot" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v19];
                                                                                                                                                                   v8 = v19;
                                                                                                                                                                   if (!v8)
                                                                                                                                                                   {
                                                                                                                                                                     v18 = 0;
-                                                                                                                                                                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_to_healthkit_min_time_update_cluster" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v18];
+                                                                                                                                                                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_to_healthkit_min_time_update_cluster" binsStart:&unk_28459F078 binsEnd:&unk_28459F150 gap:&unk_28459F0A8 error:&v18];
                                                                                                                                                                     v8 = v18;
                                                                                                                                                                     if (!v8)
                                                                                                                                                                     {
                                                                                                                                                                       v17 = 0;
-                                                                                                                                                                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_to_healthkit_time_elapsed" binsStart:&unk_28459F078 binsEnd:&unk_28459F108 gap:&unk_28459F0A8 error:&v17];
+                                                                                                                                                                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_to_healthkit_time_elapsed" binsStart:&unk_28459F078 binsEnd:&unk_28459F108 gap:&unk_28459F0A8 error:&v17];
                                                                                                                                                                       v8 = v17;
                                                                                                                                                                       if (!v8)
                                                                                                                                                                       {
                                                                                                                                                                         v16 = 0;
-                                                                                                                                                                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_to_watch_count_clusters" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v16];
+                                                                                                                                                                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_to_watch_count_clusters" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v16];
                                                                                                                                                                         v8 = v16;
                                                                                                                                                                         if (!v8)
                                                                                                                                                                         {
                                                                                                                                                                           v15 = 0;
-                                                                                                                                                                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_to_watch_footprint_delta" binsStart:&unk_28459F078 binsEnd:&unk_28459F0F0 gap:&unk_28459F0A8 error:&v15];
+                                                                                                                                                                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_to_watch_footprint_delta" binsStart:&unk_28459F078 binsEnd:&unk_28459F0F0 gap:&unk_28459F0A8 error:&v15];
                                                                                                                                                                           v8 = v15;
                                                                                                                                                                           if (!v8)
                                                                                                                                                                           {
                                                                                                                                                                             v14 = 0;
-                                                                                                                                                                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"sync_to_watch_time_elapsed" binsStart:&unk_28459F078 binsEnd:&unk_28459F108 gap:&unk_28459F0A8 error:&v14];
+                                                                                                                                                                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"sync_to_watch_time_elapsed" binsStart:&unk_28459F078 binsEnd:&unk_28459F108 gap:&unk_28459F0A8 error:&v14];
                                                                                                                                                                             v8 = v14;
                                                                                                                                                                           }
                                                                                                                                                                         }
@@ -1339,10 +1339,10 @@ LABEL_12:
 
     v9 = v8;
     objc_autoreleasePoolPop(v7);
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v9;
+      *error = v9;
     }
 
     v11 = v9 == 0;
@@ -1357,10 +1357,10 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: data", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"data");
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -1372,74 +1372,74 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)_computeMetricsForUpdateRelevanceScoresEventWithData:(id)a3 error:(id *)a4
+- (BOOL)_computeMetricsForUpdateRelevanceScoresEventWithData:(id)data error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  dataCopy = data;
+  if (dataCopy)
   {
     v7 = objc_autoreleasePoolPush();
     v26 = 0;
-    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"count_clusters_existing" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v26];
+    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"count_clusters_existing" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v26];
     v8 = v26;
     if (!v8)
     {
       v25 = 0;
-      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"count_clusters_existing_zero_relevance" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v25];
+      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"count_clusters_existing_zero_relevance" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v25];
       v8 = v25;
       if (!v8)
       {
         v24 = 0;
-        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"count_clusters_existing_greaterthanzero_relevance" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v24];
+        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"count_clusters_existing_greaterthanzero_relevance" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v24];
         v8 = v24;
         if (!v8)
         {
           v23 = 0;
-          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"count_clusters_new_zero_relevance" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v23];
+          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"count_clusters_new_zero_relevance" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v23];
           v8 = v23;
           if (!v8)
           {
             v22 = 0;
-            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"count_clusters_new_greaterthanzero_relevance" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v22];
+            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"count_clusters_new_greaterthanzero_relevance" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v22];
             v8 = v22;
             if (!v8)
             {
               v21 = 0;
-              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"count_clusters_relevance_decreased" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v21];
+              [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"count_clusters_relevance_decreased" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v21];
               v8 = v21;
               if (!v8)
               {
                 v20 = 0;
-                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"count_clusters_relevance_increased" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v20];
+                [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"count_clusters_relevance_increased" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v20];
                 v8 = v20;
                 if (!v8)
                 {
                   v19 = 0;
-                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"count_clusters_relevance_score_not_updated" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v19];
+                  [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"count_clusters_relevance_score_not_updated" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v19];
                   v8 = v19;
                   if (!v8)
                   {
                     v18 = 0;
-                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"count_clusters_relevance_score_updated" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v18];
+                    [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"count_clusters_relevance_score_updated" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v18];
                     v8 = v18;
                     if (!v8)
                     {
                       v17 = 0;
-                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"count_clusters_relevance_to_zero" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v17];
+                      [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"count_clusters_relevance_to_zero" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v17];
                       v8 = v17;
                       if (!v8)
                       {
                         v16 = 0;
-                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"count_clusters_zero_to_relevance" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v16];
+                        [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"count_clusters_zero_to_relevance" binsStart:&unk_28459F078 binsEnd:&unk_28459F120 gap:&unk_28459F0A8 error:&v16];
                         v8 = v16;
                         if (!v8)
                         {
                           v15 = 0;
-                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"footprint_delta" binsStart:&unk_28459F078 binsEnd:&unk_28459F0F0 gap:&unk_28459F0A8 error:&v15];
+                          [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"footprint_delta" binsStart:&unk_28459F078 binsEnd:&unk_28459F0F0 gap:&unk_28459F0A8 error:&v15];
                           v8 = v15;
                           if (!v8)
                           {
                             v14 = 0;
-                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:v6 key:@"time_elapsed" binsStart:&unk_28459F078 binsEnd:&unk_28459F108 gap:&unk_28459F0A8 error:&v14];
+                            [(RTWorkoutMetricsManager *)self _updateNSNumberMetricsData:dataCopy key:@"time_elapsed" binsStart:&unk_28459F078 binsEnd:&unk_28459F108 gap:&unk_28459F0A8 error:&v14];
                             v8 = v14;
                           }
                         }
@@ -1456,10 +1456,10 @@ LABEL_12:
 
     v9 = v8;
     objc_autoreleasePoolPop(v7);
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v9;
+      *error = v9;
     }
 
     v11 = v9 == 0;
@@ -1474,10 +1474,10 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: data", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"data");
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -1489,15 +1489,15 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)_updateNSNumberMetricsData:(id)a3 key:(id)a4 binsStart:(id)a5 binsEnd:(id)a6 gap:(id)a7 error:(id *)a8
+- (BOOL)_updateNSNumberMetricsData:(id)data key:(id)key binsStart:(id)start binsEnd:(id)end gap:(id)gap error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = v17;
-  if (!v13)
+  dataCopy = data;
+  keyCopy = key;
+  startCopy = start;
+  endCopy = end;
+  gapCopy = gap;
+  v18 = gapCopy;
+  if (!dataCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -1506,7 +1506,7 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: data", buf, 2u);
     }
 
-    if (!a8)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -1515,7 +1515,7 @@ LABEL_12:
     goto LABEL_22;
   }
 
-  if (!v15)
+  if (!startCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -1524,7 +1524,7 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: binsStart", v32, 2u);
     }
 
-    if (!a8)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -1533,7 +1533,7 @@ LABEL_12:
     goto LABEL_22;
   }
 
-  if (!v16)
+  if (!endCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -1542,7 +1542,7 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: binsEnd", v31, 2u);
     }
 
-    if (!a8)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -1550,11 +1550,11 @@ LABEL_12:
     v25 = @"binsEnd";
 LABEL_22:
     _RTErrorInvalidParameterCreate(v25);
-    *a8 = v23 = 0;
+    *error = v23 = 0;
     goto LABEL_24;
   }
 
-  if (!v17)
+  if (!gapCopy)
   {
     v28 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -1563,7 +1563,7 @@ LABEL_22:
       _os_log_error_impl(&dword_2304B3000, v28, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: gap", v30, 2u);
     }
 
-    if (a8)
+    if (error)
     {
       v25 = @"gap";
       goto LABEL_22;
@@ -1575,11 +1575,11 @@ LABEL_23:
   }
 
   v19 = objc_autoreleasePoolPush();
-  v20 = [v13 objectForKeyedSubscript:v14];
-  v21 = [RTMetric binsFromStart:v15 toEnd:v16 gap:v18];
+  v20 = [dataCopy objectForKeyedSubscript:keyCopy];
+  v21 = [RTMetric binsFromStart:startCopy toEnd:endCopy gap:v18];
   v22 = [RTMetric binForNumber:v20 bins:v21];
 
-  [v13 setObject:v22 forKeyedSubscript:v14];
+  [dataCopy setObject:v22 forKeyedSubscript:keyCopy];
   objc_autoreleasePoolPop(v19);
   v23 = 1;
 LABEL_24:

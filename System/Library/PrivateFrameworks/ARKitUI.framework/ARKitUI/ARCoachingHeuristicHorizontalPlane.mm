@@ -1,6 +1,6 @@
 @interface ARCoachingHeuristicHorizontalPlane
 - (int64_t)requirements;
-- (void)updateWithFrame:(id)a3 cache:(id)a4;
+- (void)updateWithFrame:(id)frame cache:(id)cache;
 @end
 
 @implementation ARCoachingHeuristicHorizontalPlane
@@ -18,9 +18,9 @@
   }
 }
 
-- (void)updateWithFrame:(id)a3 cache:(id)a4
+- (void)updateWithFrame:(id)frame cache:(id)cache
 {
-  v5 = [a4 hasHorizontalPlane:a3];
+  v5 = [cache hasHorizontalPlane:frame];
 
   [(ARCoachingHeuristic *)self setSatisfied:v5];
 }

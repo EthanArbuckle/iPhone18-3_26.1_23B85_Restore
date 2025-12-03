@@ -1,9 +1,9 @@
 @interface DYBaseSocketTransport
 - (BOOL)connected;
 - (DYBaseSocketTransport)init;
-- (DYBaseSocketTransportSharedMemoryURLs)createNewSharedMemoryTransportWithURLs:(DYBaseSocketTransportSharedMemoryURLs)a3 uniqueIdentifier:(id)a4 loadCapture:(BOOL)a5 loadDiagnostics:(BOOL)a6;
-- (int64_t)_read:(void *)a3 size:(unint64_t)a4;
-- (int64_t)_write:(const void *)a3 size:(unint64_t)a4;
+- (DYBaseSocketTransportSharedMemoryURLs)createNewSharedMemoryTransportWithURLs:(DYBaseSocketTransportSharedMemoryURLs)ls uniqueIdentifier:(id)identifier loadCapture:(BOOL)capture loadDiagnostics:(BOOL)diagnostics;
+- (int64_t)_read:(void *)_read size:(unint64_t)size;
+- (int64_t)_write:(const void *)_write size:(unint64_t)size;
 - (unsigned)_nextMessageSerial;
 - (void)_destroySharedMemoryTransport;
 - (void)_invalidate;
@@ -11,7 +11,7 @@
 - (void)_waitEAGAIN;
 - (void)closeSocketDescriptor;
 - (void)destroySharedMemoryTransport;
-- (void)runWithSocket:(int)a3;
+- (void)runWithSocket:(int)socket;
 - (void)scheduleReadOnWritableSocket;
 @end
 
@@ -24,11 +24,11 @@
   return [(DYBaseStreamTransport *)&v3 init];
 }
 
-- (int64_t)_read:(void *)a3 size:(unint64_t)a4
+- (int64_t)_read:(void *)_read size:(unint64_t)size
 {
   handle = dispatch_source_get_handle(self->_readSource);
 
-  return recv(handle, a3, a4, 0);
+  return recv(handle, _read, size, 0);
 }
 
 - (void)_waitEAGAIN
@@ -38,11 +38,11 @@
   poll(&v2, 1u, 1);
 }
 
-- (int64_t)_write:(const void *)a3 size:(unint64_t)a4
+- (int64_t)_write:(const void *)_write size:(unint64_t)size
 {
   handle = dispatch_source_get_handle(self->_readSource);
 
-  return send(handle, a3, a4, 0);
+  return send(handle, _write, size, 0);
 }
 
 - (void)closeSocketDescriptor
@@ -62,7 +62,7 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)runWithSocket:(int)a3
+- (void)runWithSocket:(int)socket
 {
   if (self->_readSource)
   {
@@ -79,10 +79,10 @@
     [DYBaseSocketTransport runWithSocket:];
   }
 
-  v5 = fcntl(a3, 3);
-  fcntl(a3, 4, v5 | 4u);
-  self->_readSource = dispatch_source_create(MEMORY[0x277D85D28], a3, 0, self->super.super._queue);
-  v6 = dispatch_source_create(MEMORY[0x277D85D50], a3, 0, self->super.super._queue);
+  v5 = fcntl(socket, 3);
+  fcntl(socket, 4, v5 | 4u);
+  self->_readSource = dispatch_source_create(MEMORY[0x277D85D28], socket, 0, self->super.super._queue);
+  v6 = dispatch_source_create(MEMORY[0x277D85D50], socket, 0, self->super.super._queue);
   self->_writeSource = v6;
   readSource = self->_readSource;
   if (!readSource)
@@ -216,7 +216,7 @@ uint64_t __55__DYBaseSocketTransport_setPrioritizeOutgoingMessages___block_invok
   [(DYBaseStreamTransport *)&v4 _invalidate];
 }
 
-- (DYBaseSocketTransportSharedMemoryURLs)createNewSharedMemoryTransportWithURLs:(DYBaseSocketTransportSharedMemoryURLs)a3 uniqueIdentifier:(id)a4 loadCapture:(BOOL)a5 loadDiagnostics:(BOOL)a6
+- (DYBaseSocketTransportSharedMemoryURLs)createNewSharedMemoryTransportWithURLs:(DYBaseSocketTransportSharedMemoryURLs)ls uniqueIdentifier:(id)identifier loadCapture:(BOOL)capture loadDiagnostics:(BOOL)diagnostics
 {
   v21 = 0;
   v22 = &v21;
@@ -235,11 +235,11 @@ uint64_t __55__DYBaseSocketTransport_setPrioritizeOutgoingMessages___block_invok
   block[1] = 3221225472;
   block[2] = __109__DYBaseSocketTransport_createNewSharedMemoryTransportWithURLs_uniqueIdentifier_loadCapture_loadDiagnostics___block_invoke;
   block[3] = &unk_27930C738;
-  v13 = a5;
+  captureCopy = capture;
   block[4] = self;
-  block[5] = a4;
-  v14 = a6;
-  v12 = a3;
+  block[5] = identifier;
+  diagnosticsCopy = diagnostics;
+  lsCopy = ls;
   block[6] = &v21;
   block[7] = &v15;
   dispatch_sync(queue, block);

@@ -1,20 +1,20 @@
 @interface PBHyperlink
-+ (id)readAnimationInfoContainerHolder:(id)a3 presentationState:(id)a4;
-+ (void)readHyperlinksWithPresentationState:(id)a3;
++ (id)readAnimationInfoContainerHolder:(id)holder presentationState:(id)state;
++ (void)readHyperlinksWithPresentationState:(id)state;
 @end
 
 @implementation PBHyperlink
 
-+ (void)readHyperlinksWithPresentationState:(id)a3
++ (void)readHyperlinksWithPresentationState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   OcSummary::OcSummary(v26);
-  v4 = [v3 reader];
-  (*(*v4 + 120))(v4, v26);
-  DocumentRef = PptBinaryReader::getDocumentRef([v3 reader]);
+  reader = [stateCopy reader];
+  (*(*reader + 120))(reader, v26);
+  DocumentRef = PptBinaryReader::getDocumentRef([stateCopy reader]);
   objc_opt_class();
-  v6 = [v3 documentRoot];
-  v7 = [v6 pbReferenceWithID:DocumentRef];
+  documentRoot = [stateCopy documentRoot];
+  v7 = [documentRoot pbReferenceWithID:DocumentRef];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -23,32 +23,32 @@
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 childCount];
-    if (v11 >= 2)
+    childCount = [v9 childCount];
+    if (childCount >= 2)
     {
       v12 = 0;
       v13 = 1;
       v24 = v7;
-      v25 = v3;
+      v25 = stateCopy;
       do
       {
         v14 = [v10 childAt:{v13, v24, v25}];
-        v15 = [v14 eshObject];
-        if ((*(*v15 + 16))(v15) == 4055)
+        eshObject = [v14 eshObject];
+        if ((*(*eshObject + 16))(eshObject) == 4055)
         {
           v16 = [v14 firstChildOfType:4051];
           v17 = v16;
           if (v16)
           {
-            v18 = [v16 eshObject];
-            if (v18)
+            eshObject2 = [v16 eshObject];
+            if (eshObject2)
             {
               if (v19)
               {
                 if (v12 < ((v28 - v27) >> 3))
                 {
                   v20 = *(v27 + 8 * v12);
-                  v21 = [v3 hyperlinkInfoWithId:v19[12] createIfAbsent:1];
+                  v21 = [stateCopy hyperlinkInfoWithId:v19[12] createIfAbsent:1];
                   if (*(v20 + 40))
                   {
                     v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCsString:v20 + 24];
@@ -62,7 +62,7 @@
                   }
 
                   v7 = v24;
-                  v3 = v25;
+                  stateCopy = v25;
                 }
 
                 ++v12;
@@ -74,35 +74,35 @@
         ++v13;
       }
 
-      while (v11 != v13);
+      while (childCount != v13);
     }
   }
 
   OcSummary::~OcSummary(v26);
 }
 
-+ (id)readAnimationInfoContainerHolder:(id)a3 presentationState:(id)a4
++ (id)readAnimationInfoContainerHolder:(id)holder presentationState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 firstChildOfType:4083];
-  v8 = [v7 eshObject];
+  holderCopy = holder;
+  stateCopy = state;
+  v7 = [holderCopy firstChildOfType:4083];
+  eshObject = [v7 eshObject];
 
-  if (!v8)
+  if (!eshObject)
   {
     v13 = 0;
     goto LABEL_48;
   }
 
-  v32 = v6;
-  v9 = [v6 hyperlinkInfoWithId:*(v8 + 52) createIfAbsent:0];
-  v31 = [v9 screenTip];
-  v33 = [v9 hyperlink1];
-  v10 = [v9 hyperlink2];
-  v11 = *(v8 + 56);
+  v32 = stateCopy;
+  v9 = [stateCopy hyperlinkInfoWithId:*(eshObject + 52) createIfAbsent:0];
+  screenTip = [v9 screenTip];
+  hyperlink1 = [v9 hyperlink1];
+  hyperlink2 = [v9 hyperlink2];
+  v11 = *(eshObject + 56);
   if (v11 == 4)
   {
-    v12 = *(v8 + 72);
+    v12 = *(eshObject + 72);
   }
 
   else
@@ -110,18 +110,18 @@
     v12 = 255;
   }
 
-  v14 = *(v8 + 64);
-  v30 = v10;
-  v15 = [v10 componentsSeparatedByString:{@", "}];
+  v14 = *(eshObject + 64);
+  v30 = hyperlink2;
+  v15 = [hyperlink2 componentsSeparatedByString:{@", "}];
   if ([v15 count] < 2)
   {
-    v17 = 0;
+    intValue = 0;
   }
 
   else
   {
     v16 = [v15 objectAtIndex:1];
-    v17 = [v16 intValue];
+    intValue = [v16 intValue];
 
     if ([v15 count] >= 3)
     {
@@ -140,7 +140,7 @@ LABEL_11:
     {
       v20 = 0;
       v21 = v11 == 3;
-      v22 = v31;
+      v22 = screenTip;
       if (!v21)
       {
         goto LABEL_44;
@@ -165,15 +165,15 @@ LABEL_33:
     {
       v18 = 0;
       v20 = 0;
-      v22 = v31;
+      v22 = screenTip;
       goto LABEL_44;
     }
 
-    v22 = v31;
-    v25 = [v5 childOfType:4026 instance:2];
-    v26 = [v25 eshObject];
+    v22 = screenTip;
+    v25 = [holderCopy childOfType:4026 instance:2];
+    eshObject2 = [v25 eshObject];
 
-    if (!v26 || !*(v26 + 64))
+    if (!eshObject2 || !*(eshObject2 + 64))
     {
       v18 = 0;
       v20 = 0;
@@ -181,7 +181,7 @@ LABEL_33:
       goto LABEL_44;
     }
 
-    v27 = [MEMORY[0x277CCACA8] stringWithCsString:v26 + 48];
+    v27 = [MEMORY[0x277CCACA8] stringWithCsString:eshObject2 + 48];
     v23 = [MEMORY[0x277CBEBC0] fileURLWithPath:v27];
 
     v19 = 1;
@@ -194,8 +194,8 @@ LABEL_46:
     [(OADHyperlink *)v13 setAction:v24];
     [(OADHyperlink *)v13 setTooltip:v22];
     [(OADHyperlink *)v13 setInvalidUrl:0];
-    [(OADHyperlink *)v13 setDoEndSound:*(v8 + 69)];
-    [(OADHyperlink *)v13 setIsVisited:*(v8 + 71)];
+    [(OADHyperlink *)v13 setDoEndSound:*(eshObject + 69)];
+    [(OADHyperlink *)v13 setIsVisited:*(eshObject + 71)];
     [(OADHyperlink *)v13 setDoAddToHistory:1];
 
     goto LABEL_47;
@@ -206,11 +206,11 @@ LABEL_46:
     v18 = 0;
     if (v12 > 8)
     {
-      v22 = v31;
+      v22 = screenTip;
       if (v12 == 9)
       {
-        v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"ppaction://hlinkpres?slideindex=%d&slidetitle=%@", v17, v34];
-        v18 = [MEMORY[0x277CBEBC0] URLWithString:v33];
+        v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"ppaction://hlinkpres?slideindex=%d&slidetitle=%@", intValue, v34];
+        v18 = [MEMORY[0x277CBEBC0] URLWithString:hyperlink1];
         goto LABEL_44;
       }
 
@@ -221,15 +221,15 @@ LABEL_46:
       }
 
       v24 = @"ppaction://hlinkfile";
-      v23 = [MEMORY[0x277CBEBC0] URLWithString:v33];
+      v23 = [MEMORY[0x277CBEBC0] URLWithString:hyperlink1];
       goto LABEL_46;
     }
 
-    v22 = v31;
+    v22 = screenTip;
     if (v12 == 7)
     {
       v18 = 0;
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"ppaction://hlinksldjump?slideindex=%d", v17];
+      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"ppaction://hlinksldjump?slideindex=%d", intValue];
       goto LABEL_42;
     }
 
@@ -239,7 +239,7 @@ LABEL_46:
       goto LABEL_44;
     }
 
-    if (v33)
+    if (hyperlink1)
     {
       v23 = [MEMORY[0x277CBEBC0] URLWithString:?];
       if (v23)
@@ -248,8 +248,8 @@ LABEL_46:
         goto LABEL_46;
       }
 
-      v29 = [v33 tc_escapedPath];
-      v18 = [MEMORY[0x277CBEBC0] URLWithString:v29];
+      tc_escapedPath = [hyperlink1 tc_escapedPath];
+      v18 = [MEMORY[0x277CBEBC0] URLWithString:tc_escapedPath];
 
       goto LABEL_33;
     }
@@ -261,7 +261,7 @@ LABEL_31:
 
   v20 = 0;
   v21 = v11 == 7;
-  v22 = v31;
+  v22 = screenTip;
   if (v21)
   {
     if (v12 == 6 && [(__CFString *)v34 length])
@@ -287,7 +287,7 @@ LABEL_44:
   v13 = 0;
 LABEL_47:
 
-  v6 = v32;
+  stateCopy = v32;
 LABEL_48:
 
   return v13;

@@ -6,7 +6,7 @@
 
 - (uint64_t)toolKitToolCoercionDefinitionDirection
 {
-  LODWORD(result) = [a1 uint32Value];
+  LODWORD(result) = [self uint32Value];
   if (result >= 2)
   {
     return 0;

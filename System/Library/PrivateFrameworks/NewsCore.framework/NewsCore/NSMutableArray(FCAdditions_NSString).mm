@@ -9,7 +9,7 @@
   v4 = a3;
   if ([v4 length])
   {
-    [a1 addObject:v4];
+    [self addObject:v4];
   }
 }
 

@@ -1,17 +1,17 @@
 @interface IDSCertifiedDeliveryReplayKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToReplayKey:(id)a3;
-- (IDSCertifiedDeliveryReplayKey)initWithCoder:(id)a3;
-- (IDSCertifiedDeliveryReplayKey)initWithHash:(id)a3;
-- (IDSCertifiedDeliveryReplayKey)initWithPayload:(id)a3 legacyIdentity:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToReplayKey:(id)key;
+- (IDSCertifiedDeliveryReplayKey)initWithCoder:(id)coder;
+- (IDSCertifiedDeliveryReplayKey)initWithHash:(id)hash;
+- (IDSCertifiedDeliveryReplayKey)initWithPayload:(id)payload legacyIdentity:(id)identity;
 @end
 
 @implementation IDSCertifiedDeliveryReplayKey
 
-- (IDSCertifiedDeliveryReplayKey)initWithPayload:(id)a3 legacyIdentity:(id)a4
+- (IDSCertifiedDeliveryReplayKey)initWithPayload:(id)payload legacyIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  identityCopy = identity;
   v17.receiver = self;
   v17.super_class = IDSCertifiedDeliveryReplayKey;
   v8 = [(IDSCertifiedDeliveryReplayKey *)&v17 init];
@@ -20,16 +20,16 @@
     goto LABEL_7;
   }
 
-  if (v7)
+  if (identityCopy)
   {
     v16 = 0;
-    v9 = [v7 protectedHashOfMessageData:v6 error:&v16];
+    v9 = [identityCopy protectedHashOfMessageData:payloadCopy error:&v16];
     v10 = v16;
   }
 
   else
   {
-    v9 = [IDSNGMMessageHasher computeHashForMessage:v6];
+    v9 = [IDSNGMMessageHasher computeHashForMessage:payloadCopy];
     v10 = 0;
   }
 
@@ -48,7 +48,7 @@ LABEL_7:
   v14 = +[IDSFoundationLog delivery];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
   {
-    sub_1A7E1AAF4(v7 == 0, v10, v14);
+    sub_1A7E1AAF4(identityCopy == 0, v10, v14);
   }
 
   v13 = 0;
@@ -57,22 +57,22 @@ LABEL_11:
   return v13;
 }
 
-- (IDSCertifiedDeliveryReplayKey)initWithHash:(id)a3
+- (IDSCertifiedDeliveryReplayKey)initWithHash:(id)hash
 {
-  v5 = a3;
+  hashCopy = hash;
   v10.receiver = self;
   v10.super_class = IDSCertifiedDeliveryReplayKey;
   v6 = [(IDSCertifiedDeliveryReplayKey *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    if (!v5)
+    if (!hashCopy)
     {
       v8 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v6->_payloadHash, a3);
+    objc_storeStrong(&v6->_payloadHash, hash);
   }
 
   v8 = v7;
@@ -81,27 +81,27 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)isEqualToReplayKey:(id)a3
+- (BOOL)isEqualToReplayKey:(id)key
 {
-  v4 = [a3 payloadHash];
-  LOBYTE(self) = [v4 isEqual:self->_payloadHash];
+  payloadHash = [key payloadHash];
+  LOBYTE(self) = [payloadHash isEqual:self->_payloadHash];
 
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSCertifiedDeliveryReplayKey *)self isEqualToReplayKey:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSCertifiedDeliveryReplayKey *)self isEqualToReplayKey:equalCopy];
 
   return v5;
 }
 
-- (IDSCertifiedDeliveryReplayKey)initWithCoder:(id)a3
+- (IDSCertifiedDeliveryReplayKey)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hash"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hash"];
 
   v6 = [(IDSCertifiedDeliveryReplayKey *)self initWithHash:v5];
   return v6;

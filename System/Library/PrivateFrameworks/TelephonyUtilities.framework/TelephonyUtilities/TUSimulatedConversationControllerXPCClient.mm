@@ -4,14 +4,14 @@
 + (id)simulatedConversationControllerAllowedClasses;
 - (NSXPCConnection)xpcConnection;
 - (TUSimulatedConversationControllerXPCClient)init;
-- (id)asynchronousServerWithErrorHandler:(id)a3;
-- (id)synchronousServerWithErrorHandler:(id)a3;
-- (void)addRemoteParticipantWithHandle:(id)a3 update:(id)a4 toConversation:(id)a5;
-- (void)createIncomingConversationWithHandles:(id)a3;
+- (id)asynchronousServerWithErrorHandler:(id)handler;
+- (id)synchronousServerWithErrorHandler:(id)handler;
+- (void)addRemoteParticipantWithHandle:(id)handle update:(id)update toConversation:(id)conversation;
+- (void)createIncomingConversationWithHandles:(id)handles;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeRemoteParticipant:(id)a3 fromConversation:(id)a4;
-- (void)updateParticipant:(id)a3 withUpdate:(id)a4 onConversation:(id)a5;
+- (void)removeRemoteParticipant:(id)participant fromConversation:(id)conversation;
+- (void)updateParticipant:(id)participant withUpdate:(id)update onConversation:(id)conversation;
 @end
 
 @implementation TUSimulatedConversationControllerXPCClient
@@ -46,15 +46,15 @@
   [(TUSimulatedConversationControllerXPCClient *)&v3 dealloc];
 }
 
-- (void)updateParticipant:(id)a3 withUpdate:(id)a4 onConversation:(id)a5
+- (void)updateParticipant:(id)participant withUpdate:(id)update onConversation:(id)conversation
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  conversationCopy = conversation;
+  updateCopy = update;
+  participantCopy = participant;
   v12 = [(TUSimulatedConversationControllerXPCClient *)self asynchronousServerWithErrorHandler:&__block_literal_global_12];
-  v11 = [v8 groupUUID];
+  groupUUID = [conversationCopy groupUUID];
 
-  [v12 updateParticipant:v10 withUpdate:v9 onConversationWithGroupUUID:v11];
+  [v12 updateParticipant:participantCopy withUpdate:updateCopy onConversationWithGroupUUID:groupUUID];
 }
 
 void __90__TUSimulatedConversationControllerXPCClient_updateParticipant_withUpdate_onConversation___block_invoke(uint64_t a1, void *a2)
@@ -72,15 +72,15 @@ void __90__TUSimulatedConversationControllerXPCClient_updateParticipant_withUpda
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addRemoteParticipantWithHandle:(id)a3 update:(id)a4 toConversation:(id)a5
+- (void)addRemoteParticipantWithHandle:(id)handle update:(id)update toConversation:(id)conversation
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  conversationCopy = conversation;
+  updateCopy = update;
+  handleCopy = handle;
   v12 = [(TUSimulatedConversationControllerXPCClient *)self asynchronousServerWithErrorHandler:&__block_literal_global_5];
-  v11 = [v8 groupUUID];
+  groupUUID = [conversationCopy groupUUID];
 
-  [v12 addRemoteParticipantWithHandle:v10 update:v9 toConversationWithGroupUUID:v11];
+  [v12 addRemoteParticipantWithHandle:handleCopy update:updateCopy toConversationWithGroupUUID:groupUUID];
 }
 
 void __99__TUSimulatedConversationControllerXPCClient_addRemoteParticipantWithHandle_update_toConversation___block_invoke(uint64_t a1, void *a2)
@@ -98,14 +98,14 @@ void __99__TUSimulatedConversationControllerXPCClient_addRemoteParticipantWithHa
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeRemoteParticipant:(id)a3 fromConversation:(id)a4
+- (void)removeRemoteParticipant:(id)participant fromConversation:(id)conversation
 {
-  v6 = a4;
-  v7 = a3;
+  conversationCopy = conversation;
+  participantCopy = participant;
   v9 = [(TUSimulatedConversationControllerXPCClient *)self asynchronousServerWithErrorHandler:&__block_literal_global_7];
-  v8 = [v6 groupUUID];
+  groupUUID = [conversationCopy groupUUID];
 
-  [v9 removeRemoteParticipant:v7 fromConversationWithGroupUUID:v8];
+  [v9 removeRemoteParticipant:participantCopy fromConversationWithGroupUUID:groupUUID];
 }
 
 void __87__TUSimulatedConversationControllerXPCClient_removeRemoteParticipant_fromConversation___block_invoke(uint64_t a1, void *a2)
@@ -123,11 +123,11 @@ void __87__TUSimulatedConversationControllerXPCClient_removeRemoteParticipant_fr
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createIncomingConversationWithHandles:(id)a3
+- (void)createIncomingConversationWithHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   v5 = [(TUSimulatedConversationControllerXPCClient *)self asynchronousServerWithErrorHandler:&__block_literal_global_9];
-  [v5 createIncomingConversationWithHandles:v4];
+  [v5 createIncomingConversationWithHandles:handlesCopy];
 }
 
 void __84__TUSimulatedConversationControllerXPCClient_createIncomingConversationWithHandles___block_invoke(uint64_t a1, void *a2)
@@ -148,13 +148,13 @@ void __84__TUSimulatedConversationControllerXPCClient_createIncomingConversation
 - (void)invalidate
 {
   objc_initWeak(&location, self);
-  v3 = [(TUSimulatedConversationControllerXPCClient *)self queue];
+  queue = [(TUSimulatedConversationControllerXPCClient *)self queue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __56__TUSimulatedConversationControllerXPCClient_invalidate__block_invoke;
   v4[3] = &unk_1E7424998;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(queue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -173,13 +173,13 @@ void __56__TUSimulatedConversationControllerXPCClient_invalidate__block_invoke(u
 
 - (NSXPCConnection)xpcConnection
 {
-  v3 = [(TUSimulatedConversationControllerXPCClient *)self queue];
+  queue = [(TUSimulatedConversationControllerXPCClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__TUSimulatedConversationControllerXPCClient_xpcConnection__block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 
   return self->_xpcConnection;
 }
@@ -287,20 +287,20 @@ uint64_t __59__TUSimulatedConversationControllerXPCClient_xpcConnection__block_i
   return [*(*(a1 + 32) + 8) invalidate];
 }
 
-- (id)asynchronousServerWithErrorHandler:(id)a3
+- (id)asynchronousServerWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TUSimulatedConversationControllerXPCClient *)self xpcConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  xpcConnection = [(TUSimulatedConversationControllerXPCClient *)self xpcConnection];
+  v6 = [xpcConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)synchronousServerWithErrorHandler:(id)a3
+- (id)synchronousServerWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TUSimulatedConversationControllerXPCClient *)self xpcConnection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  xpcConnection = [(TUSimulatedConversationControllerXPCClient *)self xpcConnection];
+  v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
@@ -343,7 +343,7 @@ uint64_t __95__TUSimulatedConversationControllerXPCClient_simulatedConversationC
   block[1] = 3221225472;
   block[2] = __95__TUSimulatedConversationControllerXPCClient_simulatedConversationControllerServerXPCInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (simulatedConversationControllerServerXPCInterface_onceToken != -1)
   {
     dispatch_once(&simulatedConversationControllerServerXPCInterface_onceToken, block);

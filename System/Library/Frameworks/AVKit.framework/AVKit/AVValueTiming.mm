@@ -1,22 +1,22 @@
 @interface AVValueTiming
-+ (AVValueTiming)allocWithZone:(_NSZone *)a3;
-+ (AVValueTiming)valueTimingWithAnchorValue:(double)a3 anchorTimeStamp:(double)a4 rate:(double)a5;
++ (AVValueTiming)allocWithZone:(_NSZone *)zone;
++ (AVValueTiming)valueTimingWithAnchorValue:(double)value anchorTimeStamp:(double)stamp rate:(double)rate;
 + (double)currentTimeStamp;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_timing;
-- (AVValueTiming)initWithAnchorValue:(double)a3 anchorTimeStamp:(double)a4 rate:(double)a5;
-- (AVValueTiming)initWithCoder:(id)a3;
-- (AVValueTiming)initWithValueTiming:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToValueTiming:(id)a3;
+- (AVValueTiming)initWithAnchorValue:(double)value anchorTimeStamp:(double)stamp rate:(double)rate;
+- (AVValueTiming)initWithCoder:(id)coder;
+- (AVValueTiming)initWithValueTiming:(id)timing;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToValueTiming:(id)timing;
 - (double)anchorTimeStamp;
 - (double)anchorValue;
 - (double)currentValue;
 - (double)rate;
-- (double)timeStampForValue:(double)a3;
-- (double)valueForTimeStamp:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (double)timeStampForValue:(double)value;
+- (double)valueForTimeStamp:(double)stamp;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVValueTiming
@@ -62,66 +62,66 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(AVValueTiming *)self anchorValue];
-  [v4 encodeDouble:@"value" forKey:?];
+  [coderCopy encodeDouble:@"value" forKey:?];
   [(AVValueTiming *)self anchorTimeStamp];
-  [v4 encodeDouble:@"time stamp" forKey:?];
+  [coderCopy encodeDouble:@"time stamp" forKey:?];
   [(AVValueTiming *)self rate];
-  [v4 encodeDouble:@"rate" forKey:?];
+  [coderCopy encodeDouble:@"rate" forKey:?];
 }
 
-- (AVValueTiming)initWithCoder:(id)a3
+- (AVValueTiming)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"value"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"value"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"time stamp"];
+  [coderCopy decodeDoubleForKey:@"time stamp"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"rate"];
+  [coderCopy decodeDoubleForKey:@"rate"];
   v10 = v9;
 
   return [(AVValueTiming *)self initWithAnchorValue:v6 anchorTimeStamp:v8 rate:v10];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [AVMutableValueTiming allocWithZone:a3];
+  v4 = [AVMutableValueTiming allocWithZone:zone];
 
   return [(AVValueTiming *)v4 initWithValueTiming:self];
 }
 
-+ (AVValueTiming)allocWithZone:(_NSZone *)a3
++ (AVValueTiming)allocWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_self();
 
-  if (v5 == a1)
+  if (v5 == self)
   {
 
-    return [(AVValueTiming *)AVConcreteValueTiming allocWithZone:a3];
+    return [(AVValueTiming *)AVConcreteValueTiming allocWithZone:zone];
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___AVValueTiming;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [AVValueTiming allocWithZone:a3];
+  v4 = [AVValueTiming allocWithZone:zone];
 
   return [(AVValueTiming *)v4 initWithValueTiming:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -129,26 +129,26 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AVValueTiming *)self isEqualToValueTiming:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AVValueTiming *)self isEqualToValueTiming:equalCopy];
   }
 
   return v5;
 }
 
-- (AVValueTiming)initWithValueTiming:(id)a3
+- (AVValueTiming)initWithValueTiming:(id)timing
 {
-  v4 = a3;
-  [v4 anchorValue];
+  timingCopy = timing;
+  [timingCopy anchorValue];
   v6 = v5;
-  [v4 anchorTimeStamp];
+  [timingCopy anchorTimeStamp];
   v8 = v7;
-  [v4 rate];
+  [timingCopy rate];
   v10 = v9;
 
   return [(AVValueTiming *)self initWithAnchorValue:v6 anchorTimeStamp:v8 rate:v10];
 }
 
-- (AVValueTiming)initWithAnchorValue:(double)a3 anchorTimeStamp:(double)a4 rate:(double)a5
+- (AVValueTiming)initWithAnchorValue:(double)value anchorTimeStamp:(double)stamp rate:(double)rate
 {
   v6 = MEMORY[0x1E695DF30];
   v7 = *MEMORY[0x1E695D940];
@@ -160,15 +160,15 @@
   return 0;
 }
 
-- (BOOL)isEqualToValueTiming:(id)a3
+- (BOOL)isEqualToValueTiming:(id)timing
 {
-  v4 = a3;
-  if (v4)
+  timingCopy = timing;
+  if (timingCopy)
   {
     [(AVValueTiming *)self _timing];
     v6 = v5;
     v8 = v7;
-    [v4 _timing];
+    [timingCopy _timing];
     v10 = v6 == v9;
     if (v8 != v11)
     {
@@ -186,12 +186,12 @@
   return v12;
 }
 
-- (double)timeStampForValue:(double)a3
+- (double)timeStampForValue:(double)value
 {
   [(AVValueTiming *)self _timing];
   v5 = v4 == 0.0;
-  v7 = v6 + a3 / v4;
-  result = 0.0 / (a3 - v6);
+  v7 = v6 + value / v4;
+  result = 0.0 / (value - v6);
   if (!v5)
   {
     return v7;
@@ -200,12 +200,12 @@
   return result;
 }
 
-- (double)valueForTimeStamp:(double)a3
+- (double)valueForTimeStamp:(double)stamp
 {
   [(AVValueTiming *)self _timing];
   if (v5 != 0.0)
   {
-    return v5 * (a3 - result);
+    return v5 * (stamp - result);
   }
 
   return result;
@@ -219,17 +219,17 @@
   return result;
 }
 
-+ (AVValueTiming)valueTimingWithAnchorValue:(double)a3 anchorTimeStamp:(double)a4 rate:(double)a5
++ (AVValueTiming)valueTimingWithAnchorValue:(double)value anchorTimeStamp:(double)stamp rate:(double)rate
 {
-  v5 = [[a1 alloc] initWithAnchorValue:a3 anchorTimeStamp:a4 rate:a5];
+  v5 = [[self alloc] initWithAnchorValue:value anchorTimeStamp:stamp rate:rate];
 
   return v5;
 }
 
 + (double)currentTimeStamp
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  [v2 systemUptime];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  [processInfo systemUptime];
   v4 = v3;
 
   return v4;

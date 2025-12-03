@@ -1,58 +1,58 @@
 @interface PGGraphIngestRecipe
 - (NSArray)highlightsToIngest;
 - (NSArray)momentsToIngest;
-- (PGGraphIngestRecipe)initWithPhotoLibrary:(id)a3;
+- (PGGraphIngestRecipe)initWithPhotoLibrary:(id)library;
 - (id)_highlightsForLibraryAnalysis;
 - (id)_momentsForLibraryAnalysis;
-- (id)defaultPostprocessorsWithGraphBuilder:(id)a3;
-- (id)defaultPreprocessorsWithGraphBuilder:(id)a3;
+- (id)defaultPostprocessorsWithGraphBuilder:(id)builder;
+- (id)defaultPreprocessorsWithGraphBuilder:(id)builder;
 @end
 
 @implementation PGGraphIngestRecipe
 
-- (id)defaultPostprocessorsWithGraphBuilder:(id)a3
+- (id)defaultPostprocessorsWithGraphBuilder:(id)builder
 {
   v27[20] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v26 = [[PGGraphIngestHomeWorkProcessor alloc] initWithGraphBuilder:v3];
+  builderCopy = builder;
+  v26 = [[PGGraphIngestHomeWorkProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[0] = v26;
-  v25 = [[PGGraphIngestLocationDisambiguationProcessor alloc] initWithGraphBuilder:v3];
+  v25 = [[PGGraphIngestLocationDisambiguationProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[1] = v25;
-  v24 = [[PGGraphIngestFrequentLocationProcessor alloc] initWithGraphBuilder:v3];
+  v24 = [[PGGraphIngestFrequentLocationProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[2] = v24;
-  v23 = [[PGGraphIngestPointsOfInterestProcessor alloc] initWithGraphBuilder:v3];
+  v23 = [[PGGraphIngestPointsOfInterestProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[3] = v23;
-  v22 = [[PGGraphIngestLocationsOfInterestProcessor alloc] initWithGraphBuilder:v3];
+  v22 = [[PGGraphIngestLocationsOfInterestProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[4] = v22;
-  v21 = [[PGGraphIngestPublicEventsProcessor alloc] initWithGraphBuilder:v3];
+  v21 = [[PGGraphIngestPublicEventsProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[5] = v21;
-  v20 = [[PGGraphIngestBusinessProcessor alloc] initWithGraphBuilder:v3];
+  v20 = [[PGGraphIngestBusinessProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[6] = v20;
-  v19 = [[PGGraphIngestNextEdgesProcessor alloc] initWithGraphBuilder:v3];
+  v19 = [[PGGraphIngestNextEdgesProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[7] = v19;
-  v18 = [[PGGraphRelationshipTaggingProcessor alloc] initWithGraphBuilder:v3];
+  v18 = [[PGGraphRelationshipTaggingProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[8] = v18;
-  v17 = [[PGGraphIngestSocialGroupsProcessor alloc] initWithGraphBuilder:v3];
+  v17 = [[PGGraphIngestSocialGroupsProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[9] = v17;
-  v16 = [[PGGraphIngestAOIBlockingProcessor alloc] initWithGraphBuilder:v3];
+  v16 = [[PGGraphIngestAOIBlockingProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[10] = v16;
-  v4 = [[PGGraphIngestHolidaysProcessor alloc] initWithGraphBuilder:v3];
+  v4 = [[PGGraphIngestHolidaysProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[11] = v4;
-  v5 = [[PGGraphIngestMeaningfulEventsProcessor alloc] initWithGraphBuilder:v3];
+  v5 = [[PGGraphIngestMeaningfulEventsProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[12] = v5;
-  v6 = [[PGGraphIngestPersonAgeCategoryProcessor alloc] initWithGraphBuilder:v3];
+  v6 = [[PGGraphIngestPersonAgeCategoryProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[13] = v6;
-  v7 = [[PGGraphIngestPersonBiologicalSexProcessor alloc] initWithGraphBuilder:v3];
+  v7 = [[PGGraphIngestPersonBiologicalSexProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[14] = v7;
-  v8 = [[PGGraphIngestRelationshipProcessor alloc] initWithGraphBuilder:v3];
+  v8 = [[PGGraphIngestRelationshipProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[15] = v8;
-  v9 = [[PGGraphIngestPetProcessor alloc] initWithGraphBuilder:v3];
+  v9 = [[PGGraphIngestPetProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[16] = v9;
-  v10 = [[PGGraphIngestEventLabelingProcessor alloc] initWithGraphBuilder:v3];
+  v10 = [[PGGraphIngestEventLabelingProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[17] = v10;
-  v11 = [[PGGraphIngestTripProcessor alloc] initWithGraphBuilder:v3];
+  v11 = [[PGGraphIngestTripProcessor alloc] initWithGraphBuilder:builderCopy];
   v27[18] = v11;
-  v12 = [[PGGraphIngestMemoryProcessor alloc] initWithGraphBuilder:v3];
+  v12 = [[PGGraphIngestMemoryProcessor alloc] initWithGraphBuilder:builderCopy];
 
   v27[19] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:20];
@@ -62,14 +62,14 @@
   return v13;
 }
 
-- (id)defaultPreprocessorsWithGraphBuilder:(id)a3
+- (id)defaultPreprocessorsWithGraphBuilder:(id)builder
 {
   v10[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [[PGGraphIngestPrefetchEventProcessor alloc] initWithGraphBuilder:v3];
-  v5 = [[PGGraphIngestPrefetchPeopleProcessor alloc] initWithGraphBuilder:v3, v4];
+  builderCopy = builder;
+  v4 = [[PGGraphIngestPrefetchEventProcessor alloc] initWithGraphBuilder:builderCopy];
+  v5 = [[PGGraphIngestPrefetchPeopleProcessor alloc] initWithGraphBuilder:builderCopy, v4];
   v10[1] = v5;
-  v6 = [[PGGraphIngestPrefetchLocationProcessor alloc] initWithGraphBuilder:v3];
+  v6 = [[PGGraphIngestPrefetchLocationProcessor alloc] initWithGraphBuilder:builderCopy];
 
   v10[2] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:3];
@@ -82,7 +82,7 @@
 - (id)_highlightsForLibraryAnalysis
 {
   v14[3] = *MEMORY[0x277D85DE8];
-  v2 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"startDate" ascending:0];
   v14[0] = v3;
   v4 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"endDate" ascending:0];
@@ -90,15 +90,15 @@
   v5 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:1];
   v14[2] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:3];
-  [v2 setSortDescriptors:v6];
+  [librarySpecificFetchOptions setSortDescriptors:v6];
 
   v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"kind = %ld || kind = %ld", 0, 3];
-  [v2 setPredicate:v7];
+  [librarySpecificFetchOptions setPredicate:v7];
 
-  v8 = [MEMORY[0x277CD9958] fetchHighlightsWithOptions:v2];
+  v8 = [MEMORY[0x277CD9958] fetchHighlightsWithOptions:librarySpecificFetchOptions];
   v9 = MEMORY[0x277CBEA60];
-  v10 = [v8 fetchedObjects];
-  v11 = [v9 arrayWithArray:v10];
+  fetchedObjects = [v8 fetchedObjects];
+  v11 = [v9 arrayWithArray:fetchedObjects];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -108,7 +108,7 @@
 - (id)_momentsForLibraryAnalysis
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v2 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"startDate" ascending:0];
   v21[0] = v3;
   v4 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"endDate" ascending:0];
@@ -116,9 +116,9 @@
   v5 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:1];
   v21[2] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:3];
-  [v2 setSortDescriptors:v6];
+  [librarySpecificFetchOptions setSortDescriptors:v6];
 
-  v7 = [MEMORY[0x277CD97B8] fetchMomentsWithOptions:v2];
+  v7 = [MEMORY[0x277CD97B8] fetchMomentsWithOptions:librarySpecificFetchOptions];
   v8 = [objc_alloc(MEMORY[0x277CCAA78]) initWithIndexesInRange:{0, objc_msgSend(v7, "count")}];
   v9 = [v8 mutableCopy];
   v15 = MEMORY[0x277D85DD0];
@@ -151,9 +151,9 @@ void __49__PGGraphIngestRecipe__momentsForLibraryAnalysis__block_invoke(uint64_t
   highlightsToIngest = self->_highlightsToIngest;
   if (!highlightsToIngest)
   {
-    v4 = [(PGGraphIngestRecipe *)self _highlightsForLibraryAnalysis];
+    _highlightsForLibraryAnalysis = [(PGGraphIngestRecipe *)self _highlightsForLibraryAnalysis];
     v5 = self->_highlightsToIngest;
-    self->_highlightsToIngest = v4;
+    self->_highlightsToIngest = _highlightsForLibraryAnalysis;
 
     highlightsToIngest = self->_highlightsToIngest;
   }
@@ -166,9 +166,9 @@ void __49__PGGraphIngestRecipe__momentsForLibraryAnalysis__block_invoke(uint64_t
   momentsToIngest = self->_momentsToIngest;
   if (!momentsToIngest)
   {
-    v4 = [(PGGraphIngestRecipe *)self _momentsForLibraryAnalysis];
+    _momentsForLibraryAnalysis = [(PGGraphIngestRecipe *)self _momentsForLibraryAnalysis];
     v5 = self->_momentsToIngest;
-    self->_momentsToIngest = v4;
+    self->_momentsToIngest = _momentsForLibraryAnalysis;
 
     momentsToIngest = self->_momentsToIngest;
   }
@@ -176,16 +176,16 @@ void __49__PGGraphIngestRecipe__momentsForLibraryAnalysis__block_invoke(uint64_t
   return momentsToIngest;
 }
 
-- (PGGraphIngestRecipe)initWithPhotoLibrary:(id)a3
+- (PGGraphIngestRecipe)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v9.receiver = self;
   v9.super_class = PGGraphIngestRecipe;
   v6 = [(PGGraphIngestRecipe *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
+    objc_storeStrong(&v6->_photoLibrary, library);
   }
 
   return v7;

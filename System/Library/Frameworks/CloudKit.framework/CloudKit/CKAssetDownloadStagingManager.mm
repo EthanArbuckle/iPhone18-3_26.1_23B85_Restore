@@ -1,29 +1,29 @@
 @interface CKAssetDownloadStagingManager
-- (BOOL)finishWithAssetDownloadStagingInfo:(id)a3 fileURL:(id *)a4 fileHandle:(id *)a5 error:(id *)a6;
+- (BOOL)finishWithAssetDownloadStagingInfo:(id)info fileURL:(id *)l fileHandle:(id *)handle error:(id *)error;
 - (BOOL)keepInflightFilesOpen;
-- (BOOL)openWithAssetDownloadStagingInfo:(id)a3 fileDescriptor:(int *)a4 closeOnDealloc:(BOOL *)a5 error:(id *)a6;
-- (CKAssetDownloadStagingManager)initWithDirectory:(id)a3;
-- (id)finishedURLWithInfo:(id)a3;
-- (id)inflightLastPathComponentWithInfo:(id)a3;
-- (id)inflightURLWithLastPathComponent:(id)a3;
-- (void)CKDescribePropertiesUsing:(id)a3;
-- (void)setKeepInflightFilesOpen:(BOOL)a3;
+- (BOOL)openWithAssetDownloadStagingInfo:(id)info fileDescriptor:(int *)descriptor closeOnDealloc:(BOOL *)dealloc error:(id *)error;
+- (CKAssetDownloadStagingManager)initWithDirectory:(id)directory;
+- (id)finishedURLWithInfo:(id)info;
+- (id)inflightLastPathComponentWithInfo:(id)info;
+- (id)inflightURLWithLastPathComponent:(id)component;
+- (void)CKDescribePropertiesUsing:(id)using;
+- (void)setKeepInflightFilesOpen:(BOOL)open;
 @end
 
 @implementation CKAssetDownloadStagingManager
 
-- (CKAssetDownloadStagingManager)initWithDirectory:(id)a3
+- (CKAssetDownloadStagingManager)initWithDirectory:(id)directory
 {
-  v5 = a3;
-  if (!v5)
+  directoryCopy = directory;
+  if (!directoryCopy)
   {
     v19 = [CKException alloc];
     v21 = objc_msgSend_initWithCode_format_(v19, v20, 12, @"Missing root directory");
     goto LABEL_14;
   }
 
-  v7 = v5;
-  v8 = objc_msgSend_URLByAppendingPathComponent_(v5, v6, @"inflight");
+  v7 = directoryCopy;
+  v8 = objc_msgSend_URLByAppendingPathComponent_(directoryCopy, v6, @"inflight");
   if (!v8)
   {
     v22 = [CKException alloc];
@@ -62,7 +62,7 @@ LABEL_14:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_directory, a3);
+    objc_storeStrong(&v15->_directory, directory);
     objc_storeStrong(&v16->_inflightDownloadDirectory, v10);
     objc_storeStrong(&v16->_finishedDownloadDirectory, v14);
     fileHandlesForInflightLastPathComponent = v16->_fileHandlesForInflightLastPathComponent;
@@ -76,21 +76,21 @@ LABEL_14:
 
 - (BOOL)keepInflightFilesOpen
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = objc_msgSend_fileHandlesForInflightLastPathComponent(v2, v3, v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_msgSend_fileHandlesForInflightLastPathComponent(selfCopy, v3, v4);
   v6 = v5 != 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v6;
 }
 
-- (void)setKeepInflightFilesOpen:(BOOL)a3
+- (void)setKeepInflightFilesOpen:(BOOL)open
 {
-  v3 = a3;
+  openCopy = open;
   obj = self;
   objc_sync_enter(obj);
-  if (v3)
+  if (openCopy)
   {
     v6 = objc_msgSend_fileHandlesForInflightLastPathComponent(obj, v4, v5);
 
@@ -109,21 +109,21 @@ LABEL_14:
   objc_sync_exit(obj);
 }
 
-- (BOOL)openWithAssetDownloadStagingInfo:(id)a3 fileDescriptor:(int *)a4 closeOnDealloc:(BOOL *)a5 error:(id *)a6
+- (BOOL)openWithAssetDownloadStagingInfo:(id)info fileDescriptor:(int *)descriptor closeOnDealloc:(BOOL *)dealloc error:(id *)error
 {
   v92[1] = *MEMORY[0x1E69E9840];
-  v85 = a3;
-  v11 = objc_msgSend_inflightLastPathComponentWithInfo_(self, v9, v85);
+  infoCopy = info;
+  v11 = objc_msgSend_inflightLastPathComponentWithInfo_(self, v9, infoCopy);
   if (v11)
   {
     v12 = objc_msgSend_inflightURLWithLastPathComponent_(self, v10, v11);
     if (v12)
     {
-      v13 = self;
-      objc_sync_enter(v13);
-      v16 = objc_msgSend_fileHandlesForInflightLastPathComponent(v13, v14, v15);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      v16 = objc_msgSend_fileHandlesForInflightLastPathComponent(selfCopy, v14, v15);
 
-      if (v16 && (objc_msgSend_fileHandlesForInflightLastPathComponent(v13, v17, v18), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKeyedSubscript_(v19, v20, v11), v21 = objc_claimAutoreleasedReturnValue(), v19, v21))
+      if (v16 && (objc_msgSend_fileHandlesForInflightLastPathComponent(selfCopy, v17, v18), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKeyedSubscript_(v19, v20, v11), v21 = objc_claimAutoreleasedReturnValue(), v19, v21))
       {
         LODWORD(v22) = objc_msgSend_fileDescriptor(v21, v17, v18);
 
@@ -132,7 +132,7 @@ LABEL_14:
         {
           v23 = 2;
 LABEL_20:
-          v84 = objc_msgSend_fileProtectionType(v13, v17, v18);
+          v84 = objc_msgSend_fileProtectionType(selfCopy, v17, v18);
           if (v23 < 0x200 || !v84)
           {
             goto LABEL_25;
@@ -155,15 +155,15 @@ LABEL_20:
           {
 LABEL_25:
 
-            objc_sync_exit(v13);
-            if (a4)
+            objc_sync_exit(selfCopy);
+            if (descriptor)
             {
-              *a4 = v22;
+              *descriptor = v22;
             }
 
-            if (a5)
+            if (dealloc)
             {
-              *a5 = v83;
+              *dealloc = v83;
             }
 
             v26 = 1;
@@ -183,9 +183,9 @@ LABEL_25:
             _os_log_error_impl(&dword_1883EA000, v65, OS_LOG_TYPE_ERROR, "Failed to set fileProtectionType for inflightFile with error %@", buf, 0xCu);
           }
 
-          if (a6)
+          if (error)
           {
-            *a6 = objc_msgSend_errorWithDomain_code_error_format_(CKPrettyError, v66, @"CKInternalErrorDomain", 1000, v82, @"Failed to set fileProtectionType for inflightFile");
+            *error = objc_msgSend_errorWithDomain_code_error_format_(CKPrettyError, v66, @"CKInternalErrorDomain", 1000, v82, @"Failed to set fileProtectionType for inflightFile");
           }
 
           v68 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v66, v67);
@@ -213,15 +213,15 @@ LABEL_25:
             }
           }
 
-          v75 = objc_msgSend_fileHandlesForInflightLastPathComponent(v13, v72, v73);
+          v75 = objc_msgSend_fileHandlesForInflightLastPathComponent(selfCopy, v72, v73);
 
           if (v75)
           {
-            v78 = objc_msgSend_fileHandlesForInflightLastPathComponent(v13, v76, v77);
+            v78 = objc_msgSend_fileHandlesForInflightLastPathComponent(selfCopy, v76, v77);
             objc_msgSend_setObject_forKeyedSubscript_(v78, v79, 0, v11);
           }
 
-          objc_sync_exit(v13);
+          objc_sync_exit(selfCopy);
           goto LABEL_60;
         }
       }
@@ -251,13 +251,13 @@ LABEL_25:
       v37 = __error();
       if ((v22 & 0x80000000) == 0)
       {
-        v40 = objc_msgSend_fileHandlesForInflightLastPathComponent(v13, v38, v39);
+        v40 = objc_msgSend_fileHandlesForInflightLastPathComponent(selfCopy, v38, v39);
 
         if (v40)
         {
           v41 = objc_alloc(MEMORY[0x1E696AC00]);
           v43 = objc_msgSend_initWithFileDescriptor_closeOnDealloc_(v41, v42, v22, 1);
-          v46 = objc_msgSend_fileHandlesForInflightLastPathComponent(v13, v44, v45);
+          v46 = objc_msgSend_fileHandlesForInflightLastPathComponent(selfCopy, v44, v45);
           objc_msgSend_setObject_forKeyedSubscript_(v46, v47, v43, v11);
 
           v83 = 0;
@@ -280,13 +280,13 @@ LABEL_25:
         _os_log_error_impl(&dword_1883EA000, v61, OS_LOG_TYPE_ERROR, "open failed with errno:%d", buf, 8u);
       }
 
-      if (a6)
+      if (error)
       {
         v63 = objc_msgSend_errorCodeFromPOSIXCode_(CKAsset, v62, v60);
-        *a6 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v64, @"CKInternalErrorDomain", v63, @"open failed with errno:%d", v60);
+        *error = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v64, @"CKInternalErrorDomain", v63, @"open failed with errno:%d", v60);
       }
 
-      objc_sync_exit(v13);
+      objc_sync_exit(selfCopy);
     }
 
     else
@@ -303,10 +303,10 @@ LABEL_25:
         _os_log_error_impl(&dword_1883EA000, v58, OS_LOG_TYPE_ERROR, "Failed to create inflightFileURL.", buf, 2u);
       }
 
-      if (a6)
+      if (error)
       {
         objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v59, @"CKInternalErrorDomain", 1000, @"Failed to create inflightFileURL.");
-        *a6 = v26 = 0;
+        *error = v26 = 0;
 LABEL_61:
 
         goto LABEL_62;
@@ -330,10 +330,10 @@ LABEL_60:
     _os_log_error_impl(&dword_1883EA000, v24, OS_LOG_TYPE_ERROR, "Failed to create inflightLastPathComponent.", buf, 2u);
   }
 
-  if (a6)
+  if (error)
   {
     objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v25, @"CKInternalErrorDomain", 1000, @"Failed to create inflightLastPathComponent.");
-    *a6 = v26 = 0;
+    *error = v26 = 0;
   }
 
   else
@@ -347,17 +347,17 @@ LABEL_62:
   return v26;
 }
 
-- (BOOL)finishWithAssetDownloadStagingInfo:(id)a3 fileURL:(id *)a4 fileHandle:(id *)a5 error:(id *)a6
+- (BOOL)finishWithAssetDownloadStagingInfo:(id)info fileURL:(id *)l fileHandle:(id *)handle error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v13 = objc_msgSend_inflightLastPathComponentWithInfo_(self, v11, v10);
+  infoCopy = info;
+  v13 = objc_msgSend_inflightLastPathComponentWithInfo_(self, v11, infoCopy);
   if (v13)
   {
     v15 = objc_msgSend_inflightURLWithLastPathComponent_(self, v12, v13);
     if (v15)
     {
-      v18 = objc_msgSend_finishedURLWithInfo_(self, v14, v10);
+      v18 = objc_msgSend_finishedURLWithInfo_(self, v14, infoCopy);
       if (v18)
       {
         v19 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v16, v17);
@@ -371,16 +371,16 @@ LABEL_62:
 
         if (v21)
         {
-          v22 = self;
-          objc_sync_enter(v22);
-          v25 = objc_msgSend_fileHandlesForInflightLastPathComponent(v22, v23, v24);
+          selfCopy = self;
+          objc_sync_enter(selfCopy);
+          v25 = objc_msgSend_fileHandlesForInflightLastPathComponent(selfCopy, v23, v24);
 
           if (v25)
           {
-            v28 = objc_msgSend_fileHandlesForInflightLastPathComponent(v22, v26, v27);
+            v28 = objc_msgSend_fileHandlesForInflightLastPathComponent(selfCopy, v26, v27);
             v30 = objc_msgSend_objectForKeyedSubscript_(v28, v29, v13);
 
-            v33 = objc_msgSend_fileHandlesForInflightLastPathComponent(v22, v31, v32);
+            v33 = objc_msgSend_fileHandlesForInflightLastPathComponent(selfCopy, v31, v32);
             objc_msgSend_setObject_forKeyedSubscript_(v33, v34, 0, v13);
 
             objc_msgSend_seekToFileOffset_(v30, v35, 0);
@@ -391,18 +391,18 @@ LABEL_62:
             v30 = 0;
           }
 
-          objc_sync_exit(v22);
+          objc_sync_exit(selfCopy);
 
-          if (a4)
+          if (l)
           {
             v44 = v18;
-            *a4 = v18;
+            *l = v18;
           }
 
-          if (a5)
+          if (handle)
           {
             v45 = v30;
-            *a5 = v30;
+            *handle = v30;
           }
 
           goto LABEL_35;
@@ -423,20 +423,20 @@ LABEL_62:
           v54 = 2112;
           v55 = v48;
           _os_log_error_impl(&dword_1883EA000, v42, OS_LOG_TYPE_ERROR, "Failed to move existing item at path %@ to path %@ with error %@", buf, 0x20u);
-          if (!a6)
+          if (!error)
           {
             goto LABEL_35;
           }
         }
 
-        else if (!a6)
+        else if (!error)
         {
 LABEL_35:
 
           goto LABEL_36;
         }
 
-        *a6 = objc_msgSend_errorWithDomain_code_error_format_(CKPrettyError, v43, @"CKInternalErrorDomain", 1000, v48, @"Failed to move existing item at path %@ to path %@", v15, v18);
+        *error = objc_msgSend_errorWithDomain_code_error_format_(CKPrettyError, v43, @"CKInternalErrorDomain", 1000, v48, @"Failed to move existing item at path %@ to path %@", v15, v18);
         goto LABEL_35;
       }
 
@@ -450,17 +450,17 @@ LABEL_35:
       {
         *buf = 0;
         _os_log_error_impl(&dword_1883EA000, v40, OS_LOG_TYPE_ERROR, "Failed to create finishedFileURL.", buf, 2u);
-        if (a6)
+        if (error)
         {
           goto LABEL_23;
         }
       }
 
-      else if (a6)
+      else if (error)
       {
 LABEL_23:
         objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v41, @"CKInternalErrorDomain", 1000, @"Failed to create finishedFileURL.");
-        *a6 = v21 = 0;
+        *error = v21 = 0;
 LABEL_36:
 
         goto LABEL_37;
@@ -480,17 +480,17 @@ LABEL_36:
     {
       *buf = 0;
       _os_log_error_impl(&dword_1883EA000, v38, OS_LOG_TYPE_ERROR, "Failed to create inflightFileURL.", buf, 2u);
-      if (a6)
+      if (error)
       {
         goto LABEL_18;
       }
     }
 
-    else if (a6)
+    else if (error)
     {
 LABEL_18:
       objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v39, @"CKInternalErrorDomain", 1000, @"Failed to create inflightFileURL.");
-      *a6 = v21 = 0;
+      *error = v21 = 0;
 LABEL_37:
 
       goto LABEL_38;
@@ -510,7 +510,7 @@ LABEL_37:
   {
     *buf = 0;
     _os_log_error_impl(&dword_1883EA000, v36, OS_LOG_TYPE_ERROR, "Failed to create inflightLastPathComponent.", buf, 2u);
-    if (a6)
+    if (error)
     {
       goto LABEL_13;
     }
@@ -520,39 +520,39 @@ LABEL_40:
     goto LABEL_38;
   }
 
-  if (!a6)
+  if (!error)
   {
     goto LABEL_40;
   }
 
 LABEL_13:
   objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v37, @"CKInternalErrorDomain", 1000, @"Failed to create inflightLastPathComponent.");
-  *a6 = v21 = 0;
+  *error = v21 = 0;
 LABEL_38:
 
   v46 = *MEMORY[0x1E69E9840];
   return v21;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v15 = a3;
+  usingCopy = using;
   v6 = objc_msgSend_directory(self, v4, v5);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v15, v7, @"directory", v6, 1);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v7, @"directory", v6, 1);
 
   v10 = objc_msgSend_fileProtectionType(self, v8, v9);
-  objc_msgSend_addPropertyIfExists_value_shouldRedact_(v15, v11, @"fileProtectionType", v10, 0);
+  objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v11, @"fileProtectionType", v10, 0);
 
   if (objc_msgSend_keepInflightFilesOpen(self, v12, v13))
   {
-    objc_msgSend_addPropertyIfExists_value_shouldRedact_(v15, v14, @"keepInflightFilesOpen", @"true", 0);
+    objc_msgSend_addPropertyIfExists_value_shouldRedact_(usingCopy, v14, @"keepInflightFilesOpen", @"true", 0);
   }
 }
 
-- (id)inflightLastPathComponentWithInfo:(id)a3
+- (id)inflightLastPathComponentWithInfo:(id)info
 {
-  v3 = a3;
-  v6 = objc_msgSend_itemID(v3, v4, v5);
+  infoCopy = info;
+  v6 = objc_msgSend_itemID(infoCopy, v4, v5);
   v9 = v6;
   if (v6)
   {
@@ -561,10 +561,10 @@ LABEL_38:
     v15 = objc_msgSend_stringWithFormat_(v10, v12, @"%llu", v11);
     if (v15)
     {
-      v18 = objc_msgSend_signature(v3, v13, v14);
+      v18 = objc_msgSend_signature(infoCopy, v13, v14);
       if (v18)
       {
-        v19 = objc_msgSend_signature(v3, v16, v17);
+        v19 = objc_msgSend_signature(infoCopy, v16, v17);
         v20 = CKStringWithData(v19);
 
         v21 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -647,31 +647,31 @@ LABEL_38:
   return v24;
 }
 
-- (id)inflightURLWithLastPathComponent:(id)a3
+- (id)inflightURLWithLastPathComponent:(id)component
 {
-  v7 = a3;
-  if (!v7)
+  componentCopy = component;
+  if (!componentCopy)
   {
     v12 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v5, v6);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"CKAssetDownloadStagingManager.m", 227, @"Missing inflightLastPathComponent.");
   }
 
   v8 = objc_msgSend_inflightDownloadDirectory(self, v5, v6);
-  v10 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(v8, v9, v7, 0);
+  v10 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(v8, v9, componentCopy, 0);
 
   return v10;
 }
 
-- (id)finishedURLWithInfo:(id)a3
+- (id)finishedURLWithInfo:(id)info
 {
-  v4 = a3;
-  v9 = objc_msgSend_trackingUUID(v4, v5, v6);
+  infoCopy = info;
+  v9 = objc_msgSend_trackingUUID(infoCopy, v5, v6);
   if (v9)
   {
-    v12 = objc_msgSend_signature(v4, v7, v8);
+    v12 = objc_msgSend_signature(infoCopy, v7, v8);
     if (v12)
     {
-      v13 = objc_msgSend_signature(v4, v10, v11);
+      v13 = objc_msgSend_signature(infoCopy, v10, v11);
       v14 = CKStringWithData(v13);
 
       v15 = objc_alloc(MEMORY[0x1E696AEC0]);

@@ -1,39 +1,39 @@
 @interface TSCH3DChartMainTitleSceneObject
-+ (id)paragraphStyleForTitleFontForInfo:(id)a3;
-- (BOOL)canRenderSelectionPath:(id)a3 forInfo:(id)a4;
-- (LabelTransform)labelTransformForPositioner:(SEL)a3;
-- (id)convertSelectionPathTo3D:(id)a3 path:(id)a4;
-- (id)selectionPathForInfo:(id)a3 scene:(id)a4 pickedPoint:(id)a5;
-- (id)textForInfo:(id)a3;
++ (id)paragraphStyleForTitleFontForInfo:(id)info;
+- (BOOL)canRenderSelectionPath:(id)path forInfo:(id)info;
+- (LabelTransform)labelTransformForPositioner:(SEL)positioner;
+- (id)convertSelectionPathTo3D:(id)d path:(id)path;
+- (id)selectionPathForInfo:(id)info scene:(id)scene pickedPoint:(id)point;
+- (id)textForInfo:(id)info;
 @end
 
 @implementation TSCH3DChartMainTitleSceneObject
 
-- (id)selectionPathForInfo:(id)a3 scene:(id)a4 pickedPoint:(id)a5
+- (id)selectionPathForInfo:(id)info scene:(id)scene pickedPoint:(id)point
 {
-  v5 = a3;
+  infoCopy = info;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
-  v12 = objc_msgSend_styleIndexForInfo_(v7, v8, v9, v10, v11, v5);
+  v12 = objc_msgSend_styleIndexForInfo_(v7, v8, v9, v10, v11, infoCopy);
   v17 = objc_msgSend_selectionPathWithClass_styleIndex_type_name_arguments_(TSCH3DSelectionPath, v13, v14, v15, v16, v6, v12, @"text", @"chartTitle", 0);
 
   return v17;
 }
 
-- (id)convertSelectionPathTo3D:(id)a3 path:(id)a4
+- (id)convertSelectionPathTo3D:(id)d path:(id)path
 {
-  v7 = objc_msgSend_selectionPathForInfo_scene_pickedPoint_(self, a2, v4, v5, v6, a3, 0, 0);
+  v7 = objc_msgSend_selectionPathForInfo_scene_pickedPoint_(self, a2, v4, v5, v6, d, 0, 0);
 
   return v7;
 }
 
-- (BOOL)canRenderSelectionPath:(id)a3 forInfo:(id)a4
+- (BOOL)canRenderSelectionPath:(id)path forInfo:(id)info
 {
-  v4 = a3;
-  v10 = objc_msgSend_type(v4, v5, v6, v7, v8);
+  pathCopy = path;
+  v10 = objc_msgSend_type(pathCopy, v5, v6, v7, v8);
   if (v10 == @"text")
   {
-    v15 = objc_msgSend_name(v4, v9, v11, v12, v13);
+    v15 = objc_msgSend_name(pathCopy, v9, v11, v12, v13);
     v14 = v15 == @"chartTitle";
   }
 
@@ -45,14 +45,14 @@
   return v14;
 }
 
-- (id)textForInfo:(id)a3
+- (id)textForInfo:(id)info
 {
-  v6 = objc_msgSend_objectValueForProperty_(a3, a2, v3, v4, v5, 1124);
+  v6 = objc_msgSend_objectValueForProperty_(info, a2, v3, v4, v5, 1124);
 
   return v6;
 }
 
-- (LabelTransform)labelTransformForPositioner:(SEL)a3
+- (LabelTransform)labelTransformForPositioner:(SEL)positioner
 {
   v5 = a4;
   v11 = v5;
@@ -70,11 +70,11 @@
   return result;
 }
 
-+ (id)paragraphStyleForTitleFontForInfo:(id)a3
++ (id)paragraphStyleForTitleFontForInfo:(id)info
 {
-  v4 = a3;
-  v9 = objc_msgSend_styleIndexForInfo_(a1, v5, v6, v7, v8, v4);
-  v14 = objc_msgSend_paragraphStyleAtIndex_(v4, v10, v11, v12, v13, v9);
+  infoCopy = info;
+  v9 = objc_msgSend_styleIndexForInfo_(self, v5, v6, v7, v8, infoCopy);
+  v14 = objc_msgSend_paragraphStyleAtIndex_(infoCopy, v10, v11, v12, v13, v9);
 
   return v14;
 }

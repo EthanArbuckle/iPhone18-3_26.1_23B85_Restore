@@ -1,17 +1,17 @@
 @interface _VisionCoreE5RTMILModelSource
-+ (BOOL)isModelSourceURL:(id)a3;
++ (BOOL)isModelSourceURL:(id)l;
 @end
 
 @implementation _VisionCoreE5RTMILModelSource
 
-+ (BOOL)isModelSourceURL:(id)a3
++ (BOOL)isModelSourceURL:(id)l
 {
-  v3 = a3;
-  if ([v3 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    v4 = [v3 lastPathComponent];
-    v5 = [v4 pathExtension];
-    v6 = [v5 isEqualToString:@"mil"];
+    lastPathComponent = [lCopy lastPathComponent];
+    pathExtension = [lastPathComponent pathExtension];
+    v6 = [pathExtension isEqualToString:@"mil"];
   }
 
   else

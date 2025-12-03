@@ -1,23 +1,23 @@
 @interface ICAccountCryptoStrategyV1
-- (BOOL)mergeEncryptedDataFromRecord:(id)a3;
-- (BOOL)setPassphrase:(id)a3 hint:(id)a4;
+- (BOOL)mergeEncryptedDataFromRecord:(id)record;
+- (BOOL)setPassphrase:(id)passphrase hint:(id)hint;
 - (void)removePassphrase;
 @end
 
 @implementation ICAccountCryptoStrategyV1
 
-- (BOOL)setPassphrase:(id)a3 hint:(id)a4
+- (BOOL)setPassphrase:(id)passphrase hint:(id)hint
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  passphraseCopy = passphrase;
+  hintCopy = hint;
   v8 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(ICCryptoStrategyBase *)self object];
-    v10 = [v9 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v10;
+    *(&buf + 4) = shortLoggingDescription;
     _os_log_impl(&dword_214D51000, v8, OS_LOG_TYPE_INFO, "Setting v1 passphrase for account… {account: %@}", &buf, 0xCu);
   }
 
@@ -29,20 +29,20 @@
   v19[1] = 3221225472;
   v19[2] = __48__ICAccountCryptoStrategyV1_setPassphrase_hint___block_invoke;
   v19[3] = &unk_278197050;
-  v11 = v7;
+  v11 = hintCopy;
   v20 = v11;
-  v12 = v6;
+  v12 = passphraseCopy;
   v21 = v12;
   p_buf = &buf;
   [(ICCryptoStrategyBase *)self performBlockIfAccountExists:v19];
   v13 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [(ICCryptoStrategyBase *)self object];
-    v15 = [v14 shortLoggingDescription];
+    object2 = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription2 = [object2 shortLoggingDescription];
     v16 = [MEMORY[0x277CCABB0] numberWithBool:*(*(&buf + 1) + 24)];
     *v23 = 138412546;
-    v24 = v15;
+    v24 = shortLoggingDescription2;
     v25 = 2112;
     v26 = v16;
     _os_log_impl(&dword_214D51000, v13, OS_LOG_TYPE_INFO, "Set v1 passphrase for account {account: %@, success: %@}", v23, 0x16u);
@@ -191,10 +191,10 @@ void __48__ICAccountCryptoStrategyV1_setPassphrase_hint___block_invoke(void *a1,
   v3 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(ICCryptoStrategyBase *)self object];
-    v5 = [v4 shortLoggingDescription];
+    object = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription = [object shortLoggingDescription];
     v9 = 138412290;
-    v10 = v5;
+    v10 = shortLoggingDescription;
     _os_log_impl(&dword_214D51000, v3, OS_LOG_TYPE_INFO, "Removing v1 passphrase for account… {account: %@}", &v9, 0xCu);
   }
 
@@ -202,10 +202,10 @@ void __48__ICAccountCryptoStrategyV1_setPassphrase_hint___block_invoke(void *a1,
   v6 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(ICCryptoStrategyBase *)self object];
-    v8 = [v7 shortLoggingDescription];
+    object2 = [(ICCryptoStrategyBase *)self object];
+    shortLoggingDescription2 = [object2 shortLoggingDescription];
     v9 = 138412290;
-    v10 = v8;
+    v10 = shortLoggingDescription2;
     _os_log_impl(&dword_214D51000, v6, OS_LOG_TYPE_INFO, "Removed v1 passphrase for account {account: %@}", &v9, 0xCu);
   }
 }
@@ -226,15 +226,15 @@ void __45__ICAccountCryptoStrategyV1_removePassphrase__block_invoke(uint64_t a1,
   [v4 removeMainKeysFromKeychainForAccount:v2];
 }
 
-- (BOOL)mergeEncryptedDataFromRecord:(id)a3
+- (BOOL)mergeEncryptedDataFromRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__ICAccountCryptoStrategyV1_mergeEncryptedDataFromRecord___block_invoke;
   v7[3] = &unk_278198090;
-  v8 = v4;
-  v5 = v4;
+  v8 = recordCopy;
+  v5 = recordCopy;
   [(ICCryptoStrategyBase *)self performBlockIfAccountExists:v7];
 
   return 1;

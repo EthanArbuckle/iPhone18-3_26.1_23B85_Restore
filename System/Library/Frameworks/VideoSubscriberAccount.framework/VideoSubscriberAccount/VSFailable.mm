@@ -1,15 +1,15 @@
 @interface VSFailable
 + (id)decodableClasses;
-+ (id)failableWithError:(id)a3;
-+ (id)failableWithObject:(id)a3;
++ (id)failableWithError:(id)error;
++ (id)failableWithObject:(id)object;
 - (VSFailable)init;
-- (VSFailable)initWithCoder:(id)a3;
-- (VSFailable)initWithError:(id)a3;
-- (VSFailable)initWithObject:(id)a3;
+- (VSFailable)initWithCoder:(id)coder;
+- (VSFailable)initWithError:(id)error;
+- (VSFailable)initWithObject:(id)object;
 - (id)description;
-- (id)unwrappedWithError:(id *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)unwrapObject:(id)a3 error:(id)a4;
+- (id)unwrappedWithError:(id *)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)unwrapObject:(id)object error:(id)error;
 @end
 
 @implementation VSFailable
@@ -28,26 +28,26 @@
   return [v2 setWithObjects:{v3, v4, v5, v6, v7, v8, v9, v10, objc_opt_class(), 0}];
 }
 
-+ (id)failableWithObject:(id)a3
++ (id)failableWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithObject:v4];
+  objectCopy = object;
+  v5 = [[self alloc] initWithObject:objectCopy];
 
   return v5;
 }
 
-+ (id)failableWithError:(id)a3
++ (id)failableWithError:(id)error
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithError:v4];
+  errorCopy = error;
+  v5 = [[self alloc] initWithError:errorCopy];
 
   return v5;
 }
 
-- (VSFailable)initWithObject:(id)a3
+- (VSFailable)initWithObject:(id)object
 {
-  v5 = a3;
-  if (!v5)
+  objectCopy = object;
+  if (!objectCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The object parameter must not be nil."];
   }
@@ -59,16 +59,16 @@
   if (v6)
   {
     v6->_kind = 0;
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, object);
   }
 
   return v7;
 }
 
-- (VSFailable)initWithError:(id)a3
+- (VSFailable)initWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The error parameter must not be nil."];
   }
@@ -80,7 +80,7 @@
   if (v5)
   {
     v5->_kind = 1;
-    v7 = [v4 copy];
+    v7 = [errorCopy copy];
     error = v6->_error;
     v6->_error = v7;
   }
@@ -98,13 +98,13 @@
   return 0;
 }
 
-- (void)unwrapObject:(id)a3 error:(id)a4
+- (void)unwrapObject:(id)object error:(id)error
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10)
+  objectCopy = object;
+  errorCopy = error;
+  if (objectCopy)
   {
-    if (v6)
+    if (errorCopy)
     {
       goto LABEL_3;
     }
@@ -113,7 +113,7 @@
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The objectHandler parameter must not be nil."];
-    if (v6)
+    if (errorCopy)
     {
       goto LABEL_3;
     }
@@ -121,22 +121,22 @@
 
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The errorHandler parameter must not be nil."];
 LABEL_3:
-  v7 = [(VSFailable *)self kind];
-  if (v7 == 1)
+  kind = [(VSFailable *)self kind];
+  if (kind == 1)
   {
-    v8 = [(VSFailable *)self error];
-    v9 = v6[2];
+    error = [(VSFailable *)self error];
+    v9 = errorCopy[2];
   }
 
   else
   {
-    if (v7)
+    if (kind)
     {
       goto LABEL_10;
     }
 
-    v8 = [(VSFailable *)self object];
-    v9 = v10[2];
+    error = [(VSFailable *)self object];
+    v9 = objectCopy[2];
   }
 
   v9();
@@ -144,7 +144,7 @@ LABEL_3:
 LABEL_10:
 }
 
-- (id)unwrappedWithError:(id *)a3
+- (id)unwrappedWithError:(id *)error
 {
   v7 = 0;
   v8 = &v7;
@@ -161,7 +161,7 @@ LABEL_10:
   v5[1] = 3221225472;
   v5[2] = __33__VSFailable_unwrappedWithError___block_invoke_2;
   v5[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v5[4] = a3;
+  v5[4] = error;
   [(VSFailable *)self unwrapObject:v6 error:v5];
   v3 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -176,22 +176,22 @@ id __33__VSFailable_unwrappedWithError___block_invoke_2(uint64_t a1, id a2)
   return result;
 }
 
-- (VSFailable)initWithCoder:(id)a3
+- (VSFailable)initWithCoder:(id)coder
 {
-  v4 = a3;
-  VSRequireKeyedCoder(v4);
+  coderCopy = coder;
+  VSRequireKeyedCoder(coderCopy);
   v13.receiver = self;
   v13.super_class = VSFailable;
   v5 = [(VSFailable *)&v13 init];
   if (v5)
   {
-    v5->_kind = [v4 decodeIntegerForKey:@"VSFailableKindKey"];
-    v6 = [objc_opt_class() decodableClasses];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"VSFailableObjectKey"];
+    v5->_kind = [coderCopy decodeIntegerForKey:@"VSFailableKindKey"];
+    decodableClasses = [objc_opt_class() decodableClasses];
+    v7 = [coderCopy decodeObjectOfClasses:decodableClasses forKey:@"VSFailableObjectKey"];
     object = v5->_object;
     v5->_object = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"VSFailableErrorKey"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"VSFailableErrorKey"];
     v10 = [v9 copy];
     error = v5->_error;
     v5->_error = v10;
@@ -200,23 +200,23 @@ id __33__VSFailable_unwrappedWithError___block_invoke_2(uint64_t a1, id a2)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  VSRequireKeyedCoder(v4);
-  [v4 encodeInteger:-[VSFailable kind](self forKey:{"kind"), @"VSFailableKindKey"}];
-  v5 = [(VSFailable *)self object];
-  [v4 encodeObject:v5 forKey:@"VSFailableObjectKey"];
+  coderCopy = coder;
+  VSRequireKeyedCoder(coderCopy);
+  [coderCopy encodeInteger:-[VSFailable kind](self forKey:{"kind"), @"VSFailableKindKey"}];
+  object = [(VSFailable *)self object];
+  [coderCopy encodeObject:object forKey:@"VSFailableObjectKey"];
 
-  v6 = [(VSFailable *)self error];
-  [v4 encodeObject:v6 forKey:@"VSFailableErrorKey"];
+  error = [(VSFailable *)self error];
+  [coderCopy encodeObject:error forKey:@"VSFailableErrorKey"];
 }
 
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(VSFailable *)self kind];
-  if (v4 == 1)
+  kind = [(VSFailable *)self kind];
+  if (kind == 1)
   {
     v5 = @"error";
   }
@@ -226,7 +226,7 @@ id __33__VSFailable_unwrappedWithError___block_invoke_2(uint64_t a1, id a2)
     v5 = 0;
   }
 
-  if (!v4)
+  if (!kind)
   {
     v5 = @"object";
   }
@@ -235,13 +235,13 @@ id __33__VSFailable_unwrappedWithError___block_invoke_2(uint64_t a1, id a2)
   [v3 addObject:v6];
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(VSFailable *)self object];
-  v9 = [v7 stringWithFormat:@"%@ = %@", @"object", v8];
+  object = [(VSFailable *)self object];
+  v9 = [v7 stringWithFormat:@"%@ = %@", @"object", object];
   [v3 addObject:v9];
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [(VSFailable *)self error];
-  v12 = [v10 stringWithFormat:@"%@ = %@", @"error", v11];
+  error = [(VSFailable *)self error];
+  v12 = [v10 stringWithFormat:@"%@ = %@", @"error", error];
   [v3 addObject:v12];
 
   v13 = MEMORY[0x277CCACA8];

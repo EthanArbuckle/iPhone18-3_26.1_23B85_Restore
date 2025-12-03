@@ -1,22 +1,22 @@
 @interface AMSUIWebOTPAction
-- (AMSUIWebOTPAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebOTPAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebOTPAction
 
-- (AMSUIWebOTPAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebOTPAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = AMSUIWebOTPAction;
-  v7 = [(AMSUIWebAction *)&v11 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v11 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"enabled"];
+    v8 = [objectCopy objectForKeyedSubscript:@"enabled"];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v6 objectForKeyedSubscript:@"enabled"];
+      v9 = [objectCopy objectForKeyedSubscript:@"enabled"];
       v7->_enabled = [v9 BOOLValue];
     }
 
@@ -34,43 +34,43 @@
   v27 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = AMSUIWebOTPAction;
-  v3 = [(AMSUIWebAction *)&v20 runAction];
-  v4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v4)
+  runAction = [(AMSUIWebAction *)&v20 runAction];
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
-    v8 = [(AMSUIWebOTPAction *)self enabled];
+    enabled = [(AMSUIWebOTPAction *)self enabled];
     *buf = 138543874;
     v22 = v6;
     v23 = 2114;
     v24 = v7;
     v25 = 1024;
-    v26 = v8;
-    _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running action. (enabled: %d)", buf, 0x1Cu);
+    v26 = enabled;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running action. (enabled: %d)", buf, 0x1Cu);
   }
 
-  v9 = [(AMSUIWebOTPAction *)self enabled];
-  v10 = [(AMSUIWebAction *)self context];
-  v11 = [v10 dataProvider];
-  v12 = v11;
-  if (v9)
+  enabled2 = [(AMSUIWebOTPAction *)self enabled];
+  context = [(AMSUIWebAction *)self context];
+  dataProvider = [context dataProvider];
+  v12 = dataProvider;
+  if (enabled2)
   {
-    v13 = [v11 startOTPListener];
+    startOTPListener = [dataProvider startOTPListener];
   }
 
   else
   {
-    v13 = [v11 stopOTPListener];
+    startOTPListener = [dataProvider stopOTPListener];
   }
 
-  v14 = v13;
+  v14 = startOTPListener;
 
   if (v14)
   {

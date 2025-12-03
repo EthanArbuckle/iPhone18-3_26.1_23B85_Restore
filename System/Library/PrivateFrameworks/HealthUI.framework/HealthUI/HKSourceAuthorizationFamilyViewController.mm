@@ -1,15 +1,15 @@
 @interface HKSourceAuthorizationFamilyViewController
 - (HKSourceAuthorizationFamilyViewController)init;
-- (HKSourceAuthorizationFamilyViewController)initWithHealthStore:(id)a3 source:(id)a4;
-- (HKSourceAuthorizationFamilyViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (HKSourceAuthorizationFamilyViewController)initWithStyle:(int64_t)a3;
+- (HKSourceAuthorizationFamilyViewController)initWithHealthStore:(id)store source:(id)source;
+- (HKSourceAuthorizationFamilyViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (HKSourceAuthorizationFamilyViewController)initWithStyle:(int64_t)style;
 - (id)_createFamilyCell;
-- (id)_valueStringForAnyCategoryEnabled:(BOOL)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)_valueStringForAnyCategoryEnabled:(BOOL)enabled;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_reloadAuthorizationSettings;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HKSourceAuthorizationFamilyViewController
@@ -24,7 +24,7 @@
   return 0;
 }
 
-- (HKSourceAuthorizationFamilyViewController)initWithStyle:(int64_t)a3
+- (HKSourceAuthorizationFamilyViewController)initWithStyle:(int64_t)style
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D940];
@@ -34,7 +34,7 @@
   return 0;
 }
 
-- (HKSourceAuthorizationFamilyViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (HKSourceAuthorizationFamilyViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D940];
@@ -44,47 +44,47 @@
   return 0;
 }
 
-- (HKSourceAuthorizationFamilyViewController)initWithHealthStore:(id)a3 source:(id)a4
+- (HKSourceAuthorizationFamilyViewController)initWithHealthStore:(id)store source:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  sourceCopy = source;
   v16.receiver = self;
   v16.super_class = HKSourceAuthorizationFamilyViewController;
   v9 = [(HKTableViewController *)&v16 initWithUsingInsetStyling:1];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_healthStore, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_healthStore, store);
+    v11 = [sourceCopy copy];
     source = v10->_source;
     v10->_source = v11;
 
-    v13 = [v8 name];
-    v14 = [(HKSourceAuthorizationFamilyViewController *)v10 navigationItem];
-    [v14 setTitle:v13];
+    name = [sourceCopy name];
+    navigationItem = [(HKSourceAuthorizationFamilyViewController *)v10 navigationItem];
+    [navigationItem setTitle:name];
   }
 
   return v10;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = HKSourceAuthorizationFamilyViewController;
-  [(HKSourceAuthorizationFamilyViewController *)&v4 viewWillAppear:a3];
+  [(HKSourceAuthorizationFamilyViewController *)&v4 viewWillAppear:appear];
   [(HKSourceAuthorizationFamilyViewController *)self _reloadAuthorizationSettings];
 }
 
 - (void)_reloadAuthorizationSettings
 {
   objc_initWeak(&location, self);
-  v3 = [(HKSourceAuthorizationFamilyViewController *)self clinicalAuthorizationController];
+  clinicalAuthorizationController = [(HKSourceAuthorizationFamilyViewController *)self clinicalAuthorizationController];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __73__HKSourceAuthorizationFamilyViewController__reloadAuthorizationSettings__block_invoke;
   v4[3] = &unk_1E81B5738;
   objc_copyWeak(&v5, &location);
-  [v3 reloadWithCompletion:v4];
+  [clinicalAuthorizationController reloadWithCompletion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -142,12 +142,12 @@ void __73__HKSourceAuthorizationFamilyViewController__reloadAuthorizationSetting
   return v2;
 }
 
-- (id)_valueStringForAnyCategoryEnabled:(BOOL)a3
+- (id)_valueStringForAnyCategoryEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v5 = v4;
-  if (v3)
+  if (enabledCopy)
   {
     v6 = @"AUTHORIZATION_ANY_CATEGORY_ON";
   }
@@ -162,61 +162,61 @@ void __73__HKSourceAuthorizationFamilyViewController__reloadAuthorizationSetting
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(HKSourceAuthorizationFamilyViewController *)self familyControllers:a3];
+  v4 = [(HKSourceAuthorizationFamilyViewController *)self familyControllers:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"_FamilyCellReuseIdentifier"];
-  if (!v7)
+  pathCopy = path;
+  _createFamilyCell = [view dequeueReusableCellWithIdentifier:@"_FamilyCellReuseIdentifier"];
+  if (!_createFamilyCell)
   {
-    v7 = [(HKSourceAuthorizationFamilyViewController *)self _createFamilyCell];
+    _createFamilyCell = [(HKSourceAuthorizationFamilyViewController *)self _createFamilyCell];
   }
 
-  v8 = [(HKSourceAuthorizationFamilyViewController *)self familyControllers];
-  v9 = [v6 row];
+  familyControllers = [(HKSourceAuthorizationFamilyViewController *)self familyControllers];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndexedSubscript:v9];
+  v10 = [familyControllers objectAtIndexedSubscript:v9];
 
-  v11 = [v10 controller];
-  v12 = [v11 titleText];
-  v13 = [v7 textLabel];
-  [v13 setText:v12];
+  controller = [v10 controller];
+  titleText = [controller titleText];
+  textLabel = [_createFamilyCell textLabel];
+  [textLabel setText:titleText];
 
-  v14 = -[HKSourceAuthorizationFamilyViewController _valueStringForAnyCategoryEnabled:](self, "_valueStringForAnyCategoryEnabled:", [v11 anyTypeEnabled]);
-  v15 = [v7 detailTextLabel];
-  [v15 setText:v14];
+  v14 = -[HKSourceAuthorizationFamilyViewController _valueStringForAnyCategoryEnabled:](self, "_valueStringForAnyCategoryEnabled:", [controller anyTypeEnabled]);
+  detailTextLabel = [_createFamilyCell detailTextLabel];
+  [detailTextLabel setText:v14];
 
-  v16 = [v11 iconImage];
-  v17 = [v7 imageView];
-  [v17 setImage:v16];
+  iconImage = [controller iconImage];
+  imageView = [_createFamilyCell imageView];
+  [imageView setImage:iconImage];
 
-  return v7;
+  return _createFamilyCell;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HKSourceAuthorizationFamilyViewController *)self familyControllers];
-  v15 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+  pathCopy = path;
+  viewCopy = view;
+  familyControllers = [(HKSourceAuthorizationFamilyViewController *)self familyControllers];
+  v15 = [familyControllers objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  v9 = [v15 viewController];
-  v10 = [v7 cellForRowAtIndexPath:v6];
+  viewController = [v15 viewController];
+  v10 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
-  v11 = [v10 textLabel];
-  v12 = [v11 text];
-  v13 = [v9 navigationItem];
-  [v13 setTitle:v12];
+  textLabel = [v10 textLabel];
+  text = [textLabel text];
+  navigationItem = [viewController navigationItem];
+  [navigationItem setTitle:text];
 
-  v14 = [(HKSourceAuthorizationFamilyViewController *)self navigationController];
-  [v14 hk_showViewController:v9 animated:1];
+  navigationController = [(HKSourceAuthorizationFamilyViewController *)self navigationController];
+  [navigationController hk_showViewController:viewController animated:1];
 }
 
 @end

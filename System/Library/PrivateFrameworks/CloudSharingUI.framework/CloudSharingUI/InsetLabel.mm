@@ -1,29 +1,29 @@
 @interface InsetLabel
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC14CloudSharingUI10InsetLabel)initWithCoder:(id)a3;
-- (_TtC14CloudSharingUI10InsetLabel)initWithFrame:(CGRect)a3;
-- (void)drawTextInRect:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC14CloudSharingUI10InsetLabel)initWithCoder:(id)coder;
+- (_TtC14CloudSharingUI10InsetLabel)initWithFrame:(CGRect)frame;
+- (void)drawTextInRect:(CGRect)rect;
 @end
 
 @implementation InsetLabel
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  v4 = UIEdgeInsetsInsetRect(a3.origin.x);
+  v4 = UIEdgeInsetsInsetRect(rect.origin.x);
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12.receiver = self;
   v12.super_class = type metadata accessor for InsetLabel();
-  v11 = self;
+  selfCopy = self;
   [(InsetLabel *)&v12 drawTextInRect:v4, v6, v8, v10];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = a3.width + -40.0;
-  v4 = a3.height + -20.0;
+  v3 = fits.width + -40.0;
+  v4 = fits.height + -20.0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for InsetLabel();
   [(InsetLabel *)&v9 sizeThatFits:v3, v4];
@@ -46,12 +46,12 @@
   return result;
 }
 
-- (_TtC14CloudSharingUI10InsetLabel)initWithFrame:(CGRect)a3
+- (_TtC14CloudSharingUI10InsetLabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = (self + OBJC_IVAR____TtC14CloudSharingUI10InsetLabel_insets);
   *v7 = xmmword_243B729A0;
   v7[1] = xmmword_243B729A0;
@@ -60,15 +60,15 @@
   return [(InsetLabel *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC14CloudSharingUI10InsetLabel)initWithCoder:(id)a3
+- (_TtC14CloudSharingUI10InsetLabel)initWithCoder:(id)coder
 {
   v4 = (self + OBJC_IVAR____TtC14CloudSharingUI10InsetLabel_insets);
   *v4 = xmmword_243B729A0;
   v4[1] = xmmword_243B729A0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for InsetLabel();
-  v5 = a3;
-  v6 = [(InsetLabel *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(InsetLabel *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

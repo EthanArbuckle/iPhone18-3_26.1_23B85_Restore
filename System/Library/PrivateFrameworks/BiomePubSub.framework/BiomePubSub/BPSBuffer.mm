@@ -1,32 +1,32 @@
 @interface BPSBuffer
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5;
-- (BPSBuffer)initWithUpstream:(id)a3 size:(unint64_t)a4 prefetch:(unint64_t)a5 whenFull:(unint64_t)a6 values:(id)a7;
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state;
+- (BPSBuffer)initWithUpstream:(id)upstream size:(unint64_t)size prefetch:(unint64_t)prefetch whenFull:(unint64_t)full values:(id)values;
 - (id)bookmarkableUpstreams;
 - (id)nextEvent;
 - (id)upstreamPublishers;
-- (id)validateBookmark:(id)a3;
-- (void)addToBuffer:(id)a3;
+- (id)validateBookmark:(id)bookmark;
+- (void)addToBuffer:(id)buffer;
 - (void)reset;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSBuffer
 
-- (BPSBuffer)initWithUpstream:(id)a3 size:(unint64_t)a4 prefetch:(unint64_t)a5 whenFull:(unint64_t)a6 values:(id)a7
+- (BPSBuffer)initWithUpstream:(id)upstream size:(unint64_t)size prefetch:(unint64_t)prefetch whenFull:(unint64_t)full values:(id)values
 {
-  v13 = a3;
-  v14 = a7;
+  upstreamCopy = upstream;
+  valuesCopy = values;
   v20.receiver = self;
   v20.super_class = BPSBuffer;
   v15 = [(BPSBuffer *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_upstream, a3);
-    v16->_size = a4;
-    v16->_prefetch = a5;
-    v16->_whenFull = a6;
-    objc_storeStrong(&v16->_values, a7);
+    objc_storeStrong(&v15->_upstream, upstream);
+    v16->_size = size;
+    v16->_prefetch = prefetch;
+    v16->_whenFull = full;
+    objc_storeStrong(&v16->_values, values);
     v17 = objc_opt_new();
     buffer = v16->_buffer;
     v16->_buffer = v17;
@@ -35,10 +35,10 @@
   return v16;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
-  v5 = [[BPSBufferInner alloc] initWithDownstream:v4 size:self->_size prefetch:self->_prefetch whenFull:self->_whenFull];
+  subscribeCopy = subscribe;
+  v5 = [[BPSBufferInner alloc] initWithDownstream:subscribeCopy size:self->_size prefetch:self->_prefetch whenFull:self->_whenFull];
 
   [(BPSPublisher *)self->_upstream subscribe:v5];
 }
@@ -46,8 +46,8 @@
 - (id)upstreamPublishers
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BPSBuffer *)self upstream];
-  v6[0] = v2;
+  upstream = [(BPSBuffer *)self upstream];
+  v6[0] = upstream;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -60,21 +60,21 @@
   prefetch = self->_prefetch;
   if (prefetch == 1)
   {
-    v9 = [(BPSBuffer *)self upstream];
-    v10 = [v9 nextEvent];
+    upstream = [(BPSBuffer *)self upstream];
+    nextEvent = [upstream nextEvent];
 
-    if (v10)
+    if (nextEvent)
     {
       do
       {
-        [(BPSBuffer *)self addToBuffer:v10];
-        v11 = [(BPSBuffer *)self upstream];
-        v12 = [v11 nextEvent];
+        [(BPSBuffer *)self addToBuffer:nextEvent];
+        upstream2 = [(BPSBuffer *)self upstream];
+        nextEvent2 = [upstream2 nextEvent];
 
-        v10 = v12;
+        nextEvent = nextEvent2;
       }
 
-      while (v12);
+      while (nextEvent2);
     }
   }
 
@@ -87,8 +87,8 @@
 
     while (1)
     {
-      v4 = [(BPSBuffer *)self buffer];
-      v5 = [v4 count];
+      buffer = [(BPSBuffer *)self buffer];
+      v5 = [buffer count];
       v6 = [(BPSBuffer *)self size];
 
       if (v5 >= v6)
@@ -96,28 +96,28 @@
         break;
       }
 
-      v7 = [(BPSBuffer *)self upstream];
-      v8 = [v7 nextEvent];
+      upstream3 = [(BPSBuffer *)self upstream];
+      nextEvent3 = [upstream3 nextEvent];
 
-      if (!v8)
+      if (!nextEvent3)
       {
         break;
       }
 
-      [(BPSBuffer *)self addToBuffer:v8];
+      [(BPSBuffer *)self addToBuffer:nextEvent3];
     }
   }
 
-  v13 = [(BPSBuffer *)self buffer];
-  v14 = [v13 count];
+  buffer2 = [(BPSBuffer *)self buffer];
+  v14 = [buffer2 count];
 
   if (v14)
   {
-    v15 = [(BPSBuffer *)self buffer];
-    v16 = [v15 objectAtIndex:0];
+    buffer3 = [(BPSBuffer *)self buffer];
+    v16 = [buffer3 objectAtIndex:0];
 
-    v17 = [(BPSBuffer *)self buffer];
-    [v17 removeObjectAtIndex:0];
+    buffer4 = [(BPSBuffer *)self buffer];
+    [buffer4 removeObjectAtIndex:0];
 
     goto LABEL_11;
   }
@@ -129,9 +129,9 @@ LABEL_11:
   return v16;
 }
 
-- (void)addToBuffer:(id)a3
+- (void)addToBuffer:(id)buffer
 {
-  v13 = a3;
+  bufferCopy = buffer;
   whenFull = self->_whenFull;
   if (whenFull != 1)
   {
@@ -143,31 +143,31 @@ LABEL_11:
     goto LABEL_8;
   }
 
-  v5 = [(BPSBuffer *)self buffer];
-  v6 = [v5 count];
+  buffer = [(BPSBuffer *)self buffer];
+  v6 = [buffer count];
   if (v6 >= [(BPSBuffer *)self size])
   {
-    v7 = [(BPSBuffer *)self buffer];
-    v8 = [v7 count];
+    buffer2 = [(BPSBuffer *)self buffer];
+    v8 = [buffer2 count];
 
     if (!v8)
     {
       goto LABEL_8;
     }
 
-    v5 = [(BPSBuffer *)self buffer];
-    [v5 removeObjectAtIndex:0];
+    buffer = [(BPSBuffer *)self buffer];
+    [buffer removeObjectAtIndex:0];
   }
 
 LABEL_8:
-  v9 = [(BPSBuffer *)self buffer];
-  v10 = [v9 count];
+  buffer3 = [(BPSBuffer *)self buffer];
+  v10 = [buffer3 count];
   v11 = [(BPSBuffer *)self size];
 
   if (v10 < v11)
   {
-    v12 = [(BPSBuffer *)self buffer];
-    [v12 addObject:v13];
+    buffer4 = [(BPSBuffer *)self buffer];
+    [buffer4 addObject:bufferCopy];
   }
 
 LABEL_10:
@@ -183,10 +183,10 @@ LABEL_10:
   [(BPSPublisher *)&v4 reset];
 }
 
-- (id)validateBookmark:(id)a3
+- (id)validateBookmark:(id)bookmark
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  bookmarkCopy = bookmark;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -197,10 +197,10 @@ LABEL_10:
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
     v6 = objc_opt_class();
-    v7 = [v5 initWithFormat:@"%@ expected bookmark of class %@, but received %@", v6, objc_opt_class(), v3];
+    bookmarkCopy = [v5 initWithFormat:@"%@ expected bookmark of class %@, but received %@", v6, objc_opt_class(), bookmarkCopy];
     v8 = MEMORY[0x1E696ABC0];
     v12 = *MEMORY[0x1E696A578];
-    v13[0] = v7;
+    v13[0] = bookmarkCopy;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v4 = [v8 errorWithDomain:@"BiomePubSubError" code:2 userInfo:v9];
   }
@@ -220,28 +220,28 @@ LABEL_10:
   return v2;
 }
 
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  publisherCopy = publisher;
+  upstreamsCopy = upstreams;
+  stateCopy = state;
+  if (stateCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [BPSBuffer publisherWithPublisher:a2 upstreams:a1 bookmarkState:?];
+      [BPSBuffer publisherWithPublisher:a2 upstreams:self bookmarkState:?];
     }
   }
 
-  v12 = v9;
+  v12 = publisherCopy;
   v13 = [BPSBuffer alloc];
-  v14 = [v12 upstream];
+  upstream = [v12 upstream];
   v15 = [v12 size];
-  v16 = [v12 prefetch];
-  v17 = [v12 whenFull];
+  prefetch = [v12 prefetch];
+  whenFull = [v12 whenFull];
 
-  v18 = [(BPSBuffer *)v13 initWithUpstream:v14 size:v15 prefetch:v16 whenFull:v17 values:v11];
+  v18 = [(BPSBuffer *)v13 initWithUpstream:upstream size:v15 prefetch:prefetch whenFull:whenFull values:stateCopy];
 
   return v18;
 }

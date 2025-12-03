@@ -1,9 +1,9 @@
 @interface BufferedStreamWriter
 - (BOOL)hasSpaceAvailable;
-- (int64_t)writeBytes:(const char *)a3 length:(unint64_t)a4 error:(id *)a5;
+- (int64_t)writeBytes:(const char *)bytes length:(unint64_t)length error:(id *)error;
 - (void)close;
 - (void)dealloc;
-- (void)expectedContentLength:(unint64_t)a3;
+- (void)expectedContentLength:(unint64_t)length;
 @end
 
 @implementation BufferedStreamWriter
@@ -14,7 +14,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "(BufferedStream) Writer deallocated: %@", buf, 0xCu);
   }
 
@@ -77,7 +77,7 @@
   }
 }
 
-- (int64_t)writeBytes:(const char *)a3 length:(unint64_t)a4 error:(id *)a5
+- (int64_t)writeBytes:(const char *)bytes length:(unint64_t)length error:(id *)error
 {
   bufferedStream = self->_bufferedStream;
   if (!bufferedStream)
@@ -89,18 +89,18 @@
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  if (a4)
+  if (length)
   {
     queue = bufferedStream->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001D0658;
     block[3] = &unk_10051B808;
-    block[6] = a4;
-    block[7] = a3;
+    block[6] = length;
+    block[7] = bytes;
     block[4] = bufferedStream;
     block[5] = &v10;
-    block[8] = a5;
+    block[8] = error;
     dispatch_sync(queue, block);
     v7 = v11[3];
   }
@@ -114,7 +114,7 @@
   return v7;
 }
 
-- (void)expectedContentLength:(unint64_t)a3
+- (void)expectedContentLength:(unint64_t)length
 {
   bufferedStream = self->_bufferedStream;
   if (bufferedStream)
@@ -125,7 +125,7 @@
     v5[2] = sub_1001D0140;
     v5[3] = &unk_10051B830;
     v5[4] = bufferedStream;
-    v5[5] = a3;
+    v5[5] = length;
     dispatch_sync(queue, v5);
   }
 }

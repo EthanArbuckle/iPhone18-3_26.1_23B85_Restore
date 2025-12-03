@@ -1,12 +1,12 @@
 @interface RMSBeginPairingMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RMSBeginPairingMessage
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = RMSBeginPairingMessage;
   v4 = [(RMSBeginPairingMessage *)&v8 description];
-  v5 = [(RMSBeginPairingMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(RMSBeginPairingMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   appName = self->_appName;
   if (appName)
   {
-    [v3 setObject:appName forKey:@"appName"];
+    [dictionary setObject:appName forKey:@"appName"];
   }
 
   deviceName = self->_deviceName;
@@ -54,93 +54,93 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_appName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deviceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deviceModel)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_passcode)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_appName)
   {
-    [v4 setAppName:?];
-    v4 = v5;
+    [toCopy setAppName:?];
+    toCopy = v5;
   }
 
   if (self->_deviceName)
   {
     [v5 setDeviceName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deviceModel)
   {
     [v5 setDeviceModel:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_passcode)
   {
     [v5 setPasscode:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_appName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_appName copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_deviceName copyWithZone:a3];
+  v8 = [(NSString *)self->_deviceName copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_deviceModel copyWithZone:a3];
+  v10 = [(NSString *)self->_deviceModel copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSString *)self->_passcode copyWithZone:a3];
+  v12 = [(NSString *)self->_passcode copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((appName = self->_appName, !(appName | v4[1])) || -[NSString isEqual:](appName, "isEqual:")) && ((deviceName = self->_deviceName, !(deviceName | v4[3])) || -[NSString isEqual:](deviceName, "isEqual:")) && ((deviceModel = self->_deviceModel, !(deviceModel | v4[2])) || -[NSString isEqual:](deviceModel, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((appName = self->_appName, !(appName | equalCopy[1])) || -[NSString isEqual:](appName, "isEqual:")) && ((deviceName = self->_deviceName, !(deviceName | equalCopy[3])) || -[NSString isEqual:](deviceName, "isEqual:")) && ((deviceModel = self->_deviceModel, !(deviceModel | equalCopy[2])) || -[NSString isEqual:](deviceModel, "isEqual:")))
   {
     passcode = self->_passcode;
-    if (passcode | v4[4])
+    if (passcode | equalCopy[4])
     {
       v9 = [(NSString *)passcode isEqual:?];
     }
@@ -167,25 +167,25 @@
   return v4 ^ v5 ^ [(NSString *)self->_passcode hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[1])
+  fromCopy = from;
+  if (fromCopy[1])
   {
     [(RMSBeginPairingMessage *)self setAppName:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(RMSBeginPairingMessage *)self setDeviceName:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(RMSBeginPairingMessage *)self setDeviceModel:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(RMSBeginPairingMessage *)self setPasscode:?];
   }

@@ -8,9 +8,9 @@
 {
   if ([(PurchaseInfo *)self->_purchaseInfo discoveredUpdate])
   {
-    v3 = [(PurchaseInfo *)self->_purchaseInfo bundleID];
+    bundleID = [(PurchaseInfo *)self->_purchaseInfo bundleID];
 
-    if (v3)
+    if (bundleID)
     {
       *v47 = 0;
       *&v47[8] = v47;
@@ -30,21 +30,21 @@
         v5 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
         {
-          v6 = [(PurchaseInfo *)self->_purchaseInfo logKey];
+          logKey = [(PurchaseInfo *)self->_purchaseInfo logKey];
           *buf = 138412290;
-          v46 = v6;
+          v46 = logKey;
           _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%@] Resetting update after purchase failed", buf, 0xCu);
         }
 
         v7 = sub_1002BB3F0();
-        v8 = [(PurchaseInfo *)self->_purchaseInfo bundleID];
-        v9 = [(PurchaseInfo *)self->_purchaseInfo logKey];
-        sub_1002BBC18(v7, v8, v9);
+        bundleID2 = [(PurchaseInfo *)self->_purchaseInfo bundleID];
+        logKey2 = [(PurchaseInfo *)self->_purchaseInfo logKey];
+        sub_1002BBC18(v7, bundleID2, logKey2);
       }
 
       v10 = +[UpdatesManager sharedManager];
-      v11 = [(PurchaseInfo *)self->_purchaseInfo logKey];
-      [v10 noteUpdatesStateChanged:@"Purchase Failure" logKey:v11];
+      logKey3 = [(PurchaseInfo *)self->_purchaseInfo logKey];
+      [v10 noteUpdatesStateChanged:@"Purchase Failure" logKey:logKey3];
 
       _Block_object_dispose(v47, 8);
     }
@@ -55,40 +55,40 @@
     v12 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(PurchaseInfo *)self->_purchaseInfo logKey];
+      logKey4 = [(PurchaseInfo *)self->_purchaseInfo logKey];
       *v47 = 138412290;
-      *&v47[4] = v13;
+      *&v47[4] = logKey4;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[%@] Removing generated vendor identifier", v47, 0xCu);
     }
 
     v14 = +[LSApplicationWorkspace defaultWorkspace];
-    v15 = [(PurchaseInfo *)self->_purchaseInfo bundleID];
+    bundleID3 = [(PurchaseInfo *)self->_purchaseInfo bundleID];
 
-    if (v15)
+    if (bundleID3)
     {
-      v16 = [(PurchaseInfo *)self->_purchaseInfo vendorName];
-      v17 = [(PurchaseInfo *)self->_purchaseInfo bundleID];
-      [v14 removeDeviceIdentifierForVendorName:v16 bundleIdentifier:v17];
+      vendorName = [(PurchaseInfo *)self->_purchaseInfo vendorName];
+      bundleID4 = [(PurchaseInfo *)self->_purchaseInfo bundleID];
+      [v14 removeDeviceIdentifierForVendorName:vendorName bundleIdentifier:bundleID4];
     }
 
-    v18 = [(PurchaseInfo *)self->_purchaseInfo temporaryBundleID];
+    temporaryBundleID = [(PurchaseInfo *)self->_purchaseInfo temporaryBundleID];
 
-    if (v18)
+    if (temporaryBundleID)
     {
-      v19 = [(PurchaseInfo *)self->_purchaseInfo vendorName];
-      v20 = [(PurchaseInfo *)self->_purchaseInfo temporaryBundleID];
-      [v14 removeDeviceIdentifierForVendorName:v19 bundleIdentifier:v20];
+      vendorName2 = [(PurchaseInfo *)self->_purchaseInfo vendorName];
+      temporaryBundleID2 = [(PurchaseInfo *)self->_purchaseInfo temporaryBundleID];
+      [v14 removeDeviceIdentifierForVendorName:vendorName2 bundleIdentifier:temporaryBundleID2];
     }
   }
 
-  v21 = [(PurchaseInfo *)self->_purchaseInfo coordinator];
-  v22 = v21 == 0;
+  coordinator = [(PurchaseInfo *)self->_purchaseInfo coordinator];
+  v22 = coordinator == 0;
 
   if (!v22)
   {
     v23 = self->_purchaseError;
-    v24 = [(NSError *)v23 domain];
-    v25 = [v24 isEqualToString:IXUserPresentableErrorDomain];
+    domain = [(NSError *)v23 domain];
+    v25 = [domain isEqualToString:IXUserPresentableErrorDomain];
 
     if ((v25 & 1) == 0)
     {
@@ -97,10 +97,10 @@
       v23 = v26;
     }
 
-    v27 = [(PurchaseInfo *)self->_purchaseInfo coordinator];
+    coordinator2 = [(PurchaseInfo *)self->_purchaseInfo coordinator];
     v28 = ASDErrorWithSafeUserInfo();
     v43 = 0;
-    v29 = sub_100249ACC(v27, v28, &v43);
+    v29 = sub_100249ACC(coordinator2, v28, &v43);
     v30 = v43;
 
     if ((v29 & 1) == 0)
@@ -108,12 +108,12 @@
       v31 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
-        v41 = [(PurchaseInfo *)self->_purchaseInfo logKey];
-        v42 = [(PurchaseInfo *)self->_purchaseInfo coordinator];
+        logKey5 = [(PurchaseInfo *)self->_purchaseInfo logKey];
+        coordinator3 = [(PurchaseInfo *)self->_purchaseInfo coordinator];
         *v47 = 138412802;
-        *&v47[4] = v41;
+        *&v47[4] = logKey5;
         *&v47[12] = 2114;
-        *&v47[14] = v42;
+        *&v47[14] = coordinator3;
         *&v47[22] = 2114;
         v48 = v30;
         _os_log_error_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "[%@] Canceling coordinator: %{public}@ failed: %{public}@", v47, 0x20u);
@@ -121,13 +121,13 @@
     }
   }
 
-  v32 = [(PurchaseInfo *)self->_purchaseInfo bundleID];
+  bundleID5 = [(PurchaseInfo *)self->_purchaseInfo bundleID];
 
-  if (v32)
+  if (bundleID5)
   {
     v33 = sub_1003649C8();
-    v34 = [(PurchaseInfo *)self->_purchaseInfo bundleID];
-    sub_100365318(v33, v34);
+    bundleID6 = [(PurchaseInfo *)self->_purchaseInfo bundleID];
+    sub_100365318(v33, bundleID6);
   }
 
   if (![(PurchaseInfo *)self->_purchaseInfo purchaseType])
@@ -148,8 +148,8 @@
     v38 = [_TtC9appstored12SkannerEvent requestWithResult:v36 destination:v37 responseCode:0 postback:0 error:self->_purchaseError];
 
     v39 = +[_TtC9appstored18SkannerCoordinator sharedInstance];
-    v40 = [(PurchaseInfo *)self->_purchaseInfo itemID];
-    [v39 logEvent:v38 forAdvertisedAppAdamID:objc_msgSend(v40 synchronizeWithSnout:"longLongValue") completionHandler:{1, &stru_100524A48}];
+    itemID = [(PurchaseInfo *)self->_purchaseInfo itemID];
+    [v39 logEvent:v38 forAdvertisedAppAdamID:objc_msgSend(itemID synchronizeWithSnout:"longLongValue") completionHandler:{1, &stru_100524A48}];
   }
 
   [(Task *)self completeWithSuccess];

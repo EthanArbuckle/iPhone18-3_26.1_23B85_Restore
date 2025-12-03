@@ -1,36 +1,36 @@
 @interface ProfileCharacteristicsViewController
-+ (BOOL)nameRowsHiddenForProfileIdentifier:(id)a3;
-+ (id)orderedRowIdentifiersBySectionIdentifierWithNameRowsHidden:(BOOL)a3 pregnancySectionHidden:(BOOL)a4 cardioFitnessMedicationsSectionHidden:(BOOL)a5;
-+ (id)orderedSectionIdentifiersWithPregnancySectionHidden:(BOOL)a3 cardioFitnessMedicationsSectionHidden:(BOOL)a4;
++ (BOOL)nameRowsHiddenForProfileIdentifier:(id)identifier;
++ (id)orderedRowIdentifiersBySectionIdentifierWithNameRowsHidden:(BOOL)hidden pregnancySectionHidden:(BOOL)sectionHidden cardioFitnessMedicationsSectionHidden:(BOOL)medicationsSectionHidden;
++ (id)orderedSectionIdentifiersWithPregnancySectionHidden:(BOOL)hidden cardioFitnessMedicationsSectionHidden:(BOOL)sectionHidden;
 - (HKHealthSettingsNavigationDonating)settingsNavigationDonatingDelegate;
-- (ProfileCharacteristicsViewController)initWithCoder:(id)a3;
-- (ProfileCharacteristicsViewController)initWithHealthStore:(id)a3;
-- (ProfileCharacteristicsViewController)initWithHealthStore:(id)a3 inEditMode:(BOOL)a4;
-- (ProfileCharacteristicsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (ProfileCharacteristicsViewController)initWithStyle:(int64_t)a3;
+- (ProfileCharacteristicsViewController)initWithCoder:(id)coder;
+- (ProfileCharacteristicsViewController)initWithHealthStore:(id)store;
+- (ProfileCharacteristicsViewController)initWithHealthStore:(id)store inEditMode:(BOOL)mode;
+- (ProfileCharacteristicsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (ProfileCharacteristicsViewController)initWithStyle:(int64_t)style;
 - (UIImageView)avatarImageView;
 - (id)_birthdayCalendar;
 - (id)_checkmarkedCircleImageView;
 - (id)_circleImageView;
 - (id)_createBetaBlockerCheckMarkCell;
 - (id)_createCalciumChannelBlockerCheckMarkCell;
-- (id)_dateAsAge:(id)a3;
-- (id)_displayStringForBiologicalSex:(int64_t)a3;
-- (id)_displayStringForBirthDate:(id)a3;
-- (id)_displayStringForBloodType:(int64_t)a3;
-- (id)_displayStringForFitzpatrickSkinType:(int64_t)a3;
-- (id)_displayStringForWheelchairUse:(int64_t)a3;
+- (id)_dateAsAge:(id)age;
+- (id)_displayStringForBiologicalSex:(int64_t)sex;
+- (id)_displayStringForBirthDate:(id)date;
+- (id)_displayStringForBloodType:(int64_t)type;
+- (id)_displayStringForFitzpatrickSkinType:(int64_t)type;
+- (id)_displayStringForWheelchairUse:(int64_t)use;
 - (id)_generalInfoFooterView;
 - (id)_initialBirthdayValue;
 - (id)_meContact;
-- (id)_titleForFooterInTableViewSection:(int64_t)a3 sectionIdentifier:(id)a4;
+- (id)_titleForFooterInTableViewSection:(int64_t)section sectionIdentifier:(id)identifier;
 - (id)_wheelchairFooterTitle;
-- (id)displayNumberOfActiveCardioFitnessMedications:(int)a3;
-- (id)getCellForIndexPath:(id)a3;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (int64_t)_profileRowIdentifierForSection:(id)a3;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
+- (id)displayNumberOfActiveCardioFitnessMedications:(int)medications;
+- (id)getCellForIndexPath:(id)path;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (int64_t)_profileRowIdentifierForSection:(id)section;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
 - (void)_adjustHeaderFrame;
 - (void)_createBarButtonItems;
 - (void)_createCells;
@@ -38,68 +38,68 @@
 - (void)_createPickers;
 - (void)_enableEditing;
 - (void)_fetchDataFromHealthStore;
-- (void)_handlePregnancyModelQueryResult:(id)a3 error:(id)a4;
-- (void)_localeDidChange:(id)a3;
+- (void)_handlePregnancyModelQueryResult:(id)result error:(id)error;
+- (void)_localeDidChange:(id)change;
 - (void)_resetFirstAndLastNameValues;
 - (void)_resetSelectedCell;
-- (void)_setPregnancyCellDisplayValueForState:(BOOL)a3;
+- (void)_setPregnancyCellDisplayValueForState:(BOOL)state;
 - (void)_startPregnancyModelQuery;
-- (void)_timeZoneDidChange:(id)a3;
+- (void)_timeZoneDidChange:(id)change;
 - (void)_updateCellsWithDisplayValues;
 - (void)_updateFirstAndLastNameCellsWithDisplayValues;
-- (void)_updateFirstName:(id)a3 lastName:(id)a4 completion:(id)a5;
+- (void)_updateFirstName:(id)name lastName:(id)lastName completion:(id)completion;
 - (void)_updateFooters;
 - (void)_updatePickersWithDisplayValues;
-- (void)birthdateChanged:(id)a3;
+- (void)birthdateChanged:(id)changed;
 - (void)cancelButtonTapped;
 - (void)dealloc;
 - (void)didClearBirthdate;
 - (void)didTapPregnancy;
 - (void)didUpdateName;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
-- (void)setAvatarImage:(id)a3;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
+- (void)setAvatarImage:(id)image;
 - (void)setCardioFitnessMedicationCheckmarks;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)setUpNavigationBar;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateCheckMarksForCell:(id)a3 option:(unint64_t)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateCheckMarksForCell:(id)cell option:(unint64_t)option;
 - (void)updateTableViewIfNeeded;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ProfileCharacteristicsViewController
 
-- (ProfileCharacteristicsViewController)initWithHealthStore:(id)a3
+- (ProfileCharacteristicsViewController)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v25.receiver = self;
   v25.super_class = ProfileCharacteristicsViewController;
   v6 = [(ProfileCharacteristicsViewController *)&v25 initWithStyle:2];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v7->_beginInEditMode = 0;
     v7->_accessType = 0;
     v8 = [MEMORY[0x1E69A4380] sharedInstanceForHealthStore:v7->_healthStore];
     displayTypeController = v7->_displayTypeController;
     v7->_displayTypeController = v8;
 
-    v10 = [objc_alloc(MEMORY[0x1E69A4048]) initWithHealthStore:v5];
+    v10 = [objc_alloc(MEMORY[0x1E69A4048]) initWithHealthStore:storeCopy];
     userDefaults = v7->_userDefaults;
     v7->_userDefaults = v10;
 
-    v12 = [v5 profileIdentifier];
-    v7->_nameRowsHidden = [ProfileCharacteristicsViewController nameRowsHiddenForProfileIdentifier:v12];
+    profileIdentifier = [storeCopy profileIdentifier];
+    v7->_nameRowsHidden = [ProfileCharacteristicsViewController nameRowsHiddenForProfileIdentifier:profileIdentifier];
 
-    v13 = [v5 profileIdentifier];
-    v7->_cardioFitnessMedicationsSectionHidden = [ProfileCharacteristicsViewController cardioFitnessMedicationsSectionHiddenForProfileIdentifier:v13];
+    profileIdentifier2 = [storeCopy profileIdentifier];
+    v7->_cardioFitnessMedicationsSectionHidden = [ProfileCharacteristicsViewController cardioFitnessMedicationsSectionHiddenForProfileIdentifier:profileIdentifier2];
 
-    v14 = [MEMORY[0x1E696C608] sharedBehavior];
-    v7->_pregnancySectionHidden = [v14 healthAppSupportedOnDevice] ^ 1;
+    mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+    v7->_pregnancySectionHidden = [mEMORY[0x1E696C608] healthAppSupportedOnDevice] ^ 1;
 
     v15 = [ProfileCharacteristicsViewController orderedSectionIdentifiersWithPregnancySectionHidden:v7->_pregnancySectionHidden cardioFitnessMedicationsSectionHidden:v7->_cardioFitnessMedicationsSectionHidden];
     orderedSectionIdentifiers = v7->_orderedSectionIdentifiers;
@@ -109,12 +109,12 @@
     orderedRowIdentifiersBySectionIdentifier = v7->_orderedRowIdentifiersBySectionIdentifier;
     v7->_orderedRowIdentifiersBySectionIdentifier = v17;
 
-    v19 = [objc_alloc(MEMORY[0x1E69A4110]) initWithHealthStore:v5];
+    v19 = [objc_alloc(MEMORY[0x1E69A4110]) initWithHealthStore:storeCopy];
     birthdateChangeManager = v7->_birthdateChangeManager;
     v7->_birthdateChangeManager = v19;
 
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 addObserver:v7 selector:sel__localeDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__localeDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
 
     v7->_isPregnant = 0;
     _HKInitializeLogging();
@@ -131,22 +131,22 @@
   return v7;
 }
 
-- (ProfileCharacteristicsViewController)initWithHealthStore:(id)a3 inEditMode:(BOOL)a4
+- (ProfileCharacteristicsViewController)initWithHealthStore:(id)store inEditMode:(BOOL)mode
 {
-  result = [(ProfileCharacteristicsViewController *)self initWithHealthStore:a3];
-  result->_beginInEditMode = a4;
+  result = [(ProfileCharacteristicsViewController *)self initWithHealthStore:store];
+  result->_beginInEditMode = mode;
   return result;
 }
 
-+ (BOOL)nameRowsHiddenForProfileIdentifier:(id)a3
++ (BOOL)nameRowsHiddenForProfileIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 BOOLForKey:@"TinkerProfileCharacteristicsHideNameRows"];
+  identifierCopy = identifier;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults BOOLForKey:@"TinkerProfileCharacteristicsHideNameRows"];
 
   if (v5)
   {
-    v6 = [v3 type] == 3;
+    v6 = [identifierCopy type] == 3;
   }
 
   else
@@ -157,16 +157,16 @@
   return v6;
 }
 
-+ (id)orderedSectionIdentifiersWithPregnancySectionHidden:(BOOL)a3 cardioFitnessMedicationsSectionHidden:(BOOL)a4
++ (id)orderedSectionIdentifiersWithPregnancySectionHidden:(BOOL)hidden cardioFitnessMedicationsSectionHidden:(BOOL)sectionHidden
 {
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [v6 addObjectsFromArray:&unk_1F38468A0];
-  if (!a3)
+  if (!hidden)
   {
     [v6 addObject:&unk_1F38465D0];
   }
 
-  if (!a4)
+  if (!sectionHidden)
   {
     [v6 addObject:&unk_1F38465E8];
   }
@@ -174,10 +174,10 @@
   return v6;
 }
 
-+ (id)orderedRowIdentifiersBySectionIdentifierWithNameRowsHidden:(BOOL)a3 pregnancySectionHidden:(BOOL)a4 cardioFitnessMedicationsSectionHidden:(BOOL)a5
++ (id)orderedRowIdentifiersBySectionIdentifierWithNameRowsHidden:(BOOL)hidden pregnancySectionHidden:(BOOL)sectionHidden cardioFitnessMedicationsSectionHidden:(BOOL)medicationsSectionHidden
 {
   v8 = objc_opt_new();
-  if (a3)
+  if (hidden)
   {
     v9 = &unk_1F38468B8;
   }
@@ -200,12 +200,12 @@
 
   [v8 setObject:v9 forKey:&unk_1F38465A0];
   [v8 setObject:&unk_1F3846900 forKey:&unk_1F38465B8];
-  if (!a4)
+  if (!sectionHidden)
   {
     [v8 setObject:&unk_1F3846918 forKey:&unk_1F38465D0];
   }
 
-  if (!a5)
+  if (!medicationsSectionHidden)
   {
     [v8 setObject:&unk_1F3846930 forKey:&unk_1F38465E8];
   }
@@ -213,7 +213,7 @@
   return v8;
 }
 
-- (ProfileCharacteristicsViewController)initWithStyle:(int64_t)a3
+- (ProfileCharacteristicsViewController)initWithStyle:(int64_t)style
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D940];
@@ -223,14 +223,14 @@
   return 0;
 }
 
-- (ProfileCharacteristicsViewController)initWithCoder:(id)a3
+- (ProfileCharacteristicsViewController)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = ProfileCharacteristicsViewController;
-  return [(ProfileCharacteristicsViewController *)&v4 initWithCoder:a3];
+  return [(ProfileCharacteristicsViewController *)&v4 initWithCoder:coder];
 }
 
-- (ProfileCharacteristicsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ProfileCharacteristicsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D940];
@@ -240,14 +240,14 @@
   return 0;
 }
 
-- (void)setAvatarImage:(id)a3
+- (void)setAvatarImage:(id)image
 {
-  v6 = a3;
-  objc_storeStrong(&self->_avatarImage, a3);
+  imageCopy = image;
+  objc_storeStrong(&self->_avatarImage, image);
   if ([(ProfileCharacteristicsViewController *)self isViewLoaded])
   {
-    v5 = [(ProfileCharacteristicsViewController *)self avatarImageView];
-    [v5 setImage:v6];
+    avatarImageView = [(ProfileCharacteristicsViewController *)self avatarImageView];
+    [avatarImageView setImage:imageCopy];
 
     [(ProfileCharacteristicsViewController *)self _adjustHeaderFrame];
   }
@@ -263,26 +263,26 @@
 
     [(UIImageView *)self->_avatarImageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(WDProfileHeaderView *)self->_headerView setAvatarView:self->_avatarImageView];
-    v5 = [MEMORY[0x1E696C608] sharedBehavior];
-    if ([v5 isiPad])
+    mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+    if ([mEMORY[0x1E696C608] isiPad])
     {
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696C608] sharedBehavior];
-      v7 = [v6 isRealityDevice];
+      mEMORY[0x1E696C608]2 = [MEMORY[0x1E696C608] sharedBehavior];
+      isRealityDevice = [mEMORY[0x1E696C608]2 isRealityDevice];
 
-      if (!v7)
+      if (!isRealityDevice)
       {
         goto LABEL_6;
       }
     }
 
-    v8 = [(WDProfileHeaderView *)self->_headerView safeAreaLayoutGuide];
-    v9 = [(UIImageView *)self->_avatarImageView centerXAnchor];
-    v10 = [v8 centerXAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    safeAreaLayoutGuide = [(WDProfileHeaderView *)self->_headerView safeAreaLayoutGuide];
+    centerXAnchor = [(UIImageView *)self->_avatarImageView centerXAnchor];
+    centerXAnchor2 = [safeAreaLayoutGuide centerXAnchor];
+    v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v11 setActive:1];
   }
 
@@ -306,33 +306,33 @@ LABEL_6:
   [(ProfileCharacteristicsViewController *)&v31 viewDidLoad];
   [(ProfileCharacteristicsViewController *)self setUpNavigationBar];
   v3 = *MEMORY[0x1E69DE3D0];
-  v4 = [(ProfileCharacteristicsViewController *)self tableView];
-  [v4 setRowHeight:v3];
+  tableView = [(ProfileCharacteristicsViewController *)self tableView];
+  [tableView setRowHeight:v3];
 
   v5 = [MEMORY[0x1E69DB878] hk_preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   [v5 lineHeight];
   v7 = v6 * 3.0;
-  v8 = [(ProfileCharacteristicsViewController *)self tableView];
-  [v8 setEstimatedRowHeight:v7];
+  tableView2 = [(ProfileCharacteristicsViewController *)self tableView];
+  [tableView2 setEstimatedRowHeight:v7];
 
-  v9 = [(ProfileCharacteristicsViewController *)self tableView];
-  [v9 setAllowsSelectionDuringEditing:1];
+  tableView3 = [(ProfileCharacteristicsViewController *)self tableView];
+  [tableView3 setAllowsSelectionDuringEditing:1];
 
-  v10 = [(ProfileCharacteristicsViewController *)self tableView];
-  [v10 setBackgroundView:0];
+  tableView4 = [(ProfileCharacteristicsViewController *)self tableView];
+  [tableView4 setBackgroundView:0];
 
-  v11 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v12 = [(ProfileCharacteristicsViewController *)self tableView];
-  [v12 setBackgroundColor:v11];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  tableView5 = [(ProfileCharacteristicsViewController *)self tableView];
+  [tableView5 setBackgroundColor:systemBackgroundColor];
 
-  v13 = [(ProfileCharacteristicsViewController *)self tableView];
+  tableView6 = [(ProfileCharacteristicsViewController *)self tableView];
   v14 = objc_opt_class();
-  v15 = [MEMORY[0x1E69A4388] defaultReuseIdentifier];
-  [v13 registerClass:v14 forHeaderFooterViewReuseIdentifier:v15];
+  defaultReuseIdentifier = [MEMORY[0x1E69A4388] defaultReuseIdentifier];
+  [tableView6 registerClass:v14 forHeaderFooterViewReuseIdentifier:defaultReuseIdentifier];
 
-  v16 = [(ProfileCharacteristicsViewController *)self tableView];
+  tableView7 = [(ProfileCharacteristicsViewController *)self tableView];
   v17 = HKUIJoinStringsForAutomationIdentifier();
-  [v16 setAccessibilityIdentifier:v17];
+  [tableView7 setAccessibilityIdentifier:v17];
 
   if (self->_beginInEditMode)
   {
@@ -347,13 +347,13 @@ LABEL_6:
   [(ProfileCharacteristicsViewController *)self setCardioFitnessMedicationCheckmarks];
   objc_initWeak(&location, self);
   v18 = [ProfileCharacteristicDiffableDataSource alloc];
-  v19 = [(ProfileCharacteristicsViewController *)self tableView];
+  tableView8 = [(ProfileCharacteristicsViewController *)self tableView];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __51__ProfileCharacteristicsViewController_viewDidLoad__block_invoke;
   v28[3] = &unk_1E7EEB5B0;
   objc_copyWeak(&v29, &location);
-  v20 = [(UITableViewDiffableDataSource *)v18 initWithTableView:v19 cellProvider:v28];
+  v20 = [(UITableViewDiffableDataSource *)v18 initWithTableView:tableView8 cellProvider:v28];
   [(ProfileCharacteristicsViewController *)self setDataSource:v20];
 
   v26[0] = MEMORY[0x1E69E9820];
@@ -361,19 +361,19 @@ LABEL_6:
   v26[2] = __51__ProfileCharacteristicsViewController_viewDidLoad__block_invoke_2;
   v26[3] = &unk_1E7EEB5D8;
   objc_copyWeak(&v27, &location);
-  v21 = [(ProfileCharacteristicsViewController *)self dataSource];
-  [v21 setFooterTitleProvider:v26];
+  dataSource = [(ProfileCharacteristicsViewController *)self dataSource];
+  [dataSource setFooterTitleProvider:v26];
 
   [(ProfileCharacteristicsViewController *)self updateTableViewIfNeeded];
-  v22 = [(ProfileCharacteristicsViewController *)self dataSource];
-  [v22 setDefaultRowAnimation:0];
+  dataSource2 = [(ProfileCharacteristicsViewController *)self dataSource];
+  [dataSource2 setDefaultRowAnimation:0];
 
-  v23 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  v24 = [(ProfileCharacteristicsViewController *)self view];
-  [v24 setBackgroundColor:v23];
+  systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  view = [(ProfileCharacteristicsViewController *)self view];
+  [view setBackgroundColor:systemGroupedBackgroundColor];
 
-  v25 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v25 addObserver:self selector:sel__timeZoneDidChange_ name:*MEMORY[0x1E695DA68] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__timeZoneDidChange_ name:*MEMORY[0x1E695DA68] object:0];
 
   objc_destroyWeak(&v27);
   objc_destroyWeak(&v29);
@@ -403,16 +403,16 @@ id __51__ProfileCharacteristicsViewController_viewDidLoad__block_invoke_2(uint64
   return v8;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = ProfileCharacteristicsViewController;
-  [(ProfileCharacteristicsViewController *)&v8 viewDidAppear:a3];
-  v4 = [(ProfileCharacteristicsViewController *)self settingsNavigationDonatingDelegate];
+  [(ProfileCharacteristicsViewController *)&v8 viewDidAppear:appear];
+  settingsNavigationDonatingDelegate = [(ProfileCharacteristicsViewController *)self settingsNavigationDonatingDelegate];
   v5 = MEMORY[0x1E69A2D68];
-  v6 = [MEMORY[0x1E69A2D68] healthSettingsHealthDetailsSpecifier];
-  v7 = [v5 internalHealthSettingsURLTo:v6];
-  [v4 donateWithDeepLink:v7 andTitle:@"Health Details"];
+  healthSettingsHealthDetailsSpecifier = [MEMORY[0x1E69A2D68] healthSettingsHealthDetailsSpecifier];
+  v7 = [v5 internalHealthSettingsURLTo:healthSettingsHealthDetailsSpecifier];
+  [settingsNavigationDonatingDelegate donateWithDeepLink:v7 andTitle:@"Health Details"];
 }
 
 - (void)updateTableViewIfNeeded
@@ -428,67 +428,67 @@ id __51__ProfileCharacteristicsViewController_viewDidLoad__block_invoke_2(uint64
   orderedRowIdentifiersBySectionIdentifier = self->_orderedRowIdentifiersBySectionIdentifier;
   self->_orderedRowIdentifiersBySectionIdentifier = v6;
 
-  v8 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
-  [v8 appendSectionsWithIdentifiers:self->_orderedSectionIdentifiers];
+  currentSnapshot = [(ProfileCharacteristicsViewController *)self currentSnapshot];
+  [currentSnapshot appendSectionsWithIdentifiers:self->_orderedSectionIdentifiers];
 
-  v9 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
+  currentSnapshot2 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
   v10 = [(NSDictionary *)self->_orderedRowIdentifiersBySectionIdentifier objectForKey:&unk_1F38465A0];
-  [v9 appendItemsWithIdentifiers:v10 intoSectionWithIdentifier:&unk_1F38465A0];
+  [currentSnapshot2 appendItemsWithIdentifiers:v10 intoSectionWithIdentifier:&unk_1F38465A0];
 
-  v11 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
+  currentSnapshot3 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
   v12 = [(NSDictionary *)self->_orderedRowIdentifiersBySectionIdentifier objectForKey:&unk_1F38465B8];
-  [v11 appendItemsWithIdentifiers:v12 intoSectionWithIdentifier:&unk_1F38465B8];
+  [currentSnapshot3 appendItemsWithIdentifiers:v12 intoSectionWithIdentifier:&unk_1F38465B8];
 
   if (!self->_pregnancySectionHidden)
   {
-    v13 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
-    [v13 appendItemsWithIdentifiers:&unk_1F3846960 intoSectionWithIdentifier:&unk_1F38465D0];
+    currentSnapshot4 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
+    [currentSnapshot4 appendItemsWithIdentifiers:&unk_1F3846960 intoSectionWithIdentifier:&unk_1F38465D0];
   }
 
   if (!self->_cardioFitnessMedicationsSectionHidden)
   {
-    v14 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
-    [v14 appendItemsWithIdentifiers:&unk_1F3846978 intoSectionWithIdentifier:&unk_1F38465E8];
+    currentSnapshot5 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
+    [currentSnapshot5 appendItemsWithIdentifiers:&unk_1F3846978 intoSectionWithIdentifier:&unk_1F38465E8];
   }
 }
 
-- (id)_titleForFooterInTableViewSection:(int64_t)a3 sectionIdentifier:(id)a4
+- (id)_titleForFooterInTableViewSection:(int64_t)section sectionIdentifier:(id)identifier
 {
-  v5 = a4;
-  if ([v5 isEqual:&unk_1F38465A0])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqual:&unk_1F38465A0])
   {
-    v6 = &stru_1F3823B88;
+    _wheelchairFooterTitle = &stru_1F3823B88;
   }
 
-  else if ([v5 isEqual:&unk_1F38465B8])
+  else if ([identifierCopy isEqual:&unk_1F38465B8])
   {
-    v6 = [(ProfileCharacteristicsViewController *)self _wheelchairFooterTitle];
+    _wheelchairFooterTitle = [(ProfileCharacteristicsViewController *)self _wheelchairFooterTitle];
   }
 
-  else if ([v5 isEqual:&unk_1F38465E8])
+  else if ([identifierCopy isEqual:&unk_1F38465E8])
   {
     v7 = WDBundle();
-    v6 = [v7 localizedStringForKey:@"CARDIO_FITNESS_RELATED_MEDICATIONS_FOOTER_TEXT" value:&stru_1F3823B88 table:@"WellnessDashboard-Localizable"];
+    _wheelchairFooterTitle = [v7 localizedStringForKey:@"CARDIO_FITNESS_RELATED_MEDICATIONS_FOOTER_TEXT" value:&stru_1F3823B88 table:@"WellnessDashboard-Localizable"];
   }
 
   else
   {
-    v6 = 0;
+    _wheelchairFooterTitle = 0;
   }
 
-  return v6;
+  return _wheelchairFooterTitle;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(ProfileCharacteristicsViewController *)self _generalInfoFooterView:a3];
+    v6 = [(ProfileCharacteristicsViewController *)self _generalInfoFooterView:view];
   }
 
   return v6;
@@ -496,12 +496,12 @@ id __51__ProfileCharacteristicsViewController_viewDidLoad__block_invoke_2(uint64
 
 - (id)_wheelchairFooterTitle
 {
-  v3 = [(HKHealthStore *)self->_healthStore profileIdentifier];
-  v4 = [v3 type];
+  profileIdentifier = [(HKHealthStore *)self->_healthStore profileIdentifier];
+  type = [profileIdentifier type];
 
   v5 = WDBundle();
   v6 = v5;
-  if (v4 == 3)
+  if (type == 3)
   {
     v7 = [v5 localizedStringForKey:@"WHEELCHAIR_USE_COREMOTION_TEXT_TINKER_%@" value:&stru_1F3823B88 table:@"WellnessDashboard-Localizable-Tinker"];
 
@@ -520,18 +520,18 @@ id __51__ProfileCharacteristicsViewController_viewDidLoad__block_invoke_2(uint64
 
 - (id)_generalInfoFooterView
 {
-  v3 = [(HKHealthStore *)self->_healthStore profileIdentifier];
-  v4 = [v3 type];
+  profileIdentifier = [(HKHealthStore *)self->_healthStore profileIdentifier];
+  type = [profileIdentifier type];
 
-  if (v4 == 3)
+  if (type == 3)
   {
     v5 = WDBundle();
     v6 = [v5 localizedStringForKey:@"EDIT_HEALTH_DETAILS_FOOTER_TEXT_%@" value:&stru_1F3823B88 table:@"WellnessDashboard-Localizable-Tinker"];
 
     v7 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v6, self->_firstName];
     v8 = objc_alloc(MEMORY[0x1E69A4388]);
-    v9 = [MEMORY[0x1E69A4388] defaultReuseIdentifier];
-    v10 = [v8 initWithReuseIdentifier:v9 markdown:v7];
+    defaultReuseIdentifier = [MEMORY[0x1E69A4388] defaultReuseIdentifier];
+    v10 = [v8 initWithReuseIdentifier:defaultReuseIdentifier markdown:v7];
   }
 
   else
@@ -542,30 +542,30 @@ id __51__ProfileCharacteristicsViewController_viewDidLoad__block_invoke_2(uint64
   return v10;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ProfileCharacteristicsViewController;
-  [(ProfileCharacteristicsViewController *)&v4 viewWillAppear:a3];
+  [(ProfileCharacteristicsViewController *)&v4 viewWillAppear:appear];
   [(ProfileCharacteristicsViewController *)self _fetchDataFromHealthStore];
   [(ProfileCharacteristicsViewController *)self _updatePickersWithDisplayValues];
 }
 
-- (void)_localeDidChange:(id)a3
+- (void)_localeDidChange:(id)change
 {
   [(ProfileCharacteristicsViewController *)self _updatePickersWithDisplayValues];
-  v5 = [(ProfileCharacteristicsViewController *)self dataSource];
-  v4 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
-  [v5 applySnapshot:v4 animatingDifferences:0];
+  dataSource = [(ProfileCharacteristicsViewController *)self dataSource];
+  currentSnapshot = [(ProfileCharacteristicsViewController *)self currentSnapshot];
+  [dataSource applySnapshot:currentSnapshot animatingDifferences:0];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E695DA68] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E695DA68] object:0];
 
   [(WDProfileTableViewCell *)self->_birthdateCell removeClearButtonTarget:self action:sel_didClearBirthdate];
   [(HKHealthStore *)self->_healthStore stopQuery:self->_pregnancyModelQuery];
@@ -574,18 +574,18 @@ id __51__ProfileCharacteristicsViewController_viewDidLoad__block_invoke_2(uint64
   [(ProfileCharacteristicsViewController *)&v5 dealloc];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = ProfileCharacteristicsViewController;
-  [(ProfileCharacteristicsViewController *)&v10 traitCollectionDidChange:v4];
-  if (v4)
+  [(ProfileCharacteristicsViewController *)&v10 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(ProfileCharacteristicsViewController *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(ProfileCharacteristicsViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
@@ -618,31 +618,31 @@ void __65__ProfileCharacteristicsViewController_traitCollectionDidChange___block
   [v3 applySnapshot:v2 animatingDifferences:0];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a3;
+  editingCopy = editing;
   v87.receiver = self;
   v87.super_class = ProfileCharacteristicsViewController;
-  [(ProfileCharacteristicsViewController *)&v87 setEditing:a3 animated:a4];
-  if (v4)
+  [(ProfileCharacteristicsViewController *)&v87 setEditing:editing animated:animated];
+  if (editingCopy)
   {
     self->_isCancelling = 0;
     [(ProfileCharacteristicsViewController *)self setModalInPresentation:1];
-    v6 = [(ProfileCharacteristicsViewController *)self navigationItem];
-    [v6 setLeftBarButtonItem:self->_cancelButtonItem animated:1];
+    navigationItem = [(ProfileCharacteristicsViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:self->_cancelButtonItem animated:1];
 
     if (!self->_cardioFitnessMedicationsSectionHidden)
     {
-      v7 = [(ProfileCharacteristicsViewController *)self dataSource];
-      v8 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
-      [v7 applySnapshot:v8 animatingDifferences:0];
+      dataSource = [(ProfileCharacteristicsViewController *)self dataSource];
+      currentSnapshot = [(ProfileCharacteristicsViewController *)self currentSnapshot];
+      [dataSource applySnapshot:currentSnapshot animatingDifferences:0];
 
-      v9 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
-      [v9 appendItemsWithIdentifiers:&unk_1F3846990 intoSectionWithIdentifier:&unk_1F38465E8];
+      currentSnapshot2 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
+      [currentSnapshot2 appendItemsWithIdentifiers:&unk_1F3846990 intoSectionWithIdentifier:&unk_1F38465E8];
 
-      v10 = [(ProfileCharacteristicsViewController *)self dataSource];
-      v11 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
-      [v10 applySnapshot:v11 animatingDifferences:1];
+      dataSource2 = [(ProfileCharacteristicsViewController *)self dataSource];
+      currentSnapshot3 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
+      [dataSource2 applySnapshot:currentSnapshot3 animatingDifferences:1];
 LABEL_46:
     }
   }
@@ -651,36 +651,36 @@ LABEL_46:
   {
     if (!self->_cardioFitnessMedicationsSectionHidden)
     {
-      v12 = [(ProfileCharacteristicsViewController *)self dataSource];
-      v13 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
-      [v12 applySnapshot:v13 animatingDifferences:0];
+      dataSource3 = [(ProfileCharacteristicsViewController *)self dataSource];
+      currentSnapshot4 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
+      [dataSource3 applySnapshot:currentSnapshot4 animatingDifferences:0];
 
-      v14 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
-      [v14 deleteItemsWithIdentifiers:&unk_1F38469A8];
+      currentSnapshot5 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
+      [currentSnapshot5 deleteItemsWithIdentifiers:&unk_1F38469A8];
 
-      v15 = [(ProfileCharacteristicsViewController *)self dataSource];
-      v16 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
-      [v15 applySnapshot:v16 animatingDifferences:1];
+      dataSource4 = [(ProfileCharacteristicsViewController *)self dataSource];
+      currentSnapshot6 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
+      [dataSource4 applySnapshot:currentSnapshot6 animatingDifferences:1];
     }
 
     [(ProfileCharacteristicsViewController *)self setModalInPresentation:0];
-    v17 = [MEMORY[0x1E69DCBE0] activeInstance];
-    [v17 removeAutocorrection];
+    activeInstance = [MEMORY[0x1E69DCBE0] activeInstance];
+    [activeInstance removeAutocorrection];
 
-    v18 = [(ProfileCharacteristicsViewController *)self view];
-    [v18 endEditing:1];
+    view = [(ProfileCharacteristicsViewController *)self view];
+    [view endEditing:1];
 
     [(ProfileCharacteristicsViewController *)self _resetSelectedCell];
-    v19 = [(ProfileCharacteristicsViewController *)self navigationItem];
-    [v19 setLeftBarButtonItem:0 animated:1];
+    navigationItem2 = [(ProfileCharacteristicsViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:0 animated:1];
 
     if (!self->_isCancelling)
     {
-      v20 = [(WDProfileEditableTableViewCell *)self->_firstNameCell displayValue];
-      v21 = v20;
-      if (v20)
+      displayValue = [(WDProfileEditableTableViewCell *)self->_firstNameCell displayValue];
+      v21 = displayValue;
+      if (displayValue)
       {
-        v22 = v20;
+        v22 = displayValue;
       }
 
       else
@@ -690,11 +690,11 @@ LABEL_46:
 
       v23 = v22;
 
-      v24 = [(WDProfileEditableTableViewCell *)self->_lastNameCell displayValue];
-      v25 = v24;
-      if (v24)
+      displayValue2 = [(WDProfileEditableTableViewCell *)self->_lastNameCell displayValue];
+      v25 = displayValue2;
+      if (displayValue2)
       {
-        v26 = v24;
+        v26 = displayValue2;
       }
 
       else
@@ -709,11 +709,11 @@ LABEL_46:
       v84[2] = __60__ProfileCharacteristicsViewController_setEditing_animated___block_invoke;
       v84[3] = &unk_1E7EEB2D0;
       v84[4] = self;
-      v11 = v23;
-      v85 = v11;
+      currentSnapshot3 = v23;
+      v85 = currentSnapshot3;
       v28 = v27;
       v86 = v28;
-      [(ProfileCharacteristicsViewController *)self _updateFirstName:v11 lastName:v28 completion:v84];
+      [(ProfileCharacteristicsViewController *)self _updateFirstName:currentSnapshot3 lastName:v28 completion:v84];
       healthStore = self->_healthStore;
       biologicalSexDisplayValue = self->_biologicalSexDisplayValue;
       v83 = 0;
@@ -831,7 +831,7 @@ LABEL_46:
       currentCardioFitnessMedicationsUse = self->_currentCardioFitnessMedicationsUse;
       v76 = v60;
       v64 = [(HKHealthStore *)v62 _setCardioFitnessMedicationsUse:currentCardioFitnessMedicationsUse error:&v76];
-      v10 = v76;
+      dataSource2 = v76;
 
       if ((v64 & 1) == 0)
       {
@@ -845,15 +845,15 @@ LABEL_46:
 
       if ([v49 shouldShowWarning])
       {
-        v66 = [(HKHealthStore *)self->_healthStore profileIdentifier];
-        v67 = [v66 type];
+        profileIdentifier = [(HKHealthStore *)self->_healthStore profileIdentifier];
+        type = [profileIdentifier type];
 
-        if (v67 != 3)
+        if (type != 3)
         {
-          v68 = [MEMORY[0x1E696C198] shared];
-          v69 = [v68 isHealthChecklistAvailable];
+          mEMORY[0x1E696C198] = [MEMORY[0x1E696C198] shared];
+          isHealthChecklistAvailable = [mEMORY[0x1E696C198] isHealthChecklistAvailable];
 
-          if (v69 && [(ProfileCharacteristicsViewController *)self accessType]!= 3)
+          if (isHealthChecklistAvailable && [(ProfileCharacteristicsViewController *)self accessType]!= 3)
           {
             v70 = [(ProfileCharacteristicsViewController *)self accessType]!= 5;
             [MEMORY[0x1E69A4110] showDisabledWarningWithHealthChecklistWithAge:objc_msgSend(v49 presentingViewController:"newAge") openHealthChecklistInContext:{self, v70}];
@@ -880,8 +880,8 @@ LABEL_46:
     }
   }
 
-  v74 = [(ProfileCharacteristicsViewController *)self tableView];
-  [v74 reloadData];
+  tableView = [(ProfileCharacteristicsViewController *)self tableView];
+  [tableView reloadData];
 }
 
 void __60__ProfileCharacteristicsViewController_setEditing_animated___block_invoke(uint64_t a1, int a2, void *a3)
@@ -953,31 +953,31 @@ void __60__ProfileCharacteristicsViewController_setEditing_animated___block_invo
   }
 }
 
-- (void)_updateFirstName:(id)a3 lastName:(id)a4 completion:(id)a5
+- (void)_updateFirstName:(id)name lastName:(id)lastName completion:(id)completion
 {
   v18[2] = *MEMORY[0x1E69E9840];
   healthStore = self->_healthStore;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(HKHealthStore *)healthStore profileIdentifier];
-  v13 = [v12 type];
+  completionCopy = completion;
+  lastNameCopy = lastName;
+  nameCopy = name;
+  profileIdentifier = [(HKHealthStore *)healthStore profileIdentifier];
+  type = [profileIdentifier type];
 
-  if (v13 == 1)
+  if (type == 1)
   {
     v14 = *MEMORY[0x1E696C908];
     v17[0] = *MEMORY[0x1E696C900];
     v17[1] = v14;
-    v18[0] = v11;
-    v18[1] = v10;
+    v18[0] = nameCopy;
+    v18[1] = lastNameCopy;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
-    [(WDUserDefaults *)self->_userDefaults setValue:v15 forKey:*MEMORY[0x1E696C918] completion:v9];
+    [(WDUserDefaults *)self->_userDefaults setValue:v15 forKey:*MEMORY[0x1E696C918] completion:completionCopy];
   }
 
   else
   {
     v16 = [objc_alloc(MEMORY[0x1E696C340]) initWithHealthStore:self->_healthStore];
-    [v16 setDisplayFirstName:v11 lastName:v10 completion:v9];
+    [v16 setDisplayFirstName:nameCopy lastName:lastNameCopy completion:completionCopy];
   }
 }
 
@@ -992,9 +992,9 @@ void __60__ProfileCharacteristicsViewController_setEditing_animated___block_invo
   [(WDProfileHeaderView *)headerView setFirstName:firstName lastName:lastName];
 }
 
-- (id)getCellForIndexPath:(id)a3
+- (id)getCellForIndexPath:(id)path
 {
-  v4 = [(ProfileCharacteristicsViewController *)self _profileRowIdentifierForSection:a3];
+  v4 = [(ProfileCharacteristicsViewController *)self _profileRowIdentifierForSection:path];
   if (v4 <= 4)
   {
     if (v4 <= 1)
@@ -1144,36 +1144,36 @@ LABEL_34:
   return v11;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v24 = a3;
-  v6 = a4;
-  [v24 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [(ProfileCharacteristicsViewController *)self isEditing];
-  v8 = [(ProfileCharacteristicsViewController *)self _profileRowIdentifierForSection:v6];
-  if ((v7 & 1) == 0)
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  isEditing = [(ProfileCharacteristicsViewController *)self isEditing];
+  v8 = [(ProfileCharacteristicsViewController *)self _profileRowIdentifierForSection:pathCopy];
+  if ((isEditing & 1) == 0)
   {
-    v9 = 0;
+    displayName = 0;
     if (v8 <= 5)
     {
       if (v8 > 3)
       {
         if (v8 == 4)
         {
-          v9 = [(WDProfileTableViewCell *)self->_bloodTypeCell displayName];
+          displayName = [(WDProfileTableViewCell *)self->_bloodTypeCell displayName];
           v15 = MEMORY[0x1E696B6C8];
         }
 
         else
         {
-          v9 = [(WDProfileTableViewCell *)self->_fitzpatrickSkinTypeCell displayName];
+          displayName = [(WDProfileTableViewCell *)self->_fitzpatrickSkinTypeCell displayName];
           v15 = MEMORY[0x1E696B6D8];
         }
       }
 
       else if (v8 == 2)
       {
-        v9 = [(WDProfileTableViewCell *)self->_birthdateCell displayName];
+        displayName = [(WDProfileTableViewCell *)self->_birthdateCell displayName];
         v15 = MEMORY[0x1E696B6D0];
       }
 
@@ -1184,7 +1184,7 @@ LABEL_34:
           goto LABEL_38;
         }
 
-        v9 = [(WDProfileTableViewCell *)self->_biologicalSexCell displayName];
+        displayName = [(WDProfileTableViewCell *)self->_biologicalSexCell displayName];
         v15 = MEMORY[0x1E696B6C0];
       }
     }
@@ -1196,7 +1196,7 @@ LABEL_34:
         goto LABEL_3;
       }
 
-      v9 = [(WDProfileTableViewCell *)self->_wheelchairUseCell displayName];
+      displayName = [(WDProfileTableViewCell *)self->_wheelchairUseCell displayName];
       v15 = MEMORY[0x1E696B6E0];
     }
 
@@ -1219,15 +1219,15 @@ LABEL_34:
           v10 = 1288;
         }
 
-        v21 = [*(&self->super.super.super.super.isa + v10) textLabel];
-        v9 = [v21 text];
+        textLabel = [*(&self->super.super.super.super.isa + v10) textLabel];
+        displayName = [textLabel text];
 LABEL_37:
 
         goto LABEL_38;
       }
 
-      v19 = [(UITableViewCell *)self->_cardioFitnessMedicationsCell textLabel];
-      v9 = [v19 text];
+      textLabel2 = [(UITableViewCell *)self->_cardioFitnessMedicationsCell textLabel];
+      displayName = [textLabel2 text];
 
       v15 = MEMORY[0x1E696C6A0];
     }
@@ -1238,11 +1238,11 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v21 = v20;
+    textLabel = v20;
     v22 = [[ProfileCharacteristicTypePermissionsViewController alloc] initWithHealthStore:self->_healthStore characteristicType:v20 firstName:self->_firstName];
-    [(ProfileCharacteristicTypePermissionsViewController *)v22 setTitle:v9];
-    v23 = [(ProfileCharacteristicsViewController *)self navigationController];
-    [v23 hk_showViewController:v22 animated:1];
+    [(ProfileCharacteristicTypePermissionsViewController *)v22 setTitle:displayName];
+    navigationController = [(ProfileCharacteristicsViewController *)self navigationController];
+    [navigationController hk_showViewController:v22 animated:1];
 
     goto LABEL_37;
   }
@@ -1254,12 +1254,12 @@ LABEL_3:
     goto LABEL_39;
   }
 
-  v11 = [v24 cellForRowAtIndexPath:v6];
-  v9 = v11;
+  v11 = [viewCopy cellForRowAtIndexPath:pathCopy];
+  displayName = v11;
   if (v11 == self->_betaBlockerUseCell)
   {
-    v16 = self;
-    v17 = v9;
+    selfCopy2 = self;
+    v17 = displayName;
     v18 = 2;
   }
 
@@ -1269,60 +1269,60 @@ LABEL_3:
     {
       selectedCell = self->_selectedCell;
       [(ProfileCharacteristicsViewController *)self _resetSelectedCell];
-      if (v9 != selectedCell)
+      if (displayName != selectedCell)
       {
-        objc_storeStrong(&self->_selectedCell, v9);
-        if (v9 == self->_birthdateCell)
+        objc_storeStrong(&self->_selectedCell, displayName);
+        if (displayName == self->_birthdateCell)
         {
           if (!self->_birthdateDisplayValue)
           {
-            v13 = [(ProfileCharacteristicsViewController *)self _initialBirthdayValue];
+            _initialBirthdayValue = [(ProfileCharacteristicsViewController *)self _initialBirthdayValue];
             birthdateDisplayValue = self->_birthdateDisplayValue;
-            self->_birthdateDisplayValue = v13;
+            self->_birthdateDisplayValue = _initialBirthdayValue;
 
             [(ProfileCharacteristicsViewController *)self _updatePickersWithDisplayValues];
             [(ProfileCharacteristicsViewController *)self _updateCellsWithDisplayValues];
           }
 
-          [(WDProfileTableViewCell *)v9 setShouldDisplayClearButtonDuringEditing:1];
+          [(WDProfileTableViewCell *)displayName setShouldDisplayClearButtonDuringEditing:1];
         }
 
-        [(WDProfileTableViewCell *)v9 becomeFirstResponder];
+        [(WDProfileTableViewCell *)displayName becomeFirstResponder];
       }
 
       goto LABEL_38;
     }
 
-    v16 = self;
-    v17 = v9;
+    selfCopy2 = self;
+    v17 = displayName;
     v18 = 1;
   }
 
-  [(ProfileCharacteristicsViewController *)v16 updateCheckMarksForCell:v17 option:v18];
+  [(ProfileCharacteristicsViewController *)selfCopy2 updateCheckMarksForCell:v17 option:v18];
 LABEL_38:
 
 LABEL_39:
 }
 
-- (void)updateCheckMarksForCell:(id)a3 option:(unint64_t)a4
+- (void)updateCheckMarksForCell:(id)cell option:(unint64_t)option
 {
-  v6 = self->_currentCardioFitnessMedicationsUse & a4;
-  v7 = a3;
+  v6 = self->_currentCardioFitnessMedicationsUse & option;
+  cellCopy = cell;
   if (v6)
   {
-    v8 = [(ProfileCharacteristicsViewController *)self _circleImageView];
-    [v7 setEditingAccessoryView:v8];
+    _circleImageView = [(ProfileCharacteristicsViewController *)self _circleImageView];
+    [cellCopy setEditingAccessoryView:_circleImageView];
 
-    v9 = self->_currentCardioFitnessMedicationsUse & ~a4;
+    v9 = self->_currentCardioFitnessMedicationsUse & ~option;
     v10 = -1;
   }
 
   else
   {
-    v11 = [(ProfileCharacteristicsViewController *)self _checkmarkedCircleImageView];
-    [v7 setEditingAccessoryView:v11];
+    _checkmarkedCircleImageView = [(ProfileCharacteristicsViewController *)self _checkmarkedCircleImageView];
+    [cellCopy setEditingAccessoryView:_checkmarkedCircleImageView];
 
-    v9 = self->_currentCardioFitnessMedicationsUse | a4;
+    v9 = self->_currentCardioFitnessMedicationsUse | option;
     v10 = 1;
   }
 
@@ -1332,9 +1332,9 @@ LABEL_39:
   [(UITableViewCell *)self->_cardioFitnessMedicationsCell _setBadgeText:v12];
 }
 
-- (id)displayNumberOfActiveCardioFitnessMedications:(int)a3
+- (id)displayNumberOfActiveCardioFitnessMedications:(int)medications
 {
-  v3 = *&a3;
+  v3 = *&medications;
   if (displayNumberOfActiveCardioFitnessMedications__onceToken != -1)
   {
     [ProfileCharacteristicsViewController displayNumberOfActiveCardioFitnessMedications:];
@@ -1354,25 +1354,25 @@ void __86__ProfileCharacteristicsViewController_displayNumberOfActiveCardioFitne
   displayNumberOfActiveCardioFitnessMedications__numberFormatter = v0;
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  v5 = a3;
-  if (self->_biologicalSexPicker == v5)
+  viewCopy = view;
+  if (self->_biologicalSexPicker == viewCopy)
   {
     v6 = 4;
   }
 
-  else if (self->_bloodTypePicker == v5)
+  else if (self->_bloodTypePicker == viewCopy)
   {
     v6 = 9;
   }
 
-  else if (self->_fitzpatrickSkinTypePicker == v5)
+  else if (self->_fitzpatrickSkinTypePicker == viewCopy)
   {
     v6 = 7;
   }
 
-  else if (self->_wheelchairUsePicker == v5)
+  else if (self->_wheelchairUsePicker == viewCopy)
   {
     v6 = 3;
   }
@@ -1385,28 +1385,28 @@ void __86__ProfileCharacteristicsViewController_displayNumberOfActiveCardioFitne
   return v6;
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v7 = a3;
-  v8 = v7;
-  if (self->_biologicalSexPicker == v7)
+  viewCopy = view;
+  v8 = viewCopy;
+  if (self->_biologicalSexPicker == viewCopy)
   {
-    v10 = [(ProfileCharacteristicsViewController *)self _displayStringForBiologicalSex:a4];
+    v10 = [(ProfileCharacteristicsViewController *)self _displayStringForBiologicalSex:row];
   }
 
-  else if (self->_bloodTypePicker == v7)
+  else if (self->_bloodTypePicker == viewCopy)
   {
-    v10 = [(ProfileCharacteristicsViewController *)self _displayStringForBloodType:a4];
+    v10 = [(ProfileCharacteristicsViewController *)self _displayStringForBloodType:row];
   }
 
-  else if (self->_fitzpatrickSkinTypePicker == v7)
+  else if (self->_fitzpatrickSkinTypePicker == viewCopy)
   {
-    v10 = [(ProfileCharacteristicsViewController *)self _displayStringForFitzpatrickSkinType:a4];
+    v10 = [(ProfileCharacteristicsViewController *)self _displayStringForFitzpatrickSkinType:row];
   }
 
   else
   {
-    if (self->_wheelchairUsePicker != v7)
+    if (self->_wheelchairUsePicker != viewCopy)
     {
       v9 = &stru_1F3823B88;
       goto LABEL_11;
@@ -1421,56 +1421,56 @@ LABEL_11:
   return v9;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v7 = a3;
+  viewCopy = view;
   if (!self->_isCancelling)
   {
-    if (self->_biologicalSexPicker == v7)
+    if (self->_biologicalSexPicker == viewCopy)
     {
       v8 = &OBJC_IVAR___ProfileCharacteristicsViewController__biologicalSexDisplayValue;
     }
 
-    else if (self->_bloodTypePicker == v7)
+    else if (self->_bloodTypePicker == viewCopy)
     {
       v8 = &OBJC_IVAR___ProfileCharacteristicsViewController__bloodTypeDisplayValue;
     }
 
-    else if (self->_fitzpatrickSkinTypePicker == v7)
+    else if (self->_fitzpatrickSkinTypePicker == viewCopy)
     {
       v8 = &OBJC_IVAR___ProfileCharacteristicsViewController__fitzpatrickSkinTypeDisplayValue;
     }
 
     else
     {
-      if (self->_wheelchairUsePicker != v7)
+      if (self->_wheelchairUsePicker != viewCopy)
       {
 LABEL_11:
-        v9 = v7;
+        v9 = viewCopy;
         [(ProfileCharacteristicsViewController *)self _updateCellsWithDisplayValues];
-        v7 = v9;
+        viewCopy = v9;
         goto LABEL_12;
       }
 
       v8 = &OBJC_IVAR___ProfileCharacteristicsViewController__wheelchairUseDisplayValue;
     }
 
-    *(&self->super.super.super.super.isa + *v8) = a4;
+    *(&self->super.super.super.super.isa + *v8) = row;
     goto LABEL_11;
   }
 
 LABEL_12:
 }
 
-- (void)birthdateChanged:(id)a3
+- (void)birthdateChanged:(id)changed
 {
   if (!self->_isCancelling)
   {
-    v5 = a3;
-    v6 = [(ProfileCharacteristicsViewController *)self _birthdayCalendar];
-    v7 = [v5 date];
+    changedCopy = changed;
+    _birthdayCalendar = [(ProfileCharacteristicsViewController *)self _birthdayCalendar];
+    date = [changedCopy date];
 
-    v8 = [v6 hk_dateOfBirthDateComponentsWithDate:v7];
+    v8 = [_birthdayCalendar hk_dateOfBirthDateComponentsWithDate:date];
     birthdateDisplayValue = self->_birthdateDisplayValue;
     self->_birthdateDisplayValue = v8;
 
@@ -1505,15 +1505,15 @@ LABEL_12:
 
 - (void)didUpdateName
 {
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v2 postNotificationName:*MEMORY[0x1E696C910] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E696C910] object:0];
 }
 
 - (void)didTapPregnancy
 {
-  v3 = [MEMORY[0x1E6963608] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v2 = [MEMORY[0x1E695DFF8] URLWithString:@"x-apple-health://MenstrualCyclesAppPlugin.healthplugin/openPregnancyOnboarding"];
-  [v3 openSensitiveURL:v2 withOptions:MEMORY[0x1E695E0F8]];
+  [defaultWorkspace openSensitiveURL:v2 withOptions:MEMORY[0x1E695E0F8]];
 }
 
 - (void)_fetchDataFromHealthStore
@@ -1664,15 +1664,15 @@ void __65__ProfileCharacteristicsViewController__startPregnancyModelQuery__block
   [WeakRetained _handlePregnancyModelQueryResult:v7 error:v6];
 }
 
-- (void)_handlePregnancyModelQueryResult:(id)a3 error:(id)a4
+- (void)_handlePregnancyModelQueryResult:(id)result error:(id)error
 {
-  v6 = a4;
-  if (a3)
+  errorCopy = error;
+  if (result)
   {
-    v7 = [a3 state];
-    if (v7 <= 2)
+    state = [result state];
+    if (state <= 2)
     {
-      self->_isPregnant = 0x100u >> (8 * v7);
+      self->_isPregnant = 0x100u >> (8 * state);
     }
 
     block[0] = MEMORY[0x1E69E9820];
@@ -1689,35 +1689,35 @@ void __65__ProfileCharacteristicsViewController__startPregnancyModelQuery__block
     v8 = *MEMORY[0x1E696B970];
     if (os_log_type_enabled(*MEMORY[0x1E696B970], OS_LOG_TYPE_ERROR))
     {
-      [(ProfileCharacteristicsViewController *)v8 _handlePregnancyModelQueryResult:v6 error:?];
+      [(ProfileCharacteristicsViewController *)v8 _handlePregnancyModelQueryResult:errorCopy error:?];
     }
   }
 }
 
 - (void)_updateFooters
 {
-  v3 = [(HKHealthStore *)self->_healthStore profileIdentifier];
-  v4 = [v3 type];
+  profileIdentifier = [(HKHealthStore *)self->_healthStore profileIdentifier];
+  type = [profileIdentifier type];
 
-  if (v4 == 3)
+  if (type == 3)
   {
-    v5 = [(ProfileCharacteristicsViewController *)self tableView];
-    v15 = [v5 footerViewForSection:0];
+    tableView = [(ProfileCharacteristicsViewController *)self tableView];
+    v15 = [tableView footerViewForSection:0];
 
     v6 = WDBundle();
     v7 = [v6 localizedStringForKey:@"EDIT_HEALTH_DETAILS_FOOTER_TEXT_%@" value:&stru_1F3823B88 table:@"WellnessDashboard-Localizable-Tinker"];
 
     v8 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v7, self->_firstName];
     [v15 updateWithMarkdown:v8];
-    v9 = [(ProfileCharacteristicsViewController *)self _wheelchairFooterTitle];
-    v10 = [(ProfileCharacteristicsViewController *)self tableView];
-    v11 = [v10 footerViewForSection:1];
-    v12 = [v11 textLabel];
-    [v12 setText:v9];
+    _wheelchairFooterTitle = [(ProfileCharacteristicsViewController *)self _wheelchairFooterTitle];
+    tableView2 = [(ProfileCharacteristicsViewController *)self tableView];
+    v11 = [tableView2 footerViewForSection:1];
+    textLabel = [v11 textLabel];
+    [textLabel setText:_wheelchairFooterTitle];
 
-    v13 = [(ProfileCharacteristicsViewController *)self dataSource];
-    v14 = [(ProfileCharacteristicsViewController *)self currentSnapshot];
-    [v13 applySnapshot:v14 animatingDifferences:0];
+    dataSource = [(ProfileCharacteristicsViewController *)self dataSource];
+    currentSnapshot = [(ProfileCharacteristicsViewController *)self currentSnapshot];
+    [dataSource applySnapshot:currentSnapshot animatingDifferences:0];
   }
 }
 
@@ -1744,27 +1744,27 @@ void __85__ProfileCharacteristicsViewController__updateFirstAndLastNameCellsWith
 
 - (void)_enableEditing
 {
-  v3 = [(HKHealthStore *)self->_healthStore profileIdentifier];
-  if ([v3 type] != 3)
+  profileIdentifier = [(HKHealthStore *)self->_healthStore profileIdentifier];
+  if ([profileIdentifier type] != 3)
   {
 
     goto LABEL_5;
   }
 
-  v4 = [(ProfileCharacteristicsViewController *)self isEditing];
+  isEditing = [(ProfileCharacteristicsViewController *)self isEditing];
 
-  if (v4)
+  if (isEditing)
   {
 LABEL_5:
-    v5 = [(ProfileCharacteristicsViewController *)self editButtonItem];
-    v6 = [(ProfileCharacteristicsViewController *)self navigationItem];
-    [v6 setRightBarButtonItem:v5];
+    editButtonItem = [(ProfileCharacteristicsViewController *)self editButtonItem];
+    navigationItem = [(ProfileCharacteristicsViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:editButtonItem];
   }
 
-  v7 = [MEMORY[0x1E696C608] isRunningStoreDemoMode];
-  v9 = [(ProfileCharacteristicsViewController *)self navigationItem];
-  v8 = [v9 rightBarButtonItem];
-  [v8 setEnabled:v7 ^ 1u];
+  isRunningStoreDemoMode = [MEMORY[0x1E696C608] isRunningStoreDemoMode];
+  navigationItem2 = [(ProfileCharacteristicsViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+  [rightBarButtonItem setEnabled:isRunningStoreDemoMode ^ 1u];
 }
 
 - (void)_createHeader
@@ -1778,15 +1778,15 @@ LABEL_5:
   [(ProfileCharacteristicsViewController *)self setAvatarImage:self->_avatarImage];
   [(ProfileCharacteristicsViewController *)self _adjustHeaderFrame];
   v6 = self->_headerView;
-  v7 = [(ProfileCharacteristicsViewController *)self tableView];
-  [v7 setTableHeaderView:v6];
+  tableView = [(ProfileCharacteristicsViewController *)self tableView];
+  [tableView setTableHeaderView:v6];
 }
 
 - (void)_adjustHeaderFrame
 {
   headerView = self->_headerView;
-  v4 = [(ProfileCharacteristicsViewController *)self tableView];
-  [v4 frame];
+  tableView = [(ProfileCharacteristicsViewController *)self tableView];
+  [tableView frame];
   [(WDProfileHeaderView *)headerView sizeThatFits:CGRectGetWidth(v11), 1.79769313e308];
   v6 = v5;
   v8 = v7;
@@ -1823,12 +1823,12 @@ LABEL_5:
 
   [(UIDatePicker *)self->_birthdatePicker setPreferredDatePickerStyle:1];
   [(UIDatePicker *)self->_birthdatePicker setDatePickerMode:1];
-  v9 = [MEMORY[0x1E695DF00] date];
-  [(UIDatePicker *)self->_birthdatePicker setMaximumDate:v9];
+  date = [MEMORY[0x1E695DF00] date];
+  [(UIDatePicker *)self->_birthdatePicker setMaximumDate:date];
 
   v10 = MEMORY[0x1E695DF00];
-  v11 = [(ProfileCharacteristicsViewController *)self _birthdayCalendar];
-  v12 = [v10 hk_minimumDateForBirthDateWithCalendar:v11];
+  _birthdayCalendar = [(ProfileCharacteristicsViewController *)self _birthdayCalendar];
+  v12 = [v10 hk_minimumDateForBirthDateWithCalendar:_birthdayCalendar];
   [(UIDatePicker *)self->_birthdatePicker setMinimumDate:v12];
 
   [(UIDatePicker *)self->_birthdatePicker addTarget:self action:sel_birthdateChanged_ forControlEvents:4096];
@@ -1982,9 +1982,9 @@ LABEL_5:
   [(WDProfileTableViewCell *)self->_wheelchairUseCell setPlaceholderValue:v53];
 
   v54 = self->_wheelchairUseCell;
-  v55 = [v90 localization];
-  v56 = [v55 displayName];
-  [(WDProfileTableViewCell *)v54 setDisplayName:v56];
+  localization = [v90 localization];
+  displayName = [localization displayName];
+  [(WDProfileTableViewCell *)v54 setDisplayName:displayName];
 
   [(WDProfileTableViewCell *)self->_wheelchairUseCell updateAutomationIdentifiersForProfileDetail:@"WheelchairUse"];
   v57 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:1 reuseIdentifier:@"WDProfileTableViewCell"];
@@ -1994,11 +1994,11 @@ LABEL_5:
   [(UITableViewCell *)self->_pregnancyCell setAccessoryType:0];
   [(UITableViewCell *)self->_pregnancyCell setEditingAccessoryType:0];
   v59 = HKHealthKeyColor();
-  v60 = [(UITableViewCell *)self->_pregnancyCell textLabel];
-  [v60 setTextColor:v59];
+  textLabel = [(UITableViewCell *)self->_pregnancyCell textLabel];
+  [textLabel setTextColor:v59];
 
-  v61 = [(UITableViewCell *)self->_pregnancyCell textLabel];
-  [v61 setNumberOfLines:0];
+  textLabel2 = [(UITableViewCell *)self->_pregnancyCell textLabel];
+  [textLabel2 setNumberOfLines:0];
 
   v96[0] = *MEMORY[0x1E69A40D8];
   v62 = v96[0];
@@ -2012,15 +2012,15 @@ LABEL_5:
   v95[1] = @"Title";
   v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:v95 count:2];
   v66 = HKUIJoinStringsForAutomationIdentifier();
-  v67 = [(UITableViewCell *)self->_pregnancyCell textLabel];
-  [v67 setAccessibilityIdentifier:v66];
+  textLabel3 = [(UITableViewCell *)self->_pregnancyCell textLabel];
+  [textLabel3 setAccessibilityIdentifier:v66];
 
   v94[0] = v64;
   v94[1] = @"Value";
   v68 = [MEMORY[0x1E695DEC8] arrayWithObjects:v94 count:2];
   v69 = HKUIJoinStringsForAutomationIdentifier();
-  v70 = [(UITableViewCell *)self->_pregnancyCell detailTextLabel];
-  [v70 setAccessibilityIdentifier:v69];
+  detailTextLabel = [(UITableViewCell *)self->_pregnancyCell detailTextLabel];
+  [detailTextLabel setAccessibilityIdentifier:v69];
 
   [(ProfileCharacteristicsViewController *)self _setPregnancyCellDisplayValueForState:self->_isPregnant];
   v71 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:1 reuseIdentifier:@"WDProfileTableViewCell"];
@@ -2032,11 +2032,11 @@ LABEL_5:
   [(UITableViewCell *)self->_cardioFitnessMedicationsCell setSelectionStyle:0];
   v73 = WDBundle();
   v74 = [v73 localizedStringForKey:@"CARDIO_FITNESS_RELATED_MEDICATIONS" value:&stru_1F3823B88 table:@"WellnessDashboard-Localizable"];
-  v75 = [(UITableViewCell *)self->_cardioFitnessMedicationsCell textLabel];
-  [v75 setText:v74];
+  textLabel4 = [(UITableViewCell *)self->_cardioFitnessMedicationsCell textLabel];
+  [textLabel4 setText:v74];
 
-  v76 = [(UITableViewCell *)self->_cardioFitnessMedicationsCell textLabel];
-  [v76 setNumberOfLines:0];
+  textLabel5 = [(UITableViewCell *)self->_cardioFitnessMedicationsCell textLabel];
+  [textLabel5 setNumberOfLines:0];
 
   v77 = [(ProfileCharacteristicsViewController *)self displayNumberOfActiveCardioFitnessMedications:self->_activeCardioFitnessMedications];
   [(UITableViewCell *)self->_cardioFitnessMedicationsCell _setBadgeText:v77];
@@ -2052,23 +2052,23 @@ LABEL_5:
   v92[1] = @"Title";
   v80 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:2];
   v81 = HKUIJoinStringsForAutomationIdentifier();
-  v82 = [(UITableViewCell *)self->_cardioFitnessMedicationsCell textLabel];
-  [v82 setAccessibilityIdentifier:v81];
+  textLabel6 = [(UITableViewCell *)self->_cardioFitnessMedicationsCell textLabel];
+  [textLabel6 setAccessibilityIdentifier:v81];
 
   v91[0] = v79;
   v91[1] = @"Value";
   v83 = [MEMORY[0x1E695DEC8] arrayWithObjects:v91 count:2];
   v84 = HKUIJoinStringsForAutomationIdentifier();
-  v85 = [(UITableViewCell *)self->_cardioFitnessMedicationsCell detailTextLabel];
-  [v85 setAccessibilityIdentifier:v84];
+  detailTextLabel2 = [(UITableViewCell *)self->_cardioFitnessMedicationsCell detailTextLabel];
+  [detailTextLabel2 setAccessibilityIdentifier:v84];
 
-  v86 = [(ProfileCharacteristicsViewController *)self _createCalciumChannelBlockerCheckMarkCell];
+  _createCalciumChannelBlockerCheckMarkCell = [(ProfileCharacteristicsViewController *)self _createCalciumChannelBlockerCheckMarkCell];
   calciumChannelBlockerUseCell = self->_calciumChannelBlockerUseCell;
-  self->_calciumChannelBlockerUseCell = v86;
+  self->_calciumChannelBlockerUseCell = _createCalciumChannelBlockerCheckMarkCell;
 
-  v88 = [(ProfileCharacteristicsViewController *)self _createBetaBlockerCheckMarkCell];
+  _createBetaBlockerCheckMarkCell = [(ProfileCharacteristicsViewController *)self _createBetaBlockerCheckMarkCell];
   betaBlockerUseCell = self->_betaBlockerUseCell;
-  self->_betaBlockerUseCell = v88;
+  self->_betaBlockerUseCell = _createBetaBlockerCheckMarkCell;
 }
 
 - (id)_createCalciumChannelBlockerCheckMarkCell
@@ -2076,28 +2076,28 @@ LABEL_5:
   v26[3] = *MEMORY[0x1E69E9840];
   v3 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:0];
   [v3 setSelectionStyle:0];
-  v4 = [(ProfileCharacteristicsViewController *)self _circleImageView];
-  [(UITableViewCell *)self->_calciumChannelBlockerUseCell setEditingAccessoryView:v4];
+  _circleImageView = [(ProfileCharacteristicsViewController *)self _circleImageView];
+  [(UITableViewCell *)self->_calciumChannelBlockerUseCell setEditingAccessoryView:_circleImageView];
 
   v5 = WDBundle();
   v6 = [v5 localizedStringForKey:@"CALCIUM_CHANNEL_BLOCKER_USE" value:&stru_1F3823B88 table:@"WellnessDashboard-Localizable"];
-  v7 = [v3 textLabel];
-  [v7 setText:v6];
+  textLabel = [v3 textLabel];
+  [textLabel setText:v6];
 
-  v8 = [v3 textLabel];
-  [v8 setNumberOfLines:0];
+  textLabel2 = [v3 textLabel];
+  [textLabel2 setNumberOfLines:0];
 
   v9 = WDBundle();
   v10 = [v9 localizedStringForKey:@"CALCIUM_CHANNEL_BLOCKER_EXAMPLES" value:&stru_1F3823B88 table:@"WellnessDashboard-Localizable"];
-  v11 = [v3 detailTextLabel];
-  [v11 setText:v10];
+  detailTextLabel = [v3 detailTextLabel];
+  [detailTextLabel setText:v10];
 
-  v12 = [v3 detailTextLabel];
-  [v12 setNumberOfLines:0];
+  detailTextLabel2 = [v3 detailTextLabel];
+  [detailTextLabel2 setNumberOfLines:0];
 
-  v13 = [MEMORY[0x1E69DC888] systemGrayColor];
-  v14 = [v3 detailTextLabel];
-  [v14 setTextColor:v13];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  detailTextLabel3 = [v3 detailTextLabel];
+  [detailTextLabel3 setTextColor:systemGrayColor];
 
   v26[0] = *MEMORY[0x1E69A40D8];
   v26[1] = @"HealthDetail";
@@ -2110,15 +2110,15 @@ LABEL_5:
   v25[1] = @"Title";
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
   v18 = HKUIJoinStringsForAutomationIdentifier();
-  v19 = [v3 textLabel];
-  [v19 setAccessibilityIdentifier:v18];
+  textLabel3 = [v3 textLabel];
+  [textLabel3 setAccessibilityIdentifier:v18];
 
   v24[0] = v16;
   v24[1] = @"Value";
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
   v21 = HKUIJoinStringsForAutomationIdentifier();
-  v22 = [v3 detailTextLabel];
-  [v22 setAccessibilityIdentifier:v21];
+  detailTextLabel4 = [v3 detailTextLabel];
+  [detailTextLabel4 setAccessibilityIdentifier:v21];
 
   return v3;
 }
@@ -2128,28 +2128,28 @@ LABEL_5:
   v26[3] = *MEMORY[0x1E69E9840];
   v3 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:0];
   [v3 setSelectionStyle:0];
-  v4 = [(ProfileCharacteristicsViewController *)self _circleImageView];
-  [v3 setEditingAccessoryView:v4];
+  _circleImageView = [(ProfileCharacteristicsViewController *)self _circleImageView];
+  [v3 setEditingAccessoryView:_circleImageView];
 
   v5 = WDBundle();
   v6 = [v5 localizedStringForKey:@"BETA_BLOCKER_USE" value:&stru_1F3823B88 table:@"WellnessDashboard-Localizable"];
-  v7 = [v3 textLabel];
-  [v7 setText:v6];
+  textLabel = [v3 textLabel];
+  [textLabel setText:v6];
 
-  v8 = [v3 textLabel];
-  [v8 setNumberOfLines:0];
+  textLabel2 = [v3 textLabel];
+  [textLabel2 setNumberOfLines:0];
 
   v9 = WDBundle();
   v10 = [v9 localizedStringForKey:@"BETA_BLOCKER_EXAMPLES" value:&stru_1F3823B88 table:@"WellnessDashboard-Localizable"];
-  v11 = [v3 detailTextLabel];
-  [v11 setText:v10];
+  detailTextLabel = [v3 detailTextLabel];
+  [detailTextLabel setText:v10];
 
-  v12 = [v3 detailTextLabel];
-  [v12 setNumberOfLines:0];
+  detailTextLabel2 = [v3 detailTextLabel];
+  [detailTextLabel2 setNumberOfLines:0];
 
-  v13 = [MEMORY[0x1E69DC888] systemGrayColor];
-  v14 = [v3 detailTextLabel];
-  [v14 setTextColor:v13];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  detailTextLabel3 = [v3 detailTextLabel];
+  [detailTextLabel3 setTextColor:systemGrayColor];
 
   v26[0] = *MEMORY[0x1E69A40D8];
   v26[1] = @"HealthDetail";
@@ -2162,15 +2162,15 @@ LABEL_5:
   v25[1] = @"Title";
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
   v18 = HKUIJoinStringsForAutomationIdentifier();
-  v19 = [v3 textLabel];
-  [v19 setAccessibilityIdentifier:v18];
+  textLabel3 = [v3 textLabel];
+  [textLabel3 setAccessibilityIdentifier:v18];
 
   v24[0] = v16;
   v24[1] = @"Value";
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
   v21 = HKUIJoinStringsForAutomationIdentifier();
-  v22 = [v3 detailTextLabel];
-  [v22 setAccessibilityIdentifier:v21];
+  detailTextLabel4 = [v3 detailTextLabel];
+  [detailTextLabel4 setAccessibilityIdentifier:v21];
 
   return v3;
 }
@@ -2206,23 +2206,23 @@ LABEL_5:
   if ([v4 takingCalciumChannelBlockers])
   {
     self->_currentCardioFitnessMedicationsUse |= 1uLL;
-    v8 = [(ProfileCharacteristicsViewController *)self _checkmarkedCircleImageView];
-    [(UITableViewCell *)self->_calciumChannelBlockerUseCell setEditingAccessoryView:v8];
+    _checkmarkedCircleImageView = [(ProfileCharacteristicsViewController *)self _checkmarkedCircleImageView];
+    [(UITableViewCell *)self->_calciumChannelBlockerUseCell setEditingAccessoryView:_checkmarkedCircleImageView];
 
     ++self->_activeCardioFitnessMedications;
   }
 
   else
   {
-    v9 = [(ProfileCharacteristicsViewController *)self _circleImageView];
-    [(UITableViewCell *)self->_calciumChannelBlockerUseCell setEditingAccessoryView:v9];
+    _circleImageView = [(ProfileCharacteristicsViewController *)self _circleImageView];
+    [(UITableViewCell *)self->_calciumChannelBlockerUseCell setEditingAccessoryView:_circleImageView];
   }
 
   if ([v4 takingBetaBlockers])
   {
     self->_currentCardioFitnessMedicationsUse |= 2uLL;
-    v10 = [(ProfileCharacteristicsViewController *)self _checkmarkedCircleImageView];
-    [(UITableViewCell *)self->_betaBlockerUseCell setEditingAccessoryView:v10];
+    _checkmarkedCircleImageView2 = [(ProfileCharacteristicsViewController *)self _checkmarkedCircleImageView];
+    [(UITableViewCell *)self->_betaBlockerUseCell setEditingAccessoryView:_checkmarkedCircleImageView2];
 
     activeCardioFitnessMedications = (self->_activeCardioFitnessMedications + 1);
     self->_activeCardioFitnessMedications = activeCardioFitnessMedications;
@@ -2230,8 +2230,8 @@ LABEL_5:
 
   else
   {
-    v12 = [(ProfileCharacteristicsViewController *)self _circleImageView];
-    [(UITableViewCell *)self->_betaBlockerUseCell setEditingAccessoryView:v12];
+    _circleImageView2 = [(ProfileCharacteristicsViewController *)self _circleImageView];
+    [(UITableViewCell *)self->_betaBlockerUseCell setEditingAccessoryView:_circleImageView2];
 
     activeCardioFitnessMedications = self->_activeCardioFitnessMedications;
   }
@@ -2272,34 +2272,34 @@ LABEL_5:
   return v2;
 }
 
-- (int64_t)_profileRowIdentifierForSection:(id)a3
+- (int64_t)_profileRowIdentifierForSection:(id)section
 {
   orderedSectionIdentifiers = self->_orderedSectionIdentifiers;
-  v5 = a3;
-  v6 = -[NSArray objectAtIndex:](orderedSectionIdentifiers, "objectAtIndex:", [v5 section]);
+  sectionCopy = section;
+  v6 = -[NSArray objectAtIndex:](orderedSectionIdentifiers, "objectAtIndex:", [sectionCopy section]);
   v7 = [(NSDictionary *)self->_orderedRowIdentifiersBySectionIdentifier objectForKey:v6];
-  v8 = [v5 row];
+  v8 = [sectionCopy row];
 
   v9 = [v7 objectAtIndex:v8];
 
-  v10 = [v9 integerValue];
-  return v10;
+  integerValue = [v9 integerValue];
+  return integerValue;
 }
 
 - (void)_updatePickersWithDisplayValues
 {
   birthdateDisplayValue = self->_birthdateDisplayValue;
-  v4 = [(ProfileCharacteristicsViewController *)self _birthdayCalendar];
-  v5 = v4;
+  _birthdayCalendar = [(ProfileCharacteristicsViewController *)self _birthdayCalendar];
+  v5 = _birthdayCalendar;
   if (birthdateDisplayValue)
   {
-    v6 = [v4 dateFromComponents:self->_birthdateDisplayValue];
+    v6 = [_birthdayCalendar dateFromComponents:self->_birthdateDisplayValue];
   }
 
   else
   {
-    v7 = [(ProfileCharacteristicsViewController *)self _initialBirthdayValue];
-    v6 = [v5 dateFromComponents:v7];
+    _initialBirthdayValue = [(ProfileCharacteristicsViewController *)self _initialBirthdayValue];
+    v6 = [v5 dateFromComponents:_initialBirthdayValue];
   }
 
   [(UIDatePicker *)self->_birthdatePicker setDate:v6];
@@ -2352,18 +2352,18 @@ LABEL_5:
   self->_selectedCell = 0;
 }
 
-- (id)_displayStringForBirthDate:(id)a3
+- (id)_displayStringForBirthDate:(id)date
 {
-  v4 = a3;
-  if (v4)
+  dateCopy = date;
+  if (dateCopy)
   {
     if (_displayStringForBirthDate__onceToken != -1)
     {
       [ProfileCharacteristicsViewController _displayStringForBirthDate:];
     }
 
-    v5 = [(ProfileCharacteristicsViewController *)self _birthdayCalendar];
-    v6 = [v5 dateFromComponents:v4];
+    _birthdayCalendar = [(ProfileCharacteristicsViewController *)self _birthdayCalendar];
+    v6 = [_birthdayCalendar dateFromComponents:dateCopy];
 
     v7 = MEMORY[0x1E696AEC0];
     v8 = [_displayStringForBirthDate__birthdateFormatter stringFromDate:v6];
@@ -2390,18 +2390,18 @@ uint64_t __67__ProfileCharacteristicsViewController__displayStringForBirthDate__
   return [v2 setDateStyle:2];
 }
 
-- (id)_dateAsAge:(id)a3
+- (id)_dateAsAge:(id)age
 {
   v3 = _dateAsAge__onceToken[0];
-  v4 = a3;
+  ageCopy = age;
   if (v3 != -1)
   {
     [ProfileCharacteristicsViewController _dateAsAge:];
   }
 
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [v5 components:4 fromDate:v4 toDate:v6 options:0];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  v7 = [currentCalendar components:4 fromDate:ageCopy toDate:date options:0];
 
   v8 = _dateAsAge__ageFormatter;
   v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "year")}];
@@ -2419,22 +2419,22 @@ void __51__ProfileCharacteristicsViewController__dateAsAge___block_invoke()
 
 - (id)_initialBirthdayValue
 {
-  v3 = [(ProfileCharacteristicsViewController *)self _meContact];
-  v4 = [v3 birthday];
-  if (!v4)
+  _meContact = [(ProfileCharacteristicsViewController *)self _meContact];
+  birthday = [_meContact birthday];
+  if (!birthday)
   {
     goto LABEL_6;
   }
 
-  v5 = v4;
-  v6 = [v3 birthday];
-  if ([v6 year] == 0x7FFFFFFFFFFFFFFFLL)
+  v5 = birthday;
+  birthday2 = [_meContact birthday];
+  if ([birthday2 year] == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_5;
   }
 
-  v7 = [v3 birthday];
-  if ([v7 month] == 0x7FFFFFFFFFFFFFFFLL)
+  birthday3 = [_meContact birthday];
+  if ([birthday3 month] == 0x7FFFFFFFFFFFFFFFLL)
   {
 
 LABEL_5:
@@ -2443,8 +2443,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v10 = [v3 birthday];
-  v11 = [v10 day];
+  birthday4 = [_meContact birthday];
+  v11 = [birthday4 day];
 
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -2452,28 +2452,28 @@ LABEL_6:
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  v13 = [v3 birthday];
-  [v12 setYear:{objc_msgSend(v13, "year")}];
+  birthday5 = [_meContact birthday];
+  [v12 setYear:{objc_msgSend(birthday5, "year")}];
 
-  v14 = [v3 birthday];
-  [v12 setMonth:{objc_msgSend(v14, "month")}];
+  birthday6 = [_meContact birthday];
+  [v12 setMonth:{objc_msgSend(birthday6, "month")}];
 
-  v15 = [v3 birthday];
-  [v12 setDay:{objc_msgSend(v15, "day")}];
+  birthday7 = [_meContact birthday];
+  [v12 setDay:{objc_msgSend(birthday7, "day")}];
 
-  v16 = [v3 birthday];
-  v17 = [v16 calendar];
-  [v12 setCalendar:v17];
+  birthday8 = [_meContact birthday];
+  calendar = [birthday8 calendar];
+  [v12 setCalendar:calendar];
 
   v18 = MEMORY[0x1E695DF00];
-  v19 = [(ProfileCharacteristicsViewController *)self _birthdayCalendar];
-  v20 = [v18 hk_minimumDateForBirthDateWithCalendar:v19];
+  _birthdayCalendar = [(ProfileCharacteristicsViewController *)self _birthdayCalendar];
+  v20 = [v18 hk_minimumDateForBirthDateWithCalendar:_birthdayCalendar];
 
-  v21 = [MEMORY[0x1E695DF00] date];
-  v22 = [(ProfileCharacteristicsViewController *)self _birthdayCalendar];
-  v23 = [v22 dateFromComponents:v12];
+  date = [MEMORY[0x1E695DF00] date];
+  _birthdayCalendar2 = [(ProfileCharacteristicsViewController *)self _birthdayCalendar];
+  v23 = [_birthdayCalendar2 dateFromComponents:v12];
 
-  if ([v23 compare:v21] == 1 || objc_msgSend(v23, "compare:", v20) == -1)
+  if ([v23 compare:date] == 1 || objc_msgSend(v23, "compare:", v20) == -1)
   {
     v24 = HKUIDefaultGregorianBirthday();
   }
@@ -2527,16 +2527,16 @@ LABEL_7:
   return v2;
 }
 
-- (id)_displayStringForBiologicalSex:(int64_t)a3
+- (id)_displayStringForBiologicalSex:(int64_t)sex
 {
-  if ((a3 - 1) > 2)
+  if ((sex - 1) > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_1E7EEB668[a3 - 1];
+    v3 = off_1E7EEB668[sex - 1];
     v4 = WDBundle();
     v5 = [v4 localizedStringForKey:v3 value:&stru_1F3823B88 table:@"WellnessDashboard-Localizable"];
   }
@@ -2544,16 +2544,16 @@ LABEL_7:
   return v5;
 }
 
-- (id)_displayStringForBloodType:(int64_t)a3
+- (id)_displayStringForBloodType:(int64_t)type
 {
-  if ((a3 - 1) > 7)
+  if ((type - 1) > 7)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_1E7EEB680[a3 - 1];
+    v3 = off_1E7EEB680[type - 1];
     v4 = WDBundle();
     v5 = [v4 localizedStringForKey:v3 value:&stru_1F3823B88 table:@"WellnessDashboard-Localizable"];
   }
@@ -2561,16 +2561,16 @@ LABEL_7:
   return v5;
 }
 
-- (id)_displayStringForFitzpatrickSkinType:(int64_t)a3
+- (id)_displayStringForFitzpatrickSkinType:(int64_t)type
 {
-  if ((a3 - 1) > 5)
+  if ((type - 1) > 5)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_1E7EEB6C0[a3 - 1];
+    v3 = off_1E7EEB6C0[type - 1];
     v4 = WDBundle();
     v5 = [v4 localizedStringForKey:v3 value:&stru_1F3823B88 table:@"WellnessDashboard-Localizable"];
   }
@@ -2578,9 +2578,9 @@ LABEL_7:
   return v5;
 }
 
-- (id)_displayStringForWheelchairUse:(int64_t)a3
+- (id)_displayStringForWheelchairUse:(int64_t)use
 {
-  if (a3)
+  if (use)
   {
     v4 = HKWheelchairUseDisplayName();
   }
@@ -2593,12 +2593,12 @@ LABEL_7:
   return v4;
 }
 
-- (void)_setPregnancyCellDisplayValueForState:(BOOL)a3
+- (void)_setPregnancyCellDisplayValueForState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v6 = v5;
-  if (v3)
+  if (stateCopy)
   {
     v7 = @"HEALTH_DETAILS_EDIT_PREGNANCY";
   }
@@ -2616,15 +2616,15 @@ LABEL_7:
   [(UITableViewCell *)pregnancyCell setNeedsUpdateConstraints];
 }
 
-- (void)_timeZoneDidChange:(id)a3
+- (void)_timeZoneDidChange:(id)change
 {
   gregorianCalendar = self->_gregorianCalendar;
-  v5 = [MEMORY[0x1E695DFE8] systemTimeZone];
-  [(NSCalendar *)gregorianCalendar setTimeZone:v5];
+  systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+  [(NSCalendar *)gregorianCalendar setTimeZone:systemTimeZone];
 
   birthdatePicker = self->_birthdatePicker;
-  v7 = [MEMORY[0x1E695DFE8] systemTimeZone];
-  [(UIDatePicker *)birthdatePicker setTimeZone:v7];
+  systemTimeZone2 = [MEMORY[0x1E695DFE8] systemTimeZone];
+  [(UIDatePicker *)birthdatePicker setTimeZone:systemTimeZone2];
 
   [(ProfileCharacteristicsViewController *)self _updatePickersWithDisplayValues];
 }

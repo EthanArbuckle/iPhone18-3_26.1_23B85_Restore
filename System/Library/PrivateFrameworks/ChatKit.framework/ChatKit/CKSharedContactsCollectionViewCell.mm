@@ -1,21 +1,21 @@
 @interface CKSharedContactsCollectionViewCell
 - (CNAvatarView)avatarView;
-- (void)configureWithContact:(id)a3;
+- (void)configureWithContact:(id)contact;
 - (void)layoutSubviews;
 @end
 
 @implementation CKSharedContactsCollectionViewCell
 
-- (void)configureWithContact:(id)a3
+- (void)configureWithContact:(id)contact
 {
-  v4 = a3;
-  v8 = [(CKSharedAssetCollectionViewCell *)self previewTitleLabel];
-  v5 = [v4 fullName];
-  v6 = [(CKSharedAssetCollectionViewCell *)self formattedTitleFromPreviewTitle:v5];
-  [v8 setAttributedText:v6];
+  contactCopy = contact;
+  previewTitleLabel = [(CKSharedAssetCollectionViewCell *)self previewTitleLabel];
+  fullName = [contactCopy fullName];
+  v6 = [(CKSharedAssetCollectionViewCell *)self formattedTitleFromPreviewTitle:fullName];
+  [previewTitleLabel setAttributedText:v6];
 
-  v7 = [(CKSharedContactsCollectionViewCell *)self avatarView];
-  [v7 setContact:v4];
+  avatarView = [(CKSharedContactsCollectionViewCell *)self avatarView];
+  [avatarView setContact:contactCopy];
 
   [(CKSharedContactsCollectionViewCell *)self setNeedsLayout];
   [(CKSharedContactsCollectionViewCell *)self layoutIfNeeded];
@@ -35,8 +35,8 @@
     [(CNAvatarView *)self->_avatarView setForcePressView:self->_avatarView];
     [(CNAvatarView *)self->_avatarView setUserInteractionEnabled:1];
     [(CNAvatarView *)self->_avatarView setShowsActionsOnForcePress:1];
-    v7 = [(CKSharedAssetCollectionViewCell *)self previewView];
-    [v7 addSubview:self->_avatarView];
+    previewView = [(CKSharedAssetCollectionViewCell *)self previewView];
+    [previewView addSubview:self->_avatarView];
 
     avatarView = self->_avatarView;
   }
@@ -49,14 +49,14 @@
   *&rect.origin.y = self;
   *&rect.size.width = CKSharedContactsCollectionViewCell;
   [(CGFloat *)&rect.origin.y layoutSubviews];
-  v3 = [(CKSharedAssetCollectionViewCell *)self previewView];
-  [v3 bounds];
+  previewView = [(CKSharedAssetCollectionViewCell *)self previewView];
+  [previewView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKSharedContactsCollectionViewCell *)self avatarView];
+  avatarView = [(CKSharedContactsCollectionViewCell *)self avatarView];
   v13 = *(MEMORY[0x1E695F058] + 8);
   rect.origin.x = *MEMORY[0x1E695F058];
   v20.origin.x = v5;
@@ -88,7 +88,7 @@
   v25.origin.y = v13;
   v25.size.width = v14;
   v25.size.height = v15;
-  [v12 setFrame:{v17, v18 - CGRectGetHeight(v25) * 0.5, v14, v15}];
+  [avatarView setFrame:{v17, v18 - CGRectGetHeight(v25) * 0.5, v14, v15}];
 }
 
 @end

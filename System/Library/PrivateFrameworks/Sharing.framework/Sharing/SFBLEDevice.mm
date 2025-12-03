@@ -1,10 +1,10 @@
 @interface SFBLEDevice
-+ (void)setRSSIEstimatorInfo:(id)a3;
-- (BOOL)updateRSSI:(int64_t)a3;
-- (SFBLEDevice)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (void)setRSSIEstimatorInfo:(id)info;
+- (BOOL)updateRSSI:(int64_t)i;
+- (SFBLEDevice)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFBLEDevice
@@ -200,8 +200,8 @@ LABEL_28:
     v24 = v29;
   }
 
-  v30 = [(NSDictionary *)self->_advertisementFields objectForKeyedSubscript:@"model", v95, rssiEstimate, v101, v103, v105, v106];
-  if (v30)
+  v106 = [(NSDictionary *)self->_advertisementFields objectForKeyedSubscript:@"model", v95, rssiEstimate, v101, v103, v105, v106];
+  if (v106)
   {
     v120[10] = v24;
     NSAppendPrintF();
@@ -473,7 +473,7 @@ LABEL_28:
   v77 = [(NSDictionary *)self->_advertisementFields objectForKeyedSubscript:@"batteryInfo", Int64, v99];
   if ([v77 count])
   {
-    v108 = v30;
+    v108 = v106;
     v114 = v68;
     NSAppendPrintF();
     v78 = v68;
@@ -502,7 +502,7 @@ LABEL_28:
           }
 
           v85 = *(*(&v110 + 1) + 8 * v83);
-          v86 = [v85 batteryType];
+          batteryType = [v85 batteryType];
           if (v81 <= 1)
           {
             v87 = "";
@@ -513,9 +513,9 @@ LABEL_28:
             v87 = "; ";
           }
 
-          if ((v86 - 1) >= 3)
+          if ((batteryType - 1) >= 3)
           {
-            if (v86 == 4)
+            if (batteryType == 4)
             {
               v88 = 77;
             }
@@ -528,14 +528,14 @@ LABEL_28:
 
           else
           {
-            v88 = dword_1A998F1D0[v86 - 1];
+            v88 = dword_1A998F1D0[batteryType - 1];
           }
 
-          v89 = [v85 batteryState];
+          batteryState = [v85 batteryState];
           [v85 batteryLevel];
           v104 = v90 * 100.0;
           v91 = 45;
-          if (v89 == 2)
+          if (batteryState == 2)
           {
             v91 = 43;
           }
@@ -560,7 +560,7 @@ LABEL_28:
 
     v68 = v78;
     v77 = v107;
-    v30 = v108;
+    v106 = v108;
   }
 
   v92 = v68;
@@ -570,9 +570,9 @@ LABEL_28:
   return v92;
 }
 
-+ (void)setRSSIEstimatorInfo:(id)a3
++ (void)setRSSIEstimatorInfo:(id)info
 {
-  v9 = a3;
+  infoCopy = info;
   Int64Ranged = CFDictionaryGetInt64Ranged();
   v4 = CFDictionaryGetInt64Ranged();
   v5 = CFDictionaryGetInt64Ranged();
@@ -639,145 +639,145 @@ LABEL_15:
 LABEL_19:
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v20 = a3;
+  coderCopy = coder;
   advertisementData = self->_advertisementData;
   if (advertisementData)
   {
-    [v20 encodeObject:advertisementData forKey:@"aData"];
+    [coderCopy encodeObject:advertisementData forKey:@"aData"];
   }
 
   advertisementFields = self->_advertisementFields;
   if (advertisementFields)
   {
-    [v20 encodeObject:advertisementFields forKey:@"aFields"];
+    [coderCopy encodeObject:advertisementFields forKey:@"aFields"];
   }
 
   bluetoothAddress = self->_bluetoothAddress;
   if (bluetoothAddress)
   {
-    [v20 encodeObject:bluetoothAddress forKey:@"bdAddr"];
+    [coderCopy encodeObject:bluetoothAddress forKey:@"bdAddr"];
   }
 
   counterpartIdentifier = self->_counterpartIdentifier;
   if (counterpartIdentifier)
   {
-    [v20 encodeObject:counterpartIdentifier forKey:@"cpid"];
+    [coderCopy encodeObject:counterpartIdentifier forKey:@"cpid"];
   }
 
   if (self->_decryptedActivityLevel)
   {
-    [v20 encodeInteger:? forKey:?];
+    [coderCopy encodeInteger:? forKey:?];
   }
 
   distance = self->_distance;
   if (distance)
   {
-    [v20 encodeInteger:distance forKey:@"dist"];
+    [coderCopy encodeInteger:distance forKey:@"dist"];
   }
 
   foundTicks = self->_foundTicks;
   if (foundTicks)
   {
-    [v20 encodeInt64:foundTicks forKey:@"fticks"];
+    [coderCopy encodeInt64:foundTicks forKey:@"fticks"];
   }
 
   proxPairingTicks = self->_proxPairingTicks;
   if (proxPairingTicks)
   {
-    [v20 encodeInt64:proxPairingTicks forKey:@"pticks"];
+    [coderCopy encodeInt64:proxPairingTicks forKey:@"pticks"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v20 encodeObject:identifier forKey:@"ident"];
+    [coderCopy encodeObject:identifier forKey:@"ident"];
   }
 
   if (self->_useBTPipe)
   {
-    [v20 encodeBool:1 forKey:@"btpipe"];
+    [coderCopy encodeBool:1 forKey:@"btpipe"];
   }
 
   if (self->_insideBubble)
   {
-    [v20 encodeBool:1 forKey:@"inBub"];
+    [coderCopy encodeBool:1 forKey:@"inBub"];
   }
 
   if (self->_insideSmallBubble)
   {
-    [v20 encodeBool:1 forKey:@"inSBub"];
+    [coderCopy encodeBool:1 forKey:@"inSBub"];
   }
 
   if (self->_insideMediumBubble)
   {
-    [v20 encodeBool:1 forKey:@"inMBub"];
+    [coderCopy encodeBool:1 forKey:@"inMBub"];
   }
 
   if (self->_lastSeen != 0.0)
   {
-    [v20 encodeDouble:@"last" forKey:?];
+    [coderCopy encodeDouble:@"last" forKey:?];
   }
 
   name = self->_name;
   if (name)
   {
-    [v20 encodeObject:name forKey:@"name"];
+    [coderCopy encodeObject:name forKey:@"name"];
   }
 
   if (self->_paired)
   {
-    [v20 encodeBool:1 forKey:@"paired"];
+    [coderCopy encodeBool:1 forKey:@"paired"];
   }
 
   rssi = self->_rssi;
   if (rssi)
   {
-    [v20 encodeInteger:rssi forKey:@"rssi"];
+    [coderCopy encodeInteger:rssi forKey:@"rssi"];
   }
 
   rssiCeiling = self->_rssiCeiling;
   if (rssiCeiling)
   {
-    [v20 encodeInteger:rssiCeiling forKey:@"cRSSI"];
+    [coderCopy encodeInteger:rssiCeiling forKey:@"cRSSI"];
   }
 
   rssiEstimate = self->_rssiEstimate;
   if (rssiEstimate)
   {
-    [v20 encodeInteger:rssiEstimate forKey:@"rssiE"];
+    [coderCopy encodeInteger:rssiEstimate forKey:@"rssiE"];
   }
 
   rssiFloor = self->_rssiFloor;
   if (rssiFloor)
   {
-    [v20 encodeInteger:rssiFloor forKey:@"fRSSI"];
+    [coderCopy encodeInteger:rssiFloor forKey:@"fRSSI"];
   }
 
   if (self->_rssiHistory[0])
   {
     v17 = [MEMORY[0x1E695DEF0] dataWithBytes:self->_rssiHistory length:8];
-    [v20 encodeObject:v17 forKey:@"hRSSI"];
+    [coderCopy encodeObject:v17 forKey:@"hRSSI"];
   }
 
   smoothedRSSI = self->_smoothedRSSI;
   if (smoothedRSSI)
   {
-    [v20 encodeInteger:smoothedRSSI forKey:@"sRSSI"];
+    [coderCopy encodeInteger:smoothedRSSI forKey:@"sRSSI"];
   }
 
-  v19 = v20;
+  v19 = coderCopy;
   if (self->_triggered)
   {
-    [v20 encodeBool:1 forKey:@"trig"];
-    v19 = v20;
+    [coderCopy encodeBool:1 forKey:@"trig"];
+    v19 = coderCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -877,21 +877,21 @@ LABEL_19:
   return v5;
 }
 
-- (BOOL)updateRSSI:(int64_t)a3
+- (BOOL)updateRSSI:(int64_t)i
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (i)
   {
-    self->_rssi = a3;
-    v4 = 127;
-    if (a3 < 127)
+    self->_rssi = i;
+    iCopy = 127;
+    if (i < 127)
     {
-      v4 = a3;
+      iCopy = i;
     }
 
-    if (v4 <= -128)
+    if (iCopy <= -128)
     {
-      LOBYTE(v4) = 0x80;
+      LOBYTE(iCopy) = 0x80;
     }
 
     rssiIndex = self->_rssiIndex;
@@ -903,7 +903,7 @@ LABEL_19:
 
     rssiHistory = self->_rssiHistory;
     self->_rssiIndex = rssiIndex + 1;
-    self->_rssiHistory[rssiIndex] = v4;
+    self->_rssiHistory[rssiIndex] = iCopy;
     rssiCount = self->_rssiCount;
     if (v6 > rssiCount)
     {
@@ -920,7 +920,7 @@ LABEL_19:
         {
           if (v6)
           {
-            LOBYTE(v4) = *rssiHistory;
+            LOBYTE(iCopy) = *rssiHistory;
             v25 = v6 - 1;
             if (v6 != 1)
             {
@@ -929,9 +929,9 @@ LABEL_19:
               {
                 v28 = *v26++;
                 v27 = v28;
-                if (v28 < v4)
+                if (v28 < iCopy)
                 {
-                  LOBYTE(v4) = v27;
+                  LOBYTE(iCopy) = v27;
                 }
 
                 --v25;
@@ -953,7 +953,7 @@ LABEL_19:
 
           if (v6)
           {
-            LOBYTE(v4) = *rssiHistory;
+            LOBYTE(iCopy) = *rssiHistory;
             v14 = v6 - 1;
             if (v6 != 1)
             {
@@ -962,9 +962,9 @@ LABEL_19:
               {
                 v17 = *v15++;
                 v16 = v17;
-                if (v17 > v4)
+                if (v17 > iCopy)
                 {
-                  LOBYTE(v4) = v16;
+                  LOBYTE(iCopy) = v16;
                 }
 
                 --v14;
@@ -984,7 +984,7 @@ LABEL_19:
         {
           if (gSFBLERSSIAlgorithm == 4)
           {
-            LODWORD(v4) = *rssiHistory;
+            LODWORD(iCopy) = *rssiHistory;
             if (v6 < 2)
             {
               v22 = *rssiHistory;
@@ -1009,14 +1009,14 @@ LABEL_19:
                   v22 = v23;
                 }
 
-                if (v23 <= v4)
+                if (v23 <= iCopy)
                 {
-                  LODWORD(v4) = v4;
+                  LODWORD(iCopy) = iCopy;
                 }
 
                 else
                 {
-                  LODWORD(v4) = v23;
+                  LODWORD(iCopy) = v23;
                 }
 
                 --v20;
@@ -1028,14 +1028,14 @@ LABEL_19:
             v29 = (v6 + 1) >> 1;
             while (1)
             {
-              v30 = (v4 + v22 + (((v4 + v22) & 0x8000u) >> 15)) >> 1;
+              v30 = (iCopy + v22 + (((iCopy + v22) & 0x8000u) >> 15)) >> 1;
               if (v6 < 1)
               {
                 v33 = 0;
                 v32 = 0;
                 v31 = 0;
                 v37 = v22;
-                v36 = v4;
+                v36 = iCopy;
               }
 
               else
@@ -1045,7 +1045,7 @@ LABEL_19:
                 v33 = 0;
                 v34 = rssiHistory;
                 v35 = v6;
-                v36 = v4;
+                v36 = iCopy;
                 v37 = v22;
                 do
                 {
@@ -1126,7 +1126,7 @@ LABEL_19:
 
               if (v33 > v32)
               {
-                LODWORD(v4) = v37;
+                LODWORD(iCopy) = v37;
               }
 
               else
@@ -1137,17 +1137,17 @@ LABEL_19:
 
             if (v31 + v33 >= v29)
             {
-              LOBYTE(v4) = (v4 + v22 + (((v4 + v22) & 0x8000u) >> 15)) >> 1;
+              LOBYTE(iCopy) = (iCopy + v22 + (((iCopy + v22) & 0x8000u) >> 15)) >> 1;
             }
 
             else
             {
-              LOBYTE(v4) = v36;
+              LOBYTE(iCopy) = v36;
             }
 
             if (v33 >= v29)
             {
-              LOBYTE(v4) = v37;
+              LOBYTE(iCopy) = v37;
             }
 
             goto LABEL_97;
@@ -1191,7 +1191,7 @@ LABEL_19:
               }
 
 LABEL_96:
-              LODWORD(v4) = v13 / v6;
+              LODWORD(iCopy) = v13 / v6;
               goto LABEL_97;
             }
 
@@ -1212,10 +1212,10 @@ LABEL_96:
           }
 
 LABEL_97:
-          result = self->_smoothedRSSI != v4;
-          self->_rssiCeiling = v4;
-          self->_rssiFloor = v4;
-          self->_smoothedRSSI = v4;
+          result = self->_smoothedRSSI != iCopy;
+          self->_rssiCeiling = iCopy;
+          self->_rssiFloor = iCopy;
+          self->_smoothedRSSI = iCopy;
           goto LABEL_98;
         }
 
@@ -1236,7 +1236,7 @@ LABEL_97:
       }
 
 LABEL_92:
-      LOBYTE(v4) = 0;
+      LOBYTE(iCopy) = 0;
       goto LABEL_97;
     }
   }
@@ -1247,22 +1247,22 @@ LABEL_98:
   return result;
 }
 
-- (SFBLEDevice)initWithCoder:(id)a3
+- (SFBLEDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v48.receiver = self;
   v48.super_class = SFBLEDevice;
   v5 = [(SFBLEDevice *)&v48 init];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"aData"])
+    if ([coderCopy containsValueForKey:@"aData"])
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"aData"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"aData"];
       advertisementData = v5->_advertisementData;
       v5->_advertisementData = v6;
     }
 
-    if ([v4 containsValueForKey:@"aFields"])
+    if ([coderCopy containsValueForKey:@"aFields"])
     {
       v8 = MEMORY[0x1E695DFD8];
       v9 = objc_opt_class();
@@ -1272,7 +1272,7 @@ LABEL_98:
       v13 = objc_opt_class();
       v14 = objc_opt_class();
       v15 = [v8 setWithObjects:{v9, v10, v11, v12, v13, v14, objc_opt_class(), 0}];
-      v16 = [v4 decodeObjectOfClasses:v15 forKey:@"aFields"];
+      v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"aFields"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -1286,9 +1286,9 @@ LABEL_98:
       v5->_advertisementFields = v16;
     }
 
-    if ([v4 containsValueForKey:@"bdAddr"])
+    if ([coderCopy containsValueForKey:@"bdAddr"])
     {
-      v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bdAddr"];
+      v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bdAddr"];
       bluetoothAddress = v5->_bluetoothAddress;
       v5->_bluetoothAddress = v21;
 
@@ -1301,24 +1301,24 @@ LABEL_98:
       }
     }
 
-    if ([v4 containsValueForKey:@"cpid"])
+    if ([coderCopy containsValueForKey:@"cpid"])
     {
-      v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cpid"];
+      v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cpid"];
       counterpartIdentifier = v5->_counterpartIdentifier;
       v5->_counterpartIdentifier = v26;
     }
 
-    if ([v4 containsValueForKey:@"decAL"])
+    if ([coderCopy containsValueForKey:@"decAL"])
     {
-      v5->_decryptedActivityLevel = [v4 decodeIntegerForKey:@"decAL"];
+      v5->_decryptedActivityLevel = [coderCopy decodeIntegerForKey:@"decAL"];
     }
 
-    if ([v4 containsValueForKey:@"dist"])
+    if ([coderCopy containsValueForKey:@"dist"])
     {
-      v5->_distance = [v4 decodeIntegerForKey:@"dist"];
+      v5->_distance = [coderCopy decodeIntegerForKey:@"dist"];
     }
 
-    v28 = v4;
+    v28 = coderCopy;
     if ([v28 containsValueForKey:@"fticks"])
     {
       v5->_foundTicks = [v28 decodeInt64ForKey:@"fticks"];
@@ -1398,7 +1398,7 @@ LABEL_98:
     if ([v35 containsValueForKey:@"hRSSI"])
     {
       v39 = [v35 decodeObjectOfClass:objc_opt_class() forKey:@"hRSSI"];
-      v40 = [v39 bytes];
+      bytes = [v39 bytes];
       v41 = [v39 length];
       v42 = 8;
       if (v41 < 8)
@@ -1411,7 +1411,7 @@ LABEL_98:
         rssiHistory = v5->_rssiHistory;
         do
         {
-          v44 = *v40++;
+          v44 = *bytes++;
           *rssiHistory++ = v44;
           --v42;
         }

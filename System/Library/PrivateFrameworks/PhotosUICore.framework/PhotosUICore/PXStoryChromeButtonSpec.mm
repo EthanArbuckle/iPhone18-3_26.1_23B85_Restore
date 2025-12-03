@@ -3,7 +3,7 @@
 - (CGSize)defaultImageSize;
 - (CGSize)focusedShadowOffset;
 - (PXStoryChromeButtonSpec)init;
-- (PXStoryChromeButtonSpec)initWithExtendedTraitCollection:(id)a3;
+- (PXStoryChromeButtonSpec)initWithExtendedTraitCollection:(id)collection;
 - (UIEdgeInsets)labelPadding;
 @end
 
@@ -51,27 +51,27 @@
 
 - (PXStoryChromeButtonSpec)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryChromeButton.m" lineNumber:110 description:{@"%s is not available as initializer", "-[PXStoryChromeButtonSpec init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryChromeButton.m" lineNumber:110 description:{@"%s is not available as initializer", "-[PXStoryChromeButtonSpec init]"}];
 
   abort();
 }
 
-- (PXStoryChromeButtonSpec)initWithExtendedTraitCollection:(id)a3
+- (PXStoryChromeButtonSpec)initWithExtendedTraitCollection:(id)collection
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  collectionCopy = collection;
   v9.receiver = self;
   v9.super_class = PXStoryChromeButtonSpec;
   v6 = [(PXStoryChromeButtonSpec *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_extendedTraitCollection, a3);
+    objc_storeStrong(&v6->_extendedTraitCollection, collection);
     [(PXExtendedTraitCollection *)v7->_extendedTraitCollection userInterfaceIdiom];
     [(PXExtendedTraitCollection *)v7->_extendedTraitCollection userInterfaceIdiom];
     [(PXExtendedTraitCollection *)v7->_extendedTraitCollection userInterfaceIdiom];
-    [v5 contentSizeCategory];
+    [collectionCopy contentSizeCategory];
     PXPreferredContentSizeCategoryIsAccessibility();
   }
 

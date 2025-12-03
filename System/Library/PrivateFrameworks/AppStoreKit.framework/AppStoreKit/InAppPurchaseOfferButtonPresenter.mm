@@ -1,6 +1,6 @@
 @interface InAppPurchaseOfferButtonPresenter
 - (void)offerButtonTapped;
-- (void)restrictionsDidChange:(id)a3;
+- (void)restrictionsDidChange:(id)change;
 @end
 
 @implementation InAppPurchaseOfferButtonPresenter
@@ -11,9 +11,9 @@
   sub_1E192E054();
 }
 
-- (void)restrictionsDidChange:(id)a3
+- (void)restrictionsDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
 
   sub_1E192EAA4();
 }

@@ -1,25 +1,25 @@
 @interface NSString
-- (id)jsa_normalizedArtworkURLOfSize:(CGSize)a3 withFormat:(id)a4;
+- (id)jsa_normalizedArtworkURLOfSize:(CGSize)size withFormat:(id)format;
 @end
 
 @implementation NSString
 
-- (id)jsa_normalizedArtworkURLOfSize:(CGSize)a3 withFormat:(id)a4
+- (id)jsa_normalizedArtworkURLOfSize:(CGSize)size withFormat:(id)format
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  formatCopy = format;
   v8 = [(NSString *)self mutableCopy];
   v9 = [NSNumber numberWithInteger:llround(width)];
-  v10 = [v9 stringValue];
-  [v8 replaceOccurrencesOfString:@"{w}" withString:v10 options:2 range:{0, objc_msgSend(v8, "length")}];
+  stringValue = [v9 stringValue];
+  [v8 replaceOccurrencesOfString:@"{w}" withString:stringValue options:2 range:{0, objc_msgSend(v8, "length")}];
 
   v11 = [NSNumber numberWithInteger:llround(height)];
-  v12 = [v11 stringValue];
-  [v8 replaceOccurrencesOfString:@"{h}" withString:v12 options:2 range:{0, objc_msgSend(v8, "length")}];
+  stringValue2 = [v11 stringValue];
+  [v8 replaceOccurrencesOfString:@"{h}" withString:stringValue2 options:2 range:{0, objc_msgSend(v8, "length")}];
 
   [v8 replaceOccurrencesOfString:@"{c}" withString:&stru_B7300 options:2 range:{0, objc_msgSend(v8, "length")}];
-  [v8 replaceOccurrencesOfString:@"{f}" withString:v7 options:2 range:{0, objc_msgSend(v8, "length")}];
+  [v8 replaceOccurrencesOfString:@"{f}" withString:formatCopy options:2 range:{0, objc_msgSend(v8, "length")}];
 
   v13 = [v8 copy];
 

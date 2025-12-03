@@ -1,9 +1,9 @@
 @interface SDShareSheetProxyLoaderChangeDetails
 - (NSArray)changedProxySections;
 - (SDShareSheetProxyLoaderChangeDetails)init;
-- (id)failedIndexesForProxySection:(id)a3;
-- (id)loadedIndexesForProxySection:(id)a3;
-- (void)addResult:(id)a3 forProxySection:(id)a4;
+- (id)failedIndexesForProxySection:(id)section;
+- (id)loadedIndexesForProxySection:(id)section;
+- (void)addResult:(id)result forProxySection:(id)section;
 @end
 
 @implementation SDShareSheetProxyLoaderChangeDetails
@@ -29,19 +29,19 @@
 
 - (NSArray)changedProxySections
 {
-  v2 = [(SDShareSheetProxyLoaderChangeDetails *)self proxySections];
-  v3 = [v2 copy];
+  proxySections = [(SDShareSheetProxyLoaderChangeDetails *)self proxySections];
+  v3 = [proxySections copy];
 
   return v3;
 }
 
-- (void)addResult:(id)a3 forProxySection:(id)a4
+- (void)addResult:(id)result forProxySection:(id)section
 {
-  v11 = a3;
-  v7 = a4;
-  if (v11)
+  resultCopy = result;
+  sectionCopy = section;
+  if (resultCopy)
   {
-    if (v7)
+    if (sectionCopy)
     {
       goto LABEL_3;
     }
@@ -50,7 +50,7 @@
   else
   {
     sub_1001BD930(a2, self);
-    if (v7)
+    if (sectionCopy)
     {
       goto LABEL_3;
     }
@@ -58,40 +58,40 @@
 
   sub_1001BD9AC(a2, self);
 LABEL_3:
-  v8 = [(SDShareSheetProxyLoaderChangeDetails *)self resultsBySectionType];
-  v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v7 type]);
-  [v8 setObject:v11 forKeyedSubscript:v9];
+  resultsBySectionType = [(SDShareSheetProxyLoaderChangeDetails *)self resultsBySectionType];
+  v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [sectionCopy type]);
+  [resultsBySectionType setObject:resultCopy forKeyedSubscript:v9];
 
-  v10 = [(SDShareSheetProxyLoaderChangeDetails *)self proxySections];
-  [v10 addObject:v7];
+  proxySections = [(SDShareSheetProxyLoaderChangeDetails *)self proxySections];
+  [proxySections addObject:sectionCopy];
 }
 
-- (id)loadedIndexesForProxySection:(id)a3
+- (id)loadedIndexesForProxySection:(id)section
 {
-  v4 = a3;
-  v5 = [(SDShareSheetProxyLoaderChangeDetails *)self resultsBySectionType];
-  v6 = [v4 type];
+  sectionCopy = section;
+  resultsBySectionType = [(SDShareSheetProxyLoaderChangeDetails *)self resultsBySectionType];
+  type = [sectionCopy type];
 
-  v7 = [NSNumber numberWithInteger:v6];
-  v8 = [v5 objectForKeyedSubscript:v7];
+  v7 = [NSNumber numberWithInteger:type];
+  v8 = [resultsBySectionType objectForKeyedSubscript:v7];
 
-  v9 = [v8 loadedIndexes];
+  loadedIndexes = [v8 loadedIndexes];
 
-  return v9;
+  return loadedIndexes;
 }
 
-- (id)failedIndexesForProxySection:(id)a3
+- (id)failedIndexesForProxySection:(id)section
 {
-  v4 = a3;
-  v5 = [(SDShareSheetProxyLoaderChangeDetails *)self resultsBySectionType];
-  v6 = [v4 type];
+  sectionCopy = section;
+  resultsBySectionType = [(SDShareSheetProxyLoaderChangeDetails *)self resultsBySectionType];
+  type = [sectionCopy type];
 
-  v7 = [NSNumber numberWithInteger:v6];
-  v8 = [v5 objectForKeyedSubscript:v7];
+  v7 = [NSNumber numberWithInteger:type];
+  v8 = [resultsBySectionType objectForKeyedSubscript:v7];
 
-  v9 = [v8 failedIndexes];
+  failedIndexes = [v8 failedIndexes];
 
-  return v9;
+  return failedIndexes;
 }
 
 @end

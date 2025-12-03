@@ -18,22 +18,22 @@
     v2 = gProxyDaemonServiceClient;
     if (v2)
     {
-      v3 = [v2 propertiesForRegistryEntryID:{objc_msgSend(a1, "entryID")}];
+      properties = [v2 propertiesForRegistryEntryID:{objc_msgSend(self, "entryID")}];
     }
 
     else
     {
       [(IOKRegistryEntry(daemon_iokit_get_property_proxy) *)&v5 iodProperties];
-      v3 = v5;
+      properties = v5;
     }
   }
 
   else
   {
-    v3 = [a1 properties];
+    properties = [self properties];
   }
 
-  return v3;
+  return properties;
 }
 
 - (id)iodPropertyForKey:()daemon_iokit_get_property_proxy
@@ -49,7 +49,7 @@
     v5 = gProxyDaemonServiceClient;
     if (v5)
     {
-      v6 = [v5 propertyForRegistryEntryID:objc_msgSend(a1 key:{"entryID"), v4}];
+      v6 = [v5 propertyForRegistryEntryID:objc_msgSend(self key:{"entryID"), v4}];
     }
 
     else
@@ -61,7 +61,7 @@
 
   else
   {
-    v6 = [a1 propertyForKey:v4];
+    v6 = [self propertyForKey:v4];
   }
 
   return v6;
@@ -80,7 +80,7 @@
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Assert: %s (value 0x%lx %lu), %s file: %s, line: %d\n", v3, 0x3Au);
   }
 
-  *a1 = 0;
+  *self = 0;
   v2 = *MEMORY[0x277D85DE8];
 }
 

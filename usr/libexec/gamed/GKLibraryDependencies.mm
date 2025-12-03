@@ -2,7 +2,7 @@
 + (GKLibraryDependencies)shared;
 - (GKGamePolicyLibrary)gamePolicyLibrary;
 - (GKLibraryDependenciesDelegate)delegate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation GKLibraryDependencies
@@ -21,10 +21,10 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1001ADC88();
 }
 

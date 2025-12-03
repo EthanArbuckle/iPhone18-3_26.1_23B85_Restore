@@ -18,7 +18,7 @@
   v10 = &v11;
   v3 = v2;
   v9 = v3;
-  [a1 checkEncryptedSearchProxyEnabledWithCompletion:v8];
+  [self checkEncryptedSearchProxyEnabledWithCompletion:v8];
   v4 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v3, v4) && MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {

@@ -13,21 +13,21 @@
 
 - (id)generateImageForFontSize:()CKImageUtils imageGenerationScale:
 {
-  v5 = [a1 emojiString];
-  v6 = [v5 __ck_generateImageForFontSize:a2 imageGenerationScale:a3];
+  emojiString = [self emojiString];
+  v6 = [emojiString __ck_generateImageForFontSize:a2 imageGenerationScale:a3];
 
   return v6;
 }
 
 - (id)generateImage
 {
-  v1 = [a1 emojiString];
+  emojiString = [self emojiString];
   v2 = +[CKUIBehavior sharedBehaviors];
   [v2 emojiStickerImageGenerationFontSize];
   v4 = v3;
   v5 = +[CKUIBehavior sharedBehaviors];
   [v5 stickerScreenScale];
-  v7 = [v1 __ck_generateImageForFontSize:v4 imageGenerationScale:v6];
+  v7 = [emojiString __ck_generateImageForFontSize:v4 imageGenerationScale:v6];
 
   return v7;
 }
@@ -40,7 +40,7 @@
   v9 = v8;
   v10 = +[CKUIBehavior sharedBehaviors];
   [v10 stickerScreenScale];
-  v12 = [a1 writeGeneratedImageToFileURL:v6 fontSize:a4 imageGenerationScale:v9 error:v11];
+  v12 = [self writeGeneratedImageToFileURL:v6 fontSize:a4 imageGenerationScale:v9 error:v11];
 
   return v12;
 }
@@ -51,7 +51,7 @@
   v10 = a5;
   if (v10)
   {
-    v11 = [a1 generateImageForFontSize:a2 imageGenerationScale:a3];
+    v11 = [self generateImageForFontSize:a2 imageGenerationScale:a3];
     v12 = v11;
     if (v11)
     {
@@ -71,7 +71,7 @@
           v24 = 2112;
           v25 = v10;
           v26 = 2112;
-          v27 = a1;
+          selfCopy = self;
           _os_log_debug_impl(&dword_19020E000, v16, OS_LOG_TYPE_DEBUG, "Wrote image (size: %ld, scale: %ld) to %@ for sticker: %@", buf, 0x2Au);
         }
       }
@@ -94,9 +94,9 @@
           v24 = 2112;
           v25 = v10;
           v26 = 2112;
-          v27 = v15;
+          selfCopy = v15;
           v28 = 2112;
-          v29 = a1;
+          selfCopy2 = self;
           _os_log_error_impl(&dword_19020E000, v16, OS_LOG_TYPE_ERROR, "Writing image (size: %ld, scale: %ld) to %@ FAILED with error: %@ for sticker: %@", buf, 0x34u);
         }
       }
@@ -130,9 +130,9 @@
 
 - (uint64_t)prepareToSend
 {
-  v2 = [a1 fileURL];
+  fileURL = [self fileURL];
   v8 = 0;
-  v3 = [a1 writeGeneratedImageToFileURL:v2 error:&v8];
+  v3 = [self writeGeneratedImageToFileURL:fileURL error:&v8];
   v4 = v8;
 
   v5 = IMLogHandleForCategory();
@@ -155,17 +155,17 @@
 
 - (id)image
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [a1 fileURL];
-  v4 = [v3 path];
-  v5 = [v2 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  fileURL = [self fileURL];
+  path = [fileURL path];
+  v5 = [defaultManager fileExistsAtPath:path];
 
   if ((v5 & 1) == 0)
   {
-    [a1 prepareToSend];
+    [self prepareToSend];
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &off_1F06BC468;
   v6 = objc_msgSendSuper2(&v8, sel_image);
 
@@ -176,8 +176,8 @@
 {
   v2 = [CKEmojiStickerLabel alloc];
   v3 = [(CKEmojiStickerLabel *)v2 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  v4 = [a1 emojiString];
-  [(CKEmojiStickerLabel *)v3 setText:v4];
+  emojiString = [self emojiString];
+  [(CKEmojiStickerLabel *)v3 setText:emojiString];
 
   [(CKEmojiStickerLabel *)v3 sizeToFit];
 

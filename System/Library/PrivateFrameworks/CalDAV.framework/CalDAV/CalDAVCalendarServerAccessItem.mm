@@ -1,23 +1,23 @@
 @interface CalDAVCalendarServerAccessItem
-- (CalDAVCalendarServerAccessItem)initWithAccess:(int)a3;
+- (CalDAVCalendarServerAccessItem)initWithAccess:(int)access;
 - (id)copyParseRules;
 @end
 
 @implementation CalDAVCalendarServerAccessItem
 
-- (CalDAVCalendarServerAccessItem)initWithAccess:(int)a3
+- (CalDAVCalendarServerAccessItem)initWithAccess:(int)access
 {
   v4 = [(CalDAVCalendarServerAccessItem *)self init];
   if (v4)
   {
-    if ((a3 - 1) > 2)
+    if ((access - 1) > 2)
     {
       v7 = 0;
     }
 
     else
     {
-      v5 = off_278D669D0[a3 - 1];
+      v5 = off_278D669D0[access - 1];
       v6 = objc_alloc(MEMORY[0x277CFDC08]);
       v7 = [v6 initWithNameSpace:*MEMORY[0x277CFDE90] andName:*v5];
     }

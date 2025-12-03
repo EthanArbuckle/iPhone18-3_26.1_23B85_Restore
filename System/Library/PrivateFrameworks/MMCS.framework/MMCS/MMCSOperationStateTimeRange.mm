@@ -1,56 +1,56 @@
 @interface MMCSOperationStateTimeRange
-+ (id)describedSortedRanges:(id)a3;
-+ (id)descriptionWithOperationState:(unint64_t)a3 absoluteStart:(double)a4 duration:(double)a5;
-+ (id)stringForOperationState:(unint64_t)a3;
-- (MMCSOperationStateTimeRange)initWithOperationState:(unint64_t)a3 startDate:(id)a4 duration:(double)a5;
++ (id)describedSortedRanges:(id)ranges;
++ (id)descriptionWithOperationState:(unint64_t)state absoluteStart:(double)start duration:(double)duration;
++ (id)stringForOperationState:(unint64_t)state;
+- (MMCSOperationStateTimeRange)initWithOperationState:(unint64_t)state startDate:(id)date duration:(double)duration;
 - (NSString)description;
 - (double)absoluteStart;
 - (double)absoluteStop;
 - (double)executing;
 - (double)queueing;
 - (double)relativeStart;
-- (int64_t)compareStartTime:(id)a3;
-- (int64_t)compareStopTime:(id)a3;
+- (int64_t)compareStartTime:(id)time;
+- (int64_t)compareStopTime:(id)time;
 @end
 
 @implementation MMCSOperationStateTimeRange
 
-- (MMCSOperationStateTimeRange)initWithOperationState:(unint64_t)a3 startDate:(id)a4 duration:(double)a5
+- (MMCSOperationStateTimeRange)initWithOperationState:(unint64_t)state startDate:(id)date duration:(double)duration
 {
-  v9 = a4;
+  dateCopy = date;
   v13.receiver = self;
   v13.super_class = MMCSOperationStateTimeRange;
   v10 = [(MMCSOperationStateTimeRange *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_operationState = a3;
-    objc_storeStrong(&v10->_startDate, a4);
-    v11->_duration = a5;
+    v10->_operationState = state;
+    objc_storeStrong(&v10->_startDate, date);
+    v11->_duration = duration;
   }
 
   return v11;
 }
 
-+ (id)stringForOperationState:(unint64_t)a3
++ (id)stringForOperationState:(unint64_t)state
 {
-  if (a3 > 2)
+  if (state > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return *(&off_2798415F0 + a3);
+    return *(&off_2798415F0 + state);
   }
 }
 
-+ (id)descriptionWithOperationState:(unint64_t)a3 absoluteStart:(double)a4 duration:(double)a5
++ (id)descriptionWithOperationState:(unint64_t)state absoluteStart:(double)start duration:(double)duration
 {
   v7 = MEMORY[0x277CCACA8];
-  v8 = [a1 stringForOperationState:a3];
+  v8 = [self stringForOperationState:state];
   mmcs_operation_metric_reference_time();
-  v10 = [v7 stringWithFormat:@"[%@ %0.3lf, %0.3lf]", v8, a4 - v9, *&a5];
+  v10 = [v7 stringWithFormat:@"[%@ %0.3lf, %0.3lf]", v8, start - v9, *&duration];
 
   return v10;
 }
@@ -65,11 +65,11 @@
   return [v3 descriptionWithOperationState:operationState absoluteStart:? duration:?];
 }
 
-+ (id)describedSortedRanges:(id)a3
++ (id)describedSortedRanges:(id)ranges
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAB68] string];
-  v6 = [v4 count];
+  rangesCopy = ranges;
+  string = [MEMORY[0x277CCAB68] string];
+  v6 = [rangesCopy count];
   if (v6)
   {
     v7 = v6;
@@ -77,28 +77,28 @@
     v9 = 0.0;
     do
     {
-      v10 = [v4 objectAtIndexedSubscript:v8];
+      v10 = [rangesCopy objectAtIndexedSubscript:v8];
       v11 = v10;
       if (v8)
       {
         [v10 absoluteStart];
         if (v12 > v9)
         {
-          [v5 appendString:@" "];
+          [string appendString:@" "];
           [v11 absoluteStart];
-          v14 = [a1 descriptionWithOperationState:2 absoluteStart:v9 duration:v13 - v9];
-          [v5 appendString:v14];
+          v14 = [self descriptionWithOperationState:2 absoluteStart:v9 duration:v13 - v9];
+          [string appendString:v14];
         }
 
-        [v5 appendString:@" "];
+        [string appendString:@" "];
         v15 = [v11 description];
-        [v5 appendString:v15];
+        [string appendString:v15];
       }
 
       else
       {
         v16 = [v10 description];
-        [v5 appendString:v16];
+        [string appendString:v16];
 
         [v11 absoluteStop];
         v9 = v17;
@@ -110,13 +110,13 @@
     while (v7 != v8);
   }
 
-  return v5;
+  return string;
 }
 
 - (double)absoluteStart
 {
-  v2 = [(MMCSOperationStateTimeRange *)self startDate];
-  [v2 timeIntervalSinceReferenceDate];
+  startDate = [(MMCSOperationStateTimeRange *)self startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v4 = v3;
 
   return v4;
@@ -144,12 +144,12 @@
   return result;
 }
 
-- (int64_t)compareStartTime:(id)a3
+- (int64_t)compareStartTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   [(MMCSOperationStateTimeRange *)self absoluteStart];
   v6 = v5;
-  [v4 absoluteStart];
+  [timeCopy absoluteStart];
   v8 = v7;
 
   if (v6 < v8)
@@ -163,12 +163,12 @@
   }
 }
 
-- (int64_t)compareStopTime:(id)a3
+- (int64_t)compareStopTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   [(MMCSOperationStateTimeRange *)self absoluteStop];
   v6 = v5;
-  [v4 absoluteStop];
+  [timeCopy absoluteStop];
   v8 = v7;
 
   if (v6 < v8)

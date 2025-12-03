@@ -1,127 +1,127 @@
 @interface HUControllableItemCollectionViewController
-- (BOOL)_hasPartialReachabilityForServiceItem:(id)a3;
-- (BOOL)_hasTapActionForItem:(id)a3;
-- (BOOL)_isMultiControllableServiceAccessory:(id)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4;
+- (BOOL)_hasPartialReachabilityForServiceItem:(id)item;
+- (BOOL)_hasTapActionForItem:(id)item;
+- (BOOL)_isMultiControllableServiceAccessory:(id)accessory;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session;
 - (BOOL)controlsWantSystemPresentationAnimations;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)itemSupportsToggleInteraction:(id)a3;
-- (BOOL)matterItemHasControlModules:(id)a3;
-- (BOOL)matterItemSupportsToggle:(id)a3;
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginInteractivePresentationWithTouchLocation:(CGPoint)a4 view:(id)a5;
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginPresentationWithContext:(id)a4;
-- (BOOL)requiresUnlockToPerformActionForItem:(id)a3;
-- (BOOL)shouldShowAccessoryControlForItem:(id)a3;
-- (HUControllableItemCollectionViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)itemSupportsToggleInteraction:(id)interaction;
+- (BOOL)matterItemHasControlModules:(id)modules;
+- (BOOL)matterItemSupportsToggle:(id)toggle;
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginInteractivePresentationWithTouchLocation:(CGPoint)location view:(id)view;
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginPresentationWithContext:(id)context;
+- (BOOL)requiresUnlockToPerformActionForItem:(id)item;
+- (BOOL)shouldShowAccessoryControlForItem:(id)item;
+- (HUControllableItemCollectionViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout;
 - (HULockAuthorizationDelegate)lockAuthorizationDelegate;
 - (HUQuickControlPresentationDelegate)quickControlPresentationDelegate;
 - (HUQuickControlPresentationHost)ancestorQuickControlHostAtPresentationTime;
 - (id)_ancestorQuickControlPresentationHost;
-- (id)_childItemsForItem:(id)a3;
-- (id)_getPresentableItemFromGenericItem:(id)a3;
-- (id)_itemForServiceControlPresentationAtPoint:(CGPoint)a3;
-- (id)_performTapActionForItem:(id)a3 tappedArea:(id)a4;
-- (id)_visibleCellForItem:(id)a3;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6;
-- (id)controlItemSupprtingToggleInteractionForItem:(id)a3;
-- (id)dragItemForItem:(id)a3 atIndexPath:(id)a4;
-- (id)finishPresentation:(id)a3 animated:(BOOL)a4;
-- (id)initUsingCompositionalLayoutWithItemManager:(id)a3;
-- (id)itemForAccessoryControlsWithItem:(id)a3;
-- (id)prepareToPerformToggleActionForItem:(id)a3 sourceItem:(id)a4;
-- (id)presentAccessoryControlsForItem:(id)a3;
-- (id)presentAccessorySettingsForItem:(id)a3;
-- (id)presentAccessorySettingsForItem:(id)a3 secondaryDestination:(unint64_t)a4;
-- (id)presentationCoordinator:(id)a3 contextForPresentationAtPoint:(CGPoint)a4;
-- (id)quickControlPresentationContextForItem:(id)a3 atIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)quickControlPresentationContextForUUID:(id)a3 type:(unint64_t)a4;
-- (id)tappableAreaForPoint:(CGPoint)a3 inItem:(id)a4 atIndexPath:(id)a5;
-- (id)toggleMatterItem:(id)a3;
-- (id)unwrappedItemForAccessoryControls:(id)a3;
+- (id)_childItemsForItem:(id)item;
+- (id)_getPresentableItemFromGenericItem:(id)item;
+- (id)_itemForServiceControlPresentationAtPoint:(CGPoint)point;
+- (id)_performTapActionForItem:(id)item tappedArea:(id)area;
+- (id)_visibleCellForItem:(id)item;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath;
+- (id)controlItemSupprtingToggleInteractionForItem:(id)item;
+- (id)dragItemForItem:(id)item atIndexPath:(id)path;
+- (id)finishPresentation:(id)presentation animated:(BOOL)animated;
+- (id)initUsingCompositionalLayoutWithItemManager:(id)manager;
+- (id)itemForAccessoryControlsWithItem:(id)item;
+- (id)prepareToPerformToggleActionForItem:(id)item sourceItem:(id)sourceItem;
+- (id)presentAccessoryControlsForItem:(id)item;
+- (id)presentAccessorySettingsForItem:(id)item;
+- (id)presentAccessorySettingsForItem:(id)item secondaryDestination:(unint64_t)destination;
+- (id)presentationCoordinator:(id)coordinator contextForPresentationAtPoint:(CGPoint)point;
+- (id)quickControlPresentationContextForItem:(id)item atIndexPath:(id)path point:(CGPoint)point;
+- (id)quickControlPresentationContextForUUID:(id)d type:(unint64_t)type;
+- (id)tappableAreaForPoint:(CGPoint)point inItem:(id)item atIndexPath:(id)path;
+- (id)toggleMatterItem:(id)item;
+- (id)unwrappedItemForAccessoryControls:(id)controls;
 - (void)_commonInit;
-- (void)_handleContextualGesture:(id)a3;
-- (void)_handleReorderGesture:(id)a3;
+- (void)_handleContextualGesture:(id)gesture;
+- (void)_handleReorderGesture:(id)gesture;
 - (void)_itemSetDidChange;
-- (void)_reorderGestureDidBegin:(id)a3;
-- (void)_reorderGestureDidChange:(id)a3;
-- (void)_reorderGestureDidEnd:(id)a3 finished:(BOOL)a4;
+- (void)_reorderGestureDidBegin:(id)begin;
+- (void)_reorderGestureDidChange:(id)change;
+- (void)_reorderGestureDidEnd:(id)end finished:(BOOL)finished;
 - (void)_showQuickControlsForSelectedMenuItem;
 - (void)_showSettingsForSelectedMenuItem;
-- (void)_updateEditingStateForCell:(id)a3 animate:(BOOL)a4;
+- (void)_updateEditingStateForCell:(id)cell animate:(BOOL)animate;
 - (void)_updateReorderingGestureRecognizer;
-- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)a3 tileItem:(HFItem *)a4 completionHandler:(id)a5;
-- (void)childViewController:(id)a3 didEndQuickControlsPresentation:(id)a4;
-- (void)childViewController:(id)a3 willBeginQuickControlsPresentation:(id)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)configureCell:(id)a3 forItem:(id)a4;
-- (void)configureWithAccessoryControlViewController:(id)a3;
-- (void)didReorderItemWithSortedItemsBySectionID:(id)a3;
-- (void)diffableDataItemManager:(id)a3 didUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6;
-- (void)itemManager:(id)a3 performUpdateRequest:(id)a4;
-- (void)presentActionSetItem:(id)a3;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentationCoordinator:(id)a3 applyOverrideAttributes:(id)a4 toItem:(id)a5;
-- (void)presentationCoordinator:(id)a3 clearOverrideAttributesForItem:(id)a4;
-- (void)presentationCoordinator:(id)a3 didRecognizeTapForItem:(id)a4 tappedArea:(id)a5;
-- (void)presentationCoordinator:(id)a3 willBeginPresentationWithContext:(id)a4;
-- (void)presentationCoordinator:(id)a3 willEndPresentationWithContext:(id)a4;
+- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)for tileItem:(HFItem *)item completionHandler:(id)handler;
+- (void)childViewController:(id)controller didEndQuickControlsPresentation:(id)presentation;
+- (void)childViewController:(id)controller willBeginQuickControlsPresentation:(id)presentation;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)configureCell:(id)cell forItem:(id)item;
+- (void)configureWithAccessoryControlViewController:(id)controller;
+- (void)didReorderItemWithSortedItemsBySectionID:(id)d;
+- (void)diffableDataItemManager:(id)manager didUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems;
+- (void)itemManager:(id)manager performUpdateRequest:(id)request;
+- (void)presentActionSetItem:(id)item;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)presentationCoordinator:(id)coordinator applyOverrideAttributes:(id)attributes toItem:(id)item;
+- (void)presentationCoordinator:(id)coordinator clearOverrideAttributesForItem:(id)item;
+- (void)presentationCoordinator:(id)coordinator didRecognizeTapForItem:(id)item tappedArea:(id)area;
+- (void)presentationCoordinator:(id)coordinator willBeginPresentationWithContext:(id)context;
+- (void)presentationCoordinator:(id)coordinator willEndPresentationWithContext:(id)context;
 - (void)refreshTileHelper;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setExecutionFuture:(id)a3 forActionSet:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setExecutionFuture:(id)future forActionSet:(id)set;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HUControllableItemCollectionViewController
 
-- (id)presentAccessorySettingsForItem:(id)a3
+- (id)presentAccessorySettingsForItem:(id)item
 {
-  v3 = [(HUControllableItemCollectionViewController *)self presentAccessorySettingsForItem:a3 secondaryDestination:0];
+  v3 = [(HUControllableItemCollectionViewController *)self presentAccessorySettingsForItem:item secondaryDestination:0];
 
   return v3;
 }
 
-- (id)presentAccessorySettingsForItem:(id)a3 secondaryDestination:(unint64_t)a4
+- (id)presentAccessorySettingsForItem:(id)item secondaryDestination:(unint64_t)destination
 {
-  v6 = a3;
-  v7 = self;
-  v8 = HUControllableItemCollectionViewController.presentAccessorySettings(for:secondaryDestination:)(v6, a4);
+  itemCopy = item;
+  selfCopy = self;
+  v8 = HUControllableItemCollectionViewController.presentAccessorySettings(for:secondaryDestination:)(itemCopy, destination);
 
   return v8;
 }
 
-- (id)presentAccessoryControlsForItem:(id)a3
+- (id)presentAccessoryControlsForItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  v6 = HUControllableItemCollectionViewController.presentAccessoryControls(for:)(v4);
+  itemCopy = item;
+  selfCopy = self;
+  v6 = HUControllableItemCollectionViewController.presentAccessoryControls(for:)(itemCopy);
 
   return v6;
 }
 
-- (void)configureWithAccessoryControlViewController:(id)a3
+- (void)configureWithAccessoryControlViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  HUControllableItemCollectionViewController.configure(accessoryControlViewController:)(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  HUControllableItemCollectionViewController.configure(accessoryControlViewController:)(controllerCopy);
 }
 
-- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)a3 tileItem:(HFItem *)a4 completionHandler:(id)a5
+- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)for tileItem:(HFItem *)item completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81C610);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v20 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = for;
+  v13[3] = item;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_20D567C58();
@@ -136,29 +136,29 @@
   v16[3] = 0;
   v16[4] = &unk_20D5C5200;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
+  forCopy = for;
+  itemCopy = item;
+  selfCopy = self;
   sub_20D11C1C8(0, 0, v11, &unk_20D5BCD00, v16);
 }
 
-- (id)unwrappedItemForAccessoryControls:(id)a3
+- (id)unwrappedItemForAccessoryControls:(id)controls
 {
   objc_opt_self();
   v4 = swift_dynamicCastObjCClass();
-  v5 = a3;
-  v6 = v5;
+  controlsCopy = controls;
+  v6 = controlsCopy;
   if (v4)
   {
-    v7 = [v4 sourceItem];
+    sourceItem = [v4 sourceItem];
   }
 
   else
   {
-    v7 = v5;
+    sourceItem = controlsCopy;
   }
 
-  v8 = v7;
+  v8 = sourceItem;
   v9 = swift_dynamicCastObjCProtocolConditional();
 
   if (!v9)
@@ -170,78 +170,78 @@
 
 - (void)refreshTileHelper
 {
-  v2 = self;
+  selfCopy = self;
   HUControllableItemCollectionViewController.refreshTileHelper()();
 }
 
 - (BOOL)controlsWantSystemPresentationAnimations
 {
-  v2 = self;
-  if ([(HUControllableItemCollectionViewController *)v2 hasCustomControlPresentationAnimations])
+  selfCopy = self;
+  if ([(HUControllableItemCollectionViewController *)selfCopy hasCustomControlPresentationAnimations])
   {
     if ([objc_opt_self() isAnIPhone])
     {
-      v3 = 1;
+      isHomeControlService = 1;
     }
 
     else
     {
-      v3 = [objc_opt_self() isHomeControlService];
+      isHomeControlService = [objc_opt_self() isHomeControlService];
     }
   }
 
   else
   {
-    v3 = 0;
+    isHomeControlService = 0;
   }
 
-  return v3;
+  return isHomeControlService;
 }
 
-- (BOOL)matterItemSupportsToggle:(id)a3
+- (BOOL)matterItemSupportsToggle:(id)toggle
 {
-  v4 = a3;
-  v5 = self;
-  v6 = _sSo42HUControllableItemCollectionViewControllerC6HomeUIE06matterB14SupportsToggle4itemSbSo6HFItemC_tF_0(v4);
+  toggleCopy = toggle;
+  selfCopy = self;
+  v6 = _sSo42HUControllableItemCollectionViewControllerC6HomeUIE06matterB14SupportsToggle4itemSbSo6HFItemC_tF_0(toggleCopy);
 
   return v6 & 1;
 }
 
-- (id)toggleMatterItem:(id)a3
+- (id)toggleMatterItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  v6 = _sSo42HUControllableItemCollectionViewControllerC6HomeUIE012toggleMatterB0ySo8NAFutureCyyXlGSo6HFItemCF_0(v4);
+  itemCopy = item;
+  selfCopy = self;
+  v6 = _sSo42HUControllableItemCollectionViewControllerC6HomeUIE012toggleMatterB0ySo8NAFutureCyyXlGSo6HFItemCF_0(itemCopy);
 
   return v6;
 }
 
-- (BOOL)matterItemHasControlModules:(id)a3
+- (BOOL)matterItemHasControlModules:(id)modules
 {
-  v4 = a3;
-  v5 = self;
-  HasControlModules4itemSbSo6HFItemC_tF_0 = _sSo42HUControllableItemCollectionViewControllerC6HomeUIE06matterB17HasControlModules4itemSbSo6HFItemC_tF_0(v4);
+  modulesCopy = modules;
+  selfCopy = self;
+  HasControlModules4itemSbSo6HFItemC_tF_0 = _sSo42HUControllableItemCollectionViewControllerC6HomeUIE06matterB17HasControlModules4itemSbSo6HFItemC_tF_0(modulesCopy);
 
   return HasControlModules4itemSbSo6HFItemC_tF_0;
 }
 
-- (id)itemForAccessoryControlsWithItem:(id)a3
+- (id)itemForAccessoryControlsWithItem:(id)item
 {
   objc_opt_self();
   v4 = swift_dynamicCastObjCClass();
-  v5 = a3;
-  v6 = v5;
+  itemCopy = item;
+  v6 = itemCopy;
   if (v4)
   {
-    v7 = [v4 sourceItem];
+    sourceItem = [v4 sourceItem];
   }
 
   else
   {
-    v7 = v5;
+    sourceItem = itemCopy;
   }
 
-  v8 = v7;
+  v8 = sourceItem;
   v9 = swift_dynamicCastObjCProtocolConditional();
 
   if (!v9)
@@ -251,31 +251,31 @@
   return v9;
 }
 
-- (BOOL)shouldShowAccessoryControlForItem:(id)a3
+- (BOOL)shouldShowAccessoryControlForItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = HUControllableItemCollectionViewController.shouldShowAccessoryControl(for:)(v4);
+  itemCopy = item;
+  selfCopy = self;
+  LOBYTE(self) = HUControllableItemCollectionViewController.shouldShowAccessoryControl(for:)(itemCopy);
 
   return self & 1;
 }
 
-- (id)finishPresentation:(id)a3 animated:(BOOL)a4
+- (id)finishPresentation:(id)presentation animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   swift_getObjectType();
-  if (swift_conformsToProtocol2() && a3)
+  if (swift_conformsToProtocol2() && presentation)
   {
-    v7 = a3;
-    v8 = self;
-    v9 = [v7 hu:-[HUControllableItemCollectionViewController controlsWantSystemPresentationAnimations](v8 dismissViewControllerAnimated:sel_controlsWantSystemPresentationAnimations)];
+    presentationCopy = presentation;
+    selfCopy = self;
+    v9 = [presentationCopy hu:-[HUControllableItemCollectionViewController controlsWantSystemPresentationAnimations](selfCopy dismissViewControllerAnimated:sel_controlsWantSystemPresentationAnimations)];
 
     v10 = v9;
   }
 
   else
   {
-    v10 = [a3 hu:v4 dismissViewControllerAnimated:?];
+    v10 = [presentation hu:animatedCopy dismissViewControllerAnimated:?];
   }
 
   return v10;
@@ -284,23 +284,23 @@
 - (void)_commonInit
 {
   [(HUControllableItemCollectionViewController *)self setInstallsStandardGestureForInteractiveMovement:0];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [(HUControllableItemCollectionViewController *)self setActionSetExecutionFuturesKeyedByIdentifier:v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(HUControllableItemCollectionViewController *)self setActionSetExecutionFuturesKeyedByIdentifier:dictionary];
 }
 
-- (HUControllableItemCollectionViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4
+- (HUControllableItemCollectionViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout
 {
-  v7 = a3;
-  v8 = a4;
-  if (([v8 conformsToProtocol:&unk_2824E78C8] & 1) == 0)
+  managerCopy = manager;
+  layoutCopy = layout;
+  if (([layoutCopy conformsToProtocol:&unk_2824E78C8] & 1) == 0)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HUControllableItemCollectionViewController.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"[collectionViewLayout conformsToProtocol:@protocol(HUControllableCollectionViewLayout)]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUControllableItemCollectionViewController.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"[collectionViewLayout conformsToProtocol:@protocol(HUControllableCollectionViewLayout)]"}];
   }
 
   v13.receiver = self;
   v13.super_class = HUControllableItemCollectionViewController;
-  v9 = [(HUItemCollectionViewController *)&v13 initWithItemManager:v7 collectionViewLayout:v8];
+  v9 = [(HUItemCollectionViewController *)&v13 initWithItemManager:managerCopy collectionViewLayout:layoutCopy];
   v10 = v9;
   if (v9)
   {
@@ -310,11 +310,11 @@
   return v10;
 }
 
-- (id)initUsingCompositionalLayoutWithItemManager:(id)a3
+- (id)initUsingCompositionalLayoutWithItemManager:(id)manager
 {
   v6.receiver = self;
   v6.super_class = HUControllableItemCollectionViewController;
-  v3 = [(HUItemCollectionViewController *)&v6 initUsingCompositionalLayoutWithItemManager:a3];
+  v3 = [(HUItemCollectionViewController *)&v6 initUsingCompositionalLayoutWithItemManager:manager];
   v4 = v3;
   if (v3)
   {
@@ -330,64 +330,64 @@
   v12.super_class = HUControllableItemCollectionViewController;
   [(HUItemCollectionViewController *)&v12 viewDidLoad];
   v3 = [HUQuickControlPresentationCoordinator alloc];
-  v4 = [(HUControllableItemCollectionViewController *)self collectionView];
-  v5 = [(HUQuickControlPresentationCoordinator *)v3 initWithTargetView:v4 delegate:self];
+  collectionView = [(HUControllableItemCollectionViewController *)self collectionView];
+  v5 = [(HUQuickControlPresentationCoordinator *)v3 initWithTargetView:collectionView delegate:self];
   [(HUControllableItemCollectionViewController *)self setQuickControlPresentationCoordinator:v5];
 
-  v6 = [(HUControllableItemCollectionViewController *)self collectionView];
-  [v6 setClipsToBounds:0];
+  collectionView2 = [(HUControllableItemCollectionViewController *)self collectionView];
+  [collectionView2 setClipsToBounds:0];
 
   if (![(HUControllableItemCollectionViewController *)self useCustomDragAndDrop])
   {
     [(HUControllableItemCollectionViewController *)self _updateReorderingGestureRecognizer];
   }
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel__handleApplicationWillResignActiveNotification_ name:*MEMORY[0x277D76768] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleApplicationWillResignActiveNotification_ name:*MEMORY[0x277D76768] object:0];
 
   if ([(HUControllableItemCollectionViewController *)self useCustomDragAndDrop])
   {
-    v8 = [(HUControllableItemCollectionViewController *)self collectionView];
-    [v8 setDragDelegate:self];
+    collectionView3 = [(HUControllableItemCollectionViewController *)self collectionView];
+    [collectionView3 setDragDelegate:self];
 
-    v9 = [(HUControllableItemCollectionViewController *)self collectionView];
-    [v9 setDropDelegate:self];
+    collectionView4 = [(HUControllableItemCollectionViewController *)self collectionView];
+    [collectionView4 setDropDelegate:self];
 
-    v10 = [MEMORY[0x277D14CE8] isAMac];
-    v11 = [(HUControllableItemCollectionViewController *)self collectionView];
-    [v11 setDragInteractionEnabled:v10];
+    isAMac = [MEMORY[0x277D14CE8] isAMac];
+    collectionView5 = [(HUControllableItemCollectionViewController *)self collectionView];
+    [collectionView5 setDragInteractionEnabled:isAMac];
   }
 
   [(HUControllableItemCollectionViewController *)self _registerSectionDecorationViews];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = HUControllableItemCollectionViewController;
-  [(HUItemCollectionViewController *)&v4 viewWillAppear:a3];
+  [(HUItemCollectionViewController *)&v4 viewWillAppear:appear];
   [(HUControllableItemCollectionViewController *)self setViewAppeared:1];
   [(HUControllableItemCollectionViewController *)self refreshTileHelper];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v20 = *MEMORY[0x277D85DE8];
   v18.receiver = self;
   v18.super_class = HUControllableItemCollectionViewController;
-  [(HUItemCollectionViewController *)&v18 viewDidAppear:a3];
-  v4 = [(HUControllableItemCollectionViewController *)self collectionView];
-  if (v4)
+  [(HUItemCollectionViewController *)&v18 viewDidAppear:appear];
+  collectionView = [(HUControllableItemCollectionViewController *)self collectionView];
+  if (collectionView)
   {
-    v5 = v4;
+    v5 = collectionView;
     do
     {
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v6 = [v5 gestureRecognizers];
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      gestureRecognizers = [v5 gestureRecognizers];
+      v7 = [gestureRecognizers countByEnumeratingWithState:&v14 objects:v19 count:16];
       if (v7)
       {
         v8 = v7;
@@ -399,51 +399,51 @@
           {
             if (*v15 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(gestureRecognizers);
             }
 
             v11 = *(*(&v14 + 1) + 8 * v10);
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v12 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
-              [v12 addMutuallyExclusiveGestureRecognizer:v11];
+              quickControlPresentationCoordinator = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
+              [quickControlPresentationCoordinator addMutuallyExclusiveGestureRecognizer:v11];
             }
 
             ++v10;
           }
 
           while (v8 != v10);
-          v8 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+          v8 = [gestureRecognizers countByEnumeratingWithState:&v14 objects:v19 count:16];
         }
 
         while (v8);
       }
 
-      v13 = [v5 superview];
+      superview = [v5 superview];
 
-      v5 = v13;
+      v5 = superview;
     }
 
-    while (v13);
+    while (superview);
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(HUControllableItemCollectionViewController *)self setEditing:0 animated:0];
   [(HUControllableItemCollectionViewController *)self setViewAppeared:0];
   v5.receiver = self;
   v5.super_class = HUControllableItemCollectionViewController;
-  [(HUItemCollectionViewController *)&v5 viewDidDisappear:v3];
+  [(HUItemCollectionViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = _Block_copy(a5);
+  animatedCopy = animated;
+  controllerCopy = controller;
+  v9 = _Block_copy(completion);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __88__HUControllableItemCollectionViewController_presentViewController_animated_completion___block_invoke;
@@ -454,7 +454,7 @@
   v11 = _Block_copy(aBlock);
   v12.receiver = self;
   v12.super_class = HUControllableItemCollectionViewController;
-  [(HUControllableItemCollectionViewController *)&v12 presentViewController:v8 animated:v6 completion:v11];
+  [(HUControllableItemCollectionViewController *)&v12 presentViewController:controllerCopy animated:animatedCopy completion:v11];
 }
 
 uint64_t __88__HUControllableItemCollectionViewController_presentViewController_animated_completion___block_invoke(uint64_t a1)
@@ -470,38 +470,38 @@ uint64_t __88__HUControllableItemCollectionViewController_presentViewController_
   return [v3 setEditing:0 animated:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = HUControllableItemCollectionViewController;
-  v4 = a3;
-  [(HUControllableItemCollectionViewController *)&v6 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(HUControllableItemCollectionViewController *)&v6 traitCollectionDidChange:changeCopy];
   v5 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator:v6.receiver];
-  [v5 traitCollectionDidChange:v4];
+  [v5 traitCollectionDidChange:changeCopy];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v23 = *MEMORY[0x277D85DE8];
-  v7 = [(HUControllableItemCollectionViewController *)self isEditing];
+  isEditing = [(HUControllableItemCollectionViewController *)self isEditing];
   v21.receiver = self;
   v21.super_class = HUControllableItemCollectionViewController;
-  [(HUCollectionViewController *)&v21 setEditing:v5 animated:v4];
-  if (v7 != v5)
+  [(HUCollectionViewController *)&v21 setEditing:editingCopy animated:animatedCopy];
+  if (isEditing != editingCopy)
   {
     if ([(HUControllableItemCollectionViewController *)self useCustomDragAndDrop])
     {
-      v8 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
-      [v8 setIsEditing:v5];
+      quickControlPresentationCoordinator = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
+      [quickControlPresentationCoordinator setIsEditing:editingCopy];
 
-      LODWORD(v8) = [MEMORY[0x277D14CE8] isAMac];
-      v9 = [(HUControllableItemCollectionViewController *)self collectionView];
-      [v9 setDragInteractionEnabled:v8 | v5];
+      LODWORD(quickControlPresentationCoordinator) = [MEMORY[0x277D14CE8] isAMac];
+      collectionView = [(HUControllableItemCollectionViewController *)self collectionView];
+      [collectionView setDragInteractionEnabled:quickControlPresentationCoordinator | editingCopy];
 
-      v10 = [(HUControllableItemCollectionViewController *)self splitViewController];
-      [v10 setEditing:v5 animated:v4];
+      splitViewController = [(HUControllableItemCollectionViewController *)self splitViewController];
+      [splitViewController setEditing:editingCopy animated:animatedCopy];
     }
 
     else
@@ -513,10 +513,10 @@ uint64_t __88__HUControllableItemCollectionViewController_presentViewController_
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v11 = [(HUControllableItemCollectionViewController *)self collectionView];
-    v12 = [v11 visibleCells];
+    collectionView2 = [(HUControllableItemCollectionViewController *)self collectionView];
+    visibleCells = [collectionView2 visibleCells];
 
-    v13 = [v12 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    v13 = [visibleCells countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v13)
     {
       v14 = v13;
@@ -528,14 +528,14 @@ uint64_t __88__HUControllableItemCollectionViewController_presentViewController_
         {
           if (*v18 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(visibleCells);
           }
 
           [(HUControllableItemCollectionViewController *)self _updateEditingStateForCell:*(*(&v17 + 1) + 8 * v16++) animate:1];
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v14 = [visibleCells countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v14);
@@ -543,19 +543,19 @@ uint64_t __88__HUControllableItemCollectionViewController_presentViewController_
   }
 }
 
-- (void)setExecutionFuture:(id)a3 forActionSet:(id)a4
+- (void)setExecutionFuture:(id)future forActionSet:(id)set
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v33 = v6;
-  if (v6 && v7 && ([v6 isFinished] & 1) == 0)
+  futureCopy = future;
+  setCopy = set;
+  v8 = setCopy;
+  v33 = futureCopy;
+  if (futureCopy && setCopy && ([futureCopy isFinished] & 1) == 0)
   {
     v32 = v8;
-    v9 = [(HUControllableItemCollectionViewController *)self actionSetExecutionFuturesKeyedByIdentifier];
-    v10 = [v8 uniqueIdentifier];
-    [v9 setObject:v6 forKeyedSubscript:v10];
+    actionSetExecutionFuturesKeyedByIdentifier = [(HUControllableItemCollectionViewController *)self actionSetExecutionFuturesKeyedByIdentifier];
+    uniqueIdentifier = [v8 uniqueIdentifier];
+    [actionSetExecutionFuturesKeyedByIdentifier setObject:futureCopy forKeyedSubscript:uniqueIdentifier];
 
     objc_initWeak(&location, self);
     v38[0] = MEMORY[0x277D85DD0];
@@ -565,15 +565,15 @@ uint64_t __88__HUControllableItemCollectionViewController_presentViewController_
     objc_copyWeak(&v40, &location);
     v11 = v8;
     v39 = v11;
-    v12 = [v6 addCompletionBlock:v38];
+    v12 = [futureCopy addCompletionBlock:v38];
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v13 = [(HUControllableItemCollectionViewController *)self collectionView];
-    v14 = [v13 visibleCells];
+    collectionView = [(HUControllableItemCollectionViewController *)self collectionView];
+    visibleCells = [collectionView visibleCells];
 
-    v15 = [v14 countByEnumeratingWithState:&v34 objects:v42 count:16];
+    v15 = [visibleCells countByEnumeratingWithState:&v34 objects:v42 count:16];
     if (v15)
     {
       v16 = *v35;
@@ -583,7 +583,7 @@ uint64_t __88__HUControllableItemCollectionViewController_presentViewController_
         {
           if (*v35 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(visibleCells);
           }
 
           v18 = *(*(&v34 + 1) + 8 * i);
@@ -632,10 +632,10 @@ uint64_t __88__HUControllableItemCollectionViewController_presentViewController_
           }
 
           objc_opt_class();
-          v27 = [v24 item];
+          item = [v24 item];
           if (objc_opt_isKindOfClass())
           {
-            v28 = v27;
+            v28 = item;
           }
 
           else
@@ -645,8 +645,8 @@ uint64_t __88__HUControllableItemCollectionViewController_presentViewController_
 
           v29 = v28;
 
-          v30 = [v29 actionSet];
-          v31 = [v30 isEqual:v11];
+          actionSet = [v29 actionSet];
+          v31 = [actionSet isEqual:v11];
 
           if (v31)
           {
@@ -656,7 +656,7 @@ uint64_t __88__HUControllableItemCollectionViewController_presentViewController_
           }
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v34 objects:v42 count:16];
+        v15 = [visibleCells countByEnumeratingWithState:&v34 objects:v42 count:16];
         if (v15)
         {
           continue;
@@ -682,12 +682,12 @@ void __78__HUControllableItemCollectionViewController_setExecutionFuture_forActi
   [v2 removeObjectForKey:v3];
 }
 
-- (id)_getPresentableItemFromGenericItem:(id)a3
+- (id)_getPresentableItemFromGenericItem:(id)item
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v4 = v3;
+  v4 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -702,15 +702,15 @@ void __78__HUControllableItemCollectionViewController_setExecutionFuture_forActi
 
   if (v6)
   {
-    v7 = [v6 sourceItem];
+    sourceItem = [v6 sourceItem];
   }
 
   else
   {
-    v7 = v4;
+    sourceItem = v4;
   }
 
-  v8 = v7;
+  v8 = sourceItem;
   v9 = &unk_28251B0C8;
   if ([v8 conformsToProtocol:v9])
   {
@@ -757,9 +757,9 @@ void __78__HUControllableItemCollectionViewController_setExecutionFuture_forActi
 {
   if (([(HUControllableItemCollectionViewController *)self isEditing]& 1) != 0 || [(HUControllableItemCollectionViewController *)self alwaysAllowReordering])
   {
-    v3 = [(HUControllableItemCollectionViewController *)self reorderGestureRecognizer];
+    reorderGestureRecognizer = [(HUControllableItemCollectionViewController *)self reorderGestureRecognizer];
 
-    if (!v3)
+    if (!reorderGestureRecognizer)
     {
       v4 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel__handleReorderGesture_];
       [(HUControllableItemCollectionViewController *)self setReorderGestureRecognizer:v4];
@@ -774,120 +774,120 @@ void __78__HUControllableItemCollectionViewController_setExecutionFuture_forActi
         v5 = 0.1;
       }
 
-      v6 = [(HUControllableItemCollectionViewController *)self reorderGestureRecognizer];
-      [v6 setMinimumPressDuration:v5];
+      reorderGestureRecognizer2 = [(HUControllableItemCollectionViewController *)self reorderGestureRecognizer];
+      [reorderGestureRecognizer2 setMinimumPressDuration:v5];
 
-      v7 = [(HUControllableItemCollectionViewController *)self reorderGestureRecognizer];
-      [v7 setDelegate:self];
+      reorderGestureRecognizer3 = [(HUControllableItemCollectionViewController *)self reorderGestureRecognizer];
+      [reorderGestureRecognizer3 setDelegate:self];
 
-      v12 = [(HUControllableItemCollectionViewController *)self collectionView];
-      v8 = [(HUControllableItemCollectionViewController *)self reorderGestureRecognizer];
-      [v12 addGestureRecognizer:v8];
+      collectionView = [(HUControllableItemCollectionViewController *)self collectionView];
+      reorderGestureRecognizer4 = [(HUControllableItemCollectionViewController *)self reorderGestureRecognizer];
+      [collectionView addGestureRecognizer:reorderGestureRecognizer4];
     }
   }
 
   else
   {
-    v9 = [(HUControllableItemCollectionViewController *)self reorderGestureRecognizer];
+    reorderGestureRecognizer5 = [(HUControllableItemCollectionViewController *)self reorderGestureRecognizer];
 
-    if (v9)
+    if (reorderGestureRecognizer5)
     {
-      v10 = [(HUControllableItemCollectionViewController *)self collectionView];
-      v11 = [(HUControllableItemCollectionViewController *)self reorderGestureRecognizer];
-      [v10 removeGestureRecognizer:v11];
+      collectionView2 = [(HUControllableItemCollectionViewController *)self collectionView];
+      reorderGestureRecognizer6 = [(HUControllableItemCollectionViewController *)self reorderGestureRecognizer];
+      [collectionView2 removeGestureRecognizer:reorderGestureRecognizer6];
 
       [(HUControllableItemCollectionViewController *)self setReorderGestureRecognizer:0];
     }
   }
 }
 
-- (void)_handleReorderGesture:(id)a3
+- (void)_handleReorderGesture:(id)gesture
 {
-  v10 = a3;
-  v4 = [v10 state];
-  if (v4 <= 2)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if (state <= 2)
   {
-    if (v4 == 1)
+    if (state == 1)
     {
-      [(HUControllableItemCollectionViewController *)self _reorderGestureDidBegin:v10];
+      [(HUControllableItemCollectionViewController *)self _reorderGestureDidBegin:gestureCopy];
     }
 
     else
     {
-      v5 = v4 == 2;
-      v6 = v10;
+      v5 = state == 2;
+      v6 = gestureCopy;
       if (!v5)
       {
         goto LABEL_14;
       }
 
-      [(HUControllableItemCollectionViewController *)self _reorderGestureDidChange:v10];
+      [(HUControllableItemCollectionViewController *)self _reorderGestureDidChange:gestureCopy];
     }
 
 LABEL_13:
-    v6 = v10;
+    v6 = gestureCopy;
     goto LABEL_14;
   }
 
-  if (v4 == 3)
+  if (state == 3)
   {
-    v7 = self;
-    v8 = v10;
+    selfCopy2 = self;
+    v8 = gestureCopy;
     v9 = 1;
     goto LABEL_12;
   }
 
-  v5 = v4 == 4;
-  v6 = v10;
+  v5 = state == 4;
+  v6 = gestureCopy;
   if (v5)
   {
-    v7 = self;
-    v8 = v10;
+    selfCopy2 = self;
+    v8 = gestureCopy;
     v9 = 0;
 LABEL_12:
-    [(HUControllableItemCollectionViewController *)v7 _reorderGestureDidEnd:v8 finished:v9];
+    [(HUControllableItemCollectionViewController *)selfCopy2 _reorderGestureDidEnd:v8 finished:v9];
     goto LABEL_13;
   }
 
 LABEL_14:
 }
 
-- (void)_reorderGestureDidBegin:(id)a3
+- (void)_reorderGestureDidBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(HUControllableItemCollectionViewController *)self collectionView];
-  v6 = [(HUControllableItemCollectionViewController *)self collectionView];
-  [v4 locationInView:v6];
+  beginCopy = begin;
+  collectionView = [(HUControllableItemCollectionViewController *)self collectionView];
+  collectionView2 = [(HUControllableItemCollectionViewController *)self collectionView];
+  [beginCopy locationInView:collectionView2];
   v8 = v7;
   v10 = v9;
 
-  v14 = [v5 indexPathForItemAtPoint:{v8, v10}];
+  v14 = [collectionView indexPathForItemAtPoint:{v8, v10}];
 
   if (v14)
   {
-    v11 = [(HUControllableItemCollectionViewController *)self collectionView];
-    [v11 beginInteractiveMovementForItemAtIndexPath:v14];
+    collectionView3 = [(HUControllableItemCollectionViewController *)self collectionView];
+    [collectionView3 beginInteractiveMovementForItemAtIndexPath:v14];
 
-    v12 = [(HUControllableItemCollectionViewController *)self collectionView];
-    v13 = [v12 cellForItemAtIndexPath:v14];
+    collectionView4 = [(HUControllableItemCollectionViewController *)self collectionView];
+    v13 = [collectionView4 cellForItemAtIndexPath:v14];
     [(HUControllableItemCollectionViewController *)self setCellBeingReordered:v13];
   }
 }
 
-- (void)_reorderGestureDidChange:(id)a3
+- (void)_reorderGestureDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(HUControllableItemCollectionViewController *)self cellBeingReordered];
-  [v5 bounds];
+  changeCopy = change;
+  cellBeingReordered = [(HUControllableItemCollectionViewController *)self cellBeingReordered];
+  [cellBeingReordered bounds];
   v7 = v6;
 
-  v8 = [(HUControllableItemCollectionViewController *)self collectionView];
-  [v4 locationInView:v8];
+  collectionView = [(HUControllableItemCollectionViewController *)self collectionView];
+  [changeCopy locationInView:collectionView];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(HUControllableItemCollectionViewController *)self collectionView];
-  [v13 contentSize];
+  collectionView2 = [(HUControllableItemCollectionViewController *)self collectionView];
+  [collectionView2 contentSize];
   v15 = v14;
   v17 = v16;
 
@@ -928,39 +928,39 @@ LABEL_14:
     }
   }
 
-  v22 = [(HUControllableItemCollectionViewController *)self collectionView];
-  [v22 updateInteractiveMovementTargetPosition:{v10, v12}];
+  collectionView3 = [(HUControllableItemCollectionViewController *)self collectionView];
+  [collectionView3 updateInteractiveMovementTargetPosition:{v10, v12}];
 }
 
-- (void)_reorderGestureDidEnd:(id)a3 finished:(BOOL)a4
+- (void)_reorderGestureDidEnd:(id)end finished:(BOOL)finished
 {
-  v4 = a4;
+  finishedCopy = finished;
   [(HUControllableItemCollectionViewController *)self setCellBeingReordered:0];
-  v6 = [(HUControllableItemCollectionViewController *)self collectionView];
-  v7 = v6;
-  if (v4)
+  collectionView = [(HUControllableItemCollectionViewController *)self collectionView];
+  v7 = collectionView;
+  if (finishedCopy)
   {
-    [v6 endInteractiveMovement];
+    [collectionView endInteractiveMovement];
   }
 
   else
   {
-    [v6 cancelInteractiveMovement];
+    [collectionView cancelInteractiveMovement];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUControllableItemCollectionViewController *)self reorderGestureRecognizer];
+  touchCopy = touch;
+  recognizerCopy = recognizer;
+  reorderGestureRecognizer = [(HUControllableItemCollectionViewController *)self reorderGestureRecognizer];
 
-  if (v8 == v7)
+  if (reorderGestureRecognizer == recognizerCopy)
   {
-    v10 = [(HUControllableItemCollectionViewController *)self collectionView];
-    v11 = [(HUControllableItemCollectionViewController *)self collectionView];
-    [v6 locationInView:v11];
-    v12 = [v10 indexPathForItemAtPoint:?];
+    collectionView = [(HUControllableItemCollectionViewController *)self collectionView];
+    collectionView2 = [(HUControllableItemCollectionViewController *)self collectionView];
+    [touchCopy locationInView:collectionView2];
+    v12 = [collectionView indexPathForItemAtPoint:?];
 
     if (v12)
     {
@@ -981,18 +981,18 @@ LABEL_14:
   return v9;
 }
 
-- (id)_visibleCellForItem:(id)a3
+- (id)_visibleCellForItem:(id)item
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(HUControllableItemCollectionViewController *)self collectionView];
-  v6 = [v5 indexPathsForVisibleItems];
+  collectionView = [(HUControllableItemCollectionViewController *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [indexPathsForVisibleItems countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1003,23 +1003,23 @@ LABEL_14:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [(HUItemCollectionViewController *)self itemManager];
-        v13 = [v12 displayedItemAtIndexPath:v11];
+        itemManager = [(HUItemCollectionViewController *)self itemManager];
+        v13 = [itemManager displayedItemAtIndexPath:v11];
 
-        if (v13 == v4)
+        if (v13 == itemCopy)
         {
-          v15 = [(HUControllableItemCollectionViewController *)self collectionView];
-          v14 = [v15 cellForItemAtIndexPath:v11];
+          collectionView2 = [(HUControllableItemCollectionViewController *)self collectionView];
+          v14 = [collectionView2 cellForItemAtIndexPath:v11];
 
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [indexPathsForVisibleItems countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         continue;
@@ -1035,11 +1035,11 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)_hasTapActionForItem:(id)a3
+- (BOOL)_hasTapActionForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = v4;
+  v5 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -1055,11 +1055,11 @@ LABEL_11:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [v5 latestResults];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D13FD8]];
-    v10 = [v9 BOOLValue];
+    latestResults = [v5 latestResults];
+    v9 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FD8]];
+    bOOLValue = [v9 BOOLValue];
 
-    if ((v10 & 1) == 0 && ![(HUControllableItemCollectionViewController *)self matterItemSupportsToggle:v5])
+    if ((bOOLValue & 1) == 0 && ![(HUControllableItemCollectionViewController *)self matterItemSupportsToggle:v5])
     {
       v14 = v5;
       if ([v14 conformsToProtocol:&unk_28251B0C8])
@@ -1074,8 +1074,8 @@ LABEL_11:
 
       v16 = v15;
 
-      v17 = [v14 latestResults];
-      v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277D137F8]];
+      latestResults2 = [v14 latestResults];
+      v18 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D137F8]];
 
       if (v18)
       {
@@ -1101,10 +1101,10 @@ LABEL_15:
       v40 = [MEMORY[0x277D145C8] hu_preferredToggleableControlItemInControlItems:v20];
       if (v40)
       {
-        v21 = [v16 accessories];
-        v22 = [v21 anyObject];
-        v23 = [v22 hf_siriEndpointProfile];
-        v24 = v23 != 0 && v19;
+        accessories = [v16 accessories];
+        anyObject = [accessories anyObject];
+        hf_siriEndpointProfile = [anyObject hf_siriEndpointProfile];
+        v24 = hf_siriEndpointProfile != 0 && v19;
 
         v11 = 1;
         if (v24)
@@ -1117,11 +1117,11 @@ LABEL_15:
       else
       {
         v26 = v20;
-        v27 = [v14 latestResults];
-        v28 = [v27 objectForKeyedSubscript:*MEMORY[0x277D14068]];
+        latestResults3 = [v14 latestResults];
+        v28 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D14068]];
 
-        v29 = [v14 latestResults];
-        v30 = [v29 objectForKeyedSubscript:*MEMORY[0x277D140E8]];
+        latestResults4 = [v14 latestResults];
+        v30 = [latestResults4 objectForKeyedSubscript:*MEMORY[0x277D140E8]];
 
         v11 = 0;
         if (!v28 && v30)
@@ -1146,8 +1146,8 @@ LABEL_15:
 
       v33 = v32;
 
-      v34 = [v33 targetModeValueSet];
-      if ([v34 count] < 2)
+      targetModeValueSet = [v33 targetModeValueSet];
+      if ([targetModeValueSet count] < 2)
       {
         v25 = 1;
       }
@@ -1156,11 +1156,11 @@ LABEL_15:
       {
         [v16 accessories];
         v35 = v38 = v20;
-        v36 = [v35 anyObject];
+        anyObject2 = [v35 anyObject];
         v39 = v16;
-        v37 = [v36 supportsCHIP];
+        supportsCHIP = [anyObject2 supportsCHIP];
 
-        v25 = v37 ^ 1;
+        v25 = supportsCHIP ^ 1;
         v20 = v38;
         v16 = v39;
       }
@@ -1185,19 +1185,19 @@ LABEL_9:
   return v12;
 }
 
-- (id)_performTapActionForItem:(id)a3 tappedArea:(id)a4
+- (id)_performTapActionForItem:(id)item tappedArea:(id)area
 {
-  v6 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = itemCopy;
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __82__HUControllableItemCollectionViewController__performTapActionForItem_tappedArea___block_invoke;
     aBlock[3] = &unk_277DB8648;
     v47 = v7;
-    v48 = self;
+    selfCopy = self;
     v8 = _Block_copy(aBlock);
 
 LABEL_5:
@@ -1205,7 +1205,7 @@ LABEL_5:
     goto LABEL_27;
   }
 
-  if ([(HUControllableItemCollectionViewController *)self matterItemSupportsToggle:v6])
+  if ([(HUControllableItemCollectionViewController *)self matterItemSupportsToggle:itemCopy])
   {
     objc_initWeak(&location, self);
     v42[0] = MEMORY[0x277D85DD0];
@@ -1213,7 +1213,7 @@ LABEL_5:
     v42[2] = __82__HUControllableItemCollectionViewController__performTapActionForItem_tappedArea___block_invoke_2;
     v42[3] = &unk_277DB8670;
     objc_copyWeak(&v44, &location);
-    v7 = v6;
+    v7 = itemCopy;
     v43 = v7;
     v8 = _Block_copy(v42);
 
@@ -1222,8 +1222,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v10 = [v6 latestResults];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277D137F8]];
+  latestResults = [itemCopy latestResults];
+  v11 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D137F8]];
 
   if (v11 && ([v11 unsignedIntegerValue] & 0x10) != 0)
   {
@@ -1234,16 +1234,16 @@ LABEL_5:
     v41[4] = self;
     v8 = _Block_copy(v41);
     v9 = 1;
-    v7 = v6;
+    v7 = itemCopy;
   }
 
   else
   {
-    v12 = [v6 latestResults];
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277D14068]];
+    latestResults2 = [itemCopy latestResults];
+    v13 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D14068]];
 
-    v14 = [v6 latestResults];
-    v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277D140E8]];
+    latestResults3 = [itemCopy latestResults];
+    v15 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D140E8]];
 
     objc_opt_class();
     v16 = v15;
@@ -1276,18 +1276,18 @@ LABEL_5:
       v20 = 1;
     }
 
-    v21 = [v6 latestResults];
-    v22 = [v21 objectForKeyedSubscript:*MEMORY[0x277D14158]];
-    v23 = [v22 unsignedIntegerValue];
+    latestResults4 = [itemCopy latestResults];
+    v22 = [latestResults4 objectForKeyedSubscript:*MEMORY[0x277D14158]];
+    unsignedIntegerValue = [v22 unsignedIntegerValue];
 
-    if (v20 && ([MEMORY[0x277CD1650] hf_isSuspendedStateSupported:v23] & 1) == 0)
+    if (v20 && ([MEMORY[0x277CD1650] hf_isSuspendedStateSupported:unsignedIntegerValue] & 1) == 0)
     {
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
       v38[2] = __82__HUControllableItemCollectionViewController__performTapActionForItem_tappedArea___block_invoke_4;
       v38[3] = &unk_277DB8698;
       v38[4] = self;
-      v7 = v6;
+      v7 = itemCopy;
       v39 = v7;
       v40 = a2;
       v8 = _Block_copy(v38);
@@ -1299,7 +1299,7 @@ LABEL_5:
     else
     {
       v24 = MEMORY[0x277D145C8];
-      v25 = [(HUControllableItemCollectionViewController *)self _childItemsForItem:v6];
+      v25 = [(HUControllableItemCollectionViewController *)self _childItemsForItem:itemCopy];
       v26 = [v24 hu_preferredToggleableControlItemInControlItems:v25];
 
       if (v26)
@@ -1317,7 +1317,7 @@ LABEL_5:
       else
       {
         v8 = 0;
-        v7 = v6;
+        v7 = itemCopy;
       }
 
       v28 = v33;
@@ -1327,12 +1327,12 @@ LABEL_5:
   }
 
 LABEL_27:
-  v29 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   if (v8)
   {
     if (v9)
     {
-      v30 = [(HUControllableItemCollectionViewController *)self prepareToPerformToggleActionForItem:v7 sourceItem:v6];
+      v30 = [(HUControllableItemCollectionViewController *)self prepareToPerformToggleActionForItem:v7 sourceItem:itemCopy];
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __82__HUControllableItemCollectionViewController__performTapActionForItem_tappedArea___block_invoke_6;
@@ -1340,7 +1340,7 @@ LABEL_27:
       v35 = v8;
       v31 = [v30 flatMap:v34];
 
-      v29 = v35;
+      futureWithNoResult = v35;
     }
 
     else
@@ -1348,10 +1348,10 @@ LABEL_27:
       v31 = v8[2](v8);
     }
 
-    v29 = v31;
+    futureWithNoResult = v31;
   }
 
-  return v29;
+  return futureWithNoResult;
 }
 
 id __82__HUControllableItemCollectionViewController__performTapActionForItem_tappedArea___block_invoke(uint64_t a1)
@@ -1415,34 +1415,34 @@ id __82__HUControllableItemCollectionViewController__performTapActionForItem_tap
   return v4;
 }
 
-- (id)_childItemsForItem:(id)a3
+- (id)_childItemsForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 accessory];
-    v7 = [v6 hf_primaryService];
-    v8 = [v5 controlItemsForService:v7];
+    v5 = itemCopy;
+    accessory = [v5 accessory];
+    hf_primaryService = [accessory hf_primaryService];
+    v8 = [v5 controlItemsForService:hf_primaryService];
   }
 
   else
   {
-    v6 = [(HUItemCollectionViewController *)self itemManager];
-    v8 = [v6 childItemsForItem:v4 ofClass:objc_opt_class()];
+    accessory = [(HUItemCollectionViewController *)self itemManager];
+    v8 = [accessory childItemsForItem:itemCopy ofClass:objc_opt_class()];
   }
 
   return v8;
 }
 
-- (id)tappableAreaForPoint:(CGPoint)a3 inItem:(id)a4 atIndexPath:(id)a5
+- (id)tappableAreaForPoint:(CGPoint)point inItem:(id)item atIndexPath:(id)path
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a5;
-  v9 = [(HUControllableItemCollectionViewController *)self collectionView];
-  v10 = [v9 cellForItemAtIndexPath:v8];
+  y = point.y;
+  x = point.x;
+  pathCopy = path;
+  collectionView = [(HUControllableItemCollectionViewController *)self collectionView];
+  v10 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   objc_opt_class();
   v11 = v10;
@@ -1460,8 +1460,8 @@ id __82__HUControllableItemCollectionViewController__performTapActionForItem_tap
 
   if (v13)
   {
-    v14 = [(HUControllableItemCollectionViewController *)self collectionView];
-    [v13 convertPoint:v14 fromView:{x, y}];
+    collectionView2 = [(HUControllableItemCollectionViewController *)self collectionView];
+    [v13 convertPoint:collectionView2 fromView:{x, y}];
     v16 = v15;
     v18 = v17;
 
@@ -1478,26 +1478,26 @@ id __82__HUControllableItemCollectionViewController__performTapActionForItem_tap
   return v20;
 }
 
-- (id)prepareToPerformToggleActionForItem:(id)a3 sourceItem:(id)a4
+- (id)prepareToPerformToggleActionForItem:(id)item sourceItem:(id)sourceItem
 {
-  v5 = a3;
-  if (![MEMORY[0x277D14670] isHomeControlService] || !-[HUControllableItemCollectionViewController requiresUnlockToPerformActionForItem:](self, "requiresUnlockToPerformActionForItem:", v5) || (-[HUControllableItemCollectionViewController lockAuthorizationDelegate](self, "lockAuthorizationDelegate"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "authorizeIfLockedForViewController:", self), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
+  itemCopy = item;
+  if (![MEMORY[0x277D14670] isHomeControlService] || !-[HUControllableItemCollectionViewController requiresUnlockToPerformActionForItem:](self, "requiresUnlockToPerformActionForItem:", itemCopy) || (-[HUControllableItemCollectionViewController lockAuthorizationDelegate](self, "lockAuthorizationDelegate"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "authorizeIfLockedForViewController:", self), futureWithNoResult = objc_claimAutoreleasedReturnValue(), v6, !futureWithNoResult))
   {
-    v7 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v7;
+  return futureWithNoResult;
 }
 
-- (void)_updateEditingStateForCell:(id)a3 animate:(BOOL)a4
+- (void)_updateEditingStateForCell:(id)cell animate:(BOOL)animate
 {
-  v4 = a4;
-  v16 = a3;
-  v6 = [(HUControllableItemCollectionViewController *)self alwaysAllowReordering];
-  v7 = v16;
-  if (!v6)
+  animateCopy = animate;
+  cellCopy = cell;
+  alwaysAllowReordering = [(HUControllableItemCollectionViewController *)self alwaysAllowReordering];
+  v7 = cellCopy;
+  if (!alwaysAllowReordering)
   {
-    v8 = v16;
+    v8 = cellCopy;
     if ([v8 conformsToProtocol:&unk_2824AB8A8])
     {
       v9 = v8;
@@ -1512,9 +1512,9 @@ id __82__HUControllableItemCollectionViewController__performTapActionForItem_tap
 
     if (v10)
     {
-      v11 = [(HUItemCollectionViewController *)self itemManager];
-      v12 = [v10 item];
-      v13 = [v11 indexPathForItem:v12];
+      itemManager = [(HUItemCollectionViewController *)self itemManager];
+      item = [v10 item];
+      v13 = [itemManager indexPathForItem:item];
 
       if (v13)
       {
@@ -1526,7 +1526,7 @@ id __82__HUControllableItemCollectionViewController__performTapActionForItem_tap
         v14 = 0;
       }
 
-      v15 = [(HUControllableItemCollectionViewController *)self isEditing]& v4;
+      v15 = [(HUControllableItemCollectionViewController *)self isEditing]& animateCopy;
       if (objc_opt_respondsToSelector())
       {
         [v10 setReorderable:v14];
@@ -1540,15 +1540,15 @@ id __82__HUControllableItemCollectionViewController__performTapActionForItem_tap
       [v10 setRearranging:v15];
     }
 
-    v7 = v16;
+    v7 = cellCopy;
   }
 }
 
-- (BOOL)_isMultiControllableServiceAccessory:(id)a3
+- (BOOL)_isMultiControllableServiceAccessory:(id)accessory
 {
-  v3 = a3;
+  accessoryCopy = accessory;
   objc_opt_class();
-  v4 = v3;
+  v4 = accessoryCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -1563,8 +1563,8 @@ id __82__HUControllableItemCollectionViewController__performTapActionForItem_tap
 
   if (v6)
   {
-    v7 = [v6 latestResults];
-    v8 = [v7 objectForKey:*MEMORY[0x277D13D88]];
+    latestResults = [v6 latestResults];
+    v8 = [latestResults objectForKey:*MEMORY[0x277D13D88]];
 
     v9 = [v8 na_flatMap:&__block_literal_global_22];
     v10 = [v9 count] > 1;
@@ -1595,27 +1595,27 @@ BOOL __83__HUControllableItemCollectionViewController__isMultiControllableServic
   return v3;
 }
 
-- (BOOL)itemSupportsToggleInteraction:(id)a3
+- (BOOL)itemSupportsToggleInteraction:(id)interaction
 {
-  v4 = a3;
-  if ([(HUControllableItemCollectionViewController *)self matterItemSupportsToggle:v4])
+  interactionCopy = interaction;
+  if ([(HUControllableItemCollectionViewController *)self matterItemSupportsToggle:interactionCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(HUControllableItemCollectionViewController *)self controlItemSupprtingToggleInteractionForItem:v4];
+    v6 = [(HUControllableItemCollectionViewController *)self controlItemSupprtingToggleInteractionForItem:interactionCopy];
     v5 = v6 != 0;
   }
 
   return v5;
 }
 
-- (id)controlItemSupprtingToggleInteractionForItem:(id)a3
+- (id)controlItemSupprtingToggleInteractionForItem:(id)item
 {
-  v4 = a3;
-  if ([(HUControllableItemCollectionViewController *)self _isMultiControllableServiceAccessory:v4])
+  itemCopy = item;
+  if ([(HUControllableItemCollectionViewController *)self _isMultiControllableServiceAccessory:itemCopy])
   {
     v5 = 0;
   }
@@ -1623,7 +1623,7 @@ BOOL __83__HUControllableItemCollectionViewController__isMultiControllableServic
   else
   {
     objc_opt_class();
-    v6 = v4;
+    v6 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
@@ -1652,22 +1652,22 @@ BOOL __83__HUControllableItemCollectionViewController__isMultiControllableServic
   return v5;
 }
 
-- (void)presentActionSetItem:(id)a3
+- (void)presentActionSetItem:(id)item
 {
-  v14 = a3;
-  v4 = [v14 actionSet];
+  itemCopy = item;
+  actionSet = [itemCopy actionSet];
 
-  if (v4)
+  if (actionSet)
   {
     v5 = objc_alloc(MEMORY[0x277D14398]);
-    v6 = [v14 actionSet];
-    v7 = [(HUItemCollectionViewController *)self itemManager];
-    v8 = [v7 home];
-    v9 = [v5 initWithExistingObject:v6 inHome:v8];
+    actionSet2 = [itemCopy actionSet];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    home = [itemManager home];
+    v9 = [v5 initWithExistingObject:actionSet2 inHome:home];
 
     v10 = [[HUSceneActionEditorViewController alloc] initWithActionSetBuilder:v9 mode:0];
-    v11 = [(UIViewController *)self hu_delegateForModalPresentation];
-    [(HUSceneActionEditorViewController *)v10 setPresentationDelegate:v11];
+    hu_delegateForModalPresentation = [(UIViewController *)self hu_delegateForModalPresentation];
+    [(HUSceneActionEditorViewController *)v10 setPresentationDelegate:hu_delegateForModalPresentation];
 
     v12 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v10];
     [v12 setModalPresentationStyle:2];
@@ -1680,26 +1680,26 @@ BOOL __83__HUControllableItemCollectionViewController__isMultiControllableServic
   }
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath
 {
-  v8 = a4;
-  v9 = a6;
-  v10 = [v9 section];
-  if (v10 >= [v8 section])
+  pathCopy = path;
+  proposedIndexPathCopy = proposedIndexPath;
+  section = [proposedIndexPathCopy section];
+  if (section >= [pathCopy section])
   {
-    v15 = [v9 section];
-    v16 = v9;
-    if (v15 <= [v8 section])
+    section2 = [proposedIndexPathCopy section];
+    v16 = proposedIndexPathCopy;
+    if (section2 <= [pathCopy section])
     {
       goto LABEL_6;
     }
 
-    v17 = [(HUItemCollectionViewController *)self itemManager];
-    v18 = [v17 displayedItemsInSection:{objc_msgSend(v8, "section")}];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    v18 = [itemManager displayedItemsInSection:{objc_msgSend(pathCopy, "section")}];
     v19 = [v18 count];
 
     v20 = MEMORY[0x277CCAA70];
-    v12 = [v8 section];
+    section3 = [pathCopy section];
     v13 = v20;
     v14 = v19 - 1;
   }
@@ -1707,48 +1707,48 @@ BOOL __83__HUControllableItemCollectionViewController__isMultiControllableServic
   else
   {
     v11 = MEMORY[0x277CCAA70];
-    v12 = [v8 section];
+    section3 = [pathCopy section];
     v13 = v11;
     v14 = 0;
   }
 
-  v16 = [v13 indexPathForItem:v14 inSection:v12];
+  v16 = [v13 indexPathForItem:v14 inSection:section3];
 
 LABEL_6:
 
   return v16;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = HUControllableItemCollectionViewController;
-  v8 = a4;
-  [(HUItemCollectionViewController *)&v9 collectionView:a3 willDisplayCell:v8 forItemAtIndexPath:a5];
-  [(HUControllableItemCollectionViewController *)self _updateEditingStateForCell:v8 animate:1, v9.receiver, v9.super_class];
+  cellCopy = cell;
+  [(HUItemCollectionViewController *)&v9 collectionView:view willDisplayCell:cellCopy forItemAtIndexPath:path];
+  [(HUControllableItemCollectionViewController *)self _updateEditingStateForCell:cellCopy animate:1, v9.receiver, v9.super_class];
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v5.receiver = self;
   v5.super_class = HUControllableItemCollectionViewController;
-  [(HUItemCollectionViewController *)&v5 collectionView:a3 didEndDisplayingCell:a4 forItemAtIndexPath:a5];
+  [(HUItemCollectionViewController *)&v5 collectionView:view didEndDisplayingCell:cell forItemAtIndexPath:path];
 }
 
-- (void)didReorderItemWithSortedItemsBySectionID:(id)a3
+- (void)didReorderItemWithSortedItemsBySectionID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dCopy = d;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v7;
     v14 = 2112;
-    v15 = v5;
+    v15 = dCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "[%@:%@]: %@", buf, 0x20u);
   }
 
@@ -1758,7 +1758,7 @@ LABEL_6:
   v8[2] = __87__HUControllableItemCollectionViewController_didReorderItemWithSortedItemsBySectionID___block_invoke;
   v8[3] = &unk_277DB86E8;
   objc_copyWeak(&v9, buf);
-  [v5 na_each:v8];
+  [dCopy na_each:v8];
   objc_destroyWeak(&v9);
   objc_destroyWeak(buf);
 }
@@ -1795,16 +1795,16 @@ void __87__HUControllableItemCollectionViewController_didReorderItemWithSortedIt
   [v4 logError:v3 operationDescription:@"ReorderItems"];
 }
 
-- (void)diffableDataItemManager:(id)a3 didUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6
+- (void)diffableDataItemManager:(id)manager didUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems
 {
-  v10 = a6;
+  removeItemsCopy = removeItems;
   v13.receiver = self;
   v13.super_class = HUControllableItemCollectionViewController;
-  v11 = a5;
-  [(HUItemCollectionViewController *)&v13 diffableDataItemManager:a3 didUpdateItems:a4 addItems:v11 removeItems:v10];
-  v12 = [v11 count];
+  addItemsCopy = addItems;
+  [(HUItemCollectionViewController *)&v13 diffableDataItemManager:manager didUpdateItems:items addItems:addItemsCopy removeItems:removeItemsCopy];
+  v12 = [addItemsCopy count];
 
-  if (v12 || [v10 count])
+  if (v12 || [removeItemsCopy count])
   {
     [(HUControllableItemCollectionViewController *)self _itemSetDidChange];
   }
@@ -1812,49 +1812,49 @@ void __87__HUControllableItemCollectionViewController_didReorderItemWithSortedIt
 
 - (void)_itemSetDidChange
 {
-  v3 = [(HUControllableItemCollectionViewController *)self collectionViewLayout];
+  collectionViewLayout = [(HUControllableItemCollectionViewController *)self collectionViewLayout];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v7 = [(HUControllableItemCollectionViewController *)self collectionViewLayout];
-    v5 = [(HUItemCollectionViewController *)self itemManager];
-    v6 = [v5 allDisplayedItems];
-    [v7 clearAllOverrideAttributesForItems:v6];
+    collectionViewLayout2 = [(HUControllableItemCollectionViewController *)self collectionViewLayout];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    allDisplayedItems = [itemManager allDisplayedItems];
+    [collectionViewLayout2 clearAllOverrideAttributesForItems:allDisplayedItems];
   }
 }
 
-- (void)itemManager:(id)a3 performUpdateRequest:(id)a4
+- (void)itemManager:(id)manager performUpdateRequest:(id)request
 {
   v9.receiver = self;
   v9.super_class = HUControllableItemCollectionViewController;
-  v6 = a4;
-  [(HUItemCollectionViewController *)&v9 itemManager:a3 performUpdateRequest:v6];
-  v7 = [v6 changes];
+  requestCopy = request;
+  [(HUItemCollectionViewController *)&v9 itemManager:manager performUpdateRequest:requestCopy];
+  changes = [requestCopy changes];
 
-  v8 = [v7 allOperations];
-  LODWORD(v6) = [v8 na_any:&__block_literal_global_282];
+  allOperations = [changes allOperations];
+  LODWORD(requestCopy) = [allOperations na_any:&__block_literal_global_282];
 
-  if (v6)
+  if (requestCopy)
   {
     [(HUControllableItemCollectionViewController *)self _itemSetDidChange];
   }
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v25.receiver = self;
   v25.super_class = HUControllableItemCollectionViewController;
-  [(HUItemCollectionViewController *)&v25 configureCell:v6 forItem:v7];
-  [(HUControllableItemCollectionViewController *)self _updateEditingStateForCell:v6 animate:1];
+  [(HUItemCollectionViewController *)&v25 configureCell:cellCopy forItem:itemCopy];
+  [(HUControllableItemCollectionViewController *)self _updateEditingStateForCell:cellCopy animate:1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = cellCopy;
     objc_opt_class();
-    v9 = v7;
+    v9 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v10 = v9;
@@ -1867,24 +1867,24 @@ void __87__HUControllableItemCollectionViewController_didReorderItemWithSortedIt
 
     v11 = v10;
 
-    v12 = [v11 homeKitObject];
-    v13 = [v12 uniqueIdentifier];
+    homeKitObject = [v11 homeKitObject];
+    uniqueIdentifier = [homeKitObject uniqueIdentifier];
 
-    if (v13)
+    if (uniqueIdentifier)
     {
-      v14 = [(HUControllableItemCollectionViewController *)self actionSetExecutionFuturesKeyedByIdentifier];
-      v15 = [v14 objectForKeyedSubscript:v13];
+      actionSetExecutionFuturesKeyedByIdentifier = [(HUControllableItemCollectionViewController *)self actionSetExecutionFuturesKeyedByIdentifier];
+      v15 = [actionSetExecutionFuturesKeyedByIdentifier objectForKeyedSubscript:uniqueIdentifier];
 
       if (v15)
       {
-        v16 = [(HUControllableItemCollectionViewController *)self actionSetExecutionFuturesKeyedByIdentifier];
-        v17 = [v16 objectForKeyedSubscript:v13];
+        actionSetExecutionFuturesKeyedByIdentifier2 = [(HUControllableItemCollectionViewController *)self actionSetExecutionFuturesKeyedByIdentifier];
+        v17 = [actionSetExecutionFuturesKeyedByIdentifier2 objectForKeyedSubscript:uniqueIdentifier];
         [v8 setExecuteActionSetFuture:v17];
       }
     }
   }
 
-  v18 = v6;
+  v18 = cellCopy;
   if ([v18 conformsToProtocol:&unk_2824AB590])
   {
     v19 = v18;
@@ -1899,33 +1899,33 @@ void __87__HUControllableItemCollectionViewController_didReorderItemWithSortedIt
 
   if (([MEMORY[0x277D14CE8] isAnIPad] & 1) == 0)
   {
-    v21 = [v20 item];
-    if (v21)
+    item = [v20 item];
+    if (item)
     {
-      v22 = v21;
-      v23 = [v20 item];
-      v24 = [v23 isEqual:v7];
+      v22 = item;
+      item2 = [v20 item];
+      v24 = [item2 isEqual:itemCopy];
 
       if ((v24 & 1) == 0)
       {
-        [v20 setItem:v7];
+        [v20 setItem:itemCopy];
         [v20 updateUIWithAnimation:1];
       }
     }
   }
 }
 
-- (id)_itemForServiceControlPresentationAtPoint:(CGPoint)a3
+- (id)_itemForServiceControlPresentationAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(HUControllableItemCollectionViewController *)self collectionView];
-  v7 = [v6 indexPathForItemAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  collectionView = [(HUControllableItemCollectionViewController *)self collectionView];
+  v7 = [collectionView indexPathForItemAtPoint:{x, y}];
 
   if (v7)
   {
-    v8 = [(HUItemCollectionViewController *)self itemManager];
-    v9 = [v8 displayedItemAtIndexPath:v7];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    v9 = [itemManager displayedItemAtIndexPath:v7];
 
     if ([v9 conformsToProtocol:&unk_2824C0828])
     {
@@ -1939,39 +1939,39 @@ LABEL_5:
   return v9;
 }
 
-- (id)quickControlPresentationContextForItem:(id)a3 atIndexPath:(id)a4 point:(CGPoint)a5
+- (id)quickControlPresentationContextForItem:(id)item atIndexPath:(id)path point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4;
-  v10 = a3;
+  y = point.y;
+  x = point.x;
+  pathCopy = path;
+  itemCopy = item;
   v11 = objc_alloc_init(HUQuickControlPresentationContext);
   [(HUQuickControlPresentationContext *)v11 setColorStyle:[(HUControllableItemCollectionViewController *)self contentColorStyle]];
-  [(HUQuickControlPresentationContext *)v11 setItem:v10];
-  v12 = [(HUItemCollectionViewController *)self itemManager];
-  v13 = [v12 childItemsForItem:v10 ofClass:objc_opt_class()];
+  [(HUQuickControlPresentationContext *)v11 setItem:itemCopy];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v13 = [itemManager childItemsForItem:itemCopy ofClass:objc_opt_class()];
   [(HUQuickControlPresentationContext *)v11 setControlItems:v13];
 
-  v14 = [(HUItemCollectionViewController *)self itemManager];
-  v15 = [v14 home];
-  [(HUQuickControlPresentationContext *)v11 setHome:v15];
+  itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+  home = [itemManager2 home];
+  [(HUQuickControlPresentationContext *)v11 setHome:home];
 
-  v16 = [(HUControllableItemCollectionViewController *)self collectionView];
-  v17 = [v16 layoutAttributesForItemAtIndexPath:v9];
+  collectionView = [(HUControllableItemCollectionViewController *)self collectionView];
+  v17 = [collectionView layoutAttributesForItemAtIndexPath:pathCopy];
   [v17 frame];
   [(HUQuickControlPresentationContext *)v11 setSourceRect:?];
 
-  v18 = [(HUControllableItemCollectionViewController *)self tappableAreaForPoint:v10 inItem:v9 atIndexPath:x, y];
+  v18 = [(HUControllableItemCollectionViewController *)self tappableAreaForPoint:itemCopy inItem:pathCopy atIndexPath:x, y];
 
   [(HUQuickControlPresentationContext *)v11 setTappedArea:v18];
   [(HUQuickControlPresentationContext *)v11 setPrefersSystemTransitions:0];
   [(HUQuickControlPresentationContext *)v11 setShouldIncludeRoomNameInHeaderTitle:0];
-  v19 = [(HUControllableItemCollectionViewController *)self navigationController];
+  navigationController = [(HUControllableItemCollectionViewController *)self navigationController];
 
-  if (v19)
+  if (navigationController)
   {
-    v20 = [(HUControllableItemCollectionViewController *)self navigationController];
-    [(HUQuickControlPresentationContext *)v11 setSourceViewController:v20];
+    navigationController2 = [(HUControllableItemCollectionViewController *)self navigationController];
+    [(HUQuickControlPresentationContext *)v11 setSourceViewController:navigationController2];
   }
 
   else
@@ -1982,26 +1982,26 @@ LABEL_5:
   return v11;
 }
 
-- (id)quickControlPresentationContextForUUID:(id)a3 type:(unint64_t)a4
+- (id)quickControlPresentationContextForUUID:(id)d type:(unint64_t)type
 {
-  v6 = a3;
+  dCopy = d;
   v7 = objc_alloc_init(HUQuickControlPresentationContext);
   [(HUQuickControlPresentationContext *)v7 setColorStyle:[(HUControllableItemCollectionViewController *)self contentColorStyle]];
-  v8 = [[HUQuickControlPresentationItemManager alloc] initWithHomeKitObjectUUID:v6 type:a4];
+  v8 = [[HUQuickControlPresentationItemManager alloc] initWithHomeKitObjectUUID:dCopy type:type];
 
   [(HUQuickControlPresentationContext *)v7 setItemManager:v8];
-  v9 = [(HUItemCollectionViewController *)self itemManager];
-  v10 = [v9 home];
-  [(HUQuickControlPresentationContext *)v7 setHome:v10];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  home = [itemManager home];
+  [(HUQuickControlPresentationContext *)v7 setHome:home];
 
   [(HUQuickControlPresentationContext *)v7 setPrefersSystemTransitions:1];
   [(HUQuickControlPresentationContext *)v7 setShouldIncludeRoomNameInHeaderTitle:0];
-  v11 = [(HUControllableItemCollectionViewController *)self navigationController];
+  navigationController = [(HUControllableItemCollectionViewController *)self navigationController];
 
-  if (v11)
+  if (navigationController)
   {
-    v12 = [(HUControllableItemCollectionViewController *)self navigationController];
-    [(HUQuickControlPresentationContext *)v7 setSourceViewController:v12];
+    navigationController2 = [(HUControllableItemCollectionViewController *)self navigationController];
+    [(HUQuickControlPresentationContext *)v7 setSourceViewController:navigationController2];
   }
 
   else
@@ -2012,9 +2012,9 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginInteractivePresentationWithTouchLocation:(CGPoint)a4 view:(id)a5
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginInteractivePresentationWithTouchLocation:(CGPoint)location view:(id)view
 {
-  v6 = [(HUControllableItemCollectionViewController *)self _itemForServiceControlPresentationAtPoint:a3, a5, a4.x, a4.y];
+  v6 = [(HUControllableItemCollectionViewController *)self _itemForServiceControlPresentationAtPoint:coordinator, view, location.x, location.y];
   if (v6)
   {
     v7 = [(HUControllableItemCollectionViewController *)self isEditing]^ 1;
@@ -2028,40 +2028,40 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginPresentationWithContext:(id)a4
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginPresentationWithContext:(id)context
 {
   v62 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([MEMORY[0x277D14670] isHomeControlService] && (objc_msgSend(v7, "didAuthenticate") & 1) == 0 && (-[HUItemCollectionViewController itemManager](self, "itemManager"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "item"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "childItemsForItem:ofClass:", v9, objc_opt_class()), v10 = objc_claimAutoreleasedReturnValue(), v51[0] = MEMORY[0x277D85DD0], v51[1] = 3221225472, v51[2] = __105__HUControllableItemCollectionViewController_presentationCoordinator_shouldBeginPresentationWithContext___block_invoke, v51[3] = &unk_277DB85D8, v51[4] = self, v11 = objc_msgSend(v10, "na_any:", v51), v10, v9, v8, v11))
+  coordinatorCopy = coordinator;
+  contextCopy = context;
+  if ([MEMORY[0x277D14670] isHomeControlService] && (objc_msgSend(contextCopy, "didAuthenticate") & 1) == 0 && (-[HUItemCollectionViewController itemManager](self, "itemManager"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(contextCopy, "item"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "childItemsForItem:ofClass:", v9, objc_opt_class()), v10 = objc_claimAutoreleasedReturnValue(), v51[0] = MEMORY[0x277D85DD0], v51[1] = 3221225472, v51[2] = __105__HUControllableItemCollectionViewController_presentationCoordinator_shouldBeginPresentationWithContext___block_invoke, v51[3] = &unk_277DB85D8, v51[4] = self, v11 = objc_msgSend(v10, "na_any:", v51), v10, v9, v8, v11))
   {
-    v12 = [v7 copy];
-    v13 = [v7 controlItems];
-    [v12 setControlItems:v13];
+    v12 = [contextCopy copy];
+    controlItems = [contextCopy controlItems];
+    [v12 setControlItems:controlItems];
 
-    v14 = [(HUControllableItemCollectionViewController *)self lockAuthorizationDelegate];
-    v15 = [v14 authorizeIfLockedForViewController:self];
+    lockAuthorizationDelegate = [(HUControllableItemCollectionViewController *)self lockAuthorizationDelegate];
+    v15 = [lockAuthorizationDelegate authorizeIfLockedForViewController:self];
 
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __105__HUControllableItemCollectionViewController_presentationCoordinator_shouldBeginPresentationWithContext___block_invoke_2;
     v48[3] = &unk_277DB7E68;
     v49 = v12;
-    v50 = v6;
+    v50 = coordinatorCopy;
     v16 = v12;
     v17 = [v15 addSuccessBlock:v48];
   }
 
   else
   {
-    v18 = [v7 item];
+    item = [contextCopy item];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v20 = [v7 item];
-      [(HUControllableItemCollectionViewController *)self presentActionSetItem:v20];
+      item2 = [contextCopy item];
+      [(HUControllableItemCollectionViewController *)self presentActionSetItem:item2];
     }
 
     else
@@ -2071,26 +2071,26 @@ LABEL_5:
       {
         v23 = objc_opt_class();
         v24 = NSStringFromClass(v23);
-        v25 = [v7 item];
+        item3 = [contextCopy item];
         *buf = 138412546;
         v53 = v24;
         v54 = 2112;
-        v55 = v25;
+        v55 = item3;
         _os_log_impl(&dword_20CEB6000, v22, OS_LOG_TYPE_DEFAULT, "%@+Controls: checking about presenting accessory controls instead of quick controls for item %@", buf, 0x16u);
       }
 
-      v26 = [v7 item];
-      v27 = [(HUControllableItemCollectionViewController *)self shouldShowAccessoryControlForItem:v26];
+      item4 = [contextCopy item];
+      v27 = [(HUControllableItemCollectionViewController *)self shouldShowAccessoryControlForItem:item4];
 
       if (!v27)
       {
         goto LABEL_21;
       }
 
-      v28 = [v7 item];
-      if ([v28 conformsToProtocol:&unk_28251AC90])
+      item5 = [contextCopy item];
+      if ([item5 conformsToProtocol:&unk_28251AC90])
       {
-        v29 = v28;
+        v29 = item5;
       }
 
       else
@@ -2101,24 +2101,24 @@ LABEL_5:
       v30 = v29;
 
       v31 = [(HUControllableItemCollectionViewController *)self matterItemHasControlModules:v30];
-      v32 = [v30 accessoryRepresentableObject];
+      accessoryRepresentableObject = [v30 accessoryRepresentableObject];
 
-      v33 = [v32 hf_isMatterOnlyAccessory];
-      v34 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v35 = [v34 BOOLForKey:*MEMORY[0x277D13D20]];
+      hf_isMatterOnlyAccessory = [accessoryRepresentableObject hf_isMatterOnlyAccessory];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v35 = [standardUserDefaults BOOLForKey:*MEMORY[0x277D13D20]];
 
       v36 = HFLogForCategory();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
         v37 = objc_opt_class();
         v38 = NSStringFromClass(v37);
-        v39 = [v7 controlItems];
+        controlItems2 = [contextCopy controlItems];
         *buf = 138413314;
         v53 = v38;
         v54 = 2112;
-        v55 = v39;
+        v55 = controlItems2;
         v56 = 1024;
-        v57 = v33;
+        v57 = hf_isMatterOnlyAccessory;
         v58 = 1024;
         v59 = v31;
         v60 = 1024;
@@ -2126,10 +2126,10 @@ LABEL_5:
         _os_log_impl(&dword_20CEB6000, v36, OS_LOG_TYPE_DEFAULT, "%@+Controls: confirming control items %@, isMatterOnly: %d, hasMatterControlModules: %d, forceNativeMatter: %d", buf, 0x28u);
       }
 
-      v40 = [v7 controlItems];
-      v41 = [v40 count] != 0;
+      controlItems3 = [contextCopy controlItems];
+      v41 = [controlItems3 count] != 0;
 
-      if (((v41 | v35 | v33 & v31) & 1) == 0)
+      if (((v41 | v35 | hf_isMatterOnlyAccessory & v31) & 1) == 0)
       {
 LABEL_21:
         v21 = 1;
@@ -2141,16 +2141,16 @@ LABEL_21:
       {
         v43 = objc_opt_class();
         v44 = NSStringFromClass(v43);
-        v45 = [v7 item];
+        item6 = [contextCopy item];
         *buf = 138412546;
         v53 = v44;
         v54 = 2112;
-        v55 = v45;
+        v55 = item6;
         _os_log_impl(&dword_20CEB6000, v42, OS_LOG_TYPE_DEFAULT, "%@+Controls presenting accessory controls for item %@", buf, 0x16u);
       }
 
-      v20 = [v7 item];
-      v46 = [(HUControllableItemCollectionViewController *)self presentAccessoryControlsForItem:v20];
+      item2 = [contextCopy item];
+      v46 = [(HUControllableItemCollectionViewController *)self presentAccessoryControlsForItem:item2];
     }
   }
 
@@ -2160,12 +2160,12 @@ LABEL_22:
   return v21;
 }
 
-- (id)presentationCoordinator:(id)a3 contextForPresentationAtPoint:(CGPoint)a4
+- (id)presentationCoordinator:(id)coordinator contextForPresentationAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(HUControllableItemCollectionViewController *)self collectionView];
-  v8 = [v7 indexPathForItemAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  collectionView = [(HUControllableItemCollectionViewController *)self collectionView];
+  v8 = [collectionView indexPathForItemAtPoint:{x, y}];
 
   if (!v8)
   {
@@ -2189,56 +2189,56 @@ LABEL_22:
   return v12;
 }
 
-- (void)presentationCoordinator:(id)a3 applyOverrideAttributes:(id)a4 toItem:(id)a5
+- (void)presentationCoordinator:(id)coordinator applyOverrideAttributes:(id)attributes toItem:(id)item
 {
-  v13 = a4;
-  v7 = a5;
-  v8 = [(HUItemCollectionViewController *)self itemManager];
-  v9 = [v8 indexPathForItem:v7];
+  attributesCopy = attributes;
+  itemCopy = item;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v9 = [itemManager indexPathForItem:itemCopy];
 
   if (v9)
   {
-    v10 = [(HUControllableItemCollectionViewController *)self collectionViewLayout];
+    collectionViewLayout = [(HUControllableItemCollectionViewController *)self collectionViewLayout];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(HUControllableItemCollectionViewController *)self collectionViewLayout];
-      [v12 applyOverrideAttributes:v13 toItem:v7 atIndexPath:v9];
+      collectionViewLayout2 = [(HUControllableItemCollectionViewController *)self collectionViewLayout];
+      [collectionViewLayout2 applyOverrideAttributes:attributesCopy toItem:itemCopy atIndexPath:v9];
     }
   }
 }
 
-- (void)presentationCoordinator:(id)a3 clearOverrideAttributesForItem:(id)a4
+- (void)presentationCoordinator:(id)coordinator clearOverrideAttributesForItem:(id)item
 {
-  v10 = a4;
-  v5 = [(HUItemCollectionViewController *)self itemManager];
-  v6 = [v5 indexPathForItem:v10];
+  itemCopy = item;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v6 = [itemManager indexPathForItem:itemCopy];
 
   if (v6)
   {
-    v7 = [(HUControllableItemCollectionViewController *)self collectionViewLayout];
+    collectionViewLayout = [(HUControllableItemCollectionViewController *)self collectionViewLayout];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(HUControllableItemCollectionViewController *)self collectionViewLayout];
-      [v9 clearOverrideAttributesForItem:v10 atIndexPath:v6];
+      collectionViewLayout2 = [(HUControllableItemCollectionViewController *)self collectionViewLayout];
+      [collectionViewLayout2 clearOverrideAttributesForItem:itemCopy atIndexPath:v6];
     }
   }
 }
 
-- (BOOL)_hasPartialReachabilityForServiceItem:(id)a3
+- (BOOL)_hasPartialReachabilityForServiceItem:(id)item
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 conformsToProtocol:&unk_28251AF08])
+  itemCopy = item;
+  if ([itemCopy conformsToProtocol:&unk_28251AF08])
   {
-    v4 = v3;
-    v5 = [v4 accessories];
-    v6 = [v5 na_filter:&__block_literal_global_308];
+    v4 = itemCopy;
+    accessories = [v4 accessories];
+    v6 = [accessories na_filter:&__block_literal_global_308];
     v7 = [v6 count];
-    v8 = [v5 count];
+    v8 = [accessories count];
     v9 = v8;
     if (v7)
     {
@@ -2276,14 +2276,14 @@ LABEL_22:
   return v11;
 }
 
-- (void)presentationCoordinator:(id)a3 didRecognizeTapForItem:(id)a4 tappedArea:(id)a5
+- (void)presentationCoordinator:(id)coordinator didRecognizeTapForItem:(id)item tappedArea:(id)area
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  itemCopy = item;
+  areaCopy = area;
   objc_opt_class();
-  v9 = [v7 latestResults];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D140E8]];
+  latestResults = [itemCopy latestResults];
+  v10 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D140E8]];
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -2296,34 +2296,34 @@ LABEL_22:
 
   v12 = v11;
 
-  v13 = [v12 isThreadNetworkError];
-  v14 = v13;
-  if (v13)
+  isThreadNetworkError = [v12 isThreadNetworkError];
+  v14 = isThreadNetworkError;
+  if (isThreadNetworkError)
   {
     if ([MEMORY[0x277D14670] isHomeApp])
     {
-      v15 = 1;
+      isSpringBoard = 1;
     }
 
     else
     {
-      v15 = [MEMORY[0x277D14670] isSpringBoard];
+      isSpringBoard = [MEMORY[0x277D14670] isSpringBoard];
     }
   }
 
   else
   {
-    v15 = 0;
+    isSpringBoard = 0;
   }
 
-  if (([v8 isEqualToString:@"HUTileCellTappableAreaDetail"] & 1) == 0 && !(v15 & 1 | !-[HUControllableItemCollectionViewController _hasTapActionForItem:](self, "_hasTapActionForItem:", v7)) && !-[HUControllableItemCollectionViewController _isMultiControllableServiceAccessory:](self, "_isMultiControllableServiceAccessory:", v7))
+  if (([areaCopy isEqualToString:@"HUTileCellTappableAreaDetail"] & 1) == 0 && !(isSpringBoard & 1 | !-[HUControllableItemCollectionViewController _hasTapActionForItem:](self, "_hasTapActionForItem:", itemCopy)) && !-[HUControllableItemCollectionViewController _isMultiControllableServiceAccessory:](self, "_isMultiControllableServiceAccessory:", itemCopy))
   {
-    v30 = [(HUControllableItemCollectionViewController *)self _performTapActionForItem:v7 tappedArea:v8];
+    v30 = [(HUControllableItemCollectionViewController *)self _performTapActionForItem:itemCopy tappedArea:areaCopy];
     goto LABEL_34;
   }
 
   objc_opt_class();
-  v16 = v7;
+  v16 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v17 = v16;
@@ -2355,9 +2355,9 @@ LABEL_16:
 
   else
   {
-    v21 = [v18 hasAnyNetworkDiagnosticsIssues];
+    hasAnyNetworkDiagnosticsIssues = [v18 hasAnyNetworkDiagnosticsIssues];
     v19 = [(HUControllableItemCollectionViewController *)self _hasPartialReachabilityForServiceItem:v16];
-    if (!v21)
+    if (!hasAnyNetworkDiagnosticsIssues)
     {
       goto LABEL_27;
     }
@@ -2378,7 +2378,7 @@ LABEL_16:
     else if (!(v20 | (([MEMORY[0x277D14670] isSpringBoard] & 1) == 0)))
     {
 LABEL_29:
-      v24 = [(HUControllableItemCollectionViewController *)self _getPresentableItemFromGenericItem:v16];
+      quickControlPresentationCoordinator2 = [(HUControllableItemCollectionViewController *)self _getPresentableItemFromGenericItem:v16];
       v28 = HFLogForCategory();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
@@ -2389,25 +2389,25 @@ LABEL_29:
         v35 = 2112;
         v36 = v12;
         v37 = 2112;
-        v38 = v24;
+        v38 = quickControlPresentationCoordinator2;
         _os_log_error_impl(&dword_20CEB6000, v28, OS_LOG_TYPE_ERROR, "%@+Controls presenting accessory settings for error in item %@ with error %@", &v33, 0x20u);
       }
 
-      v29 = [(HUControllableItemCollectionViewController *)self presentAccessorySettingsForItem:v24];
+      v29 = [(HUControllableItemCollectionViewController *)self presentAccessorySettingsForItem:quickControlPresentationCoordinator2];
       goto LABEL_32;
     }
   }
 
 LABEL_27:
-  v22 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
-  v23 = [v22 presentationContext];
+  quickControlPresentationCoordinator = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
+  presentationContext = [quickControlPresentationCoordinator presentationContext];
 
-  if (v23)
+  if (presentationContext)
   {
-    v24 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
-    v25 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
-    v26 = [v25 presentationContext];
-    v27 = [v24 presentQuickControlWithContext:v26 animated:1];
+    quickControlPresentationCoordinator2 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
+    quickControlPresentationCoordinator3 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
+    presentationContext2 = [quickControlPresentationCoordinator3 presentationContext];
+    v27 = [quickControlPresentationCoordinator2 presentQuickControlWithContext:presentationContext2 animated:1];
 
 LABEL_32:
   }
@@ -2415,59 +2415,59 @@ LABEL_32:
 LABEL_34:
 }
 
-- (void)presentationCoordinator:(id)a3 willBeginPresentationWithContext:(id)a4
+- (void)presentationCoordinator:(id)coordinator willBeginPresentationWithContext:(id)context
 {
-  [(HUControllableItemCollectionViewController *)self childViewController:self willBeginQuickControlsPresentation:a3];
-  v5 = [(HUControllableItemCollectionViewController *)self quickControlPresentationDelegate];
-  [v5 quickControlsPresentationDidUpdate:1];
+  [(HUControllableItemCollectionViewController *)self childViewController:self willBeginQuickControlsPresentation:coordinator];
+  quickControlPresentationDelegate = [(HUControllableItemCollectionViewController *)self quickControlPresentationDelegate];
+  [quickControlPresentationDelegate quickControlsPresentationDidUpdate:1];
 }
 
-- (void)presentationCoordinator:(id)a3 willEndPresentationWithContext:(id)a4
+- (void)presentationCoordinator:(id)coordinator willEndPresentationWithContext:(id)context
 {
-  v4 = [(HUControllableItemCollectionViewController *)self quickControlPresentationDelegate:a3];
+  v4 = [(HUControllableItemCollectionViewController *)self quickControlPresentationDelegate:coordinator];
   [v4 quickControlsPresentationDidUpdate:0];
 }
 
 - (id)_ancestorQuickControlPresentationHost
 {
-  v2 = [(HUControllableItemCollectionViewController *)self parentViewController];
-  if (v2)
+  parentViewController = [(HUControllableItemCollectionViewController *)self parentViewController];
+  if (parentViewController)
   {
     do
     {
-      if ([v2 conformsToProtocol:&unk_2824A3228])
+      if ([parentViewController conformsToProtocol:&unk_2824A3228])
       {
         break;
       }
 
-      v3 = [v2 parentViewController];
+      v2ParentViewController = [parentViewController parentViewController];
 
-      v2 = v3;
+      parentViewController = v2ParentViewController;
     }
 
-    while (v3);
+    while (v2ParentViewController);
   }
 
-  return v2;
+  return parentViewController;
 }
 
-- (void)childViewController:(id)a3 willBeginQuickControlsPresentation:(id)a4
+- (void)childViewController:(id)controller willBeginQuickControlsPresentation:(id)presentation
 {
-  v9 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  presentationCopy = presentation;
   if (![(HUControllableItemCollectionViewController *)self viewAppeared])
   {
-    NSLog(&cfstr_TheQuickContro.isa, v6, v9);
+    NSLog(&cfstr_TheQuickContro.isa, presentationCopy, controllerCopy);
   }
 
   if ([(HUControllableItemCollectionViewController *)self viewAppeared])
   {
-    v7 = [(HUControllableItemCollectionViewController *)self _ancestorQuickControlPresentationHost];
-    if (v7)
+    _ancestorQuickControlPresentationHost = [(HUControllableItemCollectionViewController *)self _ancestorQuickControlPresentationHost];
+    if (_ancestorQuickControlPresentationHost)
     {
-      [(HUControllableItemCollectionViewController *)self setAncestorQuickControlHostAtPresentationTime:v7];
-      v8 = [(HUControllableItemCollectionViewController *)self ancestorQuickControlHostAtPresentationTime];
-      [v8 childViewController:self willBeginQuickControlsPresentation:v6];
+      [(HUControllableItemCollectionViewController *)self setAncestorQuickControlHostAtPresentationTime:_ancestorQuickControlPresentationHost];
+      ancestorQuickControlHostAtPresentationTime = [(HUControllableItemCollectionViewController *)self ancestorQuickControlHostAtPresentationTime];
+      [ancestorQuickControlHostAtPresentationTime childViewController:self willBeginQuickControlsPresentation:presentationCopy];
     }
 
     else
@@ -2477,24 +2477,24 @@ LABEL_34:
   }
 }
 
-- (void)childViewController:(id)a3 didEndQuickControlsPresentation:(id)a4
+- (void)childViewController:(id)controller didEndQuickControlsPresentation:(id)presentation
 {
-  v10 = a4;
-  v5 = [(HUControllableItemCollectionViewController *)self ancestorQuickControlHostAtPresentationTime];
+  presentationCopy = presentation;
+  ancestorQuickControlHostAtPresentationTime = [(HUControllableItemCollectionViewController *)self ancestorQuickControlHostAtPresentationTime];
 
-  if (v5)
+  if (ancestorQuickControlHostAtPresentationTime)
   {
-    v6 = [(HUControllableItemCollectionViewController *)self _ancestorQuickControlPresentationHost];
-    v7 = [(HUControllableItemCollectionViewController *)self ancestorQuickControlHostAtPresentationTime];
+    _ancestorQuickControlPresentationHost = [(HUControllableItemCollectionViewController *)self _ancestorQuickControlPresentationHost];
+    ancestorQuickControlHostAtPresentationTime2 = [(HUControllableItemCollectionViewController *)self ancestorQuickControlHostAtPresentationTime];
 
-    if (v7 != v6)
+    if (ancestorQuickControlHostAtPresentationTime2 != _ancestorQuickControlPresentationHost)
     {
-      v8 = [(HUControllableItemCollectionViewController *)self ancestorQuickControlHostAtPresentationTime];
-      NSLog(&cfstr_TheAncestorQui.isa, v8, v6);
+      ancestorQuickControlHostAtPresentationTime3 = [(HUControllableItemCollectionViewController *)self ancestorQuickControlHostAtPresentationTime];
+      NSLog(&cfstr_TheAncestorQui.isa, ancestorQuickControlHostAtPresentationTime3, _ancestorQuickControlPresentationHost);
     }
 
-    v9 = [(HUControllableItemCollectionViewController *)self ancestorQuickControlHostAtPresentationTime];
-    [v9 childViewController:self didEndQuickControlsPresentation:v10];
+    ancestorQuickControlHostAtPresentationTime4 = [(HUControllableItemCollectionViewController *)self ancestorQuickControlHostAtPresentationTime];
+    [ancestorQuickControlHostAtPresentationTime4 childViewController:self didEndQuickControlsPresentation:presentationCopy];
 
     [(HUControllableItemCollectionViewController *)self setAncestorQuickControlHostAtPresentationTime:0];
   }
@@ -2505,16 +2505,16 @@ LABEL_34:
   }
 }
 
-- (void)_handleContextualGesture:(id)a3
+- (void)_handleContextualGesture:(id)gesture
 {
-  v27 = a3;
-  if ([v27 state] == 3)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 3)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v4 = [(HUControllableItemCollectionViewController *)self collectionView];
-      [v27 locationInView:v4];
+      collectionView = [(HUControllableItemCollectionViewController *)self collectionView];
+      [gestureCopy locationInView:collectionView];
       v6 = v5;
       v8 = v7;
 
@@ -2534,16 +2534,16 @@ LABEL_17:
       v13 = [(HUControllableItemCollectionViewController *)self _childItemsForItem:v9];
       v14 = [v13 count];
 
-      v15 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
-      v16 = [v27 view];
-      if ([(HUControllableItemCollectionViewController *)self presentationCoordinator:v15 shouldBeginInteractivePresentationWithTouchLocation:v16 view:v6, v8]&& (isKindOfClass & 1) == 0)
+      quickControlPresentationCoordinator = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
+      view = [gestureCopy view];
+      if ([(HUControllableItemCollectionViewController *)self presentationCoordinator:quickControlPresentationCoordinator shouldBeginInteractivePresentationWithTouchLocation:view view:v6, v8]&& (isKindOfClass & 1) == 0)
       {
 
         if (!(v12 & 1 | (v14 != 0)))
         {
 LABEL_12:
-          v18 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
-          v19 = [(HUControllableItemCollectionViewController *)self hasDetailsActionForPresentationCoordinator:v18 item:v9];
+          quickControlPresentationCoordinator2 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
+          v19 = [(HUControllableItemCollectionViewController *)self hasDetailsActionForPresentationCoordinator:quickControlPresentationCoordinator2 item:v9];
 
           if (v19)
           {
@@ -2556,13 +2556,13 @@ LABEL_12:
           if ([v10 count])
           {
             [(HUControllableItemCollectionViewController *)self setSelectedContextualMenuItem:v9];
-            v23 = [MEMORY[0x277D75718] sharedMenuController];
-            [v23 setMenuItems:v10];
+            mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+            [mEMORY[0x277D75718] setMenuItems:v10];
             [(HUControllableItemCollectionViewController *)self becomeFirstResponder];
             v24 = *MEMORY[0x277CBF3A8];
             v25 = *(MEMORY[0x277CBF3A8] + 8);
-            v26 = [(HUControllableItemCollectionViewController *)self collectionView];
-            [v23 showMenuFromView:v26 rect:{v6, v8, v24, v25}];
+            collectionView2 = [(HUControllableItemCollectionViewController *)self collectionView];
+            [mEMORY[0x277D75718] showMenuFromView:collectionView2 rect:{v6, v8, v24, v25}];
           }
 
           goto LABEL_17;
@@ -2578,9 +2578,9 @@ LABEL_12:
           v17 = @"HUContextualMenuItemQuickControls";
         }
 
-        v15 = _HULocalizedStringWithDefaultValue(v17, v17, 1);
-        v16 = [objc_alloc(MEMORY[0x277D75728]) initWithTitle:v15 action:sel__showQuickControlsForSelectedMenuItem];
-        [v10 addObject:v16];
+        quickControlPresentationCoordinator = _HULocalizedStringWithDefaultValue(v17, v17, 1);
+        view = [objc_alloc(MEMORY[0x277D75728]) initWithTitle:quickControlPresentationCoordinator action:sel__showQuickControlsForSelectedMenuItem];
+        [v10 addObject:view];
       }
 
       goto LABEL_12;
@@ -2590,17 +2590,17 @@ LABEL_12:
 LABEL_18:
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277D75718] sharedMenuController];
-  v8 = [v7 menuItems];
+  senderCopy = sender;
+  mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+  menuItems = [mEMORY[0x277D75718] menuItems];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __74__HUControllableItemCollectionViewController_canPerformAction_withSender___block_invoke;
   v13[3] = &__block_descriptor_40_e20_B16__0__UIMenuItem_8l;
-  v13[4] = a3;
-  v9 = [v8 na_any:v13];
+  v13[4] = action;
+  v9 = [menuItems na_any:v13];
 
   if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -2611,7 +2611,7 @@ LABEL_18:
   {
     v12.receiver = self;
     v12.super_class = HUControllableItemCollectionViewController;
-    v10 = [(HUControllableItemCollectionViewController *)&v12 canPerformAction:a3 withSender:v6];
+    v10 = [(HUControllableItemCollectionViewController *)&v12 canPerformAction:action withSender:senderCopy];
   }
 
   return v10;
@@ -2619,15 +2619,15 @@ LABEL_18:
 
 - (void)_showSettingsForSelectedMenuItem
 {
-  v3 = [(HUControllableItemCollectionViewController *)self selectedContextualMenuItem];
+  selectedContextualMenuItem = [(HUControllableItemCollectionViewController *)self selectedContextualMenuItem];
 
-  if (v3)
+  if (selectedContextualMenuItem)
   {
     objc_opt_class();
-    v4 = [(HUControllableItemCollectionViewController *)self selectedContextualMenuItem];
+    selectedContextualMenuItem2 = [(HUControllableItemCollectionViewController *)self selectedContextualMenuItem];
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = selectedContextualMenuItem2;
     }
 
     else
@@ -2637,40 +2637,40 @@ LABEL_18:
 
     v20 = v5;
 
-    v6 = [(HUControllableItemCollectionViewController *)self selectedContextualMenuItem];
+    selectedContextualMenuItem3 = [(HUControllableItemCollectionViewController *)self selectedContextualMenuItem];
     if (v20)
     {
-      v7 = [v20 accessory];
-      v8 = [v7 hf_isMultiServiceAccessory];
+      accessory = [v20 accessory];
+      hf_isMultiServiceAccessory = [accessory hf_isMultiServiceAccessory];
 
-      if ((v8 & 1) == 0)
+      if ((hf_isMultiServiceAccessory & 1) == 0)
       {
-        v9 = [v20 accessory];
-        v10 = [v9 hf_primaryService];
-        v11 = [v20 serviceItemForService:v10];
+        accessory2 = [v20 accessory];
+        hf_primaryService = [accessory2 hf_primaryService];
+        v11 = [v20 serviceItemForService:hf_primaryService];
 
-        v6 = v11;
+        selectedContextualMenuItem3 = v11;
       }
     }
 
-    v12 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
-    v13 = [(HUControllableItemCollectionViewController *)self detailsViewControllerForPresentationCoordinator:v12 item:v6];
+    quickControlPresentationCoordinator = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
+    v13 = [(HUControllableItemCollectionViewController *)self detailsViewControllerForPresentationCoordinator:quickControlPresentationCoordinator item:selectedContextualMenuItem3];
 
     if (v13)
     {
-      v14 = [(UIViewController *)self hu_delegateForModalPresentation];
-      [v13 setPresentationDelegate:v14];
+      hu_delegateForModalPresentation = [(UIViewController *)self hu_delegateForModalPresentation];
+      [v13 setPresentationDelegate:hu_delegateForModalPresentation];
 
       v15 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v13];
       [v15 setModalPresentationStyle:2];
-      v16 = [v15 presentationController];
+      presentationController = [v15 presentationController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v18 = [v15 presentationController];
-        [v18 _setPreferredCornerRadius:20.0];
+        presentationController2 = [v15 presentationController];
+        [presentationController2 _setPreferredCornerRadius:20.0];
       }
 
       v19 = [(UIViewController *)self hu_presentPreloadableViewController:v15 animated:1];
@@ -2680,20 +2680,20 @@ LABEL_18:
 
 - (void)_showQuickControlsForSelectedMenuItem
 {
-  v3 = [(HUControllableItemCollectionViewController *)self selectedContextualMenuItem];
+  selectedContextualMenuItem = [(HUControllableItemCollectionViewController *)self selectedContextualMenuItem];
 
-  if (v3)
+  if (selectedContextualMenuItem)
   {
-    v17 = [(HUControllableItemCollectionViewController *)self selectedContextualMenuItem];
-    v4 = [(HUItemCollectionViewController *)self itemManager];
-    v5 = [v4 indexPathForItem:v17];
+    selectedContextualMenuItem2 = [(HUControllableItemCollectionViewController *)self selectedContextualMenuItem];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    v5 = [itemManager indexPathForItem:selectedContextualMenuItem2];
 
-    v6 = [(HUControllableItemCollectionViewController *)self quickControlPresentationContextForItem:v17 atIndexPath:v5];
+    v6 = [(HUControllableItemCollectionViewController *)self quickControlPresentationContextForItem:selectedContextualMenuItem2 atIndexPath:v5];
     if ([MEMORY[0x277D14CE8] shouldUseLegacyQuickControlPresentation])
     {
       objc_opt_class();
-      v7 = [(HUControllableItemCollectionViewController *)self collectionView];
-      v8 = [v7 cellForItemAtIndexPath:v5];
+      collectionView = [(HUControllableItemCollectionViewController *)self collectionView];
+      v8 = [collectionView cellForItemAtIndexPath:v5];
       if (objc_opt_isKindOfClass())
       {
         v9 = v8;
@@ -2706,14 +2706,14 @@ LABEL_18:
 
       v10 = v9;
 
-      v11 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
-      [v11 setPressedTile_legacy:v10];
+      quickControlPresentationCoordinator = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
+      [quickControlPresentationCoordinator setPressedTile_legacy:v10];
     }
 
     else
     {
-      v12 = [(HUControllableItemCollectionViewController *)self collectionView];
-      v13 = [v12 cellForItemAtIndexPath:v5];
+      collectionView2 = [(HUControllableItemCollectionViewController *)self collectionView];
+      v13 = [collectionView2 cellForItemAtIndexPath:v5];
       if ([v13 conformsToProtocol:&unk_2824C4B08])
       {
         v14 = v13;
@@ -2726,49 +2726,49 @@ LABEL_18:
 
       v10 = v14;
 
-      v11 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
-      [v11 setPressedTile:v10];
+      quickControlPresentationCoordinator = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
+      [quickControlPresentationCoordinator setPressedTile:v10];
     }
 
-    v15 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
-    v16 = [v15 presentQuickControlWithContext:v6 animated:1];
+    quickControlPresentationCoordinator2 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
+    v16 = [quickControlPresentationCoordinator2 presentQuickControlWithContext:v6 animated:1];
   }
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = [a3 cellForItemAtIndexPath:v7];
+  pathCopy = path;
+  v8 = [view cellForItemAtIndexPath:pathCopy];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 || ![(HUControllableItemCollectionViewController *)self canReorderItemAtIndexPath:v7])
+  if ((objc_opt_isKindOfClass() & 1) != 0 || ![(HUControllableItemCollectionViewController *)self canReorderItemAtIndexPath:pathCopy])
   {
     v12 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v9 = [(HUItemCollectionViewController *)self itemManager];
-    v10 = [v9 displayedItemAtIndexPath:v7];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    v10 = [itemManager displayedItemAtIndexPath:pathCopy];
 
-    v11 = [(HUControllableItemCollectionViewController *)self dragItemForItem:v10 atIndexPath:v7];
+    v11 = [(HUControllableItemCollectionViewController *)self dragItemForItem:v10 atIndexPath:pathCopy];
     v12 = [MEMORY[0x277CBEA60] na_arrayWithSafeObject:v11];
   }
 
   return v12;
 }
 
-- (id)dragItemForItem:(id)a3 atIndexPath:(id)a4
+- (id)dragItemForItem:(id)item atIndexPath:(id)path
 {
   v6 = MEMORY[0x277CCAA88];
-  v7 = a4;
-  v8 = a3;
+  pathCopy = path;
+  itemCopy = item;
   v9 = objc_alloc_init(v6);
   [v9 registerItemForTypeIdentifier:*MEMORY[0x277CC2188] loadHandler:&__block_literal_global_399];
   v10 = [objc_alloc(MEMORY[0x277D75470]) initWithItemProvider:v9];
-  [v10 setLocalObject:v8];
+  [v10 setLocalObject:itemCopy];
 
-  v11 = [(HUControllableItemCollectionViewController *)self collectionView];
-  v12 = [v11 cellForItemAtIndexPath:v7];
+  collectionView = [(HUControllableItemCollectionViewController *)self collectionView];
+  v12 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   if (v12 && (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -2778,28 +2778,28 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session
 {
-  v4 = [a4 localDragSession];
+  localDragSession = [session localDragSession];
 
-  return v4 != 0;
+  return localDragSession != 0;
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
-  v8 = a4;
-  v9 = a5;
-  if ([a3 hasActiveDrag])
+  updateCopy = update;
+  pathCopy = path;
+  if ([view hasActiveDrag])
   {
-    v10 = [v8 items];
-    v11 = [v10 firstObject];
-    v12 = [v11 localObject];
+    items = [updateCopy items];
+    firstObject = [items firstObject];
+    localObject = [firstObject localObject];
 
-    v13 = [(HUItemCollectionViewController *)self itemManager];
-    v14 = [v13 indexPathForItem:v12];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    v14 = [itemManager indexPathForItem:localObject];
 
-    v15 = [v14 section];
-    if (v15 == [v9 section])
+    section = [v14 section];
+    if (section == [pathCopy section])
     {
       v16 = [objc_alloc(MEMORY[0x277D752E8]) initWithDropOperation:3 intent:1];
 
@@ -2813,13 +2813,13 @@ LABEL_6:
   return v16;
 }
 
-- (BOOL)requiresUnlockToPerformActionForItem:(id)a3
+- (BOOL)requiresUnlockToPerformActionForItem:(id)item
 {
-  v3 = [a3 latestResults];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D13D38]];
-  v5 = [v4 BOOLValue];
+  latestResults = [item latestResults];
+  v4 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13D38]];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (HULockAuthorizationDelegate)lockAuthorizationDelegate

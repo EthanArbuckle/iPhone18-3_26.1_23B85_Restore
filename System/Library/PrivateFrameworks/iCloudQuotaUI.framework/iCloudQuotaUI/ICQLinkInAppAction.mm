@@ -1,89 +1,89 @@
 @interface ICQLinkInAppAction
-- (ICQLinkInAppAction)initWithCoder:(id)a3;
-- (ICQLinkInAppAction)initWithLink:(id)a3 inOffer:(id)a4;
+- (ICQLinkInAppAction)initWithCoder:(id)coder;
+- (ICQLinkInAppAction)initWithLink:(id)link inOffer:(id)offer;
 - (NSString)description;
-- (id)_linkURLWithContext:(id)a3;
-- (void)_launchFlowManagerWithContext:(id)a3;
+- (id)_linkURLWithContext:(id)context;
+- (void)_launchFlowManagerWithContext:(id)context;
 - (void)_performOverrideUploadOnCellularConstraints;
-- (void)addAlertFromLink:(id)a3 offer:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)performActionWithContext:(id)a3;
-- (void)upgradeFlowManagerDidCancel:(id)a3;
-- (void)upgradeFlowManagerDidComplete:(id)a3;
+- (void)addAlertFromLink:(id)link offer:(id)offer;
+- (void)encodeWithCoder:(id)coder;
+- (void)performActionWithContext:(id)context;
+- (void)upgradeFlowManagerDidCancel:(id)cancel;
+- (void)upgradeFlowManagerDidComplete:(id)complete;
 @end
 
 @implementation ICQLinkInAppAction
 
-- (ICQLinkInAppAction)initWithLink:(id)a3 inOffer:(id)a4
+- (ICQLinkInAppAction)initWithLink:(id)link inOffer:(id)offer
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 text];
-  [v7 action];
+  linkCopy = link;
+  offerCopy = offer;
+  text = [linkCopy text];
+  [linkCopy action];
   v10 = _ICQStringForAction();
   v15.receiver = self;
   v15.super_class = ICQLinkInAppAction;
-  v11 = -[ICQInAppAction initWithTitle:type:icqActionType:](&v15, sel_initWithTitle_type_icqActionType_, v9, v10, [v7 action]);
+  v11 = -[ICQInAppAction initWithTitle:type:icqActionType:](&v15, sel_initWithTitle_type_icqActionType_, text, v10, [linkCopy action]);
 
   if (v11)
   {
-    objc_storeStrong(&v11->_link, a3);
-    objc_storeStrong(&v11->_offer, a4);
-    v12 = [v7 serverUIURL];
+    objc_storeStrong(&v11->_link, link);
+    objc_storeStrong(&v11->_offer, offer);
+    serverUIURL = [linkCopy serverUIURL];
     linkURL = v11->_linkURL;
-    v11->_linkURL = v12;
+    v11->_linkURL = serverUIURL;
 
-    [(ICQLinkInAppAction *)v11 addAlertFromLink:v7 offer:v8];
+    [(ICQLinkInAppAction *)v11 addAlertFromLink:linkCopy offer:offerCopy];
   }
 
   return v11;
 }
 
-- (void)addAlertFromLink:(id)a3 offer:(id)a4
+- (void)addAlertFromLink:(id)link offer:(id)offer
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 action] == 102)
+  linkCopy = link;
+  offerCopy = offer;
+  if ([linkCopy action] == 102)
   {
     v8 = _ICQGetLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(ICQLinkInAppAction *)self link];
+      link = [(ICQLinkInAppAction *)self link];
       v13 = 138412290;
-      v14 = v9;
+      v14 = link;
       _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "In-app message: link %@ includes an inAppAlert", &v13, 0xCu);
     }
 
-    v10 = [v6 parameters];
-    v11 = [v10 objectForKeyedSubscript:@"alertKey"];
+    parameters = [linkCopy parameters];
+    v11 = [parameters objectForKeyedSubscript:@"alertKey"];
 
-    v12 = [[ICQInAppAlert alloc] initWithOffer:v7 alertKey:v11];
+    v12 = [[ICQInAppAlert alloc] initWithOffer:offerCopy alertKey:v11];
     [(ICQInAppAction *)self setInAppAlert:v12];
   }
 }
 
-- (void)performActionWithContext:(id)a3
+- (void)performActionWithContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ICQLinkInAppAction *)self link];
-    [v6 action];
+    link = [(ICQLinkInAppAction *)self link];
+    [link action];
     v7 = _ICQStringForAction();
     v19 = 138543362;
     v20 = v7;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "In-app message: perform action %{public}@", &v19, 0xCu);
   }
 
-  v8 = [(ICQLinkInAppAction *)self link];
-  v9 = [v8 action];
+  link2 = [(ICQLinkInAppAction *)self link];
+  action = [link2 action];
 
-  if (v9 <= 101)
+  if (action <= 101)
   {
-    switch(v9)
+    switch(action)
     {
       case 1:
         v15 = _ICQGetLogSystem();
@@ -105,8 +105,8 @@ LABEL_15:
     v15 = _ICQGetLogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(ICQLinkInAppAction *)self link];
-      [v16 action];
+      link3 = [(ICQLinkInAppAction *)self link];
+      [link3 action];
       v17 = _ICQStringForAction();
       v19 = 138543362;
       v20 = v17;
@@ -115,35 +115,35 @@ LABEL_15:
 
 LABEL_21:
 
-    v18 = [(ICQLinkInAppAction *)self link];
-    [v18 performAction];
+    link4 = [(ICQLinkInAppAction *)self link];
+    [link4 performAction];
 LABEL_22:
 
     goto LABEL_7;
   }
 
-  if ((v9 - 102) > 0x13)
+  if ((action - 102) > 0x13)
   {
     goto LABEL_15;
   }
 
-  if (((1 << (v9 - 102)) & 0xCF478) == 0)
+  if (((1 << (action - 102)) & 0xCF478) == 0)
   {
-    if (v9 == 102)
+    if (action == 102)
     {
-      v18 = _ICQGetLogSystem();
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      link4 = _ICQGetLogSystem();
+      if (os_log_type_enabled(link4, OS_LOG_TYPE_ERROR))
       {
-        [ICQLinkInAppAction performActionWithContext:v18];
+        [ICQLinkInAppAction performActionWithContext:link4];
       }
 
       goto LABEL_22;
     }
 
-    if (v9 == 118)
+    if (action == 118)
     {
-      v14 = [(ICQLinkInAppAction *)self offer];
-      [v14 updateOfferWithAction:118];
+      offer = [(ICQLinkInAppAction *)self offer];
+      [offer updateOfferWithAction:118];
 
       goto LABEL_6;
     }
@@ -152,22 +152,22 @@ LABEL_22:
   }
 
 LABEL_6:
-  [(ICQLinkInAppAction *)self _launchFlowManagerWithContext:v4];
+  [(ICQLinkInAppAction *)self _launchFlowManagerWithContext:contextCopy];
 LABEL_7:
-  v10 = [(ICQLinkInAppAction *)self offer];
-  v11 = [v10 bundleIdentifier];
-  v12 = [(ICQLinkInAppAction *)self link];
-  [v12 action];
+  offer2 = [(ICQLinkInAppAction *)self offer];
+  bundleIdentifier = [offer2 bundleIdentifier];
+  link5 = [(ICQLinkInAppAction *)self link];
+  [link5 action];
   v13 = _ICQStringForAction();
-  [ICQAnalytics logInAppBannerInteractionWithAppIdentifier:v11 icqActionName:v13];
+  [ICQAnalytics logInAppBannerInteractionWithAppIdentifier:bundleIdentifier icqActionName:v13];
 }
 
-- (void)_launchFlowManagerWithContext:(id)a3
+- (void)_launchFlowManagerWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(ICQLinkInAppAction *)self flowManager];
+  contextCopy = context;
+  flowManager = [(ICQLinkInAppAction *)self flowManager];
 
-  if (v5)
+  if (flowManager)
   {
     v6 = _ICQGetLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -178,7 +178,7 @@ LABEL_7:
 
   else
   {
-    v6 = [(ICQLinkInAppAction *)self _linkURLWithContext:v4];
+    v6 = [(ICQLinkInAppAction *)self _linkURLWithContext:contextCopy];
     v7 = _ICQGetLogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -187,26 +187,26 @@ LABEL_7:
     }
 
     v8 = [ICQUpgradeFlowManager alloc];
-    v9 = [(ICQLinkInAppAction *)self offer];
-    v10 = [(ICQUpgradeFlowManager *)v8 initWithOffer:v9];
+    offer = [(ICQLinkInAppAction *)self offer];
+    v10 = [(ICQUpgradeFlowManager *)v8 initWithOffer:offer];
     [(ICQLinkInAppAction *)self setFlowManager:v10];
 
-    v11 = [(ICQLinkInAppAction *)self flowManager];
-    [v11 setDelegate:self];
+    flowManager2 = [(ICQLinkInAppAction *)self flowManager];
+    [flowManager2 setDelegate:self];
 
-    v12 = [(ICQLinkInAppAction *)self flowManager];
-    [v12 setFlowOptions:0];
+    flowManager3 = [(ICQLinkInAppAction *)self flowManager];
+    [flowManager3 setFlowOptions:0];
 
-    v13 = [(ICQLinkInAppAction *)self link];
+    link = [(ICQLinkInAppAction *)self link];
 
-    if (v13)
+    if (link)
     {
-      v14 = [(ICQLinkInAppAction *)self link];
-      [v14 setServerUIURL:v6];
+      link2 = [(ICQLinkInAppAction *)self link];
+      [link2 setServerUIURL:v6];
 
-      v15 = [(ICQLinkInAppAction *)self flowManager];
-      v16 = [(ICQLinkInAppAction *)self link];
-      [v15 beginRemoteUpgradeFlowWithICQLink:v16];
+      flowManager4 = [(ICQLinkInAppAction *)self flowManager];
+      link3 = [(ICQLinkInAppAction *)self link];
+      [flowManager4 beginRemoteUpgradeFlowWithICQLink:link3];
     }
 
     else
@@ -217,31 +217,31 @@ LABEL_7:
         [(ICQLinkInAppAction *)self _launchFlowManagerWithContext:v17];
       }
 
-      v15 = [(ICQLinkInAppAction *)self flowManager];
-      [v15 _beginRemoteFlowWithURL:v6];
+      flowManager4 = [(ICQLinkInAppAction *)self flowManager];
+      [flowManager4 _beginRemoteFlowWithURL:v6];
     }
   }
 }
 
-- (id)_linkURLWithContext:(id)a3
+- (id)_linkURLWithContext:(id)context
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICQLinkInAppAction *)self linkURL];
+  contextCopy = context;
+  linkURL = [(ICQLinkInAppAction *)self linkURL];
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v30 = v4;
+    v30 = contextCopy;
     v31 = 2114;
-    v32 = v5;
+    v32 = linkURL;
     _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "In-app message: adding context %{public}@ to link %{public}@", buf, 0x16u);
   }
 
-  v23 = v5;
-  v7 = [MEMORY[0x277CCACE0] componentsWithURL:v5 resolvingAgainstBaseURL:0];
-  v8 = [v7 queryItems];
-  v9 = [v8 mutableCopy];
+  v23 = linkURL;
+  v7 = [MEMORY[0x277CCACE0] componentsWithURL:linkURL resolvingAgainstBaseURL:0];
+  queryItems = [v7 queryItems];
+  v9 = [queryItems mutableCopy];
 
   if (!v9)
   {
@@ -252,7 +252,7 @@ LABEL_7:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v4;
+  v10 = contextCopy;
   v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v11)
   {
@@ -313,7 +313,7 @@ LABEL_7:
   }
 }
 
-- (void)upgradeFlowManagerDidCancel:(id)a3
+- (void)upgradeFlowManagerDidCancel:(id)cancel
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = _ICQGetLogSystem();
@@ -325,13 +325,13 @@ LABEL_7:
     _os_log_impl(&dword_275623000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ UpgradeFlowManager did cancel", &v7, 0xCu);
   }
 
-  v6 = [(ICQLinkInAppAction *)self flowManager];
-  [v6 setDelegate:0];
+  flowManager = [(ICQLinkInAppAction *)self flowManager];
+  [flowManager setDelegate:0];
 
   [(ICQLinkInAppAction *)self setFlowManager:0];
 }
 
-- (void)upgradeFlowManagerDidComplete:(id)a3
+- (void)upgradeFlowManagerDidComplete:(id)complete
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = _ICQGetLogSystem();
@@ -343,32 +343,32 @@ LABEL_7:
     _os_log_impl(&dword_275623000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ UpgradeFlowManager did complete", &v7, 0xCu);
   }
 
-  v6 = [(ICQLinkInAppAction *)self flowManager];
-  [v6 setDelegate:0];
+  flowManager = [(ICQLinkInAppAction *)self flowManager];
+  [flowManager setDelegate:0];
 
   [(ICQLinkInAppAction *)self setFlowManager:0];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = ICQLinkInAppAction;
-  v4 = a3;
-  [(ICQInAppAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ICQInAppAction *)&v7 encodeWithCoder:coderCopy];
   v5 = [(ICQLinkInAppAction *)self link:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"link"];
+  [coderCopy encodeObject:v5 forKey:@"link"];
 
-  v6 = [(ICQLinkInAppAction *)self offer];
-  [v4 encodeObject:v6 forKey:@"offer"];
+  offer = [(ICQLinkInAppAction *)self offer];
+  [coderCopy encodeObject:offer forKey:@"offer"];
 }
 
-- (ICQLinkInAppAction)initWithCoder:(id)a3
+- (ICQLinkInAppAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"offer"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"link"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"offer"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"link"];
   v7 = [(ICQLinkInAppAction *)self initWithLink:v6 inOffer:v5];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inAppAlert"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inAppAlert"];
 
   [v8 updateActionsWithOffer:v5];
   [(ICQInAppAction *)v7 setInAppAlert:v8];
@@ -379,10 +379,10 @@ LABEL_7:
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ICQInAppAction *)self title];
-  v5 = [(ICQInAppAction *)self type];
-  v6 = [(ICQLinkInAppAction *)self link];
-  v7 = [v3 stringWithFormat:@"actionTitle: %@, actionType: %@, link: %@", v4, v5, v6];
+  title = [(ICQInAppAction *)self title];
+  type = [(ICQInAppAction *)self type];
+  link = [(ICQLinkInAppAction *)self link];
+  v7 = [v3 stringWithFormat:@"actionTitle: %@, actionType: %@, link: %@", title, type, link];
 
   return v7;
 }

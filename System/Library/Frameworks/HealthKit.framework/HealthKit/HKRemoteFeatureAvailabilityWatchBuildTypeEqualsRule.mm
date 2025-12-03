@@ -1,29 +1,29 @@
 @interface HKRemoteFeatureAvailabilityWatchBuildTypeEqualsRule
 - (BOOL)evaluate;
-- (void)processUserInfo:(id)a3;
+- (void)processUserInfo:(id)info;
 @end
 
 @implementation HKRemoteFeatureAvailabilityWatchBuildTypeEqualsRule
 
-- (void)processUserInfo:(id)a3
+- (void)processUserInfo:(id)info
 {
-  v4 = [a3 objectForKeyedSubscript:@"BuildType"];
+  v4 = [info objectForKeyedSubscript:@"BuildType"];
   [(HKRemoteFeatureAvailabilityWatchBuildTypeEqualsRule *)self setBuildType:v4];
 }
 
 - (BOOL)evaluate
 {
-  v3 = [(HKRemoteFeatureAvailabilityWatchBuildTypeEqualsRule *)self buildType];
+  buildType = [(HKRemoteFeatureAvailabilityWatchBuildTypeEqualsRule *)self buildType];
 
-  if (!v3)
+  if (!buildType)
   {
     return 0;
   }
 
-  v4 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
-  v5 = [v4 watchBuildType];
-  v6 = [(HKRemoteFeatureAvailabilityWatchBuildTypeEqualsRule *)self buildType];
-  v7 = [v5 isEqualToString:v6];
+  dataSource = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
+  watchBuildType = [dataSource watchBuildType];
+  buildType2 = [(HKRemoteFeatureAvailabilityWatchBuildTypeEqualsRule *)self buildType];
+  v7 = [watchBuildType isEqualToString:buildType2];
 
   return v7;
 }

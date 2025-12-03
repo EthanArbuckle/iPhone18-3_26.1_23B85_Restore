@@ -1,21 +1,21 @@
 @interface AWDMETRICSKCellularPowerlogRFSSVoltageLevelsRfSS
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsFr:(id)a3;
-- (int)StringAsSleepStateId:(id)a3;
-- (int)StringAsVddScenarioId:(id)a3;
+- (int)StringAsFr:(id)fr;
+- (int)StringAsSleepStateId:(id)id;
+- (int)StringAsVddScenarioId:(id)id;
 - (int)fr;
 - (int)sleepStateId;
 - (int)vddScenarioId;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFr:(BOOL)a3;
-- (void)setHasSleepStateId:(BOOL)a3;
-- (void)setHasVddScenarioId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFr:(BOOL)fr;
+- (void)setHasSleepStateId:(BOOL)id;
+- (void)setHasVddScenarioId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularPowerlogRFSSVoltageLevelsRfSS
@@ -33,9 +33,9 @@
   }
 }
 
-- (void)setHasVddScenarioId:(BOOL)a3
+- (void)setHasVddScenarioId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 8;
   }
@@ -48,70 +48,70 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsVddScenarioId:(id)a3
+- (int)StringAsVddScenarioId:(id)id
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_1"])
+  idCopy = id;
+  if ([idCopy isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_1"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_2"])
+  else if ([idCopy isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_2"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_3"])
+  else if ([idCopy isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_3"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_4"])
+  else if ([idCopy isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_4"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_5"])
+  else if ([idCopy isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_5"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_6"])
+  else if ([idCopy isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_6"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_7"])
+  else if ([idCopy isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_7"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_8"])
+  else if ([idCopy isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_8"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_9"])
+  else if ([idCopy isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_9"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_10"])
+  else if ([idCopy isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_10"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_11"])
+  else if ([idCopy isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_11"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_12"])
+  else if ([idCopy isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_12"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_13"])
+  else if ([idCopy isEqualToString:@"RFPWR_RFVDD_POWER_SCENARIO_13"])
   {
     v4 = 12;
   }
@@ -137,9 +137,9 @@
   }
 }
 
-- (void)setHasSleepStateId:(BOOL)a3
+- (void)setHasSleepStateId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -152,30 +152,30 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsSleepStateId:(id)a3
+- (int)StringAsSleepStateId:(id)id
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CFW_EVT_RFPWR_RFSS_PVR_OFF"])
+  idCopy = id;
+  if ([idCopy isEqualToString:@"CFW_EVT_RFPWR_RFSS_PVR_OFF"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CFW_EVT_RFPWR_RFSS_PWR_DEEP_SLEEP"])
+  else if ([idCopy isEqualToString:@"CFW_EVT_RFPWR_RFSS_PWR_DEEP_SLEEP"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CFW_EVT_RFPWR_RFSS_PVR_MEDIUM_SLEEP"])
+  else if ([idCopy isEqualToString:@"CFW_EVT_RFPWR_RFSS_PVR_MEDIUM_SLEEP"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CFW_EVT_RFPWR_RFSS_PVR_LIGHT_SLEEP"])
+  else if ([idCopy isEqualToString:@"CFW_EVT_RFPWR_RFSS_PVR_LIGHT_SLEEP"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CFW_EVT_RFPWR_RFSS_PVR_ACTIVE"])
+  else if ([idCopy isEqualToString:@"CFW_EVT_RFPWR_RFSS_PVR_ACTIVE"])
   {
     v4 = 4;
   }
@@ -201,9 +201,9 @@
   }
 }
 
-- (void)setHasFr:(BOOL)a3
+- (void)setHasFr:(BOOL)fr
 {
-  if (a3)
+  if (fr)
   {
     v3 = 2;
   }
@@ -216,20 +216,20 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsFr:(id)a3
+- (int)StringAsFr:(id)fr
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FR1"])
+  frCopy = fr;
+  if ([frCopy isEqualToString:@"FR1"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"FR2"])
+  else if ([frCopy isEqualToString:@"FR2"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FR1_FR2"])
+  else if ([frCopy isEqualToString:@"FR1_FR2"])
   {
     v4 = 2;
   }
@@ -248,15 +248,15 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularPowerlogRFSSVoltageLevelsRfSS;
   v4 = [(AWDMETRICSKCellularPowerlogRFSSVoltageLevelsRfSS *)&v8 description];
-  v5 = [(AWDMETRICSKCellularPowerlogRFSSVoltageLevelsRfSS *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularPowerlogRFSSVoltageLevelsRfSS *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -271,7 +271,7 @@
       v8 = off_279A0FED0[vddScenarioId];
     }
 
-    [v3 setObject:v8 forKey:@"vdd_scenario_id"];
+    [dictionary setObject:v8 forKey:@"vdd_scenario_id"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -302,7 +302,7 @@ LABEL_3:
     v10 = off_279A0FF38[sleepStateId];
   }
 
-  [v3 setObject:v10 forKey:@"sleep_state_id"];
+  [dictionary setObject:v10 forKey:@"sleep_state_id"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -328,7 +328,7 @@ LABEL_17:
     v12 = off_279A0FF60[fr];
   }
 
-  [v3 setObject:v12 forKey:@"fr"];
+  [dictionary setObject:v12 forKey:@"fr"];
 
   if ((*&self->_has & 1) == 0)
   {
@@ -337,16 +337,16 @@ LABEL_17:
 
 LABEL_5:
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_duration];
-  [v3 setObject:v5 forKey:@"duration"];
+  [dictionary setObject:v5 forKey:@"duration"];
 
 LABEL_6:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -397,14 +397,14 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[5] = self->_vddScenarioId;
-    *(v4 + 24) |= 8u;
+    toCopy[5] = self->_vddScenarioId;
+    *(toCopy + 24) |= 8u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -423,8 +423,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = self->_sleepStateId;
-  *(v4 + 24) |= 4u;
+  toCopy[4] = self->_sleepStateId;
+  *(toCopy + 24) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -438,21 +438,21 @@ LABEL_4:
   }
 
 LABEL_11:
-  v4[3] = self->_fr;
-  *(v4 + 24) |= 2u;
+  toCopy[3] = self->_fr;
+  *(toCopy + 24) |= 2u;
   if (*&self->_has)
   {
 LABEL_5:
-    v4[2] = self->_duration;
-    *(v4 + 24) |= 1u;
+    toCopy[2] = self->_duration;
+    *(toCopy + 24) |= 1u;
   }
 
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -504,23 +504,23 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 24) & 8) == 0 || self->_vddScenarioId != *(v4 + 5))
+    if ((*(equalCopy + 24) & 8) == 0 || self->_vddScenarioId != *(equalCopy + 5))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 24) & 8) != 0)
+  else if ((*(equalCopy + 24) & 8) != 0)
   {
 LABEL_21:
     v5 = 0;
@@ -529,34 +529,34 @@ LABEL_21:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 24) & 4) == 0 || self->_sleepStateId != *(v4 + 4))
+    if ((*(equalCopy + 24) & 4) == 0 || self->_sleepStateId != *(equalCopy + 4))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 24) & 4) != 0)
+  else if ((*(equalCopy + 24) & 4) != 0)
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_fr != *(v4 + 3))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_fr != *(equalCopy + 3))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
     goto LABEL_21;
   }
 
-  v5 = (*(v4 + 24) & 1) == 0;
+  v5 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_duration != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_duration != *(equalCopy + 2))
     {
       goto LABEL_21;
     }
@@ -623,15 +623,15 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if ((v5 & 8) != 0)
   {
-    self->_vddScenarioId = *(v4 + 5);
+    self->_vddScenarioId = *(fromCopy + 5);
     *&self->_has |= 8u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -644,14 +644,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 24) & 4) == 0)
+  else if ((*(fromCopy + 24) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_sleepStateId = *(v4 + 4);
+  self->_sleepStateId = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -664,12 +664,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_fr = *(v4 + 3);
+  self->_fr = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
 LABEL_5:
-    self->_duration = *(v4 + 2);
+    self->_duration = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 

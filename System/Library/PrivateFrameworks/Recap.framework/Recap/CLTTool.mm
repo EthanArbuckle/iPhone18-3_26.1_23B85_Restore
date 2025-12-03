@@ -13,9 +13,9 @@
   if (v2)
   {
     objc_storeStrong(&s_sharedTool, v2);
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     signalSources = v2->_signalSources;
-    v2->_signalSources = v3;
+    v2->_signalSources = array;
 
     v5 = dispatch_queue_create("com.apple.recap.signal", 0);
     signalQueue = v2->_signalQueue;
@@ -33,8 +33,8 @@
     if (i > 0xC || ((1 << i) & 0x1D70) == 0)
     {
       signal(i, 1);
-      v5 = [(CLTTool *)self signalQueue];
-      v6 = dispatch_source_create(v3, i, 0, v5);
+      signalQueue = [(CLTTool *)self signalQueue];
+      v6 = dispatch_source_create(v3, i, 0, signalQueue);
 
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
@@ -44,8 +44,8 @@
       v10 = i;
       dispatch_source_set_event_handler(v6, v9);
       dispatch_activate(v6);
-      v7 = [(CLTTool *)self signalSources];
-      [v7 addObject:v6];
+      signalSources = [(CLTTool *)self signalSources];
+      [signalSources addObject:v6];
     }
   }
 

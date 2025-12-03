@@ -1,107 +1,107 @@
 @interface PKAttachmentView
-- (BOOL)_checkStrokesForExtendedDynamicRange:(id)a3;
+- (BOOL)_checkStrokesForExtendedDynamicRange:(id)range;
 - (BOOL)_isDrawing;
-- (BOOL)canConvertTextToHandwriting:(id)a3;
-- (BOOL)hitByTouchLocation:(CGPoint)a3 bounds:(CGRect)a4;
+- (BOOL)canConvertTextToHandwriting:(id)handwriting;
+- (BOOL)hitByTouchLocation:(CGPoint)location bounds:(CGRect)bounds;
 - (BOOL)wantsAutoRefine;
 - (CGAffineTransform)drawingTransform;
 - (CGAffineTransform)preResizeDrawingTransform;
 - (CGAffineTransform)tileDrawingTransform;
-- (CGRect)boundingBoxForHashtagOrMentionWithUUID:(id)a3;
+- (CGRect)boundingBoxForHashtagOrMentionWithUUID:(id)d;
 - (CGRect)cachedBounds;
-- (PKAttachmentView)initWithFrame:(CGRect)a3;
-- (PKAttachmentView)initWithFrame:(CGRect)a3 drawing:(id)a4;
+- (PKAttachmentView)initWithFrame:(CGRect)frame;
+- (PKAttachmentView)initWithFrame:(CGRect)frame drawing:(id)drawing;
 - (PKAttachmentViewHashtagsAndMentionsDelegate)hashtagAndMentionsDelegate;
 - (PKRecognitionController)recognitionController;
 - (PKRecognitionSessionManager)recognitionManager;
-- (double)dataDetectorInteractionHelperInputScale:(id)a3;
-- (double)heightFromDrawing:(id)a3 delta:(double)a4;
+- (double)dataDetectorInteractionHelperInputScale:(id)scale;
+- (double)heightFromDrawing:(id)drawing delta:(double)delta;
 - (id)_accessibilityUserTestingChildren;
-- (id)_firstStrokesInSelectedStrokes:(id)a3;
-- (id)_lastStrokesInSelectedStrokes:(id)a3;
-- (id)autoRefineTaskCoordinatorAutoRefineController:(id)a3;
-- (id)autoRefineTaskCoordinatorCurrentStroke:(id)a3;
-- (id)dataDetectorInteractionHelperSelectionInteraction:(id)a3;
-- (id)inlineViewAtPoint:(CGPoint)a3;
-- (int64_t)contentTypeForIntersectedStrokes:(id)a3;
+- (id)_firstStrokesInSelectedStrokes:(id)strokes;
+- (id)_lastStrokesInSelectedStrokes:(id)strokes;
+- (id)autoRefineTaskCoordinatorAutoRefineController:(id)controller;
+- (id)autoRefineTaskCoordinatorCurrentStroke:(id)stroke;
+- (id)dataDetectorInteractionHelperSelectionInteraction:(id)interaction;
+- (id)inlineViewAtPoint:(CGPoint)point;
+- (int64_t)contentTypeForIntersectedStrokes:(id)strokes;
 - (void)_cancelOffscreenTiles;
 - (void)_handleAutoRefineSettingsDidChange;
 - (void)_handleProofreadingSettingsDidChange;
 - (void)_hideHUD;
-- (void)_initializeRecognitionForDrawingIfNecessary:(id)a3 withVisibleOnscreenStrokes:(id)a4 createIfDrawingIfEmpty:(BOOL)a5;
-- (void)_logHDRStrokesForDrawing:(id)a3;
+- (void)_initializeRecognitionForDrawingIfNecessary:(id)necessary withVisibleOnscreenStrokes:(id)strokes createIfDrawingIfEmpty:(BOOL)empty;
+- (void)_logHDRStrokesForDrawing:(id)drawing;
 - (void)_progressChanged;
 - (void)_purgeAllTiles;
-- (void)_showHUDWithProgress:(id)a3;
-- (void)_toolPickerDidShowHide:(id)a3;
+- (void)_showHUDWithProgress:(id)progress;
+- (void)_toolPickerDidShowHide:(id)hide;
 - (void)_unregisterProgressObserver;
 - (void)containingScrollViewDidScroll;
-- (void)convertTextToHandwriting:(id)a3 bounds:(CGRect)a4 suggestedHeight:(double)a5 suggestedDrawing:(id)a6 inkColor:(id)a7 completion:(id)a8;
-- (void)dataDetectorInteractionHelper:(id)a3 registerUndoCommand:(id)a4;
-- (void)dataDetectorInteractionHelperNeedsLayout:(id)a3;
+- (void)convertTextToHandwriting:(id)handwriting bounds:(CGRect)bounds suggestedHeight:(double)height suggestedDrawing:(id)drawing inkColor:(id)color completion:(id)completion;
+- (void)dataDetectorInteractionHelper:(id)helper registerUndoCommand:(id)command;
+- (void)dataDetectorInteractionHelperNeedsLayout:(id)layout;
 - (void)dealloc;
 - (void)didBeginDrawing;
 - (void)didBeginModifyDrawing;
 - (void)didEndModifyDrawing;
-- (void)didFinishCalculatingVisibleOnscreenStrokes:(id)a3 drawing:(id)a4;
+- (void)didFinishCalculatingVisibleOnscreenStrokes:(id)strokes drawing:(id)drawing;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
-- (void)drawingDidChangeVisibleStrokes:(BOOL)a3;
-- (void)fetchIntersectedStrokesAtPoint:(CGPoint)a3 selectionType:(int64_t)a4 inputType:(int64_t)a5 visibleOnscreenStrokes:(id)a6 completion:(id)a7;
-- (void)fetchIntersectedStrokesBetweenTopPoint:(CGPoint)a3 bottomPoint:(CGPoint)a4 liveScrollOffset:(CGPoint)a5 completion:(id)a6;
-- (void)fetchStrokesAmbiguouslyBelowAndAboveInsertSpaceHandleWithStrokes:(id)a3 completion:(id)a4;
-- (void)fetchTranscriptionForStrokes:(id)a3 completion:(id)a4;
+- (void)drawingDidChangeVisibleStrokes:(BOOL)strokes;
+- (void)fetchIntersectedStrokesAtPoint:(CGPoint)point selectionType:(int64_t)type inputType:(int64_t)inputType visibleOnscreenStrokes:(id)strokes completion:(id)completion;
+- (void)fetchIntersectedStrokesBetweenTopPoint:(CGPoint)point bottomPoint:(CGPoint)bottomPoint liveScrollOffset:(CGPoint)offset completion:(id)completion;
+- (void)fetchStrokesAmbiguouslyBelowAndAboveInsertSpaceHandleWithStrokes:(id)strokes completion:(id)completion;
+- (void)fetchTranscriptionForStrokes:(id)strokes completion:(id)completion;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)pixelAlignForContentScale:(double)a3 enclosingScrollView:(id)a4;
-- (void)recognitionController:(id)a3 foundDataDetectorItems:(id)a4;
-- (void)recognitionController:(id)a3 foundHashtagItems:(id)a4;
-- (void)recognitionController:(id)a3 foundMentionItems:(id)a4;
-- (void)recognitionController:(id)a3 foundProofreadingItems:(id)a4;
-- (void)replaceStrokes:(id)a3 withString:(id)a4 inBounds:(CGRect)a5 completion:(id)a6;
-- (void)setAdditionalStrokes:(id)a3;
-- (void)setContentHidden:(BOOL)a3;
-- (void)setDrawing:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHashtagAndMentionsDelegate:(id)a3;
-- (void)setPreResizeDrawingTransform:(CGAffineTransform *)a3;
-- (void)setReflowingStrokeIds:(id)a3;
-- (void)setSixChannelBlending:(BOOL)a3;
-- (void)setTileDrawingTransform:(CGAffineTransform *)a3;
-- (void)setTileTransform:(CGAffineTransform *)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
-- (void)setWantsDataDetection:(BOOL)a3;
-- (void)setWantsHashtagDetection:(BOOL)a3;
-- (void)setWantsMentionDetection:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)pixelAlignForContentScale:(double)scale enclosingScrollView:(id)view;
+- (void)recognitionController:(id)controller foundDataDetectorItems:(id)items;
+- (void)recognitionController:(id)controller foundHashtagItems:(id)items;
+- (void)recognitionController:(id)controller foundMentionItems:(id)items;
+- (void)recognitionController:(id)controller foundProofreadingItems:(id)items;
+- (void)replaceStrokes:(id)strokes withString:(id)string inBounds:(CGRect)bounds completion:(id)completion;
+- (void)setAdditionalStrokes:(id)strokes;
+- (void)setContentHidden:(BOOL)hidden;
+- (void)setDrawing:(id)drawing;
+- (void)setFrame:(CGRect)frame;
+- (void)setHashtagAndMentionsDelegate:(id)delegate;
+- (void)setPreResizeDrawingTransform:(CGAffineTransform *)transform;
+- (void)setReflowingStrokeIds:(id)ids;
+- (void)setSixChannelBlending:(BOOL)blending;
+- (void)setTileDrawingTransform:(CGAffineTransform *)transform;
+- (void)setTileTransform:(CGAffineTransform *)transform;
+- (void)setTransform:(CGAffineTransform *)transform;
+- (void)setWantsDataDetection:(BOOL)detection;
+- (void)setWantsHashtagDetection:(BOOL)detection;
+- (void)setWantsMentionDetection:(BOOL)detection;
 - (void)toolPickerDidHide;
 - (void)toolPickerDidShow;
 - (void)updateAllPossibleParticipantNameTokens;
-- (void)updateDrawingHeight:(double)a3;
-- (void)updateDrawingHeight:(double)a3 notifyDrawingDidChange:(BOOL)a4;
+- (void)updateDrawingHeight:(double)height;
+- (void)updateDrawingHeight:(double)height notifyDrawingDidChange:(BOOL)change;
 - (void)updateTileContainerViewFrame;
-- (void)visibleOnscreenBoundsDidChange:(CGRect)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)visibleOnscreenBoundsDidChange:(CGRect)change;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation PKAttachmentView
 
-- (PKAttachmentView)initWithFrame:(CGRect)a3 drawing:(id)a4
+- (PKAttachmentView)initWithFrame:(CGRect)frame drawing:(id)drawing
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  drawingCopy = drawing;
   v36.receiver = self;
   v36.super_class = PKAttachmentView;
-  v11 = [(PKAttachmentView *)&v36 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(PKAttachmentView *)&v36 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    v11->_renderingEnabled = 1;
-    v13 = [MEMORY[0x1E696AFB0] UUID];
+    height->_renderingEnabled = 1;
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     listenerID = v12->_listenerID;
-    v12->_listenerID = v13;
+    v12->_listenerID = uUID;
 
     v15 = objc_alloc(MEMORY[0x1E69DD250]);
     [(PKAttachmentView *)v12 bounds];
@@ -123,16 +123,16 @@
     purgedTiles = v12->_purgedTiles;
     v12->_purgedTiles = v22;
 
-    objc_storeStrong(&v12->_drawing, a4);
+    objc_storeStrong(&v12->_drawing, drawing);
     if (+[PKTiledView showDebugOutlines])
     {
-      v24 = [(PKAttachmentView *)v12 layer];
-      [v24 setBorderWidth:1.0];
+      layer = [(PKAttachmentView *)v12 layer];
+      [layer setBorderWidth:1.0];
 
-      v25 = [MEMORY[0x1E69DC888] blueColor];
-      v26 = [v25 CGColor];
-      v27 = [(PKAttachmentView *)v12 layer];
-      [v27 setBorderColor:v26];
+      blueColor = [MEMORY[0x1E69DC888] blueColor];
+      cGColor = [blueColor CGColor];
+      layer2 = [(PKAttachmentView *)v12 layer];
+      [layer2 setBorderColor:cGColor];
     }
 
     v28 = objc_alloc_init(PKStrokeSpatialCache);
@@ -146,8 +146,8 @@
     }
 
     [(PKAttachmentView *)v12 _initializeRecognitionForDrawingIfNecessary:v12->_drawing];
-    v31 = [(PKDrawing *)v12->_drawing strokes];
-    v32 = [(PKAttachmentView *)v12 _checkStrokesForExtendedDynamicRange:v31];
+    strokes = [(PKDrawing *)v12->_drawing strokes];
+    v32 = [(PKAttachmentView *)v12 _checkStrokesForExtendedDynamicRange:strokes];
 
     if (v32)
     {
@@ -165,25 +165,25 @@
   return v12;
 }
 
-- (PKAttachmentView)initWithFrame:(CGRect)a3
+- (PKAttachmentView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = objc_alloc_init(PKDrawing);
-  v9 = [(PKAttachmentView *)self initWithFrame:v8 drawing:x, y, width, height];
+  height = [(PKAttachmentView *)self initWithFrame:v8 drawing:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(PKAttachmentView *)self recognitionManager];
-  [(PKRecognitionSessionManager *)v4 removeListener:?];
+  recognitionManager = [(PKAttachmentView *)self recognitionManager];
+  [(PKRecognitionSessionManager *)recognitionManager removeListener:?];
 
   v5.receiver = self;
   v5.super_class = PKAttachmentView;
@@ -196,79 +196,79 @@
   v12.receiver = self;
   v12.super_class = PKAttachmentView;
   [(PKAttachmentView *)&v12 didMoveToSuperview];
-  v3 = [(PKAttachmentView *)self superview];
+  superview = [(PKAttachmentView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     if ([(PKAttachmentView *)self hasSeenAnyExtendedDynamicRangeStrokes])
     {
       v4 = os_log_create("com.apple.pencilkit", "EDR");
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
-        v5 = [(PKAttachmentView *)self tiledView];
+        tiledView = [(PKAttachmentView *)self tiledView];
         *buf = 134217984;
-        v14 = v5;
+        v14 = tiledView;
         _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "EDR strokes when moving to superview for tiled view: %p", buf, 0xCu);
       }
 
-      v6 = [(PKAttachmentView *)self tiledView];
-      [v6 _setHasSeenAnyExtendedDynamicRangeInks];
+      tiledView2 = [(PKAttachmentView *)self tiledView];
+      [tiledView2 _setHasSeenAnyExtendedDynamicRangeInks];
     }
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:self selector:sel__toolPickerDidShowHide_ name:@"PKToolPickerDidShowNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__toolPickerDidShowHide_ name:@"PKToolPickerDidShowNotification" object:0];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:self selector:sel__toolPickerDidShowHide_ name:@"PKToolPickerDidHideNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__toolPickerDidShowHide_ name:@"PKToolPickerDidHideNotification" object:0];
 
-    v9 = [(PKAttachmentView *)self attachmentContainerView];
+    attachmentContainerView = [(PKAttachmentView *)self attachmentContainerView];
     if (_os_feature_enabled_impl())
     {
-      v10 = [v9 traitOverrides];
-      [v10 setNSIntegerValue:1 forTrait:objc_opt_class()];
+      traitOverrides = [attachmentContainerView traitOverrides];
+      [traitOverrides setNSIntegerValue:1 forTrait:objc_opt_class()];
     }
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 removeObserver:self name:@"PKToolPickerDidShowNotification" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 removeObserver:self name:@"PKToolPickerDidShowNotification" object:0];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 removeObserver:self name:@"PKToolPickerDidHideNotification" object:0];
+    attachmentContainerView = [MEMORY[0x1E696AD88] defaultCenter];
+    [attachmentContainerView removeObserver:self name:@"PKToolPickerDidHideNotification" object:0];
   }
 }
 
-- (void)setWantsDataDetection:(BOOL)a3
+- (void)setWantsDataDetection:(BOOL)detection
 {
-  v3 = a3;
-  self->_wantsDataDetection = a3;
-  v4 = [(PKAttachmentView *)self dataDetectorHelper];
-  [(PKDataDetectorInteractionHelper *)v4 setWantsDataDetection:v3];
+  detectionCopy = detection;
+  self->_wantsDataDetection = detection;
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  [(PKDataDetectorInteractionHelper *)dataDetectorHelper setWantsDataDetection:detectionCopy];
 }
 
-- (void)setWantsHashtagDetection:(BOOL)a3
+- (void)setWantsHashtagDetection:(BOOL)detection
 {
-  v3 = a3;
-  self->_wantsHashtagDetection = a3;
-  v4 = [(PKAttachmentView *)self dataDetectorHelper];
-  [(PKDataDetectorInteractionHelper *)v4 setWantsHashtagDetection:v3];
+  detectionCopy = detection;
+  self->_wantsHashtagDetection = detection;
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  [(PKDataDetectorInteractionHelper *)dataDetectorHelper setWantsHashtagDetection:detectionCopy];
 }
 
-- (void)setWantsMentionDetection:(BOOL)a3
+- (void)setWantsMentionDetection:(BOOL)detection
 {
-  v3 = a3;
-  self->_wantsMentionDetection = a3;
-  v4 = [(PKAttachmentView *)self dataDetectorHelper];
-  [(PKDataDetectorInteractionHelper *)v4 setWantsMentionDetection:v3];
+  detectionCopy = detection;
+  self->_wantsMentionDetection = detection;
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  [(PKDataDetectorInteractionHelper *)dataDetectorHelper setWantsMentionDetection:detectionCopy];
 }
 
-- (void)setTileDrawingTransform:(CGAffineTransform *)a3
+- (void)setTileDrawingTransform:(CGAffineTransform *)transform
 {
   self->_didSetTileDrawingTransform = 1;
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_tileDrawingTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_tileDrawingTransform.c = *&transform->c;
   *&self->_tileDrawingTransform.tx = v4;
   *&self->_tileDrawingTransform.a = v3;
 }
@@ -287,7 +287,7 @@
   return self;
 }
 
-- (void)setTileTransform:(CGAffineTransform *)a3
+- (void)setTileTransform:(CGAffineTransform *)transform
 {
   v27 = *MEMORY[0x1E69E9840];
   [MEMORY[0x1E6979518] begin];
@@ -296,11 +296,11 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(PKAttachmentView *)self tileContainerView];
-  v6 = [v5 layer];
-  v7 = [v6 sublayers];
+  tileContainerView = [(PKAttachmentView *)self tileContainerView];
+  layer = [tileContainerView layer];
+  sublayers = [layer sublayers];
 
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v8 = [sublayers countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -315,7 +315,7 @@
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(sublayers);
         }
 
         v12 = *(*(&v22 + 1) + 8 * v11);
@@ -328,10 +328,10 @@
         [v12 frame];
         MidY = CGRectGetMidY(v29);
         CGAffineTransformMakeTranslation(&v21, MidX, MidY);
-        v15 = *&a3->c;
-        v19[0] = *&a3->a;
+        v15 = *&transform->c;
+        v19[0] = *&transform->a;
         v19[1] = v15;
-        v19[2] = *&a3->tx;
+        v19[2] = *&transform->tx;
         DKDTransformInTransformSpace(v19, &v21, &v20);
         v21 = v20;
         [v12 setAffineTransform:&v21];
@@ -339,7 +339,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [sublayers countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v9);
@@ -348,45 +348,45 @@
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)setAdditionalStrokes:(id)a3
+- (void)setAdditionalStrokes:(id)strokes
 {
-  v7 = a3;
-  v4 = [v7 count];
+  strokesCopy = strokes;
+  v4 = [strokesCopy count];
   if (v4)
   {
-    v4 = v7;
+    v4 = strokesCopy;
   }
 
   additionalStrokes = self->_additionalStrokes;
   self->_additionalStrokes = v4;
 
-  v6 = [(PKAttachmentView *)self dataDetectorHelper];
-  [(PKDataDetectorInteractionHelper *)v6 setAdditionalStrokes:v7];
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  [(PKDataDetectorInteractionHelper *)dataDetectorHelper setAdditionalStrokes:strokesCopy];
 }
 
-- (void)setContentHidden:(BOOL)a3
+- (void)setContentHidden:(BOOL)hidden
 {
-  v3 = a3;
-  self->_contentHidden = a3;
-  v4 = [(PKAttachmentView *)self tileContainerView];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  self->_contentHidden = hidden;
+  tileContainerView = [(PKAttachmentView *)self tileContainerView];
+  [tileContainerView setHidden:hiddenCopy];
 }
 
-- (void)setSixChannelBlending:(BOOL)a3
+- (void)setSixChannelBlending:(BOOL)blending
 {
-  if (self->_sixChannelBlending != a3)
+  if (self->_sixChannelBlending != blending)
   {
-    v4 = a3;
-    self->_sixChannelBlending = a3;
-    v6 = [(PKAttachmentView *)self tileContainerView];
-    v7 = [v6 layer];
-    [v7 setAllowsGroupBlending:!v4];
+    blendingCopy = blending;
+    self->_sixChannelBlending = blending;
+    tileContainerView = [(PKAttachmentView *)self tileContainerView];
+    layer = [tileContainerView layer];
+    [layer setAllowsGroupBlending:!blendingCopy];
 
-    v8 = [(PKAttachmentView *)self dataDetectorHelper];
-    v9 = v8;
-    if (v8)
+    dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+    v9 = dataDetectorHelper;
+    if (dataDetectorHelper)
     {
-      v10 = *(v8 + 144);
+      v10 = *(dataDetectorHelper + 144);
     }
 
     else
@@ -395,8 +395,8 @@
     }
 
     v11 = v10;
-    v12 = [v11 layer];
-    [v12 setAllowsGroupBlending:!v4];
+    layer2 = [v11 layer];
+    [layer2 setAllowsGroupBlending:!blendingCopy];
 
     [(PKAttachmentView *)self _purgeAllTiles];
   }
@@ -409,10 +409,10 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(PKAttachmentView *)self tiles];
-  v4 = [v3 allValues];
+  tiles = [(PKAttachmentView *)self tiles];
+  allValues = [tiles allValues];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -424,21 +424,21 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         [(PKRendererTile *)*(*(&v10 + 1) + 8 * v8++) purgeTileLayers];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(PKAttachmentView *)self tiles];
-  [v9 removeAllObjects];
+  tiles2 = [(PKAttachmentView *)self tiles];
+  [tiles2 removeAllObjects];
 
   [(NSMutableDictionary *)self->_purgedTiles removeAllObjects];
 }
@@ -450,10 +450,10 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(PKAttachmentView *)self offscreenTiles];
-  v4 = [v3 objectEnumerator];
+  offscreenTiles = [(PKAttachmentView *)self offscreenTiles];
+  objectEnumerator = [offscreenTiles objectEnumerator];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -465,7 +465,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -479,38 +479,38 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  v10 = [(PKAttachmentView *)self offscreenTiles];
-  [v10 removeAllObjects];
+  offscreenTiles2 = [(PKAttachmentView *)self offscreenTiles];
+  [offscreenTiles2 removeAllObjects];
 }
 
-- (BOOL)hitByTouchLocation:(CGPoint)a3 bounds:(CGRect)a4
+- (BOOL)hitByTouchLocation:(CGPoint)location bounds:(CGRect)bounds
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v7.x = x;
   v7.y = y;
-  return CGRectContainsPoint(a4, v7);
+  return CGRectContainsPoint(bounds, v7);
 }
 
-- (void)_toolPickerDidShowHide:(id)a3
+- (void)_toolPickerDidShowHide:(id)hide
 {
-  v10 = a3;
-  v4 = [v10 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"PKToolPickerNotificationWindowSceneUserInfoKey"];
-  v6 = [(PKAttachmentView *)self window];
-  v7 = [v6 windowScene];
+  hideCopy = hide;
+  userInfo = [hideCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"PKToolPickerNotificationWindowSceneUserInfoKey"];
+  window = [(PKAttachmentView *)self window];
+  windowScene = [window windowScene];
 
-  v8 = v10;
-  if (v5 == v7)
+  v8 = hideCopy;
+  if (v5 == windowScene)
   {
-    v9 = [v10 object];
-    if ([v9 isVisible])
+    object = [hideCopy object];
+    if ([object isVisible])
     {
       [(PKAttachmentView *)self toolPickerDidShow];
     }
@@ -520,108 +520,108 @@
       [(PKAttachmentView *)self toolPickerDidHide];
     }
 
-    v8 = v10;
+    v8 = hideCopy;
   }
 }
 
 - (void)toolPickerDidShow
 {
-  v3 = [(PKAttachmentView *)self dataDetectorHelper];
-  if (v3)
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  if (dataDetectorHelper)
   {
-    v3[17] = 1;
+    dataDetectorHelper[17] = 1;
   }
 
-  v4 = [(PKAttachmentView *)self dataDetectorHelper];
-  if (v4)
+  dataDetectorHelper2 = [(PKAttachmentView *)self dataDetectorHelper];
+  if (dataDetectorHelper2)
   {
-    v4[18] = 0;
+    dataDetectorHelper2[18] = 0;
   }
 
-  v5 = [(PKAttachmentView *)self dataDetectorHelper];
-  [(PKDataDetectorInteractionHelper *)v5 updateDetectionViewVisibility];
+  dataDetectorHelper3 = [(PKAttachmentView *)self dataDetectorHelper];
+  [(PKDataDetectorInteractionHelper *)dataDetectorHelper3 updateDetectionViewVisibility];
 }
 
 - (void)toolPickerDidHide
 {
-  v3 = [(PKAttachmentView *)self dataDetectorHelper];
-  if (v3)
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  if (dataDetectorHelper)
   {
-    v3[17] = 0;
+    dataDetectorHelper[17] = 0;
   }
 
-  v4 = [(PKAttachmentView *)self dataDetectorHelper];
-  [(PKDataDetectorInteractionHelper *)v4 updateDetectionViewVisibility];
+  dataDetectorHelper2 = [(PKAttachmentView *)self dataDetectorHelper];
+  [(PKDataDetectorInteractionHelper *)dataDetectorHelper2 updateDetectionViewVisibility];
 }
 
-- (void)drawingDidChangeVisibleStrokes:(BOOL)a3
+- (void)drawingDidChangeVisibleStrokes:(BOOL)strokes
 {
-  if (a3)
+  if (strokes)
   {
     [(NSMutableDictionary *)self->_purgedTiles removeAllObjects];
     strokeSpatialCache = self->_strokeSpatialCache;
-    v5 = [(PKAttachmentView *)self drawing];
+    drawing = [(PKAttachmentView *)self drawing];
     v6 = 1;
-    [(PKStrokeSpatialCache *)strokeSpatialCache _invalidateCacheForBounds:v5 inDrawing:1 force:self->_cachedBounds.origin.x, self->_cachedBounds.origin.y, self->_cachedBounds.size.width, self->_cachedBounds.size.height];
+    [(PKStrokeSpatialCache *)strokeSpatialCache _invalidateCacheForBounds:drawing inDrawing:1 force:self->_cachedBounds.origin.x, self->_cachedBounds.origin.y, self->_cachedBounds.size.width, self->_cachedBounds.size.height];
 
-    v7 = [(PKAttachmentView *)self dataDetectorHelper];
-    v8 = v7;
-    if (v7)
+    dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+    v8 = dataDetectorHelper;
+    if (dataDetectorHelper)
     {
-      v6 = *(v7 + 17) ^ 1;
+      v6 = *(dataDetectorHelper + 17) ^ 1;
     }
 
-    v9 = [(PKAttachmentView *)self dataDetectorHelper];
-    if (v9)
+    dataDetectorHelper2 = [(PKAttachmentView *)self dataDetectorHelper];
+    if (dataDetectorHelper2)
     {
-      v9[18] = v6 & 1;
+      dataDetectorHelper2[18] = v6 & 1;
     }
 
-    v10 = [(PKAttachmentView *)self dataDetectorHelper];
-    [(PKDataDetectorInteractionHelper *)v10 setDetectionViewsHidden:?];
+    dataDetectorHelper3 = [(PKAttachmentView *)self dataDetectorHelper];
+    [(PKDataDetectorInteractionHelper *)dataDetectorHelper3 setDetectionViewsHidden:?];
 
-    v11 = [(PKAttachmentView *)self dataDetectorHelper];
-    if (v11)
+    dataDetectorHelper4 = [(PKAttachmentView *)self dataDetectorHelper];
+    if (dataDetectorHelper4)
     {
-      v11[11] = 0;
+      dataDetectorHelper4[11] = 0;
     }
   }
 
   else
   {
-    v12 = [(PKAttachmentView *)self dataDetectorHelper];
-    [(PKDataDetectorInteractionHelper *)v12 updateHashtagsAndMentionsActivationState];
-    v11 = v12;
+    dataDetectorHelper5 = [(PKAttachmentView *)self dataDetectorHelper];
+    [(PKDataDetectorInteractionHelper *)dataDetectorHelper5 updateHashtagsAndMentionsActivationState];
+    dataDetectorHelper4 = dataDetectorHelper5;
   }
 }
 
-- (void)visibleOnscreenBoundsDidChange:(CGRect)a3
+- (void)visibleOnscreenBoundsDidChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  self->_cachedBounds = a3;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  self->_cachedBounds = change;
   strokeSpatialCache = self->_strokeSpatialCache;
-  v8 = [(PKAttachmentView *)self drawing];
+  drawing = [(PKAttachmentView *)self drawing];
   if (strokeSpatialCache)
   {
-    v9 = v8;
-    [(PKStrokeSpatialCache *)strokeSpatialCache _invalidateCacheForBounds:v8 inDrawing:0 force:x, y, width, height];
-    v8 = v9;
+    v9 = drawing;
+    [(PKStrokeSpatialCache *)strokeSpatialCache _invalidateCacheForBounds:drawing inDrawing:0 force:x, y, width, height];
+    drawing = v9;
   }
 }
 
-- (void)setDrawing:(id)a3
+- (void)setDrawing:(id)drawing
 {
-  v5 = a3;
-  if (self->_drawing != v5)
+  drawingCopy = drawing;
+  if (self->_drawing != drawingCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_drawing, a3);
+    v6 = drawingCopy;
+    objc_storeStrong(&self->_drawing, drawing);
     [(PKAttachmentView *)self _initializeRecognitionForDrawingIfNecessary:v6];
     [(PKAttachmentView *)self drawingDidChange];
-    v5 = v6;
+    drawingCopy = v6;
   }
 }
 
@@ -632,10 +632,10 @@
   return CGAffineTransformMakeScale(retstr, v4 / 768.0, v4 / 768.0);
 }
 
-- (BOOL)_checkStrokesForExtendedDynamicRange:(id)a3
+- (BOOL)_checkStrokesForExtendedDynamicRange:(id)range
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  rangeCopy = range;
   if ([(PKAttachmentView *)self hasSeenAnyExtendedDynamicRangeStrokes])
   {
     LOBYTE(v5) = 1;
@@ -647,7 +647,7 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = rangeCopy;
     v5 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
@@ -696,12 +696,12 @@ LABEL_15:
   return v5;
 }
 
-- (void)didFinishCalculatingVisibleOnscreenStrokes:(id)a3 drawing:(id)a4
+- (void)didFinishCalculatingVisibleOnscreenStrokes:(id)strokes drawing:(id)drawing
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKAttachmentView *)self drawing];
-  v9 = [v7 isEqual:v8];
+  strokesCopy = strokes;
+  drawingCopy = drawing;
+  drawing = [(PKAttachmentView *)self drawing];
+  v9 = [drawingCopy isEqual:drawing];
 
   if ((v9 & 1) == 0)
   {
@@ -713,8 +713,8 @@ LABEL_15:
     }
   }
 
-  v11 = [v7 strokes];
-  v12 = [(PKAttachmentView *)self _checkStrokesForExtendedDynamicRange:v11];
+  strokes = [drawingCopy strokes];
+  v12 = [(PKAttachmentView *)self _checkStrokesForExtendedDynamicRange:strokes];
 
   if (v12)
   {
@@ -725,72 +725,72 @@ LABEL_15:
       _os_log_impl(&dword_1C7CCA000, v13, OS_LOG_TYPE_DEFAULT, "Attachment notifying tiled view about EDR strokes.", v15, 2u);
     }
 
-    v14 = [(PKAttachmentView *)self tiledView];
-    [v14 _setHasSeenAnyExtendedDynamicRangeInks];
+    tiledView = [(PKAttachmentView *)self tiledView];
+    [tiledView _setHasSeenAnyExtendedDynamicRangeInks];
   }
 
-  [(PKAttachmentView *)self _initializeRecognitionForDrawingIfNecessary:v7 withVisibleOnscreenStrokes:v6];
+  [(PKAttachmentView *)self _initializeRecognitionForDrawingIfNecessary:drawingCopy withVisibleOnscreenStrokes:strokesCopy];
 }
 
 - (void)containingScrollViewDidScroll
 {
-  v3 = [(PKAttachmentView *)self dataDetectorHelper];
-  if (v3)
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  if (dataDetectorHelper)
   {
-    v3[18] = 0;
+    dataDetectorHelper[18] = 0;
   }
 
-  v4 = [(PKAttachmentView *)self dataDetectorHelper];
-  if (v4)
+  dataDetectorHelper2 = [(PKAttachmentView *)self dataDetectorHelper];
+  if (dataDetectorHelper2)
   {
-    v5 = v4[13];
+    v5 = dataDetectorHelper2[13];
 
     if (v5 != 1)
     {
       return;
     }
 
-    v6 = [(PKAttachmentView *)self dataDetectorHelper];
-    [v6 revealDetectionViews];
+    dataDetectorHelper3 = [(PKAttachmentView *)self dataDetectorHelper];
+    [dataDetectorHelper3 revealDetectionViews];
   }
 
   else
   {
-    v6 = 0;
+    dataDetectorHelper3 = 0;
   }
 }
 
-- (void)pixelAlignForContentScale:(double)a3 enclosingScrollView:(id)a4
+- (void)pixelAlignForContentScale:(double)scale enclosingScrollView:(id)view
 {
-  v6 = a4;
-  v7 = [v6 superview];
+  viewCopy = view;
+  superview = [viewCopy superview];
   [(PKAttachmentView *)self bounds];
-  [v7 convertRect:self fromView:?];
+  [superview convertRect:self fromView:?];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = DKDRoundedRectForScale(v9, v11, v13, v15, a3);
+  v16 = DKDRoundedRectForScale(v9, v11, v13, v15, scale);
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [v6 superview];
+  superview2 = [viewCopy superview];
 
-  [v23 convertRect:self toView:{v16, v18, v20, v22}];
+  [superview2 convertRect:self toView:{v16, v18, v20, v22}];
   v25 = v24;
   v27 = v26;
   v29 = v28;
   v31 = v30;
 
-  v32 = [(PKAttachmentView *)self tileContainerView];
-  [v32 setFrame:{v25, v27, v29, v31}];
+  tileContainerView = [(PKAttachmentView *)self tileContainerView];
+  [tileContainerView setFrame:{v25, v27, v29, v31}];
 
-  v33 = [(PKAttachmentView *)self dataDetectorHelper];
-  v36 = v33;
-  if (v33)
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  v36 = dataDetectorHelper;
+  if (dataDetectorHelper)
   {
-    v34 = *(v33 + 144);
+    v34 = *(dataDetectorHelper + 144);
   }
 
   else
@@ -802,25 +802,25 @@ LABEL_15:
   [v35 setFrame:{v25, v27, v29, v31}];
 }
 
-- (double)heightFromDrawing:(id)a3 delta:(double)a4
+- (double)heightFromDrawing:(id)drawing delta:(double)delta
 {
-  [a3 bounds];
-  v6 = CGRectGetMaxY(v10) + a4;
+  [drawing bounds];
+  v6 = CGRectGetMaxY(v10) + delta;
   [(PKAttachmentView *)self drawingTransform];
   return v6 * sqrt(v9 * v9 + v8 * v8);
 }
 
-- (void)updateDrawingHeight:(double)a3
+- (void)updateDrawingHeight:(double)height
 {
-  v4 = [(PKAttachmentView *)self drawing];
-  [v4 set_canvasBounds:{0.0, 0.0, 768.0, a3}];
+  drawing = [(PKAttachmentView *)self drawing];
+  [drawing set_canvasBounds:{0.0, 0.0, 768.0, height}];
 }
 
-- (void)updateDrawingHeight:(double)a3 notifyDrawingDidChange:(BOOL)a4
+- (void)updateDrawingHeight:(double)height notifyDrawingDidChange:(BOOL)change
 {
-  v4 = a4;
-  [(PKAttachmentView *)self updateDrawingHeight:a3];
-  if (v4)
+  changeCopy = change;
+  [(PKAttachmentView *)self updateDrawingHeight:height];
+  if (changeCopy)
   {
 
     [(PKAttachmentView *)self drawingDidChange];
@@ -834,19 +834,19 @@ LABEL_15:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PKAttachmentView *)self tileContainerView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  tileContainerView = [(PKAttachmentView *)self tileContainerView];
+  [tileContainerView setFrame:{v4, v6, v8, v10}];
 
   [(PKAttachmentView *)self bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(PKAttachmentView *)self dataDetectorHelper];
-  v23 = v20;
-  if (v20)
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  v23 = dataDetectorHelper;
+  if (dataDetectorHelper)
   {
-    v21 = *(v20 + 144);
+    v21 = *(dataDetectorHelper + 144);
   }
 
   else
@@ -858,11 +858,11 @@ LABEL_15:
   [v22 setFrame:{v13, v15, v17, v19}];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = PKAttachmentView;
-  [(PKAttachmentView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PKAttachmentView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(PKAttachmentView *)self updateTileContainerViewFrame];
 }
 
@@ -871,57 +871,57 @@ LABEL_15:
   v6.receiver = self;
   v6.super_class = PKAttachmentView;
   [(PKAttachmentView *)&v6 layoutSubviews];
-  v3 = [(PKAttachmentView *)self tileMaskView];
-  [v3 setClipsToBounds:1];
+  tileMaskView = [(PKAttachmentView *)self tileMaskView];
+  [tileMaskView setClipsToBounds:1];
 
   [(PKAttachmentView *)self updateTileContainerViewFrame];
-  v4 = [(PKAttachmentView *)self dataDetectorHelper];
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
   [(PKAttachmentView *)self drawingTransform];
-  [(PKDataDetectorInteractionHelper *)v4 layoutInlineViewsDrawingTransform:v5];
+  [(PKDataDetectorInteractionHelper *)dataDetectorHelper layoutInlineViewsDrawingTransform:v5];
 }
 
 - (void)didBeginDrawing
 {
-  v2 = [(PKAttachmentView *)self dataDetectorHelper];
-  [(PKDataDetectorInteractionHelper *)v2 setDetectionViewsHidden:?];
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  [(PKDataDetectorInteractionHelper *)dataDetectorHelper setDetectionViewsHidden:?];
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
   v5.receiver = self;
   v5.super_class = PKAttachmentView;
-  v3 = *&a3->c;
-  v4[0] = *&a3->a;
+  v3 = *&transform->c;
+  v4[0] = *&transform->a;
   v4[1] = v3;
-  v4[2] = *&a3->tx;
+  v4[2] = *&transform->tx;
   [(PKAttachmentView *)&v5 setTransform:v4];
 }
 
-- (void)setReflowingStrokeIds:(id)a3
+- (void)setReflowingStrokeIds:(id)ids
 {
-  v4 = a3;
-  v5 = [(PKAttachmentView *)self dataDetectorHelper];
-  [(PKDataDetectorInteractionHelper *)v5 setReflowingStrokeIds:v4];
+  idsCopy = ids;
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  [(PKDataDetectorInteractionHelper *)dataDetectorHelper setReflowingStrokeIds:idsCopy];
 }
 
 - (void)didBeginModifyDrawing
 {
-  v3 = [(PKAttachmentView *)self dataDetectorHelper];
-  if (v3)
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  if (dataDetectorHelper)
   {
-    v3[16] = 1;
+    dataDetectorHelper[16] = 1;
   }
 
-  v4 = [(PKAttachmentView *)self dataDetectorHelper];
-  [(PKDataDetectorInteractionHelper *)v4 updateDetectionViewVisibility];
+  dataDetectorHelper2 = [(PKAttachmentView *)self dataDetectorHelper];
+  [(PKDataDetectorInteractionHelper *)dataDetectorHelper2 updateDetectionViewVisibility];
 }
 
 - (void)didEndModifyDrawing
 {
-  v2 = [(PKAttachmentView *)self dataDetectorHelper];
-  if (v2)
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  if (dataDetectorHelper)
   {
-    v2[16] = 0;
+    dataDetectorHelper[16] = 0;
   }
 }
 
@@ -944,8 +944,8 @@ LABEL_15:
   recognitionController = self->_recognitionController;
   if (!recognitionController)
   {
-    v4 = [(PKAttachmentView *)self drawing];
-    [(PKAttachmentView *)self _initializeRecognitionForDrawingIfNecessary:v4 withVisibleOnscreenStrokes:0 createIfDrawingIfEmpty:1];
+    drawing = [(PKAttachmentView *)self drawing];
+    [(PKAttachmentView *)self _initializeRecognitionForDrawingIfNecessary:drawing withVisibleOnscreenStrokes:0 createIfDrawingIfEmpty:1];
 
     recognitionController = self->_recognitionController;
   }
@@ -953,29 +953,29 @@ LABEL_15:
   return recognitionController;
 }
 
-- (void)_initializeRecognitionForDrawingIfNecessary:(id)a3 withVisibleOnscreenStrokes:(id)a4 createIfDrawingIfEmpty:(BOOL)a5
+- (void)_initializeRecognitionForDrawingIfNecessary:(id)necessary withVisibleOnscreenStrokes:(id)strokes createIfDrawingIfEmpty:(BOOL)empty
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (self->_recognitionController || [v8 _isEmpty] && !v5)
+  emptyCopy = empty;
+  necessaryCopy = necessary;
+  strokesCopy = strokes;
+  if (self->_recognitionController || [necessaryCopy _isEmpty] && !emptyCopy)
   {
-    v10 = [v9 count];
+    v10 = [strokesCopy count];
     recognitionController = self->_recognitionController;
     if (v10)
     {
-      [(PKRecognitionController *)recognitionController setDrawing:v8 withVisibleOnscreenStrokes:v9];
+      [(PKRecognitionController *)recognitionController setDrawing:necessaryCopy withVisibleOnscreenStrokes:strokesCopy];
     }
 
     else
     {
-      [(PKRecognitionController *)recognitionController setDrawing:v8];
+      [(PKRecognitionController *)recognitionController setDrawing:necessaryCopy];
     }
   }
 
   else
   {
-    v12 = [[PKRecognitionController alloc] initWithDrawing:v8 visibleOnscreenStrokes:v9];
+    v12 = [[PKRecognitionController alloc] initWithDrawing:necessaryCopy visibleOnscreenStrokes:strokesCopy];
     v13 = self->_recognitionController;
     self->_recognitionController = v12;
 
@@ -995,13 +995,13 @@ LABEL_15:
     }
 
     v17 = [PKDataDetectorInteractionHelper alloc];
-    v18 = [(PKAttachmentView *)self tileContainerView];
-    v19 = [(PKDataDetectorInteractionHelper *)&v17->super.isa initWithView:v18 parentView:self->_recognitionController recognitionController:?];
+    tileContainerView = [(PKAttachmentView *)self tileContainerView];
+    v19 = [(PKDataDetectorInteractionHelper *)&v17->super.isa initWithView:tileContainerView parentView:self->_recognitionController recognitionController:?];
     dataDetectorHelper = self->_dataDetectorHelper;
     self->_dataDetectorHelper = v19;
 
-    v21 = [(PKAttachmentView *)self window];
-    v22 = [PKToolPicker isActiveToolPickerVisibleForWindow:v21];
+    window = [(PKAttachmentView *)self window];
+    v22 = [PKToolPicker isActiveToolPickerVisibleForWindow:window];
     v23 = self->_dataDetectorHelper;
     if (v23)
     {
@@ -1024,8 +1024,8 @@ LABEL_15:
     WeakRetained = objc_loadWeakRetained(&self->_hashtagAndMentionsDelegate);
     [(PKDataDetectorInteractionHelper *)self->_dataDetectorHelper setHashtagAndMentionsDelegate:?];
 
-    v27 = [(PKAttachmentView *)self window];
-    if (v27)
+    window2 = [(PKAttachmentView *)self window];
+    if (window2)
     {
       wantsDataDetection = self->_wantsDataDetection;
     }
@@ -1035,11 +1035,11 @@ LABEL_15:
       wantsDataDetection = 0;
     }
 
-    v29 = [(PKAttachmentView *)self dataDetectorHelper];
-    [(PKDataDetectorInteractionHelper *)v29 setWantsDataDetection:?];
+    dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+    [(PKDataDetectorInteractionHelper *)dataDetectorHelper setWantsDataDetection:?];
 
-    v30 = [(PKAttachmentView *)self window];
-    if (v30)
+    window3 = [(PKAttachmentView *)self window];
+    if (window3)
     {
       wantsHashtagDetection = self->_wantsHashtagDetection;
     }
@@ -1049,11 +1049,11 @@ LABEL_15:
       wantsHashtagDetection = 0;
     }
 
-    v32 = [(PKAttachmentView *)self dataDetectorHelper];
-    [(PKDataDetectorInteractionHelper *)v32 setWantsHashtagDetection:?];
+    dataDetectorHelper2 = [(PKAttachmentView *)self dataDetectorHelper];
+    [(PKDataDetectorInteractionHelper *)dataDetectorHelper2 setWantsHashtagDetection:?];
 
-    v33 = [(PKAttachmentView *)self window];
-    if (v33)
+    window4 = [(PKAttachmentView *)self window];
+    if (window4)
     {
       wantsMentionDetection = self->_wantsMentionDetection;
     }
@@ -1063,8 +1063,8 @@ LABEL_15:
       wantsMentionDetection = 0;
     }
 
-    v35 = [(PKAttachmentView *)self dataDetectorHelper];
-    [(PKDataDetectorInteractionHelper *)v35 setWantsMentionDetection:?];
+    dataDetectorHelper3 = [(PKAttachmentView *)self dataDetectorHelper];
+    [(PKDataDetectorInteractionHelper *)dataDetectorHelper3 setWantsMentionDetection:?];
 
     [(PKAttachmentView *)self _handleAutoRefineSettingsDidChange];
     [(PKAttachmentView *)self _handleProofreadingSettingsDidChange];
@@ -1149,11 +1149,11 @@ void __114__PKAttachmentView__initializeRecognitionForDrawingIfNecessary_withVis
     _os_log_impl(&dword_1C7CCA000, v3, OS_LOG_TYPE_DEFAULT, "handle AutoRefine settings did change", v12, 2u);
   }
 
-  v4 = [(PKAttachmentView *)self wantsAutoRefine];
-  v5 = [(PKAttachmentView *)self recognitionManager];
-  [(PKRecognitionSessionManager *)v5 setWantsAutoRefine:v4];
+  wantsAutoRefine = [(PKAttachmentView *)self wantsAutoRefine];
+  recognitionManager = [(PKAttachmentView *)self recognitionManager];
+  [(PKRecognitionSessionManager *)recognitionManager setWantsAutoRefine:wantsAutoRefine];
 
-  if (v4)
+  if (wantsAutoRefine)
   {
     autoRefineTaskCoordinator = self->_autoRefineTaskCoordinator;
     if (!autoRefineTaskCoordinator)
@@ -1173,19 +1173,19 @@ void __114__PKAttachmentView__initializeRecognitionForDrawingIfNecessary_withVis
       }
     }
 
-    v9 = [(PKAttachmentView *)self recognitionManager];
-    v10 = v9;
+    recognitionManager2 = [(PKAttachmentView *)self recognitionManager];
+    v10 = recognitionManager2;
     v11 = autoRefineTaskCoordinator;
   }
 
   else
   {
-    v9 = [(PKAttachmentView *)self recognitionManager];
-    v10 = v9;
+    recognitionManager2 = [(PKAttachmentView *)self recognitionManager];
+    v10 = recognitionManager2;
     v11 = 0;
   }
 
-  [(PKRecognitionSessionManager *)v9 setAutoRefineViewDelegate:v11];
+  [(PKRecognitionSessionManager *)recognitionManager2 setAutoRefineViewDelegate:v11];
 }
 
 - (void)_handleProofreadingSettingsDidChange
@@ -1199,8 +1199,8 @@ void __114__PKAttachmentView__initializeRecognitionForDrawingIfNecessary_withVis
 
   if (PKCurrentDeviceSupportsProofreading() && PKCurrentAppSupportsRefinement() && +[PKSettingsDaemon proofreadingEnabled])
   {
-    v4 = [(PKAttachmentView *)self window];
-    v5 = v4 != 0;
+    window = [(PKAttachmentView *)self window];
+    v5 = window != 0;
   }
 
   else
@@ -1208,10 +1208,10 @@ void __114__PKAttachmentView__initializeRecognitionForDrawingIfNecessary_withVis
     v5 = 0;
   }
 
-  v6 = [(PKAttachmentView *)self dataDetectorHelper];
-  if (v6)
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  if (dataDetectorHelper)
   {
-    v7 = v6[10];
+    v7 = dataDetectorHelper[10];
 
     if (v5 == v7)
     {
@@ -1224,119 +1224,119 @@ void __114__PKAttachmentView__initializeRecognitionForDrawingIfNecessary_withVis
     return;
   }
 
-  v8 = [(PKAttachmentView *)self dataDetectorHelper];
-  [(PKDataDetectorInteractionHelper *)v8 setWantsProofreadingDetection:v5];
+  dataDetectorHelper2 = [(PKAttachmentView *)self dataDetectorHelper];
+  [(PKDataDetectorInteractionHelper *)dataDetectorHelper2 setWantsProofreadingDetection:v5];
 
-  v9 = [(PKAttachmentView *)self recognitionManager];
-  [(PKRecognitionSessionManager *)v9 setWantsProofreadingDetection:v5];
+  recognitionManager = [(PKAttachmentView *)self recognitionManager];
+  [(PKRecognitionSessionManager *)recognitionManager setWantsProofreadingDetection:v5];
 }
 
-- (void)fetchIntersectedStrokesAtPoint:(CGPoint)a3 selectionType:(int64_t)a4 inputType:(int64_t)a5 visibleOnscreenStrokes:(id)a6 completion:(id)a7
+- (void)fetchIntersectedStrokesAtPoint:(CGPoint)point selectionType:(int64_t)type inputType:(int64_t)inputType visibleOnscreenStrokes:(id)strokes completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
-  v13 = a7;
-  v14 = a6;
-  v15 = [(PKAttachmentView *)self recognitionManager];
-  [(PKRecognitionSessionManager *)v15 fetchIntersectedStrokesAtPoint:a4 selectionType:a5 inputType:v14 visibleOnscreenStrokes:v13 completion:x, y];
+  y = point.y;
+  x = point.x;
+  completionCopy = completion;
+  strokesCopy = strokes;
+  recognitionManager = [(PKAttachmentView *)self recognitionManager];
+  [(PKRecognitionSessionManager *)recognitionManager fetchIntersectedStrokesAtPoint:type selectionType:inputType inputType:strokesCopy visibleOnscreenStrokes:completionCopy completion:x, y];
 }
 
-- (void)fetchIntersectedStrokesBetweenTopPoint:(CGPoint)a3 bottomPoint:(CGPoint)a4 liveScrollOffset:(CGPoint)a5 completion:(id)a6
+- (void)fetchIntersectedStrokesBetweenTopPoint:(CGPoint)point bottomPoint:(CGPoint)bottomPoint liveScrollOffset:(CGPoint)offset completion:(id)completion
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a4.y;
-  v9 = a4.x;
-  v10 = a3.y;
-  v11 = a3.x;
-  v13 = a6;
-  v14 = [(PKAttachmentView *)self recognitionManager];
-  [(PKRecognitionSessionManager *)v14 fetchIntersectedStrokesBetweenTopPoint:v13 bottomPoint:v11 liveScrollOffset:v10 isRTL:v9 completion:v8, x, y];
+  y = offset.y;
+  x = offset.x;
+  v8 = bottomPoint.y;
+  v9 = bottomPoint.x;
+  v10 = point.y;
+  v11 = point.x;
+  completionCopy = completion;
+  recognitionManager = [(PKAttachmentView *)self recognitionManager];
+  [(PKRecognitionSessionManager *)recognitionManager fetchIntersectedStrokesBetweenTopPoint:completionCopy bottomPoint:v11 liveScrollOffset:v10 isRTL:v9 completion:v8, x, y];
 }
 
-- (id)_firstStrokesInSelectedStrokes:(id)a3
+- (id)_firstStrokesInSelectedStrokes:(id)strokes
 {
-  v4 = a3;
-  v5 = [(PKAttachmentView *)self recognitionManager];
-  v6 = [(PKRecognitionSessionManager *)v5 _firstStrokesInSelectedStrokes:v4 isRTL:[(PKAttachmentView *)self isRTL]];
+  strokesCopy = strokes;
+  recognitionManager = [(PKAttachmentView *)self recognitionManager];
+  v6 = [(PKRecognitionSessionManager *)recognitionManager _firstStrokesInSelectedStrokes:strokesCopy isRTL:[(PKAttachmentView *)self isRTL]];
 
   return v6;
 }
 
-- (id)_lastStrokesInSelectedStrokes:(id)a3
+- (id)_lastStrokesInSelectedStrokes:(id)strokes
 {
-  v4 = a3;
-  v5 = [(PKAttachmentView *)self recognitionManager];
-  v6 = [(PKRecognitionSessionManager *)v5 _lastStrokesInSelectedStrokes:v4 isRTL:[(PKAttachmentView *)self isRTL]];
+  strokesCopy = strokes;
+  recognitionManager = [(PKAttachmentView *)self recognitionManager];
+  v6 = [(PKRecognitionSessionManager *)recognitionManager _lastStrokesInSelectedStrokes:strokesCopy isRTL:[(PKAttachmentView *)self isRTL]];
 
   return v6;
 }
 
-- (void)fetchStrokesAmbiguouslyBelowAndAboveInsertSpaceHandleWithStrokes:(id)a3 completion:(id)a4
+- (void)fetchStrokesAmbiguouslyBelowAndAboveInsertSpaceHandleWithStrokes:(id)strokes completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKAttachmentView *)self recognitionManager];
-  [(PKRecognitionSessionManager *)v8 fetchStrokesAmbiguouslyBelowAndAboveInsertSpaceHandleWithStrokes:v7 completion:v6];
+  completionCopy = completion;
+  strokesCopy = strokes;
+  recognitionManager = [(PKAttachmentView *)self recognitionManager];
+  [(PKRecognitionSessionManager *)recognitionManager fetchStrokesAmbiguouslyBelowAndAboveInsertSpaceHandleWithStrokes:strokesCopy completion:completionCopy];
 }
 
-- (int64_t)contentTypeForIntersectedStrokes:(id)a3
+- (int64_t)contentTypeForIntersectedStrokes:(id)strokes
 {
-  v4 = a3;
-  v5 = [(PKAttachmentView *)self recognitionManager];
-  v6 = [(PKRecognitionSessionManager *)v5 contentTypeForIntersectedStrokes:v4];
+  strokesCopy = strokes;
+  recognitionManager = [(PKAttachmentView *)self recognitionManager];
+  v6 = [(PKRecognitionSessionManager *)recognitionManager contentTypeForIntersectedStrokes:strokesCopy];
 
   return v6;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v25.receiver = self;
   v25.super_class = PKAttachmentView;
-  [(PKAttachmentView *)&v25 willMoveToWindow:v4];
-  v5 = [(PKAttachmentView *)self dataDetectorHelper];
-  [(PKDataDetectorInteractionHelper *)v5 setWantsDataDetection:?];
+  [(PKAttachmentView *)&v25 willMoveToWindow:windowCopy];
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  [(PKDataDetectorInteractionHelper *)dataDetectorHelper setWantsDataDetection:?];
 
-  v6 = [(PKAttachmentView *)self dataDetectorHelper];
-  [(PKDataDetectorInteractionHelper *)v6 setWantsHashtagDetection:?];
+  dataDetectorHelper2 = [(PKAttachmentView *)self dataDetectorHelper];
+  [(PKDataDetectorInteractionHelper *)dataDetectorHelper2 setWantsHashtagDetection:?];
 
-  v7 = [(PKAttachmentView *)self dataDetectorHelper];
-  [(PKDataDetectorInteractionHelper *)v7 setWantsMentionDetection:?];
+  dataDetectorHelper3 = [(PKAttachmentView *)self dataDetectorHelper];
+  [(PKDataDetectorInteractionHelper *)dataDetectorHelper3 setWantsMentionDetection:?];
 
-  v8 = [(PKAttachmentView *)self dataDetectorHelper];
-  [(PKDataDetectorInteractionHelper *)v8 setWantsProofreadingDetection:?];
+  dataDetectorHelper4 = [(PKAttachmentView *)self dataDetectorHelper];
+  [(PKDataDetectorInteractionHelper *)dataDetectorHelper4 setWantsProofreadingDetection:?];
 
-  v9 = [(PKAttachmentView *)self dataDetectorHelper];
-  [(PKDataDetectorInteractionHelper *)v9 removeDetectionViews];
+  dataDetectorHelper5 = [(PKAttachmentView *)self dataDetectorHelper];
+  [(PKDataDetectorInteractionHelper *)dataDetectorHelper5 removeDetectionViews];
 
   v10 = MEMORY[0x1E69DE360];
   v11 = MEMORY[0x1E69DE348];
-  if (v4)
+  if (windowCopy)
   {
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v13 = *v10;
-    v14 = [v4 windowScene];
-    [v12 addObserver:self selector:sel__willEnterForeground_ name:v13 object:v14];
+    windowScene = [windowCopy windowScene];
+    [defaultCenter addObserver:self selector:sel__willEnterForeground_ name:v13 object:windowScene];
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v16 = *v11;
-    v17 = [v4 windowScene];
-    [v15 addObserver:self selector:sel__didEnterBackground_ name:v16 object:v17];
+    windowScene2 = [windowCopy windowScene];
+    [defaultCenter2 addObserver:self selector:sel__didEnterBackground_ name:v16 object:windowScene2];
   }
 
-  v18 = [(PKAttachmentView *)self window];
-  if (v18)
+  window = [(PKAttachmentView *)self window];
+  if (window)
   {
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
     v20 = *v10;
-    v21 = [v18 windowScene];
-    [v19 removeObserver:self name:v20 object:v21];
+    windowScene3 = [window windowScene];
+    [defaultCenter3 removeObserver:self name:v20 object:windowScene3];
 
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
     v23 = *v11;
-    v24 = [v18 windowScene];
-    [v22 removeObserver:self name:v23 object:v24];
+    windowScene4 = [window windowScene];
+    [defaultCenter4 removeObserver:self name:v23 object:windowScene4];
   }
 }
 
@@ -1345,139 +1345,139 @@ void __114__PKAttachmentView__initializeRecognitionForDrawingIfNecessary_withVis
   v21.receiver = self;
   v21.super_class = PKAttachmentView;
   [(PKAttachmentView *)&v21 didMoveToWindow];
-  v3 = [(PKAttachmentView *)self window];
+  window = [(PKAttachmentView *)self window];
 
-  if (v3)
+  if (window)
   {
     wantsDataDetection = self->_wantsDataDetection;
-    v5 = [(PKAttachmentView *)self dataDetectorHelper];
-    [(PKDataDetectorInteractionHelper *)v5 setWantsDataDetection:?];
+    dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+    [(PKDataDetectorInteractionHelper *)dataDetectorHelper setWantsDataDetection:?];
 
     wantsHashtagDetection = self->_wantsHashtagDetection;
-    v7 = [(PKAttachmentView *)self dataDetectorHelper];
-    [(PKDataDetectorInteractionHelper *)v7 setWantsHashtagDetection:?];
+    dataDetectorHelper2 = [(PKAttachmentView *)self dataDetectorHelper];
+    [(PKDataDetectorInteractionHelper *)dataDetectorHelper2 setWantsHashtagDetection:?];
 
     wantsMentionDetection = self->_wantsMentionDetection;
-    v9 = [(PKAttachmentView *)self dataDetectorHelper];
-    [(PKDataDetectorInteractionHelper *)v9 setWantsMentionDetection:?];
+    dataDetectorHelper3 = [(PKAttachmentView *)self dataDetectorHelper];
+    [(PKDataDetectorInteractionHelper *)dataDetectorHelper3 setWantsMentionDetection:?];
 
-    v10 = [(PKAttachmentView *)self window];
-    v11 = [PKToolPicker isActiveToolPickerVisibleForWindow:v10];
-    v12 = [(PKAttachmentView *)self dataDetectorHelper];
-    if (v12)
+    window2 = [(PKAttachmentView *)self window];
+    v11 = [PKToolPicker isActiveToolPickerVisibleForWindow:window2];
+    dataDetectorHelper4 = [(PKAttachmentView *)self dataDetectorHelper];
+    if (dataDetectorHelper4)
     {
-      v12[17] = v11;
+      dataDetectorHelper4[17] = v11;
     }
 
-    v13 = [(PKAttachmentView *)self dataDetectorHelper];
-    if (v13)
+    dataDetectorHelper5 = [(PKAttachmentView *)self dataDetectorHelper];
+    if (dataDetectorHelper5)
     {
-      v13[11] = 1;
+      dataDetectorHelper5[11] = 1;
     }
 
     [(PKAttachmentView *)self _handleAutoRefineSettingsDidChange];
     [(PKAttachmentView *)self _handleProofreadingSettingsDidChange];
-    v14 = [(PKAttachmentView *)self drawing];
-    v15 = [v14 _isEmpty];
+    drawing = [(PKAttachmentView *)self drawing];
+    _isEmpty = [drawing _isEmpty];
 
-    if ((v15 & 1) == 0)
+    if ((_isEmpty & 1) == 0)
     {
-      v16 = [(PKAttachmentView *)self tiledView];
-      v17 = [v16 welcomeController];
-      v18 = [(PKAttachmentView *)self tiledView];
-      v19 = [v18 window];
-      v20 = [v19 rootViewController];
-      [v17 presentHandwritingEducationPaneIfNecessaryIn:v20 withFeatures:3];
+      tiledView = [(PKAttachmentView *)self tiledView];
+      welcomeController = [tiledView welcomeController];
+      tiledView2 = [(PKAttachmentView *)self tiledView];
+      window3 = [tiledView2 window];
+      rootViewController = [window3 rootViewController];
+      [welcomeController presentHandwritingEducationPaneIfNecessaryIn:rootViewController withFeatures:3];
     }
   }
 }
 
 - (BOOL)wantsAutoRefine
 {
-  v3 = [(PKAttachmentView *)self window];
-  if (v3)
+  window = [(PKAttachmentView *)self window];
+  if (window)
   {
-    v4 = [(PKAttachmentView *)self tiledView];
-    v5 = [v4 isAutoRefineEnabled];
+    tiledView = [(PKAttachmentView *)self tiledView];
+    isAutoRefineEnabled = [tiledView isAutoRefineEnabled];
   }
 
   else
   {
-    v5 = 0;
+    isAutoRefineEnabled = 0;
   }
 
-  return v5;
+  return isAutoRefineEnabled;
 }
 
-- (void)recognitionController:(id)a3 foundDataDetectorItems:(id)a4
+- (void)recognitionController:(id)controller foundDataDetectorItems:(id)items
 {
-  v5 = a4;
-  v6 = [(PKAttachmentView *)self dataDetectorHelper];
-  if (v6)
+  itemsCopy = items;
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  if (dataDetectorHelper)
   {
-    [(PKDataDetectorInteractionHelper *)v6 updateDetectionViews:v5 withItems:v6[11] previousItems:?];
+    [(PKDataDetectorInteractionHelper *)dataDetectorHelper updateDetectionViews:itemsCopy withItems:dataDetectorHelper[11] previousItems:?];
   }
 }
 
-- (void)recognitionController:(id)a3 foundHashtagItems:(id)a4
+- (void)recognitionController:(id)controller foundHashtagItems:(id)items
 {
-  v5 = a4;
-  v6 = [(PKAttachmentView *)self dataDetectorHelper];
-  if (v6)
+  itemsCopy = items;
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  if (dataDetectorHelper)
   {
-    [(PKDataDetectorInteractionHelper *)v6 updateDetectionViews:v5 withItems:v6[12] previousItems:?];
+    [(PKDataDetectorInteractionHelper *)dataDetectorHelper updateDetectionViews:itemsCopy withItems:dataDetectorHelper[12] previousItems:?];
   }
 }
 
-- (void)recognitionController:(id)a3 foundMentionItems:(id)a4
+- (void)recognitionController:(id)controller foundMentionItems:(id)items
 {
-  v5 = a4;
-  v6 = [(PKAttachmentView *)self dataDetectorHelper];
-  if (v6)
+  itemsCopy = items;
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  if (dataDetectorHelper)
   {
-    [(PKDataDetectorInteractionHelper *)v6 updateMentionResults:v5];
+    [(PKDataDetectorInteractionHelper *)dataDetectorHelper updateMentionResults:itemsCopy];
   }
 }
 
-- (void)recognitionController:(id)a3 foundProofreadingItems:(id)a4
+- (void)recognitionController:(id)controller foundProofreadingItems:(id)items
 {
-  v5 = a4;
-  v6 = [(PKAttachmentView *)self dataDetectorHelper];
-  [(PKDataDetectorInteractionHelper *)v6 foundProofreadingItems:v5];
+  itemsCopy = items;
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  [(PKDataDetectorInteractionHelper *)dataDetectorHelper foundProofreadingItems:itemsCopy];
 }
 
-- (BOOL)canConvertTextToHandwriting:(id)a3
+- (BOOL)canConvertTextToHandwriting:(id)handwriting
 {
-  v4 = a3;
-  v5 = [(PKAttachmentView *)self recognitionController];
-  v6 = [v5 canConvertTextToHandwriting:v4];
+  handwritingCopy = handwriting;
+  recognitionController = [(PKAttachmentView *)self recognitionController];
+  v6 = [recognitionController canConvertTextToHandwriting:handwritingCopy];
 
   return v6;
 }
 
-- (void)convertTextToHandwriting:(id)a3 bounds:(CGRect)a4 suggestedHeight:(double)a5 suggestedDrawing:(id)a6 inkColor:(id)a7 completion:(id)a8
+- (void)convertTextToHandwriting:(id)handwriting bounds:(CGRect)bounds suggestedHeight:(double)height suggestedDrawing:(id)drawing inkColor:(id)color completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v17 = a3;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if (v19)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  handwritingCopy = handwriting;
+  drawingCopy = drawing;
+  colorCopy = color;
+  completionCopy = completion;
+  if (colorCopy)
   {
-    v21 = v19;
+    tintColor = colorCopy;
   }
 
   else
   {
-    v21 = [(PKAttachmentView *)self tintColor];
+    tintColor = [(PKAttachmentView *)self tintColor];
   }
 
-  v22 = v21;
-  v23 = [(PKAttachmentView *)self tiledView];
-  [v23 inputScale];
+  v22 = tintColor;
+  tiledView = [(PKAttachmentView *)self tiledView];
+  [tiledView inputScale];
   v25 = v24;
 
   self->_didReceiveTextConversion = 0;
@@ -1488,8 +1488,8 @@ void __114__PKAttachmentView__initializeRecognitionForDrawingIfNecessary_withVis
   aBlock[3] = &unk_1E82D7668;
   aBlock[4] = self;
   v26 = _Block_copy(aBlock);
-  v27 = [(PKAttachmentView *)self recognitionController];
-  v30 = v20;
+  recognitionController = [(PKAttachmentView *)self recognitionController];
+  v30 = completionCopy;
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __105__PKAttachmentView_convertTextToHandwriting_bounds_suggestedHeight_suggestedDrawing_inkColor_completion___block_invoke_2;
@@ -1500,8 +1500,8 @@ void __114__PKAttachmentView__initializeRecognitionForDrawingIfNecessary_withVis
   v29[2] = __105__PKAttachmentView_convertTextToHandwriting_bounds_suggestedHeight_suggestedDrawing_inkColor_completion___block_invoke_4;
   v29[3] = &unk_1E82D76E0;
   v29[4] = self;
-  v28 = v20;
-  [v27 convertTextToHandwriting:v17 bounds:v22 inkColor:v18 inputScale:v31 suggestedHeight:v29 suggestedDrawing:v26 progress:x completion:y shouldCancel:{width, height, v25, a5}];
+  v28 = completionCopy;
+  [recognitionController convertTextToHandwriting:handwritingCopy bounds:v22 inkColor:drawingCopy inputScale:v31 suggestedHeight:v29 suggestedDrawing:v26 progress:x completion:y shouldCancel:{width, height, v25, height}];
 }
 
 void __105__PKAttachmentView_convertTextToHandwriting_bounds_suggestedHeight_suggestedDrawing_inkColor_completion___block_invoke_2(uint64_t a1, void *a2)
@@ -1555,43 +1555,43 @@ void __105__PKAttachmentView_convertTextToHandwriting_bounds_suggestedHeight_sug
   }
 }
 
-- (void)fetchTranscriptionForStrokes:(id)a3 completion:(id)a4
+- (void)fetchTranscriptionForStrokes:(id)strokes completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(PKAttachmentView *)self recognitionManager];
-  v8 = [(PKRecognitionSessionManager *)v7 fetchTranscriptionForStrokes:v9 cancelBlock:&__block_literal_global_11 withCompletion:v6];
+  strokesCopy = strokes;
+  completionCopy = completion;
+  recognitionManager = [(PKAttachmentView *)self recognitionManager];
+  v8 = [(PKRecognitionSessionManager *)recognitionManager fetchTranscriptionForStrokes:strokesCopy cancelBlock:&__block_literal_global_11 withCompletion:completionCopy];
 }
 
-- (void)replaceStrokes:(id)a3 withString:(id)a4 inBounds:(CGRect)a5 completion:(id)a6
+- (void)replaceStrokes:(id)strokes withString:(id)string inBounds:(CGRect)bounds completion:(id)completion
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(PKAttachmentView *)self tiledView];
-  [v16 inputScale];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  completionCopy = completion;
+  stringCopy = string;
+  strokesCopy = strokes;
+  tiledView = [(PKAttachmentView *)self tiledView];
+  [tiledView inputScale];
   v18 = v17;
 
-  v19 = [(PKAttachmentView *)self recognitionController];
-  [v19 replaceStrokes:v15 withString:v14 inBounds:v13 inputScale:x completion:{y, width, height, v18}];
+  recognitionController = [(PKAttachmentView *)self recognitionController];
+  [recognitionController replaceStrokes:strokesCopy withString:stringCopy inBounds:completionCopy inputScale:x completion:{y, width, height, v18}];
 }
 
-- (void)_logHDRStrokesForDrawing:(id)a3
+- (void)_logHDRStrokesForDrawing:(id)drawing
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  drawingCopy = drawing;
   if (os_variant_has_internal_diagnostics())
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [v3 strokes];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v22 count:16];
+    strokes = [drawingCopy strokes];
+    v5 = [strokes countByEnumeratingWithState:&v14 objects:v22 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1604,7 +1604,7 @@ void __105__PKAttachmentView_convertTextToHandwriting_bounds_suggestedHeight_sug
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(strokes);
           }
 
           v11 = [*(*(&v14 + 1) + 8 * i) ink];
@@ -1623,7 +1623,7 @@ void __105__PKAttachmentView_convertTextToHandwriting_bounds_suggestedHeight_sug
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v22 count:16];
+        v6 = [strokes countByEnumeratingWithState:&v14 objects:v22 count:16];
       }
 
       while (v6);
@@ -1647,9 +1647,9 @@ void __105__PKAttachmentView_convertTextToHandwriting_bounds_suggestedHeight_sug
   }
 }
 
-- (void)_showHUDWithProgress:(id)a3
+- (void)_showHUDWithProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   v5 = _PencilKitBundle();
   v16 = [v5 localizedStringForKey:@"Converting text to handwriting…" value:@"Converting text to handwriting…" table:@"Localizable"];
 
@@ -1662,22 +1662,22 @@ void __105__PKAttachmentView_convertTextToHandwriting_bounds_suggestedHeight_sug
 
   [(PKProgressAlertController *)self->_progressAlertController setDelegate:self];
   v10 = self->_progressAlertController;
-  [(NSProgress *)v4 fractionCompleted];
+  [(NSProgress *)progressCopy fractionCompleted];
   [(PKProgressAlertController *)v10 setProgress:?];
   currentProgress = self->_currentProgress;
-  self->_currentProgress = v4;
-  v12 = v4;
+  self->_currentProgress = progressCopy;
+  v12 = progressCopy;
 
   [(NSProgress *)self->_currentProgress addObserver:self forKeyPath:@"fractionCompleted" options:3 context:PKInkSynthesisContext];
-  v13 = [(PKAttachmentView *)self viewRep];
-  v14 = [v13 window];
-  v15 = [v14 rootViewController];
-  [v15 presentViewController:self->_progressAlertController animated:1 completion:&__block_literal_global_66];
+  viewRep = [(PKAttachmentView *)self viewRep];
+  window = [viewRep window];
+  rootViewController = [window rootViewController];
+  [rootViewController presentViewController:self->_progressAlertController animated:1 completion:&__block_literal_global_66];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (PKInkSynthesisContext == a6)
+  if (PKInkSynthesisContext == context)
   {
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
@@ -1699,9 +1699,9 @@ void __105__PKAttachmentView_convertTextToHandwriting_bounds_suggestedHeight_sug
 
 - (void)_progressChanged
 {
-  v3 = [(PKProgressAlertController *)self->_progressAlertController presentingViewController];
+  presentingViewController = [(PKProgressAlertController *)self->_progressAlertController presentingViewController];
 
-  if (v3)
+  if (presentingViewController)
   {
     progressAlertController = self->_progressAlertController;
     [(NSProgress *)self->_currentProgress fractionCompleted];
@@ -1738,51 +1738,51 @@ void __28__PKAttachmentView__hideHUD__block_invoke(uint64_t a1)
 
 - (BOOL)_isDrawing
 {
-  v2 = [(PKAttachmentView *)self tiledView];
-  v3 = [v2 canvasView];
-  v4 = [v3 isHidden];
+  tiledView = [(PKAttachmentView *)self tiledView];
+  canvasView = [tiledView canvasView];
+  isHidden = [canvasView isHidden];
 
-  return v4 ^ 1;
+  return isHidden ^ 1;
 }
 
-- (void)setHashtagAndMentionsDelegate:(id)a3
+- (void)setHashtagAndMentionsDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_hashtagAndMentionsDelegate);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_hashtagAndMentionsDelegate, obj);
-    v5 = [(PKAttachmentView *)self dataDetectorHelper];
-    [(PKDataDetectorInteractionHelper *)v5 setHashtagAndMentionsDelegate:?];
+    dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+    [(PKDataDetectorInteractionHelper *)dataDetectorHelper setHashtagAndMentionsDelegate:?];
   }
 }
 
-- (id)inlineViewAtPoint:(CGPoint)a3
+- (id)inlineViewAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(PKAttachmentView *)self dataDetectorHelper];
-  v6 = [(PKDataDetectorInteractionHelper *)v5 inlineViewAtPoint:y];
+  y = point.y;
+  x = point.x;
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  v6 = [(PKDataDetectorInteractionHelper *)dataDetectorHelper inlineViewAtPoint:y];
 
   return v6;
 }
 
 - (void)updateAllPossibleParticipantNameTokens
 {
-  v2 = [(PKAttachmentView *)self dataDetectorHelper];
-  [(PKDataDetectorInteractionHelper *)v2 updateAllPossibleParticipantNameTokens];
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  [(PKDataDetectorInteractionHelper *)dataDetectorHelper updateAllPossibleParticipantNameTokens];
 }
 
-- (CGRect)boundingBoxForHashtagOrMentionWithUUID:(id)a3
+- (CGRect)boundingBoxForHashtagOrMentionWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(PKAttachmentView *)self dataDetectorHelper];
+  dCopy = d;
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
 
-  if (v5)
+  if (dataDetectorHelper)
   {
-    v6 = [(PKAttachmentView *)self dataDetectorHelper];
-    v7 = [(PKDataDetectorInteractionHelper *)v6 boundingBoxForHashtagOrMentionWithUUID:v4];
+    dataDetectorHelper2 = [(PKAttachmentView *)self dataDetectorHelper];
+    v7 = [(PKDataDetectorInteractionHelper *)dataDetectorHelper2 boundingBoxForHashtagOrMentionWithUUID:dCopy];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -1807,49 +1807,49 @@ void __28__PKAttachmentView__hideHUD__block_invoke(uint64_t a1)
   return result;
 }
 
-- (double)dataDetectorInteractionHelperInputScale:(id)a3
+- (double)dataDetectorInteractionHelperInputScale:(id)scale
 {
-  v3 = [(PKAttachmentView *)self tiledView];
-  [v3 inputScale];
+  tiledView = [(PKAttachmentView *)self tiledView];
+  [tiledView inputScale];
   v5 = v4;
 
   return v5;
 }
 
-- (void)dataDetectorInteractionHelper:(id)a3 registerUndoCommand:(id)a4
+- (void)dataDetectorInteractionHelper:(id)helper registerUndoCommand:(id)command
 {
-  v5 = a4;
-  v6 = [(PKAttachmentView *)self tiledView];
-  [v6 registerUndoCommand:v5];
+  commandCopy = command;
+  tiledView = [(PKAttachmentView *)self tiledView];
+  [tiledView registerUndoCommand:commandCopy];
 }
 
-- (id)dataDetectorInteractionHelperSelectionInteraction:(id)a3
+- (id)dataDetectorInteractionHelperSelectionInteraction:(id)interaction
 {
-  v3 = [(PKAttachmentView *)self tiledView];
-  v4 = [v3 selectionInteraction];
+  tiledView = [(PKAttachmentView *)self tiledView];
+  selectionInteraction = [tiledView selectionInteraction];
 
-  return v4;
+  return selectionInteraction;
 }
 
-- (void)dataDetectorInteractionHelperNeedsLayout:(id)a3
+- (void)dataDetectorInteractionHelperNeedsLayout:(id)layout
 {
-  v4 = [(PKAttachmentView *)self dataDetectorHelper];
-  if (v4)
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  if (dataDetectorHelper)
   {
-    v5 = v4[13];
+    v5 = dataDetectorHelper[13];
 
     if (v5 != 1)
     {
       goto LABEL_5;
     }
 
-    v6 = [(PKAttachmentView *)self dataDetectorHelper];
-    [v6 revealDetectionViews];
+    dataDetectorHelper2 = [(PKAttachmentView *)self dataDetectorHelper];
+    [dataDetectorHelper2 revealDetectionViews];
   }
 
   else
   {
-    v6 = 0;
+    dataDetectorHelper2 = 0;
   }
 
 LABEL_5:
@@ -1857,28 +1857,28 @@ LABEL_5:
   [(PKAttachmentView *)self setNeedsLayout];
 }
 
-- (id)autoRefineTaskCoordinatorCurrentStroke:(id)a3
+- (id)autoRefineTaskCoordinatorCurrentStroke:(id)stroke
 {
-  v3 = [(PKAttachmentView *)self tiledView];
-  v4 = [v3 _currentStroke];
+  tiledView = [(PKAttachmentView *)self tiledView];
+  _currentStroke = [tiledView _currentStroke];
 
-  return v4;
+  return _currentStroke;
 }
 
-- (id)autoRefineTaskCoordinatorAutoRefineController:(id)a3
+- (id)autoRefineTaskCoordinatorAutoRefineController:(id)controller
 {
-  v3 = [(PKAttachmentView *)self tiledView];
-  v4 = [v3 autoRefineController];
+  tiledView = [(PKAttachmentView *)self tiledView];
+  autoRefineController = [tiledView autoRefineController];
 
-  return v4;
+  return autoRefineController;
 }
 
 - (id)_accessibilityUserTestingChildren
 {
-  v2 = [(PKAttachmentView *)self dataDetectorHelper];
-  v3 = [v2 _accessibilityUserTestingChildren];
+  dataDetectorHelper = [(PKAttachmentView *)self dataDetectorHelper];
+  _accessibilityUserTestingChildren = [dataDetectorHelper _accessibilityUserTestingChildren];
 
-  return v3;
+  return _accessibilityUserTestingChildren;
 }
 
 - (CGAffineTransform)preResizeDrawingTransform
@@ -1890,11 +1890,11 @@ LABEL_5:
   return self;
 }
 
-- (void)setPreResizeDrawingTransform:(CGAffineTransform *)a3
+- (void)setPreResizeDrawingTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_preResizeDrawingTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_preResizeDrawingTransform.a = *&transform->a;
   *&self->_preResizeDrawingTransform.c = v4;
   *&self->_preResizeDrawingTransform.tx = v3;
 }

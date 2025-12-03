@@ -1,5 +1,5 @@
 @interface TPSTargetingValidateOperation
-- (TPSTargetingValidateOperation)initWithTargetingCondition:(id)a3;
+- (TPSTargetingValidateOperation)initWithTargetingCondition:(id)condition;
 - (id)description;
 - (int64_t)result;
 - (void)cancel;
@@ -8,16 +8,16 @@
 
 @implementation TPSTargetingValidateOperation
 
-- (TPSTargetingValidateOperation)initWithTargetingCondition:(id)a3
+- (TPSTargetingValidateOperation)initWithTargetingCondition:(id)condition
 {
-  v5 = a3;
+  conditionCopy = condition;
   v9.receiver = self;
   v9.super_class = TPSTargetingValidateOperation;
   v6 = [(TPSAsyncOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_validator, a3);
+    objc_storeStrong(&v6->_validator, condition);
     v7->_result = -1;
   }
 
@@ -27,8 +27,8 @@
 - (void)main
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [a1 context];
-  v3 = [a1 validator];
+  context = [self context];
+  validator = [self validator];
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0();
   _os_log_debug_impl(v4, v5, v6, v7, v8, 0x16u);
@@ -61,9 +61,9 @@ void __37__TPSTargetingValidateOperation_main__block_invoke(uint64_t a1, unsigne
     return -1;
   }
 
-  v3 = [(TPSAsyncOperation *)self error];
+  error = [(TPSAsyncOperation *)self error];
 
-  if (v3)
+  if (error)
   {
     return -1;
   }
@@ -78,7 +78,7 @@ void __37__TPSTargetingValidateOperation_main__block_invoke(uint64_t a1, unsigne
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_232D6F000, a2, OS_LOG_TYPE_DEBUG, "cancelling...%@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -88,9 +88,9 @@ void __37__TPSTargetingValidateOperation_main__block_invoke(uint64_t a1, unsigne
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(TPSTargetingValidateOperation *)self validator];
-  v7 = [(TPSTargetingValidateOperation *)self context];
-  v8 = [v3 stringWithFormat:@"<%@: %p validator = %@; context = %@;>", v5, self, v6, v7];;
+  validator = [(TPSTargetingValidateOperation *)self validator];
+  context = [(TPSTargetingValidateOperation *)self context];
+  v8 = [v3 stringWithFormat:@"<%@: %p validator = %@; context = %@;>", v5, self, validator, context];;
 
   return v8;
 }

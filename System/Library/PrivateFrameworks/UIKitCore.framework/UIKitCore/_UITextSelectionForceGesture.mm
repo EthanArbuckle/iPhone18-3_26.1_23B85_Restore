@@ -1,35 +1,35 @@
 @interface _UITextSelectionForceGesture
 - (BOOL)_shouldDelayUntilForceLevelRequirementIsMet;
-- (BOOL)forceHasIncreasedForTimeInterval:(double)a3;
-- (BOOL)shouldResetRangeForVelocity:(CGPoint)a3 previousVelocity:(CGPoint)a4;
+- (BOOL)forceHasIncreasedForTimeInterval:(double)interval;
+- (BOOL)shouldResetRangeForVelocity:(CGPoint)velocity previousVelocity:(CGPoint)previousVelocity;
 - (CGPoint)_adjustSceneReferenceLocation:(CGPoint)result;
-- (CGPoint)_centroidInView:(id)a3;
-- (CGPoint)_convertVelocitySample:(id)a3 fromSceneReferenceCoordinatesToView:(id)a4;
-- (CGPoint)_locationOfTouches:(id)a3;
-- (CGPoint)_shiftPanLocationToNewSceneReferenceLocation:(CGPoint)a3;
+- (CGPoint)_centroidInView:(id)view;
+- (CGPoint)_convertVelocitySample:(id)sample fromSceneReferenceCoordinatesToView:(id)view;
+- (CGPoint)_locationOfTouches:(id)touches;
+- (CGPoint)_shiftPanLocationToNewSceneReferenceLocation:(CGPoint)location;
 - (CGPoint)lastSceneReferenceLocation;
 - (CGPoint)lastUnadjustedSceneReferenceLocation;
-- (CGPoint)velocityInView:(id)a3;
+- (CGPoint)velocityInView:(id)view;
 - (CGRect)velocityRange;
-- (UIOffset)_offsetInViewFromSceneReferenceLocation:(CGPoint)a3 toSceneReferenceLocation:(CGPoint)a4;
-- (_UITextSelectionForceGesture)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)_centroidMovedTo:(CGPoint)a3 atTime:(double)a4 physicalTouch:(id)a5;
+- (UIOffset)_offsetInViewFromSceneReferenceLocation:(CGPoint)location toSceneReferenceLocation:(CGPoint)referenceLocation;
+- (_UITextSelectionForceGesture)initWithTarget:(id)target action:(SEL)action;
+- (void)_centroidMovedTo:(CGPoint)to atTime:(double)time physicalTouch:(id)touch;
 - (void)_resetVelocitySamples;
 - (void)_updateLiftOffState;
-- (void)enoughTimeElapsed:(id)a3;
+- (void)enoughTimeElapsed:(id)elapsed;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UITextSelectionForceGesture
 
-- (_UITextSelectionForceGesture)initWithTarget:(id)a3 action:(SEL)a4
+- (_UITextSelectionForceGesture)initWithTarget:(id)target action:(SEL)action
 {
   v14.receiver = self;
   v14.super_class = _UITextSelectionForceGesture;
-  v4 = [(UILongPressGestureRecognizer *)&v14 initWithTarget:a3 action:a4];
+  v4 = [(UILongPressGestureRecognizer *)&v14 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -57,15 +57,15 @@
   return v5;
 }
 
-- (void)enoughTimeElapsed:(id)a3
+- (void)enoughTimeElapsed:(id)elapsed
 {
-  v4 = a3;
+  elapsedCopy = elapsed;
   if (![(_UITextSelectionForceGesture *)self shouldFailWithoutForce]|| self && self->super.super._forcePressCount)
   {
     [(_UITextSelectionForceGesture *)self setDidLongPress:1];
     v5.receiver = self;
     v5.super_class = _UITextSelectionForceGesture;
-    [(UILongPressGestureRecognizer *)&v5 enoughTimeElapsed:v4];
+    [(UILongPressGestureRecognizer *)&v5 enoughTimeElapsed:elapsedCopy];
   }
 
   else
@@ -76,27 +76,27 @@
 
 - (BOOL)_shouldDelayUntilForceLevelRequirementIsMet
 {
-  v3 = [(_UITextSelectionForceGesture *)self shouldFailWithoutForce];
-  if (v3)
+  shouldFailWithoutForce = [(_UITextSelectionForceGesture *)self shouldFailWithoutForce];
+  if (shouldFailWithoutForce)
   {
     v5.receiver = self;
     v5.super_class = _UITextSelectionForceGesture;
-    LOBYTE(v3) = [(UIGestureRecognizer *)&v5 _shouldDelayUntilForceLevelRequirementIsMet];
+    LOBYTE(shouldFailWithoutForce) = [(UIGestureRecognizer *)&v5 _shouldDelayUntilForceLevelRequirementIsMet];
   }
 
-  return v3;
+  return shouldFailWithoutForce;
 }
 
 - (void)_resetVelocitySamples
 {
-  v3 = [(_UITextSelectionForceGesture *)self _velocitySample];
-  [v3 resetValues];
+  _velocitySample = [(_UITextSelectionForceGesture *)self _velocitySample];
+  [_velocitySample resetValues];
 
-  v4 = [(_UITextSelectionForceGesture *)self _previousVelocitySample];
-  [v4 resetValues];
+  _previousVelocitySample = [(_UITextSelectionForceGesture *)self _previousVelocitySample];
+  [_previousVelocitySample resetValues];
 
-  v5 = [(_UITextSelectionForceGesture *)self _liftOffSample];
-  [v5 resetValues];
+  _liftOffSample = [(_UITextSelectionForceGesture *)self _liftOffSample];
+  [_liftOffSample resetValues];
 }
 
 - (void)reset
@@ -113,24 +113,24 @@
   [(UIGestureRecognizer *)&v3 reset];
 }
 
-- (CGPoint)_convertVelocitySample:(id)a3 fromSceneReferenceCoordinatesToView:(id)a4
+- (CGPoint)_convertVelocitySample:(id)sample fromSceneReferenceCoordinatesToView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 dt];
+  sampleCopy = sample;
+  viewCopy = view;
+  [sampleCopy dt];
   if (v8 >= 0.001)
   {
-    [v6 start];
-    [(UIGestureRecognizer *)self _convertPoint:v7 fromSceneReferenceCoordinatesToView:?];
+    [sampleCopy start];
+    [(UIGestureRecognizer *)self _convertPoint:viewCopy fromSceneReferenceCoordinatesToView:?];
     v12 = v11;
     v14 = v13;
-    [v6 end];
-    [(UIGestureRecognizer *)self _convertPoint:v7 fromSceneReferenceCoordinatesToView:?];
+    [sampleCopy end];
+    [(UIGestureRecognizer *)self _convertPoint:viewCopy fromSceneReferenceCoordinatesToView:?];
     v16 = v15;
     v18 = v17 - v12;
-    [v6 dt];
+    [sampleCopy dt];
     v9 = v18 / v19;
-    [v6 dt];
+    [sampleCopy dt];
     v10 = (v16 - v14) / v20;
   }
 
@@ -147,19 +147,19 @@
   return result;
 }
 
-- (CGPoint)velocityInView:(id)a3
+- (CGPoint)velocityInView:(id)view
 {
-  v4 = a3;
-  [(_UITextSelectionForceGesture *)self _convertVelocitySample:self->_velocitySample fromSceneReferenceCoordinatesToView:v4];
+  viewCopy = view;
+  [(_UITextSelectionForceGesture *)self _convertVelocitySample:self->_velocitySample fromSceneReferenceCoordinatesToView:viewCopy];
   v6 = v5;
   v8 = v7;
-  v9 = [(_UITextSelectionForceGesture *)self _previousVelocitySample];
-  [v9 dt];
+  _previousVelocitySample = [(_UITextSelectionForceGesture *)self _previousVelocitySample];
+  [_previousVelocitySample dt];
   v11 = v10;
 
   if (v11 > 0.00000011920929)
   {
-    [(_UITextSelectionForceGesture *)self _convertVelocitySample:self->_previousVelocitySample fromSceneReferenceCoordinatesToView:v4];
+    [(_UITextSelectionForceGesture *)self _convertVelocitySample:self->_previousVelocitySample fromSceneReferenceCoordinatesToView:viewCopy];
     v6 = v6 * 0.25 + v12 * 0.75;
     v8 = v8 * 0.25 + v13 * 0.75;
   }
@@ -171,12 +171,12 @@
   return result;
 }
 
-- (CGPoint)_locationOfTouches:(id)a3
+- (CGPoint)_locationOfTouches:(id)touches
 {
-  v3 = [a3 anyObject];
-  v4 = [v3 window];
-  [v3 locationInView:0];
-  [v4 _convertPointToSceneReferenceSpace:?];
+  anyObject = [touches anyObject];
+  window = [anyObject window];
+  [anyObject locationInView:0];
+  [window _convertPointToSceneReferenceSpace:?];
   v6 = v5;
   v8 = v7;
 
@@ -187,19 +187,19 @@
   return result;
 }
 
-- (UIOffset)_offsetInViewFromSceneReferenceLocation:(CGPoint)a3 toSceneReferenceLocation:(CGPoint)a4
+- (UIOffset)_offsetInViewFromSceneReferenceLocation:(CGPoint)location toSceneReferenceLocation:(CGPoint)referenceLocation
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v9 = [(UIGestureRecognizer *)self view];
-  [(UIGestureRecognizer *)self _convertPoint:v9 fromSceneReferenceCoordinatesToView:v7, v6];
+  y = referenceLocation.y;
+  x = referenceLocation.x;
+  v6 = location.y;
+  v7 = location.x;
+  view = [(UIGestureRecognizer *)self view];
+  [(UIGestureRecognizer *)self _convertPoint:view fromSceneReferenceCoordinatesToView:v7, v6];
   v11 = v10;
   v13 = v12;
 
-  v14 = [(UIGestureRecognizer *)self view];
-  [(UIGestureRecognizer *)self _convertPoint:v14 fromSceneReferenceCoordinatesToView:x, y];
+  view2 = [(UIGestureRecognizer *)self view];
+  [(UIGestureRecognizer *)self _convertPoint:view2 fromSceneReferenceCoordinatesToView:x, y];
   v16 = v15;
   v18 = v17;
 
@@ -210,18 +210,18 @@
   return result;
 }
 
-- (CGPoint)_shiftPanLocationToNewSceneReferenceLocation:(CGPoint)a3
+- (CGPoint)_shiftPanLocationToNewSceneReferenceLocation:(CGPoint)location
 {
-  [(_UITextSelectionForceGesture *)self _offsetInViewFromSceneReferenceLocation:self->_lastUnadjustedSceneReferenceLocation.x toSceneReferenceLocation:self->_lastUnadjustedSceneReferenceLocation.y, a3.x, a3.y];
+  [(_UITextSelectionForceGesture *)self _offsetInViewFromSceneReferenceLocation:self->_lastUnadjustedSceneReferenceLocation.x toSceneReferenceLocation:self->_lastUnadjustedSceneReferenceLocation.y, location.x, location.y];
   v5 = v4;
   v7 = v6;
-  v8 = [(UIGestureRecognizer *)self view];
-  [(UIGestureRecognizer *)self _convertPoint:v8 fromSceneReferenceCoordinatesToView:self->_lastSceneReferenceLocation.x, self->_lastSceneReferenceLocation.y];
+  view = [(UIGestureRecognizer *)self view];
+  [(UIGestureRecognizer *)self _convertPoint:view fromSceneReferenceCoordinatesToView:self->_lastSceneReferenceLocation.x, self->_lastSceneReferenceLocation.y];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(UIGestureRecognizer *)self view];
-  [(UIGestureRecognizer *)self _convertPoint:v13 toSceneReferenceCoordinatesFromView:v5 + v10, v7 + v12];
+  view2 = [(UIGestureRecognizer *)self view];
+  [(UIGestureRecognizer *)self _convertPoint:view2 toSceneReferenceCoordinatesFromView:v5 + v10, v7 + v12];
   v15 = v14;
   v17 = v16;
 
@@ -242,101 +242,101 @@
   return result;
 }
 
-- (void)_centroidMovedTo:(CGPoint)a3 atTime:(double)a4 physicalTouch:(id)a5
+- (void)_centroidMovedTo:(CGPoint)to atTime:(double)time physicalTouch:(id)touch
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a5;
+  y = to.y;
+  x = to.x;
+  touchCopy = touch;
   [(_UITextSelectionForceGesture *)self _adjustSceneReferenceLocation:x, y];
   v11 = v10;
   v13 = v12;
-  v14 = a4 - self->_lastTouchTime;
-  v15 = [(_UITextSelectionForceGesture *)self _previousVelocitySample];
-  v16 = [(_UITextSelectionForceGesture *)self _velocitySample];
-  [v15 pullValuesFrom:v16];
+  v14 = time - self->_lastTouchTime;
+  _previousVelocitySample = [(_UITextSelectionForceGesture *)self _previousVelocitySample];
+  _velocitySample = [(_UITextSelectionForceGesture *)self _velocitySample];
+  [_previousVelocitySample pullValuesFrom:_velocitySample];
 
   v17 = self->_lastSceneReferenceLocation.x;
   v18 = self->_lastSceneReferenceLocation.y;
-  v19 = [(_UITextSelectionForceGesture *)self _velocitySample];
-  [v19 setStart:{v17, v18}];
+  _velocitySample2 = [(_UITextSelectionForceGesture *)self _velocitySample];
+  [_velocitySample2 setStart:{v17, v18}];
 
-  v20 = [(_UITextSelectionForceGesture *)self _velocitySample];
-  [v20 setEnd:{v11, v13}];
+  _velocitySample3 = [(_UITextSelectionForceGesture *)self _velocitySample];
+  [_velocitySample3 setEnd:{v11, v13}];
 
-  v21 = [(_UITextSelectionForceGesture *)self _velocitySample];
-  [v21 setDt:v14];
+  _velocitySample4 = [(_UITextSelectionForceGesture *)self _velocitySample];
+  [_velocitySample4 setDt:v14];
 
-  [v9 force];
+  [touchCopy force];
   v23 = v22;
-  v24 = [(_UITextSelectionForceGesture *)self _velocitySample];
-  [v24 setForce:v23];
+  _velocitySample5 = [(_UITextSelectionForceGesture *)self _velocitySample];
+  [_velocitySample5 setForce:v23];
 
-  [v9 majorRadius];
+  [touchCopy majorRadius];
   v26 = v25;
 
-  v27 = [(_UITextSelectionForceGesture *)self _velocitySample];
-  [v27 setMajorRadius:v26];
+  _velocitySample6 = [(_UITextSelectionForceGesture *)self _velocitySample];
+  [_velocitySample6 setMajorRadius:v26];
 
   self->_lastUnadjustedSceneReferenceLocation.x = x;
   self->_lastUnadjustedSceneReferenceLocation.y = y;
   self->_lastSceneReferenceLocation.x = v11;
   self->_lastSceneReferenceLocation.y = v13;
-  self->_lastTouchTime = a4;
+  self->_lastTouchTime = time;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UILongPressGestureRecognizer *)self touches];
-  v9 = [v8 count];
+  beganCopy = began;
+  eventCopy = event;
+  touches = [(UILongPressGestureRecognizer *)self touches];
+  v9 = [touches count];
 
   v13.receiver = self;
   v13.super_class = _UITextSelectionForceGesture;
-  [(UILongPressGestureRecognizer *)&v13 touchesBegan:v6 withEvent:v7];
+  [(UILongPressGestureRecognizer *)&v13 touchesBegan:beganCopy withEvent:eventCopy];
   if (!v9)
   {
-    [(_UITextSelectionForceGesture *)self _locationOfTouches:v6];
+    [(_UITextSelectionForceGesture *)self _locationOfTouches:beganCopy];
     self->_lastSceneReferenceLocation.x = v10;
     self->_lastSceneReferenceLocation.y = v11;
     self->_lastUnadjustedSceneReferenceLocation = self->_lastSceneReferenceLocation;
-    [v7 timestamp];
+    [eventCopy timestamp];
     self->_lastTouchTime = v12;
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIGestureRecognizer *)self view];
-  [(_UITextSelectionForceGesture *)self velocityInView:v8];
+  eventCopy = event;
+  movedCopy = moved;
+  view = [(UIGestureRecognizer *)self view];
+  [(_UITextSelectionForceGesture *)self velocityInView:view];
   v10 = v9;
   v12 = v11;
 
   v46.receiver = self;
   v46.super_class = _UITextSelectionForceGesture;
-  [(UILongPressGestureRecognizer *)&v46 touchesMoved:v7 withEvent:v6];
-  [(_UITextSelectionForceGesture *)self _locationOfTouches:v7];
+  [(UILongPressGestureRecognizer *)&v46 touchesMoved:movedCopy withEvent:eventCopy];
+  [(_UITextSelectionForceGesture *)self _locationOfTouches:movedCopy];
   v14 = v13;
   v16 = v15;
-  [v6 timestamp];
+  [eventCopy timestamp];
   v18 = v17;
 
-  v19 = [v7 anyObject];
+  anyObject = [movedCopy anyObject];
 
-  [(_UITextSelectionForceGesture *)self _centroidMovedTo:v19 atTime:v14 physicalTouch:v16, v18];
+  [(_UITextSelectionForceGesture *)self _centroidMovedTo:anyObject atTime:v14 physicalTouch:v16, v18];
   if (!self || ([(UIGestureRecognizer *)self _state]- 1) > 2 || (*(&self->super.super._gestureFlags + 6) & 8) != 0)
   {
     v20 = floor(v10);
     v21 = floor(v12);
-    v22 = [(UIGestureRecognizer *)self view];
-    [(_UITextSelectionForceGesture *)self velocityInView:v22];
+    view2 = [(UIGestureRecognizer *)self view];
+    [(_UITextSelectionForceGesture *)self velocityInView:view2];
     v24 = floor(v23);
     v26 = floor(v25);
 
-    v27 = [(UIGestureRecognizer *)self view];
-    [(UILongPressGestureRecognizer *)self locationInView:v27];
+    view3 = [(UIGestureRecognizer *)self view];
+    [(UILongPressGestureRecognizer *)self locationInView:view3];
     x = v28;
     y = v30;
     width = *MEMORY[0x1E695F060];
@@ -357,8 +357,8 @@
     }
 
     [(_UITextSelectionForceGesture *)self setVelocityRange:x, y, width, height];
-    v34 = [(_UITextSelectionForceGesture *)self _velocitySample];
-    [v34 majorRadius];
+    _velocitySample = [(_UITextSelectionForceGesture *)self _velocitySample];
+    [_velocitySample majorRadius];
     v36 = v35 * 0.3;
 
     [(_UITextSelectionForceGesture *)self velocityRange];
@@ -378,10 +378,10 @@
     v41 = v40;
     [(UIKBPanGestureVelocitySample *)self->_previousVelocitySample force];
     v43 = v42;
-    v44 = [(_UITextSelectionForceGesture *)self increasingForceState];
+    increasingForceState = [(_UITextSelectionForceGesture *)self increasingForceState];
     if (v41 >= v43)
     {
-      if (v44)
+      if (increasingForceState)
       {
         return;
       }
@@ -392,7 +392,7 @@
 
     else
     {
-      if (v44 != 1)
+      if (increasingForceState != 1)
       {
         return;
       }
@@ -404,95 +404,95 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v31.receiver = self;
   v31.super_class = _UITextSelectionForceGesture;
-  v6 = a4;
-  v7 = a3;
-  [(UILongPressGestureRecognizer *)&v31 touchesEnded:v7 withEvent:v6];
-  [(_UITextSelectionForceGesture *)self _locationOfTouches:v7, v31.receiver, v31.super_class];
+  eventCopy = event;
+  endedCopy = ended;
+  [(UILongPressGestureRecognizer *)&v31 touchesEnded:endedCopy withEvent:eventCopy];
+  [(_UITextSelectionForceGesture *)self _locationOfTouches:endedCopy, v31.receiver, v31.super_class];
   v9 = v8;
   v11 = v10;
-  [v6 timestamp];
+  [eventCopy timestamp];
   v13 = v12;
 
-  v14 = [v7 anyObject];
+  anyObject = [endedCopy anyObject];
 
-  [(_UITextSelectionForceGesture *)self _centroidMovedTo:v14 atTime:v9 physicalTouch:v11, v13];
+  [(_UITextSelectionForceGesture *)self _centroidMovedTo:anyObject atTime:v9 physicalTouch:v11, v13];
   if ([(_UITextSelectionForceGesture *)self liftOffState]== 1)
   {
-    v15 = [(UIGestureRecognizer *)self view];
-    [(_UITextSelectionForceGesture *)self velocityInView:v15];
+    view = [(UIGestureRecognizer *)self view];
+    [(_UITextSelectionForceGesture *)self velocityInView:view];
     v17 = v16;
     v19 = v18;
 
-    v20 = [(_UITextSelectionForceGesture *)self _liftOffSample];
-    [v20 majorRadius];
+    _liftOffSample = [(_UITextSelectionForceGesture *)self _liftOffSample];
+    [_liftOffSample majorRadius];
     v22 = v21;
 
     if (v17 * v17 + v19 * v19 >= v22 * v22)
     {
       v23 = atan2(-v19, -v17);
-      v24 = [(_UITextSelectionForceGesture *)self _liftOffSample];
-      [v24 end];
+      _liftOffSample2 = [(_UITextSelectionForceGesture *)self _liftOffSample];
+      [_liftOffSample2 end];
       v26 = v25;
       v28 = v27;
 
       v29 = __sincos_stret(v23);
-      v30 = [(_UITextSelectionForceGesture *)self _liftOffSample];
-      [v30 setEnd:{v22 * v29.__cosval * 0.1 + v26, v22 * v29.__sinval * 0.1 + v28}];
+      _liftOffSample3 = [(_UITextSelectionForceGesture *)self _liftOffSample];
+      [_liftOffSample3 setEnd:{v22 * v29.__cosval * 0.1 + v26, v22 * v29.__sinval * 0.1 + v28}];
     }
   }
 }
 
-- (BOOL)shouldResetRangeForVelocity:(CGPoint)a3 previousVelocity:(CGPoint)a4
+- (BOOL)shouldResetRangeForVelocity:(CGPoint)velocity previousVelocity:(CGPoint)previousVelocity
 {
-  y = a3.y;
-  x = a3.x;
-  if (a4.x == 0.0 && a3.x != 0.0 || a4.y == 0.0 && a3.y != 0.0)
+  y = velocity.y;
+  x = velocity.x;
+  if (previousVelocity.x == 0.0 && velocity.x != 0.0 || previousVelocity.y == 0.0 && velocity.y != 0.0)
   {
     return 1;
   }
 
-  v7 = atan2(a4.y, a4.x) + 3.14159265 + 3.14159265;
+  v7 = atan2(previousVelocity.y, previousVelocity.x) + 3.14159265 + 3.14159265;
   v8 = atan2(y, x) + 3.14159265 + 3.14159265;
   return v8 >= v7 + 0.785398163 || v8 <= v7 + -0.785398163;
 }
 
 - (void)_updateLiftOffState
 {
-  v3 = [(_UITextSelectionForceGesture *)self _velocitySample];
-  [v3 majorRadius];
+  _velocitySample = [(_UITextSelectionForceGesture *)self _velocitySample];
+  [_velocitySample majorRadius];
   v5 = v4;
-  v6 = [(_UITextSelectionForceGesture *)self _previousVelocitySample];
-  [v6 majorRadius];
+  _previousVelocitySample = [(_UITextSelectionForceGesture *)self _previousVelocitySample];
+  [_previousVelocitySample majorRadius];
   v8 = v7;
 
-  v9 = [(_UITextSelectionForceGesture *)self liftOffState];
-  if (v9 == 1)
+  liftOffState = [(_UITextSelectionForceGesture *)self liftOffState];
+  if (liftOffState == 1)
   {
 
     [(_UITextSelectionForceGesture *)self setLiftOffState:v5 < v8];
   }
 
-  else if (!v9 && v5 < v8)
+  else if (!liftOffState && v5 < v8)
   {
     [(_UITextSelectionForceGesture *)self setLiftOffState:1];
-    v11 = [(_UITextSelectionForceGesture *)self _liftOffSample];
-    v10 = [(_UITextSelectionForceGesture *)self _previousVelocitySample];
-    [v11 pullValuesFrom:v10];
+    _liftOffSample = [(_UITextSelectionForceGesture *)self _liftOffSample];
+    _previousVelocitySample2 = [(_UITextSelectionForceGesture *)self _previousVelocitySample];
+    [_liftOffSample pullValuesFrom:_previousVelocitySample2];
   }
 }
 
-- (CGPoint)_centroidInView:(id)a3
+- (CGPoint)_centroidInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(_UITextSelectionForceGesture *)self liftOffState]== 1)
   {
-    v5 = [(_UITextSelectionForceGesture *)self _liftOffSample];
-    [v5 end];
-    [(UIGestureRecognizer *)self _convertPoint:v4 fromSceneReferenceCoordinatesToView:?];
+    _liftOffSample = [(_UITextSelectionForceGesture *)self _liftOffSample];
+    [_liftOffSample end];
+    [(UIGestureRecognizer *)self _convertPoint:viewCopy fromSceneReferenceCoordinatesToView:?];
     v7 = v6;
     v9 = v8;
   }
@@ -501,7 +501,7 @@
   {
     v14.receiver = self;
     v14.super_class = _UITextSelectionForceGesture;
-    [(UILongPressGestureRecognizer *)&v14 _centroidInView:v4];
+    [(UILongPressGestureRecognizer *)&v14 _centroidInView:viewCopy];
     v7 = v10;
     v9 = v11;
   }
@@ -513,7 +513,7 @@
   return result;
 }
 
-- (BOOL)forceHasIncreasedForTimeInterval:(double)a3
+- (BOOL)forceHasIncreasedForTimeInterval:(double)interval
 {
   if ([(_UITextSelectionForceGesture *)self increasingForceState]!= 1 || [(UIGestureRecognizer *)self currentPreviewForceState]< 1)
   {
@@ -522,7 +522,7 @@
 
   Current = CFAbsoluteTimeGetCurrent();
   [(_UITextSelectionForceGesture *)self increasingForceTimestamp];
-  return Current - v6 >= a3;
+  return Current - v6 >= interval;
 }
 
 - (CGPoint)lastSceneReferenceLocation

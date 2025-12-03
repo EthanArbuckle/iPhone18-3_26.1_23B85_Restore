@@ -1,15 +1,15 @@
 @interface NWMessage
-- (NWMessage)initWithContent:(id)a3 context:(id)a4;
+- (NWMessage)initWithContent:(id)content context:(id)context;
 @end
 
 @implementation NWMessage
 
-- (NWMessage)initWithContent:(id)a3 context:(id)a4
+- (NWMessage)initWithContent:(id)content context:(id)context
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  contentCopy = content;
+  contextCopy = context;
+  if (contextCopy)
   {
     v26.receiver = self;
     v26.super_class = NWMessage;
@@ -17,8 +17,8 @@
     if (v9)
     {
       v10 = v9;
-      objc_storeStrong(&v9->_internalContent, a3);
-      objc_storeStrong(&v10->_internalContext, a4);
+      objc_storeStrong(&v9->_internalContent, content);
+      objc_storeStrong(&v10->_internalContext, context);
       goto LABEL_4;
     }
 

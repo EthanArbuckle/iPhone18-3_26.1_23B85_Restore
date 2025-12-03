@@ -1,14 +1,14 @@
 @interface FMFSchedule
-+ (id)_dateFromHour:(unint64_t)a3 andMinute:(unint64_t)a4;
-+ (id)_dayStringForDayOfWeek:(int64_t)a3;
-+ (id)_stringForDaysOfWeek:(int64_t)a3;
-+ (id)firstDateFromDates:(id)a3 order:(int64_t)a4;
-+ (id)localizedTimeStringForHour:(unint64_t)a3 andMinute:(unint64_t)a4 timeStyle:(unint64_t)a5;
-+ (void)_enumerateDaysOfWeekInFMFDaysOfWeek:(int64_t)a3 callback:(id)a4;
-- (BOOL)isCurrentAt:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (FMFSchedule)initWithCoder:(id)a3;
-- (FMFSchedule)initWithDictionary:(id)a3;
++ (id)_dateFromHour:(unint64_t)hour andMinute:(unint64_t)minute;
++ (id)_dayStringForDayOfWeek:(int64_t)week;
++ (id)_stringForDaysOfWeek:(int64_t)week;
++ (id)firstDateFromDates:(id)dates order:(int64_t)order;
++ (id)localizedTimeStringForHour:(unint64_t)hour andMinute:(unint64_t)minute timeStyle:(unint64_t)style;
++ (void)_enumerateDaysOfWeekInFMFDaysOfWeek:(int64_t)week callback:(id)callback;
+- (BOOL)isCurrentAt:(id)at;
+- (BOOL)isEqual:(id)equal;
+- (FMFSchedule)initWithCoder:(id)coder;
+- (FMFSchedule)initWithDictionary:(id)dictionary;
 - (NSCalendar)_gregorian;
 - (NSDictionary)dictionary;
 - (NSString)localizedDaysOfWeekString;
@@ -16,56 +16,56 @@
 - (NSString)localizedStartTimeString;
 - (NSString)validityError;
 - (id)_daysOfWeek;
-- (id)_endDateForStartDate:(id)a3;
-- (id)_nextStartDateOnDayOfWeek:(int64_t)a3 from:(id)a4 options:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_endDateForStartDate:(id)date;
+- (id)_nextStartDateOnDayOfWeek:(int64_t)week from:(id)from options:(unint64_t)options;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)nextStartDateFrom:(id)a3 options:(unint64_t)a4;
-- (id)nextStartOrEndDateFrom:(id)a3;
+- (id)nextStartDateFrom:(id)from options:(unint64_t)options;
+- (id)nextStartOrEndDateFrom:(id)from;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMFSchedule
 
-- (FMFSchedule)initWithDictionary:(id)a3
+- (FMFSchedule)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v5 = [(FMFSchedule *)self init];
     if (v5)
     {
-      v6 = [v4 objectForKeyedSubscript:@"startHour"];
+      v6 = [dictionaryCopy objectForKeyedSubscript:@"startHour"];
       -[FMFSchedule setStartHour:](v5, "setStartHour:", [v6 unsignedIntegerValue]);
 
-      v7 = [v4 objectForKeyedSubscript:@"startMin"];
+      v7 = [dictionaryCopy objectForKeyedSubscript:@"startMin"];
       -[FMFSchedule setStartMin:](v5, "setStartMin:", [v7 unsignedIntegerValue]);
 
-      v8 = [v4 objectForKeyedSubscript:@"endHour"];
+      v8 = [dictionaryCopy objectForKeyedSubscript:@"endHour"];
       -[FMFSchedule setEndHour:](v5, "setEndHour:", [v8 unsignedIntegerValue]);
 
-      v9 = [v4 objectForKeyedSubscript:@"endMin"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"endMin"];
       -[FMFSchedule setEndMin:](v5, "setEndMin:", [v9 unsignedIntegerValue]);
 
-      v10 = [v4 objectForKeyedSubscript:@"spanDays"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"spanDays"];
       -[FMFSchedule setSpanDays:](v5, "setSpanDays:", [v10 unsignedIntegerValue]);
 
-      v11 = [v4 objectForKeyedSubscript:@"daysOfWeek"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"daysOfWeek"];
       -[FMFSchedule setDaysOfWeek:](v5, "setDaysOfWeek:", [v11 unsignedIntegerValue] & 0x7F);
 
       v12 = MEMORY[0x277CBEBB0];
-      v13 = [v4 objectForKeyedSubscript:@"fenceTz"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"fenceTz"];
       v14 = [v12 timeZoneWithName:v13];
       [(FMFSchedule *)v5 setTimeZone:v14];
 
-      v15 = [(FMFSchedule *)v5 validityError];
-      if (v15)
+      validityError = [(FMFSchedule *)v5 validityError];
+      if (validityError)
       {
         v16 = LogCategory_Daemon();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
         {
-          [(FMFSchedule *)v15 initWithDictionary:v16];
+          [(FMFSchedule *)validityError initWithDictionary:v16];
         }
 
         v5 = 0;
@@ -73,7 +73,7 @@
     }
 
     self = v5;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
@@ -84,10 +84,10 @@
       [FMFSchedule initWithDictionary:v18];
     }
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (NSString)validityError
@@ -122,9 +122,9 @@
     return @"unspecified spanDays";
   }
 
-  v4 = [(FMFSchedule *)self timeZone];
+  timeZone = [(FMFSchedule *)self timeZone];
 
-  if (v4)
+  if (timeZone)
   {
     return 0;
   }
@@ -156,28 +156,28 @@
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:{-[FMFSchedule daysOfWeek](self, "daysOfWeek")}];
   [v3 setObject:v9 forKeyedSubscript:@"daysOfWeek"];
 
-  v10 = [(FMFSchedule *)self timeZone];
-  v11 = [v10 name];
-  [v3 setObject:v11 forKeyedSubscript:@"fenceTz"];
+  timeZone = [(FMFSchedule *)self timeZone];
+  name = [timeZone name];
+  [v3 setObject:name forKeyedSubscript:@"fenceTz"];
 
   v12 = [v3 copy];
 
   return v12;
 }
 
-- (FMFSchedule)initWithCoder:(id)a3
+- (FMFSchedule)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(FMFSchedule *)self init];
   if (v5)
   {
-    -[FMFSchedule setStartHour:](v5, "setStartHour:", [v4 decodeIntegerForKey:@"startHour"]);
-    -[FMFSchedule setStartMin:](v5, "setStartMin:", [v4 decodeIntegerForKey:@"startMin"]);
-    -[FMFSchedule setEndHour:](v5, "setEndHour:", [v4 decodeIntegerForKey:@"endHour"]);
-    -[FMFSchedule setEndMin:](v5, "setEndMin:", [v4 decodeIntegerForKey:@"endMin"]);
-    -[FMFSchedule setSpanDays:](v5, "setSpanDays:", [v4 decodeIntegerForKey:@"spanDays"]);
-    -[FMFSchedule setDaysOfWeek:](v5, "setDaysOfWeek:", [v4 decodeIntegerForKey:@"daysOfWeek"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fenceTz"];
+    -[FMFSchedule setStartHour:](v5, "setStartHour:", [coderCopy decodeIntegerForKey:@"startHour"]);
+    -[FMFSchedule setStartMin:](v5, "setStartMin:", [coderCopy decodeIntegerForKey:@"startMin"]);
+    -[FMFSchedule setEndHour:](v5, "setEndHour:", [coderCopy decodeIntegerForKey:@"endHour"]);
+    -[FMFSchedule setEndMin:](v5, "setEndMin:", [coderCopy decodeIntegerForKey:@"endMin"]);
+    -[FMFSchedule setSpanDays:](v5, "setSpanDays:", [coderCopy decodeIntegerForKey:@"spanDays"]);
+    -[FMFSchedule setDaysOfWeek:](v5, "setDaysOfWeek:", [coderCopy decodeIntegerForKey:@"daysOfWeek"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fenceTz"];
     v7 = [MEMORY[0x277CBEBB0] timeZoneWithName:v6];
     [(FMFSchedule *)v5 setTimeZone:v7];
   }
@@ -185,22 +185,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startHour = self->_startHour;
-  v5 = a3;
-  [v5 encodeInteger:startHour forKey:@"startHour"];
-  [v5 encodeInteger:self->_startMin forKey:@"startMin"];
-  [v5 encodeInteger:self->_endHour forKey:@"endHour"];
-  [v5 encodeInteger:self->_endMin forKey:@"endMin"];
-  [v5 encodeInteger:self->_daysOfWeek forKey:@"daysOfWeek"];
-  [v5 encodeInteger:self->_spanDays forKey:@"spanDays"];
-  v7 = [(FMFSchedule *)self timeZone];
-  v6 = [v7 name];
-  [v5 encodeObject:v6 forKey:@"fenceTz"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:startHour forKey:@"startHour"];
+  [coderCopy encodeInteger:self->_startMin forKey:@"startMin"];
+  [coderCopy encodeInteger:self->_endHour forKey:@"endHour"];
+  [coderCopy encodeInteger:self->_endMin forKey:@"endMin"];
+  [coderCopy encodeInteger:self->_daysOfWeek forKey:@"daysOfWeek"];
+  [coderCopy encodeInteger:self->_spanDays forKey:@"spanDays"];
+  timeZone = [(FMFSchedule *)self timeZone];
+  name = [timeZone name];
+  [coderCopy encodeObject:name forKey:@"fenceTz"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setStartHour:self->_startHour];
@@ -215,19 +215,19 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(FMFSchedule *)self startHour];
-    if (v6 == [v5 startHour] && (v7 = -[FMFSchedule startMin](self, "startMin"), v7 == objc_msgSend(v5, "startMin")) && (v8 = -[FMFSchedule endMin](self, "endMin"), v8 == objc_msgSend(v5, "endMin")) && (v9 = -[FMFSchedule endHour](self, "endHour"), v9 == objc_msgSend(v5, "endHour")) && (v10 = -[FMFSchedule daysOfWeek](self, "daysOfWeek"), v10 == objc_msgSend(v5, "daysOfWeek")) && (v11 = -[FMFSchedule spanDays](self, "spanDays"), v11 == objc_msgSend(v5, "spanDays")))
+    v5 = equalCopy;
+    startHour = [(FMFSchedule *)self startHour];
+    if (startHour == [v5 startHour] && (v7 = -[FMFSchedule startMin](self, "startMin"), v7 == objc_msgSend(v5, "startMin")) && (v8 = -[FMFSchedule endMin](self, "endMin"), v8 == objc_msgSend(v5, "endMin")) && (v9 = -[FMFSchedule endHour](self, "endHour"), v9 == objc_msgSend(v5, "endHour")) && (v10 = -[FMFSchedule daysOfWeek](self, "daysOfWeek"), v10 == objc_msgSend(v5, "daysOfWeek")) && (v11 = -[FMFSchedule spanDays](self, "spanDays"), v11 == objc_msgSend(v5, "spanDays")))
     {
-      v12 = [(FMFSchedule *)self timeZone];
-      v13 = [v5 timeZone];
-      v14 = [v12 isEqualToTimeZone:v13];
+      timeZone = [(FMFSchedule *)self timeZone];
+      timeZone2 = [v5 timeZone];
+      v14 = [timeZone isEqualToTimeZone:timeZone2];
     }
 
     else
@@ -246,27 +246,27 @@
 
 - (unint64_t)hash
 {
-  v3 = [(FMFSchedule *)self startHour];
-  v4 = [(FMFSchedule *)self startMin]^ v3;
-  v5 = [(FMFSchedule *)self endHour];
-  v6 = v4 ^ v5 ^ [(FMFSchedule *)self endMin];
-  v7 = [(FMFSchedule *)self daysOfWeek];
-  v8 = v7 ^ [(FMFSchedule *)self spanDays];
-  v9 = [(FMFSchedule *)self timeZone];
-  v10 = v8 ^ [v9 hash];
+  startHour = [(FMFSchedule *)self startHour];
+  v4 = [(FMFSchedule *)self startMin]^ startHour;
+  endHour = [(FMFSchedule *)self endHour];
+  v6 = v4 ^ endHour ^ [(FMFSchedule *)self endMin];
+  daysOfWeek = [(FMFSchedule *)self daysOfWeek];
+  v8 = daysOfWeek ^ [(FMFSchedule *)self spanDays];
+  timeZone = [(FMFSchedule *)self timeZone];
+  v10 = v8 ^ [timeZone hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isCurrentAt:(id)a3
+- (BOOL)isCurrentAt:(id)at
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(FMFSchedule *)self nextStartDateFrom:v4 options:4];
+  atCopy = at;
+  v5 = [(FMFSchedule *)self nextStartDateFrom:atCopy options:4];
   if (v5)
   {
     v6 = [(FMFSchedule *)self _endDateForStartDate:v5];
-    v7 = [v5 compare:v4] == -1 && objc_msgSend(v4, "compare:", v6) == -1;
+    v7 = [v5 compare:atCopy] == -1 && objc_msgSend(atCopy, "compare:", v6) == -1;
   }
 
   else
@@ -282,7 +282,7 @@
     v13 = 1024;
     v14 = v7;
     v15 = 2112;
-    v16 = v4;
+    v16 = atCopy;
     _os_log_impl(&dword_24A33F000, v8, OS_LOG_TYPE_DEFAULT, "%s: %d at: %@", &v11, 0x1Cu);
   }
 
@@ -290,21 +290,21 @@
   return v7;
 }
 
-- (id)nextStartOrEndDateFrom:(id)a3
+- (id)nextStartOrEndDateFrom:(id)from
 {
-  v4 = a3;
-  v5 = [(FMFSchedule *)self nextStartDateFrom:v4 options:4];
+  fromCopy = from;
+  v5 = [(FMFSchedule *)self nextStartDateFrom:fromCopy options:4];
   if (v5)
   {
     v6 = [(FMFSchedule *)self _endDateForStartDate:v5];
-    if (v6 && [v4 compare:v6] == -1)
+    if (v6 && [fromCopy compare:v6] == -1)
     {
       v7 = v6;
     }
 
     else
     {
-      v7 = [(FMFSchedule *)self nextStartDateFrom:v4 options:0];
+      v7 = [(FMFSchedule *)self nextStartDateFrom:fromCopy options:0];
     }
 
     v8 = v7;
@@ -322,35 +322,35 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(FMFSchedule *)self startHour];
-  v6 = [(FMFSchedule *)self startMin];
-  v7 = [(FMFSchedule *)self endHour];
-  v8 = [(FMFSchedule *)self endMin];
-  v9 = [(FMFSchedule *)self spanDays];
-  v10 = [(FMFSchedule *)self _daysOfWeek];
-  v11 = [(FMFSchedule *)self timeZone];
-  v12 = [v3 stringWithFormat:@"<%@ sH=%ld sM=%ld eH=%ld eM=%ld spanDays=%ld dOW=%@, tZ=%@>", v4, v5, v6, v7, v8, v9, v10, v11];
+  startHour = [(FMFSchedule *)self startHour];
+  startMin = [(FMFSchedule *)self startMin];
+  endHour = [(FMFSchedule *)self endHour];
+  endMin = [(FMFSchedule *)self endMin];
+  spanDays = [(FMFSchedule *)self spanDays];
+  _daysOfWeek = [(FMFSchedule *)self _daysOfWeek];
+  timeZone = [(FMFSchedule *)self timeZone];
+  v12 = [v3 stringWithFormat:@"<%@ sH=%ld sM=%ld eH=%ld eM=%ld spanDays=%ld dOW=%@, tZ=%@>", v4, startHour, startMin, endHour, endMin, spanDays, _daysOfWeek, timeZone];
 
   return v12;
 }
 
-- (id)_endDateForStartDate:(id)a3
+- (id)_endDateForStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_opt_new();
-  v6 = [(FMFSchedule *)self timeZone];
-  [v5 setTimeZone:v6];
+  timeZone = [(FMFSchedule *)self timeZone];
+  [v5 setTimeZone:timeZone];
 
   [v5 setHour:{-[FMFSchedule endHour](self, "endHour")}];
   [v5 setMinute:{-[FMFSchedule endMin](self, "endMin")}];
-  v7 = [(FMFSchedule *)self _gregorian];
-  v8 = [v7 nextDateAfterDate:v4 matchingComponents:v5 options:1024];
+  _gregorian = [(FMFSchedule *)self _gregorian];
+  v8 = [_gregorian nextDateAfterDate:dateCopy matchingComponents:v5 options:1024];
 
   if (v8)
   {
-    v9 = [(FMFSchedule *)self spanDays];
-    v10 = [(FMFSchedule *)self _gregorian];
-    v11 = v9 - ([v10 isDate:v8 inSameDayAsDate:v4] ^ 1);
+    spanDays = [(FMFSchedule *)self spanDays];
+    _gregorian2 = [(FMFSchedule *)self _gregorian];
+    v11 = spanDays - ([_gregorian2 isDate:v8 inSameDayAsDate:dateCopy] ^ 1);
 
     if ((v11 & 0x8000000000000000) != 0)
     {
@@ -366,8 +366,8 @@
       do
       {
         v12 = v8;
-        v13 = [(FMFSchedule *)self _gregorian];
-        v8 = [v13 nextDateAfterDate:v8 matchingComponents:v5 options:1024];
+        _gregorian3 = [(FMFSchedule *)self _gregorian];
+        v8 = [_gregorian3 nextDateAfterDate:v8 matchingComponents:v5 options:1024];
 
         if (v11 < 2)
         {
@@ -391,13 +391,13 @@
     [FMFSchedule _daysOfWeek];
   }
 
-  v3 = [_daysOfWeek_daysOfWeekMap allKeys];
+  allKeys = [_daysOfWeek_daysOfWeekMap allKeys];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __26__FMFSchedule__daysOfWeek__block_invoke_78;
   v6[3] = &unk_278FDDF88;
   v6[4] = self;
-  v4 = [v3 fm_filter:v6];
+  v4 = [allKeys fm_filter:v6];
 
   return v4;
 }
@@ -434,21 +434,21 @@ BOOL __26__FMFSchedule__daysOfWeek__block_invoke_78(uint64_t a1, uint64_t a2)
   return ([*(a1 + 32) daysOfWeek] & v4) != 0;
 }
 
-- (id)nextStartDateFrom:(id)a3 options:(unint64_t)a4
+- (id)nextStartDateFrom:(id)from options:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [(FMFSchedule *)self _daysOfWeek];
+  fromCopy = from;
+  _daysOfWeek = [(FMFSchedule *)self _daysOfWeek];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __41__FMFSchedule_nextStartDateFrom_options___block_invoke;
   v13[3] = &unk_278FDDFB0;
   v13[4] = self;
-  v14 = v6;
-  v15 = a4;
-  v8 = v6;
-  v9 = [v7 fm_map:v13];
+  v14 = fromCopy;
+  optionsCopy = options;
+  v8 = fromCopy;
+  v9 = [_daysOfWeek fm_map:v13];
 
-  if ((a4 & 4) != 0)
+  if ((options & 4) != 0)
   {
     v10 = 1;
   }
@@ -473,31 +473,31 @@ uint64_t __41__FMFSchedule_nextStartDateFrom_options___block_invoke(void *a1, vo
   return [v3 _nextStartDateOnDayOfWeek:v4 from:v5 options:v6];
 }
 
-- (id)_nextStartDateOnDayOfWeek:(int64_t)a3 from:(id)a4 options:(unint64_t)a5
+- (id)_nextStartDateOnDayOfWeek:(int64_t)week from:(id)from options:(unint64_t)options
 {
-  v8 = a4;
+  fromCopy = from;
   v9 = objc_opt_new();
-  v10 = [(FMFSchedule *)self timeZone];
-  [v9 setTimeZone:v10];
+  timeZone = [(FMFSchedule *)self timeZone];
+  [v9 setTimeZone:timeZone];
 
   [v9 setHour:{-[FMFSchedule startHour](self, "startHour")}];
   [v9 setMinute:{-[FMFSchedule startMin](self, "startMin")}];
-  [v9 setWeekday:a3];
-  v11 = [(FMFSchedule *)self _gregorian];
-  v12 = [v11 nextDateAfterDate:v8 matchingComponents:v9 options:a5 | 0x400];
+  [v9 setWeekday:week];
+  _gregorian = [(FMFSchedule *)self _gregorian];
+  0x400 = [_gregorian nextDateAfterDate:fromCopy matchingComponents:v9 options:options | 0x400];
 
-  return v12;
+  return 0x400;
 }
 
-+ (id)firstDateFromDates:(id)a3 order:(int64_t)a4
++ (id)firstDateFromDates:(id)dates order:(int64_t)order
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  datesCopy = dates;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [datesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -509,11 +509,11 @@ uint64_t __41__FMFSchedule_nextStartDateFrom_options___block_invoke(void *a1, vo
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(datesCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if (!v8 || [*(*(&v15 + 1) + 8 * i) compare:v8] == a4)
+        if (!v8 || [*(*(&v15 + 1) + 8 * i) compare:v8] == order)
         {
           v12 = v11;
 
@@ -521,7 +521,7 @@ uint64_t __41__FMFSchedule_nextStartDateFrom_options___block_invoke(void *a1, vo
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [datesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -543,8 +543,8 @@ uint64_t __41__FMFSchedule_nextStartDateFrom_options___block_invoke(void *a1, vo
   if (!gregorian)
   {
     v4 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5C0]];
-    v5 = [(FMFSchedule *)self timeZone];
-    [(NSCalendar *)v4 setTimeZone:v5];
+    timeZone = [(FMFSchedule *)self timeZone];
+    [(NSCalendar *)v4 setTimeZone:timeZone];
 
     v6 = self->_gregorian;
     self->_gregorian = v4;
@@ -555,26 +555,26 @@ uint64_t __41__FMFSchedule_nextStartDateFrom_options___block_invoke(void *a1, vo
   return gregorian;
 }
 
-+ (id)_dateFromHour:(unint64_t)a3 andMinute:(unint64_t)a4
++ (id)_dateFromHour:(unint64_t)hour andMinute:(unint64_t)minute
 {
   v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.0];
-  v7 = [MEMORY[0x277CBEA80] currentCalendar];
-  v8 = [v7 components:62 fromDate:v6];
-  [v8 setHour:a3];
-  [v8 setMinute:a4];
-  v9 = [v7 dateFromComponents:v8];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v8 = [currentCalendar components:62 fromDate:v6];
+  [v8 setHour:hour];
+  [v8 setMinute:minute];
+  v9 = [currentCalendar dateFromComponents:v8];
 
   return v9;
 }
 
-+ (void)_enumerateDaysOfWeekInFMFDaysOfWeek:(int64_t)a3 callback:(id)a4
++ (void)_enumerateDaysOfWeekInFMFDaysOfWeek:(int64_t)week callback:(id)callback
 {
-  v12 = a4;
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [v5 firstWeekday];
+  callbackCopy = callback;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  firstWeekday = [currentCalendar firstWeekday];
   v7 = 0;
-  v8 = ((v6 + 6) * 0x2492492492492493uLL) >> 64;
-  v9 = v6 + 6 - 7 * ((v8 + ((v6 + 6 - v8) >> 1)) >> 2);
+  v8 = ((firstWeekday + 6) * 0x2492492492492493uLL) >> 64;
+  v9 = firstWeekday + 6 - 7 * ((v8 + ((firstWeekday + 6 - v8) >> 1)) >> 2);
   v10 = v9;
   do
   {
@@ -588,9 +588,9 @@ uint64_t __41__FMFSchedule_nextStartDateFrom_options___block_invoke(void *a1, vo
       v11 = qword_24A3647E8[v10];
     }
 
-    if ((v11 & a3) != 0)
+    if ((v11 & week) != 0)
     {
-      v12[2]();
+      callbackCopy[2]();
     }
 
     if (v10 < 6)
@@ -609,14 +609,14 @@ uint64_t __41__FMFSchedule_nextStartDateFrom_options___block_invoke(void *a1, vo
   while (v10 != v9);
 }
 
-+ (id)_dayStringForDayOfWeek:(int64_t)a3
++ (id)_dayStringForDayOfWeek:(int64_t)week
 {
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = v4;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v5 = currentCalendar;
   v6 = &stru_285D7AA10;
-  if (a3 <= 7)
+  if (week <= 7)
   {
-    switch(a3)
+    switch(week)
     {
       case 1:
         v7 = 6;
@@ -632,16 +632,16 @@ uint64_t __41__FMFSchedule_nextStartDateFrom_options___block_invoke(void *a1, vo
     }
   }
 
-  else if (a3 > 31)
+  else if (week > 31)
   {
-    if (a3 == 64)
+    if (week == 64)
     {
       v7 = 0;
     }
 
     else
     {
-      if (a3 != 32)
+      if (week != 32)
       {
         goto LABEL_18;
       }
@@ -650,14 +650,14 @@ uint64_t __41__FMFSchedule_nextStartDateFrom_options___block_invoke(void *a1, vo
     }
   }
 
-  else if (a3 == 8)
+  else if (week == 8)
   {
     v7 = 3;
   }
 
   else
   {
-    if (a3 != 16)
+    if (week != 16)
     {
       goto LABEL_18;
     }
@@ -665,23 +665,23 @@ uint64_t __41__FMFSchedule_nextStartDateFrom_options___block_invoke(void *a1, vo
     v7 = 2;
   }
 
-  v8 = [v4 weekdaySymbols];
-  v6 = [v8 objectAtIndexedSubscript:v7];
+  weekdaySymbols = [currentCalendar weekdaySymbols];
+  v6 = [weekdaySymbols objectAtIndexedSubscript:v7];
 
 LABEL_18:
 
   return v6;
 }
 
-+ (id)_stringForDaysOfWeek:(int64_t)a3
++ (id)_stringForDaysOfWeek:(int64_t)week
 {
-  if (!a3)
+  if (!week)
   {
     v5 = &stru_285D7AA10;
     goto LABEL_39;
   }
 
-  if (a3 == 127)
+  if (week == 127)
   {
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:@"DAYSLIST_EVERY_DAY" value:&stru_285D7AA10 table:@"Localizable-TINKER"];
@@ -706,13 +706,13 @@ LABEL_18:
   v26 = 3221225472;
   v27 = __46__FMFSchedule_NSString___stringForDaysOfWeek___block_invoke;
   v28 = &unk_278FDE750;
-  v33 = a1;
+  selfCopy = self;
   v8 = v7;
   v29 = v8;
   v30 = v39;
   v31 = v38;
   v32 = &v34;
-  [a1 _enumerateDaysOfWeekInFMFDaysOfWeek:a3 callback:&v25];
+  [self _enumerateDaysOfWeekInFMFDaysOfWeek:week callback:&v25];
   v9 = [v8 count];
   v5 = &stru_285D7AA10;
   if (v9 > 3)
@@ -898,17 +898,17 @@ void __46__FMFSchedule_NSString___stringForDaysOfWeek___block_invoke(uint64_t a1
 
 - (NSString)localizedDaysOfWeekString
 {
-  v2 = [(FMFSchedule *)self daysOfWeek];
+  daysOfWeek = [(FMFSchedule *)self daysOfWeek];
 
-  return [FMFSchedule localizedDaysOfWeekStringFor:v2];
+  return [FMFSchedule localizedDaysOfWeekStringFor:daysOfWeek];
 }
 
-+ (id)localizedTimeStringForHour:(unint64_t)a3 andMinute:(unint64_t)a4 timeStyle:(unint64_t)a5
++ (id)localizedTimeStringForHour:(unint64_t)hour andMinute:(unint64_t)minute timeStyle:(unint64_t)style
 {
-  v6 = [FMFSchedule _dateFromHour:a3 andMinute:a4];
+  v6 = [FMFSchedule _dateFromHour:hour andMinute:minute];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCA968] localizedStringFromDate:v6 dateStyle:0 timeStyle:a5];
+    v7 = [MEMORY[0x277CCA968] localizedStringFromDate:v6 dateStyle:0 timeStyle:style];
   }
 
   else
@@ -921,18 +921,18 @@ void __46__FMFSchedule_NSString___stringForDaysOfWeek___block_invoke(uint64_t a1
 
 - (NSString)localizedStartTimeString
 {
-  v3 = [(FMFSchedule *)self startHour];
-  v4 = [(FMFSchedule *)self startMin];
+  startHour = [(FMFSchedule *)self startHour];
+  startMin = [(FMFSchedule *)self startMin];
 
-  return [FMFSchedule localizedTimeStringForHour:v3 andMinute:v4];
+  return [FMFSchedule localizedTimeStringForHour:startHour andMinute:startMin];
 }
 
 - (NSString)localizedEndTimeString
 {
-  v3 = [(FMFSchedule *)self endHour];
-  v4 = [(FMFSchedule *)self endMin];
+  endHour = [(FMFSchedule *)self endHour];
+  endMin = [(FMFSchedule *)self endMin];
 
-  return [FMFSchedule localizedTimeStringForHour:v3 andMinute:v4];
+  return [FMFSchedule localizedTimeStringForHour:endHour andMinute:endMin];
 }
 
 - (void)initWithDictionary:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

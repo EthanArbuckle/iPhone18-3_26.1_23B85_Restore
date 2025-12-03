@@ -1,30 +1,30 @@
 @interface TILiveConversionSegments
-- (BOOL)canMove:(BOOL)a3;
+- (BOOL)canMove:(BOOL)move;
 - (BOOL)didAccept;
-- (TILiveConversionSegments)initWithSegments:(id)a3 at:(unint64_t)a4;
+- (TILiveConversionSegments)initWithSegments:(id)segments at:(unint64_t)at;
 - (void)buildMarkedText;
 - (void)clear;
 - (void)commit;
-- (void)didUpdateCandidate:(id)a3 with:(id)a4;
-- (void)move:(BOOL)a3;
-- (void)setPhraseBoundary:(unint64_t)a3;
+- (void)didUpdateCandidate:(id)candidate with:(id)with;
+- (void)move:(BOOL)move;
+- (void)setPhraseBoundary:(unint64_t)boundary;
 @end
 
 @implementation TILiveConversionSegments
 
-- (TILiveConversionSegments)initWithSegments:(id)a3 at:(unint64_t)a4
+- (TILiveConversionSegments)initWithSegments:(id)segments at:(unint64_t)at
 {
-  v6 = a3;
+  segmentsCopy = segments;
   v11.receiver = self;
   v11.super_class = TILiveConversionSegments;
   v7 = [(TILiveConversionSegments *)&v11 init];
   if (v7)
   {
-    v8 = [v6 mutableCopy];
+    v8 = [segmentsCopy mutableCopy];
     rawSegments = v7->_rawSegments;
     v7->_rawSegments = v8;
 
-    v7->_index = a4;
+    v7->_index = at;
     [(TILiveConversionSegments *)v7 buildMarkedText];
   }
 
@@ -33,9 +33,9 @@
 
 - (void)clear
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   rawSegments = self->_rawSegments;
-  self->_rawSegments = v3;
+  self->_rawSegments = array;
 
   self->_index = 0x7FFFFFFFFFFFFFFFLL;
 
@@ -44,32 +44,32 @@
 
 - (void)commit
 {
-  v3 = [(TILiveConversionSegments *)self currentCandidate];
-  if (v3)
+  currentCandidate = [(TILiveConversionSegments *)self currentCandidate];
+  if (currentCandidate)
   {
-    v4 = v3;
-    v5 = [(TILiveConversionSegments *)self index];
+    v4 = currentCandidate;
+    index = [(TILiveConversionSegments *)self index];
     v6 = [(NSMutableArray *)self->_rawSegments count];
 
-    if (v5 < v6)
+    if (index < v6)
     {
       v14 = objc_alloc_init(MEMORY[0x29EDC7250]);
-      v7 = [(TILiveConversionSegments *)self currentCandidate];
-      v8 = [v7 label];
-      [v14 setSurface:v8];
+      currentCandidate2 = [(TILiveConversionSegments *)self currentCandidate];
+      label = [currentCandidate2 label];
+      [v14 setSurface:label];
 
-      v9 = [(TILiveConversionSegments *)self currentCandidate];
-      v10 = [v9 input];
-      [v14 setReading:v10];
+      currentCandidate3 = [(TILiveConversionSegments *)self currentCandidate];
+      input = [currentCandidate3 input];
+      [v14 setReading:input];
 
       [(NSMutableArray *)self->_rawSegments replaceObjectAtIndex:[(TILiveConversionSegments *)self index] withObject:v14];
-      v11 = [(TILiveConversionSegments *)self currentSegment];
+      currentSegment = [(TILiveConversionSegments *)self currentSegment];
 
-      if (v11)
+      if (currentSegment)
       {
         rawSegments = self->_rawSegments;
-        v13 = [(TILiveConversionSegments *)self currentSegment];
-        [(NSMutableArray *)rawSegments insertObject:v13 atIndex:[(TILiveConversionSegments *)self index]+ 1];
+        currentSegment2 = [(TILiveConversionSegments *)self currentSegment];
+        [(NSMutableArray *)rawSegments insertObject:currentSegment2 atIndex:[(TILiveConversionSegments *)self index]+ 1];
       }
 
       [(TILiveConversionSegments *)self setCurrentCandidate:0];
@@ -79,26 +79,26 @@
   }
 }
 
-- (BOOL)canMove:(BOOL)a3
+- (BOOL)canMove:(BOOL)move
 {
-  if (!a3)
+  if (!move)
   {
     return [(TILiveConversionSegments *)self index]!= 0;
   }
 
-  v4 = [(TILiveConversionSegments *)self currentSegment];
+  currentSegment = [(TILiveConversionSegments *)self currentSegment];
 
-  v5 = [(TILiveConversionSegments *)self index];
-  v6 = [(TILiveConversionSegments *)self rawSegments];
-  v7 = [v6 count];
-  if (v4)
+  index = [(TILiveConversionSegments *)self index];
+  rawSegments = [(TILiveConversionSegments *)self rawSegments];
+  v7 = [rawSegments count];
+  if (currentSegment)
   {
-    v8 = v5 >= v7;
+    v8 = index >= v7;
   }
 
   else
   {
-    v8 = v5 >= v7 - 1;
+    v8 = index >= v7 - 1;
   }
 
   v9 = !v8;
@@ -106,14 +106,14 @@
   return v9;
 }
 
-- (void)move:(BOOL)a3
+- (void)move:(BOOL)move
 {
-  v3 = a3;
-  v5 = [(TILiveConversionSegments *)self index];
-  v6 = v5 - 1;
-  if (v3)
+  moveCopy = move;
+  index = [(TILiveConversionSegments *)self index];
+  v6 = index - 1;
+  if (moveCopy)
   {
-    v6 = v5 + 1;
+    v6 = index + 1;
   }
 
   self->_index = v6;
@@ -121,33 +121,33 @@
   [(TILiveConversionSegments *)self buildMarkedText];
 }
 
-- (void)didUpdateCandidate:(id)a3 with:(id)a4
+- (void)didUpdateCandidate:(id)candidate with:(id)with
 {
-  v6 = a4;
-  [(TILiveConversionSegments *)self setCurrentCandidate:a3];
-  [(TILiveConversionSegments *)self setCurrentSegment:v6];
+  withCopy = with;
+  [(TILiveConversionSegments *)self setCurrentCandidate:candidate];
+  [(TILiveConversionSegments *)self setCurrentSegment:withCopy];
 
   [(TILiveConversionSegments *)self buildMarkedText];
 }
 
 - (BOOL)didAccept
 {
-  v3 = [(TILiveConversionSegments *)self rawSegments];
-  [v3 removeObjectsInRange:{0, -[TILiveConversionSegments index](self, "index") + 1}];
+  rawSegments = [(TILiveConversionSegments *)self rawSegments];
+  [rawSegments removeObjectsInRange:{0, -[TILiveConversionSegments index](self, "index") + 1}];
 
-  v4 = [(TILiveConversionSegments *)self currentSegment];
+  currentSegment = [(TILiveConversionSegments *)self currentSegment];
 
-  if (v4)
+  if (currentSegment)
   {
-    v5 = [(TILiveConversionSegments *)self rawSegments];
-    v6 = [(TILiveConversionSegments *)self currentSegment];
-    [v5 insertObject:v6 atIndex:0];
+    rawSegments2 = [(TILiveConversionSegments *)self rawSegments];
+    currentSegment2 = [(TILiveConversionSegments *)self currentSegment];
+    [rawSegments2 insertObject:currentSegment2 atIndex:0];
   }
 
   [(TILiveConversionSegments *)self setCurrentCandidate:0];
   [(TILiveConversionSegments *)self setCurrentSegment:0];
-  v7 = [(TILiveConversionSegments *)self rawSegments];
-  v8 = [v7 count];
+  rawSegments3 = [(TILiveConversionSegments *)self rawSegments];
+  v8 = [rawSegments3 count];
 
   if (v8)
   {
@@ -158,21 +158,21 @@
   return v8 != 0;
 }
 
-- (void)setPhraseBoundary:(unint64_t)a3
+- (void)setPhraseBoundary:(unint64_t)boundary
 {
   v7[0] = 0;
   v7[1] = v7;
   v7[2] = 0x2020000000;
   v7[3] = 0;
-  v5 = [(TILiveConversionSegments *)self rawSegments];
+  rawSegments = [(TILiveConversionSegments *)self rawSegments];
   v6[0] = MEMORY[0x29EDCA5F8];
   v6[1] = 3221225472;
   v6[2] = __46__TILiveConversionSegments_setPhraseBoundary___block_invoke;
   v6[3] = &unk_29F3791C0;
   v6[5] = v7;
-  v6[6] = a3;
+  v6[6] = boundary;
   v6[4] = self;
-  [v5 enumerateObjectsUsingBlock:v6];
+  [rawSegments enumerateObjectsUsingBlock:v6];
 
   [(TILiveConversionSegments *)self buildMarkedText];
   _Block_object_dispose(v7, 8);
@@ -195,9 +195,9 @@ void __46__TILiveConversionSegments_setPhraseBoundary___block_invoke(uint64_t a1
   v54 = objc_alloc_init(MEMORY[0x29EDBA050]);
   v3 = objc_alloc_init(MEMORY[0x29EDBA050]);
   v52 = objc_alloc_init(MEMORY[0x29EDBA050]);
-  v4 = [MEMORY[0x29EDB8DE8] array];
-  v5 = [(TILiveConversionSegments *)self rawSegments];
-  v6 = [v5 count];
+  array = [MEMORY[0x29EDB8DE8] array];
+  rawSegments = [(TILiveConversionSegments *)self rawSegments];
+  v6 = [rawSegments count];
 
   if (v6)
   {
@@ -207,109 +207,109 @@ void __46__TILiveConversionSegments_setPhraseBoundary___block_invoke(uint64_t a1
     v10 = 0x29EDBA000uLL;
     while (1)
     {
-      v11 = [(TILiveConversionSegments *)self rawSegments];
-      v12 = [v11 objectAtIndexedSubscript:v7];
+      rawSegments2 = [(TILiveConversionSegments *)self rawSegments];
+      v12 = [rawSegments2 objectAtIndexedSubscript:v7];
 
       if (v7 == [(TILiveConversionSegments *)self index]&& ([(TILiveConversionSegments *)self currentCandidate], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
       {
-        v14 = [(TILiveConversionSegments *)self currentCandidate];
-        [v14 input];
+        currentCandidate = [(TILiveConversionSegments *)self currentCandidate];
+        [currentCandidate input];
         v15 = v8;
-        v16 = v4;
+        v16 = array;
         v17 = v3;
         v19 = v18 = v10;
         [v54 appendString:v19];
 
-        v20 = [(TILiveConversionSegments *)self currentCandidate];
-        v21 = [v20 label];
-        [v17 appendString:v21];
+        currentCandidate2 = [(TILiveConversionSegments *)self currentCandidate];
+        label = [currentCandidate2 label];
+        [v17 appendString:label];
 
-        v22 = [(TILiveConversionSegments *)self currentCandidate];
-        v23 = [v22 label];
-        v53 = v15 + [v23 length];
+        currentCandidate3 = [(TILiveConversionSegments *)self currentCandidate];
+        label2 = [currentCandidate3 label];
+        v53 = v15 + [label2 length];
 
-        v24 = [(TILiveConversionSegments *)self currentCandidate];
-        v25 = [v24 label];
-        v26 = [v25 length];
+        currentCandidate4 = [(TILiveConversionSegments *)self currentCandidate];
+        label3 = [currentCandidate4 label];
+        v26 = [label3 length];
 
         v10 = v18;
         v27 = [*(v18 + 360) valueWithRange:{v9, v26}];
         [v16 addObject:v27];
 
-        v28 = [(TILiveConversionSegments *)self currentCandidate];
-        v29 = [v28 label];
-        v9 += [v29 length];
+        currentCandidate5 = [(TILiveConversionSegments *)self currentCandidate];
+        label4 = [currentCandidate5 label];
+        v9 += [label4 length];
 
-        v30 = [(TILiveConversionSegments *)self currentSegment];
+        currentSegment = [(TILiveConversionSegments *)self currentSegment];
 
-        if (!v30)
+        if (!currentSegment)
         {
           v3 = v17;
-          v4 = v16;
+          array = v16;
           v8 = v53;
           goto LABEL_13;
         }
 
-        v31 = [(TILiveConversionSegments *)self currentSegment];
-        v32 = [v31 reading];
-        [v54 appendString:v32];
+        currentSegment2 = [(TILiveConversionSegments *)self currentSegment];
+        reading = [currentSegment2 reading];
+        [v54 appendString:reading];
 
-        v33 = [(TILiveConversionSegments *)self currentSegment];
-        v34 = [v33 surface];
-        [v17 appendString:v34];
+        currentSegment3 = [(TILiveConversionSegments *)self currentSegment];
+        surface = [currentSegment3 surface];
+        [v17 appendString:surface];
 
-        v35 = [(TILiveConversionSegments *)self currentSegment];
-        v36 = [v35 surface];
-        v37 = [v36 length];
+        currentSegment4 = [(TILiveConversionSegments *)self currentSegment];
+        surface2 = [currentSegment4 surface];
+        v37 = [surface2 length];
 
         v38 = v37;
         v10 = v18;
         v39 = [*(v18 + 360) valueWithRange:{v9, v38}];
         [v16 addObject:v39];
 
-        v40 = [(TILiveConversionSegments *)self currentSegment];
-        v41 = [v40 surface];
-        v9 += [v41 length];
+        currentSegment5 = [(TILiveConversionSegments *)self currentSegment];
+        surface3 = [currentSegment5 surface];
+        v9 += [surface3 length];
 
         v3 = v17;
-        v4 = v16;
+        array = v16;
         v8 = v53;
       }
 
       else
       {
-        v42 = [v12 reading];
-        [v54 appendString:v42];
+        reading2 = [v12 reading];
+        [v54 appendString:reading2];
 
-        v43 = [v12 surface];
-        [v3 appendString:v43];
+        surface4 = [v12 surface];
+        [v3 appendString:surface4];
 
         if ([(TILiveConversionSegments *)self index]>= v7)
         {
-          v44 = [v12 surface];
-          v8 = v8 + [v44 length];
+          surface5 = [v12 surface];
+          v8 = v8 + [surface5 length];
         }
 
         if ([(TILiveConversionSegments *)self index]> v7)
         {
-          v45 = [v12 surface];
-          [v52 appendString:v45];
+          surface6 = [v12 surface];
+          [v52 appendString:surface6];
         }
 
-        v46 = [v12 surface];
-        v47 = [v46 length];
+        surface7 = [v12 surface];
+        v47 = [surface7 length];
 
         v48 = [*(v10 + 360) valueWithRange:{v9, v47}];
-        [v4 addObject:v48];
+        [array addObject:v48];
 
-        v40 = [v12 surface];
-        v9 += [v40 length];
+        currentSegment5 = [v12 surface];
+        v9 += [currentSegment5 length];
       }
 
 LABEL_13:
       ++v7;
-      v49 = [(TILiveConversionSegments *)self rawSegments];
-      v50 = [v49 count];
+      rawSegments3 = [(TILiveConversionSegments *)self rawSegments];
+      v50 = [rawSegments3 count];
 
       if (v50 <= v7)
       {
@@ -324,7 +324,7 @@ LABEL_17:
   [(TILiveConversionSegments *)self setInputString:v3];
   [(TILiveConversionSegments *)self setInputIndex:v8];
   [(TILiveConversionSegments *)self setAutoCommitString:v52];
-  v51 = [v4 copy];
+  v51 = [array copy];
   [(TILiveConversionSegments *)self setSegmentRanges:v51];
 }
 

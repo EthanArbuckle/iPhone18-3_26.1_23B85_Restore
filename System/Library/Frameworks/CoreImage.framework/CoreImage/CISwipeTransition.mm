@@ -136,7 +136,7 @@
     inputColor = [CIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
   }
 
-  v31 = [(CISwipeTransition *)self _kernel];
+  _kernel = [(CISwipeTransition *)self _kernel];
   v32 = *MEMORY[0x1E695F040];
   v33 = *(MEMORY[0x1E695F040] + 8);
   v34 = *(MEMORY[0x1E695F040] + 16);
@@ -146,7 +146,7 @@
   v59[1] = inputTargetImage;
   v59[2] = inputColor;
   v59[3] = v29;
-  v37 = [v31 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v59, 4), v32, v33, v34, v35}];
+  v37 = [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v59, 4), v32, v33, v34, v35}];
   [(CIImage *)self->inputImage extent];
   v39 = v38;
   v41 = v40;

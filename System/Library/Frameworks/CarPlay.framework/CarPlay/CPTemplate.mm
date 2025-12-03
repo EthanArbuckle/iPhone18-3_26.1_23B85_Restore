@@ -1,29 +1,29 @@
 @interface CPTemplate
-- (BOOL)barButton:(id)a3 setImage:(id)a4;
-- (BOOL)barButton:(id)a3 setTitle:(id)a4;
-- (BOOL)control:(id)a3 setEnabled:(BOOL)a4;
-- (BOOL)control:(id)a3 setSelected:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)barButton:(id)button setImage:(id)image;
+- (BOOL)barButton:(id)button setTitle:(id)title;
+- (BOOL)control:(id)control setEnabled:(BOOL)enabled;
+- (BOOL)control:(id)control setSelected:(BOOL)selected;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)shouldHideNavigationBar;
 - (CPTemplate)init;
-- (CPTemplate)initWithCoder:(id)a3;
+- (CPTemplate)initWithCoder:(id)coder;
 - (CPTemplateDelegate)templateDelegate;
 - (NSString)backTitle;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)connectTemplateProvider:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleActionForControlIdentifier:(id)a3;
+- (void)connectTemplateProvider:(id)provider;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleActionForControlIdentifier:(id)identifier;
 - (void)invalidateTemplateProvider;
-- (void)setBackButton:(id)a3;
-- (void)setLeadingNavigationBarButtons:(id)a3;
+- (void)setBackButton:(id)button;
+- (void)setLeadingNavigationBarButtons:(id)buttons;
 - (void)setNeedsUpdate;
-- (void)setTrailingNavigationBarButtons:(id)a3;
-- (void)templateDidAppearWithIdentifier:(id)a3 animated:(BOOL)a4;
-- (void)templateDidDisappearWithIdentifier:(id)a3 animated:(BOOL)a4;
-- (void)templateDidDismissWithIdentifier:(id)a3;
-- (void)templateWillAppearWithIdentifier:(id)a3 animated:(BOOL)a4;
-- (void)templateWillDisappearWithIdentifier:(id)a3 animated:(BOOL)a4;
+- (void)setTrailingNavigationBarButtons:(id)buttons;
+- (void)templateDidAppearWithIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)templateDidDisappearWithIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)templateDidDismissWithIdentifier:(id)identifier;
+- (void)templateWillAppearWithIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)templateWillDisappearWithIdentifier:(id)identifier animated:(BOOL)animated;
 @end
 
 @implementation CPTemplate
@@ -34,11 +34,11 @@
   v11.receiver = self;
   v11.super_class = CPTemplate;
   v4 = [(CPTemplate *)&v11 description];
-  v5 = [(CPTemplate *)self identifier];
-  v6 = [(CPTemplate *)self userInfo];
-  v7 = [(CPTemplate *)self tabTitle];
-  v8 = [(CPTemplate *)self tabImage];
-  v9 = [v3 stringWithFormat:@"%@ <identifier: %@, userInfo: %@, tabTitle: %@, tabImage: %@, showsTabBadge: %d>", v4, v5, v6, v7, v8, -[CPTemplate showsTabBadge](self, "showsTabBadge")];
+  identifier = [(CPTemplate *)self identifier];
+  userInfo = [(CPTemplate *)self userInfo];
+  tabTitle = [(CPTemplate *)self tabTitle];
+  tabImage = [(CPTemplate *)self tabImage];
+  v9 = [v3 stringWithFormat:@"%@ <identifier: %@, userInfo: %@, tabTitle: %@, tabImage: %@, showsTabBadge: %d>", v4, identifier, userInfo, tabTitle, tabImage, -[CPTemplate showsTabBadge](self, "showsTabBadge")];
 
   return v9;
 }
@@ -50,9 +50,9 @@
   v2 = [(CPTemplate *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v2->_identifier;
-    v2->_identifier = v3;
+    v2->_identifier = uUID;
 
     v5 = objc_opt_new();
     internalLeadingBarButtons = v2->_internalLeadingBarButtons;
@@ -70,15 +70,15 @@
   return v2;
 }
 
-- (CPTemplate)initWithCoder:(id)a3
+- (CPTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = CPTemplate;
   v5 = [(CPTemplate *)&v24 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPTemplateIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPTemplateIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
@@ -86,66 +86,66 @@
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v8 setWithObjects:{v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"CPTemplateLeadingNavigationBarButtons"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"CPTemplateLeadingNavigationBarButtons"];
     internalLeadingBarButtons = v5->_internalLeadingBarButtons;
     v5->_internalLeadingBarButtons = v12;
 
-    v14 = [v4 decodeObjectOfClasses:v11 forKey:@"CPTemplateTrailingNavigationBarButtons"];
+    v14 = [coderCopy decodeObjectOfClasses:v11 forKey:@"CPTemplateTrailingNavigationBarButtons"];
     internalTrailingBarButtons = v5->_internalTrailingBarButtons;
     v5->_internalTrailingBarButtons = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPTemplateNavigationBarBackButtonKey"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPTemplateNavigationBarBackButtonKey"];
     backButton = v5->_backButton;
     v5->_backButton = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPTemplateTabTitleKey"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPTemplateTabTitleKey"];
     tabTitle = v5->_tabTitle;
     v5->_tabTitle = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPTemplateTabImageKey"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPTemplateTabImageKey"];
     tabImage = v5->_tabImage;
     v5->_tabImage = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPTemplateTabSystemItemKey"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPTemplateTabSystemItemKey"];
     v5->_tabSystemItem = [v22 unsignedIntegerValue];
 
-    v5->_showsTabBadge = [v4 decodeBoolForKey:@"kCPTemplateTabBadgeKey"];
+    v5->_showsTabBadge = [coderCopy decodeBoolForKey:@"kCPTemplateTabBadgeKey"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  v4 = [(CPTemplate *)self identifier];
-  [v11 encodeObject:v4 forKey:@"CPTemplateIdentifier"];
+  coderCopy = coder;
+  identifier = [(CPTemplate *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"CPTemplateIdentifier"];
 
-  v5 = [(CPTemplate *)self internalLeadingBarButtons];
-  [v11 encodeObject:v5 forKey:@"CPTemplateLeadingNavigationBarButtons"];
+  internalLeadingBarButtons = [(CPTemplate *)self internalLeadingBarButtons];
+  [coderCopy encodeObject:internalLeadingBarButtons forKey:@"CPTemplateLeadingNavigationBarButtons"];
 
-  v6 = [(CPTemplate *)self internalTrailingBarButtons];
-  [v11 encodeObject:v6 forKey:@"CPTemplateTrailingNavigationBarButtons"];
+  internalTrailingBarButtons = [(CPTemplate *)self internalTrailingBarButtons];
+  [coderCopy encodeObject:internalTrailingBarButtons forKey:@"CPTemplateTrailingNavigationBarButtons"];
 
-  v7 = [(CPTemplate *)self backButton];
-  [v11 encodeObject:v7 forKey:@"kCPTemplateNavigationBarBackButtonKey"];
+  backButton = [(CPTemplate *)self backButton];
+  [coderCopy encodeObject:backButton forKey:@"kCPTemplateNavigationBarBackButtonKey"];
 
-  v8 = [(CPTemplate *)self tabTitle];
-  [v11 encodeObject:v8 forKey:@"CPTemplateTabTitleKey"];
+  tabTitle = [(CPTemplate *)self tabTitle];
+  [coderCopy encodeObject:tabTitle forKey:@"CPTemplateTabTitleKey"];
 
-  v9 = [(CPTemplate *)self tabImage];
-  [v11 encodeObject:v9 forKey:@"CPTemplateTabImageKey"];
+  tabImage = [(CPTemplate *)self tabImage];
+  [coderCopy encodeObject:tabImage forKey:@"CPTemplateTabImageKey"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CPTemplate tabSystemItem](self, "tabSystemItem")}];
-  [v11 encodeObject:v10 forKey:@"kCPTemplateTabSystemItemKey"];
+  [coderCopy encodeObject:v10 forKey:@"kCPTemplateTabSystemItemKey"];
 
-  [v11 encodeBool:-[CPTemplate showsTabBadge](self forKey:{"showsTabBadge"), @"kCPTemplateTabBadgeKey"}];
+  [coderCopy encodeBool:-[CPTemplate showsTabBadge](self forKey:{"showsTabBadge"), @"kCPTemplateTabBadgeKey"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -155,9 +155,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CPTemplate *)v4 identifier];
-      v6 = [(CPTemplate *)self identifier];
-      v7 = [v5 isEqual:v6];
+      identifier = [(CPTemplate *)equalCopy identifier];
+      identifier2 = [(CPTemplate *)self identifier];
+      v7 = [identifier isEqual:identifier2];
     }
 
     else
@@ -171,25 +171,25 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CPTemplate *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(CPTemplate *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (void)connectTemplateProvider:(id)a3
+- (void)connectTemplateProvider:(id)provider
 {
-  v4 = a3;
-  [(CPTemplate *)self setTemplateProvider:v4];
-  v5 = [(CPTemplate *)self templateProviderFuture];
-  [v5 finishWithResult:v4];
+  providerCopy = provider;
+  [(CPTemplate *)self setTemplateProvider:providerCopy];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
+  [templateProviderFuture finishWithResult:providerCopy];
 }
 
 - (void)invalidateTemplateProvider
 {
   [(CPTemplate *)self setTemplateProvider:0];
-  v3 = [(CPTemplate *)self templateProviderFuture];
-  [v3 cancel];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
+  [templateProviderFuture cancel];
 
   v4 = objc_opt_new();
   [(CPTemplate *)self setTemplateProviderFuture:v4];
@@ -197,37 +197,37 @@
 
 - (BOOL)shouldHideNavigationBar
 {
-  v3 = [(CPTemplate *)self backButton];
-  if (v3)
+  backButton = [(CPTemplate *)self backButton];
+  if (backButton)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(CPTemplate *)self leadingNavigationBarButtons];
-    if ([v5 count])
+    leadingNavigationBarButtons = [(CPTemplate *)self leadingNavigationBarButtons];
+    if ([leadingNavigationBarButtons count])
     {
       v4 = 0;
     }
 
     else
     {
-      v6 = [(CPTemplate *)self trailingNavigationBarButtons];
-      v4 = [v6 count] == 0;
+      trailingNavigationBarButtons = [(CPTemplate *)self trailingNavigationBarButtons];
+      v4 = [trailingNavigationBarButtons count] == 0;
     }
   }
 
   return v4;
 }
 
-- (void)setBackButton:(id)a3
+- (void)setBackButton:(id)button
 {
-  v6 = a3;
-  if (v6)
+  buttonCopy = button;
+  if (buttonCopy)
   {
     v7 = objc_opt_class();
-    v8 = v6;
+    v8 = buttonCopy;
     v9 = [MEMORY[0x277CBEB98] setWithObject:v7];
     v10 = v8;
     if (([v9 containsObject:object_getClass(v10)] & 1) == 0)
@@ -239,35 +239,35 @@
     }
   }
 
-  objc_storeStrong(&self->_backButton, a3);
-  [v6 setDelegate:self];
-  v14 = [(CPTemplate *)self templateProviderFuture];
+  objc_storeStrong(&self->_backButton, button);
+  [buttonCopy setDelegate:self];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __28__CPTemplate_setBackButton___block_invoke;
   v17[3] = &unk_278A11E20;
-  v18 = v6;
-  v15 = v6;
-  v16 = [v14 addSuccessBlock:v17];
+  v18 = buttonCopy;
+  v15 = buttonCopy;
+  v16 = [templateProviderFuture addSuccessBlock:v17];
 }
 
-- (void)setLeadingNavigationBarButtons:(id)a3
+- (void)setLeadingNavigationBarButtons:(id)buttons
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  buttonsCopy = buttons;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __45__CPTemplate_setLeadingNavigationBarButtons___block_invoke;
   v19[3] = &__block_descriptor_40_e28_v32__0__CPBarButton_8Q16_B24l;
   v19[4] = a2;
-  [v5 enumerateObjectsUsingBlock:v19];
+  [buttonsCopy enumerateObjectsUsingBlock:v19];
   v6 = CarPlayFrameworkGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
-    v23 = v5;
+    v23 = buttonsCopy;
     _os_log_impl(&dword_236ED4000, v6, OS_LOG_TYPE_DEFAULT, "%@: New leading bar buttons: %@", buf, 0x16u);
   }
 
@@ -280,19 +280,19 @@
   v17[4] = self;
   v18 = v7;
   v8 = v7;
-  [v5 enumerateObjectsUsingBlock:v17];
+  [buttonsCopy enumerateObjectsUsingBlock:v17];
   v9 = [v8 copy];
   [(CPTemplate *)self setInternalLeadingBarButtons:v9];
 
-  v10 = [(CPTemplate *)self internalLeadingBarButtons];
-  v11 = [(CPTemplate *)self templateProviderFuture];
+  internalLeadingBarButtons = [(CPTemplate *)self internalLeadingBarButtons];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __45__CPTemplate_setLeadingNavigationBarButtons___block_invoke_2;
   v15[3] = &unk_278A11E20;
-  v16 = v10;
-  v12 = v10;
-  v13 = [v11 addSuccessBlock:v15];
+  v16 = internalLeadingBarButtons;
+  v12 = internalLeadingBarButtons;
+  v13 = [templateProviderFuture addSuccessBlock:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -330,23 +330,23 @@ void __45__CPTemplate_setLeadingNavigationBarButtons___block_invoke_38(uint64_t 
   }
 }
 
-- (void)setTrailingNavigationBarButtons:(id)a3
+- (void)setTrailingNavigationBarButtons:(id)buttons
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  buttonsCopy = buttons;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __46__CPTemplate_setTrailingNavigationBarButtons___block_invoke;
   v19[3] = &__block_descriptor_40_e28_v32__0__CPBarButton_8Q16_B24l;
   v19[4] = a2;
-  [v5 enumerateObjectsUsingBlock:v19];
+  [buttonsCopy enumerateObjectsUsingBlock:v19];
   v6 = CarPlayFrameworkGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
-    v23 = v5;
+    v23 = buttonsCopy;
     _os_log_impl(&dword_236ED4000, v6, OS_LOG_TYPE_DEFAULT, "%@: New trailing bar buttons: %@", buf, 0x16u);
   }
 
@@ -358,19 +358,19 @@ void __45__CPTemplate_setLeadingNavigationBarButtons___block_invoke_38(uint64_t 
   v17[4] = self;
   v18 = v7;
   v8 = v7;
-  [v5 enumerateObjectsUsingBlock:v17];
+  [buttonsCopy enumerateObjectsUsingBlock:v17];
   v9 = [v8 copy];
   [(CPTemplate *)self setInternalTrailingBarButtons:v9];
 
-  v10 = [(CPTemplate *)self internalTrailingBarButtons];
-  v11 = [(CPTemplate *)self templateProviderFuture];
+  internalTrailingBarButtons = [(CPTemplate *)self internalTrailingBarButtons];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __46__CPTemplate_setTrailingNavigationBarButtons___block_invoke_2;
   v15[3] = &unk_278A11E20;
-  v16 = v10;
-  v12 = v10;
-  v13 = [v11 addSuccessBlock:v15];
+  v16 = internalTrailingBarButtons;
+  v12 = internalTrailingBarButtons;
+  v13 = [templateProviderFuture addSuccessBlock:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -422,29 +422,29 @@ void __46__CPTemplate_setTrailingNavigationBarButtons___block_invoke_39(uint64_t
 
   if (![v3 length])
   {
-    v4 = [(CPTemplate *)self tabTitle];
+    tabTitle = [(CPTemplate *)self tabTitle];
 
-    if (v4)
+    if (tabTitle)
     {
-      v5 = [(CPTemplate *)self tabTitle];
+      tabTitle2 = [(CPTemplate *)self tabTitle];
 
-      v3 = v5;
+      v3 = tabTitle2;
     }
   }
 
   return v3;
 }
 
-- (void)handleActionForControlIdentifier:(id)a3
+- (void)handleActionForControlIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__CPTemplate_handleActionForControlIdentifier___block_invoke;
   v6[3] = &unk_278A10780;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -531,17 +531,17 @@ void __47__CPTemplate_handleActionForControlIdentifier___block_invoke_42(uint64_
   }
 }
 
-- (void)templateWillAppearWithIdentifier:(id)a3 animated:(BOOL)a4
+- (void)templateWillAppearWithIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v6 = a3;
+  identifierCopy = identifier;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__CPTemplate_templateWillAppearWithIdentifier_animated___block_invoke;
   block[3] = &unk_278A11EB8;
   block[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = identifierCopy;
+  animatedCopy = animated;
+  v7 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -557,17 +557,17 @@ void __56__CPTemplate_templateWillAppearWithIdentifier_animated___block_invoke(u
   }
 }
 
-- (void)templateWillDisappearWithIdentifier:(id)a3 animated:(BOOL)a4
+- (void)templateWillDisappearWithIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v6 = a3;
+  identifierCopy = identifier;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__CPTemplate_templateWillDisappearWithIdentifier_animated___block_invoke;
   block[3] = &unk_278A11EB8;
   block[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = identifierCopy;
+  animatedCopy = animated;
+  v7 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -583,17 +583,17 @@ void __59__CPTemplate_templateWillDisappearWithIdentifier_animated___block_invok
   }
 }
 
-- (void)templateDidAppearWithIdentifier:(id)a3 animated:(BOOL)a4
+- (void)templateDidAppearWithIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v6 = a3;
+  identifierCopy = identifier;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__CPTemplate_templateDidAppearWithIdentifier_animated___block_invoke;
   block[3] = &unk_278A11EB8;
   block[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = identifierCopy;
+  animatedCopy = animated;
+  v7 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -609,17 +609,17 @@ void __55__CPTemplate_templateDidAppearWithIdentifier_animated___block_invoke(ui
   }
 }
 
-- (void)templateDidDisappearWithIdentifier:(id)a3 animated:(BOOL)a4
+- (void)templateDidDisappearWithIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v6 = a3;
+  identifierCopy = identifier;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__CPTemplate_templateDidDisappearWithIdentifier_animated___block_invoke;
   block[3] = &unk_278A11EB8;
   block[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = identifierCopy;
+  animatedCopy = animated;
+  v7 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -635,16 +635,16 @@ void __58__CPTemplate_templateDidDisappearWithIdentifier_animated___block_invoke
   }
 }
 
-- (void)templateDidDismissWithIdentifier:(id)a3
+- (void)templateDidDismissWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__CPTemplate_templateDidDismissWithIdentifier___block_invoke;
   v6[3] = &unk_278A10780;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -660,18 +660,18 @@ void __47__CPTemplate_templateDidDismissWithIdentifier___block_invoke(uint64_t a
   }
 }
 
-- (BOOL)control:(id)a3 setEnabled:(BOOL)a4
+- (BOOL)control:(id)control setEnabled:(BOOL)enabled
 {
-  v6 = a3;
-  v7 = [(CPTemplate *)self templateProviderFuture];
+  controlCopy = control;
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __33__CPTemplate_control_setEnabled___block_invoke;
   v11[3] = &unk_278A11EE0;
-  v12 = v6;
-  v13 = a4;
-  v8 = v6;
-  v9 = [v7 addSuccessBlock:v11];
+  v12 = controlCopy;
+  enabledCopy = enabled;
+  v8 = controlCopy;
+  v9 = [templateProviderFuture addSuccessBlock:v11];
 
   return 1;
 }
@@ -684,18 +684,18 @@ void __33__CPTemplate_control_setEnabled___block_invoke(uint64_t a1, void *a2)
   [v4 setControl:v5 enabled:*(a1 + 40)];
 }
 
-- (BOOL)control:(id)a3 setSelected:(BOOL)a4
+- (BOOL)control:(id)control setSelected:(BOOL)selected
 {
-  v6 = a3;
-  v7 = [(CPTemplate *)self templateProviderFuture];
+  controlCopy = control;
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __34__CPTemplate_control_setSelected___block_invoke;
   v11[3] = &unk_278A11EE0;
-  v12 = v6;
-  v13 = a4;
-  v8 = v6;
-  v9 = [v7 addSuccessBlock:v11];
+  v12 = controlCopy;
+  selectedCopy = selected;
+  v8 = controlCopy;
+  v9 = [templateProviderFuture addSuccessBlock:v11];
 
   return 1;
 }
@@ -708,20 +708,20 @@ void __34__CPTemplate_control_setSelected___block_invoke(uint64_t a1, void *a2)
   [v4 setControl:v5 selected:*(a1 + 40)];
 }
 
-- (BOOL)barButton:(id)a3 setImage:(id)a4
+- (BOOL)barButton:(id)button setImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPTemplate *)self templateProviderFuture];
+  buttonCopy = button;
+  imageCopy = image;
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __33__CPTemplate_barButton_setImage___block_invoke;
   v13[3] = &unk_278A11F08;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 addSuccessBlock:v13];
+  v14 = buttonCopy;
+  v15 = imageCopy;
+  v9 = imageCopy;
+  v10 = buttonCopy;
+  v11 = [templateProviderFuture addSuccessBlock:v13];
 
   return 1;
 }
@@ -734,20 +734,20 @@ void __33__CPTemplate_barButton_setImage___block_invoke(uint64_t a1, void *a2)
   [v4 setBarButton:v5 image:*(a1 + 40)];
 }
 
-- (BOOL)barButton:(id)a3 setTitle:(id)a4
+- (BOOL)barButton:(id)button setTitle:(id)title
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPTemplate *)self templateProviderFuture];
+  buttonCopy = button;
+  titleCopy = title;
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __33__CPTemplate_barButton_setTitle___block_invoke;
   v13[3] = &unk_278A11F08;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 addSuccessBlock:v13];
+  v14 = buttonCopy;
+  v15 = titleCopy;
+  v9 = titleCopy;
+  v10 = buttonCopy;
+  v11 = [templateProviderFuture addSuccessBlock:v13];
 
   return 1;
 }
@@ -762,20 +762,20 @@ void __33__CPTemplate_barButton_setTitle___block_invoke(uint64_t a1, void *a2)
 
 - (void)setNeedsUpdate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (![(CPTemplate *)v2 needsUpdate])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(CPTemplate *)selfCopy needsUpdate])
   {
-    [(CPTemplate *)v2 setNeedsUpdate:1];
+    [(CPTemplate *)selfCopy setNeedsUpdate:1];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __28__CPTemplate_setNeedsUpdate__block_invoke;
     block[3] = &unk_278A105A0;
-    block[4] = v2;
+    block[4] = selfCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __28__CPTemplate_setNeedsUpdate__block_invoke(uint64_t a1)

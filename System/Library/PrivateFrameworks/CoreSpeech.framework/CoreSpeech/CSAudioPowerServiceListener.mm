@@ -1,15 +1,15 @@
 @interface CSAudioPowerServiceListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)listen;
 @end
 
 @implementation CSAudioPowerServiceListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_listener != v6)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if (self->_listener != listenerCopy)
   {
     v8 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -23,11 +23,11 @@
   }
 
   v9 = CSAudioPowerServiceGetXPCInterface();
-  [v7 setExportedInterface:v9];
+  [connectionCopy setExportedInterface:v9];
 
-  if (([CSUtils xpcConnection:v7 hasEntitlement:@"siri.audiopowerupdate.xpc"]& 1) == 0)
+  if (([CSUtils xpcConnection:connectionCopy hasEntitlement:@"siri.audiopowerupdate.xpc"]& 1) == 0)
   {
-    [v7 invalidate];
+    [connectionCopy invalidate];
 LABEL_9:
     v13 = 0;
     goto LABEL_10;
@@ -43,8 +43,8 @@ LABEL_9:
     exportedObject = self->_exportedObject;
   }
 
-  [v7 setExportedObject:exportedObject];
-  [v7 resume];
+  [connectionCopy setExportedObject:exportedObject];
+  [connectionCopy resume];
   v13 = 1;
 LABEL_10:
 

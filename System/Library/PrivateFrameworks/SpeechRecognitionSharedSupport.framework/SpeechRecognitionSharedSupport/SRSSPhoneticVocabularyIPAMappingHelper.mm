@@ -1,11 +1,11 @@
 @interface SRSSPhoneticVocabularyIPAMappingHelper
-+ (id)nvASRFromIPA:(id)a3 locale:(id)a4 separator:(id)a5;
++ (id)nvASRFromIPA:(id)a locale:(id)locale separator:(id)separator;
 - (_TtC30SpeechRecognitionSharedSupport38SRSSPhoneticVocabularyIPAMappingHelper)init;
 @end
 
 @implementation SRSSPhoneticVocabularyIPAMappingHelper
 
-+ (id)nvASRFromIPA:(id)a3 locale:(id)a4 separator:(id)a5
++ (id)nvASRFromIPA:(id)a locale:(id)locale separator:(id)separator
 {
   v5 = sub_26B5B5AF8();
   v7 = v6;

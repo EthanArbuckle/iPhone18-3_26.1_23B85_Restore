@@ -1,29 +1,29 @@
 @interface PLUSSchemaPLUSContactGroundTruth
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSContactGroundTruth)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSContactGroundTruth)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSContactGroundTruth)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSContactGroundTruth)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasContactSuggestionUsedBySiri:(BOOL)a3;
-- (void)setHasHasSiriResolvedContactForEntity:(BOOL)a3;
-- (void)setHasSiriResolvedAndPlusInferredContactComparison:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasContactSuggestionUsedBySiri:(BOOL)siri;
+- (void)setHasHasSiriResolvedContactForEntity:(BOOL)entity;
+- (void)setHasSiriResolvedAndPlusInferredContactComparison:(BOOL)comparison;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSContactGroundTruth
 
-- (PLUSSchemaPLUSContactGroundTruth)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSContactGroundTruth)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PLUSSchemaPLUSContactGroundTruth;
   v5 = [(PLUSSchemaPLUSContactGroundTruth *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"groundTruthId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"groundTruthId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,28 +31,28 @@
       [(PLUSSchemaPLUSContactGroundTruth *)v5 setGroundTruthId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"groundTruthSource"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"groundTruthSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSContactGroundTruth setGroundTruthSource:](v5, "setGroundTruthSource:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"hasSiriResolvedContactForEntity"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"hasSiriResolvedContactForEntity"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSContactGroundTruth setHasSiriResolvedContactForEntity:](v5, "setHasSiriResolvedContactForEntity:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"siriResolvedAndPlusInferredContactComparison"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"siriResolvedAndPlusInferredContactComparison"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSContactGroundTruth setSiriResolvedAndPlusInferredContactComparison:](v5, "setSiriResolvedAndPlusInferredContactComparison:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"contactSuggestionUsedBySiri"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"contactSuggestionUsedBySiri"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSContactGroundTruth)initWithJSON:(id)a3
+- (PLUSSchemaPLUSContactGroundTruth)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSContactGroundTruth *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSContactGroundTruth *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSContactGroundTruth *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,7 +101,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 8) != 0)
   {
     v4 = [(PLUSSchemaPLUSContactGroundTruth *)self contactSuggestionUsedBySiri]- 1;
@@ -115,22 +115,22 @@
       v5 = off_1E78E04C8[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"contactSuggestionUsedBySiri"];
+    [dictionary setObject:v5 forKeyedSubscript:@"contactSuggestionUsedBySiri"];
   }
 
   if (self->_groundTruthId)
   {
-    v6 = [(PLUSSchemaPLUSContactGroundTruth *)self groundTruthId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    groundTruthId = [(PLUSSchemaPLUSContactGroundTruth *)self groundTruthId];
+    dictionaryRepresentation = [groundTruthId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"groundTruthId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"groundTruthId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"groundTruthId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"groundTruthId"];
     }
   }
 
@@ -144,7 +144,7 @@
 
 LABEL_19:
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLUSSchemaPLUSContactGroundTruth hasSiriResolvedContactForEntity](self, "hasSiriResolvedContactForEntity")}];
-    [v3 setObject:v12 forKeyedSubscript:@"hasSiriResolvedContactForEntity"];
+    [dictionary setObject:v12 forKeyedSubscript:@"hasSiriResolvedContactForEntity"];
 
     if ((*&self->_has & 4) == 0)
     {
@@ -163,7 +163,7 @@ LABEL_20:
       v14 = off_1E78E0550[v13];
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"siriResolvedAndPlusInferredContactComparison"];
+    [dictionary setObject:v14 forKeyedSubscript:@"siriResolvedAndPlusInferredContactComparison"];
     goto LABEL_24;
   }
 
@@ -178,7 +178,7 @@ LABEL_20:
     v11 = off_1E78E04E0[v10];
   }
 
-  [v3 setObject:v11 forKeyedSubscript:@"groundTruthSource"];
+  [dictionary setObject:v11 forKeyedSubscript:@"groundTruthSource"];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -192,9 +192,9 @@ LABEL_13:
   }
 
 LABEL_24:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -252,30 +252,30 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = [(PLUSSchemaPLUSContactGroundTruth *)self groundTruthId];
-  v6 = [v4 groundTruthId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  groundTruthId = [(PLUSSchemaPLUSContactGroundTruth *)self groundTruthId];
+  groundTruthId2 = [equalCopy groundTruthId];
+  v7 = groundTruthId2;
+  if ((groundTruthId != 0) == (groundTruthId2 == 0))
   {
 
     goto LABEL_24;
   }
 
-  v8 = [(PLUSSchemaPLUSContactGroundTruth *)self groundTruthId];
-  if (v8)
+  groundTruthId3 = [(PLUSSchemaPLUSContactGroundTruth *)self groundTruthId];
+  if (groundTruthId3)
   {
-    v9 = v8;
-    v10 = [(PLUSSchemaPLUSContactGroundTruth *)self groundTruthId];
-    v11 = [v4 groundTruthId];
-    v12 = [v10 isEqual:v11];
+    v9 = groundTruthId3;
+    groundTruthId4 = [(PLUSSchemaPLUSContactGroundTruth *)self groundTruthId];
+    groundTruthId5 = [equalCopy groundTruthId];
+    v12 = [groundTruthId4 isEqual:groundTruthId5];
 
     if (!v12)
     {
@@ -288,7 +288,7 @@ LABEL_5:
   }
 
   has = self->_has;
-  v14 = v4[32];
+  v14 = equalCopy[32];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_24:
@@ -299,13 +299,13 @@ LABEL_24:
   if (*&has)
   {
     groundTruthSource = self->_groundTruthSource;
-    if (groundTruthSource != [v4 groundTruthSource])
+    if (groundTruthSource != [equalCopy groundTruthSource])
     {
       goto LABEL_24;
     }
 
     has = self->_has;
-    v14 = v4[32];
+    v14 = equalCopy[32];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -317,13 +317,13 @@ LABEL_24:
   if (v16)
   {
     hasSiriResolvedContactForEntity = self->_hasSiriResolvedContactForEntity;
-    if (hasSiriResolvedContactForEntity != [v4 hasSiriResolvedContactForEntity])
+    if (hasSiriResolvedContactForEntity != [equalCopy hasSiriResolvedContactForEntity])
     {
       goto LABEL_24;
     }
 
     has = self->_has;
-    v14 = v4[32];
+    v14 = equalCopy[32];
   }
 
   v18 = (*&has >> 2) & 1;
@@ -335,10 +335,10 @@ LABEL_24:
   if (v18)
   {
     siriResolvedAndPlusInferredContactComparison = self->_siriResolvedAndPlusInferredContactComparison;
-    if (siriResolvedAndPlusInferredContactComparison == [v4 siriResolvedAndPlusInferredContactComparison])
+    if (siriResolvedAndPlusInferredContactComparison == [equalCopy siriResolvedAndPlusInferredContactComparison])
     {
       has = self->_has;
-      v14 = v4[32];
+      v14 = equalCopy[32];
       goto LABEL_20;
     }
 
@@ -355,7 +355,7 @@ LABEL_20:
   if (v20)
   {
     contactSuggestionUsedBySiri = self->_contactSuggestionUsedBySiri;
-    if (contactSuggestionUsedBySiri != [v4 contactSuggestionUsedBySiri])
+    if (contactSuggestionUsedBySiri != [equalCopy contactSuggestionUsedBySiri])
     {
       goto LABEL_24;
     }
@@ -367,14 +367,14 @@ LABEL_25:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(PLUSSchemaPLUSContactGroundTruth *)self groundTruthId];
+  toCopy = to;
+  groundTruthId = [(PLUSSchemaPLUSContactGroundTruth *)self groundTruthId];
 
-  if (v4)
+  if (groundTruthId)
   {
-    v5 = [(PLUSSchemaPLUSContactGroundTruth *)self groundTruthId];
+    groundTruthId2 = [(PLUSSchemaPLUSContactGroundTruth *)self groundTruthId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -385,11 +385,11 @@ LABEL_25:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v7 = v8;
+    v7 = toCopy;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -409,20 +409,20 @@ LABEL_7:
   }
 
   PBDataWriterWriteInt32Field();
-  v7 = v8;
+  v7 = toCopy;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_8:
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 
 LABEL_9:
 }
 
-- (void)setHasContactSuggestionUsedBySiri:(BOOL)a3
+- (void)setHasContactSuggestionUsedBySiri:(BOOL)siri
 {
-  if (a3)
+  if (siri)
   {
     v3 = 8;
   }
@@ -435,9 +435,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSiriResolvedAndPlusInferredContactComparison:(BOOL)a3
+- (void)setHasSiriResolvedAndPlusInferredContactComparison:(BOOL)comparison
 {
-  if (a3)
+  if (comparison)
   {
     v3 = 4;
   }
@@ -450,9 +450,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasHasSiriResolvedContactForEntity:(BOOL)a3
+- (void)setHasHasSiriResolvedContactForEntity:(BOOL)entity
 {
-  if (a3)
+  if (entity)
   {
     v3 = 2;
   }
@@ -465,17 +465,17 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = PLUSSchemaPLUSContactGroundTruth;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(PLUSSchemaPLUSContactGroundTruth *)self groundTruthId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(PLUSSchemaPLUSContactGroundTruth *)self deleteGroundTruthId];
   }

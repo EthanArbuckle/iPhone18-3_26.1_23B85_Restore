@@ -1,30 +1,30 @@
 @interface MSVSegmentedDecoder
-+ (id)decodedObjectOfClass:(Class)a3 fromPackage:(id)a4 userInfo:(id)a5 error:(id *)a6;
-+ (id)decodedObjectOfClasses:(id)a3 fromPackage:(id)a4 userInfo:(id)a5 error:(id *)a6;
-- (BOOL)containsValueForKey:(id)a3;
-- (BOOL)decodeBoolForKey:(id)a3;
-- (MSVSegmentedDecoder)initWithCodingPackage:(id)a3 userInfo:(id)a4 error:(id *)a5;
-- (const)decodeBytesForKey:(id)a3 returnedLength:(unint64_t *)a4;
-- (double)decodeDoubleForKey:(id)a3;
-- (float)decodeFloatForKey:(id)a3;
-- (id)_coderForKey:(id)a3;
-- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4;
-- (id)decodeRootObjectOfClass:(Class)a3 error:(id *)a4;
-- (id)decodeRootObjectOfClasses:(id)a3 error:(id *)a4;
++ (id)decodedObjectOfClass:(Class)class fromPackage:(id)package userInfo:(id)info error:(id *)error;
++ (id)decodedObjectOfClasses:(id)classes fromPackage:(id)package userInfo:(id)info error:(id *)error;
+- (BOOL)containsValueForKey:(id)key;
+- (BOOL)decodeBoolForKey:(id)key;
+- (MSVSegmentedDecoder)initWithCodingPackage:(id)package userInfo:(id)info error:(id *)error;
+- (const)decodeBytesForKey:(id)key returnedLength:(unint64_t *)length;
+- (double)decodeDoubleForKey:(id)key;
+- (float)decodeFloatForKey:(id)key;
+- (id)_coderForKey:(id)key;
+- (id)decodeObjectOfClasses:(id)classes forKey:(id)key;
+- (id)decodeRootObjectOfClass:(Class)class error:(id *)error;
+- (id)decodeRootObjectOfClasses:(id)classes error:(id *)error;
 - (id)error;
 - (id)msv_userInfo;
-- (int)decodeInt32ForKey:(id)a3;
-- (int)decodeIntForKey:(id)a3;
-- (int64_t)decodeInt64ForKey:(id)a3;
-- (void)msv_setUserInfo:(id)a3;
+- (int)decodeInt32ForKey:(id)key;
+- (int)decodeIntForKey:(id)key;
+- (int64_t)decodeInt64ForKey:(id)key;
+- (void)msv_setUserInfo:(id)info;
 @end
 
 @implementation MSVSegmentedDecoder
 
-- (id)_coderForKey:(id)a3
+- (id)_coderForKey:(id)key
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -44,7 +44,7 @@
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 containsValueForKey:{v4, v12}])
+        if ([v9 containsValueForKey:{keyCopy, v12}])
         {
           v6 = v9;
           goto LABEL_11;
@@ -68,11 +68,11 @@ LABEL_11:
   return v6;
 }
 
-- (void)msv_setUserInfo:(id)a3
+- (void)msv_setUserInfo:(id)info
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 copy];
+  infoCopy = info;
+  v5 = [infoCopy copy];
   userInfo = self->_userInfo;
   self->_userInfo = v5;
 
@@ -96,7 +96,7 @@ LABEL_11:
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v13 + 1) + 8 * v11++) msv_setUserInfo:{v4, v13}];
+        [*(*(&v13 + 1) + 8 * v11++) msv_setUserInfo:{infoCopy, v13}];
       }
 
       while (v9 != v11);
@@ -122,10 +122,10 @@ LABEL_11:
   }
 }
 
-- (const)decodeBytesForKey:(id)a3 returnedLength:(unint64_t *)a4
+- (const)decodeBytesForKey:(id)key returnedLength:(unint64_t *)length
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  keyCopy = key;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -147,7 +147,7 @@ LABEL_11:
         }
 
         v12 = *(*(&v17 + 1) + 8 * v11);
-        v13 = [v12 decodeBytesForKey:v6 returnedLength:{a4, v17}];
+        v13 = [v12 decodeBytesForKey:keyCopy returnedLength:{length, v17}];
         if (v13)
         {
           v14 = v13;
@@ -175,67 +175,67 @@ LABEL_11:
   return v14;
 }
 
-- (double)decodeDoubleForKey:(id)a3
+- (double)decodeDoubleForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MSVSegmentedDecoder *)self _coderForKey:v4];
-  [v5 decodeDoubleForKey:v4];
+  keyCopy = key;
+  v5 = [(MSVSegmentedDecoder *)self _coderForKey:keyCopy];
+  [v5 decodeDoubleForKey:keyCopy];
   v7 = v6;
 
   return v7;
 }
 
-- (float)decodeFloatForKey:(id)a3
+- (float)decodeFloatForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MSVSegmentedDecoder *)self _coderForKey:v4];
-  [v5 decodeFloatForKey:v4];
+  keyCopy = key;
+  v5 = [(MSVSegmentedDecoder *)self _coderForKey:keyCopy];
+  [v5 decodeFloatForKey:keyCopy];
   v7 = v6;
 
   return v7;
 }
 
-- (int64_t)decodeInt64ForKey:(id)a3
+- (int64_t)decodeInt64ForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MSVSegmentedDecoder *)self _coderForKey:v4];
-  v6 = [v5 decodeInt64ForKey:v4];
+  keyCopy = key;
+  v5 = [(MSVSegmentedDecoder *)self _coderForKey:keyCopy];
+  v6 = [v5 decodeInt64ForKey:keyCopy];
 
   return v6;
 }
 
-- (int)decodeInt32ForKey:(id)a3
+- (int)decodeInt32ForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MSVSegmentedDecoder *)self _coderForKey:v4];
-  v6 = [v5 decodeInt32ForKey:v4];
+  keyCopy = key;
+  v5 = [(MSVSegmentedDecoder *)self _coderForKey:keyCopy];
+  v6 = [v5 decodeInt32ForKey:keyCopy];
 
   return v6;
 }
 
-- (int)decodeIntForKey:(id)a3
+- (int)decodeIntForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MSVSegmentedDecoder *)self _coderForKey:v4];
-  v6 = [v5 decodeIntForKey:v4];
+  keyCopy = key;
+  v5 = [(MSVSegmentedDecoder *)self _coderForKey:keyCopy];
+  v6 = [v5 decodeIntForKey:keyCopy];
 
   return v6;
 }
 
-- (BOOL)decodeBoolForKey:(id)a3
+- (BOOL)decodeBoolForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MSVSegmentedDecoder *)self _coderForKey:v4];
-  v6 = [v5 decodeBoolForKey:v4];
+  keyCopy = key;
+  v5 = [(MSVSegmentedDecoder *)self _coderForKey:keyCopy];
+  v6 = [v5 decodeBoolForKey:keyCopy];
 
   return v6;
 }
 
-- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4
+- (id)decodeObjectOfClasses:(id)classes forKey:(id)key
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  classesCopy = classes;
+  keyCopy = key;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -255,7 +255,7 @@ LABEL_11:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) decodeObjectOfClasses:v6 forKey:{v7, v17}];
+        v13 = [*(*(&v17 + 1) + 8 * i) decodeObjectOfClasses:classesCopy forKey:{keyCopy, v17}];
         if (v13)
         {
           v14 = v13;
@@ -281,30 +281,30 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)containsValueForKey:(id)a3
+- (BOOL)containsValueForKey:(id)key
 {
-  v3 = [(MSVSegmentedDecoder *)self _coderForKey:a3];
+  v3 = [(MSVSegmentedDecoder *)self _coderForKey:key];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)decodeRootObjectOfClass:(Class)a3 error:(id *)a4
+- (id)decodeRootObjectOfClass:(Class)class error:(id *)error
 {
-  v6 = [MEMORY[0x1E695DFD8] setWithObject:a3];
-  v7 = [(MSVSegmentedDecoder *)self decodeRootObjectOfClasses:v6 error:a4];
+  v6 = [MEMORY[0x1E695DFD8] setWithObject:class];
+  v7 = [(MSVSegmentedDecoder *)self decodeRootObjectOfClasses:v6 error:error];
 
   return v7;
 }
 
-- (id)decodeRootObjectOfClasses:(id)a3 error:(id *)a4
+- (id)decodeRootObjectOfClasses:(id)classes error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (([v7 containsObject:self->_rootClass] & 1) == 0)
+  classesCopy = classes;
+  if (([classesCopy containsObject:self->_rootClass] & 1) == 0)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"MSVSegmentedEncoder.m" lineNumber:223 description:{@"Attempt to decode package of archived class: %@", self->_rootClass}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVSegmentedEncoder.m" lineNumber:223 description:{@"Attempt to decode package of archived class: %@", self->_rootClass}];
   }
 
   v33 = 0u;
@@ -325,7 +325,7 @@ LABEL_11:
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v31 + 1) + 8 * i) beginDecodingPartialTopLevelObjectOfClasses:v7];
+        [*(*(&v31 + 1) + 8 * i) beginDecodingPartialTopLevelObjectOfClasses:classesCopy];
       }
 
       v9 = [(NSArray *)v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
@@ -362,33 +362,33 @@ LABEL_11:
     while (v14);
   }
 
-  v17 = [(MSVSegmentedCodingPackage *)self->_package allVersions];
+  allVersions = [(MSVSegmentedCodingPackage *)self->_package allVersions];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __55__MSVSegmentedDecoder_decodeRootObjectOfClasses_error___block_invoke;
   v25[3] = &unk_1E7982520;
   v18 = v12;
   v26 = v18;
-  [v17 enumerateKeysAndObjectsUsingBlock:v25];
+  [allVersions enumerateKeysAndObjectsUsingBlock:v25];
 
-  v19 = [(MSVSegmentedDecoder *)self error];
-  if (v19)
+  error = [(MSVSegmentedDecoder *)self error];
+  if (error)
   {
 
-    if (a4)
+    if (error)
     {
-      v20 = v19;
-      *a4 = v19;
+      v20 = error;
+      *error = error;
     }
 
     [(MSVSegmentedDecoder *)self __setError:0];
     v18 = 0;
   }
 
-  else if (a4 && !v18)
+  else if (error && !v18)
   {
     [MEMORY[0x1E696ABC0] msv_errorWithDomain:*MEMORY[0x1E696A250] code:4865 debugDescription:@"failed to decode root object"];
-    *a4 = v18 = 0;
+    *error = v18 = 0;
   }
 
   v21 = v18;
@@ -427,10 +427,10 @@ void __55__MSVSegmentedDecoder_decodeRootObjectOfClasses_error___block_invoke(ui
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) error];
-        if (v8)
+        error = [*(*(&v12 + 1) + 8 * i) error];
+        if (error)
         {
-          v9 = v8;
+          decodeError = error;
 
           goto LABEL_11;
         }
@@ -446,18 +446,18 @@ void __55__MSVSegmentedDecoder_decodeRootObjectOfClasses_error___block_invoke(ui
     }
   }
 
-  v9 = [(MSVSegmentedDecoder *)self decodeError];
+  decodeError = [(MSVSegmentedDecoder *)self decodeError];
 LABEL_11:
   v10 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return decodeError;
 }
 
-- (MSVSegmentedDecoder)initWithCodingPackage:(id)a3 userInfo:(id)a4 error:(id *)a5
+- (MSVSegmentedDecoder)initWithCodingPackage:(id)package userInfo:(id)info error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  packageCopy = package;
+  infoCopy = info;
   v36.receiver = self;
   v36.super_class = MSVSegmentedDecoder;
   v11 = [(MSVSegmentedDecoder *)&v36 init];
@@ -466,7 +466,7 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  v12 = [v10 copy];
+  v12 = [infoCopy copy];
   v13 = v12;
   v14 = MEMORY[0x1E695E0F8];
   if (v12)
@@ -481,10 +481,10 @@ LABEL_11:
 
   objc_storeStrong(&v11->_userInfo, v15);
 
-  objc_storeStrong(&v11->_package, a3);
-  v16 = [(MSVSegmentedCodingPackage *)v11->_package archivedClass];
+  objc_storeStrong(&v11->_package, package);
+  archivedClass = [(MSVSegmentedCodingPackage *)v11->_package archivedClass];
   rootClass = v11->_rootClass;
-  v11->_rootClass = v16;
+  v11->_rootClass = archivedClass;
 
   package = v11->_package;
   v35 = 0;
@@ -503,9 +503,9 @@ LABEL_11:
   {
     v24 = v23;
     v25 = *v32;
-    if (v10)
+    if (infoCopy)
     {
-      v14 = v10;
+      v14 = infoCopy;
     }
 
     do
@@ -528,10 +528,10 @@ LABEL_11:
 
   if (v20)
   {
-    if (a5)
+    if (error)
     {
       v27 = v20;
-      *a5 = v20;
+      *error = v20;
     }
 
     v28 = 0;
@@ -547,13 +547,13 @@ LABEL_17:
   return v28;
 }
 
-+ (id)decodedObjectOfClasses:(id)a3 fromPackage:(id)a4 userInfo:(id)a5 error:(id *)a6
++ (id)decodedObjectOfClasses:(id)classes fromPackage:(id)package userInfo:(id)info error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
+  classesCopy = classes;
+  infoCopy = info;
+  packageCopy = package;
   v20 = 0;
-  v12 = [[MSVSegmentedDecoder alloc] initWithCodingPackage:v11 userInfo:v10 error:&v20];
+  v12 = [[MSVSegmentedDecoder alloc] initWithCodingPackage:packageCopy userInfo:infoCopy error:&v20];
 
   v13 = v20;
   if (v13)
@@ -565,7 +565,7 @@ LABEL_17:
   else
   {
     v19 = 0;
-    v15 = [(MSVSegmentedDecoder *)v12 decodeRootObjectOfClasses:v9 error:&v19];
+    v15 = [(MSVSegmentedDecoder *)v12 decodeRootObjectOfClasses:classesCopy error:&v19];
     v14 = v19;
     if (!v14)
     {
@@ -575,11 +575,11 @@ LABEL_17:
     }
   }
 
-  if (a6)
+  if (error)
   {
     v16 = v14;
     v17 = 0;
-    *a6 = v14;
+    *error = v14;
   }
 
   else
@@ -592,13 +592,13 @@ LABEL_8:
   return v17;
 }
 
-+ (id)decodedObjectOfClass:(Class)a3 fromPackage:(id)a4 userInfo:(id)a5 error:(id *)a6
++ (id)decodedObjectOfClass:(Class)class fromPackage:(id)package userInfo:(id)info error:(id *)error
 {
   v10 = MEMORY[0x1E695DFD8];
-  v11 = a5;
-  v12 = a4;
-  v13 = [v10 setWithObject:a3];
-  v14 = [a1 decodedObjectOfClasses:v13 fromPackage:v12 userInfo:v11 error:a6];
+  infoCopy = info;
+  packageCopy = package;
+  v13 = [v10 setWithObject:class];
+  v14 = [self decodedObjectOfClasses:v13 fromPackage:packageCopy userInfo:infoCopy error:error];
 
   return v14;
 }

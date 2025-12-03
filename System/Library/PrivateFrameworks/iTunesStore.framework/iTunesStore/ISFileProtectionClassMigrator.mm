@@ -7,7 +7,7 @@
 + (BOOL)migrate
 {
   v104 = *MEMORY[0x277D85DE8];
-  v71 = [MEMORY[0x277D69B38] sharedStoreServicesConfig];
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedStoreServicesConfig];
   v69 = CPSharedResourcesDirectory();
   v93 = 0;
   v94 = &v93;
@@ -15,28 +15,28 @@
   v96 = 1;
   if (!v69)
   {
-    v51 = v71;
-    if (!v51)
+    mEMORY[0x277D69B38]2 = mEMORY[0x277D69B38];
+    if (!mEMORY[0x277D69B38]2)
     {
-      v51 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v52 = v51;
-    v53 = [v51 shouldLog];
-    v54 = [v52 shouldLogToDisk];
-    v55 = [v52 OSLogObject];
-    v56 = v55;
-    if (v54)
+    v52 = mEMORY[0x277D69B38]2;
+    shouldLog = [mEMORY[0x277D69B38]2 shouldLog];
+    shouldLogToDisk = [v52 shouldLogToDisk];
+    oSLogObject = [v52 OSLogObject];
+    v56 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v57 = v53 | 2;
+      v57 = shouldLog | 2;
     }
 
     else
     {
-      v57 = v53;
+      v57 = shouldLog;
     }
 
-    if (os_log_type_enabled(v55, OS_LOG_TYPE_FAULT))
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v58 = v57;
     }
@@ -69,7 +69,7 @@ LABEL_86:
     goto LABEL_86;
   }
 
-  v66 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v91 = 0u;
   v92 = 0u;
   v89 = 0u;
@@ -94,28 +94,28 @@ LABEL_86:
       v6 = v5;
       if ((_set_path_class([v5 fileSystemRepresentation], 0) & 0xFFFFFFFD) != 0)
       {
-        v7 = v71;
-        if (!v71)
+        mEMORY[0x277D69B38]3 = mEMORY[0x277D69B38];
+        if (!mEMORY[0x277D69B38])
         {
-          v7 = [MEMORY[0x277D69B38] sharedConfig];
+          mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedConfig];
         }
 
-        v8 = v7;
-        v9 = [v7 shouldLog];
-        v10 = [v8 shouldLogToDisk];
-        v11 = [v8 OSLogObject];
-        v12 = v11;
-        if (v10)
+        v8 = mEMORY[0x277D69B38]3;
+        shouldLog2 = [mEMORY[0x277D69B38]3 shouldLog];
+        shouldLogToDisk2 = [v8 shouldLogToDisk];
+        oSLogObject2 = [v8 OSLogObject];
+        v12 = oSLogObject2;
+        if (shouldLogToDisk2)
         {
-          v13 = v9 | 2;
+          v13 = shouldLog2 | 2;
         }
 
         else
         {
-          v13 = v9;
+          v13 = shouldLog2;
         }
 
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
         {
           v14 = v13;
         }
@@ -189,10 +189,10 @@ LABEL_23:
       v81[1] = 3221225472;
       v81[2] = __40__ISFileProtectionClassMigrator_migrate__block_invoke;
       v81[3] = &unk_27A670968;
-      v22 = v71;
+      v22 = mEMORY[0x277D69B38];
       v82 = v22;
       v83 = &v93;
-      v23 = [v66 enumeratorAtURL:v20 includingPropertiesForKeys:v21 options:0 errorHandler:v81];
+      v23 = [defaultManager enumeratorAtURL:v20 includingPropertiesForKeys:v21 options:0 errorHandler:v81];
       v70 = v19;
       v68 = v18;
 
@@ -218,30 +218,30 @@ LABEL_23:
             v76 = 0;
             if (![v28 getResourceValue:&v76 forKey:v17 error:{&v84, v63}])
             {
-              v38 = v22;
-              if (!v71)
+              mEMORY[0x277D69B38]4 = v22;
+              if (!mEMORY[0x277D69B38])
               {
-                v38 = [MEMORY[0x277D69B38] sharedConfig];
+                mEMORY[0x277D69B38]4 = [MEMORY[0x277D69B38] sharedConfig];
               }
 
-              v31 = v38;
-              v39 = [v38 shouldLog];
-              v40 = [v31 shouldLogToDisk];
-              v41 = [v31 OSLogObject];
-              v42 = v41;
-              if (v40)
+              v31 = mEMORY[0x277D69B38]4;
+              shouldLog3 = [mEMORY[0x277D69B38]4 shouldLog];
+              shouldLogToDisk3 = [v31 shouldLogToDisk];
+              oSLogObject3 = [v31 OSLogObject];
+              v42 = oSLogObject3;
+              if (shouldLogToDisk3)
               {
-                v39 |= 2u;
+                shouldLog3 |= 2u;
               }
 
-              if (os_log_type_enabled(v41, OS_LOG_TYPE_FAULT))
+              if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_FAULT))
               {
-                v43 = v39;
+                v43 = shouldLog3;
               }
 
               else
               {
-                v43 = v39 & 2;
+                v43 = shouldLog3 & 2;
               }
 
               if (v43)
@@ -281,30 +281,30 @@ LABEL_59:
                 continue;
               }
 
-              v30 = v22;
-              if (!v71)
+              mEMORY[0x277D69B38]5 = v22;
+              if (!mEMORY[0x277D69B38])
               {
-                v30 = [MEMORY[0x277D69B38] sharedConfig];
+                mEMORY[0x277D69B38]5 = [MEMORY[0x277D69B38] sharedConfig];
               }
 
-              v31 = v30;
-              v32 = [v30 shouldLog];
-              v33 = [v31 shouldLogToDisk];
-              v34 = [v31 OSLogObject];
-              v35 = v34;
-              if (v33)
+              v31 = mEMORY[0x277D69B38]5;
+              shouldLog4 = [mEMORY[0x277D69B38]5 shouldLog];
+              shouldLogToDisk4 = [v31 shouldLogToDisk];
+              oSLogObject4 = [v31 OSLogObject];
+              v35 = oSLogObject4;
+              if (shouldLogToDisk4)
               {
-                v32 |= 2u;
+                shouldLog4 |= 2u;
               }
 
-              if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
+              if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_FAULT))
               {
-                v36 = v32;
+                v36 = shouldLog4;
               }
 
               else
               {
-                v36 = v32 & 2;
+                v36 = shouldLog4 & 2;
               }
 
               if (v36)
@@ -329,8 +329,8 @@ LABEL_59:
               goto LABEL_59;
             }
 
-            v45 = [v28 path];
-            setFileClassC(v45, v22, v94 + 24);
+            path = [v28 path];
+            setFileClassC(path, v22, v94 + 24);
           }
 
           v25 = [v24 countByEnumeratingWithState:&v77 objects:v98 count:16];
@@ -376,7 +376,7 @@ LABEL_65:
         }
 
         v49 = [v69 stringByAppendingPathComponent:*(*(&v72 + 1) + 8 * k)];
-        setFileClassC(v49, v71, v94 + 24);
+        setFileClassC(v49, mEMORY[0x277D69B38], v94 + 24);
       }
 
       v46 = [&unk_2884CA968 countByEnumeratingWithState:&v72 objects:v97 count:16];

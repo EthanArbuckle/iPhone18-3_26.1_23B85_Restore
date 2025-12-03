@@ -1,31 +1,31 @@
 @interface MRContentItemRequest
-- (MRContentItemRequest)initWithCoder:(id)a3;
-- (MRContentItemRequest)initWithItem:(id)a3 request:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setItem:(id)a3;
+- (MRContentItemRequest)initWithCoder:(id)coder;
+- (MRContentItemRequest)initWithItem:(id)item request:(id)request;
+- (void)encodeWithCoder:(id)coder;
+- (void)setItem:(id)item;
 @end
 
 @implementation MRContentItemRequest
 
-- (MRContentItemRequest)initWithItem:(id)a3 request:(id)a4
+- (MRContentItemRequest)initWithItem:(id)item request:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  requestCopy = request;
   v14.receiver = self;
   v14.super_class = MRContentItemRequest;
   v8 = [(MRContentItemRequest *)&v14 init];
   if (v8)
   {
-    if (v6)
+    if (itemCopy)
     {
-      if (v7)
+      if (requestCopy)
       {
 LABEL_4:
-        v9 = [v7 copy];
+        v9 = [requestCopy copy];
         request = v8->_request;
         v8->_request = v9;
 
-        v11 = MRContentItemCreateFromRequest(v6, v8->_request);
+        v11 = MRContentItemCreateFromRequest(itemCopy, v8->_request);
         item = v8->_item;
         v8->_item = v11;
 
@@ -36,7 +36,7 @@ LABEL_4:
     else
     {
       [MRContentItemRequest initWithItem:request:];
-      if (v7)
+      if (requestCopy)
       {
         goto LABEL_4;
       }
@@ -51,22 +51,22 @@ LABEL_5:
   return v8;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  MergedItem = MRContentItemCreateMergedItem(self->_item, a3);
+  MergedItem = MRContentItemCreateMergedItem(self->_item, item);
   item = self->_item;
   self->_item = MergedItem;
 }
 
-- (MRContentItemRequest)initWithCoder:(id)a3
+- (MRContentItemRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MRContentItemRequest;
   v5 = [(MRContentItemRequest *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"1"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"1"];
     if (!v6)
     {
       [MRContentItemRequest initWithCoder:];
@@ -81,7 +81,7 @@ LABEL_5:
       [MRContentItemRequest initWithCoder:];
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"0"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"0"];
     if (!v9)
     {
       [MRContentItemRequest initWithCoder:];
@@ -100,14 +100,14 @@ LABEL_5:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   item = self->_item;
-  v5 = a3;
+  coderCopy = coder;
   ExternalRepresentation = MRContentItemCreateExternalRepresentation(0, item);
-  [v5 encodeObject:ExternalRepresentation forKey:@"1"];
-  v6 = [(MRPlaybackQueueRequest *)self->_request data];
-  [v5 encodeObject:v6 forKey:@"0"];
+  [coderCopy encodeObject:ExternalRepresentation forKey:@"1"];
+  data = [(MRPlaybackQueueRequest *)self->_request data];
+  [coderCopy encodeObject:data forKey:@"0"];
 }
 
 - (void)initWithItem:request:.cold.1()

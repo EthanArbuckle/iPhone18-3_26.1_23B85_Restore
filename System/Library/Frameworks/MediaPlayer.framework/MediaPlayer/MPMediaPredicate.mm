@@ -1,14 +1,14 @@
 @interface MPMediaPredicate
-- (BOOL)evaluateEntity:(id)a3;
-- (MPMediaPredicate)initWithCoder:(id)a3;
-- (MPMediaPredicate)initWithProtobufferDecodableObject:(id)a3 library:(id)a4;
+- (BOOL)evaluateEntity:(id)entity;
+- (MPMediaPredicate)initWithCoder:(id)coder;
+- (MPMediaPredicate)initWithProtobufferDecodableObject:(id)object library:(id)library;
 @end
 
 @implementation MPMediaPredicate
 
-- (BOOL)evaluateEntity:(id)a3
+- (BOOL)evaluateEntity:(id)entity
 {
-  v4 = [a3 valueForKey:@"persistentID"];
+  v4 = [entity valueForKey:@"persistentID"];
   v5 = [MPMediaPropertyPredicate predicateWithValue:v4 forProperty:@"persistentID"];
   v6 = [MPMediaQuery alloc];
   v7 = [MEMORY[0x1E695DFD8] setWithObjects:{self, v5, 0}];
@@ -18,14 +18,14 @@
   return v7;
 }
 
-- (MPMediaPredicate)initWithProtobufferDecodableObject:(id)a3 library:(id)a4
+- (MPMediaPredicate)initWithProtobufferDecodableObject:(id)object library:(id)library
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E696A4B8] format:@"MPMediaPredicate is an abstract class and cannot be decoded."];
 
   return 0;
 }
 
-- (MPMediaPredicate)initWithCoder:(id)a3
+- (MPMediaPredicate)initWithCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E696A4C8] format:@"MPMediaPredicate is an abstract class and cannot be decoded."];
 

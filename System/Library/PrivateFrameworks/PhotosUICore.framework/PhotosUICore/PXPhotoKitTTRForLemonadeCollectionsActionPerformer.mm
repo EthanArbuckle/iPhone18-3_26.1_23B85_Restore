@@ -1,5 +1,5 @@
 @interface PXPhotoKitTTRForLemonadeCollectionsActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
 - (void)performUserInteractionTask;
 @end
 
@@ -8,13 +8,13 @@
 - (void)performUserInteractionTask
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(PXActionPerformer *)self hostViewController];
-  v4 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-  if ([v4 isTransient])
+  hostViewController = [(PXActionPerformer *)self hostViewController];
+  assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  if ([assetCollection isTransient])
   {
-    v5 = [v4 localizedTitle];
+    localizedTitle = [assetCollection localizedTitle];
     v6 = +[PXLemonadeDocumentsUtilities documentsLocalizedTitles];
-    v7 = [v6 containsObject:v5];
+    v7 = [v6 containsObject:localizedTitle];
   }
 
   else
@@ -24,8 +24,8 @@
 
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v9 = MEMORY[0x1E6978630];
-  v10 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-  v11 = [v9 fetchAssetsInAssetCollection:v10 options:0];
+  assetCollection2 = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  v11 = [v9 fetchAssetsInAssetCollection:assetCollection2 options:0];
 
   v20 = 0u;
   v21 = 0u;
@@ -63,15 +63,15 @@
     while (v14);
   }
 
-  [PXTTRWorkflowFactory presentDefaultWorkFlowInViewController:v3 withContext:v7 attachmentFileUrls:v8];
+  [PXTTRWorkflowFactory presentDefaultWorkFlowInViewController:hostViewController withContext:v7 attachmentFileUrls:v8];
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v4 = [PXRootSettings sharedInstance:a3];
-  v5 = [v4 canShowInternalUI];
+  v4 = [PXRootSettings sharedInstance:reference];
+  canShowInternalUI = [v4 canShowInternalUI];
 
-  return v5;
+  return canShowInternalUI;
 }
 
 @end

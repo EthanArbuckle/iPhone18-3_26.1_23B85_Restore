@@ -1,26 +1,26 @@
 @interface OnDeviceACAM
-+ (id)algorithmWithData:(id)a3;
-- (id)init:(id)a3;
++ (id)algorithmWithData:(id)data;
+- (id)init:(id)init;
 - (id)output;
-- (int)freshInitWithData:(id)a3;
-- (int)runWithData:(id)a3;
-- (void)addToBdcOutputBuffer:(const void *)a3 :(double)a4;
-- (void)multiLog:(id)a3;
+- (int)freshInitWithData:(id)data;
+- (int)runWithData:(id)data;
+- (void)addToBdcOutputBuffer:(const void *)buffer :(double)a4;
+- (void)multiLog:(id)log;
 @end
 
 @implementation OnDeviceACAM
 
-+ (id)algorithmWithData:(id)a3
++ (id)algorithmWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __34__OnDeviceACAM_algorithmWithData___block_invoke;
   v10[3] = &unk_278D050D8;
-  v11 = v4;
-  v12 = a1;
+  v11 = dataCopy;
+  selfCopy = self;
   v5 = +[OnDeviceACAM algorithmWithData:]::onceToken;
-  v6 = v4;
+  v6 = dataCopy;
   if (v5 != -1)
   {
     dispatch_once(&+[OnDeviceACAM algorithmWithData:]::onceToken, v10);
@@ -39,24 +39,24 @@ uint64_t __34__OnDeviceACAM_algorithmWithData___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (int)freshInitWithData:(id)a3
+- (int)freshInitWithData:(id)data
 {
   v65[35] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v47 = [v4 objectForKey:@"smcData"];
-  v5 = [v4 objectForKey:@"sbcStreamData"];
-  v6 = [v4 objectForKey:@"obcStreamData"];
-  v46 = [v4 objectForKey:@"dailyStreamData"];
-  v7 = [(OnDeviceACAM *)self model];
-  ACAMSerialization::Deserialization::setSMCKeyDataFromDictionary(v65, v7 + 937, v47, 100.0);
-  v8 = [MEMORY[0x277CBEB68] null];
-  if (([v5 isEqual:v8] & 1) == 0 && objc_msgSend(v5, "count"))
+  dataCopy = data;
+  v47 = [dataCopy objectForKey:@"smcData"];
+  v5 = [dataCopy objectForKey:@"sbcStreamData"];
+  v6 = [dataCopy objectForKey:@"obcStreamData"];
+  v46 = [dataCopy objectForKey:@"dailyStreamData"];
+  model = [(OnDeviceACAM *)self model];
+  ACAMSerialization::Deserialization::setSMCKeyDataFromDictionary(v65, model + 937, v47, 100.0);
+  null = [MEMORY[0x277CBEB68] null];
+  if (([v5 isEqual:null] & 1) == 0 && objc_msgSend(v5, "count"))
   {
-    v9 = [MEMORY[0x277CBEB68] null];
-    if (([v6 isEqual:v9] & 1) == 0 && objc_msgSend(v6, "count"))
+    null2 = [MEMORY[0x277CBEB68] null];
+    if (([v6 isEqual:null2] & 1) == 0 && objc_msgSend(v6, "count"))
     {
-      v10 = [MEMORY[0x277CBEB68] null];
-      if (![v46 isEqual:v10])
+      null3 = [MEMORY[0x277CBEB68] null];
+      if (![v46 isEqual:null3])
       {
         v12 = [v46 count] == 0;
 
@@ -201,11 +201,11 @@ uint64_t __34__OnDeviceACAM_algorithmWithData___block_invoke(uint64_t a1)
           *&v61 = __src;
           *(&v61 + 1) = 0xCCCCCCCCCCCCCCCDLL * ((v56 - __src) >> 3);
           v39 = [v46 objectAtIndexedSubscript:0];
-          ACAMSerialization::Deserialization::setDailyDataFromDictionary(&v63, v7 + 937, v39, 100.0);
+          ACAMSerialization::Deserialization::setDailyDataFromDictionary(&v63, model + 937, v39, 100.0);
 
           [(OnDeviceACAM *)self multiLog:@"Performing BDC-based initialization."];
-          v40 = [(OnDeviceACAM *)self runTimeOptions];
-          v41 = [v40 objectForKeyedSubscript:@"SaveDebugInfo"];
+          runTimeOptions = [(OnDeviceACAM *)self runTimeOptions];
+          v41 = [runTimeOptions objectForKeyedSubscript:@"SaveDebugInfo"];
           v42 = [v41 isEqual:MEMORY[0x277CBEC38]];
 
           if (v42)
@@ -213,26 +213,26 @@ uint64_t __34__OnDeviceACAM_algorithmWithData___block_invoke(uint64_t a1)
             v52 = 0;
             v53 = 0;
             v54 = 0;
-            v43 = [(OnDeviceACAM *)self model];
+            model2 = [(OnDeviceACAM *)self model];
             v48 = v61;
             v49 = v62;
             v50 = v63;
             v51 = v64;
-            ACAM::init(v43, &v48);
+            ACAM::init(model2, &v48);
           }
 
-          v44 = [(OnDeviceACAM *)self model];
+          model3 = [(OnDeviceACAM *)self model];
           v48 = v61;
           v49 = v62;
           v50 = v63;
           v51 = v64;
-          ACAM::init(v44, &v48);
+          ACAM::init(model3, &v48);
         }
 
 LABEL_9:
         [(OnDeviceACAM *)self multiLog:@"BDC Data is not present. Performing fallback initialization"];
-        v11 = [(OnDeviceACAM *)self model];
-        ACAM::init(v11, v65[3], v65[1], v65[0]);
+        model4 = [(OnDeviceACAM *)self model];
+        ACAM::init(model4, v65[3], v65[1], v65[0]);
       }
     }
   }
@@ -240,9 +240,9 @@ LABEL_9:
   goto LABEL_9;
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v72 = MEMORY[0x28223BE20](self, a2, a3);
+  v72 = MEMORY[0x28223BE20](self, a2, init);
   v125[3] = *MEMORY[0x277D85DE8];
   v68 = v3;
   v69 = [v68 objectForKey:@"smcData"];
@@ -275,18 +275,18 @@ LABEL_9:
   runTimeOptions = v4->_runTimeOptions;
   v4->_runTimeOptions = v14;
 
-  v16 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   debugLogBuffer = v4->_debugLogBuffer;
-  v4->_debugLogBuffer = v16;
+  v4->_debugLogBuffer = array;
 
   v18 = [v71 objectForKeyedSubscript:@"kSavedAlgoStateOnDeviceACAMInterface"];
   LODWORD(v4) = v18 == 0;
 
   if (v4)
   {
-    v22 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     lastBDCOutputTimestamp = v73->_lastBDCOutputTimestamp;
-    v73->_lastBDCOutputTimestamp = v22;
+    v73->_lastBDCOutputTimestamp = dictionary;
 
     [(NSMutableDictionary *)v73->_lastBDCOutputTimestamp setObject:&unk_2853AFFC0 forKeyedSubscript:@"SBC"];
     [(NSMutableDictionary *)v73->_lastBDCOutputTimestamp setObject:&unk_2853AFFC0 forKeyedSubscript:@"Daily"];
@@ -306,9 +306,9 @@ LABEL_9:
 
   if (v25)
   {
-    v29 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary2 = [MEMORY[0x277CBEAC0] dictionary];
     freshInitInfo = v73->_freshInitInfo;
-    v73->_freshInitInfo = v29;
+    v73->_freshInitInfo = dictionary2;
   }
 
   else
@@ -324,9 +324,9 @@ LABEL_9:
 
   if (v31)
   {
-    v35 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     runningInfo = v73->_runningInfo;
-    v73->_runningInfo = v35;
+    v73->_runningInfo = array2;
   }
 
   else
@@ -338,14 +338,14 @@ LABEL_9:
   }
 
   v124[0] = @"SBC";
-  v36 = [MEMORY[0x277CBEB18] array];
-  v125[0] = v36;
+  array3 = [MEMORY[0x277CBEB18] array];
+  v125[0] = array3;
   v124[1] = @"Daily";
-  v37 = [MEMORY[0x277CBEB18] array];
-  v125[1] = v37;
+  array4 = [MEMORY[0x277CBEB18] array];
+  v125[1] = array4;
   v124[2] = @"Weekly";
-  v38 = [MEMORY[0x277CBEB18] array];
-  v125[2] = v38;
+  array5 = [MEMORY[0x277CBEB18] array];
+  v125[2] = array5;
   v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v125 forKeys:v124 count:3];
   bdcOutputBuffer = v73->_bdcOutputBuffer;
   v73->_bdcOutputBuffer = v39;
@@ -1082,10 +1082,10 @@ LABEL_9:
   ACAMUtility::ACAMParameterPack::ACAMParameterPack(&v75, &v74, v47);
 }
 
-- (void)addToBdcOutputBuffer:(const void *)a3 :(double)a4
+- (void)addToBdcOutputBuffer:(const void *)buffer :(double)a4
 {
   std::string::basic_string[abi:ne200100]<0>(__p, "SBC");
-  v7 = std::__hash_table<std::__hash_value_type<std::string,double>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,double>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,double>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,double>>>::find<std::string>(a3, __p);
+  v7 = std::__hash_table<std::__hash_value_type<std::string,double>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,double>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,double>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,double>>>::find<std::string>(buffer, __p);
   if (!v7)
   {
     std::__throw_out_of_range[abi:ne200100]("unordered_map::at: key not found");
@@ -1107,19 +1107,19 @@ LABEL_9:
   {
 LABEL_6:
     v9 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-    v10 = [(OnDeviceACAM *)self lastBDCOutputTimestamp];
-    [v10 setObject:v9 forKeyedSubscript:@"SBC"];
+    lastBDCOutputTimestamp = [(OnDeviceACAM *)self lastBDCOutputTimestamp];
+    [lastBDCOutputTimestamp setObject:v9 forKeyedSubscript:@"SBC"];
 
-    v11 = [(OnDeviceACAM *)self bdcOutputBuffer];
-    v12 = [v11 objectForKeyedSubscript:@"SBC"];
-    v13 = [(OnDeviceACAM *)self model];
-    v15 = ACAMSerialization::Serialization::createBDCSBCFromACAM(v13, v14, a4);
+    bdcOutputBuffer = [(OnDeviceACAM *)self bdcOutputBuffer];
+    v12 = [bdcOutputBuffer objectForKeyedSubscript:@"SBC"];
+    model = [(OnDeviceACAM *)self model];
+    v15 = ACAMSerialization::Serialization::createBDCSBCFromACAM(model, v14, a4);
     [v12 addObject:v15];
   }
 
 LABEL_7:
   std::string::basic_string[abi:ne200100]<0>(__p, "Daily");
-  v16 = std::__hash_table<std::__hash_value_type<std::string,double>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,double>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,double>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,double>>>::find<std::string>(a3, __p);
+  v16 = std::__hash_table<std::__hash_value_type<std::string,double>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,double>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,double>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,double>>>::find<std::string>(buffer, __p);
   if (!v16)
   {
     std::__throw_out_of_range[abi:ne200100]("unordered_map::at: key not found");
@@ -1141,13 +1141,13 @@ LABEL_7:
   {
 LABEL_12:
     v18 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-    v19 = [(OnDeviceACAM *)self lastBDCOutputTimestamp];
-    [v19 setObject:v18 forKeyedSubscript:@"Daily"];
+    lastBDCOutputTimestamp2 = [(OnDeviceACAM *)self lastBDCOutputTimestamp];
+    [lastBDCOutputTimestamp2 setObject:v18 forKeyedSubscript:@"Daily"];
 
-    v20 = [(OnDeviceACAM *)self bdcOutputBuffer];
-    v21 = [v20 objectForKeyedSubscript:@"Daily"];
-    v22 = [(OnDeviceACAM *)self model];
-    v26 = ACAMSerialization::Serialization::createBDCDailyFromACAM(v22, v23, a4, v24, v25);
+    bdcOutputBuffer2 = [(OnDeviceACAM *)self bdcOutputBuffer];
+    v21 = [bdcOutputBuffer2 objectForKeyedSubscript:@"Daily"];
+    model2 = [(OnDeviceACAM *)self model];
+    v26 = ACAMSerialization::Serialization::createBDCDailyFromACAM(model2, v23, a4, v24, v25);
     [v21 addObject:v26];
 
     *([(OnDeviceACAM *)self model]+ 37940) = 0;
@@ -1155,7 +1155,7 @@ LABEL_12:
 
 LABEL_13:
   std::string::basic_string[abi:ne200100]<0>(__p, "Weekly");
-  v27 = std::__hash_table<std::__hash_value_type<std::string,double>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,double>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,double>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,double>>>::find<std::string>(a3, __p);
+  v27 = std::__hash_table<std::__hash_value_type<std::string,double>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,double>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,double>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,double>>>::find<std::string>(buffer, __p);
   if (!v27)
   {
     std::__throw_out_of_range[abi:ne200100]("unordered_map::at: key not found");
@@ -1171,14 +1171,14 @@ LABEL_13:
 
 LABEL_18:
     v29 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-    v30 = [(OnDeviceACAM *)self lastBDCOutputTimestamp];
-    [v30 setObject:v29 forKeyedSubscript:@"Weekly"];
+    lastBDCOutputTimestamp3 = [(OnDeviceACAM *)self lastBDCOutputTimestamp];
+    [lastBDCOutputTimestamp3 setObject:v29 forKeyedSubscript:@"Weekly"];
 
     [(OnDeviceACAM *)self bdcOutputBuffer];
     [objc_claimAutoreleasedReturnValue() objectForKeyedSubscript:@"Weekly"];
     objc_claimAutoreleasedReturnValue();
-    v31 = [(OnDeviceACAM *)self model];
-    ACAMSerialization::Serialization::createBDCWeeklyFromACAM(v31, v32, a4);
+    model3 = [(OnDeviceACAM *)self model];
+    ACAMSerialization::Serialization::createBDCWeeklyFromACAM(model3, v32, a4);
   }
 
   operator delete(__p[0]);
@@ -1188,12 +1188,12 @@ LABEL_18:
   }
 }
 
-- (int)runWithData:(id)a3
+- (int)runWithData:(id)data
 {
   v156 = *MEMORY[0x277D85DE8];
-  v107 = a3;
-  v112 = [v107 objectForKey:@"amaStreamData"];
-  v108 = [v107 objectForKey:@"smcData"];
+  dataCopy = data;
+  v112 = [dataCopy objectForKey:@"amaStreamData"];
+  v108 = [dataCopy objectForKey:@"smcData"];
   ACAMSerialization::Deserialization::setSMCKeyDataFromDictionary(v139, ([(OnDeviceACAM *)self model]+ 7496), v108, 100.0);
   v4 = [v112 count];
   [(OnDeviceACAM *)self multiLog:@"%lu 1Hz data received ", v4];
@@ -1244,13 +1244,13 @@ LABEL_18:
   }
 
   v110 = v4;
-  v6 = [(OnDeviceACAM *)self model];
+  model = [(OnDeviceACAM *)self model];
   if (v4)
   {
     v116 = 0;
     v118 = 0;
     v7 = 0;
-    v8 = v6[4644];
+    v8 = model[4644];
     v109 = 0;
     v9 = -1.0;
     v10 = 1;
@@ -1361,7 +1361,7 @@ LABEL_18:
         }
 
         *(v16 - 16) = v21;
-        v120 = [(OnDeviceACAM *)self lastBDCOutputTimestamp];
+        lastBDCOutputTimestamp = [(OnDeviceACAM *)self lastBDCOutputTimestamp];
         v111 = v112;
         v132[0] = (-1 - 0x5555555555555555 * ((v137 - v136) >> 3));
         std::string::basic_string[abi:ne200100]<0>(&v150, "SBC");
@@ -1404,7 +1404,7 @@ LABEL_18:
             v40 = MEMORY[0x277CCACA8];
             v41 = SBYTE7(v151);
             v42 = v150;
-            v43 = [MEMORY[0x277CCACA8] defaultCStringEncoding];
+            defaultCStringEncoding = [MEMORY[0x277CCACA8] defaultCStringEncoding];
             if (v41 >= 0)
             {
               v44 = &v150;
@@ -1415,7 +1415,7 @@ LABEL_18:
               v44 = v42;
             }
 
-            v45 = [v40 stringWithCString:v44 encoding:v43];
+            v45 = [v40 stringWithCString:v44 encoding:defaultCStringEncoding];
             if (v39[7])
             {
               v46 = v39 + 6;
@@ -1448,7 +1448,7 @@ LABEL_18:
 
             else
             {
-              v51 = [v120 objectForKeyedSubscript:v45];
+              v51 = [lastBDCOutputTimestamp objectForKeyedSubscript:v45];
               [v51 doubleValue];
               v50 = v52;
             }
@@ -1503,15 +1503,15 @@ LABEL_18:
 
   [(OnDeviceACAM *)self multiLog:@"%lu valid 1Hz data found out of %lu.\n- %lu are invalid records\n- %lu have overlapping timestamp with SBC\n- %lu chunks identified\n", v109, v110, v118, v116, 0xAAAAAAAAAAAAAAABLL * ((v137 - v136) >> 3)];
   [(OnDeviceACAM *)self multiLog:@"Running OnDeviceACAM"];
-  v54 = [(OnDeviceACAM *)self runTimeOptions];
-  v55 = [v54 objectForKeyedSubscript:@"SaveDebugInfo"];
+  runTimeOptions = [(OnDeviceACAM *)self runTimeOptions];
+  v55 = [runTimeOptions objectForKeyedSubscript:@"SaveDebugInfo"];
   v56 = [v55 isEqual:MEMORY[0x277CBEC38]];
 
   if (v56)
   {
-    v57 = [(OnDeviceACAM *)self debugLogBuffer];
+    debugLogBuffer = [(OnDeviceACAM *)self debugLogBuffer];
     v59 = OnDeviceACAMUtility::createDebugLogItem(@"SMC Key for Running OnDeviceACAM", v108, v58);
-    [v57 addObject:v59];
+    [debugLogBuffer addObject:v59];
   }
 
   if (v137 == v136)
@@ -1642,18 +1642,18 @@ LABEL_95:
     v122[0] = 0;
     v122[1] = 0;
     *&v123 = 0;
-    v74 = [(OnDeviceACAM *)self runTimeOptions];
-    v75 = [v74 objectForKeyedSubscript:@"SaveDebugInfo"];
+    runTimeOptions2 = [(OnDeviceACAM *)self runTimeOptions];
+    v75 = [runTimeOptions2 objectForKeyedSubscript:@"SaveDebugInfo"];
     [v75 isEqual:MEMORY[0x277CBEC38]];
 
-    v76 = [(OnDeviceACAM *)self model];
+    model2 = [(OnDeviceACAM *)self model];
     v77 = v136 + 24 * v60;
     v78 = *v77;
     v79 = 0xCCCCCCCCCCCCCCCDLL * ((*(v77 + 8) - *v77) >> 3);
     v150 = v139[0];
     v151 = v139[1];
     v152[0] = v140;
-    ACAM::runOnce(v76, v78, v79, &v150);
+    ACAM::runOnce(model2, v78, v79, &v150);
     v80 = v122[0];
     if (v122[0])
     {
@@ -1677,8 +1677,8 @@ LABEL_95:
   while (v60 < 0xAAAAAAAAAAAAAAABLL * ((v137 - v136) >> 3));
 LABEL_108:
   [(OnDeviceACAM *)self multiLog:@"Finished"];
-  v82 = [(OnDeviceACAM *)self model];
-  v119 = ACAMSerialization::Serialization::createBDCDailyFromACAM(v82, v83, v11, v84, v85);
+  model3 = [(OnDeviceACAM *)self model];
+  v119 = ACAMSerialization::Serialization::createBDCDailyFromACAM(model3, v83, v11, v84, v85);
   v149[0] = v108;
   v148[0] = @"rawSmcKey";
   v148[1] = @"parsedTeq";
@@ -1760,21 +1760,21 @@ LABEL_108:
   }
 
   [(OnDeviceACAM *)self multiLog:@"Writing currentRunningInfo"];
-  v102 = [(OnDeviceACAM *)self runningInfo];
-  [v102 addObject:v101];
+  runningInfo = [(OnDeviceACAM *)self runningInfo];
+  [runningInfo addObject:v101];
   while (1)
   {
 
-    v103 = [(OnDeviceACAM *)self runningInfo];
-    v104 = [v103 count] > 0xA;
+    runningInfo2 = [(OnDeviceACAM *)self runningInfo];
+    v104 = [runningInfo2 count] > 0xA;
 
     if (!v104)
     {
       break;
     }
 
-    v102 = [(OnDeviceACAM *)self runningInfo];
-    [v102 removeObjectAtIndex:0];
+    runningInfo = [(OnDeviceACAM *)self runningInfo];
+    [runningInfo removeObjectAtIndex:0];
   }
 
   [(OnDeviceACAM *)self multiLog:@"Finished currentRunningInfo"];
@@ -1804,8 +1804,8 @@ LABEL_108:
   v52 = 0u;
   v53 = 0u;
   ACAMPersistentStates::retrieve(v40, [(OnDeviceACAM *)self model]);
-  v3 = [(OnDeviceACAM *)self runTimeOptions];
-  v4 = [v3 objectForKeyedSubscript:@"SaveDebugInfo"];
+  runTimeOptions = [(OnDeviceACAM *)self runTimeOptions];
+  v4 = [runTimeOptions objectForKeyedSubscript:@"SaveDebugInfo"];
   v5 = [v4 isEqual:MEMORY[0x277CBEC38]];
 
   if (v5)
@@ -1815,46 +1815,46 @@ LABEL_108:
 
   v61[0] = @"savedAlgoState";
   v55[0] = @"kSavedAlgoStateOnDeviceACAMInterface";
-  v56 = [(OnDeviceACAM *)self lastBDCOutputTimestamp];
+  lastBDCOutputTimestamp = [(OnDeviceACAM *)self lastBDCOutputTimestamp];
   v55[1] = @"kSavedAlgoStateOnDeviceACAMCoreAlgo";
-  v35 = v56;
+  v35 = lastBDCOutputTimestamp;
   v57 = ACAMSerialization::Serialization::createDiskStateFromPersistentState(v40, v6);
   v55[2] = @"kSavedAlgoStateOnDeviceACAMDebugLog";
   v34 = v57;
-  v33 = [(OnDeviceACAM *)self debugLogBuffer];
-  v58 = deep_copy_object(v33);
+  debugLogBuffer = [(OnDeviceACAM *)self debugLogBuffer];
+  v58 = deep_copy_object(debugLogBuffer);
   v55[3] = @"kSavedAlgoStateOnDeviceACAMRunningInfo";
   v32 = v58;
-  v7 = [(OnDeviceACAM *)self runningInfo];
-  v8 = deep_copy_object(v7);
+  runningInfo = [(OnDeviceACAM *)self runningInfo];
+  v8 = deep_copy_object(runningInfo);
   v59 = v8;
   v55[4] = @"kSavedAlgoStateOnDeviceACAMFreshInitInfo";
-  v9 = [(OnDeviceACAM *)self freshInitInfo];
-  v10 = deep_copy_object(v9);
+  freshInitInfo = [(OnDeviceACAM *)self freshInitInfo];
+  v10 = deep_copy_object(freshInitInfo);
   v60 = v10;
-  v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v56 forKeys:v55 count:5];
+  v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&lastBDCOutputTimestamp forKeys:v55 count:5];
   v62[0] = v11;
   v61[1] = @"kBDCOutputData";
-  v12 = [(OnDeviceACAM *)self bdcOutputBuffer];
-  v13 = deep_copy_object(v12);
+  bdcOutputBuffer = [(OnDeviceACAM *)self bdcOutputBuffer];
+  v13 = deep_copy_object(bdcOutputBuffer);
   v62[1] = v13;
   v62[2] = MEMORY[0x277CBEC10];
   v61[2] = @"kPowerLogData";
   v61[3] = @"kCoreAnalyticsData";
-  v14 = [(OnDeviceACAM *)self model];
-  v18 = ACAMSerialization::Serialization::createCoreAnalyticsFromACAM(v14, v15, v16, v17);
+  model = [(OnDeviceACAM *)self model];
+  v18 = ACAMSerialization::Serialization::createCoreAnalyticsFromACAM(model, v15, v16, v17);
   v62[3] = v18;
   v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v62 forKeys:v61 count:4];
 
-  v19 = [(OnDeviceACAM *)self debugLogBuffer];
-  [v19 removeAllObjects];
+  debugLogBuffer2 = [(OnDeviceACAM *)self debugLogBuffer];
+  [debugLogBuffer2 removeAllObjects];
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v20 = [(OnDeviceACAM *)self bdcOutputBuffer];
-  v21 = [v20 countByEnumeratingWithState:&v36 objects:v54 count:16];
+  bdcOutputBuffer2 = [(OnDeviceACAM *)self bdcOutputBuffer];
+  v21 = [bdcOutputBuffer2 countByEnumeratingWithState:&v36 objects:v54 count:16];
   if (v21)
   {
     v22 = *v37;
@@ -1864,16 +1864,16 @@ LABEL_108:
       {
         if (*v37 != v22)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(bdcOutputBuffer2);
         }
 
         v24 = *(*(&v36 + 1) + 8 * i);
-        v25 = [(OnDeviceACAM *)self bdcOutputBuffer];
-        v26 = [v25 objectForKey:v24];
+        bdcOutputBuffer3 = [(OnDeviceACAM *)self bdcOutputBuffer];
+        v26 = [bdcOutputBuffer3 objectForKey:v24];
         [v26 removeAllObjects];
       }
 
-      v21 = [v20 countByEnumeratingWithState:&v36 objects:v54 count:16];
+      v21 = [bdcOutputBuffer2 countByEnumeratingWithState:&v36 objects:v54 count:16];
     }
 
     while (v21);
@@ -1909,15 +1909,15 @@ LABEL_108:
   return v31;
 }
 
-- (void)multiLog:(id)a3
+- (void)multiLog:(id)log
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  logCopy = log;
   v5 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v5 setDateFormat:@"YYYY-MM-dd HH:m:s.SSS"];
   v6 = [MEMORY[0x277CBEAA8] now];
   v7 = [v5 stringFromDate:v6];
-  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v4 arguments:&v30];
+  v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:logCopy arguments:&v30];
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@] %@", v7, v8];
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
@@ -1927,8 +1927,8 @@ LABEL_108:
     _os_log_impl(&dword_241A71000, logger, OS_LOG_TYPE_DEFAULT, "%@", &buf, 0xCu);
   }
 
-  v11 = [(OnDeviceACAM *)self runTimeOptions];
-  v12 = [v11 objectForKeyedSubscript:@"WriteStdOut"];
+  runTimeOptions = [(OnDeviceACAM *)self runTimeOptions];
+  v12 = [runTimeOptions objectForKeyedSubscript:@"WriteStdOut"];
   v13 = [v12 isEqual:MEMORY[0x277CBEC38]];
 
   if (v13)
@@ -1949,15 +1949,15 @@ LABEL_108:
     }
   }
 
-  v18 = [(OnDeviceACAM *)self runTimeOptions];
-  v19 = [v18 objectForKeyedSubscript:@"SaveDebugInfo"];
+  runTimeOptions2 = [(OnDeviceACAM *)self runTimeOptions];
+  v19 = [runTimeOptions2 objectForKeyedSubscript:@"SaveDebugInfo"];
   v20 = [v19 isEqual:MEMORY[0x277CBEC38]];
 
   if (v20)
   {
     debugLogBuffer = self->_debugLogBuffer;
-    v22 = [MEMORY[0x277CBEB68] null];
-    v24 = OnDeviceACAMUtility::createDebugLogItem(v9, v22, v23);
+    null = [MEMORY[0x277CBEB68] null];
+    v24 = OnDeviceACAMUtility::createDebugLogItem(v9, null, v23);
     [(NSMutableArray *)debugLogBuffer addObject:v24];
   }
 

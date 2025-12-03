@@ -1,19 +1,19 @@
 @interface SUUIViewControllerContainerView
-- (SUUIViewControllerContainerView)initWithFrame:(CGRect)a3;
+- (SUUIViewControllerContainerView)initWithFrame:(CGRect)frame;
 - (void)_updateLayoutOfViewControllerView;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setViewController:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setViewController:(id)controller;
 @end
 
 @implementation SUUIViewControllerContainerView
 
-- (SUUIViewControllerContainerView)initWithFrame:(CGRect)a3
+- (SUUIViewControllerContainerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SUUIViewControllerContainerView;
-  v3 = [(SUUIViewControllerContainerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIViewControllerContainerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -31,47 +31,47 @@
   [(SUUIViewControllerContainerView *)self _updateLayoutOfViewControllerView];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = SUUIViewControllerContainerView;
-  [(SUUIViewControllerContainerView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SUUIViewControllerContainerView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(SUUIViewControllerContainerView *)self _updateLayoutOfViewControllerView];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SUUIViewControllerContainerView;
-  [(SUUIViewControllerContainerView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SUUIViewControllerContainerView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SUUIViewControllerContainerView *)self _updateLayoutOfViewControllerView];
 }
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   viewController = self->_viewController;
-  v10 = v5;
-  if (viewController != v5)
+  v10 = controllerCopy;
+  if (viewController != controllerCopy)
   {
     if (viewController)
     {
-      v7 = [(UIViewController *)viewController view];
-      if ([v7 isDescendantOfView:self])
+      view = [(UIViewController *)viewController view];
+      if ([view isDescendantOfView:self])
       {
-        [v7 removeFromSuperview];
+        [view removeFromSuperview];
       }
     }
 
-    objc_storeStrong(&self->_viewController, a3);
+    objc_storeStrong(&self->_viewController, controller);
     viewController = self->_viewController;
   }
 
   if (viewController)
   {
-    v8 = [(UIViewController *)viewController view];
-    v9 = v8;
-    if (v8 && ([v8 isDescendantOfView:self] & 1) == 0)
+    view2 = [(UIViewController *)viewController view];
+    v9 = view2;
+    if (view2 && ([view2 isDescendantOfView:self] & 1) == 0)
     {
       [v9 removeFromSuperview];
       [(SUUIViewControllerContainerView *)self addSubview:v9];
@@ -82,9 +82,9 @@
 
 - (void)_updateLayoutOfViewControllerView
 {
-  v3 = [(UIViewController *)self->_viewController view];
+  view = [(UIViewController *)self->_viewController view];
   [(SUUIViewControllerContainerView *)self bounds];
-  [v3 setFrame:?];
+  [view setFrame:?];
 }
 
 @end

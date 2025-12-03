@@ -2,20 +2,20 @@
 - (AKServerBackoffController)init;
 - (AKServerBackoffControllerDelegate)delegate;
 - (BOOL)_isBackoffSupported;
-- (BOOL)_isStaleClientInfo:(id)a3;
-- (BOOL)_shouldBackoffContext:(id)a3 matchingClients:(id)a4;
-- (BOOL)shouldBackoffContext:(id)a3;
-- (id)_clientInfoForContext:(id)a3;
-- (id)_clientInfoForContext:(id)a3 matchingClients:(id)a4;
-- (id)_objectForKey:(id)a3;
-- (id)_sanitizeServerBackoffInfoDict:(id)a3;
+- (BOOL)_isStaleClientInfo:(id)info;
+- (BOOL)_shouldBackoffContext:(id)context matchingClients:(id)clients;
+- (BOOL)shouldBackoffContext:(id)context;
+- (id)_clientInfoForContext:(id)context;
+- (id)_clientInfoForContext:(id)context matchingClients:(id)clients;
+- (id)_objectForKey:(id)key;
+- (id)_sanitizeServerBackoffInfoDict:(id)dict;
 - (id)_serverBackoffDefaults;
-- (id)_updatedServerBackoffInfoForClients:(id)a3 cachedClients:(id)a4;
-- (id)serverBackoffInfoForContext:(id)a3;
-- (void)_setObject:(id)a3 forKey:(id)a4;
-- (void)_updateServerBackoffInfoWithDictionary:(id)a3;
-- (void)configureFromHeaderFields:(id)a3;
-- (void)reportTelemetryForContext:(id)a3 backoffType:(unint64_t)a4;
+- (id)_updatedServerBackoffInfoForClients:(id)clients cachedClients:(id)cachedClients;
+- (id)serverBackoffInfoForContext:(id)context;
+- (void)_setObject:(id)object forKey:(id)key;
+- (void)_updateServerBackoffInfoWithDictionary:(id)dictionary;
+- (void)configureFromHeaderFields:(id)fields;
+- (void)reportTelemetryForContext:(id)context backoffType:(unint64_t)type;
 @end
 
 @implementation AKServerBackoffController
@@ -75,22 +75,22 @@
   return v3;
 }
 
-- (void)configureFromHeaderFields:(id)a3
+- (void)configureFromHeaderFields:(id)fields
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKServerBackoffController *)v13 _isBackoffSupported])
+  objc_storeStrong(location, fields);
+  if ([(AKServerBackoffController *)selfCopy _isBackoffSupported])
   {
-    p_serverBackoffLock = &v13->_serverBackoffLock;
+    p_serverBackoffLock = &selfCopy->_serverBackoffLock;
     v4 = MEMORY[0x1E69E9820];
     v5 = -1073741824;
     v6 = 0;
     v7 = __55__AKServerBackoffController_configureFromHeaderFields___block_invoke;
     v8 = &unk_1E73D4080;
     v9 = MEMORY[0x1E69E5928](location[0]);
-    v10 = MEMORY[0x1E69E5928](v13);
+    v10 = MEMORY[0x1E69E5928](selfCopy);
     aaf_unfair_lock_perform_1(p_serverBackoffLock, &v4);
     objc_storeStrong(&v10, 0);
     objc_storeStrong(&v9, 0);
@@ -154,17 +154,17 @@ void __55__AKServerBackoffController_configureFromHeaderFields___block_invoke(id
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)shouldBackoffContext:(id)a3
+- (BOOL)shouldBackoffContext:(id)context
 {
   v26 = *MEMORY[0x1E69E9840];
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(os_unfair_lock_s *)v23 _isBackoffSupported])
+  objc_storeStrong(location, context);
+  if ([(os_unfair_lock_s *)selfCopy _isBackoffSupported])
   {
-    os_unfair_lock_lock(v23 + 2);
-    v20 = [(os_unfair_lock_s *)v23 _objectForKey:@"X-Apple-S-Backoff-Server-Info"];
+    os_unfair_lock_lock(selfCopy + 2);
+    v20 = [(os_unfair_lock_s *)selfCopy _objectForKey:@"X-Apple-S-Backoff-Server-Info"];
     v19 = 0;
     memset(__b, 0, sizeof(__b));
     obj = MEMORY[0x1E69E5928](v20);
@@ -183,21 +183,21 @@ void __55__AKServerBackoffController_configureFromHeaderFields___block_invoke(id
         }
 
         v18 = *(__b[1] + 8 * v10);
-        v16 = [(os_unfair_lock_s *)v23 delegate];
+        delegate = [(os_unfair_lock_s *)selfCopy delegate];
         if ((objc_opt_respondsToSelector() & 1) == 0)
         {
           goto LABEL_15;
         }
 
-        v15 = [v16 urlAtKey:v18];
-        v6 = [v15 absoluteString];
+        v15 = [delegate urlAtKey:v18];
+        absoluteString = [v15 absoluteString];
         v5 = [location[0] url];
-        v4 = [v5 absoluteString];
-        v7 = [v6 isEqualToString:?];
-        MEMORY[0x1E69E5920](v4);
+        absoluteString2 = [v5 absoluteString];
+        v7 = [absoluteString isEqualToString:?];
+        MEMORY[0x1E69E5920](absoluteString2);
         MEMORY[0x1E69E5920](v5);
-        MEMORY[0x1E69E5920](v6);
-        if ((v7 & 1) == 0 || ((v14 = [v20 objectForKey:v18], (-[os_unfair_lock_s _shouldBackoffContext:matchingClients:](v23, "_shouldBackoffContext:matchingClients:", location[0], v14) & 1) == 0) ? (v21 = 0) : (v19 = 1, -[os_unfair_lock_s reportTelemetryForContext:backoffType:](v23, "reportTelemetryForContext:backoffType:", location[0], 1), v21 = 2), objc_storeStrong(&v14, 0), !v21))
+        MEMORY[0x1E69E5920](absoluteString);
+        if ((v7 & 1) == 0 || ((v14 = [v20 objectForKey:v18], (-[os_unfair_lock_s _shouldBackoffContext:matchingClients:](selfCopy, "_shouldBackoffContext:matchingClients:", location[0], v14) & 1) == 0) ? (v21 = 0) : (v19 = 1, -[os_unfair_lock_s reportTelemetryForContext:backoffType:](selfCopy, "reportTelemetryForContext:backoffType:", location[0], 1), v21 = 2), objc_storeStrong(&v14, 0), !v21))
         {
           v21 = 0;
         }
@@ -209,7 +209,7 @@ LABEL_15:
           v21 = 0;
         }
 
-        objc_storeStrong(&v16, 0);
+        objc_storeStrong(&delegate, 0);
         if (v21)
         {
           break;
@@ -235,7 +235,7 @@ LABEL_19:
     }
 
     MEMORY[0x1E69E5920](obj);
-    os_unfair_lock_unlock(v23 + 2);
+    os_unfair_lock_unlock(selfCopy + 2);
     v24 = v19 & 1;
     v21 = 1;
     objc_storeStrong(&v20, 0);
@@ -252,21 +252,21 @@ LABEL_19:
   return v24 & 1;
 }
 
-- (id)serverBackoffInfoForContext:(id)a3
+- (id)serverBackoffInfoForContext:(id)context
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(AKServerBackoffController *)v15 _isBackoffSupported])
+  objc_storeStrong(location, context);
+  if ([(AKServerBackoffController *)selfCopy _isBackoffSupported])
   {
-    p_serverBackoffLock = &v15->_serverBackoffLock;
+    p_serverBackoffLock = &selfCopy->_serverBackoffLock;
     v6 = MEMORY[0x1E69E9820];
     v7 = -1073741824;
     v8 = 0;
     v9 = __57__AKServerBackoffController_serverBackoffInfoForContext___block_invoke;
     v10 = &unk_1E73D6BC0;
-    v11 = MEMORY[0x1E69E5928](v15);
+    v11 = MEMORY[0x1E69E5928](selfCopy);
     v12 = MEMORY[0x1E69E5928](location[0]);
     v16 = aaf_unfair_lock_perform_with_result_0(p_serverBackoffLock, &v6);
     objc_storeStrong(&v12, 0);
@@ -394,27 +394,27 @@ BOOL __57__AKServerBackoffController_serverBackoffInfoForContext___block_invoke_
   return v11;
 }
 
-- (void)reportTelemetryForContext:(id)a3 backoffType:(unint64_t)a4
+- (void)reportTelemetryForContext:(id)context backoffType:(unint64_t)type
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v33[1] = a4;
+  objc_storeStrong(location, context);
+  v33[1] = type;
   v33[0] = 0;
-  if (a4 == 1)
+  if (type == 1)
   {
     objc_storeStrong(v33, @"com.apple.aaa.backoff.client");
   }
 
-  else if (a4 == 2)
+  else if (type == 2)
   {
     objc_storeStrong(v33, @"com.apple.aaa.backoff.server");
   }
 
   if (v33[0])
   {
-    v28 = [(AKServerBackoffController *)v35 _clientInfoForContext:location[0]];
+    v28 = [(AKServerBackoffController *)selfCopy _clientInfoForContext:location[0]];
     if (v28)
     {
       v4 = objc_opt_class();
@@ -510,15 +510,15 @@ BOOL __57__AKServerBackoffController_serverBackoffInfoForContext___block_invoke_
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_shouldBackoffContext:(id)a3 matchingClients:(id)a4
+- (BOOL)_shouldBackoffContext:(id)context matchingClients:(id)clients
 {
   v51 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v47 = 0;
-  objc_storeStrong(&v47, a4);
+  objc_storeStrong(&v47, clients);
   memset(__b, 0, sizeof(__b));
   v26 = MEMORY[0x1E69E5928](v47);
   v27 = [v26 countByEnumeratingWithState:__b objects:v50 count:16];
@@ -560,22 +560,22 @@ BOOL __57__AKServerBackoffController_serverBackoffInfoForContext___block_invoke_
       [v40 doubleValue];
       v39 = [v16 dateWithTimeIntervalSince1970:v4 / 1000.0];
       v38 = [v39 dateByAddingTimeInterval:{objc_msgSend(v41, "integerValue")}];
-      v37 = [MEMORY[0x1E695DF00] date];
-      v17 = [location[0] appServerName];
-      v18 = [v17 lowercaseString];
-      v19 = [v42 lowercaseString];
+      date = [MEMORY[0x1E695DF00] date];
+      appServerName = [location[0] appServerName];
+      lowercaseString = [appServerName lowercaseString];
+      lowercaseString2 = [v42 lowercaseString];
       v35 = 0;
       v33 = 0;
       v31 = 0;
       v29 = 0;
       v20 = 0;
-      if ([v18 isEqualToString:?])
+      if ([lowercaseString isEqualToString:?])
       {
         if (v36 = [location[0] clientBundleID], v35 = 1, !v36) && !v44 || (v34 = objc_msgSend(location[0], "clientBundleID"), v33 = 1, v20 = 0, (objc_msgSend(v34, "isEqualToString:", v44)))
         {
           if (v32 = [location[0] proxiedAppBundleID], v31 = 1, !v32) && !v43 || (v30 = objc_msgSend(location[0], "proxiedAppBundleID"), v29 = 1, v20 = 0, (objc_msgSend(v30, "isEqualToString:", v43)))
           {
-            v20 = [v37 compare:v38] == -1;
+            v20 = [date compare:v38] == -1;
           }
         }
       }
@@ -600,9 +600,9 @@ BOOL __57__AKServerBackoffController_serverBackoffInfoForContext___block_invoke_
         MEMORY[0x1E69E5920](v36);
       }
 
-      MEMORY[0x1E69E5920](v19);
-      MEMORY[0x1E69E5920](v18);
-      MEMORY[0x1E69E5920](v17);
+      MEMORY[0x1E69E5920](lowercaseString2);
+      MEMORY[0x1E69E5920](lowercaseString);
+      MEMORY[0x1E69E5920](appServerName);
       if (v20)
       {
         v49 = 1;
@@ -614,7 +614,7 @@ BOOL __57__AKServerBackoffController_serverBackoffInfoForContext___block_invoke_
         v28 = 0;
       }
 
-      objc_storeStrong(&v37, 0);
+      objc_storeStrong(&date, 0);
       objc_storeStrong(&v38, 0);
       objc_storeStrong(&v39, 0);
       objc_storeStrong(&v40, 0);
@@ -658,19 +658,19 @@ LABEL_27:
   return v49 & 1;
 }
 
-- (void)_updateServerBackoffInfoWithDictionary:(id)a3
+- (void)_updateServerBackoffInfoWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = [(AKServerBackoffController *)v22 _objectForKey:@"X-Apple-S-Backoff-Server-Info"];
+  objc_storeStrong(location, dictionary);
+  v15 = [(AKServerBackoffController *)selfCopy _objectForKey:@"X-Apple-S-Backoff-Server-Info"];
   v20 = [v15 mutableCopy];
   MEMORY[0x1E69E5920](v15);
   if (v20)
   {
-    v14 = [(AKServerBackoffController *)v22 _sanitizeServerBackoffInfoDict:v20];
+    v14 = [(AKServerBackoffController *)selfCopy _sanitizeServerBackoffInfoDict:v20];
     v3 = [v14 mutableCopy];
     v4 = v20;
     v20 = v3;
@@ -709,7 +709,7 @@ LABEL_27:
       MEMORY[0x1E69E5920](v6);
       if (v16)
       {
-        v7 = [(AKServerBackoffController *)v22 _updatedServerBackoffInfoForClients:v17 cachedClients:v16];
+        v7 = [(AKServerBackoffController *)selfCopy _updatedServerBackoffInfoForClients:v17 cachedClients:v16];
         [v20 setObject:? forKeyedSubscript:?];
         MEMORY[0x1E69E5920](v7);
       }
@@ -735,7 +735,7 @@ LABEL_27:
   }
 
   MEMORY[0x1E69E5920](obj);
-  [(AKServerBackoffController *)v22 _setObject:v20 forKey:@"X-Apple-S-Backoff-Server-Info"];
+  [(AKServerBackoffController *)selfCopy _setObject:v20 forKey:@"X-Apple-S-Backoff-Server-Info"];
   objc_storeStrong(&v20, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -752,15 +752,15 @@ uint64_t __68__AKServerBackoffController__updateServerBackoffInfoWithDictionary_
   return isKindOfClass & 1;
 }
 
-- (id)_updatedServerBackoffInfoForClients:(id)a3 cachedClients:(id)a4
+- (id)_updatedServerBackoffInfoForClients:(id)clients cachedClients:(id)cachedClients
 {
   v46 = *MEMORY[0x1E69E9840];
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, clients);
   v41 = 0;
-  objc_storeStrong(&v41, a4);
+  objc_storeStrong(&v41, cachedClients);
   v40 = [v41 mutableCopy];
   memset(__b, 0, sizeof(__b));
   v27 = MEMORY[0x1E69E5928](location[0]);
@@ -779,7 +779,7 @@ uint64_t __68__AKServerBackoffController__updateServerBackoffInfoWithDictionary_
       }
 
       v39 = *(__b[1] + 8 * v24);
-      if (![(AKServerBackoffController *)v43 _isStaleClientInfo:v39])
+      if (![(AKServerBackoffController *)selfCopy _isStaleClientInfo:v39])
       {
         v16 = objc_opt_class();
         v17 = [v39 objectForKeyedSubscript:@"c"];
@@ -894,13 +894,13 @@ uint64_t __68__AKServerBackoffController__updateServerBackoffInfoWithDictionary_
   return v5;
 }
 
-- (id)_sanitizeServerBackoffInfoDict:(id)a3
+- (id)_sanitizeServerBackoffInfoDict:(id)dict
 {
   v29 = *MEMORY[0x1E69E9840];
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dict);
   v24 = [location[0] mutableCopy];
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x1E69E5928](location[0]);
@@ -938,7 +938,7 @@ uint64_t __68__AKServerBackoffController__updateServerBackoffInfoWithDictionary_
           }
 
           v19 = *(v18[1] + 8 * v8);
-          if ([(AKServerBackoffController *)v26 _isStaleClientInfo:v19])
+          if ([(AKServerBackoffController *)selfCopy _isStaleClientInfo:v19])
           {
             [v20 removeObject:v19];
           }
@@ -984,7 +984,7 @@ uint64_t __68__AKServerBackoffController__updateServerBackoffInfoWithDictionary_
   }
 
   MEMORY[0x1E69E5920](obj);
-  [(AKServerBackoffController *)v26 _setObject:v24 forKey:@"X-Apple-S-Backoff-Server-Info"];
+  [(AKServerBackoffController *)selfCopy _setObject:v24 forKey:@"X-Apple-S-Backoff-Server-Info"];
   v4 = MEMORY[0x1E69E5928](v24);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(location, 0);
@@ -993,12 +993,12 @@ uint64_t __68__AKServerBackoffController__updateServerBackoffInfoWithDictionary_
   return v4;
 }
 
-- (BOOL)_isStaleClientInfo:(id)a3
+- (BOOL)_isStaleClientInfo:(id)info
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v5 = objc_opt_class();
   v6 = [location[0] objectForKeyedSubscript:@"b"];
   v15 = _AKSafeCast_21(v5, v6);
@@ -1011,9 +1011,9 @@ uint64_t __68__AKServerBackoffController__updateServerBackoffInfoWithDictionary_
   [v14 doubleValue];
   v13 = [v9 dateWithTimeIntervalSince1970:v3 / 1000.0];
   v12 = [v13 dateByAddingTimeInterval:{objc_msgSend(v15, "integerValue")}];
-  v11 = [MEMORY[0x1E695DF00] date];
-  v10 = [v11 compare:v12] == 1;
-  objc_storeStrong(&v11, 0);
+  date = [MEMORY[0x1E695DF00] date];
+  v10 = [date compare:v12] == 1;
+  objc_storeStrong(&date, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
@@ -1022,43 +1022,43 @@ uint64_t __68__AKServerBackoffController__updateServerBackoffInfoWithDictionary_
   return v10;
 }
 
-- (void)_setObject:(id)a3 forKey:(id)a4
+- (void)_setObject:(id)object forKey:(id)key
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, object);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(AKServerBackoffController *)v8 _serverBackoffDefaults];
-  [v5 setObject:location[0] forKey:v6];
-  MEMORY[0x1E69E5920](v5);
+  objc_storeStrong(&v6, key);
+  _serverBackoffDefaults = [(AKServerBackoffController *)selfCopy _serverBackoffDefaults];
+  [_serverBackoffDefaults setObject:location[0] forKey:v6];
+  MEMORY[0x1E69E5920](_serverBackoffDefaults);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)_objectForKey:(id)a3
+- (id)_objectForKey:(id)key
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKServerBackoffController *)v7 _serverBackoffDefaults];
-  v5 = [v4 objectForKey:location[0]];
-  MEMORY[0x1E69E5920](v4);
+  objc_storeStrong(location, key);
+  _serverBackoffDefaults = [(AKServerBackoffController *)selfCopy _serverBackoffDefaults];
+  v5 = [_serverBackoffDefaults objectForKey:location[0]];
+  MEMORY[0x1E69E5920](_serverBackoffDefaults);
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-- (id)_clientInfoForContext:(id)a3
+- (id)_clientInfoForContext:(id)context
 {
   v31 = *MEMORY[0x1E69E9840];
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v24 = [(AKServerBackoffController *)v26 _objectForKey:@"X-Apple-S-Backoff-Server-Info"];
+  objc_storeStrong(location, context);
+  v24 = [(AKServerBackoffController *)selfCopy _objectForKey:@"X-Apple-S-Backoff-Server-Info"];
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x1E69E5928](v24);
   v16 = [obj countByEnumeratingWithState:__b objects:v30 count:16];
@@ -1076,27 +1076,27 @@ uint64_t __68__AKServerBackoffController__updateServerBackoffInfoWithDictionary_
       }
 
       v23 = *(__b[1] + 8 * v13);
-      v21 = [(AKServerBackoffController *)v26 delegate];
+      delegate = [(AKServerBackoffController *)selfCopy delegate];
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
         goto LABEL_13;
       }
 
-      v20 = [v21 urlAtKey:v23];
-      v9 = [v20 absoluteString];
+      v20 = [delegate urlAtKey:v23];
+      absoluteString = [v20 absoluteString];
       v8 = [location[0] url];
-      v7 = [v8 absoluteString];
-      v10 = [v9 isEqualToString:?];
-      MEMORY[0x1E69E5920](v7);
+      absoluteString2 = [v8 absoluteString];
+      v10 = [absoluteString isEqualToString:?];
+      MEMORY[0x1E69E5920](absoluteString2);
       MEMORY[0x1E69E5920](v8);
-      MEMORY[0x1E69E5920](v9);
+      MEMORY[0x1E69E5920](absoluteString);
       if ((v10 & 1) == 0)
       {
         goto LABEL_11;
       }
 
       v19 = [v24 objectForKey:v23];
-      v18 = [(AKServerBackoffController *)v26 _clientInfoForContext:location[0] matchingClients:v19];
+      v18 = [(AKServerBackoffController *)selfCopy _clientInfoForContext:location[0] matchingClients:v19];
       if (v18)
       {
         v5 = v18;
@@ -1128,7 +1128,7 @@ LABEL_13:
         v17 = 0;
       }
 
-      objc_storeStrong(&v21, 0);
+      objc_storeStrong(&delegate, 0);
       if (v17)
       {
         break;
@@ -1167,15 +1167,15 @@ LABEL_17:
   return v3;
 }
 
-- (id)_clientInfoForContext:(id)a3 matchingClients:(id)a4
+- (id)_clientInfoForContext:(id)context matchingClients:(id)clients
 {
   v42 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, clients);
   memset(__b, 0, sizeof(__b));
   v22 = MEMORY[0x1E69E5928](v38);
   v23 = [v22 countByEnumeratingWithState:__b objects:v41 count:16];
@@ -1205,25 +1205,25 @@ LABEL_17:
       v12 = [v37 objectForKeyedSubscript:@"s"];
       v33 = _AKSafeCast_21(v11, v12);
       MEMORY[0x1E69E5920](v12);
-      v13 = [location[0] appServerName];
-      v14 = [v13 lowercaseString];
-      v15 = [v33 lowercaseString];
+      appServerName = [location[0] appServerName];
+      lowercaseString = [appServerName lowercaseString];
+      lowercaseString2 = [v33 lowercaseString];
       v31 = 0;
       v29 = 0;
       v27 = 0;
       v25 = 0;
       v16 = 0;
-      if ([v14 isEqualToString:?])
+      if ([lowercaseString isEqualToString:?])
       {
         if (v32 = [location[0] clientBundleID], v31 = 1, !v32) && !v35 || (v30 = objc_msgSend(location[0], "clientBundleID"), v29 = 1, v16 = 0, (objc_msgSend(v30, "isEqualToString:", v35)))
         {
-          v28 = [location[0] proxiedAppBundleID];
+          proxiedAppBundleID = [location[0] proxiedAppBundleID];
           v27 = 1;
-          if (v28 || (v6 = 1, v34))
+          if (proxiedAppBundleID || (v6 = 1, v34))
           {
-            v26 = [location[0] proxiedAppBundleID];
+            proxiedAppBundleID2 = [location[0] proxiedAppBundleID];
             v25 = 1;
-            v6 = [v26 isEqualToString:v34];
+            v6 = [proxiedAppBundleID2 isEqualToString:v34];
           }
 
           v16 = v6;
@@ -1232,12 +1232,12 @@ LABEL_17:
 
       if (v25)
       {
-        MEMORY[0x1E69E5920](v26);
+        MEMORY[0x1E69E5920](proxiedAppBundleID2);
       }
 
       if (v27)
       {
-        MEMORY[0x1E69E5920](v28);
+        MEMORY[0x1E69E5920](proxiedAppBundleID);
       }
 
       if (v29)
@@ -1250,9 +1250,9 @@ LABEL_17:
         MEMORY[0x1E69E5920](v32);
       }
 
-      MEMORY[0x1E69E5920](v15);
-      MEMORY[0x1E69E5920](v14);
-      MEMORY[0x1E69E5920](v13);
+      MEMORY[0x1E69E5920](lowercaseString2);
+      MEMORY[0x1E69E5920](lowercaseString);
+      MEMORY[0x1E69E5920](appServerName);
       if (v16)
       {
         v40 = MEMORY[0x1E69E5928](v37);

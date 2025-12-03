@@ -6,7 +6,7 @@
 
 - (void)checkpoint
 {
-  v2 = self;
+  selfCopy = self;
   DatabaseManager.checkpoint()();
 }
 

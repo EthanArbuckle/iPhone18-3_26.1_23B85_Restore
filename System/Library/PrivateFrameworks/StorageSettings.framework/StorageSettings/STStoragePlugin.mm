@@ -2,7 +2,7 @@
 - (NSArray)tips;
 - (NSString)identifier;
 - (void)notifyUsageChanged;
-- (void)reloadSpecifiersForApp:(id)a3;
+- (void)reloadSpecifiersForApp:(id)app;
 - (void)reloadTips;
 @end
 
@@ -12,16 +12,16 @@
 {
   if ([(NSString *)self->_identifier length])
   {
-    v3 = self->_identifier;
+    bundleIdentifier = self->_identifier;
   }
 
   else
   {
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v3 = [v4 bundleIdentifier];
+    bundleIdentifier = [v4 bundleIdentifier];
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (NSArray)tips
@@ -39,26 +39,26 @@
 
 - (void)notifyUsageChanged
 {
-  v2 = [MEMORY[0x277D69958] sharedNotifier];
-  [v2 postAppsStateChanged:0];
+  mEMORY[0x277D69958] = [MEMORY[0x277D69958] sharedNotifier];
+  [mEMORY[0x277D69958] postAppsStateChanged:0];
 }
 
 - (void)reloadTips
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"STStoragePluginReloadTipsNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"STStoragePluginReloadTipsNotification" object:self];
 }
 
-- (void)reloadSpecifiersForApp:(id)a3
+- (void)reloadSpecifiersForApp:(id)app
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D69958];
-  v4 = a3;
-  v5 = [v3 sharedNotifier];
-  v8[0] = v4;
+  appCopy = app;
+  sharedNotifier = [v3 sharedNotifier];
+  v8[0] = appCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
 
-  [v5 notify:@"STStoragePluginReloadSpecifiersNotification" forBundleIDs:v6];
+  [sharedNotifier notify:@"STStoragePluginReloadSpecifiersNotification" forBundleIDs:v6];
   v7 = *MEMORY[0x277D85DE8];
 }
 

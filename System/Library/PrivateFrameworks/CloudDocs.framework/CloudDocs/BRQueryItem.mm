@@ -1,11 +1,11 @@
 @interface BRQueryItem
-+ (id)askDaemonQueryItemForURL:(id)a3 andFakeFSEvent:(BOOL)a4 error:(id *)a5;
-+ (id)containerItemForContainer:(id)a3 withRepresentativeItem:(id)a4;
-+ (id)containerItemForContainer:(id)a3 withRepresentativeItem:(id)a4 zoneRowID:(id)a5;
++ (id)askDaemonQueryItemForURL:(id)l andFakeFSEvent:(BOOL)event error:(id *)error;
++ (id)containerItemForContainer:(id)container withRepresentativeItem:(id)item;
++ (id)containerItemForContainer:(id)container withRepresentativeItem:(id)item zoneRowID:(id)d;
 + (void)initialize;
 - (BOOL)_isInSharedZone;
 - (BOOL)_isSharedFolderSubItem;
-- (BOOL)canMerge:(id)a3;
+- (BOOL)canMerge:(id)merge;
 - (BOOL)editedSinceShared;
 - (BOOL)fp_isLastModifiedByCurrentUser;
 - (BOOL)isBRAlias;
@@ -16,8 +16,8 @@
 - (BOOL)isDownloadActive;
 - (BOOL)isDownloaded;
 - (BOOL)isDownloading;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToQueryItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToQueryItem:(id)item;
 - (BOOL)isEvictable;
 - (BOOL)isFinderBookmark;
 - (BOOL)isHidden;
@@ -39,9 +39,9 @@
 - (BOOL)isUploading;
 - (BRFileObjectID)fileObjectID;
 - (BRFileObjectID)parentFileObjectID;
-- (BRQueryItem)initWithCoder:(id)a3;
-- (BRQueryItem)initWithFPItem:(id)a3;
-- (BRQueryItem)initWithQueryItem:(id)a3;
+- (BRQueryItem)initWithCoder:(id)coder;
+- (BRQueryItem)initWithFPItem:(id)item;
+- (BRQueryItem)initWithQueryItem:(id)item;
 - (NSArray)decorations;
 - (NSData)tagData;
 - (NSData)versionIdentifier;
@@ -72,11 +72,11 @@
 - (NSString)sharingPermissions;
 - (NSURL)localRepresentationURL;
 - (NSURL)url;
-- (id)attributeForKey:(id)a3;
-- (id)attributeForName:(id)a3;
-- (id)attributesForNames:(id)a3;
+- (id)attributeForKey:(id)key;
+- (id)attributeForName:(id)name;
+- (id)attributesForNames:(id)names;
 - (id)containerIDIfDesktopOrDocuments;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)downloadingStatus;
 - (id)localizedFileNameIfDesktopOrDocuments;
 - (id)owner;
@@ -89,18 +89,18 @@
 - (unsigned)br_shareOptions;
 - (unsigned)br_uploadStatus;
 - (unsigned)diffs;
-- (void)_mergeAttrs:(id)a3;
-- (void)_mergeURL:(id)a3;
-- (void)attachLogicalExtension:(id)a3 physicalExtension:(id)a4;
+- (void)_mergeAttrs:(id)attrs;
+- (void)_mergeURL:(id)l;
+- (void)attachLogicalExtension:(id)extension physicalExtension:(id)physicalExtension;
 - (void)clearDiffs;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)markDead;
-- (void)merge:(id)a3 allowMergingFileObjectIDIfPossible:(BOOL)a4;
+- (void)merge:(id)merge allowMergingFileObjectIDIfPossible:(BOOL)possible;
 - (void)parentFileID;
-- (void)setAttribute:(id)a3 forKey:(id)a4;
-- (void)setIsNetworkOffline:(BOOL)a3;
-- (void)setIsPreCrash:(BOOL)a3;
+- (void)setAttribute:(id)attribute forKey:(id)key;
+- (void)setIsNetworkOffline:(BOOL)offline;
+- (void)setIsPreCrash:(BOOL)crash;
 @end
 
 @implementation BRQueryItem
@@ -108,7 +108,7 @@
 + (void)initialize
 {
   v27[44] = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = *MEMORY[0x1E696A5C0];
     v26[0] = *MEMORY[0x1E696A5C8];
@@ -218,10 +218,10 @@
     v19 = _getterMap;
     _getterMap = v18;
 
-    v20 = [_getterMap keyEnumerator];
-    v21 = [v20 allObjects];
+    keyEnumerator = [_getterMap keyEnumerator];
+    allObjects = [keyEnumerator allObjects];
     v22 = _allKeys;
-    _allKeys = v21;
+    _allKeys = allObjects;
 
     v23 = [MEMORY[0x1E695DF20] sharedKeySetForKeys:_allKeys];
     v24 = _sharedKeySet;
@@ -233,20 +233,20 @@
 
 - (BOOL)isTrashed
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = HIWORD(*&v2->_flags.var0) & 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = HIWORD(*&selfCopy->_flags.var0) & 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isDead
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_flags.var0 & 0x30) == 16;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_flags.var0 & 0x30) == 16;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -254,27 +254,27 @@
 - (NSString)description
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:128];
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = objc_opt_class();
-  fileObjectID = v4->_fileObjectID;
-  v7 = BRQueryItemFieldsPrettyPrint(v4->_diffs);
-  v8 = BRCPrettyPrintEnum(*&v4->_flags.var0 & 3, br_download_status_entries);
-  [(NSString *)v3 appendFormat:@"<%@ %@ (%@) dn:%s up:%s", v5, fileObjectID, v7, v8, BRCPrettyPrintEnum((LODWORD(v4->_flags.value) >> 2) & 3, br_upload_status_entries)];
+  fileObjectID = selfCopy->_fileObjectID;
+  v7 = BRQueryItemFieldsPrettyPrint(selfCopy->_diffs);
+  v8 = BRCPrettyPrintEnum(*&selfCopy->_flags.var0 & 3, br_download_status_entries);
+  [(NSString *)v3 appendFormat:@"<%@ %@ (%@) dn:%s up:%s", v5, fileObjectID, v7, v8, BRCPrettyPrintEnum((LODWORD(selfCopy->_flags.value) >> 2) & 3, br_upload_status_entries)];
 
-  if (v4->_url)
+  if (selfCopy->_url)
   {
     [(NSString *)v3 appendString:@" url:"];
-    v9 = [(NSURL *)v4->_url path];
-    v10 = [v9 fp_obfuscatedPath];
-    [(NSString *)v3 appendString:v10];
+    path = [(NSURL *)selfCopy->_url path];
+    fp_obfuscatedPath = [path fp_obfuscatedPath];
+    [(NSString *)v3 appendString:fp_obfuscatedPath];
   }
 
-  var0 = v4->_flags.var0;
+  var0 = selfCopy->_flags.var0;
   if ((var0 & 0x100000) != 0)
   {
     [(NSString *)v3 appendString:@" roDB"];
-    var0 = v4->_flags.var0;
+    var0 = selfCopy->_flags.var0;
   }
 
   if ((var0 & 0x40) != 0)
@@ -282,17 +282,17 @@
     [(NSString *)v3 appendString:@" conflicted"];
   }
 
-  if ([(BRQueryItem *)v4 isHidden])
+  if ([(BRQueryItem *)selfCopy isHidden])
   {
     [(NSString *)v3 appendString:@" hidden"];
   }
 
-  if ([(BRQueryItem *)v4 isHiddenExt])
+  if ([(BRQueryItem *)selfCopy isHiddenExt])
   {
     [(NSString *)v3 appendString:@" h-ext"];
   }
 
-  v12 = (*&v4->_flags.var0 >> 4) & 3;
+  v12 = (*&selfCopy->_flags.var0 >> 4) & 3;
   if (v12 > 1)
   {
     if (v12 == 3)
@@ -318,17 +318,17 @@
 
   [(NSString *)v3 appendString:v13];
 LABEL_18:
-  v14 = v4->_flags.var0;
+  v14 = selfCopy->_flags.var0;
   if ((v14 & 0x8000) != 0)
   {
     [(NSString *)v3 appendString:@" br-alias"];
-    v14 = v4->_flags.var0;
+    v14 = selfCopy->_flags.var0;
   }
 
   if ((v14 & 0x200) != 0)
   {
     [(NSString *)v3 appendString:@" downloading"];
-    v14 = v4->_flags.var0;
+    v14 = selfCopy->_flags.var0;
   }
 
   if ((v14 & 0x100) != 0)
@@ -336,13 +336,13 @@ LABEL_18:
     [(NSString *)v3 appendString:@" uploading"];
   }
 
-  v15 = [(BRQueryItem *)v4 subclassDescription];
-  if (v15)
+  subclassDescription = [(BRQueryItem *)selfCopy subclassDescription];
+  if (subclassDescription)
   {
-    [(NSString *)v3 appendString:v15];
+    [(NSString *)v3 appendString:subclassDescription];
   }
 
-  v16 = (*&v4->_flags.var0 >> 11) & 7;
+  v16 = (*&selfCopy->_flags.var0 >> 11) & 7;
   if (v16)
   {
     switch(v16)
@@ -367,7 +367,7 @@ LABEL_31:
   }
 
 LABEL_36:
-  v19 = v4->_flags.var0;
+  v19 = selfCopy->_flags.var0;
   if ((v19 & 0x3800) != 0)
   {
     if ((v19 & 0x200000) != 0)
@@ -383,62 +383,62 @@ LABEL_36:
     [(NSString *)v3 appendString:v20];
   }
 
-  if ([(BRQueryItem *)v4 editedSinceShared])
+  if ([(BRQueryItem *)selfCopy editedSinceShared])
   {
     [(NSString *)v3 appendFormat:@" ess"];
   }
 
-  v21 = [(BRQueryItem *)v4 collaborationIdentifier];
+  collaborationIdentifier = [(BRQueryItem *)selfCopy collaborationIdentifier];
 
-  if (v21)
+  if (collaborationIdentifier)
   {
-    v22 = [(BRQueryItem *)v4 collaborationIdentifier];
-    [(NSString *)v3 appendFormat:@" collabid: %@", v22];
+    collaborationIdentifier2 = [(BRQueryItem *)selfCopy collaborationIdentifier];
+    [(NSString *)v3 appendFormat:@" collabid: %@", collaborationIdentifier2];
   }
 
-  v23 = [(BRQueryItem *)v4 attributeForKey:@"created-by-user"];
-  v24 = [v23 BOOLValue];
+  v23 = [(BRQueryItem *)selfCopy attributeForKey:@"created-by-user"];
+  bOOLValue = [v23 BOOLValue];
 
-  if (v24)
+  if (bOOLValue)
   {
     [(NSString *)v3 appendFormat:@" cbm"];
   }
 
-  if (v4->_appLibraryID)
+  if (selfCopy->_appLibraryID)
   {
-    [(NSString *)v3 appendFormat:@" ct:%@", v4->_appLibraryID];
+    [(NSString *)v3 appendFormat:@" ct:%@", selfCopy->_appLibraryID];
   }
 
-  if (v4->_parentPath)
+  if (selfCopy->_parentPath)
   {
-    [(NSString *)v3 appendFormat:@" p:'%@'", v4->_parentPath];
+    [(NSString *)v3 appendFormat:@" p:'%@'", selfCopy->_parentPath];
   }
 
-  if (v4->_parentFileObjectID)
+  if (selfCopy->_parentFileObjectID)
   {
-    [(NSString *)v3 appendFormat:@" pid:%@", v4->_parentFileObjectID];
+    [(NSString *)v3 appendFormat:@" pid:%@", selfCopy->_parentFileObjectID];
   }
 
-  if (v4->_shareRootFileObjectID)
+  if (selfCopy->_shareRootFileObjectID)
   {
-    [(NSString *)v3 appendFormat:@" shroot:%@", v4->_shareRootFileObjectID];
+    [(NSString *)v3 appendFormat:@" shroot:%@", selfCopy->_shareRootFileObjectID];
   }
 
-  logicalName = v4->_logicalName;
+  logicalName = selfCopy->_logicalName;
   if (logicalName)
   {
-    v26 = [(NSString *)logicalName fp_obfuscatedFilename];
-    [(NSString *)v3 appendFormat:@" n:'%@'", v26];
+    fp_obfuscatedFilename = [(NSString *)logicalName fp_obfuscatedFilename];
+    [(NSString *)v3 appendFormat:@" n:'%@'", fp_obfuscatedFilename];
   }
 
-  physicalName = v4->_physicalName;
+  physicalName = selfCopy->_physicalName;
   if (physicalName)
   {
-    v28 = [(NSString *)physicalName fp_obfuscatedFilename];
-    [(NSString *)v3 appendFormat:@" f:'%@'", v28];
+    fp_obfuscatedFilename2 = [(NSString *)physicalName fp_obfuscatedFilename];
+    [(NSString *)v3 appendFormat:@" f:'%@'", fp_obfuscatedFilename2];
   }
 
-  kind = v4->_flags.var0.kind;
+  kind = selfCopy->_flags.var0.kind;
   if (kind > 4)
   {
     v30 = &stru_1F23D4ED0;
@@ -449,43 +449,43 @@ LABEL_36:
     v30 = off_1E7A15B10[kind];
   }
 
-  [(NSString *)v3 appendFormat:@" %@:%llu", v30, [(BRFileObjectID *)v4->_fileObjectID rawID]];
-  size = v4->_size;
+  [(NSString *)v3 appendFormat:@" %@:%llu", v30, [(BRFileObjectID *)selfCopy->_fileObjectID rawID]];
+  size = selfCopy->_size;
   if (size)
   {
     v32 = BRLocalizedFileSizeDescriptionWithExactCount([(NSNumber *)size longLongValue]);
     [(NSString *)v3 appendFormat:@" sz:%@", v32];
   }
 
-  if (!v4->_flags.var0.kind)
+  if (!selfCopy->_flags.var0.kind)
   {
-    [(NSString *)v3 appendFormat:@" ch:%@", v4->_childItemCount];
+    [(NSString *)v3 appendFormat:@" ch:%@", selfCopy->_childItemCount];
   }
 
-  if (v4->_mtime)
+  if (selfCopy->_mtime)
   {
-    [(NSString *)v3 appendFormat:@" mt:%@", v4->_mtime];
+    [(NSString *)v3 appendFormat:@" mt:%@", selfCopy->_mtime];
   }
 
-  if (v4->_btime)
+  if (selfCopy->_btime)
   {
-    [(NSString *)v3 appendFormat:@" bt:%@", v4->_btime];
+    [(NSString *)v3 appendFormat:@" bt:%@", selfCopy->_btime];
   }
 
-  if (v4->_lastUsedTime)
+  if (selfCopy->_lastUsedTime)
   {
-    [(NSString *)v3 appendFormat:@" last-open:%@", v4->_lastUsedTime];
+    [(NSString *)v3 appendFormat:@" last-open:%@", selfCopy->_lastUsedTime];
   }
 
-  if (v4->_favoriteRank)
+  if (selfCopy->_favoriteRank)
   {
-    [(NSString *)v3 appendFormat:@" favorite-rank:%@", v4->_favoriteRank];
+    [(NSString *)v3 appendFormat:@" favorite-rank:%@", selfCopy->_favoriteRank];
   }
 
-  if (v4->_attrs)
+  if (selfCopy->_attrs)
   {
     [(NSString *)v3 appendString:@" a:{"];
-    attrs = v4->_attrs;
+    attrs = selfCopy->_attrs;
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
     v41[2] = __26__BRQueryItem_description__block_invoke;
@@ -496,29 +496,29 @@ LABEL_36:
     [(NSString *)v34 replaceCharactersInRange:[(NSString *)v34 length]- 1 withString:1, @"}"];
   }
 
-  xattrs = v4->_xattrs;
+  xattrs = selfCopy->_xattrs;
   if (xattrs && [(NSDictionary *)xattrs count])
   {
     [(NSString *)v3 appendFormat:@" xattrs"];
   }
 
-  conflictingVersions = v4->_conflictingVersions;
+  conflictingVersions = selfCopy->_conflictingVersions;
   if (conflictingVersions && [(NSArray *)conflictingVersions count])
   {
     [(NSString *)v3 appendFormat:@" conflictingversions"];
   }
 
-  symlinkTargetPath = v4->_symlinkTargetPath;
+  symlinkTargetPath = selfCopy->_symlinkTargetPath;
   if (symlinkTargetPath)
   {
-    v38 = [(NSString *)symlinkTargetPath fp_obfuscatedPath];
-    [(NSString *)v3 appendFormat:@" symlink-target:%@", v38];
+    fp_obfuscatedPath2 = [(NSString *)symlinkTargetPath fp_obfuscatedPath];
+    [(NSString *)v3 appendFormat:@" symlink-target:%@", fp_obfuscatedPath2];
   }
 
-  [(NSString *)v3 appendFormat:@" content-policy:%ld", v4->_contentPolicy];
+  [(NSString *)v3 appendFormat:@" content-policy:%ld", selfCopy->_contentPolicy];
   [(NSString *)v3 appendString:@">"];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v39 = v3;
 
   return v3;
@@ -526,12 +526,12 @@ LABEL_36:
 
 - (NSDate)creationDate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSNumber *)v2->_btime unsignedLongLongValue];
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  unsignedLongLongValue = [(NSNumber *)selfCopy->_btime unsignedLongLongValue];
+  if (unsignedLongLongValue)
   {
-    v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v3];
+    v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:unsignedLongLongValue];
   }
 
   else
@@ -539,18 +539,18 @@ LABEL_36:
     v4 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (NSString)filename
 {
-  v3 = [(BRQueryItem *)self localizedFileNameIfDesktopOrDocuments];
-  v4 = v3;
-  if (v3)
+  localizedFileNameIfDesktopOrDocuments = [(BRQueryItem *)self localizedFileNameIfDesktopOrDocuments];
+  v4 = localizedFileNameIfDesktopOrDocuments;
+  if (localizedFileNameIfDesktopOrDocuments)
   {
-    v5 = v3;
+    v5 = localizedFileNameIfDesktopOrDocuments;
   }
 
   else
@@ -565,11 +565,11 @@ LABEL_36:
 
 - (id)localizedFileNameIfDesktopOrDocuments
 {
-  v2 = [(BRQueryItem *)self containerIDIfDesktopOrDocuments];
-  v3 = v2;
-  if (v2)
+  containerIDIfDesktopOrDocuments = [(BRQueryItem *)self containerIDIfDesktopOrDocuments];
+  v3 = containerIDIfDesktopOrDocuments;
+  if (containerIDIfDesktopOrDocuments)
   {
-    if ([v2 isEqualToString:@"com.apple.Desktop"])
+    if ([containerIDIfDesktopOrDocuments isEqualToString:@"com.apple.Desktop"])
     {
       v4 = +[BRContainer localizedNameForDesktopContainer];
 LABEL_6:
@@ -592,10 +592,10 @@ LABEL_8:
 
 - (BOOL)isDirectory
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_flags.var0.kind == 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_flags.var0.kind == 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -603,30 +603,30 @@ LABEL_8:
 - (NSString)containerDisplayName
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(BRFileObjectID *)v2->_fileObjectID isRootContainerItem])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(BRFileObjectID *)selfCopy->_fileObjectID isRootContainerItem])
   {
-    v3 = 0;
+    localizedName = 0;
   }
 
   else
   {
     v4 = [BRMangledID alloc];
-    v5 = [(BRQueryItem *)v2 appLibraryID];
-    v6 = [(BRMangledID *)v4 initWithAppLibraryName:v5];
+    appLibraryID = [(BRQueryItem *)selfCopy appLibraryID];
+    v6 = [(BRMangledID *)v4 initWithAppLibraryName:appLibraryID];
 
     v7 = +[BRContainerCache containerCache];
     v8 = [v7 containerByID:v6];
 
-    v3 = [v8 localizedName];
-    if (!v3)
+    localizedName = [v8 localizedName];
+    if (!localizedName)
     {
       v9 = brc_bread_crumbs("[BRQueryItem containerDisplayName]", 1151);
       v10 = brc_default_log(0, 0);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
       {
-        v13 = [(BRQueryItem *)v2 url];
+        v13 = [(BRQueryItem *)selfCopy url];
         v14 = 138412802;
         v15 = v13;
         v16 = 2112;
@@ -638,11 +638,11 @@ LABEL_8:
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return localizedName;
 }
 
 - (NSString)parentItemIdentifier
@@ -657,23 +657,23 @@ LABEL_8:
     parentFileObjectID = self->_parentFileObjectID;
     if (parentFileObjectID)
     {
-      v5 = [(BRFileObjectID *)parentFileObjectID asString];
+      asString = [(BRFileObjectID *)parentFileObjectID asString];
       goto LABEL_7;
     }
 
     v3 = MEMORY[0x1E6967250];
   }
 
-  v5 = *v3;
+  asString = *v3;
 LABEL_7:
 
-  return v5;
+  return asString;
 }
 
 - (BOOL)isHidden
 {
-  v3 = [(BRQueryItem *)self logicalName];
-  if ([v3 hasPrefix:@"."])
+  logicalName = [(BRQueryItem *)self logicalName];
+  if ([logicalName hasPrefix:@"."])
   {
     LOBYTE(v4) = 1;
   }
@@ -688,50 +688,50 @@ LABEL_7:
 
 - (NSString)logicalName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_logicalName;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_logicalName;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isHiddenExt
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_flags.var0 >> 14) & 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_flags.var0 >> 14) & 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)editedSinceShared
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = HIBYTE(*&v2->_flags.var0) & 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = HIBYTE(*&selfCopy->_flags.var0) & 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSString)collaborationIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_collaborationIdentifier;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_collaborationIdentifier;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BRFileObjectID)fileObjectID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_fileObjectID;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_fileObjectID;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -740,53 +740,53 @@ LABEL_7:
 {
   if ([(BRQueryItem *)self isDirectory])
   {
-    v3 = [(BRQueryItem *)self logicalName];
-    if (([v3 isEqualToString:@"Desktop"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"Documents"))
+    logicalName = [(BRQueryItem *)self logicalName];
+    if (([logicalName isEqualToString:@"Desktop"] & 1) != 0 || objc_msgSend(logicalName, "isEqualToString:", @"Documents"))
     {
       v4 = [(BRQueryItem *)self url];
-      v5 = [v4 br_containerIDIfIsDocumentsContainerURL];
+      br_containerIDIfIsDocumentsContainerURL = [v4 br_containerIDIfIsDocumentsContainerURL];
     }
 
     else
     {
-      v5 = 0;
+      br_containerIDIfIsDocumentsContainerURL = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    br_containerIDIfIsDocumentsContainerURL = 0;
   }
 
-  return v5;
+  return br_containerIDIfIsDocumentsContainerURL;
 }
 
 - (BOOL)isBRAlias
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_flags.var0 >> 15) & 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_flags.var0 >> 15) & 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSString)appLibraryID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_appLibraryID;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_appLibraryID;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BRFileObjectID)parentFileObjectID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_parentFileObjectID;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_parentFileObjectID;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -818,40 +818,40 @@ LABEL_7:
 
 - (BOOL)isFinderBookmark
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_flags.var0.kind == 3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_flags.var0.kind == 3;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isSymlink
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_flags.var0.kind == 4;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_flags.var0.kind == 4;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isPackage
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_flags.var0.kind == 2;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_flags.var0.kind == 2;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isDocument
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_flags.var0.kind - 1 < 2;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_flags.var0.kind - 1 < 2;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -885,9 +885,9 @@ LABEL_7:
     }
   }
 
-  v4 = [(BRQueryItem *)self isBRAlias];
+  isBRAlias = [(BRQueryItem *)self isBRAlias];
   v5 = v3 & 0xFFFFFFFFFFFFFFEFLL;
-  if (v4)
+  if (isBRAlias)
   {
     v3 &= ~0x10uLL;
   }
@@ -898,9 +898,9 @@ LABEL_7:
     v6 = v5;
     if ((*&self->_flags.var0 & 0x3800) == 0x1800)
     {
-      v7 = [(BRQueryItem *)self _isSharedFolderSubItem];
+      _isSharedFolderSubItem = [(BRQueryItem *)self _isSharedFolderSubItem];
       v8 = -19;
-      if (v7)
+      if (_isSharedFolderSubItem)
       {
         v8 = -63;
       }
@@ -911,22 +911,22 @@ LABEL_7:
 
   if ((self->_flags.value & 0x100000000) == 0)
   {
-    v9 = [(BRQueryItem *)self parentItemIdentifier];
-    if (([v9 isEqualToString:*MEMORY[0x1E6967250]] & 1) == 0)
+    parentItemIdentifier = [(BRQueryItem *)self parentItemIdentifier];
+    if (([parentItemIdentifier isEqualToString:*MEMORY[0x1E6967250]] & 1) == 0)
     {
 
       goto LABEL_25;
     }
 
-    v10 = [(BRQueryItem *)self filename];
-    if ([v10 isEqualToString:@"Desktop"])
+    filename = [(BRQueryItem *)self filename];
+    if ([filename isEqualToString:@"Desktop"])
     {
     }
 
     else
     {
-      v11 = [(BRQueryItem *)self filename];
-      v12 = [v11 isEqualToString:@"Documents"];
+      filename2 = [(BRQueryItem *)self filename];
+      v12 = [filename2 isEqualToString:@"Documents"];
 
       if (!v12)
       {
@@ -952,58 +952,58 @@ LABEL_25:
 
 - (NSNumber)documentSize
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(BRQueryItem *)v2 attributeForName:*MEMORY[0x1E696A5F0]];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(BRQueryItem *)selfCopy attributeForName:*MEMORY[0x1E696A5F0]];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSNumber)size
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_size;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_size;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSDate)contentModificationDate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSNumber *)v2->_mtime unsignedLongLongValue];
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  unsignedLongLongValue = [(NSNumber *)selfCopy->_mtime unsignedLongLongValue];
+  if (unsignedLongLongValue)
   {
-    v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v3];
+    creationDate = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:unsignedLongLongValue];
 LABEL_5:
-    v5 = v4;
+    v5 = creationDate;
     goto LABEL_6;
   }
 
-  if ([(BRQueryItem *)v2 isDirectory])
+  if ([(BRQueryItem *)selfCopy isDirectory])
   {
-    v4 = [(BRQueryItem *)v2 creationDate];
+    creationDate = [(BRQueryItem *)selfCopy creationDate];
     goto LABEL_5;
   }
 
   v5 = 0;
 LABEL_6:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
 - (NSDate)lastUsedDate
 {
-  v2 = [(BRQueryItem *)self lastUsedTime];
-  v3 = v2;
-  if (v2)
+  lastUsedTime = [(BRQueryItem *)self lastUsedTime];
+  v3 = lastUsedTime;
+  if (lastUsedTime)
   {
     v4 = MEMORY[0x1E695DF00];
-    [v2 doubleValue];
+    [lastUsedTime doubleValue];
     v5 = [v4 dateWithTimeIntervalSince1970:?];
   }
 
@@ -1017,10 +1017,10 @@ LABEL_6:
 
 - (NSNumber)lastUsedTime
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_lastUsedTime;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_lastUsedTime;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -1044,10 +1044,10 @@ LABEL_6:
 
 - (NSNumber)favoriteRank
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_favoriteRank;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_favoriteRank;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -1055,9 +1055,9 @@ LABEL_6:
 - (BOOL)isUploaded
 {
   v2 = [(BRQueryItem *)self attributeForName:*MEMORY[0x1E696A6C0]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 uint64_t __25__BRQueryItem_initialize__block_invoke_18(uint64_t a1, void *a2)
@@ -1086,10 +1086,10 @@ uint64_t __25__BRQueryItem_initialize__block_invoke_18(uint64_t a1, void *a2)
 
 - (unsigned)br_uploadStatus
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (LOWORD(v2->_flags.value) >> 2) & 3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (LOWORD(selfCopy->_flags.value) >> 2) & 3;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -1097,17 +1097,17 @@ uint64_t __25__BRQueryItem_initialize__block_invoke_18(uint64_t a1, void *a2)
 - (BOOL)isUploading
 {
   v2 = [(BRQueryItem *)self attributeForName:*MEMORY[0x1E696A6C8]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isNetworkOffline
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_flags.var0 >> 25) & 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_flags.var0 >> 25) & 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -1132,17 +1132,17 @@ id __25__BRQueryItem_initialize__block_invoke_22(uint64_t a1, void *a2)
 - (BOOL)isDownloading
 {
   v2 = [(BRQueryItem *)self attributeForName:*MEMORY[0x1E696A6A8]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unsigned)br_downloadStatus
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  var0 = v2->_flags.var0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  var0 = selfCopy->_flags.var0;
+  objc_sync_exit(selfCopy);
 
   return var0 & 3;
 }
@@ -1198,10 +1198,10 @@ id __25__BRQueryItem_initialize__block_invoke_17(uint64_t a1, void *a2)
 
 - (BOOL)isShared
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_flags.var0 & 0x3800) != 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_flags.var0 & 0x3800) != 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -1227,9 +1227,9 @@ id __25__BRQueryItem_initialize__block_invoke_17(uint64_t a1, void *a2)
 
 - (id)sharedItemRole
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = ((*&v2->_flags.var0 >> 11) & 7) - 1;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = ((*&selfCopy->_flags.var0 >> 11) & 7) - 1;
   if (v3 > 3)
   {
     v4 = 0;
@@ -1240,7 +1240,7 @@ id __25__BRQueryItem_initialize__block_invoke_17(uint64_t a1, void *a2)
     v4 = **(&unk_1E7A15AF0 + v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -1280,9 +1280,9 @@ id __25__BRQueryItem_initialize__block_invoke_17(uint64_t a1, void *a2)
   if (self->_zoneRowID && self->_parentZoneRowID)
   {
     v4 = [(BRQueryItem *)self url];
-    v5 = [v4 br_isInTrash];
+    br_isInTrash = [v4 br_isInTrash];
 
-    if (v5)
+    if (br_isInTrash)
     {
       [(NSDictionary *)v3 setObject:self->_appLibraryID forKeyedSubscript:@"palid"];
     }
@@ -1302,8 +1302,8 @@ id __25__BRQueryItem_initialize__block_invoke_17(uint64_t a1, void *a2)
     shareRootFileObjectID = self->_shareRootFileObjectID;
     if (shareRootFileObjectID)
     {
-      v9 = [(BRFileObjectID *)shareRootFileObjectID asString];
-      [(NSDictionary *)v3 setObject:v9 forKeyedSubscript:@"sr"];
+      asString = [(BRFileObjectID *)shareRootFileObjectID asString];
+      [(NSDictionary *)v3 setObject:asString forKeyedSubscript:@"sr"];
     }
 
     if ([(BRQueryItem *)self isDirectory])
@@ -1401,10 +1401,10 @@ id __25__BRQueryItem_initialize__block_invoke_17(uint64_t a1, void *a2)
 
 - (NSURL)url
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_url;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_url;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -1432,21 +1432,21 @@ id __25__BRQueryItem_initialize__block_invoke_17(uint64_t a1, void *a2)
 
 - (BOOL)_isSharedFolderSubItem
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_flags.var0 >> 21) & 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_flags.var0 >> 21) & 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSString)displayName
 {
-  v3 = [(BRQueryItem *)self localizedFileNameIfDesktopOrDocuments];
-  v4 = v3;
-  if (v3)
+  localizedFileNameIfDesktopOrDocuments = [(BRQueryItem *)self localizedFileNameIfDesktopOrDocuments];
+  v4 = localizedFileNameIfDesktopOrDocuments;
+  if (localizedFileNameIfDesktopOrDocuments)
   {
-    v5 = v3;
+    v5 = localizedFileNameIfDesktopOrDocuments;
   }
 
   else
@@ -1480,20 +1480,20 @@ uint64_t __25__BRQueryItem_initialize__block_invoke_12(uint64_t a1, void *a2)
 
 - (BOOL)isConflicted
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_flags.var0 >> 6) & 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_flags.var0 >> 6) & 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSNumber)isDownloadRequested
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:(LOWORD(v2->_flags.value) >> 10) & 1];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:(LOWORD(selfCopy->_flags.value) >> 10) & 1];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -1576,30 +1576,30 @@ LABEL_14:
 
 - (unsigned)br_shareOptions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_flags.var0 >> 11) & 7;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_flags.var0 >> 11) & 7;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isTopLevelSharedItem
 {
-  v3 = [(BRQueryItem *)self isShared];
-  if (v3)
+  isShared = [(BRQueryItem *)self isShared];
+  if (isShared)
   {
-    LOBYTE(v3) = ![(BRQueryItem *)self _isSharedFolderSubItem];
+    LOBYTE(isShared) = ![(BRQueryItem *)self _isSharedFolderSubItem];
   }
 
-  return v3;
+  return isShared;
 }
 
 - (unint64_t)fileSystemFlags
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (![(BRFileObjectID *)v2->_fileObjectID isRootContainerItem]&& ((v2->_flags.value & 0x20000) != 0 || ([(BRQueryItem *)v2 isDirectory]|| [(BRQueryItem *)v2 isPackage]) && ([(BRQueryItem *)v2 capabilities]& 4) != 0))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(BRFileObjectID *)selfCopy->_fileObjectID isRootContainerItem]&& ((selfCopy->_flags.value & 0x20000) != 0 || ([(BRQueryItem *)selfCopy isDirectory]|| [(BRQueryItem *)selfCopy isPackage]) && ([(BRQueryItem *)selfCopy capabilities]& 4) != 0))
   {
     v3 = 6;
   }
@@ -1609,8 +1609,8 @@ LABEL_14:
     v3 = 2;
   }
 
-  value_low = LODWORD(v2->_flags.value);
-  if ([(BRQueryItem *)v2 isHidden])
+  value_low = LODWORD(selfCopy->_flags.value);
+  if ([(BRQueryItem *)selfCopy isHidden])
   {
     v5 = v3 | (value_low >> 18) & 1 | (value_low >> 10) & 0x10 | 8;
   }
@@ -1620,7 +1620,7 @@ LABEL_14:
     v5 = v3 | (value_low >> 18) & 1 | (value_low >> 10) & 0x10;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -1638,9 +1638,9 @@ LABEL_14:
   if ([(BRQueryItem *)self _isSharedFolderSubItem]&& ![(BRQueryItem *)self editedSinceShared])
   {
     v5 = [(BRQueryItem *)self attributeForKey:@"created-by-user"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
-    if (v6)
+    if (bOOLValue)
     {
       v7 = @"AddedByMe";
     }
@@ -2047,87 +2047,87 @@ uint64_t __25__BRQueryItem_initialize__block_invoke_42(uint64_t a1, void *a2)
 
 - (id)owner
 {
-  v2 = [(BRQueryItem *)self ownerNameComponents];
-  v3 = v2;
-  if (v2)
+  ownerNameComponents = [(BRQueryItem *)self ownerNameComponents];
+  v3 = ownerNameComponents;
+  if (ownerNameComponents)
   {
-    v4 = [v2 br_formattedName];
+    br_formattedName = [ownerNameComponents br_formattedName];
   }
 
   else
   {
-    v4 = 0;
+    br_formattedName = 0;
   }
 
-  return v4;
+  return br_formattedName;
 }
 
 - (NSURL)localRepresentationURL
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_localRepresentationURL;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_localRepresentationURL;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (unsigned)diffs
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  diffs = v2->_diffs;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  diffs = selfCopy->_diffs;
+  objc_sync_exit(selfCopy);
 
   return diffs;
 }
 
 - (NSString)parentPath
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_parentPath;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_parentPath;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSString)physicalName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_physicalName;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_physicalName;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isTopLevel
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_flags.var0 >> 27) & 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_flags.var0 >> 27) & 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSNumber)mtime
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_mtime;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_mtime;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSNumber)btime
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_btime;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_btime;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -2143,37 +2143,37 @@ id __22__BRQueryItem_tagData__block_invoke(uint64_t a1, void *a2)
 
 - (NSData)versionIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSNumber *)v2->_mtime unsignedLongValue];
-  v11 = v3;
-  v4 = [(BRQueryItem *)v2 size];
-  v5 = [v4 unsignedLongLongValue];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  unsignedLongValue = [(NSNumber *)selfCopy->_mtime unsignedLongValue];
+  v11 = unsignedLongValue;
+  v4 = [(BRQueryItem *)selfCopy size];
+  unsignedLongLongValue = [v4 unsignedLongLongValue];
 
-  if (v5 > 0x100000)
+  if (unsignedLongLongValue > 0x100000)
   {
     v6 = [MEMORY[0x1E695DEF0] dataWithBytes:&v11 length:8];
   }
 
   else
   {
-    v9 = [(BRQueryItem *)v2 isDownloaded];
-    v10 = v3;
-    v6 = [MEMORY[0x1E695DEF0] dataWithBytes:&v9 length:9];
+    isDownloaded = [(BRQueryItem *)selfCopy isDownloaded];
+    v10 = unsignedLongValue;
+    v6 = [MEMORY[0x1E695DEF0] dataWithBytes:&isDownloaded length:9];
   }
 
   v7 = v6;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)setIsNetworkOffline:(BOOL)a3
+- (void)setIsNetworkOffline:(BOOL)offline
 {
-  v3 = a3;
+  offlineCopy = offline;
   obj = self;
   objc_sync_enter(obj);
-  if (v3)
+  if (offlineCopy)
   {
     v4 = 0x2000000;
   }
@@ -2201,11 +2201,11 @@ id __22__BRQueryItem_tagData__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)isInTransfer
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_flags.var0.kind)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_flags.var0.kind)
   {
-    var0 = v2->_flags.var0;
+    var0 = selfCopy->_flags.var0;
     v4 = (~var0 & 0x30) != 0 && (~var0 & 0xF) != 0;
   }
 
@@ -2214,17 +2214,17 @@ id __22__BRQueryItem_tagData__block_invoke(uint64_t a1, void *a2)
     v4 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (BOOL)isLive
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_flags.var0 & 0x30) == 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_flags.var0 & 0x30) == 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -2247,20 +2247,20 @@ id __22__BRQueryItem_tagData__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)isPreCrash
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_flags.var0 >> 7) & 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_flags.var0 >> 7) & 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setIsPreCrash:(BOOL)a3
+- (void)setIsPreCrash:(BOOL)crash
 {
-  v3 = a3;
+  crashCopy = crash;
   obj = self;
   objc_sync_enter(obj);
-  if (v3)
+  if (crashCopy)
   {
     v4 = 128;
   }
@@ -2276,38 +2276,38 @@ id __22__BRQueryItem_tagData__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)isDownloadActive
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_flags.var0 >> 9) & 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_flags.var0 >> 9) & 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isUploadActive
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_flags.var0 >> 8) & 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_flags.var0 >> 8) & 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isEvictable
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_flags.var0 >> 28) & 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_flags.var0 >> 28) & 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (BRQueryItem)initWithCoder:(id)a3
+- (BRQueryItem)initWithCoder:(id)coder
 {
   v93[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   if (initWithCoder__once != -1)
   {
     [BRQueryItem initWithCoder:];
@@ -2321,75 +2321,75 @@ id __22__BRQueryItem_tagData__block_invoke(uint64_t a1, void *a2)
   {
     v5->_logicalHandle = -1;
     v5->_physicalHandle = -1;
-    v5->_flags.value = [v4 decodeInt64ForKey:@"flags"];
-    v6->_diffs = [v4 decodeIntForKey:@"diffs"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cid"];
+    v5->_flags.value = [coderCopy decodeInt64ForKey:@"flags"];
+    v6->_diffs = [coderCopy decodeIntForKey:@"diffs"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cid"];
     appLibraryID = v6->_appLibraryID;
     v6->_appLibraryID = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     logicalName = v6->_logicalName;
     v6->_logicalName = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fault"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fault"];
     p_physicalName = &v6->_physicalName;
     physicalName = v6->_physicalName;
     v6->_physicalName = v11;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parent"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parent"];
     parentPath = v6->_parentPath;
     v6->_parentPath = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"foid"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"foid"];
     fileObjectID = v6->_fileObjectID;
     v6->_fileObjectID = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pfoid"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pfoid"];
     parentFileObjectID = v6->_parentFileObjectID;
     v6->_parentFileObjectID = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sr"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sr"];
     shareRootFileObjectID = v6->_shareRootFileObjectID;
     v6->_shareRootFileObjectID = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"size"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"size"];
     size = v6->_size;
     v6->_size = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mtime"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mtime"];
     mtime = v6->_mtime;
     v6->_mtime = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"btime"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"btime"];
     btime = v6->_btime;
     v6->_btime = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastusedtime"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastusedtime"];
     lastUsedTime = v6->_lastUsedTime;
     v6->_lastUsedTime = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"favoriterank"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"favoriterank"];
     favoriteRank = v6->_favoriteRank;
     v6->_favoriteRank = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"childitemcount"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"childitemcount"];
     childItemCount = v6->_childItemCount;
     v6->_childItemCount = v32;
 
-    v34 = [v4 decodeObjectOfClasses:initWithCoder__allowedClasses forKey:@"attrs"];
+    v34 = [coderCopy decodeObjectOfClasses:initWithCoder__allowedClasses forKey:@"attrs"];
     v35 = [v34 mutableCopy];
     attrs = v6->_attrs;
     v6->_attrs = v35;
 
-    v37 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v4, "decodeInt64ForKey:", @"zrid"}];
+    v37 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(coderCopy, "decodeInt64ForKey:", @"zrid"}];
     zoneRowID = v6->_zoneRowID;
     v6->_zoneRowID = v37;
 
-    v39 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v4, "decodeInt64ForKey:", @"pzrid"}];
+    v39 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(coderCopy, "decodeInt64ForKey:", @"pzrid"}];
     parentZoneRowID = v6->_parentZoneRowID;
     v6->_parentZoneRowID = v39;
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"collabid"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"collabid"];
     collaborationIdentifier = v6->_collaborationIdentifier;
     v6->_collaborationIdentifier = v41;
 
@@ -2398,11 +2398,11 @@ id __22__BRQueryItem_tagData__block_invoke(uint64_t a1, void *a2)
     v93[1] = objc_opt_class();
     v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v93 count:2];
     v45 = [v43 setWithArray:v44];
-    v46 = [v4 decodeObjectOfClasses:v45 forKey:@"conflictingversions"];
+    v46 = [coderCopy decodeObjectOfClasses:v45 forKey:@"conflictingversions"];
     conflictingVersions = v6->_conflictingVersions;
     v6->_conflictingVersions = v46;
 
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cver"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cver"];
     contentVersion = v6->_contentVersion;
     v6->_contentVersion = v48;
 
@@ -2411,15 +2411,15 @@ id __22__BRQueryItem_tagData__block_invoke(uint64_t a1, void *a2)
     v92[1] = objc_opt_class();
     v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:2];
     v52 = [v50 setWithArray:v51];
-    v53 = [v4 decodeObjectOfClasses:v52 forKey:@"eqCver"];
+    v53 = [coderCopy decodeObjectOfClasses:v52 forKey:@"eqCver"];
     equivalentContentVersions = v6->_equivalentContentVersions;
     v6->_equivalentContentVersions = v53;
 
-    v55 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sver"];
+    v55 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sver"];
     structureVersion = v6->_structureVersion;
     v6->_structureVersion = v55;
 
-    v57 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastEditorDeviceName"];
+    v57 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastEditorDeviceName"];
     lastEditorDeviceName = v6->_lastEditorDeviceName;
     v6->_lastEditorDeviceName = v57;
 
@@ -2429,15 +2429,15 @@ id __22__BRQueryItem_tagData__block_invoke(uint64_t a1, void *a2)
     v91[2] = objc_opt_class();
     v60 = [MEMORY[0x1E695DEC8] arrayWithObjects:v91 count:3];
     v61 = [v59 setWithArray:v60];
-    v62 = [v4 decodeObjectOfClasses:v61 forKey:@"xattrs"];
+    v62 = [coderCopy decodeObjectOfClasses:v61 forKey:@"xattrs"];
     xattrs = v6->_xattrs;
     v6->_xattrs = v62;
 
-    v64 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symlinkTargetPath"];
+    v64 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symlinkTargetPath"];
     symlinkTargetPath = v6->_symlinkTargetPath;
     v6->_symlinkTargetPath = v64;
 
-    v6->_contentPolicy = [v4 decodeIntForKey:@"contentPolicy"];
+    v6->_contentPolicy = [coderCopy decodeIntForKey:@"contentPolicy"];
     if (!v6->_parentPath)
     {
 LABEL_22:
@@ -2477,8 +2477,8 @@ LABEL_19:
       {
         v81 = v6->_url;
         v82 = *MEMORY[0x1E695EA60];
-        v83 = [(BRFileObjectID *)v6->_fileObjectID documentID];
-        MEMORY[0x1B26FDF70](v81, v82, v83);
+        documentID = [(BRFileObjectID *)v6->_fileObjectID documentID];
+        MEMORY[0x1B26FDF70](v81, v82, documentID);
       }
 
       goto LABEL_22;
@@ -2487,7 +2487,7 @@ LABEL_19:
     if (v6->_logicalName)
     {
       v69 = [v66 URLByAppendingPathComponent:? isDirectory:?];
-      v70 = v6->_url;
+      brc_stringByDeletingPathExtension = v6->_url;
       v6->_url = v69;
     }
 
@@ -2506,9 +2506,9 @@ LABEL_19:
       }
 
       v75 = [(NSString *)v6->_physicalName substringFromIndex:1];
-      v70 = [v75 brc_stringByDeletingPathExtension];
+      brc_stringByDeletingPathExtension = [v75 brc_stringByDeletingPathExtension];
 
-      v76 = [v66 URLByAppendingPathComponent:v70 isDirectory:kind == 0];
+      v76 = [v66 URLByAppendingPathComponent:brc_stringByDeletingPathExtension isDirectory:kind == 0];
       v77 = v6->_url;
       v6->_url = v76;
     }
@@ -2558,22 +2558,22 @@ void __29__BRQueryItem_initWithCoder___block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)attachLogicalExtension:(id)a3 physicalExtension:(id)a4
+- (void)attachLogicalExtension:(id)extension physicalExtension:(id)physicalExtension
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  p_url = &v8->_url;
-  url = v8->_url;
-  if (!v6 || !url)
+  extensionCopy = extension;
+  physicalExtensionCopy = physicalExtension;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  p_url = &selfCopy->_url;
+  url = selfCopy->_url;
+  if (!extensionCopy || !url)
   {
     goto LABEL_21;
   }
 
   v11 = url;
-  v12 = v6;
+  v12 = extensionCopy;
   active_platform = dyld_get_active_platform();
   if ((active_platform & 0xFFFFFFFB) != 2 && active_platform != 1 && active_platform != 11)
   {
@@ -2614,7 +2614,7 @@ LABEL_20:
 
     else
     {
-      if (v8->_logicalHandle < 0)
+      if (selfCopy->_logicalHandle < 0)
       {
         v15 = brc_bread_crumbs("brc_sandbox_replace_extension", 1654);
         v16 = brc_notifications_log();
@@ -2635,14 +2635,14 @@ LABEL_20:
         }
       }
 
-      v8->_logicalHandle = v14;
+      selfCopy->_logicalHandle = v14;
     }
 
     goto LABEL_20;
   }
 
 LABEL_21:
-  if (v7 && *p_url)
+  if (physicalExtensionCopy && *p_url)
   {
     v20 = _CFURLPromiseCopyPhysicalURL();
     v21 = v20;
@@ -2667,7 +2667,7 @@ LABEL_21:
       }
 
       v23 = v21;
-      v24 = v7;
+      v24 = physicalExtensionCopy;
       v25 = dyld_get_active_platform();
       if ((v25 & 0xFFFFFFFB) == 2 || v25 == 1 || v25 == 11)
       {
@@ -2705,7 +2705,7 @@ LABEL_48:
 
           else
           {
-            if (v8->_physicalHandle < 0)
+            if (selfCopy->_physicalHandle < 0)
             {
               v30 = brc_bread_crumbs("brc_sandbox_replace_extension", 1654);
               v31 = brc_notifications_log();
@@ -2726,7 +2726,7 @@ LABEL_48:
               }
             }
 
-            v8->_physicalHandle = v29;
+            selfCopy->_physicalHandle = v29;
           }
         }
       }
@@ -2749,55 +2749,55 @@ LABEL_48:
   }
 
 LABEL_49:
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [v5 encodeInt64:v4->_flags.value forKey:@"flags"];
-  [v5 encodeInt:v4->_diffs forKey:@"diffs"];
-  [v5 encodeObject:v4->_appLibraryID forKey:@"cid"];
-  [v5 encodeObject:v4->_logicalName forKey:@"name"];
-  [v5 encodeObject:v4->_physicalName forKey:@"fault"];
-  [v5 encodeObject:v4->_parentPath forKey:@"parent"];
-  [v5 encodeObject:v4->_fileObjectID forKey:@"foid"];
-  [v5 encodeObject:v4->_parentFileObjectID forKey:@"pfoid"];
-  [v5 encodeObject:v4->_shareRootFileObjectID forKey:@"sr"];
-  [v5 encodeObject:v4->_size forKey:@"size"];
-  [v5 encodeObject:v4->_mtime forKey:@"mtime"];
-  [v5 encodeObject:v4->_btime forKey:@"btime"];
-  [v5 encodeObject:v4->_lastUsedTime forKey:@"lastusedtime"];
-  [v5 encodeObject:v4->_favoriteRank forKey:@"favoriterank"];
-  [v5 encodeObject:v4->_childItemCount forKey:@"childitemcount"];
-  [v5 encodeObject:v4->_attrs forKey:@"attrs"];
-  [v5 encodeInt64:-[NSNumber longLongValue](v4->_zoneRowID forKey:{"longLongValue"), @"zrid"}];
-  [v5 encodeInt64:-[NSNumber longLongValue](v4->_parentZoneRowID forKey:{"longLongValue"), @"pzrid"}];
-  [v5 encodeObject:v4->_collaborationIdentifier forKey:@"collabid"];
-  [v5 encodeObject:v4->_contentVersion forKey:@"cver"];
-  [v5 encodeObject:v4->_equivalentContentVersions forKey:@"eqCver"];
-  [v5 encodeObject:v4->_structureVersion forKey:@"sver"];
-  [v5 encodeObject:v4->_lastEditorDeviceName forKey:@"lastEditorDeviceName"];
-  [v5 encodeObject:v4->_xattrs forKey:@"xattrs"];
-  [v5 encodeObject:v4->_conflictingVersions forKey:@"conflictingversions"];
-  [v5 encodeObject:v4->_symlinkTargetPath forKey:@"symlinkTargetPath"];
-  [v5 encodeInt:LODWORD(v4->_contentPolicy) forKey:@"contentPolicy"];
-  objc_sync_exit(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [coderCopy encodeInt64:selfCopy->_flags.value forKey:@"flags"];
+  [coderCopy encodeInt:selfCopy->_diffs forKey:@"diffs"];
+  [coderCopy encodeObject:selfCopy->_appLibraryID forKey:@"cid"];
+  [coderCopy encodeObject:selfCopy->_logicalName forKey:@"name"];
+  [coderCopy encodeObject:selfCopy->_physicalName forKey:@"fault"];
+  [coderCopy encodeObject:selfCopy->_parentPath forKey:@"parent"];
+  [coderCopy encodeObject:selfCopy->_fileObjectID forKey:@"foid"];
+  [coderCopy encodeObject:selfCopy->_parentFileObjectID forKey:@"pfoid"];
+  [coderCopy encodeObject:selfCopy->_shareRootFileObjectID forKey:@"sr"];
+  [coderCopy encodeObject:selfCopy->_size forKey:@"size"];
+  [coderCopy encodeObject:selfCopy->_mtime forKey:@"mtime"];
+  [coderCopy encodeObject:selfCopy->_btime forKey:@"btime"];
+  [coderCopy encodeObject:selfCopy->_lastUsedTime forKey:@"lastusedtime"];
+  [coderCopy encodeObject:selfCopy->_favoriteRank forKey:@"favoriterank"];
+  [coderCopy encodeObject:selfCopy->_childItemCount forKey:@"childitemcount"];
+  [coderCopy encodeObject:selfCopy->_attrs forKey:@"attrs"];
+  [coderCopy encodeInt64:-[NSNumber longLongValue](selfCopy->_zoneRowID forKey:{"longLongValue"), @"zrid"}];
+  [coderCopy encodeInt64:-[NSNumber longLongValue](selfCopy->_parentZoneRowID forKey:{"longLongValue"), @"pzrid"}];
+  [coderCopy encodeObject:selfCopy->_collaborationIdentifier forKey:@"collabid"];
+  [coderCopy encodeObject:selfCopy->_contentVersion forKey:@"cver"];
+  [coderCopy encodeObject:selfCopy->_equivalentContentVersions forKey:@"eqCver"];
+  [coderCopy encodeObject:selfCopy->_structureVersion forKey:@"sver"];
+  [coderCopy encodeObject:selfCopy->_lastEditorDeviceName forKey:@"lastEditorDeviceName"];
+  [coderCopy encodeObject:selfCopy->_xattrs forKey:@"xattrs"];
+  [coderCopy encodeObject:selfCopy->_conflictingVersions forKey:@"conflictingversions"];
+  [coderCopy encodeObject:selfCopy->_symlinkTargetPath forKey:@"symlinkTargetPath"];
+  [coderCopy encodeInt:LODWORD(selfCopy->_contentPolicy) forKey:@"contentPolicy"];
+  objc_sync_exit(selfCopy);
 }
 
-- (BRQueryItem)initWithQueryItem:(id)a3
+- (BRQueryItem)initWithQueryItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v10.receiver = self;
   v10.super_class = BRQueryItem;
   v5 = [(BRQueryItem *)&v10 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = itemCopy;
     objc_sync_enter(v6);
     v5->_logicalHandle = -1;
     v5->_physicalHandle = -1;
@@ -2839,11 +2839,11 @@ LABEL_49:
   return v5;
 }
 
-- (BRQueryItem)initWithFPItem:(id)a3
+- (BRQueryItem)initWithFPItem:(id)item
 {
   v89 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
     v82.receiver = self;
     v82.super_class = BRQueryItem;
@@ -2852,38 +2852,38 @@ LABEL_49:
     {
 LABEL_75:
       self = v5;
-      v16 = self;
+      selfCopy = self;
       goto LABEL_76;
     }
 
-    v6 = [v4 fileURL];
+    fileURL = [itemCopy fileURL];
     url = v5->_url;
-    v5->_url = v6;
+    v5->_url = fileURL;
 
     objc_storeStrong(&v5->_localRepresentationURL, v5->_url);
-    v8 = [v4 filename];
+    filename = [itemCopy filename];
     logicalName = v5->_logicalName;
-    v5->_logicalName = v8;
+    v5->_logicalName = filename;
 
-    v10 = [v4 userInfo];
-    v11 = [v10 objectForKeyedSubscript:@"pkg_size"];
+    userInfo = [itemCopy userInfo];
+    v11 = [userInfo objectForKeyedSubscript:@"pkg_size"];
     v12 = v11;
     if (v11)
     {
-      v13 = v11;
+      documentSize = v11;
     }
 
     else
     {
-      v13 = [v4 documentSize];
+      documentSize = [itemCopy documentSize];
     }
 
     size = v5->_size;
-    v5->_size = v13;
+    v5->_size = documentSize;
 
     if ([(NSURL *)v5->_url br_isInTrash])
     {
-      [v10 objectForKey:@"palid"];
+      [userInfo objectForKey:@"palid"];
     }
 
     else
@@ -2894,66 +2894,66 @@ LABEL_75:
     appLibraryID = v5->_appLibraryID;
     v5->_appLibraryID = v18;
 
-    v20 = [v4 providerItemIdentifier];
-    v21 = [BRFileObjectID fileObjectIDWithString:v20];
+    providerItemIdentifier = [itemCopy providerItemIdentifier];
+    v21 = [BRFileObjectID fileObjectIDWithString:providerItemIdentifier];
     fileObjectID = v5->_fileObjectID;
     v5->_fileObjectID = v21;
 
-    v23 = [v4 itemID];
+    itemID = [itemCopy itemID];
     nsmdqFPItemID = v5->_nsmdqFPItemID;
-    v5->_nsmdqFPItemID = v23;
+    v5->_nsmdqFPItemID = itemID;
 
     v25 = MEMORY[0x1E696AD98];
-    v26 = [v4 creationDate];
-    [v26 timeIntervalSince1970];
+    creationDate = [itemCopy creationDate];
+    [creationDate timeIntervalSince1970];
     v27 = [v25 numberWithDouble:?];
     btime = v5->_btime;
     v5->_btime = v27;
 
     v29 = MEMORY[0x1E696AD98];
-    v30 = [v4 contentModificationDate];
-    [v30 timeIntervalSince1970];
+    contentModificationDate = [itemCopy contentModificationDate];
+    [contentModificationDate timeIntervalSince1970];
     v31 = [v29 numberWithDouble:?];
     mtime = v5->_mtime;
     v5->_mtime = v31;
 
-    v33 = [v4 favoriteRank];
+    favoriteRank = [itemCopy favoriteRank];
     favoriteRank = v5->_favoriteRank;
-    v5->_favoriteRank = v33;
+    v5->_favoriteRank = favoriteRank;
 
-    v35 = [v4 contentType];
-    if ([v4 isFolder])
+    contentType = [itemCopy contentType];
+    if ([itemCopy isFolder])
     {
       v36 = 0;
     }
 
-    else if ([v4 isPackage])
+    else if ([itemCopy isPackage])
     {
       v36 = 2;
     }
 
-    else if ([v35 br_isSymbolicLinkType])
+    else if ([contentType br_isSymbolicLinkType])
     {
       v36 = 4;
     }
 
-    else if ([v35 br_isAliasFileType])
+    else if ([contentType br_isAliasFileType])
     {
       v36 = 3;
     }
 
     else
     {
-      if (([v35 br_isFileType] & 1) == 0)
+      if (([contentType br_isFileType] & 1) == 0)
       {
         v37 = brc_bread_crumbs("[BRQueryItem initWithFPItem:]", 1815);
         v38 = brc_default_log(0, 0);
         if (os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
         {
           *buf = 138412802;
-          v84 = v35;
+          v84 = contentType;
           v85 = 2112;
-          v86 = v4;
+          v86 = itemCopy;
           v87 = 2112;
           v88 = v37;
           _os_log_fault_impl(&dword_1AE2A9000, v38, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: Couldn't initialize _flags.kind from the content type %@ for %@%@", buf, 0x20u);
@@ -2964,16 +2964,16 @@ LABEL_75:
     }
 
     v5->_flags.var0.kind = v36;
-    if ([v4 isMostRecentVersionDownloaded])
+    if ([itemCopy isMostRecentVersionDownloaded])
     {
       v39 = *&v5->_flags.var0 | 3;
     }
 
     else
     {
-      v40 = [v4 isDownloaded];
+      isDownloaded = [itemCopy isDownloaded];
       v41 = *&v5->_flags.var0 & 0xFFFFFFFC;
-      if (v40)
+      if (isDownloaded)
       {
         v39 = v41 | 2;
       }
@@ -2985,77 +2985,77 @@ LABEL_75:
     }
 
     *&v5->_flags.var0 = v39;
-    v42 = [v4 downloadingError];
+    downloadingError = [itemCopy downloadingError];
 
-    if (v42)
+    if (downloadingError)
     {
-      v43 = [v4 downloadingError];
-      [(BRQueryItem *)v5 setAttribute:v43 forKey:@"dlErr"];
+      downloadingError2 = [itemCopy downloadingError];
+      [(BRQueryItem *)v5 setAttribute:downloadingError2 forKey:@"dlErr"];
     }
 
-    v44 = [v4 uploadingError];
+    uploadingError = [itemCopy uploadingError];
 
-    if (v44)
+    if (uploadingError)
     {
-      v45 = [v4 uploadingError];
-      [(BRQueryItem *)v5 setAttribute:v45 forKey:@"ulErr"];
+      uploadingError2 = [itemCopy uploadingError];
+      [(BRQueryItem *)v5 setAttribute:uploadingError2 forKey:@"ulErr"];
     }
 
-    v46 = [v4 downloadingProgress];
-    v47 = v46;
-    if (v46)
+    downloadingProgress = [itemCopy downloadingProgress];
+    v47 = downloadingProgress;
+    if (downloadingProgress)
     {
       v48 = MEMORY[0x1E696AD98];
-      [v46 fractionCompleted];
+      [downloadingProgress fractionCompleted];
       v50 = [v48 numberWithDouble:v49 * 100.0];
       [(BRQueryItem *)v5 setAttribute:v50 forKey:@"dl%"];
     }
 
-    v51 = [v4 uploadingProgress];
-    v52 = v51;
-    if (v51)
+    uploadingProgress = [itemCopy uploadingProgress];
+    v52 = uploadingProgress;
+    if (uploadingProgress)
     {
       v53 = MEMORY[0x1E696AD98];
-      [v51 fractionCompleted];
+      [uploadingProgress fractionCompleted];
       v55 = [v53 numberWithDouble:v54 * 100.0];
       [(BRQueryItem *)v5 setAttribute:v55 forKey:@"ul%"];
     }
 
-    if ([v4 isUploaded])
+    if ([itemCopy isUploaded])
     {
       v56 = *&v5->_flags.var0 | 0xC;
     }
 
     else
     {
-      v57 = [v4 isUploading];
+      isUploading = [itemCopy isUploading];
       v56 = *&v5->_flags.var0 & 0xFFFFFFF3;
-      if (v57)
+      if (isUploading)
       {
         v56 |= 4u;
       }
     }
 
     *&v5->_flags.var0 = v56;
-    v58 = [v4 tags];
-    v59 = [v58 count];
+    tags = [itemCopy tags];
+    v59 = [tags count];
 
     if (v59)
     {
-      v60 = [v4 tags];
-      v61 = [v60 br_transform:&__block_literal_global_323];
+      tags2 = [itemCopy tags];
+      v61 = [tags2 br_transform:&__block_literal_global_323];
       [(BRQueryItem *)v5 setAttribute:v61 forKey:@"tags"];
     }
 
-    if (([v4 conformsToProtocol:&unk_1F23ED4F8] & 1) == 0)
+    if (([itemCopy conformsToProtocol:&unk_1F23ED4F8] & 1) == 0)
     {
       [BRQueryItem initWithFPItem:];
     }
 
-    v62 = v4;
+    v62 = itemCopy;
     *&v5->_flags.var0 &= ~0x8000u;
-    v63 = [v62 isDownloadRequested];
-    if ([v63 unsignedShortValue])
+    isDownloadRequested = [v62 isDownloadRequested];
+    if ([isDownloadRequested unsignedShortValue])
     {
       v64 = 1024;
     }
@@ -3081,8 +3081,8 @@ LABEL_75:
 
     if ([v62 isDownloading])
     {
-      v65 = [v62 downloadingProgress];
-      *&v5->_flags.var0 = *&v5->_flags.var0 & 0xFFFFFDFF | ((v65 != 0) << 9);
+      downloadingProgress2 = [v62 downloadingProgress];
+      *&v5->_flags.var0 = *&v5->_flags.var0 & 0xFFFFFDFF | ((downloadingProgress2 != 0) << 9);
     }
 
     else
@@ -3101,17 +3101,17 @@ LABEL_75:
     }
 
     *&v5->_flags.var0 = *&v5->_flags.var0 & 0xFFFFFEFF | v66;
-    v67 = [v62 conflictingVersions];
-    *&v5->_flags.var0 = *&v5->_flags.var0 & 0xFFFFFFBF | (([v67 count] != 0) << 6);
+    conflictingVersions = [v62 conflictingVersions];
+    *&v5->_flags.var0 = *&v5->_flags.var0 & 0xFFFFFFBF | (([conflictingVersions count] != 0) << 6);
 
     *&v5->_flags.var0 &= 0xFFFFC7FF;
-    v68 = [v62 sharingPermissions];
+    sharingPermissions = [v62 sharingPermissions];
     if ([v62 isShared])
     {
-      v69 = [v62 isSharedByCurrentUser];
-      if ([v68 isEqual:*MEMORY[0x1E695DD28]])
+      isSharedByCurrentUser = [v62 isSharedByCurrentUser];
+      if ([sharingPermissions isEqual:*MEMORY[0x1E695DD28]])
       {
-        v70 = v69 == 0;
+        v70 = isSharedByCurrentUser == 0;
         v71 = 6144;
         v72 = 2048;
 LABEL_63:
@@ -3124,9 +3124,9 @@ LABEL_63:
         goto LABEL_66;
       }
 
-      if ([v68 isEqual:*MEMORY[0x1E695DD30]])
+      if ([sharingPermissions isEqual:*MEMORY[0x1E695DD30]])
       {
-        v70 = v69 == 0;
+        v70 = isSharedByCurrentUser == 0;
         v71 = 0x2000;
         v72 = 4096;
         goto LABEL_63;
@@ -3134,11 +3134,11 @@ LABEL_63:
     }
 
 LABEL_66:
-    v73 = [v62 ownerNameComponents];
-    [(BRQueryItem *)v5 setAttribute:v73 forKey:@"owner-components"];
+    ownerNameComponents = [v62 ownerNameComponents];
+    [(BRQueryItem *)v5 setAttribute:ownerNameComponents forKey:@"owner-components"];
 
-    v74 = [v62 mostRecentEditorNameComponents];
-    [(BRQueryItem *)v5 setAttribute:v74 forKey:@"last-editor-components"];
+    mostRecentEditorNameComponents = [v62 mostRecentEditorNameComponents];
+    [(BRQueryItem *)v5 setAttribute:mostRecentEditorNameComponents forKey:@"last-editor-components"];
 
     if ([v62 isShared])
     {
@@ -3159,7 +3159,7 @@ LABEL_66:
     }
 
     *&v5->_flags.var0 = *&v5->_flags.var0 & 0xFFDFFFFF | v75;
-    v76 = [v10 objectForKeyedSubscript:@"ess"];
+    v76 = [userInfo objectForKeyedSubscript:@"ess"];
     if ([v76 BOOLValue])
     {
       v77 = 0x1000000;
@@ -3172,9 +3172,9 @@ LABEL_66:
 
     *&v5->_flags.var0 = *&v5->_flags.var0 & 0xFEFFFFFF | v77;
 
-    v78 = [v62 symlinkTargetPath];
+    symlinkTargetPath = [v62 symlinkTargetPath];
     symlinkTargetPath = v5->_symlinkTargetPath;
-    v5->_symlinkTargetPath = v78;
+    v5->_symlinkTargetPath = symlinkTargetPath;
 
     goto LABEL_75;
   }
@@ -3188,35 +3188,35 @@ LABEL_66:
     _os_log_impl(&dword_1AE2A9000, v15, OS_LOG_TYPE_DEFAULT, "[WARNING] Can't build query item with nil FPItem%@", buf, 0xCu);
   }
 
-  v16 = 0;
+  selfCopy = 0;
 LABEL_76:
 
   v80 = *MEMORY[0x1E69E9840];
-  return v16;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithQueryItem:self];
 }
 
 - (NSString)path
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSURL *)v2->_url path];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  path = [(NSURL *)selfCopy->_url path];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return path;
 }
 
-- (BOOL)isEqualToQueryItem:(id)a3
+- (BOOL)isEqualToQueryItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (self == itemCopy)
   {
     v11 = 1;
   }
@@ -3227,21 +3227,21 @@ LABEL_76:
     v13[1] = 3221225472;
     v14 = __34__BRQueryItem_isEqualToQueryItem___block_invoke;
     v15 = &unk_1E7A159E0;
-    v16 = self;
-    v17 = v4;
-    v6 = self;
+    selfCopy = self;
+    v17 = itemCopy;
+    selfCopy2 = self;
     v7 = v17;
     v8 = v13;
-    if (v6 >= v7)
+    if (selfCopy2 >= v7)
     {
       v9 = v7;
       objc_sync_enter(v9);
-      v10 = v6;
+      v10 = selfCopy2;
     }
 
     else
     {
-      v9 = v6;
+      v9 = selfCopy2;
       objc_sync_enter(v9);
       v10 = v7;
     }
@@ -3630,10 +3630,10 @@ uint64_t __34__BRQueryItem_isEqualToQueryItem___block_invoke(uint64_t a1)
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -3641,7 +3641,7 @@ uint64_t __34__BRQueryItem_isEqualToQueryItem___block_invoke(uint64_t a1)
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRQueryItem *)self isEqualToQueryItem:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRQueryItem *)self isEqualToQueryItem:equalCopy];
   }
 
   return v5;
@@ -3649,18 +3649,18 @@ uint64_t __34__BRQueryItem_isEqualToQueryItem___block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(BRFileObjectID *)v2->_fileObjectID hash];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(BRFileObjectID *)selfCopy->_fileObjectID hash];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_mergeAttrs:(id)a3
+- (void)_mergeAttrs:(id)attrs
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attrsCopy = attrs;
   v5 = 0;
   v47 = xmmword_1E7A15A60;
   v48 = *&off_1E7A15A70;
@@ -3674,8 +3674,8 @@ uint64_t __34__BRQueryItem_isEqualToQueryItem___block_invoke(uint64_t a1)
   do
   {
     v6 = *(&v41 + v5);
-    v7 = v4[27];
-    v8 = self;
+    v7 = attrsCopy[27];
+    selfCopy = self;
     v9 = v6;
     v10 = v7;
     v11 = [v10 objectForKey:{v9, v41, v42, v43, v44, v45, v46, v47, v48, v49}];
@@ -3703,8 +3703,8 @@ uint64_t __34__BRQueryItem_isEqualToQueryItem___block_invoke(uint64_t a1)
   }
 
   while (v5 != 144);
-  v15 = v4[27];
-  v16 = v8;
+  v15 = attrsCopy[27];
+  v16 = selfCopy;
   v17 = v15;
   v18 = [v17 objectForKey:@"alias-path"];
   if (v18)
@@ -3722,8 +3722,8 @@ uint64_t __34__BRQueryItem_isEqualToQueryItem___block_invoke(uint64_t a1)
     [(NSMutableDictionary *)v19 setObject:v18 forKey:@"alias-path"];
   }
 
-  v22 = [(BRQueryItem *)v16 isInTransfer];
-  v23 = v4[27];
+  isInTransfer = [(BRQueryItem *)v16 isInTransfer];
+  v23 = attrsCopy[27];
   v24 = v16;
   v25 = v23;
   v26 = [v25 objectForKey:@"dl%"];
@@ -3742,12 +3742,12 @@ uint64_t __34__BRQueryItem_isEqualToQueryItem___block_invoke(uint64_t a1)
     [(NSMutableDictionary *)v27 setObject:v26 forKey:@"dl%"];
   }
 
-  else if (!v22)
+  else if (!isInTransfer)
   {
     [(NSMutableDictionary *)self->_attrs removeObjectForKey:@"dl%"];
   }
 
-  v30 = v4[27];
+  v30 = attrsCopy[27];
   v31 = v24;
   v32 = v30;
   v33 = [v32 objectForKey:@"ul%"];
@@ -3766,7 +3766,7 @@ uint64_t __34__BRQueryItem_isEqualToQueryItem___block_invoke(uint64_t a1)
     [(NSMutableDictionary *)v34 setObject:v33 forKey:@"ul%"];
   }
 
-  else if (!v22)
+  else if (!isInTransfer)
   {
     [(NSMutableDictionary *)self->_attrs removeObjectForKey:@"ul%"];
   }
@@ -3785,13 +3785,13 @@ uint64_t __34__BRQueryItem_isEqualToQueryItem___block_invoke(uint64_t a1)
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_mergeURL:(id)a3
+- (void)_mergeURL:(id)l
 {
   v60 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   p_url = &self->_url;
   url = self->_url;
-  v7 = v4[15];
+  v7 = lCopy[15];
   if (url == v7 || v7 == 0)
   {
     goto LABEL_63;
@@ -3815,9 +3815,9 @@ uint64_t __34__BRQueryItem_isEqualToQueryItem___block_invoke(uint64_t a1)
   CFRelease(v11);
 LABEL_9:
 
-  v13 = v4[15];
+  v13 = lCopy[15];
   v14 = _CFURLPromiseCopyPhysicalURL();
-  v15 = v4[15];
+  v15 = lCopy[15];
   if (v14 != v15)
   {
     v16 = *p_url;
@@ -3831,9 +3831,9 @@ LABEL_9:
       {
 LABEL_14:
 
-        v21 = v4[15];
+        v21 = lCopy[15];
         _CFURLPromiseSetPhysicalURL();
-        v15 = v4[15];
+        v15 = lCopy[15];
 
         goto LABEL_15;
       }
@@ -3853,8 +3853,8 @@ LABEL_15:
   {
     v23 = self->_url;
     v24 = *MEMORY[0x1E695EA60];
-    v25 = [(BRFileObjectID *)self->_fileObjectID documentID];
-    MEMORY[0x1B26FDF70](v23, v24, v25);
+    documentID = [(BRFileObjectID *)self->_fileObjectID documentID];
+    MEMORY[0x1B26FDF70](v23, v24, documentID);
   }
 
   v26 = MEMORY[0x1B26FDF00](*p_url);
@@ -4022,12 +4022,12 @@ LABEL_63:
   v53 = *MEMORY[0x1E69E9840];
 }
 
-- (id)attributeForKey:(id)a3
+- (id)attributeForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [_getterMap objectForKeyedSubscript:v4];
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [_getterMap objectForKeyedSubscript:keyCopy];
 
   if (v6)
   {
@@ -4039,54 +4039,54 @@ LABEL_63:
     }
   }
 
-  v7 = [(NSMutableDictionary *)v5->_attrs objectForKeyedSubscript:v4];
+  v7 = [(NSMutableDictionary *)selfCopy->_attrs objectForKeyedSubscript:keyCopy];
   v8 = [v7 copy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (void)setAttribute:(id)a3 forKey:(id)a4
+- (void)setAttribute:(id)attribute forKey:(id)key
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  attrs = v7->_attrs;
-  if (v11)
+  attributeCopy = attribute;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  attrs = selfCopy->_attrs;
+  if (attributeCopy)
   {
     if (attrs)
     {
-      [(NSMutableDictionary *)attrs setObject:v11 forKey:v6];
+      [(NSMutableDictionary *)attrs setObject:attributeCopy forKey:keyCopy];
       goto LABEL_8;
     }
 
-    v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v11, v6, 0}];
+    v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{attributeCopy, keyCopy, 0}];
   }
 
   else
   {
-    [(NSMutableDictionary *)attrs removeObjectForKey:v6];
-    v9 = [(NSMutableDictionary *)v7->_attrs count];
+    [(NSMutableDictionary *)attrs removeObjectForKey:keyCopy];
+    v9 = [(NSMutableDictionary *)selfCopy->_attrs count];
     if (v9)
     {
       goto LABEL_8;
     }
   }
 
-  v10 = v7->_attrs;
-  v7->_attrs = v9;
+  v10 = selfCopy->_attrs;
+  selfCopy->_attrs = v9;
 
 LABEL_8:
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)canMerge:(id)a3
+- (BOOL)canMerge:(id)merge
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  mergeCopy = merge;
+  v5 = mergeCopy;
+  if (self == mergeCopy)
   {
     v11 = 1;
   }
@@ -4097,21 +4097,21 @@ LABEL_8:
     v13[1] = 3221225472;
     v14 = __24__BRQueryItem_canMerge___block_invoke;
     v15 = &unk_1E7A159E0;
-    v16 = self;
-    v17 = v4;
-    v6 = self;
+    selfCopy = self;
+    v17 = mergeCopy;
+    selfCopy2 = self;
     v7 = v17;
     v8 = v13;
-    if (v6 >= v7)
+    if (selfCopy2 >= v7)
     {
       v9 = v7;
       objc_sync_enter(v9);
-      v10 = v6;
+      v10 = selfCopy2;
     }
 
     else
     {
-      v9 = v6;
+      v9 = selfCopy2;
       objc_sync_enter(v9);
       v10 = v7;
     }
@@ -4141,36 +4141,36 @@ uint64_t __24__BRQueryItem_canMerge___block_invoke(uint64_t a1)
   }
 }
 
-- (void)merge:(id)a3 allowMergingFileObjectIDIfPossible:(BOOL)a4
+- (void)merge:(id)merge allowMergingFileObjectIDIfPossible:(BOOL)possible
 {
-  v6 = a3;
-  if (!v6)
+  mergeCopy = merge;
+  if (!mergeCopy)
   {
     [BRQueryItem merge:allowMergingFileObjectIDIfPossible:];
   }
 
-  if (self != v6)
+  if (self != mergeCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v13 = __56__BRQueryItem_merge_allowMergingFileObjectIDIfPossible___block_invoke;
     v14 = &unk_1E7A15A98;
-    v17 = a4;
-    v15 = self;
-    v16 = v6;
-    v7 = self;
+    possibleCopy = possible;
+    selfCopy = self;
+    v16 = mergeCopy;
+    selfCopy2 = self;
     v8 = v16;
     v9 = v12;
-    if (v7 >= v8)
+    if (selfCopy2 >= v8)
     {
       v10 = v8;
       objc_sync_enter(v10);
-      v11 = v7;
+      v11 = selfCopy2;
     }
 
     else
     {
-      v10 = v7;
+      v10 = selfCopy2;
       objc_sync_enter(v10);
       v11 = v8;
     }
@@ -4333,10 +4333,10 @@ LABEL_36:
   return result;
 }
 
-+ (id)askDaemonQueryItemForURL:(id)a3 andFakeFSEvent:(BOOL)a4 error:(id *)a5
++ (id)askDaemonQueryItemForURL:(id)l andFakeFSEvent:(BOOL)event error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   memset(v18, 0, sizeof(v18));
   __brc_create_section(0, "+[BRQueryItem askDaemonQueryItemForURL:andFakeFSEvent:error:]", 2437, 0, v18);
   v7 = brc_bread_crumbs("+[BRQueryItem askDaemonQueryItemForURL:andFakeFSEvent:error:]", 2437);
@@ -4344,18 +4344,18 @@ LABEL_36:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v16 = v18[0];
-    v17 = [v6 path];
+    path = [lCopy path];
     *buf = 134218498;
     v20 = v16;
     v21 = 2112;
-    v22 = v17;
+    v22 = path;
     v23 = 2112;
     v24 = v7;
     _os_log_debug_impl(&dword_1AE2A9000, v8, OS_LOG_TYPE_DEBUG, "[NOTIF] ┏%llx asking item for url: %@%@", buf, 0x20u);
   }
 
-  v9 = [MEMORY[0x1E69673A8] defaultManager];
-  v10 = [v9 itemForURL:v6 error:a5];
+  defaultManager = [MEMORY[0x1E69673A8] defaultManager];
+  v10 = [defaultManager itemForURL:lCopy error:error];
 
   if (v10)
   {
@@ -4388,16 +4388,16 @@ LABEL_36:
   return v11;
 }
 
-- (id)attributeForName:(id)a3
+- (id)attributeForName:(id)name
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [_getterMap objectForKey:v4];
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [_getterMap objectForKey:nameCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = (*(v6 + 16))(v6, v5);
+    v8 = (*(v6 + 16))(v6, selfCopy);
   }
 
   else
@@ -4412,23 +4412,23 @@ LABEL_36:
     v8 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (id)attributesForNames:(id)a3
+- (id)attributesForNames:(id)names
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  namesCopy = names;
   v5 = [MEMORY[0x1E695DF90] dictionaryWithSharedKeySet:_sharedKeySet];
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = namesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -4443,7 +4443,7 @@ LABEL_36:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [(BRQueryItem *)v6 attributeForName:v11, v15];
+        v12 = [(BRQueryItem *)selfCopy attributeForName:v11, v15];
         if (v12)
         {
           [v5 setObject:v12 forKey:v11];
@@ -4456,27 +4456,27 @@ LABEL_36:
     while (v8);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   v13 = *MEMORY[0x1E69E9840];
 
   return v5;
 }
 
-+ (id)containerItemForContainer:(id)a3 withRepresentativeItem:(id)a4
++ (id)containerItemForContainer:(id)container withRepresentativeItem:(id)item
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_BRContainerItem alloc] initWithQueryItem:v5 container:v6 zoneRowID:0];
+  itemCopy = item;
+  containerCopy = container;
+  v7 = [[_BRContainerItem alloc] initWithQueryItem:itemCopy container:containerCopy zoneRowID:0];
 
   return v7;
 }
 
-+ (id)containerItemForContainer:(id)a3 withRepresentativeItem:(id)a4 zoneRowID:(id)a5
++ (id)containerItemForContainer:(id)container withRepresentativeItem:(id)item zoneRowID:(id)d
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[_BRContainerItem alloc] initWithQueryItem:v8 container:v9 zoneRowID:v7];
+  dCopy = d;
+  itemCopy = item;
+  containerCopy = container;
+  v10 = [[_BRContainerItem alloc] initWithQueryItem:itemCopy container:containerCopy zoneRowID:dCopy];
 
   return v10;
 }

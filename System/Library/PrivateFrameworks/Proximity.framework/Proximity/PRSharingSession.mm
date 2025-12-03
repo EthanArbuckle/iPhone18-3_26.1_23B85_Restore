@@ -1,17 +1,17 @@
 @interface PRSharingSession
-- (BOOL)trackNewBTPeer:(id)a3 withDviceModel:(id)a4 error:(id *)a5;
+- (BOOL)trackNewBTPeer:(id)peer withDviceModel:(id)model error:(id *)error;
 - (PRSharingSession)init;
-- (PRSharingSession)initWithDelegate:(id)a3 delegateQueue:(id)a4;
+- (PRSharingSession)initWithDelegate:(id)delegate delegateQueue:(id)queue;
 - (PRSharingSessionDelegate)delegate;
-- (void)beacon:(id)a3 didChangeState:(unint64_t)a4;
-- (void)beacon:(id)a3 didOutputRangeResults:(id)a4;
-- (void)didFailWithError:(id)a3;
-- (void)estimator:(id)a3 didEstimateProximity:(int64_t)a4 toPeer:(id)a5;
-- (void)invokeDelegateBlock:(id)a3;
-- (void)logScores:(id)a3;
-- (void)onNewSharingChoiceScores:(id)a3;
+- (void)beacon:(id)beacon didChangeState:(unint64_t)state;
+- (void)beacon:(id)beacon didOutputRangeResults:(id)results;
+- (void)didFailWithError:(id)error;
+- (void)estimator:(id)estimator didEstimateProximity:(int64_t)proximity toPeer:(id)peer;
+- (void)invokeDelegateBlock:(id)block;
+- (void)logScores:(id)scores;
+- (void)onNewSharingChoiceScores:(id)scores;
 - (void)startInitiating;
-- (void)startWatchDogWithDuration:(int64_t)a3;
+- (void)startWatchDogWithDuration:(int64_t)duration;
 - (void)stopInitiating;
 - (void)stopProx;
 - (void)watchDogTimedOut;
@@ -48,7 +48,7 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startWatchDogWithDuration:(int64_t)a3
+- (void)startWatchDogWithDuration:(int64_t)duration
 {
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
@@ -60,7 +60,7 @@
   reportWatchdog = self->_reportWatchdog;
   self->_reportWatchdog = v5;
 
-  v7 = dispatch_time(0, a3);
+  v7 = dispatch_time(0, duration);
   dispatch_after(v7, self->_delegateQueue, self->_reportWatchdog);
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -72,14 +72,14 @@ void __46__PRSharingSession_startWatchDogWithDuration___block_invoke(uint64_t a1
   [WeakRetained watchDogTimedOut];
 }
 
-- (PRSharingSession)initWithDelegate:(id)a3 delegateQueue:(id)a4
+- (PRSharingSession)initWithDelegate:(id)delegate delegateQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  if (!delegateCopy)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PRSharingSession.mm" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PRSharingSession.mm" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
   }
 
   v33.receiver = self;
@@ -88,8 +88,8 @@ void __46__PRSharingSession_startWatchDogWithDuration___block_invoke(uint64_t a1
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v7);
-    objc_storeStrong(&v10->_delegateQueue, a4);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    objc_storeStrong(&v10->_delegateQueue, queue);
     v10->_needToRestart = 0;
     v10->_scoresReported = 0;
     v11 = os_log_create("com.apple.proximity", "PRSharingSession");
@@ -177,15 +177,15 @@ void __51__PRSharingSession_initWithDelegate_delegateQueue___block_invoke_2(uint
   self->_scoresReported = 0;
 }
 
-- (BOOL)trackNewBTPeer:(id)a3 withDviceModel:(id)a4 error:(id *)a5
+- (BOOL)trackNewBTPeer:(id)peer withDviceModel:(id)model error:(id *)error
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  peerCopy = peer;
+  modelCopy = model;
+  v11 = modelCopy;
+  if (peerCopy)
   {
-    if (v10)
+    if (modelCopy)
     {
       goto LABEL_3;
     }
@@ -193,8 +193,8 @@ void __51__PRSharingSession_initWithDelegate_delegateQueue___block_invoke_2(uint
 
   else
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PRSharingSession.mm" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"peerMacAddress"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PRSharingSession.mm" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"peerMacAddress"}];
 
     if (v11)
     {
@@ -202,8 +202,8 @@ void __51__PRSharingSession_initWithDelegate_delegateQueue___block_invoke_2(uint
     }
   }
 
-  v20 = [MEMORY[0x277CCA890] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"PRSharingSession.mm" lineNumber:186 description:{@"Invalid parameter not satisfying: %@", @"deviceModel"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PRSharingSession.mm" lineNumber:186 description:{@"Invalid parameter not satisfying: %@", @"deviceModel"}];
 
 LABEL_3:
   if (self->_scoresReported)
@@ -217,13 +217,13 @@ LABEL_3:
   }
 
   btProxEstimator = self->_btProxEstimator;
-  v13 = [PRSharingSessionHelper NSDataMacToUUID:v9];
-  v14 = [(PRProximityEstimator *)btProxEstimator startEstimatingProximityFor:v13 peerDeviceModel:v11 withError:a5];
+  v13 = [PRSharingSessionHelper NSDataMacToUUID:peerCopy];
+  v14 = [(PRProximityEstimator *)btProxEstimator startEstimatingProximityFor:v13 peerDeviceModel:v11 withError:error];
 
   if (v14)
   {
-    [(NSMutableDictionary *)self->_trackedBTPeers setObject:&unk_2845BCA70 forKeyedSubscript:v9];
-    [(NSMutableDictionary *)self->_trackedBTPeersDevice setObject:v11 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)self->_trackedBTPeers setObject:&unk_2845BCA70 forKeyedSubscript:peerCopy];
+    [(NSMutableDictionary *)self->_trackedBTPeersDevice setObject:v11 forKeyedSubscript:peerCopy];
   }
 
   else
@@ -233,13 +233,13 @@ LABEL_3:
       [PRSharingSession trackNewBTPeer:withDviceModel:error:];
     }
 
-    if (a5)
+    if (error)
     {
       v15 = MEMORY[0x277CCA9B8];
       v21 = *MEMORY[0x277CCA450];
       v22[0] = @"Failed to start estimating proximity to peer";
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-      *a5 = [v15 errorWithDomain:@"com.apple.Proximity.ErrorDomain" code:202 userInfo:v16];
+      *error = [v15 errorWithDomain:@"com.apple.Proximity.ErrorDomain" code:202 userInfo:v16];
     }
   }
 
@@ -250,78 +250,78 @@ LABEL_3:
 - (void)stopProx
 {
   *buf = 138412290;
-  *a3 = a1;
+  *a3 = self;
   _os_log_error_impl(&dword_230EB5000, log, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
 }
 
-- (void)logScores:(id)a3
+- (void)logScores:(id)scores
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  scoresCopy = scores;
+  if ([scoresCopy count])
   {
-    for (i = 0; i < [v4 count]; ++i)
+    for (i = 0; i < [scoresCopy count]; ++i)
     {
       kdebug_trace();
-      v6 = [MEMORY[0x277CCAB68] string];
-      [v6 appendFormat:@"New scores: "];
-      v7 = [v4 objectAtIndexedSubscript:i];
-      v8 = [v7 btAddress];
-      [v6 appendFormat:@"mac address: %@, ", v8];
+      string = [MEMORY[0x277CCAB68] string];
+      [string appendFormat:@"New scores: "];
+      v7 = [scoresCopy objectAtIndexedSubscript:i];
+      btAddress = [v7 btAddress];
+      [string appendFormat:@"mac address: %@, ", btAddress];
 
       [v7 score];
-      [v6 appendFormat:@"score: %f, ", v9];
-      v10 = [v7 angle];
-      LOBYTE(v8) = v10 == 0;
+      [string appendFormat:@"score: %f, ", v9];
+      angle = [v7 angle];
+      LOBYTE(btAddress) = angle == 0;
 
-      if (v8)
+      if (btAddress)
       {
-        [v6 appendFormat:@"angle degrees: nil, "];
-        [v6 appendFormat:@"angle uncertainty: nil, "];
+        [string appendFormat:@"angle degrees: nil, "];
+        [string appendFormat:@"angle uncertainty: nil, "];
       }
 
       else
       {
-        v11 = [v7 angle];
-        [v11 measurement];
-        [v6 appendFormat:@"angle degrees: %f, ", v12];
+        angle2 = [v7 angle];
+        [angle2 measurement];
+        [string appendFormat:@"angle degrees: %f, ", v12];
 
-        v13 = [v7 angle];
-        [v13 uncertainty];
-        [v6 appendFormat:@"angle uncertainty: %f, ", v14];
+        angle3 = [v7 angle];
+        [angle3 uncertainty];
+        [string appendFormat:@"angle uncertainty: %f, ", v14];
 
         [v7 timestamp];
-        [v6 appendFormat:@"#bighead_test mach_abs_time: %f, ", v15];
+        [string appendFormat:@"#bighead_test mach_abs_time: %f, ", v15];
       }
 
-      v16 = [v7 range];
-      v17 = v16 == 0;
+      range = [v7 range];
+      v17 = range == 0;
 
       if (v17)
       {
-        [v6 appendFormat:@"range meters: nil, "];
-        [v6 appendFormat:@"range uncertainty: nil, "];
+        [string appendFormat:@"range meters: nil, "];
+        [string appendFormat:@"range uncertainty: nil, "];
       }
 
       else
       {
-        v18 = [v7 range];
-        [v18 measurement];
-        [v6 appendFormat:@"range meters: %f, ", v19];
+        range2 = [v7 range];
+        [range2 measurement];
+        [string appendFormat:@"range meters: %f, ", v19];
 
-        v20 = [v7 range];
-        [v20 uncertainty];
-        [v6 appendFormat:@"range uncertainty: %f, ", v21];
+        range3 = [v7 range];
+        [range3 uncertainty];
+        [string appendFormat:@"range uncertainty: %f, ", v21];
       }
 
       v22 = +[PRSharingSessionHelper ProxToString:](PRSharingSessionHelper, "ProxToString:", [v7 proximity]);
-      [v6 appendFormat:@"prox: %@, ", v22];
+      [string appendFormat:@"prox: %@, ", v22];
 
       logger = self->_logger;
       if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v27 = v6;
+        v27 = string;
         _os_log_impl(&dword_230EB5000, logger, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
       }
 
@@ -342,11 +342,11 @@ LABEL_3:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)estimator:(id)a3 didEstimateProximity:(int64_t)a4 toPeer:(id)a5
+- (void)estimator:(id)estimator didEstimateProximity:(int64_t)proximity toPeer:(id)peer
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [PRSharingSessionHelper UUIDToNSDataMac:v7 len:6];
+  peerCopy = peer;
+  v8 = [PRSharingSessionHelper UUIDToNSDataMac:peerCopy len:6];
   v9 = [(NSMutableDictionary *)self->_trackedBTPeers objectForKeyedSubscript:v8];
 
   if (v9)
@@ -355,7 +355,7 @@ LABEL_3:
     v30 = 0.0;
     if (PRCommonGetAllTimes(0, &v30, &v29))
     {
-      v10 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+      v10 = [MEMORY[0x277CCABB0] numberWithInteger:proximity];
       [(NSMutableDictionary *)self->_trackedBTPeers setObject:v10 forKeyedSubscript:v8];
 
       v11 = [PRSharingSessionHelper reverseNSData:v8];
@@ -366,7 +366,7 @@ LABEL_3:
       WORD4(v26) = 0;
       v27 = xmmword_230EED680;
       v28[0] = 1;
-      *&v28[4] = [PRSharingSessionHelper ProxToCoarseRange:a4];
+      *&v28[4] = [PRSharingSessionHelper ProxToCoarseRange:proximity];
       *&v28[24] = 0;
       v28[8] = 0;
       *&v28[16] = 0;
@@ -395,7 +395,7 @@ LABEL_3:
       v16 = self->_logger;
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [PRSharingSessionHelper ProxToString:a4];
+        v17 = [PRSharingSessionHelper ProxToString:proximity];
         v18 = v17;
         v19 = v25.__r_.__value_.__r.__words[0];
         if (v14 >= 0)
@@ -436,23 +436,23 @@ LABEL_3:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beacon:(id)a3 didOutputRangeResults:(id)a4
+- (void)beacon:(id)beacon didOutputRangeResults:(id)results
 {
-  v5 = a4;
+  resultsCopy = results;
   kdebug_trace();
-  [(PRSharingChoice *)self->_sharingChoiceEstimator addRoseSolutions:v5 currentMachContTime:PRCommonGetMachContinuousTimeSeconds()];
+  [(PRSharingChoice *)self->_sharingChoiceEstimator addRoseSolutions:resultsCopy currentMachContTime:PRCommonGetMachContinuousTimeSeconds()];
   kdebug_trace();
 }
 
-- (void)beacon:(id)a3 didChangeState:(unint64_t)a4
+- (void)beacon:(id)beacon didChangeState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = 0;
-  if (a4 > 1)
+  beaconCopy = beacon;
+  stateCopy = 0;
+  if (state > 1)
   {
-    if (a4 != 3)
+    if (state != 3)
     {
-      if (a4 != 2)
+      if (state != 2)
       {
         goto LABEL_28;
       }
@@ -479,7 +479,7 @@ LABEL_3:
 
     if (![(PRSharingChoice *)self->_sharingChoiceEstimator currentlyInitiating])
     {
-      v7 = 3;
+      stateCopy = 3;
       goto LABEL_28;
     }
 
@@ -490,7 +490,7 @@ LABEL_26:
       v12 = 1;
 LABEL_27:
       self->_needToRestart = v12;
-      v7 = a4;
+      stateCopy = state;
       goto LABEL_28;
     }
 
@@ -500,7 +500,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (!a4)
+  if (!state)
   {
     v13 = self->_logger;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -511,7 +511,7 @@ LABEL_25:
 
     if (![(PRSharingChoice *)self->_sharingChoiceEstimator currentlyInitiating])
     {
-      v7 = 0;
+      stateCopy = 0;
       goto LABEL_28;
     }
 
@@ -525,7 +525,7 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  if (a4 == 1)
+  if (state == 1)
   {
     v8 = self->_logger;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -546,11 +546,11 @@ LABEL_25:
       [(PRSharingSession *)self startInitiating];
     }
 
-    v7 = 1;
+    stateCopy = 1;
   }
 
 LABEL_28:
-  v16 = [(PRSharingSession *)self delegate];
+  delegate = [(PRSharingSession *)self delegate];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
@@ -560,7 +560,7 @@ LABEL_28:
     v18[2] = __42__PRSharingSession_beacon_didChangeState___block_invoke;
     v18[3] = &unk_2788F3C90;
     v18[4] = self;
-    v18[5] = v7;
+    v18[5] = stateCopy;
     [(PRSharingSession *)self invokeDelegateBlock:v18];
   }
 }
@@ -571,16 +571,16 @@ void __42__PRSharingSession_beacon_didChangeState___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didChangeProximitySensorState:*(a1 + 40)];
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__PRSharingSession_didFailWithError___block_invoke;
   v6[3] = &unk_2788F3CB8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   [(PRSharingSession *)self invokeDelegateBlock:v6];
 }
 
@@ -590,11 +590,11 @@ void __37__PRSharingSession_didFailWithError___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didFailwithError:*(a1 + 40)];
 }
 
-- (void)onNewSharingChoiceScores:(id)a3
+- (void)onNewSharingChoiceScores:(id)scores
 {
-  v4 = a3;
-  [(PRSharingSession *)self logScores:v4];
-  if (!self->_scoresReported && [v4 count])
+  scoresCopy = scores;
+  [(PRSharingSession *)self logScores:scoresCopy];
+  if (!self->_scoresReported && [scoresCopy count])
   {
     self->_scoresReported = 1;
   }
@@ -609,9 +609,9 @@ void __37__PRSharingSession_didFailWithError___block_invoke(uint64_t a1)
   v6[1] = 3221225472;
   v6[2] = __45__PRSharingSession_onNewSharingChoiceScores___block_invoke;
   v6[3] = &unk_2788F3CB8;
-  v5 = v4;
+  v5 = scoresCopy;
   v7 = v5;
-  v8 = self;
+  selfCopy = self;
   [(PRSharingSession *)self invokeDelegateBlock:v6];
 }
 
@@ -623,19 +623,19 @@ void __45__PRSharingSession_onNewSharingChoiceScores___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 40) didEstimateScores:*(a1 + 32)];
 }
 
-- (void)invokeDelegateBlock:(id)a3
+- (void)invokeDelegateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   delegateQueue = self->_delegateQueue;
-  v6 = v4;
+  v6 = blockCopy;
   if (delegateQueue)
   {
-    dispatch_async(delegateQueue, v4);
+    dispatch_async(delegateQueue, blockCopy);
   }
 
   else
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 }
 

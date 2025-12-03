@@ -1,10 +1,10 @@
 @interface WKEditCommand
-- (WKEditCommand)initWithWebEditCommandProxy:(void *)a3;
+- (WKEditCommand)initWithWebEditCommandProxy:(void *)proxy;
 @end
 
 @implementation WKEditCommand
 
-- (WKEditCommand)initWithWebEditCommandProxy:(void *)a3
+- (WKEditCommand)initWithWebEditCommandProxy:(void *)proxy
 {
   v9.receiver = self;
   v9.super_class = WKEditCommand;
@@ -12,8 +12,8 @@
   v5 = v4;
   if (v4)
   {
-    v6 = *a3;
-    *a3 = 0;
+    v6 = *proxy;
+    *proxy = 0;
     m_ptr = v4->_command.m_ptr;
     v4->_command.m_ptr = v6;
     if (m_ptr)

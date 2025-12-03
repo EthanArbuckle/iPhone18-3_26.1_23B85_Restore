@@ -1,33 +1,33 @@
 @interface CRFileSender
-- (BOOL)_chunkQueue_blockingSendChannelMessage:(id)a3;
-- (CRFileSender)initWithChannel:(id)a3 isPriority:(BOOL)a4;
-- (id)_sendFileURL:(id)a3 withMetadata:(id)a4 completion:(id)a5;
-- (id)sendLogArchive:(id)a3 completion:(id)a4;
-- (id)sendThemeAsset:(id)a3 completion:(id)a4;
-- (unint64_t)_internalQueue_chunkSizeForTransferWithPriority:(BOOL)a3;
-- (void)_internalQueue_handleFileAcceptMessage:(id)a3;
+- (BOOL)_chunkQueue_blockingSendChannelMessage:(id)message;
+- (CRFileSender)initWithChannel:(id)channel isPriority:(BOOL)priority;
+- (id)_sendFileURL:(id)l withMetadata:(id)metadata completion:(id)completion;
+- (id)sendLogArchive:(id)archive completion:(id)completion;
+- (id)sendThemeAsset:(id)asset completion:(id)completion;
+- (unint64_t)_internalQueue_chunkSizeForTransferWithPriority:(BOOL)priority;
+- (void)_internalQueue_handleFileAcceptMessage:(id)message;
 - (void)_internalQueue_signalChunkQueue;
-- (void)channel:(id)a3 didReceiveMessage:(id)a4;
-- (void)didCloseChannel:(id)a3;
-- (void)didSendMessageForChannel:(id)a3;
+- (void)channel:(id)channel didReceiveMessage:(id)message;
+- (void)didCloseChannel:(id)channel;
+- (void)didSendMessageForChannel:(id)channel;
 - (void)invalidate;
 @end
 
 @implementation CRFileSender
 
-- (CRFileSender)initWithChannel:(id)a3 isPriority:(BOOL)a4
+- (CRFileSender)initWithChannel:(id)channel isPriority:(BOOL)priority
 {
-  v4 = a4;
-  v7 = a3;
+  priorityCopy = priority;
+  channelCopy = channel;
   v22.receiver = self;
   v22.super_class = CRFileSender;
   v8 = [(CRFileSender *)&v22 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_channel, a3);
-    v9->_priority = v4;
-    if (v4)
+    objc_storeStrong(&v8->_channel, channel);
+    v9->_priority = priorityCopy;
+    if (priorityCopy)
     {
       v10 = QOS_CLASS_USER_INITIATED;
     }
@@ -54,8 +54,8 @@
     v9->_chunkQueueSendSlots = v19;
 
     v9->_internalQueueOutstandingSendCount = 0;
-    [v7 setChannelDelegate:v9];
-    [v7 openChannel];
+    [channelCopy setChannelDelegate:v9];
+    [channelCopy openChannel];
     v9->_channelIsOpen = 1;
   }
 
@@ -70,56 +70,56 @@
     sub_100082938();
   }
 
-  v4 = [(CRFileSender *)self internalQueue];
+  internalQueue = [(CRFileSender *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100016EB8;
   block[3] = &unk_1000DD480;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(internalQueue, block);
 }
 
-- (id)sendThemeAsset:(id)a3 completion:(id)a4
+- (id)sendThemeAsset:(id)asset completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 assetsArchiveURL];
-  v9 = [v7 signatureData];
-  v10 = [v7 certificateData];
-  v11 = [v7 accessoryAdditionsData];
-  v12 = [v7 version];
+  completionCopy = completion;
+  assetCopy = asset;
+  assetsArchiveURL = [assetCopy assetsArchiveURL];
+  signatureData = [assetCopy signatureData];
+  certificateData = [assetCopy certificateData];
+  accessoryAdditionsData = [assetCopy accessoryAdditionsData];
+  version = [assetCopy version];
 
-  v13 = [v12 accessoryContentVersion];
+  accessoryContentVersion = [version accessoryContentVersion];
 
-  if (v8 && v13)
+  if (assetsArchiveURL && accessoryContentVersion)
   {
     v24[0] = @"payloadType";
     v24[1] = @"version";
     v25[0] = &off_1000E7A20;
-    v25[1] = v13;
+    v25[1] = accessoryContentVersion;
     v14 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:2];
     v15 = [v14 mutableCopy];
 
-    if (v10)
+    if (certificateData)
     {
-      [v15 setObject:v10 forKey:@"certificate"];
+      [v15 setObject:certificateData forKey:@"certificate"];
     }
 
-    if (v9)
+    if (signatureData)
     {
-      [v15 setObject:v9 forKey:@"signature"];
+      [v15 setObject:signatureData forKey:@"signature"];
     }
 
-    if (v11)
+    if (accessoryAdditionsData)
     {
-      [v15 setObject:v11 forKey:@"additions"];
+      [v15 setObject:accessoryAdditionsData forKey:@"additions"];
     }
 
     v16 = sub_100002A68(4uLL);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v13;
+      v23 = accessoryContentVersion;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "starting file transfer for cluster theme version %@", buf, 0xCu);
     }
 
@@ -128,16 +128,16 @@
     v19[2] = sub_100017214;
     v19[3] = &unk_1000DD910;
     v19[4] = self;
-    v20 = v13;
-    v21 = v6;
-    v17 = [(CRFileSender *)self _sendFileURL:v8 withMetadata:v15 completion:v19];
+    v20 = accessoryContentVersion;
+    v21 = completionCopy;
+    v17 = [(CRFileSender *)self _sendFileURL:assetsArchiveURL withMetadata:v15 completion:v19];
   }
 
   else
   {
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
 
     v17 = 0;
@@ -146,10 +146,10 @@
   return v17;
 }
 
-- (id)sendLogArchive:(id)a3 completion:(id)a4
+- (id)sendLogArchive:(id)archive completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  archiveCopy = archive;
+  completionCopy = completion;
   v19 = @"payloadType";
   v20 = &off_1000E7A38;
   v8 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
@@ -157,7 +157,7 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = archiveCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "starting file transfer for log archive %@", buf, 0xCu);
   }
 
@@ -166,22 +166,22 @@
   v14[2] = sub_1000174CC;
   v14[3] = &unk_1000DD910;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
+  v15 = archiveCopy;
+  v16 = completionCopy;
+  v10 = completionCopy;
+  v11 = archiveCopy;
   v12 = [(CRFileSender *)self _sendFileURL:v11 withMetadata:v8 completion:v14];
 
   return v12;
 }
 
-- (unint64_t)_internalQueue_chunkSizeForTransferWithPriority:(BOOL)a3
+- (unint64_t)_internalQueue_chunkSizeForTransferWithPriority:(BOOL)priority
 {
-  v3 = a3;
+  priorityCopy = priority;
   keyExistsAndHasValidFormat = 0;
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"TransferChunkSize", @"com.apple.carplay.internal", &keyExistsAndHasValidFormat);
   v5 = 102400;
-  if (v3)
+  if (priorityCopy)
   {
     v5 = 204800;
   }
@@ -207,30 +207,30 @@
   return v7;
 }
 
-- (id)_sendFileURL:(id)a3 withMetadata:(id)a4 completion:(id)a5
+- (id)_sendFileURL:(id)l withMetadata:(id)metadata completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  metadataCopy = metadata;
+  completionCopy = completion;
   v11 = [[NSProgress alloc] initWithParent:0 userInfo:0];
   [v11 setTotalUnitCount:2];
   [v11 setCompletedUnitCount:0];
-  v12 = [(CRFileSender *)self internalQueue];
+  internalQueue = [(CRFileSender *)self internalQueue];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10001782C;
   v21[3] = &unk_1000DDA00;
-  v22 = v8;
-  v27 = v10;
+  v22 = lCopy;
+  v27 = completionCopy;
   v13 = v11;
   v23 = v13;
-  v24 = self;
-  v25 = v12;
-  v26 = v9;
-  v14 = v9;
-  v15 = v12;
-  v16 = v10;
-  v17 = v8;
+  selfCopy = self;
+  v25 = internalQueue;
+  v26 = metadataCopy;
+  v14 = metadataCopy;
+  v15 = internalQueue;
+  v16 = completionCopy;
+  v17 = lCopy;
   dispatch_async(v15, v21);
   v18 = v26;
   v19 = v13;
@@ -238,11 +238,11 @@
   return v13;
 }
 
-- (BOOL)_chunkQueue_blockingSendChannelMessage:(id)a3
+- (BOOL)_chunkQueue_blockingSendChannelMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(CRFileSender *)self chunkQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  chunkQueue = [(CRFileSender *)self chunkQueue];
+  dispatch_assert_queue_V2(chunkQueue);
 
   v26 = 0;
   v27 = &v26;
@@ -252,17 +252,17 @@
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v6 = [(CRFileSender *)self internalQueue];
+  internalQueue = [(CRFileSender *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100018CEC;
   block[3] = &unk_1000DDA28;
   block[4] = self;
   v20 = &v26;
-  v7 = v4;
+  v7 = messageCopy;
   v19 = v7;
   v21 = &v22;
-  dispatch_sync(v6, block);
+  dispatch_sync(internalQueue, block);
 
   if (*(v23 + 24) == 1)
   {
@@ -273,19 +273,19 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "waiting on chunk to send", buf, 2u);
     }
 
-    v9 = [(CRFileSender *)self chunkQueueSendSlots];
+    chunkQueueSendSlots = [(CRFileSender *)self chunkQueueSendSlots];
     v10 = dispatch_time(0, 60000000000);
-    v11 = dispatch_semaphore_wait(v9, v10);
+    v11 = dispatch_semaphore_wait(chunkQueueSendSlots, v10);
 
     if (v11)
     {
-      v12 = [(CRFileSender *)self internalQueue];
+      internalQueue2 = [(CRFileSender *)self internalQueue];
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
       v16[2] = sub_100018DF4;
       v16[3] = &unk_1000DD480;
       v16[4] = self;
-      dispatch_sync(v12, v16);
+      dispatch_sync(internalQueue2, v16);
 
       v13 = sub_100002A68(4uLL);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -307,30 +307,30 @@
 
 - (void)_internalQueue_signalChunkQueue
 {
-  v3 = [(CRFileSender *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(CRFileSender *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v4 = [(CRFileSender *)self internalQueueOutstandingSendCount];
+  internalQueueOutstandingSendCount = [(CRFileSender *)self internalQueueOutstandingSendCount];
   if ([(CRFileSender *)self internalQueueOutstandingSendCount])
   {
     [(CRFileSender *)self setInternalQueueOutstandingSendCount:[(CRFileSender *)self internalQueueOutstandingSendCount]- 1];
   }
 
-  if (v4 >= 3)
+  if (internalQueueOutstandingSendCount >= 3)
   {
-    v5 = [(CRFileSender *)self chunkQueueSendSlots];
-    dispatch_semaphore_signal(v5);
+    chunkQueueSendSlots = [(CRFileSender *)self chunkQueueSendSlots];
+    dispatch_semaphore_signal(chunkQueueSendSlots);
   }
 }
 
-- (void)_internalQueue_handleFileAcceptMessage:(id)a3
+- (void)_internalQueue_handleFileAcceptMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(CRFileSender *)self internalQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  internalQueue = [(CRFileSender *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   objc_opt_class();
-  v6 = [v4 objectForKey:@"accepted"];
+  v6 = [messageCopy objectForKey:@"accepted"];
   if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v7 = v6;
@@ -343,10 +343,10 @@
 
   if (v7)
   {
-    v8 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
     v9 = sub_100002A68(4uLL);
     v10 = v9;
-    if (v8)
+    if (unsignedIntegerValue)
     {
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
@@ -360,11 +360,11 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "file transfer was accepted", v13, 2u);
     }
 
-    v12 = [(CRFileSender *)self currentAcceptCompletion];
-    v11 = v12;
-    if (v12)
+    currentAcceptCompletion = [(CRFileSender *)self currentAcceptCompletion];
+    v11 = currentAcceptCompletion;
+    if (currentAcceptCompletion)
     {
-      (*(v12 + 16))(v12, v8 == 0);
+      (*(currentAcceptCompletion + 16))(currentAcceptCompletion, unsignedIntegerValue == 0);
     }
   }
 
@@ -378,46 +378,46 @@
   }
 }
 
-- (void)didSendMessageForChannel:(id)a3
+- (void)didSendMessageForChannel:(id)channel
 {
-  v4 = [(CRFileSender *)self internalQueue];
+  internalQueue = [(CRFileSender *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000190F4;
   block[3] = &unk_1000DD480;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(internalQueue, block);
 }
 
-- (void)channel:(id)a3 didReceiveMessage:(id)a4
+- (void)channel:(id)channel didReceiveMessage:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   v6 = sub_100002A68(4uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    sub_100082E9C(v5, v6);
+    sub_100082E9C(messageCopy, v6);
   }
 
-  v7 = [(CRFileSender *)self internalQueue];
+  internalQueue = [(CRFileSender *)self internalQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10001922C;
   v9[3] = &unk_1000DD580;
-  v10 = v5;
-  v11 = self;
-  v8 = v5;
-  dispatch_async(v7, v9);
+  v10 = messageCopy;
+  selfCopy = self;
+  v8 = messageCopy;
+  dispatch_async(internalQueue, v9);
 }
 
-- (void)didCloseChannel:(id)a3
+- (void)didCloseChannel:(id)channel
 {
-  v4 = [(CRFileSender *)self internalQueue];
+  internalQueue = [(CRFileSender *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100019504;
   block[3] = &unk_1000DD480;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(internalQueue, block);
 }
 
 @end

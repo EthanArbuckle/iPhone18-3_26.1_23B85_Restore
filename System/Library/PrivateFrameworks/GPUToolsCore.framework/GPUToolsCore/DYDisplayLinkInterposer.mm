@@ -1,30 +1,30 @@
 @interface DYDisplayLinkInterposer
-- (DYDisplayLinkInterposer)initWithTarget:(id)a3 selector:(SEL)a4;
+- (DYDisplayLinkInterposer)initWithTarget:(id)target selector:(SEL)selector;
 - (void)dealloc;
-- (void)forwardDisplayLinkCallback:(id)a3;
+- (void)forwardDisplayLinkCallback:(id)callback;
 @end
 
 @implementation DYDisplayLinkInterposer
 
-- (DYDisplayLinkInterposer)initWithTarget:(id)a3 selector:(SEL)a4
+- (DYDisplayLinkInterposer)initWithTarget:(id)target selector:(SEL)selector
 {
   v11.receiver = self;
   v11.super_class = DYDisplayLinkInterposer;
   v6 = [(DYDisplayLinkInterposer *)&v11 init];
   if (v6)
   {
-    v6->_target = a3;
-    if (a4)
+    v6->_target = target;
+    if (selector)
     {
-      v8 = a4;
+      selectorCopy = selector;
     }
 
     else
     {
-      v8 = 0;
+      selectorCopy = 0;
     }
 
-    v6->_sel = v8;
+    v6->_sel = selectorCopy;
     GPUTools::DYLockUtils::Lock(&sDisplayLinkIdleTimeLock, v7);
     if (!spDisplayLinkIdleTime)
     {
@@ -37,7 +37,7 @@
   return v6;
 }
 
-- (void)forwardDisplayLinkCallback:(id)a3
+- (void)forwardDisplayLinkCallback:(id)callback
 {
   if (self->_endTimestamp)
   {

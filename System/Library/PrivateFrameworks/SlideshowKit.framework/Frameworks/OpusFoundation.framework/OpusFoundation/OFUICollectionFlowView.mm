@@ -1,36 +1,36 @@
 @interface OFUICollectionFlowView
-- (BOOL)_isFrameEntirelyVisible:(CGRect)a3;
-- (BOOL)isFrameVisible:(CGRect)a3;
-- (BOOL)performDragOperation:(id)a3;
-- (CGRect)draggingDestination:(id)a3 originalFrameForItem:(id)a4;
-- (OFUICollectionFlowView)initWithFrame:(CGRect)a3 collectionViewFlowLayout:(id)a4;
-- (float)autoscrollDistance:(CGRect)a3;
-- (unint64_t)draggingDestinationEntered:(id)a3;
-- (unint64_t)draggingDestinationUpdated:(id)a3;
-- (void)_cleanupDragging:(id)a3;
-- (void)_prepareDragging:(id)a3;
-- (void)autoscroll:(float)a3;
+- (BOOL)_isFrameEntirelyVisible:(CGRect)visible;
+- (BOOL)isFrameVisible:(CGRect)visible;
+- (BOOL)performDragOperation:(id)operation;
+- (CGRect)draggingDestination:(id)destination originalFrameForItem:(id)item;
+- (OFUICollectionFlowView)initWithFrame:(CGRect)frame collectionViewFlowLayout:(id)layout;
+- (float)autoscrollDistance:(CGRect)distance;
+- (unint64_t)draggingDestinationEntered:(id)entered;
+- (unint64_t)draggingDestinationUpdated:(id)updated;
+- (void)_cleanupDragging:(id)dragging;
+- (void)_prepareDragging:(id)dragging;
+- (void)autoscroll:(float)autoscroll;
 - (void)dealloc;
-- (void)draggingDestinationEnded:(id)a3 cancelled:(BOOL)a4;
-- (void)draggingDestinationExited:(id)a3;
-- (void)draggingDestinationWillEnd:(id)a3 cancelled:(BOOL)a4;
-- (void)registerDraggingPasteboardType:(id)a3;
-- (void)setDraggingEmptyIndexPath:(id)a3 session:(id)a4;
-- (void)setDraggingSelectionIndexPath:(id)a3;
+- (void)draggingDestinationEnded:(id)ended cancelled:(BOOL)cancelled;
+- (void)draggingDestinationExited:(id)exited;
+- (void)draggingDestinationWillEnd:(id)end cancelled:(BOOL)cancelled;
+- (void)registerDraggingPasteboardType:(id)type;
+- (void)setDraggingEmptyIndexPath:(id)path session:(id)session;
+- (void)setDraggingSelectionIndexPath:(id)path;
 @end
 
 @implementation OFUICollectionFlowView
 
-- (OFUICollectionFlowView)initWithFrame:(CGRect)a3 collectionViewFlowLayout:(id)a4
+- (OFUICollectionFlowView)initWithFrame:(CGRect)frame collectionViewFlowLayout:(id)layout
 {
   v10.receiver = self;
   v10.super_class = OFUICollectionFlowView;
-  v5 = [(OFUICollectionFlowView *)&v10 initWithFrame:a3.origin.x collectionViewLayout:a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(OFUICollectionFlowView *)&v10 initWithFrame:frame.origin.x collectionViewLayout:frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
-    v6 = [a4 scrollDirection];
-    v7 = v6 == 0;
-    v8 = v6 != 0;
+    scrollDirection = [layout scrollDirection];
+    v7 = scrollDirection == 0;
+    v8 = scrollDirection != 0;
     [(OFUICollectionFlowView *)v5 setAlwaysBounceHorizontal:v8];
     [(OFUICollectionFlowView *)v5 setAlwaysBounceVertical:v7];
     [(OFUICollectionFlowView *)v5 setShowsHorizontalScrollIndicator:v8];
@@ -76,17 +76,17 @@
   [(OFUICollectionFlowView *)&v6 dealloc];
 }
 
-- (void)registerDraggingPasteboardType:(id)a3
+- (void)registerDraggingPasteboardType:(id)type
 {
   if (([(NSMutableArray *)self->_draggingPasteboardTypes containsObject:?]& 1) == 0)
   {
     draggingPasteboardTypes = self->_draggingPasteboardTypes;
 
-    [(NSMutableArray *)draggingPasteboardTypes addObject:a3];
+    [(NSMutableArray *)draggingPasteboardTypes addObject:type];
   }
 }
 
-- (void)setDraggingSelectionIndexPath:(id)a3
+- (void)setDraggingSelectionIndexPath:(id)path
 {
   if (self->_draggingSelectionIndexPath)
   {
@@ -102,11 +102,11 @@
     }
   }
 
-  if (a3)
+  if (path)
   {
-    v6 = a3;
-    self->_draggingSelectionIndexPath = v6;
-    v7 = [(OFUICollectionFlowView *)self cellForItemAtIndexPath:v6];
+    pathCopy = path;
+    self->_draggingSelectionIndexPath = pathCopy;
+    v7 = [(OFUICollectionFlowView *)self cellForItemAtIndexPath:pathCopy];
     if (v7)
     {
       if (!self->_isAnimating)
@@ -129,31 +129,31 @@
   }
 }
 
-- (void)setDraggingEmptyIndexPath:(id)a3 session:(id)a4
+- (void)setDraggingEmptyIndexPath:(id)path session:(id)session
 {
   if (([(NSIndexPath *)self->_draggingEmptyIndexPath isEqual:?]& 1) == 0)
   {
     draggingEmptyIndexPath = self->_draggingEmptyIndexPath;
-    if (a3)
+    if (path)
     {
-      v8 = [(OFUICollectionFlowView *)self draggingDelegate];
+      draggingDelegate = [(OFUICollectionFlowView *)self draggingDelegate];
       if (draggingEmptyIndexPath)
       {
-        if (v8)
+        if (draggingDelegate)
         {
           [(OFUICollectionFlowView *)self draggingDelegate];
           if (objc_opt_respondsToSelector())
           {
-            if (([(OFUICollectionFlowViewDragging *)[(OFUICollectionFlowView *)self draggingDelegate] collectionView:self moveEmptyItemAtIndexPath:self->_draggingEmptyIndexPath toIndexPath:a3 session:a4]& 1) == 0 && OFLoggerLevel >= 2)
+            if (([(OFUICollectionFlowViewDragging *)[(OFUICollectionFlowView *)self draggingDelegate] collectionView:self moveEmptyItemAtIndexPath:self->_draggingEmptyIndexPath toIndexPath:path session:session]& 1) == 0 && OFLoggerLevel >= 2)
             {
               [OFLogger logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusFoundation/Framework/Kit/OFUICollectionFlowView.m" line:196 andFormat:@"We are in an unstable state which is unexpected, trying to recover with no guarantee..."];
             }
 
             [(OFUICollectionFlowView *)self setDraggingSelectionIndexPath:0];
-            v9 = [(NSIndexPath *)self->_draggingEmptyIndexPath item];
-            if (v9 >= [(OFUICollectionFlowView *)self numberOfItemsInSection:[(NSIndexPath *)self->_draggingEmptyIndexPath section]])
+            item = [(NSIndexPath *)self->_draggingEmptyIndexPath item];
+            if (item >= [(OFUICollectionFlowView *)self numberOfItemsInSection:[(NSIndexPath *)self->_draggingEmptyIndexPath section]])
             {
-              [(OFUICollectionFlowView *)self setDraggingSelectionIndexPath:a3];
+              [(OFUICollectionFlowView *)self setDraggingSelectionIndexPath:path];
               goto LABEL_35;
             }
 
@@ -162,13 +162,13 @@
             v18[2] = __60__OFUICollectionFlowView_setDraggingEmptyIndexPath_session___block_invoke;
             v18[3] = &unk_279C89FB8;
             v18[4] = self;
-            v18[5] = a3;
+            v18[5] = path;
             v17[0] = MEMORY[0x277D85DD0];
             v17[1] = 3221225472;
             v17[2] = __60__OFUICollectionFlowView_setDraggingEmptyIndexPath_session___block_invoke_2;
             v17[3] = &unk_279C8A230;
             v17[4] = self;
-            v17[5] = a3;
+            v17[5] = path;
             v10 = v18;
             v11 = v17;
             goto LABEL_29;
@@ -183,16 +183,16 @@
 
 LABEL_35:
 
-        self->_draggingEmptyIndexPath = a3;
+        self->_draggingEmptyIndexPath = path;
         return;
       }
 
-      if (v8)
+      if (draggingDelegate)
       {
         [(OFUICollectionFlowView *)self draggingDelegate];
         if (objc_opt_respondsToSelector())
         {
-          if (([(OFUICollectionFlowViewDragging *)[(OFUICollectionFlowView *)self draggingDelegate] collectionView:self insertEmptyItemAtIndexPath:a3 session:a4]& 1) == 0 && OFLoggerLevel >= 2)
+          if (([(OFUICollectionFlowViewDragging *)[(OFUICollectionFlowView *)self draggingDelegate] collectionView:self insertEmptyItemAtIndexPath:path session:session]& 1) == 0 && OFLoggerLevel >= 2)
           {
             [OFLogger logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusFoundation/Framework/Kit/OFUICollectionFlowView.m" line:228 andFormat:@"We are in an unstable state which is unexpected, trying to recover with no guarantee..."];
           }
@@ -203,7 +203,7 @@ LABEL_35:
           v16[2] = __60__OFUICollectionFlowView_setDraggingEmptyIndexPath_session___block_invoke_3;
           v16[3] = &unk_279C89FB8;
           v16[4] = self;
-          v16[5] = a3;
+          v16[5] = path;
           v15[0] = MEMORY[0x277D85DD0];
           v15[1] = 3221225472;
           v15[2] = __60__OFUICollectionFlowView_setDraggingEmptyIndexPath_session___block_invoke_4;
@@ -237,7 +237,7 @@ LABEL_29:
         [(OFUICollectionFlowView *)self draggingDelegate];
         if (objc_opt_respondsToSelector())
         {
-          if (([(OFUICollectionFlowViewDragging *)[(OFUICollectionFlowView *)self draggingDelegate] collectionView:self removeEmptyItemAtIndexPath:self->_draggingEmptyIndexPath session:a4]& 1) == 0 && OFLoggerLevel >= 2)
+          if (([(OFUICollectionFlowViewDragging *)[(OFUICollectionFlowView *)self draggingDelegate] collectionView:self removeEmptyItemAtIndexPath:self->_draggingEmptyIndexPath session:session]& 1) == 0 && OFLoggerLevel >= 2)
           {
             [OFLogger logMessageWithLevel:2 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusFoundation/Framework/Kit/OFUICollectionFlowView.m" line:256 andFormat:@"We are in an unstable state which is unexpected, trying to recover with no guarantee..."];
           }
@@ -272,7 +272,7 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  [(OFUICollectionFlowView *)self setDraggingSelectionIndexPath:a3];
+  [(OFUICollectionFlowView *)self setDraggingSelectionIndexPath:path];
 }
 
 uint64_t __60__OFUICollectionFlowView_setDraggingEmptyIndexPath_session___block_invoke_3(uint64_t a1)
@@ -294,7 +294,7 @@ uint64_t __60__OFUICollectionFlowView_setDraggingEmptyIndexPath_session___block_
   return [v1 deleteItemsAtIndexPaths:v2];
 }
 
-- (void)_prepareDragging:(id)a3
+- (void)_prepareDragging:(id)dragging
 {
   if (!self->_isDragging)
   {
@@ -305,7 +305,7 @@ uint64_t __60__OFUICollectionFlowView_setDraggingEmptyIndexPath_session___block_
     v5[1] = 3221225472;
     v5[2] = __43__OFUICollectionFlowView__prepareDragging___block_invoke;
     v5[3] = &unk_279C89F90;
-    v5[4] = a3;
+    v5[4] = dragging;
     [MEMORY[0x277D75D18] animateWithDuration:196610 delay:v5 options:&__block_literal_global_8 animations:0.200000003 completion:0.0];
   }
 }
@@ -317,17 +317,17 @@ uint64_t __43__OFUICollectionFlowView__prepareDragging___block_invoke(uint64_t a
   return [v1 setAlpha:0.800000012];
 }
 
-- (void)_cleanupDragging:(id)a3
+- (void)_cleanupDragging:(id)dragging
 {
   if (self->_isDragging)
   {
     [(OFUICollectionFlowView *)self setDraggingSelectionIndexPath:0];
-    [(OFUICollectionFlowView *)self setDraggingEmptyIndexPath:0 session:a3];
+    [(OFUICollectionFlowView *)self setDraggingEmptyIndexPath:0 session:dragging];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __43__OFUICollectionFlowView__cleanupDragging___block_invoke;
     v5[3] = &unk_279C89F90;
-    v5[4] = a3;
+    v5[4] = dragging;
     [MEMORY[0x277D75D18] animateWithDuration:196610 delay:v5 options:&__block_literal_global_22 animations:0.200000003 completion:0.0];
     self->_isDragging = 0;
   }
@@ -340,9 +340,9 @@ uint64_t __43__OFUICollectionFlowView__cleanupDragging___block_invoke(uint64_t a
   return [v1 setAlpha:1.0];
 }
 
-- (unint64_t)draggingDestinationEntered:(id)a3
+- (unint64_t)draggingDestinationEntered:(id)entered
 {
-  if (![objc_msgSend(a3 "pasteboard")])
+  if (![objc_msgSend(entered "pasteboard")])
   {
     return 1;
   }
@@ -356,10 +356,10 @@ uint64_t __43__OFUICollectionFlowView__cleanupDragging___block_invoke(uint64_t a
     }
   }
 
-  [a3 setDelayUpdates:1];
-  if ([a3 sourceOperation] != 2)
+  [entered setDelayUpdates:1];
+  if ([entered sourceOperation] != 2)
   {
-    if ([a3 sourceOperation] == 4)
+    if ([entered sourceOperation] == 4)
     {
       v5 = 4;
       goto LABEL_9;
@@ -370,14 +370,14 @@ uint64_t __43__OFUICollectionFlowView__cleanupDragging___block_invoke(uint64_t a
 
   v5 = 2;
 LABEL_9:
-  [(OFUICollectionFlowView *)self _prepareDragging:a3];
+  [(OFUICollectionFlowView *)self _prepareDragging:entered];
   return v5;
 }
 
-- (unint64_t)draggingDestinationUpdated:(id)a3
+- (unint64_t)draggingDestinationUpdated:(id)updated
 {
-  [a3 position];
-  -[OFUICollectionFlowView convertPoint:fromView:](self, "convertPoint:fromView:", [a3 window], v5, v6);
+  [updated position];
+  -[OFUICollectionFlowView convertPoint:fromView:](self, "convertPoint:fromView:", [updated window], v5, v6);
   v8 = v7;
   v10 = v9;
   v11 = [(OFUICollectionFlowView *)self indexPathForItemAtPoint:?];
@@ -419,9 +419,9 @@ LABEL_11:
   v21 = v11;
   if (self->_draggingEmptyIndexPath)
   {
-    v22 = [v11 item];
+    item = [v11 item];
     v21 = v11;
-    if (v22 > [(NSIndexPath *)self->_draggingEmptyIndexPath item])
+    if (item > [(NSIndexPath *)self->_draggingEmptyIndexPath item])
     {
       v21 = [MEMORY[0x277CCAA70] indexPathForItem:objc_msgSend(v11 inSection:{"item") + 1, objc_msgSend(v11, "section")}];
     }
@@ -443,7 +443,7 @@ LABEL_11:
           if (objc_opt_respondsToSelector())
           {
             [(OFUICollectionFlowView *)self draggingDelegate];
-            if (objc_opt_respondsToSelector() & 1) != 0 && (-[OFUICollectionFlowViewDragging collectionView:canInsertItemsFromPasteboard:atIndexPath:session:](-[OFUICollectionFlowView draggingDelegate](self, "draggingDelegate"), "collectionView:canInsertItemsFromPasteboard:atIndexPath:session:", self, [a3 pasteboard], v21, a3))
+            if (objc_opt_respondsToSelector() & 1) != 0 && (-[OFUICollectionFlowViewDragging collectionView:canInsertItemsFromPasteboard:atIndexPath:session:](-[OFUICollectionFlowView draggingDelegate](self, "draggingDelegate"), "collectionView:canInsertItemsFromPasteboard:atIndexPath:session:", self, [updated pasteboard], v21, updated))
             {
               v23 = 1;
             }
@@ -468,7 +468,7 @@ LABEL_11:
 LABEL_46:
     if (v23)
     {
-      -[OFUICollectionFlowView setDraggingEmptyIndexPath:session:](self, "setDraggingEmptyIndexPath:session:", [MEMORY[0x277CCAA70] indexPathForItem:objc_msgSend(v11 inSection:{"item"), objc_msgSend(v11, "section")}], a3);
+      -[OFUICollectionFlowView setDraggingEmptyIndexPath:session:](self, "setDraggingEmptyIndexPath:session:", [MEMORY[0x277CCAA70] indexPathForItem:objc_msgSend(v11 inSection:{"item"), objc_msgSend(v11, "section")}], updated);
       return 16;
     }
 
@@ -483,11 +483,11 @@ LABEL_46:
   mergeRectInset = self->_mergeRectInset;
   if (v23 && self->_draggingEmptyIndexPath)
   {
-    v28 = [v11 item];
-    v29 = [(NSIndexPath *)self->_draggingEmptyIndexPath item];
+    item2 = [v11 item];
+    item3 = [(NSIndexPath *)self->_draggingEmptyIndexPath item];
     [v13 frame];
     v31 = v30;
-    if (v28 >= v29)
+    if (item2 >= item3)
     {
       [v13 frame];
       v35 = v40;
@@ -535,17 +535,17 @@ LABEL_34:
   }
 
   [(OFUICollectionFlowView *)self draggingDelegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || !-[OFUICollectionFlowViewDragging collectionView:canMergeWithItemsFromPasteboard:atIndexPath:session:](-[OFUICollectionFlowView draggingDelegate](self, "draggingDelegate"), "collectionView:canMergeWithItemsFromPasteboard:atIndexPath:session:", self, [a3 pasteboard], v11, a3))
+  if ((objc_opt_respondsToSelector() & 1) == 0 || !-[OFUICollectionFlowViewDragging collectionView:canMergeWithItemsFromPasteboard:atIndexPath:session:](-[OFUICollectionFlowView draggingDelegate](self, "draggingDelegate"), "collectionView:canMergeWithItemsFromPasteboard:atIndexPath:session:", self, [updated pasteboard], v11, updated))
   {
     goto LABEL_46;
   }
 
   if (self->_draggingEmptyIndexPath)
   {
-    v38 = [v11 item];
-    if (v38 < [(NSIndexPath *)self->_draggingEmptyIndexPath item])
+    item4 = [v11 item];
+    if (item4 < [(NSIndexPath *)self->_draggingEmptyIndexPath item])
     {
-      [(OFUICollectionFlowView *)self setDraggingEmptyIndexPath:0 session:a3];
+      [(OFUICollectionFlowView *)self setDraggingEmptyIndexPath:0 session:updated];
     }
   }
 
@@ -555,7 +555,7 @@ LABEL_34:
   if (CGRectContainsPoint(v46, v44))
   {
 
-    return [a3 destinationOperation];
+    return [updated destinationOperation];
   }
 
   else
@@ -565,7 +565,7 @@ LABEL_34:
   }
 }
 
-- (void)draggingDestinationExited:(id)a3
+- (void)draggingDestinationExited:(id)exited
 {
   if ([(OFUICollectionFlowView *)self draggingDelegate])
   {
@@ -585,14 +585,14 @@ LABEL_34:
     }
   }
 
-  [(OFUICollectionFlowView *)self _cleanupDragging:a3];
+  [(OFUICollectionFlowView *)self _cleanupDragging:exited];
 }
 
-- (BOOL)performDragOperation:(id)a3
+- (BOOL)performDragOperation:(id)operation
 {
-  if ([a3 destinationOperation] == 32)
+  if ([operation destinationOperation] == 32)
   {
-    v5 = -[OFUICollectionFlowViewDragging collectionView:mergeWithItemsFromPasteboard:atIndexPath:session:](-[OFUICollectionFlowView draggingDelegate](self, "draggingDelegate"), "collectionView:mergeWithItemsFromPasteboard:atIndexPath:session:", self, [a3 pasteboard], self->_draggingSelectionIndexPath, a3);
+    v5 = -[OFUICollectionFlowViewDragging collectionView:mergeWithItemsFromPasteboard:atIndexPath:session:](-[OFUICollectionFlowView draggingDelegate](self, "draggingDelegate"), "collectionView:mergeWithItemsFromPasteboard:atIndexPath:session:", self, [operation pasteboard], self->_draggingSelectionIndexPath, operation);
     v6 = [(OFUICollectionFlowView *)self cellForItemAtIndexPath:self->_draggingSelectionIndexPath];
     if (v6)
     {
@@ -601,20 +601,20 @@ LABEL_34:
 
     if (v5)
     {
-      if ([a3 animation] == 1)
+      if ([operation animation] == 1)
       {
-        [a3 setAnimation:8];
+        [operation setAnimation:8];
       }
 
       return 1;
     }
 
 LABEL_27:
-    [a3 setAnimation:2];
+    [operation setAnimation:2];
     return 0;
   }
 
-  if ([a3 destinationOperation] == 16)
+  if ([operation destinationOperation] == 16)
   {
     if (self->_draggingEmptyIndexPath)
     {
@@ -623,7 +623,7 @@ LABEL_27:
         [(OFUICollectionFlowView *)self draggingDelegate];
         if (objc_opt_respondsToSelector())
         {
-          if (([(OFUICollectionFlowViewDragging *)[(OFUICollectionFlowView *)self draggingDelegate] collectionView:self removeEmptyItemAtIndexPath:self->_draggingEmptyIndexPath session:a3]& 1) != 0 || OFLoggerLevel < 2)
+          if (([(OFUICollectionFlowViewDragging *)[(OFUICollectionFlowView *)self draggingDelegate] collectionView:self removeEmptyItemAtIndexPath:self->_draggingEmptyIndexPath session:operation]& 1) != 0 || OFLoggerLevel < 2)
           {
             goto LABEL_19;
           }
@@ -651,14 +651,14 @@ LABEL_18:
     }
 
 LABEL_19:
-    v9 = -[OFUICollectionFlowViewDragging collectionView:insertItemsFromPasteboard:atIndexPath:session:](-[OFUICollectionFlowView draggingDelegate](self, "draggingDelegate"), "collectionView:insertItemsFromPasteboard:atIndexPath:session:", self, [a3 pasteboard], self->_draggingEmptyIndexPath, a3);
+    v9 = -[OFUICollectionFlowViewDragging collectionView:insertItemsFromPasteboard:atIndexPath:session:](-[OFUICollectionFlowView draggingDelegate](self, "draggingDelegate"), "collectionView:insertItemsFromPasteboard:atIndexPath:session:", self, [operation pasteboard], self->_draggingEmptyIndexPath, operation);
     v10 = [(OFUICollectionFlowView *)self cellForItemAtIndexPath:self->_draggingEmptyIndexPath];
     if (v9)
     {
       v11 = v10;
-      if ([a3 animation] == 1)
+      if ([operation animation] == 1)
       {
-        [a3 setAnimation:4];
+        [operation setAnimation:4];
       }
 
       v14[0] = MEMORY[0x277D85DD0];
@@ -720,12 +720,12 @@ uint64_t __47__OFUICollectionFlowView_performDragOperation___block_invoke(uint64
   return result;
 }
 
-- (BOOL)isFrameVisible:(CGRect)a3
+- (BOOL)isFrameVisible:(CGRect)visible
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
   v8 = [-[OFUICollectionFlowView collectionViewLayout](self "collectionViewLayout")];
   [(OFUICollectionFlowView *)self contentOffset];
   if (v8 == 1)
@@ -756,13 +756,13 @@ uint64_t __47__OFUICollectionFlowView_performDragOperation___block_invoke(uint64
   return v11 <= v15;
 }
 
-- (BOOL)_isFrameEntirelyVisible:(CGRect)a3
+- (BOOL)_isFrameEntirelyVisible:(CGRect)visible
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(OFUICollectionFlowView *)self convertRect:[(OFUICollectionFlowView *)self window] toView:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
+  [(OFUICollectionFlowView *)self convertRect:[(OFUICollectionFlowView *)self window] toView:visible.origin.x, visible.origin.y, visible.size.width, visible.size.height];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -782,7 +782,7 @@ uint64_t __47__OFUICollectionFlowView_performDragOperation___block_invoke(uint64
   return v16;
 }
 
-- (CGRect)draggingDestination:(id)a3 originalFrameForItem:(id)a4
+- (CGRect)draggingDestination:(id)destination originalFrameForItem:(id)item
 {
   v7 = *MEMORY[0x277CBF3A0];
   v8 = *(MEMORY[0x277CBF3A0] + 8);
@@ -793,7 +793,7 @@ uint64_t __47__OFUICollectionFlowView_performDragOperation___block_invoke(uint64
     [(OFUICollectionFlowView *)self draggingDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [(OFUICollectionFlowViewDragging *)[(OFUICollectionFlowView *)self draggingDelegate] collectionView:self originalFrameForItem:a4 session:a3];
+      [(OFUICollectionFlowViewDragging *)[(OFUICollectionFlowView *)self draggingDelegate] collectionView:self originalFrameForItem:item session:destination];
       v7 = v11;
       v8 = v12;
       v9 = v13;
@@ -808,14 +808,14 @@ uint64_t __47__OFUICollectionFlowView_performDragOperation___block_invoke(uint64
   if (CGRectIsEmpty(v27))
   {
     v15 = [(NSIndexPath *)[(OFUICollectionFlowView *)self draggingSelectionIndexPath] row];
-    v16 = [a3 indexOfItem:a4];
+    v16 = [destination indexOfItem:item];
     v17 = -[OFUICollectionFlowView cellForItemAtIndexPath:](self, "cellForItemAtIndexPath:", [MEMORY[0x277CCAA70] indexPathForRow:v16 + v15 inSection:0]);
     [v17 frame];
     if ([(OFUICollectionFlowView *)self isFrameVisible:?])
     {
-      v18 = [a3 window];
+      window = [destination window];
       [v17 frame];
-      [v18 convertRect:self fromView:?];
+      [window convertRect:self fromView:?];
       v7 = v19;
       v8 = v20;
       v9 = v21;
@@ -834,21 +834,21 @@ uint64_t __47__OFUICollectionFlowView_performDragOperation___block_invoke(uint64
   return result;
 }
 
-- (void)draggingDestinationWillEnd:(id)a3 cancelled:(BOOL)a4
+- (void)draggingDestinationWillEnd:(id)end cancelled:(BOOL)cancelled
 {
-  if ([(OFUICollectionFlowView *)self draggingDelegate:a3])
+  if ([(OFUICollectionFlowView *)self draggingDelegate:end])
   {
     [(OFUICollectionFlowView *)self draggingDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(OFUICollectionFlowView *)self draggingDelegate];
+      draggingDelegate = [(OFUICollectionFlowView *)self draggingDelegate];
 
-      [(OFUICollectionFlowViewDragging *)v5 collectionViewDraggingWillFinish:self];
+      [(OFUICollectionFlowViewDragging *)draggingDelegate collectionViewDraggingWillFinish:self];
     }
   }
 }
 
-- (void)draggingDestinationEnded:(id)a3 cancelled:(BOOL)a4
+- (void)draggingDestinationEnded:(id)ended cancelled:(BOOL)cancelled
 {
   if ([(OFUICollectionFlowView *)self draggingDelegate])
   {
@@ -859,22 +859,22 @@ uint64_t __47__OFUICollectionFlowView_performDragOperation___block_invoke(uint64
     }
   }
 
-  if (self->_draggingEmptyIndexPath && !a4)
+  if (self->_draggingEmptyIndexPath && !cancelled)
   {
     -[OFUICollectionFlowView reloadItemsAtIndexPaths:](self, "reloadItemsAtIndexPaths:", [MEMORY[0x277CBEA60] arrayWithObject:?]);
   }
 
   [(OFUICollectionFlowView *)self setDraggingEmptyIndexPath:0];
 
-  [(OFUICollectionFlowView *)self _cleanupDragging:a3];
+  [(OFUICollectionFlowView *)self _cleanupDragging:ended];
 }
 
-- (float)autoscrollDistance:(CGRect)a3
+- (float)autoscrollDistance:(CGRect)distance
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = distance.size.height;
+  width = distance.size.width;
+  y = distance.origin.y;
+  x = distance.origin.x;
   v8 = [-[OFUICollectionFlowView collectionViewLayout](self "collectionViewLayout")];
   [(OFUICollectionFlowView *)self bounds];
   v51.origin.x = v9;
@@ -996,7 +996,7 @@ LABEL_16:
   return v14;
 }
 
-- (void)autoscroll:(float)a3
+- (void)autoscroll:(float)autoscroll
 {
   [-[OFUICollectionFlowView collectionViewLayout](self "collectionViewLayout")];
   [(OFUICollectionFlowView *)self contentOffset];

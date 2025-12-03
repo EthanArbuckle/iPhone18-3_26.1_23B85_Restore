@@ -1,6 +1,6 @@
 @interface CPUIGridTemplateCollectionCell
 - (void)prepareForReuse;
-- (void)setButton:(id)a3;
+- (void)setButton:(id)button;
 @end
 
 @implementation CPUIGridTemplateCollectionCell
@@ -15,10 +15,10 @@
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(CPUIGridTemplateCollectionCell *)self contentView];
-  v4 = [v3 subviews];
+  contentView = [(CPUIGridTemplateCollectionCell *)self contentView];
+  subviews = [contentView subviews];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  v5 = [subviews countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -30,14 +30,14 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) removeFromSuperview];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v6);
@@ -46,38 +46,38 @@
   [(CPUIGridTemplateCollectionCell *)self setButton:0];
 }
 
-- (void)setButton:(id)a3
+- (void)setButton:(id)button
 {
   v25[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_button != v5)
+  buttonCopy = button;
+  if (self->_button != buttonCopy)
   {
-    objc_storeStrong(&self->_button, a3);
-    if (v5)
+    objc_storeStrong(&self->_button, button);
+    if (buttonCopy)
     {
-      v6 = [(CPUIGridTemplateCollectionCell *)self contentView];
-      [v6 addSubview:v5];
+      contentView = [(CPUIGridTemplateCollectionCell *)self contentView];
+      [contentView addSubview:buttonCopy];
 
       v18 = MEMORY[0x277CCAAD0];
-      v23 = [(CPUIGridButton *)v5 topAnchor];
-      v24 = [(CPUIGridTemplateCollectionCell *)self contentView];
-      v22 = [v24 topAnchor];
-      v21 = [v23 constraintEqualToAnchor:v22 constant:0.0];
+      topAnchor = [(CPUIGridButton *)buttonCopy topAnchor];
+      contentView2 = [(CPUIGridTemplateCollectionCell *)self contentView];
+      topAnchor2 = [contentView2 topAnchor];
+      v21 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
       v25[0] = v21;
-      v19 = [(CPUIGridButton *)v5 leftAnchor];
-      v20 = [(CPUIGridTemplateCollectionCell *)self contentView];
-      v17 = [v20 leftAnchor];
-      v16 = [v19 constraintEqualToAnchor:v17 constant:2.0];
+      leftAnchor = [(CPUIGridButton *)buttonCopy leftAnchor];
+      contentView3 = [(CPUIGridTemplateCollectionCell *)self contentView];
+      leftAnchor2 = [contentView3 leftAnchor];
+      v16 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:2.0];
       v25[1] = v16;
-      v7 = [(CPUIGridButton *)v5 rightAnchor];
-      v8 = [(CPUIGridTemplateCollectionCell *)self contentView];
-      v9 = [v8 rightAnchor];
-      v10 = [v7 constraintEqualToAnchor:v9 constant:-2.0];
+      rightAnchor = [(CPUIGridButton *)buttonCopy rightAnchor];
+      contentView4 = [(CPUIGridTemplateCollectionCell *)self contentView];
+      rightAnchor2 = [contentView4 rightAnchor];
+      v10 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-2.0];
       v25[2] = v10;
-      v11 = [(CPUIGridButton *)v5 bottomAnchor];
-      v12 = [(CPUIGridTemplateCollectionCell *)self contentView];
-      v13 = [v12 bottomAnchor];
-      v14 = [v11 constraintEqualToAnchor:v13 constant:-1.0];
+      bottomAnchor = [(CPUIGridButton *)buttonCopy bottomAnchor];
+      contentView5 = [(CPUIGridTemplateCollectionCell *)self contentView];
+      bottomAnchor2 = [contentView5 bottomAnchor];
+      v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-1.0];
       v25[3] = v14;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:4];
       [v18 activateConstraints:v15];

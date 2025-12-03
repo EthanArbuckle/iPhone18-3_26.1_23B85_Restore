@@ -1,53 +1,53 @@
 @interface PHScreenTimeHostViewController
-- (PHScreenTimeHostViewController)initWithRequest:(id)a3 delegate:(id)a4;
+- (PHScreenTimeHostViewController)initWithRequest:(id)request delegate:(id)delegate;
 - (PHScreenTimeHostViewControllerDelegate)delegate;
 - (void)dismissAlert;
-- (void)lockoutViewControllerDidFinishDismissing:(id)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)lockoutViewControllerDidFinishDismissing:(id)dismissing;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PHScreenTimeHostViewController
 
-- (PHScreenTimeHostViewController)initWithRequest:(id)a3 delegate:(id)a4
+- (PHScreenTimeHostViewController)initWithRequest:(id)request delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = PHScreenTimeHostViewController;
   v8 = [(PHScreenTimeHostViewController *)&v25 init];
   if (v8)
   {
-    v9 = [v6 bundleIdentifier];
-    if ([v9 length])
+    bundleIdentifier = [requestCopy bundleIdentifier];
+    if ([bundleIdentifier length])
     {
-      v10 = [CNContactStoreConfiguration tu_contactStoreConfigurationForBundleIdentifier:v9];
+      v10 = [CNContactStoreConfiguration tu_contactStoreConfigurationForBundleIdentifier:bundleIdentifier];
       v11 = [[CNContactStore alloc] initWithConfiguration:v10];
-      objc_storeWeak(&v8->_delegate, v7);
-      v12 = [v6 sanitizedHandles];
-      v13 = [v12 allObjects];
-      v14 = [v6 contactNamesByHandleWithContactsDataSource:v11];
-      v15 = [STLockoutViewController lockoutViewControllerWithBundleIdentifier:v9 contactsHandles:v13 contactNameByHandle:v14];
+      objc_storeWeak(&v8->_delegate, delegateCopy);
+      sanitizedHandles = [requestCopy sanitizedHandles];
+      allObjects = [sanitizedHandles allObjects];
+      v14 = [requestCopy contactNamesByHandleWithContactsDataSource:v11];
+      v15 = [STLockoutViewController lockoutViewControllerWithBundleIdentifier:bundleIdentifier contactsHandles:allObjects contactNameByHandle:v14];
       lockoutViewController = v8->_lockoutViewController;
       v8->_lockoutViewController = v15;
 
       [(STLockoutViewController *)v8->_lockoutViewController setViewControllerDelegate:v8];
       [(STLockoutViewController *)v8->_lockoutViewController setOkButtonAction:1];
-      v17 = [(STLockoutViewController *)v8->_lockoutViewController view];
-      [v17 setAutoresizingMask:18];
+      view = [(STLockoutViewController *)v8->_lockoutViewController view];
+      [view setAutoresizingMask:18];
 
-      v18 = [(PHScreenTimeHostViewController *)v8 lockoutViewController];
-      [v18 willMoveToParentViewController:v8];
+      lockoutViewController = [(PHScreenTimeHostViewController *)v8 lockoutViewController];
+      [lockoutViewController willMoveToParentViewController:v8];
 
-      v19 = [(PHScreenTimeHostViewController *)v8 lockoutViewController];
-      [(PHScreenTimeHostViewController *)v8 addChildViewController:v19];
+      lockoutViewController2 = [(PHScreenTimeHostViewController *)v8 lockoutViewController];
+      [(PHScreenTimeHostViewController *)v8 addChildViewController:lockoutViewController2];
 
-      v20 = [(PHScreenTimeHostViewController *)v8 view];
-      v21 = [(PHScreenTimeHostViewController *)v8 lockoutViewController];
-      v22 = [v21 view];
-      [v20 addSubview:v22];
+      view2 = [(PHScreenTimeHostViewController *)v8 view];
+      lockoutViewController3 = [(PHScreenTimeHostViewController *)v8 lockoutViewController];
+      view3 = [lockoutViewController3 view];
+      [view2 addSubview:view3];
 
-      v23 = [(PHScreenTimeHostViewController *)v8 lockoutViewController];
-      [v23 didMoveToParentViewController:v8];
+      lockoutViewController4 = [(PHScreenTimeHostViewController *)v8 lockoutViewController];
+      [lockoutViewController4 didMoveToParentViewController:v8];
     }
 
     else
@@ -55,7 +55,7 @@
       v10 = sub_100004F84();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        sub_1002545D8(v6, v10);
+        sub_1002545D8(requestCopy, v10);
       }
     }
   }
@@ -63,28 +63,28 @@
   return v8;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PHScreenTimeHostViewController;
-  [(PHScreenTimeHostViewController *)&v5 viewWillDisappear:a3];
+  [(PHScreenTimeHostViewController *)&v5 viewWillDisappear:disappear];
   if ([(PHScreenTimeHostViewController *)self isBeingDismissed])
   {
-    v4 = [(PHScreenTimeHostViewController *)self delegate];
-    [v4 didDismissAlertFromHostViewController];
+    delegate = [(PHScreenTimeHostViewController *)self delegate];
+    [delegate didDismissAlertFromHostViewController];
   }
 }
 
-- (void)lockoutViewControllerDidFinishDismissing:(id)a3
+- (void)lockoutViewControllerDidFinishDismissing:(id)dismissing
 {
-  v3 = [(PHScreenTimeHostViewController *)self delegate];
-  [v3 didDismissAlertFromHostViewController];
+  delegate = [(PHScreenTimeHostViewController *)self delegate];
+  [delegate didDismissAlertFromHostViewController];
 }
 
 - (void)dismissAlert
 {
-  v2 = [(PHScreenTimeHostViewController *)self lockoutViewController];
-  [v2 dismissViewControllerAnimated:1 completion:&stru_100357280];
+  lockoutViewController = [(PHScreenTimeHostViewController *)self lockoutViewController];
+  [lockoutViewController dismissViewControllerAnimated:1 completion:&stru_100357280];
 }
 
 - (PHScreenTimeHostViewControllerDelegate)delegate

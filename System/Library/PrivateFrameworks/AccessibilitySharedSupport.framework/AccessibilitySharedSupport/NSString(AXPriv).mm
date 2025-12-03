@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = __33__NSString_AXPriv___ideographSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_ideographSet___onceToken != -1)
   {
     dispatch_once(&_ideographSet___onceToken, block);
@@ -56,7 +56,7 @@
   block[1] = 3221225472;
   block[2] = __38__NSString_AXPriv___japaneseLetterSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_japaneseLetterSet___onceToken != -1)
   {
     dispatch_once(&_japaneseLetterSet___onceToken, block);
@@ -67,16 +67,16 @@
 
 - (uint64_t)_isOnlyIdeographs
 {
-  v2 = [objc_opt_class() _ideographSet];
+  _ideographSet = [objc_opt_class() _ideographSet];
 
-  return [a1 _contentsExclusivelyInCharacterSet:v2];
+  return [self _contentsExclusivelyInCharacterSet:_ideographSet];
 }
 
 - (uint64_t)_isJapanesePhrase
 {
-  v2 = [objc_opt_class() _japaneseLetterSet];
+  _japaneseLetterSet = [objc_opt_class() _japaneseLetterSet];
 
-  return [a1 _contentsExclusivelyInCharacterSet:v2];
+  return [self _contentsExclusivelyInCharacterSet:_japaneseLetterSet];
 }
 
 @end

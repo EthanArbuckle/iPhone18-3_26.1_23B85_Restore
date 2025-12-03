@@ -1,6 +1,6 @@
 @interface FloatingPaletteContentView
 - (CGSize)intrinsicContentSize;
-- (_TtC14FitnessAppRoot26FloatingPaletteContentView)initWithCoder:(id)a3;
+- (_TtC14FitnessAppRoot26FloatingPaletteContentView)initWithCoder:(id)coder;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
 @end
@@ -15,7 +15,7 @@
   return result;
 }
 
-- (_TtC14FitnessAppRoot26FloatingPaletteContentView)initWithCoder:(id)a3
+- (_TtC14FitnessAppRoot26FloatingPaletteContentView)initWithCoder:(id)coder
 {
   *(&self->super.super._responderFlags + OBJC_IVAR____TtC14FitnessAppRoot26FloatingPaletteContentView_delegate) = 0;
   swift_unknownObjectWeakInit();

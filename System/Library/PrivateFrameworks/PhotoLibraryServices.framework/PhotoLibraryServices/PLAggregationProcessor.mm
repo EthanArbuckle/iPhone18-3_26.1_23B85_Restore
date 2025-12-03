@@ -2,7 +2,7 @@
 + (BOOL)isEnabled;
 + (BOOL)requireContiguousAggregation;
 + (BOOL)requireStartAtFirstDayOfWeek;
-+ (BOOL)shouldAggregateMoment:(id)a3 numberOfAssetsEligibleForCuration:(unint64_t *)a4;
++ (BOOL)shouldAggregateMoment:(id)moment numberOfAssetsEligibleForCuration:(unint64_t *)curation;
 + (NSDate)allowedStartDateToAggregate;
 + (double)timeIntervalOfRecentContentToIgnore;
 + (unint64_t)maximumNumberOfAssetsPerAggregation;
@@ -11,19 +11,19 @@
 + (unint64_t)maximumNumberOfDaysPerAggregation;
 + (void)initialize;
 + (void)restoreDefaultEnablement;
-+ (void)setEnabled:(BOOL)a3;
++ (void)setEnabled:(BOOL)enabled;
 - (PLAggregationProcessor)init;
-- (id)_aggregationMomentClustersForMomentClusters:(id)a3;
-- (id)processAggregationsWithSortedMomentClusters:(id)a3 momentsContainedInOtherHighlights:(id)a4 progressBlock:(id)a5;
-- (id)sortedNeighborMomentClustersOfMomentClusters:(id)a3 forAllMomentClusters:(id)a4;
+- (id)_aggregationMomentClustersForMomentClusters:(id)clusters;
+- (id)processAggregationsWithSortedMomentClusters:(id)clusters momentsContainedInOtherHighlights:(id)highlights progressBlock:(id)block;
+- (id)sortedNeighborMomentClustersOfMomentClusters:(id)clusters forAllMomentClusters:(id)momentClusters;
 @end
 
 @implementation PLAggregationProcessor
 
-+ (BOOL)shouldAggregateMoment:(id)a3 numberOfAssetsEligibleForCuration:(unint64_t *)a4
++ (BOOL)shouldAggregateMoment:(id)moment numberOfAssetsEligibleForCuration:(unint64_t *)curation
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  momentCopy = moment;
   v5 = +[PLAggregationProcessor maximumNumberOfAssetsPerMoment];
   v6 = +[PLAggregationProcessor maximumNumberOfAssetsPerShortMoment];
   v7 = v6;
@@ -41,8 +41,8 @@
 
   v27 = 0uLL;
   v28 = 0uLL;
-  v9 = [v4 assets];
-  v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  assets = [momentCopy assets];
+  v10 = [assets countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v10)
   {
     v11 = v10;
@@ -54,7 +54,7 @@ LABEL_6:
     {
       if (*v26 != v13)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(assets);
       }
 
       if ([PLPhotosHighlightGenerator assetEligibleForCuration:*(*(&v25 + 1) + 8 * v14)])
@@ -67,7 +67,7 @@ LABEL_6:
 
       if (v11 == ++v14)
       {
-        v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v11 = [assets countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v11)
         {
           goto LABEL_6;
@@ -84,40 +84,40 @@ LABEL_6:
   }
 
   v15 = objc_alloc(MEMORY[0x1E696AB80]);
-  v16 = [v4 startDate];
-  v17 = [v4 endDate];
-  v18 = [v15 initWithStartDate:v16 endDate:v17];
+  startDate = [momentCopy startDate];
+  endDate = [momentCopy endDate];
+  v18 = [v15 initWithStartDate:startDate endDate:endDate];
 
   [v18 duration];
   v21 = v19 <= 120.0 && v12 <= v7;
   v22 = v12 <= v5 || v21;
-  if (a4)
+  if (curation)
   {
-    *a4 = v12;
+    *curation = v12;
   }
 
   return v22;
 }
 
-- (id)_aggregationMomentClustersForMomentClusters:(id)a3
+- (id)_aggregationMomentClustersForMomentClusters:(id)clusters
 {
   v110 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = [v5 localStartDate];
+  clustersCopy = clusters;
+  firstObject = [clustersCopy firstObject];
+  localStartDate = [firstObject localStartDate];
 
-  v7 = [v4 lastObject];
-  v8 = [v7 localEndDate];
+  lastObject = [clustersCopy lastObject];
+  localEndDate = [lastObject localEndDate];
 
-  v63 = v8;
-  v64 = v6;
-  v62 = [(NSCalendar *)self->_calendar components:16 fromDate:v6 toDate:v8 options:0];
+  v63 = localEndDate;
+  v64 = localStartDate;
+  v62 = [(NSCalendar *)self->_calendar components:16 fromDate:localStartDate toDate:localEndDate options:0];
   v77 = [v62 day];
   v100 = 0u;
   v101 = 0u;
   v102 = 0u;
   v103 = 0u;
-  v9 = v4;
+  v9 = clustersCopy;
   v10 = [v9 countByEnumeratingWithState:&v100 objects:v109 count:16];
   v79 = v9;
   if (v10)
@@ -139,8 +139,8 @@ LABEL_6:
         v97 = 0u;
         v98 = 0u;
         v99 = 0u;
-        v15 = [v14 moments];
-        v16 = [v15 countByEnumeratingWithState:&v96 objects:v108 count:16];
+        moments = [v14 moments];
+        v16 = [moments countByEnumeratingWithState:&v96 objects:v108 count:16];
         if (v16)
         {
           v17 = v16;
@@ -151,16 +151,16 @@ LABEL_6:
             {
               if (*v97 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(moments);
               }
 
               curatedAssetCountByMomentUUID = self->_curatedAssetCountByMomentUUID;
-              v21 = [*(*(&v96 + 1) + 8 * j) uuid];
-              v22 = [(NSMutableDictionary *)curatedAssetCountByMomentUUID objectForKeyedSubscript:v21];
+              uuid = [*(*(&v96 + 1) + 8 * j) uuid];
+              v22 = [(NSMutableDictionary *)curatedAssetCountByMomentUUID objectForKeyedSubscript:uuid];
               v12 += [v22 unsignedIntegerValue];
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v96 objects:v108 count:16];
+            v17 = [moments countByEnumeratingWithState:&v96 objects:v108 count:16];
           }
 
           while (v17);
@@ -180,10 +180,10 @@ LABEL_6:
     v12 = 0;
   }
 
-  v23 = [objc_opt_class() maximumNumberOfDaysPerAggregation];
-  v24 = [objc_opt_class() maximumNumberOfAssetsPerAggregation];
-  v25 = vcvtpd_u64_f64(v77 / v23);
-  v26 = vcvtpd_u64_f64(v12 / v24);
+  maximumNumberOfDaysPerAggregation = [objc_opt_class() maximumNumberOfDaysPerAggregation];
+  maximumNumberOfAssetsPerAggregation = [objc_opt_class() maximumNumberOfAssetsPerAggregation];
+  v25 = vcvtpd_u64_f64(v77 / maximumNumberOfDaysPerAggregation);
+  v26 = vcvtpd_u64_f64(v12 / maximumNumberOfAssetsPerAggregation);
   if (v25 <= v26)
   {
     v27 = v26;
@@ -197,7 +197,7 @@ LABEL_6:
   v67 = v27 - 1;
   if (v27 == 1)
   {
-    v28 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v92 = 0u;
     v93 = 0u;
     v94 = 0u;
@@ -217,8 +217,8 @@ LABEL_6:
             objc_enumerationMutation(v29);
           }
 
-          v34 = [*(*(&v92 + 1) + 8 * k) moments];
-          [v28 addObjectsFromArray:v34];
+          moments2 = [*(*(&v92 + 1) + 8 * k) moments];
+          [array addObjectsFromArray:moments2];
         }
 
         v31 = [v29 countByEnumeratingWithState:&v92 objects:v107 count:16];
@@ -227,16 +227,16 @@ LABEL_6:
       while (v31);
     }
 
-    v35 = [[PLMomentCluster alloc] initWithMoments:v28];
-    v106 = v35;
+    array2 = [[PLMomentCluster alloc] initWithMoments:array];
+    v106 = array2;
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v106 count:1];
   }
 
   else
   {
-    if (v77 <= v23)
+    if (v77 <= maximumNumberOfDaysPerAggregation)
     {
-      v37 = v23;
+      v37 = maximumNumberOfDaysPerAggregation;
     }
 
     else
@@ -244,9 +244,9 @@ LABEL_6:
       v37 = v77;
     }
 
-    if (v12 <= v24)
+    if (v12 <= maximumNumberOfAssetsPerAggregation)
     {
-      v38 = v24;
+      v38 = maximumNumberOfAssetsPerAggregation;
     }
 
     else
@@ -255,7 +255,7 @@ LABEL_6:
     }
 
     v39 = [MEMORY[0x1E695DF70] arrayWithCapacity:v27];
-    v35 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v40 = v64;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -264,7 +264,7 @@ LABEL_6:
     v66 = v39;
     v91 = v66;
     v41 = _Block_copy(aBlock);
-    v72 = [v9 lastObject];
+    lastObject2 = [v9 lastObject];
     v86 = 0u;
     v87 = 0u;
     v88 = 0u;
@@ -292,15 +292,15 @@ LABEL_6:
           }
 
           v75 = v42;
-          v78 = v35;
+          v78 = array2;
           v45 = *(*(&v86 + 1) + 8 * v43);
-          v76 = [v45 localStartDate];
+          localStartDate2 = [v45 localStartDate];
           v82 = 0u;
           v83 = 0u;
           v84 = 0u;
           v85 = 0u;
-          v46 = [v45 moments];
-          v47 = [v46 countByEnumeratingWithState:&v82 objects:v104 count:16];
+          moments3 = [v45 moments];
+          v47 = [moments3 countByEnumeratingWithState:&v82 objects:v104 count:16];
           if (v47)
           {
             v48 = v47;
@@ -312,16 +312,16 @@ LABEL_6:
               {
                 if (*v83 != v50)
                 {
-                  objc_enumerationMutation(v46);
+                  objc_enumerationMutation(moments3);
                 }
 
                 v52 = self->_curatedAssetCountByMomentUUID;
-                v53 = [*(*(&v82 + 1) + 8 * m) uuid];
-                v54 = [(NSMutableDictionary *)v52 objectForKeyedSubscript:v53];
+                uuid2 = [*(*(&v82 + 1) + 8 * m) uuid];
+                v54 = [(NSMutableDictionary *)v52 objectForKeyedSubscript:uuid2];
                 v49 += [v54 unsignedIntegerValue];
               }
 
-              v48 = [v46 countByEnumeratingWithState:&v82 objects:v104 count:16];
+              v48 = [moments3 countByEnumeratingWithState:&v82 objects:v104 count:16];
             }
 
             while (v48);
@@ -333,29 +333,29 @@ LABEL_6:
           }
 
           v42 = v49 + v75;
-          v40 = v76;
-          v55 = [(NSCalendar *)self->_calendar components:16 fromDate:v74 toDate:v76 options:0];
+          v40 = localStartDate2;
+          v55 = [(NSCalendar *)self->_calendar components:16 fromDate:v74 toDate:localStartDate2 options:0];
           v56 = [v55 day];
           v57 = v81;
-          if (v45 == v72 || (v56 <= v70 ? (v58 = v42 > v69) : (v58 = 1), !v58 || -[NSCalendar isDate:inSameDayAsDate:](self->_calendar, "isDate:inSameDayAsDate:", v76, v81) || [v66 count] == v67))
+          if (v45 == lastObject2 || (v56 <= v70 ? (v58 = v42 > v69) : (v58 = 1), !v58 || -[NSCalendar isDate:inSameDayAsDate:](self->_calendar, "isDate:inSameDayAsDate:", localStartDate2, v81) || [v66 count] == v67))
           {
-            v35 = v78;
+            array2 = v78;
             [(PLMomentCluster *)v78 addObject:v45];
           }
 
           else
           {
             (v65)[2](v65, v78);
-            v35 = [MEMORY[0x1E695DF70] arrayWithObject:v45];
+            array2 = [MEMORY[0x1E695DF70] arrayWithObject:v45];
 
-            v59 = v76;
+            v59 = localStartDate2;
             v42 = v49;
             v74 = v59;
             v57 = v81;
           }
 
           ++v43;
-          v44 = v76;
+          v44 = localStartDate2;
         }
 
         while (v43 != v73);
@@ -371,10 +371,10 @@ LABEL_6:
       v74 = v40;
     }
 
-    (v65)[2](v65, v35);
-    v28 = v66;
+    (v65)[2](v65, array2);
+    array = v66;
 
-    v36 = v28;
+    v36 = array;
   }
 
   return v36;
@@ -390,17 +390,17 @@ void __70__PLAggregationProcessor__aggregationMomentClustersForMomentClusters___
   }
 }
 
-- (id)processAggregationsWithSortedMomentClusters:(id)a3 momentsContainedInOtherHighlights:(id)a4 progressBlock:(id)a5
+- (id)processAggregationsWithSortedMomentClusters:(id)clusters momentsContainedInOtherHighlights:(id)highlights progressBlock:(id)block
 {
   v108 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v84 = a4;
-  v9 = a5;
-  if ([v8 count])
+  clustersCopy = clusters;
+  highlightsCopy = highlights;
+  blockCopy = block;
+  if ([clustersCopy count])
   {
-    v68 = v9;
-    v75 = _Block_copy(v9);
-    v67 = [MEMORY[0x1E695DEC8] array];
+    v68 = blockCopy;
+    v75 = _Block_copy(blockCopy);
+    array = [MEMORY[0x1E695DEC8] array];
     v10 = PLMomentGenerationGetLog();
     v11 = os_signpost_id_generate(v10);
     info = 0;
@@ -418,20 +418,20 @@ void __70__PLAggregationProcessor__aggregationMomentClustersForMomentClusters___
     v70 = v13;
 
     v64 = mach_absolute_time();
-    v66 = [v8 count];
-    v14 = [MEMORY[0x1E695DEE8] currentCalendar];
+    v66 = [clustersCopy count];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     v15 = [MEMORY[0x1E695DFE8] timeZoneWithAbbreviation:@"GMT"];
-    v74 = v14;
-    [v14 setTimeZone:v15];
+    v74 = currentCalendar;
+    [currentCalendar setTimeZone:v15];
 
-    v85 = [objc_opt_class() allowedStartDateToAggregate];
+    allowedStartDateToAggregate = [objc_opt_class() allowedStartDateToAggregate];
     v76 = [MEMORY[0x1E695DFA8] set];
     v95 = 0u;
     v96 = 0u;
     v97 = 0u;
     v98 = 0u;
-    v69 = v8;
-    obj = v8;
+    v69 = clustersCopy;
+    obj = clustersCopy;
     v82 = [obj countByEnumeratingWithState:&v95 objects:v107 count:16];
     if (v82)
     {
@@ -446,12 +446,12 @@ void __70__PLAggregationProcessor__aggregationMomentClustersForMomentClusters___
           }
 
           v17 = *(*(&v95 + 1) + 8 * i);
-          v18 = [v17 moments];
+          moments = [v17 moments];
           v91 = 0u;
           v92 = 0u;
           v93 = 0u;
           v94 = 0u;
-          v19 = v18;
+          v19 = moments;
           v20 = [v19 countByEnumeratingWithState:&v91 objects:v106 count:16];
           if (v20)
           {
@@ -470,8 +470,8 @@ void __70__PLAggregationProcessor__aggregationMomentClustersForMomentClusters___
                 v24 = *(*(&v91 + 1) + 8 * j);
                 v25 = objc_autoreleasePoolPush();
                 *buf = 0;
-                v26 = [v24 pl_startDate];
-                if ([v26 compare:v85] == 1 || objc_msgSend(v84, "containsObject:", v24))
+                pl_startDate = [v24 pl_startDate];
+                if ([pl_startDate compare:allowedStartDateToAggregate] == 1 || objc_msgSend(highlightsCopy, "containsObject:", v24))
                 {
 
 LABEL_22:
@@ -489,8 +489,8 @@ LABEL_22:
 
                 v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:*buf];
                 curatedAssetCountByMomentUUID = self->_curatedAssetCountByMomentUUID;
-                v30 = [v24 uuid];
-                [(NSMutableDictionary *)curatedAssetCountByMomentUUID setObject:v28 forKeyedSubscript:v30];
+                uuid = [v24 uuid];
+                [(NSMutableDictionary *)curatedAssetCountByMomentUUID setObject:v28 forKeyedSubscript:uuid];
 
                 objc_autoreleasePoolPop(v25);
               }
@@ -516,9 +516,9 @@ LABEL_23:
       while (v82);
     }
 
-    v71 = [MEMORY[0x1E695DF70] array];
-    v72 = [objc_opt_class() requireContiguousAggregation];
-    v81 = [objc_opt_class() requireStartAtFirstDayOfWeek];
+    array2 = [MEMORY[0x1E695DF70] array];
+    requireContiguousAggregation = [objc_opt_class() requireContiguousAggregation];
+    requireStartAtFirstDayOfWeek = [objc_opt_class() requireStartAtFirstDayOfWeek];
     v87 = 0u;
     v88 = 0u;
     v89 = 0u;
@@ -557,15 +557,15 @@ LABEL_27:
               _os_log_impl(&dword_19BF1F000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Cancelled at line %d", buf, 8u);
             }
 
-            v51 = v67;
-            v50 = v67;
+            v51 = array;
+            v50 = array;
 
-            v52 = v71;
+            v52 = array2;
             goto LABEL_73;
           }
         }
 
-        v39 = [v38 localStartDate];
+        localStartDate = [v38 localStartDate];
         v40 = [v35 count];
         v41 = [v76 containsObject:v38];
         if (v41)
@@ -589,7 +589,7 @@ LABEL_27:
           break;
         }
 
-        if (![(NSCalendar *)self->_calendar isDate:v39 equalToDate:v34 toUnitGranularity:8])
+        if (![(NSCalendar *)self->_calendar isDate:localStartDate equalToDate:v34 toUnitGranularity:8])
         {
           obja += v40;
           if (v40 == 1)
@@ -600,21 +600,21 @@ LABEL_27:
 
 LABEL_49:
           v45 = [(PLAggregationProcessor *)self _aggregationMomentClustersForMomentClusters:v35];
-          [v71 addObjectsFromArray:v45];
+          [array2 addObjectsFromArray:v45];
 
           if (v43)
           {
 LABEL_50:
-            v46 = [MEMORY[0x1E695DF70] arrayWithObject:v38];
+            array3 = [MEMORY[0x1E695DF70] arrayWithObject:v38];
 
-            if (v81)
+            if (requireStartAtFirstDayOfWeek)
             {
-              v47 = [v74 pl_startOfWeekForDate:v39];
+              v47 = [v74 pl_startOfWeekForDate:localStartDate];
             }
 
             else
             {
-              v47 = v39;
+              v47 = localStartDate;
             }
 
             v48 = v47;
@@ -624,11 +624,11 @@ LABEL_50:
           }
 
 LABEL_57:
-          v46 = [MEMORY[0x1E695DF70] array];
+          array3 = [MEMORY[0x1E695DF70] array];
 
           v34 = 0;
 LABEL_54:
-          v35 = v46;
+          v35 = array3;
           goto LABEL_55;
         }
 
@@ -649,7 +649,7 @@ LABEL_55:
         }
       }
 
-      v44 = v72;
+      v44 = requireContiguousAggregation;
       if (!v40)
       {
         v44 = 0;
@@ -676,14 +676,14 @@ LABEL_55:
     v73 = 0;
 LABEL_65:
 
-    v52 = v71;
+    v52 = array2;
     if ([v35 count] >= 2)
     {
       v53 = [(PLAggregationProcessor *)self _aggregationMomentClustersForMomentClusters:v35];
-      [v71 addObjectsFromArray:v53];
+      [array2 addObjectsFromArray:v53];
     }
 
-    v54 = [v71 count];
+    v54 = [array2 count];
     v55 = mach_absolute_time();
     numer = info.numer;
     denom = info.denom;
@@ -703,22 +703,22 @@ LABEL_65:
     v60 = v59;
     if (os_log_type_enabled(v60, OS_LOG_TYPE_INFO))
     {
-      v61 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[HighlightsGeneration] Moment Aggregation statistics: %lu aggregations, %lu singletons, %lu moments contained", v54, v73, obja];
+      obja = [MEMORY[0x1E696AEC0] stringWithFormat:@"[HighlightsGeneration] Moment Aggregation statistics: %lu aggregations, %lu singletons, %lu moments contained", v54, v73, obja];
       *buf = 136315650;
       *&buf[4] = "AggregationsProcessing";
       v101 = 2112;
-      v102 = v61;
+      v102 = obja;
       v103 = 2048;
       *&v104 = ((((v55 - v64) * numer) / denom) / 1000000.0);
       _os_log_impl(&dword_19BF1F000, v60, OS_LOG_TYPE_INFO, "[Performance] %s - %@: %f ms", buf, 0x20u);
     }
 
-    v50 = v71;
-    v51 = v67;
+    v50 = array2;
+    v51 = array;
 LABEL_73:
 
-    v9 = v68;
-    v8 = v69;
+    blockCopy = v68;
+    clustersCopy = v69;
   }
 
   else
@@ -729,17 +729,17 @@ LABEL_73:
   return v50;
 }
 
-- (id)sortedNeighborMomentClustersOfMomentClusters:(id)a3 forAllMomentClusters:(id)a4
+- (id)sortedNeighborMomentClustersOfMomentClusters:(id)clusters forAllMomentClusters:(id)momentClusters
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  clustersCopy = clusters;
+  momentClustersCopy = momentClusters;
   v8 = [MEMORY[0x1E695DFA8] set];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v9 = v6;
+  v9 = clustersCopy;
   v10 = [v9 countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v10)
   {
@@ -755,8 +755,8 @@ LABEL_73:
         }
 
         calendar = self->_calendar;
-        v15 = [*(*(&v37 + 1) + 8 * i) startDate];
-        v16 = [(NSCalendar *)calendar pl_startOfMonthForDate:v15];
+        startDate = [*(*(&v37 + 1) + 8 * i) startDate];
+        v16 = [(NSCalendar *)calendar pl_startOfMonthForDate:startDate];
 
         [v8 addObject:v16];
       }
@@ -773,7 +773,7 @@ LABEL_73:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v18 = v7;
+  v18 = momentClustersCopy;
   v19 = [v18 countByEnumeratingWithState:&v33 objects:v42 count:16];
   if (v19)
   {
@@ -790,8 +790,8 @@ LABEL_73:
 
         v23 = *(*(&v33 + 1) + 8 * j);
         v24 = self->_calendar;
-        v25 = [v23 startDate];
-        v26 = [(NSCalendar *)v24 pl_startOfMonthForDate:v25];
+        startDate2 = [v23 startDate];
+        v26 = [(NSCalendar *)v24 pl_startOfMonthForDate:startDate2];
 
         if ([v8 containsObject:v26])
         {
@@ -823,9 +823,9 @@ LABEL_73:
   v2 = [(PLAggregationProcessor *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     calendar = v2->_calendar;
-    v2->_calendar = v3;
+    v2->_calendar = currentCalendar;
 
     v5 = [MEMORY[0x1E695DFE8] timeZoneWithAbbreviation:@"GMT"];
     [(NSCalendar *)v2->_calendar setTimeZone:v5];
@@ -860,7 +860,7 @@ double __61__PLAggregationProcessor_timeIntervalOfRecentContentToIgnore__block_i
 
 + (NSDate)allowedStartDateToAggregate
 {
-  [a1 timeIntervalOfRecentContentToIgnore];
+  [self timeIntervalOfRecentContentToIgnore];
   v3 = v2;
   v4 = +[PLMomentGenerationUtils today];
   v5 = [v4 dateByAddingTimeInterval:-v3];
@@ -966,21 +966,21 @@ void __56__PLAggregationProcessor_maximumNumberOfAssetsPerMoment__block_invoke()
 
 + (void)restoreDefaultEnablement
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 removeObjectForKey:@"PLAggregationProcessorEnabled"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"PLAggregationProcessorEnabled"];
 }
 
-+ (void)setEnabled:(BOOL)a3
++ (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PLAggregationProcessorEnabled"];
+  enabledCopy = enabled;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:enabledCopy forKey:@"PLAggregationProcessorEnabled"];
 }
 
 + (BOOL)isEnabled
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PLAggregationProcessorEnabled"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PLAggregationProcessorEnabled"];
 
   return v3;
 }
@@ -988,11 +988,11 @@ void __56__PLAggregationProcessor_maximumNumberOfAssetsPerMoment__block_invoke()
 + (void)initialize
 {
   v8[8] = *MEMORY[0x1E69E9840];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___PLAggregationProcessor;
   objc_msgSendSuper2(&v6, sel_initialize);
   v2 = _os_feature_enabled_impl();
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v7[0] = @"PLAggregationProcessorEnabled";
   v4 = [MEMORY[0x1E696AD98] numberWithBool:v2 ^ 1u];
   v8[0] = v4;
@@ -1011,7 +1011,7 @@ void __56__PLAggregationProcessor_maximumNumberOfAssetsPerMoment__block_invoke()
   v8[6] = MEMORY[0x1E695E110];
   v8[7] = &unk_1F0FBCA00;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:8];
-  [v3 registerDefaults:v5];
+  [standardUserDefaults registerDefaults:v5];
 }
 
 @end

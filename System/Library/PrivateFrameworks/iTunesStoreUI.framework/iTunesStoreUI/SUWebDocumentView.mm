@@ -1,19 +1,19 @@
 @interface SUWebDocumentView
-- (SUWebDocumentView)initWithFrame:(CGRect)a3;
+- (SUWebDocumentView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)setHTMLFragment:(id)a3;
-- (void)setPlaintextString:(id)a3;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 request:(id)a5 frame:(id)a6 decisionListener:(id)a7;
-- (void)webView:(id)a3 didFinishLoadForFrame:(id)a4;
+- (void)setHTMLFragment:(id)fragment;
+- (void)setPlaintextString:(id)string;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action request:(id)request frame:(id)frame decisionListener:(id)listener;
+- (void)webView:(id)view didFinishLoadForFrame:(id)frame;
 @end
 
 @implementation SUWebDocumentView
 
-- (SUWebDocumentView)initWithFrame:(CGRect)a3
+- (SUWebDocumentView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SUWebDocumentView;
-  v3 = [(UIWebTiledView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIWebTiledView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -39,23 +39,23 @@
   [(UIWebTiledView *)&v4 dealloc];
 }
 
-- (void)setPlaintextString:(id)a3
+- (void)setPlaintextString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = a3;
+    stringCopy = string;
   }
 
   else
   {
-    v4 = &stru_1F41B3660;
+    stringCopy = &stru_1F41B3660;
   }
 
-  v5 = SUCreateHTMLForPlainText(v4, self->_stylesheet);
+  v5 = SUCreateHTMLForPlainText(stringCopy, self->_stylesheet);
   [(SUWebDocumentView *)self loadHTMLString:v5 baseURL:0];
 }
 
-- (void)setHTMLFragment:(id)a3
+- (void)setHTMLFragment:(id)fragment
 {
   v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"<html>"];
   stylesheet = self->_stylesheet;
@@ -66,19 +66,19 @@
     v5 = v8;
   }
 
-  v7 = &stru_1F41B3660;
-  if (a3)
+  fragmentCopy = &stru_1F41B3660;
+  if (fragment)
   {
-    v7 = a3;
+    fragmentCopy = fragment;
   }
 
-  [v5 appendFormat:@"<body>%@</body></html>", v7];
+  [v5 appendFormat:@"<body>%@</body></html>", fragmentCopy];
   [(SUWebDocumentView *)self loadHTMLString:v8 baseURL:0];
 }
 
-- (void)webView:(id)a3 didFinishLoadForFrame:(id)a4
+- (void)webView:(id)view didFinishLoadForFrame:(id)frame
 {
-  if ([*(&self->super.super.super.super.super.isa + *MEMORY[0x1E69DD868]) mainFrame] == a4)
+  if ([*(&self->super.super.super.super.super.isa + *MEMORY[0x1E69DD868]) mainFrame] == frame)
   {
     loadDelegate = self->_loadDelegate;
 
@@ -86,18 +86,18 @@
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 request:(id)a5 frame:(id)a6 decisionListener:(id)a7
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action request:(id)request frame:(id)frame decisionListener:(id)listener
 {
-  if ([objc_msgSend(a4 objectForKey:{*MEMORY[0x1E69E2FD0]), "integerValue"}])
+  if ([objc_msgSend(action objectForKey:{*MEMORY[0x1E69E2FD0]), "integerValue"}])
   {
 
-    [a7 use];
+    [listener use];
   }
 
   else
   {
-    [a7 ignore];
-    v9 = [a5 URL];
+    [listener ignore];
+    v9 = [request URL];
     v10 = +[SUClientDispatch clientInterface];
 
     SUOpenExternalURL(v9, v10);

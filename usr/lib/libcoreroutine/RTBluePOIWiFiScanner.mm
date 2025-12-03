@@ -1,18 +1,18 @@
 @interface RTBluePOIWiFiScanner
-- (RTBluePOIWiFiScanner)initWithDefaultsManager:(id)a3 wifiManager:(id)a4 bluePOIEnabler:(id)a5 bluePOIMetricManager:(id)a6;
-- (void)_processWifiScanResults:(id)a3;
+- (RTBluePOIWiFiScanner)initWithDefaultsManager:(id)manager wifiManager:(id)wifiManager bluePOIEnabler:(id)enabler bluePOIMetricManager:(id)metricManager;
+- (void)_processWifiScanResults:(id)results;
 - (void)_triggerScan;
-- (void)onLeechWifiScanResultsNotification:(id)a3;
+- (void)onLeechWifiScanResultsNotification:(id)notification;
 @end
 
 @implementation RTBluePOIWiFiScanner
 
 - (void)_triggerScan
 {
-  v3 = [(RTBluePOIWiFiScanner *)self bluePOIEnabler];
-  v4 = [v3 enabled];
+  bluePOIEnabler = [(RTBluePOIWiFiScanner *)self bluePOIEnabler];
+  enabled = [bluePOIEnabler enabled];
 
-  if (v4)
+  if (enabled)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -25,25 +25,25 @@
     }
 
     [(RTWiFiManager *)self->_wifiManager scheduleScanWithChannels:&unk_2845A12E0];
-    v6 = [(RTBluePOIWiFiScanner *)self bluePOIMetricManager];
-    v7 = [v6 dailyMetrics];
-    [v7 increaseCountForKey:@"BluePOIDailyEventOpportunisticWiFiScanRequestCount"];
+    bluePOIMetricManager = [(RTBluePOIWiFiScanner *)self bluePOIMetricManager];
+    dailyMetrics = [bluePOIMetricManager dailyMetrics];
+    [dailyMetrics increaseCountForKey:@"BluePOIDailyEventOpportunisticWiFiScanRequestCount"];
 
-    v8 = [(RTBluePOIWiFiScanner *)self bluePOIMetricManager];
+    bluePOIMetricManager2 = [(RTBluePOIWiFiScanner *)self bluePOIMetricManager];
     v9 = [MEMORY[0x277CBEAA8] now];
-    [v8 setObject:v9 forKey:@"BluePOIQueryEventLastActiveWiFiScanDate"];
+    [bluePOIMetricManager2 setObject:v9 forKey:@"BluePOIQueryEventLastActiveWiFiScanDate"];
   }
 }
 
-- (RTBluePOIWiFiScanner)initWithDefaultsManager:(id)a3 wifiManager:(id)a4 bluePOIEnabler:(id)a5 bluePOIMetricManager:(id)a6
+- (RTBluePOIWiFiScanner)initWithDefaultsManager:(id)manager wifiManager:(id)wifiManager bluePOIEnabler:(id)enabler bluePOIMetricManager:(id)metricManager
 {
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v10)
+  managerCopy = manager;
+  wifiManagerCopy = wifiManager;
+  enablerCopy = enabler;
+  metricManagerCopy = metricManager;
+  v14 = metricManagerCopy;
+  if (!managerCopy)
   {
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -58,7 +58,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (!v11)
+  if (!wifiManagerCopy)
   {
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -71,7 +71,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (!v12)
+  if (!enablerCopy)
   {
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -84,7 +84,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (!v13)
+  if (!metricManagerCopy)
   {
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -96,7 +96,7 @@ LABEL_26:
 
 LABEL_27:
 
-    v30 = 0;
+    selfCopy = 0;
     goto LABEL_28;
   }
 
@@ -106,11 +106,11 @@ LABEL_27:
   v16 = v15;
   if (v15)
   {
-    v34 = v12;
-    v35 = v11;
-    objc_storeStrong(&v15->_wifiManager, a4);
-    objc_storeStrong(&v16->_bluePOIEnabler, a5);
-    objc_storeStrong(&v16->_bluePOIMetricManager, a6);
+    v34 = enablerCopy;
+    v35 = wifiManagerCopy;
+    objc_storeStrong(&v15->_wifiManager, wifiManager);
+    objc_storeStrong(&v16->_bluePOIEnabler, enabler);
+    objc_storeStrong(&v16->_bluePOIMetricManager, metricManager);
     wifiManager = v16->_wifiManager;
     v18 = +[(RTNotification *)RTWiFiManagerNotificationLeechScanResults];
     [(RTNotifier *)wifiManager addObserver:v16 selector:sel_onLeechWifiScanResultsNotification_ name:v18];
@@ -138,8 +138,8 @@ LABEL_27:
           }
 
           v25 = *(*(&v36 + 1) + 8 * i);
-          v26 = [MEMORY[0x277CBEAA8] date];
-          [(NSMutableDictionary *)v16->targettedChannelsLastSeenDates setObject:v26 forKeyedSubscript:v25];
+          date = [MEMORY[0x277CBEAA8] date];
+          [(NSMutableDictionary *)v16->targettedChannelsLastSeenDates setObject:date forKeyedSubscript:v25];
         }
 
         v22 = [&unk_2845A12E0 countByEnumeratingWithState:&v36 objects:v42 count:16];
@@ -148,12 +148,12 @@ LABEL_27:
       while (v22);
     }
 
-    v27 = [MEMORY[0x277CBEAA8] date];
+    date2 = [MEMORY[0x277CBEAA8] date];
     lastTargettedScan = v16->lastTargettedScan;
-    v16->lastTargettedScan = v27;
+    v16->lastTargettedScan = date2;
 
-    v12 = v34;
-    v11 = v35;
+    enablerCopy = v34;
+    wifiManagerCopy = v35;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v29 = _rt_log_facility_get_os_log(RTLogFacilityBluePOI);
@@ -166,15 +166,15 @@ LABEL_27:
   }
 
   self = v16;
-  v30 = self;
+  selfCopy = self;
 LABEL_28:
 
-  return v30;
+  return selfCopy;
 }
 
-- (void)onLeechWifiScanResultsNotification:(id)a3
+- (void)onLeechWifiScanResultsNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityBluePOI);
@@ -185,19 +185,19 @@ LABEL_28:
     }
   }
 
-  v6 = [(RTBluePOIWiFiScanner *)self bluePOIEnabler];
-  v7 = [v6 enabled];
+  bluePOIEnabler = [(RTBluePOIWiFiScanner *)self bluePOIEnabler];
+  enabled = [bluePOIEnabler enabled];
 
-  if (v7)
+  if (enabled)
   {
-    v8 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __59__RTBluePOIWiFiScanner_onLeechWifiScanResultsNotification___block_invoke;
     v9[3] = &unk_2788C4A70;
-    v10 = v4;
-    v11 = self;
-    dispatch_async(v8, v9);
+    v10 = notificationCopy;
+    selfCopy = self;
+    dispatch_async(queue, v9);
   }
 }
 
@@ -226,21 +226,21 @@ void __59__RTBluePOIWiFiScanner_onLeechWifiScanResultsNotification___block_invok
   }
 }
 
-- (void)_processWifiScanResults:(id)a3
+- (void)_processWifiScanResults:(id)results
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v31 = v4;
-  v6 = [v4 reverseObjectEnumerator];
-  v7 = [v6 allObjects];
+  resultsCopy = results;
+  date = [MEMORY[0x277CBEAA8] date];
+  v31 = resultsCopy;
+  reverseObjectEnumerator = [resultsCopy reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v8 = objc_opt_new();
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v7;
+  obj = allObjects;
   v9 = [obj countByEnumeratingWithState:&v37 objects:v46 count:16];
   if (v9)
   {
@@ -261,7 +261,7 @@ void __59__RTBluePOIWiFiScanner_onLeechWifiScanResultsNotification___block_invok
         {
           if (([v8 containsObject:v13] & 1) == 0)
           {
-            [(NSMutableDictionary *)self->targettedChannelsLastSeenDates setObject:v5 forKeyedSubscript:v13];
+            [(NSMutableDictionary *)self->targettedChannelsLastSeenDates setObject:date forKeyedSubscript:v13];
             [v8 addObject:v13];
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
             {
@@ -305,7 +305,7 @@ void __59__RTBluePOIWiFiScanner_onLeechWifiScanResultsNotification___block_invok
 
 LABEL_21:
 
-  [v5 timeIntervalSinceDate:self->lastTargettedScan];
+  [date timeIntervalSinceDate:self->lastTargettedScan];
   if (v17 > 120.0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -342,7 +342,7 @@ LABEL_21:
 
           v25 = *(*(&v33 + 1) + 8 * j);
           v26 = [(NSMutableDictionary *)self->targettedChannelsLastSeenDates objectForKeyedSubscript:v25, v30];
-          [v5 timeIntervalSinceDate:v26];
+          [date timeIntervalSinceDate:v26];
           if (v27 > 120.0)
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -358,7 +358,7 @@ LABEL_21:
               }
             }
 
-            objc_storeStrong((&self->super.super.super.isa + v30), v5);
+            objc_storeStrong((&self->super.super.super.isa + v30), date);
             [(RTBluePOIWiFiScanner *)self _triggerScan];
             goto LABEL_40;
           }

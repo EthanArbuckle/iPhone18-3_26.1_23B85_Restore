@@ -12,11 +12,11 @@
 
 - (id)systemApertureElementContext
 {
-  v1 = [a1 systemApertureElementContextPrivate];
-  v2 = v1;
-  if (v1)
+  systemApertureElementContextPrivate = [self systemApertureElementContextPrivate];
+  v2 = systemApertureElementContextPrivate;
+  if (systemApertureElementContextPrivate)
   {
-    v3 = v1;
+    v3 = systemApertureElementContextPrivate;
   }
 
   else
@@ -31,22 +31,22 @@
 
 - (id)systemApertureHostedElementContext
 {
-  if ((SBUIIsSystemApertureEnabled() & 1) != 0 || [a1 SBUI_isHostedBySystemAperture])
+  if ((SBUIIsSystemApertureEnabled() & 1) != 0 || [self SBUI_isHostedBySystemAperture])
   {
-    v2 = [a1 systemApertureElementSource];
+    systemApertureElementSource = [self systemApertureElementSource];
   }
 
   else
   {
-    v2 = 0;
+    systemApertureElementSource = 0;
   }
 
-  return v2;
+  return systemApertureElementSource;
 }
 
 - (SBUISystemApertureElementSource)systemApertureElementSource
 {
-  v2 = [a1 _sceneComponentForKey:@"SBUISystemApertureElementSourceKey"];
+  v2 = [self _sceneComponentForKey:@"SBUISystemApertureElementSourceKey"];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -72,7 +72,7 @@
   if (!v6)
   {
     v6 = objc_alloc_init(SBUISystemApertureElementSource);
-    [(SBUISystemApertureElementSource *)v6 registerWithScene:a1];
+    [(SBUISystemApertureElementSource *)v6 registerWithScene:self];
   }
 
   return v6;
@@ -80,24 +80,24 @@
 
 - (BOOL)SBUI_isHostedBySystemAperture
 {
-  v2 = [a1 systemApertureElementSourceIfExists];
-  v3 = [v2 layoutMode];
+  systemApertureElementSourceIfExists = [self systemApertureElementSourceIfExists];
+  layoutMode = [systemApertureElementSourceIfExists layoutMode];
 
-  if (v3)
+  if (layoutMode)
   {
     return 1;
   }
 
-  v5 = [a1 _FBSScene];
-  v6 = [v5 settings];
-  v7 = [v6 SBUISA_layoutMode];
+  _FBSScene = [self _FBSScene];
+  settings = [_FBSScene settings];
+  sBUISA_layoutMode = [settings SBUISA_layoutMode];
 
-  return v7 != 0;
+  return sBUISA_layoutMode != 0;
 }
 
 - (void)systemApertureElementSourceIfExists
 {
-  v1 = [a1 _sceneComponentForKey:@"SBUISystemApertureElementSourceKey"];
+  v1 = [self _sceneComponentForKey:@"SBUISystemApertureElementSourceKey"];
   v2 = objc_opt_class();
   v3 = v1;
   if (v2)
@@ -120,17 +120,17 @@
 
 - (id)systemApertureElementViewControllerProvider
 {
-  v1 = [a1 systemApertureElementContextPrivate];
-  v2 = [v1 systemApertureElementViewControllerProvider];
+  systemApertureElementContextPrivate = [self systemApertureElementContextPrivate];
+  systemApertureElementViewControllerProvider = [systemApertureElementContextPrivate systemApertureElementViewControllerProvider];
 
-  return v2;
+  return systemApertureElementViewControllerProvider;
 }
 
 - (void)setSystemApertureElementViewControllerProvider:()SBUISystemAperture
 {
   v4 = a3;
-  v5 = [a1 systemApertureElementContextPrivate];
-  [v5 setSystemApertureElementViewControllerProvider:v4];
+  systemApertureElementContextPrivate = [self systemApertureElementContextPrivate];
+  [systemApertureElementContextPrivate setSystemApertureElementViewControllerProvider:v4];
 }
 
 @end

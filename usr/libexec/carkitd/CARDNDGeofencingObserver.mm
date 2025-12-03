@@ -2,23 +2,23 @@
 - (BOOL)_shouldCreateGeofences;
 - (BOOL)currentlyInRegion;
 - (CARDNDGeofencingObserver)init;
-- (CARDNDGeofencingObserver)initWithRoutineManager:(id)a3 locationManager:(id)a4 wiFiManager:(id)a5;
+- (CARDNDGeofencingObserver)initWithRoutineManager:(id)manager locationManager:(id)locationManager wiFiManager:(id)fiManager;
 - (CARDNDGeofencingObserverDelegate)delegate;
-- (id)_addCoordinatesToMonitoredRegion:(CLLocationCoordinate2D)a3 identifier:(id)a4 radius:(unint64_t)a5;
+- (id)_addCoordinatesToMonitoredRegion:(CLLocationCoordinate2D)region identifier:(id)identifier radius:(unint64_t)radius;
 - (void)_checkWiFiPowerForGeofences;
-- (void)_createGeofenceForLOI:(id)a3;
+- (void)_createGeofenceForLOI:(id)i;
 - (void)_createGeofencesAroundHomeAndWork;
-- (void)_createGeofencesAroundPredictedLocationsFromLocation:(id)a3;
+- (void)_createGeofencesAroundPredictedLocationsFromLocation:(id)location;
 - (void)_postNotificationForGeofence;
-- (void)_updateState:(int64_t)a3 forRegion:(id)a4;
+- (void)_updateState:(int64_t)state forRegion:(id)region;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didDetermineState:(int64_t)a4 forRegion:(id)a5;
-- (void)locationManager:(id)a3 didEnterRegion:(id)a4;
-- (void)locationManager:(id)a3 didExitRegion:(id)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didStartMonitoringForRegion:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didDetermineState:(int64_t)state forRegion:(id)region;
+- (void)locationManager:(id)manager didEnterRegion:(id)region;
+- (void)locationManager:(id)manager didExitRegion:(id)region;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didStartMonitoringForRegion:(id)region;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)stopMonitoringLOIs;
 @end
 
@@ -62,26 +62,26 @@
   return v11;
 }
 
-- (CARDNDGeofencingObserver)initWithRoutineManager:(id)a3 locationManager:(id)a4 wiFiManager:(id)a5
+- (CARDNDGeofencingObserver)initWithRoutineManager:(id)manager locationManager:(id)locationManager wiFiManager:(id)fiManager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  locationManagerCopy = locationManager;
+  fiManagerCopy = fiManager;
   v19.receiver = self;
   v19.super_class = CARDNDGeofencingObserver;
   v11 = [(CARDNDGeofencingObserver *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    [(CARDNDGeofencingObserver *)v11 setRoutineManager:v8];
-    [(CARDNDGeofencingObserver *)v12 setLocationManager:v9];
-    v13 = [(CARDNDGeofencingObserver *)v12 locationManager];
-    [v13 setDelegate:v12];
+    [(CARDNDGeofencingObserver *)v11 setRoutineManager:managerCopy];
+    [(CARDNDGeofencingObserver *)v12 setLocationManager:locationManagerCopy];
+    locationManager = [(CARDNDGeofencingObserver *)v12 locationManager];
+    [locationManager setDelegate:v12];
 
-    v14 = [(CARDNDGeofencingObserver *)v12 locationManager];
-    [v14 setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
+    locationManager2 = [(CARDNDGeofencingObserver *)v12 locationManager];
+    [locationManager2 setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
 
-    [(CARDNDGeofencingObserver *)v12 setWiFiManager:v10];
+    [(CARDNDGeofencingObserver *)v12 setWiFiManager:fiManagerCopy];
     v15 = +[NSArray array];
     monitoredRegions = v12->_monitoredRegions;
     v12->_monitoredRegions = v15;
@@ -119,8 +119,8 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(CARDNDGeofencingObserver *)self monitoredRegions];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  monitoredRegions = [(CARDNDGeofencingObserver *)self monitoredRegions];
+  v5 = [monitoredRegions countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -132,19 +132,19 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(monitoredRegions);
         }
 
         v9 = *(*(&v16 + 1) + 8 * v8);
-        v10 = [(CARDNDGeofencingObserver *)self locationManager];
-        v11 = [v9 region];
-        [v10 stopMonitoringForRegion:v11];
+        locationManager = [(CARDNDGeofencingObserver *)self locationManager];
+        region = [v9 region];
+        [locationManager stopMonitoringForRegion:region];
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v6 = [monitoredRegions countByEnumeratingWithState:&v16 objects:v21 count:16];
     }
 
     while (v6);
@@ -164,11 +164,11 @@
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Geofences cleared", buf, 2u);
   }
 
-  v14 = [(CARDNDGeofencingObserver *)self locationManager];
-  [v14 stopMonitoringSignificantLocationChanges];
+  locationManager2 = [(CARDNDGeofencingObserver *)self locationManager];
+  [locationManager2 stopMonitoringSignificantLocationChanges];
 
-  v15 = [(CARDNDGeofencingObserver *)self locationManager];
-  [v15 stopUpdatingLocation];
+  locationManager3 = [(CARDNDGeofencingObserver *)self locationManager];
+  [locationManager3 stopUpdatingLocation];
 
   [(CARDNDGeofencingObserver *)self _postNotificationForGeofence];
 }
@@ -179,8 +179,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(CARDNDGeofencingObserver *)self monitoredRegions];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  monitoredRegions = [(CARDNDGeofencingObserver *)self monitoredRegions];
+  v3 = [monitoredRegions countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -191,7 +191,7 @@
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(monitoredRegions);
         }
 
         if ([*(*(&v11 + 1) + 8 * i) regionState] == 1)
@@ -207,7 +207,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [monitoredRegions countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;
@@ -217,11 +217,11 @@
     }
   }
 
-  v2 = CarDNDWDLogging();
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  monitoredRegions = CarDNDWDLogging();
+  if (os_log_type_enabled(monitoredRegions, OS_LOG_TYPE_DEFAULT))
   {
     *v10 = 0;
-    _os_log_impl(&_mh_execute_header, v2, OS_LOG_TYPE_DEFAULT, "Not in any monitored regions", v10, 2u);
+    _os_log_impl(&_mh_execute_header, monitoredRegions, OS_LOG_TYPE_DEFAULT, "Not in any monitored regions", v10, 2u);
   }
 
   v7 = 0;
@@ -230,13 +230,13 @@ LABEL_15:
   return v7;
 }
 
-- (id)_addCoordinatesToMonitoredRegion:(CLLocationCoordinate2D)a3 identifier:(id)a4 radius:(unint64_t)a5
+- (id)_addCoordinatesToMonitoredRegion:(CLLocationCoordinate2D)region identifier:(id)identifier radius:(unint64_t)radius
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v9 = a4;
+  longitude = region.longitude;
+  latitude = region.latitude;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(_CARDNDRegion);
-  v11 = [[CLCircularRegion alloc] initWithCenter:v9 radius:latitude identifier:{longitude, a5}];
+  v11 = [[CLCircularRegion alloc] initWithCenter:identifierCopy radius:latitude identifier:{longitude, radius}];
   [(_CARDNDRegion *)v10 setRegion:v11];
 
   v12 = CarDNDWDLogging();
@@ -249,17 +249,17 @@ LABEL_15:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412290;
-    v20 = v9;
+    v20 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Creating geofence for [%@]", &v19, 0xCu);
   }
 
-  v14 = [(CARDNDGeofencingObserver *)self monitoredRegions];
-  v15 = [v14 arrayByAddingObject:v10];
+  monitoredRegions = [(CARDNDGeofencingObserver *)self monitoredRegions];
+  v15 = [monitoredRegions arrayByAddingObject:v10];
   [(CARDNDGeofencingObserver *)self setMonitoredRegions:v15];
 
-  v16 = [(CARDNDGeofencingObserver *)self locationManager];
-  v17 = [(_CARDNDRegion *)v10 region];
-  [v16 startMonitoringForRegion:v17];
+  locationManager = [(CARDNDGeofencingObserver *)self locationManager];
+  region = [(_CARDNDRegion *)v10 region];
+  [locationManager startMonitoringForRegion:region];
 
   return v10;
 }
@@ -270,10 +270,10 @@ LABEL_15:
   {
     if ([(CARDNDGeofencingObserver *)self isDNDActive])
     {
-      v7 = [(CARDNDGeofencingObserver *)self wiFiManager];
-      v8 = [v7 isPowered];
+      wiFiManager = [(CARDNDGeofencingObserver *)self wiFiManager];
+      isPowered = [wiFiManager isPowered];
 
-      if ((v8 & 1) == 0)
+      if ((isPowered & 1) == 0)
       {
         v3 = CarDNDWDLogging();
         if (!os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -315,10 +315,10 @@ LABEL_15:
         goto LABEL_15;
       }
 
-      v9 = [(CARDNDGeofencingObserver *)self isCurrentlyInsideGeofence];
+      isCurrentlyInsideGeofence = [(CARDNDGeofencingObserver *)self isCurrentlyInsideGeofence];
       v3 = CarDNDWDLogging();
       v10 = os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT);
-      if (!v9)
+      if (!isCurrentlyInsideGeofence)
       {
         if (!v10)
         {
@@ -379,9 +379,9 @@ LABEL_17:
   CFNotificationCenterPostNotification(DarwinNotifyCenter, v13, 0, 0, 1u);
 }
 
-- (void)_updateState:(int64_t)a3 forRegion:(id)a4
+- (void)_updateState:(int64_t)state forRegion:(id)region
 {
-  v5 = a4;
+  regionCopy = region;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -404,57 +404,57 @@ LABEL_17:
         }
 
         v11 = *(*(&v30 + 1) + 8 * i);
-        v12 = [v11 region];
-        v13 = [v12 identifier];
-        v14 = [v5 identifier];
-        v15 = [v13 isEqualToString:v14];
+        region = [v11 region];
+        identifier = [region identifier];
+        identifier2 = [regionCopy identifier];
+        v15 = [identifier isEqualToString:identifier2];
 
         if (v15)
         {
           v16 = CarDNDWDLogging();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
           {
-            v23 = [v5 identifier];
-            [v5 center];
+            identifier3 = [regionCopy identifier];
+            [regionCopy center];
             v25 = v24;
-            [v5 center];
+            [regionCopy center];
             *buf = v27;
-            v35 = v23;
+            v35 = identifier3;
             v36 = 2048;
-            v37 = v25;
+            stateCopy2 = v25;
             v38 = 2048;
             v39 = v26;
             v40 = 2048;
-            v41 = a3;
+            stateCopy = state;
             _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "Updating region state for [%@] lat/long: {%f, %f}: %ld", buf, 0x2Au);
           }
 
           v17 = CarDNDWDLogging();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            v18 = [v5 identifier];
+            identifier4 = [regionCopy identifier];
             *buf = 138412546;
-            v35 = v18;
+            v35 = identifier4;
             v36 = 2048;
-            v37 = a3;
+            stateCopy2 = state;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Updating region state for geofence [%@]: %ld", buf, 0x16u);
           }
 
-          [v11 setRegionState:a3];
-          v19 = [(CARDNDGeofencingObserver *)self currentlyInRegion];
-          if (v19 != [(CARDNDGeofencingObserver *)self isCurrentlyInsideGeofence])
+          [v11 setRegionState:state];
+          currentlyInRegion = [(CARDNDGeofencingObserver *)self currentlyInRegion];
+          if (currentlyInRegion != [(CARDNDGeofencingObserver *)self isCurrentlyInsideGeofence])
           {
-            [(CARDNDGeofencingObserver *)self setIsCurrentlyInsideGeofence:v19];
+            [(CARDNDGeofencingObserver *)self setIsCurrentlyInsideGeofence:currentlyInRegion];
             [(CARDNDGeofencingObserver *)self _postNotificationForGeofence];
           }
 
-          v20 = [(CARDNDGeofencingObserver *)self delegate];
+          delegate = [(CARDNDGeofencingObserver *)self delegate];
           v21 = objc_opt_respondsToSelector();
 
           if (v21)
           {
-            v22 = [(CARDNDGeofencingObserver *)self delegate];
-            [v22 geofencingObserver:self didUpdateRegionState:a3];
+            delegate2 = [(CARDNDGeofencingObserver *)self delegate];
+            [delegate2 geofencingObserver:self didUpdateRegionState:state];
           }
         }
       }
@@ -466,16 +466,16 @@ LABEL_17:
   }
 }
 
-- (void)_createGeofenceForLOI:(id)a3
+- (void)_createGeofenceForLOI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v26 = self;
-  v5 = [(CARDNDGeofencingObserver *)self monitoredRegions];
-  v6 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  selfCopy = self;
+  monitoredRegions = [(CARDNDGeofencingObserver *)self monitoredRegions];
+  v6 = [monitoredRegions countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v6)
   {
     v7 = v6;
@@ -486,20 +486,20 @@ LABEL_17:
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(monitoredRegions);
         }
 
-        v10 = [*(*(&v27 + 1) + 8 * i) region];
-        v11 = [v10 identifier];
-        v12 = [v4 identifier];
-        v13 = [v12 UUIDString];
-        v14 = [v11 isEqualToString:v13];
+        region = [*(*(&v27 + 1) + 8 * i) region];
+        identifier = [region identifier];
+        identifier2 = [iCopy identifier];
+        uUIDString = [identifier2 UUIDString];
+        v14 = [identifier isEqualToString:uUIDString];
 
         if (v14)
         {
 
-          v17 = CarDNDWDLogging();
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+          location = CarDNDWDLogging();
+          if (os_log_type_enabled(location, OS_LOG_TYPE_DEBUG))
           {
             sub_1000822C8();
           }
@@ -508,7 +508,7 @@ LABEL_17:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v7 = [monitoredRegions countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v7)
       {
         continue;
@@ -518,13 +518,13 @@ LABEL_17:
     }
   }
 
-  v15 = [(CARDNDGeofencingObserver *)v26 monitoredRegions];
-  v16 = [v15 count];
+  monitoredRegions2 = [(CARDNDGeofencingObserver *)selfCopy monitoredRegions];
+  v16 = [monitoredRegions2 count];
 
   if (v16 > 0x13)
   {
-    v17 = CarDNDWDLogging();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+    location = CarDNDWDLogging();
+    if (os_log_type_enabled(location, OS_LOG_TYPE_DEBUG))
     {
       sub_100082378();
     }
@@ -532,31 +532,31 @@ LABEL_17:
 
   else
   {
-    v17 = [v4 location];
-    [v17 latitude];
+    location = [iCopy location];
+    [location latitude];
     v19 = v18;
-    v20 = [v4 location];
-    [v20 longitude];
+    location2 = [iCopy location];
+    [location2 longitude];
     v22 = CLLocationCoordinate2DMake(v19, v21);
-    v23 = [v4 identifier];
-    v24 = [v23 UUIDString];
-    v25 = [(CARDNDGeofencingObserver *)v26 _addCoordinatesToMonitoredRegion:v24 identifier:400 radius:v22.latitude, v22.longitude];
+    identifier3 = [iCopy identifier];
+    uUIDString2 = [identifier3 UUIDString];
+    v25 = [(CARDNDGeofencingObserver *)selfCopy _addCoordinatesToMonitoredRegion:uUIDString2 identifier:400 radius:v22.latitude, v22.longitude];
   }
 
 LABEL_15:
 }
 
-- (void)_createGeofencesAroundPredictedLocationsFromLocation:(id)a3
+- (void)_createGeofencesAroundPredictedLocationsFromLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(CARDNDGeofencingObserver *)self routineManager];
+  locationCopy = location;
+  routineManager = [(CARDNDGeofencingObserver *)self routineManager];
   v6 = +[NSDate date];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001441C;
   v7[3] = &unk_1000DD7C0;
   v7[4] = self;
-  [v5 fetchNextPredictedLocationsOfInterestFromLocation:v4 startDate:v6 timeInterval:v7 withHandler:28800.0];
+  [routineManager fetchNextPredictedLocationsOfInterestFromLocation:locationCopy startDate:v6 timeInterval:v7 withHandler:28800.0];
 }
 
 - (void)_createGeofencesAroundHomeAndWork
@@ -568,13 +568,13 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Fetching home LOI", buf, 2u);
   }
 
-  v4 = [(CARDNDGeofencingObserver *)self routineManager];
+  routineManager = [(CARDNDGeofencingObserver *)self routineManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000147A8;
   v8[3] = &unk_1000DD7C0;
   v8[4] = self;
-  [v4 fetchLocationsOfInterestOfType:0 withHandler:v8];
+  [routineManager fetchLocationsOfInterestOfType:0 withHandler:v8];
 
   v5 = CarDNDWDLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -583,16 +583,16 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Fetching work LOI", buf, 2u);
   }
 
-  v6 = [(CARDNDGeofencingObserver *)self routineManager];
+  routineManager2 = [(CARDNDGeofencingObserver *)self routineManager];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000149F4;
   v7[3] = &unk_1000DD7C0;
   v7[4] = self;
-  [v6 fetchLocationsOfInterestOfType:1 withHandler:v7];
+  [routineManager2 fetchLocationsOfInterestOfType:1 withHandler:v7];
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -602,21 +602,21 @@ LABEL_15:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  [a4 lastObject];
+  [locations lastObject];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100014E68;
   v7 = v6[3] = &unk_1000DD580;
-  v8 = self;
+  selfCopy = self;
   v5 = v7;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)locationManager:(id)a3 didStartMonitoringForRegion:(id)a4
+- (void)locationManager:(id)manager didStartMonitoringForRegion:(id)region
 {
-  v4 = a4;
+  regionCopy = region;
   v5 = CarDNDWDLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -626,16 +626,16 @@ LABEL_15:
   v6 = CarDNDWDLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 identifier];
+    identifier = [regionCopy identifier];
     v8 = 138412290;
-    v9 = v7;
+    v9 = identifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Begin monitoring for [%@]", &v8, 0xCu);
   }
 }
 
-- (void)locationManager:(id)a3 didEnterRegion:(id)a4
+- (void)locationManager:(id)manager didEnterRegion:(id)region
 {
-  v5 = a4;
+  regionCopy = region;
   v6 = CarDNDWDLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -645,9 +645,9 @@ LABEL_15:
   v7 = CarDNDWDLogging();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 identifier];
+    identifier = [regionCopy identifier];
     *buf = 138412290;
-    v13 = v8;
+    v13 = identifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Entered region for [%@]", buf, 0xCu);
   }
 
@@ -656,14 +656,14 @@ LABEL_15:
   v10[2] = sub_100015294;
   v10[3] = &unk_1000DD580;
   v10[4] = self;
-  v11 = v5;
-  v9 = v5;
+  v11 = regionCopy;
+  v9 = regionCopy;
   dispatch_async(&_dispatch_main_q, v10);
 }
 
-- (void)locationManager:(id)a3 didExitRegion:(id)a4
+- (void)locationManager:(id)manager didExitRegion:(id)region
 {
-  v5 = a4;
+  regionCopy = region;
   v6 = CarDNDWDLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -673,9 +673,9 @@ LABEL_15:
   v7 = CarDNDWDLogging();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 identifier];
+    identifier = [regionCopy identifier];
     *buf = 138412290;
-    v13 = v8;
+    v13 = identifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Exited region for [%@]", buf, 0xCu);
   }
 
@@ -684,22 +684,22 @@ LABEL_15:
   v10[2] = sub_100015404;
   v10[3] = &unk_1000DD580;
   v10[4] = self;
-  v11 = v5;
-  v9 = v5;
+  v11 = regionCopy;
+  v9 = regionCopy;
   dispatch_async(&_dispatch_main_q, v10);
 }
 
-- (void)locationManager:(id)a3 didDetermineState:(int64_t)a4 forRegion:(id)a5
+- (void)locationManager:(id)manager didDetermineState:(int64_t)state forRegion:(id)region
 {
-  v7 = a5;
+  regionCopy = region;
   v8 = CarDNDWDLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 identifier];
+    identifier = [regionCopy identifier];
     *buf = 138412546;
-    v15 = v9;
+    v15 = identifier;
     v16 = 2048;
-    v17 = a4;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Determined state for [%@]: %ld", buf, 0x16u);
   }
 
@@ -707,20 +707,20 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = sub_100015564;
   block[3] = &unk_1000DD7E8;
-  v12 = v7;
-  v13 = a4;
+  v12 = regionCopy;
+  stateCopy2 = state;
   block[4] = self;
-  v10 = v7;
+  v10 = regionCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = CarDNDWDLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
   {
-    sub_1000825C0(v4, v5);
+    sub_1000825C0(errorCopy, v5);
   }
 }
 
@@ -728,10 +728,10 @@ LABEL_15:
 {
   if ([(CARDNDGeofencingObserver *)self locationServicesEnabled])
   {
-    v3 = [(CARDNDGeofencingObserver *)self wiFiManager];
-    v4 = [v3 isPowered];
+    wiFiManager = [(CARDNDGeofencingObserver *)self wiFiManager];
+    isPowered = [wiFiManager isPowered];
 
-    if (v4)
+    if (isPowered)
     {
       return 1;
     }
@@ -764,10 +764,10 @@ LABEL_8:
 
 - (void)_checkWiFiPowerForGeofences
 {
-  v3 = [(CARDNDGeofencingObserver *)self wiFiManager];
-  v4 = [v3 isPowered];
+  wiFiManager = [(CARDNDGeofencingObserver *)self wiFiManager];
+  isPowered = [wiFiManager isPowered];
 
-  if ((v4 & 1) == 0)
+  if ((isPowered & 1) == 0)
   {
 
     [(CARDNDGeofencingObserver *)self stopMonitoringLOIs];

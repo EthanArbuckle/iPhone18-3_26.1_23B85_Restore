@@ -1,37 +1,37 @@
 @interface ATXMenuItemStream
-- (id)_getIntentEventFromBMAppMenuItem:(id)a3 bundleIdFilter:(id)a4;
-- (id)getMenuItemEventsBetweenStartDate:(id)a3 endDate:(id)a4 bundleIdFilter:(id)a5 limit:(unint64_t)a6;
-- (unint64_t)numberOfMenuItemEventsBetweenStartDate:(id)a3 endDate:(id)a4;
-- (void)_enumerateMenuItemEventsBetweenStartDate:(id)a3 endDate:(id)a4 bundleIdFilter:(id)a5 reversed:(BOOL)a6 block:(id)a7;
+- (id)_getIntentEventFromBMAppMenuItem:(id)item bundleIdFilter:(id)filter;
+- (id)getMenuItemEventsBetweenStartDate:(id)date endDate:(id)endDate bundleIdFilter:(id)filter limit:(unint64_t)limit;
+- (unint64_t)numberOfMenuItemEventsBetweenStartDate:(id)date endDate:(id)endDate;
+- (void)_enumerateMenuItemEventsBetweenStartDate:(id)date endDate:(id)endDate bundleIdFilter:(id)filter reversed:(BOOL)reversed block:(id)block;
 @end
 
 @implementation ATXMenuItemStream
 
-- (id)getMenuItemEventsBetweenStartDate:(id)a3 endDate:(id)a4 bundleIdFilter:(id)a5 limit:(unint64_t)a6
+- (id)getMenuItemEventsBetweenStartDate:(id)date endDate:(id)endDate bundleIdFilter:(id)filter limit:(unint64_t)limit
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  filterCopy = filter;
+  endDateCopy = endDate;
+  dateCopy = date;
   v13 = objc_opt_new();
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __84__ATXMenuItemStream_getMenuItemEventsBetweenStartDate_endDate_bundleIdFilter_limit___block_invoke;
   v21 = &unk_1E80C1A58;
   v22 = v13;
-  v23 = a6;
+  limitCopy = limit;
   v14 = v13;
-  [(ATXMenuItemStream *)self _enumerateMenuItemEventsBetweenStartDate:v12 endDate:v11 bundleIdFilter:v10 reversed:1 block:&v18];
+  [(ATXMenuItemStream *)self _enumerateMenuItemEventsBetweenStartDate:dateCopy endDate:endDateCopy bundleIdFilter:filterCopy reversed:1 block:&v18];
 
-  v15 = [v14 reverseObjectEnumerator];
-  v16 = [v15 allObjects];
+  reverseObjectEnumerator = [v14 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  return v16;
+  return allObjects;
 }
 
-- (unint64_t)numberOfMenuItemEventsBetweenStartDate:(id)a3 endDate:(id)a4
+- (unint64_t)numberOfMenuItemEventsBetweenStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -41,28 +41,28 @@
   v10[2] = __68__ATXMenuItemStream_numberOfMenuItemEventsBetweenStartDate_endDate___block_invoke;
   v10[3] = &unk_1E80C1A80;
   v10[4] = &v11;
-  [(ATXMenuItemStream *)self _enumerateMenuItemEventsBetweenStartDate:v6 endDate:v7 bundleIdFilter:0 reversed:0 block:v10];
+  [(ATXMenuItemStream *)self _enumerateMenuItemEventsBetweenStartDate:dateCopy endDate:endDateCopy bundleIdFilter:0 reversed:0 block:v10];
   v8 = v12[3];
   _Block_object_dispose(&v11, 8);
 
   return v8;
 }
 
-- (void)_enumerateMenuItemEventsBetweenStartDate:(id)a3 endDate:(id)a4 bundleIdFilter:(id)a5 reversed:(BOOL)a6 block:(id)a7
+- (void)_enumerateMenuItemEventsBetweenStartDate:(id)date endDate:(id)endDate bundleIdFilter:(id)filter reversed:(BOOL)reversed block:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  dateCopy = date;
+  endDateCopy = endDate;
+  filterCopy = filter;
+  blockCopy = block;
   v15 = objc_autoreleasePoolPush();
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __100__ATXMenuItemStream__enumerateMenuItemEventsBetweenStartDate_endDate_bundleIdFilter_reversed_block___block_invoke_12;
   v19[3] = &unk_1E80C1AA8;
   v19[4] = self;
-  v16 = v13;
+  v16 = filterCopy;
   v20 = v16;
-  v17 = v14;
+  v17 = blockCopy;
   v21 = v17;
   v18 = [0 sinkWithCompletion:&__block_literal_global_19 shouldContinue:v19];
 
@@ -109,20 +109,20 @@ uint64_t __100__ATXMenuItemStream__enumerateMenuItemEventsBetweenStartDate_endDa
   return v5;
 }
 
-- (id)_getIntentEventFromBMAppMenuItem:(id)a3 bundleIdFilter:(id)a4
+- (id)_getIntentEventFromBMAppMenuItem:(id)item bundleIdFilter:(id)filter
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 bundleID];
-  if (v7)
+  itemCopy = item;
+  filterCopy = filter;
+  bundleID = [itemCopy bundleID];
+  if (bundleID)
   {
   }
 
   else
   {
-    v8 = [v5 bundleURL];
+    bundleURL = [itemCopy bundleURL];
 
-    if (!v8)
+    if (!bundleURL)
     {
       v19 = __atxlog_handle_default();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -134,22 +134,22 @@ uint64_t __100__ATXMenuItemStream__enumerateMenuItemEventsBetweenStartDate_endDa
     }
   }
 
-  v9 = [v5 path];
-  v10 = [v9 count];
+  path = [itemCopy path];
+  v10 = [path count];
 
   if (v10)
   {
-    if (!v6 || ([v5 bundleID], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", v6), v11, (v12 & 1) != 0))
+    if (!filterCopy || ([itemCopy bundleID], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", filterCopy), v11, (v12 & 1) != 0))
     {
-      v13 = [v5 path];
-      v14 = [v13 lastObject];
+      path2 = [itemCopy path];
+      lastObject = [path2 lastObject];
 
-      v15 = [v5 path];
-      if ([v15 count])
+      path3 = [itemCopy path];
+      if ([path3 count])
       {
-        v16 = [v5 path];
-        v17 = [v5 path];
-        v18 = [v16 subarrayWithRange:{0, objc_msgSend(v17, "count") - 1}];
+        path4 = [itemCopy path];
+        path5 = [itemCopy path];
+        v18 = [path4 subarrayWithRange:{0, objc_msgSend(path5, "count") - 1}];
       }
 
       else
@@ -159,14 +159,14 @@ uint64_t __100__ATXMenuItemStream__enumerateMenuItemEventsBetweenStartDate_endDa
 
       v21 = [v18 componentsJoinedByString:@" > "];
       v22 = [ATXAction alloc];
-      v23 = [v5 path];
+      path6 = [itemCopy path];
       v24 = objc_opt_new();
-      v25 = [v5 bundleID];
-      v26 = [(ATXAction *)v22 initWithMenuItemPath:v23 actionUUID:v24 bundleId:v25 title:v14 subtitle:v21];
+      bundleID2 = [itemCopy bundleID];
+      v26 = [(ATXAction *)v22 initWithMenuItemPath:path6 actionUUID:v24 bundleId:bundleID2 title:lastObject subtitle:v21];
 
       v27 = [ATXIntentEvent alloc];
-      v28 = [v5 bundleID];
-      v20 = [(ATXIntentEvent *)v27 initWithBundleId:v28 intentType:@"RunIntelligenceCommand" dateInterval:0 action:v26];
+      bundleID3 = [itemCopy bundleID];
+      v20 = [(ATXIntentEvent *)v27 initWithBundleId:bundleID3 intentType:@"RunIntelligenceCommand" dateInterval:0 action:v26];
 
       goto LABEL_18;
     }
@@ -174,7 +174,7 @@ uint64_t __100__ATXMenuItemStream__enumerateMenuItemEventsBetweenStartDate_endDa
     v19 = __atxlog_handle_default();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [(ATXMenuItemStream *)v5 _getIntentEventFromBMAppMenuItem:v6 bundleIdFilter:v19];
+      [(ATXMenuItemStream *)itemCopy _getIntentEventFromBMAppMenuItem:filterCopy bundleIdFilter:v19];
     }
   }
 

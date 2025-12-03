@@ -1,15 +1,15 @@
 @interface HIDRMUIUserAuthorizationManager
-+ (BOOL)digitFromCharacter:(unsigned __int16)a3 digit:(unsigned int *)a4;
++ (BOOL)digitFromCharacter:(unsigned __int16)character digit:(unsigned int *)digit;
 + (OS_os_log)log;
-+ (id)digitsArrayFromNumber:(id)a3;
++ (id)digitsArrayFromNumber:(id)number;
 + (id)sharedManager;
-+ (id)userNotificationForType:(int64_t)a3 deviceName:(id)a4;
-+ (unsigned)randomNumberWithDigitCount:(unsigned __int8)a3;
-- (BOOL)removeAllUserAuthorizationRequests:(id *)a3;
-- (BOOL)removeUserAuthorizationRequest:(id)a3 error:(id *)a4;
++ (id)userNotificationForType:(int64_t)type deviceName:(id)name;
++ (unsigned)randomNumberWithDigitCount:(unsigned __int8)count;
+- (BOOL)removeAllUserAuthorizationRequests:(id *)requests;
+- (BOOL)removeUserAuthorizationRequest:(id)request error:(id *)error;
 - (HIDRMUIUserAuthorizationManager)init;
 - (OS_os_log)log;
-- (void)addUserAuthorizationRequest:(id)a3 completion:(id)a4;
+- (void)addUserAuthorizationRequest:(id)request completion:(id)completion;
 @end
 
 @implementation HIDRMUIUserAuthorizationManager
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __48__HIDRMUIUserAuthorizationManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -38,113 +38,113 @@ uint64_t __48__HIDRMUIUserAuthorizationManager_sharedManager__block_invoke(uint6
   return MEMORY[0x2821F96F8]();
 }
 
-+ (unsigned)randomNumberWithDigitCount:(unsigned __int8)a3
++ (unsigned)randomNumberWithDigitCount:(unsigned __int8)count
 {
-  if ((a3 - 1) > 8)
+  if ((count - 1) > 8)
   {
     return 0;
   }
 
-  v3 = a3;
-  v4 = __exp10((a3 - 1));
-  v5 = __exp10(v3);
+  countCopy = count;
+  v4 = __exp10((count - 1));
+  v5 = __exp10(countCopy);
   return arc4random_uniform((v5 + -1.0) - v4 + 1) + v4;
 }
 
-+ (id)digitsArrayFromNumber:(id)a3
++ (id)digitsArrayFromNumber:(id)number
 {
-  v3 = [a3 unsignedIntValue];
-  v4 = [MEMORY[0x277CBEB18] array];
+  unsignedIntValue = [number unsignedIntValue];
+  array = [MEMORY[0x277CBEB18] array];
   do
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v3 % 0xA];
-    [v4 addObject:v5];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:unsignedIntValue % 0xA];
+    [array addObject:v5];
 
-    v6 = v3 > 9;
-    v3 /= 0xAu;
+    v6 = unsignedIntValue > 9;
+    unsignedIntValue /= 0xAu;
   }
 
   while (v6);
-  v7 = [v4 reverseObjectEnumerator];
-  v8 = [v7 allObjects];
+  reverseObjectEnumerator = [array reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  return v8;
+  return allObjects;
 }
 
-+ (BOOL)digitFromCharacter:(unsigned __int16)a3 digit:(unsigned int *)a4
++ (BOOL)digitFromCharacter:(unsigned __int16)character digit:(unsigned int *)digit
 {
-  v4 = a3 - 48;
-  if ((a3 - 48) <= 9 && a4 != 0)
+  v4 = character - 48;
+  if ((character - 48) <= 9 && digit != 0)
   {
-    *a4 = v4;
+    *digit = v4;
   }
 
   return v4 < 0xA;
 }
 
-+ (id)userNotificationForType:(int64_t)a3 deviceName:(id)a4
++ (id)userNotificationForType:(int64_t)type deviceName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v7 = objc_alloc_init(IOUserNotification);
   v8 = v7;
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v42 = [MEMORY[0x277CCA8D8] mainBundle];
-      v43 = [v42 localizedStringForKey:@"This accessory must be approved in Settings before it can control your device." value:&stru_2862DB1F8 table:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v43 = [mainBundle localizedStringForKey:@"This accessory must be approved in Settings before it can control your device." value:&stru_2862DB1F8 table:0];
       [(IOUserNotification *)v8 setHeader:v43];
 
-      v44 = [MEMORY[0x277CCA8D8] mainBundle];
-      v45 = [v44 localizedStringForKey:@"If you did not plug in an input device value:this accessory may be attempting to compromise your privacy or harm your device." table:{&stru_2862DB1F8, 0}];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v45 = [mainBundle2 localizedStringForKey:@"If you did not plug in an input device value:this accessory may be attempting to compromise your privacy or harm your device." table:{&stru_2862DB1F8, 0}];
       [(IOUserNotification *)v8 setMessage:v45];
 
-      v46 = [MEMORY[0x277CCA8D8] mainBundle];
-      v47 = [v46 localizedStringForKey:@"View in Settings" value:&stru_2862DB1F8 table:0];
+      mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+      v47 = [mainBundle3 localizedStringForKey:@"View in Settings" value:&stru_2862DB1F8 table:0];
       [(IOUserNotification *)v8 addButtonWithTitle:v47];
 
-      v48 = [MEMORY[0x277CCA8D8] mainBundle];
-      v49 = [v48 localizedStringForKey:@"Cancel" value:&stru_2862DB1F8 table:0];
+      mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+      v49 = [mainBundle4 localizedStringForKey:@"Cancel" value:&stru_2862DB1F8 table:0];
       [(IOUserNotification *)v8 addButtonWithTitle:v49];
 
       v51[0] = MEMORY[0x277D85DD0];
       v51[1] = 3221225472;
       v51[2] = __70__HIDRMUIUserAuthorizationManager_userNotificationForType_deviceName___block_invoke;
       v51[3] = &__block_descriptor_40_e40_v24__0__IOUserNotification_8__NSError_16l;
-      v51[4] = a1;
+      v51[4] = self;
       [(IOUserNotification *)v8 setResponseHandler:v51];
       goto LABEL_14;
     }
 
-    if (a3 == 3)
+    if (type == 3)
     {
       v16 = MEMORY[0x277CCACA8];
-      v17 = [MEMORY[0x277CCA8D8] mainBundle];
-      v18 = [v17 localizedStringForKey:@"Allow “%@” to control your device?" value:&stru_2862DB1F8 table:0];
-      v19 = [v16 stringWithFormat:v18, v6];
-      [(IOUserNotification *)v8 setHeader:v19];
+      mainBundle5 = [MEMORY[0x277CCA8D8] mainBundle];
+      v18 = [mainBundle5 localizedStringForKey:@"Allow “%@” to control your device?" value:&stru_2862DB1F8 table:0];
+      nameCopy = [v16 stringWithFormat:v18, nameCopy];
+      [(IOUserNotification *)v8 setHeader:nameCopy];
 
-      v20 = [MEMORY[0x277CCA8D8] mainBundle];
-      v21 = [v20 localizedStringForKey:@"Only allow control if you trust this accessory. Malicious accessories may attempt to compromise your privacy or harm your device." value:&stru_2862DB1F8 table:0];
+      mainBundle6 = [MEMORY[0x277CCA8D8] mainBundle];
+      v21 = [mainBundle6 localizedStringForKey:@"Only allow control if you trust this accessory. Malicious accessories may attempt to compromise your privacy or harm your device." value:&stru_2862DB1F8 table:0];
       [(IOUserNotification *)v8 setMessage:v21];
 
-      v22 = [MEMORY[0x277CCA8D8] mainBundle];
-      v23 = [v22 localizedStringForKey:@"Approve Your Accessory" value:&stru_2862DB1F8 table:0];
+      mainBundle7 = [MEMORY[0x277CCA8D8] mainBundle];
+      v23 = [mainBundle7 localizedStringForKey:@"Approve Your Accessory" value:&stru_2862DB1F8 table:0];
       [(IOUserNotification *)v8 setLockScreenHeader:v23];
 
-      v24 = [MEMORY[0x277CCA8D8] mainBundle];
-      v25 = [v24 localizedStringForKey:@"Unlock to approve your accessory" value:&stru_2862DB1F8 table:0];
+      mainBundle8 = [MEMORY[0x277CCA8D8] mainBundle];
+      v25 = [mainBundle8 localizedStringForKey:@"Unlock to approve your accessory" value:&stru_2862DB1F8 table:0];
       [(IOUserNotification *)v8 setLockScreenMessage:v25];
 
       [(IOUserNotification *)v8 setShouldDismissOnLock:0];
       [(IOUserNotification *)v8 setShouldDismissOnUnlock:0];
       [(IOUserNotification *)v8 setShouldAllowLockScreenDismissal:0];
-      v26 = [MEMORY[0x277CCA8D8] mainBundle];
-      v27 = [v26 localizedStringForKey:@"Don't Allow" value:&stru_2862DB1F8 table:0];
+      mainBundle9 = [MEMORY[0x277CCA8D8] mainBundle];
+      v27 = [mainBundle9 localizedStringForKey:@"Don't Allow" value:&stru_2862DB1F8 table:0];
       [(IOUserNotification *)v8 addButtonWithTitle:v27];
 
-      v13 = [MEMORY[0x277CCA8D8] mainBundle];
-      v14 = v13;
+      mainBundle10 = [MEMORY[0x277CCA8D8] mainBundle];
+      v14 = mainBundle10;
       v15 = @"Allow Control";
       goto LABEL_12;
     }
@@ -152,62 +152,62 @@ uint64_t __48__HIDRMUIUserAuthorizationManager_sharedManager__block_invoke(uint6
 
   else
   {
-    if (!a3)
+    if (!type)
     {
-      v29 = [MEMORY[0x277CCA8D8] mainBundle];
-      v30 = [v29 localizedStringForKey:@"Approve Your Accessory" value:&stru_2862DB1F8 table:0];
+      mainBundle11 = [MEMORY[0x277CCA8D8] mainBundle];
+      v30 = [mainBundle11 localizedStringForKey:@"Approve Your Accessory" value:&stru_2862DB1F8 table:0];
       [(IOUserNotification *)v8 setHeader:v30];
 
       v31 = MEMORY[0x277CCACA8];
-      v32 = [MEMORY[0x277CCA8D8] mainBundle];
-      v33 = [v32 localizedStringForKey:@"“%@” is attempting to control your device. Enter the following keys on this accessory to approve it." value:&stru_2862DB1F8 table:0];
-      v34 = [v31 stringWithFormat:v33, v6];
-      [(IOUserNotification *)v8 setMessage:v34];
+      mainBundle12 = [MEMORY[0x277CCA8D8] mainBundle];
+      v33 = [mainBundle12 localizedStringForKey:@"“%@” is attempting to control your device. Enter the following keys on this accessory to approve it." value:&stru_2862DB1F8 table:0];
+      nameCopy2 = [v31 stringWithFormat:v33, nameCopy];
+      [(IOUserNotification *)v8 setMessage:nameCopy2];
 
-      v35 = [MEMORY[0x277CCA8D8] mainBundle];
-      v36 = [v35 localizedStringForKey:@"Approve Your Accessory" value:&stru_2862DB1F8 table:0];
+      mainBundle13 = [MEMORY[0x277CCA8D8] mainBundle];
+      v36 = [mainBundle13 localizedStringForKey:@"Approve Your Accessory" value:&stru_2862DB1F8 table:0];
       [(IOUserNotification *)v8 setLockScreenHeader:v36];
 
-      v37 = [MEMORY[0x277CCA8D8] mainBundle];
-      v38 = [v37 localizedStringForKey:@"Unlock to approve your accessory" value:&stru_2862DB1F8 table:0];
+      mainBundle14 = [MEMORY[0x277CCA8D8] mainBundle];
+      v38 = [mainBundle14 localizedStringForKey:@"Unlock to approve your accessory" value:&stru_2862DB1F8 table:0];
       [(IOUserNotification *)v8 setLockScreenMessage:v38];
 
       [(IOUserNotification *)v8 setShouldDismissOnLock:0];
       [(IOUserNotification *)v8 setShouldDismissOnUnlock:0];
       [(IOUserNotification *)v8 setShouldAllowLockScreenDismissal:0];
       [(IOUserNotification *)v8 setExtensionIdentifier:@"com.apple.HIDRMUI.HIDRMUICFUNUIExtension"];
-      v39 = [MEMORY[0x277CCA8D8] mainBundle];
-      v40 = [v39 localizedStringForKey:@"Cancel" value:&stru_2862DB1F8 table:0];
+      mainBundle15 = [MEMORY[0x277CCA8D8] mainBundle];
+      v40 = [mainBundle15 localizedStringForKey:@"Cancel" value:&stru_2862DB1F8 table:0];
       [(IOUserNotification *)v8 addButtonWithTitle:v40];
 
-      v13 = [MEMORY[0x277CCA8D8] mainBundle];
-      v14 = v13;
+      mainBundle10 = [MEMORY[0x277CCA8D8] mainBundle];
+      v14 = mainBundle10;
       v15 = @"Not a Keyboard";
       goto LABEL_12;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
-      v9 = [MEMORY[0x277CCA8D8] mainBundle];
-      v10 = [v9 localizedStringForKey:@"This accessory has been blocked from controlling your device." value:&stru_2862DB1F8 table:0];
+      mainBundle16 = [MEMORY[0x277CCA8D8] mainBundle];
+      v10 = [mainBundle16 localizedStringForKey:@"This accessory has been blocked from controlling your device." value:&stru_2862DB1F8 table:0];
       [(IOUserNotification *)v8 setHeader:v10];
 
-      v11 = [MEMORY[0x277CCA8D8] mainBundle];
-      v12 = [v11 localizedStringForKey:@"If you did not plug in a keyboard value:this accessory may be attempting to compromise your privacy or harm your device." table:{&stru_2862DB1F8, 0}];
+      mainBundle17 = [MEMORY[0x277CCA8D8] mainBundle];
+      v12 = [mainBundle17 localizedStringForKey:@"If you did not plug in a keyboard value:this accessory may be attempting to compromise your privacy or harm your device." table:{&stru_2862DB1F8, 0}];
       [(IOUserNotification *)v8 setMessage:v12];
 
-      v13 = [MEMORY[0x277CCA8D8] mainBundle];
-      v14 = v13;
+      mainBundle10 = [MEMORY[0x277CCA8D8] mainBundle];
+      v14 = mainBundle10;
       v15 = @"Done";
 LABEL_12:
-      v41 = [v13 localizedStringForKey:v15 value:&stru_2862DB1F8 table:0];
+      v41 = [mainBundle10 localizedStringForKey:v15 value:&stru_2862DB1F8 table:0];
       [(IOUserNotification *)v8 addButtonWithTitle:v41];
 
       goto LABEL_14;
     }
   }
 
-  v28 = [a1 log];
+  v28 = [self log];
   if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
   {
     +[HIDRMUIUserAuthorizationManager userNotificationForType:deviceName:];
@@ -302,9 +302,9 @@ LABEL_16:
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v6 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
-    v7 = dispatch_queue_create(v5, v6);
+    v7 = dispatch_queue_create(uTF8String, v6);
     completionQueue = v2->_completionQueue;
     v2->_completionQueue = v7;
 
@@ -316,11 +316,11 @@ LABEL_16:
   return v2;
 }
 
-- (void)addUserAuthorizationRequest:(id)a3 completion:(id)a4
+- (void)addUserAuthorizationRequest:(id)request completion:(id)completion
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v38[0] = 0;
   v38[1] = v38;
   v38[2] = 0x2020000000;
@@ -335,15 +335,15 @@ LABEL_16:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v45 = v6;
+    v45 = requestCopy;
     _os_log_impl(&dword_250977000, v8, OS_LOG_TYPE_DEFAULT, "Adding user authorization request... (authorizationRequest: %@)", buf, 0xCu);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v6 requiresPairing];
-    if (v9)
+    requiresPairing = [requestCopy requiresPairing];
+    if (requiresPairing)
     {
       v10 = 0;
     }
@@ -354,11 +354,11 @@ LABEL_16:
     }
 
     v11 = objc_opt_class();
-    v12 = [v6 deviceName];
-    v13 = [v11 userNotificationForType:v10 deviceName:v12];
+    deviceName = [requestCopy deviceName];
+    v13 = [v11 userNotificationForType:v10 deviceName:deviceName];
 
-    v14 = [AuthRequestWrapper requestWrapperWithCompletion:v7 andUserNotification:v13];
-    if (v9)
+    v14 = [AuthRequestWrapper requestWrapperWithCompletion:completionCopy andUserNotification:v13];
+    if (requiresPairing)
     {
       v15 = [objc_opt_class() randomNumberWithDigitCount:4];
       v16 = objc_opt_class();
@@ -381,7 +381,7 @@ LABEL_16:
 
     v22 = self->_authRequests;
     objc_sync_enter(v22);
-    [(NSMutableDictionary *)self->_authRequests setObject:v14 forKey:v6];
+    [(NSMutableDictionary *)self->_authRequests setObject:v14 forKey:requestCopy];
     objc_sync_exit(v22);
 
     v23 = [(HIDRMUIUserAuthorizationManager *)self log];
@@ -399,7 +399,7 @@ LABEL_16:
     objc_copyWeak(v35, buf);
     v31[4] = self;
     v33 = v36;
-    v32 = v6;
+    v32 = requestCopy;
     v34 = v38;
     v35[1] = v10;
     [v13 presentNotificationWithResponseHandler:v31];
@@ -425,7 +425,7 @@ LABEL_16:
       [(HIDRMUIUserAuthorizationManager *)v29 addUserAuthorizationRequest:buf completion:v27];
     }
 
-    v7[2](v7, 7, v13);
+    completionCopy[2](completionCopy, 7, v13);
   }
 
   _Block_object_dispose(v36, 8);
@@ -752,26 +752,26 @@ void __74__HIDRMUIUserAuthorizationManager_addUserAuthorizationRequest_completio
   (*(a1[6] + 16))();
 }
 
-- (BOOL)removeUserAuthorizationRequest:(id)a3 error:(id *)a4
+- (BOOL)removeUserAuthorizationRequest:(id)request error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  requestCopy = request;
   v7 = [(HIDRMUIUserAuthorizationManager *)self log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v6;
+    v27 = requestCopy;
     _os_log_impl(&dword_250977000, v7, OS_LOG_TYPE_DEFAULT, "Removing user authorization request... (authorizationRequest: %@)", buf, 0xCu);
   }
 
-  if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!requestCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v16 = MEMORY[0x277CCA9B8];
     v22 = *MEMORY[0x277CCA450];
     v9 = HIDRMUIErrorStringFromCode(1001);
     v23 = v9;
-    v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-    v17 = [v16 errorWithDomain:@"HIDRMUIErrorDomain" code:1001 userInfo:{v13, v22}];
+    completionHandler2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
+    v17 = [v16 errorWithDomain:@"HIDRMUIErrorDomain" code:1001 userInfo:{completionHandler2, v22}];
 LABEL_11:
     v14 = v17;
     v15 = 0;
@@ -780,8 +780,8 @@ LABEL_11:
 
   v8 = self->_authRequests;
   objc_sync_enter(v8);
-  v9 = [(NSMutableDictionary *)self->_authRequests objectForKey:v6];
-  [(NSMutableDictionary *)self->_authRequests removeObjectForKey:v6];
+  v9 = [(NSMutableDictionary *)self->_authRequests objectForKey:requestCopy];
+  [(NSMutableDictionary *)self->_authRequests removeObjectForKey:requestCopy];
   objc_sync_exit(v8);
 
   if (!v9)
@@ -789,25 +789,25 @@ LABEL_11:
     v21 = MEMORY[0x277CCA9B8];
     v24 = *MEMORY[0x277CCA450];
     v25 = @"Authorization request not found.";
-    v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    v17 = [v21 errorWithDomain:@"HIDRMUIErrorDomain" code:1002 userInfo:v13];
+    completionHandler2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
+    v17 = [v21 errorWithDomain:@"HIDRMUIErrorDomain" code:1002 userInfo:completionHandler2];
     goto LABEL_11;
   }
 
-  v10 = [v9 userNotification];
+  userNotification = [v9 userNotification];
 
-  if (v10)
+  if (userNotification)
   {
-    v11 = [v9 userNotification];
-    [v11 dismissNotification];
+    userNotification2 = [v9 userNotification];
+    [userNotification2 dismissNotification];
   }
 
-  v12 = [v9 completionHandler];
+  completionHandler = [v9 completionHandler];
 
-  if (v12)
+  if (completionHandler)
   {
-    v13 = [v9 completionHandler];
-    v13[2](v13, 0, 0);
+    completionHandler2 = [v9 completionHandler];
+    completionHandler2[2](completionHandler2, 0, 0);
     v14 = 0;
     v15 = 1;
 LABEL_12:
@@ -819,25 +819,25 @@ LABEL_12:
   v15 = 1;
 LABEL_13:
 
-  if (a4)
+  if (error)
   {
     v18 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
   v19 = *MEMORY[0x277D85DE8];
   return v15;
 }
 
-- (BOOL)removeAllUserAuthorizationRequests:(id *)a3
+- (BOOL)removeAllUserAuthorizationRequests:(id *)requests
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = [(HIDRMUIUserAuthorizationManager *)self userAuthorizationRequests];
+  userAuthorizationRequests = [(HIDRMUIUserAuthorizationManager *)self userAuthorizationRequests];
   v5 = [(HIDRMUIUserAuthorizationManager *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v21 = [v4 count];
+    v21 = [userAuthorizationRequests count];
     _os_log_impl(&dword_250977000, v5, OS_LOG_TYPE_DEFAULT, "Removing all user authorization requests... (authRequests.count: %lu)", buf, 0xCu);
   }
 
@@ -845,7 +845,7 @@ LABEL_13:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = userAuthorizationRequests;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -904,7 +904,7 @@ LABEL_5:
   block[1] = 3221225472;
   block[2] = __38__HIDRMUIUserAuthorizationManager_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken != -1)
   {
     dispatch_once(&log_onceToken, block);

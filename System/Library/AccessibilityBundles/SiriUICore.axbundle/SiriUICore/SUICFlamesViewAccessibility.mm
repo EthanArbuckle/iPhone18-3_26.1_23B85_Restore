@@ -1,15 +1,15 @@
 @interface SUICFlamesViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 @end
 
 @implementation SUICFlamesViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUICFlamesView" hasInstanceVariable:@"_flamesDelegate" withType:"<SUICFlamesViewDelegate>"];
-  [v3 validateClass:@"SUICFlamesView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUICFlamesView" hasInstanceVariable:@"_flamesDelegate" withType:"<SUICFlamesViewDelegate>"];
+  [validationsCopy validateClass:@"SUICFlamesView" isKindOfClass:@"UIView"];
 }
 
 - (BOOL)isAccessibilityElement
@@ -18,15 +18,15 @@
   v2 = __UIAccessibilityCastAsClass();
   if ([v2 _accessibilityViewIsVisible])
   {
-    v3 = [v2 _accessibilityWindowVisible];
+    _accessibilityWindowVisible = [v2 _accessibilityWindowVisible];
   }
 
   else
   {
-    v3 = 0;
+    _accessibilityWindowVisible = 0;
   }
 
-  return v3;
+  return _accessibilityWindowVisible;
 }
 
 @end

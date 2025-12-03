@@ -1,31 +1,31 @@
 @interface ENFileSession
-- (BOOL)_activateHandleReply:(id)a3 error:(id *)a4;
-- (BOOL)_activateSyncWithRequest:(id)a3 error:(id *)a4;
-- (BOOL)activateWithArchivePath:(id)a3 error:(id *)a4;
-- (BOOL)activateWithFilePath:(id)a3 error:(id *)a4;
-- (ENFileSession)initWithServiceClient:(id)a3;
+- (BOOL)_activateHandleReply:(id)reply error:(id *)error;
+- (BOOL)_activateSyncWithRequest:(id)request error:(id *)error;
+- (BOOL)activateWithArchivePath:(id)path error:(id *)error;
+- (BOOL)activateWithFilePath:(id)path error:(id *)error;
+- (ENFileSession)initWithServiceClient:(id)client;
 - (NSDate)endDate;
 - (NSDate)startDate;
-- (id)_activateCreateXPCRequestWithFD:(int)a3 archive:(BOOL)a4 signatureData:(id)a5 error:(id *)a6;
-- (id)_readTEKBatchHandleReply:(id)a3 error:(id *)a4;
-- (id)readTEKBatchAndReturnError:(id *)a3;
-- (id)verifySignatureWithPublicKey:(__SecKey *)a3 error:(id *)a4;
+- (id)_activateCreateXPCRequestWithFD:(int)d archive:(BOOL)archive signatureData:(id)data error:(id *)error;
+- (id)_readTEKBatchHandleReply:(id)reply error:(id *)error;
+- (id)readTEKBatchAndReturnError:(id *)error;
+- (id)verifySignatureWithPublicKey:(__SecKey *)key error:(id *)error;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation ENFileSession
 
-- (ENFileSession)initWithServiceClient:(id)a3
+- (ENFileSession)initWithServiceClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v9.receiver = self;
   v9.super_class = ENFileSession;
   v6 = [(ENFileSession *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceClient, a3);
+    objc_storeStrong(&v6->_serviceClient, client);
     v7->_batchSize = 256;
   }
 
@@ -106,14 +106,14 @@ void __27__ENFileSession_invalidate__block_invoke_2(uint64_t a1)
   (*(*(a1 + 32) + 16))();
 }
 
-- (BOOL)activateWithFilePath:(id)a3 error:(id *)a4
+- (BOOL)activateWithFilePath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 stringByDeletingPathExtension];
-  v8 = [v7 stringByAppendingPathExtension:@"sig"];
+  pathCopy = path;
+  stringByDeletingPathExtension = [pathCopy stringByDeletingPathExtension];
+  v8 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"sig"];
 
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [v9 fileExistsAtPath:v8];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v10 = [defaultManager fileExistsAtPath:v8];
 
   if (v10)
   {
@@ -123,10 +123,10 @@ void __27__ENFileSession_invalidate__block_invoke_2(uint64_t a1)
     v13 = v12;
     if (!v11)
     {
-      if (a4)
+      if (error)
       {
         ENNestedErrorF(v12, 1);
-        *a4 = v15 = 0;
+        *error = v15 = 0;
       }
 
       else
@@ -145,10 +145,10 @@ void __27__ENFileSession_invalidate__block_invoke_2(uint64_t a1)
     v13 = 0;
   }
 
-  v14 = [(ENFileSession *)self _activateCreateXPCRequestWithPath:v6 archive:0 signatureData:v13 error:a4];
+  v14 = [(ENFileSession *)self _activateCreateXPCRequestWithPath:pathCopy archive:0 signatureData:v13 error:error];
   if (v14)
   {
-    v15 = [(ENFileSession *)self _activateSyncWithRequest:v14 error:a4];
+    v15 = [(ENFileSession *)self _activateSyncWithRequest:v14 error:error];
   }
 
   else
@@ -160,16 +160,16 @@ LABEL_8:
   return v15;
 }
 
-- (id)_activateCreateXPCRequestWithFD:(int)a3 archive:(BOOL)a4 signatureData:(id)a5 error:(id *)a6
+- (id)_activateCreateXPCRequestWithFD:(int)d archive:(BOOL)archive signatureData:(id)data error:(id *)error
 {
-  v7 = a4;
-  v10 = a5;
-  v11 = xpc_fd_create(a3);
+  archiveCopy = archive;
+  dataCopy = data;
+  v11 = xpc_fd_create(d);
   if (v11)
   {
     v12 = xpc_dictionary_create(0, 0, 0);
     v13 = v12;
-    if (v7)
+    if (archiveCopy)
     {
       v14 = 10;
     }
@@ -183,15 +183,15 @@ LABEL_8:
     xpc_dictionary_set_uint64(v13, "btSz", self->_batchSize);
     xpc_dictionary_set_value(v13, "fd", v11);
     xpc_dictionary_set_uint64(v13, "fileSF", self->_flags);
-    if (v10)
+    if (dataCopy)
     {
-      v15 = v10;
+      v15 = dataCopy;
       v16 = v13;
-      v17 = v10;
-      v18 = [v17 bytes];
-      if (v18)
+      v17 = dataCopy;
+      bytes = [v17 bytes];
+      if (bytes)
       {
-        v19 = v18;
+        v19 = bytes;
       }
 
       else
@@ -204,16 +204,16 @@ LABEL_8:
       xpc_dictionary_set_data(v16, "sigD", v19, v20);
     }
 
-    if ((a3 & 0x80000000) == 0)
+    if ((d & 0x80000000) == 0)
     {
-      close(a3);
+      close(d);
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     ENErrorF(1);
-    *a6 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -224,12 +224,12 @@ LABEL_8:
   return v13;
 }
 
-- (BOOL)_activateSyncWithRequest:(id)a3 error:(id *)a4
+- (BOOL)_activateSyncWithRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   if (self->_activateCalled)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_10;
     }
@@ -239,11 +239,11 @@ LABEL_8:
 
   if (self->_invalidated)
   {
-    if (a4)
+    if (error)
     {
 LABEL_10:
       ENErrorF(10);
-      *a4 = v10 = 0;
+      *error = v10 = 0;
       goto LABEL_6;
     }
 
@@ -252,13 +252,13 @@ LABEL_12:
     goto LABEL_6;
   }
 
-  v7 = [(ENXPCServiceClient *)self->_serviceClient getXPCConnectionAndReturnError:a4];
+  v7 = [(ENXPCServiceClient *)self->_serviceClient getXPCConnectionAndReturnError:error];
   v8 = v7;
   if (v7)
   {
     self->_activateCalled = 1;
-    v9 = xpc_connection_send_message_with_reply_sync(v7, v6);
-    v10 = [(ENFileSession *)self _activateHandleReply:v9 error:a4];
+    v9 = xpc_connection_send_message_with_reply_sync(v7, requestCopy);
+    v10 = [(ENFileSession *)self _activateHandleReply:v9 error:error];
   }
 
   else
@@ -270,9 +270,9 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)_activateHandleReply:(id)a3 error:(id *)a4
+- (BOOL)_activateHandleReply:(id)reply error:(id *)error
 {
-  v5 = a3;
+  replyCopy = reply;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -282,26 +282,26 @@ LABEL_6:
   v6 = v10[5];
   if (v6)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = v6;
+      *error = v6;
     }
   }
 
   else
   {
-    v7 = xpc_dictionary_get_value(v5, "meta");
+    v7 = xpc_dictionary_get_value(replyCopy, "meta");
     if (v7)
     {
-      if ((CUXPCDecodeNSData() & 1) != 0 && a4)
+      if ((CUXPCDecodeNSData() & 1) != 0 && error)
       {
-        *a4 = ENErrorF(16);
+        *error = ENErrorF(16);
       }
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = ENErrorF(16);
+      *error = ENErrorF(16);
     }
   }
 
@@ -341,30 +341,30 @@ BOOL __44__ENFileSession__activateHandleReply_error___block_invoke(uint64_t a1, 
   return v8;
 }
 
-- (id)readTEKBatchAndReturnError:(id *)a3
+- (id)readTEKBatchAndReturnError:(id *)error
 {
   if (self->_activateSucceeded)
   {
     if (!self->_invalidated)
     {
-      [(ENFileSession *)&self->super.isa readTEKBatchAndReturnError:a3, &v8];
+      [(ENFileSession *)&self->super.isa readTEKBatchAndReturnError:error, &v8];
       v4 = v8;
       goto LABEL_4;
     }
 
-    if (a3)
+    if (error)
     {
       goto LABEL_10;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
 LABEL_10:
     v6 = ENErrorF(10);
     v7 = v6;
     v4 = 0;
-    *a3 = v6;
+    *error = v6;
     goto LABEL_4;
   }
 
@@ -374,9 +374,9 @@ LABEL_4:
   return v4;
 }
 
-- (id)_readTEKBatchHandleReply:(id)a3 error:(id *)a4
+- (id)_readTEKBatchHandleReply:(id)reply error:(id *)error
 {
-  v6 = a3;
+  replyCopy = reply;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -387,7 +387,7 @@ LABEL_4:
   if (!v7)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v9 = xpc_dictionary_get_array(v6, "tekA");
+    v9 = xpc_dictionary_get_array(replyCopy, "tekA");
     v10 = v9;
     if (v9)
     {
@@ -403,10 +403,10 @@ LABEL_4:
     v11 = v17[5];
     if (v11)
     {
-      if (a4)
+      if (error)
       {
         v13 = 0;
-        *a4 = v11;
+        *error = v11;
         goto LABEL_9;
       }
     }
@@ -436,9 +436,9 @@ LABEL_9:
   }
 
   v13 = 0;
-  if (a4)
+  if (error)
   {
-    *a4 = v7;
+    *error = v7;
   }
 
 LABEL_10:
@@ -478,12 +478,12 @@ BOOL __48__ENFileSession__readTEKBatchHandleReply_error___block_invoke(uint64_t 
   return v8;
 }
 
-- (id)verifySignatureWithPublicKey:(__SecKey *)a3 error:(id *)a4
+- (id)verifySignatureWithPublicKey:(__SecKey *)key error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
   if (!self->_activateSucceeded)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_47;
     }
@@ -492,13 +492,13 @@ LABEL_43:
     v33 = 10;
 LABEL_46:
     ENErrorF(v33);
-    *a4 = v30 = 0;
+    *error = v30 = 0;
     goto LABEL_37;
   }
 
   if (self->_invalidated)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_47;
     }
@@ -513,11 +513,11 @@ LABEL_46:
     v8 = v7;
     if (v7)
     {
-      v9 = [(NSArray *)v7 firstObject];
+      firstObject = [(NSArray *)v7 firstObject];
 
-      if (v9)
+      if (firstObject)
       {
-        v34 = a4;
+        errorCopy = error;
         v35 = v8;
         v40 = 0u;
         v41 = 0u;
@@ -543,35 +543,35 @@ LABEL_46:
               }
 
               v17 = *(*(&v38 + 1) + 8 * v16);
-              v18 = [v17 signatureData];
+              signatureData = [v17 signatureData];
 
-              if (v18)
+              if (signatureData)
               {
                 error = 0;
-                if (SecKeyVerifySignature(a3, v13, sha256Data, v18, &error))
+                if (SecKeyVerifySignature(key, v13, sha256Data, signatureData, &error))
                 {
                   v30 = v17;
 
                   goto LABEL_35;
                 }
 
-                v19 = error;
+                errorCopy2 = error;
                 if (error)
                 {
-                  v20 = [(__CFError *)error domain];
-                  if ([v20 isEqualToString:v15])
+                  domain = [(__CFError *)error domain];
+                  if ([domain isEqualToString:v15])
                   {
                     v21 = v14;
                     v22 = v13;
                     v23 = sha256Data;
                     v24 = v10;
-                    v25 = a3;
+                    keyCopy = key;
                     v26 = v15;
-                    v27 = [(__CFError *)v19 code];
+                    code = [(__CFError *)errorCopy2 code];
 
-                    v28 = v27 == -67808;
+                    v28 = code == -67808;
                     v15 = v26;
-                    a3 = v25;
+                    key = keyCopy;
                     v10 = v24;
                     sha256Data = v23;
                     v13 = v22;
@@ -610,10 +610,10 @@ LABEL_27:
           while (v29);
         }
 
-        if (v34)
+        if (errorCopy)
         {
           ENErrorF(2);
-          *v34 = v30 = 0;
+          *errorCopy = v30 = 0;
         }
 
         else
@@ -626,17 +626,17 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      if (a4)
+      if (error)
       {
         goto LABEL_51;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_51:
       ENErrorF(2);
-      *a4 = v30 = 0;
+      *error = v30 = 0;
 LABEL_36:
 
       goto LABEL_37;
@@ -646,7 +646,7 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  if (a4)
+  if (error)
   {
     v33 = 2;
     goto LABEL_46;
@@ -681,13 +681,13 @@ LABEL_37:
       {
         v7 = xpc_dictionary_create(0, 0, 0);
         xpc_dictionary_set_int64(v7, "smTyp", 12);
-        v8 = [(ENXPCServiceClient *)self->_serviceClient dispatchQueue];
+        dispatchQueue = [(ENXPCServiceClient *)self->_serviceClient dispatchQueue];
         handler[0] = MEMORY[0x277D85DD0];
         handler[1] = 3221225472;
         handler[2] = __27__ENFileSession_invalidate__block_invoke_2;
         handler[3] = &unk_278A4B720;
         handler[4] = v3;
-        xpc_connection_send_message_with_reply(v5, v7, v8, handler);
+        xpc_connection_send_message_with_reply(v5, v7, dispatchQueue, handler);
       }
 
       else
@@ -698,12 +698,12 @@ LABEL_37:
   }
 }
 
-- (BOOL)activateWithArchivePath:(id)a3 error:(id *)a4
+- (BOOL)activateWithArchivePath:(id)path error:(id *)error
 {
-  v6 = [(ENFileSession *)self _activateCreateXPCRequestWithPath:a3 archive:1 signatureData:0 error:a4];
+  v6 = [(ENFileSession *)self _activateCreateXPCRequestWithPath:path archive:1 signatureData:0 error:error];
   if (v6)
   {
-    v7 = [(ENFileSession *)self _activateSyncWithRequest:v6 error:a4];
+    v7 = [(ENFileSession *)self _activateSyncWithRequest:v6 error:error];
   }
 
   else

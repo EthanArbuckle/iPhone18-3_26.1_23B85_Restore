@@ -1,56 +1,56 @@
 @interface AKOverlayView
 + (void)initialize;
 - (AKMainEventHandler)mainEventHandler;
-- (AKOverlayView)initWithPageController:(id)a3;
+- (AKOverlayView)initWithPageController:(id)controller;
 - (AKPageController)pageController;
-- (BOOL)_hasResizeHandleAtLocation:(CGPoint)a3;
+- (BOOL)_hasResizeHandleAtLocation:(CGPoint)location;
 - (BOOL)_isEditingTextBoxAnnotation;
-- (BOOL)_scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (CGRect)_findResizeHandleRectAtLocation:(CGPoint)a3 withVisualStyle:(id *)a4;
-- (CGRect)_scribbleInteraction:(id)a3 frameForElement:(id)a4;
-- (UIEdgeInsets)_scribbleInteraction:(id)a3 hitToleranceInsetsForElement:(id)a4 defaultInsets:(UIEdgeInsets)a5;
-- (id)_liftOffHandleViewForRegion:(id)a3;
-- (id)_liftOffHandleViewInFrame:(CGRect)a3 withPointStyle:(unint64_t)a4;
+- (BOOL)_scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (CGRect)_findResizeHandleRectAtLocation:(CGPoint)location withVisualStyle:(id *)style;
+- (CGRect)_scribbleInteraction:(id)interaction frameForElement:(id)element;
+- (UIEdgeInsets)_scribbleInteraction:(id)interaction hitToleranceInsetsForElement:(id)element defaultInsets:(UIEdgeInsets)insets;
+- (id)_liftOffHandleViewForRegion:(id)region;
+- (id)_liftOffHandleViewInFrame:(CGRect)frame withPointStyle:(unint64_t)style;
 - (id)_singleSelectedAnnotation;
 - (id)annotationController;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)keyCommands;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_addLiftOffHandleViewForRegion:(id)a3;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_addLiftOffHandleViewForRegion:(id)region;
 - (void)_postScrollViewRectChangedNotification;
 - (void)_postScrollViewScrollOrMagnifyEndNotification;
 - (void)_removeAllLiftOffHandleViews;
-- (void)_removeLiftOffHandleViewForRegion:(id)a3;
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6;
-- (void)_scribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5;
-- (void)_scrollViewDidEndAnimation:(id)a3;
-- (void)_scrollViewDidEndDecelerating:(id)a3;
-- (void)_scrollViewDidEndDragging:(id)a3;
-- (void)_scrollViewDidScrollToTop:(id)a3;
+- (void)_removeLiftOffHandleViewForRegion:(id)region;
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion;
+- (void)_scribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion;
+- (void)_scrollViewDidEndAnimation:(id)animation;
+- (void)_scrollViewDidEndDecelerating:(id)decelerating;
+- (void)_scrollViewDidEndDragging:(id)dragging;
+- (void)_scrollViewDidScrollToTop:(id)top;
 - (void)_setupObservation;
 - (void)_startObservingAnnotationEventHandlers;
 - (void)_stopObservingAnnotationEventHandlers;
 - (void)_teardownObservation;
-- (void)_updateLayersUsingScrollViewWithForcedUpdate:(BOOL)a3 dismissSelectionMenu:(BOOL)a4;
+- (void)_updateLayersUsingScrollViewWithForcedUpdate:(BOOL)update dismissSelectionMenu:(BOOL)menu;
 - (void)_wasMovedToNewSuperview;
-- (void)_willEndLiveMagnify:(id)a3;
-- (void)_willStartLiveMagnify:(id)a3;
-- (void)copy:(id)a3;
-- (void)cut:(id)a3;
+- (void)_willEndLiveMagnify:(id)magnify;
+- (void)_willStartLiveMagnify:(id)magnify;
+- (void)copy:(id)copy;
+- (void)cut:(id)cut;
 - (void)dealloc;
-- (void)delete:(id)a3;
+- (void)delete:(id)delete;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
-- (void)duplicate:(id)a3;
-- (void)editTextAnnotation:(id)a3;
-- (void)layoutSublayersOfLayer:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)paste:(id)a3;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
-- (void)willMoveToSuperview:(id)a3;
+- (void)duplicate:(id)duplicate;
+- (void)editTextAnnotation:(id)annotation;
+- (void)layoutSublayersOfLayer:(id)layer;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)paste:(id)paste;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation AKOverlayView
@@ -63,25 +63,25 @@
   }
 }
 
-- (AKOverlayView)initWithPageController:(id)a3
+- (AKOverlayView)initWithPageController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = AKOverlayView;
   v5 = [(AKOverlayView *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    [(AKOverlayView *)v5 setPageController:v4];
-    v7 = [v4 controller];
-    v8 = [v7 mainEventHandler];
-    [(AKOverlayView *)v6 setMainEventHandler:v8];
+    [(AKOverlayView *)v5 setPageController:controllerCopy];
+    controller = [controllerCopy controller];
+    mainEventHandler = [controller mainEventHandler];
+    [(AKOverlayView *)v6 setMainEventHandler:mainEventHandler];
 
-    v9 = [v4 layerPresentationManager];
-    v10 = [v9 rootLayer];
+    layerPresentationManager = [controllerCopy layerPresentationManager];
+    rootLayer = [layerPresentationManager rootLayer];
 
-    v11 = [(AKOverlayView *)v6 layer];
-    [v11 addSublayer:v10];
+    layer = [(AKOverlayView *)v6 layer];
+    [layer addSublayer:rootLayer];
 
     [(AKOverlayView *)v6 setUserInteractionEnabled:0];
     v12 = objc_alloc_init(MEMORY[0x277CD9660]);
@@ -91,8 +91,8 @@
     v13 = [objc_alloc(MEMORY[0x277D75870]) initWithDelegate:v6];
     [(AKOverlayView *)v6 setPointerInteraction:v13];
 
-    v14 = [(AKOverlayView *)v6 pointerInteraction];
-    [(AKOverlayView *)v6 addInteraction:v14];
+    pointerInteraction = [(AKOverlayView *)v6 pointerInteraction];
+    [(AKOverlayView *)v6 addInteraction:pointerInteraction];
   }
 
   return v6;
@@ -106,13 +106,13 @@
   [(AKOverlayView *)&v3 dealloc];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v4 = a3;
+  superviewCopy = superview;
   [(AKOverlayView *)self _willRemoveFromOldSuperview];
   v5.receiver = self;
   v5.super_class = AKOverlayView;
-  [(AKOverlayView *)&v5 willMoveToSuperview:v4];
+  [(AKOverlayView *)&v5 willMoveToSuperview:superviewCopy];
 }
 
 - (void)didMoveToSuperview
@@ -120,13 +120,13 @@
   v5.receiver = self;
   v5.super_class = AKOverlayView;
   [(AKOverlayView *)&v5 didMoveToSuperview];
-  v3 = [(AKOverlayView *)self superview];
+  superview = [(AKOverlayView *)self superview];
 
-  if (v3)
+  if (superview)
   {
-    v4 = [(AKOverlayView *)self window];
+    window = [(AKOverlayView *)self window];
 
-    if (v4)
+    if (window)
     {
       [(AKOverlayView *)self _wasMovedToNewSuperview];
     }
@@ -140,9 +140,9 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(AKOverlayView *)self window];
+  window = [(AKOverlayView *)self window];
 
-  if (v3 && [(AKOverlayView *)self deferWasMovedToSuperviewUntilMoveToWindow])
+  if (window && [(AKOverlayView *)self deferWasMovedToSuperviewUntilMoveToWindow])
   {
     [(AKOverlayView *)self setDeferWasMovedToSuperviewUntilMoveToWindow:0];
 
@@ -150,32 +150,32 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  eventCopy = event;
   v38.receiver = self;
   v38.super_class = AKOverlayView;
-  v8 = [(AKOverlayView *)&v38 hitTest:v7 withEvent:x, y];
-  v9 = [(AKOverlayView *)self pageController];
-  v10 = [v9 controller];
-  v11 = v10;
+  v8 = [(AKOverlayView *)&v38 hitTest:eventCopy withEvent:x, y];
+  pageController = [(AKOverlayView *)self pageController];
+  controller = [pageController controller];
+  v11 = controller;
   if (!v8)
   {
-    v12 = [v10 textEditorController];
-    v13 = [v12 textView];
+    textEditorController = [controller textEditorController];
+    textView = [textEditorController textView];
 
-    if (!v13 || (-[AKOverlayView convertPoint:toView:](self, "convertPoint:toView:", v13, x, y), v15 = v14, v17 = v16, ![v13 pointInside:v7 withEvent:?]) || (objc_msgSend(v13, "hitTest:withEvent:", v7, v15, v17), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!textView || (-[AKOverlayView convertPoint:toView:](self, "convertPoint:toView:", textView, x, y), v15 = v14, v17 = v16, ![textView pointInside:eventCopy withEvent:?]) || (objc_msgSend(textView, "hitTest:withEvent:", eventCopy, v15, v17), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v33 = v13;
+      v33 = textView;
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v18 = [(AKOverlayView *)self subviews];
-      v19 = [v18 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      subviews = [(AKOverlayView *)self subviews];
+      v19 = [subviews countByEnumeratingWithState:&v34 objects:v39 count:16];
       if (v19)
       {
         v20 = v19;
@@ -186,7 +186,7 @@ LABEL_7:
         {
           if (*v35 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(subviews);
           }
 
           v23 = *(*(&v34 + 1) + 8 * v22);
@@ -198,7 +198,7 @@ LABEL_7:
 
           if (v20 == ++v22)
           {
-            v20 = [v18 countByEnumeratingWithState:&v34 objects:v39 count:16];
+            v20 = [subviews countByEnumeratingWithState:&v34 objects:v39 count:16];
             if (v20)
             {
               goto LABEL_7;
@@ -218,10 +218,10 @@ LABEL_7:
         [(AKOverlayView *)self convertPoint:v24 toView:x, y];
         v26 = v25;
         v28 = v27;
-        v13 = v33;
-        if ([v24 pointInside:v7 withEvent:?])
+        textView = v33;
+        if ([v24 pointInside:eventCopy withEvent:?])
         {
-          v8 = [v24 hitTest:v7 withEvent:{v26, v28}];
+          v8 = [v24 hitTest:eventCopy withEvent:{v26, v28}];
         }
 
         else
@@ -237,16 +237,16 @@ LABEL_13:
         v24 = 0;
 LABEL_17:
         v8 = 0;
-        v13 = v33;
+        textView = v33;
       }
     }
   }
 
-  v29 = [v11 overlayInteractionDelegate];
-  v30 = v29;
+  overlayInteractionDelegate = [v11 overlayInteractionDelegate];
+  v30 = overlayInteractionDelegate;
   if (v8)
   {
-    v31 = v29 == 0;
+    v31 = overlayInteractionDelegate == 0;
   }
 
   else
@@ -254,7 +254,7 @@ LABEL_17:
     v31 = 1;
   }
 
-  if (!v31 && ([v29 annotationController:v11 shouldAllowOverlayHitTestAtPoint:self forOverlayView:v8 currentHitTest:{x, y}] & 1) == 0)
+  if (!v31 && ([overlayInteractionDelegate annotationController:v11 shouldAllowOverlayHitTestAtPoint:self forOverlayView:v8 currentHitTest:{x, y}] & 1) == 0)
   {
 
     v8 = 0;
@@ -267,10 +267,10 @@ LABEL_17:
 {
   if (![(AKOverlayView *)self isObservingEventHandling])
   {
-    v5 = [(AKOverlayView *)self pageController];
-    v3 = [v5 controller];
-    v4 = [v3 mainEventHandler];
-    [v4 addObserver:self forKeyPath:@"annotationEventHandler" options:0 context:@"AKOverlayView.eventHandlingObservationContext"];
+    pageController = [(AKOverlayView *)self pageController];
+    controller = [pageController controller];
+    mainEventHandler = [controller mainEventHandler];
+    [mainEventHandler addObserver:self forKeyPath:@"annotationEventHandler" options:0 context:@"AKOverlayView.eventHandlingObservationContext"];
     [(AKOverlayView *)self setIsObservingEventHandling:1];
   }
 }
@@ -279,33 +279,33 @@ LABEL_17:
 {
   if ([(AKOverlayView *)self isObservingEventHandling])
   {
-    v5 = [(AKOverlayView *)self pageController];
-    v3 = [v5 controller];
-    v4 = [v3 mainEventHandler];
-    [v4 removeObserver:self forKeyPath:@"annotationEventHandler" context:@"AKOverlayView.eventHandlingObservationContext"];
+    pageController = [(AKOverlayView *)self pageController];
+    controller = [pageController controller];
+    mainEventHandler = [controller mainEventHandler];
+    [mainEventHandler removeObserver:self forKeyPath:@"annotationEventHandler" context:@"AKOverlayView.eventHandlingObservationContext"];
     [(AKOverlayView *)self setIsObservingEventHandling:0];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(AKOverlayView *)self pageController];
-  v14 = [v13 controller];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  pageController = [(AKOverlayView *)self pageController];
+  controller = [pageController controller];
 
-  if (a6 == @"AKOverlayView.contentViewMagnificationObservationContext")
+  if (context == @"AKOverlayView.contentViewMagnificationObservationContext")
   {
     [(AKOverlayView *)self _updateLayersUsingScrollView];
     [(AKOverlayView *)self _postScrollViewRectChangedNotification];
     goto LABEL_27;
   }
 
-  if (a6 == @"AKOverlayView.overlayViewSizeObservationContext")
+  if (context == @"AKOverlayView.overlayViewSizeObservationContext")
   {
-    v15 = [v12 objectForKey:*MEMORY[0x277CCA300]];
-    v16 = [v12 objectForKey:*MEMORY[0x277CCA2F0]];
+    v15 = [changeCopy objectForKey:*MEMORY[0x277CCA300]];
+    v16 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
     [v15 akRectValue];
     v18 = v17;
     v20 = v19;
@@ -341,10 +341,10 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (a6 == @"AKOverlayView.contentViewContentSizeObservationContext")
+  if (context == @"AKOverlayView.contentViewContentSizeObservationContext")
   {
-    v15 = [v12 objectForKey:*MEMORY[0x277CCA300]];
-    v16 = [v12 objectForKey:*MEMORY[0x277CCA2F0]];
+    v15 = [changeCopy objectForKey:*MEMORY[0x277CCA300]];
+    v16 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
     [v15 akSizeValue];
     v33 = v32;
     v35 = v34;
@@ -357,120 +357,120 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (a6 == @"AKOverlayView.controllerAnnotationEditingContext")
+  if (context == @"AKOverlayView.controllerAnnotationEditingContext")
   {
-    v39 = [v14 annotationEditingEnabled];
+    annotationEditingEnabled = [controller annotationEditingEnabled];
 LABEL_26:
-    v40 = v39;
-    v41 = [(AKOverlayView *)self pointerInteraction];
-    [v41 setEnabled:v40];
+    v40 = annotationEditingEnabled;
+    pointerInteraction = [(AKOverlayView *)self pointerInteraction];
+    [pointerInteraction setEnabled:v40];
 
     goto LABEL_27;
   }
 
-  if (a6 == @"AKOverlayView.controllerFormFillingContext")
+  if (context == @"AKOverlayView.controllerFormFillingContext")
   {
-    v39 = [v14 formFillingEnabled];
+    annotationEditingEnabled = [controller formFillingEnabled];
     goto LABEL_26;
   }
 
-  if (a6 == @"AKOverlayView.eventHandlingObservationContext")
+  if (context == @"AKOverlayView.eventHandlingObservationContext")
   {
     [(AKOverlayView *)self _removeAllLiftOffHandleViews];
   }
 
-  else if (a6 != @"AKOverlayView.selectedAnnotationsContext")
+  else if (context != @"AKOverlayView.selectedAnnotationsContext")
   {
     v42.receiver = self;
     v42.super_class = AKOverlayView;
-    [(AKOverlayView *)&v42 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(AKOverlayView *)&v42 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
 LABEL_27:
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
-  v8 = a3;
-  v4 = [(AKOverlayView *)self layer];
+  layerCopy = layer;
+  layer = [(AKOverlayView *)self layer];
 
-  if (v4 == v8)
+  if (layer == layerCopy)
   {
-    v5 = [(AKOverlayView *)self pageController];
-    v6 = [v5 layerPresentationManager];
-    v7 = [v6 rootLayer];
+    pageController = [(AKOverlayView *)self pageController];
+    layerPresentationManager = [pageController layerPresentationManager];
+    rootLayer = [layerPresentationManager rootLayer];
 
-    [v8 bounds];
-    [v7 setFrame:?];
+    [layerCopy bounds];
+    [rootLayer setFrame:?];
   }
 }
 
 - (id)keyCommands
 {
-  v2 = [(AKOverlayView *)self annotationController];
-  v3 = [v2 keyCommandsForAnnotations];
+  annotationController = [(AKOverlayView *)self annotationController];
+  keyCommandsForAnnotations = [annotationController keyCommandsForAnnotations];
 
-  return v3;
+  return keyCommandsForAnnotations;
 }
 
 - (id)annotationController
 {
-  v2 = [(AKOverlayView *)self pageController];
-  v3 = [v2 controller];
+  pageController = [(AKOverlayView *)self pageController];
+  controller = [pageController controller];
 
-  return v3;
+  return controller;
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  v4 = a3;
-  v5 = [(AKOverlayView *)self annotationController];
-  [v5 cut:v4];
+  cutCopy = cut;
+  annotationController = [(AKOverlayView *)self annotationController];
+  [annotationController cut:cutCopy];
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v4 = a3;
-  v5 = [(AKOverlayView *)self annotationController];
-  [v5 copy:v4];
+  copyCopy = copy;
+  annotationController = [(AKOverlayView *)self annotationController];
+  [annotationController copy:copyCopy];
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
-  v4 = a3;
-  v5 = [(AKOverlayView *)self annotationController];
-  [v5 paste:v4];
+  pasteCopy = paste;
+  annotationController = [(AKOverlayView *)self annotationController];
+  [annotationController paste:pasteCopy];
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
-  v4 = a3;
-  v5 = [(AKOverlayView *)self annotationController];
-  [v5 delete:v4];
+  deleteCopy = delete;
+  annotationController = [(AKOverlayView *)self annotationController];
+  [annotationController delete:deleteCopy];
 }
 
-- (void)duplicate:(id)a3
+- (void)duplicate:(id)duplicate
 {
-  v4 = a3;
-  v5 = [(AKOverlayView *)self annotationController];
-  [v5 duplicate:v4];
+  duplicateCopy = duplicate;
+  annotationController = [(AKOverlayView *)self annotationController];
+  [annotationController duplicate:duplicateCopy];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(AKOverlayView *)self annotationController];
-  v8 = [v7 textEditorController];
-  v9 = [v8 textView];
+  senderCopy = sender;
+  annotationController = [(AKOverlayView *)self annotationController];
+  textEditorController = [annotationController textEditorController];
+  textView = [textEditorController textView];
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && ([v9 isBlockedAction:a3])
+  if (objc_opt_isKindOfClass() & 1) != 0 && ([textView isBlockedAction:action])
   {
     goto LABEL_3;
   }
 
   v18 = 0;
-  v11 = [v7 canPerformKeyCommandAction:a3 withSender:v6 handled:&v18];
+  v11 = [annotationController canPerformKeyCommandAction:action withSender:senderCopy handled:&v18];
   if (v18)
   {
 LABEL_22:
@@ -478,9 +478,9 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v12 = [MEMORY[0x277D75718] sharedMenuController];
-  v13 = v12;
-  if (v12 == v6)
+  mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+  v13 = mEMORY[0x277D75718];
+  if (mEMORY[0x277D75718] == senderCopy)
   {
   }
 
@@ -493,46 +493,46 @@ LABEL_22:
     {
       v16.receiver = self;
       v16.super_class = AKOverlayView;
-      v11 = [(AKOverlayView *)&v16 canPerformAction:a3 withSender:v6];
+      v11 = [(AKOverlayView *)&v16 canPerformAction:action withSender:senderCopy];
       goto LABEL_22;
     }
   }
 
-  if (sel_editTextAnnotation_ == a3)
+  if (sel_editTextAnnotation_ == action)
   {
-    v11 = [v7 validateEditTextAnnotation:v6];
+    v11 = [annotationController validateEditTextAnnotation:senderCopy];
     goto LABEL_22;
   }
 
-  if (sel_duplicate_ == a3)
+  if (sel_duplicate_ == action)
   {
-    v11 = [v7 validateDuplicate:v6];
+    v11 = [annotationController validateDuplicate:senderCopy];
     goto LABEL_22;
   }
 
-  if (sel_delete_ == a3)
+  if (sel_delete_ == action)
   {
-    v11 = [v7 validateDelete:v6];
+    v11 = [annotationController validateDelete:senderCopy];
     goto LABEL_22;
   }
 
-  if (sel_cut_ == a3)
+  if (sel_cut_ == action)
   {
-    v11 = [v7 validateCut:v6];
+    v11 = [annotationController validateCut:senderCopy];
     goto LABEL_22;
   }
 
-  if (sel_copy_ == a3)
+  if (sel_copy_ == action)
   {
-    v11 = [v7 validateCopy:v6];
+    v11 = [annotationController validateCopy:senderCopy];
     goto LABEL_22;
   }
 
-  if (sel_paste_ != a3)
+  if (sel_paste_ != action)
   {
     v17.receiver = self;
     v17.super_class = AKOverlayView;
-    v11 = [(AKOverlayView *)&v17 canPerformAction:a3 withSender:v6];
+    v11 = [(AKOverlayView *)&v17 canPerformAction:action withSender:senderCopy];
     goto LABEL_22;
   }
 
@@ -543,94 +543,94 @@ LABEL_23:
   return v10;
 }
 
-- (void)editTextAnnotation:(id)a3
+- (void)editTextAnnotation:(id)annotation
 {
-  v6 = a3;
-  v4 = [(AKOverlayView *)self pageController];
-  v5 = [v4 controller];
-  if ([v5 validateEditTextAnnotation:v6])
+  annotationCopy = annotation;
+  pageController = [(AKOverlayView *)self pageController];
+  controller = [pageController controller];
+  if ([controller validateEditTextAnnotation:annotationCopy])
   {
-    [v5 editTextAnnotation:v6];
+    [controller editTextAnnotation:annotationCopy];
   }
 }
 
 - (id)_singleSelectedAnnotation
 {
-  v2 = [(AKOverlayView *)self pageController];
-  v3 = [v2 controller];
-  v4 = [v3 modelController];
-  v5 = [v4 allSelectedAnnotations];
+  pageController = [(AKOverlayView *)self pageController];
+  controller = [pageController controller];
+  modelController = [controller modelController];
+  allSelectedAnnotations = [modelController allSelectedAnnotations];
 
-  if ([v5 count] == 1)
+  if ([allSelectedAnnotations count] == 1)
   {
-    v6 = [v5 firstObject];
+    firstObject = [allSelectedAnnotations firstObject];
   }
 
   else
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
-  return v6;
+  return firstObject;
 }
 
 - (void)_postScrollViewRectChangedNotification
 {
   v2 = MEMORY[0x277CCAB88];
-  v3 = [(AKOverlayView *)self observedScrollView];
-  v5 = [v2 notificationWithName:@"AKOverlayView.AKContentScrollViewVisibleRectChangeNotification" object:v3];
+  observedScrollView = [(AKOverlayView *)self observedScrollView];
+  v5 = [v2 notificationWithName:@"AKOverlayView.AKContentScrollViewVisibleRectChangeNotification" object:observedScrollView];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotification:v5];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotification:v5];
 }
 
 - (void)_postScrollViewScrollOrMagnifyEndNotification
 {
   v2 = MEMORY[0x277CCAB88];
-  v3 = [(AKOverlayView *)self observedScrollView];
-  v5 = [v2 notificationWithName:@"AKOverlayView.AKContentScrollViewEndScrollOrMagnifyNotification" object:v3];
+  observedScrollView = [(AKOverlayView *)self observedScrollView];
+  v5 = [v2 notificationWithName:@"AKOverlayView.AKContentScrollViewEndScrollOrMagnifyNotification" object:observedScrollView];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotification:v5];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotification:v5];
 }
 
-- (void)_updateLayersUsingScrollViewWithForcedUpdate:(BOOL)a3 dismissSelectionMenu:(BOOL)a4
+- (void)_updateLayersUsingScrollViewWithForcedUpdate:(BOOL)update dismissSelectionMenu:(BOOL)menu
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(AKOverlayView *)self window];
+  menuCopy = menu;
+  updateCopy = update;
+  window = [(AKOverlayView *)self window];
 
-  if (v7)
+  if (window)
   {
-    v8 = [(AKOverlayView *)self observedScrollView];
-    v9 = [v8 isZooming];
+    observedScrollView = [(AKOverlayView *)self observedScrollView];
+    isZooming = [observedScrollView isZooming];
 
-    v10 = [(AKOverlayView *)self scrollViewIsInLiveMagnify];
-    v11 = [(AKOverlayView *)self observedScrollView];
+    scrollViewIsInLiveMagnify = [(AKOverlayView *)self scrollViewIsInLiveMagnify];
+    observedScrollView2 = [(AKOverlayView *)self observedScrollView];
     v12 = 1.0;
-    if (v11)
+    if (observedScrollView2)
     {
-      v13 = v11;
-      v14 = [(AKOverlayView *)self observedScrollView];
-      v15 = [v14 window];
+      v13 = observedScrollView2;
+      observedScrollView3 = [(AKOverlayView *)self observedScrollView];
+      window2 = [observedScrollView3 window];
 
-      if (v15)
+      if (window2)
       {
-        v16 = [(AKOverlayView *)self observedScrollView];
-        [v16 zoomScale];
+        observedScrollView4 = [(AKOverlayView *)self observedScrollView];
+        [observedScrollView4 zoomScale];
         v12 = v17;
       }
     }
 
-    v19 = [(AKOverlayView *)self pageController];
+    pageController = [(AKOverlayView *)self pageController];
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
-    [v19 updateScaleFactor:v9 | v10 isLiveUpdate:v5 forceUpdate:v12];
+    [pageController updateScaleFactor:isZooming | scrollViewIsInLiveMagnify isLiveUpdate:updateCopy forceUpdate:v12];
     [MEMORY[0x277CD9FF0] commit];
-    if (v4)
+    if (menuCopy)
     {
-      v18 = [v19 controller];
-      [v18 hideSelectionMenu:0];
+      controller = [pageController controller];
+      [controller hideSelectionMenu:0];
     }
   }
 }
@@ -641,49 +641,49 @@ LABEL_23:
   {
     [(AKOverlayView *)self setIsObserving:1];
     [(AKOverlayView *)self _startObservingAnnotationEventHandlers];
-    v3 = [(UIView *)self akEnclosingScrollView];
-    [(AKOverlayView *)self setObservedScrollView:v3];
+    akEnclosingScrollView = [(UIView *)self akEnclosingScrollView];
+    [(AKOverlayView *)self setObservedScrollView:akEnclosingScrollView];
 
-    v4 = [(AKOverlayView *)self observedScrollView];
+    observedScrollView = [(AKOverlayView *)self observedScrollView];
 
-    if (v4)
+    if (observedScrollView)
     {
-      v5 = [(AKOverlayView *)self observedScrollView];
-      [v5 addObserver:self forKeyPath:@"contentSize" options:3 context:@"AKOverlayView.contentViewContentSizeObservationContext"];
+      observedScrollView2 = [(AKOverlayView *)self observedScrollView];
+      [observedScrollView2 addObserver:self forKeyPath:@"contentSize" options:3 context:@"AKOverlayView.contentViewContentSizeObservationContext"];
 
       [(AKOverlayView *)self addObserver:self forKeyPath:@"pageController.controller.annotationEditingEnabled" options:0 context:@"AKOverlayView.controllerAnnotationEditingContext"];
       [(AKOverlayView *)self addObserver:self forKeyPath:@"pageController.controller.formFillingEnabled" options:0 context:@"AKOverlayView.controllerFormFillingContext"];
-      v6 = [MEMORY[0x277CCAB98] defaultCenter];
-      v7 = [(AKOverlayView *)self observedScrollView];
-      [v6 addObserver:self selector:sel__willStartLiveMagnify_ name:@"UITextSelectionWillZoom" object:v7];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      observedScrollView3 = [(AKOverlayView *)self observedScrollView];
+      [defaultCenter addObserver:self selector:sel__willStartLiveMagnify_ name:@"UITextSelectionWillZoom" object:observedScrollView3];
 
-      v8 = [MEMORY[0x277CCAB98] defaultCenter];
-      v9 = [(AKOverlayView *)self observedScrollView];
-      [v8 addObserver:self selector:sel__willEndLiveMagnify_ name:@"UITextSelectionDidZoom" object:v9];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      observedScrollView4 = [(AKOverlayView *)self observedScrollView];
+      [defaultCenter2 addObserver:self selector:sel__willEndLiveMagnify_ name:@"UITextSelectionDidZoom" object:observedScrollView4];
 
-      v10 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
       v11 = *MEMORY[0x277D77560];
-      v12 = [(AKOverlayView *)self observedScrollView];
-      [v10 addObserver:self selector:sel__scrollViewDidEndDragging_ name:v11 object:v12];
+      observedScrollView5 = [(AKOverlayView *)self observedScrollView];
+      [defaultCenter3 addObserver:self selector:sel__scrollViewDidEndDragging_ name:v11 object:observedScrollView5];
 
-      v13 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
       v14 = *MEMORY[0x277D77558];
-      v15 = [(AKOverlayView *)self observedScrollView];
-      [v13 addObserver:self selector:sel__scrollViewDidEndDecelerating_ name:v14 object:v15];
+      observedScrollView6 = [(AKOverlayView *)self observedScrollView];
+      [defaultCenter4 addObserver:self selector:sel__scrollViewDidEndDecelerating_ name:v14 object:observedScrollView6];
 
-      v16 = [MEMORY[0x277CCAB98] defaultCenter];
-      v17 = [(AKOverlayView *)self observedScrollView];
-      [v16 addObserver:self selector:sel__scrollViewDidEndAnimation_ name:@"_UIScrollViewAnimationEndedNotification" object:v17];
+      defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+      observedScrollView7 = [(AKOverlayView *)self observedScrollView];
+      [defaultCenter5 addObserver:self selector:sel__scrollViewDidEndAnimation_ name:@"_UIScrollViewAnimationEndedNotification" object:observedScrollView7];
 
-      v18 = [MEMORY[0x277CCAB98] defaultCenter];
-      v19 = [(AKOverlayView *)self observedScrollView];
-      [v18 addObserver:self selector:sel__scrollViewDidScrollToTop_ name:@"AKScrollViewDidScrollToTopNotification" object:v19];
+      defaultCenter6 = [MEMORY[0x277CCAB98] defaultCenter];
+      observedScrollView8 = [(AKOverlayView *)self observedScrollView];
+      [defaultCenter6 addObserver:self selector:sel__scrollViewDidScrollToTop_ name:@"AKScrollViewDidScrollToTopNotification" object:observedScrollView8];
 
-      v20 = [(AKOverlayView *)self observedScrollView];
-      [v20 addObserver:self forKeyPath:@"frame" options:3 context:@"AKOverlayView.overlayViewSizeObservationContext"];
+      observedScrollView9 = [(AKOverlayView *)self observedScrollView];
+      [observedScrollView9 addObserver:self forKeyPath:@"frame" options:3 context:@"AKOverlayView.overlayViewSizeObservationContext"];
 
-      v21 = [(AKOverlayView *)self observedScrollView];
-      [v21 addObserver:self forKeyPath:@"bounds" options:3 context:@"AKOverlayView.overlayViewSizeObservationContext"];
+      observedScrollView10 = [(AKOverlayView *)self observedScrollView];
+      [observedScrollView10 addObserver:self forKeyPath:@"bounds" options:3 context:@"AKOverlayView.overlayViewSizeObservationContext"];
 
       [(AKOverlayView *)self addObserver:self forKeyPath:@"frame" options:3 context:@"AKOverlayView.overlayViewSizeObservationContext"];
 
@@ -703,46 +703,46 @@ LABEL_23:
   {
     [(AKOverlayView *)self setIsObserving:0];
     [(AKOverlayView *)self _stopObservingAnnotationEventHandlers];
-    v3 = [(AKOverlayView *)self observedScrollView];
+    observedScrollView = [(AKOverlayView *)self observedScrollView];
 
-    if (v3)
+    if (observedScrollView)
     {
-      v4 = [(AKOverlayView *)self observedScrollView];
-      [v4 removeObserver:self forKeyPath:@"contentSize" context:@"AKOverlayView.contentViewContentSizeObservationContext"];
+      observedScrollView2 = [(AKOverlayView *)self observedScrollView];
+      [observedScrollView2 removeObserver:self forKeyPath:@"contentSize" context:@"AKOverlayView.contentViewContentSizeObservationContext"];
 
       [(AKOverlayView *)self removeObserver:self forKeyPath:@"pageController.controller.annotationEditingEnabled" context:@"AKOverlayView.controllerAnnotationEditingContext"];
       [(AKOverlayView *)self removeObserver:self forKeyPath:@"pageController.controller.formFillingEnabled" context:@"AKOverlayView.controllerFormFillingContext"];
-      v5 = [MEMORY[0x277CCAB98] defaultCenter];
-      v6 = [(AKOverlayView *)self observedScrollView];
-      [v5 removeObserver:self name:@"UITextSelectionWillZoom" object:v6];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      observedScrollView3 = [(AKOverlayView *)self observedScrollView];
+      [defaultCenter removeObserver:self name:@"UITextSelectionWillZoom" object:observedScrollView3];
 
-      v7 = [MEMORY[0x277CCAB98] defaultCenter];
-      v8 = [(AKOverlayView *)self observedScrollView];
-      [v7 removeObserver:self name:@"UITextSelectionDidZoom" object:v8];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      observedScrollView4 = [(AKOverlayView *)self observedScrollView];
+      [defaultCenter2 removeObserver:self name:@"UITextSelectionDidZoom" object:observedScrollView4];
 
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
       v10 = *MEMORY[0x277D77560];
-      v11 = [(AKOverlayView *)self observedScrollView];
-      [v9 removeObserver:self name:v10 object:v11];
+      observedScrollView5 = [(AKOverlayView *)self observedScrollView];
+      [defaultCenter3 removeObserver:self name:v10 object:observedScrollView5];
 
-      v12 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
       v13 = *MEMORY[0x277D77558];
-      v14 = [(AKOverlayView *)self observedScrollView];
-      [v12 removeObserver:self name:v13 object:v14];
+      observedScrollView6 = [(AKOverlayView *)self observedScrollView];
+      [defaultCenter4 removeObserver:self name:v13 object:observedScrollView6];
 
-      v15 = [MEMORY[0x277CCAB98] defaultCenter];
-      v16 = [(AKOverlayView *)self observedScrollView];
-      [v15 removeObserver:self name:@"_UIScrollViewAnimationEndedNotification" object:v16];
+      defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+      observedScrollView7 = [(AKOverlayView *)self observedScrollView];
+      [defaultCenter5 removeObserver:self name:@"_UIScrollViewAnimationEndedNotification" object:observedScrollView7];
 
-      v17 = [MEMORY[0x277CCAB98] defaultCenter];
-      v18 = [(AKOverlayView *)self observedScrollView];
-      [v17 removeObserver:self name:@"AKScrollViewDidScrollToTopNotification" object:v18];
+      defaultCenter6 = [MEMORY[0x277CCAB98] defaultCenter];
+      observedScrollView8 = [(AKOverlayView *)self observedScrollView];
+      [defaultCenter6 removeObserver:self name:@"AKScrollViewDidScrollToTopNotification" object:observedScrollView8];
 
-      v19 = [(AKOverlayView *)self observedScrollView];
-      [v19 removeObserver:self forKeyPath:@"frame" context:@"AKOverlayView.overlayViewSizeObservationContext"];
+      observedScrollView9 = [(AKOverlayView *)self observedScrollView];
+      [observedScrollView9 removeObserver:self forKeyPath:@"frame" context:@"AKOverlayView.overlayViewSizeObservationContext"];
 
-      v20 = [(AKOverlayView *)self observedScrollView];
-      [v20 removeObserver:self forKeyPath:@"bounds" context:@"AKOverlayView.overlayViewSizeObservationContext"];
+      observedScrollView10 = [(AKOverlayView *)self observedScrollView];
+      [observedScrollView10 removeObserver:self forKeyPath:@"bounds" context:@"AKOverlayView.overlayViewSizeObservationContext"];
 
       [(AKOverlayView *)self removeObserver:self forKeyPath:@"frame" context:@"AKOverlayView.overlayViewSizeObservationContext"];
       [(AKOverlayView *)self removeObserver:self forKeyPath:@"bounds" context:@"AKOverlayView.overlayViewSizeObservationContext"];
@@ -756,31 +756,31 @@ LABEL_23:
 {
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v3 = [(AKOverlayView *)self pageController];
-  [v3 overlayWasAddedToSuperview];
+  pageController = [(AKOverlayView *)self pageController];
+  [pageController overlayWasAddedToSuperview];
   [(AKOverlayView *)self _setupObservation];
   [(AKOverlayView *)self _updateLayersUsingScrollView];
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (void)_willStartLiveMagnify:(id)a3
+- (void)_willStartLiveMagnify:(id)magnify
 {
-  v4 = [a3 object];
-  v5 = [(AKOverlayView *)self observedScrollView];
+  object = [magnify object];
+  observedScrollView = [(AKOverlayView *)self observedScrollView];
 
-  if (v4 == v5)
+  if (object == observedScrollView)
   {
 
     [(AKOverlayView *)self setScrollViewIsInLiveMagnify:1];
   }
 }
 
-- (void)_willEndLiveMagnify:(id)a3
+- (void)_willEndLiveMagnify:(id)magnify
 {
-  v4 = [a3 object];
-  v5 = [(AKOverlayView *)self observedScrollView];
+  object = [magnify object];
+  observedScrollView = [(AKOverlayView *)self observedScrollView];
 
-  if (v4 == v5)
+  if (object == observedScrollView)
   {
     [(AKOverlayView *)self setScrollViewIsInLiveMagnify:0];
     [(AKOverlayView *)self _updateLayersUsingScrollViewWithForcedUpdate:1 dismissSelectionMenu:0];
@@ -789,19 +789,19 @@ LABEL_23:
   }
 }
 
-- (void)_scrollViewDidEndDragging:(id)a3
+- (void)_scrollViewDidEndDragging:(id)dragging
 {
-  v9 = a3;
-  v4 = [v9 object];
-  v5 = [(AKOverlayView *)self observedScrollView];
+  draggingCopy = dragging;
+  object = [draggingCopy object];
+  observedScrollView = [(AKOverlayView *)self observedScrollView];
 
-  if (v4 == v5)
+  if (object == observedScrollView)
   {
-    v6 = [v9 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x277D77568]];
-    v8 = [v7 BOOLValue];
+    userInfo = [draggingCopy userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x277D77568]];
+    bOOLValue = [v7 BOOLValue];
 
-    if ((v8 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       [(AKOverlayView *)self _updateLayersUsingScrollViewWithForcedUpdate:1];
       [(AKOverlayView *)self _postScrollViewScrollOrMagnifyEndNotification];
@@ -809,12 +809,12 @@ LABEL_23:
   }
 }
 
-- (void)_scrollViewDidEndDecelerating:(id)a3
+- (void)_scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = [a3 object];
-  v5 = [(AKOverlayView *)self observedScrollView];
+  object = [decelerating object];
+  observedScrollView = [(AKOverlayView *)self observedScrollView];
 
-  if (v4 == v5)
+  if (object == observedScrollView)
   {
     [(AKOverlayView *)self _updateLayersUsingScrollViewWithForcedUpdate:1];
 
@@ -822,12 +822,12 @@ LABEL_23:
   }
 }
 
-- (void)_scrollViewDidEndAnimation:(id)a3
+- (void)_scrollViewDidEndAnimation:(id)animation
 {
-  v4 = [a3 object];
-  v5 = [(AKOverlayView *)self observedScrollView];
+  object = [animation object];
+  observedScrollView = [(AKOverlayView *)self observedScrollView];
 
-  if (v4 == v5)
+  if (object == observedScrollView)
   {
     [(AKOverlayView *)self _updateLayersUsingScrollViewWithForcedUpdate:1];
 
@@ -835,12 +835,12 @@ LABEL_23:
   }
 }
 
-- (void)_scrollViewDidScrollToTop:(id)a3
+- (void)_scrollViewDidScrollToTop:(id)top
 {
-  v4 = [a3 object];
-  v5 = [(AKOverlayView *)self observedScrollView];
+  object = [top object];
+  observedScrollView = [(AKOverlayView *)self observedScrollView];
 
-  if (v4 == v5)
+  if (object == observedScrollView)
   {
     [(AKOverlayView *)self _updateLayersUsingScrollViewWithForcedUpdate:1];
 
@@ -848,17 +848,17 @@ LABEL_23:
   }
 }
 
-- (CGRect)_findResizeHandleRectAtLocation:(CGPoint)a3 withVisualStyle:(id *)a4
+- (CGRect)_findResizeHandleRectAtLocation:(CGPoint)location withVisualStyle:(id *)style
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(AKOverlayView *)self _singleSelectedAnnotation];
-  if (v8)
+  y = location.y;
+  x = location.x;
+  _singleSelectedAnnotation = [(AKOverlayView *)self _singleSelectedAnnotation];
+  if (_singleSelectedAnnotation)
   {
-    v9 = [(AKOverlayView *)self pageController];
+    pageController = [(AKOverlayView *)self pageController];
     v42 = 0;
     v43 = 0;
-    [AKAnnotationPointOfInterestHelper pointsOfInterest:&v43 withVisualStyle:&v42 ofAnnotation:v8 pageControllerForPixelAlignment:v9];
+    [AKAnnotationPointOfInterestHelper pointsOfInterest:&v43 withVisualStyle:&v42 ofAnnotation:_singleSelectedAnnotation pageControllerForPixelAlignment:pageController];
     v10 = v43;
     v11 = v42;
     v36 = 0;
@@ -878,7 +878,7 @@ LABEL_23:
     v23[1] = 3221225472;
     v23[2] = sub_23F48CCA0;
     v23[3] = &unk_278C7C280;
-    v13 = v9;
+    v13 = pageController;
     v24 = v13;
     v14 = v11;
     v28 = x;
@@ -887,9 +887,9 @@ LABEL_23:
     v26 = &v36;
     v27 = &v30;
     [v10 enumerateObjectsUsingBlock:v23];
-    if (a4)
+    if (style)
     {
-      *a4 = v31[5];
+      *style = v31[5];
     }
 
     v15 = v37[4];
@@ -920,10 +920,10 @@ LABEL_23:
   return result;
 }
 
-- (BOOL)_hasResizeHandleAtLocation:(CGPoint)a3
+- (BOOL)_hasResizeHandleAtLocation:(CGPoint)location
 {
   v14 = 0;
-  [(AKOverlayView *)self _findResizeHandleRectAtLocation:&v14 withVisualStyle:a3.x, a3.y];
+  [(AKOverlayView *)self _findResizeHandleRectAtLocation:&v14 withVisualStyle:location.x, location.y];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -942,27 +942,27 @@ LABEL_23:
   return v12;
 }
 
-- (id)_liftOffHandleViewInFrame:(CGRect)a3 withPointStyle:(unint64_t)a4
+- (id)_liftOffHandleViewInFrame:(CGRect)frame withPointStyle:(unint64_t)style
 {
-  if (a4 <= 1)
+  if (style <= 1)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    v11 = [(AKOverlayView *)self _singleSelectedAnnotation];
-    if (v11)
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
+    _singleSelectedAnnotation = [(AKOverlayView *)self _singleSelectedAnnotation];
+    if (_singleSelectedAnnotation)
     {
-      v12 = [(AKOverlayView *)self pageController];
-      v13 = [v12 layerPresentationManager];
-      v14 = [v13 adornmentLayerForAnnotation:v11];
+      pageController = [(AKOverlayView *)self pageController];
+      layerPresentationManager = [pageController layerPresentationManager];
+      v14 = [layerPresentationManager adornmentLayerForAnnotation:_singleSelectedAnnotation];
 
       if (v14)
       {
-        v15 = [v14 handleSublayerWithStyle:a4];
+        v15 = [v14 handleSublayerWithStyle:style];
         v4 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{x, y, width, height}];
-        v16 = [v4 layer];
-        [v16 addSublayer:v15];
+        layer = [v4 layer];
+        [layer addSublayer:v15];
 
         [v4 bounds];
         v17 = v24.origin.x;
@@ -997,116 +997,116 @@ LABEL_23:
   return v4;
 }
 
-- (id)_liftOffHandleViewForRegion:(id)a3
+- (id)_liftOffHandleViewForRegion:(id)region
 {
-  v4 = a3;
-  v5 = [(AKOverlayView *)self pointerRegionToHandleViewDict];
-  v6 = [v5 objectForKey:v4];
+  regionCopy = region;
+  pointerRegionToHandleViewDict = [(AKOverlayView *)self pointerRegionToHandleViewDict];
+  v6 = [pointerRegionToHandleViewDict objectForKey:regionCopy];
 
   return v6;
 }
 
-- (void)_addLiftOffHandleViewForRegion:(id)a3
+- (void)_addLiftOffHandleViewForRegion:(id)region
 {
-  v4 = a3;
-  if (v4)
+  regionCopy = region;
+  if (regionCopy)
   {
-    v14 = v4;
-    v5 = [(AKOverlayView *)self pointerRegionToHandleViewDict];
+    v14 = regionCopy;
+    pointerRegionToHandleViewDict = [(AKOverlayView *)self pointerRegionToHandleViewDict];
 
-    if (!v5)
+    if (!pointerRegionToHandleViewDict)
     {
       v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
       [(AKOverlayView *)self setPointerRegionToHandleViewDict:v6];
     }
 
-    v7 = [(AKOverlayView *)self pointerRegionToHandleViewDict];
-    v8 = [v7 objectForKey:v14];
+    pointerRegionToHandleViewDict2 = [(AKOverlayView *)self pointerRegionToHandleViewDict];
+    v8 = [pointerRegionToHandleViewDict2 objectForKey:v14];
 
     if (!v8)
     {
-      v9 = [v14 identifier];
-      v10 = v9;
-      if (v9)
+      identifier = [v14 identifier];
+      v10 = identifier;
+      if (identifier)
       {
-        v11 = [v9 integerValue];
-        if (v11 <= 1)
+        integerValue = [identifier integerValue];
+        if (integerValue <= 1)
         {
-          v12 = v11;
+          v12 = integerValue;
           [v14 rect];
           v13 = [(AKOverlayView *)self _liftOffHandleViewInFrame:v12 withPointStyle:?];
           if (v13)
           {
             [(AKOverlayView *)self addSubview:v13];
-            [v7 setObject:v13 forKey:v14];
+            [pointerRegionToHandleViewDict2 setObject:v13 forKey:v14];
           }
         }
       }
     }
 
-    v4 = v14;
+    regionCopy = v14;
   }
 }
 
 - (void)_removeAllLiftOffHandleViews
 {
-  v2 = [(AKOverlayView *)self pointerRegionToHandleViewDict];
-  if (v2)
+  pointerRegionToHandleViewDict = [(AKOverlayView *)self pointerRegionToHandleViewDict];
+  if (pointerRegionToHandleViewDict)
   {
-    v3 = v2;
-    [v2 enumerateKeysAndObjectsUsingBlock:&unk_28519E7D0];
+    v3 = pointerRegionToHandleViewDict;
+    [pointerRegionToHandleViewDict enumerateKeysAndObjectsUsingBlock:&unk_28519E7D0];
     [v3 removeAllObjects];
-    v2 = v3;
+    pointerRegionToHandleViewDict = v3;
   }
 }
 
-- (void)_removeLiftOffHandleViewForRegion:(id)a3
+- (void)_removeLiftOffHandleViewForRegion:(id)region
 {
-  v4 = a3;
-  if (v4)
+  regionCopy = region;
+  if (regionCopy)
   {
-    v8 = v4;
-    v5 = [(AKOverlayView *)self pointerRegionToHandleViewDict];
-    v6 = [v5 objectForKey:v8];
+    v8 = regionCopy;
+    pointerRegionToHandleViewDict = [(AKOverlayView *)self pointerRegionToHandleViewDict];
+    v6 = [pointerRegionToHandleViewDict objectForKey:v8];
     v7 = v6;
     if (v6)
     {
       [v6 removeFromSuperview];
-      [v5 removeObjectForKey:v8];
+      [pointerRegionToHandleViewDict removeObjectForKey:v8];
     }
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)_scribbleInteraction:(id)a3 shouldBeginAtLocation:(CGPoint)a4
+- (BOOL)_scribbleInteraction:(id)interaction shouldBeginAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(AKOverlayView *)self _isEditingTextBoxAnnotation];
-  if (v7)
+  y = location.y;
+  x = location.x;
+  _isEditingTextBoxAnnotation = [(AKOverlayView *)self _isEditingTextBoxAnnotation];
+  if (_isEditingTextBoxAnnotation)
   {
-    LOBYTE(v7) = ![(AKOverlayView *)self _hasResizeHandleAtLocation:x, y];
+    LOBYTE(_isEditingTextBoxAnnotation) = ![(AKOverlayView *)self _hasResizeHandleAtLocation:x, y];
   }
 
-  return v7;
+  return _isEditingTextBoxAnnotation;
 }
 
 - (BOOL)_isEditingTextBoxAnnotation
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(AKOverlayView *)self pageController];
-  v3 = [v2 controller];
+  pageController = [(AKOverlayView *)self pageController];
+  controller = [pageController controller];
 
-  if ([v3 annotationEditingEnabled])
+  if ([controller annotationEditingEnabled])
   {
     v14 = 0u;
     v15 = 0u;
     v13 = 0u;
-    v4 = [v3 modelController];
-    v5 = [v4 allSelectedAnnotations];
+    modelController = [controller modelController];
+    allSelectedAnnotations = [modelController allSelectedAnnotations];
 
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v6 = [allSelectedAnnotations countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1118,14 +1118,14 @@ LABEL_23:
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allSelectedAnnotations);
           }
 
           objc_opt_class();
           v8 |= objc_opt_isKindOfClass();
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [allSelectedAnnotations countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -1145,12 +1145,12 @@ LABEL_23:
   return v8 & 1;
 }
 
-- (UIEdgeInsets)_scribbleInteraction:(id)a3 hitToleranceInsetsForElement:(id)a4 defaultInsets:(UIEdgeInsets)a5
+- (UIEdgeInsets)_scribbleInteraction:(id)interaction hitToleranceInsetsForElement:(id)element defaultInsets:(UIEdgeInsets)insets
 {
-  v5 = a5.top + -30.0;
-  v6 = a5.bottom + -30.0;
-  v7 = a5.left + -100.0;
-  v8 = a5.right + -100.0;
+  v5 = insets.top + -30.0;
+  v6 = insets.bottom + -30.0;
+  v7 = insets.left + -100.0;
+  v8 = insets.right + -100.0;
   result.right = v8;
   result.bottom = v6;
   result.left = v7;
@@ -1158,27 +1158,27 @@ LABEL_23:
   return result;
 }
 
-- (void)_scribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5
+- (void)_scribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a5;
-  v7 = [(AKOverlayView *)self pageController];
-  v8 = [v7 controller];
+  completionCopy = completion;
+  pageController = [(AKOverlayView *)self pageController];
+  controller = [pageController controller];
 
-  v9 = [v8 textEditorController];
-  v10 = [v9 annotation];
+  textEditorController = [controller textEditorController];
+  annotation = [textEditorController annotation];
   v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
-  if ([v8 annotationEditingEnabled])
+  if ([controller annotationEditingEnabled])
   {
-    v22 = v9;
+    v22 = textEditorController;
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = [v8 modelController];
-    v13 = [v12 allSelectedAnnotations];
+    modelController = [controller modelController];
+    allSelectedAnnotations = [modelController allSelectedAnnotations];
 
-    v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v14 = [allSelectedAnnotations countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v14)
     {
       v15 = v14;
@@ -1190,34 +1190,34 @@ LABEL_23:
         {
           if (*v24 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allSelectedAnnotations);
           }
 
           v18 = *(*(&v23 + 1) + 8 * v17);
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) != 0 && ([v18 editingDisabled] & 1) == 0)
           {
-            v19 = [v18 UUID];
-            [v11 addObject:v19];
+            uUID = [v18 UUID];
+            [v11 addObject:uUID];
           }
 
           ++v17;
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v15 = [allSelectedAnnotations countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v15);
     }
 
-    v9 = v22;
+    textEditorController = v22;
   }
 
-  if (v10)
+  if (annotation)
   {
-    v20 = [v10 UUID];
-    v21 = [v11 indexOfObject:v20];
+    uUID2 = [annotation UUID];
+    v21 = [v11 indexOfObject:uUID2];
   }
 
   else
@@ -1225,15 +1225,15 @@ LABEL_23:
     v21 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v6[2](v6, v11, v21);
+  completionCopy[2](completionCopy, v11, v21);
 }
 
-- (CGRect)_scribbleInteraction:(id)a3 frameForElement:(id)a4
+- (CGRect)_scribbleInteraction:(id)interaction frameForElement:(id)element
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(AKOverlayView *)self pageController];
-  v7 = [v6 controller];
+  elementCopy = element;
+  pageController = [(AKOverlayView *)self pageController];
+  controller = [pageController controller];
   v8 = *MEMORY[0x277CBF398];
   v9 = *(MEMORY[0x277CBF398] + 8);
   v10 = *(MEMORY[0x277CBF398] + 16);
@@ -1242,10 +1242,10 @@ LABEL_23:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v12 = [v7 modelController];
-  v13 = [v12 allSelectedAnnotations];
+  modelController = [controller modelController];
+  allSelectedAnnotations = [modelController allSelectedAnnotations];
 
-  v14 = [v13 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  v14 = [allSelectedAnnotations countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1256,12 +1256,12 @@ LABEL_23:
       {
         if (*v34 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allSelectedAnnotations);
         }
 
         v18 = *(*(&v33 + 1) + 8 * i);
-        v19 = [v18 UUID];
-        v20 = [v19 isEqual:v5];
+        uUID = [v18 UUID];
+        v20 = [uUID isEqual:elementCopy];
 
         if (v20)
         {
@@ -1274,7 +1274,7 @@ LABEL_23:
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v15 = [allSelectedAnnotations countByEnumeratingWithState:&v33 objects:v37 count:16];
       if (v15)
       {
         continue;
@@ -1292,7 +1292,7 @@ LABEL_11:
   v39.size.height = v11;
   if (!CGRectIsNull(v39))
   {
-    [v6 convertRectFromModelToOverlay:{v8, v9, v10, v11}];
+    [pageController convertRectFromModelToOverlay:{v8, v9, v10, v11}];
     v8 = v25;
     v9 = v26;
     v10 = v27;
@@ -1310,25 +1310,25 @@ LABEL_11:
   return result;
 }
 
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a6;
-  v10 = [(AKOverlayView *)self pageController];
-  v11 = [v10 controller];
+  elementCopy = element;
+  completionCopy = completion;
+  pageController = [(AKOverlayView *)self pageController];
+  controller = [pageController controller];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = [v11 modelController];
-  v13 = [v12 allSelectedAnnotations];
+  modelController = [controller modelController];
+  allSelectedAnnotations = [modelController allSelectedAnnotations];
 
-  v14 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v14 = [allSelectedAnnotations countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v14)
   {
     v15 = v14;
-    v23 = v10;
+    v23 = pageController;
     v16 = *v25;
     while (2)
     {
@@ -1336,29 +1336,29 @@ LABEL_11:
       {
         if (*v25 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allSelectedAnnotations);
         }
 
         v18 = *(*(&v24 + 1) + 8 * i);
-        v19 = [v18 UUID];
-        v20 = [v19 isEqual:v8];
+        uUID = [v18 UUID];
+        v20 = [uUID isEqual:elementCopy];
 
         if (v20)
         {
-          v22 = [v11 textEditorController];
-          v10 = v23;
-          if (([v22 isEditing] & 1) == 0)
+          textEditorController = [controller textEditorController];
+          pageController = v23;
+          if (([textEditorController isEditing] & 1) == 0)
           {
-            [v22 beginEditingAnnotation:v18 withPageController:v23 selectAllText:0 withPencil:1];
+            [textEditorController beginEditingAnnotation:v18 withPageController:v23 selectAllText:0 withPencil:1];
           }
 
-          v21 = [v22 textView];
+          textView = [textEditorController textView];
 
           goto LABEL_14;
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v15 = [allSelectedAnnotations countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v15)
       {
         continue;
@@ -1367,24 +1367,24 @@ LABEL_11:
       break;
     }
 
-    v21 = 0;
-    v10 = v23;
+    textView = 0;
+    pageController = v23;
   }
 
   else
   {
-    v21 = 0;
+    textView = 0;
   }
 
 LABEL_14:
 
-  v9[2](v9, v21);
+  completionCopy[2](completionCopy, textView);
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v7 = a5;
-  [a4 location];
+  regionCopy = region;
+  [request location];
   v20 = 0;
   [(AKOverlayView *)self _findResizeHandleRectAtLocation:&v20 withVisualStyle:?];
   v9 = v8;
@@ -1398,7 +1398,7 @@ LABEL_14:
   v22.size.height = v15;
   if (CGRectIsEmpty(v22))
   {
-    v17 = v7;
+    v17 = regionCopy;
   }
 
   else
@@ -1411,20 +1411,20 @@ LABEL_14:
   return v18;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  if (a4)
+  if (region)
   {
     MEMORY[0x2821F9670](self, sel__addLiftOffHandleViewForRegion_);
   }
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AKOverlayView *)self _liftOffHandleViewForRegion:v9];
+  interactionCopy = interaction;
+  regionCopy = region;
+  animatorCopy = animator;
+  v11 = [(AKOverlayView *)self _liftOffHandleViewForRegion:regionCopy];
   if (v11)
   {
     objc_initWeak(&location, self);
@@ -1433,60 +1433,60 @@ LABEL_14:
     v12[2] = sub_23F48DC68;
     v12[3] = &unk_278C7C2C8;
     objc_copyWeak(&v14, &location);
-    v13 = v9;
-    [v10 addCompletion:v12];
+    v13 = regionCopy;
+    [animatorCopy addCompletion:v12];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 identifier];
-  v7 = v6;
-  if (!v6 || [v6 integerValue] > 1)
+  regionCopy = region;
+  identifier = [regionCopy identifier];
+  v7 = identifier;
+  if (!identifier || [identifier integerValue] > 1)
   {
-    v8 = 0;
+    hiddenPointerStyle = 0;
     goto LABEL_34;
   }
 
-  v9 = [(AKOverlayView *)self _singleSelectedAnnotation];
-  if (v9)
+  _singleSelectedAnnotation = [(AKOverlayView *)self _singleSelectedAnnotation];
+  if (_singleSelectedAnnotation)
   {
-    v10 = [(AKOverlayView *)self pageController];
-    [v5 rect];
+    pageController = [(AKOverlayView *)self pageController];
+    [regionCopy rect];
     [AKGeometryHelper centerOfRect:?];
-    [v10 convertPointFromOverlayToModel:?];
+    [pageController convertPointFromOverlayToModel:?];
     v12 = v11;
     v14 = v13;
-    [v10 currentModelToScreenScaleFactor];
-    v16 = [AKAnnotationPointOfInterestHelper draggableAreaForPoint:v9 onAnnotation:v10 withScale:v12 pageControllerForPixelAlignment:v14, v15];
-    v8 = [MEMORY[0x277D75890] hiddenPointerStyle];
+    [pageController currentModelToScreenScaleFactor];
+    v16 = [AKAnnotationPointOfInterestHelper draggableAreaForPoint:_singleSelectedAnnotation onAnnotation:pageController withScale:v12 pageControllerForPixelAlignment:v14, v15];
+    hiddenPointerStyle = [MEMORY[0x277D75890] hiddenPointerStyle];
     if (!v16)
     {
       goto LABEL_32;
     }
 
-    v17 = [(AKOverlayView *)self _liftOffHandleViewForRegion:v5];
+    v17 = [(AKOverlayView *)self _liftOffHandleViewForRegion:regionCopy];
     if (v17)
     {
       v18 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:v17];
       v19 = [MEMORY[0x277D75858] effectWithPreview:v18];
       v20 = [MEMORY[0x277D75890] styleWithEffect:v19 shape:0];
 
-      v8 = v20;
+      hiddenPointerStyle = v20;
     }
 
     if (v16 <= 8)
     {
-      v21 = [v9 conformsToAKRotatableAnnotationProtocol];
+      conformsToAKRotatableAnnotationProtocol = [_singleSelectedAnnotation conformsToAKRotatableAnnotationProtocol];
       v22 = 0.0;
-      if (v21)
+      if (conformsToAKRotatableAnnotationProtocol)
       {
-        [v9 rotationAngle];
+        [_singleSelectedAnnotation rotationAngle];
       }
 
       v16 = ((v16 + vcvtad_u64_f64(v22 / 0.785398163) - 1) & 7) + 1;
@@ -1507,7 +1507,7 @@ LABEL_25:
           v29 = v35;
 LABEL_30:
           v25 = [v28 arrayWithObjects:v29 count:2];
-          [v8 setAccessories:v25];
+          [hiddenPointerStyle setAccessories:v25];
           goto LABEL_31;
         }
 
@@ -1543,7 +1543,7 @@ LABEL_30:
         v26 = [MEMORY[0x277D75850] arrowAccessoryWithPosition:{*MEMORY[0x277D76E08], *(MEMORY[0x277D76E08] + 8)}];
         v31[3] = v26;
         v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:4];
-        [v8 setAccessories:v27];
+        [hiddenPointerStyle setAccessories:v27];
 
 LABEL_31:
         goto LABEL_32;
@@ -1596,12 +1596,12 @@ LABEL_27:
     goto LABEL_30;
   }
 
-  v8 = 0;
+  hiddenPointerStyle = 0;
 LABEL_33:
 
 LABEL_34:
 
-  return v8;
+  return hiddenPointerStyle;
 }
 
 - (AKPageController)pageController

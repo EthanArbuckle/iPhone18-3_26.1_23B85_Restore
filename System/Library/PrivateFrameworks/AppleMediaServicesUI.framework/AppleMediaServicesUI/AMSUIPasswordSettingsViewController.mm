@@ -1,29 +1,29 @@
 @interface AMSUIPasswordSettingsViewController
-- (AMSUIPasswordSettingsViewController)initWithAccount:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)freeDownloadsToggle:(id)a3 changedValue:(BOOL)a4;
-- (void)handleAuthenticateRequest:(id)a3 completion:(id)a4;
-- (void)handleDialogRequest:(id)a3 completion:(id)a4;
+- (AMSUIPasswordSettingsViewController)initWithAccount:(id)account;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)freeDownloadsToggle:(id)toggle changedValue:(BOOL)value;
+- (void)handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)handleDialogRequest:(id)request completion:(id)completion;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation AMSUIPasswordSettingsViewController
 
-- (AMSUIPasswordSettingsViewController)initWithAccount:(id)a3
+- (AMSUIPasswordSettingsViewController)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v11.receiver = self;
   v11.super_class = AMSUIPasswordSettingsViewController;
   v6 = [(AMSUIPasswordSettingsViewController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
     v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
     bundle = v7->_bundle;
     v7->_bundle = v8;
@@ -35,9 +35,9 @@
 - (void)loadView
 {
   v4 = [AMSUIPasswordSettingsViewProvider makeViewWithAccount:self->_account];
-  v3 = [v4 view];
+  view = [v4 view];
   [v4 setView:0];
-  [(AMSUIPasswordSettingsViewController *)self setView:v3];
+  [(AMSUIPasswordSettingsViewController *)self setView:view];
 }
 
 - (void)viewDidLoad
@@ -45,30 +45,30 @@
   v7.receiver = self;
   v7.super_class = AMSUIPasswordSettingsViewController;
   [(AMSUIPasswordSettingsViewController *)&v7 viewDidLoad];
-  v3 = [(AMSUIPasswordSettingsViewController *)self bundle];
-  v4 = [v3 localizedStringForKey:@"PASSWORD_SETTINGS_TITLE" value:&stru_1F3921360 table:0];
+  bundle = [(AMSUIPasswordSettingsViewController *)self bundle];
+  v4 = [bundle localizedStringForKey:@"PASSWORD_SETTINGS_TITLE" value:&stru_1F3921360 table:0];
   [(AMSUIPasswordSettingsViewController *)self setTitle:v4];
 
   v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_donePressed_];
-  v6 = [(AMSUIPasswordSettingsViewController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem = [(AMSUIPasswordSettingsViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    v8 = [v6 dequeueReusableCellWithIdentifier:@"Free" forIndexPath:v7];
-    v9 = [(AMSUIPasswordSettingsViewController *)self bundle];
-    v10 = [v9 localizedStringForKey:@"PASSWORD_SETTINGS_REQUIRE" value:&stru_1F3921360 table:0];
-    v11 = [v8 textLabel];
-    [v11 setText:v10];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"Free" forIndexPath:pathCopy];
+    bundle = [(AMSUIPasswordSettingsViewController *)self bundle];
+    v10 = [bundle localizedStringForKey:@"PASSWORD_SETTINGS_REQUIRE" value:&stru_1F3921360 table:0];
+    textLabel = [v8 textLabel];
+    [textLabel setText:v10];
 
     v12 = ([MEMORY[0x1E698CB10] requirePasswordImmediately] & 1) != 0 || -[AMSUIPasswordSettingsViewController freeSetting](self, "freeSetting") == 1;
-    v19 = [v8 toggle];
-    [v19 setOn:v12];
+    toggle = [v8 toggle];
+    [toggle setOn:v12];
 
     [v8 setDelegate:self];
     v20 = 0.5;
@@ -92,30 +92,30 @@
       v21 = 0;
     }
 
-    v22 = [v8 contentView];
-    [v22 setAlpha:v20];
+    contentView = [v8 contentView];
+    [contentView setAlpha:v20];
 
-    v23 = [v8 toggle];
-    [v23 setEnabled:v21];
+    toggle2 = [v8 toggle];
+    [toggle2 setEnabled:v21];
 
     goto LABEL_26;
   }
 
-  v8 = [v6 dequeueReusableCellWithIdentifier:@"Purchases" forIndexPath:v7];
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"Purchases" forIndexPath:pathCopy];
   if ([MEMORY[0x1E698CB10] requirePasswordImmediately])
   {
-    v13 = [v8 contentView];
-    [v13 setAlpha:0.5];
+    contentView2 = [v8 contentView];
+    [contentView2 setAlpha:0.5];
   }
 
-  v14 = [v7 row];
-  v15 = [(AMSUIPasswordSettingsViewController *)self bundle];
-  v16 = v15;
+  v14 = [pathCopy row];
+  bundle2 = [(AMSUIPasswordSettingsViewController *)self bundle];
+  v16 = bundle2;
   if (!v14)
   {
-    v24 = [v15 localizedStringForKey:@"PASSWORD_SETTINGS_ALWAYS" value:&stru_1F3921360 table:0];
-    v25 = [v8 textLabel];
-    [v25 setText:v24];
+    v24 = [bundle2 localizedStringForKey:@"PASSWORD_SETTINGS_ALWAYS" value:&stru_1F3921360 table:0];
+    textLabel2 = [v8 textLabel];
+    [textLabel2 setText:v24];
 
     if (-[AMSUIPasswordSettingsViewController paidSetting](self, "paidSetting") != 1 && -[AMSUIPasswordSettingsViewController paidSetting](self, "paidSetting") && ![MEMORY[0x1E698CB10] requirePasswordImmediately])
     {
@@ -123,13 +123,13 @@
     }
 
 LABEL_22:
-    [v6 selectRowAtIndexPath:v7 animated:1 scrollPosition:0];
+    [viewCopy selectRowAtIndexPath:pathCopy animated:1 scrollPosition:0];
     goto LABEL_24;
   }
 
-  v17 = [v15 localizedStringForKey:@"PASSWORD_SETTINGS_SOMETIMES" value:&stru_1F3921360 table:0];
-  v18 = [v8 textLabel];
-  [v18 setText:v17];
+  v17 = [bundle2 localizedStringForKey:@"PASSWORD_SETTINGS_SOMETIMES" value:&stru_1F3921360 table:0];
+  textLabel3 = [v8 textLabel];
+  [textLabel3 setText:v17];
 
   if (-[AMSUIPasswordSettingsViewController paidSetting](self, "paidSetting") == 2 && ([MEMORY[0x1E698CB10] requirePasswordImmediately] & 1) == 0)
   {
@@ -137,15 +137,15 @@ LABEL_22:
   }
 
 LABEL_23:
-  [v6 deselectRowAtIndexPath:v7 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 LABEL_24:
   if (self->_isBiometricsEnabled)
   {
-    v26 = [v8 contentView];
-    [v26 setAlpha:0.5];
+    contentView3 = [v8 contentView];
+    [contentView3 setAlpha:0.5];
 
-    v27 = [MEMORY[0x1E69DC888] tintColor];
-    v28 = [v27 colorWithAlphaComponent:0.5];
+    tintColor = [MEMORY[0x1E69DC888] tintColor];
+    v28 = [tintColor colorWithAlphaComponent:0.5];
     [v8 setTintColor:v28];
 
     [v8 setUserInteractionEnabled:0];
@@ -156,9 +156,9 @@ LABEL_26:
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 1;
   }
@@ -169,11 +169,11 @@ LABEL_26:
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(AMSUIPasswordSettingsViewController *)self bundle];
-  v6 = v5;
-  if (a4)
+  bundle = [(AMSUIPasswordSettingsViewController *)self bundle];
+  v6 = bundle;
+  if (section)
   {
     v7 = @"PASSWORD_SETTINGS_FREE_HEADER";
   }
@@ -183,23 +183,23 @@ LABEL_26:
     v7 = @"PASSWORD_SETTINGS_PAID_HEADER";
   }
 
-  v8 = [v5 localizedStringForKey:v7 value:&stru_1F3921360 table:0];
+  v8 = [bundle localizedStringForKey:v7 value:&stru_1F3921360 table:0];
 
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E698C968] sharedAccountsConfig];
-  if (!v6)
+  pathCopy = path;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedAccountsConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v6 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = AMSLogKey();
@@ -207,10 +207,10 @@ LABEL_26:
     v23 = v8;
     v24 = 2114;
     v25 = v9;
-    _os_log_impl(&dword_1BB036000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Paid Downloads toggled", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Paid Downloads toggled", buf, 0x16u);
   }
 
-  if ([v5 row])
+  if ([pathCopy row])
   {
     v10 = 2;
   }
@@ -222,21 +222,21 @@ LABEL_26:
 
   [(AMSUIPasswordSettingsViewController *)self setPaidSetting:v10];
   v11 = objc_alloc(MEMORY[0x1E698CB48]);
-  v12 = [(AMSUIPasswordSettingsViewController *)self account];
-  v13 = [(AMSUIPasswordSettingsViewController *)self freeSetting];
-  v14 = [(AMSUIPasswordSettingsViewController *)self paidSetting];
-  v15 = [MEMORY[0x1E698CB48] createBagForSubProfile];
-  v16 = [v11 initWithAccount:v12 freeSetting:v13 paidSetting:v14 delegate:self bag:v15];
+  account = [(AMSUIPasswordSettingsViewController *)self account];
+  freeSetting = [(AMSUIPasswordSettingsViewController *)self freeSetting];
+  paidSetting = [(AMSUIPasswordSettingsViewController *)self paidSetting];
+  createBagForSubProfile = [MEMORY[0x1E698CB48] createBagForSubProfile];
+  v16 = [v11 initWithAccount:account freeSetting:freeSetting paidSetting:paidSetting delegate:self bag:createBagForSubProfile];
 
-  v17 = [v16 performSync];
+  performSync = [v16 performSync];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __73__AMSUIPasswordSettingsViewController_tableView_didSelectRowAtIndexPath___block_invoke;
   v20[3] = &unk_1E7F255A0;
   v20[4] = self;
-  v21 = v5;
-  v18 = v5;
-  [v17 addFinishBlock:v20];
+  v21 = pathCopy;
+  v18 = pathCopy;
+  [performSync addFinishBlock:v20];
 
   v19 = *MEMORY[0x1E69E9840];
 }
@@ -333,9 +333,9 @@ void __73__AMSUIPasswordSettingsViewController_tableView_didSelectRowAtIndexPath
   [v1 reloadData];
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if (([MEMORY[0x1E698CB10] requirePasswordImmediately] & 1) != 0 || self->_isBiometricsEnabled)
   {
     v6 = 0;
@@ -343,14 +343,14 @@ void __73__AMSUIPasswordSettingsViewController_tableView_didSelectRowAtIndexPath
 
   else
   {
-    if ([v5 section])
+    if ([pathCopy section])
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = v5;
+      v7 = pathCopy;
     }
 
     v6 = v7;
@@ -359,19 +359,19 @@ void __73__AMSUIPasswordSettingsViewController_tableView_didSelectRowAtIndexPath
   return v6;
 }
 
-- (void)freeDownloadsToggle:(id)a3 changedValue:(BOOL)a4
+- (void)freeDownloadsToggle:(id)toggle changedValue:(BOOL)value
 {
-  v4 = a4;
+  valueCopy = value;
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E698C968] sharedAccountsConfig];
-  if (!v7)
+  toggleCopy = toggle;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedAccountsConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v7 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v10 = AMSLogKey();
@@ -379,10 +379,10 @@ void __73__AMSUIPasswordSettingsViewController_tableView_didSelectRowAtIndexPath
     v24 = v9;
     v25 = 2114;
     v26 = v10;
-    _os_log_impl(&dword_1BB036000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Free Downloads toggled", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Free Downloads toggled", buf, 0x16u);
   }
 
-  if (v4)
+  if (valueCopy)
   {
     v11 = 1;
   }
@@ -394,21 +394,21 @@ void __73__AMSUIPasswordSettingsViewController_tableView_didSelectRowAtIndexPath
 
   [(AMSUIPasswordSettingsViewController *)self setFreeSetting:v11];
   v12 = objc_alloc(MEMORY[0x1E698CB48]);
-  v13 = [(AMSUIPasswordSettingsViewController *)self account];
-  v14 = [(AMSUIPasswordSettingsViewController *)self freeSetting];
-  v15 = [(AMSUIPasswordSettingsViewController *)self paidSetting];
-  v16 = [MEMORY[0x1E698CB48] createBagForSubProfile];
-  v17 = [v12 initWithAccount:v13 freeSetting:v14 paidSetting:v15 delegate:self bag:v16];
+  account = [(AMSUIPasswordSettingsViewController *)self account];
+  freeSetting = [(AMSUIPasswordSettingsViewController *)self freeSetting];
+  paidSetting = [(AMSUIPasswordSettingsViewController *)self paidSetting];
+  createBagForSubProfile = [MEMORY[0x1E698CB48] createBagForSubProfile];
+  v17 = [v12 initWithAccount:account freeSetting:freeSetting paidSetting:paidSetting delegate:self bag:createBagForSubProfile];
 
-  v18 = [v17 performSync];
+  performSync = [v17 performSync];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __72__AMSUIPasswordSettingsViewController_freeDownloadsToggle_changedValue___block_invoke;
   v21[3] = &unk_1E7F255A0;
   v21[4] = self;
-  v22 = v6;
-  v19 = v6;
-  [v18 addFinishBlock:v21];
+  v22 = toggleCopy;
+  v19 = toggleCopy;
+  [performSync addFinishBlock:v21];
 
   v20 = *MEMORY[0x1E69E9840];
 }
@@ -465,36 +465,36 @@ void __72__AMSUIPasswordSettingsViewController_freeDownloadsToggle_changedValue_
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAuthenticateRequest:(id)a3 completion:(id)a4
+- (void)handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[AMSUIAuthenticateTask alloc] initWithRequest:v7 presentingViewController:self];
+  completionCopy = completion;
+  requestCopy = request;
+  v8 = [[AMSUIAuthenticateTask alloc] initWithRequest:requestCopy presentingViewController:self];
 
-  v9 = [(AMSAuthenticateTask *)v8 performAuthentication];
+  performAuthentication = [(AMSAuthenticateTask *)v8 performAuthentication];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __76__AMSUIPasswordSettingsViewController_handleAuthenticateRequest_completion___block_invoke;
   v11[3] = &unk_1E7F24370;
-  v12 = v6;
-  v10 = v6;
-  [v9 addFinishBlock:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [performAuthentication addFinishBlock:v11];
 }
 
-- (void)handleDialogRequest:(id)a3 completion:(id)a4
+- (void)handleDialogRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[AMSUIAlertDialogTask alloc] initWithRequest:v7 presentingViewController:self];
+  completionCopy = completion;
+  requestCopy = request;
+  v8 = [[AMSUIAlertDialogTask alloc] initWithRequest:requestCopy presentingViewController:self];
 
-  v9 = [(AMSUIAlertDialogTask *)v8 present];
+  present = [(AMSUIAlertDialogTask *)v8 present];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __70__AMSUIPasswordSettingsViewController_handleDialogRequest_completion___block_invoke;
   v11[3] = &unk_1E7F24398;
-  v12 = v6;
-  v10 = v6;
-  [v9 addFinishBlock:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [present addFinishBlock:v11];
 }
 
 @end

@@ -14,14 +14,14 @@
   {
     out_token = 0;
     objc_initWeak(&location, self);
-    v3 = [@"com.apple.corespeech.fakeasset.rolling" UTF8String];
+    uTF8String = [@"com.apple.corespeech.fakeasset.rolling" UTF8String];
     queue = self->_queue;
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __70__CoreSpeechXPCFakeModelMonitor__registerForFakeAssetRollNotification__block_invoke;
     handler[3] = &unk_2784C5588;
     objc_copyWeak(&v9, &location);
-    v5 = notify_register_dispatch(v3, &out_token, queue, handler);
+    v5 = notify_register_dispatch(uTF8String, &out_token, queue, handler);
     if (v5)
     {
       v6 = *MEMORY[0x277D015D8];

@@ -1,9 +1,9 @@
 @interface DDScanServerDispatcher
 - (DDScanServerDispatcher)init;
 - (id)reportQueue;
-- (uint64_t)scannerConf:(int)a3 sync:(void *)a4 string:(void *)a5 runTask:;
+- (uint64_t)scannerConf:(int)conf sync:(void *)sync string:(void *)string runTask:;
 - (void)dealloc;
-- (void)recycleScanner:(void *)a3 fromList:(int)a4 sameQueue:;
+- (void)recycleScanner:(void *)scanner fromList:(int)list sameQueue:;
 @end
 
 @implementation DDScanServerDispatcher
@@ -218,21 +218,21 @@ LABEL_32:
 
 - (id)reportQueue
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[3];
+    self = self[3];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)scannerConf:(int)a3 sync:(void *)a4 string:(void *)a5 runTask:
+- (uint64_t)scannerConf:(int)conf sync:(void *)sync string:(void *)string runTask:
 {
   v9 = a2;
-  v10 = a4;
-  v11 = a5;
-  if (a1)
+  syncCopy = sync;
+  stringCopy = string;
+  if (self)
   {
     v60 = 0;
     v61 = &v60;
@@ -247,24 +247,24 @@ LABEL_32:
 
     else
     {
-      v12 = [[DDScannerServiceConfiguration alloc] initWithScannerType:0 passiveIntent:a3 ^ 1u];
+      v12 = [[DDScannerServiceConfiguration alloc] initWithScannerType:0 passiveIntent:conf ^ 1u];
     }
 
     v13 = v61[5];
     v61[5] = v12;
 
-    v14 = [v61[5] language];
-    if (v14 || ![(__CFString *)v10 length])
+    language = [v61[5] language];
+    if (language || ![(__CFString *)syncCopy length])
     {
-      if ([v14 isEqualToString:@"inconclusive"])
+      if ([language isEqualToString:@"inconclusive"])
       {
         [v61[5] setLanguage:0];
       }
 
-      else if ([v14 length])
+      else if ([language length])
       {
         [v61[5] setLanguageHighConfidence:1];
-        v15 = v14;
+        v15 = language;
         if (_scriptForEmbeddingFromLanguage__onceToken != -1)
         {
           dispatch_once(&_scriptForEmbeddingFromLanguage__onceToken, &__block_literal_global);
@@ -288,7 +288,7 @@ LABEL_32:
 
     else if (([0 isEqualToString:@"inconclusive"] & 1) == 0)
     {
-      v18 = DDComputeDominantScriptOrLanguage(v10);
+      v18 = DDComputeDominantScriptOrLanguage(syncCopy);
       [v61[5] setScript:v18];
       v19 = 0;
       v20 = 0;
@@ -384,18 +384,18 @@ LABEL_29:
     v41 = &v40;
     v42 = 0x2020000000;
     v43 = 0;
-    v21 = *(a1 + 8);
+    v21 = *(self + 8);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __58__DDScanServerDispatcher_scannerConf_sync_string_runTask___block_invoke;
     block[3] = &unk_1E8001B58;
     v38 = sel_scannerConf_sync_string_runTask_;
-    block[4] = a1;
+    block[4] = self;
     v33 = &v44;
     v34 = &v48;
     v35 = &v60;
-    v39 = a3;
-    v22 = v11;
+    confCopy = conf;
+    v22 = stringCopy;
     v32 = v22;
     v36 = &v40;
     v37 = &v54;
@@ -405,7 +405,7 @@ LABEL_29:
       goto LABEL_40;
     }
 
-    if (a3)
+    if (conf)
     {
       if (v9)
       {
@@ -418,16 +418,16 @@ LABEL_29:
       }
     }
 
-    else if (!v10 || [(__CFString *)v10 length]>= 0xA0)
+    else if (!syncCopy || [(__CFString *)syncCopy length]>= 0xA0)
     {
-      v24 = *(a1 + 16);
+      v24 = *(self + 16);
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __58__DDScanServerDispatcher_scannerConf_sync_string_runTask___block_invoke_3;
       v26[3] = &unk_1E8001B80;
       v28 = &v54;
       v29 = &v60;
-      v26[4] = a1;
+      v26[4] = self;
       v27 = v22;
       v30 = &v48;
       dispatch_async(v24, v26);
@@ -436,9 +436,9 @@ LABEL_29:
     }
 
     (*(v22 + 2))(v22, v55[5], v61[5]);
-    [(DDScanServerDispatcher *)a1 recycleScanner:v49[5] fromList:0 sameQueue:?];
+    [(DDScanServerDispatcher *)self recycleScanner:v49[5] fromList:0 sameQueue:?];
 LABEL_40:
-    a1 = v45[3];
+    self = v45[3];
 
     _Block_object_dispose(&v40, 8);
     _Block_object_dispose(&v44, 8);
@@ -448,7 +448,7 @@ LABEL_40:
     _Block_object_dispose(&v60, 8);
   }
 
-  return a1;
+  return self;
 }
 
 void __58__DDScanServerDispatcher_scannerConf_sync_string_runTask___block_invoke(uint64_t a1)
@@ -785,11 +785,11 @@ LABEL_68:
   v72 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recycleScanner:(void *)a3 fromList:(int)a4 sameQueue:
+- (void)recycleScanner:(void *)scanner fromList:(int)list sameQueue:
 {
   v6 = a2;
-  v16 = a3;
-  if (a1 && v6)
+  scannerCopy = scanner;
+  if (self && v6)
   {
     v7 = MEMORY[0x1E69E9820];
     while (1)
@@ -800,13 +800,13 @@ LABEL_68:
       v29 = __Block_byref_object_copy_;
       v30 = __Block_byref_object_dispose_;
       v31 = 0;
-      v8 = *(a1 + 8);
+      v8 = *(self + 8);
       block[0] = v7;
       block[1] = 3221225472;
       block[2] = __60__DDScanServerDispatcher_recycleScanner_fromList_sameQueue___block_invoke;
       block[3] = &unk_1E8001BD0;
-      block[4] = a1;
-      v9 = v16;
+      block[4] = self;
+      v9 = scannerCopy;
       v23 = v9;
       v25 = &v26;
       v10 = v6;
@@ -819,16 +819,16 @@ LABEL_68:
         break;
       }
 
-      if (!a4)
+      if (!list)
       {
-        v14 = *(a1 + 16);
+        v14 = *(self + 16);
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
         v17[2] = __60__DDScanServerDispatcher_recycleScanner_fromList_sameQueue___block_invoke_2;
         v17[3] = &unk_1E8001BD0;
         v21 = &v26;
         v18 = v11;
-        v19 = a1;
+        selfCopy = self;
         v20 = v9;
         dispatch_async(v14, v17);
 

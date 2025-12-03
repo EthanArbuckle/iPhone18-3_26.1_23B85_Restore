@@ -23,14 +23,14 @@
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_249340000, v2, OS_LOG_TYPE_DEFAULT, "Start observing collection %@", &v5, 0xCu);
   }
 
-  [a1 doc_setIsObserving:1];
-  [a1 startObserving];
+  [self doc_setIsObserving:1];
+  [self startObserving];
   v3 = +[DOCFPItemCollectionManager sharedManager];
-  [v3 collectionDidStartObserving:a1];
+  [v3 collectionDidStartObserving:self];
 
   v4 = *MEMORY[0x277D85DE8];
 }
@@ -54,14 +54,14 @@
 
 - (uint64_t)doc_startObservationIfNeeded
 {
-  result = [a1 doc_displaysSearchResults];
+  result = [self doc_displaysSearchResults];
   if ((result & 1) == 0)
   {
-    result = [a1 doc_isObserving];
+    result = [self doc_isObserving];
     if ((result & 1) == 0)
     {
 
-      return [a1 doc_startObserving];
+      return [self doc_startObserving];
     }
   }
 
@@ -70,25 +70,25 @@
 
 - (uint64_t)doc_isObserving
 {
-  v1 = objc_getAssociatedObject(a1, &_isObservingIdentifier);
+  v1 = objc_getAssociatedObject(self, &_isObservingIdentifier);
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)doc_setIsObserving:()DOCUtils
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  objc_setAssociatedObject(a1, &_isObservingIdentifier, v2, 1);
+  objc_setAssociatedObject(self, &_isObservingIdentifier, v2, 1);
 }
 
 - (uint64_t)doc_stopObserving
@@ -104,27 +104,27 @@
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_249340000, v2, OS_LOG_TYPE_DEFAULT, "Stop observing collection %@", &v6, 0xCu);
   }
 
   v3 = +[DOCFPItemCollectionManager sharedManager];
-  [v3 collectionDidStopObserving:a1];
+  [v3 collectionDidStopObserving:self];
 
-  [a1 doc_setIsObserving:0];
-  result = [a1 stopObserving];
+  [self doc_setIsObserving:0];
+  result = [self stopObserving];
   v5 = *MEMORY[0x277D85DE8];
   return result;
 }
 
 - (uint64_t)doc_restartObservation
 {
-  if ([a1 doc_isObserving])
+  if ([self doc_isObserving])
   {
-    [a1 doc_stopObserving];
+    [self doc_stopObserving];
   }
 
-  return [a1 doc_startObservationIfNeeded];
+  return [self doc_startObservationIfNeeded];
 }
 
 @end

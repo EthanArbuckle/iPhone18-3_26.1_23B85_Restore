@@ -1,32 +1,32 @@
 @interface GKResourceIdentifier
-+ (id)resourceIdentifierForKeys:(id)a3;
-+ (id)resourceIdentifiersForBagKeys:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (GKResourceIdentifier)initWithKeys:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resourceIdentifierForKeys:(id)keys;
++ (id)resourceIdentifiersForBagKeys:(id)keys;
+- (BOOL)isEqual:(id)equal;
+- (GKResourceIdentifier)initWithKeys:(id)keys;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation GKResourceIdentifier
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [GKResourceIdentifier allocWithZone:a3];
+  v4 = [GKResourceIdentifier allocWithZone:zone];
   keys = self->_keys;
 
   return [(GKResourceIdentifier *)v4 initWithKeys:keys];
 }
 
-- (GKResourceIdentifier)initWithKeys:(id)a3
+- (GKResourceIdentifier)initWithKeys:(id)keys
 {
-  v4 = a3;
-  if (![v4 count])
+  keysCopy = keys;
+  if (![keysCopy count])
   {
     v5 = [NSString stringWithFormat:@"A GKResourceIdentifier must have at least one key"];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKResourceManager.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (0 < [keys count])\n[%s (%s:%d)]", v5, "-[GKResourceIdentifier initWithKeys:]", [v7 UTF8String], 35);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (0 < [keys count])\n[%s (%s:%d)]", v5, "-[GKResourceIdentifier initWithKeys:]", [lastPathComponent UTF8String], 35);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
@@ -36,7 +36,7 @@
   v9 = [(GKResourceIdentifier *)&v18 init];
   if (v9)
   {
-    v10 = [v4 copy];
+    v10 = [keysCopy copy];
     keys = v9->_keys;
     v9->_keys = v10;
 
@@ -54,22 +54,22 @@
   return v9;
 }
 
-+ (id)resourceIdentifiersForBagKeys:(id)a3
++ (id)resourceIdentifiersForBagKeys:(id)keys
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000F7484;
   v5[3] = &unk_100366878;
-  v5[4] = a1;
-  v3 = [a3 _gkMapWithBlock:v5];
+  v5[4] = self;
+  v3 = [keys _gkMapWithBlock:v5];
 
   return v3;
 }
 
-+ (id)resourceIdentifierForKeys:(id)a3
++ (id)resourceIdentifierForKeys:(id)keys
 {
-  v3 = a3;
-  v4 = [[GKResourceIdentifier alloc] initWithKeys:v3];
+  keysCopy = keys;
+  v4 = [[GKResourceIdentifier alloc] initWithKeys:keysCopy];
 
   return v4;
 }
@@ -92,11 +92,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   keys = self->_keys;
-  v4 = [a3 keys];
-  LOBYTE(keys) = [(NSArray *)keys isEqual:v4];
+  keys = [equal keys];
+  LOBYTE(keys) = [(NSArray *)keys isEqual:keys];
 
   return keys;
 }

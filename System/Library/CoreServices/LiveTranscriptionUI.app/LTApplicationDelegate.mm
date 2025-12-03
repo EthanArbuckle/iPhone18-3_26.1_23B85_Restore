@@ -1,18 +1,18 @@
 @interface LTApplicationDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 - (_TtC19LiveTranscriptionUI21LTApplicationDelegate)init;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (void)applicationWillTerminate:(id)a3;
-- (void)setWindow:(id)a3;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (void)applicationWillTerminate:(id)terminate;
+- (void)setWindow:(id)window;
 @end
 
 @implementation LTApplicationDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC19LiveTranscriptionUI21LTApplicationDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC19LiveTranscriptionUI21LTApplicationDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC19LiveTranscriptionUI21LTApplicationDelegate_window) = window;
+  windowCopy = window;
 }
 
 - (_TtC19LiveTranscriptionUI21LTApplicationDelegate)init
@@ -23,7 +23,7 @@
   return [(LTApplicationDelegate *)&v3 init];
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   static os_log_type_t.debug.getter();
   if (qword_1000626F0 != -1)
@@ -35,7 +35,7 @@
   return 1;
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
   static os_log_type_t.debug.getter();
   if (qword_1000626F0 != -1)
@@ -52,13 +52,13 @@
   AXLTCaptionsProvider.stopTranscribing()();
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
-  v6 = [v5 role];
+  sessionCopy = session;
+  role = [sessionCopy role];
   v7 = objc_allocWithZone(UISceneConfiguration);
   v8 = String._bridgeToObjectiveC()();
-  v9 = [v7 initWithName:v8 sessionRole:v6];
+  v9 = [v7 initWithName:v8 sessionRole:role];
 
   return v9;
 }

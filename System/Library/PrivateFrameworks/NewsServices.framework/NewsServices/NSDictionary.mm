@@ -9,38 +9,38 @@
 - (BOOL)nn_active
 {
   v2 = [(NSDictionary *)self objectForKeyedSubscript:@"nn_active"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unint64_t)sync_headlineCount
 {
   v2 = [(NSDictionary *)self objectForKeyedSubscript:@"sync_headlineCount"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)sync_type
 {
   v2 = [(NSDictionary *)self objectForKeyedSubscript:@"sync_type"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  if (v3 >= 6)
+  if (unsignedIntegerValue >= 6)
   {
     v4 = NNSetupCompanionSyncLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v6 = 134217984;
-      v7 = v3;
+      v7 = unsignedIntegerValue;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Unknown type %lu", &v6, 0xCu);
     }
 
     return 0;
   }
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 @end

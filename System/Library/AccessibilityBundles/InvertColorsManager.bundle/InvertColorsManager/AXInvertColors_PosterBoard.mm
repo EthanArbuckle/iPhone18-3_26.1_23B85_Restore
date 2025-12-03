@@ -1,26 +1,26 @@
 @interface AXInvertColors_PosterBoard
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_PosterBoard
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PBFGalleryEditingSceneViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"PBFPosterGalleryPreviewViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PBFGalleryEditingSceneViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"PBFPosterGalleryPreviewViewController" isKindOfClass:@"UIViewController"];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"PBFPosterGalleryPreviewViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"PBFGalleryEditingSceneViewControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"LockScreenPosterCollectionViewCell_InvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"HomeScreenPosterCollectionViewCell_InvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"PBFPosterRackCollectionViewController_InvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"PBFPosterGalleryPreviewViewController_InvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"PBFPosterGalleryPreviewViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"PBFGalleryEditingSceneViewControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"LockScreenPosterCollectionViewCell_InvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"HomeScreenPosterCollectionViewCell_InvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"PBFPosterRackCollectionViewController_InvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"PBFPosterGalleryPreviewViewController_InvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

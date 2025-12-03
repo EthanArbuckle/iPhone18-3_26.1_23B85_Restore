@@ -1,29 +1,29 @@
 @interface APCacheStore
-- (APCacheStore)initWithFileStorage:(id)a3 memoryCache:(id)a4;
-- (APCacheStore)initWithTotalCostLimit:(int64_t)a3;
-- (BOOL)_executeOperation:(id)a3;
-- (BOOL)_hasObjectForKey:(id)a3;
-- (BOOL)hasObjectForKey:(id)a3;
-- (BOOL)isObjectAliveForKey:(id)a3;
-- (id)_objectForKey:(id)a3 ignoreKeys:(id)a4;
+- (APCacheStore)initWithFileStorage:(id)storage memoryCache:(id)cache;
+- (APCacheStore)initWithTotalCostLimit:(int64_t)limit;
+- (BOOL)_executeOperation:(id)operation;
+- (BOOL)_hasObjectForKey:(id)key;
+- (BOOL)hasObjectForKey:(id)key;
+- (BOOL)isObjectAliveForKey:(id)key;
+- (id)_objectForKey:(id)key ignoreKeys:(id)keys;
 - (id)createTransaction;
-- (id)enumerateIDsWithExtension:(id)a3;
-- (id)objectForKey:(id)a3 ignoreKeys:(id)a4;
+- (id)enumerateIDsWithExtension:(id)extension;
+- (id)objectForKey:(id)key ignoreKeys:(id)keys;
 - (void)_printCacheStatistics;
-- (void)enableDiagnosticsWithInterval:(double)a3;
-- (void)evictObjectFromMemoryCacheForKey:(id)a3;
-- (void)executeBlock:(id)a3;
-- (void)removeObjectForKey:(id)a3 transaction:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4 transaction:(id)a5;
-- (void)touchObjectForKey:(id)a3 transaction:(id)a4;
+- (void)enableDiagnosticsWithInterval:(double)interval;
+- (void)evictObjectFromMemoryCacheForKey:(id)key;
+- (void)executeBlock:(id)block;
+- (void)removeObjectForKey:(id)key transaction:(id)transaction;
+- (void)setObject:(id)object forKey:(id)key transaction:(id)transaction;
+- (void)touchObjectForKey:(id)key transaction:(id)transaction;
 @end
 
 @implementation APCacheStore
 
-- (APCacheStore)initWithFileStorage:(id)a3 memoryCache:(id)a4
+- (APCacheStore)initWithFileStorage:(id)storage memoryCache:(id)cache
 {
-  v7 = a3;
-  v8 = a4;
+  storageCopy = storage;
+  cacheCopy = cache;
   v15.receiver = self;
   v15.super_class = APCacheStore;
   v9 = [(APCacheStore *)&v15 init];
@@ -33,8 +33,8 @@
     lock = v9->_lock;
     v9->_lock = v10;
 
-    objc_storeStrong(&v9->_fileStorage, a3);
-    objc_storeStrong(&v9->_memoryCache, a4);
+    objc_storeStrong(&v9->_fileStorage, storage);
+    objc_storeStrong(&v9->_memoryCache, cache);
     v12 = +[NSMapTable weakToWeakObjectsMapTable];
     liveObjectsTracker = v9->_liveObjectsTracker;
     v9->_liveObjectsTracker = v12;
@@ -43,13 +43,13 @@
   return v9;
 }
 
-- (APCacheStore)initWithTotalCostLimit:(int64_t)a3
+- (APCacheStore)initWithTotalCostLimit:(int64_t)limit
 {
   v5 = objc_alloc_init(NSCache);
   v6 = v5;
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((limit & 0x8000000000000000) == 0)
   {
-    [v5 setTotalCostLimit:a3];
+    [v5 setTotalCostLimit:limit];
   }
 
   v7 = objc_alloc_init(APFileSystemAdapter);
@@ -58,28 +58,28 @@
   return v8;
 }
 
-- (BOOL)hasObjectForKey:(id)a3
+- (BOOL)hasObjectForKey:(id)key
 {
-  v4 = a3;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
     v5 = [NSString stringWithFormat:@"%@ key cannot be nil", objc_opt_class()];
     APSimulateCrash();
   }
 
-  v6 = [(APCacheStore *)self lock];
-  [v6 lock];
-  v7 = [(APCacheStore *)self _hasObjectForKey:v4];
-  [v6 unlock];
+  lock = [(APCacheStore *)self lock];
+  [lock lock];
+  v7 = [(APCacheStore *)self _hasObjectForKey:keyCopy];
+  [lock unlock];
 
   return v7;
 }
 
-- (BOOL)_hasObjectForKey:(id)a3
+- (BOOL)_hasObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(APCacheStore *)self memoryCache];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  memoryCache = [(APCacheStore *)self memoryCache];
+  v6 = [memoryCache objectForKey:keyCopy];
 
   if (v6)
   {
@@ -88,38 +88,38 @@
 
   else
   {
-    v8 = [(APCacheStore *)self fileStorage];
-    v7 = [v8 fileExists:v4];
+    fileStorage = [(APCacheStore *)self fileStorage];
+    v7 = [fileStorage fileExists:keyCopy];
   }
 
   return v7;
 }
 
-- (id)objectForKey:(id)a3 ignoreKeys:(id)a4
+- (id)objectForKey:(id)key ignoreKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  keyCopy = key;
+  keysCopy = keys;
+  if (!keyCopy)
   {
     v8 = [NSString stringWithFormat:@"%@ key cannot be nil", objc_opt_class()];
     APSimulateCrash();
   }
 
-  v9 = [(APCacheStore *)self lock];
-  [v9 lock];
-  v10 = [(APCacheStore *)self _objectForKey:v6 ignoreKeys:v7];
-  [v9 unlock];
+  lock = [(APCacheStore *)self lock];
+  [lock lock];
+  v10 = [(APCacheStore *)self _objectForKey:keyCopy ignoreKeys:keysCopy];
+  [lock unlock];
 
   return v10;
 }
 
-- (id)_objectForKey:(id)a3 ignoreKeys:(id)a4
+- (id)_objectForKey:(id)key ignoreKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  keysCopy = keys;
   ++self->_diagnosticsOperations;
-  v8 = [(APCacheStore *)self memoryCache];
-  v9 = [v8 objectForKey:v6];
+  memoryCache = [(APCacheStore *)self memoryCache];
+  v9 = [memoryCache objectForKey:keyCopy];
 
   if (v9)
   {
@@ -130,28 +130,28 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v11 = [(APCacheStore *)self liveObjectsTracker];
-  v9 = [v11 objectForKey:v6];
+  liveObjectsTracker = [(APCacheStore *)self liveObjectsTracker];
+  v9 = [liveObjectsTracker objectForKey:keyCopy];
 
   if (v9)
   {
-    v12 = [(APCacheStore *)self memoryCache];
-    [v12 setObject:v9 forKey:v6];
+    memoryCache2 = [(APCacheStore *)self memoryCache];
+    [memoryCache2 setObject:v9 forKey:keyCopy];
 
     v10 = 24;
     goto LABEL_5;
   }
 
-  v15 = [(APCacheStore *)self fileStorage];
+  fileStorage = [(APCacheStore *)self fileStorage];
   v28 = 0;
-  v16 = [v15 readDataFromFile:v6 error:&v28];
+  v16 = [fileStorage readDataFromFile:keyCopy error:&v28];
   v17 = v28;
 
   if (v17)
   {
-    v18 = [v17 domain];
-    v19 = v18;
-    if (v18 != NSCocoaErrorDomain)
+    domain = [v17 domain];
+    v19 = domain;
+    if (domain != NSCocoaErrorDomain)
     {
 
 LABEL_16:
@@ -164,7 +164,7 @@ LABEL_19:
       }
 
       *buf = 138543619;
-      v30 = v6;
+      v30 = keyCopy;
       v31 = 2113;
       v32 = v17;
       v25 = "Unable to read file %{public}@. Error: %{private}@";
@@ -175,9 +175,9 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v23 = [v17 code];
+    code = [v17 code];
 
-    if (v23 != 260)
+    if (code != 260)
     {
       goto LABEL_16;
     }
@@ -192,7 +192,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v20 = [APCacheableBaseObject deserializeFromData:v16 ignoreKeys:v7];
+  v20 = [APCacheableBaseObject deserializeFromData:v16 ignoreKeys:keysCopy];
   if (!v20)
   {
     v24 = APLogForCategory();
@@ -202,7 +202,7 @@ LABEL_20:
     }
 
     *buf = 138543362;
-    v30 = v6;
+    v30 = keyCopy;
     v25 = "Unable to deserialize object %{public}@.";
     v26 = v24;
     v27 = 12;
@@ -210,8 +210,8 @@ LABEL_20:
   }
 
   v21 = v20;
-  v22 = [(APCacheStore *)self memoryCache];
-  [v22 setObject:v21 forKey:v6];
+  memoryCache3 = [(APCacheStore *)self memoryCache];
+  [memoryCache3 setObject:v21 forKey:keyCopy];
 
   v13 = v21;
 LABEL_21:
@@ -221,20 +221,20 @@ LABEL_6:
   return v13;
 }
 
-- (void)removeObjectForKey:(id)a3 transaction:(id)a4
+- (void)removeObjectForKey:(id)key transaction:(id)transaction
 {
-  v9 = a3;
-  v6 = a4;
-  if (!v9)
+  keyCopy = key;
+  transactionCopy = transaction;
+  if (!keyCopy)
   {
     v7 = [NSString stringWithFormat:@"%@ key cannot be nil", objc_opt_class()];
     APSimulateCrash();
   }
 
-  v8 = [[APCacheStoreOperationRemove alloc] initWithCacheStore:self key:v9];
-  if (v6)
+  v8 = [[APCacheStoreOperationRemove alloc] initWithCacheStore:self key:keyCopy];
+  if (transactionCopy)
   {
-    [v6 addOperation:v8];
+    [transactionCopy addOperation:v8];
   }
 
   else
@@ -243,14 +243,14 @@ LABEL_6:
   }
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4 transaction:(id)a5
+- (void)setObject:(id)object forKey:(id)key transaction:(id)transaction
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v13)
+  objectCopy = object;
+  keyCopy = key;
+  transactionCopy = transaction;
+  if (objectCopy)
   {
-    if (v8)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
@@ -261,7 +261,7 @@ LABEL_6:
     v11 = [NSString stringWithFormat:@"%@ object cannot be nil", objc_opt_class()];
     APSimulateCrash();
 
-    if (v8)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
@@ -271,10 +271,10 @@ LABEL_6:
   APSimulateCrash();
 
 LABEL_3:
-  v10 = [[APCacheStoreOperationSet alloc] initWithCacheStore:self key:v8 object:v13];
-  if (v9)
+  v10 = [[APCacheStoreOperationSet alloc] initWithCacheStore:self key:keyCopy object:objectCopy];
+  if (transactionCopy)
   {
-    [v9 addOperation:v10];
+    [transactionCopy addOperation:v10];
   }
 
   else
@@ -283,11 +283,11 @@ LABEL_3:
   }
 }
 
-- (void)touchObjectForKey:(id)a3 transaction:(id)a4
+- (void)touchObjectForKey:(id)key transaction:(id)transaction
 {
-  v11 = a3;
-  v6 = a4;
-  if (!v11)
+  keyCopy = key;
+  transactionCopy = transaction;
+  if (!keyCopy)
   {
     v7 = [NSString stringWithFormat:@"%@ key cannot be nil", objc_opt_class()];
     APSimulateCrash();
@@ -295,11 +295,11 @@ LABEL_3:
 
   v8 = [APCacheStoreOperationTouch alloc];
   v9 = +[NSDate now];
-  v10 = [(APCacheStoreOperationTouch *)v8 initWithCacheStore:self key:v11 timestamp:v9];
+  v10 = [(APCacheStoreOperationTouch *)v8 initWithCacheStore:self key:keyCopy timestamp:v9];
 
-  if (v6)
+  if (transactionCopy)
   {
-    [v6 addOperation:v10];
+    [transactionCopy addOperation:v10];
   }
 
   else
@@ -315,81 +315,81 @@ LABEL_3:
   return v2;
 }
 
-- (void)executeBlock:(id)a3
+- (void)executeBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(APCacheStore *)self lock];
-  [v5 lock];
-  v4[2](v4);
+  blockCopy = block;
+  lock = [(APCacheStore *)self lock];
+  [lock lock];
+  blockCopy[2](blockCopy);
 
-  [v5 unlock];
+  [lock unlock];
 }
 
-- (BOOL)_executeOperation:(id)a3
+- (BOOL)_executeOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(APCacheStore *)self lock];
-  [v5 lock];
-  v6 = [v4 execute];
-  if (v6)
+  operationCopy = operation;
+  lock = [(APCacheStore *)self lock];
+  [lock lock];
+  execute = [operationCopy execute];
+  if (execute)
   {
-    [v4 commit];
+    [operationCopy commit];
   }
 
   else
   {
-    [v4 rollBack];
+    [operationCopy rollBack];
   }
 
-  [v5 unlock];
-  return v6;
+  [lock unlock];
+  return execute;
 }
 
-- (BOOL)isObjectAliveForKey:(id)a3
+- (BOOL)isObjectAliveForKey:(id)key
 {
-  v4 = a3;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
     v5 = [NSString stringWithFormat:@"%@ key cannot be nil", objc_opt_class()];
     APSimulateCrash();
   }
 
-  v6 = [(APCacheStore *)self lock];
-  [v6 lock];
-  v7 = [(APCacheStore *)self liveObjectsTracker];
-  v8 = [v7 objectForKey:v4];
+  lock = [(APCacheStore *)self lock];
+  [lock lock];
+  liveObjectsTracker = [(APCacheStore *)self liveObjectsTracker];
+  v8 = [liveObjectsTracker objectForKey:keyCopy];
   v9 = v8 != 0;
 
-  [v6 unlock];
+  [lock unlock];
   return v9;
 }
 
-- (void)evictObjectFromMemoryCacheForKey:(id)a3
+- (void)evictObjectFromMemoryCacheForKey:(id)key
 {
-  v8 = a3;
-  if (!v8)
+  keyCopy = key;
+  if (!keyCopy)
   {
     v4 = [NSString stringWithFormat:@"%@ key cannot be nil", objc_opt_class()];
     APSimulateCrash();
   }
 
-  v5 = [(APCacheStore *)self lock];
-  [v5 lock];
-  v6 = [(APCacheStore *)self memoryCache];
-  [v6 removeObjectForKey:v8];
+  lock = [(APCacheStore *)self lock];
+  [lock lock];
+  memoryCache = [(APCacheStore *)self memoryCache];
+  [memoryCache removeObjectForKey:keyCopy];
 
-  v7 = [(APCacheStore *)self liveObjectsTracker];
-  [v7 removeObjectForKey:v8];
+  liveObjectsTracker = [(APCacheStore *)self liveObjectsTracker];
+  [liveObjectsTracker removeObjectForKey:keyCopy];
 
-  [v5 unlock];
+  [lock unlock];
 }
 
-- (id)enumerateIDsWithExtension:(id)a3
+- (id)enumerateIDsWithExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v5 = objc_alloc_init(_APMapEnumerator);
-  v6 = [(APCacheStore *)self fileStorage];
-  v7 = [v6 enumeratorForFilesWithExtension:v4];
+  fileStorage = [(APCacheStore *)self fileStorage];
+  v7 = [fileStorage enumeratorForFilesWithExtension:extensionCopy];
 
   [(_APMapEnumerator *)v5 setSrcEnumerator:v7];
   [(_APMapEnumerator *)v5 setTransformationBlock:&stru_100480450];
@@ -397,12 +397,12 @@ LABEL_3:
   return v5;
 }
 
-- (void)enableDiagnosticsWithInterval:(double)a3
+- (void)enableDiagnosticsWithInterval:(double)interval
 {
   if (+[APSystemInternal isAppleInternalInstall])
   {
-    self->_diagnosticsInterval = a3;
-    if (a3 > 0.0)
+    self->_diagnosticsInterval = interval;
+    if (interval > 0.0)
     {
       v5 = dispatch_get_global_queue(-2, 0);
       v6 = dispatch_source_create(&_dispatch_source_type_memorypressure, 0, 7uLL, v5);
@@ -436,49 +436,49 @@ LABEL_3:
 - (void)_printCacheStatistics
 {
   context = objc_autoreleasePoolPush();
-  v25 = [(APCacheStore *)self lock];
-  [v25 lock];
-  v3 = [(APCacheStore *)self liveObjectsTracker];
-  v4 = [v3 keyEnumerator];
+  lock = [(APCacheStore *)self lock];
+  [lock lock];
+  liveObjectsTracker = [(APCacheStore *)self liveObjectsTracker];
+  keyEnumerator = [liveObjectsTracker keyEnumerator];
 
-  v5 = [v4 nextObject];
-  if (v5)
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    v6 = nextObject;
     v7 = 0;
     v8 = 0;
     v9 = 0;
     v10 = 0;
     do
     {
-      v11 = [(APCacheStore *)self liveObjectsTracker];
-      v12 = [v11 objectForKey:v6];
+      liveObjectsTracker2 = [(APCacheStore *)self liveObjectsTracker];
+      v12 = [liveObjectsTracker2 objectForKey:v6];
 
       if (v12)
       {
-        v13 = [(APCacheStore *)self memoryCache];
-        v14 = [v13 objectForKey:v6];
+        memoryCache = [(APCacheStore *)self memoryCache];
+        v14 = [memoryCache objectForKey:v6];
 
-        v15 = [v12 objectSize];
+        objectSize = [v12 objectSize];
         if (v14)
         {
-          v8 += v15;
+          v8 += objectSize;
           ++v7;
         }
 
         else
         {
-          v10 += v15;
+          v10 += objectSize;
           ++v9;
         }
       }
 
-      v16 = [v4 nextObject];
+      nextObject2 = [keyEnumerator nextObject];
 
-      v6 = v16;
+      v6 = nextObject2;
     }
 
-    while (v16);
+    while (nextObject2);
   }
 
   else
@@ -489,7 +489,7 @@ LABEL_3:
     v7 = 0;
   }
 
-  [v25 unlock];
+  [lock unlock];
 
   objc_autoreleasePoolPop(context);
   diagnosticsOperations = self->_diagnosticsOperations;

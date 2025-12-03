@@ -1,25 +1,25 @@
 @interface CCUIMainViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)overlayBackgroundViewTapped:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)overlayBackgroundViewTapped:(id)tapped;
 @end
 
 @implementation CCUIMainViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUIMainViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CCUIMainViewController" hasInstanceMethod:@"overlayBackgroundViewTapped:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUIMainViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CCUIMainViewController" hasInstanceMethod:@"overlayBackgroundViewTapped:" withFullSignature:{"v", "@", 0}];
 }
 
-- (void)overlayBackgroundViewTapped:(id)a3
+- (void)overlayBackgroundViewTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   if (!UIAccessibilityIsVoiceOverRunning() && !UIAccessibilityIsSwitchControlRunning() && !_AXSCommandAndControlEnabled())
   {
     v5.receiver = self;
     v5.super_class = CCUIMainViewControllerAccessibility;
-    [(CCUIMainViewControllerAccessibility *)&v5 overlayBackgroundViewTapped:v4];
+    [(CCUIMainViewControllerAccessibility *)&v5 overlayBackgroundViewTapped:tappedCopy];
   }
 }
 

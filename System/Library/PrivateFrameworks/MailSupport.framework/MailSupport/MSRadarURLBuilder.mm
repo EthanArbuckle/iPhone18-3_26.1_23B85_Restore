@@ -1,13 +1,13 @@
 @interface MSRadarURLBuilder
 + (BOOL)canOpenRadar;
-+ (id)_URLFromQueryItems:(id)a3 builder:(id)a4;
++ (id)_URLFromQueryItems:(id)items builder:(id)builder;
 + (id)_blackPearlComponentInfo;
-+ (id)_componentInfoDictionaryFromComponent:(int64_t)a3;
-+ (id)componentIDFromRadarComponent:(int64_t)a3;
-+ (id)componentNameFromRadarComponent:(int64_t)a3;
-+ (id)radarURLWithBuilder:(id)a3;
-+ (id)stringFromRadarClassification:(int64_t)a3;
-+ (id)stringFromRadarReproducibility:(int64_t)a3;
++ (id)_componentInfoDictionaryFromComponent:(int64_t)component;
++ (id)componentIDFromRadarComponent:(int64_t)component;
++ (id)componentNameFromRadarComponent:(int64_t)component;
++ (id)radarURLWithBuilder:(id)builder;
++ (id)stringFromRadarClassification:(int64_t)classification;
++ (id)stringFromRadarReproducibility:(int64_t)reproducibility;
 - (MSRadarURLBuilder)init;
 - (id)autoDiagnosticsString;
 @end
@@ -56,42 +56,42 @@
 
   v5 = v4;
   _Block_object_dispose(&v10, 8);
-  v6 = [v4 sharedApplication];
-  v7 = [v6 canOpenURL:v3];
+  sharedApplication = [v4 sharedApplication];
+  v7 = [sharedApplication canOpenURL:v3];
 
   return v7;
 }
 
-+ (id)stringFromRadarClassification:(int64_t)a3
++ (id)stringFromRadarClassification:(int64_t)classification
 {
-  if (a3 > 9)
+  if (classification > 9)
   {
     return &stru_28692F9D8;
   }
 
   else
   {
-    return off_27985B9F0[a3];
+    return off_27985B9F0[classification];
   }
 }
 
-+ (id)stringFromRadarReproducibility:(int64_t)a3
++ (id)stringFromRadarReproducibility:(int64_t)reproducibility
 {
-  if (a3 > 5)
+  if (reproducibility > 5)
   {
     return &stru_28692F9D8;
   }
 
   else
   {
-    return off_27985BA40[a3];
+    return off_27985BA40[reproducibility];
   }
 }
 
-+ (id)_componentInfoDictionaryFromComponent:(int64_t)a3
++ (id)_componentInfoDictionaryFromComponent:(int64_t)component
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  switch(a3)
+  switch(component)
   {
     case 27:
       v10[0] = @"sRadarComponentIDKey";
@@ -100,7 +100,7 @@
       v11[1] = @"Mail Search Backend";
       v10[2] = @"sRadarComponentVersionKey";
       v11[2] = @"iOS";
-      v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:3];
+      _blackPearlComponentInfo = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:3];
       break;
     case 28:
       v8[0] = @"sRadarComponentIDKey";
@@ -109,10 +109,10 @@
       v9[1] = @"Mail MIME";
       v8[2] = @"sRadarComponentVersionKey";
       v9[2] = @"iOS";
-      v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:3];
+      _blackPearlComponentInfo = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:3];
       break;
     case 29:
-      v3 = [a1 _blackPearlComponentInfo];
+      _blackPearlComponentInfo = [self _blackPearlComponentInfo];
       break;
     default:
       v6[0] = @"sRadarComponentNameKey";
@@ -121,13 +121,13 @@
       v7[1] = @"224209";
       v6[2] = @"sRadarComponentVersionKey";
       v7[2] = @"iOS";
-      v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:3];
+      _blackPearlComponentInfo = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:3];
       break;
   }
 
   v4 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return _blackPearlComponentInfo;
 }
 
 + (id)_blackPearlComponentInfo
@@ -145,17 +145,17 @@
   return v2;
 }
 
-+ (id)componentNameFromRadarComponent:(int64_t)a3
++ (id)componentNameFromRadarComponent:(int64_t)component
 {
-  v3 = [a1 _componentInfoDictionaryFromComponent:a3];
+  v3 = [self _componentInfoDictionaryFromComponent:component];
   v4 = [v3 objectForKeyedSubscript:@"sRadarComponentNameKey"];
 
   return v4;
 }
 
-+ (id)componentIDFromRadarComponent:(int64_t)a3
++ (id)componentIDFromRadarComponent:(int64_t)component
 {
-  v3 = [a1 _componentInfoDictionaryFromComponent:a3];
+  v3 = [self _componentInfoDictionaryFromComponent:component];
   v4 = [v3 objectForKeyedSubscript:@"sRadarComponentIDKey"];
 
   return v4;
@@ -163,64 +163,64 @@
 
 - (id)autoDiagnosticsString
 {
-  v2 = [(MSRadarURLBuilder *)self autoDiagnostics];
-  if ((v2 - 1) > 5)
+  autoDiagnostics = [(MSRadarURLBuilder *)self autoDiagnostics];
+  if ((autoDiagnostics - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_27985BA70[v2 - 1];
+    return off_27985BA70[autoDiagnostics - 1];
   }
 }
 
-+ (id)radarURLWithBuilder:(id)a3
++ (id)radarURLWithBuilder:(id)builder
 {
   v47[7] = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  if (!v46)
+  builderCopy = builder;
+  if (!builderCopy)
   {
-    v34 = [MEMORY[0x277CCA890] currentHandler];
-    [v34 handleFailureInMethod:a2 object:a1 file:@"MSRadarURLBuilder.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSRadarURLBuilder.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"builderBlock"}];
   }
 
   v5 = objc_opt_new();
-  v46[2](v46, v5);
+  builderCopy[2](builderCopy, v5);
   if ([v5 appendStandardDisclaimerToDescription])
   {
-    v6 = [v5 radarDescription];
+    radarDescription = [v5 radarDescription];
     if ([v5 appendSysdiagnoseHowTo])
     {
-      v7 = [v6 stringByAppendingString:@"\n\n*** REQUIRED DIAGNOSTICS\nPlease attach Mail-targeted sysdiagnose (run sudo sysdiagnose Mail in Terminal).\n"];
+      v7 = [radarDescription stringByAppendingString:@"\n\n*** REQUIRED DIAGNOSTICS\nPlease attach Mail-targeted sysdiagnose (run sudo sysdiagnose Mail in Terminal).\n"];
 
-      v6 = v7;
+      radarDescription = v7;
     }
 
     if (([v5 customFooter] & 1) == 0)
     {
-      v8 = [v6 stringByAppendingString:{@"\n\n*** Note: If you have allowed Mail to collect privacy sensitive logs in Tap-to-Radar, Mail will attach the content of the email currently displayed to this radar. This is the EML file inside the Mail Logs folder, you can remove this attachment using the Tap-To-Radar app. ***"}];
+      v8 = [radarDescription stringByAppendingString:{@"\n\n*** Note: If you have allowed Mail to collect privacy sensitive logs in Tap-to-Radar, Mail will attach the content of the email currently displayed to this radar. This is the EML file inside the Mail Logs folder, you can remove this attachment using the Tap-To-Radar app. ***"}];
 
-      v6 = v8;
+      radarDescription = v8;
     }
 
-    [v5 setRadarDescription:v6];
+    [v5 setRadarDescription:radarDescription];
   }
 
-  v45 = [a1 stringFromRadarClassification:{objc_msgSend(v5, "classification")}];
-  v43 = [a1 stringFromRadarReproducibility:{objc_msgSend(v5, "reproducibility")}];
-  v35 = [a1 _componentInfoDictionaryFromComponent:{objc_msgSend(v5, "component")}];
+  v45 = [self stringFromRadarClassification:{objc_msgSend(v5, "classification")}];
+  v43 = [self stringFromRadarReproducibility:{objc_msgSend(v5, "reproducibility")}];
+  v35 = [self _componentInfoDictionaryFromComponent:{objc_msgSend(v5, "component")}];
   v41 = [v35 objectForKeyedSubscript:@"sRadarComponentNameKey"];
   v44 = [v35 objectForKeyedSubscript:@"sRadarComponentIDKey"];
-  v36 = a1;
+  selfCopy = self;
   v42 = [v35 objectForKeyedSubscript:@"sRadarComponentVersionKey"];
   v9 = MEMORY[0x277CBEB18];
   v10 = MEMORY[0x277CCAD18];
-  v40 = [v5 title];
+  title = [v5 title];
   v39 = [v10 queryItemWithName:@"Title" value:?];
   v47[0] = v39;
   v11 = MEMORY[0x277CCAD18];
-  v38 = [v5 radarDescription];
+  radarDescription2 = [v5 radarDescription];
   v37 = [v11 queryItemWithName:@"Description" value:?];
   v47[1] = v37;
   v12 = [MEMORY[0x277CCAD18] queryItemWithName:@"ComponentID" value:v44];
@@ -236,18 +236,18 @@
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:7];
   v18 = [v9 arrayWithArray:v17];
 
-  v19 = [v5 attachmentPath];
+  attachmentPath = [v5 attachmentPath];
 
-  if (v19)
+  if (attachmentPath)
   {
     v20 = MEMORY[0x277CCAD18];
-    v21 = [v5 attachmentPath];
-    v22 = [v20 queryItemWithName:@"attachments" value:v21];
+    attachmentPath2 = [v5 attachmentPath];
+    v22 = [v20 queryItemWithName:@"attachments" value:attachmentPath2];
     [v18 addObject:v22];
   }
 
-  v23 = [v5 extensionIdentifiers];
-  v24 = [v23 componentsJoinedByString:{@", "}];
+  extensionIdentifiers = [v5 extensionIdentifiers];
+  v24 = [extensionIdentifiers componentsJoinedByString:{@", "}];
 
   if (v24)
   {
@@ -255,10 +255,10 @@
     [v18 addObject:v25];
   }
 
-  v26 = [v5 autoDiagnosticsString];
-  if (v26)
+  autoDiagnosticsString = [v5 autoDiagnosticsString];
+  if (autoDiagnosticsString)
   {
-    v27 = [MEMORY[0x277CCAD18] queryItemWithName:@"AutoDiagnostics" value:v26];
+    v27 = [MEMORY[0x277CCAD18] queryItemWithName:@"AutoDiagnostics" value:autoDiagnosticsString];
     [v18 addObject:v27];
   }
 
@@ -276,18 +276,18 @@
   v30 = [v28 queryItemWithName:@"IncludeDevicePrefixInTitle" value:v29];
   [v18 addObject:v30];
 
-  v31 = [v36 _URLFromQueryItems:v18 builder:v5];
+  v31 = [selfCopy _URLFromQueryItems:v18 builder:v5];
 
   v32 = *MEMORY[0x277D85DE8];
 
   return v31;
 }
 
-+ (id)_URLFromQueryItems:(id)a3 builder:(id)a4
++ (id)_URLFromQueryItems:(id)items builder:(id)builder
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
-  [v5 setQueryItems:v4];
+  [v5 setQueryItems:itemsCopy];
   [v5 setScheme:@"tap-to-radar"];
   [v5 setHost:@"new"];
   v6 = [v5 URL];

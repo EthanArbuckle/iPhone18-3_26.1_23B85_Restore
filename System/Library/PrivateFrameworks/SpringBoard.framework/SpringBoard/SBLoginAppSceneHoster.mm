@@ -4,10 +4,10 @@
 - (SBLoginAppSceneHosterDelegate)delegate;
 - (void)_updateHIDEventDeferralsIfNecessary;
 - (void)killLoginApp;
-- (void)launchLoginAppWithInitialOrientation:(int64_t)a3 completion:(id)a4;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4;
-- (void)setDeferHIDEvents:(BOOL)a3;
+- (void)launchLoginAppWithInitialOrientation:(int64_t)orientation completion:(id)completion;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context;
+- (void)setDeferHIDEvents:(BOOL)events;
 @end
 
 @implementation SBLoginAppSceneHoster
@@ -26,61 +26,61 @@
   return v2;
 }
 
-- (void)launchLoginAppWithInitialOrientation:(int64_t)a3 completion:(id)a4
+- (void)launchLoginAppWithInitialOrientation:(int64_t)orientation completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_scene)
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
   {
     v8 = objc_alloc(MEMORY[0x277CC1E70]);
-    v9 = [(SBLoginAppSceneHoster *)self hostedAppBundleID];
+    hostedAppBundleID = [(SBLoginAppSceneHoster *)self hostedAppBundleID];
     v54[0] = 0;
-    v10 = [v8 initWithBundleIdentifier:v9 allowPlaceholder:0 error:v54];
+    v10 = [v8 initWithBundleIdentifier:hostedAppBundleID allowPlaceholder:0 error:v54];
     v11 = v54[0];
 
     if (v10)
     {
       v43 = v11;
-      v12 = [v10 identities];
-      v13 = [v12 firstObject];
+      identities = [v10 identities];
+      firstObject = [identities firstObject];
 
-      v42 = v13;
-      v14 = [MEMORY[0x277D46F60] identityForLSApplicationIdentity:v13 LSApplicationRecord:v10];
+      v42 = firstObject;
+      v14 = [MEMORY[0x277D46F60] identityForLSApplicationIdentity:firstObject LSApplicationRecord:v10];
       v15 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-      v16 = [(SBLoginAppSceneHoster *)self hostedApp];
+      hostedApp = [(SBLoginAppSceneHoster *)self hostedApp];
       v40 = v15;
-      v17 = [v15 newSceneIdentityForApplication:v16];
+      v17 = [v15 newSceneIdentityForApplication:hostedApp];
 
-      v18 = [SBApp windowSceneManager];
-      v19 = [v18 embeddedDisplayWindowScene];
-      v20 = [v19 _fbsDisplayConfiguration];
+      windowSceneManager = [SBApp windowSceneManager];
+      embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
+      _fbsDisplayConfiguration = [embeddedDisplayWindowScene _fbsDisplayConfiguration];
 
-      v44 = [MEMORY[0x277D0AA90] mainConfiguration];
-      v21 = [MEMORY[0x277D0AD48] definition];
+      mainConfiguration = [MEMORY[0x277D0AA90] mainConfiguration];
+      definition = [MEMORY[0x277D0AD48] definition];
       v39 = v17;
-      [v21 setIdentity:v17];
-      v22 = [MEMORY[0x277D67BE8] specification];
-      [v21 setSpecification:v22];
+      [definition setIdentity:v17];
+      specification = [MEMORY[0x277D67BE8] specification];
+      [definition setSpecification:specification];
 
       v41 = v14;
       v23 = [MEMORY[0x277D0ADA8] identityForProcessIdentity:v14];
-      [v21 setClientIdentity:v23];
+      [definition setClientIdentity:v23];
 
-      v24 = [MEMORY[0x277D0AAD8] sharedInstance];
-      v25 = [v24 createSceneWithDefinition:v21];
+      mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+      v25 = [mEMORY[0x277D0AAD8] createSceneWithDefinition:definition];
       scene = self->_scene;
       self->_scene = v25;
 
       v27 = [SBDeviceApplicationSceneHandle alloc];
-      v28 = [(SBLoginAppSceneHoster *)self hostedApp];
+      hostedApp2 = [(SBLoginAppSceneHoster *)self hostedApp];
       v29 = self->_scene;
-      v30 = [v20 identity];
-      v31 = [(SBApplicationSceneHandle *)v27 _initWithApplication:v28 scene:v29 displayIdentity:v30];
+      identity = [_fbsDisplayConfiguration identity];
+      v31 = [(SBApplicationSceneHandle *)v27 _initWithApplication:hostedApp2 scene:v29 displayIdentity:identity];
       sceneHandle = self->_sceneHandle;
       self->_sceneHandle = v31;
 
@@ -89,11 +89,11 @@
       v49[1] = 3221225472;
       v49[2] = __73__SBLoginAppSceneHoster_launchLoginAppWithInitialOrientation_completion___block_invoke;
       v49[3] = &unk_2783A8DF8;
-      v34 = v44;
+      v34 = mainConfiguration;
       v50 = v34;
-      v35 = v20;
-      v52 = self;
-      v53 = a3;
+      v35 = _fbsDisplayConfiguration;
+      selfCopy = self;
+      orientationCopy = orientation;
       v51 = v35;
       [(FBScene *)v33 configureParameters:v49];
       [(FBScene *)self->_scene addObserver:self];
@@ -106,10 +106,10 @@
       objc_copyWeak(&v47, &location);
       v46 = v7;
       [(FBScene *)v36 performUpdate:&__block_literal_global_1 withCompletion:v45];
-      v37 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle wallpaperStyle];
+      wallpaperStyle = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle wallpaperStyle];
       v38 = +[SBWallpaperController sharedInstance];
-      [v38 setWallpaperStyle:v37 forPriority:1 forVariant:1 withAnimationFactory:0];
-      [v38 setWallpaperStyle:v37 forPriority:1 forVariant:0 withAnimationFactory:0];
+      [v38 setWallpaperStyle:wallpaperStyle forPriority:1 forVariant:1 withAnimationFactory:0];
+      [v38 setWallpaperStyle:wallpaperStyle forPriority:1 forVariant:0 withAnimationFactory:0];
 
       objc_destroyWeak(&v47);
       objc_destroyWeak(&location);
@@ -228,11 +228,11 @@ void __73__SBLoginAppSceneHoster_launchLoginAppWithInitialOrientation_completion
   [(SBLoginAppSceneHoster *)self _updateHIDEventDeferralsIfNecessary];
 }
 
-- (void)setDeferHIDEvents:(BOOL)a3
+- (void)setDeferHIDEvents:(BOOL)events
 {
-  if (self->_deferHIDEvents != a3)
+  if (self->_deferHIDEvents != events)
   {
-    self->_deferHIDEvents = a3;
+    self->_deferHIDEvents = events;
     [(SBLoginAppSceneHoster *)self _updateHIDEventDeferralsIfNecessary];
   }
 }
@@ -250,17 +250,17 @@ void __73__SBLoginAppSceneHoster_launchLoginAppWithInitialOrientation_completion
   if (self->_deferHIDEvents != (self->_keyboardFocusRedirectAssertion != 0))
   {
     v4 = +[SBMainWorkspace sharedInstance];
-    v15 = [v4 keyboardFocusController];
+    keyboardFocusController = [v4 keyboardFocusController];
 
-    v5 = [(SBLoginAppSceneHoster *)self hostedAppBundleID];
-    v6 = [MEMORY[0x277D0AAC0] sharedInstance];
-    v7 = [v6 processesForBundleIdentifier:v5];
-    v8 = [v7 firstObject];
+    hostedAppBundleID = [(SBLoginAppSceneHoster *)self hostedAppBundleID];
+    mEMORY[0x277D0AAC0] = [MEMORY[0x277D0AAC0] sharedInstance];
+    v7 = [mEMORY[0x277D0AAC0] processesForBundleIdentifier:hostedAppBundleID];
+    firstObject = [v7 firstObject];
 
-    if (v8)
+    if (firstObject)
     {
-      v9 = [v8 state];
-      v10 = [v9 pid];
+      state = [firstObject state];
+      v10 = [state pid];
     }
 
     else
@@ -270,8 +270,8 @@ void __73__SBLoginAppSceneHoster_launchLoginAppWithInitialOrientation_completion
 
     if (self->_deferHIDEvents && (scene = self->_scene) != 0 && (v10 & 0x80000000) == 0)
     {
-      v12 = [(FBScene *)scene identityToken];
-      v13 = [v15 redirectSpringBoardLockFocusForReason:@"LoginWindow" toProcessidentifier:v10 toSceneIdentityToken:v12];
+      identityToken = [(FBScene *)scene identityToken];
+      v13 = [keyboardFocusController redirectSpringBoardLockFocusForReason:@"LoginWindow" toProcessidentifier:v10 toSceneIdentityToken:identityToken];
       keyboardFocusRedirectAssertion = self->_keyboardFocusRedirectAssertion;
       self->_keyboardFocusRedirectAssertion = v13;
     }
@@ -279,17 +279,17 @@ void __73__SBLoginAppSceneHoster_launchLoginAppWithInitialOrientation_completion
     else
     {
       [(BSInvalidatable *)self->_keyboardFocusRedirectAssertion invalidate];
-      v12 = self->_keyboardFocusRedirectAssertion;
+      identityToken = self->_keyboardFocusRedirectAssertion;
       self->_keyboardFocusRedirectAssertion = 0;
     }
   }
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v5 = a4;
-  v6 = [v5 settingsDiff];
-  if ([v6 containsProperty:sel_backgroundStyle])
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  if ([settingsDiff containsProperty:sel_backgroundStyle])
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -298,45 +298,45 @@ void __73__SBLoginAppSceneHoster_launchLoginAppWithInitialOrientation_completion
     v14[4] = self;
     [MEMORY[0x277CF0D38] animateWithFactory:0 actions:v14];
     v7 = +[SBWallpaperController sharedInstance];
-    v8 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle wallpaperStyle];
-    [v7 setWallpaperStyle:v8 forPriority:1 forVariant:1 withAnimationFactory:0];
-    [v7 setWallpaperStyle:v8 forPriority:1 forVariant:0 withAnimationFactory:0];
+    wallpaperStyle = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle wallpaperStyle];
+    [v7 setWallpaperStyle:wallpaperStyle forPriority:1 forVariant:1 withAnimationFactory:0];
+    [v7 setWallpaperStyle:wallpaperStyle forPriority:1 forVariant:0 withAnimationFactory:0];
   }
 
-  v9 = [v5 settings];
+  settings = [settingsCopy settings];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v11 = [v5 settings];
-    v12 = [(SBLoginAppSceneHoster *)self delegate];
-    if ([v6 containsProperty:sel_idleTimerMode])
+    settings2 = [settingsCopy settings];
+    delegate = [(SBLoginAppSceneHoster *)self delegate];
+    if ([settingsDiff containsProperty:sel_idleTimerMode])
     {
-      [v12 sceneUpdatedIdleTimerMode:{objc_msgSend(v11, "idleTimerMode")}];
+      [delegate sceneUpdatedIdleTimerMode:{objc_msgSend(settings2, "idleTimerMode")}];
     }
 
-    if ([v6 containsProperty:sel_statusBarUserNameOverride])
+    if ([settingsDiff containsProperty:sel_statusBarUserNameOverride])
     {
-      v13 = [v11 statusBarUserNameOverride];
-      [v12 sceneUpdatedStatusBarUserName:v13];
+      statusBarUserNameOverride = [settings2 statusBarUserNameOverride];
+      [delegate sceneUpdatedStatusBarUserName:statusBarUserNameOverride];
     }
 
-    if ([v6 containsProperty:sel_rotationMode])
+    if ([settingsDiff containsProperty:sel_rotationMode])
     {
-      [v12 sceneUpdatedRotationMode:{objc_msgSend(v11, "rotationMode")}];
+      [delegate sceneUpdatedRotationMode:{objc_msgSend(settings2, "rotationMode")}];
     }
 
-    if ([v6 containsProperty:sel_wallpaperMode])
+    if ([settingsDiff containsProperty:sel_wallpaperMode])
     {
-      [v12 sceneUpdatedWallpaperMode:{objc_msgSend(v11, "wallpaperMode")}];
+      [delegate sceneUpdatedWallpaperMode:{objc_msgSend(settings2, "wallpaperMode")}];
     }
   }
 }
 
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context
 {
-  [(UIScenePresenter *)self->_scenePresenter invalidate:a3];
+  [(UIScenePresenter *)self->_scenePresenter invalidate:invalidate];
   scenePresenter = self->_scenePresenter;
   self->_scenePresenter = 0;
 
@@ -349,8 +349,8 @@ void __73__SBLoginAppSceneHoster_launchLoginAppWithInitialOrientation_completion
   v9 = +[SBWallpaperController sharedInstance];
   [v9 removeWallpaperStyleForPriority:1 forVariant:1 withAnimationFactory:0];
   [v9 removeWallpaperStyleForPriority:1 forVariant:0 withAnimationFactory:0];
-  v8 = [(SBLoginAppSceneHoster *)self delegate];
-  [v8 sceneInvalidated];
+  delegate = [(SBLoginAppSceneHoster *)self delegate];
+  [delegate sceneInvalidated];
 }
 
 - (SBLoginAppSceneHosterDelegate)delegate

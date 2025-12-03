@@ -1,10 +1,10 @@
 @interface PGInvariantPartnerBiologicalSexFemaleMemoryNodeFeatureExtractor
-- (PGInvariantPartnerBiologicalSexFemaleMemoryNodeFeatureExtractor)initWithError:(id *)a3;
+- (PGInvariantPartnerBiologicalSexFemaleMemoryNodeFeatureExtractor)initWithError:(id *)error;
 @end
 
 @implementation PGInvariantPartnerBiologicalSexFemaleMemoryNodeFeatureExtractor
 
-- (PGInvariantPartnerBiologicalSexFemaleMemoryNodeFeatureExtractor)initWithError:(id *)a3
+- (PGInvariantPartnerBiologicalSexFemaleMemoryNodeFeatureExtractor)initWithError:(id *)error
 {
   v22[1] = *MEMORY[0x277D85DE8];
   v3 = +[PGInvariantPartnerBiologicalSexFemaleMemoryNodeFeatureExtractor name];
@@ -13,16 +13,16 @@
 
   v5 = MEMORY[0x277D22C90];
   v6 = +[PGGraphPersonNode filterExcludingMe];
-  v7 = [v6 relation];
-  v21[0] = v7;
+  relation = [v6 relation];
+  v21[0] = relation;
   v8 = [PGGraphPersonNode filterForBiologicalSex:1];
-  v9 = [v8 relation];
-  v21[1] = v9;
+  relation2 = [v8 relation];
+  v21[1] = relation2;
   v10 = +[PGGraphPersonNode partnerOfPerson];
   v21[2] = v10;
   v11 = +[PGGraphMeNode filter];
-  v12 = [v11 relation];
-  v21[3] = v12;
+  relation3 = [v11 relation];
+  v21[3] = relation3;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:4];
   v14 = [v5 chain:v13];
 

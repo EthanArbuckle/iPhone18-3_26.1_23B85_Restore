@@ -7,9 +7,9 @@
 - (__CFString)stringByAppendingAsNewLine:()WFContentProperty
 {
   v4 = a3;
-  if ([a1 length])
+  if ([self length])
   {
-    v5 = [a1 stringByAppendingString:@"\n"];
+    v5 = [self stringByAppendingString:@"\n"];
     v6 = v5;
     if (v4)
     {

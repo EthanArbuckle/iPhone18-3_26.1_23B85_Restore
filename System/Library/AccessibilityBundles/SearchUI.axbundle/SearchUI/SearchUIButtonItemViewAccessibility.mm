@@ -11,17 +11,17 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 accessibilityLabel];
+    accessibilityLabel = [v4 accessibilityLabel];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SearchUIButtonItemViewAccessibility;
-    v6 = [(SearchUIButtonItemViewAccessibility *)&v9 accessibilityLabel];
+    accessibilityLabel = [(SearchUIButtonItemViewAccessibility *)&v9 accessibilityLabel];
   }
 
-  v7 = v6;
+  v7 = accessibilityLabel;
 
   return v7;
 }

@@ -1,42 +1,42 @@
 @interface PXBarAppearance
 + (id)_sharedDefaultImplementationDelegate;
-- (BOOL)adjustedPrefersStatusBarHidden:(BOOL)a3;
+- (BOOL)adjustedPrefersStatusBarHidden:(BOOL)hidden;
 - (PXBarAppearance)init;
-- (PXBarAppearance)initWithViewController:(id)a3;
+- (PXBarAppearance)initWithViewController:(id)controller;
 - (PXBarAppearanceImplementationDelegate)_implementationDelegate;
 - (PXBarAppearanceImplementationDelegate)implementationDelegate;
 - (UIViewController)viewController;
-- (int64_t)adjustedPreferredStatusBarUpdateAnimation:(int64_t)a3;
-- (void)_performBarsTransition:(id)a3;
-- (void)_setImplementationDelegate:(id)a3;
-- (void)_setNavigationBarVisible:(BOOL)a3 withAnimationOptions:(id)a4;
-- (void)_setTabBarVisible:(BOOL)a3 withAnimationOptions:(id)a4;
-- (void)_setToolbarVisible:(BOOL)a3 withAnimationOptions:(id)a4;
+- (int64_t)adjustedPreferredStatusBarUpdateAnimation:(int64_t)animation;
+- (void)_performBarsTransition:(id)transition;
+- (void)_setImplementationDelegate:(id)delegate;
+- (void)_setNavigationBarVisible:(BOOL)visible withAnimationOptions:(id)options;
+- (void)_setTabBarVisible:(BOOL)visible withAnimationOptions:(id)options;
+- (void)_setToolbarVisible:(BOOL)visible withAnimationOptions:(id)options;
 - (void)_update;
 - (void)_updateImplementationDelegate;
-- (void)_updateOnViewAppearance:(BOOL)a3;
-- (void)_updateOnViewWillAppear:(BOOL)a3;
-- (void)_updateStatusBarStyleAndVisibilityWithAnimationOptions:(id)a3;
-- (void)_updateWithAnimationOptions:(id)a3 isStatusBarHidden:(BOOL)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChangesWithAnimationOptions:(id)a3 changes:(id)a4;
-- (void)setPrefersNavigationBarVisible:(BOOL)a3;
-- (void)setPrefersStatusBarVisible:(BOOL)a3;
-- (void)setPrefersTabBarVisible:(BOOL)a3;
-- (void)setPrefersToolbarVisible:(BOOL)a3;
-- (void)viewControllerViewIsAppearing:(BOOL)a3;
-- (void)viewControllerViewWillAppear:(BOOL)a3;
+- (void)_updateOnViewAppearance:(BOOL)appearance;
+- (void)_updateOnViewWillAppear:(BOOL)appear;
+- (void)_updateStatusBarStyleAndVisibilityWithAnimationOptions:(id)options;
+- (void)_updateWithAnimationOptions:(id)options isStatusBarHidden:(BOOL)hidden;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChangesWithAnimationOptions:(id)options changes:(id)changes;
+- (void)setPrefersNavigationBarVisible:(BOOL)visible;
+- (void)setPrefersStatusBarVisible:(BOOL)visible;
+- (void)setPrefersTabBarVisible:(BOOL)visible;
+- (void)setPrefersToolbarVisible:(BOOL)visible;
+- (void)viewControllerViewIsAppearing:(BOOL)appearing;
+- (void)viewControllerViewWillAppear:(BOOL)appear;
 @end
 
 @implementation PXBarAppearance
 
 - (void)_update
 {
-  v5 = [(PXBarAppearance *)self _animationOptions];
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 isStatusBarHidden];
+  _animationOptions = [(PXBarAppearance *)self _animationOptions];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  isStatusBarHidden = [mEMORY[0x1E69DC668] isStatusBarHidden];
 
-  [(PXBarAppearance *)self _updateWithAnimationOptions:v5 isStatusBarHidden:v4];
+  [(PXBarAppearance *)self _updateWithAnimationOptions:_animationOptions isStatusBarHidden:isStatusBarHidden];
 }
 
 - (UIViewController)viewController
@@ -48,33 +48,33 @@
 
 - (void)_updateImplementationDelegate
 {
-  v3 = [(PXBarAppearance *)self viewController];
-  v4 = [v3 px_barAppearance];
-  v9 = [v4 implementationDelegate];
+  viewController = [(PXBarAppearance *)self viewController];
+  px_barAppearance = [viewController px_barAppearance];
+  implementationDelegate = [px_barAppearance implementationDelegate];
 
-  v5 = v9;
-  if (!v9)
+  v5 = implementationDelegate;
+  if (!implementationDelegate)
   {
     do
     {
-      v8 = [v3 parentViewController];
-      if (!v8)
+      parentViewController = [viewController parentViewController];
+      if (!parentViewController)
       {
         v5 = +[PXBarAppearance _sharedDefaultImplementationDelegate];
         goto LABEL_7;
       }
 
-      v6 = v8;
+      v6 = parentViewController;
 
-      v7 = [v6 px_barAppearance];
-      v10 = [v7 implementationDelegate];
+      px_barAppearance2 = [v6 px_barAppearance];
+      implementationDelegate2 = [px_barAppearance2 implementationDelegate];
 
-      v5 = v10;
-      v3 = v6;
+      v5 = implementationDelegate2;
+      viewController = v6;
     }
 
-    while (!v10);
-    v3 = v6;
+    while (!implementationDelegate2);
+    viewController = v6;
   }
 
 LABEL_7:
@@ -95,7 +95,7 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __55__PXBarAppearance__sharedDefaultImplementationDelegate__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_sharedDefaultImplementationDelegate_onceToken != -1)
   {
     dispatch_once(&_sharedDefaultImplementationDelegate_onceToken, block);
@@ -123,43 +123,43 @@ void __55__PXBarAppearance__sharedDefaultImplementationDelegate__block_invoke(ui
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (PXBarAppearanceObservationContext == a5)
+  if (PXBarAppearanceObservationContext == context)
   {
-    [(PXBarAppearance *)self _update:a3];
+    [(PXBarAppearance *)self _update:observable];
   }
 }
 
-- (void)_performBarsTransition:(id)a3
+- (void)_performBarsTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   transitionsCounter = self->_transitionsCounter;
   self->_transitionsCounter = transitionsCounter + 1;
   if (!transitionsCounter)
   {
-    v6 = [(PXBarAppearance *)self viewController];
-    [v6 px_willTransitionBars];
+    viewController = [(PXBarAppearance *)self viewController];
+    [viewController px_willTransitionBars];
   }
 
-  v4[2](v4);
+  transitionCopy[2](transitionCopy);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __42__PXBarAppearance__performBarsTransition___block_invoke;
   aBlock[3] = &unk_1E774C648;
   aBlock[4] = self;
   v7 = _Block_copy(aBlock);
-  v8 = [(PXBarAppearance *)self viewController];
-  v9 = [v8 transitionCoordinator];
+  viewController2 = [(PXBarAppearance *)self viewController];
+  transitionCoordinator = [viewController2 transitionCoordinator];
 
-  if (v9)
+  if (transitionCoordinator)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __42__PXBarAppearance__performBarsTransition___block_invoke_2;
     v10[3] = &unk_1E773A210;
     v11 = v7;
-    [v9 animateAlongsideTransition:0 completion:v10];
+    [transitionCoordinator animateAlongsideTransition:0 completion:v10];
   }
 
   else
@@ -179,11 +179,11 @@ void __42__PXBarAppearance__performBarsTransition___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setTabBarVisible:(BOOL)a3 withAnimationOptions:(id)a4
+- (void)_setTabBarVisible:(BOOL)visible withAnimationOptions:(id)options
 {
-  v6 = a4;
-  v7 = [v6 type];
-  if (v7 == 1)
+  optionsCopy = options;
+  type = [optionsCopy type];
+  if (type == 1)
   {
     v8 = 6;
   }
@@ -193,7 +193,7 @@ void __42__PXBarAppearance__performBarsTransition___block_invoke(uint64_t a1)
     v8 = 0;
   }
 
-  if (v7 == 2)
+  if (type == 2)
   {
     v9 = 7;
   }
@@ -203,19 +203,19 @@ void __42__PXBarAppearance__performBarsTransition___block_invoke(uint64_t a1)
     v9 = v8;
   }
 
-  v10 = [(PXBarAppearance *)self viewController];
-  v11 = [v10 tabBarController];
+  viewController = [(PXBarAppearance *)self viewController];
+  tabBarController = [viewController tabBarController];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __58__PXBarAppearance__setTabBarVisible_withAnimationOptions___block_invoke;
   v14[3] = &unk_1E7741058;
-  v18 = a3;
+  visibleCopy = visible;
   v17 = v9;
-  v15 = v11;
-  v16 = v6;
-  v12 = v6;
-  v13 = v11;
+  v15 = tabBarController;
+  v16 = optionsCopy;
+  v12 = optionsCopy;
+  v13 = tabBarController;
   [(PXBarAppearance *)self _performBarsTransition:v14];
 }
 
@@ -238,22 +238,22 @@ uint64_t __58__PXBarAppearance__setTabBarVisible_withAnimationOptions___block_in
   }
 }
 
-- (void)_setToolbarVisible:(BOOL)a3 withAnimationOptions:(id)a4
+- (void)_setToolbarVisible:(BOOL)visible withAnimationOptions:(id)options
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PXBarAppearance *)self viewController];
-  v8 = [v7 navigationController];
+  visibleCopy = visible;
+  optionsCopy = options;
+  viewController = [(PXBarAppearance *)self viewController];
+  navigationController = [viewController navigationController];
 
-  if ([v8 isToolbarHidden] == v4)
+  if ([navigationController isToolbarHidden] == visibleCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __59__PXBarAppearance__setToolbarVisible_withAnimationOptions___block_invoke;
     v9[3] = &unk_1E774B368;
-    v10 = v6;
-    v11 = v8;
-    v12 = v4;
+    v10 = optionsCopy;
+    v11 = navigationController;
+    v12 = visibleCopy;
     [(PXBarAppearance *)self _performBarsTransition:v9];
   }
 }
@@ -291,22 +291,22 @@ uint64_t __59__PXBarAppearance__setToolbarVisible_withAnimationOptions___block_i
   return [v8 _setToolbarHidden:v7 edge:v9 duration:?];
 }
 
-- (void)_setNavigationBarVisible:(BOOL)a3 withAnimationOptions:(id)a4
+- (void)_setNavigationBarVisible:(BOOL)visible withAnimationOptions:(id)options
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PXBarAppearance *)self viewController];
-  v8 = [v7 navigationController];
+  visibleCopy = visible;
+  optionsCopy = options;
+  viewController = [(PXBarAppearance *)self viewController];
+  navigationController = [viewController navigationController];
 
-  if ([v8 isNavigationBarHidden] == v4)
+  if ([navigationController isNavigationBarHidden] == visibleCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __65__PXBarAppearance__setNavigationBarVisible_withAnimationOptions___block_invoke;
     v9[3] = &unk_1E774B368;
-    v10 = v6;
-    v11 = v8;
-    v12 = v4;
+    v10 = optionsCopy;
+    v11 = navigationController;
+    v12 = visibleCopy;
     [(PXBarAppearance *)self _performBarsTransition:v9];
   }
 }
@@ -344,17 +344,17 @@ uint64_t __65__PXBarAppearance__setNavigationBarVisible_withAnimationOptions___b
   return [v8 _setNavigationBarHidden:v7 edge:v9 duration:?];
 }
 
-- (void)_updateStatusBarStyleAndVisibilityWithAnimationOptions:(id)a3
+- (void)_updateStatusBarStyleAndVisibilityWithAnimationOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 type];
+  optionsCopy = options;
+  type = [optionsCopy type];
   v6 = 1;
-  if (v5 == 2)
+  if (type == 2)
   {
     v6 = 2;
   }
 
-  if (v5)
+  if (type)
   {
     v7 = v6;
   }
@@ -366,7 +366,7 @@ uint64_t __65__PXBarAppearance__setNavigationBarVisible_withAnimationOptions___b
 
   [(PXBarAppearance *)self _setPreferredStatusBarUpdateAnimation:v7];
   v8 = MEMORY[0x1E69DD250];
-  [v4 duration];
+  [optionsCopy duration];
   v10 = v9;
 
   v11[0] = MEMORY[0x1E69E9820];
@@ -383,63 +383,63 @@ void __74__PXBarAppearance__updateStatusBarStyleAndVisibilityWithAnimationOption
   [v1 setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)_updateWithAnimationOptions:(id)a3 isStatusBarHidden:(BOOL)a4
+- (void)_updateWithAnimationOptions:(id)options isStatusBarHidden:(BOOL)hidden
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PXBarAppearance *)self viewController];
-  if ([v7 _appearState] - 1 <= 2)
+  hiddenCopy = hidden;
+  optionsCopy = options;
+  viewController = [(PXBarAppearance *)self viewController];
+  if ([viewController _appearState] - 1 <= 2)
   {
-    v8 = [(PXBarAppearance *)self prefersStatusBarVisible];
-    v9 = [(PXBarAppearance *)self prefersNavigationBarVisible];
-    v10 = [(PXBarAppearance *)self prefersToolbarVisible];
-    v11 = [(PXBarAppearance *)self prefersTabBarVisible];
-    v12 = v11;
-    v16 = v10;
-    if (v10 && v11 && (MEMORY[0x1A590D320]() & 1) == 0)
+    prefersStatusBarVisible = [(PXBarAppearance *)self prefersStatusBarVisible];
+    prefersNavigationBarVisible = [(PXBarAppearance *)self prefersNavigationBarVisible];
+    prefersToolbarVisible = [(PXBarAppearance *)self prefersToolbarVisible];
+    prefersTabBarVisible = [(PXBarAppearance *)self prefersTabBarVisible];
+    v12 = prefersTabBarVisible;
+    v16 = prefersToolbarVisible;
+    if (prefersToolbarVisible && prefersTabBarVisible && (MEMORY[0x1A590D320]() & 1) == 0)
     {
       PXAssertGetLog();
     }
 
-    v13 = [v7 navigationController];
-    v14 = [v13 isNavigationBarHidden];
-    v15 = [v13 _useStandardStatusBarHeight];
-    if (v8 == v4 && v9 == v14 && v8 == v9)
+    navigationController = [viewController navigationController];
+    isNavigationBarHidden = [navigationController isNavigationBarHidden];
+    _useStandardStatusBarHeight = [navigationController _useStandardStatusBarHeight];
+    if (prefersStatusBarVisible == hiddenCopy && prefersNavigationBarVisible == isNavigationBarHidden && prefersStatusBarVisible == prefersNavigationBarVisible)
     {
-      [v13 _setUseStandardStatusBarHeight:1];
+      [navigationController _setUseStandardStatusBarHeight:1];
     }
 
-    if (v8)
+    if (prefersStatusBarVisible)
     {
-      [(PXBarAppearance *)self _setNavigationBarVisible:v9 withAnimationOptions:v6];
-      [(PXBarAppearance *)self _setTabBarVisible:v12 withAnimationOptions:v6];
-      [(PXBarAppearance *)self _setToolbarVisible:v16 withAnimationOptions:v6];
-      [(PXBarAppearance *)self _updateStatusBarStyleAndVisibilityWithAnimationOptions:v6];
+      [(PXBarAppearance *)self _setNavigationBarVisible:prefersNavigationBarVisible withAnimationOptions:optionsCopy];
+      [(PXBarAppearance *)self _setTabBarVisible:v12 withAnimationOptions:optionsCopy];
+      [(PXBarAppearance *)self _setToolbarVisible:v16 withAnimationOptions:optionsCopy];
+      [(PXBarAppearance *)self _updateStatusBarStyleAndVisibilityWithAnimationOptions:optionsCopy];
     }
 
     else
     {
-      [(PXBarAppearance *)self _updateStatusBarStyleAndVisibilityWithAnimationOptions:v6];
-      [(PXBarAppearance *)self _setNavigationBarVisible:v9 withAnimationOptions:v6];
-      [(PXBarAppearance *)self _setTabBarVisible:v12 withAnimationOptions:v6];
-      [(PXBarAppearance *)self _setToolbarVisible:v16 withAnimationOptions:v6];
+      [(PXBarAppearance *)self _updateStatusBarStyleAndVisibilityWithAnimationOptions:optionsCopy];
+      [(PXBarAppearance *)self _setNavigationBarVisible:prefersNavigationBarVisible withAnimationOptions:optionsCopy];
+      [(PXBarAppearance *)self _setTabBarVisible:v12 withAnimationOptions:optionsCopy];
+      [(PXBarAppearance *)self _setToolbarVisible:v16 withAnimationOptions:optionsCopy];
     }
 
-    [v13 _setUseStandardStatusBarHeight:v15];
+    [navigationController _setUseStandardStatusBarHeight:_useStandardStatusBarHeight];
   }
 }
 
-- (void)_updateOnViewAppearance:(BOOL)a3
+- (void)_updateOnViewAppearance:(BOOL)appearance
 {
-  v3 = a3;
-  v11 = [(PXBarAppearance *)self viewController];
+  appearanceCopy = appearance;
+  viewController = [(PXBarAppearance *)self viewController];
   [(PXBarAppearance *)self _updateImplementationDelegate];
-  v5 = [(PXBarAppearance *)self _implementationDelegate];
-  v6 = [v11 transitionCoordinator];
-  if (v3)
+  _implementationDelegate = [(PXBarAppearance *)self _implementationDelegate];
+  transitionCoordinator = [viewController transitionCoordinator];
+  if (appearanceCopy)
   {
     v7 = [PXBarAnimationOptions alloc];
-    [v6 transitionDuration];
+    [transitionCoordinator transitionDuration];
     v8 = [(PXBarAnimationOptions *)v7 initWithType:1 duration:?];
   }
 
@@ -448,33 +448,33 @@ void __74__PXBarAppearance__updateStatusBarStyleAndVisibilityWithAnimationOption
     v8 = 0;
   }
 
-  v9 = [MEMORY[0x1E69DC668] sharedApplication];
-  v10 = [v9 isStatusBarHidden];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  isStatusBarHidden = [mEMORY[0x1E69DC668] isStatusBarHidden];
 
   if (self->_implementationDelegateFlags.respondsToIsStatusBarVisible)
   {
-    v10 = [v5 barAppearanceIsStatusBarVisible:self] ^ 1;
+    isStatusBarHidden = [_implementationDelegate barAppearanceIsStatusBarVisible:self] ^ 1;
   }
 
-  [(PXBarAppearance *)self _updateWithAnimationOptions:v8 isStatusBarHidden:v10];
+  [(PXBarAppearance *)self _updateWithAnimationOptions:v8 isStatusBarHidden:isStatusBarHidden];
 }
 
-- (void)_updateOnViewWillAppear:(BOOL)a3
+- (void)_updateOnViewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(PXBarAppearance *)self _updateImplementationDelegate];
-  v5 = [(PXBarAppearance *)self _implementationDelegate];
+  _implementationDelegate = [(PXBarAppearance *)self _implementationDelegate];
   if (self->_implementationDelegateFlags.respondsToWillUpdateBarAppearanceOnViewWillAppear)
   {
-    v6 = v5;
-    [v5 barAppearance:self willUpdateBarAppearanceOnViewWillAppear:v3];
-    v5 = v6;
+    v6 = _implementationDelegate;
+    [_implementationDelegate barAppearance:self willUpdateBarAppearanceOnViewWillAppear:appearCopy];
+    _implementationDelegate = v6;
   }
 }
 
-- (void)_setImplementationDelegate:(id)a3
+- (void)_setImplementationDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->__implementationDelegate);
 
   if (WeakRetained != obj)
@@ -486,19 +486,19 @@ void __74__PXBarAppearance__updateStatusBarStyleAndVisibilityWithAnimationOption
   }
 }
 
-- (int64_t)adjustedPreferredStatusBarUpdateAnimation:(int64_t)a3
+- (int64_t)adjustedPreferredStatusBarUpdateAnimation:(int64_t)animation
 {
   if (![(PXBarAppearance *)self isEnabled])
   {
-    return a3;
+    return animation;
   }
 
   return [(PXBarAppearance *)self _preferredStatusBarUpdateAnimation];
 }
 
-- (BOOL)adjustedPrefersStatusBarHidden:(BOOL)a3
+- (BOOL)adjustedPrefersStatusBarHidden:(BOOL)hidden
 {
-  LOBYTE(v3) = a3;
+  LOBYTE(v3) = hidden;
   if ([(PXBarAppearance *)self isEnabled])
   {
     return ![(PXBarAppearance *)self prefersStatusBarVisible];
@@ -507,76 +507,76 @@ void __74__PXBarAppearance__updateStatusBarStyleAndVisibilityWithAnimationOption
   return v3;
 }
 
-- (void)viewControllerViewIsAppearing:(BOOL)a3
+- (void)viewControllerViewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   if ([(PXBarAppearance *)self isEnabled]&& [(PXBarAppearance *)self prefersViewIsAppearingForAppearanceUpdates])
   {
 
-    [(PXBarAppearance *)self _updateOnViewAppearance:v3];
+    [(PXBarAppearance *)self _updateOnViewAppearance:appearingCopy];
   }
 }
 
-- (void)viewControllerViewWillAppear:(BOOL)a3
+- (void)viewControllerViewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if ([(PXBarAppearance *)self isEnabled])
   {
-    [(PXBarAppearance *)self _updateOnViewWillAppear:v3];
+    [(PXBarAppearance *)self _updateOnViewWillAppear:appearCopy];
     if (![(PXBarAppearance *)self prefersViewIsAppearingForAppearanceUpdates])
     {
 
-      [(PXBarAppearance *)self _updateOnViewAppearance:v3];
+      [(PXBarAppearance *)self _updateOnViewAppearance:appearCopy];
     }
   }
 }
 
-- (void)setPrefersTabBarVisible:(BOOL)a3
+- (void)setPrefersTabBarVisible:(BOOL)visible
 {
-  if (self->_prefersTabBarVisible != a3)
+  if (self->_prefersTabBarVisible != visible)
   {
     [(PXBarAppearance *)self signalChange:8];
-    self->_prefersTabBarVisible = a3;
+    self->_prefersTabBarVisible = visible;
   }
 }
 
-- (void)setPrefersToolbarVisible:(BOOL)a3
+- (void)setPrefersToolbarVisible:(BOOL)visible
 {
-  if (self->_prefersToolbarVisible != a3)
+  if (self->_prefersToolbarVisible != visible)
   {
     [(PXBarAppearance *)self signalChange:4];
-    self->_prefersToolbarVisible = a3;
+    self->_prefersToolbarVisible = visible;
   }
 }
 
-- (void)setPrefersNavigationBarVisible:(BOOL)a3
+- (void)setPrefersNavigationBarVisible:(BOOL)visible
 {
-  if (self->_prefersNavigationBarVisible != a3)
+  if (self->_prefersNavigationBarVisible != visible)
   {
     [(PXBarAppearance *)self signalChange:2];
-    self->_prefersNavigationBarVisible = a3;
+    self->_prefersNavigationBarVisible = visible;
   }
 }
 
-- (void)setPrefersStatusBarVisible:(BOOL)a3
+- (void)setPrefersStatusBarVisible:(BOOL)visible
 {
-  if (self->_prefersStatusBarVisible != a3)
+  if (self->_prefersStatusBarVisible != visible)
   {
     [(PXBarAppearance *)self signalChange:1];
-    self->_prefersStatusBarVisible = a3;
+    self->_prefersStatusBarVisible = visible;
   }
 }
 
-- (void)performChangesWithAnimationOptions:(id)a3 changes:(id)a4
+- (void)performChangesWithAnimationOptions:(id)options changes:(id)changes
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXBarAppearance *)self _animationOptions];
-  v9 = v8;
-  if (v6)
+  optionsCopy = options;
+  changesCopy = changes;
+  _animationOptions = [(PXBarAppearance *)self _animationOptions];
+  v9 = _animationOptions;
+  if (optionsCopy)
   {
-    if (v8)
+    if (_animationOptions)
     {
       v10 = PLUIGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -584,26 +584,26 @@ void __74__PXBarAppearance__updateStatusBarStyleAndVisibilityWithAnimationOption
         *buf = 138412546;
         v13 = v9;
         v14 = 2112;
-        v15 = v6;
+        v15 = optionsCopy;
         _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEFAULT, "bar appearance animation options specified multiple times (existing:%@, specified:%@)", buf, 0x16u);
       }
     }
 
     else
     {
-      [(PXBarAppearance *)self _setAnimationOptions:v6];
+      [(PXBarAppearance *)self _setAnimationOptions:optionsCopy];
     }
   }
 
   v11.receiver = self;
   v11.super_class = PXBarAppearance;
-  [(PXBarAppearance *)&v11 performChanges:v7];
+  [(PXBarAppearance *)&v11 performChanges:changesCopy];
   [(PXBarAppearance *)self _setAnimationOptions:v9];
 }
 
-- (PXBarAppearance)initWithViewController:(id)a3
+- (PXBarAppearance)initWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = PXBarAppearance;
   v5 = [(PXBarAppearance *)&v8 init];
@@ -614,7 +614,7 @@ void __74__PXBarAppearance__updateStatusBarStyleAndVisibilityWithAnimationOption
     v5->_prefersNavigationBarVisible = 1;
     v5->_prefersToolbarVisible = 0;
     v5->_prefersTabBarVisible = 0;
-    objc_storeWeak(&v5->_viewController, v4);
+    objc_storeWeak(&v5->_viewController, controllerCopy);
     [(PXBarAppearance *)v6 registerChangeObserver:v6 context:PXBarAppearanceObservationContext];
   }
 
@@ -623,8 +623,8 @@ void __74__PXBarAppearance__updateStatusBarStyleAndVisibilityWithAnimationOption
 
 - (PXBarAppearance)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXBarAppearance.m" lineNumber:57 description:@"unavailable initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXBarAppearance.m" lineNumber:57 description:@"unavailable initializer"];
 
   return 0;
 }

@@ -1,22 +1,22 @@
 @interface FPAuxData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)supportsFormattedValue;
-- (FPAuxData)initWithValue:(int64_t)a3 shouldAggregate:(BOOL)a4;
+- (FPAuxData)initWithValue:(int64_t)value shouldAggregate:(BOOL)aggregate;
 - (const)formattedValue;
 - (id)description;
 @end
 
 @implementation FPAuxData
 
-- (FPAuxData)initWithValue:(int64_t)a3 shouldAggregate:(BOOL)a4
+- (FPAuxData)initWithValue:(int64_t)value shouldAggregate:(BOOL)aggregate
 {
   v7.receiver = self;
   v7.super_class = FPAuxData;
   result = [(FPAuxData *)&v7 init];
   if (result)
   {
-    result->_aggregate = a4;
-    result->_value = a3;
+    result->_aggregate = aggregate;
+    result->_value = value;
   }
 
   return result;
@@ -26,39 +26,39 @@
 {
   if ([(FPAuxData *)self supportsFormattedValue])
   {
-    v3 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%s", -[FPAuxData formattedValue](self, "formattedValue")];
+    stringValue = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%s", -[FPAuxData formattedValue](self, "formattedValue")];
   }
 
   else
   {
     v4 = [MEMORY[0x29EDBA070] numberWithLongLong:{-[FPAuxData value](self, "value")}];
-    v3 = [v4 stringValue];
+    stringValue = [v4 stringValue];
   }
 
-  return v3;
+  return stringValue;
 }
 
 - (BOOL)supportsFormattedValue
 {
-  v2 = [(FPAuxData *)self formatter];
-  v3 = v2 != 0;
+  formatter = [(FPAuxData *)self formatter];
+  v3 = formatter != 0;
 
   return v3;
 }
 
 - (const)formattedValue
 {
-  v3 = [(FPAuxData *)self formatter];
-  v4 = v3[2](v3, [(FPAuxData *)self value]);
+  formatter = [(FPAuxData *)self formatter];
+  v4 = formatter[2](formatter, [(FPAuxData *)self value]);
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_value == v4[2];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_value == equalCopy[2];
 
   return v5;
 }

@@ -1,13 +1,13 @@
 @interface MOTimeAtHomeParams
-- (MOTimeAtHomeParams)initWithConfigurationManager:(id)a3;
+- (MOTimeAtHomeParams)initWithConfigurationManager:(id)manager;
 @end
 
 @implementation MOTimeAtHomeParams
 
-- (MOTimeAtHomeParams)initWithConfigurationManager:(id)a3
+- (MOTimeAtHomeParams)initWithConfigurationManager:(id)manager
 {
-  v6 = a3;
-  if (v6)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v22.receiver = self;
     v22.super_class = MOTimeAtHomeParams;
@@ -15,7 +15,7 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_configurationManager, a3);
+      objc_storeStrong(&v7->_configurationManager, manager);
       [(MOConfigurationManagerBase *)v8->_configurationManager getDoubleSettingForKey:@"timeAtHomeInviteEventTimeOverlapWithVisitsThreshold" withFallback:1800.0];
       v8->_timeAtHomeInviteEventTimeOverlapWithVisitsThreshold = v9;
       LODWORD(v9) = 1128792064;
@@ -40,7 +40,7 @@
     }
 
     self = v8;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
@@ -54,10 +54,10 @@
     v20 = +[NSAssertionHandler currentHandler];
     [v20 handleFailureInMethod:a2 object:self file:@"MOTimeAtHomeParams.m" lineNumber:49 description:@"Invalid parameter not satisfying: configurationManager"];
 
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 @end

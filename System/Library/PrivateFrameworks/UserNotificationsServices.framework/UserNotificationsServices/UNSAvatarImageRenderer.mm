@@ -1,39 +1,39 @@
 @interface UNSAvatarImageRenderer
-+ (id)sharedInstanceForPointSize:(double)a3;
++ (id)sharedInstanceForPointSize:(double)size;
 - (id)_getAvatarImageGenerationQueueAndIncrementUsageCount;
-- (id)_imageNamed:(id)a3 inBundleIdentifier:(id)a4 traitCollection:(id)a5;
-- (id)_initWithPointSize:(double)a3;
-- (id)_queue_imageForContacts:(id)a3 compatibleWithTraitCollection:(id)a4 circular:(BOOL)a5;
-- (id)_silhouetteFallbackImageNameForContacts:(id)a3;
-- (id)_systemImageNamed:(id)a3 traitCollection:(id)a4;
+- (id)_imageNamed:(id)named inBundleIdentifier:(id)identifier traitCollection:(id)collection;
+- (id)_initWithPointSize:(double)size;
+- (id)_queue_imageForContacts:(id)contacts compatibleWithTraitCollection:(id)collection circular:(BOOL)circular;
+- (id)_silhouetteFallbackImageNameForContacts:(id)contacts;
+- (id)_systemImageNamed:(id)named traitCollection:(id)collection;
 - (void)_decrementAvatarImageGenerationQueueUsageCountAndInvalidateIfNeeded;
-- (void)renderAvatarForCommunicationContext:(id)a3 bundleIdentifier:(id)a4 compatibleWithTraitCollection:(id)a5 completion:(id)a6;
+- (void)renderAvatarForCommunicationContext:(id)context bundleIdentifier:(id)identifier compatibleWithTraitCollection:(id)collection completion:(id)completion;
 @end
 
 @implementation UNSAvatarImageRenderer
 
-+ (id)sharedInstanceForPointSize:(double)a3
++ (id)sharedInstanceForPointSize:(double)size
 {
   if (sharedInstanceForPointSize__onceToken != -1)
   {
     +[UNSAvatarImageRenderer sharedInstanceForPointSize:];
   }
 
-  v5 = a1;
-  objc_sync_enter(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = sharedInstanceForPointSize____pointSizesToRenderers;
-  v7 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithDouble:size];
   v8 = [v6 objectForKey:v7];
 
   if (!v8)
   {
-    v8 = [[UNSAvatarImageRenderer alloc] _initWithPointSize:a3];
+    v8 = [[UNSAvatarImageRenderer alloc] _initWithPointSize:size];
     v9 = sharedInstanceForPointSize____pointSizesToRenderers;
-    v10 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithDouble:size];
     [v9 setObject:v8 forKey:v10];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
@@ -45,27 +45,27 @@ uint64_t __53__UNSAvatarImageRenderer_sharedInstanceForPointSize___block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)renderAvatarForCommunicationContext:(id)a3 bundleIdentifier:(id)a4 compatibleWithTraitCollection:(id)a5 completion:(id)a6
+- (void)renderAvatarForCommunicationContext:(id)context bundleIdentifier:(id)identifier compatibleWithTraitCollection:(id)collection completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(UNSAvatarImageRenderer *)self _getAvatarImageGenerationQueueAndIncrementUsageCount];
+  contextCopy = context;
+  identifierCopy = identifier;
+  collectionCopy = collection;
+  completionCopy = completion;
+  _getAvatarImageGenerationQueueAndIncrementUsageCount = [(UNSAvatarImageRenderer *)self _getAvatarImageGenerationQueueAndIncrementUsageCount];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __120__UNSAvatarImageRenderer_renderAvatarForCommunicationContext_bundleIdentifier_compatibleWithTraitCollection_completion___block_invoke;
   block[3] = &unk_279E14398;
-  v23 = v12;
-  v24 = v13;
-  v20 = v10;
-  v21 = v11;
-  v22 = self;
-  v15 = v12;
-  v16 = v11;
-  v17 = v13;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v23 = collectionCopy;
+  v24 = completionCopy;
+  v20 = contextCopy;
+  v21 = identifierCopy;
+  selfCopy = self;
+  v15 = collectionCopy;
+  v16 = identifierCopy;
+  v17 = completionCopy;
+  v18 = contextCopy;
+  dispatch_async(_getAvatarImageGenerationQueueAndIncrementUsageCount, block);
 }
 
 void __120__UNSAvatarImageRenderer_renderAvatarForCommunicationContext_bundleIdentifier_compatibleWithTraitCollection_completion___block_invoke(uint64_t a1)
@@ -256,7 +256,7 @@ uint64_t __120__UNSAvatarImageRenderer_renderAvatarForCommunicationContext_bundl
   return result;
 }
 
-- (id)_initWithPointSize:(double)a3
+- (id)_initWithPointSize:(double)size
 {
   v13.receiver = self;
   v13.super_class = UNSAvatarImageRenderer;
@@ -288,13 +288,13 @@ uint64_t __120__UNSAvatarImageRenderer_renderAvatarForCommunicationContext_bundl
     v4->_avatarRenderer = v9;
 
     v4->_avatarImageGenerationQueueUsageCount = 0;
-    v11 = 44.0;
-    if (a3 > 0.0)
+    sizeCopy = 44.0;
+    if (size > 0.0)
     {
-      v11 = a3;
+      sizeCopy = size;
     }
 
-    v4->_pointSize = v11;
+    v4->_pointSize = sizeCopy;
   }
 
   return v4;
@@ -302,31 +302,31 @@ uint64_t __120__UNSAvatarImageRenderer_renderAvatarForCommunicationContext_bundl
 
 - (id)_getAvatarImageGenerationQueueAndIncrementUsageCount
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  avatarImageGenerationQueue = v2->_avatarImageGenerationQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  avatarImageGenerationQueue = selfCopy->_avatarImageGenerationQueue;
   if (avatarImageGenerationQueue)
   {
-    ++v2->_avatarImageGenerationQueueUsageCount;
+    ++selfCopy->_avatarImageGenerationQueueUsageCount;
   }
 
   else
   {
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v5 = [v4 bundleIdentifier];
+    bundleIdentifier = [v4 bundleIdentifier];
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v5 stringByAppendingFormat:@".%@.avatarGeneration", v7];
+    v8 = [bundleIdentifier stringByAppendingFormat:@".%@.avatarGeneration", v7];
     SerialWithQoS = BSDispatchQueueCreateSerialWithQoS();
-    v10 = v2->_avatarImageGenerationQueue;
-    v2->_avatarImageGenerationQueue = SerialWithQoS;
+    v10 = selfCopy->_avatarImageGenerationQueue;
+    selfCopy->_avatarImageGenerationQueue = SerialWithQoS;
 
-    v2->_avatarImageGenerationQueueUsageCount = 1;
-    avatarImageGenerationQueue = v2->_avatarImageGenerationQueue;
+    selfCopy->_avatarImageGenerationQueueUsageCount = 1;
+    avatarImageGenerationQueue = selfCopy->_avatarImageGenerationQueue;
   }
 
   v11 = avatarImageGenerationQueue;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v11;
 }
@@ -350,21 +350,21 @@ uint64_t __120__UNSAvatarImageRenderer_renderAvatarForCommunicationContext_bundl
   objc_sync_exit(obj);
 }
 
-- (id)_imageNamed:(id)a3 inBundleIdentifier:(id)a4 traitCollection:(id)a5
+- (id)_imageNamed:(id)named inBundleIdentifier:(id)identifier traitCollection:(id)collection
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CC1E70] unkit_applicationRecordIfEligibleToDeliverNotificationsForBundleIdentifier:v8];
+  namedCopy = named;
+  identifierCopy = identifier;
+  collectionCopy = collection;
+  v10 = [MEMORY[0x277CC1E70] unkit_applicationRecordIfEligibleToDeliverNotificationsForBundleIdentifier:identifierCopy];
   v11 = [v10 URL];
   v12 = [v11 copy];
 
-  if (!v12 || ([MEMORY[0x277CCA8D8] bundleWithURL:v12], (v13 = objc_claimAutoreleasedReturnValue()) == 0) || (v14 = v13, objc_msgSend(MEMORY[0x277D755B8], "imageNamed:inBundle:compatibleWithTraitCollection:", v7, v13, v9), v15 = objc_claimAutoreleasedReturnValue(), v14, !v15))
+  if (!v12 || ([MEMORY[0x277CCA8D8] bundleWithURL:v12], (v13 = objc_claimAutoreleasedReturnValue()) == 0) || (v14 = v13, objc_msgSend(MEMORY[0x277D755B8], "imageNamed:inBundle:compatibleWithTraitCollection:", namedCopy, v13, collectionCopy), v15 = objc_claimAutoreleasedReturnValue(), v14, !v15))
   {
     v16 = *MEMORY[0x277CE2070];
     if (os_log_type_enabled(*MEMORY[0x277CE2070], OS_LOG_TYPE_ERROR))
     {
-      [UNSAvatarImageRenderer _imageNamed:v16 inBundleIdentifier:v7 traitCollection:v8];
+      [UNSAvatarImageRenderer _imageNamed:v16 inBundleIdentifier:namedCopy traitCollection:identifierCopy];
     }
 
     v15 = 0;
@@ -373,31 +373,31 @@ uint64_t __120__UNSAvatarImageRenderer_renderAvatarForCommunicationContext_bundl
   return v15;
 }
 
-- (id)_systemImageNamed:(id)a3 traitCollection:(id)a4
+- (id)_systemImageNamed:(id)named traitCollection:(id)collection
 {
   v5 = MEMORY[0x277D755D0];
   pointSize = self->_pointSize;
-  v7 = a4;
-  v8 = a3;
+  collectionCopy = collection;
+  namedCopy = named;
   v9 = [v5 configurationWithPointSize:pointSize];
-  v10 = [v9 configurationWithTraitCollection:v7];
+  v10 = [v9 configurationWithTraitCollection:collectionCopy];
 
-  v11 = [MEMORY[0x277D755B8] systemImageNamed:v8 withConfiguration:v10];
+  v11 = [MEMORY[0x277D755B8] systemImageNamed:namedCopy withConfiguration:v10];
 
   return v11;
 }
 
-- (id)_queue_imageForContacts:(id)a3 compatibleWithTraitCollection:(id)a4 circular:(BOOL)a5
+- (id)_queue_imageForContacts:(id)contacts compatibleWithTraitCollection:(id)collection circular:(BOOL)circular
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  circularCopy = circular;
+  contactsCopy = contacts;
+  collectionCopy = collection;
+  v10 = contactsCopy;
   if ([v10 count])
   {
-    [v9 displayScale];
+    [collectionCopy displayScale];
     v12 = v11;
-    if ([v9 userInterfaceStyle] == 2)
+    if ([collectionCopy userInterfaceStyle] == 2)
     {
       v13 = 3;
     }
@@ -425,7 +425,7 @@ uint64_t __120__UNSAvatarImageRenderer_renderAvatarForCommunicationContext_bundl
 
     v15 = v14;
     _Block_object_dispose(&v20, 8);
-    v16 = [v14 scopeWithPointSize:0 scale:!v5 rightToLeft:v13 style:self->_pointSize backgroundStyle:{self->_pointSize, v12}];
+    v16 = [v14 scopeWithPointSize:0 scale:!circularCopy rightToLeft:v13 style:self->_pointSize backgroundStyle:{self->_pointSize, v12}];
     v17 = [(CNAvatarImageRenderer *)self->_avatarRenderer avatarImageForContacts:v10 scope:v16];
   }
 
@@ -437,9 +437,9 @@ uint64_t __120__UNSAvatarImageRenderer_renderAvatarForCommunicationContext_bundl
   return v17;
 }
 
-- (id)_silhouetteFallbackImageNameForContacts:(id)a3
+- (id)_silhouetteFallbackImageNameForContacts:(id)contacts
 {
-  v3 = [a3 count];
+  v3 = [contacts count];
   if (v3 > 2)
   {
     return @"person.3.fill";

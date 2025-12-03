@@ -2,36 +2,36 @@
 - (CGRect)frame;
 - (UIColor)backgroundColor;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation ArtworkView
 
 - (UIColor)backgroundColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E0D9934();
 
   return v3;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E0D99D0(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_24E0D99D0(color);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E0D9A28();
 }
 
 - (CGRect)frame
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E0D9F08();
   v4 = v3;
   v6 = v5;
@@ -49,9 +49,9 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  v3 = self;
+  selfCopy = self;
   sub_24E0D9FB4();
 }
 

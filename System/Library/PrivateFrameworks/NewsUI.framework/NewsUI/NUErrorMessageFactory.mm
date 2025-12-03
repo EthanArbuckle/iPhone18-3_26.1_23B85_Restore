@@ -1,22 +1,22 @@
 @interface NUErrorMessageFactory
-+ (id)errorMessageForArticleViewWithOfflineReason:(int64_t)a3;
-+ (id)errorMessageForTitle:(id)a3 subtitle:(id)a4;
-- (NUErrorMessageFactory)initWithNetworkReachability:(id)a3;
++ (id)errorMessageForArticleViewWithOfflineReason:(int64_t)reason;
++ (id)errorMessageForTitle:(id)title subtitle:(id)subtitle;
+- (NUErrorMessageFactory)initWithNetworkReachability:(id)reachability;
 - (id)errorMessageForArticleView;
 @end
 
 @implementation NUErrorMessageFactory
 
-- (NUErrorMessageFactory)initWithNetworkReachability:(id)a3
+- (NUErrorMessageFactory)initWithNetworkReachability:(id)reachability
 {
-  v5 = a3;
+  reachabilityCopy = reachability;
   v9.receiver = self;
   v9.super_class = NUErrorMessageFactory;
   v6 = [(NUErrorMessageFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_networkReachability, a3);
+    objc_storeStrong(&v6->_networkReachability, reachability);
   }
 
   return v7;
@@ -24,15 +24,15 @@
 
 - (id)errorMessageForArticleView
 {
-  v3 = [(NUErrorMessageFactory *)self networkReachability];
-  v4 = -[NUErrorMessageFactory errorMessageForArticleViewWithOfflineReason:](self, "errorMessageForArticleViewWithOfflineReason:", [v3 offlineReason]);
+  networkReachability = [(NUErrorMessageFactory *)self networkReachability];
+  v4 = -[NUErrorMessageFactory errorMessageForArticleViewWithOfflineReason:](self, "errorMessageForArticleViewWithOfflineReason:", [networkReachability offlineReason]);
 
   return v4;
 }
 
-+ (id)errorMessageForArticleViewWithOfflineReason:(int64_t)a3
++ (id)errorMessageForArticleViewWithOfflineReason:(int64_t)reason
 {
-  if ((a3 - 1) > 5)
+  if ((reason - 1) > 5)
   {
     v5 = 0;
     v7 = 0;
@@ -40,7 +40,7 @@
 
   else
   {
-    v3 = off_2799A36F8[a3 - 1];
+    v3 = off_2799A36F8[reason - 1];
     v4 = NUBundle();
     v5 = [v4 localizedStringForKey:@"NUStoryUnavailableAlertTitle" value:&stru_286E03B58 table:0];
 
@@ -53,14 +53,14 @@
   return v8;
 }
 
-+ (id)errorMessageForTitle:(id)a3 subtitle:(id)a4
++ (id)errorMessageForTitle:(id)title subtitle:(id)subtitle
 {
   v4 = 0;
-  if (a3 && a4)
+  if (title && subtitle)
   {
-    v6 = a4;
-    v7 = a3;
-    v4 = [[NUErrorMessage alloc] initWithTitle:v7 subtitle:v6];
+    subtitleCopy = subtitle;
+    titleCopy = title;
+    v4 = [[NUErrorMessage alloc] initWithTitle:titleCopy subtitle:subtitleCopy];
   }
 
   return v4;

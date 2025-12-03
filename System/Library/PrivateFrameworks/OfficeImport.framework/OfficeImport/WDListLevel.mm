@@ -1,20 +1,20 @@
 @interface WDListLevel
-- (WDListLevel)initWithDocument:(id)a3;
+- (WDListLevel)initWithDocument:(id)document;
 - (id)description;
 @end
 
 @implementation WDListLevel
 
-- (WDListLevel)initWithDocument:(id)a3
+- (WDListLevel)initWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v14.receiver = self;
   v14.super_class = WDListLevel;
   v5 = [(WDListLevel *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mDocument, v4);
+    objc_storeWeak(&v5->mDocument, documentCopy);
     v6->mStartNumber = 0;
     v6->mNumberFormat = 0;
     v6->mRestartNumbering = 1;
@@ -29,11 +29,11 @@
     v6->mLegacySpace = 0;
     v6->mLegacyIndent = 0;
     v6->mJustification = 0;
-    v9 = [[WDParagraphProperties alloc] initWithDocument:v4];
+    v9 = [[WDParagraphProperties alloc] initWithDocument:documentCopy];
     mParagraphProperties = v6->mParagraphProperties;
     v6->mParagraphProperties = v9;
 
-    v11 = [[WDCharacterProperties alloc] initWithDocument:v4];
+    v11 = [[WDCharacterProperties alloc] initWithDocument:documentCopy];
     mCharacterProperties = v6->mCharacterProperties;
     v6->mCharacterProperties = v11;
   }

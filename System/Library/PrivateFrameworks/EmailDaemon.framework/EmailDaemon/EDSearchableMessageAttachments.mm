@@ -1,8 +1,8 @@
 @interface EDSearchableMessageAttachments
 + (CSCustomAttributeKey)specificUTIsAttribute;
 - (EDSearchableMessageAttachments)init;
-- (EDSearchableMessageAttachments)initWithNames:(id)a3 paths:(id)a4 UTIs:(id)a5 specificUTIs:(id)a6 mimeTypes:(id)a7 kinds:(id)a8;
-- (void)addToAttributes:(id)a3;
+- (EDSearchableMessageAttachments)initWithNames:(id)names paths:(id)paths UTIs:(id)is specificUTIs:(id)tIs mimeTypes:(id)types kinds:(id)kinds;
+- (void)addToAttributes:(id)attributes;
 @end
 
 @implementation EDSearchableMessageAttachments
@@ -19,7 +19,7 @@
   return v3;
 }
 
-- (EDSearchableMessageAttachments)initWithNames:(id)a3 paths:(id)a4 UTIs:(id)a5 specificUTIs:(id)a6 mimeTypes:(id)a7 kinds:(id)a8
+- (EDSearchableMessageAttachments)initWithNames:(id)names paths:(id)paths UTIs:(id)is specificUTIs:(id)tIs mimeTypes:(id)types kinds:(id)kinds
 {
   v9 = sub_1C645CA14();
   v10 = sub_1C645CA14();
@@ -43,16 +43,16 @@
   return [(EDSearchableMessageAttachments *)&v18 init];
 }
 
-- (void)addToAttributes:(id)a3
+- (void)addToAttributes:(id)attributes
 {
   sub_1C640DBAC(self + OBJC_IVAR___EDSearchableMessageAttachments__underlying, v7);
-  v5 = a3;
-  v6 = self;
+  attributesCopy = attributes;
+  selfCopy = self;
   swift_dynamicCast();
   v7[0] = v7[3];
   v7[1] = v7[4];
   v7[2] = v7[5];
-  SearchableMessageAttachments.addTo(_:)(v5);
+  SearchableMessageAttachments.addTo(_:)(attributesCopy);
 }
 
 - (EDSearchableMessageAttachments)init

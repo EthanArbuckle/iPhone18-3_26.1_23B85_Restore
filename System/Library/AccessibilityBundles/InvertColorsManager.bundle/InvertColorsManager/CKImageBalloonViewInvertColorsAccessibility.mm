@@ -12,8 +12,8 @@
   v3 = [(CKImageBalloonViewInvertColorsAccessibility *)self safeValueForKey:@"tailMask"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 layer];
-  [AXInvertColorsAppHelper toggleInvertColors:v5];
+  layer = [v4 layer];
+  [AXInvertColorsAppHelper toggleInvertColors:layer];
 }
 
 - (void)layoutSubviews

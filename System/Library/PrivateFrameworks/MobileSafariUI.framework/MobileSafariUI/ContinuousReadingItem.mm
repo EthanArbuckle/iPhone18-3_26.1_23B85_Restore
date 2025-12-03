@@ -1,41 +1,41 @@
 @interface ContinuousReadingItem
-+ (ContinuousReadingItem)itemWithReadingListItem:(id)a3;
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (ContinuousReadingItem)itemWithReadingListItem:(id)item;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
+- (BOOL)isEqual:(id)equal;
 - (NSString)previewText;
 - (NSString)title;
 - (NSURL)URL;
-- (id)_initWithReadingListItem:(id)a3;
+- (id)_initWithReadingListItem:(id)item;
 - (id)_siteNameForReadingListItem;
 - (unint64_t)hash;
-- (void)_readingListItemDidUpdate:(id)a3;
+- (void)_readingListItemDidUpdate:(id)update;
 - (void)dealloc;
 @end
 
 @implementation ContinuousReadingItem
 
-+ (ContinuousReadingItem)itemWithReadingListItem:(id)a3
++ (ContinuousReadingItem)itemWithReadingListItem:(id)item
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithReadingListItem:v4];
+  itemCopy = item;
+  v5 = [[self alloc] _initWithReadingListItem:itemCopy];
 
   return v5;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ContinuousReadingItem;
   [(ContinuousReadingItem *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -45,12 +45,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ContinuousReadingItem *)self readingListBookmark];
-      v7 = [v6 identifier];
-      v8 = [(ContinuousReadingItem *)v5 readingListBookmark];
+      v5 = equalCopy;
+      readingListBookmark = [(ContinuousReadingItem *)self readingListBookmark];
+      identifier = [readingListBookmark identifier];
+      readingListBookmark2 = [(ContinuousReadingItem *)v5 readingListBookmark];
 
-      v9 = v7 == [v8 identifier];
+      v9 = identifier == [readingListBookmark2 identifier];
     }
 
     else
@@ -64,18 +64,18 @@
 
 - (unint64_t)hash
 {
-  v2 = [(ContinuousReadingItem *)self readingListBookmark];
-  v3 = [v2 identifier];
+  readingListBookmark = [(ContinuousReadingItem *)self readingListBookmark];
+  identifier = [readingListBookmark identifier];
 
-  return v3;
+  return identifier;
 }
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  v4 = a3;
-  v9.receiver = a1;
+  keyCopy = key;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___ContinuousReadingItem;
-  v5 = objc_msgSendSuper2(&v9, sel_keyPathsForValuesAffectingValueForKey_, v4);
+  v5 = objc_msgSendSuper2(&v9, sel_keyPathsForValuesAffectingValueForKey_, keyCopy);
   v6 = keyPathsForValuesAffectingValueForKey__derivedKeys;
   if (!keyPathsForValuesAffectingValueForKey__derivedKeys)
   {
@@ -84,7 +84,7 @@
     v6 = &unk_2827FC658;
   }
 
-  if ([v6 containsObject:v4])
+  if ([v6 containsObject:keyCopy])
   {
     v7 = [v5 setByAddingObject:@"readingListBookmark"];
 
@@ -96,49 +96,49 @@
 
 - (NSString)title
 {
-  v2 = [(ContinuousReadingItem *)self readingListBookmark];
-  v3 = [v2 title];
+  readingListBookmark = [(ContinuousReadingItem *)self readingListBookmark];
+  title = [readingListBookmark title];
 
-  return v3;
+  return title;
 }
 
 - (NSString)previewText
 {
-  v2 = [(ContinuousReadingItem *)self readingListBookmark];
-  v3 = [v2 previewText];
+  readingListBookmark = [(ContinuousReadingItem *)self readingListBookmark];
+  previewText = [readingListBookmark previewText];
 
-  return v3;
+  return previewText;
 }
 
 - (NSURL)URL
 {
-  v2 = [(ContinuousReadingItem *)self readingListBookmark];
-  v3 = [(WebBookmark *)v2 safari_bestCurrentURL];
+  readingListBookmark = [(ContinuousReadingItem *)self readingListBookmark];
+  safari_bestCurrentURL = [(WebBookmark *)readingListBookmark safari_bestCurrentURL];
 
-  return v3;
+  return safari_bestCurrentURL;
 }
 
 - (id)_siteNameForReadingListItem
 {
-  v2 = [(ContinuousReadingItem *)self readingListBookmark];
-  v3 = [v2 address];
-  v4 = [v3 safari_simplifiedUserVisibleURLStringWithSimplifications:511 forDisplayOnly:1 simplifiedStringOffset:0];
+  readingListBookmark = [(ContinuousReadingItem *)self readingListBookmark];
+  address = [readingListBookmark address];
+  v4 = [address safari_simplifiedUserVisibleURLStringWithSimplifications:511 forDisplayOnly:1 simplifiedStringOffset:0];
 
   return v4;
 }
 
-- (id)_initWithReadingListItem:(id)a3
+- (id)_initWithReadingListItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = ContinuousReadingItem;
   v6 = [(ContinuousReadingItem *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_readingListBookmark, a3);
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v7 selector:sel__readingListItemDidUpdate_ name:@"ReadingListBookmarkDidUpdateNotification" object:0];
+    objc_storeStrong(&v6->_readingListBookmark, item);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__readingListItemDidUpdate_ name:@"ReadingListBookmarkDidUpdateNotification" object:0];
 
     v9 = v7;
   }
@@ -146,16 +146,16 @@
   return v7;
 }
 
-- (void)_readingListItemDidUpdate:(id)a3
+- (void)_readingListItemDidUpdate:(id)update
 {
-  v7 = [a3 object];
-  v4 = [v7 identifier];
-  v5 = [(ContinuousReadingItem *)self readingListBookmark];
-  v6 = [v5 identifier];
+  object = [update object];
+  identifier = [object identifier];
+  readingListBookmark = [(ContinuousReadingItem *)self readingListBookmark];
+  identifier2 = [readingListBookmark identifier];
 
-  if (v4 == v6)
+  if (identifier == identifier2)
   {
-    [(ContinuousReadingItem *)self _setReadingListBookmark:v7];
+    [(ContinuousReadingItem *)self _setReadingListBookmark:object];
   }
 }
 

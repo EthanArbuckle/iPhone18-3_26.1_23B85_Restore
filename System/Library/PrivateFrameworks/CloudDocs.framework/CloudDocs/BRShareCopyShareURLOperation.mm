@@ -1,40 +1,40 @@
 @interface BRShareCopyShareURLOperation
-- (BRShareCopyShareURLOperation)initWithFileURL:(id)a3 documentType:(id)a4;
-- (BRShareCopyShareURLOperation)initWithItemID:(id)a3;
-- (BRShareCopyShareURLOperation)initWithShare:(id)a3 documentType:(id)a4;
-- (BRShareCopyShareURLOperation)initWithShare:(id)a3 fileURL:(id)a4 documentType:(id)a5;
-- (BRShareCopyShareURLOperation)initWithShare:(id)a3 itemID:(id)a4;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (BRShareCopyShareURLOperation)initWithFileURL:(id)l documentType:(id)type;
+- (BRShareCopyShareURLOperation)initWithItemID:(id)d;
+- (BRShareCopyShareURLOperation)initWithShare:(id)share documentType:(id)type;
+- (BRShareCopyShareURLOperation)initWithShare:(id)share fileURL:(id)l documentType:(id)type;
+- (BRShareCopyShareURLOperation)initWithShare:(id)share itemID:(id)d;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
 @implementation BRShareCopyShareURLOperation
 
-- (BRShareCopyShareURLOperation)initWithShare:(id)a3 fileURL:(id)a4 documentType:(id)a5
+- (BRShareCopyShareURLOperation)initWithShare:(id)share fileURL:(id)l documentType:(id)type
 {
-  v7 = a3;
+  shareCopy = share;
   v11.receiver = self;
   v11.super_class = BRShareCopyShareURLOperation;
-  v8 = [(BRShareOperation *)&v11 initWithURL:a4];
+  v8 = [(BRShareOperation *)&v11 initWithURL:l];
   v9 = v8;
   if (v8)
   {
-    [(BRShareCopyShareURLOperation *)v8 setShare:v7];
+    [(BRShareCopyShareURLOperation *)v8 setShare:shareCopy];
   }
 
   return v9;
 }
 
-- (BRShareCopyShareURLOperation)initWithShare:(id)a3 documentType:(id)a4
+- (BRShareCopyShareURLOperation)initWithShare:(id)share documentType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  shareCopy = share;
+  typeCopy = type;
+  if (shareCopy)
   {
-    v8 = br_shareAssociatedURL(v6);
+    v8 = br_shareAssociatedURL(shareCopy);
     if (v8)
     {
-      v9 = [(BRShareCopyShareURLOperation *)self initWithShare:v6 fileURL:v8 documentType:v7];
+      v9 = [(BRShareCopyShareURLOperation *)self initWithShare:shareCopy fileURL:v8 documentType:typeCopy];
     }
 
     else
@@ -67,12 +67,12 @@
   return v9;
 }
 
-- (BRShareCopyShareURLOperation)initWithFileURL:(id)a3 documentType:(id)a4
+- (BRShareCopyShareURLOperation)initWithFileURL:(id)l documentType:(id)type
 {
   v15 = 0;
-  v6 = a4;
-  v7 = a3;
-  v8 = BRSharingCreateShareForItemAtURL(v7, &v15);
+  typeCopy = type;
+  lCopy = l;
+  v8 = BRSharingCreateShareForItemAtURL(lCopy, &v15);
   v9 = v15;
   share = self->_share;
   self->_share = v8;
@@ -81,30 +81,30 @@
   self->_error = v9;
   v12 = v9;
 
-  v13 = [(BRShareCopyShareURLOperation *)self initWithShare:self->_share fileURL:v7 documentType:v6];
+  v13 = [(BRShareCopyShareURLOperation *)self initWithShare:self->_share fileURL:lCopy documentType:typeCopy];
   return v13;
 }
 
-- (BRShareCopyShareURLOperation)initWithShare:(id)a3 itemID:(id)a4
+- (BRShareCopyShareURLOperation)initWithShare:(id)share itemID:(id)d
 {
-  v6 = a3;
+  shareCopy = share;
   v10.receiver = self;
   v10.super_class = BRShareCopyShareURLOperation;
-  v7 = [(BRShareOperation *)&v10 initWithItemIdentifier:a4];
+  v7 = [(BRShareOperation *)&v10 initWithItemIdentifier:d];
   v8 = v7;
   if (v7)
   {
-    [(BRShareCopyShareURLOperation *)v7 setShare:v6];
+    [(BRShareCopyShareURLOperation *)v7 setShare:shareCopy];
   }
 
   return v8;
 }
 
-- (BRShareCopyShareURLOperation)initWithItemID:(id)a3
+- (BRShareCopyShareURLOperation)initWithItemID:(id)d
 {
   v12 = 0;
-  v4 = a3;
-  v5 = BRSharingCreateShareForItemWithIdentifier(v4, &v12);
+  dCopy = d;
+  v5 = BRSharingCreateShareForItemWithIdentifier(dCopy, &v12);
   v6 = v12;
   share = self->_share;
   self->_share = v5;
@@ -113,7 +113,7 @@
   self->_error = v6;
   v9 = v6;
 
-  v10 = [(BRShareCopyShareURLOperation *)self initWithShare:self->_share itemID:v4];
+  v10 = [(BRShareCopyShareURLOperation *)self initWithShare:self->_share itemID:dCopy];
   return v10;
 }
 
@@ -152,32 +152,32 @@ void __36__BRShareCopyShareURLOperation_main__block_invoke(uint64_t a1, void *a2
   [*(a1 + 32) completedWithResult:v9 error:v8];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRShareCopyShareURLOperation *)self shareCopyURLCompletionBlock];
-  if (v8)
+  resultCopy = result;
+  errorCopy = error;
+  shareCopyURLCompletionBlock = [(BRShareCopyShareURLOperation *)self shareCopyURLCompletionBlock];
+  if (shareCopyURLCompletionBlock)
   {
-    v9 = [v6 objectForKeyedSubscript:@"share"];
-    v10 = [v6 objectForKeyedSubscript:@"url"];
-    (v8)[2](v8, v9, v10, v7);
+    v9 = [resultCopy objectForKeyedSubscript:@"share"];
+    v10 = [resultCopy objectForKeyedSubscript:@"url"];
+    (shareCopyURLCompletionBlock)[2](shareCopyURLCompletionBlock, v9, v10, errorCopy);
 
     [(BRShareCopyShareURLOperation *)self setShareCopyURLCompletionBlock:0];
   }
 
-  v11 = [(BRShareCopyShareURLOperation *)self copyShareURLCompletionBlock];
-  if (v11)
+  copyShareURLCompletionBlock = [(BRShareCopyShareURLOperation *)self copyShareURLCompletionBlock];
+  if (copyShareURLCompletionBlock)
   {
-    v12 = [v6 objectForKeyedSubscript:@"url"];
-    (v11)[2](v11, v12, v7);
+    v12 = [resultCopy objectForKeyedSubscript:@"url"];
+    (copyShareURLCompletionBlock)[2](copyShareURLCompletionBlock, v12, errorCopy);
 
     [(BRShareCopyShareURLOperation *)self setCopyShareURLCompletionBlock:0];
   }
 
   v13.receiver = self;
   v13.super_class = BRShareCopyShareURLOperation;
-  [(BROperation *)&v13 finishWithResult:v6 error:v7];
+  [(BROperation *)&v13 finishWithResult:resultCopy error:errorCopy];
 }
 
 - (void)initWithShare:documentType:.cold.1()

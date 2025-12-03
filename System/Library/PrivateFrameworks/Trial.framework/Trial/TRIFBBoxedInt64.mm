@@ -1,6 +1,6 @@
 @interface TRIFBBoxedInt64
-- (BOOL)isEqual:(id)a3;
-- (TRIFBBoxedInt64)initWithVal:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (TRIFBBoxedInt64)initWithVal:(int64_t)val;
 - (id)init_;
 - (unint64_t)hash;
 @end
@@ -15,13 +15,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,9 +45,9 @@
   return v9;
 }
 
-- (TRIFBBoxedInt64)initWithVal:(int64_t)a3
+- (TRIFBBoxedInt64)initWithVal:(int64_t)val
 {
-  v4 = [[TRIFBMutableBoxedInt64 alloc] initWithVal:a3];
+  v4 = [[TRIFBMutableBoxedInt64 alloc] initWithVal:val];
   p_super = &v4->super;
   if (v4)
   {

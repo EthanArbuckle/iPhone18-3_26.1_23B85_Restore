@@ -1,22 +1,22 @@
 @interface STMutableStatusItemsStatusDomainData
-- (BOOL)applyDiff:(id)a3;
+- (BOOL)applyDiff:(id)diff;
 - (STMutableDictionaryData)visualDescriptorsByIdentifierDictionaryData;
 - (STMutableListData)statusItemsAttributionListData;
-- (STMutableStatusItemsStatusDomainData)initWithStatusItemsAttributionListData:(id)a3 visualDescriptorsByIdentifierDictionaryData:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addAttribution:(id)a3;
-- (void)removeAttribution:(id)a3;
-- (void)setAttributions:(id)a3;
-- (void)setVisualDescriptor:(id)a3 forStatusItemWithIdentifier:(id)a4;
+- (STMutableStatusItemsStatusDomainData)initWithStatusItemsAttributionListData:(id)data visualDescriptorsByIdentifierDictionaryData:(id)dictionaryData;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addAttribution:(id)attribution;
+- (void)removeAttribution:(id)attribution;
+- (void)setAttributions:(id)attributions;
+- (void)setVisualDescriptor:(id)descriptor forStatusItemWithIdentifier:(id)identifier;
 @end
 
 @implementation STMutableStatusItemsStatusDomainData
 
-- (STMutableStatusItemsStatusDomainData)initWithStatusItemsAttributionListData:(id)a3 visualDescriptorsByIdentifierDictionaryData:(id)a4
+- (STMutableStatusItemsStatusDomainData)initWithStatusItemsAttributionListData:(id)data visualDescriptorsByIdentifierDictionaryData:(id)dictionaryData
 {
-  v6 = a4;
-  v7 = [a3 mutableCopy];
-  v8 = [v6 mutableCopy];
+  dictionaryDataCopy = dictionaryData;
+  v7 = [data mutableCopy];
+  v8 = [dictionaryDataCopy mutableCopy];
 
   v11.receiver = self;
   v11.super_class = STMutableStatusItemsStatusDomainData;
@@ -25,68 +25,68 @@
   return v9;
 }
 
-- (void)setAttributions:(id)a3
+- (void)setAttributions:(id)attributions
 {
-  if (a3)
+  if (attributions)
   {
-    v4 = a3;
-    v5 = [(STMutableStatusItemsStatusDomainData *)self statusItemsAttributionListData];
-    [v5 setObjects:v4];
+    attributionsCopy = attributions;
+    statusItemsAttributionListData = [(STMutableStatusItemsStatusDomainData *)self statusItemsAttributionListData];
+    [statusItemsAttributionListData setObjects:attributionsCopy];
   }
 }
 
-- (void)addAttribution:(id)a3
+- (void)addAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [(STMutableStatusItemsStatusDomainData *)self statusItemsAttributionListData];
-    [v5 addObject:v4];
+    attributionCopy = attribution;
+    statusItemsAttributionListData = [(STMutableStatusItemsStatusDomainData *)self statusItemsAttributionListData];
+    [statusItemsAttributionListData addObject:attributionCopy];
   }
 }
 
-- (void)removeAttribution:(id)a3
+- (void)removeAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    v4 = a3;
-    v5 = [(STMutableStatusItemsStatusDomainData *)self statusItemsAttributionListData];
-    [v5 removeObject:v4];
+    attributionCopy = attribution;
+    statusItemsAttributionListData = [(STMutableStatusItemsStatusDomainData *)self statusItemsAttributionListData];
+    [statusItemsAttributionListData removeObject:attributionCopy];
   }
 }
 
-- (void)setVisualDescriptor:(id)a3 forStatusItemWithIdentifier:(id)a4
+- (void)setVisualDescriptor:(id)descriptor forStatusItemWithIdentifier:(id)identifier
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(STMutableStatusItemsStatusDomainData *)self visualDescriptorsByIdentifierDictionaryData];
-  v8 = v7;
-  if (v9)
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
+  visualDescriptorsByIdentifierDictionaryData = [(STMutableStatusItemsStatusDomainData *)self visualDescriptorsByIdentifierDictionaryData];
+  v8 = visualDescriptorsByIdentifierDictionaryData;
+  if (descriptorCopy)
   {
-    [v7 setObject:v9 forKey:v6];
+    [visualDescriptorsByIdentifierDictionaryData setObject:descriptorCopy forKey:identifierCopy];
   }
 
   else
   {
-    [v7 removeObjectForKey:v6];
+    [visualDescriptorsByIdentifierDictionaryData removeObjectForKey:identifierCopy];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [STStatusItemsStatusDomainData allocWithZone:a3];
+  v4 = [STStatusItemsStatusDomainData allocWithZone:zone];
 
   return [(STStatusItemsStatusDomainData *)v4 initWithData:self];
 }
 
-- (BOOL)applyDiff:(id)a3
+- (BOOL)applyDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    [v4 applyToMutableData:self];
+    [diffCopy applyToMutableData:self];
   }
 
   return isKindOfClass & 1;
@@ -96,18 +96,18 @@
 {
   v4.receiver = self;
   v4.super_class = STMutableStatusItemsStatusDomainData;
-  v2 = [(STStatusItemsStatusDomainData *)&v4 statusItemsAttributionListData];
+  statusItemsAttributionListData = [(STStatusItemsStatusDomainData *)&v4 statusItemsAttributionListData];
 
-  return v2;
+  return statusItemsAttributionListData;
 }
 
 - (STMutableDictionaryData)visualDescriptorsByIdentifierDictionaryData
 {
   v4.receiver = self;
   v4.super_class = STMutableStatusItemsStatusDomainData;
-  v2 = [(STStatusItemsStatusDomainData *)&v4 visualDescriptorsByIdentifierDictionaryData];
+  visualDescriptorsByIdentifierDictionaryData = [(STStatusItemsStatusDomainData *)&v4 visualDescriptorsByIdentifierDictionaryData];
 
-  return v2;
+  return visualDescriptorsByIdentifierDictionaryData;
 }
 
 @end

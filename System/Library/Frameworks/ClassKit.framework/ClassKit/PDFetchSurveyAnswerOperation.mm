@@ -1,7 +1,7 @@
 @interface PDFetchSurveyAnswerOperation
-- (BOOL)_deleteAnswersWithSurveyIDs:(id)a3;
-- (BOOL)processPayloadStatus:(id)a3 allowMixedResponse:(BOOL)a4 error:(id *)a5;
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4;
+- (BOOL)_deleteAnswersWithSurveyIDs:(id)ds;
+- (BOOL)processPayloadStatus:(id)status allowMixedResponse:(BOOL)response error:(id *)error;
+- (BOOL)processResponseObject:(id)object error:(id *)error;
 - (id)requestData;
 @end
 
@@ -13,19 +13,19 @@
   if (v3 && [v3 count] || (v4 = *(&self->super.super._responseStatusError + 3)) != 0 && objc_msgSend(v4, "count"))
   {
     v30 = objc_alloc_init(PDDPQueryRequest);
-    v5 = [*(&self->super._responseStatusPayloadFailed + 3) firstObject];
-    v6 = [(PDOperation *)self database];
-    v29 = v5;
-    v7 = sub_1000C8950(v6, v5);
+    firstObject = [*(&self->super._responseStatusPayloadFailed + 3) firstObject];
+    database = [(PDOperation *)self database];
+    v29 = firstObject;
+    v7 = sub_1000C8950(database, firstObject);
 
     if ([v7 count])
     {
       v8 = objc_alloc_init(PDDPSchoolworkQueryZone);
-      v9 = [(PDEndpointRequestOperation *)self endpointInfo];
-      v10 = v9;
-      if (v9)
+      endpointInfo = [(PDEndpointRequestOperation *)self endpointInfo];
+      v10 = endpointInfo;
+      if (endpointInfo)
       {
-        v11 = *(v9 + 64);
+        v11 = *(endpointInfo + 64);
       }
 
       else
@@ -35,8 +35,8 @@
 
       [(PDDPSchoolworkQueryZone *)v8 setLimit:v11];
 
-      v12 = [v7 firstObject];
-      v13 = [NSString stringWithFormat:@"%@-%@", @"Class-Answer", v12];
+      firstObject2 = [v7 firstObject];
+      v13 = [NSString stringWithFormat:@"%@-%@", @"Class-Answer", firstObject2];
 
       v28 = v13;
       [(PDDPSchoolworkQueryZone *)v8 setZoneName:v13];
@@ -89,29 +89,29 @@
       [(PDDPSchoolworkSearchQuery *)v23 setCriteria:v24];
       [(PDDPSchoolworkSearchQuery *)v14 addContents:v23];
       [(PDDPQueryRequest *)v30 setFilterQuery:v14];
-      v26 = [(PDDPQueryRequest *)v30 data];
+      data = [(PDDPQueryRequest *)v30 data];
     }
 
     else
     {
       v8 = [NSError cls_createErrorWithCode:2 description:@"survey missing class ID."];
       [(PDOperation *)self finishWithError:v8];
-      v26 = 0;
+      data = 0;
     }
   }
 
   else
   {
     [(PDEndpointRequestOperation *)self markAsFinished];
-    v26 = 0;
+    data = 0;
   }
 
-  return v26;
+  return data;
 }
 
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4
+- (BOOL)processResponseObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   if ([(PDOperation *)self isAborted])
   {
     v7 = 0;
@@ -120,100 +120,100 @@
   else
   {
     CLSInitLog();
-    v8 = [(PDFetchSurveyAnswerOperation *)self logSubsystem];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    logSubsystem = [(PDFetchSurveyAnswerOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_INFO))
     {
       v9 = objc_opt_class();
       v10 = v9;
-      v11 = [(PDURLRequestOperation *)self operationID];
+      operationID = [(PDURLRequestOperation *)self operationID];
       v16 = 138543618;
       v17 = v9;
       v18 = 2114;
-      v19 = v11;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ processing response;", &v16, 0x16u);
+      v19 = operationID;
+      _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ processing response;", &v16, 0x16u);
     }
 
     [(PDFetchSurveyAnswerOperation *)self _deleteAnswersWithSurveyIDs:*(&self->super._responseStatusPayloadFailed + 3)];
-    v12 = [v6 queryPayloads];
-    v13 = [v12 count];
-    v14 = [(PDURLRequestOperation *)self stats];
-    if (v14)
+    queryPayloads = [objectCopy queryPayloads];
+    v13 = [queryPayloads count];
+    stats = [(PDURLRequestOperation *)self stats];
+    if (stats)
     {
-      v14[15] = v13;
+      stats[15] = v13;
     }
 
-    v7 = [(PDAbstractClassZoneOperation *)self processPayloadsFromResponse:v12 error:a4];
+    v7 = [(PDAbstractClassZoneOperation *)self processPayloadsFromResponse:queryPayloads error:error];
   }
 
   return v7;
 }
 
-- (BOOL)processPayloadStatus:(id)a3 allowMixedResponse:(BOOL)a4 error:(id *)a5
+- (BOOL)processPayloadStatus:(id)status allowMixedResponse:(BOOL)response error:(id *)error
 {
-  v8 = [a3 status];
-  if ([v8 hasInternalMessage])
+  status = [status status];
+  if ([status hasInternalMessage])
   {
     CLSInitLog();
-    v9 = [(PDFetchSurveyAnswerOperation *)self logSubsystem];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    logSubsystem = [(PDFetchSurveyAnswerOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
     {
       v16 = objc_opt_class();
       v24 = v16;
-      v17 = [(PDURLRequestOperation *)self operationID];
-      v18 = [v8 code];
-      v19 = [v8 message];
-      v20 = [v8 internalMessage];
+      operationID = [(PDURLRequestOperation *)self operationID];
+      code = [status code];
+      message = [status message];
+      internalMessage = [status internalMessage];
       *buf = 138544386;
       v26 = v16;
       v27 = 2114;
-      v28 = v17;
+      v28 = operationID;
       v29 = 1024;
-      *v30 = v18;
+      *v30 = code;
       *&v30[4] = 2112;
-      *&v30[6] = v19;
+      *&v30[6] = message;
       v31 = 2112;
-      v32 = v20;
-      _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ status code: %d message: %@ internal message:%@", buf, 0x30u);
+      v32 = internalMessage;
+      _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ status code: %d message: %@ internal message:%@", buf, 0x30u);
     }
   }
 
-  if (-[PDAbstractClassZoneOperation shouldProcessPayloadWithStatusCode:](self, "shouldProcessPayloadWithStatusCode:", [v8 code]))
+  if (-[PDAbstractClassZoneOperation shouldProcessPayloadWithStatusCode:](self, "shouldProcessPayloadWithStatusCode:", [status code]))
   {
     goto LABEL_6;
   }
 
-  if ([v8 code] == 801)
+  if ([status code] == 801)
   {
 LABEL_14:
     v10 = 0;
     goto LABEL_15;
   }
 
-  v11 = sub_1001055FC(v8, a4);
+  v11 = sub_1001055FC(status, response);
   if (v11)
   {
     v12 = v11;
     [(PDEndpointRequestOperation *)self setResponseStatusError:v11];
-    if (a5)
+    if (error)
     {
       v13 = v12;
-      *a5 = v12;
+      *error = v12;
     }
 
     CLSInitLog();
-    v14 = [(PDFetchSurveyAnswerOperation *)self logSubsystem];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    logSubsystem2 = [(PDFetchSurveyAnswerOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_ERROR))
     {
       v21 = objc_opt_class();
       v22 = v21;
-      v23 = [(PDURLRequestOperation *)self operationID];
+      operationID2 = [(PDURLRequestOperation *)self operationID];
       *buf = 138543874;
       v26 = v21;
       v27 = 2114;
-      v28 = v23;
+      v28 = operationID2;
       v29 = 2114;
       *v30 = v12;
-      _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ assignment request errored: %{public}@;", buf, 0x20u);
+      _os_log_error_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ assignment request errored: %{public}@;", buf, 0x20u);
     }
 
     goto LABEL_14;
@@ -226,12 +226,12 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)_deleteAnswersWithSurveyIDs:(id)a3
+- (BOOL)_deleteAnswersWithSurveyIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [PDDatabase whereSQLForArray:v4 prefix:@"state = 2 and surveyID in "];
-  v6 = [(PDOperation *)self database];
-  v7 = [v6 deleteAll:objc_opt_class() where:v5 bindings:v4];
+  dsCopy = ds;
+  v5 = [PDDatabase whereSQLForArray:dsCopy prefix:@"state = 2 and surveyID in "];
+  database = [(PDOperation *)self database];
+  v7 = [database deleteAll:objc_opt_class() where:v5 bindings:dsCopy];
 
   return v7;
 }

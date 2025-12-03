@@ -1,25 +1,25 @@
 @interface HDExampleFeatureProfileExtension
-- (HDExampleFeatureProfileExtension)initWithProfile:(id)a3;
-- (id)_initWithProfile:(void *)a3 featureIdentifier:(void *)a4 loggingCategory:;
-- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)a3;
-- (void)notificationSyncClient:(id)a3 didReceiveInstructionWithAction:(int64_t)a4;
+- (HDExampleFeatureProfileExtension)initWithProfile:(id)profile;
+- (id)_initWithProfile:(void *)profile featureIdentifier:(void *)identifier loggingCategory:;
+- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)identifier;
+- (void)notificationSyncClient:(id)client didReceiveInstructionWithAction:(int64_t)action;
 @end
 
 @implementation HDExampleFeatureProfileExtension
 
-- (HDExampleFeatureProfileExtension)initWithProfile:(id)a3
+- (HDExampleFeatureProfileExtension)initWithProfile:(id)profile
 {
   v4 = *MEMORY[0x277CCC028];
-  v5 = a3;
+  profileCopy = profile;
   v6 = HKLogInfrastructure();
-  v7 = [(HDExampleFeatureProfileExtension *)&self->super.isa _initWithProfile:v5 featureIdentifier:v4 loggingCategory:v6];
+  v7 = [(HDExampleFeatureProfileExtension *)&self->super.isa _initWithProfile:profileCopy featureIdentifier:v4 loggingCategory:v6];
 
   return v7;
 }
 
-- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)a3
+- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)identifier
 {
-  if ([a3 isEqualToString:self->_featureIdentifier])
+  if ([identifier isEqualToString:self->_featureIdentifier])
   {
     v4 = self->_featureAvailabilityManager;
   }
@@ -32,10 +32,10 @@
   return v4;
 }
 
-- (void)notificationSyncClient:(id)a3 didReceiveInstructionWithAction:(int64_t)a4
+- (void)notificationSyncClient:(id)client didReceiveInstructionWithAction:(int64_t)action
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  clientCopy = client;
   _HKInitializeLogging();
   v7 = MEMORY[0x277CCC300];
   v8 = *MEMORY[0x277CCC300];
@@ -53,12 +53,12 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v14 = [WeakRetained notificationManager];
+  notificationManager = [WeakRetained notificationManager];
 
-  if (a4 == 1)
+  if (action == 1)
   {
     v42 = 0;
-    v15 = [v6 pendingNotificationDismissInstructionsWithError:&v42];
+    v15 = [clientCopy pendingNotificationDismissInstructionsWithError:&v42];
     v16 = v42;
     if (!v15)
     {
@@ -72,8 +72,8 @@
       goto LABEL_20;
     }
 
-    v26 = [v15 categoryIdentifiers];
-    v27 = [v26 count];
+    categoryIdentifiers = [v15 categoryIdentifiers];
+    v27 = [categoryIdentifiers count];
 
     if (v27)
     {
@@ -81,10 +81,10 @@
       v37[1] = 3221225472;
       v37[2] = __91__HDExampleFeatureProfileExtension_notificationSyncClient_didReceiveInstructionWithAction___block_invoke_313;
       v37[3] = &unk_2796BCD50;
-      v38 = v14;
-      v39 = v6;
+      v38 = notificationManager;
+      v39 = clientCopy;
       v40 = v15;
-      v41 = self;
+      selfCopy = self;
       v15 = v15;
       [v38 getDeliveredNotificationsWithCompletionHandler:v37];
 
@@ -109,10 +109,10 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (a4 == 3)
+  if (action == 3)
   {
     v46 = 0;
-    v15 = [v6 pendingNotificationSendInstructionsWithError:&v46];
+    v15 = [clientCopy pendingNotificationSendInstructionsWithError:&v46];
     v16 = v46;
     if (!v15)
     {
@@ -126,29 +126,29 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v17 = [v15 categoryIdentifiers];
-    v18 = [v17 count];
+    categoryIdentifiers2 = [v15 categoryIdentifiers];
+    v18 = [categoryIdentifiers2 count];
 
     if (v18)
     {
       v19 = objc_alloc_init(MEMORY[0x277CE1F60]);
       [v19 setTitle:@"Example Feature [Internal Only]"];
-      v20 = [v15 categoryIdentifiers];
-      v21 = [v20 allObjects];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      categoryIdentifiers3 = [v15 categoryIdentifiers];
+      allObjects = [categoryIdentifiers3 allObjects];
+      v22 = [allObjects componentsJoinedByString:@"\n"];
       [v19 setBody:v22];
 
-      v23 = [MEMORY[0x277CCAD78] UUID];
-      v24 = [v23 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
       v43[0] = MEMORY[0x277D85DD0];
       v43[1] = 3221225472;
       v43[2] = __91__HDExampleFeatureProfileExtension_notificationSyncClient_didReceiveInstructionWithAction___block_invoke;
       v43[3] = &unk_2796BCD08;
       v43[4] = self;
-      v44 = v6;
+      v44 = clientCopy;
       v45 = v15;
       v25 = v15;
-      [v14 postNotificationWithIdentifier:v24 content:v19 trigger:0 completion:v43];
+      [notificationManager postNotificationWithIdentifier:uUIDString content:v19 trigger:0 completion:v43];
 
       v15 = v19;
 LABEL_20:
@@ -262,64 +262,64 @@ id __91__HDExampleFeatureProfileExtension_notificationSyncClient_didReceiveInstr
   return v3;
 }
 
-- (id)_initWithProfile:(void *)a3 featureIdentifier:(void *)a4 loggingCategory:
+- (id)_initWithProfile:(void *)profile featureIdentifier:(void *)identifier loggingCategory:
 {
   v36[1] = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  profileCopy = profile;
+  identifierCopy = identifier;
+  if (self)
   {
-    v33.receiver = a1;
+    v33.receiver = self;
     v33.super_class = HDExampleFeatureProfileExtension;
     v10 = objc_msgSendSuper2(&v33, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
-      objc_storeStrong(v10 + 4, a3);
-      objc_storeWeak(a1 + 5, v7);
-      v11 = [MEMORY[0x277CCDD30] sharedBehavior];
-      v12 = [v11 isAppleInternalInstall];
+      objc_storeStrong(v10 + 4, profile);
+      objc_storeWeak(self + 5, v7);
+      mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+      isAppleInternalInstall = [mEMORY[0x277CCDD30] isAppleInternalInstall];
 
-      if (v12)
+      if (isAppleInternalInstall)
       {
         v13 = objc_alloc(MEMORY[0x277D107C0]);
-        v14 = [v7 daemon];
-        v15 = [v13 initWithDaemon:v14 featureIdentifier:v8];
+        daemon = [v7 daemon];
+        v15 = [v13 initWithDaemon:daemon featureIdentifier:profileCopy];
 
         v16 = objc_alloc(MEMORY[0x277D10728]);
-        v17 = [MEMORY[0x277CCD260] emptyCountrySet];
-        v18 = [v7 daemon];
-        v19 = [v16 initWithFeatureIdentifier:v8 defaultCountrySet:v17 healthDaemon:v18];
+        emptyCountrySet = [MEMORY[0x277CCD260] emptyCountrySet];
+        daemon2 = [v7 daemon];
+        v19 = [v16 initWithFeatureIdentifier:profileCopy defaultCountrySet:emptyCountrySet healthDaemon:daemon2];
 
         v20 = objc_alloc(MEMORY[0x277CCD420]);
         v35 = *MEMORY[0x277CCBEA0];
-        v21 = [MEMORY[0x277CCD428] defaultOnboardingEligibilityRequirementsForFeatureIdentifier:v8];
+        v21 = [MEMORY[0x277CCD428] defaultOnboardingEligibilityRequirementsForFeatureIdentifier:profileCopy];
         v34 = v21;
         v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v34 count:1];
         v36[0] = v22;
         v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
         v24 = [v20 initWithRequirementsByContext:v23];
 
-        v25 = [objc_alloc(MEMORY[0x277D106D8]) initWithProfile:v7 featureIdentifier:v8 availabilityRequirements:v24 currentOnboardingVersion:1 pairedDeviceCapability:0 regionAvailabilityProvider:v19 disableAndExpiryProvider:v15 loggingCategory:v9];
-        v26 = a1[1];
-        a1[1] = v25;
+        v25 = [objc_alloc(MEMORY[0x277D106D8]) initWithProfile:v7 featureIdentifier:profileCopy availabilityRequirements:v24 currentOnboardingVersion:1 pairedDeviceCapability:0 regionAvailabilityProvider:v19 disableAndExpiryProvider:v15 loggingCategory:identifierCopy];
+        v26 = self[1];
+        self[1] = v25;
 
         v27 = HKCreateSerialDispatchQueue();
-        v28 = a1[3];
-        a1[3] = v27;
+        v28 = self[3];
+        self[3] = v27;
 
-        v29 = [objc_alloc(MEMORY[0x277D107B8]) initWithProfile:v7 clientIdentifier:v8 queue:a1[3]];
-        v30 = a1[2];
-        a1[2] = v29;
+        v29 = [objc_alloc(MEMORY[0x277D107B8]) initWithProfile:v7 clientIdentifier:profileCopy queue:self[3]];
+        v30 = self[2];
+        self[2] = v29;
 
-        [a1[2] setDelegate:a1];
+        [self[2] setDelegate:self];
       }
     }
   }
 
   v31 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
 - (void)notificationSyncClient:(void *)a1 didReceiveInstructionWithAction:.cold.1(void *a1)

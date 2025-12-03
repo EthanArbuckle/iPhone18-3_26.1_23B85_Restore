@@ -1,40 +1,40 @@
 @interface PFStoryConcreteRecipeClip
-- (BOOL)isEqualToClip:(id)a3;
+- (BOOL)isEqualToClip:(id)clip;
 - (NSString)diagnosticDescription;
-- (PFStoryConcreteRecipeClip)initWithAssetIdentifier:(id)a3 playbackStyle:(int64_t)a4 minimumDuration:(id *)a5 idealDuration:(id *)a6 maximumDuration:(id *)a7 videoCueOffset:(id *)a8 motionStyle:(int64_t)a9 transition:(int64_t)a10;
+- (PFStoryConcreteRecipeClip)initWithAssetIdentifier:(id)identifier playbackStyle:(int64_t)style minimumDuration:(id *)duration idealDuration:(id *)idealDuration maximumDuration:(id *)maximumDuration videoCueOffset:(id *)offset motionStyle:(int64_t)motionStyle transition:(int64_t)self0;
 @end
 
 @implementation PFStoryConcreteRecipeClip
 
-- (BOOL)isEqualToClip:(id)a3
+- (BOOL)isEqualToClip:(id)clip
 {
-  v4 = a3;
-  if (self == v4)
+  clipCopy = clip;
+  if (self == clipCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    v5 = [(PFStoryConcreteRecipeClip *)self assetIdentifier];
-    v6 = [(PFStoryConcreteRecipeClip *)v4 assetIdentifier];
-    v7 = [v5 isEqual:v6];
+    assetIdentifier = [(PFStoryConcreteRecipeClip *)self assetIdentifier];
+    assetIdentifier2 = [(PFStoryConcreteRecipeClip *)clipCopy assetIdentifier];
+    v7 = [assetIdentifier isEqual:assetIdentifier2];
 
     if (!v7)
     {
       goto LABEL_23;
     }
 
-    v8 = [(PFStoryConcreteRecipeClip *)self playbackStyle];
-    if (v8 != [(PFStoryConcreteRecipeClip *)v4 playbackStyle])
+    playbackStyle = [(PFStoryConcreteRecipeClip *)self playbackStyle];
+    if (playbackStyle != [(PFStoryConcreteRecipeClip *)clipCopy playbackStyle])
     {
       goto LABEL_23;
     }
 
     [(PFStoryConcreteRecipeClip *)self minimumDuration];
-    if (v4)
+    if (clipCopy)
     {
-      [(PFStoryConcreteRecipeClip *)v4 minimumDuration];
+      [(PFStoryConcreteRecipeClip *)clipCopy minimumDuration];
     }
 
     else
@@ -48,9 +48,9 @@
     }
 
     [(PFStoryConcreteRecipeClip *)self idealDuration];
-    if (v4)
+    if (clipCopy)
     {
-      [(PFStoryConcreteRecipeClip *)v4 idealDuration];
+      [(PFStoryConcreteRecipeClip *)clipCopy idealDuration];
     }
 
     else
@@ -64,9 +64,9 @@
     }
 
     [(PFStoryConcreteRecipeClip *)self maximumDuration];
-    if (v4)
+    if (clipCopy)
     {
-      [(PFStoryConcreteRecipeClip *)v4 maximumDuration];
+      [(PFStoryConcreteRecipeClip *)clipCopy maximumDuration];
     }
 
     else
@@ -80,9 +80,9 @@
     }
 
     [(PFStoryConcreteRecipeClip *)self videoCueOffset];
-    if (v4)
+    if (clipCopy)
     {
-      [(PFStoryConcreteRecipeClip *)v4 videoCueOffset];
+      [(PFStoryConcreteRecipeClip *)clipCopy videoCueOffset];
     }
 
     else
@@ -90,7 +90,7 @@
       memset(&v13, 0, sizeof(v13));
     }
 
-    if (CMTimeCompare(&time1, &v13) || (v10 = [(PFStoryConcreteRecipeClip *)self motionStyle], v10 != [(PFStoryConcreteRecipeClip *)v4 motionStyle]))
+    if (CMTimeCompare(&time1, &v13) || (v10 = [(PFStoryConcreteRecipeClip *)self motionStyle], v10 != [(PFStoryConcreteRecipeClip *)clipCopy motionStyle]))
     {
 LABEL_23:
       v9 = 0;
@@ -98,8 +98,8 @@ LABEL_23:
 
     else
     {
-      v11 = [(PFStoryConcreteRecipeClip *)self transition];
-      v9 = v11 == [(PFStoryConcreteRecipeClip *)v4 transition];
+      transition = [(PFStoryConcreteRecipeClip *)self transition];
+      v9 = transition == [(PFStoryConcreteRecipeClip *)clipCopy transition];
     }
   }
 
@@ -115,30 +115,30 @@ LABEL_23:
   return v5;
 }
 
-- (PFStoryConcreteRecipeClip)initWithAssetIdentifier:(id)a3 playbackStyle:(int64_t)a4 minimumDuration:(id *)a5 idealDuration:(id *)a6 maximumDuration:(id *)a7 videoCueOffset:(id *)a8 motionStyle:(int64_t)a9 transition:(int64_t)a10
+- (PFStoryConcreteRecipeClip)initWithAssetIdentifier:(id)identifier playbackStyle:(int64_t)style minimumDuration:(id *)duration idealDuration:(id *)idealDuration maximumDuration:(id *)maximumDuration videoCueOffset:(id *)offset motionStyle:(int64_t)motionStyle transition:(int64_t)self0
 {
-  v16 = a3;
+  identifierCopy = identifier;
   v24.receiver = self;
   v24.super_class = PFStoryConcreteRecipeClip;
   v17 = [(PFStoryConcreteRecipeClip *)&v24 init];
   v18 = *(v17 + 1);
-  *(v17 + 1) = v16;
+  *(v17 + 1) = identifierCopy;
 
-  *(v17 + 2) = a4;
-  v19 = *&a5->var0;
-  *(v17 + 5) = a5->var3;
+  *(v17 + 2) = style;
+  v19 = *&duration->var0;
+  *(v17 + 5) = duration->var3;
   *(v17 + 24) = v19;
-  v20 = *&a6->var0;
-  *(v17 + 8) = a6->var3;
+  v20 = *&idealDuration->var0;
+  *(v17 + 8) = idealDuration->var3;
   *(v17 + 3) = v20;
-  v21 = *&a7->var0;
-  *(v17 + 11) = a7->var3;
+  v21 = *&maximumDuration->var0;
+  *(v17 + 11) = maximumDuration->var3;
   *(v17 + 72) = v21;
-  var3 = a8->var3;
-  *(v17 + 6) = *&a8->var0;
+  var3 = offset->var3;
+  *(v17 + 6) = *&offset->var0;
   *(v17 + 14) = var3;
-  *(v17 + 15) = a9;
-  *(v17 + 16) = a10;
+  *(v17 + 15) = motionStyle;
+  *(v17 + 16) = transition;
   return v17;
 }
 

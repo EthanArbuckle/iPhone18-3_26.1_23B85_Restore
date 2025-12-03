@@ -1,21 +1,21 @@
 @interface HDWorkoutSeriesDataAggregator
-+ (BOOL)_shouldAggregateToSeriesIsAppleWatch:(BOOL)a3 hasActiveWorkout:(BOOL)a4 hasForegroundAnchoredObjectQuery:(BOOL)a5 workoutIsFirstParty:(BOOL)a6;
-- (BOOL)_hasForegroundAnchoredObjectQuery:(id)a3;
-- (BOOL)shouldAggregateToSeriesForState:(id)a3 collector:(id)a4 device:(id)a5 requestedAggregationDate:(id)a6 mode:(int64_t)a7 options:(unint64_t)a8;
-- (id)_isWorkoutFirstParty:(id)a3;
-- (void)setConfiguration:(id)a3;
++ (BOOL)_shouldAggregateToSeriesIsAppleWatch:(BOOL)watch hasActiveWorkout:(BOOL)workout hasForegroundAnchoredObjectQuery:(BOOL)query workoutIsFirstParty:(BOOL)party;
+- (BOOL)_hasForegroundAnchoredObjectQuery:(id)query;
+- (BOOL)shouldAggregateToSeriesForState:(id)state collector:(id)collector device:(id)device requestedAggregationDate:(id)date mode:(int64_t)mode options:(unint64_t)options;
+- (id)_isWorkoutFirstParty:(id)party;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation HDWorkoutSeriesDataAggregator
 
-- (BOOL)shouldAggregateToSeriesForState:(id)a3 collector:(id)a4 device:(id)a5 requestedAggregationDate:(id)a6 mode:(int64_t)a7 options:(unint64_t)a8
+- (BOOL)shouldAggregateToSeriesForState:(id)state collector:(id)collector device:(id)device requestedAggregationDate:(id)date mode:(int64_t)mode options:(unint64_t)options
 {
-  v9 = [(HDDataAggregator *)self dataCollectionManager:a3];
-  v10 = [v9 profile];
+  v9 = [(HDDataAggregator *)self dataCollectionManager:state];
+  profile = [v9 profile];
 
   if (HKFeatureFlagWorkoutSeriesFirstPartyOnly())
   {
-    v11 = [(HDWorkoutSeriesDataAggregator *)self _isWorkoutFirstParty:v10];
+    v11 = [(HDWorkoutSeriesDataAggregator *)self _isWorkoutFirstParty:profile];
     if (!v11)
     {
       v20 = 0;
@@ -23,62 +23,62 @@
     }
 
     v12 = v11;
-    v13 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
   }
 
   else
   {
-    v13 = 1;
+    bOOLValue = 1;
   }
 
-  v14 = [v10 daemon];
-  v15 = [v14 behavior];
-  v16 = [v15 isAppleWatch];
+  daemon = [profile daemon];
+  behavior = [daemon behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  v17 = [(HDWorkoutSeriesDataAggregator *)self _hasForegroundAnchoredObjectQuery:v10];
-  v18 = [(HDDataAggregator *)self configuration];
-  v19 = [v18 hasActiveWorkout];
+  v17 = [(HDWorkoutSeriesDataAggregator *)self _hasForegroundAnchoredObjectQuery:profile];
+  configuration = [(HDDataAggregator *)self configuration];
+  hasActiveWorkout = [configuration hasActiveWorkout];
 
-  v20 = [objc_opt_class() _shouldAggregateToSeriesIsAppleWatch:v16 hasActiveWorkout:v19 hasForegroundAnchoredObjectQuery:v17 workoutIsFirstParty:v13];
+  v20 = [objc_opt_class() _shouldAggregateToSeriesIsAppleWatch:isAppleWatch hasActiveWorkout:hasActiveWorkout hasForegroundAnchoredObjectQuery:v17 workoutIsFirstParty:bOOLValue];
 LABEL_6:
 
   return v20;
 }
 
-+ (BOOL)_shouldAggregateToSeriesIsAppleWatch:(BOOL)a3 hasActiveWorkout:(BOOL)a4 hasForegroundAnchoredObjectQuery:(BOOL)a5 workoutIsFirstParty:(BOOL)a6
++ (BOOL)_shouldAggregateToSeriesIsAppleWatch:(BOOL)watch hasActiveWorkout:(BOOL)workout hasForegroundAnchoredObjectQuery:(BOOL)query workoutIsFirstParty:(BOOL)party
 {
-  if (a3 && a4)
+  if (watch && workout)
   {
-    return a6 & ~a5;
+    return party & ~query;
   }
 
   else
   {
-    return a4 & ~a3;
+    return workout & ~watch;
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 hasActiveWorkout];
-  v6 = [(HDDataAggregator *)self configuration];
-  v7 = [v6 hasActiveWorkout];
+  configurationCopy = configuration;
+  hasActiveWorkout = [configurationCopy hasActiveWorkout];
+  configuration = [(HDDataAggregator *)self configuration];
+  hasActiveWorkout2 = [configuration hasActiveWorkout];
 
-  if (v5 != v7)
+  if (hasActiveWorkout != hasActiveWorkout2)
   {
-    v8 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __50__HDWorkoutSeriesDataAggregator_setConfiguration___block_invoke;
     v10[3] = &unk_2786130B0;
     v10[4] = self;
-    [(HDActiveDataAggregator *)self requestAggregationThroughDate:v8 mode:0 options:3 completion:v10];
+    [(HDActiveDataAggregator *)self requestAggregationThroughDate:date mode:0 options:3 completion:v10];
   }
 
   v9.receiver = self;
   v9.super_class = HDWorkoutSeriesDataAggregator;
-  [(HDDataAggregator *)&v9 setConfiguration:v4];
+  [(HDDataAggregator *)&v9 setConfiguration:configurationCopy];
 }
 
 void __50__HDWorkoutSeriesDataAggregator_setConfiguration___block_invoke(uint64_t a1, int a2, void *a3)
@@ -114,14 +114,14 @@ void __50__HDWorkoutSeriesDataAggregator_setConfiguration___block_invoke(uint64_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_isWorkoutFirstParty:(id)a3
+- (id)_isWorkoutFirstParty:(id)party
 {
-  v3 = [a3 workoutManager];
-  v4 = [v3 currentWorkout];
+  workoutManager = [party workoutManager];
+  currentWorkout = [workoutManager currentWorkout];
 
-  if (v4)
+  if (currentWorkout)
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "isFirstParty")}];
+    v5 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(currentWorkout, "isFirstParty")}];
   }
 
   else
@@ -132,15 +132,15 @@ void __50__HDWorkoutSeriesDataAggregator_setConfiguration___block_invoke(uint64_
   return v5;
 }
 
-- (BOOL)_hasForegroundAnchoredObjectQuery:(id)a3
+- (BOOL)_hasForegroundAnchoredObjectQuery:(id)query
 {
-  v4 = [a3 daemon];
-  v5 = [v4 queryManager];
-  v6 = [(HDActiveQuantityDataAggregator *)self quantityType];
-  v7 = [v5 foregroundAnchoredObjectQueryBundleIdentifiersForType:v6];
+  daemon = [query daemon];
+  queryManager = [daemon queryManager];
+  quantityType = [(HDActiveQuantityDataAggregator *)self quantityType];
+  v7 = [queryManager foregroundAnchoredObjectQueryBundleIdentifiersForType:quantityType];
 
-  LOBYTE(v6) = [v7 count] != 0;
-  return v6;
+  LOBYTE(quantityType) = [v7 count] != 0;
+  return quantityType;
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface SummarySharingProfileGradientsProvider
 - (_TtC18HealthExperienceUI38SummarySharingProfileGradientsProvider)init;
-- (void)controllerDidChangeContent:(id)a3;
+- (void)controllerDidChangeContent:(id)content;
 @end
 
 @implementation SummarySharingProfileGradientsProvider
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
   v3 = *(&self->super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI38SummarySharingProfileGradientsProvider_fetchedResultsController);
-  v4 = self;
-  v5 = [v3 sections];
-  if (v5)
+  selfCopy = self;
+  sections = [v3 sections];
+  if (sections)
   {
-    v6 = v5;
+    v6 = sections;
     sub_1BA024D28();
     v7 = sub_1BA4A6B08();
   }

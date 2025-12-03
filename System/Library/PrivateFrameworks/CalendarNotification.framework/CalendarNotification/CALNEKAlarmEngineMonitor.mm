@@ -1,27 +1,27 @@
 @interface CALNEKAlarmEngineMonitor
-- (CALNEKAlarmEngineMonitor)initWithAlarmEngine:(id)a3 notificationCenter:(id)a4;
+- (CALNEKAlarmEngineMonitor)initWithAlarmEngine:(id)engine notificationCenter:(id)center;
 - (void)activate;
-- (void)addAlarmsFiredObserver:(id)a3 selector:(SEL)a4;
+- (void)addAlarmsFiredObserver:(id)observer selector:(SEL)selector;
 - (void)didRegisterForAlarms;
-- (void)receivedAlarmNamed:(id)a3;
-- (void)receivedNotificationNamed:(id)a3;
-- (void)removeAlarmsFiredObserver:(id)a3;
+- (void)receivedAlarmNamed:(id)named;
+- (void)receivedNotificationNamed:(id)named;
+- (void)removeAlarmsFiredObserver:(id)observer;
 @end
 
 @implementation CALNEKAlarmEngineMonitor
 
-- (CALNEKAlarmEngineMonitor)initWithAlarmEngine:(id)a3 notificationCenter:(id)a4
+- (CALNEKAlarmEngineMonitor)initWithAlarmEngine:(id)engine notificationCenter:(id)center
 {
-  v7 = a3;
-  v8 = a4;
+  engineCopy = engine;
+  centerCopy = center;
   v12.receiver = self;
   v12.super_class = CALNEKAlarmEngineMonitor;
   v9 = [(CALNEKAlarmEngineMonitor *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_alarmEngine, a3);
-    objc_storeStrong(&v10->_notificationCenter, a4);
+    objc_storeStrong(&v9->_alarmEngine, engine);
+    objc_storeStrong(&v10->_notificationCenter, center);
   }
 
   return v10;
@@ -29,27 +29,27 @@
 
 - (void)activate
 {
-  v3 = [(CALNEKAlarmEngineMonitor *)self alarmEngine];
-  [v3 start];
+  alarmEngine = [(CALNEKAlarmEngineMonitor *)self alarmEngine];
+  [alarmEngine start];
 
   [(CALNEKAlarmEngineMonitor *)self setActive:1];
 }
 
-- (void)receivedNotificationNamed:(id)a3
+- (void)receivedNotificationNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   if ([(CALNEKAlarmEngineMonitor *)self isActive])
   {
-    v5 = [(CALNEKAlarmEngineMonitor *)self alarmEngine];
-    [v5 handleDarwinNotification:v4];
+    alarmEngine = [(CALNEKAlarmEngineMonitor *)self alarmEngine];
+    [alarmEngine handleDarwinNotification:namedCopy];
   }
 
   else
   {
-    v5 = +[CALNLogSubsystem calendar];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    alarmEngine = +[CALNLogSubsystem calendar];
+    if (os_log_type_enabled(alarmEngine, OS_LOG_TYPE_ERROR))
     {
-      [(CALNEKAlarmEngineMonitor *)v4 receivedNotificationNamed:v5];
+      [(CALNEKAlarmEngineMonitor *)namedCopy receivedNotificationNamed:alarmEngine];
     }
   }
 }
@@ -58,8 +58,8 @@
 {
   if ([(CALNEKAlarmEngineMonitor *)self isActive])
   {
-    v4 = [(CALNEKAlarmEngineMonitor *)self alarmEngine];
-    [v4 didRegisterForAlarms];
+    alarmEngine = [(CALNEKAlarmEngineMonitor *)self alarmEngine];
+    [alarmEngine didRegisterForAlarms];
   }
 
   else
@@ -72,39 +72,39 @@
   }
 }
 
-- (void)receivedAlarmNamed:(id)a3
+- (void)receivedAlarmNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   if ([(CALNEKAlarmEngineMonitor *)self isActive])
   {
-    v5 = [(CALNEKAlarmEngineMonitor *)self alarmEngine];
-    [v5 receivedAlarmNamed:v4];
+    alarmEngine = [(CALNEKAlarmEngineMonitor *)self alarmEngine];
+    [alarmEngine receivedAlarmNamed:namedCopy];
   }
 
   else
   {
-    v5 = +[CALNLogSubsystem calendar];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    alarmEngine = +[CALNLogSubsystem calendar];
+    if (os_log_type_enabled(alarmEngine, OS_LOG_TYPE_ERROR))
     {
-      [(CALNEKAlarmEngineMonitor *)v4 receivedAlarmNamed:v5];
+      [(CALNEKAlarmEngineMonitor *)namedCopy receivedAlarmNamed:alarmEngine];
     }
   }
 }
 
-- (void)addAlarmsFiredObserver:(id)a3 selector:(SEL)a4
+- (void)addAlarmsFiredObserver:(id)observer selector:(SEL)selector
 {
-  v6 = a3;
-  v8 = [(CALNEKAlarmEngineMonitor *)self notificationCenter];
-  v7 = [(CALNEKAlarmEngineMonitor *)self alarmEngine];
-  [v8 addObserver:v6 selector:a4 name:@"EKAlarmEngineAlarmsDidFireNotification" object:v7];
+  observerCopy = observer;
+  notificationCenter = [(CALNEKAlarmEngineMonitor *)self notificationCenter];
+  alarmEngine = [(CALNEKAlarmEngineMonitor *)self alarmEngine];
+  [notificationCenter addObserver:observerCopy selector:selector name:@"EKAlarmEngineAlarmsDidFireNotification" object:alarmEngine];
 }
 
-- (void)removeAlarmsFiredObserver:(id)a3
+- (void)removeAlarmsFiredObserver:(id)observer
 {
-  v4 = a3;
-  v6 = [(CALNEKAlarmEngineMonitor *)self notificationCenter];
-  v5 = [(CALNEKAlarmEngineMonitor *)self alarmEngine];
-  [v6 removeObserver:v4 name:@"EKAlarmEngineAlarmsDidFireNotification" object:v5];
+  observerCopy = observer;
+  notificationCenter = [(CALNEKAlarmEngineMonitor *)self notificationCenter];
+  alarmEngine = [(CALNEKAlarmEngineMonitor *)self alarmEngine];
+  [notificationCenter removeObserver:observerCopy name:@"EKAlarmEngineAlarmsDidFireNotification" object:alarmEngine];
 }
 
 - (void)receivedNotificationNamed:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

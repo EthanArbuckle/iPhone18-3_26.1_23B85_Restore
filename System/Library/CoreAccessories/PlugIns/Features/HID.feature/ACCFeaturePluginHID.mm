@@ -58,8 +58,8 @@
     _os_log_impl(&dword_2335CB000, v5, OS_LOG_TYPE_DEFAULT, "Stopping HID feature plugin...", v7, 2u);
   }
 
-  v6 = [(ACCFeaturePluginHID *)self hidProvider];
-  [v6 stopHIDProvider];
+  hidProvider = [(ACCFeaturePluginHID *)self hidProvider];
+  [hidProvider stopHIDProvider];
 
   [(ACCFeaturePluginHID *)self setHidProvider:0];
   [(ACCFeaturePluginHID *)self setIsRunning:0];
@@ -75,16 +75,16 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ACCFeaturePluginHID *)self pluginName];
+  pluginName = [(ACCFeaturePluginHID *)self pluginName];
   v5 = obfuscatedPointer(self);
-  v6 = [(ACCFeaturePluginHID *)self isRunning];
+  isRunning = [(ACCFeaturePluginHID *)self isRunning];
   v7 = "NO";
-  if (v6)
+  if (isRunning)
   {
     v7 = "YES";
   }
 
-  v8 = [v3 stringWithFormat:@"<%@: %p> isRunning: %s", v4, v5, v7];
+  v8 = [v3 stringWithFormat:@"<%@: %p> isRunning: %s", pluginName, v5, v7];
 
   return v8;
 }

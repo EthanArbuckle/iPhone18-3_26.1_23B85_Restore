@@ -1,5 +1,5 @@
 @interface TSPRXStartViewController
-- (TSPRXStartViewController)initWithBtDevice:(id)a3;
+- (TSPRXStartViewController)initWithBtDevice:(id)device;
 - (TSSIMSetupFlowDelegate)delegate;
 - (void)_startClientFlow;
 - (void)viewDidLoad;
@@ -7,16 +7,16 @@
 
 @implementation TSPRXStartViewController
 
-- (TSPRXStartViewController)initWithBtDevice:(id)a3
+- (TSPRXStartViewController)initWithBtDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = TSPRXStartViewController;
   v6 = [(TSPRXStartViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_client, a3);
+    objc_storeStrong(&v6->_client, device);
   }
 
   return v7;
@@ -54,12 +54,12 @@
   radioImageView = self->_radioImageView;
   self->_radioImageView = v10;
 
-  v12 = [MEMORY[0x277D75348] systemBlueColor];
-  [(UIImageView *)self->_radioImageView setTintColor:v12];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  [(UIImageView *)self->_radioImageView setTintColor:systemBlueColor];
 
   [(UIImageView *)self->_radioImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v13 = [(TSPRXStartViewController *)self contentView];
-  [v13 addSubview:self->_radioImageView];
+  contentView = [(TSPRXStartViewController *)self contentView];
+  [contentView addSubview:self->_radioImageView];
 
   objc_initWeak(&location, self);
   v14 = MEMORY[0x277D432F0];
@@ -75,8 +75,8 @@
   self->_action = v17;
 
   v19 = [(TSPRXStartViewController *)self addAction:self->_action];
-  v20 = [(TSPRXStartViewController *)self contentView];
-  [v20 bounds];
+  contentView2 = [(TSPRXStartViewController *)self contentView];
+  [contentView2 bounds];
   v22 = v21;
   v24 = v23;
 
@@ -99,29 +99,29 @@
   [v56 size];
   v33 = v32;
   v44 = MEMORY[0x277CCAAD0];
-  v53 = [(UIImageView *)self->_radioImageView topAnchor];
-  v55 = [(TSPRXStartViewController *)self contentView];
-  v54 = [v55 mainContentGuide];
-  v52 = [v54 topAnchor];
-  v51 = [v53 constraintGreaterThanOrEqualToAnchor:v52];
+  topAnchor = [(UIImageView *)self->_radioImageView topAnchor];
+  contentView3 = [(TSPRXStartViewController *)self contentView];
+  mainContentGuide = [contentView3 mainContentGuide];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v51 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v61[0] = v51;
-  v48 = [(UIImageView *)self->_radioImageView centerXAnchor];
-  v50 = [(TSPRXStartViewController *)self contentView];
-  v49 = [v50 mainContentGuide];
-  v47 = [v49 centerXAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  centerXAnchor = [(UIImageView *)self->_radioImageView centerXAnchor];
+  contentView4 = [(TSPRXStartViewController *)self contentView];
+  mainContentGuide2 = [contentView4 mainContentGuide];
+  centerXAnchor2 = [mainContentGuide2 centerXAnchor];
+  v46 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v61[1] = v46;
-  v45 = [(UIImageView *)self->_radioImageView centerYAnchor];
-  v34 = [(TSPRXStartViewController *)self contentView];
-  v35 = [v34 mainContentGuide];
-  v36 = [v35 centerYAnchor];
-  v37 = [v45 constraintEqualToAnchor:v36];
+  centerYAnchor = [(UIImageView *)self->_radioImageView centerYAnchor];
+  contentView5 = [(TSPRXStartViewController *)self contentView];
+  mainContentGuide3 = [contentView5 mainContentGuide];
+  centerYAnchor2 = [mainContentGuide3 centerYAnchor];
+  v37 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v61[2] = v37;
-  v38 = [(UIImageView *)self->_radioImageView widthAnchor];
-  v39 = [v38 constraintEqualToConstant:v29 * v31];
+  widthAnchor = [(UIImageView *)self->_radioImageView widthAnchor];
+  v39 = [widthAnchor constraintEqualToConstant:v29 * v31];
   v61[3] = v39;
-  v40 = [(UIImageView *)self->_radioImageView heightAnchor];
-  v41 = [v40 constraintEqualToConstant:v29 * v33];
+  heightAnchor = [(UIImageView *)self->_radioImageView heightAnchor];
+  v41 = [heightAnchor constraintEqualToConstant:v29 * v33];
   v61[4] = v41;
   v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:5];
   [v44 activateConstraints:v42];

@@ -1,24 +1,24 @@
 @interface HKInteractiveChartsMonthViewController
-- (HKInteractiveChartsMonthViewController)initWithHealthStore:(id)a3 dateCache:(id)a4 date:(id)a5;
-- (void)calendarScrollViewController:(id)a3 accessoryViewForDate:(id)a4 accessoryViewCompletion:(id)a5;
+- (HKInteractiveChartsMonthViewController)initWithHealthStore:(id)store dateCache:(id)cache date:(id)date;
+- (void)calendarScrollViewController:(id)controller accessoryViewForDate:(id)date accessoryViewCompletion:(id)completion;
 - (void)didTapTodayButton;
-- (void)dismissViewController:(id)a3;
+- (void)dismissViewController:(id)controller;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation HKInteractiveChartsMonthViewController
 
-- (HKInteractiveChartsMonthViewController)initWithHealthStore:(id)a3 dateCache:(id)a4 date:(id)a5
+- (HKInteractiveChartsMonthViewController)initWithHealthStore:(id)store dateCache:(id)cache date:(id)date
 {
-  v8 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = HKInteractiveChartsMonthViewController;
-  v9 = [(HKMonthViewController *)&v12 initWithDateCache:a4 date:a5];
+  v9 = [(HKMonthViewController *)&v12 initWithDateCache:cache date:date];
   v10 = v9;
   if (v9)
   {
-    [(HKInteractiveChartsMonthViewController *)v9 setHealthStore:v8];
+    [(HKInteractiveChartsMonthViewController *)v9 setHealthStore:storeCopy];
     [(HKMonthViewController *)v10 setTitleAlignment:1];
   }
 
@@ -31,32 +31,32 @@
   v19.super_class = HKInteractiveChartsMonthViewController;
   [(HKMonthViewController *)&v19 viewDidLoad];
   v3 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:24 target:self action:sel_dismissViewController_];
-  v4 = [(HKInteractiveChartsMonthViewController *)self navigationItem];
-  [v4 setLeftBarButtonItem:v3];
+  navigationItem = [(HKInteractiveChartsMonthViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v3];
 
   v5 = objc_alloc(MEMORY[0x1E69DC708]);
   v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v7 = [v6 localizedStringForKey:@"TODAY" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   v8 = [v5 initWithTitle:v7 style:0 target:self action:sel_didTapTodayButton];
-  v9 = [(HKInteractiveChartsMonthViewController *)self navigationItem];
-  [v9 setRightBarButtonItem:v8];
+  navigationItem2 = [(HKInteractiveChartsMonthViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v8];
 
   v10 = [HKWeekdayHeaderPaletteView alloc];
   v11 = [(HKWeekdayHeaderPaletteView *)v10 initWithFrame:HKUICalendarLocaleIsRightToLeft() shouldSupportRTL:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(HKInteractiveChartsMonthViewController *)self setWeekdayHeaderPaletteView:v11];
 
-  v12 = [(HKInteractiveChartsMonthViewController *)self navigationController];
+  navigationController = [(HKInteractiveChartsMonthViewController *)self navigationController];
   +[HKWeekdayHeaderPaletteView preferredHeight];
-  v14 = [v12 paletteForEdge:2 size:{0.0, v13}];
+  v14 = [navigationController paletteForEdge:2 size:{0.0, v13}];
   [(HKInteractiveChartsMonthViewController *)self setContainingPalette:v14];
 
-  v15 = [(HKInteractiveChartsMonthViewController *)self containingPalette];
-  v16 = [(HKInteractiveChartsMonthViewController *)self weekdayHeaderPaletteView];
-  [v15 addSubview:v16];
+  containingPalette = [(HKInteractiveChartsMonthViewController *)self containingPalette];
+  weekdayHeaderPaletteView = [(HKInteractiveChartsMonthViewController *)self weekdayHeaderPaletteView];
+  [containingPalette addSubview:weekdayHeaderPaletteView];
 
-  v17 = [(HKInteractiveChartsMonthViewController *)self navigationController];
-  v18 = [(HKInteractiveChartsMonthViewController *)self containingPalette];
-  [v17 attachPalette:v18 isPinned:1];
+  navigationController2 = [(HKInteractiveChartsMonthViewController *)self navigationController];
+  containingPalette2 = [(HKInteractiveChartsMonthViewController *)self containingPalette];
+  [navigationController2 attachPalette:containingPalette2 isPinned:1];
 }
 
 - (void)viewWillLayoutSubviews
@@ -64,55 +64,55 @@
   v8.receiver = self;
   v8.super_class = HKInteractiveChartsMonthViewController;
   [(HKMonthViewController *)&v8 viewWillLayoutSubviews];
-  v3 = [(HKInteractiveChartsMonthViewController *)self containingPalette];
-  [v3 bounds];
+  containingPalette = [(HKInteractiveChartsMonthViewController *)self containingPalette];
+  [containingPalette bounds];
   Width = CGRectGetWidth(v9);
   +[HKWeekdayHeaderPaletteView preferredHeight];
   v6 = v5;
-  v7 = [(HKInteractiveChartsMonthViewController *)self weekdayHeaderPaletteView];
-  [v7 setFrame:{0.0, 0.0, Width, v6}];
+  weekdayHeaderPaletteView = [(HKInteractiveChartsMonthViewController *)self weekdayHeaderPaletteView];
+  [weekdayHeaderPaletteView setFrame:{0.0, 0.0, Width, v6}];
 }
 
-- (void)dismissViewController:(id)a3
+- (void)dismissViewController:(id)controller
 {
-  v5 = [(HKMonthViewController *)self delegate];
-  v4 = [(HKMonthViewController *)self currentDate];
-  [v5 monthViewController:self didSelectDate:v4];
+  delegate = [(HKMonthViewController *)self delegate];
+  currentDate = [(HKMonthViewController *)self currentDate];
+  [delegate monthViewController:self didSelectDate:currentDate];
 }
 
-- (void)calendarScrollViewController:(id)a3 accessoryViewForDate:(id)a4 accessoryViewCompletion:(id)a5
+- (void)calendarScrollViewController:(id)controller accessoryViewForDate:(id)date accessoryViewCompletion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(HKInteractiveChartsMonthViewController *)self sampleType];
+  dateCopy = date;
+  completionCopy = completion;
+  sampleType = [(HKInteractiveChartsMonthViewController *)self sampleType];
 
-  if (v9)
+  if (sampleType)
   {
-    v10 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v11 = [MEMORY[0x1E696C378] predicateForSamplesForDayFromDate:v7 calendar:v10 options:0];
-    v12 = [(HKInteractiveChartsMonthViewController *)self additionalSamplePredicate];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v11 = [MEMORY[0x1E696C378] predicateForSamplesForDayFromDate:dateCopy calendar:currentCalendar options:0];
+    additionalSamplePredicate = [(HKInteractiveChartsMonthViewController *)self additionalSamplePredicate];
 
-    if (v12)
+    if (additionalSamplePredicate)
     {
-      v13 = [(HKInteractiveChartsMonthViewController *)self additionalSamplePredicate];
-      v14 = HKUIPredicateMatchingPredicates(v11, v13);
+      additionalSamplePredicate2 = [(HKInteractiveChartsMonthViewController *)self additionalSamplePredicate];
+      v14 = HKUIPredicateMatchingPredicates(v11, additionalSamplePredicate2);
 
       v11 = v14;
     }
 
     v15 = objc_alloc(MEMORY[0x1E696C3C8]);
-    v16 = [(HKInteractiveChartsMonthViewController *)self sampleType];
+    sampleType2 = [(HKInteractiveChartsMonthViewController *)self sampleType];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __116__HKInteractiveChartsMonthViewController_calendarScrollViewController_accessoryViewForDate_accessoryViewCompletion___block_invoke;
     v19[3] = &unk_1E81B5A88;
-    v20 = v7;
-    v21 = self;
-    v22 = v8;
-    v17 = [v15 initWithSampleType:v16 predicate:v11 limit:1 sortDescriptors:0 resultsHandler:v19];
+    v20 = dateCopy;
+    selfCopy = self;
+    v22 = completionCopy;
+    v17 = [v15 initWithSampleType:sampleType2 predicate:v11 limit:1 sortDescriptors:0 resultsHandler:v19];
 
-    v18 = [(HKInteractiveChartsMonthViewController *)self healthStore];
-    [v18 executeQuery:v17];
+    healthStore = [(HKInteractiveChartsMonthViewController *)self healthStore];
+    [healthStore executeQuery:v17];
   }
 }
 
@@ -176,8 +176,8 @@ void __116__HKInteractiveChartsMonthViewController_calendarScrollViewController_
 
 - (void)didTapTodayButton
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(HKMonthViewController *)self setCurrentDate:v3 animateIfPossible:1];
+  date = [MEMORY[0x1E695DF00] date];
+  [(HKMonthViewController *)self setCurrentDate:date animateIfPossible:1];
 }
 
 @end

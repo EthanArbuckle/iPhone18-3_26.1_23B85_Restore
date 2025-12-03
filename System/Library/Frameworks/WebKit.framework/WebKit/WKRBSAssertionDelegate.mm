@@ -1,12 +1,12 @@
 @interface WKRBSAssertionDelegate
-- (uint64_t)assertion:(id *)a1 didInvalidateWithError:;
-- (uint64_t)assertion:(uint64_t)a1 didInvalidateWithError:;
-- (uint64_t)assertionWillInvalidate:(id *)a1;
-- (uint64_t)assertionWillInvalidate:(uint64_t)a1;
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4;
-- (void)assertion:(uint64_t)a1 didInvalidateWithError:;
-- (void)assertionWillInvalidate:(id)a3;
-- (void)assertionWillInvalidate:(uint64_t)a1;
+- (uint64_t)assertion:(id *)assertion didInvalidateWithError:;
+- (uint64_t)assertion:(uint64_t)assertion didInvalidateWithError:;
+- (uint64_t)assertionWillInvalidate:(id *)invalidate;
+- (uint64_t)assertionWillInvalidate:(uint64_t)invalidate;
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error;
+- (void)assertion:(uint64_t)assertion didInvalidateWithError:;
+- (void)assertionWillInvalidate:(id)invalidate;
+- (void)assertionWillInvalidate:(uint64_t)invalidate;
 - (void)dealloc;
 @end
 
@@ -19,7 +19,7 @@
   [(WKRBSAssertionDelegate *)&v3 dealloc];
 }
 
-- (void)assertionWillInvalidate:(id)a3
+- (void)assertionWillInvalidate:(id)invalidate
 {
   buf[3] = *MEMORY[0x1E69E9840];
   v4 = qword_1ED641030;
@@ -50,7 +50,7 @@
   objc_destroyWeak(&location);
 }
 
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error
 {
   v14 = *MEMORY[0x1E69E9840];
   v6 = qword_1ED641030;
@@ -60,7 +60,7 @@
     *buf = 134218242;
     *&buf[4] = self;
     v12 = 2114;
-    v13 = a4;
+    errorCopy = error;
     _os_log_impl(&dword_19D52D000, v6, OS_LOG_TYPE_DEFAULT, "%p - WKRBSAssertionDelegate: assertion was invalidated, error: %{public}@", buf, 0x16u);
   }
 
@@ -83,24 +83,24 @@
   objc_destroyWeak(&location);
 }
 
-- (uint64_t)assertionWillInvalidate:(uint64_t)a1
+- (uint64_t)assertionWillInvalidate:(uint64_t)invalidate
 {
-  *a1 = &unk_1F1100C48;
-  objc_destroyWeak((a1 + 8));
-  return a1;
+  *invalidate = &unk_1F1100C48;
+  objc_destroyWeak((invalidate + 8));
+  return invalidate;
 }
 
-- (uint64_t)assertionWillInvalidate:(id *)a1
+- (uint64_t)assertionWillInvalidate:(id *)invalidate
 {
-  *a1 = &unk_1F1100C48;
-  objc_destroyWeak(a1 + 1);
+  *invalidate = &unk_1F1100C48;
+  objc_destroyWeak(invalidate + 1);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(invalidate, v2);
 }
 
-- (void)assertionWillInvalidate:(uint64_t)a1
+- (void)assertionWillInvalidate:(uint64_t)invalidate
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  WeakRetained = objc_loadWeakRetained((invalidate + 8));
   if (WeakRetained)
   {
     v2 = WeakRetained;
@@ -111,24 +111,24 @@
   }
 }
 
-- (uint64_t)assertion:(uint64_t)a1 didInvalidateWithError:
+- (uint64_t)assertion:(uint64_t)assertion didInvalidateWithError:
 {
-  *a1 = &unk_1F1100C70;
-  objc_destroyWeak((a1 + 8));
-  return a1;
+  *assertion = &unk_1F1100C70;
+  objc_destroyWeak((assertion + 8));
+  return assertion;
 }
 
-- (uint64_t)assertion:(id *)a1 didInvalidateWithError:
+- (uint64_t)assertion:(id *)assertion didInvalidateWithError:
 {
-  *a1 = &unk_1F1100C70;
-  objc_destroyWeak(a1 + 1);
+  *assertion = &unk_1F1100C70;
+  objc_destroyWeak(assertion + 1);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(assertion, v2);
 }
 
-- (void)assertion:(uint64_t)a1 didInvalidateWithError:
+- (void)assertion:(uint64_t)assertion didInvalidateWithError:
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  WeakRetained = objc_loadWeakRetained((assertion + 8));
   if (WeakRetained)
   {
     v2 = WeakRetained;

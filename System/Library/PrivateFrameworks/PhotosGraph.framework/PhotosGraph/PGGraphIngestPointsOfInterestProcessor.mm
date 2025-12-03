@@ -1,33 +1,33 @@
 @interface PGGraphIngestPointsOfInterestProcessor
-- (BOOL)_fetchPointsOfInterestForRegions:(id)a3 loggingConnection:(id)a4 progress:(id)a5;
-- (BOOL)shouldRunWithGraphUpdate:(id)a3;
-- (PGGraphIngestPointsOfInterestProcessor)initWithGraphBuilder:(id)a3;
-- (id)_pointOfInterestTypeStringsFromBusinessItems:(id)a3 withOriginalCoordinate:(CLLocationCoordinate2D)a4;
-- (void)_collectPOIsToResolveWithMomentNodes:(id)a3 graphUpdate:(id)a4 progress:(id)a5;
-- (void)_insertPointOfInterestTypeStrings:(id)a3 graph:(id)a4 withMomentNodes:(id)a5 loggingConnection:(id)a6;
-- (void)deletePOIEdgesWithMomentNodes:(id)a3 inGraph:(id)a4;
-- (void)disambiguatePointsOfInterestWithMomentNodes:(id)a3 graphUpdate:(id)a4 progress:(id)a5;
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4;
+- (BOOL)_fetchPointsOfInterestForRegions:(id)regions loggingConnection:(id)connection progress:(id)progress;
+- (BOOL)shouldRunWithGraphUpdate:(id)update;
+- (PGGraphIngestPointsOfInterestProcessor)initWithGraphBuilder:(id)builder;
+- (id)_pointOfInterestTypeStringsFromBusinessItems:(id)items withOriginalCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)_collectPOIsToResolveWithMomentNodes:(id)nodes graphUpdate:(id)update progress:(id)progress;
+- (void)_insertPointOfInterestTypeStrings:(id)strings graph:(id)graph withMomentNodes:(id)nodes loggingConnection:(id)connection;
+- (void)deletePOIEdgesWithMomentNodes:(id)nodes inGraph:(id)graph;
+- (void)disambiguatePointsOfInterestWithMomentNodes:(id)nodes graphUpdate:(id)update progress:(id)progress;
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block;
 @end
 
 @implementation PGGraphIngestPointsOfInterestProcessor
 
-- (BOOL)_fetchPointsOfInterestForRegions:(id)a3 loggingConnection:(id)a4 progress:(id)a5
+- (BOOL)_fetchPointsOfInterestForRegions:(id)regions loggingConnection:(id)connection progress:(id)progress
 {
   v33[2] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  connectionCopy = connection;
+  progressCopy = progress;
   v10 = MEMORY[0x277D27768];
-  v11 = a3;
+  regionsCopy = regions;
   v12 = [v10 alloc];
-  v13 = [(PGGraphBuilder *)self->_graphBuilder poiCache];
-  v14 = [(PGGraphBuilder *)self->_graphBuilder locationCache];
-  v15 = [v12 initWithPOICache:v13 locationCache:v14];
+  poiCache = [(PGGraphBuilder *)self->_graphBuilder poiCache];
+  locationCache = [(PGGraphBuilder *)self->_graphBuilder locationCache];
+  v15 = [v12 initWithPOICache:poiCache locationCache:locationCache];
 
   v16 = objc_alloc(MEMORY[0x277D27770]);
-  v17 = [(PGGraphBuilder *)self->_graphBuilder poiCache];
-  v18 = [(PGGraphBuilder *)self->_graphBuilder locationCache];
-  v19 = [v16 initWithPOICache:v17 locationCache:v18];
+  poiCache2 = [(PGGraphBuilder *)self->_graphBuilder poiCache];
+  locationCache2 = [(PGGraphBuilder *)self->_graphBuilder locationCache];
+  v19 = [v16 initWithPOICache:poiCache2 locationCache:locationCache2];
 
   [v15 setPrecision:0.1];
   [v19 setPrecision:0.1];
@@ -37,22 +37,22 @@
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:2];
   v22 = [v20 initWithQueryPerformers:v21];
 
-  [v22 setLoggingConnection:v8];
+  [v22 setLoggingConnection:connectionCopy];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __102__PGGraphIngestPointsOfInterestProcessor__fetchPointsOfInterestForRegions_loggingConnection_progress___block_invoke;
   v29[3] = &unk_27888A280;
-  v23 = v9;
+  v23 = progressCopy;
   v30 = v23;
   v28 = 0;
-  v24 = [v22 createCacheForRegions:v11 progressBlock:v29 error:&v28];
+  v24 = [v22 createCacheForRegions:regionsCopy progressBlock:v29 error:&v28];
 
   v25 = v28;
-  if ((v24 & 1) == 0 && os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  if ((v24 & 1) == 0 && os_log_type_enabled(connectionCopy, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v32 = v25;
-    _os_log_error_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_ERROR, "Failed caching pois: %@", buf, 0xCu);
+    _os_log_error_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_ERROR, "Failed caching pois: %@", buf, 0xCu);
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -70,13 +70,13 @@ uint64_t __102__PGGraphIngestPointsOfInterestProcessor__fetchPointsOfInterestFor
   return result;
 }
 
-- (void)_collectPOIsToResolveWithMomentNodes:(id)a3 graphUpdate:(id)a4 progress:(id)a5
+- (void)_collectPOIsToResolveWithMomentNodes:(id)nodes graphUpdate:(id)update progress:(id)progress
 {
   v57 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v29 = a4;
-  v9 = a5;
-  v10 = _Block_copy(v9);
+  nodesCopy = nodes;
+  updateCopy = update;
+  progressCopy = progress;
+  v10 = _Block_copy(progressCopy);
   v47 = 0;
   v48 = &v47;
   v49 = 0x2020000000;
@@ -98,18 +98,18 @@ uint64_t __102__PGGraphIngestPointsOfInterestProcessor__fetchPointsOfInterestFor
 
   else
   {
-    v13 = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
-    v27 = v9;
-    v14 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    serviceManager = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
+    v27 = progressCopy;
+    loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v28 = v10;
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     buf = 0;
     *&v55 = &buf;
     *(&v55 + 1) = 0x2020000000;
     v56 = 0;
     v17 = v10;
-    v18 = 1.0 / [v8 count];
+    v18 = 1.0 / [nodesCopy count];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __100__PGGraphIngestPointsOfInterestProcessor__collectPOIsToResolveWithMomentNodes_graphUpdate_progress___block_invoke;
@@ -120,20 +120,20 @@ uint64_t __102__PGGraphIngestPointsOfInterestProcessor__fetchPointsOfInterestFor
     v41 = 0x3F847AE147AE147BLL;
     p_buf = &buf;
     v40 = &v47;
-    v26 = v15;
+    v26 = dictionary;
     v32 = v26;
-    v25 = v13;
+    v25 = serviceManager;
     v33 = v25;
-    v20 = v16;
+    v20 = dictionary2;
     v34 = v20;
-    v35 = v29;
-    v21 = v14;
+    v35 = updateCopy;
+    v21 = loggingConnection;
     v36 = v21;
     v42 = v18;
-    [v8 enumerateNodesUsingBlock:v31];
-    objc_storeStrong(&self->_momentNodesToResolvePOIByRegion, v15);
-    v9 = v27;
-    objc_storeStrong(&self->_momentNodesToResolvePOIAndEnrichByBusinessItemMuid, v16);
+    [nodesCopy enumerateNodesUsingBlock:v31];
+    objc_storeStrong(&self->_momentNodesToResolvePOIByRegion, dictionary);
+    progressCopy = v27;
+    objc_storeStrong(&self->_momentNodesToResolvePOIAndEnrichByBusinessItemMuid, dictionary2);
     if (v17)
     {
       Current = CFAbsoluteTimeGetCurrent();
@@ -349,25 +349,25 @@ void __100__PGGraphIngestPointsOfInterestProcessor__collectPOIsToResolveWithMome
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_pointOfInterestTypeStringsFromBusinessItems:(id)a3 withOriginalCoordinate:(CLLocationCoordinate2D)a4
+- (id)_pointOfInterestTypeStringsFromBusinessItems:(id)items withOriginalCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v41 = *MEMORY[0x277D85DE8];
-  v38 = a4;
-  v6 = a3;
-  if ([v6 count])
+  coordinateCopy = coordinate;
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
     v43.latitude = latitude;
     v43.longitude = longitude;
     v27 = CLLocationCoordinate2DIsValid(v43);
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v25 = v6;
-    obj = v6;
+    v25 = itemsCopy;
+    obj = itemsCopy;
     v8 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v8)
     {
@@ -390,8 +390,8 @@ void __100__PGGraphIngestPointsOfInterestProcessor__collectPOIsToResolveWithMome
 
           v32 = 0;
           v33 = 0;
-          v13 = [v12 region];
-          [v13 center];
+          region = [v12 region];
+          [region center];
           v32 = v14;
           v33 = v15;
 
@@ -399,12 +399,12 @@ void __100__PGGraphIngestPointsOfInterestProcessor__collectPOIsToResolveWithMome
           if (v16 <= 0.1)
           {
 LABEL_9:
-            v17 = [v12 categories];
+            categories = [v12 categories];
             v28 = 0u;
             v29 = 0u;
             v30 = 0u;
             v31 = 0u;
-            v18 = [v17 countByEnumeratingWithState:&v28 objects:v39 count:16];
+            v18 = [categories countByEnumeratingWithState:&v28 objects:v39 count:16];
             if (v18)
             {
               v19 = v18;
@@ -415,17 +415,17 @@ LABEL_9:
                 {
                   if (*v29 != v20)
                   {
-                    objc_enumerationMutation(v17);
+                    objc_enumerationMutation(categories);
                   }
 
                   v22 = +[PGGraphPlacesResolver poiStringFromSpatialLookupCategory:](PGGraphPlacesResolver, "poiStringFromSpatialLookupCategory:", [*(*(&v28 + 1) + 8 * j) integerValue]);
                   if (v22)
                   {
-                    [v7 addObject:v22];
+                    [array addObject:v22];
                   }
                 }
 
-                v19 = [v17 countByEnumeratingWithState:&v28 objects:v39 count:16];
+                v19 = [categories countByEnumeratingWithState:&v28 objects:v39 count:16];
               }
 
               while (v19);
@@ -439,37 +439,37 @@ LABEL_9:
       while (v9);
     }
 
-    v6 = v25;
+    itemsCopy = v25;
   }
 
   else
   {
-    v7 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return array;
 }
 
-- (void)_insertPointOfInterestTypeStrings:(id)a3 graph:(id)a4 withMomentNodes:(id)a5 loggingConnection:(id)a6
+- (void)_insertPointOfInterestTypeStrings:(id)strings graph:(id)graph withMomentNodes:(id)nodes loggingConnection:(id)connection
 {
   v57 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v43 = a4;
-  v9 = a5;
+  stringsCopy = strings;
+  graphCopy = graph;
+  nodesCopy = nodes;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v8;
-  v10 = [v8 countByEnumeratingWithState:&v51 objects:v56 count:16];
+  obj = stringsCopy;
+  v10 = [stringsCopy countByEnumeratingWithState:&v51 objects:v56 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = *v52;
     v34 = v49;
-    v35 = v9;
+    v35 = nodesCopy;
     v40 = *v52;
     do
     {
@@ -486,14 +486,14 @@ LABEL_9:
         if (v14)
         {
           v15 = objc_alloc_init(MEMORY[0x277D22C50]);
-          v16 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithSet:v9 graph:v43];
-          v17 = [PGGraphPOINodeCollection poiNodesForLabel:v14 inGraph:v43];
+          v16 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithSet:nodesCopy graph:graphCopy];
+          v17 = [PGGraphPOINodeCollection poiNodesForLabel:v14 inGraph:graphCopy];
           if ([v17 count])
           {
             v18 = v16;
             v19 = [(PGGraphEdgeCollection *)PGGraphPOIEdgeCollection edgesFromNodes:v16 toNodes:v17];
             v20 = [v19 count];
-            if (v20 >= [v9 count])
+            if (v20 >= [nodesCopy count])
             {
               v16 = v18;
               v12 = v40;
@@ -503,25 +503,25 @@ LABEL_9:
             else
             {
               v41 = v14;
-              v21 = [v17 anyNode];
+              anyNode = [v17 anyNode];
               v16 = v18;
               v12 = v40;
 LABEL_11:
               v11 = v42;
-              if (v21)
+              if (anyNode)
               {
                 v39 = v16;
                 v22 = v16;
                 v38 = v17;
                 if ([v19 count])
                 {
-                  v23 = [v19 elementIdentifiers];
+                  elementIdentifiers = [v19 elementIdentifiers];
                   v48[0] = MEMORY[0x277D85DD0];
                   v48[1] = 3221225472;
                   v49[0] = __116__PGGraphIngestPointsOfInterestProcessor__insertPointOfInterestTypeStrings_graph_withMomentNodes_loggingConnection___block_invoke;
                   v49[1] = &unk_27888A200;
-                  v50 = v43;
-                  [v23 enumerateIdentifiersWithBlock:v48];
+                  v50 = graphCopy;
+                  [elementIdentifiers enumerateIdentifiersWithBlock:v48];
 
                   v24 = [(MANodeCollection *)PGGraphMomentNodeCollection sourceNodesOfEdges:v19];
                   v25 = [(MAElementCollection *)v22 collectionBySubtracting:v24];
@@ -534,7 +534,7 @@ LABEL_11:
                 v47 = 0u;
                 v44 = 0u;
                 v45 = 0u;
-                v26 = v9;
+                v26 = nodesCopy;
                 v27 = [v26 countByEnumeratingWithState:&v44 objects:v55 count:16];
                 if (v27)
                 {
@@ -552,7 +552,7 @@ LABEL_11:
                       v31 = *(*(&v44 + 1) + 8 * i);
                       if ([(MANodeCollection *)v22 containsNode:v31])
                       {
-                        v32 = [[PGGraphPOIEdge alloc] initFromMomentNode:v31 toPOINode:v21 confidence:1 poiIsImproved:0 poiIsSpecial:1.0];
+                        v32 = [[PGGraphPOIEdge alloc] initFromMomentNode:v31 toPOINode:anyNode confidence:1 poiIsImproved:0 poiIsSpecial:1.0];
                         [v15 addEdge:v32];
                       }
                     }
@@ -563,8 +563,8 @@ LABEL_11:
                   while (v28);
                 }
 
-                [v43 executeGraphChangeRequest:v15];
-                v9 = v35;
+                [graphCopy executeGraphChangeRequest:v15];
+                nodesCopy = v35;
                 v12 = v40;
                 v14 = v41;
                 v11 = v42;
@@ -583,8 +583,8 @@ LABEL_11:
           }
 
           v41 = v14;
-          v21 = [[PGGraphPOINode alloc] initWithLabel:v14];
-          [v15 addNode:v21];
+          anyNode = [[PGGraphPOINode alloc] initWithLabel:v14];
+          [v15 addNode:anyNode];
           v19 = 0;
           goto LABEL_11;
         }
@@ -604,25 +604,25 @@ LABEL_27:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deletePOIEdgesWithMomentNodes:(id)a3 inGraph:(id)a4
+- (void)deletePOIEdgesWithMomentNodes:(id)nodes inGraph:(id)graph
 {
   v5 = MEMORY[0x277D22C50];
-  v6 = a4;
-  v7 = a3;
+  graphCopy = graph;
+  nodesCopy = nodes;
   v10 = objc_alloc_init(v5);
-  v8 = [v7 poiNodes];
-  v9 = [(PGGraphEdgeCollection *)PGGraphPOIEdgeCollection edgesFromNodes:v7 toNodes:v8];
+  poiNodes = [nodesCopy poiNodes];
+  v9 = [(PGGraphEdgeCollection *)PGGraphPOIEdgeCollection edgesFromNodes:nodesCopy toNodes:poiNodes];
 
   [v10 removeEdges:v9];
-  [v6 executeGraphChangeRequest:v10];
+  [graphCopy executeGraphChangeRequest:v10];
 }
 
-- (void)disambiguatePointsOfInterestWithMomentNodes:(id)a3 graphUpdate:(id)a4 progress:(id)a5
+- (void)disambiguatePointsOfInterestWithMomentNodes:(id)nodes graphUpdate:(id)update progress:(id)progress
 {
   v97 = *MEMORY[0x277D85DE8];
-  v44 = a3;
-  v45 = a4;
-  v43 = a5;
+  nodesCopy = nodes;
+  updateCopy = update;
+  progressCopy = progress;
   v83 = 0;
   v84 = 0;
   v85 = &v84;
@@ -631,11 +631,11 @@ LABEL_27:
   v80 = 0;
   v81 = &v80;
   v82 = 0x2020000000;
-  v46 = _Block_copy(v43);
+  v46 = _Block_copy(progressCopy);
   if (!v46 || (v8 = CFAbsoluteTimeGetCurrent(), v8 - v81[3] < 0.01) || (v81[3] = v8, v88[0] = 0, (*(v46 + 2))(v46, v88, 0.0), v9 = *(v85 + 24) | v88[0], *(v85 + 24) = v9, (v9 & 1) == 0))
   {
-    v48 = [(PGGraphBuilder *)self->_graphBuilder graph];
-    v49 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+    graph = [(PGGraphBuilder *)self->_graphBuilder graph];
+    loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
     v75[0] = MEMORY[0x277D85DD0];
     v75[1] = 3221225472;
     v75[2] = __107__PGGraphIngestPointsOfInterestProcessor_disambiguatePointsOfInterestWithMomentNodes_graphUpdate_progress___block_invoke;
@@ -645,7 +645,7 @@ LABEL_27:
     v77 = &v80;
     v78 = &v84;
     v79 = 0x3F847AE147AE147BLL;
-    [(PGGraphIngestPointsOfInterestProcessor *)self _collectPOIsToResolveWithMomentNodes:v44 graphUpdate:v45 progress:v75];
+    [(PGGraphIngestPointsOfInterestProcessor *)self _collectPOIsToResolveWithMomentNodes:nodesCopy graphUpdate:updateCopy progress:v75];
     if (*(v85 + 24) == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -666,8 +666,8 @@ LABEL_27:
     {
       v41 = v10;
       v11 = objc_alloc(MEMORY[0x277CBEB98]);
-      v12 = [(NSDictionary *)v47 allKeys];
-      v13 = [v11 initWithArray:v12];
+      allKeys = [(NSDictionary *)v47 allKeys];
+      v13 = [v11 initWithArray:allKeys];
 
       businessCacheUpdater = self->_businessCacheUpdater;
       v70[0] = MEMORY[0x277D85DD0];
@@ -708,7 +708,7 @@ LABEL_27:
               v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v95 count:1];
               v26 = [(PGGraphIngestPointsOfInterestProcessor *)self _pointOfInterestTypeStringsFromBusinessItems:v25 withOriginalCoordinate:v19, v20];
 
-              [(PGGraphIngestPointsOfInterestProcessor *)self _insertPointOfInterestTypeStrings:v26 graph:v48 withMomentNodes:v24 loggingConnection:v49];
+              [(PGGraphIngestPointsOfInterestProcessor *)self _insertPointOfInterestTypeStrings:v26 graph:graph withMomentNodes:v24 loggingConnection:loggingConnection];
             }
           }
 
@@ -754,7 +754,7 @@ LABEL_43:
 
     if ([(NSDictionary *)v42 count])
     {
-      v30 = [(NSDictionary *)v42 allKeys];
+      allKeys2 = [(NSDictionary *)v42 allKeys];
       v61[0] = MEMORY[0x277D85DD0];
       v61[1] = 3221225472;
       v61[2] = __107__PGGraphIngestPointsOfInterestProcessor_disambiguatePointsOfInterestWithMomentNodes_graphUpdate_progress___block_invoke_256;
@@ -764,7 +764,7 @@ LABEL_43:
       v63 = &v80;
       v65 = xmmword_22F78C160;
       v64 = &v84;
-      v32 = [(PGGraphIngestPointsOfInterestProcessor *)self _fetchPointsOfInterestForRegions:v30 loggingConnection:v49 progress:v61];
+      v32 = [(PGGraphIngestPointsOfInterestProcessor *)self _fetchPointsOfInterestForRegions:allKeys2 loggingConnection:loggingConnection progress:v61];
       if (*(v85 + 24) == 1)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -784,7 +784,7 @@ LABEL_34:
       v33 = v10;
       if (v32)
       {
-        v34 = [(PGGraphBuilder *)self->_graphBuilder poiCache];
+        poiCache = [(PGGraphBuilder *)self->_graphBuilder poiCache];
         *buf = 0;
         *&v93 = buf;
         *(&v93 + 1) = 0x2020000000;
@@ -800,11 +800,11 @@ LABEL_34:
         v57 = &v80;
         v60 = xmmword_22F78C170;
         v58 = &v84;
-        v36 = v34;
+        v36 = poiCache;
         v51 = v36;
-        v52 = self;
-        v53 = v48;
-        v54 = v49;
+        selfCopy = self;
+        v53 = graph;
+        v54 = loggingConnection;
         [(NSDictionary *)v42 enumerateKeysAndObjectsUsingBlock:v50];
         v37 = *(v85 + 24);
         if (v37 == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -952,14 +952,14 @@ void __107__PGGraphIngestPointsOfInterestProcessor_disambiguatePointsOfInterestW
   objc_autoreleasePoolPop(v9);
 }
 
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  v9 = os_signpost_id_generate(v8);
-  v10 = v8;
+  updateCopy = update;
+  blockCopy = block;
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  v9 = os_signpost_id_generate(loggingConnection);
+  v10 = loggingConnection;
   v11 = v10;
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
@@ -970,12 +970,12 @@ void __107__PGGraphIngestPointsOfInterestProcessor_disambiguatePointsOfInterestW
   info = 0;
   mach_timebase_info(&info);
   v12 = mach_absolute_time();
-  v13 = [(PGGraphBuilder *)self->_graphBuilder graph];
-  v14 = [v6 momentNodesToProcessInGraph:v13 forMomentUpdateTypes:objc_msgSend(objc_opt_class() includeInsertedNodes:{"requiredMomentUpdateTypes"), 1}];
+  graph = [(PGGraphBuilder *)self->_graphBuilder graph];
+  v14 = [updateCopy momentNodesToProcessInGraph:graph forMomentUpdateTypes:objc_msgSend(objc_opt_class() includeInsertedNodes:{"requiredMomentUpdateTypes"), 1}];
 
   if ([v14 count])
   {
-    [(PGGraphIngestPointsOfInterestProcessor *)self disambiguatePointsOfInterestWithMomentNodes:v14 graphUpdate:v6 progress:v7];
+    [(PGGraphIngestPointsOfInterestProcessor *)self disambiguatePointsOfInterestWithMomentNodes:v14 graphUpdate:updateCopy progress:blockCopy];
   }
 
   v15 = mach_absolute_time();
@@ -1001,36 +1001,36 @@ void __107__PGGraphIngestPointsOfInterestProcessor_disambiguatePointsOfInterestW
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldRunWithGraphUpdate:(id)a3
+- (BOOL)shouldRunWithGraphUpdate:(id)update
 {
-  v3 = a3;
-  if ([v3 isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(v3, "hasMomentsToInsert") & 1) != 0 || (objc_msgSend(v3, "hasMomentsToDelete"))
+  updateCopy = update;
+  if ([updateCopy isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(updateCopy, "hasMomentsToInsert") & 1) != 0 || (objc_msgSend(updateCopy, "hasMomentsToDelete"))
   {
     v4 = 1;
   }
 
   else
   {
-    v6 = [v3 momentUpdateTypes];
-    v4 = ([objc_opt_class() requiredMomentUpdateTypes] & v6) != 0;
+    momentUpdateTypes = [updateCopy momentUpdateTypes];
+    v4 = ([objc_opt_class() requiredMomentUpdateTypes] & momentUpdateTypes) != 0;
   }
 
   return v4;
 }
 
-- (PGGraphIngestPointsOfInterestProcessor)initWithGraphBuilder:(id)a3
+- (PGGraphIngestPointsOfInterestProcessor)initWithGraphBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v13.receiver = self;
   v13.super_class = PGGraphIngestPointsOfInterestProcessor;
   v6 = [(PGGraphIngestPointsOfInterestProcessor *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphBuilder, a3);
+    objc_storeStrong(&v6->_graphBuilder, builder);
     v8 = objc_alloc(MEMORY[0x277D27678]);
-    v9 = [v5 poiCache];
-    v10 = [v8 initWithBusinessCategoryCache:v9];
+    poiCache = [builderCopy poiCache];
+    v10 = [v8 initWithBusinessCategoryCache:poiCache];
     businessCacheUpdater = v7->_businessCacheUpdater;
     v7->_businessCacheUpdater = v10;
   }

@@ -1,23 +1,23 @@
 @interface DMCSnapshotUtilities
-- (BOOL)_executeSnapshotActionAtPath:(id)a3 action:(id)a4;
-- (BOOL)captureSnapshotAtPath:(id)a3 name:(id)a4;
-- (BOOL)deleteSnapshotAtPath:(id)a3 name:(id)a4;
+- (BOOL)_executeSnapshotActionAtPath:(id)path action:(id)action;
+- (BOOL)captureSnapshotAtPath:(id)path name:(id)name;
+- (BOOL)deleteSnapshotAtPath:(id)path name:(id)name;
 @end
 
 @implementation DMCSnapshotUtilities
 
-- (BOOL)captureSnapshotAtPath:(id)a3 name:(id)a4
+- (BOOL)captureSnapshotAtPath:(id)path name:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__DMCSnapshotUtilities_captureSnapshotAtPath_name___block_invoke;
   v9[3] = &unk_1E7ADD270;
-  v10 = v6;
-  v7 = v6;
-  LOBYTE(a3) = [(DMCSnapshotUtilities *)self _executeSnapshotActionAtPath:a3 action:v9];
+  v10 = nameCopy;
+  v7 = nameCopy;
+  LOBYTE(path) = [(DMCSnapshotUtilities *)self _executeSnapshotActionAtPath:path action:v9];
 
-  return a3;
+  return path;
 }
 
 BOOL __51__DMCSnapshotUtilities_captureSnapshotAtPath_name___block_invoke(uint64_t a1, int a2)
@@ -52,18 +52,18 @@ BOOL __51__DMCSnapshotUtilities_captureSnapshotAtPath_name___block_invoke(uint64
   return v2 >= 0;
 }
 
-- (BOOL)deleteSnapshotAtPath:(id)a3 name:(id)a4
+- (BOOL)deleteSnapshotAtPath:(id)path name:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __50__DMCSnapshotUtilities_deleteSnapshotAtPath_name___block_invoke;
   v9[3] = &unk_1E7ADD270;
-  v10 = v6;
-  v7 = v6;
-  LOBYTE(a3) = [(DMCSnapshotUtilities *)self _executeSnapshotActionAtPath:a3 action:v9];
+  v10 = nameCopy;
+  v7 = nameCopy;
+  LOBYTE(path) = [(DMCSnapshotUtilities *)self _executeSnapshotActionAtPath:path action:v9];
 
-  return a3;
+  return path;
 }
 
 BOOL __50__DMCSnapshotUtilities_deleteSnapshotAtPath_name___block_invoke(uint64_t a1, int a2)
@@ -106,10 +106,10 @@ BOOL __50__DMCSnapshotUtilities_deleteSnapshotAtPath_name___block_invoke(uint64_
   return result;
 }
 
-- (BOOL)_executeSnapshotActionAtPath:(id)a3 action:(id)a4
+- (BOOL)_executeSnapshotActionAtPath:(id)path action:(id)action
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  actionCopy = action;
   v5 = open([@"/private/var" fileSystemRepresentation], 0);
   if ((v5 & 0x80000000) != 0)
   {
@@ -134,7 +134,7 @@ BOOL __50__DMCSnapshotUtilities_deleteSnapshotAtPath_name___block_invoke(uint64_
   else
   {
     v6 = v5;
-    v7 = v4[2](v4, v5);
+    v7 = actionCopy[2](actionCopy, v5);
     close(v6);
   }
 

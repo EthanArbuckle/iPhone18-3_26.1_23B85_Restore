@@ -1,53 +1,53 @@
 @interface TTSMauiSpeechEngine
-- (BOOL)_addPathDictionaryEntriesForDirectory:(id)a3;
+- (BOOL)_addPathDictionaryEntriesForDirectory:(id)directory;
 - (BOOL)_initializeEngine;
 - (BOOL)_initializeVoiceDataFiles;
-- (BOOL)_loadVoiceResource:(id)a3;
-- (BOOL)loadVoiceResource:(id)a3;
-- (BOOL)queue_unloadVoiceResource:(id)a3;
-- (BOOL)setVoice:(id)a3;
-- (BOOL)unloadVoiceResource:(id)a3;
-- (TTSMauiSpeechEngine)initWithVoice:(id)a3;
+- (BOOL)_loadVoiceResource:(id)resource;
+- (BOOL)loadVoiceResource:(id)resource;
+- (BOOL)queue_unloadVoiceResource:(id)resource;
+- (BOOL)setVoice:(id)voice;
+- (BOOL)unloadVoiceResource:(id)resource;
+- (TTSMauiSpeechEngine)initWithVoice:(id)voice;
 - (VE_DATA_MAPPING_INTERFACE_S)dataMapImpl;
 - (VE_DATA_STREAM_INTERFACE_S)dataStreamImpl;
 - (_VE_HSAFE)vocalizerClassHandle;
 - (_VE_HSAFE)vocalizerInstanceHandle;
-- (id)_applyPostRuleRewrites:(id)a3;
+- (id)_applyPostRuleRewrites:(id)rewrites;
 - (id)_nextBuffer;
-- (id)_parseBrokerString:(id)a3;
-- (id)_preprocessText:(id)a3;
+- (id)_parseBrokerString:(id)string;
+- (id)_preprocessText:(id)text;
 - (id)_rawLiteralCharacterRegexForCurrentLanguage;
-- (id)_vocalizerClampNumber:(id)a3 between:(unsigned __int16)a4 and:(unsigned __int16)a5;
+- (id)_vocalizerClampNumber:(id)number between:(unsigned __int16)between and:(unsigned __int16)and;
 - (id)emptyBufferForVocalizer;
 - (id)nextBuffer;
-- (unsigned)open:(id)a3 mode:(id)a4 outPointer:(__sFILE *)a5;
-- (unsigned)processingCallback:(id *)a3;
+- (unsigned)open:(id)open mode:(id)mode outPointer:(__sFILE *)pointer;
+- (unsigned)processingCallback:(id *)callback;
 - (void)_deinitializeEngine;
-- (void)_speakString:(id)a3 withFormat:(int)a4;
+- (void)_speakString:(id)string withFormat:(int)format;
 - (void)_syncParametersWithEngine;
 - (void)cancelSpeaking;
 - (void)dealloc;
-- (void)loadRuleset:(id)a3;
+- (void)loadRuleset:(id)ruleset;
 - (void)queue_unloadAllVoiceResources;
-- (void)setPitch:(id)a3;
-- (void)setPostSentencePauseDuration:(id)a3;
-- (void)setRate:(id)a3;
-- (void)setTimbre:(id)a3;
-- (void)setTrimEndingSilences:(BOOL)a3;
-- (void)setVolume:(id)a3;
+- (void)setPitch:(id)pitch;
+- (void)setPostSentencePauseDuration:(id)duration;
+- (void)setRate:(id)rate;
+- (void)setTimbre:(id)timbre;
+- (void)setTrimEndingSilences:(BOOL)silences;
+- (void)setVolume:(id)volume;
 - (void)unloadAllVoiceResources;
 @end
 
 @implementation TTSMauiSpeechEngine
 
-- (TTSMauiSpeechEngine)initWithVoice:(id)a3
+- (TTSMauiSpeechEngine)initWithVoice:(id)voice
 {
-  v5 = a3;
+  voiceCopy = voice;
   v35.receiver = self;
   v35.super_class = TTSMauiSpeechEngine;
   v6 = [(TTSMauiSpeechEngine *)&v35 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_currentVoice, a3), [MEMORY[0x277CBEB38] dictionary], v8 = objc_claimAutoreleasedReturnValue(), pathDictionary = v7->_pathDictionary, v7->_pathDictionary = v8, pathDictionary, v10 = objc_alloc_init(MEMORY[0x277CCA928]), producedBuffers = v7->_producedBuffers, v7->_producedBuffers = v10, producedBuffers, v12 = objc_alloc_init(MEMORY[0x277D70410]), ruleSetRunner = v7->_ruleSetRunner, v7->_ruleSetRunner = v12, ruleSetRunner, objc_initWeak(&location, v7), v29 = MEMORY[0x277D85DD0], v30 = 3221225472, v31 = __37__TTSMauiSpeechEngine_initWithVoice___block_invoke, v32 = &unk_279DA8E70, objc_copyWeak(&v33, &location), -[TTSRulesetRunner setPostRuleWriter:](v7->_ruleSetRunner, "setPostRuleWriter:", &v29), v7->_bufferLock._os_unfair_lock_opaque = 0, v7->_state = 0, dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, -1), v14 = objc_claimAutoreleasedReturnValue(), dispatch_queue_attr_make_with_autorelease_frequency(v14, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM), v15 = objc_claimAutoreleasedReturnValue(), v14, v16 = dispatch_queue_create("com.maui.synthesis", v15), synthesisQueue = v7->_synthesisQueue, v7->_synthesisQueue = v16, synthesisQueue, objc_msgSend(MEMORY[0x277CBEB40], "orderedSet", v29, v30, v31, v32), v18 = objc_claimAutoreleasedReturnValue(), voiceResources = v7->_voiceResources, v7->_voiceResources = v18, voiceResources, pitch = v7->_pitch, v7->_pitch = &unk_287EF90F0, pitch, volume = v7->_volume, v7->_volume = &unk_287EF9108, volume, rate = v7->_rate, v7->_rate = &unk_287EF90F0, rate, timbre = v7->_timbre, v7->_timbre = &unk_287EF90F0, timbre, postSentencePauseDuration = v7->_postSentencePauseDuration, v7->_postSentencePauseDuration = &unk_287EF9120, postSentencePauseDuration, objc_msgSend(MEMORY[0x277CBEB40], "orderedSet"), v25 = objc_claimAutoreleasedReturnValue(), finishedBuffers = v7->_finishedBuffers, v7->_finishedBuffers = v25, finishedBuffers, LOBYTE(v14) = -[TTSMauiSpeechEngine _initializeEngine](v7, "_initializeEngine"), v15, objc_destroyWeak(&v33), objc_destroyWeak(&location), (v14 & 1) == 0))
+  if (v6 && (objc_storeStrong(&v6->_currentVoice, voice), [MEMORY[0x277CBEB38] dictionary], v8 = objc_claimAutoreleasedReturnValue(), pathDictionary = v7->_pathDictionary, v7->_pathDictionary = v8, pathDictionary, v10 = objc_alloc_init(MEMORY[0x277CCA928]), producedBuffers = v7->_producedBuffers, v7->_producedBuffers = v10, producedBuffers, v12 = objc_alloc_init(MEMORY[0x277D70410]), ruleSetRunner = v7->_ruleSetRunner, v7->_ruleSetRunner = v12, ruleSetRunner, objc_initWeak(&location, v7), v29 = MEMORY[0x277D85DD0], v30 = 3221225472, v31 = __37__TTSMauiSpeechEngine_initWithVoice___block_invoke, v32 = &unk_279DA8E70, objc_copyWeak(&v33, &location), -[TTSRulesetRunner setPostRuleWriter:](v7->_ruleSetRunner, "setPostRuleWriter:", &v29), v7->_bufferLock._os_unfair_lock_opaque = 0, v7->_state = 0, dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, -1), v14 = objc_claimAutoreleasedReturnValue(), dispatch_queue_attr_make_with_autorelease_frequency(v14, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM), v15 = objc_claimAutoreleasedReturnValue(), v14, v16 = dispatch_queue_create("com.maui.synthesis", v15), synthesisQueue = v7->_synthesisQueue, v7->_synthesisQueue = v16, synthesisQueue, objc_msgSend(MEMORY[0x277CBEB40], "orderedSet", v29, v30, v31, v32), v18 = objc_claimAutoreleasedReturnValue(), voiceResources = v7->_voiceResources, v7->_voiceResources = v18, voiceResources, pitch = v7->_pitch, v7->_pitch = &unk_287EF90F0, pitch, volume = v7->_volume, v7->_volume = &unk_287EF9108, volume, rate = v7->_rate, v7->_rate = &unk_287EF90F0, rate, timbre = v7->_timbre, v7->_timbre = &unk_287EF90F0, timbre, postSentencePauseDuration = v7->_postSentencePauseDuration, v7->_postSentencePauseDuration = &unk_287EF9120, postSentencePauseDuration, objc_msgSend(MEMORY[0x277CBEB40], "orderedSet"), v25 = objc_claimAutoreleasedReturnValue(), finishedBuffers = v7->_finishedBuffers, v7->_finishedBuffers = v25, finishedBuffers, LOBYTE(v14) = -[TTSMauiSpeechEngine _initializeEngine](v7, "_initializeEngine"), v15, objc_destroyWeak(&v33), objc_destroyWeak(&location), (v14 & 1) == 0))
   {
     v27 = 0;
   }
@@ -77,20 +77,20 @@ id __37__TTSMauiSpeechEngine_initWithVoice___block_invoke(uint64_t a1, void *a2)
   [(TTSMauiSpeechEngine *)&v3 dealloc];
 }
 
-- (BOOL)setVoice:(id)a3
+- (BOOL)setVoice:(id)voice
 {
-  v4 = a3;
+  voiceCopy = voice;
   [(TTSMauiSpeechEngine *)self cancelSpeaking];
   [(TTSMauiSpeechEngine *)self unloadAllVoiceResources];
   [(TTSMauiSpeechEngine *)self _deinitializeEngine];
-  v5 = [MEMORY[0x277CBEB40] orderedSet];
-  [(TTSMauiSpeechEngine *)self setVoiceResources:v5];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  [(TTSMauiSpeechEngine *)self setVoiceResources:orderedSet];
 
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  [(TTSMauiSpeechEngine *)self setPathDictionary:v6];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(TTSMauiSpeechEngine *)self setPathDictionary:dictionary];
 
   [(TTSMauiSpeechEngine *)self setBrokerString:0];
-  [(TTSMauiSpeechEngine *)self setCurrentVoice:v4];
+  [(TTSMauiSpeechEngine *)self setCurrentVoice:voiceCopy];
 
   return [(TTSMauiSpeechEngine *)self _initializeEngine];
 }
@@ -141,22 +141,22 @@ __n128 __34__TTSMauiSpeechEngine_dataMapImpl__block_invoke()
   return result;
 }
 
-- (unsigned)open:(id)a3 mode:(id)a4 outPointer:(__sFILE *)a5
+- (unsigned)open:(id)open mode:(id)mode outPointer:(__sFILE *)pointer
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(TTSMauiSpeechEngine *)self pathDictionary];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  modeCopy = mode;
+  openCopy = open;
+  pathDictionary = [(TTSMauiSpeechEngine *)self pathDictionary];
+  v11 = [pathDictionary objectForKeyedSubscript:openCopy];
 
   if (v11)
   {
-    v12 = [v11 fileSystemRepresentation];
-    v13 = v8;
-    v14 = fopen(v12, [v8 cStringUsingEncoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}]);
+    fileSystemRepresentation = [v11 fileSystemRepresentation];
+    v13 = modeCopy;
+    v14 = fopen(fileSystemRepresentation, [modeCopy cStringUsingEncoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}]);
     if (v14)
     {
       v15 = 0;
-      *a5 = v14;
+      *pointer = v14;
     }
 
     else
@@ -177,16 +177,16 @@ __n128 __34__TTSMauiSpeechEngine_dataMapImpl__block_invoke()
 {
   if ([(TTSMauiSpeechEngine *)self state]== 3)
   {
-    v3 = 0;
+    inProgressBuffer = 0;
   }
 
   else
   {
     AX_PERFORM_WITH_LOCK();
-    v3 = [(TTSMauiSpeechEngine *)self inProgressBuffer];
+    inProgressBuffer = [(TTSMauiSpeechEngine *)self inProgressBuffer];
   }
 
-  return v3;
+  return inProgressBuffer;
 }
 
 void __46__TTSMauiSpeechEngine_emptyBufferForVocalizer__block_invoke(uint64_t a1)
@@ -245,15 +245,15 @@ void __34__TTSMauiSpeechEngine_bufferDone___block_invoke(uint64_t a1)
 {
   while (1)
   {
-    v3 = [(TTSMauiSpeechEngine *)self state];
-    v4 = v3;
-    if (v3 != 4 && v3 != 2)
+    state = [(TTSMauiSpeechEngine *)self state];
+    v4 = state;
+    if (state != 4 && state != 2)
     {
       break;
     }
 
-    v5 = [(TTSMauiSpeechEngine *)self _nextBuffer];
-    if (v5)
+    _nextBuffer = [(TTSMauiSpeechEngine *)self _nextBuffer];
+    if (_nextBuffer)
     {
       goto LABEL_7;
     }
@@ -269,10 +269,10 @@ void __34__TTSMauiSpeechEngine_bufferDone___block_invoke(uint64_t a1)
     [(NSCondition *)producedBuffers waitUntilDate:v8];
   }
 
-  v5 = 0;
+  _nextBuffer = 0;
 LABEL_7:
 
-  return v5;
+  return _nextBuffer;
 }
 
 - (id)_nextBuffer
@@ -308,24 +308,24 @@ void __34__TTSMauiSpeechEngine__nextBuffer__block_invoke(uint64_t a1)
   }
 }
 
-- (unsigned)processingCallback:(id *)a3
+- (unsigned)processingCallback:(id *)callback
 {
-  if (a3->var0 == 16)
+  if (callback->var0 == 16)
   {
-    [(TTSMauiSpeechEngine *)self bufferDone:a3->var2];
+    [(TTSMauiSpeechEngine *)self bufferDone:callback->var2];
     return 0;
   }
 
-  if (a3->var0 != 8)
+  if (callback->var0 != 8)
   {
     return 0;
   }
 
-  v4 = [(TTSMauiSpeechEngine *)self emptyBufferForVocalizer];
-  if (v4)
+  emptyBufferForVocalizer = [(TTSMauiSpeechEngine *)self emptyBufferForVocalizer];
+  if (emptyBufferForVocalizer)
   {
-    v5 = v4;
-    [v4 fillInOutDataForBuffer:a3->var2];
+    v5 = emptyBufferForVocalizer;
+    [emptyBufferForVocalizer fillInOutDataForBuffer:callback->var2];
 
     return 0;
   }
@@ -333,22 +333,22 @@ void __34__TTSMauiSpeechEngine__nextBuffer__block_invoke(uint64_t a1)
   return -2147481593;
 }
 
-- (id)_preprocessText:(id)a3
+- (id)_preprocessText:(id)text
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 precomposedStringWithCanonicalMapping];
-  v6 = [(TTSMauiSpeechEngine *)self currentVoice];
-  v7 = [v6 language];
-  v8 = [v7 hasPrefix:@"ko"];
+  textCopy = text;
+  precomposedStringWithCanonicalMapping = [textCopy precomposedStringWithCanonicalMapping];
+  currentVoice = [(TTSMauiSpeechEngine *)self currentVoice];
+  language = [currentVoice language];
+  v8 = [language hasPrefix:@"ko"];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277D70400] sharedInstance];
-    v10 = [v9 regexForString:@"[\\u1100-\\u1112\\u1161-\\u1175\\u11A8-\\u11AF\\u11B7-\\u11C2\\uD558]" atStart:0];
+    mEMORY[0x277D70400] = [MEMORY[0x277D70400] sharedInstance];
+    v10 = [mEMORY[0x277D70400] regexForString:@"[\\u1100-\\u1112\\u1161-\\u1175\\u11A8-\\u11AF\\u11B7-\\u11C2\\uD558]" atStart:0];
 
     v26 = v10;
-    v11 = [v10 matchesInString:v5 options:2 range:{0, objc_msgSend(v5, "length")}];
+    v11 = [v10 matchesInString:precomposedStringWithCanonicalMapping options:2 range:{0, objc_msgSend(precomposedStringWithCanonicalMapping, "length")}];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -370,14 +370,14 @@ void __34__TTSMauiSpeechEngine__nextBuffer__block_invoke(uint64_t a1)
           v16 = *(*(&v27 + 1) + 8 * i);
           if (v16)
           {
-            v17 = [*(*(&v27 + 1) + 8 * i) range];
-            v19 = [v5 substringWithRange:{v17, v18}];
-            v20 = [v16 range];
+            range = [*(*(&v27 + 1) + 8 * i) range];
+            v19 = [precomposedStringWithCanonicalMapping substringWithRange:{range, v18}];
+            range2 = [v16 range];
             v22 = v21;
             v23 = TTSChoseong_JongseongToHangul();
-            v24 = [v5 stringByReplacingCharactersInRange:v20 withString:{v22, v23}];
+            v24 = [precomposedStringWithCanonicalMapping stringByReplacingCharactersInRange:range2 withString:{v22, v23}];
 
-            v5 = v24;
+            precomposedStringWithCanonicalMapping = v24;
           }
         }
 
@@ -388,24 +388,24 @@ void __34__TTSMauiSpeechEngine__nextBuffer__block_invoke(uint64_t a1)
     }
   }
 
-  return v5;
+  return precomposedStringWithCanonicalMapping;
 }
 
-- (void)_speakString:(id)a3 withFormat:(int)a4
+- (void)_speakString:(id)string withFormat:(int)format
 {
-  v6 = a3;
+  stringCopy = string;
   [(TTSMauiSpeechEngine *)self cancelSpeaking];
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
   v15[3] = __Block_byref_object_copy_;
   v15[4] = __Block_byref_object_dispose_;
-  v7 = v6;
+  v7 = stringCopy;
   v16 = v7;
   v8 = [(TTSMauiSpeechEngine *)self _preprocessText:v7];
 
   [(TTSMauiSpeechEngine *)self setState:2];
-  v9 = [(TTSMauiSpeechEngine *)self synthesisQueue];
+  synthesisQueue = [(TTSMauiSpeechEngine *)self synthesisQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __47__TTSMauiSpeechEngine__speakString_withFormat___block_invoke;
@@ -413,9 +413,9 @@ void __34__TTSMauiSpeechEngine__nextBuffer__block_invoke(uint64_t a1)
   v11[4] = self;
   v12 = v8;
   v13 = v15;
-  v14 = a4;
+  formatCopy = format;
   v10 = v8;
-  dispatch_async(v9, v11);
+  dispatch_async(synthesisQueue, v11);
 
   _Block_object_dispose(v15, 8);
 }
@@ -500,16 +500,16 @@ void __47__TTSMauiSpeechEngine__speakString_withFormat___block_invoke(uint64_t a
 - (void)cancelSpeaking
 {
   [(TTSMauiSpeechEngine *)self setState:3];
-  v3 = [(TTSMauiSpeechEngine *)self ruleSetRunner];
-  [v3 cancelProcessing];
+  ruleSetRunner = [(TTSMauiSpeechEngine *)self ruleSetRunner];
+  [ruleSetRunner cancelProcessing];
 
-  v4 = [(TTSMauiSpeechEngine *)self synthesisQueue];
+  synthesisQueue = [(TTSMauiSpeechEngine *)self synthesisQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__TTSMauiSpeechEngine_cancelSpeaking__block_invoke;
   block[3] = &unk_279DA8EB8;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(synthesisQueue, block);
 }
 
 void __37__TTSMauiSpeechEngine_cancelSpeaking__block_invoke_2(uint64_t a1)
@@ -523,12 +523,12 @@ void __37__TTSMauiSpeechEngine_cancelSpeaking__block_invoke_2(uint64_t a1)
   [v3 broadcast];
 }
 
-- (void)setRate:(id)a3
+- (void)setRate:(id)rate
 {
-  v6 = a3;
-  if (([v6 isEqualToNumber:self->_rate] & 1) == 0)
+  rateCopy = rate;
+  if (([rateCopy isEqualToNumber:self->_rate] & 1) == 0)
   {
-    v4 = [(TTSMauiSpeechEngine *)self _vocalizerClampNumber:v6 between:50 and:400];
+    v4 = [(TTSMauiSpeechEngine *)self _vocalizerClampNumber:rateCopy between:50 and:400];
     rate = self->_rate;
     self->_rate = v4;
 
@@ -536,12 +536,12 @@ void __37__TTSMauiSpeechEngine_cancelSpeaking__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setPitch:(id)a3
+- (void)setPitch:(id)pitch
 {
-  v6 = a3;
-  if (([v6 isEqualToNumber:self->_pitch] & 1) == 0)
+  pitchCopy = pitch;
+  if (([pitchCopy isEqualToNumber:self->_pitch] & 1) == 0)
   {
-    v4 = [(TTSMauiSpeechEngine *)self _vocalizerClampNumber:v6 between:50 and:200];
+    v4 = [(TTSMauiSpeechEngine *)self _vocalizerClampNumber:pitchCopy between:50 and:200];
     pitch = self->_pitch;
     self->_pitch = v4;
 
@@ -549,12 +549,12 @@ void __37__TTSMauiSpeechEngine_cancelSpeaking__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setVolume:(id)a3
+- (void)setVolume:(id)volume
 {
-  v6 = a3;
-  if (([v6 isEqualToNumber:self->_volume] & 1) == 0)
+  volumeCopy = volume;
+  if (([volumeCopy isEqualToNumber:self->_volume] & 1) == 0)
   {
-    v4 = [(TTSMauiSpeechEngine *)self _vocalizerClampNumber:v6 between:0 and:100];
+    v4 = [(TTSMauiSpeechEngine *)self _vocalizerClampNumber:volumeCopy between:0 and:100];
     volume = self->_volume;
     self->_volume = v4;
 
@@ -562,12 +562,12 @@ void __37__TTSMauiSpeechEngine_cancelSpeaking__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setTimbre:(id)a3
+- (void)setTimbre:(id)timbre
 {
-  v6 = a3;
-  if (([v6 isEqualToNumber:self->_timbre] & 1) == 0)
+  timbreCopy = timbre;
+  if (([timbreCopy isEqualToNumber:self->_timbre] & 1) == 0)
   {
-    v4 = [(TTSMauiSpeechEngine *)self _vocalizerClampNumber:v6 between:50 and:200];
+    v4 = [(TTSMauiSpeechEngine *)self _vocalizerClampNumber:timbreCopy between:50 and:200];
     timbre = self->_timbre;
     self->_timbre = v4;
 
@@ -575,12 +575,12 @@ void __37__TTSMauiSpeechEngine_cancelSpeaking__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setPostSentencePauseDuration:(id)a3
+- (void)setPostSentencePauseDuration:(id)duration
 {
-  v6 = a3;
-  if (([v6 isEqualToNumber:self->_postSentencePauseDuration] & 1) == 0)
+  durationCopy = duration;
+  if (([durationCopy isEqualToNumber:self->_postSentencePauseDuration] & 1) == 0)
   {
-    v4 = [(TTSMauiSpeechEngine *)self _vocalizerClampNumber:v6 between:0 and:9];
+    v4 = [(TTSMauiSpeechEngine *)self _vocalizerClampNumber:durationCopy between:0 and:9];
     postSentencePauseDuration = self->_postSentencePauseDuration;
     self->_postSentencePauseDuration = v4;
 
@@ -588,29 +588,29 @@ void __37__TTSMauiSpeechEngine_cancelSpeaking__block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)_vocalizerClampNumber:(id)a3 between:(unsigned __int16)a4 and:(unsigned __int16)a5
+- (id)_vocalizerClampNumber:(id)number between:(unsigned __int16)between and:(unsigned __int16)and
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = [a3 unsignedShortValue];
-  if (v7 >= v5)
+  andCopy = and;
+  betweenCopy = between;
+  unsignedShortValue = [number unsignedShortValue];
+  if (unsignedShortValue >= andCopy)
   {
-    v8 = v5;
+    v8 = andCopy;
   }
 
   else
   {
-    v8 = v7;
+    v8 = unsignedShortValue;
   }
 
-  if (v7 >= v6)
+  if (unsignedShortValue >= betweenCopy)
   {
     v9 = v8;
   }
 
   else
   {
-    v9 = v6;
+    v9 = betweenCopy;
   }
 
   v10 = MEMORY[0x277CCABB0];
@@ -632,20 +632,20 @@ void __37__TTSMauiSpeechEngine_cancelSpeaking__block_invoke_2(uint64_t a1)
     }
   }
 
-  v6 = [(TTSMauiSpeechEngine *)self currentVoice];
-  v7 = [v6 path];
-  v8 = [(TTSMauiSpeechEngine *)self _addPathDictionaryEntriesForDirectory:v7];
+  currentVoice = [(TTSMauiSpeechEngine *)self currentVoice];
+  path = [currentVoice path];
+  v8 = [(TTSMauiSpeechEngine *)self _addPathDictionaryEntriesForDirectory:path];
 
   return v8;
 }
 
-- (BOOL)_addPathDictionaryEntriesForDirectory:(id)a3
+- (BOOL)_addPathDictionaryEntriesForDirectory:(id)directory
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v24 = 0;
-  v6 = [v5 contentsOfDirectoryAtPath:v4 error:&v24];
+  v6 = [defaultManager contentsOfDirectoryAtPath:directoryCopy error:&v24];
   v7 = v24;
 
   if (v7)
@@ -680,9 +680,9 @@ void __37__TTSMauiSpeechEngine_cancelSpeaking__block_invoke_2(uint64_t a1)
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          v13 = [v4 stringByAppendingPathComponent:v12];
-          v14 = [v12 stringByDeletingPathExtension];
-          v15 = [v14 stringByReplacingOccurrencesOfString:@"_" withString:@"/"];
+          v13 = [directoryCopy stringByAppendingPathComponent:v12];
+          stringByDeletingPathExtension = [v12 stringByDeletingPathExtension];
+          v15 = [stringByDeletingPathExtension stringByReplacingOccurrencesOfString:@"_" withString:@"/"];
 
           if (([v12 hasSuffix:@".hdr"] & 1) != 0 || objc_msgSend(v12, "hasSuffix:", @".hdr.asset"))
           {
@@ -690,8 +690,8 @@ void __37__TTSMauiSpeechEngine_cancelSpeaking__block_invoke_2(uint64_t a1)
             v15 = @"broker";
           }
 
-          v16 = [(TTSMauiSpeechEngine *)self pathDictionary];
-          [v16 setObject:v13 forKeyedSubscript:v15];
+          pathDictionary = [(TTSMauiSpeechEngine *)self pathDictionary];
+          [pathDictionary setObject:v13 forKeyedSubscript:v15];
         }
 
         v9 = [obj countByEnumeratingWithState:&v20 objects:v25 count:16];
@@ -706,21 +706,21 @@ void __37__TTSMauiSpeechEngine_cancelSpeaking__block_invoke_2(uint64_t a1)
   return v7 == 0;
 }
 
-- (id)_parseBrokerString:(id)a3
+- (id)_parseBrokerString:(id)string
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D70400] sharedInstance];
-  v5 = [v4 regexForString:@"([\\s]*<(?<parameter>.*)>(?<value>.*)<\\/.*>\\n)" atStart:0];
+  stringCopy = string;
+  mEMORY[0x277D70400] = [MEMORY[0x277D70400] sharedInstance];
+  v5 = [mEMORY[0x277D70400] regexForString:@"([\\s]*<(?<parameter>.*)>(?<value>.*)<\\/.*>\\n)" atStart:0];
 
-  v27 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v26 = v5;
-  v29 = v3;
-  obj = [v5 matchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  v29 = stringCopy;
+  obj = [v5 matchesInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
   v6 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v6)
   {
@@ -756,13 +756,13 @@ void __37__TTSMauiSpeechEngine_cancelSpeaking__block_invoke_2(uint64_t a1)
           v19 = v16;
           v20 = v9;
           v21 = [v29 substringWithRange:{v12, v14}];
-          v22 = [v21 uppercaseString];
-          v23 = [v22 isEqualToString:@"COMPONENT"];
+          uppercaseString = [v21 uppercaseString];
+          v23 = [uppercaseString isEqualToString:@"COMPONENT"];
 
           if ((v23 & 1) == 0)
           {
             v24 = [v29 substringWithRange:{v18, v19}];
-            [v27 setObject:v24 forKeyedSubscript:v21];
+            [dictionary setObject:v24 forKeyedSubscript:v21];
           }
 
           v9 = v20;
@@ -775,28 +775,28 @@ void __37__TTSMauiSpeechEngine_cancelSpeaking__block_invoke_2(uint64_t a1)
     while (v7);
   }
 
-  return v27;
+  return dictionary;
 }
 
 - (void)_deinitializeEngine
 {
-  v3 = [(TTSMauiSpeechEngine *)self vocalizerInstanceHandle];
-  ve_ttsClose(v3, v4, v5, v6, v7, v8, v9, v10);
-  v11 = [(TTSMauiSpeechEngine *)self vocalizerClassHandle];
-  ve_ttsUnInitialize(v11, v12);
+  vocalizerInstanceHandle = [(TTSMauiSpeechEngine *)self vocalizerInstanceHandle];
+  ve_ttsClose(vocalizerInstanceHandle, v4, v5, v6, v7, v8, v9, v10);
+  vocalizerClassHandle = [(TTSMauiSpeechEngine *)self vocalizerClassHandle];
+  ve_ttsUnInitialize(vocalizerClassHandle, v12);
 
   [(TTSMauiSpeechEngine *)self setState:0];
 }
 
-- (void)setTrimEndingSilences:(BOOL)a3
+- (void)setTrimEndingSilences:(BOOL)silences
 {
-  v3 = a3;
+  silencesCopy = silences;
   v13 = *MEMORY[0x277D85DE8];
   bzero(v12, 0x83CuLL);
   v11 = 22;
-  v12[0] = v3;
-  v5 = [(TTSMauiSpeechEngine *)self vocalizerInstanceHandle];
-  ve_ttsSetParamList(v5, v6, &v11, 1u, v7, v8, v9, v10);
+  v12[0] = silencesCopy;
+  vocalizerInstanceHandle = [(TTSMauiSpeechEngine *)self vocalizerInstanceHandle];
+  ve_ttsSetParamList(vocalizerInstanceHandle, v6, &v11, 1u, v7, v8, v9, v10);
 }
 
 - (BOOL)_initializeEngine
@@ -804,8 +804,8 @@ void __37__TTSMauiSpeechEngine_cancelSpeaking__block_invoke_2(uint64_t a1)
   v60 = *MEMORY[0x277D85DE8];
   if ([(TTSMauiSpeechEngine *)self _initializeVoiceDataFiles])
   {
-    v3 = [(TTSMauiSpeechEngine *)self pathDictionary];
-    v4 = [v3 objectForKeyedSubscript:@"broker"];
+    pathDictionary = [(TTSMauiSpeechEngine *)self pathDictionary];
+    v4 = [pathDictionary objectForKeyedSubscript:@"broker"];
 
     if (!v4)
     {
@@ -835,13 +835,13 @@ void __37__TTSMauiSpeechEngine_cancelSpeaking__block_invoke_2(uint64_t a1)
     }
 
     [(TTSMauiSpeechEngine *)self setBrokerString:v5];
-    v8 = [(TTSMauiSpeechEngine *)self brokerString];
-    v9 = [(TTSMauiSpeechEngine *)self _parseBrokerString:v8];
+    brokerString = [(TTSMauiSpeechEngine *)self brokerString];
+    v9 = [(TTSMauiSpeechEngine *)self _parseBrokerString:brokerString];
 
     v50[0] = 8963;
-    v10 = [(TTSMauiSpeechEngine *)self brokerString];
-    v11 = v10;
-    v50[1] = [v10 cStringUsingEncoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}];
+    brokerString2 = [(TTSMauiSpeechEngine *)self brokerString];
+    v11 = brokerString2;
+    v50[1] = [brokerString2 cStringUsingEncoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}];
     v50[2] = TTSMauiVocalizerGetHeapImpl();
     v50[3] = 0;
     v50[4] = TTSMauiVocalizerGetCriticalSectionImpl();
@@ -879,8 +879,8 @@ LABEL_19:
     [(TTSMauiSpeechEngine *)self setVocalizerClassHandle:__b, v49];
     v46 = 0;
     v47 = 0;
-    v17 = [(TTSMauiSpeechEngine *)self vocalizerClassHandle];
-    if (ve_ttsOpen(v17, v18, 0, 0, &v46, v19, v20, v21))
+    vocalizerClassHandle = [(TTSMauiSpeechEngine *)self vocalizerClassHandle];
+    if (ve_ttsOpen(vocalizerClassHandle, v18, 0, 0, &v46, v19, v20, v21))
     {
       v22 = AXTTSLogCommon();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -911,13 +911,13 @@ LABEL_19:
       v57 = 1;
       v58 = 7;
       v59 = 1;
-      v29 = [(TTSMauiSpeechEngine *)self vocalizerInstanceHandle];
-      if (!ve_ttsSetParamList(v29, v30, &v52, 4u, v31, v32, v33, v34))
+      vocalizerInstanceHandle = [(TTSMauiSpeechEngine *)self vocalizerInstanceHandle];
+      if (!ve_ttsSetParamList(vocalizerInstanceHandle, v30, &v52, 4u, v31, v32, v33, v34))
       {
         v45[0] = self;
         v45[1] = MauiProcCallback;
-        v36 = [(TTSMauiSpeechEngine *)self vocalizerInstanceHandle];
-        v43 = ve_ttsSetOutDevice(v36, v37, v45, v38, v39, v40, v41, v42);
+        vocalizerInstanceHandle2 = [(TTSMauiSpeechEngine *)self vocalizerInstanceHandle];
+        v43 = ve_ttsSetOutDevice(vocalizerInstanceHandle2, v37, v45, v38, v39, v40, v41, v42);
         v15 = v43 == 0;
         if (v43)
         {
@@ -974,26 +974,26 @@ LABEL_20:
 
 - (id)_rawLiteralCharacterRegexForCurrentLanguage
 {
-  v2 = [(TTSMauiSpeechEngine *)self currentVoice];
-  v3 = [v2 language];
+  currentVoice = [(TTSMauiSpeechEngine *)self currentVoice];
+  language = [currentVoice language];
 
-  if ([v3 hasPrefix:@"el"])
+  if ([language hasPrefix:@"el"])
   {
     v4 = @"[\\u03B1-\\u03C9]";
 LABEL_7:
-    v5 = [MEMORY[0x277D70400] sharedInstance];
-    v6 = [v5 regexForString:v4 atStart:0];
+    mEMORY[0x277D70400] = [MEMORY[0x277D70400] sharedInstance];
+    v6 = [mEMORY[0x277D70400] regexForString:v4 atStart:0];
 
     goto LABEL_8;
   }
 
-  if ([v3 hasPrefix:@"da"])
+  if ([language hasPrefix:@"da"])
   {
     v4 = @"[æøå]";
     goto LABEL_7;
   }
 
-  if ([v3 hasPrefix:@"ja"])
+  if ([language hasPrefix:@"ja"])
   {
     v4 = @"[\\u30a0-\\u30ff]";
     goto LABEL_7;
@@ -1005,57 +1005,57 @@ LABEL_8:
   return v6;
 }
 
-- (id)_applyPostRuleRewrites:(id)a3
+- (id)_applyPostRuleRewrites:(id)rewrites
 {
-  v4 = a3;
-  v5 = [(TTSMauiSpeechEngine *)self _rawLiteralCharacterRegexForCurrentLanguage];
-  v6 = [(TTSMauiSpeechEngine *)self currentVoice];
-  v7 = [v6 language];
-  v8 = [v7 hasPrefix:@"ja"];
+  rewritesCopy = rewrites;
+  _rawLiteralCharacterRegexForCurrentLanguage = [(TTSMauiSpeechEngine *)self _rawLiteralCharacterRegexForCurrentLanguage];
+  currentVoice = [(TTSMauiSpeechEngine *)self currentVoice];
+  language = [currentVoice language];
+  v8 = [language hasPrefix:@"ja"];
 
   if (v8)
   {
-    v9 = [v4 originalString];
-    v10 = [MEMORY[0x277D70400] sharedInstance];
-    v11 = [v10 regexForString:@"((?<=(\\\\!|\\x1B)\\\\tn=spell\\\\)[\\s\\S]*?(?=((\\\\!|\\x1B)\\\\tn=)|$))" atStart:0];
+    originalString = [rewritesCopy originalString];
+    mEMORY[0x277D70400] = [MEMORY[0x277D70400] sharedInstance];
+    v11 = [mEMORY[0x277D70400] regexForString:@"((?<=(\\\\!|\\x1B)\\\\tn=spell\\\\)[\\s\\S]*?(?=((\\\\!|\\x1B)\\\\tn=)|$))" atStart:0];
 
-    v12 = [MEMORY[0x277D70400] sharedInstance];
-    v13 = [v12 regexForString:@"[ぁぃぅぇぉっゃゅょァィゥェォッャュョァィゥェォャュョッㇱっ]" atStart:0];
+    mEMORY[0x277D70400]2 = [MEMORY[0x277D70400] sharedInstance];
+    v13 = [mEMORY[0x277D70400]2 regexForString:@"[ぁぃぅぇぉっゃゅょァィゥェォッャュョァィゥェォャュョッㇱっ]" atStart:0];
 
-    v14 = [v4 originalString];
-    v15 = [v14 length];
+    originalString2 = [rewritesCopy originalString];
+    v15 = [originalString2 length];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __46__TTSMauiSpeechEngine__applyPostRuleRewrites___block_invoke;
     v29[3] = &unk_279DA8F80;
     v30 = v13;
-    v31 = v9;
-    v32 = v4;
-    v16 = v9;
+    v31 = originalString;
+    v32 = rewritesCopy;
+    v16 = originalString;
     v17 = v13;
     [v11 enumerateMatchesInString:v16 options:2 range:0 usingBlock:{v15, v29}];
   }
 
-  if (v5)
+  if (_rawLiteralCharacterRegexForCurrentLanguage)
   {
-    v18 = [v4 originalString];
-    v19 = [MEMORY[0x277D70400] sharedInstance];
-    v20 = [v19 regexForString:@"((?<=(\\\\!|\\x1B)\\\\tn=spell\\\\)[\\s\\S]*?(?=((\\\\!|\\x1B)\\\\tn=)|$))" atStart:0];
+    originalString3 = [rewritesCopy originalString];
+    mEMORY[0x277D70400]3 = [MEMORY[0x277D70400] sharedInstance];
+    v20 = [mEMORY[0x277D70400]3 regexForString:@"((?<=(\\\\!|\\x1B)\\\\tn=spell\\\\)[\\s\\S]*?(?=((\\\\!|\\x1B)\\\\tn=)|$))" atStart:0];
 
-    v21 = [v4 originalString];
-    v22 = [v21 length];
+    originalString4 = [rewritesCopy originalString];
+    v22 = [originalString4 length];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __46__TTSMauiSpeechEngine__applyPostRuleRewrites___block_invoke_3;
     v25[3] = &unk_279DA8F80;
-    v26 = v5;
-    v27 = v18;
-    v28 = v4;
-    v23 = v18;
+    v26 = _rawLiteralCharacterRegexForCurrentLanguage;
+    v27 = originalString3;
+    v28 = rewritesCopy;
+    v23 = originalString3;
     [v20 enumerateMatchesInString:v23 options:2 range:0 usingBlock:{v22, v25}];
   }
 
-  return v4;
+  return rewritesCopy;
 }
 
 void __46__TTSMauiSpeechEngine__applyPostRuleRewrites___block_invoke(uint64_t a1, void *a2)
@@ -1147,27 +1147,27 @@ void __46__TTSMauiSpeechEngine__applyPostRuleRewrites___block_invoke_4(uint64_t 
   {
     bzero(v18, 0x290uLL);
     v17 = 9;
-    v3 = [(TTSMauiSpeechEngine *)self rate];
-    v18[0] = [v3 unsignedShortValue];
+    rate = [(TTSMauiSpeechEngine *)self rate];
+    v18[0] = [rate unsignedShortValue];
 
     v19 = 10;
-    v4 = [(TTSMauiSpeechEngine *)self pitch];
-    v20 = [v4 unsignedShortValue];
+    pitch = [(TTSMauiSpeechEngine *)self pitch];
+    unsignedShortValue = [pitch unsignedShortValue];
 
     v21 = 24;
-    v5 = [(TTSMauiSpeechEngine *)self timbre];
-    v22 = [v5 unsignedShortValue];
+    timbre = [(TTSMauiSpeechEngine *)self timbre];
+    unsignedShortValue2 = [timbre unsignedShortValue];
 
     v23 = 8;
-    v6 = [(TTSMauiSpeechEngine *)self volume];
-    v24 = [v6 unsignedShortValue];
+    volume = [(TTSMauiSpeechEngine *)self volume];
+    unsignedShortValue3 = [volume unsignedShortValue];
 
     v25 = 11;
-    v7 = [(TTSMauiSpeechEngine *)self postSentencePauseDuration];
-    v26 = [v7 unsignedShortValue];
+    postSentencePauseDuration = [(TTSMauiSpeechEngine *)self postSentencePauseDuration];
+    unsignedShortValue4 = [postSentencePauseDuration unsignedShortValue];
 
-    v8 = [(TTSMauiSpeechEngine *)self vocalizerInstanceHandle];
-    v14 = ve_ttsSetParamList(v8, v9, &v17, 5u, v10, v11, v12, v13);
+    vocalizerInstanceHandle = [(TTSMauiSpeechEngine *)self vocalizerInstanceHandle];
+    v14 = ve_ttsSetParamList(vocalizerInstanceHandle, v9, &v17, 5u, v10, v11, v12, v13);
     if (v14)
     {
       v15 = v14;
@@ -1180,27 +1180,27 @@ void __46__TTSMauiSpeechEngine__applyPostRuleRewrites___block_invoke_4(uint64_t 
   }
 }
 
-- (BOOL)loadVoiceResource:(id)a3
+- (BOOL)loadVoiceResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(TTSMauiSpeechEngine *)self synthesisQueue];
+  synthesisQueue = [(TTSMauiSpeechEngine *)self synthesisQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__TTSMauiSpeechEngine_loadVoiceResource___block_invoke;
   block[3] = &unk_279DA8FA8;
-  v9 = v4;
+  v9 = resourceCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = resourceCopy;
+  dispatch_sync(synthesisQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(resourceCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return resourceCopy;
 }
 
 uint64_t __41__TTSMauiSpeechEngine_loadVoiceResource___block_invoke(uint64_t a1)
@@ -1210,95 +1210,95 @@ uint64_t __41__TTSMauiSpeechEngine_loadVoiceResource___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)loadRuleset:(id)a3
+- (void)loadRuleset:(id)ruleset
 {
-  v4 = a3;
+  rulesetCopy = ruleset;
   v7 = [[TTSMauiVoiceResource alloc] init];
   [(TTSMauiVoiceResource *)v7 setType:0];
-  [(TTSMauiVoiceResource *)v7 setRuleSet:v4];
-  v5 = [(TTSMauiSpeechEngine *)self ruleSetRunner];
-  [v5 loadRuleSet:v4];
+  [(TTSMauiVoiceResource *)v7 setRuleSet:rulesetCopy];
+  ruleSetRunner = [(TTSMauiSpeechEngine *)self ruleSetRunner];
+  [ruleSetRunner loadRuleSet:rulesetCopy];
 
-  v6 = [(TTSMauiSpeechEngine *)self voiceResources];
-  [v6 addObject:v7];
+  voiceResources = [(TTSMauiSpeechEngine *)self voiceResources];
+  [voiceResources addObject:v7];
 }
 
-- (BOOL)_loadVoiceResource:(id)a3
+- (BOOL)_loadVoiceResource:(id)resource
 {
-  v4 = a3;
-  if ([v4 type])
+  resourceCopy = resource;
+  if ([resourceCopy type])
   {
-    v5 = [v4 type];
-    if (v5 > 2)
+    type = [resourceCopy type];
+    if (type > 2)
     {
       v6 = "";
     }
 
     else
     {
-      v6 = off_279DA8FC8[v5];
+      v6 = off_279DA8FC8[type];
     }
 
-    v9 = [v4 resourceData];
+    resourceData = [resourceCopy resourceData];
 
-    if (v9)
+    if (resourceData)
     {
-      v10 = [v4 resourceData];
-      v11 = [v10 bytes];
+      resourceData2 = [resourceCopy resourceData];
+      bytes = [resourceData2 bytes];
 
-      v12 = [v4 resourceData];
-      v13 = [v12 length];
+      resourceData3 = [resourceCopy resourceData];
+      v13 = [resourceData3 length];
     }
 
     else
     {
-      v14 = [v4 resourceString];
-      v11 = [v14 cStringUsingEncoding:4];
+      resourceString = [resourceCopy resourceString];
+      bytes = [resourceString cStringUsingEncoding:4];
 
-      v12 = [v4 resourceString];
-      v13 = [v12 lengthOfBytesUsingEncoding:4];
+      resourceData3 = [resourceCopy resourceString];
+      v13 = [resourceData3 lengthOfBytesUsingEncoding:4];
     }
 
     v15 = v13;
 
     v31 = 0;
     v32 = 0;
-    v16 = [(TTSMauiSpeechEngine *)self vocalizerInstanceHandle];
-    v20 = ve_ttsResourceLoad(v16, v17, v6, v15, v11, &v31, v18, v19);
+    vocalizerInstanceHandle = [(TTSMauiSpeechEngine *)self vocalizerInstanceHandle];
+    v20 = ve_ttsResourceLoad(vocalizerInstanceHandle, v17, v6, v15, bytes, &v31, v18, v19);
     v21 = v20 == 0;
     if (!v20)
     {
-      [v4 setVoiceResourceHandle:{v31, v32}];
-      v22 = [(TTSMauiSpeechEngine *)self voiceResources];
-      [v22 addObject:v4];
+      [resourceCopy setVoiceResourceHandle:{v31, v32}];
+      voiceResources = [(TTSMauiSpeechEngine *)self voiceResources];
+      [voiceResources addObject:resourceCopy];
     }
   }
 
   else
   {
-    v7 = [v4 resourceData];
-    if (v7)
+    resourceData4 = [resourceCopy resourceData];
+    if (resourceData4)
     {
-      v8 = [v4 resourceData];
+      resourceData5 = [resourceCopy resourceData];
     }
 
     else
     {
-      v23 = [v4 resourceString];
-      v8 = [v23 dataUsingEncoding:4];
+      resourceString2 = [resourceCopy resourceString];
+      resourceData5 = [resourceString2 dataUsingEncoding:4];
     }
 
     v24 = MEMORY[0x277D70408];
-    v25 = [v4 resourceName];
-    v26 = [(TTSMauiSpeechEngine *)self loadedResources];
-    v27 = [v24 rulesetWithData:v8 identifier:v25 priority:{objc_msgSend(v26, "count")}];
+    resourceName = [resourceCopy resourceName];
+    loadedResources = [(TTSMauiSpeechEngine *)self loadedResources];
+    v27 = [v24 rulesetWithData:resourceData5 identifier:resourceName priority:{objc_msgSend(loadedResources, "count")}];
 
-    [v4 setRuleSet:v27];
-    v28 = [(TTSMauiSpeechEngine *)self ruleSetRunner];
-    [v28 loadRuleSet:v27];
+    [resourceCopy setRuleSet:v27];
+    ruleSetRunner = [(TTSMauiSpeechEngine *)self ruleSetRunner];
+    [ruleSetRunner loadRuleSet:v27];
 
-    v29 = [(TTSMauiSpeechEngine *)self voiceResources];
-    [v29 addObject:v4];
+    voiceResources2 = [(TTSMauiSpeechEngine *)self voiceResources];
+    [voiceResources2 addObject:resourceCopy];
 
     v21 = 1;
   }
@@ -1306,27 +1306,27 @@ uint64_t __41__TTSMauiSpeechEngine_loadVoiceResource___block_invoke(uint64_t a1)
   return v21;
 }
 
-- (BOOL)unloadVoiceResource:(id)a3
+- (BOOL)unloadVoiceResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(TTSMauiSpeechEngine *)self synthesisQueue];
+  synthesisQueue = [(TTSMauiSpeechEngine *)self synthesisQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__TTSMauiSpeechEngine_unloadVoiceResource___block_invoke;
   block[3] = &unk_279DA8FA8;
-  v9 = v4;
+  v9 = resourceCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = resourceCopy;
+  dispatch_sync(synthesisQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(resourceCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return resourceCopy;
 }
 
 uint64_t __43__TTSMauiSpeechEngine_unloadVoiceResource___block_invoke(uint64_t a1)
@@ -1336,30 +1336,30 @@ uint64_t __43__TTSMauiSpeechEngine_unloadVoiceResource___block_invoke(uint64_t a
   return result;
 }
 
-- (BOOL)queue_unloadVoiceResource:(id)a3
+- (BOOL)queue_unloadVoiceResource:(id)resource
 {
-  v4 = a3;
-  v5 = [(TTSMauiSpeechEngine *)self voiceResources];
-  [v5 removeObject:v4];
+  resourceCopy = resource;
+  voiceResources = [(TTSMauiSpeechEngine *)self voiceResources];
+  [voiceResources removeObject:resourceCopy];
 
-  v6 = [v4 ruleSet];
+  ruleSet = [resourceCopy ruleSet];
 
-  if (v6)
+  if (ruleSet)
   {
-    v7 = [(TTSMauiSpeechEngine *)self ruleSetRunner];
-    v8 = [v4 ruleSet];
-    [v7 unloadRuleset:v8];
+    ruleSetRunner = [(TTSMauiSpeechEngine *)self ruleSetRunner];
+    ruleSet2 = [resourceCopy ruleSet];
+    [ruleSetRunner unloadRuleset:ruleSet2];
 
-    [v4 setRuleSet:0];
+    [resourceCopy setRuleSet:0];
     v9 = 0;
   }
 
   else
   {
-    v10 = [(TTSMauiSpeechEngine *)self vocalizerInstanceHandle];
+    vocalizerInstanceHandle = [(TTSMauiSpeechEngine *)self vocalizerInstanceHandle];
     v12 = v11;
-    v13 = [v4 voiceResourceHandle];
-    v9 = ve_ttsResourceUnload(v10, v12, v13, v14, v15, v16, v17, v18) == 0;
+    voiceResourceHandle = [resourceCopy voiceResourceHandle];
+    v9 = ve_ttsResourceUnload(vocalizerInstanceHandle, v12, voiceResourceHandle, v14, v15, v16, v17, v18) == 0;
   }
 
   return v9;
@@ -1367,20 +1367,20 @@ uint64_t __43__TTSMauiSpeechEngine_unloadVoiceResource___block_invoke(uint64_t a
 
 - (void)unloadAllVoiceResources
 {
-  v3 = [(TTSMauiSpeechEngine *)self synthesisQueue];
+  synthesisQueue = [(TTSMauiSpeechEngine *)self synthesisQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__TTSMauiSpeechEngine_unloadAllVoiceResources__block_invoke;
   block[3] = &unk_279DA8EB8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(synthesisQueue, block);
 }
 
 - (void)queue_unloadAllVoiceResources
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(TTSMauiSpeechEngine *)self voiceResources];
-  v4 = [v3 copy];
+  voiceResources = [(TTSMauiSpeechEngine *)self voiceResources];
+  v4 = [voiceResources copy];
 
   v12 = 0u;
   v13 = 0u;

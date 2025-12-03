@@ -1,36 +1,36 @@
 @interface MedicationDoseLogMedicationViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_axUpdateButtonTraits;
-- (void)didTapRecord:(id)a3;
-- (void)didTapSkip:(id)a3;
+- (void)didTapRecord:(id)record;
+- (void)didTapSkip:(id)skip;
 @end
 
 @implementation MedicationDoseLogMedicationViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HealthMedicationsUI.MedicationDoseLogMedicationView" hasSwiftField:@"skippedButton" withSwiftType:"UIButton"];
-  [v3 validateClass:@"HealthMedicationsUI.MedicationDoseLogMedicationView" hasSwiftField:@"takenButton" withSwiftType:"UIButton"];
-  [v3 validateClass:@"HealthMedicationsUI.MedicationDoseLogMedicationView" hasSwiftField:@"viewModel" withSwiftType:"Optional<MedicationsDoseLogViewModel>"];
-  [v3 validateClass:@"HealthMedicationsUI.MedicationsDoseLogViewModel" hasSwiftField:@"status" withSwiftType:"HKMedicationDoseEventLogStatus"];
-  [v3 validateClass:@"HealthMedicationsUI.MedicationDoseLogMedicationView" hasInstanceMethod:@"didTapSkip:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HealthMedicationsUI.MedicationDoseLogMedicationView" hasInstanceMethod:@"didTapRecord:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HealthMedicationsUI.MedicationDoseLogMedicationView" hasSwiftField:@"skippedButton" withSwiftType:"UIButton"];
+  [validationsCopy validateClass:@"HealthMedicationsUI.MedicationDoseLogMedicationView" hasSwiftField:@"takenButton" withSwiftType:"UIButton"];
+  [validationsCopy validateClass:@"HealthMedicationsUI.MedicationDoseLogMedicationView" hasSwiftField:@"viewModel" withSwiftType:"Optional<MedicationsDoseLogViewModel>"];
+  [validationsCopy validateClass:@"HealthMedicationsUI.MedicationsDoseLogViewModel" hasSwiftField:@"status" withSwiftType:"HKMedicationDoseEventLogStatus"];
+  [validationsCopy validateClass:@"HealthMedicationsUI.MedicationDoseLogMedicationView" hasInstanceMethod:@"didTapSkip:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HealthMedicationsUI.MedicationDoseLogMedicationView" hasInstanceMethod:@"didTapRecord:" withFullSignature:{"v", "@", 0}];
 }
 
-- (void)didTapSkip:(id)a3
+- (void)didTapSkip:(id)skip
 {
   v4.receiver = self;
   v4.super_class = MedicationDoseLogMedicationViewAccessibility;
-  [(MedicationDoseLogMedicationViewAccessibility *)&v4 didTapSkip:a3];
+  [(MedicationDoseLogMedicationViewAccessibility *)&v4 didTapSkip:skip];
   [(MedicationDoseLogMedicationViewAccessibility *)self _axUpdateButtonTraits];
 }
 
-- (void)didTapRecord:(id)a3
+- (void)didTapRecord:(id)record
 {
   v4.receiver = self;
   v4.super_class = MedicationDoseLogMedicationViewAccessibility;
-  [(MedicationDoseLogMedicationViewAccessibility *)&v4 didTapRecord:a3];
+  [(MedicationDoseLogMedicationViewAccessibility *)&v4 didTapRecord:record];
   [(MedicationDoseLogMedicationViewAccessibility *)self _axUpdateButtonTraits];
 }
 

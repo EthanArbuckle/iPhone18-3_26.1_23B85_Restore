@@ -3,7 +3,7 @@
 - (TNUIManager)init;
 - (void)_clearCache;
 - (void)_modifyThreatNotificationCFU;
-- (void)_registerCFUReceiptIfNeededWithLDMEnabled:(BOOL)a3;
+- (void)_registerCFUReceiptIfNeededWithLDMEnabled:(BOOL)enabled;
 - (void)_startListener;
 - (void)dealloc;
 @end
@@ -148,8 +148,8 @@
       }
 
       v29 = *(*(&v53 + 1) + 8 * i);
-      v30 = [v29 uniqueIdentifier];
-      v31 = [v30 isEqualToString:@"com.apple.ThreatNotificationUI.FollowUpItem.general"];
+      uniqueIdentifier = [v29 uniqueIdentifier];
+      v31 = [uniqueIdentifier isEqualToString:@"com.apple.ThreatNotificationUI.FollowUpItem.general"];
 
       if (v31)
       {
@@ -161,10 +161,10 @@
         }
 
         v33 = +[LockdownModeManager shared];
-        v34 = [v33 enabled];
+        enabled = [v33 enabled];
 
-        [(TNUIManager *)self _registerCFUReceiptIfNeededWithLDMEnabled:v34];
-        if (v34 && [(TNUIManager *)self _cfuViewed])
+        [(TNUIManager *)self _registerCFUReceiptIfNeededWithLDMEnabled:enabled];
+        if (enabled && [(TNUIManager *)self _cfuViewed])
         {
           if (([v32 displayStyle] & 0x10) == 0)
           {
@@ -260,7 +260,7 @@ LABEL_41:
   [(NSUserDefaults *)userDefaults synchronize];
 }
 
-- (void)_registerCFUReceiptIfNeededWithLDMEnabled:(BOOL)a3
+- (void)_registerCFUReceiptIfNeededWithLDMEnabled:(BOOL)enabled
 {
   v4 = [(NSUserDefaults *)self->_userDefaults objectForKey:@"com.apple.ThreatNotificationUI.storage.threatNotificationTimestamp"];
   if (v4)

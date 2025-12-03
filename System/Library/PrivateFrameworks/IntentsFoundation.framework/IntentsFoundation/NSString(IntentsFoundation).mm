@@ -12,33 +12,33 @@
 
 - (__CFString)if_stringByLowercasingFirstCharacter
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [a1 characterAtIndex:0];
+    v2 = [self characterAtIndex:0];
     if (v2 < 0x41 || v2 - 91 <= 0x24)
     {
-      v8 = [a1 copy];
+      v8 = [self copy];
     }
 
     else
     {
       v3 = objc_autoreleasePoolPush();
-      v4 = [a1 mutableCopy];
-      v5 = [a1 substringToIndex:1];
-      v6 = [v5 lowercaseString];
-      [v4 replaceCharactersInRange:0 withString:{1, v6}];
+      v4 = [self mutableCopy];
+      v5 = [self substringToIndex:1];
+      lowercaseString = [v5 lowercaseString];
+      [v4 replaceCharactersInRange:0 withString:{1, lowercaseString}];
 
-      if ([a1 isEqual:v4])
+      if ([self isEqual:v4])
       {
-        v7 = a1;
+        selfCopy = self;
       }
 
       else
       {
-        v7 = v4;
+        selfCopy = v4;
       }
 
-      v8 = [v7 copy];
+      v8 = [selfCopy copy];
 
       objc_autoreleasePoolPop(v3);
     }
@@ -54,33 +54,33 @@
 
 - (__CFString)if_stringByUppercasingFirstCharacter
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [a1 characterAtIndex:0];
+    v2 = [self characterAtIndex:0];
     if (v2 < 0x61 || v2 - 123 <= 4)
     {
-      v8 = [a1 copy];
+      v8 = [self copy];
     }
 
     else
     {
       v3 = objc_autoreleasePoolPush();
-      v4 = [a1 mutableCopy];
-      v5 = [a1 substringToIndex:1];
-      v6 = [v5 uppercaseString];
-      [v4 replaceCharactersInRange:0 withString:{1, v6}];
+      v4 = [self mutableCopy];
+      v5 = [self substringToIndex:1];
+      uppercaseString = [v5 uppercaseString];
+      [v4 replaceCharactersInRange:0 withString:{1, uppercaseString}];
 
-      if ([a1 isEqual:v4])
+      if ([self isEqual:v4])
       {
-        v7 = a1;
+        selfCopy = self;
       }
 
       else
       {
-        v7 = v4;
+        selfCopy = v4;
       }
 
-      v8 = [v7 copy];
+      v8 = [selfCopy copy];
 
       objc_autoreleasePoolPop(v3);
     }
@@ -96,38 +96,38 @@
 
 - (id)if_ASCIIStringByUppercasingFirstCharacter
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [a1 mutableCopy];
+    v2 = [self mutableCopy];
     v5 = __toupper([v2 characterAtIndex:0]);
     [v2 replaceCharactersInRange:0 withCString:1 length:{&v5, 1}];
-    v3 = [v2 copy];
+    selfCopy = [v2 copy];
   }
 
   else
   {
-    v3 = a1;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)if_ASCIIStringByLowercasingFirstCharacter
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [a1 mutableCopy];
+    v2 = [self mutableCopy];
     v5 = __tolower([v2 characterAtIndex:0]);
     [v2 replaceCharactersInRange:0 withCString:1 length:{&v5, 1}];
-    v3 = [v2 copy];
+    selfCopy = [v2 copy];
   }
 
   else
   {
-    v3 = a1;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 + (id)if_stringWithData:()IntentsFoundation
@@ -153,10 +153,10 @@
   {
     v6 = a3;
     v7 = a3;
-    v8 = [v7 bytes];
+    bytes = [v7 bytes];
     v9 = [v7 length];
 
-    v10 = [a1 if_hexStringFromBytes:v8 length:v9];
+    v10 = [self if_hexStringFromBytes:bytes length:v9];
   }
 
   else
@@ -210,7 +210,7 @@
     while (v4);
   }
 
-  v15 = [[a1 alloc] initWithBytesNoCopy:v7 length:v8 - v7 encoding:1 freeWhenDone:1];
+  v15 = [[self alloc] initWithBytesNoCopy:v7 length:v8 - v7 encoding:1 freeWhenDone:1];
 
   return v15;
 }

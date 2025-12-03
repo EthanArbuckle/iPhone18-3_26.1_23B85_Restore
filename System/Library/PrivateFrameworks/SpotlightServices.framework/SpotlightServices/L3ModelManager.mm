@@ -1,22 +1,22 @@
 @interface L3ModelManager
-+ (BOOL)getBoolFeatureField:(id *)a3 valueObj:(id *)a4 fieldName:(const char *)a5 defaultValue:(BOOL)a6;
-+ (_MDPlistContainer)loadMdpData:(id)a3;
-+ (const)getStringFeatureField:(id *)a3 valueObj:(id *)a4 fieldName:(const char *)a5 log:(BOOL)a6;
-+ (float)getFloatFeatureField:(id *)a3 valueObj:(id *)a4 fieldName:(const char *)a5 defaultValue:(float)a6;
-+ (id)get2DArrayFeatureField:(id *)a3 fieldName:(const char *)a4 dataType:(int)a5;
-+ (id)getArrayDictionaryFeatureField:(id *)a3 fieldName:(const char *)a4;
-+ (id)getArrayFeatureField:(id *)a3 fieldName:(const char *)a4 dataType:(int)a5;
-+ (id)getArrayStringField:(id *)a3 fieldName:(const char *)a4;
-+ (int64_t)getIntFeatureField:(id *)a3 valueObj:(id *)a4 fieldName:(const char *)a5 defaultValue:(int64_t)a6;
++ (BOOL)getBoolFeatureField:(id *)field valueObj:(id *)obj fieldName:(const char *)name defaultValue:(BOOL)value;
++ (_MDPlistContainer)loadMdpData:(id)data;
++ (const)getStringFeatureField:(id *)field valueObj:(id *)obj fieldName:(const char *)name log:(BOOL)log;
++ (float)getFloatFeatureField:(id *)field valueObj:(id *)obj fieldName:(const char *)name defaultValue:(float)value;
++ (id)get2DArrayFeatureField:(id *)field fieldName:(const char *)name dataType:(int)type;
++ (id)getArrayDictionaryFeatureField:(id *)field fieldName:(const char *)name;
++ (id)getArrayFeatureField:(id *)field fieldName:(const char *)name dataType:(int)type;
++ (id)getArrayStringField:(id *)field fieldName:(const char *)name;
++ (int64_t)getIntFeatureField:(id *)field valueObj:(id *)obj fieldName:(const char *)name defaultValue:(int64_t)value;
 - (BOOL)loadDictionary;
 - (BOOL)loadModel;
 - (BOOL)loadModelConfig;
-- (BOOL)loadUnitTestData:(id)a3;
+- (BOOL)loadUnitTestData:(id)data;
 - (L3ModelManager)init;
-- (id)predictProcessedFeatures:(id)a3 denseFeatures:(id)a4;
-- (int64_t)getBundleId:(id)a3 defaultValue:(int64_t)a4 hashing:(BOOL)a5 hashBucketStart:(int)a6 embeddingTableSize:(int)a7;
-- (int64_t)getLocaleId:(id)a3 defaultValue:(int64_t)a4;
-- (void)extractFeatures:(id)a3 idFeatures:(id)a4 denseFeatures:(id)a5 index:(int64_t)a6 unitTest:(BOOL)a7;
+- (id)predictProcessedFeatures:(id)features denseFeatures:(id)denseFeatures;
+- (int64_t)getBundleId:(id)id defaultValue:(int64_t)value hashing:(BOOL)hashing hashBucketStart:(int)start embeddingTableSize:(int)size;
+- (int64_t)getLocaleId:(id)id defaultValue:(int64_t)value;
+- (void)extractFeatures:(id)features idFeatures:(id)idFeatures denseFeatures:(id)denseFeatures index:(int64_t)index unitTest:(BOOL)test;
 - (void)unloadModel;
 @end
 
@@ -157,9 +157,9 @@ LABEL_22:
     self->_denseFeatureConfigs = 0;
   }
 
-  v7 = [(spotlight_l3_1 *)self->_model model];
+  model = [(spotlight_l3_1 *)self->_model model];
 
-  if (v7)
+  if (model)
   {
     model = self->_model;
     self->_model = 0;
@@ -176,9 +176,9 @@ LABEL_22:
   [(NSCondition *)self->_condition unlock];
 }
 
-+ (_MDPlistContainer)loadMdpData:(id)a3
++ (_MDPlistContainer)loadMdpData:(id)data
 {
-  v3 = SSDefaultsGetAssetPath(a3);
+  v3 = SSDefaultsGetAssetPath(data);
   v4 = v3;
   if (v3 && [v3 length])
   {
@@ -443,9 +443,9 @@ LABEL_34:
   return v26;
 }
 
-- (BOOL)loadUnitTestData:(id)a3
+- (BOOL)loadUnitTestData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = [L3ModelManager loadMdpData:@"spotlight_l3_ios_unit_test_data_v1.mdplist"];
   if (v4)
   {
@@ -461,10 +461,10 @@ LABEL_34:
       {
         v9 = [L3ModelManager getArrayDictionaryFeatureField:v12 fieldName:"rawFeatures"];
         v10 = [L3ModelManager getArrayFeatureField:v12 fieldName:"scores" dataType:1];
-        [v3 setObject:v6 forKeyedSubscript:@"idFeatures"];
-        [v3 setObject:v7 forKeyedSubscript:@"denseFeatures"];
-        [v3 setObject:v9 forKeyedSubscript:@"rawFeatures"];
-        [v3 setObject:v10 forKeyedSubscript:@"scores"];
+        [dataCopy setObject:v6 forKeyedSubscript:@"idFeatures"];
+        [dataCopy setObject:v7 forKeyedSubscript:@"denseFeatures"];
+        [dataCopy setObject:v9 forKeyedSubscript:@"rawFeatures"];
+        [dataCopy setObject:v10 forKeyedSubscript:@"scores"];
       }
     }
 
@@ -484,25 +484,25 @@ LABEL_34:
   return v8;
 }
 
-+ (const)getStringFeatureField:(id *)a3 valueObj:(id *)a4 fieldName:(const char *)a5 log:(BOOL)a6
++ (const)getStringFeatureField:(id *)field valueObj:(id *)obj fieldName:(const char *)name log:(BOOL)log
 {
-  v6 = a6;
-  v11 = *a3;
+  logCopy = log;
+  v11 = *field;
   if (_MDPlistDictionaryGetPlistObjectForKey())
   {
-    v12 = *&a4->var0;
-    var2 = a4->var2;
+    v12 = *&obj->var0;
+    var2 = obj->var2;
     return _MDPlistStringGetValue();
   }
 
   else
   {
-    if (v6)
+    if (logCopy)
     {
       v10 = SSGeneralLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [L3ModelManager getStringFeatureField:a5 valueObj:v10 fieldName:? log:?];
+        [L3ModelManager getStringFeatureField:name valueObj:v10 fieldName:? log:?];
       }
     }
 
@@ -510,49 +510,49 @@ LABEL_34:
   }
 }
 
-+ (BOOL)getBoolFeatureField:(id *)a3 valueObj:(id *)a4 fieldName:(const char *)a5 defaultValue:(BOOL)a6
++ (BOOL)getBoolFeatureField:(id *)field valueObj:(id *)obj fieldName:(const char *)name defaultValue:(BOOL)value
 {
-  v9 = *a3;
+  v9 = *field;
   if (_MDPlistDictionaryGetPlistObjectForKey())
   {
-    v10 = *&a4->var0;
-    var2 = a4->var2;
+    v10 = *&obj->var0;
+    var2 = obj->var2;
     return _MDPlistBooleanGetValue() != 0;
   }
 
-  return a6;
+  return value;
 }
 
-+ (int64_t)getIntFeatureField:(id *)a3 valueObj:(id *)a4 fieldName:(const char *)a5 defaultValue:(int64_t)a6
++ (int64_t)getIntFeatureField:(id *)field valueObj:(id *)obj fieldName:(const char *)name defaultValue:(int64_t)value
 {
-  v9 = *a3;
+  v9 = *field;
   if (_MDPlistDictionaryGetPlistObjectForKey())
   {
-    v10 = *&a4->var0;
-    var2 = a4->var2;
+    v10 = *&obj->var0;
+    var2 = obj->var2;
     return _MDPlistNumberGetIntValue();
   }
 
-  return a6;
+  return value;
 }
 
-+ (float)getFloatFeatureField:(id *)a3 valueObj:(id *)a4 fieldName:(const char *)a5 defaultValue:(float)a6
++ (float)getFloatFeatureField:(id *)field valueObj:(id *)obj fieldName:(const char *)name defaultValue:(float)value
 {
-  v10 = *a3;
+  v10 = *field;
   if (_MDPlistDictionaryGetPlistObjectForKey())
   {
-    v11 = *&a4->var0;
-    var2 = a4->var2;
+    v11 = *&obj->var0;
+    var2 = obj->var2;
     _MDPlistNumberGetDoubleValue();
     return v8;
   }
 
-  return a6;
+  return value;
 }
 
-+ (id)get2DArrayFeatureField:(id *)a3 fieldName:(const char *)a4 dataType:(int)a5
++ (id)get2DArrayFeatureField:(id *)field fieldName:(const char *)name dataType:(int)type
 {
-  v17 = *a3;
+  v17 = *field;
   if (!_MDPlistDictionaryGetPlistObjectForKey())
   {
     v15 = 0;
@@ -589,13 +589,13 @@ LABEL_11:
     }
   }
 
-  if (a5 <= 1)
+  if (type <= 1)
   {
     for (i = 0; i != v9; ++i)
     {
       v13 = MEMORY[0x1E696AD98];
       _MDPlistArrayGetPlistObjectAtIndex();
-      if (a5)
+      if (type)
       {
         _MDPlistNumberGetDoubleValue();
         [v13 numberWithDouble:{0, 0, 0}];
@@ -620,9 +620,9 @@ LABEL_16:
   return v15;
 }
 
-+ (id)getArrayFeatureField:(id *)a3 fieldName:(const char *)a4 dataType:(int)a5
++ (id)getArrayFeatureField:(id *)field fieldName:(const char *)name dataType:(int)type
 {
-  v14 = *a3;
+  v14 = *field;
   if (!_MDPlistDictionaryGetPlistObjectForKey())
   {
     v12 = 0;
@@ -642,7 +642,7 @@ LABEL_9:
   while (1)
   {
     _MDPlistArrayGetPlistObjectAtIndex();
-    if (a5 == 1)
+    if (type == 1)
     {
       v10 = MEMORY[0x1E696AD98];
       _MDPlistNumberGetDoubleValue();
@@ -650,7 +650,7 @@ LABEL_9:
       goto LABEL_8;
     }
 
-    if (a5)
+    if (type)
     {
       break;
     }
@@ -674,9 +674,9 @@ LABEL_13:
   return v12;
 }
 
-+ (id)getArrayDictionaryFeatureField:(id *)a3 fieldName:(const char *)a4
++ (id)getArrayDictionaryFeatureField:(id *)field fieldName:(const char *)name
 {
-  v10 = *a3;
+  v10 = *field;
   if (_MDPlistDictionaryGetPlistObjectForKey())
   {
     Count = _MDPlistArrayGetCount();
@@ -730,9 +730,9 @@ void __59__L3ModelManager_getArrayDictionaryFeatureField_fieldName___block_invok
   [v8 setObject:v7 forKeyedSubscript:v11];
 }
 
-+ (id)getArrayStringField:(id *)a3 fieldName:(const char *)a4
++ (id)getArrayStringField:(id *)field fieldName:(const char *)name
 {
-  v6 = *a3;
+  v6 = *field;
   if (_MDPlistDictionaryGetPlistObjectForKey())
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:_MDPlistArrayGetCount()];
@@ -757,48 +757,48 @@ void __48__L3ModelManager_getArrayStringField_fieldName___block_invoke(uint64_t 
   [v4 addObject:v5];
 }
 
-- (int64_t)getBundleId:(id)a3 defaultValue:(int64_t)a4 hashing:(BOOL)a5 hashBucketStart:(int)a6 embeddingTableSize:(int)a7
+- (int64_t)getBundleId:(id)id defaultValue:(int64_t)value hashing:(BOOL)hashing hashBucketStart:(int)start embeddingTableSize:(int)size
 {
-  if (a3)
+  if (id)
   {
     bundleDict = self->_bundleDict;
     if (bundleDict)
     {
-      v10 = a5;
+      hashingCopy = hashing;
       v11 = [SSPlistDataReader intValueForBundle:"intValueForBundle:defaultValue:" defaultValue:?];
-      a4 = v11;
-      if (v10 && v11 >= a6)
+      value = v11;
+      if (hashingCopy && v11 >= start)
       {
-        return (v11 - a6) % (a7 - a6) + a6;
+        return (v11 - start) % (size - start) + start;
       }
     }
   }
 
-  return a4;
+  return value;
 }
 
-- (int64_t)getLocaleId:(id)a3 defaultValue:(int64_t)a4
+- (int64_t)getLocaleId:(id)id defaultValue:(int64_t)value
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && self->_localeDict)
+  idCopy = id;
+  v7 = idCopy;
+  if (idCopy && self->_localeDict)
   {
-    v8 = [v6 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+    v8 = [idCopy stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
-    a4 = -[SSPlistDataReader intValueForKey:defaultValue:](self->_localeDict, "intValueForKey:defaultValue:", [v8 UTF8String], a4);
+    value = -[SSPlistDataReader intValueForKey:defaultValue:](self->_localeDict, "intValueForKey:defaultValue:", [v8 UTF8String], value);
     v7 = v8;
   }
 
-  return a4;
+  return value;
 }
 
-- (void)extractFeatures:(id)a3 idFeatures:(id)a4 denseFeatures:(id)a5 index:(int64_t)a6 unitTest:(BOOL)a7
+- (void)extractFeatures:(id)features idFeatures:(id)idFeatures denseFeatures:(id)denseFeatures index:(int64_t)index unitTest:(BOOL)test
 {
-  v69 = a7;
+  testCopy = test;
   v93 = *MEMORY[0x1E69E9840];
-  v75 = a3;
-  v70 = a4;
-  v73 = a5;
+  featuresCopy = features;
+  idFeaturesCopy = idFeatures;
+  denseFeaturesCopy = denseFeatures;
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
@@ -819,51 +819,51 @@ void __48__L3ModelManager_getArrayStringField_fieldName___block_invoke(uint64_t 
         }
 
         v13 = *(*(&v81 + 1) + 8 * i);
-        v14 = [v13 name];
-        v15 = [v14 isEqualToString:@"locale"];
+        name = [v13 name];
+        v15 = [name isEqualToString:@"locale"];
 
         if (v15)
         {
           v16 = MEMORY[0x1E696AD98];
-          v17 = [v13 name];
-          v18 = [v75 objectForKey:v17];
+          name2 = [v13 name];
+          v18 = [featuresCopy objectForKey:name2];
           v19 = [v16 numberWithLong:{-[L3ModelManager getLocaleId:defaultValue:](self, "getLocaleId:defaultValue:", v18, 1)}];
-          v20 = [MEMORY[0x1E696AD98] numberWithLong:a6];
+          v20 = [MEMORY[0x1E696AD98] numberWithLong:index];
           v91[0] = v20;
           v21 = (v11 + 1);
           v22 = [MEMORY[0x1E696AD98] numberWithInt:v11];
           v91[1] = v22;
           v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v91 count:2];
-          [v70 setObject:v19 forKeyedSubscript:v23];
+          [idFeaturesCopy setObject:v19 forKeyedSubscript:v23];
 
           v11 = v21;
         }
 
         else
         {
-          v24 = [v13 name];
-          v25 = [v24 isEqualToString:@"section_bundle_id"];
+          name3 = [v13 name];
+          v25 = [name3 isEqualToString:@"section_bundle_id"];
 
           if (v25)
           {
             v26 = MEMORY[0x1E696AD98];
-            v17 = [v13 name];
-            v68 = [v75 objectForKey:v17];
+            name2 = [v13 name];
+            v68 = [featuresCopy objectForKey:name2];
             v27 = [v26 numberWithLong:{-[L3ModelManager getBundleId:defaultValue:hashing:hashBucketStart:embeddingTableSize:](self, "getBundleId:defaultValue:hashing:hashBucketStart:embeddingTableSize:", v68, 1006, objc_msgSend(v13, "hashing"), objc_msgSend(v13, "hashBucketStart"), objc_msgSend(v13, "embeddingTableSize"))}];
-            v28 = [MEMORY[0x1E696AD98] numberWithLong:a6];
+            v28 = [MEMORY[0x1E696AD98] numberWithLong:index];
             v90[0] = v28;
             v29 = [MEMORY[0x1E696AD98] numberWithInt:v11];
             v90[1] = v29;
             v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v90 count:2];
-            [v70 setObject:v27 forKeyedSubscript:v30];
+            [idFeaturesCopy setObject:v27 forKeyedSubscript:v30];
 
             v11 = (v11 + 1);
           }
 
           else
           {
-            v17 = SSGeneralLog();
-            if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+            name2 = SSGeneralLog();
+            if (os_log_type_enabled(name2, OS_LOG_TYPE_ERROR))
             {
               [L3ModelManager extractFeatures:v89 idFeatures:v13 denseFeatures:? index:? unitTest:?];
             }
@@ -900,34 +900,34 @@ void __48__L3ModelManager_getArrayStringField_fieldName___block_invoke(uint64_t 
         }
 
         v37 = *(*(&v77 + 1) + 8 * v35);
-        v38 = [v37 name];
-        v39 = [v38 isEqualToString:@"position_section"] & !v69;
+        name4 = [v37 name];
+        v39 = [name4 isEqualToString:@"position_section"] & !testCopy;
 
         v40 = 3.0;
         if ((v39 & 1) == 0)
         {
-          v41 = [v37 name];
+          name5 = [v37 name];
           if ([v37 transform])
           {
-            v42 = [v37 originalFeatureName];
+            originalFeatureName = [v37 originalFeatureName];
 
-            v41 = v42;
+            name5 = originalFeatureName;
           }
 
-          if (v69)
+          if (testCopy)
           {
-            v43 = [v41 lowercaseString];
+            lowercaseString = [name5 lowercaseString];
 
-            v41 = v43;
+            name5 = lowercaseString;
           }
 
-          v44 = [v75 objectForKeyedSubscript:v41];
+          v44 = [featuresCopy objectForKeyedSubscript:name5];
           if (v44)
           {
             if ([v37 transform])
             {
-              v45 = [v37 transformType];
-              v46 = [v45 isEqualToString:@"string_length"];
+              transformType = [v37 transformType];
+              v46 = [transformType isEqualToString:@"string_length"];
 
               if (v46)
               {
@@ -965,8 +965,8 @@ LABEL_31:
           goto LABEL_41;
         }
 
-        v49 = [v37 normalizationType];
-        v50 = [v49 isEqualToString:@"minmax"];
+        normalizationType = [v37 normalizationType];
+        v50 = [normalizationType isEqualToString:@"minmax"];
 
         if (v50)
         {
@@ -982,8 +982,8 @@ LABEL_37:
           goto LABEL_41;
         }
 
-        v57 = [v37 normalizationType];
-        v58 = [v57 isEqualToString:@"sigmoid"];
+        normalizationType2 = [v37 normalizationType];
+        v58 = [normalizationType2 isEqualToString:@"sigmoid"];
 
         if (v58)
         {
@@ -1001,13 +1001,13 @@ LABEL_37:
 LABEL_41:
         *&v48 = v40;
         v61 = [MEMORY[0x1E696AD98] numberWithFloat:v48];
-        v62 = [MEMORY[0x1E696AD98] numberWithLong:a6];
+        v62 = [MEMORY[0x1E696AD98] numberWithLong:index];
         v85[0] = v62;
         v33 = (v36 + 1);
         v63 = [MEMORY[0x1E696AD98] numberWithInt:v36];
         v85[1] = v63;
         v64 = [MEMORY[0x1E695DEC8] arrayWithObjects:v85 count:2];
-        [v73 setObject:v61 forKeyedSubscript:v64];
+        [denseFeaturesCopy setObject:v61 forKeyedSubscript:v64];
 
         ++v35;
       }
@@ -1023,11 +1023,11 @@ LABEL_41:
   v67 = *MEMORY[0x1E69E9840];
 }
 
-- (id)predictProcessedFeatures:(id)a3 denseFeatures:(id)a4
+- (id)predictProcessedFeatures:(id)features denseFeatures:(id)denseFeatures
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[spotlight_l3_1Input alloc] initWithId_features:v6 dense_features:v7];
+  featuresCopy = features;
+  denseFeaturesCopy = denseFeatures;
+  v8 = [[spotlight_l3_1Input alloc] initWithId_features:featuresCopy dense_features:denseFeaturesCopy];
   model = self->_model;
   v25 = 0;
   v10 = [(spotlight_l3_1 *)model predictionFromFeatures:v8 error:&v25];

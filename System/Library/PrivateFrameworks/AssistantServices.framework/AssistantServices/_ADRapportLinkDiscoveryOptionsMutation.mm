@@ -1,5 +1,5 @@
 @interface _ADRapportLinkDiscoveryOptionsMutation
-- (_ADRapportLinkDiscoveryOptionsMutation)initWithBase:(id)a3;
+- (_ADRapportLinkDiscoveryOptionsMutation)initWithBase:(id)base;
 - (int64_t)getIncludesFamily;
 - (int64_t)getIncludesHome;
 - (int64_t)getIncludesRemoraDevices;
@@ -46,16 +46,16 @@
   }
 }
 
-- (_ADRapportLinkDiscoveryOptionsMutation)initWithBase:(id)a3
+- (_ADRapportLinkDiscoveryOptionsMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _ADRapportLinkDiscoveryOptionsMutation;
   v6 = [(_ADRapportLinkDiscoveryOptionsMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

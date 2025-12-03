@@ -1,16 +1,16 @@
 @interface WDClinicalSettingsViewAnalyticsDataViewControllerFileCell
-- (WDClinicalSettingsViewAnalyticsDataViewControllerFileCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WDClinicalSettingsViewAnalyticsDataViewControllerFileCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)description;
-- (void)setFileURL:(id)a3;
+- (void)setFileURL:(id)l;
 @end
 
 @implementation WDClinicalSettingsViewAnalyticsDataViewControllerFileCell
 
-- (WDClinicalSettingsViewAnalyticsDataViewControllerFileCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WDClinicalSettingsViewAnalyticsDataViewControllerFileCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = WDClinicalSettingsViewAnalyticsDataViewControllerFileCell;
-  v4 = [(WDClinicalSettingsViewAnalyticsDataViewControllerFileCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WDClinicalSettingsViewAnalyticsDataViewControllerFileCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -20,14 +20,14 @@
   return v5;
 }
 
-- (void)setFileURL:(id)a3
+- (void)setFileURL:(id)l
 {
-  objc_storeStrong(&self->_fileURL, a3);
-  v5 = a3;
-  v7 = [v5 lastPathComponent];
+  objc_storeStrong(&self->_fileURL, l);
+  lCopy = l;
+  lastPathComponent = [lCopy lastPathComponent];
 
-  v6 = [(WDClinicalSettingsViewAnalyticsDataViewControllerFileCell *)self textLabel];
-  [v6 setText:v7];
+  textLabel = [(WDClinicalSettingsViewAnalyticsDataViewControllerFileCell *)self textLabel];
+  [textLabel setText:lastPathComponent];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WDClinicalSettingsViewAnalyticsDataViewControllerFileCell *)self fileURL];
-  v7 = [v3 stringWithFormat:@"<%@:%p %@>", v5, self, v6];
+  fileURL = [(WDClinicalSettingsViewAnalyticsDataViewControllerFileCell *)self fileURL];
+  v7 = [v3 stringWithFormat:@"<%@:%p %@>", v5, self, fileURL];
 
   return v7;
 }

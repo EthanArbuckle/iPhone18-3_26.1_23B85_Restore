@@ -1,6 +1,6 @@
 @interface WFDatabaseFetchedRecordResult
 - (NSString)reason;
-- (WFDatabaseFetchedRecordResult)initWithResultType:(unint64_t)a3 reason:(id)a4;
+- (WFDatabaseFetchedRecordResult)initWithResultType:(unint64_t)type reason:(id)reason;
 @end
 
 @implementation WFDatabaseFetchedRecordResult
@@ -21,9 +21,9 @@
   return v3;
 }
 
-- (WFDatabaseFetchedRecordResult)initWithResultType:(unint64_t)a3 reason:(id)a4
+- (WFDatabaseFetchedRecordResult)initWithResultType:(unint64_t)type reason:(id)reason
 {
-  if (a4)
+  if (reason)
   {
     v5 = sub_1CA94C3A8();
     v7 = v6;
@@ -35,7 +35,7 @@
     v7 = 0;
   }
 
-  return sub_1CA68BD48(a3, v5, v7, &OBJC_IVAR___WFDatabaseFetchedRecordResult_resultType, &OBJC_IVAR___WFDatabaseFetchedRecordResult_reason, off_1E836E1A8);
+  return sub_1CA68BD48(type, v5, v7, &OBJC_IVAR___WFDatabaseFetchedRecordResult_resultType, &OBJC_IVAR___WFDatabaseFetchedRecordResult_reason, off_1E836E1A8);
 }
 
 @end

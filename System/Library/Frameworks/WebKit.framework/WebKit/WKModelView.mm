@@ -1,8 +1,8 @@
 @interface WKModelView
-- (BOOL)createFileForModel:(void *)a3;
-- (WKModelView)initWithModel:(void *)a3 layerID:()ProcessQualified<WTF:()WTF:(unsigned long long>>)a4 :(void *)a5 ObjectIdentifierMainThreadAccessTraits<uint64_t> :ObjectIdentifierGeneric<WebCore::PlatformLayerIdentifierType page:;
+- (BOOL)createFileForModel:(void *)model;
+- (WKModelView)initWithModel:(void *)model layerID:()ProcessQualified<WTF:()WTF:(unsigned long long>>)f :(void *)a5 ObjectIdentifierMainThreadAccessTraits<uint64_t> :ObjectIdentifierGeneric<WebCore::PlatformLayerIdentifierType page:;
 - (id).cxx_construct;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)createPreview;
 - (void)layoutSubviews;
 - (void)updateBounds;
@@ -10,10 +10,10 @@
 
 @implementation WKModelView
 
-- (WKModelView)initWithModel:(void *)a3 layerID:()ProcessQualified<WTF:()WTF:(unsigned long long>>)a4 :(void *)a5 ObjectIdentifierMainThreadAccessTraits<uint64_t> :ObjectIdentifierGeneric<WebCore::PlatformLayerIdentifierType page:
+- (WKModelView)initWithModel:(void *)model layerID:()ProcessQualified<WTF:()WTF:(unsigned long long>>)f :(void *)a5 ObjectIdentifierMainThreadAccessTraits<uint64_t> :ObjectIdentifierGeneric<WebCore::PlatformLayerIdentifierType page:
 {
-  m_identifier = a4.m_processIdentifier.m_identifier;
-  v7 = a4.m_object.m_identifier;
+  m_identifier = f.m_processIdentifier.m_identifier;
+  v7 = f.m_object.m_identifier;
   v9 = *(MEMORY[0x1E695F058] + 16);
   self->_lastBounds.origin = *MEMORY[0x1E695F058];
   self->_lastBounds.size = v9;
@@ -23,12 +23,12 @@
   height = self->_lastBounds.size.height;
   v19.receiver = self;
   v19.super_class = WKModelView;
-  v13 = [(WKModelView *)&v19 initWithFrame:v9.width, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(WKModelView *)&v19 initWithFrame:v9.width, y, width, height];
+  v14 = height;
+  if (height)
   {
-    v13->_layerID.m_value.m_object.m_identifier = v7;
-    v13->_layerID.m_value.m_processIdentifier.m_identifier = m_identifier;
+    height->_layerID.m_value.m_object.m_identifier = v7;
+    height->_layerID.m_value.m_processIdentifier.m_identifier = m_identifier;
     WTF::WeakPtrFactory<IPC::MessageReceiver,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(a5 + 6, a5 + 16);
     v16 = *(a5 + 3);
     atomic_fetch_add(v16, 1u);
@@ -40,14 +40,14 @@
       WTF::fastFree(m_ptr, v15);
     }
 
-    [(WKModelView *)v14 createFileForModel:a3];
+    [(WKModelView *)v14 createFileForModel:model];
     [(WKModelView *)v14 updateBounds];
   }
 
   return v14;
 }
 
-- (BOOL)createFileForModel:(void *)a3
+- (BOOL)createFileForModel:(void *)model
 {
   WebKit::WebsiteDataStore::defaultModelElementCacheDirectory(MEMORY[0x1E696EBA0], &v17);
   if (!v17)
@@ -97,7 +97,7 @@ LABEL_24:
     v7 = LODWORD(v18[0]) != -1;
     if (LODWORD(v18[0]) != -1)
     {
-      v9 = *(a3 + 1);
+      v9 = *(model + 1);
       atomic_fetch_add(v9 + 2, 1u);
       WebCore::SharedBuffer::span(v9);
       WTF::FileSystemImpl::FileHandle::write();
@@ -461,9 +461,9 @@ uint64_t __27__WKModelView_updateBounds__block_invoke_2(uint64_t a1)
   return [v2 invalidate];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  if ([(WKModelView *)self pointInside:a4 withEvent:a3.x, a3.y])
+  if ([(WKModelView *)self pointInside:event withEvent:test.x, test.y])
   {
     return self;
   }

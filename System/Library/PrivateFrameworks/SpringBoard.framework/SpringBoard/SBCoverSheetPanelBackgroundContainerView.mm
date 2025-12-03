@@ -1,16 +1,16 @@
 @interface SBCoverSheetPanelBackgroundContainerView
-- (void)_setPresentationValue:(id)a3 forKey:(id)a4;
+- (void)_setPresentationValue:(id)value forKey:(id)key;
 @end
 
 @implementation SBCoverSheetPanelBackgroundContainerView
 
-- (void)_setPresentationValue:(id)a3 forKey:(id)a4
+- (void)_setPresentationValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  valueCopy = value;
+  keyCopy = key;
+  v8 = valueCopy;
   v9 = v8;
-  if ([v7 isEqualToString:@"position"])
+  if ([keyCopy isEqualToString:@"position"])
   {
     [v8 CGPointValue];
     v11 = v10;
@@ -31,7 +31,7 @@
 
   v16.receiver = self;
   v16.super_class = SBCoverSheetPanelBackgroundContainerView;
-  [(SBCoverSheetPanelBackgroundContainerView *)&v16 _setPresentationValue:v9 forKey:v7];
+  [(SBCoverSheetPanelBackgroundContainerView *)&v16 _setPresentationValue:v9 forKey:keyCopy];
 }
 
 @end

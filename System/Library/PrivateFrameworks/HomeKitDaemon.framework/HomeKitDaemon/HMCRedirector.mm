@@ -1,10 +1,10 @@
 @interface HMCRedirector
 + (id)logCategory;
-- (BOOL)processInserts:(id)a3 updates:(id)a4 deletes:(id)a5;
-- (HMCRedirector)initWithLabel:(id)a3 partition:(id)a4;
-- (id)addTarget:(id)a3 selector:(SEL)a4 changeMask:(unint64_t)a5 forChangesOfObjectsWithModelType:(id)a6 forChangesOfObjectsWithModelID:(id)a7;
-- (id)addTarget:(id)a3 selector:(SEL)a4 changeMask:(unint64_t)a5 forChangesOfObjectsWithModelType:(id)a6 forChangesOfObjectsWithModelID:(id)a7 error:(id *)a8;
-- (void)removeRegistrationForChangeOfObjectsOfModelType:(id)a3 forChangesOfObjectsWithModelID:(id)a4;
+- (BOOL)processInserts:(id)inserts updates:(id)updates deletes:(id)deletes;
+- (HMCRedirector)initWithLabel:(id)label partition:(id)partition;
+- (id)addTarget:(id)target selector:(SEL)selector changeMask:(unint64_t)mask forChangesOfObjectsWithModelType:(id)type forChangesOfObjectsWithModelID:(id)d;
+- (id)addTarget:(id)target selector:(SEL)selector changeMask:(unint64_t)mask forChangesOfObjectsWithModelType:(id)type forChangesOfObjectsWithModelID:(id)d error:(id *)error;
+- (void)removeRegistrationForChangeOfObjectsOfModelType:(id)type forChangesOfObjectsWithModelID:(id)d;
 @end
 
 @implementation HMCRedirector
@@ -66,23 +66,23 @@ void __29__HMCRedirector_removeTuple___block_invoke_5(uint64_t a1, void *a2, voi
   }
 }
 
-- (void)removeRegistrationForChangeOfObjectsOfModelType:(id)a3 forChangesOfObjectsWithModelID:(id)a4
+- (void)removeRegistrationForChangeOfObjectsOfModelType:(id)type forChangesOfObjectsWithModelID:(id)d
 {
-  v9 = a3;
-  v6 = a4;
+  typeCopy = type;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
-  v7 = [MEMORY[0x277CBEB98] setWithArray:v9];
-  v8 = [MEMORY[0x277CBEB98] setWithArray:v6];
+  v7 = [MEMORY[0x277CBEB98] setWithArray:typeCopy];
+  v8 = [MEMORY[0x277CBEB98] setWithArray:dCopy];
   __removeRegistrations(self, v7, v8);
 
   os_unfair_lock_unlock(&self->_lock.lock);
 }
 
-- (BOOL)processInserts:(id)a3 updates:(id)a4 deletes:(id)a5
+- (BOOL)processInserts:(id)inserts updates:(id)updates deletes:(id)deletes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  insertsCopy = inserts;
+  updatesCopy = updates;
+  deletesCopy = deletes;
   v33 = 0;
   v31 = 0;
   v32 = 0;
@@ -100,7 +100,7 @@ void __29__HMCRedirector_removeTuple___block_invoke_5(uint64_t a1, void *a2, voi
   }
 
   v13 = insertClass;
-  _binChanges(WeakRetained, &v33, v8, v13, 0);
+  _binChanges(WeakRetained, &v33, insertsCopy, v13, 0);
 
   if (self)
   {
@@ -115,7 +115,7 @@ void __29__HMCRedirector_removeTuple___block_invoke_5(uint64_t a1, void *a2, voi
   }
 
   v16 = updateModelID;
-  _binChanges(WeakRetained, &v32, v9, v14, v16);
+  _binChanges(WeakRetained, &v32, updatesCopy, v14, v16);
 
   if (self)
   {
@@ -130,7 +130,7 @@ void __29__HMCRedirector_removeTuple___block_invoke_5(uint64_t a1, void *a2, voi
   }
 
   v19 = deleteModelID;
-  _binChanges(WeakRetained, &v31, v10, v17, v19);
+  _binChanges(WeakRetained, &v31, deletesCopy, v17, v19);
 
   os_unfair_lock_unlock(&self->_lock.lock);
   v20 = (v33 | v32 | v31);
@@ -289,14 +289,14 @@ void __48__HMCRedirector_processInserts_updates_deletes___block_invoke_3(uint64_
   }
 }
 
-- (id)addTarget:(id)a3 selector:(SEL)a4 changeMask:(unint64_t)a5 forChangesOfObjectsWithModelType:(id)a6 forChangesOfObjectsWithModelID:(id)a7 error:(id *)a8
+- (id)addTarget:(id)target selector:(SEL)selector changeMask:(unint64_t)mask forChangesOfObjectsWithModelType:(id)type forChangesOfObjectsWithModelID:(id)d error:(id *)error
 {
-  v14 = a3;
-  v15 = a6;
-  v26 = a7;
+  targetCopy = target;
+  typeCopy = type;
+  dCopy = d;
   v16 = [HMCRedirectorTuple alloc];
-  v17 = self;
-  v18 = v14;
+  selfCopy = self;
+  v18 = targetCopy;
   if (v16)
   {
     v39.receiver = v16;
@@ -306,40 +306,40 @@ void __48__HMCRedirector_processInserts_updates_deletes___block_invoke_3(uint64_
     {
       if (objc_opt_respondsToSelector())
       {
-        v14 = [v18 methodSignatureForSelector:a4];
-        if ([v14 numberOfArguments] != 3)
+        targetCopy = [v18 methodSignatureForSelector:selector];
+        if ([targetCopy numberOfArguments] != 3)
         {
 LABEL_23:
           _HMFPreconditionFailure();
           goto LABEL_24;
         }
 
-        if (*[v14 getArgumentTypeAtIndex:0] != 64)
+        if (*[targetCopy getArgumentTypeAtIndex:0] != 64)
         {
 LABEL_24:
           _HMFPreconditionFailure();
           goto LABEL_25;
         }
 
-        if (*[v14 getArgumentTypeAtIndex:1] != 58)
+        if (*[targetCopy getArgumentTypeAtIndex:1] != 58)
         {
 LABEL_25:
           _HMFPreconditionFailure();
 LABEL_26:
           v25 = _HMFPreconditionFailure();
-          os_unfair_lock_unlock(&v14[v17]);
+          os_unfair_lock_unlock(&targetCopy[selfCopy]);
           _Unwind_Resume(v25);
         }
 
-        if (*[v14 getArgumentTypeAtIndex:2] != 64)
+        if (*[targetCopy getArgumentTypeAtIndex:2] != 64)
         {
           goto LABEL_26;
         }
 
-        if (*[v14 methodReturnType] == 118 && !*(objc_msgSend(v14, "methodReturnType") + 1))
+        if (*[targetCopy methodReturnType] == 118 && !*(objc_msgSend(targetCopy, "methodReturnType") + 1))
         {
-          objc_storeWeak(&v16->_owner, v17);
-          v16->_selector = a4;
+          objc_storeWeak(&v16->_owner, selfCopy);
+          v16->_selector = selector;
           objc_storeWeak(&v16->_target, v18);
 
           goto LABEL_11;
@@ -360,12 +360,12 @@ LABEL_11:
   v36[1] = 3221225472;
   v36[2] = __117__HMCRedirector_addTarget_selector_changeMask_forChangesOfObjectsWithModelType_forChangesOfObjectsWithModelID_error___block_invoke;
   v36[3] = &unk_278688000;
-  v38 = a5;
-  v36[4] = v17;
+  maskCopy = mask;
+  v36[4] = selfCopy;
   v19 = v16;
   v37 = v19;
-  [v15 hmf_enumerateWithAutoreleasePoolUsingBlock:v36];
-  if (a8 && *a8)
+  [typeCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v36];
+  if (error && *error)
   {
     goto LABEL_16;
   }
@@ -374,16 +374,16 @@ LABEL_11:
   v33[1] = 3221225472;
   v33[2] = __117__HMCRedirector_addTarget_selector_changeMask_forChangesOfObjectsWithModelType_forChangesOfObjectsWithModelID_error___block_invoke_150;
   v33[3] = &unk_278688028;
-  v35 = a5;
-  v33[4] = v17;
+  maskCopy2 = mask;
+  v33[4] = selfCopy;
   v20 = v19;
   v34 = v20;
-  [v26 hmf_enumerateWithAutoreleasePoolUsingBlock:v33];
-  if (a8 && *a8)
+  [dCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v33];
+  if (error && *error)
   {
 
 LABEL_16:
-    os_unfair_lock_unlock(&v17->_lock.lock);
+    os_unfair_lock_unlock(&selfCopy->_lock.lock);
     v21 = 0;
     goto LABEL_18;
   }
@@ -392,22 +392,22 @@ LABEL_16:
   v30[1] = 3221225472;
   v30[2] = __117__HMCRedirector_addTarget_selector_changeMask_forChangesOfObjectsWithModelType_forChangesOfObjectsWithModelID_error___block_invoke_152;
   v30[3] = &unk_278688000;
-  v32 = a5;
-  v30[4] = v17;
+  maskCopy3 = mask;
+  v30[4] = selfCopy;
   v22 = v20;
   v31 = v22;
-  [v15 hmf_enumerateWithAutoreleasePoolUsingBlock:v30];
+  [typeCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v30];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __117__HMCRedirector_addTarget_selector_changeMask_forChangesOfObjectsWithModelType_forChangesOfObjectsWithModelID_error___block_invoke_2;
   v27[3] = &unk_278688028;
-  v29 = a5;
-  v27[4] = v17;
+  maskCopy4 = mask;
+  v27[4] = selfCopy;
   v23 = v22;
   v28 = v23;
-  [v26 hmf_enumerateWithAutoreleasePoolUsingBlock:v27];
+  [dCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v27];
 
-  os_unfair_lock_unlock(&v17->_lock.lock);
+  os_unfair_lock_unlock(&selfCopy->_lock.lock);
   v21 = v23;
 LABEL_18:
 
@@ -745,35 +745,35 @@ void __117__HMCRedirector_addTarget_selector_changeMask_forChangesOfObjectsWithM
   }
 }
 
-- (id)addTarget:(id)a3 selector:(SEL)a4 changeMask:(unint64_t)a5 forChangesOfObjectsWithModelType:(id)a6 forChangesOfObjectsWithModelID:(id)a7
+- (id)addTarget:(id)target selector:(SEL)selector changeMask:(unint64_t)mask forChangesOfObjectsWithModelType:(id)type forChangesOfObjectsWithModelID:(id)d
 {
   v38 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  targetCopy = target;
+  typeCopy = type;
+  dCopy = d;
   v25 = 0;
-  v15 = [(HMCRedirector *)self addTarget:v12 selector:a4 changeMask:a5 forChangesOfObjectsWithModelType:v13 forChangesOfObjectsWithModelID:v14 error:&v25];
+  v15 = [(HMCRedirector *)self addTarget:targetCopy selector:selector changeMask:mask forChangesOfObjectsWithModelType:typeCopy forChangesOfObjectsWithModelID:dCopy error:&v25];
   v16 = v25;
   if (!v15)
   {
     v19 = v16;
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       v23 = HMFGetLogIdentifier();
-      v24 = NSStringFromSelector(a4);
+      v24 = NSStringFromSelector(selector);
       *buf = 138544642;
       v27 = v23;
       v28 = 2112;
-      v29 = v12;
+      v29 = targetCopy;
       v30 = 2112;
       v31 = v24;
       v32 = 2112;
-      v33 = v13;
+      v33 = typeCopy;
       v34 = 2112;
-      v35 = v14;
+      v35 = dCopy;
       v36 = 2112;
       v37 = v19;
       _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_ERROR, "%{public}@Unable to register %@ / %@ for changes of objects %@ and IDs %@: %@", buf, 0x3Eu);
@@ -788,38 +788,38 @@ void __117__HMCRedirector_addTarget_selector_changeMask_forChangesOfObjectsWithM
   return v15;
 }
 
-- (HMCRedirector)initWithLabel:(id)a3 partition:(id)a4
+- (HMCRedirector)initWithLabel:(id)label partition:(id)partition
 {
-  v7 = a3;
-  v8 = a4;
+  labelCopy = label;
+  partitionCopy = partition;
   v22.receiver = self;
   v22.super_class = HMCRedirector;
   v9 = [(HMCRedirector *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_label, a3);
-    v11 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    objc_storeStrong(&v9->_label, label);
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     insertClass = v10->_insertClass;
-    v10->_insertClass = v11;
+    v10->_insertClass = strongToWeakObjectsMapTable;
 
-    v13 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     updateClass = v10->_updateClass;
-    v10->_updateClass = v13;
+    v10->_updateClass = strongToWeakObjectsMapTable2;
 
-    v15 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable3 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     updateModelID = v10->_updateModelID;
-    v10->_updateModelID = v15;
+    v10->_updateModelID = strongToWeakObjectsMapTable3;
 
-    v17 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable4 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     deleteClass = v10->_deleteClass;
-    v10->_deleteClass = v17;
+    v10->_deleteClass = strongToWeakObjectsMapTable4;
 
-    v19 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable5 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     deleteModelID = v10->_deleteModelID;
-    v10->_deleteModelID = v19;
+    v10->_deleteModelID = strongToWeakObjectsMapTable5;
 
-    objc_storeWeak(&v10->_partition, v8);
+    objc_storeWeak(&v10->_partition, partitionCopy);
     v10->_lock.lock._os_unfair_lock_opaque = 0;
   }
 

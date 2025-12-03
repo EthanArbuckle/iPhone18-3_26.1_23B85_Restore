@@ -1,14 +1,14 @@
 @interface AWDSafariCKBookmarksSyncEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSafariCKBookmarksSyncEvent
@@ -22,9 +22,9 @@
   [(AWDSafariCKBookmarksSyncEvent *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -46,35 +46,35 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_result), @"result"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_result), @"result"}];
   }
 
   errorDomain = self->_errorDomain;
   if (errorDomain)
   {
-    [v3 setObject:errorDomain forKey:@"errorDomain"];
+    [dictionary setObject:errorDomain forKey:@"errorDomain"];
   }
 
   errorCode = self->_errorCode;
   if (errorCode)
   {
-    [v3 setObject:errorCode forKey:@"errorCode"];
+    [dictionary setObject:errorCode forKey:@"errorCode"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -102,37 +102,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = self->_timestamp;
-    *(a3 + 40) |= 2u;
+    *(to + 2) = self->_timestamp;
+    *(to + 40) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(a3 + 1) = self->_result;
-    *(a3 + 40) |= 1u;
+    *(to + 1) = self->_result;
+    *(to + 40) |= 1u;
   }
 
   if (self->_errorDomain)
   {
-    [a3 setErrorDomain:?];
+    [to setErrorDomain:?];
   }
 
   if (self->_errorCode)
   {
 
-    [a3 setErrorCode:?];
+    [to setErrorCode:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -148,26 +148,26 @@
     *(v5 + 40) |= 1u;
   }
 
-  *(v6 + 32) = [(NSString *)self->_errorDomain copyWithZone:a3];
-  *(v6 + 24) = [(NSString *)self->_errorCode copyWithZone:a3];
+  *(v6 + 32) = [(NSString *)self->_errorDomain copyWithZone:zone];
+  *(v6 + 24) = [(NSString *)self->_errorCode copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 40);
+    v6 = *(equal + 40);
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 40) & 2) == 0 || self->_timestamp != *(a3 + 2))
+      if ((*(equal + 40) & 2) == 0 || self->_timestamp != *(equal + 2))
       {
         goto LABEL_16;
       }
     }
 
-    else if ((*(a3 + 40) & 2) != 0)
+    else if ((*(equal + 40) & 2) != 0)
     {
 LABEL_16:
       LOBYTE(v5) = 0;
@@ -176,22 +176,22 @@ LABEL_16:
 
     if (*&self->_has)
     {
-      if ((*(a3 + 40) & 1) == 0 || self->_result != *(a3 + 1))
+      if ((*(equal + 40) & 1) == 0 || self->_result != *(equal + 1))
       {
         goto LABEL_16;
       }
     }
 
-    else if (*(a3 + 40))
+    else if (*(equal + 40))
     {
       goto LABEL_16;
     }
 
     errorDomain = self->_errorDomain;
-    if (!(errorDomain | *(a3 + 4)) || (v5 = [(NSString *)errorDomain isEqual:?]) != 0)
+    if (!(errorDomain | *(equal + 4)) || (v5 = [(NSString *)errorDomain isEqual:?]) != 0)
     {
       errorCode = self->_errorCode;
-      if (errorCode | *(a3 + 3))
+      if (errorCode | *(equal + 3))
       {
 
         LOBYTE(v5) = [(NSString *)errorCode isEqual:?];
@@ -235,28 +235,28 @@ LABEL_6:
   return v5 ^ [(NSString *)self->_errorCode hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 2u;
-    v5 = *(a3 + 40);
+    v5 = *(from + 40);
   }
 
   if (v5)
   {
-    self->_result = *(a3 + 1);
+    self->_result = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDSafariCKBookmarksSyncEvent *)self setErrorDomain:?];
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
 
     [(AWDSafariCKBookmarksSyncEvent *)self setErrorCode:?];

@@ -1,20 +1,20 @@
 @interface UITextSuggestionWithAction
 - (SEL)action;
-- (void)performActionWihSender:(id)a3;
-- (void)setAction:(SEL)a3;
+- (void)performActionWihSender:(id)sender;
+- (void)setAction:(SEL)action;
 @end
 
 @implementation UITextSuggestionWithAction
 
-- (void)performActionWihSender:(id)a3
+- (void)performActionWihSender:(id)sender
 {
-  v4 = [(UITextSuggestionWithAction *)self target];
-  if (v4)
+  target = [(UITextSuggestionWithAction *)self target];
+  if (target)
   {
-    v8 = v4;
+    target3 = target;
     if ([(UITextSuggestionWithAction *)self action])
     {
-      v5 = [(UITextSuggestionWithAction *)self target];
+      target2 = [(UITextSuggestionWithAction *)self target];
       [(UITextSuggestionWithAction *)self action];
       v6 = objc_opt_respondsToSelector();
 
@@ -23,20 +23,20 @@
         return;
       }
 
-      v8 = [(UITextSuggestionWithAction *)self target];
-      v7 = [(UITextSuggestionWithAction *)self action];
+      target3 = [(UITextSuggestionWithAction *)self target];
+      action = [(UITextSuggestionWithAction *)self action];
       if (dyld_program_sdk_at_least())
       {
-        [v8 v7];
+        [target3 action];
       }
 
       else
       {
-        [v8 performSelector:v7 withObject:self];
+        [target3 performSelector:action withObject:self];
       }
     }
 
-    v4 = v8;
+    target = target3;
   }
 }
 
@@ -53,19 +53,19 @@
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v3;
+  self->_action = actionCopy;
 }
 
 @end

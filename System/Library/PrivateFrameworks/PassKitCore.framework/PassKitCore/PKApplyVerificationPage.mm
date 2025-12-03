@@ -1,48 +1,48 @@
 @interface PKApplyVerificationPage
-- (PKApplyVerificationPage)initWithDictionary:(id)a3 type:(unint64_t)a4 codeLength:(unint64_t)a5 fieldOptions:(id)a6;
-- (PKApplyVerificationPage)initWithDictonary:(id)a3;
+- (PKApplyVerificationPage)initWithDictionary:(id)dictionary type:(unint64_t)type codeLength:(unint64_t)length fieldOptions:(id)options;
+- (PKApplyVerificationPage)initWithDictonary:(id)dictonary;
 @end
 
 @implementation PKApplyVerificationPage
 
-- (PKApplyVerificationPage)initWithDictonary:(id)a3
+- (PKApplyVerificationPage)initWithDictonary:(id)dictonary
 {
-  v4 = a3;
-  v5 = [v4 PKStringForKey:@"verificationType"];
+  dictonaryCopy = dictonary;
+  v5 = [dictonaryCopy PKStringForKey:@"verificationType"];
   v6 = PKApplyVerificationTypeFromString(v5);
 
-  v7 = -[PKApplyVerificationPage initWithDictionary:type:codeLength:fieldOptions:](self, "initWithDictionary:type:codeLength:fieldOptions:", v4, v6, [v4 PKIntegerForKey:@"verificationCodeLength"], 0);
+  v7 = -[PKApplyVerificationPage initWithDictionary:type:codeLength:fieldOptions:](self, "initWithDictionary:type:codeLength:fieldOptions:", dictonaryCopy, v6, [dictonaryCopy PKIntegerForKey:@"verificationCodeLength"], 0);
   return v7;
 }
 
-- (PKApplyVerificationPage)initWithDictionary:(id)a3 type:(unint64_t)a4 codeLength:(unint64_t)a5 fieldOptions:(id)a6
+- (PKApplyVerificationPage)initWithDictionary:(id)dictionary type:(unint64_t)type codeLength:(unint64_t)length fieldOptions:(id)options
 {
-  v10 = a3;
-  v11 = a6;
-  if (a4)
+  dictionaryCopy = dictionary;
+  optionsCopy = options;
+  if (type)
   {
-    if (a4 != 1 || a5)
+    if (type != 1 || length)
     {
       v14.receiver = self;
       v14.super_class = PKApplyVerificationPage;
-      v12 = [(PKDynamicProvisioningFieldsPageContent *)&v14 initWithDictionary:v10 fieldOptions:v11 businessChatIdentifier:0];
+      v12 = [(PKDynamicProvisioningFieldsPageContent *)&v14 initWithDictionary:dictionaryCopy fieldOptions:optionsCopy businessChatIdentifier:0];
       if (v12)
       {
-        v12->_verificationType = a4;
-        v12->_verificationCodeLength = a5;
+        v12->_verificationType = type;
+        v12->_verificationCodeLength = length;
       }
 
       self = v12;
-      a5 = self;
+      length = self;
     }
   }
 
   else
   {
-    a5 = 0;
+    length = 0;
   }
 
-  return a5;
+  return length;
 }
 
 @end

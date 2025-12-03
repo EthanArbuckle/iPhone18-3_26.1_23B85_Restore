@@ -1,12 +1,12 @@
 @interface CMOutlineState
 - (CMOutlineState)init;
-- (CMOutlineState)initWithListDefinition:(id)a3;
-- (id)levelDescriptionAtIndex:(unsigned __int8)a3;
-- (unint64_t)counterAtLevel:(unsigned __int8)a3;
+- (CMOutlineState)initWithListDefinition:(id)definition;
+- (id)levelDescriptionAtIndex:(unsigned __int8)index;
+- (unint64_t)counterAtLevel:(unsigned __int8)level;
 - (unint64_t)levelCount;
-- (void)increaseCounterAtLevel:(unsigned __int8)a3;
+- (void)increaseCounterAtLevel:(unsigned __int8)level;
 - (void)reset;
-- (void)setCounterTo:(unint64_t)a3 atLevel:(unsigned __int8)a4;
+- (void)setCounterTo:(unint64_t)to atLevel:(unsigned __int8)level;
 @end
 
 @implementation CMOutlineState
@@ -53,16 +53,16 @@
   }
 }
 
-- (CMOutlineState)initWithListDefinition:(id)a3
+- (CMOutlineState)initWithListDefinition:(id)definition
 {
-  v5 = a3;
+  definitionCopy = definition;
   v11.receiver = self;
   v11.super_class = CMOutlineState;
   v6 = [(CMOutlineState *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listDefinition, a3);
+    objc_storeStrong(&v6->_listDefinition, definition);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     counters = v7->_counters;
     v7->_counters = v8;
@@ -87,32 +87,32 @@
   }
 }
 
-- (void)setCounterTo:(unint64_t)a3 atLevel:(unsigned __int8)a4
+- (void)setCounterTo:(unint64_t)to atLevel:(unsigned __int8)level
 {
-  if ([(CMOutlineState *)self levelCount]> a4)
+  if ([(CMOutlineState *)self levelCount]> level)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:to];
     [NSMutableArray setObject:"setObject:atIndexedSubscript:" atIndexedSubscript:?];
   }
 }
 
-- (unint64_t)counterAtLevel:(unsigned __int8)a3
+- (unint64_t)counterAtLevel:(unsigned __int8)level
 {
-  v3 = a3;
-  if ([(CMOutlineState *)self levelCount]<= a3)
+  levelCopy = level;
+  if ([(CMOutlineState *)self levelCount]<= level)
   {
     return 0;
   }
 
-  v5 = [(NSMutableArray *)self->_counters objectAtIndexedSubscript:v3];
-  v6 = [v5 unsignedIntegerValue];
+  v5 = [(NSMutableArray *)self->_counters objectAtIndexedSubscript:levelCopy];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
-- (id)levelDescriptionAtIndex:(unsigned __int8)a3
+- (id)levelDescriptionAtIndex:(unsigned __int8)index
 {
-  v3 = a3;
+  indexCopy = index;
   v5 = [(WDList *)self->_currentList levelOverrideForLevel:?];
   if ([v5 isListLevelOverridden])
   {
@@ -121,46 +121,46 @@
 
   else
   {
-    [(WDListDefinition *)self->_listDefinition levelAt:v3];
+    [(WDListDefinition *)self->_listDefinition levelAt:indexCopy];
   }
   v6 = ;
 
   return v6;
 }
 
-- (void)increaseCounterAtLevel:(unsigned __int8)a3
+- (void)increaseCounterAtLevel:(unsigned __int8)level
 {
-  v3 = a3;
-  if ([(CMOutlineState *)self levelCount]> a3 && [(CMOutlineState *)self levelCount])
+  levelCopy = level;
+  if ([(CMOutlineState *)self levelCount]> level && [(CMOutlineState *)self levelCount])
   {
     for (i = 0; [(CMOutlineState *)self levelCount]> i; ++i)
     {
       v6 = [(CMOutlineState *)self levelDescriptionAtIndex:i];
-      if (i >= v3 || (-[NSMutableArray objectAtIndexedSubscript:](self->_counters, "objectAtIndexedSubscript:", i), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 intValue], v9 = objc_msgSend(v6, "startNumber"), v7, v9 <= v8))
+      if (i >= levelCopy || (-[NSMutableArray objectAtIndexedSubscript:](self->_counters, "objectAtIndexedSubscript:", i), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 intValue], v9 = objc_msgSend(v6, "startNumber"), v7, v9 <= v8))
       {
-        if (v3 == i)
+        if (levelCopy == i)
         {
           v11 = MEMORY[0x277CCABB0];
-          v10 = [(NSMutableArray *)self->_counters objectAtIndexedSubscript:v3];
+          v10 = [(NSMutableArray *)self->_counters objectAtIndexedSubscript:levelCopy];
           v12 = [v11 numberWithInt:{objc_msgSend(v10, "intValue") + 1}];
-          [(NSMutableArray *)self->_counters setObject:v12 atIndexedSubscript:v3];
+          [(NSMutableArray *)self->_counters setObject:v12 atIndexedSubscript:levelCopy];
         }
 
         else
         {
-          if (i <= v3)
+          if (i <= levelCopy)
           {
             goto LABEL_16;
           }
 
-          v13 = [v6 restartLevelOverridden];
-          v14 = i;
-          if (v13)
+          restartLevelOverridden = [v6 restartLevelOverridden];
+          restartLevel = i;
+          if (restartLevelOverridden)
           {
-            v14 = [v6 restartLevel];
+            restartLevel = [v6 restartLevel];
           }
 
-          if (v14 <= v3)
+          if (restartLevel <= levelCopy)
           {
             goto LABEL_16;
           }

@@ -1,28 +1,28 @@
 @interface UIWebRotatingNodePopover
 - (CGPoint)presentationPoint;
-- (UIWebRotatingNodePopover)initWithDOMNode:(id)a3;
+- (UIWebRotatingNodePopover)initWithDOMNode:(id)node;
 - (void)dealloc;
-- (void)popoverControllerDidDismissPopover:(id)a3;
-- (void)presentPopoverAnimated:(BOOL)a3;
-- (void)setPopoverController:(id)a3;
+- (void)popoverControllerDidDismissPopover:(id)popover;
+- (void)presentPopoverAnimated:(BOOL)animated;
+- (void)setPopoverController:(id)controller;
 @end
 
 @implementation UIWebRotatingNodePopover
 
-- (UIWebRotatingNodePopover)initWithDOMNode:(id)a3
+- (UIWebRotatingNodePopover)initWithDOMNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v10.receiver = self;
   v10.super_class = UIWebRotatingNodePopover;
   v5 = [(UIWebRotatingNodePopover *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(UIWebRotatingNodePopover *)v5 setNode:v4];
+    [(UIWebRotatingNodePopover *)v5 setNode:nodeCopy];
     [(UIWebRotatingNodePopover *)v6 setPresentationPoint:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v6 selector:sel_willRotate_ name:@"UIWindowWillRotateNotification" object:0];
-    [v7 addObserver:v6 selector:sel_didRotate_ name:@"UIWindowDidRotateNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_willRotate_ name:@"UIWindowWillRotateNotification" object:0];
+    [defaultCenter addObserver:v6 selector:sel_didRotate_ name:@"UIWindowDidRotateNotification" object:0];
     v8 = v6;
   }
 
@@ -36,40 +36,40 @@
   [(UIPopoverController *)self->_popoverController dismissPopoverAnimated:1];
   [(UIPopoverController *)self->_popoverController setDelegate:0];
   [(UIWebRotatingNodePopover *)self setPopoverController:0];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = @"UIWindowWillRotateNotification";
   v6[1] = @"UIWindowDidRotateNotification";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:2];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   v5.receiver = self;
   v5.super_class = UIWebRotatingNodePopover;
   [(UIWebRotatingNodePopover *)&v5 dealloc];
 }
 
-- (void)setPopoverController:(id)a3
+- (void)setPopoverController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   popoverController = self->_popoverController;
-  if (popoverController != v5)
+  if (popoverController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(UIPopoverController *)popoverController setDelegate:0];
-    objc_storeStrong(&self->_popoverController, a3);
+    objc_storeStrong(&self->_popoverController, controller);
     [(UIPopoverController *)self->_popoverController setDelegate:self];
-    v5 = v7;
+    controllerCopy = v7;
   }
 }
 
-- (void)presentPopoverAnimated:(BOOL)a3
+- (void)presentPopoverAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   WebThreadLock();
-  v5 = [(DOMNode *)self->_node ownerDocument];
-  v6 = [v5 webFrame];
+  ownerDocument = [(DOMNode *)self->_node ownerDocument];
+  webFrame = [ownerDocument webFrame];
 
-  v7 = [UIWebBrowserView getUIWebBrowserViewForWebFrame:v6];
-  v8 = [(UIWebRotatingNodePopover *)self popoverArrowDirections];
+  v7 = [UIWebBrowserView getUIWebBrowserViewForWebFrame:webFrame];
+  popoverArrowDirections = [(UIWebRotatingNodePopover *)self popoverArrowDirections];
   [(UIPopoverController *)self->_popoverController _setAllowsPopoverPresentationToAdapt:0];
   [(UIWebRotatingNodePopover *)self presentationPoint];
   if (v10 == *MEMORY[0x1E695EFF8] && v9 == *(MEMORY[0x1E695EFF8] + 8))
@@ -88,7 +88,7 @@
       v22 = 0u;
     }
 
-    [v7 convertRect:v6 fromFrame:quadBoundingBox(&v21)];
+    [v7 convertRect:webFrame fromFrame:quadBoundingBox(&v21)];
     popoverController = self->_popoverController;
     v26 = CGRectIntegral(v27);
     v18 = popoverController;
@@ -110,10 +110,10 @@
     v18 = v14;
   }
 
-  [(UIPopoverController *)v18 presentPopoverFromRect:v7 inView:v8 permittedArrowDirections:v3 animated:v26.origin.x, v26.origin.y, v26.size.width, v26.size.height, v21, v22, v23, v24];
+  [(UIPopoverController *)v18 presentPopoverFromRect:v7 inView:popoverArrowDirections permittedArrowDirections:animatedCopy animated:v26.origin.x, v26.origin.y, v26.size.width, v26.size.height, v21, v22, v23, v24];
 }
 
-- (void)popoverControllerDidDismissPopover:(id)a3
+- (void)popoverControllerDidDismissPopover:(id)popover
 {
   if (!self->_isRotating)
   {

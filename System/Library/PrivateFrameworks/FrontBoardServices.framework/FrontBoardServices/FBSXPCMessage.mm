@@ -1,12 +1,12 @@
 @interface FBSXPCMessage
 + (id)message;
-+ (id)messageWithBSXPCMessage:(id)a3 ownReply:(BOOL)a4;
-+ (id)messageWithPacker:(id)a3;
-+ (id)messageWithPayload:(id)a3;
++ (id)messageWithBSXPCMessage:(id)message ownReply:(BOOL)reply;
++ (id)messageWithPacker:(id)packer;
++ (id)messageWithPayload:(id)payload;
 - (FBSXPCMessage)init;
-- (FBSXPCMessage)initWithMessagePacker:(id)a3;
-- (FBSXPCMessage)initWithMessagePayload:(id)a3;
-- (void)sendReplyMessageWithPacker:(id)a3;
+- (FBSXPCMessage)initWithMessagePacker:(id)packer;
+- (FBSXPCMessage)initWithMessagePayload:(id)payload;
+- (void)sendReplyMessageWithPacker:(id)packer;
 @end
 
 @implementation FBSXPCMessage
@@ -21,67 +21,67 @@
 
 + (id)message
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)messageWithPayload:(id)a3
++ (id)messageWithPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [[FBSXPCMessage alloc] initWithMessagePayload:v3];
+  payloadCopy = payload;
+  v4 = [[FBSXPCMessage alloc] initWithMessagePayload:payloadCopy];
 
   return v4;
 }
 
-+ (id)messageWithPacker:(id)a3
++ (id)messageWithPacker:(id)packer
 {
-  v3 = a3;
-  v4 = [[FBSXPCMessage alloc] initWithMessagePacker:v3];
+  packerCopy = packer;
+  v4 = [[FBSXPCMessage alloc] initWithMessagePacker:packerCopy];
 
   return v4;
 }
 
-+ (id)messageWithBSXPCMessage:(id)a3 ownReply:(BOOL)a4
++ (id)messageWithBSXPCMessage:(id)message ownReply:(BOOL)reply
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"fbs_message"];
+  replyCopy = reply;
+  messageCopy = message;
+  v6 = [messageCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"fbs_message"];
   v7 = [[FBSXPCMessage alloc] initWithMessagePayload:v6];
-  if (v4)
+  if (replyCopy)
   {
-    v8 = [v5 createReply];
+    createReply = [messageCopy createReply];
     reply = v7->_reply;
-    v7->_reply = v8;
+    v7->_reply = createReply;
   }
 
   return v7;
 }
 
-- (FBSXPCMessage)initWithMessagePayload:(id)a3
+- (FBSXPCMessage)initWithMessagePayload:(id)payload
 {
-  v5 = a3;
+  payloadCopy = payload;
   v9.receiver = self;
   v9.super_class = FBSXPCMessage;
   v6 = [(FBSXPCMessage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_payload, a3);
+    objc_storeStrong(&v6->_payload, payload);
   }
 
   return v7;
 }
 
-- (FBSXPCMessage)initWithMessagePacker:(id)a3
+- (FBSXPCMessage)initWithMessagePacker:(id)packer
 {
-  v5 = a3;
-  if (!v5)
+  packerCopy = packer;
+  if (!packerCopy)
   {
     [(FBSXPCMessage *)a2 initWithMessagePacker:?];
   }
 
-  v6 = v5;
+  v6 = packerCopy;
   v7 = [(FBSXPCMessage *)self init];
   v8 = v7;
   if (v7)
@@ -92,12 +92,12 @@
   return v8;
 }
 
-- (void)sendReplyMessageWithPacker:(id)a3
+- (void)sendReplyMessageWithPacker:(id)packer
 {
-  v4 = a3;
+  packerCopy = packer;
   if (self->_reply)
   {
-    v7 = v4;
+    v7 = packerCopy;
     v5 = xpc_dictionary_create(0, 0, 0);
     if (v7)
     {
@@ -109,7 +109,7 @@
     reply = self->_reply;
     self->_reply = 0;
 
-    v4 = v7;
+    packerCopy = v7;
   }
 }
 

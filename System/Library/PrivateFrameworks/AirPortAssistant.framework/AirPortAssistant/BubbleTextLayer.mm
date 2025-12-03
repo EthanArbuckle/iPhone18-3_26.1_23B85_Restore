@@ -1,7 +1,7 @@
 @interface BubbleTextLayer
-+ (BOOL)needsDisplayForKey:(id)a3;
++ (BOOL)needsDisplayForKey:(id)key;
 - (BOOL)isAnnotationBubble;
-- (BubbleTextLayer)initWithOwningView:(id)a3;
+- (BubbleTextLayer)initWithOwningView:(id)view;
 - (CGImage)image;
 - (CGRect)textFrame;
 - (CGSize)boundsSizeConstraint;
@@ -9,22 +9,22 @@
 - (CGSize)getImagePreferredSize;
 - (CGSize)getRightAccessoryLayerPreferredSize;
 - (CGSize)preferredFrameSize;
-- (CGSize)textPreferredFrameSizeForLayerSize:(CGSize)a3;
+- (CGSize)textPreferredFrameSizeForLayerSize:(CGSize)size;
 - (double)textBaselineOffset;
-- (void)addAnnotationPoint:(CGPoint)a3;
+- (void)addAnnotationPoint:(CGPoint)point;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 - (void)layoutSublayers;
-- (void)setBoundsSizeConstraint:(CGSize)a3;
-- (void)setFont:(id)a3;
-- (void)setImage:(CGImage *)a3;
-- (void)setOwningView:(id)a3;
-- (void)setRightAccessoryLayer:(id)a3;
+- (void)setBoundsSizeConstraint:(CGSize)constraint;
+- (void)setFont:(id)font;
+- (void)setImage:(CGImage *)image;
+- (void)setOwningView:(id)view;
+- (void)setRightAccessoryLayer:(id)layer;
 @end
 
 @implementation BubbleTextLayer
 
-- (BubbleTextLayer)initWithOwningView:(id)a3
+- (BubbleTextLayer)initWithOwningView:(id)view
 {
   v17.receiver = self;
   v17.super_class = BubbleTextLayer;
@@ -32,7 +32,7 @@
   v6 = v4;
   if (v4)
   {
-    objc_msgSend_setOwningView_(v4, v5, a3);
+    objc_msgSend_setOwningView_(v4, v5, view);
     objc_msgSend_setNeedsDisplayOnBoundsChange_(v6, v7, 1);
     v8 = sub_23EBFD680(0.0, 0.0, 0.0, 0.0);
     objc_msgSend_setFillColor_(v6, v9, v8);
@@ -90,18 +90,18 @@
   [(BubbleTextLayer *)&v7 dealloc];
 }
 
-- (void)addAnnotationPoint:(CGPoint)a3
+- (void)addAnnotationPoint:(CGPoint)point
 {
-  DictionaryRepresentation = CGPointCreateDictionaryRepresentation(a3);
+  DictionaryRepresentation = CGPointCreateDictionaryRepresentation(point);
   objc_msgSend_addObject_(self->_annotationPoints, v5, DictionaryRepresentation);
 
   objc_msgSend_setNeedsLayout(self, v6, v7);
 }
 
-- (void)setOwningView:(id)a3
+- (void)setOwningView:(id)view
 {
-  self->_owningView = a3;
-  v4 = objc_msgSend_mainScreen(MEMORY[0x277D759A0], a2, a3);
+  self->_owningView = view;
+  v4 = objc_msgSend_mainScreen(MEMORY[0x277D759A0], a2, view);
   objc_msgSend_scale(v4, v5, v6);
 
   MEMORY[0x2821F9670](self, sel_setContentsScale_, v7);
@@ -118,37 +118,37 @@
   return result;
 }
 
-- (void)setImage:(CGImage *)a3
+- (void)setImage:(CGImage *)image
 {
   if (!self->_leftImageLayer)
   {
-    v5 = objc_msgSend_layer(MEMORY[0x277CD9ED0], a2, a3);
+    v5 = objc_msgSend_layer(MEMORY[0x277CD9ED0], a2, image);
     self->_leftImageLayer = v5;
     objc_msgSend_addSublayer_(self, v6, v5);
   }
 
-  objc_msgSend_begin(MEMORY[0x277CD9FF0], a2, a3);
+  objc_msgSend_begin(MEMORY[0x277CD9FF0], a2, image);
   v7 = MEMORY[0x277CD9FF0];
   v10 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v8, v9, 0.0);
   objc_msgSend_setValue_forKey_(v7, v11, v10, *MEMORY[0x277CDA908]);
-  objc_msgSend_setContents_(self->_leftImageLayer, v12, a3);
+  objc_msgSend_setContents_(self->_leftImageLayer, v12, image);
   objc_msgSend_setNeedsLayout(self, v13, v14);
   v16 = MEMORY[0x277CD9FF0];
 
   MEMORY[0x2821F9670](v16, sel_commit, v15);
 }
 
-- (void)setRightAccessoryLayer:(id)a3
+- (void)setRightAccessoryLayer:(id)layer
 {
-  if (a3 && self->_rightAccessoryLayer != a3)
+  if (layer && self->_rightAccessoryLayer != layer)
   {
-    objc_msgSend_addSublayer_(self, a2, a3);
+    objc_msgSend_addSublayer_(self, a2, layer);
   }
 
   rightAccessoryLayer = self->_rightAccessoryLayer;
   if (rightAccessoryLayer)
   {
-    v6 = rightAccessoryLayer == a3;
+    v6 = rightAccessoryLayer == layer;
   }
 
   else
@@ -158,15 +158,15 @@
 
   if (!v6)
   {
-    objc_msgSend_removeFromSuperlayer(rightAccessoryLayer, a2, a3);
+    objc_msgSend_removeFromSuperlayer(rightAccessoryLayer, a2, layer);
   }
 
-  self->_rightAccessoryLayer = a3;
+  self->_rightAccessoryLayer = layer;
 
-  objc_msgSend_setNeedsLayout(self, a2, a3);
+  objc_msgSend_setNeedsLayout(self, a2, layer);
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   if (dword_27E382F28 <= 800)
   {
@@ -177,21 +177,21 @@
 
     if (dword_27E382F28 <= 800 && (dword_27E382F28 != -1 || sub_23EB74AC8(&dword_27E382F28, 0x320u)))
     {
-      sub_23EB75374(&dword_27E382F28, "[BubbleTextLayer setFont:]", 800, "%@\n", v3, v4, v5, v6, a3);
+      sub_23EB75374(&dword_27E382F28, "[BubbleTextLayer setFont:]", 800, "%@\n", v3, v4, v5, v6, font);
     }
   }
 
-  v9 = CFGetTypeID(a3);
+  v9 = CFGetTypeID(font);
   if (v9 == CGFontGetTypeID())
   {
     objc_msgSend_fontSize(self, v10, v11);
-    v13 = CTFontCreateWithGraphicsFont(a3, v12, 0, 0);
+    v13 = CTFontCreateWithGraphicsFont(font, v12, 0, 0);
   }
 
   else if (v9 == CFStringGetTypeID())
   {
     objc_msgSend_fontSize(self, v16, v17);
-    v13 = CTFontCreateWithName(a3, v18, 0);
+    v13 = CTFontCreateWithName(font, v18, 0);
   }
 
   else
@@ -201,7 +201,7 @@
       return;
     }
 
-    v13 = CFRetain(a3);
+    v13 = CFRetain(font);
   }
 
   v19 = v13;
@@ -219,10 +219,10 @@
   }
 }
 
-- (void)setBoundsSizeConstraint:(CGSize)a3
+- (void)setBoundsSizeConstraint:(CGSize)constraint
 {
-  height = a3.height;
-  width = a3.width;
+  height = constraint.height;
+  width = constraint.width;
   if (dword_27E382F28 <= 800 && (dword_27E382F28 != -1 || sub_23EB74AC8(&dword_27E382F28, 0x320u)))
   {
     sub_23EB75374(&dword_27E382F28, "[BubbleTextLayer setBoundsSizeConstraint:]", 800, "%@  constraint = (w = %.2f h = %.2f)\n", v4, v5, v6, v7, self);
@@ -310,10 +310,10 @@
   return annotationPoints;
 }
 
-- (CGSize)textPreferredFrameSizeForLayerSize:(CGSize)a3
+- (CGSize)textPreferredFrameSizeForLayerSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   objc_msgSend_string(self, a2, v3);
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -650,35 +650,35 @@ LABEL_19:
   }
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   if (dword_27E382F28 <= 800 && (dword_27E382F28 != -1 || sub_23EB74AC8(&dword_27E382F28, 0x320u)))
   {
     sub_23EB75374(&dword_27E382F28, "[BubbleTextLayer drawInContext:]", 800, "\n", v3, v4, v5, v6, v47);
   }
 
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   if (objc_msgSend_isAnnotationBubble(self, v9, v10))
   {
-    sub_23EBFD864(a3, self->_bubbleFrame.origin.x, self->_bubbleFrame.origin.y, self->_bubbleFrame.size.width, self->_bubbleFrame.size.height, self->_bubbleFrame.size.height * 0.5, 16.0);
+    sub_23EBFD864(context, self->_bubbleFrame.origin.x, self->_bubbleFrame.origin.y, self->_bubbleFrame.size.width, self->_bubbleFrame.size.height, self->_bubbleFrame.size.height * 0.5, 16.0);
   }
 
   else
   {
-    sub_23EBFDA80(a3, self->_bubbleFrame.origin.x, self->_bubbleFrame.origin.y, self->_bubbleFrame.size.width, self->_bubbleFrame.size.height, self->_bubbleFrame.size.height * 0.5);
+    sub_23EBFDA80(context, self->_bubbleFrame.origin.x, self->_bubbleFrame.origin.y, self->_bubbleFrame.size.width, self->_bubbleFrame.size.height, self->_bubbleFrame.size.height * 0.5);
   }
 
-  CGContextClosePath(a3);
+  CGContextClosePath(context);
   generalShadowColor = self->_generalShadowColor;
   if (generalShadowColor)
   {
     v48.width = 0.0;
     v48.height = 1.0;
-    CGContextSetShadowWithColor(a3, v48, 1.0, generalShadowColor);
+    CGContextSetShadowWithColor(context, v48, 1.0, generalShadowColor);
   }
 
   p_bubbleFrame = &self->_bubbleFrame;
-  CGContextBeginTransparencyLayerWithRect(a3, self->_bubbleFrame, 0);
+  CGContextBeginTransparencyLayerWithRect(context, self->_bubbleFrame, 0);
   if (objc_msgSend_fillColor(self, v13, v14) && objc_msgSend_fillColor2(self, v15, v16))
   {
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
@@ -687,7 +687,7 @@ LABEL_19:
     v24 = objc_msgSend_fillColor2(self, v22, v23);
     v26 = objc_msgSend_arrayWithObjects_(v18, v25, v21, v24, 0);
     v27 = CGGradientCreateWithColors(DeviceRGB, v26, 0);
-    CGContextClip(a3);
+    CGContextClip(context);
     v55.origin.x = p_bubbleFrame->origin.x;
     v55.origin.y = self->_bubbleFrame.origin.y;
     v55.size.width = self->_bubbleFrame.size.width;
@@ -706,7 +706,7 @@ LABEL_19:
     v49.y = 0.0;
     v49.x = MidX;
     v54.x = v29;
-    CGContextDrawLinearGradient(a3, v27, v49, v54, 0);
+    CGContextDrawLinearGradient(context, v27, v49, v54, 0);
     CGGradientRelease(v27);
     CGColorSpaceRelease(DeviceRGB);
   }
@@ -714,36 +714,36 @@ LABEL_19:
   else
   {
     v30 = objc_msgSend_fillColor(self, v15, v16);
-    CGContextSetFillColorWithColor(a3, v30);
-    CGContextDrawPath(a3, kCGPathFill);
+    CGContextSetFillColorWithColor(context, v30);
+    CGContextDrawPath(context, kCGPathFill);
   }
 
-  CGContextEndTransparencyLayer(a3);
+  CGContextEndTransparencyLayer(context);
   v50.width = 0.0;
   v50.height = 0.0;
-  CGContextSetShadowWithColor(a3, v50, 0.0, 0);
+  CGContextSetShadowWithColor(context, v50, 0.0, 0);
   objc_msgSend_frameWidth(self, v31, v32);
   if (v35 != 0.0 && objc_msgSend_frameColor(self, v33, v34))
   {
     objc_msgSend_frameWidth(self, v36, v37);
-    CGContextSetLineWidth(a3, v38);
+    CGContextSetLineWidth(context, v38);
     v41 = objc_msgSend_frameColor(self, v39, v40);
-    CGContextSetStrokeColorWithColor(a3, v41);
-    CGContextDrawPath(a3, kCGPathStroke);
+    CGContextSetStrokeColorWithColor(context, v41);
+    CGContextDrawPath(context, kCGPathStroke);
   }
 
-  CGContextSetShouldSmoothFonts(a3, 0);
-  CGContextSetAllowsFontSmoothing(a3, 0);
-  CGContextSetTextPosition(a3, self->_textFrame.origin.x, self->_textFrame.origin.y);
+  CGContextSetShouldSmoothFonts(context, 0);
+  CGContextSetAllowsFontSmoothing(context, 0);
+  CGContextSetTextPosition(context, self->_textFrame.origin.x, self->_textFrame.origin.y);
   objc_msgSend_bounds(self, v42, v43);
-  CGContextTranslateCTM(a3, 0.0, v44);
-  CGContextScaleCTM(a3, 1.0, -1.0);
+  CGContextTranslateCTM(context, 0.0, v44);
+  CGContextScaleCTM(context, 1.0, -1.0);
   v45 = self->_generalShadowColor;
   if (v45)
   {
     v51.width = 0.0;
     v51.height = -1.0;
-    CGContextSetShadowWithColor(a3, v51, 1.0, v45);
+    CGContextSetShadowWithColor(context, v51, 1.0, v45);
   }
 
   whiteShadowColor = self->_whiteShadowColor;
@@ -751,26 +751,26 @@ LABEL_19:
   {
     v52.width = 0.0;
     v52.height = 1.0;
-    CGContextSetShadowWithColor(a3, v52, 0.0, whiteShadowColor);
+    CGContextSetShadowWithColor(context, v52, 0.0, whiteShadowColor);
   }
 
-  CTLineDraw(self->_theLine, a3);
+  CTLineDraw(self->_theLine, context);
   v53.width = 0.0;
   v53.height = 0.0;
-  CGContextSetShadowWithColor(a3, v53, 0.0, 0);
-  CGContextRestoreGState(a3);
+  CGContextSetShadowWithColor(context, v53, 0.0, 0);
+  CGContextRestoreGState(context);
 }
 
-+ (BOOL)needsDisplayForKey:(id)a3
++ (BOOL)needsDisplayForKey:(id)key
 {
-  if (objc_msgSend_isEqualToString_(a3, a2, @"foregroundColor") & 1) != 0 || (objc_msgSend_isEqualToString_(a3, v5, @"fillColor") & 1) != 0 || (objc_msgSend_isEqualToString_(a3, v6, @"fillColor2") & 1) != 0 || (objc_msgSend_isEqualToString_(a3, v7, @"frameColor") & 1) != 0 || (objc_msgSend_isEqualToString_(a3, v8, @"frameWidth") & 1) != 0 || (objc_msgSend_isEqualToString_(a3, v9, @"fontSize") & 1) != 0 || (objc_msgSend_isEqualToString_(a3, v10, @"string"))
+  if (objc_msgSend_isEqualToString_(key, a2, @"foregroundColor") & 1) != 0 || (objc_msgSend_isEqualToString_(key, v5, @"fillColor") & 1) != 0 || (objc_msgSend_isEqualToString_(key, v6, @"fillColor2") & 1) != 0 || (objc_msgSend_isEqualToString_(key, v7, @"frameColor") & 1) != 0 || (objc_msgSend_isEqualToString_(key, v8, @"frameWidth") & 1) != 0 || (objc_msgSend_isEqualToString_(key, v9, @"fontSize") & 1) != 0 || (objc_msgSend_isEqualToString_(key, v10, @"string"))
   {
     return 1;
   }
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS___BubbleTextLayer;
-  return objc_msgSendSuper2(&v12, sel_needsDisplayForKey_, a3);
+  return objc_msgSendSuper2(&v12, sel_needsDisplayForKey_, key);
 }
 
 @end

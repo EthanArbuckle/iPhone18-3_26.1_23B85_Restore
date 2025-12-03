@@ -6,7 +6,7 @@
 
 - (NSString)seriesName
 {
-  v2 = self;
+  selfCopy = self;
   MAudiobook.seriesName.getter();
   v4 = v3;
 

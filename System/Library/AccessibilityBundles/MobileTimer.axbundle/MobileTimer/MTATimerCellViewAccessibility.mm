@@ -1,5 +1,5 @@
 @interface MTATimerCellViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilitySetup;
@@ -8,12 +8,12 @@
 
 @implementation MTATimerCellViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTATimerCellView" hasInstanceMethod:@"localSetup" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MTATimerCellView" hasInstanceMethod:@"controlButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTATimerCellView" hasInstanceMethod:@"state" withFullSignature:{"Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTATimerCellView" hasInstanceMethod:@"localSetup" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MTATimerCellView" hasInstanceMethod:@"controlButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTATimerCellView" hasInstanceMethod:@"state" withFullSignature:{"Q", 0}];
 }
 
 - (void)_accessibilitySetup
@@ -72,15 +72,15 @@ id __52__MTATimerCellViewAccessibility__accessibilitySetup__block_invoke(uint64_
 {
   v7.receiver = self;
   v7.super_class = MTATimerCellViewAccessibility;
-  v3 = [(MTATimerCellViewAccessibility *)&v7 accessibilityTraits];
-  v4 = [(MTATimerCellViewAccessibility *)self _accessibilityIsTimerRunning];
+  accessibilityTraits = [(MTATimerCellViewAccessibility *)&v7 accessibilityTraits];
+  _accessibilityIsTimerRunning = [(MTATimerCellViewAccessibility *)self _accessibilityIsTimerRunning];
   v5 = *MEMORY[0x29EDC7FF0];
-  if (!v4)
+  if (!_accessibilityIsTimerRunning)
   {
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 @end

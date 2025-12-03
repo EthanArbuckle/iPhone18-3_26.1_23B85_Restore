@@ -1,10 +1,10 @@
 @interface UIView
 - (CGPoint)zw_boundsCenter;
-- (CGPoint)zw_convertPointFromScreenCoordinates:(CGPoint)a3;
-- (CGPoint)zw_convertPointToScreenCoordinates:(CGPoint)a3;
+- (CGPoint)zw_convertPointFromScreenCoordinates:(CGPoint)coordinates;
+- (CGPoint)zw_convertPointToScreenCoordinates:(CGPoint)coordinates;
 - (CGRect)zw_convertBoundsToScreenCoordinates;
-- (CGRect)zw_convertRectFromScreenCoordinates:(CGRect)a3;
-- (CGRect)zw_convertRectToScreenCoordinates:(CGRect)a3;
+- (CGRect)zw_convertRectFromScreenCoordinates:(CGRect)coordinates;
+- (CGRect)zw_convertRectToScreenCoordinates:(CGRect)coordinates;
 @end
 
 @implementation UIView
@@ -21,17 +21,17 @@
   return result;
 }
 
-- (CGRect)zw_convertRectToScreenCoordinates:(CGRect)a3
+- (CGRect)zw_convertRectToScreenCoordinates:(CGRect)coordinates
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UIView *)self window];
-  v9 = v8;
-  if (v8)
+  height = coordinates.size.height;
+  width = coordinates.size.width;
+  y = coordinates.origin.y;
+  x = coordinates.origin.x;
+  window = [(UIView *)self window];
+  v9 = window;
+  if (window)
   {
-    [v8 convertRect:self fromView:{x, y, width, height}];
+    [window convertRect:self fromView:{x, y, width, height}];
     [v9 _convertRectToSceneReferenceSpace:?];
     x = v10;
     y = v11;
@@ -50,17 +50,17 @@
   return result;
 }
 
-- (CGRect)zw_convertRectFromScreenCoordinates:(CGRect)a3
+- (CGRect)zw_convertRectFromScreenCoordinates:(CGRect)coordinates
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UIView *)self window];
-  v9 = v8;
-  if (v8)
+  height = coordinates.size.height;
+  width = coordinates.size.width;
+  y = coordinates.origin.y;
+  x = coordinates.origin.x;
+  window = [(UIView *)self window];
+  v9 = window;
+  if (window)
   {
-    [v8 _convertRectFromSceneReferenceSpace:{x, y, width, height}];
+    [window _convertRectFromSceneReferenceSpace:{x, y, width, height}];
     [v9 convertRect:self toView:?];
     x = v10;
     y = v11;
@@ -79,15 +79,15 @@
   return result;
 }
 
-- (CGPoint)zw_convertPointToScreenCoordinates:(CGPoint)a3
+- (CGPoint)zw_convertPointToScreenCoordinates:(CGPoint)coordinates
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UIView *)self window];
-  v7 = v6;
-  if (v6)
+  y = coordinates.y;
+  x = coordinates.x;
+  window = [(UIView *)self window];
+  v7 = window;
+  if (window)
   {
-    [v6 convertPoint:self fromView:{x, y}];
+    [window convertPoint:self fromView:{x, y}];
     [v7 _convertPointToSceneReferenceSpace:?];
     x = v8;
     y = v9;
@@ -100,15 +100,15 @@
   return result;
 }
 
-- (CGPoint)zw_convertPointFromScreenCoordinates:(CGPoint)a3
+- (CGPoint)zw_convertPointFromScreenCoordinates:(CGPoint)coordinates
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UIView *)self window];
-  v7 = v6;
-  if (v6)
+  y = coordinates.y;
+  x = coordinates.x;
+  window = [(UIView *)self window];
+  v7 = window;
+  if (window)
   {
-    [v6 _convertPointFromSceneReferenceSpace:{x, y}];
+    [window _convertPointFromSceneReferenceSpace:{x, y}];
     [v7 convertPoint:self toView:?];
     x = v8;
     y = v9;

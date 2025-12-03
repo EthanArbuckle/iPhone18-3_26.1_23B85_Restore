@@ -22,7 +22,7 @@
   v20 = *MEMORY[0x29EDCA608];
   v18.receiver = self;
   v18.super_class = MOSuggestionSheetAssetViewAccessibility;
-  v3 = [(MOSuggestionSheetAssetViewAccessibility *)&v18 accessibilityTraits];
+  accessibilityTraits = [(MOSuggestionSheetAssetViewAccessibility *)&v18 accessibilityTraits];
   v17 = 0;
   objc_opt_class();
   v4 = [(MOSuggestionSheetAssetViewAccessibility *)self safeValueForKey:@"subviews"];
@@ -47,7 +47,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v3 |= [*(*(&v13 + 1) + 8 * i) accessibilityTraits];
+        accessibilityTraits |= [*(*(&v13 + 1) + 8 * i) accessibilityTraits];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v13 objects:v19 count:16];
@@ -57,7 +57,7 @@
   }
 
   v11 = *MEMORY[0x29EDCA608];
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)accessibilityCustomActions
@@ -70,12 +70,12 @@
 
   v19.receiver = self;
   v19.super_class = MOSuggestionSheetAssetViewAccessibility;
-  v5 = [(MOSuggestionSheetAssetViewAccessibility *)&v19 accessibilityCustomActions];
-  v6 = [v5 mutableCopy];
+  accessibilityCustomActions = [(MOSuggestionSheetAssetViewAccessibility *)&v19 accessibilityCustomActions];
+  array = [accessibilityCustomActions mutableCopy];
 
-  if (!v6)
+  if (!array)
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
   v17 = 0u;
@@ -97,8 +97,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) accessibilityCustomActions];
-        [v6 addObjectsFromArray:v12];
+        accessibilityCustomActions2 = [*(*(&v15 + 1) + 8 * i) accessibilityCustomActions];
+        [array addObjectsFromArray:accessibilityCustomActions2];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v15 objects:v21 count:16];
@@ -109,7 +109,7 @@
 
   v13 = *MEMORY[0x29EDCA608];
 
-  return v6;
+  return array;
 }
 
 @end

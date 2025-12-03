@@ -1,16 +1,16 @@
 @interface SiriSharedUICompactUserUtteranceViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SiriSharedUICompactUserUtteranceViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SiriSharedUICompactUserUtteranceView" hasInstanceMethod:@"_streamingTextView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUICStreamingTextView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SiriSharedUICompactUserUtteranceView" hasInstanceMethod:@"_setStreamingText:carousel:showEditImage:" withFullSignature:{"v", "@", "B", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SiriSharedUICompactUserUtteranceView" hasInstanceMethod:@"_streamingTextView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUICStreamingTextView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SiriSharedUICompactUserUtteranceView" hasInstanceMethod:@"_setStreamingText:carousel:showEditImage:" withFullSignature:{"v", "@", "B", "B", 0}];
 }
 
 - (id)accessibilityLabel

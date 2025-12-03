@@ -1,27 +1,27 @@
 @interface IFTSchemaIFTActionConfirmationSystemStyle
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTActionConfirmationSystemStyle)initWithDictionary:(id)a3;
-- (IFTSchemaIFTActionConfirmationSystemStyle)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTActionConfirmationSystemStyle)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTActionConfirmationSystemStyle)initWithJSON:(id)n;
 - (IFTSchemaIFTActionConfirmationSystemStyleGenerativeAIEnablement)generativeAIEnablement;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (void)deleteGenerativeAIEnablement;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTActionConfirmationSystemStyle
 
-- (IFTSchemaIFTActionConfirmationSystemStyle)initWithDictionary:(id)a3
+- (IFTSchemaIFTActionConfirmationSystemStyle)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = IFTSchemaIFTActionConfirmationSystemStyle;
   v5 = [(IFTSchemaIFTActionConfirmationSystemStyle *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"generativeAIEnablement"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"generativeAIEnablement"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,30 +35,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTActionConfirmationSystemStyle)initWithJSON:(id)a3
+- (IFTSchemaIFTActionConfirmationSystemStyle)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTActionConfirmationSystemStyle *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTActionConfirmationSystemStyle *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTActionConfirmationSystemStyle *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -71,43 +71,43 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_generativeAIEnablement)
   {
-    v4 = [(IFTSchemaIFTActionConfirmationSystemStyle *)self generativeAIEnablement];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    generativeAIEnablement = [(IFTSchemaIFTActionConfirmationSystemStyle *)self generativeAIEnablement];
+    dictionaryRepresentation = [generativeAIEnablement dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"generativeAIEnablement"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"generativeAIEnablement"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"generativeAIEnablement"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"generativeAIEnablement"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     whichOneof_Actionconfirmationsystemstyle = self->_whichOneof_Actionconfirmationsystemstyle;
-    if (whichOneof_Actionconfirmationsystemstyle == [v4 whichOneof_Actionconfirmationsystemstyle])
+    if (whichOneof_Actionconfirmationsystemstyle == [equalCopy whichOneof_Actionconfirmationsystemstyle])
     {
-      v6 = [(IFTSchemaIFTActionConfirmationSystemStyle *)self generativeAIEnablement];
-      v7 = [v4 generativeAIEnablement];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      generativeAIEnablement = [(IFTSchemaIFTActionConfirmationSystemStyle *)self generativeAIEnablement];
+      generativeAIEnablement2 = [equalCopy generativeAIEnablement];
+      v8 = generativeAIEnablement2;
+      if ((generativeAIEnablement != 0) != (generativeAIEnablement2 == 0))
       {
-        v9 = [(IFTSchemaIFTActionConfirmationSystemStyle *)self generativeAIEnablement];
-        if (!v9)
+        generativeAIEnablement3 = [(IFTSchemaIFTActionConfirmationSystemStyle *)self generativeAIEnablement];
+        if (!generativeAIEnablement3)
         {
 
 LABEL_11:
@@ -115,10 +115,10 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(IFTSchemaIFTActionConfirmationSystemStyle *)self generativeAIEnablement];
-        v12 = [v4 generativeAIEnablement];
-        v13 = [v11 isEqual:v12];
+        v10 = generativeAIEnablement3;
+        generativeAIEnablement4 = [(IFTSchemaIFTActionConfirmationSystemStyle *)self generativeAIEnablement];
+        generativeAIEnablement5 = [equalCopy generativeAIEnablement];
+        v13 = [generativeAIEnablement4 isEqual:generativeAIEnablement5];
 
         if (v13)
         {
@@ -138,14 +138,14 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(IFTSchemaIFTActionConfirmationSystemStyle *)self generativeAIEnablement];
+  toCopy = to;
+  generativeAIEnablement = [(IFTSchemaIFTActionConfirmationSystemStyle *)self generativeAIEnablement];
 
-  if (v4)
+  if (generativeAIEnablement)
   {
-    v5 = [(IFTSchemaIFTActionConfirmationSystemStyle *)self generativeAIEnablement];
+    generativeAIEnablement2 = [(IFTSchemaIFTActionConfirmationSystemStyle *)self generativeAIEnablement];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -175,17 +175,17 @@ LABEL_9:
   return v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = IFTSchemaIFTActionConfirmationSystemStyle;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(IFTSchemaIFTActionConfirmationSystemStyle *)self generativeAIEnablement:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(IFTSchemaIFTActionConfirmationSystemStyle *)self deleteGenerativeAIEnablement];
   }

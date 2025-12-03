@@ -1,25 +1,25 @@
 @interface NTKParmesanAssetLayout
-- (BOOL)isEqual:(id)a3;
-- (BOOL)linkFromSrcDirectory:(id)a3 toDstDirectory:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)linkFromSrcDirectory:(id)directory toDstDirectory:(id)dstDirectory;
 - (NSString)baseImageName;
 - (NTKParmesanAssetLayout)init;
-- (NTKParmesanAssetLayout)initWithOriginalCrop:(id)a3 baseImageName:(id)a4 mask:(id)a5 timeLayout:(id)a6 colorAnalysis:(id)a7 imageAOTBrightness:(double)a8 userEdited:(BOOL)a9;
-- (id)copyWithZone:(void *)a3;
+- (NTKParmesanAssetLayout)initWithOriginalCrop:(id)crop baseImageName:(id)name mask:(id)mask timeLayout:(id)layout colorAnalysis:(id)analysis imageAOTBrightness:(double)brightness userEdited:(BOOL)edited;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)setBaseImageName:(id)a3;
-- (void)setColorAnalysis:(id)a3;
-- (void)setMask:(id)a3;
-- (void)setOriginalCrop:(id)a3;
-- (void)setTimeLayout:(id)a3;
+- (void)setBaseImageName:(id)name;
+- (void)setColorAnalysis:(id)analysis;
+- (void)setMask:(id)mask;
+- (void)setOriginalCrop:(id)crop;
+- (void)setTimeLayout:(id)layout;
 @end
 
 @implementation NTKParmesanAssetLayout
 
-- (void)setOriginalCrop:(id)a3
+- (void)setOriginalCrop:(id)crop
 {
   v4 = *(self + OBJC_IVAR___NTKParmesanAssetLayout_originalCrop);
-  *(self + OBJC_IVAR___NTKParmesanAssetLayout_originalCrop) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NTKParmesanAssetLayout_originalCrop) = crop;
+  cropCopy = crop;
 }
 
 - (NSString)baseImageName
@@ -30,7 +30,7 @@
   return v2;
 }
 
-- (void)setBaseImageName:(id)a3
+- (void)setBaseImageName:(id)name
 {
   v4 = sub_23BFFA300();
   v5 = (self + OBJC_IVAR___NTKParmesanAssetLayout_baseImageName);
@@ -38,36 +38,36 @@
   v5[1] = v6;
 }
 
-- (void)setMask:(id)a3
+- (void)setMask:(id)mask
 {
   v4 = *(self + OBJC_IVAR___NTKParmesanAssetLayout_mask);
-  *(self + OBJC_IVAR___NTKParmesanAssetLayout_mask) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NTKParmesanAssetLayout_mask) = mask;
+  maskCopy = mask;
 }
 
-- (void)setTimeLayout:(id)a3
+- (void)setTimeLayout:(id)layout
 {
   v4 = *(self + OBJC_IVAR___NTKParmesanAssetLayout_timeLayout);
-  *(self + OBJC_IVAR___NTKParmesanAssetLayout_timeLayout) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NTKParmesanAssetLayout_timeLayout) = layout;
+  layoutCopy = layout;
 }
 
-- (void)setColorAnalysis:(id)a3
+- (void)setColorAnalysis:(id)analysis
 {
   v4 = *(self + OBJC_IVAR___NTKParmesanAssetLayout_colorAnalysis);
-  *(self + OBJC_IVAR___NTKParmesanAssetLayout_colorAnalysis) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NTKParmesanAssetLayout_colorAnalysis) = analysis;
+  analysisCopy = analysis;
 }
 
-- (NTKParmesanAssetLayout)initWithOriginalCrop:(id)a3 baseImageName:(id)a4 mask:(id)a5 timeLayout:(id)a6 colorAnalysis:(id)a7 imageAOTBrightness:(double)a8 userEdited:(BOOL)a9
+- (NTKParmesanAssetLayout)initWithOriginalCrop:(id)crop baseImageName:(id)name mask:(id)mask timeLayout:(id)layout colorAnalysis:(id)analysis imageAOTBrightness:(double)brightness userEdited:(BOOL)edited
 {
   v15 = sub_23BFFA300();
   v17 = v16;
-  v18 = a3;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  return sub_23BFB4CE0(v18, v15, v17, a5, v20, a7, a9, a8);
+  cropCopy = crop;
+  maskCopy = mask;
+  layoutCopy = layout;
+  analysisCopy = analysis;
+  return sub_23BFB4CE0(cropCopy, v15, v17, mask, layoutCopy, analysis, edited, brightness);
 }
 
 - (NTKParmesanAssetLayout)init
@@ -77,11 +77,11 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_23BFFA960();
     swift_unknownObjectRelease();
@@ -90,7 +90,7 @@
   else
   {
     memset(v11, 0, sizeof(v11));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_23BF6D608(v11, v9);
@@ -118,15 +118,15 @@ LABEL_9:
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_23BFB6184();
 
   return v3;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_23BFB62EC(v6);
 
   sub_23BF4C484(v6, v6[3]);
@@ -135,13 +135,13 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)linkFromSrcDirectory:(id)a3 toDstDirectory:(id)a4
+- (BOOL)linkFromSrcDirectory:(id)directory toDstDirectory:(id)dstDirectory
 {
   v5 = sub_23BFFA300();
   v7 = v6;
   v8 = sub_23BFFA300();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   LOBYTE(v8) = sub_23BFB6764(v5, v7, v8, v10);
 
   return v8 & 1;

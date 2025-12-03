@@ -1,5 +1,5 @@
 @interface MapsTheme
-+ (Class)visualEffectClassAllowingBlur:(BOOL)a3;
++ (Class)visualEffectClassAllowingBlur:(BOOL)blur;
 + (UIColor)ugcAddPhotoCellBackgroundColor;
 + (UIColor)ugcHairlineColor;
 + (UIColor)ugcPOIEnrichmentEditorBackgroundColor;
@@ -7,40 +7,40 @@
 + (double)buttonCornerRadius;
 + (double)cardCornerRadius;
 + (double)macButtonCornerRadius;
-+ (id)_colorWithAssetCatalogName:(id)a3;
++ (id)_colorWithAssetCatalogName:(id)name;
 + (id)blurEffect;
 + (id)globalThemes;
 + (id)sharedTheme;
-+ (id)visualEffectViewAllowingBlur:(BOOL)a3;
-- (BOOL)updateMapsThemeStyleIfNeeded:(unint64_t)a3;
-- (BOOL)updateVisualEffectStyleIfNeeded:(unint64_t)a3;
-- (MapsTheme)initWithMapsThemeStyle:(unint64_t)a3 visualEffectStyle:(unint64_t)a4;
++ (id)visualEffectViewAllowingBlur:(BOOL)blur;
+- (BOOL)updateMapsThemeStyleIfNeeded:(unint64_t)needed;
+- (BOOL)updateVisualEffectStyleIfNeeded:(unint64_t)needed;
+- (MapsTheme)initWithMapsThemeStyle:(unint64_t)style visualEffectStyle:(unint64_t)effectStyle;
 - (UIColor)dynamicControlBackgroundColor;
 - (UIColor)dynamicHairlineColor;
 - (UIColor)navEndButtonBackgroundHighlightedColor;
 - (UIColor)navPauseButtonBackgroundHighlightedColor;
 - (UIColor)navResumeRouteBannerHighlightColor;
 - (UIColor)navSignSecondaryColor;
-- (id)_mapsThemeStyleKey:(unint64_t)a3;
-- (id)_maps_colorNamed:(id)a3;
-- (id)blackCircleButtonBackgroundColor:(unint64_t)a3;
-- (id)blueButtonBackgroundColor:(unint64_t)a3;
-- (id)blueButtonTitleColor:(unint64_t)a3;
-- (id)fadedGrayButtonBackgroundColor:(unint64_t)a3;
-- (id)fadedGrayButtonTitleColor:(unint64_t)a3;
-- (id)flyoverTourButtonBackgroundColor:(BOOL)a3;
-- (id)greenButtonBackgroundColor:(unint64_t)a3;
-- (id)greenButtonTitleColor:(unint64_t)a3;
-- (id)lazyLoadingImageWithKey:(id)a3 factory:(id)a4;
-- (id)lazyLoadingImageWithKey:(id)a3 imageName:(id)a4 imageColor:(id)a5 supportRTL:(BOOL)a6;
-- (id)lazyLoadingImageWithKey:(id)a3 imageName:(id)a4 supportRTL:(BOOL)a5;
-- (id)ridesharingRatingStarColorOn:(BOOL)a3;
-- (id)ridesharingTippingOptionsBackgroundColor:(BOOL)a3;
-- (id)ridesharingTippingOptionsForegroundColor:(BOOL)a3;
-- (id)ridesharingTippingOptionsForegroundCurrencyColor:(BOOL)a3;
-- (id)statusIndicatorBackgroundColor:(unint64_t)a3;
-- (id)statusIndicatorTextColorForStyleDefault:(unint64_t)a3;
-- (id)statusIndicatorTextColorForStyleLightContent:(unint64_t)a3;
+- (id)_mapsThemeStyleKey:(unint64_t)key;
+- (id)_maps_colorNamed:(id)named;
+- (id)blackCircleButtonBackgroundColor:(unint64_t)color;
+- (id)blueButtonBackgroundColor:(unint64_t)color;
+- (id)blueButtonTitleColor:(unint64_t)color;
+- (id)fadedGrayButtonBackgroundColor:(unint64_t)color;
+- (id)fadedGrayButtonTitleColor:(unint64_t)color;
+- (id)flyoverTourButtonBackgroundColor:(BOOL)color;
+- (id)greenButtonBackgroundColor:(unint64_t)color;
+- (id)greenButtonTitleColor:(unint64_t)color;
+- (id)lazyLoadingImageWithKey:(id)key factory:(id)factory;
+- (id)lazyLoadingImageWithKey:(id)key imageName:(id)name imageColor:(id)color supportRTL:(BOOL)l;
+- (id)lazyLoadingImageWithKey:(id)key imageName:(id)name supportRTL:(BOOL)l;
+- (id)ridesharingRatingStarColorOn:(BOOL)on;
+- (id)ridesharingTippingOptionsBackgroundColor:(BOOL)color;
+- (id)ridesharingTippingOptionsForegroundColor:(BOOL)color;
+- (id)ridesharingTippingOptionsForegroundCurrencyColor:(BOOL)color;
+- (id)statusIndicatorBackgroundColor:(unint64_t)color;
+- (id)statusIndicatorTextColorForStyleDefault:(unint64_t)default;
+- (id)statusIndicatorTextColorForStyleLightContent:(unint64_t)content;
 - (int64_t)blurDarkeningAppearance;
 - (int64_t)selectionBackgroundAppearance;
 - (int64_t)textFieldKeyboardAppearance;
@@ -78,9 +78,9 @@
 + (id)blurEffect
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if ((GEOConfigGetBOOL() & (v3 != 5)) != 0)
+  if ((GEOConfigGetBOOL() & (userInterfaceIdiom != 5)) != 0)
   {
     v4 = 9;
   }
@@ -147,9 +147,9 @@
   return v4;
 }
 
-- (id)blueButtonBackgroundColor:(unint64_t)a3
+- (id)blueButtonBackgroundColor:(unint64_t)color
 {
-  if (a3 == 1)
+  if (color == 1)
   {
     [(MapsTheme *)self colorForTag:@"BlueButtonHighlightedColorKey"];
   }
@@ -163,9 +163,9 @@
   return v3;
 }
 
-- (id)greenButtonBackgroundColor:(unint64_t)a3
+- (id)greenButtonBackgroundColor:(unint64_t)color
 {
-  if (a3 == 1)
+  if (color == 1)
   {
     v3 = @"GreenButtonHighlightedColorKey";
   }
@@ -210,9 +210,9 @@
   return qword_10195DFD8;
 }
 
-- (id)flyoverTourButtonBackgroundColor:(BOOL)a3
+- (id)flyoverTourButtonBackgroundColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     v3 = @"FlyoverTourButtonBackgroundSelectedColor";
   }
@@ -227,9 +227,9 @@
   return v4;
 }
 
-- (id)ridesharingTippingOptionsForegroundCurrencyColor:(BOOL)a3
+- (id)ridesharingTippingOptionsForegroundCurrencyColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     v3 = @"RidesharingTippingOptionsForegroundCurrencySelectedColor";
   }
@@ -244,9 +244,9 @@
   return v4;
 }
 
-- (id)ridesharingTippingOptionsForegroundColor:(BOOL)a3
+- (id)ridesharingTippingOptionsForegroundColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     v3 = @"RidesharingTippingOptionsForegroundSelectedColor";
   }
@@ -261,9 +261,9 @@
   return v4;
 }
 
-- (id)ridesharingTippingOptionsBackgroundColor:(BOOL)a3
+- (id)ridesharingTippingOptionsBackgroundColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     v3 = @"RidesharingTippingOptionsBackgroundSelectedColor";
   }
@@ -278,9 +278,9 @@
   return v4;
 }
 
-- (id)ridesharingRatingStarColorOn:(BOOL)a3
+- (id)ridesharingRatingStarColorOn:(BOOL)on
 {
-  if (a3)
+  if (on)
   {
     v3 = @"RidesharingRatingStarOnColor";
   }
@@ -307,9 +307,9 @@
   return v3;
 }
 
-- (id)fadedGrayButtonTitleColor:(unint64_t)a3
+- (id)fadedGrayButtonTitleColor:(unint64_t)color
 {
-  if (a3 == 1)
+  if (color == 1)
   {
     v3 = @"FadedGrayButtonTitleColorKey";
   }
@@ -324,9 +324,9 @@
   return v4;
 }
 
-- (id)blueButtonTitleColor:(unint64_t)a3
+- (id)blueButtonTitleColor:(unint64_t)color
 {
-  if (a3 == 1)
+  if (color == 1)
   {
     v3 = @"BlueButtonHighlightedTitleColorKey";
   }
@@ -341,9 +341,9 @@
   return v4;
 }
 
-- (id)greenButtonTitleColor:(unint64_t)a3
+- (id)greenButtonTitleColor:(unint64_t)color
 {
-  if (a3 == 1)
+  if (color == 1)
   {
     v3 = @"GreenButtonHighlightedTitleColorKey";
   }
@@ -358,22 +358,22 @@
   return v4;
 }
 
-- (id)_maps_colorNamed:(id)a3
+- (id)_maps_colorNamed:(id)named
 {
-  v3 = a3;
-  v4 = [UIColor colorNamed:v3];
+  namedCopy = named;
+  v4 = [UIColor colorNamed:namedCopy];
   if (!v4)
   {
     v5 = +[NSBundle mainBundle];
-    v4 = [UIColor colorNamed:v3 inBundle:v5 compatibleWithTraitCollection:0];
+    v4 = [UIColor colorNamed:namedCopy inBundle:v5 compatibleWithTraitCollection:0];
   }
 
   return v4;
 }
 
-- (id)fadedGrayButtonBackgroundColor:(unint64_t)a3
+- (id)fadedGrayButtonBackgroundColor:(unint64_t)color
 {
-  if (a3 == 1)
+  if (color == 1)
   {
     v3 = [UIColor colorWithWhite:0.0 alpha:0.0500000007];
     v4 = [UIColor colorWithWhite:0.0 alpha:0.300000012];
@@ -397,16 +397,16 @@
   return v4;
 }
 
-- (id)blackCircleButtonBackgroundColor:(unint64_t)a3
+- (id)blackCircleButtonBackgroundColor:(unint64_t)color
 {
-  v3 = [UIColor colorWithWhite:dbl_1012128C0[a3 == 1] alpha:1.0];
+  v3 = [UIColor colorWithWhite:dbl_1012128C0[color == 1] alpha:1.0];
 
   return v3;
 }
 
-- (id)statusIndicatorBackgroundColor:(unint64_t)a3
+- (id)statusIndicatorBackgroundColor:(unint64_t)color
 {
-  if (a3 == 1)
+  if (color == 1)
   {
     [(MapsTheme *)self colorForTag:@"StatusIndicatorHighlightedColorKey"];
   }
@@ -420,9 +420,9 @@
   return v3;
 }
 
-- (id)statusIndicatorTextColorForStyleLightContent:(unint64_t)a3
+- (id)statusIndicatorTextColorForStyleLightContent:(unint64_t)content
 {
-  if (a3 == 1)
+  if (content == 1)
   {
     [UIColor colorWithWhite:1.0 alpha:0.400000006];
   }
@@ -436,9 +436,9 @@
   return v3;
 }
 
-- (id)statusIndicatorTextColorForStyleDefault:(unint64_t)a3
+- (id)statusIndicatorTextColorForStyleDefault:(unint64_t)default
 {
-  if (a3 == 1)
+  if (default == 1)
   {
     [UIColor colorWithWhite:0.0 alpha:0.400000006];
   }
@@ -506,18 +506,18 @@
   return 1;
 }
 
-- (id)lazyLoadingImageWithKey:(id)a3 factory:(id)a4
+- (id)lazyLoadingImageWithKey:(id)key factory:(id)factory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSDictionary *)self->_colorsForCurrentTheme objectForKeyedSubscript:v6];
+  keyCopy = key;
+  factoryCopy = factory;
+  v8 = [(NSDictionary *)self->_colorsForCurrentTheme objectForKeyedSubscript:keyCopy];
   if (!v8)
   {
     v9 = [(MapsTheme *)self _mapsThemeStyleKey:self->_mapsThemeStyle];
-    v10 = [objc_opt_class() globalThemes];
-    v11 = [v10 objectForKeyedSubscript:v9];
+    globalThemes = [objc_opt_class() globalThemes];
+    v11 = [globalThemes objectForKeyedSubscript:v9];
 
-    v12 = [v11 objectForKeyedSubscript:v6];
+    v12 = [v11 objectForKeyedSubscript:keyCopy];
     if (v12)
     {
       v8 = v12;
@@ -526,13 +526,13 @@
 
     else
     {
-      v8 = v7[2](v7);
+      v8 = factoryCopy[2](factoryCopy);
       v14 = [NSMutableDictionary dictionaryWithDictionary:v11];
-      [v14 setObject:v8 forKeyedSubscript:v6];
+      [v14 setObject:v8 forKeyedSubscript:keyCopy];
       v13 = [v14 copy];
 
-      v15 = [objc_opt_class() globalThemes];
-      [v15 setObject:v13 forKeyedSubscript:v9];
+      globalThemes2 = [objc_opt_class() globalThemes];
+      [globalThemes2 setObject:v13 forKeyedSubscript:v9];
     }
 
     colorsForCurrentTheme = self->_colorsForCurrentTheme;
@@ -542,12 +542,12 @@
   return v8;
 }
 
-- (id)lazyLoadingImageWithKey:(id)a3 imageName:(id)a4 imageColor:(id)a5 supportRTL:(BOOL)a6
+- (id)lazyLoadingImageWithKey:(id)key imageName:(id)name imageColor:(id)color supportRTL:(BOOL)l
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(NSDictionary *)self->_colorsForCurrentTheme objectForKeyedSubscript:v10];
+  keyCopy = key;
+  nameCopy = name;
+  colorCopy = color;
+  v13 = [(NSDictionary *)self->_colorsForCurrentTheme objectForKeyedSubscript:keyCopy];
   v14 = v13;
   if (v13)
   {
@@ -560,28 +560,28 @@
     v17[1] = 3221225472;
     v17[2] = sub_1009A1384;
     v17[3] = &unk_101630A98;
-    v18 = v12;
-    v21 = a6;
-    v19 = v11;
-    v20 = self;
-    v15 = [(MapsTheme *)self lazyLoadingImageWithKey:v10 factory:v17];
+    v18 = colorCopy;
+    lCopy = l;
+    v19 = nameCopy;
+    selfCopy = self;
+    v15 = [(MapsTheme *)self lazyLoadingImageWithKey:keyCopy factory:v17];
   }
 
   return v15;
 }
 
-- (id)lazyLoadingImageWithKey:(id)a3 imageName:(id)a4 supportRTL:(BOOL)a5
+- (id)lazyLoadingImageWithKey:(id)key imageName:(id)name supportRTL:(BOOL)l
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(MapsTheme *)self keyColor];
-  v11 = [(MapsTheme *)self lazyLoadingImageWithKey:v9 imageName:v8 imageColor:v10 supportRTL:v5];
+  lCopy = l;
+  nameCopy = name;
+  keyCopy = key;
+  keyColor = [(MapsTheme *)self keyColor];
+  v11 = [(MapsTheme *)self lazyLoadingImageWithKey:keyCopy imageName:nameCopy imageColor:keyColor supportRTL:lCopy];
 
   return v11;
 }
 
-- (MapsTheme)initWithMapsThemeStyle:(unint64_t)a3 visualEffectStyle:(unint64_t)a4
+- (MapsTheme)initWithMapsThemeStyle:(unint64_t)style visualEffectStyle:(unint64_t)effectStyle
 {
   v14.receiver = self;
   v14.super_class = MapsTheme;
@@ -589,11 +589,11 @@
   v7 = v6;
   if (v6)
   {
-    v6->_mapsThemeStyle = a3;
-    v6->_currentVisualEffectStyle = a4;
-    v8 = [objc_opt_class() globalThemes];
+    v6->_mapsThemeStyle = style;
+    v6->_currentVisualEffectStyle = effectStyle;
+    globalThemes = [objc_opt_class() globalThemes];
     v9 = [(MapsTheme *)v7 _mapsThemeStyleKey:v7->_mapsThemeStyle];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    v10 = [globalThemes objectForKeyedSubscript:v9];
     colorsForCurrentTheme = v7->_colorsForCurrentTheme;
     v7->_colorsForCurrentTheme = v10;
 
@@ -604,21 +604,21 @@
   return v7;
 }
 
-- (id)_mapsThemeStyleKey:(unint64_t)a3
+- (id)_mapsThemeStyleKey:(unint64_t)key
 {
   currentVisualEffectStyle = self->_currentVisualEffectStyle;
   v4 = @"DarkThemeWithoutVisualEffect";
-  if (a3 != 1)
+  if (key != 1)
   {
     v4 = 0;
   }
 
-  if (!a3)
+  if (!key)
   {
     v4 = @"StandardThemeWithoutVisualEffect";
   }
 
-  if (a3 == 1)
+  if (key == 1)
   {
     v5 = @"DarkTheme";
   }
@@ -628,7 +628,7 @@
     v5 = 0;
   }
 
-  if (!a3)
+  if (!key)
   {
     v5 = @"StandardTheme";
   }
@@ -651,42 +651,42 @@
 
 - (void)_updateCurrentTheme
 {
-  v6 = [objc_opt_class() globalThemes];
+  globalThemes = [objc_opt_class() globalThemes];
   v3 = [(MapsTheme *)self _mapsThemeStyleKey:self->_mapsThemeStyle];
-  v4 = [v6 objectForKeyedSubscript:v3];
+  v4 = [globalThemes objectForKeyedSubscript:v3];
   colorsForCurrentTheme = self->_colorsForCurrentTheme;
   self->_colorsForCurrentTheme = v4;
 }
 
-- (BOOL)updateVisualEffectStyleIfNeeded:(unint64_t)a3
+- (BOOL)updateVisualEffectStyleIfNeeded:(unint64_t)needed
 {
   currentVisualEffectStyle = self->_currentVisualEffectStyle;
-  if (currentVisualEffectStyle != a3)
+  if (currentVisualEffectStyle != needed)
   {
-    self->_currentVisualEffectStyle = a3;
+    self->_currentVisualEffectStyle = needed;
     [(MapsTheme *)self _updateCurrentTheme];
   }
 
-  return currentVisualEffectStyle != a3;
+  return currentVisualEffectStyle != needed;
 }
 
-- (BOOL)updateMapsThemeStyleIfNeeded:(unint64_t)a3
+- (BOOL)updateMapsThemeStyleIfNeeded:(unint64_t)needed
 {
   mapsThemeStyle = self->_mapsThemeStyle;
-  if (mapsThemeStyle != a3)
+  if (mapsThemeStyle != needed)
   {
-    self->_mapsThemeStyle = a3;
+    self->_mapsThemeStyle = needed;
     [(MapsTheme *)self _updateCurrentTheme];
   }
 
-  return mapsThemeStyle != a3;
+  return mapsThemeStyle != needed;
 }
 
-+ (id)_colorWithAssetCatalogName:(id)a3
++ (id)_colorWithAssetCatalogName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[NSBundle mainBundle];
-  v5 = [UIColor colorNamed:v3 inBundle:v4 compatibleWithTraitCollection:0];
+  v5 = [UIColor colorNamed:nameCopy inBundle:v4 compatibleWithTraitCollection:0];
 
   return v5;
 }
@@ -734,18 +734,18 @@
   return v4;
 }
 
-+ (id)visualEffectViewAllowingBlur:(BOOL)a3
++ (id)visualEffectViewAllowingBlur:(BOOL)blur
 {
-  v4 = objc_alloc([a1 visualEffectClassAllowingBlur:a3]);
-  v5 = [a1 blurEffect];
-  v6 = [v4 initWithEffect:v5];
+  v4 = objc_alloc([self visualEffectClassAllowingBlur:blur]);
+  blurEffect = [self blurEffect];
+  v6 = [v4 initWithEffect:blurEffect];
 
   [v6 _setGroupName:@"MapsTheme"];
 
   return v6;
 }
 
-+ (Class)visualEffectClassAllowingBlur:(BOOL)a3
++ (Class)visualEffectClassAllowingBlur:(BOOL)blur
 {
   v3 = objc_opt_class();
 

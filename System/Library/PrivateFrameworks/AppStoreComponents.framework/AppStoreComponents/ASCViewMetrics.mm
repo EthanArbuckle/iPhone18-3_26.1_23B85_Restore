@@ -1,30 +1,30 @@
 @interface ASCViewMetrics
-- (ASCViewMetrics)initWithCoder:(id)a3;
-- (ASCViewMetrics)initWithInstructions:(id)a3 pageFields:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)dataForInvocationPoint:(id)a3;
+- (ASCViewMetrics)initWithCoder:(id)coder;
+- (ASCViewMetrics)initWithInstructions:(id)instructions pageFields:(id)fields;
+- (BOOL)isEqual:(id)equal;
+- (id)dataForInvocationPoint:(id)point;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCViewMetrics
 
-- (ASCViewMetrics)initWithInstructions:(id)a3 pageFields:(id)a4
+- (ASCViewMetrics)initWithInstructions:(id)instructions pageFields:(id)fields
 {
-  v6 = a3;
-  v7 = a4;
+  instructionsCopy = instructions;
+  fieldsCopy = fields;
   +[ASCEligibility assertCurrentProcessEligibility];
   v14.receiver = self;
   v14.super_class = ASCViewMetrics;
   v8 = [(ASCViewMetrics *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [instructionsCopy copy];
     instructions = v8->_instructions;
     v8->_instructions = v9;
 
-    v11 = [v7 copy];
+    v11 = [fieldsCopy copy];
     pageFields = v8->_pageFields;
     v8->_pageFields = v11;
   }
@@ -32,20 +32,20 @@
   return v8;
 }
 
-- (ASCViewMetrics)initWithCoder:(id)a3
+- (ASCViewMetrics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc(MEMORY[0x277CBEB98]);
   v6 = objc_opt_class();
   v7 = [v5 initWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"instructions"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"instructions"];
   if (v8)
   {
-    v9 = ASCMetricsFieldsDecodeForKey(v4, @"pageFields");
+    v9 = ASCMetricsFieldsDecodeForKey(coderCopy, @"pageFields");
     if (v9)
     {
       self = [(ASCViewMetrics *)self initWithInstructions:v8 pageFields:v9];
-      v10 = self;
+      selfCopy = self;
     }
 
     else
@@ -56,7 +56,7 @@
         [(ASCViewMetrics *)v19 initWithCoder:v20, v21, v22, v23, v24, v25, v26];
       }
 
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -68,40 +68,40 @@
       [(ASCViewMetrics *)v11 initWithCoder:v12, v13, v14, v15, v16, v17, v18];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCViewMetrics *)self instructions];
-  [v4 encodeObject:v5 forKey:@"instructions"];
+  coderCopy = coder;
+  instructions = [(ASCViewMetrics *)self instructions];
+  [coderCopy encodeObject:instructions forKey:@"instructions"];
 
-  v6 = [(ASCViewMetrics *)self pageFields];
-  [v4 encodeObject:v6 forKey:@"pageFields"];
+  pageFields = [(ASCViewMetrics *)self pageFields];
+  [coderCopy encodeObject:pageFields forKey:@"pageFields"];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCViewMetrics *)self instructions];
-  [(ASCHasher *)v3 combineObject:v4];
+  instructions = [(ASCViewMetrics *)self instructions];
+  [(ASCHasher *)v3 combineObject:instructions];
 
-  v5 = [(ASCViewMetrics *)self pageFields];
-  [(ASCHasher *)v3 combineObject:v5];
+  pageFields = [(ASCViewMetrics *)self pageFields];
+  [(ASCHasher *)v3 combineObject:pageFields];
 
-  v6 = [(ASCHasher *)v3 finalizeHash];
-  return v6;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -124,31 +124,31 @@
 
   if (v7)
   {
-    v8 = [(ASCViewMetrics *)self instructions];
-    v9 = [v7 instructions];
-    v10 = v9;
-    if (v8 && v9)
+    instructions = [(ASCViewMetrics *)self instructions];
+    instructions2 = [v7 instructions];
+    v10 = instructions2;
+    if (instructions && instructions2)
     {
-      if ([v8 isEqual:v9])
+      if ([instructions isEqual:instructions2])
       {
         goto LABEL_10;
       }
     }
 
-    else if (v8 == v9)
+    else if (instructions == instructions2)
     {
 LABEL_10:
-      v11 = [(ASCViewMetrics *)self pageFields];
-      v12 = [v7 pageFields];
-      v13 = v12;
-      if (v11 && v12)
+      pageFields = [(ASCViewMetrics *)self pageFields];
+      pageFields2 = [v7 pageFields];
+      v13 = pageFields2;
+      if (pageFields && pageFields2)
       {
-        v14 = [v11 isEqual:v12];
+        v14 = [pageFields isEqual:pageFields2];
       }
 
       else
       {
-        v14 = v11 == v12;
+        v14 = pageFields == pageFields2;
       }
 
       goto LABEL_18;
@@ -169,28 +169,28 @@ LABEL_19:
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCViewMetrics *)self instructions];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"instructions"];
+  instructions = [(ASCViewMetrics *)self instructions];
+  [(ASCDescriber *)v3 addObject:instructions withName:@"instructions"];
 
-  v5 = [(ASCViewMetrics *)self pageFields];
-  [(ASCDescriber *)v3 addSensitiveObject:v5 withName:@"pageFields"];
+  pageFields = [(ASCViewMetrics *)self pageFields];
+  [(ASCDescriber *)v3 addSensitiveObject:pageFields withName:@"pageFields"];
 
-  v6 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v6;
+  return finalizeDescription;
 }
 
-- (id)dataForInvocationPoint:(id)a3
+- (id)dataForInvocationPoint:(id)point
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pointCopy = point;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(ASCViewMetrics *)self instructions];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  instructions = [(ASCViewMetrics *)self instructions];
+  v7 = [instructions countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -201,21 +201,21 @@ LABEL_19:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(instructions);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 invocationPoints];
-        v13 = [v12 containsObject:v4];
+        invocationPoints = [v11 invocationPoints];
+        v13 = [invocationPoints containsObject:pointCopy];
 
         if (v13)
         {
-          v14 = [v11 data];
-          [v5 addObject:v14];
+          data = [v11 data];
+          [v5 addObject:data];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [instructions countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);

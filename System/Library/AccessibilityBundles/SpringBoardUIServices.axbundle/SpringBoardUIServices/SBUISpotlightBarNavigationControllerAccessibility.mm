@@ -1,15 +1,15 @@
 @interface SBUISpotlightBarNavigationControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityNavigationControllerShouldSendScreenChange;
 @end
 
 @implementation SBUISpotlightBarNavigationControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBUISpotlightBarNavigationController" isKindOfClass:@"UINavigationController"];
-  [v3 validateClass:@"UINavigationControllerAccessibility" hasInstanceMethod:@"_accessibilityNavigationControllerShouldSendScreenChange" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBUISpotlightBarNavigationController" isKindOfClass:@"UINavigationController"];
+  [validationsCopy validateClass:@"UINavigationControllerAccessibility" hasInstanceMethod:@"_accessibilityNavigationControllerShouldSendScreenChange" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)_accessibilityNavigationControllerShouldSendScreenChange
@@ -20,7 +20,7 @@
   {
     objc_opt_class();
     v2 = __UIAccessibilityCastAsClass();
-    v3 = [v2 parentViewController];
+    parentViewController = [v2 parentViewController];
     NSClassFromString(&cfstr_Sbtodayviewcon.isa);
     v4 = objc_opt_isKindOfClass() ^ 1;
   }

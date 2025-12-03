@@ -1,33 +1,33 @@
 @interface BCCardStackTransitionAnimatorWrapper
-- (BCCardStackTransitionAnimatorWrapper)initWithAnimator:(id)a3 context:(id)a4 waitUntilReadyBlock:(id)a5 setupBeforeAnimationBlock:(id)a6;
-- (double)transitionDuration:(id)a3;
+- (BCCardStackTransitionAnimatorWrapper)initWithAnimator:(id)animator context:(id)context waitUntilReadyBlock:(id)block setupBeforeAnimationBlock:(id)animationBlock;
+- (double)transitionDuration:(id)duration;
 - (void)_setupBeforeAnimationIfNeeded;
-- (void)animateTransition:(id)a3;
-- (void)waitUntilReady:(id)a3;
+- (void)animateTransition:(id)transition;
+- (void)waitUntilReady:(id)ready;
 - (void)waitUntilReadyThenAnimate;
 @end
 
 @implementation BCCardStackTransitionAnimatorWrapper
 
-- (BCCardStackTransitionAnimatorWrapper)initWithAnimator:(id)a3 context:(id)a4 waitUntilReadyBlock:(id)a5 setupBeforeAnimationBlock:(id)a6
+- (BCCardStackTransitionAnimatorWrapper)initWithAnimator:(id)animator context:(id)context waitUntilReadyBlock:(id)block setupBeforeAnimationBlock:(id)animationBlock
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  animatorCopy = animator;
+  contextCopy = context;
+  blockCopy = block;
+  animationBlockCopy = animationBlock;
   v22.receiver = self;
   v22.super_class = BCCardStackTransitionAnimatorWrapper;
   v15 = [(BCCardStackTransitionAnimatorWrapper *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_animator, a3);
-    objc_storeStrong(&v16->_context, a4);
-    v17 = [v13 copy];
+    objc_storeStrong(&v15->_animator, animator);
+    objc_storeStrong(&v16->_context, context);
+    v17 = [blockCopy copy];
     waitUntilReadyBlock = v16->_waitUntilReadyBlock;
     v16->_waitUntilReadyBlock = v17;
 
-    v19 = [v14 copy];
+    v19 = [animationBlockCopy copy];
     setupBeforeAnimationBlock = v16->_setupBeforeAnimationBlock;
     v16->_setupBeforeAnimationBlock = v19;
   }
@@ -35,10 +35,10 @@
   return v16;
 }
 
-- (void)waitUntilReady:(id)a3
+- (void)waitUntilReady:(id)ready
 {
   waitUntilReadyBlock = self->_waitUntilReadyBlock;
-  v5 = a3;
+  readyCopy = ready;
   v7 = objc_retainBlock(waitUntilReadyBlock);
   v6 = self->_waitUntilReadyBlock;
   self->_waitUntilReadyBlock = 0;
@@ -50,7 +50,7 @@
 
   else
   {
-    v5[2](v5);
+    readyCopy[2](readyCopy);
   }
 }
 
@@ -77,16 +77,16 @@
   self->_setupBeforeAnimationBlock = 0;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   context = self->_context;
-  if (context != v4)
+  if (context != transitionCopy)
   {
-    [(BCCardStackTransitionContext *)context setOuterContext:v4];
-    v6 = [(BCCardStackTransitionContext *)v4 containerView];
-    v7 = [(BCCardStackTransitionContext *)v4 viewForKey:UITransitionContextToViewKey];
-    [v6 addSubview:v7];
+    [(BCCardStackTransitionContext *)context setOuterContext:transitionCopy];
+    containerView = [(BCCardStackTransitionContext *)transitionCopy containerView];
+    v7 = [(BCCardStackTransitionContext *)transitionCopy viewForKey:UITransitionContextToViewKey];
+    [containerView addSubview:v7];
   }
 
   [(BCCardStackTransitionAnimatorWrapper *)self _setupBeforeAnimationIfNeeded];
@@ -106,7 +106,7 @@
   }
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   if (![(BCCardStackTransitionContext *)self->_context isAnimated])
   {

@@ -1,7 +1,7 @@
 @interface UIAppearanceMonitor
 - (BOOL)_canShowWhileLocked;
-- (_TtC6TipKit19UIAppearanceMonitor)initWithCoder:(id)a3;
-- (_TtC6TipKit19UIAppearanceMonitor)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC6TipKit19UIAppearanceMonitor)initWithCoder:(id)coder;
+- (_TtC6TipKit19UIAppearanceMonitor)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation UIAppearanceMonitor
@@ -16,13 +16,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   canShowWhileLockedSbyF_0 = j___s6TipKit0A23UIPopoverViewControllerC19_canShowWhileLockedSbyF_0();
 
   return canShowWhileLockedSbyF_0 & 1;
 }
 
-- (_TtC6TipKit19UIAppearanceMonitor)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6TipKit19UIAppearanceMonitor)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_1A3622E3C();
   sub_1A3622E2C();
@@ -32,10 +32,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     v6 = sub_1A3622B8C();
-    a3 = v7;
+    name = v7;
   }
 
   else
@@ -43,13 +43,13 @@
     v6 = 0;
   }
 
-  v8 = a4;
-  v9 = sub_1A361D0AC(v6, a3, a4);
+  bundleCopy = bundle;
+  v9 = sub_1A361D0AC(v6, name, bundle);
 
   return v9;
 }
 
-- (_TtC6TipKit19UIAppearanceMonitor)initWithCoder:(id)a3
+- (_TtC6TipKit19UIAppearanceMonitor)initWithCoder:(id)coder
 {
   sub_1A3622E3C();
   sub_1A3622E2C();
@@ -59,7 +59,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_1A361D250(a3);
+  v4 = sub_1A361D250(coder);
 
   return v4;
 }

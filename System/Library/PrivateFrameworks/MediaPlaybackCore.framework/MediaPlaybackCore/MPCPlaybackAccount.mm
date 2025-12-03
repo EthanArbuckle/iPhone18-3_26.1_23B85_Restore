@@ -3,27 +3,27 @@
 - (BOOL)hasCatalogPlaybackCapability;
 - (BOOL)hasDelegationCapability;
 - (BOOL)hasMigrationCapability;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)usesLease;
-- (MPCPlaybackAccount)initWithDelegatedUserIdentity:(id)a3;
-- (MPCPlaybackAccount)initWithUserIdentity:(id)a3 subscriptionStatus:(id)a4;
+- (MPCPlaybackAccount)initWithDelegatedUserIdentity:(id)identity;
+- (MPCPlaybackAccount)initWithUserIdentity:(id)identity subscriptionStatus:(id)status;
 - (NSString)shortHashedDSID;
-- (id)_copyStreamerStorage:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_copyStreamerStorage:(id)storage;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (id)delegateTokenAWithError:(id *)a3;
+- (id)delegateTokenAWithError:(id *)error;
 - (id)description;
 - (unint64_t)hash;
-- (void)getDelegateTokenEWithTokenB:(_MPCProtoDelegateInfoTokenB *)a3 completion:(id)a4;
+- (void)getDelegateTokenEWithTokenB:(_MPCProtoDelegateInfoTokenB *)b completion:(id)completion;
 @end
 
 @implementation MPCPlaybackAccount
 
-- (id)_copyStreamerStorage:(id)a3
+- (id)_copyStreamerStorage:(id)storage
 {
-  v5 = a3;
-  v6 = self;
-  sub_1C5C7DACC(a3, v14);
+  storageCopy = storage;
+  selfCopy = self;
+  sub_1C5C7DACC(storage, v14);
 
   v7 = v15;
   if (!v15)
@@ -46,8 +46,8 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AD60]);
   v4 = objc_opt_class();
-  v5 = [(MPCPlaybackAccount *)self shortHashedDSID];
-  v6 = [v3 initWithFormat:@"<%@ hashedDSID=%@ ", v4, v5];
+  shortHashedDSID = [(MPCPlaybackAccount *)self shortHashedDSID];
+  v6 = [v3 initWithFormat:@"<%@ hashedDSID=%@ ", v4, shortHashedDSID];
 
   if (self->_activeAccount)
   {
@@ -104,11 +104,11 @@
     return 1;
   }
 
-  v4 = [(MPCPlaybackAccount *)self canEnableCloudLibrary];
-  v5 = [(ICURLBag *)self->_bag radioConfiguration];
-  v6 = [v5 isContinueListeningAvailable];
+  canEnableCloudLibrary = [(MPCPlaybackAccount *)self canEnableCloudLibrary];
+  radioConfiguration = [(ICURLBag *)self->_bag radioConfiguration];
+  isContinueListeningAvailable = [radioConfiguration isContinueListeningAvailable];
 
-  return v4 & [(MPCPlaybackAccount *)self hasCatalogPlaybackCapability]& v6;
+  return canEnableCloudLibrary & [(MPCPlaybackAccount *)self hasCatalogPlaybackCapability]& isContinueListeningAvailable;
 }
 
 - (BOOL)hasCatalogPlaybackCapability
@@ -141,23 +141,23 @@
   return v5;
 }
 
-- (id)delegateTokenAWithError:(id *)a3
+- (id)delegateTokenAWithError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1C5CBB04C();
 
   return v4;
 }
 
-- (void)getDelegateTokenEWithTokenB:(_MPCProtoDelegateInfoTokenB *)a3 completion:(id)a4
+- (void)getDelegateTokenEWithTokenB:(_MPCProtoDelegateInfoTokenB *)b completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = b;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  bCopy = b;
+  selfCopy = self;
 
   sub_1C5E3A9D0(&unk_1C6035B98, v7);
 }
@@ -170,9 +170,9 @@
   }
 
   v3 = [objc_alloc(MEMORY[0x1E6970A00]) initWithICSubscriptionStatus:self->_subscriptionStatus];
-  v4 = [v3 shouldUseLease];
+  shouldUseLease = [v3 shouldUseLease];
 
-  return v4;
+  return shouldUseLease;
 }
 
 - (BOOL)hasDelegationCapability
@@ -197,7 +197,7 @@
   return v4 & [(MPCPlaybackAccount *)self hasCatalogPlaybackCapability];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   delegated = self->_delegated;
   v5 = [MPCPlaybackAccount alloc];
@@ -298,9 +298,9 @@
   return [v12 stringWithFormat:@"<MPCPlaybackAccount:%p hashedDSID=%@ identity=%@ isActiveAccount=%@ isFallbackAccount=%@ isDelegated=%@ cloudLibraryEnabled=%@ privateListeningEnabled=%@ canAutoPlay=%@ storeFront=%@ subscriptionStatus=%@ bag=%@>", self, hashedDSID, userIdentity, v5, v6, v7, v8, v9, v10, self->_storeFrontIdentifier, self->_subscriptionStatus, self->_bag];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -308,7 +308,7 @@
     goto LABEL_12;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = v5;
   if (self->_delegated != *(v5 + 12) || self->_activeAccount != *(v5 + 9) || self->_fallbackAccount != *(v5 + 10) || self->_hasCloudLibraryEnabled != *(v5 + 8) || self->_privateListeningEnabled != *(v5 + 11))
   {
@@ -324,10 +324,10 @@
 LABEL_14:
     userIdentity = self->_userIdentity;
     v14 = v6[2];
-    v15 = [MEMORY[0x1E69E4688] defaultIdentityStore];
+    defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
     v16 = userIdentity;
     v17 = v14;
-    v18 = v15;
+    v18 = defaultIdentityStore;
     v19 = v18;
     if (v16 == v17)
     {
@@ -425,40 +425,40 @@ LABEL_12:
 - (unint64_t)hash
 {
   userIdentity = self->_userIdentity;
-  v3 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-  v4 = [(ICUserIdentity *)userIdentity hashInStore:v3];
+  defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+  v4 = [(ICUserIdentity *)userIdentity hashInStore:defaultIdentityStore];
 
   return v4;
 }
 
-- (MPCPlaybackAccount)initWithDelegatedUserIdentity:(id)a3
+- (MPCPlaybackAccount)initWithDelegatedUserIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v9.receiver = self;
   v9.super_class = MPCPlaybackAccount;
   v6 = [(MPCPlaybackAccount *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userIdentity, a3);
+    objc_storeStrong(&v6->_userIdentity, identity);
     *&v7->_privateListeningEnabled = 257;
   }
 
   return v7;
 }
 
-- (MPCPlaybackAccount)initWithUserIdentity:(id)a3 subscriptionStatus:(id)a4
+- (MPCPlaybackAccount)initWithUserIdentity:(id)identity subscriptionStatus:(id)status
 {
-  v7 = a3;
-  v8 = a4;
+  identityCopy = identity;
+  statusCopy = status;
   v12.receiver = self;
   v12.super_class = MPCPlaybackAccount;
   v9 = [(MPCPlaybackAccount *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_userIdentity, a3);
-    objc_storeStrong(&v10->_subscriptionStatus, a4);
+    objc_storeStrong(&v9->_userIdentity, identity);
+    objc_storeStrong(&v10->_subscriptionStatus, status);
   }
 
   return v10;

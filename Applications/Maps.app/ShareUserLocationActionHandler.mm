@@ -1,45 +1,45 @@
 @interface ShareUserLocationActionHandler
-+ (void)performAction:(id)a3 inContext:(id)a4;
++ (void)performAction:(id)action inContext:(id)context;
 @end
 
 @implementation ShareUserLocationActionHandler
 
-+ (void)performAction:(id)a3 inContext:(id)a4
++ (void)performAction:(id)action inContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  actionCopy = action;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v5 chrome];
-    v9 = [v8 mapView];
-    if ([v9 isUserLocationVisible])
+    chrome = [contextCopy chrome];
+    mapView = [chrome mapView];
+    if ([mapView isUserLocationVisible])
     {
-      v10 = [v5 chrome];
-      v11 = [v10 userLocationView];
+      chrome2 = [contextCopy chrome];
+      userLocationView = [chrome2 userLocationView];
     }
 
     else
     {
-      v11 = 0;
+      userLocationView = 0;
     }
 
-    v12 = [v5 appCoordinator];
+    appCoordinator = [contextCopy appCoordinator];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100903914;
     v22[3] = &unk_10162E490;
-    v13 = v11;
+    v13 = userLocationView;
     v23 = v13;
-    v14 = v12;
+    v14 = appCoordinator;
     v24 = v14;
     v15 = objc_retainBlock(v22);
     v16 = +[MKLocationManager sharedLocationManager];
-    v17 = [v16 isAuthorizedForPreciseLocation];
+    isAuthorizedForPreciseLocation = [v16 isAuthorizedForPreciseLocation];
 
-    if (v17)
+    if (isAuthorizedForPreciseLocation)
     {
       (v15[2])(v15, 0);
     }

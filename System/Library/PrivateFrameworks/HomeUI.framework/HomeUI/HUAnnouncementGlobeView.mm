@@ -2,38 +2,38 @@
 - (BOOL)_isNextAnnouncementTheOldest;
 - (BOOL)hasActivePlaybackSession;
 - (CGSize)playbackBoundingBoxSize;
-- (HUAnnouncementGlobeView)initWithAnnouncementPayload:(id)a3 delegate:(id)a4;
+- (HUAnnouncementGlobeView)initWithAnnouncementPayload:(id)payload delegate:(id)delegate;
 - (HUAnnouncementsGlobeViewDelegate)globeViewDelegate;
-- (double)_radiusOfPlaybackViewInSlotPosition:(unint64_t)a3;
-- (double)_xCoordinateForPlaybackViewInSlotPosition:(unint64_t)a3;
-- (double)_yCoordinateForPlaybackViewInSlotPosition:(unint64_t)a3;
+- (double)_radiusOfPlaybackViewInSlotPosition:(unint64_t)position;
+- (double)_xCoordinateForPlaybackViewInSlotPosition:(unint64_t)position;
+- (double)_yCoordinateForPlaybackViewInSlotPosition:(unint64_t)position;
 - (id)_blurEffectForCurrentInterfaceStyle;
 - (id)_nextAnnouncementPlaybackView;
-- (id)_onQueue_fetchNewAnnouncementInfo:(id)a3 oldestVisitedAnnouncementID:(id)a4;
-- (unint64_t)_indexOfLatestCachedAnnouncementFromIDs:(id)a3;
-- (unint64_t)_numberOfSlotsAvailableForNewAnnouncements:(id)a3;
+- (id)_onQueue_fetchNewAnnouncementInfo:(id)info oldestVisitedAnnouncementID:(id)d;
+- (unint64_t)_indexOfLatestCachedAnnouncementFromIDs:(id)ds;
+- (unint64_t)_numberOfSlotsAvailableForNewAnnouncements:(id)announcements;
 - (unint64_t)_numberOfUnplayedAnnouncements;
-- (void)_addOrInsertAnnouncementsFromIDs:(id)a3 withInfo:(id)a4 withinRange:(_NSRange)a5 inFreeSlots:(unint64_t)a6;
+- (void)_addOrInsertAnnouncementsFromIDs:(id)ds withInfo:(id)info withinRange:(_NSRange)range inFreeSlots:(unint64_t)slots;
 - (void)_addVisitedAnnouncementsToDisplayQueueIfNeeded;
-- (void)_appendAnnouncements:(id)a3 withInfo:(id)a4;
+- (void)_appendAnnouncements:(id)announcements withInfo:(id)info;
 - (void)_configureVisualStyleForBackgroundView;
-- (void)_layoutPlaybackViewCenteredIfNeeded:(id)a3;
-- (void)_layoutPlaybackViewsWithAnimationDuration:(double)a3 completion:(id)a4;
-- (void)_playAnnouncementWithInfo:(id)a3;
+- (void)_layoutPlaybackViewCenteredIfNeeded:(id)needed;
+- (void)_layoutPlaybackViewsWithAnimationDuration:(double)duration completion:(id)completion;
+- (void)_playAnnouncementWithInfo:(id)info;
 - (void)_playNextAnnouncement;
 - (void)_playRecentlyAddedAnnouncements;
-- (void)_seedVisitedAnouncements:(id)a3 withInfo:(id)a4;
+- (void)_seedVisitedAnouncements:(id)anouncements withInfo:(id)info;
 - (void)_setupConstrainstsForPlaybackViews;
-- (void)_setupConstraintsForPlaybackViewIfNeeded:(id)a3 slotPosition:(unint64_t)a4;
+- (void)_setupConstraintsForPlaybackViewIfNeeded:(id)needed slotPosition:(unint64_t)position;
 - (void)_setupIncomingAnnouncementSession;
-- (void)_setupSubviewsForAnnouncementInfo:(id)a3;
+- (void)_setupSubviewsForAnnouncementInfo:(id)info;
 - (void)_showVisitedAnnouncementsView;
-- (void)_submitAnalyticsForAnnouncePlaybackCompletedSuccessfully:(BOOL)a3 forAnnouncementID:(id)a4 interruptedByUser:(BOOL)a5;
-- (void)_togglePlayback:(id)a3;
-- (void)_updateLayoutAndAppearanceForPlaybackView:(id)a3 atSlotPosition:(unint64_t)a4;
-- (void)audioPlayer:(id)a3 didPausePlaybackWithReason:(id)a4;
-- (void)audioPlayer:(id)a3 didUpdateAveragePower:(double)a4;
-- (void)audioPlayerDidFinishPlayback:(id)a3 withError:(id)a4;
+- (void)_submitAnalyticsForAnnouncePlaybackCompletedSuccessfully:(BOOL)successfully forAnnouncementID:(id)d interruptedByUser:(BOOL)user;
+- (void)_togglePlayback:(id)playback;
+- (void)_updateLayoutAndAppearanceForPlaybackView:(id)view atSlotPosition:(unint64_t)position;
+- (void)audioPlayer:(id)player didPausePlaybackWithReason:(id)reason;
+- (void)audioPlayer:(id)player didUpdateAveragePower:(double)power;
+- (void)audioPlayerDidFinishPlayback:(id)playback withError:(id)error;
 - (void)layoutSubviews;
 - (void)skipToNextAnnouncement;
 - (void)stopPlayback;
@@ -43,19 +43,19 @@
 
 @implementation HUAnnouncementGlobeView
 
-- (HUAnnouncementGlobeView)initWithAnnouncementPayload:(id)a3 delegate:(id)a4
+- (HUAnnouncementGlobeView)initWithAnnouncementPayload:(id)payload delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  delegateCopy = delegate;
   v27.receiver = self;
   v27.super_class = HUAnnouncementGlobeView;
   v8 = [(HUAnnouncementGlobeView *)&v27 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_globeViewDelegate, v7);
-    v10 = [v6 objectForKeyedSubscript:*MEMORY[0x277CEA768]];
-    v11 = [v6 objectForKeyedSubscript:*MEMORY[0x277CEA9E8]];
+    objc_storeWeak(&v8->_globeViewDelegate, delegateCopy);
+    v10 = [payloadCopy objectForKeyedSubscript:*MEMORY[0x277CEA768]];
+    v11 = [payloadCopy objectForKeyedSubscript:*MEMORY[0x277CEA9E8]];
     announcementGroupID = v9->_announcementGroupID;
     v9->_announcementGroupID = v11;
 
@@ -76,7 +76,7 @@
     v9->_visitedAnnouncements = v19;
 
     [(NSMutableDictionary *)v9->_announcementsInfo setObject:&unk_2824917F0 forKey:*MEMORY[0x277CEAA18]];
-    [(NSMutableDictionary *)v9->_announcementsInfo setObject:v6 forKey:v10];
+    [(NSMutableDictionary *)v9->_announcementsInfo setObject:payloadCopy forKey:v10];
     [(NSMutableArray *)v9->_announcementIDs addObject:v10];
     v21 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v9 action:sel__togglePlayback_];
     tapGestureRecognizer = v9->_tapGestureRecognizer;
@@ -90,7 +90,7 @@
     v9->_totalNumberOfAnnouncements = 1;
     v9->_seedOnceToken = 0;
     v9->_displayVisitedOnceToken = 0;
-    [(HUAnnouncementGlobeView *)v9 _setupSubviewsForAnnouncementInfo:v6];
+    [(HUAnnouncementGlobeView *)v9 _setupSubviewsForAnnouncementInfo:payloadCopy];
     [(HUAnnouncementGlobeView *)v9 _setupIncomingAnnouncementSession];
   }
 
@@ -99,19 +99,19 @@
 
 - (BOOL)hasActivePlaybackSession
 {
-  v2 = [(HUAnnouncementGlobeView *)self audioPlayer];
-  v3 = v2 != 0;
+  audioPlayer = [(HUAnnouncementGlobeView *)self audioPlayer];
+  v3 = audioPlayer != 0;
 
   return v3;
 }
 
-- (void)_setupSubviewsForAnnouncementInfo:(id)a3
+- (void)_setupSubviewsForAnnouncementInfo:(id)info
 {
   v4 = MEMORY[0x277D75D68];
-  v5 = a3;
+  infoCopy = info;
   v6 = [v4 alloc];
-  v7 = [(HUAnnouncementGlobeView *)self _blurEffectForCurrentInterfaceStyle];
-  v8 = [v6 initWithEffect:v7];
+  _blurEffectForCurrentInterfaceStyle = [(HUAnnouncementGlobeView *)self _blurEffectForCurrentInterfaceStyle];
+  v8 = [v6 initWithEffect:_blurEffectForCurrentInterfaceStyle];
   backgroundView = self->_backgroundView;
   self->_backgroundView = v8;
 
@@ -125,23 +125,23 @@
   v13 = *(MEMORY[0x277CBF3A0] + 16);
   v14 = *(MEMORY[0x277CBF3A0] + 24);
   v29 = [(HUAnnouncementPlaybackView *)v10 initWithFrame:*MEMORY[0x277CBF3A0], v12, v13, v14];
-  [(HUAnnouncementPlaybackView *)v29 setAnnouncementInfo:v5];
+  [(HUAnnouncementPlaybackView *)v29 setAnnouncementInfo:infoCopy];
 
   [(HUAnnouncementPlaybackView *)v29 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(HUAnnouncementPlaybackView *)v29 setUserInteractionEnabled:0];
-  v15 = [(UIVisualEffectView *)self->_backgroundView contentView];
-  [v15 addSubview:v29];
+  contentView = [(UIVisualEffectView *)self->_backgroundView contentView];
+  [contentView addSubview:v29];
 
-  v16 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  [v16 addObject:v29];
+  currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  [currentlyDisplayedAnnouncements addObject:v29];
 
   v17 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v11, v12, v13, v14}];
   tappableCoverView = self->_tappableCoverView;
   self->_tappableCoverView = v17;
 
   [(UIView *)self->_tappableCoverView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v19 = [MEMORY[0x277D75348] clearColor];
-  [(UIView *)self->_tappableCoverView setBackgroundColor:v19];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIView *)self->_tappableCoverView setBackgroundColor:clearColor];
 
   [(UIView *)self->_tappableCoverView addGestureRecognizer:self->_tapGestureRecognizer];
   v20 = _HULocalizedStringWithDefaultValue(@"HUAnnounceStopPlayback_AX_Label_Title", @"HUAnnounceStopPlayback_AX_Label_Title", 1);
@@ -164,8 +164,8 @@
   [(UIImageView *)self->_playImageView setContentMode:1];
   [(UIImageView *)self->_playImageView setImage:v26];
   v27 = self->_playImageView;
-  v28 = [MEMORY[0x277D75348] systemBlackColor];
-  [(UIImageView *)v27 setTintColor:v28];
+  systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+  [(UIImageView *)v27 setTintColor:systemBlackColor];
 
   [(UIImageView *)self->_playImageView setAlpha:0.0];
   [(UIView *)self->_tappableCoverView addSubview:self->_playImageView];
@@ -177,99 +177,99 @@
   v58.super_class = HUAnnouncementGlobeView;
   [(HUAnnouncementGlobeView *)&v58 updateConstraints];
   v3 = objc_opt_new();
-  v4 = [(UIVisualEffectView *)self->_backgroundView centerXAnchor];
-  v5 = [(HUAnnouncementGlobeView *)self centerXAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  centerXAnchor = [(UIVisualEffectView *)self->_backgroundView centerXAnchor];
+  centerXAnchor2 = [(HUAnnouncementGlobeView *)self centerXAnchor];
+  v6 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v3 addObject:v6];
 
-  v7 = [(UIVisualEffectView *)self->_backgroundView centerYAnchor];
-  v8 = [(HUAnnouncementGlobeView *)self centerYAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  centerYAnchor = [(UIVisualEffectView *)self->_backgroundView centerYAnchor];
+  centerYAnchor2 = [(HUAnnouncementGlobeView *)self centerYAnchor];
+  v9 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v3 addObject:v9];
 
-  v10 = [(UIVisualEffectView *)self->_backgroundView heightAnchor];
-  v11 = [(HUAnnouncementGlobeView *)self heightAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  heightAnchor = [(UIVisualEffectView *)self->_backgroundView heightAnchor];
+  heightAnchor2 = [(HUAnnouncementGlobeView *)self heightAnchor];
+  v12 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   [v3 addObject:v12];
 
-  v13 = [(UIVisualEffectView *)self->_backgroundView widthAnchor];
-  v14 = [(UIVisualEffectView *)self->_backgroundView heightAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  widthAnchor = [(UIVisualEffectView *)self->_backgroundView widthAnchor];
+  heightAnchor3 = [(UIVisualEffectView *)self->_backgroundView heightAnchor];
+  v15 = [widthAnchor constraintEqualToAnchor:heightAnchor3];
   [v3 addObject:v15];
 
-  v16 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v17 = [v16 objectAtIndexedSubscript:0];
+  currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v17 = [currentlyDisplayedAnnouncements objectAtIndexedSubscript:0];
 
-  v18 = [v17 centerXAnchor];
-  v19 = [(UIVisualEffectView *)self->_backgroundView centerXAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19 constant:0.0];
+  centerXAnchor3 = [v17 centerXAnchor];
+  centerXAnchor4 = [(UIVisualEffectView *)self->_backgroundView centerXAnchor];
+  v20 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4 constant:0.0];
   [v17 setCenterXConstraint:v20];
 
-  v21 = [v17 centerYAnchor];
-  v22 = [(UIVisualEffectView *)self->_backgroundView centerYAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22 constant:0.0];
+  centerYAnchor3 = [v17 centerYAnchor];
+  centerYAnchor4 = [(UIVisualEffectView *)self->_backgroundView centerYAnchor];
+  v23 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4 constant:0.0];
   [v17 setCenterYConstraint:v23];
 
-  v24 = [v17 heightAnchor];
-  v25 = [v24 constraintEqualToConstant:120.0];
+  heightAnchor4 = [v17 heightAnchor];
+  v25 = [heightAnchor4 constraintEqualToConstant:120.0];
   [v17 setHeightConstraint:v25];
 
-  v26 = [v17 widthAnchor];
-  v27 = [v17 heightAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  widthAnchor2 = [v17 widthAnchor];
+  heightAnchor5 = [v17 heightAnchor];
+  v28 = [widthAnchor2 constraintEqualToAnchor:heightAnchor5];
   [v17 setWidthConstraint:v28];
 
-  v29 = [v17 centerXConstraint];
-  [v3 addObject:v29];
+  centerXConstraint = [v17 centerXConstraint];
+  [v3 addObject:centerXConstraint];
 
-  v30 = [v17 centerYConstraint];
-  [v3 addObject:v30];
+  centerYConstraint = [v17 centerYConstraint];
+  [v3 addObject:centerYConstraint];
 
-  v31 = [v17 heightConstraint];
-  [v3 addObject:v31];
+  heightConstraint = [v17 heightConstraint];
+  [v3 addObject:heightConstraint];
 
-  v32 = [v17 widthAnchor];
-  v33 = [v17 heightAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  widthAnchor3 = [v17 widthAnchor];
+  heightAnchor6 = [v17 heightAnchor];
+  v34 = [widthAnchor3 constraintEqualToAnchor:heightAnchor6];
   [v3 addObject:v34];
 
-  v35 = [(UIView *)self->_tappableCoverView centerXAnchor];
-  v36 = [(HUAnnouncementGlobeView *)self centerXAnchor];
-  v37 = [v35 constraintEqualToAnchor:v36];
+  centerXAnchor5 = [(UIView *)self->_tappableCoverView centerXAnchor];
+  centerXAnchor6 = [(HUAnnouncementGlobeView *)self centerXAnchor];
+  v37 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   [v3 addObject:v37];
 
-  v38 = [(UIView *)self->_tappableCoverView centerYAnchor];
-  v39 = [(HUAnnouncementGlobeView *)self centerYAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  centerYAnchor5 = [(UIView *)self->_tappableCoverView centerYAnchor];
+  centerYAnchor6 = [(HUAnnouncementGlobeView *)self centerYAnchor];
+  v40 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   [v3 addObject:v40];
 
-  v41 = [(UIView *)self->_tappableCoverView heightAnchor];
-  v42 = [(HUAnnouncementGlobeView *)self heightAnchor];
-  v43 = [v41 constraintEqualToAnchor:v42];
+  heightAnchor7 = [(UIView *)self->_tappableCoverView heightAnchor];
+  heightAnchor8 = [(HUAnnouncementGlobeView *)self heightAnchor];
+  v43 = [heightAnchor7 constraintEqualToAnchor:heightAnchor8];
   [v3 addObject:v43];
 
-  v44 = [(UIView *)self->_tappableCoverView widthAnchor];
-  v45 = [(HUAnnouncementGlobeView *)self heightAnchor];
-  v46 = [v44 constraintEqualToAnchor:v45];
+  widthAnchor4 = [(UIView *)self->_tappableCoverView widthAnchor];
+  heightAnchor9 = [(HUAnnouncementGlobeView *)self heightAnchor];
+  v46 = [widthAnchor4 constraintEqualToAnchor:heightAnchor9];
   [v3 addObject:v46];
 
-  v47 = [(UIImageView *)self->_playImageView centerXAnchor];
-  v48 = [(UIView *)self->_tappableCoverView centerXAnchor];
-  v49 = [v47 constraintEqualToAnchor:v48];
+  centerXAnchor7 = [(UIImageView *)self->_playImageView centerXAnchor];
+  centerXAnchor8 = [(UIView *)self->_tappableCoverView centerXAnchor];
+  v49 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
   [v3 addObject:v49];
 
-  v50 = [(UIImageView *)self->_playImageView centerYAnchor];
-  v51 = [(UIView *)self->_tappableCoverView centerYAnchor];
-  v52 = [v50 constraintEqualToAnchor:v51];
+  centerYAnchor7 = [(UIImageView *)self->_playImageView centerYAnchor];
+  centerYAnchor8 = [(UIView *)self->_tappableCoverView centerYAnchor];
+  v52 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
   [v3 addObject:v52];
 
-  v53 = [(UIImageView *)self->_playImageView heightAnchor];
-  v54 = [v53 constraintEqualToConstant:44.0];
+  heightAnchor10 = [(UIImageView *)self->_playImageView heightAnchor];
+  v54 = [heightAnchor10 constraintEqualToConstant:44.0];
   [v3 addObject:v54];
 
-  v55 = [(UIImageView *)self->_playImageView widthAnchor];
-  v56 = [(UIImageView *)self->_playImageView heightAnchor];
-  v57 = [v55 constraintEqualToAnchor:v56];
+  widthAnchor5 = [(UIImageView *)self->_playImageView widthAnchor];
+  heightAnchor11 = [(UIImageView *)self->_playImageView heightAnchor];
+  v57 = [widthAnchor5 constraintEqualToAnchor:heightAnchor11];
   [v3 addObject:v57];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v3];
@@ -281,26 +281,26 @@
   v6.receiver = self;
   v6.super_class = HUAnnouncementGlobeView;
   [(HUAnnouncementGlobeView *)&v6 layoutSubviews];
-  v3 = [(HUAnnouncementGlobeView *)self layer];
-  [v3 setMasksToBounds:1];
+  layer = [(HUAnnouncementGlobeView *)self layer];
+  [layer setMasksToBounds:1];
 
-  v4 = [(HUAnnouncementGlobeView *)self layer];
+  layer2 = [(HUAnnouncementGlobeView *)self layer];
   [(HUAnnouncementGlobeView *)self bounds];
-  [v4 setCornerRadius:v5 * 0.5];
+  [layer2 setCornerRadius:v5 * 0.5];
 }
 
 - (void)skipToNextAnnouncement
 {
-  v3 = [(HUAnnouncementGlobeView *)self audioPlayer];
-  v4 = [v3 isPlaying];
+  audioPlayer = [(HUAnnouncementGlobeView *)self audioPlayer];
+  isPlaying = [audioPlayer isPlaying];
 
-  if (v4)
+  if (isPlaying)
   {
-    v5 = [(HUAnnouncementGlobeView *)self audioPlayer];
-    [v5 stop];
+    audioPlayer2 = [(HUAnnouncementGlobeView *)self audioPlayer];
+    [audioPlayer2 stop];
 
-    v6 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v7 = [v6 objectAtIndexedSubscript:0];
+    currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v7 = [currentlyDisplayedAnnouncements objectAtIndexedSubscript:0];
 
     [v7 playbackStopped];
     [(HUAnnouncementGlobeView *)self _playNextAnnouncement];
@@ -310,35 +310,35 @@
 - (void)stopPlayback
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(HUAnnouncementGlobeView *)self audioPlayer];
-  [v3 stop];
+  audioPlayer = [(HUAnnouncementGlobeView *)self audioPlayer];
+  [audioPlayer stop];
 
-  v4 = [(HUAnnouncementGlobeView *)self playImageView];
-  [v4 setAlpha:1.0];
+  playImageView = [(HUAnnouncementGlobeView *)self playImageView];
+  [playImageView setAlpha:1.0];
 
   v5 = _HULocalizedStringWithDefaultValue(@"HUAnnounceStartPlayback_AX_Label_Title", @"HUAnnounceStartPlayback_AX_Label_Title", 1);
-  v6 = [(HUAnnouncementGlobeView *)self tappableCoverView];
-  [v6 setAccessibilityLabel:v5];
+  tappableCoverView = [(HUAnnouncementGlobeView *)self tappableCoverView];
+  [tappableCoverView setAccessibilityLabel:v5];
 
   v7 = _HULocalizedStringWithDefaultValue(@"HUAnnounceResumePlayback_AX_Label_Hint", @"HUAnnounceResumePlayback_AX_Label_Hint", 1);
-  v8 = [(HUAnnouncementGlobeView *)self tappableCoverView];
-  [v8 setAccessibilityHint:v7];
+  tappableCoverView2 = [(HUAnnouncementGlobeView *)self tappableCoverView];
+  [tappableCoverView2 setAccessibilityHint:v7];
 
-  v9 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v10 = [v9 count];
+  currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v10 = [currentlyDisplayedAnnouncements count];
 
   if (v10)
   {
-    v11 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v12 = [v11 objectAtIndexedSubscript:0];
+    currentlyDisplayedAnnouncements2 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v12 = [currentlyDisplayedAnnouncements2 objectAtIndexedSubscript:0];
 
     [v12 playbackStopped];
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v13 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v14 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    currentlyDisplayedAnnouncements3 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v14 = [currentlyDisplayedAnnouncements3 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v14)
     {
       v15 = v14;
@@ -350,88 +350,88 @@
         {
           if (*v27 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(currentlyDisplayedAnnouncements3);
           }
 
           [*(*(&v26 + 1) + 8 * v17++) setAlpha:0.5];
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v15 = [currentlyDisplayedAnnouncements3 countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v15);
     }
 
-    v18 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
-    if (v18)
+    globeViewDelegate = [(HUAnnouncementGlobeView *)self globeViewDelegate];
+    if (globeViewDelegate)
     {
-      v19 = v18;
-      v20 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
+      v19 = globeViewDelegate;
+      globeViewDelegate2 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
       v21 = objc_opt_respondsToSelector();
 
       if (v21)
       {
-        v22 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
-        v23 = [v12 announcementInfo];
-        [v22 didSelectItemWithInfo:v23 totalNumberOfAnnouncements:{-[HUAnnouncementGlobeView totalNumberOfAnnouncements](self, "totalNumberOfAnnouncements")}];
+        globeViewDelegate3 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
+        announcementInfo = [v12 announcementInfo];
+        [globeViewDelegate3 didSelectItemWithInfo:announcementInfo totalNumberOfAnnouncements:{-[HUAnnouncementGlobeView totalNumberOfAnnouncements](self, "totalNumberOfAnnouncements")}];
       }
     }
   }
 
   [(HUAnnouncementGlobeView *)self setAudioPlayer:0];
-  v24 = [(HUAnnouncementGlobeView *)self announceRemotePlaybackSession];
-  v25 = [(HUAnnouncementGlobeView *)self lastPlayedAnnouncementID];
-  [v24 setPlaybackStoppedForAnnouncement:v25];
+  announceRemotePlaybackSession = [(HUAnnouncementGlobeView *)self announceRemotePlaybackSession];
+  lastPlayedAnnouncementID = [(HUAnnouncementGlobeView *)self lastPlayedAnnouncementID];
+  [announceRemotePlaybackSession setPlaybackStoppedForAnnouncement:lastPlayedAnnouncementID];
 }
 
 - (void)teardownAnnouncements
 {
-  v3 = [(HUAnnouncementGlobeView *)self audioPlayer];
-  v4 = [v3 isPlaying];
+  audioPlayer = [(HUAnnouncementGlobeView *)self audioPlayer];
+  isPlaying = [audioPlayer isPlaying];
 
-  v5 = [(HUAnnouncementGlobeView *)self announceRemotePlaybackSession];
-  [v5 endSession];
+  announceRemotePlaybackSession = [(HUAnnouncementGlobeView *)self announceRemotePlaybackSession];
+  [announceRemotePlaybackSession endSession];
 
   [(HUAnnouncementGlobeView *)self setAnnounceRemotePlaybackSession:0];
-  v6 = [(HUAnnouncementGlobeView *)self audioPlayer];
-  [v6 stop];
+  audioPlayer2 = [(HUAnnouncementGlobeView *)self audioPlayer];
+  [audioPlayer2 stop];
 
-  if (v4)
+  if (isPlaying)
   {
-    v7 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v8 = [currentlyDisplayedAnnouncements objectAtIndexedSubscript:0];
 
-    v9 = [v8 announcementInfo];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CEA768]];
+    announcementInfo = [v8 announcementInfo];
+    v10 = [announcementInfo objectForKeyedSubscript:*MEMORY[0x277CEA768]];
 
     [(HUAnnouncementGlobeView *)self _submitAnalyticsForAnnouncePlaybackCompletedSuccessfully:1 forAnnouncementID:v10 interruptedByUser:1];
   }
 
-  v11 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  [v11 makeObjectsPerformSelector:sel_removeFromSuperview];
+  currentlyDisplayedAnnouncements2 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  [currentlyDisplayedAnnouncements2 makeObjectsPerformSelector:sel_removeFromSuperview];
 
-  v12 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  [v12 removeAllObjects];
+  currentlyDisplayedAnnouncements3 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  [currentlyDisplayedAnnouncements3 removeAllObjects];
 
-  v13 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
-  [v13 removeAllObjects];
+  visitedAnnouncements = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
+  [visitedAnnouncements removeAllObjects];
 
-  v14 = [(HUAnnouncementGlobeView *)self announcementIDs];
-  [v14 removeAllObjects];
+  announcementIDs = [(HUAnnouncementGlobeView *)self announcementIDs];
+  [announcementIDs removeAllObjects];
 
-  v15 = [(HUAnnouncementGlobeView *)self announcementsInfo];
-  [v15 removeAllObjects];
+  announcementsInfo = [(HUAnnouncementGlobeView *)self announcementsInfo];
+  [announcementsInfo removeAllObjects];
 }
 
 - (void)_configureVisualStyleForBackgroundView
 {
-  v3 = [(HUAnnouncementGlobeView *)self backgroundView];
-  v4 = [(HUAnnouncementGlobeView *)self _blurEffectForCurrentInterfaceStyle];
-  [v3 setEffect:v4];
+  backgroundView = [(HUAnnouncementGlobeView *)self backgroundView];
+  _blurEffectForCurrentInterfaceStyle = [(HUAnnouncementGlobeView *)self _blurEffectForCurrentInterfaceStyle];
+  [backgroundView setEffect:_blurEffectForCurrentInterfaceStyle];
 
-  v5 = [(HUAnnouncementGlobeView *)self traitCollection];
-  [v5 userInterfaceStyle];
+  traitCollection = [(HUAnnouncementGlobeView *)self traitCollection];
+  [traitCollection userInterfaceStyle];
 
   backgroundView = self->_backgroundView;
   v7 = [MEMORY[0x277D75348] colorWithRed:0.882352941 green:0.88627451 blue:0.894117647 alpha:1.0];
@@ -440,9 +440,9 @@
 
 - (void)_setupIncomingAnnouncementSession
 {
-  v3 = [(HUAnnouncementGlobeView *)self announcementGroupID];
+  announcementGroupID = [(HUAnnouncementGlobeView *)self announcementGroupID];
 
-  if (v3)
+  if (announcementGroupID)
   {
     v4 = objc_alloc_init(MEMORY[0x277CEABC8]);
     [(HUAnnouncementGlobeView *)self setAnnounceRemotePlaybackSession:v4];
@@ -454,14 +454,14 @@
       _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "Now setting up Announce Remote Playback Session", buf, 2u);
     }
 
-    v6 = [(HUAnnouncementGlobeView *)self announceRemotePlaybackSession];
-    v7 = [(HUAnnouncementGlobeView *)self announcementGroupID];
+    announceRemotePlaybackSession = [(HUAnnouncementGlobeView *)self announceRemotePlaybackSession];
+    announcementGroupID2 = [(HUAnnouncementGlobeView *)self announcementGroupID];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __60__HUAnnouncementGlobeView__setupIncomingAnnouncementSession__block_invoke;
     v8[3] = &unk_277DBA608;
     v8[4] = self;
-    [v6 startSessionForGroupID:v7 announcementsHandler:v8];
+    [announceRemotePlaybackSession startSessionForGroupID:announcementGroupID2 announcementsHandler:v8];
   }
 }
 
@@ -559,29 +559,29 @@ void __60__HUAnnouncementGlobeView__setupIncomingAnnouncementSession__block_invo
   [v2 _appendAnnouncements:v4 withInfo:v3];
 }
 
-- (void)_appendAnnouncements:(id)a3 withInfo:(id)a4
+- (void)_appendAnnouncements:(id)announcements withInfo:(id)info
 {
   v67 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  announcementsCopy = announcements;
+  infoCopy = info;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  [(HUAnnouncementGlobeView *)self _seedVisitedAnouncements:v7 withInfo:v8];
-  -[HUAnnouncementGlobeView setTotalNumberOfAnnouncements:](self, "setTotalNumberOfAnnouncements:", [v7 count]);
-  v9 = [(HUAnnouncementGlobeView *)self _indexOfLatestCachedAnnouncementFromIDs:v7];
+  [(HUAnnouncementGlobeView *)self _seedVisitedAnouncements:announcementsCopy withInfo:infoCopy];
+  -[HUAnnouncementGlobeView setTotalNumberOfAnnouncements:](self, "setTotalNumberOfAnnouncements:", [announcementsCopy count]);
+  v9 = [(HUAnnouncementGlobeView *)self _indexOfLatestCachedAnnouncementFromIDs:announcementsCopy];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_29;
   }
 
   v10 = v9;
-  v11 = [v7 count] + ~v9;
-  v12 = [(HUAnnouncementGlobeView *)self _numberOfSlotsAvailableForNewAnnouncements:v7];
+  v11 = [announcementsCopy count] + ~v9;
+  v12 = [(HUAnnouncementGlobeView *)self _numberOfSlotsAvailableForNewAnnouncements:announcementsCopy];
   v13 = HFLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = NSStringFromSelector(a2);
     *buf = 138413058;
-    v60 = self;
+    selfCopy3 = self;
     v61 = 2112;
     v62 = v14;
     v63 = 2048;
@@ -594,8 +594,8 @@ void __60__HUAnnouncementGlobeView__setupIncomingAnnouncementSession__block_invo
   if (v11 && v12)
   {
     v15 = objc_opt_new();
-    v16 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v17 = [v16 count];
+    currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v17 = [currentlyDisplayedAnnouncements count];
 
     if (v12 >= v11)
     {
@@ -615,11 +615,11 @@ void __60__HUAnnouncementGlobeView__setupIncomingAnnouncementSession__block_invo
         v19 = 2;
         do
         {
-          v20 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-          v21 = [v20 objectAtIndexedSubscript:v19];
+          currentlyDisplayedAnnouncements2 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+          v21 = [currentlyDisplayedAnnouncements2 objectAtIndexedSubscript:v19];
 
-          v22 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
-          [v22 insertObject:v21 atIndex:0];
+          visitedAnnouncements = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
+          [visitedAnnouncements insertObject:v21 atIndex:0];
 
           [v15 addObject:v21];
           --v19;
@@ -628,8 +628,8 @@ void __60__HUAnnouncementGlobeView__setupIncomingAnnouncementSession__block_invo
         while (v19 > 2 - v18);
       }
 
-      v23 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-      [v23 removeObjectsInArray:v15];
+      currentlyDisplayedAnnouncements3 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+      [currentlyDisplayedAnnouncements3 removeObjectsInArray:v15];
 
       v24 = HFLogForCategory();
       a2 = aSelectora;
@@ -637,7 +637,7 @@ void __60__HUAnnouncementGlobeView__setupIncomingAnnouncementSession__block_invo
       {
         v25 = NSStringFromSelector(aSelectora);
         *buf = 138412802;
-        v60 = self;
+        selfCopy3 = self;
         v61 = 2112;
         v62 = v25;
         v63 = 2112;
@@ -653,24 +653,24 @@ void __60__HUAnnouncementGlobeView__setupIncomingAnnouncementSession__block_invo
       v26 = 0;
     }
 
-    [(HUAnnouncementGlobeView *)self _addOrInsertAnnouncementsFromIDs:v7 withInfo:v8 withinRange:v10 inFreeSlots:v18, v12];
+    [(HUAnnouncementGlobeView *)self _addOrInsertAnnouncementsFromIDs:announcementsCopy withInfo:infoCopy withinRange:v10 inFreeSlots:v18, v12];
     [(HUAnnouncementGlobeView *)self _addVisitedAnnouncementsToDisplayQueueIfNeeded];
-    v37 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v38 = [v37 objectAtIndexedSubscript:0];
+    currentlyDisplayedAnnouncements4 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v38 = [currentlyDisplayedAnnouncements4 objectAtIndexedSubscript:0];
 
     [(HUAnnouncementGlobeView *)self _setupConstrainstsForPlaybackViews];
-    v39 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
-    if (v39)
+    globeViewDelegate = [(HUAnnouncementGlobeView *)self globeViewDelegate];
+    if (globeViewDelegate)
     {
-      v40 = v39;
-      v41 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
+      v40 = globeViewDelegate;
+      globeViewDelegate2 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
       v42 = objc_opt_respondsToSelector();
 
       if (v42)
       {
-        v43 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
-        v44 = [v38 announcementInfo];
-        [v43 didSelectItemWithInfo:v44 totalNumberOfAnnouncements:{-[HUAnnouncementGlobeView totalNumberOfAnnouncements](self, "totalNumberOfAnnouncements")}];
+        globeViewDelegate3 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
+        announcementInfo = [v38 announcementInfo];
+        [globeViewDelegate3 didSelectItemWithInfo:announcementInfo totalNumberOfAnnouncements:{-[HUAnnouncementGlobeView totalNumberOfAnnouncements](self, "totalNumberOfAnnouncements")}];
       }
     }
 
@@ -688,40 +688,40 @@ void __60__HUAnnouncementGlobeView__setupIncomingAnnouncementSession__block_invo
     goto LABEL_29;
   }
 
-  v27 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  if (![v27 count])
+  currentlyDisplayedAnnouncements5 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  if (![currentlyDisplayedAnnouncements5 count])
   {
     goto LABEL_19;
   }
 
-  v28 = [(HUAnnouncementGlobeView *)self audioPlayer];
-  if (v28)
+  audioPlayer = [(HUAnnouncementGlobeView *)self audioPlayer];
+  if (audioPlayer)
   {
 
 LABEL_19:
     goto LABEL_20;
   }
 
-  v46 = [(HUAnnouncementGlobeView *)self _numberOfUnplayedAnnouncements];
+  _numberOfUnplayedAnnouncements = [(HUAnnouncementGlobeView *)self _numberOfUnplayedAnnouncements];
 
-  if (!v46)
+  if (!_numberOfUnplayedAnnouncements)
   {
 LABEL_20:
-    v29 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v30 = [v29 objectAtIndexedSubscript:0];
+    currentlyDisplayedAnnouncements6 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v30 = [currentlyDisplayedAnnouncements6 objectAtIndexedSubscript:0];
 
-    v31 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
-    if (v31)
+    globeViewDelegate4 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
+    if (globeViewDelegate4)
     {
-      v32 = v31;
-      v33 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
+      v32 = globeViewDelegate4;
+      globeViewDelegate5 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
       v34 = objc_opt_respondsToSelector();
 
       if (v34)
       {
-        v35 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
-        v36 = [v30 announcementInfo];
-        [v35 didSelectItemWithInfo:v36 totalNumberOfAnnouncements:{-[HUAnnouncementGlobeView totalNumberOfAnnouncements](self, "totalNumberOfAnnouncements")}];
+        globeViewDelegate6 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
+        announcementInfo2 = [v30 announcementInfo];
+        [globeViewDelegate6 didSelectItemWithInfo:announcementInfo2 totalNumberOfAnnouncements:{-[HUAnnouncementGlobeView totalNumberOfAnnouncements](self, "totalNumberOfAnnouncements")}];
       }
     }
 
@@ -732,22 +732,22 @@ LABEL_20:
   if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
   {
     v48 = NSStringFromSelector(a2);
-    v49 = [(HUAnnouncementGlobeView *)self _numberOfUnplayedAnnouncements];
-    v50 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    _numberOfUnplayedAnnouncements2 = [(HUAnnouncementGlobeView *)self _numberOfUnplayedAnnouncements];
+    currentlyDisplayedAnnouncements7 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
     *buf = 138413058;
-    v60 = self;
+    selfCopy3 = self;
     v61 = 2112;
     v62 = v48;
     v63 = 2048;
-    v64 = v49;
+    v64 = _numberOfUnplayedAnnouncements2;
     v65 = 2112;
-    v66 = v50;
+    v66 = currentlyDisplayedAnnouncements7;
     _os_log_impl(&dword_20CEB6000, v47, OS_LOG_TYPE_DEFAULT, "%@:%@ Now Playing [%lu] unplayed announcements [%@]....", buf, 0x2Au);
   }
 
   [(HUAnnouncementGlobeView *)self _addVisitedAnnouncementsToDisplayQueueIfNeeded];
-  v51 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v52 = [v51 count];
+  currentlyDisplayedAnnouncements8 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v52 = [currentlyDisplayedAnnouncements8 count];
 
   if (v52 >= 2)
   {
@@ -841,21 +841,21 @@ LABEL_6:
   [*(a1 + 32) _playRecentlyAddedAnnouncements];
 }
 
-- (void)_seedVisitedAnouncements:(id)a3 withInfo:(id)a4
+- (void)_seedVisitedAnouncements:(id)anouncements withInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  anouncementsCopy = anouncements;
+  infoCopy = info;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __61__HUAnnouncementGlobeView__seedVisitedAnouncements_withInfo___block_invoke;
   v12[3] = &unk_277DBDE68;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = anouncementsCopy;
+  v14 = infoCopy;
   v15 = a2;
   seedOnceToken = self->_seedOnceToken;
-  v10 = v8;
-  v11 = v7;
+  v10 = infoCopy;
+  v11 = anouncementsCopy;
   if (seedOnceToken != -1)
   {
     dispatch_once(&self->_seedOnceToken, v12);
@@ -988,27 +988,27 @@ LABEL_10:
 - (void)_setupConstrainstsForPlaybackViews
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v5 = [v4 objectAtIndexedSubscript:0];
+  currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v5 = [currentlyDisplayedAnnouncements objectAtIndexedSubscript:0];
 
-  v6 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  currentlyDisplayedAnnouncements2 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
   v7 = 0;
-  if ([v6 count] >= 2)
+  if ([currentlyDisplayedAnnouncements2 count] >= 2)
   {
-    v8 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v7 = [v8 objectAtIndexedSubscript:1];
+    currentlyDisplayedAnnouncements3 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v7 = [currentlyDisplayedAnnouncements3 objectAtIndexedSubscript:1];
   }
 
-  v9 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  if ([v9 count] < 3)
+  currentlyDisplayedAnnouncements4 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  if ([currentlyDisplayedAnnouncements4 count] < 3)
   {
     v11 = 0;
   }
 
   else
   {
-    v10 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v11 = [v10 objectAtIndexedSubscript:2];
+    currentlyDisplayedAnnouncements5 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v11 = [currentlyDisplayedAnnouncements5 objectAtIndexedSubscript:2];
   }
 
   [(HUAnnouncementGlobeView *)self _layoutPlaybackViewCenteredIfNeeded:v5];
@@ -1019,39 +1019,39 @@ LABEL_10:
   {
     v13 = NSStringFromSelector(a2);
     v16 = 138412546;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = v13;
     _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "%@:%@ Setup complete for All Playback views. Animation Begins!", &v16, 0x16u);
   }
 
-  v14 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  currentlyDisplayedAnnouncements6 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v15 = [currentlyDisplayedAnnouncements6 objectAtIndexedSubscript:0];
 
   [v15 pausePlaybackAnimation];
 }
 
-- (void)_layoutPlaybackViewsWithAnimationDuration:(double)a3 completion:(id)a4
+- (void)_layoutPlaybackViewsWithAnimationDuration:(double)duration completion:(id)completion
 {
-  v7 = a4;
-  v8 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v9 = [v8 objectAtIndexedSubscript:0];
+  completionCopy = completion;
+  currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v9 = [currentlyDisplayedAnnouncements objectAtIndexedSubscript:0];
 
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x3032000000;
   v26[3] = __Block_byref_object_copy__14;
   v26[4] = __Block_byref_object_dispose__14;
-  v10 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  if ([v10 count] <= 1)
+  currentlyDisplayedAnnouncements2 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  if ([currentlyDisplayedAnnouncements2 count] <= 1)
   {
     v27 = 0;
   }
 
   else
   {
-    v11 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v27 = [v11 objectAtIndexedSubscript:1];
+    currentlyDisplayedAnnouncements3 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v27 = [currentlyDisplayedAnnouncements3 objectAtIndexedSubscript:1];
   }
 
   v24[0] = 0;
@@ -1059,16 +1059,16 @@ LABEL_10:
   v24[2] = 0x3032000000;
   v24[3] = __Block_byref_object_copy__14;
   v24[4] = __Block_byref_object_dispose__14;
-  v12 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  if ([v12 count] < 3)
+  currentlyDisplayedAnnouncements4 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  if ([currentlyDisplayedAnnouncements4 count] < 3)
   {
     v25 = 0;
   }
 
   else
   {
-    v13 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v25 = [v13 objectAtIndexedSubscript:2];
+    currentlyDisplayedAnnouncements5 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v25 = [currentlyDisplayedAnnouncements5 objectAtIndexedSubscript:2];
   }
 
   v14 = MEMORY[0x277D75D18];
@@ -1087,9 +1087,9 @@ LABEL_10:
   v17[2] = __80__HUAnnouncementGlobeView__layoutPlaybackViewsWithAnimationDuration_completion___block_invoke_41;
   v17[3] = &unk_277DB8090;
   v17[4] = self;
-  v16 = v7;
+  v16 = completionCopy;
   v18 = v16;
-  [v14 animateWithDuration:v19 animations:v17 completion:a3];
+  [v14 animateWithDuration:v19 animations:v17 completion:duration];
 
   _Block_object_dispose(v24, 8);
   _Block_object_dispose(v26, 8);
@@ -1160,12 +1160,12 @@ uint64_t __80__HUAnnouncementGlobeView__layoutPlaybackViewsWithAnimationDuration
   return result;
 }
 
-- (unint64_t)_indexOfLatestCachedAnnouncementFromIDs:(id)a3
+- (unint64_t)_indexOfLatestCachedAnnouncementFromIDs:(id)ds
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  if ([v5 count])
+  dsCopy = ds;
+  currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  if ([currentlyDisplayedAnnouncements count])
   {
     v6 = 0;
   }
@@ -1179,9 +1179,9 @@ uint64_t __80__HUAnnouncementGlobeView__layoutPlaybackViewsWithAnimationDuration
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v26 = self;
-  v7 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v8 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  selfCopy = self;
+  currentlyDisplayedAnnouncements2 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v8 = [currentlyDisplayedAnnouncements2 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1193,13 +1193,13 @@ uint64_t __80__HUAnnouncementGlobeView__layoutPlaybackViewsWithAnimationDuration
       {
         if (*v28 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(currentlyDisplayedAnnouncements2);
         }
 
-        v13 = [*(*(&v27 + 1) + 8 * i) announcementInfo];
-        v14 = [v13 objectForKeyedSubscript:v11];
+        announcementInfo = [*(*(&v27 + 1) + 8 * i) announcementInfo];
+        v14 = [announcementInfo objectForKeyedSubscript:v11];
 
-        v15 = [v4 indexOfObject:v14];
+        v15 = [dsCopy indexOfObject:v14];
         if (v15 <= v6)
         {
           v16 = v6;
@@ -1216,23 +1216,23 @@ uint64_t __80__HUAnnouncementGlobeView__layoutPlaybackViewsWithAnimationDuration
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v9 = [currentlyDisplayedAnnouncements2 countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v9);
   }
 
-  v17 = [(HUAnnouncementGlobeView *)v26 visitedAnnouncements];
-  v18 = [v17 count];
+  visitedAnnouncements = [(HUAnnouncementGlobeView *)selfCopy visitedAnnouncements];
+  v18 = [visitedAnnouncements count];
 
   if (v18)
   {
-    v19 = [(HUAnnouncementGlobeView *)v26 visitedAnnouncements];
-    v20 = [v19 lastObject];
+    visitedAnnouncements2 = [(HUAnnouncementGlobeView *)selfCopy visitedAnnouncements];
+    lastObject = [visitedAnnouncements2 lastObject];
 
-    v21 = [v20 announcementInfo];
-    v22 = [v21 objectForKeyedSubscript:*MEMORY[0x277CEA768]];
-    v23 = [v4 indexOfObject:v22];
+    announcementInfo2 = [lastObject announcementInfo];
+    v22 = [announcementInfo2 objectForKeyedSubscript:*MEMORY[0x277CEA768]];
+    v23 = [dsCopy indexOfObject:v22];
 
     if (v23 <= v6)
     {
@@ -1253,12 +1253,12 @@ uint64_t __80__HUAnnouncementGlobeView__layoutPlaybackViewsWithAnimationDuration
   return v6;
 }
 
-- (unint64_t)_numberOfSlotsAvailableForNewAnnouncements:(id)a3
+- (unint64_t)_numberOfSlotsAvailableForNewAnnouncements:(id)announcements
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v6 = [v5 count];
+  announcementsCopy = announcements;
+  currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v6 = [currentlyDisplayedAnnouncements count];
 
   if (v6 == 3)
   {
@@ -1266,12 +1266,12 @@ uint64_t __80__HUAnnouncementGlobeView__layoutPlaybackViewsWithAnimationDuration
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v7 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    currentlyDisplayedAnnouncements2 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v8 = [currentlyDisplayedAnnouncements2 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v8)
     {
       v9 = v8;
-      v23 = self;
+      selfCopy = self;
       v10 = *v27;
       v11 = *MEMORY[0x277CEA768];
       v12 = 3;
@@ -1284,24 +1284,24 @@ uint64_t __80__HUAnnouncementGlobeView__layoutPlaybackViewsWithAnimationDuration
         {
           if (*v27 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(currentlyDisplayedAnnouncements2);
           }
 
           v14 = *(*(&v26 + 1) + 8 * v13);
-          v15 = [v14 announcementInfo];
-          v16 = [v15 objectForKeyedSubscript:v11];
-          v17 = [v4 indexOfObject:v16];
+          announcementInfo = [v14 announcementInfo];
+          v16 = [announcementInfo objectForKeyedSubscript:v11];
+          v17 = [announcementsCopy indexOfObject:v16];
 
           if (!v17)
           {
-            v19 = [(HUAnnouncementGlobeView *)v23 currentlyDisplayedAnnouncements];
-            v20 = [v19 objectAtIndexedSubscript:0];
+            currentlyDisplayedAnnouncements3 = [(HUAnnouncementGlobeView *)selfCopy currentlyDisplayedAnnouncements];
+            v20 = [currentlyDisplayedAnnouncements3 objectAtIndexedSubscript:0];
             v18 = v25 - v13;
             if ([v20 isEqual:v14])
             {
-              v21 = [(HUAnnouncementGlobeView *)v23 hasActivePlaybackSession];
+              hasActivePlaybackSession = [(HUAnnouncementGlobeView *)selfCopy hasActivePlaybackSession];
 
-              if (v21)
+              if (hasActivePlaybackSession)
               {
                 v18 = 0;
               }
@@ -1318,7 +1318,7 @@ uint64_t __80__HUAnnouncementGlobeView__layoutPlaybackViewsWithAnimationDuration
         }
 
         while (v9 != v13);
-        v9 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v9 = [currentlyDisplayedAnnouncements2 countByEnumeratingWithState:&v26 objects:v30 count:16];
         v18 = v24;
         v12 = v24;
         if (v9)
@@ -1346,29 +1346,29 @@ LABEL_18:
   return v18;
 }
 
-- (void)_addOrInsertAnnouncementsFromIDs:(id)a3 withInfo:(id)a4 withinRange:(_NSRange)a5 inFreeSlots:(unint64_t)a6
+- (void)_addOrInsertAnnouncementsFromIDs:(id)ds withInfo:(id)info withinRange:(_NSRange)range inFreeSlots:(unint64_t)slots
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v52 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v43 = a4;
-  v12 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v13 = [v12 objectAtIndexedSubscript:0];
+  dsCopy = ds;
+  infoCopy = info;
+  currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v13 = [currentlyDisplayedAnnouncements objectAtIndexedSubscript:0];
 
-  v14 = [v13 announcementInfo];
-  v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277CEA768]];
-  v16 = [v11 indexOfObject:v15];
+  announcementInfo = [v13 announcementInfo];
+  v15 = [announcementInfo objectForKeyedSubscript:*MEMORY[0x277CEA768]];
+  v16 = [dsCopy indexOfObject:v15];
 
   v36 = v13;
   if (v16)
   {
-    v17 = 0;
+    fullyPlayed = 0;
   }
 
   else
   {
-    v17 = [v13 fullyPlayed];
+    fullyPlayed = [v13 fullyPlayed];
   }
 
   v18 = location + 1;
@@ -1381,32 +1381,32 @@ LABEL_18:
     v22 = *(MEMORY[0x277CBF3A0] + 16);
     v23 = *(MEMORY[0x277CBF3A0] + 24);
     v39 = -length;
-    v37 = a6 - 3;
-    v38 = a6 - 2;
-    v40 = v11;
+    v37 = slots - 3;
+    v38 = slots - 2;
+    v40 = dsCopy;
     do
     {
-      v24 = [v11 objectAtIndexedSubscript:v18 + v19];
+      v24 = [dsCopy objectAtIndexedSubscript:v18 + v19];
       v25 = [[HUAnnouncementPlaybackView alloc] initWithFrame:v20, v21, v22, v23];
-      v26 = [v43 objectForKeyedSubscript:v24];
+      v26 = [infoCopy objectForKeyedSubscript:v24];
       [(HUAnnouncementPlaybackView *)v25 setAnnouncementInfo:v26];
 
       [(HUAnnouncementPlaybackView *)v25 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(HUAnnouncementPlaybackView *)v25 setUserInteractionEnabled:0];
-      v27 = [(HUAnnouncementGlobeView *)self backgroundView];
-      v28 = [v27 contentView];
-      [v28 addSubview:v25];
+      backgroundView = [(HUAnnouncementGlobeView *)self backgroundView];
+      contentView = [backgroundView contentView];
+      [contentView addSubview:v25];
 
       [(HUAnnouncementPlaybackView *)v25 setAlpha:0.0];
-      if (v17)
+      if (fullyPlayed)
       {
         if (length <= 1)
         {
           goto LABEL_15;
         }
 
-        v29 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-        v30 = [v29 count] - 1;
+        currentlyDisplayedAnnouncements2 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+        v30 = [currentlyDisplayedAnnouncements2 count] - 1;
 
         if ((v30 & 0x8000000000000000) == 0)
         {
@@ -1425,22 +1425,22 @@ LABEL_16:
           {
             v32 = NSStringFromSelector(a2);
             *buf = 138413314;
-            v45 = self;
+            selfCopy2 = self;
             v46 = 2112;
             v47 = v32;
             v48 = 1024;
-            *v49 = v17;
+            *v49 = fullyPlayed;
             *&v49[4] = 2112;
             *&v49[6] = v25;
             v50 = 2048;
             v51 = v30;
             _os_log_impl(&dword_20CEB6000, v31, OS_LOG_TYPE_DEFAULT, "%@:%@ [Insert-Operation-DM] InsertInFirstSlot = [%d] Inserting [%@] at index = [%ld]", buf, 0x30u);
 
-            v11 = v40;
+            dsCopy = v40;
           }
 
-          v33 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-          [v33 insertObject:v25 atIndex:v30];
+          currentlyDisplayedAnnouncements3 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+          [currentlyDisplayedAnnouncements3 insertObject:v25 atIndex:v30];
           goto LABEL_22;
         }
 
@@ -1457,18 +1457,18 @@ LABEL_15:
       {
         v35 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v45 = self;
+        selfCopy2 = self;
         v46 = 2112;
         v47 = v35;
         v48 = 2112;
         *v49 = v25;
         _os_log_impl(&dword_20CEB6000, v34, OS_LOG_TYPE_DEFAULT, "%@:%@ [Append-Operation-DM] Appending [%@] to displayed announcements", buf, 0x20u);
 
-        v11 = v40;
+        dsCopy = v40;
       }
 
-      v33 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-      [v33 addObject:v25];
+      currentlyDisplayedAnnouncements3 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+      [currentlyDisplayedAnnouncements3 addObject:v25];
 LABEL_22:
 
       --length;
@@ -1487,32 +1487,32 @@ LABEL_22:
   v54[2] = 0x3032000000;
   v54[3] = __Block_byref_object_copy__14;
   v54[4] = __Block_byref_object_dispose__14;
-  v4 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v55 = [v4 objectAtIndexedSubscript:0];
+  currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v55 = [currentlyDisplayedAnnouncements objectAtIndexedSubscript:0];
 
-  v5 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  if ([v5 count] < 2)
+  currentlyDisplayedAnnouncements2 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  if ([currentlyDisplayedAnnouncements2 count] < 2)
   {
-    v6 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    [v6 objectAtIndexedSubscript:0];
+    currentlyDisplayedAnnouncements3 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    [currentlyDisplayedAnnouncements3 objectAtIndexedSubscript:0];
   }
 
   else
   {
-    v6 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    [v6 objectAtIndexedSubscript:1];
+    currentlyDisplayedAnnouncements3 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    [currentlyDisplayedAnnouncements3 objectAtIndexedSubscript:1];
   }
   v7 = ;
 
-  v8 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  if ([v8 count] < 3)
+  currentlyDisplayedAnnouncements4 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  if ([currentlyDisplayedAnnouncements4 count] < 3)
   {
   }
 
   else
   {
-    v9 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v10 = [v9 objectAtIndexedSubscript:2];
+    currentlyDisplayedAnnouncements5 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v10 = [currentlyDisplayedAnnouncements5 objectAtIndexedSubscript:2];
 
     if (v10)
     {
@@ -1520,13 +1520,13 @@ LABEL_22:
     }
   }
 
-  v11 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v12 = [v11 count] > 1;
+  currentlyDisplayedAnnouncements6 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v12 = [currentlyDisplayedAnnouncements6 count] > 1;
 
   if (v12)
   {
-    v13 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v10 = [v13 objectAtIndexedSubscript:0];
+    currentlyDisplayedAnnouncements7 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v10 = [currentlyDisplayedAnnouncements7 objectAtIndexedSubscript:0];
   }
 
   else
@@ -1535,20 +1535,20 @@ LABEL_22:
   }
 
 LABEL_11:
-  v14 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  if ([v14 count] < 3)
+  currentlyDisplayedAnnouncements8 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  if ([currentlyDisplayedAnnouncements8 count] < 3)
   {
     v17 = 0;
     goto LABEL_15;
   }
 
-  v15 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
-  v16 = [v15 count] == 0;
+  visitedAnnouncements = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
+  v16 = [visitedAnnouncements count] == 0;
 
   if (!v16)
   {
-    v14 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
-    v17 = [v14 objectAtIndexedSubscript:0];
+    currentlyDisplayedAnnouncements8 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
+    v17 = [currentlyDisplayedAnnouncements8 objectAtIndexedSubscript:0];
 LABEL_15:
 
     goto LABEL_16;
@@ -1556,34 +1556,34 @@ LABEL_15:
 
   v17 = 0;
 LABEL_16:
-  v18 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  [v18 removeAllObjects];
+  currentlyDisplayedAnnouncements9 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  [currentlyDisplayedAnnouncements9 removeAllObjects];
 
-  v19 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  [v19 na_safeAddObject:v7];
+  currentlyDisplayedAnnouncements10 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  [currentlyDisplayedAnnouncements10 na_safeAddObject:v7];
 
-  v20 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  [v20 na_safeAddObject:v10];
+  currentlyDisplayedAnnouncements11 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  [currentlyDisplayedAnnouncements11 na_safeAddObject:v10];
 
-  v21 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  [v21 na_safeAddObject:v17];
+  currentlyDisplayedAnnouncements12 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  [currentlyDisplayedAnnouncements12 na_safeAddObject:v17];
 
   v22 = HFLogForCategory();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     v23 = NSStringFromSelector(a2);
-    v24 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    currentlyDisplayedAnnouncements13 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
     *buf = 138412802;
-    v57 = self;
+    selfCopy3 = self;
     v58 = 2112;
     v59 = v23;
     v60 = 2112;
-    v61 = v24;
+    v61 = currentlyDisplayedAnnouncements13;
     _os_log_impl(&dword_20CEB6000, v22, OS_LOG_TYPE_DEFAULT, "%@:%@ Updated data model to display announcements =  [%@]....", buf, 0x20u);
   }
 
-  v25 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
-  v26 = [v25 count];
+  visitedAnnouncements2 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
+  v26 = [visitedAnnouncements2 count];
 
   if (v26)
   {
@@ -1591,10 +1591,10 @@ LABEL_16:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       v28 = NSStringFromSelector(a2);
-      v29 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
-      v30 = [v29 objectAtIndexedSubscript:0];
+      visitedAnnouncements3 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
+      v30 = [visitedAnnouncements3 objectAtIndexedSubscript:0];
       *buf = 138412802;
-      v57 = self;
+      selfCopy3 = self;
       v58 = 2112;
       v59 = v28;
       v60 = 2112;
@@ -1602,24 +1602,24 @@ LABEL_16:
       _os_log_impl(&dword_20CEB6000, v27, OS_LOG_TYPE_DEFAULT, "%@:%@ Removing oldest visited announcement since we already pulled it in to display = %@.", buf, 0x20u);
     }
 
-    v31 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
-    [v31 removeObjectAtIndex:0];
+    visitedAnnouncements4 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
+    [visitedAnnouncements4 removeObjectAtIndex:0];
   }
 
   if (v17)
   {
-    v32 = [v17 superview];
-    v33 = v32 == 0;
+    superview = [v17 superview];
+    v33 = superview == 0;
 
     if (v33)
     {
       v34 = MEMORY[0x277CCAAD0];
-      v35 = [v17 constraints];
-      [v34 deactivateConstraints:v35];
+      constraints = [v17 constraints];
+      [v34 deactivateConstraints:constraints];
 
-      v36 = [(HUAnnouncementGlobeView *)self backgroundView];
-      v37 = [v36 contentView];
-      [v37 addSubview:v17];
+      backgroundView = [(HUAnnouncementGlobeView *)self backgroundView];
+      contentView = [backgroundView contentView];
+      [contentView addSubview:v17];
 
       [v17 setAlpha:0.0];
       [(HUAnnouncementGlobeView *)self _setupConstraintsForPlaybackViewIfNeeded:v17 slotPosition:3];
@@ -1631,7 +1631,7 @@ LABEL_16:
   {
     v39 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v57 = self;
+    selfCopy3 = self;
     v58 = 2112;
     v59 = v39;
     _os_log_impl(&dword_20CEB6000, v38, OS_LOG_TYPE_DEFAULT, "%@:%@ Begin animating announcements", buf, 0x16u);
@@ -1644,7 +1644,7 @@ LABEL_16:
   v48[3] = &unk_277DBDEB8;
   v41 = v10;
   v49 = v41;
-  v50 = self;
+  selfCopy4 = self;
   v51 = v7;
   v42 = v17;
   v52 = v42;
@@ -1753,52 +1753,52 @@ void __56__HUAnnouncementGlobeView__showVisitedAnnouncementsView__block_invoke_2
   }
 }
 
-- (void)_layoutPlaybackViewCenteredIfNeeded:(id)a3
+- (void)_layoutPlaybackViewCenteredIfNeeded:(id)needed
 {
   v37[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  neededCopy = needed;
+  v6 = neededCopy;
+  if (neededCopy)
   {
-    [v5 alpha];
+    [neededCopy alpha];
     if (v7 == 0.0)
     {
       [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
       [v6 setUserInteractionEnabled:0];
-      v8 = [(HUAnnouncementGlobeView *)self backgroundView];
-      v9 = [v8 contentView];
-      [v9 addSubview:v6];
+      backgroundView = [(HUAnnouncementGlobeView *)self backgroundView];
+      contentView = [backgroundView contentView];
+      [contentView addSubview:v6];
 
-      v10 = [v6 centerXAnchor];
-      v11 = [(HUAnnouncementGlobeView *)self backgroundView];
-      v12 = [v11 centerXAnchor];
-      v13 = [v10 constraintEqualToAnchor:v12 constant:0.0];
+      centerXAnchor = [v6 centerXAnchor];
+      backgroundView2 = [(HUAnnouncementGlobeView *)self backgroundView];
+      centerXAnchor2 = [backgroundView2 centerXAnchor];
+      v13 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:0.0];
       [v6 setCenterXConstraint:v13];
 
-      v14 = [v6 centerYAnchor];
-      v15 = [(HUAnnouncementGlobeView *)self backgroundView];
-      v16 = [v15 centerYAnchor];
-      v17 = [v14 constraintEqualToAnchor:v16 constant:0.0];
+      centerYAnchor = [v6 centerYAnchor];
+      backgroundView3 = [(HUAnnouncementGlobeView *)self backgroundView];
+      centerYAnchor2 = [backgroundView3 centerYAnchor];
+      v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:0.0];
       [v6 setCenterYConstraint:v17];
 
-      v18 = [v6 heightAnchor];
-      v19 = [v18 constraintEqualToConstant:120.0];
+      heightAnchor = [v6 heightAnchor];
+      v19 = [heightAnchor constraintEqualToConstant:120.0];
       [v6 setHeightConstraint:v19];
 
-      v20 = [v6 widthAnchor];
-      v21 = [v6 heightAnchor];
-      v22 = [v20 constraintEqualToAnchor:v21];
+      widthAnchor = [v6 widthAnchor];
+      heightAnchor2 = [v6 heightAnchor];
+      v22 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
       [v6 setWidthConstraint:v22];
 
       v23 = MEMORY[0x277CCAAD0];
-      v24 = [v6 centerXConstraint];
-      v37[0] = v24;
-      v25 = [v6 centerYConstraint];
-      v37[1] = v25;
-      v26 = [v6 heightConstraint];
-      v37[2] = v26;
-      v27 = [v6 widthConstraint];
-      v37[3] = v27;
+      centerXConstraint = [v6 centerXConstraint];
+      v37[0] = centerXConstraint;
+      centerYConstraint = [v6 centerYConstraint];
+      v37[1] = centerYConstraint;
+      heightConstraint = [v6 heightConstraint];
+      v37[2] = heightConstraint;
+      widthConstraint = [v6 widthConstraint];
+      v37[3] = widthConstraint;
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:4];
       [v23 activateConstraints:v28];
 
@@ -1808,7 +1808,7 @@ void __56__HUAnnouncementGlobeView__showVisitedAnnouncementsView__block_invoke_2
       {
         v30 = NSStringFromSelector(a2);
         v31 = 138412802;
-        v32 = self;
+        selfCopy = self;
         v33 = 2112;
         v34 = v30;
         v35 = 2112;
@@ -1819,52 +1819,52 @@ void __56__HUAnnouncementGlobeView__showVisitedAnnouncementsView__block_invoke_2
   }
 }
 
-- (void)_setupConstraintsForPlaybackViewIfNeeded:(id)a3 slotPosition:(unint64_t)a4
+- (void)_setupConstraintsForPlaybackViewIfNeeded:(id)needed slotPosition:(unint64_t)position
 {
   v45[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  neededCopy = needed;
+  v8 = neededCopy;
+  if (neededCopy)
   {
-    [v7 alpha];
+    [neededCopy alpha];
     if (v9 == 0.0)
     {
-      [(HUAnnouncementGlobeView *)self _xCoordinateForPlaybackViewInSlotPosition:a4];
+      [(HUAnnouncementGlobeView *)self _xCoordinateForPlaybackViewInSlotPosition:position];
       v11 = v10;
-      [(HUAnnouncementGlobeView *)self _yCoordinateForPlaybackViewInSlotPosition:a4];
+      [(HUAnnouncementGlobeView *)self _yCoordinateForPlaybackViewInSlotPosition:position];
       v13 = v12;
-      [(HUAnnouncementGlobeView *)self _radiusOfPlaybackViewInSlotPosition:a4];
+      [(HUAnnouncementGlobeView *)self _radiusOfPlaybackViewInSlotPosition:position];
       v15 = v14;
-      v16 = [v8 centerXAnchor];
-      v17 = [(HUAnnouncementGlobeView *)self backgroundView];
-      v18 = [v17 centerXAnchor];
-      v19 = [v16 constraintEqualToAnchor:v18 constant:v11];
+      centerXAnchor = [v8 centerXAnchor];
+      backgroundView = [(HUAnnouncementGlobeView *)self backgroundView];
+      centerXAnchor2 = [backgroundView centerXAnchor];
+      v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:v11];
       [v8 setCenterXConstraint:v19];
 
-      v20 = [v8 centerYAnchor];
-      v21 = [(HUAnnouncementGlobeView *)self backgroundView];
-      v22 = [v21 centerYAnchor];
-      v23 = [v20 constraintEqualToAnchor:v22 constant:v13];
+      centerYAnchor = [v8 centerYAnchor];
+      backgroundView2 = [(HUAnnouncementGlobeView *)self backgroundView];
+      centerYAnchor2 = [backgroundView2 centerYAnchor];
+      v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:v13];
       [v8 setCenterYConstraint:v23];
 
-      v24 = [v8 heightAnchor];
-      v25 = [v24 constraintEqualToConstant:v15 * 0.5];
+      heightAnchor = [v8 heightAnchor];
+      v25 = [heightAnchor constraintEqualToConstant:v15 * 0.5];
       [v8 setHeightConstraint:v25];
 
-      v26 = [v8 widthAnchor];
-      v27 = [v8 heightAnchor];
-      v28 = [v26 constraintEqualToAnchor:v27];
+      widthAnchor = [v8 widthAnchor];
+      heightAnchor2 = [v8 heightAnchor];
+      v28 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
       [v8 setWidthConstraint:v28];
 
       v29 = MEMORY[0x277CCAAD0];
-      v30 = [v8 centerXConstraint];
-      v45[0] = v30;
-      v31 = [v8 centerYConstraint];
-      v45[1] = v31;
-      v32 = [v8 heightConstraint];
-      v45[2] = v32;
-      v33 = [v8 widthConstraint];
-      v45[3] = v33;
+      centerXConstraint = [v8 centerXConstraint];
+      v45[0] = centerXConstraint;
+      centerYConstraint = [v8 centerYConstraint];
+      v45[1] = centerYConstraint;
+      heightConstraint = [v8 heightConstraint];
+      v45[2] = heightConstraint;
+      widthConstraint = [v8 widthConstraint];
+      v45[3] = widthConstraint;
       v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:4];
       [v29 activateConstraints:v34];
 
@@ -1875,51 +1875,51 @@ void __56__HUAnnouncementGlobeView__showVisitedAnnouncementsView__block_invoke_2
       {
         v36 = NSStringFromSelector(a2);
         v37 = 138413058;
-        v38 = self;
+        selfCopy = self;
         v39 = 2112;
         v40 = v36;
         v41 = 2112;
         v42 = v8;
         v43 = 2048;
-        v44 = a4;
+        positionCopy = position;
         _os_log_impl(&dword_20CEB6000, v35, OS_LOG_TYPE_DEFAULT, "%@:%@ Setting up playback view [%@] to display in slot [%lu]", &v37, 0x2Au);
       }
     }
   }
 }
 
-- (void)_updateLayoutAndAppearanceForPlaybackView:(id)a3 atSlotPosition:(unint64_t)a4
+- (void)_updateLayoutAndAppearanceForPlaybackView:(id)view atSlotPosition:(unint64_t)position
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  [(HUAnnouncementGlobeView *)self _xCoordinateForPlaybackViewInSlotPosition:a4];
+  viewCopy = view;
+  [(HUAnnouncementGlobeView *)self _xCoordinateForPlaybackViewInSlotPosition:position];
   v9 = v8;
-  [(HUAnnouncementGlobeView *)self _yCoordinateForPlaybackViewInSlotPosition:a4];
+  [(HUAnnouncementGlobeView *)self _yCoordinateForPlaybackViewInSlotPosition:position];
   v11 = v10;
-  [(HUAnnouncementGlobeView *)self _radiusOfPlaybackViewInSlotPosition:a4];
+  [(HUAnnouncementGlobeView *)self _radiusOfPlaybackViewInSlotPosition:position];
   v13 = v12;
-  v14 = [v7 centerXConstraint];
-  [v14 setConstant:v9];
+  centerXConstraint = [viewCopy centerXConstraint];
+  [centerXConstraint setConstant:v9];
 
-  v15 = [v7 centerYConstraint];
-  [v15 setConstant:v11];
+  centerYConstraint = [viewCopy centerYConstraint];
+  [centerYConstraint setConstant:v11];
 
-  v16 = [v7 heightConstraint];
-  [v16 setConstant:v13 + v13];
+  heightConstraint = [viewCopy heightConstraint];
+  [heightConstraint setConstant:v13 + v13];
 
-  v17 = [v7 fullyPlayed];
+  fullyPlayed = [viewCopy fullyPlayed];
   v18 = 1.0;
-  if (v17)
+  if (fullyPlayed)
   {
     v18 = 0.5;
   }
 
-  [v7 setAlpha:v18];
+  [viewCopy setAlpha:v18];
   v19 = *(MEMORY[0x277CBF2C0] + 16);
   *v22 = *MEMORY[0x277CBF2C0];
   *&v22[16] = v19;
   v23 = *(MEMORY[0x277CBF2C0] + 32);
-  [v7 setTransform:v22];
+  [viewCopy setTransform:v22];
   v20 = HFLogForCategory();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -1929,38 +1929,38 @@ void __56__HUAnnouncementGlobeView__showVisitedAnnouncementsView__block_invoke_2
     *&v22[12] = 2112;
     *&v22[14] = v21;
     *&v22[22] = 2112;
-    *&v22[24] = v7;
+    *&v22[24] = viewCopy;
     LOWORD(v23) = 2048;
-    *(&v23 + 2) = a4;
+    *(&v23 + 2) = position;
     _os_log_impl(&dword_20CEB6000, v20, OS_LOG_TYPE_DEFAULT, "%@:%@ Updating constraints and alpha for playback view [%@] in Slot Position [%lu]", v22, 0x2Au);
   }
 }
 
-- (double)_xCoordinateForPlaybackViewInSlotPosition:(unint64_t)a3
+- (double)_xCoordinateForPlaybackViewInSlotPosition:(unint64_t)position
 {
-  if (a3 == 3)
+  if (position == 3)
   {
-    v4 = [(HUAnnouncementGlobeView *)self backgroundView];
-    [v4 bounds];
+    backgroundView = [(HUAnnouncementGlobeView *)self backgroundView];
+    [backgroundView bounds];
     v6 = v9 * 0.5 + -49.6;
     v7 = -0.0871557427;
     goto LABEL_7;
   }
 
-  if (a3 == 2)
+  if (position == 2)
   {
-    v4 = [(HUAnnouncementGlobeView *)self backgroundView];
-    [v4 bounds];
+    backgroundView = [(HUAnnouncementGlobeView *)self backgroundView];
+    [backgroundView bounds];
     v6 = v8 * 0.5 + -44.0;
     v7 = 0.965925826;
     goto LABEL_7;
   }
 
   v3 = 0.0;
-  if (a3 == 1)
+  if (position == 1)
   {
-    v4 = [(HUAnnouncementGlobeView *)self backgroundView];
-    [v4 bounds];
+    backgroundView = [(HUAnnouncementGlobeView *)self backgroundView];
+    [backgroundView bounds];
     v6 = v5 * 0.5 + -54.0;
     v7 = -0.707106781;
 LABEL_7:
@@ -1970,31 +1970,31 @@ LABEL_7:
   return v3;
 }
 
-- (double)_yCoordinateForPlaybackViewInSlotPosition:(unint64_t)a3
+- (double)_yCoordinateForPlaybackViewInSlotPosition:(unint64_t)position
 {
-  if (a3 == 3)
+  if (position == 3)
   {
-    v4 = [(HUAnnouncementGlobeView *)self backgroundView];
-    [v4 bounds];
+    backgroundView = [(HUAnnouncementGlobeView *)self backgroundView];
+    [backgroundView bounds];
     v6 = v9 * 0.5 + -49.6;
     v7 = 0.996194698;
     goto LABEL_7;
   }
 
-  if (a3 == 2)
+  if (position == 2)
   {
-    v4 = [(HUAnnouncementGlobeView *)self backgroundView];
-    [v4 bounds];
+    backgroundView = [(HUAnnouncementGlobeView *)self backgroundView];
+    [backgroundView bounds];
     v6 = v8 * 0.5 + -44.0;
     v7 = 0.258819045;
     goto LABEL_7;
   }
 
   v3 = 0.0;
-  if (a3 == 1)
+  if (position == 1)
   {
-    v4 = [(HUAnnouncementGlobeView *)self backgroundView];
-    [v4 bounds];
+    backgroundView = [(HUAnnouncementGlobeView *)self backgroundView];
+    [backgroundView bounds];
     v6 = v5 * 0.5 + -54.0;
     v7 = -0.707106781;
 LABEL_7:
@@ -2004,35 +2004,35 @@ LABEL_7:
   return v3;
 }
 
-- (double)_radiusOfPlaybackViewInSlotPosition:(unint64_t)a3
+- (double)_radiusOfPlaybackViewInSlotPosition:(unint64_t)position
 {
-  if (a3 - 1 > 2)
+  if (position - 1 > 2)
   {
     return 60.0;
   }
 
   else
   {
-    return dbl_20D5CABF0[a3 - 1];
+    return dbl_20D5CABF0[position - 1];
   }
 }
 
 - (id)_nextAnnouncementPlaybackView
 {
   v58 = *MEMORY[0x277D85DE8];
-  v3 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v4 = [v3 objectAtIndexedSubscript:0];
+  currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v4 = [currentlyDisplayedAnnouncements objectAtIndexedSubscript:0];
 
-  v5 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  currentlyDisplayedAnnouncements2 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
   v6 = 0;
-  if ([v5 count] >= 2)
+  if ([currentlyDisplayedAnnouncements2 count] >= 2)
   {
-    v7 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v6 = [v7 objectAtIndexedSubscript:1];
+    currentlyDisplayedAnnouncements3 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v6 = [currentlyDisplayedAnnouncements3 objectAtIndexedSubscript:1];
   }
 
-  v8 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  if ([v8 count] <= 2)
+  currentlyDisplayedAnnouncements4 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  if ([currentlyDisplayedAnnouncements4 count] <= 2)
   {
 
     v11 = 0;
@@ -2043,8 +2043,8 @@ LABEL_9:
     goto LABEL_29;
   }
 
-  v9 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v10 = [v9 objectAtIndexedSubscript:2];
+  currentlyDisplayedAnnouncements5 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v10 = [currentlyDisplayedAnnouncements5 objectAtIndexedSubscript:2];
 
   if (!v10)
   {
@@ -2068,8 +2068,8 @@ LABEL_9:
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v15 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v16 = [v15 countByEnumeratingWithState:&v51 objects:v57 count:16];
+    currentlyDisplayedAnnouncements6 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v16 = [currentlyDisplayedAnnouncements6 countByEnumeratingWithState:&v51 objects:v57 count:16];
     if (v16)
     {
       v17 = v16;
@@ -2081,36 +2081,36 @@ LABEL_9:
         {
           if (*v52 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(currentlyDisplayedAnnouncements6);
           }
 
-          v21 = [*(*(&v51 + 1) + 8 * i) announcementInfo];
-          v22 = [v21 objectForKeyedSubscript:v19];
+          announcementInfo = [*(*(&v51 + 1) + 8 * i) announcementInfo];
+          v22 = [announcementInfo objectForKeyedSubscript:v19];
 
           [v14 addObject:v22];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v51 objects:v57 count:16];
+        v17 = [currentlyDisplayedAnnouncements6 countByEnumeratingWithState:&v51 objects:v57 count:16];
       }
 
       while (v17);
     }
 
-    v23 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
-    if ([v23 count])
+    visitedAnnouncements = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
+    if ([visitedAnnouncements count])
     {
-      v24 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
-      v25 = [v24 firstObject];
+      visitedAnnouncements2 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
+      firstObject = [visitedAnnouncements2 firstObject];
     }
 
     else
     {
-      v25 = 0;
+      firstObject = 0;
     }
 
-    v47 = v25;
-    v26 = [v25 announcementInfo];
-    v27 = [v26 objectForKeyedSubscript:*MEMORY[0x277CEA768]];
+    v47 = firstObject;
+    announcementInfo2 = [firstObject announcementInfo];
+    v27 = [announcementInfo2 objectForKeyedSubscript:*MEMORY[0x277CEA768]];
 
     v11 = [(HUAnnouncementGlobeView *)self _onQueue_fetchNewAnnouncementInfo:v14 oldestVisitedAnnouncementID:v27];
     v28 = HFLogForCategory();
@@ -2154,16 +2154,16 @@ LABEL_9:
 
   v13 = 1;
 LABEL_29:
-  v32 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
-  v31 = [v32 count];
+  visitedAnnouncements3 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
+  v31 = [visitedAnnouncements3 count];
 
   if (v31)
   {
-    v33 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
-    v31 = [v33 objectAtIndexedSubscript:0];
+    visitedAnnouncements4 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
+    v31 = [visitedAnnouncements4 objectAtIndexedSubscript:0];
 
-    v34 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
-    [v34 removeObjectAtIndex:0];
+    visitedAnnouncements5 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
+    [visitedAnnouncements5 removeObjectAtIndex:0];
 
     v35 = HFLogForCategory();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -2232,14 +2232,14 @@ LABEL_42:
   }
 
   v41 = MEMORY[0x277CCAAD0];
-  v42 = [(HUAnnouncementPlaybackView *)v31 constraints];
-  [v41 deactivateConstraints:v42];
+  constraints = [(HUAnnouncementPlaybackView *)v31 constraints];
+  [v41 deactivateConstraints:constraints];
 
   [(HUAnnouncementPlaybackView *)v31 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(HUAnnouncementPlaybackView *)v31 setUserInteractionEnabled:0];
-  v43 = [(HUAnnouncementGlobeView *)self backgroundView];
-  v44 = [v43 contentView];
-  [v44 addSubview:v31];
+  backgroundView = [(HUAnnouncementGlobeView *)self backgroundView];
+  contentView = [backgroundView contentView];
+  [contentView addSubview:v31];
 
   [(HUAnnouncementPlaybackView *)v31 setAlpha:0.0];
   v45 = *(MEMORY[0x277CBF2C0] + 16);
@@ -2253,25 +2253,25 @@ LABEL_45:
   return v31;
 }
 
-- (void)_togglePlayback:(id)a3
+- (void)_togglePlayback:(id)playback
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = [(HUAnnouncementGlobeView *)self audioPlayer];
-  if (v5)
+  audioPlayer = [(HUAnnouncementGlobeView *)self audioPlayer];
+  if (audioPlayer)
   {
-    v6 = v5;
-    v7 = [(HUAnnouncementGlobeView *)self audioPlayer];
-    v8 = [v7 isPlaying];
+    v6 = audioPlayer;
+    audioPlayer2 = [(HUAnnouncementGlobeView *)self audioPlayer];
+    isPlaying = [audioPlayer2 isPlaying];
 
-    if (v8)
+    if (isPlaying)
     {
-      if (a3)
+      if (playback)
       {
-        v9 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-        v10 = [v9 objectAtIndexedSubscript:0];
+        currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+        v10 = [currentlyDisplayedAnnouncements objectAtIndexedSubscript:0];
 
-        v11 = [v10 announcementInfo];
-        v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CEA768]];
+        announcementInfo = [v10 announcementInfo];
+        v12 = [announcementInfo objectForKeyedSubscript:*MEMORY[0x277CEA768]];
 
         [(HUAnnouncementGlobeView *)self _submitAnalyticsForAnnouncePlaybackCompletedSuccessfully:1 forAnnouncementID:v12 interruptedByUser:1];
       }
@@ -2281,25 +2281,25 @@ LABEL_45:
     }
   }
 
-  v13 = [(HUAnnouncementGlobeView *)self lastPlayedAnnouncementID];
-  if (v13)
+  lastPlayedAnnouncementID = [(HUAnnouncementGlobeView *)self lastPlayedAnnouncementID];
+  if (lastPlayedAnnouncementID)
   {
-    v14 = [(HUAnnouncementGlobeView *)self announcementsInfo];
-    v15 = [(HUAnnouncementGlobeView *)self lastPlayedAnnouncementID];
-    [v14 objectForKeyedSubscript:v15];
+    announcementsInfo = [(HUAnnouncementGlobeView *)self announcementsInfo];
+    lastPlayedAnnouncementID2 = [(HUAnnouncementGlobeView *)self lastPlayedAnnouncementID];
+    [announcementsInfo objectForKeyedSubscript:lastPlayedAnnouncementID2];
   }
 
   else
   {
-    v14 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v15 = [v14 objectAtIndexedSubscript:0];
-    [v15 announcementInfo];
+    announcementsInfo = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    lastPlayedAnnouncementID2 = [announcementsInfo objectAtIndexedSubscript:0];
+    [lastPlayedAnnouncementID2 announcementInfo];
   }
   v16 = ;
 
-  v17 = [(HUAnnouncementGlobeView *)self audioPlayer];
+  audioPlayer3 = [(HUAnnouncementGlobeView *)self audioPlayer];
 
-  if (!v17)
+  if (!audioPlayer3)
   {
     v18 = MEMORY[0x277CBEBC0];
     v19 = [v16 objectForKeyedSubscript:*MEMORY[0x277CEA7F0]];
@@ -2313,8 +2313,8 @@ LABEL_45:
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v22 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v23 = [v22 countByEnumeratingWithState:&v46 objects:v50 count:16];
+  currentlyDisplayedAnnouncements2 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v23 = [currentlyDisplayedAnnouncements2 countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v23)
   {
     v24 = v23;
@@ -2325,13 +2325,13 @@ LABEL_45:
       {
         if (*v47 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(currentlyDisplayedAnnouncements2);
         }
 
         v27 = *(*(&v46 + 1) + 8 * i);
-        v28 = [(HUAnnouncementGlobeView *)self lastPlayedAnnouncementID];
+        lastPlayedAnnouncementID3 = [(HUAnnouncementGlobeView *)self lastPlayedAnnouncementID];
 
-        if (v28)
+        if (lastPlayedAnnouncementID3)
         {
           if ([v27 fullyPlayed])
           {
@@ -2346,7 +2346,7 @@ LABEL_45:
 
         else
         {
-          if (!a3)
+          if (!playback)
           {
             continue;
           }
@@ -2358,54 +2358,54 @@ LABEL_45:
         [v27 setAlpha:v29];
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v46 objects:v50 count:16];
+      v24 = [currentlyDisplayedAnnouncements2 countByEnumeratingWithState:&v46 objects:v50 count:16];
     }
 
     while (v24);
   }
 
-  v30 = [(HUAnnouncementGlobeView *)self lastPlayedAnnouncementID];
+  lastPlayedAnnouncementID4 = [(HUAnnouncementGlobeView *)self lastPlayedAnnouncementID];
 
-  if (!v30)
+  if (!lastPlayedAnnouncementID4)
   {
-    v31 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
-    [v31 makeObjectsPerformSelector:sel_setFullyPlayed_ withObject:MEMORY[0x277CBEC28]];
+    visitedAnnouncements = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
+    [visitedAnnouncements makeObjectsPerformSelector:sel_setFullyPlayed_ withObject:MEMORY[0x277CBEC28]];
   }
 
-  v32 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v33 = [v32 objectAtIndexedSubscript:0];
+  currentlyDisplayedAnnouncements3 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v33 = [currentlyDisplayedAnnouncements3 objectAtIndexedSubscript:0];
 
-  v34 = [v33 fullyPlayed];
+  fullyPlayed = [v33 fullyPlayed];
   v35 = 1.0;
-  if (v34)
+  if (fullyPlayed)
   {
     v35 = 0.5;
   }
 
   [v33 setAlpha:v35];
   [(HUAnnouncementGlobeView *)self _playAnnouncementWithInfo:v16];
-  v36 = [(HUAnnouncementGlobeView *)self playImageView];
-  [v36 setAlpha:0.0];
+  playImageView = [(HUAnnouncementGlobeView *)self playImageView];
+  [playImageView setAlpha:0.0];
 
   v37 = _HULocalizedStringWithDefaultValue(@"HUAnnounceStopPlayback_AX_Label_Title", @"HUAnnounceStopPlayback_AX_Label_Title", 1);
-  v38 = [(HUAnnouncementGlobeView *)self tappableCoverView];
-  [v38 setAccessibilityLabel:v37];
+  tappableCoverView = [(HUAnnouncementGlobeView *)self tappableCoverView];
+  [tappableCoverView setAccessibilityLabel:v37];
 
   v39 = _HULocalizedStringWithDefaultValue(@"HUAnnounceStopPlayback_AX_Label_Hint", @"HUAnnounceStopPlayback_AX_Label_Hint", 1);
-  v40 = [(HUAnnouncementGlobeView *)self tappableCoverView];
-  [v40 setAccessibilityHint:v39];
+  tappableCoverView2 = [(HUAnnouncementGlobeView *)self tappableCoverView];
+  [tappableCoverView2 setAccessibilityHint:v39];
 
-  v41 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
-  if (v41)
+  globeViewDelegate = [(HUAnnouncementGlobeView *)self globeViewDelegate];
+  if (globeViewDelegate)
   {
-    v42 = v41;
-    v43 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
+    v42 = globeViewDelegate;
+    globeViewDelegate2 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
     v44 = objc_opt_respondsToSelector();
 
     if (v44)
     {
-      v45 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
-      [v45 didSelectItemWithInfo:v16 totalNumberOfAnnouncements:{-[HUAnnouncementGlobeView totalNumberOfAnnouncements](self, "totalNumberOfAnnouncements")}];
+      globeViewDelegate3 = [(HUAnnouncementGlobeView *)self globeViewDelegate];
+      [globeViewDelegate3 didSelectItemWithInfo:v16 totalNumberOfAnnouncements:{-[HUAnnouncementGlobeView totalNumberOfAnnouncements](self, "totalNumberOfAnnouncements")}];
     }
   }
 }
@@ -2413,15 +2413,15 @@ LABEL_45:
 - (void)_playRecentlyAddedAnnouncements
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = [(HUAnnouncementGlobeView *)self audioPlayer];
-  if (v4 && (v5 = v4, -[HUAnnouncementGlobeView audioPlayer](self, "audioPlayer"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isPlaying], v6, v5, (v7 & 1) != 0))
+  audioPlayer = [(HUAnnouncementGlobeView *)self audioPlayer];
+  if (audioPlayer && (v5 = audioPlayer, -[HUAnnouncementGlobeView audioPlayer](self, "audioPlayer"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isPlaying], v6, v5, (v7 & 1) != 0))
   {
     v8 = HFLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v28 = self;
+      selfCopy = self;
       v29 = 2112;
       v30 = v9;
       _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@:%@ Not playing the next announcement since audio player is busy playing", buf, 0x16u);
@@ -2430,69 +2430,69 @@ LABEL_45:
 
   else
   {
-    v10 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v11 = [v10 objectAtIndexedSubscript:0];
-    v26 = [v11 announcementInfo];
+    currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v11 = [currentlyDisplayedAnnouncements objectAtIndexedSubscript:0];
+    announcementInfo = [v11 announcementInfo];
 
-    v12 = [(HUAnnouncementGlobeView *)self audioPlayer];
+    audioPlayer2 = [(HUAnnouncementGlobeView *)self audioPlayer];
 
-    if (!v12)
+    if (!audioPlayer2)
     {
       v13 = MEMORY[0x277CBEBC0];
-      v14 = [v26 objectForKeyedSubscript:*MEMORY[0x277CEA7F0]];
+      v14 = [announcementInfo objectForKeyedSubscript:*MEMORY[0x277CEA7F0]];
       v15 = [v13 fileURLWithPath:v14];
 
       v16 = [objc_alloc(MEMORY[0x277D14420]) initWithAudioFileURL:v15 audioSessionOptions:2 delegate:self];
       [(HUAnnouncementGlobeView *)self setAudioPlayer:v16];
     }
 
-    v17 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v18 = [v17 objectAtIndexedSubscript:0];
+    currentlyDisplayedAnnouncements2 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v18 = [currentlyDisplayedAnnouncements2 objectAtIndexedSubscript:0];
 
-    v19 = [v18 fullyPlayed];
+    fullyPlayed = [v18 fullyPlayed];
     v20 = 1.0;
-    if (v19)
+    if (fullyPlayed)
     {
       v20 = 0.5;
     }
 
     [v18 setAlpha:v20];
-    [(HUAnnouncementGlobeView *)self _playAnnouncementWithInfo:v26];
-    v21 = [(HUAnnouncementGlobeView *)self playImageView];
-    [v21 setAlpha:0.0];
+    [(HUAnnouncementGlobeView *)self _playAnnouncementWithInfo:announcementInfo];
+    playImageView = [(HUAnnouncementGlobeView *)self playImageView];
+    [playImageView setAlpha:0.0];
 
     v22 = _HULocalizedStringWithDefaultValue(@"HUAnnounceStopPlayback_AX_Label_Title", @"HUAnnounceStopPlayback_AX_Label_Title", 1);
-    v23 = [(HUAnnouncementGlobeView *)self tappableCoverView];
-    [v23 setAccessibilityLabel:v22];
+    tappableCoverView = [(HUAnnouncementGlobeView *)self tappableCoverView];
+    [tappableCoverView setAccessibilityLabel:v22];
 
     v24 = _HULocalizedStringWithDefaultValue(@"HUAnnounceStopPlayback_AX_Label_Hint", @"HUAnnounceStopPlayback_AX_Label_Hint", 1);
-    v25 = [(HUAnnouncementGlobeView *)self tappableCoverView];
-    [v25 setAccessibilityHint:v24];
+    tappableCoverView2 = [(HUAnnouncementGlobeView *)self tappableCoverView];
+    [tappableCoverView2 setAccessibilityHint:v24];
   }
 }
 
-- (void)_playAnnouncementWithInfo:(id)a3
+- (void)_playAnnouncementWithInfo:(id)info
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v7 = [v6 objectAtIndexedSubscript:0];
+  infoCopy = info;
+  currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v7 = [currentlyDisplayedAnnouncements objectAtIndexedSubscript:0];
 
-  v8 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
-  v9 = [v8 lastObject];
-  v10 = [v9 isEqual:v7];
+  visitedAnnouncements = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
+  lastObject = [visitedAnnouncements lastObject];
+  v10 = [lastObject isEqual:v7];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
-    [v11 addObject:v7];
+    visitedAnnouncements2 = [(HUAnnouncementGlobeView *)self visitedAnnouncements];
+    [visitedAnnouncements2 addObject:v7];
 
     v12 = HFLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2112;
       v31 = v13;
       v32 = 2112;
@@ -2505,93 +2505,93 @@ LABEL_45:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = NSStringFromSelector(a2);
-    v16 = [v7 announcementInfo];
+    announcementInfo = [v7 announcementInfo];
     *buf = 138412802;
-    v29 = self;
+    selfCopy2 = self;
     v30 = 2112;
     v31 = v15;
     v32 = 2112;
-    v33 = v16;
+    v33 = announcementInfo;
     _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "%@:%@ Now Playing announcement with Info [%@]", buf, 0x20u);
   }
 
   v17 = MEMORY[0x277CBEBC0];
-  v18 = [v5 objectForKeyedSubscript:*MEMORY[0x277CEA7F0]];
+  v18 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CEA7F0]];
   v19 = [v17 fileURLWithPath:v18];
 
-  v20 = [(HUAnnouncementGlobeView *)self audioPlayer];
-  [v20 updateAudioFileURL:v19];
+  audioPlayer = [(HUAnnouncementGlobeView *)self audioPlayer];
+  [audioPlayer updateAudioFileURL:v19];
 
-  v21 = [(HUAnnouncementGlobeView *)self audioPlayer];
+  audioPlayer2 = [(HUAnnouncementGlobeView *)self audioPlayer];
   v27 = 0;
-  [v21 prepareToPlay:&v27];
+  [audioPlayer2 prepareToPlay:&v27];
   v22 = v27;
 
   if (v22)
   {
-    v23 = HFLogForCategory();
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    announceRemotePlaybackSession = HFLogForCategory();
+    if (os_log_type_enabled(announceRemotePlaybackSession, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v29 = v19;
+      selfCopy2 = v19;
       v30 = 2112;
       v31 = v22;
-      _os_log_impl(&dword_20CEB6000, v23, OS_LOG_TYPE_DEFAULT, "Audio Player Failed to prepare for announcement URL [%@] with reason[%@]", buf, 0x16u);
+      _os_log_impl(&dword_20CEB6000, announceRemotePlaybackSession, OS_LOG_TYPE_DEFAULT, "Audio Player Failed to prepare for announcement URL [%@] with reason[%@]", buf, 0x16u);
     }
   }
 
   else
   {
-    v24 = [v5 objectForKeyedSubscript:*MEMORY[0x277CEA768]];
+    v24 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CEA768]];
     [(HUAnnouncementGlobeView *)self setLastPlayedAnnouncementID:v24];
 
-    v25 = [(HUAnnouncementGlobeView *)self audioPlayer];
-    [v25 play];
+    audioPlayer3 = [(HUAnnouncementGlobeView *)self audioPlayer];
+    [audioPlayer3 play];
 
-    v23 = [(HUAnnouncementGlobeView *)self announceRemotePlaybackSession];
-    v26 = [(HUAnnouncementGlobeView *)self lastPlayedAnnouncementID];
-    [v23 setPlaybackStartedForAnnouncement:v26];
+    announceRemotePlaybackSession = [(HUAnnouncementGlobeView *)self announceRemotePlaybackSession];
+    lastPlayedAnnouncementID = [(HUAnnouncementGlobeView *)self lastPlayedAnnouncementID];
+    [announceRemotePlaybackSession setPlaybackStartedForAnnouncement:lastPlayedAnnouncementID];
   }
 }
 
 - (void)_playNextAnnouncement
 {
-  v3 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  if ([v3 count] >= 2 && -[HUAnnouncementGlobeView _numberOfUnplayedAnnouncements](self, "_numberOfUnplayedAnnouncements"))
+  currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  if ([currentlyDisplayedAnnouncements count] >= 2 && -[HUAnnouncementGlobeView _numberOfUnplayedAnnouncements](self, "_numberOfUnplayedAnnouncements"))
   {
-    v4 = [(HUAnnouncementGlobeView *)self _isNextAnnouncementTheOldest];
+    _isNextAnnouncementTheOldest = [(HUAnnouncementGlobeView *)self _isNextAnnouncementTheOldest];
 
-    if (!v4)
+    if (!_isNextAnnouncementTheOldest)
     {
-      v5 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-      v6 = [v5 objectAtIndexedSubscript:0];
+      currentlyDisplayedAnnouncements2 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+      v6 = [currentlyDisplayedAnnouncements2 objectAtIndexedSubscript:0];
 
-      v7 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+      currentlyDisplayedAnnouncements3 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
       v8 = 0;
-      if ([v7 count] >= 2)
+      if ([currentlyDisplayedAnnouncements3 count] >= 2)
       {
-        v9 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-        v8 = [v9 objectAtIndexedSubscript:1];
+        currentlyDisplayedAnnouncements4 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+        v8 = [currentlyDisplayedAnnouncements4 objectAtIndexedSubscript:1];
       }
 
-      v10 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-      if ([v10 count] < 3)
+      currentlyDisplayedAnnouncements5 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+      if ([currentlyDisplayedAnnouncements5 count] < 3)
       {
         v12 = 0;
       }
 
       else
       {
-        v11 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-        v12 = [v11 objectAtIndexedSubscript:2];
+        currentlyDisplayedAnnouncements6 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+        v12 = [currentlyDisplayedAnnouncements6 objectAtIndexedSubscript:2];
       }
 
-      v13 = [(HUAnnouncementGlobeView *)self _nextAnnouncementPlaybackView];
-      v14 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-      [v14 addObject:v13];
+      _nextAnnouncementPlaybackView = [(HUAnnouncementGlobeView *)self _nextAnnouncementPlaybackView];
+      currentlyDisplayedAnnouncements7 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+      [currentlyDisplayedAnnouncements7 addObject:_nextAnnouncementPlaybackView];
 
-      v15 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-      [v15 removeObjectAtIndex:0];
+      currentlyDisplayedAnnouncements8 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+      [currentlyDisplayedAnnouncements8 removeObjectAtIndex:0];
 
       v16 = MEMORY[0x277D75D18];
       v25[0] = MEMORY[0x277D85DD0];
@@ -2600,7 +2600,7 @@ LABEL_45:
       v25[3] = &unk_277DBDF08;
       v25[4] = self;
       v26 = v8;
-      v27 = v13;
+      v27 = _nextAnnouncementPlaybackView;
       v28 = v6;
       v29 = v12;
       v21[0] = MEMORY[0x277D85DD0];
@@ -2608,12 +2608,12 @@ LABEL_45:
       v21[2] = __48__HUAnnouncementGlobeView__playNextAnnouncement__block_invoke_2;
       v21[3] = &unk_277DB8838;
       v22 = v28;
-      v23 = self;
+      selfCopy = self;
       v24 = v26;
       v17 = v26;
       v18 = v28;
       v19 = v12;
-      v20 = v13;
+      v20 = _nextAnnouncementPlaybackView;
       [v16 animateWithDuration:v25 animations:v21 completion:0.5];
 
       return;
@@ -2729,8 +2729,8 @@ void __48__HUAnnouncementGlobeView__playNextAnnouncement__block_invoke_2(id *a1,
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v3 = [currentlyDisplayedAnnouncements countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -2742,7 +2742,7 @@ void __48__HUAnnouncementGlobeView__playNextAnnouncement__block_invoke_2(id *a1,
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(currentlyDisplayedAnnouncements);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -2752,7 +2752,7 @@ void __48__HUAnnouncementGlobeView__playNextAnnouncement__block_invoke_2(id *a1,
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [currentlyDisplayedAnnouncements countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -2768,48 +2768,48 @@ void __48__HUAnnouncementGlobeView__playNextAnnouncement__block_invoke_2(id *a1,
 
 - (BOOL)_isNextAnnouncementTheOldest
 {
-  v3 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v4 = [v3 count];
+  currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v4 = [currentlyDisplayedAnnouncements count];
 
   if (v4 < 2)
   {
     return 1;
   }
 
-  v5 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v6 = [v5 objectAtIndexedSubscript:1];
-  v7 = [v6 announcementInfo];
+  currentlyDisplayedAnnouncements2 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v6 = [currentlyDisplayedAnnouncements2 objectAtIndexedSubscript:1];
+  announcementInfo = [v6 announcementInfo];
 
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277CEAA18]];
-  v9 = [v8 unsignedIntegerValue];
+  v8 = [announcementInfo objectForKeyedSubscript:*MEMORY[0x277CEAA18]];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  v10 = v9 == 0;
+  v10 = unsignedIntegerValue == 0;
   return v10;
 }
 
-- (id)_onQueue_fetchNewAnnouncementInfo:(id)a3 oldestVisitedAnnouncementID:(id)a4
+- (id)_onQueue_fetchNewAnnouncementInfo:(id)info oldestVisitedAnnouncementID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  dCopy = d;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__14;
   v23 = __Block_byref_object_dispose__14;
   v24 = 0;
-  v9 = [(HUAnnouncementGlobeView *)self dataSourceUpdateQueue];
+  dataSourceUpdateQueue = [(HUAnnouncementGlobeView *)self dataSourceUpdateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__HUAnnouncementGlobeView__onQueue_fetchNewAnnouncementInfo_oldestVisitedAnnouncementID___block_invoke;
   block[3] = &unk_277DBDF30;
   block[4] = self;
-  v15 = v7;
+  v15 = infoCopy;
   v17 = &v19;
   v18 = a2;
-  v16 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_sync(v9, block);
+  v16 = dCopy;
+  v10 = dCopy;
+  v11 = infoCopy;
+  dispatch_sync(dataSourceUpdateQueue, block);
 
   v12 = v20[5];
   _Block_object_dispose(&v19, 8);
@@ -2900,10 +2900,10 @@ void __89__HUAnnouncementGlobeView__onQueue_fetchNewAnnouncementInfo_oldestVisit
 
 - (id)_blurEffectForCurrentInterfaceStyle
 {
-  v2 = [(HUAnnouncementGlobeView *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(HUAnnouncementGlobeView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v3 == 2)
+  if (userInterfaceStyle == 2)
   {
     v4 = 2;
   }
@@ -2918,74 +2918,74 @@ void __89__HUAnnouncementGlobeView__onQueue_fetchNewAnnouncementInfo_oldestVisit
   return [v5 effectWithStyle:v4];
 }
 
-- (void)audioPlayer:(id)a3 didUpdateAveragePower:(double)a4
+- (void)audioPlayer:(id)player didUpdateAveragePower:(double)power
 {
-  if ([a3 isPlaying])
+  if ([player isPlaying])
   {
-    v6 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-    v7 = [v6 objectAtIndexedSubscript:0];
+    currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+    v7 = [currentlyDisplayedAnnouncements objectAtIndexedSubscript:0];
 
-    [v7 didUpdateAveragePower:a4];
+    [v7 didUpdateAveragePower:power];
   }
 }
 
-- (void)audioPlayer:(id)a3 didPausePlaybackWithReason:(id)a4
+- (void)audioPlayer:(id)player didPausePlaybackWithReason:(id)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  reasonCopy = reason;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     v13 = 138412802;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v8;
     v17 = 2112;
-    v18 = v6;
+    v18 = reasonCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@ Playback paused with reason [%@]", &v13, 0x20u);
   }
 
-  v9 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v10 = [v9 objectAtIndexedSubscript:0];
+  currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v10 = [currentlyDisplayedAnnouncements objectAtIndexedSubscript:0];
 
-  v11 = [v10 announcementInfo];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CEA768]];
+  announcementInfo = [v10 announcementInfo];
+  v12 = [announcementInfo objectForKeyedSubscript:*MEMORY[0x277CEA768]];
 
   [(HUAnnouncementGlobeView *)self _submitAnalyticsForAnnouncePlaybackCompletedSuccessfully:1 forAnnouncementID:v12 interruptedByUser:0];
   [(HUAnnouncementGlobeView *)self stopPlayback];
 }
 
-- (void)audioPlayerDidFinishPlayback:(id)a3 withError:(id)a4
+- (void)audioPlayerDidFinishPlayback:(id)playback withError:(id)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
-  v8 = [v7 objectAtIndexedSubscript:0];
+  errorCopy = error;
+  currentlyDisplayedAnnouncements = [(HUAnnouncementGlobeView *)self currentlyDisplayedAnnouncements];
+  v8 = [currentlyDisplayedAnnouncements objectAtIndexedSubscript:0];
 
   [v8 setFullyPlayed:1];
   [v8 playbackStopped];
-  v9 = [v8 announcementInfo];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CEA768]];
+  announcementInfo = [v8 announcementInfo];
+  v10 = [announcementInfo objectForKeyedSubscript:*MEMORY[0x277CEA768]];
 
-  v11 = [(HUAnnouncementGlobeView *)self announceRemotePlaybackSession];
-  [v11 setPlaybackStoppedForAnnouncement:v10];
+  announceRemotePlaybackSession = [(HUAnnouncementGlobeView *)self announceRemotePlaybackSession];
+  [announceRemotePlaybackSession setPlaybackStoppedForAnnouncement:v10];
 
   v12 = HFLogForCategory();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (errorCopy)
   {
     if (v13)
     {
       v14 = NSStringFromSelector(a2);
       v18 = 138413058;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2112;
       v21 = v14;
       v22 = 2112;
       v23 = v8;
       v24 = 2112;
-      v25 = v6;
+      v25 = errorCopy;
       v15 = "%@:%@ Error finishing playing announcement [%@] - Error %@";
       v16 = v12;
       v17 = 42;
@@ -2998,7 +2998,7 @@ LABEL_6:
   {
     v14 = NSStringFromSelector(a2);
     v18 = 138412802;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2112;
     v21 = v14;
     v22 = 2112;
@@ -3009,47 +3009,47 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  [(HUAnnouncementGlobeView *)self _submitAnalyticsForAnnouncePlaybackCompletedSuccessfully:v6 == 0 forAnnouncementID:v10 interruptedByUser:0];
+  [(HUAnnouncementGlobeView *)self _submitAnalyticsForAnnouncePlaybackCompletedSuccessfully:errorCopy == 0 forAnnouncementID:v10 interruptedByUser:0];
   [(HUAnnouncementGlobeView *)self _playNextAnnouncement];
 }
 
-- (void)_submitAnalyticsForAnnouncePlaybackCompletedSuccessfully:(BOOL)a3 forAnnouncementID:(id)a4 interruptedByUser:(BOOL)a5
+- (void)_submitAnalyticsForAnnouncePlaybackCompletedSuccessfully:(BOOL)successfully forAnnouncementID:(id)d interruptedByUser:(BOOL)user
 {
-  v5 = a5;
-  v6 = a3;
-  v8 = a4;
-  v9 = [(HUAnnouncementGlobeView *)self audioPlayer];
-  v10 = [v9 playerStopSource];
+  userCopy = user;
+  successfullyCopy = successfully;
+  dCopy = d;
+  audioPlayer = [(HUAnnouncementGlobeView *)self audioPlayer];
+  playerStopSource = [audioPlayer playerStopSource];
 
-  v11 = [(HUAnnouncementGlobeView *)self audioPlayer];
-  [v11 duration];
+  audioPlayer2 = [(HUAnnouncementGlobeView *)self audioPlayer];
+  [audioPlayer2 duration];
   v13 = v12;
 
   v26 = objc_opt_new();
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
   [v26 setObject:v14 forKey:*MEMORY[0x277D133F8]];
 
-  v15 = [MEMORY[0x277CCABB0] numberWithInt:!v6];
+  v15 = [MEMORY[0x277CCABB0] numberWithInt:!successfullyCopy];
   [v26 setObject:v15 forKey:*MEMORY[0x277D13400]];
 
-  [v26 setObject:v8 forKey:*MEMORY[0x277D133F0]];
-  v16 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+  [v26 setObject:dCopy forKey:*MEMORY[0x277D133F0]];
+  v16 = [MEMORY[0x277CCABB0] numberWithBool:userCopy];
   [v26 setObject:v16 forKey:*MEMORY[0x277D13418]];
 
-  v17 = [MEMORY[0x277CCABB0] numberWithInt:(v10 & 0xFFFFFFFFFFFFFFFELL) == 2];
+  v17 = [MEMORY[0x277CCABB0] numberWithInt:(playerStopSource & 0xFFFFFFFFFFFFFFFELL) == 2];
   [v26 setObject:v17 forKey:*MEMORY[0x277D13410]];
 
-  v18 = [MEMORY[0x277CCABB0] numberWithInt:v10 == 4];
+  v18 = [MEMORY[0x277CCABB0] numberWithInt:playerStopSource == 4];
   [v26 setObject:v18 forKey:*MEMORY[0x277D13408]];
 
-  v19 = [(HUAnnouncementGlobeView *)self audioPlayer];
-  v20 = [v19 routeChangeReason];
+  audioPlayer3 = [(HUAnnouncementGlobeView *)self audioPlayer];
+  routeChangeReason = [audioPlayer3 routeChangeReason];
 
-  if (v20)
+  if (routeChangeReason)
   {
-    v21 = [(HUAnnouncementGlobeView *)self audioPlayer];
-    v22 = [v21 routeChangeReason];
-    [v26 setObject:v22 forKey:*MEMORY[0x277D13690]];
+    audioPlayer4 = [(HUAnnouncementGlobeView *)self audioPlayer];
+    routeChangeReason2 = [audioPlayer4 routeChangeReason];
+    [v26 setObject:routeChangeReason2 forKey:*MEMORY[0x277D13690]];
   }
 
   v23 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:_AXSShowAudioTranscriptions()];

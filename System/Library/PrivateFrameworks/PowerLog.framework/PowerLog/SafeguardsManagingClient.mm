@@ -1,45 +1,45 @@
 @interface SafeguardsManagingClient
-- (BOOL)clearMitigationRecordsWithError:(id *)a3;
-- (BOOL)clearTargetProcessWithError:(id *)a3;
-- (BOOL)forceCPUViolationForProcess:(id)a3 error:(id *)a4;
-- (BOOL)forceDetectionWithStartTime:(id)a3 endTime:(id)a4 error:(id *)a5;
-- (BOOL)forceDetectorViolationForProcess:(id)a3 error:(id *)a4;
-- (BOOL)forceMidnightRoutine:(id *)a3;
-- (BOOL)forceMitigation:(id)a3 forProcess:(id)a4 withPercentage:(id)a5 withSeconds:(id)a6 withPenaltyBoxDuration:(id)a7 error:(id *)a8;
-- (BOOL)getCpuPercentageTriggerForWindowEndDate:(id)a3 windowStartDate:(id)a4 crossedThreshold:(BOOL *)a5 score:(double *)a6 error:(id *)a7;
-- (BOOL)resetRuleParameters:(id)a3 error:(id *)a4;
-- (BOOL)sendCoalitionEntries:(id)a3 error:(id *)a4;
-- (BOOL)setContextForIdentifier:(id)a3 withState:(id)a4 error:(id *)a5;
-- (BOOL)setDefaultsWithMaxFatalCount:(id)a3 withMaxNonFatal:(id)a4 withEnableMitigations:(id)a5 withEnablePenaltyBox:(id)a6 withPercentage:(id)a7 withSeconds:(id)a8 withPenaltyBoxDuration:(id)a9 withMitigationsPluggedIn:(id)a10 withMitigateXPCServices:(id)a11 error:(id *)a12;
-- (BOOL)setInfoForProcess:(id)a3 withFatalCount:(id)a4 withNonFatalCount:(id)a5 withExitCount:(id)a6 withPenaltyCount:(id)a7 withPolicyMask:(id)a8 error:(id *)a9;
-- (BOOL)setMaxRelaunchPollingInterval:(id)a3 error:(id *)a4;
-- (BOOL)setPollingInterval:(id)a3 error:(id *)a4;
-- (BOOL)setRelaunchPollingInterval:(id)a3 error:(id *)a4;
-- (BOOL)setRestrictionsByProcessPerScenario:(id)a3 error:(id *)a4;
-- (BOOL)setRuleParameters:(id)a3 withWindowSize:(id)a4 withStepSize:(id)a5 withMaxLookback:(id)a6 withDaemonOnly:(id)a7 error:(id *)a8;
-- (BOOL)setScenarioRefreshInterval:(id)a3 error:(id *)a4;
-- (BOOL)setTargetProcessMitigationRecords:(id)a3 withError:(id *)a4;
-- (BOOL)setTargetProcessTo:(id)a3 withPercentage:(id)a4 withSeconds:(id)a5 withPenaltyBoxDuration:(id)a6 error:(id *)a7;
-- (BOOL)setTriggerInterval:(id)a3 error:(id *)a4;
+- (BOOL)clearMitigationRecordsWithError:(id *)error;
+- (BOOL)clearTargetProcessWithError:(id *)error;
+- (BOOL)forceCPUViolationForProcess:(id)process error:(id *)error;
+- (BOOL)forceDetectionWithStartTime:(id)time endTime:(id)endTime error:(id *)error;
+- (BOOL)forceDetectorViolationForProcess:(id)process error:(id *)error;
+- (BOOL)forceMidnightRoutine:(id *)routine;
+- (BOOL)forceMitigation:(id)mitigation forProcess:(id)process withPercentage:(id)percentage withSeconds:(id)seconds withPenaltyBoxDuration:(id)duration error:(id *)error;
+- (BOOL)getCpuPercentageTriggerForWindowEndDate:(id)date windowStartDate:(id)startDate crossedThreshold:(BOOL *)threshold score:(double *)score error:(id *)error;
+- (BOOL)resetRuleParameters:(id)parameters error:(id *)error;
+- (BOOL)sendCoalitionEntries:(id)entries error:(id *)error;
+- (BOOL)setContextForIdentifier:(id)identifier withState:(id)state error:(id *)error;
+- (BOOL)setDefaultsWithMaxFatalCount:(id)count withMaxNonFatal:(id)fatal withEnableMitigations:(id)mitigations withEnablePenaltyBox:(id)box withPercentage:(id)percentage withSeconds:(id)seconds withPenaltyBoxDuration:(id)duration withMitigationsPluggedIn:(id)self0 withMitigateXPCServices:(id)self1 error:(id *)self2;
+- (BOOL)setInfoForProcess:(id)process withFatalCount:(id)count withNonFatalCount:(id)fatalCount withExitCount:(id)exitCount withPenaltyCount:(id)penaltyCount withPolicyMask:(id)mask error:(id *)error;
+- (BOOL)setMaxRelaunchPollingInterval:(id)interval error:(id *)error;
+- (BOOL)setPollingInterval:(id)interval error:(id *)error;
+- (BOOL)setRelaunchPollingInterval:(id)interval error:(id *)error;
+- (BOOL)setRestrictionsByProcessPerScenario:(id)scenario error:(id *)error;
+- (BOOL)setRuleParameters:(id)parameters withWindowSize:(id)size withStepSize:(id)stepSize withMaxLookback:(id)lookback withDaemonOnly:(id)only error:(id *)error;
+- (BOOL)setScenarioRefreshInterval:(id)interval error:(id *)error;
+- (BOOL)setTargetProcessMitigationRecords:(id)records withError:(id *)error;
+- (BOOL)setTargetProcessTo:(id)to withPercentage:(id)percentage withSeconds:(id)seconds withPenaltyBoxDuration:(id)duration error:(id *)error;
+- (BOOL)setTriggerInterval:(id)interval error:(id *)error;
 - (SafeguardsManagingClient)init;
-- (id)getActiveScenarios:(id *)a3;
-- (id)getDefaults:(id *)a3;
-- (id)getInfoForProcess:(id)a3 error:(id *)a4;
-- (id)getMaxRelaunchPollingInterval:(id *)a3;
-- (id)getMitigationPolicy:(id *)a3;
-- (id)getMonitoredList:(id *)a3;
-- (id)getPenaltyList:(id *)a3;
-- (id)getPollingInterval:(id *)a3;
-- (id)getProcessesAffectedByScenarioMapWithError:(id *)a3;
-- (id)getRelaunchPollingInterval:(id *)a3;
-- (id)getRestrictionsForProcess:(id)a3 forScenario:(id)a4 withError:(id *)a5;
-- (id)getScenarioRefreshInterval:(id *)a3;
-- (id)getScenarios:(id *)a3;
-- (id)getTargetProcess:(id *)a3;
-- (id)getTargetProcessMitigationRecords:(id *)a3;
-- (id)getTriggerInterval:(id *)a3;
+- (id)getActiveScenarios:(id *)scenarios;
+- (id)getDefaults:(id *)defaults;
+- (id)getInfoForProcess:(id)process error:(id *)error;
+- (id)getMaxRelaunchPollingInterval:(id *)interval;
+- (id)getMitigationPolicy:(id *)policy;
+- (id)getMonitoredList:(id *)list;
+- (id)getPenaltyList:(id *)list;
+- (id)getPollingInterval:(id *)interval;
+- (id)getProcessesAffectedByScenarioMapWithError:(id *)error;
+- (id)getRelaunchPollingInterval:(id *)interval;
+- (id)getRestrictionsForProcess:(id)process forScenario:(id)scenario withError:(id *)error;
+- (id)getScenarioRefreshInterval:(id *)interval;
+- (id)getScenarios:(id *)scenarios;
+- (id)getTargetProcess:(id *)process;
+- (id)getTargetProcessMitigationRecords:(id *)records;
+- (id)getTriggerInterval:(id *)interval;
 - (void)init;
-- (void)reportScheduledIntensiveWorkByProcesses:(id)a3;
+- (void)reportScheduledIntensiveWorkByProcesses:(id)processes;
 @end
 
 @implementation SafeguardsManagingClient
@@ -83,7 +83,7 @@
     {
       LODWORD(location[0]) = 0;
       xpc_user_sessions_get_foreground_uid();
-      v11 = [(NSXPCConnection *)v2->_connection _xpcConnection];
+      _xpcConnection = [(NSXPCConnection *)v2->_connection _xpcConnection];
       xpc_connection_set_target_user_session_uid();
     }
 
@@ -162,17 +162,17 @@ void __32__SafeguardsManagingClient_init__block_invoke_47(uint64_t a1)
   }
 }
 
-- (void)reportScheduledIntensiveWorkByProcesses:(id)a3
+- (void)reportScheduledIntensiveWorkByProcesses:(id)processes
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  processesCopy = processes;
   if (self->_featureEnabled)
   {
     logger = self->_logger;
     if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v4;
+      v11 = processesCopy;
       _os_log_impl(&dword_1BACB7000, logger, OS_LOG_TYPE_DEFAULT, "Reporting %@ as now running intensive workloads", buf, 0xCu);
     }
 
@@ -183,7 +183,7 @@ void __32__SafeguardsManagingClient_init__block_invoke_47(uint64_t a1)
     v9[3] = &unk_1E7F18938;
     v9[4] = self;
     v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v9];
-    [v7 reportScheduledIntensiveWorkByProcesses:v4];
+    [v7 reportScheduledIntensiveWorkByProcesses:processesCopy];
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -199,7 +199,7 @@ void __68__SafeguardsManagingClient_reportScheduledIntensiveWorkByProcesses___bl
   }
 }
 
-- (id)getActiveScenarios:(id *)a3
+- (id)getActiveScenarios:(id *)scenarios
 {
   if (self->_featureEnabled)
   {
@@ -233,7 +233,7 @@ void __68__SafeguardsManagingClient_reportScheduledIntensiveWorkByProcesses___bl
     v6 = v12[5];
     if (v6)
     {
-      *a3 = v6;
+      *scenarios = v6;
     }
 
     v7 = v18[5];
@@ -264,7 +264,7 @@ void __47__SafeguardsManagingClient_getActiveScenarios___block_invoke(uint64_t a
   *(v5 + 40) = v3;
 }
 
-- (id)getScenarios:(id *)a3
+- (id)getScenarios:(id *)scenarios
 {
   if (self->_featureEnabled)
   {
@@ -298,7 +298,7 @@ void __47__SafeguardsManagingClient_getActiveScenarios___block_invoke(uint64_t a
     v6 = v12[5];
     if (v6)
     {
-      *a3 = v6;
+      *scenarios = v6;
     }
 
     v7 = v18[5];
@@ -329,7 +329,7 @@ void __41__SafeguardsManagingClient_getScenarios___block_invoke(uint64_t a1, voi
   *(v5 + 40) = v3;
 }
 
-- (id)getMitigationPolicy:(id *)a3
+- (id)getMitigationPolicy:(id *)policy
 {
   v16 = 0;
   v17 = &v16;
@@ -358,9 +358,9 @@ void __41__SafeguardsManagingClient_getScenarios___block_invoke(uint64_t a1, voi
   v8[4] = &v16;
   [v5 getMitigationPolicyWithHandler:v8];
 
-  if (a3)
+  if (policy)
   {
-    *a3 = v11[5];
+    *policy = v11[5];
   }
 
   v6 = v17[5];
@@ -385,7 +385,7 @@ void __48__SafeguardsManagingClient_getMitigationPolicy___block_invoke(uint64_t 
   *(v5 + 40) = v3;
 }
 
-- (id)getProcessesAffectedByScenarioMapWithError:(id *)a3
+- (id)getProcessesAffectedByScenarioMapWithError:(id *)error
 {
   if (self->_featureEnabled)
   {
@@ -419,7 +419,7 @@ void __48__SafeguardsManagingClient_getMitigationPolicy___block_invoke(uint64_t 
     v6 = v12[5];
     if (v6)
     {
-      *a3 = v6;
+      *error = v6;
     }
 
     v7 = v18[5];
@@ -450,10 +450,10 @@ void __71__SafeguardsManagingClient_getProcessesAffectedByScenarioMapWithError__
   *(v5 + 40) = v3;
 }
 
-- (id)getRestrictionsForProcess:(id)a3 forScenario:(id)a4 withError:(id *)a5
+- (id)getRestrictionsForProcess:(id)process forScenario:(id)scenario withError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  processCopy = process;
+  scenarioCopy = scenario;
   if (self->_featureEnabled)
   {
     v23 = 0;
@@ -481,12 +481,12 @@ void __71__SafeguardsManagingClient_getProcessesAffectedByScenarioMapWithError__
     v15[2] = __76__SafeguardsManagingClient_getRestrictionsForProcess_forScenario_withError___block_invoke_55;
     v15[3] = &unk_1E7F18A00;
     v15[4] = &v23;
-    [v11 getRestrictionsForProcess:v8 forScenario:v9 withHandler:v15];
+    [v11 getRestrictionsForProcess:processCopy forScenario:scenarioCopy withHandler:v15];
 
     v12 = v18[5];
     if (v12)
     {
-      *a5 = v12;
+      *error = v12;
     }
 
     v13 = v24[5];
@@ -517,7 +517,7 @@ void __76__SafeguardsManagingClient_getRestrictionsForProcess_forScenario_withEr
   *(v5 + 40) = v3;
 }
 
-- (id)getPollingInterval:(id *)a3
+- (id)getPollingInterval:(id *)interval
 {
   if (self->_featureEnabled)
   {
@@ -551,7 +551,7 @@ void __76__SafeguardsManagingClient_getRestrictionsForProcess_forScenario_withEr
     v6 = v12[5];
     if (v6)
     {
-      *a3 = v6;
+      *interval = v6;
     }
 
     v7 = v18[5];
@@ -582,7 +582,7 @@ void __47__SafeguardsManagingClient_getPollingInterval___block_invoke(uint64_t a
   *(v5 + 40) = v3;
 }
 
-- (id)getRelaunchPollingInterval:(id *)a3
+- (id)getRelaunchPollingInterval:(id *)interval
 {
   if (self->_featureEnabled)
   {
@@ -616,7 +616,7 @@ void __47__SafeguardsManagingClient_getPollingInterval___block_invoke(uint64_t a
     v6 = v12[5];
     if (v6)
     {
-      *a3 = v6;
+      *interval = v6;
     }
 
     v7 = v18[5];
@@ -647,7 +647,7 @@ void __55__SafeguardsManagingClient_getRelaunchPollingInterval___block_invoke(ui
   *(v5 + 40) = v3;
 }
 
-- (id)getMaxRelaunchPollingInterval:(id *)a3
+- (id)getMaxRelaunchPollingInterval:(id *)interval
 {
   if (self->_featureEnabled)
   {
@@ -681,7 +681,7 @@ void __55__SafeguardsManagingClient_getRelaunchPollingInterval___block_invoke(ui
     v6 = v12[5];
     if (v6)
     {
-      *a3 = v6;
+      *interval = v6;
     }
 
     v7 = v18[5];
@@ -712,7 +712,7 @@ void __58__SafeguardsManagingClient_getMaxRelaunchPollingInterval___block_invoke
   *(v5 + 40) = v3;
 }
 
-- (id)getTriggerInterval:(id *)a3
+- (id)getTriggerInterval:(id *)interval
 {
   if (self->_featureEnabled)
   {
@@ -746,7 +746,7 @@ void __58__SafeguardsManagingClient_getMaxRelaunchPollingInterval___block_invoke
     v6 = v12[5];
     if (v6)
     {
-      *a3 = v6;
+      *interval = v6;
     }
 
     v7 = v18[5];
@@ -777,7 +777,7 @@ void __47__SafeguardsManagingClient_getTriggerInterval___block_invoke(uint64_t a
   *(v5 + 40) = v3;
 }
 
-- (id)getScenarioRefreshInterval:(id *)a3
+- (id)getScenarioRefreshInterval:(id *)interval
 {
   if (self->_featureEnabled)
   {
@@ -811,7 +811,7 @@ void __47__SafeguardsManagingClient_getTriggerInterval___block_invoke(uint64_t a
     v6 = v12[5];
     if (v6)
     {
-      *a3 = v6;
+      *interval = v6;
     }
 
     v7 = v18[5];
@@ -842,7 +842,7 @@ void __55__SafeguardsManagingClient_getScenarioRefreshInterval___block_invoke(ui
   *(v5 + 40) = v3;
 }
 
-- (id)getTargetProcess:(id *)a3
+- (id)getTargetProcess:(id *)process
 {
   if (self->_featureEnabled)
   {
@@ -876,7 +876,7 @@ void __55__SafeguardsManagingClient_getScenarioRefreshInterval___block_invoke(ui
     v6 = v12[5];
     if (v6)
     {
-      *a3 = v6;
+      *process = v6;
     }
 
     v7 = v18[5];
@@ -907,9 +907,9 @@ void __45__SafeguardsManagingClient_getTargetProcess___block_invoke(uint64_t a1,
   *(v5 + 40) = v3;
 }
 
-- (id)getInfoForProcess:(id)a3 error:(id *)a4
+- (id)getInfoForProcess:(id)process error:(id *)error
 {
-  v6 = a3;
+  processCopy = process;
   if (self->_featureEnabled)
   {
     v20 = 0;
@@ -938,16 +938,16 @@ void __45__SafeguardsManagingClient_getTargetProcess___block_invoke(uint64_t a1,
     v12[3] = &unk_1E7F18A28;
     v12[4] = &v20;
     v12[5] = &v14;
-    [v8 getInfoForProcess:v6 withHandler:v12];
+    [v8 getInfoForProcess:processCopy withHandler:v12];
 
     v9 = v15[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
       v9 = v15[5];
     }
 
-    *a4 = v9;
+    *error = v9;
     v10 = v21[5];
     _Block_object_dispose(&v14, 8);
 
@@ -990,7 +990,7 @@ void __52__SafeguardsManagingClient_getInfoForProcess_error___block_invoke_63(ui
   *(v9 + 40) = v6;
 }
 
-- (id)getDefaults:(id *)a3
+- (id)getDefaults:(id *)defaults
 {
   if (self->_featureEnabled)
   {
@@ -1025,11 +1025,11 @@ void __52__SafeguardsManagingClient_getInfoForProcess_error___block_invoke_63(ui
     v6 = v12[5];
     if (v6)
     {
-      *a3 = v6;
+      *defaults = v6;
       v6 = v12[5];
     }
 
-    *a3 = v6;
+    *defaults = v6;
     v7 = v18[5];
     _Block_object_dispose(&v11, 8);
 
@@ -1072,7 +1072,7 @@ void __40__SafeguardsManagingClient_getDefaults___block_invoke_65(uint64_t a1, v
   *(v9 + 40) = v6;
 }
 
-- (id)getMonitoredList:(id *)a3
+- (id)getMonitoredList:(id *)list
 {
   if (self->_featureEnabled)
   {
@@ -1107,11 +1107,11 @@ void __40__SafeguardsManagingClient_getDefaults___block_invoke_65(uint64_t a1, v
     v6 = v12[5];
     if (v6)
     {
-      *a3 = v6;
+      *list = v6;
       v6 = v12[5];
     }
 
-    *a3 = v6;
+    *list = v6;
     v7 = v18[5];
     _Block_object_dispose(&v11, 8);
 
@@ -1154,7 +1154,7 @@ void __45__SafeguardsManagingClient_getMonitoredList___block_invoke_66(uint64_t 
   *(v9 + 40) = v6;
 }
 
-- (id)getPenaltyList:(id *)a3
+- (id)getPenaltyList:(id *)list
 {
   if (self->_featureEnabled)
   {
@@ -1189,11 +1189,11 @@ void __45__SafeguardsManagingClient_getMonitoredList___block_invoke_66(uint64_t 
     v6 = v12[5];
     if (v6)
     {
-      *a3 = v6;
+      *list = v6;
       v6 = v12[5];
     }
 
-    *a3 = v6;
+    *list = v6;
     v7 = v18[5];
     _Block_object_dispose(&v11, 8);
 
@@ -1236,7 +1236,7 @@ void __43__SafeguardsManagingClient_getPenaltyList___block_invoke_67(uint64_t a1
   *(v9 + 40) = v6;
 }
 
-- (BOOL)getCpuPercentageTriggerForWindowEndDate:(id)a3 windowStartDate:(id)a4 crossedThreshold:(BOOL *)a5 score:(double *)a6 error:(id *)a7
+- (BOOL)getCpuPercentageTriggerForWindowEndDate:(id)date windowStartDate:(id)startDate crossedThreshold:(BOOL *)threshold score:(double *)score error:(id *)error
 {
   if (!self->_featureEnabled)
   {
@@ -1253,20 +1253,20 @@ void __43__SafeguardsManagingClient_getPenaltyList___block_invoke_67(uint64_t a1
   v21[2] = __113__SafeguardsManagingClient_getCpuPercentageTriggerForWindowEndDate_windowStartDate_crossedThreshold_score_error___block_invoke;
   v21[3] = &unk_1E7F18A50;
   v21[4] = self;
-  v21[5] = a7;
-  v16 = a4;
-  v17 = a3;
+  v21[5] = error;
+  startDateCopy = startDate;
+  dateCopy = date;
   v18 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v21];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __113__SafeguardsManagingClient_getCpuPercentageTriggerForWindowEndDate_windowStartDate_crossedThreshold_score_error___block_invoke_68;
   v20[3] = &__block_descriptor_56_e23_v28__0B8d12__NSError_20l;
-  v20[4] = a5;
-  v20[5] = a6;
-  v20[6] = a7;
-  [v18 getCpuPercentageTriggerForWindowEndDate:v17 windowStartDate:v16 handler:v20];
+  v20[4] = threshold;
+  v20[5] = score;
+  v20[6] = error;
+  [v18 getCpuPercentageTriggerForWindowEndDate:dateCopy windowStartDate:startDateCopy handler:v20];
 
-  return a7 == 0;
+  return error == 0;
 }
 
 void __113__SafeguardsManagingClient_getCpuPercentageTriggerForWindowEndDate_windowStartDate_crossedThreshold_score_error___block_invoke(uint64_t a1, void *a2)
@@ -1292,7 +1292,7 @@ id __113__SafeguardsManagingClient_getCpuPercentageTriggerForWindowEndDate_windo
   return result;
 }
 
-- (id)getTargetProcessMitigationRecords:(id *)a3
+- (id)getTargetProcessMitigationRecords:(id *)records
 {
   if (self->_featureEnabled)
   {
@@ -1327,11 +1327,11 @@ id __113__SafeguardsManagingClient_getCpuPercentageTriggerForWindowEndDate_windo
     v6 = v12[5];
     if (v6)
     {
-      *a3 = v6;
+      *records = v6;
       v6 = v12[5];
     }
 
-    *a3 = v6;
+    *records = v6;
     v7 = v18[5];
     _Block_object_dispose(&v11, 8);
 
@@ -1374,9 +1374,9 @@ void __62__SafeguardsManagingClient_getTargetProcessMitigationRecords___block_in
   *(v9 + 40) = v6;
 }
 
-- (BOOL)setRestrictionsByProcessPerScenario:(id)a3 error:(id *)a4
+- (BOOL)setRestrictionsByProcessPerScenario:(id)scenario error:(id *)error
 {
-  v6 = a3;
+  scenarioCopy = scenario;
   if (self->_featureEnabled)
   {
     v14 = 0;
@@ -1398,13 +1398,13 @@ void __62__SafeguardsManagingClient_getTargetProcessMitigationRecords___block_in
     v12[2] = __70__SafeguardsManagingClient_setRestrictionsByProcessPerScenario_error___block_invoke_73;
     v12[3] = &unk_1E7F18AC0;
     v12[4] = &v14;
-    [v8 modifyRestrictionsByProcessPerScenario:v6 withHandler:v12];
+    [v8 modifyRestrictionsByProcessPerScenario:scenarioCopy withHandler:v12];
 
     v9 = v15[5];
     v10 = v9 == 0;
-    if (a4 && v9)
+    if (error && v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
 
     _Block_object_dispose(&v14, 8);
@@ -1432,9 +1432,9 @@ void __70__SafeguardsManagingClient_setRestrictionsByProcessPerScenario_error___
   *(v5 + 40) = v3;
 }
 
-- (BOOL)setPollingInterval:(id)a3 error:(id *)a4
+- (BOOL)setPollingInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
+  intervalCopy = interval;
   if (self->_featureEnabled)
   {
     v13 = 0;
@@ -1451,13 +1451,13 @@ void __70__SafeguardsManagingClient_setRestrictionsByProcessPerScenario_error___
     v12[4] = self;
     v12[5] = &v13;
     v8 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v12];
-    [v8 modifyPollingInterval:v6];
+    [v8 modifyPollingInterval:intervalCopy];
 
     v9 = v14[5];
     v10 = v9 == 0;
-    if (a4 && v9)
+    if (error && v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
 
     _Block_object_dispose(&v13, 8);
@@ -1485,9 +1485,9 @@ void __53__SafeguardsManagingClient_setPollingInterval_error___block_invoke(uint
   *(v5 + 40) = v3;
 }
 
-- (BOOL)setRelaunchPollingInterval:(id)a3 error:(id *)a4
+- (BOOL)setRelaunchPollingInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
+  intervalCopy = interval;
   if (self->_featureEnabled)
   {
     v13 = 0;
@@ -1504,13 +1504,13 @@ void __53__SafeguardsManagingClient_setPollingInterval_error___block_invoke(uint
     v12[4] = self;
     v12[5] = &v13;
     v8 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v12];
-    [v8 modifyRelaunchPollingInterval:v6];
+    [v8 modifyRelaunchPollingInterval:intervalCopy];
 
     v9 = v14[5];
     v10 = v9 == 0;
-    if (a4 && v9)
+    if (error && v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
 
     _Block_object_dispose(&v13, 8);
@@ -1538,9 +1538,9 @@ void __61__SafeguardsManagingClient_setRelaunchPollingInterval_error___block_inv
   *(v5 + 40) = v3;
 }
 
-- (BOOL)setMaxRelaunchPollingInterval:(id)a3 error:(id *)a4
+- (BOOL)setMaxRelaunchPollingInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
+  intervalCopy = interval;
   if (self->_featureEnabled)
   {
     v13 = 0;
@@ -1557,13 +1557,13 @@ void __61__SafeguardsManagingClient_setRelaunchPollingInterval_error___block_inv
     v12[4] = self;
     v12[5] = &v13;
     v8 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v12];
-    [v8 modifyMaxRelaunchPollingInterval:v6];
+    [v8 modifyMaxRelaunchPollingInterval:intervalCopy];
 
     v9 = v14[5];
     v10 = v9 == 0;
-    if (a4 && v9)
+    if (error && v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
 
     _Block_object_dispose(&v13, 8);
@@ -1591,9 +1591,9 @@ void __64__SafeguardsManagingClient_setMaxRelaunchPollingInterval_error___block_
   *(v5 + 40) = v3;
 }
 
-- (BOOL)setTriggerInterval:(id)a3 error:(id *)a4
+- (BOOL)setTriggerInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
+  intervalCopy = interval;
   if (self->_featureEnabled)
   {
     v13 = 0;
@@ -1610,13 +1610,13 @@ void __64__SafeguardsManagingClient_setMaxRelaunchPollingInterval_error___block_
     v12[4] = self;
     v12[5] = &v13;
     v8 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v12];
-    [v8 modifyTriggerInterval:v6];
+    [v8 modifyTriggerInterval:intervalCopy];
 
     v9 = v14[5];
     v10 = v9 == 0;
-    if (a4 && v9)
+    if (error && v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
 
     _Block_object_dispose(&v13, 8);
@@ -1644,9 +1644,9 @@ void __53__SafeguardsManagingClient_setTriggerInterval_error___block_invoke(uint
   *(v5 + 40) = v3;
 }
 
-- (BOOL)setScenarioRefreshInterval:(id)a3 error:(id *)a4
+- (BOOL)setScenarioRefreshInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
+  intervalCopy = interval;
   if (self->_featureEnabled)
   {
     v13 = 0;
@@ -1663,13 +1663,13 @@ void __53__SafeguardsManagingClient_setTriggerInterval_error___block_invoke(uint
     v12[4] = self;
     v12[5] = &v13;
     v8 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v12];
-    [v8 modifyScenarioRefreshInterval:v6];
+    [v8 modifyScenarioRefreshInterval:intervalCopy];
 
     v9 = v14[5];
     v10 = v9 == 0;
-    if (a4 && v9)
+    if (error && v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
 
     _Block_object_dispose(&v13, 8);
@@ -1697,12 +1697,12 @@ void __61__SafeguardsManagingClient_setScenarioRefreshInterval_error___block_inv
   *(v5 + 40) = v3;
 }
 
-- (BOOL)setTargetProcessTo:(id)a3 withPercentage:(id)a4 withSeconds:(id)a5 withPenaltyBoxDuration:(id)a6 error:(id *)a7
+- (BOOL)setTargetProcessTo:(id)to withPercentage:(id)percentage withSeconds:(id)seconds withPenaltyBoxDuration:(id)duration error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  toCopy = to;
+  percentageCopy = percentage;
+  secondsCopy = seconds;
+  durationCopy = duration;
   if (self->_featureEnabled)
   {
     v22 = 0;
@@ -1719,13 +1719,13 @@ void __61__SafeguardsManagingClient_setScenarioRefreshInterval_error___block_inv
     v21[4] = self;
     v21[5] = &v22;
     v17 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v21];
-    [v17 modifyTargetProcess:v12 withPercentage:v13 withSeconds:v14 withPenaltyBoxDuration:v15];
+    [v17 modifyTargetProcess:toCopy withPercentage:percentageCopy withSeconds:secondsCopy withPenaltyBoxDuration:durationCopy];
 
     v18 = v23[5];
     v19 = v18 == 0;
-    if (a7 && v18)
+    if (error && v18)
     {
-      *a7 = v18;
+      *error = v18;
     }
 
     _Block_object_dispose(&v22, 8);
@@ -1753,7 +1753,7 @@ void __103__SafeguardsManagingClient_setTargetProcessTo_withPercentage_withSecon
   *(v5 + 40) = v3;
 }
 
-- (BOOL)clearTargetProcessWithError:(id *)a3
+- (BOOL)clearTargetProcessWithError:(id *)error
 {
   if (!self->_featureEnabled)
   {
@@ -1778,9 +1778,9 @@ void __103__SafeguardsManagingClient_setTargetProcessTo_withPercentage_withSecon
 
   v6 = v11[5];
   v7 = v6 == 0;
-  if (a3 && v6)
+  if (error && v6)
   {
-    *a3 = v6;
+    *error = v6;
   }
 
   _Block_object_dispose(&v10, 8);
@@ -1802,14 +1802,14 @@ void __56__SafeguardsManagingClient_clearTargetProcessWithError___block_invoke(u
   *(v5 + 40) = v3;
 }
 
-- (BOOL)setInfoForProcess:(id)a3 withFatalCount:(id)a4 withNonFatalCount:(id)a5 withExitCount:(id)a6 withPenaltyCount:(id)a7 withPolicyMask:(id)a8 error:(id *)a9
+- (BOOL)setInfoForProcess:(id)process withFatalCount:(id)count withNonFatalCount:(id)fatalCount withExitCount:(id)exitCount withPenaltyCount:(id)penaltyCount withPolicyMask:(id)mask error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  processCopy = process;
+  countCopy = count;
+  fatalCountCopy = fatalCount;
+  exitCountCopy = exitCount;
+  penaltyCountCopy = penaltyCount;
+  maskCopy = mask;
   if (self->_featureEnabled)
   {
     v28 = 0;
@@ -1831,13 +1831,13 @@ void __56__SafeguardsManagingClient_clearTargetProcessWithError___block_invoke(u
     v26[2] = __131__SafeguardsManagingClient_setInfoForProcess_withFatalCount_withNonFatalCount_withExitCount_withPenaltyCount_withPolicyMask_error___block_invoke_74;
     v26[3] = &unk_1E7F18AC0;
     v26[4] = &v28;
-    [v22 modifyProcessInfoFor:v15 withFatalCount:v16 withNonFatalCount:v17 withExitCount:v18 withPenaltyCount:v19 withPolicyMask:v20 withHandler:v26];
+    [v22 modifyProcessInfoFor:processCopy withFatalCount:countCopy withNonFatalCount:fatalCountCopy withExitCount:exitCountCopy withPenaltyCount:penaltyCountCopy withPolicyMask:maskCopy withHandler:v26];
 
     v23 = v29[5];
     v24 = v23 == 0;
-    if (a9 && v23)
+    if (error && v23)
     {
-      *a9 = v23;
+      *error = v23;
     }
 
     _Block_object_dispose(&v28, 8);
@@ -1865,10 +1865,10 @@ void __131__SafeguardsManagingClient_setInfoForProcess_withFatalCount_withNonFat
   *(v5 + 40) = v3;
 }
 
-- (BOOL)setContextForIdentifier:(id)a3 withState:(id)a4 error:(id *)a5
+- (BOOL)setContextForIdentifier:(id)identifier withState:(id)state error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  stateCopy = state;
   if (self->_featureEnabled)
   {
     v16 = 0;
@@ -1885,13 +1885,13 @@ void __131__SafeguardsManagingClient_setInfoForProcess_withFatalCount_withNonFat
     v15[4] = self;
     v15[5] = &v16;
     v11 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v15];
-    [v11 modifyContextForIdentifier:v8 withState:v9];
+    [v11 modifyContextForIdentifier:identifierCopy withState:stateCopy];
 
     v12 = v17[5];
     v13 = v12 == 0;
-    if (a5 && v12)
+    if (error && v12)
     {
-      *a5 = v12;
+      *error = v12;
     }
 
     _Block_object_dispose(&v16, 8);
@@ -1919,17 +1919,17 @@ void __68__SafeguardsManagingClient_setContextForIdentifier_withState_error___bl
   *(v5 + 40) = v3;
 }
 
-- (BOOL)setDefaultsWithMaxFatalCount:(id)a3 withMaxNonFatal:(id)a4 withEnableMitigations:(id)a5 withEnablePenaltyBox:(id)a6 withPercentage:(id)a7 withSeconds:(id)a8 withPenaltyBoxDuration:(id)a9 withMitigationsPluggedIn:(id)a10 withMitigateXPCServices:(id)a11 error:(id *)a12
+- (BOOL)setDefaultsWithMaxFatalCount:(id)count withMaxNonFatal:(id)fatal withEnableMitigations:(id)mitigations withEnablePenaltyBox:(id)box withPercentage:(id)percentage withSeconds:(id)seconds withPenaltyBoxDuration:(id)duration withMitigationsPluggedIn:(id)self0 withMitigateXPCServices:(id)self1 error:(id *)self2
 {
-  v31 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
+  countCopy = count;
+  fatalCopy = fatal;
+  mitigationsCopy = mitigations;
+  boxCopy = box;
+  percentageCopy = percentage;
+  secondsCopy = seconds;
+  durationCopy = duration;
+  inCopy = in;
+  servicesCopy = services;
   if (self->_featureEnabled)
   {
     v34 = 0;
@@ -1951,13 +1951,13 @@ void __68__SafeguardsManagingClient_setContextForIdentifier_withState_error___bl
     v32[2] = __221__SafeguardsManagingClient_setDefaultsWithMaxFatalCount_withMaxNonFatal_withEnableMitigations_withEnablePenaltyBox_withPercentage_withSeconds_withPenaltyBoxDuration_withMitigationsPluggedIn_withMitigateXPCServices_error___block_invoke_75;
     v32[3] = &unk_1E7F18AC0;
     v32[4] = &v34;
-    [v27 modifyDefaults:v31 withMaxNonFatal:v18 withEnableMitigations:v19 withEnablePenaltyBox:v20 withPercentage:v21 withSeconds:v22 withPenaltyBoxDuration:v23 withMitigationsPluggedIn:v24 withMitigateXPCServices:v25 withHandler:v32];
+    [v27 modifyDefaults:countCopy withMaxNonFatal:fatalCopy withEnableMitigations:mitigationsCopy withEnablePenaltyBox:boxCopy withPercentage:percentageCopy withSeconds:secondsCopy withPenaltyBoxDuration:durationCopy withMitigationsPluggedIn:inCopy withMitigateXPCServices:servicesCopy withHandler:v32];
 
     v28 = v35[5];
     v29 = v28 == 0;
-    if (a12 && v28)
+    if (error && v28)
     {
-      *a12 = v28;
+      *error = v28;
     }
 
     _Block_object_dispose(&v34, 8);
@@ -1985,9 +1985,9 @@ void __221__SafeguardsManagingClient_setDefaultsWithMaxFatalCount_withMaxNonFata
   *(v5 + 40) = v3;
 }
 
-- (BOOL)setTargetProcessMitigationRecords:(id)a3 withError:(id *)a4
+- (BOOL)setTargetProcessMitigationRecords:(id)records withError:(id *)error
 {
-  v6 = a3;
+  recordsCopy = records;
   if (self->_featureEnabled)
   {
     v14 = 0;
@@ -2009,13 +2009,13 @@ void __221__SafeguardsManagingClient_setDefaultsWithMaxFatalCount_withMaxNonFata
     v12[2] = __72__SafeguardsManagingClient_setTargetProcessMitigationRecords_withError___block_invoke_76;
     v12[3] = &unk_1E7F18AC0;
     v12[4] = &v14;
-    [v8 modifyTargetProcessMitigationRecords:v6 withHandler:v12];
+    [v8 modifyTargetProcessMitigationRecords:recordsCopy withHandler:v12];
 
     v9 = v15[5];
     v10 = v9 == 0;
-    if (a4 && v9)
+    if (error && v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
 
     _Block_object_dispose(&v14, 8);
@@ -2043,7 +2043,7 @@ void __72__SafeguardsManagingClient_setTargetProcessMitigationRecords_withError_
   *(v5 + 40) = v3;
 }
 
-- (BOOL)clearMitigationRecordsWithError:(id *)a3
+- (BOOL)clearMitigationRecordsWithError:(id *)error
 {
   if (!self->_featureEnabled)
   {
@@ -2073,9 +2073,9 @@ void __72__SafeguardsManagingClient_setTargetProcessMitigationRecords_withError_
 
   v6 = v12[5];
   v7 = v6 == 0;
-  if (a3 && v6)
+  if (error && v6)
   {
-    *a3 = v6;
+    *error = v6;
   }
 
   _Block_object_dispose(&v11, 8);
@@ -2097,13 +2097,13 @@ void __60__SafeguardsManagingClient_clearMitigationRecordsWithError___block_invo
   *(v5 + 40) = v3;
 }
 
-- (BOOL)setRuleParameters:(id)a3 withWindowSize:(id)a4 withStepSize:(id)a5 withMaxLookback:(id)a6 withDaemonOnly:(id)a7 error:(id *)a8
+- (BOOL)setRuleParameters:(id)parameters withWindowSize:(id)size withStepSize:(id)stepSize withMaxLookback:(id)lookback withDaemonOnly:(id)only error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  parametersCopy = parameters;
+  sizeCopy = size;
+  stepSizeCopy = stepSize;
+  lookbackCopy = lookback;
+  onlyCopy = only;
   if (self->_featureEnabled)
   {
     v26 = 0;
@@ -2126,13 +2126,13 @@ void __60__SafeguardsManagingClient_clearMitigationRecordsWithError___block_invo
     v24[3] = &unk_1E7F18960;
     v24[4] = self;
     v24[5] = &v26;
-    [v20 setRuleParameters:v14 withWindowSize:v15 withStepSize:v16 withMaxLookback:v17 withDaemonOnly:v18 withHandler:v24];
+    [v20 setRuleParameters:parametersCopy withWindowSize:sizeCopy withStepSize:stepSizeCopy withMaxLookback:lookbackCopy withDaemonOnly:onlyCopy withHandler:v24];
 
     v21 = v27[5];
     v22 = v21 == 0;
     if (v21)
     {
-      *a8 = v21;
+      *error = v21;
     }
 
     _Block_object_dispose(&v26, 8);
@@ -2177,9 +2177,9 @@ void __111__SafeguardsManagingClient_setRuleParameters_withWindowSize_withStepSi
   *(v5 + 40) = v3;
 }
 
-- (BOOL)resetRuleParameters:(id)a3 error:(id *)a4
+- (BOOL)resetRuleParameters:(id)parameters error:(id *)error
 {
-  v6 = a3;
+  parametersCopy = parameters;
   if (self->_featureEnabled)
   {
     v14 = 0;
@@ -2202,13 +2202,13 @@ void __111__SafeguardsManagingClient_setRuleParameters_withWindowSize_withStepSi
     v12[3] = &unk_1E7F18960;
     v12[4] = self;
     v12[5] = &v14;
-    [v8 resetRuleParameters:v6 withHandler:v12];
+    [v8 resetRuleParameters:parametersCopy withHandler:v12];
 
     v9 = v15[5];
     v10 = v9 == 0;
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
 
     _Block_object_dispose(&v14, 8);
@@ -2253,13 +2253,13 @@ void __54__SafeguardsManagingClient_resetRuleParameters_error___block_invoke_79(
   *(v5 + 40) = v3;
 }
 
-- (BOOL)forceMitigation:(id)a3 forProcess:(id)a4 withPercentage:(id)a5 withSeconds:(id)a6 withPenaltyBoxDuration:(id)a7 error:(id *)a8
+- (BOOL)forceMitigation:(id)mitigation forProcess:(id)process withPercentage:(id)percentage withSeconds:(id)seconds withPenaltyBoxDuration:(id)duration error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  mitigationCopy = mitigation;
+  processCopy = process;
+  percentageCopy = percentage;
+  secondsCopy = seconds;
+  durationCopy = duration;
   if (self->_featureEnabled)
   {
     v26 = 0;
@@ -2282,13 +2282,13 @@ void __54__SafeguardsManagingClient_resetRuleParameters_error___block_invoke_79(
     v24[3] = &unk_1E7F18960;
     v24[4] = self;
     v24[5] = &v26;
-    [v20 forceMitigation:v14 forProcess:v15 withPercentage:v16 withSeconds:v17 withPenaltyBoxDuration:v18 withHandler:v24];
+    [v20 forceMitigation:mitigationCopy forProcess:processCopy withPercentage:percentageCopy withSeconds:secondsCopy withPenaltyBoxDuration:durationCopy withHandler:v24];
 
     v21 = v27[5];
     v22 = v21 == 0;
     if (v21)
     {
-      *a8 = v21;
+      *error = v21;
     }
 
     _Block_object_dispose(&v26, 8);
@@ -2333,7 +2333,7 @@ void __111__SafeguardsManagingClient_forceMitigation_forProcess_withPercentage_w
   *(v5 + 40) = v3;
 }
 
-- (BOOL)forceMidnightRoutine:(id *)a3
+- (BOOL)forceMidnightRoutine:(id *)routine
 {
   if (!self->_featureEnabled)
   {
@@ -2363,9 +2363,9 @@ void __111__SafeguardsManagingClient_forceMitigation_forProcess_withPercentage_w
 
   v6 = v12[5];
   v7 = v6 == 0;
-  if (a3 && v6)
+  if (routine && v6)
   {
-    *a3 = v6;
+    *routine = v6;
   }
 
   _Block_object_dispose(&v11, 8);
@@ -2387,9 +2387,9 @@ void __49__SafeguardsManagingClient_forceMidnightRoutine___block_invoke(uint64_t
   *(v5 + 40) = v3;
 }
 
-- (BOOL)forceCPUViolationForProcess:(id)a3 error:(id *)a4
+- (BOOL)forceCPUViolationForProcess:(id)process error:(id *)error
 {
-  v6 = a3;
+  processCopy = process;
   if (self->_featureEnabled)
   {
     v14 = 0;
@@ -2412,13 +2412,13 @@ void __49__SafeguardsManagingClient_forceMidnightRoutine___block_invoke(uint64_t
     v12[3] = &unk_1E7F18960;
     v12[4] = self;
     v12[5] = &v14;
-    [v8 forceCPUViolationForProcess:v6 withHandler:v12];
+    [v8 forceCPUViolationForProcess:processCopy withHandler:v12];
 
     v9 = v15[5];
     v10 = v9 == 0;
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
 
     _Block_object_dispose(&v14, 8);
@@ -2463,9 +2463,9 @@ void __62__SafeguardsManagingClient_forceCPUViolationForProcess_error___block_in
   *(v5 + 40) = v3;
 }
 
-- (BOOL)forceDetectorViolationForProcess:(id)a3 error:(id *)a4
+- (BOOL)forceDetectorViolationForProcess:(id)process error:(id *)error
 {
-  v6 = a3;
+  processCopy = process;
   if (self->_featureEnabled)
   {
     v14 = 0;
@@ -2488,13 +2488,13 @@ void __62__SafeguardsManagingClient_forceCPUViolationForProcess_error___block_in
     v12[3] = &unk_1E7F18960;
     v12[4] = self;
     v12[5] = &v14;
-    [v8 forceDetectorViolationForProcess:v6 withHandler:v12];
+    [v8 forceDetectorViolationForProcess:processCopy withHandler:v12];
 
     v9 = v15[5];
     v10 = v9 == 0;
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
 
     _Block_object_dispose(&v14, 8);
@@ -2539,10 +2539,10 @@ void __67__SafeguardsManagingClient_forceDetectorViolationForProcess_error___blo
   *(v5 + 40) = v3;
 }
 
-- (BOOL)forceDetectionWithStartTime:(id)a3 endTime:(id)a4 error:(id *)a5
+- (BOOL)forceDetectionWithStartTime:(id)time endTime:(id)endTime error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  timeCopy = time;
+  endTimeCopy = endTime;
   if (self->_featureEnabled)
   {
     v17 = 0;
@@ -2565,13 +2565,13 @@ void __67__SafeguardsManagingClient_forceDetectorViolationForProcess_error___blo
     v15[3] = &unk_1E7F18960;
     v15[4] = self;
     v15[5] = &v17;
-    [v11 forceDetectionWithStartTime:v8 endTime:v9 withHandler:v15];
+    [v11 forceDetectionWithStartTime:timeCopy endTime:endTimeCopy withHandler:v15];
 
     v12 = v18[5];
     v13 = v12 == 0;
     if (v12)
     {
-      *a5 = v12;
+      *error = v12;
     }
 
     _Block_object_dispose(&v17, 8);
@@ -2616,9 +2616,9 @@ void __70__SafeguardsManagingClient_forceDetectionWithStartTime_endTime_error___
   *(v5 + 40) = v3;
 }
 
-- (BOOL)sendCoalitionEntries:(id)a3 error:(id *)a4
+- (BOOL)sendCoalitionEntries:(id)entries error:(id *)error
 {
-  v6 = a3;
+  entriesCopy = entries;
   if (self->_featureEnabled)
   {
     v14 = 0;
@@ -2641,13 +2641,13 @@ void __70__SafeguardsManagingClient_forceDetectionWithStartTime_endTime_error___
     v12[3] = &unk_1E7F18960;
     v12[4] = self;
     v12[5] = &v14;
-    [v8 updateCoalitionEntries:v6 withHandler:v12];
+    [v8 updateCoalitionEntries:entriesCopy withHandler:v12];
 
     v9 = v15[5];
     v10 = v9 == 0;
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
 
     _Block_object_dispose(&v14, 8);
@@ -2695,7 +2695,7 @@ void __55__SafeguardsManagingClient_sendCoalitionEntries_error___block_invoke_85
 - (void)init
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v3 = a2;
   xpc_strerror();
   OUTLINED_FUNCTION_2_0();

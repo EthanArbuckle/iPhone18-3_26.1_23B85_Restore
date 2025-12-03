@@ -2,38 +2,38 @@
 + (SKLabelNode)labelNodeWithAttributedText:(NSAttributedString *)attributedText;
 + (SKLabelNode)labelNodeWithFontNamed:(NSString *)fontName;
 + (SKLabelNode)labelNodeWithText:(NSString *)text;
-+ (id)_labelNodeWithFontNamed:(id)a3;
-+ (id)_labelNodeWithFontTexture:(id)a3 fontDataString:(id)a4;
++ (id)_labelNodeWithFontNamed:(id)named;
++ (id)_labelNodeWithFontTexture:(id)texture fontDataString:(id)string;
 + (id)debugHierarchyPropertyDescriptions;
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)Mutable;
-- (BOOL)isEqualToNode:(id)a3;
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)Mutable;
+- (BOOL)isEqualToNode:(id)node;
 - (CGRect)frame;
 - (SKLabelNode)init;
-- (SKLabelNode)initWithCoder:(id)a3;
+- (SKLabelNode)initWithCoder:(id)coder;
 - (SKLabelNode)initWithFontNamed:(NSString *)fontName;
 - (UIColor)color;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)_didMakeBackingNode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setColor:(UIColor *)color;
 - (void)setColorBlendFactor:(CGFloat)colorBlendFactor;
 - (void)setFontColor:(UIColor *)fontColor;
 - (void)setFontSize:(CGFloat)fontSize;
 - (void)setHorizontalAlignmentMode:(SKLabelHorizontalAlignmentMode)horizontalAlignmentMode;
-- (void)setUIFont:(id)a3;
+- (void)setUIFont:(id)font;
 - (void)setVerticalAlignmentMode:(SKLabelVerticalAlignmentMode)verticalAlignmentMode;
 @end
 
 @implementation SKLabelNode
 
-- (void)setUIFont:(id)a3
+- (void)setUIFont:(id)font
 {
-  v7 = a3;
-  v4 = [v7 fontName];
-  [v7 pointSize];
-  v6 = CTFontCreateWithName(v4, v5, 0);
+  fontCopy = font;
+  fontName = [fontCopy fontName];
+  [fontCopy pointSize];
+  v6 = CTFontCreateWithName(fontName, v5, 0);
 
   SKCLabelNode::setFont(self->_skcLabelNode, v6);
   CFRelease(v6);
@@ -61,83 +61,83 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = SKLabelNode;
-  [(SKNode *)&v22 encodeWithCoder:v4];
-  v5 = [(SKLabelNode *)self fontName];
-  [v4 encodeObject:v5 forKey:@"_fontName"];
+  [(SKNode *)&v22 encodeWithCoder:coderCopy];
+  fontName = [(SKLabelNode *)self fontName];
+  [coderCopy encodeObject:fontName forKey:@"_fontName"];
 
-  v6 = [(SKLabelNode *)self text];
-  [v4 encodeObject:v6 forKey:@"_text"];
+  text = [(SKLabelNode *)self text];
+  [coderCopy encodeObject:text forKey:@"_text"];
 
-  v7 = [(SKLabelNode *)self attributedText];
-  [v4 encodeObject:v7 forKey:@"_attributedText"];
+  attributedText = [(SKLabelNode *)self attributedText];
+  [coderCopy encodeObject:attributedText forKey:@"_attributedText"];
 
-  [v4 encodeObject:MEMORY[0x277CBEBF8] forKey:@"_textSprites"];
-  [v4 encodeObject:0 forKey:@"_textSprite"];
-  v8 = [(SKLabelNode *)self fontColor];
-  [v8 red];
-  [v4 encodeDouble:@"_fontColorR" forKey:?];
+  [coderCopy encodeObject:MEMORY[0x277CBEBF8] forKey:@"_textSprites"];
+  [coderCopy encodeObject:0 forKey:@"_textSprite"];
+  fontColor = [(SKLabelNode *)self fontColor];
+  [fontColor red];
+  [coderCopy encodeDouble:@"_fontColorR" forKey:?];
 
-  v9 = [(SKLabelNode *)self fontColor];
-  [v9 green];
-  [v4 encodeDouble:@"_fontColorG" forKey:?];
+  fontColor2 = [(SKLabelNode *)self fontColor];
+  [fontColor2 green];
+  [coderCopy encodeDouble:@"_fontColorG" forKey:?];
 
-  v10 = [(SKLabelNode *)self fontColor];
-  [v10 blue];
-  [v4 encodeDouble:@"_fontColorB" forKey:?];
+  fontColor3 = [(SKLabelNode *)self fontColor];
+  [fontColor3 blue];
+  [coderCopy encodeDouble:@"_fontColorB" forKey:?];
 
-  v11 = [(SKLabelNode *)self fontColor];
-  [v11 alpha];
-  [v4 encodeDouble:@"_fontColorA" forKey:?];
+  fontColor4 = [(SKLabelNode *)self fontColor];
+  [fontColor4 alpha];
+  [coderCopy encodeDouble:@"_fontColorA" forKey:?];
 
-  v12 = [(SKLabelNode *)self color];
-  [v12 red];
-  [v4 encodeDouble:@"_colorR" forKey:?];
+  color = [(SKLabelNode *)self color];
+  [color red];
+  [coderCopy encodeDouble:@"_colorR" forKey:?];
 
-  v13 = [(SKLabelNode *)self color];
-  [v13 green];
-  [v4 encodeDouble:@"_colorG" forKey:?];
+  color2 = [(SKLabelNode *)self color];
+  [color2 green];
+  [coderCopy encodeDouble:@"_colorG" forKey:?];
 
-  v14 = [(SKLabelNode *)self color];
-  [v14 blue];
-  [v4 encodeDouble:@"_colorB" forKey:?];
+  color3 = [(SKLabelNode *)self color];
+  [color3 blue];
+  [coderCopy encodeDouble:@"_colorB" forKey:?];
 
-  v15 = [(SKLabelNode *)self color];
-  [v15 alpha];
-  [v4 encodeDouble:@"_colorA" forKey:?];
+  color4 = [(SKLabelNode *)self color];
+  [color4 alpha];
+  [coderCopy encodeDouble:@"_colorA" forKey:?];
 
   [(SKLabelNode *)self fontSize];
-  [v4 encodeDouble:@"_fontSize" forKey:?];
+  [coderCopy encodeDouble:@"_fontSize" forKey:?];
   [(SKLabelNode *)self colorBlendFactor];
-  [v4 encodeDouble:@"_labelColorBlend" forKey:?];
-  [v4 encodeInteger:-[SKLabelNode blendMode](self forKey:{"blendMode"), @"_labelBlendMode"}];
+  [coderCopy encodeDouble:@"_labelColorBlend" forKey:?];
+  [coderCopy encodeInteger:-[SKLabelNode blendMode](self forKey:{"blendMode"), @"_labelBlendMode"}];
   v16 = [MEMORY[0x277CCABB0] numberWithDouble:{-[SKLabelNode horizontalAlignmentMode](self, "horizontalAlignmentMode")}];
-  [v4 encodeObject:v16 forKey:@"_horizontalAlignmentMode"];
+  [coderCopy encodeObject:v16 forKey:@"_horizontalAlignmentMode"];
 
   v17 = [MEMORY[0x277CCABB0] numberWithDouble:{-[SKLabelNode verticalAlignmentMode](self, "verticalAlignmentMode")}];
-  [v4 encodeObject:v17 forKey:@"_verticalAlignmentMode"];
+  [coderCopy encodeObject:v17 forKey:@"_verticalAlignmentMode"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SKLabelNode numberOfLines](self, "numberOfLines")}];
-  [v4 encodeObject:v18 forKey:@"_numberOfLines"];
+  [coderCopy encodeObject:v18 forKey:@"_numberOfLines"];
 
   v19 = MEMORY[0x277CCABB0];
   [(SKLabelNode *)self preferredMaxLayoutWidth];
   *&v20 = v20;
   v21 = [v19 numberWithFloat:v20];
-  [v4 encodeObject:v21 forKey:@"_preferredMaxLayoutWidth"];
+  [coderCopy encodeObject:v21 forKey:@"_preferredMaxLayoutWidth"];
 }
 
-- (SKLabelNode)initWithCoder:(id)a3
+- (SKLabelNode)initWithCoder:(id)coder
 {
   v42[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = SKLabelNode;
-  v5 = [(SKNode *)&v41 initWithCoder:v4];
+  v5 = [(SKNode *)&v41 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
@@ -147,9 +147,9 @@
     v42[3] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:4];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_textSprites"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_textSprites"];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_textSprite"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_textSprite"];
     if ([v9 count])
     {
       [(SKNode *)v5 removeChildrenInArray:v9];
@@ -160,64 +160,64 @@
       [(SKNode *)v5 removeChild:v10];
     }
 
-    [v4 decodeDoubleForKey:@"_fontSize"];
+    [coderCopy decodeDoubleForKey:@"_fontSize"];
     [(SKLabelNode *)v5 setFontSize:?];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fontName"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fontName"];
     [(SKLabelNode *)v5 setFontName:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_text"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_text"];
     [(SKLabelNode *)v5 setText:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_attributedText"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_attributedText"];
     [(SKLabelNode *)v5 setAttributedText:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_horizontalAlignmentMode"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_horizontalAlignmentMode"];
     -[SKLabelNode setHorizontalAlignmentMode:](v5, "setHorizontalAlignmentMode:", [v14 intValue]);
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_verticalAlignmentMode"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_verticalAlignmentMode"];
     -[SKLabelNode setVerticalAlignmentMode:](v5, "setVerticalAlignmentMode:", [v15 intValue]);
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_numberOfLines"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_numberOfLines"];
     LOBYTE(v15) = v16 == 0;
 
     if ((v15 & 1) == 0)
     {
-      v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_numberOfLines"];
+      v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_numberOfLines"];
       -[SKLabelNode setNumberOfLines:](v5, "setNumberOfLines:", [v17 intValue]);
     }
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_preferredMaxLayoutWidth"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_preferredMaxLayoutWidth"];
     v19 = v18 == 0;
 
     if (!v19)
     {
-      v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_preferredMaxLayoutWidth"];
+      v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_preferredMaxLayoutWidth"];
       [v20 floatValue];
       [(SKLabelNode *)v5 setPreferredMaxLayoutWidth:v21];
     }
 
-    -[SKLabelNode setBlendMode:](v5, "setBlendMode:", [v4 decodeIntegerForKey:@"_labelBlendMode"]);
-    [v4 decodeDoubleForKey:@"_labelColorBlend"];
+    -[SKLabelNode setBlendMode:](v5, "setBlendMode:", [coderCopy decodeIntegerForKey:@"_labelBlendMode"]);
+    [coderCopy decodeDoubleForKey:@"_labelColorBlend"];
     [(SKLabelNode *)v5 setColorBlendFactor:?];
     v22 = MEMORY[0x277D75348];
-    [v4 decodeDoubleForKey:@"_fontColorR"];
+    [coderCopy decodeDoubleForKey:@"_fontColorR"];
     v24 = v23;
-    [v4 decodeDoubleForKey:@"_fontColorG"];
+    [coderCopy decodeDoubleForKey:@"_fontColorG"];
     v26 = v25;
-    [v4 decodeDoubleForKey:@"_fontColorB"];
+    [coderCopy decodeDoubleForKey:@"_fontColorB"];
     v28 = v27;
-    [v4 decodeDoubleForKey:@"_fontColorA"];
+    [coderCopy decodeDoubleForKey:@"_fontColorA"];
     v30 = [v22 colorWithRed:v24 green:v26 blue:v28 alpha:v29];
     [(SKLabelNode *)v5 setFontColor:v30];
 
     v31 = MEMORY[0x277D75348];
-    [v4 decodeDoubleForKey:@"_colorR"];
+    [coderCopy decodeDoubleForKey:@"_colorR"];
     v33 = v32;
-    [v4 decodeDoubleForKey:@"_colorG"];
+    [coderCopy decodeDoubleForKey:@"_colorG"];
     v35 = v34;
-    [v4 decodeDoubleForKey:@"_colorB"];
+    [coderCopy decodeDoubleForKey:@"_colorB"];
     v37 = v36;
-    [v4 decodeDoubleForKey:@"_colorA"];
+    [coderCopy decodeDoubleForKey:@"_colorA"];
     v39 = [v31 colorWithRed:v33 green:v35 blue:v37 alpha:v38];
     [(SKLabelNode *)v5 setColor:v39];
   }
@@ -225,10 +225,10 @@
   return v5;
 }
 
-- (BOOL)isEqualToNode:(id)a3
+- (BOOL)isEqualToNode:(id)node
 {
-  v4 = a3;
-  if (self == v4)
+  nodeCopy = node;
+  if (self == nodeCopy)
   {
     v30 = 1;
   }
@@ -238,28 +238,28 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = nodeCopy;
       v34.receiver = self;
       v34.super_class = SKLabelNode;
       if ([(SKNode *)&v34 isEqualToNode:v5])
       {
-        v6 = [(SKLabelNode *)self text];
-        v7 = [(SKLabelNode *)v5 text];
-        if ([v6 isEqualToString:v7])
+        text = [(SKLabelNode *)self text];
+        text2 = [(SKLabelNode *)v5 text];
+        if ([text isEqualToString:text2])
         {
-          v8 = [(SKLabelNode *)self fontColor];
-          v9 = [v8 CGColor];
-          v10 = [(SKLabelNode *)v5 fontColor];
-          if (CGColorEqualToColor(v9, [v10 CGColor]))
+          fontColor = [(SKLabelNode *)self fontColor];
+          cGColor = [fontColor CGColor];
+          fontColor2 = [(SKLabelNode *)v5 fontColor];
+          if (CGColorEqualToColor(cGColor, [fontColor2 CGColor]))
           {
-            v11 = [(SKLabelNode *)self fontName];
-            v12 = [(SKLabelNode *)v5 fontName];
-            if ([v11 isEqualToString:v12] && (-[SKLabelNode fontSize](self, "fontSize"), v14 = v13, -[SKLabelNode fontSize](v5, "fontSize"), v15 = v14, *&v16 = v16, (COERCE_UNSIGNED_INT(v15 - *&v16) & 0x60000000) == 0) && (v17 = -[SKLabelNode verticalAlignmentMode](self, "verticalAlignmentMode"), v17 == -[SKLabelNode verticalAlignmentMode](v5, "verticalAlignmentMode")) && (v18 = -[SKLabelNode horizontalAlignmentMode](self, "horizontalAlignmentMode"), v18 == -[SKLabelNode horizontalAlignmentMode](v5, "horizontalAlignmentMode")))
+            fontName = [(SKLabelNode *)self fontName];
+            fontName2 = [(SKLabelNode *)v5 fontName];
+            if ([fontName isEqualToString:fontName2] && (-[SKLabelNode fontSize](self, "fontSize"), v14 = v13, -[SKLabelNode fontSize](v5, "fontSize"), v15 = v14, *&v16 = v16, (COERCE_UNSIGNED_INT(v15 - *&v16) & 0x60000000) == 0) && (v17 = -[SKLabelNode verticalAlignmentMode](self, "verticalAlignmentMode"), v17 == -[SKLabelNode verticalAlignmentMode](v5, "verticalAlignmentMode")) && (v18 = -[SKLabelNode horizontalAlignmentMode](self, "horizontalAlignmentMode"), v18 == -[SKLabelNode horizontalAlignmentMode](v5, "horizontalAlignmentMode")))
             {
-              v33 = [(SKLabelNode *)self color];
-              v19 = [v33 CGColor];
-              v32 = [(SKLabelNode *)v5 color];
-              if (CGColorEqualToColor(v19, [v32 CGColor]) && (-[SKLabelNode colorBlendFactor](self, "colorBlendFactor"), v21 = v20, -[SKLabelNode colorBlendFactor](v5, "colorBlendFactor"), v22 = v21, *&v23 = v23, (COERCE_UNSIGNED_INT(v22 - *&v23) & 0x60000000) == 0) && (v24 = -[SKLabelNode blendMode](self, "blendMode"), v24 == -[SKLabelNode blendMode](v5, "blendMode")) && (v25 = -[SKLabelNode numberOfLines](self, "numberOfLines"), v25 == -[SKLabelNode numberOfLines](v5, "numberOfLines")))
+              color = [(SKLabelNode *)self color];
+              cGColor2 = [color CGColor];
+              color2 = [(SKLabelNode *)v5 color];
+              if (CGColorEqualToColor(cGColor2, [color2 CGColor]) && (-[SKLabelNode colorBlendFactor](self, "colorBlendFactor"), v21 = v20, -[SKLabelNode colorBlendFactor](v5, "colorBlendFactor"), v22 = v21, *&v23 = v23, (COERCE_UNSIGNED_INT(v22 - *&v23) & 0x60000000) == 0) && (v24 = -[SKLabelNode blendMode](self, "blendMode"), v24 == -[SKLabelNode blendMode](v5, "blendMode")) && (v25 = -[SKLabelNode numberOfLines](self, "numberOfLines"), v25 == -[SKLabelNode numberOfLines](v5, "numberOfLines")))
               {
                 [(SKLabelNode *)self preferredMaxLayoutWidth];
                 v27 = v26;
@@ -426,29 +426,29 @@
   return [(SKLabelNode *)self copyWithZone:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = SKLabelNode;
-  v4 = [(SKNode *)&v11 copyWithZone:a3];
-  v5 = [(SKLabelNode *)self text];
-  [v4 setText:v5];
+  v4 = [(SKNode *)&v11 copyWithZone:zone];
+  text = [(SKLabelNode *)self text];
+  [v4 setText:text];
 
-  v6 = [(SKLabelNode *)self attributedText];
-  [v4 setAttributedText:v6];
+  attributedText = [(SKLabelNode *)self attributedText];
+  [v4 setAttributedText:attributedText];
 
-  v7 = [(SKLabelNode *)self fontName];
-  [v4 setFontName:v7];
+  fontName = [(SKLabelNode *)self fontName];
+  [v4 setFontName:fontName];
 
-  v8 = [(SKLabelNode *)self fontColor];
-  [v4 setFontColor:v8];
+  fontColor = [(SKLabelNode *)self fontColor];
+  [v4 setFontColor:fontColor];
 
   [(SKLabelNode *)self fontSize];
   [v4 setFontSize:?];
   [v4 setHorizontalAlignmentMode:{-[SKLabelNode horizontalAlignmentMode](self, "horizontalAlignmentMode")}];
   [v4 setVerticalAlignmentMode:{-[SKLabelNode verticalAlignmentMode](self, "verticalAlignmentMode")}];
-  v9 = [(SKLabelNode *)self color];
-  [v4 setColor:v9];
+  color = [(SKLabelNode *)self color];
+  [v4 setColor:color];
 
   [(SKLabelNode *)self colorBlendFactor];
   [v4 setColorBlendFactor:?];
@@ -474,12 +474,12 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SKNode *)self name];
-  v5 = [(SKLabelNode *)self text];
-  v6 = [(SKLabelNode *)self fontName];
+  name = [(SKNode *)self name];
+  text = [(SKLabelNode *)self text];
+  fontName = [(SKLabelNode *)self fontName];
   [(SKNode *)self position];
   v7 = NSStringFromCGPoint(v11);
-  v8 = [v3 stringWithFormat:@"<SKLabelNode> name:'%@' text:'%@' fontName:'%@' position:%@", v4, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"<SKLabelNode> name:'%@' text:'%@' fontName:'%@' position:%@", name, text, fontName, v7];
 
   return v8;
 }
@@ -611,30 +611,30 @@
   return v23;
 }
 
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)Mutable
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)Mutable
 {
   v84 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v77 = a4;
-  if ([v9 isEqualToString:@"visualRepresentation"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"visualRepresentation"])
   {
-    Mutable = [v77 createDebugHierarchyVisualRepresentation];
+    Mutable = [objectCopy createDebugHierarchyVisualRepresentation];
     v78 = @"propertyFormat";
-    v10 = [*MEMORY[0x277CE1E10] identifier];
-    v79 = v10;
-    *a5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v79 forKeys:&v78 count:1];
+    identifier = [*MEMORY[0x277CE1E10] identifier];
+    v79 = identifier;
+    *options = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v79 forKeys:&v78 count:1];
 
     goto LABEL_101;
   }
 
-  if ([v9 isEqualToString:@"visualRepresentationOffset"])
+  if ([nameCopy isEqualToString:@"visualRepresentationOffset"])
   {
-    [v77 _untransformedBounds];
+    [objectCopy _untransformedBounds];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    [v77 _anchorPoint];
+    [objectCopy _anchorPoint];
     v81 = v12 + floor(v16 * v19);
     v82 = v14 + floor(v18 * v20);
     v21 = malloc_type_malloc(0x10uLL, 0x6004044C4A2DFuLL);
@@ -657,16 +657,16 @@
     goto LABEL_101;
   }
 
-  if ([v9 isEqualToString:@"color"])
+  if ([nameCopy isEqualToString:@"color"])
   {
-    v76 = [v77 color];
-    v26 = [v76 CGColor];
-    if (v26)
+    color = [objectCopy color];
+    cGColor = [color CGColor];
+    if (cGColor)
     {
       Mutable = CFDictionaryCreateMutable(0, 20, MEMORY[0x277CBED60], MEMORY[0x277CBF150]);
-      space = CGColorGetColorSpace(v26);
+      space = CGColorGetColorSpace(cGColor);
       v27 = CGColorSpaceCopyName(space);
-      NumberOfComponents = CGColorGetNumberOfComponents(v26);
+      NumberOfComponents = CGColorGetNumberOfComponents(cGColor);
       v29 = NumberOfComponents << 32;
       v30 = NumberOfComponents;
       if (NumberOfComponents << 32)
@@ -703,7 +703,7 @@
         v31 = &stru_282E190D8;
       }
 
-      Components = CGColorGetComponents(v26);
+      Components = CGColorGetComponents(cGColor);
       v45 = malloc_type_malloc(v29 >> 29, 0x6004044C4A2DFuLL);
       v46 = v45;
       if (v29)
@@ -789,16 +789,16 @@
     goto LABEL_27;
   }
 
-  if ([v9 isEqualToString:@"fontColor"])
+  if ([nameCopy isEqualToString:@"fontColor"])
   {
-    v76 = [v77 fontColor];
-    v34 = [v76 CGColor];
-    if (v34)
+    color = [objectCopy fontColor];
+    cGColor2 = [color CGColor];
+    if (cGColor2)
     {
       Mutable = CFDictionaryCreateMutable(0, 20, MEMORY[0x277CBED60], MEMORY[0x277CBF150]);
-      spacea = CGColorGetColorSpace(v34);
+      spacea = CGColorGetColorSpace(cGColor2);
       v35 = CGColorSpaceCopyName(spacea);
-      v36 = CGColorGetNumberOfComponents(v34);
+      v36 = CGColorGetNumberOfComponents(cGColor2);
       v37 = v36 << 32;
       v38 = v36;
       if (v36 << 32)
@@ -835,7 +835,7 @@
         v31 = &stru_282E190D8;
       }
 
-      v56 = CGColorGetComponents(v34);
+      v56 = CGColorGetComponents(cGColor2);
       v57 = malloc_type_malloc(v37 >> 29, 0x6004044C4A2DFuLL);
       v58 = v57;
       if (v37)
@@ -927,8 +927,8 @@ LABEL_83:
     goto LABEL_101;
   }
 
-  v41 = v77;
-  v42 = v9;
+  v41 = objectCopy;
+  v42 = nameCopy;
   if (![v42 length])
   {
     goto LABEL_91;
@@ -944,18 +944,18 @@ LABEL_83:
   {
     if ([v42 length] < 2)
     {
-      v55 = [v42 uppercaseString];
+      uppercaseString = [v42 uppercaseString];
     }
 
     else
     {
       v52 = [v42 substringToIndex:1];
-      v53 = [v52 uppercaseString];
+      uppercaseString2 = [v52 uppercaseString];
       v54 = [v42 substringFromIndex:1];
-      v55 = [v53 stringByAppendingString:v54];
+      uppercaseString = [uppercaseString2 stringByAppendingString:v54];
     }
 
-    v64 = [@"is" stringByAppendingString:v55];
+    v64 = [@"is" stringByAppendingString:uppercaseString];
     NSSelectorFromString(v64);
     v43 = (objc_opt_respondsToSelector() & 1) != 0 ? v64 : 0;
   }
@@ -1021,14 +1021,14 @@ LABEL_101:
   return Mutable;
 }
 
-+ (id)_labelNodeWithFontNamed:(id)a3
++ (id)_labelNodeWithFontNamed:(id)named
 {
   v3 = objc_alloc_init(objc_opt_class());
 
   return v3;
 }
 
-+ (id)_labelNodeWithFontTexture:(id)a3 fontDataString:(id)a4
++ (id)_labelNodeWithFontTexture:(id)texture fontDataString:(id)string
 {
   v4 = objc_alloc_init(objc_opt_class());
 

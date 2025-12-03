@@ -1,25 +1,25 @@
 @interface CKTranscriptGroupHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (CKTranscriptGroupHeaderViewAccessibility)initWithFrame:(CGRect)a3 conversation:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (CKTranscriptGroupHeaderViewAccessibility)initWithFrame:(CGRect)frame conversation:(id)conversation;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CKTranscriptGroupHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKTranscriptGroupHeaderView" hasInstanceMethod:@"actionButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTranscriptGroupHeaderView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTranscriptGroupHeaderView" hasInstanceMethod:@"initWithFrame: conversation:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "@", 0}];
-  [v3 validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKTranscriptGroupHeaderView" hasInstanceMethod:@"actionButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTranscriptGroupHeaderView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTranscriptGroupHeaderView" hasInstanceMethod:@"initWithFrame: conversation:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "@", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
 }
 
-- (CKTranscriptGroupHeaderViewAccessibility)initWithFrame:(CGRect)a3 conversation:(id)a4
+- (CKTranscriptGroupHeaderViewAccessibility)initWithFrame:(CGRect)frame conversation:(id)conversation
 {
   v6.receiver = self;
   v6.super_class = CKTranscriptGroupHeaderViewAccessibility;
-  v4 = [(CKTranscriptGroupHeaderViewAccessibility *)&v6 initWithFrame:a4 conversation:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(CKTranscriptGroupHeaderViewAccessibility *)&v6 initWithFrame:conversation conversation:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(CKTranscriptGroupHeaderViewAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
 
   return v4;

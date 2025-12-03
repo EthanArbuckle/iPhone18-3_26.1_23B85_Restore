@@ -3,7 +3,7 @@
 - (UIAccelerometer)init;
 - (id)_motionManager;
 - (id)delegate;
-- (void)_acceleratedInX:(double)a3 y:(double)a4 z:(double)a5 timestamp:(double)a6;
+- (void)_acceleratedInX:(double)x y:(double)y z:(double)z timestamp:(double)timestamp;
 - (void)_startAccelerometerIfNecessary;
 - (void)_stopAccelerometer;
 - (void)dealloc;
@@ -18,7 +18,7 @@
   v3 = sharedAccelerometer_sharedAccelerometer;
   if (!sharedAccelerometer_sharedAccelerometer)
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     v5 = sharedAccelerometer_sharedAccelerometer;
     sharedAccelerometer_sharedAccelerometer = v4;
 
@@ -35,9 +35,9 @@
   v2 = [(UIAccelerometer *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__willResume_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
-    [v3 addObserver:v2 selector:sel__didSuspend_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__willResume_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__didSuspend_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
     [(UIAccelerometer *)v2 setUpdateInterval:0.1];
     v4 = v2;
   }
@@ -58,15 +58,15 @@
   self->_updateInterval = updateInterval;
   if (*&self->_accelerometerFlags)
   {
-    v5 = [(UIAccelerometer *)self _motionManager];
-    v6 = v5;
+    _motionManager = [(UIAccelerometer *)self _motionManager];
+    v6 = _motionManager;
     v7 = self->_updateInterval;
     if (v7 <= 0.0)
     {
       v7 = 0.1;
     }
 
-    [v5 setAccelerometerUpdateInterval:v7];
+    [_motionManager setAccelerometerUpdateInterval:v7];
 
     [(UIAccelerometer *)self _startAccelerometerIfNecessary];
   }
@@ -106,15 +106,15 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_acceleratedInX:(double)a3 y:(double)a4 z:(double)a5 timestamp:(double)a6
+- (void)_acceleratedInX:(double)x y:(double)y z:(double)z timestamp:(double)timestamp
 {
   if (*&self->_accelerometerFlags)
   {
     v13 = objc_opt_new();
-    [v13 setTimestamp:a6];
-    [v13 setX:a3];
-    [v13 setY:a4];
-    [v13 setZ:a5];
+    [v13 setTimestamp:timestamp];
+    [v13 setX:x];
+    [v13 setY:y];
+    [v13 setZ:z];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained accelerometer:self didAccelerate:v13];
   }
@@ -147,9 +147,9 @@ LABEL_9:
     v7 = self->_motionManager;
     self->_motionManager = v6;
 
-    v8 = [(CMMotionManager *)self->_motionManager isAccelerometerAvailable];
+    isAccelerometerAvailable = [(CMMotionManager *)self->_motionManager isAccelerometerAvailable];
     motionManager = self->_motionManager;
-    if (!v8)
+    if (!isAccelerometerAvailable)
     {
       self->_motionManager = 0;
 
@@ -162,8 +162,8 @@ LABEL_9:
 
 - (void)_startAccelerometerIfNecessary
 {
-  v4 = [(UIAccelerometer *)self _motionManager];
-  if (([v4 isAccelerometerActive] & 1) == 0)
+  _motionManager = [(UIAccelerometer *)self _motionManager];
+  if (([_motionManager isAccelerometerActive] & 1) == 0)
   {
     accelerometerFlags = self->_accelerometerFlags;
 
@@ -172,20 +172,20 @@ LABEL_9:
       return;
     }
 
-    v4 = [(UIAccelerometer *)self _motionManager];
-    [v4 setAccelerometerDataCallback:accelCallback info:self interval:self->_updateInterval];
+    _motionManager = [(UIAccelerometer *)self _motionManager];
+    [_motionManager setAccelerometerDataCallback:accelCallback info:self interval:self->_updateInterval];
   }
 }
 
 - (void)_stopAccelerometer
 {
-  v3 = [(UIAccelerometer *)self _motionManager];
-  v4 = [v3 isAccelerometerActive];
+  _motionManager = [(UIAccelerometer *)self _motionManager];
+  isAccelerometerActive = [_motionManager isAccelerometerActive];
 
-  if (v4)
+  if (isAccelerometerActive)
   {
-    v5 = [(UIAccelerometer *)self _motionManager];
-    [v5 stopAccelerometerUpdates];
+    _motionManager2 = [(UIAccelerometer *)self _motionManager];
+    [_motionManager2 stopAccelerometerUpdates];
   }
 }
 

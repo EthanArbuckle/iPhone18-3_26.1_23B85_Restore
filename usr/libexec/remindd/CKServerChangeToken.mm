@@ -6,8 +6,8 @@
 
 - (id)ic_loggingDescription
 {
-  v2 = [(CKServerChangeToken *)self data];
-  v3 = [v2 base64EncodedStringWithOptions:0];
+  data = [(CKServerChangeToken *)self data];
+  v3 = [data base64EncodedStringWithOptions:0];
   v4 = [NSString stringWithFormat:@"<ServerChangeToken %@>", v3];
 
   return v4;

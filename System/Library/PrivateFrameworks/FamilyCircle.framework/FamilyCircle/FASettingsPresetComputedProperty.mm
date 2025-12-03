@@ -1,11 +1,11 @@
 @interface FASettingsPresetComputedProperty
 - (FASettingsPresetComputedProperty)init;
-- (FASettingsPresetComputedProperty)initWithConditions:(id)a3;
-- (FASettingsPresetComputedProperty)initWithDictionary:(id)a3;
+- (FASettingsPresetComputedProperty)initWithConditions:(id)conditions;
+- (FASettingsPresetComputedProperty)initWithDictionary:(id)dictionary;
 - (NSArray)conditions;
 - (NSSet)dependencies;
-- (id)computedValueWithValueProvider:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)computedValueWithValueProvider:(id)provider;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FASettingsPresetComputedProperty
@@ -20,7 +20,7 @@
   return v3;
 }
 
-- (FASettingsPresetComputedProperty)initWithConditions:(id)a3
+- (FASettingsPresetComputedProperty)initWithConditions:(id)conditions
 {
   type metadata accessor for FASettingsPresetPropertyCondition();
   *(self + OBJC_IVAR___FASettingsPresetComputedProperty_conditions) = sub_1B715E320();
@@ -29,9 +29,9 @@
   return [(FASettingsPresetComputedProperty *)&v5 init];
 }
 
-- (FASettingsPresetComputedProperty)initWithDictionary:(id)a3
+- (FASettingsPresetComputedProperty)initWithDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v3 = sub_1B715DFE0();
   }
@@ -44,19 +44,19 @@
   return FASettingsPresetComputedProperty.init(dictionary:)(v3);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  FASettingsPresetComputedProperty.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  FASettingsPresetComputedProperty.encode(with:)(coderCopy);
 }
 
-- (id)computedValueWithValueProvider:(id)a3
+- (id)computedValueWithValueProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   _Block_copy(v4);
-  v5 = self;
-  sub_1B711DB3C(v5, v4, v14);
+  selfCopy = self;
+  sub_1B711DB3C(selfCopy, v4, v14);
   _Block_release(v4);
 
   v6 = v15;
@@ -83,7 +83,7 @@
 
 - (NSSet)dependencies
 {
-  v2 = self;
+  selfCopy = self;
   FASettingsPresetComputedProperty.dependencies.getter();
 
   v3 = sub_1B715E4B0();

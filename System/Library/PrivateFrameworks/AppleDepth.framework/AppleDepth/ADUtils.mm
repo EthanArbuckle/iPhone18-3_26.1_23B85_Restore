@@ -1,54 +1,54 @@
 @interface ADUtils
-+ (BOOL)updatePixelBufferAllocationWithNewSize:(CGSize)a3 pixelFormat:(unsigned int)a4 pixelBuffer:(__CVBuffer *)a5;
-+ (__CVBuffer)pixelBufferFromData:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5 pixelFormat:(const char *)a6;
-+ (double)addAnglesToRotation:(double)a3 angles:(double)a4;
-+ (double)calcRotationAngle:(float *)a3;
-+ (float32x2_t)calcRotationMatrix:(float32x4_t)a1;
-+ (id)getStandardNameForBufferOfType:(id)a3 moduleName:(id)a4;
-+ (id)prioritizationAsString:(int64_t)a3;
-+ (id)undistortedCalibrationWithSameFOV:(id)a3;
-+ (int64_t)ADReturnFromOSStatus:(int)a3;
-+ (int64_t)convertToLevelsConfidence:(__CVBuffer *)a3 confidenceOutput:(__CVBuffer *)a4 confidenceLevelRanges:(id)a5;
-+ (int64_t)copyModifyNormalsPixelBuffer:(__CVBuffer *)a3 output:(__CVBuffer *)a4 normalsRotation:(int64_t)a5;
-+ (int64_t)filterInvalidsFromFloatImage:(__CVBuffer *)a3 minValue:(float)a4 maxValue:(float)a5 clampToMinMax:(BOOL)a6;
-+ (int64_t)fuseCurrentDepth:(__CVBuffer *)a3 previousDepth:(__CVBuffer *)a4 intoOutputDepth:(__CVBuffer *)a5 currentConfidence:(__CVBuffer *)a6 previousConfidence:(__CVBuffer *)a7 intoOutputConfidence:(__CVBuffer *)a8 alpha:(float)a9 confidenceUnits:(unint64_t)a10;
-+ (int64_t)fuseCurrentDepthAndConfidenceMaps:(__CVBuffer *)a3 previousDepth:(__CVBuffer *)a4 currentConfidence:(__CVBuffer *)a5 previousConfidence:(__CVBuffer *)a6 outputDepth:(__CVBuffer *)a7 outputConfidence:(__CVBuffer *)a8 defaultAlpha:(float)a9 depthMaxDiff:(float)a10;
-+ (int64_t)fuseCurrentMap:(__CVBuffer *)a3 previousMap:(__CVBuffer *)a4 intoOutputMap:(__CVBuffer *)a5 usingAlpha:(__CVBuffer *)a6 defaultAlpha:(float)a7 diffThreshold:(float)a8;
-+ (int64_t)postProcessConfidence:(__CVBuffer *)a3 confidenceOutput:(__CVBuffer *)a4 rawConfidenceUnits:(unint64_t)a5 outConfidenceUnits:(unint64_t)a6 confidenceLevelRanges:(id)a7;
-+ (int64_t)postProcessDepth:(__CVBuffer *)a3 depthOutput:(__CVBuffer *)a4 inputRoi:(CGRect)a5;
-+ (int64_t)postProcessNormals:(__CVBuffer *)a3 normalsOutput:(__CVBuffer *)a4 normalsRotation:(int64_t)a5;
-+ (int64_t)postProcessWithDepth:(__CVBuffer *)a3 confidence:(__CVBuffer *)a4 normals:(__CVBuffer *)a5 depthOutput:(__CVBuffer *)a6 confidenceOutput:(__CVBuffer *)a7 normalsOutput:(__CVBuffer *)a8 normalsRotation:(int64_t)a9 rawConfidenceUnits:(unint64_t)a10 outConfidenceUnits:(unint64_t)a11 confidenceLevelRanges:(id)a12;
-+ (int64_t)scaleConvertRotateImage:(__CVBuffer *)a3 rotateBy:(unsigned __int8)a4 cropBy:(CGRect)a5 scaleInto:(__CVBuffer *)a6 intermediateScalingBuffer:(__CVBuffer *)a7 intermediateRotatingBuffer:(__CVBuffer *)a8 useVT:(BOOL)a9;
-+ (int64_t)warpAndFuseWithCurrDepth:(__CVBuffer *)a3 prevDepth:(__CVBuffer *)a4 currNormals:(__CVBuffer *)a5 prevNormals:(__CVBuffer *)a6 opticalFlow:(__CVBuffer *)a7 alphaMap:(__CVBuffer *)a8 defaultAlpha:(float)a9 depthOutput:(__CVBuffer *)pixelBuffer normalsOutput:(__CVBuffer *)a11;
-+ (int64_t)warpMap:(__CVBuffer *)a3 toOutput:(__CVBuffer *)a4 usingOpticalFlow:(__CVBuffer *)a5;
-+ (int64_t)warpPreviousDepth:(__CVBuffer *)a3 intoCurrentDepth:(__CVBuffer *)a4 previousConfidence:(__CVBuffer *)a5 intoCurrentConfidence:(__CVBuffer *)a6 usingOpticalFlow:(__CVBuffer *)a7;
-+ (void)convertRGBAFloat:(__CVBuffer *)a3 toPlanar:(__CVBuffer *)a4;
-+ (void)updatePixelBufferIOSurfaceLabel:(id)a3 pixelBuffer:(__CVBuffer *)a4;
++ (BOOL)updatePixelBufferAllocationWithNewSize:(CGSize)size pixelFormat:(unsigned int)format pixelBuffer:(__CVBuffer *)buffer;
++ (__CVBuffer)pixelBufferFromData:(id)data width:(unint64_t)width height:(unint64_t)height pixelFormat:(const char *)format;
++ (double)addAnglesToRotation:(double)rotation angles:(double)angles;
++ (double)calcRotationAngle:(float *)angle;
++ (float32x2_t)calcRotationMatrix:(float32x4_t)matrix;
++ (id)getStandardNameForBufferOfType:(id)type moduleName:(id)name;
++ (id)prioritizationAsString:(int64_t)string;
++ (id)undistortedCalibrationWithSameFOV:(id)v;
++ (int64_t)ADReturnFromOSStatus:(int)status;
++ (int64_t)convertToLevelsConfidence:(__CVBuffer *)confidence confidenceOutput:(__CVBuffer *)output confidenceLevelRanges:(id)ranges;
++ (int64_t)copyModifyNormalsPixelBuffer:(__CVBuffer *)buffer output:(__CVBuffer *)output normalsRotation:(int64_t)rotation;
++ (int64_t)filterInvalidsFromFloatImage:(__CVBuffer *)image minValue:(float)value maxValue:(float)maxValue clampToMinMax:(BOOL)max;
++ (int64_t)fuseCurrentDepth:(__CVBuffer *)depth previousDepth:(__CVBuffer *)previousDepth intoOutputDepth:(__CVBuffer *)outputDepth currentConfidence:(__CVBuffer *)confidence previousConfidence:(__CVBuffer *)previousConfidence intoOutputConfidence:(__CVBuffer *)outputConfidence alpha:(float)alpha confidenceUnits:(unint64_t)self0;
++ (int64_t)fuseCurrentDepthAndConfidenceMaps:(__CVBuffer *)maps previousDepth:(__CVBuffer *)depth currentConfidence:(__CVBuffer *)confidence previousConfidence:(__CVBuffer *)previousConfidence outputDepth:(__CVBuffer *)outputDepth outputConfidence:(__CVBuffer *)outputConfidence defaultAlpha:(float)alpha depthMaxDiff:(float)self0;
++ (int64_t)fuseCurrentMap:(__CVBuffer *)map previousMap:(__CVBuffer *)previousMap intoOutputMap:(__CVBuffer *)outputMap usingAlpha:(__CVBuffer *)alpha defaultAlpha:(float)defaultAlpha diffThreshold:(float)threshold;
++ (int64_t)postProcessConfidence:(__CVBuffer *)confidence confidenceOutput:(__CVBuffer *)output rawConfidenceUnits:(unint64_t)units outConfidenceUnits:(unint64_t)confidenceUnits confidenceLevelRanges:(id)ranges;
++ (int64_t)postProcessDepth:(__CVBuffer *)depth depthOutput:(__CVBuffer *)output inputRoi:(CGRect)roi;
++ (int64_t)postProcessNormals:(__CVBuffer *)normals normalsOutput:(__CVBuffer *)output normalsRotation:(int64_t)rotation;
++ (int64_t)postProcessWithDepth:(__CVBuffer *)depth confidence:(__CVBuffer *)confidence normals:(__CVBuffer *)normals depthOutput:(__CVBuffer *)output confidenceOutput:(__CVBuffer *)confidenceOutput normalsOutput:(__CVBuffer *)normalsOutput normalsRotation:(int64_t)rotation rawConfidenceUnits:(unint64_t)self0 outConfidenceUnits:(unint64_t)self1 confidenceLevelRanges:(id)self2;
++ (int64_t)scaleConvertRotateImage:(__CVBuffer *)image rotateBy:(unsigned __int8)by cropBy:(CGRect)cropBy scaleInto:(__CVBuffer *)into intermediateScalingBuffer:(__CVBuffer *)buffer intermediateRotatingBuffer:(__CVBuffer *)rotatingBuffer useVT:(BOOL)t;
++ (int64_t)warpAndFuseWithCurrDepth:(__CVBuffer *)depth prevDepth:(__CVBuffer *)prevDepth currNormals:(__CVBuffer *)normals prevNormals:(__CVBuffer *)prevNormals opticalFlow:(__CVBuffer *)flow alphaMap:(__CVBuffer *)map defaultAlpha:(float)alpha depthOutput:(__CVBuffer *)pixelBuffer normalsOutput:(__CVBuffer *)self1;
++ (int64_t)warpMap:(__CVBuffer *)map toOutput:(__CVBuffer *)output usingOpticalFlow:(__CVBuffer *)flow;
++ (int64_t)warpPreviousDepth:(__CVBuffer *)depth intoCurrentDepth:(__CVBuffer *)currentDepth previousConfidence:(__CVBuffer *)confidence intoCurrentConfidence:(__CVBuffer *)currentConfidence usingOpticalFlow:(__CVBuffer *)flow;
++ (void)convertRGBAFloat:(__CVBuffer *)float toPlanar:(__CVBuffer *)planar;
++ (void)updatePixelBufferIOSurfaceLabel:(id)label pixelBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation ADUtils
 
-+ (__CVBuffer)pixelBufferFromData:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5 pixelFormat:(const char *)a6
++ (__CVBuffer)pixelBufferFromData:(id)data width:(unint64_t)width height:(unint64_t)height pixelFormat:(const char *)format
 {
-  v9 = a3;
-  if (!strcmp(a6, "24RG"))
+  dataCopy = data;
+  if (!strcmp(format, "24RG"))
   {
     v10 = 24;
   }
 
-  else if (!strcmp(a6, "ARGB"))
+  else if (!strcmp(format, "ARGB"))
   {
     v10 = 32;
   }
 
   else
   {
-    v10 = bswap32(*a6);
+    v10 = bswap32(*format);
   }
 
   pixelBufferOut = 0;
   BufferAttributes = getBufferAttributes();
-  if (CVPixelBufferCreate(*MEMORY[0x277CBECE8], a4, a5, v10, BufferAttributes, &pixelBufferOut))
+  if (CVPixelBufferCreate(*MEMORY[0x277CBECE8], width, height, v10, BufferAttributes, &pixelBufferOut))
   {
     v13 = 0;
   }
@@ -58,7 +58,7 @@
     v13 = pixelBufferOut;
   }
 
-  if (PixelBufferUtils::pixelBufferFromData(v9, v13, v12))
+  if (PixelBufferUtils::pixelBufferFromData(dataCopy, v13, v12))
   {
     CVPixelBufferRelease(v13);
     v13 = 0;
@@ -67,34 +67,34 @@
   return v13;
 }
 
-+ (id)prioritizationAsString:(int64_t)a3
++ (id)prioritizationAsString:(int64_t)string
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (a3 >= 5)
+  if (string >= 5)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v7 = a3;
+      stringCopy = string;
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unknown prioritization numbered: %lu", buf, 0xCu);
     }
 
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", a3];
+    string = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", string];
   }
 
   else
   {
-    v4 = off_278CA1558[a3];
+    string = off_278CA1558[string];
   }
 
-  return v4;
+  return string;
 }
 
-+ (id)undistortedCalibrationWithSameFOV:(id)a3
++ (id)undistortedCalibrationWithSameFOV:(id)v
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 distortionModel];
+  vCopy = v;
+  distortionModel = [vCopy distortionModel];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -103,7 +103,7 @@
     goto LABEL_2;
   }
 
-  v7 = [v3 distortionModel];
+  distortionModel2 = [vCopy distortionModel];
   objc_opt_class();
   v8 = objc_opt_isKindOfClass();
 
@@ -111,19 +111,19 @@
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v31 = [v3 distortionModel];
+      distortionModel3 = [vCopy distortionModel];
       *buf = 138543362;
-      v37 = v31;
+      v37 = distortionModel3;
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "cannot calculate undistorted fov for distortion %{public}@", buf, 0xCu);
     }
 
     goto LABEL_11;
   }
 
-  v9 = [v3 distortionModel];
-  v10 = [v9 XThetaType];
+  distortionModel4 = [vCopy distortionModel];
+  xThetaType = [distortionModel4 XThetaType];
 
-  if (v10 == 1)
+  if (xThetaType == 1)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -136,14 +136,14 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v10)
+  if (xThetaType)
   {
 LABEL_2:
-    v6 = v3;
+    v6 = vCopy;
     goto LABEL_12;
   }
 
-  v6 = [v3 mutableCopy];
+  v6 = [vCopy mutableCopy];
   v11 = objc_opt_new();
   [v6 setDistortionModel:v11];
 
@@ -173,26 +173,26 @@ LABEL_12:
   return v6;
 }
 
-+ (void)convertRGBAFloat:(__CVBuffer *)a3 toPlanar:(__CVBuffer *)a4
++ (void)convertRGBAFloat:(__CVBuffer *)float toPlanar:(__CVBuffer *)planar
 {
   srcChannels[4] = *MEMORY[0x277D85DE8];
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  CVPixelBufferLockBaseAddress(a4, 0);
+  CVPixelBufferLockBaseAddress(float, 1uLL);
+  CVPixelBufferLockBaseAddress(planar, 0);
   memset(&v65, 0, sizeof(v65));
   v6 = MEMORY[0x277CBF3A0];
-  PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &v65);
+  PixelBufferUtils::asVImageBuffer(float, *MEMORY[0x277CBF3A0], &v65);
   memset(&v64, 0, sizeof(v64));
-  PixelBufferUtils::asVImageBuffer(a4, *v6, &v64);
+  PixelBufferUtils::asVImageBuffer(planar, *v6, &v64);
   v63.height = 0;
   v63.width = 0;
-  PixelBufferUtils::asVImageBuffer(a4, *v6, &v63);
+  PixelBufferUtils::asVImageBuffer(planar, *v6, &v63);
   v62.height = 0;
   v62.width = 0;
-  PixelBufferUtils::asVImageBuffer(a4, *v6, &v62);
+  PixelBufferUtils::asVImageBuffer(planar, *v6, &v62);
   v61.height = 0;
   v61.width = 0;
-  v54 = a4;
-  PixelBufferUtils::asVImageBuffer(a4, *v6, &v61);
+  planarCopy = planar;
+  PixelBufferUtils::asVImageBuffer(planar, *v6, &v61);
   v7 = (v64.height * v64.rowBytes) >> 2;
   data = v64.data;
   v8 = v64.rowBytes >> 2;
@@ -206,8 +206,8 @@ LABEL_12:
   v58 = v64.data + v7;
   v63.rowBytes = v64.rowBytes >> 2;
   v64.rowBytes >>= 2;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  pixelBuffer = a3;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(float);
+  pixelBuffer = float;
   if (PixelBufferUtils::pixelSizeForPixelFormat(PixelFormatType, 0) == 8)
   {
     height = v65.height;
@@ -314,7 +314,7 @@ LABEL_10:
 
   else
   {
-    srcChannels[0] = CVPixelBufferGetBaseAddress(a3);
+    srcChannels[0] = CVPixelBufferGetBaseAddress(float);
     srcChannels[1] = srcChannels[0] + 4;
     srcChannels[2] = srcChannels[0] + 8;
     srcChannels[3] = srcChannels[0] + 12;
@@ -326,12 +326,12 @@ LABEL_10:
   }
 
   CVPixelBufferUnlockBaseAddress(pixelBuffer, 1uLL);
-  CVPixelBufferUnlockBaseAddress(v54, 0);
+  CVPixelBufferUnlockBaseAddress(planarCopy, 0);
 }
 
-+ (int64_t)ADReturnFromOSStatus:(int)a3
++ (int64_t)ADReturnFromOSStatus:(int)status
 {
-  if (a3)
+  if (status)
   {
     return -22950;
   }
@@ -342,46 +342,46 @@ LABEL_10:
   }
 }
 
-+ (int64_t)fuseCurrentDepth:(__CVBuffer *)a3 previousDepth:(__CVBuffer *)a4 intoOutputDepth:(__CVBuffer *)a5 currentConfidence:(__CVBuffer *)a6 previousConfidence:(__CVBuffer *)a7 intoOutputConfidence:(__CVBuffer *)a8 alpha:(float)a9 confidenceUnits:(unint64_t)a10
++ (int64_t)fuseCurrentDepth:(__CVBuffer *)depth previousDepth:(__CVBuffer *)previousDepth intoOutputDepth:(__CVBuffer *)outputDepth currentConfidence:(__CVBuffer *)confidence previousConfidence:(__CVBuffer *)previousConfidence intoOutputConfidence:(__CVBuffer *)outputConfidence alpha:(float)alpha confidenceUnits:(unint64_t)self0
 {
-  if (!a3)
+  if (!depth)
   {
     return -22953;
   }
 
-  if (!a5)
+  if (!outputDepth)
   {
     return -22953;
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(depth);
   if (PixelFormatType == 1717856627 || PixelFormatType == 1751411059)
   {
     return -22953;
   }
 
-  if (a6 && a7 && a8)
+  if (confidence && previousConfidence && outputConfidence)
   {
     LODWORD(v20) = 0.5;
-    *&v19 = a9;
+    *&v19 = alpha;
 
-    return [a1 fuseCurrentDepthAndConfidenceMaps:a3 previousDepth:a4 currentConfidence:a6 previousConfidence:a7 outputDepth:a5 outputConfidence:a8 defaultAlpha:v19 depthMaxDiff:v20];
+    return [self fuseCurrentDepthAndConfidenceMaps:depth previousDepth:previousDepth currentConfidence:confidence previousConfidence:previousConfidence outputDepth:outputDepth outputConfidence:outputConfidence defaultAlpha:v19 depthMaxDiff:v20];
   }
 
   else
   {
     LODWORD(v20) = 0.5;
-    *&v19 = a9;
+    *&v19 = alpha;
 
-    return [a1 fuseCurrentMap:a3 previousMap:a4 intoOutputMap:a5 usingAlpha:0 defaultAlpha:v19 diffThreshold:v20];
+    return [self fuseCurrentMap:depth previousMap:previousDepth intoOutputMap:outputDepth usingAlpha:0 defaultAlpha:v19 diffThreshold:v20];
   }
 }
 
-+ (int64_t)fuseCurrentDepthAndConfidenceMaps:(__CVBuffer *)a3 previousDepth:(__CVBuffer *)a4 currentConfidence:(__CVBuffer *)a5 previousConfidence:(__CVBuffer *)a6 outputDepth:(__CVBuffer *)a7 outputConfidence:(__CVBuffer *)a8 defaultAlpha:(float)a9 depthMaxDiff:(float)a10
++ (int64_t)fuseCurrentDepthAndConfidenceMaps:(__CVBuffer *)maps previousDepth:(__CVBuffer *)depth currentConfidence:(__CVBuffer *)confidence previousConfidence:(__CVBuffer *)previousConfidence outputDepth:(__CVBuffer *)outputDepth outputConfidence:(__CVBuffer *)outputConfidence defaultAlpha:(float)alpha depthMaxDiff:(float)self0
 {
   v163 = *MEMORY[0x277D85DE8];
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  v18 = CVPixelBufferGetPixelFormatType(a5);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(maps);
+  v18 = CVPixelBufferGetPixelFormatType(confidence);
   if (PixelFormatType <= 1717856626)
   {
     if (PixelFormatType == 1278226536)
@@ -455,31 +455,31 @@ LABEL_11:
         }
 
 LABEL_50:
-        CVPixelBufferLockBaseAddress(a3, 1uLL);
-        CVPixelBufferLockBaseAddress(a4, 1uLL);
-        CVPixelBufferLockBaseAddress(a7, 0);
-        CVPixelBufferLockBaseAddress(a5, 1uLL);
-        CVPixelBufferLockBaseAddress(a6, 1uLL);
-        CVPixelBufferLockBaseAddress(a8, 0);
-        Width = CVPixelBufferGetWidth(a3);
-        Height = CVPixelBufferGetHeight(a3);
-        BaseAddress = CVPixelBufferGetBaseAddress(a3);
-        v143 = CVPixelBufferGetBaseAddress(a4);
-        v89 = CVPixelBufferGetBaseAddress(a7);
-        pixelBuffer = a8;
-        v90 = CVPixelBufferGetBaseAddress(a5);
-        v91 = CVPixelBufferGetBaseAddress(a6);
-        v92 = CVPixelBufferGetBaseAddress(a8);
-        v153 = a3;
-        BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-        v154 = a4;
-        v94 = CVPixelBufferGetBytesPerRow(a4);
-        v155 = a7;
-        v95 = CVPixelBufferGetBytesPerRow(a7);
-        v156 = a5;
-        v96 = CVPixelBufferGetBytesPerRow(a5);
-        v157 = a6;
-        v97 = CVPixelBufferGetBytesPerRow(a6);
+        CVPixelBufferLockBaseAddress(maps, 1uLL);
+        CVPixelBufferLockBaseAddress(depth, 1uLL);
+        CVPixelBufferLockBaseAddress(outputDepth, 0);
+        CVPixelBufferLockBaseAddress(confidence, 1uLL);
+        CVPixelBufferLockBaseAddress(previousConfidence, 1uLL);
+        CVPixelBufferLockBaseAddress(outputConfidence, 0);
+        Width = CVPixelBufferGetWidth(maps);
+        Height = CVPixelBufferGetHeight(maps);
+        BaseAddress = CVPixelBufferGetBaseAddress(maps);
+        v143 = CVPixelBufferGetBaseAddress(depth);
+        v89 = CVPixelBufferGetBaseAddress(outputDepth);
+        pixelBuffer = outputConfidence;
+        v90 = CVPixelBufferGetBaseAddress(confidence);
+        v91 = CVPixelBufferGetBaseAddress(previousConfidence);
+        v92 = CVPixelBufferGetBaseAddress(outputConfidence);
+        mapsCopy4 = maps;
+        BytesPerRow = CVPixelBufferGetBytesPerRow(maps);
+        depthCopy4 = depth;
+        v94 = CVPixelBufferGetBytesPerRow(depth);
+        outputDepthCopy4 = outputDepth;
+        v95 = CVPixelBufferGetBytesPerRow(outputDepth);
+        confidenceCopy4 = confidence;
+        v96 = CVPixelBufferGetBytesPerRow(confidence);
+        previousConfidenceCopy4 = previousConfidence;
+        v97 = CVPixelBufferGetBytesPerRow(previousConfidence);
         v98 = CVPixelBufferGetBytesPerRow(pixelBuffer);
         if (Height && Width)
         {
@@ -503,17 +503,17 @@ LABEL_50:
                 _H4 = *v104;
                 __asm { FCVT            S5, H4 }
 
-                v112 = _S2 * _S5;
-                if (v112 <= a9)
+                alphaCopy = _S2 * _S5;
+                if (alphaCopy <= alpha)
                 {
-                  v112 = a9;
+                  alphaCopy = alpha;
                 }
 
-                v113 = 1.0 - v112;
-                v107 = (v107 * v112) + *v101 * v113;
+                v113 = 1.0 - alphaCopy;
+                v107 = (v107 * alphaCopy) + *v101 * v113;
                 __asm { FCVT            D3, H4 }
 
-                _D2 = (v112 * _S2) + _D3 * v113;
+                _D2 = (alphaCopy * _S2) + _D3 * v113;
                 __asm { FCVT            H2, D2 }
               }
 
@@ -545,31 +545,31 @@ LABEL_50:
       goto LABEL_50;
     }
 
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
-    CVPixelBufferLockBaseAddress(a4, 1uLL);
-    CVPixelBufferLockBaseAddress(a7, 0);
-    CVPixelBufferLockBaseAddress(a5, 1uLL);
-    CVPixelBufferLockBaseAddress(a6, 1uLL);
-    CVPixelBufferLockBaseAddress(a8, 0);
-    v152 = CVPixelBufferGetWidth(a3);
-    v117 = CVPixelBufferGetHeight(a3);
-    v148 = CVPixelBufferGetBaseAddress(a3);
-    v144 = CVPixelBufferGetBaseAddress(a4);
-    v118 = CVPixelBufferGetBaseAddress(a7);
-    pixelBuffer = a8;
-    v119 = CVPixelBufferGetBaseAddress(a5);
-    v120 = CVPixelBufferGetBaseAddress(a6);
-    v121 = CVPixelBufferGetBaseAddress(a8);
-    v153 = a3;
-    v122 = CVPixelBufferGetBytesPerRow(a3);
-    v154 = a4;
-    v123 = CVPixelBufferGetBytesPerRow(a4);
-    v155 = a7;
-    v124 = CVPixelBufferGetBytesPerRow(a7);
-    v156 = a5;
-    v125 = CVPixelBufferGetBytesPerRow(a5);
-    v157 = a6;
-    v126 = CVPixelBufferGetBytesPerRow(a6);
+    CVPixelBufferLockBaseAddress(maps, 1uLL);
+    CVPixelBufferLockBaseAddress(depth, 1uLL);
+    CVPixelBufferLockBaseAddress(outputDepth, 0);
+    CVPixelBufferLockBaseAddress(confidence, 1uLL);
+    CVPixelBufferLockBaseAddress(previousConfidence, 1uLL);
+    CVPixelBufferLockBaseAddress(outputConfidence, 0);
+    v152 = CVPixelBufferGetWidth(maps);
+    v117 = CVPixelBufferGetHeight(maps);
+    v148 = CVPixelBufferGetBaseAddress(maps);
+    v144 = CVPixelBufferGetBaseAddress(depth);
+    v118 = CVPixelBufferGetBaseAddress(outputDepth);
+    pixelBuffer = outputConfidence;
+    v119 = CVPixelBufferGetBaseAddress(confidence);
+    v120 = CVPixelBufferGetBaseAddress(previousConfidence);
+    v121 = CVPixelBufferGetBaseAddress(outputConfidence);
+    mapsCopy4 = maps;
+    v122 = CVPixelBufferGetBytesPerRow(maps);
+    depthCopy4 = depth;
+    v123 = CVPixelBufferGetBytesPerRow(depth);
+    outputDepthCopy4 = outputDepth;
+    v124 = CVPixelBufferGetBytesPerRow(outputDepth);
+    confidenceCopy4 = confidence;
+    v125 = CVPixelBufferGetBytesPerRow(confidence);
+    previousConfidenceCopy4 = previousConfidence;
+    v126 = CVPixelBufferGetBytesPerRow(previousConfidence);
     v127 = CVPixelBufferGetBytesPerRow(pixelBuffer);
     if (v117 && v152)
     {
@@ -588,15 +588,15 @@ LABEL_50:
           v137 = *v132;
           if (*v130 > 0.0)
           {
-            v138 = v137 * *v133;
-            if (v138 <= a9)
+            alphaCopy2 = v137 * *v133;
+            if (alphaCopy2 <= alpha)
             {
-              v138 = a9;
+              alphaCopy2 = alpha;
             }
 
-            v139 = 1.0 - v138;
-            v136 = (v136 * v138) + *v130 * v139;
-            v137 = (v137 * v138) + *v133 * v139;
+            v139 = 1.0 - alphaCopy2;
+            v136 = (v136 * alphaCopy2) + *v130 * v139;
+            v137 = (v137 * alphaCopy2) + *v133 * v139;
           }
 
           *v131++ = v136;
@@ -661,31 +661,31 @@ LABEL_19:
     }
 
 LABEL_37:
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
-    CVPixelBufferLockBaseAddress(a4, 1uLL);
-    CVPixelBufferLockBaseAddress(a7, 0);
-    CVPixelBufferLockBaseAddress(a5, 1uLL);
-    CVPixelBufferLockBaseAddress(a6, 1uLL);
-    CVPixelBufferLockBaseAddress(a8, 0);
-    v150 = CVPixelBufferGetWidth(a3);
-    v61 = CVPixelBufferGetHeight(a3);
-    v146 = CVPixelBufferGetBaseAddress(a3);
-    v142 = CVPixelBufferGetBaseAddress(a4);
-    v62 = CVPixelBufferGetBaseAddress(a7);
-    pixelBuffer = a8;
-    v63 = CVPixelBufferGetBaseAddress(a5);
-    v64 = CVPixelBufferGetBaseAddress(a6);
-    v65 = CVPixelBufferGetBaseAddress(a8);
-    v153 = a3;
-    v66 = CVPixelBufferGetBytesPerRow(a3);
-    v154 = a4;
-    v67 = CVPixelBufferGetBytesPerRow(a4);
-    v155 = a7;
-    v68 = CVPixelBufferGetBytesPerRow(a7);
-    v156 = a5;
-    v69 = CVPixelBufferGetBytesPerRow(a5);
-    v157 = a6;
-    v70 = CVPixelBufferGetBytesPerRow(a6);
+    CVPixelBufferLockBaseAddress(maps, 1uLL);
+    CVPixelBufferLockBaseAddress(depth, 1uLL);
+    CVPixelBufferLockBaseAddress(outputDepth, 0);
+    CVPixelBufferLockBaseAddress(confidence, 1uLL);
+    CVPixelBufferLockBaseAddress(previousConfidence, 1uLL);
+    CVPixelBufferLockBaseAddress(outputConfidence, 0);
+    v150 = CVPixelBufferGetWidth(maps);
+    v61 = CVPixelBufferGetHeight(maps);
+    v146 = CVPixelBufferGetBaseAddress(maps);
+    v142 = CVPixelBufferGetBaseAddress(depth);
+    v62 = CVPixelBufferGetBaseAddress(outputDepth);
+    pixelBuffer = outputConfidence;
+    v63 = CVPixelBufferGetBaseAddress(confidence);
+    v64 = CVPixelBufferGetBaseAddress(previousConfidence);
+    v65 = CVPixelBufferGetBaseAddress(outputConfidence);
+    mapsCopy4 = maps;
+    v66 = CVPixelBufferGetBytesPerRow(maps);
+    depthCopy4 = depth;
+    v67 = CVPixelBufferGetBytesPerRow(depth);
+    outputDepthCopy4 = outputDepth;
+    v68 = CVPixelBufferGetBytesPerRow(outputDepth);
+    confidenceCopy4 = confidence;
+    v69 = CVPixelBufferGetBytesPerRow(confidence);
+    previousConfidenceCopy4 = previousConfidence;
+    v70 = CVPixelBufferGetBytesPerRow(previousConfidence);
     v71 = CVPixelBufferGetBytesPerRow(pixelBuffer);
     if (v61 && v150)
     {
@@ -706,10 +706,10 @@ LABEL_37:
 
           if (!_ZF & _CF)
           {
-            v83 = v81 * *v77;
-            if (v83 <= a9)
+            alphaCopy3 = v81 * *v77;
+            if (alphaCopy3 <= alpha)
             {
-              v83 = a9;
+              alphaCopy3 = alpha;
             }
 
             __asm
@@ -718,11 +718,11 @@ LABEL_37:
               FCVT            D3, H3
             }
 
-            v86 = 1.0 - v83;
-            _D2 = (v83 * _S2) + _D3 * v86;
+            v86 = 1.0 - alphaCopy3;
+            _D2 = (alphaCopy3 * _S2) + _D3 * v86;
             __asm { FCVT            H2, D2 }
 
-            v81 = (v81 * v83) + *v77 * v86;
+            v81 = (v81 * alphaCopy3) + *v77 * v86;
           }
 
           *v75 = _H2;
@@ -753,31 +753,31 @@ LABEL_37:
   }
 
 LABEL_26:
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  CVPixelBufferLockBaseAddress(a4, 1uLL);
-  CVPixelBufferLockBaseAddress(a7, 0);
-  CVPixelBufferLockBaseAddress(a5, 1uLL);
-  CVPixelBufferLockBaseAddress(a6, 1uLL);
-  CVPixelBufferLockBaseAddress(a8, 0);
-  v149 = CVPixelBufferGetWidth(a3);
-  v25 = CVPixelBufferGetHeight(a3);
-  v145 = CVPixelBufferGetBaseAddress(a3);
-  v141 = CVPixelBufferGetBaseAddress(a4);
-  v26 = CVPixelBufferGetBaseAddress(a7);
-  pixelBuffer = a8;
-  v27 = CVPixelBufferGetBaseAddress(a5);
-  v28 = CVPixelBufferGetBaseAddress(a6);
-  v29 = CVPixelBufferGetBaseAddress(a8);
-  v153 = a3;
-  v30 = CVPixelBufferGetBytesPerRow(a3);
-  v154 = a4;
-  v31 = CVPixelBufferGetBytesPerRow(a4);
-  v155 = a7;
-  v32 = CVPixelBufferGetBytesPerRow(a7);
-  v156 = a5;
-  v33 = CVPixelBufferGetBytesPerRow(a5);
-  v157 = a6;
-  v34 = CVPixelBufferGetBytesPerRow(a6);
+  CVPixelBufferLockBaseAddress(maps, 1uLL);
+  CVPixelBufferLockBaseAddress(depth, 1uLL);
+  CVPixelBufferLockBaseAddress(outputDepth, 0);
+  CVPixelBufferLockBaseAddress(confidence, 1uLL);
+  CVPixelBufferLockBaseAddress(previousConfidence, 1uLL);
+  CVPixelBufferLockBaseAddress(outputConfidence, 0);
+  v149 = CVPixelBufferGetWidth(maps);
+  v25 = CVPixelBufferGetHeight(maps);
+  v145 = CVPixelBufferGetBaseAddress(maps);
+  v141 = CVPixelBufferGetBaseAddress(depth);
+  v26 = CVPixelBufferGetBaseAddress(outputDepth);
+  pixelBuffer = outputConfidence;
+  v27 = CVPixelBufferGetBaseAddress(confidence);
+  v28 = CVPixelBufferGetBaseAddress(previousConfidence);
+  v29 = CVPixelBufferGetBaseAddress(outputConfidence);
+  mapsCopy4 = maps;
+  v30 = CVPixelBufferGetBytesPerRow(maps);
+  depthCopy4 = depth;
+  v31 = CVPixelBufferGetBytesPerRow(depth);
+  outputDepthCopy4 = outputDepth;
+  v32 = CVPixelBufferGetBytesPerRow(outputDepth);
+  confidenceCopy4 = confidence;
+  v33 = CVPixelBufferGetBytesPerRow(confidence);
+  previousConfidenceCopy4 = previousConfidence;
+  v34 = CVPixelBufferGetBytesPerRow(previousConfidence);
   v35 = CVPixelBufferGetBytesPerRow(pixelBuffer);
   if (v25 && v149)
   {
@@ -803,10 +803,10 @@ LABEL_26:
           _H4 = *v41;
           __asm { FCVT            S5, H4 }
 
-          v54 = _S2 * _S5;
-          if (v54 <= a9)
+          alphaCopy4 = _S2 * _S5;
+          if (alphaCopy4 <= alpha)
           {
-            v54 = a9;
+            alphaCopy4 = alpha;
           }
 
           __asm
@@ -815,15 +815,15 @@ LABEL_26:
             FCVT            D3, H3
           }
 
-          v57 = 1.0 - v54;
-          _D1 = (v54 * _S1) + _D3 * v57;
+          v57 = 1.0 - alphaCopy4;
+          _D1 = (alphaCopy4 * _S1) + _D3 * v57;
           __asm
           {
             FCVT            H1, D1
             FCVT            D3, H4
           }
 
-          _D2 = (v54 * _S2) + _D3 * v57;
+          _D2 = (alphaCopy4 * _S2) + _D3 * v57;
           __asm { FCVT            H2, D2 }
         }
 
@@ -843,27 +843,27 @@ LABEL_26:
   }
 
 LABEL_72:
-  CVPixelBufferUnlockBaseAddress(v153, 1uLL);
-  CVPixelBufferUnlockBaseAddress(v154, 1uLL);
-  CVPixelBufferUnlockBaseAddress(v155, 0);
-  CVPixelBufferUnlockBaseAddress(v156, 1uLL);
-  CVPixelBufferUnlockBaseAddress(v157, 1uLL);
+  CVPixelBufferUnlockBaseAddress(mapsCopy4, 1uLL);
+  CVPixelBufferUnlockBaseAddress(depthCopy4, 1uLL);
+  CVPixelBufferUnlockBaseAddress(outputDepthCopy4, 0);
+  CVPixelBufferUnlockBaseAddress(confidenceCopy4, 1uLL);
+  CVPixelBufferUnlockBaseAddress(previousConfidenceCopy4, 1uLL);
   CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
   return 0;
 }
 
-+ (int64_t)fuseCurrentMap:(__CVBuffer *)a3 previousMap:(__CVBuffer *)a4 intoOutputMap:(__CVBuffer *)a5 usingAlpha:(__CVBuffer *)a6 defaultAlpha:(float)a7 diffThreshold:(float)a8
++ (int64_t)fuseCurrentMap:(__CVBuffer *)map previousMap:(__CVBuffer *)previousMap intoOutputMap:(__CVBuffer *)outputMap usingAlpha:(__CVBuffer *)alpha defaultAlpha:(float)defaultAlpha diffThreshold:(float)threshold
 {
   v406 = *MEMORY[0x277D85DE8];
   result = -22953;
-  if (!a3 || !a4 || !a5)
+  if (!map || !previousMap || !outputMap)
   {
     return result;
   }
 
-  v400 = *&a8;
-  v401 = *&a7;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  v400 = *&threshold;
+  v401 = *&defaultAlpha;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(map);
   if (PixelFormatType > 1717856626)
   {
     if (PixelFormatType != 1717856627)
@@ -877,26 +877,26 @@ LABEL_72:
     }
 
 LABEL_11:
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
-    CVPixelBufferLockBaseAddress(a4, 1uLL);
-    CVPixelBufferLockBaseAddress(a5, 0);
+    CVPixelBufferLockBaseAddress(map, 1uLL);
+    CVPixelBufferLockBaseAddress(previousMap, 1uLL);
+    CVPixelBufferLockBaseAddress(outputMap, 0);
     memset(&__p, 0, sizeof(__p));
     rowBytes = MEMORY[0x277CBF3A0];
-    PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &__p);
+    PixelBufferUtils::asVImageBuffer(map, *MEMORY[0x277CBF3A0], &__p);
     memset(&buf, 0, sizeof(buf));
-    PixelBufferUtils::asVImageBuffer(a4, *rowBytes, &buf);
+    PixelBufferUtils::asVImageBuffer(previousMap, *rowBytes, &buf);
     memset(&v403, 0, sizeof(v403));
-    PixelBufferUtils::asVImageBuffer(a5, *rowBytes, &v403);
-    if (a6)
+    PixelBufferUtils::asVImageBuffer(outputMap, *rowBytes, &v403);
+    if (alpha)
     {
-      CVPixelBufferLockBaseAddress(a6, 1uLL);
-      PixelBufferUtils::asVImageBuffer(a6, *rowBytes, &v402);
+      CVPixelBufferLockBaseAddress(alpha, 1uLL);
+      PixelBufferUtils::asVImageBuffer(alpha, *rowBytes, &v402);
       data = v402.data;
       rowBytes = v402.rowBytes;
     }
 
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    Width = CVPixelBufferGetWidth(map);
+    Height = CVPixelBufferGetHeight(map);
     if (Height && Width)
     {
       v106 = v403.rowBytes;
@@ -905,7 +905,7 @@ LABEL_11:
       v109 = buf.data;
       v110 = buf.rowBytes;
       v111 = v403.data;
-      if (a6)
+      if (alpha)
       {
         if (Width > 7)
         {
@@ -1559,26 +1559,26 @@ LABEL_91:
   }
 
 LABEL_13:
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  CVPixelBufferLockBaseAddress(a4, 1uLL);
-  CVPixelBufferLockBaseAddress(a5, 0);
+  CVPixelBufferLockBaseAddress(map, 1uLL);
+  CVPixelBufferLockBaseAddress(previousMap, 1uLL);
+  CVPixelBufferLockBaseAddress(outputMap, 0);
   memset(&__p, 0, sizeof(__p));
   v16 = MEMORY[0x277CBF3A0];
-  PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &__p);
+  PixelBufferUtils::asVImageBuffer(map, *MEMORY[0x277CBF3A0], &__p);
   memset(&buf, 0, sizeof(buf));
-  PixelBufferUtils::asVImageBuffer(a4, *v16, &buf);
+  PixelBufferUtils::asVImageBuffer(previousMap, *v16, &buf);
   memset(&v403, 0, sizeof(v403));
-  PixelBufferUtils::asVImageBuffer(a5, *v16, &v403);
-  if (a6)
+  PixelBufferUtils::asVImageBuffer(outputMap, *v16, &v403);
+  if (alpha)
   {
-    CVPixelBufferLockBaseAddress(a6, 1uLL);
-    PixelBufferUtils::asVImageBuffer(a6, *v16, &v402);
+    CVPixelBufferLockBaseAddress(alpha, 1uLL);
+    PixelBufferUtils::asVImageBuffer(alpha, *v16, &v402);
     data = v402.data;
     v16 = v402.rowBytes;
   }
 
-  v17 = CVPixelBufferGetWidth(a3);
-  v18 = CVPixelBufferGetHeight(a3);
+  v17 = CVPixelBufferGetWidth(map);
+  v18 = CVPixelBufferGetHeight(map);
   if (v18 && v17)
   {
     v19 = v403.rowBytes;
@@ -1587,7 +1587,7 @@ LABEL_13:
     v22 = buf.data;
     v23 = buf.rowBytes;
     v24 = v403.data;
-    if (a6)
+    if (alpha)
     {
       if (v17 > 7)
       {
@@ -2373,29 +2373,29 @@ LABEL_13:
   }
 
 LABEL_393:
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
-  CVPixelBufferUnlockBaseAddress(a4, 1uLL);
-  CVPixelBufferUnlockBaseAddress(a5, 0);
-  if (a6)
+  CVPixelBufferUnlockBaseAddress(map, 1uLL);
+  CVPixelBufferUnlockBaseAddress(previousMap, 1uLL);
+  CVPixelBufferUnlockBaseAddress(outputMap, 0);
+  if (alpha)
   {
-    CVPixelBufferUnlockBaseAddress(a6, 1uLL);
+    CVPixelBufferUnlockBaseAddress(alpha, 1uLL);
   }
 
   return 0;
 }
 
-+ (int64_t)warpPreviousDepth:(__CVBuffer *)a3 intoCurrentDepth:(__CVBuffer *)a4 previousConfidence:(__CVBuffer *)a5 intoCurrentConfidence:(__CVBuffer *)a6 usingOpticalFlow:(__CVBuffer *)a7
++ (int64_t)warpPreviousDepth:(__CVBuffer *)depth intoCurrentDepth:(__CVBuffer *)currentDepth previousConfidence:(__CVBuffer *)confidence intoCurrentConfidence:(__CVBuffer *)currentConfidence usingOpticalFlow:(__CVBuffer *)flow
 {
   result = -22953;
-  if (a3)
+  if (depth)
   {
-    if (a4)
+    if (currentDepth)
     {
-      result = [a1 warpMap:? toOutput:? usingOpticalFlow:?];
-      if (!result && a5 && a6)
+      result = [self warpMap:? toOutput:? usingOpticalFlow:?];
+      if (!result && confidence && currentConfidence)
       {
 
-        return [a1 warpMap:a5 toOutput:a6 usingOpticalFlow:a7];
+        return [self warpMap:confidence toOutput:currentConfidence usingOpticalFlow:flow];
       }
     }
   }
@@ -2403,16 +2403,16 @@ LABEL_393:
   return result;
 }
 
-+ (int64_t)warpMap:(__CVBuffer *)a3 toOutput:(__CVBuffer *)a4 usingOpticalFlow:(__CVBuffer *)a5
++ (int64_t)warpMap:(__CVBuffer *)map toOutput:(__CVBuffer *)output usingOpticalFlow:(__CVBuffer *)flow
 {
   v68 = *MEMORY[0x277D85DE8];
   result = -22953;
-  if (!a3 || !a4 || !a5)
+  if (!map || !output || !flow)
   {
     return result;
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(map);
   if (PixelFormatType > 1717856626)
   {
     if (PixelFormatType == 1717856627)
@@ -2432,18 +2432,18 @@ LABEL_393:
   {
     case 0x4C303066:
 LABEL_33:
-      CVPixelBufferLockBaseAddress(a3, 1uLL);
-      CVPixelBufferLockBaseAddress(a5, 1uLL);
-      CVPixelBufferLockBaseAddress(a4, 0);
+      CVPixelBufferLockBaseAddress(map, 1uLL);
+      CVPixelBufferLockBaseAddress(flow, 1uLL);
+      CVPixelBufferLockBaseAddress(output, 0);
       memset(&__p, 0, sizeof(__p));
       v38 = MEMORY[0x277CBF3A0];
-      PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &__p);
+      PixelBufferUtils::asVImageBuffer(map, *MEMORY[0x277CBF3A0], &__p);
       memset(&buf, 0, sizeof(buf));
-      PixelBufferUtils::asVImageBuffer(a5, *v38, &buf);
+      PixelBufferUtils::asVImageBuffer(flow, *v38, &buf);
       memset(&v65, 0, sizeof(v65));
-      PixelBufferUtils::asVImageBuffer(a4, *v38, &v65);
-      Width = CVPixelBufferGetWidth(a3);
-      Height = CVPixelBufferGetHeight(a3);
+      PixelBufferUtils::asVImageBuffer(output, *v38, &v65);
+      Width = CVPixelBufferGetWidth(map);
+      Height = CVPixelBufferGetHeight(map);
       if (Height && Width)
       {
         v41 = 0;
@@ -2492,24 +2492,24 @@ LABEL_33:
       }
 
 LABEL_54:
-      CVPixelBufferUnlockBaseAddress(a3, 1uLL);
-      CVPixelBufferUnlockBaseAddress(a5, 1uLL);
-      CVPixelBufferUnlockBaseAddress(a4, 0);
+      CVPixelBufferUnlockBaseAddress(map, 1uLL);
+      CVPixelBufferUnlockBaseAddress(flow, 1uLL);
+      CVPixelBufferUnlockBaseAddress(output, 0);
       return 0;
     case 0x4C303068:
 LABEL_12:
-      CVPixelBufferLockBaseAddress(a3, 1uLL);
-      CVPixelBufferLockBaseAddress(a5, 1uLL);
-      CVPixelBufferLockBaseAddress(a4, 0);
+      CVPixelBufferLockBaseAddress(map, 1uLL);
+      CVPixelBufferLockBaseAddress(flow, 1uLL);
+      CVPixelBufferLockBaseAddress(output, 0);
       memset(&__p, 0, sizeof(__p));
       v10 = MEMORY[0x277CBF3A0];
-      PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &__p);
+      PixelBufferUtils::asVImageBuffer(map, *MEMORY[0x277CBF3A0], &__p);
       memset(&buf, 0, sizeof(buf));
-      PixelBufferUtils::asVImageBuffer(a5, *v10, &buf);
+      PixelBufferUtils::asVImageBuffer(flow, *v10, &buf);
       memset(&v65, 0, sizeof(v65));
-      PixelBufferUtils::asVImageBuffer(a4, *v10, &v65);
-      v11 = CVPixelBufferGetWidth(a3);
-      v12 = CVPixelBufferGetHeight(a3);
+      PixelBufferUtils::asVImageBuffer(output, *v10, &v65);
+      v11 = CVPixelBufferGetWidth(map);
+      v12 = CVPixelBufferGetHeight(map);
       if (v12 && v11)
       {
         v13 = 0;
@@ -2590,21 +2590,21 @@ LABEL_56:
   return -22956;
 }
 
-+ (double)addAnglesToRotation:(double)a3 angles:(double)a4
++ (double)addAnglesToRotation:(double)rotation angles:(double)angles
 {
-  [a1 calcRotationMatrix:a5];
+  [self calcRotationMatrix:a5];
   *&result = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v5, a2.f32[0]), v6, *a2.f32, 1), v7, a2, 2).u64[0];
   return result;
 }
 
-+ (double)calcRotationAngle:(float *)a3
++ (double)calcRotationAngle:(float *)angle
 {
-  v4 = a3[6];
-  v5 = a3[10];
+  v4 = angle[6];
+  v5 = angle[10];
   v6.f32[0] = atan2f(v4, v5);
   v12 = v6;
-  v10 = *a3;
-  v11 = atan2f(-COERCE_FLOAT(*(a3 + 1)), sqrtf((v5 * v5) + (v4 * v4)));
+  v10 = *angle;
+  v11 = atan2f(-COERCE_FLOAT(*(angle + 1)), sqrtf((v5 * v5) + (v4 * v4)));
   v7 = atan2f(*(&v10 + 1), *&v10);
   v8 = v12;
   v8.f32[1] = v11;
@@ -2613,9 +2613,9 @@ LABEL_56:
   return result;
 }
 
-+ (float32x2_t)calcRotationMatrix:(float32x4_t)a1
++ (float32x2_t)calcRotationMatrix:(float32x4_t)matrix
 {
-  v1 = vmulq_f32(a1, vdupq_n_s32(0x3A83126Fu));
+  v1 = vmulq_f32(matrix, vdupq_n_s32(0x3A83126Fu));
   v2 = v1.f32[1];
   v3 = v1.f32[2];
   __sincosf_stret(v1.f32[0]);
@@ -2624,12 +2624,12 @@ LABEL_56:
   return vmul_n_f32(__PAIR64__(LODWORD(v4.__sinval), LODWORD(v4.__cosval)), cosval);
 }
 
-+ (int64_t)filterInvalidsFromFloatImage:(__CVBuffer *)a3 minValue:(float)a4 maxValue:(float)a5 clampToMinMax:(BOOL)a6
++ (int64_t)filterInvalidsFromFloatImage:(__CVBuffer *)image minValue:(float)value maxValue:(float)maxValue clampToMinMax:(BOOL)max
 {
-  v228 = *&a4;
-  v229 = *&a5;
+  v228 = *&value;
+  v229 = *&maxValue;
   v233 = *MEMORY[0x277D85DE8];
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(image);
   if (PixelFormatType > 1717856626)
   {
     if (PixelFormatType != 1751411059 && PixelFormatType != 1751410032)
@@ -2638,7 +2638,7 @@ LABEL_56:
       goto LABEL_7;
     }
 
-    if (!a3)
+    if (!image)
     {
 LABEL_39:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -2650,14 +2650,14 @@ LABEL_39:
       return -22964;
     }
 
-    CVPixelBufferLockBaseAddress(a3, 0);
+    CVPixelBufferLockBaseAddress(image, 0);
     memset(&buf, 0, sizeof(buf));
-    PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &buf);
+    PixelBufferUtils::asVImageBuffer(image, *MEMORY[0x277CBF3A0], &buf);
     height = buf.height;
     if (!buf.height || (width = buf.width) == 0)
     {
 LABEL_77:
-      CVPixelBufferUnlockBaseAddress(a3, 0);
+      CVPixelBufferUnlockBaseAddress(image, 0);
       return 0;
     }
 
@@ -2666,7 +2666,7 @@ LABEL_77:
     v23 = buf.width & 0xFFFFFFFFFFFFFFF8;
     v24 = vdupq_lane_s32(v228, 0);
     v25 = vdupq_lane_s32(v229, 0);
-    if (!a6)
+    if (!max)
     {
       if (buf.width > 7)
       {
@@ -3017,11 +3017,11 @@ LABEL_7:
   if (PixelFormatType == (v9 | 0x66640000))
   {
 LABEL_8:
-    if (a3)
+    if (image)
     {
-      CVPixelBufferLockBaseAddress(a3, 0);
+      CVPixelBufferLockBaseAddress(image, 0);
       memset(&buf, 0, sizeof(buf));
-      PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &buf);
+      PixelBufferUtils::asVImageBuffer(image, *MEMORY[0x277CBF3A0], &buf);
       v10 = buf.height;
       if (buf.height)
       {
@@ -3034,7 +3034,7 @@ LABEL_8:
           v15 = 4 * (buf.width & 0xFFFFFFFFFFFFFFF8);
           v16 = vdupq_lane_s32(v228, 0);
           v17 = vdupq_lane_s32(v229, 0);
-          if (a6)
+          if (max)
           {
             if (buf.width >= 8)
             {
@@ -3484,7 +3484,7 @@ LABEL_8:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v226 = CVPixelBufferGetPixelFormatType(a3);
+    v226 = CVPixelBufferGetPixelFormatType(image);
     PixelBufferUtils::pixelFormatAsString(v226, &buf);
     v227 = (buf.width & 0x8000000000000000) == 0 ? &buf : buf.data;
     *v231 = 136446210;
@@ -3499,16 +3499,16 @@ LABEL_8:
   return -22956;
 }
 
-+ (int64_t)warpAndFuseWithCurrDepth:(__CVBuffer *)a3 prevDepth:(__CVBuffer *)a4 currNormals:(__CVBuffer *)a5 prevNormals:(__CVBuffer *)a6 opticalFlow:(__CVBuffer *)a7 alphaMap:(__CVBuffer *)a8 defaultAlpha:(float)a9 depthOutput:(__CVBuffer *)pixelBuffer normalsOutput:(__CVBuffer *)a11
++ (int64_t)warpAndFuseWithCurrDepth:(__CVBuffer *)depth prevDepth:(__CVBuffer *)prevDepth currNormals:(__CVBuffer *)normals prevNormals:(__CVBuffer *)prevNormals opticalFlow:(__CVBuffer *)flow alphaMap:(__CVBuffer *)map defaultAlpha:(float)alpha depthOutput:(__CVBuffer *)pixelBuffer normalsOutput:(__CVBuffer *)self1
 {
   v143 = *MEMORY[0x277D85DE8];
   result = -22953;
-  if (a7 && a4 && a3 && pixelBuffer)
+  if (flow && prevDepth && depth && pixelBuffer)
   {
-    v19 = a6;
-    if (a5)
+    prevNormalsCopy = prevNormals;
+    if (normals)
     {
-      _ZF = a11 == 0;
+      _ZF = output == 0;
     }
 
     else
@@ -3516,7 +3516,7 @@ LABEL_8:
       _ZF = 1;
     }
 
-    v22 = !_ZF && a6 != 0;
+    v22 = !_ZF && prevNormals != 0;
     PixelFormatType = CVPixelBufferGetPixelFormatType(pixelBuffer);
     if (PixelFormatType <= 1717856626)
     {
@@ -3565,7 +3565,7 @@ LABEL_79:
 LABEL_29:
       if (v22)
       {
-        v27 = CVPixelBufferGetPixelFormatType(a5);
+        v27 = CVPixelBufferGetPixelFormatType(normals);
         if (v27 != 1717855600 && v27 != 1717856627)
         {
           v28 = v27;
@@ -3586,52 +3586,52 @@ LABEL_29:
         }
       }
 
-      v132 = v19;
-      CVPixelBufferLockBaseAddress(a7, 1uLL);
-      CVPixelBufferLockBaseAddress(a3, 1uLL);
-      CVPixelBufferLockBaseAddress(a4, 1uLL);
+      v132 = prevNormalsCopy;
+      CVPixelBufferLockBaseAddress(flow, 1uLL);
+      CVPixelBufferLockBaseAddress(depth, 1uLL);
+      CVPixelBufferLockBaseAddress(prevDepth, 1uLL);
       CVPixelBufferLockBaseAddress(pixelBuffer, 0);
       memset(&__p, 0, sizeof(__p));
       v29 = MEMORY[0x277CBF3A0];
-      PixelBufferUtils::asVImageBuffer(a7, *MEMORY[0x277CBF3A0], &__p);
+      PixelBufferUtils::asVImageBuffer(flow, *MEMORY[0x277CBF3A0], &__p);
       memset(&buf, 0, sizeof(buf));
-      PixelBufferUtils::asVImageBuffer(a3, *v29, &buf);
+      PixelBufferUtils::asVImageBuffer(depth, *v29, &buf);
       memset(&v140, 0, sizeof(v140));
-      PixelBufferUtils::asVImageBuffer(a4, *v29, &v140);
+      PixelBufferUtils::asVImageBuffer(prevDepth, *v29, &v140);
       memset(&v139, 0, sizeof(v139));
       PixelBufferUtils::asVImageBuffer(pixelBuffer, *v29, &v139);
       if (v22)
       {
-        CVPixelBufferLockBaseAddress(a5, 1uLL);
-        CVPixelBufferLockBaseAddress(v19, 1uLL);
-        CVPixelBufferLockBaseAddress(a11, 0);
-        PixelBufferUtils::asVImageBuffer(a5, *v29, &v138);
+        CVPixelBufferLockBaseAddress(normals, 1uLL);
+        CVPixelBufferLockBaseAddress(prevNormalsCopy, 1uLL);
+        CVPixelBufferLockBaseAddress(output, 0);
+        PixelBufferUtils::asVImageBuffer(normals, *v29, &v138);
         data = v138.data;
         rowBytes = v138.rowBytes;
-        PixelBufferUtils::asVImageBuffer(v19, *v29, &v138);
+        PixelBufferUtils::asVImageBuffer(prevNormalsCopy, *v29, &v138);
         v12 = v138.data;
-        v19 = v138.rowBytes;
-        PixelBufferUtils::asVImageBuffer(a11, *v29, &v138);
+        prevNormalsCopy = v138.rowBytes;
+        PixelBufferUtils::asVImageBuffer(output, *v29, &v138);
         v13 = v138.data;
         v15 = v138.rowBytes;
-        if (!a8)
+        if (!map)
         {
           goto LABEL_39;
         }
       }
 
-      else if (!a8)
+      else if (!map)
       {
         goto LABEL_39;
       }
 
-      CVPixelBufferLockBaseAddress(a8, 1uLL);
-      PixelBufferUtils::asVImageBuffer(a8, *v29, &v138);
+      CVPixelBufferLockBaseAddress(map, 1uLL);
+      PixelBufferUtils::asVImageBuffer(map, *v29, &v138);
       v14 = v138.data;
       v29 = v138.rowBytes;
 LABEL_39:
-      Width = CVPixelBufferGetWidth(a3);
-      Height = CVPixelBufferGetHeight(a3);
+      Width = CVPixelBufferGetWidth(depth);
+      Height = CVPixelBufferGetHeight(depth);
       if (Height && Width)
       {
         v32 = 0;
@@ -3641,13 +3641,13 @@ LABEL_39:
         v36 = __p.rowBytes;
         v37 = v139.rowBytes;
         v38 = v140.rowBytes;
-        v39 = a9;
+        alphaCopy2 = alpha;
         do
         {
           v40 = 0;
           v41 = (__p.data + v36 * v34);
           v42 = &v14[v34 * v29];
-          if (!a8)
+          if (!map)
           {
             v42 = 0;
           }
@@ -3693,7 +3693,7 @@ LABEL_39:
               v64 = v57;
               v65 = v53;
               _H20 = *(v140.data + 2 * v53 + 2 * v40 + v38 * (v34 + v64));
-              if (a8)
+              if (map)
               {
                 __asm { FCVT            S16, H20 }
 
@@ -3718,29 +3718,29 @@ LABEL_39:
 
                 if (vabds_f32(_S16, _S19) >= 0.5)
                 {
-                  v39 = a9;
+                  alphaCopy2 = alpha;
                 }
 
                 else
                 {
-                  v39 = v71;
+                  alphaCopy2 = v71;
                 }
               }
 
-              v72 = (v39 * _S19);
+              v72 = (alphaCopy2 * _S19);
               __asm { FCVT            D20, H20 }
 
-              v74 = 1.0 - v39;
+              v74 = 1.0 - alphaCopy2;
               _D20 = v72 + _D20 * v74;
               __asm { FCVT            H20, D20 }
 
               *&v46[2 * v40] = LOWORD(_D20);
               if (v22)
               {
-                v76 = &v12[16 * v65 + v19 * (v34 + v64)];
-                v77 = vmlaq_n_f64(vcvtq_f64_f32(vmul_n_f32(*v62.f32, v39)), vcvtq_f64_f32(*&v76[16 * v40]), v74);
+                v76 = &v12[16 * v65 + prevNormalsCopy * (v34 + v64)];
+                v77 = vmlaq_n_f64(vcvtq_f64_f32(vmul_n_f32(*v62.f32, alphaCopy2)), vcvtq_f64_f32(*&v76[16 * v40]), v74);
                 *v77.f32 = vcvt_f32_f64(v77);
-                v78 = vmuls_lane_f32(v39, v62, 2) + COERCE_FLOAT(*&v76[16 * v40 + 8]) * v74;
+                v78 = vmuls_lane_f32(alphaCopy2, v62, 2) + COERCE_FLOAT(*&v76[16 * v40 + 8]) * v74;
                 v77.f32[2] = v78;
                 v79 = vmulq_f32(v77, v77);
                 *&v80 = v79.f32[2] + vaddv_f32(*v79.f32);
@@ -3765,18 +3765,18 @@ LABEL_39:
         while (v34 != Height);
       }
 
-      CVPixelBufferUnlockBaseAddress(a7, 1uLL);
-      CVPixelBufferUnlockBaseAddress(a3, 1uLL);
-      CVPixelBufferUnlockBaseAddress(a4, 1uLL);
+      CVPixelBufferUnlockBaseAddress(flow, 1uLL);
+      CVPixelBufferUnlockBaseAddress(depth, 1uLL);
+      CVPixelBufferUnlockBaseAddress(prevDepth, 1uLL);
       CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
       if (v22)
       {
-        CVPixelBufferUnlockBaseAddress(a11, 0);
-        CVPixelBufferUnlockBaseAddress(a5, 1uLL);
+        CVPixelBufferUnlockBaseAddress(output, 0);
+        CVPixelBufferUnlockBaseAddress(normals, 1uLL);
         CVPixelBufferUnlockBaseAddress(v132, 1uLL);
       }
 
-      if (!a8)
+      if (!map)
       {
         return 0;
       }
@@ -3786,7 +3786,7 @@ LABEL_39:
 
     if (v22)
     {
-      v24 = CVPixelBufferGetPixelFormatType(a5);
+      v24 = CVPixelBufferGetPixelFormatType(normals);
       if (v24 != 1717855600 && v24 != 1717856627)
       {
         v25 = v24;
@@ -3807,52 +3807,52 @@ LABEL_39:
       }
     }
 
-    v131 = v19;
-    CVPixelBufferLockBaseAddress(a7, 1uLL);
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
-    CVPixelBufferLockBaseAddress(a4, 1uLL);
+    v131 = prevNormalsCopy;
+    CVPixelBufferLockBaseAddress(flow, 1uLL);
+    CVPixelBufferLockBaseAddress(depth, 1uLL);
+    CVPixelBufferLockBaseAddress(prevDepth, 1uLL);
     CVPixelBufferLockBaseAddress(pixelBuffer, 0);
     memset(&__p, 0, sizeof(__p));
     v26 = MEMORY[0x277CBF3A0];
-    PixelBufferUtils::asVImageBuffer(a7, *MEMORY[0x277CBF3A0], &__p);
+    PixelBufferUtils::asVImageBuffer(flow, *MEMORY[0x277CBF3A0], &__p);
     memset(&buf, 0, sizeof(buf));
-    PixelBufferUtils::asVImageBuffer(a3, *v26, &buf);
+    PixelBufferUtils::asVImageBuffer(depth, *v26, &buf);
     memset(&v140, 0, sizeof(v140));
-    PixelBufferUtils::asVImageBuffer(a4, *v26, &v140);
+    PixelBufferUtils::asVImageBuffer(prevDepth, *v26, &v140);
     memset(&v139, 0, sizeof(v139));
     PixelBufferUtils::asVImageBuffer(pixelBuffer, *v26, &v139);
     if (v22)
     {
-      CVPixelBufferLockBaseAddress(a5, 1uLL);
-      CVPixelBufferLockBaseAddress(v19, 1uLL);
-      CVPixelBufferLockBaseAddress(a11, 0);
-      PixelBufferUtils::asVImageBuffer(a5, *v26, &v138);
+      CVPixelBufferLockBaseAddress(normals, 1uLL);
+      CVPixelBufferLockBaseAddress(prevNormalsCopy, 1uLL);
+      CVPixelBufferLockBaseAddress(output, 0);
+      PixelBufferUtils::asVImageBuffer(normals, *v26, &v138);
       rowBytes = v138.data;
       data = v138.rowBytes;
-      PixelBufferUtils::asVImageBuffer(v19, *v26, &v138);
+      PixelBufferUtils::asVImageBuffer(prevNormalsCopy, *v26, &v138);
       v12 = v138.data;
-      v19 = v138.rowBytes;
-      PixelBufferUtils::asVImageBuffer(a11, *v26, &v138);
+      prevNormalsCopy = v138.rowBytes;
+      PixelBufferUtils::asVImageBuffer(output, *v26, &v138);
       v13 = v138.data;
       v15 = v138.rowBytes;
-      if (!a8)
+      if (!map)
       {
         goto LABEL_83;
       }
     }
 
-    else if (!a8)
+    else if (!map)
     {
       goto LABEL_83;
     }
 
-    CVPixelBufferLockBaseAddress(a8, 1uLL);
-    PixelBufferUtils::asVImageBuffer(a8, *v26, &v138);
+    CVPixelBufferLockBaseAddress(map, 1uLL);
+    PixelBufferUtils::asVImageBuffer(map, *v26, &v138);
     v14 = v138.data;
     v26 = v138.rowBytes;
 LABEL_83:
-    v83 = CVPixelBufferGetWidth(a3);
-    v84 = CVPixelBufferGetHeight(a3);
+    v83 = CVPixelBufferGetWidth(depth);
+    v84 = CVPixelBufferGetHeight(depth);
     if (v84 && v83)
     {
       v85 = 0;
@@ -3862,13 +3862,13 @@ LABEL_83:
       v89 = __p.rowBytes;
       v90 = v139.rowBytes;
       v91 = v140.rowBytes;
-      v92 = a9;
+      alphaCopy4 = alpha;
       do
       {
         v93 = 0;
         v94 = (__p.data + v89 * v87);
         v95 = &v14[v87 * v26];
-        if (!a8)
+        if (!map)
         {
           v95 = 0;
         }
@@ -3911,27 +3911,27 @@ LABEL_83:
             v114 = v108;
             v115 = v104;
             v116 = *(v140.data + 4 * v104 + 4 * v93 + v91 * (v87 + v114));
-            if (a8)
+            if (map)
             {
               v117 = *&v95[4 * v93];
               v118 = v117 >= 0.0 ? *&v95[4 * v93] : 0.0;
-              v92 = v117 <= 1.0 ? v118 : 1.0;
+              alphaCopy4 = v117 <= 1.0 ? v118 : 1.0;
               if (vabds_f32(v116, v112) >= 0.5)
               {
-                v92 = a9;
+                alphaCopy4 = alpha;
               }
             }
 
-            v119 = (v112 * v92);
-            v120 = 1.0 - v92;
+            v119 = (v112 * alphaCopy4);
+            v120 = 1.0 - alphaCopy4;
             v121 = v119 + v116 * v120;
             *&v99[4 * v93] = v121;
             if (v22)
             {
-              v122 = &v12[16 * v115 + v19 * (v87 + v114)];
-              v123 = vmlaq_n_f64(vcvtq_f64_f32(vmul_n_f32(*v113.f32, v92)), vcvtq_f64_f32(*&v122[16 * v93]), v120);
+              v122 = &v12[16 * v115 + prevNormalsCopy * (v87 + v114)];
+              v123 = vmlaq_n_f64(vcvtq_f64_f32(vmul_n_f32(*v113.f32, alphaCopy4)), vcvtq_f64_f32(*&v122[16 * v93]), v120);
               *v123.f32 = vcvt_f32_f64(v123);
-              v124 = vmuls_lane_f32(v92, v113, 2) + COERCE_FLOAT(*&v122[16 * v93 + 8]) * v120;
+              v124 = vmuls_lane_f32(alphaCopy4, v113, 2) + COERCE_FLOAT(*&v122[16 * v93 + 8]) * v120;
               v123.f32[2] = v124;
               v125 = vmulq_f32(v123, v123);
               *&v126 = v125.f32[2] + vaddv_f32(*v125.f32);
@@ -3956,35 +3956,35 @@ LABEL_83:
       while (v87 != v84);
     }
 
-    CVPixelBufferUnlockBaseAddress(a7, 1uLL);
-    CVPixelBufferUnlockBaseAddress(a3, 1uLL);
-    CVPixelBufferUnlockBaseAddress(a4, 1uLL);
+    CVPixelBufferUnlockBaseAddress(flow, 1uLL);
+    CVPixelBufferUnlockBaseAddress(depth, 1uLL);
+    CVPixelBufferUnlockBaseAddress(prevDepth, 1uLL);
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
     if (v22)
     {
-      CVPixelBufferUnlockBaseAddress(a11, 0);
-      CVPixelBufferUnlockBaseAddress(a5, 1uLL);
+      CVPixelBufferUnlockBaseAddress(output, 0);
+      CVPixelBufferUnlockBaseAddress(normals, 1uLL);
       CVPixelBufferUnlockBaseAddress(v131, 1uLL);
     }
 
-    if (!a8)
+    if (!map)
     {
       return 0;
     }
 
 LABEL_122:
-    CVPixelBufferUnlockBaseAddress(a8, 1uLL);
+    CVPixelBufferUnlockBaseAddress(map, 1uLL);
     return 0;
   }
 
   return result;
 }
 
-+ (int64_t)postProcessWithDepth:(__CVBuffer *)a3 confidence:(__CVBuffer *)a4 normals:(__CVBuffer *)a5 depthOutput:(__CVBuffer *)a6 confidenceOutput:(__CVBuffer *)a7 normalsOutput:(__CVBuffer *)a8 normalsRotation:(int64_t)a9 rawConfidenceUnits:(unint64_t)a10 outConfidenceUnits:(unint64_t)a11 confidenceLevelRanges:(id)a12
++ (int64_t)postProcessWithDepth:(__CVBuffer *)depth confidence:(__CVBuffer *)confidence normals:(__CVBuffer *)normals depthOutput:(__CVBuffer *)output confidenceOutput:(__CVBuffer *)confidenceOutput normalsOutput:(__CVBuffer *)normalsOutput normalsRotation:(int64_t)rotation rawConfidenceUnits:(unint64_t)self0 outConfidenceUnits:(unint64_t)self1 confidenceLevelRanges:(id)self2
 {
-  v18 = a12;
-  v19 = [ADUtils postProcessDepth:a3 depthOutput:a6];
-  if (!v19 && (!a4 || !a7 || (v19 = [ADUtils postProcessConfidence:a4 confidenceOutput:a7 rawConfidenceUnits:a10 outConfidenceUnits:a11 confidenceLevelRanges:v18]) == 0) && (!a5 || !a8 || (v19 = [ADUtils postProcessNormals:a5 normalsOutput:a8 normalsRotation:a9]) == 0))
+  rangesCopy = ranges;
+  v19 = [ADUtils postProcessDepth:depth depthOutput:output];
+  if (!v19 && (!confidence || !confidenceOutput || (v19 = [ADUtils postProcessConfidence:confidence confidenceOutput:confidenceOutput rawConfidenceUnits:units outConfidenceUnits:confidenceUnits confidenceLevelRanges:rangesCopy]) == 0) && (!normals || !normalsOutput || (v19 = [ADUtils postProcessNormals:normals normalsOutput:normalsOutput normalsRotation:rotation]) == 0))
   {
     v19 = 0;
   }
@@ -3992,18 +3992,18 @@ LABEL_122:
   return v19;
 }
 
-+ (int64_t)postProcessNormals:(__CVBuffer *)a3 normalsOutput:(__CVBuffer *)a4 normalsRotation:(int64_t)a5
++ (int64_t)postProcessNormals:(__CVBuffer *)normals normalsOutput:(__CVBuffer *)output normalsRotation:(int64_t)rotation
 {
   v16 = *MEMORY[0x277D85DE8];
   result = -22953;
-  if (a3 && a4)
+  if (normals && output)
   {
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(normals);
     v10 = PixelFormatType;
-    if ((PixelFormatType == 1717856627 || PixelFormatType == 1717855600) && PixelFormatType == CVPixelBufferGetPixelFormatType(a4))
+    if ((PixelFormatType == 1717856627 || PixelFormatType == 1717855600) && PixelFormatType == CVPixelBufferGetPixelFormatType(output))
     {
 
-      return [ADUtils copyModifyNormalsPixelBuffer:a3 output:a4 normalsRotation:a5];
+      return [ADUtils copyModifyNormalsPixelBuffer:normals output:output normalsRotation:rotation];
     }
 
     else
@@ -4028,26 +4028,26 @@ LABEL_122:
   return result;
 }
 
-+ (int64_t)postProcessConfidence:(__CVBuffer *)a3 confidenceOutput:(__CVBuffer *)a4 rawConfidenceUnits:(unint64_t)a5 outConfidenceUnits:(unint64_t)a6 confidenceLevelRanges:(id)a7
++ (int64_t)postProcessConfidence:(__CVBuffer *)confidence confidenceOutput:(__CVBuffer *)output rawConfidenceUnits:(unint64_t)units outConfidenceUnits:(unint64_t)confidenceUnits confidenceLevelRanges:(id)ranges
 {
   v229 = *MEMORY[0x277D85DE8];
-  v11 = a7;
+  rangesCopy = ranges;
   v12 = -22950;
-  if (!a3 || !a4)
+  if (!confidence || !output)
   {
     goto LABEL_409;
   }
 
-  if (a6 > 1)
+  if (confidenceUnits > 1)
   {
-    if (a6 != 2)
+    if (confidenceUnits != 2)
     {
-      if (a6 != 3)
+      if (confidenceUnits != 3)
       {
         goto LABEL_409;
       }
 
-      if (a5 != 3)
+      if (units != 3)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
@@ -4062,14 +4062,14 @@ LABEL_122:
       goto LABEL_29;
     }
 
-    if (a5 != 3)
+    if (units != 3)
     {
-      if (a5 == 2)
+      if (units == 2)
       {
         goto LABEL_29;
       }
 
-      if (a5)
+      if (units)
       {
         goto LABEL_409;
       }
@@ -4078,8 +4078,8 @@ LABEL_122:
       v22 = *(MEMORY[0x277CBF3A0] + 8);
       v17 = *(MEMORY[0x277CBF3A0] + 16);
       v16 = *(MEMORY[0x277CBF3A0] + 24);
-      PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-      v23 = CVPixelBufferGetPixelFormatType(a4);
+      PixelFormatType = CVPixelBufferGetPixelFormatType(confidence);
+      v23 = CVPixelBufferGetPixelFormatType(output);
       v20 = v23;
       if (PixelFormatType > 1717856626)
       {
@@ -4112,12 +4112,12 @@ LABEL_68:
           if (v23 == 1278226536)
           {
 LABEL_398:
-            Width = CVPixelBufferGetWidth(a3);
-            Height = CVPixelBufferGetHeight(a3);
-            v28 = CVPixelBufferGetWidth(a4);
-            v29 = CVPixelBufferGetHeight(a4);
-            BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-            v187 = CVPixelBufferGetBytesPerRow(a4);
+            Width = CVPixelBufferGetWidth(confidence);
+            Height = CVPixelBufferGetHeight(confidence);
+            v28 = CVPixelBufferGetWidth(output);
+            v29 = CVPixelBufferGetHeight(output);
+            BytesPerRow = CVPixelBufferGetBytesPerRow(confidence);
+            v187 = CVPixelBufferGetBytesPerRow(output);
             v245.origin.x = v21;
             v245.origin.y = v22;
             v245.size.width = v17;
@@ -4137,14 +4137,14 @@ LABEL_398:
 
             if (v21 + v17 <= Width && v22 + v16 <= Height)
             {
-              if (a3 != a4)
+              if (confidence != output)
               {
-                CVPixelBufferLockBaseAddress(a3, 1uLL);
+                CVPixelBufferLockBaseAddress(confidence, 1uLL);
               }
 
-              CVPixelBufferLockBaseAddress(a4, 0);
-              BaseAddress = CVPixelBufferGetBaseAddress(a3);
-              v206 = CVPixelBufferGetBaseAddress(a4);
+              CVPixelBufferLockBaseAddress(output, 0);
+              BaseAddress = CVPixelBufferGetBaseAddress(confidence);
+              v206 = CVPixelBufferGetBaseAddress(output);
               if (v17 > 0.0 && v16 > 0.0)
               {
                 v207 = 0;
@@ -4186,12 +4186,12 @@ LABEL_398:
           goto LABEL_398;
         }
 
-        Width = CVPixelBufferGetWidth(a3);
-        Height = CVPixelBufferGetHeight(a3);
-        v28 = CVPixelBufferGetWidth(a4);
-        v29 = CVPixelBufferGetHeight(a4);
-        v178 = CVPixelBufferGetBytesPerRow(a3);
-        v179 = CVPixelBufferGetBytesPerRow(a4);
+        Width = CVPixelBufferGetWidth(confidence);
+        Height = CVPixelBufferGetHeight(confidence);
+        v28 = CVPixelBufferGetWidth(output);
+        v29 = CVPixelBufferGetHeight(output);
+        v178 = CVPixelBufferGetBytesPerRow(confidence);
+        v179 = CVPixelBufferGetBytesPerRow(output);
         v244.origin.x = v21;
         v244.origin.y = v22;
         v244.size.width = v17;
@@ -4211,14 +4211,14 @@ LABEL_398:
 
         if (v21 + v17 <= Width && v22 + v16 <= Height)
         {
-          if (a3 != a4)
+          if (confidence != output)
           {
-            CVPixelBufferLockBaseAddress(a3, 1uLL);
+            CVPixelBufferLockBaseAddress(confidence, 1uLL);
           }
 
-          CVPixelBufferLockBaseAddress(a4, 0);
-          v180 = CVPixelBufferGetBaseAddress(a3);
-          v181 = CVPixelBufferGetBaseAddress(a4);
+          CVPixelBufferLockBaseAddress(output, 0);
+          v180 = CVPixelBufferGetBaseAddress(confidence);
+          v181 = CVPixelBufferGetBaseAddress(output);
           if (v17 > 0.0 && v16 > 0.0)
           {
             v182 = 0;
@@ -4277,12 +4277,12 @@ LABEL_88:
         }
 
 LABEL_242:
-        Width = CVPixelBufferGetWidth(a3);
-        Height = CVPixelBufferGetHeight(a3);
-        v28 = CVPixelBufferGetWidth(a4);
-        v29 = CVPixelBufferGetHeight(a4);
-        v114 = CVPixelBufferGetBytesPerRow(a3);
-        v115 = CVPixelBufferGetBytesPerRow(a4);
+        Width = CVPixelBufferGetWidth(confidence);
+        Height = CVPixelBufferGetHeight(confidence);
+        v28 = CVPixelBufferGetWidth(output);
+        v29 = CVPixelBufferGetHeight(output);
+        v114 = CVPixelBufferGetBytesPerRow(confidence);
+        v115 = CVPixelBufferGetBytesPerRow(output);
         v237.origin.x = v21;
         v237.origin.y = v22;
         v237.size.width = v17;
@@ -4302,14 +4302,14 @@ LABEL_242:
 
         if (v21 + v17 <= Width && v22 + v16 <= Height)
         {
-          if (a3 != a4)
+          if (confidence != output)
           {
-            CVPixelBufferLockBaseAddress(a3, 1uLL);
+            CVPixelBufferLockBaseAddress(confidence, 1uLL);
           }
 
-          CVPixelBufferLockBaseAddress(a4, 0);
-          v116 = CVPixelBufferGetBaseAddress(a3);
-          v117 = CVPixelBufferGetBaseAddress(a4);
+          CVPixelBufferLockBaseAddress(output, 0);
+          v116 = CVPixelBufferGetBaseAddress(confidence);
+          v117 = CVPixelBufferGetBaseAddress(output);
           if (v17 > 0.0 && v16 > 0.0)
           {
             v118 = 0;
@@ -4343,12 +4343,12 @@ LABEL_242:
       if (v23 == 1751411059 || v23 == 1751410032)
       {
 LABEL_166:
-        Width = CVPixelBufferGetWidth(a3);
-        Height = CVPixelBufferGetHeight(a3);
-        v28 = CVPixelBufferGetWidth(a4);
-        v29 = CVPixelBufferGetHeight(a4);
-        v72 = CVPixelBufferGetBytesPerRow(a3);
-        v73 = CVPixelBufferGetBytesPerRow(a4);
+        Width = CVPixelBufferGetWidth(confidence);
+        Height = CVPixelBufferGetHeight(confidence);
+        v28 = CVPixelBufferGetWidth(output);
+        v29 = CVPixelBufferGetHeight(output);
+        v72 = CVPixelBufferGetBytesPerRow(confidence);
+        v73 = CVPixelBufferGetBytesPerRow(output);
         v233.origin.x = v21;
         v233.origin.y = v22;
         v233.size.width = v17;
@@ -4368,14 +4368,14 @@ LABEL_166:
 
         if (v21 + v17 <= Width && v22 + v16 <= Height)
         {
-          if (a3 != a4)
+          if (confidence != output)
           {
-            CVPixelBufferLockBaseAddress(a3, 1uLL);
+            CVPixelBufferLockBaseAddress(confidence, 1uLL);
           }
 
-          CVPixelBufferLockBaseAddress(a4, 0);
-          v74 = CVPixelBufferGetBaseAddress(a3);
-          v75 = CVPixelBufferGetBaseAddress(a4);
+          CVPixelBufferLockBaseAddress(output, 0);
+          v74 = CVPixelBufferGetBaseAddress(confidence);
+          v75 = CVPixelBufferGetBaseAddress(output);
           if (v17 > 0.0 && v16 > 0.0)
           {
             v76 = 0;
@@ -4416,8 +4416,8 @@ LABEL_396:
     v14 = *(MEMORY[0x277CBF3A0] + 8);
     v17 = *(MEMORY[0x277CBF3A0] + 16);
     v16 = *(MEMORY[0x277CBF3A0] + 24);
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-    v25 = CVPixelBufferGetPixelFormatType(a4);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(confidence);
+    v25 = CVPixelBufferGetPixelFormatType(output);
     v20 = v25;
     if (PixelFormatType > 1717856626)
     {
@@ -4466,12 +4466,12 @@ LABEL_52:
         }
 
 LABEL_325:
-        Width = CVPixelBufferGetWidth(a3);
-        Height = CVPixelBufferGetHeight(a3);
-        v28 = CVPixelBufferGetWidth(a4);
-        v29 = CVPixelBufferGetHeight(a4);
-        CVPixelBufferGetBytesPerRow(a3);
-        v153 = CVPixelBufferGetBytesPerRow(a4);
+        Width = CVPixelBufferGetWidth(confidence);
+        Height = CVPixelBufferGetHeight(confidence);
+        v28 = CVPixelBufferGetWidth(output);
+        v29 = CVPixelBufferGetHeight(output);
+        CVPixelBufferGetBytesPerRow(confidence);
+        v153 = CVPixelBufferGetBytesPerRow(output);
         v241.origin.x = v15;
         v241.origin.y = v14;
         v241.size.width = v17;
@@ -4488,14 +4488,14 @@ LABEL_325:
         {
           if (v15 + v17 <= Width && v14 + v16 <= Height)
           {
-            if (a3 != a4)
+            if (confidence != output)
             {
-              CVPixelBufferLockBaseAddress(a3, 1uLL);
+              CVPixelBufferLockBaseAddress(confidence, 1uLL);
             }
 
-            CVPixelBufferLockBaseAddress(a4, 0);
-            CVPixelBufferGetBaseAddress(a3);
-            v154 = CVPixelBufferGetBaseAddress(a4);
+            CVPixelBufferLockBaseAddress(output, 0);
+            CVPixelBufferGetBaseAddress(confidence);
+            v154 = CVPixelBufferGetBaseAddress(output);
             if (v17 > 0.0 && v16 > 0.0)
             {
               v155 = 0;
@@ -4541,12 +4541,12 @@ LABEL_325:
         goto LABEL_407;
       }
 
-      Width = CVPixelBufferGetWidth(a3);
-      Height = CVPixelBufferGetHeight(a3);
-      v28 = CVPixelBufferGetWidth(a4);
-      v29 = CVPixelBufferGetHeight(a4);
-      CVPixelBufferGetBytesPerRow(a3);
-      v143 = CVPixelBufferGetBytesPerRow(a4);
+      Width = CVPixelBufferGetWidth(confidence);
+      Height = CVPixelBufferGetHeight(confidence);
+      v28 = CVPixelBufferGetWidth(output);
+      v29 = CVPixelBufferGetHeight(output);
+      CVPixelBufferGetBytesPerRow(confidence);
+      v143 = CVPixelBufferGetBytesPerRow(output);
       v240.origin.x = v15;
       v240.origin.y = v14;
       v240.size.width = v17;
@@ -4563,14 +4563,14 @@ LABEL_325:
       {
         if (v15 + v17 <= Width && v14 + v16 <= Height)
         {
-          if (a3 != a4)
+          if (confidence != output)
           {
-            CVPixelBufferLockBaseAddress(a3, 1uLL);
+            CVPixelBufferLockBaseAddress(confidence, 1uLL);
           }
 
-          CVPixelBufferLockBaseAddress(a4, 0);
-          CVPixelBufferGetBaseAddress(a3);
-          v144 = CVPixelBufferGetBaseAddress(a4);
+          CVPixelBufferLockBaseAddress(output, 0);
+          CVPixelBufferGetBaseAddress(confidence);
+          v144 = CVPixelBufferGetBaseAddress(output);
           if (v17 > 0.0 && v16 > 0.0)
           {
             v145 = 0;
@@ -4631,12 +4631,12 @@ LABEL_78:
         }
 
 LABEL_202:
-        Width = CVPixelBufferGetWidth(a3);
-        Height = CVPixelBufferGetHeight(a3);
-        v28 = CVPixelBufferGetWidth(a4);
-        v29 = CVPixelBufferGetHeight(a4);
-        v89 = CVPixelBufferGetBytesPerRow(a3);
-        v90 = CVPixelBufferGetBytesPerRow(a4);
+        Width = CVPixelBufferGetWidth(confidence);
+        Height = CVPixelBufferGetHeight(confidence);
+        v28 = CVPixelBufferGetWidth(output);
+        v29 = CVPixelBufferGetHeight(output);
+        v89 = CVPixelBufferGetBytesPerRow(confidence);
+        v90 = CVPixelBufferGetBytesPerRow(output);
         v235.origin.x = v15;
         v235.origin.y = v14;
         v235.size.width = v17;
@@ -4653,14 +4653,14 @@ LABEL_202:
         {
           if (v15 + v17 <= Width && v14 + v16 <= Height)
           {
-            if (a3 != a4)
+            if (confidence != output)
             {
-              CVPixelBufferLockBaseAddress(a3, 1uLL);
+              CVPixelBufferLockBaseAddress(confidence, 1uLL);
             }
 
-            CVPixelBufferLockBaseAddress(a4, 0);
-            v91 = CVPixelBufferGetBaseAddress(a3);
-            v92 = CVPixelBufferGetBaseAddress(a4);
+            CVPixelBufferLockBaseAddress(output, 0);
+            v91 = CVPixelBufferGetBaseAddress(confidence);
+            v92 = CVPixelBufferGetBaseAddress(output);
             if (v17 > 0.0 && v16 > 0.0)
             {
               v93 = 0;
@@ -4713,12 +4713,12 @@ LABEL_202:
     if (v25 == 1751411059 || v25 == 1751410032)
     {
 LABEL_120:
-      Width = CVPixelBufferGetWidth(a3);
-      Height = CVPixelBufferGetHeight(a3);
-      v28 = CVPixelBufferGetWidth(a4);
-      v29 = CVPixelBufferGetHeight(a4);
-      v45 = CVPixelBufferGetBytesPerRow(a3);
-      v46 = CVPixelBufferGetBytesPerRow(a4);
+      Width = CVPixelBufferGetWidth(confidence);
+      Height = CVPixelBufferGetHeight(confidence);
+      v28 = CVPixelBufferGetWidth(output);
+      v29 = CVPixelBufferGetHeight(output);
+      v45 = CVPixelBufferGetBytesPerRow(confidence);
+      v46 = CVPixelBufferGetBytesPerRow(output);
       v231.origin.x = v15;
       v231.origin.y = v14;
       v231.size.width = v17;
@@ -4735,14 +4735,14 @@ LABEL_120:
       {
         if (v15 + v17 <= Width && v14 + v16 <= Height)
         {
-          if (a3 != a4)
+          if (confidence != output)
           {
-            CVPixelBufferLockBaseAddress(a3, 1uLL);
+            CVPixelBufferLockBaseAddress(confidence, 1uLL);
           }
 
-          CVPixelBufferLockBaseAddress(a4, 0);
-          v47 = CVPixelBufferGetBaseAddress(a3);
-          v48 = CVPixelBufferGetBaseAddress(a4);
+          CVPixelBufferLockBaseAddress(output, 0);
+          v47 = CVPixelBufferGetBaseAddress(confidence);
+          v48 = CVPixelBufferGetBaseAddress(output);
           if (v17 > 0.0 && v16 > 0.0)
           {
             v49 = 0;
@@ -4794,13 +4794,13 @@ LABEL_323:
     goto LABEL_441;
   }
 
-  if (!a6)
+  if (!confidenceUnits)
   {
-    if (a5)
+    if (units)
     {
-      if (a5 != 2)
+      if (units != 2)
       {
-        if (a5 != 3)
+        if (units != 3)
         {
           goto LABEL_409;
         }
@@ -4809,8 +4809,8 @@ LABEL_323:
         v14 = *(MEMORY[0x277CBF3A0] + 8);
         v17 = *(MEMORY[0x277CBF3A0] + 16);
         v16 = *(MEMORY[0x277CBF3A0] + 24);
-        PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-        v19 = CVPixelBufferGetPixelFormatType(a4);
+        PixelFormatType = CVPixelBufferGetPixelFormatType(confidence);
+        v19 = CVPixelBufferGetPixelFormatType(output);
         v20 = v19;
         if (PixelFormatType > 1717856626)
         {
@@ -4859,12 +4859,12 @@ LABEL_60:
             }
 
 LABEL_371:
-            Width = CVPixelBufferGetWidth(a3);
-            Height = CVPixelBufferGetHeight(a3);
-            v28 = CVPixelBufferGetWidth(a4);
-            v29 = CVPixelBufferGetHeight(a4);
-            CVPixelBufferGetBytesPerRow(a3);
-            v177 = CVPixelBufferGetBytesPerRow(a4);
+            Width = CVPixelBufferGetWidth(confidence);
+            Height = CVPixelBufferGetHeight(confidence);
+            v28 = CVPixelBufferGetWidth(output);
+            v29 = CVPixelBufferGetHeight(output);
+            CVPixelBufferGetBytesPerRow(confidence);
+            v177 = CVPixelBufferGetBytesPerRow(output);
             v243.origin.x = v15;
             v243.origin.y = v14;
             v243.size.width = v17;
@@ -4881,14 +4881,14 @@ LABEL_371:
             {
               if (v15 + v17 <= Width && v14 + v16 <= Height)
               {
-                if (a3 != a4)
+                if (confidence != output)
                 {
-                  CVPixelBufferLockBaseAddress(a3, 1uLL);
+                  CVPixelBufferLockBaseAddress(confidence, 1uLL);
                 }
 
-                CVPixelBufferLockBaseAddress(a4, 0);
-                CVPixelBufferGetBaseAddress(a3);
-                v192 = CVPixelBufferGetBaseAddress(a4);
+                CVPixelBufferLockBaseAddress(output, 0);
+                CVPixelBufferGetBaseAddress(confidence);
+                v192 = CVPixelBufferGetBaseAddress(output);
                 if (v17 > 0.0 && v16 > 0.0)
                 {
                   v193 = 0;
@@ -4956,12 +4956,12 @@ LABEL_371:
             goto LABEL_407;
           }
 
-          Width = CVPixelBufferGetWidth(a3);
-          Height = CVPixelBufferGetHeight(a3);
-          v28 = CVPixelBufferGetWidth(a4);
-          v29 = CVPixelBufferGetHeight(a4);
-          CVPixelBufferGetBytesPerRow(a3);
-          v164 = CVPixelBufferGetBytesPerRow(a4);
+          Width = CVPixelBufferGetWidth(confidence);
+          Height = CVPixelBufferGetHeight(confidence);
+          v28 = CVPixelBufferGetWidth(output);
+          v29 = CVPixelBufferGetHeight(output);
+          CVPixelBufferGetBytesPerRow(confidence);
+          v164 = CVPixelBufferGetBytesPerRow(output);
           v242.origin.x = v15;
           v242.origin.y = v14;
           v242.size.width = v17;
@@ -4978,14 +4978,14 @@ LABEL_371:
           {
             if (v15 + v17 <= Width && v14 + v16 <= Height)
             {
-              if (a3 != a4)
+              if (confidence != output)
               {
-                CVPixelBufferLockBaseAddress(a3, 1uLL);
+                CVPixelBufferLockBaseAddress(confidence, 1uLL);
               }
 
-              CVPixelBufferLockBaseAddress(a4, 0);
-              CVPixelBufferGetBaseAddress(a3);
-              v165 = CVPixelBufferGetBaseAddress(a4);
+              CVPixelBufferLockBaseAddress(output, 0);
+              CVPixelBufferGetBaseAddress(confidence);
+              v165 = CVPixelBufferGetBaseAddress(output);
               if (v17 > 0.0 && v16 > 0.0)
               {
                 v166 = 0;
@@ -5067,12 +5067,12 @@ LABEL_83:
             }
 
 LABEL_219:
-            Width = CVPixelBufferGetWidth(a3);
-            Height = CVPixelBufferGetHeight(a3);
-            v28 = CVPixelBufferGetWidth(a4);
-            v29 = CVPixelBufferGetHeight(a4);
-            v100 = CVPixelBufferGetBytesPerRow(a3);
-            v101 = CVPixelBufferGetBytesPerRow(a4);
+            Width = CVPixelBufferGetWidth(confidence);
+            Height = CVPixelBufferGetHeight(confidence);
+            v28 = CVPixelBufferGetWidth(output);
+            v29 = CVPixelBufferGetHeight(output);
+            v100 = CVPixelBufferGetBytesPerRow(confidence);
+            v101 = CVPixelBufferGetBytesPerRow(output);
             v236.origin.x = v15;
             v236.origin.y = v14;
             v236.size.width = v17;
@@ -5089,14 +5089,14 @@ LABEL_219:
             {
               if (v15 + v17 <= Width && v14 + v16 <= Height)
               {
-                if (a3 != a4)
+                if (confidence != output)
                 {
-                  CVPixelBufferLockBaseAddress(a3, 1uLL);
+                  CVPixelBufferLockBaseAddress(confidence, 1uLL);
                 }
 
-                CVPixelBufferLockBaseAddress(a4, 0);
-                v102 = CVPixelBufferGetBaseAddress(a3);
-                v103 = CVPixelBufferGetBaseAddress(a4);
+                CVPixelBufferLockBaseAddress(output, 0);
+                v102 = CVPixelBufferGetBaseAddress(confidence);
+                v103 = CVPixelBufferGetBaseAddress(output);
                 if (v17 > 0.0 && v16 > 0.0)
                 {
                   v104 = 0;
@@ -5151,12 +5151,12 @@ LABEL_219:
                 }
 
 LABEL_438:
-                if (a3 != a4)
+                if (confidence != output)
                 {
-                  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+                  CVPixelBufferUnlockBaseAddress(confidence, 1uLL);
                 }
 
-                CVPixelBufferUnlockBaseAddress(a4, 0);
+                CVPixelBufferUnlockBaseAddress(output, 0);
                 v12 = 0;
                 goto LABEL_409;
               }
@@ -5178,12 +5178,12 @@ LABEL_438:
         if (v19 == 1751411059 || v19 == 1751410032)
         {
 LABEL_140:
-          Width = CVPixelBufferGetWidth(a3);
-          Height = CVPixelBufferGetHeight(a3);
-          v28 = CVPixelBufferGetWidth(a4);
-          v29 = CVPixelBufferGetHeight(a4);
-          v57 = CVPixelBufferGetBytesPerRow(a3);
-          v58 = CVPixelBufferGetBytesPerRow(a4);
+          Width = CVPixelBufferGetWidth(confidence);
+          Height = CVPixelBufferGetHeight(confidence);
+          v28 = CVPixelBufferGetWidth(output);
+          v29 = CVPixelBufferGetHeight(output);
+          v57 = CVPixelBufferGetBytesPerRow(confidence);
+          v58 = CVPixelBufferGetBytesPerRow(output);
           v232.origin.x = v15;
           v232.origin.y = v14;
           v232.size.width = v17;
@@ -5200,14 +5200,14 @@ LABEL_140:
           {
             if (v15 + v17 <= Width && v14 + v16 <= Height)
             {
-              if (a3 != a4)
+              if (confidence != output)
               {
-                CVPixelBufferLockBaseAddress(a3, 1uLL);
+                CVPixelBufferLockBaseAddress(confidence, 1uLL);
               }
 
-              CVPixelBufferLockBaseAddress(a4, 0);
-              v59 = CVPixelBufferGetBaseAddress(a3);
-              v60 = CVPixelBufferGetBaseAddress(a4);
+              CVPixelBufferLockBaseAddress(output, 0);
+              v59 = CVPixelBufferGetBaseAddress(confidence);
+              v60 = CVPixelBufferGetBaseAddress(output);
               if (v17 > 0.0 && v16 > 0.0)
               {
                 v61 = 0;
@@ -5329,8 +5329,8 @@ LABEL_397:
       v14 = *(MEMORY[0x277CBF3A0] + 8);
       v17 = *(MEMORY[0x277CBF3A0] + 16);
       v16 = *(MEMORY[0x277CBF3A0] + 24);
-      PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-      v24 = CVPixelBufferGetPixelFormatType(a4);
+      PixelFormatType = CVPixelBufferGetPixelFormatType(confidence);
+      v24 = CVPixelBufferGetPixelFormatType(output);
       v20 = v24;
       if (PixelFormatType > 1717856626)
       {
@@ -5379,12 +5379,12 @@ LABEL_44:
           }
 
 LABEL_282:
-          Width = CVPixelBufferGetWidth(a3);
-          Height = CVPixelBufferGetHeight(a3);
-          v28 = CVPixelBufferGetWidth(a4);
-          v29 = CVPixelBufferGetHeight(a4);
-          v131 = CVPixelBufferGetBytesPerRow(a3);
-          v132 = CVPixelBufferGetBytesPerRow(a4);
+          Width = CVPixelBufferGetWidth(confidence);
+          Height = CVPixelBufferGetHeight(confidence);
+          v28 = CVPixelBufferGetWidth(output);
+          v29 = CVPixelBufferGetHeight(output);
+          v131 = CVPixelBufferGetBytesPerRow(confidence);
+          v132 = CVPixelBufferGetBytesPerRow(output);
           v239.origin.x = v15;
           v239.origin.y = v14;
           v239.size.width = v17;
@@ -5401,14 +5401,14 @@ LABEL_282:
           {
             if (v15 + v17 <= Width && v14 + v16 <= Height)
             {
-              if (a3 != a4)
+              if (confidence != output)
               {
-                CVPixelBufferLockBaseAddress(a3, 1uLL);
+                CVPixelBufferLockBaseAddress(confidence, 1uLL);
               }
 
-              CVPixelBufferLockBaseAddress(a4, 0);
-              v133 = CVPixelBufferGetBaseAddress(a3);
-              v134 = CVPixelBufferGetBaseAddress(a4);
+              CVPixelBufferLockBaseAddress(output, 0);
+              v133 = CVPixelBufferGetBaseAddress(confidence);
+              v134 = CVPixelBufferGetBaseAddress(output);
               if (v17 > 0.0 && v16 > 0.0)
               {
                 v135 = 0;
@@ -5462,12 +5462,12 @@ LABEL_282:
           goto LABEL_407;
         }
 
-        Width = CVPixelBufferGetWidth(a3);
-        Height = CVPixelBufferGetHeight(a3);
-        v28 = CVPixelBufferGetWidth(a4);
-        v29 = CVPixelBufferGetHeight(a4);
-        v120 = CVPixelBufferGetBytesPerRow(a3);
-        v121 = CVPixelBufferGetBytesPerRow(a4);
+        Width = CVPixelBufferGetWidth(confidence);
+        Height = CVPixelBufferGetHeight(confidence);
+        v28 = CVPixelBufferGetWidth(output);
+        v29 = CVPixelBufferGetHeight(output);
+        v120 = CVPixelBufferGetBytesPerRow(confidence);
+        v121 = CVPixelBufferGetBytesPerRow(output);
         v238.origin.x = v15;
         v238.origin.y = v14;
         v238.size.width = v17;
@@ -5484,14 +5484,14 @@ LABEL_282:
         {
           if (v15 + v17 <= Width && v14 + v16 <= Height)
           {
-            if (a3 != a4)
+            if (confidence != output)
             {
-              CVPixelBufferLockBaseAddress(a3, 1uLL);
+              CVPixelBufferLockBaseAddress(confidence, 1uLL);
             }
 
-            CVPixelBufferLockBaseAddress(a4, 0);
-            v122 = CVPixelBufferGetBaseAddress(a3);
-            v123 = CVPixelBufferGetBaseAddress(a4);
+            CVPixelBufferLockBaseAddress(output, 0);
+            v122 = CVPixelBufferGetBaseAddress(confidence);
+            v123 = CVPixelBufferGetBaseAddress(output);
             if (v17 > 0.0 && v16 > 0.0)
             {
               v124 = 0;
@@ -5559,12 +5559,12 @@ LABEL_73:
           }
 
 LABEL_181:
-          Width = CVPixelBufferGetWidth(a3);
-          Height = CVPixelBufferGetHeight(a3);
-          v28 = CVPixelBufferGetWidth(a4);
-          v29 = CVPixelBufferGetHeight(a4);
-          v79 = CVPixelBufferGetBytesPerRow(a3);
-          v80 = CVPixelBufferGetBytesPerRow(a4);
+          Width = CVPixelBufferGetWidth(confidence);
+          Height = CVPixelBufferGetHeight(confidence);
+          v28 = CVPixelBufferGetWidth(output);
+          v29 = CVPixelBufferGetHeight(output);
+          v79 = CVPixelBufferGetBytesPerRow(confidence);
+          v80 = CVPixelBufferGetBytesPerRow(output);
           v234.origin.x = v15;
           v234.origin.y = v14;
           v234.size.width = v17;
@@ -5581,14 +5581,14 @@ LABEL_181:
           {
             if (v15 + v17 <= Width && v14 + v16 <= Height)
             {
-              if (a3 != a4)
+              if (confidence != output)
               {
-                CVPixelBufferLockBaseAddress(a3, 1uLL);
+                CVPixelBufferLockBaseAddress(confidence, 1uLL);
               }
 
-              CVPixelBufferLockBaseAddress(a4, 0);
-              v81 = CVPixelBufferGetBaseAddress(a3);
-              v82 = CVPixelBufferGetBaseAddress(a4);
+              CVPixelBufferLockBaseAddress(output, 0);
+              v81 = CVPixelBufferGetBaseAddress(confidence);
+              v82 = CVPixelBufferGetBaseAddress(output);
               if (v17 > 0.0 && v16 > 0.0)
               {
                 v83 = 0;
@@ -5649,12 +5649,12 @@ LABEL_181:
       if (v24 == 1751411059 || v24 == 1751410032)
       {
 LABEL_96:
-        Width = CVPixelBufferGetWidth(a3);
-        Height = CVPixelBufferGetHeight(a3);
-        v28 = CVPixelBufferGetWidth(a4);
-        v29 = CVPixelBufferGetHeight(a4);
-        v30 = CVPixelBufferGetBytesPerRow(a3);
-        v31 = CVPixelBufferGetBytesPerRow(a4);
+        Width = CVPixelBufferGetWidth(confidence);
+        Height = CVPixelBufferGetHeight(confidence);
+        v28 = CVPixelBufferGetWidth(output);
+        v29 = CVPixelBufferGetHeight(output);
+        v30 = CVPixelBufferGetBytesPerRow(confidence);
+        v31 = CVPixelBufferGetBytesPerRow(output);
         v230.origin.x = v15;
         v230.origin.y = v14;
         v230.size.width = v17;
@@ -5671,14 +5671,14 @@ LABEL_96:
         {
           if (v15 + v17 <= Width && v14 + v16 <= Height)
           {
-            if (a3 != a4)
+            if (confidence != output)
             {
-              CVPixelBufferLockBaseAddress(a3, 1uLL);
+              CVPixelBufferLockBaseAddress(confidence, 1uLL);
             }
 
-            CVPixelBufferLockBaseAddress(a4, 0);
-            v32 = CVPixelBufferGetBaseAddress(a3);
-            v33 = CVPixelBufferGetBaseAddress(a4);
+            CVPixelBufferLockBaseAddress(output, 0);
+            v32 = CVPixelBufferGetBaseAddress(confidence);
+            v33 = CVPixelBufferGetBaseAddress(output);
             if (v17 > 0.0 && v16 > 0.0)
             {
               v34 = 0;
@@ -5776,13 +5776,13 @@ LABEL_441:
     }
 
 LABEL_29:
-    v13 = copyModifyPixelBuffer<&(postProcessingNone(float))>(a3, a4, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24));
+    v13 = copyModifyPixelBuffer<&(postProcessingNone(float))>(confidence, output, *MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24));
     goto LABEL_30;
   }
 
-  if (a6 == 1)
+  if (confidenceUnits == 1)
   {
-    v13 = [ADUtils convertToLevelsConfidence:a3 confidenceOutput:a4 confidenceLevelRanges:v11];
+    v13 = [ADUtils convertToLevelsConfidence:confidence confidenceOutput:output confidenceLevelRanges:rangesCopy];
 LABEL_30:
     v12 = v13;
   }
@@ -5792,28 +5792,28 @@ LABEL_409:
   return v12;
 }
 
-+ (int64_t)postProcessDepth:(__CVBuffer *)a3 depthOutput:(__CVBuffer *)a4 inputRoi:(CGRect)a5
++ (int64_t)postProcessDepth:(__CVBuffer *)depth depthOutput:(__CVBuffer *)output inputRoi:(CGRect)roi
 {
   v87 = *MEMORY[0x277D85DE8];
   result = -22950;
-  if (!a3 || !a4)
+  if (!depth || !output)
   {
     return result;
   }
 
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  v13 = CVPixelBufferGetPixelFormatType(a4);
+  height = roi.size.height;
+  width = roi.size.width;
+  y = roi.origin.y;
+  x = roi.origin.x;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(depth);
+  v13 = CVPixelBufferGetPixelFormatType(output);
   if (PixelFormatType == v13)
   {
     v93.origin.x = x;
     v93.origin.y = y;
     v93.size.width = width;
     v93.size.height = height;
-    if (copyPixelBufferVImage(a4, *MEMORY[0x277CBF348], a3, v93))
+    if (copyPixelBufferVImage(output, *MEMORY[0x277CBF348], depth, v93))
     {
       return -22950;
     }
@@ -5830,11 +5830,11 @@ LABEL_409:
   if (v15 != v17)
   {
 
-    return copyModifyPixelBuffer<&(postProcessingNone(float))>(a3, a4, x, y, width, height);
+    return copyModifyPixelBuffer<&(postProcessingNone(float))>(depth, output, x, y, width, height);
   }
 
-  v18 = CVPixelBufferGetPixelFormatType(a3);
-  v19 = CVPixelBufferGetPixelFormatType(a4);
+  v18 = CVPixelBufferGetPixelFormatType(depth);
+  v19 = CVPixelBufferGetPixelFormatType(output);
   v20 = v19;
   if (v18 > 1717856626)
   {
@@ -5909,12 +5909,12 @@ LABEL_100:
       }
 
 LABEL_102:
-      v21 = CVPixelBufferGetWidth(a3);
-      v22 = CVPixelBufferGetHeight(a3);
-      v23 = CVPixelBufferGetWidth(a4);
-      v24 = CVPixelBufferGetHeight(a4);
-      BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-      v57 = CVPixelBufferGetBytesPerRow(a4);
+      v21 = CVPixelBufferGetWidth(depth);
+      v22 = CVPixelBufferGetHeight(depth);
+      v23 = CVPixelBufferGetWidth(output);
+      v24 = CVPixelBufferGetHeight(output);
+      BytesPerRow = CVPixelBufferGetBytesPerRow(depth);
+      v57 = CVPixelBufferGetBytesPerRow(output);
       v92.origin.x = x;
       v92.origin.y = y;
       v92.size.width = width;
@@ -5931,14 +5931,14 @@ LABEL_102:
       {
         if (x + width <= v21 && y + height <= v22)
         {
-          if (a3 != a4)
+          if (depth != output)
           {
-            CVPixelBufferLockBaseAddress(a3, 1uLL);
+            CVPixelBufferLockBaseAddress(depth, 1uLL);
           }
 
-          CVPixelBufferLockBaseAddress(a4, 0);
-          BaseAddress = CVPixelBufferGetBaseAddress(a3);
-          v62 = CVPixelBufferGetBaseAddress(a4);
+          CVPixelBufferLockBaseAddress(output, 0);
+          BaseAddress = CVPixelBufferGetBaseAddress(depth);
+          v62 = CVPixelBufferGetBaseAddress(output);
           if (width > 0.0 && height > 0.0)
           {
             v63 = 0;
@@ -5995,12 +5995,12 @@ LABEL_110:
       return -22957;
     }
 
-    v21 = CVPixelBufferGetWidth(a3);
-    v22 = CVPixelBufferGetHeight(a3);
-    v23 = CVPixelBufferGetWidth(a4);
-    v24 = CVPixelBufferGetHeight(a4);
-    v45 = CVPixelBufferGetBytesPerRow(a3);
-    v46 = CVPixelBufferGetBytesPerRow(a4);
+    v21 = CVPixelBufferGetWidth(depth);
+    v22 = CVPixelBufferGetHeight(depth);
+    v23 = CVPixelBufferGetWidth(output);
+    v24 = CVPixelBufferGetHeight(output);
+    v45 = CVPixelBufferGetBytesPerRow(depth);
+    v46 = CVPixelBufferGetBytesPerRow(output);
     v91.origin.x = x;
     v91.origin.y = y;
     v91.size.width = width;
@@ -6017,14 +6017,14 @@ LABEL_110:
     {
       if (x + width <= v21 && y + height <= v22)
       {
-        if (a3 != a4)
+        if (depth != output)
         {
-          CVPixelBufferLockBaseAddress(a3, 1uLL);
+          CVPixelBufferLockBaseAddress(depth, 1uLL);
         }
 
-        CVPixelBufferLockBaseAddress(a4, 0);
-        v47 = CVPixelBufferGetBaseAddress(a3);
-        v48 = CVPixelBufferGetBaseAddress(a4);
+        CVPixelBufferLockBaseAddress(output, 0);
+        v47 = CVPixelBufferGetBaseAddress(depth);
+        v48 = CVPixelBufferGetBaseAddress(output);
         if (width > 0.0 && height > 0.0)
         {
           v49 = 0;
@@ -6097,12 +6097,12 @@ LABEL_36:
     }
 
 LABEL_44:
-    v21 = CVPixelBufferGetWidth(a3);
-    v22 = CVPixelBufferGetHeight(a3);
-    v23 = CVPixelBufferGetWidth(a4);
-    v24 = CVPixelBufferGetHeight(a4);
-    v25 = CVPixelBufferGetBytesPerRow(a3);
-    v26 = CVPixelBufferGetBytesPerRow(a4);
+    v21 = CVPixelBufferGetWidth(depth);
+    v22 = CVPixelBufferGetHeight(depth);
+    v23 = CVPixelBufferGetWidth(output);
+    v24 = CVPixelBufferGetHeight(output);
+    v25 = CVPixelBufferGetBytesPerRow(depth);
+    v26 = CVPixelBufferGetBytesPerRow(output);
     v89.origin.x = x;
     v89.origin.y = y;
     v89.size.width = width;
@@ -6119,14 +6119,14 @@ LABEL_44:
     {
       if (x + width <= v21 && y + height <= v22)
       {
-        if (a3 != a4)
+        if (depth != output)
         {
-          CVPixelBufferLockBaseAddress(a3, 1uLL);
+          CVPixelBufferLockBaseAddress(depth, 1uLL);
         }
 
-        CVPixelBufferLockBaseAddress(a4, 0);
-        v27 = CVPixelBufferGetBaseAddress(a3);
-        v28 = CVPixelBufferGetBaseAddress(a4);
+        CVPixelBufferLockBaseAddress(output, 0);
+        v27 = CVPixelBufferGetBaseAddress(depth);
+        v28 = CVPixelBufferGetBaseAddress(output);
         if (width > 0.0 && height > 0.0)
         {
           v29 = 0;
@@ -6206,12 +6206,12 @@ LABEL_128:
   }
 
 LABEL_62:
-  v21 = CVPixelBufferGetWidth(a3);
-  v22 = CVPixelBufferGetHeight(a3);
-  v23 = CVPixelBufferGetWidth(a4);
-  v24 = CVPixelBufferGetHeight(a4);
-  v37 = CVPixelBufferGetBytesPerRow(a3);
-  v38 = CVPixelBufferGetBytesPerRow(a4);
+  v21 = CVPixelBufferGetWidth(depth);
+  v22 = CVPixelBufferGetHeight(depth);
+  v23 = CVPixelBufferGetWidth(output);
+  v24 = CVPixelBufferGetHeight(output);
+  v37 = CVPixelBufferGetBytesPerRow(depth);
+  v38 = CVPixelBufferGetBytesPerRow(output);
   v90.origin.x = x;
   v90.origin.y = y;
   v90.size.width = width;
@@ -6234,14 +6234,14 @@ LABEL_62:
     goto LABEL_108;
   }
 
-  if (a3 != a4)
+  if (depth != output)
   {
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
+    CVPixelBufferLockBaseAddress(depth, 1uLL);
   }
 
-  CVPixelBufferLockBaseAddress(a4, 0);
-  v39 = CVPixelBufferGetBaseAddress(a3);
-  v40 = CVPixelBufferGetBaseAddress(a4);
+  CVPixelBufferLockBaseAddress(output, 0);
+  v39 = CVPixelBufferGetBaseAddress(depth);
+  v40 = CVPixelBufferGetBaseAddress(output);
   if (width > 0.0 && height > 0.0)
   {
     v41 = 0;
@@ -6272,48 +6272,48 @@ LABEL_62:
   }
 
 LABEL_124:
-  if (a3 != a4)
+  if (depth != output)
   {
-    CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+    CVPixelBufferUnlockBaseAddress(depth, 1uLL);
   }
 
-  CVPixelBufferUnlockBaseAddress(a4, 0);
+  CVPixelBufferUnlockBaseAddress(output, 0);
   return 0;
 }
 
-+ (int64_t)copyModifyNormalsPixelBuffer:(__CVBuffer *)a3 output:(__CVBuffer *)a4 normalsRotation:(int64_t)a5
++ (int64_t)copyModifyNormalsPixelBuffer:(__CVBuffer *)buffer output:(__CVBuffer *)output normalsRotation:(int64_t)rotation
 {
   v22 = *MEMORY[0x277D85DE8];
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  CVPixelBufferLockBaseAddress(a4, 0);
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
-  v11 = CVPixelBufferGetBaseAddress(a4);
-  DataSize = CVPixelBufferGetDataSize(a3);
+  Width = CVPixelBufferGetWidth(output);
+  Height = CVPixelBufferGetHeight(output);
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
+  CVPixelBufferLockBaseAddress(output, 0);
+  BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+  v11 = CVPixelBufferGetBaseAddress(output);
+  DataSize = CVPixelBufferGetDataSize(buffer);
   v14 = Height * Width;
   if (!(Height * Width))
   {
 LABEL_12:
-    CVPixelBufferUnlockBaseAddress(a3, 1uLL);
-    CVPixelBufferUnlockBaseAddress(a4, 0);
+    CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
+    CVPixelBufferUnlockBaseAddress(output, 0);
     return 0;
   }
 
-  if (a5 <= 3)
+  if (rotation <= 3)
   {
     v15 = DataSize / 0xC;
     do
     {
-      if (a5)
+      if (rotation)
       {
-        if (a5 == 3)
+        if (rotation == 3)
         {
           v13.f32[0] = -BaseAddress[v15];
           v16 = *BaseAddress;
         }
 
-        else if (a5 == 1)
+        else if (rotation == 1)
         {
           v13.f32[0] = BaseAddress[v15];
           v16 = -*BaseAddress;
@@ -6352,27 +6352,27 @@ LABEL_12:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v20 = 134217984;
-    v21 = a5;
+    rotationCopy = rotation;
     _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Rotating normals is not implemented for %ld.", &v20, 0xCu);
   }
 
   return -22952;
 }
 
-+ (int64_t)convertToLevelsConfidence:(__CVBuffer *)a3 confidenceOutput:(__CVBuffer *)a4 confidenceLevelRanges:(id)a5
++ (int64_t)convertToLevelsConfidence:(__CVBuffer *)confidence confidenceOutput:(__CVBuffer *)output confidenceLevelRanges:(id)ranges
 {
   v532 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  v9 = CVPixelBufferGetPixelFormatType(a4);
-  if (v7)
+  rangesCopy = ranges;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(confidence);
+  v9 = CVPixelBufferGetPixelFormatType(output);
+  if (rangesCopy)
   {
     v10 = v9;
-    [v7 highLevel];
+    [rangesCopy highLevel];
     v523 = v11;
-    [v7 lowLevel];
+    [rangesCopy lowLevel];
     v522 = v12;
-    v13 = [v7 confidenceUnits];
+    confidenceUnits = [rangesCopy confidenceUnits];
     if (PixelFormatType > 1717856626)
     {
       if (PixelFormatType != 1717856627)
@@ -6388,18 +6388,18 @@ LABEL_13:
           if (v10 == 1717856627)
           {
 LABEL_64:
-            if (a3 != a4)
+            if (confidence != output)
             {
-              CVPixelBufferLockBaseAddress(a3, 1uLL);
+              CVPixelBufferLockBaseAddress(confidence, 1uLL);
             }
 
-            CVPixelBufferLockBaseAddress(a4, 0);
-            Width = CVPixelBufferGetWidth(a3);
-            Height = CVPixelBufferGetHeight(a3);
-            BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-            v59 = CVPixelBufferGetBytesPerRow(a4);
-            BaseAddress = CVPixelBufferGetBaseAddress(a3);
-            v61 = CVPixelBufferGetBaseAddress(a4);
+            CVPixelBufferLockBaseAddress(output, 0);
+            Width = CVPixelBufferGetWidth(confidence);
+            Height = CVPixelBufferGetHeight(confidence);
+            BytesPerRow = CVPixelBufferGetBytesPerRow(confidence);
+            v59 = CVPixelBufferGetBytesPerRow(output);
+            BaseAddress = CVPixelBufferGetBaseAddress(confidence);
+            v61 = CVPixelBufferGetBaseAddress(output);
             if (!Height || !Width)
             {
               goto LABEL_638;
@@ -6417,7 +6417,7 @@ LABEL_64:
             v65 = vdupq_lane_s16(_D0, 0);
             v66 = vdupq_lane_s16(_D1, 0);
             v67 = Width & 0x1FFFFFFFCLL;
-            if (v13)
+            if (confidenceUnits)
             {
               if (Width <= 3)
               {
@@ -6818,18 +6818,18 @@ LABEL_414:
           }
 
 LABEL_26:
-          if (a3 != a4)
+          if (confidence != output)
           {
-            CVPixelBufferLockBaseAddress(a3, 1uLL);
+            CVPixelBufferLockBaseAddress(confidence, 1uLL);
           }
 
-          CVPixelBufferLockBaseAddress(a4, 0);
-          v15 = CVPixelBufferGetWidth(a3);
-          v16 = CVPixelBufferGetHeight(a3);
-          v17 = CVPixelBufferGetBytesPerRow(a3);
-          v18 = CVPixelBufferGetBytesPerRow(a4);
-          v19 = CVPixelBufferGetBaseAddress(a3);
-          v20 = CVPixelBufferGetBaseAddress(a4);
+          CVPixelBufferLockBaseAddress(output, 0);
+          v15 = CVPixelBufferGetWidth(confidence);
+          v16 = CVPixelBufferGetHeight(confidence);
+          v17 = CVPixelBufferGetBytesPerRow(confidence);
+          v18 = CVPixelBufferGetBytesPerRow(output);
+          v19 = CVPixelBufferGetBaseAddress(confidence);
+          v20 = CVPixelBufferGetBaseAddress(output);
           if (!v16 || !v15)
           {
             goto LABEL_638;
@@ -6851,7 +6851,7 @@ LABEL_26:
           v31 = 2 * (v15 & 0x1FFFFFFF0);
           v32 = v15 & 0x1FFFFFFFCLL;
           v33 = 2 * (v15 & 0x1FFFFFFFCLL);
-          if (v13)
+          if (confidenceUnits)
           {
             if (v15 <= 3)
             {
@@ -7257,18 +7257,18 @@ LABEL_330:
           }
         }
 
-        if (a3 != a4)
+        if (confidence != output)
         {
-          CVPixelBufferLockBaseAddress(a3, 1uLL);
+          CVPixelBufferLockBaseAddress(confidence, 1uLL);
         }
 
-        CVPixelBufferLockBaseAddress(a4, 0);
-        v88 = CVPixelBufferGetWidth(a3);
-        v89 = CVPixelBufferGetHeight(a3);
-        v90 = CVPixelBufferGetBytesPerRow(a3);
-        v91 = CVPixelBufferGetBytesPerRow(a4);
-        v92 = CVPixelBufferGetBaseAddress(a3);
-        v93 = CVPixelBufferGetBaseAddress(a4);
+        CVPixelBufferLockBaseAddress(output, 0);
+        v88 = CVPixelBufferGetWidth(confidence);
+        v89 = CVPixelBufferGetHeight(confidence);
+        v90 = CVPixelBufferGetBytesPerRow(confidence);
+        v91 = CVPixelBufferGetBytesPerRow(output);
+        v92 = CVPixelBufferGetBaseAddress(confidence);
+        v93 = CVPixelBufferGetBaseAddress(output);
         if (!v89 || !v88)
         {
           goto LABEL_638;
@@ -7290,7 +7290,7 @@ LABEL_330:
         v101 = 2 * (v88 & 0x1FFFFFFE0);
         v102 = v88 & 0x1FFFFFFFCLL;
         v103 = 2 * (v88 & 0x1FFFFFFFCLL);
-        if (v13)
+        if (confidenceUnits)
         {
           if (v88 <= 3)
           {
@@ -7749,18 +7749,18 @@ LABEL_18:
       }
 
 LABEL_83:
-      if (a3 != a4)
+      if (confidence != output)
       {
-        CVPixelBufferLockBaseAddress(a3, 1uLL);
+        CVPixelBufferLockBaseAddress(confidence, 1uLL);
       }
 
-      CVPixelBufferLockBaseAddress(a4, 0);
-      v73 = CVPixelBufferGetWidth(a3);
-      v74 = CVPixelBufferGetHeight(a3);
-      v75 = CVPixelBufferGetBytesPerRow(a3);
-      v76 = CVPixelBufferGetBytesPerRow(a4);
-      v77 = CVPixelBufferGetBaseAddress(a3);
-      v78 = CVPixelBufferGetBaseAddress(a4);
+      CVPixelBufferLockBaseAddress(output, 0);
+      v73 = CVPixelBufferGetWidth(confidence);
+      v74 = CVPixelBufferGetHeight(confidence);
+      v75 = CVPixelBufferGetBytesPerRow(confidence);
+      v76 = CVPixelBufferGetBytesPerRow(output);
+      v77 = CVPixelBufferGetBaseAddress(confidence);
+      v78 = CVPixelBufferGetBaseAddress(output);
       if (!v74 || !v73)
       {
         goto LABEL_638;
@@ -7770,7 +7770,7 @@ LABEL_83:
       v80 = vdupq_lane_s32(v522, 0);
       v81 = vdupq_lane_s32(v523, 0);
       v82 = v73 & 0x1FFFFFFFCLL;
-      if (v13)
+      if (confidenceUnits)
       {
         if (v73 <= 3)
         {
@@ -8157,18 +8157,18 @@ LABEL_266:
       if (v10 == 1278226534)
       {
 LABEL_47:
-        if (a3 != a4)
+        if (confidence != output)
         {
-          CVPixelBufferLockBaseAddress(a3, 1uLL);
+          CVPixelBufferLockBaseAddress(confidence, 1uLL);
         }
 
-        CVPixelBufferLockBaseAddress(a4, 0);
-        v39 = CVPixelBufferGetWidth(a3);
-        v40 = CVPixelBufferGetHeight(a3);
-        v41 = CVPixelBufferGetBytesPerRow(a3);
-        v42 = CVPixelBufferGetBytesPerRow(a4);
-        v43 = CVPixelBufferGetBaseAddress(a3);
-        v44 = CVPixelBufferGetBaseAddress(a4);
+        CVPixelBufferLockBaseAddress(output, 0);
+        v39 = CVPixelBufferGetWidth(confidence);
+        v40 = CVPixelBufferGetHeight(confidence);
+        v41 = CVPixelBufferGetBytesPerRow(confidence);
+        v42 = CVPixelBufferGetBytesPerRow(output);
+        v43 = CVPixelBufferGetBaseAddress(confidence);
+        v44 = CVPixelBufferGetBaseAddress(output);
         if (!v40 || !v39)
         {
           goto LABEL_638;
@@ -8180,7 +8180,7 @@ LABEL_47:
         v48 = 4 * (v39 & 0x1FFFFFFF8);
         v49 = vdupq_lane_s32(v522, 0);
         v50 = vdupq_lane_s32(v523, 0);
-        if (v13)
+        if (confidenceUnits)
         {
           if (v39 <= 7)
           {
@@ -8222,12 +8222,12 @@ LABEL_47:
 
             while (v40 > v51);
 LABEL_638:
-            if (a3 != a4)
+            if (confidence != output)
             {
-              CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+              CVPixelBufferUnlockBaseAddress(confidence, 1uLL);
             }
 
-            CVPixelBufferUnlockBaseAddress(a4, 0);
+            CVPixelBufferUnlockBaseAddress(output, 0);
             v14 = 0;
             goto LABEL_641;
           }
@@ -8526,18 +8526,18 @@ LABEL_297:
       goto LABEL_83;
     }
 
-    if (a3 != a4)
+    if (confidence != output)
     {
-      CVPixelBufferLockBaseAddress(a3, 1uLL);
+      CVPixelBufferLockBaseAddress(confidence, 1uLL);
     }
 
-    CVPixelBufferLockBaseAddress(a4, 0);
-    v108 = CVPixelBufferGetWidth(a3);
-    v109 = CVPixelBufferGetHeight(a3);
-    v110 = CVPixelBufferGetBytesPerRow(a3);
-    v111 = CVPixelBufferGetBytesPerRow(a4);
-    v112 = CVPixelBufferGetBaseAddress(a3);
-    v113 = CVPixelBufferGetBaseAddress(a4);
+    CVPixelBufferLockBaseAddress(output, 0);
+    v108 = CVPixelBufferGetWidth(confidence);
+    v109 = CVPixelBufferGetHeight(confidence);
+    v110 = CVPixelBufferGetBytesPerRow(confidence);
+    v111 = CVPixelBufferGetBytesPerRow(output);
+    v112 = CVPixelBufferGetBaseAddress(confidence);
+    v113 = CVPixelBufferGetBaseAddress(output);
     if (!v109 || !v108)
     {
       goto LABEL_638;
@@ -8551,7 +8551,7 @@ LABEL_297:
     v119 = 4 * (v108 & 0x1FFFFFFE0);
     v120 = v108 & 0x1FFFFFFFCLL;
     v121 = 4 * (v108 & 0x1FFFFFFFCLL);
-    if (v13)
+    if (confidenceUnits)
     {
       if (v108 <= 3)
       {
@@ -8955,9 +8955,9 @@ LABEL_641:
   return v14;
 }
 
-+ (int64_t)scaleConvertRotateImage:(__CVBuffer *)a3 rotateBy:(unsigned __int8)a4 cropBy:(CGRect)a5 scaleInto:(__CVBuffer *)a6 intermediateScalingBuffer:(__CVBuffer *)a7 intermediateRotatingBuffer:(__CVBuffer *)a8 useVT:(BOOL)a9
++ (int64_t)scaleConvertRotateImage:(__CVBuffer *)image rotateBy:(unsigned __int8)by cropBy:(CGRect)cropBy scaleInto:(__CVBuffer *)into intermediateScalingBuffer:(__CVBuffer *)buffer intermediateRotatingBuffer:(__CVBuffer *)rotatingBuffer useVT:(BOOL)t
 {
-  if (PixelBufferUtils::scaleConvertRotatePixelBuffer(a3, a4, a6, a5, a7, a8, a9))
+  if (PixelBufferUtils::scaleConvertRotatePixelBuffer(image, by, into, cropBy, buffer, rotatingBuffer, t))
   {
     return -22966;
   }
@@ -8968,10 +8968,10 @@ LABEL_641:
   }
 }
 
-+ (id)getStandardNameForBufferOfType:(id)a3 moduleName:(id)a4
++ (id)getStandardNameForBufferOfType:(id)type moduleName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  typeCopy = type;
+  nameCopy = name;
   v7 = 0x277CCA000uLL;
   {
     v7 = 0x277CCA000uLL;
@@ -8982,46 +8982,46 @@ LABEL_641:
     }
   }
 
-  v8 = [*(v7 + 3240) stringWithFormat:@"%@/AppleDepth  %@/%@ ; 1/1", +[ADUtils getStandardNameForBufferOfType:moduleName:]::progname, v5, v6];;
+  nameCopy = [*(v7 + 3240) stringWithFormat:@"%@/AppleDepth  %@/%@ ; 1/1", +[ADUtils getStandardNameForBufferOfType:moduleName:]::progname, typeCopy, nameCopy];;
 
-  return v8;
+  return nameCopy;
 }
 
-+ (void)updatePixelBufferIOSurfaceLabel:(id)a3 pixelBuffer:(__CVBuffer *)a4
++ (void)updatePixelBufferIOSurfaceLabel:(id)label pixelBuffer:(__CVBuffer *)buffer
 {
-  value = a3;
-  IOSurface = CVPixelBufferGetIOSurface(a4);
+  value = label;
+  IOSurface = CVPixelBufferGetIOSurface(buffer);
   IOSurfaceSetValue(IOSurface, *MEMORY[0x277CD2A50], value);
 }
 
-+ (BOOL)updatePixelBufferAllocationWithNewSize:(CGSize)a3 pixelFormat:(unsigned int)a4 pixelBuffer:(__CVBuffer *)a5
++ (BOOL)updatePixelBufferAllocationWithNewSize:(CGSize)size pixelFormat:(unsigned int)format pixelBuffer:(__CVBuffer *)buffer
 {
-  height = a3.height;
-  width = a3.width;
-  if (*a5)
+  height = size.height;
+  width = size.width;
+  if (*buffer)
   {
-    if (a3.width == CVPixelBufferGetWidth(*a5) && height == CVPixelBufferGetHeight(*a5) && CVPixelBufferGetPixelFormatType(*a5) == a4)
+    if (size.width == CVPixelBufferGetWidth(*buffer) && height == CVPixelBufferGetHeight(*buffer) && CVPixelBufferGetPixelFormatType(*buffer) == format)
     {
       return 0;
     }
 
-    if (*a5)
+    if (*buffer)
     {
-      CVPixelBufferRelease(*a5);
+      CVPixelBufferRelease(*buffer);
     }
   }
 
   pixelBufferOut = 0;
   v10 = *MEMORY[0x277CBECE8];
   BufferAttributes = getBufferAttributes();
-  v12 = CVPixelBufferCreate(v10, width, height, a4, BufferAttributes, &pixelBufferOut);
+  v12 = CVPixelBufferCreate(v10, width, height, format, BufferAttributes, &pixelBufferOut);
   v13 = pixelBufferOut;
   if (v12)
   {
     v13 = 0;
   }
 
-  *a5 = v13;
+  *buffer = v13;
   return 1;
 }
 

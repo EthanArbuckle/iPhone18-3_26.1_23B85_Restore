@@ -1,15 +1,15 @@
 @interface WatchSetupAdvertisementIdentifier
-+ (BOOL)_consistencyCheckForAdvertisingIdentifier:(unsigned int)a3 pairingStrategy:(unsigned __int8)a4 deviceSize:(unsigned __int8)a5 enclosureMaterial:(unsigned __int8)a6;
++ (BOOL)_consistencyCheckForAdvertisingIdentifier:(unsigned int)identifier pairingStrategy:(unsigned __int8)strategy deviceSize:(unsigned __int8)size enclosureMaterial:(unsigned __int8)material;
 - (NSString)humanReadableName;
-- (WatchSetupAdvertisementIdentifier)initWithAdvertisingIdentifier:(unsigned int)a3 pairingStrategy:(unsigned __int8)a4 deviceSize:(unsigned __int8)a5 enclosureMaterial:(unsigned __int8)a6;
-- (WatchSetupAdvertisementIdentifier)initWithHumanReadableName:(id)a3;
-- (WatchSetupAdvertisementIdentifier)initWithPackedIdentifierData:(id)a3;
+- (WatchSetupAdvertisementIdentifier)initWithAdvertisingIdentifier:(unsigned int)identifier pairingStrategy:(unsigned __int8)strategy deviceSize:(unsigned __int8)size enclosureMaterial:(unsigned __int8)material;
+- (WatchSetupAdvertisementIdentifier)initWithHumanReadableName:(id)name;
+- (WatchSetupAdvertisementIdentifier)initWithPackedIdentifierData:(id)data;
 - (id)packedIdentifierData;
 @end
 
 @implementation WatchSetupAdvertisementIdentifier
 
-- (WatchSetupAdvertisementIdentifier)initWithAdvertisingIdentifier:(unsigned int)a3 pairingStrategy:(unsigned __int8)a4 deviceSize:(unsigned __int8)a5 enclosureMaterial:(unsigned __int8)a6
+- (WatchSetupAdvertisementIdentifier)initWithAdvertisingIdentifier:(unsigned int)identifier pairingStrategy:(unsigned __int8)strategy deviceSize:(unsigned __int8)size enclosureMaterial:(unsigned __int8)material
 {
   if ([WatchSetupAdvertisementIdentifier _consistencyCheckForAdvertisingIdentifier:"_consistencyCheckForAdvertisingIdentifier:pairingStrategy:deviceSize:enclosureMaterial:" pairingStrategy:? deviceSize:? enclosureMaterial:?])
   {
@@ -18,29 +18,29 @@
     v11 = [(WatchSetupAdvertisementIdentifier *)&v14 init];
     if (v11)
     {
-      v11->_advertisingIdentifier = a3;
-      v11->_pairingStrategy = a4;
-      v11->_deviceSize = a5;
-      v11->_enclosureMaterial = a6;
+      v11->_advertisingIdentifier = identifier;
+      v11->_pairingStrategy = strategy;
+      v11->_deviceSize = size;
+      v11->_enclosureMaterial = material;
     }
 
     self = v11;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (WatchSetupAdvertisementIdentifier)initWithPackedIdentifierData:(id)a3
+- (WatchSetupAdvertisementIdentifier)initWithPackedIdentifierData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length] == 4)
+  dataCopy = data;
+  if ([dataCopy length] == 4)
   {
     v16.receiver = self;
     v16.super_class = WatchSetupAdvertisementIdentifier;
@@ -48,7 +48,7 @@
     if (v5)
     {
       *buf = 0;
-      [v4 getBytes:buf length:4];
+      [dataCopy getBytes:buf length:4];
       v6 = buf[0];
       v5->_pairingStrategy = buf[0] >> 5;
       v7 = buf[2];
@@ -64,7 +64,7 @@
     }
 
     self = v5;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -80,21 +80,21 @@
         *buf = 134218240;
         v18 = 4;
         v19 = 2048;
-        v20 = [v4 length];
+        v20 = [dataCopy length];
         _os_log_error_impl(&dword_1E0ADF000, v13, OS_LOG_TYPE_ERROR, "Incorrect size of packed identifier data, expecting %lu but got %lu", buf, 0x16u);
       }
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
   v14 = *MEMORY[0x1E69E9840];
-  return v10;
+  return selfCopy;
 }
 
-- (WatchSetupAdvertisementIdentifier)initWithHumanReadableName:(id)a3
+- (WatchSetupAdvertisementIdentifier)initWithHumanReadableName:(id)name
 {
-  v4 = NRAdvertisingInfoFromPayload(a3);
+  v4 = NRAdvertisingInfoFromPayload(name);
   v5 = [v4 objectForKeyedSubscript:@"n"];
   v6 = [v5 longLongValue] & 0x1FFFF;
 
@@ -121,23 +121,23 @@
     }
 
     self = v13;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-+ (BOOL)_consistencyCheckForAdvertisingIdentifier:(unsigned int)a3 pairingStrategy:(unsigned __int8)a4 deviceSize:(unsigned __int8)a5 enclosureMaterial:(unsigned __int8)a6
++ (BOOL)_consistencyCheckForAdvertisingIdentifier:(unsigned int)identifier pairingStrategy:(unsigned __int8)strategy deviceSize:(unsigned __int8)size enclosureMaterial:(unsigned __int8)material
 {
   result = 0;
-  if (a3 >> 5 <= 0xC34 && !(a3 >> 17) && a4 <= 7u && (a6 | a5) <= 0x3F && NRCharFieldLength > a4 && NRCharFieldLength > a5)
+  if (identifier >> 5 <= 0xC34 && !(identifier >> 17) && strategy <= 7u && (material | size) <= 0x3F && NRCharFieldLength > strategy && NRCharFieldLength > size)
   {
-    return NRCharFieldLength > a6;
+    return NRCharFieldLength > material;
   }
 
   return result;

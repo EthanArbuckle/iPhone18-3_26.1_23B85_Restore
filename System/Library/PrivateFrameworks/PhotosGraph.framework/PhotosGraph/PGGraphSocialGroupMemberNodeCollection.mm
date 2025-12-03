@@ -1,6 +1,6 @@
 @interface PGGraphSocialGroupMemberNodeCollection
-+ (id)memberNodesForLocalIdentifier:(id)a3 inGraph:(id)a4;
-+ (id)memberNodesForLocalIdentifiers:(id)a3 inGraph:(id)a4;
++ (id)memberNodesForLocalIdentifier:(id)identifier inGraph:(id)graph;
++ (id)memberNodesForLocalIdentifiers:(id)identifiers inGraph:(id)graph;
 - (NSArray)names;
 - (NSSet)localIdentifiers;
 - (NSSet)uuids;
@@ -65,8 +65,8 @@ void __47__PGGraphSocialGroupMemberNodeCollection_names__block_invoke(uint64_t a
 
 - (PGGraphSocialGroupNodeCollection)socialGroupNodes
 {
-  v3 = [(PGGraphSocialGroupMemberNodeCollection *)self socialGroupOfMember];
-  v4 = [(MANodeCollection *)PGGraphSocialGroupNodeCollection nodesRelatedToNodes:self withRelation:v3];
+  socialGroupOfMember = [(PGGraphSocialGroupMemberNodeCollection *)self socialGroupOfMember];
+  v4 = [(MANodeCollection *)PGGraphSocialGroupNodeCollection nodesRelatedToNodes:self withRelation:socialGroupOfMember];
 
   return v4;
 }
@@ -74,13 +74,13 @@ void __47__PGGraphSocialGroupMemberNodeCollection_names__block_invoke(uint64_t a
 - (NSSet)uuids
 {
   v3 = [MEMORY[0x277CBEB58] setWithCapacity:{-[MAElementCollection count](self, "count")}];
-  v4 = [(PGGraphSocialGroupMemberNodeCollection *)self personNodes];
-  v5 = [v4 uuids];
-  [v3 unionSet:v5];
+  personNodes = [(PGGraphSocialGroupMemberNodeCollection *)self personNodes];
+  uuids = [personNodes uuids];
+  [v3 unionSet:uuids];
 
-  v6 = [(PGGraphSocialGroupMemberNodeCollection *)self petNodes];
-  v7 = [v6 uuids];
-  [v3 unionSet:v7];
+  petNodes = [(PGGraphSocialGroupMemberNodeCollection *)self petNodes];
+  uuids2 = [petNodes uuids];
+  [v3 unionSet:uuids2];
 
   return v3;
 }
@@ -88,13 +88,13 @@ void __47__PGGraphSocialGroupMemberNodeCollection_names__block_invoke(uint64_t a
 - (NSSet)localIdentifiers
 {
   v3 = [MEMORY[0x277CBEB58] setWithCapacity:{-[MAElementCollection count](self, "count")}];
-  v4 = [(PGGraphSocialGroupMemberNodeCollection *)self personNodes];
-  v5 = [v4 localIdentifiers];
-  [v3 unionSet:v5];
+  personNodes = [(PGGraphSocialGroupMemberNodeCollection *)self personNodes];
+  localIdentifiers = [personNodes localIdentifiers];
+  [v3 unionSet:localIdentifiers];
 
-  v6 = [(PGGraphSocialGroupMemberNodeCollection *)self petNodes];
-  v7 = [v6 localIdentifiers];
-  [v3 unionSet:v7];
+  petNodes = [(PGGraphSocialGroupMemberNodeCollection *)self petNodes];
+  localIdentifiers2 = [petNodes localIdentifiers];
+  [v3 unionSet:localIdentifiers2];
 
   return v3;
 }
@@ -102,41 +102,41 @@ void __47__PGGraphSocialGroupMemberNodeCollection_names__block_invoke(uint64_t a
 - (id)socialGroupOfMember
 {
   v2 = +[PGGraphBelongsToEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
-+ (id)memberNodesForLocalIdentifier:(id)a3 inGraph:(id)a4
++ (id)memberNodesForLocalIdentifier:(id)identifier inGraph:(id)graph
 {
   v16 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CBEB98];
-  v15 = a3;
+  identifierCopy = identifier;
   v7 = MEMORY[0x277CBEA60];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 arrayWithObjects:&v15 count:1];
-  v11 = [v6 setWithArray:{v10, v15, v16}];
+  graphCopy = graph;
+  identifierCopy2 = identifier;
+  v10 = [v7 arrayWithObjects:&identifierCopy count:1];
+  v11 = [v6 setWithArray:{v10, identifierCopy, v16}];
 
-  v12 = [a1 memberNodesForLocalIdentifiers:v11 inGraph:v8];
+  v12 = [self memberNodesForLocalIdentifiers:v11 inGraph:graphCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-+ (id)memberNodesForLocalIdentifiers:(id)a3 inGraph:(id)a4
++ (id)memberNodesForLocalIdentifiers:(id)identifiers inGraph:(id)graph
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [PGGraphPersonNodeCollection personNodesForLocalIdentifiers:v6 inGraph:v5];
-  v8 = [PGGraphPetNodeCollection petNodesForLocalIdentifiers:v6 inGraph:v5];
+  graphCopy = graph;
+  identifiersCopy = identifiers;
+  v7 = [PGGraphPersonNodeCollection personNodesForLocalIdentifiers:identifiersCopy inGraph:graphCopy];
+  v8 = [PGGraphPetNodeCollection petNodesForLocalIdentifiers:identifiersCopy inGraph:graphCopy];
 
   v9 = [PGGraphSocialGroupMemberNodeCollection alloc];
-  v10 = [v7 elementIdentifiers];
-  v11 = [v8 elementIdentifiers];
-  v12 = [v10 identifierSetByFormingUnion:v11];
-  v13 = [(MAElementCollection *)v9 initWithGraph:v5 elementIdentifiers:v12];
+  elementIdentifiers = [v7 elementIdentifiers];
+  elementIdentifiers2 = [v8 elementIdentifiers];
+  v12 = [elementIdentifiers identifierSetByFormingUnion:elementIdentifiers2];
+  v13 = [(MAElementCollection *)v9 initWithGraph:graphCopy elementIdentifiers:v12];
 
   return v13;
 }

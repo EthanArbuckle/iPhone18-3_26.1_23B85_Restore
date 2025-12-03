@@ -11,18 +11,18 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:0];
-    v6 = [v5 dictionary];
-    a1 = [a1 initWithDictionary:v6];
+    dictionary = [v5 dictionary];
+    self = [self initWithDictionary:dictionary];
 
-    v7 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface DOCItemRowView
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (_TtC26DocumentManagerExecutables14DOCItemRowView)initWithFrame:(CGRect)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (_TtC26DocumentManagerExecutables14DOCItemRowView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
@@ -13,14 +13,14 @@
   v4.receiver = self;
   v4.super_class = type metadata accessor for DOCItemRowView();
   v2 = v4.receiver;
-  v3 = [(DOCItemRowView *)&v4 didMoveToWindow];
-  (*((*MEMORY[0x277D85000] & *v2) + 0x3B0))(v3);
+  didMoveToWindow = [(DOCItemRowView *)&v4 didMoveToWindow];
+  (*((*MEMORY[0x277D85000] & *v2) + 0x3B0))(didMoveToWindow);
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  width = a3.width;
-  v4 = self;
+  width = size.width;
+  selfCopy = self;
   v6 = DOCItemRowView.systemLayoutSizeFitting(_:)(__PAIR128__(v5, *&width));
 
   v7 = v6.width;
@@ -32,7 +32,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DOCItemRowView.layoutSubviews()();
 }
 
@@ -40,7 +40,7 @@
 {
   v3 = OBJC_IVAR____TtC26DocumentManagerExecutables14DOCItemRowView_progressState;
   v4 = *(**(&self->super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables14DOCItemRowView_progressState) + 184);
-  v5 = self;
+  selfCopy = self;
 
   v4(0);
 
@@ -48,12 +48,12 @@
 
   v6(0);
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for DOCItemRowView();
   [(DOCItemRowView *)&v7 dealloc];
 }
 
-- (_TtC26DocumentManagerExecutables14DOCItemRowView)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables14DOCItemRowView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

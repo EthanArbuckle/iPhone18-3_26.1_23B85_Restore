@@ -1,6 +1,6 @@
 @interface DESPFLEncryptor
 - (DESPFLEncryptor)init;
-- (DESPFLEncryptor)initWithRecipe:(id)a3;
+- (DESPFLEncryptor)initWithRecipe:(id)recipe;
 @end
 
 @implementation DESPFLEncryptor
@@ -19,10 +19,10 @@
   return result;
 }
 
-- (DESPFLEncryptor)initWithRecipe:(id)a3
+- (DESPFLEncryptor)initWithRecipe:(id)recipe
 {
-  v4 = [a3 recipeUserInfo];
-  v5 = [(DESPFLEncryptor *)self initWithRecipeUserInfo:v4 writeToSubmissionLogs:1];
+  recipeUserInfo = [recipe recipeUserInfo];
+  v5 = [(DESPFLEncryptor *)self initWithRecipeUserInfo:recipeUserInfo writeToSubmissionLogs:1];
 
   return v5;
 }

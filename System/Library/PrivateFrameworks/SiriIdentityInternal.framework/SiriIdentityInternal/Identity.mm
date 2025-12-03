@@ -1,18 +1,18 @@
 @interface Identity
-- (Identity)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (Identity)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 @end
 
 @implementation Identity
 
-- (Identity)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (Identity)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     sub_266E9D024();
   }
 
   sub_266E9D024();
-  if (a5)
+  if (hint)
   {
     sub_266E9D024();
   }

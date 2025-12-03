@@ -88,10 +88,10 @@
 
 - (uint64_t)isCECAcknowledgementError
 {
-  result = [objc_msgSend(a1 "domain")];
+  result = [objc_msgSend(self "domain")];
   if (result)
   {
-    return [a1 code] == 2;
+    return [self code] == 2;
   }
 
   return result;

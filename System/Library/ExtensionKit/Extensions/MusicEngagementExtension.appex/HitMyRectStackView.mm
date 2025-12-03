@@ -1,29 +1,29 @@
 @interface HitMyRectStackView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (_TtC11MusicCoreUI18HitMyRectStackView)initWithCoder:(id)a3;
-- (_TtC11MusicCoreUI18HitMyRectStackView)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (_TtC11MusicCoreUI18HitMyRectStackView)initWithCoder:(id)coder;
+- (_TtC11MusicCoreUI18HitMyRectStackView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation HitMyRectStackView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  LOBYTE(v4) = HitMyRectStackView.point(inside:with:)(v4, x, y);
+  eventCopy = event;
+  y = inside.y;
+  x = inside.x;
+  eventCopy2 = event;
+  selfCopy = self;
+  LOBYTE(eventCopy) = HitMyRectStackView.point(inside:with:)(eventCopy, x, y);
 
-  return v4 & 1;
+  return eventCopy & 1;
 }
 
-- (_TtC11MusicCoreUI18HitMyRectStackView)initWithFrame:(CGRect)a3
+- (_TtC11MusicCoreUI18HitMyRectStackView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11MusicCoreUI18HitMyRectStackView_useBoundsAsPointInside) = 0;
   v10.receiver = self;
@@ -31,13 +31,13 @@
   return [(HitMyRectStackView *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtC11MusicCoreUI18HitMyRectStackView)initWithCoder:(id)a3
+- (_TtC11MusicCoreUI18HitMyRectStackView)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11MusicCoreUI18HitMyRectStackView_useBoundsAsPointInside) = 0;
   v7.receiver = self;
   v7.super_class = ObjectType;
-  return [(HitMyRectStackView *)&v7 initWithCoder:a3];
+  return [(HitMyRectStackView *)&v7 initWithCoder:coder];
 }
 
 @end

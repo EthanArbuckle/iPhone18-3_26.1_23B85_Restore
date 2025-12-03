@@ -1,21 +1,21 @@
 @interface CKRichCardCarouselBalloonView
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
-- (CKRichCardCarouselBalloonView)initWithCoder:(id)a3;
-- (CKRichCardCarouselBalloonView)initWithFrame:(CGRect)a3;
-- (void)chatBotActionButton:(id)a3 didSelectChipAction:(id)a4;
-- (void)configureForMessagePart:(id)a3;
-- (void)didTapTruncatedCaptionForRichCard:(id)a3;
-- (void)openAppFromNotificationExtensionWith:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
+- (CKRichCardCarouselBalloonView)initWithCoder:(id)coder;
+- (CKRichCardCarouselBalloonView)initWithFrame:(CGRect)frame;
+- (void)chatBotActionButton:(id)button didSelectChipAction:(id)action;
+- (void)configureForMessagePart:(id)part;
+- (void)didTapTruncatedCaptionForRichCard:(id)card;
+- (void)openAppFromNotificationExtensionWith:(id)with;
 - (void)prepareForReuse;
 @end
 
 @implementation CKRichCardCarouselBalloonView
 
-- (void)configureForMessagePart:(id)a3
+- (void)configureForMessagePart:(id)part
 {
-  v5 = a3;
-  v6 = self;
-  sub_1908CD3B8(a3);
+  partCopy = part;
+  selfCopy = self;
+  sub_1908CD3B8(part);
 }
 
 - (void)prepareForReuse
@@ -28,11 +28,11 @@
   *&v2[OBJC_IVAR___CKRichCardCarouselBalloonView_richCards] = 0;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v8 = sub_1908CE09C(width, height);
   v10 = v9;
 
@@ -43,25 +43,25 @@
   return result;
 }
 
-- (CKRichCardCarouselBalloonView)initWithFrame:(CGRect)a3
+- (CKRichCardCarouselBalloonView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR___CKRichCardCarouselBalloonView_richCards) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for RichCardCarouselBalloonView();
   return [(CKCarouselBalloonView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (CKRichCardCarouselBalloonView)initWithCoder:(id)a3
+- (CKRichCardCarouselBalloonView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR___CKRichCardCarouselBalloonView_richCards) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for RichCardCarouselBalloonView();
-  v4 = a3;
-  v5 = [(CKCarouselBalloonView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CKCarouselBalloonView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -70,50 +70,50 @@
   return v5;
 }
 
-- (void)openAppFromNotificationExtensionWith:(id)a3
+- (void)openAppFromNotificationExtensionWith:(id)with
 {
-  v5 = self;
-  v3 = [(CKBalloonView *)v5 delegate];
-  if (v3)
+  selfCopy = self;
+  delegate = [(CKBalloonView *)selfCopy delegate];
+  if (delegate)
   {
-    v4 = v3;
-    if (([(CKBalloonViewDelegate *)v3 respondsToSelector:sel_didTapChipListFromNotificationExtensionWithBalloonView_]& 1) != 0)
+    v4 = delegate;
+    if (([(CKBalloonViewDelegate *)delegate respondsToSelector:sel_didTapChipListFromNotificationExtensionWithBalloonView_]& 1) != 0)
     {
-      [(CKBalloonViewDelegate *)v4 didTapChipListFromNotificationExtensionWithBalloonView:v5];
+      [(CKBalloonViewDelegate *)v4 didTapChipListFromNotificationExtensionWithBalloonView:selfCopy];
     }
 
     swift_unknownObjectRelease();
   }
 }
 
-- (void)chatBotActionButton:(id)a3 didSelectChipAction:(id)a4
+- (void)chatBotActionButton:(id)button didSelectChipAction:(id)action
 {
-  v5 = a4;
-  v8 = self;
-  v6 = [(CKBalloonView *)v8 delegate];
-  if (v6)
+  actionCopy = action;
+  selfCopy = self;
+  delegate = [(CKBalloonView *)selfCopy delegate];
+  if (delegate)
   {
-    v7 = v6;
-    if (([(CKBalloonViewDelegate *)v6 respondsToSelector:sel_balloonView_selectedChipAction_]& 1) != 0)
+    v7 = delegate;
+    if (([(CKBalloonViewDelegate *)delegate respondsToSelector:sel_balloonView_selectedChipAction_]& 1) != 0)
     {
-      [(CKBalloonViewDelegate *)v7 balloonView:v8 selectedChipAction:v5];
+      [(CKBalloonViewDelegate *)v7 balloonView:selfCopy selectedChipAction:actionCopy];
     }
 
     swift_unknownObjectRelease();
   }
 }
 
-- (void)didTapTruncatedCaptionForRichCard:(id)a3
+- (void)didTapTruncatedCaptionForRichCard:(id)card
 {
-  v4 = a3;
-  v7 = self;
-  v5 = [(CKBalloonView *)v7 delegate];
-  if (v5)
+  cardCopy = card;
+  selfCopy = self;
+  delegate = [(CKBalloonView *)selfCopy delegate];
+  if (delegate)
   {
-    v6 = v5;
-    if (([(CKBalloonViewDelegate *)v5 respondsToSelector:sel_didTapTruncatedCaptionForRichCard_onBalloonView_]& 1) != 0)
+    v6 = delegate;
+    if (([(CKBalloonViewDelegate *)delegate respondsToSelector:sel_didTapTruncatedCaptionForRichCard_onBalloonView_]& 1) != 0)
     {
-      [(CKBalloonViewDelegate *)v6 didTapTruncatedCaptionForRichCard:v4 onBalloonView:v7];
+      [(CKBalloonViewDelegate *)v6 didTapTruncatedCaptionForRichCard:cardCopy onBalloonView:selfCopy];
     }
 
     swift_unknownObjectRelease();

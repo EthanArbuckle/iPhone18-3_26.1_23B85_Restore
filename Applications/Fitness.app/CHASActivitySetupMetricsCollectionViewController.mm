@@ -1,54 +1,54 @@
 @interface CHASActivitySetupMetricsCollectionViewController
 - (BOOL)holdBeforeDisplaying;
 - (BPSBuddyControllerDelegate)delegate;
-- (CHASActivitySetupMetricsCollectionViewController)initWithPresentationContext:(int64_t)a3;
-- (CHASActivitySetupMetricsCollectionViewController)initWithPresentationContext:(int64_t)a3 pregnancyStateProvider:(id)a4;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
+- (CHASActivitySetupMetricsCollectionViewController)initWithPresentationContext:(int64_t)context;
+- (CHASActivitySetupMetricsCollectionViewController)initWithPresentationContext:(int64_t)context pregnancyStateProvider:(id)provider;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
 - (id)_footerString;
 - (id)_makeFooterView;
 - (id)_titleForConfirmButton;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
 - (id)tapToRadarMetadata;
 - (void)_contentSizeDidChange;
-- (void)_determinePresentationContextIfNeededWithHealthStore:(id)a3;
-- (void)_endEditingAndDiscardChanges:(BOOL)a3;
+- (void)_determinePresentationContextIfNeededWithHealthStore:(id)store;
+- (void)_endEditingAndDiscardChanges:(BOOL)changes;
 - (void)_requestWheelchairDiagnosticsSubmissionIfNecessary;
 - (void)_startEdit;
 - (void)didTapEditPregnancy;
 - (void)shouldReloadPregnancySection;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tappedConfirm:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tappedConfirm:(id)confirm;
 - (void)viewDidLoad;
-- (void)wheelchairUseSwitchDidChangeTo:(BOOL)a3;
+- (void)wheelchairUseSwitchDidChangeTo:(BOOL)to;
 @end
 
 @implementation CHASActivitySetupMetricsCollectionViewController
 
-- (CHASActivitySetupMetricsCollectionViewController)initWithPresentationContext:(int64_t)a3
+- (CHASActivitySetupMetricsCollectionViewController)initWithPresentationContext:(int64_t)context
 {
   v5.receiver = self;
   v5.super_class = CHASActivitySetupMetricsCollectionViewController;
   result = [(CHASActivitySetupMetricsCollectionViewController *)&v5 initWithTitle:&stru_1008680E8 detailText:0 icon:0 adoptTableViewScrollView:1];
   if (result)
   {
-    result->_presentationContext = a3;
+    result->_presentationContext = context;
   }
 
   return result;
 }
 
-- (CHASActivitySetupMetricsCollectionViewController)initWithPresentationContext:(int64_t)a3 pregnancyStateProvider:(id)a4
+- (CHASActivitySetupMetricsCollectionViewController)initWithPresentationContext:(int64_t)context pregnancyStateProvider:(id)provider
 {
-  v7 = a4;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = CHASActivitySetupMetricsCollectionViewController;
   v8 = [(CHASActivitySetupMetricsCollectionViewController *)&v11 initWithTitle:&stru_1008680E8 detailText:0 icon:0 adoptTableViewScrollView:1];
   v9 = v8;
   if (v8)
   {
-    v8->_presentationContext = a3;
-    objc_storeStrong(&v8->_pregnancyStateProvider, a4);
+    v8->_presentationContext = context;
+    objc_storeStrong(&v8->_pregnancyStateProvider, provider);
   }
 
   return v9;
@@ -59,23 +59,23 @@
   v34.receiver = self;
   v34.super_class = CHASActivitySetupMetricsCollectionViewController;
   [(CHASActivitySetupMetricsCollectionViewController *)&v34 viewDidLoad];
-  v3 = [(CHASActivitySetupMetricsCollectionViewController *)self delegate];
-  if (v3)
+  delegate = [(CHASActivitySetupMetricsCollectionViewController *)self delegate];
+  if (delegate)
   {
-    v4 = [(CHASActivitySetupMetricsCollectionViewController *)self delegate];
-    v5 = [v4 activePairingDevice];
+    delegate2 = [(CHASActivitySetupMetricsCollectionViewController *)self delegate];
+    activePairingDevice = [delegate2 activePairingDevice];
   }
 
   else
   {
-    v5 = FIGetActivePairedDevice();
+    activePairingDevice = FIGetActivePairedDevice();
   }
 
   v6 = FIUIHealthStoreForDevice();
   v7 = [[FIActivitySettingsController alloc] initWithHealthStore:v6];
   [v7 populateExistingCharacteristics];
   v8 = [[NSUUID alloc] initWithUUIDString:@"E5E86144-6C47-4545-8F52-A5D468C1DA85"];
-  v9 = [v5 supportsCapability:v8];
+  v9 = [activePairingDevice supportsCapability:v8];
   if ((v9 & 1) != 0 || [v7 wheelchairUse] != 2)
   {
     p_showWheelchair = &self->_showWheelchair;
@@ -102,29 +102,29 @@
 
   [(FIUIHealthSettingsDataSource *)self->_healthSettingsDataSource setDelegate:self];
   [(CHASActivitySetupMetricsCollectionViewController *)self _determinePresentationContextIfNeededWithHealthStore:v6];
-  v16 = [(CHASActivitySetupMetricsCollectionViewController *)self navigationController];
-  self->_isNavigationBarHidden = [v16 isNavigationBarHidden];
+  navigationController = [(CHASActivitySetupMetricsCollectionViewController *)self navigationController];
+  self->_isNavigationBarHidden = [navigationController isNavigationBarHidden];
 
-  v17 = [(CHASActivitySetupMetricsCollectionViewController *)self headerView];
+  headerView = [(CHASActivitySetupMetricsCollectionViewController *)self headerView];
   v18 = [NSBundle bundleForClass:objc_opt_class()];
   v19 = [v18 localizedStringForKey:@"SET_UP_ACTIVITY" value:&stru_1008680E8 table:@"ActivitySetup"];
-  [v17 setTitle:v19];
+  [headerView setTitle:v19];
 
-  v20 = [(CHASActivitySetupMetricsCollectionViewController *)self headerView];
+  headerView2 = [(CHASActivitySetupMetricsCollectionViewController *)self headerView];
   v21 = [NSBundle bundleForClass:objc_opt_class()];
   v22 = [v21 localizedStringForKey:@"SET_UP_ACTIVITY_DETAIL" value:&stru_1008680E8 table:@"ActivitySetup"];
-  [v20 setDetailText:v22];
+  [headerView2 setDetailText:v22];
 
   v23 = +[OBBoldTrayButton boldButton];
-  v24 = [(CHASActivitySetupMetricsCollectionViewController *)self _titleForConfirmButton];
+  _titleForConfirmButton = [(CHASActivitySetupMetricsCollectionViewController *)self _titleForConfirmButton];
   [v23 addTarget:self action:"tappedConfirm:" forControlEvents:64];
-  [v23 setTitle:v24 forState:0];
+  [v23 setTitle:_titleForConfirmButton forState:0];
   v25 = BPSPillSelectedColor();
   [v23 setTintColor:v25];
 
   [v23 setAccessibilityIdentifier:@"Fitness.ActivitySetupMetrics.ConfirmButton"];
-  v26 = [(CHASActivitySetupMetricsCollectionViewController *)self buttonTray];
-  [v26 addButton:v23];
+  buttonTray = [(CHASActivitySetupMetricsCollectionViewController *)self buttonTray];
+  [buttonTray addButton:v23];
 
   v27 = [[CHASActivitySetupContentSizedTableView alloc] initWithFrame:2 style:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(CHASActivitySetupContentSizedTableView *)v27 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -134,13 +134,13 @@
   [(CHASActivitySetupContentSizedTableView *)v27 setSeparatorColor:v28];
 
   v29 = +[ARUIMetricColors keyColors];
-  v30 = [v29 nonGradientTextColor];
-  [(CHASActivitySetupContentSizedTableView *)v27 _setAccessoryBaseColor:v30];
+  nonGradientTextColor = [v29 nonGradientTextColor];
+  [(CHASActivitySetupContentSizedTableView *)v27 _setAccessoryBaseColor:nonGradientTextColor];
 
   [(CHASActivitySetupMetricsCollectionViewController *)self setShouldAdjustButtonTrayForKeyboard:1];
-  v31 = [(CHASActivitySetupMetricsCollectionViewController *)self _makeFooterView];
+  _makeFooterView = [(CHASActivitySetupMetricsCollectionViewController *)self _makeFooterView];
   footerView = self->_footerView;
-  self->_footerView = v31;
+  self->_footerView = _makeFooterView;
 
   [(CHASActivitySetupMetricsCollectionViewController *)self setTableView:v27];
   v33 = +[NSNotificationCenter defaultCenter];
@@ -160,17 +160,17 @@
   return v2;
 }
 
-- (void)tappedConfirm:(id)a3
+- (void)tappedConfirm:(id)confirm
 {
-  v4 = a3;
+  confirmCopy = confirm;
   if (self->_isNavigationBarHidden)
   {
-    v5 = [(CHASActivitySetupMetricsCollectionViewController *)self navigationController];
-    [v5 setNavigationBarHidden:1 animated:0];
+    navigationController = [(CHASActivitySetupMetricsCollectionViewController *)self navigationController];
+    [navigationController setNavigationBarHidden:1 animated:0];
   }
 
-  v6 = [(FIUIHealthSettingsDataSource *)self->_healthSettingsDataSource editedSettingsController];
-  [v6 commmitWithError:0];
+  editedSettingsController = [(FIUIHealthSettingsDataSource *)self->_healthSettingsDataSource editedSettingsController];
+  [editedSettingsController commmitWithError:0];
 
   presentationContext = self->_presentationContext;
   if (presentationContext <= 2)
@@ -212,12 +212,12 @@
     {
       v8 = CHASActivitySetupThreeRingsOnboardingViewController;
 LABEL_19:
-      v11 = [[v8 alloc] initWithPresentationContext:self->_presentationContext];
-      v12 = [(CHASActivitySetupMetricsCollectionViewController *)self delegate];
-      [v11 setDelegate:v12];
+      delegate2 = [[v8 alloc] initWithPresentationContext:self->_presentationContext];
+      delegate = [(CHASActivitySetupMetricsCollectionViewController *)self delegate];
+      [delegate2 setDelegate:delegate];
 
-      v13 = [(CHASActivitySetupMetricsCollectionViewController *)self navigationController];
-      [v13 pushViewController:v11 animated:1];
+      navigationController2 = [(CHASActivitySetupMetricsCollectionViewController *)self navigationController];
+      [navigationController2 pushViewController:delegate2 animated:1];
 
 LABEL_20:
       goto LABEL_21;
@@ -230,8 +230,8 @@ LABEL_18:
 
   if (presentationContext == 5)
   {
-    v11 = [(CHASActivitySetupMetricsCollectionViewController *)self delegate];
-    [v11 buddyControllerDone:self];
+    delegate2 = [(CHASActivitySetupMetricsCollectionViewController *)self delegate];
+    [delegate2 buddyControllerDone:self];
     goto LABEL_20;
   }
 
@@ -252,8 +252,8 @@ LABEL_21:
   v7 = [v3 initWithFrame:{CGRectZero.origin.x, y, width, height}];
   v8 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(CHASActivitySetupMetricsCollectionViewController *)self _footerString];
-  [v8 setText:v9];
+  _footerString = [(CHASActivitySetupMetricsCollectionViewController *)self _footerString];
+  [v8 setText:_footerString];
 
   v10 = +[UIColor secondaryLabelColor];
   [v8 setTextColor:v10];
@@ -264,21 +264,21 @@ LABEL_21:
   [v8 setLineBreakMode:0];
   [v8 setNumberOfLines:0];
   [v7 addSubview:v8];
-  v25 = [v8 topAnchor];
-  v24 = [v7 topAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24 constant:10.0];
+  topAnchor = [v8 topAnchor];
+  topAnchor2 = [v7 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
   v26[0] = v23;
-  v22 = [v8 leadingAnchor];
-  v21 = [v7 leadingAnchor];
-  v12 = [v22 constraintEqualToAnchor:v21];
+  leadingAnchor = [v8 leadingAnchor];
+  leadingAnchor2 = [v7 leadingAnchor];
+  v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[1] = v12;
-  v13 = [v8 trailingAnchor];
-  v14 = [v7 trailingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  trailingAnchor = [v8 trailingAnchor];
+  trailingAnchor2 = [v7 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26[2] = v15;
-  v16 = [v8 bottomAnchor];
-  v17 = [v7 bottomAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17 constant:-10.0];
+  bottomAnchor = [v8 bottomAnchor];
+  bottomAnchor2 = [v7 bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
   v26[3] = v18;
   v19 = [NSArray arrayWithObjects:v26 count:4];
   [NSLayoutConstraint activateConstraints:v19];
@@ -288,21 +288,21 @@ LABEL_21:
 
 - (id)_footerString
 {
-  v2 = [(CHASActivitySetupMetricsCollectionViewController *)self delegate];
-  v3 = [v2 activePairingDevice];
+  delegate = [(CHASActivitySetupMetricsCollectionViewController *)self delegate];
+  activePairingDevice = [delegate activePairingDevice];
 
   v4 = +[_HKBehavior sharedBehavior];
-  v5 = [v4 fitnessMode];
+  fitnessMode = [v4 fitnessMode];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = v6;
-  if (v3)
+  if (activePairingDevice)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = v5 == 2;
+    v8 = fitnessMode == 2;
   }
 
   if (v8)
@@ -327,14 +327,14 @@ LABEL_21:
   _objc_release_x1();
 }
 
-- (void)_determinePresentationContextIfNeededWithHealthStore:(id)a3
+- (void)_determinePresentationContextIfNeededWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   if (!self->_presentationContext)
   {
     objc_initWeak(&location, self);
     objc_copyWeak(&v6, &location);
-    v5 = v4;
+    v5 = storeCopy;
     FIUIUserHasExistingMoveGoal();
 
     objc_destroyWeak(&v6);
@@ -344,27 +344,27 @@ LABEL_21:
 
 - (BOOL)holdBeforeDisplaying
 {
-  v3 = [(CHASActivitySetupMetricsCollectionViewController *)self delegate];
-  v4 = [v3 setupFlowUserInfo];
+  delegate = [(CHASActivitySetupMetricsCollectionViewController *)self delegate];
+  setupFlowUserInfo = [delegate setupFlowUserInfo];
 
-  v5 = [v4 objectForKeyedSubscript:BPSPairingFlowIsTinkerPairing];
-  v6 = [v5 BOOLValue];
+  v5 = [setupFlowUserInfo objectForKeyedSubscript:BPSPairingFlowIsTinkerPairing];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 objectForKeyedSubscript:BPSPairingFlowIsTinkerHealthSharingEnabled];
-  v8 = [v7 BOOLValue];
+  v7 = [setupFlowUserInfo objectForKeyedSubscript:BPSPairingFlowIsTinkerHealthSharingEnabled];
+  bOOLValue2 = [v7 BOOLValue];
 
   _HKInitializeLogging();
   v9 = HKLogActivity;
   if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    v14 = v6;
+    v14 = bOOLValue;
     v15 = 1024;
-    v16 = v8;
+    v16 = bOOLValue2;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "CHASActivitySetupMetricsCollectionViewController - controllerNeedsToRun: isTinkerPairing %d isTinkerHealthSharingEnabled %d", buf, 0xEu);
   }
 
-  v10 = v6 ^ 1 | v8;
+  v10 = bOOLValue ^ 1 | bOOLValue2;
   if ((v10 & 1) == 0)
   {
     block[0] = _NSConcreteStackBlock;
@@ -378,19 +378,19 @@ LABEL_21:
   return (v10 & 1) == 0;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  if (self->_showWheelchair && [(FIUIHealthSettingsDataSource *)self->_healthSettingsDataSource wheelchairSectionIndex]== a4)
+  viewCopy = view;
+  if (self->_showWheelchair && [(FIUIHealthSettingsDataSource *)self->_healthSettingsDataSource wheelchairSectionIndex]== section)
   {
-    v7 = [(CHASActivitySetupMetricsCollectionViewController *)self tableView];
-    [v7 frame];
+    tableView = [(CHASActivitySetupMetricsCollectionViewController *)self tableView];
+    [tableView frame];
     v9 = v8;
-    v10 = [(CHASActivitySetupMetricsCollectionViewController *)self tableView];
-    [v10 directionalLayoutMargins];
+    tableView2 = [(CHASActivitySetupMetricsCollectionViewController *)self tableView];
+    [tableView2 directionalLayoutMargins];
     v12 = v9 - v11;
-    v13 = [(CHASActivitySetupMetricsCollectionViewController *)self tableView];
-    [v13 directionalLayoutMargins];
+    tableView3 = [(CHASActivitySetupMetricsCollectionViewController *)self tableView];
+    [tableView3 directionalLayoutMargins];
     v15 = v12 - v14;
 
     LODWORD(v16) = 1148846080;
@@ -407,11 +407,11 @@ LABEL_21:
   return v19;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   if (self->_showWheelchair)
   {
-    if ([(FIUIHealthSettingsDataSource *)self->_healthSettingsDataSource wheelchairSectionIndex]== a4)
+    if ([(FIUIHealthSettingsDataSource *)self->_healthSettingsDataSource wheelchairSectionIndex]== section)
     {
       v6 = self->_footerView;
     }
@@ -430,21 +430,21 @@ LABEL_21:
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  [v10 deselectRowAtIndexPath:v6 animated:1];
-  if ([(FIUIHealthSettingsDataSource *)self->_healthSettingsDataSource shouldBypassFirstResponderAction:v6])
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  if ([(FIUIHealthSettingsDataSource *)self->_healthSettingsDataSource shouldBypassFirstResponderAction:pathCopy])
   {
     [(CHASActivitySetupMetricsCollectionViewController *)self didTapEditPregnancy];
   }
 
   else
   {
-    v7 = [v10 cellForRowAtIndexPath:v6];
-    v8 = [(CHASActivitySetupMetricsCollectionViewController *)self view];
-    [v8 endEditing:1];
+    v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
+    view = [(CHASActivitySetupMetricsCollectionViewController *)self view];
+    [view endEditing:1];
 
     selectedCell = self->_selectedCell;
     if (v7 == selectedCell)
@@ -478,8 +478,8 @@ LABEL_21:
 {
   if (self->_isNavigationBarHidden)
   {
-    v3 = [(CHASActivitySetupMetricsCollectionViewController *)self navigationController];
-    [v3 setNavigationBarHidden:0 animated:0];
+    navigationController = [(CHASActivitySetupMetricsCollectionViewController *)self navigationController];
+    [navigationController setNavigationBarHidden:0 animated:0];
   }
 
   v4 = [UIBarButtonItem alloc];
@@ -487,57 +487,57 @@ LABEL_21:
   v6 = [v5 localizedStringForKey:@"DONE_BUTTON" value:&stru_1008680E8 table:@"Localizable"];
   v13 = [v4 initWithTitle:v6 style:2 target:self action:"_done"];
 
-  v7 = [(CHASActivitySetupMetricsCollectionViewController *)self navigationItem];
-  [v7 setRightBarButtonItem:v13];
+  navigationItem = [(CHASActivitySetupMetricsCollectionViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v13];
 
   v8 = [UIBarButtonItem alloc];
   v9 = FIUIBundle();
   v10 = [v9 localizedStringForKey:@"CANCEL_BUTTON" value:&stru_1008680E8 table:@"Localizable"];
   v11 = [v8 initWithTitle:v10 style:0 target:self action:"_cancel"];
 
-  v12 = [(CHASActivitySetupMetricsCollectionViewController *)self navigationItem];
-  [v12 setLeftBarButtonItem:v11];
+  navigationItem2 = [(CHASActivitySetupMetricsCollectionViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v11];
 
   [(FIUIHealthSettingsDataSource *)self->_healthSettingsDataSource startEditing];
 }
 
-- (void)_endEditingAndDiscardChanges:(BOOL)a3
+- (void)_endEditingAndDiscardChanges:(BOOL)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   if (self->_isNavigationBarHidden)
   {
-    v5 = [(CHASActivitySetupMetricsCollectionViewController *)self navigationController];
-    [v5 setNavigationBarHidden:1 animated:0];
+    navigationController = [(CHASActivitySetupMetricsCollectionViewController *)self navigationController];
+    [navigationController setNavigationBarHidden:1 animated:0];
   }
 
   selectedCell = self->_selectedCell;
   self->_selectedCell = 0;
 
-  v7 = [(CHASActivitySetupMetricsCollectionViewController *)self view];
-  [v7 endEditing:1];
+  view = [(CHASActivitySetupMetricsCollectionViewController *)self view];
+  [view endEditing:1];
 
-  v8 = [(CHASActivitySetupMetricsCollectionViewController *)self navigationItem];
-  [v8 setRightBarButtonItem:0];
+  navigationItem = [(CHASActivitySetupMetricsCollectionViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:0];
 
-  v9 = [(CHASActivitySetupMetricsCollectionViewController *)self navigationItem];
-  [v9 setLeftBarButtonItem:0];
+  navigationItem2 = [(CHASActivitySetupMetricsCollectionViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:0];
 
   healthSettingsDataSource = self->_healthSettingsDataSource;
 
-  [(FIUIHealthSettingsDataSource *)healthSettingsDataSource endEditingAndDiscardChanges:v3];
+  [(FIUIHealthSettingsDataSource *)healthSettingsDataSource endEditingAndDiscardChanges:changesCopy];
 }
 
 - (void)_requestWheelchairDiagnosticsSubmissionIfNecessary
 {
   v3 = +[MCProfileConnection sharedConnection];
-  v4 = [v3 isDiagnosticSubmissionAllowed];
+  isDiagnosticSubmissionAllowed = [v3 isDiagnosticSubmissionAllowed];
 
-  if (v4)
+  if (isDiagnosticSubmissionAllowed)
   {
     v5 = +[MCProfileConnection sharedConnection];
-    v6 = [v5 hasWheelchairDataSubmissionAllowedBeenSet];
+    hasWheelchairDataSubmissionAllowedBeenSet = [v5 hasWheelchairDataSubmissionAllowedBeenSet];
 
-    if ((v6 & 1) == 0)
+    if ((hasWheelchairDataSubmissionAllowedBeenSet & 1) == 0)
     {
       v7 = [NSBundle bundleForClass:objc_opt_class()];
       v8 = [v7 localizedStringForKey:@"FEEDBACK_WHEELCHAIR_TITLE" value:&stru_1008680E8 table:@"ActivitySetup"];
@@ -570,19 +570,19 @@ LABEL_21:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v4 = [(FIUIHealthSettingsDataSource *)self->_healthSettingsDataSource tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 textLabel];
+  v4 = [(FIUIHealthSettingsDataSource *)self->_healthSettingsDataSource tableView:view cellForRowAtIndexPath:path];
+  textLabel = [v4 textLabel];
   v6 = BPSTextColor();
-  [v5 setTextColor:v6];
+  [textLabel setTextColor:v6];
 
   v7 = BPSForegroundColor();
   [v4 setBackgroundColor:v7];
 
-  v8 = [v4 accessoryView];
+  accessoryView = [v4 accessoryView];
   v9 = BPSAccessoryColor();
-  [v8 setTintColor:v9];
+  [accessoryView setTintColor:v9];
 
   v10 = objc_alloc_init(UIView);
   v11 = BPSCellHightlightColor();
@@ -593,9 +593,9 @@ LABEL_21:
   return v4;
 }
 
-- (void)wheelchairUseSwitchDidChangeTo:(BOOL)a3
+- (void)wheelchairUseSwitchDidChangeTo:(BOOL)to
 {
-  if (a3)
+  if (to)
   {
     [(CHASActivitySetupMetricsCollectionViewController *)self _requestWheelchairDiagnosticsSubmissionIfNecessary];
   }

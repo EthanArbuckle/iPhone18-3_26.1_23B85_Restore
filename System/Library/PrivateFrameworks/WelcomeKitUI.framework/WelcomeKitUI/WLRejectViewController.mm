@@ -1,13 +1,13 @@
 @interface WLRejectViewController
-- (WLRejectViewController)initWithWelcomeController:(id)a3;
+- (WLRejectViewController)initWithWelcomeController:(id)controller;
 - (void)_retry;
 @end
 
 @implementation WLRejectViewController
 
-- (WLRejectViewController)initWithWelcomeController:(id)a3
+- (WLRejectViewController)initWithWelcomeController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = WLLocalizedString();
   v7 = WLLocalizedString();
   v8 = MEMORY[0x277D755B8];
@@ -19,21 +19,21 @@
 
   if (v11)
   {
-    objc_storeStrong(&v11->_welcomeController, a3);
-    v12 = [MEMORY[0x277D37618] boldButton];
+    objc_storeStrong(&v11->_welcomeController, controller);
+    boldButton = [MEMORY[0x277D37618] boldButton];
     retryButton = v11->_retryButton;
-    v11->_retryButton = v12;
+    v11->_retryButton = boldButton;
 
     v14 = v11->_retryButton;
     v15 = WLLocalizedString();
     [(OBTrayButton *)v14 setTitle:v15 forState:0];
 
     [(OBTrayButton *)v11->_retryButton addTarget:v11 action:sel__retry forControlEvents:64];
-    v16 = [(WLRejectViewController *)v11 buttonTray];
-    [v16 addButton:v11->_retryButton];
+    buttonTray = [(WLRejectViewController *)v11 buttonTray];
+    [buttonTray addButton:v11->_retryButton];
 
-    v17 = [(OBBaseWelcomeController *)v11 navigationItem];
-    [v17 setHidesBackButton:1 animated:0];
+    navigationItem = [(OBBaseWelcomeController *)v11 navigationItem];
+    [navigationItem setHidesBackButton:1 animated:0];
   }
 
   return v11;

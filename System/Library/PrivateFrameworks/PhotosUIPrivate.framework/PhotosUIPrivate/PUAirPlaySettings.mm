@@ -62,27 +62,27 @@
   }
 
   [v5 appendFormat:@"\n\tCompensate for overscan: %@", v8];
-  v9 = [(PUAirPlaySettings *)self placeholderForMirroredScreen];
-  if (v9 > 2)
+  placeholderForMirroredScreen = [(PUAirPlaySettings *)self placeholderForMirroredScreen];
+  if (placeholderForMirroredScreen > 2)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = off_1E7B74CD8[v9];
+    v10 = off_1E7B74CD8[placeholderForMirroredScreen];
   }
 
   [v5 appendFormat:@"\n\tMirrored placeholder type: %@", v10];
-  v11 = [(PUAirPlaySettings *)self placeholderForSecondScreen];
-  if (v11 > 2)
+  placeholderForSecondScreen = [(PUAirPlaySettings *)self placeholderForSecondScreen];
+  if (placeholderForSecondScreen > 2)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = off_1E7B74CD8[v11];
+    v12 = off_1E7B74CD8[placeholderForSecondScreen];
   }
 
   [v5 appendFormat:@"\n\tSecond-screen placeholder type: %@", v12];

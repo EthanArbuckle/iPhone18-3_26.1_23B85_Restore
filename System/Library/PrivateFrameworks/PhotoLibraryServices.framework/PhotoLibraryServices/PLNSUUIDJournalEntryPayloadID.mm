@@ -1,7 +1,7 @@
 @interface PLNSUUIDJournalEntryPayloadID
-- (BOOL)isEqual:(id)a3;
-- (PLNSUUIDJournalEntryPayloadID)initWithUUIDBytes:(unsigned __int8)a3[16];
-- (PLNSUUIDJournalEntryPayloadID)initWithUUIDString:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PLNSUUIDJournalEntryPayloadID)initWithUUIDBytes:(unsigned __int8)bytes[16];
+- (PLNSUUIDJournalEntryPayloadID)initWithUUIDString:(id)string;
 - (id)payloadUUIDData;
 @end
 
@@ -18,10 +18,10 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -31,7 +31,7 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v6 = [(NSUUID *)self->_payloadID isEqual:v4->_payloadID];
+      v6 = [(NSUUID *)self->_payloadID isEqual:equalCopy->_payloadID];
     }
 
     else
@@ -43,11 +43,11 @@
   return v6;
 }
 
-- (PLNSUUIDJournalEntryPayloadID)initWithUUIDString:(id)a3
+- (PLNSUUIDJournalEntryPayloadID)initWithUUIDString:(id)string
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithUUIDString:v5];
+  stringCopy = string;
+  v6 = [[v4 alloc] initWithUUIDString:stringCopy];
 
   if (v6)
   {
@@ -70,14 +70,14 @@
   return v8;
 }
 
-- (PLNSUUIDJournalEntryPayloadID)initWithUUIDBytes:(unsigned __int8)a3[16]
+- (PLNSUUIDJournalEntryPayloadID)initWithUUIDBytes:(unsigned __int8)bytes[16]
 {
   v8.receiver = self;
   v8.super_class = PLNSUUIDJournalEntryPayloadID;
   v4 = [(PLNSUUIDJournalEntryPayloadID *)&v8 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:a3];
+    v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:bytes];
     payloadID = v4->_payloadID;
     v4->_payloadID = v5;
   }

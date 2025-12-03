@@ -1,10 +1,10 @@
 @interface MosaicSquareGridLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (CGSize)collectionViewContentSize;
 - (_TtC9MomentsUI22MosaicSquareGridLayout)init;
-- (_TtC9MomentsUI22MosaicSquareGridLayout)initWithCoder:(id)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (_TtC9MomentsUI22MosaicSquareGridLayout)initWithCoder:(id)coder;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (void)prepareLayout;
 @end
 
@@ -12,14 +12,14 @@
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   MosaicSquareGridLayout.prepare()();
 }
 
 - (CGSize)collectionViewContentSize
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.isa) + 0x78);
-  v3 = self;
+  selfCopy = self;
   v2();
   v5 = v4;
   v7 = v6;
@@ -31,16 +31,16 @@
   return result;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v5 = self;
-  v6 = [(MosaicSquareGridLayout *)v5 collectionView];
-  if (v6)
+  height = change.size.height;
+  width = change.size.width;
+  selfCopy = self;
+  collectionView = [(MosaicSquareGridLayout *)selfCopy collectionView];
+  if (collectionView)
   {
-    v7 = v6;
-    [v6 bounds];
+    v7 = collectionView;
+    [collectionView bounds];
     v10.width = width;
     v10.height = height;
     v8 = CGSizeEqualToSize(v10, v11);
@@ -55,7 +55,7 @@
   }
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -63,7 +63,7 @@
   v7 = &v15 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = *((*MEMORY[0x277D85000] & self->super.super.isa) + 0x60);
-  v9 = self;
+  selfCopy = self;
   v10 = v8();
   if (v10 >> 62)
   {
@@ -112,13 +112,13 @@ LABEL_9:
   return v14;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
@@ -151,7 +151,7 @@ LABEL_9:
   return [(MosaicSquareGridLayout *)&v6 init];
 }
 
-- (_TtC9MomentsUI22MosaicSquareGridLayout)initWithCoder:(id)a3
+- (_TtC9MomentsUI22MosaicSquareGridLayout)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC9MomentsUI22MosaicSquareGridLayout_cachedAttributes) = MEMORY[0x277D84F90];
   v4 = (self + OBJC_IVAR____TtC9MomentsUI22MosaicSquareGridLayout_contentBounds);
@@ -159,8 +159,8 @@ LABEL_9:
   v4[1] = 0u;
   v8.receiver = self;
   v8.super_class = type metadata accessor for MosaicSquareGridLayout();
-  v5 = a3;
-  v6 = [(MosaicSquareGridLayout *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(MosaicSquareGridLayout *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

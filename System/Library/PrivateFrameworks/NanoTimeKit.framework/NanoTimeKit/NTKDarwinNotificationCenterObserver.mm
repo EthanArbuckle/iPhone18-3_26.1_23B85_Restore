@@ -1,22 +1,22 @@
 @interface NTKDarwinNotificationCenterObserver
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSObject)observerObject;
 - (SEL)selector;
-- (void)setSelector:(SEL)a3;
+- (void)setSelector:(SEL)selector;
 @end
 
 @implementation NTKDarwinNotificationCenterObserver
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(NTKDarwinNotificationCenterObserver *)self observerObject];
-  v6 = [v4 observerObject];
-  if (v5 == v6)
+  equalCopy = equal;
+  observerObject = [(NTKDarwinNotificationCenterObserver *)self observerObject];
+  observerObject2 = [equalCopy observerObject];
+  if (observerObject == observerObject2)
   {
-    v8 = [(NTKDarwinNotificationCenterObserver *)self notificationName];
-    v9 = [v4 notificationName];
-    v7 = [v8 isEqualToString:v9];
+    notificationName = [(NTKDarwinNotificationCenterObserver *)self notificationName];
+    notificationName2 = [equalCopy notificationName];
+    v7 = [notificationName isEqualToString:notificationName2];
   }
 
   else
@@ -47,19 +47,19 @@
   }
 }
 
-- (void)setSelector:(SEL)a3
+- (void)setSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_selector = v3;
+  self->_selector = selectorCopy;
 }
 
 @end

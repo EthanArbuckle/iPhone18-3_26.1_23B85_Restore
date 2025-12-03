@@ -1,59 +1,59 @@
 @interface MPModelLibraryFavoriteEntityChangeRequestOperation
-- (id)_storeImportItemFromRequestIdentifiers:(id)a3 modelClass:(Class)a4 changeAction:(int64_t)a5;
-- (int64_t)_likedStateFromRequestAction:(int64_t)a3;
-- (void)_runLibraryMappingRequestWithIdentifiers:(id)a3 class:(Class)a4 completionHandler:(id)a5;
-- (void)_runRequestWithIdentifiers:(id)a3 persistentID:(int64_t)a4 favoriteEntityChangeRequestAction:(int64_t)a5 class:(Class)a6;
-- (void)_setLikedStateForRequestAction:(int64_t)a3 forEntityWithPersistentID:(int64_t)a4 modelClass:(Class)a5;
+- (id)_storeImportItemFromRequestIdentifiers:(id)identifiers modelClass:(Class)class changeAction:(int64_t)action;
+- (int64_t)_likedStateFromRequestAction:(int64_t)action;
+- (void)_runLibraryMappingRequestWithIdentifiers:(id)identifiers class:(Class)class completionHandler:(id)handler;
+- (void)_runRequestWithIdentifiers:(id)identifiers persistentID:(int64_t)d favoriteEntityChangeRequestAction:(int64_t)action class:(Class)class;
+- (void)_setLikedStateForRequestAction:(int64_t)action forEntityWithPersistentID:(int64_t)d modelClass:(Class)class;
 - (void)execute;
 @end
 
 @implementation MPModelLibraryFavoriteEntityChangeRequestOperation
 
-- (int64_t)_likedStateFromRequestAction:(int64_t)a3
+- (int64_t)_likedStateFromRequestAction:(int64_t)action
 {
-  if (a3 < 4)
+  if (action < 4)
   {
-    return qword_1A2740270[a3];
+    return qword_1A2740270[action];
   }
 
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"MPModelLibraryFavoriteEntityChangeRequestOperation.m" lineNumber:644 description:{@"FavoriteEntityChangeRequestAction (%d) is not a supported state", a3}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryFavoriteEntityChangeRequestOperation.m" lineNumber:644 description:{@"FavoriteEntityChangeRequestAction (%d) is not a supported state", action}];
 
   return 0;
 }
 
-- (id)_storeImportItemFromRequestIdentifiers:(id)a3 modelClass:(Class)a4 changeAction:(int64_t)a5
+- (id)_storeImportItemFromRequestIdentifiers:(id)identifiers modelClass:(Class)class changeAction:(int64_t)action
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [v8 universalStore];
-  v10 = [v9 adamID];
+  identifiersCopy = identifiers;
+  universalStore = [identifiersCopy universalStore];
+  adamID = [universalStore adamID];
 
-  if (!v10)
+  if (!adamID)
   {
-    v11 = [v8 universalStore];
-    v10 = [v11 purchasedAdamID];
+    universalStore2 = [identifiersCopy universalStore];
+    adamID = [universalStore2 purchasedAdamID];
 
-    if (!v10)
+    if (!adamID)
     {
-      v12 = [v8 universalStore];
-      v10 = [v12 subscriptionAdamID];
+      universalStore3 = [identifiersCopy universalStore];
+      adamID = [universalStore3 subscriptionAdamID];
     }
   }
 
-  v13 = [v8 universalStore];
-  v14 = [v13 globalPlaylistID];
+  universalStore4 = [identifiersCopy universalStore];
+  globalPlaylistID = [universalStore4 globalPlaylistID];
 
-  if (v10 || v14)
+  if (adamID || globalPlaylistID)
   {
-    v16 = [[MPStoreItemLibraryImportElement alloc] initWithStoreItemID:v10 additionalTrackMetadata:0];
-    if (a5 == 2)
+    v16 = [[MPStoreItemLibraryImportElement alloc] initWithStoreItemID:adamID additionalTrackMetadata:0];
+    if (action == 2)
     {
-      if ([(objc_class *)a4 isSubclassOfClass:objc_opt_class()])
+      if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
       {
         v17 = MEMORY[0x1E69B34E0];
-        v18 = [(MPAsyncOperation *)self userIdentity];
-        v19 = [v17 musicLibraryForUserAccount:v18];
+        userIdentity = [(MPAsyncOperation *)self userIdentity];
+        v19 = [v17 musicLibraryForUserAccount:userIdentity];
 
         v20 = [v19 sagaCloudFavoriteSongAddToLibraryBehavior] < 2;
       }
@@ -92,12 +92,12 @@
   return v15;
 }
 
-- (void)_runLibraryMappingRequestWithIdentifiers:(id)a3 class:(Class)a4 completionHandler:(id)a5
+- (void)_runLibraryMappingRequestWithIdentifiers:(id)identifiers class:(Class)class completionHandler:(id)handler
 {
   v61 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v8 = a5;
-  v9 = v8;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  v9 = handlerCopy;
   if (self->_mappingState != 2)
   {
     v10 = os_log_create("com.apple.amp.mediaplayer", "Favoriting");
@@ -105,11 +105,11 @@
     {
       mappingState = self->_mappingState;
       *buf = 138543874;
-      *&buf[4] = v37;
+      *&buf[4] = identifiersCopy;
       *&buf[12] = 1024;
       *&buf[14] = mappingState;
       *&buf[18] = 2114;
-      *&buf[20] = a4;
+      *&buf[20] = class;
       _os_log_impl(&dword_1A238D000, v10, OS_LOG_TYPE_DEFAULT, "Looking for entity with identifiers=%{public}@, mappingState=%d, class=%{public}@", buf, 0x1Cu);
     }
 
@@ -125,23 +125,23 @@
     v52[3] = 0;
     if (self->_mappingState == 1)
     {
-      v12 = [(MPAsyncOperation *)self userIdentity];
-      [MPStoreLibraryPersonalizationRequest libraryViewAllowingEmptyCollectionsAndNonLibraryContentForUserIdentity:v12];
+      userIdentity = [(MPAsyncOperation *)self userIdentity];
+      [MPStoreLibraryPersonalizationRequest libraryViewAllowingEmptyCollectionsAndNonLibraryContentForUserIdentity:userIdentity];
     }
 
     else
     {
-      v12 = [(MPAsyncOperation *)self userIdentity];
-      [MPStoreLibraryPersonalizationRequest libraryViewAllowingEmptyCollectionsForUserIdentity:v12];
+      userIdentity = [(MPAsyncOperation *)self userIdentity];
+      [MPStoreLibraryPersonalizationRequest libraryViewAllowingEmptyCollectionsForUserIdentity:userIdentity];
     }
     v36 = ;
 
-    v13 = [(MPModelLibraryFavoriteEntityChangeRequest *)self->_request modelObject];
+    modelObject = [(MPModelLibraryFavoriteEntityChangeRequest *)self->_request modelObject];
     v14 = objc_opt_class();
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v13 anyObject];
+      anyObject = [modelObject anyObject];
       v14 = objc_opt_class();
     }
 
@@ -149,8 +149,8 @@
     {
       v18 = objc_alloc_init(MPStoreLibraryMappingRequestOperation);
       [(MPStoreLibraryMappingRequestOperation *)v18 setLibraryView:v36];
-      [(MPStoreLibraryMappingRequestOperation *)v18 setModelClass:a4];
-      v53 = v37;
+      [(MPStoreLibraryMappingRequestOperation *)v18 setModelClass:class];
+      v53 = identifiersCopy;
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
       [(MPStoreLibraryMappingRequestOperation *)v18 setIdentifierSets:v24];
 
@@ -159,10 +159,10 @@
       v38[2] = __119__MPModelLibraryFavoriteEntityChangeRequestOperation__runLibraryMappingRequestWithIdentifiers_class_completionHandler___block_invoke_118;
       v38[3] = &unk_1E767AEB0;
       v42 = buf;
-      v39 = v37;
-      v40 = self;
+      v39 = identifiersCopy;
+      selfCopy = self;
       v43 = v52;
-      v44 = a4;
+      classCopy = class;
       v41 = v9;
       [(MPStoreLibraryMappingRequestOperation *)v18 setResponseHandler:v38];
       [(NSOperationQueue *)self->_operationQueue addOperation:v18];
@@ -176,26 +176,26 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v34 = v13;
+    v34 = modelObject;
     v16 = MEMORY[0x1E69B34E0];
-    v17 = [(MPAsyncOperation *)self userIdentity];
-    v33 = [v16 musicLibraryForUserAccount:v17];
+    userIdentity2 = [(MPAsyncOperation *)self userIdentity];
+    v33 = [v16 musicLibraryForUserAccount:userIdentity2];
 
-    v35 = [(__CFString *)v34 name];
+    name = [(__CFString *)v34 name];
     v18 = objc_alloc_init(MPStoreLibraryMappingRequestOperation);
     [(MPStoreLibraryMappingRequestOperation *)v18 setLibraryView:v36];
-    [(MPStoreLibraryMappingRequestOperation *)v18 setModelClass:a4];
-    if ([v35 length])
+    [(MPStoreLibraryMappingRequestOperation *)v18 setModelClass:class];
+    if ([name length])
     {
-      v19 = [v33 groupingKeyForString:v35];
+      v19 = [v33 groupingKeyForString:name];
       v20 = MEMORY[0x1E695DF20];
-      v21 = v19;
+      null = v19;
       if (!v19)
       {
-        v21 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
 
-      v22 = [v20 dictionaryWithObject:v21 forKey:v37];
+      v22 = [v20 dictionaryWithObject:null forKey:identifiersCopy];
       v54 = v22;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:1];
       [(MPStoreLibraryMappingRequestOperation *)v18 setAlbumArtistNamesToIdentifierSets:v23];
@@ -209,10 +209,10 @@ LABEL_26:
       v45[2] = __119__MPModelLibraryFavoriteEntityChangeRequestOperation__runLibraryMappingRequestWithIdentifiers_class_completionHandler___block_invoke;
       v45[3] = &unk_1E767AEB0;
       v49 = buf;
-      v46 = v37;
-      v47 = self;
+      v46 = identifiersCopy;
+      selfCopy2 = self;
       v50 = v52;
-      v51 = a4;
+      classCopy2 = class;
       v48 = v9;
       [(MPStoreLibraryMappingRequestOperation *)v18 setResponseHandler:v45];
       [(NSOperationQueue *)self->_operationQueue addOperation:v18];
@@ -235,8 +235,8 @@ LABEL_26:
       v55[1] = @"action";
       v56[0] = v27;
       v28 = MEMORY[0x1E696AD98];
-      v29 = [(MPModelLibraryFavoriteEntityChangeRequest *)self->_request requestAction];
-      v30 = [v28 numberWithInteger:{objc_msgSend(v29, "changeRequestAction")}];
+      requestAction = [(MPModelLibraryFavoriteEntityChangeRequest *)self->_request requestAction];
+      v30 = [v28 numberWithInteger:{objc_msgSend(requestAction, "changeRequestAction")}];
       v56[1] = v30;
       v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:v55 count:2];
       v57 = v31;
@@ -257,9 +257,9 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (v8)
+  if (handlerCopy)
   {
-    (*(v8 + 2))(v8, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
 LABEL_27:
@@ -363,7 +363,7 @@ void __119__MPModelLibraryFavoriteEntityChangeRequestOperation__runLibraryMappin
   }
 }
 
-- (void)_setLikedStateForRequestAction:(int64_t)a3 forEntityWithPersistentID:(int64_t)a4 modelClass:(Class)a5
+- (void)_setLikedStateForRequestAction:(int64_t)action forEntityWithPersistentID:(int64_t)d modelClass:(Class)class
 {
   v107 = *MEMORY[0x1E69E9840];
   v97 = 0;
@@ -372,20 +372,20 @@ void __119__MPModelLibraryFavoriteEntityChangeRequestOperation__runLibraryMappin
   v100 = __Block_byref_object_copy__30535;
   v101 = __Block_byref_object_dispose__30536;
   v102 = 0;
-  v9 = [(MPAsyncOperation *)self userIdentity];
-  v10 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v9];
+  userIdentity = [(MPAsyncOperation *)self userIdentity];
+  v10 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:userIdentity];
 
-  v11 = [(MPModelLibraryFavoriteEntityChangeRequest *)self->_request modelObject];
-  v85 = [v11 identifiers];
+  modelObject = [(MPModelLibraryFavoriteEntityChangeRequest *)self->_request modelObject];
+  identifiers = [modelObject identifiers];
 
-  v12 = [(MPModelLibraryFavoriteEntityChangeRequestOperation *)self _likedStateFromRequestAction:a3];
-  v13 = [v10 favoriteSongsPlaylist];
-  v14 = [v13 valueForProperty:@"keepLocal"];
-  v15 = [v14 BOOLValue];
+  v12 = [(MPModelLibraryFavoriteEntityChangeRequestOperation *)self _likedStateFromRequestAction:action];
+  favoriteSongsPlaylist = [v10 favoriteSongsPlaylist];
+  v14 = [favoriteSongsPlaylist valueForProperty:@"keepLocal"];
+  bOOLValue = [v14 BOOLValue];
 
-  if ([(objc_class *)a5 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v16 = [v10 itemWithPersistentID:a4 verifyExistence:0];
+    v16 = [v10 itemWithPersistentID:d verifyExistence:0];
     if (v16)
     {
       v17 = @"_itemLikedState";
@@ -395,11 +395,11 @@ void __119__MPModelLibraryFavoriteEntityChangeRequestOperation__runLibraryMappin
       v98[5] = v19;
 
       v21 = [v98[5] objectForKey:@"likedState"];
-      v22 = [v21 intValue];
+      intValue = [v21 intValue];
 
       v23 = os_log_create("com.apple.amp.mediaplayer", "Favoriting");
       v24 = v23;
-      if (v12 == v22)
+      if (v12 == intValue)
       {
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
@@ -415,9 +415,9 @@ void __119__MPModelLibraryFavoriteEntityChangeRequestOperation__runLibraryMappin
 
           v59 = v25;
           *buf = 134218242;
-          v104 = a4;
+          dCopy13 = d;
           v105 = 2114;
-          v106 = v59;
+          dCopy12 = v59;
           _os_log_impl(&dword_1A238D000, v24, OS_LOG_TYPE_ERROR, "track persistentID=%lld is already %{public}@", buf, 0x16u);
         }
 
@@ -447,9 +447,9 @@ void __119__MPModelLibraryFavoriteEntityChangeRequestOperation__runLibraryMappin
 
           v62 = v45;
           *buf = 138543618;
-          v104 = v62;
+          dCopy13 = v62;
           v105 = 2048;
-          v106 = a4;
+          dCopy12 = d;
           _os_log_impl(&dword_1A238D000, v24, OS_LOG_TYPE_DEFAULT, "Setting likedState=%{public}@ for track with persistentID=%lld", buf, 0x16u);
         }
 
@@ -461,12 +461,12 @@ void __119__MPModelLibraryFavoriteEntityChangeRequestOperation__runLibraryMappin
         v89[3] = &unk_1E767AE70;
         v93 = &v97;
         v94 = v12;
-        v96 = v15;
-        v95 = a4;
+        v96 = bOOLValue;
+        dCopy3 = d;
         v16 = v63;
         v90 = v16;
         v91 = v10;
-        v92 = self;
+        selfCopy = self;
         [v16 setValue:v64 forProperty:@"_itemLikedState" withCompletionBlock:v89];
       }
 
@@ -478,7 +478,7 @@ void __119__MPModelLibraryFavoriteEntityChangeRequestOperation__runLibraryMappin
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v104 = a4;
+      dCopy13 = d;
       _os_log_impl(&dword_1A238D000, v42, OS_LOG_TYPE_ERROR, "Could not locate item with persistentID=%lld", buf, 0xCu);
     }
 
@@ -500,9 +500,9 @@ LABEL_94:
     goto LABEL_95;
   }
 
-  if ([(objc_class *)a5 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v16 = [v10 playlistWithPersistentID:a4];
+    v16 = [v10 playlistWithPersistentID:d];
     if (v16)
     {
       v26 = @"_playlistLikedState";
@@ -512,11 +512,11 @@ LABEL_94:
       v98[5] = v27;
 
       v29 = [v98[5] objectForKey:@"likedState"];
-      v30 = [v29 intValue];
+      intValue2 = [v29 intValue];
 
       v31 = os_log_create("com.apple.amp.mediaplayer", "Favoriting");
       v32 = v31;
-      if (v12 == v30)
+      if (v12 == intValue2)
       {
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
@@ -532,9 +532,9 @@ LABEL_94:
 
           v69 = v33;
           *buf = 134218242;
-          v104 = a4;
+          dCopy13 = d;
           v105 = 2114;
-          v106 = v69;
+          dCopy12 = v69;
           _os_log_impl(&dword_1A238D000, v32, OS_LOG_TYPE_ERROR, "playlist persistentID=%lld is already %{public}@", buf, 0x16u);
         }
 
@@ -564,9 +564,9 @@ LABEL_94:
 
           v72 = v56;
           *buf = 138543618;
-          v104 = v72;
+          dCopy13 = v72;
           v105 = 2048;
-          v106 = a4;
+          dCopy12 = d;
           _os_log_impl(&dword_1A238D000, v32, OS_LOG_TYPE_DEFAULT, "Setting likedState=%{public}@ for playlist with persistentID=%lld", buf, 0x16u);
         }
 
@@ -587,7 +587,7 @@ LABEL_94:
     if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v104 = a4;
+      dCopy13 = d;
       _os_log_impl(&dword_1A238D000, v54, OS_LOG_TYPE_ERROR, "Could not locate playlist with persistentID=%lld", buf, 0xCu);
     }
 
@@ -601,9 +601,9 @@ LABEL_94:
     goto LABEL_63;
   }
 
-  if ([(objc_class *)a5 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v16 = [v10 collectionWithPersistentID:a4 groupingType:3];
+    v16 = [v10 collectionWithPersistentID:d groupingType:3];
     if (v16)
     {
       v34 = @"_albumArtistLikedState";
@@ -613,11 +613,11 @@ LABEL_94:
       v98[5] = v35;
 
       v37 = [v98[5] objectForKey:@"albumArtistFavoriteState"];
-      v38 = [v37 intValue];
+      intValue3 = [v37 intValue];
 
       v39 = os_log_create("com.apple.amp.mediaplayer", "Favoriting");
       v40 = v39;
-      if (v12 == v38)
+      if (v12 == intValue3)
       {
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
@@ -633,9 +633,9 @@ LABEL_94:
 
           v75 = v41;
           *buf = 134218242;
-          v104 = a4;
+          dCopy13 = d;
           v105 = 2114;
-          v106 = v75;
+          dCopy12 = v75;
           _os_log_impl(&dword_1A238D000, v40, OS_LOG_TYPE_ERROR, "album artist persistentID=%lld is already %{public}@", buf, 0x16u);
         }
 
@@ -665,9 +665,9 @@ LABEL_94:
 
           v78 = v66;
           *buf = 138543618;
-          v104 = v78;
+          dCopy13 = v78;
           v105 = 2048;
-          v106 = a4;
+          dCopy12 = d;
           _os_log_impl(&dword_1A238D000, v40, OS_LOG_TYPE_DEFAULT, "Setting likedState=%{public}@ for album artist with persistentID=%lld", buf, 0x16u);
         }
 
@@ -688,9 +688,9 @@ LABEL_94:
     if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v104 = a4;
+      dCopy13 = d;
       v105 = 2114;
-      v106 = v85;
+      dCopy12 = identifiers;
       _os_log_impl(&dword_1A238D000, v57, OS_LOG_TYPE_ERROR, "Could not locate album artist with persistentID=%lld, identifiers=%{public}@", buf, 0x16u);
     }
 
@@ -704,9 +704,9 @@ LABEL_94:
     goto LABEL_63;
   }
 
-  if ([(objc_class *)a5 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v16 = [v10 collectionWithPersistentID:a4 groupingType:1];
+    v16 = [v10 collectionWithPersistentID:d groupingType:1];
     if (v16)
     {
       v46 = @"_albumLikedState";
@@ -716,11 +716,11 @@ LABEL_94:
       v98[5] = v47;
 
       v49 = [v98[5] objectForKey:@"albumLikedState"];
-      v50 = [v49 intValue];
+      intValue4 = [v49 intValue];
 
       v51 = _MPLogCategoryFavoriting();
       v52 = v51;
-      if (v12 == v50)
+      if (v12 == intValue4)
       {
         if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
         {
@@ -736,9 +736,9 @@ LABEL_94:
 
           v80 = v53;
           *buf = 134218242;
-          v104 = a4;
+          dCopy13 = d;
           v105 = 2114;
-          v106 = v80;
+          dCopy12 = v80;
           _os_log_impl(&dword_1A238D000, v52, OS_LOG_TYPE_ERROR, "album persistentID=%lld is already %{public}@", buf, 0x16u);
         }
 
@@ -768,9 +768,9 @@ LABEL_94:
 
           v83 = v74;
           *buf = 138543618;
-          v104 = v83;
+          dCopy13 = v83;
           v105 = 2048;
-          v106 = a4;
+          dCopy12 = d;
           _os_log_impl(&dword_1A238D000, v52, OS_LOG_TYPE_DEFAULT, "Setting likedState=%{public}@ for album with persistentID=%lld", buf, 0x16u);
         }
 
@@ -791,7 +791,7 @@ LABEL_94:
     if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v104 = a4;
+      dCopy13 = d;
       _os_log_impl(&dword_1A238D000, v67, OS_LOG_TYPE_ERROR, "Could not locate album with persistentID=%lld", buf, 0xCu);
     }
 
@@ -895,29 +895,29 @@ void __122__MPModelLibraryFavoriteEntityChangeRequestOperation__setLikedStateFor
   [v5 finishWithError:v4];
 }
 
-- (void)_runRequestWithIdentifiers:(id)a3 persistentID:(int64_t)a4 favoriteEntityChangeRequestAction:(int64_t)a5 class:(Class)a6
+- (void)_runRequestWithIdentifiers:(id)identifiers persistentID:(int64_t)d favoriteEntityChangeRequestAction:(int64_t)action class:(Class)class
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  identifiersCopy = identifiers;
   v11 = os_log_create("com.apple.amp.mediaplayer", "Favoriting_Oversize");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = MPNSStringForFavoriteEntityChangeRequestAction(a5);
-    v13 = [(MPAsyncOperation *)self userIdentity];
+    v12 = MPNSStringForFavoriteEntityChangeRequestAction(action);
+    userIdentity = [(MPAsyncOperation *)self userIdentity];
     *buf = 138544130;
     v21 = v12;
     v22 = 2114;
-    v23 = v10;
+    v23 = identifiersCopy;
     v24 = 2114;
-    v25 = a6;
+    classCopy = class;
     v26 = 2114;
-    v27 = v13;
+    v27 = userIdentity;
     _os_log_impl(&dword_1A238D000, v11, OS_LOG_TYPE_DEFAULT, "Running request %{public}@ for entity with identifiers=%{public}@, modelClass=%{public}@ userIdentity=%{public}@", buf, 0x2Au);
   }
 
-  if (a4)
+  if (d)
   {
-    [(MPModelLibraryFavoriteEntityChangeRequestOperation *)self _setLikedStateForRequestAction:a5 forEntityWithPersistentID:a4 modelClass:a6];
+    [(MPModelLibraryFavoriteEntityChangeRequestOperation *)self _setLikedStateForRequestAction:action forEntityWithPersistentID:d modelClass:class];
   }
 
   else
@@ -926,12 +926,12 @@ void __122__MPModelLibraryFavoriteEntityChangeRequestOperation__setLikedStateFor
     v14[1] = 3221225472;
     v14[2] = __134__MPModelLibraryFavoriteEntityChangeRequestOperation__runRequestWithIdentifiers_persistentID_favoriteEntityChangeRequestAction_class___block_invoke;
     v14[3] = &unk_1E767AE40;
-    v15 = v10;
-    v16 = self;
-    v17 = a5;
-    v18 = a6;
+    v15 = identifiersCopy;
+    selfCopy = self;
+    actionCopy = action;
+    classCopy2 = class;
     v19 = 0;
-    [(MPModelLibraryFavoriteEntityChangeRequestOperation *)self _runLibraryMappingRequestWithIdentifiers:v15 class:a6 completionHandler:v14];
+    [(MPModelLibraryFavoriteEntityChangeRequestOperation *)self _runLibraryMappingRequestWithIdentifiers:v15 class:class completionHandler:v14];
   }
 }
 
@@ -1566,12 +1566,12 @@ void __134__MPModelLibraryFavoriteEntityChangeRequestOperation__runRequestWithId
 - (void)execute
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(MPModelLibraryFavoriteEntityChangeRequest *)self->_request modelObject];
-  v4 = [(MPModelLibraryFavoriteEntityChangeRequest *)self->_request requestAction];
-  v5 = v4;
-  if (v3)
+  modelObject = [(MPModelLibraryFavoriteEntityChangeRequest *)self->_request modelObject];
+  requestAction = [(MPModelLibraryFavoriteEntityChangeRequest *)self->_request requestAction];
+  v5 = requestAction;
+  if (modelObject)
   {
-    v6 = v4 == 0;
+    v6 = requestAction == 0;
   }
 
   else
@@ -1585,7 +1585,7 @@ void __134__MPModelLibraryFavoriteEntityChangeRequestOperation__runRequestWithId
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v24 = 138543618;
-      v25 = v3;
+      v25 = modelObject;
       v26 = 2114;
       v27 = v5;
       _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_DEFAULT, "Not running favorite state change operation for entity=%{public}@ action=%{public}@ as the request is invalid", &v24, 0x16u);
@@ -1603,7 +1603,7 @@ void __134__MPModelLibraryFavoriteEntityChangeRequestOperation__runRequestWithId
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
-      v15 = [v3 anyObject];
+      anyObject = [modelObject anyObject];
       v13 = objc_opt_class();
     }
 
@@ -1619,17 +1619,17 @@ void __134__MPModelLibraryFavoriteEntityChangeRequestOperation__runRequestWithId
         [(NSOperationQueue *)self->_operationQueue setMaxConcurrentOperationCount:1];
         [(NSOperationQueue *)self->_operationQueue setName:@"com.apple.MediaPlayer.MPModelLibraryFavoriteEntityChangeRequestOperation.operationQueue"];
         v18 = self->_operationQueue;
-        v19 = [MEMORY[0x1E696AF00] currentThread];
-        -[NSOperationQueue setQualityOfService:](v18, "setQualityOfService:", [v19 qualityOfService]);
+        currentThread = [MEMORY[0x1E696AF00] currentThread];
+        -[NSOperationQueue setQualityOfService:](v18, "setQualityOfService:", [currentThread qualityOfService]);
       }
 
       self->_mappingState = 0;
       self->_canRerunRequest = 1;
-      v20 = [v3 identifiers];
-      v21 = [v20 library];
-      v22 = [v21 persistentID];
+      identifiers = [modelObject identifiers];
+      library = [identifiers library];
+      persistentID = [library persistentID];
 
-      -[MPModelLibraryFavoriteEntityChangeRequestOperation _runRequestWithIdentifiers:persistentID:favoriteEntityChangeRequestAction:class:](self, "_runRequestWithIdentifiers:persistentID:favoriteEntityChangeRequestAction:class:", v20, v22, [v5 changeRequestAction], v13);
+      -[MPModelLibraryFavoriteEntityChangeRequestOperation _runRequestWithIdentifiers:persistentID:favoriteEntityChangeRequestAction:class:](self, "_runRequestWithIdentifiers:persistentID:favoriteEntityChangeRequestAction:class:", identifiers, persistentID, [v5 changeRequestAction], v13);
       goto LABEL_21;
     }
 
@@ -1637,7 +1637,7 @@ void __134__MPModelLibraryFavoriteEntityChangeRequestOperation__runRequestWithId
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v24 = 138543618;
-      v25 = v3;
+      v25 = modelObject;
       v26 = 2114;
       v27 = v5;
       _os_log_impl(&dword_1A238D000, v23, OS_LOG_TYPE_DEFAULT, "Not running favorite state change operation for entity=%{public}@ action=%{public}@ as the request object is not supported", &v24, 0x16u);

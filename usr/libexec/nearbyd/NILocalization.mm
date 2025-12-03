@@ -1,11 +1,11 @@
 @interface NILocalization
 + (id)_niFrameworkBundle;
-+ (id)_niLocalizedStringFromBundle:(id)a3 withKey:(id)a4;
-+ (id)_niLocalizedStringFromFrameworkBundleWithKey:(id)a3;
++ (id)_niLocalizedStringFromBundle:(id)bundle withKey:(id)key;
++ (id)_niLocalizedStringFromFrameworkBundleWithKey:(id)key;
 + (id)fallbackBundle;
-+ (id)fallbackBundleWithBundle:(id)a3;
++ (id)fallbackBundleWithBundle:(id)bundle;
 + (id)localizedBundle;
-+ (id)localizedBundleWithBundle:(id)a3;
++ (id)localizedBundleWithBundle:(id)bundle;
 @end
 
 @implementation NILocalization
@@ -22,21 +22,21 @@
   return v3;
 }
 
-+ (id)_niLocalizedStringFromFrameworkBundleWithKey:(id)a3
++ (id)_niLocalizedStringFromFrameworkBundleWithKey:(id)key
 {
-  v3 = a3;
-  v4 = [objc_opt_class() localizedBundle];
-  v5 = [v4 localizedStringForKey:v3 value:0 table:0];
+  keyCopy = key;
+  localizedBundle = [objc_opt_class() localizedBundle];
+  v5 = [localizedBundle localizedStringForKey:keyCopy value:0 table:0];
 
   if (!v5)
   {
-    v6 = [objc_opt_class() fallbackBundle];
-    v5 = [v6 localizedStringForKey:v3 value:0 table:0];
+    fallbackBundle = [objc_opt_class() fallbackBundle];
+    v5 = [fallbackBundle localizedStringForKey:keyCopy value:0 table:0];
 
     if (!v5)
     {
-      v7 = [objc_opt_class() _niFrameworkBundle];
-      v5 = [v7 localizedStringForKey:v3 value:0 table:0];
+      _niFrameworkBundle = [objc_opt_class() _niFrameworkBundle];
+      v5 = [_niFrameworkBundle localizedStringForKey:keyCopy value:0 table:0];
     }
   }
 
@@ -46,8 +46,8 @@
 + (id)fallbackBundle
 {
   v2 = objc_opt_class();
-  v3 = [objc_opt_class() _niFrameworkBundle];
-  v4 = [v2 fallbackBundleWithBundle:v3];
+  _niFrameworkBundle = [objc_opt_class() _niFrameworkBundle];
+  v4 = [v2 fallbackBundleWithBundle:_niFrameworkBundle];
 
   return v4;
 }
@@ -55,63 +55,63 @@
 + (id)localizedBundle
 {
   v2 = objc_opt_class();
-  v3 = [objc_opt_class() _niFrameworkBundle];
-  v4 = [v2 localizedBundleWithBundle:v3];
+  _niFrameworkBundle = [objc_opt_class() _niFrameworkBundle];
+  v4 = [v2 localizedBundleWithBundle:_niFrameworkBundle];
 
   return v4;
 }
 
-+ (id)_niLocalizedStringFromBundle:(id)a3 withKey:(id)a4
++ (id)_niLocalizedStringFromBundle:(id)bundle withKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() localizedBundleWithBundle:v5];
-  v8 = [v7 localizedStringForKey:v6 value:0 table:0];
+  bundleCopy = bundle;
+  keyCopy = key;
+  v7 = [objc_opt_class() localizedBundleWithBundle:bundleCopy];
+  v8 = [v7 localizedStringForKey:keyCopy value:0 table:0];
 
   if (!v8)
   {
-    v9 = [objc_opt_class() fallbackBundleWithBundle:v5];
-    v8 = [v9 localizedStringForKey:v6 value:0 table:0];
+    v9 = [objc_opt_class() fallbackBundleWithBundle:bundleCopy];
+    v8 = [v9 localizedStringForKey:keyCopy value:0 table:0];
 
     if (!v8)
     {
-      v8 = [v5 localizedStringForKey:v6 value:0 table:0];
+      v8 = [bundleCopy localizedStringForKey:keyCopy value:0 table:0];
     }
   }
 
   return v8;
 }
 
-+ (id)fallbackBundleWithBundle:(id)a3
++ (id)fallbackBundleWithBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = +[NSLocale preferredLanguages];
-  v5 = [v4 firstObject];
-  v6 = [v5 componentsSeparatedByString:@"-"];
-  v7 = [v6 firstObject];
+  firstObject = [v4 firstObject];
+  v6 = [firstObject componentsSeparatedByString:@"-"];
+  firstObject2 = [v6 firstObject];
 
-  v8 = [v3 pathForResource:@"Localizable" ofType:@"strings" inDirectory:0 forLocalization:v7];
+  v8 = [bundleCopy pathForResource:@"Localizable" ofType:@"strings" inDirectory:0 forLocalization:firstObject2];
 
-  v9 = [v8 stringByDeletingLastPathComponent];
-  v10 = [NSBundle bundleWithPath:v9];
+  stringByDeletingLastPathComponent = [v8 stringByDeletingLastPathComponent];
+  v10 = [NSBundle bundleWithPath:stringByDeletingLastPathComponent];
 
   return v10;
 }
 
-+ (id)localizedBundleWithBundle:(id)a3
++ (id)localizedBundleWithBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = +[NSLocale preferredLanguages];
-  v5 = [objc_opt_class() _niFrameworkBundle];
-  v6 = [v5 localizations];
-  v7 = [NSBundle preferredLocalizationsFromArray:v6 forPreferences:v4];
+  _niFrameworkBundle = [objc_opt_class() _niFrameworkBundle];
+  localizations = [_niFrameworkBundle localizations];
+  v7 = [NSBundle preferredLocalizationsFromArray:localizations forPreferences:v4];
 
-  v8 = [v3 resourcePath];
+  resourcePath = [bundleCopy resourcePath];
 
-  v9 = [v7 firstObject];
-  v10 = [NSString stringWithFormat:@"%@.lproj", v9];
+  firstObject = [v7 firstObject];
+  v10 = [NSString stringWithFormat:@"%@.lproj", firstObject];
 
-  v11 = [v8 stringByAppendingPathComponent:v10];
+  v11 = [resourcePath stringByAppendingPathComponent:v10];
   v12 = [NSBundle bundleWithPath:v11];
 
   return v12;

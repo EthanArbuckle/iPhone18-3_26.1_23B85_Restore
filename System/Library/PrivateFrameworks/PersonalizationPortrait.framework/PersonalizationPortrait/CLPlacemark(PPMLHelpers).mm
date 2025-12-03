@@ -12,11 +12,11 @@
   if ([v4 isEqualToString:@"name"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [a1 name];
-    v7 = v6;
-    if (v6)
+    name = [self name];
+    timeZone = name;
+    if (name)
     {
-      v8 = v6;
+      v8 = name;
     }
 
     else
@@ -31,11 +31,11 @@
   if ([v4 isEqualToString:@"inlandWater"])
   {
     v10 = MEMORY[0x1E695FE60];
-    v11 = [a1 inlandWater];
+    inlandWater = [self inlandWater];
 LABEL_8:
-    v7 = v11;
+    timeZone = inlandWater;
     v9 = v10;
-    v8 = v7;
+    v8 = timeZone;
 LABEL_9:
     v12 = [v9 featureValueWithString:v8];
 LABEL_10:
@@ -47,11 +47,11 @@ LABEL_10:
   {
     v14 = MEMORY[0x1E695FE60];
     v15 = MEMORY[0x1E695FF10];
-    v16 = [a1 areasOfInterest];
-    v17 = v16;
-    if (v16)
+    areasOfInterest = [self areasOfInterest];
+    v17 = areasOfInterest;
+    if (areasOfInterest)
     {
-      v18 = v16;
+      v18 = areasOfInterest;
     }
 
     else
@@ -68,11 +68,11 @@ LABEL_10:
   if ([v4 isEqualToString:@"timezone"])
   {
     v20 = MEMORY[0x1E695FE60];
-    v7 = [a1 timeZone];
-    v21 = [(__CFString *)v7 abbreviation];
+    timeZone = [self timeZone];
+    abbreviation = [(__CFString *)timeZone abbreviation];
 LABEL_23:
-    v22 = v21;
-    v12 = [v20 featureValueWithString:v21];
+    v22 = abbreviation;
+    v12 = [v20 featureValueWithString:abbreviation];
 
     goto LABEL_10;
   }
@@ -80,43 +80,43 @@ LABEL_23:
   if ([v4 isEqualToString:@"region"])
   {
     v20 = MEMORY[0x1E695FE60];
-    v7 = [a1 region];
-    v21 = [(__CFString *)v7 identifier];
+    timeZone = [self region];
+    abbreviation = [(__CFString *)timeZone identifier];
     goto LABEL_23;
   }
 
   if ([v4 isEqualToString:@"subAdministrativeArea"])
   {
     v10 = MEMORY[0x1E695FE60];
-    v11 = [a1 subAdministrativeArea];
+    inlandWater = [self subAdministrativeArea];
     goto LABEL_8;
   }
 
   if ([v4 isEqualToString:@"administrativeArea"])
   {
     v10 = MEMORY[0x1E695FE60];
-    v11 = [a1 administrativeArea];
+    inlandWater = [self administrativeArea];
     goto LABEL_8;
   }
 
   if ([v4 isEqualToString:@"thoroughfare"])
   {
     v10 = MEMORY[0x1E695FE60];
-    v11 = [a1 thoroughfare];
+    inlandWater = [self thoroughfare];
     goto LABEL_8;
   }
 
   if ([v4 isEqualToString:@"countryCode"])
   {
     v10 = MEMORY[0x1E695FE60];
-    v11 = [a1 ISOcountryCode];
+    inlandWater = [self ISOcountryCode];
     goto LABEL_8;
   }
 
   if ([v4 isEqualToString:@"specificity"])
   {
     v23 = MEMORY[0x1E695FE60];
-    [a1 pp_addressSpecificity];
+    [self pp_addressSpecificity];
     v12 = [v23 featureValueWithDouble:?];
   }
 
@@ -141,19 +141,19 @@ LABEL_11:
 
 - (void)pp_addressSpecificity
 {
-  [a1 name];
+  [self name];
 
-  [a1 thoroughfare];
-  [a1 subThoroughfare];
+  [self thoroughfare];
+  [self subThoroughfare];
 
-  [a1 locality];
-  [a1 subLocality];
+  [self locality];
+  [self subLocality];
 
-  [a1 administrativeArea];
-  [a1 subAdministrativeArea];
+  [self administrativeArea];
+  [self subAdministrativeArea];
 
-  [a1 postalCode];
-  [a1 ISOcountryCode];
+  [self postalCode];
+  [self ISOcountryCode];
 }
 
 @end

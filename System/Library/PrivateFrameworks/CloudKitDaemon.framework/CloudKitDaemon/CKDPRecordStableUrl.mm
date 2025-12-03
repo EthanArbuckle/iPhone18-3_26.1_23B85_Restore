@@ -1,12 +1,12 @@
 @interface CKDPRecordStableUrl
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRecordStableUrl
@@ -60,120 +60,120 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_routingKey)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_shortTokenHash)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_protectedFullToken)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_encryptedPublicSharingKey)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_displayedHostname)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   routingKey = self->_routingKey;
-  v11 = v4;
+  v11 = toCopy;
   if (routingKey)
   {
-    objc_msgSend_setRoutingKey_(v4, v5, routingKey);
-    v4 = v11;
+    objc_msgSend_setRoutingKey_(toCopy, v5, routingKey);
+    toCopy = v11;
   }
 
   shortTokenHash = self->_shortTokenHash;
   if (shortTokenHash)
   {
     objc_msgSend_setShortTokenHash_(v11, v5, shortTokenHash);
-    v4 = v11;
+    toCopy = v11;
   }
 
   protectedFullToken = self->_protectedFullToken;
   if (protectedFullToken)
   {
     objc_msgSend_setProtectedFullToken_(v11, v5, protectedFullToken);
-    v4 = v11;
+    toCopy = v11;
   }
 
   encryptedPublicSharingKey = self->_encryptedPublicSharingKey;
   if (encryptedPublicSharingKey)
   {
     objc_msgSend_setEncryptedPublicSharingKey_(v11, v5, encryptedPublicSharingKey);
-    v4 = v11;
+    toCopy = v11;
   }
 
   displayedHostname = self->_displayedHostname;
   if (displayedHostname)
   {
     objc_msgSend_setDisplayedHostname_(v11, v5, displayedHostname);
-    v4 = v11;
+    toCopy = v11;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_routingKey, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_routingKey, v11, zone);
   v13 = v10[4];
   v10[4] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_shortTokenHash, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_shortTokenHash, v14, zone);
   v16 = v10[5];
   v10[5] = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_protectedFullToken, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_protectedFullToken, v17, zone);
   v19 = v10[3];
   v10[3] = v18;
 
-  v21 = objc_msgSend_copyWithZone_(self->_encryptedPublicSharingKey, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_encryptedPublicSharingKey, v20, zone);
   v22 = v10[2];
   v10[2] = v21;
 
-  v24 = objc_msgSend_copyWithZone_(self->_displayedHostname, v23, a3);
+  v24 = objc_msgSend_copyWithZone_(self->_displayedHostname, v23, zone);
   v25 = v10[1];
   v10[1] = v24;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_12;
   }
 
   routingKey = self->_routingKey;
-  v9 = v4[4];
+  v9 = equalCopy[4];
   if (routingKey | v9)
   {
     if (!objc_msgSend_isEqual_(routingKey, v7, v9))
@@ -182,10 +182,10 @@
     }
   }
 
-  if (((shortTokenHash = self->_shortTokenHash, v11 = v4[5], !(shortTokenHash | v11)) || objc_msgSend_isEqual_(shortTokenHash, v7, v11)) && ((protectedFullToken = self->_protectedFullToken, v13 = v4[3], !(protectedFullToken | v13)) || objc_msgSend_isEqual_(protectedFullToken, v7, v13)) && ((encryptedPublicSharingKey = self->_encryptedPublicSharingKey, v15 = v4[2], !(encryptedPublicSharingKey | v15)) || objc_msgSend_isEqual_(encryptedPublicSharingKey, v7, v15)))
+  if (((shortTokenHash = self->_shortTokenHash, v11 = equalCopy[5], !(shortTokenHash | v11)) || objc_msgSend_isEqual_(shortTokenHash, v7, v11)) && ((protectedFullToken = self->_protectedFullToken, v13 = equalCopy[3], !(protectedFullToken | v13)) || objc_msgSend_isEqual_(protectedFullToken, v7, v13)) && ((encryptedPublicSharingKey = self->_encryptedPublicSharingKey, v15 = equalCopy[2], !(encryptedPublicSharingKey | v15)) || objc_msgSend_isEqual_(encryptedPublicSharingKey, v7, v15)))
   {
     displayedHostname = self->_displayedHostname;
-    v17 = v4[1];
+    v17 = equalCopy[1];
     if (displayedHostname | v17)
     {
       isEqual = objc_msgSend_isEqual_(displayedHostname, v7, v17);
@@ -215,34 +215,34 @@ LABEL_12:
   return v13 ^ objc_msgSend_hash(self->_displayedHostname, v14, v15);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v10 = a3;
-  v5 = v10[4];
+  fromCopy = from;
+  v5 = fromCopy[4];
   if (v5)
   {
     objc_msgSend_setRoutingKey_(self, v4, v5);
   }
 
-  v6 = v10[5];
+  v6 = fromCopy[5];
   if (v6)
   {
     objc_msgSend_setShortTokenHash_(self, v4, v6);
   }
 
-  v7 = v10[3];
+  v7 = fromCopy[3];
   if (v7)
   {
     objc_msgSend_setProtectedFullToken_(self, v4, v7);
   }
 
-  v8 = v10[2];
+  v8 = fromCopy[2];
   if (v8)
   {
     objc_msgSend_setEncryptedPublicSharingKey_(self, v4, v8);
   }
 
-  v9 = v10[1];
+  v9 = fromCopy[1];
   if (v9)
   {
     objc_msgSend_setDisplayedHostname_(self, v4, v9);

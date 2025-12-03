@@ -26,13 +26,13 @@
   v3 = OBJC_IVAR____TtC10FitnessApp34ActivitySharingCloudDeviceProvider_activitySharingCloudDevicesChangedToken;
   swift_beginAccess();
   v4 = *(&self->super.isa + v3);
-  v5 = self;
+  selfCopy = self;
   if (v4 != -1)
   {
     notify_cancel(v4);
   }
 
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for ActivitySharingCloudDeviceProvider();
   [(ActivitySharingCloudDeviceProvider *)&v6 dealloc];
 }

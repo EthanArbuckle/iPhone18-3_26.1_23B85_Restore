@@ -1,16 +1,16 @@
 @interface _CTMutableGlyphStorage
-- (CGPoint)originAtIndex:(int64_t)a3;
-- (CGSize)customAdvanceForIndex:(int64_t)a3;
-- (_CTMutableGlyphStorage)initWithInterface:(id)a3 options:(unsigned int)a4;
-- (id)copyWithRange:(id)a3;
-- (int64_t)attachmentCountAtIndex:(int64_t)a3;
-- (void)getCustomAdvances:(CGSize *)a3 forIndexes:(const int64_t *)a4 count:(int64_t)a5;
-- (void)insertGlyphsAtRange:(id)a3;
-- (void)moveGlyphsFromRange:(id)a3 toIndex:(int64_t)a4;
-- (void)puntStringIndicesInRange:(id)a3 by:(int64_t)a4;
-- (void)resetOrigins:(id)a3;
-- (void)setOrigin:(CGPoint)a3 atIndex:(int64_t)a4;
-- (void)swapGlyphsAtIndex:(int64_t)a3 withIndex:(int64_t)a4;
+- (CGPoint)originAtIndex:(int64_t)index;
+- (CGSize)customAdvanceForIndex:(int64_t)index;
+- (_CTMutableGlyphStorage)initWithInterface:(id)interface options:(unsigned int)options;
+- (id)copyWithRange:(id)range;
+- (int64_t)attachmentCountAtIndex:(int64_t)index;
+- (void)getCustomAdvances:(CGSize *)advances forIndexes:(const int64_t *)indexes count:(int64_t)count;
+- (void)insertGlyphsAtRange:(id)range;
+- (void)moveGlyphsFromRange:(id)range toIndex:(int64_t)index;
+- (void)puntStringIndicesInRange:(id)range by:(int64_t)by;
+- (void)resetOrigins:(id)origins;
+- (void)setOrigin:(CGPoint)origin atIndex:(int64_t)index;
+- (void)swapGlyphsAtIndex:(int64_t)index withIndex:(int64_t)withIndex;
 - (void)sync;
 @end
 
@@ -39,29 +39,29 @@
   }
 }
 
-- (_CTMutableGlyphStorage)initWithInterface:(id)a3 options:(unsigned int)a4
+- (_CTMutableGlyphStorage)initWithInterface:(id)interface options:(unsigned int)options
 {
-  if (a3)
+  if (interface)
   {
-    v4 = a4;
-    v6 = *(a3 + 1);
+    optionsCopy = options;
+    v6 = *(interface + 1);
     v10.receiver = self;
     v10.super_class = _CTMutableGlyphStorage;
     v7 = [(_CTGlyphStorage *)&v10 initWithCount:v6];
     v8 = v7;
     if (v7)
     {
-      v7->_interface = a3;
-      v7->super._glyphs = *(a3 + 2);
-      v7->super._advances = *(a3 + 3);
-      v7->super._props = *(a3 + 4);
-      v7->super._stringIndices = *(a3 + 5);
+      v7->_interface = interface;
+      v7->super._glyphs = *(interface + 2);
+      v7->super._advances = *(interface + 3);
+      v7->super._props = *(interface + 4);
+      v7->super._stringIndices = *(interface + 5);
       if (objc_opt_respondsToSelector())
       {
         v8->_implementsOrigins = 1;
       }
 
-      if (v4)
+      if (optionsCopy)
       {
         v8->_hasCustomAdvances = 1;
       }
@@ -82,28 +82,28 @@
   return v8;
 }
 
-- (id)copyWithRange:(id)a3
+- (id)copyWithRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v6 = [(CTGlyphStorageInterface *)self->_interface createCopy:?];
   if (!self->_implementsOrigins)
   {
     AssociatedObject = objc_getAssociatedObject(self, sOriginsAssociationKey);
     if (AssociatedObject)
     {
-      v8 = [AssociatedObject bytes];
-      v9 = [objc_alloc(MEMORY[0x1E695DF88]) initWithBytes:v8 + 16 * var0 length:16 * var1];
-      objc_setAssociatedObject(v6, sOriginsAssociationKey, v9, 0x301);
+      bytes = [AssociatedObject bytes];
+      var1 = [objc_alloc(MEMORY[0x1E695DF88]) initWithBytes:bytes + 16 * var0 length:16 * var1];
+      objc_setAssociatedObject(v6, sOriginsAssociationKey, var1, 0x301);
     }
   }
 
   return v6;
 }
 
-- (CGSize)customAdvanceForIndex:(int64_t)a3
+- (CGSize)customAdvanceForIndex:(int64_t)index
 {
-  if (self->super._glyphs[a3] == -1)
+  if (self->super._glyphs[index] == -1)
   {
     v5 = *MEMORY[0x1E695F060];
   }
@@ -112,7 +112,7 @@
   {
     *&v5 = -1;
     *(&v5 + 1) = -1;
-    [(CTGlyphStorageInterface *)self->_interface getCustomAdvance:&v5 forIndex:a3];
+    [(CTGlyphStorageInterface *)self->_interface getCustomAdvance:&v5 forIndex:index];
   }
 
   v4 = *(&v5 + 1);
@@ -122,20 +122,20 @@
   return result;
 }
 
-- (void)getCustomAdvances:(CGSize *)a3 forIndexes:(const int64_t *)a4 count:(int64_t)a5
+- (void)getCustomAdvances:(CGSize *)advances forIndexes:(const int64_t *)indexes count:(int64_t)count
 {
   if (self->_implementsCustomAdvancesForIndexes)
   {
-    [(CTGlyphStorageInterface *)self->_interface getCustomAdvances:a3 forIndexes:a4 count:a5];
+    [(CTGlyphStorageInterface *)self->_interface getCustomAdvances:advances forIndexes:indexes count:count];
   }
 }
 
-- (int64_t)attachmentCountAtIndex:(int64_t)a3
+- (int64_t)attachmentCountAtIndex:(int64_t)index
 {
   absorbedCounts = self->_interface->_absorbedCounts;
   if (absorbedCounts)
   {
-    return absorbedCounts[a3];
+    return absorbedCounts[index];
   }
 
   else
@@ -144,19 +144,19 @@
   }
 }
 
-- (void)resetOrigins:(id)a3
+- (void)resetOrigins:(id)origins
 {
   if (!self->_implementsOrigins)
   {
-    var1 = a3.var1;
-    var0 = a3.var0;
+    var1 = origins.var1;
+    var0 = origins.var0;
     AssociatedObject = objc_getAssociatedObject(self, sOriginsAssociationKey);
     if (AssociatedObject)
     {
-      v6 = [AssociatedObject mutableBytes];
+      mutableBytes = [AssociatedObject mutableBytes];
       if (var1 >= 1)
       {
-        v7 = (v6 + 16 * var0);
+        v7 = (mutableBytes + 16 * var0);
         v8 = var1 + 1;
         v9 = MEMORY[0x1E695EFF8];
         do
@@ -171,14 +171,14 @@
   }
 }
 
-- (CGPoint)originAtIndex:(int64_t)a3
+- (CGPoint)originAtIndex:(int64_t)index
 {
   if (self->_implementsOrigins)
   {
     origins = self->_interface->_origins;
     if (origins)
     {
-      p_x = &origins[a3].x;
+      p_x = &origins[index].x;
     }
 
     else
@@ -192,7 +192,7 @@
     AssociatedObject = objc_getAssociatedObject(self, sOriginsAssociationKey);
     if (AssociatedObject)
     {
-      p_x = ([AssociatedObject bytes] + 16 * a3);
+      p_x = ([AssociatedObject bytes] + 16 * index);
     }
 
     else
@@ -208,10 +208,10 @@
   return result;
 }
 
-- (void)setOrigin:(CGPoint)a3 atIndex:(int64_t)a4
+- (void)setOrigin:(CGPoint)origin atIndex:(int64_t)index
 {
-  y = a3.y;
-  x = a3.x;
+  y = origin.y;
+  x = origin.x;
   if (self->_implementsOrigins)
   {
     interface = self->_interface;
@@ -225,7 +225,7 @@
   {
     v10 = AssociatedObject;
 LABEL_7:
-    v11 = ([v10 mutableBytes] + 16 * a4);
+    v11 = ([v10 mutableBytes] + 16 * index);
     *v11 = x;
     v11[1] = y;
     return;
@@ -243,9 +243,9 @@ LABEL_7:
   }
 }
 
-- (void)puntStringIndicesInRange:(id)a3 by:(int64_t)a4
+- (void)puntStringIndicesInRange:(id)range by:(int64_t)by
 {
-  if (a4 && a3.var1 >= 1)
+  if (by && range.var1 >= 1)
   {
     v16 = v9;
     v17 = v8;
@@ -255,11 +255,11 @@ LABEL_7:
     v21 = v4;
     v22 = v10;
     v23 = v11;
-    var0 = a3.var0;
-    v15 = a3.var0 + a3.var1;
+    var0 = range.var0;
+    v15 = range.var0 + range.var1;
     do
     {
-      [(CTGlyphStorageInterface *)self->_interface setStringIndex:self->_interface->_stringIndexes[var0] + a4 forIndex:var0, v16, v17, v18, v19, v20, v21, v22, v23];
+      [(CTGlyphStorageInterface *)self->_interface setStringIndex:self->_interface->_stringIndexes[var0] + by forIndex:var0, v16, v17, v18, v19, v20, v21, v22, v23];
       ++var0;
     }
 
@@ -267,13 +267,13 @@ LABEL_7:
   }
 }
 
-- (void)insertGlyphsAtRange:(id)a3
+- (void)insertGlyphsAtRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   interface = self->_interface;
   glyphCount = interface->_glyphCount;
-  [(CTGlyphStorageInterface *)interface insertGlyphs:a3.var0 - 1];
+  [(CTGlyphStorageInterface *)interface insertGlyphs:range.var0 - 1];
   if (!self->_implementsOrigins)
   {
     AssociatedObject = objc_getAssociatedObject(self, sOriginsAssociationKey);
@@ -281,17 +281,17 @@ LABEL_7:
     {
       v9 = AssociatedObject;
       [AssociatedObject setLength:16 * (glyphCount + var1)];
-      v10 = [v9 mutableBytes];
+      mutableBytes = [v9 mutableBytes];
       if (glyphCount - var0 >= 1)
       {
 
-        memmove((v10 + 16 * var0 + 16 * var1), (v10 + 16 * var0), 16 * (glyphCount - var0));
+        memmove((mutableBytes + 16 * var0 + 16 * var1), (mutableBytes + 16 * var0), 16 * (glyphCount - var0));
       }
     }
   }
 }
 
-- (void)swapGlyphsAtIndex:(int64_t)a3 withIndex:(int64_t)a4
+- (void)swapGlyphsAtIndex:(int64_t)index withIndex:(int64_t)withIndex
 {
   [CTGlyphStorageInterface swapGlyph:"swapGlyph:withIndex:" withIndex:?];
   if (!self->_implementsOrigins)
@@ -299,27 +299,27 @@ LABEL_7:
     AssociatedObject = objc_getAssociatedObject(self, sOriginsAssociationKey);
     if (AssociatedObject)
     {
-      v8 = [AssociatedObject mutableBytes];
-      v9 = *(v8 + 16 * a3);
-      *(v8 + 16 * a3) = *(v8 + 16 * a4);
-      *(v8 + 16 * a4) = v9;
+      mutableBytes = [AssociatedObject mutableBytes];
+      v9 = *(mutableBytes + 16 * index);
+      *(mutableBytes + 16 * index) = *(mutableBytes + 16 * withIndex);
+      *(mutableBytes + 16 * withIndex) = v9;
     }
   }
 }
 
-- (void)moveGlyphsFromRange:(id)a3 toIndex:(int64_t)a4
+- (void)moveGlyphsFromRange:(id)range toIndex:(int64_t)index
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  [(CTGlyphStorageInterface *)self->_interface moveGlyphsTo:a4 from:a3.var0, a3.var1];
+  var1 = range.var1;
+  var0 = range.var0;
+  [(CTGlyphStorageInterface *)self->_interface moveGlyphsTo:index from:range.var0, range.var1];
   if (!self->_implementsOrigins)
   {
     AssociatedObject = objc_getAssociatedObject(self, sOriginsAssociationKey);
     if (AssociatedObject)
     {
-      v9 = [AssociatedObject mutableBytes];
-      v10 = (v9 + 16 * var0);
-      v11 = (v9 + 16 * a4);
+      mutableBytes = [AssociatedObject mutableBytes];
+      v10 = (mutableBytes + 16 * var0);
+      v11 = (mutableBytes + 16 * index);
 
       memmove(v11, v10, 16 * var1);
     }

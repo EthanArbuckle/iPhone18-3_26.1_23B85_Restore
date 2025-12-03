@@ -1,21 +1,21 @@
 @interface IKStyleMediaQuery
-+ (id)mediaQueryListWithCSSMediaQuery:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (IKStyleMediaQuery)initWithMediaType:(id)a3 featureValues:(id)a4 isNegated:(BOOL)a5;
++ (id)mediaQueryListWithCSSMediaQuery:(id)query;
+- (BOOL)isEqual:(id)equal;
+- (IKStyleMediaQuery)initWithMediaType:(id)type featureValues:(id)values isNegated:(BOOL)negated;
 - (NSString)identifier;
 - (unint64_t)hash;
 @end
 
 @implementation IKStyleMediaQuery
 
-+ (id)mediaQueryListWithCSSMediaQuery:(id)a3
++ (id)mediaQueryListWithCSSMediaQuery:(id)query
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v25 = v3;
-  v24 = [v3 queryList];
-  [v24 subQueryList];
+  queryCopy = query;
+  array = [MEMORY[0x277CBEB18] array];
+  v25 = queryCopy;
+  queryList = [queryCopy queryList];
+  [queryList subQueryList];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -24,7 +24,7 @@
   if (v29)
   {
     v27 = *v37;
-    v28 = v4;
+    v28 = array;
     do
     {
       v5 = 0;
@@ -37,13 +37,13 @@
 
         v30 = *(*(&v36 + 1) + 8 * v5);
         v31 = v5;
-        v6 = [v30 expressionList];
-        v7 = [MEMORY[0x277CBEB38] dictionary];
+        expressionList = [v30 expressionList];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v8 = v6;
+        v8 = expressionList;
         v9 = [v8 countByEnumeratingWithState:&v32 objects:v40 count:16];
         if (v9)
         {
@@ -59,17 +59,17 @@
               }
 
               v13 = *(*(&v32 + 1) + 8 * i);
-              v14 = [MEMORY[0x277CBEB68] null];
-              v15 = [v13 valueAsString];
-              if (([v15 isEqualToString:&stru_2866C1E60] & 1) == 0)
+              null = [MEMORY[0x277CBEB68] null];
+              valueAsString = [v13 valueAsString];
+              if (([valueAsString isEqualToString:&stru_2866C1E60] & 1) == 0)
               {
-                v16 = v15;
+                v16 = valueAsString;
 
-                v14 = v16;
+                null = v16;
               }
 
               v17 = [v13 key];
-              [v7 setObject:v14 forKey:v17];
+              [dictionary setObject:null forKey:v17];
             }
 
             v10 = [v8 countByEnumeratingWithState:&v32 objects:v40 count:16];
@@ -79,10 +79,10 @@
         }
 
         v18 = [IKStyleMediaQuery alloc];
-        v19 = [v30 type];
-        v20 = -[IKStyleMediaQuery initWithMediaType:featureValues:isNegated:](v18, "initWithMediaType:featureValues:isNegated:", v19, v7, [v30 negated]);
+        type = [v30 type];
+        v20 = -[IKStyleMediaQuery initWithMediaType:featureValues:isNegated:](v18, "initWithMediaType:featureValues:isNegated:", type, dictionary, [v30 negated]);
 
-        v4 = v28;
+        array = v28;
         [v28 addObject:v20];
 
         v5 = v31 + 1;
@@ -95,9 +95,9 @@
     while (v29);
   }
 
-  if ([v4 count])
+  if ([array count])
   {
-    v21 = v4;
+    v21 = array;
   }
 
   else
@@ -110,19 +110,19 @@
   return v21;
 }
 
-- (IKStyleMediaQuery)initWithMediaType:(id)a3 featureValues:(id)a4 isNegated:(BOOL)a5
+- (IKStyleMediaQuery)initWithMediaType:(id)type featureValues:(id)values isNegated:(BOOL)negated
 {
-  v9 = a3;
-  v10 = a4;
+  typeCopy = type;
+  valuesCopy = values;
   v16.receiver = self;
   v16.super_class = IKStyleMediaQuery;
   v11 = [(IKStyleMediaQuery *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_isNegated = a5;
-    objc_storeStrong(&v11->_mediaType, a3);
-    v13 = [v10 copy];
+    v11->_isNegated = negated;
+    objc_storeStrong(&v11->_mediaType, type);
+    v13 = [valuesCopy copy];
     featureValues = v12->_featureValues;
     v12->_featureValues = v13;
   }
@@ -130,16 +130,16 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(IKStyleMediaQuery *)self identifier];
-    v6 = [v4 identifier];
-    v7 = [v5 isEqual:v6];
+    identifier = [(IKStyleMediaQuery *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v7 = [identifier isEqual:identifier2];
   }
 
   else
@@ -152,8 +152,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(IKStyleMediaQuery *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(IKStyleMediaQuery *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -163,11 +163,11 @@
   identifier = self->_identifier;
   if (!identifier)
   {
-    v4 = [MEMORY[0x277CCAB68] string];
-    v5 = v4;
+    string = [MEMORY[0x277CCAB68] string];
+    v5 = string;
     if (self->_isNegated)
     {
-      [v4 appendString:@"not "];
+      [string appendString:@"not "];
     }
 
     [v5 appendString:self->_mediaType];

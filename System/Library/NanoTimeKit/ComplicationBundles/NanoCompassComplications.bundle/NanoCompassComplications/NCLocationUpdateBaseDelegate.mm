@@ -1,49 +1,49 @@
 @interface NCLocationUpdateBaseDelegate
-+ (id)CLAuthorizationStatusToString:(int)a3;
++ (id)CLAuthorizationStatusToString:(int)string;
 - (BOOL)isLocationServiceOff;
 - (NCLocationUpdateBaseDelegate)init;
 - (double)cappedMaxDistanceInMeters;
 - (double)getNearestWaypointDistance;
-- (id)startLocationServiceUpdateWithHandler:(id)a3;
-- (id)startLocationUpdatesWithHandler:(id)a3;
+- (id)startLocationServiceUpdateWithHandler:(id)handler;
+- (id)startLocationUpdatesWithHandler:(id)handler;
 - (void)_adjustLocationUpdateInterest;
-- (void)_idleTimerFired:(id)a3;
+- (void)_idleTimerFired:(id)fired;
 - (void)_invalidateIdleTimer;
 - (void)_logCurrentLocation;
 - (void)_notifyLocationUpdateHandlers;
 - (void)_populateNearestAndFurthestWaypoints;
 - (void)_resetLocationAndAltitude;
-- (void)_setFurthestWaypoint:(id)a3 withDistance:(double)a4;
-- (void)_setNearestWaypoint:(id)a3 withDistance:(double)a4;
+- (void)_setFurthestWaypoint:(id)waypoint withDistance:(double)distance;
+- (void)_setNearestWaypoint:(id)waypoint withDistance:(double)distance;
 - (void)_startIdleTimer;
-- (void)_startLocationUpdatesWithInterest:(int64_t)a3;
-- (void)_updateMotionType:(int64_t)a3 isDeviceStationary:(BOOL)a4;
+- (void)_startLocationUpdatesWithInterest:(int64_t)interest;
+- (void)_updateMotionType:(int64_t)type isDeviceStationary:(BOOL)stationary;
 - (void)dealloc;
-- (void)endSession:(id)a3;
-- (void)fetchGroundAltitudeNearLocation:(id)a3 completion:(id)a4;
-- (void)fetchIsRemote:(id)a3;
-- (void)fetchLocationsWithinInterval:(id)a3 completionHandler:(id)a4;
-- (void)fetchLocationsWithinRadius:(double)a3 count:(int64_t)a4 taskIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)fetchSmoothedLocationsWithinInterval:(id)a3 completionHandler:(id)a4;
-- (void)fetchWillPrompt:(id)a3;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)performAfterLocationPromptIsShown:(id)a3;
-- (void)setCurrentUpdateInterest:(int64_t)a3;
-- (void)setForce1Hz:(BOOL)a3;
-- (void)setParkedCarWaypoint:(id)a3;
-- (void)setStartLocationUpdate:(BOOL)a3;
-- (void)setWaypoints:(id)a3;
-- (void)startFurthestWaypointUpdatesWithHandler:(id)a3;
-- (void)startLocationUpdateInterestDescriptionUpdatesWithHandler:(id)a3;
-- (void)startMotionActivityUpdatesWithHandler:(id)a3;
-- (void)startNearestWaypointUpdatesWithHandler:(id)a3;
-- (void)startSession:(id)a3;
-- (void)startSessionWithoutLookback:(id)a3;
+- (void)endSession:(id)session;
+- (void)fetchGroundAltitudeNearLocation:(id)location completion:(id)completion;
+- (void)fetchIsRemote:(id)remote;
+- (void)fetchLocationsWithinInterval:(id)interval completionHandler:(id)handler;
+- (void)fetchLocationsWithinRadius:(double)radius count:(int64_t)count taskIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)fetchSmoothedLocationsWithinInterval:(id)interval completionHandler:(id)handler;
+- (void)fetchWillPrompt:(id)prompt;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)performAfterLocationPromptIsShown:(id)shown;
+- (void)setCurrentUpdateInterest:(int64_t)interest;
+- (void)setForce1Hz:(BOOL)hz;
+- (void)setParkedCarWaypoint:(id)waypoint;
+- (void)setStartLocationUpdate:(BOOL)update;
+- (void)setWaypoints:(id)waypoints;
+- (void)startFurthestWaypointUpdatesWithHandler:(id)handler;
+- (void)startLocationUpdateInterestDescriptionUpdatesWithHandler:(id)handler;
+- (void)startMotionActivityUpdatesWithHandler:(id)handler;
+- (void)startNearestWaypointUpdatesWithHandler:(id)handler;
+- (void)startSession:(id)session;
+- (void)startSessionWithoutLookback:(id)lookback;
 - (void)stopLocationUpdates;
-- (void)stopLocationUpdatesForToken:(id)a3;
-- (void)updateLocation:(id)a3 error:(id)a4;
+- (void)stopLocationUpdatesForToken:(id)token;
+- (void)updateLocation:(id)location error:(id)error;
 - (void)updateLocationManagerWithCurrentAuthorizationStatus;
 @end
 
@@ -132,15 +132,15 @@
   [(NCLocationUpdateBaseDelegate *)&v17 dealloc];
 }
 
-- (void)setForce1Hz:(BOOL)a3
+- (void)setForce1Hz:(BOOL)hz
 {
-  v3 = a3;
+  hzCopy = hz;
   v14 = *MEMORY[0x277D85DE8];
   v5 = NCLogForCategory(3uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"Do not force";
-    if (v3)
+    if (hzCopy)
     {
       v6 = @"Force";
     }
@@ -152,9 +152,9 @@
     _os_log_impl(&dword_23BD26000, v5, OS_LOG_TYPE_DEFAULT, "%s %{public}@ 1Hz updates.", &v10, 0x16u);
   }
 
-  if (self->_force1Hz != v3)
+  if (self->_force1Hz != hzCopy)
   {
-    self->_force1Hz = v3;
+    self->_force1Hz = hzCopy;
     objc_msgSend__adjustLocationUpdateInterest(self, v7, v8, v9);
   }
 }
@@ -422,12 +422,12 @@ LABEL_54:
 LABEL_55:
 }
 
-- (void)_setNearestWaypoint:(id)a3 withDistance:(double)a4
+- (void)_setNearestWaypoint:(id)waypoint withDistance:(double)distance
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  objc_storeStrong(&self->_nearestWaypoint, a3);
-  self->_shortestDistance = a4;
+  waypointCopy = waypoint;
+  objc_storeStrong(&self->_nearestWaypoint, waypoint);
+  self->_shortestDistance = distance;
   nearestWaypointHandler = self->_nearestWaypointHandler;
   v9 = NCLogForCategory(7uLL);
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -467,12 +467,12 @@ LABEL_55:
   }
 }
 
-- (void)_setFurthestWaypoint:(id)a3 withDistance:(double)a4
+- (void)_setFurthestWaypoint:(id)waypoint withDistance:(double)distance
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  objc_storeStrong(&self->_furthestWaypoint, a3);
-  self->_furthestDistance = a4;
+  waypointCopy = waypoint;
+  objc_storeStrong(&self->_furthestWaypoint, waypoint);
+  self->_furthestDistance = distance;
   furthestWaypointHandler = self->_furthestWaypointHandler;
   v9 = NCLogForCategory(7uLL);
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -512,10 +512,10 @@ LABEL_55:
   }
 }
 
-- (void)startNearestWaypointUpdatesWithHandler:(id)a3
+- (void)startNearestWaypointUpdatesWithHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x23EEBBDF0]();
   nearestWaypointHandler = self->_nearestWaypointHandler;
   self->_nearestWaypointHandler = v5;
@@ -539,15 +539,15 @@ LABEL_55:
   v11[2] = sub_23BD4A110;
   v11[3] = &unk_278B94398;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v11);
 }
 
-- (void)startFurthestWaypointUpdatesWithHandler:(id)a3
+- (void)startFurthestWaypointUpdatesWithHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = MEMORY[0x23EEBBDF0](a3, a2);
+  v4 = MEMORY[0x23EEBBDF0](handler, a2);
   furthestWaypointHandler = self->_furthestWaypointHandler;
   self->_furthestWaypointHandler = v4;
 
@@ -562,41 +562,41 @@ LABEL_55:
   objc_msgSend__populateNearestAndFurthestWaypoints(self, v7, v8, v9);
 }
 
-- (void)setWaypoints:(id)a3
+- (void)setWaypoints:(id)waypoints
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  waypointsCopy = waypoints;
   v5 = NCLogForCategory(7uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 136315394;
     v17 = "[NCLocationUpdateBaseDelegate setWaypoints:]";
     v18 = 2048;
-    v19 = objc_msgSend_count(v4, v6, v7, v8);
+    v19 = objc_msgSend_count(waypointsCopy, v6, v7, v8);
     _os_log_impl(&dword_23BD26000, v5, OS_LOG_TYPE_DEFAULT, "%s %lu waypoints are set", &v16, 0x16u);
   }
 
   v9 = objc_alloc(MEMORY[0x277CBEB18]);
-  v11 = objc_msgSend_initWithArray_copyItems_(v9, v10, v4, 1);
+  v11 = objc_msgSend_initWithArray_copyItems_(v9, v10, waypointsCopy, 1);
   waypoints = self->_waypoints;
   self->_waypoints = v11;
 
   objc_msgSend__populateNearestAndFurthestWaypoints(self, v13, v14, v15);
 }
 
-- (void)setParkedCarWaypoint:(id)a3
+- (void)setParkedCarWaypoint:(id)waypoint
 {
-  objc_storeStrong(&self->_parkedCarWaypoint, a3);
+  objc_storeStrong(&self->_parkedCarWaypoint, waypoint);
 
   objc_msgSend__populateNearestAndFurthestWaypoints(self, v4, v5, v6);
 }
 
-- (id)startLocationUpdatesWithHandler:(id)a3
+- (id)startLocationUpdatesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = objc_msgSend_tokenWithValue_(NCManagerLocationToken, v5, self->_locationToken, v6);
   ++self->_locationToken;
-  v8 = MEMORY[0x23EEBBDF0](v4);
+  v8 = MEMORY[0x23EEBBDF0](handlerCopy);
   objc_msgSend_setObject_forKeyedSubscript_(self->_locationUpdateHandlers, v9, v8, v7);
 
   objc_msgSend_updateLocationManagerWithCurrentAuthorizationStatus(self, v10, v11, v12);
@@ -605,17 +605,17 @@ LABEL_55:
   v15[2] = sub_23BD4A454;
   v15[3] = &unk_278B94398;
   v15[4] = self;
-  v16 = v4;
-  v13 = v4;
+  v16 = handlerCopy;
+  v13 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v15);
 
   return v7;
 }
 
-- (void)stopLocationUpdatesForToken:(id)a3
+- (void)stopLocationUpdatesForToken:(id)token
 {
   v22 = *MEMORY[0x277D85DE8];
-  objc_msgSend_removeObjectForKey_(self->_locationUpdateHandlers, a2, a3, v3);
+  objc_msgSend_removeObjectForKey_(self->_locationUpdateHandlers, a2, token, v3);
   v8 = objc_msgSend_count(self->_locationUpdateHandlers, v5, v6, v7);
   if (!self->_startLocationUpdate || v8 == 0)
   {
@@ -636,12 +636,12 @@ LABEL_55:
   objc_msgSend__invalidateIdleTimer(self, v9, v10, v11);
 }
 
-- (id)startLocationServiceUpdateWithHandler:(id)a3
+- (id)startLocationServiceUpdateWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = objc_msgSend_tokenWithValue_(NCManagerLocationServiceToken, v5, self->_locationServiceToken, v6);
   ++self->_locationServiceToken;
-  v8 = MEMORY[0x23EEBBDF0](v4);
+  v8 = MEMORY[0x23EEBBDF0](handlerCopy);
   objc_msgSend_setObject_forKeyedSubscript_(self->_locationServiceUpdateHandlers, v9, v8, v7);
 
   v12[0] = MEMORY[0x277D85DD0];
@@ -649,16 +649,16 @@ LABEL_55:
   v12[2] = sub_23BD4A660;
   v12[3] = &unk_278B94718;
   v12[4] = self;
-  v13 = v4;
-  v10 = v4;
+  v13 = handlerCopy;
+  v10 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v12);
 
   return v7;
 }
 
-- (void)startLocationUpdateInterestDescriptionUpdatesWithHandler:(id)a3
+- (void)startLocationUpdateInterestDescriptionUpdatesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x23EEBBDF0]();
   locationInterestDescriptionHandler = self->_locationInterestDescriptionHandler;
   self->_locationInterestDescriptionHandler = v5;
@@ -668,15 +668,15 @@ LABEL_55:
   v12[1] = 3221225472;
   v12[2] = sub_23BD4A7A0;
   v12[3] = &unk_278B94740;
-  v13 = v4;
+  v13 = handlerCopy;
   v14 = updated;
-  v11 = v4;
+  v11 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v12);
 }
 
-- (void)startMotionActivityUpdatesWithHandler:(id)a3
+- (void)startMotionActivityUpdatesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x23EEBBDF0]();
   motionActivityHandler = self->_motionActivityHandler;
   self->_motionActivityHandler = v5;
@@ -691,18 +691,18 @@ LABEL_55:
   v17[3] = &unk_278B94768;
   objc_copyWeak(&v20, &location);
   v18 = v14;
-  v19 = v4;
+  v19 = handlerCopy;
   v15 = v14;
-  v16 = v4;
+  v16 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v17);
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
 }
 
-- (void)startSession:(id)a3
+- (void)startSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = mach_continuous_time();
   v6 = NCLogForCategory(5uLL);
   v7 = os_signpost_id_generate(v6);
@@ -727,8 +727,8 @@ LABEL_55:
   v10 = v9;
   v27 = v7;
   v22 = v10;
-  v23 = self;
-  v11 = v4;
+  selfCopy = self;
+  v11 = sessionCopy;
   v24 = v11;
   v12 = MEMORY[0x23EEBBDF0](v21);
   v13 = NCLogForCategory(5uLL);
@@ -750,9 +750,9 @@ LABEL_55:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)startSessionWithoutLookback:(id)a3
+- (void)startSessionWithoutLookback:(id)lookback
 {
-  v4 = a3;
+  lookbackCopy = lookback;
   v5 = mach_continuous_time();
   v6 = NCLogForCategory(5uLL);
   v7 = os_signpost_id_generate(v6);
@@ -777,8 +777,8 @@ LABEL_55:
   v10 = v9;
   v27 = v7;
   v22 = v10;
-  v23 = self;
-  v11 = v4;
+  selfCopy = self;
+  v11 = lookbackCopy;
   v24 = v11;
   v12 = MEMORY[0x23EEBBDF0](v21);
   v13 = NCLogForCategory(5uLL);
@@ -800,9 +800,9 @@ LABEL_55:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)endSession:(id)a3
+- (void)endSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = mach_continuous_time();
   v6 = NCLogForCategory(5uLL);
   v7 = os_signpost_id_generate(v6);
@@ -821,9 +821,9 @@ LABEL_55:
   v20 = v5;
   v21 = v7;
   v17 = v9;
-  v18 = self;
-  v19 = v4;
-  v10 = v4;
+  selfCopy = self;
+  v19 = sessionCopy;
+  v10 = sessionCopy;
   v11 = v9;
   v12 = MEMORY[0x23EEBBDF0](v16);
   v13 = NCLogForCategory(5uLL);
@@ -835,11 +835,11 @@ LABEL_55:
   objc_msgSend_endTranscriptSessionWithCompletion_(self->_locationManager, v14, v12, v15);
 }
 
-- (void)fetchLocationsWithinRadius:(double)a3 count:(int64_t)a4 taskIdentifier:(id)a5 completionHandler:(id)a6
+- (void)fetchLocationsWithinRadius:(double)radius count:(int64_t)count taskIdentifier:(id)identifier completionHandler:(id)handler
 {
   v58 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v15 = objc_msgSend_rawLocation(self->_location, v12, v13, v14);
   if (v15)
   {
@@ -851,7 +851,7 @@ LABEL_55:
     if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
     {
       *buf = 138543362;
-      *&buf[4] = v10;
+      *&buf[4] = identifierCopy;
       _os_signpost_emit_with_name_impl(&dword_23BD26000, v20, OS_SIGNPOST_INTERVAL_BEGIN, v18, "Begin CL/CR transcript fetch", "(task: %{public}@)", buf, 0xCu);
     }
 
@@ -862,11 +862,11 @@ LABEL_55:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      *&buf[4] = a4;
+      *&buf[4] = count;
       *&buf[12] = 2048;
-      *&buf[14] = a3;
+      *&buf[14] = radius;
       *&buf[22] = 2114;
-      v55 = v10;
+      v55 = identifierCopy;
       _os_log_impl(&dword_23BD26000, v28, OS_LOG_TYPE_DEFAULT, "Fetching %ld locations within %.0fm of current location (task: %{public}@).", buf, 0x20u);
     }
 
@@ -896,11 +896,11 @@ LABEL_55:
     v29 = v20;
     v42 = v29;
     v49 = v18;
-    v43 = v10;
-    v44 = v11;
+    v43 = identifierCopy;
+    v44 = handlerCopy;
     v47 = buf;
     v30 = MEMORY[0x23EEBBDF0](v41);
-    v32 = objc_msgSend_historicalUpdaterWithCenter_radius_dateInterval_sampleCount_queue_handler_(self->_locationManager, v31, 0, a4, self->_clFetchQueue, v30, v25, v27, a3);
+    v32 = objc_msgSend_historicalUpdaterWithCenter_radius_dateInterval_sampleCount_queue_handler_(self->_locationManager, v31, 0, count, self->_clFetchQueue, v30, v25, v27, radius);
     v33 = *(*&buf[8] + 40);
     *(*&buf[8] + 40) = v32;
 
@@ -917,20 +917,20 @@ LABEL_55:
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v10;
+      *&buf[4] = identifierCopy;
       _os_log_impl(&dword_23BD26000, v37, OS_LOG_TYPE_DEFAULT, "Asked to fetch locations, but we have no current location (task: %{public}@).", buf, 0xCu);
     }
 
     v29 = objc_msgSend_nc_currentLocationUnknownError(MEMORY[0x277CCA9B8], v38, v39, v40);
-    (*(v11 + 2))(v11, MEMORY[0x277CBEBF8], v29);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEBF8], v29);
   }
 }
 
-- (void)fetchLocationsWithinInterval:(id)a3 completionHandler:(id)a4
+- (void)fetchLocationsWithinInterval:(id)interval completionHandler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  intervalCopy = interval;
+  handlerCopy = handler;
   v8 = mach_continuous_time();
   v9 = NCLogForCategory(8uLL);
   v10 = os_signpost_id_generate(v9);
@@ -946,7 +946,7 @@ LABEL_55:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = intervalCopy;
     _os_log_impl(&dword_23BD26000, v13, OS_LOG_TYPE_DEFAULT, "Fetching locations within %{public}@.", &buf, 0xCu);
   }
 
@@ -976,11 +976,11 @@ LABEL_55:
   v14 = v12;
   v24 = v14;
   v30 = v10;
-  v15 = v7;
+  v15 = handlerCopy;
   v25 = v15;
   p_buf = &buf;
   v16 = MEMORY[0x23EEBBDF0](v23);
-  v18 = objc_msgSend_historicalUpdaterWithDateInterval_sampleCount_queue_handler_(self->_locationManager, v17, v6, 10, self->_clFetchQueue, v16);
+  v18 = objc_msgSend_historicalUpdaterWithDateInterval_sampleCount_queue_handler_(self->_locationManager, v17, intervalCopy, 10, self->_clFetchQueue, v16);
   v19 = *(*(&buf + 1) + 40);
   *(*(&buf + 1) + 40) = v18;
 
@@ -991,11 +991,11 @@ LABEL_55:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)fetchSmoothedLocationsWithinInterval:(id)a3 completionHandler:(id)a4
+- (void)fetchSmoothedLocationsWithinInterval:(id)interval completionHandler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  intervalCopy = interval;
+  handlerCopy = handler;
   if (objc_msgSend_authorizationStatusForBundlePath_(MEMORY[0x277CBFC10], v8, @"/System/Library/LocationBundles/AppleWatchWorkout.bundle", v9) - 3 >= 2)
   {
     v27 = NCLogForCategory(5uLL);
@@ -1005,7 +1005,7 @@ LABEL_55:
       _os_log_impl(&dword_23BD26000, v27, OS_LOG_TYPE_DEFAULT, "Workouts is not authorized to use location; unable to fetch smoothed locations.", buf, 2u);
     }
 
-    (*(v7 + 2))(v7, MEMORY[0x277CBEBF8], 0);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEBF8], 0);
   }
 
   else
@@ -1025,7 +1025,7 @@ LABEL_55:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v39 = v6;
+      v39 = intervalCopy;
       _os_log_impl(&dword_23BD26000, v15, OS_LOG_TYPE_INFO, "Fetching smoothed locations within %{public}@.", buf, 0xCu);
     }
 
@@ -1037,9 +1037,9 @@ LABEL_55:
     v16 = v14;
     v32 = v16;
     v36 = v12;
-    v17 = v6;
+    v17 = intervalCopy;
     v33 = v17;
-    v34 = v7;
+    v34 = handlerCopy;
     v18 = MEMORY[0x23EEBBDF0](&v28);
     locationSmoother = self->_locationSmoother;
     p_locationSmoother = &self->_locationSmoother;
@@ -1062,9 +1062,9 @@ LABEL_55:
   }
 }
 
-- (void)fetchIsRemote:(id)a3
+- (void)fetchIsRemote:(id)remote
 {
-  v4 = a3;
+  remoteCopy = remote;
   v5 = objc_alloc(MEMORY[0x277CBEBD0]);
   v8 = objc_msgSend_initWithSuiteName_(v5, v6, @"com.apple.NanoCompass", v7);
   if (objc_msgSend_BOOLForKey_(v8, v9, @"simulateRemoteStatus", v10))
@@ -1076,7 +1076,7 @@ LABEL_55:
       _os_log_impl(&dword_23BD26000, v14, OS_LOG_TYPE_DEFAULT, "Internal default for simulateRemoteStatus is set to YES; isRemote will return YES.", buf, 2u);
     }
 
-    v4[2](v4, 1);
+    remoteCopy[2](remoteCopy, 1);
   }
 
   else if (objc_msgSend_isLocationServiceOff(self, v11, v12, v13))
@@ -1087,7 +1087,7 @@ LABEL_55:
       sub_23BD670CC();
     }
 
-    v4[2](v4, 0);
+    remoteCopy[2](remoteCopy, 0);
   }
 
   else
@@ -1116,16 +1116,16 @@ LABEL_55:
     v32 = v16;
     v33 = v18;
     v30 = v20;
-    v31 = v4;
+    v31 = remoteCopy;
     v22 = v20;
     v23 = MEMORY[0x23EEBBDF0](&v26);
     objc_msgSend_isConsideredInRemoteAreaWithCompletion_(self->_locationManager, v24, v23, v25, v26, v27, v28, v29);
   }
 }
 
-- (void)fetchWillPrompt:(id)a3
+- (void)fetchWillPrompt:(id)prompt
 {
-  v4 = a3;
+  promptCopy = prompt;
   v5 = objc_alloc(MEMORY[0x277CBEBD0]);
   v8 = objc_msgSend_initWithSuiteName_(v5, v6, @"com.apple.NanoCompass", v7);
   if (objc_msgSend_BOOLForKey_(v8, v9, @"simulateRemoteStatus", v10))
@@ -1137,7 +1137,7 @@ LABEL_55:
       _os_log_impl(&dword_23BD26000, v14, OS_LOG_TYPE_DEFAULT, "Internal default for simulateRemoteStatus is set to YES; willPrompt will return YES.", buf, 2u);
     }
 
-    v4[2](v4, 1);
+    promptCopy[2](promptCopy, 1);
   }
 
   else if (objc_msgSend_isLocationServiceOff(self, v11, v12, v13))
@@ -1148,7 +1148,7 @@ LABEL_55:
       sub_23BD67234();
     }
 
-    v4[2](v4, 0);
+    promptCopy[2](promptCopy, 0);
   }
 
   else
@@ -1177,25 +1177,25 @@ LABEL_55:
     v32 = v16;
     v33 = v18;
     v30 = v20;
-    v31 = v4;
+    v31 = promptCopy;
     v22 = v20;
     v23 = MEMORY[0x23EEBBDF0](&v26);
     objc_msgSend_willPromptForTranscriptSessionWithCompletion_(self->_locationManager, v24, v23, v25, v26, v27, v28, v29);
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v8 = objc_msgSend_authorizationStatus(v4, v5, v6, v7);
-  v12 = objc_msgSend__limitsPrecision(v4, v9, v10, v11);
+  authorizationCopy = authorization;
+  v8 = objc_msgSend_authorizationStatus(authorizationCopy, v5, v6, v7);
+  v12 = objc_msgSend__limitsPrecision(authorizationCopy, v9, v10, v11);
   self->_locationAuthorizationStatus = v8;
   v13 = NCLogForCategory(3uLL);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v16 = objc_msgSend_CLAuthorizationStatusToString_(NCLocationUpdateBaseDelegate, v14, self->_locationAuthorizationStatus, v15);
-    v20 = objc_msgSend__limitsPrecision(v4, v17, v18, v19);
+    v20 = objc_msgSend__limitsPrecision(authorizationCopy, v17, v18, v19);
     v21 = @"Precise";
     if (v20)
     {
@@ -1248,27 +1248,27 @@ LABEL_55:
   objc_msgSend_updateLocationManagerWithCurrentAuthorizationStatus(self, v30, v31, v32);
 }
 
-- (void)performAfterLocationPromptIsShown:(id)a3
+- (void)performAfterLocationPromptIsShown:(id)shown
 {
   if (self->_authorizationStatusDetermined)
   {
-    v4 = *(a3 + 2);
+    v4 = *(shown + 2);
 
-    v4(a3);
+    v4(shown);
   }
 
   else
   {
-    self->_locationPromptShownAction = MEMORY[0x23EEBBDF0](a3, a2);
+    self->_locationPromptShownAction = MEMORY[0x23EEBBDF0](shown, a2);
 
     MEMORY[0x2821F96F8]();
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = NCLogForCategory(3uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1277,13 +1277,13 @@ LABEL_55:
     _os_log_impl(&dword_23BD26000, v6, OS_LOG_TYPE_DEFAULT, "%s Unexpected call to CLLocationManagerDelegate.", &v8, 0xCu);
   }
 
-  objc_msgSend_updateLocation_error_(self, v7, 0, v5);
+  objc_msgSend_updateLocation_error_(self, v7, 0, errorCopy);
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  locationsCopy = locations;
   v6 = NCLogForCategory(3uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1292,16 +1292,16 @@ LABEL_55:
     _os_log_impl(&dword_23BD26000, v6, OS_LOG_TYPE_DEFAULT, "%s Unexpected call to CLLocationManagerDelegate.", &v12, 0xCu);
   }
 
-  v10 = objc_msgSend_lastObject(v5, v7, v8, v9);
+  v10 = objc_msgSend_lastObject(locationsCopy, v7, v8, v9);
 
   objc_msgSend_updateLocation_error_(self, v11, v10, 0);
 }
 
-- (void)updateLocation:(id)a3 error:(id)a4
+- (void)updateLocation:(id)location error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = objc_msgSend_domain(v7, v8, v9, v10);
+  locationCopy = location;
+  errorCopy = error;
+  v11 = objc_msgSend_domain(errorCopy, v8, v9, v10);
   v12 = *MEMORY[0x277CBFCF0];
 
   if (v11 != v12)
@@ -1309,7 +1309,7 @@ LABEL_55:
     goto LABEL_2;
   }
 
-  if (objc_msgSend_code(v7, v13, v14, v15) == 1)
+  if (objc_msgSend_code(errorCopy, v13, v14, v15) == 1)
   {
     v16 = NCLogForCategory(3uLL);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -1325,7 +1325,7 @@ LABEL_17:
     goto LABEL_27;
   }
 
-  if (!objc_msgSend_code(v7, v21, v22, v23))
+  if (!objc_msgSend_code(errorCopy, v21, v22, v23))
   {
     v16 = NCLogForCategory(3uLL);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -1341,7 +1341,7 @@ LABEL_17:
 
 LABEL_2:
   v16 = objc_msgSend_rawLocation(self->_location, v13, v14, v15);
-  if (objc_msgSend_isEqual_(v6, v17, v16, v18))
+  if (objc_msgSend_isEqual_(locationCopy, v17, v16, v18))
   {
     v20 = NCLogForCategory(3uLL);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
@@ -1353,7 +1353,7 @@ LABEL_2:
 
   else
   {
-    v20 = objc_msgSend_locationWithLocation_error_(NCLocation, v19, v6, v7);
+    v20 = objc_msgSend_locationWithLocation_error_(NCLocation, v19, locationCopy, errorCopy);
     isBetterThan_withStaleTimeThreshold = objc_msgSend_isBetterThan_withStaleTimeThreshold_(v20, v26, self->_location, v27, 180.0);
     if (isBetterThan_withStaleTimeThreshold)
     {
@@ -1373,7 +1373,7 @@ LABEL_2:
 
     else
     {
-      v34 = objc_msgSend_altitudeWithLocation_error_(NCAltitude, v30, v6, v7);
+      v34 = objc_msgSend_altitudeWithLocation_error_(NCAltitude, v30, locationCopy, errorCopy);
       v33 = objc_msgSend_isBetterThan_withStaleTimeThreshold_(v34, v35, self->_altitude, v36, 180.0);
       if (v33)
       {
@@ -1449,26 +1449,26 @@ LABEL_27:
   }
 }
 
-- (void)_startLocationUpdatesWithInterest:(int64_t)a3
+- (void)_startLocationUpdatesWithInterest:(int64_t)interest
 {
   v29 = *MEMORY[0x277D85DE8];
   if (self->_startLocationUpdate)
   {
-    v5 = (a3 + 1) & 0xFFFFFFFFFFFFFFFDLL;
+    v5 = (interest + 1) & 0xFFFFFFFFFFFFFFFDLL;
     v6 = NCLogForCategory(3uLL);
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
     if (v5)
     {
       if (v7)
       {
-        if ((a3 + 1) > 2)
+        if ((interest + 1) > 2)
         {
           v8 = @"Unknown";
         }
 
         else
         {
-          v8 = off_278B94960[a3 + 1];
+          v8 = off_278B94960[interest + 1];
         }
 
         v25 = 136315394;
@@ -1483,14 +1483,14 @@ LABEL_27:
     {
       if (v7)
       {
-        if ((a3 + 1) > 2)
+        if ((interest + 1) > 2)
         {
           v10 = @"Unknown";
         }
 
         else
         {
-          v10 = off_278B94960[a3 + 1];
+          v10 = off_278B94960[interest + 1];
         }
 
         v25 = 136315394;
@@ -1507,7 +1507,7 @@ LABEL_27:
         _os_log_impl(&dword_23BD26000, v11, OS_LOG_TYPE_INFO, "Resume rhythmic configuration live updater.", &v25, 2u);
       }
 
-      if (a3 <= 0)
+      if (interest <= 0)
       {
         defaultLocationUpdater = self->_defaultLocationUpdater;
         v20 = NCLogForCategory(3uLL);
@@ -1702,23 +1702,23 @@ LABEL_27:
   return v5;
 }
 
-+ (id)CLAuthorizationStatusToString:(int)a3
++ (id)CLAuthorizationStatusToString:(int)string
 {
-  if ((a3 - 1) > 3)
+  if ((string - 1) > 3)
   {
     return @"kCLAuthorizationStatusNotDetermined";
   }
 
   else
   {
-    return off_278B94940[a3 - 1];
+    return off_278B94940[string - 1];
   }
 }
 
-- (void)_updateMotionType:(int64_t)a3 isDeviceStationary:(BOOL)a4
+- (void)_updateMotionType:(int64_t)type isDeviceStationary:(BOOL)stationary
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v8 = objc_msgSend_NCMotionTypeToString_(MEMORY[0x277CC1CC8], v6, a3, v7);
+  v8 = objc_msgSend_NCMotionTypeToString_(MEMORY[0x277CC1CC8], v6, type, v7);
   motionActivityHandler = self->_motionActivityHandler;
   v14 = v8;
   if (motionActivityHandler)
@@ -1766,7 +1766,7 @@ LABEL_27:
   }
 }
 
-- (void)_idleTimerFired:(id)a3
+- (void)_idleTimerFired:(id)fired
 {
   v4 = NCLogForCategory(3uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1790,13 +1790,13 @@ LABEL_27:
   }
 }
 
-- (void)setCurrentUpdateInterest:(int64_t)a3
+- (void)setCurrentUpdateInterest:(int64_t)interest
 {
   v20 = *MEMORY[0x277D85DE8];
   currentUpdateInterest = self->_currentUpdateInterest;
-  if (currentUpdateInterest != a3)
+  if (currentUpdateInterest != interest)
   {
-    if (a3 == -1)
+    if (interest == -1)
     {
       objc_msgSend__startIdleTimer(self, a2, -1, v3);
       v7 = @"YES";
@@ -1806,7 +1806,7 @@ LABEL_27:
     {
       if (currentUpdateInterest == -1)
       {
-        objc_msgSend__invalidateIdleTimer(self, a2, a3, v3);
+        objc_msgSend__invalidateIdleTimer(self, a2, interest, v3);
       }
 
       v7 = @"NO";
@@ -1815,14 +1815,14 @@ LABEL_27:
     v8 = NCLogForCategory(3uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      if ((a3 + 1) > 2)
+      if ((interest + 1) > 2)
       {
         v9 = @"Unknown";
       }
 
       else
       {
-        v9 = off_278B94960[a3 + 1];
+        v9 = off_278B94960[interest + 1];
       }
 
       v14 = 136315650;
@@ -1834,38 +1834,38 @@ LABEL_27:
       _os_log_impl(&dword_23BD26000, v8, OS_LOG_TYPE_DEFAULT, "%s Adjust currentUpdateInterest to %{public}@. Start wakeup timer? %{public}@.", &v14, 0x20u);
     }
 
-    self->_currentUpdateInterest = a3;
+    self->_currentUpdateInterest = interest;
     locationInterestDescriptionHandler = self->_locationInterestDescriptionHandler;
     if (locationInterestDescriptionHandler)
     {
-      if ((a3 + 1) > 2)
+      if ((interest + 1) > 2)
       {
         v13 = @"Unknown";
       }
 
       else
       {
-        v13 = off_278B94960[a3 + 1];
+        v13 = off_278B94960[interest + 1];
       }
 
       locationInterestDescriptionHandler[2](locationInterestDescriptionHandler, v13);
     }
 
-    objc_msgSend__startLocationUpdatesWithInterest_(self, v10, a3, v11);
+    objc_msgSend__startLocationUpdatesWithInterest_(self, v10, interest, v11);
   }
 }
 
-- (void)setStartLocationUpdate:(BOOL)a3
+- (void)setStartLocationUpdate:(BOOL)update
 {
-  v3 = a3;
+  updateCopy = update;
   v38 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if (!self->_transcriptSession || v3)
+  if (!self->_transcriptSession || updateCopy)
   {
-    self->_startLocationUpdate = v3;
+    self->_startLocationUpdate = updateCopy;
     v8 = NCLogForCategory(1uLL);
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (updateCopy)
     {
       if (v9)
       {
@@ -1935,23 +1935,23 @@ LABEL_13:
     }
 
     objc_msgSend_setCurrentUpdateInterest_(self, v6, -1, v7);
-    self->_startLocationUpdate = v3;
+    self->_startLocationUpdate = updateCopy;
   }
 }
 
-- (void)fetchGroundAltitudeNearLocation:(id)a3 completion:(id)a4
+- (void)fetchGroundAltitudeNearLocation:(id)location completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  completionCopy = completion;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_23BD4E914;
   block[3] = &unk_278B94920;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v12 = locationCopy;
+  v13 = completionCopy;
+  v8 = completionCopy;
+  v9 = locationCopy;
   v10 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, block);
   dispatch_async(self->_clFetchQueue, v10);
 }

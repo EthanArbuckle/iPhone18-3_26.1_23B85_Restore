@@ -15,19 +15,19 @@
 
 - (id)px_navigationDestination
 {
-  v1 = [a1 px_forwardingNavigationParticipantForDestination:0];
+  v1 = [self px_forwardingNavigationParticipantForDestination:0];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 px_navigationDestination];
+    px_navigationDestination = [v1 px_navigationDestination];
   }
 
   else
   {
-    v3 = 0;
+    px_navigationDestination = 0;
   }
 
-  return v3;
+  return px_navigationDestination;
 }
 
 - (void)_px_prepareNavigationFromViewController:()PXProgrammaticNavigation routingOptions:options:completionHandler:
@@ -35,25 +35,25 @@
   v11 = *MEMORY[0x1E69E9840];
   v9 = a3;
   v10 = a6;
-  if (v9 != a1)
+  if (v9 != self)
   {
     PXAssertGetLog();
   }
 
-  [a1 px_dismissPresentedViewControllerWithOptions:a5 completionHandler:v10];
+  [self px_dismissPresentedViewControllerWithOptions:a5 completionHandler:v10];
 }
 
 - (void)_navigateToDestination:()PXProgrammaticNavigation options:completionHandler:
 {
   v9 = a3;
   v10 = a5;
-  v11 = a1;
+  selfCopy = self;
   v12 = MEMORY[0x1E695DFD8];
-  v13 = [v11 childViewControllers];
-  v14 = v13;
-  if (v13)
+  childViewControllers = [selfCopy childViewControllers];
+  v14 = childViewControllers;
+  if (childViewControllers)
   {
-    v15 = v13;
+    v15 = childViewControllers;
   }
 
   else
@@ -63,10 +63,10 @@
 
   v16 = [v12 setWithArray:v15];
 
-  v17 = [v11 _nextExistingViewControllerOnRouteToDestination:v9];
+  v17 = [selfCopy _nextExistingViewControllerOnRouteToDestination:v9];
   if (v17)
   {
-    v18 = v11;
+    v18 = selfCopy;
     while ([v16 containsObject:v17])
     {
       v19 = v17;
@@ -85,7 +85,7 @@
 
   else
   {
-    v19 = v11;
+    v19 = selfCopy;
   }
 
 LABEL_11:
@@ -94,7 +94,7 @@ LABEL_11:
   v24[1] = 3221225472;
   v24[2] = __95__UIViewController_PXProgrammaticNavigation___navigateToDestination_options_completionHandler___block_invoke;
   v24[3] = &unk_1E7741E10;
-  v24[4] = v11;
+  v24[4] = selfCopy;
   v25 = v19;
   v28 = a2;
   v29 = a4;
@@ -103,18 +103,18 @@ LABEL_11:
   v21 = v10;
   v22 = v9;
   v23 = v19;
-  [v11 _px_prepareNavigationFromViewController:v23 routingOptions:v20 options:a4 completionHandler:v24];
+  [selfCopy _px_prepareNavigationFromViewController:v23 routingOptions:v20 options:a4 completionHandler:v24];
 }
 
 - (id)_nextExistingViewControllerOnRouteToDestination:()PXProgrammaticNavigation
 {
-  v4 = a1;
+  selfCopy = self;
   while (1)
   {
-    v5 = v4;
-    v4 = [v4 nextExistingParticipantOnRouteToDestination:a3];
+    v5 = selfCopy;
+    selfCopy = [selfCopy nextExistingParticipantOnRouteToDestination:a3];
 
-    if (!v4)
+    if (!selfCopy)
     {
       break;
     }
@@ -122,7 +122,7 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = selfCopy;
       goto LABEL_6;
     }
   }
@@ -150,11 +150,11 @@ LABEL_6:
   v5 = v4;
   v15 = v5;
   v6 = _Block_copy(&v11);
-  v7 = [a1 px_nextViewControllerInNavigationController];
-  v6[2](v6, v7);
+  px_nextViewControllerInNavigationController = [self px_nextViewControllerInNavigationController];
+  v6[2](v6, px_nextViewControllerInNavigationController);
 
-  v8 = [a1 presentedViewController];
-  v6[2](v6, v8);
+  presentedViewController = [self presentedViewController];
+  v6[2](v6, presentedViewController);
 
   v9 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -166,7 +166,7 @@ LABEL_6:
 {
   v8 = a5;
   v9 = a3;
-  v10 = [a1 px_forwardingNavigationParticipantForDestination:v9];
+  v10 = [self px_forwardingNavigationParticipantForDestination:v9];
   if (objc_opt_respondsToSelector())
   {
     [v10 navigateToDestination:v9 options:a4 completionHandler:v8];
@@ -174,14 +174,14 @@ LABEL_6:
 
   else
   {
-    [a1 _navigateToDestination:v9 options:a4 completionHandler:v8];
+    [self _navigateToDestination:v9 options:a4 completionHandler:v8];
   }
 }
 
 - (id)nextExistingParticipantOnRouteToDestination:()PXProgrammaticNavigation
 {
   v4 = a3;
-  v5 = [a1 px_forwardingNavigationParticipantForDestination:v4];
+  v5 = [self px_forwardingNavigationParticipantForDestination:v4];
   v6 = v5;
   if (v5)
   {
@@ -190,7 +190,7 @@ LABEL_6:
 
   else
   {
-    [a1 _nextExistingParticipantOnRouteToDestination:v4];
+    [self _nextExistingParticipantOnRouteToDestination:v4];
   }
   v7 = ;
 
@@ -200,7 +200,7 @@ LABEL_6:
 - (uint64_t)routingOptionsForDestination:()PXProgrammaticNavigation
 {
   v4 = a3;
-  v5 = [a1 px_forwardingNavigationParticipantForDestination:v4];
+  v5 = [self px_forwardingNavigationParticipantForDestination:v4];
   v6 = v5;
   if (v5)
   {
@@ -218,24 +218,24 @@ LABEL_6:
 - (void)px_dismissPresentedViewControllerWithOptions:()PXProgrammaticNavigation completionHandler:
 {
   v6 = a4;
-  v7 = [a1 presentedViewController];
-  if (v7)
+  presentedViewController = [self presentedViewController];
+  if (presentedViewController)
   {
-    if (objc_opt_respondsToSelector() & 1) == 0 || (v8 = [v7 isReadyForDismissal], (a3) || v8)
+    if (objc_opt_respondsToSelector() & 1) == 0 || (v8 = [presentedViewController isReadyForDismissal], (a3) || v8)
     {
-      v9 = v7;
+      v9 = presentedViewController;
       if (objc_opt_respondsToSelector())
       {
         [v9 prepareForDismissal];
       }
 
-      v10 = [v9 presentingViewController];
+      presentingViewController = [v9 presentingViewController];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __109__UIViewController_PXProgrammaticNavigation__px_dismissPresentedViewControllerWithOptions_completionHandler___block_invoke;
       v11[3] = &unk_1E774C250;
       v12 = v6;
-      [v10 dismissViewControllerAnimated:0 completion:v11];
+      [presentingViewController dismissViewControllerAnimated:0 completion:v11];
     }
 
     else
@@ -254,7 +254,7 @@ LABEL_6:
 {
   if ([a3 type] == 17)
   {
-    v4 = [[PXPerformanceBaselineNavigationParticipant alloc] initWithPresentingViewController:a1];
+    v4 = [[PXPerformanceBaselineNavigationParticipant alloc] initWithPresentingViewController:self];
   }
 
   else

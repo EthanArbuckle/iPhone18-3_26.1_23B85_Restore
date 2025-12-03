@@ -1,13 +1,13 @@
 @interface HMDCameraClipImportMetadata
-- (id)initClipData:(id)a3;
+- (id)initClipData:(id)data;
 @end
 
 @implementation HMDCameraClipImportMetadata
 
-- (id)initClipData:(id)a3
+- (id)initClipData:(id)data
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v44.receiver = self;
   v44.super_class = HMDCameraClipImportMetadata;
   v5 = [(HMDCameraClipImportMetadata *)&v44 init];
@@ -18,7 +18,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v6 = [v4 hmf_stringForKey:@"startDate"];
+  v6 = [dataCopy hmf_stringForKey:@"startDate"];
   if (!v6)
   {
     v21 = objc_autoreleasePoolPush();
@@ -30,7 +30,7 @@ LABEL_27:
       *buf = 138543618;
       v46 = v24;
       v47 = 2112;
-      v48 = v4;
+      v48 = dataCopy;
       _os_log_impl(&dword_2531F8000, v23, OS_LOG_TYPE_ERROR, "%{public}@Could not find start date string in clip data: %@", buf, 0x16u);
     }
 
@@ -61,7 +61,7 @@ LABEL_27:
   }
 
   v10 = v9;
-  v11 = [v4 hmf_numberForKey:@"targetFragmentDuration"];
+  v11 = [dataCopy hmf_numberForKey:@"targetFragmentDuration"];
   if (!v11)
   {
     v29 = objc_autoreleasePoolPush();
@@ -73,7 +73,7 @@ LABEL_27:
       *buf = 138543618;
       v46 = v32;
       v47 = 2112;
-      v48 = v4;
+      v48 = dataCopy;
       _os_log_impl(&dword_2531F8000, v31, OS_LOG_TYPE_ERROR, "%{public}@Could not find target fragment duration in clip data: %@", buf, 0x16u);
     }
 
@@ -82,7 +82,7 @@ LABEL_27:
   }
 
   v12 = v11;
-  v13 = [v4 hmf_arrayForKey:@"posterFrames"];
+  v13 = [dataCopy hmf_arrayForKey:@"posterFrames"];
   if (!v13)
   {
     v33 = objc_autoreleasePoolPush();
@@ -94,7 +94,7 @@ LABEL_27:
       *buf = 138543618;
       v46 = v36;
       v47 = 2112;
-      v48 = v4;
+      v48 = dataCopy;
       _os_log_impl(&dword_2531F8000, v35, OS_LOG_TYPE_ERROR, "%{public}@Could not find poster frames in clip data: %@", buf, 0x16u);
     }
 
@@ -106,7 +106,7 @@ LABEL_21:
   }
 
   v14 = v13;
-  v15 = [v4 hmf_arrayForKey:@"fragments"];
+  v15 = [dataCopy hmf_arrayForKey:@"fragments"];
   if (v15)
   {
     objc_storeStrong(&v5->_startDate, v10);
@@ -132,7 +132,7 @@ LABEL_21:
       *buf = 138543618;
       v46 = v42;
       v47 = 2112;
-      v48 = v4;
+      v48 = dataCopy;
       _os_log_impl(&dword_2531F8000, v39, OS_LOG_TYPE_ERROR, "%{public}@Could not find video fragments in clip data: %@", buf, 0x16u);
     }
 

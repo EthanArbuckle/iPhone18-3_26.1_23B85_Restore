@@ -1,11 +1,11 @@
 @interface SBApplicationRestrictionMonitoringServer
 - (SBApplicationRestrictionMonitoringServer)init;
-- (void)_didFinishProcessingAppRestrictionUpdateWithUUID:(uint64_t)a1;
-- (void)_postAppRestrictionChangeWithState:(uint64_t)a1;
-- (void)applicationRestrictionControllerDidPostAppVisibilityUpdate:(id)a3;
-- (void)applicationRestrictionControllerWillPostAppVisibilityUpdate:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)removeConnection:(uint64_t)a1;
+- (void)_didFinishProcessingAppRestrictionUpdateWithUUID:(uint64_t)d;
+- (void)_postAppRestrictionChangeWithState:(uint64_t)state;
+- (void)applicationRestrictionControllerDidPostAppVisibilityUpdate:(id)update;
+- (void)applicationRestrictionControllerWillPostAppVisibilityUpdate:(id)update;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)removeConnection:(uint64_t)connection;
 @end
 
 @implementation SBApplicationRestrictionMonitoringServer
@@ -60,27 +60,27 @@ void __48__SBApplicationRestrictionMonitoringServer_init__block_invoke(uint64_t 
   [v6 setDelegate:*(a1 + 32)];
 }
 
-- (void)applicationRestrictionControllerWillPostAppVisibilityUpdate:(id)a3
+- (void)applicationRestrictionControllerWillPostAppVisibilityUpdate:(id)update
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 allAllowedAppBundleIdentifiers];
-  v6 = [v4 allRestrictedAppBundleIdentifiers];
-  v7 = [objc_alloc(MEMORY[0x277D669A8]) initWithAllowedIdentifiers:v5 restrictedIdentifiers:v6];
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  objc_storeStrong(&self->_pendingRestrictionUpdateUUID, v8);
+  updateCopy = update;
+  allAllowedAppBundleIdentifiers = [updateCopy allAllowedAppBundleIdentifiers];
+  allRestrictedAppBundleIdentifiers = [updateCopy allRestrictedAppBundleIdentifiers];
+  v7 = [objc_alloc(MEMORY[0x277D669A8]) initWithAllowedIdentifiers:allAllowedAppBundleIdentifiers restrictedIdentifiers:allRestrictedAppBundleIdentifiers];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  objc_storeStrong(&self->_pendingRestrictionUpdateUUID, uUID);
   [(BSCompoundAssertion *)self->_pendingRestrictionUpdateAssertion invalidate];
   objc_initWeak(&location, self);
   v9 = MEMORY[0x277CF0BD0];
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"SBApplicationRestrictionMonitoringServer.pendingRestrictionUpdate.%@", v8];
+  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"SBApplicationRestrictionMonitoringServer.pendingRestrictionUpdate.%@", uUID];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __104__SBApplicationRestrictionMonitoringServer_applicationRestrictionControllerWillPostAppVisibilityUpdate___block_invoke;
   v18[3] = &unk_2783B46A0;
   objc_copyWeak(&v22, &location);
-  v11 = v8;
+  v11 = uUID;
   v19 = v11;
-  v20 = self;
+  selfCopy = self;
   v12 = v7;
   v21 = v12;
   v13 = [v9 assertionWithIdentifier:v10 stateDidChangeHandler:v18];
@@ -140,7 +140,7 @@ void __104__SBApplicationRestrictionMonitoringServer_applicationRestrictionContr
   [(SBApplicationRestrictionMonitoringServer *)WeakRetained _postAppRestrictionChangeWithState:?];
 }
 
-- (void)applicationRestrictionControllerDidPostAppVisibilityUpdate:(id)a3
+- (void)applicationRestrictionControllerDidPostAppVisibilityUpdate:(id)update
 {
   v12 = *MEMORY[0x277D85DE8];
   [(BSInvalidatable *)self->_restrictionControllerDidFinishNotifyingObserversAssertion invalidate];
@@ -151,34 +151,34 @@ void __104__SBApplicationRestrictionMonitoringServer_applicationRestrictionContr
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     pendingRestrictionUpdateUUID = self->_pendingRestrictionUpdateUUID;
-    v7 = [(BSCompoundAssertion *)self->_pendingRestrictionUpdateAssertion reasons];
+    reasons = [(BSCompoundAssertion *)self->_pendingRestrictionUpdateAssertion reasons];
     v8 = 138412546;
     v9 = pendingRestrictionUpdateUUID;
     v10 = 2048;
-    v11 = [v7 count];
+    v11 = [reasons count];
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "App restriction update with ID=%@ was ingested by restriction observers. Now waiting for %lu outstanding assertions…", &v8, 0x16u);
   }
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 remoteProcess];
-  v12 = [v11 auditToken];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
+  remoteProcess = [connectionCopy remoteProcess];
+  auditToken = [remoteProcess auditToken];
 
   v13 = self->_queue;
   objc_initWeak(&location, self);
-  if (([(FBServiceClientAuthenticator *)self->_authenticator authenticateAuditToken:v12]& 1) != 0)
+  if (([(FBServiceClientAuthenticator *)self->_authenticator authenticateAuditToken:auditToken]& 1) != 0)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __86__SBApplicationRestrictionMonitoringServer_listener_didReceiveConnection_withContext___block_invoke;
     block[3] = &unk_2783A9A90;
-    v14 = v9;
+    v14 = connectionCopy;
     v17 = v14;
-    v18 = self;
+    selfCopy = self;
     objc_copyWeak(&v20, &location);
     v19 = v13;
     dispatch_sync(v19, block);
@@ -192,10 +192,10 @@ void __104__SBApplicationRestrictionMonitoringServer_applicationRestrictionContr
     v15 = SBLogApplicationRestrictionMonitoring();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [SBHomeScreenConfigurationServer listener:v9 didReceiveConnection:v15 withContext:?];
+      [SBHomeScreenConfigurationServer listener:connectionCopy didReceiveConnection:v15 withContext:?];
     }
 
-    [v9 invalidate];
+    [connectionCopy invalidate];
   }
 
   objc_destroyWeak(&location);
@@ -266,21 +266,21 @@ void __86__SBApplicationRestrictionMonitoringServer_listener_didReceiveConnectio
   [(SBApplicationRestrictionMonitoringServer *)WeakRetained removeConnection:?];
 }
 
-- (void)_didFinishProcessingAppRestrictionUpdateWithUUID:(uint64_t)a1
+- (void)_didFinishProcessingAppRestrictionUpdateWithUUID:(uint64_t)d
 {
   v9 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (d)
   {
     dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-    if ([*(a1 + 40) isEqual:v3])
+    if ([*(d + 40) isEqual:v3])
     {
-      v4 = *(a1 + 40);
-      *(a1 + 40) = 0;
+      v4 = *(d + 40);
+      *(d + 40) = 0;
 
-      [*(a1 + 48) invalidate];
-      v5 = *(a1 + 48);
-      *(a1 + 48) = 0;
+      [*(d + 48) invalidate];
+      v5 = *(d + 48);
+      *(d + 48) = 0;
 
       v6 = SBLogApplicationRestrictionMonitoring();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -293,14 +293,14 @@ void __86__SBApplicationRestrictionMonitoringServer_listener_didReceiveConnectio
   }
 }
 
-- (void)_postAppRestrictionChangeWithState:(uint64_t)a1
+- (void)_postAppRestrictionChangeWithState:(uint64_t)state
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (state)
   {
-    dispatch_assert_queue_V2(*(a1 + 24));
-    v4 = [*(a1 + 32) copy];
+    dispatch_assert_queue_V2(*(state + 24));
+    v4 = [*(state + 32) copy];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -321,8 +321,8 @@ void __86__SBApplicationRestrictionMonitoringServer_listener_didReceiveConnectio
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * v9) remoteTarget];
-          [v10 observeUpdateWithApplicationRestrictState:v3];
+          remoteTarget = [*(*(&v13 + 1) + 8 * v9) remoteTarget];
+          [remoteTarget observeUpdateWithApplicationRestrictState:v3];
 
           ++v9;
         }
@@ -345,13 +345,13 @@ void __86__SBApplicationRestrictionMonitoringServer_listener_didReceiveConnectio
   }
 }
 
-- (void)removeConnection:(uint64_t)a1
+- (void)removeConnection:(uint64_t)connection
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (connection)
   {
-    dispatch_assert_queue_V2(*(a1 + 24));
+    dispatch_assert_queue_V2(*(connection + 24));
     v4 = SBLogApplicationRestrictionMonitoring();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -360,7 +360,7 @@ void __86__SBApplicationRestrictionMonitoringServer_listener_didReceiveConnectio
       _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "Removing connection: %{public}@", &v5, 0xCu);
     }
 
-    [*(a1 + 32) removeObject:v3];
+    [*(connection + 32) removeObject:v3];
   }
 }
 

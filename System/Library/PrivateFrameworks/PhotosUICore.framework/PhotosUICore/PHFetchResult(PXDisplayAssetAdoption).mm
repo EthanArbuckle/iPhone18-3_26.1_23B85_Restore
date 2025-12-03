@@ -12,34 +12,34 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    v6 = [a1 fetchedObjectIDs];
-    v7 = [v5 fetchedObjectIDs];
-    v8 = v7;
-    if (v6 && v7)
+    fetchedObjectIDs = [self fetchedObjectIDs];
+    fetchedObjectIDs2 = [v5 fetchedObjectIDs];
+    v8 = fetchedObjectIDs2;
+    if (fetchedObjectIDs && fetchedObjectIDs2)
     {
-      if (v6 == v7)
+      if (fetchedObjectIDs == fetchedObjectIDs2)
       {
         v9 = 1;
       }
 
       else
       {
-        v9 = [v6 isEqual:v7];
+        v9 = [fetchedObjectIDs isEqual:fetchedObjectIDs2];
       }
     }
 
     else
     {
-      v10 = [a1 fetchedObjects];
-      v11 = [v5 fetchedObjects];
-      if (v10 == v11)
+      fetchedObjects = [self fetchedObjects];
+      fetchedObjects2 = [v5 fetchedObjects];
+      if (fetchedObjects == fetchedObjects2)
       {
         v9 = 1;
       }
 
       else
       {
-        v9 = [v10 isEqual:v11];
+        v9 = [fetchedObjects isEqual:fetchedObjects2];
       }
     }
   }
@@ -54,12 +54,12 @@
 
 - (id)thumbnailAssetAtIndex:()PXDisplayAssetAdoption
 {
-  v5 = [a1 thumbnailAssets];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  thumbnailAssets = [self thumbnailAssets];
+  v6 = [thumbnailAssets objectAtIndexedSubscript:a3];
 
   if (!v6)
   {
-    v6 = [a1 objectAtIndex:a3];
+    v6 = [self objectAtIndex:a3];
   }
 
   return v6;

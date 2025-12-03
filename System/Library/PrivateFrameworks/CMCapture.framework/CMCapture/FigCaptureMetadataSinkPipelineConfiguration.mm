@@ -1,5 +1,5 @@
 @interface FigCaptureMetadataSinkPipelineConfiguration
-- (__n128)setLensSmudgeDetectionConfiguration:(uint64_t)a1;
+- (__n128)setLensSmudgeDetectionConfiguration:(uint64_t)configuration;
 - (uint64_t)compressed8BitInputEnabled;
 - (uint64_t)setCompressed8BitInputEnabled:(uint64_t)result;
 - (uint64_t)setInputRotationRelativeToSource:(uint64_t)result;
@@ -16,9 +16,9 @@
 
 - (uint64_t)compressed8BitInputEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 49));
+    return OUTLINED_FUNCTION_5_27(*(self + 49));
   }
 
   else
@@ -105,13 +105,13 @@
   return result;
 }
 
-- (__n128)setLensSmudgeDetectionConfiguration:(uint64_t)a1
+- (__n128)setLensSmudgeDetectionConfiguration:(uint64_t)configuration
 {
-  if (a1)
+  if (configuration)
   {
     result = *a2;
-    *(a1 + 76) = *(a2 + 12);
-    *(a1 + 64) = result;
+    *(configuration + 76) = *(a2 + 12);
+    *(configuration + 64) = result;
   }
 
   return result;

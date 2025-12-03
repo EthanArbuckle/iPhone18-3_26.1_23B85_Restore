@@ -1,16 +1,16 @@
 @interface PKWebServiceVirtualCardFeatureNetwork
-+ (id)virtualCardFeatureNetworksFromDictionary:(id)a3;
-- (BOOL)isSupportedOnDevice:(id)a3;
-- (PKWebServiceVirtualCardFeatureNetwork)initWithDictionary:(id)a3 network:(int64_t)a4;
++ (id)virtualCardFeatureNetworksFromDictionary:(id)dictionary;
+- (BOOL)isSupportedOnDevice:(id)device;
+- (PKWebServiceVirtualCardFeatureNetwork)initWithDictionary:(id)dictionary network:(int64_t)network;
 @end
 
 @implementation PKWebServiceVirtualCardFeatureNetwork
 
-+ (id)virtualCardFeatureNetworksFromDictionary:(id)a3
++ (id)virtualCardFeatureNetworksFromDictionary:(id)dictionary
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  dictionaryCopy = dictionary;
+  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
   v6 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   [v6 setNumberStyle:1];
   v11 = MEMORY[0x1E69E9820];
@@ -21,7 +21,7 @@
   v16 = v5;
   v7 = v5;
   v8 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:&v11];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:&v11];
 
   v9 = [v7 copy];
 
@@ -79,20 +79,20 @@ void __82__PKWebServiceVirtualCardFeatureNetwork_virtualCardFeatureNetworksFromD
   }
 }
 
-- (PKWebServiceVirtualCardFeatureNetwork)initWithDictionary:(id)a3 network:(int64_t)a4
+- (PKWebServiceVirtualCardFeatureNetwork)initWithDictionary:(id)dictionary network:(int64_t)network
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v7 = [(PKWebServiceVirtualCardFeatureNetwork *)self init];
   v8 = v7;
   if (v7)
   {
-    v7->_network = a4;
-    v7->_implicitlySupported = [v6 PKBoolForKey:@"implicitlySupported"];
-    v9 = [v6 PKNumberForKey:@"refreshType"];
+    v7->_network = network;
+    v7->_implicitlySupported = [dictionaryCopy PKBoolForKey:@"implicitlySupported"];
+    v9 = [dictionaryCopy PKNumberForKey:@"refreshType"];
     refreshType = v8->_refreshType;
     v8->_refreshType = v9;
 
-    v11 = [v6 PKDictionaryForKey:@"versionRange"];
+    v11 = [dictionaryCopy PKDictionaryForKey:@"versionRange"];
     v12 = [[PKOSVersionRequirementRange alloc] initWithDictionary:v11];
     versions = v8->_versions;
     v8->_versions = v12;
@@ -101,19 +101,19 @@ void __82__PKWebServiceVirtualCardFeatureNetwork_virtualCardFeatureNetworksFromD
   return v8;
 }
 
-- (BOOL)isSupportedOnDevice:(id)a3
+- (BOOL)isSupportedOnDevice:(id)device
 {
   if (!self->_versions)
   {
     return 1;
   }
 
-  v3 = self;
-  v4 = [a3 deviceClass];
+  selfCopy = self;
+  deviceClass = [device deviceClass];
   v5 = +[PKOSVersionRequirement fromDeviceVersion];
-  LOBYTE(v3) = [(PKOSVersionRequirementRange *)v3->_versions versionMeetsRequirements:v5 deviceClass:v4];
+  LOBYTE(selfCopy) = [(PKOSVersionRequirementRange *)selfCopy->_versions versionMeetsRequirements:v5 deviceClass:deviceClass];
 
-  return v3;
+  return selfCopy;
 }
 
 @end

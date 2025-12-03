@@ -1,34 +1,34 @@
 @interface UIKBAutoFillMenus
-+ (id)updatedSystemAutoFillMenuWithMenuElements:(id)a3 hideUnavailableItems:(BOOL)a4;
-+ (id)updatedSystemAutoFillMenuWithMenuElements:(id)a3 hideUnavailableItems:(BOOL)a4 isSecureTextField:(BOOL)a5;
++ (id)updatedSystemAutoFillMenuWithMenuElements:(id)elements hideUnavailableItems:(BOOL)items;
++ (id)updatedSystemAutoFillMenuWithMenuElements:(id)elements hideUnavailableItems:(BOOL)items isSecureTextField:(BOOL)field;
 @end
 
 @implementation UIKBAutoFillMenus
 
-+ (id)updatedSystemAutoFillMenuWithMenuElements:(id)a3 hideUnavailableItems:(BOOL)a4
++ (id)updatedSystemAutoFillMenuWithMenuElements:(id)elements hideUnavailableItems:(BOOL)items
 {
-  v4 = a4;
-  v6 = a3;
+  itemsCopy = items;
+  elementsCopy = elements;
   v7 = +[UIKeyboardImpl activeInstance];
-  v8 = [v7 textInputTraits];
-  v9 = [a1 updatedSystemAutoFillMenuWithMenuElements:v6 hideUnavailableItems:v4 isSecureTextField:{objc_msgSend(v8, "isSecureTextEntry")}];
+  textInputTraits = [v7 textInputTraits];
+  v9 = [self updatedSystemAutoFillMenuWithMenuElements:elementsCopy hideUnavailableItems:itemsCopy isSecureTextField:{objc_msgSend(textInputTraits, "isSecureTextEntry")}];
 
   return v9;
 }
 
-+ (id)updatedSystemAutoFillMenuWithMenuElements:(id)a3 hideUnavailableItems:(BOOL)a4 isSecureTextField:(BOOL)a5
++ (id)updatedSystemAutoFillMenuWithMenuElements:(id)elements hideUnavailableItems:(BOOL)items isSecureTextField:(BOOL)field
 {
-  v8 = a3;
+  elementsCopy = elements;
   if (+[UIKeyboard supportsAutoFillPanel](UIKeyboard, "supportsAutoFillPanel") && [UIApp isProtectedDataAvailable] && (+[UIKeyboard keyboardBundleIdentifier](UIKeyboard, "keyboardBundleIdentifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", @"com.apple.purplebuddy"), v9, (v10 & 1) == 0))
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __102__UIKBAutoFillMenus_updatedSystemAutoFillMenuWithMenuElements_hideUnavailableItems_isSecureTextField___block_invoke_2;
     v13[3] = &__block_descriptor_42_e25___NSArray_16__0__UIMenu_8l;
-    v14 = a4;
-    v15 = a5;
-    v13[4] = a1;
-    v11 = _UIMenuReplacingElementMatchingPredicate(v8, &__block_literal_global_663, v13);
+    itemsCopy = items;
+    fieldCopy = field;
+    v13[4] = self;
+    v11 = _UIMenuReplacingElementMatchingPredicate(elementsCopy, &__block_literal_global_663, v13);
   }
 
   else

@@ -1,19 +1,19 @@
 @interface HAPService
-+ (BOOL)hap2_mergeServices:(id)a3 discoveredServices:(id)a4 mergedServices:(id)a5;
++ (BOOL)hap2_mergeServices:(id)services discoveredServices:(id)discoveredServices mergedServices:(id)mergedServices;
 - (BOOL)_validateMandatoryCharacteristics;
 - (BOOL)_validateServiceCharacteristics;
-- (BOOL)hap2_mergeWithService:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)mergeObject:(id)a3;
-- (BOOL)shouldMergeObject:(id)a3;
+- (BOOL)hap2_mergeWithService:(id)service;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)mergeObject:(id)object;
+- (BOOL)shouldMergeObject:(id)object;
 - (BOOL)updateAndValidateCharacteristics;
 - (CBService)cbService;
 - (HAPAccessory)accessory;
-- (HAPService)initWithType:(id)a3 instanceID:(id)a4 parsedCharacteristics:(id)a5 serviceProperties:(unint64_t)a6 linkedServices:(id)a7;
+- (HAPService)initWithType:(id)type instanceID:(id)d parsedCharacteristics:(id)characteristics serviceProperties:(unint64_t)properties linkedServices:(id)services;
 - (NSArray)characteristics;
 - (NSString)description;
-- (id)characteristicsOfType:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)characteristicsOfType:(id)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)propertiesDescription;
 - (unint64_t)hash;
 @end
@@ -27,14 +27,14 @@
   return WeakRetained;
 }
 
-- (BOOL)mergeObject:(id)a3
+- (BOOL)mergeObject:(id)object
 {
   v92 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -54,7 +54,7 @@ LABEL_28:
   if (![(HAPService *)self shouldMergeObject:v6])
   {
     v37 = objc_autoreleasePoolPush();
-    v38 = self;
+    selfCopy = self;
     v39 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
@@ -72,13 +72,13 @@ LABEL_28:
 
   v65 = v6;
   v7 = MEMORY[0x277CBEB98];
-  v8 = [(HAPService *)self characteristics];
-  v9 = [v7 setWithArray:v8];
+  characteristics = [(HAPService *)self characteristics];
+  v9 = [v7 setWithArray:characteristics];
 
   v10 = MEMORY[0x277CBEB98];
-  v66 = v4;
-  v11 = [v4 characteristics];
-  v12 = [v10 setWithArray:v11];
+  v66 = objectCopy;
+  characteristics2 = [objectCopy characteristics];
+  v12 = [v10 setWithArray:characteristics2];
 
   v67 = v9;
   v13 = [v9 mutableCopy];
@@ -106,7 +106,7 @@ LABEL_28:
 
         v18 = *(*(&v81 + 1) + 8 * i);
         v19 = objc_autoreleasePoolPush();
-        v20 = self;
+        selfCopy2 = self;
         v21 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
@@ -129,9 +129,9 @@ LABEL_28:
 
   v23 = [v12 mutableCopy];
   [v23 minusSet:v67];
-  v24 = [(HAPService *)self characteristics];
-  v25 = [v24 firstObject];
-  v26 = [v25 shouldValidateValueAfterReading];
+  characteristics3 = [(HAPService *)self characteristics];
+  firstObject = [characteristics3 firstObject];
+  shouldValidateValueAfterReading = [firstObject shouldValidateValueAfterReading];
 
   v79 = 0u;
   v80 = 0u;
@@ -154,7 +154,7 @@ LABEL_28:
 
         v31 = *(*(&v77 + 1) + 8 * j);
         v32 = objc_autoreleasePoolPush();
-        v33 = self;
+        selfCopy3 = self;
         v34 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
         {
@@ -167,8 +167,8 @@ LABEL_28:
         }
 
         objc_autoreleasePoolPop(v32);
-        [v31 setService:v33];
-        [v31 setShouldValidateValueAfterReading:v26];
+        [v31 setService:selfCopy3];
+        [v31 setShouldValidateValueAfterReading:shouldValidateValueAfterReading];
       }
 
       v28 = [v70 countByEnumeratingWithState:&v77 objects:v86 count:16];
@@ -206,7 +206,7 @@ LABEL_28:
 
         v47 = *(*(&v73 + 1) + 8 * k);
         v48 = objc_autoreleasePoolPush();
-        v49 = self;
+        selfCopy4 = self;
         v50 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
         {
@@ -223,7 +223,7 @@ LABEL_28:
         if (v52 && [v47 mergeObject:v52])
         {
           v53 = objc_autoreleasePoolPush();
-          v54 = v49;
+          v54 = selfCopy4;
           v55 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
           {
@@ -249,41 +249,41 @@ LABEL_28:
   v41 = v36;
 
   v57 = MEMORY[0x277CBEB18];
-  v58 = [v69 allObjects];
-  v59 = [v57 arrayWithArray:v58];
+  allObjects = [v69 allObjects];
+  v59 = [v57 arrayWithArray:allObjects];
 
-  v60 = [v70 allObjects];
-  [v59 addObjectsFromArray:v60];
+  allObjects2 = [v70 allObjects];
+  [v59 addObjectsFromArray:allObjects2];
 
   v61 = [v59 copy];
   [(HAPService *)self setCharacteristics:v61];
 
   v6 = v65;
   -[HAPService setServiceProperties:](self, "setServiceProperties:", [v65 serviceProperties]);
-  v62 = [v65 linkedServices];
-  [(HAPService *)self setLinkedServices:v62];
+  linkedServices = [v65 linkedServices];
+  [(HAPService *)self setLinkedServices:linkedServices];
 
-  v4 = v66;
+  objectCopy = v66;
 LABEL_45:
 
   v63 = *MEMORY[0x277D85DE8];
   return v41 & 1;
 }
 
-- (BOOL)shouldMergeObject:(id)a3
+- (BOOL)shouldMergeObject:(id)object
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(HAPService *)self isEqual:v4])
+  objectCopy = object;
+  if ([(HAPService *)self isEqual:objectCopy])
   {
     v5 = MEMORY[0x277CBEB98];
-    v6 = [(HAPService *)self characteristics];
-    v7 = [v5 setWithArray:v6];
+    characteristics = [(HAPService *)self characteristics];
+    v7 = [v5 setWithArray:characteristics];
 
     v8 = MEMORY[0x277CBEB98];
-    v30 = v4;
-    v9 = [v4 characteristics];
-    v10 = [v8 setWithArray:v9];
+    v30 = objectCopy;
+    characteristics2 = [objectCopy characteristics];
+    v10 = [v8 setWithArray:characteristics2];
 
     v29 = v7;
     v11 = [v7 mutableCopy];
@@ -324,7 +324,7 @@ LABEL_45:
           }
 
           v20 = objc_autoreleasePoolPush();
-          v21 = self;
+          selfCopy = self;
           v22 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
@@ -361,7 +361,7 @@ LABEL_13:
       {
 LABEL_18:
 
-        v4 = v30;
+        objectCopy = v30;
         goto LABEL_19;
       }
     }
@@ -374,17 +374,17 @@ LABEL_19:
   return v16 & 1;
 }
 
-- (id)characteristicsOfType:(id)a3
+- (id)characteristicsOfType:(id)type
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  typeCopy = type;
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(HAPService *)self characteristics];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  characteristics = [(HAPService *)self characteristics];
+  v7 = [characteristics countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -395,20 +395,20 @@ LABEL_19:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(characteristics);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 type];
-        v13 = [v12 isEqualToString:v4];
+        type = [v11 type];
+        v13 = [type isEqualToString:typeCopy];
 
         if (v13)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [characteristics countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -416,20 +416,20 @@ LABEL_19:
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
 - (BOOL)_validateMandatoryCharacteristics
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = +[HAPMetadata getSharedInstance];
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(HAPService *)self characteristics];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  characteristics = [(HAPService *)self characteristics];
+  v6 = [characteristics countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -441,24 +441,24 @@ LABEL_19:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(characteristics);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * v9) type];
-        [v4 addObject:v10];
+        type = [*(*(&v15 + 1) + 8 * v9) type];
+        [array addObject:type];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [characteristics countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(HAPService *)self type];
-  v12 = [v3 validateMandatoryCharacteristics:v4 forService:v11];
+  type2 = [(HAPService *)self type];
+  v12 = [v3 validateMandatoryCharacteristics:array forService:type2];
 
   v13 = *MEMORY[0x277D85DE8];
   return v12;
@@ -467,13 +467,13 @@ LABEL_19:
 - (BOOL)_validateServiceCharacteristics
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HAPService *)self characteristics];
-  v4 = [v3 count];
+  characteristics = [(HAPService *)self characteristics];
+  v4 = [characteristics count];
 
   if (!v4)
   {
     v5 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -495,7 +495,7 @@ LABEL_8:
   if (![(HAPService *)self _validateMandatoryCharacteristics])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy2 = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -526,7 +526,7 @@ LABEL_9:
   if (![(HAPService *)self _validateServiceCharacteristics])
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -542,15 +542,15 @@ LABEL_9:
   }
 
   v3 = objc_alloc(MEMORY[0x277CBEB58]);
-  v4 = [(HAPService *)self characteristics];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  characteristics = [(HAPService *)self characteristics];
+  v5 = [v3 initWithCapacity:{objc_msgSend(characteristics, "count")}];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [(HAPService *)self characteristics];
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  characteristics2 = [(HAPService *)self characteristics];
+  v7 = [characteristics2 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (!v7)
   {
     v15 = 1;
@@ -565,17 +565,17 @@ LABEL_9:
     {
       if (*v29 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(characteristics2);
       }
 
       v11 = *(*(&v28 + 1) + 8 * i);
-      v12 = [v11 instanceID];
-      v13 = [v5 containsObject:v12];
+      instanceID = [v11 instanceID];
+      v13 = [v5 containsObject:instanceID];
 
       if (v13)
       {
         v20 = objc_autoreleasePoolPush();
-        v21 = self;
+        selfCopy2 = self;
         v22 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
@@ -594,13 +594,13 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v14 = [v11 instanceID];
-      [v5 addObject:v14];
+      instanceID2 = [v11 instanceID];
+      [v5 addObject:instanceID2];
 
       if (![(HAPService *)self _updateCharacteristic:v11])
       {
         v20 = objc_autoreleasePoolPush();
-        v25 = self;
+        selfCopy3 = self;
         v22 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
@@ -615,7 +615,7 @@ LABEL_21:
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    v8 = [characteristics2 countByEnumeratingWithState:&v28 objects:v32 count:16];
     v15 = 1;
     if (v8)
     {
@@ -661,11 +661,11 @@ LABEL_23:
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPService *)self instanceID];
-  v5 = [(HAPService *)self type];
-  v6 = [(HAPService *)self propertiesDescription];
-  v7 = [(HAPService *)self linkedServices];
-  v8 = [v3 stringWithFormat:@"Instance ID: %@, Type: %@, Properties: %@, Linked Service: %@", v4, v5, v6, v7];
+  instanceID = [(HAPService *)self instanceID];
+  type = [(HAPService *)self type];
+  propertiesDescription = [(HAPService *)self propertiesDescription];
+  linkedServices = [(HAPService *)self linkedServices];
+  v8 = [v3 stringWithFormat:@"Instance ID: %@, Type: %@, Properties: %@, Linked Service: %@", instanceID, type, propertiesDescription, linkedServices];
 
   return v8;
 }
@@ -683,10 +683,10 @@ LABEL_23:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -696,7 +696,7 @@ LABEL_23:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -710,24 +710,24 @@ LABEL_23:
       goto LABEL_7;
     }
 
-    v7 = [(HAPService *)self instanceID];
-    v8 = [(HAPService *)v6 instanceID];
-    v9 = numbersAreNotEqualNilSafe(v7, v8);
+    instanceID = [(HAPService *)self instanceID];
+    instanceID2 = [(HAPService *)v6 instanceID];
+    v9 = numbersAreNotEqualNilSafe(instanceID, instanceID2);
 
     if (v9)
     {
       goto LABEL_7;
     }
 
-    v12 = [(HAPService *)self type];
-    v13 = [(HAPService *)v6 type];
-    if (!(v12 | v13))
+    type = [(HAPService *)self type];
+    type2 = [(HAPService *)v6 type];
+    if (!(type | type2))
     {
       goto LABEL_13;
     }
 
-    v14 = v13;
-    v15 = [v12 isEqualToString:v13];
+    v14 = type2;
+    v15 = [type isEqualToString:type2];
 
     if (!v15)
     {
@@ -738,17 +738,17 @@ LABEL_7:
     else
     {
 LABEL_13:
-      v16 = [(HAPService *)self accessory];
-      if (v16)
+      accessory = [(HAPService *)self accessory];
+      if (accessory)
       {
-        v17 = v16;
-        v18 = [(HAPService *)v6 accessory];
-        if (v18)
+        v17 = accessory;
+        accessory2 = [(HAPService *)v6 accessory];
+        if (accessory2)
         {
-          v19 = v18;
-          v20 = [(HAPService *)self accessory];
-          v21 = [(HAPService *)v6 accessory];
-          v10 = [v20 isEqual:v21];
+          v19 = accessory2;
+          accessory3 = [(HAPService *)self accessory];
+          accessory4 = [(HAPService *)v6 accessory];
+          v10 = [accessory3 isEqual:accessory4];
         }
 
         else
@@ -769,41 +769,41 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v2 = [(HAPService *)self instanceID];
-  v3 = [v2 hash];
+  instanceID = [(HAPService *)self instanceID];
+  v3 = [instanceID hash];
 
   return v3;
 }
 
-- (HAPService)initWithType:(id)a3 instanceID:(id)a4 parsedCharacteristics:(id)a5 serviceProperties:(unint64_t)a6 linkedServices:(id)a7
+- (HAPService)initWithType:(id)type instanceID:(id)d parsedCharacteristics:(id)characteristics serviceProperties:(unint64_t)properties linkedServices:(id)services
 {
   v55 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (isValidTypeName(v12))
+  typeCopy = type;
+  dCopy = d;
+  characteristicsCopy = characteristics;
+  servicesCopy = services;
+  if (isValidTypeName(typeCopy))
   {
-    v16 = [v12 hap_validatedAndNormalizedUUIDString];
-    if (v16)
+    hap_validatedAndNormalizedUUIDString = [typeCopy hap_validatedAndNormalizedUUIDString];
+    if (hap_validatedAndNormalizedUUIDString)
     {
-      if (isValidInstanceID(v13))
+      if (isValidInstanceID(dCopy))
       {
         v46.receiver = self;
         v46.super_class = HAPService;
         self = [(HAPService *)&v46 init];
         if (self)
         {
-          v44 = v15;
+          v44 = servicesCopy;
           +[HAPMetadata getSharedInstance];
-          v18 = v17 = v16;
+          v18 = v17 = hap_validatedAndNormalizedUUIDString;
           v19 = [MEMORY[0x277D0F888] hmf_cachedInstanceForString:v17];
           type = self->_type;
           self->_type = v19;
 
           v45 = v18;
           v21 = v18;
-          v16 = v17;
+          hap_validatedAndNormalizedUUIDString = v17;
           v22 = [v21 serviceUTIFromType:v17];
           if (v22)
           {
@@ -821,7 +821,7 @@ LABEL_13:
               v51 = 2112;
               v52 = v22;
               v53 = 2112;
-              v54 = v13;
+              v54 = dCopy;
               _os_log_impl(&dword_22AADC000, log, OS_LOG_TYPE_DEBUG, "%{public}@%@ ----> %@ [%@]", buf, 0x2Au);
             }
 
@@ -829,11 +829,11 @@ LABEL_13:
           }
 
           v26 = v22;
-          objc_storeStrong(&self->_instanceID, a4);
-          v15 = v44;
-          if (v14)
+          objc_storeStrong(&self->_instanceID, d);
+          servicesCopy = v44;
+          if (characteristicsCopy)
           {
-            if ([v14 count] >= 0x65)
+            if ([characteristicsCopy count] >= 0x65)
             {
               v27 = objc_autoreleasePoolPush();
               v28 = HMFGetOSLogHandle();
@@ -852,7 +852,7 @@ LABEL_33:
               goto LABEL_34;
             }
 
-            objc_storeStrong(&self->_characteristics, a5);
+            objc_storeStrong(&self->_characteristics, characteristics);
             if (![(HAPService *)self updateAndValidateCharacteristics])
             {
               v27 = objc_autoreleasePoolPush();
@@ -873,7 +873,7 @@ LABEL_34:
             }
           }
 
-          self->_serviceProperties = a6;
+          self->_serviceProperties = properties;
           if (v44)
           {
             v39 = v44;
@@ -888,7 +888,7 @@ LABEL_34:
         }
 
         self = self;
-        v34 = self;
+        selfCopy = self;
         goto LABEL_29;
       }
 
@@ -921,7 +921,7 @@ LABEL_20:
 
     objc_autoreleasePoolPop(v35);
 LABEL_22:
-    v34 = 0;
+    selfCopy = 0;
 LABEL_29:
 
     goto LABEL_30;
@@ -935,16 +935,16 @@ LABEL_29:
     *buf = 138543618;
     v48 = v33;
     v49 = 2112;
-    v50 = v12;
+    v50 = typeCopy;
     _os_log_impl(&dword_22AADC000, v32, OS_LOG_TYPE_ERROR, "%{public}@### Unable to initialize service because of invalid service type name: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v31);
-  v34 = 0;
+  selfCopy = 0;
 LABEL_30:
 
   v40 = *MEMORY[0x277D85DE8];
-  return v34;
+  return selfCopy;
 }
 
 - (CBService)cbService
@@ -964,31 +964,31 @@ LABEL_30:
   return v3;
 }
 
-- (BOOL)hap2_mergeWithService:(id)a3
+- (BOOL)hap2_mergeWithService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = MEMORY[0x277CBEB38];
-  v6 = [(HAPService *)self characteristics];
-  v7 = [v5 dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  characteristics = [(HAPService *)self characteristics];
+  v7 = [v5 dictionaryWithCapacity:{objc_msgSend(characteristics, "count")}];
 
-  v8 = [(HAPService *)self characteristics];
+  characteristics2 = [(HAPService *)self characteristics];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __42__HAPService_HAP2__hap2_mergeWithService___block_invoke;
   v30[3] = &unk_2786D60B0;
   v9 = v7;
   v31 = v9;
-  [v8 hmf_enumerateWithAutoreleasePoolUsingBlock:v30];
+  [characteristics2 hmf_enumerateWithAutoreleasePoolUsingBlock:v30];
 
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 0;
   v10 = MEMORY[0x277CBEB18];
-  v11 = [v4 characteristics];
-  v12 = [v10 arrayWithCapacity:{objc_msgSend(v11, "count")}];
+  characteristics3 = [serviceCopy characteristics];
+  v12 = [v10 arrayWithCapacity:{objc_msgSend(characteristics3, "count")}];
 
-  v13 = [v4 characteristics];
+  characteristics4 = [serviceCopy characteristics];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __42__HAPService_HAP2__hap2_mergeWithService___block_invoke_2;
@@ -998,7 +998,7 @@ LABEL_30:
   v25 = &v26;
   v15 = v12;
   v24 = v15;
-  [v13 hmf_enumerateWithAutoreleasePoolUsingBlock:&v19];
+  [characteristics4 hmf_enumerateWithAutoreleasePoolUsingBlock:&v19];
 
   if ([v14 count])
   {
@@ -1063,38 +1063,38 @@ void __42__HAPService_HAP2__hap2_mergeWithService___block_invoke_2(void *a1, voi
   [v12 addObject:v13];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HAPService *)self type];
-  v7 = [v6 copyWithZone:a3];
-  v8 = [(HAPService *)self instanceID];
-  v9 = [v8 copyWithZone:a3];
+  type = [(HAPService *)self type];
+  v7 = [type copyWithZone:zone];
+  instanceID = [(HAPService *)self instanceID];
+  v9 = [instanceID copyWithZone:zone];
   v10 = objc_alloc(MEMORY[0x277CBEA60]);
-  v11 = [(HAPService *)self characteristics];
-  v12 = [v10 initWithArray:v11 copyItems:1];
-  v13 = [(HAPService *)self serviceProperties];
+  characteristics = [(HAPService *)self characteristics];
+  v12 = [v10 initWithArray:characteristics copyItems:1];
+  serviceProperties = [(HAPService *)self serviceProperties];
   v14 = objc_alloc(MEMORY[0x277CBEA60]);
-  v15 = [(HAPService *)self linkedServices];
-  v16 = [v14 initWithArray:v15 copyItems:1];
-  v17 = [v5 initWithType:v7 instanceID:v9 parsedCharacteristics:v12 serviceProperties:v13 linkedServices:v16];
+  linkedServices = [(HAPService *)self linkedServices];
+  v16 = [v14 initWithArray:linkedServices copyItems:1];
+  v17 = [v5 initWithType:v7 instanceID:v9 parsedCharacteristics:v12 serviceProperties:serviceProperties linkedServices:v16];
 
   return v17;
 }
 
-+ (BOOL)hap2_mergeServices:(id)a3 discoveredServices:(id)a4 mergedServices:(id)a5
++ (BOOL)hap2_mergeServices:(id)services discoveredServices:(id)discoveredServices mergedServices:(id)mergedServices
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
+  servicesCopy = services;
+  discoveredServicesCopy = discoveredServices;
+  mergedServicesCopy = mergedServices;
+  v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(servicesCopy, "count")}];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __73__HAPService_HAP2__hap2_mergeServices_discoveredServices_mergedServices___block_invoke;
   v27[3] = &unk_2786D5B58;
   v11 = v10;
   v28 = v11;
-  [v7 hmf_enumerateWithAutoreleasePoolUsingBlock:v27];
+  [servicesCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v27];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -1105,10 +1105,10 @@ void __42__HAPService_HAP2__hap2_mergeWithService___block_invoke_2(void *a1, voi
   v19 = &unk_2786D5050;
   v12 = v11;
   v20 = v12;
-  v13 = v9;
+  v13 = mergedServicesCopy;
   v21 = v13;
   v22 = &v23;
-  [v8 hmf_enumerateWithAutoreleasePoolUsingBlock:&v16];
+  [discoveredServicesCopy hmf_enumerateWithAutoreleasePoolUsingBlock:&v16];
   if ([v12 count])
   {
     v14 = 1;

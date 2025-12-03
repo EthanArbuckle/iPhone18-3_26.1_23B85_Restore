@@ -1,22 +1,22 @@
 @interface FeaturedMaterialCell
 - (UIButton)accessibilityPlayButton;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation FeaturedMaterialCell
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_45D920(a3, &selRef_isHighlighted, &selRef_setHighlighted_);
+  selfCopy = self;
+  sub_45D920(highlighted, &selRef_isHighlighted, &selRef_setHighlighted_);
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = self;
-  sub_45D920(a3, &selRef_isSelected, &selRef_setSelected_);
+  selfCopy = self;
+  sub_45D920(selected, &selRef_isSelected, &selRef_setSelected_);
 }
 
 - (void)layoutSubviews
@@ -25,8 +25,8 @@
   v12.super_class = type metadata accessor for FeaturedMaterialCell();
   v2 = v12.receiver;
   [(VerticalLockupCollectionViewCell *)&v12 layoutSubviews];
-  v3 = [v2 contentView];
-  [v3 bounds];
+  contentView = [v2 contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -39,7 +39,7 @@
 
 - (UIButton)accessibilityPlayButton
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_45C560();
 
   return v3;

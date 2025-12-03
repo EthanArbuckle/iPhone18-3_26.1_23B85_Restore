@@ -1,64 +1,64 @@
 @interface CBBrightestALSFilter
-- (BOOL)displayBrightnessFactorPropertyHandler:(id)a3;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
+- (BOOL)displayBrightnessFactorPropertyHandler:(id)handler;
+- (BOOL)setProperty:(id)property forKey:(id)key;
 - (CBBrightestALSFilter)init;
-- (id)filterEvent:(id)a3;
+- (id)filterEvent:(id)event;
 - (void)dealloc;
-- (void)forgetDataForService:(__IOHIDServiceClient *)a3;
+- (void)forgetDataForService:(__IOHIDServiceClient *)service;
 @end
 
 @implementation CBBrightestALSFilter
 
 - (CBBrightestALSFilter)init
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = CBBrightestALSFilter;
-  v7 = [(CBBrightestALSFilter *)&v5 init];
-  if (v7)
+  selfCopy = [(CBBrightestALSFilter *)&v5 init];
+  if (selfCopy)
   {
     v2 = os_log_create("com.apple.CoreBrightness.CBBrightestALSFilter", "default");
-    v7->super._logHandle = v2;
+    selfCopy->super._logHandle = v2;
     v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v7->_alsEvents = v3;
+    selfCopy->_alsEvents = v3;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (self->super._logHandle)
   {
-    MEMORY[0x1E69E5920](v5->super._logHandle);
-    v5->super._logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->super._logHandle);
+    selfCopy->super._logHandle = 0;
   }
 
-  *&v2 = MEMORY[0x1E69E5920](v5->_alsEvents).n128_u64[0];
-  v3.receiver = v5;
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_alsEvents).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = CBBrightestALSFilter;
   [(CBBrightestALSFilter *)&v3 dealloc];
 }
 
-- (id)filterEvent:(id)a3
+- (id)filterEvent:(id)event
 {
   v25 = *MEMORY[0x1E69E9840];
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
-  v20 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = v20;
-    -[NSMutableDictionary setObject:forKey:](v22->_alsEvents, "setObject:forKey:", v20, [v20 serviceRegistryID]);
+    v19 = eventCopy;
+    -[NSMutableDictionary setObject:forKey:](selfCopy->_alsEvents, "setObject:forKey:", eventCopy, [eventCopy serviceRegistryID]);
     context = objc_autoreleasePoolPush();
-    v18 = [(NSMutableDictionary *)v22->_alsEvents keysSortedByValueUsingComparator:&__block_literal_global_6];
-    if (v22->super._logHandle)
+    v18 = [(NSMutableDictionary *)selfCopy->_alsEvents keysSortedByValueUsingComparator:&__block_literal_global_6];
+    if (selfCopy->super._logHandle)
     {
-      logHandle = v22->super._logHandle;
+      logHandle = selfCopy->super._logHandle;
     }
 
     else
@@ -80,12 +80,12 @@
     v16 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_1_8_64(v24, v22->_alsEvents);
+      __os_log_helper_16_2_1_8_64(v24, selfCopy->_alsEvents);
       _os_log_debug_impl(&dword_1DE8E5000, v17, v16, "ALS events %@", v24, 0xCu);
     }
 
-    v15 = -[NSMutableDictionary objectForKey:](v22->_alsEvents, "objectForKey:", [v18 objectAtIndexedSubscript:0]);
-    if (v15 && (([v15 obstructed] & 1) == 0 || (objc_msgSend(v20, "firstALSSample") & 1) != 0))
+    v15 = -[NSMutableDictionary objectForKey:](selfCopy->_alsEvents, "objectForKey:", [v18 objectAtIndexedSubscript:0]);
+    if (v15 && (([v15 obstructed] & 1) == 0 || (objc_msgSend(eventCopy, "firstALSSample") & 1) != 0))
     {
       v23 = v15;
       v14 = 1;
@@ -93,9 +93,9 @@
 
     else
     {
-      if (v22->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        v7 = v22->super._logHandle;
+        v7 = selfCopy->super._logHandle;
       }
 
       else
@@ -132,17 +132,17 @@
 
   else
   {
-    v23 = v20;
+    v23 = eventCopy;
   }
 
   *MEMORY[0x1E69E9840];
   return v23;
 }
 
-- (void)forgetDataForService:(__IOHIDServiceClient *)a3
+- (void)forgetDataForService:(__IOHIDServiceClient *)service
 {
   v8 = *MEMORY[0x1E69E9840];
-  RegistryID = IOHIDServiceClientGetRegistryID(a3);
+  RegistryID = IOHIDServiceClientGetRegistryID(service);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSMutableDictionary *)self->_alsEvents objectForKey:RegistryID])
   {
@@ -178,36 +178,36 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
   v5 = 0;
-  if ([a4 isEqual:@"DisplayBrightnessFactor"] & 1) != 0 || (objc_msgSend(a4, "isEqual:", @"DisplayBrightnessFactorWithFade"))
+  if ([key isEqual:@"DisplayBrightnessFactor"] & 1) != 0 || (objc_msgSend(key, "isEqual:", @"DisplayBrightnessFactorWithFade"))
   {
-    return [(CBBrightestALSFilter *)self displayBrightnessFactorPropertyHandler:a3];
+    return [(CBBrightestALSFilter *)self displayBrightnessFactorPropertyHandler:property];
   }
 
   return v5;
 }
 
-- (BOOL)displayBrightnessFactorPropertyHandler:(id)a3
+- (BOOL)displayBrightnessFactorPropertyHandler:(id)handler
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [a3 objectForKey:@"DisplayBrightnessFactor"];
+    handlerCopy = [handler objectForKey:@"DisplayBrightnessFactor"];
   }
 
   else
   {
-    v7 = a3;
+    handlerCopy = handler;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 floatValue];
+    [handlerCopy floatValue];
     if (v3 <= 0.0)
     {
       if (self->super._logHandle)

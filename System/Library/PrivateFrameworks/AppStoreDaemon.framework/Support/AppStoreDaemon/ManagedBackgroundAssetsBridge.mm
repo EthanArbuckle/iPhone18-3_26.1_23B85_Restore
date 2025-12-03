@@ -1,13 +1,13 @@
 @interface ManagedBackgroundAssetsBridge
-+ (void)cleanUpWithCompletionHandler:(id)a3;
-+ (void)handleAppUninstallWithBundleID:(id)a3;
-+ (void)handleAppUninstallsWithBundleIDs:(id)a3;
++ (void)cleanUpWithCompletionHandler:(id)handler;
++ (void)handleAppUninstallWithBundleID:(id)d;
++ (void)handleAppUninstallsWithBundleIDs:(id)ds;
 - (_TtC9appstored29ManagedBackgroundAssetsBridge)init;
 @end
 
 @implementation ManagedBackgroundAssetsBridge
 
-+ (void)handleAppUninstallsWithBundleIDs:(id)a3
++ (void)handleAppUninstallsWithBundleIDs:(id)ds
 {
   v3 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v3 - 8);
@@ -24,7 +24,7 @@
   sub_10019F02C(0, 0, v5, &unk_100434528, v9);
 }
 
-+ (void)handleAppUninstallWithBundleID:(id)a3
++ (void)handleAppUninstallWithBundleID:(id)d
 {
   v3 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v3 - 8);
@@ -43,15 +43,15 @@
   sub_10019F02C(0, 0, v5, &unk_100434500, v11);
 }
 
-+ (void)cleanUpWithCompletionHandler:(id)a3
++ (void)cleanUpWithCompletionHandler:(id)handler
 {
   v5 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  *(v9 + 24) = a1;
+  *(v9 + 24) = self;
   v10 = type metadata accessor for TaskPriority();
   (*(*(v10 - 8) + 56))(v7, 1, 1, v10);
   v11 = swift_allocObject();

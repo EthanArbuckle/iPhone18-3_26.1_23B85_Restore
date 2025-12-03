@@ -64,9 +64,9 @@
 - (BOOL)dmps_excludedFromFirstLogin
 {
   v2 = [(NSDictionary *)self objectForKeyedSubscript:@"excludedFromFirstLogin"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

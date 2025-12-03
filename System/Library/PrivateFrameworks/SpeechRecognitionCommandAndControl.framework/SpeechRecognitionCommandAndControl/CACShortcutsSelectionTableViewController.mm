@@ -1,28 +1,28 @@
 @interface CACShortcutsSelectionTableViewController
-- (CACShortcutsSelectionTableViewController)initWithPreviouslySelectedShortcut:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (CACShortcutsSelectionTableViewController)initWithPreviouslySelectedShortcut:(id)shortcut;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)cancelButtonAction;
-- (void)setCachedShortcuts:(id)a3;
-- (void)shortcutsDidChange:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setCachedShortcuts:(id)shortcuts;
+- (void)shortcutsDidChange:(id)change;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CACShortcutsSelectionTableViewController
 
-- (CACShortcutsSelectionTableViewController)initWithPreviouslySelectedShortcut:(id)a3
+- (CACShortcutsSelectionTableViewController)initWithPreviouslySelectedShortcut:(id)shortcut
 {
-  v5 = a3;
+  shortcutCopy = shortcut;
   v9.receiver = self;
   v9.super_class = CACShortcutsSelectionTableViewController;
   v6 = [(CACShortcutsSelectionTableViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_previouslySelectedShortcut, a3);
+    objc_storeStrong(&v6->_previouslySelectedShortcut, shortcut);
   }
 
   return v7;
@@ -33,37 +33,37 @@
   v10.receiver = self;
   v10.super_class = CACShortcutsSelectionTableViewController;
   [(CACShortcutsSelectionTableViewController *)&v10 viewDidLoad];
-  v3 = [(CACShortcutsSelectionTableViewController *)self tableView];
-  [v3 setDelegate:self];
+  tableView = [(CACShortcutsSelectionTableViewController *)self tableView];
+  [tableView setDelegate:self];
 
-  v4 = [(CACShortcutsSelectionTableViewController *)self tableView];
-  [v4 setDataSource:self];
+  tableView2 = [(CACShortcutsSelectionTableViewController *)self tableView];
+  [tableView2 setDataSource:self];
 
-  v5 = [(CACShortcutsSelectionTableViewController *)self tableView];
-  [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"ShortcutsCell"];
+  tableView3 = [(CACShortcutsSelectionTableViewController *)self tableView];
+  [tableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"ShortcutsCell"];
 
   v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelButtonAction];
-  v7 = [(CACShortcutsSelectionTableViewController *)self navigationItem];
-  [v7 setLeftBarButtonItem:v6];
+  navigationItem = [(CACShortcutsSelectionTableViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v6];
 
-  v8 = [MEMORY[0x277CE7E38] sharedManager];
-  v9 = [v8 shortcuts];
-  [(CACShortcutsSelectionTableViewController *)self setCachedShortcuts:v9];
+  mEMORY[0x277CE7E38] = [MEMORY[0x277CE7E38] sharedManager];
+  shortcuts = [mEMORY[0x277CE7E38] shortcuts];
+  [(CACShortcutsSelectionTableViewController *)self setCachedShortcuts:shortcuts];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = CACShortcutsSelectionTableViewController;
-  [(CACShortcutsSelectionTableViewController *)&v10 viewWillAppear:a3];
+  [(CACShortcutsSelectionTableViewController *)&v10 viewWillAppear:appear];
   objc_initWeak(&location, self);
-  v4 = [MEMORY[0x277CE7E38] sharedManager];
+  mEMORY[0x277CE7E38] = [MEMORY[0x277CE7E38] sharedManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__CACShortcutsSelectionTableViewController_viewWillAppear___block_invoke;
   v7[3] = &unk_279CEB640;
   objc_copyWeak(&v8, &location);
-  v5 = [v4 registerShortcutsDidChangeBlock:v7];
+  v5 = [mEMORY[0x277CE7E38] registerShortcutsDidChangeBlock:v7];
   shortcutsToken = self->_shortcutsToken;
   self->_shortcutsToken = v5;
 
@@ -88,17 +88,17 @@ void __59__CACShortcutsSelectionTableViewController_viewWillAppear___block_invok
   [WeakRetained shortcutsDidChange:v4];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CE7E38] sharedManager];
-  v6 = [(CACShortcutsSelectionTableViewController *)self shortcutsToken];
-  [v5 unregisterShortcutsDidChangeBlock:v6];
+  disappearCopy = disappear;
+  mEMORY[0x277CE7E38] = [MEMORY[0x277CE7E38] sharedManager];
+  shortcutsToken = [(CACShortcutsSelectionTableViewController *)self shortcutsToken];
+  [mEMORY[0x277CE7E38] unregisterShortcutsDidChangeBlock:shortcutsToken];
 
   [(CACShortcutsSelectionTableViewController *)self dismissViewControllerAnimated:1 completion:&__block_literal_global_6];
   v7.receiver = self;
   v7.super_class = CACShortcutsSelectionTableViewController;
-  [(CACShortcutsSelectionTableViewController *)&v7 viewWillDisappear:v3];
+  [(CACShortcutsSelectionTableViewController *)&v7 viewWillDisappear:disappearCopy];
 }
 
 void __62__CACShortcutsSelectionTableViewController_viewWillDisappear___block_invoke()
@@ -134,21 +134,21 @@ void __62__CACShortcutsSelectionTableViewController_cancelButtonAction__block_in
   }
 }
 
-- (void)setCachedShortcuts:(id)a3
+- (void)setCachedShortcuts:(id)shortcuts
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  cachedShortcuts = v5->_cachedShortcuts;
-  v5->_cachedShortcuts = v4;
-  v7 = v4;
+  shortcutsCopy = shortcuts;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedShortcuts = selfCopy->_cachedShortcuts;
+  selfCopy->_cachedShortcuts = shortcutsCopy;
+  v7 = shortcutsCopy;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__CACShortcutsSelectionTableViewController_setCachedShortcuts___block_invoke;
   block[3] = &unk_279CEB2D0;
-  block[4] = v5;
+  block[4] = selfCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -158,59 +158,59 @@ void __63__CACShortcutsSelectionTableViewController_setCachedShortcuts___block_i
   [v1 reloadData];
 }
 
-- (void)shortcutsDidChange:(id)a3
+- (void)shortcutsDidChange:(id)change
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = CACLogShortcuts();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = changeCopy;
     _os_log_impl(&dword_26B354000, v5, OS_LOG_TYPE_DEFAULT, "New shortcuts %@", &v6, 0xCu);
   }
 
-  [(CACShortcutsSelectionTableViewController *)self setCachedShortcuts:v4];
+  [(CACShortcutsSelectionTableViewController *)self setCachedShortcuts:changeCopy];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(CACShortcutsSelectionTableViewController *)self cachedShortcuts:a3];
+  v4 = [(CACShortcutsSelectionTableViewController *)self cachedShortcuts:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"ShortcutsCell" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"ShortcutsCell" forIndexPath:pathCopy];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:3 reuseIdentifier:@"ShortcutsCell"];
   }
 
-  v8 = [(CACShortcutsSelectionTableViewController *)self cachedShortcuts];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+  cachedShortcuts = [(CACShortcutsSelectionTableViewController *)self cachedShortcuts];
+  v9 = [cachedShortcuts objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  v10 = [v9 shortcutName];
-  v11 = [v7 textLabel];
-  [v11 setText:v10];
+  shortcutName = [v9 shortcutName];
+  textLabel = [v7 textLabel];
+  [textLabel setText:shortcutName];
 
   v12 = MEMORY[0x277CCACA8];
-  v13 = [v9 shortcutName];
-  v14 = [v12 stringWithFormat:@"%@", v13];
-  v15 = [v7 detailTextLabel];
-  [v15 setText:v14];
+  shortcutName2 = [v9 shortcutName];
+  v14 = [v12 stringWithFormat:@"%@", shortcutName2];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setText:v14];
 
-  v16 = [v9 identifier];
-  v17 = [(CACShortcutsSelectionTableViewController *)self previouslySelectedShortcut];
-  v18 = [v17 identifier];
+  identifier = [v9 identifier];
+  previouslySelectedShortcut = [(CACShortcutsSelectionTableViewController *)self previouslySelectedShortcut];
+  identifier2 = [previouslySelectedShortcut identifier];
 
-  if (v16 == v18)
+  if (identifier == identifier2)
   {
     [v7 setAccessoryType:3];
-    [(CACShortcutsSelectionTableViewController *)self setPreviouslySelectedIndex:v6];
+    [(CACShortcutsSelectionTableViewController *)self setPreviouslySelectedIndex:pathCopy];
   }
 
   else
@@ -221,24 +221,24 @@ void __63__CACShortcutsSelectionTableViewController_setCachedShortcuts___block_i
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CACShortcutsSelectionTableViewController *)self previouslySelectedIndex];
-  v9 = [v7 cellForRowAtIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  previouslySelectedIndex = [(CACShortcutsSelectionTableViewController *)self previouslySelectedIndex];
+  v9 = [viewCopy cellForRowAtIndexPath:previouslySelectedIndex];
 
   [v9 setAccessoryType:0];
-  v10 = [v7 cellForRowAtIndexPath:v6];
+  v10 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   [v10 setAccessoryType:3];
-  v11 = [(CACShortcutsSelectionTableViewController *)self cachedShortcuts];
-  v12 = [v6 row];
+  cachedShortcuts = [(CACShortcutsSelectionTableViewController *)self cachedShortcuts];
+  v12 = [pathCopy row];
 
-  v13 = [v11 objectAtIndexedSubscript:v12];
+  v13 = [cachedShortcuts objectAtIndexedSubscript:v12];
 
-  v14 = [(CACShortcutsSelectionTableViewController *)self shortcutsSelectionDelegate];
-  [v14 didSelectShortcut:v13];
+  shortcutsSelectionDelegate = [(CACShortcutsSelectionTableViewController *)self shortcutsSelectionDelegate];
+  [shortcutsSelectionDelegate didSelectShortcut:v13];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;

@@ -1,56 +1,56 @@
 @interface _UIActivityUserDefaultsDataSource
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
 - (_UIActivityUserDefaultsDataSourceProxy)dataSourceProxy;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 @end
 
 @implementation _UIActivityUserDefaultsDataSource
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIActivityUserDefaultsDataSource *)self dataSourceProxy];
-  v9 = [v8 tableView:v7 canMoveRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  dataSourceProxy = [(_UIActivityUserDefaultsDataSource *)self dataSourceProxy];
+  v9 = [dataSourceProxy tableView:viewCopy canMoveRowAtIndexPath:pathCopy];
 
   return v9;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_UIActivityUserDefaultsDataSource *)self dataSourceProxy];
-  [v11 tableView:v10 moveRowAtIndexPath:v9 toIndexPath:v8];
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  viewCopy = view;
+  dataSourceProxy = [(_UIActivityUserDefaultsDataSource *)self dataSourceProxy];
+  [dataSourceProxy tableView:viewCopy moveRowAtIndexPath:pathCopy toIndexPath:indexPathCopy];
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIActivityUserDefaultsDataSource *)self dataSourceProxy];
-  v9 = [v8 tableView:v7 canEditRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  dataSourceProxy = [(_UIActivityUserDefaultsDataSource *)self dataSourceProxy];
+  v9 = [dataSourceProxy tableView:viewCopy canEditRowAtIndexPath:pathCopy];
 
   return v9;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(_UIActivityUserDefaultsDataSource *)self dataSourceProxy];
-  [v10 tableView:v9 commitEditingStyle:a4 forRowAtIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  dataSourceProxy = [(_UIActivityUserDefaultsDataSource *)self dataSourceProxy];
+  [dataSourceProxy tableView:viewCopy commitEditingStyle:style forRowAtIndexPath:pathCopy];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(_UIActivityUserDefaultsDataSource *)self dataSourceProxy];
-  v8 = [v7 tableView:v6 titleForHeaderInSection:a4];
+  viewCopy = view;
+  dataSourceProxy = [(_UIActivityUserDefaultsDataSource *)self dataSourceProxy];
+  v8 = [dataSourceProxy tableView:viewCopy titleForHeaderInSection:section];
 
   return v8;
 }

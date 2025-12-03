@@ -1,25 +1,25 @@
 @interface NCNotificationManagementPromotingSuggestionContentProvider
-- (NCNotificationManagementPromotingSuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6;
+- (NCNotificationManagementPromotingSuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate;
 - (id)auxiliaryOptionActions;
-- (void)handleKeepAction:(id)a3;
-- (void)handleOffAction:(id)a3;
+- (void)handleKeepAction:(id)action;
+- (void)handleOffAction:(id)action;
 @end
 
 @implementation NCNotificationManagementPromotingSuggestionContentProvider
 
-- (NCNotificationManagementPromotingSuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6
+- (NCNotificationManagementPromotingSuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate
 {
-  v10 = a4;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = NCNotificationManagementPromotingSuggestionContentProvider;
-  v11 = [(NCNotificationManagementSuggestionContentProvider *)&v17 initWithNotificationRequest:a3 bundleDisplayName:v10 managementDelegate:a5 suggestionDelegate:a6];
+  v11 = [(NCNotificationManagementSuggestionContentProvider *)&v17 initWithNotificationRequest:request bundleDisplayName:nameCopy managementDelegate:delegate suggestionDelegate:suggestionDelegate];
   if (v11)
   {
     v12 = MEMORY[0x277CCACA8];
     v13 = NCUserNotificationsUIKitFrameworkBundle();
     v14 = [v13 localizedStringForKey:@"NOTIFICATION_MANAGEMENT_SUGGESTION_EXPLANATION" value:&stru_282FE84F8 table:0];
-    v15 = [v12 stringWithFormat:v14, v10];
-    [(NCNotificationManagementSuggestionContentProvider *)v11 setAuxiliaryOptionsSummaryText:v15];
+    nameCopy = [v12 stringWithFormat:v14, nameCopy];
+    [(NCNotificationManagementSuggestionContentProvider *)v11 setAuxiliaryOptionsSummaryText:nameCopy];
   }
 
   return v11;
@@ -78,20 +78,20 @@ void __84__NCNotificationManagementPromotingSuggestionContentProvider_auxiliaryO
   [WeakRetained handleOffAction:v4];
 }
 
-- (void)handleKeepAction:(id)a3
+- (void)handleKeepAction:(id)action
 {
-  v4 = a3;
-  v6 = [(NCNotificationManagementContentProvider *)self managementDelegate];
-  v5 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v6 notificationManagementContentProvider:self requestsPresentingNotificationManagementViewType:1 forNotificationRequest:v5 withPresentingView:v4];
+  actionCopy = action;
+  managementDelegate = [(NCNotificationManagementContentProvider *)self managementDelegate];
+  notificationRequest = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [managementDelegate notificationManagementContentProvider:self requestsPresentingNotificationManagementViewType:1 forNotificationRequest:notificationRequest withPresentingView:actionCopy];
 }
 
-- (void)handleOffAction:(id)a3
+- (void)handleOffAction:(id)action
 {
-  v4 = a3;
-  v6 = [(NCNotificationManagementContentProvider *)self managementDelegate];
-  v5 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v6 notificationManagementContentProvider:self requestsPresentingNotificationManagementViewType:2 forNotificationRequest:v5 withPresentingView:v4];
+  actionCopy = action;
+  managementDelegate = [(NCNotificationManagementContentProvider *)self managementDelegate];
+  notificationRequest = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [managementDelegate notificationManagementContentProvider:self requestsPresentingNotificationManagementViewType:2 forNotificationRequest:notificationRequest withPresentingView:actionCopy];
 }
 
 @end

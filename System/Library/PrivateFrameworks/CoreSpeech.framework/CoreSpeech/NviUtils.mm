@@ -1,28 +1,28 @@
 @interface NviUtils
-+ (BOOL)_createDirAtPath:(id)a3;
-+ (BOOL)createDirAtPath:(id)a3;
++ (BOOL)_createDirAtPath:(id)path;
++ (BOOL)createDirAtPath:(id)path;
 + (BOOL)isNviEnabled;
-+ (double)getVoiceTriggerEndSecsFromVTEI:(id)a3;
-+ (id)getValueFromDictionaryOfDictionaries:(id)a3 keypath:(id)a4;
-+ (id)readJsonDictionaryAt:(id)a3;
-+ (id)strRepForNviDataSourceType:(unint64_t)a3;
-+ (id)strRepForNviSignalMask:(unint64_t)a3;
-+ (id)strRepForNviSignalType:(unint64_t)a3;
++ (double)getVoiceTriggerEndSecsFromVTEI:(id)i;
++ (id)getValueFromDictionaryOfDictionaries:(id)dictionaries keypath:(id)keypath;
++ (id)readJsonDictionaryAt:(id)at;
++ (id)strRepForNviDataSourceType:(unint64_t)type;
++ (id)strRepForNviSignalMask:(unint64_t)mask;
++ (id)strRepForNviSignalType:(unint64_t)type;
 + (id)timeStampString;
-+ (int64_t)getVoiceTriggerEndSampleCountFromVTEI:(id)a3;
-+ (unint64_t)nviDataSourceTypeForStr:(id)a3;
-+ (unint64_t)nviSignalTypeForStr:(id)a3;
++ (int64_t)getVoiceTriggerEndSampleCountFromVTEI:(id)i;
++ (unint64_t)nviDataSourceTypeForStr:(id)str;
++ (unint64_t)nviSignalTypeForStr:(id)str;
 @end
 
 @implementation NviUtils
 
-+ (BOOL)createDirAtPath:(id)a3
++ (BOOL)createDirAtPath:(id)path
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v10 = 0;
-  v5 = [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v10];
+  v5 = [defaultManager createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:0 error:&v10];
   v6 = v10;
   if (v6)
   {
@@ -37,7 +37,7 @@
       *buf = 136315394;
       v12 = "+[NviUtils createDirAtPath:]";
       v13 = 2114;
-      v14 = v3;
+      v14 = pathCopy;
       _os_log_impl(&dword_222E4D000, v7, OS_LOG_TYPE_DEFAULT, "%s Failed to create dir at: %{public}@", buf, 0x16u);
     }
   }
@@ -46,18 +46,18 @@
   return v5;
 }
 
-+ (id)getValueFromDictionaryOfDictionaries:(id)a3 keypath:(id)a4
++ (id)getValueFromDictionaryOfDictionaries:(id)dictionaries keypath:(id)keypath
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  dictionariesCopy = dictionaries;
+  keypathCopy = keypath;
+  v7 = dictionariesCopy;
   v8 = v7;
-  if ([v6 count] == 1)
+  if ([keypathCopy count] == 1)
   {
 LABEL_5:
-    v12 = [v6 lastObject];
-    v13 = [v8 objectForKeyedSubscript:v12];
+    lastObject = [keypathCopy lastObject];
+    v13 = [v8 objectForKeyedSubscript:lastObject];
   }
 
   else
@@ -66,7 +66,7 @@ LABEL_5:
     v10 = v7;
     while (1)
     {
-      v11 = [v6 objectAtIndexedSubscript:v9];
+      v11 = [keypathCopy objectAtIndexedSubscript:v9];
       v8 = [v10 objectForKeyedSubscript:v11];
 
       if (!v8)
@@ -76,7 +76,7 @@ LABEL_5:
 
       ++v9;
       v10 = v8;
-      if (v9 >= [v6 count] - 1)
+      if (v9 >= [keypathCopy count] - 1)
       {
         goto LABEL_5;
       }
@@ -86,13 +86,13 @@ LABEL_5:
     if (os_log_type_enabled(NviLogContextFacility, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [v6 objectAtIndexedSubscript:v9];
+      v16 = [keypathCopy objectAtIndexedSubscript:v9];
       v19 = 136315650;
       v20 = "+[NviUtils getValueFromDictionaryOfDictionaries:keypath:]";
       v21 = 2114;
       v22 = v16;
       v23 = 2114;
-      v24 = v6;
+      v24 = keypathCopy;
       _os_log_impl(&dword_222E4D000, v15, OS_LOG_TYPE_DEFAULT, "%s Could not find <%{public}@> in Keypath=%{public}@", &v19, 0x20u);
     }
 
@@ -104,24 +104,24 @@ LABEL_5:
   return v13;
 }
 
-+ (id)readJsonDictionaryAt:(id)a3
++ (id)readJsonDictionaryAt:(id)at
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  atCopy = at;
   v19 = 0;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 fileExistsAtPath:v5 isDirectory:&v19];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:atCopy isDirectory:&v19];
 
   if (v19)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"NviUtils.m" lineNumber:213 description:{@"Unexpected!! Received dir for NviConfig: %@", v5}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NviUtils.m" lineNumber:213 description:{@"Unexpected!! Received dir for NviConfig: %@", atCopy}];
 
     if (v7)
     {
 LABEL_3:
       v18 = 0;
-      v8 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v5 options:0 error:&v18];
+      v8 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:atCopy options:0 error:&v18];
       v9 = v18;
       if (v9 || !v8)
       {
@@ -131,7 +131,7 @@ LABEL_3:
           *buf = 136315650;
           v21 = "+[NviUtils readJsonDictionaryAt:]";
           v22 = 2114;
-          v23 = v5;
+          v23 = atCopy;
           v24 = 2114;
           v25 = v9;
           _os_log_impl(&dword_222E4D000, v11, OS_LOG_TYPE_DEFAULT, "%s Could not read Json file at: %{public}@, err: %{public}@", buf, 0x20u);
@@ -153,7 +153,7 @@ LABEL_3:
             *buf = 136315650;
             v21 = "+[NviUtils readJsonDictionaryAt:]";
             v22 = 2114;
-            v23 = v5;
+            v23 = atCopy;
             v24 = 2114;
             v25 = v9;
             _os_log_impl(&dword_222E4D000, v12, OS_LOG_TYPE_DEFAULT, "%s Failed to parse json at: %{public}@, err: %{public}@", buf, 0x20u);
@@ -181,7 +181,7 @@ LABEL_3:
     *buf = 136315394;
     v21 = "+[NviUtils readJsonDictionaryAt:]";
     v22 = 2114;
-    v23 = v5;
+    v23 = atCopy;
     _os_log_impl(&dword_222E4D000, v14, OS_LOG_TYPE_DEFAULT, "%s Json file doesnt exist at: %{public}@", buf, 0x16u);
   }
 
@@ -193,15 +193,15 @@ LABEL_18:
   return v10;
 }
 
-+ (double)getVoiceTriggerEndSecsFromVTEI:(id)a3
++ (double)getVoiceTriggerEndSecsFromVTEI:(id)i
 {
-  v3 = a3;
-  v4 = v3;
+  iCopy = i;
+  v4 = iCopy;
   v5 = -1.0;
-  if (v3)
+  if (iCopy)
   {
     v6 = *MEMORY[0x277D01EB0];
-    v7 = [v3 objectForKeyedSubscript:*MEMORY[0x277D01EB0]];
+    v7 = [iCopy objectForKeyedSubscript:*MEMORY[0x277D01EB0]];
 
     if (v7)
     {
@@ -214,22 +214,22 @@ LABEL_18:
   return v5;
 }
 
-+ (int64_t)getVoiceTriggerEndSampleCountFromVTEI:(id)a3
++ (int64_t)getVoiceTriggerEndSampleCountFromVTEI:(id)i
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && (v5 = *MEMORY[0x277D01EA8], [v3 objectForKeyedSubscript:*MEMORY[0x277D01EA8]], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  iCopy = i;
+  v4 = iCopy;
+  if (iCopy && (v5 = *MEMORY[0x277D01EA8], [iCopy objectForKeyedSubscript:*MEMORY[0x277D01EA8]], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     v7 = [v4 objectForKeyedSubscript:v5];
-    v8 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v8 = -1;
+    integerValue = -1;
   }
 
-  return v8;
+  return integerValue;
 }
 
 + (id)timeStampString
@@ -239,19 +239,19 @@ LABEL_18:
   [v2 setLocale:v3];
 
   [v2 setDateFormat:@"yyyyMMdd_HHmmss.SSS"];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [v2 stringFromDate:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [v2 stringFromDate:date];
 
   return v5;
 }
 
-+ (BOOL)_createDirAtPath:(id)a3
++ (BOOL)_createDirAtPath:(id)path
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v10 = 0;
-  v5 = [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v10];
+  v5 = [defaultManager createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:0 error:&v10];
   v6 = v10;
   if (v6)
   {
@@ -266,7 +266,7 @@ LABEL_18:
       *buf = 136315394;
       v12 = "+[NviUtils _createDirAtPath:]";
       v13 = 2114;
-      v14 = v3;
+      v14 = pathCopy;
       _os_log_impl(&dword_222E4D000, v7, OS_LOG_TYPE_DEFAULT, "%s Failed to create dir at: %{public}@", buf, 0x16u);
     }
   }
@@ -275,11 +275,11 @@ LABEL_18:
   return v5;
 }
 
-+ (unint64_t)nviDataSourceTypeForStr:(id)a3
++ (unint64_t)nviDataSourceTypeForStr:(id)str
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isEqualToString:@"NviAudioDataSrcType"])
+  strCopy = str;
+  if ([strCopy isEqualToString:@"NviAudioDataSrcType"])
   {
     v4 = 0;
   }
@@ -292,7 +292,7 @@ LABEL_18:
       v8 = 136315394;
       v9 = "+[NviUtils nviDataSourceTypeForStr:]";
       v10 = 2114;
-      v11 = v3;
+      v11 = strCopy;
       _os_log_impl(&dword_222E4D000, v5, OS_LOG_TYPE_DEFAULT, "%s Unknown DataSrcTypeStr(%{public}@)", &v8, 0x16u);
     }
 
@@ -303,10 +303,10 @@ LABEL_18:
   return v4;
 }
 
-+ (id)strRepForNviDataSourceType:(unint64_t)a3
++ (id)strRepForNviDataSourceType:(unint64_t)type
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (type)
   {
     v4 = NviLogContextFacility;
     if (os_log_type_enabled(NviLogContextFacility, OS_LOG_TYPE_DEFAULT))
@@ -314,7 +314,7 @@ LABEL_18:
       v7 = 136315394;
       v8 = "+[NviUtils strRepForNviDataSourceType:]";
       v9 = 2050;
-      v10 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_222E4D000, v4, OS_LOG_TYPE_DEFAULT, "%s Unknown DataSrc Type: %{public}lu", &v7, 0x16u);
     }
 
@@ -330,38 +330,38 @@ LABEL_18:
   return result;
 }
 
-+ (unint64_t)nviSignalTypeForStr:(id)a3
++ (unint64_t)nviSignalTypeForStr:(id)str
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"NviVADSignalType"])
+  strCopy = str;
+  if ([strCopy isEqualToString:@"NviVADSignalType"])
   {
     v6 = 1;
   }
 
-  else if ([v5 isEqualToString:@"NviKwdSignalType"])
+  else if ([strCopy isEqualToString:@"NviKwdSignalType"])
   {
     v6 = 2;
   }
 
-  else if ([v5 isEqualToString:@"NviDirectionalitySignalType"])
+  else if ([strCopy isEqualToString:@"NviDirectionalitySignalType"])
   {
     v6 = 4;
   }
 
-  else if ([v5 isEqualToString:@"NviAsdAnchorSignalType"])
+  else if ([strCopy isEqualToString:@"NviAsdAnchorSignalType"])
   {
     v6 = 8;
   }
 
-  else if ([v5 isEqualToString:@"NviAsdPayloadSignalType"])
+  else if ([strCopy isEqualToString:@"NviAsdPayloadSignalType"])
   {
     v6 = 16;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"NviUtils.m" lineNumber:144 description:{@"Unknown NviSignalTypeString: <%@>", v5}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NviUtils.m" lineNumber:144 description:{@"Unknown NviSignalTypeString: <%@>", strCopy}];
 
     v6 = -1;
   }
@@ -369,33 +369,33 @@ LABEL_18:
   return v6;
 }
 
-+ (id)strRepForNviSignalMask:(unint64_t)a3
++ (id)strRepForNviSignalMask:(unint64_t)mask
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAB68] string];
+  maskCopy = mask;
+  string = [MEMORY[0x277CCAB68] string];
   for (i = 0; i != 5; ++i)
   {
-    v6 = [NviUtils strRepForNviSignalType:(1 << i) & v3];
-    [v4 appendFormat:@"|%@", v6];
+    maskCopy = [NviUtils strRepForNviSignalType:(1 << i) & maskCopy];
+    [string appendFormat:@"|%@", maskCopy];
   }
 
-  [v4 appendString:@"|"];
+  [string appendString:@"|"];
 
-  return v4;
+  return string;
 }
 
-+ (id)strRepForNviSignalType:(unint64_t)a3
++ (id)strRepForNviSignalType:(unint64_t)type
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       result = @"NviVADSignalType";
       goto LABEL_15;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       result = @"NviKwdSignalType";
       goto LABEL_15;
@@ -404,7 +404,7 @@ LABEL_18:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 4uLL:
         result = @"NviDirectionalitySignalType";
@@ -424,7 +424,7 @@ LABEL_18:
     v7 = 136315394;
     v8 = "+[NviUtils strRepForNviSignalType:]";
     v9 = 2048;
-    v10 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_222E4D000, v5, OS_LOG_TYPE_DEFAULT, "%s WARN: Invalid sigType: %lu", &v7, 0x16u);
   }
 

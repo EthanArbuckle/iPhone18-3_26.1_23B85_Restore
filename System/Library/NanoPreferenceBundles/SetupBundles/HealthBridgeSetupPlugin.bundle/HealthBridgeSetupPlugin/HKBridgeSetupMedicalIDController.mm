@@ -1,6 +1,6 @@
 @interface HKBridgeSetupMedicalIDController
 - (BPSSetupMiniFlowControllerDelegate)miniFlowDelegate;
-- (HKBridgeSetupMedicalIDController)initWithConfiguration:(id)a3;
+- (HKBridgeSetupMedicalIDController)initWithConfiguration:(id)configuration;
 - (id)detailString;
 - (id)imageResourceBundleIdentifier;
 - (id)suggestedButtonTitle;
@@ -9,15 +9,15 @@
 - (void)_loadMedicalIDDataFromHealthStore;
 - (void)_presentMedicalID;
 - (void)_updateHealthProfileInformationFromMedicalIDData;
-- (void)medicalIDViewControllerDidCancel:(id)a3;
-- (void)medicalIDViewControllerDidSave:(id)a3;
+- (void)medicalIDViewControllerDidCancel:(id)cancel;
+- (void)medicalIDViewControllerDidSave:(id)save;
 @end
 
 @implementation HKBridgeSetupMedicalIDController
 
-- (HKBridgeSetupMedicalIDController)initWithConfiguration:(id)a3
+- (HKBridgeSetupMedicalIDController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = HKBridgeSetupMedicalIDController;
   v5 = [(HKBridgeSetupMedicalIDController *)&v14 init];
@@ -25,17 +25,17 @@
   if (v5)
   {
     [(HKBridgeSetupMedicalIDController *)v5 setStyle:2];
-    v7 = [v4 copy];
+    v7 = [configurationCopy copy];
     configuration = v6->_configuration;
     v6->_configuration = v7;
 
-    v9 = [(_HKBridgeSetupConfiguration *)v6->_configuration healthStore];
+    healthStore = [(_HKBridgeSetupConfiguration *)v6->_configuration healthStore];
     healthStore = v6->_healthStore;
-    v6->_healthStore = v9;
+    v6->_healthStore = healthStore;
 
-    v11 = [(_HKBridgeSetupConfiguration *)v6->_configuration medicalIDStore];
+    medicalIDStore = [(_HKBridgeSetupConfiguration *)v6->_configuration medicalIDStore];
     medicalIDStore = v6->_medicalIDStore;
-    v6->_medicalIDStore = v11;
+    v6->_medicalIDStore = medicalIDStore;
 
     v6->_loadingMedicalIDData = 1;
     [(HKBridgeSetupMedicalIDController *)v6 _loadMedicalIDDataFromHealthStore];
@@ -63,58 +63,58 @@
   [v8 setShouldSaveDataToHealthDetails:1];
   v3 = [[MIUIMedicalIDViewController alloc] initWithHealthStore:self->_healthStore medicalIDData:self->_medicalIDData displayConfiguration:v8];
   v4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_dismissMedicalID"];
-  v5 = [v3 navigationItem];
-  [v5 setRightBarButtonItem:v4];
+  navigationItem = [v3 navigationItem];
+  [navigationItem setRightBarButtonItem:v4];
 
   v6 = [[HKNavigationController alloc] initWithRootViewController:v3];
-  v7 = [(HKBridgeSetupMedicalIDController *)self navigationController];
-  [v7 presentViewController:v6 animated:1 completion:0];
+  navigationController = [(HKBridgeSetupMedicalIDController *)self navigationController];
+  [navigationController presentViewController:v6 animated:1 completion:0];
 }
 
 - (void)_dismissMedicalID
 {
   [(HKBridgeSetupMedicalIDController *)self dismissViewControllerAnimated:1 completion:0];
-  v3 = [(HKBridgeSetupMedicalIDController *)self miniFlowDelegate];
-  [v3 miniFlowStepComplete:self];
+  miniFlowDelegate = [(HKBridgeSetupMedicalIDController *)self miniFlowDelegate];
+  [miniFlowDelegate miniFlowStepComplete:self];
 }
 
-- (void)medicalIDViewControllerDidCancel:(id)a3
+- (void)medicalIDViewControllerDidCancel:(id)cancel
 {
-  v4 = [(HKBridgeSetupMedicalIDController *)self presentedViewController];
+  presentedViewController = [(HKBridgeSetupMedicalIDController *)self presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
 
     [(HKBridgeSetupMedicalIDController *)self dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)medicalIDViewControllerDidSave:(id)a3
+- (void)medicalIDViewControllerDidSave:(id)save
 {
-  v8 = a3;
-  v4 = [(HKBridgeSetupMedicalIDController *)self presentedViewController];
+  saveCopy = save;
+  presentedViewController = [(HKBridgeSetupMedicalIDController *)self presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
     [(HKBridgeSetupMedicalIDController *)self dismissViewControllerAnimated:1 completion:0];
   }
 
-  v5 = [v8 medicalID];
+  medicalID = [saveCopy medicalID];
   medicalIDData = self->_medicalIDData;
-  self->_medicalIDData = v5;
+  self->_medicalIDData = medicalID;
 
   [(HKBridgeSetupMedicalIDController *)self _updateHealthProfileInformationFromMedicalIDData];
-  v7 = [(HKBridgeSetupMedicalIDController *)self miniFlowDelegate];
-  [v7 miniFlowStepComplete:self];
+  miniFlowDelegate = [(HKBridgeSetupMedicalIDController *)self miniFlowDelegate];
+  [miniFlowDelegate miniFlowStepComplete:self];
 }
 
 - (id)titleString
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"TINKER_MEDICAL_ID_TITLE_%@" value:&stru_C4D8 table:@"Localizable-tinker"];
-  v5 = [(_HKBridgeSetupConfiguration *)self->_configuration familyMember];
-  v6 = [v5 firstName];
-  v7 = [NSString stringWithFormat:v4, v6];
+  familyMember = [(_HKBridgeSetupConfiguration *)self->_configuration familyMember];
+  firstName = [familyMember firstName];
+  v7 = [NSString stringWithFormat:v4, firstName];
 
   return v7;
 }
@@ -139,21 +139,21 @@
 - (id)imageResourceBundleIdentifier
 {
   v2 = [NSBundle bundleForClass:objc_opt_class()];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (void)_updateHealthProfileInformationFromMedicalIDData
 {
-  v3 = [(_HKMedicalIDData *)self->_medicalIDData gregorianBirthday];
+  gregorianBirthday = [(_HKMedicalIDData *)self->_medicalIDData gregorianBirthday];
 
-  if (v3)
+  if (gregorianBirthday)
   {
     healthStore = self->_healthStore;
-    v5 = [(_HKMedicalIDData *)self->_medicalIDData gregorianBirthday];
+    gregorianBirthday2 = [(_HKMedicalIDData *)self->_medicalIDData gregorianBirthday];
     v28 = 0;
-    LOBYTE(healthStore) = [(HKHealthStore *)healthStore _setDateOfBirthComponents:v5 error:&v28];
+    LOBYTE(healthStore) = [(HKHealthStore *)healthStore _setDateOfBirthComponents:gregorianBirthday2 error:&v28];
     v6 = v28;
 
     if ((healthStore & 1) == 0)
@@ -172,14 +172,14 @@
     v6 = 0;
   }
 
-  v8 = [(_HKMedicalIDData *)self->_medicalIDData weight];
+  weight = [(_HKMedicalIDData *)self->_medicalIDData weight];
 
-  if (v8)
+  if (weight)
   {
     v9 = self->_healthStore;
-    v10 = [(_HKMedicalIDData *)self->_medicalIDData weight];
+    weight2 = [(_HKMedicalIDData *)self->_medicalIDData weight];
     v27 = v6;
-    v11 = [(HKHealthStore *)v9 _setBodyMassCharacteristicQuantity:v10 error:&v27];
+    v11 = [(HKHealthStore *)v9 _setBodyMassCharacteristicQuantity:weight2 error:&v27];
     v12 = v27;
 
     if ((v11 & 1) == 0)
@@ -198,14 +198,14 @@
     v12 = v6;
   }
 
-  v14 = [(_HKMedicalIDData *)self->_medicalIDData height];
+  height = [(_HKMedicalIDData *)self->_medicalIDData height];
 
-  if (v14)
+  if (height)
   {
     v15 = self->_healthStore;
-    v16 = [(_HKMedicalIDData *)self->_medicalIDData height];
+    height2 = [(_HKMedicalIDData *)self->_medicalIDData height];
     v26 = v12;
-    v17 = [(HKHealthStore *)v15 _setHeightCharacteristicQuantity:v16 error:&v26];
+    v17 = [(HKHealthStore *)v15 _setHeightCharacteristicQuantity:height2 error:&v26];
     v18 = v26;
 
     if ((v17 & 1) == 0)
@@ -227,9 +227,9 @@
   if ([(_HKMedicalIDData *)self->_medicalIDData bloodType])
   {
     v20 = self->_healthStore;
-    v21 = [(_HKMedicalIDData *)self->_medicalIDData bloodType];
+    bloodType = [(_HKMedicalIDData *)self->_medicalIDData bloodType];
     v25 = v18;
-    v22 = [(HKHealthStore *)v20 _setBloodType:v21 error:&v25];
+    v22 = [(HKHealthStore *)v20 _setBloodType:bloodType error:&v25];
     v23 = v25;
 
     if ((v22 & 1) == 0)

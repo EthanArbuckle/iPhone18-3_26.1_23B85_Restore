@@ -1,49 +1,49 @@
 @interface JFXExportController
-+ (id)presetNameForCGSize:(CGSize)a3;
-+ (unint64_t)audioDataRateForPreset:(id)a3;
-+ (unint64_t)dataRateForPreset:(id)a3 size:(CGSize)a4;
-+ (unint64_t)estimatedFileSizeForDuration:(int)a3 frameRate:(double)a4 preset:(id)a5 size:(CGSize)a6;
-+ (unint64_t)videoDataRateForPreset:(id)a3 size:(CGSize)a4;
-- (JFXExportController)initWithWithComposition:(id)a3 presets:(id)a4 toFile:(id)a5 poster:(id)a6 delegate:(id)a7;
++ (id)presetNameForCGSize:(CGSize)size;
++ (unint64_t)audioDataRateForPreset:(id)preset;
++ (unint64_t)dataRateForPreset:(id)preset size:(CGSize)size;
++ (unint64_t)estimatedFileSizeForDuration:(int)duration frameRate:(double)rate preset:(id)preset size:(CGSize)size;
++ (unint64_t)videoDataRateForPreset:(id)preset size:(CGSize)size;
+- (JFXExportController)initWithWithComposition:(id)composition presets:(id)presets toFile:(id)file poster:(id)poster delegate:(id)delegate;
 - (id)metadataToAdd;
 - (void)analyticsForSessionBegin;
-- (void)analyticsForSessionCompleteWithStatus:(int64_t)a3;
+- (void)analyticsForSessionCompleteWithStatus:(int64_t)status;
 - (void)beginAsynchronousExport;
-- (void)closeSessionWithStatus:(int64_t)a3;
+- (void)closeSessionWithStatus:(int64_t)status;
 - (void)informDelegateOfCompletion;
 - (void)nextPreset;
-- (void)serviceProgressTimer:(id)a3;
+- (void)serviceProgressTimer:(id)timer;
 - (void)startProgressTimer;
 - (void)stopProgressTimer;
-- (void)updateProgressViewWithProgress:(float)a3 reduced:(BOOL)a4;
+- (void)updateProgressViewWithProgress:(float)progress reduced:(BOOL)reduced;
 @end
 
 @implementation JFXExportController
 
-- (JFXExportController)initWithWithComposition:(id)a3 presets:(id)a4 toFile:(id)a5 poster:(id)a6 delegate:(id)a7
+- (JFXExportController)initWithWithComposition:(id)composition presets:(id)presets toFile:(id)file poster:(id)poster delegate:(id)delegate
 {
-  v22 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  compositionCopy = composition;
+  presetsCopy = presets;
+  fileCopy = file;
+  posterCopy = poster;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = JFXExportController;
   v17 = [(JFXExportController *)&v23 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_composition, a3);
-    objc_storeStrong(&v18->_presets, a4);
+    objc_storeStrong(&v17->_composition, composition);
+    objc_storeStrong(&v18->_presets, presets);
     v18->_exportingIndexPresets = 0;
-    objc_storeStrong(&v18->_exportPath, a5);
+    objc_storeStrong(&v18->_exportPath, file);
     currentPreset = v18->_currentPreset;
     v18->_currentPreset = 0;
 
     v18->_cancel = 0;
     v18->_status = 0;
-    objc_storeStrong(&v18->_poster, a6);
-    objc_storeStrong(&v18->_delegate, a7);
+    objc_storeStrong(&v18->_poster, poster);
+    objc_storeStrong(&v18->_delegate, delegate);
     if (![(NSArray *)v18->_presets count])
     {
       v20 = JFXLog_export();
@@ -57,53 +57,53 @@
   return v18;
 }
 
-+ (unint64_t)estimatedFileSizeForDuration:(int)a3 frameRate:(double)a4 preset:(id)a5 size:(CGSize)a6
++ (unint64_t)estimatedFileSizeForDuration:(int)duration frameRate:(double)rate preset:(id)preset size:(CGSize)size
 {
-  if (!a5)
+  if (!preset)
   {
     return 0;
   }
 
-  v6 = a4;
-  return a3 / vcvtps_u32_f32(v6) * (vcvtd_n_f64_u64([a1 dataRateForPreset:a5 size:{a6.width, a6.height}], 3uLL) * 1.05);
+  rateCopy = rate;
+  return duration / vcvtps_u32_f32(rateCopy) * (vcvtd_n_f64_u64([self dataRateForPreset:preset size:{size.width, size.height}], 3uLL) * 1.05);
 }
 
-+ (unint64_t)dataRateForPreset:(id)a3 size:(CGSize)a4
++ (unint64_t)dataRateForPreset:(id)preset size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [a1 videoDataRateForPreset:v7 size:{width, height}];
-  v9 = [a1 audioDataRateForPreset:v7];
+  height = size.height;
+  width = size.width;
+  presetCopy = preset;
+  v8 = [self videoDataRateForPreset:presetCopy size:{width, height}];
+  v9 = [self audioDataRateForPreset:presetCopy];
 
   return v9 + v8;
 }
 
-+ (unint64_t)videoDataRateForPreset:(id)a3 size:(CGSize)a4
++ (unint64_t)videoDataRateForPreset:(id)preset size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
+  height = size.height;
+  width = size.width;
+  presetCopy = preset;
   if (videoDataRateForPreset_size__onceToken != -1)
   {
     +[JFXExportController videoDataRateForPreset:size:];
   }
 
-  v7 = [videoDataRateForPreset_size__presetToDataRateLUT objectForKeyedSubscript:v6];
+  v7 = [videoDataRateForPreset_size__presetToDataRateLUT objectForKeyedSubscript:presetCopy];
 
   if (v7)
   {
-    v8 = [videoDataRateForPreset_size__presetToDataRateLUT objectForKeyedSubscript:v6];
-    v9 = [v8 unsignedIntegerValue];
+    v8 = [videoDataRateForPreset_size__presetToDataRateLUT objectForKeyedSubscript:presetCopy];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
   }
 
   else
   {
-    v9 = 10500000;
+    unsignedIntegerValue = 10500000;
   }
 
-  v10 = [v6 isEqualToString:JFXAssetExportPresetLowQuality];
-  v11 = v9 >> (CGSizeIsSquare(width, height) & (v10 ^ 1));
+  v10 = [presetCopy isEqualToString:JFXAssetExportPresetLowQuality];
+  v11 = unsignedIntegerValue >> (CGSizeIsSquare(width, height) & (v10 ^ 1));
 
   return v11;
 }
@@ -139,11 +139,11 @@ void __51__JFXExportController_videoDataRateForPreset_size___block_invoke()
   videoDataRateForPreset_size__presetToDataRateLUT = v3;
 }
 
-+ (unint64_t)audioDataRateForPreset:(id)a3
++ (unint64_t)audioDataRateForPreset:(id)preset
 {
   v3 = 256000;
-  v4 = a3;
-  if (([v4 isEqualToString:*MEMORY[0x277CE5BA8]] & 1) == 0 && !objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277CE5BB0]))
+  presetCopy = preset;
+  if (([presetCopy isEqualToString:*MEMORY[0x277CE5BA8]] & 1) == 0 && !objc_msgSend(presetCopy, "isEqualToString:", *MEMORY[0x277CE5BB0]))
   {
     v3 = 128000;
   }
@@ -151,9 +151,9 @@ void __51__JFXExportController_videoDataRateForPreset_size___block_invoke()
   return v3;
 }
 
-+ (id)presetNameForCGSize:(CGSize)a3
++ (id)presetNameForCGSize:(CGSize)size
 {
-  v3 = a3.width * a3.height;
+  v3 = size.width * size.height;
   if (v3 >= 8294400.0)
   {
     v4 = MEMORY[0x277CE5BB8];
@@ -183,11 +183,11 @@ void __51__JFXExportController_videoDataRateForPreset_size___block_invoke()
 
 - (void)nextPreset
 {
-  v3 = [(JFXExportController *)self exportingIndexPresets];
-  v4 = [(JFXExportController *)self presets];
-  v5 = [v4 count];
+  exportingIndexPresets = [(JFXExportController *)self exportingIndexPresets];
+  presets = [(JFXExportController *)self presets];
+  v5 = [presets count];
 
-  if (v3 >= v5)
+  if (exportingIndexPresets >= v5)
   {
 
     [(JFXExportController *)self setCurrentPreset:0];
@@ -195,8 +195,8 @@ void __51__JFXExportController_videoDataRateForPreset_size___block_invoke()
 
   else
   {
-    v6 = [(JFXExportController *)self presets];
-    v7 = [v6 objectAtIndex:self->_exportingIndexPresets];
+    presets2 = [(JFXExportController *)self presets];
+    v7 = [presets2 objectAtIndex:self->_exportingIndexPresets];
     [(JFXExportController *)self setCurrentPreset:v7];
 
     v8 = [(JFXExportController *)self exportingIndexPresets]+ 1;
@@ -218,9 +218,9 @@ void __51__JFXExportController_videoDataRateForPreset_size___block_invoke()
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)closeSessionWithStatus:(int64_t)a3
+- (void)closeSessionWithStatus:(int64_t)status
 {
-  [(JFXExportController *)self analyticsForSessionCompleteWithStatus:a3];
+  [(JFXExportController *)self analyticsForSessionCompleteWithStatus:status];
   [JFXExportController cancelPreviousPerformRequestsWithTarget:self];
   [(JFXExportController *)self stopProgressTimer];
 
@@ -253,11 +253,11 @@ void __51__JFXExportController_videoDataRateForPreset_size___block_invoke()
   v3 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel_serviceProgressTimer_ selector:0 userInfo:1 repeats:0.5];
   [(JFXExportController *)self setProgressTimer:v3];
 
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  [v4 setIdleTimerDisabled:0];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setIdleTimerDisabled:0];
 
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  [v5 setIdleTimerDisabled:1];
+  mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128]2 setIdleTimerDisabled:1];
 }
 
 - (void)stopProgressTimer
@@ -282,99 +282,99 @@ void __40__JFXExportController_stopProgressTimer__block_invoke()
   [v1 setIdleTimerDisabled:0];
 }
 
-- (void)serviceProgressTimer:(id)a3
+- (void)serviceProgressTimer:(id)timer
 {
   [(JFXExportController *)self progress];
   [(JFXExportController *)self updateProgressViewWithProgress:1 reduced:?];
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  [v4 setIdleTimerDisabled:0];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setIdleTimerDisabled:0];
 
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  [v5 setIdleTimerDisabled:1];
+  mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128]2 setIdleTimerDisabled:1];
 }
 
-- (void)updateProgressViewWithProgress:(float)a3 reduced:(BOOL)a4
+- (void)updateProgressViewWithProgress:(float)progress reduced:(BOOL)reduced
 {
-  v4 = a4;
-  v7 = [(JFXExportController *)self presets];
-  v8 = [v7 count];
+  reducedCopy = reduced;
+  presets = [(JFXExportController *)self presets];
+  v8 = [presets count];
 
   if (v8 >= 2)
   {
-    v9 = [(JFXExportController *)self presets];
-    v10 = 1.0 / [v9 count];
+    presets2 = [(JFXExportController *)self presets];
+    v10 = 1.0 / [presets2 count];
 
-    a3 = (v10 * a3) + v10 * ([(JFXExportController *)self exportingIndexPresets]- 1);
+    progress = (v10 * progress) + v10 * ([(JFXExportController *)self exportingIndexPresets]- 1);
   }
 
-  v11 = [(JFXExportController *)self delegate];
+  delegate = [(JFXExportController *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    if (v4)
+    if (reducedCopy)
     {
-      v13 = a3 * 0.95;
-      a3 = v13;
+      v13 = progress * 0.95;
+      progress = v13;
     }
 
-    v15 = [(JFXExportController *)self delegate];
-    *&v14 = a3;
-    [v15 exportProgressedTo:v14];
+    delegate2 = [(JFXExportController *)self delegate];
+    *&v14 = progress;
+    [delegate2 exportProgressedTo:v14];
   }
 }
 
 - (id)metadataToAdd
 {
-  v3 = [MEMORY[0x277CBEA60] array];
-  v4 = [(JFXExportController *)self poster];
+  array = [MEMORY[0x277CBEA60] array];
+  poster = [(JFXExportController *)self poster];
 
   v5 = MEMORY[0x277CE5FA8];
-  if (v4)
+  if (poster)
   {
-    v6 = [(JFXExportController *)self poster];
-    v7 = UIImageJPEGRepresentation(v6, 0.8);
+    poster2 = [(JFXExportController *)self poster];
+    v7 = UIImageJPEGRepresentation(poster2, 0.8);
 
-    v8 = [(JFXExportController *)self poster];
-    [v8 size];
+    poster3 = [(JFXExportController *)self poster];
+    [poster3 size];
     v10 = v9;
 
     if (v10 > 0.0 && v7)
     {
-      v11 = [MEMORY[0x277CE6558] metadataItem];
-      [v11 setKeySpace:*v5];
-      [v11 setKey:*MEMORY[0x277CE5FC8]];
-      [v11 setValue:v7];
-      v12 = [v3 arrayByAddingObject:v11];
+      metadataItem = [MEMORY[0x277CE6558] metadataItem];
+      [metadataItem setKeySpace:*v5];
+      [metadataItem setKey:*MEMORY[0x277CE5FC8]];
+      [metadataItem setValue:v7];
+      v12 = [array arrayByAddingObject:metadataItem];
 
-      v3 = v12;
+      array = v12;
     }
 
     [(JFXExportController *)self setPoster:0];
   }
 
-  v13 = [MEMORY[0x277CE6558] metadataItem];
-  [v13 setKeySpace:*v5];
-  [v13 setKey:*MEMORY[0x277CE5FE0]];
-  v14 = [MEMORY[0x277CCA8D8] mainBundle];
-  v15 = [v14 bundleIdentifier];
-  v16 = [v15 pathExtension];
-  [v13 setValue:v16];
+  metadataItem2 = [MEMORY[0x277CE6558] metadataItem];
+  [metadataItem2 setKeySpace:*v5];
+  [metadataItem2 setKey:*MEMORY[0x277CE5FE0]];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  pathExtension = [bundleIdentifier pathExtension];
+  [metadataItem2 setValue:pathExtension];
 
-  v17 = [v3 arrayByAddingObject:v13];
+  v17 = [array arrayByAddingObject:metadataItem2];
 
   return v17;
 }
 
 - (void)analyticsForSessionBegin
 {
-  v3 = [(JFXExportController *)self delegate];
+  delegate = [(JFXExportController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(JFXExportController *)self delegate];
-    [v5 exportAnalyticsForSessionBegin];
+    delegate2 = [(JFXExportController *)self delegate];
+    [delegate2 exportAnalyticsForSessionBegin];
   }
 
   v6 = mach_absolute_time();
@@ -382,15 +382,15 @@ void __40__JFXExportController_stopProgressTimer__block_invoke()
   [(JFXExportController *)self setExportStartTime:v6];
 }
 
-- (void)analyticsForSessionCompleteWithStatus:(int64_t)a3
+- (void)analyticsForSessionCompleteWithStatus:(int64_t)status
 {
-  v5 = [(JFXExportController *)self delegate];
+  delegate = [(JFXExportController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(JFXExportController *)self delegate];
-    [v7 exportAnalyticsForSessionCompleteWithStatus:a3 exportMachDuration:{-[JFXExportController exportDuration](self, "exportDuration")}];
+    delegate2 = [(JFXExportController *)self delegate];
+    [delegate2 exportAnalyticsForSessionCompleteWithStatus:status exportMachDuration:{-[JFXExportController exportDuration](self, "exportDuration")}];
   }
 }
 

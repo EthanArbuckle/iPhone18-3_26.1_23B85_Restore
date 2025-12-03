@@ -1,6 +1,6 @@
 @interface CNNMLScalerEspresso
-- (CNNMLScalerEspresso)initWithConfig:(id)a3 modelIndex:(int64_t)a4 scalingFactor:(int)a5;
-- (int)inferenceWithPixelBuffer:(__CVBuffer *)a3 toDestinationPixelBuffer:(__CVBuffer *)a4;
+- (CNNMLScalerEspresso)initWithConfig:(id)config modelIndex:(int64_t)index scalingFactor:(int)factor;
+- (int)inferenceWithPixelBuffer:(__CVBuffer *)buffer toDestinationPixelBuffer:(__CVBuffer *)pixelBuffer;
 - (void)dealloc;
 @end
 
@@ -23,9 +23,9 @@
   [(CNNMLScalerEspresso *)&v3 dealloc];
 }
 
-- (CNNMLScalerEspresso)initWithConfig:(id)a3 modelIndex:(int64_t)a4 scalingFactor:(int)a5
+- (CNNMLScalerEspresso)initWithConfig:(id)config modelIndex:(int64_t)index scalingFactor:(int)factor
 {
-  v8 = a3;
+  configCopy = config;
   v24.receiver = self;
   v24.super_class = CNNMLScalerEspresso;
   v9 = [(CNNMLScalerEspresso *)&v24 init];
@@ -34,14 +34,14 @@
     goto LABEL_26;
   }
 
-  v10 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v11 = [v10 resourceURL];
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-  if (a4 != 1)
+  if (index != 1)
   {
-    if (!a4)
+    if (!index)
     {
-      v12 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_emoji_mlscaler.espresso.net" relativeToURL:v11];
+      v12 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_emoji_mlscaler.espresso.net" relativeToURL:resourceURL];
       goto LABEL_20;
     }
 
@@ -56,7 +56,7 @@ LABEL_10:
     goto LABEL_23;
   }
 
-  if (a5 != 4 && a5 != 2)
+  if (factor != 4 && factor != 2)
   {
     goto LABEL_10;
   }
@@ -73,11 +73,11 @@ LABEL_10:
     }
 
     v12 = 0;
-    v11 = 0;
+    resourceURL = 0;
     goto LABEL_23;
   }
 
-  if (a5 == 2)
+  if (factor == 2)
   {
     v15 = @"cnn_gp_mlscaler.espresso.net";
   }
@@ -89,7 +89,7 @@ LABEL_10:
 
   v12 = [MEMORY[0x1E695DFF8] URLWithString:v15 relativeToURL:v14];
 
-  v11 = v14;
+  resourceURL = v14;
 LABEL_20:
   v9->_plan = 0;
   v9->_ctx = 0;
@@ -98,13 +98,13 @@ LABEL_20:
   v9->_plan = plan;
   if (plan)
   {
-    v17 = [v12 path];
-    [v17 UTF8String];
+    path = [v12 path];
+    [path UTF8String];
     v18 = espresso_plan_add_network();
 
     if (!v18)
     {
-      [v8 UTF8String];
+      [configCopy UTF8String];
       if (!espresso_network_select_configuration())
       {
         v20 = espresso_plan_build();
@@ -131,7 +131,7 @@ LABEL_27:
   return v21;
 }
 
-- (int)inferenceWithPixelBuffer:(__CVBuffer *)a3 toDestinationPixelBuffer:(__CVBuffer *)a4
+- (int)inferenceWithPixelBuffer:(__CVBuffer *)buffer toDestinationPixelBuffer:(__CVBuffer *)pixelBuffer
 {
   v4 = VCPSignPostLog();
   v5 = os_signpost_id_generate(v4);

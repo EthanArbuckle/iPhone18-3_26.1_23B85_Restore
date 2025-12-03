@@ -1,53 +1,53 @@
 @interface IMDirectoryContents
-+ (BOOL)isGroupPhotoPath:(id)a3;
-- (BOOL)isAttachmentPath:(id)a3;
-- (BOOL)isStickerPath:(id)a3;
-- (BOOL)isSyncAssetPath:(id)a3;
-- (IMDirectoryContents)initWithRootPath:(id)a3 attachmentsPath:(id)a4 syncAssetsPath:(id)a5 stickersPath:(id)a6;
++ (BOOL)isGroupPhotoPath:(id)path;
+- (BOOL)isAttachmentPath:(id)path;
+- (BOOL)isStickerPath:(id)path;
+- (BOOL)isSyncAssetPath:(id)path;
+- (IMDirectoryContents)initWithRootPath:(id)path attachmentsPath:(id)attachmentsPath syncAssetsPath:(id)assetsPath stickersPath:(id)stickersPath;
 - (NSArray)attachmentPaths;
 - (NSArray)sortedPaths;
 - (NSArray)syncAssetPaths;
 - (NSArray)topLevelPaths;
 - (NSSet)allPaths;
 - (void)gather;
-- (void)gatherLivePhotoBundleContentInfoAtPath:(id)a3;
-- (void)recursivelyGatherFileInfoAtPath:(id)a3 fileInfoMap:(id)a4;
+- (void)gatherLivePhotoBundleContentInfoAtPath:(id)path;
+- (void)recursivelyGatherFileInfoAtPath:(id)path fileInfoMap:(id)map;
 @end
 
 @implementation IMDirectoryContents
 
-- (IMDirectoryContents)initWithRootPath:(id)a3 attachmentsPath:(id)a4 syncAssetsPath:(id)a5 stickersPath:(id)a6
+- (IMDirectoryContents)initWithRootPath:(id)path attachmentsPath:(id)attachmentsPath syncAssetsPath:(id)assetsPath stickersPath:(id)stickersPath
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pathCopy = path;
+  attachmentsPathCopy = attachmentsPath;
+  assetsPathCopy = assetsPath;
+  stickersPathCopy = stickersPath;
   v24.receiver = self;
   v24.super_class = IMDirectoryContents;
   v14 = [(IMDirectoryContents *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [pathCopy copy];
     rootPath = v14->_rootPath;
     v14->_rootPath = v15;
 
-    if (v11)
+    if (attachmentsPathCopy)
     {
-      v17 = [v11 copy];
+      v17 = [attachmentsPathCopy copy];
       attachmentsPath = v14->_attachmentsPath;
       v14->_attachmentsPath = v17;
     }
 
-    if (v13)
+    if (stickersPathCopy)
     {
-      v19 = [v13 copy];
+      v19 = [stickersPathCopy copy];
       stickersPath = v14->_stickersPath;
       v14->_stickersPath = v19;
     }
 
-    if (v12)
+    if (assetsPathCopy)
     {
-      v21 = [v12 copy];
+      v21 = [assetsPathCopy copy];
       syncAssetsPath = v14->_syncAssetsPath;
       v14->_syncAssetsPath = v21;
     }
@@ -58,14 +58,14 @@
   return v14;
 }
 
-- (BOOL)isAttachmentPath:(id)a3
+- (BOOL)isAttachmentPath:(id)path
 {
-  v4 = a3;
-  v5 = [(IMDirectoryContents *)self attachmentsPath];
-  if (v5)
+  pathCopy = path;
+  attachmentsPath = [(IMDirectoryContents *)self attachmentsPath];
+  if (attachmentsPath)
   {
-    v6 = [(IMDirectoryContents *)self attachmentsPath];
-    v7 = [v4 hasPrefix:v6];
+    attachmentsPath2 = [(IMDirectoryContents *)self attachmentsPath];
+    v7 = [pathCopy hasPrefix:attachmentsPath2];
   }
 
   else
@@ -76,14 +76,14 @@
   return v7;
 }
 
-- (BOOL)isStickerPath:(id)a3
+- (BOOL)isStickerPath:(id)path
 {
-  v4 = a3;
-  v5 = [(IMDirectoryContents *)self stickersPath];
-  if (v5)
+  pathCopy = path;
+  stickersPath = [(IMDirectoryContents *)self stickersPath];
+  if (stickersPath)
   {
-    v6 = [(IMDirectoryContents *)self stickersPath];
-    v7 = [v4 hasPrefix:v6];
+    stickersPath2 = [(IMDirectoryContents *)self stickersPath];
+    v7 = [pathCopy hasPrefix:stickersPath2];
   }
 
   else
@@ -94,14 +94,14 @@
   return v7;
 }
 
-- (BOOL)isSyncAssetPath:(id)a3
+- (BOOL)isSyncAssetPath:(id)path
 {
-  v4 = a3;
-  v5 = [(IMDirectoryContents *)self syncAssetsPath];
-  if (v5)
+  pathCopy = path;
+  syncAssetsPath = [(IMDirectoryContents *)self syncAssetsPath];
+  if (syncAssetsPath)
   {
-    v6 = [(IMDirectoryContents *)self syncAssetsPath];
-    v7 = [v4 hasPrefix:v6];
+    syncAssetsPath2 = [(IMDirectoryContents *)self syncAssetsPath];
+    v7 = [pathCopy hasPrefix:syncAssetsPath2];
   }
 
   else
@@ -112,12 +112,12 @@
   return v7;
 }
 
-- (void)gatherLivePhotoBundleContentInfoAtPath:(id)a3
+- (void)gatherLivePhotoBundleContentInfoAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9 = IMFileSizeZero;
   v8 = 0;
-  v5 = IMFileSizeForItemAtPath(v4, &v9, 1, &v8);
+  v5 = IMFileSizeForItemAtPath(pathCopy, &v9, 1, &v8);
   v6 = v8;
   if (v5)
   {
@@ -134,14 +134,14 @@
   }
 }
 
-- (void)recursivelyGatherFileInfoAtPath:(id)a3 fileInfoMap:(id)a4
+- (void)recursivelyGatherFileInfoAtPath:(id)path fileInfoMap:(id)map
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  mapCopy = map;
   v41 = 0;
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v8 fileExistsAtPath:v6 isDirectory:&v41];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v9 = [defaultManager fileExistsAtPath:pathCopy isDirectory:&v41];
 
   if (!v9)
   {
@@ -149,7 +149,7 @@
   }
 
   v40 = 0;
-  v10 = [IMAPFSUtils purgableFlagsForPath:v6 error:&v40];
+  v10 = [IMAPFSUtils purgableFlagsForPath:pathCopy error:&v40];
   if (v40)
   {
     v11 = IMLogHandleForCategory("DiskSpace");
@@ -163,7 +163,7 @@
   {
     v34 = IMFileSizeZero;
     v33 = 0;
-    v16 = IMFileSizeForItemAtPath(v6, &v34, 1, &v33);
+    v16 = IMFileSizeForItemAtPath(pathCopy, &v34, 1, &v33);
     v17 = v33;
     if (!v16)
     {
@@ -175,25 +175,25 @@
     }
 
     v19 = [IMDiskSpaceFileManagerFileInfo alloc];
-    v20 = [(IMDirectoryContents *)self isAttachmentPath:v6];
-    v21 = [(IMDirectoryContents *)self isSyncAssetPath:v6];
-    LOBYTE(v32) = [(IMDirectoryContents *)self isStickerPath:v6];
-    v22 = [(IMDiskSpaceFileManagerFileInfo *)v19 initWithPath:v6 fileSize:v34 isDirectory:0 isAttachment:v20 isSyncAsset:v21 isSticker:v32 purgableFlags:v10];
-    [v7 setObject:v22 forKeyedSubscript:v6];
+    v20 = [(IMDirectoryContents *)self isAttachmentPath:pathCopy];
+    v21 = [(IMDirectoryContents *)self isSyncAssetPath:pathCopy];
+    LOBYTE(v32) = [(IMDirectoryContents *)self isStickerPath:pathCopy];
+    v22 = [(IMDiskSpaceFileManagerFileInfo *)v19 initWithPath:pathCopy fileSize:v34 isDirectory:0 isAttachment:v20 isSyncAsset:v21 isSticker:v32 purgableFlags:v10];
+    [mapCopy setObject:v22 forKeyedSubscript:pathCopy];
 
     goto LABEL_27;
   }
 
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v39 = 0;
-  v13 = [v12 contentsOfDirectoryAtPath:v6 error:&v39];
+  v13 = [defaultManager2 contentsOfDirectoryAtPath:pathCopy error:&v39];
   v14 = v39;
 
   if (!v14)
   {
     v23 = MEMORY[0x1E6982C40];
-    v24 = [v6 pathExtension];
-    v25 = [v23 typeWithFilenameExtension:v24];
+    pathExtension = [pathCopy pathExtension];
+    v25 = [v23 typeWithFilenameExtension:pathExtension];
     v26 = [v25 conformsToType:*MEMORY[0x1E6982E80]];
 
     v37 = 0u;
@@ -215,7 +215,7 @@
             objc_enumerationMutation(v17);
           }
 
-          v31 = [v6 stringByAppendingPathComponent:*(*(&v35 + 1) + 8 * i)];
+          v31 = [pathCopy stringByAppendingPathComponent:*(*(&v35 + 1) + 8 * i)];
           if (v26)
           {
             [(IMDirectoryContents *)self gatherLivePhotoBundleContentInfoAtPath:v31];
@@ -223,7 +223,7 @@
 
           else
           {
-            [(IMDirectoryContents *)self recursivelyGatherFileInfoAtPath:v31 fileInfoMap:v7];
+            [(IMDirectoryContents *)self recursivelyGatherFileInfoAtPath:v31 fileInfoMap:mapCopy];
           }
         }
 
@@ -251,8 +251,8 @@ LABEL_28:
   sortedPaths = self->_sortedPaths;
   if (!sortedPaths)
   {
-    v4 = [(NSDictionary *)self->_fileInfoMap allKeys];
-    v5 = [v4 sortedArrayUsingComparator:&unk_1F1BA83A8];
+    allKeys = [(NSDictionary *)self->_fileInfoMap allKeys];
+    v5 = [allKeys sortedArrayUsingComparator:&unk_1F1BA83A8];
     v6 = self->_sortedPaths;
     self->_sortedPaths = v5;
 
@@ -265,8 +265,8 @@ LABEL_28:
 - (NSSet)allPaths
 {
   v3 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v4 = [(IMDirectoryContents *)self sortedPaths];
-  v5 = [v3 initWithArray:v4];
+  sortedPaths = [(IMDirectoryContents *)self sortedPaths];
+  v5 = [v3 initWithArray:sortedPaths];
 
   return v5;
 }
@@ -277,13 +277,13 @@ LABEL_28:
   attachmentPaths = self->_attachmentPaths;
   if (!attachmentPaths)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [(IMDirectoryContents *)self sortedPaths];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    sortedPaths = [(IMDirectoryContents *)self sortedPaths];
+    v6 = [sortedPaths countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
       v7 = v6;
@@ -294,31 +294,31 @@ LABEL_28:
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(sortedPaths);
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
           if ([(IMDirectoryContents *)self isAttachmentPath:v10])
           {
-            v11 = [(IMDirectoryContents *)self fileInfoMap];
-            v12 = [v11 objectForKeyedSubscript:v10];
-            v13 = [v12 isDirectory];
+            fileInfoMap = [(IMDirectoryContents *)self fileInfoMap];
+            v12 = [fileInfoMap objectForKeyedSubscript:v10];
+            isDirectory = [v12 isDirectory];
 
-            if ((v13 & 1) == 0)
+            if ((isDirectory & 1) == 0)
             {
-              [(NSArray *)v4 addObject:v10];
+              [(NSArray *)array addObject:v10];
             }
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [sortedPaths countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v7);
     }
 
     v14 = self->_attachmentPaths;
-    self->_attachmentPaths = v4;
+    self->_attachmentPaths = array;
 
     attachmentPaths = self->_attachmentPaths;
   }
@@ -331,13 +331,13 @@ LABEL_28:
   v19 = *MEMORY[0x1E69E9840];
   if (!self->_syncAssetPaths)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = [(IMDirectoryContents *)self sortedPaths];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    sortedPaths = [(IMDirectoryContents *)self sortedPaths];
+    v5 = [sortedPaths countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -348,24 +348,24 @@ LABEL_28:
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(sortedPaths);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
           if ([(IMDirectoryContents *)self isSyncAssetPath:v9])
           {
-            v10 = [(IMDirectoryContents *)self fileInfoMap];
-            v11 = [v10 objectForKeyedSubscript:v9];
-            v12 = [v11 isDirectory];
+            fileInfoMap = [(IMDirectoryContents *)self fileInfoMap];
+            v11 = [fileInfoMap objectForKeyedSubscript:v9];
+            isDirectory = [v11 isDirectory];
 
-            if ((v12 & 1) == 0)
+            if ((isDirectory & 1) == 0)
             {
-              [v3 addObject:v9];
+              [array addObject:v9];
             }
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [sortedPaths countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v6);
@@ -380,13 +380,13 @@ LABEL_28:
   v21 = *MEMORY[0x1E69E9840];
   if (!self->_topLevelPaths)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v4 = [(IMDirectoryContents *)self sortedPaths];
-    v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    sortedPaths = [(IMDirectoryContents *)self sortedPaths];
+    v5 = [sortedPaths countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v5)
     {
       v6 = v5;
@@ -397,28 +397,28 @@ LABEL_28:
         {
           if (*v17 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(sortedPaths);
           }
 
           v9 = *(*(&v16 + 1) + 8 * i);
-          v10 = [v9 stringByDeletingLastPathComponent];
-          v11 = [(IMDirectoryContents *)self rootPath];
-          v12 = [v10 isEqualToString:v11];
+          stringByDeletingLastPathComponent = [v9 stringByDeletingLastPathComponent];
+          rootPath = [(IMDirectoryContents *)self rootPath];
+          v12 = [stringByDeletingLastPathComponent isEqualToString:rootPath];
 
           if (v12)
           {
-            [(NSArray *)v3 addObject:v9];
+            [(NSArray *)array addObject:v9];
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v6 = [sortedPaths countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v6);
     }
 
     topLevelPaths = self->_topLevelPaths;
-    self->_topLevelPaths = v3;
+    self->_topLevelPaths = array;
   }
 
   attachmentPaths = self->_attachmentPaths;
@@ -432,9 +432,9 @@ LABEL_28:
   v3 = IMLogHandleForCategory("DiskSpace");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(IMDirectoryContents *)self rootPath];
+    rootPath = [(IMDirectoryContents *)self rootPath];
     v14 = 138412290;
-    v15 = v4;
+    v15 = rootPath;
     _os_log_impl(&dword_1A85E5000, v3, OS_LOG_TYPE_INFO, "Directory Contents: Gathering info for path: %@", &v14, 0xCu);
   }
 
@@ -450,33 +450,33 @@ LABEL_28:
   sortedPaths = self->_sortedPaths;
   self->_sortedPaths = 0;
 
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  v10 = [(IMDirectoryContents *)self rootPath];
-  v11 = [v10 length];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  rootPath2 = [(IMDirectoryContents *)self rootPath];
+  v11 = [rootPath2 length];
 
   if (v11)
   {
-    v12 = [(IMDirectoryContents *)self rootPath];
-    [(IMDirectoryContents *)self recursivelyGatherFileInfoAtPath:v12 fileInfoMap:v9];
+    rootPath3 = [(IMDirectoryContents *)self rootPath];
+    [(IMDirectoryContents *)self recursivelyGatherFileInfoAtPath:rootPath3 fileInfoMap:dictionary];
   }
 
   else
   {
-    v12 = IMLogHandleForCategory("DiskSpace");
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    rootPath3 = IMLogHandleForCategory("DiskSpace");
+    if (os_log_type_enabled(rootPath3, OS_LOG_TYPE_ERROR))
     {
-      sub_1A88C5A44(v12);
+      sub_1A88C5A44(rootPath3);
     }
   }
 
   fileInfoMap = self->_fileInfoMap;
-  self->_fileInfoMap = v9;
+  self->_fileInfoMap = dictionary;
 }
 
-+ (BOOL)isGroupPhotoPath:(id)a3
++ (BOOL)isGroupPhotoPath:(id)path
 {
-  v3 = [a3 lastPathComponent];
-  v4 = [v3 containsString:@"GroupPhotoImage"];
+  lastPathComponent = [path lastPathComponent];
+  v4 = [lastPathComponent containsString:@"GroupPhotoImage"];
 
   return v4;
 }

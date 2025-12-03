@@ -1,15 +1,15 @@
 @interface OZShaderController
-- (OZShaderController)initWithURL:(id)a3;
-- (id)functionNameFromLine:(id)a3;
-- (id)preprocess:(id)a3;
-- (id)process:(id)a3;
+- (OZShaderController)initWithURL:(id)l;
+- (id)functionNameFromLine:(id)line;
+- (id)preprocess:(id)preprocess;
+- (id)process:(id)process;
 - (void)dealloc;
-- (void)loadShaderWithURL:(id)a3;
+- (void)loadShaderWithURL:(id)l;
 @end
 
 @implementation OZShaderController
 
-- (OZShaderController)initWithURL:(id)a3
+- (OZShaderController)initWithURL:(id)l
 {
   v6.receiver = self;
   v6.super_class = OZShaderController;
@@ -18,7 +18,7 @@
   {
     v4->_parameters = objc_alloc_init(MEMORY[0x277CBEB18]);
     [(OZShaderController *)v4 initRegex];
-    [(OZShaderController *)v4 loadShaderWithURL:a3];
+    [(OZShaderController *)v4 loadShaderWithURL:l];
   }
 
   return v4;
@@ -31,11 +31,11 @@
   [(OZShaderController *)&v3 dealloc];
 }
 
-- (void)loadShaderWithURL:(id)a3
+- (void)loadShaderWithURL:(id)l
 {
   v14 = *MEMORY[0x277D85DE8];
-  self->_url = [a3 copy];
-  v5 = [MEMORY[0x277CCACA8] stringWithContentsOfURL:a3 encoding:134217984 error:0];
+  self->_url = [l copy];
+  v5 = [MEMORY[0x277CCACA8] stringWithContentsOfURL:l encoding:134217984 error:0];
   self->_shader = v5;
   if (v5)
   {
@@ -53,9 +53,9 @@
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v9 localizedDescription];
+          localizedDescription = [v9 localizedDescription];
           *buf = 138412290;
-          v13 = v10;
+          v13 = localizedDescription;
           _os_log_impl(&dword_25F8F0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "[Shader] Error while processing script file: %@", buf, 0xCu);
         }
       }
@@ -63,10 +63,10 @@
   }
 }
 
-- (id)preprocess:(id)a3
+- (id)preprocess:(id)preprocess
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [a3 componentsSeparatedByCharactersInSet:{objc_msgSend(MEMORY[0x277CCA900], "newlineCharacterSet")}];
+  v4 = [preprocess componentsSeparatedByCharactersInSet:{objc_msgSend(MEMORY[0x277CCA900], "newlineCharacterSet")}];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -99,25 +99,25 @@
   return v8;
 }
 
-- (id)process:(id)a3
+- (id)process:(id)process
 {
-  v3 = a3;
-  if (![a3 containsString:@"EXPORT"])
+  processCopy = process;
+  if (![process containsString:@"EXPORT"])
   {
-    if ([v3 hasPrefix:@"vertex"])
+    if ([processCopy hasPrefix:@"vertex"])
     {
-      self->_vertexFunctionName = [(OZShaderController *)self functionNameFromLine:v3];
+      self->_vertexFunctionName = [(OZShaderController *)self functionNameFromLine:processCopy];
     }
 
-    else if ([v3 hasPrefix:@"fragment"])
+    else if ([processCopy hasPrefix:@"fragment"])
     {
-      self->_fragmentFunctionName = [(OZShaderController *)self functionNameFromLine:v3];
+      self->_fragmentFunctionName = [(OZShaderController *)self functionNameFromLine:processCopy];
     }
 
-    return v3;
+    return processCopy;
   }
 
-  v5 = -[NSRegularExpression firstMatchInString:options:range:](self->_paramRegex, "firstMatchInString:options:range:", v3, 0, 0, [v3 length]);
+  v5 = -[NSRegularExpression firstMatchInString:options:range:](self->_paramRegex, "firstMatchInString:options:range:", processCopy, 0, 0, [processCopy length]);
   if (!v5)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -131,13 +131,13 @@
 
   v6 = v5;
   v7 = [(NSTextCheckingResult *)v5 rangeAtIndex:1];
-  v9 = [v3 substringWithRange:{v7, v8}];
+  v9 = [processCopy substringWithRange:{v7, v8}];
   v10 = [(NSTextCheckingResult *)v6 rangeAtIndex:2];
-  v12 = [v3 substringWithRange:{v10, v11}];
+  v12 = [processCopy substringWithRange:{v10, v11}];
   v13 = [(NSTextCheckingResult *)v6 rangeAtIndex:3];
-  v15 = [v3 substringWithRange:{v13, v14}];
+  v15 = [processCopy substringWithRange:{v13, v14}];
   v16 = [(NSTextCheckingResult *)v6 rangeAtIndex:4];
-  v18 = [v3 substringWithRange:{v16, v17}];
+  v18 = [processCopy substringWithRange:{v16, v17}];
   if ([v9 isEqualToString:@"CHANNEL_FLOAT"])
   {
     v19 = 0;
@@ -189,14 +189,14 @@
   return [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@%@", v12, v15, v18];
 }
 
-- (id)functionNameFromLine:(id)a3
+- (id)functionNameFromLine:(id)line
 {
-  result = -[NSRegularExpression firstMatchInString:options:range:](self->_functionRegex, "firstMatchInString:options:range:", a3, 0, 0, [a3 length]);
+  result = -[NSRegularExpression firstMatchInString:options:range:](self->_functionRegex, "firstMatchInString:options:range:", line, 0, 0, [line length]);
   if (result)
   {
     v6 = [result rangeAtIndex:1];
 
-    return [a3 substringWithRange:{v6, v5}];
+    return [line substringWithRange:{v6, v5}];
   }
 
   return result;

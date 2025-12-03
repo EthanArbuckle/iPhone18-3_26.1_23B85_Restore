@@ -1,52 +1,52 @@
 @interface HMDNetworkRouterWANPortRule
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterWANPortRule)init;
-- (HMDNetworkRouterWANPortRule)initWithProtocol:(id)a3 hostDNSName:(id)a4 hostIPStart:(id)a5 hostIPEnd:(id)a6 hostPortStart:(id)a7 hostPortEnd:(id)a8;
+- (HMDNetworkRouterWANPortRule)initWithProtocol:(id)protocol hostDNSName:(id)name hostIPStart:(id)start hostIPEnd:(id)end hostPortStart:(id)portStart hostPortEnd:(id)portEnd;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
-- (void)addTo:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
+- (void)addTo:(id)to;
 @end
 
 @implementation HMDNetworkRouterWANPortRule
 
-- (void)addTo:(id)a3
+- (void)addTo:(id)to
 {
-  v7 = a3;
-  v4 = [v7 portRules];
-  v5 = v4;
-  if (v4)
+  toCopy = to;
+  portRules = [toCopy portRules];
+  v5 = portRules;
+  if (portRules)
   {
-    [v4 addObject:self];
+    [portRules addObject:self];
   }
 
   else
   {
     v6 = [MEMORY[0x277CBEB18] arrayWithObject:self];
-    [v7 setPortRules:v6];
+    [toCopy setPortRules:v6];
   }
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDNetworkRouterWANPortRule *)self protocol];
-  v5 = [(HMDNetworkRouterWANPortRule *)self hostDNSName];
-  v6 = [(HMDNetworkRouterWANPortRule *)self hostIPStart];
-  v7 = [(HMDNetworkRouterWANPortRule *)self hostIPEnd];
-  v8 = [(HMDNetworkRouterWANPortRule *)self hostPortStart];
-  v9 = [(HMDNetworkRouterWANPortRule *)self hostPortEnd];
-  v10 = [v3 stringWithFormat:@"<HMDNetworkRouterWANPortRule protocol=%@, hostDNSName=%@, hostIPStart=%@, hostIPEnd=%@, hostPortStart=%@, hostPortEnd=%@>", v4, v5, v6, v7, v8, v9];
+  protocol = [(HMDNetworkRouterWANPortRule *)self protocol];
+  hostDNSName = [(HMDNetworkRouterWANPortRule *)self hostDNSName];
+  hostIPStart = [(HMDNetworkRouterWANPortRule *)self hostIPStart];
+  hostIPEnd = [(HMDNetworkRouterWANPortRule *)self hostIPEnd];
+  hostPortStart = [(HMDNetworkRouterWANPortRule *)self hostPortStart];
+  hostPortEnd = [(HMDNetworkRouterWANPortRule *)self hostPortEnd];
+  v10 = [v3 stringWithFormat:@"<HMDNetworkRouterWANPortRule protocol=%@, hostDNSName=%@, hostIPStart=%@, hostIPEnd=%@, hostPortStart=%@, hostPortEnd=%@>", protocol, hostDNSName, hostIPStart, hostIPEnd, hostPortStart, hostPortEnd];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -56,34 +56,34 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HMDNetworkRouterWANPortRule *)self protocol];
-      v8 = [(HMDNetworkRouterWANPortRule *)v6 protocol];
-      if (v7 != v8)
+      v6 = equalCopy;
+      protocol = [(HMDNetworkRouterWANPortRule *)self protocol];
+      protocol2 = [(HMDNetworkRouterWANPortRule *)v6 protocol];
+      if (protocol != protocol2)
       {
-        v9 = [(HMDNetworkRouterWANPortRule *)self protocol];
-        v55 = [(HMDNetworkRouterWANPortRule *)v6 protocol];
-        v56 = v9;
-        if (![v9 isEqual:?])
+        protocol3 = [(HMDNetworkRouterWANPortRule *)self protocol];
+        protocol4 = [(HMDNetworkRouterWANPortRule *)v6 protocol];
+        v56 = protocol3;
+        if (![protocol3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_37;
         }
       }
 
-      v11 = [(HMDNetworkRouterWANPortRule *)self hostDNSName];
-      v12 = [(HMDNetworkRouterWANPortRule *)v6 hostDNSName];
-      if (v11 != v12)
+      hostDNSName = [(HMDNetworkRouterWANPortRule *)self hostDNSName];
+      hostDNSName2 = [(HMDNetworkRouterWANPortRule *)v6 hostDNSName];
+      if (hostDNSName != hostDNSName2)
       {
-        v3 = [(HMDNetworkRouterWANPortRule *)self hostDNSName];
-        v53 = [(HMDNetworkRouterWANPortRule *)v6 hostDNSName];
-        if (![v3 isEqual:?])
+        hostDNSName3 = [(HMDNetworkRouterWANPortRule *)self hostDNSName];
+        hostDNSName4 = [(HMDNetworkRouterWANPortRule *)v6 hostDNSName];
+        if (![hostDNSName3 isEqual:?])
         {
           v10 = 0;
 LABEL_35:
 
 LABEL_36:
-          if (v7 == v8)
+          if (protocol == protocol2)
           {
 LABEL_38:
 
@@ -96,22 +96,22 @@ LABEL_37:
         }
       }
 
-      v13 = [(HMDNetworkRouterWANPortRule *)self hostIPStart];
-      v14 = [(HMDNetworkRouterWANPortRule *)v6 hostIPStart];
-      v54 = v13;
-      v15 = v13 == v14;
-      v16 = v14;
+      hostIPStart = [(HMDNetworkRouterWANPortRule *)self hostIPStart];
+      hostIPStart2 = [(HMDNetworkRouterWANPortRule *)v6 hostIPStart];
+      v54 = hostIPStart;
+      v15 = hostIPStart == hostIPStart2;
+      v16 = hostIPStart2;
       if (v15)
       {
-        v51 = v14;
+        v51 = hostIPStart2;
       }
 
       else
       {
-        v17 = [(HMDNetworkRouterWANPortRule *)self hostIPStart];
-        v47 = [(HMDNetworkRouterWANPortRule *)v6 hostIPStart];
-        v48 = v17;
-        if (![v17 isEqual:?])
+        hostIPStart3 = [(HMDNetworkRouterWANPortRule *)self hostIPStart];
+        hostIPStart4 = [(HMDNetworkRouterWANPortRule *)v6 hostIPStart];
+        v48 = hostIPStart3;
+        if (![hostIPStart3 isEqual:?])
         {
           v10 = 0;
           v24 = v16;
@@ -119,7 +119,7 @@ LABEL_37:
 LABEL_33:
 
 LABEL_34:
-          if (v11 == v12)
+          if (hostDNSName == hostDNSName2)
           {
             goto LABEL_36;
           }
@@ -130,18 +130,18 @@ LABEL_34:
         v51 = v16;
       }
 
-      v18 = [(HMDNetworkRouterWANPortRule *)self hostIPEnd];
-      v19 = [(HMDNetworkRouterWANPortRule *)v6 hostIPEnd];
-      v49 = v18;
-      v50 = v3;
-      v15 = v18 == v19;
-      v20 = v19;
+      hostIPEnd = [(HMDNetworkRouterWANPortRule *)self hostIPEnd];
+      hostIPEnd2 = [(HMDNetworkRouterWANPortRule *)v6 hostIPEnd];
+      v49 = hostIPEnd;
+      v50 = hostDNSName3;
+      v15 = hostIPEnd == hostIPEnd2;
+      v20 = hostIPEnd2;
       if (!v15)
       {
-        v21 = [(HMDNetworkRouterWANPortRule *)self hostIPEnd];
-        v41 = [(HMDNetworkRouterWANPortRule *)v6 hostIPEnd];
-        v42 = v21;
-        if (![v21 isEqual:?])
+        hostIPEnd3 = [(HMDNetworkRouterWANPortRule *)self hostIPEnd];
+        hostIPEnd4 = [(HMDNetworkRouterWANPortRule *)v6 hostIPEnd];
+        v42 = hostIPEnd3;
+        if (![hostIPEnd3 isEqual:?])
         {
           v22 = v51;
           v10 = 0;
@@ -152,7 +152,7 @@ LABEL_32:
           v25 = v54;
           v24 = v22;
           v15 = v54 == v22;
-          v3 = v50;
+          hostDNSName3 = v50;
           if (v15)
           {
             goto LABEL_34;
@@ -162,39 +162,39 @@ LABEL_32:
         }
       }
 
-      v26 = [(HMDNetworkRouterWANPortRule *)self hostPortStart];
-      v44 = [(HMDNetworkRouterWANPortRule *)v6 hostPortStart];
-      v45 = v26;
+      hostPortStart = [(HMDNetworkRouterWANPortRule *)self hostPortStart];
+      hostPortStart2 = [(HMDNetworkRouterWANPortRule *)v6 hostPortStart];
+      v45 = hostPortStart;
       v46 = v20;
-      v43 = v12;
-      if (v26 == v44)
+      v43 = hostDNSName2;
+      if (hostPortStart == hostPortStart2)
       {
-        v40 = v11;
+        v40 = hostDNSName;
         v29 = v51;
       }
 
       else
       {
-        v27 = [(HMDNetworkRouterWANPortRule *)self hostPortStart];
-        v38 = [(HMDNetworkRouterWANPortRule *)v6 hostPortStart];
-        v39 = v27;
-        v28 = [v27 isEqual:?];
+        hostPortStart3 = [(HMDNetworkRouterWANPortRule *)self hostPortStart];
+        hostPortStart4 = [(HMDNetworkRouterWANPortRule *)v6 hostPortStart];
+        v39 = hostPortStart3;
+        v28 = [hostPortStart3 isEqual:?];
         v29 = v51;
         if (!v28)
         {
           v10 = 0;
-          v36 = v44;
+          v36 = hostPortStart2;
           v35 = v45;
           goto LABEL_28;
         }
 
-        v40 = v11;
+        v40 = hostDNSName;
       }
 
-      v30 = [(HMDNetworkRouterWANPortRule *)self hostPortEnd];
-      v31 = [(HMDNetworkRouterWANPortRule *)v6 hostPortEnd];
-      v32 = v31;
-      if (v30 == v31)
+      hostPortEnd = [(HMDNetworkRouterWANPortRule *)self hostPortEnd];
+      hostPortEnd2 = [(HMDNetworkRouterWANPortRule *)v6 hostPortEnd];
+      v32 = hostPortEnd2;
+      if (hostPortEnd == hostPortEnd2)
       {
 
         v10 = 1;
@@ -204,23 +204,23 @@ LABEL_32:
       {
         [(HMDNetworkRouterWANPortRule *)self hostPortEnd];
         v33 = v52 = v29;
-        v34 = [(HMDNetworkRouterWANPortRule *)v6 hostPortEnd];
-        v10 = [v33 isEqual:v34];
+        hostPortEnd3 = [(HMDNetworkRouterWANPortRule *)v6 hostPortEnd];
+        v10 = [v33 isEqual:hostPortEnd3];
 
         v29 = v52;
       }
 
-      v36 = v44;
+      v36 = hostPortStart2;
       v35 = v45;
-      v11 = v40;
-      if (v45 == v44)
+      hostDNSName = v40;
+      if (v45 == hostPortStart2)
       {
         v22 = v29;
 LABEL_30:
 
         v23 = v49;
         v20 = v46;
-        v12 = v43;
+        hostDNSName2 = v43;
         if (v49 == v46)
         {
           goto LABEL_32;
@@ -243,21 +243,21 @@ LABEL_39:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterWANPortRule allocWithZone:a3];
-  v5 = [(HMDNetworkRouterWANPortRule *)self protocol];
-  v6 = [(HMDNetworkRouterWANPortRule *)self hostDNSName];
-  v7 = [(HMDNetworkRouterWANPortRule *)self hostIPStart];
-  v8 = [(HMDNetworkRouterWANPortRule *)self hostIPEnd];
-  v9 = [(HMDNetworkRouterWANPortRule *)self hostPortStart];
-  v10 = [(HMDNetworkRouterWANPortRule *)self hostPortEnd];
-  v11 = [(HMDNetworkRouterWANPortRule *)v4 initWithProtocol:v5 hostDNSName:v6 hostIPStart:v7 hostIPEnd:v8 hostPortStart:v9 hostPortEnd:v10];
+  v4 = [HMDNetworkRouterWANPortRule allocWithZone:zone];
+  protocol = [(HMDNetworkRouterWANPortRule *)self protocol];
+  hostDNSName = [(HMDNetworkRouterWANPortRule *)self hostDNSName];
+  hostIPStart = [(HMDNetworkRouterWANPortRule *)self hostIPStart];
+  hostIPEnd = [(HMDNetworkRouterWANPortRule *)self hostIPEnd];
+  hostPortStart = [(HMDNetworkRouterWANPortRule *)self hostPortStart];
+  hostPortEnd = [(HMDNetworkRouterWANPortRule *)self hostPortEnd];
+  v11 = [(HMDNetworkRouterWANPortRule *)v4 initWithProtocol:protocol hostDNSName:hostDNSName hostIPStart:hostIPStart hostIPEnd:hostIPEnd hostPortStart:hostPortStart hostPortEnd:hostPortEnd];
 
   return v11;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
   v49 = 0u;
@@ -282,13 +282,13 @@ LABEL_39:
   v32 = 0u;
   v30 = 0u;
   TLV8BufferInit();
-  v5 = [(HMDNetworkRouterWANPortRule *)self protocol];
+  protocol = [(HMDNetworkRouterWANPortRule *)self protocol];
 
-  if (v5)
+  if (protocol)
   {
-    v6 = [(HMDNetworkRouterWANPortRule *)self protocol];
+    protocol2 = [(HMDNetworkRouterWANPortRule *)self protocol];
     v29 = 0;
-    v7 = [v6 serializeWithError:&v29];
+    v7 = [protocol2 serializeWithError:&v29];
     v8 = v29;
 
     if (v8)
@@ -304,13 +304,13 @@ LABEL_39:
     }
   }
 
-  v9 = [(HMDNetworkRouterWANPortRule *)self hostDNSName];
+  hostDNSName = [(HMDNetworkRouterWANPortRule *)self hostDNSName];
 
-  if (v9)
+  if (hostDNSName)
   {
-    v10 = [(HMDNetworkRouterWANPortRule *)self hostDNSName];
+    hostDNSName2 = [(HMDNetworkRouterWANPortRule *)self hostDNSName];
     v28 = 0;
-    v7 = [v10 serializeWithError:&v28];
+    v7 = [hostDNSName2 serializeWithError:&v28];
     v8 = v28;
 
     if (v8)
@@ -326,13 +326,13 @@ LABEL_39:
     }
   }
 
-  v11 = [(HMDNetworkRouterWANPortRule *)self hostIPStart];
+  hostIPStart = [(HMDNetworkRouterWANPortRule *)self hostIPStart];
 
-  if (v11)
+  if (hostIPStart)
   {
-    v12 = [(HMDNetworkRouterWANPortRule *)self hostIPStart];
+    hostIPStart2 = [(HMDNetworkRouterWANPortRule *)self hostIPStart];
     v27 = 0;
-    v7 = [v12 serializeWithError:&v27];
+    v7 = [hostIPStart2 serializeWithError:&v27];
     v8 = v27;
 
     if (v8)
@@ -348,16 +348,16 @@ LABEL_39:
     }
   }
 
-  v13 = [(HMDNetworkRouterWANPortRule *)self hostIPEnd];
+  hostIPEnd = [(HMDNetworkRouterWANPortRule *)self hostIPEnd];
 
-  if (!v13)
+  if (!hostIPEnd)
   {
     goto LABEL_17;
   }
 
-  v14 = [(HMDNetworkRouterWANPortRule *)self hostIPEnd];
+  hostIPEnd2 = [(HMDNetworkRouterWANPortRule *)self hostIPEnd];
   v26 = 0;
-  v7 = [v14 serializeWithError:&v26];
+  v7 = [hostIPEnd2 serializeWithError:&v26];
   v8 = v26;
 
   if (v8)
@@ -372,11 +372,11 @@ LABEL_39:
 LABEL_20:
 
 LABEL_21:
-    if (a3)
+    if (error)
     {
       HMErrorFromOSStatus();
       v8 = 0;
-      *a3 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_30;
     }
 
@@ -387,13 +387,13 @@ LABEL_29:
   }
 
 LABEL_17:
-  v15 = [(HMDNetworkRouterWANPortRule *)self hostPortStart];
+  hostPortStart = [(HMDNetworkRouterWANPortRule *)self hostPortStart];
 
-  if (v15)
+  if (hostPortStart)
   {
-    v16 = [(HMDNetworkRouterWANPortRule *)self hostPortStart];
+    hostPortStart2 = [(HMDNetworkRouterWANPortRule *)self hostPortStart];
     v25 = 0;
-    v7 = [v16 serializeWithError:&v25];
+    v7 = [hostPortStart2 serializeWithError:&v25];
     v8 = v25;
 
     if (v8)
@@ -409,24 +409,24 @@ LABEL_17:
     }
   }
 
-  v18 = [(HMDNetworkRouterWANPortRule *)self hostPortEnd];
+  hostPortEnd = [(HMDNetworkRouterWANPortRule *)self hostPortEnd];
 
-  if (v18)
+  if (hostPortEnd)
   {
-    v19 = [(HMDNetworkRouterWANPortRule *)self hostPortEnd];
+    hostPortEnd2 = [(HMDNetworkRouterWANPortRule *)self hostPortEnd];
     v24 = 0;
-    v7 = [v19 serializeWithError:&v24];
+    v7 = [hostPortEnd2 serializeWithError:&v24];
     v8 = v24;
 
     if (v8)
     {
 LABEL_27:
 
-      if (a3)
+      if (error)
       {
         v20 = v8;
         v17 = 0;
-        *a3 = v8;
+        *error = v8;
         goto LABEL_30;
       }
 
@@ -453,16 +453,16 @@ LABEL_30:
   return v17;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v8 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v9 = [v7 length];
   if (!v9)
   {
@@ -482,7 +482,7 @@ LABEL_30:
   v12 = 0;
   v26 = 0;
   v27 = 0;
-  v13 = v8 + v9;
+  v13 = bytes + v9;
   do
   {
     v40 = 0;
@@ -492,10 +492,10 @@ LABEL_30:
     v36 = 0;
     if (TLV8GetNext() || TLV8GetOrCopyCoalesced())
     {
-      if (a4)
+      if (error)
       {
         HMErrorFromOSStatus();
-        *a4 = v19 = 0;
+        *error = v19 = 0;
         goto LABEL_32;
       }
 
@@ -515,11 +515,11 @@ LABEL_31:
       }
 
 LABEL_26:
-      if (a4)
+      if (error)
       {
         v18 = v10;
         v19 = 0;
-        *a4 = v10;
+        *error = v10;
 LABEL_32:
         v21 = v28;
         v20 = v29;
@@ -626,26 +626,26 @@ LABEL_36:
   return v19;
 }
 
-- (HMDNetworkRouterWANPortRule)initWithProtocol:(id)a3 hostDNSName:(id)a4 hostIPStart:(id)a5 hostIPEnd:(id)a6 hostPortStart:(id)a7 hostPortEnd:(id)a8
+- (HMDNetworkRouterWANPortRule)initWithProtocol:(id)protocol hostDNSName:(id)name hostIPStart:(id)start hostIPEnd:(id)end hostPortStart:(id)portStart hostPortEnd:(id)portEnd
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  protocolCopy = protocol;
+  nameCopy = name;
+  startCopy = start;
+  endCopy = end;
+  portStartCopy = portStart;
+  portEndCopy = portEnd;
   v24.receiver = self;
   v24.super_class = HMDNetworkRouterWANPortRule;
   v18 = [(HMDNetworkRouterWANPortRule *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_protocol, a3);
-    objc_storeStrong(&v19->_hostDNSName, a4);
-    objc_storeStrong(&v19->_hostIPStart, a5);
-    objc_storeStrong(&v19->_hostIPEnd, a6);
-    objc_storeStrong(&v19->_hostPortStart, a7);
-    objc_storeStrong(&v19->_hostPortEnd, a8);
+    objc_storeStrong(&v18->_protocol, protocol);
+    objc_storeStrong(&v19->_hostDNSName, name);
+    objc_storeStrong(&v19->_hostIPStart, start);
+    objc_storeStrong(&v19->_hostIPEnd, end);
+    objc_storeStrong(&v19->_hostPortStart, portStart);
+    objc_storeStrong(&v19->_hostPortEnd, portEnd);
   }
 
   return v19;
@@ -658,24 +658,24 @@ LABEL_36:
   return [(HMDNetworkRouterWANPortRule *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterWANPortRule);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterWANPortRule *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterWANPortRule *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

@@ -1,38 +1,38 @@
 @interface LTMMetadataWriterV1
-+ (id)createLTMMetadataFromLTMOutput:(sLtmComputeOutput *)a3 statistics:(sCLRProcHITHStat_SOFTISP *)a4 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a5 geometryData:(id)a6;
-+ (void)_addAverageLTMToMetadata:(id)a3 curvesType:(int)a4 fromOutput:(sLtmComputeOutput *)a5;
-+ (void)_addGlobalLTMLookUpTableAlignedToFinalCropRect:(id)a3;
-+ (void)_addHazeCorrection:(id)a3 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a4;
-+ (void)_addHighlightCompression:(id)a3 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a4;
-+ (void)_addLTMCurveTypeToMetadata:(id)a3 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a4;
-+ (void)_addLTMCurvesToMetadata:(id)a3 curvesType:(int)a4 fromOutput:(sLtmComputeOutput *)a5 statistics:(sCLRProcHITHStat_SOFTISP *)a6 geometryData:(id)a7 isSIFR:(BOOL)a8;
-+ (void)_addLTMEnabledToMetadata:(id)a3;
-+ (void)_addLocalClippingDataToMetadata:(id)a3 statistics:(sCLRProcHITHStat_SOFTISP *)a4 geometryData:(id)a5;
-+ (void)_addLocalHistToMetadata:(id)a3 statistics:(sCLRProcHITHStat_SOFTISP *)a4 geometryData:(id)a5;
-+ (void)_addSoftDGainToMetadata:(id)a3 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a4;
-+ (void)_addSpatialCCMDataToMetadata:(id)a3 fromOutput:(sLtmComputeOutput *)a4 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a5;
-+ (void)addLTMMetadataTo:(id)a3 curvesType:(int)a4 fromLTMOutput:(sLtmComputeOutput *)a5 statistics:(sCLRProcHITHStat_SOFTISP *)a6 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a7 geometryData:(id)a8;
++ (id)createLTMMetadataFromLTMOutput:(sLtmComputeOutput *)output statistics:(sCLRProcHITHStat_SOFTISP *)statistics driverInputMetadata:(sRefDriverInputs_SOFTISP *)metadata geometryData:(id)data;
++ (void)_addAverageLTMToMetadata:(id)metadata curvesType:(int)type fromOutput:(sLtmComputeOutput *)output;
++ (void)_addGlobalLTMLookUpTableAlignedToFinalCropRect:(id)rect;
++ (void)_addHazeCorrection:(id)correction driverInputMetadata:(sRefDriverInputs_SOFTISP *)metadata;
++ (void)_addHighlightCompression:(id)compression driverInputMetadata:(sRefDriverInputs_SOFTISP *)metadata;
++ (void)_addLTMCurveTypeToMetadata:(id)metadata driverInputMetadata:(sRefDriverInputs_SOFTISP *)inputMetadata;
++ (void)_addLTMCurvesToMetadata:(id)metadata curvesType:(int)type fromOutput:(sLtmComputeOutput *)output statistics:(sCLRProcHITHStat_SOFTISP *)statistics geometryData:(id)data isSIFR:(BOOL)r;
++ (void)_addLTMEnabledToMetadata:(id)metadata;
++ (void)_addLocalClippingDataToMetadata:(id)metadata statistics:(sCLRProcHITHStat_SOFTISP *)statistics geometryData:(id)data;
++ (void)_addLocalHistToMetadata:(id)metadata statistics:(sCLRProcHITHStat_SOFTISP *)statistics geometryData:(id)data;
++ (void)_addSoftDGainToMetadata:(id)metadata driverInputMetadata:(sRefDriverInputs_SOFTISP *)inputMetadata;
++ (void)_addSpatialCCMDataToMetadata:(id)metadata fromOutput:(sLtmComputeOutput *)output driverInputMetadata:(sRefDriverInputs_SOFTISP *)inputMetadata;
++ (void)addLTMMetadataTo:(id)to curvesType:(int)type fromLTMOutput:(sLtmComputeOutput *)output statistics:(sCLRProcHITHStat_SOFTISP *)statistics driverInputMetadata:(sRefDriverInputs_SOFTISP *)metadata geometryData:(id)data;
 @end
 
 @implementation LTMMetadataWriterV1
 
-+ (id)createLTMMetadataFromLTMOutput:(sLtmComputeOutput *)a3 statistics:(sCLRProcHITHStat_SOFTISP *)a4 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a5 geometryData:(id)a6
++ (id)createLTMMetadataFromLTMOutput:(sLtmComputeOutput *)output statistics:(sCLRProcHITHStat_SOFTISP *)statistics driverInputMetadata:(sRefDriverInputs_SOFTISP *)metadata geometryData:(id)data
 {
-  v10 = a6;
+  dataCopy = data;
   v11 = objc_opt_new();
   if (v11)
   {
-    [a1 _addLTMCurvesToMetadata:v11 curvesType:0 fromOutput:a3 statistics:a4 geometryData:v10 isSIFR:a5->isSIFRFrame];
-    [a1 _addSoftDGainToMetadata:v11 driverInputMetadata:a5];
-    [a1 _addLTMCurveTypeToMetadata:v11 driverInputMetadata:a5];
-    [a1 _addLTMEnabledToMetadata:v11];
-    [a1 _addLocalHistToMetadata:v11 statistics:a4 geometryData:v10];
-    [a1 _addLocalClippingDataToMetadata:v11 statistics:a4 geometryData:v10];
-    [a1 _addAverageLTMToMetadata:v11 curvesType:0 fromOutput:a3];
-    [a1 _addSpatialCCMDataToMetadata:v11 fromOutput:a3 driverInputMetadata:a5];
-    [a1 _addGlobalLTMLookUpTableAlignedToFinalCropRect:v11];
-    [a1 _addHighlightCompression:v11 driverInputMetadata:a5];
-    [a1 _addHazeCorrection:v11 driverInputMetadata:a5];
+    [self _addLTMCurvesToMetadata:v11 curvesType:0 fromOutput:output statistics:statistics geometryData:dataCopy isSIFR:metadata->isSIFRFrame];
+    [self _addSoftDGainToMetadata:v11 driverInputMetadata:metadata];
+    [self _addLTMCurveTypeToMetadata:v11 driverInputMetadata:metadata];
+    [self _addLTMEnabledToMetadata:v11];
+    [self _addLocalHistToMetadata:v11 statistics:statistics geometryData:dataCopy];
+    [self _addLocalClippingDataToMetadata:v11 statistics:statistics geometryData:dataCopy];
+    [self _addAverageLTMToMetadata:v11 curvesType:0 fromOutput:output];
+    [self _addSpatialCCMDataToMetadata:v11 fromOutput:output driverInputMetadata:metadata];
+    [self _addGlobalLTMLookUpTableAlignedToFinalCropRect:v11];
+    [self _addHighlightCompression:v11 driverInputMetadata:metadata];
+    [self _addHazeCorrection:v11 driverInputMetadata:metadata];
     v12 = v11;
   }
 
@@ -44,19 +44,19 @@
   return v11;
 }
 
-+ (void)addLTMMetadataTo:(id)a3 curvesType:(int)a4 fromLTMOutput:(sLtmComputeOutput *)a5 statistics:(sCLRProcHITHStat_SOFTISP *)a6 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a7 geometryData:(id)a8
++ (void)addLTMMetadataTo:(id)to curvesType:(int)type fromLTMOutput:(sLtmComputeOutput *)output statistics:(sCLRProcHITHStat_SOFTISP *)statistics driverInputMetadata:(sRefDriverInputs_SOFTISP *)metadata geometryData:(id)data
 {
-  v11 = *&a4;
-  isSIFRFrame = a7->isSIFRFrame;
-  v14 = a3;
-  [a1 _addLTMCurvesToMetadata:v14 curvesType:v11 fromOutput:a5 statistics:a6 geometryData:a8 isSIFR:isSIFRFrame];
-  [a1 _addAverageLTMToMetadata:v14 curvesType:v11 fromOutput:a5];
+  v11 = *&type;
+  isSIFRFrame = metadata->isSIFRFrame;
+  toCopy = to;
+  [self _addLTMCurvesToMetadata:toCopy curvesType:v11 fromOutput:output statistics:statistics geometryData:data isSIFR:isSIFRFrame];
+  [self _addAverageLTMToMetadata:toCopy curvesType:v11 fromOutput:output];
 }
 
-+ (void)_addLTMCurvesToMetadata:(id)a3 curvesType:(int)a4 fromOutput:(sLtmComputeOutput *)a5 statistics:(sCLRProcHITHStat_SOFTISP *)a6 geometryData:(id)a7 isSIFR:(BOOL)a8
++ (void)_addLTMCurvesToMetadata:(id)metadata curvesType:(int)type fromOutput:(sLtmComputeOutput *)output statistics:(sCLRProcHITHStat_SOFTISP *)statistics geometryData:(id)data isSIFR:(BOOL)r
 {
-  v12 = a3;
-  v13 = a7;
+  metadataCopy = metadata;
+  dataCopy = data;
   v14 = malloc_type_malloc(0x1878uLL, 0x1000040504FFAC1uLL);
   if (v14)
   {
@@ -69,7 +69,7 @@
       {
         *v15 = 257;
         *v16 = 257;
-        v18 = &a5->LTC[3185];
+        v18 = &output->LTC[3185];
         for (i = 1; i != 258; ++i)
         {
           v15[i] = vcvtms_s32_f32(*v18 * 65535.0);
@@ -81,22 +81,22 @@
         *v14 = 0x410000600080004;
         *(v14 + 4) = 130;
         *(v14 + 10) = 0;
-        LOWORD(v20) = a6->localHistStrideX;
+        LOWORD(v20) = statistics->localHistStrideX;
         v21 = v20;
-        [v13 inputTextureDownsampleRatio];
+        [dataCopy inputTextureDownsampleRatio];
         *&v23 = v22 * v21;
         *(v14 + 9) = *&v23;
-        LOWORD(v23) = a6->localHistStrideY;
+        LOWORD(v23) = statistics->localHistStrideY;
         v24 = v23;
-        [v13 inputTextureDownsampleRatio];
+        [dataCopy inputTextureDownsampleRatio];
         *(v14 + 10) = (v25 * v24);
         *(v14 + 11) = 65;
         v26 = -6240;
         v27 = vdupq_n_s32(0x477FFF00u);
         do
         {
-          v28 = *a5->LTC;
-          a5 = (a5 + 16);
+          v28 = *output->LTC;
+          output = (output + 16);
           *&v14[v26 + 6264] = vmovn_s32(vcvtq_u32_f32(vrndmq_f32(vmulq_f32(v28, v27))));
           v26 += 8;
         }
@@ -105,40 +105,40 @@
         v29 = [MEMORY[0x1E695DF88] dataWithBytes:v14 length:6264];
         v30 = [MEMORY[0x1E695DF88] dataWithBytes:v15 length:516];
         v31 = [MEMORY[0x1E695DF88] dataWithBytes:v17 length:516];
-        if (a4 == 3)
+        if (type == 3)
         {
-          [v12 setObject:v29 forKeyedSubscript:@"LTMLookUpTables_HLGWithoutFaceBoost"];
-          [v12 setObject:v30 forKeyedSubscript:@"GlobalLTMLookUpTable_HLGWithoutFaceBoost"];
+          [metadataCopy setObject:v29 forKeyedSubscript:@"LTMLookUpTables_HLGWithoutFaceBoost"];
+          [metadataCopy setObject:v30 forKeyedSubscript:@"GlobalLTMLookUpTable_HLGWithoutFaceBoost"];
           v33 = @"GlobalToneCurveLookUpTable_HLGWithoutFaceBoost";
         }
 
         else
         {
-          if (a4 == 2)
+          if (type == 2)
           {
-            [v12 setObject:v29 forKeyedSubscript:*MEMORY[0x1E6990E00]];
-            [v12 setObject:v30 forKeyedSubscript:*MEMORY[0x1E6990DC8]];
+            [metadataCopy setObject:v29 forKeyedSubscript:*MEMORY[0x1E6990E00]];
+            [metadataCopy setObject:v30 forKeyedSubscript:*MEMORY[0x1E6990DC8]];
             v32 = MEMORY[0x1E6990DD8];
           }
 
-          else if (a4 == 1)
+          else if (type == 1)
           {
-            [v12 setObject:v29 forKeyedSubscript:*MEMORY[0x1E6990E08]];
-            [v12 setObject:v30 forKeyedSubscript:*MEMORY[0x1E6990DD0]];
+            [metadataCopy setObject:v29 forKeyedSubscript:*MEMORY[0x1E6990E08]];
+            [metadataCopy setObject:v30 forKeyedSubscript:*MEMORY[0x1E6990DD0]];
             v32 = MEMORY[0x1E6990DE0];
           }
 
           else
           {
-            [v12 setObject:v29 forKeyedSubscript:*MEMORY[0x1E6991068]];
-            [v12 setObject:v30 forKeyedSubscript:*MEMORY[0x1E6991020]];
+            [metadataCopy setObject:v29 forKeyedSubscript:*MEMORY[0x1E6991068]];
+            [metadataCopy setObject:v30 forKeyedSubscript:*MEMORY[0x1E6991020]];
             v32 = MEMORY[0x1E6991030];
           }
 
           v33 = *v32;
         }
 
-        [v12 setObject:v31 forKeyedSubscript:v33];
+        [metadataCopy setObject:v31 forKeyedSubscript:v33];
       }
 
       else
@@ -175,68 +175,68 @@
   free(v14);
 }
 
-+ (void)_addSoftDGainToMetadata:(id)a3 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a4
++ (void)_addSoftDGainToMetadata:(id)metadata driverInputMetadata:(sRefDriverInputs_SOFTISP *)inputMetadata
 {
   v5 = MEMORY[0x1E696AD98];
-  LODWORD(v4) = vcvts_n_u32_f32(a4->softIspDGain, 8uLL);
-  v6 = a3;
+  LODWORD(v4) = vcvts_n_u32_f32(inputMetadata->softIspDGain, 8uLL);
+  metadataCopy = metadata;
   v7 = [v5 numberWithUnsignedInt:v4];
-  [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x1E6991168]];
+  [metadataCopy setObject:v7 forKeyedSubscript:*MEMORY[0x1E6991168]];
 }
 
-+ (void)_addLTMCurveTypeToMetadata:(id)a3 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a4
++ (void)_addLTMCurveTypeToMetadata:(id)metadata driverInputMetadata:(sRefDriverInputs_SOFTISP *)inputMetadata
 {
   v4 = MEMORY[0x1E696AD98];
-  ltmProcMode = a4->ltmProcMode;
-  v6 = a3;
+  ltmProcMode = inputMetadata->ltmProcMode;
+  metadataCopy = metadata;
   v7 = [v4 numberWithInt:ltmProcMode];
-  [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x1E6991058]];
+  [metadataCopy setObject:v7 forKeyedSubscript:*MEMORY[0x1E6991058]];
 }
 
-+ (void)_addAverageLTMToMetadata:(id)a3 curvesType:(int)a4 fromOutput:(sLtmComputeOutput *)a5
++ (void)_addAverageLTMToMetadata:(id)metadata curvesType:(int)type fromOutput:(sLtmComputeOutput *)output
 {
-  v17 = a3;
+  metadataCopy = metadata;
   v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:65];
   for (i = 0; i != 65; ++i)
   {
     v9 = 0;
     v10 = 0;
-    v11 = a5;
+    outputCopy = output;
     do
     {
       for (j = 0; j != 520; j += 65)
       {
-        v10 = (floorf(v11->LTC[j] * 65535.0) + v10);
+        v10 = (floorf(outputCopy->LTC[j] * 65535.0) + v10);
       }
 
       ++v9;
-      v11 = (v11 + 2080);
+      outputCopy = (outputCopy + 2080);
     }
 
     while (v9 != 6);
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:(v10 / 0x30)];
     [v7 setObject:v13 atIndexedSubscript:i];
 
-    a5 = (a5 + 4);
+    output = (output + 4);
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v15 = *MEMORY[0x1E6990D90];
-    v14 = v17;
+    v14 = metadataCopy;
   }
 
   else
   {
-    v14 = v17;
-    if (a4 == 2)
+    v14 = metadataCopy;
+    if (type == 2)
     {
       v16 = MEMORY[0x1E6990D88];
     }
 
     else
     {
-      if (a4 == 3)
+      if (type == 3)
       {
         v15 = @"AverageLTM_HLGWithoutFaceBoost";
         goto LABEL_15;
@@ -252,12 +252,12 @@ LABEL_15:
   [v14 setObject:v7 forKeyedSubscript:v15];
 }
 
-+ (void)_addHighlightCompression:(id)a3 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a4
++ (void)_addHighlightCompression:(id)compression driverInputMetadata:(sRefDriverInputs_SOFTISP *)metadata
 {
-  v5 = a3;
-  if (a4->useHighlightCompression)
+  compressionCopy = compression;
+  if (metadata->useHighlightCompression)
   {
-    v9 = v5;
+    v9 = compressionCopy;
     v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:257];
     for (i = 0; i != 257; ++i)
     {
@@ -267,88 +267,88 @@ LABEL_15:
 
     [v9 setObject:v6 forKeyedSubscript:*MEMORY[0x1E6990DB8]];
 
-    v5 = v9;
+    compressionCopy = v9;
   }
 }
 
-+ (void)_addHazeCorrection:(id)a3 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a4
++ (void)_addHazeCorrection:(id)correction driverInputMetadata:(sRefDriverInputs_SOFTISP *)metadata
 {
-  v5 = a3;
-  if (a4->useHazeCorrection)
+  correctionCopy = correction;
+  if (metadata->useHazeCorrection)
   {
-    v10 = v5;
+    v10 = correctionCopy;
     v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:3];
     for (i = 0; i != 3; ++i)
     {
-      LODWORD(v7) = *(&a4[1].gainDigi + (i & 3));
+      LODWORD(v7) = *(&metadata[1].gainDigi + (i & 3));
       v9 = [MEMORY[0x1E696AD98] numberWithFloat:v7];
       [v6 setObject:v9 atIndexedSubscript:i];
     }
 
     [v10 setObject:v6 forKeyedSubscript:*MEMORY[0x1E6990DE8]];
 
-    v5 = v10;
+    correctionCopy = v10;
   }
 }
 
-+ (void)_addLTMEnabledToMetadata:(id)a3
++ (void)_addLTMEnabledToMetadata:(id)metadata
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = [v3 numberWithBool:1];
-  [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x1E6991060]];
+  [metadataCopy setObject:v5 forKeyedSubscript:*MEMORY[0x1E6991060]];
 }
 
-+ (void)_addLocalHistToMetadata:(id)a3 statistics:(sCLRProcHITHStat_SOFTISP *)a4 geometryData:(id)a5
++ (void)_addLocalHistToMetadata:(id)metadata statistics:(sCLRProcHITHStat_SOFTISP *)statistics geometryData:(id)data
 {
-  v29 = a3;
-  v7 = a5;
+  metadataCopy = metadata;
+  dataCopy = data;
   v8 = malloc_type_malloc(0x19A0uLL, 0x1000040E0EAB150uLL);
   v9 = v8;
   if (v8)
   {
     HIDWORD(v10) = 6560;
     *v8 = 0x19A000000001;
-    LODWORD(v10) = a4->gridOriginX;
+    LODWORD(v10) = statistics->gridOriginX;
     v11 = v10;
-    [v7 deepZoomOrigin];
+    [dataCopy deepZoomOrigin];
     v13 = v12 + v11;
-    [v7 inputTextureDownsampleRatio];
+    [dataCopy inputTextureDownsampleRatio];
     *&v15 = v13 * v14;
     *(v9 + 4) = *&v15;
-    LODWORD(v15) = a4->gridOriginY;
+    LODWORD(v15) = statistics->gridOriginY;
     v16 = v15;
-    [v7 deepZoomOrigin];
+    [dataCopy deepZoomOrigin];
     v18 = v17 + v16;
-    [v7 inputTextureDownsampleRatio];
+    [dataCopy inputTextureDownsampleRatio];
     v20 = v18 * v19;
     *(v9 + 5) = v20;
-    LOWORD(v20) = a4->localHistBlockSizeX;
+    LOWORD(v20) = statistics->localHistBlockSizeX;
     *&v18 = LODWORD(v20);
-    [v7 inputTextureDownsampleRatio];
+    [dataCopy inputTextureDownsampleRatio];
     *&v22 = v21 * *&v18;
     *(v9 + 6) = *&v22;
-    LOWORD(v22) = a4->localHistBlockSizeY;
+    LOWORD(v22) = statistics->localHistBlockSizeY;
     *&v18 = v22;
-    [v7 inputTextureDownsampleRatio];
+    [dataCopy inputTextureDownsampleRatio];
     *&v24 = v23 * *&v18;
     *(v9 + 7) = *&v24;
-    LOWORD(v24) = a4->localHistStrideX;
+    LOWORD(v24) = statistics->localHistStrideX;
     *&v18 = v24;
-    [v7 inputTextureDownsampleRatio];
+    [dataCopy inputTextureDownsampleRatio];
     *&v26 = v25 * *&v18;
     *(v9 + 8) = *&v26;
-    LOWORD(v26) = a4->localHistStrideY;
+    LOWORD(v26) = statistics->localHistStrideY;
     *&v18 = v26;
-    [v7 inputTextureDownsampleRatio];
+    [dataCopy inputTextureDownsampleRatio];
     *(v9 + 9) = (v27 * *&v18);
-    *(v9 + 5) = *&a4->localHistNumHorBlocks;
+    *(v9 + 5) = *&statistics->localHistNumHorBlocks;
     *(v9 + 12) = 68;
-    *(v9 + 13) = a4->localHistCountBitShift;
-    *(v9 + 7) = a4->localHistogramOriginalTilePixelCount;
-    memcpy(v9 + 4, a4->localHistStat, 0x1980uLL);
+    *(v9 + 13) = statistics->localHistCountBitShift;
+    *(v9 + 7) = statistics->localHistogramOriginalTilePixelCount;
+    memcpy(v9 + 4, statistics->localHistStat, 0x1980uLL);
     v28 = [MEMORY[0x1E695DEF0] dataWithBytes:v9 length:6560];
-    [v29 setObject:v28 forKeyedSubscript:*MEMORY[0x1E6991088]];
+    [metadataCopy setObject:v28 forKeyedSubscript:*MEMORY[0x1E6991088]];
   }
 
   else
@@ -359,61 +359,61 @@ LABEL_15:
   free(v9);
 }
 
-+ (void)_addLocalClippingDataToMetadata:(id)a3 statistics:(sCLRProcHITHStat_SOFTISP *)a4 geometryData:(id)a5
++ (void)_addLocalClippingDataToMetadata:(id)metadata statistics:(sCLRProcHITHStat_SOFTISP *)statistics geometryData:(id)data
 {
-  v7 = a3;
-  v8 = a5;
+  metadataCopy = metadata;
+  dataCopy = data;
   v9 = malloc_type_malloc(0x1ACuLL, 0x1000040DE9E61F1uLL);
   v10 = v9;
   if (v9)
   {
     HIDWORD(v11) = 428;
     *v9 = 0x1AC00000001;
-    LODWORD(v11) = a4->gridOriginX;
+    LODWORD(v11) = statistics->gridOriginX;
     v12 = v11;
-    [v8 deepZoomOrigin];
+    [dataCopy deepZoomOrigin];
     v14 = v13 + v12;
-    [v8 inputTextureDownsampleRatio];
+    [dataCopy inputTextureDownsampleRatio];
     *&v16 = v14 * v15;
     *(v10 + 4) = *&v16;
-    LODWORD(v16) = a4->gridOriginY;
+    LODWORD(v16) = statistics->gridOriginY;
     v17 = v16;
-    [v8 deepZoomOrigin];
+    [dataCopy deepZoomOrigin];
     v19 = v18 + v17;
-    [v8 inputTextureDownsampleRatio];
+    [dataCopy inputTextureDownsampleRatio];
     v21 = v19 * v20;
     *(v10 + 5) = v21;
-    LOWORD(v21) = a4->localHistBlockSizeX;
+    LOWORD(v21) = statistics->localHistBlockSizeX;
     *&v19 = LODWORD(v21);
-    [v8 inputTextureDownsampleRatio];
+    [dataCopy inputTextureDownsampleRatio];
     *&v23 = v22 * *&v19;
     *(v10 + 6) = *&v23;
-    LOWORD(v23) = a4->localHistBlockSizeY;
+    LOWORD(v23) = statistics->localHistBlockSizeY;
     *&v19 = v23;
-    [v8 inputTextureDownsampleRatio];
+    [dataCopy inputTextureDownsampleRatio];
     *&v25 = v24 * *&v19;
     *(v10 + 7) = *&v25;
-    LOWORD(v25) = a4->localHistStrideX;
+    LOWORD(v25) = statistics->localHistStrideX;
     *&v19 = v25;
-    [v8 inputTextureDownsampleRatio];
+    [dataCopy inputTextureDownsampleRatio];
     *&v27 = v26 * *&v19;
     *(v10 + 8) = *&v27;
-    LOWORD(v27) = a4->localHistStrideY;
+    LOWORD(v27) = statistics->localHistStrideY;
     *&v19 = v27;
-    [v8 inputTextureDownsampleRatio];
+    [dataCopy inputTextureDownsampleRatio];
     v28 = 0;
     *(v10 + 9) = (v29 * *&v19);
-    *(v10 + 5) = *&a4->localHistNumHorBlocks;
-    *(v10 + 12) = a4->localHistCountBitShift;
-    localHistLowThreshold = a4->localHistLowThreshold;
-    *(v10 + 7) = a4->localHistogramOriginalTilePixelCount;
+    *(v10 + 5) = *&statistics->localHistNumHorBlocks;
+    *(v10 + 12) = statistics->localHistCountBitShift;
+    localHistLowThreshold = statistics->localHistLowThreshold;
+    *(v10 + 7) = statistics->localHistogramOriginalTilePixelCount;
     *(v10 + 16) = localHistLowThreshold;
     *(v10 + 17) = 0;
-    *(v10 + 18) = a4->localHistHighThreshold;
+    *(v10 + 18) = statistics->localHistHighThreshold;
     *(v10 + 38) = 65539;
     *(v10 + 21) = 2;
     v31 = v10 + 25;
-    v32 = a4->localHistStat + 134;
+    v32 = statistics->localHistStat + 134;
     do
     {
       v33 = v32;
@@ -439,7 +439,7 @@ LABEL_15:
 
     while (v28 != 6);
     v37 = [MEMORY[0x1E695DEF0] dataWithBytes:v10 length:428];
-    [v7 setObject:v37 forKeyedSubscript:*MEMORY[0x1E6991080]];
+    [metadataCopy setObject:v37 forKeyedSubscript:*MEMORY[0x1E6991080]];
   }
 
   else
@@ -450,15 +450,15 @@ LABEL_15:
   free(v10);
 }
 
-+ (void)_addSpatialCCMDataToMetadata:(id)a3 fromOutput:(sLtmComputeOutput *)a4 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a5
++ (void)_addSpatialCCMDataToMetadata:(id)metadata fromOutput:(sLtmComputeOutput *)output driverInputMetadata:(sRefDriverInputs_SOFTISP *)inputMetadata
 {
-  v7 = a3;
+  metadataCopy = metadata;
   if (_addSpatialCCMDataToMetadata_fromOutput_driverInputMetadata__onceToken != -1)
   {
     +[LTMMetadataWriterV1 _addSpatialCCMDataToMetadata:fromOutput:driverInputMetadata:];
   }
 
-  if (a5->useSpatialCCM)
+  if (inputMetadata->useSpatialCCM)
   {
     v8 = malloc_type_malloc(0x2898uLL, 0x1000040504FFAC1uLL);
     v9 = v8;
@@ -467,11 +467,11 @@ LABEL_15:
       *v8 = 0x360000C001003E9;
       *(v8 + 4) = 54;
       *(v8 + 10) = 0;
-      *(v8 + 9) = a5->tileStatsRegion.width >> 4;
-      *(v8 + 10) = a5->tileStatsRegion.height / 0xC;
+      *(v8 + 9) = inputMetadata->tileStatsRegion.width >> 4;
+      *(v8 + 10) = inputMetadata->tileStatsRegion.height / 0xC;
       *(v8 + 11) = 4096;
       v10 = v8 + 76;
-      v11 = &a4->LTC[3725];
+      v11 = &output->LTC[3725];
       v12 = 192;
       v13 = vdupq_n_s32(0x45800000u);
       do
@@ -529,7 +529,7 @@ LABEL_15:
       if (v35)
       {
         v36 = v35;
-        [v7 setObject:v35 forKeyedSubscript:*MEMORY[0x1E6991078]];
+        [metadataCopy setObject:v35 forKeyedSubscript:*MEMORY[0x1E6991078]];
       }
 
       else
@@ -548,16 +548,16 @@ LABEL_15:
 
   else
   {
-    [v7 removeObjectForKey:*MEMORY[0x1E6991078]];
+    [metadataCopy removeObjectForKey:*MEMORY[0x1E6991078]];
   }
 }
 
-+ (void)_addGlobalLTMLookUpTableAlignedToFinalCropRect:(id)a3
++ (void)_addGlobalLTMLookUpTableAlignedToFinalCropRect:(id)rect
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = a3;
+  rectCopy = rect;
   v5 = [v3 numberWithBool:1];
-  [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x1E6990DC0]];
+  [rectCopy setObject:v5 forKeyedSubscript:*MEMORY[0x1E6990DC0]];
 }
 
 + (void)createLTMMetadataFromLTMOutput:statistics:driverInputMetadata:geometryData:.cold.1()

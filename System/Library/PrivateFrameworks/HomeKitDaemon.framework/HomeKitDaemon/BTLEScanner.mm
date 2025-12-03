@@ -5,16 +5,16 @@
 - (void)_flushQueue;
 - (void)_stopScan;
 - (void)_stopTimer;
-- (void)didUpdateBTLEState:(int64_t)a3;
-- (void)setScanTimer:(uint64_t)a1;
-- (void)timerDidFire:(id)a3;
+- (void)didUpdateBTLEState:(int64_t)state;
+- (void)setScanTimer:(uint64_t)timer;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation BTLEScanner
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v6 = a3;
+  fireCopy = fire;
   if (self)
   {
     dispatch_assert_queue_V2(self->_workQueue);
@@ -27,12 +27,12 @@
     scanTimer = 0;
   }
 
-  v5 = v6;
-  if (scanTimer == v6)
+  v5 = fireCopy;
+  if (scanTimer == fireCopy)
   {
     [(BTLEScanner *)self _stopScan];
     [(BTLEScanner *)self _flushQueue];
-    v5 = v6;
+    v5 = fireCopy;
   }
 }
 
@@ -61,7 +61,7 @@
 
 - (void)_checkCanScan
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_scanQueue;
@@ -73,9 +73,9 @@
     v31 = &v30;
     v32 = 0x2020000000;
     v33 = 0;
-    if (v2)
+    if (selfCopy)
     {
-      scanQueue = v2->_scanQueue;
+      scanQueue = selfCopy->_scanQueue;
     }
 
     else
@@ -93,11 +93,11 @@
 
     v5 = objc_alloc(MEMORY[0x277D0F920]);
     v6 = [v5 initWithTimeInterval:1 options:v31[3]];
-    [(BTLEScanner *)v2 setScanTimer:v6];
+    [(BTLEScanner *)selfCopy setScanTimer:v6];
 
-    if (v2)
+    if (selfCopy)
     {
-      scanTimer = v2->_scanTimer;
+      scanTimer = selfCopy->_scanTimer;
     }
 
     else
@@ -106,12 +106,12 @@
     }
 
     v8 = scanTimer;
-    [(HMFTimer *)v8 setDelegate:v2];
+    [(HMFTimer *)v8 setDelegate:selfCopy];
 
-    if (v2)
+    if (selfCopy)
     {
-      v9 = v2->_workQueue;
-      v10 = v2->_scanTimer;
+      v9 = selfCopy->_workQueue;
+      v10 = selfCopy->_scanTimer;
     }
 
     else
@@ -123,9 +123,9 @@
     v11 = v10;
     [(HMFTimer *)v11 setDelegateQueue:v9];
 
-    if (v2)
+    if (selfCopy)
     {
-      v12 = v2->_scanTimer;
+      v12 = selfCopy->_scanTimer;
     }
 
     else
@@ -136,14 +136,14 @@
     v13 = v12;
     [(HMFTimer *)v13 resume];
 
-    objc_initWeak(&location, v2);
+    objc_initWeak(&location, selfCopy);
     v14 = objc_alloc_init(MEMORY[0x277D02838]);
     v15 = v14;
-    if (v2)
+    if (selfCopy)
     {
-      objc_storeStrong(&v2->_cubleScanner, v14);
+      objc_storeStrong(&selfCopy->_cubleScanner, v14);
 
-      cubleScanner = v2->_cubleScanner;
+      cubleScanner = selfCopy->_cubleScanner;
     }
 
     else
@@ -157,9 +157,9 @@
 
     if (IsAppleTV())
     {
-      if (v2)
+      if (selfCopy)
       {
-        v18 = v2->_cubleScanner;
+        v18 = selfCopy->_cubleScanner;
       }
 
       else
@@ -171,9 +171,9 @@
       [(CUBLEScanner *)v19 setScanFlags:[(CUBLEScanner *)v19 scanFlags]| 1];
     }
 
-    if (v2)
+    if (selfCopy)
     {
-      v20 = v2->_cubleScanner;
+      v20 = selfCopy->_cubleScanner;
     }
 
     else
@@ -189,9 +189,9 @@
     v26[2] = __28__BTLEScanner__checkCanScan__block_invoke_2;
     v26[3] = &unk_278675B50;
     objc_copyWeak(&v27, &location);
-    if (v2)
+    if (selfCopy)
     {
-      v22 = v2->_cubleScanner;
+      v22 = selfCopy->_cubleScanner;
     }
 
     else
@@ -202,9 +202,9 @@
     v23 = v22;
     [(CUBLEScanner *)v23 setDeviceFoundHandler:v26];
 
-    if (v2)
+    if (selfCopy)
     {
-      v24 = v2->_cubleScanner;
+      v24 = selfCopy->_cubleScanner;
     }
 
     else
@@ -223,7 +223,7 @@
   else
   {
 
-    [(BTLEScanner *)v2 _stopScan];
+    [(BTLEScanner *)selfCopy _stopScan];
   }
 }
 
@@ -243,11 +243,11 @@ uint64_t __28__BTLEScanner__checkCanScan__block_invoke(uint64_t a1, uint64_t a2,
   return 1;
 }
 
-- (void)setScanTimer:(uint64_t)a1
+- (void)setScanTimer:(uint64_t)timer
 {
-  if (a1)
+  if (timer)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((timer + 16), a2);
   }
 }
 
@@ -434,15 +434,15 @@ LABEL_5:
   if (v2)
   {
     v3 = HMDispatchQueueNameString();
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     workQueue = v2->_workQueue;
     v2->_workQueue = v6;
 
-    v8 = [MEMORY[0x277CFEA60] getInstance];
+    getInstance = [MEMORY[0x277CFEA60] getInstance];
     centralManager = v2->_centralManager;
-    v2->_centralManager = v8;
+    v2->_centralManager = getInstance;
 
     v10 = objc_alloc_init(HMDAccessoryQueues);
     scanQueue = v2->_scanQueue;
@@ -455,7 +455,7 @@ LABEL_5:
   return v2;
 }
 
-- (void)didUpdateBTLEState:(int64_t)a3
+- (void)didUpdateBTLEState:(int64_t)state
 {
   if (self)
   {
@@ -472,7 +472,7 @@ LABEL_5:
   v4[2] = __34__BTLEScanner_didUpdateBTLEState___block_invoke;
   v4[3] = &unk_27868A0D0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = state;
   dispatch_async(workQueue, v4);
 }
 

@@ -1,15 +1,15 @@
 @interface PXExistingSuggestionsDebugViewController
-- (PXExistingSuggestionsDebugViewController)initWithName:(id)a3 options:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)assetsDataSourceManagerForSuggestion:(id)a3;
-- (id)oneUpPresentationInitialAssetReference:(id)a3;
-- (id)oneUpPresentationMediaProvider:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (PXExistingSuggestionsDebugViewController)initWithName:(id)name options:(id)options;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)assetsDataSourceManagerForSuggestion:(id)suggestion;
+- (id)oneUpPresentationInitialAssetReference:(id)reference;
+- (id)oneUpPresentationMediaProvider:(id)provider;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_fetchExistingSuggestions;
-- (void)configureCell:(id)a3 withItem:(id)a4;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)configureCell:(id)cell withItem:(id)item;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -18,21 +18,21 @@
 - (void)_fetchExistingSuggestions
 {
   v38[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v4 = [v3 librarySpecificFetchOptions];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  librarySpecificFetchOptions = [px_deprecated_appPhotoLibrary librarySpecificFetchOptions];
 
   v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:1];
   v38[0] = v5;
   v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:1];
   v38[1] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:2];
-  [v4 setSortDescriptors:v7];
+  [librarySpecificFetchOptions setSortDescriptors:v7];
 
-  v8 = [MEMORY[0x1E6978AE8] fetchSuggestionsWithOptions:v4];
+  v8 = [MEMORY[0x1E6978AE8] fetchSuggestionsWithOptions:librarySpecificFetchOptions];
   if ([v8 count])
   {
-    v29 = self;
-    v30 = v4;
+    selfCopy = self;
+    v30 = librarySpecificFetchOptions;
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v32 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v33 = 0u;
@@ -59,8 +59,8 @@
 
           v16 = *(*(&v33 + 1) + 8 * i);
           v17 = [[PXExistingSuggestionsDebugCollectionItem alloc] initWithSuggestion:v16];
-          v18 = [v16 creationDate];
-          v19 = [MEMORY[0x1E696AB78] localizedStringFromDate:v18 dateStyle:1 timeStyle:0];
+          creationDate = [v16 creationDate];
+          v19 = [MEMORY[0x1E696AB78] localizedStringFromDate:creationDate dateStyle:1 timeStyle:0];
           v20 = v19;
           if (!v13 || ([v19 isEqualToString:v12] & 1) == 0)
           {
@@ -88,100 +88,100 @@
       v13 = 0;
     }
 
-    v23 = [v9 reverseObjectEnumerator];
-    v24 = [v23 allObjects];
-    sectionNames = v29->_sectionNames;
-    v29->_sectionNames = v24;
+    reverseObjectEnumerator = [v9 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    sectionNames = selfCopy->_sectionNames;
+    selfCopy->_sectionNames = allObjects;
 
-    itemsBySectionName = v29->_itemsBySectionName;
-    v29->_itemsBySectionName = v32;
+    itemsBySectionName = selfCopy->_itemsBySectionName;
+    selfCopy->_itemsBySectionName = v32;
     v27 = v32;
 
-    v4 = v30;
+    librarySpecificFetchOptions = v30;
     v8 = v28;
   }
 }
 
-- (void)configureCell:(id)a3 withItem:(id)a4
+- (void)configureCell:(id)cell withItem:(id)item
 {
-  v16 = a3;
-  v5 = a4;
-  v6 = [v5 suggestion];
-  [v16 setSuggestion:v6];
-  v7 = [v6 state];
+  cellCopy = cell;
+  itemCopy = item;
+  suggestion = [itemCopy suggestion];
+  [cellCopy setSuggestion:suggestion];
+  state = [suggestion state];
   v8 = 0;
-  if (v7 <= 1)
+  if (state <= 1)
   {
-    if (v7)
+    if (state)
     {
-      if (v7 != 1)
+      if (state != 1)
       {
         goto LABEL_13;
       }
 
-      v9 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E69DC888] blueColor];
+      labelColor = [MEMORY[0x1E69DC888] blueColor];
     }
   }
 
   else
   {
-    switch(v7)
+    switch(state)
     {
       case 2:
-        v9 = [MEMORY[0x1E69DC888] grayColor];
+        labelColor = [MEMORY[0x1E69DC888] grayColor];
         break;
       case 4:
-        v9 = [MEMORY[0x1E69DC888] redColor];
+        labelColor = [MEMORY[0x1E69DC888] redColor];
         break;
       case 3:
-        v9 = [MEMORY[0x1E69DC888] greenColor];
+        labelColor = [MEMORY[0x1E69DC888] greenColor];
         break;
       default:
         goto LABEL_13;
     }
   }
 
-  v8 = v9;
+  v8 = labelColor;
 LABEL_13:
-  v10 = [v16 textLabel];
-  v11 = [v5 name];
-  v12 = [v11 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_1F1741150];
+  textLabel = [cellCopy textLabel];
+  name = [itemCopy name];
+  v12 = [name stringByReplacingOccurrencesOfString:@"\n" withString:&stru_1F1741150];
 
-  [v10 setText:v12];
-  [v10 setTextColor:v8];
-  v13 = [v16 detailTextLabel];
-  v14 = [v5 description];
-  [v13 setText:v14];
+  [textLabel setText:v12];
+  [textLabel setTextColor:v8];
+  detailTextLabel = [cellCopy detailTextLabel];
+  v14 = [itemCopy description];
+  [detailTextLabel setText:v14];
 
-  [v13 setTextColor:v8];
-  [v13 sizeToFit];
-  v15 = [v5 suggestion];
+  [detailTextLabel setTextColor:v8];
+  [detailTextLabel sizeToFit];
+  suggestion2 = [itemCopy suggestion];
 
-  [v16 setAccessoryType:4 * (v15 != 0)];
+  [cellCopy setAccessoryType:4 * (suggestion2 != 0)];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"ExistingSuggestionsDebugTableViewCellIdentifier"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"ExistingSuggestionsDebugTableViewCellIdentifier"];
   if (!v7)
   {
     v7 = [[PXExistingSuggestionsDebugViewCell alloc] initWithStyle:3 reuseIdentifier:@"ExistingSuggestionsDebugTableViewCellIdentifier"];
-    v8 = [(PXExistingSuggestionsDebugViewCell *)v7 detailTextLabel];
-    [v8 setNumberOfLines:2];
+    detailTextLabel = [(PXExistingSuggestionsDebugViewCell *)v7 detailTextLabel];
+    [detailTextLabel setNumberOfLines:2];
 
-    v9 = [(PXExistingSuggestionsDebugViewCell *)v7 detailTextLabel];
-    [v9 setLineBreakMode:0];
+    detailTextLabel2 = [(PXExistingSuggestionsDebugViewCell *)v7 detailTextLabel];
+    [detailTextLabel2 setLineBreakMode:0];
   }
 
-  v10 = -[NSArray objectAtIndexedSubscript:](self->_sectionNames, "objectAtIndexedSubscript:", [v6 section]);
+  v10 = -[NSArray objectAtIndexedSubscript:](self->_sectionNames, "objectAtIndexedSubscript:", [pathCopy section]);
   v11 = [(NSDictionary *)self->_itemsBySectionName objectForKeyedSubscript:v10];
-  v12 = [v6 row];
+  v12 = [pathCopy row];
 
   v13 = [v11 objectAtIndexedSubscript:v12];
 
@@ -190,58 +190,58 @@ LABEL_13:
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(NSArray *)self->_sectionNames objectAtIndexedSubscript:a4];
+  v5 = [(NSArray *)self->_sectionNames objectAtIndexedSubscript:section];
   v6 = [(NSDictionary *)self->_itemsBySectionName objectForKeyedSubscript:v5];
   v7 = [v6 count];
 
   return v7;
 }
 
-- (id)oneUpPresentationInitialAssetReference:(id)a3
+- (id)oneUpPresentationInitialAssetReference:(id)reference
 {
-  v3 = [(PXExistingSuggestionsDebugViewController *)self oneUpPresentationDataSourceManager:a3];
-  v4 = [v3 dataSource];
-  v5 = [v4 startingAssetReference];
+  v3 = [(PXExistingSuggestionsDebugViewController *)self oneUpPresentationDataSourceManager:reference];
+  dataSource = [v3 dataSource];
+  startingAssetReference = [dataSource startingAssetReference];
 
-  return v5;
+  return startingAssetReference;
 }
 
-- (id)oneUpPresentationMediaProvider:(id)a3
+- (id)oneUpPresentationMediaProvider:(id)provider
 {
   v3 = objc_alloc_init(PXPhotoKitUIMediaProvider);
 
   return v3;
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
   sectionNames = self->_sectionNames;
-  v6 = a4;
-  v14 = -[NSArray objectAtIndexedSubscript:](sectionNames, "objectAtIndexedSubscript:", [v6 section]);
+  pathCopy = path;
+  v14 = -[NSArray objectAtIndexedSubscript:](sectionNames, "objectAtIndexedSubscript:", [pathCopy section]);
   v7 = [(NSDictionary *)self->_itemsBySectionName objectForKeyedSubscript:?];
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   v9 = [v7 objectAtIndexedSubscript:v8];
 
-  v10 = [v9 suggestion];
-  if (v10)
+  suggestion = [v9 suggestion];
+  if (suggestion)
   {
-    v11 = [MEMORY[0x1E6978630] fetchKeyCuratedAssetInAssetCollection:v10 referenceAsset:0];
-    v12 = [[PXSuggestionDebugViewController alloc] initWithSuggestion:v10 suggestionInfo:0];
-    v13 = [(PXExistingSuggestionsDebugViewController *)self navigationController];
-    [v13 px_presentViewControllerInNavigationController:v12 animated:1 dimissButtonLocation:0 completion:0];
+    v11 = [MEMORY[0x1E6978630] fetchKeyCuratedAssetInAssetCollection:suggestion referenceAsset:0];
+    v12 = [[PXSuggestionDebugViewController alloc] initWithSuggestion:suggestion suggestionInfo:0];
+    navigationController = [(PXExistingSuggestionsDebugViewController *)self navigationController];
+    [navigationController px_presentViewControllerInNavigationController:v12 animated:1 dimissButtonLocation:0 completion:0];
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   sectionNames = self->_sectionNames;
-  v6 = a4;
-  v7 = -[NSArray objectAtIndexedSubscript:](sectionNames, "objectAtIndexedSubscript:", [v6 section]);
+  pathCopy = path;
+  v7 = -[NSArray objectAtIndexedSubscript:](sectionNames, "objectAtIndexedSubscript:", [pathCopy section]);
   v8 = [(NSDictionary *)self->_itemsBySectionName objectForKeyedSubscript:v7];
-  v9 = [v6 row];
+  v9 = [pathCopy row];
 
   v10 = [v8 objectAtIndexedSubscript:v9];
 
@@ -261,34 +261,34 @@ LABEL_13:
   return v13;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   sectionNames = self->_sectionNames;
-  v6 = a4;
-  v12 = -[NSArray objectAtIndexedSubscript:](sectionNames, "objectAtIndexedSubscript:", [v6 section]);
+  pathCopy = path;
+  v12 = -[NSArray objectAtIndexedSubscript:](sectionNames, "objectAtIndexedSubscript:", [pathCopy section]);
   v7 = [(NSDictionary *)self->_itemsBySectionName objectForKeyedSubscript:?];
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   v9 = [v7 objectAtIndexedSubscript:v8];
 
-  v10 = [v9 suggestion];
-  if (v10)
+  suggestion = [v9 suggestion];
+  if (suggestion)
   {
-    objc_storeStrong(&self->_currentSuggestion, v10);
+    objc_storeStrong(&self->_currentSuggestion, suggestion);
     [(UIViewController *)self px_enableOneUpPresentation];
-    v11 = [(UIViewController *)self px_oneUpPresentation];
-    [v11 setDelegate:self];
-    [v11 startWithConfigurationHandler:0];
+    px_oneUpPresentation = [(UIViewController *)self px_oneUpPresentation];
+    [px_oneUpPresentation setDelegate:self];
+    [px_oneUpPresentation startWithConfigurationHandler:0];
   }
 }
 
-- (id)assetsDataSourceManagerForSuggestion:(id)a3
+- (id)assetsDataSourceManagerForSuggestion:(id)suggestion
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6978630] fetchKeyAssetsInAssetCollection:a3 options:0];
-  v4 = [v3 fetchedObjects];
+  v3 = [MEMORY[0x1E6978630] fetchKeyAssetsInAssetCollection:suggestion options:0];
+  fetchedObjects = [v3 fetchedObjects];
 
-  v5 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssets:v4 title:0];
+  v5 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssets:fetchedObjects title:0];
   v6 = MEMORY[0x1E6978760];
   v14[0] = v5;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
@@ -307,8 +307,8 @@ LABEL_13:
   v7.receiver = self;
   v7.super_class = PXExistingSuggestionsDebugViewController;
   [(PXExistingSuggestionsDebugViewController *)&v7 viewDidLoad];
-  v3 = [(PXExistingSuggestionsDebugViewController *)self navigationItem];
-  v4 = v3;
+  navigationItem = [(PXExistingSuggestionsDebugViewController *)self navigationItem];
+  v4 = navigationItem;
   if (self->_name)
   {
     name = self->_name;
@@ -319,26 +319,26 @@ LABEL_13:
     name = @"Existing Suggestions";
   }
 
-  [v3 setTitle:name];
+  [navigationItem setTitle:name];
 
-  v6 = [(PXExistingSuggestionsDebugViewController *)self tableView];
-  [v6 setEstimatedRowHeight:44.0];
+  tableView = [(PXExistingSuggestionsDebugViewController *)self tableView];
+  [tableView setEstimatedRowHeight:44.0];
 
   [(PXExistingSuggestionsDebugViewController *)self _fetchExistingSuggestions];
 }
 
-- (PXExistingSuggestionsDebugViewController)initWithName:(id)a3 options:(id)a4
+- (PXExistingSuggestionsDebugViewController)initWithName:(id)name options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = PXExistingSuggestionsDebugViewController;
   v9 = [(PXExistingSuggestionsDebugViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_options, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_options, options);
   }
 
   return v10;
